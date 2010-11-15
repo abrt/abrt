@@ -200,7 +200,7 @@ static char *do_log_and_save_line(char *log_line, void *param)
 // Do not trust client_report here!
 // dbus handler passes it from user without checking
 report_status_t Report(const map_crash_data_t& client_report,
-                       const vector_string_t &reporters,
+                       const vector_string_t& events,
                        const map_map_string_t& settings,
                        long caller_uid)
 {
@@ -271,7 +271,7 @@ report_status_t Report(const map_crash_data_t& client_report,
             std::string key = its->first;
             if (get_crash_data_item_content_or_NULL(client_report, key.c_str()) == NULL)
             {
-                /* client does not have it -> does not want it passed to reporters */
+                /* client does not have it -> does not want it passed to events */
                 VERB3 log("Won't report BIN file %s:'%s'", key.c_str(), its->second[CD_CONTENT].c_str());
                 its++; /* move off the element we will erase */
                 stored_report.erase(key);
@@ -282,7 +282,6 @@ report_status_t Report(const map_crash_data_t& client_report,
     }
 
     VERB3 {
-        log("Run reporters");
         log_map_crash_data(client_report, " client_report");
         log_map_crash_data(stored_report, " stored_report");
     }
@@ -305,7 +304,7 @@ report_status_t Report(const map_crash_data_t& client_report,
         reporter_settings++;
     }
 
-    // Run reporters
+    // Run events
     bool at_least_one_reporter_succeeded = false;
     report_status_t ret;
     std::string message;
@@ -313,31 +312,31 @@ report_status_t Report(const map_crash_data_t& client_report,
     struct run_event_state *run_state = new_run_event_state();
     run_state->logging_callback = do_log_and_save_line;
     run_state->logging_param = &l_state;
-    for (unsigned i = 0; i < reporters.size(); i++)
+    for (unsigned i = 0; i < events.size(); i++)
     {
-        std::string plugin_name = "report_" + reporters[i];
+        std::string event = events[i];
 
         l_state.last_line = NULL;
-        int r = run_event(run_state, dump_dir_name, plugin_name.c_str());
+        int r = run_event(run_state, dump_dir_name, event.c_str());
         if (r == -1)
         {
-            l_state.last_line = xasprintf("Error: no processing is specified for event '%s'", plugin_name.c_str());
+            l_state.last_line = xasprintf("Error: no processing is specified for event '%s'", event.c_str());
         }
         if (r == 0)
         {
             at_least_one_reporter_succeeded = true;
-            ret[plugin_name].push_back("1"); // REPORT_STATUS_IDX_FLAG
-            ret[plugin_name].push_back(l_state.last_line ? : "Reporting succeeded"); // REPORT_STATUS_IDX_MSG
+            ret[event].push_back("1"); // REPORT_STATUS_IDX_FLAG
+            ret[event].push_back(l_state.last_line ? : "Reporting succeeded"); // REPORT_STATUS_IDX_MSG
             if (message != "")
                 message += ";";
             message += (l_state.last_line ? : "Reporting succeeded");
         }
         else
         {
-            ret[plugin_name].push_back("0");      // REPORT_STATUS_IDX_FLAG
-            ret[plugin_name].push_back(l_state.last_line ? : "Error in reporting"); // REPORT_STATUS_IDX_MSG
+            ret[event].push_back("0");      // REPORT_STATUS_IDX_FLAG
+            ret[event].push_back(l_state.last_line ? : "Error in reporting"); // REPORT_STATUS_IDX_MSG
             update_client("Reporting via '%s' was not successful%s%s",
-                    plugin_name.c_str(),
+                    event.c_str(),
                     l_state.last_line ? ": " : "",
                     l_state.last_line ? l_state.last_line : ""
             );
@@ -370,11 +369,11 @@ report_status_t Report(const map_crash_data_t& client_report,
         report_status_t::iterator ret_it = ret.begin();
         while (ret_it != ret.end())
         {
-            const string &plugin_name = ret_it->first;
+            const string &event = ret_it->first;
             const vector_string_t &v = ret_it->second;
             if (v[REPORT_STATUS_IDX_FLAG] == "1")
             {
-                database->SetReportedPerReporter(crash_id.c_str(), plugin_name.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
+                database->SetReportedPerReporter(crash_id.c_str(), event.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
             }
             ret_it++;
         }

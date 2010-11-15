@@ -87,7 +87,7 @@ void RunAction(const char *pActionDir,
  *  A report status, which reporters ends successfuly with messages.
  */
 report_status_t Report(const map_crash_data_t& crash_data,
-                       const vector_string_t& reporters,
+                       const vector_string_t& events,
                        const map_map_string_t& settings,
                        long caller_uid);
 /**

@@ -35,7 +35,7 @@ class ReporterAssistant():
         self.comment_changed = False
         self.howto_changed = False
         self.report_has_bt = False
-        self.selected_reporters = []
+        self.selected_report_events = []
         """ create the assistant """
         self.assistant = gtk.Assistant()
         self.assistant.set_icon_name("abrt")
@@ -290,13 +290,13 @@ class ReporterAssistant():
         error_msgs = []
         rating_required = False
 
-        for reporter in self.selected_reporters:
-            if "RatingRequired" in reporter.Settings.keys():
-                if reporter.Settings["RatingRequired"] == "yes":
-                    rating_required = True
-                    log1(_("Rating is required by the %s plugin") % reporter)
-        if self.selected_reporters and not rating_required:
-            log1(_("Rating is not required by any plugin, skipping the check..."))
+        ###for reporter in self.selected_report_events:
+        ###    if "RatingRequired" in reporter.Settings.keys():
+        ###        if reporter.Settings["RatingRequired"] == "yes":
+        ###            rating_required = True
+        ###            log1(_("Rating is required by the %s plugin") % reporter)
+        ###if self.selected_report_events and not rating_required:
+        ###    log1(_("Rating is not required by any plugin, skipping the check..."))
 
         try:
             rating = int(self.result[FILENAME_RATING][CD_CONTENT])
@@ -407,33 +407,33 @@ class ReporterAssistant():
             log2("  result:%s", str(report))
             # Careful, this will print reporters_settings["Password"] too
             log2("  settings:%s", str(reporters_settings))
-            self.daemon.Report(report, self.selected_reporters, reporters_settings)
+            self.daemon.Report(report, self.selected_report_events, reporters_settings)
             log2("Report() returned")
             #self.hydrate()
         except Exception, ex:
             self.hide_progress()
             gui_error_message(_("Reporting failed!\n%s" % ex))
 
-    def on_plugin_toggled(self, plugin, plugins, reporter, page):
+    def on_plugin_toggled(self, plugin, plugins, event_name, page):
         complete = False
         if plugin.get_active():
-            log1("Plugin >>%s<< activated" % reporter)
-            self.selected_reporters.append(reporter)
-            check_result = self.check_settings([reporter])
-            if check_result == NO_PROBLEMS_DETECTED:
-                pass
-            elif check_result:
-                page_n = self.assistant.get_current_page()
-                self.assistant.set_page_complete(page, True)
-                self.assistant.set_current_page(page_n+1)
-            else:
-                plugin.set_active(False)
+            log1("Plugin >>%s<< activated" % event_name)
+            self.selected_report_events.append(event_name)
+            ###check_result = self.check_settings([reporter])
+            ###if check_result == NO_PROBLEMS_DETECTED:
+            ###    pass
+            ###elif check_result:
+            ###    page_n = self.assistant.get_current_page()
+            ###    self.assistant.set_page_complete(page, True)
+            ###    self.assistant.set_current_page(page_n+1)
+            ###else:
+            ###    plugin.set_active(False)
         else:
-            self.selected_reporters.remove(reporter)
-            log1("Plugin >>%s<< de-activated" % reporter)
-        if self.selected_reporters:
+            self.selected_report_events.remove(event_name)
+            log1("Plugin >>%s<< de-activated" % event_name)
+        if self.selected_report_events:
             complete = True
-        log1("Selected reporters: %s" % [str(x) for x in self.selected_reporters])
+        log1("Selected reporters: %s" % [x for x in self.selected_report_events])
         self.assistant.set_page_complete(page, complete)
 
     def on_bt_toggled(self, togglebutton, page):
@@ -483,51 +483,32 @@ class ReporterAssistant():
         page.pack_start(vbox_plugins)
 
         # add checkboxes for enabled reporters
-        self.selected_reporters = []
-        #FIXME: cache settings! Create some class to represent it like PluginList
-        self.settings = self.daemon.getSettings()
+        # the logic for package specific reporters has been moved
+        # to abrt-handle-crashdump with configuration in abrt_events.conf
         pluginlist = getPluginInfoList(self.daemon)
-        self.reporters = []
-        AnalyzerActionsAndReporters = self.settings["AnalyzerActionsAndReporters"]
-        try:
-            reporters = None
-            try:
-                reporters = AnalyzerActionsAndReporters[self.report.getAnalyzerName()+":"+self.report.getPackageName()]
-                log1("Found per-package reporters, "
-                     "using it instead of the common reporter")
-            except KeyError:
-                pass
-            # the package specific reporter has higher priority,
-            # so don't overwrite it if it's set
-            if not reporters:
-                reporters = AnalyzerActionsAndReporters[self.report.getAnalyzerName()]
-            # FIXME: split(',') doesn't work for RunApp("date", "date.txt")
-            # but since we don't have reporters with parameters, it will find
-            # the reporter plugins anyway, but it should be more clever...
-            for reporter_name in reporters.split(','):
-                reporter = pluginlist.getReporterByName(reporter_name)
-                if reporter:
-                    log1("Adding >>%s<< to reporters", reporter)
-                    self.reporters.append(reporter)
-        except KeyError:
-            # Analyzer has no associated reporters.
-            # but we don't care, maybe user just want to read the backtrace??
-            pass
-        for reporter in self.reporters:
-            cb = gtk.CheckButton(str(reporter))
-            cb.connect("toggled", self.on_plugin_toggled, plugins_cb, reporter, page)
+        self.selected_report_events = []
+        self.possible_report_events = []
+        for event_name in self.report.get_report_event_names():
+            log1("Adding >>%s<< to report events", event_name)
+            self.possible_report_events.append(event_name)
+        if len(self.possible_report_events) == 0:
+            # WTF?? Try running "report" event anyway...
+            self.possible_report_events.append("report")
+        for event_name in self.possible_report_events:
+            display_name = "Report"
+            if event_name != "report":  # then it's "report_foo"
+                display_name = event_name[7:]
+            cb = gtk.CheckButton(display_name)
+            cb.connect("toggled", self.on_plugin_toggled, plugins_cb, event_name, page)
             plugins_cb.append(cb)
             vbox_plugins.pack_start(cb, fill=True, expand=False)
-        # automatically select the reporter if we have only one reporter plugin
-        if len(self.reporters) == 1:
-            # we want to skip it only if the plugin is properly configured
-            if self.reporters[0].Settings.check():
-                #self.selected_reporters.append(self.reporters[0])
-                self.assistant.set_page_complete(page, True)
-                log1(_("Only one reporter plugin is configured."))
-                # this is safe, because in python the variable is visible even
-                # outside the for loop
-                cb.set_active(True)
+        # automatically select the report event if we have only one
+        if len(self.possible_report_events) == 1:
+            self.assistant.set_page_complete(page, True)
+            log1(_("Only one reporter plugin is configured."))
+            # this is safe, because in python the variable is visible even
+            # outside the for loop it was created (in this case, cb)
+            cb.set_active(True)
         self.pdict_add_page(page, PAGE_REPORTER_SELECTOR)
         self.assistant.set_page_type(page, gtk.ASSISTANT_PAGE_INTRO)
         self.assistant.set_page_title(page, _("Send a bug report"))

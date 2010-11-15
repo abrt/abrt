@@ -46,6 +46,9 @@ CD_EVENTS       = "Events"
 
 # FIXME - create method or smth that returns type|editable|content
 
+#EVENTS PARSING
+REPORT_EVENT = "report"
+REPORT_EVENT_PREFIX = "report_"
 
 class Dump():
     """Class for mapping the debug dump to python object"""
@@ -163,3 +166,9 @@ class Dump():
             return self.hostname
         except AttributeError:
             return None
+
+    def get_report_event_names(self):
+        try:
+            return [x for x in self.Events.split('\n') if (x == REPORT_EVENT or x[:len(REPORT_EVENT_PREFIX)] == REPORT_EVENT_PREFIX)]
+        except AttributeError:
+            return []

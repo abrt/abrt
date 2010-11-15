@@ -242,9 +242,9 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
         return 0;
     }
 
-    /* Second parameter: list of reporters to use */
-    vector_string_t reporters;
-    r = load_val(&in_iter, reporters);
+    /* Second parameter: list of events to run */
+    vector_string_t events;
+    r = load_val(&in_iter, events);
     if (r == ABRT_DBUS_ERROR)
     {
         error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
@@ -289,7 +289,7 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
     report_status_t argout1;
     try
     {
-        argout1 = Report(argin1, reporters, user_conf_data, unix_uid);
+        argout1 = Report(argin1, events, user_conf_data, unix_uid);
     }
     catch (CABRTException &e)
     {
