@@ -118,8 +118,8 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([
 	Makefile
 	abrt.pc
-	lib/Makefile
-	lib/utils/Makefile
+	src/include/Makefile
+	src/lib/Makefile
 	src/plugins/Makefile
 	src/Makefile
 	src/btparser/Makefile
@@ -128,7 +128,6 @@ AC_CONFIG_FILES([
 	src/applet/Makefile
 	src/gui/Makefile
 	src/cli/Makefile
-	inc/Makefile
 	po/Makefile.in
 	icons/Makefile
 	tests/btparser/Makefile

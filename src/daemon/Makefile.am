@@ -18,8 +18,8 @@ abrtd_SOURCES = \
     Settings.h Settings.cpp \
     Daemon.h Daemon.cpp
 abrtd_CPPFLAGS = \
-    -I$(srcdir)/../../inc \
-    -I$(srcdir)/../../lib/utils \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
@@ -36,14 +36,14 @@ abrtd_CPPFLAGS = \
 abrtd_LDADD = \
     $(DL_LIBS) \
     $(DBUS_LIBS) \
-    ../../lib/utils/libABRTUtils.la \
-    ../../lib/utils/libABRTdUtils.la
+    ../lib/libABRTUtils.la \
+    ../lib/libABRTdUtils.la
 
 abrt_server_SOURCES = \
     abrt-server.c
 abrt_server_CPPFLAGS = \
-    -I$(srcdir)/../../inc \
-    -I$(srcdir)/../../lib/utils \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
@@ -54,13 +54,13 @@ abrt_server_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_server_LDADD = \
-    ../../lib/utils/libABRTUtils.la
+    ../lib/libABRTUtils.la
 
 abrt_handle_crashdump_SOURCES = \
     abrt-handle-crashdump.c
 abrt_handle_crashdump_CPPFLAGS = \
-    -I$(srcdir)/../../inc \
-    -I$(srcdir)/../../lib/utils \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
@@ -72,15 +72,15 @@ abrt_handle_crashdump_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_handle_crashdump_LDADD = \
-    ../../lib/utils/libABRTUtils.la
+    ../lib/libABRTUtils.la
 
 abrt_action_save_package_data_SOURCES = \
     rpm.h rpm.c \
     Settings.h Settings.cpp \
     abrt-action-save-package-data.cpp
 abrt_action_save_package_data_CPPFLAGS = \
-    -I$(srcdir)/../../inc \
-    -I$(srcdir)/../../lib/utils \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
@@ -95,8 +95,8 @@ abrt_action_save_package_data_CPPFLAGS = \
 # polkit_check_authorization is in libABRTdUtils
 abrt_action_save_package_data_LDADD = \
     $(RPM_LIBS) \
-    ../../lib/utils/libABRTdUtils.la \
-    ../../lib/utils/libABRTUtils.la
+    ../lib/libABRTdUtils.la \
+    ../lib/libABRTUtils.la
 
 dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/
 dist_dbusabrtconf_DATA = dbus-abrt.conf

@@ -13,9 +13,9 @@ libbtparser_la_SOURCES = \
 	normalize_xorg.c \
 	thread.h thread.c \
 	utils.h utils.c
-libbtparser_la_CFLAGS = -Wall -Werror -D_GNU_SOURCE -I../../lib/utils
+libbtparser_la_CFLAGS = -Wall -Werror -D_GNU_SOURCE -I../lib
 libbtparser_la_LDFLAGS = -version-info 1:1:0
-libbtparser_la_LIBADD = ../../lib/utils/libABRTUtils.la
+libbtparser_la_LIBADD = ../lib/libABRTUtils.la
 
 # From http://www.seul.org/docs/autotut/
 # Version consists 3 numbers: CURRENT, REVISION, AGE.

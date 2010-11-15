@@ -5,7 +5,7 @@ lib_LTLIBRARIES = \
     libABRTUtils.la \
     libABRTdUtils.la \
     libABRT_web_utils.la
-HEADER_DIR = $(srcdir)/../../inc
+HEADER_DIR = $(srcdir)/../include
 AM_CPPFLAGS = -I$(HEADER_DIR)
 
 # Not used just yet:
@@ -42,7 +42,7 @@ libABRTUtils_la_SOURCES = \
     parse_options.c parse_options.h
 libABRTUtils_la_CPPFLAGS = \
     -Wall -Werror \
-    -I$(srcdir)/../../inc \
+    -I$(srcdir)/../include \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
@@ -66,7 +66,7 @@ libABRTdUtils_la_SOURCES = \
     Polkit.h Polkit.cpp
 libABRTdUtils_la_CPPFLAGS = \
     -Wall -Werror \
-    -I$(srcdir)/../../inc \
+    -I$(srcdir)/../include \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
@@ -85,7 +85,7 @@ libABRT_web_utils_la_SOURCES = \
     abrt_xmlrpc.h abrt_xmlrpc.cpp
 libABRT_web_utils_la_CPPFLAGS = \
     -Wall -Werror \
-    -I$(srcdir)/../../inc \
+    -I$(srcdir)/../include \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \

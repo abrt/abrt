@@ -5,8 +5,8 @@ abrt_applet_SOURCES = \
     applet_gtk.h applet_gtk.c
 abrt_applet_CPPFLAGS = \
     -Wall -Werror \
-    -I$(srcdir)/../../inc \
-    -I$(srcdir)/../../lib/utils \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
     -I/usr/include/glib-2.0 \
     -I/usr/lib/glib-2.0/include \
     -DBIN_DIR=\"$(bindir)\" \
@@ -22,7 +22,7 @@ abrt_applet_CPPFLAGS = \
 #    $(LIBNOTIFY_CFLAGS)
 #    $(DBUS_GLIB_CFLAGS)
 abrt_applet_LDADD = \
-    ../../lib/utils/libABRTUtils.la \
+    ../lib/libABRTUtils.la \
     -lglib-2.0 \
     -lgthread-2.0 \
     $(DBUS_LIBS) \

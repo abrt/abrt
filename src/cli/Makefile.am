@@ -7,8 +7,8 @@ abrt_cli_SOURCES = \
     dbus.h dbus.cpp
 
 abrt_cli_CPPFLAGS = \
-    -I$(srcdir)/../../inc \
-    -I$(srcdir)/../../lib/utils \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     $(ENABLE_SOCKET_OR_DBUS) \
     $(DBUS_CFLAGS) $(GLIB_CFLAGS) \
@@ -16,8 +16,8 @@ abrt_cli_CPPFLAGS = \
 #    $(GTK_CFLAGS)
 
 abrt_cli_LDADD = \
-    ../../lib/utils/libABRTUtils.la \
-    ../../lib/utils/libABRTdUtils.la \
+    ../lib/libABRTUtils.la \
+    ../lib/libABRTdUtils.la \
     $(GLIB_LIBS)
 
 man_MANS = abrt-cli.1
