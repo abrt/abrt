@@ -840,13 +840,13 @@ int main(int argc, char** argv)
      * (I saw it set only DBUS_STARTER_ADDRESS and DBUS_STARTER_BUS_TYPE).
      * In this case, set something sane:
      */
-    if (!getenv("PATH"))
-        putenv((char*)"PATH=/usr/sbin:/usr/bin:/sbin:/bin");
-
-    /* need to add LIBEXEC_DIR to PATH, because otherwise abrt-action-*
-     * is not found by exec()
+    /* Need to add LIBEXEC_DIR to PATH, because otherwise abrt-action-*
+     * are not found by exec()
      */
-    putenv(xasprintf("PATH=%s:%s", LIBEXEC_DIR, getenv("PATH")));
+    const char *env_path = getenv("PATH");
+    if (!env_path || !env_path[0])
+        env_path = "/usr/sbin:/usr/bin:/sbin:/bin";
+    putenv(xasprintf("PATH=%s:%s", LIBEXEC_DIR, env_path));
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
 

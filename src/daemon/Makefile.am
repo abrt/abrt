@@ -69,6 +69,7 @@ abrt_handle_crashdump_CPPFLAGS = \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    -DLIBEXEC_DIR=\"$(LIBEXEC_DIR)\" \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_handle_crashdump_LDADD = \
