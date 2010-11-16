@@ -71,7 +71,6 @@ using namespace std;
  * - GetPluginsInfo(): returns map_map_string_t
  *      map["plugin"] = { "Name": "plugin", "Enabled": "yes" ... }
  * - GetPluginSettings(PluginName): returns map_plugin_settings_t (map_string_t)
- * - SetPluginSettings(PluginName, map_plugin_settings_t): returns void
  * - RegisterPlugin(PluginName): returns void
  * - UnRegisterPlugin(PluginName): returns void
  * - GetSettings(): returns map_abrt_settings_t (map_map_string_t)

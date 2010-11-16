@@ -128,16 +128,6 @@ class CPluginManager
          * @return A plugin type.
          */
         plugin_type_t GetPluginType(const char *pName);
-        /**
-         * A method, which sets up a plugin. The settings are also saved in home
-         * directory of an user.
-         * @param pName A plugin name.
-         * @param pUID An uid of user.
-         * @param pSettings A plugin's settings.
-         */
-        void SetPluginSettings(const char *pName,
-                               const char *pUID,
-                               const map_plugin_settings_t& pSettings);
 };
 
 #endif /*PLUGINMANAGER_H_*/

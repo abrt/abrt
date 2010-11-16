@@ -263,28 +263,6 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
         }
     }
 
-#if 0
-    //const char * sender = dbus_message_get_sender(call);
-    if (!user_conf_data.empty())
-    {
-        map_map_string_t::const_iterator it_user_conf_data = user_conf_data.begin();
-        for (; it_user_conf_data != user_conf_data.end(); it_user_conf_data++)
-        {
-            //std::string PluginName = it_user_conf_data->first;
-            log("plugin:'%s'", it_user_conf_data->first.c_str());
-            map_string_t::const_iterator it_plugin_config;
-            for    (it_plugin_config = it_user_conf_data->second.begin();
-                    it_plugin_config != it_user_conf_data->second.end();
-                    it_plugin_config++)
-            {
-                log("key:'%s' val:'%s'", it_plugin_config->first.c_str(), it_plugin_config->second.c_str());
-            }
-            // this would overwrite the default settings
-            //g_pPluginManager->SetPluginSettings(PluginName, sender, plugin_settings);
-        }
-    }
-#endif
-
     long unix_uid = get_remote_uid(call);
     report_status_t argout1;
     try
@@ -367,39 +345,6 @@ static int handle_GetPluginSettings(DBusMessage* call, DBusMessage* reply)
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
     store_val(&out_iter, plugin_settings);
-
-    send_flush_and_unref(reply);
-    return 0;
-}
-
-static int handle_SetPluginSettings(DBusMessage* call, DBusMessage* reply)
-{
-    int r;
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(call, &in_iter);
-    std::string PluginName;
-    r = load_val(&in_iter, PluginName);
-    if (r != ABRT_DBUS_MORE_FIELDS)
-    {
-        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-        return -1;
-    }
-    map_plugin_settings_t plugin_settings;
-    r = load_val(&in_iter, plugin_settings);
-    if (r != ABRT_DBUS_LAST_FIELD)
-    {
-        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-        return -1;
-    }
-
-    long unix_uid = get_remote_uid(call);
-    VERB1 log("got %s('%s',...) call from uid %ld", "SetPluginSettings", PluginName.c_str(), unix_uid);
-    /* Disabled, as we don't use it, we use only temporary user settings while reporting
-       this method should be used to change the default setting and thus should
-       be protected by polkit
-   */
-   //FIXME: protect with polkit
-//    g_pPluginManager->SetPluginSettings(PluginName, to_string(unix_uid), plugin_settings);
 
     send_flush_and_unref(reply);
     return 0;
@@ -508,8 +453,6 @@ static DBusHandlerResult message_received(DBusConnection* conn, DBusMessage* msg
         r = handle_GetPluginsInfo(msg, reply);
     else if (strcmp(member, "GetPluginSettings") == 0)
         r = handle_GetPluginSettings(msg, reply);
-    else if (strcmp(member, "SetPluginSettings") == 0)
-        r = handle_SetPluginSettings(msg, reply);
 #ifdef PLUGIN_DYNAMIC_LOAD_UNLOAD
     else if (strcmp(member, "RegisterPlugin") == 0)
         r = handle_RegisterPlugin(msg, reply);
