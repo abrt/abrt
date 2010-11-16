@@ -175,7 +175,7 @@ static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid)
      || chdir(user_pwd) != 0
     ) {
         perror_msg("can't cd to %s", user_pwd);
-        return 0;
+        return -1;
     }
 
     /* Mimic "core.PID" if requested */
