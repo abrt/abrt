@@ -25,7 +25,6 @@
 #include "abrt_types.h"
 #include "plugin.h"
 #include "analyzer.h"
-#include "reporter.h"
 #include "database.h"
 #include "action.h"
 
@@ -98,18 +97,6 @@ class CPluginManager
          */
         void UnRegisterPluginDBUS(const char *pName, const char *pDBUSSender);
 #endif
-        /**
-         * A method, which returns instance of particular analyzer plugin.
-         * @param pName A plugin name.
-         * @return An analyzer plugin.
-         */
-        CAnalyzer* GetAnalyzer(const char *pName);
-        /**
-         * A method, which returns instance of particular reporter plugin.
-         * @param pName A plugin name.
-         * @return A reporter plugin.
-         */
-        CReporter* GetReporter(const char *pName);
         /**
          * A method, which returns instance of particular action plugin.
          * @param pName A plugin name.

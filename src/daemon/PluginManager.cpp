@@ -260,38 +260,6 @@ void CPluginManager::UnRegisterPluginDBUS(const char *pName, const char *pDBUSSe
 }
 #endif
 
-CAnalyzer* CPluginManager::GetAnalyzer(const char *pName)
-{
-    CPlugin *plugin = LoadPlugin(pName);
-    if (!plugin)
-    {
-        error_msg("Plugin '%s' is not registered", pName);
-        return NULL;
-    }
-    if (m_mapLoadedModules[pName]->GetType() != ANALYZER)
-    {
-        error_msg("Plugin '%s' is not an analyzer plugin", pName);
-        return NULL;
-    }
-    return (CAnalyzer*)plugin;
-}
-
-CReporter* CPluginManager::GetReporter(const char *pName)
-{
-    CPlugin *plugin = LoadPlugin(pName);
-    if (!plugin)
-    {
-        error_msg("Plugin '%s' is not registered", pName);
-        return NULL;
-    }
-    if (m_mapLoadedModules[pName]->GetType() != REPORTER)
-    {
-        error_msg("Plugin '%s' is not a reporter plugin", pName);
-        return NULL;
-    }
-    return (CReporter*)plugin;
-}
-
 CAction* CPluginManager::GetAction(const char *pName, bool silent)
 {
     CPlugin *plugin = LoadPlugin(pName);
