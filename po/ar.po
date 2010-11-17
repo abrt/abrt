@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-06 18:38+0200\n"
+"POT-Creation-Date: 2010-11-17 18:42+0100\n"
 "PO-Revision-Date: 2010-08-05 22:41+0300\n"
 "Last-Translator: Munzir Taha (منذر طه) <munzirtaha@gmail.com>\n"
 "Language-Team: Arabic <trans-ar@lists.fedoraproject.org>\n"
@@ -96,25 +96,24 @@ msgstr "أضف تعليق جديد إلي العلّة %d"
 msgid "Reports bugs to bugzilla"
 msgstr ""
 
-#: ../lib/Plugins/CCpp.cpp:185
+#: ../lib/Plugins/CCpp.cpp:189
 msgid "Generating backtrace"
 msgstr "توليد بيانات التقفِّي"
 
-#: ../lib/Plugins/CCpp.cpp:353
+#: ../lib/Plugins/CCpp.cpp:357
 msgid "Starting the debuginfo installation"
 msgstr "بِدء تثبيت معلومات التصحيح(debuginfo)"
 
-#. Compatibility code.
-#. This whole block should be deleted for Fedora 14.
-#: ../lib/Plugins/CCpp.cpp:566
-msgid "Getting global universal unique identification..."
-msgstr "إحضار المعرّف الفريد العالمي العام..."
-
-#: ../lib/Plugins/CCpp.cpp:748
+#: ../lib/Plugins/CCpp.cpp:640
 msgid "Skipping the debuginfo installation"
 msgstr "تخطّي تثبيت معلومات التصحيح(debuginfo)"
 
-#: ../lib/Plugins/CCpp.cpp:1061
+#: ../lib/Plugins/CCpp.cpp:658
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr ""
+
+#: ../lib/Plugins/CCpp.cpp:934
 msgid "Analyzes crashes in C/C++ programs"
 msgstr ""
 
@@ -205,6 +204,10 @@ msgstr ""
 #: ../lib/Plugins/RHTSupport.cpp:233
 msgid "Creating a new case..."
 msgstr "إنشاء حالة جديدة..."
+
+#: ../lib/Plugins/RHTSupport.cpp:309
+msgid "Reports bugs to Red Hat support"
+msgstr ""
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
@@ -429,22 +432,30 @@ msgid ""
 "Command:            %s\n"
 "Executable:         %s\n"
 "System:             %s, kernel %s\n"
-"Rating:             %s\n"
-"Coredump file:      %s\n"
 "Reason:             %s\n"
 msgstr ""
 
-#: ../src/CLI/CLI.cpp:133
+#: ../src/CLI/CLI.cpp:131
+#, c-format
+msgid "Coredump file:      %s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:135
+#, fuzzy, c-format
+msgid "Rating:             %s\n"
+msgstr "\tإسم المٌضيف  : %s\n"
+
+#: ../src/CLI/CLI.cpp:140
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr ""
 
-#: ../src/CLI/CLI.cpp:137
+#: ../src/CLI/CLI.cpp:144
 #, fuzzy, c-format
 msgid "Hostname:           %s\n"
 msgstr "\tإسم المٌضيف  : %s\n"
 
-#: ../src/CLI/CLI.cpp:141
+#: ../src/CLI/CLI.cpp:148
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -452,7 +463,7 @@ msgid ""
 "%s\n"
 msgstr "# كيفية إعادة إنتاج الانهيار؟"
 
-#: ../src/CLI/CLI.cpp:145
+#: ../src/CLI/CLI.cpp:152
 #, c-format
 msgid ""
 "\n"
@@ -460,7 +471,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: ../src/CLI/CLI.cpp:151
+#: ../src/CLI/CLI.cpp:158
 #, c-format
 msgid ""
 "\n"
@@ -469,7 +480,7 @@ msgid ""
 msgstr ""
 
 #. Message has embedded tabs.
-#: ../src/CLI/CLI.cpp:249
+#: ../src/CLI/CLI.cpp:256
 #, fuzzy, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
@@ -511,7 +522,7 @@ msgstr ""
 "\t@N    - الإنهيار رقم N (حينما يتم عرضه باستخدام --list --full ) اللذيسيتم "
 "إستخدامه\n"
 
-#: ../src/CLI/CLI.cpp:295
+#: ../src/CLI/CLI.cpp:302
 msgid "You must specify exactly one operation"
 msgstr "يجب عليك تحديد عملية واحدة بالضبط"
 
@@ -594,34 +605,60 @@ msgstr ""
 "\n"
 "لم يتم العثور علي تغييرات في التقرير"
 
+#. The response might take more than 1 char in non-latin scripts.
+#: ../src/CLI/report.cpp:545
+msgid "y"
+msgstr ""
+
+#: ../src/CLI/report.cpp:546
+msgid "N"
+msgstr ""
+
 #. Read the missing information and push it to plugin settings.
-#: ../src/CLI/report.cpp:646
+#: ../src/CLI/report.cpp:647
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "تم الكشف عن إعدادات خاطئة للملحق %s\n"
 
-#: ../src/CLI/report.cpp:650
+#: ../src/CLI/report.cpp:651
 msgid "Enter your login: "
 msgstr "أدخل إسم الدخول الخاص بك:"
 
-#: ../src/CLI/report.cpp:656
+#: ../src/CLI/report.cpp:657
 msgid "Enter your password: "
 msgstr "أدخل كلمة المرور الخاصة بك:"
 
-#: ../src/CLI/report.cpp:700
+#: ../src/CLI/report.cpp:702
 msgid "Reporting..."
 msgstr "إرسال التقرير..."
 
-#: ../src/CLI/report.cpp:719
-#, c-format
-msgid "Report using %s? [y/N]: "
+#: ../src/CLI/report.cpp:721
+#, fuzzy, c-format
+msgid "Report using %s?"
 msgstr "إرسال التقرير باستخدام %s ؟ [Y/N]:"
 
-#: ../src/CLI/report.cpp:722
+#: ../src/CLI/report.cpp:724
 msgid "Skipping..."
 msgstr "تخطّي..."
 
-#: ../src/CLI/report.cpp:739
+#: ../src/CLI/report.cpp:736
+#, fuzzy
+msgid "Reporting disabled because the backtrace is unusable"
+msgstr "التبليغ غير مفعّل لأن بيانات التقفِّي(backtrace) غير صالحة."
+
+#: ../src/CLI/report.cpp:740
+#, c-format
+msgid ""
+"Please try to install debuginfo manually using the command: \"debuginfo-"
+"install %s\" and try again\n"
+msgstr ""
+
+#: ../src/CLI/report.cpp:749
+#, fuzzy
+msgid "Error loading reporter settings"
+msgstr "خطأ في الحصول على التقرير: %s"
+
+#: ../src/CLI/report.cpp:768
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "تم التبليغ عن العطل عن طريق عدد %d من الملحقات (%d خطأ)\n"
@@ -650,11 +687,11 @@ msgstr "ملحق قاعدة البيانات لم يحدد. فضلا افحص إ
 msgid "View and report application crashes"
 msgstr "عرض وتبليغ عن انهيارات التطبيق"
 
-#: ../src/Gui/ABRTExceptions.py:6
+#: ../src/Gui/ABRTExceptions.py:7
 msgid "Another client is already running, trying to wake it..."
 msgstr "هناك عميل اخر يعمل بالفعل,أٌحاول إيقاظٌه..."
 
-#: ../src/Gui/ABRTExceptions.py:13
+#: ../src/Gui/ABRTExceptions.py:14
 msgid ""
 "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "حصلتٌ علي بيانات غير متوقّعة من المٌترقّب (هل قاعدة البيانات مٌحدّثة جيدا؟)."
@@ -863,7 +900,7 @@ msgstr ""
 "رقم العطل=%s"
 
 #. default texts
-#: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:19
+#: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:20
 msgid "Brief description of how to reproduce this or what you did..."
 msgstr "وصف موجز لكيفيّة تكرار العطل أو ما اللذي فعلتَه..."
 
@@ -871,7 +908,7 @@ msgstr "وصف موجز لكيفيّة تكرار العطل أو ما اللذ�
 msgid "You must check the backtrace for sensitive data."
 msgstr "يجب التحقق من بيانات التقفِّي (backtrace) لمحو البيانات الحسّاسة."
 
-#: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:308
+#: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:312
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -888,7 +925,7 @@ msgstr ""
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "بيانات التقفِّي غير صالحة للإستعمال, لايمٌكنك التليغ عن هذا."
 
-#: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:314
+#: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:318
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -910,8 +947,8 @@ msgstr ""
 "لايوجد مٌلحق مبلّغ متوفّر لهذا النوع من الأعطال.\n"
 "فضلا إفحص abrt.conf."
 
-#: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:201
-#: ../src/Gui/PluginsSettingsDialog.py:169
+#: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:205
+#: ../src/Gui/PluginsSettingsDialog.py:170
 #, python-format
 msgid ""
 "Cannot save plugin settings:\n"
@@ -920,12 +957,12 @@ msgstr ""
 "غير قادر علي حفظ إعدادات المٌلحق:\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:448 ../src/Gui/CReporterAssistant.py:231
+#: ../src/Gui/CCReporterDialog.py:448 ../src/Gui/CReporterAssistant.py:235
 #, python-format
 msgid "Configure %s options"
 msgstr "إعداد عدد %s من الخيارات"
 
-#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:845
+#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:899
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -933,7 +970,7 @@ msgstr ""
 "غير قادر علي الحصول علي التقرير!\n"
 "هل معلومات التصحيح(debuginfo) مفقودة؟"
 
-#: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:398
+#: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:403
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -943,22 +980,22 @@ msgstr ""
 "%s"
 
 #: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
-#: ../src/Gui/CReporterAssistant.py:884
+#: ../src/Gui/CReporterAssistant.py:938
 #, python-format
 msgid "Error acquiring the report: %s"
 msgstr "خطأ في الحصول على التقرير: %s"
 
-#: ../src/Gui/ConfBackend.py:77
+#: ../src/Gui/ConfBackend.py:78
 msgid "Cannot connect to the Gnome Keyring daemon."
 msgstr "غير قادر علي الاتصال بالمٌتَرقّب \"سلسة مفاتيح غنوم\"."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
-#: ../src/Gui/ConfBackend.py:83
+#: ../src/Gui/ConfBackend.py:84
 msgid "Cannot get the default keyring."
 msgstr "غير قادر علي الحصول علي سلسلة المفاتيح(keyring) الافتراضية."
 
-#: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
+#: ../src/Gui/ConfBackend.py:103 ../src/Gui/ConfBackend.py:119
 msgid ""
 "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
@@ -966,7 +1003,7 @@ msgstr ""
 "الملحقات."
 
 #. we tried 2 times, so giving up the authorization
-#: ../src/Gui/ConfBackend.py:152
+#: ../src/Gui/ConfBackend.py:153
 #, python-format
 msgid ""
 "Access to gnome-keyring has been denied, cannot load the settings for %s!"
@@ -974,55 +1011,55 @@ msgstr ""
 "تم رفض الوصول إلى سلسلة مفاتيح جنوم(gnome-keyring)، غير قادر علي تحميل "
 "إعدادات %s."
 
-#: ../src/Gui/ConfBackend.py:205
+#: ../src/Gui/ConfBackend.py:206
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr ""
 "تم رفض الوصول إلى سلسلة مفاتيح جنوم(gnome-keyring)، غير قادر علي تحميل "
 "إعدادات %s."
 
-#: ../src/Gui/CReporterAssistant.py:20
+#: ../src/Gui/CReporterAssistant.py:21
 msgid "Crash info doesn't contain a backtrace"
 msgstr "معلومات العطل لاتحتوي علي بيانات تقفِّي(backtrace)"
 
-#: ../src/Gui/CReporterAssistant.py:280
+#: ../src/Gui/CReporterAssistant.py:284
 #, python-format
 msgid "Rating is required by the %s plugin"
 msgstr "التقييم مطلوب بواسطة الملحق %s"
 
-#: ../src/Gui/CReporterAssistant.py:282
+#: ../src/Gui/CReporterAssistant.py:286
 msgid "Rating is not required by any plugin, skipping the check..."
 msgstr "التقييم غير مطلوب بأي ملحق, تخطي الفحص.."
 
-#: ../src/Gui/CReporterAssistant.py:286
+#: ../src/Gui/CReporterAssistant.py:290
 #, python-format
 msgid "Rating is %s"
 msgstr "التقييم هو %s"
 
-#: ../src/Gui/CReporterAssistant.py:289
+#: ../src/Gui/CReporterAssistant.py:293
 msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr "مخلفات التحطم(Crashdump) ليس لها تقييم => سنفترض أنّها غير مطلوبة"
 
-#: ../src/Gui/CReporterAssistant.py:294
+#: ../src/Gui/CReporterAssistant.py:298
 msgid "You should check the backtrace for sensitive data."
 msgstr "يجب أن تتحقق بيانات التقفِّي (backtrace) للبيانات الحسّاسة."
 
-#: ../src/Gui/CReporterAssistant.py:295
+#: ../src/Gui/CReporterAssistant.py:299
 msgid "You must agree with sending the backtrace."
 msgstr "لابد أن توافق علي إرسال بيانات التقفِّي (backtrace)."
 
-#: ../src/Gui/CReporterAssistant.py:310
+#: ../src/Gui/CReporterAssistant.py:314
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "التبليغ غير مفعّل لأن بيانات التقفِّي(backtrace) غير صالحة."
 
-#: ../src/Gui/CReporterAssistant.py:355
+#: ../src/Gui/CReporterAssistant.py:360
 msgid "You did not provide any steps to reproduce."
 msgstr "لم تقدم أي خطوات لكيفية التكرار."
 
-#: ../src/Gui/CReporterAssistant.py:369
+#: ../src/Gui/CReporterAssistant.py:374
 msgid "You did not provide any comments."
 msgstr "لَم تٌعلِّق."
 
-#: ../src/Gui/CReporterAssistant.py:450
+#: ../src/Gui/CReporterAssistant.py:455
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -1045,15 +1082,15 @@ msgstr ""
 "الخاصة بك على أي بيانات حسّاسة لاتريد مشاركَتِها.\n"
 "إختر إلي أين تريد تبليغ العلّة، ثم اضغط 'إلى الأمام' للمواصلة."
 
-#: ../src/Gui/CReporterAssistant.py:510
+#: ../src/Gui/CReporterAssistant.py:515
 msgid "Only one reporter plugin is configured."
 msgstr "ملحق مبلّغ واحد فقط تم ضبطه."
 
-#: ../src/Gui/CReporterAssistant.py:516
+#: ../src/Gui/CReporterAssistant.py:521
 msgid "Send a bug report"
 msgstr "أرسل تقرير العلّة"
 
-#: ../src/Gui/CReporterAssistant.py:554
+#: ../src/Gui/CReporterAssistant.py:559
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -1068,114 +1105,118 @@ msgstr ""
 "فضلا راجع معلومات بيانات التقفِّي(backtrace) أدناه وعدّلها بحسب الحاجة لتتأكد "
 "أن تقرير العلّة الخاص بك لايحوي أية بيانات حسّاسة لاتود مشاركتها:"
 
-#: ../src/Gui/CReporterAssistant.py:595
+#: ../src/Gui/CReporterAssistant.py:603
 msgid "Refresh"
 msgstr "إنعاش"
 
-#: ../src/Gui/CReporterAssistant.py:597
+#: ../src/Gui/CReporterAssistant.py:605
 msgid "Copy"
 msgstr "نسخ"
 
-#: ../src/Gui/CReporterAssistant.py:603
+#: ../src/Gui/CReporterAssistant.py:611
 msgid "I agree with submitting the backtrace"
 msgstr "أٌوافق علي بيانات التقفِّي(backtrace) المٌقَدّم"
 
-#: ../src/Gui/CReporterAssistant.py:608
+#: ../src/Gui/CReporterAssistant.py:616
 msgid "Approve the backtrace"
 msgstr "الموافقة علي بيانات التقفِّي(backtrace)"
 
-#: ../src/Gui/CReporterAssistant.py:631
+#: ../src/Gui/CReporterAssistant.py:659
+msgid "You need to fill the how to before you can proceed..."
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:682
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "كيف حدث هذا التحطم(خطوة بخطوة)؟ كيف يمكنك تكراره؟"
 
-#: ../src/Gui/CReporterAssistant.py:649
+#: ../src/Gui/CReporterAssistant.py:703
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr "هل هناك أي تعليق تود مشاركته مع صائني البرمجيات؟"
 
-#: ../src/Gui/CReporterAssistant.py:668
+#: ../src/Gui/CReporterAssistant.py:723
 msgid "Provide additional details"
 msgstr "تفاصيل إضافية"
 
-#: ../src/Gui/CReporterAssistant.py:675
+#: ../src/Gui/CReporterAssistant.py:729
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr ""
 "<b>تلميح:</b> التعليقات الخاصة بك ليست خاصّة. فضلا راقَب ما تقوله تبعاً لذلك"
 
-#: ../src/Gui/CReporterAssistant.py:716
+#: ../src/Gui/CReporterAssistant.py:770
 msgid "Confirm and send the report"
 msgstr "تأكيد وإرسال التقرير"
 
-#: ../src/Gui/CReporterAssistant.py:718
+#: ../src/Gui/CReporterAssistant.py:772
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr "بالأسفل ملخص تقرير العلّة الخاص بك. فضلا أٌنقر 'تطبيق' لتقديمه."
 
-#: ../src/Gui/CReporterAssistant.py:723
+#: ../src/Gui/CReporterAssistant.py:777
 msgid "<b>Basic details</b>"
 msgstr "<b>التفاصيل الأساسية</b>"
 
 #. left table
-#: ../src/Gui/CReporterAssistant.py:730
+#: ../src/Gui/CReporterAssistant.py:784
 msgid "Component"
 msgstr "مكوّن"
 
-#: ../src/Gui/CReporterAssistant.py:731
+#: ../src/Gui/CReporterAssistant.py:785
 msgid "Package"
 msgstr "حزمة"
 
-#: ../src/Gui/CReporterAssistant.py:732
+#: ../src/Gui/CReporterAssistant.py:786
 msgid "Executable"
 msgstr "تنفيذي"
 
-#: ../src/Gui/CReporterAssistant.py:733
+#: ../src/Gui/CReporterAssistant.py:787
 msgid "Cmdline"
 msgstr "سطر الأوامر"
 
 #. right table
-#: ../src/Gui/CReporterAssistant.py:735
+#: ../src/Gui/CReporterAssistant.py:789
 msgid "Architecture"
 msgstr "المعماريّ"
 
-#: ../src/Gui/CReporterAssistant.py:736
+#: ../src/Gui/CReporterAssistant.py:790
 msgid "Kernel"
 msgstr "كرنل"
 
-#: ../src/Gui/CReporterAssistant.py:737
+#: ../src/Gui/CReporterAssistant.py:791
 msgid "Release"
 msgstr "الإصدارة"
 
-#: ../src/Gui/CReporterAssistant.py:738
+#: ../src/Gui/CReporterAssistant.py:792
 msgid "Reason"
 msgstr "السبب"
 
-#: ../src/Gui/CReporterAssistant.py:749 ../src/Gui/report.glade.h:3
+#: ../src/Gui/CReporterAssistant.py:803 ../src/Gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>بيانات التقفِّي</b>"
 
-#: ../src/Gui/CReporterAssistant.py:752
+#: ../src/Gui/CReporterAssistant.py:806
 msgid "Click to view..."
 msgstr "أنقر للعرض ..."
 
-#: ../src/Gui/CReporterAssistant.py:764
+#: ../src/Gui/CReporterAssistant.py:818
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>خطوات تكرار العطل:</b>"
 
-#: ../src/Gui/CReporterAssistant.py:785
+#: ../src/Gui/CReporterAssistant.py:839
 msgid "<b>Comments:</b>"
 msgstr "<b>التعليق:</b>"
 
-#: ../src/Gui/CReporterAssistant.py:788
+#: ../src/Gui/CReporterAssistant.py:842
 msgid "No comment provided!"
 msgstr "لم يتم تجهيز أي تعليق!"
 
-#: ../src/Gui/CReporterAssistant.py:824
+#: ../src/Gui/CReporterAssistant.py:878
 msgid "Finished sending the bug report"
 msgstr "تم الانتهاء من إرسال تقرير العلّة"
 
-#: ../src/Gui/CReporterAssistant.py:828
+#: ../src/Gui/CReporterAssistant.py:882
 msgid "<b>Bug reports:</b>"
 msgstr "<b>تقارير العلَّل:</b>"
 
@@ -1187,12 +1228,12 @@ msgstr "السّجل"
 msgid "Report done"
 msgstr "إنتهاء التقرير"
 
-#: ../src/Gui/PluginSettingsUI.py:17
+#: ../src/Gui/PluginSettingsUI.py:18
 msgid "Cannot find PluginDialog widget in the UI description!"
 msgstr ""
 "غير قادر علي العثور على الودجة(widget) PluginDialog في وصف واجهة المستخدم!"
 
-#: ../src/Gui/PluginSettingsUI.py:24
+#: ../src/Gui/PluginSettingsUI.py:25
 #, python-format
 msgid ""
 "No UI for the plugin <b>%s</b>, this is probably a bug.\n"
@@ -1204,29 +1245,29 @@ msgstr ""
 "فضلا أبلغ عنها من هنا <a href=\"https://fedorahosted.org/abrt/newticket"
 "\">https://fedorahosted.org/abrt/newticket</a>"
 
-#: ../src/Gui/PluginSettingsUI.py:59 ../src/Gui/PluginSettingsUI.py:85
+#: ../src/Gui/PluginSettingsUI.py:60 ../src/Gui/PluginSettingsUI.py:86
 msgid "Combo box is not implemented"
 msgstr "لم يتم تنفيذ مربع السرد(combo box)"
 
-#: ../src/Gui/PluginSettingsUI.py:68
+#: ../src/Gui/PluginSettingsUI.py:69
 msgid "Nothing to hydrate!"
 msgstr "لاشئ ليتم هيدرته(hydrate)!"
 
-#: ../src/Gui/PluginsSettingsDialog.py:24
+#: ../src/Gui/PluginsSettingsDialog.py:25
 msgid "Cannot load the GUI description for SettingsDialog!"
 msgstr "غير قادر علي تحميل وصف واجهة المستخدم الرسومية(GUI) لنافذة الإعدادات!"
 
 #. Create/configure columns and add them to pluginlist
 #. column "name" has two kind of cells:
-#: ../src/Gui/PluginsSettingsDialog.py:41
+#: ../src/Gui/PluginsSettingsDialog.py:42
 msgid "Name"
 msgstr "الإسم:"
 
-#: ../src/Gui/PluginsSettingsDialog.py:148
+#: ../src/Gui/PluginsSettingsDialog.py:149
 msgid "Please select a plugin from the list to edit it's options."
 msgstr "فضلا حدد البرنامج المساعد من القائمة لتحرير خياراته."
 
-#: ../src/Gui/PluginsSettingsDialog.py:156
+#: ../src/Gui/PluginsSettingsDialog.py:157
 #, python-format
 msgid ""
 "Error while opening the plugin settings UI: \n"
@@ -1326,19 +1367,19 @@ msgstr "إرسال التقرير"
 msgid "Show log"
 msgstr "إظهار السجل"
 
-#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
+#: ../src/Gui/SettingsDialog.py:34 ../src/Gui/SettingsDialog.py:51
 msgid "<b>Select plugin</b>"
 msgstr "<b>حدد الملحق/b>"
 
-#: ../src/Gui/SettingsDialog.py:36
+#: ../src/Gui/SettingsDialog.py:37
 msgid "<b>Select database backend</b>"
 msgstr "<b>حدد قاعدة البيانات الخلفية (backend)</b>"
 
-#: ../src/Gui/SettingsDialog.py:169
+#: ../src/Gui/SettingsDialog.py:170
 msgid "Remove this job"
 msgstr "أزال هذه المهمة"
 
-#: ../src/Gui/SettingsDialog.py:213
+#: ../src/Gui/SettingsDialog.py:214
 msgid "Remove this action"
 msgstr "أزال هذا الإجراء"
 
@@ -1443,6 +1484,9 @@ msgstr ""
 "تم الكشف عن إعدادات خاطئة لبعض الملحقات المبلّغة المفعّلة.\n"
 "فضلا إستخدام الأزرار الموجودة أدناه لفتح التضبيطات الخاصة بكل منها وإصلاحها "
 "قبل المضي قدما، أو قد تفشل عملية الإبلاغ.\n"
+
+#~ msgid "Getting global universal unique identification..."
+#~ msgstr "إحضار المعرّف الفريد العالمي العام..."
 
 #~ msgid ""
 #~ "Thank you for your bug report. It has been succesfully submitted. You may "
