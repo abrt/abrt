@@ -122,6 +122,20 @@ void save_oops_to_debug_dump(const vector_string_t& oopsList)
 
     VERB1 log("Saving %u oopses as crash dump dirs", idx >= countdown ? countdown-1 : idx);
 
+    char tainted[1] = {'-1'};
+    /* once tainted flag is set to 1, only restart can reset the flag to 0 */
+    int tainted_fd = open("/proc/sys/kernel/tainted", O_RDONLY);
+    if (tainted_fd > 0)
+    {
+        /* contain only 0 or 1 */
+        if (read(tainted_fd, &tainted, 1) != 1)
+            error_msg("Unable to read one byte from /proc/sys/kernel/tainted");
+
+        close(tainted_fd);
+    }
+    else
+        error_msg("/proc/sys/kernel/tainted does not exist");
+
     while (idx != 0 && --countdown != 0)
     {
         char path[sizeof(DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu-%lu") + 3 * sizeof(long)*3];
@@ -143,6 +157,7 @@ void save_oops_to_debug_dump(const vector_string_t& oopsList)
             /* Optional, makes generated bz more informative */
             strchrnul(second_line, '\n')[0] = '\0';
             dd.SaveText(FILENAME_REASON, second_line);
+            dd.SaveText(FILENAME_TAINTED, tainted);
         }
         catch (CABRTException& e)
         {
