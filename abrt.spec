@@ -225,8 +225,6 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
 %find_lang %{name}
 
-#rm -rf $RPM_BUILD_ROOT/%{_libdir}/lib*.la
-#rm -rf $RPM_BUILD_ROOT/%{_libdir}/%{name}/lib*.la
 # remove all .la and .a files
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
@@ -336,7 +334,7 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
 %{_initrddir}/%{name}d
-# /var/cache/%{name} is to be removed in 1.3.x timeframe
+# /var/cache/abrt is to be removed in 1.3.x timeframe
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/cache/%{name}
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/spool/%{name}
 %dir %attr(0700, abrt, abrt) %{_localstatedir}/spool/%{name}-upload
@@ -346,7 +344,7 @@ fi
 %dir %{_libdir}/%{name}
 %{_mandir}/man8/abrtd.8.gz
 %{_mandir}/man5/%{name}.conf.5.gz
-#%{_mandir}/man5/pyhook.conf.5.gz
+# {_mandir}/man5/pyhook.conf.5.gz
 %{_mandir}/man7/%{name}-plugins.7.gz
 %{_datadir}/polkit-1/actions/org.fedoraproject.abrt.policy
 %{_datadir}/dbus-1/system-services/com.redhat.abrt.service
@@ -425,7 +423,7 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/RHTSupport.conf
 %{_libdir}/%{name}/RHTSupport.glade
-#%{_mandir}/man7/abrt-RHTSupport.7.gz
+# {_mandir}/man7/abrt-RHTSupport.7.gz
 %{_libexecdir}/abrt-action-rhtsupport
 
 %files plugin-reportuploader
