@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-11-17 18:42+0100\n"
-"PO-Revision-Date: 2010-07-29 15:48+0200\n"
+"POT-Creation-Date: 2010-11-18 13:38+0100\n"
+"PO-Revision-Date: 2010-11-18 13:43+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "Language: pl\n"
@@ -15,12 +15,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../lib/Plugins/Bugzilla.cpp:466
+#: ../lib/Plugins/Bugzilla.cpp:477
 #, c-format
 msgid "New bug id: %i"
 msgstr "Identyfikator nowego błędu: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:561
+#: ../lib/Plugins/Bugzilla.cpp:572
 #, c-format
 msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
@@ -29,7 +29,7 @@ msgstr ""
 "Nie można się zalogować. Proszę sprawdzić Edycja->Wtyczki->Bugzilla oraz "
 "plik /etc/abrt/plugins/Bugzilla.conf. Komunikat od serwera: %s"
 
-#: ../lib/Plugins/Bugzilla.cpp:681
+#: ../lib/Plugins/Bugzilla.cpp:692
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -37,59 +37,59 @@ msgstr ""
 "Pola login lub hasło są puste.\n"
 "Proszę sprawdzić plik "
 
-#: ../lib/Plugins/Bugzilla.cpp:690
+#: ../lib/Plugins/Bugzilla.cpp:701
 msgid "Logging into bugzilla..."
 msgstr "Logowanie do Bugzilli..."
 
-#: ../lib/Plugins/Bugzilla.cpp:693
+#: ../lib/Plugins/Bugzilla.cpp:704
 msgid "Checking for duplicates..."
 msgstr "Sprawdzanie duplikatów..."
 
-#: ../lib/Plugins/Bugzilla.cpp:714 ../lib/Plugins/Bugzilla.cpp:749
+#: ../lib/Plugins/Bugzilla.cpp:725 ../lib/Plugins/Bugzilla.cpp:760
 msgid "Missing mandatory member 'bugs'"
 msgstr "Brak wymaganego elementu \"bugs\""
 
-#: ../lib/Plugins/Bugzilla.cpp:732 ../lib/Plugins/Bugzilla.cpp:765
-#: ../lib/Plugins/Bugzilla.cpp:841
+#: ../lib/Plugins/Bugzilla.cpp:743 ../lib/Plugins/Bugzilla.cpp:776
+#: ../lib/Plugins/Bugzilla.cpp:852
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "Funkcja get_bug_info() nie powiodła się. Nie można zebrać wszystkich "
 "wymaganych informacji"
 
-#: ../lib/Plugins/Bugzilla.cpp:781
+#: ../lib/Plugins/Bugzilla.cpp:792
 msgid "Creating a new bug..."
 msgstr "Tworzenie nowego błędu..."
 
-#: ../lib/Plugins/Bugzilla.cpp:786
+#: ../lib/Plugins/Bugzilla.cpp:797
 msgid "Bugzilla entry creation failed"
 msgstr "Utworzenie wpisu Bugzilli nie powiodło się"
 
-#: ../lib/Plugins/Bugzilla.cpp:796 ../lib/Plugins/Bugzilla.cpp:891
+#: ../lib/Plugins/Bugzilla.cpp:807 ../lib/Plugins/Bugzilla.cpp:902
 msgid "Logging out..."
 msgstr "Wylogowywanie..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:815
+#: ../lib/Plugins/Bugzilla.cpp:826
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Błąd został już wcześniej zgłoszony: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:837
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla nie może odnaleźć błędu nadrzędnego błędu %d"
 
-#: ../lib/Plugins/Bugzilla.cpp:855 ../lib/Plugins/Bugzilla.cpp:856
+#: ../lib/Plugins/Bugzilla.cpp:866 ../lib/Plugins/Bugzilla.cpp:867
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "Dodawanie %s do listy obserwujących"
 
-#: ../lib/Plugins/Bugzilla.cpp:880
+#: ../lib/Plugins/Bugzilla.cpp:891
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Dodawanie nowego komentarza do błędu %d"
 
-#: ../lib/Plugins/Bugzilla.cpp:979
+#: ../lib/Plugins/Bugzilla.cpp:990
 msgid "Reports bugs to bugzilla"
 msgstr "Zgłasza błędy w Bugzilli"
 
@@ -108,7 +108,7 @@ msgstr "Pomijanie instalacji pakietów debuginfo"
 #: ../lib/Plugins/CCpp.cpp:658
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "Przetworzenie wyjątku dla %s nie powiodło się"
 
 #: ../lib/Plugins/CCpp.cpp:934
 msgid "Analyzes crashes in C/C++ programs"
@@ -148,7 +148,7 @@ msgstr "Tworzenie i wysyłanie zgłoszenia..."
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr "Wysyła informację o awarii jądra do witryny kerneloops.org"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:200
+#: ../lib/Plugins/KerneloopsScanner.cpp:215
 msgid "Periodically scans for and saves kernel oopses"
 msgstr "Okresowo skanuje i zapisuje awarie jądra"
 
@@ -203,9 +203,8 @@ msgid "Creating a new case..."
 msgstr "Dodawanie nowego przypadku..."
 
 #: ../lib/Plugins/RHTSupport.cpp:309
-#, fuzzy
 msgid "Reports bugs to Red Hat support"
-msgstr "Zgłasza błędy w Bugzilli"
+msgstr "Zgłasza błędy we wsparciu firmy Red Hat"
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
@@ -424,7 +423,7 @@ msgid "\tHostname   : %s\n"
 msgstr "\tNazwa komputera : %s\n"
 
 #: ../src/CLI/CLI.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
 "Last crash:         %s\n"
@@ -436,27 +435,25 @@ msgid ""
 "System:             %s, kernel %s\n"
 "Reason:             %s\n"
 msgstr ""
-"Identyfikator awari: %s:%s\n"
-"Ostatnia awaria:     %s\n"
-"Analizator:          %s\n"
-"Składnik:            %s\n"
-"Pakiet:              %s\n"
-"Polecenie:           %s\n"
-"Plik wykonywalny:    %s\n"
-"System:              %s, jądro %s\n"
-"Ocena:               %s\n"
-"Pliki zrzutu core:   %s\n"
-"Przyczyna:           %s\n"
+"Identyfikator awarii: %s:%s\n"
+"Ostatnia awaria:      %s\n"
+"Analizator:           %s\n"
+"Składnik:             %s\n"
+"Pakiet:               %s\n"
+"Polecenie:            %s\n"
+"Plik wykonywalny:     %s\n"
+"System:               %s, jądro %s\n"
+"Przyczyna:            %s\n"
 
 #: ../src/CLI/CLI.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Coredump file:      %s\n"
-msgstr "Funkcja awarii:             %s\n"
+msgstr "Plik zrzutu core:     %s\n"
 
 #: ../src/CLI/CLI.cpp:135
-#, fuzzy, c-format
+#, c-format
 msgid "Rating:             %s\n"
-msgstr "Nazwa komputera:            %s\n"
+msgstr "Ocena:                %s\n"
 
 #: ../src/CLI/CLI.cpp:140
 #, c-format
@@ -635,11 +632,11 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/CLI/report.cpp:545
 msgid "y"
-msgstr ""
+msgstr "t"
 
 #: ../src/CLI/report.cpp:546
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:647
@@ -660,18 +657,17 @@ msgid "Reporting..."
 msgstr "Zgłaszanie..."
 
 #: ../src/CLI/report.cpp:721
-#, fuzzy, c-format
+#, c-format
 msgid "Report using %s?"
-msgstr "Zgłosić używając %s? [t/N]: "
+msgstr "Zgłosić używając %s?"
 
 #: ../src/CLI/report.cpp:724
 msgid "Skipping..."
 msgstr "Pomijanie..."
 
 #: ../src/CLI/report.cpp:736
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "Zgłaszanie jest wyłączone, ponieważ nie można użyć wyjątku."
+msgstr "Zgłaszanie jest wyłączone, ponieważ nie można użyć wyjątku"
 
 #: ../src/CLI/report.cpp:740
 #, c-format
@@ -679,11 +675,12 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
+"Proszę spróbować zainstalować pakiety debuginfo ręcznie używając polecenia: "
+"\"debuginfo-install %s\" i spróbować ponownie\n"
 
 #: ../src/CLI/report.cpp:749
-#, fuzzy
 msgid "Error loading reporter settings"
-msgstr "Błąd podczas uzyskiwania zgłoszenia: %s"
+msgstr "Błąd podczas wczytywania ustawień zgłaszania"
 
 #: ../src/CLI/report.cpp:768
 #, c-format
@@ -1161,7 +1158,7 @@ msgstr "Akceptuję wyjątek"
 
 #: ../src/Gui/CReporterAssistant.py:659
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "Należy wypełnić sekcję opisu awarii, aby kontynuować."
 
 #: ../src/Gui/CReporterAssistant.py:682
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
@@ -1528,6 +1525,3 @@ msgstr ""
 "Proszę użyć poniższych przycisków, aby otworzyć odpowiednią konfigurację i "
 "naprawić ją przed kontynuowaniem. W innym przypadku proces zgłoszenia się "
 "nie powiedzie.\n"
-
-#~ msgid "Getting global universal unique identification..."
-#~ msgstr "Uzyskiwanie globalnego UUID..."
