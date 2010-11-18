@@ -364,6 +364,7 @@ static void delete_file_dir(const char *dir)
 void dd_delete(struct dump_dir *dd)
 {
     delete_file_dir(dd->dd_dir);
+    dd_close(dd);
 }
 
 static char *load_text_file(const char *path, unsigned flags)
@@ -499,6 +500,5 @@ void delete_debug_dump_dir(const char *dd_dir)
     if (dd)
     {
         dd_delete(dd);
-        dd_close(dd);
     }
 }

@@ -50,10 +50,10 @@ enum {
     /* DD_FAIL_QUIETLY bit is valid for dd_load_text_ext too, */
     DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE = (1 << 1),
 };
-char* dd_load_text_ext(const struct dump_dir *dd, const char* name, unsigned flags);
-char* dd_load_text(const struct dump_dir *dd, const char* name);
+char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned flags);
+char* dd_load_text(const struct dump_dir *dd, const char *name);
 void dd_save_text(struct dump_dir *dd, const char *name, const char *data);
-void dd_save_binary(struct dump_dir* dd, const char* name, const char* data, unsigned size);
+void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, unsigned size);
 void dd_delete(struct dump_dir *dd);
 
 void delete_debug_dump_dir(const char *dd_dir);

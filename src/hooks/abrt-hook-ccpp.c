@@ -452,7 +452,6 @@ int main(int argc, char** argv)
         {
             int sv_errno = errno;
             dd_delete(dd);
-            dd_close(dd);
             if (user_core_fd >= 0)
             {
                 xchdir(user_pwd);
@@ -481,7 +480,6 @@ int main(int argc, char** argv)
         {
             unlink(path);
             dd_delete(dd);
-            dd_close(dd);
             if (user_core_fd >= 0)
             {
                 xchdir(user_pwd);

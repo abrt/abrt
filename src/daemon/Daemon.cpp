@@ -264,21 +264,6 @@ static gboolean cron_activation_reshedule_cb(gpointer data)
     return FALSE;
 }
 
-static int SetUpMW()
-{
-    VERB1 log("Adding analyzers, actions or reporters");
-    map_analyzer_actions_and_reporters_t::iterator it_aar = g_settings_mapAnalyzerActionsAndReporters.begin();
-    for (; it_aar != g_settings_mapAnalyzerActionsAndReporters.end(); it_aar++)
-    {
-        vector_pair_string_string_t::iterator it_ar = it_aar->second.begin();
-        for (; it_ar != it_aar->second.end(); it_ar++)
-        {
-            AddAnalyzerActionOrReporter(it_aar->first.c_str(), it_ar->first.c_str(), it_ar->second.c_str());
-        }
-    }
-    return 0;
-}
-
 static int SetUpCron()
 {
     map_cron_t::iterator it_c = g_settings_mapCron.begin();
@@ -942,8 +927,6 @@ int main(int argc, char** argv)
         g_pPluginManager = new CPluginManager();
         g_pPluginManager->LoadPlugins();
 
-        if (SetUpMW() != 0) /* logging is inside */
-            throw 1;
         if (SetUpCron() != 0)
             throw 1;
 

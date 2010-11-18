@@ -21,7 +21,6 @@
 #include "Polkit.h"
 
 #define SECTION_COMMON      "Common"
-#define SECTION_ANALYZER_ACTIONS_AND_REPORTERS   "AnalyzerActionsAndReporters"
 #define SECTION_CRON        "Cron"
 
 /* Conf file has this format:
@@ -39,8 +38,6 @@
  * If the same name found on more than one line,
  * the values are appended, separated by comma: map["name"] = "value1,value2" */
 static map_string_t s_mapSectionCommon;
-/* ... from [ AnalyzerActionsAndReporters ] */
-static map_string_t s_mapSectionAnalyzerActionsAndReporters;
 /* ... from [ Cron ] */
 static map_string_t s_mapSectionCron;
 
@@ -59,9 +56,6 @@ char *g_settings_sWatchCrashdumpArchiveDir = NULL;
 unsigned int  g_settings_nMaxCrashReportsSize = 1000;
 bool          g_settings_bProcessUnpackaged = false;
 
-/* [ AnalyzerActionsAndReporters ] */
-/* many lines, one per key: "map_key = aa_first,bb_first(bb_second),cc_first" */
-map_analyzer_actions_and_reporters_t g_settings_mapAnalyzerActionsAndReporters;
 /* [ Cron ] */
 /* many lines, one per key: "map_key = aa_first,bb_first(bb_second),cc_first" */
 map_cron_t    g_settings_mapCron;
@@ -250,85 +244,6 @@ static int ParseCron()
     return 0; /* no error */
 }
 
-static set_string_t ParseKey(const char *Key, int *err)
-{
-    unsigned int ii;
-    std::string item;
-    std::string key;
-    set_string_t set;
-    bool is_quote = false;
-    for (ii = 0; Key[ii]; ii++)
-    {
-        if (Key[ii] == '\"')
-        {
-            is_quote = !is_quote;
-        }
-        else if (Key[ii] == ':' && !is_quote)
-        {
-            key = item;
-            item = "";
-        }
-        else if (isspace(Key[ii]) && !is_quote)
-        {
-            continue;
-        }
-        else if ((Key[ii] == ',') && !is_quote)
-        {
-            if (!key.empty())
-            {
-                set.insert(key + ":" + item);
-                item = "";
-            }
-            else
-            {
-                *err = 1;
-                error_msg("Parser error: Invalid syntax on column %d in \"%s\"", ii, Key);
-            }
-        }
-        else
-        {
-            item += Key[ii];
-        }
-    }
-    if (is_quote)
-    {
-        *err = 1;
-        error_msg("Parser error: Unclosed quote in \"%s\"", Key);
-    }
-    else if (item != "")
-    {
-        if (key == "")
-        {
-            set.insert(item);
-        }
-        else
-        {
-            set.insert(key + ":" + item);
-        }
-    }
-    return set;
-}
-
-static int ParseAnalyzerActionsAndReporters()
-{
-    map_string_t::iterator it = s_mapSectionAnalyzerActionsAndReporters.begin();
-    for (; it != s_mapSectionAnalyzerActionsAndReporters.end(); it++)
-    {
-        int err = 0;
-        set_string_t keys = ParseKey(it->first.c_str(), &err);
-        vector_pair_string_string_t actionsAndReporters = ParseListWithArgs(it->second.c_str(), &err);
-        if (err)
-            return err;
-        set_string_t::iterator it_keys = keys.begin();
-        for (; it_keys != keys.end(); it_keys++)
-        {
-            VERB2 log("AnalyzerActionsAndReporters['%s']=...", it_keys->c_str());
-            g_settings_mapAnalyzerActionsAndReporters[*it_keys] = actionsAndReporters;
-        }
-    }
-    return 0; /* no error */
-}
-
 static void LoadGPGKeys()
 {
     FILE *fp = fopen(CONF_DIR"/gpg_keys", "r");
@@ -449,12 +364,6 @@ static int ReadConfigurationFromFile(FILE *fp)
                 s_mapSectionCommon[key] += ",";
             s_mapSectionCommon[key] += value;
         }
-        else if (section == SECTION_ANALYZER_ACTIONS_AND_REPORTERS)
-        {
-            if (s_mapSectionAnalyzerActionsAndReporters[key] != "")
-                s_mapSectionAnalyzerActionsAndReporters[key] += ",";
-            s_mapSectionAnalyzerActionsAndReporters[key] += value;
-        }
         else if (section == SECTION_CRON)
         {
             if (s_mapSectionCron[key] != "")
@@ -492,8 +401,6 @@ int LoadSettings()
     if (err == 0)
         err = ParseCommon();
     if (err == 0)
-        err = ParseAnalyzerActionsAndReporters();
-    if (err == 0)
         err = ParseCron();
 
     if (err == 0)
@@ -517,7 +424,6 @@ map_abrt_settings_t GetSettings()
     map_abrt_settings_t ABRTSettings;
 
     ABRTSettings[SECTION_COMMON] = s_mapSectionCommon;
-    ABRTSettings[SECTION_ANALYZER_ACTIONS_AND_REPORTERS] = s_mapSectionAnalyzerActionsAndReporters;
     ABRTSettings[SECTION_CRON] = s_mapSectionCron;
 
     return ABRTSettings;
@@ -543,12 +449,6 @@ void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
     {
         s_mapSectionCommon = it->second;
         ParseCommon();
-    }
-    it = pSettings.find(SECTION_ANALYZER_ACTIONS_AND_REPORTERS);
-    if (it != end)
-    {
-        s_mapSectionAnalyzerActionsAndReporters = it->second;
-        ParseAnalyzerActionsAndReporters();
     }
     it = pSettings.find(SECTION_CRON);
     if (it != end)

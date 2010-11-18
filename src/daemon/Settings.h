@@ -22,7 +22,6 @@
 #include "abrt_types.h"
 #include <glib.h>
 
-typedef map_vector_pair_string_string_t map_analyzer_actions_and_reporters_t;
 typedef map_vector_pair_string_string_t map_cron_t;
 typedef map_map_string_t map_abrt_settings_t;
 
@@ -35,7 +34,6 @@ extern bool          g_settings_bProcessUnpackaged;
 extern char *g_settings_sDatabase;
 extern char *g_settings_sWatchCrashdumpArchiveDir;
 extern map_cron_t    g_settings_mapCron;
-extern map_analyzer_actions_and_reporters_t g_settings_mapAnalyzerActionsAndReporters;
 
 int LoadSettings();
 void SaveSettings();

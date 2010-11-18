@@ -112,25 +112,6 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
  */
 mw_result_t FillCrashInfo(const char *crash_id,
                         map_crash_data_t& pCrashData);
-/**
- * Gets all local UUIDs and UIDs of crashes. These crashes
- * occurred when a particular user was logged in.
- * @param pUID an UID of an user.
- * @return A vector of pairs  (local UUID, UID).
- */
-void GetUUIDsOfCrash(long caller_uid, vector_string_t &result);
-/**
- * Adds one association among alanyzer plugin and its
- * action and reporter plugins.
- * @param pAnalyzer A name of an analyzer plugin.
- * @param pActionOrReporter A name of an action or reporter plugin.
- * @param pArgs An arguments for action or reporter plugin.
- */
-void AddAnalyzerActionOrReporter(const char *pAnalyzer,
-                                 const char *pActionOrReporter,
-                                 const char *pArgs);
-
-//bool analyzer_has_InformAllUsers(const char *analyzer_name);
 
 vector_map_crash_data_t GetCrashInfos(long caller_uid);
 int  CreateReportThread(const char* crash_id, long caller_uid, int force, const char* pSender);

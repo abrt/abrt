@@ -35,14 +35,6 @@ using namespace std;
  */
 CPluginManager* g_pPluginManager;
 
-/**
- * A map, which associates particular analyzer to one or more
- * action or reporter plugins. These are activated when a crash, which
- * is maintained by particular analyzer, occurs.
- */
-typedef std::map<std::string, vector_pair_string_string_t> map_analyzer_actions_and_reporters_t;
-static map_analyzer_actions_and_reporters_t s_mapAnalyzerActionsAndReporters;
-
 
 /**
  * Transforms a debugdump directory to inner crash
@@ -609,7 +601,7 @@ mw_result_t FillCrashInfo(const char *crash_id,
     return MW_OK;
 }
 
-void GetUUIDsOfCrash(long caller_uid, vector_string_t &result)
+static void GetUUIDsOfCrash(long caller_uid, vector_string_t &result)
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     database->Connect();
@@ -625,13 +617,6 @@ void GetUUIDsOfCrash(long caller_uid, vector_string_t &result)
 
     // TODO: return GList
     db_list_free(rows);
-}
-
-void AddAnalyzerActionOrReporter(const char *pAnalyzer,
-                                              const char *pAnalyzerOrReporter,
-                                              const char *pArgs)
-{
-    s_mapAnalyzerActionsAndReporters[pAnalyzer].push_back(make_pair(std::string(pAnalyzerOrReporter), std::string(pArgs)));
 }
 
 vector_map_crash_data_t GetCrashInfos(long caller_uid)
