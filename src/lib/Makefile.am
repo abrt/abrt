@@ -65,7 +65,7 @@ libABRTdUtils_la_SOURCES = \
     $(HEADER_DIR)/plugin.h Plugin.cpp \
     Polkit.h Polkit.cpp
 libABRTdUtils_la_CPPFLAGS = \
-    -Wall -Werror \
+    -Wall \
     -I$(srcdir)/../include \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
