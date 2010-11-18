@@ -52,7 +52,7 @@ Requires: systemd-units
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
 Requires(pre): shadow-utils
-Obsoletes: abrt-plugin-sqlite3
+Obsoletes: abrt-plugin-sqlite3 > 0.0.1
 # required for transition from 1.1.13, can be removed after some time
 Obsoletes: abrt-plugin-runapp > 0.0.1
 Obsoletes: abrt-plugin-filetransfer > 0.0.1
@@ -110,9 +110,9 @@ Summary: %{name}'s kerneloops addon
 Group: System Environment/Libraries
 Requires: curl
 Requires: %{name} = %{version}-%{release}
-Obsoletes: kerneloops
-Obsoletes: abrt-plugin-kerneloops
-Obsoletes: abrt-plugin-kerneloopsreporter
+Obsoletes: kerneloops > 0.0.1
+Obsoletes: abrt-plugin-kerneloops > 0.0.1
+Obsoletes: abrt-plugin-kerneloopsreporter > 0.0.1
 
 %description addon-kerneloops
 This package contains plugin for collecting kernel crash information
@@ -149,9 +149,9 @@ Plugin to report bugs into the bugzilla.
 Summary: %{name}'s RHTSupport plugin
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
-Obsoletes: abrt-plugin-catcut
-Obsoletes: abrt-plugin-rhfastcheck
-Obsoletes: abrt-plugin-rhticket
+Obsoletes: abrt-plugin-catcut > 0.0.1
+Obsoletes: abrt-plugin-rhfastcheck > 0.0.1
+Obsoletes: abrt-plugin-rhticket > 0.0.1
 
 %description plugin-rhtsupport
 Plugin to report bugs into RH support system.
@@ -160,7 +160,7 @@ Plugin to report bugs into RH support system.
 Summary: %{name}'s reportuploader plugin
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
-Obsoletes: abrt-plugin-ticketuploader
+Obsoletes: abrt-plugin-ticketuploader > 0.0.1
 
 %description plugin-reportuploader
 Plugin to report bugs into anonymous FTP site associated with ticketing system.
@@ -169,7 +169,7 @@ Plugin to report bugs into anonymous FTP site associated with ticketing system.
 Summary: %{name}'s addon for catching and analyzing Python exceptions
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
-Obsoletes: gnome-python2-bugbuddy
+Obsoletes: gnome-python2-bugbuddy > 0.0.1
 Provides: gnome-python2-bugbuddy
 
 %description addon-python
@@ -204,7 +204,7 @@ Requires: gdb >= 7.0-3
 Requires: abrt-gui
 Requires: abrt-plugin-logger, abrt-plugin-bugzilla
 #Requires: abrt-plugin-firefox
-Obsoletes: bug-buddy
+Obsoletes: bug-buddy > 0.0.1
 Provides: bug-buddy
 
 %description desktop
