@@ -52,6 +52,7 @@
 #define FILENAME_HOSTNAME     "hostname"
 // Optional. Set to "1" by abrt-handle-upload for every unpacked crashdump
 #define FILENAME_REMOTE       "remote"
+#define FILENAME_TAINTED      "kernel_tainted"
 // TODO: TicketUploader also has open-coded "TICKET", "CUSTOMER" files
 
 // Apart from CD_UID, which is also stored as a file in dump directory,

@@ -391,6 +391,8 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData, int depend_on_bugn
     const char *duphash         = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_DUPHASH);
     const char *reason          = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_REASON);
     const char *function        = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_CRASH_FUNCTION);
+    const char *analyzer        = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_ANALYZER);
+    const char *tainted         = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_TAINTED);
 
     struct strbuf *buf_summary = strbuf_new();
     strbuf_append_strf(buf_summary, "[abrt] %s", package);
@@ -400,6 +402,13 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData, int depend_on_bugn
 
     if (reason != NULL)
         strbuf_append_strf(buf_summary, ": %s", reason);
+
+    if (tainted && analyzer
+        && (tainted[0] == '1')
+        && (strcmp(analyzer, "Kerneloops") == 0)
+    ) {
+        strbuf_append_str(buf_summary, ": TAINTED");
+    }
 
     char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);
 

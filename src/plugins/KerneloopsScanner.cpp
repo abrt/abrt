@@ -121,6 +121,20 @@ int save_oops_to_debug_dump(GList **oopsList)
 
     VERB1 log("Saving %u oopses as crash dump dirs", idx >= countdown ? countdown-1 : idx);
 
+    char tainted[2] = {'x', '\0'};
+    /* once tainted flag is set to 1, only restart can reset the flag to 0 */
+    int tainted_fd = open("/proc/sys/kernel/tainted", O_RDONLY);
+    if (tainted_fd >= 0)
+    {
+        /* contain only 0 or 1 */
+        if (read(tainted_fd, &tainted, 1) != 1)
+            error_msg("Unable to read one byte from /proc/sys/kernel/tainted");
+
+        close(tainted_fd);
+    }
+    else
+        error_msg("/proc/sys/kernel/tainted does not exist");
+
     int errors = 0;
 
     while (idx != 0 && --countdown != 0)
@@ -143,6 +157,10 @@ int save_oops_to_debug_dump(GList **oopsList)
             /* Optional, makes generated bz more informative */
             strchrnul(second_line, '\n')[0] = '\0';
             dd_save_text(dd, FILENAME_REASON, second_line);
+
+            if (tainted[0] == '1')
+                dd_save_text(dd, FILENAME_TAINTED, tainted);
+
             dd_close(dd);
         }
         else
