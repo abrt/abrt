@@ -54,42 +54,11 @@ class PluginsSettingsDialog:
         column.set_resizable(True)
         self.pluginlist.append_column(column)
 
-# "Enable" toggle column is disabled for now. Grep for PLUGIN_DYNAMIC_LOAD_UNLOAD
-#        column = gtk.TreeViewColumn(_("Enabled"))
-#        # column "enabled" has one kind of cells:
-#        cell_toggle_enable = gtk.CellRendererToggle()
-#        cell_toggle_enable.set_property("activatable", True)
-#        cell_toggle_enable.connect("toggled", self.on_enabled_toggled, self.pluginsListStore)
-#        column.pack_start(cell_toggle_enable, True)
-#        column.add_attribute(cell_toggle_enable, "active", 1)
-#        column.add_attribute(cell_toggle_enable, "visible", 2)
-#        self.pluginlist.append_column(column)
-
         #connect signals
         self.pluginlist.connect("cursor-changed", self.on_tvDumps_cursor_changed)
         self.builder.get_object("bConfigurePlugin").connect("clicked", self.on_bConfigurePlugin_clicked, self.pluginlist)
         self.builder.get_object("bClose").connect("clicked", self.on_bClose_clicked)
         self.builder.get_object("bConfigurePlugin").set_sensitive(False)
-
-# "Enable" toggle column is disabled for now. Grep for PLUGIN_DYNAMIC_LOAD_UNLOAD
-#    def on_enabled_toggled(self,cell, path, model):
-#        plugin = model[path][model.get_n_columns()-1]
-#        if plugin:
-#            if model[path][1]:
-#                #print "self.ccdaemon.UnRegisterPlugin(%s)" % (plugin.getName())
-#                self.ccdaemon.unRegisterPlugin(plugin.getName())
-#                # FIXME: create class plugin and move this into method Plugin.Enable()
-#                plugin.Enabled = "no"
-#                plugin.Settings = None
-#            else:
-#                #print "self.ccdaemon.RegisterPlugin(%s)" % (model[path][model.get_n_columns()-1])
-#                self.ccdaemon.registerPlugin(plugin.getName())
-#                # FIXME: create class plugin and move this into method Plugin.Enable()
-#                plugin.Enabled = "yes"
-#                default_settings = self.ccdaemon.getPluginSettings(plugin.getName())
-#                plugin.Settings = PluginSettings()
-#                plugin.Settings.load(plugin.getName(), default_settings)
-#            model[path][1] = not model[path][1]
 
     def filter_plugins(self, model, miter, data):
         return True
