@@ -846,7 +846,6 @@ int main(int argc, char **argv)
         switch (opt)
         {
         case 'c':
-            dump_dir_name = optarg;
             VERB1 log("Loading settings from '%s'", optarg);
             LoadPluginSettings(optarg, settings);
             VERB3 log("Loaded '%s'", optarg);
