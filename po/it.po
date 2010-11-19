@@ -9,19 +9,21 @@
 # Pierro Silvio <perplesso82@gmail.com>, 2009.
 # Guido Grazioli <guido.grazioli@gmail.com>, 2009, 2010.
 # Andrea La Fauci <andrea.lafauci@weproudlymanage.com>, 2010.
+# Francesco <fdaluisio@fedoraproject.org>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt-master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-11-17 18:42+0100\n"
-"PO-Revision-Date: 2010-07-30 09:35+1000\n"
-"Last-Translator: \n"
-"Language-Team:  <it@li.org>\n"
+"PO-Revision-Date: 2010-11-19 15:41+0100\n"
+"Last-Translator: Francesco <fdaluisio@fedoraproject.org>\n"
+"Language-Team: Italian <trans-it@fedoraproject.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Lokalize 1.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../lib/Plugins/Bugzilla.cpp:466
 #, c-format
@@ -116,7 +118,7 @@ msgstr "Omissione installazione debuginfo in corso"
 #: ../lib/Plugins/CCpp.cpp:658
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "Analisi del Backtrace per %s fallita"
 
 #: ../lib/Plugins/CCpp.cpp:934
 msgid "Analyzes crashes in C/C++ programs"
@@ -212,9 +214,8 @@ msgid "Creating a new case..."
 msgstr "Creazione di un nuovo caso..."
 
 #: ../lib/Plugins/RHTSupport.cpp:309
-#, fuzzy
 msgid "Reports bugs to Red Hat support"
-msgstr "Notifica bug a bugzilla"
+msgstr "Notifica bug al supporto Red Hat"
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
@@ -431,7 +432,7 @@ msgid "\tHostname   : %s\n"
 msgstr "\tHostname   : %s\n"
 
 #: ../src/CLI/CLI.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
 "Last crash:         %s\n"
@@ -451,17 +452,15 @@ msgstr ""
 "Comando:            %s\n"
 "Eseguibile:         %s\n"
 "Sistema:             %s, kernel %s\n"
-"Rating:             %s\n"
-"Coredump file:      %s\n"
 "Motivo:             %s\n"
 
 #: ../src/CLI/CLI.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Coredump file:      %s\n"
-msgstr "Funzione Crash:     %s\n"
+msgstr "File Coredump:     %s\n"
 
 #: ../src/CLI/CLI.cpp:135
-#, fuzzy, c-format
+#, c-format
 msgid "Rating:             %s\n"
 msgstr "Hostname:           %s\n"
 
@@ -640,11 +639,11 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/CLI/report.cpp:545
 msgid "y"
-msgstr ""
+msgstr "s"
 
 #: ../src/CLI/report.cpp:546
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:647
@@ -665,7 +664,7 @@ msgid "Reporting..."
 msgstr "Notifica in corso..."
 
 #: ../src/CLI/report.cpp:721
-#, fuzzy, c-format
+#, c-format
 msgid "Report using %s?"
 msgstr "Notifica utilizzando %s? [s/N]: "
 
@@ -674,9 +673,8 @@ msgid "Skipping..."
 msgstr "Omissione in corso..."
 
 #: ../src/CLI/report.cpp:736
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "Notifiche disabilitate poichè il backtrace non è utilizzabile."
+msgstr "Notifiche disabilitate poichè il backtrace non è utilizzabile"
 
 #: ../src/CLI/report.cpp:740
 #, c-format
@@ -684,11 +682,13 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
+"Si prega di installare debuginfo manualmente usando il comando: "
+"\"debuginfo-"
+"install %s\" e provare di nuovo\n"
 
 #: ../src/CLI/report.cpp:749
-#, fuzzy
 msgid "Error loading reporter settings"
-msgstr "Errore durante l'acquisizione del report: %s"
+msgstr "Errore durante caricamento delle impostazioni del reporter"
 
 #: ../src/CLI/report.cpp:768
 #, c-format
@@ -1167,7 +1167,7 @@ msgstr "Approva il backtrace"
 
 #: ../src/Gui/CReporterAssistant.py:659
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "Inserire il come prima di procedere..."
 
 #: ../src/Gui/CReporterAssistant.py:682
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
