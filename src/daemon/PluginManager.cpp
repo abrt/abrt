@@ -21,7 +21,6 @@
 #include <dlfcn.h>
 #include "abrtlib.h"
 #include "abrt_exception.h"
-#include "Polkit.h"
 #include "PluginManager.h"
 
 using namespace std;

@@ -18,7 +18,6 @@
 */
 #include "abrtlib.h"
 #include "Settings.h"
-#include "Polkit.h"
 
 #define SECTION_COMMON      "Common"
 #define SECTION_CRON        "Cron"
@@ -432,17 +431,6 @@ map_abrt_settings_t GetSettings()
 /* dbus call to change some .conf file data */
 void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
 {
-    int polkit_result;
-
-    polkit_result = polkit_check_authorization(dbus_sender,
-                       "org.fedoraproject.abrt.change-daemon-settings");
-    if (polkit_result != PolkitYes)
-    {
-        error_msg("user %s not authorized, returned %d", dbus_sender, polkit_result);
-        return;
-    }
-    log("user %s succesfully authorized", dbus_sender);
-
     map_abrt_settings_t::const_iterator it = pSettings.find(SECTION_COMMON);
     map_abrt_settings_t::const_iterator end = pSettings.end();
     if (it != end)
