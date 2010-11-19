@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-11-17 18:42+0100\n"
-"PO-Revision-Date: 2010-07-30 15:35+0200\n"
+"POT-Creation-Date: 2010-11-19 01:46+0000\n"
+"PO-Revision-Date: 2010-11-19 13:30+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
 "Language: nl\n"
@@ -20,12 +20,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.6.1\n"
 
-#: ../lib/Plugins/Bugzilla.cpp:466
+#: ../lib/Plugins/Bugzilla.cpp:477
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nieuwe bug id: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:561
+#: ../lib/Plugins/Bugzilla.cpp:572
 #, c-format
 msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
@@ -34,7 +34,7 @@ msgstr ""
 "Kan niet inloggen. Controleer Bewerken->Plug-ins->Bugzilla en /etc/abrt/"
 "plugins/Bugzilla.conf. Server melde: %s"
 
-#: ../lib/Plugins/Bugzilla.cpp:681
+#: ../lib/Plugins/Bugzilla.cpp:692
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -42,58 +42,58 @@ msgstr ""
 "Leeg inlog of wachtwoord.\n"
 "Controleren a.u.b. "
 
-#: ../lib/Plugins/Bugzilla.cpp:690
+#: ../lib/Plugins/Bugzilla.cpp:701
 msgid "Logging into bugzilla..."
 msgstr "Inloggen bij bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:693
+#: ../lib/Plugins/Bugzilla.cpp:704
 msgid "Checking for duplicates..."
 msgstr "Controleren voor dubbele..."
 
-#: ../lib/Plugins/Bugzilla.cpp:714 ../lib/Plugins/Bugzilla.cpp:749
+#: ../lib/Plugins/Bugzilla.cpp:725 ../lib/Plugins/Bugzilla.cpp:760
 msgid "Missing mandatory member 'bugs'"
 msgstr "Verplicht onderdeel 'bugs' ontbreekt"
 
-#: ../lib/Plugins/Bugzilla.cpp:732 ../lib/Plugins/Bugzilla.cpp:765
-#: ../lib/Plugins/Bugzilla.cpp:841
+#: ../lib/Plugins/Bugzilla.cpp:743 ../lib/Plugins/Bugzilla.cpp:776
+#: ../lib/Plugins/Bugzilla.cpp:852
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() faalde. Kon alle noodzakelijke informatie niet verzamelen"
 
-#: ../lib/Plugins/Bugzilla.cpp:781
+#: ../lib/Plugins/Bugzilla.cpp:792
 msgid "Creating a new bug..."
 msgstr "Nieuwe bug aanmaken..."
 
-#: ../lib/Plugins/Bugzilla.cpp:786
+#: ../lib/Plugins/Bugzilla.cpp:797
 msgid "Bugzilla entry creation failed"
 msgstr "Het aanmaken van een Bugzilla ingang mislukte"
 
-#: ../lib/Plugins/Bugzilla.cpp:796 ../lib/Plugins/Bugzilla.cpp:891
+#: ../lib/Plugins/Bugzilla.cpp:807 ../lib/Plugins/Bugzilla.cpp:902
 msgid "Logging out..."
 msgstr "Uitloggen..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:815
+#: ../lib/Plugins/Bugzilla.cpp:826
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Bug is al aangemeld: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:837
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla kon de ouder van bug %d  niet vinden"
 
-#: ../lib/Plugins/Bugzilla.cpp:855 ../lib/Plugins/Bugzilla.cpp:856
+#: ../lib/Plugins/Bugzilla.cpp:866 ../lib/Plugins/Bugzilla.cpp:867
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "Voeg %s toe aan CC lijst"
 
-#: ../lib/Plugins/Bugzilla.cpp:880
+#: ../lib/Plugins/Bugzilla.cpp:891
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Voeg nieuw commentaar toe aan bug(%d)"
 
-#: ../lib/Plugins/Bugzilla.cpp:979
+#: ../lib/Plugins/Bugzilla.cpp:990
 msgid "Reports bugs to bugzilla"
 msgstr "Bugs rapporteren aan bugzilla"
 
@@ -112,7 +112,7 @@ msgstr "Sla de debuginfo installatie over"
 #: ../lib/Plugins/CCpp.cpp:658
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "Backtrace ontleden mislukte voor %s"
 
 #: ../lib/Plugins/CCpp.cpp:934
 msgid "Analyzes crashes in C/C++ programs"
@@ -152,7 +152,7 @@ msgstr "Aanmaken en indienen van een rapport..."
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr "Stuurt kernel oops informatie naar kerneloops.org"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:200
+#: ../lib/Plugins/KerneloopsScanner.cpp:215
 msgid "Periodically scans for and saves kernel oopses"
 msgstr "Regelmatig scannen en opslaan van kernel oopses"
 
@@ -208,9 +208,8 @@ msgid "Creating a new case..."
 msgstr "Een nieuwe zaak aanmaken..."
 
 #: ../lib/Plugins/RHTSupport.cpp:309
-#, fuzzy
 msgid "Reports bugs to Red Hat support"
-msgstr "Bugs rapporteren aan bugzilla"
+msgstr "Bugs rapporteren aan Red Hat ondersteuning"
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
@@ -427,7 +426,7 @@ msgid "\tHostname   : %s\n"
 msgstr "\tHost naam   : %s\n"
 
 #: ../src/CLI/CLI.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
 "Last crash:         %s\n"
@@ -447,19 +446,17 @@ msgstr ""
 "Commando:           %s\n"
 "Uitvoerbaar prog:   %s\n"
 "Systeem:            %s, kernel %s\n"
-"Beoordeling         %s\n"
-"Coredump bestand:   %s\n"
 "Reden:              %s\n"
 
 #: ../src/CLI/CLI.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Coredump file:      %s\n"
-msgstr "Crash functie:      %s\n"
+msgstr "Coredump bestand:   %s\n"
 
 #: ../src/CLI/CLI.cpp:135
-#, fuzzy, c-format
+#, c-format
 msgid "Rating:             %s\n"
-msgstr "Host naam:          %s\n"
+msgstr "Waardering:         %s\n"
 
 #: ../src/CLI/CLI.cpp:140
 #, c-format
@@ -636,11 +633,11 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/CLI/report.cpp:545
 msgid "y"
-msgstr ""
+msgstr "j"
 
 #: ../src/CLI/report.cpp:546
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:647
@@ -661,30 +658,29 @@ msgid "Reporting..."
 msgstr "Rapporteren..."
 
 #: ../src/CLI/report.cpp:721
-#, fuzzy, c-format
+#, c-format
 msgid "Report using %s?"
-msgstr "Rapporteren met  %s? [j/N]: "
+msgstr "Rapporteren met %s? "
 
 #: ../src/CLI/report.cpp:724
 msgid "Skipping..."
 msgstr "Overslaan..."
 
 #: ../src/CLI/report.cpp:736
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "Rapportage is uitgezet omdat de backtrace onbruikbaar is."
+msgstr "Rapportage is uitgezet omdat de backtrace onbruikbaar is"
 
 #: ../src/CLI/report.cpp:740
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
-msgstr ""
+msgstr "Probeer debuginfo handmatig te installeren met het commando: \"debuginfo-"
+"install %s\" en probeer het opnieuw\n"
 
 #: ../src/CLI/report.cpp:749
-#, fuzzy
 msgid "Error loading reporter settings"
-msgstr "Fout tijdens het verkrijgen van het rapport: %s"
+msgstr "Fout tijdens het laden van de rapporteer instellingen"
 
 #: ../src/CLI/report.cpp:768
 #, c-format
@@ -1162,7 +1158,7 @@ msgstr "De backtrace goedkeuren"
 
 #: ../src/Gui/CReporterAssistant.py:659
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "Je moet hoe te reproduceren invullen voor je verder kan gaan..."
 
 #: ../src/Gui/CReporterAssistant.py:682
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
