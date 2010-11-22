@@ -130,6 +130,7 @@ if __name__ == "__main__":
         mockcfg.write("\n")
         # at the moment only works for fedora with global repos
         # ToDo RHEL and local repos
+#        """
         mockcfg.write("[fedora]\n")
         mockcfg.write("name=fedora\n")
         mockcfg.write("mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=fedora-" + version + "&arch=" + repoarch + "\n")
@@ -153,7 +154,7 @@ if __name__ == "__main__":
         # custom repo containing abrt-1.1.4.1, abrt-addon-ccpp-1.1.4.1 and abrt-libs-1.1.4.1 for fedora-[12|13|14]-[i686|x86_64]
         mockcfg.write("[abrt]\n")
         mockcfg.write("name=abrt\n")
-        mockcfg.write("baseurl=http://simona.expresmu.sk:44480/" + distribution + "-" + version + "-" + arch + "-abrt\n")
+        mockcfg.write("baseurl=http://repos.fedorapeople.org/repos/mtoman/abrt/" + distribution + "-" + version + "/" + arch + "/\n")
         mockcfg.write("failovermethod=priority\n")
         """
         # testing local repos
@@ -181,7 +182,7 @@ if __name__ == "__main__":
         mockcfg.write("name=abrt\n")
         mockcfg.write("baseurl=http://localhost:44480/" + distribution + "-" + version + "-" + arch + "-abrt\n")
         mockcfg.write("failovermethod=priority\n")
-        """
+#        """
         mockcfg.write("\n")
         mockcfg.write("\"\"\"\n")
         mockcfg.close()
@@ -192,23 +193,21 @@ if __name__ == "__main__":
     mockr = "../../" + workdir + "/mock"
 
     print "Initializing virtual root...",
-    sys.stdout.flush()
 
     retrace_run(11, ["mock", "init", "-r", mockr])
 
     print "OK"
 
     print "Installing debuginfos...",
-    sys.stdout.flush()
 
-    retrace_run(12, ["mock", "shell", "-r", mockr, "debuginfo-install" + packages])
+    retrace_run(12, ["cp", "-r", workdir + "/crash", workdir + "/" + chroot + "/root/var/spool/abrt"])
+#    retrace_run(13, ["mock", "shell", "-r", mockr, "abrt-action-install-debuginfo", "/var/spool/abrt/crash/coredump", "/tmp/abrt"])
+    retrace_run(13, ["mock", "shell", "-r", mockr, "debuginfo-install" + packages])
 
     print "OK"
 
     print "Generating backtrace...",
-    sys.stdout.flush()
 
-    retrace_run(13, ["cp", "-r", workdir + "/crash", workdir + "/" + chroot + "/root/var/spool/abrt"])
     retrace_run(14, ["mock", "shell", "-r", mockr, "--", "abrt-action-generate-backtrace -d /var/spool/abrt/crash"])
     retrace_run(15, ["cp", workdir + "/" + chroot + "/root/var/spool/abrt/crash/backtrace", workdir])
 
