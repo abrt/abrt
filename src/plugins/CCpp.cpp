@@ -23,7 +23,6 @@
 #include "CCpp.h"
 #include "abrt_exception.h"
 #include "comm_layer_inner.h"
-#include "Polkit.h"
 
 using namespace std;
 

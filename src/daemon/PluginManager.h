@@ -83,20 +83,6 @@ class CPluginManager
          * @param pName A plugin name.
          */
         void UnLoadPlugin(const char *pName);
-#ifdef PLUGIN_DYNAMIC_LOAD_UNLOAD
-        /**
-         * A method, which registers particular plugin.
-         * @param pName A plugin name.
-         */
-        void RegisterPluginDBUS(const char *pName, const char *pDBUSSender);
-        /**
-         * A method, which unregister particular plugin,
-         * called via DBUS
-         * @param pName A plugin name.
-         * @param pDBUSSender DBUS user identification
-         */
-        void UnRegisterPluginDBUS(const char *pName, const char *pDBUSSender);
-#endif
         /**
          * A method, which returns instance of particular action plugin.
          * @param pName A plugin name.

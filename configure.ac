@@ -48,7 +48,6 @@ PKG_CHECK_MODULES([LIBNOTIFY], [libnotify])
 #PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([XMLRPC], [xmlrpc])
 PKG_CHECK_MODULES([XMLRPC_CLIENT], [xmlrpc_client])
-PKG_CHECK_MODULES([POLKIT], [polkit-gobject-1])
 
 PKG_PROG_PKG_CONFIG
 AC_ARG_WITH([systemdsystemunitdir],

@@ -62,8 +62,7 @@ libABRTdUtils_la_SOURCES = \
     parse_release.cpp \
     make_descr.cpp \
     $(HEADER_DIR)/comm_layer_inner.h CommLayerInner.cpp \
-    $(HEADER_DIR)/plugin.h Plugin.cpp \
-    Polkit.h Polkit.cpp
+    $(HEADER_DIR)/plugin.h Plugin.cpp
 libABRTdUtils_la_CPPFLAGS = \
     -Wall \
     -I$(srcdir)/../include \
@@ -72,12 +71,10 @@ libABRTdUtils_la_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
-    $(POLKIT_CFLAGS) \
     -D_GNU_SOURCE
 libABRTdUtils_la_LDFLAGS = \
     -version-info 0:1:0
 libABRTdUtils_la_LIBADD = \
-    $(POLKIT_LIBS) \
     -ldl
 
 libABRT_web_utils_la_SOURCES = \

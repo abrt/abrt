@@ -93,7 +93,6 @@ abrt_action_save_package_data_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Werror
-# polkit_check_authorization is in libABRTdUtils
 abrt_action_save_package_data_LDADD = \
     $(RPM_LIBS) \
     ../lib/libABRTdUtils.la \
@@ -107,9 +106,6 @@ dist_daemonconf_DATA = \
     abrt.conf \
     abrt_event.conf \
     gpg_keys
-
-polkitconfdir = ${datadir}/polkit-1/actions
-dist_polkitconf_DATA = org.fedoraproject.abrt.policy
 
 comredhatabrtservicedir = ${datadir}/dbus-1/system-services
 dist_comredhatabrtservice_DATA = com.redhat.abrt.service

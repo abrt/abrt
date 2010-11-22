@@ -350,48 +350,6 @@ static int handle_GetPluginSettings(DBusMessage* call, DBusMessage* reply)
     return 0;
 }
 
-#ifdef PLUGIN_DYNAMIC_LOAD_UNLOAD
-static int handle_RegisterPlugin(DBusMessage* call, DBusMessage* reply)
-{
-    int r;
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(call, &in_iter);
-    const char* PluginName;
-    r = load_val(&in_iter, PluginName);
-    if (r != ABRT_DBUS_LAST_FIELD)
-    {
-        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-        return -1;
-    }
-
-    const char * sender = dbus_message_get_sender(call);
-    g_pPluginManager->RegisterPluginDBUS(PluginName, sender);
-
-    send_flush_and_unref(reply);
-    return 0;
-}
-
-static int handle_UnRegisterPlugin(DBusMessage* call, DBusMessage* reply)
-{
-    int r;
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(call, &in_iter);
-    const char* PluginName;
-    r = load_val(&in_iter, PluginName);
-    if (r != ABRT_DBUS_LAST_FIELD)
-    {
-        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-        return -1;
-    }
-
-    const char * sender = dbus_message_get_sender(call);
-    g_pPluginManager->UnRegisterPluginDBUS(PluginName, sender);
-
-    send_flush_and_unref(reply);
-    return 0;
-}
-#endif
-
 static int handle_GetSettings(DBusMessage* call, DBusMessage* reply)
 {
     map_abrt_settings_t result = GetSettings();
@@ -453,12 +411,6 @@ static DBusHandlerResult message_received(DBusConnection* conn, DBusMessage* msg
         r = handle_GetPluginsInfo(msg, reply);
     else if (strcmp(member, "GetPluginSettings") == 0)
         r = handle_GetPluginSettings(msg, reply);
-#ifdef PLUGIN_DYNAMIC_LOAD_UNLOAD
-    else if (strcmp(member, "RegisterPlugin") == 0)
-        r = handle_RegisterPlugin(msg, reply);
-    else if (strcmp(member, "UnRegisterPlugin") == 0)
-        r = handle_UnRegisterPlugin(msg, reply);
-#endif
     else if (strcmp(member, "GetSettings") == 0)
         r = handle_GetSettings(msg, reply);
     else if (strcmp(member, "SetSettings") == 0)
