@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-10-18 13:21+0000\n"
+"POT-Creation-Date: 2010-11-22 21:34+0100\n"
 "PO-Revision-Date: 2010-10-18 16:28+0300\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -16,286 +16,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.6.1\n"
-
-#: ../lib/plugins/Bugzilla.cpp:149
-msgid "Reports bugs to bugzilla"
-msgstr "Raportoi ohjelmavirheitä Bugzillaan"
-
-#: ../lib/plugins/CCpp.cpp:79
-msgid "Generating backtrace"
-msgstr "Luodaan pinolistausta"
-
-#: ../lib/plugins/CCpp.cpp:115
-msgid "Starting the debuginfo installation"
-msgstr "Aloitetaan debuginfon asennus"
-
-#. Compatibility code.
-#. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:338
-msgid "Getting global universal unique identification..."
-msgstr "Haetaan yleinen ainutkertainen tunnus..."
-
-#: ../lib/plugins/CCpp.cpp:532
-msgid "Skipping the debuginfo installation"
-msgstr "Ohitetaan debuginfon asennus"
-
-#: ../lib/plugins/CCpp.cpp:783
-msgid "Analyzes crashes in C/C++ programs"
-msgstr "Analysoi C/C++-ohjelmien kaatumisia"
-
-#: ../lib/plugins/FileTransfer.cpp:51 ../lib/plugins/ReportUploader.cpp:96
-msgid "FileTransfer: URL not specified"
-msgstr "FileTransfer: URL:ää ei ole määritelty"
-
-#: ../lib/plugins/FileTransfer.cpp:55 ../lib/plugins/ReportUploader.cpp:100
-#, c-format
-msgid "Sending archive %s to %s"
-msgstr "Lähetetään arkisto %s osoitteeseen %s"
-
-#: ../lib/plugins/FileTransfer.cpp:244
-msgid "FileTransfer: Creating a report..."
-msgstr "Tiedostonsiirto: Luodaan ilmoitusta..."
-
-#: ../lib/plugins/FileTransfer.cpp:268 ../lib/plugins/FileTransfer.cpp:297
-#, c-format
-msgid "Cannot create and send an archive: %s"
-msgstr "Ei voitu luoda ja lähettää arkistoa: %s"
-
-#: ../lib/plugins/FileTransfer.cpp:364
-msgid "Sends a report via FTP or SCTP"
-msgstr "Lähettää raportin FTP:llä tai SCTP:llä"
-
-#: ../lib/plugins/Kerneloops.cpp:150
-msgid "Analyzes kernel oopses"
-msgstr "Analysoi ytimen oopseja"
-
-#: ../lib/plugins/KerneloopsReporter.cpp:95
-msgid "Creating and submitting a report..."
-msgstr "Luodaan ja lähetetään ilmoitus..."
-
-#: ../lib/plugins/KerneloopsReporter.cpp:144
-msgid "Sends kernel oops information to kerneloops.org"
-msgstr "Lähettää ytimen oops-tiedot kerneloops.org-sivustolle"
-
-#: ../lib/plugins/KerneloopsScanner.cpp:211
-msgid "Periodically scans for and saves kernel oopses"
-msgstr "Etsii ja tallentaa ytimen oopsit säännöllisesti"
-
-#: ../lib/plugins/Logger.cpp:68
-#, c-format
-msgid "Writing report to '%s'"
-msgstr "Kirjoitetaan raportti kohteeseen ”%s”"
-
-#: ../lib/plugins/Logger.cpp:74
-#, c-format
-msgid "The report was appended to %s"
-msgstr "Raportti lisättiin kohteeseen %s"
-
-#: ../lib/plugins/Logger.cpp:74
-#, c-format
-msgid "The report was stored to %s"
-msgstr "Raportti tallennettiin kohteeseen %s"
-
-#: ../lib/plugins/Logger.cpp:82
-msgid "Writes report to a file"
-msgstr "Kirjoittaa raportin tiedostoon"
-
-#: ../lib/plugins/Mailx.cpp:99
-msgid "Sending an email..."
-msgstr "Lähetetään sähköpostia..."
-
-#: ../lib/plugins/Mailx.cpp:150
-msgid "Sends an email with a report (via mailx command)"
-msgstr "Lähettää raportin sähköpostilla (mailx-komentoa käyttäen)"
-
-#: ../lib/plugins/Python.cpp:99
-msgid "Analyzes crashes in Python programs"
-msgstr "Analysoi Python-ohjelmien kaatumisia"
-
-#: ../lib/plugins/ReportUploader.cpp:130
-#, c-format
-msgid "Sending failed, trying again. %s"
-msgstr "Lähettäminen epäonnistui, yritä uudelleen. %s"
-
-#: ../lib/plugins/ReportUploader.cpp:196
-msgid "Creating a ReportUploader report..."
-msgstr "Luodaan ReportUploader-raportti..."
-
-#: ../lib/plugins/ReportUploader.cpp:514
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-msgstr ""
-"Pakkaa kaatumistiedot .tar.gz-tiedostoon ja valinnaisesti lähettää tiedoston "
-"FTP:llä/SCP:llä/tms."
-
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../lib/plugins/RHTSupport.cpp:109
-msgid "Compressing data"
-msgstr "Pakataan tietoja"
-
-#: ../lib/plugins/RHTSupport.cpp:246
-msgid "Creating a new case..."
-msgstr "Luodaan uusi tapaus..."
-
-#: ../lib/plugins/RHTSupport.cpp:328
-msgid "Reports bugs to Red Hat support"
-msgstr "Raportoi ohjelmavirheitä Red Hatin käyttötukeen"
-
-#: ../lib/plugins/RunApp.cpp:75
-msgid "Runs a command, saves its output"
-msgstr "Suorittaa komennon ja tallentaa sen tulosteen"
-
-#: ../lib/plugins/SOSreport.cpp:99
-#, c-format
-msgid "Running sosreport: %s"
-msgstr "Suoritetaan sosreport: %s"
-
-#: ../lib/plugins/SOSreport.cpp:104
-msgid "Finished running sosreport"
-msgstr "Sosreportin suoritus valmistui"
-
-#: ../lib/plugins/SOSreport.cpp:132
-#, c-format
-msgid "Unable to open debug dump '%s'"
-msgstr "Virheenjäljitysvedosta ”%s” ei voida avata"
-
-#: ../lib/plugins/SOSreport.cpp:166
-msgid "Runs sosreport, saves the output"
-msgstr "Suorittaa sosreportin ja tallentaa sen tulosteen"
-
-#: ../lib/plugins/SQLite3.cpp:718
-msgid "Keeps SQLite3 database about all crashes"
-msgstr "Pitää SQLite3-tietokantaa kaikista kaatumisista"
-
-#: ../lib/plugins/Bugzilla.glade.h:1
-msgid "<b>Bugzilla plugin configuration</b>"
-msgstr "<b>Bugzilla-liitännäisen asetukset</b>"
-
-#: ../lib/plugins/Bugzilla.glade.h:2
-msgid "Bugzilla URL:"
-msgstr "Bugzillan URL:"
-
-#: ../lib/plugins/Bugzilla.glade.h:3
-msgid "Don't have an account yet?"
-msgstr "Eikö sinulla ole vielä tiliä?"
-
-#: ../lib/plugins/Bugzilla.glade.h:4
-msgid "Login(email):"
-msgstr "Käyttäjätunnus (sähköpostiosoite):"
-
-#: ../lib/plugins/Bugzilla.glade.h:5 ../lib/plugins/RHTSupport.glade.h:3
-msgid "Password:"
-msgstr "Salasana:"
-
-#: ../lib/plugins/Bugzilla.glade.h:6 ../lib/plugins/RHTSupport.glade.h:5
-msgid "SSL verify"
-msgstr "SSL-varmennus"
-
-#: ../lib/plugins/Bugzilla.glade.h:7 ../lib/plugins/RHTSupport.glade.h:6
-msgid "Show password"
-msgstr "Näytä salasana"
-
-#: ../lib/plugins/Bugzilla.glade.h:8
-msgid ""
-"You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
-"\">here</a>"
-msgstr ""
-"Voit luoda sen <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
-"\">täällä</a>"
-
-#: ../lib/plugins/KerneloopsReporter.glade.h:1
-msgid "<b>Kerneloops Reporter plugin configuration</b>"
-msgstr "<b>Kerneloops-raportoijaliitännäisen asetukset</b>"
-
-#: ../lib/plugins/KerneloopsReporter.glade.h:2
-msgid "Submit URL:"
-msgstr "Lähetysosoite:"
-
-#: ../lib/plugins/Logger.glade.h:1
-msgid "<b>Logger plugin configuration</b>"
-msgstr "<b>Lokikirjoitusliitännäisen asetukset</b>"
-
-#: ../lib/plugins/Logger.glade.h:2
-msgid "Append new logs"
-msgstr "Lisää uudet lokit vanhoihin tiedostoihin"
-
-#: ../lib/plugins/Logger.glade.h:3
-msgid "Logger file:"
-msgstr "Lokitiedosto:"
-
-#: ../lib/plugins/Mailx.glade.h:1
-msgid "<b>Mailx plugin configuration</b>"
-msgstr "<b>Mailx-liitännäisen asetukset</b>"
-
-#: ../lib/plugins/Mailx.glade.h:2
-msgid "Recipient's Email:"
-msgstr "Vastaanottajan sähköpostiosoite:"
-
-#: ../lib/plugins/Mailx.glade.h:3
-msgid "Send Binary Data"
-msgstr "Lähetä binääridata"
-
-#: ../lib/plugins/Mailx.glade.h:4
-msgid "Subject:"
-msgstr "Aihe:"
-
-#: ../lib/plugins/Mailx.glade.h:5
-msgid "Your Email:"
-msgstr "Sinun sähköpostiosoitteesi:"
-
-#: ../lib/plugins/ReportUploader.glade.h:1
-msgid "<b>Report Uploader plugin configuration</b>"
-msgstr "<b>Tiketinlähettäjäliitännäisen asetukset</b>"
-
-#: ../lib/plugins/ReportUploader.glade.h:2
-msgid "Customer:"
-msgstr "Asiakas:"
-
-#: ../lib/plugins/ReportUploader.glade.h:3
-msgid "Retry count:"
-msgstr "Uudelleenyritysten määrä:"
-
-#: ../lib/plugins/ReportUploader.glade.h:4
-msgid "Retry delay:"
-msgstr "Uudelleenyritysten viive:"
-
-#: ../lib/plugins/ReportUploader.glade.h:5
-msgid "Ticket:"
-msgstr "Tiketti:"
-
-#: ../lib/plugins/ReportUploader.glade.h:6
-msgid "URL:"
-msgstr "URL:"
-
-#: ../lib/plugins/ReportUploader.glade.h:7
-msgid "Upload"
-msgstr "Lähetä"
-
-#: ../lib/plugins/ReportUploader.glade.h:8
-msgid "Use encryption"
-msgstr "Käytä salausta"
-
-#: ../lib/plugins/RHTSupport.glade.h:1
-msgid "<b>RHTSupport plugin configuration</b>"
-msgstr "<b>RHTSupport-liitännäisen asetukset</b>"
-
-#: ../lib/plugins/RHTSupport.glade.h:2
-msgid "Login:"
-msgstr "Käyttäjätunnus:"
-
-#: ../lib/plugins/RHTSupport.glade.h:4
-msgid "RHTSupport URL:"
-msgstr "RHTSupport URL:"
-
-#: ../lib/utils/abrt_curl.c:171
-#, c-format
-msgid "Uploaded: %llu of %llu kbytes"
-msgstr "Lähetetty: %llu/%llu kilotavua"
-
-#: ../lib/utils/parse_options.c:11
-#, c-format
-msgid "Usage: %s\n"
-msgstr "Käyttö: %s\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -307,16 +27,16 @@ msgstr "ABRT-ilmoitussovelma"
 msgid "Automatic Bug Reporting Tool"
 msgstr "Automaattinen ohjelmavikojen raportointiohjelma"
 
-#: ../src/applet/Applet.cpp:76
+#: ../src/applet/Applet.cpp:86
 #, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "Paketissa %s on huomattu kaatuminen"
 
-#: ../src/applet/Applet.cpp:78
+#: ../src/applet/Applet.cpp:88
 msgid "A crash has been detected"
 msgstr "Kaatuminen on huomattu"
 
-#: ../src/applet/Applet.cpp:275
+#: ../src/applet/Applet.cpp:285
 msgid "ABRT service is not running"
 msgstr "ABRT-palvelu ei ole käytössä"
 
@@ -498,20 +218,20 @@ msgstr ""
 msgid "You must specify exactly one operation"
 msgstr "On määritettävä tasan yksi toiminto."
 
-#: ../src/cli/report.cpp:170
+#: ../src/cli/report.cpp:167
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# Tämä kenttä on vain luku -tilassa\n"
 
-#: ../src/cli/report.cpp:190
+#: ../src/cli/report.cpp:187
 msgid "# Describe the circumstances of this crash below"
 msgstr "# Kuvaile alla kaatumistilannetta"
 
-#: ../src/cli/report.cpp:192
+#: ../src/cli/report.cpp:189
 msgid "# How to reproduce the crash?"
 msgstr "# Kuinka kaatumisen voi toistaa?"
 
-#: ../src/cli/report.cpp:194
+#: ../src/cli/report.cpp:191
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -520,49 +240,49 @@ msgstr ""
 "# Tarkista, ettei tämä sisällä mitään luottamuksellisia tietoja, kuten "
 "salasanoja."
 
-#: ../src/cli/report.cpp:196
+#: ../src/cli/report.cpp:193
 msgid "# Architecture"
 msgstr "# Arkkitehtuuri"
 
-#: ../src/cli/report.cpp:197
+#: ../src/cli/report.cpp:194
 msgid "# Command line"
 msgstr "# Komentorivi"
 
-#: ../src/cli/report.cpp:198
+#: ../src/cli/report.cpp:195
 msgid "# Component"
 msgstr "# Komponentti"
 
-#: ../src/cli/report.cpp:199
+#: ../src/cli/report.cpp:196
 msgid "# Core dump"
 msgstr "# Muistivedos"
 
-#: ../src/cli/report.cpp:200
+#: ../src/cli/report.cpp:197
 msgid "# Executable"
 msgstr "# Suoritettava tiedosto"
 
-#: ../src/cli/report.cpp:201
+#: ../src/cli/report.cpp:198
 msgid "# Kernel version"
 msgstr "# Ytimen versio"
 
-#: ../src/cli/report.cpp:202
+#: ../src/cli/report.cpp:199
 msgid "# Package"
 msgstr "# Paketti"
 
-#: ../src/cli/report.cpp:203
+#: ../src/cli/report.cpp:200
 msgid "# Reason of crash"
 msgstr "# Kaatumisen syy"
 
-#: ../src/cli/report.cpp:204
+#: ../src/cli/report.cpp:201
 msgid "# Release string of the operating system"
 msgstr "# Käyttöjärjestelmän julkaisutunnus"
 
-#: ../src/cli/report.cpp:327
+#: ../src/cli/report.cpp:324
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
 "Komentoa vi ei voida suorittaa: $TERM-, $VISUAL- tai $EDITOR -muuttujia ei "
 "ole määritetty."
 
-#: ../src/cli/report.cpp:415
+#: ../src/cli/report.cpp:412
 msgid ""
 "\n"
 "The report has been updated"
@@ -570,7 +290,7 @@ msgstr ""
 "\n"
 "Raportti on päivitetty"
 
-#: ../src/cli/report.cpp:417
+#: ../src/cli/report.cpp:414
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -579,164 +299,103 @@ msgstr ""
 "Raportissa ei havaittu muutoksia"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:543
+#: ../src/cli/report.cpp:540
 msgid "y"
 msgstr "k"
 
-#: ../src/cli/report.cpp:544
+#: ../src/cli/report.cpp:541
 msgid "N"
 msgstr "E"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:645
+#: ../src/cli/report.cpp:641
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Liitännäisellä %s havaittiin olevan väärät asetukset\n"
 
-#: ../src/cli/report.cpp:649
+#: ../src/cli/report.cpp:645
 msgid "Enter your login: "
 msgstr "Käyttäjätunnus: "
 
-#: ../src/cli/report.cpp:655
+#: ../src/cli/report.cpp:651
 msgid "Enter your password: "
 msgstr "Salasana: "
 
-#: ../src/cli/report.cpp:700
+#: ../src/cli/report.cpp:696
 msgid "Reporting..."
 msgstr "Raportoidaan..."
 
-#: ../src/cli/report.cpp:719
+#: ../src/cli/report.cpp:715
 #, c-format
 msgid "Report using %s?"
 msgstr "Raportoidaanko käyttäen raportoijaa %s?: "
 
-#: ../src/cli/report.cpp:722
+#: ../src/cli/report.cpp:718
 msgid "Skipping..."
 msgstr "Ohitetaan..."
 
-#: ../src/cli/report.cpp:734
+#: ../src/cli/report.cpp:730
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Raportointi on poistettu käytöstä, koska pinolistaus on hyödytön"
 
-#: ../src/cli/report.cpp:738
+#: ../src/cli/report.cpp:734
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
-"Yritä asentaa debuginfo manuaalisesti käyttäen komentoa ”debuginfo-install %"
-"s” ja kokeile sitten uudelleen\n"
+"Yritä asentaa debuginfo manuaalisesti käyttäen komentoa ”debuginfo-install "
+"%s” ja kokeile sitten uudelleen\n"
 
-#: ../src/cli/report.cpp:747
+#: ../src/cli/report.cpp:743
 msgid "Error loading reporter settings"
 msgstr "Virhe ladattaessa raportoijan asetuksia"
 
-#: ../src/cli/report.cpp:766
+#: ../src/cli/report.cpp:762
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Kaatuminen on raportoitu %d liitännäisen kautta (%d virhettä)\n"
 
-#: ../src/daemon/abrt-action-analyze-c.c:154
+#: ../src/daemon/abrt-handle-crashdump.c:42
 msgid ""
-" [-vs] -d DIR\n"
-"\n"
-"Calculates and saves UUID of coredumps"
+" [-vs] -d DIR -e EVENT\n"
+"   or: "
 msgstr ""
-" [-vs] -d DIR\n"
-"\n"
-"Laskee ja tallentaa muistivedosten UUID:t"
 
-#: ../src/daemon/abrt-action-analyze-c.c:166
-msgid "Crash dump directory"
-msgstr "Muistivedoshakemisto"
-
-#: ../src/daemon/abrt-action-analyze-c.c:167
+#: ../src/daemon/abrt-handle-crashdump.c:57
+#: ../src/plugins/abrt-action-analyze-c.c:167
+#: ../src/plugins/abrt-action-analyze-oops.c:144
+#: ../src/plugins/abrt-action-analyze-python.c:49
 msgid "Log to syslog"
 msgstr "Kirjoita lokia syslogiin"
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:462
-#, c-format
-msgid "New bug id: %i"
-msgstr "Uuden ohjelmavirheilmoituksen tunnus: %i"
+#: ../src/daemon/abrt-handle-crashdump.c:58
+#: ../src/plugins/abrt-action-analyze-c.c:166
+#: ../src/plugins/abrt-action-analyze-oops.c:143
+#: ../src/plugins/abrt-action-analyze-python.c:48
+#: ../src/plugins/abrt-action-mailx.cpp:153
+#: ../src/plugins/abrt-action-print.cpp:51
+#: ../src/plugins/abrt-action-upload.cpp:270
+msgid "Crash dump directory"
+msgstr "Muistivedoshakemisto"
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:575
-#, c-format
-msgid "Can't open '%s'"
-msgstr "Hakemiston ”%s” avaaminen ei onnistu"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:600
-#, c-format
-msgid "Empty login or password, please check %s"
-msgstr "Käyttäjätunnus tai salasana on tyhjä, tarkista %s"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:609
-msgid "Logging into bugzilla..."
-msgstr "Kirjaudutaan bugzillaan..."
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:612
-msgid "Checking for duplicates..."
-msgstr "Etsitään samanlaisia..."
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:633
-#: ../src/daemon/abrt-action-bugzilla.cpp:669
-msgid "Missing mandatory member 'bugs'"
-msgstr "Puuttuva pakollinen osa ”bugs”"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:652
-#: ../src/daemon/abrt-action-bugzilla.cpp:685
-#: ../src/daemon/abrt-action-bugzilla.cpp:760
-msgid "get_bug_info() failed. Could not collect all mandatory information"
+#: ../src/daemon/abrt-handle-crashdump.c:59
+msgid "Handle EVENT"
 msgstr ""
-"get_bug_info() epäonnistui. Kaikkia pakollisia tietoja ei voitu kerätä."
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:701
-msgid "Creating a new bug..."
-msgstr "Luodaan uusi ohjelmavirheilmoitus..."
+#: ../src/daemon/abrt-handle-crashdump.c:60
+msgid "List possible events [which start with PFX]"
+msgstr ""
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:706
-msgid "Bugzilla entry creation failed"
-msgstr "Bugzilla-ilmoituksen luominen epäonnistui"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:716
-#: ../src/daemon/abrt-action-bugzilla.cpp:813
-msgid "Logging out..."
-msgstr "Kirjaudutaan ulos..."
-
-#. decision based on state
-#: ../src/daemon/abrt-action-bugzilla.cpp:734
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr "Ohjelmavirheestä on jo tehty ilmoitus: %i"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:745
-#, c-format
-msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla ei löytänyt ylemmän tason vikailmoitusta ilmoitukselle %d"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:774
-#, c-format
-msgid "Add %s to CC list"
-msgstr "Lisää %s CC-luetteloon"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:798
-#, c-format
-msgid "Adding new comment to bug %d"
-msgstr "﻿Lisää uusi kommentti vikailmoitukseen (%d)"
-
-#: ../src/daemon/abrt-action-generate-backtrace.c:317
-#, c-format
-msgid "Backtrace parsing failed for %s"
-msgstr "Kohteen %s pinolistauksen jäsentäminen epäonnistui"
-
-#: ../src/daemon/CommLayerServerDBus.cpp:224
+#: ../src/daemon/CommLayerServerDBus.cpp:229
 msgid "Comment is too long"
 msgstr "Kommentti on liian pitkä"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:228
+#: ../src/daemon/CommLayerServerDBus.cpp:233
 msgid "'How to reproduce' is too long"
 msgstr "Toisto-ohjeet ovat liian pitkät"
 
-#: ../src/daemon/Daemon.cpp:633
+#: ../src/daemon/Daemon.cpp:614
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -744,23 +403,23 @@ msgstr ""
 "Raportin koko ylitti sille annetun rajan. Tarkista järjestelmän "
 "MaxCrashReportsSize-arvo abrt.conf-tiedostossa."
 
-#: ../src/daemon/Daemon.cpp:862
+#: ../src/daemon/Daemon.cpp:784
 msgid "abrtd [options]"
 msgstr "abrtd [valitsimet]"
 
-#: ../src/daemon/Daemon.cpp:872
+#: ../src/daemon/Daemon.cpp:794
 msgid "Do not daemonize"
 msgstr "Älä aseta taustaprosessiksi"
 
-#: ../src/daemon/Daemon.cpp:873
+#: ../src/daemon/Daemon.cpp:795
 msgid "Log to syslog even with -d"
 msgstr "Kirjoita lokia syslogiin myös valitsimen -d kanssa"
 
-#: ../src/daemon/Daemon.cpp:874
+#: ../src/daemon/Daemon.cpp:796
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Lopeta SEK sekunnin toimettomuuden jälkeen"
 
-#: ../src/daemon/Settings.cpp:216 ../src/daemon/Settings.cpp:221
+#: ../src/daemon/Settings.cpp:207 ../src/daemon/Settings.cpp:212
 msgid "Database plugin not specified. Please check abrtd settings."
 msgstr "Tietokantaliitännäistä ei ole määritetty. Tarkista abrtd:n asetukset."
 
@@ -807,7 +466,7 @@ msgid "Please check if the abrt daemon is running."
 msgstr "Tarkista onko abrt-taustaprosessi käynnissä."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:170
+#: ../src/gui/CCDBusBackend.py:169
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
@@ -989,7 +648,7 @@ msgstr ""
 msgid "You must check the backtrace for sensitive data."
 msgstr "Tarkista pinolistaus arkaluontoisten tietojen varalta."
 
-#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:325
+#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:326
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -1008,7 +667,7 @@ msgstr ""
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "Virheenjäljitystiedot ovat hyödyttömät, tätä ei voi raportoida!"
 
-#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:331
+#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:332
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -1032,8 +691,8 @@ msgstr ""
 "Tämäntyyppiselle kaatumiselle ei ole saatavilla raportoijaliitännäistä.\n"
 "Tarkista abrt.conf."
 
-#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:218
-#: ../src/gui/PluginsSettingsDialog.py:170
+#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:219
+#: ../src/gui/PluginsSettingsDialog.py:136
 #, python-format
 msgid ""
 "Cannot save plugin settings:\n"
@@ -1042,12 +701,12 @@ msgstr ""
 "Liitännäisen asetuksia ei voida tallentaa:\n"
 " %s"
 
-#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:248
+#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:249
 #, python-format
 msgid "Configure %s options"
 msgstr "Tee liitännäisen %s asetukset"
 
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1008
+#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1036
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -1055,7 +714,7 @@ msgstr ""
 "Raporttia ei saatu!\n"
 "Puuttuuko debuginfo?"
 
-#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:415
+#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:417
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -1065,7 +724,7 @@ msgstr ""
 "%s"
 
 #: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:1047
+#: ../src/gui/CReporterAssistant.py:1075
 #, python-format
 msgid "Error acquiring the report: %s"
 msgstr "Raportin hankkiminen epäonnistui: %s"
@@ -1080,7 +739,7 @@ msgstr "Gnomen avainnipun taustaprosessiin ei saatu yhteyttä."
 msgid "Cannot get the default keyring."
 msgstr "Oletusavainnipun hakeminen ei onnistu."
 
-#: ../src/gui/ConfBackend.py:103 ../src/gui/ConfBackend.py:119
+#: ../src/gui/ConfBackend.py:103 ../src/gui/ConfBackend.py:120
 msgid ""
 "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
@@ -1088,7 +747,7 @@ msgstr ""
 "tallenneta."
 
 #. we tried 2 times, so giving up the authorization
-#: ../src/gui/ConfBackend.py:153
+#: ../src/gui/ConfBackend.py:154
 #, python-format
 msgid ""
 "Access to gnome-keyring has been denied, cannot load the settings for %s!"
@@ -1096,7 +755,7 @@ msgstr ""
 "Gnomen avainnippuun on pääsy kielletty, liitännäisen %s asetuksia ei voi "
 "ladata!"
 
-#: ../src/gui/ConfBackend.py:206
+#: ../src/gui/ConfBackend.py:207
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr "Gnomen avainnippuun on pääsy kielletty, asetuksia ei voi ladata."
 
@@ -1104,45 +763,36 @@ msgstr "Gnomen avainnippuun on pääsy kielletty, asetuksia ei voi ladata."
 msgid "Crash info doesn't contain a backtrace"
 msgstr "Kaatumistiedot eivät sisällä pinolistausta"
 
-#: ../src/gui/CReporterAssistant.py:297
-#, python-format
-msgid "Rating is required by the %s plugin"
-msgstr "Liitännäinen %s vaatii arvostelun"
-
-#: ../src/gui/CReporterAssistant.py:299
-msgid "Rating is not required by any plugin, skipping the check..."
-msgstr "Mikään liitännäinen ei vaadi arvostelua, ohitetaan tarkistus..."
-
-#: ../src/gui/CReporterAssistant.py:303
+#: ../src/gui/CReporterAssistant.py:304
 #, python-format
 msgid "Rating is %s"
 msgstr "Arvostelu on %s"
 
-#: ../src/gui/CReporterAssistant.py:306
+#: ../src/gui/CReporterAssistant.py:307
 msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr "Kaatumisella ei ole arvostelua, oletetaan ettei sitä vaadita"
 
-#: ../src/gui/CReporterAssistant.py:311
+#: ../src/gui/CReporterAssistant.py:312
 msgid "You should check the backtrace for sensitive data."
 msgstr "Tarkista pinolistaus luottamuksellisien tietojen varalta."
 
-#: ../src/gui/CReporterAssistant.py:312
+#: ../src/gui/CReporterAssistant.py:313
 msgid "You must agree with sending the backtrace."
 msgstr "Pinolistauksen lähettäminen on hyväksyttävä."
 
-#: ../src/gui/CReporterAssistant.py:327
+#: ../src/gui/CReporterAssistant.py:328
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Raportointi on poistettu käytöstä, koska pinolistaus on hyödytön."
 
-#: ../src/gui/CReporterAssistant.py:372
+#: ../src/gui/CReporterAssistant.py:374
 msgid "You did not provide any steps to reproduce."
 msgstr "Vian toistamiseksi tarvittavia vaiheita ei ole annettu."
 
-#: ../src/gui/CReporterAssistant.py:386
+#: ../src/gui/CReporterAssistant.py:388
 msgid "You did not provide any comments."
 msgstr "Kommentteja ei ole annettu."
 
-#: ../src/gui/CReporterAssistant.py:467
+#: ../src/gui/CReporterAssistant.py:469
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -1166,15 +816,15 @@ msgstr ""
 "\n"
 "Valitse minne vikailmoitus tehdään ja napsauta ”Eteenpäin”."
 
-#: ../src/gui/CReporterAssistant.py:527
+#: ../src/gui/CReporterAssistant.py:510
 msgid "Only one reporter plugin is configured."
 msgstr "Vain yksi raportoijaliitännäinen on määritetty."
 
-#: ../src/gui/CReporterAssistant.py:533
+#: ../src/gui/CReporterAssistant.py:516
 msgid "Send a bug report"
 msgstr "Lähetä vikaraportti"
 
-#: ../src/gui/CReporterAssistant.py:571
+#: ../src/gui/CReporterAssistant.py:554
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -1189,124 +839,128 @@ msgstr ""
 "Tarkista pinolistaus ja muokkaa sitä tarvittaessa siten, että raportissa ei "
 "ole mitään yksityistä tietoa, mitä et halua jakaa:"
 
-#: ../src/gui/CReporterAssistant.py:642 ../src/gui/CReporterAssistant.py:655
-#: ../src/gui/CReporterAssistant.py:689
+#: ../src/gui/CReporterAssistant.py:625 ../src/gui/CReporterAssistant.py:638
+#: ../src/gui/CReporterAssistant.py:672
 #, python-format
 msgid "Found %i occurence(s) [at: %i of %i]"
 msgstr "Löytyi %i esiintymää [nykyinen: %i / %i]"
 
-#: ../src/gui/CReporterAssistant.py:726
+#: ../src/gui/CReporterAssistant.py:709
 msgid "Search:"
 msgstr "Etsi:"
 
-#: ../src/gui/CReporterAssistant.py:756
+#: ../src/gui/CReporterAssistant.py:740
 msgid "Refresh"
 msgstr "Päivitä"
 
-#: ../src/gui/CReporterAssistant.py:758
+#: ../src/gui/CReporterAssistant.py:742
 msgid "Copy"
 msgstr "Kopioi"
 
-#: ../src/gui/CReporterAssistant.py:764
+#: ../src/gui/CReporterAssistant.py:748
 msgid "I agree with submitting the backtrace"
 msgstr "Pinolistauksen saa lähettää"
 
-#: ../src/gui/CReporterAssistant.py:769
+#: ../src/gui/CReporterAssistant.py:753
 msgid "Approve the backtrace"
 msgstr "Hyväksy pinolistaus"
 
-#: ../src/gui/CReporterAssistant.py:792
+#: ../src/gui/CReporterAssistant.py:796
+msgid "You need to fill the how to before you can proceed..."
+msgstr ""
+
+#: ../src/gui/CReporterAssistant.py:819
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "Kuinka tämä kaatuminen tapahtui? Kuinka sen pystyy toistamaan?"
 
-#: ../src/gui/CReporterAssistant.py:811
+#: ../src/gui/CReporterAssistant.py:839
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr "Haluatko lähettää ohjelmistoylläpitäjille jotain kommentteja?"
 
-#: ../src/gui/CReporterAssistant.py:831
+#: ../src/gui/CReporterAssistant.py:859
 msgid "Provide additional details"
 msgstr "Anna lisätietoja"
 
-#: ../src/gui/CReporterAssistant.py:838
+#: ../src/gui/CReporterAssistant.py:866
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr "<b>Vinkki:</b> Kommentit ovat julkisia."
 
-#: ../src/gui/CReporterAssistant.py:879
+#: ../src/gui/CReporterAssistant.py:907
 msgid "Confirm and send the report"
 msgstr "Vahvista ja lähetä raportti"
 
-#: ../src/gui/CReporterAssistant.py:881
+#: ../src/gui/CReporterAssistant.py:909
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Alla on yhteenveto vikaraportista. Napsauta ”Toteuta” sen lähettämiseksi."
 
-#: ../src/gui/CReporterAssistant.py:886
+#: ../src/gui/CReporterAssistant.py:914
 msgid "<b>Basic details</b>"
 msgstr "<b>Perustiedot</b>"
 
 #. left table
-#: ../src/gui/CReporterAssistant.py:893
+#: ../src/gui/CReporterAssistant.py:921
 msgid "Component"
 msgstr "Komponentti"
 
-#: ../src/gui/CReporterAssistant.py:894
+#: ../src/gui/CReporterAssistant.py:922
 msgid "Package"
 msgstr "Paketti"
 
-#: ../src/gui/CReporterAssistant.py:895
+#: ../src/gui/CReporterAssistant.py:923
 msgid "Executable"
 msgstr "Suoritettava tiedosto"
 
-#: ../src/gui/CReporterAssistant.py:896
+#: ../src/gui/CReporterAssistant.py:924
 msgid "Cmdline"
 msgstr "Komentorivi"
 
 #. right table
-#: ../src/gui/CReporterAssistant.py:898
+#: ../src/gui/CReporterAssistant.py:926
 msgid "Architecture"
 msgstr "Arkkitehtuuri"
 
-#: ../src/gui/CReporterAssistant.py:899
+#: ../src/gui/CReporterAssistant.py:927
 msgid "Kernel"
 msgstr "Ydin"
 
-#: ../src/gui/CReporterAssistant.py:900
+#: ../src/gui/CReporterAssistant.py:928
 msgid "Release"
 msgstr "Julkaisu"
 
-#: ../src/gui/CReporterAssistant.py:901
+#: ../src/gui/CReporterAssistant.py:929
 msgid "Reason"
 msgstr "Syy"
 
-#: ../src/gui/CReporterAssistant.py:912 ../src/gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:940 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>Pinolistaus</b>"
 
-#: ../src/gui/CReporterAssistant.py:915
+#: ../src/gui/CReporterAssistant.py:943
 msgid "Click to view..."
 msgstr "Näytä napsauttamalla..."
 
-#: ../src/gui/CReporterAssistant.py:927
+#: ../src/gui/CReporterAssistant.py:955
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Ohjeet ongelman toistamiseen:</b>"
 
-#: ../src/gui/CReporterAssistant.py:948
+#: ../src/gui/CReporterAssistant.py:976
 msgid "<b>Comments:</b>"
 msgstr "<b>Kommentit:</b>"
 
-#: ../src/gui/CReporterAssistant.py:951
+#: ../src/gui/CReporterAssistant.py:979
 msgid "No comment provided!"
 msgstr "Kommentteja ei ole annettu!"
 
-#: ../src/gui/CReporterAssistant.py:987
+#: ../src/gui/CReporterAssistant.py:1015
 msgid "Finished sending the bug report"
 msgstr "Vikaraportin lähetys valmistui"
 
-#: ../src/gui/CReporterAssistant.py:991
+#: ../src/gui/CReporterAssistant.py:1019
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Vikaraportit:</b>"
 
@@ -1352,11 +1006,11 @@ msgstr "Ei voida ladata SettingsDialogin käyttöliittymäkuvausta!"
 msgid "Name"
 msgstr "Nimi"
 
-#: ../src/gui/PluginsSettingsDialog.py:149
+#: ../src/gui/PluginsSettingsDialog.py:118
 msgid "Please select a plugin from the list to edit its options."
 msgstr "Valitse luettelosta liitännäinen, jonka asetuksia haluat muokata."
 
-#: ../src/gui/PluginsSettingsDialog.py:157
+#: ../src/gui/PluginsSettingsDialog.py:126
 #, python-format
 msgid ""
 "Error while opening the plugin settings UI: \n"
@@ -1575,6 +1229,423 @@ msgstr ""
 "virheellisiksi. Käytä alla olevia painikkeita liitännäisten asetusten "
 "avaamiseksi ja korjaa virheet tai raportointi saattaa epäonnistua.\n"
 
+#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.cpp:50
+#, c-format
+msgid "Uploaded: %llu of %llu kbytes"
+msgstr "Lähetetty: %llu/%llu kilotavua"
+
+#: ../src/lib/parse_options.c:11
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Käyttö: %s\n"
+
+#: ../src/plugins/abrt-action-analyze-c.c:154
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID of coredumps"
+msgstr ""
+" [-vs] -d DIR\n"
+"\n"
+"Laskee ja tallentaa muistivedosten UUID:t"
+
+#: ../src/plugins/abrt-action-analyze-oops.c:131
+#, fuzzy
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID and DUPHASH of oops crash dumps"
+msgstr ""
+" [-vs] -d DIR\n"
+"\n"
+"Laskee ja tallentaa muistivedosten UUID:t"
+
+#: ../src/plugins/abrt-action-analyze-python.c:36
+#, fuzzy
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID and DUPHASH of python crash dumps"
+msgstr ""
+" [-vs] -d DIR\n"
+"\n"
+"Laskee ja tallentaa muistivedosten UUID:t"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:470
+#, c-format
+msgid "New bug id: %i"
+msgstr "Uuden ohjelmavirheilmoituksen tunnus: %i"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:583
+#, c-format
+msgid "Can't open '%s'"
+msgstr "Hakemiston ”%s” avaaminen ei onnistu"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:603
+#, c-format
+msgid "Empty login or password, please check %s"
+msgstr "Käyttäjätunnus tai salasana on tyhjä, tarkista %s"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:621
+msgid "Logging into bugzilla..."
+msgstr "Kirjaudutaan bugzillaan..."
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:624
+msgid "Checking for duplicates..."
+msgstr "Etsitään samanlaisia..."
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:645
+#: ../src/plugins/abrt-action-bugzilla.cpp:681
+msgid "Missing mandatory member 'bugs'"
+msgstr "Puuttuva pakollinen osa ”bugs”"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:664
+#: ../src/plugins/abrt-action-bugzilla.cpp:697
+#: ../src/plugins/abrt-action-bugzilla.cpp:772
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr ""
+"get_bug_info() epäonnistui. Kaikkia pakollisia tietoja ei voitu kerätä."
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:713
+msgid "Creating a new bug..."
+msgstr "Luodaan uusi ohjelmavirheilmoitus..."
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:718
+msgid "Bugzilla entry creation failed"
+msgstr "Bugzilla-ilmoituksen luominen epäonnistui"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:728
+#: ../src/plugins/abrt-action-bugzilla.cpp:825
+msgid "Logging out..."
+msgstr "Kirjaudutaan ulos..."
+
+#. decision based on state
+#: ../src/plugins/abrt-action-bugzilla.cpp:746
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "Ohjelmavirheestä on jo tehty ilmoitus: %i"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:757
+#, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr "Bugzilla ei löytänyt ylemmän tason vikailmoitusta ilmoitukselle %d"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:786
+#, c-format
+msgid "Add %s to CC list"
+msgstr "Lisää %s CC-luetteloon"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:810
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "﻿Lisää uusi kommentti vikailmoitukseen (%d)"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:319
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr "Kohteen %s pinolistauksen jäsentäminen epäonnistui"
+
+#: ../src/plugins/abrt-action-kerneloops.cpp:113
+#, fuzzy, c-format
+msgid "Submitting oops report to %s"
+msgstr "Kirjoitetaan raportti kohteeseen ”%s”"
+
+#: ../src/plugins/abrt-action-mailx.cpp:117
+msgid "Sending an email..."
+msgstr "Lähetetään sähköpostia..."
+
+#: ../src/plugins/abrt-action-mailx.cpp:141
+msgid ""
+" [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"Upload compressed tarball of crash dump"
+msgstr ""
+
+#: ../src/plugins/abrt-action-mailx.cpp:154
+#: ../src/plugins/abrt-action-upload.cpp:271
+#, fuzzy
+msgid "Config file"
+msgstr "Lokitiedosto:"
+
+#: ../src/plugins/abrt-action-print.cpp:40
+msgid ""
+" [-v] [-o FILE] -d DIR\n"
+"\n"
+"Print information about the crash to standard output"
+msgstr ""
+
+#: ../src/plugins/abrt-action-print.cpp:52
+msgid "Output file"
+msgstr ""
+
+#: ../src/plugins/abrt-action-print.cpp:101
+#, c-format
+msgid "The report was appended to %s"
+msgstr "Raportti lisättiin kohteeseen %s"
+
+#: ../src/plugins/abrt-action-print.cpp:101
+#, c-format
+msgid "The report was stored to %s"
+msgstr "Raportti tallennettiin kohteeseen %s"
+
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. error msg is already logged by dd_opendir
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#: ../src/plugins/abrt-action-rhtsupport.cpp:46
+#: ../src/plugins/abrt-action-upload.cpp:124
+msgid "Compressing data"
+msgstr "Pakataan tietoja"
+
+#: ../src/plugins/abrt-action-rhtsupport.cpp:81
+#, fuzzy
+msgid "Empty login or password, please check RHTSupport.conf"
+msgstr "Käyttäjätunnus tai salasana on tyhjä, tarkista %s"
+
+#: ../src/plugins/abrt-action-rhtsupport.cpp:198
+msgid "Creating a new case..."
+msgstr "Luodaan uusi tapaus..."
+
+#: ../src/plugins/abrt-action-upload.cpp:68
+#, fuzzy, c-format
+msgid "Sending %s to %s"
+msgstr "Lähetetään tiedosto %s osoitteeseen %s"
+
+#. This ends up a "reporting status message" in abrtd
+#: ../src/plugins/abrt-action-upload.cpp:101
+#, c-format
+msgid "Successfully sent %s to %s"
+msgstr ""
+
+#: ../src/plugins/abrt-action-upload.cpp:223
+#, c-format
+msgid "Archive is created: '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-upload.cpp:257
+msgid ""
+" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"Upload compressed tarball of crash dump"
+msgstr ""
+
+#: ../src/plugins/abrt-action-upload.cpp:272
+msgid "Base URL to upload to"
+msgstr ""
+
+#: ../src/plugins/Bugzilla.glade.h:1
+msgid "<b>Bugzilla plugin configuration</b>"
+msgstr "<b>Bugzilla-liitännäisen asetukset</b>"
+
+#: ../src/plugins/Bugzilla.glade.h:2
+msgid "Bugzilla URL:"
+msgstr "Bugzillan URL:"
+
+#: ../src/plugins/Bugzilla.glade.h:3
+msgid "Don't have an account yet?"
+msgstr "Eikö sinulla ole vielä tiliä?"
+
+#: ../src/plugins/Bugzilla.glade.h:4
+msgid "Login(email):"
+msgstr "Käyttäjätunnus (sähköpostiosoite):"
+
+#: ../src/plugins/Bugzilla.glade.h:5 ../src/plugins/RHTSupport.glade.h:3
+msgid "Password:"
+msgstr "Salasana:"
+
+#: ../src/plugins/Bugzilla.glade.h:6 ../src/plugins/RHTSupport.glade.h:5
+msgid "SSL verify"
+msgstr "SSL-varmennus"
+
+#: ../src/plugins/Bugzilla.glade.h:7 ../src/plugins/RHTSupport.glade.h:6
+msgid "Show password"
+msgstr "Näytä salasana"
+
+#: ../src/plugins/Bugzilla.glade.h:8
+msgid ""
+"You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
+"\">here</a>"
+msgstr ""
+"Voit luoda sen <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
+"\">täällä</a>"
+
+#: ../src/plugins/CCpp.cpp:277
+msgid "Analyzes crashes in C/C++ programs"
+msgstr "Analysoi C/C++-ohjelmien kaatumisia"
+
+#: ../src/plugins/KerneloopsReporter.glade.h:1
+msgid "<b>Kerneloops Reporter plugin configuration</b>"
+msgstr "<b>Kerneloops-raportoijaliitännäisen asetukset</b>"
+
+#: ../src/plugins/KerneloopsReporter.glade.h:2
+msgid "Submit URL:"
+msgstr "Lähetysosoite:"
+
+#: ../src/plugins/KerneloopsScanner.cpp:229
+msgid "Periodically scans for and saves kernel oopses"
+msgstr "Etsii ja tallentaa ytimen oopsit säännöllisesti"
+
+#: ../src/plugins/Logger.glade.h:1
+msgid "<b>Logger plugin configuration</b>"
+msgstr "<b>Lokikirjoitusliitännäisen asetukset</b>"
+
+#: ../src/plugins/Logger.glade.h:2
+msgid "Append new logs"
+msgstr "Lisää uudet lokit vanhoihin tiedostoihin"
+
+#: ../src/plugins/Logger.glade.h:3
+msgid "Logger file:"
+msgstr "Lokitiedosto:"
+
+#: ../src/plugins/Mailx.glade.h:1
+msgid "<b>Mailx plugin configuration</b>"
+msgstr "<b>Mailx-liitännäisen asetukset</b>"
+
+#: ../src/plugins/Mailx.glade.h:2
+msgid "Recipient's Email:"
+msgstr "Vastaanottajan sähköpostiosoite:"
+
+#: ../src/plugins/Mailx.glade.h:3
+msgid "Send Binary Data"
+msgstr "Lähetä binääridata"
+
+#: ../src/plugins/Mailx.glade.h:4
+msgid "Subject:"
+msgstr "Aihe:"
+
+#: ../src/plugins/Mailx.glade.h:5
+msgid "Your Email:"
+msgstr "Sinun sähköpostiosoitteesi:"
+
+#: ../src/plugins/RHTSupport.glade.h:1
+msgid "<b>RHTSupport plugin configuration</b>"
+msgstr "<b>RHTSupport-liitännäisen asetukset</b>"
+
+#: ../src/plugins/RHTSupport.glade.h:2
+msgid "Login:"
+msgstr "Käyttäjätunnus:"
+
+#: ../src/plugins/RHTSupport.glade.h:4
+msgid "RHTSupport URL:"
+msgstr "RHTSupport URL:"
+
+#: ../src/plugins/SQLite3.cpp:739
+msgid "Keeps SQLite3 database about all crashes"
+msgstr "Pitää SQLite3-tietokantaa kaikista kaatumisista"
+
+#: ../src/plugins/Upload.glade.h:1
+#, fuzzy
+msgid "<b>Upload plugin configuration</b>"
+msgstr "<b>Tiketinlähettäjäliitännäisen asetukset</b>"
+
+#: ../src/plugins/Upload.glade.h:2
+msgid "Retry count:"
+msgstr "Uudelleenyritysten määrä:"
+
+#: ../src/plugins/Upload.glade.h:3
+msgid "Retry delay:"
+msgstr "Uudelleenyritysten viive:"
+
+#: ../src/plugins/Upload.glade.h:4
+msgid "URL:"
+msgstr "URL:"
+
+#: ../src/plugins/Upload.glade.h:5
+msgid "Use encryption"
+msgstr "Käytä salausta"
+
+#~ msgid "Reports bugs to bugzilla"
+#~ msgstr "Raportoi ohjelmavirheitä Bugzillaan"
+
+#~ msgid "Generating backtrace"
+#~ msgstr "Luodaan pinolistausta"
+
+#~ msgid "Starting the debuginfo installation"
+#~ msgstr "Aloitetaan debuginfon asennus"
+
+#~ msgid "Getting global universal unique identification..."
+#~ msgstr "Haetaan yleinen ainutkertainen tunnus..."
+
+#~ msgid "Skipping the debuginfo installation"
+#~ msgstr "Ohitetaan debuginfon asennus"
+
+#~ msgid "FileTransfer: URL not specified"
+#~ msgstr "FileTransfer: URL:ää ei ole määritelty"
+
+#~ msgid "Sending archive %s to %s"
+#~ msgstr "Lähetetään arkisto %s osoitteeseen %s"
+
+#~ msgid "FileTransfer: Creating a report..."
+#~ msgstr "Tiedostonsiirto: Luodaan ilmoitusta..."
+
+#~ msgid "Cannot create and send an archive: %s"
+#~ msgstr "Ei voitu luoda ja lähettää arkistoa: %s"
+
+#~ msgid "Sends a report via FTP or SCTP"
+#~ msgstr "Lähettää raportin FTP:llä tai SCTP:llä"
+
+#~ msgid "Analyzes kernel oopses"
+#~ msgstr "Analysoi ytimen oopseja"
+
+#~ msgid "Creating and submitting a report..."
+#~ msgstr "Luodaan ja lähetetään ilmoitus..."
+
+#~ msgid "Sends kernel oops information to kerneloops.org"
+#~ msgstr "Lähettää ytimen oops-tiedot kerneloops.org-sivustolle"
+
+#~ msgid "Writes report to a file"
+#~ msgstr "Kirjoittaa raportin tiedostoon"
+
+#~ msgid "Sends an email with a report (via mailx command)"
+#~ msgstr "Lähettää raportin sähköpostilla (mailx-komentoa käyttäen)"
+
+#~ msgid "Analyzes crashes in Python programs"
+#~ msgstr "Analysoi Python-ohjelmien kaatumisia"
+
+#~ msgid "Sending failed, trying again. %s"
+#~ msgstr "Lähettäminen epäonnistui, yritä uudelleen. %s"
+
+#~ msgid "Creating a ReportUploader report..."
+#~ msgstr "Luodaan ReportUploader-raportti..."
+
+#~ msgid ""
+#~ "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+#~ msgstr ""
+#~ "Pakkaa kaatumistiedot .tar.gz-tiedostoon ja valinnaisesti lähettää "
+#~ "tiedoston FTP:llä/SCP:llä/tms."
+
+#~ msgid "Reports bugs to Red Hat support"
+#~ msgstr "Raportoi ohjelmavirheitä Red Hatin käyttötukeen"
+
+#~ msgid "Runs a command, saves its output"
+#~ msgstr "Suorittaa komennon ja tallentaa sen tulosteen"
+
+#~ msgid "Running sosreport: %s"
+#~ msgstr "Suoritetaan sosreport: %s"
+
+#~ msgid "Finished running sosreport"
+#~ msgstr "Sosreportin suoritus valmistui"
+
+#~ msgid "Unable to open debug dump '%s'"
+#~ msgstr "Virheenjäljitysvedosta ”%s” ei voida avata"
+
+#~ msgid "Runs sosreport, saves the output"
+#~ msgstr "Suorittaa sosreportin ja tallentaa sen tulosteen"
+
+#~ msgid "Customer:"
+#~ msgstr "Asiakas:"
+
+#~ msgid "Ticket:"
+#~ msgstr "Tiketti:"
+
+#~ msgid "Upload"
+#~ msgstr "Lähetä"
+
+#~ msgid "Rating is required by the %s plugin"
+#~ msgstr "Liitännäinen %s vaatii arvostelun"
+
+#~ msgid "Rating is not required by any plugin, skipping the check..."
+#~ msgstr "Mikään liitännäinen ei vaadi arvostelua, ohitetaan tarkistus..."
+
 #~ msgid ""
 #~ "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/"
 #~ "Bugzilla.conf. Server said: %s"
@@ -1593,9 +1664,6 @@ msgstr ""
 
 #~ msgid "send_file: URL not specified"
 #~ msgstr "send_file: URL:ää ei ole määritelty"
-
-#~ msgid "Sending file %s to %s"
-#~ msgstr "Lähetetään tiedosto %s osoitteeseen %s"
 
 #~ msgid "New bug id: %s"
 #~ msgstr "Uuden ohjelmavirheilmoituksen tunnus: %s"

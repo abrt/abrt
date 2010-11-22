@@ -8,297 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.ta\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-10-14 20:16+0200\n"
+"POT-Creation-Date: 2010-11-22 21:34+0100\n"
 "PO-Revision-Date: 2010-08-03 11:58+0530\n"
 "Last-Translator: I Felix <ifelix@redhat.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\\n\n"
-
-#: ../lib/plugins/Bugzilla.cpp:149
-msgid "Reports bugs to bugzilla"
-msgstr "bugzilla-வுக்கு பிழைகளை அறிக்கையிடுகிறது"
-
-#: ../lib/plugins/CCpp.cpp:79
-msgid "Generating backtrace"
-msgstr "பேக்ட்ரேஸை உருவாக்குகிறது..."
-
-#: ../lib/plugins/CCpp.cpp:115
-msgid "Starting the debuginfo installation"
-msgstr "debuginfo நிறுவலை துவக்குகிறது"
-
-#. Compatibility code.
-#. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:338
-msgid "Getting global universal unique identification..."
-msgstr "முழுமையான உலகளாவிய தனி அடையாளத்தை பெறுகிறது..."
-
-#: ../lib/plugins/CCpp.cpp:532
-msgid "Skipping the debuginfo installation"
-msgstr "debuginfo நிறுவலை தவிர்த்தது"
-
-#: ../lib/plugins/CCpp.cpp:783
-msgid "Analyzes crashes in C/C++ programs"
-msgstr "C/C++ நிரல்களில் ஆய்வுகள் சேதமடைகின்றன"
-
-#: ../lib/plugins/FileTransfer.cpp:51 ../lib/plugins/ReportUploader.cpp:96
-msgid "FileTransfer: URL not specified"
-msgstr "கோப்பு இடமாற்றம்: URL குறிப்பிடப்படவில்லை"
-
-#: ../lib/plugins/FileTransfer.cpp:55 ../lib/plugins/ReportUploader.cpp:100
-#, c-format
-msgid "Sending archive %s to %s"
-msgstr "காப்பு %sஐ %sவழியாக அனுப்புகிறது"
-
-#: ../lib/plugins/FileTransfer.cpp:244
-msgid "FileTransfer: Creating a report..."
-msgstr "கோப்பு இடமாற்றம்: ஒரு அறிக்கை உருவாக்குகிறது..."
-
-#: ../lib/plugins/FileTransfer.cpp:268 ../lib/plugins/FileTransfer.cpp:297
-#, c-format
-msgid "Cannot create and send an archive: %s"
-msgstr "ஒரு காப்பு உருவாக்க மற்றும் அனுப்ப முடியவில்லை: %s"
-
-#: ../lib/plugins/FileTransfer.cpp:364
-msgid "Sends a report via FTP or SCTP"
-msgstr "FTP அல்லது SCTP வழியாக அறிக்கை அனுப்புகிறது"
-
-#: ../lib/plugins/Kerneloops.cpp:150
-msgid "Analyzes kernel oopses"
-msgstr "kernel oops-களை ஆராய்கிறது"
-
-#: ../lib/plugins/KerneloopsReporter.cpp:95
-msgid "Creating and submitting a report..."
-msgstr "ஒரு அறிக்கையை உருவாக்கி சமர்ப்பிக்கிறது..."
-
-#: ../lib/plugins/KerneloopsReporter.cpp:144
-msgid "Sends kernel oops information to kerneloops.org"
-msgstr "kerneloops.orgக்கு கர்னல் ஊப்ஸ் தகவலை அனுப்புகிறது"
-
-#: ../lib/plugins/KerneloopsScanner.cpp:211
-msgid "Periodically scans for and saves kernel oopses"
-msgstr "கால இடைவெளியில் கர்னல் ஊப்ஸ்களை சேமித்து ஸ்கேன் செய்கிறது"
-
-#: ../lib/plugins/Logger.cpp:68
-#, c-format
-msgid "Writing report to '%s'"
-msgstr "'%s'க்கு அறிக்கையை எழுதவும்"
-
-#: ../lib/plugins/Logger.cpp:74
-#, c-format
-msgid "The report was appended to %s"
-msgstr "சேவை %sக்கு சேர்க்கப்பட்டது"
-
-#: ../lib/plugins/Logger.cpp:74
-#, c-format
-msgid "The report was stored to %s"
-msgstr "அறிக்கை %sஇல் சேமிக்கப்பட்டது"
-
-#: ../lib/plugins/Logger.cpp:82
-msgid "Writes report to a file"
-msgstr "ஒரு கோப்பில் அறிக்கை எழுதுகிறது"
-
-#: ../lib/plugins/Mailx.cpp:99
-msgid "Sending an email..."
-msgstr "ஒரு மின்னஞ்சல் அனுப்புகிறது..."
-
-#: ../lib/plugins/Mailx.cpp:150
-msgid "Sends an email with a report (via mailx command)"
-msgstr "ஒரு அறிக்கையுடன் ஒரு மின்னஞ்சல் அனுப்புகிறது (mailx கட்டளை வழியாக)"
-
-#: ../lib/plugins/Python.cpp:100
-msgid "Analyzes crashes in Python programs"
-msgstr "Python நிரல்களில் க்ராஷ்களை ஆராய்கிறது"
-
-#: ../lib/plugins/ReportUploader.cpp:130
-#, c-format
-msgid "Sending failed, trying again. %s"
-msgstr "அனுப்ப முடியவில்லை, மீண்டும் முயற்சிக்கிறது. %s"
-
-#: ../lib/plugins/ReportUploader.cpp:196
-msgid "Creating a ReportUploader report..."
-msgstr "ஒரு ReportUploader அறிக்கையை உருவாக்குகிறது..."
-
-#: ../lib/plugins/ReportUploader.cpp:514
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-msgstr ""
-".tar.gz கோப்பாக சிதைத்த தரவை பேக் செய்கிறது, விருப்பமான FTP/SCP/etc வழியாக அதை "
-"பதிவேற்றுகிறது"
-
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../lib/plugins/RHTSupport.cpp:109
-msgid "Compressing data"
-msgstr ""
-
-#: ../lib/plugins/RHTSupport.cpp:246
-msgid "Creating a new case..."
-msgstr "ஒரு புதிய வழக்கை உருவாக்குகிறது..."
-
-#: ../lib/plugins/RHTSupport.cpp:328
-#, fuzzy
-msgid "Reports bugs to Red Hat support"
-msgstr "bugzilla-வுக்கு பிழைகளை அறிக்கையிடுகிறது"
-
-#: ../lib/plugins/RunApp.cpp:75
-msgid "Runs a command, saves its output"
-msgstr "ஒரு கட்டளையை இயக்கி அதன் வெளிப்பாட்டை சேமிக்கிறது"
-
-#: ../lib/plugins/SOSreport.cpp:99
-#, c-format
-msgid "Running sosreport: %s"
-msgstr "sosreportஐ இயங்குகிறது: %s"
-
-#: ../lib/plugins/SOSreport.cpp:104
-msgid "Finished running sosreport"
-msgstr "sosreport இயங்குதல் முடிக்கப்பட்டது"
-
-#: ../lib/plugins/SOSreport.cpp:132
-#, c-format
-msgid "Unable to open debug dump '%s'"
-msgstr ""
-
-#: ../lib/plugins/SOSreport.cpp:166
-msgid "Runs sosreport, saves the output"
-msgstr "sosreportஐ இயக்கி, வெளிப்பாட்டை சேமிக்கிறது"
-
-#: ../lib/plugins/SQLite3.cpp:718
-msgid "Keeps SQLite3 database about all crashes"
-msgstr "SQLite3 தரவுத்தளத்தை அனைத்து க்ராஷ்களில் வைக்கிறது"
-
-#: ../lib/plugins/Bugzilla.glade.h:1
-msgid "<b>Bugzilla plugin configuration</b>"
-msgstr "<b>Bugzilla கூடுதல் இணைப்பு கட்டமைப்பு</b>"
-
-#: ../lib/plugins/Bugzilla.glade.h:2
-msgid "Bugzilla URL:"
-msgstr "Bugzilla URL:"
-
-#: ../lib/plugins/Bugzilla.glade.h:3
-msgid "Don't have an account yet?"
-msgstr "இதுவரை ஒரு கணக்கு எதுவும் இல்லையா?"
-
-#: ../lib/plugins/Bugzilla.glade.h:4
-msgid "Login(email):"
-msgstr "புகுபதிவு(மின்னஞ்சல்):"
-
-#: ../lib/plugins/Bugzilla.glade.h:5 ../lib/plugins/RHTSupport.glade.h:3
-msgid "Password:"
-msgstr "கடவுச்சொல்:"
-
-#: ../lib/plugins/Bugzilla.glade.h:6 ../lib/plugins/RHTSupport.glade.h:5
-msgid "SSL verify"
-msgstr "SSL சரிபார்த்தல்"
-
-#: ../lib/plugins/Bugzilla.glade.h:7 ../lib/plugins/RHTSupport.glade.h:6
-msgid "Show password"
-msgstr "கடவுச்சொல்லை காட்டு"
-
-#: ../lib/plugins/Bugzilla.glade.h:8
-msgid ""
-"You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
-"\">here</a>"
-msgstr ""
-"நீங்கள் இதை <a href=\"https://bugzilla.redhat.com/createaccount.cgi\">இங்கே</a> "
-"உருவாக்கலாம்"
-
-#: ../lib/plugins/KerneloopsReporter.glade.h:1
-msgid "<b>Kerneloops Reporter plugin configuration</b>"
-msgstr "<b>Kerneloops அறிக்கையிடுபவர் கூடுதல் இணைப்பு கட்டமைப்பு</b>"
-
-#: ../lib/plugins/KerneloopsReporter.glade.h:2
-msgid "Submit URL:"
-msgstr "URLஐ சமர்ப்பி:"
-
-#: ../lib/plugins/Logger.glade.h:1
-msgid "<b>Logger plugin configuration</b>"
-msgstr "<b>Logger கூடுதல் இணைப்பு கட்டமைப்பு</b>"
-
-#: ../lib/plugins/Logger.glade.h:2
-msgid "Append new logs"
-msgstr "புதிய பதிவுகளை சேர்"
-
-#: ../lib/plugins/Logger.glade.h:3
-msgid "Logger file:"
-msgstr "Logger கோப்பு:"
-
-#: ../lib/plugins/Mailx.glade.h:1
-msgid "<b>Mailx plugin configuration</b>"
-msgstr "<b>Mailx கூடுதல் இணைப்பு கட்டமைப்பு</b>"
-
-#: ../lib/plugins/Mailx.glade.h:2
-msgid "Recipient's Email:"
-msgstr "பெறுநரின் மின்னஞ்சல்:"
-
-#: ../lib/plugins/Mailx.glade.h:3
-msgid "Send Binary Data"
-msgstr "பைனரி தரவை அனுப்பு"
-
-#: ../lib/plugins/Mailx.glade.h:4
-msgid "Subject:"
-msgstr "பொருள்:"
-
-#: ../lib/plugins/Mailx.glade.h:5
-msgid "Your Email:"
-msgstr "உங்கள் மின்னஞ்சல்:"
-
-#: ../lib/plugins/ReportUploader.glade.h:1
-msgid "<b>Report Uploader plugin configuration</b>"
-msgstr "<b>டிக்கெட் பதிவேற்றி கூடுதல் இணைப்பு கட்டமைப்பு</b>"
-
-#: ../lib/plugins/ReportUploader.glade.h:2
-msgid "Customer:"
-msgstr "வாடிக்கையாளர்:"
-
-#: ../lib/plugins/ReportUploader.glade.h:3
-msgid "Retry count:"
-msgstr "எண்ணிக்கையை மறுமுயலுக:"
-
-#: ../lib/plugins/ReportUploader.glade.h:4
-msgid "Retry delay:"
-msgstr "தாமதத்தை மறுமுயலுக:"
-
-#: ../lib/plugins/ReportUploader.glade.h:5
-msgid "Ticket:"
-msgstr "டிக்கெட்:"
-
-#: ../lib/plugins/ReportUploader.glade.h:6
-msgid "URL:"
-msgstr "URL:"
-
-#: ../lib/plugins/ReportUploader.glade.h:7
-msgid "Upload"
-msgstr "பதிவேற்று"
-
-#: ../lib/plugins/ReportUploader.glade.h:8
-msgid "Use encryption"
-msgstr "மறைகுறியாக்கத்தை பயன்படுத்து"
-
-#: ../lib/plugins/RHTSupport.glade.h:1
-msgid "<b>RHTSupport plugin configuration</b>"
-msgstr "<b>RHTSupport கூடுதல் இணைப்பு கட்டமைப்பு</b>"
-
-#: ../lib/plugins/RHTSupport.glade.h:2
-msgid "Login:"
-msgstr "புகுபதிவு:"
-
-#: ../lib/plugins/RHTSupport.glade.h:4
-msgid "RHTSupport URL:"
-msgstr "RHTSupport URL:"
-
-#: ../lib/utils/abrt_curl.c:171
-#, c-format
-msgid "Uploaded: %llu of %llu kbytes"
-msgstr ""
-
-#: ../lib/utils/parse_options.c:11
-#, c-format
-msgid "Usage: %s\n"
-msgstr ""
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -310,16 +29,16 @@ msgstr "ABRT அறிவிப்பு ஆப்லெட்"
 msgid "Automatic Bug Reporting Tool"
 msgstr "தானியக்க பிழை அறிக்கையிடும் கருவி"
 
-#: ../src/applet/Applet.cpp:76
+#: ../src/applet/Applet.cpp:86
 #, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "தொகுப்பு %s இல் ஒரு சேதம் கண்டறியப்பட்டது"
 
-#: ../src/applet/Applet.cpp:78
+#: ../src/applet/Applet.cpp:88
 msgid "A crash has been detected"
 msgstr "ஒரு சேதம் கண்டறியப்பட்டது"
 
-#: ../src/applet/Applet.cpp:275
+#: ../src/applet/Applet.cpp:285
 msgid "ABRT service is not running"
 msgstr "ABRT சேவை இயங்கவில்லை"
 
@@ -501,20 +220,20 @@ msgstr ""
 msgid "You must specify exactly one operation"
 msgstr "நீங்கள் ஒரு செயல்முறையை சரியாக குறிப்பிட வேண்டும்"
 
-#: ../src/cli/report.cpp:170
+#: ../src/cli/report.cpp:167
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# இந்த புலம் வாசிக்க மட்டும்\n"
 
-#: ../src/cli/report.cpp:190
+#: ../src/cli/report.cpp:187
 msgid "# Describe the circumstances of this crash below"
 msgstr "# இந்த க்ராஷிற்கான காரணத்தின் விவரம் கீழே"
 
-#: ../src/cli/report.cpp:192
+#: ../src/cli/report.cpp:189
 msgid "# How to reproduce the crash?"
 msgstr "# க்ராஷை எவ்வாறு மறுஉற்பத்தி செய்யவேண்டும்?"
 
-#: ../src/cli/report.cpp:194
+#: ../src/cli/report.cpp:191
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -522,47 +241,47 @@ msgstr ""
 "# பேக்ட்ரைஸ்\n"
 "# இது எந்த உணர்வான தரவை கொண்டிருக்கவில்லை என சரிபார்க்கவும் (கடவுச்சொல் போன்றவை)"
 
-#: ../src/cli/report.cpp:196
+#: ../src/cli/report.cpp:193
 msgid "# Architecture"
 msgstr "# கணினி"
 
-#: ../src/cli/report.cpp:197
+#: ../src/cli/report.cpp:194
 msgid "# Command line"
 msgstr "# கட்டளை வரி"
 
-#: ../src/cli/report.cpp:198
+#: ../src/cli/report.cpp:195
 msgid "# Component"
 msgstr "# கூறு"
 
-#: ../src/cli/report.cpp:199
+#: ../src/cli/report.cpp:196
 msgid "# Core dump"
 msgstr "# கோர் டம்ப்"
 
-#: ../src/cli/report.cpp:200
+#: ../src/cli/report.cpp:197
 msgid "# Executable"
 msgstr "# இயங்கக்கூடியது"
 
-#: ../src/cli/report.cpp:201
+#: ../src/cli/report.cpp:198
 msgid "# Kernel version"
 msgstr "# கர்னல் பதிப்பு"
 
-#: ../src/cli/report.cpp:202
+#: ../src/cli/report.cpp:199
 msgid "# Package"
 msgstr "# தொகுப்பு"
 
-#: ../src/cli/report.cpp:203
+#: ../src/cli/report.cpp:200
 msgid "# Reason of crash"
 msgstr "# க்ராஷிற்கான காரணம்"
 
-#: ../src/cli/report.cpp:204
+#: ../src/cli/report.cpp:201
 msgid "# Release string of the operating system"
 msgstr "# வெளியீடு சரத்திற்கான இயங்க தளம்"
 
-#: ../src/cli/report.cpp:327
+#: ../src/cli/report.cpp:324
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr "vi: $TERM, $VISUAL மற்றும் $EDITOR அமைக்கப்படவில்லை மற்றும் இயக்க முடியவில்லை"
 
-#: ../src/cli/report.cpp:415
+#: ../src/cli/report.cpp:412
 msgid ""
 "\n"
 "The report has been updated"
@@ -570,7 +289,7 @@ msgstr ""
 "\n"
 "அறிக்கை புதுப்பிக்கப்பட்டது"
 
-#: ../src/cli/report.cpp:417
+#: ../src/cli/report.cpp:414
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -579,163 +298,103 @@ msgstr ""
 "அறிக்கையில் எந்த மாற்றங்களும் இல்லை"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:543
+#: ../src/cli/report.cpp:540
 msgid "y"
 msgstr ""
 
-#: ../src/cli/report.cpp:544
+#: ../src/cli/report.cpp:541
 msgid "N"
 msgstr ""
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:645
+#: ../src/cli/report.cpp:641
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "கூடுதல் இணைப்பு %sக்கு தவறான அமைவு கண்டறியப்பட்டது\n"
 
-#: ../src/cli/report.cpp:649
+#: ../src/cli/report.cpp:645
 msgid "Enter your login: "
 msgstr "உங்கள் புகுபதிவை உள்ளிடவும்: "
 
-#: ../src/cli/report.cpp:655
+#: ../src/cli/report.cpp:651
 msgid "Enter your password: "
 msgstr "உங்கள் கடவுச்சொல்லை உள்ளிடுங்கள்: "
 
-#: ../src/cli/report.cpp:700
+#: ../src/cli/report.cpp:696
 msgid "Reporting..."
 msgstr "அறிக்கையிடுகிறது..."
 
-#: ../src/cli/report.cpp:719
+#: ../src/cli/report.cpp:715
 #, fuzzy, c-format
 msgid "Report using %s?"
 msgstr "அறிக்கை %sஐ பயன்படுத்துகிறதா? [y/N]: "
 
-#: ../src/cli/report.cpp:722
+#: ../src/cli/report.cpp:718
 msgid "Skipping..."
 msgstr "தவிர்க்கிறது..."
 
-#: ../src/cli/report.cpp:734
+#: ../src/cli/report.cpp:730
 #, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "அறிக்கை செயல்நீக்கப்பட்டது, மேலே காட்டப்பட்ட சிக்கல்களை பொருத்தவும்."
 
-#: ../src/cli/report.cpp:738
+#: ../src/cli/report.cpp:734
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
 
-#: ../src/cli/report.cpp:747
+#: ../src/cli/report.cpp:743
 #, fuzzy
 msgid "Error loading reporter settings"
 msgstr "அறிக்கையை பெறும் போது பிழை: %s"
 
-#: ../src/cli/report.cpp:766
+#: ../src/cli/report.cpp:762
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "க்ரஷ் %d கூடுதல் இணைப்புகள் வழியாக அறிக்கையிடப்பட்டது (%d பிழைகள்)\n"
 
-#: ../src/daemon/abrt-action-analyze-c.c:154
+#: ../src/daemon/abrt-handle-crashdump.c:42
 msgid ""
-" [-vs] -d DIR\n"
-"\n"
-"Calculates and saves UUID"
+" [-vs] -d DIR -e EVENT\n"
+"   or: "
 msgstr ""
 
-#: ../src/daemon/abrt-action-analyze-c.c:166
-msgid "Crash dump directory"
-msgstr ""
-
-#: ../src/daemon/abrt-action-analyze-c.c:167
+#: ../src/daemon/abrt-handle-crashdump.c:57
+#: ../src/plugins/abrt-action-analyze-c.c:167
+#: ../src/plugins/abrt-action-analyze-oops.c:144
+#: ../src/plugins/abrt-action-analyze-python.c:49
 msgid "Log to syslog"
 msgstr ""
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:462
-#, c-format
-msgid "New bug id: %i"
-msgstr "புதிய பிழை குறியீடு: %i"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:575
-#, c-format
-msgid "Can't open '%s'"
+#: ../src/daemon/abrt-handle-crashdump.c:58
+#: ../src/plugins/abrt-action-analyze-c.c:166
+#: ../src/plugins/abrt-action-analyze-oops.c:143
+#: ../src/plugins/abrt-action-analyze-python.c:48
+#: ../src/plugins/abrt-action-mailx.cpp:153
+#: ../src/plugins/abrt-action-print.cpp:51
+#: ../src/plugins/abrt-action-upload.cpp:270
+msgid "Crash dump directory"
 msgstr ""
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:600
-#, fuzzy, c-format
-msgid "Empty login or password, please check %s"
-msgstr ""
-"வெற்று புகுபதிவு அல்லது கடவுச்சொல்.\n"
-"சரி பார்க்கவும்"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:609
-msgid "Logging into bugzilla..."
-msgstr "bugzillaவில் உள்நுழைகிறது..."
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:612
-msgid "Checking for duplicates..."
-msgstr "போலிகளுக்கு சரிபார்க்கிறது..."
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:633
-#: ../src/daemon/abrt-action-bugzilla.cpp:669
-msgid "Missing mandatory member 'bugs'"
-msgstr "விடுபட்ட அவசியமான உறுப்பினர் 'பிழைகள்'"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:652
-#: ../src/daemon/abrt-action-bugzilla.cpp:685
-#: ../src/daemon/abrt-action-bugzilla.cpp:760
-msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
-"get_bug_info() செயலிழக்கப்பட்டது. அனைத்து அவசிய தகவலையும் சேகரிக்க முடியவில்லை"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:701
-msgid "Creating a new bug..."
-msgstr "புதிய பிழையை உருவாக்குகிறது..."
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:706
-msgid "Bugzilla entry creation failed"
-msgstr "Bugzilla உள்ளீடு உருவாக்க முடியவில்லை"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:716
-#: ../src/daemon/abrt-action-bugzilla.cpp:813
-msgid "Logging out..."
-msgstr "வெளியேறுகிறது..."
-
-#. decision based on state
-#: ../src/daemon/abrt-action-bugzilla.cpp:734
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr "பிழை ஏற்கனவே அறிக்கையிடப்பட்டது: %i"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:745
-#, c-format
-msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla பிழை(%d) மூலத்தை அறிய முடியவில்லை"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:774
-#, fuzzy, c-format
-msgid "Add %s to CC list"
-msgstr "%s க்கு CC பட்டியலைச் சேர்"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:798
-#, c-format
-msgid "Adding new comment to bug %d"
-msgstr "பிழையில் புதிய கட்டளையைச் சேர்(%d)"
-
-#: ../src/daemon/abrt-action-generate-backtrace.c:317
-#, c-format
-msgid "Backtrace parsing failed for %s"
+#: ../src/daemon/abrt-handle-crashdump.c:59
+msgid "Handle EVENT"
 msgstr ""
 
-#: ../src/daemon/CommLayerServerDBus.cpp:224
+#: ../src/daemon/abrt-handle-crashdump.c:60
+msgid "List possible events [which start with PFX]"
+msgstr ""
+
+#: ../src/daemon/CommLayerServerDBus.cpp:229
 msgid "Comment is too long"
 msgstr "குறிப்பு மிக நீண்டது"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:228
+#: ../src/daemon/CommLayerServerDBus.cpp:233
 msgid "'How to reproduce' is too long"
 msgstr "'How to reproduce' மிக நீண்டது"
 
-#: ../src/daemon/Daemon.cpp:633
+#: ../src/daemon/Daemon.cpp:614
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -743,23 +402,23 @@ msgstr ""
 "அறிக்கை அளவு ஒதுக்கீட்டை தாண்டியது. உங்கள் MaxCrashReportsSize மதிப்பை abrt.conf.இல் "
 "சரிபார்க்கவும்."
 
-#: ../src/daemon/Daemon.cpp:862
+#: ../src/daemon/Daemon.cpp:784
 msgid "abrtd [options]"
 msgstr ""
 
-#: ../src/daemon/Daemon.cpp:872
+#: ../src/daemon/Daemon.cpp:794
 msgid "Do not daemonize"
 msgstr ""
 
-#: ../src/daemon/Daemon.cpp:873
+#: ../src/daemon/Daemon.cpp:795
 msgid "Log to syslog even with -d"
 msgstr ""
 
-#: ../src/daemon/Daemon.cpp:874
+#: ../src/daemon/Daemon.cpp:796
 msgid "Exit after SEC seconds of inactivity"
 msgstr ""
 
-#: ../src/daemon/Settings.cpp:216 ../src/daemon/Settings.cpp:221
+#: ../src/daemon/Settings.cpp:207 ../src/daemon/Settings.cpp:212
 msgid "Database plugin not specified. Please check abrtd settings."
 msgstr "தரவுத்தள கூடுதல் இணைப்பு குறிப்பிடப்படவில்லை. abrtd அமைவுகளை சரி பார்க்கவும்."
 
@@ -805,7 +464,7 @@ msgid "Please check if the abrt daemon is running."
 msgstr "abrt டீமான் இயங்கினால் சோதிக்கவும்."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:170
+#: ../src/gui/CCDBusBackend.py:169
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
@@ -987,7 +646,7 @@ msgstr "இதனை மீண்டும் உருவாக்குவத�
 msgid "You must check the backtrace for sensitive data."
 msgstr "உணர்வுள்ள தரவுக்கு பேக்ட்ரேஸை சரி பார்க்க வேண்டும்."
 
-#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:325
+#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:326
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -996,15 +655,15 @@ msgid ""
 "then use the Refresh button to regenerate the backtrace."
 msgstr ""
 "backtrace பயன்படுத்தபடவில்லை.\n"
-"இந்தக் கட்டளையைப் பயன்படுத்தி debuginfo கைமுறையாக நிறுவவும்:<b>debuginfo-install %"
-"s</b> \n"
+"இந்தக் கட்டளையைப் பயன்படுத்தி debuginfo கைமுறையாக நிறுவவும்:<b>debuginfo-install "
+"%s</b> \n"
 " பின் backtraceஐ மீண்டும் உருவாக்க புதுப்பி பொத்தானை பயன்படுத்தவும்."
 
 #: ../src/gui/CCReporterDialog.py:120
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "பேக்ட்ரேஸ் பயன்படுத்தக்கூடியதுதல்ல, இதனை நீங்கள் அறிக்கையிட முடியாது!"
 
-#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:331
+#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:332
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -1028,8 +687,8 @@ msgstr ""
 "அறிவிப்பாளர் கூடுதல் இணைப்பு இந்த வகையான க்ராஷ்க்கு இல்லை\n"
 "abrt.conf.ஐ சரிபார்க்கவும்"
 
-#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:218
-#: ../src/gui/PluginsSettingsDialog.py:170
+#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:219
+#: ../src/gui/PluginsSettingsDialog.py:136
 #, python-format
 msgid ""
 "Cannot save plugin settings:\n"
@@ -1038,12 +697,12 @@ msgstr ""
 "கூடுதல் இணைப்பு அமைவுகளை சேமிக்க முடியவில்லை:\n"
 " %s"
 
-#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:248
+#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:249
 #, python-format
 msgid "Configure %s options"
 msgstr "%s விருப்பங்களை கட்டமை"
 
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1008
+#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1036
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -1051,7 +710,7 @@ msgstr ""
 "அறிக்கையை பெற முடியவில்லை!\n"
 "debuginfo விடுபட்டுள்ளதா?"
 
-#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:415
+#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:417
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -1061,7 +720,7 @@ msgstr ""
 "%s"
 
 #: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:1047
+#: ../src/gui/CReporterAssistant.py:1075
 #, python-format
 msgid "Error acquiring the report: %s"
 msgstr "அறிக்கையை பெறும் போது பிழை: %s"
@@ -1076,20 +735,20 @@ msgstr "Gnome Keyring டீமானோடு இணைக்க முடி�
 msgid "Cannot get the default keyring."
 msgstr "முன்னிருப்பு கீரிங்கை பெற முடியவில்லை"
 
-#: ../src/gui/ConfBackend.py:103 ../src/gui/ConfBackend.py:119
+#: ../src/gui/ConfBackend.py:103 ../src/gui/ConfBackend.py:120
 msgid ""
 "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
 "gnome-keyringஐ அணுகுவது மறுக்கப்பட்டது, கூடுதல் இணைப்பு அமைவுகள் சேமிக்கப்படவில்லை."
 
 #. we tried 2 times, so giving up the authorization
-#: ../src/gui/ConfBackend.py:153
+#: ../src/gui/ConfBackend.py:154
 #, python-format
 msgid ""
 "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "gnome-keyringஐ அணுகுவது மறுக்கப்பட்டது, %s-க்கு அமைவுகளை ஏற்ற முடியவில்லை!"
 
-#: ../src/gui/ConfBackend.py:206
+#: ../src/gui/ConfBackend.py:207
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr "gnome-keyringஐ அணுகுவது மறுக்கப்பட்டது, அமைவுகளை ஏற்ற முடியவில்லை."
 
@@ -1097,45 +756,36 @@ msgstr "gnome-keyringஐ அணுகுவது மறுக்கப்பட
 msgid "Crash info doesn't contain a backtrace"
 msgstr "க்ராஷ் தகவல் ஒரு பேக்ட்ரேஸை கொண்டிருக்காது"
 
-#: ../src/gui/CReporterAssistant.py:297
-#, python-format
-msgid "Rating is required by the %s plugin"
-msgstr "மதிப்பிதல் %s கூடுதல் இணைப்பால் தேவைப்படுகிறது"
-
-#: ../src/gui/CReporterAssistant.py:299
-msgid "Rating is not required by any plugin, skipping the check..."
-msgstr "மதிப்பீடு எந்த கூடுதல் இணைப்பிற்கும் தேவைப்படாது, சரிபார்த்தலை தவிர்க்கிறது..."
-
-#: ../src/gui/CReporterAssistant.py:303
+#: ../src/gui/CReporterAssistant.py:304
 #, python-format
 msgid "Rating is %s"
 msgstr "மதிப்பிடுதல் %s"
 
-#: ../src/gui/CReporterAssistant.py:306
+#: ../src/gui/CReporterAssistant.py:307
 msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr "Crashdump மதிப்பீட்டை கொண்டிருக்கவில்லை => அது தேவையில்லை"
 
-#: ../src/gui/CReporterAssistant.py:311
+#: ../src/gui/CReporterAssistant.py:312
 msgid "You should check the backtrace for sensitive data."
 msgstr "உணர்வுள்ள தரவுக்கு பேக்ட்ரேஸை சரி பார்க்க வேண்டும்."
 
-#: ../src/gui/CReporterAssistant.py:312
+#: ../src/gui/CReporterAssistant.py:313
 msgid "You must agree with sending the backtrace."
 msgstr "நீங்கள் பேக்ட்ரேஸுடன் அனுப்பும் போது ஏற்க வேண்டும்."
 
-#: ../src/gui/CReporterAssistant.py:327
+#: ../src/gui/CReporterAssistant.py:328
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "அறிக்கை செயல்நீக்கப்பட்டது, மேலே காட்டப்பட்ட சிக்கல்களை பொருத்தவும்."
 
-#: ../src/gui/CReporterAssistant.py:372
+#: ../src/gui/CReporterAssistant.py:374
 msgid "You did not provide any steps to reproduce."
 msgstr "நீங்கள் மறுஉற்பத்தி செய்ய படிகள் எதுவும் வழங்கவில்லை."
 
-#: ../src/gui/CReporterAssistant.py:386
+#: ../src/gui/CReporterAssistant.py:388
 msgid "You did not provide any comments."
 msgstr "நீங்கள் கருத்துக்கள் எதுவும் வழங்கவில்லை."
 
-#: ../src/gui/CReporterAssistant.py:467
+#: ../src/gui/CReporterAssistant.py:469
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -1162,15 +812,15 @@ msgstr ""
 "Select where you would like to report the bug, and press 'Forward' to "
 "continue."
 
-#: ../src/gui/CReporterAssistant.py:527
+#: ../src/gui/CReporterAssistant.py:510
 msgid "Only one reporter plugin is configured."
 msgstr "ஒரே ஒரு அறிகையிடுபவர் கூடுதல் இணைப்பு மட்டுமே கட்டமைக்கப்பட்டுள்ளது."
 
-#: ../src/gui/CReporterAssistant.py:533
+#: ../src/gui/CReporterAssistant.py:516
 msgid "Send a bug report"
 msgstr "ஒரு பிழை அறிக்கை அனுப்பு"
 
-#: ../src/gui/CReporterAssistant.py:571
+#: ../src/gui/CReporterAssistant.py:554
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -1186,127 +836,131 @@ msgstr ""
 "Please review the backtrace below and modify it as needed to ensure your bug "
 "report does not contain any sensitive data you would rather not share:"
 
-#: ../src/gui/CReporterAssistant.py:642 ../src/gui/CReporterAssistant.py:655
-#: ../src/gui/CReporterAssistant.py:689
+#: ../src/gui/CReporterAssistant.py:625 ../src/gui/CReporterAssistant.py:638
+#: ../src/gui/CReporterAssistant.py:672
 #, python-format
 msgid "Found %i occurence(s) [at: %i of %i]"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:726
+#: ../src/gui/CReporterAssistant.py:709
 msgid "Search:"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:756
+#: ../src/gui/CReporterAssistant.py:740
 msgid "Refresh"
 msgstr "புதுப்பி"
 
-#: ../src/gui/CReporterAssistant.py:758
+#: ../src/gui/CReporterAssistant.py:742
 msgid "Copy"
 msgstr "நகலெடு"
 
-#: ../src/gui/CReporterAssistant.py:764
+#: ../src/gui/CReporterAssistant.py:748
 msgid "I agree with submitting the backtrace"
 msgstr "நான் பேக்ட்ரேஸை சமர்ப்பிக்க ஒத்துக்கொள்கிறேன்"
 
-#: ../src/gui/CReporterAssistant.py:769
+#: ../src/gui/CReporterAssistant.py:753
 msgid "Approve the backtrace"
 msgstr "பேக்ட்ரேஸை அனுமதி"
 
-#: ../src/gui/CReporterAssistant.py:792
+#: ../src/gui/CReporterAssistant.py:796
+msgid "You need to fill the how to before you can proceed..."
+msgstr ""
+
+#: ../src/gui/CReporterAssistant.py:819
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr ""
 "இந்த க்ராஷ் எவ்வாறு ஏற்பட்டது (படிப்படியாக)? நீங்கள் அதை எவ்வாறு மறு உற்பத்தி செய்தீர்கள்?"
 
-#: ../src/gui/CReporterAssistant.py:811
+#: ../src/gui/CReporterAssistant.py:839
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr "மென்பொருள் பராமரிப்பவர்களிடம் ஏதாவது கருத்தங்களை பகிர்ந்து கொள்ள வேண்டுமா?"
 
-#: ../src/gui/CReporterAssistant.py:831
+#: ../src/gui/CReporterAssistant.py:859
 msgid "Provide additional details"
 msgstr "கூடுதல் விவரங்களை கொடு"
 
-#: ../src/gui/CReporterAssistant.py:838
+#: ../src/gui/CReporterAssistant.py:866
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr ""
 "<b>துணுக்கு:</b> உங்கள் கருத்துக்கள் தனிப்பட்டவை அல்ல. நீங்கள் சொல்வதற்கு ஏற்ப பார்க்கவும்."
 
-#: ../src/gui/CReporterAssistant.py:879
+#: ../src/gui/CReporterAssistant.py:907
 msgid "Confirm and send the report"
 msgstr "உறுதிப்படுத்தி அறிக்கையை அனுப்பு"
 
-#: ../src/gui/CReporterAssistant.py:881
+#: ../src/gui/CReporterAssistant.py:909
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "கீழே உள்ளது உங்கள் பிழை அறிக்கையின் ஒரு சுருக்கம். 'செயல்படுத்து' என்பதை கிளிக் செய்து "
 "சமர்பிக்கவும்."
 
-#: ../src/gui/CReporterAssistant.py:886
+#: ../src/gui/CReporterAssistant.py:914
 msgid "<b>Basic details</b>"
 msgstr "<b>அடிப்படை விவரங்கள்</b>"
 
 #. left table
-#: ../src/gui/CReporterAssistant.py:893
+#: ../src/gui/CReporterAssistant.py:921
 msgid "Component"
 msgstr "கூறு"
 
-#: ../src/gui/CReporterAssistant.py:894
+#: ../src/gui/CReporterAssistant.py:922
 msgid "Package"
 msgstr "தொகுப்பு"
 
-#: ../src/gui/CReporterAssistant.py:895
+#: ../src/gui/CReporterAssistant.py:923
 msgid "Executable"
 msgstr "இயங்கக்கூடியது"
 
-#: ../src/gui/CReporterAssistant.py:896
+#: ../src/gui/CReporterAssistant.py:924
 msgid "Cmdline"
 msgstr "Cmdline"
 
 #. right table
-#: ../src/gui/CReporterAssistant.py:898
+#: ../src/gui/CReporterAssistant.py:926
 msgid "Architecture"
 msgstr "கணினி"
 
-#: ../src/gui/CReporterAssistant.py:899
+#: ../src/gui/CReporterAssistant.py:927
 msgid "Kernel"
 msgstr "கர்னல்"
 
-#: ../src/gui/CReporterAssistant.py:900
+#: ../src/gui/CReporterAssistant.py:928
 msgid "Release"
 msgstr "வெளியீடு"
 
-#: ../src/gui/CReporterAssistant.py:901
+#: ../src/gui/CReporterAssistant.py:929
 msgid "Reason"
 msgstr "காரணம்"
 
-#: ../src/gui/CReporterAssistant.py:912 ../src/gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:940 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>பேக்ட்ரேஸ்</b>"
 
-#: ../src/gui/CReporterAssistant.py:915
+#: ../src/gui/CReporterAssistant.py:943
 msgid "Click to view..."
 msgstr "பார்க்க கிளிக் செய்"
 
-#: ../src/gui/CReporterAssistant.py:927
+#: ../src/gui/CReporterAssistant.py:955
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>மறுஉற்பத்தி செய்வதற்கான படிகள்</b>"
 
-#: ../src/gui/CReporterAssistant.py:948
+#: ../src/gui/CReporterAssistant.py:976
 msgid "<b>Comments:</b>"
 msgstr "<b>கருத்துக்கள்:</b>"
 
-#: ../src/gui/CReporterAssistant.py:951
+#: ../src/gui/CReporterAssistant.py:979
 msgid "No comment provided!"
 msgstr "குறிப்புரை வழங்கப்படவில்லை!"
 
-#: ../src/gui/CReporterAssistant.py:987
+#: ../src/gui/CReporterAssistant.py:1015
 msgid "Finished sending the bug report"
 msgstr "பிழை அறிக்கை அனுப்பியாகிவிட்டது"
 
-#: ../src/gui/CReporterAssistant.py:991
+#: ../src/gui/CReporterAssistant.py:1019
 msgid "<b>Bug reports:</b>"
 msgstr "<b>பிழை அறிக்கைகள்:</b>"
 
@@ -1351,12 +1005,12 @@ msgstr "GUI விவரத்தை SettingsDialogக்கு ஏற்ற ம
 msgid "Name"
 msgstr "பெயர்"
 
-#: ../src/gui/PluginsSettingsDialog.py:149
+#: ../src/gui/PluginsSettingsDialog.py:118
 #, fuzzy
 msgid "Please select a plugin from the list to edit its options."
 msgstr "ஒரு கூடுதல் இணைப்பை பட்டியலிலிருந்து தேர்ந்தெடுத்து அதன் விருப்பங்களை திருத்தவும்"
 
-#: ../src/gui/PluginsSettingsDialog.py:157
+#: ../src/gui/PluginsSettingsDialog.py:126
 #, python-format
 msgid ""
 "Error while opening the plugin settings UI: \n"
@@ -1573,6 +1227,414 @@ msgstr ""
 "Please use the buttons below to open the respective configuration and fix it "
 "before you proceed, otherwise, the reporting process may fail.\n"
 
+#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.cpp:50
+#, c-format
+msgid "Uploaded: %llu of %llu kbytes"
+msgstr ""
+
+#: ../src/lib/parse_options.c:11
+#, c-format
+msgid "Usage: %s\n"
+msgstr ""
+
+#: ../src/plugins/abrt-action-analyze-c.c:154
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID of coredumps"
+msgstr ""
+
+#: ../src/plugins/abrt-action-analyze-oops.c:131
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID and DUPHASH of oops crash dumps"
+msgstr ""
+
+#: ../src/plugins/abrt-action-analyze-python.c:36
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID and DUPHASH of python crash dumps"
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:470
+#, c-format
+msgid "New bug id: %i"
+msgstr "புதிய பிழை குறியீடு: %i"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:583
+#, c-format
+msgid "Can't open '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:603
+#, fuzzy, c-format
+msgid "Empty login or password, please check %s"
+msgstr ""
+"வெற்று புகுபதிவு அல்லது கடவுச்சொல்.\n"
+"சரி பார்க்கவும்"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:621
+msgid "Logging into bugzilla..."
+msgstr "bugzillaவில் உள்நுழைகிறது..."
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:624
+msgid "Checking for duplicates..."
+msgstr "போலிகளுக்கு சரிபார்க்கிறது..."
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:645
+#: ../src/plugins/abrt-action-bugzilla.cpp:681
+msgid "Missing mandatory member 'bugs'"
+msgstr "விடுபட்ட அவசியமான உறுப்பினர் 'பிழைகள்'"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:664
+#: ../src/plugins/abrt-action-bugzilla.cpp:697
+#: ../src/plugins/abrt-action-bugzilla.cpp:772
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr ""
+"get_bug_info() செயலிழக்கப்பட்டது. அனைத்து அவசிய தகவலையும் சேகரிக்க முடியவில்லை"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:713
+msgid "Creating a new bug..."
+msgstr "புதிய பிழையை உருவாக்குகிறது..."
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:718
+msgid "Bugzilla entry creation failed"
+msgstr "Bugzilla உள்ளீடு உருவாக்க முடியவில்லை"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:728
+#: ../src/plugins/abrt-action-bugzilla.cpp:825
+msgid "Logging out..."
+msgstr "வெளியேறுகிறது..."
+
+#. decision based on state
+#: ../src/plugins/abrt-action-bugzilla.cpp:746
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "பிழை ஏற்கனவே அறிக்கையிடப்பட்டது: %i"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:757
+#, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr "Bugzilla பிழை(%d) மூலத்தை அறிய முடியவில்லை"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:786
+#, fuzzy, c-format
+msgid "Add %s to CC list"
+msgstr "%s க்கு CC பட்டியலைச் சேர்"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:810
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "பிழையில் புதிய கட்டளையைச் சேர்(%d)"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:319
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr ""
+
+#: ../src/plugins/abrt-action-kerneloops.cpp:113
+#, fuzzy, c-format
+msgid "Submitting oops report to %s"
+msgstr "'%s'க்கு அறிக்கையை எழுதவும்"
+
+#: ../src/plugins/abrt-action-mailx.cpp:117
+msgid "Sending an email..."
+msgstr "ஒரு மின்னஞ்சல் அனுப்புகிறது..."
+
+#: ../src/plugins/abrt-action-mailx.cpp:141
+msgid ""
+" [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"Upload compressed tarball of crash dump"
+msgstr ""
+
+#: ../src/plugins/abrt-action-mailx.cpp:154
+#: ../src/plugins/abrt-action-upload.cpp:271
+#, fuzzy
+msgid "Config file"
+msgstr "Logger கோப்பு:"
+
+#: ../src/plugins/abrt-action-print.cpp:40
+msgid ""
+" [-v] [-o FILE] -d DIR\n"
+"\n"
+"Print information about the crash to standard output"
+msgstr ""
+
+#: ../src/plugins/abrt-action-print.cpp:52
+msgid "Output file"
+msgstr ""
+
+#: ../src/plugins/abrt-action-print.cpp:101
+#, c-format
+msgid "The report was appended to %s"
+msgstr "சேவை %sக்கு சேர்க்கப்பட்டது"
+
+#: ../src/plugins/abrt-action-print.cpp:101
+#, c-format
+msgid "The report was stored to %s"
+msgstr "அறிக்கை %sஇல் சேமிக்கப்பட்டது"
+
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. error msg is already logged by dd_opendir
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#: ../src/plugins/abrt-action-rhtsupport.cpp:46
+#: ../src/plugins/abrt-action-upload.cpp:124
+msgid "Compressing data"
+msgstr ""
+
+#: ../src/plugins/abrt-action-rhtsupport.cpp:81
+#, fuzzy
+msgid "Empty login or password, please check RHTSupport.conf"
+msgstr ""
+"வெற்று புகுபதிவு அல்லது கடவுச்சொல்.\n"
+"சரி பார்க்கவும்"
+
+#: ../src/plugins/abrt-action-rhtsupport.cpp:198
+msgid "Creating a new case..."
+msgstr "ஒரு புதிய வழக்கை உருவாக்குகிறது..."
+
+#: ../src/plugins/abrt-action-upload.cpp:68
+#, fuzzy, c-format
+msgid "Sending %s to %s"
+msgstr "காப்பு %sஐ %sவழியாக அனுப்புகிறது"
+
+#. This ends up a "reporting status message" in abrtd
+#: ../src/plugins/abrt-action-upload.cpp:101
+#, c-format
+msgid "Successfully sent %s to %s"
+msgstr ""
+
+#: ../src/plugins/abrt-action-upload.cpp:223
+#, c-format
+msgid "Archive is created: '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-upload.cpp:257
+msgid ""
+" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"Upload compressed tarball of crash dump"
+msgstr ""
+
+#: ../src/plugins/abrt-action-upload.cpp:272
+msgid "Base URL to upload to"
+msgstr ""
+
+#: ../src/plugins/Bugzilla.glade.h:1
+msgid "<b>Bugzilla plugin configuration</b>"
+msgstr "<b>Bugzilla கூடுதல் இணைப்பு கட்டமைப்பு</b>"
+
+#: ../src/plugins/Bugzilla.glade.h:2
+msgid "Bugzilla URL:"
+msgstr "Bugzilla URL:"
+
+#: ../src/plugins/Bugzilla.glade.h:3
+msgid "Don't have an account yet?"
+msgstr "இதுவரை ஒரு கணக்கு எதுவும் இல்லையா?"
+
+#: ../src/plugins/Bugzilla.glade.h:4
+msgid "Login(email):"
+msgstr "புகுபதிவு(மின்னஞ்சல்):"
+
+#: ../src/plugins/Bugzilla.glade.h:5 ../src/plugins/RHTSupport.glade.h:3
+msgid "Password:"
+msgstr "கடவுச்சொல்:"
+
+#: ../src/plugins/Bugzilla.glade.h:6 ../src/plugins/RHTSupport.glade.h:5
+msgid "SSL verify"
+msgstr "SSL சரிபார்த்தல்"
+
+#: ../src/plugins/Bugzilla.glade.h:7 ../src/plugins/RHTSupport.glade.h:6
+msgid "Show password"
+msgstr "கடவுச்சொல்லை காட்டு"
+
+#: ../src/plugins/Bugzilla.glade.h:8
+msgid ""
+"You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
+"\">here</a>"
+msgstr ""
+"நீங்கள் இதை <a href=\"https://bugzilla.redhat.com/createaccount.cgi\">இங்கே</a> "
+"உருவாக்கலாம்"
+
+#: ../src/plugins/CCpp.cpp:277
+msgid "Analyzes crashes in C/C++ programs"
+msgstr "C/C++ நிரல்களில் ஆய்வுகள் சேதமடைகின்றன"
+
+#: ../src/plugins/KerneloopsReporter.glade.h:1
+msgid "<b>Kerneloops Reporter plugin configuration</b>"
+msgstr "<b>Kerneloops அறிக்கையிடுபவர் கூடுதல் இணைப்பு கட்டமைப்பு</b>"
+
+#: ../src/plugins/KerneloopsReporter.glade.h:2
+msgid "Submit URL:"
+msgstr "URLஐ சமர்ப்பி:"
+
+#: ../src/plugins/KerneloopsScanner.cpp:229
+msgid "Periodically scans for and saves kernel oopses"
+msgstr "கால இடைவெளியில் கர்னல் ஊப்ஸ்களை சேமித்து ஸ்கேன் செய்கிறது"
+
+#: ../src/plugins/Logger.glade.h:1
+msgid "<b>Logger plugin configuration</b>"
+msgstr "<b>Logger கூடுதல் இணைப்பு கட்டமைப்பு</b>"
+
+#: ../src/plugins/Logger.glade.h:2
+msgid "Append new logs"
+msgstr "புதிய பதிவுகளை சேர்"
+
+#: ../src/plugins/Logger.glade.h:3
+msgid "Logger file:"
+msgstr "Logger கோப்பு:"
+
+#: ../src/plugins/Mailx.glade.h:1
+msgid "<b>Mailx plugin configuration</b>"
+msgstr "<b>Mailx கூடுதல் இணைப்பு கட்டமைப்பு</b>"
+
+#: ../src/plugins/Mailx.glade.h:2
+msgid "Recipient's Email:"
+msgstr "பெறுநரின் மின்னஞ்சல்:"
+
+#: ../src/plugins/Mailx.glade.h:3
+msgid "Send Binary Data"
+msgstr "பைனரி தரவை அனுப்பு"
+
+#: ../src/plugins/Mailx.glade.h:4
+msgid "Subject:"
+msgstr "பொருள்:"
+
+#: ../src/plugins/Mailx.glade.h:5
+msgid "Your Email:"
+msgstr "உங்கள் மின்னஞ்சல்:"
+
+#: ../src/plugins/RHTSupport.glade.h:1
+msgid "<b>RHTSupport plugin configuration</b>"
+msgstr "<b>RHTSupport கூடுதல் இணைப்பு கட்டமைப்பு</b>"
+
+#: ../src/plugins/RHTSupport.glade.h:2
+msgid "Login:"
+msgstr "புகுபதிவு:"
+
+#: ../src/plugins/RHTSupport.glade.h:4
+msgid "RHTSupport URL:"
+msgstr "RHTSupport URL:"
+
+#: ../src/plugins/SQLite3.cpp:739
+msgid "Keeps SQLite3 database about all crashes"
+msgstr "SQLite3 தரவுத்தளத்தை அனைத்து க்ராஷ்களில் வைக்கிறது"
+
+#: ../src/plugins/Upload.glade.h:1
+#, fuzzy
+msgid "<b>Upload plugin configuration</b>"
+msgstr "<b>டிக்கெட் பதிவேற்றி கூடுதல் இணைப்பு கட்டமைப்பு</b>"
+
+#: ../src/plugins/Upload.glade.h:2
+msgid "Retry count:"
+msgstr "எண்ணிக்கையை மறுமுயலுக:"
+
+#: ../src/plugins/Upload.glade.h:3
+msgid "Retry delay:"
+msgstr "தாமதத்தை மறுமுயலுக:"
+
+#: ../src/plugins/Upload.glade.h:4
+msgid "URL:"
+msgstr "URL:"
+
+#: ../src/plugins/Upload.glade.h:5
+msgid "Use encryption"
+msgstr "மறைகுறியாக்கத்தை பயன்படுத்து"
+
+#~ msgid "Reports bugs to bugzilla"
+#~ msgstr "bugzilla-வுக்கு பிழைகளை அறிக்கையிடுகிறது"
+
+#~ msgid "Generating backtrace"
+#~ msgstr "பேக்ட்ரேஸை உருவாக்குகிறது..."
+
+#~ msgid "Starting the debuginfo installation"
+#~ msgstr "debuginfo நிறுவலை துவக்குகிறது"
+
+#~ msgid "Getting global universal unique identification..."
+#~ msgstr "முழுமையான உலகளாவிய தனி அடையாளத்தை பெறுகிறது..."
+
+#~ msgid "Skipping the debuginfo installation"
+#~ msgstr "debuginfo நிறுவலை தவிர்த்தது"
+
+#~ msgid "FileTransfer: URL not specified"
+#~ msgstr "கோப்பு இடமாற்றம்: URL குறிப்பிடப்படவில்லை"
+
+#~ msgid "Sending archive %s to %s"
+#~ msgstr "காப்பு %sஐ %sவழியாக அனுப்புகிறது"
+
+#~ msgid "FileTransfer: Creating a report..."
+#~ msgstr "கோப்பு இடமாற்றம்: ஒரு அறிக்கை உருவாக்குகிறது..."
+
+#~ msgid "Cannot create and send an archive: %s"
+#~ msgstr "ஒரு காப்பு உருவாக்க மற்றும் அனுப்ப முடியவில்லை: %s"
+
+#~ msgid "Sends a report via FTP or SCTP"
+#~ msgstr "FTP அல்லது SCTP வழியாக அறிக்கை அனுப்புகிறது"
+
+#~ msgid "Analyzes kernel oopses"
+#~ msgstr "kernel oops-களை ஆராய்கிறது"
+
+#~ msgid "Creating and submitting a report..."
+#~ msgstr "ஒரு அறிக்கையை உருவாக்கி சமர்ப்பிக்கிறது..."
+
+#~ msgid "Sends kernel oops information to kerneloops.org"
+#~ msgstr "kerneloops.orgக்கு கர்னல் ஊப்ஸ் தகவலை அனுப்புகிறது"
+
+#~ msgid "Writes report to a file"
+#~ msgstr "ஒரு கோப்பில் அறிக்கை எழுதுகிறது"
+
+#~ msgid "Sends an email with a report (via mailx command)"
+#~ msgstr "ஒரு அறிக்கையுடன் ஒரு மின்னஞ்சல் அனுப்புகிறது (mailx கட்டளை வழியாக)"
+
+#~ msgid "Analyzes crashes in Python programs"
+#~ msgstr "Python நிரல்களில் க்ராஷ்களை ஆராய்கிறது"
+
+#~ msgid "Sending failed, trying again. %s"
+#~ msgstr "அனுப்ப முடியவில்லை, மீண்டும் முயற்சிக்கிறது. %s"
+
+#~ msgid "Creating a ReportUploader report..."
+#~ msgstr "ஒரு ReportUploader அறிக்கையை உருவாக்குகிறது..."
+
+#~ msgid ""
+#~ "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+#~ msgstr ""
+#~ ".tar.gz கோப்பாக சிதைத்த தரவை பேக் செய்கிறது, விருப்பமான FTP/SCP/etc வழியாக அதை "
+#~ "பதிவேற்றுகிறது"
+
+#, fuzzy
+#~ msgid "Reports bugs to Red Hat support"
+#~ msgstr "bugzilla-வுக்கு பிழைகளை அறிக்கையிடுகிறது"
+
+#~ msgid "Runs a command, saves its output"
+#~ msgstr "ஒரு கட்டளையை இயக்கி அதன் வெளிப்பாட்டை சேமிக்கிறது"
+
+#~ msgid "Running sosreport: %s"
+#~ msgstr "sosreportஐ இயங்குகிறது: %s"
+
+#~ msgid "Finished running sosreport"
+#~ msgstr "sosreport இயங்குதல் முடிக்கப்பட்டது"
+
+#~ msgid "Runs sosreport, saves the output"
+#~ msgstr "sosreportஐ இயக்கி, வெளிப்பாட்டை சேமிக்கிறது"
+
+#~ msgid "Customer:"
+#~ msgstr "வாடிக்கையாளர்:"
+
+#~ msgid "Ticket:"
+#~ msgstr "டிக்கெட்:"
+
+#~ msgid "Upload"
+#~ msgstr "பதிவேற்று"
+
+#~ msgid "Rating is required by the %s plugin"
+#~ msgstr "மதிப்பிதல் %s கூடுதல் இணைப்பால் தேவைப்படுகிறது"
+
+#~ msgid "Rating is not required by any plugin, skipping the check..."
+#~ msgstr "மதிப்பீடு எந்த கூடுதல் இணைப்பிற்கும் தேவைப்படாது, சரிபார்த்தலை தவிர்க்கிறது..."
+
 #~ msgid ""
 #~ "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/"
 #~ "Bugzilla.conf. Server said: %s"
@@ -1594,10 +1656,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "send_file: URL not specified"
 #~ msgstr "கோப்பு இடமாற்றம்: URL குறிப்பிடப்படவில்லை"
-
-#, fuzzy
-#~ msgid "Sending file %s to %s"
-#~ msgstr "காப்பு %sஐ %sவழியாக அனுப்புகிறது"
 
 #, fuzzy
 #~ msgid "New bug id: %s"

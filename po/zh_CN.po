@@ -12,295 +12,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.zh_CN(2)\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-10-14 20:16+0200\n"
+"POT-Creation-Date: 2010-11-22 21:34+0100\n"
 "PO-Revision-Date: 2010-07-30 10:40+1000\n"
 "Last-Translator: Leah Liu <lliu@redhat.com>\n"
 "Language-Team: Wei Liu\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: KBabel 1.11.4\n"
-
-#: ../lib/plugins/Bugzilla.cpp:149
-msgid "Reports bugs to bugzilla"
-msgstr "向 bugzilla 报告 bug"
-
-#: ../lib/plugins/CCpp.cpp:79
-msgid "Generating backtrace"
-msgstr "正在生成回溯"
-
-#: ../lib/plugins/CCpp.cpp:115
-msgid "Starting the debuginfo installation"
-msgstr "正在启动调试信息的安装"
-
-#. Compatibility code.
-#. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:338
-msgid "Getting global universal unique identification..."
-msgstr "正在取得全局的通用唯一标识......"
-
-#: ../lib/plugins/CCpp.cpp:532
-msgid "Skipping the debuginfo installation"
-msgstr "跳过调试信息的安装"
-
-#: ../lib/plugins/CCpp.cpp:783
-msgid "Analyzes crashes in C/C++ programs"
-msgstr "使用 C/C++ 程序分析崩溃"
-
-#: ../lib/plugins/FileTransfer.cpp:51 ../lib/plugins/ReportUploader.cpp:96
-msgid "FileTransfer: URL not specified"
-msgstr "文件传送器： URL 未指定"
-
-#: ../lib/plugins/FileTransfer.cpp:55 ../lib/plugins/ReportUploader.cpp:100
-#, c-format
-msgid "Sending archive %s to %s"
-msgstr "正在发送归档 %s 至 %s"
-
-#: ../lib/plugins/FileTransfer.cpp:244
-msgid "FileTransfer: Creating a report..."
-msgstr "文件传送器：正在创建报告......"
-
-#: ../lib/plugins/FileTransfer.cpp:268 ../lib/plugins/FileTransfer.cpp:297
-#, c-format
-msgid "Cannot create and send an archive: %s"
-msgstr "无法生成并及发送归档：%s"
-
-#: ../lib/plugins/FileTransfer.cpp:364
-msgid "Sends a report via FTP or SCTP"
-msgstr "使用 FTP 或者 SCTP 发送报告"
-
-#: ../lib/plugins/Kerneloops.cpp:150
-msgid "Analyzes kernel oopses"
-msgstr "分析内核 opps"
-
-#: ../lib/plugins/KerneloopsReporter.cpp:95
-msgid "Creating and submitting a report..."
-msgstr "正在创建及提交报告……"
-
-#: ../lib/plugins/KerneloopsReporter.cpp:144
-msgid "Sends kernel oops information to kerneloops.org"
-msgstr "向 kerneloops.org 发送内核 opps 信息"
-
-#: ../lib/plugins/KerneloopsScanner.cpp:211
-msgid "Periodically scans for and saves kernel oopses"
-msgstr "周期性扫描并保存内核 opps"
-
-#: ../lib/plugins/Logger.cpp:68
-#, c-format
-msgid "Writing report to '%s'"
-msgstr "正在将报告写入 '%s'"
-
-#: ../lib/plugins/Logger.cpp:74
-#, c-format
-msgid "The report was appended to %s"
-msgstr "已在 %s 中附加该报告"
-
-#: ../lib/plugins/Logger.cpp:74
-#, c-format
-msgid "The report was stored to %s"
-msgstr "已在 %s 中保存该报告"
-
-#: ../lib/plugins/Logger.cpp:82
-msgid "Writes report to a file"
-msgstr "将报告写入文件"
-
-#: ../lib/plugins/Mailx.cpp:99
-msgid "Sending an email..."
-msgstr "正在发送电子邮件……"
-
-#: ../lib/plugins/Mailx.cpp:150
-msgid "Sends an email with a report (via mailx command)"
-msgstr "发送带报告的电子邮件（使用 mailx 命令）"
-
-#: ../lib/plugins/Python.cpp:100
-msgid "Analyzes crashes in Python programs"
-msgstr "使用 Python 程序分许崩溃"
-
-#: ../lib/plugins/ReportUploader.cpp:130
-#, c-format
-msgid "Sending failed, trying again. %s"
-msgstr "发送失败，再试一次。%s"
-
-#: ../lib/plugins/ReportUploader.cpp:196
-msgid "Creating a ReportUploader report..."
-msgstr "正在生成 ReportUploader 报告......"
-
-#: ../lib/plugins/ReportUploader.cpp:514
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-msgstr "将崩溃数据打包成 .tar.gz 文件，并可使用 FTP/SCP/etc 将其上传。"
-
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../lib/plugins/RHTSupport.cpp:109
-msgid "Compressing data"
-msgstr ""
-
-#: ../lib/plugins/RHTSupport.cpp:246
-msgid "Creating a new case..."
-msgstr "正在创建新案例……"
-
-#: ../lib/plugins/RHTSupport.cpp:328
-#, fuzzy
-msgid "Reports bugs to Red Hat support"
-msgstr "向 bugzilla 报告 bug"
-
-#: ../lib/plugins/RunApp.cpp:75
-msgid "Runs a command, saves its output"
-msgstr "运行命令保存其输出结果"
-
-#: ../lib/plugins/SOSreport.cpp:99
-#, c-format
-msgid "Running sosreport: %s"
-msgstr "正在运行 sosreport：%s"
-
-#: ../lib/plugins/SOSreport.cpp:104
-msgid "Finished running sosreport"
-msgstr "sosreport 运行完毕"
-
-#: ../lib/plugins/SOSreport.cpp:132
-#, c-format
-msgid "Unable to open debug dump '%s'"
-msgstr ""
-
-#: ../lib/plugins/SOSreport.cpp:166
-msgid "Runs sosreport, saves the output"
-msgstr "运行 sosreport，保存输出结果。"
-
-#: ../lib/plugins/SQLite3.cpp:718
-msgid "Keeps SQLite3 database about all crashes"
-msgstr "保留 SQLite3 数据库中所有崩溃"
-
-#: ../lib/plugins/Bugzilla.glade.h:1
-msgid "<b>Bugzilla plugin configuration</b>"
-msgstr "<b>Bugzilla 插件配置</b>"
-
-#: ../lib/plugins/Bugzilla.glade.h:2
-msgid "Bugzilla URL:"
-msgstr "Bugzilla URL："
-
-#: ../lib/plugins/Bugzilla.glade.h:3
-msgid "Don't have an account yet?"
-msgstr "有还没有帐户吗？"
-
-#: ../lib/plugins/Bugzilla.glade.h:4
-msgid "Login(email):"
-msgstr "登录（电子邮件）："
-
-#: ../lib/plugins/Bugzilla.glade.h:5 ../lib/plugins/RHTSupport.glade.h:3
-msgid "Password:"
-msgstr "密码："
-
-#: ../lib/plugins/Bugzilla.glade.h:6 ../lib/plugins/RHTSupport.glade.h:5
-msgid "SSL verify"
-msgstr "SSL 验证"
-
-#: ../lib/plugins/Bugzilla.glade.h:7 ../lib/plugins/RHTSupport.glade.h:6
-msgid "Show password"
-msgstr "显示密码"
-
-#: ../lib/plugins/Bugzilla.glade.h:8
-msgid ""
-"You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
-"\">here</a>"
-msgstr ""
-"您可在<a href=\"https://bugzilla.redhat.com/createaccount.cgi\">这里</a>生成"
-"它"
-
-#: ../lib/plugins/KerneloopsReporter.glade.h:1
-msgid "<b>Kerneloops Reporter plugin configuration</b>"
-msgstr "<b>内核回送报告程序插件配置</b>"
-
-#: ../lib/plugins/KerneloopsReporter.glade.h:2
-msgid "Submit URL:"
-msgstr "提交 URL："
-
-#: ../lib/plugins/Logger.glade.h:1
-msgid "<b>Logger plugin configuration</b>"
-msgstr "<b>日志程序插件配置</b>"
-
-#: ../lib/plugins/Logger.glade.h:2
-msgid "Append new logs"
-msgstr "附加新日志"
-
-#: ../lib/plugins/Logger.glade.h:3
-msgid "Logger file:"
-msgstr "日志程序文件："
-
-#: ../lib/plugins/Mailx.glade.h:1
-msgid "<b>Mailx plugin configuration</b>"
-msgstr "<b>Mailx 插件配置</b>"
-
-#: ../lib/plugins/Mailx.glade.h:2
-msgid "Recipient's Email:"
-msgstr "收件人电子邮件："
-
-#: ../lib/plugins/Mailx.glade.h:3
-msgid "Send Binary Data"
-msgstr "发送二进制数据"
-
-#: ../lib/plugins/Mailx.glade.h:4
-msgid "Subject:"
-msgstr "主题："
-
-#: ../lib/plugins/Mailx.glade.h:5
-msgid "Your Email:"
-msgstr "您的邮件："
-
-#: ../lib/plugins/ReportUploader.glade.h:1
-msgid "<b>Report Uploader plugin configuration</b>"
-msgstr "<b>Ticket 上传程序插件配置</b>"
-
-#: ../lib/plugins/ReportUploader.glade.h:2
-msgid "Customer:"
-msgstr "客户："
-
-#: ../lib/plugins/ReportUploader.glade.h:3
-msgid "Retry count:"
-msgstr "重试次数："
-
-#: ../lib/plugins/ReportUploader.glade.h:4
-msgid "Retry delay:"
-msgstr "重试延迟："
-
-#: ../lib/plugins/ReportUploader.glade.h:5
-msgid "Ticket:"
-msgstr "Ticket："
-
-#: ../lib/plugins/ReportUploader.glade.h:6
-msgid "URL:"
-msgstr "URL："
-
-#: ../lib/plugins/ReportUploader.glade.h:7
-msgid "Upload"
-msgstr "上传"
-
-#: ../lib/plugins/ReportUploader.glade.h:8
-msgid "Use encryption"
-msgstr "使用加密"
-
-#: ../lib/plugins/RHTSupport.glade.h:1
-msgid "<b>RHTSupport plugin configuration</b>"
-msgstr "<b>RHTSupport 插件配置</b>"
-
-#: ../lib/plugins/RHTSupport.glade.h:2
-msgid "Login:"
-msgstr "登录："
-
-#: ../lib/plugins/RHTSupport.glade.h:4
-msgid "RHTSupport URL:"
-msgstr "RHTSupport URL："
-
-#: ../lib/utils/abrt_curl.c:171
-#, c-format
-msgid "Uploaded: %llu of %llu kbytes"
-msgstr ""
-
-#: ../lib/utils/parse_options.c:11
-#, c-format
-msgid "Usage: %s\n"
-msgstr ""
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -312,16 +33,16 @@ msgstr "ABRT 通知程序"
 msgid "Automatic Bug Reporting Tool"
 msgstr "自动 bug 报告工具"
 
-#: ../src/applet/Applet.cpp:76
+#: ../src/applet/Applet.cpp:86
 #, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "已探测到 %s 软件包中的一个崩溃"
 
-#: ../src/applet/Applet.cpp:78
+#: ../src/applet/Applet.cpp:88
 msgid "A crash has been detected"
 msgstr "已发觉一个崩溃"
 
-#: ../src/applet/Applet.cpp:275
+#: ../src/applet/Applet.cpp:285
 msgid "ABRT service is not running"
 msgstr "ABRT 服务不在运行"
 
@@ -501,20 +222,20 @@ msgstr ""
 msgid "You must specify exactly one operation"
 msgstr "您必须指定具体的操作"
 
-#: ../src/cli/report.cpp:170
+#: ../src/cli/report.cpp:167
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# 该字段为只读\n"
 
-#: ../src/cli/report.cpp:190
+#: ../src/cli/report.cpp:187
 msgid "# Describe the circumstances of this crash below"
 msgstr "# 在下面描述此崩溃的发生环境"
 
-#: ../src/cli/report.cpp:192
+#: ../src/cli/report.cpp:189
 msgid "# How to reproduce the crash?"
 msgstr "# 如何再现该崩溃？"
 
-#: ../src/cli/report.cpp:194
+#: ../src/cli/report.cpp:191
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -522,47 +243,47 @@ msgstr ""
 "# 回溯\n"
 "# 检查它是否包含任何敏感数据（密码等等）。"
 
-#: ../src/cli/report.cpp:196
+#: ../src/cli/report.cpp:193
 msgid "# Architecture"
 msgstr "# 架构"
 
-#: ../src/cli/report.cpp:197
+#: ../src/cli/report.cpp:194
 msgid "# Command line"
 msgstr "# 命令行"
 
-#: ../src/cli/report.cpp:198
+#: ../src/cli/report.cpp:195
 msgid "# Component"
 msgstr "# 组件"
 
-#: ../src/cli/report.cpp:199
+#: ../src/cli/report.cpp:196
 msgid "# Core dump"
 msgstr "# 内存转储"
 
-#: ../src/cli/report.cpp:200
+#: ../src/cli/report.cpp:197
 msgid "# Executable"
 msgstr "# 可执行文件"
 
-#: ../src/cli/report.cpp:201
+#: ../src/cli/report.cpp:198
 msgid "# Kernel version"
 msgstr "# 内核版本"
 
-#: ../src/cli/report.cpp:202
+#: ../src/cli/report.cpp:199
 msgid "# Package"
 msgstr "# 软件包"
 
-#: ../src/cli/report.cpp:203
+#: ../src/cli/report.cpp:200
 msgid "# Reason of crash"
 msgstr "# 崩溃原因"
 
-#: ../src/cli/report.cpp:204
+#: ../src/cli/report.cpp:201
 msgid "# Release string of the operating system"
 msgstr "# 操作系统的发行版本"
 
-#: ../src/cli/report.cpp:327
+#: ../src/cli/report.cpp:324
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr "无法运行 vi：还没有设置 $TERM、$VISUAL 和 $EDITOR"
 
-#: ../src/cli/report.cpp:415
+#: ../src/cli/report.cpp:412
 msgid ""
 "\n"
 "The report has been updated"
@@ -570,7 +291,7 @@ msgstr ""
 "\n"
 "该报告已更新"
 
-#: ../src/cli/report.cpp:417
+#: ../src/cli/report.cpp:414
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -579,185 +300,126 @@ msgstr ""
 "未查出报告有更改"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:543
+#: ../src/cli/report.cpp:540
 msgid "y"
 msgstr ""
 
-#: ../src/cli/report.cpp:544
+#: ../src/cli/report.cpp:541
 msgid "N"
 msgstr ""
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:645
+#: ../src/cli/report.cpp:641
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "探测到插件 %s 的错误设置。\n"
 
-#: ../src/cli/report.cpp:649
+#: ../src/cli/report.cpp:645
 msgid "Enter your login: "
 msgstr "输入您的登录名："
 
-#: ../src/cli/report.cpp:655
+#: ../src/cli/report.cpp:651
 msgid "Enter your password: "
 msgstr "输入您的密码："
 
-#: ../src/cli/report.cpp:700
+#: ../src/cli/report.cpp:696
 msgid "Reporting..."
 msgstr "报告中……"
 
-#: ../src/cli/report.cpp:719
+#: ../src/cli/report.cpp:715
 #, fuzzy, c-format
 msgid "Report using %s?"
 msgstr "用 %s 报告？［y/N］："
 
-#: ../src/cli/report.cpp:722
+#: ../src/cli/report.cpp:718
 msgid "Skipping..."
 msgstr "跳过中……"
 
-#: ../src/cli/report.cpp:734
+#: ../src/cli/report.cpp:730
 #, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "不能报告因为回溯不可用。"
 
-#: ../src/cli/report.cpp:738
+#: ../src/cli/report.cpp:734
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
 
-#: ../src/cli/report.cpp:747
+#: ../src/cli/report.cpp:743
 #, fuzzy
 msgid "Error loading reporter settings"
 msgstr "获取报告时出错：%s"
 
-#: ../src/cli/report.cpp:766
+#: ../src/cli/report.cpp:762
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "使用 %d 插件报告的崩溃（%d 错误）\n"
 
-#: ../src/daemon/abrt-action-analyze-c.c:154
+#: ../src/daemon/abrt-handle-crashdump.c:42
 msgid ""
-" [-vs] -d DIR\n"
-"\n"
-"Calculates and saves UUID"
+" [-vs] -d DIR -e EVENT\n"
+"   or: "
 msgstr ""
 
-#: ../src/daemon/abrt-action-analyze-c.c:166
-msgid "Crash dump directory"
-msgstr ""
-
-#: ../src/daemon/abrt-action-analyze-c.c:167
+#: ../src/daemon/abrt-handle-crashdump.c:57
+#: ../src/plugins/abrt-action-analyze-c.c:167
+#: ../src/plugins/abrt-action-analyze-oops.c:144
+#: ../src/plugins/abrt-action-analyze-python.c:49
 msgid "Log to syslog"
 msgstr ""
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:462
-#, c-format
-msgid "New bug id: %i"
-msgstr "新的 bug id：%i"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:575
-#, c-format
-msgid "Can't open '%s'"
+#: ../src/daemon/abrt-handle-crashdump.c:58
+#: ../src/plugins/abrt-action-analyze-c.c:166
+#: ../src/plugins/abrt-action-analyze-oops.c:143
+#: ../src/plugins/abrt-action-analyze-python.c:48
+#: ../src/plugins/abrt-action-mailx.cpp:153
+#: ../src/plugins/abrt-action-print.cpp:51
+#: ../src/plugins/abrt-action-upload.cpp:270
+msgid "Crash dump directory"
 msgstr ""
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:600
-#, fuzzy, c-format
-msgid "Empty login or password, please check %s"
-msgstr ""
-"空登录名或密码。\n"
-"请检查一下！"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:609
-msgid "Logging into bugzilla..."
-msgstr "正在登录 bugzilla ……"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:612
-msgid "Checking for duplicates..."
-msgstr "检查是否存在重复……"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:633
-#: ../src/daemon/abrt-action-bugzilla.cpp:669
-msgid "Missing mandatory member 'bugs'"
-msgstr "缺少必需成员 'bugs'"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:652
-#: ../src/daemon/abrt-action-bugzilla.cpp:685
-#: ../src/daemon/abrt-action-bugzilla.cpp:760
-msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr "get_bug_info() 失败。不能收集到所有必需信息。"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:701
-msgid "Creating a new bug..."
-msgstr "生成新 bug......"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:706
-msgid "Bugzilla entry creation failed"
-msgstr "Bugzilla 条目生成失败"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:716
-#: ../src/daemon/abrt-action-bugzilla.cpp:813
-msgid "Logging out..."
-msgstr "正在注销……"
-
-#. decision based on state
-#: ../src/daemon/abrt-action-bugzilla.cpp:734
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr " bug 已报告：%i"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:745
-#, c-format
-msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla 不能找到 bug 的父级（%d）"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:774
-#, fuzzy, c-format
-msgid "Add %s to CC list"
-msgstr "在 CC 列表中添加 %s"
-
-#: ../src/daemon/abrt-action-bugzilla.cpp:798
-#, c-format
-msgid "Adding new comment to bug %d"
-msgstr "在 bug 中添加新注释（%d）"
-
-#: ../src/daemon/abrt-action-generate-backtrace.c:317
-#, c-format
-msgid "Backtrace parsing failed for %s"
+#: ../src/daemon/abrt-handle-crashdump.c:59
+msgid "Handle EVENT"
 msgstr ""
 
-#: ../src/daemon/CommLayerServerDBus.cpp:224
+#: ../src/daemon/abrt-handle-crashdump.c:60
+msgid "List possible events [which start with PFX]"
+msgstr ""
+
+#: ../src/daemon/CommLayerServerDBus.cpp:229
 msgid "Comment is too long"
 msgstr "评论过长"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:228
+#: ../src/daemon/CommLayerServerDBus.cpp:233
 msgid "'How to reproduce' is too long"
 msgstr "“如何再现”过长"
 
-#: ../src/daemon/Daemon.cpp:633
+#: ../src/daemon/Daemon.cpp:614
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
 msgstr ""
 "报告大小已超出配额。请检查在 abrt.conf 文件中系统的 MaxCrashReportsSize 值。"
 
-#: ../src/daemon/Daemon.cpp:862
+#: ../src/daemon/Daemon.cpp:784
 msgid "abrtd [options]"
 msgstr ""
 
-#: ../src/daemon/Daemon.cpp:872
+#: ../src/daemon/Daemon.cpp:794
 msgid "Do not daemonize"
 msgstr ""
 
-#: ../src/daemon/Daemon.cpp:873
+#: ../src/daemon/Daemon.cpp:795
 msgid "Log to syslog even with -d"
 msgstr ""
 
-#: ../src/daemon/Daemon.cpp:874
+#: ../src/daemon/Daemon.cpp:796
 msgid "Exit after SEC seconds of inactivity"
 msgstr ""
 
-#: ../src/daemon/Settings.cpp:216 ../src/daemon/Settings.cpp:221
+#: ../src/daemon/Settings.cpp:207 ../src/daemon/Settings.cpp:212
 msgid "Database plugin not specified. Please check abrtd settings."
 msgstr "没有指定数据库插件。请检查 abrtd 设置。"
 
@@ -803,7 +465,7 @@ msgid "Please check if the abrt daemon is running."
 msgstr "请检查 abrt 守护进程是否正在运行。"
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:170
+#: ../src/gui/CCDBusBackend.py:169
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
@@ -981,7 +643,7 @@ msgstr "简要描述如何重复此崩溃或者您做了什么......"
 msgid "You must check the backtrace for sensitive data."
 msgstr "您必须检查回溯是否包含敏感数据。"
 
-#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:325
+#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:326
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -997,7 +659,7 @@ msgstr ""
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "回溯不可用，您不能报告这个 bug！"
 
-#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:331
+#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:332
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -1019,8 +681,8 @@ msgstr ""
 "没有可用于该类型崩溃的报告器插件。\n"
 "请检查 abrt.conf。"
 
-#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:218
-#: ../src/gui/PluginsSettingsDialog.py:170
+#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:219
+#: ../src/gui/PluginsSettingsDialog.py:136
 #, python-format
 msgid ""
 "Cannot save plugin settings:\n"
@@ -1029,12 +691,12 @@ msgstr ""
 "无法保存插件设置：\n"
 " %s"
 
-#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:248
+#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:249
 #, python-format
 msgid "Configure %s options"
 msgstr "配置 %s 选项"
 
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1008
+#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1036
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -1042,7 +704,7 @@ msgstr ""
 "无法获取报告！\n"
 "调试信息缺失？"
 
-#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:415
+#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:417
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -1052,7 +714,7 @@ msgstr ""
 "%s"
 
 #: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:1047
+#: ../src/gui/CReporterAssistant.py:1075
 #, python-format
 msgid "Error acquiring the report: %s"
 msgstr "获取报告时出错：%s"
@@ -1067,19 +729,19 @@ msgstr "无法连接到 Gnome 密钥环守护进程。"
 msgid "Cannot get the default keyring."
 msgstr "不能获取默认密钥环。"
 
-#: ../src/gui/ConfBackend.py:103 ../src/gui/ConfBackend.py:119
+#: ../src/gui/ConfBackend.py:103 ../src/gui/ConfBackend.py:120
 msgid ""
 "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr "对 gnome 密钥环的访问被拒绝，插件设置将不会被保存。"
 
 #. we tried 2 times, so giving up the authorization
-#: ../src/gui/ConfBackend.py:153
+#: ../src/gui/ConfBackend.py:154
 #, python-format
 msgid ""
 "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "对 gnome 密钥环的访问被拒绝，无法载入 %s 的设置！"
 
-#: ../src/gui/ConfBackend.py:206
+#: ../src/gui/ConfBackend.py:207
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr "对 gnome 密钥环的访问被拒绝，无法载入设置。"
 
@@ -1087,45 +749,36 @@ msgstr "对 gnome 密钥环的访问被拒绝，无法载入设置。"
 msgid "Crash info doesn't contain a backtrace"
 msgstr "崩溃信息中不包含回溯"
 
-#: ../src/gui/CReporterAssistant.py:297
-#, python-format
-msgid "Rating is required by the %s plugin"
-msgstr "%s 插件需要等级"
-
-#: ../src/gui/CReporterAssistant.py:299
-msgid "Rating is not required by any plugin, skipping the check..."
-msgstr "所有插件都不需要等级，跳过这个检查......"
-
-#: ../src/gui/CReporterAssistant.py:303
+#: ../src/gui/CReporterAssistant.py:304
 #, python-format
 msgid "Rating is %s"
 msgstr "等级为 %s"
 
-#: ../src/gui/CReporterAssistant.py:306
+#: ../src/gui/CReporterAssistant.py:307
 msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr "崩溃转储没有等级 => 我们假设它不需要"
 
-#: ../src/gui/CReporterAssistant.py:311
+#: ../src/gui/CReporterAssistant.py:312
 msgid "You should check the backtrace for sensitive data."
 msgstr "您应该检查回溯中是否有敏感数据。"
 
-#: ../src/gui/CReporterAssistant.py:312
+#: ../src/gui/CReporterAssistant.py:313
 msgid "You must agree with sending the backtrace."
 msgstr "您必须同意发送此回溯。"
 
-#: ../src/gui/CReporterAssistant.py:327
+#: ../src/gui/CReporterAssistant.py:328
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "不能报告因为回溯不可用。"
 
-#: ../src/gui/CReporterAssistant.py:372
+#: ../src/gui/CReporterAssistant.py:374
 msgid "You did not provide any steps to reproduce."
 msgstr "您未提供任何重复步骤。"
 
-#: ../src/gui/CReporterAssistant.py:386
+#: ../src/gui/CReporterAssistant.py:388
 msgid "You did not provide any comments."
 msgstr "您未提供任何评论。"
 
-#: ../src/gui/CReporterAssistant.py:467
+#: ../src/gui/CReporterAssistant.py:469
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -1148,15 +801,15 @@ msgstr ""
 "\n"
 "选择您要在哪里报告此 bug 并按‘前进’继续。"
 
-#: ../src/gui/CReporterAssistant.py:527
+#: ../src/gui/CReporterAssistant.py:510
 msgid "Only one reporter plugin is configured."
 msgstr "只配置了一个报告程序插件。"
 
-#: ../src/gui/CReporterAssistant.py:533
+#: ../src/gui/CReporterAssistant.py:516
 msgid "Send a bug report"
 msgstr "发送 bug 报告"
 
-#: ../src/gui/CReporterAssistant.py:571
+#: ../src/gui/CReporterAssistant.py:554
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -1171,123 +824,127 @@ msgstr ""
 "请检查下面的回溯并在必要时修改它以确保您的 bug 报告中不含任何您不愿共享的敏感"
 "数据："
 
-#: ../src/gui/CReporterAssistant.py:642 ../src/gui/CReporterAssistant.py:655
-#: ../src/gui/CReporterAssistant.py:689
+#: ../src/gui/CReporterAssistant.py:625 ../src/gui/CReporterAssistant.py:638
+#: ../src/gui/CReporterAssistant.py:672
 #, python-format
 msgid "Found %i occurence(s) [at: %i of %i]"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:726
+#: ../src/gui/CReporterAssistant.py:709
 msgid "Search:"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:756
+#: ../src/gui/CReporterAssistant.py:740
 msgid "Refresh"
 msgstr "刷新"
 
-#: ../src/gui/CReporterAssistant.py:758
+#: ../src/gui/CReporterAssistant.py:742
 msgid "Copy"
 msgstr "复制"
 
-#: ../src/gui/CReporterAssistant.py:764
+#: ../src/gui/CReporterAssistant.py:748
 msgid "I agree with submitting the backtrace"
 msgstr "我同意提交回溯"
 
-#: ../src/gui/CReporterAssistant.py:769
+#: ../src/gui/CReporterAssistant.py:753
 msgid "Approve the backtrace"
 msgstr "同意回溯"
 
-#: ../src/gui/CReporterAssistant.py:792
+#: ../src/gui/CReporterAssistant.py:796
+msgid "You need to fill the how to before you can proceed..."
+msgstr ""
+
+#: ../src/gui/CReporterAssistant.py:819
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "此崩溃是如何发生的（具体步骤）？您如何重复它？"
 
-#: ../src/gui/CReporterAssistant.py:811
+#: ../src/gui/CReporterAssistant.py:839
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr "您有什么要与软件维护者分享的评论吗？"
 
-#: ../src/gui/CReporterAssistant.py:831
+#: ../src/gui/CReporterAssistant.py:859
 msgid "Provide additional details"
 msgstr "提供附加细节"
 
-#: ../src/gui/CReporterAssistant.py:838
+#: ../src/gui/CReporterAssistant.py:866
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr "<b>提示：</b>您的评论不是私下的。请注意您的言论。"
 
-#: ../src/gui/CReporterAssistant.py:879
+#: ../src/gui/CReporterAssistant.py:907
 msgid "Confirm and send the report"
 msgstr "确认并发送报告"
 
-#: ../src/gui/CReporterAssistant.py:881
+#: ../src/gui/CReporterAssistant.py:909
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr "下面是您的 bug 报告的摘要。请点击‘应用’提交。"
 
-#: ../src/gui/CReporterAssistant.py:886
+#: ../src/gui/CReporterAssistant.py:914
 msgid "<b>Basic details</b>"
 msgstr "<b>基本细节</b>"
 
 #. left table
-#: ../src/gui/CReporterAssistant.py:893
+#: ../src/gui/CReporterAssistant.py:921
 msgid "Component"
 msgstr "组件"
 
-#: ../src/gui/CReporterAssistant.py:894
+#: ../src/gui/CReporterAssistant.py:922
 msgid "Package"
 msgstr "软件包"
 
-#: ../src/gui/CReporterAssistant.py:895
+#: ../src/gui/CReporterAssistant.py:923
 msgid "Executable"
 msgstr "可执行文件"
 
-#: ../src/gui/CReporterAssistant.py:896
+#: ../src/gui/CReporterAssistant.py:924
 msgid "Cmdline"
 msgstr "命令行"
 
 #. right table
-#: ../src/gui/CReporterAssistant.py:898
+#: ../src/gui/CReporterAssistant.py:926
 msgid "Architecture"
 msgstr "架构"
 
-#: ../src/gui/CReporterAssistant.py:899
+#: ../src/gui/CReporterAssistant.py:927
 msgid "Kernel"
 msgstr "内核"
 
-#: ../src/gui/CReporterAssistant.py:900
+#: ../src/gui/CReporterAssistant.py:928
 msgid "Release"
 msgstr "发行版"
 
-#: ../src/gui/CReporterAssistant.py:901
+#: ../src/gui/CReporterAssistant.py:929
 msgid "Reason"
 msgstr "原因"
 
-#: ../src/gui/CReporterAssistant.py:912 ../src/gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:940 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>回溯</b>"
 
-#: ../src/gui/CReporterAssistant.py:915
+#: ../src/gui/CReporterAssistant.py:943
 msgid "Click to view..."
 msgstr "点击查看......"
 
-#: ../src/gui/CReporterAssistant.py:927
+#: ../src/gui/CReporterAssistant.py:955
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>再现步骤：</b>"
 
-#: ../src/gui/CReporterAssistant.py:948
+#: ../src/gui/CReporterAssistant.py:976
 msgid "<b>Comments:</b>"
 msgstr "<b>评论：</b>"
 
-#: ../src/gui/CReporterAssistant.py:951
+#: ../src/gui/CReporterAssistant.py:979
 msgid "No comment provided!"
 msgstr "未提供评论！"
 
-#: ../src/gui/CReporterAssistant.py:987
+#: ../src/gui/CReporterAssistant.py:1015
 msgid "Finished sending the bug report"
 msgstr " bug 报告发送完毕"
 
-#: ../src/gui/CReporterAssistant.py:991
+#: ../src/gui/CReporterAssistant.py:1019
 msgid "<b>Bug reports:</b>"
 msgstr "<b> bug 报告：</b>"
 
@@ -1332,12 +989,12 @@ msgstr "无法载入对设置对话的图形用户界面描述！"
 msgid "Name"
 msgstr "名称"
 
-#: ../src/gui/PluginsSettingsDialog.py:149
+#: ../src/gui/PluginsSettingsDialog.py:118
 #, fuzzy
 msgid "Please select a plugin from the list to edit its options."
 msgstr "请从以下列表中选择一个插件以编辑其选项。"
 
-#: ../src/gui/PluginsSettingsDialog.py:157
+#: ../src/gui/PluginsSettingsDialog.py:126
 #, python-format
 msgid ""
 "Error while opening the plugin settings UI: \n"
@@ -1552,6 +1209,408 @@ msgid ""
 msgstr ""
 "探测到有些启用的报告程序插件有错误设置。请使用以下按钮打开对应的配置并在继续"
 "报告前修复它，否则报告过程会失败。\n"
+
+#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.cpp:50
+#, c-format
+msgid "Uploaded: %llu of %llu kbytes"
+msgstr ""
+
+#: ../src/lib/parse_options.c:11
+#, c-format
+msgid "Usage: %s\n"
+msgstr ""
+
+#: ../src/plugins/abrt-action-analyze-c.c:154
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID of coredumps"
+msgstr ""
+
+#: ../src/plugins/abrt-action-analyze-oops.c:131
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID and DUPHASH of oops crash dumps"
+msgstr ""
+
+#: ../src/plugins/abrt-action-analyze-python.c:36
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID and DUPHASH of python crash dumps"
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:470
+#, c-format
+msgid "New bug id: %i"
+msgstr "新的 bug id：%i"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:583
+#, c-format
+msgid "Can't open '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:603
+#, fuzzy, c-format
+msgid "Empty login or password, please check %s"
+msgstr ""
+"空登录名或密码。\n"
+"请检查一下！"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:621
+msgid "Logging into bugzilla..."
+msgstr "正在登录 bugzilla ……"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:624
+msgid "Checking for duplicates..."
+msgstr "检查是否存在重复……"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:645
+#: ../src/plugins/abrt-action-bugzilla.cpp:681
+msgid "Missing mandatory member 'bugs'"
+msgstr "缺少必需成员 'bugs'"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:664
+#: ../src/plugins/abrt-action-bugzilla.cpp:697
+#: ../src/plugins/abrt-action-bugzilla.cpp:772
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr "get_bug_info() 失败。不能收集到所有必需信息。"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:713
+msgid "Creating a new bug..."
+msgstr "生成新 bug......"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:718
+msgid "Bugzilla entry creation failed"
+msgstr "Bugzilla 条目生成失败"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:728
+#: ../src/plugins/abrt-action-bugzilla.cpp:825
+msgid "Logging out..."
+msgstr "正在注销……"
+
+#. decision based on state
+#: ../src/plugins/abrt-action-bugzilla.cpp:746
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr " bug 已报告：%i"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:757
+#, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr "Bugzilla 不能找到 bug 的父级（%d）"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:786
+#, fuzzy, c-format
+msgid "Add %s to CC list"
+msgstr "在 CC 列表中添加 %s"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:810
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "在 bug 中添加新注释（%d）"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:319
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr ""
+
+#: ../src/plugins/abrt-action-kerneloops.cpp:113
+#, fuzzy, c-format
+msgid "Submitting oops report to %s"
+msgstr "正在将报告写入 '%s'"
+
+#: ../src/plugins/abrt-action-mailx.cpp:117
+msgid "Sending an email..."
+msgstr "正在发送电子邮件……"
+
+#: ../src/plugins/abrt-action-mailx.cpp:141
+msgid ""
+" [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"Upload compressed tarball of crash dump"
+msgstr ""
+
+#: ../src/plugins/abrt-action-mailx.cpp:154
+#: ../src/plugins/abrt-action-upload.cpp:271
+#, fuzzy
+msgid "Config file"
+msgstr "日志程序文件："
+
+#: ../src/plugins/abrt-action-print.cpp:40
+msgid ""
+" [-v] [-o FILE] -d DIR\n"
+"\n"
+"Print information about the crash to standard output"
+msgstr ""
+
+#: ../src/plugins/abrt-action-print.cpp:52
+msgid "Output file"
+msgstr ""
+
+#: ../src/plugins/abrt-action-print.cpp:101
+#, c-format
+msgid "The report was appended to %s"
+msgstr "已在 %s 中附加该报告"
+
+#: ../src/plugins/abrt-action-print.cpp:101
+#, c-format
+msgid "The report was stored to %s"
+msgstr "已在 %s 中保存该报告"
+
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. error msg is already logged by dd_opendir
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#: ../src/plugins/abrt-action-rhtsupport.cpp:46
+#: ../src/plugins/abrt-action-upload.cpp:124
+msgid "Compressing data"
+msgstr ""
+
+#: ../src/plugins/abrt-action-rhtsupport.cpp:81
+#, fuzzy
+msgid "Empty login or password, please check RHTSupport.conf"
+msgstr ""
+"空登录名或密码。\n"
+"请检查一下！"
+
+#: ../src/plugins/abrt-action-rhtsupport.cpp:198
+msgid "Creating a new case..."
+msgstr "正在创建新案例……"
+
+#: ../src/plugins/abrt-action-upload.cpp:68
+#, fuzzy, c-format
+msgid "Sending %s to %s"
+msgstr "正在发送归档 %s 至 %s"
+
+#. This ends up a "reporting status message" in abrtd
+#: ../src/plugins/abrt-action-upload.cpp:101
+#, c-format
+msgid "Successfully sent %s to %s"
+msgstr ""
+
+#: ../src/plugins/abrt-action-upload.cpp:223
+#, c-format
+msgid "Archive is created: '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-upload.cpp:257
+msgid ""
+" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"Upload compressed tarball of crash dump"
+msgstr ""
+
+#: ../src/plugins/abrt-action-upload.cpp:272
+msgid "Base URL to upload to"
+msgstr ""
+
+#: ../src/plugins/Bugzilla.glade.h:1
+msgid "<b>Bugzilla plugin configuration</b>"
+msgstr "<b>Bugzilla 插件配置</b>"
+
+#: ../src/plugins/Bugzilla.glade.h:2
+msgid "Bugzilla URL:"
+msgstr "Bugzilla URL："
+
+#: ../src/plugins/Bugzilla.glade.h:3
+msgid "Don't have an account yet?"
+msgstr "有还没有帐户吗？"
+
+#: ../src/plugins/Bugzilla.glade.h:4
+msgid "Login(email):"
+msgstr "登录（电子邮件）："
+
+#: ../src/plugins/Bugzilla.glade.h:5 ../src/plugins/RHTSupport.glade.h:3
+msgid "Password:"
+msgstr "密码："
+
+#: ../src/plugins/Bugzilla.glade.h:6 ../src/plugins/RHTSupport.glade.h:5
+msgid "SSL verify"
+msgstr "SSL 验证"
+
+#: ../src/plugins/Bugzilla.glade.h:7 ../src/plugins/RHTSupport.glade.h:6
+msgid "Show password"
+msgstr "显示密码"
+
+#: ../src/plugins/Bugzilla.glade.h:8
+msgid ""
+"You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
+"\">here</a>"
+msgstr ""
+"您可在<a href=\"https://bugzilla.redhat.com/createaccount.cgi\">这里</a>生成"
+"它"
+
+#: ../src/plugins/CCpp.cpp:277
+msgid "Analyzes crashes in C/C++ programs"
+msgstr "使用 C/C++ 程序分析崩溃"
+
+#: ../src/plugins/KerneloopsReporter.glade.h:1
+msgid "<b>Kerneloops Reporter plugin configuration</b>"
+msgstr "<b>内核回送报告程序插件配置</b>"
+
+#: ../src/plugins/KerneloopsReporter.glade.h:2
+msgid "Submit URL:"
+msgstr "提交 URL："
+
+#: ../src/plugins/KerneloopsScanner.cpp:229
+msgid "Periodically scans for and saves kernel oopses"
+msgstr "周期性扫描并保存内核 opps"
+
+#: ../src/plugins/Logger.glade.h:1
+msgid "<b>Logger plugin configuration</b>"
+msgstr "<b>日志程序插件配置</b>"
+
+#: ../src/plugins/Logger.glade.h:2
+msgid "Append new logs"
+msgstr "附加新日志"
+
+#: ../src/plugins/Logger.glade.h:3
+msgid "Logger file:"
+msgstr "日志程序文件："
+
+#: ../src/plugins/Mailx.glade.h:1
+msgid "<b>Mailx plugin configuration</b>"
+msgstr "<b>Mailx 插件配置</b>"
+
+#: ../src/plugins/Mailx.glade.h:2
+msgid "Recipient's Email:"
+msgstr "收件人电子邮件："
+
+#: ../src/plugins/Mailx.glade.h:3
+msgid "Send Binary Data"
+msgstr "发送二进制数据"
+
+#: ../src/plugins/Mailx.glade.h:4
+msgid "Subject:"
+msgstr "主题："
+
+#: ../src/plugins/Mailx.glade.h:5
+msgid "Your Email:"
+msgstr "您的邮件："
+
+#: ../src/plugins/RHTSupport.glade.h:1
+msgid "<b>RHTSupport plugin configuration</b>"
+msgstr "<b>RHTSupport 插件配置</b>"
+
+#: ../src/plugins/RHTSupport.glade.h:2
+msgid "Login:"
+msgstr "登录："
+
+#: ../src/plugins/RHTSupport.glade.h:4
+msgid "RHTSupport URL:"
+msgstr "RHTSupport URL："
+
+#: ../src/plugins/SQLite3.cpp:739
+msgid "Keeps SQLite3 database about all crashes"
+msgstr "保留 SQLite3 数据库中所有崩溃"
+
+#: ../src/plugins/Upload.glade.h:1
+#, fuzzy
+msgid "<b>Upload plugin configuration</b>"
+msgstr "<b>Ticket 上传程序插件配置</b>"
+
+#: ../src/plugins/Upload.glade.h:2
+msgid "Retry count:"
+msgstr "重试次数："
+
+#: ../src/plugins/Upload.glade.h:3
+msgid "Retry delay:"
+msgstr "重试延迟："
+
+#: ../src/plugins/Upload.glade.h:4
+msgid "URL:"
+msgstr "URL："
+
+#: ../src/plugins/Upload.glade.h:5
+msgid "Use encryption"
+msgstr "使用加密"
+
+#~ msgid "Reports bugs to bugzilla"
+#~ msgstr "向 bugzilla 报告 bug"
+
+#~ msgid "Generating backtrace"
+#~ msgstr "正在生成回溯"
+
+#~ msgid "Starting the debuginfo installation"
+#~ msgstr "正在启动调试信息的安装"
+
+#~ msgid "Getting global universal unique identification..."
+#~ msgstr "正在取得全局的通用唯一标识......"
+
+#~ msgid "Skipping the debuginfo installation"
+#~ msgstr "跳过调试信息的安装"
+
+#~ msgid "FileTransfer: URL not specified"
+#~ msgstr "文件传送器： URL 未指定"
+
+#~ msgid "FileTransfer: Creating a report..."
+#~ msgstr "文件传送器：正在创建报告......"
+
+#~ msgid "Cannot create and send an archive: %s"
+#~ msgstr "无法生成并及发送归档：%s"
+
+#~ msgid "Sends a report via FTP or SCTP"
+#~ msgstr "使用 FTP 或者 SCTP 发送报告"
+
+#~ msgid "Analyzes kernel oopses"
+#~ msgstr "分析内核 opps"
+
+#~ msgid "Creating and submitting a report..."
+#~ msgstr "正在创建及提交报告……"
+
+#~ msgid "Sends kernel oops information to kerneloops.org"
+#~ msgstr "向 kerneloops.org 发送内核 opps 信息"
+
+#~ msgid "Writes report to a file"
+#~ msgstr "将报告写入文件"
+
+#~ msgid "Sends an email with a report (via mailx command)"
+#~ msgstr "发送带报告的电子邮件（使用 mailx 命令）"
+
+#~ msgid "Analyzes crashes in Python programs"
+#~ msgstr "使用 Python 程序分许崩溃"
+
+#~ msgid "Sending failed, trying again. %s"
+#~ msgstr "发送失败，再试一次。%s"
+
+#~ msgid "Creating a ReportUploader report..."
+#~ msgstr "正在生成 ReportUploader 报告......"
+
+#~ msgid ""
+#~ "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+#~ msgstr "将崩溃数据打包成 .tar.gz 文件，并可使用 FTP/SCP/etc 将其上传。"
+
+#, fuzzy
+#~ msgid "Reports bugs to Red Hat support"
+#~ msgstr "向 bugzilla 报告 bug"
+
+#~ msgid "Runs a command, saves its output"
+#~ msgstr "运行命令保存其输出结果"
+
+#~ msgid "Running sosreport: %s"
+#~ msgstr "正在运行 sosreport：%s"
+
+#~ msgid "Finished running sosreport"
+#~ msgstr "sosreport 运行完毕"
+
+#~ msgid "Runs sosreport, saves the output"
+#~ msgstr "运行 sosreport，保存输出结果。"
+
+#~ msgid "Customer:"
+#~ msgstr "客户："
+
+#~ msgid "Ticket:"
+#~ msgstr "Ticket："
+
+#~ msgid "Upload"
+#~ msgstr "上传"
+
+#~ msgid "Rating is required by the %s plugin"
+#~ msgstr "%s 插件需要等级"
+
+#~ msgid "Rating is not required by any plugin, skipping the check..."
+#~ msgstr "所有插件都不需要等级，跳过这个检查......"
 
 #~ msgid ""
 #~ "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/"
