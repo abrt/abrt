@@ -36,6 +36,7 @@ class ReporterAssistant():
         self.howto_changed = False
         self.report_has_bt = False
         self.selected_report_events = []
+        self.ev_warning = None
         """ create the assistant """
         self.assistant = gtk.Assistant()
         self.assistant.set_icon_name("abrt")
@@ -360,6 +361,7 @@ class ReporterAssistant():
                 except KeyError:
                     buff.set_text(COMMENT_HINT_TEXT)
                 self.comment_tev.set_buffer(buff)
+                self.on_howto_changed(self.howto_tev, None, self.howto_vbox, page)
         elif page == self.pdict_get_page(PAGE_CONFIRM):
             # howto
             if self.howto_changed:
@@ -753,6 +755,49 @@ class ReporterAssistant():
         page.pack_start(self.backtrace_cb, expand=False, fill=False)
         page.show_all()
 
+    def show_warning_for_tev(self, vbox, message):
+        if type(vbox) == gtk.VBox:
+            if not self.ev_warning:
+                lbl_warning = gtk.Label(message)
+                self.ev_warning = gtk.EventBox()
+                self.ev_warning.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse('#CC3333'))
+                self.ev_warning.add(lbl_warning)
+                vbox.pack_start(self.ev_warning, False, False)
+            self.ev_warning.show_all()
+        else:
+            log("Can't show warning because page is not a VBox")
+
+    # TODO: per page warning
+    def hide_warning_for_tev(self, vbox=None):
+        if self.ev_warning:
+            self.ev_warning.hide()
+
+    def is_howto_filled(self, howto_buff):
+        text = ""
+        start_it = howto_buff.get_start_iter()
+        end_it = howto_buff.get_end_iter()
+        text = howto_buff.get_text(start_it, end_it)
+        # ingore new lines and spaces in the text
+        clean_text = text.strip().replace("\n","").replace(" ","")
+        clean_howto_hint = HOW_TO_HINT_TEXT.strip().replace("\n","").replace(" ","")
+        # howto has to be longer then the hint
+        # and must not be same as the hint
+        if ( len(clean_text) >= len(clean_howto_hint) and
+           clean_text != clean_howto_hint
+           ):
+            return True
+        else:
+            return False
+
+    def on_howto_changed(self, textview, event, vbox, page):
+        textbuffer = textview.get_buffer()
+        howto_filled = self.is_howto_filled(textbuffer)
+        if not howto_filled:
+            self.show_warning_for_tev(vbox, _("You need to fill the how to before you can proceed..."))
+        else:
+            self.hide_warning_for_tev()
+        self.assistant.set_page_complete(page, self.is_howto_filled(textbuffer))
+
     def prepare_page_3(self):
         page = gtk.VBox(spacing=10)
         page.set_border_width(10)
@@ -770,7 +815,7 @@ class ReporterAssistant():
         details_hbox.pack_start(details_alignment, expand=False, padding=30)
 
         # how to reproduce
-        howto_vbox = gtk.VBox(spacing=5)
+        self.howto_vbox = gtk.VBox(spacing=0)
         howto_lbl = gtk.Label(_("How did this crash happen (step-by-step)? "
                            "How would you reproduce it?"))
         howto_lbl.set_alignment(0.0, 0.0)
@@ -779,14 +824,15 @@ class ReporterAssistant():
         self.howto_tev.set_wrap_mode(gtk.WRAP_WORD)
         self.howto_tev.set_accepts_tab(False)
         self.howto_tev.connect("focus-out-event", self.on_howto_focusout_cb)
+        self.howto_tev.connect("key-release-event", self.on_howto_changed, self.howto_vbox, page)
         howto_buff = gtk.TextBuffer()
         howto_buff.set_text(HOW_TO_HINT_TEXT)
         self.howto_tev.set_buffer(howto_buff)
         howto_scroll_w = gtk.ScrolledWindow()
         howto_scroll_w.add(self.howto_tev)
         howto_scroll_w.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        howto_vbox.pack_start(howto_lbl, expand=False, fill=True)
-        howto_vbox.pack_start(howto_scroll_w)
+        self.howto_vbox.pack_start(howto_lbl, expand=False, fill=True)
+        self.howto_vbox.pack_start(howto_scroll_w)
 
         # comment
         comment_vbox = gtk.VBox(spacing=5)
@@ -805,7 +851,7 @@ class ReporterAssistant():
         comment_vbox.pack_start(comment_lbl, expand=False, fill=True)
         comment_vbox.pack_start(comment_scroll_w)
 
-        details_vbox.pack_start(howto_vbox)
+        details_vbox.pack_start(self.howto_vbox)
         details_vbox.pack_start(comment_vbox)
         self.assistant.insert_page(page, PAGE_EXTRA_INFO)
         self.pdict_add_page(page, PAGE_EXTRA_INFO)
