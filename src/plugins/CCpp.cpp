@@ -31,13 +31,15 @@ using namespace std;
 #define CORE_PATTERN            "|"CCPP_HOOK_PATH" "DEBUG_DUMPS_DIR" %p %s %u %c"
 #define CORE_PIPE_LIMIT_IFACE   "/proc/sys/kernel/core_pipe_limit"
 /* core_pipe_limit specifies how many dump_helpers might run at the same time
-0 - means unlimited, but the it's not guaranteed that /proc/<pid> of crashing
-process might not be available for dump_helper
-4 - means that 4 dump_helpers can run at the same time, which should be enough
-for ABRT, we can miss some crashes, but what are the odds that more processes
-crash at the same time? This value has been recommended by nhorman
-*/
-#define CORE_PIPE_LIMIT "4"
+ * 0 - means unlimited, but it's not guaranteed that /proc/<pid> of crashing
+ * process will be available for dump_helper
+ * 4 - means that 4 dump_helpers can run at the same time (the rest will also
+ * run, but they will fail to read /proc/<pid>)
+ * This should be enough for ABRT, we can miss some crashes, but what are
+ * the odds that more processes crash at the same time?
+ * The value of 4 has been recommended by nhorman.
+ */
+#define CORE_PIPE_LIMIT         "4"
 
 #define DEBUGINFO_CACHE_DIR     LOCALSTATEDIR"/cache/abrt-di"
 
