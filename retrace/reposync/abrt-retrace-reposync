@@ -1,0 +1,39 @@
+#!/bin/bash
+if    [ $3 ] && [ ! $4 ] \
+   && ( [ $1 = "fedora" ] || [ $1 = "rhel" ] ) \
+   && ( [ $3 = "i686" ] || [ $3 = "x86_64" ] )
+then
+    cd /var/cache/abrt-retrace
+
+    LOG="$1-$2-$3.log"
+    date >> $LOG
+
+    if [ $1 = "fedora" ]
+    then
+        reposync -a $3 \
+        --repoid="$1-$2-$3" \
+        --repoid="$1-$2-$3-debuginfo" \
+        --repoid="$1-$2-$3-updates" \
+        --repoid="$1-$2-$3-updates-debuginfo" \
+        --repoid="$1-$2-$3-updates-testing" \
+        --repoid="$1-$2-$3-updates-testing-debuginfo" | grep "Downloading" >> $LOG
+
+#    createrepo "$1-$2-$3" >> $LOG
+#    createrepo "$1-$2-$3-debuginfo" >> $LOG
+        createrepo "$1-$2-$3-updates" > /dev/null
+        createrepo "$1-$2-$3-updates-debuginfo" > /dev/null
+        createrepo "$1-$2-$3-updates-testing" > /dev/null
+        createrepo "$1-$2-$3-updates-testing-debuginfo" > /dev/null
+    else
+        reposync -a $3 --repoid="$1-$2-$3" | grep "Downloading" >> $LOG
+    fi
+else
+    echo "Usage: $0 distribution version architecture"
+    echo
+    echo "where"
+    echo "distributuon = [fedora|rhel]"
+    echo "version = release version"
+    echo "architecture = [i686|x86_64]"
+
+    exit 1
+fi
