@@ -122,7 +122,7 @@ void save_oops_to_debug_dump(const vector_string_t& oopsList)
 
     VERB1 log("Saving %u oopses as crash dump dirs", idx >= countdown ? countdown-1 : idx);
 
-    char tainted[1] = {'x'};
+    char tainted[2] = {'x', '\0'};
     /* once tainted flag is set to 1, only restart can reset the flag to 0 */
     int tainted_fd = open("/proc/sys/kernel/tainted", O_RDONLY);
     if (tainted_fd > 0)
