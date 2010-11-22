@@ -102,16 +102,6 @@ report_status_t Report(const map_crash_data_t& crash_data,
  */
 mw_result_t SaveDebugDump(const char *pDebugDumpDir,
                         map_crash_data_t& pCrashData);
-/**
- * Get one crash info. If getting is successful,
- * then crash info is filled.
- * @param pUUID A local UUID of a crash.
- * @param pUID An UID of an user.
- * @param pCrashData A crash info.
- * @return It return results of operation. See mw_result_t.
- */
-mw_result_t FillCrashInfo(const char *crash_id,
-                        map_crash_data_t& pCrashData);
 
 vector_map_crash_data_t GetCrashInfos(long caller_uid);
 int  CreateReportThread(const char* crash_id, long caller_uid, int force, const char* pSender);

@@ -37,16 +37,26 @@ CPluginManager* g_pPluginManager;
 
 
 /**
+ * Get one crash info. If getting is successful,
+ * then crash info is filled.
+ * @param dump_dir_name A dump dir containing all necessary data.
+ * @param pCrashData A crash info.
+ * @return It return results of operation. See mw_result_t.
+ */
+static mw_result_t FillCrashInfo(const char *crash_id,
+                        map_crash_data_t& pCrashData);
+
+/**
  * Transforms a debugdump directory to inner crash
  * report form. This form is used for later reporting.
- * @param pDebugDumpDir A debugdump dir containing all necessary data.
+ * @param dump_dir_name A debugdump dir containing all necessary data.
  * @param pCrashData A created crash report.
  */
-static bool DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& pCrashData)
+static bool DebugDumpToCrashReport(const char *dump_dir_name, map_crash_data_t& pCrashData)
 {
-    VERB3 log(" DebugDumpToCrashReport('%s')", pDebugDumpDir);
+    VERB3 log(" DebugDumpToCrashReport('%s')", dump_dir_name);
 
-    struct dump_dir *dd = dd_opendir(pDebugDumpDir, /*flags:*/ 0);
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return false;
 
@@ -56,7 +66,7 @@ static bool DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& 
         if (!dd_exist(dd, *v))
         {
             dd_close(dd);
-            log("Important file '%s/%s' is missing", pDebugDumpDir, *v);
+            log("Important file '%s/%s' is missing", dump_dir_name, *v);
             return false;
         }
         v++;
@@ -561,7 +571,7 @@ mw_result_t SaveDebugDump(const char *dump_dir_name,
     return res;
 }
 
-mw_result_t FillCrashInfo(const char *crash_id,
+static mw_result_t FillCrashInfo(const char *crash_id,
                           map_crash_data_t& pCrashData)
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
