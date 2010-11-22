@@ -122,7 +122,7 @@ void save_oops_to_debug_dump(const vector_string_t& oopsList)
 
     VERB1 log("Saving %u oopses as crash dump dirs", idx >= countdown ? countdown-1 : idx);
 
-    char tainted[1] = {'-1'};
+    char tainted[1] = {'x'};
     /* once tainted flag is set to 1, only restart can reset the flag to 0 */
     int tainted_fd = open("/proc/sys/kernel/tainted", O_RDONLY);
     if (tainted_fd > 0)
@@ -157,7 +157,8 @@ void save_oops_to_debug_dump(const vector_string_t& oopsList)
             /* Optional, makes generated bz more informative */
             strchrnul(second_line, '\n')[0] = '\0';
             dd.SaveText(FILENAME_REASON, second_line);
-            dd.SaveText(FILENAME_TAINTED, tainted);
+            if (tainted[0] == '1')
+                dd.SaveText(FILENAME_TAINTED, tainted);
         }
         catch (CABRTException& e)
         {
