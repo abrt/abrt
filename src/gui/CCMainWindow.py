@@ -184,7 +184,7 @@ class MainWindow():
             # so we shouldn't continue..
             sys.exit()
         for entry in dumplist[::-1]:
-            n = self.dumpsListStore.append([["gtk-no","gtk-yes"][entry.isReported()],
+            n = self.dumpsListStore.append([["gtk-no","gtk-yes"][entry.getMessage() != ""],
                                             entry.getExecutable(),
                                             entry.get_hostname(),
                                             entry.getTime("%c"),
@@ -276,7 +276,7 @@ class MainWindow():
         #move this to Dump class
         hb_reports = self.wTree.get_widget("hb_reports")
         lReported = self.wTree.get_widget("l_message")
-        if dump.isReported():
+        if dump.getMessage() != "":
             hb_reports.show()
             report_label_raw = ""
             report_label = ""
@@ -296,10 +296,10 @@ class MainWindow():
         else:
             hb_reports.hide()
 
-    def mark_last_selected_row(self, dump_list_store, path, iter, last_selected_uuid):
+    def mark_last_selected_row(self, dump_list_store, path, iter, last_selected_DumpDir):
         # Get dump object from list (in our list it's in last col)
         dump = dump_list_store.get_value(iter, dump_list_store.get_n_columns()-1)
-        if dump.getUUID() == last_selected_uuid:
+        if dump.getDumpDir() == last_selected_DumpDir:
             self.dlist.set_cursor(dump_list_store.get_path(iter)[0])
             return True # done, stop iteration
         return False
@@ -315,11 +315,11 @@ class MainWindow():
         if next_iter:
             last_dump = dumpsListStore.get_value(next_iter, dumpsListStore.get_n_columns()-1)
         try:
-            self.ccdaemon.DeleteDebugDump("%s:%s" % (dump.getUID(), dump.getUUID()))
+            self.ccdaemon.DeleteDebugDump(dump.getDumpDir())
             self.hydrate()
             if last_dump:
                 # we deleted the selected line, so we want to select the next one
-                dumpsListStore.foreach(self.mark_last_selected_row, last_dump.getUUID())
+                dumpsListStore.foreach(self.mark_last_selected_row, last_dump.getDumpDir())
             treeview.emit("cursor-changed")
         except Exception, ex:
             print ex
@@ -363,8 +363,7 @@ class MainWindow():
         self.hydrate()
         if last_dump:
             # re-select the line that was selected before a new crash happened
-            dumpsListStore.foreach(self.mark_last_selected_row, last_dump.getUUID())
-
+            dumpsListStore.foreach(self.mark_last_selected_row, last_dump.getDumpDir())
 
     def on_bReport_clicked(self, button):
         dumpsListStore, path = self.dumplist_get_selected()

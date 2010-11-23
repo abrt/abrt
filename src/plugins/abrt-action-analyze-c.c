@@ -50,7 +50,7 @@ static char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return NULL;
-    char *uid_str = dd_load_text(dd, CD_UID);
+    char *uid_str = dd_load_text(dd, FILENAME_UID);
     dd_close(dd);
     unsigned uid = xatoi_u(uid_str);
     free(uid_str);
@@ -231,7 +231,7 @@ int main(int argc, char **argv)
     create_hash(hash_str, string_to_hash);
     /*free(hash_str);*/
 
-    dd_save_text(dd, CD_UUID, hash_str);
+    dd_save_text(dd, FILENAME_UUID, hash_str);
     dd_close(dd);
 
     return 0;

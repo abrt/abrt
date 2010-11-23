@@ -360,86 +360,6 @@ static int SetUpCron()
     return 0;
 }
 
-static void FindNewDumps(const char* pPath)
-{
-    /* Get all debugdump directories in the pPath directory */
-    GList *dirs = NULL;
-    DIR *dp = opendir(pPath);
-    if (dp == NULL)
-    {
-        perror_msg("Can't open directory '%s'", pPath);
-        return;
-    }
-    struct dirent *ep;
-    while ((ep = readdir(dp)))
-    {
-        if (dot_or_dotdot(ep->d_name))
-            continue; /* skip "." and ".." */
-        char *dname = concat_path_file(pPath, ep->d_name);
-        struct stat stats;
-        if (lstat(dname, &stats) == 0)
-        {
-            if (S_ISDIR(stats.st_mode))
-            {
-                VERB1 log("Will check directory '%s'", ep->d_name);
-                dirs = g_list_append(dirs, dname);
-                continue;
-            }
-        }
-        free(dname);
-    }
-    closedir(dp);
-
-    unsigned size = g_list_length(dirs);
-    if (size == 0)
-        return;
-    log("Checking for unsaved crashes (dirs to check:%u)", size);
-
-    /* Get potentially non-processed debugdumps */
-    for (GList *li = dirs; li != NULL; li = g_list_next(li))
-    {
-        try
-        {
-            const char *dir_name = (char*)dirs->data;
-            map_crash_data_t crashinfo;
-            mw_result_t res = SaveDebugDump(dir_name, crashinfo);
-            switch (res)
-            {
-                case MW_OK:
-                    /* Not VERB1: this is new, unprocessed crash dump.
-                     * Last abrtd somehow missed it - need to inform user */
-                    log("Non-processed crash in %s, saving into database", dir_name);
-                    break;
-                case MW_IN_DB:
-                    /* This debugdump was found in DB, nothing else was done
-                     * by SaveDebugDump or needs to be done by us */
-                    VERB1 log("%s is already saved in database", dir_name);
-                    break;
-                case MW_REPORTED: /* already reported dup */
-                case MW_OCCURRED: /* not-yet-reported dup */
-                    VERB1 log("Duplicate crash %s, deleting", dir_name);
-                    delete_debug_dump_dir(dir_name);
-                    break;
-                default:
-                    log("Corrupted or bad crash %s (res:%d), deleting", dir_name, (int)res);
-                    delete_debug_dump_dir(dir_name);
-                    break;
-            }
-        }
-        catch (CABRTException& e)
-        {
-            error_msg("%s", e.what());
-        }
-    }
-
-    for (GList *li = dirs; li != NULL; li = g_list_next(li))
-        free(li->data);
-
-    g_list_free(dirs);
-
-    log("Done checking for unsaved crashes");
-}
-
 static int CreatePidFile()
 {
     int fd;
@@ -616,7 +536,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 char *d = concat_path_file(DEBUG_DUMPS_DIR, worst_dir);
                 free(worst_dir);
                 worst_dir = NULL;
-                DeleteDebugDump_by_dir(d);
+                delete_debug_dump_dir(d);
                 free(d);
             }
         }
@@ -625,38 +545,36 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         try
         {
             fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
-            /* Note: SaveDebugDump does not save crashinfo, it _fetches_ crashinfo */
             map_crash_data_t crashinfo;
-            mw_result_t res = SaveDebugDump(fullname, crashinfo);
+            mw_result_t res = LoadDebugDump(fullname, crashinfo);
             switch (res)
             {
                 case MW_OK:
                     log("New crash %s, processing", fullname);
                     /* Fall through */
 
-                case MW_REPORTED: /* already reported dup */
-                case MW_OCCURRED: /* not-yet-reported dup */
+                case MW_OCCURRED: /* dup */
                 {
                     if (res != MW_OK)
                     {
-                        const char *first = get_crash_data_item_content(crashinfo, CD_DUMPDIR).c_str();
+                        const char *first = get_crash_data_item_content_or_NULL(crashinfo, CD_DUMPDIR);
                         log("Deleting crash %s (dup of %s), sending dbus signal",
                                 strrchr(fullname, '/') + 1,
                                 strrchr(first, '/') + 1);
                         delete_debug_dump_dir(fullname);
                     }
 
-                    const char *analyzer = get_crash_data_item_content(crashinfo, FILENAME_ANALYZER).c_str();
-                    const char *uid_str = get_crash_data_item_content(crashinfo, CD_UID).c_str();
+                    const char *uid_str = get_crash_data_item_content_or_NULL(crashinfo, FILENAME_UID);
+                    const char *inform_all = get_crash_data_item_content_or_NULL(crashinfo, FILENAME_INFORMALL);
 
-                    /* Send dbus signal */
-                    //if (analyzer_has_InformAllUsers(analyzer))
-                    //    uid_str = NULL;
+                    if (inform_all && string_to_bool(inform_all))
+                        uid_str = NULL;
                     char *crash_id = xasprintf("%s:%s",
-                                    get_crash_data_item_content(crashinfo, CD_UID).c_str(),
-                                    get_crash_data_item_content(crashinfo, CD_UUID).c_str()
+                                    get_crash_data_item_content_or_NULL(crashinfo, FILENAME_UID),
+                                    get_crash_data_item_content_or_NULL(crashinfo, FILENAME_UUID)
                     );
-                    g_pCommLayer->Crash(get_crash_data_item_content(crashinfo, FILENAME_PACKAGE).c_str(),
+                    /* Send dbus signal */
+                    g_pCommLayer->Crash(get_crash_data_item_content_or_NULL(crashinfo, FILENAME_PACKAGE),
                                     crash_id,
                                     fullname,
                                     uid_str
@@ -664,9 +582,6 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                     free(crash_id);
                     break;
                 }
-                case MW_IN_DB:
-                    log("Huh, this crash is already in db?! Nothing to do");
-                    break;
                 case MW_CORRUPTED:
                 case MW_GPG_ERROR:
                 default:
@@ -984,8 +899,6 @@ int main(int argc, char** argv)
     /* Enter the event loop */
     try
     {
-        /* This may take a while, therefore we don't do it in init section */
-        FindNewDumps(DEBUG_DUMPS_DIR);
         log("Init complete, entering main loop");
         run_main_loop(pMainloop);
     }

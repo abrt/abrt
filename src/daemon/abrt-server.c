@@ -134,7 +134,7 @@ static void create_debug_dump()
     /* Store id of the user whose application crashed. */
     char uid_str[sizeof(long) * 3 + 2];
     sprintf(uid_str, "%lu", (long)client_uid);
-    dd_save_text(dd, CD_UID, uid_str);
+    dd_save_text(dd, FILENAME_UID, uid_str);
 
     dd_close(dd);
 

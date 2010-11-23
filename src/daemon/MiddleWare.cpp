@@ -43,7 +43,7 @@ CPluginManager* g_pPluginManager;
  * @param pCrashData A crash info.
  * @return It return results of operation. See mw_result_t.
  */
-static mw_result_t FillCrashInfo(const char *crash_id,
+static mw_result_t FillCrashInfo(const char *dump_dir_name,
                         map_crash_data_t& pCrashData);
 
 /**
@@ -79,6 +79,8 @@ static bool DebugDumpToCrashReport(const char *dump_dir_name, map_crash_data_t& 
     add_to_crash_data_ext(pCrashData, CD_EVENTS, CD_SYS, CD_ISNOTEDITABLE, events);
     free(events);
 
+    add_to_crash_data_ext(pCrashData, CD_DUMPDIR, CD_SYS, CD_ISNOTEDITABLE, dump_dir_name);
+
     return true;
 }
 
@@ -94,43 +96,44 @@ static char *do_log_and_update_client(char *log_line, void *param)
  * (1) by StartJob dbus call -> CreateReportThread(), in the thread
  * (2) by CreateReport dbus call
  */
-mw_result_t CreateCrashReport(const char *crash_id,
+mw_result_t CreateCrashReport(const char *dump_dir_name,
                 long caller_uid,
                 int force,
                 map_crash_data_t& pCrashData)
 {
-    VERB2 log("CreateCrashReport('%s',%ld,result)", crash_id, caller_uid);
+    VERB2 log("CreateCrashReport('%s',%ld,result)", dump_dir_name, caller_uid);
 
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
-    database->Connect();
-    struct db_row *row = database->GetRow(crash_id);
-    database->DisConnect();
-    if (!row)
-    {
-        error_msg("crash '%s' is not in database", crash_id);
-        return MW_IN_DB_ERROR;
-    }
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        return MW_NOENT_ERROR;
 
     mw_result_t r = MW_OK;
 
-    if (caller_uid != 0 /* not called by root */
-     && row->db_inform_all[0] != '1'
-    ) {
+    if (caller_uid != 0) /* not called by root */
+    {
         char caller_uid_str[sizeof(long) * 3 + 2];
         sprintf(caller_uid_str, "%ld", caller_uid);
-        if (strcmp(caller_uid_str, row->db_uid) != 0)
+
+        char *uid = dd_load_text(dd, FILENAME_UID);
+        if (strcmp(uid, caller_uid_str) != 0)
         {
-            error_msg("crash '%s' can't be accessed by user with uid %ld", crash_id, caller_uid);
-            r = MW_IN_DB_ERROR;
-            goto ret;
+            char *inform_all = dd_load_text(dd, FILENAME_INFORMALL);
+            if (!string_to_bool(inform_all))
+            {
+                dd_close(dd);
+                error_msg("crash '%s' can't be accessed by user with uid %ld", dump_dir_name, caller_uid);
+                r = MW_PERM_ERROR;
+                goto ret;
+            }
         }
     }
+    dd_close(dd);
 
     try
     {
         struct run_event_state *run_state = new_run_event_state();
         run_state->logging_callback = do_log_and_update_client;
-        int res = run_event(run_state, row->db_dump_dir, force ? "reanalyze" : "analyze");
+        int res = run_event(run_state, dump_dir_name, force ? "reanalyze" : "analyze");
         free_run_event_state(run_state);
         if (res != 0 && res != -1) /* -1 is "nothing was done", here it is ok */
         {
@@ -141,7 +144,7 @@ mw_result_t CreateCrashReport(const char *crash_id,
         /* Do a load_crash_data_from_debug_dump from (possibly updated)
          * crash dump dir
          */
-        if (!DebugDumpToCrashReport(row->db_dump_dir, pCrashData))
+        if (!DebugDumpToCrashReport(dump_dir_name, pCrashData))
         {
             error_msg("Error loading crash data");
             r = MW_ERROR;
@@ -159,7 +162,6 @@ mw_result_t CreateCrashReport(const char *crash_id,
     }
 
  ret:
-    db_row_free(row);
     VERB3 log("CreateCrashReport() returns %d", r);
     return r;
 }
@@ -207,17 +209,16 @@ report_status_t Report(const map_crash_data_t& client_report,
                        long caller_uid)
 {
     // Get ID fields
-    const char *UID = get_crash_data_item_content_or_NULL(client_report, CD_UID);
-    const char *UUID = get_crash_data_item_content_or_NULL(client_report, CD_UUID);
-    if (!UID || !UUID)
+    const char *UID = get_crash_data_item_content_or_NULL(client_report, FILENAME_UID);
+    const char *dump_dir_name = get_crash_data_item_content_or_NULL(client_report, CD_DUMPDIR);
+    if (!UID || !dump_dir_name)
     {
-        throw CABRTException(EXCEP_ERROR, "Report(): UID or UUID is missing in client's report data");
+        throw CABRTException(EXCEP_ERROR, "Report(): UID or DUMPDIR is missing in client's report data");
     }
-    string crash_id = ssprintf("%s:%s", UID, UUID);
 
     // Retrieve corresponding stored record
     map_crash_data_t stored_report;
-    mw_result_t r = FillCrashInfo(crash_id.c_str(), stored_report);
+    mw_result_t r = FillCrashInfo(dump_dir_name, stored_report);
     if (r != MW_OK)
     {
         return report_status_t();
@@ -225,14 +226,12 @@ report_status_t Report(const map_crash_data_t& client_report,
 
     // Is it allowed for this user to report?
     if (caller_uid != 0   // not called by root
-     && get_crash_data_item_content(stored_report, CD_INFORMALL) != "1"
+     && get_crash_data_item_content(stored_report, FILENAME_INFORMALL) != "1"
      && strcmp(to_string(caller_uid).c_str(), UID) != 0
     ) {
         throw CABRTException(EXCEP_ERROR, "Report(): user with uid %ld can't report crash %s",
-                        caller_uid, crash_id.c_str());
+                        caller_uid, dump_dir_name);
     }
-
-    const char *dump_dir_name = get_crash_data_item_content_or_NULL(stored_report, CD_DUMPDIR);
 
     // Save comment, "how to reproduce", backtrace
 //TODO: we should iterate through stored_report and modify all
@@ -363,136 +362,102 @@ report_status_t Report(const map_crash_data_t& client_report,
     }
     g_list_free(env_list);
 
-    // Save reporting results to database
+    // Save reporting results
     if (at_least_one_reporter_succeeded)
     {
-        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
-        database->Connect();
         report_status_t::iterator ret_it = ret.begin();
         while (ret_it != ret.end())
         {
-            const string &event = ret_it->first;
-            const vector_string_t &v = ret_it->second;
-            if (v[REPORT_STATUS_IDX_FLAG] == "1")
-            {
-                database->SetReportedPerReporter(crash_id.c_str(), event.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
-            }
+//            const string &event = ret_it->first;
+//            const vector_string_t &v = ret_it->second;
+//            if (v[REPORT_STATUS_IDX_FLAG] == "1")
+//            {
+// TODO: append to a log of reports done
+//                database->SetReportedPerReporter(dump_dir_name, event.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
+//            }
             ret_it++;
         }
-        database->SetReported(crash_id.c_str(), message.c_str());
-        database->DisConnect();
+        /* Was: database->SetReported(dump_dir_name, message.c_str()); */
+        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        if (dd)
+        {
+            dd_save_text(dd, FILENAME_MESSAGE, message.c_str());
+            dd_close(dd);
+        }
     }
 
     return ret;
 #undef client_report
 }
 
-/**
- * Check whether particular debugdump directory is saved in database.
- * @param debug_dump_dir
- *  A debugdump dir containing all necessary data.
- * @return
- *  It returns true if debugdump dir is already saved, otherwise
- *  it returns false.
- */
-static bool is_debug_dump_saved(const char *debug_dump_dir)
-{
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
-    database->Connect();
-    struct db_row *row = database->GetRow_by_dir(debug_dump_dir);
-    database->DisConnect();
-
-    db_row_free(row);
-    return row != NULL;
-}
-
-/**
- * Save a debugdump into database. If saving is
- * successful, then crash info is filled. Otherwise the crash info is
- * not changed.
- * @param pUUID A local UUID of a crash.
- * @param pUID An UID of an user.
- * @param pTime Time when a crash occurs.
- * @param pDebugDumpPath A debugdump path.
- * @param pCrashData A filled crash info.
- * @return It return results of operation. See mw_result_t.
- */
-static mw_result_t SaveDebugDumpToDatabase(const char *crash_id,
-                bool inform_all_users,
-                const char *pTime,
-                const char *pDebugDumpDir,
-                map_crash_data_t& pCrashData)
-{
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
-    database->Connect();
-    /* note: if [UUID,UID] record exists, pDebugDumpDir is not updated in the record */
-    database->Insert_or_Update(crash_id, inform_all_users, pDebugDumpDir, pTime);
-
-    struct db_row *row = database->GetRow(crash_id);
-    database->DisConnect();
-
-    mw_result_t res = FillCrashInfo(crash_id, pCrashData);
-    if (res == MW_OK)
-    {
-        const char *first = get_crash_data_item_content(pCrashData, CD_DUMPDIR).c_str();
-        if (row && row->db_reported[0] == '1')
-        {
-            log("Crash is in database already (dup of %s) and is reported", first);
-            db_row_free(row);
-            return MW_REPORTED;
-        }
-        if (row && xatou(row->db_count) > 1)
-        {
-            db_row_free(row);
-            log("Crash is in database already (dup of %s)", first);
-            return MW_OCCURRED;
-        }
-    }
-    db_row_free(row);
-    return res;
-}
-
-/* We need to share some data between SaveDebugDump and is_crash_id_in_db: */
+/* We need to share some data between LoadDebugDump and is_crash_a_dup: */
 struct cdump_state {
-    char *uid;             /* filled by SaveDebugDump */
-    char *crash_id;        /* filled by is_crash_id_in_db */
-    int crash_id_is_in_db; /* filled by is_crash_id_in_db */
+    char *uid;                   /* filled by LoadDebugDump */
+    char *uuid;                  /* filled by is_crash_a_dup */
+    char *crash_dump_dup_name;   /* filled by is_crash_a_dup */
 };
 
-static int is_crash_id_in_db(const char *dump_dir_name, void *param)
+static int is_crash_a_dup(const char *dump_dir_name, void *param)
 {
     struct cdump_state *state = (struct cdump_state *)param;
 
-    if (state->crash_id)
+    if (state->uuid)
         return 0; /* we already checked it, don't do it again */
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return 0; /* wtf? (error, but will be handled elsewhere later) */
-    char *uuid = dd_load_text_ext(dd, CD_UUID,
+    state->uuid = dd_load_text_ext(dd, FILENAME_UUID,
                 DD_FAIL_QUIETLY + DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
     );
     dd_close(dd);
-    if (!uuid)
+    if (!state->uuid)
     {
         return 0; /* no uuid (yet), "run_event, please continue iterating" */
     }
-    state->crash_id = xasprintf("%s:%s", state->uid, uuid);
-    free(uuid);
 
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
-    database->Connect();
-    struct db_row *row = database->GetRow(state->crash_id);
-    database->DisConnect();
+    /* Scan crash dumps looking for a dup */
+//TODO: explain why this is safe wrt concurrent runs
+    DIR *dir = opendir(DEBUG_DUMPS_DIR);
+    if (dir != NULL)
+    {
+        struct dirent *dent;
+        while ((dent = readdir(dir)) != NULL)
+        {
+            if (dot_or_dotdot(dent->d_name))
+                continue; /* skip "." and ".." */
 
-    if (!row) /* Crash id is not in db - this crash wasn't seen before */
-        return 0; /* "run_event, please continue iterating" */
+            int different;
+            char *uid, *uuid;
+            char *dump_dir_name2 = concat_path_file(DEBUG_DUMPS_DIR, dent->d_name);
 
-    /* Crash id is in db */
-    db_row_free(row);
-    state->crash_id_is_in_db = 1;
-    /* "run_event, please stop iterating": */
-    return 1;
+            if (strcmp(dump_dir_name, dump_dir_name2) == 0)
+                goto next; /* we are never a dup of ourself */
+
+            dd = dd_opendir(dump_dir_name2, /*flags:*/ 0);
+            if (!dd)
+                goto next;
+            uid = dd_load_text(dd, FILENAME_UID);
+            uuid = dd_load_text(dd, FILENAME_UUID);
+            dd_close(dd);
+            different = strcmp(state->uid, uid) || strcmp(state->uuid, uuid);
+            free(uid);
+            free(uuid);
+            if (different)
+                goto next;
+
+            state->crash_dump_dup_name = dump_dir_name2;
+            /* "run_event, please stop iterating": */
+            return 1;
+
+ next:
+            free(dump_dir_name2);
+        }
+        closedir(dir);
+    }
+
+    /* No dup found */
+    return 0; /* "run_event, please continue iterating" */
 }
 
 static char *do_log(char *log_line, void *param)
@@ -502,92 +467,110 @@ static char *do_log(char *log_line, void *param)
     return log_line;
 }
 
-mw_result_t SaveDebugDump(const char *dump_dir_name,
+mw_result_t LoadDebugDump(const char *dump_dir_name,
                           map_crash_data_t& pCrashData)
 {
     mw_result_t res;
 
-    if (is_debug_dump_saved(dump_dir_name))
-        return MW_IN_DB;
-
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return MW_ERROR;
-    struct cdump_state state = { NULL, NULL, false }; /* uid, crash_id, crash_id_is_in_db */
-    state.uid = dd_load_text(dd, CD_UID);
-    char *time = dd_load_text(dd, FILENAME_TIME);
+    struct cdump_state state;
+    state.uid = dd_load_text(dd, FILENAME_UID);
+    state.uuid = NULL;
+    state.crash_dump_dup_name = NULL;
     char *analyzer = dd_load_text(dd, FILENAME_ANALYZER);
     dd_close(dd);
 
     res = MW_ERROR;
 
+    /* Run post-create event handler(s) */
     struct run_event_state *run_state = new_run_event_state();
-    run_state->post_run_callback = is_crash_id_in_db;
+    run_state->post_run_callback = is_crash_a_dup;
     run_state->post_run_param = &state;
     run_state->logging_callback = do_log;
     int r = run_event(run_state, dump_dir_name, "post-create");
     free_run_event_state(run_state);
 
-    /* Is crash id in db? (In this case, is_crash_id_in_db() should have
+//TODO: consider this case:
+// new dump is created, post-create detects that it is a dup,
+// but then FillCrashInfo(dup_name) *FAILS*.
+// In this case, we later delete damaged dup_name (right?)
+// but new dump never gets its FILENAME_COUNT set!
+
+    /* Is crash a dup? (In this case, is_crash_a_dup() should have
      * aborted "post-create" event processing as soon as it saw uuid
-     * such that uid:uuid (=crash_id) is in database, and set
-     * the state.crash_id_is_in_db flag)
+     * and determined that there is another crash with same uuid.
+     * In this case it sets state.crash_dump_dup_name)
      */
-    if (!state.crash_id_is_in_db)
+    if (!state.crash_dump_dup_name)
     {
         /* No. Was there error on one of processing steps in run_event? */
         if (r != 0)
             goto ret; /* yes */
 
-        /* Was uuid created after all? (In this case, is_crash_id_in_db()
-         * should have fetched it and created state.crash_id)
+        /* Was uuid created after all? (In this case, is_crash_a_dup()
+         * should have fetched it and created state.uuid)
          */
-        if (!state.crash_id)
+        if (!state.uuid)
         {
             /* no */
             log("Dump directory '%s' has no UUID element", dump_dir_name);
             goto ret;
         }
     }
+    else
+    {
+        dump_dir_name = state.crash_dump_dup_name;
+    }
 
     /* Loads pCrashData (from the *first debugdump dir* if this one is a dup)
      * Returns:
-     * MW_REPORTED: "the crash is flagged as reported in DB" (which also means it's a dup)
      * MW_OCCURRED: "crash count is != 1" (iow: it is > 1 - dup)
      * MW_OK: "crash count is 1" (iow: this is a new crash, not a dup)
      * else: an error code
      */
-    res = SaveDebugDumpToDatabase(state.crash_id,
-                    true, /*analyzer_has_InformAllUsers(analyzer),*/
-                    time,
-                    dump_dir_name,
-                    pCrashData);
+    {
+        dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        if (!dd)
+        {
+            res = MW_ERROR;
+            goto ret;
+        }
+        char *count_str = dd_load_text_ext(dd, FILENAME_COUNT, DD_FAIL_QUIETLY);
+        unsigned long count = strtoul(count_str, NULL, 10);
+        count++;
+        char new_count_str[sizeof(long)*3 + 2];
+        sprintf(new_count_str, "%lu", count);
+        dd_save_text(dd, FILENAME_COUNT, new_count_str);
+        dd_close(dd);
+
+        res = FillCrashInfo(dump_dir_name, pCrashData);
+        if (res == MW_OK)
+        {
+            if (count > 1)
+            {
+                log("Crash dump is a duplicate of %s", dump_dir_name);
+                res = MW_OCCURRED;
+            }
+        }
+    }
+
  ret:
-    free(state.crash_id);
+    free(state.uuid);
     free(state.uid);
-    free(time);
+    free(state.crash_dump_dup_name);
     free(analyzer);
 
     return res;
 }
 
-static mw_result_t FillCrashInfo(const char *crash_id,
+static mw_result_t FillCrashInfo(const char *dump_dir_name,
                           map_crash_data_t& pCrashData)
 {
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
-    database->Connect();
-    struct db_row *row = database->GetRow(crash_id);
-    database->DisConnect();
-
-    if (!row)
-        return MW_ERROR;
-
-    struct dump_dir *dd = dd_opendir(row->db_dump_dir, /*flags:*/ 0);
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
-    {
-        db_row_free(row);
         return MW_ERROR;
-    }
 
     load_crash_data_from_debug_dump(dd, pCrashData);
     char *events = list_possible_events(dd, NULL, "");
@@ -596,76 +579,85 @@ static mw_result_t FillCrashInfo(const char *crash_id,
     add_to_crash_data_ext(pCrashData, CD_EVENTS, CD_SYS, CD_ISNOTEDITABLE, events);
     free(events);
 
-//TODO: we _never_ use CD_SYS, perhaps we should use it here?
-    add_to_crash_data(pCrashData, CD_UID              , row->db_uid        );
-    add_to_crash_data(pCrashData, CD_UUID             , row->db_uuid       );
-    add_to_crash_data(pCrashData, CD_INFORMALL        , row->db_inform_all );
-    add_to_crash_data(pCrashData, CD_COUNT            , row->db_count      );
-    add_to_crash_data(pCrashData, CD_REPORTED         , row->db_reported   );
-    add_to_crash_data(pCrashData, CD_MESSAGE          , row->db_message    );
-    add_to_crash_data(pCrashData, CD_DUMPDIR          , row->db_dump_dir   );
-    add_to_crash_data(pCrashData, FILENAME_TIME       , row->db_time       );
-
-    db_row_free(row);
+    add_to_crash_data_ext(pCrashData, CD_DUMPDIR, CD_SYS, CD_ISNOTEDITABLE, dump_dir_name);
 
     return MW_OK;
-}
-
-static void GetUUIDsOfCrash(long caller_uid, vector_string_t &result)
-{
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
-    database->Connect();
-    GList *rows = database->GetUIDData(caller_uid);
-    database->DisConnect();
-
-    for (GList *li = rows; li != NULL; li = g_list_next(li))
-    {
-        struct db_row *row = (struct db_row*)li->data;
-        string crash_id = ssprintf("%s:%s", row->db_uid, row->db_uuid);
-        result.push_back(crash_id);
-    }
-
-    // TODO: return GList
-    db_list_free(rows);
 }
 
 vector_map_crash_data_t GetCrashInfos(long caller_uid)
 {
     vector_map_crash_data_t retval;
     log("Getting crash infos...");
-    try
+
+    DIR *dir = opendir(DEBUG_DUMPS_DIR);
+    if (dir != NULL)
     {
-        vector_string_t crash_ids;
-//TODO: it looks strange that we select UUIDs
-//olny in order to find which directories to read!
-//Should we simply retrieve list of *directories*, not *uuids*?
-        GetUUIDsOfCrash(caller_uid, crash_ids);
-
-        unsigned int ii;
-        for (ii = 0; ii < crash_ids.size(); ii++)
+        try
         {
-            const char *crash_id = crash_ids[ii].c_str();
-
-            map_crash_data_t info;
-            mw_result_t res = FillCrashInfo(crash_id, info);
-            switch (res)
+            struct dirent *dent;
+            while ((dent = readdir(dir)) != NULL)
             {
-                case MW_OK:
-                    retval.push_back(info);
-                    break;
-                case MW_ERROR:
-                    error_msg("Dump directory for crash_id %s doesn't exist or misses crucial files, deleting", crash_id);
-                    /* Deletes both DB record and dump dir */
-                    DeleteDebugDump(crash_id, /*caller_uid:*/ 0);
-                    break;
-                default:
-                    break;
+                if (dot_or_dotdot(dent->d_name))
+                    continue; /* skip "." and ".." */
+
+                char *dump_dir_name = concat_path_file(DEBUG_DUMPS_DIR, dent->d_name);
+
+                struct stat statbuf;
+                if (stat(dump_dir_name, &statbuf) != 0
+                 || !S_ISDIR(statbuf.st_mode)
+                ) {
+                    goto next; /* not a dir, skip */
+                }
+
+                /* Skip directories which are not for this uid */
+                if (caller_uid != 0) /* not called by root? */
+                {
+                    char *uid;
+                    char caller_uid_str[sizeof(long) * 3 + 2];
+
+                    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+                    if (!dd)
+                        goto next;
+
+                    sprintf(caller_uid_str, "%ld", caller_uid);
+                    uid = dd_load_text(dd, FILENAME_UID);
+                    if (strcmp(uid, caller_uid_str) != 0)
+                    {
+                        char *inform_all = dd_load_text(dd, FILENAME_INFORMALL);
+                        if (!string_to_bool(inform_all))
+                        {
+                            dd_close(dd);
+                            goto next;
+                        }
+                    }
+                    dd_close(dd);
+                }
+
+                {
+                    map_crash_data_t info;
+                    mw_result_t res = FillCrashInfo(dump_dir_name, info);
+                    switch (res)
+                    {
+                        case MW_OK:
+                            retval.push_back(info);
+                            break;
+                        case MW_ERROR:
+                            error_msg("Dump directory %s doesn't exist or misses crucial files, deleting", dump_dir_name);
+                            delete_debug_dump_dir(dump_dir_name);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+ next:
+                free(dump_dir_name);
             }
         }
-    }
-    catch (CABRTException& e)
-    {
-        error_msg("%s", e.what());
+        catch (CABRTException& e)
+        {
+            error_msg("%s", e.what());
+        }
+        closedir(dir);
     }
 
     return retval;
@@ -681,19 +673,18 @@ vector_map_crash_data_t GetCrashInfos(long caller_uid)
  */
 void CreateReport(const char* crash_id, long caller_uid, int force, map_crash_data_t& crashReport)
 {
-    /* FIXME: starting from here, any shared data must be protected with a mutex.
-     * For example, CreateCrashReport does:
-     * g_pPluginManager->GetDatabase(g_settings_sDatabase);
-     * which is unsafe wrt concurrent updates to g_pPluginManager state.
-     */
+    /* FIXME: starting from here, any shared data must be protected with a mutex. */
     mw_result_t res = CreateCrashReport(crash_id, caller_uid, force, crashReport);
     switch (res)
     {
         case MW_OK:
             VERB2 log_map_crash_data(crashReport, "crashReport");
             break;
-        case MW_IN_DB_ERROR:
-            error_msg("Can't find crash with id %s in database", crash_id);
+        case MW_NOENT_ERROR:
+            error_msg("Can't find crash with id '%s'", crash_id);
+            break;
+        case MW_PERM_ERROR:
+            error_msg("Can't find crash with id '%s'", crash_id);
             break;
         case MW_PLUGIN_ERROR:
             error_msg("Particular analyzer plugin isn't loaded or there is an error within plugin(s)");
@@ -770,63 +761,34 @@ int CreateReportThread(const char* crash_id, long caller_uid, int force, const c
 }
 
 
-/* Remove dump dir and its DB record */
-int DeleteDebugDump(const char *crash_id, long caller_uid)
+/* Remove dump dir */
+int DeleteDebugDump(const char *dump_dir_name, long caller_uid)
 {
-    try
-    {
-        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
-        database->Connect();
-        struct db_row *row = database->GetRow(crash_id);
-        if (!row)
-        {
-            database->DisConnect();
-            return ENOENT;
-        }
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        return MW_NOENT_ERROR;
 
+    if (caller_uid != 0) /* not called by root */
+    {
         char caller_uid_str[sizeof(long) * 3 + 2];
-        sprintf(caller_uid_str, "%li", caller_uid);
+        sprintf(caller_uid_str, "%ld", caller_uid);
 
-        if (caller_uid != 0 /* not called by root */
-         && row->db_inform_all[0] != '1'
-         && strcmp(caller_uid_str, row->db_uid) != 0
-        ) {
-            database->DisConnect();
-            db_row_free(row);
-            return EPERM;
-        }
-        database->DeleteRow(crash_id);
-        database->DisConnect();
-        if (row->db_dump_dir[0] != '\0')
+        char *uid = dd_load_text(dd, FILENAME_UID);
+        if (strcmp(uid, caller_uid_str) != 0)
         {
-            delete_debug_dump_dir(row->db_dump_dir);
-            db_row_free(row);
-            return 0; /* success */
+            char *inform_all = dd_load_text(dd, FILENAME_INFORMALL);
+            if (!string_to_bool(inform_all))
+            {
+                dd_close(dd);
+                error_msg("crash '%s' can't be accessed by user with uid %ld", dump_dir_name, caller_uid);
+                return 1;
+            }
         }
-        db_row_free(row);
     }
-    catch (CABRTException& e)
-    {
-        error_msg("%s", e.what());
-    }
-    return EIO; /* generic failure code */
-}
 
-void DeleteDebugDump_by_dir(const char *dump_dir)
-{
-    try
-    {
-        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
-        database->Connect();
-        database->DeleteRows_by_dir(dump_dir);
-        database->DisConnect();
+    dd_delete(dd);
 
-        delete_debug_dump_dir(dump_dir);
-    }
-    catch (CABRTException& e)
-    {
-        error_msg("%s", e.what());
-    }
+    return 0; /* success */
 }
 
 void GetPluginsInfo(map_map_string_t &map_of_plugin_info)

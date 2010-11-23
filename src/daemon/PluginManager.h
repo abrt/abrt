@@ -25,7 +25,6 @@
 #include "abrt_types.h"
 #include "plugin.h"
 #include "analyzer.h"
-#include "database.h"
 #include "action.h"
 
 class CLoadedModule; /* opaque */
@@ -89,12 +88,6 @@ class CPluginManager
          * @return An action plugin.
          */
         CAction* GetAction(const char *pName, bool silent = false);
-        /**
-         * A method, which returns instance of particular database plugin.
-         * @param pName A plugin name.
-         * @return A database plugin.
-         */
-        CDatabase* GetDatabase(const char *pName);
         /**
          * A method, which returns type of particular plugin.
          * @param pName A plugin name.

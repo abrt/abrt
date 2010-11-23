@@ -1065,7 +1065,7 @@ class ReporterAssistant():
         # when getReport is done it emits "analyze-complete" and on_analyze_complete_cb is called
         # FIXME: does it make sense to change it to use callback rather then signal emitting?
         try:
-            self.daemon.start_job("%s:%s" % (self.report.getUID(), self.report.getUUID()), force)
+            self.daemon.start_job(self.report.getDumpDir(), force)
         except Exception, ex:
             # FIXME #3  dbus.exceptions.DBusException: org.freedesktop.DBus.Error.NoReply: Did not receive a reply
             # do this async and wait for yum to end with debuginfoinstal

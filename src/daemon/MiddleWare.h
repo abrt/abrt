@@ -30,13 +30,12 @@
  */
 typedef enum {
     MW_OK,               /**< No error.*/
-    MW_OCCURRED,         /**< A not-yet-reported dup.*/
-    MW_REPORTED,         /**< A reported dup.*/
+    MW_OCCURRED,         /**< No error, but thus dump is a dup.*/
     MW_ERROR,            /**< Common error.*/
+    MW_NOENT_ERROR,
+    MW_PERM_ERROR,
     MW_CORRUPTED,        /**< Debugdump directory is corrupted.*/
     MW_GPG_ERROR,        /**< Package is not signed properly.*/
-    MW_IN_DB,            /**< Debugdump directory is already saved in a database.*/
-    MW_IN_DB_ERROR,      /**< Error while working with a database.*/
     MW_PLUGIN_ERROR,     /**< plugin wasn't found or error within plugin*/
 } mw_result_t;
 
@@ -56,7 +55,7 @@ typedef enum {
  * @param pCrashData A filled crash report.
  * @return It return results of operation. See mw_result_t.
  */
-mw_result_t CreateCrashReport(const char *crash_id,
+mw_result_t CreateCrashReport(const char *dump_dir_name,
                               long caller_uid,
                               int force,
                               map_crash_data_t& pCrashData);
@@ -91,23 +90,20 @@ report_status_t Report(const map_crash_data_t& crash_data,
                        const map_map_string_t& settings,
                        long caller_uid);
 /**
- * Adds package name and description to debugdump dir.
- * Saves debugdump into database.
- * Detects whether it's a duplicate crash.
+ * Detects whether it's a duplicate crash dump.
  * Fills crash info.
  * Note that if it's a dup, loads _first crash_ info, not this one's.
- * @param pDebugDumpDir A debugdump directory.
+ * @param dump_dir_name A debugdump directory.
  * @param pCrashData A crash info.
  * @return It return results of operation. See mw_result_t.
  */
-mw_result_t SaveDebugDump(const char *pDebugDumpDir,
+mw_result_t LoadDebugDump(const char *dump_dir_name,
                         map_crash_data_t& pCrashData);
 
 vector_map_crash_data_t GetCrashInfos(long caller_uid);
-int  CreateReportThread(const char* crash_id, long caller_uid, int force, const char* pSender);
-void CreateReport(const char* crash_id, long caller_uid, int force, map_crash_data_t&);
-int  DeleteDebugDump(const char *crash_id, long caller_uid);
-void DeleteDebugDump_by_dir(const char *dump_dir);
+int  CreateReportThread(const char* dump_dir_name, long caller_uid, int force, const char* pSender);
+void CreateReport(const char* dump_dir_name, long caller_uid, int force, map_crash_data_t&);
+int  DeleteDebugDump(const char *dump_dir_name, long caller_uid);
 
 void GetPluginsInfo(map_map_string_t &map_of_plugin_info);
 void GetPluginSettings(const char *plugin_name, map_plugin_settings_t &plugin_settings);

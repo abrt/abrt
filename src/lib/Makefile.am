@@ -38,7 +38,6 @@ libABRTUtils_la_SOURCES = \
     run_event.c \
     abrt_packages.c abrt_packages.h \
     hooklib.c hooklib.h \
-    database.c \
     parse_options.c parse_options.h
 libABRTUtils_la_CPPFLAGS = \
     -Wall -Werror \

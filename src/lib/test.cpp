@@ -83,14 +83,14 @@ int main(int argc, char** argv)
             std::cout << "Application Crashed! " <<
                          crashInfo[FILENAME_PACKAGE][CD_CONTENT] << ", " <<
                          crashInfo[FILENAME_EXECUTABLE][CD_CONTENT] << ", " <<
-                         crashInfo[CD_COUNT][CD_CONTENT] << ", " << std::endl;
+                         crashInfo[FILENAME_COUNT][CD_CONTENT] << ", " << std::endl;
 
             /* Get Report, so user can change data (remove private stuff)
              * If we do not want user interaction, just send data immediately
              */
             map_crash_data_t crashReport;
             middleWare.CreateCrashReport(crashInfo[FILENAME_DUPHASH][CD_CONTENT],
-                                         crashInfo[CD_UID][CD_CONTENT],
+                                         crashInfo[FILENAME_UID][CD_CONTENT],
                                          crashReport);
             /* Report crash */
             middleWare.Report(crashReport);

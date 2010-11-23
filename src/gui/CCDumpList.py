@@ -30,8 +30,7 @@ class DumpList(list):
 
     def getDumpByCrashID(self, crashid):
         for dump in self:
-            # crashid can be either hash or uid:hash
-            if crashid in (dump.getUUID(),dump.getUID()+":"+dump.getUUID()):
+            if crashid == dump.getDumpDir():
                 return dump
 
 __PFList = None

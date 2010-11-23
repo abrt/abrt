@@ -167,7 +167,7 @@ int main(int argc, char **argv)
     hash &= 0x7FFFFFFF;
     char hash_str[sizeof(int)*3 + 2];
     sprintf(hash_str, "%u", hash);
-    dd_save_text(dd, CD_UUID, hash_str);
+    dd_save_text(dd, FILENAME_UUID, hash_str);
     dd_save_text(dd, FILENAME_DUPHASH, hash_str);
 
     dd_close(dd);

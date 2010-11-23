@@ -111,7 +111,7 @@ int main(int argc, char **argv)
     }
     *d = '\0';
 
-    dd_save_text(dd, CD_UUID, hash_str);
+    dd_save_text(dd, FILENAME_UUID, hash_str);
     dd_save_text(dd, FILENAME_DUPHASH, hash_str);
     dd_close(dd);
 

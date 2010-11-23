@@ -166,11 +166,10 @@ static int create_and_upload_archive(
         char *short_name, *full_name;
         while (dd_get_next_file(dd, &short_name, &full_name))
         {
-            if (strcmp(short_name, CD_COUNT) == 0) goto next;
+            if (strcmp(short_name, FILENAME_COUNT) == 0) goto next;
             if (strcmp(short_name, CD_DUMPDIR) == 0) goto next;
-            if (strcmp(short_name, CD_INFORMALL) == 0) goto next;
-            if (strcmp(short_name, CD_REPORTED) == 0) goto next;
-            if (strcmp(short_name, CD_MESSAGE) == 0) goto next; // plugin's status message (if we already reported it yesterday)
+            if (strcmp(short_name, FILENAME_INFORMALL) == 0) goto next;
+            if (strcmp(short_name, FILENAME_MESSAGE) == 0) goto next; // plugin's status message (if we already reported it yesterday)
             if (strcmp(short_name, FILENAME_DESCRIPTION) == 0) goto next; // package description
             // dd_get_next_file guarantees this:
             //struct stat stbuf;

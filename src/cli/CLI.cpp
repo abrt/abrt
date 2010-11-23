@@ -44,18 +44,18 @@ static void print_crash(const map_crash_data_t &crash)
     const char *timestr = get_crash_data_item_content(crash, FILENAME_TIME).c_str();
     const char *timeloc = localize_crash_time(timestr);
 
-    printf(_("\tUID        : %s\n"
-             "\tUUID       : %s\n"
+    printf(_("\tCrash dump : %s\n"
+             "\tUID        : %s\n"
              "\tPackage    : %s\n"
              "\tExecutable : %s\n"
              "\tCrash Time : %s\n"
              "\tCrash Count: %s\n"),
-           get_crash_data_item_content(crash, CD_UID).c_str(),
-           get_crash_data_item_content(crash, CD_UUID).c_str(),
+           get_crash_data_item_content(crash, CD_DUMPDIR).c_str(),
+           get_crash_data_item_content(crash, FILENAME_UID).c_str(),
            get_crash_data_item_content(crash, FILENAME_PACKAGE).c_str(),
            get_crash_data_item_content(crash, FILENAME_EXECUTABLE).c_str(),
            timeloc,
-           get_crash_data_item_content(crash, CD_COUNT).c_str());
+           get_crash_data_item_content(crash, FILENAME_COUNT).c_str());
 
     free((void *)timeloc);
 
@@ -75,7 +75,7 @@ static void print_crash_list(const vector_map_crash_data_t& crash_list, bool inc
     for (unsigned i = 0; i < crash_list.size(); ++i)
     {
         const map_crash_data_t& crash = crash_list[i];
-        if (get_crash_data_item_content(crash, CD_REPORTED) == "1" && !include_reported)
+        if (get_crash_data_item_content(crash, FILENAME_MESSAGE) != "" && !include_reported)
             continue;
 
         printf("%u.\n", i);
@@ -91,7 +91,7 @@ static void print_crash_info(const map_crash_data_t& crash, bool show_backtrace)
     const char *timestr = get_crash_data_item_content(crash, FILENAME_TIME).c_str();
     const char *timeloc = localize_crash_time(timestr);
 
-    printf(_("Crash ID:           %s:%s\n"
+    printf(_("Dump directory:     %s\n"
              "Last crash:         %s\n"
              "Analyzer:           %s\n"
              "Component:          %s\n"
@@ -100,8 +100,7 @@ static void print_crash_info(const map_crash_data_t& crash, bool show_backtrace)
              "Executable:         %s\n"
              "System:             %s, kernel %s\n"
              "Reason:             %s\n"),
-           get_crash_data_item_content(crash, CD_UID).c_str(),
-           get_crash_data_item_content(crash, CD_UUID).c_str(),
+           get_crash_data_item_content(crash, CD_DUMPDIR).c_str(),
            timeloc,
            get_crash_data_item_content(crash, FILENAME_ANALYZER).c_str(),
            get_crash_data_item_content(crash, FILENAME_COMPONENT).c_str(),
@@ -151,8 +150,7 @@ static void print_crash_info(const map_crash_data_t& crash, bool show_backtrace)
 }
 
 /**
- * Converts crash reference from user's input to unique crash identification
- * in form UID:UUID.
+ * Converts crash reference from user's input to crash dump dir name.
  * The returned string must be released by caller.
  */
 static char *guess_crash_id(const char *str)
@@ -165,10 +163,7 @@ static char *guess_crash_id(const char *str)
         if (position >= num_crashinfos)
             error_msg_and_die("There are only %u crash infos", num_crashinfos);
         map_crash_data_t& info = ci[position];
-        return xasprintf("%s:%s",
-                get_crash_data_item_content(info, CD_UID).c_str(),
-                get_crash_data_item_content(info, CD_UUID).c_str()
-        );
+        return xstrdup(get_crash_data_item_content(info, CD_DUMPDIR).c_str());
     }
 
     unsigned len = strlen(str);
@@ -177,19 +172,16 @@ static char *guess_crash_id(const char *str)
     for (ii = 0; ii < num_crashinfos; ii++)
     {
         map_crash_data_t& info = ci[ii];
-        const char *this_uuid = get_crash_data_item_content(info, CD_UUID).c_str();
-        if (strncmp(str, this_uuid, len) == 0)
+        const char *this_dir = get_crash_data_item_content(info, CD_DUMPDIR).c_str();
+        if (strncmp(str, this_dir, len) == 0)
         {
             if (result)
                 error_msg_and_die("Crash prefix '%s' is not unique", str);
-            result = xasprintf("%s:%s",
-                    get_crash_data_item_content(info, CD_UID).c_str(),
-                    this_uuid
-            );
+            result = xstrdup(this_dir);
         }
     }
     if (!result)
-        error_msg_and_die("Crash '%s' not found", str);
+        error_msg_and_die("Crash dump directory '%s' not found", str);
     return result;
 }
 
@@ -257,8 +249,7 @@ static void usage(char *argv0)
         "	-i, --info CRASH_ID	print detailed information about a crash\n"
         "	      -b, --backtrace	print detailed information about a crash including backtrace\n"
         "CRASH_ID can be:\n"
-        "	UID:UUID pair,\n"
-        "	unique UUID prefix  - the crash with matching UUID will be acted upon\n"
+        "	a name of dump directory, or\n"
         "	@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
         ),
         name, name);

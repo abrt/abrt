@@ -115,7 +115,7 @@ static void create_and_send_email(
     args = append_str_to_vector(args, arg_size, email_to);
 
     log(_("Sending an email..."));
-    const char *uid_str = get_crash_data_item_content_or_NULL(pCrashData, CD_UID);
+    const char *uid_str = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_UID);
     exec_and_feed_input(xatoi_u(uid_str), dsc, args);
 
     free(dsc);

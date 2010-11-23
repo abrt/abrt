@@ -455,81 +455,6 @@ static GList *split(const char *s, const char delim)
     return elems;
 }
 
-/** Returns a list of enabled Reporter plugins, that are used to report
- * a particular crash.
- * @todo
- *  Very similar code is used in the GUI, and also in the Daemon.
- *  It should be shared.
- */
-static vector_string_t get_enabled_reporters(map_crash_data_t &crash_data)
-{
-    vector_string_t result;
-
-    /* Get global daemon settings. Analyzer->Reporters mapping is stored there. */
-    map_map_string_t settings = call_GetSettings();
-    /* Reporters are separated by comma in the following map. */
-    map_string_t &analyzer_to_reporters = settings["AnalyzerActionsAndReporters"];
-
-    /* Get the analyzer from the crash. */
-    const char *analyzer = get_crash_data_item_content_or_NULL(crash_data, FILENAME_ANALYZER);
-    if (!analyzer)
-        return result; /* No analyzer found in the crash data. */
-
-    /* First try to find package name dependent analyzer.
-     * nvr = name-version-release
-     * TODO: Similar code is in MiddleWare.cpp. It should not be duplicated.
-     */
-    const char *package_nvr = get_crash_data_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
-    if (!package_nvr)
-        return result; /* No package name found in the crash data. */
-    char * package_name = get_package_name_from_NVR_or_NULL(package_nvr);
-    // analyzer with package name (CCpp:xorg-x11-app) has higher priority
-    map_string_t::const_iterator reporters_iter;
-    if (package_name != NULL)
-    {
-        char* package_specific_analyzer = xasprintf("%s:%s", analyzer, package_name);
-        reporters_iter = analyzer_to_reporters.find(package_specific_analyzer);
-        free(package_specific_analyzer);
-        free(package_name);
-    }
-
-    if (analyzer_to_reporters.end() == reporters_iter)
-    {
-        reporters_iter = analyzer_to_reporters.find(analyzer);
-        if (analyzer_to_reporters.end() == reporters_iter)
-            return result; /* No reporters found for the analyzer. */
-    }
-
-    /* Reporters found, now parse the list. */
-    GList *reporter_list = split(reporters_iter->second.c_str(), ',');
-
-    // Get informations about all plugins.
-    map_map_string_t plugins = call_GetPluginsInfo();
-    // Check the configuration of each enabled Reporter plugin.
-    map_map_string_t::iterator it, itend = plugins.end();
-    for (it = plugins.begin(); it != itend; ++it)
-    {
-        // Skip disabled plugins.
-        if (string_to_bool(it->second["Enabled"].c_str()) != true)
-            continue;
-        // Skip nonReporter plugins.
-        if (0 != strcmp(it->second["Type"].c_str(), "Reporter"))
-            continue;
-        // Skip plugins not used in this particular crash.
-        for (GList *li = reporter_list; li != NULL; li = g_list_next(li))
-        {
-            if (strcmp((char*)li->data, it->first.c_str()) == 0)
-                result.push_back(it->first);
-        }
-    }
-
-    for (GList *li = reporter_list; li != NULL; li = g_list_next(li))
-        free((char*)li->data);
-    g_list_free(reporter_list);
-
-    return result;
-}
-
 /**
  * Asks a [y/n] question on stdin/stdout.
  * Returns true if the answer is yes, false otherwise.
@@ -684,9 +609,27 @@ int report(const char *crash_id, int flags)
             return result;
     }
 
-    /* Get enabled reporters associated with this particular crash. */
-    vector_string_t reporters = get_enabled_reporters(cr);
-    map_map_string_t reporters_settings; /* to be filled on the next line */
+    /* Get possible reporters associated with this particular crash. */
+    const char *events = get_crash_data_item_content_or_NULL(cr, CD_EVENTS);
+    vector_string_t reporters;
+    if (events) while (*events)
+    {
+        const char *end = strchrnul(events, '\n');
+        if (strncmp(events, "report", 6) == 0
+         && (events[6] == '\0' || events[6] == '_')
+        ) {
+            char *tmp = xstrndup(events, end - events);
+            reporters.push_back(tmp);
+            free(tmp);
+        }
+        events = end;
+        if (!*events)
+            break;
+        events++;
+    }
+
+    /* Get settings */
+    map_map_string_t reporters_settings;
     get_reporter_plugin_settings(reporters, reporters_settings);
 
     int errors = 0;
@@ -759,6 +702,6 @@ int report(const char *crash_id, int flags)
         }
     }
 
-    printf(_("Crash reported via %d plugins (%d errors)\n"), plugins, errors);
+    printf(_("Crash reported via %d report events (%d errors)\n"), plugins, errors);
     return errors != 0;
 }

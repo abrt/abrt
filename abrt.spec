@@ -32,7 +32,6 @@ BuildRequires: dbus-devel
 BuildRequires: gtk2-devel
 BuildRequires: curl-devel
 BuildRequires: rpm-devel >= 4.6
-BuildRequires: sqlite-devel > 3.0
 BuildRequires: desktop-file-utils
 #BuildRequires: nss-devel
 BuildRequires: libnotify-devel
@@ -346,9 +345,6 @@ fi
 # {_mandir}/man5/pyhook.conf.5.gz
 %{_mandir}/man7/%{name}-plugins.7.gz
 %{_datadir}/dbus-1/system-services/com.redhat.abrt.service
-%config(noreplace) %{_sysconfdir}/%{name}/plugins/SQLite3.conf
-%{_libdir}/%{name}/libSQLite3.so*
-%{_mandir}/man7/%{name}-SQLite3.7.gz
 
 %files libs
 %defattr(-,root,root,-)

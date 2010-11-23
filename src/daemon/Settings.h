@@ -31,7 +31,6 @@ extern GList *g_settings_setBlackListedPaths;
 extern unsigned int  g_settings_nMaxCrashReportsSize;
 extern bool          g_settings_bOpenGPGCheck;
 extern bool          g_settings_bProcessUnpackaged;
-extern char *g_settings_sDatabase;
 extern char *g_settings_sWatchCrashdumpArchiveDir;
 extern map_cron_t    g_settings_mapCron;
 

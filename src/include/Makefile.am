@@ -8,7 +8,6 @@ HEADER_FILES = \
     dump_dir.h \
     observer.h \
     plugin.h \
-    database.h \
     action.h \
     analyzer.h \
     xfuncs.h

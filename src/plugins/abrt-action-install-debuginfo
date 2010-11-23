@@ -25,7 +25,8 @@
 #
 # Exitcodes:
 # 0 - all debuginfos are installed
-# 1 - not all debuginfos are installed
+# 0 - not all debuginfos are installed
+#     (was 1, but this scares event processing)
 # 2+ - serious problem
 #
 # Algorithm:
@@ -413,6 +414,8 @@ done
 
 cleanup_and_report_missing
 
-test x"$missing_build_ids" != x"" && exit 1
+# Was exiting with 1, but this stops event processing.
+test x"$missing_build_ids" != x"" && exit 0
+
 echo "All needed debuginfos are present"
 exit 0

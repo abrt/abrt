@@ -67,12 +67,11 @@ static const char *const blacklisted_items[] = {
     FILENAME_DESCRIPTION, /* package description - basically useless */
     FILENAME_HOSTNAME ,
     FILENAME_DUPHASH  ,
-    CD_UUID           ,
-    CD_INFORMALL      ,
+    FILENAME_UUID     ,
+    FILENAME_INFORMALL,
     CD_DUMPDIR        ,
-    CD_COUNT          ,
-    CD_REPORTED       ,
-    CD_MESSAGE        ,
+    FILENAME_COUNT    ,
+    FILENAME_MESSAGE  ,
     NULL
 };
 

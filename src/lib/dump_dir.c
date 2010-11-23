@@ -311,7 +311,7 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
     char long_str[sizeof(long) * 3 + 2];
 
     sprintf(long_str, "%lu", (long)uid);
-    dd_save_text(dd, CD_UID, long_str);
+    dd_save_text(dd, FILENAME_UID, long_str);
 
     struct utsname buf;
     uname(&buf); /* never fails */

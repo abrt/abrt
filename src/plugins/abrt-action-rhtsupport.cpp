@@ -130,11 +130,10 @@ static void report_to_rhtsupport(
         map_crash_data_t::const_iterator it = pCrashData.begin();
         for (; it != pCrashData.end(); it++)
         {
-            if (it->first == CD_COUNT) continue;
+            if (it->first == FILENAME_COUNT) continue;
             if (it->first == CD_DUMPDIR) continue;
-            if (it->first == CD_INFORMALL) continue;
-            if (it->first == CD_REPORTED) continue;
-            if (it->first == CD_MESSAGE) continue; // plugin's status message (if we already reported it yesterday)
+            if (it->first == FILENAME_INFORMALL) continue;
+            if (it->first == FILENAME_MESSAGE) continue; // plugin's status message (if we already reported it yesterday)
             if (it->first == FILENAME_DESCRIPTION) continue; // package description
 
             const char *content = it->second[CD_CONTENT].c_str();

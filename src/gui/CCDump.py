@@ -35,13 +35,13 @@ FILENAME_RATING       = "rating"
 FILENAME_HOSTNAME     = "hostname"
 FILENAME_REMOTE       = "remote"
 
-CD_UID          = "uid"
-CD_UUID         = "uuid"
-CD_INFORMALL    = "InformAll"
+FILENAME_UID          = "uid"
+FILENAME_UUID         = "uuid"
+FILENAME_INFORMALL    = "inform_all_users"
+FILENAME_COUNT        = "count"
+FILENAME_MESSAGE      = "message"
+
 CD_DUMPDIR      = "DumpDir"
-CD_COUNT        = "Count"
-CD_REPORTED     = "Reported"
-CD_MESSAGE      = "Message"
 CD_EVENTS       = "Events"
 
 # FIXME - create method or smth that returns type|editable|content
@@ -52,7 +52,7 @@ REPORT_EVENT_PREFIX = "report_"
 
 class Dump():
     """Class for mapping the debug dump to python object"""
-    not_required_fields = ["comment", "Message"]
+    not_required_fields = [FILENAME_COMMENT, FILENAME_MESSAGE]
     def __init__(self):
         # we set all attrs dynamically, so no need to have it in init
         for field in self.not_required_fields:
@@ -79,8 +79,11 @@ class Dump():
     def getUID(self):
         return self.uid
 
+    def getDumpDir(self):
+        return self.DumpDir
+
     def getCount(self):
-        return int(self.Count)
+        return int(self.count)
 
     def getExecutable(self):
         try:
@@ -96,14 +99,11 @@ class Dump():
     def getPackage(self):
         return self.package
 
-    def isReported(self):
-        return self.Reported == "1"
-
     def getMessage(self):
-        if not self.Message:
+        if not self.message:
             return "" #[]
-        #return self.Message[CD_CONTENT].split('\n')
-        return self.Message
+        #return self.message[CD_CONTENT].split('\n')
+        return self.message
 
     def getTime(self, fmt=None):
         if self.time:

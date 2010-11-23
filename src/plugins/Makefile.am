@@ -7,8 +7,7 @@ libexec_SCRIPTS = \
 
 pluginslib_LTLIBRARIES = \
     libCCpp.la \
-    libKerneloopsScanner.la \
-    libSQLite3.la
+    libKerneloopsScanner.la
 
 dist_pluginslib_DATA = \
     Logger.glade \
@@ -27,8 +26,7 @@ dist_pluginsconf_DATA = \
     Kerneloops.conf \
     Bugzilla.conf \
     RHTSupport.conf \
-    Upload.conf \
-    SQLite3.conf
+    Upload.conf
 
 man_MANS = \
     abrt-Bugzilla.7 \
@@ -37,7 +35,6 @@ man_MANS = \
     abrt-Logger.7 \
     abrt-Mailx.7 \
     abrt-Upload.7 \
-    abrt-SQLite3.7 \
     abrt-plugins.7
 
 EXTRA_DIST = $(man_MANS) abrt-action-install-debuginfo
@@ -47,7 +44,6 @@ $(DESTDIR)/$(DEBUG_INFO_DIR):
 
 install-data-hook: $(DESTDIR)/$(DEBUG_INFO_DIR)
 	sed 's: = /var/: = $(localstatedir)/:g' -i \
-	    $(DESTDIR)$(sysconfdir)/abrt/plugins/SQLite3.conf \
 	    $(DESTDIR)$(sysconfdir)/abrt/plugins/Logger.conf
 
 # CCpp
@@ -65,12 +61,6 @@ libCCpp_la_CPPFLAGS = -Wall -Werror \
 libKerneloopsScanner_la_SOURCES = KerneloopsScanner.cpp KerneloopsScanner.h KerneloopsSysLog.cpp KerneloopsSysLog.h
 libKerneloopsScanner_la_LDFLAGS = -avoid-version $(GLIB_LIBS)
 libKerneloopsScanner_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" $(GLIB_CFLAGS)
-
-# SQLite3
-libSQLite3_la_SOURCES = SQLite3.cpp SQLite3.h
-libSQLite3_la_LDFLAGS = -avoid-version
-libSQLite3_la_LIBADD = $(SQLITE3_LIBS) $(GLIB_LIBS)
-libSQLite3_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) $(SQLITE3_CFLAGS) -DLOCALSTATEDIR='"$(localstatedir)"' $(GLIB_CFLAGS)
 
 libexec_PROGRAMS = \
     abrt-action-analyze-c \

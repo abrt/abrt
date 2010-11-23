@@ -50,7 +50,6 @@ bool          g_settings_bOpenGPGCheck = false;
 GList *g_settings_setOpenGPGPublicKeys = NULL;
 GList *g_settings_setBlackListedPkgs = NULL;
 GList *g_settings_setBlackListedPaths = NULL;
-char *g_settings_sDatabase = NULL;
 char *g_settings_sWatchCrashdumpArchiveDir = NULL;
 unsigned int  g_settings_nMaxCrashReportsSize = 1000;
 bool          g_settings_bProcessUnpackaged = false;
@@ -200,17 +199,6 @@ static int ParseCommon()
     {
         g_settings_setBlackListedPaths = parse_list(it->second.c_str());
     }
-    it = s_mapSectionCommon.find("Database");
-    if (it != end)
-    {
-        if (it->second.empty())
-            error_msg_and_die(_("Database plugin not specified. Please check abrtd settings."));
-
-        g_settings_sDatabase = xstrdup(it->second.c_str());
-    }
-    else
-        error_msg_and_die(_("Database plugin not specified. Please check abrtd settings."));
-
     it = s_mapSectionCommon.find("WatchCrashdumpArchiveDir");
     if (it != end)
     {
@@ -465,9 +453,6 @@ void settings_free()
 
     g_list_free(g_settings_setBlackListedPaths);
     g_settings_setBlackListedPaths = NULL;
-
-    free(g_settings_sDatabase);
-    g_settings_sDatabase = NULL;
 
     free(g_settings_sWatchCrashdumpArchiveDir);
     g_settings_sWatchCrashdumpArchiveDir = NULL;

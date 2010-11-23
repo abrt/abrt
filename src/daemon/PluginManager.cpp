@@ -247,20 +247,6 @@ CAction* CPluginManager::GetAction(const char *pName, bool silent)
     return (CAction*)plugin;
 }
 
-CDatabase* CPluginManager::GetDatabase(const char *pName)
-{
-    CPlugin *plugin = LoadPlugin(pName);
-    if (!plugin)
-    {
-        throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not registered", pName);
-    }
-    if (m_mapLoadedModules[pName]->GetType() != DATABASE)
-    {
-        throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not a database plugin", pName);
-    }
-    return (CDatabase*)plugin;
-}
-
 plugin_type_t CPluginManager::GetPluginType(const char *pName)
 {
     CPlugin *plugin = LoadPlugin(pName);

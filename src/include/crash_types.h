@@ -37,7 +37,7 @@
 // Name of the function where the application crashed.
 // Optional.
 #define FILENAME_CRASH_FUNCTION "crash_function"
-// filled by CDebugDump::Create() (which also fills CD_UID):
+// filled by CDebugDump::Create() (which also fills FILENAME_UID):
 #define FILENAME_ARCHITECTURE "architecture"
 #define FILENAME_KERNEL       "kernel"
 #define FILENAME_TIME         "time"
@@ -55,22 +55,16 @@
 #define FILENAME_TAINTED      "kernel_tainted"
 // TODO: TicketUploader also has open-coded "TICKET", "CUSTOMER" files
 
-// Apart from CD_UID, which is also stored as a file in dump directory,
-// these items only exist in db. (CD_UID is also a file because
-// dump directory is created before its DB entry, and DB has to learn
-// CD_UID from _somewhere_ in order to be able to store it in DB record,
-// right?)
-#define CD_UID          "uid"
-// Now uuid also is saved as a file (but is still stored in database too):
-#define CD_UUID         "uuid"
-#define CD_INFORMALL    "InformAll"
-#define CD_DUMPDIR      "DumpDir"
-#define CD_COUNT        "Count"
-#define CD_REPORTED     "Reported"
-#define CD_MESSAGE      "Message"
+#define FILENAME_UID       "uid"
+#define FILENAME_UUID      "uuid"
+#define FILENAME_INFORMALL "inform_all_users"
+#define FILENAME_COUNT     "count"
+#define FILENAME_MESSAGE   "message"
+// Not stored as files, added "on the fly":
+#define CD_DUMPDIR         "DumpDir"
 // "Which events are possible (make sense) on this crash dump?"
 // (a string with "\n" terminated event names)
-#define CD_EVENTS       "Events"
+#define CD_EVENTS          "Events"
 
 
 // Crash data is a map of 3-element vectors of strings: type, editable, content
