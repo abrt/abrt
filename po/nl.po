@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-11-22 21:34+0100\n"
-"PO-Revision-Date: 2010-11-12 16:38+0200\n"
+"POT-Creation-Date: 2010-11-23 07:35+0000\n"
+"PO-Revision-Date: 2010-11-23 10:57+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
 "Language: nl\n"
@@ -361,6 +361,8 @@ msgid ""
 " [-vs] -d DIR -e EVENT\n"
 "   or: "
 msgstr ""
+" [-vs] -d DIR -e EVENT\n"
+"   of: "
 
 #: ../src/daemon/abrt-handle-crashdump.c:57
 #: ../src/plugins/abrt-action-analyze-c.c:167
@@ -381,11 +383,11 @@ msgstr "Crash dump map"
 
 #: ../src/daemon/abrt-handle-crashdump.c:59
 msgid "Handle EVENT"
-msgstr ""
+msgstr "Handel gebeurtenis af"
 
 #: ../src/daemon/abrt-handle-crashdump.c:60
 msgid "List possible events [which start with PFX]"
-msgstr ""
+msgstr "Laat mogelijke gebeurtenissen zien [die beginnen met PFX]"
 
 #: ../src/daemon/CommLayerServerDBus.cpp:229
 msgid "Comment is too long"
@@ -874,7 +876,7 @@ msgstr "De backtrace goedkeuren"
 
 #: ../src/gui/CReporterAssistant.py:796
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "Je moet hoe te reproduceren invullen voor je verder kan gaan..."
 
 #: ../src/gui/CReporterAssistant.py:819
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
@@ -1258,7 +1260,6 @@ msgstr ""
 "Berekent en slaat UUID van coredumps op"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:131
-#, fuzzy
 msgid ""
 " [-vs] -d DIR\n"
 "\n"
@@ -1266,10 +1267,9 @@ msgid ""
 msgstr ""
 " [-vs] -d DIR\n"
 "\n"
-"Berekent en slaat UUID van coredumps op"
+"Berekent en slaat UUID en DUPHASH van oops crash dumps op"
 
 #: ../src/plugins/abrt-action-analyze-python.c:36
-#, fuzzy
 msgid ""
 " [-vs] -d DIR\n"
 "\n"
@@ -1277,7 +1277,7 @@ msgid ""
 msgstr ""
 " [-vs] -d DIR\n"
 "\n"
-"Berekent en slaat UUID van coredumps op"
+"Berekent en slaat UUID en DUPHASH van python crash dumps op"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:470
 #, c-format
@@ -1354,9 +1354,9 @@ msgid "Backtrace parsing failed for %s"
 msgstr "Backtrace ontleden mislukte voor %s"
 
 #: ../src/plugins/abrt-action-kerneloops.cpp:113
-#, fuzzy, c-format
+#, c-format
 msgid "Submitting oops report to %s"
-msgstr "Rapport schrijven naar: '%s'"
+msgstr "Stuur oops rapport naar %s"
 
 #: ../src/plugins/abrt-action-mailx.cpp:117
 msgid "Sending an email..."
@@ -1368,12 +1368,14 @@ msgid ""
 "\n"
 "Upload compressed tarball of crash dump"
 msgstr ""
+" [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"Upload gecomprimeerde tarball of crash dump"
 
 #: ../src/plugins/abrt-action-mailx.cpp:154
 #: ../src/plugins/abrt-action-upload.cpp:271
-#, fuzzy
 msgid "Config file"
-msgstr "Log bestand:"
+msgstr "Config bestand"
 
 #: ../src/plugins/abrt-action-print.cpp:40
 msgid ""
@@ -1381,10 +1383,13 @@ msgid ""
 "\n"
 "Print information about the crash to standard output"
 msgstr ""
+" [-v] [-o FILE] -d DIR\n"
+"\n"
+"Print informatie over de crash naar standaard output"
 
 #: ../src/plugins/abrt-action-print.cpp:52
 msgid "Output file"
-msgstr ""
+msgstr "Output bestand"
 
 #: ../src/plugins/abrt-action-print.cpp:101
 #, c-format
@@ -1405,29 +1410,28 @@ msgid "Compressing data"
 msgstr "Data comprimeren"
 
 #: ../src/plugins/abrt-action-rhtsupport.cpp:81
-#, fuzzy
 msgid "Empty login or password, please check RHTSupport.conf"
-msgstr "Lege inlog of wachtwoord, controleer %s "
+msgstr "Lege inlog of wachtwoord, controleer RHTSupport.conf"
 
 #: ../src/plugins/abrt-action-rhtsupport.cpp:198
 msgid "Creating a new case..."
 msgstr "Een nieuwe zaak aanmaken..."
 
 #: ../src/plugins/abrt-action-upload.cpp:68
-#, fuzzy, c-format
+#, c-format
 msgid "Sending %s to %s"
-msgstr "Bestand versturen van %s naar %s"
+msgstr "%s versturen naar %s"
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/plugins/abrt-action-upload.cpp:101
 #, c-format
 msgid "Successfully sent %s to %s"
-msgstr ""
+msgstr "%s met succes verzonden naar %s"
 
 #: ../src/plugins/abrt-action-upload.cpp:223
 #, c-format
 msgid "Archive is created: '%s'"
-msgstr ""
+msgstr "Archief is gemaakt: '%s'"
 
 #: ../src/plugins/abrt-action-upload.cpp:257
 msgid ""
@@ -1435,10 +1439,13 @@ msgid ""
 "\n"
 "Upload compressed tarball of crash dump"
 msgstr ""
+" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"Upload gecomprimeerde tarball of crash dump"
 
 #: ../src/plugins/abrt-action-upload.cpp:272
 msgid "Base URL to upload to"
-msgstr ""
+msgstr "Basis URL om naar te uploaden"
 
 #: ../src/plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
@@ -1541,9 +1548,8 @@ msgid "Keeps SQLite3 database about all crashes"
 msgstr "Bewaart SQLite3 database over alle crashes"
 
 #: ../src/plugins/Upload.glade.h:1
-#, fuzzy
 msgid "<b>Upload plugin configuration</b>"
-msgstr "<b>Ticket upload plug-in configuratie</b>"
+msgstr "<b>Upload plug-in configuratie</b>"
 
 #: ../src/plugins/Upload.glade.h:2
 msgid "Retry count:"
