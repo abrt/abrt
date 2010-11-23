@@ -6,14 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-11-22 21:34+0100\n"
-"PO-Revision-Date: 2010-10-16 10:11+0200\n"
+"POT-Creation-Date: 2010-11-23 07:35+0000\n"
+"PO-Revision-Date: 2010-11-23 08:55+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
-"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pl\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -360,6 +360,8 @@ msgid ""
 " [-vs] -d DIR -e EVENT\n"
 "   or: "
 msgstr ""
+" [-vs] -d KAT -e ZDARZENIE\n"
+"  lub: "
 
 #: ../src/daemon/abrt-handle-crashdump.c:57
 #: ../src/plugins/abrt-action-analyze-c.c:167
@@ -380,11 +382,11 @@ msgstr "Katalog zrzutów awarii"
 
 #: ../src/daemon/abrt-handle-crashdump.c:59
 msgid "Handle EVENT"
-msgstr ""
+msgstr "Obsługa ZDARZEŃ"
 
 #: ../src/daemon/abrt-handle-crashdump.c:60
 msgid "List possible events [which start with PFX]"
-msgstr ""
+msgstr "Wyświetla możliwe zdarzenia (zaczynające się od PFX)"
 
 #: ../src/daemon/CommLayerServerDBus.cpp:229
 msgid "Comment is too long"
@@ -874,7 +876,7 @@ msgstr "Akceptuję wyjątek"
 
 #: ../src/gui/CReporterAssistant.py:796
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "Należy wypełnić sekcję opisu awarii, aby kontynuować."
 
 #: ../src/gui/CReporterAssistant.py:819
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
@@ -1263,7 +1265,6 @@ msgstr ""
 "Oblicza i zapisuje UUID zrzutów core"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:131
-#, fuzzy
 msgid ""
 " [-vs] -d DIR\n"
 "\n"
@@ -1271,10 +1272,9 @@ msgid ""
 msgstr ""
 " [-vs] -d KAT\n"
 "\n"
-"Oblicza i zapisuje UUID zrzutów core"
+"Oblicza i zapisuje UUID oraz SUMĘ_DUPLIKATU zrzutów core awarii jądra"
 
 #: ../src/plugins/abrt-action-analyze-python.c:36
-#, fuzzy
 msgid ""
 " [-vs] -d DIR\n"
 "\n"
@@ -1282,7 +1282,7 @@ msgid ""
 msgstr ""
 " [-vs] -d KAT\n"
 "\n"
-"Oblicza i zapisuje UUID zrzutów core"
+"Oblicza i zapisuje UUID oraz SUMĘ_DUPLIKATU zrzutów core języka Python"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:470
 #, c-format
@@ -1360,9 +1360,9 @@ msgid "Backtrace parsing failed for %s"
 msgstr "Przetworzenie wyjątku nie powiodło się dla %s"
 
 #: ../src/plugins/abrt-action-kerneloops.cpp:113
-#, fuzzy, c-format
+#, c-format
 msgid "Submitting oops report to %s"
-msgstr "Zapisywanie zgłoszenia do \"%s\""
+msgstr "Wysyłanie zgłoszenia awarii jądra do %s"
 
 #: ../src/plugins/abrt-action-mailx.cpp:117
 msgid "Sending an email..."
@@ -1374,12 +1374,14 @@ msgid ""
 "\n"
 "Upload compressed tarball of crash dump"
 msgstr ""
+" [-v] -d DIR [-c PLIK_KONFIGURACJI]\n"
+"\n"
+"Wysyła skompresowane archiwum tar zrzutu awarii"
 
 #: ../src/plugins/abrt-action-mailx.cpp:154
 #: ../src/plugins/abrt-action-upload.cpp:271
-#, fuzzy
 msgid "Config file"
-msgstr "Plik dziennika:"
+msgstr "Plik konfiguracji"
 
 #: ../src/plugins/abrt-action-print.cpp:40
 msgid ""
@@ -1387,10 +1389,13 @@ msgid ""
 "\n"
 "Print information about the crash to standard output"
 msgstr ""
+" [-v] [-o PLIK] -d KAT\n"
+"\n"
+"Wyświetla informacje o awarii w standardowym wyjściu"
 
 #: ../src/plugins/abrt-action-print.cpp:52
 msgid "Output file"
-msgstr ""
+msgstr "Plik wyjściowy"
 
 #: ../src/plugins/abrt-action-print.cpp:101
 #, c-format
@@ -1411,29 +1416,28 @@ msgid "Compressing data"
 msgstr "Kompresowanie danych"
 
 #: ../src/plugins/abrt-action-rhtsupport.cpp:81
-#, fuzzy
 msgid "Empty login or password, please check RHTSupport.conf"
-msgstr "Pusty login lub hasło, proszę sprawdzić %s"
+msgstr "Pusty login lub hasło, proszę sprawdzić plik RHTSupport.conf"
 
 #: ../src/plugins/abrt-action-rhtsupport.cpp:198
 msgid "Creating a new case..."
 msgstr "Dodawanie nowego przypadku..."
 
 #: ../src/plugins/abrt-action-upload.cpp:68
-#, fuzzy, c-format
+#, c-format
 msgid "Sending %s to %s"
-msgstr "Wysyłanie archiwum %s do %s"
+msgstr "Wysyłanie %s do %s"
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/plugins/abrt-action-upload.cpp:101
 #, c-format
 msgid "Successfully sent %s to %s"
-msgstr ""
+msgstr "Pomyślnie wysłano %s do %s"
 
 #: ../src/plugins/abrt-action-upload.cpp:223
 #, c-format
 msgid "Archive is created: '%s'"
-msgstr ""
+msgstr "Utworzono archiwum: \"%s\""
 
 #: ../src/plugins/abrt-action-upload.cpp:257
 msgid ""
@@ -1441,10 +1445,13 @@ msgid ""
 "\n"
 "Upload compressed tarball of crash dump"
 msgstr ""
+" [-v] -d KAT [-c PLIK_KONFIGURACJI] [-u URL]\n"
+"\n"
+"Wysyła skompresowane archiwum tar zrzutu awarii"
 
 #: ../src/plugins/abrt-action-upload.cpp:272
 msgid "Base URL to upload to"
-msgstr ""
+msgstr "Podstawowy adres URL, do którego wysłać"
 
 #: ../src/plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
@@ -1547,7 +1554,6 @@ msgid "Keeps SQLite3 database about all crashes"
 msgstr "Utrzymuje bazę danych SQLite3 o wszystkich awariach"
 
 #: ../src/plugins/Upload.glade.h:1
-#, fuzzy
 msgid "<b>Upload plugin configuration</b>"
 msgstr "<b>Konfiguracja wtyczki wysyłania zgłoszeń</b>"
 
@@ -1566,94 +1572,3 @@ msgstr "Adres URL:"
 #: ../src/plugins/Upload.glade.h:5
 msgid "Use encryption"
 msgstr "Użycie szyfrowania"
-
-#~ msgid "Reports bugs to bugzilla"
-#~ msgstr "Zgłasza błędy w Bugzilli"
-
-#~ msgid "Generating backtrace"
-#~ msgstr "Tworzenie wyjątku"
-
-#~ msgid "Starting the debuginfo installation"
-#~ msgstr "Uruchamianie instalacji pakietów debuginfo"
-
-#~ msgid "Getting global universal unique identification..."
-#~ msgstr "Uzyskiwanie globalnego UUID..."
-
-#~ msgid "Skipping the debuginfo installation"
-#~ msgstr "Pomijanie instalacji pakietów debuginfo"
-
-#~ msgid "FileTransfer: URL not specified"
-#~ msgstr "Wtyczka przesyłania plików: nie podano adresu URL"
-
-#~ msgid "FileTransfer: Creating a report..."
-#~ msgstr "Wtyczka przesyłania plików: tworzenie zgłoszenia..."
-
-#~ msgid "Cannot create and send an archive: %s"
-#~ msgstr "Nie można utworzyć i wysłać archiwum: %s"
-
-#~ msgid "Sends a report via FTP or SCTP"
-#~ msgstr "Wysyła zgłoszenie przez FTP lub SCTP"
-
-#~ msgid "Analyzes kernel oopses"
-#~ msgstr "Analizuje awarie jądra"
-
-#~ msgid "Creating and submitting a report..."
-#~ msgstr "Tworzenie i wysyłanie zgłoszenia..."
-
-#~ msgid "Sends kernel oops information to kerneloops.org"
-#~ msgstr "Wysyła informację o awarii jądra do witryny kerneloops.org"
-
-#~ msgid "Writes report to a file"
-#~ msgstr "Zapisuje zgłoszenia do pliku"
-
-#~ msgid "Sends an email with a report (via mailx command)"
-#~ msgstr "Wysyła wiadomość e-mail ze zgłoszeniem (przez polecenie mailx)"
-
-#~ msgid "Analyzes crashes in Python programs"
-#~ msgstr "Analizuje awarie w programach w języku Python"
-
-#~ msgid "Sending failed, trying again. %s"
-#~ msgstr "Wysyłanie nie powiodło się, próbowanie ponownie. %s"
-
-#~ msgid "Creating a ReportUploader report..."
-#~ msgstr "Tworzenie zgłoszenia wtyczki wysyłania zgłoszeń..."
-
-#~ msgid ""
-#~ "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-#~ msgstr ""
-#~ "Pakuje dane awarii do pliku .tar.gz, opcjonalnie wysyła je przez FTP/SCP/"
-#~ "itp."
-
-#~ msgid "Reports bugs to Red Hat support"
-#~ msgstr "Zgłasza błędy do wsparcia firmy Red Hat"
-
-#~ msgid "Runs a command, saves its output"
-#~ msgstr "Wykonuje polecenie, zapisuje jego wyjście"
-
-#~ msgid "Running sosreport: %s"
-#~ msgstr "Wykonywanie sosreport: %s"
-
-#~ msgid "Finished running sosreport"
-#~ msgstr "Ukończono wykonywanie sosreport"
-
-#~ msgid "Unable to open debug dump '%s'"
-#~ msgstr "Nie można otworzyć zrzutu debugowania \"%s\""
-
-#~ msgid "Runs sosreport, saves the output"
-#~ msgstr "Wykonuje polecenie sosreport, zapisuje wyjście"
-
-#~ msgid "Customer:"
-#~ msgstr "Klient:"
-
-#~ msgid "Ticket:"
-#~ msgstr "Zgłoszenie:"
-
-#~ msgid "Upload"
-#~ msgstr "Wysyłanie"
-
-#~ msgid "Rating is required by the %s plugin"
-#~ msgstr "Ocena jest wymagana przez wtyczkę %s"
-
-#~ msgid "Rating is not required by any plugin, skipping the check..."
-#~ msgstr ""
-#~ "Ocena nie jest wymagana przez żadną wtyczkę. Pomijanie sprawdzania..."
