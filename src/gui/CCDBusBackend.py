@@ -141,7 +141,7 @@ class DBusManager(gobject.GObject):
         # dummy function for async method call to workaround the timeout
         pass
 
-    def crash_cb(self, package, uuid, uid=""):
+    def crash_cb(self, package, uuid, crashdir, uid="",):
         self.emit("crash", package, uuid, uid)
 
     def update_cb(self, message):
