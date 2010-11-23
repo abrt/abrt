@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-11-23 07:35+0000\n"
-"PO-Revision-Date: 2010-11-23 08:55+0100\n"
+"POT-Creation-Date: 2010-11-23 21:39+0000\n"
+"PO-Revision-Date: 2010-11-23 22:49+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -71,15 +71,15 @@ msgstr "Otwórz ABRT"
 #: ../src/cli/CLI.cpp:47
 #, c-format
 msgid ""
+"\tCrash dump : %s\n"
 "\tUID        : %s\n"
-"\tUUID       : %s\n"
 "\tPackage    : %s\n"
 "\tExecutable : %s\n"
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 msgstr ""
+"\tZrzut awarii    : %s\n"
 "\tUID             : %s\n"
-"\tUUID            : %s\n"
 "\tPakiet          : %s\n"
 "\tPlik wykonywalny: %s\n"
 "\tCzas awarii     : %s\n"
@@ -93,7 +93,7 @@ msgstr "\tNazwa komputera : %s\n"
 #: ../src/cli/CLI.cpp:94
 #, c-format
 msgid ""
-"Crash ID:           %s:%s\n"
+"Dump directory:     %s\n"
 "Last crash:         %s\n"
 "Analyzer:           %s\n"
 "Component:          %s\n"
@@ -103,7 +103,7 @@ msgid ""
 "System:             %s, kernel %s\n"
 "Reason:             %s\n"
 msgstr ""
-"Identyfikator awarii: %s:%s\n"
+"Katalog zrzutu:       %s\n"
 "Ostatnia awaria:      %s\n"
 "Analizator:           %s\n"
 "Składnik:             %s\n"
@@ -113,27 +113,27 @@ msgstr ""
 "System:               %s, jądro %s\n"
 "Przyczyna:            %s\n"
 
-#: ../src/cli/CLI.cpp:122
+#: ../src/cli/CLI.cpp:121
 #, c-format
 msgid "Coredump file:      %s\n"
 msgstr "Plik zrzutu core:           %s\n"
 
-#: ../src/cli/CLI.cpp:126
+#: ../src/cli/CLI.cpp:125
 #, c-format
 msgid "Rating:             %s\n"
 msgstr "Ocena:                      %s\n"
 
-#: ../src/cli/CLI.cpp:131
+#: ../src/cli/CLI.cpp:130
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr "Funkcja awarii:             %s\n"
 
-#: ../src/cli/CLI.cpp:135
+#: ../src/cli/CLI.cpp:134
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr "Nazwa komputera:            %s\n"
 
-#: ../src/cli/CLI.cpp:139
+#: ../src/cli/CLI.cpp:138
 #, c-format
 msgid ""
 "\n"
@@ -144,7 +144,7 @@ msgstr ""
 "Jak powtórzyć awarię (w języku angielskim)?\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:143
+#: ../src/cli/CLI.cpp:142
 #, c-format
 msgid ""
 "\n"
@@ -155,7 +155,7 @@ msgstr ""
 "Komentarz (w języku angielskim):\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:149
+#: ../src/cli/CLI.cpp:148
 #, c-format
 msgid ""
 "\n"
@@ -167,7 +167,7 @@ msgstr ""
 "%s\n"
 
 #. Message has embedded tabs.
-#: ../src/cli/CLI.cpp:247
+#: ../src/cli/CLI.cpp:239
 #, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
@@ -187,8 +187,7 @@ msgid ""
 "\t      -b, --backtrace\tprint detailed information about a crash including "
 "backtrace\n"
 "CRASH_ID can be:\n"
-"\tUID:UUID pair,\n"
-"\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
+"\ta name of dump directory, or\n"
 "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
 msgstr ""
 "Użycie: %s [OPCJA]\n"
@@ -209,12 +208,11 @@ msgstr ""
 "\t      -b, --backtrace\twyświetla szczegółowe informacje o awarii, w tym "
 "wyjątek\n"
 "IDENTYFIKATOR_AWARII może wynosić:\n"
-"\tparę UID:UUID,\n"
-"\tunikalny przedrostek UUID - zostanie użyta awaria z pasującym UUID\n"
+"\tnazwę katalogu zrzutu lub,\n"
 "\t@N - zostanie użyta n-ta awaria (tak, jak wyświetlane przez --list --"
 "full)\n"
 
-#: ../src/cli/CLI.cpp:292
+#: ../src/cli/CLI.cpp:283
 msgid "You must specify exactly one operation"
 msgstr "Należy podać dokładnie jedne działanie"
 
@@ -298,46 +296,46 @@ msgstr ""
 "Nie wykryto zmian w zgłoszeniu"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:540
+#: ../src/cli/report.cpp:465
 msgid "y"
 msgstr "t"
 
-#: ../src/cli/report.cpp:541
+#: ../src/cli/report.cpp:466
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:641
+#: ../src/cli/report.cpp:566
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Wykryto błędne ustawienia dla wtyczki %s\n"
 
-#: ../src/cli/report.cpp:645
+#: ../src/cli/report.cpp:570
 msgid "Enter your login: "
 msgstr "Proszę podać login: "
 
-#: ../src/cli/report.cpp:651
+#: ../src/cli/report.cpp:576
 msgid "Enter your password: "
 msgstr "Proszę podać hasło: "
 
-#: ../src/cli/report.cpp:696
+#: ../src/cli/report.cpp:639
 msgid "Reporting..."
 msgstr "Zgłaszanie..."
 
-#: ../src/cli/report.cpp:715
+#: ../src/cli/report.cpp:658
 #, c-format
 msgid "Report using %s?"
 msgstr "Zgłosić używając %s?"
 
-#: ../src/cli/report.cpp:718
+#: ../src/cli/report.cpp:661
 msgid "Skipping..."
 msgstr "Pomijanie..."
 
-#: ../src/cli/report.cpp:730
+#: ../src/cli/report.cpp:673
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Zgłaszanie jest wyłączone, ponieważ nie można użyć wyjątku"
 
-#: ../src/cli/report.cpp:734
+#: ../src/cli/report.cpp:677
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -346,14 +344,14 @@ msgstr ""
 "Proszę spróbować zainstalować pakiet debuginfo ręcznie, używając polecenia: "
 "\"debuginfo-install %s\" i spróbować ponownie\n"
 
-#: ../src/cli/report.cpp:743
+#: ../src/cli/report.cpp:686
 msgid "Error loading reporter settings"
 msgstr "Błąd podczas wczytywania ustawień zgłaszania"
 
-#: ../src/cli/report.cpp:762
+#: ../src/cli/report.cpp:705
 #, c-format
-msgid "Crash reported via %d plugins (%d errors)\n"
-msgstr "Zgłoszono awarię przez %d wtyczki (%d błędów)\n"
+msgid "Crash reported via %d report events (%d errors)\n"
+msgstr "Zgłoszono awarię przez %d wtyczki zgłaszania (%d błędów)\n"
 
 #: ../src/daemon/abrt-handle-crashdump.c:42
 msgid ""
@@ -376,7 +374,7 @@ msgstr "Przekazuje komunikaty do dziennika systemowego"
 #: ../src/plugins/abrt-action-analyze-python.c:48
 #: ../src/plugins/abrt-action-mailx.cpp:153
 #: ../src/plugins/abrt-action-print.cpp:51
-#: ../src/plugins/abrt-action-upload.cpp:270
+#: ../src/plugins/abrt-action-upload.cpp:269
 msgid "Crash dump directory"
 msgstr "Katalog zrzutów awarii"
 
@@ -396,7 +394,7 @@ msgstr "Komentarz jest za długi"
 msgid "'How to reproduce' is too long"
 msgstr "\"Jak powtórzyć awarię\" jest za długie"
 
-#: ../src/daemon/Daemon.cpp:614
+#: ../src/daemon/Daemon.cpp:534
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -404,26 +402,22 @@ msgstr ""
 "Wielkość zgłoszenia przekroczyła dozwolone ograniczenie. Proszę sprawdzić "
 "wartość zmiennej MaxCrashReportsSize w pliku abrt.conf."
 
-#: ../src/daemon/Daemon.cpp:784
+#: ../src/daemon/Daemon.cpp:699
 msgid "abrtd [options]"
 msgstr "abrtd [opcje]"
 
-#: ../src/daemon/Daemon.cpp:794
+#: ../src/daemon/Daemon.cpp:709
 msgid "Do not daemonize"
 msgstr "Bez tworzenia demona"
 
-#: ../src/daemon/Daemon.cpp:795
+#: ../src/daemon/Daemon.cpp:710
 msgid "Log to syslog even with -d"
 msgstr ""
 "Przekazuje komunikaty do dziennika systemowego, nawet jeśli podano opcję -d"
 
-#: ../src/daemon/Daemon.cpp:796
+#: ../src/daemon/Daemon.cpp:711
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Kończy działanie po SEKUNDACH nieaktywności"
-
-#: ../src/daemon/Settings.cpp:207 ../src/daemon/Settings.cpp:212
-msgid "Database plugin not specified. Please check abrtd settings."
-msgstr "Nie podano wtyczki bazy danych. Proszę sprawdzić ustawienia abrtd."
 
 #: ../src/gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -625,7 +619,7 @@ msgstr ""
 msgid "You have to select a crash to copy."
 msgstr "Należy wybrać awarię do skopiowania."
 
-#: ../src/gui/CCMainWindow.py:422
+#: ../src/gui/CCMainWindow.py:421
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -636,7 +630,7 @@ msgstr ""
 "\t--report=IDENTYFIKATOR_AWARII\tBezpośrednio zgłasza awarię z "
 "IDENTYFIKATOREM_AWARII"
 
-#: ../src/gui/CCMainWindow.py:445
+#: ../src/gui/CCMainWindow.py:444
 #, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"
@@ -1379,7 +1373,7 @@ msgstr ""
 "Wysyła skompresowane archiwum tar zrzutu awarii"
 
 #: ../src/plugins/abrt-action-mailx.cpp:154
-#: ../src/plugins/abrt-action-upload.cpp:271
+#: ../src/plugins/abrt-action-upload.cpp:270
 msgid "Config file"
 msgstr "Plik konfiguracji"
 
@@ -1419,7 +1413,7 @@ msgstr "Kompresowanie danych"
 msgid "Empty login or password, please check RHTSupport.conf"
 msgstr "Pusty login lub hasło, proszę sprawdzić plik RHTSupport.conf"
 
-#: ../src/plugins/abrt-action-rhtsupport.cpp:198
+#: ../src/plugins/abrt-action-rhtsupport.cpp:197
 msgid "Creating a new case..."
 msgstr "Dodawanie nowego przypadku..."
 
@@ -1434,12 +1428,12 @@ msgstr "Wysyłanie %s do %s"
 msgid "Successfully sent %s to %s"
 msgstr "Pomyślnie wysłano %s do %s"
 
-#: ../src/plugins/abrt-action-upload.cpp:223
+#: ../src/plugins/abrt-action-upload.cpp:222
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "Utworzono archiwum: \"%s\""
 
-#: ../src/plugins/abrt-action-upload.cpp:257
+#: ../src/plugins/abrt-action-upload.cpp:256
 msgid ""
 " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1449,7 +1443,7 @@ msgstr ""
 "\n"
 "Wysyła skompresowane archiwum tar zrzutu awarii"
 
-#: ../src/plugins/abrt-action-upload.cpp:272
+#: ../src/plugins/abrt-action-upload.cpp:271
 msgid "Base URL to upload to"
 msgstr "Podstawowy adres URL, do którego wysłać"
 
@@ -1548,10 +1542,6 @@ msgstr "Login:"
 #: ../src/plugins/RHTSupport.glade.h:4
 msgid "RHTSupport URL:"
 msgstr "Adres URL usługi RHTSupport:"
-
-#: ../src/plugins/SQLite3.cpp:739
-msgid "Keeps SQLite3 database about all crashes"
-msgstr "Utrzymuje bazę danych SQLite3 o wszystkich awariach"
 
 #: ../src/plugins/Upload.glade.h:1
 msgid "<b>Upload plugin configuration</b>"
