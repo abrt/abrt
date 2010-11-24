@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-11-23 07:35+0000\n"
-"PO-Revision-Date: 2010-11-23 10:57+0200\n"
+"POT-Creation-Date: 2010-11-23 21:39+0000\n"
+"PO-Revision-Date: 2010-11-24 11:59+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
 "Language: nl\n"
@@ -74,15 +74,15 @@ msgstr "Open ABRT"
 #: ../src/cli/CLI.cpp:47
 #, c-format
 msgid ""
+"\tCrash dump : %s\n"
 "\tUID        : %s\n"
-"\tUUID       : %s\n"
 "\tPackage    : %s\n"
 "\tExecutable : %s\n"
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 msgstr ""
+"\tCrash dump      : %s\n"
 "\tUID             : %s\n"
-"\tUUID            : %s\n"
 "\tPakket          : %s\n"
 "\tUitvoerbaar prog: %s\n"
 "\tCrash tijd      : %s\n"
@@ -96,7 +96,7 @@ msgstr "\tHost naam   : %s\n"
 #: ../src/cli/CLI.cpp:94
 #, c-format
 msgid ""
-"Crash ID:           %s:%s\n"
+"Dump directory:     %s\n"
 "Last crash:         %s\n"
 "Analyzer:           %s\n"
 "Component:          %s\n"
@@ -106,7 +106,7 @@ msgid ""
 "System:             %s, kernel %s\n"
 "Reason:             %s\n"
 msgstr ""
-"Crash ID:           %s:%s\n"
+"Dump map:           %s\n"
 "Laatste crash:      %s\n"
 "Analyse:            %s\n"
 "Onderdeel:          %s\n"
@@ -116,27 +116,27 @@ msgstr ""
 "Systeem:            %s, kernel %s\n"
 "Reden:              %s\n"
 
-#: ../src/cli/CLI.cpp:122
+#: ../src/cli/CLI.cpp:121
 #, c-format
 msgid "Coredump file:      %s\n"
 msgstr "Coredump bestand:   %s\n"
 
-#: ../src/cli/CLI.cpp:126
+#: ../src/cli/CLI.cpp:125
 #, c-format
 msgid "Rating:             %s\n"
 msgstr "Beoordeling:        %s\n"
 
-#: ../src/cli/CLI.cpp:131
+#: ../src/cli/CLI.cpp:130
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr "Crash functie:      %s\n"
 
-#: ../src/cli/CLI.cpp:135
+#: ../src/cli/CLI.cpp:134
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr "Host naam:          %s\n"
 
-#: ../src/cli/CLI.cpp:139
+#: ../src/cli/CLI.cpp:138
 #, c-format
 msgid ""
 "\n"
@@ -147,7 +147,7 @@ msgstr ""
 "Hoe te reproduceren:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:143
+#: ../src/cli/CLI.cpp:142
 #, c-format
 msgid ""
 "\n"
@@ -158,7 +158,7 @@ msgstr ""
 "Commentaar:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:149
+#: ../src/cli/CLI.cpp:148
 #, c-format
 msgid ""
 "\n"
@@ -170,7 +170,7 @@ msgstr ""
 "%s\n"
 
 #. Message has embedded tabs.
-#: ../src/cli/CLI.cpp:247
+#: ../src/cli/CLI.cpp:239
 #, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
@@ -190,8 +190,7 @@ msgid ""
 "\t      -b, --backtrace\tprint detailed information about a crash including "
 "backtrace\n"
 "CRASH_ID can be:\n"
-"\tUID:UUID pair,\n"
-"\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
+"\ta name of dump directory, or\n"
 "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
 msgstr ""
 "Gebruik: %s [OPTIE]\n"
@@ -208,16 +207,14 @@ msgstr ""
 "\t\t-y, --always \tmaak een rapport aan en verstuur deze zonder te vragen\n"
 "\t-d, --delete CRASH_ID\tverwijder een crash\n"
 "\t-i, --info CRASH_ID\tlaat gedetailleerde informatie over crash zien\n"
-"\t\t-b, --backtrace\tlaat gedetailleerde informatie over crash zien "
-"inclusief backtrace\n"
+"\t\t-b, --backtrace\tlaat gedetailleerde informatie over crash zien inclusief "
+"backtrace\n"
 "CRASH_ID kan zijn:\n"
-"\tUID:UUID paar,\n"
-"\tunieke UUID prefix  - de crash met bijpassende UUID waarop actie "
-"ondernomen zal worden\n"
-"\t@N  - N-de crash (zoals getoond door --list --full) waarop actie "
-"ondernomen zal worden\n"
+"\teen naam van een dump map of\n"
+"\t@N  - N-de crash (zoals getoond door --list --full) waarop actie ondernomen "
+"zal worden\n"
 
-#: ../src/cli/CLI.cpp:292
+#: ../src/cli/CLI.cpp:283
 msgid "You must specify exactly one operation"
 msgstr "Je moet exact een bewerking specificeren."
 
@@ -299,46 +296,46 @@ msgstr ""
 "Er zijn geen veranderingen in het rapport ontdekt"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:540
+#: ../src/cli/report.cpp:465
 msgid "y"
 msgstr "j"
 
-#: ../src/cli/report.cpp:541
+#: ../src/cli/report.cpp:466
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:641
+#: ../src/cli/report.cpp:566
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Voor plug-in %s zijn verkeerde instellingen ontdekt\n"
 
-#: ../src/cli/report.cpp:645
+#: ../src/cli/report.cpp:570
 msgid "Enter your login: "
 msgstr "Voer jouw gebruikersnaam in:"
 
-#: ../src/cli/report.cpp:651
+#: ../src/cli/report.cpp:576
 msgid "Enter your password: "
 msgstr "Voer jouw wachtwoord in:"
 
-#: ../src/cli/report.cpp:696
+#: ../src/cli/report.cpp:639
 msgid "Reporting..."
 msgstr "Rapporteren..."
 
-#: ../src/cli/report.cpp:715
+#: ../src/cli/report.cpp:658
 #, c-format
 msgid "Report using %s?"
 msgstr "Rapporteren met gebruik van %s? "
 
-#: ../src/cli/report.cpp:718
+#: ../src/cli/report.cpp:661
 msgid "Skipping..."
 msgstr "Overslaan..."
 
-#: ../src/cli/report.cpp:730
+#: ../src/cli/report.cpp:673
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Rapporteren is uitgezet omdat de backtrace onbruikbaar is."
 
-#: ../src/cli/report.cpp:734
+#: ../src/cli/report.cpp:677
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -347,14 +344,14 @@ msgstr ""
 "Probeer debuginfo handmatig te installeren met het commando: \"debuginfo-"
 "install %s\" en probeer het opnieuw\n"
 
-#: ../src/cli/report.cpp:743
+#: ../src/cli/report.cpp:686
 msgid "Error loading reporter settings"
 msgstr "Fout tijdens het laden van rapporteer instellingen"
 
-#: ../src/cli/report.cpp:762
+#: ../src/cli/report.cpp:705
 #, c-format
-msgid "Crash reported via %d plugins (%d errors)\n"
-msgstr "Crash gerapporteerd met %d plug-ins (%d fouten)\n"
+msgid "Crash reported via %d report events (%d errors)\n"
+msgstr "Crash gerapporteerd via %d rapport gebeurtenissen (%d fouten)\n"
 
 #: ../src/daemon/abrt-handle-crashdump.c:42
 msgid ""
@@ -377,7 +374,7 @@ msgstr "Loggen naar syslog"
 #: ../src/plugins/abrt-action-analyze-python.c:48
 #: ../src/plugins/abrt-action-mailx.cpp:153
 #: ../src/plugins/abrt-action-print.cpp:51
-#: ../src/plugins/abrt-action-upload.cpp:270
+#: ../src/plugins/abrt-action-upload.cpp:269
 msgid "Crash dump directory"
 msgstr "Crash dump map"
 
@@ -397,7 +394,7 @@ msgstr "Commentaar is te lang"
 msgid "'How to reproduce' is too long"
 msgstr "'Hoe te reproduceren' is te lang"
 
-#: ../src/daemon/Daemon.cpp:614
+#: ../src/daemon/Daemon.cpp:534
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -405,25 +402,21 @@ msgstr ""
 "De grootte van het rapport overschreed de quota. Controleer de "
 "MaxCrashReportsSize waarde van het systeem in abrt.conf."
 
-#: ../src/daemon/Daemon.cpp:784
+#: ../src/daemon/Daemon.cpp:699
 msgid "abrtd [options]"
 msgstr "abrtd [opties]"
 
-#: ../src/daemon/Daemon.cpp:794
+#: ../src/daemon/Daemon.cpp:709
 msgid "Do not daemonize"
 msgstr "Niet instellen als daemon"
 
-#: ../src/daemon/Daemon.cpp:795
+#: ../src/daemon/Daemon.cpp:710
 msgid "Log to syslog even with -d"
 msgstr "Loggen naar syslog zelfs met -d"
 
-#: ../src/daemon/Daemon.cpp:796
+#: ../src/daemon/Daemon.cpp:711
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Afsluiten na SEC seconden van inactiviteit"
-
-#: ../src/daemon/Settings.cpp:207 ../src/daemon/Settings.cpp:212
-msgid "Database plugin not specified. Please check abrtd settings."
-msgstr "Database plug-in niet gespecificeerd. Controleer de artd instellingen."
 
 #: ../src/gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -622,7 +615,7 @@ msgstr ""
 msgid "You have to select a crash to copy."
 msgstr "Je moet een crash selecteren om te kopiëren."
 
-#: ../src/gui/CCMainWindow.py:422
+#: ../src/gui/CCMainWindow.py:421
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -632,7 +625,7 @@ msgstr ""
 "\t-v[vv]\t\t\tBreedsprakig\n"
 "\t--report=CRASH_ID\tRapporteer crash direct met CRASH_ID"
 
-#: ../src/gui/CCMainWindow.py:445
+#: ../src/gui/CCMainWindow.py:444
 #, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"
@@ -1373,7 +1366,7 @@ msgstr ""
 "Upload gecomprimeerde tarball of crash dump"
 
 #: ../src/plugins/abrt-action-mailx.cpp:154
-#: ../src/plugins/abrt-action-upload.cpp:271
+#: ../src/plugins/abrt-action-upload.cpp:270
 msgid "Config file"
 msgstr "Config bestand"
 
@@ -1413,7 +1406,7 @@ msgstr "Data comprimeren"
 msgid "Empty login or password, please check RHTSupport.conf"
 msgstr "Lege inlog of wachtwoord, controleer RHTSupport.conf"
 
-#: ../src/plugins/abrt-action-rhtsupport.cpp:198
+#: ../src/plugins/abrt-action-rhtsupport.cpp:197
 msgid "Creating a new case..."
 msgstr "Een nieuwe zaak aanmaken..."
 
@@ -1428,12 +1421,12 @@ msgstr "%s versturen naar %s"
 msgid "Successfully sent %s to %s"
 msgstr "%s met succes verzonden naar %s"
 
-#: ../src/plugins/abrt-action-upload.cpp:223
+#: ../src/plugins/abrt-action-upload.cpp:222
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "Archief is gemaakt: '%s'"
 
-#: ../src/plugins/abrt-action-upload.cpp:257
+#: ../src/plugins/abrt-action-upload.cpp:256
 msgid ""
 " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1443,7 +1436,7 @@ msgstr ""
 "\n"
 "Upload gecomprimeerde tarball of crash dump"
 
-#: ../src/plugins/abrt-action-upload.cpp:272
+#: ../src/plugins/abrt-action-upload.cpp:271
 msgid "Base URL to upload to"
 msgstr "Basis URL om naar te uploaden"
 
@@ -1543,10 +1536,6 @@ msgstr "Inlog:"
 msgid "RHTSupport URL:"
 msgstr "RHTSupport URL:"
 
-#: ../src/plugins/SQLite3.cpp:739
-msgid "Keeps SQLite3 database about all crashes"
-msgstr "Bewaart SQLite3 database over alle crashes"
-
 #: ../src/plugins/Upload.glade.h:1
 msgid "<b>Upload plugin configuration</b>"
 msgstr "<b>Upload plug-in configuratie</b>"
@@ -1566,6 +1555,13 @@ msgstr "URL:"
 #: ../src/plugins/Upload.glade.h:5
 msgid "Use encryption"
 msgstr "Gebruik encryptie"
+
+#~ msgid "Database plugin not specified. Please check abrtd settings."
+#~ msgstr ""
+#~ "Database plug-in niet gespecificeerd. Controleer de artd instellingen."
+
+#~ msgid "Keeps SQLite3 database about all crashes"
+#~ msgstr "Bewaart SQLite3 database over alle crashes"
 
 #~ msgid "Reports bugs to bugzilla"
 #~ msgstr "Bugs rapporteren aan bugzilla"
