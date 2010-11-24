@@ -20,8 +20,6 @@
 #
 # Output goes to GUI as debuginfo install log. The script should be careful
 # to give useful, but not overly cluttered info to stdout.
-# Additionally, abrt daemon handles "MISSING:xxxx" messages specially:
-# it is used to inform about missing debuginfos.
 #
 # Exitcodes:
 # 0 - all debuginfos are installed
@@ -155,9 +153,10 @@ cleanup_and_report_missing() {
         $keep_tmp || { $debug && echo "Removing $tempdir" >&2; rm -rf "$tempdir"; }
     fi
 
-    for missing in $missing_build_ids; do
-        echo "MISSING:$missing" >&2
-    done
+    # Disabled. We no longer need this, gdb output flags missing debuginfos anyway
+    #for missing in $missing_build_ids; do
+    #    echo "MISSING:$missing" >&2
+    #done
 
     test x"$missing_build_ids" != x"" && echo "`count_words $missing_build_ids` debuginfos can't be found" >&2
 }
