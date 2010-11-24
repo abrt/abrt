@@ -75,8 +75,12 @@ static void print_crash_list(const vector_map_crash_data_t& crash_list, bool inc
     for (unsigned i = 0; i < crash_list.size(); ++i)
     {
         const map_crash_data_t& crash = crash_list[i];
-        if (get_crash_data_item_content(crash, FILENAME_MESSAGE) != "" && !include_reported)
-            continue;
+        if (!include_reported)
+        {
+            const char *msg = get_crash_data_item_content_or_NULL(crash, FILENAME_MESSAGE);
+            if (!msg || !msg[0])
+                continue;
+        }
 
         printf("%u.\n", i);
         print_crash(crash);
