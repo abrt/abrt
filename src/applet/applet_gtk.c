@@ -170,7 +170,14 @@ static void on_notify_close(NotifyNotification *notification, gpointer user_data
 static NotifyNotification *new_warn_notification()
 {
     NotifyNotification *notification;
+
+/* the fourth argument was removed in libnotify 0.7.0 */
+#if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR < 7)
     notification = notify_notification_new(_("Warning"), NULL, NULL, NULL);
+#else
+    notification = notify_notification_new(_("Warning"), NULL, NULL);
+#endif
+
     g_signal_connect(notification, "closed", G_CALLBACK(on_notify_close), NULL);
 
     GdkPixbuf *pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(),
