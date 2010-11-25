@@ -12,6 +12,7 @@ AM_YFLAGS = --verbose
 libABRTUtils_la_SOURCES = \
     xfuncs.cpp \
     encbase64.cpp \
+    stdio_helpers.cpp \
     read_write.cpp \
     logging.cpp \
     copyfd.cpp \

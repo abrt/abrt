@@ -99,6 +99,10 @@ extern int g_verbose;
 char* skip_whitespace(const char *s);
 char* skip_non_whitespace(const char *s);
 
+/* A-la fgets, but malloced and of unlimited size */
+char *xmalloc_fgets(FILE *file);
+/* Similar, but removes trailing \n */
+char *xmalloc_fgetline(FILE *file);
 
 #ifdef __cplusplus
 extern "C" {
