@@ -387,6 +387,68 @@ int ctx::add_comment(xmlrpc_int32 bug_id, const char* comment, bool is_private)
     return result ? 0 : -1;
 }
 
+/* From RHEL6 kernel/panic.c:
+ * { TAINT_PROPRIETARY_MODULE,     'P', 'G' },
+ * { TAINT_FORCED_MODULE,          'F', ' ' },
+ * { TAINT_UNSAFE_SMP,             'S', ' ' },
+ * { TAINT_FORCED_RMMOD,           'R', ' ' },
+ * { TAINT_MACHINE_CHECK,          'M', ' ' },
+ * { TAINT_BAD_PAGE,               'B', ' ' },
+ * { TAINT_USER,                   'U', ' ' },
+ * { TAINT_DIE,                    'D', ' ' },
+ * { TAINT_OVERRIDDEN_ACPI_TABLE,  'A', ' ' },
+ * { TAINT_WARN,                   'W', ' ' },
+ * { TAINT_CRAP,                   'C', ' ' },
+ * { TAINT_FIRMWARE_WORKAROUND,    'I', ' ' },
+ * entries 12 - 27 are unused
+ * { TAINT_HARDWARE_UNSUPPORTED,   'H', ' ' },
+ * entries 29 - 31 are unused
+ */
+
+static const char * const taint_warnings[] = {
+    "Proprietary Module",
+    "Forced Module",
+    "Unsafe SMP",
+    "Forced rmmod",
+    "Machine Check",
+    "Bad Page",
+    "User",
+    "Die",
+    "Overriden ACPI Table",
+    "Warning Issued",
+    "Experimental Module Loaded",
+    "Firmware Workaround",
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    "Hardware Unsupported",
+    NULL,
+    NULL,
+};
+
+static const char *tainted_string(unsigned tainted)
+{
+    unsigned idx = 0;
+    while ((tainted >>= 1) != 0)
+        idx++;
+
+    return taint_warnings[idx];
+}
+
 xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData, int depend_on_bugno)
 {
     const std::string& package   = get_crash_data_item_content(pCrashData, FILENAME_PACKAGE);
@@ -397,7 +459,7 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData, int depend_on_bugn
     const char *reason           = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_REASON);
     const char *function         = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_CRASH_FUNCTION);
     const char *analyzer         = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_ANALYZER);
-    const char *tainted          = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_TAINTED);
+    const char *tainted_str     = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_TAINTED);
 
     std::string summary = "[abrt] " + package;
     if (function != NULL && strlen(function) < 30)
@@ -412,12 +474,16 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData, int depend_on_bugn
         summary += reason;
     }
 
-    if (tainted && analyzer
-        && (tainted[0] == '1')
+    if (tainted_str && analyzer
         && (strcmp(analyzer, "Kerneloops") == 0)
     ) {
-        summary += ": ";
-        summary += "TAINTED";
+        unsigned long tainted = xatoi_u(tainted_str);
+        const char *tainted_warning = tainted_string(tainted);
+        if (tainted_warning)
+        {
+            summary += ": TAINTED";
+            summary += tainted_warning;
+        }
     }
 
     std::string status_whiteboard = "abrt_hash:" + duphash;
