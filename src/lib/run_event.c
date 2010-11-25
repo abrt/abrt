@@ -235,7 +235,7 @@ char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const
                     if (!dd)
                         goto stop; /* error (note: dd_opendir logged error msg) */
                 }
-                char *real_val = dd_load_text(dd, p);
+                char *real_val = dd_load_text_ext(dd, p, DD_FAIL_QUIETLY);
                 /* Does VAL match? */
                 if (strcmp(real_val, line_val) != 0)
                 {

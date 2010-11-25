@@ -117,8 +117,10 @@ mw_result_t CreateCrashReport(const char *dump_dir_name,
         char *uid = dd_load_text(dd, FILENAME_UID);
         if (strcmp(uid, caller_uid_str) != 0)
         {
-            char *inform_all = dd_load_text(dd, FILENAME_INFORMALL);
-            if (!string_to_bool(inform_all))
+            char *inform_all = dd_load_text_ext(dd, FILENAME_INFORMALL, DD_FAIL_QUIETLY);
+            bool for_all = string_to_bool(inform_all);
+            free(inform_all);
+            if (!for_all)
             {
                 dd_close(dd);
                 error_msg("crash '%s' can't be accessed by user with uid %ld", dump_dir_name, caller_uid);
@@ -226,10 +228,11 @@ report_status_t Report(const map_crash_data_t& client_report,
 
     // Is it allowed for this user to report?
     if (caller_uid != 0   // not called by root
-     && get_crash_data_item_content(stored_report, FILENAME_INFORMALL) != "1"
      && strcmp(to_string(caller_uid).c_str(), UID) != 0
     ) {
-        throw CABRTException(EXCEP_ERROR, "Report(): user with uid %ld can't report crash %s",
+        const char *inform_all = get_crash_data_item_content_or_NULL(stored_report, FILENAME_INFORMALL);
+        if (!inform_all || !string_to_bool(inform_all))
+            throw CABRTException(EXCEP_ERROR, "Report(): user with uid %ld can't report crash %s",
                         caller_uid, dump_dir_name);
     }
 
@@ -623,8 +626,10 @@ vector_map_crash_data_t GetCrashInfos(long caller_uid)
                     uid = dd_load_text(dd, FILENAME_UID);
                     if (strcmp(uid, caller_uid_str) != 0)
                     {
-                        char *inform_all = dd_load_text(dd, FILENAME_INFORMALL);
-                        if (!string_to_bool(inform_all))
+                        char *inform_all = dd_load_text_ext(dd, FILENAME_INFORMALL, DD_FAIL_QUIETLY);
+                        bool for_all = string_to_bool(inform_all);
+                        free(inform_all);
+                        if (!for_all)
                         {
                             dd_close(dd);
                             goto next;
@@ -776,7 +781,7 @@ int DeleteDebugDump(const char *dump_dir_name, long caller_uid)
         char *uid = dd_load_text(dd, FILENAME_UID);
         if (strcmp(uid, caller_uid_str) != 0)
         {
-            char *inform_all = dd_load_text(dd, FILENAME_INFORMALL);
+            char *inform_all = dd_load_text_ext(dd, FILENAME_INFORMALL, DD_FAIL_QUIETLY);
             if (!string_to_bool(inform_all))
             {
                 dd_close(dd);

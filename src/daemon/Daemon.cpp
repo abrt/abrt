@@ -575,7 +575,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                     );
                     /* Send dbus signal */
                     g_pCommLayer->Crash(get_crash_data_item_content_or_NULL(crashinfo, FILENAME_PACKAGE),
-                                    crash_id,
+                                    crash_id, //TODO: stop passing this param, it is unused
                                     fullname,
                                     uid_str
                     );
