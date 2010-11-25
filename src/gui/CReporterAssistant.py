@@ -66,6 +66,36 @@ class ReporterAssistant():
         self.connect_signal(daemon, "report-done", self.on_report_done_cb)
         self.connect_signal(daemon, "update", self.update_cb)
 
+        # add view log button, when in verbose mode
+        if get_verbose_level():
+            b_view_log = gtk.Button(_("View log"))
+            b_view_log.connect("clicked", self.on_show_log_cb)
+            self.assistant.add_action_widget(b_view_log)
+            b_view_log.show()
+
+
+    def on_show_log_cb(self, button):
+        viewer = gtk.Window()
+        viewer.set_icon_name("abrt")
+        viewer.set_default_size(600,500)
+        viewer.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
+        viewer.set_transient_for(self.assistant)
+        vbox = gtk.VBox()
+        viewer.add(vbox)
+        log_tev = gtk.TextView()
+        log_tev.set_editable(False)
+        log_buff = gtk.TextBuffer()
+        log_buff.set_text(self.updates)
+        log_sw = gtk.ScrolledWindow()
+        log_sw.add(log_tev)
+        log_sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        log_tev.set_buffer(log_buff)
+        vbox.pack_start(log_sw)
+        b_close = gtk.Button(stock=gtk.STOCK_CLOSE)
+        b_close.connect("clicked",lambda *w: viewer.destroy())
+        vbox.pack_start(b_close, False)
+        viewer.show_all()
+
     # call to update the progressbar
     def progress_update_cb(self, *args):
         self.pBar.pulse()
