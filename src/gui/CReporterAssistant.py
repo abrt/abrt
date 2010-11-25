@@ -305,6 +305,14 @@ class ReporterAssistant():
         except Exception, ex:
             rating = None
             log1(_("Crashdump doesn't have rating => we suppose it's not required"))
+
+        # FIXME: temporary warning about low rating because of
+        # removal the code that checks if reporter requires rating
+        if rating != None and rating < 4:
+            error_msgs.append(_("The backtrace is incomplete, please make sure"
+                                " you provide the steps to reproduce."))
+
+
         # active buttons acording to required fields
         # if an backtrace has rating use it
         if not SendBacktrace:
