@@ -80,7 +80,6 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "crash_types.h"
 #include "dump_dir.h"
 #include "abrt_types.h"
-#include "abrt_packages.h"
 
 
 #ifdef __cplusplus
@@ -253,6 +252,27 @@ std::string to_string(T x)
 
 void parse_args(const char *psArgs, vector_string_t& pArgs, int quote = -1);
 void parse_release(const char *pRelease, char **product, char **version);
+
+char* make_description_bz(const map_crash_data_t& pCrashData);
+char* make_description_reproduce_comment(const map_crash_data_t& pCrashData);
+char* make_description_logger(const map_crash_data_t& pCrashData);
+char* make_description_mailx(const map_crash_data_t& pCrashData);
+
+/**
+ * Loads settings and stores it in second parameter. On success it
+ * returns true, otherwise returns false.
+ *
+ * @param path A path of config file.
+ *  Config file consists of "key=value" lines.
+ * @param settings A readed plugin's settings.
+ * @param skipKeysWithoutValue
+ *  If true, lines in format "key=" (without value) are skipped.
+ *  Otherwise empty value "" is inserted into pSettings.
+ * @return if it success it returns true, otherwise it returns false.
+ */
+extern bool LoadPluginSettings(const char *pPath,
+			       map_plugin_settings_t& pSettings,
+			       bool skipKeysWithoutValue = true);
 
 // TODO: npajkovs: full rewrite ssprintf -> xasprintf
 static inline std::string ssprintf(const char *format, ...)

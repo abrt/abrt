@@ -21,7 +21,6 @@
 #include "run-command.h"
 #include "dbus.h"
 #include "abrtlib.h"
-#include "plugin.h" // LoadPluginSettings
 
 /* Field separator for the crash report file that is edited by user. */
 #define FIELD_SEP "%----"
@@ -534,7 +533,7 @@ static void get_reporter_plugin_settings(const vector_string_t& reporters,
         {
             map_string_t single_plugin_settings;
             std::string path = std::string(homedir) + "/.abrt/"
-                + it->first + "."PLUGINS_CONF_EXTENSION;
+                + it->first + ".conf";
             /* Load plugin config in the home dir. Do not skip lines with empty value (but containing a "key="),
                because user may want to override password from /etc/abrt/plugins/*.conf, but he prefers to
                enter it every time he reports. */

@@ -75,7 +75,7 @@ static const char *const blacklisted_items[] = {
     NULL
 };
 
-char* make_dsc_mailx(const map_crash_data_t & crash_data)
+char* make_description_mailx(const map_crash_data_t & crash_data)
 {
     struct strbuf *buf_dsc = strbuf_new();
     struct strbuf *buf_additional_files = strbuf_new();

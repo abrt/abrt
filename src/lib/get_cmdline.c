@@ -17,8 +17,6 @@
 */
 #include "abrtlib.h"
 
-#define VAR_RUN_PID_FILE        VAR_RUN"/abrtd.pid"
-
 static char *append_escaped(char *start, const char *s)
 {
     char hex_char_buf[] = "\\x00";
@@ -104,36 +102,4 @@ char* get_cmdline(pid_t pid)
     }
 
     return xstrdup(escaped_cmdline + 1); /* +1 skips extraneous leading space */
-}
-
-int daemon_is_ok()
-{
-    int fd = open(VAR_RUN_PID_FILE, O_RDONLY);
-    if (fd < 0)
-    {
-        return 0;
-    }
-
-    char pid[sizeof(pid_t)*3 + 2];
-    int len = read(fd, pid, sizeof(pid)-1);
-    close(fd);
-    if (len <= 0)
-        return 0;
-
-    pid[len] = '\0';
-    *strchrnul(pid, '\n') = '\0';
-    /* paranoia: we don't want to check /proc//stat or /proc///stat */
-    if (pid[0] == '\0' || pid[0] == '/')
-        return 0;
-
-    /* TODO: maybe readlink and check that it is "xxx/abrt"? */
-    char path[sizeof("/proc/%s/stat") + sizeof(pid)];
-    sprintf(path, "/proc/%s/stat", pid);
-    struct stat sb;
-    if (stat(path, &sb) == -1)
-    {
-        return 0;
-    }
-
-    return 1;
 }

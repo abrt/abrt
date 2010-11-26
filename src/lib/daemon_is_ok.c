@@ -1,6 +1,5 @@
 /*
-    Copyright (C) 2010  ABRT team
-    Copyright (C) 2010  RedHat Inc
+    Copyright (C) 2009  RedHat inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,26 +17,35 @@
 */
 #include "abrtlib.h"
 
-/* cuts the name from the NVR format: foo-1.2.3-1.el6
-   returns a newly allocated string
-*/
-char* get_package_name_from_NVR_or_NULL(const char* packageNVR)
+int daemon_is_ok()
 {
-    char* package_name = NULL;
-    if (packageNVR != NULL)
+    int fd = open(VAR_RUN"/abrtd.pid", O_RDONLY);
+    if (fd < 0)
     {
-        VERB1 log("packageNVR %s", packageNVR);
-        package_name = xstrdup(packageNVR);
-        char *pos = strrchr(package_name, '-');
-        if (pos != NULL)
-        {
-            *pos = 0;
-            pos = strrchr(package_name, '-');
-            if (pos != NULL)
-            {
-                *pos = 0;
-            }
-        }
+        return 0;
     }
-    return package_name;
+
+    char pid[sizeof(pid_t)*3 + 2];
+    int len = read(fd, pid, sizeof(pid)-1);
+    close(fd);
+    if (len <= 0)
+        return 0;
+
+    pid[len] = '\0';
+    *strchrnul(pid, '\n') = '\0';
+    /* paranoia: we don't want to check /proc//stat or /proc///stat */
+    if (pid[0] == '\0' || pid[0] == '/')
+        return 0;
+
+    char path[sizeof("/proc/%s/stat") + sizeof(pid)];
+    sprintf(path, "/proc/%s/stat", pid);
+    struct stat sb;
+    if (stat(path, &sb) == -1)
+    {
+        return 0;
+    }
+
+    /* TODO: maybe readlink /proc/PID/exe and check that it is "xxx/abrt"? */
+
+    return 1;
 }

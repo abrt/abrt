@@ -25,9 +25,6 @@
 #include "crash_types.h"
 #include "abrt_exception.h"
 
-#include "plugin.h" /* make_description_bz */
-
-
 #define PROGNAME "abrt-action-rhtsupport"
 
 static void report_to_rhtsupport(

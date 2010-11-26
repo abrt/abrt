@@ -24,9 +24,6 @@
 #include "crash_types.h"
 #include "abrt_exception.h"
 
-#include "plugin.h" /* LoadPluginSettings */
-
-
 #define PROGNAME "abrt-action-upload"
 
 //TODO: use this for better logging

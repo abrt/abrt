@@ -16,8 +16,8 @@ abrt_cli_CPPFLAGS = \
 #    $(GTK_CFLAGS)
 
 abrt_cli_LDADD = \
-    ../lib/libABRTUtils.la \
-    ../lib/libABRTdUtils.la \
+    ../lib/libabrt.la \
+    ../lib/libabrt_dbus.la \
     $(GLIB_LIBS)
 
 man_MANS = abrt-cli.1

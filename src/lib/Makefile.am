@@ -1,10 +1,13 @@
-# ABRTUtils has small set of deps. This reduces deps of smaller abrt binaries
-# ABRTdUtils has much more. It is used by daemon and plugins only
-# ABRT_web_utils is used only by some abrt-action-foo programs, not by daemon
+# libabrt - the stuff shared among most of abrt (like xmalloc, logging)
+# libabrt_daemon - only daemon/server/dbus related things are here
+# libabrt_dbus - daemon, cli and applet use this
+# libabrt_web - abrt-action-foo where foo deals with network/web/ftp/...
 lib_LTLIBRARIES = \
-    libABRTUtils.la \
-    libABRTdUtils.la \
-    libABRT_web_utils.la
+    libabrt.la \
+    libabrt_daemon.la \
+    libabrt_dbus.la \
+    libabrt_web.la
+
 HEADER_DIR = $(srcdir)/../include
 AM_CPPFLAGS = -I$(HEADER_DIR)
 
@@ -12,11 +15,8 @@ AM_CPPFLAGS = -I$(HEADER_DIR)
 # time.cpp
 # xconnect.cpp
 
-libABRTUtils_la_SOURCES = \
+libabrt_la_SOURCES = \
     xfuncs.c \
-    concat_path_file.c \
-    append_to_malloced_string.c \
-    overlapping_strcpy.c \
     encbase64.c \
     stdio_helpers.c \
     hash_md5.c hash_md5.h \
@@ -24,22 +24,44 @@ libABRTUtils_la_SOURCES = \
     read_write.c read_write.h \
     logging.c logging.h \
     copyfd.c \
-    daemon.c \
+    concat_path_file.c \
+    append_to_malloced_string.c \
+    overlapping_strcpy.c \
     skip_whitespace.c \
+    stringops.cpp \
+    strbuf.c strbuf.h \
     xatonum.c numtoa.cpp \
     spawn.c \
-    stringops.cpp \
     dirsize.c \
     dump_dir.c \
-    strbuf.c strbuf.h \
-    abrt_dbus.c abrt_dbus.h \
+    get_cmdline.c \
+    daemon_is_ok.c \
+    load_plugin_settings.cpp \
+    make_descr.cpp \
+    run_event.c \
     CrashTypes.cpp \
     ABRTException.cpp \
-    run_event.c \
-    abrt_packages.c abrt_packages.h \
     hooklib.c hooklib.h \
+    parse_release.cpp \
     parse_options.c parse_options.h
-libABRTUtils_la_CPPFLAGS = \
+libabrt_la_CPPFLAGS = \
+    -Wall -Werror \
+    -I$(srcdir)/../include \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    $(GLIB_CFLAGS) \
+    -D_GNU_SOURCE
+libabrt_la_LDFLAGS = \
+    -version-info 0:1:0
+libabrt_la_LIBADD = \
+    $(GLIB_LIBS)
+
+libabrt_dbus_la_SOURCES = \
+    abrt_dbus.c abrt_dbus.h
+libabrt_dbus_la_CPPFLAGS = \
     -Wall -Werror \
     -I$(srcdir)/../include \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
@@ -50,19 +72,16 @@ libABRTUtils_la_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(DBUS_CFLAGS) \
     -D_GNU_SOURCE
-libABRTUtils_la_LDFLAGS = \
+libabrt_dbus_la_LDFLAGS = \
     -version-info 0:1:0
-libABRTUtils_la_LIBADD = \
+libabrt_dbus_la_LIBADD = \
     $(GLIB_LIBS) \
-    $(DBUS_LIBS) \
-    -ldl
+    $(DBUS_LIBS)
 
-libABRTdUtils_la_SOURCES = \
-    parse_release.cpp \
-    make_descr.cpp \
+libabrt_daemon_la_SOURCES = \
     $(HEADER_DIR)/comm_layer_inner.h CommLayerInner.cpp \
     $(HEADER_DIR)/plugin.h Plugin.cpp
-libABRTdUtils_la_CPPFLAGS = \
+libabrt_daemon_la_CPPFLAGS = \
     -Wall \
     -I$(srcdir)/../include \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
@@ -71,15 +90,15 @@ libABRTdUtils_la_CPPFLAGS = \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -D_GNU_SOURCE
-libABRTdUtils_la_LDFLAGS = \
+libabrt_daemon_la_LDFLAGS = \
     -version-info 0:1:0
-libABRTdUtils_la_LIBADD = \
+libabrt_daemon_la_LIBADD = \
     -ldl
 
-libABRT_web_utils_la_SOURCES = \
+libabrt_web_la_SOURCES = \
     abrt_curl.h abrt_curl.c \
     abrt_xmlrpc.h abrt_xmlrpc.cpp
-libABRT_web_utils_la_CPPFLAGS = \
+libabrt_web_la_CPPFLAGS = \
     -Wall -Werror \
     -I$(srcdir)/../include \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
@@ -91,9 +110,9 @@ libABRT_web_utils_la_CPPFLAGS = \
     $(LIBXML_CFLAGS) \
     $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
     -D_GNU_SOURCE
-libABRT_web_utils_la_LDFLAGS = \
+libabrt_web_la_LDFLAGS = \
     -version-info 0:1:0
-libABRT_web_utils_la_LIBADD = \
+libabrt_web_la_LIBADD = \
     $(CURL_LIBS) \
     $(LIBXML_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)

@@ -80,6 +80,8 @@ char* rpm_get_package_nvr(const char* filename);
  */
 char* rpm_get_component(const char* filename);
 
+char* get_package_name_from_NVR_or_NULL(const char* packageNVR);
+
 #ifdef __cplusplus
 }
 #endif

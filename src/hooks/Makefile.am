@@ -12,7 +12,7 @@ abrt_hook_ccpp_CPPFLAGS = \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -D_GNU_SOURCE
 abrt_hook_ccpp_LDADD = \
-    ../lib/libABRTUtils.la
+    ../lib/libabrt.la
 
 # dumpoops
 dumpoops_SOURCES = \
@@ -30,7 +30,8 @@ dumpoops_CPPFLAGS = \
     -D_GNU_SOURCE
 # build will succeed, but at runtime plugins do need ABRT*d*Utils
 dumpoops_LDADD = \
-    ../lib/libABRTUtils.la \
+    ../lib/libabrt_daemon.la \
+    ../lib/libabrt.la \
     $(GLIB_FLAGS)
 
 python_PYTHON = abrt.pth abrt_exception_handler.py

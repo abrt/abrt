@@ -22,7 +22,6 @@
 #include "parse_options.h"
 #include "crash_types.h"
 #include "abrt_exception.h"
-#include "plugin.h" /* make_description_logger */
 
 #define PROGNAME "abrt-action-print"
 

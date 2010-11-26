@@ -21,8 +21,6 @@
 #include "crash_types.h"
 #include "abrt_exception.h"
 
-#include "plugin.h" /* make_description_bz */
-
 #define XML_RPC_SUFFIX      "/xmlrpc.cgi"
 #define MAX_HOPS            5
 

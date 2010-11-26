@@ -22,14 +22,13 @@ abrt_applet_CPPFLAGS = \
 #    $(LIBNOTIFY_CFLAGS)
 #    $(DBUS_GLIB_CFLAGS)
 abrt_applet_LDADD = \
-    ../lib/libABRTUtils.la \
+    ../lib/libabrt.la \
+    ../lib/libabrt_dbus.la \
     -lglib-2.0 \
     -lgthread-2.0 \
     $(DBUS_LIBS) \
     $(LIBNOTIFY_LIBS) \
     $(GTK_LIBS)
-#    ../../lib/Utils/libABRTdUtils.la
-#    $(DL_LIBS)
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 

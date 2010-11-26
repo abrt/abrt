@@ -110,26 +110,4 @@ typedef struct SPluginInfo
         PLUGINS_MAGIC_NUMBER,\
     };
 
-/* helper functions */
-char* make_description_bz(const map_crash_data_t& pCrashData);
-char* make_description_reproduce_comment(const map_crash_data_t& pCrashData);
-char* make_description_logger(const map_crash_data_t& pCrashData);
-char* make_dsc_mailx(const map_crash_data_t& pCrashData);
-
-/**
- * Loads settings and stores it in second parameter. On success it
- * returns true, otherwise returns false.
- *
- * @param path A path of config file.
- *  Config file consists of "key=value" lines.
- * @param settings A readed plugin's settings.
- * @param skipKeysWithoutValue
- *  If true, lines in format "key=" (without value) are skipped.
- *  Otherwise empty value "" is inserted into pSettings.
- * @return if it success it returns true, otherwise it returns false.
- */
-extern bool LoadPluginSettings(const char *pPath,
-			       map_plugin_settings_t& pSettings,
-			       bool skipKeysWithoutValue = true);
-
 #endif

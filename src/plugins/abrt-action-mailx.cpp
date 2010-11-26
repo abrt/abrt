@@ -24,9 +24,6 @@
 #include "crash_types.h"
 #include "abrt_exception.h"
 
-#include "plugin.h" /* LoadPluginSettings */
-
-
 #define PROGNAME "abrt-action-mailx"
 
 static void exec_and_feed_input(uid_t uid, const char* text, char **args)
@@ -93,7 +90,7 @@ static void create_and_send_email(
     unsigned arg_size = 0;
     args = append_str_to_vector(args, arg_size, "/bin/mailx");
 
-    char *dsc = make_dsc_mailx(pCrashData);
+    char *dsc = make_description_mailx(pCrashData);
 
     if (send_binary_data)
     {
