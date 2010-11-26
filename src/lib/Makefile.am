@@ -1,7 +1,7 @@
 # libabrt - the stuff shared among most of abrt (like xmalloc, logging)
-# libabrt_daemon - only daemon/server/dbus related things are here
+# libabrt_daemon - only daemon related things are here
 # libabrt_dbus - daemon, cli and applet use this
-# libabrt_web - abrt-action-foo where foo deals with network/web/ftp/...
+# libabrt_web - for abrt-action-foo where foo deals with network/web/ftp/...
 lib_LTLIBRARIES = \
     libabrt.la \
     libabrt_daemon.la \
