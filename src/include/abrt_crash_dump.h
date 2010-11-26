@@ -16,8 +16,8 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#ifndef CRASHTYPES_H_
-#define CRASHTYPES_H_
+#ifndef ABRT_CRASH_DUMP_H_
+#define ABRT_CRASH_DUMP_H_
 
 #include "abrt_types.h"
 
@@ -114,7 +114,7 @@ void add_to_crash_data(map_crash_data_t& pCrashData,
 		const char *pItem,
 		const char *pContent);
 
-void load_crash_data_from_debug_dump(struct dump_dir *dd, map_crash_data_t& data);
+void load_crash_data_from_crash_dump_dir(struct dump_dir *dd, map_crash_data_t& data);
 
 const char *get_crash_data_item_content_or_NULL(const map_crash_data_t& crash_data, const char *key);
 // Aborts if key is not found:

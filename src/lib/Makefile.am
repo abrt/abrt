@@ -39,7 +39,7 @@ libabrt_la_SOURCES = \
     load_plugin_settings.cpp \
     make_descr.cpp \
     run_event.c \
-    CrashTypes.cpp \
+    crash_dump.cpp \
     ABRTException.cpp \
     hooklib.c hooklib.h \
     parse_release.cpp \

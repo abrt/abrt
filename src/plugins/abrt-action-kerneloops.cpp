@@ -19,7 +19,7 @@
 
 #include <curl/curl.h>
 #include "abrtlib.h"
-#include "crash_types.h"
+#include "abrt_crash_dump.h"
 #include "abrt_exception.h"
 
 #define PROGNAME "abrt-action-kerneloops"
@@ -92,7 +92,7 @@ static void report_to_kerneloops(
         exit(1); /* error msg is already logged */
 
     map_crash_data_t pCrashData;
-    load_crash_data_from_debug_dump(dd, pCrashData);
+    load_crash_data_from_crash_dump_dir(dd, pCrashData);
     dd_close(dd);
 
     const char *backtrace = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_BACKTRACE);

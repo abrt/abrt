@@ -22,7 +22,7 @@
 #include "abrt_curl.h"
 #include "abrt_xmlrpc.h"
 #include "abrt_rh_support.h"
-#include "crash_types.h"
+#include "abrt_crash_dump.h"
 #include "abrt_exception.h"
 
 #define PROGNAME "abrt-action-rhtsupport"
@@ -36,7 +36,7 @@ static void report_to_rhtsupport(
         exit(1); /* error msg is already logged by dd_opendir */
 
     map_crash_data_t pCrashData;
-    load_crash_data_from_debug_dump(dd, pCrashData);
+    load_crash_data_from_crash_dump_dir(dd, pCrashData);
     dd_close(dd);
 
     /* Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing */

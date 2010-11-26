@@ -19,7 +19,7 @@
 #define ABRT_CLI_DBUS_H
 
 #include "abrt_dbus.h"
-#include "crash_types.h"
+#include "abrt_crash_dump.h"
 
 extern DBusConnection* s_dbus_conn;
 

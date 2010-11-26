@@ -536,7 +536,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 char *d = concat_path_file(DEBUG_DUMPS_DIR, worst_dir);
                 free(worst_dir);
                 worst_dir = NULL;
-                delete_debug_dump_dir(d);
+                delete_crash_dump_dir(d);
                 free(d);
             }
         }
@@ -561,7 +561,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                         log("Deleting crash %s (dup of %s), sending dbus signal",
                                 strrchr(fullname, '/') + 1,
                                 strrchr(first, '/') + 1);
-                        delete_debug_dump_dir(fullname);
+                        delete_crash_dump_dir(fullname);
                     }
 
                     const char *uid_str = get_crash_data_item_content_or_NULL(crashinfo, FILENAME_UID);
@@ -586,7 +586,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 case MW_GPG_ERROR:
                 default:
                     log("Corrupted or bad crash %s (res:%d), deleting", fullname, (int)res);
-                    delete_debug_dump_dir(fullname);
+                    delete_crash_dump_dir(fullname);
                     break;
             }
         }

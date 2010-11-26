@@ -20,7 +20,7 @@
 */
 #include "abrtlib.h"
 #include "parse_options.h"
-#include "crash_types.h"
+#include "abrt_crash_dump.h"
 #include "abrt_exception.h"
 
 #define PROGNAME "abrt-action-print"
@@ -82,7 +82,7 @@ int main(int argc, char **argv)
             return 1; /* error message is already logged */
 
         map_crash_data_t pCrashData;
-        load_crash_data_from_debug_dump(dd, pCrashData);
+        load_crash_data_from_crash_dump_dir(dd, pCrashData);
         dd_close(dd);
 
         char *dsc = make_description_logger(pCrashData);

@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "crash_types.h"
+#include "abrt_crash_dump.h"
 
 const char *const must_have_files[] = {
 	FILENAME_ARCHITECTURE,
@@ -156,7 +156,7 @@ static char* is_text_file(const char *name, ssize_t *sz)
     return NULL; /* it's binary */
 }
 
-void load_crash_data_from_debug_dump(struct dump_dir *dd, map_crash_data_t& data)
+void load_crash_data_from_crash_dump_dir(struct dump_dir *dd, map_crash_data_t& data)
 {
     char *short_name;
     char *full_name;

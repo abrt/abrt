@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "crash_types.h"
+#include "abrt_crash_dump.h"
 
 
 using namespace std;

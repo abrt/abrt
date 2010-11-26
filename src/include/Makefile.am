@@ -3,7 +3,7 @@ HEADER_FILES = \
     abrtlib.h \
     abrt_types.h \
     comm_layer_inner.h \
-    crash_types.h \
+    abrt_crash_dump.h \
     dbus_common.h \
     dump_dir.h \
     observer.h \

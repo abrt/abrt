@@ -1,6 +1,5 @@
 /*
-    DebugDump.h - header file for the library caring of writing new reports
-                  to the specific directory
+    On-disk storage of crash dumps
 
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
     Copyright (C) 2009  RedHat inc.
@@ -19,8 +18,8 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#ifndef DEBUGDUMP_H_
-#define DEBUGDUMP_H_
+#ifndef DUMP_DIR_H_
+#define DUMP_DIR_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,7 +55,7 @@ void dd_save_text(struct dump_dir *dd, const char *name, const char *data);
 void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, unsigned size);
 void dd_delete(struct dump_dir *dd);
 
-void delete_debug_dump_dir(const char *dd_dir);
+void delete_crash_dump_dir(const char *dd_dir);
 
 #ifdef __cplusplus
 }

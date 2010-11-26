@@ -498,8 +498,8 @@ int main(int argc, char** argv)
         }
 
         /* We close dumpdir before we start catering for crash storm case.
-         * Otherwise, delete_debug_dump_dir's from other concurrent
-         * CCpp's won't be able to delete our dump (their delete_debug_dump_dir
+         * Otherwise, delete_crash_dump_dir's from other concurrent
+         * CCpp's won't be able to delete our dump (their delete_crash_dump_dir
          * will wait for us), and we won't be able to delete their dumps.
          * Classic deadlock.
          */

@@ -18,7 +18,7 @@
 */
 #include "abrtlib.h"
 #include "abrt_xmlrpc.h"
-#include "crash_types.h"
+#include "abrt_crash_dump.h"
 #include "abrt_exception.h"
 
 #define XML_RPC_SUFFIX      "/xmlrpc.cgi"
@@ -645,7 +645,7 @@ static void report_to_bugzilla(
         throw CABRTException(EXCEP_PLUGIN, _("Can't open '%s'"), dump_dir_name);
     }
     map_crash_data_t pCrashData;
-    load_crash_data_from_debug_dump(dd, pCrashData);
+    load_crash_data_from_crash_dump_dir(dd, pCrashData);
     dd_close(dd);
 
     const char *env;
