@@ -96,7 +96,6 @@ GTK+ wizard for convenient bug reporting.
 Summary: %{name}'s C/C++ addon
 Group: System Environment/Libraries
 Requires: elfutils
-Requires: yum-utils
 Requires: %{name} = %{version}-%{release}
 
 %description addon-ccpp
@@ -378,7 +377,7 @@ fi
 %{_libdir}/%{name}/libCCpp.so*
 %{_libexecdir}/abrt-hook-ccpp
 %{_libexecdir}/abrt-action-analyze-c
-%{_libexecdir}/abrt-action-install-debuginfo
+%{_libexecdir}/abrt-action-install-debuginfo.py*
 %{_libexecdir}/abrt-action-generate-backtrace
 
 %files addon-kerneloops

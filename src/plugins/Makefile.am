@@ -3,7 +3,7 @@ UTILS_PATH=$(srcdir)/../lib
 AM_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH)
 pluginslibdir=$(PLUGINS_LIB_DIR)
 libexec_SCRIPTS = \
-    abrt-action-install-debuginfo
+    abrt-action-install-debuginfo.py
 
 pluginslib_LTLIBRARIES = \
     libCCpp.la \
@@ -37,7 +37,9 @@ man_MANS = \
     abrt-Upload.7 \
     abrt-plugins.7
 
-EXTRA_DIST = $(man_MANS) abrt-action-install-debuginfo
+PYTHON_FILES = abrt-action-install-debuginfo.py
+
+EXTRA_DIST = $(man_MANS) $(PYTHON_FILES)
 
 $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'
