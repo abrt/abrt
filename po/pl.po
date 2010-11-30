@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-11-29 13:51+0100\n"
-"PO-Revision-Date: 2010-11-23 22:49+0100\n"
+"PO-Revision-Date: 2010-11-30 10:57+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "Language: pl\n"
@@ -1357,116 +1357,114 @@ msgstr "Przetworzenie wyjątku nie powiodło się dla %s"
 #: ../src/plugins/abrt-action-install-debuginfo.py:72
 #, python-format
 msgid "Extracting cpio from %s"
-msgstr ""
+msgstr "Wypakowywanie cpio z %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:77
 msgid "Can't write to:"
-msgstr ""
+msgstr "Nie można zapisać do:"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:87
 msgid "Removing the temporary rpm file"
-msgstr ""
+msgstr "Usuwanie tymczasowego pliku RPM"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:91
 #, python-format
 msgid "Can't extract package: %s"
-msgstr ""
+msgstr "Nie można wypakować pakietu: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:99
 #, python-format
 msgid "Caching files from %s made from %s"
-msgstr ""
+msgstr "Umieszczanie plików z %s utworzonych z %s w pamięci podręcznej"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:107
 msgid "Removing the temporary cpio file"
-msgstr ""
+msgstr "Usuwanie tymczasowego pliku cpio"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:110
 #, python-format
 msgid "Can't extract files from: %s"
-msgstr ""
+msgstr "Nie można wypakować plików z: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:134
 #: ../src/plugins/abrt-action-install-debuginfo.py:140
 #, python-format
 msgid "Downloading (%i of %i) %.30s : %.3s %%"
-msgstr ""
+msgstr "Pobieranie (%i z %i) %.30s: %.3s %%"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:169
 msgid "Searching the missing debuginfo packages"
-msgstr ""
+msgstr "Wyszukiwanie brakujących pakietów debuginfo"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:224
 #, python-format
 msgid "To download: (%.2f) M / Installed size: %.2f M"
-msgstr ""
+msgstr "Do pobrania: (%.2f) M/rozmiar po zainstalowaniu: %.2f M"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:240
 msgid "Is this ok? [y/N] "
-msgstr ""
+msgstr "W porządku? [t/N] "
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:257
 #, python-format
 msgid "Downloading package %s failed"
-msgstr ""
+msgstr "Pobranie pakietu %s nie powiodło się"
 
 #. recursively delete the temp dir on failure
 #: ../src/plugins/abrt-action-install-debuginfo.py:268
 msgid "Unpacking failed, aborting download..."
-msgstr ""
+msgstr "Rozpakowanie nie powiodło się, przerywanie pobierania..."
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:275
 #, python-format
 msgid "All downloaded packages have been extracted, removing %s"
-msgstr ""
+msgstr "Wszystkie pobrane pakiety zostały wypakowane, usuwanie %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:280
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
-msgstr ""
+msgstr "Nie można usunąć %s, prawdopodobnie zawiera dziennik błędów"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:305
 #, python-format
 msgid "Analyzing corefile: %(corefile_path)s"
-msgstr ""
+msgstr "Analizowanie pliku core: %(corefile_path)s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:384
 #, python-format
 msgid "Can't remove %(tmpdir_path)s: %(reason)s"
-msgstr ""
+msgstr "Nie można usunąć %(tmpdir_path)s: %(reason)s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:394
 msgid "Exiting on user Command"
-msgstr ""
+msgstr "Kończenie działania na polecenie użytkownika"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:413
 #, python-format
 msgid "Usage: %s --core=<COREFILE> --tmpdir=<TMPDIR> --cachedir=<CACHEDIR>"
 msgstr ""
+"Użycie: %s --core=<PLIK_CORE> --tmpdir=<KAT_TYMCZASOWY> "
+"--cachedir=<KAT_PAMIĘCI_PODRĘCZNEJ>"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:442
-#, fuzzy
 msgid "You have to specify the path to coredump."
-msgstr "Należy wybrać awarię do skopiowania."
+msgstr "Należy podać ścieżkę do zrzutu core."
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:446
-#, fuzzy
 msgid "You have to specify the path to cachedir."
-msgstr "Należy wybrać awarię do skopiowania."
+msgstr "Należy podać ścieżkę do katalogu pamięci podręcznej."
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:450
-#, fuzzy
 msgid "You have to specify the path to tmpdir."
-msgstr "Należy wybrać awarię do skopiowania."
+msgstr "Należy podać ścieżkę do katalogu tymczasowego."
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:463
 msgid "All debuginfo seems to be available"
-msgstr ""
+msgstr "Wszystkie pakiety debuginfo są dostępne"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:470
-#, fuzzy
 msgid "Complete!"
-msgstr "Składnik"
+msgstr "Ukończono."
 
 #: ../src/plugins/abrt-action-kerneloops.cpp:111
 #, c-format
