@@ -530,7 +530,7 @@ static GHashTable *get_reporter_plugin_settings(const vector_string_t& reporters
         // Copy the received settings as defaults.
         // Plugins won't work without it, if some value is missing
         // they use their default values for all fields.
-        g_hash_table_insert(settings, xstrdup(it->c_str()), (void*)single_plugin_settings);
+        g_hash_table_replace(settings, xstrdup(it->c_str()), (void*)single_plugin_settings);
     }
 
     /* Second, load user-specific settings, which override
@@ -542,8 +542,8 @@ static GHashTable *get_reporter_plugin_settings(const vector_string_t& reporters
         GHashTableIter iter;
         gpointer key, value;
 
-        g_hash_table_iter_init (&iter, settings);
-        while (g_hash_table_iter_next (&iter, &key, &value))
+        g_hash_table_iter_init(&iter, settings);
+        while (g_hash_table_iter_next(&iter, &key, &value))
         {
             map_string_t single_plugin_settings;
 
