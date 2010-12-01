@@ -40,6 +40,7 @@ libabrt_la_SOURCES = \
     make_descr.cpp \
     run_event.c \
     crash_dump.cpp \
+    create_crash_dump_dir.cpp \
     ABRTException.cpp \
     hooklib.c hooklib.h \
     parse_release.cpp \
@@ -50,6 +51,7 @@ libabrt_la_CPPFLAGS = \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     $(GLIB_CFLAGS) \

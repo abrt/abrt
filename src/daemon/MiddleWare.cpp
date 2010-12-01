@@ -60,6 +60,15 @@ static bool DebugDumpToCrashReport(const char *dump_dir_name, map_crash_data_t& 
     if (!dd)
         return false;
 
+    static const char *const must_have_files[] = {
+	FILENAME_ARCHITECTURE,
+	FILENAME_KERNEL      ,
+	FILENAME_PACKAGE     ,
+	FILENAME_COMPONENT   ,
+	FILENAME_RELEASE     ,
+	FILENAME_EXECUTABLE  ,
+	NULL
+    };
     const char *const *v = must_have_files;
     while (*v)
     {

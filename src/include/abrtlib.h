@@ -78,8 +78,9 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "hash_md5.h"
 
 #include "abrt_crash_dump.h"
-#include "dump_dir.h"
 #include "abrt_types.h"
+#include "dump_dir.h"
+#include "run_event.h"
 
 
 #ifdef __cplusplus
@@ -215,23 +216,6 @@ char* get_cmdline(pid_t pid);
 
 /* Returns 1 if abrtd daemon is running, 0 otherwise. */
 int daemon_is_ok();
-
-struct run_event_state {
-    int (*post_run_callback)(const char *dump_dir_name, void *param);
-    void *post_run_param;
-    char* (*logging_callback)(char *log_line, void *param);
-    void *logging_param;
-};
-static inline struct run_event_state *new_run_event_state()
-    { return (struct run_event_state*)xzalloc(sizeof(struct run_event_state)); }
-static inline void free_run_event_state(struct run_event_state *state)
-    { free(state); }
-/* Returns exitcode of first failed action, or first nonzero return value
- * of post_run_callback. If all actions are successful, returns 0.
- * If no actions were run for the event, returns -1.
- */
-int run_event(struct run_event_state *state, const char *dump_dir_name, const char *event);
-char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const char *pfx);
 
 #ifdef __cplusplus
 }

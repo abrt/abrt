@@ -1,4 +1,5 @@
 bin_PROGRAMS = abrt-applet
+#test-report
 
 abrt_applet_SOURCES = \
     Applet.cpp \
@@ -29,6 +30,15 @@ abrt_applet_LDADD = \
     $(DBUS_LIBS) \
     $(LIBNOTIFY_LIBS) \
     $(GTK_LIBS)
+
+#test_report_SOURCES = \
+#    test_report.cpp
+#test_report_CPPFLAGS = \
+#    -Wall -Werror \
+#    -I$(srcdir)/../include \
+#    -D_GNU_SOURCE
+#test_report_LDADD = \
+#    ../lib/libabrt.la
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 

@@ -21,6 +21,10 @@
 #ifndef DUMP_DIR_H_
 #define DUMP_DIR_H_
 
+/* For DIR */
+#include <sys/types.h>
+#include <dirent.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

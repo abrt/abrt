@@ -368,6 +368,7 @@ fi
 %{_datadir}/icons/hicolor/*/status/*
 %{_datadir}/%{name}/icons/hicolor/*/status/*
 %{_bindir}/abrt-applet
+#%{_bindir}/test-report
 %{_sysconfdir}/xdg/autostart/abrt-applet.desktop
 
 %files addon-ccpp

@@ -18,6 +18,16 @@
 */
 #include "abrtlib.h"
 
+struct run_event_state *new_run_event_state()
+{
+    return (struct run_event_state*)xzalloc(sizeof(struct run_event_state));
+}
+
+void free_run_event_state(struct run_event_state *state)
+{
+    free(state);
+}
+
 int run_event(struct run_event_state *state,
                 const char *dump_dir_name,
                 const char *event

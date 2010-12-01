@@ -19,16 +19,6 @@
 #include "abrtlib.h"
 #include "abrt_crash_dump.h"
 
-const char *const must_have_files[] = {
-	FILENAME_ARCHITECTURE,
-	FILENAME_KERNEL      ,
-	FILENAME_PACKAGE     ,
-	FILENAME_COMPONENT   ,
-	FILENAME_RELEASE     ,
-	FILENAME_EXECUTABLE  ,
-	NULL
-};
-
 static const char *const editable_files[] = {
 	FILENAME_DESCRIPTION,
 	FILENAME_COMMENT    ,
