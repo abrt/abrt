@@ -161,7 +161,7 @@ map_crash_data_t call_CreateReport(const char* crash_id)
 
 report_status_t call_Report(const map_crash_data_t& report,
 			    const vector_string_t& reporters,
-			    const map_map_string_t &plugins)
+			    GHashTable *plugins)
 {
     DBusMessage* msg = new_call_msg(__func__ + 5);
     DBusMessageIter out_iter;
@@ -172,8 +172,8 @@ report_status_t call_Report(const map_crash_data_t& report,
     /* parameter #2: reporters to use */
     store_val(&out_iter, reporters);
     /* parameter #3 (opt): plugin config */
-    if (!plugins.empty())
-        store_val(&out_iter, plugins);
+    if (g_hash_table_size(plugins))
+        store_hash_table_map_string_t(&out_iter, plugins);
 
     DBusMessage *reply = send_get_reply_and_unref(msg);
 

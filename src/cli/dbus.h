@@ -18,6 +18,7 @@
 #ifndef ABRT_CLI_DBUS_H
 #define ABRT_CLI_DBUS_H
 
+#include <glib.h>
 #include "abrt_dbus.h"
 #include "abrt_crash_dump.h"
 
@@ -41,7 +42,7 @@ map_crash_data_t call_CreateReport(const char *crash_id);
  */
 report_status_t call_Report(const map_crash_data_t& report,
 			    const vector_string_t& reporters,
-			    const map_map_string_t &plugins);
+			    GHashTable *plugins);
 
 int32_t call_DeleteDebugDump(const char* crash_id);
 

@@ -502,24 +502,35 @@ static bool set_echo(bool enabled)
     return true;
 }
 
+static void free_map_string_t(gpointer data)
+{
+    delete (map_string_t *)data;
+}
+
 /**
  * Gets reporter plugin settings.
  * @param reporters
  *   List of reporter names. Settings of these reporters are handled.
- * @param settings
+ * @return settings
  *   A structure filled with reporter plugin settings.
+ *   It's GHashTable<char *, map_plugin_t *> and must be passed to
+ *   g_hash_table_destroy();
  */
-static void get_reporter_plugin_settings(const vector_string_t& reporters,
-        map_map_string_t &settings)
+static GHashTable *get_reporter_plugin_settings(const vector_string_t& reporters)
 {
     /* First of all, load system-wide report plugin settings. */
+    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal,
+                                                 free, free_map_string_t);
+
     for (vector_string_t::const_iterator it = reporters.begin(); it != reporters.end(); ++it)
     {
-        map_string_t single_plugin_settings = call_GetPluginSettings(it->c_str());
+        map_string_t *single_plugin_settings =  new map_string_t;
+        *single_plugin_settings = call_GetPluginSettings(it->c_str());
+
         // Copy the received settings as defaults.
         // Plugins won't work without it, if some value is missing
         // they use their default values for all fields.
-        settings[it->c_str()] = single_plugin_settings;
+        g_hash_table_insert(settings, xstrdup(it->c_str()), (void*)single_plugin_settings);
     }
 
     /* Second, load user-specific settings, which override
@@ -528,24 +539,30 @@ static void get_reporter_plugin_settings(const vector_string_t& reporters,
     const char* homedir = pw ? pw->pw_dir : NULL;
     if (homedir)
     {
-        map_map_string_t::const_iterator itend = settings.end();
-        for (map_map_string_t::iterator it = settings.begin(); it != itend; ++it)
+        GHashTableIter iter;
+        gpointer key, value;
+
+        g_hash_table_iter_init (&iter, settings);
+        while (g_hash_table_iter_next (&iter, &key, &value))
         {
             map_string_t single_plugin_settings;
-            std::string path = std::string(homedir) + "/.abrt/"
-                + it->first + ".conf";
+
+            char *path = xasprintf("%s/.abrt/%s.conf", homedir, (char *)key);
+
             /* Load plugin config in the home dir. Do not skip lines with empty value (but containing a "key="),
                because user may want to override password from /etc/abrt/plugins/*.conf, but he prefers to
                enter it every time he reports. */
-            bool success = LoadPluginSettings(path.c_str(), single_plugin_settings, false);
+            bool success = LoadPluginSettings(path, single_plugin_settings, false);
+            free(path);
             if (!success)
                 continue;
             // Merge user's plugin settings into already loaded settings.
             map_string_t::const_iterator valit, valitend = single_plugin_settings.end();
             for (valit = single_plugin_settings.begin(); valit != valitend; ++valit)
-                it->second[valit->first] = valit->second;
+                (*(map_string_t*)value)[valit->first] = valit->second;
         }
     }
+    return settings;
 }
 
 /**
@@ -628,8 +645,7 @@ int report(const char *crash_id, int flags)
     }
 
     /* Get settings */
-    map_map_string_t reporters_settings;
-    get_reporter_plugin_settings(reporters, reporters_settings);
+    GHashTable *reporters_settings = get_reporter_plugin_settings(reporters);
 
     int errors = 0;
     int plugins = 0;
@@ -661,18 +677,18 @@ int report(const char *crash_id, int flags)
                 continue;
             }
 
-            map_map_string_t::iterator settings = reporters_settings.find(it->c_str());
-            if (settings != reporters_settings.end())
+            map_string_t *settings = (map_string_t *)g_hash_table_lookup(reporters_settings, it->c_str());
+            if (settings)
             {
-                map_string_t::iterator rating_setting = settings->second.find("RatingRequired");
-                if (rating_setting != settings->second.end()
+                map_string_t::iterator rating_setting = settings->find("RatingRequired");
+                if (rating_setting != settings->end()
                         && string_to_bool(rating_setting->second.c_str())
                         && rating < 3)
                 {
                     puts(_("Reporting disabled because the backtrace is unusable"));
 
                     const char *package = get_crash_data_item_content_or_NULL(cr, FILENAME_PACKAGE);
-                    if (package[0])
+                    if (package && package[0])
                         printf(_("Please try to install debuginfo manually using the command: \"debuginfo-install %s\" and try again\n"), package);
 
                     plugins++;
@@ -688,7 +704,7 @@ int report(const char *crash_id, int flags)
                 continue;
             }
 
-            ask_for_missing_settings(it->c_str(), settings->second);
+            ask_for_missing_settings(it->c_str(), *settings);
 
             vector_string_t cur_reporter(1, *it);
             report_status_t r = call_Report(cr, cur_reporter, reporters_settings);
@@ -701,6 +717,7 @@ int report(const char *crash_id, int flags)
         }
     }
 
+    g_hash_table_destroy(reporters_settings);
     printf(_("Crash reported via %d report events (%d errors)\n"), plugins, errors);
     return errors != 0;
 }

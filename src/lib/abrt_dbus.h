@@ -20,6 +20,7 @@
 #define ABRT_DBUS_H
 
 #include <dbus/dbus.h>
+#include <glib.h>
 #include "abrtlib.h"
 
 
@@ -199,6 +200,34 @@ template<typename E>
 static inline void store_val(DBusMessageIter* iter, const std::vector<E>& val) { store_vector(iter, val); }
 template<typename K, typename V>
 static inline void store_val(DBusMessageIter* iter, const std::map<K,V>& val)  { store_map(iter, val); }
+
+/* next patch will rewrite this into c */
+static inline void store_hash_table_map_string_t(DBusMessageIter* iter, GHashTable *ht)
+{
+    DBusMessageIter sub_iter;
+    if (!dbus_message_iter_open_container(iter, DBUS_TYPE_ARRAY, "{sa{ss}}", &sub_iter))
+        die_out_of_memory();
+
+    GHashTableIter ht_iter;
+    gpointer key, value;
+
+    g_hash_table_iter_init(&ht_iter, ht);
+    while (g_hash_table_iter_next(&ht_iter, &key, &value))
+    {
+        DBusMessageIter sub_sub_iter;
+        if (!dbus_message_iter_open_container(&sub_iter, DBUS_TYPE_DICT_ENTRY, NULL, &sub_sub_iter))
+            die_out_of_memory();
+
+        store_val(&sub_sub_iter, (char *)key);
+        store_val(&sub_sub_iter, *(map_string_t *)value);
+
+        if (!dbus_message_iter_close_container(&sub_iter, &sub_sub_iter))
+            die_out_of_memory();
+    }
+
+    if (!dbus_message_iter_close_container(iter, &sub_iter))
+        die_out_of_memory();
+}
 
 
 /*
