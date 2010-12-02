@@ -130,6 +130,12 @@ AC_CONFIG_FILES([
 	po/Makefile.in
 	icons/Makefile
 	tests/btparser/Makefile
+	retrace/Makefile
+	retrace/config/Makefile
+	retrace/interface/Makefile
+	retrace/lib/Makefile
+	retrace/reposync/Makefile
+	retrace/worker/Makefile
 ])
 
 AC_OUTPUT

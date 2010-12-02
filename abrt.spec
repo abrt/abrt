@@ -207,6 +207,17 @@ Provides: bug-buddy
 %description desktop
 Virtual package to make easy default installation on desktop environments.
 
+%package retrace-server
+Summary: %{name}'s retrace server using HTTP protocol
+Group: System Environment/Daemons
+Requires: abrt-addon-ccpp
+Requires: gdb >= 7.0-3
+Requires: httpd, mod_wsgi, python-webob
+
+%description retrace-server
+The retrace server provides a coredump analysis and backtrace
+generation service over a network using HTTP protocol.
+
 %prep
 %setup -q
 
@@ -433,7 +444,6 @@ fi
 %{python_site}/*.py*
 %{python_site}/abrt.pth
 
-
 %files cli
 %defattr(-,root,root,-)
 %{_bindir}/abrt-cli
@@ -442,6 +452,15 @@ fi
 
 %files desktop
 %defattr(-,root,root,-)
+
+%files retrace-server
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/retrace.conf
+%config(noreplace) %{_sysconfdir}/httpd/conf.d/retrace_httpd.conf
+%{_bindir}/abrt-retrace-reposync
+%{_bindir}/abrt-retrace-worker
+%{_datadir}/abrt-retrace/*.py*
+%{_datadir}/abrt-retrace/*.wsgi
 
 %changelog
 * Wed Jun 09 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.5-1
