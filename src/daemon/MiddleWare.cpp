@@ -100,12 +100,22 @@ static char *do_log_and_update_client(char *log_line, void *param)
     return log_line;
 }
 
+/**
+ * Takes care of getting all additional data needed
+ * for computing UUIDs and creating a report for particular analyzer
+ * plugin. This report could be send somewhere afterwards. If a creation
+ * is successful, then  a crash report is filled.
+ * @param pAnalyzer A name of an analyzer plugin.
+ * @param pDebugDumpPath A debugdump dir containing all necessary data.
+ * @param pCrashData A filled crash report.
+ * @return It return results of operation. See mw_result_t.
+ */
 /*
  * Called in two cases:
  * (1) by StartJob dbus call -> CreateReportThread(), in the thread
  * (2) by CreateReport dbus call
  */
-mw_result_t CreateCrashReport(const char *dump_dir_name,
+static mw_result_t CreateCrashReport(const char *dump_dir_name,
                 long caller_uid,
                 int force,
                 map_crash_data_t& pCrashData)

@@ -210,6 +210,7 @@ static const struct option longopts[] =
 {
     /* name, has_arg, flag, val */
     { "help"     , no_argument, NULL, '?' },
+    { "verbose"  , no_argument, NULL, 'v' },
     { "version"  , no_argument, NULL, 'V' },
     { "list"     , no_argument, NULL, 'l' },
     { "full"     , no_argument, NULL, 'f' },
@@ -243,6 +244,7 @@ static void usage(char *argv0)
     printf(_("Usage: %s [OPTION]\n\n"
         "Startup:\n"
         "	-V, --version		display the version of %s and exit\n"
+        "	-v, --verbose		increase verbosity\n"
         "	-?, --help		print this help\n\n"
         "Actions:\n"
         "	-l, --list		print a list of all crashes which are not yet reported\n"
@@ -278,8 +280,7 @@ int main(int argc, char** argv)
     while (1)
     {
         /* Do not use colons, arguments are handled after parsing all options. */
-        int c = getopt_long_only(argc, argv, "?Vrdlfyib",
-                                 longopts, NULL);
+        int c = getopt_long(argc, argv, "?Vvrdlfyib", longopts, NULL);
 
 #define SET_OP(newop)                                                \
         if (op != -1 && op != newop)                                 \
@@ -298,6 +299,7 @@ int main(int argc, char** argv)
         case 'f': full = true;          break;
         case 'y': always = true;        break;
         case 'b': backtrace = true;     break;
+        case 'v': g_verbose++;          break;
         case -1: /* end of options */   break;
         default: /* some error */
         case '?':

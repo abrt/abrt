@@ -46,20 +46,6 @@ typedef enum {
 
 
 /**
- * Takes care of getting all additional data needed
- * for computing UUIDs and creating a report for particular analyzer
- * plugin. This report could be send somewhere afterwards. If a creation
- * is successful, then  a crash report is filled.
- * @param pAnalyzer A name of an analyzer plugin.
- * @param pDebugDumpPath A debugdump dir containing all necessary data.
- * @param pCrashData A filled crash report.
- * @return It return results of operation. See mw_result_t.
- */
-mw_result_t CreateCrashReport(const char *dump_dir_name,
-                              long caller_uid,
-                              int force,
-                              map_crash_data_t& pCrashData);
-/**
  * Activates particular action plugin.
  * @param pActionDir A directory, which is passed as working to a action plugin.
  * @param pPluginName An action plugin name.

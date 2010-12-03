@@ -435,25 +435,6 @@ static void read_from_stdin(const char *question, char *result, int result_size)
     strchrnul(result, '\n')[0] = '\0';
 }
 
-/** Splits a string into substrings using chosen delimiters.
- * @param delim
- *  Specifies a set of characters that delimit the
- *  tokens in the parsed string
- */
-static GList *split(const char *s, const char delim)
-{
-    GList *elems = NULL;
-    while (1)
-    {
-        const char *end = strchrnul(s, delim);
-        elems = g_list_append(elems, xstrndup(s, end - s));
-        if (*end == '\0')
-            break;
-        s = end + 1;
-    }
-    return elems;
-}
-
 /**
  * Asks a [y/n] question on stdin/stdout.
  * Returns true if the answer is yes, false otherwise.

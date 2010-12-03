@@ -223,7 +223,7 @@ char* make_description_logger(const map_crash_data_t& pCrashData)
             if (was_multiline)
             {
                 if (buf_long_dsc->len != 0)
-                    strbuf_append_char(buf_long_dsc,'\n');
+                    strbuf_append_char(buf_long_dsc, '\n');
 
                 strbuf_append_str(buf_long_dsc, tmp);
             }
