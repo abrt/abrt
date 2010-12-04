@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-11-30 20:55+0000\n"
-"PO-Revision-Date: 2010-12-01 17:26+0200\n"
+"POT-Creation-Date: 2010-12-03 20:47+0000\n"
+"PO-Revision-Date: 2010-12-04 09:42+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -171,13 +171,14 @@ msgstr ""
 "%s\n"
 
 #. Message has embedded tabs.
-#: ../src/cli/CLI.cpp:243
+#: ../src/cli/CLI.cpp:244
 #, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
 "\n"
 "Startup:\n"
 "\t-V, --version\t\tdisplay the version of %s and exit\n"
+"\t-v, --verbose\t\tincrease verbosity\n"
 "\t-?, --help\t\tprint this help\n"
 "\n"
 "Actions:\n"
@@ -198,6 +199,7 @@ msgstr ""
 "\n"
 "Запуск:\n"
 "\t-V, --version\t\tпоказати дані щодо версії %s і завершити роботу\n"
+"\t-v, --verbose\t\tзробити повідомлення докладнішими\n"
 "\t-?, --help\t\tпоказати цю довідкову інформацію\n"
 "\n"
 "Дії:\n"
@@ -215,7 +217,7 @@ msgstr ""
 "\t@N  — виконання дії над N-им збоєм (у списку, показаному командою з "
 "параметрами --list --full)\n"
 
-#: ../src/cli/CLI.cpp:287
+#: ../src/cli/CLI.cpp:288
 msgid "You must specify exactly one operation"
 msgstr "Вам слід вказати точно одну дію"
 
@@ -299,46 +301,46 @@ msgstr ""
 "Не виявлено жодних змін у звіті"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:464
+#: ../src/cli/report.cpp:445
 msgid "y"
 msgstr "y"
 
-#: ../src/cli/report.cpp:465
+#: ../src/cli/report.cpp:446
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:565
+#: ../src/cli/report.cpp:563
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Виявлено помилкові параметри модуля %s\n"
 
-#: ../src/cli/report.cpp:569
+#: ../src/cli/report.cpp:567
 msgid "Enter your login: "
 msgstr "Введіть ваше ім’я користувача: "
 
-#: ../src/cli/report.cpp:575
+#: ../src/cli/report.cpp:573
 msgid "Enter your password: "
 msgstr "Введіть ваш пароль: "
 
-#: ../src/cli/report.cpp:638
+#: ../src/cli/report.cpp:635
 msgid "Reporting..."
 msgstr "Звітування…"
 
-#: ../src/cli/report.cpp:657
+#: ../src/cli/report.cpp:654
 #, c-format
 msgid "Report using %s?"
 msgstr "Створити звіт за допомогою %s?"
 
-#: ../src/cli/report.cpp:660
+#: ../src/cli/report.cpp:657
 msgid "Skipping..."
 msgstr "Пропускаємо…"
 
-#: ../src/cli/report.cpp:672
+#: ../src/cli/report.cpp:669
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Звітування вимкнено, оскільки зворотне трасування є непридатним"
 
-#: ../src/cli/report.cpp:676
+#: ../src/cli/report.cpp:673
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -347,11 +349,11 @@ msgstr ""
 "Спробуйте встановити debuginfo вручну: «debuginfo-install %s», потім "
 "повторіть спробу\n"
 
-#: ../src/cli/report.cpp:685
+#: ../src/cli/report.cpp:682
 msgid "Error loading reporter settings"
 msgstr "Помилка при завантаженні параметрів звітування"
 
-#: ../src/cli/report.cpp:704
+#: ../src/cli/report.cpp:702
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "Повідомлення щодо збою створено на основі %d подій (%d помилок)\n"
@@ -543,7 +545,7 @@ msgstr ""
 "Копія ліцензії GNU надається разом із цією програмою. \n"
 "Її також можна знайти на сайті <http://www.gnu.org/licenses/>."
 
-#: ../src/gui/ccgui.glade.h:19 ../src/gui/CReporterAssistant.py:71
+#: ../src/gui/ccgui.glade.h:19 ../src/gui/CReporterAssistant.py:111
 msgid "View log"
 msgstr "Показати журнал"
 
@@ -647,7 +649,7 @@ msgid "You must check the backtrace for sensitive data."
 msgstr ""
 "Вам слід вилучити з даних зворотного трасування всі конфіденційні дані."
 
-#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:364
+#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:392
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -663,8 +665,8 @@ msgstr ""
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "Непридатні відомості трасування. Їх не можна надсилати."
 
-#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:342
-#: ../src/gui/CReporterAssistant.py:370
+#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:370
+#: ../src/gui/CReporterAssistant.py:398
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -688,7 +690,7 @@ msgstr ""
 "Немає модулів звітування для цього типу збоїв.\n"
 "Будь ласка, внесіть зміни до abrt.conf"
 
-#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:249
+#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:277
 #: ../src/gui/PluginsSettingsDialog.py:136
 #, python-format
 msgid ""
@@ -698,12 +700,12 @@ msgstr ""
 "Не вдалося зберегти параметри модуля:\n"
 " %s"
 
-#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:279
+#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:307
 #, python-format
 msgid "Configure %s options"
 msgstr "Налаштувати параметри %s"
 
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1074
+#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1102
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -711,7 +713,7 @@ msgstr ""
 "Не вдається отримати звіт.\n"
 "Немає debuginfo?"
 
-#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:455
+#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:483
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -721,7 +723,7 @@ msgstr ""
 "%s"
 
 #: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:1113
+#: ../src/gui/CReporterAssistant.py:1139
 #, python-format
 msgid "Error acquiring the report: %s"
 msgstr "Помилка при отриманні звіту: %s"
@@ -759,37 +761,37 @@ msgstr ""
 msgid "Crash info doesn't contain a backtrace"
 msgstr "Відомості щодо збою не містять зворотного трасування"
 
-#: ../src/gui/CReporterAssistant.py:334
+#: ../src/gui/CReporterAssistant.py:362
 #, python-format
 msgid "Rating is %s"
 msgstr "Оцінка: %s"
 
-#: ../src/gui/CReporterAssistant.py:337
+#: ../src/gui/CReporterAssistant.py:365
 msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr "Дамп збою не містить оцінки => припускаємо, що вона не потрібна"
 
-#: ../src/gui/CReporterAssistant.py:350
+#: ../src/gui/CReporterAssistant.py:378
 msgid "You should check the backtrace for sensitive data."
 msgstr ""
 "Вам слід вилучити з даних зворотного трасування всі конфіденційні дані."
 
-#: ../src/gui/CReporterAssistant.py:351
+#: ../src/gui/CReporterAssistant.py:379
 msgid "You must agree with sending the backtrace."
 msgstr "Вам слід погодитися на надсилання зворотного трасування."
 
-#: ../src/gui/CReporterAssistant.py:366
+#: ../src/gui/CReporterAssistant.py:394
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Звітування вимкнено, оскільки зворотне трасування є непридатним."
 
-#: ../src/gui/CReporterAssistant.py:412
+#: ../src/gui/CReporterAssistant.py:440
 msgid "You did not provide any steps to reproduce."
 msgstr "Ви не вказали кроків щодо відтворення збою."
 
-#: ../src/gui/CReporterAssistant.py:426
+#: ../src/gui/CReporterAssistant.py:454
 msgid "You did not provide any comments."
 msgstr "Ви не зазначили жодних коментарів."
 
-#: ../src/gui/CReporterAssistant.py:507
+#: ../src/gui/CReporterAssistant.py:535
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -816,15 +818,15 @@ msgstr ""
 "Виберіть отримувача звіту про ваду і натисніть кнопку «Далі», щоб продовжити "
 "процес звітування."
 
-#: ../src/gui/CReporterAssistant.py:548
+#: ../src/gui/CReporterAssistant.py:576
 msgid "Only one reporter plugin is configured."
 msgstr "Налаштовано лише один модуль звітування."
 
-#: ../src/gui/CReporterAssistant.py:554
+#: ../src/gui/CReporterAssistant.py:582
 msgid "Send a bug report"
 msgstr "Надіслати звіт про ваду"
 
-#: ../src/gui/CReporterAssistant.py:592
+#: ../src/gui/CReporterAssistant.py:620
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -841,52 +843,52 @@ msgstr ""
 "Будь ласка, ознайомтеся з наведеними нижче даними і вилучіть з них будь-які "
 "конфіденційні дані, якими ви не бажаєте ділитися зі сторонніми особами:"
 
-#: ../src/gui/CReporterAssistant.py:663 ../src/gui/CReporterAssistant.py:676
-#: ../src/gui/CReporterAssistant.py:710
+#: ../src/gui/CReporterAssistant.py:691 ../src/gui/CReporterAssistant.py:704
+#: ../src/gui/CReporterAssistant.py:738
 #, python-format
 msgid "Found %i occurence(s) [at: %i of %i]"
 msgstr "Знайдено %i збіги [у %i з %i]"
 
-#: ../src/gui/CReporterAssistant.py:747
+#: ../src/gui/CReporterAssistant.py:775
 msgid "Search:"
 msgstr "Пошук:"
 
-#: ../src/gui/CReporterAssistant.py:778
+#: ../src/gui/CReporterAssistant.py:806
 msgid "Refresh"
 msgstr "Оновити"
 
-#: ../src/gui/CReporterAssistant.py:780
+#: ../src/gui/CReporterAssistant.py:808
 msgid "Copy"
 msgstr "Копіювати"
 
-#: ../src/gui/CReporterAssistant.py:786
+#: ../src/gui/CReporterAssistant.py:814
 msgid "I agree with submitting the backtrace"
 msgstr "Я погоджуюсь на надсилання зворотного трасування"
 
-#: ../src/gui/CReporterAssistant.py:791
+#: ../src/gui/CReporterAssistant.py:819
 msgid "Approve the backtrace"
 msgstr "Згода з надсиланням зворотного трасування"
 
-#: ../src/gui/CReporterAssistant.py:834
+#: ../src/gui/CReporterAssistant.py:862
 msgid "You need to fill the how to before you can proceed..."
 msgstr "Вам слід вказати настанови з відтворення, щоб обробку було продовжено…"
 
-#: ../src/gui/CReporterAssistant.py:857
+#: ../src/gui/CReporterAssistant.py:885
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "Покрокові дії, які призвели до збою. Як відтворити збій?"
 
-#: ../src/gui/CReporterAssistant.py:877
+#: ../src/gui/CReporterAssistant.py:905
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr ""
 "Чи маєте ви якісь коментарі, про які варто знати розробникам програмного "
 "забезпечення?"
 
-#: ../src/gui/CReporterAssistant.py:897
+#: ../src/gui/CReporterAssistant.py:925
 msgid "Provide additional details"
 msgstr "Надати додаткові дані"
 
-#: ../src/gui/CReporterAssistant.py:904
+#: ../src/gui/CReporterAssistant.py:932
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
@@ -894,80 +896,80 @@ msgstr ""
 "<b>Підказка:</b> доступ до ваших коментарів є відкритим. Будь ласка, будьте "
 "стримані у висловлюваннях."
 
-#: ../src/gui/CReporterAssistant.py:945
+#: ../src/gui/CReporterAssistant.py:973
 msgid "Confirm and send the report"
 msgstr "Підтвердити і надіслати звіт"
 
-#: ../src/gui/CReporterAssistant.py:947
+#: ../src/gui/CReporterAssistant.py:975
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Нижче наведено резюме вашого звіту про ваду. Натисніть кнопку «Застосувати», "
 "щоб надіслати його."
 
-#: ../src/gui/CReporterAssistant.py:952
+#: ../src/gui/CReporterAssistant.py:980
 msgid "<b>Basic details</b>"
 msgstr "<b>Основні дані</b>"
 
 #. left table
-#: ../src/gui/CReporterAssistant.py:959
+#: ../src/gui/CReporterAssistant.py:987
 msgid "Component"
 msgstr "Компонент"
 
-#: ../src/gui/CReporterAssistant.py:960
+#: ../src/gui/CReporterAssistant.py:988
 msgid "Package"
 msgstr "Пакунок"
 
-#: ../src/gui/CReporterAssistant.py:961
+#: ../src/gui/CReporterAssistant.py:989
 msgid "Executable"
 msgstr "Виконуваний файл"
 
-#: ../src/gui/CReporterAssistant.py:962
+#: ../src/gui/CReporterAssistant.py:990
 msgid "Cmdline"
 msgstr "Командний рядок"
 
 #. right table
-#: ../src/gui/CReporterAssistant.py:964
+#: ../src/gui/CReporterAssistant.py:992
 msgid "Architecture"
 msgstr "Архітектура"
 
-#: ../src/gui/CReporterAssistant.py:965
+#: ../src/gui/CReporterAssistant.py:993
 msgid "Kernel"
 msgstr "Ядро"
 
-#: ../src/gui/CReporterAssistant.py:966
+#: ../src/gui/CReporterAssistant.py:994
 msgid "Release"
 msgstr "Випуск"
 
-#: ../src/gui/CReporterAssistant.py:967
+#: ../src/gui/CReporterAssistant.py:995
 msgid "Reason"
 msgstr "Причина"
 
-#: ../src/gui/CReporterAssistant.py:978 ../src/gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:1006 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>Зворотне трасування</b>"
 
-#: ../src/gui/CReporterAssistant.py:981
+#: ../src/gui/CReporterAssistant.py:1009
 msgid "Click to view..."
 msgstr "Натисніть, щоб переглянути…"
 
-#: ../src/gui/CReporterAssistant.py:993
+#: ../src/gui/CReporterAssistant.py:1021
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Кроки з відтворення:</b>"
 
-#: ../src/gui/CReporterAssistant.py:1014
+#: ../src/gui/CReporterAssistant.py:1042
 msgid "<b>Comments:</b>"
 msgstr "<b>Коментарі:</b>"
 
-#: ../src/gui/CReporterAssistant.py:1017
+#: ../src/gui/CReporterAssistant.py:1045
 msgid "No comment provided!"
 msgstr "Не надано жодних коментарів!"
 
-#: ../src/gui/CReporterAssistant.py:1053
+#: ../src/gui/CReporterAssistant.py:1081
 msgid "Finished sending the bug report"
 msgstr "Надсилання звіту про ваду завершено"
 
-#: ../src/gui/CReporterAssistant.py:1057
+#: ../src/gui/CReporterAssistant.py:1085
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Звіти про вади:</b>"
 
@@ -1440,8 +1442,8 @@ msgstr "Завершення роботи за бажанням користув
 #, python-format
 msgid "Usage: %s --core=<COREFILE> --tmpdir=<TMPDIR> --cachedir=<CACHEDIR>"
 msgstr ""
-"Використання: %s --core=<ФАЙЛ_ЯДРА> --tmpdir=<КАТАЛОГ_ТИМЧАСОВИХ_ДАНИХ> "
-"--cachedir=<КАТАЛОГ_КЕШУ>"
+"Використання: %s --core=<ФАЙЛ_ЯДРА> --tmpdir=<КАТАЛОГ_ТИМЧАСОВИХ_ДАНИХ> --"
+"cachedir=<КАТАЛОГ_КЕШУ>"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:442
 msgid "You have to specify the path to coredump."
