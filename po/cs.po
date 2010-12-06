@@ -18,23 +18,23 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt 1.1.1\n"
+"Project-Id-Version: abrt 1.1.x\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-11-17 18:42+0100\n"
-"PO-Revision-Date: 2010-07-27 19:16+0200\n"
-"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
+"POT-Creation-Date: 2010-12-06 13:46+0000\n"
+"PO-Revision-Date: 2010-12-06 15:09+0100\n"
+"Last-Translator: Petr Pisar <ppisar@redhat.com>\n"
 "Language-Team: Czech Fedora <diskuse@lists.l10n.cz>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 
-#: ../lib/Plugins/Bugzilla.cpp:466
+#: ../lib/Plugins/Bugzilla.cpp:543
 #, c-format
 msgid "New bug id: %i"
 msgstr "Číslo nové chyby: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:561
+#: ../lib/Plugins/Bugzilla.cpp:638
 #, c-format
 msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
@@ -43,7 +43,7 @@ msgstr ""
 "Nelze se přihlásit. Zkontrolujte Upravit→Moduly→Bugzilla a /etc/abrt/plugins/"
 "Bugzilla.conf. Server řekl: %s"
 
-#: ../lib/Plugins/Bugzilla.cpp:681
+#: ../lib/Plugins/Bugzilla.cpp:758
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -51,57 +51,57 @@ msgstr ""
 "Prázdné přihlašovací jméno nebo heslo.\n"
 "Zkontrolujte správnost "
 
-#: ../lib/Plugins/Bugzilla.cpp:690
+#: ../lib/Plugins/Bugzilla.cpp:767
 msgid "Logging into bugzilla..."
 msgstr "Přihlašuje se do bugzilly…"
 
-#: ../lib/Plugins/Bugzilla.cpp:693
+#: ../lib/Plugins/Bugzilla.cpp:770
 msgid "Checking for duplicates..."
 msgstr "Hledají se duplikáty…"
 
-#: ../lib/Plugins/Bugzilla.cpp:714 ../lib/Plugins/Bugzilla.cpp:749
+#: ../lib/Plugins/Bugzilla.cpp:791 ../lib/Plugins/Bugzilla.cpp:826
 msgid "Missing mandatory member 'bugs'"
 msgstr "Povinný prvek „bugs“ chybí"
 
-#: ../lib/Plugins/Bugzilla.cpp:732 ../lib/Plugins/Bugzilla.cpp:765
-#: ../lib/Plugins/Bugzilla.cpp:841
+#: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
+#: ../lib/Plugins/Bugzilla.cpp:918
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() selhalo. Nebylo možné získat všechny povinné údaje"
 
-#: ../lib/Plugins/Bugzilla.cpp:781
+#: ../lib/Plugins/Bugzilla.cpp:858
 msgid "Creating a new bug..."
 msgstr "Vytváří se nový požadavek…"
 
-#: ../lib/Plugins/Bugzilla.cpp:786
+#: ../lib/Plugins/Bugzilla.cpp:863
 msgid "Bugzilla entry creation failed"
 msgstr "Záznam v bugzille se nepodařilo vytvořit"
 
-#: ../lib/Plugins/Bugzilla.cpp:796 ../lib/Plugins/Bugzilla.cpp:891
+#: ../lib/Plugins/Bugzilla.cpp:873 ../lib/Plugins/Bugzilla.cpp:968
 msgid "Logging out..."
 msgstr "Odhlašování…"
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:815
+#: ../lib/Plugins/Bugzilla.cpp:892
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Tato chyba již je nahlášena: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:903
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla nedokázala najít rodiče chyby %d"
 
-#: ../lib/Plugins/Bugzilla.cpp:855 ../lib/Plugins/Bugzilla.cpp:856
+#: ../lib/Plugins/Bugzilla.cpp:932 ../lib/Plugins/Bugzilla.cpp:933
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "Do seznamu CC se přidává %s"
 
-#: ../lib/Plugins/Bugzilla.cpp:880
+#: ../lib/Plugins/Bugzilla.cpp:957
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "K chybě %d se přidává nový komentář"
 
-#: ../lib/Plugins/Bugzilla.cpp:979
+#: ../lib/Plugins/Bugzilla.cpp:1056
 msgid "Reports bugs to bugzilla"
 msgstr "Hlásí chyby do bugzilly"
 
@@ -120,7 +120,7 @@ msgstr "Instalace ladicích informací se vynechá"
 #: ../lib/Plugins/CCpp.cpp:658
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "Rozbor zásobníku volání v %s se nezdařil"
 
 #: ../lib/Plugins/CCpp.cpp:934
 msgid "Analyzes crashes in C/C++ programs"
@@ -160,7 +160,7 @@ msgstr "Vytváří se a odesílá hlášení…"
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr "Posílá hlášení o problémech v kernelu na kerneloops.org"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:200
+#: ../lib/Plugins/KerneloopsScanner.cpp:212
 msgid "Periodically scans for and saves kernel oopses"
 msgstr "Periodicky vyhledává a hlásí problémy v kernelu"
 
@@ -216,9 +216,8 @@ msgid "Creating a new case..."
 msgstr "Vytváří se nový případ…"
 
 #: ../lib/Plugins/RHTSupport.cpp:309
-#, fuzzy
 msgid "Reports bugs to Red Hat support"
-msgstr "Hlásí chyby do bugzilly"
+msgstr "Hlásí chyby na podporu společnosti Red Hat"
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
@@ -436,7 +435,7 @@ msgid "\tHostname   : %s\n"
 msgstr "\tNázev stroje: %s\n"
 
 #: ../src/CLI/CLI.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
 "Last crash:         %s\n"
@@ -456,19 +455,17 @@ msgstr ""
 "Příkaz:             %s\n"
 "Program:            %s\n"
 "Systém:             %s, jádro %s\n"
-"Hodnocení:          %s\n"
-"Obraz paměti:       %s\n"
 "Příčina:            %s\n"
 
 #: ../src/CLI/CLI.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Coredump file:      %s\n"
-msgstr "Místo pádu:      %s\n"
+msgstr "Obraz paměti:       %s\n"
 
 #: ../src/CLI/CLI.cpp:135
-#, fuzzy, c-format
+#, c-format
 msgid "Rating:             %s\n"
-msgstr "Název stroje:       %s\n"
+msgstr "Hodnocení:          %s\n"
 
 #: ../src/CLI/CLI.cpp:140
 #, c-format
@@ -643,11 +640,11 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/CLI/report.cpp:545
 msgid "y"
-msgstr ""
+msgstr "a"
 
 #: ../src/CLI/report.cpp:546
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:647
@@ -668,18 +665,17 @@ msgid "Reporting..."
 msgstr "Nahlašuje se…"
 
 #: ../src/CLI/report.cpp:721
-#, fuzzy, c-format
+#, c-format
 msgid "Report using %s?"
-msgstr "Nahlásit prostřednictvím %s? [a/N]: "
+msgstr "Nahlásit prostřednictvím %s?"
 
 #: ../src/CLI/report.cpp:724
 msgid "Skipping..."
 msgstr "Vynecháno…"
 
 #: ../src/CLI/report.cpp:736
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "Odeslání zakázáno, protože výpis volání není použitelný."
+msgstr "Odeslání zakázáno, protože výpis volání není použitelný"
 
 #: ../src/CLI/report.cpp:740
 #, c-format
@@ -687,11 +683,12 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
+"Zkuste nainstalovat balíčky s ladicími údaji ručně pomocí příkazu "
+"„debuginfo-install %s“ a zkuste to znovu\n"
 
 #: ../src/CLI/report.cpp:749
-#, fuzzy
 msgid "Error loading reporter settings"
-msgstr "Chyba při získávání hlášení: %s"
+msgstr "Chyba při zavádění nastavení ohlašovatele"
 
 # FIXME: Plurals
 #: ../src/CLI/report.cpp:768
@@ -1158,7 +1155,7 @@ msgstr "Schválit výpis volání"
 
 #: ../src/Gui/CReporterAssistant.py:659
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "Než budete moci pokračovat, je třeba vyplnit jak přivodit pád…"
 
 #: ../src/Gui/CReporterAssistant.py:682
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
