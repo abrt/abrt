@@ -75,30 +75,32 @@ static const char *const blacklisted_items[] = {
     NULL
 };
 
-char* make_description_mailx(const map_crash_data_t & crash_data)
+char* make_description_mailx(crash_data_t *crash_data)
 {
     struct strbuf *buf_dsc = strbuf_new();
     struct strbuf *buf_additional_files = strbuf_new();
     struct strbuf *buf_duphash_file = strbuf_new();
     struct strbuf *buf_common_files = strbuf_new();
 
-    map_crash_data_t::const_iterator it;
-    for (it = crash_data.begin(); it != crash_data.end(); it++)
+    GHashTableIter iter;
+    char *name;
+    struct crash_item *value;
+    g_hash_table_iter_init(&iter, crash_data);
+    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
-        if (it->second[CD_TYPE] == CD_TXT)
+        if (value->flags & CD_FLAG_TXT)
         {
-            const char *itemname = it->first.c_str();
-            if ((strcmp(itemname, FILENAME_DUPHASH) != 0)
-             && (strcmp(itemname, FILENAME_ARCHITECTURE) != 0)
-             && (strcmp(itemname, FILENAME_KERNEL) != 0)
-             && (strcmp(itemname, FILENAME_PACKAGE) != 0)
+            if ((strcmp(name, FILENAME_DUPHASH) != 0)
+             && (strcmp(name, FILENAME_ARCHITECTURE) != 0)
+             && (strcmp(name, FILENAME_KERNEL) != 0)
+             && (strcmp(name, FILENAME_PACKAGE) != 0)
             ) {
-                strbuf_append_strf(buf_additional_files, "%s\n-----\n%s\n\n", itemname, it->second[CD_CONTENT].c_str());
+                strbuf_append_strf(buf_additional_files, "%s\n-----\n%s\n\n", name, value->content);
             }
-            else if (strcmp(itemname, FILENAME_DUPHASH) == 0)
-                strbuf_append_strf(buf_duphash_file, "%s\n-----\n%s\n\n", itemname, it->second[CD_CONTENT].c_str());
+            else if (strcmp(name, FILENAME_DUPHASH) == 0)
+                strbuf_append_strf(buf_duphash_file, "%s\n-----\n%s\n\n", name, value->content);
             else
-                strbuf_append_strf(buf_common_files, "%s\n-----\n%s\n\n", itemname, it->second[CD_CONTENT].c_str());
+                strbuf_append_strf(buf_common_files, "%s\n-----\n%s\n\n", name, value->content);
         }
     }
 
@@ -117,24 +119,26 @@ char* make_description_mailx(const map_crash_data_t & crash_data)
     return strbuf_free_nobuf(buf_dsc);
 }
 
-char* make_description_bz(const map_crash_data_t& pCrashData)
+char* make_description_bz(crash_data_t *crash_data)
 {
     struct strbuf *buf_dsc = strbuf_new();
     struct strbuf *buf_long_dsc = strbuf_new();
 
-    map_crash_data_t::const_iterator it = pCrashData.begin();
-    for (; it != pCrashData.end(); it++)
+    GHashTableIter iter;
+    char *name;
+    struct crash_item *value;
+    g_hash_table_iter_init(&iter, crash_data);
+    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
-        const char *itemname = it->first.c_str();
-        const char *type = it->second[CD_TYPE].c_str();
-        const char *content = it->second[CD_CONTENT].c_str();
-        if (strcmp(type, CD_TXT) == 0)
+        unsigned flags = value->flags;
+        const char *content = value->content;
+        if (flags & CD_FLAG_TXT)
         {
             /* Skip items we are not interested in */
             const char *const *bl = blacklisted_items;
             while (*bl)
             {
-                if (strcmp(itemname, *bl) == 0)
+                if (strcmp(name, *bl) == 0)
                     break;
                 bl++;
             }
@@ -151,7 +155,7 @@ char* make_description_bz(const map_crash_data_t& pCrashData)
                 add_content(&was_multiline,
                         &tmp,
 			/* "reproduce: blah" looks ugly, fixing: */
-                        (strcmp(itemname, FILENAME_REPRODUCE) == 0) ? "How to reproduce" : itemname,
+                        (strcmp(name, FILENAME_REPRODUCE) == 0) ? "How to reproduce" : name,
                         content
                 );
 
@@ -170,7 +174,7 @@ char* make_description_bz(const map_crash_data_t& pCrashData)
             } else {
                 bool was_multiline = 0;
                 char *dsc = NULL;
-                add_content(&was_multiline, &dsc, "Attached file", itemname);
+                add_content(&was_multiline, &dsc, "Attached file", name);
                 strbuf_append_str(buf_dsc, dsc);
                 free(dsc);
             }
@@ -189,25 +193,25 @@ char* make_description_bz(const map_crash_data_t& pCrashData)
     return strbuf_free_nobuf(buf_dsc);
 }
 
-char* make_description_logger(const map_crash_data_t& pCrashData)
+char* make_description_logger(crash_data_t *crash_data)
 {
     struct strbuf *buf_dsc = strbuf_new();
     struct strbuf *buf_long_dsc = strbuf_new();
 
-    map_crash_data_t::const_iterator it = pCrashData.begin();
-    for (; it != pCrashData.end(); it++)
+    GHashTableIter iter;
+    char *name;
+    struct crash_item *value;
+    g_hash_table_iter_init(&iter, crash_data);
+    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
-        const char *filename = it->first.c_str();
-        const char *type = it->second[CD_TYPE].c_str();
-        const char *content = it->second[CD_CONTENT].c_str();
-        if ((strcmp(type, CD_TXT) == 0)
-         || (strcmp(type, CD_BIN) == 0)
-        ) {
+        const char *content = value->content;
+        if (value->flags & (CD_FLAG_TXT|CD_FLAG_BIN))
+        {
             /* Skip items we are not interested in */
             const char *const *bl = blacklisted_items;
             while (*bl)
             {
-                if (filename == *bl)
+                if (name == *bl)
                     break;
                 bl++;
             }
@@ -218,7 +222,7 @@ char* make_description_logger(const map_crash_data_t& pCrashData)
 
             bool was_multiline = 0;
             char *tmp = NULL;
-            add_content(&was_multiline, &tmp, filename, content);
+            add_content(&was_multiline, &tmp, name, content);
 
             if (was_multiline)
             {
@@ -242,29 +246,27 @@ char* make_description_logger(const map_crash_data_t& pCrashData)
     return strbuf_free_nobuf(buf_dsc);
 }
 
-char* make_description_reproduce_comment(const map_crash_data_t& pCrashData)
+char* make_description_reproduce_comment(crash_data_t *crash_data)
 {
     char *repro = NULL;
     char *comment = NULL;
+    struct crash_item *value;
 
-    map_crash_data_t::const_iterator end = pCrashData.end();
-    map_crash_data_t::const_iterator it;
-
-    it = pCrashData.find(FILENAME_REPRODUCE);
-    if (it != end)
+    value = get_crash_data_item_or_NULL(crash_data, FILENAME_REPRODUCE);
+    if (value)
     {
-        if ((it->second[CD_CONTENT].size() > 0)
-            &&  (it->second[CD_CONTENT] != "1.\n2.\n3.\n"))
-        {
-            repro = xasprintf("\n\nHow to reproduce\n-----\n%s", it->second[CD_CONTENT].c_str());
+        if (value->content[0]
+         && strcmp(value->content, "1.\n2.\n3.\n") != 0
+        ) {
+            repro = xasprintf("\n\nHow to reproduce\n-----\n%s", value->content);
         }
     }
 
-    it = pCrashData.find(FILENAME_COMMENT);
-    if (it != end)
+    value = get_crash_data_item_or_NULL(crash_data, FILENAME_COMMENT);
+    if (value)
     {
-        if (it->second[CD_CONTENT].size() > 0)
-            comment = xasprintf("\n\nComment\n-----\n%s", it->second[CD_CONTENT].c_str());
+        if (value->content[0])
+            comment = xasprintf("\n\nComment\n-----\n%s", value->content);
     }
 
     if (!repro && !comment)

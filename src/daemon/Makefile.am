@@ -52,6 +52,7 @@ abrt_server_CPPFLAGS = \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_server_LDADD = \
@@ -71,6 +72,7 @@ abrt_handle_crashdump_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DLIBEXEC_DIR=\"$(LIBEXEC_DIR)\" \
+    $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_handle_crashdump_LDADD = \

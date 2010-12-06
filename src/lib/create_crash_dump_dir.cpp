@@ -21,7 +21,7 @@
 
 using namespace std;
 
-struct dump_dir *create_crash_dump_dir(const map_crash_data_t& crash_data)
+struct dump_dir *create_crash_dump_dir(crash_data_t *crash_data)
 {
     char *path = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%lu-%lu", (long)getpid(), (long)time(NULL));
     struct dump_dir *dd = dd_create(path, getuid());
@@ -29,28 +29,24 @@ struct dump_dir *create_crash_dump_dir(const map_crash_data_t& crash_data)
     if (!dd)
         return NULL;
 
-    map_crash_data_t::const_iterator its = crash_data.begin();
-    while (its != crash_data.end())
+    GHashTableIter iter;
+    char *name;
+    struct crash_item *value;
+    g_hash_table_iter_init(&iter, crash_data);
+    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
-        const char *name, *value;
-        name = its->first.c_str();
-
         if (name[0] == '.' || strchr(name, '/'))
         {
             error_msg("Crash data field name contains disallowed chars: '%s'", name);
             goto next;
         }
 
-//FIXME: what to do with CD_BINs??
-        /* Fields: CD_TYPE (is CD_SYS, CD_BIN or CD_TXT),
-         * CD_EDITABLE, CD_CONTENT */
-        if (its->second[CD_TYPE] == CD_BIN)
+//FIXME: what to do with CD_FLAG_BINs??
+        if (value->flags & CD_FLAG_BIN)
             goto next;
 
-        value = its->second[CD_CONTENT].c_str();
-        dd_save_text(dd, name, value);
- next:
-        its++;
+        dd_save_text(dd, name, value->content);
+ next: ;
     }
 
     return dd;

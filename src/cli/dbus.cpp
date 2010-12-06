@@ -121,7 +121,7 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
     }
 }
 
-vector_map_crash_data_t call_GetCrashInfos()
+vector_of_crash_data_t *call_GetCrashInfos()
 {
     DBusMessage* msg = new_call_msg(__func__ + 5);
     DBusMessage *reply = send_get_reply_and_unref(msg);
@@ -129,8 +129,8 @@ vector_map_crash_data_t call_GetCrashInfos()
     DBusMessageIter in_iter;
     dbus_message_iter_init(reply, &in_iter);
 
-    vector_map_crash_data_t argout;
-    int r = load_val(&in_iter, argout);
+    vector_of_crash_data_t *argout = NULL;
+    int r = load_vector_of_crash_data(&in_iter, &argout);
     if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
         error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
 
@@ -138,7 +138,7 @@ vector_map_crash_data_t call_GetCrashInfos()
     return argout;
 }
 
-map_crash_data_t call_CreateReport(const char* crash_id)
+crash_data_t *call_CreateReport(const char* crash_id)
 {
     DBusMessage* msg = new_call_msg(__func__ + 5);
     dbus_message_append_args(msg,
@@ -150,8 +150,8 @@ map_crash_data_t call_CreateReport(const char* crash_id)
     DBusMessageIter in_iter;
     dbus_message_iter_init(reply, &in_iter);
 
-    map_crash_data_t argout;
-    int r = load_val(&in_iter, argout);
+    crash_data_t *argout = NULL;
+    int r = load_crash_data(&in_iter, &argout);
     if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
         error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
 
@@ -159,7 +159,7 @@ map_crash_data_t call_CreateReport(const char* crash_id)
     return argout;
 }
 
-report_status_t call_Report(const map_crash_data_t& report,
+report_status_t call_Report(crash_data_t *report,
 			    const vector_string_t& reporters,
 			    GHashTable *plugins)
 {
@@ -168,7 +168,7 @@ report_status_t call_Report(const map_crash_data_t& report,
     dbus_message_iter_init_append(msg, &out_iter);
 
     /* parameter #1: report data */
-    store_val(&out_iter, report);
+    store_crash_data(&out_iter, report);
     /* parameter #2: reporters to use */
     store_val(&out_iter, reporters);
     /* parameter #3 (opt): plugin config */

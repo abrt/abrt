@@ -55,15 +55,15 @@ using namespace std;
  * - signal: we got SIGTERM or SIGINT
  *
  * DBus methods we have:
- * - GetCrashInfos(): returns a vector_map_crash_data_t (vector_map_vector_string_t)
+ * - GetCrashInfos(): returns a vector_of_crash_data
  *      of crashes for given uid
  *      v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
  * - StartJob(crash_id,force): starts creating a report for /var/spool/abrt/DIR with this UID:UUID.
  *      Returns job id (uint64).
  *      After thread returns, when report creation thread has finished,
  *      JobDone() dbus signal is emitted.
- * - CreateReport(crash_id): returns map_crash_data_t (map_vector_string_t)
- * - Report(map_crash_data_t (map_vector_string_t[, map_map_string_t])):
+ * - CreateReport(crash_id): returns crash data (hash table of struct crash_item)
+ * - Report(crash_data[, map_map_string_t]):
  *      "Please report this crash": calls Report() of all registered reporter plugins.
  *      Returns report_status_t (map_vector_string_t) - the status of each call.
  *      2nd parameter is the contents of user's abrt.conf.
@@ -542,11 +542,11 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         }
 
         char *fullname = NULL;
+        crash_data_t *crash_data = NULL;
         try
         {
             fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
-            map_crash_data_t crashinfo;
-            mw_result_t res = LoadDebugDump(fullname, crashinfo);
+            mw_result_t res = LoadDebugDump(fullname, &crash_data);
             switch (res)
             {
                 case MW_OK:
@@ -557,24 +557,24 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 {
                     if (res != MW_OK)
                     {
-                        const char *first = get_crash_data_item_content_or_NULL(crashinfo, CD_DUMPDIR);
+                        const char *first = get_crash_item_content_or_NULL(crash_data, CD_DUMPDIR);
                         log("Deleting crash %s (dup of %s), sending dbus signal",
                                 strrchr(fullname, '/') + 1,
                                 strrchr(first, '/') + 1);
                         delete_crash_dump_dir(fullname);
                     }
 
-                    const char *uid_str = get_crash_data_item_content_or_NULL(crashinfo, FILENAME_UID);
-                    const char *inform_all = get_crash_data_item_content_or_NULL(crashinfo, FILENAME_INFORMALL);
+                    const char *uid_str = get_crash_item_content_or_NULL(crash_data, FILENAME_UID);
+                    const char *inform_all = get_crash_item_content_or_NULL(crash_data, FILENAME_INFORMALL);
 
                     if (inform_all && string_to_bool(inform_all))
                         uid_str = NULL;
                     char *crash_id = xasprintf("%s:%s",
-                                    get_crash_data_item_content_or_NULL(crashinfo, FILENAME_UID),
-                                    get_crash_data_item_content_or_NULL(crashinfo, FILENAME_UUID)
+                                    get_crash_item_content_or_NULL(crash_data, FILENAME_UID),
+                                    get_crash_item_content_or_NULL(crash_data, FILENAME_UUID)
                     );
                     /* Send dbus signal */
-                    g_pCommLayer->Crash(get_crash_data_item_content_or_NULL(crashinfo, FILENAME_PACKAGE),
+                    g_pCommLayer->Crash(get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE),
                                     crash_id, //TODO: stop passing this param, it is unused
                                     fullname,
                                     uid_str
@@ -598,9 +598,11 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         {
             free(fullname);
             free(buf);
+            free_crash_data(crash_data);
             throw;
         }
         free(fullname);
+        free_crash_data(crash_data);
     } /* while */
 
     free(buf);

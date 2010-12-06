@@ -34,12 +34,13 @@ static char *do_log(char *log_line, void *param)
 
 int main(int argc, char** argv)
 {
-    map_crash_data_t cd;
+    crash_data_t *crash_data = new_crash_data();
 
-    add_to_crash_data(cd, "analyzer", "wow");
+    add_to_crash_data(crash_data, "analyzer", "wow");
     const char *event = "report";
 
-    struct dump_dir *dd = create_crash_dump_dir(cd);
+    struct dump_dir *dd = create_crash_dump_dir(crash_data);
+    free_crash_data(crash_data);
     if (!dd)
         return 1;
     char *dir_name = strdup(dd->dd_dir);

@@ -66,8 +66,7 @@ static void create_and_send_email(
     if (!dd)
         exit(1); /* error msg is already logged by dd_opendir */
 
-    map_crash_data_t pCrashData;
-    load_crash_data_from_crash_dump_dir(dd, pCrashData);
+    crash_data_t *crash_data = load_crash_data_from_crash_dump_dir(dd);
     dd_close(dd);
 
     char* env;
@@ -90,17 +89,20 @@ static void create_and_send_email(
     unsigned arg_size = 0;
     args = append_str_to_vector(args, arg_size, "/bin/mailx");
 
-    char *dsc = make_description_mailx(pCrashData);
+    char *dsc = make_description_mailx(crash_data);
 
     if (send_binary_data)
     {
-        map_crash_data_t::const_iterator it_cd;
-        for (it_cd = pCrashData.begin(); it_cd != pCrashData.end(); it_cd++)
+        GHashTableIter iter;
+        char *name;
+        struct crash_item *value;
+        g_hash_table_iter_init(&iter, crash_data);
+        while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
         {
-            if (it_cd->second[CD_TYPE] == CD_BIN)
+            if (value->flags & CD_FLAG_BIN)
             {
                 args = append_str_to_vector(args, arg_size, "-a");
-                args = append_str_to_vector(args, arg_size, it_cd->second[CD_CONTENT].c_str());
+                args = append_str_to_vector(args, arg_size, value->content);
             }
         }
     }
@@ -112,7 +114,7 @@ static void create_and_send_email(
     args = append_str_to_vector(args, arg_size, email_to);
 
     log(_("Sending an email..."));
-    const char *uid_str = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_UID);
+    const char *uid_str = get_crash_item_content_or_NULL(crash_data, FILENAME_UID);
     exec_and_feed_input(xatoi_u(uid_str), dsc, args);
 
     free(dsc);
@@ -121,6 +123,8 @@ static void create_and_send_email(
         free(*args++);
     args -= arg_size;
     free(args);
+
+    free_crash_data(crash_data);
 
     log("Email was sent to: %s", email_to);
 }

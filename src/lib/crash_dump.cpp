@@ -19,6 +19,70 @@
 #include "abrtlib.h"
 #include "abrt_crash_dump.h"
 
+static void free_crash_item(void *ptr)
+{
+    if (ptr)
+    {
+        struct crash_item *item = (struct crash_item *)ptr;
+        free(item->content);
+        free(item);
+    }
+}
+
+
+/* crash_data["name"] = { "content", CD_FLAG_foo_bits } */
+
+crash_data_t *new_crash_data(void)
+{
+    return g_hash_table_new_full(g_str_hash, g_str_equal,
+                 free, free_crash_item);
+}
+
+void add_to_crash_data_ext(crash_data_t *crash_data,
+                const char *name,
+                const char *content,
+                unsigned flags)
+{
+    struct crash_item *item = (struct crash_item *)xzalloc(sizeof(*item));
+    item->content = xstrdup(content);
+    item->flags = flags;
+    g_hash_table_replace(crash_data, xstrdup(name), item);
+}
+
+void add_to_crash_data(crash_data_t *crash_data,
+                const char *name,
+                const char *content)
+{
+    add_to_crash_data_ext(crash_data, name, content, CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
+}
+
+const char *get_crash_item_content_or_die(crash_data_t *crash_data, const char *key)
+{
+    struct crash_item *item = get_crash_data_item_or_NULL(crash_data, key);
+    if (!item)
+        error_msg_and_die("Error accessing crash data: no ['%s']", key);
+    return item->content;
+}
+
+const char *get_crash_item_content_or_NULL(crash_data_t *crash_data, const char *key)
+{
+    struct crash_item *item = get_crash_data_item_or_NULL(crash_data, key);
+    if (!item)
+        return NULL;
+    return item->content;
+}
+
+
+/* crash_data_vector[i] = { "name" = { "content", CD_FLAG_foo_bits } } */
+
+vector_of_crash_data_t *new_vector_of_crash_data(void)
+{
+    return g_ptr_array_new_with_free_func((void (*)(void*)) &free_crash_data);
+}
+
+
+/* Miscellaneous helpers */
+
 static const char *const editable_files[] = {
 	FILENAME_DESCRIPTION,
 	FILENAME_COMMENT    ,
@@ -40,36 +104,6 @@ static bool is_editable(const char *name, const char *const *v)
 bool is_editable_file(const char *file_name)
 {
 	return is_editable(file_name, editable_files);
-}
-
-
-void add_to_crash_data_ext(map_crash_data_t& pCrashData,
-                const char *pItem,
-                const char *pType,
-                const char *pEditable,
-                const char *pContent)
-{
-	map_crash_data_t::iterator it = pCrashData.find(pItem);
-	if (it == pCrashData.end()) {
-		vector_string_t& v = pCrashData[pItem]; /* create empty vector */
-		v.push_back(pType);
-		v.push_back(pEditable);
-		v.push_back(pContent);
-		return;
-	}
-	vector_string_t& v = it->second;
-	while (v.size() < 3)
-		v.push_back("");
-	v[CD_TYPE]     = pType;
-	v[CD_EDITABLE] = pEditable;
-	v[CD_CONTENT]  = pContent;
-}
-
-void add_to_crash_data(map_crash_data_t& pCrashData,
-                const char *pItem,
-                const char *pContent)
-{
-	add_to_crash_data_ext(pCrashData, pItem, CD_TXT, CD_ISNOTEDITABLE, pContent);
 }
 
 static char* is_text_file(const char *name, ssize_t *sz)
@@ -146,10 +180,11 @@ static char* is_text_file(const char *name, ssize_t *sz)
     return NULL; /* it's binary */
 }
 
-void load_crash_data_from_crash_dump_dir(struct dump_dir *dd, map_crash_data_t& data)
+crash_data_t *load_crash_data_from_crash_dump_dir(struct dump_dir *dd)
 {
     char *short_name;
     char *full_name;
+    crash_data_t *crash_data = new_crash_data();
 
     dd_init_next_file(dd);
     while (dd_get_next_file(dd, &short_name, &full_name))
@@ -163,11 +198,10 @@ void load_crash_data_from_crash_dump_dir(struct dump_dir *dd, map_crash_data_t& 
             text = is_text_file(full_name, &sz);
             if (!text)
             {
-                add_to_crash_data_ext(data,
+                add_to_crash_data_ext(crash_data,
                         short_name,
-                        CD_BIN,
-                        CD_ISNOTEDITABLE,
-                        full_name
+                        full_name,
+                        CD_FLAG_BIN + CD_FLAG_ISNOTEDITABLE
                 );
 
                 free(short_name);
@@ -183,62 +217,30 @@ void load_crash_data_from_crash_dump_dir(struct dump_dir *dd, map_crash_data_t& 
             content = dd_load_text(dd, short_name);
         free(text);
 
-        add_to_crash_data_ext(data,
+        add_to_crash_data_ext(crash_data,
                 short_name,
-                CD_TXT,
-                editable ? CD_ISEDITABLE : CD_ISNOTEDITABLE,
-                content
+                content,
+                (editable ? CD_FLAG_TXT + CD_FLAG_ISEDITABLE : CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE)
         );
         free(short_name);
         free(full_name);
         free(content);
     }
+    return crash_data;
 }
 
-static const std::string* helper_get_crash_data_item_content(const map_crash_data_t& crash_data, const char *key)
+void log_map_crash_data(crash_data_t *crash_data, const char *pfx)
 {
-	map_crash_data_t::const_iterator it = crash_data.find(key);
-	if (it == crash_data.end()) {
-		return NULL;
-	}
-	if (it->second.size() <= CD_CONTENT) {
-		return NULL;
-	}
-	return &it->second[CD_CONTENT];
-}
-
-const std::string& get_crash_data_item_content(const map_crash_data_t& crash_data, const char *key)
-{
-	const std::string* sp = helper_get_crash_data_item_content(crash_data, key);
-	if (sp == NULL) {
-		if (crash_data.find(key) == crash_data.end())
-			error_msg_and_die("Error accessing crash data: no ['%s']", key);
-		error_msg_and_die("Error accessing crash data: no ['%s'][%d]", key, CD_CONTENT);
-	}
-	return *sp;
-}
-
-const char *get_crash_data_item_content_or_NULL(const map_crash_data_t& crash_data, const char *key)
-{
-	const std::string* sp = helper_get_crash_data_item_content(crash_data, key);
-	if (!sp) {
-		return NULL;
-	}
-	return sp->c_str();
-}
-
-void log_map_crash_data(const map_crash_data_t& data, const char *name)
-{
-	map_crash_data_t::const_iterator it = data.begin();
-	while (it != data.end())
-	{
-		ssize_t sz = it->second.size();
-		log("%s[%s]:%s/%s/'%.20s'",
-			name, it->first.c_str(),
-			sz > 0 ? it->second[0].c_str() : "<NO [0]>",
-			sz > 1 ? it->second[1].c_str() : "<NO [1]>",
-			sz > 2 ? it->second[2].c_str() : "<NO [2]>"
-		);
-		it++;
-	}
+    GHashTableIter iter;
+    char *name;
+    struct crash_item *value;
+    g_hash_table_iter_init(&iter, crash_data);
+    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
+    {
+        log("%s[%s]:'%s' 0x%x",
+                pfx, name,
+                value->content,
+                value->flags
+        );
+    }
 }

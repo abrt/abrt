@@ -56,7 +56,8 @@ libCCpp_la_CPPFLAGS = -Wall -Werror \
     -I$(UTILS_PATH) \
     -DCCPP_HOOK_PATH=\"${libexecdir}/abrt-hook-ccpp\" \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    -DLOCALSTATEDIR='"$(localstatedir)"'
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    $(GLIB_CFLAGS)
 #    -DHOSTILE_KERNEL
 
 # KerneloopsScanner
@@ -89,6 +90,7 @@ abrt_action_analyze_c_CPPFLAGS = \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_action_analyze_c_LDADD = \
@@ -107,6 +109,7 @@ abrt_action_analyze_python_CPPFLAGS = \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_action_analyze_python_LDADD = \
@@ -125,6 +128,7 @@ abrt_action_analyze_oops_CPPFLAGS = \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_action_analyze_oops_LDADD = \
@@ -143,6 +147,7 @@ abrt_action_generate_backtrace_CPPFLAGS = \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_action_generate_backtrace_LDADD = \

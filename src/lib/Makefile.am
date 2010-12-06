@@ -91,6 +91,7 @@ libabrt_daemon_la_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
+    $(GLIB_CFLAGS) \
     -D_GNU_SOURCE
 libabrt_daemon_la_LDFLAGS = \
     -version-info 0:1:0
@@ -108,6 +109,7 @@ libabrt_web_la_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
+    $(GLIB_CFLAGS) \
     $(CURL_CFLAGS) \
     $(LIBXML_CFLAGS) \
     $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
@@ -115,6 +117,7 @@ libabrt_web_la_CPPFLAGS = \
 libabrt_web_la_LDFLAGS = \
     -version-info 0:1:0
 libabrt_web_la_LIBADD = \
+    $(GLIB_LIBS) \
     $(CURL_LIBS) \
     $(LIBXML_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)

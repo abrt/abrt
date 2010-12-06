@@ -142,30 +142,30 @@ static void remove_comments_and_unescape(char *str)
  * Writes a field of crash report to a file.
  * Field must be writable.
  */
-static void write_crash_report_field(FILE *fp, const map_crash_data_t &report,
+static void write_crash_report_field(FILE *fp, crash_data_t *crash_data,
         const char *field, const char *description)
 {
-    const map_crash_data_t::const_iterator it = report.find(field);
-    if (it == report.end())
+    const struct crash_item *value = get_crash_data_item_or_NULL(crash_data, field);
+    if (!value)
     {
         // exit silently, all fields are optional for now
         //error_msg("Field %s not found", field);
         return;
     }
 
-    if (it->second[CD_TYPE] == CD_SYS)
+    if (value->flags & CD_FLAG_SYS)
     {
         error_msg("Cannot update field %s because it is a system value", field);
         return;
     }
 
-    fprintf(fp, "%s%s\n", FIELD_SEP, it->first.c_str());
+    fprintf(fp, "%s%s\n", FIELD_SEP, field);
 
     fprintf(fp, "%s\n", description);
-    if (it->second[CD_EDITABLE] != CD_ISEDITABLE)
+    if (!(value->flags & CD_FLAG_ISEDITABLE))
         fprintf(fp, _("# This field is read only\n"));
 
-    char *escaped_content = escape(it->second[CD_CONTENT].c_str());
+    char *escaped_content = escape(value->content);
     fprintf(fp, "%s\n", escaped_content);
     free(escaped_content);
 }
@@ -177,7 +177,7 @@ static void write_crash_report_field(FILE *fp, const map_crash_data_t &report,
  *  If the report is successfully stored to the file, a zero value is returned.
  *  On failure, nonzero value is returned.
  */
-static void write_crash_report(const map_crash_data_t &report, FILE *fp)
+static void write_crash_report(crash_data_t *report, FILE *fp)
 {
     fprintf(fp, "# Please check this report. Lines starting with '#' will be ignored.\n"
             "# Lines starting with '%%----' separate fields, please do not delete them.\n\n");
@@ -208,7 +208,7 @@ static void write_crash_report(const map_crash_data_t &report, FILE *fp)
  *  1 if the field was changed.
  *  Changes to read-only fields are ignored.
  */
-static int read_crash_report_field(const char *text, map_crash_data_t &report,
+static int read_crash_report_field(const char *text, crash_data_t *report,
         const char *field)
 {
     char separator[sizeof("\n" FIELD_SEP)-1 + strlen(field) + 2]; // 2 = '\n\0'
@@ -225,21 +225,21 @@ static int read_crash_report_field(const char *text, map_crash_data_t &report,
     else
         length = end - textfield;
 
-    const map_crash_data_t::iterator it = report.find(field);
-    if (it == report.end())
+    struct crash_item *value = get_crash_data_item_or_NULL(report, field);
+    if (!value)
     {
         error_msg("Field %s not found", field);
         return 0;
     }
 
-    if (it->second[CD_TYPE] == CD_SYS)
+    if (value->flags & CD_FLAG_SYS)
     {
         error_msg("Cannot update field %s because it is a system value", field);
         return 0;
     }
 
     // Do not change noneditable fields.
-    if (it->second[CD_EDITABLE] != CD_ISEDITABLE)
+    if (!(value->flags & CD_FLAG_ISEDITABLE))
         return 0;
 
     // Compare the old field contents with the new field contents.
@@ -248,16 +248,16 @@ static int read_crash_report_field(const char *text, map_crash_data_t &report,
     newvalue[length] = '\0';
     trim(newvalue);
 
-    char oldvalue[it->second[CD_CONTENT].length() + 1];
-    strcpy(oldvalue, it->second[CD_CONTENT].c_str());
+    char oldvalue[strlen(value->content) + 1];
+    strcpy(oldvalue, value->content);
     trim(oldvalue);
 
     // Return if no change in the contents detected.
-    int cmp = strcmp(newvalue, oldvalue);
-    if (!cmp)
+    if (strcmp(newvalue, oldvalue) == 0)
         return 0;
 
-    it->second[CD_CONTENT].assign(newvalue);
+    free(value->content);
+    value->content = xstrdup(newvalue);
     return 1;
 }
 
@@ -269,7 +269,7 @@ static int read_crash_report_field(const char *text, map_crash_data_t &report,
  *  1 if any field was changed.
  *  Changes to read-only fields are ignored.
  */
-static int read_crash_report(map_crash_data_t &report, const char *text)
+static int read_crash_report(crash_data_t *report, const char *text)
 {
     int result = 0;
     result |= read_crash_report_field(text, report, FILENAME_COMMENT);
@@ -292,13 +292,13 @@ static int read_crash_report(map_crash_data_t &report, const char *text)
  * Ensures that the fields needed for editor are present in the crash data.
  * Fields: comments, how to reproduce.
  */
-static void create_fields_for_editor(map_crash_data_t &crash_data)
+static void create_fields_for_editor(crash_data_t *crash_data)
 {
-    if (crash_data.find(FILENAME_COMMENT) == crash_data.end())
-        add_to_crash_data_ext(crash_data, FILENAME_COMMENT, CD_TXT, CD_ISEDITABLE, "");
+    if (!get_crash_data_item_or_NULL(crash_data, FILENAME_COMMENT))
+        add_to_crash_data_ext(crash_data, FILENAME_COMMENT, "", CD_FLAG_TXT + CD_FLAG_ISEDITABLE);
 
-    if (crash_data.find(FILENAME_REPRODUCE) == crash_data.end())
-        add_to_crash_data_ext(crash_data, FILENAME_REPRODUCE, CD_TXT, CD_ISEDITABLE, "1. \n2. \n3. \n");
+    if (!get_crash_data_item_or_NULL(crash_data, FILENAME_REPRODUCE))
+        add_to_crash_data_ext(crash_data, FILENAME_REPRODUCE, "1. \n2. \n3. \n", CD_FLAG_TXT + CD_FLAG_ISEDITABLE);
 }
 
 /**
@@ -342,7 +342,7 @@ static int launch_editor(const char *path)
  *  2 on failure, unable to create, open, or close temporary file
  *  3 on failure, cannot launch text editor
  */
-static int run_report_editor(map_crash_data_t &cr)
+static int run_report_editor(crash_data_t *crash_data)
 {
     /* Open a temporary file and write the crash report to it. */
     char filename[] = "/tmp/abrt-report.XXXXXX";
@@ -360,7 +360,7 @@ static int run_report_editor(map_crash_data_t &cr)
         return 2;
     }
 
-    write_crash_report(cr, fp);
+    write_crash_report(crash_data, fp);
 
     if (fclose(fp)) /* errno is set */
     {
@@ -405,7 +405,7 @@ static int run_report_editor(map_crash_data_t &cr)
 
     remove_comments_and_unescape(text);
     // Updates the crash report from the file text.
-    int report_changed = read_crash_report(cr, text);
+    int report_changed = read_crash_report(crash_data, text);
     free(text);
     if (report_changed)
         puts(_("\nThe report has been updated"));
@@ -587,27 +587,31 @@ int report(const char *crash_id, int flags)
     if (flags & CLI_REPORT_SILENT_IF_NOT_FOUND)
         logmode = 0;
     // Ask for an initial report.
-    map_crash_data_t cr = call_CreateReport(crash_id);
+    crash_data_t *crash_data = call_CreateReport(crash_id);
     logmode = old_logmode;
-    if (cr.size() == 0)
+    if (!crash_data || g_hash_table_size(crash_data) == 0)
     {
+        free_crash_data(crash_data);
         return -1;
     }
 
-    const char *rating_str = get_crash_data_item_content_or_NULL(cr, FILENAME_RATING);
+    const char *rating_str = get_crash_item_content_or_NULL(crash_data, FILENAME_RATING);
     unsigned rating = rating_str ? xatou(rating_str) : 4;
 
     /* Open text editor and give a chance to review the backtrace etc. */
     if (!(flags & CLI_REPORT_BATCH))
     {
-        create_fields_for_editor(cr);
-        int result = run_report_editor(cr);
+        create_fields_for_editor(crash_data);
+        int result = run_report_editor(crash_data);
         if (result != 0)
+        {
+            free_crash_data(crash_data);
             return result;
+        }
     }
 
     /* Get possible reporters associated with this particular crash. */
-    const char *events = get_crash_data_item_content_or_NULL(cr, CD_EVENTS);
+    const char *events = get_crash_item_content_or_NULL(crash_data, CD_EVENTS);
     vector_string_t reporters;
     if (events) while (*events)
     {
@@ -633,7 +637,7 @@ int report(const char *crash_id, int flags)
     if (flags & CLI_REPORT_BATCH)
     {
         puts(_("Reporting..."));
-        report_status_t r = call_Report(cr, reporters, reporters_settings);
+        report_status_t r = call_Report(crash_data, reporters, reporters_settings);
         report_status_t::iterator it = r.begin();
         while (it != r.end())
         {
@@ -668,7 +672,7 @@ int report(const char *crash_id, int flags)
                 {
                     puts(_("Reporting disabled because the backtrace is unusable"));
 
-                    const char *package = get_crash_data_item_content_or_NULL(cr, FILENAME_PACKAGE);
+                    const char *package = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
                     if (package && package[0])
                         printf(_("Please try to install debuginfo manually using the command: \"debuginfo-install %s\" and try again\n"), package);
 
@@ -688,7 +692,7 @@ int report(const char *crash_id, int flags)
             ask_for_missing_settings(it->c_str(), *settings);
 
             vector_string_t cur_reporter(1, *it);
-            report_status_t r = call_Report(cr, cur_reporter, reporters_settings);
+            report_status_t r = call_Report(crash_data, cur_reporter, reporters_settings);
             assert(r.size() == 1); /* one reporter --> one report status */
             vector_string_t &v = r.begin()->second;
             printf("%s: %s\n", r.begin()->first.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
@@ -699,6 +703,7 @@ int report(const char *crash_id, int flags)
     }
 
     g_hash_table_destroy(reporters_settings);
+    free_crash_data(crash_data);
     printf(_("Crash reported via %d report events (%d errors)\n"), plugins, errors);
     return errors != 0;
 }

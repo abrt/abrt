@@ -19,54 +19,82 @@
 #ifndef CRASH_DUMP_H_
 #define CRASH_DUMP_H_
 
+#include <glib.h>
 
-// Crash data is a map of 3-element vectors of strings: type, editable, content
-#define CD_TYPE         0
-#define CD_EDITABLE     1
-#define CD_CONTENT      2
-
-// SYS - system value, should not be displayed
-// BIN - binary data
-// TXT - text data, can be displayed
-#define CD_SYS          "s"
-#define CD_BIN          "b"
-#define CD_TXT          "t"
-
-#define CD_ISEDITABLE    "y"
-#define CD_ISNOTEDITABLE "n"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 struct dump_dir;
 
-#ifdef __cplusplus
+enum {
+    CD_FLAG_SYS           = (1 << 0),
+    CD_FLAG_BIN           = (1 << 1),
+    CD_FLAG_TXT           = (1 << 2),
+    CD_FLAG_ISEDITABLE    = (1 << 3),
+    CD_FLAG_ISNOTEDITABLE = (1 << 4),
+};
 
-#include <map>
-#include <vector>
-#include <string>
+struct crash_item {
+    char    *content;
+    unsigned flags;
+};
+typedef struct crash_item crash_item;
 
 /* In-memory crash data structure and accessors */
 
-typedef std::map<std::string, std::vector<std::string> > map_crash_data_t;
+typedef GHashTable crash_data_t;
 
-void add_to_crash_data_ext(map_crash_data_t& pCrashData,
-                const char *pItem,
-                const char *pType,
-                const char *pEditable,
-                const char *pContent);
-/* Uses type:CD_TXT, editable:CD_ISNOTEDITABLE */
-void add_to_crash_data(map_crash_data_t& pCrashData,
-                const char *pItem,
-                const char *pContent);
+crash_data_t *new_crash_data(void);
 
-const char        *get_crash_data_item_content_or_NULL(const map_crash_data_t& crash_data, const char *key);
+static inline void free_crash_data(crash_data_t *crash_data)
+{
+    if (crash_data)
+        g_hash_table_destroy(crash_data);
+}
+
+void add_to_crash_data_ext(crash_data_t *crash_data,
+                const char *name,
+                const char *content,
+                unsigned flags);
+/* Uses CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE flags */
+void add_to_crash_data(crash_data_t *crash_data,
+                const char *name,
+                const char *content);
+
+static inline struct crash_item *get_crash_data_item_or_NULL(crash_data_t *crash_data, const char *key)
+{
+    return (struct crash_item *)g_hash_table_lookup(crash_data, key);
+}
+const char *get_crash_item_content_or_NULL(crash_data_t *crash_data, const char *key);
 /* Aborts if key is not found: */
-const std::string& get_crash_data_item_content(const map_crash_data_t& crash_data, const char *key);
+const char *get_crash_item_content_or_die(crash_data_t *crash_data, const char *key);
+
+
+/* Vector of these structures */
+
+typedef GPtrArray vector_of_crash_data_t;
+
+static inline crash_data_t *get_crash_data(vector_of_crash_data_t *vector, unsigned i)
+{
+    return (crash_data_t *)g_ptr_array_index(vector, i);
+}
+
+vector_of_crash_data_t *new_vector_of_crash_data(void);
+static inline void free_vector_of_crash_data(vector_of_crash_data_t *vector)
+{
+    if (vector)
+        g_ptr_array_free(vector, TRUE);
+}
 
 
 /* Conversions between in-memory and on-disk formats */
 
-void load_crash_data_from_crash_dump_dir(struct dump_dir *dd, map_crash_data_t& data);
-struct dump_dir *create_crash_dump_dir(const map_crash_data_t& crash_data);
+crash_data_t *load_crash_data_from_crash_dump_dir(struct dump_dir *dd);
+struct dump_dir *create_crash_dump_dir(crash_data_t *crash_data);
 
+#ifdef __cplusplus
+}
 #endif
 
 #endif

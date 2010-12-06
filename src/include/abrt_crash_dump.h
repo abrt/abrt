@@ -77,18 +77,10 @@ extern "C" {
 
 bool is_editable_file(const char *file_name);
 
+void log_map_crash_data(crash_data_t *crash_data, const char *pfx);
+
 #ifdef __cplusplus
 }
 #endif
-
-
-#ifdef __cplusplus
-
-typedef std::vector<map_crash_data_t> vector_map_crash_data_t;
-
-void log_map_crash_data(const map_crash_data_t& data, const char *name);
-
-#endif /* __cplusplus */
-
 
 #endif

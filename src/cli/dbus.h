@@ -24,9 +24,9 @@
 
 extern DBusConnection* s_dbus_conn;
 
-vector_map_crash_data_t call_GetCrashInfos();
+vector_of_crash_data_t *call_GetCrashInfos();
 
-map_crash_data_t call_CreateReport(const char *crash_id);
+crash_data_t *call_CreateReport(const char *crash_id);
 
 /** Sends report using enabled Reporter plugins.
  * @param report
@@ -40,7 +40,7 @@ map_crash_data_t call_CreateReport(const char *crash_id);
  *  obtained by call_GetPluginSettings, otherwise the plugin might ignore
  *  the settings.
  */
-report_status_t call_Report(const map_crash_data_t& report,
+report_status_t call_Report(crash_data_t *report,
 			    const vector_string_t& reporters,
 			    GHashTable *plugins);
 

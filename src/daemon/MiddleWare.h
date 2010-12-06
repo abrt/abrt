@@ -71,7 +71,7 @@ void RunAction(const char *pActionDir,
  * @return
  *  A report status, which reporters ends successfuly with messages.
  */
-report_status_t Report(const map_crash_data_t& crash_data,
+report_status_t Report(crash_data_t *crash_data,
                        const vector_string_t& events,
                        const map_map_string_t& settings,
                        long caller_uid);
@@ -83,12 +83,11 @@ report_status_t Report(const map_crash_data_t& crash_data,
  * @param pCrashData A crash info.
  * @return It return results of operation. See mw_result_t.
  */
-mw_result_t LoadDebugDump(const char *dump_dir_name,
-                        map_crash_data_t& pCrashData);
+mw_result_t LoadDebugDump(const char *dump_dir_name, crash_data_t **crash_data);
 
-vector_map_crash_data_t GetCrashInfos(long caller_uid);
+vector_of_crash_data_t *GetCrashInfos(long caller_uid);
 int  CreateReportThread(const char* dump_dir_name, long caller_uid, int force, const char* pSender);
-void CreateReport(const char* dump_dir_name, long caller_uid, int force, map_crash_data_t&);
+void CreateReport(const char* dump_dir_name, long caller_uid, int force, crash_data_t **crash_data);
 int  DeleteDebugDump(const char *dump_dir_name, long caller_uid);
 
 void GetPluginsInfo(map_map_string_t &map_of_plugin_info);

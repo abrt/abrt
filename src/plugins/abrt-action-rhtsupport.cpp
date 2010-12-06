@@ -35,8 +35,7 @@ static void report_to_rhtsupport(
     if (!dd)
         exit(1); /* error msg is already logged by dd_opendir */
 
-    map_crash_data_t pCrashData;
-    load_crash_data_from_crash_dump_dir(dd, pCrashData);
+    crash_data_t *crash_data = load_crash_data_from_crash_dump_dir(dd);
     dd_close(dd);
 
     /* Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing */
@@ -79,9 +78,9 @@ static void report_to_rhtsupport(
         goto ret;
     }
 
-    package  = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_PACKAGE);
-    reason   = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_REASON);
-    function = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_CRASH_FUNCTION);
+    package  = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
+    reason   = get_crash_item_content_or_NULL(crash_data, FILENAME_REASON);
+    function = get_crash_item_content_or_NULL(crash_data, FILENAME_CRASH_FUNCTION);
 
     {
         struct strbuf *buf_summary = strbuf_new();
@@ -92,7 +91,7 @@ static void report_to_rhtsupport(
             strbuf_append_strf(buf_summary, ": %s", reason);
         summary = strbuf_free_nobuf(buf_summary);
 
-        char *bz_dsc = make_description_bz(pCrashData);
+        char *bz_dsc = make_description_bz(crash_data);
         dsc = xasprintf("abrt version: "VERSION"\n%s", bz_dsc);
         free(bz_dsc);
     }
@@ -124,21 +123,24 @@ static void report_to_rhtsupport(
     }
 
     {
-        map_crash_data_t::const_iterator it = pCrashData.begin();
-        for (; it != pCrashData.end(); it++)
+        GHashTableIter iter;
+        char *name;
+        struct crash_item *value;
+        g_hash_table_iter_init(&iter, crash_data);
+        while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
         {
-            if (it->first == FILENAME_COUNT) continue;
-            if (it->first == CD_DUMPDIR) continue;
-            if (it->first == FILENAME_INFORMALL) continue;
-            if (it->first == FILENAME_MESSAGE) continue; // plugin's status message (if we already reported it yesterday)
-            if (it->first == FILENAME_DESCRIPTION) continue; // package description
+            if (strcmp(name, FILENAME_COUNT) == 0) continue;
+            if (strcmp(name, CD_DUMPDIR) == 0) continue;
+            if (strcmp(name, FILENAME_INFORMALL) == 0) continue;
+            if (strcmp(name, FILENAME_MESSAGE) == 0) continue; // plugin's status message (if we already reported it yesterday)
+            if (strcmp(name, FILENAME_DESCRIPTION) == 0) continue; // package description
 
-            const char *content = it->second[CD_CONTENT].c_str();
-            if (it->second[CD_TYPE] == CD_TXT)
+            const char *content = value->content;
+            if (value->flags & CD_FLAG_TXT)
             {
-                reportfile_add_binding_from_string(file, it->first.c_str(), content);
+                reportfile_add_binding_from_string(file, name, content);
             }
-            else if (it->second[CD_TYPE] == CD_BIN)
+            else if (value->flags & CD_FLAG_BIN)
             {
                 const char *basename = strrchr(content, '/');
                 if (basename)
@@ -148,7 +150,7 @@ static void report_to_rhtsupport(
                 char *xml_name = concat_path_file("content", basename);
                 reportfile_add_binding_from_namedfile(file,
                         /*on_disk_filename */ content,
-                        /*binding_name     */ it->first.c_str(),
+                        /*binding_name     */ name,
                         /*recorded_filename*/ xml_name,
                         /*binary           */ 1);
                 if (tar_append_file(tar, (char*)content, xml_name) != 0)
@@ -248,6 +250,7 @@ static void report_to_rhtsupport(
     free(url);
     free(login);
     free(password);
+    free_crash_data(crash_data);
 
     if (errmsg)
         error_msg_and_die("%s", errmsg);

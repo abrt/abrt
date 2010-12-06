@@ -38,10 +38,10 @@ static char *localize_crash_time(const char *timestr)
 }
 
 /** Prints basic information about a crash to stdout. */
-static void print_crash(const map_crash_data_t &crash)
+static void print_crash(crash_data_t *crash_data)
 {
     /* Create a localized string from crash time. */
-    const char *timestr = get_crash_data_item_content(crash, FILENAME_TIME).c_str();
+    const char *timestr = get_crash_item_content_or_die(crash_data, FILENAME_TIME);
     const char *timeloc = localize_crash_time(timestr);
 
     printf(_("\tCrash dump : %s\n"
@@ -50,17 +50,18 @@ static void print_crash(const map_crash_data_t &crash)
              "\tExecutable : %s\n"
              "\tCrash Time : %s\n"
              "\tCrash Count: %s\n"),
-           get_crash_data_item_content(crash, CD_DUMPDIR).c_str(),
-           get_crash_data_item_content(crash, FILENAME_UID).c_str(),
-           get_crash_data_item_content(crash, FILENAME_PACKAGE).c_str(),
-           get_crash_data_item_content(crash, FILENAME_EXECUTABLE).c_str(),
+           get_crash_item_content_or_NULL(crash_data, CD_DUMPDIR),
+           get_crash_item_content_or_NULL(crash_data, FILENAME_UID),
+           get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE),
+           get_crash_item_content_or_NULL(crash_data, FILENAME_EXECUTABLE),
            timeloc,
-           get_crash_data_item_content(crash, FILENAME_COUNT).c_str());
+           get_crash_item_content_or_NULL(crash_data, FILENAME_COUNT)
+    );
 
     free((void *)timeloc);
 
     /* Print the hostname if it's available. */
-    const char *hostname = get_crash_data_item_content_or_NULL(crash, FILENAME_HOSTNAME);
+    const char *hostname = get_crash_item_content_or_NULL(crash_data, FILENAME_HOSTNAME);
     if (hostname)
         printf(_("\tHostname   : %s\n"), hostname);
 }
@@ -70,14 +71,14 @@ static void print_crash(const map_crash_data_t &crash)
  * @param include_reported
  *   Do not skip entries marked as already reported.
  */
-static void print_crash_list(const vector_map_crash_data_t& crash_list, bool include_reported)
+static void print_crash_list(vector_of_crash_data_t *crash_list, bool include_reported)
 {
-    for (unsigned i = 0; i < crash_list.size(); ++i)
+    for (unsigned i = 0; i < crash_list->len; ++i)
     {
-        const map_crash_data_t& crash = crash_list[i];
+        crash_data_t *crash = get_crash_data(crash_list, i);
         if (!include_reported)
         {
-            const char *msg = get_crash_data_item_content_or_NULL(crash, FILENAME_MESSAGE);
+            const char *msg = get_crash_item_content_or_NULL(crash, FILENAME_MESSAGE);
             if (!msg || !msg[0])
                 continue;
         }
@@ -90,9 +91,9 @@ static void print_crash_list(const vector_map_crash_data_t& crash_list, bool inc
 /**
  * Prints full information about a crash
  */
-static void print_crash_info(const map_crash_data_t& crash, bool show_backtrace)
+static void print_crash_info(crash_data_t *crash_data, bool show_backtrace)
 {
-    const char *timestr = get_crash_data_item_content(crash, FILENAME_TIME).c_str();
+    const char *timestr = get_crash_item_content_or_die(crash_data, FILENAME_TIME);
     const char *timeloc = localize_crash_time(timestr);
 
     printf(_("Dump directory:     %s\n"
@@ -104,50 +105,51 @@ static void print_crash_info(const map_crash_data_t& crash, bool show_backtrace)
              "Executable:         %s\n"
              "System:             %s, kernel %s\n"
              "Reason:             %s\n"),
-           get_crash_data_item_content(crash, CD_DUMPDIR).c_str(),
+           get_crash_item_content_or_die(crash_data, CD_DUMPDIR),
            timeloc,
-           get_crash_data_item_content(crash, FILENAME_ANALYZER).c_str(),
-           get_crash_data_item_content(crash, FILENAME_COMPONENT).c_str(),
-           get_crash_data_item_content(crash, FILENAME_PACKAGE).c_str(),
-           get_crash_data_item_content(crash, FILENAME_CMDLINE).c_str(),
-           get_crash_data_item_content(crash, FILENAME_EXECUTABLE).c_str(),
-           get_crash_data_item_content(crash, FILENAME_RELEASE).c_str(),
-           get_crash_data_item_content(crash, FILENAME_KERNEL).c_str(),
-           get_crash_data_item_content(crash, FILENAME_REASON).c_str());
+           get_crash_item_content_or_die(crash_data, FILENAME_ANALYZER),
+           get_crash_item_content_or_die(crash_data, FILENAME_COMPONENT),
+           get_crash_item_content_or_die(crash_data, FILENAME_PACKAGE),
+           get_crash_item_content_or_die(crash_data, FILENAME_CMDLINE),
+           get_crash_item_content_or_die(crash_data, FILENAME_EXECUTABLE),
+           get_crash_item_content_or_die(crash_data, FILENAME_RELEASE),
+           get_crash_item_content_or_die(crash_data, FILENAME_KERNEL),
+           get_crash_item_content_or_die(crash_data, FILENAME_REASON)
+    );
 
     free((void *)timeloc);
 
     /* Print optional fields only if they are available */
 
     /* Coredump is not present in kerneloopses and Python exceptions. */
-    const char *coredump = get_crash_data_item_content_or_NULL(crash, FILENAME_COREDUMP);
+    const char *coredump = get_crash_item_content_or_NULL(crash_data, FILENAME_COREDUMP);
     if (coredump)
         printf(_("Coredump file:      %s\n"), coredump);
 
-    const char *rating = get_crash_data_item_content_or_NULL(crash, FILENAME_RATING);
+    const char *rating = get_crash_item_content_or_NULL(crash_data, FILENAME_RATING);
     if (rating)
         printf(_("Rating:             %s\n"), rating);
 
     /* Crash function is not present in kerneloopses, and before the full report is created.*/
-    const char *crash_function = get_crash_data_item_content_or_NULL(crash, FILENAME_CRASH_FUNCTION);
+    const char *crash_function = get_crash_item_content_or_NULL(crash_data, FILENAME_CRASH_FUNCTION);
     if (crash_function)
         printf(_("Crash function:     %s\n"), crash_function);
 
-    const char *hostname = get_crash_data_item_content_or_NULL(crash, FILENAME_HOSTNAME);
+    const char *hostname = get_crash_item_content_or_NULL(crash_data, FILENAME_HOSTNAME);
     if (hostname)
         printf(_("Hostname:           %s\n"), hostname);
 
-    const char *reproduce = get_crash_data_item_content_or_NULL(crash, FILENAME_REPRODUCE);
+    const char *reproduce = get_crash_item_content_or_NULL(crash_data, FILENAME_REPRODUCE);
     if (reproduce)
         printf(_("\nHow to reproduce:\n%s\n"), reproduce);
 
-    const char *comment = get_crash_data_item_content_or_NULL(crash, FILENAME_COMMENT);
+    const char *comment = get_crash_item_content_or_NULL(crash_data, FILENAME_COMMENT);
     if (comment)
         printf(_("\nComment:\n%s\n"), comment);
 
     if (show_backtrace)
     {
-        const char *backtrace = get_crash_data_item_content_or_NULL(crash, FILENAME_BACKTRACE);
+        const char *backtrace = get_crash_item_content_or_NULL(crash_data, FILENAME_BACKTRACE);
         if (backtrace)
             printf(_("\nBacktrace:\n%s\n"), backtrace);
     }
@@ -159,15 +161,17 @@ static void print_crash_info(const map_crash_data_t& crash, bool show_backtrace)
  */
 static char *guess_crash_id(const char *str)
 {
-    vector_map_crash_data_t ci = call_GetCrashInfos();
-    unsigned num_crashinfos = ci.size();
+    vector_of_crash_data_t *ci = call_GetCrashInfos();
+    unsigned num_crashinfos = ci->len;
     if (str[0] == '@') /* "--report @N" syntax */
     {
         unsigned position = xatoi_u(str + 1);
         if (position >= num_crashinfos)
             error_msg_and_die("There are only %u crash infos", num_crashinfos);
-        map_crash_data_t& info = ci[position];
-        return xstrdup(get_crash_data_item_content(info, CD_DUMPDIR).c_str());
+        crash_data_t *info = get_crash_data(ci, position);
+        char *res = xstrdup(get_crash_item_content_or_die(info, CD_DUMPDIR));
+        free_vector_of_crash_data(ci);
+        return res;
     }
 
     unsigned len = strlen(str);
@@ -175,8 +179,8 @@ static char *guess_crash_id(const char *str)
     char *result = NULL;
     for (ii = 0; ii < num_crashinfos; ii++)
     {
-        map_crash_data_t& info = ci[ii];
-        const char *this_dir = get_crash_data_item_content(info, CD_DUMPDIR).c_str();
+        crash_data_t *info = get_crash_data(ci, ii);
+        const char *this_dir = get_crash_item_content_or_die(info, CD_DUMPDIR);
         if (strncmp(str, this_dir, len) == 0)
         {
             if (result)
@@ -184,6 +188,7 @@ static char *guess_crash_id(const char *str)
             result = xstrdup(this_dir);
         }
     }
+    free_vector_of_crash_data(ci);
     if (!result)
         error_msg_and_die("Crash dump directory '%s' not found", str);
     return result;
@@ -353,8 +358,9 @@ int main(int argc, char** argv)
     {
         case OPT_GET_LIST:
         {
-            vector_map_crash_data_t ci = call_GetCrashInfos();
+            vector_of_crash_data_t *ci = call_GetCrashInfos();
             print_crash_list(ci, full);
+            free_vector_of_crash_data(ci);
             break;
         }
         case OPT_REPORT:
@@ -403,12 +409,12 @@ int main(int argc, char** argv)
             int old_logmode = logmode;
             logmode = 0;
 
-            map_crash_data_t crashData = call_CreateReport(crash_id);
-            if (crashData.empty()) /* no such crash_id */
+            crash_data_t *crash_data = call_CreateReport(crash_id);
+            if (!crash_data) /* no such crash_id */
             {
                 crash_id = guess_crash_id(crash_id);
-                crashData = call_CreateReport(crash_id);
-                if (crashData.empty())
+                crash_data = call_CreateReport(crash_id);
+                if (!crash_data)
                 {
                     error_msg("Crash '%s' not found", crash_id);
                     free((void *)crash_id);
@@ -420,7 +426,8 @@ int main(int argc, char** argv)
 
             logmode = old_logmode;
 
-            print_crash_info(crashData, backtrace);
+            print_crash_info(crash_data, backtrace);
+            free_crash_data(crash_data);
 
             break;
         }

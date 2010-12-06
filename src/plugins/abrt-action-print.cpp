@@ -81,13 +81,13 @@ int main(int argc, char **argv)
         if (!dd)
             return 1; /* error message is already logged */
 
-        map_crash_data_t pCrashData;
-        load_crash_data_from_crash_dump_dir(dd, pCrashData);
+        crash_data_t *crash_data = load_crash_data_from_crash_dump_dir(dd);
         dd_close(dd);
 
-        char *dsc = make_description_logger(pCrashData);
+        char *dsc = make_description_logger(crash_data);
         fputs(dsc, stdout);
         free(dsc);
+        free_crash_data(crash_data);
     }
     catch (CABRTException& e)
     {

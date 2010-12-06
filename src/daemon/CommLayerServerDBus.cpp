@@ -144,11 +144,12 @@ static long get_remote_uid(DBusMessage* call, const char** ppSender = NULL)
 static int handle_GetCrashInfos(DBusMessage* call, DBusMessage* reply)
 {
     long unix_uid = get_remote_uid(call);
-    vector_map_crash_data_t argout1 = GetCrashInfos(unix_uid);
+    vector_of_crash_data_t *argout1 = GetCrashInfos(unix_uid);
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
-    store_val(&out_iter, argout1);
+    store_vector_of_crash_data(&out_iter, argout1);
+    free_vector_of_crash_data(argout1);
 
     send_flush_and_unref(reply);
     return 0;
@@ -197,12 +198,12 @@ static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
     }
 
     long unix_uid = get_remote_uid(call);
-    map_crash_data_t report;
-    CreateReport(crash_id, unix_uid, /*force:*/ 0, report);
+    crash_data_t *report = NULL;
+    CreateReport(crash_id, unix_uid, /*force:*/ 0, &report);
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
-    store_val(&out_iter, report);
+    store_crash_data(&out_iter, report);
 
     send_flush_and_unref(reply);
     return 0;
@@ -211,19 +212,28 @@ static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
 static int handle_Report(DBusMessage* call, DBusMessage* reply)
 {
     int r;
+    long unix_uid;
+    report_status_t argout1;
+    map_map_string_t user_conf_data;
+    vector_string_t events;
+    const char* comment = NULL;
+    const char* reproduce = NULL;
+    const char* errmsg = NULL;
     DBusMessageIter in_iter;
+
     dbus_message_iter_init(call, &in_iter);
 
-    map_crash_data_t argin1;
-    r = load_val(&in_iter, argin1);
+    crash_data_t *crash_data = NULL;
+    r = load_crash_data(&in_iter, &crash_data);
     if (r != ABRT_DBUS_MORE_FIELDS)
     {
         error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-        return -1;
+        r = -1;
+        goto ret;
     }
-    const char* comment = get_crash_data_item_content_or_NULL(argin1, FILENAME_COMMENT) ? : "";
-    const char* reproduce = get_crash_data_item_content_or_NULL(argin1, FILENAME_REPRODUCE) ? : "";
-    const char* errmsg = NULL;
+//TODO? get_crash_item_content_or_die_or_empty?
+    comment = get_crash_item_content_or_NULL(crash_data, FILENAME_COMMENT) ? : "";
+    reproduce = get_crash_item_content_or_NULL(crash_data, FILENAME_REPRODUCE) ? : "";
     if (strlen(comment) > LIMIT_MESSAGE)
     {
         errmsg = _("Comment is too long");
@@ -239,35 +249,35 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
         if (!reply)
             die_out_of_memory();
         send_flush_and_unref(reply);
-        return 0;
+        r = 0;
+        goto ret;
     }
 
     /* Second parameter: list of events to run */
-    vector_string_t events;
     r = load_val(&in_iter, events);
     if (r == ABRT_DBUS_ERROR)
     {
         error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-        return -1;
+        r = -1;
+        goto ret;
     }
 
     /* Third parameter (optional): configuration data for plugins */
-    map_map_string_t user_conf_data;
     if (r == ABRT_DBUS_MORE_FIELDS)
     {
         r = load_val(&in_iter, user_conf_data);
         if (r != ABRT_DBUS_LAST_FIELD)
         {
             error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-            return -1;
+            r = -1;
+            goto ret;
         }
     }
 
-    long unix_uid = get_remote_uid(call);
-    report_status_t argout1;
+    unix_uid = get_remote_uid(call);
     try
     {
-        argout1 = Report(argin1, events, user_conf_data, unix_uid);
+        argout1 = Report(crash_data, events, user_conf_data, unix_uid);
     }
     catch (CABRTException &e)
     {
@@ -276,7 +286,8 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
         if (!reply)
             die_out_of_memory();
         send_flush_and_unref(reply);
-        return 0;
+        r = 0;
+        goto ret;
     }
 
     DBusMessageIter out_iter;
@@ -284,7 +295,10 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
     store_val(&out_iter, argout1);
 
     send_flush_and_unref(reply);
-    return 0;
+    r = 0;
+ ret:
+    free_crash_data(crash_data);
+    return r;
 }
 
 static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
