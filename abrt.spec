@@ -49,6 +49,7 @@ Requires: systemd-units
 %endif
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
+Requires: report-libs
 Requires(pre): shadow-utils
 Obsoletes: abrt-plugin-sqlite3 > 0.0.1
 # required for transition from 1.1.13, can be removed after some time
@@ -60,6 +61,14 @@ Obsoletes: abrt-plugin-sosreport > 0.0.1
 %{name} is a tool to help users to detect defects in applications and
 to create a bug report with all informations needed by maintainer to fix it.
 It uses plugin system to extend its functionality.
+
+%package -n report-libs
+Summary: Libraries for reporting crashes to different targets.
+Group: System Environment/Libraries
+
+%description -n report-libs
+Libraries providing API for reporting different problems in applications to
+different bug targets like bugzilla, ftp, trac, etc...
 
 %package libs
 Summary: Libraries for %{name}
@@ -345,9 +354,16 @@ fi
 %{_mandir}/man7/%{name}-plugins.7.gz
 %{_datadir}/dbus-1/system-services/com.redhat.abrt.service
 
+%files -n report-libs
+%defattr(-,root,root,-)
+%{_libdir}/libabrt.so.*
+
 %files libs
 %defattr(-,root,root,-)
-%{_libdir}/lib*.so.*
+%{_libdir}/libabrt_daemon.so.*
+%{_libdir}/libabrt_dbus.so.*
+%{_libdir}/libabrt_web.so.*
+%{_libdir}/libbtparser.so.*
 
 %files devel
 %defattr(-,root,root,-)
