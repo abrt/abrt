@@ -218,7 +218,6 @@ abrt_action_upload_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_action_upload_LDFLAGS = -ltar
-# Needs libABRTdUtils only for LoadPluginSettings
 abrt_action_upload_LDADD = \
     $(GLIB_LIBS) \
     $(CURL_LIBS) \
@@ -240,7 +239,6 @@ abrt_action_kerneloops_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Werror
-# libABRTdUtils is used only because of LoadPluginSettings:
 abrt_action_kerneloops_LDADD = \
     ../lib/libabrt_web.la \
     ../lib/libabrt.la
@@ -280,7 +278,6 @@ abrt_action_print_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Werror
-# libABRTdUtils is used only because of make_description_logger:
 abrt_action_print_LDADD = \
     ../lib/libabrt.la
 

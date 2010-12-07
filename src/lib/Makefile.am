@@ -28,7 +28,6 @@ libabrt_la_SOURCES = \
     append_to_malloced_string.c \
     overlapping_strcpy.c \
     skip_whitespace.c \
-    stringops.cpp \
     strbuf.c strbuf.h \
     xatonum.c numtoa.cpp \
     spawn.c \

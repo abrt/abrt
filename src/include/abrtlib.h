@@ -217,6 +217,13 @@ char* get_cmdline(pid_t pid);
 /* Returns 1 if abrtd daemon is running, 0 otherwise. */
 int daemon_is_ok();
 
+char* make_description_bz(crash_data_t *crash_data);
+char* make_description_reproduce_comment(crash_data_t *crash_data);
+char* make_description_logger(crash_data_t *crash_data);
+char* make_description_mailx(crash_data_t *crash_data);
+
+void parse_release(const char *pRelease, char **product, char **version);
+
 #ifdef __cplusplus
 }
 #endif
@@ -233,14 +240,6 @@ std::string to_string(T x)
         return signed_to_string(x);
     return unsigned_to_string(x);
 }
-
-void parse_args(const char *psArgs, vector_string_t& pArgs, int quote = -1);
-void parse_release(const char *pRelease, char **product, char **version);
-
-char* make_description_bz(crash_data_t *crash_data);
-char* make_description_reproduce_comment(crash_data_t *crash_data);
-char* make_description_logger(crash_data_t *crash_data);
-char* make_description_mailx(crash_data_t *crash_data);
 
 /**
  * Loads settings and stores it in second parameter. On success it
