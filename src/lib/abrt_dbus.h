@@ -85,6 +85,7 @@ void store_uint64(DBusMessageIter* iter, uint64_t val);
 void store_string(DBusMessageIter* iter, const char* val);
 void store_crash_data(DBusMessageIter* iter, crash_data_t *val);
 void store_vector_of_crash_data(DBusMessageIter* iter, vector_of_crash_data_t *val);
+void store_map_string(DBusMessageIter* iter, map_string_h *val);
 
 /*
  * Helpers for parsing DBus messages

@@ -22,7 +22,6 @@
 */
 
 #include "abrtlib.h"
-#include "abrt_exception.h"
 #include "KerneloopsScanner.h"
 #include <dlfcn.h>
 #include <glib.h>

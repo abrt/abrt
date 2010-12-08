@@ -19,7 +19,6 @@
 #include <dbus/dbus.h>
 #include "abrtlib.h"
 #include "abrt_dbus.h"
-#include "abrt_exception.h"
 #include "comm_layer_inner.h"
 #include "dbus_common.h"
 #include "MiddleWare.h"
@@ -275,20 +274,7 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
     }
 
     unix_uid = get_remote_uid(call);
-    try
-    {
-        argout1 = Report(crash_data, events, user_conf_data, unix_uid);
-    }
-    catch (CABRTException &e)
-    {
-        dbus_message_unref(reply);
-        reply = dbus_message_new_error(call, DBUS_ERROR_FAILED, e.what());
-        if (!reply)
-            die_out_of_memory();
-        send_flush_and_unref(reply);
-        r = 0;
-        goto ret;
-    }
+    argout1 = Report(crash_data, events, user_conf_data, unix_uid);
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
@@ -353,12 +339,13 @@ static int handle_GetPluginSettings(DBusMessage* call, DBusMessage* reply)
 
     //long unix_uid = get_remote_uid(call);
     //VERB1 log("got %s('%s') call from uid %ld", "GetPluginSettings", PluginName, unix_uid);
-    map_plugin_settings_t plugin_settings;
-    GetPluginSettings(PluginName, plugin_settings);
+    map_string_h *plugin_settings = GetPluginSettings(PluginName);
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
-    store_val(&out_iter, plugin_settings);
+    store_map_string(&out_iter, plugin_settings);
+
+    free_map_string(plugin_settings);
 
     send_flush_and_unref(reply);
     return 0;

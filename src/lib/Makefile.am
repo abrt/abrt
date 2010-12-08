@@ -40,7 +40,7 @@ libabrt_la_SOURCES = \
     run_event.c \
     crash_dump.cpp \
     create_crash_dump_dir.cpp \
-    ABRTException.cpp \
+    abrt_types.c \
     hooklib.c hooklib.h \
     parse_release.cpp \
     parse_options.c parse_options.h

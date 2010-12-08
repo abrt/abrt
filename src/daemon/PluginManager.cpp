@@ -20,7 +20,6 @@
 */
 #include <dlfcn.h>
 #include "abrtlib.h"
-#include "abrt_exception.h"
 #include "PluginManager.h"
 
 using namespace std;
@@ -132,18 +131,14 @@ CPlugin* CPluginManager::LoadPlugin(const char *pName, bool enabled_only)
         /* Kerneloops{,Scanner,Reporter} share the same .conf file */
         conf_name = "Kerneloops";
     }
-    map_plugin_settings_t pluginSettings;
     string conf_fullname = ssprintf(PLUGINS_CONF_DIR"/%s."PLUGINS_CONF_EXTENSION, conf_name);
-    LoadPluginSettings(conf_fullname.c_str(), pluginSettings);
-    m_map_plugin_settings[pName] = pluginSettings;
-    /* If settings are empty, most likely .conf file does not exist.
-     * Don't mislead the user: */
-    VERB3 if (!pluginSettings.empty()) log("Loaded %s.conf", conf_name);
+    map_string_h *pluginSettings = new_map_string();
+    if (load_conf_file(conf_fullname.c_str(), pluginSettings, /*skip key w/o values:*/ true))
+        VERB3 log("Loaded %s.conf", conf_name);
 
     if (enabled_only)
     {
-        map_plugin_settings_t::iterator it = pluginSettings.find("Enabled");
-        if (it == pluginSettings.end() || !string_to_bool(it->second.c_str()))
+        if (!string_to_bool(get_map_string_item_or_empty(pluginSettings, "Enabled")))
         {
             plugin_info["Enabled"] = "no";
             string empty;
@@ -163,6 +158,7 @@ CPlugin* CPluginManager::LoadPlugin(const char *pName, bool enabled_only)
     if (!handle)
     {
         error_msg("Can't load '%s': %s", libPath.c_str(), dlerror());
+        free_map_string(pluginSettings);
         return NULL; /* error */
     }
     CLoadedModule *module = new CLoadedModule(handle, pName);
@@ -175,27 +171,32 @@ CPlugin* CPluginManager::LoadPlugin(const char *pName, bool enabled_only)
                 module->GetMagicNumber(), PLUGINS_MAGIC_NUMBER,
                 module->GetType(), MAX_PLUGIN_TYPE);
         delete module;
+        free_map_string(pluginSettings);
         return NULL; /* error */
     }
     VERB3 log("Loaded plugin %s v.%s", pName, module->GetVersion());
 
     CPlugin *plugin = NULL;
-    try
+    plugin = module->PluginNew();
+    plugin->Init();
+    /* Need to convert pluginSettings from map_string_h container
+     * to map_string_t, since plugin->SetSettings() needs that type.
+     * To be removed when remaining uses of map_string_t
+     * are globally converted to map_string_h.
+     */
     {
-        plugin = module->PluginNew();
-        plugin->Init();
-        plugin->SetSettings(pluginSettings);
+        map_string_t pluginSettings2;
+        GHashTableIter iter;
+        char *name;
+        char *value;
+        g_hash_table_iter_init(&iter, pluginSettings);
+        while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
+        {
+            pluginSettings2[name] = value;
+        }
+        plugin->SetSettings(pluginSettings2);
     }
-    catch (CABRTException& e)
-    {
-        error_msg("Can't initialize plugin %s: %s",
-                pName,
-                e.what()
-        );
-        delete plugin;
-        delete module;
-        return NULL; /* error */
-    }
+    free_map_string(pluginSettings);
 
     plugin_info["Enabled"] = "yes";
     plugin_info["Type"] = plugin_type_str[module->GetType()];
@@ -252,7 +253,7 @@ plugin_type_t CPluginManager::GetPluginType(const char *pName)
     CPlugin *plugin = LoadPlugin(pName);
     if (!plugin)
     {
-        throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not registered", pName);
+        return INVALID_PLUGIN_TYPE;
     }
     map_loaded_module_t::iterator it_module = m_mapLoadedModules.find(pName);
     return it_module->second->GetType();

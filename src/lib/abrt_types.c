@@ -1,6 +1,6 @@
 /*
-    Copyright (C) 2010  ABRT team
-    Copyright (C) 2010  RedHat Inc
+    Copyright (C) 2010  ABRT Team
+    Copyright (C) 2010  RedHat inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,18 +16,22 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include "abrt_exception.h"
+#include "abrtlib.h"
 
-CABRTException::CABRTException(abrt_exception_t type, const char* fmt, ...)
+map_string_h *new_map_string(void)
 {
-    m_type = type;
-    va_list ap;
-    va_start(ap, fmt);
-    m_what = xvasprintf(fmt, ap);
-    va_end(ap);
+    return g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
 }
 
-CABRTException::CABRTException(const CABRTException& rhs):
-    m_type(rhs.m_type),
-    m_what(xstrdup(rhs.m_what))
-{}
+void free_map_string(map_string_h *ms)
+{
+    if (ms)
+        g_hash_table_destroy(ms);
+}
+
+const char *get_map_string_item_or_empty(map_string_h *ms, const char *key)
+{
+    const char *v = (const char*)g_hash_table_lookup(ms, key);
+    if (!v) v = "";
+    return v;
+}

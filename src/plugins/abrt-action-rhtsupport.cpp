@@ -23,13 +23,12 @@
 #include "abrt_xmlrpc.h"
 #include "abrt_rh_support.h"
 #include "abrt_crash_dump.h"
-#include "abrt_exception.h"
 
 #define PROGNAME "abrt-action-rhtsupport"
 
 static void report_to_rhtsupport(
                 const char *dump_dir_name,
-                const map_plugin_settings_t& settings)
+                map_string_h *settings)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
@@ -53,24 +52,17 @@ static void report_to_rhtsupport(
     const char* package;
 
     char* env;
-    map_plugin_settings_t::const_iterator end = settings.end();
-    map_plugin_settings_t::const_iterator it;
-
     env = getenv("RHTSupport_URL");
-    it = settings.find("URL");
-    char *url = xstrdup(env ? env : it == end ? "https://api.access.redhat.com/rs" : it->second.c_str());
+    char *url = xstrdup(env ? env : (get_map_string_item_or_NULL(settings, "URL") ?  : "https://api.access.redhat.com/rs"));
 
     env = getenv("RHTSupport_Login");
-    it = settings.find("Login");
-    char *login = xstrdup(env ? env : it == end ? "" : it->second.c_str());
+    char *login = xstrdup(env ? env : get_map_string_item_or_empty(settings, "Login"));
 
     env = getenv("RHTSupport_Password");
-    it = settings.find("Password");
-    char *password = xstrdup(env ? env : it == end ? "" : it->second.c_str());
+    char *password = xstrdup(env ? env : get_map_string_item_or_empty(settings, "Password"));
 
     env = getenv("RHTSupport_SSLVerify");
-    it = settings.find("SSLVerify");
-    bool ssl_verify = string_to_bool(env ? env : it == end ? "1" : it->second.c_str());
+    bool ssl_verify = string_to_bool(env ? env : get_map_string_item_or_empty(settings, "SSLVerify"));
 
     if (!login[0] || !password[0])
     {
@@ -262,8 +254,7 @@ int main(int argc, char **argv)
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    map_plugin_settings_t settings;
-
+    map_string_h *settings = new_map_string();
     const char *dump_dir_name = ".";
     enum {
         OPT_s = (1 << 0),
@@ -276,7 +267,7 @@ int main(int argc, char **argv)
         {
         case 'c':
             VERB1 log("Loading settings from '%s'", optarg);
-            LoadPluginSettings(optarg, settings);
+            load_conf_file(optarg, settings, /*skip key w/o values:*/ true);
             VERB3 log("Loaded '%s'", optarg);
             break;
         case 'd':
@@ -323,14 +314,8 @@ int main(int argc, char **argv)
         error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
     xmlrpc_env_clean(&env);
 
-    try
-    {
-        report_to_rhtsupport(dump_dir_name, settings);
-    }
-    catch (CABRTException& e)
-    {
-        error_msg_and_die("%s", e.what());
-    }
+    report_to_rhtsupport(dump_dir_name, settings);
 
+    free_map_string(settings);
     return 0;
 }

@@ -91,6 +91,6 @@ void CreateReport(const char* dump_dir_name, long caller_uid, int force, crash_d
 int  DeleteDebugDump(const char *dump_dir_name, long caller_uid);
 
 void GetPluginsInfo(map_map_string_t &map_of_plugin_info);
-void GetPluginSettings(const char *plugin_name, map_plugin_settings_t &plugin_settings);
+map_string_h *GetPluginSettings(const char *plugin_name);
 
 #endif /*MIDDLEWARE_H_*/

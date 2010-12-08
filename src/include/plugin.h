@@ -76,6 +76,7 @@ typedef enum {
     REPORTER,    /**< A reporter plugin*/
     DATABASE,    /**< A database plugin*/
     MAX_PLUGIN_TYPE = DATABASE,
+    INVALID_PLUGIN_TYPE
 } plugin_type_t;
 
 /**

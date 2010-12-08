@@ -156,6 +156,34 @@ void store_string(DBusMessageIter* iter, const char* val)
     free((char*)sanitized);
 }
 
+/* Helper for storing map_string */
+void store_map_string(DBusMessageIter* dbus_iter, map_string_h *val)
+{
+    DBusMessageIter sub_iter;
+    /* map_string is a map. map in dbus is an array of two element structs "({...})":
+     * "s" (string) for key and "s" for value (in this case, also string) */
+    if (!dbus_message_iter_open_container(dbus_iter, DBUS_TYPE_ARRAY, "{ss}", &sub_iter))
+        die_out_of_memory();
+
+    GHashTableIter iter;
+    char *name;
+    char *value;
+    g_hash_table_iter_init(&iter, val);
+    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
+    {
+        DBusMessageIter sub_sub_iter;
+        if (!dbus_message_iter_open_container(&sub_iter, DBUS_TYPE_DICT_ENTRY, NULL, &sub_sub_iter))
+            die_out_of_memory();
+        store_string(&sub_sub_iter, name);
+        store_string(&sub_sub_iter, value);
+        if (!dbus_message_iter_close_container(&sub_iter, &sub_sub_iter))
+            die_out_of_memory();
+    }
+
+    if (!dbus_message_iter_close_container(dbus_iter, &sub_iter))
+        die_out_of_memory();
+}
+
 /* Helpers for storing crash_data */
 
 static void store_crash_item(DBusMessageIter* iter, struct crash_item *val)

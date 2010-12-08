@@ -24,7 +24,6 @@
 #include <asm/unistd.h> /* __NR_syslog */
 #include <glib.h>
 #include "abrtlib.h"
-#include "abrt_exception.h"
 #include "comm_layer_inner.h"
 #include "KerneloopsSysLog.h"
 #include "KerneloopsScanner.h"

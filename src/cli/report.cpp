@@ -521,26 +521,35 @@ static GHashTable *get_reporter_plugin_settings(const vector_string_t& reporters
     if (homedir)
     {
         GHashTableIter iter;
-        gpointer key, value;
-
+        char *key;
+        map_string_t *value;
         g_hash_table_iter_init(&iter, settings);
-        while (g_hash_table_iter_next(&iter, &key, &value))
+        while (g_hash_table_iter_next(&iter, (void**)&key, (void**)&value))
         {
-            map_string_t single_plugin_settings;
-
-            char *path = xasprintf("%s/.abrt/%s.conf", homedir, (char *)key);
-
-            /* Load plugin config in the home dir. Do not skip lines with empty value (but containing a "key="),
-               because user may want to override password from /etc/abrt/plugins/*.conf, but he prefers to
-               enter it every time he reports. */
-            bool success = LoadPluginSettings(path, single_plugin_settings, false);
+            /* Load plugin config in the home dir. Do not skip lines
+             * with empty value (but containing a "key="),
+             * because user may want to override password
+             * from /etc/abrt/plugins/*.conf, but he prefers to
+             * enter it every time he reports. */
+            map_string_h *single_plugin_settings = new_map_string();
+            char *path = xasprintf("%s/.abrt/%s.conf", homedir, key);
+            bool success = load_conf_file(path, single_plugin_settings, /*skip key w/o values:*/ false);
             free(path);
             if (!success)
+            {
+                free_map_string(single_plugin_settings);
                 continue;
-            // Merge user's plugin settings into already loaded settings.
-            map_string_t::const_iterator valit, valitend = single_plugin_settings.end();
-            for (valit = single_plugin_settings.begin(); valit != valitend; ++valit)
-                (*(map_string_t*)value)[valit->first] = valit->second;
+            }
+
+            /* Merge user's plugin settings into already loaded settings */
+            GHashTableIter iter2;
+            char *key2;
+            char *value2;
+            g_hash_table_iter_init(&iter2, single_plugin_settings);
+            while (g_hash_table_iter_next(&iter2, (void**)&key2, (void**)&value2))
+                (*value)[key2] = xstrdup(value2);
+
+            free_map_string(single_plugin_settings);
         }
     }
     return settings;

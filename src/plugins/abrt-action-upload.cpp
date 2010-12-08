@@ -22,7 +22,6 @@
 #include "abrtlib.h"
 #include "parse_options.h"
 #include "abrt_crash_dump.h"
-#include "abrt_exception.h"
 
 #define PROGNAME "abrt-action-upload"
 
@@ -104,7 +103,7 @@ static int send_file(const char *url, const char *filename)
 
 static int create_and_upload_archive(
                 const char *dump_dir_name,
-                const map_plugin_settings_t& settings)
+                map_string_h *settings)
 {
     int result = 0;
 
@@ -125,12 +124,8 @@ static int create_and_upload_archive(
 //ArchiveType = .tar.bz2
 //ExcludeFiles = foo,bar*,b*z
     char* env;
-    map_plugin_settings_t::const_iterator end = settings.end();
-    map_plugin_settings_t::const_iterator it;
-
     env = getenv("Upload_URL");
-    it = settings.find("URL");
-    const char *url = (env ? env : (it == end ? NULL : it->second.c_str()));
+    const char *url = (env ? env : get_map_string_item_or_empty(settings, "URL"));
 
     /* Create a child gzip which will compress the data */
     /* SELinux guys are not happy with /tmp, using /var/run/abrt */
@@ -279,21 +274,14 @@ int main(int argc, char **argv)
     //    logmode = LOGMODE_SYSLOG;
     //}
 
-    map_plugin_settings_t settings;
+    map_string_h *settings = new_map_string();
     if (url)
-        settings["URL"] = url;
+        g_hash_table_replace(settings, xstrdup("URL"), xstrdup(url));
     if (conf_file)
-        LoadPluginSettings(conf_file, settings);
+        load_conf_file(conf_file, settings, /*skip key w/o values:*/ true);
 
-    int result = 0;
-    try
-    {
-        result = create_and_upload_archive(dump_dir_name, settings);
-    }
-    catch (CABRTException& e)
-    {
-        error_msg_and_die("%s", e.what());
-    }
+    int result = create_and_upload_archive(dump_dir_name, settings);
 
+    free_map_string(settings);
     return result;
 }

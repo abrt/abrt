@@ -48,10 +48,6 @@ class CPluginManager
          * Registered plugins. A key is a plugin name.
          */
         map_plugin_t m_mapPlugins;
-        /**
-         * List of all possible plugins (loaded or not), with some attributes.
-         */
-        map_map_string_t m_map_plugin_settings;
 
     public:
         /**

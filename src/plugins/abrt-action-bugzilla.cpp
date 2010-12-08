@@ -19,7 +19,6 @@
 #include "abrtlib.h"
 #include "abrt_xmlrpc.h"
 #include "abrt_crash_dump.h"
-#include "abrt_exception.h"
 
 #define XML_RPC_SUFFIX      "/xmlrpc.cgi"
 #define MAX_HOPS            5
@@ -612,15 +611,10 @@ int ctx::get_bug_info(struct bug_info* bz, xmlrpc_int32 bug_id)
 void ctx::login(const char* login, const char* passwd)
 {
     xmlrpc_value* result = call("User.login", "({s:s,s:s})", "login", login, "password", passwd);
-
     if (!result)
-    {
-        char *errmsg = xasprintf("Can't login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla.conf. Server said: %s", env.fault_string);
-        error_msg("%s", errmsg); // show error in daemon log
-        CABRTException e(EXCEP_PLUGIN,  errmsg);
-        free(errmsg);
-        throw e;
-    }
+        error_msg_and_die("Can't login. Check Edit->Plugins->Bugzilla "
+                        "and /etc/abrt/plugins/Bugzilla.conf. Server said: %s",
+                        env.fault_string);
     xmlrpc_DECREF(result);
 }
 
@@ -638,13 +632,11 @@ void ctx::logout()
 
 static void report_to_bugzilla(
                 const char *dump_dir_name,
-                /*const*/ map_plugin_settings_t& settings)
+                map_string_h *settings)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
-    {
-        throw CABRTException(EXCEP_PLUGIN, _("Can't open '%s'"), dump_dir_name);
-    }
+        xfunc_die(); /* dd_opendir already emitted error msg */
     crash_data_t *crash_data = load_crash_data_from_crash_dump_dir(dd);
     dd_close(dd);
 
@@ -656,23 +648,23 @@ static void report_to_bugzilla(
     bool ssl_verify;
 
     env = getenv("Bugzilla_Login");
-    login = env ? env : settings["Login"].c_str();
+    login = env ? env : get_map_string_item_or_empty(settings, "Login");
     env = getenv("Bugzilla_Password");
-    password = env ? env : settings["Password"].c_str();
+    password = env ? env : get_map_string_item_or_empty(settings, "Password");
     if (!login[0] || !password[0])
     {
         VERB3 log("Empty login and password");
-        throw CABRTException(EXCEP_PLUGIN, _("Empty login or password, please check %s"), PLUGINS_CONF_DIR"/Bugzilla.conf");
+        error_msg_and_die(_("Empty login or password, please check %s"), PLUGINS_CONF_DIR"/Bugzilla.conf");
     }
 
     env = getenv("Bugzilla_BugzillaURL");
-    bugzilla_url = env ? env : settings["BugzillaURL"].c_str();
+    bugzilla_url = env ? env : get_map_string_item_or_empty(settings, "BugzillaURL");
     if (!bugzilla_url[0])
         bugzilla_url = "https://bugzilla.redhat.com";
     bugzilla_xmlrpc = xasprintf("%s"XML_RPC_SUFFIX, bugzilla_url);
 
     env = getenv("Bugzilla_SSLVerify");
-    ssl_verify = string_to_bool(env ? env : settings["SSLVerify"].c_str());
+    ssl_verify = string_to_bool(env ? env : get_map_string_item_or_empty(settings, "SSLVerify"));
 
     const char *component = get_crash_item_content_or_NULL(crash_data, FILENAME_COMPONENT);
     const char *duphash   = get_crash_item_content_or_NULL(crash_data, FILENAME_DUPHASH);
@@ -704,7 +696,7 @@ static void report_to_bugzilla(
     if (!all_bugs)
     {
         throw_if_xml_fault_occurred(&bz_server.env);
-        throw CABRTException(EXCEP_PLUGIN, _("Missing mandatory member 'bugs'"));
+        error_msg_and_die(_("Missing mandatory member 'bugs'"));
     }
 
     xmlrpc_int32 bug_id = -1;
@@ -723,7 +715,7 @@ static void report_to_bugzilla(
         {
             bug_info_destroy(&bz);
             throw_if_xml_fault_occurred(&bz_server.env);
-            throw CABRTException(EXCEP_PLUGIN, _("get_bug_info() failed. Could not collect all mandatory information"));
+            error_msg_and_die(_("get_bug_info() failed. Could not collect all mandatory information"));
         }
 
         if (strcmp(bz.bug_product, product) != 0)
@@ -740,7 +732,7 @@ static void report_to_bugzilla(
             if (!all_bugs)
             {
                 throw_if_xml_fault_occurred(&bz_server.env);
-                throw CABRTException(EXCEP_PLUGIN, _("Missing mandatory member 'bugs'"));
+                error_msg_and_die(_("Missing mandatory member 'bugs'"));
             }
 
             all_bugs_size = bz_server.get_array_size(all_bugs);
@@ -756,7 +748,7 @@ static void report_to_bugzilla(
                 {
                     bug_info_destroy(&bz);
                     throw_if_xml_fault_occurred(&bz_server.env);
-                    throw CABRTException(EXCEP_PLUGIN, _("get_bug_info() failed. Could not collect all mandatory information"));
+                    error_msg_and_die(_("get_bug_info() failed. Could not collect all mandatory information"));
                 }
             }
             else
@@ -777,7 +769,7 @@ static void report_to_bugzilla(
         if (bug_id < 0)
         {
             throw_if_xml_fault_occurred(&bz_server.env);
-            throw CABRTException(EXCEP_PLUGIN, _("Bugzilla entry creation failed"));
+            error_msg_and_die(_("Bugzilla entry creation failed"));
         }
 
         log("Adding attachments to bug %d...", bug_id);
@@ -816,7 +808,7 @@ static void report_to_bugzilla(
             {
                 VERB3 log("Bugzilla could not find a parent of bug %d", (int)original_bug_id);
                 bug_info_destroy(&bz);
-                throw CABRTException(EXCEP_PLUGIN, _("Bugzilla couldn't find parent of bug %d"), (int)original_bug_id);
+                error_msg_and_die(_("Bugzilla couldn't find parent of bug %d"), (int)original_bug_id);
             }
 
             log("Bug %d is a duplicate, using parent bug %d", bug_id, (int)bz.bug_dup_id);
@@ -831,7 +823,7 @@ static void report_to_bugzilla(
                 {
                     throw_if_xml_fault_occurred(&bz_server.env);
                 }
-                throw CABRTException(EXCEP_PLUGIN, _("get_bug_info() failed. Could not collect all mandatory information"));
+                error_msg_and_die(_("get_bug_info() failed. Could not collect all mandatory information"));
             }
 
             // found a bug which is not CLOSED as DUPLICATE
@@ -905,8 +897,7 @@ int main(int argc, char **argv)
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    map_plugin_settings_t settings;
-
+    map_string_h *settings = new_map_string();
     const char *dump_dir_name = ".";
     enum {
         OPT_s = (1 << 0),
@@ -919,7 +910,7 @@ int main(int argc, char **argv)
         {
         case 'c':
             VERB1 log("Loading settings from '%s'", optarg);
-            LoadPluginSettings(optarg, settings);
+            load_conf_file(optarg, settings, /*skip key w/o values:*/ true);
             VERB3 log("Loaded '%s'", optarg);
             break;
         case 'd':
@@ -966,14 +957,8 @@ int main(int argc, char **argv)
         error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
     xmlrpc_env_clean(&env);
 
-    try
-    {
-        report_to_bugzilla(dump_dir_name, settings);
-    }
-    catch (CABRTException& e)
-    {
-        error_msg_and_die("%s", e.what());
-    }
+    report_to_bugzilla(dump_dir_name, settings);
 
+    free_map_string(settings);
     return 0;
 }

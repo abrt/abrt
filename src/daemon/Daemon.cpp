@@ -27,7 +27,6 @@
 #include <sys/ioctl.h> /* ioctl(FIONREAD) */
 #include <glib.h>
 #include "abrtlib.h"
-#include "abrt_exception.h"
 #include "comm_layer_inner.h"
 #include "Settings.h"
 #include "CommLayerServerDBus.h"
@@ -543,63 +542,49 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 
         char *fullname = NULL;
         crash_data_t *crash_data = NULL;
-        try
+        fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
+        mw_result_t res = LoadDebugDump(fullname, &crash_data);
+        switch (res)
         {
-            fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
-            mw_result_t res = LoadDebugDump(fullname, &crash_data);
-            switch (res)
+            case MW_OK:
+                log("New crash %s, processing", fullname);
+                /* Fall through */
+
+            case MW_OCCURRED: /* dup */
             {
-                case MW_OK:
-                    log("New crash %s, processing", fullname);
-                    /* Fall through */
-
-                case MW_OCCURRED: /* dup */
+                if (res != MW_OK)
                 {
-                    if (res != MW_OK)
-                    {
-                        const char *first = get_crash_item_content_or_NULL(crash_data, CD_DUMPDIR);
-                        log("Deleting crash %s (dup of %s), sending dbus signal",
-                                strrchr(fullname, '/') + 1,
-                                strrchr(first, '/') + 1);
-                        delete_crash_dump_dir(fullname);
-                    }
-
-                    const char *uid_str = get_crash_item_content_or_NULL(crash_data, FILENAME_UID);
-                    const char *inform_all = get_crash_item_content_or_NULL(crash_data, FILENAME_INFORMALL);
-
-                    if (inform_all && string_to_bool(inform_all))
-                        uid_str = NULL;
-                    char *crash_id = xasprintf("%s:%s",
-                                    get_crash_item_content_or_NULL(crash_data, FILENAME_UID),
-                                    get_crash_item_content_or_NULL(crash_data, FILENAME_UUID)
-                    );
-                    /* Send dbus signal */
-                    g_pCommLayer->Crash(get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE),
-                                    crash_id, //TODO: stop passing this param, it is unused
-                                    fullname,
-                                    uid_str
-                    );
-                    free(crash_id);
-                    break;
-                }
-                case MW_CORRUPTED:
-                case MW_GPG_ERROR:
-                default:
-                    log("Corrupted or bad crash %s (res:%d), deleting", fullname, (int)res);
+                    const char *first = get_crash_item_content_or_NULL(crash_data, CD_DUMPDIR);
+                    log("Deleting crash %s (dup of %s), sending dbus signal",
+                            strrchr(fullname, '/') + 1,
+                            strrchr(first, '/') + 1);
                     delete_crash_dump_dir(fullname);
-                    break;
+                }
+
+                const char *uid_str = get_crash_item_content_or_NULL(crash_data, FILENAME_UID);
+                const char *inform_all = get_crash_item_content_or_NULL(crash_data, FILENAME_INFORMALL);
+
+                if (inform_all && string_to_bool(inform_all))
+                    uid_str = NULL;
+                char *crash_id = xasprintf("%s:%s",
+                                get_crash_item_content_or_NULL(crash_data, FILENAME_UID),
+                                get_crash_item_content_or_NULL(crash_data, FILENAME_UUID)
+                );
+                /* Send dbus signal */
+                g_pCommLayer->Crash(get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE),
+                                crash_id, //TODO: stop passing this param, it is unused
+                                fullname,
+                                uid_str
+                );
+                free(crash_id);
+                break;
             }
-        }
-        catch (CABRTException& e)
-        {
-            error_msg("%s", e.what());
-        }
-        catch (...)
-        {
-            free(fullname);
-            free(buf);
-            free_crash_data(crash_data);
-            throw;
+            case MW_CORRUPTED:
+            case MW_GPG_ERROR:
+            default:
+                log("Corrupted or bad crash %s (res:%d), deleting", fullname, (int)res);
+                delete_crash_dump_dir(fullname);
+                break;
         }
         free(fullname);
         free_crash_data(crash_data);
@@ -899,19 +884,8 @@ int main(int argc, char** argv)
     s_signal_pipe_write = s_signal_pipe[1];
 
     /* Enter the event loop */
-    try
-    {
-        log("Init complete, entering main loop");
-        run_main_loop(pMainloop);
-    }
-    catch (CABRTException& e)
-    {
-        error_msg("Error: %s", e.what());
-    }
-    catch (std::exception& e)
-    {
-        error_msg("Error: %s", e.what());
-    }
+    log("Init complete, entering main loop");
+    run_main_loop(pMainloop);
 
  cleanup:
     /* Error or INT/TERM. Clean up, in reverse order.

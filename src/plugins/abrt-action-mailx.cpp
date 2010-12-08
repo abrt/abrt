@@ -22,7 +22,6 @@
 #include "abrtlib.h"
 #include "parse_options.h"
 #include "abrt_crash_dump.h"
-#include "abrt_exception.h"
 
 #define PROGNAME "abrt-action-mailx"
 
@@ -60,7 +59,7 @@ static char** append_str_to_vector(char **vec, unsigned &size, const char *str)
 
 static void create_and_send_email(
                 const char *dump_dir_name,
-                const map_plugin_settings_t& settings)
+                map_string_h *settings)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
@@ -70,20 +69,14 @@ static void create_and_send_email(
     dd_close(dd);
 
     char* env;
-    map_plugin_settings_t::const_iterator end = settings.end();
-    map_plugin_settings_t::const_iterator it;
     env = getenv("Mailx_Subject");
-    it = settings.find("Subject");
-    const char *subject = xstrdup(env ? env : (it != end ? it->second.c_str() : "[abrt] full crash report"));
+    const char *subject = (env ? env : get_map_string_item_or_NULL(settings, "Subject") ? : "[abrt] full crash report");
     env = getenv("Mailx_EmailFrom");
-    it = settings.find("EmailFrom");
-    const char *email_from = (env ? env : (it != end ? it->second.c_str() : "user@localhost"));
+    const char *email_from = (env ? env : get_map_string_item_or_NULL(settings, "EmailFrom") ? : "user@localhost");
     env = getenv("Mailx_EmailTo");
-    it = settings.find("EmailTo");
-    const char *email_to = (env ? env : (it != end ? it->second.c_str() : "root@localhost"));
+    const char *email_to = (env ? env : get_map_string_item_or_NULL(settings, "EmailTo") ? : "root@localhost");
     env = getenv("Mailx_SendBinaryData");
-    it = settings.find("SendBinaryData");
-    bool send_binary_data = string_to_bool(env ? env : (it != end ? it->second.c_str() : "0"));
+    bool send_binary_data = string_to_bool(env ? env : get_map_string_item_or_empty(settings, "SendBinaryData"));
 
     char **args = NULL;
     unsigned arg_size = 0;
@@ -166,18 +159,12 @@ int main(int argc, char **argv)
     //    logmode = LOGMODE_SYSLOG;
     //}
 
-    map_plugin_settings_t settings;
+    map_string_h *settings = new_map_string();
     if (conf_file)
-        LoadPluginSettings(conf_file, settings);
+        load_conf_file(conf_file, settings, /*skip key w/o values:*/ true);
 
-    try
-    {
-        create_and_send_email(dump_dir_name, settings);
-    }
-    catch (CABRTException& e)
-    {
-        error_msg_and_die("%s", e.what());
-    }
+    create_and_send_email(dump_dir_name, settings);
 
+    free_map_string(settings);
     return 0;
 }

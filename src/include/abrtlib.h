@@ -224,6 +224,20 @@ char* make_description_mailx(crash_data_t *crash_data);
 
 void parse_release(const char *pRelease, char **product, char **version);
 
+/**
+ * Loads settings and stores it in second parameter. On success it
+ * returns true, otherwise returns false.
+ *
+ * @param path A path of config file.
+ *  Config file consists of "key=value" lines.
+ * @param settings A read plugin's settings.
+ * @param skipKeysWithoutValue
+ *  If true, lines in format "key=" (without value) are skipped.
+ *  Otherwise empty value "" is inserted into pSettings.
+ * @return if it success it returns true, otherwise it returns false.
+ */
+bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWithoutValue);
+
 #ifdef __cplusplus
 }
 #endif
@@ -240,22 +254,6 @@ std::string to_string(T x)
         return signed_to_string(x);
     return unsigned_to_string(x);
 }
-
-/**
- * Loads settings and stores it in second parameter. On success it
- * returns true, otherwise returns false.
- *
- * @param path A path of config file.
- *  Config file consists of "key=value" lines.
- * @param settings A readed plugin's settings.
- * @param skipKeysWithoutValue
- *  If true, lines in format "key=" (without value) are skipped.
- *  Otherwise empty value "" is inserted into pSettings.
- * @return if it success it returns true, otherwise it returns false.
- */
-extern bool LoadPluginSettings(const char *pPath,
-			       map_plugin_settings_t& pSettings,
-			       bool skipKeysWithoutValue = true);
 
 // TODO: npajkovs: full rewrite ssprintf -> xasprintf
 static inline std::string ssprintf(const char *format, ...)

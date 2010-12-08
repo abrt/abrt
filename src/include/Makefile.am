@@ -3,7 +3,6 @@ HEADER_FILES = \
     dump_dir.h \
     run_event.h \
     \
-    abrt_exception.h \
     abrtlib.h \
     abrt_types.h \
     comm_layer_inner.h \

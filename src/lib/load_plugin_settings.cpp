@@ -18,8 +18,10 @@
 */
 #include "abrtlib.h"
 
-bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings,
-                        bool skipKeysWithoutValue /*= true*/)
+/* Returns NULL if open failed.
+ * Returns empty hash if conf file is empty.
+ */
+bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWithoutValue)
 {
     FILE *fp = stdin;
     if (strcmp(pPath, "-") != 0)
@@ -36,8 +38,13 @@ bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings,
         bool is_value = false;
         bool valid = false;
         bool in_quote = false;
-        std::string key;
-        std::string value;
+        /* We are reusing line buffer to form temporary
+         * "key\0value\0..." in its beginning
+         */
+        char *key = line;
+        char *value = line;
+        char *cur = line;
+
         for (ii = 0; line[ii] != '\0'; ii++)
         {
             if (line[ii] == '"')
@@ -48,7 +55,7 @@ bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings,
             {
                 continue;
             }
-            if (line[ii] == '#' && !in_quote && key == "")
+            if (line[ii] == '#' && !in_quote && cur == line)
             {
                 break;
             }
@@ -56,39 +63,36 @@ bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings,
             {
                 is_value = true;
                 valid = true;
+                *cur++ = '\0'; /* terminate key */
+                value = cur; /* remember where value starts */
                 continue;
             }
-            if (!is_value)
-            {
-                key += line[ii];
-            }
-            else
-            {
-                value += line[ii];
-            }
+            *cur++ = line[ii]; /* store next key or value char */
         }
+	*cur++ = '\0'; /* terminate value */
 
         /* Skip broken or empty lines. */
         if (!valid)
             goto free_line;
 
         /* Skip lines with empty key. */
-        if (key.length() == 0)
+        if (key[0] == '\0')
             goto free_line;
 
-        if (skipKeysWithoutValue && value.length() == 0)
+        if (skipKeysWithoutValue && value[0] == '\0')
             goto free_line;
 
         /* Skip lines with unclosed quotes. */
         if (in_quote)
             goto free_line;
 
-        pSettings[key] = value;
+        g_hash_table_replace(settings, xstrdup(key), xstrdup(value));
  free_line:
         free(line);
     }
 
     if (fp != stdin)
         fclose(fp);
+
     return true;
 }

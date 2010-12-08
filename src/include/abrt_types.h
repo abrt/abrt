@@ -19,6 +19,33 @@
 #ifndef ABRT_TYPES_H_
 #define ABRT_TYPES_H_
 
+#include <glib.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* We can't typedef it to map_string_t, since other parts of ABRT
+ * (daemon, cli) still use that name for C++ container. For now,
+ * let's call it map_string_h:
+ */
+typedef GHashTable map_string_h;
+
+map_string_h *new_map_string(void);
+void free_map_string(map_string_h *ms);
+const char *get_map_string_item_or_empty(map_string_h *ms, const char *key);
+static inline
+const char *get_map_string_item_or_NULL(map_string_h *ms, const char *key)
+{
+    return (const char*)g_hash_table_lookup(ms, key);
+}
+
+
+#ifdef __cplusplus
+}
+#endif
+
+
 #ifdef __cplusplus
 
 #include <map>

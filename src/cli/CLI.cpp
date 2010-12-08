@@ -19,7 +19,6 @@
 # include <locale.h>
 #endif
 #include <getopt.h>
-#include "abrt_exception.h"
 #include "abrtlib.h"
 #include "abrt_dbus.h"
 #include "dbus_common.h"

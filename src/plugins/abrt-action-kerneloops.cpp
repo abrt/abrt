@@ -20,7 +20,6 @@
 #include <curl/curl.h>
 #include "abrtlib.h"
 #include "abrt_crash_dump.h"
-#include "abrt_exception.h"
 
 #define PROGNAME "abrt-action-kerneloops"
 
@@ -85,7 +84,7 @@ static CURLcode http_post_to_kerneloops_site(const char *url, const char *oopsda
 
 static void report_to_kerneloops(
                 const char *dump_dir_name,
-                const map_plugin_settings_t& settings)
+                map_string_h *settings)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
@@ -98,12 +97,8 @@ static void report_to_kerneloops(
     if (!backtrace)
         error_msg_and_die("Error sending kernel oops due to missing backtrace");
 
-    map_plugin_settings_t::const_iterator end = settings.end();
-    map_plugin_settings_t::const_iterator it;
-
     const char *env = getenv("KerneloopsReporter_SubmitURL");
-    it = settings.find("SubmitURL");
-    const char *submitURL = (env ? env : it == end ? "" : it->second.c_str());
+    const char *submitURL = (env ? env : get_map_string_item_or_empty(settings, "SubmitURL"));
     if (!submitURL[0])
         submitURL = "http://submit.kerneloops.org/submitoops.php";
 
@@ -129,8 +124,7 @@ int main(int argc, char **argv)
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    map_plugin_settings_t settings;
-
+    map_string_h *settings = new_map_string();
     const char *dump_dir_name = ".";
     enum {
         OPT_s = (1 << 0),
@@ -143,7 +137,7 @@ int main(int argc, char **argv)
         {
         case 'c':
             VERB1 log("Loading settings from '%s'", optarg);
-            LoadPluginSettings(optarg, settings);
+            load_conf_file(optarg, settings, /*skip key w/o values:*/ true);
             VERB3 log("Loaded '%s'", optarg);
             break;
         case 'd':
@@ -182,14 +176,8 @@ int main(int argc, char **argv)
         logmode = LOGMODE_SYSLOG;
     }
 
-    try
-    {
-        report_to_kerneloops(dump_dir_name, settings);
-    }
-    catch (CABRTException& e)
-    {
-        error_msg_and_die("%s", e.what());
-    }
+    report_to_kerneloops(dump_dir_name, settings);
 
+    free_map_string(settings);
     return 0;
 }
