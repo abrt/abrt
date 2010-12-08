@@ -19,9 +19,6 @@
 #include "abrtlib.h"
 #include "abrt_crash_dump.h"
 
-
-using namespace std;
-
 // caller is responsible for freeing **dsc
 static void add_content(bool *was_multiline, char **dsc, const char *header, const char *content)
 {

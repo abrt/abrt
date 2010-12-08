@@ -230,19 +230,23 @@ report_status_t Report(crash_data_t *client_report,
     }
 
     // Is it allowed for this user to report?
-    if (caller_uid != 0   // not called by root
-     && strcmp(to_string(caller_uid).c_str(), get_crash_item_content_or_die(stored_report, FILENAME_UID)) != 0
-    ) {
-        const char *inform_all = get_crash_item_content_or_NULL(stored_report, FILENAME_INFORMALL);
-        if (!inform_all || !string_to_bool(inform_all))
+    if (caller_uid != 0)   // not called by root
+    {
+        char caller_uid_str[sizeof(long)*3 + 2];
+        sprintf(caller_uid_str, "%ld", caller_uid);
+        if (strcmp(caller_uid_str, get_crash_item_content_or_die(stored_report, FILENAME_UID)) != 0)
         {
-            free_crash_data(stored_report);
-            char *errmsg = xasprintf("user with uid %ld can't report crash %s", caller_uid, dump_dir_name);
-            update_client("Reporting error: %s", errmsg);
-            ret[""].push_back("0");      // REPORT_STATUS_IDX_FLAG
-            ret[""].push_back(errmsg); // REPORT_STATUS_IDX_MSG
-            free(errmsg);
-            return ret;
+            const char *inform_all = get_crash_item_content_or_NULL(stored_report, FILENAME_INFORMALL);
+            if (!inform_all || !string_to_bool(inform_all))
+            {
+                free_crash_data(stored_report);
+                char *errmsg = xasprintf("user with uid %ld can't report crash %s", caller_uid, dump_dir_name);
+                update_client("Reporting error: %s", errmsg);
+                ret[""].push_back("0");      // REPORT_STATUS_IDX_FLAG
+                ret[""].push_back(errmsg); // REPORT_STATUS_IDX_MSG
+                free(errmsg);
+                return ret;
+            }
         }
     }
 

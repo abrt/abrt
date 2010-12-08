@@ -567,7 +567,9 @@ int ctx::add_attachments(const char* bug_id_str, crash_data_t *crash_data)
 
 int ctx::get_bug_info(struct bug_info* bz, xmlrpc_int32 bug_id)
 {
-    xmlrpc_value* result = call("bugzilla.getBug", "(s)", to_string(bug_id).c_str());
+    char bug_id_str[sizeof(long)*3 + 2];
+    sprintf(bug_id_str, "%lu", (long)bug_id);
+    xmlrpc_value* result = call("bugzilla.getBug", "(s)", bug_id_str);
     if (!result)
         return -1;
 
@@ -772,8 +774,10 @@ static void report_to_bugzilla(
             error_msg_and_die(_("Bugzilla entry creation failed"));
         }
 
-        log("Adding attachments to bug %d...", bug_id);
-        int ret = bz_server.add_attachments(to_string(bug_id).c_str(), crash_data);
+        log("Adding attachments to bug %ld...", (long)bug_id);
+        char bug_id_str[sizeof(long)*3 + 2];
+        sprintf(bug_id_str, "%ld", (long) bug_id);
+        int ret = bz_server.add_attachments(bug_id_str, crash_data);
         if (ret == -1)
         {
             throw_if_xml_fault_occurred(&bz_server.env);

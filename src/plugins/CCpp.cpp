@@ -258,17 +258,6 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-//ok to delete?
-//const map_plugin_settings_t& CAnalyzerCCpp::GetSettings()
-//{
-//    m_pSettings["MemoryMap"] = m_bMemoryMap ? "yes" : "no";
-//    m_pSettings["DebugInfo"] = m_sDebugInfo;
-//    m_pSettings["DebugInfoCacheMB"] = to_string(m_nDebugInfoCacheMB);
-//    m_pSettings["InstallDebugInfo"] = m_bInstallDebugInfo ? "yes" : "no";
-//
-//    return m_pSettings;
-//}
-
 PLUGIN_INFO(ANALYZER,
             CAnalyzerCCpp,
             "CCpp",

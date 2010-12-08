@@ -29,7 +29,7 @@ libabrt_la_SOURCES = \
     overlapping_strcpy.c \
     skip_whitespace.c \
     strbuf.c strbuf.h \
-    xatonum.c numtoa.cpp \
+    xatonum.c \
     spawn.c \
     dirsize.c \
     dump_dir.c \

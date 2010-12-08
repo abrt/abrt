@@ -245,16 +245,6 @@ bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWith
 
 /* C++ style stuff */
 #ifdef __cplusplus
-std::string unsigned_to_string(unsigned long long x);
-std::string signed_to_string(long long x);
-template <class T> inline
-std::string to_string(T x)
-{
-    if ((T)~(T)0 < (T)0) /* T is a signed type */
-        return signed_to_string(x);
-    return unsigned_to_string(x);
-}
-
 // TODO: npajkovs: full rewrite ssprintf -> xasprintf
 static inline std::string ssprintf(const char *format, ...)
 {
