@@ -207,7 +207,7 @@ static int ParseCommon()
     it = s_mapSectionCommon.find("MaxCrashReportsSize");
     if (it != end)
     {
-        g_settings_nMaxCrashReportsSize = xatoi_u(it->second.c_str());
+        g_settings_nMaxCrashReportsSize = xatoi_positive(it->second.c_str());
     }
     it = s_mapSectionCommon.find("ProcessUnpackaged");
     if (it != end)

@@ -31,8 +31,11 @@ typedef struct sha1_ctx_t {
 	void (*process_block)(struct sha1_ctx_t*);
 } sha1_ctx_t;
 
+#define sha1_begin abrt_sha1_begin
 void sha1_begin(sha1_ctx_t *ctx);
+#define sha1_hash abrt_sha1_hash
 void sha1_hash(const void *buffer, size_t len, sha1_ctx_t *ctx);
+#define sha1_end abrt_sha1_end
 void sha1_end(void *resbuf, sha1_ctx_t *ctx);
 
 #ifdef __cplusplus

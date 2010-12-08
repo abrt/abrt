@@ -75,8 +75,10 @@
 extern "C" {
 #endif
 
+#define is_editable_file abrt_is_editable_file
 bool is_editable_file(const char *file_name);
 
+#define log_map_crash_data abrt_log_map_crash_data
 void log_map_crash_data(crash_data_t *crash_data, const char *pfx);
 
 #ifdef __cplusplus

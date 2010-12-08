@@ -164,7 +164,7 @@ static char *guess_crash_id(const char *str)
     unsigned num_crashinfos = ci->len;
     if (str[0] == '@') /* "--report @N" syntax */
     {
-        unsigned position = xatoi_u(str + 1);
+        unsigned position = xatoi_positive(str + 1);
         if (position >= num_crashinfos)
             error_msg_and_die("There are only %u crash infos", num_crashinfos);
         crash_data_t *info = get_crash_data(ci, position);

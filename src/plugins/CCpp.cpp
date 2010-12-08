@@ -240,7 +240,7 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
     it = pSettings.find("GdbTimeoutSec");
     if (it != end)
     {
-        m_nGdbTimeoutSec = xatoi_u(it->second.c_str());
+        m_nGdbTimeoutSec = xatoi_positive(it->second.c_str());
     }
     it = pSettings.find("InstallDebugInfo");
     if (it == end) //compat, remove after 0.0.11

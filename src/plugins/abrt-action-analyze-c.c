@@ -52,7 +52,7 @@ static char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
         return NULL;
     char *uid_str = dd_load_text(dd, FILENAME_UID);
     dd_close(dd);
-    unsigned uid = xatoi_u(uid_str);
+    unsigned uid = xatoi_positive(uid_str);
     free(uid_str);
 
     int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_SETGUID | EXECFLG_SETSID | EXECFLG_QUIET;

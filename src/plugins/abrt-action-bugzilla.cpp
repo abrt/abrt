@@ -465,7 +465,7 @@ xmlrpc_int32 ctx::new_bug(crash_data_t *crash_data, int depend_on_bugno)
     if (tainted_str && analyzer
         && (strcmp(analyzer, "Kerneloops") == 0)
     ) {
-        unsigned long tainted = xatoi_u(tainted_str);
+        unsigned long tainted = xatoi_positive(tainted_str);
         const char *tainted_warning = tainted_string(tainted);
         if (tainted_warning)
             strbuf_append_strf(buf_summary, ": TAINTED %s", tainted_warning);

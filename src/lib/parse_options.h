@@ -41,9 +41,11 @@ struct options {
 
 #define OPT__VERBOSE(v)     OPT_BOOL('v', "verbose", (v), "be verbose")
 
+#define parse_opts abrt_parse_opts
 unsigned parse_opts(int argc, char **argv, const struct options *opt,
                 const char *usage);
 
+#define parse_usage_and_die abrt_parse_usage_and_die
 void parse_usage_and_die(const char *usage, const struct options *opt);
 
 #ifdef __cplusplus

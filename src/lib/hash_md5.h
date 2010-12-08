@@ -24,6 +24,9 @@ typedef struct md5_ctx_t {
         uint32_t buflen;
         char buffer[128];
 } md5_ctx_t;
+#define md5_begin abrt_md5_begin
 void md5_begin(md5_ctx_t *ctx);
+#define md5_hash abrt_md5_hash
 void md5_hash(const void *data, size_t length, md5_ctx_t *ctx);
+#define md5_end abrt_md5_end
 void md5_end(void *resbuf, md5_ctx_t *ctx);

@@ -13,7 +13,7 @@ T=/tmp/$$_$RANDOM
 test -d "$T" && exit 1
 
 rm -rf BUILDROOT "abrt-$ABRTVER" "abrt-$ABRTVER".tar "abrt-$ABRTVER".tar.gz \
-    abrt*.rpm \
+    abrt*.rpm report*.rpm \
     2>/dev/null
 
 mkdir -p "$T"/"abrt-$ABRTVER" || exit

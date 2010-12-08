@@ -272,10 +272,10 @@ int main(int argc, char** argv)
 
     errno = 0;
     const char* dddir = argv[1];
-    pid_t pid = xatoi_u(argv[2]);
+    pid_t pid = xatoi_positive(argv[2]);
     const char* signal_str = argv[3];
-    int signal_no = xatoi_u(argv[3]);
-    uid_t uid = xatoi_u(argv[4]);
+    int signal_no = xatoi_positive(argv[3]);
+    uid_t uid = xatoi_positive(argv[4]);
     off_t ulimit_c = strtoull(argv[5], NULL, 10);
     if (ulimit_c < 0) /* unlimited? */
     {

@@ -108,7 +108,7 @@ static void create_and_send_email(
 
     log(_("Sending an email..."));
     const char *uid_str = get_crash_item_content_or_NULL(crash_data, FILENAME_UID);
-    exec_and_feed_input(xatoi_u(uid_str), dsc, args);
+    exec_and_feed_input(xatoi_positive(uid_str), dsc, args);
 
     free(dsc);
 

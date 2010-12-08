@@ -32,14 +32,20 @@ extern "C" {
 
 // NB: will return short read on error, not -1,
 // if some data was read before error occurred
+#define xread abrt_xread
 void xread(int fd, void *buf, size_t count);
 
+#define safe_read abrt_safe_read
 ssize_t safe_read(int fd, void *buf, size_t count);
+#define safe_write abrt_safe_write
 ssize_t safe_write(int fd, const void *buf, size_t count);
 
+#define full_read abrt_full_read
 ssize_t full_read(int fd, void *buf, size_t count);
+#define full_write abrt_full_write
 ssize_t full_write(int fd, const void *buf, size_t count);
 
+#define full_write_str abrt_full_write_str
 ssize_t full_write_str(int fd, const char *buf);
 
 #ifdef __cplusplus

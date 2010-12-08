@@ -31,8 +31,11 @@ extern "C" {
  */
 typedef GHashTable map_string_h;
 
+#define new_map_string abrt_new_map_string
 map_string_h *new_map_string(void);
+#define free_map_string abrt_free_map_string
 void free_map_string(map_string_h *ms);
+#define get_map_string_item_or_empty abrt_get_map_string_item_or_empty
 const char *get_map_string_item_or_empty(map_string_h *ms, const char *key);
 static inline
 const char *get_map_string_item_or_NULL(map_string_h *ms, const char *key)

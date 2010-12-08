@@ -28,7 +28,7 @@ inval:
     error_msg_and_die("invalid number '%s'", numstr);
 }
 
-int xatoi_u(const char *numstr)
+int xatoi_positive(const char *numstr)
 {
     unsigned r = xatou(numstr);
     if (r > (unsigned)INT_MAX)
@@ -41,7 +41,7 @@ int xatoi(const char *numstr)
     unsigned r;
 
     if (*numstr != '-')
-        return xatoi_u(numstr);
+        return xatoi_positive(numstr);
 
     r = xatou(numstr + 1);
     if (r > (unsigned)INT_MAX + 1)

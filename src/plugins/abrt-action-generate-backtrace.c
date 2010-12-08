@@ -131,7 +131,7 @@ static char* exec_vp(char **args, uid_t uid, int redirect_stderr, int *status)
 static char *get_backtrace(struct dump_dir *dd)
 {
     char *uid_str = dd_load_text(dd, FILENAME_UID);
-    uid_t uid = xatoi_u(uid_str);
+    uid_t uid = xatoi_positive(uid_str);
     free(uid_str);
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
     dd_close(dd);
