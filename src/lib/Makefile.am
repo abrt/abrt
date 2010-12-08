@@ -35,14 +35,14 @@ libabrt_la_SOURCES = \
     dump_dir.c \
     get_cmdline.c \
     daemon_is_ok.c \
-    load_plugin_settings.cpp \
-    make_descr.cpp \
+    load_plugin_settings.c \
+    make_descr.c \
     run_event.c \
-    crash_dump.cpp \
-    create_crash_dump_dir.cpp \
+    crash_dump.c \
+    create_crash_dump_dir.c \
     abrt_types.c \
     hooklib.c hooklib.h \
-    parse_release.cpp \
+    parse_release.c \
     parse_options.c parse_options.h
 libabrt_la_CPPFLAGS = \
     -Wall -Werror \
