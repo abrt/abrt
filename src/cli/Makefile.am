@@ -7,12 +7,13 @@ abrt_cli_SOURCES = \
     dbus.h dbus.cpp
 
 abrt_cli_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     $(ENABLE_SOCKET_OR_DBUS) \
     $(DBUS_CFLAGS) $(GLIB_CFLAGS) \
-    -D_GNU_SOURCE
+    -D_GNU_SOURCE \
+    -Wall -Werror
 #    $(GTK_CFLAGS)
 
 abrt_cli_LDADD = \

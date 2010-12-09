@@ -5,12 +5,13 @@ bin_PROGRAMS = dumpoops
 abrt_hook_ccpp_SOURCES = \
     abrt-hook-ccpp.c
 abrt_hook_ccpp_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     $(GLIB_CFLAGS) \
+    -Wall \
     -D_GNU_SOURCE
 abrt_hook_ccpp_LDADD = \
     ../lib/libabrt.la
@@ -19,7 +20,7 @@ abrt_hook_ccpp_LDADD = \
 dumpoops_SOURCES = \
     dumpoops.cpp
 dumpoops_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -I$(srcdir)/../plugins \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
@@ -28,8 +29,9 @@ dumpoops_CPPFLAGS = \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     $(GLIB_CFLAGS) \
+    -Wall -Werror \
     -D_GNU_SOURCE
-# build will succeed, but at runtime plugins do need ABRT*d*Utils
+# build will succeed without it, but at runtime plugins do need libabrt_daemon
 dumpoops_LDADD = \
     ../lib/libabrt_daemon.la \
     ../lib/libabrt.la

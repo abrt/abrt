@@ -8,9 +8,6 @@ lib_LTLIBRARIES = \
     libabrt_dbus.la \
     libabrt_web.la
 
-HEADER_DIR = $(srcdir)/../include
-AM_CPPFLAGS = -I$(HEADER_DIR)
-
 # Not used just yet:
 # time.cpp
 # xconnect.cpp
@@ -46,7 +43,7 @@ libabrt_la_SOURCES = \
     parse_options.c parse_options.h
 libabrt_la_CPPFLAGS = \
     -Wall -Werror \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
@@ -63,8 +60,7 @@ libabrt_la_LIBADD = \
 libabrt_dbus_la_SOURCES = \
     abrt_dbus.c abrt_dbus.h
 libabrt_dbus_la_CPPFLAGS = \
-    -Wall -Werror \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
@@ -72,6 +68,7 @@ libabrt_dbus_la_CPPFLAGS = \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     $(GLIB_CFLAGS) \
     $(DBUS_CFLAGS) \
+    -Wall -Werror \
     -D_GNU_SOURCE
 libabrt_dbus_la_LDFLAGS = \
     -version-info 0:1:0
@@ -80,17 +77,18 @@ libabrt_dbus_la_LIBADD = \
     $(DBUS_LIBS)
 
 libabrt_daemon_la_SOURCES = \
-    $(HEADER_DIR)/comm_layer_inner.h CommLayerInner.cpp \
-    $(HEADER_DIR)/plugin.h Plugin.cpp
+    CommLayerInner.cpp \
+    Plugin.cpp
 libabrt_daemon_la_CPPFLAGS = \
-    -Wall \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     $(GLIB_CFLAGS) \
+    -Wall \
+    -Werror \
     -D_GNU_SOURCE
 libabrt_daemon_la_LDFLAGS = \
     -version-info 0:1:0
@@ -102,7 +100,7 @@ libabrt_web_la_SOURCES = \
     abrt_xmlrpc.h abrt_xmlrpc.cpp
 libabrt_web_la_CPPFLAGS = \
     -Wall -Werror \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \

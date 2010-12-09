@@ -67,8 +67,15 @@ Summary: Libraries for reporting crashes to different targets.
 Group: System Environment/Libraries
 
 %description -n report-libs
-Libraries providing API for reporting different problems in applications to
-different bug targets like bugzilla, ftp, trac, etc...
+Libraries providing API for reporting different problems in applications
+to different bug targets like bugzilla, ftp, trac, etc...
+
+%package -n report-libs-devel
+Summary: Development libraries and headers for report-libs.
+Group: Development/Libraries
+
+%description -n report-libs-devel
+Development libraries and headers for report-libs.
 
 %package libs
 Summary: Libraries for %{name}
@@ -358,6 +365,11 @@ fi
 %defattr(-,root,root,-)
 %{_libdir}/libabrt.so.*
 
+%files -n report-libs-devel
+%defattr(-,root,root,-)
+%{_includedir}/report/*
+%{_libdir}/libabrt.so
+
 %files libs
 %defattr(-,root,root,-)
 %{_libdir}/libabrt_daemon.so.*
@@ -367,7 +379,7 @@ fi
 
 %files devel
 %defattr(-,root,root,-)
-%{_includedir}/*
+%{_includedir}/abrt/*
 %{_libdir}/lib*.so
 %{_libdir}/pkgconfig/*
 %doc doc/abrt-plugin doc/howto-write-reporter

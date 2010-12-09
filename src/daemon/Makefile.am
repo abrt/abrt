@@ -18,7 +18,7 @@ abrtd_SOURCES = \
     Settings.h Settings.cpp \
     Daemon.h Daemon.cpp
 abrtd_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -43,7 +43,7 @@ abrtd_LDADD = \
 abrt_server_SOURCES = \
     abrt-server.c
 abrt_server_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -61,7 +61,7 @@ abrt_server_LDADD = \
 abrt_handle_crashdump_SOURCES = \
     abrt-handle-crashdump.c
 abrt_handle_crashdump_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -83,7 +83,7 @@ abrt_action_save_package_data_SOURCES = \
     Settings.h Settings.cpp \
     abrt-action-save-package-data.cpp
 abrt_action_save_package_data_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \

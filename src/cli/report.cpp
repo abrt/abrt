@@ -356,15 +356,14 @@ static int run_report_editor(crash_data_t *crash_data)
     FILE *fp = fdopen(fd, "w");
     if (!fp) /* errno is set */
     {
-        perror_msg("can't open '%s' to save the crash report", filename);
-        return 2;
+        die_out_of_memory();
     }
 
     write_crash_report(crash_data, fp);
 
     if (fclose(fp)) /* errno is set */
     {
-        perror_msg("can't close '%s'", filename);
+        perror_msg("can't write '%s'", filename);
         return 2;
     }
 
@@ -381,21 +380,18 @@ static int run_report_editor(crash_data_t *crash_data)
     }
 
     fseek(fp, 0, SEEK_END);
-    long size = ftell(fp);
+    unsigned long size = ftell(fp);
     fseek(fp, 0, SEEK_SET);
 
     char *text = (char*)xmalloc(size + 1);
     if (fread(text, 1, size, fp) != size)
     {
         error_msg("can't read '%s'", filename);
+        fclose(fp);
         return 2;
     }
     text[size] = '\0';
-    if (fclose(fp) != 0) /* errno is set */
-    {
-        perror_msg("can't close '%s'", filename);
-        return 2;
-    }
+    fclose(fp);
 
     // Delete the tempfile.
     if (unlink(filename) == -1) /* errno is set */
@@ -448,7 +444,8 @@ static bool ask_yesno(const char *question)
     fflush(NULL);
 
     char answer[16];
-    fgets(answer, sizeof(answer), stdin);
+    if (!fgets(answer, sizeof(answer), stdin))
+        return false;
     /* Use strncmp here because the answer might contain a newline as
        the last char. */
     return 0 == strncmp(answer, yes, strlen(yes));
@@ -529,7 +526,7 @@ static GHashTable *get_reporter_plugin_settings(const vector_string_t& reporters
             /* Load plugin config in the home dir. Do not skip lines
              * with empty value (but containing a "key="),
              * because user may want to override password
-             * from /etc/abrt/plugins/*.conf, but he prefers to
+             * from /etc/abrt/plugins/foo.conf, but he prefers to
              * enter it every time he reports. */
             map_string_h *single_plugin_settings = new_map_string();
             char *path = xasprintf("%s/.abrt/%s.conf", homedir, key);

@@ -1,8 +1,11 @@
-HEADER_FILES = \
-    crash_dump.h \
-    dump_dir.h \
-    run_event.h \
-    \
+libreport_includedir = $(includedir)/report
+libreport_include_HEADERS = \
+    report/crash_dump.h \
+    report/dump_dir.h \
+    report/run_event.h
+
+libabrt_includedir = $(includedir)/abrt
+libabrt_include_HEADERS = \
     abrtlib.h \
     abrt_types.h \
     comm_layer_inner.h \
@@ -13,6 +16,3 @@ HEADER_FILES = \
     action.h \
     analyzer.h \
     xfuncs.h
-
-lib_includedir=$(includedir)/abrt/
-lib_include_HEADERS = $(HEADER_FILES)

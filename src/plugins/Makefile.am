@@ -1,7 +1,5 @@
-INC_PATH=$(srcdir)/../include
-UTILS_PATH=$(srcdir)/../lib
-AM_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH)
-pluginslibdir=$(PLUGINS_LIB_DIR)
+pluginslibdir = $(PLUGINS_LIB_DIR)
+
 libexec_SCRIPTS = \
     abrt-action-install-debuginfo.py
 
@@ -18,6 +16,7 @@ dist_pluginslib_DATA = \
     KerneloopsReporter.glade
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
+
 dist_pluginsconf_DATA = \
     CCpp.conf \
     Python.conf \
@@ -49,21 +48,32 @@ install-data-hook: $(DESTDIR)/$(DEBUG_INFO_DIR)
 	    $(DESTDIR)$(sysconfdir)/abrt/plugins/Logger.conf
 
 # CCpp
-libCCpp_la_SOURCES = CCpp.cpp CCpp.h
-libCCpp_la_LDFLAGS = -avoid-version
-libCCpp_la_CPPFLAGS = -Wall -Werror \
-    -I$(INC_PATH) \
-    -I$(UTILS_PATH) \
+libCCpp_la_SOURCES = \
+    CCpp.cpp CCpp.h
+libCCpp_la_CPPFLAGS = \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
     -DCCPP_HOOK_PATH=\"${libexecdir}/abrt-hook-ccpp\" \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
-    $(GLIB_CFLAGS)
+    $(GLIB_CFLAGS) \
+    -Wall -Werror
 #    -DHOSTILE_KERNEL
+libCCpp_la_LDFLAGS = \
+    -avoid-version
 
 # KerneloopsScanner
-libKerneloopsScanner_la_SOURCES = KerneloopsScanner.cpp KerneloopsScanner.h KerneloopsSysLog.cpp KerneloopsSysLog.h
-libKerneloopsScanner_la_LDFLAGS = -avoid-version $(GLIB_LIBS)
-libKerneloopsScanner_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" $(GLIB_CFLAGS)
+libKerneloopsScanner_la_SOURCES = \
+    KerneloopsScanner.cpp KerneloopsScanner.h \
+    KerneloopsSysLog.cpp KerneloopsSysLog.h
+libKerneloopsScanner_la_CPPFLAGS = \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    $(GLIB_CFLAGS)
+libKerneloopsScanner_la_LDFLAGS = \
+    -avoid-version \
+    $(GLIB_LIBS)
 
 libexec_PROGRAMS = \
     abrt-action-analyze-c \
@@ -80,7 +90,7 @@ libexec_PROGRAMS = \
 abrt_action_analyze_c_SOURCES = \
     abrt-action-analyze-c.c
 abrt_action_analyze_c_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -99,7 +109,7 @@ abrt_action_analyze_c_LDADD = \
 abrt_action_analyze_python_SOURCES = \
     abrt-action-analyze-python.c
 abrt_action_analyze_python_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -118,7 +128,7 @@ abrt_action_analyze_python_LDADD = \
 abrt_action_analyze_oops_SOURCES = \
     abrt-action-analyze-oops.c
 abrt_action_analyze_oops_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -137,7 +147,7 @@ abrt_action_analyze_oops_LDADD = \
 abrt_action_generate_backtrace_SOURCES = \
     abrt-action-generate-backtrace.c
 abrt_action_generate_backtrace_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -157,7 +167,7 @@ abrt_action_generate_backtrace_LDADD = \
 abrt_action_bugzilla_SOURCES = \
     abrt-action-bugzilla.cpp
 abrt_action_bugzilla_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -179,7 +189,7 @@ abrt_action_rhtsupport_SOURCES = \
     abrt_rh_support.h abrt_rh_support.c \
     abrt-action-rhtsupport.cpp
 abrt_action_rhtsupport_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -203,7 +213,7 @@ abrt_action_rhtsupport_LDADD = \
 abrt_action_upload_SOURCES = \
     abrt-action-upload.cpp
 abrt_action_upload_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -226,7 +236,7 @@ abrt_action_upload_LDADD = \
 abrt_action_kerneloops_SOURCES = \
     abrt-action-kerneloops.cpp
 abrt_action_kerneloops_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -246,7 +256,7 @@ abrt_action_kerneloops_LDADD = \
 abrt_action_mailx_SOURCES = \
     abrt-action-mailx.cpp
 abrt_action_mailx_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -265,7 +275,7 @@ abrt_action_mailx_LDADD = \
 abrt_action_print_SOURCES = \
     abrt-action-print.cpp
 abrt_action_print_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
