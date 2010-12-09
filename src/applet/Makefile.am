@@ -32,11 +32,12 @@ abrt_applet_LDADD = \
     $(GTK_LIBS)
 
 #test_report_SOURCES = \
-#    test_report.cpp
+#    test_report.c
 #test_report_CPPFLAGS = \
-#    -Wall -Werror \
 #    -I$(srcdir)/../include/report -I$(srcdir)/../include \
-#    -D_GNU_SOURCE
+#    $(GLIB_CFLAGS) \
+#    -D_GNU_SOURCE \
+#    -Wall -Werror
 #test_report_LDADD = \
 #    ../lib/libreport.la
 
