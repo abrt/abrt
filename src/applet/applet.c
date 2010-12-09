@@ -38,8 +38,8 @@ static void Crash(DBusMessage* signal)
     dbus_message_iter_init(signal, &in_iter);
 
     /* 1st param: package */
-    const char* package_name;
-    r = load_val(&in_iter, package_name);
+    const char* package_name = NULL;
+    r = load_charp(&in_iter, &package_name);
 
     /* 2nd param: crash_id */
     if (r != ABRT_DBUS_MORE_FIELDS)
@@ -48,7 +48,7 @@ static void Crash(DBusMessage* signal)
         return;
     }
     const char* crash_id = NULL;
-    r = load_val(&in_iter, crash_id);
+    r = load_charp(&in_iter, &crash_id);
 
     /* 3rd param: dir */
 //dir parameter is not used for now, use is planned in the future
@@ -58,13 +58,13 @@ static void Crash(DBusMessage* signal)
         return;
     }
     const char* dir = NULL;
-    r = load_val(&in_iter, dir);
+    r = load_charp(&in_iter, &dir);
 
     /* Optional 4th param: uid */
     const char* uid_str = NULL;
     if (r == ABRT_DBUS_MORE_FIELDS)
     {
-        r = load_val(&in_iter, uid_str);
+        r = load_charp(&in_iter, &uid_str);
     }
     if (r != ABRT_DBUS_LAST_FIELD)
     {
@@ -118,8 +118,8 @@ static void QuotaExceed(DBusMessage* signal)
     int r;
     DBusMessageIter in_iter;
     dbus_message_iter_init(signal, &in_iter);
-    const char* str;
-    r = load_val(&in_iter, str);
+    const char* str = NULL;
+    r = load_charp(&in_iter, &str);
     if (r != ABRT_DBUS_LAST_FIELD)
     {
         error_msg("dbus signal %s: parameter type mismatch", __func__);
@@ -137,8 +137,8 @@ static void NameOwnerChanged(DBusMessage* signal)
     int r;
     DBusMessageIter in_iter;
     dbus_message_iter_init(signal, &in_iter);
-    const char* name;
-    r = load_val(&in_iter, name);
+    const char* name = NULL;
+    r = load_charp(&in_iter, &name);
     if (r != ABRT_DBUS_MORE_FIELDS)
     {
         error_msg("dbus signal %s: parameter type mismatch", __func__);
@@ -149,15 +149,15 @@ static void NameOwnerChanged(DBusMessage* signal)
     if (strcmp(name, "com.redhat.abrt") != 0)
         return;
 
-    const char* old_owner;
-    r = load_val(&in_iter, old_owner);
+    const char* old_owner = NULL;
+    r = load_charp(&in_iter, &old_owner);
     if (r != ABRT_DBUS_MORE_FIELDS)
     {
         error_msg("dbus signal %s: parameter type mismatch", __func__);
         return;
     }
-    const char* new_owner;
-    r = load_val(&in_iter, new_owner);
+    const char* new_owner = NULL;
+    r = load_charp(&in_iter, &new_owner);
     if (r != ABRT_DBUS_LAST_FIELD)
     {
         error_msg("dbus signal %s: parameter type mismatch", __func__);
