@@ -49,7 +49,7 @@ Requires: systemd-units
 %endif
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
-Requires: report-libs
+Requires: libreport
 Requires(pre): shadow-utils
 Obsoletes: abrt-plugin-sqlite3 > 0.0.1
 # required for transition from 1.1.13, can be removed after some time
@@ -62,20 +62,20 @@ Obsoletes: abrt-plugin-sosreport > 0.0.1
 to create a bug report with all informations needed by maintainer to fix it.
 It uses plugin system to extend its functionality.
 
-%package -n report-libs
+%package -n libreport
 Summary: Libraries for reporting crashes to different targets.
 Group: System Environment/Libraries
 
-%description -n report-libs
+%description -n libreport
 Libraries providing API for reporting different problems in applications
 to different bug targets like bugzilla, ftp, trac, etc...
 
-%package -n report-libs-devel
-Summary: Development libraries and headers for report-libs.
+%package -n libreport-devel
+Summary: Development libraries and headers for libreport.
 Group: Development/Libraries
 
-%description -n report-libs-devel
-Development libraries and headers for report-libs.
+%description -n libreport-devel
+Development libraries and headers for libreport.
 
 %package libs
 Summary: Libraries for %{name}
@@ -361,11 +361,11 @@ fi
 %{_mandir}/man7/%{name}-plugins.7.gz
 %{_datadir}/dbus-1/system-services/com.redhat.abrt.service
 
-%files -n report-libs
+%files -n libreport
 %defattr(-,root,root,-)
 %{_libdir}/libreport.so.*
 
-%files -n report-libs-devel
+%files -n libreport-devel
 %defattr(-,root,root,-)
 %{_includedir}/report/*
 %{_libdir}/libreport.so
