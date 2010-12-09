@@ -363,12 +363,12 @@ fi
 
 %files -n report-libs
 %defattr(-,root,root,-)
-%{_libdir}/libabrt.so.*
+%{_libdir}/libreport.so.*
 
 %files -n report-libs-devel
 %defattr(-,root,root,-)
 %{_includedir}/report/*
-%{_libdir}/libabrt.so
+%{_libdir}/libreport.so
 
 %files libs
 %defattr(-,root,root,-)

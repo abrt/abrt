@@ -17,7 +17,7 @@ abrt_cli_CPPFLAGS = \
 #    $(GTK_CFLAGS)
 
 abrt_cli_LDADD = \
-    ../lib/libabrt.la \
+    ../lib/libreport.la \
     ../lib/libabrt_dbus.la \
     $(GLIB_LIBS)
 

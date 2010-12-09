@@ -104,7 +104,7 @@ abrt_action_analyze_c_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_action_analyze_c_LDADD = \
-    ../lib/libabrt.la
+    ../lib/libreport.la
 
 abrt_action_analyze_python_SOURCES = \
     abrt-action-analyze-python.c
@@ -123,7 +123,7 @@ abrt_action_analyze_python_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_action_analyze_python_LDADD = \
-    ../lib/libabrt.la
+    ../lib/libreport.la
 
 abrt_action_analyze_oops_SOURCES = \
     abrt-action-analyze-oops.c
@@ -142,7 +142,7 @@ abrt_action_analyze_oops_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_action_analyze_oops_LDADD = \
-    ../lib/libabrt.la
+    ../lib/libreport.la
 
 abrt_action_generate_backtrace_SOURCES = \
     abrt-action-generate-backtrace.c
@@ -161,7 +161,7 @@ abrt_action_generate_backtrace_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_action_generate_backtrace_LDADD = \
-    ../lib/libabrt.la \
+    ../lib/libreport.la \
     ../btparser/libbtparser.la
 
 abrt_action_bugzilla_SOURCES = \
@@ -183,7 +183,7 @@ abrt_action_bugzilla_CPPFLAGS = \
 abrt_action_bugzilla_LDADD = \
     $(GLIB_LIBS) \
     ../lib/libabrt_web.la \
-    ../lib/libabrt.la
+    ../lib/libreport.la
 
 abrt_action_rhtsupport_SOURCES = \
     abrt_rh_support.h abrt_rh_support.c \
@@ -208,7 +208,7 @@ abrt_action_rhtsupport_LDADD = \
     $(GLIB_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
     ../lib/libabrt_web.la \
-    ../lib/libabrt.la
+    ../lib/libreport.la
 
 abrt_action_upload_SOURCES = \
     abrt-action-upload.cpp
@@ -231,7 +231,7 @@ abrt_action_upload_LDFLAGS = -ltar
 abrt_action_upload_LDADD = \
     $(GLIB_LIBS) \
     $(CURL_LIBS) \
-    ../lib/libabrt.la
+    ../lib/libreport.la
 
 abrt_action_kerneloops_SOURCES = \
     abrt-action-kerneloops.cpp
@@ -251,7 +251,7 @@ abrt_action_kerneloops_CPPFLAGS = \
     -Wall -Werror
 abrt_action_kerneloops_LDADD = \
     ../lib/libabrt_web.la \
-    ../lib/libabrt.la
+    ../lib/libreport.la
 
 abrt_action_mailx_SOURCES = \
     abrt-action-mailx.cpp
@@ -270,7 +270,7 @@ abrt_action_mailx_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_action_mailx_LDADD = \
-    ../lib/libabrt.la
+    ../lib/libreport.la
 
 abrt_action_print_SOURCES = \
     abrt-action-print.cpp
@@ -289,6 +289,6 @@ abrt_action_print_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_action_print_LDADD = \
-    ../lib/libabrt.la
+    ../lib/libreport.la
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@

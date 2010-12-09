@@ -36,7 +36,7 @@ abrtd_CPPFLAGS = \
 abrtd_LDADD = \
     $(DL_LIBS) \
     $(DBUS_LIBS) \
-    ../lib/libabrt.la \
+    ../lib/libreport.la \
     ../lib/libabrt_daemon.la \
     ../lib/libabrt_dbus.la
 
@@ -56,7 +56,7 @@ abrt_server_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_server_LDADD = \
-    ../lib/libabrt.la
+    ../lib/libreport.la
 
 abrt_handle_crashdump_SOURCES = \
     abrt-handle-crashdump.c
@@ -76,7 +76,7 @@ abrt_handle_crashdump_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_handle_crashdump_LDADD = \
-    ../lib/libabrt.la
+    ../lib/libreport.la
 
 abrt_action_save_package_data_SOURCES = \
     rpm.h rpm.c \
@@ -98,7 +98,7 @@ abrt_action_save_package_data_CPPFLAGS = \
     -Wall -Werror
 abrt_action_save_package_data_LDADD = \
     $(RPM_LIBS) \
-    ../lib/libabrt.la
+    ../lib/libreport.la
 
 dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/
 dist_dbusabrtconf_DATA = dbus-abrt.conf

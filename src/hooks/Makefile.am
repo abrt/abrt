@@ -14,7 +14,7 @@ abrt_hook_ccpp_CPPFLAGS = \
     -Wall \
     -D_GNU_SOURCE
 abrt_hook_ccpp_LDADD = \
-    ../lib/libabrt.la
+    ../lib/libreport.la
 
 # dumpoops
 dumpoops_SOURCES = \
@@ -34,7 +34,7 @@ dumpoops_CPPFLAGS = \
 # build will succeed without it, but at runtime plugins do need libabrt_daemon
 dumpoops_LDADD = \
     ../lib/libabrt_daemon.la \
-    ../lib/libabrt.la
+    ../lib/libreport.la
 
 python_PYTHON = abrt.pth abrt_exception_handler.py
 EXTRA_DIST = abrt_exception_handler.py.in $(man_MANS)
