@@ -23,12 +23,12 @@
 #include <xmlrpc-c/base.h>
 #include <xmlrpc-c/client.h>
 
+#ifdef __cplusplus
 /*
  * Simple class holding XMLRPC connection data.
  * Used mainly to ensure we always destroy xmlrpc client and server_info
  * on return or throw.
  */
-
 struct abrt_xmlrpc_conn {
     xmlrpc_client* m_pClient;
     xmlrpc_server_info* m_pServer_info;
@@ -40,9 +40,19 @@ struct abrt_xmlrpc_conn {
     void new_xmlrpc_client(const char* url, bool ssl_verify);
     void destroy_xmlrpc_client();
 };
+#endif
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* Utility functions */
 void throw_xml_fault(xmlrpc_env *env);
 void throw_if_xml_fault_occurred(xmlrpc_env *env);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

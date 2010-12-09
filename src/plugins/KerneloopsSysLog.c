@@ -185,8 +185,8 @@ int extract_oopses(GList **oopses, char *buffer, size_t buflen)
         if (linecount >= lines_info_alloc)
         {
             lines_info_alloc += REALLOC_CHUNK;
-            lines_info = (line_info*)xrealloc(lines_info,
-                            lines_info_alloc * sizeof(struct line_info));
+            lines_info = (struct line_info*)xrealloc(lines_info,
+                            lines_info_alloc * sizeof(lines_info[0]));
         }
         lines_info[linecount].ptr = c;
         lines_info[linecount].level = linelevel;

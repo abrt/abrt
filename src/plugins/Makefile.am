@@ -57,6 +57,7 @@ libCCpp_la_CPPFLAGS = \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     $(GLIB_CFLAGS) \
+    -D_GNU_SOURCE \
     -Wall -Werror
 #    -DHOSTILE_KERNEL
 libCCpp_la_LDFLAGS = \
@@ -65,12 +66,14 @@ libCCpp_la_LDFLAGS = \
 # KerneloopsScanner
 libKerneloopsScanner_la_SOURCES = \
     KerneloopsScanner.cpp KerneloopsScanner.h \
-    KerneloopsSysLog.cpp KerneloopsSysLog.h
+    KerneloopsSysLog.c KerneloopsSysLog.h
 libKerneloopsScanner_la_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    $(GLIB_CFLAGS)
+    $(GLIB_CFLAGS) \
+    -D_GNU_SOURCE \
+    -Wall -Werror
 libKerneloopsScanner_la_LDFLAGS = \
     -avoid-version \
     $(GLIB_LIBS)
@@ -187,7 +190,7 @@ abrt_action_bugzilla_LDADD = \
 
 abrt_action_rhtsupport_SOURCES = \
     abrt_rh_support.h abrt_rh_support.c \
-    abrt-action-rhtsupport.cpp
+    abrt-action-rhtsupport.c
 abrt_action_rhtsupport_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
@@ -211,7 +214,7 @@ abrt_action_rhtsupport_LDADD = \
     ../lib/libreport.la
 
 abrt_action_upload_SOURCES = \
-    abrt-action-upload.cpp
+    abrt-action-upload.c
 abrt_action_upload_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
@@ -234,7 +237,7 @@ abrt_action_upload_LDADD = \
     ../lib/libreport.la
 
 abrt_action_kerneloops_SOURCES = \
-    abrt-action-kerneloops.cpp
+    abrt-action-kerneloops.c
 abrt_action_kerneloops_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
@@ -254,7 +257,7 @@ abrt_action_kerneloops_LDADD = \
     ../lib/libreport.la
 
 abrt_action_mailx_SOURCES = \
-    abrt-action-mailx.cpp
+    abrt-action-mailx.c
 abrt_action_mailx_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
@@ -273,7 +276,7 @@ abrt_action_mailx_LDADD = \
     ../lib/libreport.la
 
 abrt_action_print_SOURCES = \
-    abrt-action-print.cpp
+    abrt-action-print.c
 abrt_action_print_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \

@@ -46,14 +46,16 @@ static void exec_and_feed_input(uid_t uid, const char* text, char **args)
         error_msg_and_die("Error running '%s'", args[0]);
 }
 
-static char** append_str_to_vector(char **vec, unsigned &size, const char *str)
+static char** append_str_to_vector(char **vec, unsigned *size_p, const char *str)
 {
     //log("old vec: %p", vec);
+    unsigned size = *size_p;
     vec = (char**) xrealloc(vec, (size+2) * sizeof(vec[0]));
     vec[size] = xstrdup(str);
     //log("new vec: %p, added [%d] %p", vec, size, vec[size]);
     size++;
     vec[size] = NULL;
+    *size_p = size;
     return vec;
 }
 
@@ -80,7 +82,7 @@ static void create_and_send_email(
 
     char **args = NULL;
     unsigned arg_size = 0;
-    args = append_str_to_vector(args, arg_size, "/bin/mailx");
+    args = append_str_to_vector(args, &arg_size, "/bin/mailx");
 
     char *dsc = make_description_mailx(crash_data);
 
@@ -94,17 +96,17 @@ static void create_and_send_email(
         {
             if (value->flags & CD_FLAG_BIN)
             {
-                args = append_str_to_vector(args, arg_size, "-a");
-                args = append_str_to_vector(args, arg_size, value->content);
+                args = append_str_to_vector(args, &arg_size, "-a");
+                args = append_str_to_vector(args, &arg_size, value->content);
             }
         }
     }
 
-    args = append_str_to_vector(args, arg_size, "-s");
-    args = append_str_to_vector(args, arg_size, subject);
-    args = append_str_to_vector(args, arg_size, "-r");
-    args = append_str_to_vector(args, arg_size, email_from);
-    args = append_str_to_vector(args, arg_size, email_to);
+    args = append_str_to_vector(args, &arg_size, "-s");
+    args = append_str_to_vector(args, &arg_size, subject);
+    args = append_str_to_vector(args, &arg_size, "-r");
+    args = append_str_to_vector(args, &arg_size, email_from);
+    args = append_str_to_vector(args, &arg_size, email_to);
 
     log(_("Sending an email..."));
     const char *uid_str = get_crash_item_content_or_NULL(crash_data, FILENAME_UID);
