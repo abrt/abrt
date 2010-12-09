@@ -372,15 +372,14 @@ fi
 
 %files libs
 %defattr(-,root,root,-)
-%{_libdir}/libabrt_daemon.so.*
-%{_libdir}/libabrt_dbus.so.*
-%{_libdir}/libabrt_web.so.*
+%{_libdir}/libabrt*.so.*
 %{_libdir}/libbtparser.so.*
 
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/abrt/*
-%{_libdir}/lib*.so
+%{_libdir}/libabrt*.so
+%{_libdir}/libbtparser.so
 %{_libdir}/pkgconfig/*
 %doc doc/abrt-plugin doc/howto-write-reporter
 
