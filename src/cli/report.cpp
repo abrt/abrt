@@ -518,10 +518,10 @@ static GHashTable *get_reporter_plugin_settings(const vector_string_t& reporters
     if (homedir)
     {
         GHashTableIter iter;
-        char *key;
-        map_string_t *value;
+        char *plugin_name;
+        map_string_t *plugin_settings;
         g_hash_table_iter_init(&iter, settings);
-        while (g_hash_table_iter_next(&iter, (void**)&key, (void**)&value))
+        while (g_hash_table_iter_next(&iter, (void**)&plugin_name, (void**)&plugin_settings))
         {
             /* Load plugin config in the home dir. Do not skip lines
              * with empty value (but containing a "key="),
@@ -529,7 +529,7 @@ static GHashTable *get_reporter_plugin_settings(const vector_string_t& reporters
              * from /etc/abrt/plugins/foo.conf, but he prefers to
              * enter it every time he reports. */
             map_string_h *single_plugin_settings = new_map_string();
-            char *path = xasprintf("%s/.abrt/%s.conf", homedir, key);
+            char *path = xasprintf("%s/.abrt/%s.conf", homedir, plugin_name);
             bool success = load_conf_file(path, single_plugin_settings, /*skip key w/o values:*/ false);
             free(path);
             if (!success)
@@ -540,11 +540,11 @@ static GHashTable *get_reporter_plugin_settings(const vector_string_t& reporters
 
             /* Merge user's plugin settings into already loaded settings */
             GHashTableIter iter2;
-            char *key2;
-            char *value2;
+            char *key;
+            char *value;
             g_hash_table_iter_init(&iter2, single_plugin_settings);
-            while (g_hash_table_iter_next(&iter2, (void**)&key2, (void**)&value2))
-                (*value)[key2] = xstrdup(value2);
+            while (g_hash_table_iter_next(&iter2, (void**)&key, (void**)&value))
+                (*plugin_settings)[key] = xstrdup(value);
 
             free_map_string(single_plugin_settings);
         }

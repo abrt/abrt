@@ -149,6 +149,7 @@ CPlugin* CPluginManager::LoadPlugin(const char *pName, bool enabled_only)
             plugin_info["WWW"] = empty;
             plugin_info["GTKBuilder"] = empty;
             VERB3 log("Plugin %s: 'Enabled' is not set, not loading it (yet)", pName);
+            free_map_string(pluginSettings);
             return NULL; /* error */
         }
     }
