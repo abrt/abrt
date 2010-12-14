@@ -47,6 +47,7 @@ PKG_CHECK_MODULES([LIBNOTIFY], [libnotify])
 #PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([XMLRPC], [xmlrpc])
 PKG_CHECK_MODULES([XMLRPC_CLIENT], [xmlrpc_client])
+PKG_CHECK_MODULES([PYTHON], [python])
 
 PKG_PROG_PKG_CONFIG
 AC_ARG_WITH([systemdsystemunitdir],
@@ -119,6 +120,7 @@ AC_CONFIG_FILES([
 	abrt.pc
 	src/include/Makefile
 	src/lib/Makefile
+	src/report-python/Makefile
 	src/plugins/Makefile
 	src/Makefile
 	src/btparser/Makefile

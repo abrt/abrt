@@ -77,6 +77,14 @@ Group: Development/Libraries
 %description -n libreport-devel
 Development libraries and headers for libreport.
 
+%package -n libreport-python
+Summary: Python bindings for report-libs.
+# Is group correct here? -
+Group: System Environment/Libraries
+
+%description -n libreport-python
+Python bindings for report-libs.
+
 %package libs
 Summary: Libraries for %{name}
 Group: System Environment/Libraries
@@ -369,6 +377,10 @@ fi
 %defattr(-,root,root,-)
 %{_includedir}/report/*
 %{_libdir}/libreport.so
+
+%files -n libreport-python
+%defattr(-,root,root,-)
+%{python_sitearch}/report/*
 
 %files libs
 %defattr(-,root,root,-)
