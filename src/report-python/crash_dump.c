@@ -1,6 +1,6 @@
 /*
-    Copyright (C) 2009  Abrt team.
-    Copyright (C) 2009  RedHat inc.
+    Copyright (C) 2010  Abrt team.
+    Copyright (C) 2010  RedHat inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 */
 #include <Python.h>
 #include <structmember.h>
+
 #include <errno.h>
 #include "crash_dump.h"
 #include "pyreport_common.h"
@@ -61,13 +62,12 @@ void add_to_crash_data_ext(crash_data_t *crash_data,
                 unsigned flags);
 */
 
-static PyObject * p_crash_data_add_ext(PyObject *pself, PyObject *args, PyObject *kwds)
+static PyObject *p_crash_data_add_ext(PyObject *pself, PyObject *args, PyObject *kwds)
 {
-    p_crash_data* self = (p_crash_data*)pself;
+    p_crash_data *self = (p_crash_data*)pself;
 
-
-    const char * name;
-    const char * content;
+    const char *name;
+    const char *content;
     int FLAGS;
     if(!PyArg_ParseTuple(args, "ssi", &name, &content, &FLAGS))
     {
@@ -79,13 +79,12 @@ static PyObject * p_crash_data_add_ext(PyObject *pself, PyObject *args, PyObject
     /* every function returns PyObject to return void we need to do this */
     Py_RETURN_NONE;
 }
-static PyObject * p_crash_data_add(PyObject *pself, PyObject *args, PyObject *kwds)
+static PyObject *p_crash_data_add(PyObject *pself, PyObject *args, PyObject *kwds)
 {
-    p_crash_data* self = (p_crash_data*)pself;
+    p_crash_data *self = (p_crash_data*)pself;
 
-
-    const char * name;
-    const char * content;
+    const char *name;
+    const char *content;
     if(!PyArg_ParseTuple(args, "ss", &name, &content))
     {
         /* PyArg_ParseTuple raises the exception saying why it fails
@@ -106,9 +105,9 @@ static inline struct crash_item *get_crash_data_item_or_NULL(crash_data_t *crash
 }
 */
 
-static PyObject * p_get_crash_data_item(PyObject *pself, PyObject *args, PyObject *kwds)
+static PyObject *p_get_crash_data_item(PyObject *pself, PyObject *args, PyObject *kwds)
 {
-    p_crash_data* self = (p_crash_data*)pself;
+    p_crash_data *self = (p_crash_data*)pself;
 
     const char *key;
     if(!PyArg_ParseTuple(args, "s", &key))
@@ -120,9 +119,9 @@ static PyObject * p_get_crash_data_item(PyObject *pself, PyObject *args, PyObjec
 }
 
 
-static PyObject * p_create_crash_dump_dir(PyObject *pself, PyObject *args)
+static PyObject *p_create_crash_dump_dir(PyObject *pself, PyObject *args)
 {
-    p_crash_data* self = (p_crash_data*)pself;
+    p_crash_data *self = (p_crash_data*)pself;
     struct dump_dir *dd = create_crash_dump_dir(self->cd);
     if(dd == NULL)
     {
@@ -156,7 +155,7 @@ static PyMethodDef p_crash_data_methods[] = {
 PyTypeObject p_crash_data_type = {
     PyObject_HEAD_INIT(NULL)
     0,                         /*ob_size*/
-    "report.p_crash_data",             /*tp_name*/
+    "report.crash_data",             /*tp_name*/
     sizeof(p_crash_data),             /*tp_basicsize*/
     0,                         /*tp_itemsize*/
     p_crash_data_dealloc, /*tp_dealloc*/
@@ -175,7 +174,7 @@ PyTypeObject p_crash_data_type = {
     0,                         /*tp_setattro*/
     0,                         /*tp_as_buffer*/
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /*tp_flags*/
-    "p_crash_data objects",           /* tp_doc */
+    "crash_data objects",           /* tp_doc */
     0,		               /* tp_traverse */
     0,		               /* tp_clear */
     0,		               /* tp_richcompare */

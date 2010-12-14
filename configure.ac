@@ -47,7 +47,12 @@ PKG_CHECK_MODULES([LIBNOTIFY], [libnotify])
 #PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([XMLRPC], [xmlrpc])
 PKG_CHECK_MODULES([XMLRPC_CLIENT], [xmlrpc_client])
-PKG_CHECK_MODULES([PYTHON], [python])
+# Just PKG_CHECK_MODULES([PYTHON], [python]) works only with python2.7+
+# Below, if python is not found, we set up for python2.6 w/o checking:
+PKG_CHECK_MODULES([PYTHON], [python],,[
+    PYTHON_LIBS='-L/usr/lib64 -lpython2.6'
+    PYTHON_CFLAGS='-I/usr/include/python2.6'
+])
 
 PKG_PROG_PKG_CONFIG
 AC_ARG_WITH([systemdsystemunitdir],

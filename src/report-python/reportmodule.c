@@ -20,7 +20,7 @@ init_pyreport(void)
     m = Py_InitModule3("_pyreport", module_methods, "Python wrapper around crash_data_t");
     if (m == NULL)
     {
-        printf("m == NULL");
+        printf("m == NULL\n");
         return;
     }
 
