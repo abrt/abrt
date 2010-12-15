@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-11-17 18:42+0100\n"
-"PO-Revision-Date: 2010-08-06 22:54+0300\n"
+"POT-Creation-Date: 2010-12-15 13:46+0000\n"
+"PO-Revision-Date: 2010-12-16 00:25+0200\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "Language: fi\n"
@@ -15,13 +15,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.6.1\n"
 
-#: ../lib/Plugins/Bugzilla.cpp:466
+#: ../lib/Plugins/Bugzilla.cpp:543
 #, c-format
 msgid "New bug id: %i"
 msgstr "Uuden ohjelmavirheilmoituksen tunnus: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:561
+#: ../lib/Plugins/Bugzilla.cpp:638
 #, c-format
 msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
@@ -30,7 +31,7 @@ msgstr ""
 "Ei voida kirjautua sisään. Tarkista Muokkaa->Liitännäiset->Bugzilla ja "
 "tiedosto /etc/abrt/plugins/Bugzilla.conf. Palvelimen viesti: %s"
 
-#: ../lib/Plugins/Bugzilla.cpp:681
+#: ../lib/Plugins/Bugzilla.cpp:758
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -38,58 +39,58 @@ msgstr ""
 "Käyttäjätunnus tai salasana on tyhjä.\n"
 "Tarkista "
 
-#: ../lib/Plugins/Bugzilla.cpp:690
+#: ../lib/Plugins/Bugzilla.cpp:767
 msgid "Logging into bugzilla..."
 msgstr "Kirjaudutaan bugzillaan..."
 
-#: ../lib/Plugins/Bugzilla.cpp:693
+#: ../lib/Plugins/Bugzilla.cpp:770
 msgid "Checking for duplicates..."
 msgstr "Etsitään samanlaisia..."
 
-#: ../lib/Plugins/Bugzilla.cpp:714 ../lib/Plugins/Bugzilla.cpp:749
+#: ../lib/Plugins/Bugzilla.cpp:791 ../lib/Plugins/Bugzilla.cpp:826
 msgid "Missing mandatory member 'bugs'"
 msgstr "Puuttuva pakollinen osa ”bugs”"
 
-#: ../lib/Plugins/Bugzilla.cpp:732 ../lib/Plugins/Bugzilla.cpp:765
-#: ../lib/Plugins/Bugzilla.cpp:841
+#: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
+#: ../lib/Plugins/Bugzilla.cpp:918
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() epäonnistui. Kaikkia pakollisia tietoja ei voitu kerätä."
 
-#: ../lib/Plugins/Bugzilla.cpp:781
+#: ../lib/Plugins/Bugzilla.cpp:858
 msgid "Creating a new bug..."
 msgstr "Luodaan uusi ohjelmavirheilmoitus..."
 
-#: ../lib/Plugins/Bugzilla.cpp:786
+#: ../lib/Plugins/Bugzilla.cpp:863
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla-ilmoituksen luominen epäonnistui"
 
-#: ../lib/Plugins/Bugzilla.cpp:796 ../lib/Plugins/Bugzilla.cpp:891
+#: ../lib/Plugins/Bugzilla.cpp:873 ../lib/Plugins/Bugzilla.cpp:968
 msgid "Logging out..."
 msgstr "Kirjaudutaan ulos..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:815
+#: ../lib/Plugins/Bugzilla.cpp:892
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Ohjelmavirheestä on jo tehty ilmoitus: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:903
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla ei löytänyt ylemmän tason vikailmoitusta ilmoitukselle %d"
 
-#: ../lib/Plugins/Bugzilla.cpp:855 ../lib/Plugins/Bugzilla.cpp:856
+#: ../lib/Plugins/Bugzilla.cpp:932 ../lib/Plugins/Bugzilla.cpp:933
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "Lisää %s CC-luetteloon"
 
-#: ../lib/Plugins/Bugzilla.cpp:880
+#: ../lib/Plugins/Bugzilla.cpp:957
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "﻿Lisää uusi kommentti vikailmoitukseen (%d)"
 
-#: ../lib/Plugins/Bugzilla.cpp:979
+#: ../lib/Plugins/Bugzilla.cpp:1056
 msgid "Reports bugs to bugzilla"
 msgstr "Raportoi ohjelmavirheitä Bugzillaan"
 
@@ -108,7 +109,7 @@ msgstr "Ohitetaan debuginfon asennus"
 #: ../lib/Plugins/CCpp.cpp:658
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "Kohteen %s pinolistauksen jäsentäminen epäonnistui"
 
 #: ../lib/Plugins/CCpp.cpp:934
 msgid "Analyzes crashes in C/C++ programs"
@@ -148,7 +149,7 @@ msgstr "Luodaan ja lähetetään ilmoitus..."
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr "Lähettää ytimen oops-tiedot kerneloops.org-sivustolle"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:200
+#: ../lib/Plugins/KerneloopsScanner.cpp:212
 msgid "Periodically scans for and saves kernel oopses"
 msgstr "Etsii ja tallentaa ytimen oopsit säännöllisesti"
 
@@ -204,9 +205,8 @@ msgid "Creating a new case..."
 msgstr "Luodaan uusi tapaus..."
 
 #: ../lib/Plugins/RHTSupport.cpp:309
-#, fuzzy
 msgid "Reports bugs to Red Hat support"
-msgstr "Raportoi ohjelmavirheitä Bugzillaan"
+msgstr "Raportoi ohjelmavirheitä Red Hatin käyttötukeen"
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
@@ -422,7 +422,7 @@ msgid "\tHostname   : %s\n"
 msgstr "\tKonenimi     : %s\n"
 
 #: ../src/CLI/CLI.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
 "Last crash:         %s\n"
@@ -442,19 +442,17 @@ msgstr ""
 "Komento:            %s\n"
 "Suoritettava:       %s\n"
 "Järjestelmä:        %s, ydin %s\n"
-"Arvostelu:          %s\n"
-"Muistivedostied.:   %s\n"
 "Syy:                %s\n"
 
 #: ../src/CLI/CLI.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Coredump file:      %s\n"
-msgstr "Kaatumisfunktio:   %s\n"
+msgstr "Muistivedostiedosto:   %s\n"
 
 #: ../src/CLI/CLI.cpp:135
-#, fuzzy, c-format
+#, c-format
 msgid "Rating:             %s\n"
-msgstr "Konenimi:          %s\n"
+msgstr "Arvostelu:          %s\n"
 
 #: ../src/CLI/CLI.cpp:140
 #, c-format
@@ -635,11 +633,11 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/CLI/report.cpp:545
 msgid "y"
-msgstr ""
+msgstr "k"
 
 #: ../src/CLI/report.cpp:546
 msgid "N"
-msgstr ""
+msgstr "e"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:647
@@ -660,30 +658,29 @@ msgid "Reporting..."
 msgstr "Raportoidaan..."
 
 #: ../src/CLI/report.cpp:721
-#, fuzzy, c-format
+#, c-format
 msgid "Report using %s?"
-msgstr "Raportoidaanko käyttäen raportoijaa %s? [y/N]: "
+msgstr "Raportoidaanko käyttäen raportoijaa %s?"
 
 #: ../src/CLI/report.cpp:724
 msgid "Skipping..."
 msgstr "Ohitetaan..."
 
 #: ../src/CLI/report.cpp:736
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "Raportointi on poistettu käytöstä, koska pinolistaus on hyödytön."
+msgstr "Raportointi on poistettu käytöstä, koska pinolistaus on hyödytön"
 
 #: ../src/CLI/report.cpp:740
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
-msgstr ""
+msgstr "Yritä asentaa debuginfo manuaalisesti käyttäen komentoa ”debuginfo-install %"
+"s” ja kokeile sitten uudelleen\n"
 
 #: ../src/CLI/report.cpp:749
-#, fuzzy
 msgid "Error loading reporter settings"
-msgstr "Raportin hankkiminen epäonnistui: %s"
+msgstr "Virhe ladattaessa raportoijan asetuksia"
 
 #: ../src/CLI/report.cpp:768
 #, c-format
@@ -1153,7 +1150,7 @@ msgstr "Hyväksy pinolistaus"
 
 #: ../src/Gui/CReporterAssistant.py:659
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "Toisto-ohjeet on täytettävä ennen kuin voit jatkaa…"
 
 #: ../src/Gui/CReporterAssistant.py:682
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
@@ -1182,7 +1179,7 @@ msgstr "Vahvista ja lähetä raportti"
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
-"Alla on yhteenveto vikaraportista. Napsauta ”Käytä” sen lähettämiseksi."
+"Alla on yhteenveto vikaraportista. Napsauta ”Toteuta” sen lähettämiseksi."
 
 #: ../src/Gui/CReporterAssistant.py:777
 msgid "<b>Basic details</b>"
