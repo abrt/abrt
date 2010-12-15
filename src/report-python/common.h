@@ -21,5 +21,6 @@
 /* exception object */
 extern PyObject *ReportError;
 
-/* crash_data type object */
+/* type objects */
 extern PyTypeObject p_crash_data_type;
+extern PyTypeObject p_dump_dir_type;

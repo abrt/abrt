@@ -35,26 +35,23 @@ p_crash_data_dealloc(PyObject *pself)
     p_crash_data *self = (p_crash_data*)pself;
     free_crash_data(self->cd);
     self->cd = NULL;
-    self->ob_type->tp_free((PyObject*)self);
+    self->ob_type->tp_free(pself);
 }
 
 static PyObject *
 p_crash_data_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
-    p_crash_data *self;
-
-    self = (p_crash_data *)type->tp_alloc(type, 0);
-    if (self != NULL)
+    p_crash_data *self = (p_crash_data *)type->tp_alloc(type, 0);
+    if (self)
         self->cd = new_crash_data();
-
     return (PyObject *)self;
 }
 
-static int
-p_crash_data_init(PyObject *pself, PyObject *args, PyObject *kwds)
-{
-    return 0;
-}
+//static int
+//p_crash_data_init(PyObject *pself, PyObject *args, PyObject *kwds)
+//{
+//    return 0;
+//}
 
 /*
 void add_to_crash_data_ext(crash_data_t *crash_data,
@@ -62,7 +59,6 @@ void add_to_crash_data_ext(crash_data_t *crash_data,
                 const char *content,
                 unsigned flags);
 */
-
 static PyObject *p_crash_data_add_ext(PyObject *pself, PyObject *args)
 {
     p_crash_data *self = (p_crash_data*)pself;
@@ -79,9 +75,10 @@ static PyObject *p_crash_data_add_ext(PyObject *pself, PyObject *args)
     }
     add_to_crash_data_ext(self->cd, name, content, FLAGS);
 
-    /* every function returns PyObject to return void we need to do this */
+    /* every function returns PyObject, to return void we need to do this */
     Py_RETURN_NONE;
 }
+
 static PyObject *p_crash_data_add(PyObject *pself, PyObject *args)
 {
     p_crash_data *self = (p_crash_data*)pself;
@@ -94,17 +91,11 @@ static PyObject *p_crash_data_add(PyObject *pself, PyObject *args)
     }
     add_to_crash_data(self->cd, name, content);
 
-    /* every function returns PyObject to return void we need to do this */
+    /* every function returns PyObject, to return void we need to do this */
     Py_RETURN_NONE;
 }
 
-/*
-static inline struct crash_item *get_crash_data_item_or_NULL(crash_data_t *crash_data, const char *key)
-{
-    return (struct crash_item *)g_hash_table_lookup(crash_data, key);
-}
-*/
-
+/* struct crash_item *get_crash_data_item_or_NULL(crash_data_t *crash_data, const char *key); */
 static PyObject *p_get_crash_data_item(PyObject *pself, PyObject *args)
 {
     p_crash_data *self = (p_crash_data*)pself;
@@ -116,7 +107,6 @@ static PyObject *p_get_crash_data_item(PyObject *pself, PyObject *args)
     struct crash_item *ci = get_crash_data_item_or_NULL(self->cd, key);
     return Py_BuildValue("sI", ci->content, ci->flags);
 }
-
 
 static PyObject *p_create_crash_dump_dir(PyObject *pself, PyObject *args)
 {
@@ -132,9 +122,9 @@ static PyObject *p_create_crash_dump_dir(PyObject *pself, PyObject *args)
     Py_RETURN_NONE;
 }
 
-static PyMemberDef p_crash_data_members[] = {
-    { NULL }
-};
+//static PyMemberDef p_crash_data_members[] = {
+//    { NULL }
+//};
 
 static PyMethodDef p_crash_data_methods[] = {
     { "add"        , p_crash_data_add, METH_VARARGS, "Adds item to the crash data using default flags" },
@@ -152,7 +142,7 @@ PyTypeObject p_crash_data_type = {
     .tp_flags     = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
     .tp_doc       = "crash_data objects",
     .tp_methods   = p_crash_data_methods,
-    .tp_members   = p_crash_data_members,
-    .tp_init      = p_crash_data_init,
+    //.tp_members   = p_crash_data_members,
+    //.tp_init      = p_crash_data_init,
     .tp_new       = p_crash_data_new,
 };

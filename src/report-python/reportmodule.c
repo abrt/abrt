@@ -21,6 +21,13 @@
 
 PyObject *ReportError;
 
+//static PyMethodDef module_methods[] = {
+//    { "dd_opendir"           , p_dd_opendir, METH_VARARGS, NULL };
+//    { "dd_create"            , p_dd_create, METH_VARARGS, NULL };
+//    { "delete_crash_dump_dir", p_delete_crash_dump_dir, METH_VARARGS, NULL },
+//    { NULL }
+//};
+
 #ifndef PyMODINIT_FUNC	/* declarations for DLL import/export */
 #define PyMODINIT_FUNC void
 #endif
@@ -32,6 +39,11 @@ init_pyreport(void)
     if (PyType_Ready(&p_crash_data_type) < 0)
     {
         printf("PyType_Ready(&p_crash_data_type) < 0\n");
+        return;
+    }
+    if (PyType_Ready(&p_dump_dir_type) < 0)
+    {
+        printf("PyType_Ready(&p_dump_dir_type) < 0\n");
         return;
     }
 
@@ -49,4 +61,7 @@ init_pyreport(void)
 
     Py_INCREF(&p_crash_data_type);
     PyModule_AddObject(m, "crash_data", (PyObject *)&p_crash_data_type);
+
+    Py_INCREF(&p_dump_dir_type);
+    PyModule_AddObject(m, "dump_dir", (PyObject *)&p_dump_dir_type);
 }

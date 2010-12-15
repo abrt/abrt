@@ -7,6 +7,7 @@ pyreportexec_LTLIBRARIES = _pyreport.la
 _pyreport_la_SOURCES = \
     reportmodule.c \
     crash_dump.c \
+    dump_dir.c \
     common.h
 _pyreport_la_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
