@@ -79,7 +79,7 @@ static crash_data_t *DebugDumpToCrashReport(const char *dump_dir_name)
         v++;
     }
 
-    crash_data_t *crash_data = load_crash_data_from_crash_dump_dir(dd);
+    crash_data_t *crash_data = load_crash_data_from_dump_dir(dd);
     char *events = list_possible_events(dd, NULL, "");
     dd_close(dd);
 
@@ -162,7 +162,7 @@ static mw_result_t CreateCrashReport(const char *dump_dir_name,
         goto ret;
     }
 
-    /* Do a load_crash_data_from_crash_dump_dir from (possibly updated)
+    /* Do a load_crash_data_from_dump_dir from (possibly updated)
      * crash dump dir
      */
     *crash_data = DebugDumpToCrashReport(dump_dir_name);
@@ -590,7 +590,7 @@ static crash_data_t *FillCrashInfo(const char *dump_dir_name)
     if (!dd)
         return NULL;
 
-    crash_data_t *crash_data = load_crash_data_from_crash_dump_dir(dd);
+    crash_data_t *crash_data = load_crash_data_from_dump_dir(dd);
     char *events = list_possible_events(dd, NULL, "");
     dd_close(dd);
 
@@ -656,7 +656,7 @@ vector_of_crash_data_t *GetCrashInfos(long caller_uid)
                 if (!crash_data)
                 {
                     error_msg("Dump directory %s doesn't exist or misses crucial files, deleting", dump_dir_name);
-                    delete_crash_dump_dir(dump_dir_name);
+                    delete_dump_dir(dump_dir_name);
                 }
                 else
                 {

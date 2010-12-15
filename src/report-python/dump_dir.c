@@ -199,5 +199,5 @@ PyObject *p_dd_create(PyObject *module, PyObject *args)
     return (PyObject*)new_dd;
 }
 
-/* void delete_crash_dump_dir(const char *dd_dir); */
-//static PyObject *p_delete_crash_dump_dir(PyObject *pself, PyObject *args);
+/* void delete_dump_dir(const char *dd_dir); */
+//static PyObject *p_delete_dump_dir(PyObject *pself, PyObject *args);

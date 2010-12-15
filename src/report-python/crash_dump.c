@@ -59,37 +59,21 @@ void add_to_crash_data_ext(crash_data_t *crash_data,
                 const char *content,
                 unsigned flags);
 */
-static PyObject *p_crash_data_add_ext(PyObject *pself, PyObject *args)
-{
-    p_crash_data *self = (p_crash_data*)pself;
-
-    const char *name;
-    const char *content;
-    int FLAGS;
-    if (!PyArg_ParseTuple(args, "ssi", &name, &content, &FLAGS))
-    {
-        /* PyArg_ParseTuple raises the exception saying why it fails
-         * eg: TypeError: function takes exactly 2 arguments (1 given)
-         */
-        return NULL;
-    }
-    add_to_crash_data_ext(self->cd, name, content, FLAGS);
-
-    /* every function returns PyObject, to return void we need to do this */
-    Py_RETURN_NONE;
-}
-
 static PyObject *p_crash_data_add(PyObject *pself, PyObject *args)
 {
     p_crash_data *self = (p_crash_data*)pself;
 
     const char *name;
     const char *content;
-    if (!PyArg_ParseTuple(args, "ss", &name, &content))
+    int flags = 0;
+    if (!PyArg_ParseTuple(args, "ss|i", &name, &content, &flags))
     {
+        /* PyArg_ParseTuple raises the exception saying why it fails
+         * eg: TypeError: function takes exactly 2 arguments (1 given)
+         */
         return NULL;
     }
-    add_to_crash_data(self->cd, name, content);
+    add_to_crash_data_ext(self->cd, name, content, flags);
 
     /* every function returns PyObject, to return void we need to do this */
     Py_RETURN_NONE;
@@ -108,14 +92,14 @@ static PyObject *p_get_crash_data_item(PyObject *pself, PyObject *args)
     return Py_BuildValue("sI", ci->content, ci->flags);
 }
 
-/* struct dump_dir *create_crash_dump_dir(crash_data_t *crash_data); */
-static PyObject *p_create_crash_dump_dir(PyObject *pself, PyObject *args)
+/* struct dump_dir *create_dump_dir(crash_data_t *crash_data); */
+static PyObject *p_create_dump_dir(PyObject *pself, PyObject *args)
 {
     p_crash_data *self = (p_crash_data*)pself;
     p_dump_dir *new_dd = PyObject_New(p_dump_dir, &p_dump_dir_type);
     if (!new_dd)
         return NULL;
-    struct dump_dir *dd = create_crash_dump_dir(self->cd);
+    struct dump_dir *dd = create_dump_dir(self->cd);
     if (!dd)
     {
         PyObject_Del((PyObject*)new_dd);
@@ -131,10 +115,9 @@ static PyObject *p_create_crash_dump_dir(PyObject *pself, PyObject *args)
 //};
 
 static PyMethodDef p_crash_data_methods[] = {
-    { "add"        , p_crash_data_add, METH_VARARGS, "Adds item to the crash data using default flags" },
-    { "add_ext"    , p_crash_data_add_ext, METH_VARARGS, "Adds item to the crash data" },
-    { "get"        , p_get_crash_data_item, METH_VARARGS, "Gets the value of item indexed by the key" },
-    { "create_crash_dump_dir", p_create_crash_dump_dir, METH_NOARGS, "Saves the crash_data to"LOCALSTATEDIR"/run/abrt/tmp-<pid>-<time>" },
+    { "add"            , p_crash_data_add, METH_VARARGS, "Adds item to the crash data" },
+    { "get"            , p_get_crash_data_item, METH_VARARGS, "Gets the value of item indexed by the key" },
+    { "create_dump_dir", p_create_dump_dir, METH_NOARGS, "Saves the crash_data to"LOCALSTATEDIR"/run/abrt/tmp-<pid>-<time>" },
     { NULL }
 };
 

@@ -34,7 +34,7 @@ static void report_to_rhtsupport(
     if (!dd)
         exit(1); /* error msg is already logged by dd_opendir */
 
-    crash_data_t *crash_data = load_crash_data_from_crash_dump_dir(dd);
+    crash_data_t *crash_data = load_crash_data_from_dump_dir(dd);
     dd_close(dd);
 
     /* Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing */

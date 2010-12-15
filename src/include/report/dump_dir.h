@@ -59,7 +59,7 @@ void dd_save_text(struct dump_dir *dd, const char *name, const char *data);
 void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, unsigned size);
 void dd_delete(struct dump_dir *dd);
 
-void delete_crash_dump_dir(const char *dd_dir);
+void delete_dump_dir(const char *dd_dir);
 
 #ifdef __cplusplus
 }

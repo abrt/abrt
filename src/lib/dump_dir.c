@@ -504,7 +504,7 @@ int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name)
 }
 
 /* Utility function */
-void delete_crash_dump_dir(const char *dd_dir)
+void delete_dump_dir(const char *dd_dir)
 {
     struct dump_dir *dd = dd_opendir(dd_dir, /*flags:*/ 0);
     if (dd)

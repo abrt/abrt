@@ -78,7 +78,7 @@ int main(int argc, char **argv)
     if (!dd)
         return 1; /* error message is already logged */
 
-    crash_data_t *crash_data = load_crash_data_from_crash_dump_dir(dd);
+    crash_data_t *crash_data = load_crash_data_from_dump_dir(dd);
     dd_close(dd);
 
     char *dsc = make_description_logger(crash_data);

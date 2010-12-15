@@ -180,7 +180,7 @@ static char* is_text_file(const char *name, ssize_t *sz)
     return NULL; /* it's binary */
 }
 
-crash_data_t *load_crash_data_from_crash_dump_dir(struct dump_dir *dd)
+crash_data_t *load_crash_data_from_dump_dir(struct dump_dir *dd)
 {
     char *short_name;
     char *full_name;

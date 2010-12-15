@@ -19,7 +19,7 @@
 
 #include "abrtlib.h"
 
-struct dump_dir *create_crash_dump_dir(crash_data_t *crash_data)
+struct dump_dir *create_dump_dir(crash_data_t *crash_data)
 {
     char *path = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%lu-%lu", (long)getpid(), (long)time(NULL));
     struct dump_dir *dd = dd_create(path, getuid());

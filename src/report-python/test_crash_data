@@ -6,7 +6,7 @@ import report
 cd = crash_data()
 cd.add("foo", "bar")
 
-dd = cd.create_crash_dump_dir()
+dd = cd.create_dump_dir()
 
 if dd:
     print "dd is nonzero"
