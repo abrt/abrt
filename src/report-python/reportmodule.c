@@ -21,12 +21,12 @@
 
 PyObject *ReportError;
 
-//static PyMethodDef module_methods[] = {
-//    { "dd_opendir"           , p_dd_opendir, METH_VARARGS, NULL };
-//    { "dd_create"            , p_dd_create, METH_VARARGS, NULL };
+static PyMethodDef module_methods[] = {
+    { "dd_opendir"           , p_dd_opendir, METH_VARARGS, NULL },
+    { "dd_create"            , p_dd_create, METH_VARARGS, NULL },
 //    { "delete_crash_dump_dir", p_delete_crash_dump_dir, METH_VARARGS, NULL },
-//    { NULL }
-//};
+    { NULL }
+};
 
 #ifndef PyMODINIT_FUNC	/* declarations for DLL import/export */
 #define PyMODINIT_FUNC void
@@ -47,8 +47,9 @@ init_pyreport(void)
         return;
     }
 
-    m = Py_InitModule3("_pyreport", /*module_methods:*/ NULL, "Python wrapper for libreport");
-    if (m == NULL)
+    m = Py_InitModule("_pyreport", module_methods);
+    //m = Py_InitModule3("_pyreport", module_methods, "Python wrapper for libreport");
+    if (!m)
     {
         printf("m == NULL\n");
         return;

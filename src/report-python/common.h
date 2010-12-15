@@ -24,3 +24,13 @@ extern PyObject *ReportError;
 /* type objects */
 extern PyTypeObject p_crash_data_type;
 extern PyTypeObject p_dump_dir_type;
+
+/* module-level functions */
+PyObject *p_dd_opendir(PyObject *module, PyObject *args);
+PyObject *p_dd_create(PyObject *module, PyObject *args);
+
+/* python objects' struct defs */
+typedef struct {
+    PyObject_HEAD
+    struct dump_dir *dd;
+} p_dump_dir;

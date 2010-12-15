@@ -26,11 +26,6 @@
 #include "dump_dir.h"
 #include "common.h"
 
-typedef struct {
-    PyObject_HEAD
-    struct dump_dir *dd;
-} p_dump_dir;
-
 static void
 p_dump_dir_dealloc(PyObject *pself)
 {
@@ -147,6 +142,16 @@ static PyMethodDef p_dump_dir_methods[] = {
     { NULL }
 };
 
+static int p_dd_is_non_null(PyObject *pself)
+{
+    p_dump_dir *self = (p_dump_dir*)pself;
+    return self->dd != NULL;
+}
+
+static PyNumberMethods p_dump_dir_number_methods = {
+    .nb_nonzero = p_dd_is_non_null,
+};
+
 PyTypeObject p_dump_dir_type = {
     PyObject_HEAD_INIT(NULL)
     .tp_name      = "report.dump_dir",
@@ -158,13 +163,41 @@ PyTypeObject p_dump_dir_type = {
     //.tp_members   = p_dump_dir_members,
     //.tp_init      = p_dump_dir_init,
     .tp_new       = p_dump_dir_new,
+    .tp_as_number = &p_dump_dir_number_methods,
 };
 
 
 /* struct dump_dir *dd_opendir(const char *dir, int flags); */
-//static PyObject *p_dd_opendir(PyObject *pself, PyObject *args);
+PyObject *p_dd_opendir(PyObject *module, PyObject *args)
+{
+    const char *dir;
+    int flags = 0;
+    if (!PyArg_ParseTuple(args, "s|i", &dir, &flags))
+        return NULL;
+//    PyObject *new_obj = PyObject_CallObject(&p_dump_dir_type, NULL); /* constructor call */
+//    p_dump_dir *new_dd = (p_dump_dir*)new_obj;
+    p_dump_dir *new_dd = PyObject_New(p_dump_dir, &p_dump_dir_type);
+    if (!new_dd)
+        return NULL;
+    new_dd->dd = dd_opendir(dir, flags);
+    return (PyObject*)new_dd;
+}
+
 /* struct dump_dir *dd_create(const char *dir, uid_t uid); */
-//static PyObject *p_dd_create(PyObject *pself, PyObject *args);
+PyObject *p_dd_create(PyObject *module, PyObject *args)
+{
+    const char *dir;
+    int uid;
+    if (!PyArg_ParseTuple(args, "si", &dir, &uid))
+        return NULL;
+//    PyObject *new_obj = PyObject_CallObject(&p_dump_dir_type, NULL); /* constructor call */
+//    p_dump_dir *new_dd = (p_dump_dir*)new_obj;
+    p_dump_dir *new_dd = PyObject_New(p_dump_dir, &p_dump_dir_type);
+    if (!new_dd)
+        return NULL;
+    new_dd->dd = dd_create(dir, uid);
+    return (PyObject*)new_dd;
+}
 
 /* void delete_crash_dump_dir(const char *dd_dir); */
 //static PyObject *p_delete_crash_dump_dir(PyObject *pself, PyObject *args);
