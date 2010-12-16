@@ -63,6 +63,12 @@ static PyObject *p_dd_close(PyObject *pself, PyObject *args)
 static PyObject *p_dd_delete(PyObject *pself, PyObject *args)
 {
     p_dump_dir *self = (p_dump_dir*)pself;
+//Do we want to disallow delete() on non-opened dd?
+//    if (!self->dd)
+//    {
+//        PyErr_SetString(ReportError, "dump dir is not open");
+//        return NULL;
+//    }
     dd_delete(self->dd);
     self->dd = NULL;
     Py_RETURN_NONE;
@@ -72,6 +78,11 @@ static PyObject *p_dd_delete(PyObject *pself, PyObject *args)
 static PyObject *p_dd_exist(PyObject *pself, PyObject *args)
 {
     p_dump_dir *self = (p_dump_dir*)pself;
+    if (!self->dd)
+    {
+        PyErr_SetString(ReportError, "dump dir is not open");
+        return NULL;
+    }
     const char *path;
     if (!PyArg_ParseTuple(args, "s", &path))
     {
@@ -90,6 +101,11 @@ static PyObject *p_dd_exist(PyObject *pself, PyObject *args)
 static PyObject *p_dd_load_text_ext(PyObject *pself, PyObject *args)
 {
     p_dump_dir *self = (p_dump_dir*)pself;
+    if (!self->dd)
+    {
+        PyErr_SetString(ReportError, "dump dir is not open");
+        return NULL;
+    }
     const char *name;
     int flags = 0;
     if (!PyArg_ParseTuple(args, "s|i", &name, &flags))
@@ -106,6 +122,11 @@ static PyObject *p_dd_load_text_ext(PyObject *pself, PyObject *args)
 static PyObject *p_dd_save_text(PyObject *pself, PyObject *args)
 {
     p_dump_dir *self = (p_dump_dir*)pself;
+    if (!self->dd)
+    {
+        PyErr_SetString(ReportError, "dump dir is not open");
+        return NULL;
+    }
     const char *name;
     const char *data;
     if (!PyArg_ParseTuple(args, "ss", &name, &data))
@@ -120,6 +141,11 @@ static PyObject *p_dd_save_text(PyObject *pself, PyObject *args)
 static PyObject *p_dd_save_binary(PyObject *pself, PyObject *args)
 {
     p_dump_dir *self = (p_dump_dir*)pself;
+    if (!self->dd)
+    {
+        PyErr_SetString(ReportError, "dump dir is not open");
+        return NULL;
+    }
     const char *name;
     const char *data;
     unsigned size;
