@@ -91,7 +91,7 @@ static inline void free_vector_of_crash_data(vector_of_crash_data_t *vector)
 /* Conversions between in-memory and on-disk formats */
 
 crash_data_t *load_crash_data_from_dump_dir(struct dump_dir *dd);
-struct dump_dir *create_dump_dir(crash_data_t *crash_data);
+struct dump_dir *create_dump_dir(crash_data_t *crash_data, const char *base_dir_name);
 
 #ifdef __cplusplus
 }

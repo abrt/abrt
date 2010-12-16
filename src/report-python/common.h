@@ -29,6 +29,7 @@ extern PyTypeObject p_run_event_state_type;
 /* module-level functions */
 PyObject *p_dd_opendir(PyObject *module, PyObject *args);
 PyObject *p_dd_create(PyObject *module, PyObject *args);
+PyObject *p_delete_dump_dir(PyObject *pself, PyObject *args);
 
 /* python objects' struct defs */
 typedef struct {

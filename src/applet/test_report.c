@@ -39,7 +39,7 @@ int main(int argc, char** argv)
     add_to_crash_data(crash_data, "analyzer", "wow");
     const char *event = "report";
 
-    struct dump_dir *dd = create_dump_dir(crash_data);
+    struct dump_dir *dd = create_dump_dir(crash_data, "/tmp");
     free_crash_data(crash_data);
     if (!dd)
         return 1;

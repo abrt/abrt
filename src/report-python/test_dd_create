@@ -10,6 +10,7 @@ if dd:
 else:
     print "dd is zero"
 
+print "name:", dd.name
 print "closing"
 dd.close()
 
@@ -17,3 +18,8 @@ if dd:
     print "dd is nonzero"
 else:
     print "dd is zero"
+
+# Should fail here
+dd.name = "qwe"
+
+print "Done"

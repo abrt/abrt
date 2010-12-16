@@ -22,9 +22,10 @@
 PyObject *ReportError;
 
 static PyMethodDef module_methods[] = {
+    /* method_name, func, flags, doc_string */
     { "dd_opendir"     , p_dd_opendir, METH_VARARGS, NULL },
     { "dd_create"      , p_dd_create, METH_VARARGS, NULL },
-//    { "delete_dump_dir", p_delete_dump_dir, METH_VARARGS, NULL },
+    { "delete_dump_dir", p_delete_dump_dir, METH_VARARGS, NULL },
     { NULL }
 };
 

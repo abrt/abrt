@@ -31,7 +31,7 @@ typedef struct {
 } p_run_event_state;
 
 
-/*** initialization/freeing code ***/
+/*** init/cleanup ***/
 
 static int post_run_callback(const char *dump_dir_name, void *param);
 static char *logging_callback(char *log_line, void *param);

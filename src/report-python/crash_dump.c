@@ -92,14 +92,19 @@ static PyObject *p_get_crash_data_item(PyObject *pself, PyObject *args)
     return Py_BuildValue("sI", ci->content, ci->flags);
 }
 
-/* struct dump_dir *create_dump_dir(crash_data_t *crash_data); */
+/* struct dump_dir *create_dump_dir(crash_data_t *crash_data, const char *base_dir_name); */
 static PyObject *p_create_dump_dir(PyObject *pself, PyObject *args)
 {
     p_crash_data *self = (p_crash_data*)pself;
+    const char *base_dir_name = NULL;
+    if (!PyArg_ParseTuple(args, "|s", &base_dir_name))
+    {
+        return NULL;
+    }
     p_dump_dir *new_dd = PyObject_New(p_dump_dir, &p_dump_dir_type);
     if (!new_dd)
         return NULL;
-    struct dump_dir *dd = create_dump_dir(self->cd);
+    struct dump_dir *dd = create_dump_dir(self->cd, base_dir_name);
     if (!dd)
     {
         PyObject_Del((PyObject*)new_dd);
@@ -115,9 +120,10 @@ static PyObject *p_create_dump_dir(PyObject *pself, PyObject *args)
 //};
 
 static PyMethodDef p_crash_data_methods[] = {
-    { "add"            , p_crash_data_add, METH_VARARGS, "Adds item to the crash data" },
-    { "get"            , p_get_crash_data_item, METH_VARARGS, "Gets the value of item indexed by the key" },
-    { "create_dump_dir", p_create_dump_dir, METH_NOARGS, "Saves the crash_data to"LOCALSTATEDIR"/run/abrt/tmp-<pid>-<time>" },
+    /* method_name, func, flags, doc_string */
+    { "add"            , p_crash_data_add, METH_VARARGS },
+    { "get"            , p_get_crash_data_item, METH_VARARGS },
+    { "create_dump_dir", p_create_dump_dir, METH_VARARGS },
     { NULL }
 };
 
@@ -125,11 +131,10 @@ PyTypeObject p_crash_data_type = {
     PyObject_HEAD_INIT(NULL)
     .tp_name      = "report.crash_data",
     .tp_basicsize = sizeof(p_crash_data),
-    .tp_dealloc   = p_crash_data_dealloc,
     .tp_flags     = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
-    .tp_doc       = "crash_data objects",
-    .tp_methods   = p_crash_data_methods,
-    //.tp_members   = p_crash_data_members,
-    //.tp_init      = p_crash_data_init,
     .tp_new       = p_crash_data_new,
+    .tp_dealloc   = p_crash_data_dealloc,
+    //.tp_init      = p_crash_data_init,
+    //.tp_members   = p_crash_data_members,
+    .tp_methods   = p_crash_data_methods,
 };

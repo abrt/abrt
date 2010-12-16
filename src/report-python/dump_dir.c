@@ -1,8 +1,8 @@
 /*
     On-disk storage of crash dumps
 
-    Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
-    Copyright (C) 2009  RedHat inc.
+    Copyright (C) 2010  Abrt team
+    Copyright (C) 2010  RedHat inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,14 +25,7 @@
 #include "dump_dir.h"
 #include "common.h"
 
-static void
-p_dump_dir_dealloc(PyObject *pself)
-{
-    p_dump_dir *self = (p_dump_dir*)pself;
-    dd_close(self->dd);
-    self->dd = NULL;
-    self->ob_type->tp_free(pself);
-}
+/*** init/cleanup ***/
 
 static PyObject *
 p_dump_dir_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
@@ -43,12 +36,23 @@ p_dump_dir_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     return (PyObject *)self;
 }
 
+static void
+p_dump_dir_dealloc(PyObject *pself)
+{
+    p_dump_dir *self = (p_dump_dir*)pself;
+    dd_close(self->dd);
+    self->dd = NULL;
+    self->ob_type->tp_free(pself);
+}
+
 //static int
 //p_dump_dir_init(PyObject *pself, PyObject *args, PyObject *kwds)
 //{
 //    return 0;
 //}
 
+
+/*** methods ***/
 
 /* void dd_close(struct dump_dir *dd); */
 static PyObject *p_dd_close(PyObject *pself, PyObject *args)
@@ -98,7 +102,7 @@ static PyObject *p_dd_exist(PyObject *pself, PyObject *args)
 
 /* char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned flags); */
 /* char* dd_load_text(const struct dump_dir *dd, const char *name); */
-static PyObject *p_dd_load_text_ext(PyObject *pself, PyObject *args)
+static PyObject *p_dd_load_text(PyObject *pself, PyObject *args)
 {
     p_dump_dir *self = (p_dump_dir*)pself;
     if (!self->dd)
@@ -157,22 +161,49 @@ static PyObject *p_dd_save_binary(PyObject *pself, PyObject *args)
     Py_RETURN_NONE;
 }
 
+
+/*** attribute getters/setters ***/
+
+static PyObject *get_name(PyObject *pself, void *unused)
+{
+    p_dump_dir *self = (p_dump_dir*)pself;
+    if (self->dd)
+        return Py_BuildValue("s", self->dd->dd_dir);
+    Py_RETURN_NONE;
+}
+
+//static PyObject *set_name(PyObject *pself, void *unused)
+//{
+//    PyErr_SetString(ReportError, "dump dir name is not settable");
+//    Py_RETURN_NONE;
+//}
+
+
+/*** type object ***/
+
 static PyMethodDef p_dump_dir_methods[] = {
+    /* method_name, func, flags, doc_string */
     { "close"      , p_dd_close, METH_NOARGS, NULL },
     { "delete"     , p_dd_delete, METH_NOARGS, NULL },
     { "exist"      , p_dd_exist, METH_VARARGS, NULL },
-    { "load_text"  , p_dd_load_text_ext, METH_VARARGS, NULL },
+    { "load_text"  , p_dd_load_text, METH_VARARGS, NULL },
     { "save_text"  , p_dd_save_text, METH_VARARGS, NULL },
     { "save_binary", p_dd_save_binary, METH_VARARGS, NULL },
     { NULL }
 };
 
+static PyGetSetDef p_dump_dir_getset[] = {
+    /* attr_name, getter_func, setter_func, doc_string, void_param */
+    { "name", get_name, NULL /*set_name*/ },
+    { NULL }
+};
+
+/* Support for "dd = dd_opendir(...); if [not] dd: ..." */
 static int p_dd_is_non_null(PyObject *pself)
 {
     p_dump_dir *self = (p_dump_dir*)pself;
     return self->dd != NULL;
 }
-
 static PyNumberMethods p_dump_dir_number_methods = {
     .nb_nonzero = p_dd_is_non_null,
 };
@@ -181,16 +212,19 @@ PyTypeObject p_dump_dir_type = {
     PyObject_HEAD_INIT(NULL)
     .tp_name      = "report.dump_dir",
     .tp_basicsize = sizeof(p_dump_dir),
-    .tp_dealloc   = p_dump_dir_dealloc,
+    /* Py_TPFLAGS_BASETYPE means "can be subtyped": */
     .tp_flags     = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
-    .tp_doc       = "dump_dir objects",
-    .tp_methods   = p_dump_dir_methods,
-    //.tp_members   = p_dump_dir_members,
-    //.tp_init      = p_dump_dir_init,
     .tp_new       = p_dump_dir_new,
+    .tp_dealloc   = p_dump_dir_dealloc,
+    //.tp_init      = p_dump_dir_init,
+    //.tp_members   = p_dump_dir_members,
+    .tp_methods   = p_dump_dir_methods,
     .tp_as_number = &p_dump_dir_number_methods,
+    .tp_getset    = p_dump_dir_getset,
 };
 
+
+/*** module-level functions ***/
 
 /* struct dump_dir *dd_opendir(const char *dir, int flags); */
 PyObject *p_dd_opendir(PyObject *module, PyObject *args)
@@ -221,4 +255,11 @@ PyObject *p_dd_create(PyObject *module, PyObject *args)
 }
 
 /* void delete_dump_dir(const char *dd_dir); */
-//static PyObject *p_delete_dump_dir(PyObject *pself, PyObject *args);
+PyObject *p_delete_dump_dir(PyObject *pself, PyObject *args)
+{
+    const char *dir;
+    if (!PyArg_ParseTuple(args, "s", &dir))
+        return NULL;
+    delete_dump_dir(dir);
+    Py_RETURN_NONE;
+}

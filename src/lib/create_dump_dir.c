@@ -19,11 +19,42 @@
 
 #include "abrtlib.h"
 
-struct dump_dir *create_dump_dir(crash_data_t *crash_data)
+static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir_name)
 {
-    char *path = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%lu-%lu", (long)getpid(), (long)time(NULL));
+    char *path = concat_path_file(base_dir_name, dir_name);
     struct dump_dir *dd = dd_create(path, getuid());
     free(path);
+    return dd;
+}
+
+struct dump_dir *create_dump_dir(crash_data_t *crash_data, const char *base_dir_name)
+{
+    char dir_name[sizeof("abrt-tmp-%lu-%lu") + sizeof(long)*3 * 2];
+    sprintf(dir_name, "abrt-tmp-%lu-%lu", (long)getpid(), (long)time(NULL));
+
+    struct dump_dir *dd;
+    if (base_dir_name)
+        dd = try_dd_create(base_dir_name, dir_name);
+    else
+    {
+        /* Try /var/run/abrt */
+        dd = try_dd_create(LOCALSTATEDIR"/run/abrt", dir_name);
+        /* Try $HOME/tmp */
+        if (!dd)
+        {
+            char *home = getenv("HOME");
+            if (home && home[0])
+            {
+                home = concat_path_file(home, "tmp");
+                /*mkdir(home, 0777); - do we want this? */
+                dd = try_dd_create(home, dir_name);
+                free(home);
+            }
+        }
+        /* Try /tmp */
+        if (!dd)
+            dd = try_dd_create("/tmp", dir_name);
+    }
     if (!dd)
         return NULL;
 
