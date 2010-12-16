@@ -24,6 +24,7 @@ extern PyObject *ReportError;
 /* type objects */
 extern PyTypeObject p_crash_data_type;
 extern PyTypeObject p_dump_dir_type;
+extern PyTypeObject p_run_event_state_type;
 
 /* module-level functions */
 PyObject *p_dd_opendir(PyObject *module, PyObject *args);

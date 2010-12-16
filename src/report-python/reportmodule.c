@@ -34,8 +34,6 @@ static PyMethodDef module_methods[] = {
 PyMODINIT_FUNC
 init_pyreport(void)
 {
-    PyObject* m;
-
     if (PyType_Ready(&p_crash_data_type) < 0)
     {
         printf("PyType_Ready(&p_crash_data_type) < 0\n");
@@ -46,8 +44,13 @@ init_pyreport(void)
         printf("PyType_Ready(&p_dump_dir_type) < 0\n");
         return;
     }
+    if (PyType_Ready(&p_run_event_state_type) < 0)
+    {
+        printf("PyType_Ready(&p_run_event_state_type) < 0\n");
+        return;
+    }
 
-    m = Py_InitModule("_pyreport", module_methods);
+    PyObject *m = Py_InitModule("_pyreport", module_methods);
     //m = Py_InitModule3("_pyreport", module_methods, "Python wrapper for libreport");
     if (!m)
     {
@@ -60,9 +63,13 @@ init_pyreport(void)
     Py_INCREF(ReportError);
     PyModule_AddObject(m, "error", ReportError);
 
+    /* init type objects */
     Py_INCREF(&p_crash_data_type);
     PyModule_AddObject(m, "crash_data", (PyObject *)&p_crash_data_type);
 
     Py_INCREF(&p_dump_dir_type);
     PyModule_AddObject(m, "dump_dir", (PyObject *)&p_dump_dir_type);
+
+    Py_INCREF(&p_run_event_state_type);
+    PyModule_AddObject(m, "run_event_state", (PyObject *)&p_run_event_state_type);
 }

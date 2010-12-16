@@ -8,6 +8,7 @@ _pyreport_la_SOURCES = \
     reportmodule.c \
     crash_dump.c \
     dump_dir.c \
+    run_event.c \
     common.h
 _pyreport_la_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
