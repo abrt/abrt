@@ -22,7 +22,6 @@
 #include <structmember.h>
 
 #include <errno.h>
-#include "crash_dump.h"
 #include "dump_dir.h"
 #include "common.h"
 
@@ -174,8 +173,6 @@ PyObject *p_dd_opendir(PyObject *module, PyObject *args)
     int flags = 0;
     if (!PyArg_ParseTuple(args, "s|i", &dir, &flags))
         return NULL;
-//    PyObject *new_obj = PyObject_CallObject(&p_dump_dir_type, NULL); /* constructor call */
-//    p_dump_dir *new_dd = (p_dump_dir*)new_obj;
     p_dump_dir *new_dd = PyObject_New(p_dump_dir, &p_dump_dir_type);
     if (!new_dd)
         return NULL;
@@ -190,8 +187,6 @@ PyObject *p_dd_create(PyObject *module, PyObject *args)
     int uid;
     if (!PyArg_ParseTuple(args, "si", &dir, &uid))
         return NULL;
-//    PyObject *new_obj = PyObject_CallObject(&p_dump_dir_type, NULL); /* constructor call */
-//    p_dump_dir *new_dd = (p_dump_dir*)new_obj;
     p_dump_dir *new_dd = PyObject_New(p_dump_dir, &p_dump_dir_type);
     if (!new_dd)
         return NULL;
