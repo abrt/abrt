@@ -1,6 +1,8 @@
 pyreportexecdir = $(pyexecdir)/report
 
-pyreportexec_PYTHON = __init__.py
+pyreportexec_PYTHON = \
+    __init__.py \
+    accountmanager.py
 
 pyreportexec_LTLIBRARIES = _pyreport.la
 
@@ -28,3 +30,13 @@ _pyreport_la_LDFLAGS = \
     -export-symbols-regex init_pyreport
 _pyreport_la_LIBADD = \
     ../lib/libreport.la
+
+# report compat:
+
+pyreportioexecdir = $(pyexecdir)/report/io
+
+pyreportioexec_PYTHON = \
+    io/__init__.py \
+    io/GTKIO.py \
+    io/NewtIO.py \
+    io/TextIO.py
