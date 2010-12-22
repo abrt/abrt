@@ -19,6 +19,9 @@
 #include <Python.h>
 #include "common.h"
 
+#include "crash_data.h"
+#include "dump_dir.h"
+
 PyObject *ReportError;
 
 static PyMethodDef module_methods[] = {
@@ -67,9 +70,16 @@ init_pyreport(void)
     /* init type objects */
     Py_INCREF(&p_crash_data_type);
     PyModule_AddObject(m, "crash_data", (PyObject *)&p_crash_data_type);
+    PyModule_AddObject(m, "CD_FLAG_SYS"          , Py_BuildValue("i", CD_FLAG_SYS          ));
+    PyModule_AddObject(m, "CD_FLAG_BIN"          , Py_BuildValue("i", CD_FLAG_BIN          ));
+    PyModule_AddObject(m, "CD_FLAG_TXT"          , Py_BuildValue("i", CD_FLAG_TXT          ));
+    PyModule_AddObject(m, "CD_FLAG_ISEDITABLE"   , Py_BuildValue("i", CD_FLAG_ISEDITABLE   ));
+    PyModule_AddObject(m, "CD_FLAG_ISNOTEDITABLE", Py_BuildValue("i", CD_FLAG_ISNOTEDITABLE));
 
     Py_INCREF(&p_dump_dir_type);
     PyModule_AddObject(m, "dump_dir", (PyObject *)&p_dump_dir_type);
+    PyModule_AddObject(m, "DD_FAIL_QUIETLY"                    , Py_BuildValue("i", DD_FAIL_QUIETLY                    ));
+    PyModule_AddObject(m, "DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE", Py_BuildValue("i", DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE));
 
     Py_INCREF(&p_run_event_state_type);
     PyModule_AddObject(m, "run_event_state", (PyObject *)&p_run_event_state_type);

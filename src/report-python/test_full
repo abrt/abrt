@@ -22,6 +22,6 @@ def log_function(line):
 
 cd = crash_data()
 cd.add("foo", "bar")
-cd.add("analyzer", "baz")
+cd.add("analyzer", "baz", CD_FLAG_ISNOTEDITABLE)
 r = run_event_on_crash_data(cd, "post-create", log_function)
 print "Result:", r
