@@ -16,8 +16,8 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#ifndef CRASH_DUMP_H_
-#define CRASH_DUMP_H_
+#ifndef CRASH_DATA_H_
+#define CRASH_DATA_H_
 
 #include <glib.h>
 
@@ -90,8 +90,10 @@ static inline void free_vector_of_crash_data(vector_of_crash_data_t *vector)
 
 /* Conversions between in-memory and on-disk formats */
 
-crash_data_t *load_crash_data_from_dump_dir(struct dump_dir *dd);
-struct dump_dir *create_dump_dir(crash_data_t *crash_data, const char *base_dir_name);
+void load_crash_data_from_dump_dir(crash_data_t *crash_data, struct dump_dir *dd);
+crash_data_t *create_crash_data_from_dump_dir(struct dump_dir *dd);
+
+struct dump_dir *create_dump_dir_from_crash_data(crash_data_t *crash_data, const char *base_dir_name);
 
 #ifdef __cplusplus
 }

@@ -79,7 +79,7 @@ static crash_data_t *DebugDumpToCrashReport(const char *dump_dir_name)
         v++;
     }
 
-    crash_data_t *crash_data = load_crash_data_from_dump_dir(dd);
+    crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
     char *events = list_possible_events(dd, NULL, "");
     dd_close(dd);
 
@@ -154,7 +154,7 @@ static mw_result_t CreateCrashReport(const char *dump_dir_name,
 
     run_state = new_run_event_state();
     run_state->logging_callback = do_log_and_update_client;
-    res = run_event(run_state, dump_dir_name, force ? "reanalyze" : "analyze");
+    res = run_event_on_dir_name(run_state, dump_dir_name, force ? "reanalyze" : "analyze");
     free_run_event_state(run_state);
     if (res != 0 && res != -1) /* -1 is "nothing was done", here it is ok */
     {
@@ -162,7 +162,7 @@ static mw_result_t CreateCrashReport(const char *dump_dir_name,
         goto ret;
     }
 
-    /* Do a load_crash_data_from_dump_dir from (possibly updated)
+    /* Do a create_crash_data_from_dump_dir from (possibly updated)
      * crash dump dir
      */
     *crash_data = DebugDumpToCrashReport(dump_dir_name);
@@ -336,7 +336,7 @@ report_status_t Report(crash_data_t *client_report,
         std::string event = events[i];
 
         l_state.last_line = NULL;
-        int r = run_event(run_state, dump_dir_name, event.c_str());
+        int r = run_event_on_dir_name(run_state, dump_dir_name, event.c_str());
         if (r == -1)
         {
             l_state.last_line = xasprintf("Error: no processing is specified for event '%s'", event.c_str());
@@ -507,7 +507,7 @@ mw_result_t LoadDebugDump(const char *dump_dir_name, crash_data_t **crash_data)
     run_state->post_run_callback = is_crash_a_dup;
     run_state->post_run_param = &state;
     run_state->logging_callback = do_log;
-    int r = run_event(run_state, dump_dir_name, "post-create");
+    int r = run_event_on_dir_name(run_state, dump_dir_name, "post-create");
     free_run_event_state(run_state);
 
 //TODO: consider this case:
@@ -590,7 +590,7 @@ static crash_data_t *FillCrashInfo(const char *dump_dir_name)
     if (!dd)
         return NULL;
 
-    crash_data_t *crash_data = load_crash_data_from_dump_dir(dd);
+    crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
     char *events = list_possible_events(dd, NULL, "");
     dd_close(dd);
 

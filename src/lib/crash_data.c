@@ -185,11 +185,10 @@ static char* is_text_file(const char *name, ssize_t *sz)
     return NULL; /* it's binary */
 }
 
-crash_data_t *load_crash_data_from_dump_dir(struct dump_dir *dd)
+void load_crash_data_from_dump_dir(crash_data_t *crash_data, struct dump_dir *dd)
 {
     char *short_name;
     char *full_name;
-    crash_data_t *crash_data = new_crash_data();
 
     dd_init_next_file(dd);
     while (dd_get_next_file(dd, &short_name, &full_name))
@@ -208,7 +207,6 @@ crash_data_t *load_crash_data_from_dump_dir(struct dump_dir *dd)
                         full_name,
                         CD_FLAG_BIN + CD_FLAG_ISNOTEDITABLE
                 );
-
                 free(short_name);
                 free(full_name);
                 continue;
@@ -231,6 +229,12 @@ crash_data_t *load_crash_data_from_dump_dir(struct dump_dir *dd)
         free(full_name);
         free(content);
     }
+}
+
+crash_data_t *create_crash_data_from_dump_dir(struct dump_dir *dd)
+{
+    crash_data_t *crash_data = new_crash_data();
+    load_crash_data_from_dump_dir(crash_data, dd);
     return crash_data;
 }
 

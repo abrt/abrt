@@ -27,7 +27,7 @@ static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir
     return dd;
 }
 
-struct dump_dir *create_dump_dir(crash_data_t *crash_data, const char *base_dir_name)
+struct dump_dir *create_dump_dir_from_crash_data(crash_data_t *crash_data, const char *base_dir_name)
 {
     char dir_name[sizeof("abrt-tmp-%lu-%lu") + sizeof(long)*3 * 2];
     sprintf(dir_name, "abrt-tmp-%lu-%lu", (long)getpid(), (long)time(NULL));

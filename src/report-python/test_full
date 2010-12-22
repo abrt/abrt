@@ -12,7 +12,7 @@ def run_event_on_crash_data(cd, event, log_function = None):
     if log_function: # maybe if callable(log_function)?
         run_state.logging_callback = log_function
     print "Running event:", event
-    r = run_state.run_event(dir_name, event)
+    r = run_state.run_event_on_dir_name(dir_name, event)
     print "Deleting:", dir_name
     delete_dump_dir(dir_name)
     return r;

@@ -20,8 +20,9 @@
 #include <structmember.h>
 
 #include <errno.h>
-#include "run_event.h"
 #include "common.h"
+#include "crash_data.h"
+#include "run_event.h"
 
 typedef struct {
     PyObject_HEAD
@@ -71,7 +72,7 @@ static void p_run_event_state_dealloc(PyObject *pself)
 
 /*** methods ***/
 
-/* First, C-level callback helpers for run_event(): */
+/* First, C-level callback helpers for run_event_on_FOO(): */
 static int post_run_callback(const char *dump_dir_name, void *param)
 {
     PyObject *obj = (PyObject*)param;
@@ -94,8 +95,8 @@ static char *logging_callback(char *log_line, void *param)
     return log_line; /* signaling to caller that we didnt consume the string */
 }
 
-/* int run_event(struct run_event_state *state, const char *dump_dir_name, const char *event); */
-static PyObject *p_run_event(PyObject *pself, PyObject *args)
+/* int run_event_on_dir_name(struct run_event_state *state, const char *dump_dir_name, const char *event); */
+static PyObject *p_run_event_on_dir_name(PyObject *pself, PyObject *args)
 {
     p_run_event_state *self = (p_run_event_state*)pself;
     const char *dump_dir_name;
@@ -104,7 +105,22 @@ static PyObject *p_run_event(PyObject *pself, PyObject *args)
     {
         return NULL;
     }
-    int r = run_event(self->state, dump_dir_name, event);
+    int r = run_event_on_dir_name(self->state, dump_dir_name, event);
+    PyObject *obj = Py_BuildValue("i", r);
+    return obj;
+}
+
+/* int run_event_on_crash_data(struct run_event_state *state, crash_data_t *data, const char *event); */
+static PyObject *p_run_event_on_crash_data(PyObject *pself, PyObject *args)
+{
+    p_run_event_state *self = (p_run_event_state*)pself;
+    p_crash_data *cd;
+    const char *event;
+    if (!PyArg_ParseTuple(args, "O!s", &p_crash_data_type, &cd, &event))
+    {
+        return NULL;
+    }
+    int r = run_event_on_crash_data(self->state, cd->cd, event);
     PyObject *obj = Py_BuildValue("i", r);
     return obj;
 }
@@ -177,7 +193,8 @@ static int set_logging_callback(PyObject *pself, PyObject *callback, void *unuse
 
 static PyMethodDef p_run_event_state_methods[] = {
     /* method_name, func, flags, doc_string */
-    { "run_event", p_run_event, METH_VARARGS },
+    { "run_event_on_dir_name"  , p_run_event_on_dir_name  , METH_VARARGS },
+    { "run_event_on_crash_data", p_run_event_on_crash_data, METH_VARARGS },
     { NULL }
 };
 

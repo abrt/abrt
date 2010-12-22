@@ -639,7 +639,7 @@ static void report_to_bugzilla(
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         xfunc_die(); /* dd_opendir already emitted error msg */
-    crash_data_t *crash_data = load_crash_data_from_dump_dir(dd);
+    crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
     dd_close(dd);
 
     const char *env;

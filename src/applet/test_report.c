@@ -39,7 +39,7 @@ int main(int argc, char** argv)
     add_to_crash_data(crash_data, "analyzer", "wow");
     const char *event = "report";
 
-    struct dump_dir *dd = create_dump_dir(crash_data, "/tmp");
+    struct dump_dir *dd = create_dump_dir_from_crash_data(crash_data, "/tmp");
     free_crash_data(crash_data);
     if (!dd)
         return 1;
@@ -50,7 +50,7 @@ int main(int argc, char** argv)
 
     struct run_event_state *run_state = new_run_event_state();
     run_state->logging_callback = do_log;
-    int r = run_event(run_state, dir_name, event);
+    int r = run_event_on_dir_name(run_state, dir_name, event);
     if (r == -1)
         printf("No actions are found for event '%s'\n", event);
     free_run_event_state(run_state);

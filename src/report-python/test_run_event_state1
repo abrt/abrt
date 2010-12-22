@@ -20,8 +20,8 @@ if not dd:
 dd.save_text("analyzer", "foo")
 dd.close()
 
-res.run_event("testdir", "post-create")
+res.run_event_on_dir_name("testdir", "post-create")
 
 dd = dd_opendir("testdir")
-#dd.delete()
+dd.delete()
 dd.close()

@@ -17,18 +17,16 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <Python.h>
-#include "common.h"
 
-#include "crash_data.h"
-#include "dump_dir.h"
+#include "common.h"
 
 PyObject *ReportError;
 
 static PyMethodDef module_methods[] = {
     /* method_name, func, flags, doc_string */
-    { "dd_opendir"     , p_dd_opendir, METH_VARARGS, NULL },
-    { "dd_create"      , p_dd_create, METH_VARARGS, NULL },
-    { "delete_dump_dir", p_delete_dump_dir, METH_VARARGS, NULL },
+    { "dd_opendir"     , p_dd_opendir     , METH_VARARGS },
+    { "dd_create"      , p_dd_create      , METH_VARARGS },
+    { "delete_dump_dir", p_delete_dump_dir, METH_VARARGS },
     { NULL }
 };
 

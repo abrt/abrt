@@ -28,7 +28,7 @@ void free_run_event_state(struct run_event_state *state)
     free(state);
 }
 
-int run_event(struct run_event_state *state,
+int run_event_on_dir_name(struct run_event_state *state,
                 const char *dump_dir_name,
                 const char *event
 ) {
@@ -181,6 +181,25 @@ int run_event(struct run_event_state *state,
     fclose(conffile);
 
     return retval;
+}
+
+int run_event_on_crash_data(struct run_event_state *state, crash_data_t *data, const char *event)
+{
+    struct dump_dir *dd = create_dump_dir_from_crash_data(data, NULL);
+    if (!dd)
+        return -1;
+    char *dir_name = xstrdup(dd->dd_dir);
+    dd_close(dd);
+    int r = run_event_on_dir_name(state, dir_name, event);
+    dd = dd_opendir(dir_name, 0);
+    free(dir_name);
+    if (dd)
+    {
+        g_hash_table_remove_all(data);
+        load_crash_data_from_dump_dir(data, dd);
+        dd_delete(dd);
+    }
+    return r;
 }
 
 char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const char *pfx)

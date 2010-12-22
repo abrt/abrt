@@ -18,6 +18,10 @@
 */
 #include <Python.h>
 
+#include "dump_dir.h"
+#include "crash_data.h"
+#include "run_event.h"
+
 /* exception object */
 extern PyObject *ReportError;
 
@@ -36,3 +40,8 @@ typedef struct {
     PyObject_HEAD
     struct dump_dir *dd;
 } p_dump_dir;
+
+typedef struct {
+    PyObject_HEAD
+    crash_data_t *cd;
+} p_crash_data;

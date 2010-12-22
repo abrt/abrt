@@ -67,7 +67,7 @@ static void create_and_send_email(
     if (!dd)
         exit(1); /* error msg is already logged by dd_opendir */
 
-    crash_data_t *crash_data = load_crash_data_from_dump_dir(dd);
+    crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
     dd_close(dd);
 
     char* env;

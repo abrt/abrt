@@ -119,11 +119,12 @@ def createAlertSignature(component, hashmarkername, hashvalue, summary, alertSig
     return cd
 
 def report(cd, io_unused):
-    dd = cd.create_dump_dir()
-    dir_name = dd.name
-    dd.close()
+    #dd = cd.create_dump_dir()
+    #dir_name = dd.name
+    #dd.close()
     #r = os.spawnlp(P_WAIT, "abrt-handle-crashdump", "abrt-handle-crashdump", "-d", dirname, "-e" , "report");
+    ### Silmpler alternative:
     state = run_event_state()
     #state.logging_callback = logfunc
-    r = state.run_event(dir_name, "report")
+    r = state.run_event_on_crash_data(cd, "report")
     return r

@@ -22,7 +22,6 @@
 #include <structmember.h>
 
 #include <errno.h>
-#include "dump_dir.h"
 #include "common.h"
 
 /*** init/cleanup ***/
