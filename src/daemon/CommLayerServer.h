@@ -20,7 +20,7 @@
 #define COMMLAYERSERVER_H_
 
 #include "abrtlib.h"
-#include "abrt_crash_dump.h"
+#include "abrt_crash_data.h"
 
 class CCommLayerServer {
     public:

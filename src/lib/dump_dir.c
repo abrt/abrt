@@ -205,7 +205,7 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
      * defaults to "."! Let's require that at least some crash dump dir
      * specific files exist before we declare open successful:
      */
-    char *name = concat_path_file(dir, FILENAME_ANALYZER);
+    char *name = concat_path_file(dir, FILENAME_UID);
     int bad = (lstat(name, &stat_buf) != 0 || !S_ISREG(stat_buf.st_mode));
     free(name);
     if (bad)

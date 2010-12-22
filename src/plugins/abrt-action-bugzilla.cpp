@@ -18,7 +18,7 @@
 */
 #include "abrtlib.h"
 #include "abrt_xmlrpc.h"
-#include "abrt_crash_dump.h"
+#include "abrt_crash_data.h"
 
 #define XML_RPC_SUFFIX      "/xmlrpc.cgi"
 #define MAX_HOPS            5

@@ -20,7 +20,7 @@
 
 #include <glib.h>
 #include "abrt_dbus.h"
-#include "abrt_crash_dump.h"
+#include "abrt_crash_data.h"
 
 extern DBusConnection* s_dbus_conn;
 

@@ -35,7 +35,7 @@ libreport_la_SOURCES = \
     load_plugin_settings.c \
     make_descr.c \
     run_event.c \
-    crash_dump.c \
+    crash_data.c \
     create_dump_dir.c \
     abrt_types.c \
     hooklib.c hooklib.h \

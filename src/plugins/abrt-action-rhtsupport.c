@@ -22,7 +22,7 @@
 #include "abrt_curl.h"
 #include "abrt_xmlrpc.h"
 #include "abrt_rh_support.h"
-#include "abrt_crash_dump.h"
+#include "abrt_crash_data.h"
 
 #define PROGNAME "abrt-action-rhtsupport"
 

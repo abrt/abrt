@@ -20,7 +20,7 @@
 #include <structmember.h>
 
 #include <errno.h>
-#include "crash_dump.h"
+#include "crash_data.h"
 #include "dump_dir.h"
 #include "common.h"
 

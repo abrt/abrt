@@ -19,7 +19,7 @@
 
 #include <curl/curl.h>
 #include "abrtlib.h"
-#include "abrt_crash_dump.h"
+#include "abrt_crash_data.h"
 
 #define PROGNAME "abrt-action-kerneloops"
 

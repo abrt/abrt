@@ -23,7 +23,7 @@
 #define PLUGIN_H_
 
 #include "abrt_types.h"
-#include "abrt_crash_dump.h"
+#include "abrt_crash_data.h"
 
 #define PLUGINS_MAGIC_NUMBER 6
 

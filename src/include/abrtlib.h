@@ -77,7 +77,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "hash_sha1.h"
 #include "hash_md5.h"
 
-#include "abrt_crash_dump.h"
+#include "abrt_crash_data.h"
 #include "abrt_types.h"
 #include "dump_dir.h"
 #include "run_event.h"

@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "crash_dump.h"
+#include "crash_data.h"
 #include "dump_dir.h"
 #include "run_event.h"
 

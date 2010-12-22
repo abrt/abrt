@@ -3,7 +3,7 @@ from datetime import datetime
 
 from abrt_utils import _, init_logging, log, log1, log2
 
-# Keep in sync with [abrt_]crash_dump.h!
+# Keep in sync with [abrt_]crash_data.h!
 CD_TYPE     = 0
 CD_EDITABLE = 1
 CD_CONTENT  = 2

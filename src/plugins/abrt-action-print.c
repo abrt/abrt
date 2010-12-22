@@ -20,7 +20,7 @@
 */
 #include "abrtlib.h"
 #include "parse_options.h"
-#include "abrt_crash_dump.h"
+#include "abrt_crash_data.h"
 
 #define PROGNAME "abrt-action-print"
 

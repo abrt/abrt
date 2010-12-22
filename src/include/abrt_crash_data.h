@@ -19,7 +19,7 @@
 #ifndef ABRT_CRASH_DUMP_H_
 #define ABRT_CRASH_DUMP_H_
 
-#include "crash_dump.h"
+#include "crash_data.h"
 #include "abrt_types.h"
 
 // Text bigger than this usually is attached, not added inline
@@ -78,8 +78,8 @@ extern "C" {
 #define is_editable_file abrt_is_editable_file
 bool is_editable_file(const char *file_name);
 
-#define log_map_crash_data abrt_log_map_crash_data
-void log_map_crash_data(crash_data_t *crash_data, const char *pfx);
+#define log_crash_data abrt_log_crash_data
+void log_crash_data(crash_data_t *crash_data, const char *pfx);
 
 #ifdef __cplusplus
 }

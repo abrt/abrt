@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "abrt_crash_dump.h"
+#include "abrt_crash_data.h"
 
 static void free_crash_item(void *ptr)
 {
@@ -229,7 +229,7 @@ crash_data_t *load_crash_data_from_dump_dir(struct dump_dir *dd)
     return crash_data;
 }
 
-void log_map_crash_data(crash_data_t *crash_data, const char *pfx)
+void log_crash_data(crash_data_t *crash_data, const char *pfx)
 {
     GHashTableIter iter;
     char *name;

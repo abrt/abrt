@@ -300,8 +300,8 @@ report_status_t Report(crash_data_t *client_report,
     }
 
     VERB3 {
-        log_map_crash_data(client_report, " client_report");
-        log_map_crash_data(stored_report, " stored_report");
+        log_crash_data(client_report, " client_report");
+        log_crash_data(stored_report, " stored_report");
     }
     free_crash_data(stored_report);
 #define stored_report stored_report_must_not_be_used_below
@@ -687,7 +687,7 @@ void CreateReport(const char* crash_id, long caller_uid, int force, crash_data_t
     switch (res)
     {
         case MW_OK:
-            VERB2 log_map_crash_data(*crash_data, "crashReport");
+            VERB2 log_crash_data(*crash_data, "crashReport");
             break;
         case MW_NOENT_ERROR:
             error_msg("Can't find crash with id '%s'", crash_id);

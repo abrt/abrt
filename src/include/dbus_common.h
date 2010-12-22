@@ -19,7 +19,7 @@
 #ifndef DBUSCOMMON_H_
 #define DBUSCOMMON_H_
 
-#include "abrt_crash_dump.h"
+#include "abrt_crash_data.h"
 
 #define ABRTD_DBUS_NAME "com.redhat.abrt"
 #define ABRTD_DBUS_PATH "/com/redhat/abrt"
