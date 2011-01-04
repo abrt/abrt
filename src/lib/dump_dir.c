@@ -1,6 +1,4 @@
 /*
-    DebugDump.cpp
-
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
     Copyright (C) 2009  RedHat inc.
 
@@ -53,12 +51,20 @@ static bool exist_file_dir(const char *path)
     return false;
 }
 
-static bool get_and_set_lock(const char* lock_file, const char* pid)
+/* Return values:
+ * -1: error
+ *  0: failed to lock (someone else has it locked)
+ *  1: success
+ */
+static int get_and_set_lock(const char* lock_file, const char* pid)
 {
     while (symlink(pid, lock_file) != 0)
     {
         if (errno != EEXIST)
-            perror_msg_and_die("Can't create lock file '%s'", lock_file);
+        {
+            perror_msg("Can't create lock file '%s'", lock_file);
+            return -1;
+        }
 
         char pid_buf[sizeof(pid_t)*3 + 4];
         ssize_t r = readlink(lock_file, pid_buf, sizeof(pid_buf) - 1);
@@ -70,14 +76,15 @@ static bool get_and_set_lock(const char* lock_file, const char* pid)
                 usleep(10 * 1000); /* avoid CPU eating loop */
                 continue;
             }
-            perror_msg_and_die("Can't read lock file '%s'", lock_file);
+            perror_msg("Can't read lock file '%s'", lock_file);
+            return -1;
         }
         pid_buf[r] = '\0';
 
         if (strcmp(pid_buf, pid) == 0)
         {
             log("Lock file '%s' is already locked by us", lock_file);
-            return false;
+            return 0;
         }
         if (isdigit_str(pid_buf))
         {
@@ -86,22 +93,23 @@ static bool get_and_set_lock(const char* lock_file, const char* pid)
             if (access(pid_str, F_OK) == 0)
             {
                 log("Lock file '%s' is locked by process %s", lock_file, pid_buf);
-                return false;
+                return 0;
             }
             log("Lock file '%s' was locked by process %s, but it crashed?", lock_file, pid_buf);
         }
         /* The file may be deleted by now by other process. Ignore ENOENT */
         if (unlink(lock_file) != 0 && errno != ENOENT)
         {
-            perror_msg_and_die("Can't remove stale lock file '%s'", lock_file);
+            perror_msg("Can't remove stale lock file '%s'", lock_file);
+            return -1;
         }
     }
 
     VERB1 log("Locked '%s'", lock_file);
-    return true;
+    return 1;
 }
 
-static void dd_lock(struct dump_dir *dd)
+static int dd_lock(struct dump_dir *dd)
 {
     if (dd->locked)
         error_msg_and_die("Locking bug on '%s'", dd->dd_dir);
@@ -111,10 +119,17 @@ static void dd_lock(struct dump_dir *dd)
 
     char pid_buf[sizeof(long)*3 + 2];
     sprintf(pid_buf, "%lu", (long)getpid());
-    while ((dd->locked = get_and_set_lock(lock_buf, pid_buf)) != true)
+    while (1)
     {
+        int r = get_and_set_lock(lock_buf, pid_buf);
+        if (r < 0)
+            return r; /* error */
+        if (r > 0)
+            break; /* locked successfully */
         sleep(1); /* was 0.5 seconds */
     }
+    dd->locked = true;
+    return 0;
 }
 
 static void dd_unlock(struct dump_dir *dd)
@@ -185,7 +200,11 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
     }
     dir = dd->dd_dir;
 
-    dd_lock(dd);
+    if (dd_lock(dd) < 0)
+    {
+        dd_close(dd);
+        return NULL;
+    }
 
     struct stat stat_buf;
     if (stat(dir, &stat_buf) != 0 || !S_ISDIR(stat_buf.st_mode))
@@ -265,7 +284,11 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
         return NULL;
     }
 
-    dd_lock(dd);
+    if (dd_lock(dd) < 0)
+    {
+        dd_close(dd);
+        return NULL;
+    }
 
     /* Was creating it with mode 0700 and user as the owner, but this allows
      * the user to replace any file in the directory, changing security-sensitive data
@@ -281,7 +304,7 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
     /* mkdir's mode (above) can be affected by umask, fix it */
     if (chmod(dir, 0750) == -1)
     {
-        perror_msg("Can't change mode of '%s'", dir);
+        perror_msg("can't change mode of '%s'", dir);
         dd_close(dd);
         return NULL;
     }
@@ -292,7 +315,7 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
     if (pw)
         dd->dd_uid = pw->pw_uid;
     else
-        error_msg("User 'abrt' does not exist, using uid 0");
+        error_msg("user 'abrt' does not exist, using uid 0");
 
     /* Get crashed application's group id */
     /*dd->dd_gid = 0; - dd_init did this already */
@@ -304,7 +327,7 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
 
     if (chown(dir, dd->dd_uid, dd->dd_gid) == -1)
     {
-        perror_msg("Can't change '%s' ownership to %lu:%lu", dir,
+        perror_msg("can't change '%s' ownership to %lu:%lu", dir,
                    (long)dd->dd_uid, (long)dd->dd_gid);
     }
 
