@@ -207,17 +207,22 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
     }
 
     struct stat stat_buf;
-    if (stat(dir, &stat_buf) != 0 || !S_ISDIR(stat_buf.st_mode))
-    {
-        if (!(flags & DD_FAIL_QUIETLY))
-            error_msg("'%s' does not exist", dir);
-        dd_close(dd);
-        return NULL;
-    }
 
-    /* In case caller would want to create more files, he'll need uid:gid */
-    dd->dd_uid = stat_buf.st_uid;
-    dd->dd_gid = stat_buf.st_gid;
+    dd->dd_uid = (uid_t)-1L;
+    dd->dd_gid = (gid_t)-1L;
+    if (geteuid() == 0)
+    {
+        /* In case caller would want to create more files, he'll need uid:gid */
+        if (stat(dir, &stat_buf) != 0 || !S_ISDIR(stat_buf.st_mode))
+        {
+            if (!(flags & DD_FAIL_QUIETLY))
+                error_msg("'%s' does not exist", dir);
+            dd_close(dd);
+            return NULL;
+        }
+        dd->dd_uid = stat_buf.st_uid;
+        dd->dd_gid = stat_buf.st_gid;
+    }
 
     /* Without this check, e.g. abrt-action-print happily prints any current
      * directory when run without arguments, because its option -d DIR
@@ -300,7 +305,6 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
         dd_close(dd);
         return NULL;
     }
-
     /* mkdir's mode (above) can be affected by umask, fix it */
     if (chmod(dir, 0750) == -1)
     {
@@ -309,26 +313,31 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
         return NULL;
     }
 
-    /* Get ABRT's user id */
-    /*dd->dd_uid = 0; - dd_init did this already */
-    struct passwd *pw = getpwnam("abrt");
-    if (pw)
-        dd->dd_uid = pw->pw_uid;
-    else
-        error_msg("user 'abrt' does not exist, using uid 0");
-
-    /* Get crashed application's group id */
-    /*dd->dd_gid = 0; - dd_init did this already */
-    pw = getpwuid(uid);
-    if (pw)
-        dd->dd_gid = pw->pw_gid;
-    else
-        error_msg("User %lu does not exist, using gid 0", (long)uid);
-
-    if (chown(dir, dd->dd_uid, dd->dd_gid) == -1)
+    dd->dd_uid = (uid_t)-1L;
+    dd->dd_gid = (gid_t)-1L;
+    if (uid != (uid_t)-1L)
     {
-        perror_msg("can't change '%s' ownership to %lu:%lu", dir,
-                   (long)dd->dd_uid, (long)dd->dd_gid);
+        /* Get ABRT's user id */
+        dd->dd_uid = 0;
+        struct passwd *pw = getpwnam("abrt");
+        if (pw)
+            dd->dd_uid = pw->pw_uid;
+        else
+            error_msg("user 'abrt' does not exist, using uid 0");
+
+        /* Get crashed application's group id */
+        /*dd->dd_gid = 0; - dd_init did this already */
+        pw = getpwuid(uid);
+        if (pw)
+            dd->dd_gid = pw->pw_gid;
+        else
+            error_msg("User %lu does not exist, using gid 0", (long)uid);
+
+        if (chown(dir, dd->dd_uid, dd->dd_gid) == -1)
+        {
+            perror_msg("can't change '%s' ownership to %lu:%lu", dir,
+                       (long)dd->dd_uid, (long)dd->dd_gid);
+        }
     }
 
     char long_str[sizeof(long) * 3 + 2];
@@ -434,10 +443,15 @@ static bool save_binary_file(const char *path, const char* data, unsigned size, 
         perror_msg("Can't open file '%s'", path);
         return false;
     }
-    if (fchown(fd, uid, gid) == -1)
+
+    if (uid != (uid_t)-1L)
     {
-        perror_msg("can't change '%s' ownership to %lu:%lu", path, (long)uid, (long)gid);
+        if (fchown(fd, uid, gid) == -1)
+        {
+            perror_msg("can't change '%s' ownership to %lu:%lu", path, (long)uid, (long)gid);
+        }
     }
+
     unsigned r = full_write(fd, data, size);
     close(fd);
     if (r != size)

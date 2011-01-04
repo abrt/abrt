@@ -44,6 +44,9 @@ struct dump_dir {
 void dd_close(struct dump_dir *dd);
 
 struct dump_dir *dd_opendir(const char *dir, int flags);
+/* Pass uid = (uid_t)-1L to disable chown'ing of newly created files
+ * (IOW: if you aren't running under root):
+ */
 struct dump_dir *dd_create(const char *dir, uid_t uid);
 int dd_exist(struct dump_dir *dd, const char *path);
 DIR *dd_init_next_file(struct dump_dir *dd);

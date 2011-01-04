@@ -14,7 +14,7 @@ res = run_event_state()
 res.post_run_callback = post_run_callback
 res.logging_callback = logging_callback
 
-dd = dd_create("testdir", 0)
+dd = dd_create("testdir")
 if not dd:
     sys.exit(1)
 dd.save_text("analyzer", "foo")

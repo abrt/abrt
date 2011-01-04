@@ -243,8 +243,8 @@ PyObject *p_dd_opendir(PyObject *module, PyObject *args)
 PyObject *p_dd_create(PyObject *module, PyObject *args)
 {
     const char *dir;
-    int uid;
-    if (!PyArg_ParseTuple(args, "si", &dir, &uid))
+    int uid = -1;
+    if (!PyArg_ParseTuple(args, "s|i", &dir, &uid))
         return NULL;
     p_dump_dir *new_dd = PyObject_New(p_dump_dir, &p_dump_dir_type);
     if (!new_dd)
