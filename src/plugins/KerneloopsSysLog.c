@@ -218,32 +218,39 @@ next_line:
 
         if (oopsstart < 0)
         {
-            /* find start-of-oops markers */
-            if (strstr(curline, "general protection fault:"))
+            /* Find start-of-oops markers */
+            /* In some comparisons, we skip 1st letter, to avoid dealing with
+             * changes in capitalization in kernel. For example, I see that
+             * current kernel git (at 2011-01-01) has both "kernel BUG at ..."
+             * and "Kernel BUG at ..." messages, and I don't want to change
+             * the code below whenever kernel is changed to use "K" (or "k")
+             * uniformly.
+             */
+            if (strstr(curline, /*g*/ "eneral protection fault:"))
                 oopsstart = i;
             else if (strstr(curline, "BUG:"))
                 oopsstart = i;
-            else if (strstr(curline, "kernel BUG at"))
+            else if (strstr(curline, /*k*/ "ernel BUG at"))
                 oopsstart = i;
             else if (strstr(curline, "do_IRQ: stack overflow:"))
                 oopsstart = i;
             else if (strstr(curline, "RTNL: assertion failed"))
                  oopsstart = i;
-            else if (strstr(curline, "Eeek! page_mapcount(page) went negative!"))
+            else if (strstr(curline, /*e*/ "eek! page_mapcount(page) went negative!"))
                 oopsstart = i;
-            else if (strstr(curline, "near stack overflow (cur:"))
+            else if (strstr(curline, /*n*/ "ear stack overflow (cur:"))
                 oopsstart = i;
-            else if (strstr(curline, "double fault:"))
+            else if (strstr(curline, /*d*/ "ouble fault:"))
                 oopsstart = i;
-            else if (strstr(curline, "Badness at"))
+            else if (strstr(curline, /*b*/ "adness at"))
                 oopsstart = i;
             else if (strstr(curline, "NETDEV WATCHDOG"))
                 oopsstart = i;
             else if (strstr(curline, "WARNING: at ")) /* WARN_ON() generated message */
                 oopsstart = i;
-            else if (strstr(curline, "Unable to handle kernel"))
+            else if (strstr(curline, /*u*/ "nable to handle kernel"))
                 oopsstart = i;
-            else if (strstr(curline, "sysctl table check failed"))
+            else if (strstr(curline, /*s*/ "ysctl table check failed"))
                 oopsstart = i;
             else if (strstr(curline, "INFO: possible recursive locking detected"))
                 oopsstart = i;
@@ -251,11 +258,12 @@ next_line:
             // by "Badness at", "kernel BUG at", or "WARNING: at" string
             //else if (strstr(curline, "------------[ cut here ]------------"))
             //	oopsstart = i;
-            else if (strstr(curline, "list_del corruption."))
+            else if (strstr(curline, "list_del corruption"))
                 oopsstart = i;
-            else if (strstr(curline, "list_add corruption."))
+            else if (strstr(curline, "list_add corruption"))
                 oopsstart = i;
-            if (strstr(curline, "Oops:") && i >= 3)
+
+            if (i >= 3 && strstr(curline, "Oops:"))
                 oopsstart = i-3;
 
             if (oopsstart >= 0)
