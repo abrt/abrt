@@ -75,7 +75,9 @@ class ConfBackendGnomeKeyring(ConfBackend):
         if g_default_key_ring:
             return
         if not gkey or not gkey.is_available():
-            raise ConfBackendInitError(_("Cannot connect to the Gnome Keyring daemon."))
+            raise ConfBackendInitError(
+                _("Can't connect to gnome-keyring-daemon, changes won't be saved.")
+                )
         try:
             g_default_key_ring = gkey.get_default_keyring_sync()
         except:

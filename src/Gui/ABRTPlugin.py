@@ -17,10 +17,19 @@ class PluginSettings(dict):
     def __init__(self):
         dict.__init__(self)
         self.client_side_conf = None
+        self.init_warnings = []
         try:
             self.client_side_conf = getCurrentConfBackend()
         except ConfBackendInitError, e:
+            # this exception is not critical, but we might want to show
+            # it to user as a warning, so store it for later...
+            # and we can't raise the exception here and let the caller to handle
+            # it, because PluginSettings object wouldn't be created...
+            self.init_warnings.append(e)
             print e
+
+    def get_init_warnings(self):
+        return self.init_warnings
 
     def check(self):
         # if present, these should be non-empty

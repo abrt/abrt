@@ -1,7 +1,8 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.14"/>
   <!-- interface-naming-policy project-wide -->
+  <object class="GtkAction" id="action1"/>
   <object class="GtkDialog" id="PluginDialog">
     <property name="border_width">12</property>
     <property name="resizable">False</property>
@@ -9,11 +10,9 @@
     <property name="window_position">center-on-parent</property>
     <property name="icon_name">abrt</property>
     <property name="type_hint">normal</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <property name="spacing">12</property>
         <child>
           <object class="GtkFrame" id="frame1">
@@ -70,7 +69,7 @@
                       <object class="GtkEntry" id="conf_BugzillaURL">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="invisible_char">&#x25CF;</property>
+                        <property name="invisible_char">●</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -81,7 +80,7 @@
                       <object class="GtkEntry" id="conf_Login">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="invisible_char">&#x25CF;</property>
+                        <property name="invisible_char">●</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -95,7 +94,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="visibility">False</property>
-                        <property name="invisible_char">&#x25CF;</property>
+                        <property name="invisible_char">●</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -176,6 +175,7 @@
                 <property name="use_markup">True</property>
               </object>
               <packing>
+                <property name="expand">False</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -188,6 +188,7 @@
                 <property name="selectable">True</property>
               </object>
               <packing>
+                <property name="expand">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -242,5 +243,4 @@
       <action-widget response="-10">bApply</action-widget>
     </action-widgets>
   </object>
-  <object class="GtkAction" id="action1"/>
 </interface>

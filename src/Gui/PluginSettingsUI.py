@@ -19,6 +19,14 @@ class PluginSettingsUI():
             self.dialog.set_title("%s" % pluginfo.getName())
             if parent:
                 self.dialog.set_transient_for(parent)
+
+            dialog_vbox = self.plugin_gui.get_object("dialog-vbox")
+            for warning in self.Settings.get_init_warnings():
+                warn_lbl = gtk.Label()
+                warn_lbl.set_markup("<span color=\"red\">%s</span>" % warning)
+                dialog_vbox.pack_start(warn_lbl)
+                warn_lbl.show()
+
         else:
             # we shouldn't get here, but just to be safe
             log1("No UI for plugin %s" % pluginfo)
