@@ -223,7 +223,6 @@ Requires: %{name}-addon-ccpp, %{name}-addon-python
 Requires: gdb >= 7.0-3
 Requires: %{name}-gui
 Requires: %{name}-plugin-logger, %{name}-plugin-bugzilla, %{name}-plugin-runapp
-#Requires: %{name}-plugin-firefox
 Obsoletes: bug-buddy
 Provides: bug-buddy
 
@@ -349,7 +348,6 @@ fi
 %{_sbindir}/%{name}d
 %{_bindir}/%{name}-debuginfo-install
 %{_bindir}/%{name}-handle-upload
-%{_bindir}/%{name}-backtrace
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-%{name}.conf
@@ -362,10 +360,8 @@ fi
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
 %dir %{_libdir}/%{name}
-%{_mandir}/man1/%{name}-backtrace.1.gz
 %{_mandir}/man8/abrtd.8.gz
 %{_mandir}/man5/%{name}.conf.5.gz
-#%{_mandir}/man5/pyhook.conf.5.gz
 %{_mandir}/man7/%{name}-plugins.7.gz
 %{_datadir}/polkit-1/actions/org.fedoraproject.abrt.policy
 %{_datadir}/dbus-1/system-services/com.redhat.abrt.service

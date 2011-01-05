@@ -127,7 +127,6 @@ AC_CONFIG_FILES([
 	src/Applet/Makefile
 	src/Gui/Makefile
 	src/CLI/Makefile
-	src/utils/Makefile
 	inc/Makefile
 	po/Makefile.in
 	icons/Makefile
