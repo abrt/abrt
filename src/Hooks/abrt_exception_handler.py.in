@@ -61,8 +61,10 @@ def handleMyException((etype, value, tb)):
 
     # restore original exception handler
     sys.excepthook = sys.__excepthook__  # pylint: disable-msg=E1101
-    # ignore uncaught ctrl-c
-    if etype == KeyboardInterrupt:
+    # ignore
+    #  - uncaught ctrl-c
+    #  - SystemExit rhbz#636913 -> this exception is not an error
+    if etype in [KeyboardInterrupt, SystemExit]:
         return sys.__excepthook__(etype, value, tb)
 
     try:
