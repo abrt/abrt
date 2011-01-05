@@ -695,12 +695,20 @@ presentation kernel core file has 181MB, xz -2 of it has 65MB.
 According to `set target debug 1' GDB reads only 131406 bytes of it
 (incl. the NOTE segment).
 
-2. User management for the HTTP interface. We need multiple
+2. Use gdbserver instead of uploading whole coredump.
+GDB's gdbserver cannot process coredumps, but Jan Kratochvil's can:
+  git://git.fedorahosted.org/git/elfutils.git
+  branch: jankratochvil/gdbserver
+  src/gdbserver.c
+   * Currently threading is not supported.
+   * Currently only x86_64 is supported (the NOTE registers layout).
+
+3. User management for the HTTP interface. We need multiple
 authentication sources (x509 for RHEL).
 
-3. Make architecture, release, packages files, which must be included
+4. Make architecture, release, packages files, which must be included
 in the package when creating a task, optional. Allow uploading a
 coredump without involving tar: just coredump, coredump.gz, or
 coredump.xz.
 
-4. Handle non-standard packages (provided by user)
+5. Handle non-standard packages (provided by user)
