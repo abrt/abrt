@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Sweta Kothari <swkothar@redhat.com>, 2009, 2010.
+# Sweta Kothari <swkothar@redhat.com>, 2009, 2010, 2011.
 # Ankit Patel <ankit@redhat.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.gu\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-12-09 09:15+0000\n"
-"PO-Revision-Date: 2010-12-31 16:56+0530\n"
+"PO-Revision-Date: 2011-01-05 15:29+0530\n"
 "Last-Translator: Sweta Kothari <swkothar@redhat.com>\n"
 "Language-Team: Gujarati\n"
 "MIME-Version: 1.0\n"
@@ -69,7 +69,7 @@ msgid "Open ABRT"
 msgstr "ABRT ખોલો"
 
 #: ../src/cli/CLI.cpp:46
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\tCrash dump : %s\n"
 "\tUID        : %s\n"
@@ -78,8 +78,8 @@ msgid ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 msgstr ""
+"\tભંગાણ ડમ્પ : %s\n"
 "\tUID        : %s\n"
-"\tUUID       : %s\n"
 "\tપેકેજ    : %s\n"
 "\tએક્સિક્યૂટેબલ : %s\n"
 "\tભંગાણ સમય : %s\n"
@@ -91,7 +91,7 @@ msgid "\tHostname   : %s\n"
 msgstr "\tયજમાનનામ   : %s\n"
 
 #: ../src/cli/CLI.cpp:98
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Dump directory:     %s\n"
 "Last crash:         %s\n"
@@ -103,16 +103,14 @@ msgid ""
 "System:             %s, kernel %s\n"
 "Reason:             %s\n"
 msgstr ""
-"ભંગાણ ID:           %s:%s\n"
+"ડમ્પ ડિરેક્ટરી:     %s\n"
 "છેલ્લુ ભંગાણ:         %s\n"
-"Analyzer:           %s\n"
+"વિશ્લેષક:           %s\n"
 "ઘટક:          %s\n"
 "પેકેજ:            %s\n"
 "આદેશ:            %s\n"
 "એક્ઝિક્યુટેબલ:         %s\n"
 "સિસ્ટમ:             %s, કર્નલ %s\n"
-"રેટિંગ:             %s\n"
-"કોરડમ્પ ફાઇલ:      %s\n"
 "કારણ:             %s\n"
 
 #: ../src/cli/CLI.cpp:126
@@ -170,7 +168,7 @@ msgstr ""
 
 #. Message has embedded tabs.
 #: ../src/cli/CLI.cpp:248
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
 "\n"
@@ -196,12 +194,13 @@ msgstr ""
 "વપરાશ: %s [OPTION]\n"
 "\n"
 "શરૂઆત:\n"
-"\t-V, --આવૃત્તિ\t\t%s ની આવૃત્તિને દર્શાવો અને બહાર નીકળો\n"
-"\t-?, --મદદ\t\tઆ મદદને છાપો\n"
+"\t-V, --version\t\t%s ની આવૃત્તિને દર્શાવો અને બહાર નીકળો\n"
+"\t-v, --verbose\t\tવર્બોસિટીને વધારો\n"
+"\t-?, --help\t\tઆ મદદને છાપો\n"
 "\n"
-"Actions:\n"
-"\t-l, --યાદી\t\tબધા ભંગાણોની યાદીને છાપો કે જે હજુ અહેવાલ થયેલ નથી\n"
-"\t      -f, --સંપૂર્ણ\tબધા ભંગાણોની યાદીને છાપો, અહેવાલ થયેલ એકને પહેલેથી જ સમાવી રહ્યા "
+"ક્રિયાઓ:\n"
+"\t-l, --list\t\tબધા ભંગાણોની યાદીને છાપો કે જે હજુ અહેવાલ થયેલ નથી\n"
+"\t      -f, --full\tબધા ભંગાણોની યાદીને છાપો, અહેવાલ થયેલ એકને પહેલેથી જ સમાવી રહ્યા "
 "છે\n"
 "\t-r, --CRASH_ID નો અહેવાલ કરો\tઅહેવાલને બનાવો અને મોકલો\n"
 "\t      -y, --હંમેશા\tપૂછ્યા વગર અહેવાલને બનાવો અને મોકલો\n"
@@ -210,8 +209,7 @@ msgstr ""
 "\t      -b, --બેકટ્રેસ\tબેકટ્રેસને સમાવી રહ્યા હોય તે ભંગાણ વિશે વિગત થયેલ જાણકારીને "
 "છાપો\n"
 "CRASH_ID હોઇ શકે છે:\n"
-"\tUID:UUID જોડણી,\n"
-"\tઅનન્ય UUID ઉપસર્ગ  - ભંગાણ એ બંધબેસતા UUID સાથે કાર્ય કરશે\n"
+"\tડમ્પ ડિરેક્ટરીનું નામ, અથવા\n"
 "\t@N  - N નું ભંગાણ (--list --full દ્દારા દર્શાવેલ પ્રમાણે) કાર્ય કરશે\n"
 
 #: ../src/cli/CLI.cpp:292
@@ -332,9 +330,8 @@ msgid "Skipping..."
 msgstr "છોડી રહ્યા છે..."
 
 #: ../src/cli/report.cpp:682
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "અહેવાલ કરવાનું નિષ્ક્રિય થયેલ છે કારણ કે બેકટ્રેસ ઉપયોગ કરી શકાય તેવુ નથી."
+msgstr "અહેવાલ કરવાનું નિષ્ક્રિય થયેલ છે કારણ કે બેકટ્રેસ ઉપયોગ કરી શકાય તેવુ નથી"
 
 #: ../src/cli/report.cpp:686
 #, c-format
@@ -350,9 +347,9 @@ msgid "Error loading reporter settings"
 msgstr "રિપોર્ટર સુયોજનોને લોડ કરતી વખતે ભૂલ"
 
 #: ../src/cli/report.cpp:716
-#, fuzzy, c-format
+#, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
-msgstr "%d પ્લગઇન મારફતે અહેવાલ થયેલ ભંગાણ (%d ભૂલો)\n"
+msgstr "%d અહેવાલ ઘટનાઓ મારફતે અહેવાલ થયેલ ભંગાણ (%d ભૂલો)\n)\n"
 
 #: ../src/daemon/abrt-handle-crashdump.c:42
 msgid ""
@@ -377,15 +374,15 @@ msgstr "syslog માં લૉગ લો"
 #: ../src/plugins/abrt-action-print.cpp:49
 #: ../src/plugins/abrt-action-upload.cpp:261
 msgid "Crash dump directory"
-msgstr ""
+msgstr "ભંગાણ ડમ્પ ડિરેક્ટરી"
 
 #: ../src/daemon/abrt-handle-crashdump.c:59
 msgid "Handle EVENT"
-msgstr ""
+msgstr "EVENT સંભાળો"
 
 #: ../src/daemon/abrt-handle-crashdump.c:60
 msgid "List possible events [which start with PFX]"
-msgstr ""
+msgstr "શક્ય ઘટનાઓની યાદી કરો [કે જે PFX સાથે શરૂ થાય છે]"
 
 #: ../src/daemon/CommLayerServerDBus.cpp:238
 msgid "Comment is too long"
@@ -409,15 +406,15 @@ msgstr "abrtd [વિકલ્પો]"
 
 #: ../src/daemon/Daemon.cpp:696
 msgid "Do not daemonize"
-msgstr ""
+msgstr "ડિમોનાઇઝ કરો નહિં"
 
 #: ../src/daemon/Daemon.cpp:697
 msgid "Log to syslog even with -d"
-msgstr ""
+msgstr "-d સાથે પણ syslog નો લૉગ લો"
 
 #: ../src/daemon/Daemon.cpp:698
 msgid "Exit after SEC seconds of inactivity"
-msgstr ""
+msgstr "બિનપ્રવૃત્તિની SEC સેકંડો પછી બહાર નીકળો"
 
 #: ../src/gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -832,7 +829,7 @@ msgstr ""
 #: ../src/gui/CReporterAssistant.py:738
 #, python-format
 msgid "Found %i occurence(s) [at: %i of %i]"
-msgstr ""
+msgstr "%i ઘટના (ઓ) મળી [at: %i of %i]"
 
 #: ../src/gui/CReporterAssistant.py:775
 msgid "Search:"
@@ -856,7 +853,7 @@ msgstr "બેકટ્રેસને મંજૂર કરો"
 
 #: ../src/gui/CReporterAssistant.py:862
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "તમારે ભરવાની જરૂર છે તમે કેવી રીતે આગળ વધી શકો છો..."
 
 #: ../src/gui/CReporterAssistant.py:885
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
@@ -1230,6 +1227,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredumps"
 msgstr ""
+" [-vs] -d DIR\n"
+"\n"
+"કોરડમ્પની UUID નો સંગ્રહ અને ગણતરી કરે છે"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:131
 msgid ""
@@ -1237,6 +1237,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH of oops crash dumps"
 msgstr ""
+" [-vs] -d DIR\n"
+"\n"
+"oops ભંગાણ ડમ્પોનાં UUID અને DUPHASH નો સંગ્રહ કરે છે અને ગણતરી કરે છે"
 
 #: ../src/plugins/abrt-action-analyze-python.c:36
 msgid ""
@@ -1244,6 +1247,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
+" [-vs] -d DIR\n"
+"\n"
+"python ભંગાણ ડમ્પોનાં UUID અને DUPHASH નો સંગ્રહ કરે છે અને ગણતરી કરે છે"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:531
 #, c-format
@@ -1311,12 +1317,12 @@ msgstr "ભૂલ(%d) માં નવી ટિપ્પણીને ઉમે�
 #: ../src/plugins/abrt-action-generate-backtrace.c:319
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "%s બેકટ્રેસ પાર્સિંગ નિષ્ફળ"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:72
 #, python-format
 msgid "Extracting cpio from %s"
-msgstr ""
+msgstr "%s માંથી cpio ને બહાર કાઢી રહ્યા છે"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:77
 msgid "Can't write to:"
@@ -1329,12 +1335,12 @@ msgstr "કામચલાઉ rpm ફાઇલને દૂર કરી રહ�
 #: ../src/plugins/abrt-action-install-debuginfo.py:91
 #, python-format
 msgid "Can't extract package: %s"
-msgstr ""
+msgstr "પેકેજને બહાર કાઢી શકાતુ નથી: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:99
 #, python-format
 msgid "Caching files from %s made from %s"
-msgstr ""
+msgstr "%s માંથી ફાઇલો કેશ કરી રહ્યા છીએ કે જે %s માંથી બનાવવામાં આવેલ છે"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:107
 msgid "Removing the temporary cpio file"
@@ -1343,7 +1349,7 @@ msgstr "કામચલાઉ cpio ફાઇલને દૂર કરી રહ
 #: ../src/plugins/abrt-action-install-debuginfo.py:110
 #, python-format
 msgid "Can't extract files from: %s"
-msgstr ""
+msgstr "તેમાંથી ફાઇલોને બહાર કાઢી શકાતી નથી: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:134
 #: ../src/plugins/abrt-action-install-debuginfo.py:140
@@ -1372,22 +1378,22 @@ msgstr "પેકેજ %s ને ડાઉનલોડ કરતી વખત�
 #. recursively delete the temp dir on failure
 #: ../src/plugins/abrt-action-install-debuginfo.py:268
 msgid "Unpacking failed, aborting download..."
-msgstr ""
+msgstr "અનપેકિંગ નિષ્ફળ, ડાઉનલોડને કાઢી રહ્યા છે..."
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:275
 #, python-format
 msgid "All downloaded packages have been extracted, removing %s"
-msgstr ""
+msgstr "બધા ડાઉનલોડ થયેલ પેકેજોને બહાર કાઢી દીધેલ છે, %s ને દૂર કરી રહ્યા છે"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:280
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
-msgstr ""
+msgstr "%s ને દૂર કરી શકાતુ નથી, કદાચ ભૂલ લૉગને સમાવે છે"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:305
 #, python-format
 msgid "Analyzing corefile: %(corefile_path)s"
-msgstr ""
+msgstr "કોરફાઇલનું વિશ્લેષણ કરી રહ્યા છે: %(corefile_path)s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:384
 #, python-format
@@ -1396,7 +1402,7 @@ msgstr "%(tmpdir_path)s દૂર કરી શકાતી નથી: %(reason)
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:394
 msgid "Exiting on user Command"
-msgstr ""
+msgstr "વપરાશકર્તા આદેશ પર બહાર નીકળી રહ્યા છે"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:413
 #, python-format
@@ -1438,6 +1444,9 @@ msgid ""
 "\n"
 "Upload compressed tarball of crash dump"
 msgstr ""
+" [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"ભંગાણ ડમ્પનો સંકોચાયેલ ટારબોલને અપલોડ કરો"
 
 #: ../src/plugins/abrt-action-mailx.cpp:148
 #: ../src/plugins/abrt-action-upload.cpp:262
@@ -1450,6 +1459,9 @@ msgid ""
 "\n"
 "Print information about the crash to standard output"
 msgstr ""
+" [-v] [-o FILE] -d DIR\n"
+"\n"
+"મૂળભૂત આઉટપુટમાં ભંગાણ વિશે જાણકારીને છાપો"
 
 #: ../src/plugins/abrt-action-print.cpp:50
 msgid "Output file"
@@ -1495,7 +1507,7 @@ msgstr "%s માં %s ને સફળતાપૂર્વક મોકલી
 #: ../src/plugins/abrt-action-upload.cpp:214
 #, c-format
 msgid "Archive is created: '%s'"
-msgstr ""
+msgstr "પેટી બનાવેલ છે: '%s'"
 
 #: ../src/plugins/abrt-action-upload.cpp:248
 msgid ""
@@ -1503,10 +1515,13 @@ msgid ""
 "\n"
 "Upload compressed tarball of crash dump"
 msgstr ""
+" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"ભંગાણ ડમ્પનાં સંકોચાયેલ ટારબોલને અપલોડ કરો"
 
 #: ../src/plugins/abrt-action-upload.cpp:263
 msgid "Base URL to upload to"
-msgstr ""
+msgstr "તેમાં અપલોડ કરવા માટે મૂળ URL"
 
 #: ../src/plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
