@@ -69,7 +69,7 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
         " --only=devicemapper --only=filesys --only=hardware --only=kernel"
         " --only=libraries --only=memory --only=networking --only=nfsserver"
         " --only=pam --only=process --only=rpm -k rpm.rpmva=off --only=ssh"
-        " --only=startup --only=yum 2>&1;"
+        " --only=startup --only=yum --only=general --only=x11 2>&1;"
         "rm sosreport*.md5 2>/dev/null;"
         "mv sosreport*.tar.bz2 sosreport.tar.bz2 2>/dev/null;"
         "mv sosreport*.tar.xz  sosreport.tar.xz  2>/dev/null;"
