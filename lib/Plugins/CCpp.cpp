@@ -39,15 +39,27 @@
 using namespace std;
 
 #define CORE_PATTERN_IFACE      "/proc/sys/kernel/core_pattern"
-#define CORE_PATTERN            "|"CCPP_HOOK_PATH" "DEBUG_DUMPS_DIR" %p %s %u %c"
+/*
+ * %s - signal number
+ * %c - ulimit -c value
+ * %p - pid
+ * %u - uid
+ * %g - gid
+ * %t - UNIX time of dump
+ * %h - hostname
+ * %e - executable filename
+ * %% - output one "%"
+ */
+#define CORE_PATTERN            "|"CCPP_HOOK_PATH" "DEBUG_DUMPS_DIR" %s %c %p %u %g %t %h %e"
+
 #define CORE_PIPE_LIMIT_IFACE   "/proc/sys/kernel/core_pipe_limit"
 /* core_pipe_limit specifies how many dump_helpers might run at the same time
-0 - means unlimited, but the it's not guaranteed that /proc/<pid> of crashing
-process might not be available for dump_helper
-4 - means that 4 dump_helpers can run at the same time, which should be enough
-for ABRT, we can miss some crashes, but what are the odds that more processes
-crash at the same time? This value has been recommended by nhorman
-*/
+ * 0 - means unlimited, but the it's not guaranteed that /proc/<pid>
+ *     of crashing process will be available for dump_helper
+ * 4 - means that 4 dump_helpers can run at the same time, which should be enough
+ *     for ABRT, we can miss some crashes, but what are the odds that more processes
+ *     crash at the same time? This value has been recommended by nhorman
+ */
 #define CORE_PIPE_LIMIT "4"
 
 #define DEBUGINFO_CACHE_DIR     LOCALSTATEDIR"/cache/abrt-di"
@@ -796,7 +808,7 @@ void CAnalyzerCCpp::Init()
     }
     if (m_sOldCorePattern[0] == '|')
     {
-        if (m_sOldCorePattern == CORE_PATTERN)
+        if (strncmp(m_sOldCorePattern.c_str(), CORE_PATTERN, strlen(CORE_PATTERN)) == 0)
         {
             log("warning: %s already contains %s, "
                 "did abrt daemon crash recently?",
@@ -820,14 +832,35 @@ void CAnalyzerCCpp::Init()
     fp = fopen(CORE_PATTERN_IFACE, "w");
     if (fp)
     {
-        fputs(CORE_PATTERN, fp);
+        if (m_sOldCorePattern[0] != '|')
+        {
+            const char *old = m_sOldCorePattern.c_str();
+            unsigned len = strchrnul(old, '\n') - old;
+            char *hex_old = (char*)xmalloc(len * 2 + 1);
+            bin2hex(hex_old, old, len)[0] = '\0';
+            /* Trailing 00 is a sentinel. Decoder in the hook will check it.
+             * If it won't see it, then kernel has truncated the argument:
+             */
+            char *pattern = xasprintf("%s %s00", CORE_PATTERN, hex_old);
+            //log("old:'%s'->'%s'", old, hex_old);
+            //log("pattern:'%s'", pattern);
+
+            fputs(pattern, fp);
+
+            free(pattern);
+            free(hex_old);
+        }
+        else
+        {
+            fputs(CORE_PATTERN, fp);
+        }
         fclose(fp);
     }
 
     /* read the core_pipe_limit and change it if it's == 0
-       otherwise the abrt-hook-ccpp won't be able to read /proc/<pid>
-       of the crashing process
-    */
+     * otherwise the abrt-hook-ccpp won't be able to read /proc/<pid>
+     * of the crashing process
+     */
     fp = fopen(CORE_PIPE_LIMIT_IFACE, "r");
     if (fp)
     {

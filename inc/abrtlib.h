@@ -218,6 +218,17 @@ char* xmalloc_sockaddr2dotted_noport(const struct sockaddr *sa);
 
 /* Random utility functions */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+/* Emit a string of hex representation of bytes */
+char* bin2hex(char *dst, const char *str, int count);
+/* Convert "xxxxxxxx" hex string to binary, no more than COUNT bytes */
+char* hex2bin(char *dst, const char *str, int count);
+#ifdef __cplusplus
+}
+#endif
+
 /* Returns command line of running program.
  * Caller is responsible to free() the returned value.
  * If the pid is not valid or command line can not be obtained,
