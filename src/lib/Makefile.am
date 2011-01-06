@@ -15,6 +15,7 @@ lib_LTLIBRARIES = \
 libreport_la_SOURCES = \
     xfuncs.c \
     encbase64.c \
+    binhex.c \
     stdio_helpers.c \
     hash_md5.c hash_md5.h \
     hash_sha1.c hash_sha1.h \
