@@ -30,6 +30,14 @@
 #include "abrt_types.h"
 #include <glib.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int extract_oopses(GList **oopses, char *buffer, size_t buflen);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
