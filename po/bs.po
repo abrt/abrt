@@ -7,55 +7,715 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-05-30 08:06+0000\n"
+"POT-Creation-Date: 2011-01-07 15:40+0100\n"
 "PO-Revision-Date: 2010-05-30 11:54+0100\n"
 "Last-Translator: Arnes Arnautović <arnes99@gmail.com>\n"
 "Language-Team: Bosnian\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/Gui/ABRTExceptions.py:6
-msgid "Another client is already running, trying to wake it."
+#: ../lib/Plugins/Bugzilla.cpp:543
+#, c-format
+msgid "New bug id: %i"
+msgstr "Novi id greške: %i"
+
+#: ../lib/Plugins/Bugzilla.cpp:638
+#, c-format
+msgid ""
+"Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
+"conf. Server said: %s"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:758
+msgid ""
+"Empty login or password.\n"
+"Please check "
+msgstr ""
+"Prazan login ili šifra.\n"
+"Molim provjerite "
+
+#: ../lib/Plugins/Bugzilla.cpp:767
+msgid "Logging into bugzilla..."
+msgstr "Prijavljivanje u bugzillu..."
+
+#: ../lib/Plugins/Bugzilla.cpp:770
+msgid "Checking for duplicates..."
+msgstr "Provjeravanje duplikata..."
+
+#: ../lib/Plugins/Bugzilla.cpp:791 ../lib/Plugins/Bugzilla.cpp:826
+msgid "Missing mandatory member 'bugs'"
+msgstr "Nedostaje obavezni član 'bugs'"
+
+#: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
+#: ../lib/Plugins/Bugzilla.cpp:918
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr "get_bug_info() neuspjelo. Nisam mogao skupiti sve obavezne informacije"
+
+#: ../lib/Plugins/Bugzilla.cpp:858
+#, fuzzy
+msgid "Creating a new bug..."
+msgstr "Stvaranje nove greške..."
+
+#: ../lib/Plugins/Bugzilla.cpp:863
+msgid "Bugzilla entry creation failed"
+msgstr "Bugzilla stvaranje unosa neuspjelo"
+
+#: ../lib/Plugins/Bugzilla.cpp:873 ../lib/Plugins/Bugzilla.cpp:968
+msgid "Logging out..."
+msgstr "Odjavljivanje..."
+
+#. decision based on state
+#: ../lib/Plugins/Bugzilla.cpp:892
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "Greška je već izviještena: %i"
+
+#: ../lib/Plugins/Bugzilla.cpp:903
+#, fuzzy, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr "Bugzilla nije mogla naći roditelja greške(%d)"
+
+#: ../lib/Plugins/Bugzilla.cpp:932 ../lib/Plugins/Bugzilla.cpp:933
+#, c-format
+msgid "Adding %s to CC list"
+msgstr "Dodaj%s na CC listu"
+
+#: ../lib/Plugins/Bugzilla.cpp:957
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "Dodaj novi komentar u grešku(%d)"
+
+#: ../lib/Plugins/Bugzilla.cpp:1056
+msgid "Reports bugs to bugzilla"
+msgstr ""
+
+#: ../lib/Plugins/CCpp.cpp:201
+msgid "Generating backtrace"
+msgstr "Stvaram backtrace"
+
+#: ../lib/Plugins/CCpp.cpp:369
+#, fuzzy
+msgid "Starting the debuginfo installation"
+msgstr "Započinjem debuginfo instalaciju"
+
+#: ../lib/Plugins/CCpp.cpp:652
+#, fuzzy
+msgid "Skipping the debuginfo installation"
+msgstr "Preskačem debuginfo instalaciju"
+
+#: ../lib/Plugins/CCpp.cpp:670
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr ""
+
+#: ../lib/Plugins/CCpp.cpp:967
+msgid "Analyzes crashes in C/C++ programs"
+msgstr ""
+
+#: ../lib/Plugins/FileTransfer.cpp:52 ../lib/Plugins/ReportUploader.cpp:97
+msgid "FileTransfer: URL not specified"
+msgstr "Prijenos datoteke: URL nije određen"
+
+#: ../lib/Plugins/FileTransfer.cpp:56 ../lib/Plugins/ReportUploader.cpp:101
+#, c-format
+msgid "Sending archive %s to %s"
+msgstr "Šaljem arhivu %s na %s"
+
+#: ../lib/Plugins/FileTransfer.cpp:239
+msgid "FileTransfer: Creating a report..."
+msgstr "Prijenos datoteke: Stvaram izvještaj..."
+
+#: ../lib/Plugins/FileTransfer.cpp:263 ../lib/Plugins/FileTransfer.cpp:292
+#, fuzzy, c-format
+msgid "Cannot create and send an archive: %s"
+msgstr "Nemogu stvoriti i poslati arhivu: %s"
+
+#: ../lib/Plugins/FileTransfer.cpp:359
+msgid "Sends a report via FTP or SCTP"
+msgstr ""
+
+#: ../lib/Plugins/Kerneloops.cpp:142
+msgid "Analyzes kernel oopses"
+msgstr ""
+
+#: ../lib/Plugins/KerneloopsReporter.cpp:94
+msgid "Creating and submitting a report..."
+msgstr "Stvaram i podnosim izvještaj..."
+
+#: ../lib/Plugins/KerneloopsReporter.cpp:142
+msgid "Sends kernel oops information to kerneloops.org"
+msgstr ""
+
+#: ../lib/Plugins/KerneloopsScanner.cpp:212
+msgid "Periodically scans for and saves kernel oopses"
+msgstr ""
+
+#: ../lib/Plugins/Logger.cpp:73
+#, c-format
+msgid "Writing report to '%s'"
+msgstr "Zapisujem izvještaj u '%s'"
+
+#: ../lib/Plugins/Logger.cpp:79
+#, c-format
+msgid "The report was appended to %s"
+msgstr ""
+
+#: ../lib/Plugins/Logger.cpp:79
+#, c-format
+msgid "The report was stored to %s"
+msgstr ""
+
+#: ../lib/Plugins/Logger.cpp:87
+#, fuzzy
+msgid "Writes report to a file"
+msgstr "Zapisujem izvještaj u '%s'"
+
+#: ../lib/Plugins/Mailx.cpp:135
+msgid "Sending an email..."
+msgstr "Šaljem email..."
+
+#: ../lib/Plugins/Mailx.cpp:192
+msgid "Sends an email with a report (via mailx command)"
+msgstr ""
+
+#: ../lib/Plugins/Python.cpp:97
+msgid "Analyzes crashes in Python programs"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.cpp:130
+#, c-format
+msgid "Sending failed, trying again. %s"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.cpp:192
+#, fuzzy
+msgid "Creating a ReportUploader report..."
+msgstr "Stvaram i podnosim izvještaj..."
+
+#: ../lib/Plugins/ReportUploader.cpp:502
+msgid ""
+"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgstr ""
+
+#: ../lib/Plugins/RHTSupport.cpp:233
+#, fuzzy
+msgid "Creating a new case..."
+msgstr "Stvaranje nove greške..."
+
+#: ../lib/Plugins/RHTSupport.cpp:309
+msgid "Reports bugs to Red Hat support"
+msgstr ""
+
+#: ../lib/Plugins/RunApp.cpp:73
+msgid "Runs a command, saves its output"
+msgstr ""
+
+#: ../lib/Plugins/SOSreport.cpp:98
+#, c-format
+msgid "Running sosreport: %s"
+msgstr "Izvodim sosreport: %s"
+
+#: ../lib/Plugins/SOSreport.cpp:103
+#, fuzzy
+msgid "Finished running sosreport"
+msgstr "Završeno izvođenje sosreport"
+
+#: ../lib/Plugins/SOSreport.cpp:159
+msgid "Runs sosreport, saves the output"
+msgstr ""
+
+#: ../lib/Plugins/SQLite3.cpp:678
+msgid "Keeps SQLite3 database about all crashes"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:1
+msgid "<b>Bugzilla plugin configuration</b>"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:2
+msgid "Bugzilla URL:"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:3
+msgid "Don't have an account yet?"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:4
+msgid "Login(email):"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:5 ../lib/Plugins/RHTSupport.glade.h:3
+msgid "Password:"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:6 ../lib/Plugins/RHTSupport.glade.h:5
+msgid "SSL verify"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:7 ../lib/Plugins/RHTSupport.glade.h:6
+msgid "Show password"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:8
+msgid ""
+"You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
+"\">here</a>"
+msgstr ""
+
+#: ../lib/Plugins/KerneloopsReporter.glade.h:1
+msgid "<b>Kerneloops Reporter plugin configuration</b>"
+msgstr ""
+
+#: ../lib/Plugins/KerneloopsReporter.glade.h:2
+msgid "Submit URL:"
+msgstr ""
+
+#: ../lib/Plugins/Logger.glade.h:1
+msgid "<b>Logger plugin configuration</b>"
+msgstr ""
+
+#: ../lib/Plugins/Logger.glade.h:2
+msgid "Append new logs"
+msgstr ""
+
+#: ../lib/Plugins/Logger.glade.h:3
+msgid "Logger file:"
+msgstr ""
+
+#: ../lib/Plugins/Mailx.glade.h:1
+msgid "<b>Mailx plugin configuration</b>"
+msgstr ""
+
+#: ../lib/Plugins/Mailx.glade.h:2
+msgid "Recipient's Email:"
+msgstr ""
+
+#: ../lib/Plugins/Mailx.glade.h:3
+msgid "Send Binary Data"
+msgstr ""
+
+#: ../lib/Plugins/Mailx.glade.h:4
+msgid "Subject:"
+msgstr ""
+
+#: ../lib/Plugins/Mailx.glade.h:5
+msgid "Your Email:"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.glade.h:1
+msgid "<b>Report Uploader plugin configuration</b>"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.glade.h:2
+msgid "Customer:"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.glade.h:3
+msgid "Retry count:"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.glade.h:4
+msgid "Retry delay:"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.glade.h:5
+msgid "Ticket:"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.glade.h:6
+msgid "URL:"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.glade.h:7
+msgid "Upload"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.glade.h:8
+#, fuzzy
+msgid "Use encryption"
+msgstr "Opis:"
+
+#: ../lib/Plugins/RHTSupport.glade.h:1
+msgid "<b>RHTSupport plugin configuration</b>"
+msgstr ""
+
+#: ../lib/Plugins/RHTSupport.glade.h:2
+msgid "Login:"
+msgstr ""
+
+#: ../lib/Plugins/RHTSupport.glade.h:4
+msgid "RHTSupport URL:"
+msgstr ""
+
+#: ../src/Applet/abrt-applet.desktop.in.h:1
+msgid "ABRT notification applet"
+msgstr ""
+
+#: ../src/Applet/abrt-applet.desktop.in.h:2 ../src/Gui/abrt.desktop.in.h:1
+#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/report.glade.h:16
+msgid "Automatic Bug Reporting Tool"
+msgstr "Automatski alat za izvještaj greški"
+
+#: ../src/Applet/Applet.cpp:85
+#, fuzzy, c-format
+msgid "A crash in the %s package has been detected"
+msgstr "Pad u paketu %s je otkriven"
+
+#: ../src/Applet/Applet.cpp:87
+msgid "A crash has been detected"
+msgstr "Pad je otkriven"
+
+#: ../src/Applet/Applet.cpp:284
+msgid "ABRT service is not running"
+msgstr "ABRT servis se neizvodi"
+
+#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
+#: ../src/Applet/CCApplet.cpp:287
+msgid "Warning"
+msgstr "Upozorenje"
+
+#: ../src/Applet/CCApplet.cpp:89
+#, fuzzy
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
+msgstr ""
+"Aplet područja obavijesti za obavještavanje korisnika o problemima "
+"otkrivenim od strane ABRT-a"
+
+#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
+msgid "translator-credits"
+msgstr "Arnes Arnautović <arnes99@gmail.com>"
+
+#: ../src/Applet/CCApplet.cpp:115
+msgid "Hide"
+msgstr "Sakrij"
+
+#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:13
+msgid "Report"
+msgstr "Izvještaj"
+
+#: ../src/Applet/CCApplet.cpp:256 ../src/Applet/CCApplet.cpp:284
+msgid "Open ABRT"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:56
+#, c-format
+msgid ""
+"\tUID        : %s\n"
+"\tUUID       : %s\n"
+"\tPackage    : %s\n"
+"\tExecutable : %s\n"
+"\tCrash Time : %s\n"
+"\tCrash Count: %s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:74
+#, c-format
+msgid "\tHostname   : %s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:103
+#, c-format
+msgid ""
+"Crash ID:           %s:%s\n"
+"Last crash:         %s\n"
+"Analyzer:           %s\n"
+"Component:          %s\n"
+"Package:            %s\n"
+"Command:            %s\n"
+"Executable:         %s\n"
+"System:             %s, kernel %s\n"
+"Reason:             %s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:131
+#, c-format
+msgid "Coredump file:      %s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:135
+#, c-format
+msgid "Rating:             %s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:140
+#, c-format
+msgid "Crash function:     %s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:144
+#, c-format
+msgid "Hostname:           %s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:148
+#, c-format
+msgid ""
+"\n"
+"How to reproduce:\n"
+"%s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:152
+#, c-format
+msgid ""
+"\n"
+"Comment:\n"
+"%s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:158
+#, c-format
+msgid ""
+"\n"
+"Backtrace:\n"
+"%s\n"
+msgstr ""
+
+#. Message has embedded tabs.
+#: ../src/CLI/CLI.cpp:256
+#, c-format
+msgid ""
+"Usage: %s [OPTION]\n"
+"\n"
+"Startup:\n"
+"\t-V, --version\t\tdisplay the version of %s and exit\n"
+"\t-?, --help\t\tprint this help\n"
+"\n"
+"Actions:\n"
+"\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
+"\t      -f, --full\tprint a list of all crashes, including the already "
+"reported ones\n"
+"\t-r, --report CRASH_ID\tcreate and send a report\n"
+"\t      -y, --always\tcreate and send a report without asking\n"
+"\t-d, --delete CRASH_ID\tremove a crash\n"
+"\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
+"\t      -b, --backtrace\tprint detailed information about a crash including "
+"backtrace\n"
+"CRASH_ID can be:\n"
+"\tUID:UUID pair,\n"
+"\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
+"\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:302
+msgid "You must specify exactly one operation"
+msgstr ""
+
+#: ../src/CLI/report.cpp:179
+#, c-format
+msgid "# This field is read only\n"
+msgstr ""
+
+#: ../src/CLI/report.cpp:199
+msgid "# Describe the circumstances of this crash below"
+msgstr ""
+
+#: ../src/CLI/report.cpp:201
+msgid "# How to reproduce the crash?"
+msgstr ""
+
+#: ../src/CLI/report.cpp:203
+#, fuzzy
+msgid ""
+"# Backtrace\n"
+"# Check that it does not contain any sensitive data (passwords, etc.)"
+msgstr "Provjerio sam backtrace i odstranio osjetljive podatke (šifre, itd)"
+
+#: ../src/CLI/report.cpp:205
+#, fuzzy
+msgid "# Architecture"
+msgstr "Arhitektura"
+
+#: ../src/CLI/report.cpp:206
+#, fuzzy
+msgid "# Command line"
+msgstr "Naredbena linija"
+
+#: ../src/CLI/report.cpp:207
+#, fuzzy
+msgid "# Component"
+msgstr "Komponenta"
+
+#: ../src/CLI/report.cpp:208
+msgid "# Core dump"
+msgstr ""
+
+#: ../src/CLI/report.cpp:209
+#, fuzzy
+msgid "# Executable"
+msgstr "Izvršivo"
+
+#: ../src/CLI/report.cpp:210
+msgid "# Kernel version"
+msgstr ""
+
+#: ../src/CLI/report.cpp:211
+#, fuzzy
+msgid "# Package"
+msgstr "Paket"
+
+#: ../src/CLI/report.cpp:212
+msgid "# Reason of crash"
+msgstr ""
+
+#: ../src/CLI/report.cpp:213
+msgid "# Release string of the operating system"
+msgstr ""
+
+#: ../src/CLI/report.cpp:336
+msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
+msgstr ""
+
+#: ../src/CLI/report.cpp:424
+#, fuzzy
+msgid ""
+"\n"
+"The report has been updated"
+msgstr "Pad je otkriven"
+
+#: ../src/CLI/report.cpp:426
+msgid ""
+"\n"
+"No changes were detected in the report"
+msgstr ""
+
+#. The response might take more than 1 char in non-latin scripts.
+#: ../src/CLI/report.cpp:545
+msgid "y"
+msgstr ""
+
+#: ../src/CLI/report.cpp:546
+msgid "N"
+msgstr ""
+
+#. Read the missing information and push it to plugin settings.
+#: ../src/CLI/report.cpp:647
+#, c-format
+msgid "Wrong settings were detected for plugin %s\n"
+msgstr ""
+
+#: ../src/CLI/report.cpp:651
+msgid "Enter your login: "
+msgstr ""
+
+#: ../src/CLI/report.cpp:657
+msgid "Enter your password: "
+msgstr ""
+
+#: ../src/CLI/report.cpp:702
+#, fuzzy
+msgid "Reporting..."
+msgstr "Izvještaj"
+
+#: ../src/CLI/report.cpp:721
+#, fuzzy, c-format
+msgid "Report using %s?"
+msgstr "Obavjesni dodaci"
+
+#: ../src/CLI/report.cpp:724
+msgid "Skipping..."
+msgstr ""
+
+#: ../src/CLI/report.cpp:736
+#, fuzzy
+msgid "Reporting disabled because the backtrace is unusable"
+msgstr "Izvješavanje isključeno. Molim popravite probleme prikazate iznad."
+
+#: ../src/CLI/report.cpp:740
+#, c-format
+msgid ""
+"Please try to install debuginfo manually using the command: \"debuginfo-"
+"install %s\" and try again\n"
+msgstr ""
+
+#: ../src/CLI/report.cpp:749
+#, fuzzy
+msgid "Error loading reporter settings"
+msgstr "Greška pri dobivanju izvještaja: %s"
+
+#: ../src/CLI/report.cpp:768
+#, c-format
+msgid "Crash reported via %d plugins (%d errors)\n"
+msgstr ""
+
+#: ../src/Daemon/CommLayerServerDBus.cpp:234
+msgid "Comment is too long"
+msgstr ""
+
+#: ../src/Daemon/CommLayerServerDBus.cpp:238
+msgid "'How to reproduce' is too long"
+msgstr ""
+
+#: ../src/Daemon/Daemon.cpp:517
+#, fuzzy
+msgid ""
+"The size of the report exceeded the quota. Please check system's "
+"MaxCrashReportsSize value in abrt.conf."
+msgstr ""
+"Veličina izvještaja prešla kvotu. Molim provjerite sistemsku "
+"MaxCrashReportsSize vrijednost u abrt.conf."
+
+#: ../src/Daemon/MiddleWare.cpp:579
+msgid "Database plugin not specified. Please check abrtd settings."
+msgstr ""
+
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "Pogledaj i izvijesti aplikacijske padove"
+
+#: ../src/Gui/ABRTExceptions.py:7
+#, fuzzy
+msgid "Another client is already running, trying to wake it..."
 msgstr "Drugi klijent se već izvršava, pokušavam ga probuditi."
 
-#: ../src/Gui/ABRTExceptions.py:13
-msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr "Dobiveni neočekivani podaci od daemona (da li je baza podataka ispravno ažurirana?)."
+#: ../src/Gui/ABRTExceptions.py:14
+#, fuzzy
+msgid ""
+"Got unexpected data from the daemon (is the database properly updated?)."
+msgstr ""
+"Dobiveni neočekivani podaci od daemona (da li je baza podataka ispravno "
+"ažurirana?)."
 
-#: ../src/Gui/ABRTPlugin.py:62
+#: ../src/Gui/ABRTPlugin.py:71
 msgid "Not loaded plugins"
 msgstr "Dodaci nisu učitani"
 
-#: ../src/Gui/ABRTPlugin.py:63
+#: ../src/Gui/ABRTPlugin.py:72
 msgid "Analyzer plugins"
 msgstr "Analizirajući dodaci"
 
-#: ../src/Gui/ABRTPlugin.py:64
+#: ../src/Gui/ABRTPlugin.py:73
 msgid "Action plugins"
 msgstr "Akcijski dodaci"
 
-#: ../src/Gui/ABRTPlugin.py:65
+#: ../src/Gui/ABRTPlugin.py:74
 msgid "Reporter plugins"
 msgstr "Obavjesni dodaci"
 
-#: ../src/Gui/ABRTPlugin.py:66
+#: ../src/Gui/ABRTPlugin.py:75
 msgid "Database plugins"
 msgstr "Dodaci baze podataka"
 
 #: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
-msgid "Can't connect to system dbus"
+#, fuzzy
+msgid "Cannot connect to system dbus."
 msgstr "Nemogu se spojiti na sistemski dbus"
 
 #: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
-msgid "Please check if abrt daemon is running"
+#, fuzzy
+msgid "Please check if the abrt daemon is running."
 msgstr "Molim provjerite da li se abrt daemon izvršava"
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
 #: ../src/Gui/CCDBusBackend.py:174
+#, fuzzy
 msgid ""
-"Daemon didn't return valid report info\n"
-"Debuginfo is missing?"
+"Daemon did not return a valid report info.\n"
+"Is debuginfo missing?"
 msgstr ""
 "Daemon nije vratio važeći izvještaj\n"
 "Debuginfo nedostaje?"
@@ -96,23 +756,13 @@ msgstr "<b>Korisnik:</b>"
 msgid "About ABRT"
 msgstr "O ABRT-u"
 
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/CCMainWindow.py:8
-#: ../src/Gui/report.glade.h:16 ../src/Gui/abrt.desktop.in.h:1
-msgid "Automatic Bug Reporting Tool"
-msgstr "Automatski alat za izvještaj greški"
-
 #: ../src/Gui/ccgui.glade.h:11
-#,fuzy
 msgid "Copy to Clipboard"
 msgstr "Kopiraj u Clipboard"
 
 #: ../src/Gui/ccgui.glade.h:12 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "Dodaci"
-
-#: ../src/Gui/ccgui.glade.h:13 ../src/Applet/CCApplet.cpp:253
-msgid "Report"
-msgstr "Izvještaj"
 
 #: ../src/Gui/ccgui.glade.h:14
 msgid ""
@@ -129,13 +779,14 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"Ovaj program je slobodni softver; možete ga redistribuirati i/ili modificirati "
-"pod uslovima GNU Generalne Javne Licence objavljenim od strane Fondacije "
-"Slobodnog Softvera; ili verzije 2 licence ili (na Vašu opciju) bilo koju noviju verziju.\n"
+"Ovaj program je slobodni softver; možete ga redistribuirati i/ili "
+"modificirati pod uslovima GNU Generalne Javne Licence objavljenim od strane "
+"Fondacije Slobodnog Softvera; ili verzije 2 licence ili (na Vašu opciju) "
+"bilo koju noviju verziju.\n"
 "\n"
-"Ovaj program je distribuiran u nadi da će biti koristan ali BEZ IKAKVE GARANCIJE; "
-"čak i bez implicirane garancije prodaje ili SPREMNOSTI ZA ODREĐENU SVRHU. "
-"Pogledajte GNU Generalnu Javnu Licencu za više detalja.\n"
+"Ovaj program je distribuiran u nadi da će biti koristan ali BEZ IKAKVE "
+"GARANCIJE; čak i bez implicirane garancije prodaje ili SPREMNOSTI ZA "
+"ODREĐENU SVRHU. Pogledajte GNU Generalnu Javnu Licencu za više detalja.\n"
 "\n"
 "Trebali biste dobiti kopiju GNU Generalne javne licence zajedno sa ovim "
 "programom. Ako niste pogledajte <http://www.gnu.org/licenses/>."
@@ -156,43 +807,43 @@ msgstr "_Datoteka"
 msgid "_Help"
 msgstr "_Pomoć"
 
-#: ../src/Gui/ccgui.glade.h:23 ../src/Applet/CCApplet.cpp:105
-msgid "translator-credits"
-msgstr "Arnes Arnautović <arnes99@gmail.com>"
-
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:62
+#: ../src/Gui/CCMainWindow.py:63
 msgid "Reported"
 msgstr "Izvješteno"
 
-#: ../src/Gui/CCMainWindow.py:70
+#: ../src/Gui/CCMainWindow.py:71
 msgid "Application"
 msgstr "Aplikacija"
 
-#: ../src/Gui/CCMainWindow.py:72
+#: ../src/Gui/CCMainWindow.py:73
+msgid "Hostname"
+msgstr ""
+
+#: ../src/Gui/CCMainWindow.py:75
 msgid "Latest Crash"
 msgstr "Najnoviji pad"
 
-#: ../src/Gui/CCMainWindow.py:140
-#, python-format
+#: ../src/Gui/CCMainWindow.py:143
+#, fuzzy, python-format
 msgid ""
-"Can't show the settings dialog\n"
+"Cannot show the settings dialog.\n"
 "%s"
 msgstr ""
 "Nemogu prikazati dijalog postavki\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:145
-#, python-format
+#: ../src/Gui/CCMainWindow.py:148
+#, fuzzy, python-format
 msgid ""
-"Unable to finish current task!\n"
+"Unable to finish the current task!\n"
 "%s"
 msgstr ""
 "Nisam u stanju da završim trenutni zadatak!\n"
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:180
+#: ../src/Gui/CCMainWindow.py:183
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -201,7 +852,7 @@ msgstr ""
 "Greška pri učitavanju dump liste.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:237
+#: ../src/Gui/CCMainWindow.py:241
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -210,11 +861,11 @@ msgstr ""
 "<b>%s Pad</b>\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:333
+#: ../src/Gui/CCMainWindow.py:337
 msgid "You have to select a crash to copy."
 msgstr "Morate odabrati pad za kopiranje."
 
-#: ../src/Gui/CCMainWindow.py:418
+#: ../src/Gui/CCMainWindow.py:422
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -224,44 +875,48 @@ msgstr ""
 "\t-v[vv]\t\t\tVerbose\n"
 "\t--report=CRASH_ID\tDirektno izvijesti o padu sa CRASH_ID"
 
-#: ../src/Gui/CCMainWindow.py:441
-#, python-format
+#: ../src/Gui/CCMainWindow.py:445
+#, fuzzy, python-format
 msgid ""
-"No such crash in database, probably wrong crashid.\n"
+"No such crash in the database, probably wrong crashid.\n"
 "crashid=%s"
 msgstr ""
 "Nepostoji takav pad u bazi podataka, vjerovatno pogrešan crashid.\n"
 "crashid=%s"
 
 #. default texts
-#: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:18
-msgid "Brief description how to reproduce this or what you did..."
+#: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:20
+#, fuzzy
+msgid "Brief description of how to reproduce this or what you did..."
 msgstr "Kratak opis kako reproducirati ovo ili šta ste uradili..."
 
-#: ../src/Gui/CCReporterDialog.py:107 ../src/Gui/CReporterAssistant.py:260
-msgid "You must check backtrace for sensitive data"
+#: ../src/Gui/CCReporterDialog.py:107
+#, fuzzy
+msgid "You must check the backtrace for sensitive data."
 msgstr "Morate provjeriti backtrace za osjetljive podatke"
 
-#: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:272
-#, python-format
+#: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:312
+#, fuzzy, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using command: <b>debuginfo-install "
-"%s</b> \n"
-"then use Refresh button to regenerate the backtrace."
+"Please try to install debuginfo manually using the command: <b>debuginfo-"
+"install %s</b> \n"
+"then use the Refresh button to regenerate the backtrace."
 msgstr ""
 "Izvještavanje isključeno zato što backtrace nije iskoristiv.\n"
-"Molim pokušajte instalirati debuginfo ručno koristeći naredbu: <b>debuginfo-install "
-"%s</b> \n"
+"Molim pokušajte instalirati debuginfo ručno koristeći naredbu: <b>debuginfo-"
+"install %s</b> \n"
 "a zatim pritisnite Osvježi dugme da bi ponovno stvorili backtrace."
 
-#: ../src/Gui/CCReporterDialog.py:120 ../src/Gui/CReporterAssistant.py:274
-msgid "The backtrace is unusable, you can't report this!"
+#: ../src/Gui/CCReporterDialog.py:120
+#, fuzzy
+msgid "The backtrace is unusable, you cannot report this!"
 msgstr "Backtrace nije iskoristiv stoga nemožete ovo izvijestiti!"
 
-#: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:278
+#: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:318
+#, fuzzy
 msgid ""
-"The backtrace is incomplete, please make sure you provide good steps to "
+"The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
 "Backtrace nije potpun. Molim da se pobrinete da date dobre korake za "
@@ -272,40 +927,44 @@ msgid "Reporting disabled, please fix the problems shown above."
 msgstr "Izvješavanje isključeno. Molim popravite probleme prikazate iznad."
 
 #: ../src/Gui/CCReporterDialog.py:132
-msgid "Sends the report using selected plugin."
+#, fuzzy
+msgid "Sends the report using the selected plugin."
 msgstr "Šalje izvještaj koristeći odabrani dodatak."
 
 #: ../src/Gui/CCReporterDialog.py:398
+#, fuzzy
 msgid ""
-"No reporter plugin available for this type of crash\n"
+"No reporter plugin available for this type of crash.\n"
 "Please check abrt.conf."
 msgstr ""
 "Nema izvještavajućeg dodatka dostupnog za ovaj tip pada\n"
 "Molim provjerite abrt.conf."
 
-#: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:180
-#, python-format
+#: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:205
+#: ../src/Gui/PluginsSettingsDialog.py:170
+#, fuzzy, python-format
 msgid ""
-"Can't save plugin settings:\n"
+"Cannot save plugin settings:\n"
 " %s"
 msgstr ""
 "Nemogu spremiti postavke dodatka:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:448 ../src/Gui/CReporterAssistant.py:210
+#: ../src/Gui/CCReporterDialog.py:448 ../src/Gui/CReporterAssistant.py:235
 #, python-format
 msgid "Configure %s options"
 msgstr "Podesi %s opcije"
 
-#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:787
+#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:899
+#, fuzzy
 msgid ""
 "Unable to get report!\n"
-"Debuginfo is missing?"
+"Is debuginfo missing?"
 msgstr ""
 "Nemogu dobiti izvještaj!\n"
 "Debuginfo nedostaje?"
 
-#: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:362
+#: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:403
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -315,10 +974,263 @@ msgstr ""
 "%s"
 
 #: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
-#: ../src/Gui/CReporterAssistant.py:819
-#, python-format
-msgid "Error getting the report: %s"
+#: ../src/Gui/CReporterAssistant.py:938
+#, fuzzy, python-format
+msgid "Error acquiring the report: %s"
 msgstr "Greška pri dobivanju izvještaja: %s"
+
+#: ../src/Gui/ConfBackend.py:79
+msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
+msgstr ""
+
+#. could happen if keyring daemon is running, but we run gui under
+#. user who is not the owner of the running session - using su
+#: ../src/Gui/ConfBackend.py:86
+msgid "Cannot get the default keyring."
+msgstr ""
+
+#: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgstr ""
+
+#. we tried 2 times, so giving up the authorization
+#: ../src/Gui/ConfBackend.py:155
+#, python-format
+msgid ""
+"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgstr ""
+
+#: ../src/Gui/ConfBackend.py:208
+msgid "Access to gnome-keyring has been denied, cannot load settings."
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:21
+msgid "Crash info doesn't contain a backtrace"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:284
+#, python-format
+msgid "Rating is required by the %s plugin"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:286
+msgid "Rating is not required by any plugin, skipping the check..."
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:290
+#, python-format
+msgid "Rating is %s"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:293
+msgid "Crashdump doesn't have rating => we suppose it's not required"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:298
+#, fuzzy
+msgid "You should check the backtrace for sensitive data."
+msgstr "Morate provjeriti backtrace za osjetljive podatke"
+
+#: ../src/Gui/CReporterAssistant.py:299
+#, fuzzy
+msgid "You must agree with sending the backtrace."
+msgstr "Morate se složiti sa slanjem backtrace-a"
+
+#: ../src/Gui/CReporterAssistant.py:314
+#, fuzzy
+msgid "Reporting disabled because the backtrace is unusable."
+msgstr "Izvješavanje isključeno. Molim popravite probleme prikazate iznad."
+
+#: ../src/Gui/CReporterAssistant.py:360
+#, fuzzy
+msgid "You did not provide any steps to reproduce."
+msgstr "Niste dali nikakve korake za reproduciranje."
+
+#: ../src/Gui/CReporterAssistant.py:374
+#, fuzzy
+msgid "You did not provide any comments."
+msgstr "Niste dali nikakve komentare."
+
+#: ../src/Gui/CReporterAssistant.py:455
+#, fuzzy, python-format
+msgid ""
+"It looks like an application from the package <b>%s</b> has crashed on your "
+"system. It is a good idea to send a bug report about this issue. The report "
+"will provide software maintainers with information essential in figuring out "
+"how to provide a bug fix for you.\n"
+"\n"
+"Please review the information that follows and modify it as needed to ensure "
+"your bug report does not contain any sensitive data you would rather not "
+"share.\n"
+"\n"
+"Select where you would like to report the bug, and press 'Forward' to "
+"continue."
+msgstr ""
+"Izgleda da je aplikacija iz paketa <b>%s</b> pala na Vašem sistemu. Dobra "
+"ideja je poslati izvještaj greške o ovome. Izvještaj će dati održavačima "
+"softvera potrebne informacije u odlučivanju kako obezbijediti ispravku "
+"greške za Vas\n"
+"\n"
+"Molim pregledajte informacije koje slijede i modificirajte ih po potrebi da "
+"bi bili sigurni da izvještaj o grešci nesadrži osjetljive podatke koje nebi "
+"željeli dijeliti\n"
+"\n"
+"Odaberite gdje biste željeli izvijestiti o grešci i pritisnite 'Naprijed' da "
+"nastavite."
+
+#: ../src/Gui/CReporterAssistant.py:515
+msgid "Only one reporter plugin is configured."
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:521
+msgid "Send a bug report"
+msgstr "Pošalji izvještaj o grešci"
+
+#: ../src/Gui/CReporterAssistant.py:559
+#, fuzzy
+msgid ""
+"Below is the backtrace associated with your crash. A crash backtrace "
+"provides developers with details about how the crash happened, helping them "
+"track down the source of the problem.\n"
+"\n"
+"Please review the backtrace below and modify it as needed to ensure your bug "
+"report does not contain any sensitive data you would rather not share:"
+msgstr ""
+"Ispod je backtrace vezan za Vaš pad. Backtrace pada daje razvijačima "
+"softvera detalje o padu, olakšavajući im pronalaženje izvora problema\n"
+"\n"
+"Molim pregledajte backtrace ispod i modificirajte ga po potrebi da bi bili "
+"sigurni da Vaš izvještaj o grešci nesadržava bilo kakve osjetljive podatke "
+"koje nebi željeli podijeliti:"
+
+#: ../src/Gui/CReporterAssistant.py:603
+msgid "Refresh"
+msgstr "Osvježi"
+
+#: ../src/Gui/CReporterAssistant.py:605
+msgid "Copy"
+msgstr "Kopiraj"
+
+#: ../src/Gui/CReporterAssistant.py:611
+msgid "I agree with submitting the backtrace"
+msgstr "Slažem se sa podnošenjem backtrace-a"
+
+#: ../src/Gui/CReporterAssistant.py:616
+#, fuzzy
+msgid "Approve the backtrace"
+msgstr "Odobri backtrace"
+
+#: ../src/Gui/CReporterAssistant.py:659
+msgid "You need to fill the how to before you can proceed..."
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:682
+#, fuzzy
+msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
+msgstr "Kako se ovaj pad dogodio, korak po korak? Kako bi ga Vi reproducirali?"
+
+#: ../src/Gui/CReporterAssistant.py:703
+#, fuzzy
+msgid ""
+"Are there any comments you would like to share with the software maintainers?"
+msgstr ""
+"Da li ima kakvih komentara koje biste željeli podijeliti sa održavateljima "
+"softvera?"
+
+#: ../src/Gui/CReporterAssistant.py:723
+msgid "Provide additional details"
+msgstr "Obezbijedite dodatne detalje"
+
+#: ../src/Gui/CReporterAssistant.py:729
+#, fuzzy
+msgid ""
+"<b>Tip:</b> Your comments are not private. Please watch what you say "
+"accordingly."
+msgstr ""
+"<b>Savjet:</b> Vaši komentari nisu privatni. Molim da pazite šta ćete pritom "
+"reći"
+
+#: ../src/Gui/CReporterAssistant.py:770
+#, fuzzy
+msgid "Confirm and send the report"
+msgstr "Potvrdi i pošalji izvještaj"
+
+#: ../src/Gui/CReporterAssistant.py:772
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgstr ""
+"Ispod je pregled Vašeg izvještaja o grešci. Molim kliknite 'Primjeni' da bi "
+"ga podnijeli."
+
+#: ../src/Gui/CReporterAssistant.py:777
+msgid "<b>Basic details</b>"
+msgstr "<b>Osnovni detalji</b>"
+
+#. left table
+#: ../src/Gui/CReporterAssistant.py:784
+msgid "Component"
+msgstr "Komponenta"
+
+#: ../src/Gui/CReporterAssistant.py:785
+msgid "Package"
+msgstr "Paket"
+
+#: ../src/Gui/CReporterAssistant.py:786
+msgid "Executable"
+msgstr "Izvršivo"
+
+#: ../src/Gui/CReporterAssistant.py:787
+msgid "Cmdline"
+msgstr "Naredbena linija"
+
+#. right table
+#: ../src/Gui/CReporterAssistant.py:789
+msgid "Architecture"
+msgstr "Arhitektura"
+
+#: ../src/Gui/CReporterAssistant.py:790
+msgid "Kernel"
+msgstr "Kernel"
+
+#: ../src/Gui/CReporterAssistant.py:791
+msgid "Release"
+msgstr "Izdanje"
+
+#: ../src/Gui/CReporterAssistant.py:792
+msgid "Reason"
+msgstr "Razlog"
+
+#: ../src/Gui/CReporterAssistant.py:803 ../src/Gui/report.glade.h:3
+msgid "<b>Backtrace</b>"
+msgstr "<b>Backtrace</b>"
+
+#: ../src/Gui/CReporterAssistant.py:806
+#, fuzzy
+msgid "Click to view..."
+msgstr "Kliknite da pogledate..."
+
+#: ../src/Gui/CReporterAssistant.py:818
+#, fuzzy
+msgid "<b>Steps to reproduce:</b>"
+msgstr "<b>Koraci za reproduciranje:</b>"
+
+#: ../src/Gui/CReporterAssistant.py:839
+msgid "<b>Comments:</b>"
+msgstr "<b>Komentari:</b>"
+
+#: ../src/Gui/CReporterAssistant.py:842
+msgid "No comment provided!"
+msgstr "Nije dat nikakav komentar!"
+
+#: ../src/Gui/CReporterAssistant.py:878
+#, fuzzy
+msgid "Finished sending the bug report"
+msgstr "Završi sa slanjem izvještaja od grešci"
+
+#: ../src/Gui/CReporterAssistant.py:882
+msgid "<b>Bug reports:</b>"
+msgstr "<b>Izvještaji greški:</b>"
 
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Log"
@@ -328,17 +1240,62 @@ msgstr "Dnevnik"
 msgid "Report done"
 msgstr "Izvještaj završen"
 
-#: ../src/Gui/PluginSettingsUI.py:17
-msgid "Can't find PluginDialog widget in UI description!"
-msgstr "Nemogu naći vizualne kontrole PluginDialog-a u opisu korisničkog sučelja."
+#: ../src/Gui/PluginSettingsUI.py:18
+#, fuzzy
+msgid "Cannot find PluginDialog widget in the UI description!"
+msgstr ""
+"Nemogu naći vizualne kontrole PluginDialog-a u opisu korisničkog sučelja."
 
-#: ../src/Gui/PluginSettingsUI.py:54 ../src/Gui/PluginSettingsUI.py:80
-msgid "combo box is not implemented"
+#: ../src/Gui/PluginSettingsUI.py:33
+#, python-format
+msgid ""
+"No UI for the plugin <b>%s</b>, this is probably a bug.\n"
+"Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
+"\">https://fedorahosted.org/abrt/newticket</a>"
+msgstr ""
+
+#: ../src/Gui/PluginSettingsUI.py:68 ../src/Gui/PluginSettingsUI.py:94
+#, fuzzy
+msgid "Combo box is not implemented"
 msgstr "kombo kutija nije implementirana"
 
-#: ../src/Gui/PluginSettingsUI.py:63
+#: ../src/Gui/PluginSettingsUI.py:77
 msgid "Nothing to hydrate!"
 msgstr "Ništa za hidrirati!"
+
+#: ../src/Gui/PluginsSettingsDialog.py:25
+msgid "Cannot load the GUI description for SettingsDialog!"
+msgstr ""
+
+#. Create/configure columns and add them to pluginlist
+#. column "name" has two kind of cells:
+#: ../src/Gui/PluginsSettingsDialog.py:42
+#, fuzzy
+msgid "Name"
+msgstr "Ime:"
+
+#: ../src/Gui/PluginsSettingsDialog.py:149
+msgid "Please select a plugin from the list to edit it's options."
+msgstr ""
+
+#: ../src/Gui/PluginsSettingsDialog.py:157
+#, fuzzy, python-format
+msgid ""
+"Error while opening the plugin settings UI: \n"
+"\n"
+"%s"
+msgstr ""
+"Greška pri učitavanju dump liste.\n"
+"%s"
+
+#: ../src/Gui/progress_window.glade.h:1 ../src/Gui/report.glade.h:17
+msgid "Details"
+msgstr "Detalji"
+
+#: ../src/Gui/progress_window.glade.h:2 ../src/Gui/report.glade.h:21
+#, fuzzy
+msgid "Please wait..."
+msgstr "Molim trenutak..."
 
 #: ../src/Gui/report.glade.h:1
 msgid " "
@@ -347,10 +1304,6 @@ msgstr " "
 #: ../src/Gui/report.glade.h:2
 msgid "<b>Attachments</b>"
 msgstr "<b>Prilog</b>"
-
-#: ../src/Gui/report.glade.h:3 ../src/Gui/CReporterAssistant.py:697
-msgid "<b>Backtrace</b>"
-msgstr "<b>Backtrace</b>"
 
 #: ../src/Gui/report.glade.h:4
 msgid "<b>Comment</b>"
@@ -361,7 +1314,8 @@ msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>Kako reproducirati (u nekoliko kratkih koraka)</b>"
 
 #: ../src/Gui/report.glade.h:6
-msgid "<b>Please fix the following problems</b>"
+#, fuzzy
+msgid "<b>Please fix the following problems:</b>"
 msgstr "<b>Molim da popravite sljedeće probleme</b>"
 
 #: ../src/Gui/report.glade.h:7
@@ -400,25 +1354,19 @@ msgstr "<span fgcolor=\"blue\">Razlog:</span>"
 msgid "<span fgcolor=\"blue\">Release:</span>"
 msgstr "<span fgcolor=\"blue\">Izdanje:</span>"
 
-#: ../src/Gui/report.glade.h:17 ../src/Gui/progress_window.glade.h:1
-msgid "Details"
-msgstr "Detalji"
-
 #: ../src/Gui/report.glade.h:18
-msgid "Forces ABRT to regenerate the backtrace"
+#, fuzzy
+msgid "Forces ABRT to regenerate the backtrace."
 msgstr "Prisiljava ABRT da ponovno stvori backtrace"
 
 #: ../src/Gui/report.glade.h:19
-msgid "I checked backtrace and removed sensitive data (passwords, etc)"
+#, fuzzy
+msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
 msgstr "Provjerio sam backtrace i odstranio osjetljive podatke (šifre, itd)"
 
 #: ../src/Gui/report.glade.h:20
 msgid "N/A"
 msgstr "N/A"
-
-#: ../src/Gui/report.glade.h:21 ../src/Gui/progress_window.glade.h:2
-msgid "Please wait.."
-msgstr "Molim trenutak..."
 
 #: ../src/Gui/report.glade.h:22
 msgid "Reporter Selector"
@@ -432,19 +1380,19 @@ msgstr "Pošalji izvještaj"
 msgid "Show log"
 msgstr "Prikaži dnevnik"
 
-#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
+#: ../src/Gui/SettingsDialog.py:34 ../src/Gui/SettingsDialog.py:51
 msgid "<b>Select plugin</b>"
 msgstr "<b>Odaberi dodatak</b>"
 
-#: ../src/Gui/SettingsDialog.py:36
+#: ../src/Gui/SettingsDialog.py:37
 msgid "<b>Select database backend</b>"
 msgstr "<b>Odaberi backend baze podataka</b>"
 
-#: ../src/Gui/SettingsDialog.py:169
+#: ../src/Gui/SettingsDialog.py:170
 msgid "Remove this job"
 msgstr "Odstrani ovaj zadatak"
 
-#: ../src/Gui/SettingsDialog.py:213
+#: ../src/Gui/SettingsDialog.py:214
 msgid "Remove this action"
 msgstr "Odstrani ovu akciju"
 
@@ -513,7 +1461,8 @@ msgid "GPG keys: "
 msgstr "GPG ključevi: "
 
 #: ../src/Gui/settings.glade.h:17
-msgid "Max coredump storage size(MB):"
+#, fuzzy
+msgid "Max coredump storage size (MB):"
 msgstr "Maksimalni prostor dump jezgre (MB):"
 
 #: ../src/Gui/settings.glade.h:18
@@ -532,352 +1481,40 @@ msgstr "Verzija:"
 msgid "Web Site:"
 msgstr "Web stranica:"
 
-#: ../src/Gui/abrt.desktop.in.h:2
-msgid "View and report application crashes"
-msgstr "Pogledaj i izvijesti aplikacijske padove"
+#: ../src/Gui/settings_wizard.glade.h:1
+#, fuzzy
+msgid "<b>Do you want to continue?</b>"
+msgstr "<b>Gdje želite da izvijestite ovaj incident?</b>"
 
-#: ../src/Gui/CReporterAssistant.py:261
-msgid "You must agree with sending the backtrace"
-msgstr "Morate se složiti sa slanjem backtrace-a"
-
-#: ../src/Gui/CReporterAssistant.py:319
-msgid "You didn't provide any steps to reproduce."
-msgstr "Niste dali nikakve korake za reproduciranje."
-
-#: ../src/Gui/CReporterAssistant.py:333
-msgid "You didn't provide any comments."
-msgstr "Niste dali nikakve komentare."
-
-#: ../src/Gui/CReporterAssistant.py:411
-#, python-format
-msgid ""
-"It looks like an application from the package <b>%s</b> has crashed on your "
-"system. It's a good idea to send a bug report about this issue. The report "
-"will provide software maintainers with information essential in figuring out "
-"how to provide a bug fix for you\n"
-"\n"
-"Please review the information that follows and modify it as needed to ensure "
-"your bug report does not contain any sensitive date you'd rather not share\n"
-"\n"
-"Select where you would like to report the bug, and press 'Forward' to "
-"continue."
+#: ../src/Gui/settings_wizard.glade.h:2
+msgid "Wrong Settings Detected"
 msgstr ""
-"Izgleda da je aplikacija iz paketa <b>%s</b> pala na Vašem "
-"sistemu. Dobra ideja je poslati izvještaj greške o ovome. Izvještaj "
-"će dati održavačima softvera potrebne informacije u odlučivanju "
-"kako obezbijediti ispravku greške za Vas\n"
-"\n"
-"Molim pregledajte informacije koje slijede i modificirajte ih po potrebi da bi bili sigurni "
-"da izvještaj o grešci nesadrži osjetljive podatke koje nebi željeli dijeliti\n"
-"\n"
-"Odaberite gdje biste željeli izvijestiti o grešci i pritisnite 'Naprijed' da "
-"nastavite."
 
-#: ../src/Gui/CReporterAssistant.py:464
-msgid "Send a bug report"
-msgstr "Pošalji izvještaj o grešci"
-
-#: ../src/Gui/CReporterAssistant.py:502
+#: ../src/Gui/settings_wizard.glade.h:3
 msgid ""
-"Below is the backtrace associated with your crash. A crash backtrace "
-"provides developers with details about how a crash happen, helping them "
-"track down the source of the problem\n"
-"\n"
-"Please review the backtrace below and modify it as needed to ensure your bug "
-"report does not contain any sensitive date you'd rather not share:"
+"Wrong settings were detected for some of the enabled reporter plugins. "
+"Please use the buttons below to open the respective configuration and fix it "
+"before you proceed, otherwise, the reporting process may fail.\n"
 msgstr ""
-"Ispod je backtrace vezan za Vaš pad. Backtrace pada "
-"daje razvijačima softvera detalje o padu, olakšavajući im "
-"pronalaženje izvora problema\n"
-"\n"
-"Molim pregledajte backtrace ispod i modificirajte ga po potrebi da bi bili sigurni da Vaš "
-"izvještaj o grešci nesadržava bilo kakve osjetljive podatke koje nebi željeli podijeliti:"
 
-#: ../src/Gui/CReporterAssistant.py:543
-msgid "Refresh"
-msgstr "Osvježi"
+#~ msgid ""
+#~ "Thank you for your bug report. It has been succesfully submitted. You may "
+#~ "view your bug report online using the web adress below:"
+#~ msgstr ""
+#~ "Hvala Vam za Vaš izvještaj o grešci. Uspješno je podnesen. Možete "
+#~ "pogledati Svoj izvještaj o grešci na mreži koristeći web adresu ispod:"
 
-#: ../src/Gui/CReporterAssistant.py:545
-msgid "Copy"
-msgstr "Kopiraj"
+#~ msgid "Not reported"
+#~ msgstr "Nije izvješteno"
 
-#: ../src/Gui/CReporterAssistant.py:551
-msgid "I agree with submitting the backtrace"
-msgstr "Slažem se sa podnošenjem backtrace-a"
+#~ msgid "Jump to bug %d"
+#~ msgstr "Skoči na grešku %d"
 
-#: ../src/Gui/CReporterAssistant.py:556
-msgid "Approve backtrace"
-msgstr "Odobri backtrace"
+#~ msgid "Getting local universal unique identification"
+#~ msgstr "Uzimam lokalnu univerzalnu jedinstvenu identifikaciju"
 
-#: ../src/Gui/CReporterAssistant.py:579
-msgid "How this crash happen, step-by-step? How would you reproduce it?"
-msgstr "Kako se ovaj pad dogodio, korak po korak? Kako bi ga Vi reproducirali?"
+#~ msgid "Getting global universal unique identification..."
+#~ msgstr "Uzimam globalnu univerzalnu jedinstvenu identifikaciju..."
 
-#: ../src/Gui/CReporterAssistant.py:597
-msgid ""
-"Are there any comment you'd like to share with the software maintainers?"
-msgstr ""
-"Da li ima kakvih komentara koje biste željeli podijeliti sa održavateljima softvera?"
-
-#: ../src/Gui/CReporterAssistant.py:616
-msgid "Provide additional details"
-msgstr "Obezbijedite dodatne detalje"
-
-#: ../src/Gui/CReporterAssistant.py:623
-msgid ""
-"<b>Tip:</b> Your comments are not private. Please monitor what you say "
-"accordingly"
-msgstr ""
-"<b>Savjet:</b> Vaši komentari nisu privatni. Molim da pazite šta ćete "
-"pritom reći"
-
-#: ../src/Gui/CReporterAssistant.py:664
-msgid "Confirm and send report"
-msgstr "Potvrdi i pošalji izvještaj"
-
-#: ../src/Gui/CReporterAssistant.py:666
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
-msgstr ""
-"Ispod je pregled Vašeg izvještaja o grešci. Molim kliknite 'Primjeni' da bi ga podnijeli."
-
-#: ../src/Gui/CReporterAssistant.py:671
-msgid "<b>Basic details</b>"
-msgstr "<b>Osnovni detalji</b>"
-
-#. left table
-#: ../src/Gui/CReporterAssistant.py:678
-msgid "Component"
-msgstr "Komponenta"
-
-#: ../src/Gui/CReporterAssistant.py:679
-msgid "Package"
-msgstr "Paket"
-
-#: ../src/Gui/CReporterAssistant.py:680
-msgid "Executable"
-msgstr "Izvršivo"
-
-#: ../src/Gui/CReporterAssistant.py:681
-msgid "Cmdline"
-msgstr "Naredbena linija"
-
-#. right table
-#: ../src/Gui/CReporterAssistant.py:683
-msgid "Architecture"
-msgstr "Arhitektura"
-
-#: ../src/Gui/CReporterAssistant.py:684
-msgid "Kernel"
-msgstr "Kernel"
-
-#: ../src/Gui/CReporterAssistant.py:685
-msgid "Release"
-msgstr "Izdanje"
-
-#: ../src/Gui/CReporterAssistant.py:686
-msgid "Reason"
-msgstr "Razlog"
-
-#: ../src/Gui/CReporterAssistant.py:700
-msgid "Click to view ..."
-msgstr "Kliknite da pogledate..."
-
-#: ../src/Gui/CReporterAssistant.py:712
-msgid "<b>Steps to reporoduce:</b>"
-msgstr "<b>Koraci za reproduciranje:</b>"
-
-#: ../src/Gui/CReporterAssistant.py:730
-msgid "<b>Comments:</b>"
-msgstr "<b>Komentari:</b>"
-
-#: ../src/Gui/CReporterAssistant.py:733
-msgid "No comment provided!"
-msgstr "Nije dat nikakav komentar!"
-
-#: ../src/Gui/CReporterAssistant.py:756
-msgid "Finish sending the bug report"
-msgstr "Završi sa slanjem izvještaja od grešci"
-
-#: ../src/Gui/CReporterAssistant.py:757
-msgid ""
-"Thank you for your bug report. It has been succesfully submitted. You may "
-"view your bug report online using the web adress below:"
-msgstr ""
-"Hvala Vam za Vaš izvještaj o grešci. Uspješno je podnesen. Možete "
-"pogledati Svoj izvještaj o grešci na mreži koristeći web adresu ispod:"
-
-#: ../src/Gui/CReporterAssistant.py:765
-msgid "<b>Bug reports:</b>"
-msgstr "<b>Izvještaji greški:</b>"
-
-#: ../src/Gui/CReporterAssistant.py:769
-msgid "Not reported"
-msgstr "Nije izvješteno"
-
-#: ../src/Applet/Applet.cpp:88
-#, c-format
-msgid "A crash in package %s has been detected"
-msgstr "Pad u paketu %s je otkriven"
-
-#: ../src/Applet/Applet.cpp:90
-msgid "A crash has been detected"
-msgstr "Pad je otkriven"
-
-#: ../src/Applet/Applet.cpp:266
-msgid "ABRT service is not running"
-msgstr "ABRT servis se neizvodi"
-
-#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
-#: ../src/Applet/CCApplet.cpp:287
-msgid "Warning"
-msgstr "Upozorenje"
-
-#: ../src/Applet/CCApplet.cpp:89
-msgid "Notification area applet to notify user about issues detected by ABRT"
-msgstr "Aplet područja obavijesti za obavještavanje korisnika o problemima otkrivenim od strane ABRT-a"
-
-#: ../src/Applet/CCApplet.cpp:115
-msgid "Hide"
-msgstr "Sakrij"
-
-#: ../src/Daemon/Daemon.cpp:477
-msgid ""
-"Report size exceeded the quota. Please check system's MaxCrashReportsSize "
-"value in abrt.conf."
-msgstr ""
-"Veličina izvještaja prešla kvotu. Molim provjerite sistemsku MaxCrashReportsSize "
-"vrijednost u abrt.conf."
-
-#: ../lib/Plugins/Bugzilla.cpp:328
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr "Greška je već izviještena: %i"
-
-#: ../lib/Plugins/Bugzilla.cpp:409
-#, c-format
-msgid "New bug id: %i"
-msgstr "Novi id greške: %i"
-
-#: ../lib/Plugins/Bugzilla.cpp:621
-msgid ""
-"Empty login or password.\n"
-"Please check "
-msgstr ""
-"Prazan login ili šifra.\n"
-"Molim provjerite "
-
-#: ../lib/Plugins/Bugzilla.cpp:629
-msgid "Logging into bugzilla..."
-msgstr "Prijavljivanje u bugzillu..."
-
-#: ../lib/Plugins/Bugzilla.cpp:632
-msgid "Checking for duplicates..."
-msgstr "Provjeravanje duplikata..."
-
-#: ../lib/Plugins/Bugzilla.cpp:645
-msgid "Missing mandatory member 'bugs'"
-msgstr "Nedostaje obavezni član 'bugs'"
-
-#: ../lib/Plugins/Bugzilla.cpp:655
-msgid "Creating new bug..."
-msgstr "Stvaranje nove greške..."
-
-#: ../lib/Plugins/Bugzilla.cpp:660
-msgid "Bugzilla entry creation failed"
-msgstr "Bugzilla stvaranje unosa neuspjelo"
-
-#: ../lib/Plugins/Bugzilla.cpp:668 ../lib/Plugins/Bugzilla.cpp:778
-msgid "Logging out..."
-msgstr "Odjavljivanje..."
-
-#: ../lib/Plugins/Bugzilla.cpp:700 ../lib/Plugins/Bugzilla.cpp:728
-msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr "get_bug_info() neuspjelo. Nisam mogao skupiti sve obavezne informacije"
-
-#: ../lib/Plugins/Bugzilla.cpp:712
-#, c-format
-msgid "Bugzilla couldn't find parent of bug(%d)"
-msgstr "Bugzilla nije mogla naći roditelja greške(%d)"
-
-#: ../lib/Plugins/Bugzilla.cpp:717
-#, c-format
-msgid "Jump to bug %d"
-msgstr "Skoči na grešku %d"
-
-#: ../lib/Plugins/Bugzilla.cpp:742 ../lib/Plugins/Bugzilla.cpp:743
-#, c-format
-msgid "Adding %s to CC list"
-msgstr "Dodaj%s na CC listu"
-
-#: ../lib/Plugins/Bugzilla.cpp:767
-#, c-format
-msgid "Adding new comment to bug %d"
-msgstr "Dodaj novi komentar u grešku(%d)"
-
-#: ../lib/Plugins/Kerneloops.cpp:118
-msgid "Getting local universal unique identification"
-msgstr "Uzimam lokalnu univerzalnu jedinstvenu identifikaciju"
-
-#: ../lib/Plugins/CCpp.cpp:159
-msgid "Generating backtrace"
-msgstr "Stvaram backtrace"
-
-#: ../lib/Plugins/CCpp.cpp:327
-msgid "Starting debuginfo installation"
-msgstr "Započinjem debuginfo instalaciju"
-
-#. Compatibility code.
-#. This whole block should be deleted for Fedora 14.
-#: ../lib/Plugins/CCpp.cpp:535
-msgid "Getting global universal unique identification..."
-msgstr "Uzimam globalnu univerzalnu jedinstvenu identifikaciju..."
-
-#: ../lib/Plugins/CCpp.cpp:701
-msgid "Skipping debuginfo installation"
-msgstr "Preskačem debuginfo instalaciju"
-
-#: ../lib/Plugins/KerneloopsReporter.cpp:94
-msgid "Creating and submitting a report..."
-msgstr "Stvaram i podnosim izvještaj..."
-
-#: ../lib/Plugins/Logger.cpp:73
-#, c-format
-msgid "Writing report to '%s'"
-msgstr "Zapisujem izvještaj u '%s'"
-
-#: ../lib/Plugins/FileTransfer.cpp:53
-msgid "FileTransfer: URL not specified"
-msgstr "Prijenos datoteke: URL nije određen"
-
-#: ../lib/Plugins/FileTransfer.cpp:57
-#, c-format
-msgid "Sending archive %s to %s"
-msgstr "Šaljem arhivu %s na %s"
-
-#: ../lib/Plugins/FileTransfer.cpp:288
-msgid "FileTransfer: Creating a report..."
-msgstr "Prijenos datoteke: Stvaram izvještaj..."
-
-#: ../lib/Plugins/FileTransfer.cpp:322
-#, c-format
-msgid "Can't create and send an archive: %s"
-msgstr "Nemogu stvoriti i poslati arhivu: %s"
-
-#: ../lib/Plugins/FileTransfer.cpp:351
-#, c-format
-msgid "Can't create and send an archive %s"
-msgstr "Nemogu stvoriti i poslati arhivu: %s"
-
-#: ../lib/Plugins/Mailx.cpp:135
-msgid "Sending an email..."
-msgstr "Šaljem email..."
-
-#: ../lib/Plugins/SOSreport.cpp:86
-#, c-format
-msgid "Running sosreport: %s"
-msgstr "Izvodim sosreport: %s"
-
-#: ../lib/Plugins/SOSreport.cpp:91
-msgid "Done running sosreport"
-msgstr "Završeno izvođenje sosreport"
+#~ msgid "Can't create and send an archive %s"
+#~ msgstr "Nemogu stvoriti i poslati arhivu: %s"

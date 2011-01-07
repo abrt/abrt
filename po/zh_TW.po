@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-11-17 18:42+0100\n"
+"POT-Creation-Date: 2011-01-07 15:40+0100\n"
 "PO-Revision-Date: 2010-07-30 15:55+1000\n"
 "Last-Translator: Terry Chuang <tchuang@redhat.com>\n"
 "Language-Team: Traditional Chinese <zh_TW@li.org>\n"
@@ -20,12 +20,12 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../lib/Plugins/Bugzilla.cpp:466
+#: ../lib/Plugins/Bugzilla.cpp:543
 #, c-format
 msgid "New bug id: %i"
 msgstr "新的錯誤 id：%i"
 
-#: ../lib/Plugins/Bugzilla.cpp:561
+#: ../lib/Plugins/Bugzilla.cpp:638
 #, c-format
 msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
@@ -34,7 +34,7 @@ msgstr ""
 "無法登入。請檢查編輯->外掛->Bugzilla 以及 /etc/abrt/plugins/Bugzilla.conf。伺"
 "服器回傳了：%s"
 
-#: ../lib/Plugins/Bugzilla.cpp:681
+#: ../lib/Plugins/Bugzilla.cpp:758
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -42,78 +42,78 @@ msgstr ""
 "登錄帳號與密碼是空的。\n"
 "請檢查"
 
-#: ../lib/Plugins/Bugzilla.cpp:690
+#: ../lib/Plugins/Bugzilla.cpp:767
 msgid "Logging into bugzilla..."
 msgstr "正在登入 bugzilla…"
 
-#: ../lib/Plugins/Bugzilla.cpp:693
+#: ../lib/Plugins/Bugzilla.cpp:770
 msgid "Checking for duplicates..."
 msgstr "正在檢查是否有重覆…"
 
-#: ../lib/Plugins/Bugzilla.cpp:714 ../lib/Plugins/Bugzilla.cpp:749
+#: ../lib/Plugins/Bugzilla.cpp:791 ../lib/Plugins/Bugzilla.cpp:826
 msgid "Missing mandatory member 'bugs'"
 msgstr "必要的成員 'bugs' 遺失"
 
-#: ../lib/Plugins/Bugzilla.cpp:732 ../lib/Plugins/Bugzilla.cpp:765
-#: ../lib/Plugins/Bugzilla.cpp:841
+#: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
+#: ../lib/Plugins/Bugzilla.cpp:918
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() 失敗。無法蒐集所有必要的資訊"
 
-#: ../lib/Plugins/Bugzilla.cpp:781
+#: ../lib/Plugins/Bugzilla.cpp:858
 msgid "Creating a new bug..."
 msgstr "正在建立新的 bug…"
 
-#: ../lib/Plugins/Bugzilla.cpp:786
+#: ../lib/Plugins/Bugzilla.cpp:863
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla 項目建立失敗"
 
-#: ../lib/Plugins/Bugzilla.cpp:796 ../lib/Plugins/Bugzilla.cpp:891
+#: ../lib/Plugins/Bugzilla.cpp:873 ../lib/Plugins/Bugzilla.cpp:968
 msgid "Logging out..."
 msgstr "正在登出…"
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:815
+#: ../lib/Plugins/Bugzilla.cpp:892
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "錯誤已回報：%i"
 
-#: ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:903
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla 找不到錯誤 %d 的 parent"
 
-#: ../lib/Plugins/Bugzilla.cpp:855 ../lib/Plugins/Bugzilla.cpp:856
+#: ../lib/Plugins/Bugzilla.cpp:932 ../lib/Plugins/Bugzilla.cpp:933
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "將 %s 新增至 CC 清單中"
 
-#: ../lib/Plugins/Bugzilla.cpp:880
+#: ../lib/Plugins/Bugzilla.cpp:957
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "在錯誤（%d）中新增註釋"
 
-#: ../lib/Plugins/Bugzilla.cpp:979
+#: ../lib/Plugins/Bugzilla.cpp:1056
 msgid "Reports bugs to bugzilla"
 msgstr "將錯誤回報至 bugzilla"
 
-#: ../lib/Plugins/CCpp.cpp:189
+#: ../lib/Plugins/CCpp.cpp:201
 msgid "Generating backtrace"
 msgstr "正在產生 backtrace"
 
-#: ../lib/Plugins/CCpp.cpp:357
+#: ../lib/Plugins/CCpp.cpp:369
 msgid "Starting the debuginfo installation"
 msgstr "開始進行 debuginfo 的安裝"
 
-#: ../lib/Plugins/CCpp.cpp:640
+#: ../lib/Plugins/CCpp.cpp:652
 msgid "Skipping the debuginfo installation"
 msgstr "跳過 debuginfo 的安裝"
 
-#: ../lib/Plugins/CCpp.cpp:658
+#: ../lib/Plugins/CCpp.cpp:670
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr ""
 
-#: ../lib/Plugins/CCpp.cpp:934
+#: ../lib/Plugins/CCpp.cpp:967
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "分析 C/C++ 程式中的錯誤"
 
@@ -151,7 +151,7 @@ msgstr "正在建立及提交報告中..."
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr "傳送 kernel 錯誤資訊至 kerneloops.org"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:200
+#: ../lib/Plugins/KerneloopsScanner.cpp:212
 msgid "Periodically scans for and saves kernel oopses"
 msgstr "暫時性地掃描並儲存 kernel 錯誤"
 
@@ -715,23 +715,23 @@ msgid ""
 "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "由 daemon 取得了非預期的資料（資料庫是否已正確更新？）。"
 
-#: ../src/Gui/ABRTPlugin.py:62
+#: ../src/Gui/ABRTPlugin.py:71
 msgid "Not loaded plugins"
 msgstr "未載入的外掛程式"
 
-#: ../src/Gui/ABRTPlugin.py:63
+#: ../src/Gui/ABRTPlugin.py:72
 msgid "Analyzer plugins"
 msgstr "Analyzer 外掛程式"
 
-#: ../src/Gui/ABRTPlugin.py:64
+#: ../src/Gui/ABRTPlugin.py:73
 msgid "Action plugins"
 msgstr "Action 外掛程式"
 
-#: ../src/Gui/ABRTPlugin.py:65
+#: ../src/Gui/ABRTPlugin.py:74
 msgid "Reporter plugins"
 msgstr "Reporter 外掛程式"
 
-#: ../src/Gui/ABRTPlugin.py:66
+#: ../src/Gui/ABRTPlugin.py:75
 msgid "Database plugins"
 msgstr "Database 外掛程式"
 
@@ -999,29 +999,30 @@ msgstr ""
 msgid "Error acquiring the report: %s"
 msgstr "嘗試取得報告時發生了錯誤：%s"
 
-#: ../src/Gui/ConfBackend.py:78
-msgid "Cannot connect to the Gnome Keyring daemon."
+#: ../src/Gui/ConfBackend.py:79
+#, fuzzy
+msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
 msgstr "無法連上 Gnome Keyring daemon"
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
-#: ../src/Gui/ConfBackend.py:84
+#: ../src/Gui/ConfBackend.py:86
 msgid "Cannot get the default keyring."
 msgstr "無法取得預設的 keyring。"
 
-#: ../src/Gui/ConfBackend.py:103 ../src/Gui/ConfBackend.py:119
+#: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
 msgid ""
 "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr "存取 gnome-keyring 已被拒絕，外掛設定將不會被儲存。"
 
 #. we tried 2 times, so giving up the authorization
-#: ../src/Gui/ConfBackend.py:153
+#: ../src/Gui/ConfBackend.py:155
 #, python-format
 msgid ""
 "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "存取 gnome-keyring 已被拒絕，無法載入 %s 的設定！"
 
-#: ../src/Gui/ConfBackend.py:206
+#: ../src/Gui/ConfBackend.py:208
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr "存取 gnome-keyring 已被拒絕，無法載入設定。"
 
@@ -1240,7 +1241,7 @@ msgstr "回報完成"
 msgid "Cannot find PluginDialog widget in the UI description!"
 msgstr "在 UI 描述中找不到 PluginDialog widget！"
 
-#: ../src/Gui/PluginSettingsUI.py:25
+#: ../src/Gui/PluginSettingsUI.py:33
 #, python-format
 msgid ""
 "No UI for the plugin <b>%s</b>, this is probably a bug.\n"
@@ -1251,11 +1252,11 @@ msgstr ""
 "請將這項錯誤回報至 <a href=\"https://fedorahosted.org/abrt/newticket"
 "\">https://fedorahosted.org/abrt/newticket</a>"
 
-#: ../src/Gui/PluginSettingsUI.py:60 ../src/Gui/PluginSettingsUI.py:86
+#: ../src/Gui/PluginSettingsUI.py:68 ../src/Gui/PluginSettingsUI.py:94
 msgid "Combo box is not implemented"
 msgstr "Combo box 尚未實做"
 
-#: ../src/Gui/PluginSettingsUI.py:69
+#: ../src/Gui/PluginSettingsUI.py:77
 msgid "Nothing to hydrate!"
 msgstr "沒有需要合成的東西！"
 

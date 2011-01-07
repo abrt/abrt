@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.kn\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-11-17 18:42+0100\n"
+"POT-Creation-Date: 2011-01-07 15:40+0100\n"
 "PO-Revision-Date: 2010-07-30 16:13+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: kn_IN <kde-i18n-doc@kde.org>\n"
@@ -18,12 +18,12 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: ../lib/Plugins/Bugzilla.cpp:466
+#: ../lib/Plugins/Bugzilla.cpp:543
 #, c-format
 msgid "New bug id: %i"
 msgstr "ಹೊಸ ದೋಷ ವರದಿಯ ಐಡಿ: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:561
+#: ../lib/Plugins/Bugzilla.cpp:638
 #, c-format
 msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
@@ -32,7 +32,7 @@ msgstr ""
 "ಪ್ರವೇಶಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ. ಸಂಪಾದನೆ->ಪ್ಲಗ್‌ಇನ್‌ಗಳು->ಬಗ್‌ಝಿಲ್ಲಾ ಹಾಗು /etc/abrt/plugins/"
 "Bugzilla ಅನ್ನು ನೋಡಿ.conf. Server ಹೀಗೆ ಹೇಳಿದೆ : %s"
 
-#: ../lib/Plugins/Bugzilla.cpp:681
+#: ../lib/Plugins/Bugzilla.cpp:758
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -40,78 +40,78 @@ msgstr ""
 "ಬಳಕೆದಾರ ಹೆಸರು ಅಥವ ಗುಪ್ತಪದವು ಖಾಲಿ ಇದೆ.\n"
 "ದಯವಿಟ್ಟು ಇದನ್ನು ಪರಿಶೀಲಿಸಿ "
 
-#: ../lib/Plugins/Bugzilla.cpp:690
+#: ../lib/Plugins/Bugzilla.cpp:767
 msgid "Logging into bugzilla..."
 msgstr "ಬಗ್‌ಝಿಲ್ಲಾಗೆ ಪ್ರವೇಶಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:693
+#: ../lib/Plugins/Bugzilla.cpp:770
 msgid "Checking for duplicates..."
 msgstr "ದ್ವಿಪ್ರತಿಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:714 ../lib/Plugins/Bugzilla.cpp:749
+#: ../lib/Plugins/Bugzilla.cpp:791 ../lib/Plugins/Bugzilla.cpp:826
 msgid "Missing mandatory member 'bugs'"
 msgstr "'ದೋಷಗಳು' ಎಂಬ ಅಗತ್ಯ ನಮೂದು ಕಾಣಿಸುತ್ತಿಲ್ಲ"
 
-#: ../lib/Plugins/Bugzilla.cpp:732 ../lib/Plugins/Bugzilla.cpp:765
-#: ../lib/Plugins/Bugzilla.cpp:841
+#: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
+#: ../lib/Plugins/Bugzilla.cpp:918
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() ವಿಫಲಗೊಂಡಿದೆ. ಎಲ್ಲಾ ಅಗತ್ಯ ಮಾಹಿತಿಯನ್ನು ಸಂಗ್ರಹಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../lib/Plugins/Bugzilla.cpp:781
+#: ../lib/Plugins/Bugzilla.cpp:858
 msgid "Creating a new bug..."
 msgstr "ಹೊಸ ದೋಷವನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:786
+#: ../lib/Plugins/Bugzilla.cpp:863
 msgid "Bugzilla entry creation failed"
 msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ನಮೂದನ್ನು ರಚಿಸುವಿಕೆಯು ವಿಫಲಗೊಂಡಿದೆ"
 
-#: ../lib/Plugins/Bugzilla.cpp:796 ../lib/Plugins/Bugzilla.cpp:891
+#: ../lib/Plugins/Bugzilla.cpp:873 ../lib/Plugins/Bugzilla.cpp:968
 msgid "Logging out..."
 msgstr "ನಿರ್ಗಮಿಸಲಾಗುತ್ತಿದೆ..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:815
+#: ../lib/Plugins/Bugzilla.cpp:892
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "ದೋಷವನ್ನು ಈಗಾಗಲೆ ವರದಿ ಮಾಡಲಾಗಿದೆ: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:903
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "ದೋಷ %d ಮೂಲವನ್ನು ಪತ್ತೆ ಮಾಡಲು ಬಗ್‌ಝಿಲ್ಲಾದಿಂದ ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../lib/Plugins/Bugzilla.cpp:855 ../lib/Plugins/Bugzilla.cpp:856
+#: ../lib/Plugins/Bugzilla.cpp:932 ../lib/Plugins/Bugzilla.cpp:933
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "%s ರವರನ್ನು CC ಪಟ್ಟಿಗೆ ಸೇರಿಸು"
 
-#: ../lib/Plugins/Bugzilla.cpp:880
+#: ../lib/Plugins/Bugzilla.cpp:957
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "ದೋಷಕ್ಕೆ(%d) ಒಂದು ಹೊಸ ಟಿಪ್ಪಣಿಯನ್ನು ಸೇರಿಸಿ"
 
-#: ../lib/Plugins/Bugzilla.cpp:979
+#: ../lib/Plugins/Bugzilla.cpp:1056
 msgid "Reports bugs to bugzilla"
 msgstr "ದೋಷಗಳನ್ನು ಬಗ್‌ಝಿಲ್ಲಾಗೆ ವರದಿ ಮಾಡುತ್ತದೆ"
 
-#: ../lib/Plugins/CCpp.cpp:189
+#: ../lib/Plugins/CCpp.cpp:201
 msgid "Generating backtrace"
 msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಉತ್ಪಾದಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../lib/Plugins/CCpp.cpp:357
+#: ../lib/Plugins/CCpp.cpp:369
 msgid "Starting the debuginfo installation"
 msgstr "debuginfo ಅನುಸ್ಥಾಪನೆಯನ್ನು ಆರಂಭಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../lib/Plugins/CCpp.cpp:640
+#: ../lib/Plugins/CCpp.cpp:652
 msgid "Skipping the debuginfo installation"
 msgstr "debuginfo ಅನುಸ್ಥಾಪನೆಯನ್ನು ಉಪೇಕ್ಷಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../lib/Plugins/CCpp.cpp:658
+#: ../lib/Plugins/CCpp.cpp:670
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr ""
 
-#: ../lib/Plugins/CCpp.cpp:934
+#: ../lib/Plugins/CCpp.cpp:967
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "C/C++ ಪ್ರೊಗ್ರಾಮ್‌ಗಳಲ್ಲಿನ ಕುಸಿತಗಳನ್ನು ವಿಶ್ಲೇಷಿಸುತ್ತದೆ"
 
@@ -149,7 +149,7 @@ msgstr "ಒಂದು ವರದಿಯನ್ನು ರಚಿಸಿ ಸಲ್ಲಿ
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr "ಕರ್ನಲ್ oops ಮಾಹಿತಿಯನ್ನು kerneloops.org ಗೆ ಕಳುಹಿಸುತ್ತದೆ"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:200
+#: ../lib/Plugins/KerneloopsScanner.cpp:212
 msgid "Periodically scans for and saves kernel oopses"
 msgstr "ನಿರ್ದಿಷ್ಟ ಕಾಲಾವಧಿಯಲ್ಲಿ ಕರ್ನಲ್ oopses ಗಾಗಿ ಹುಡುಕಾಡುತ್ತದೆ ಹಾಗು ಶೇಖರಿಸಿಡುತ್ತದೆ"
 
@@ -721,23 +721,23 @@ msgstr ""
 "ಡೆಮನ್‌ನಿಂದ ಅನಿರೀಕ್ಷಿತವಾದ ದತ್ತಾಂಶವು ಮರಳಿದೆ (ದತ್ತಸಂಚಯವನ್ನು ಸಮರ್ಪಕವಾಗಿ ಅಪ್‌ಡೇಟ್ "
 "ಮಾಡಲಾಗಿದೆಯೆ?)."
 
-#: ../src/Gui/ABRTPlugin.py:62
+#: ../src/Gui/ABRTPlugin.py:71
 msgid "Not loaded plugins"
 msgstr "ಲೋಡ್ ಮಾಡಲಾದ ಪ್ಲಗ್‌ಇನ್‌ಗಳಲ್ಲ"
 
-#: ../src/Gui/ABRTPlugin.py:63
+#: ../src/Gui/ABRTPlugin.py:72
 msgid "Analyzer plugins"
 msgstr "ವಿಶ್ಲೇಷಕದ ಪ್ಲಗ್‌ಇನ್‌ಗಳು"
 
-#: ../src/Gui/ABRTPlugin.py:64
+#: ../src/Gui/ABRTPlugin.py:73
 msgid "Action plugins"
 msgstr "ಕ್ರಿಯೆಯ ಪ್ಲಗ್‌ಇನ್‌ಗಳು"
 
-#: ../src/Gui/ABRTPlugin.py:65
+#: ../src/Gui/ABRTPlugin.py:74
 msgid "Reporter plugins"
 msgstr "ವರದಿಗಾರ ಪ್ಲಗ್‌ಇನ್‌ಗಳು"
 
-#: ../src/Gui/ABRTPlugin.py:66
+#: ../src/Gui/ABRTPlugin.py:75
 msgid "Database plugins"
 msgstr "ದತ್ತಸಂಚಯ ಪ್ಲಗ್‌ಇನ್‌ಗಳು"
 
@@ -1014,17 +1014,18 @@ msgstr ""
 msgid "Error acquiring the report: %s"
 msgstr "ವರದಿಯನ್ನು ಪಡೆಯುವಲ್ಲಿ ದೋಷ ಉಂಟಾಗಿದೆ: %s"
 
-#: ../src/Gui/ConfBackend.py:78
-msgid "Cannot connect to the Gnome Keyring daemon."
+#: ../src/Gui/ConfBackend.py:79
+#, fuzzy
+msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
 msgstr "Gnome ಕೀರಿಂಗ್ ಡೆಮನ್‌ನೊಂದಿಗೆ ಸಂಪರ್ಕಸಾಧಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
-#: ../src/Gui/ConfBackend.py:84
+#: ../src/Gui/ConfBackend.py:86
 msgid "Cannot get the default keyring."
 msgstr "ಪೂರ್ವನಿಯೋಜಿತ ಕೀಲಿಸುರುಳಿಯನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
 
-#: ../src/Gui/ConfBackend.py:103 ../src/Gui/ConfBackend.py:119
+#: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
 msgid ""
 "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
@@ -1032,7 +1033,7 @@ msgstr ""
 "ಉಳಿಸಲಾಗುವುದಿಲ್ಲ."
 
 #. we tried 2 times, so giving up the authorization
-#: ../src/Gui/ConfBackend.py:153
+#: ../src/Gui/ConfBackend.py:155
 #, python-format
 msgid ""
 "Access to gnome-keyring has been denied, cannot load the settings for %s!"
@@ -1040,7 +1041,7 @@ msgstr ""
 "gnome-ಕೀಲಿಸುರುಳಿಯನ್ನು ನಿಲುಕಿಸಿಕೊಳ್ಳುವುದನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ, %s ಗಾಗಿನ "
 "ಸಿದ್ಧತೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ!"
 
-#: ../src/Gui/ConfBackend.py:206
+#: ../src/Gui/ConfBackend.py:208
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr ""
 "gnome-ಕೀಲಿಸುರುಳಿಯನ್ನು ನಿಲುಕಿಸಿಕೊಳ್ಳುವುದನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ, ಸಿದ್ಧತೆಗಳನ್ನು ಲೋಡ್ "
@@ -1270,7 +1271,7 @@ msgstr "ವರದಿಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಲಾಗಿ�
 msgid "Cannot find PluginDialog widget in the UI description!"
 msgstr "UI ವಿವರಣೆಯಲ್ಲಿ PluginDialog ವಿಜೆಟ್ ಕಂಡು ಬಂದಿಲ್ಲ!"
 
-#: ../src/Gui/PluginSettingsUI.py:25
+#: ../src/Gui/PluginSettingsUI.py:33
 #, python-format
 msgid ""
 "No UI for the plugin <b>%s</b>, this is probably a bug.\n"
@@ -1281,11 +1282,11 @@ msgstr ""
 "ದಯವಿಟ್ಟು ಇದನ್ನು <a href=\"https://fedorahosted.org/abrt/newticket\">https://"
 "fedorahosted.org/abrt/newticket</a> ಎಂಬಲ್ಲಿ ವರದಿ ಮಾಡಿ"
 
-#: ../src/Gui/PluginSettingsUI.py:60 ../src/Gui/PluginSettingsUI.py:86
+#: ../src/Gui/PluginSettingsUI.py:68 ../src/Gui/PluginSettingsUI.py:94
 msgid "Combo box is not implemented"
 msgstr "ಸಂಯೋಜನಾ ಚೌಕವನ್ನು ಅನ್ವಯಿಸಲಾಗಿಲ್ಲ"
 
-#: ../src/Gui/PluginSettingsUI.py:69
+#: ../src/Gui/PluginSettingsUI.py:77
 msgid "Nothing to hydrate!"
 msgstr "ಹೈಡ್ರೇಟ್ ಮಾಡಲು ಏನೂ ಇಲ್ಲ!"
 

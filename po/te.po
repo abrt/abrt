@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.te\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-11-17 18:42+0100\n"
+"POT-Creation-Date: 2011-01-07 15:40+0100\n"
 "PO-Revision-Date: 2010-07-30 14:44+0530\n"
 "Last-Translator: Krishna Babu K <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
@@ -35,12 +35,12 @@ msgstr ""
 "\n"
 "\n"
 
-#: ../lib/Plugins/Bugzilla.cpp:466
+#: ../lib/Plugins/Bugzilla.cpp:543
 #, c-format
 msgid "New bug id: %i"
 msgstr "కొత్త బగ్ id: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:561
+#: ../lib/Plugins/Bugzilla.cpp:638
 #, c-format
 msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
@@ -49,7 +49,7 @@ msgstr ""
 "లాగిన్ కాలేదు. సరిచేయు->ప్లగిన్స్->బగ్‌జిల్లా మరియు /etc/abrt/plugins/Bugzilla.conf "
 "పరిశీలించుము. సర్వర్ చేబుతోంది: %s"
 
-#: ../lib/Plugins/Bugzilla.cpp:681
+#: ../lib/Plugins/Bugzilla.cpp:758
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -57,78 +57,78 @@ msgstr ""
 "ఖాళీ లాగిన్ లేదా సంకేతపదము.\n"
 "దయచేసి సరిచూసుకొనుము "
 
-#: ../lib/Plugins/Bugzilla.cpp:690
+#: ../lib/Plugins/Bugzilla.cpp:767
 msgid "Logging into bugzilla..."
 msgstr "బగ్‌జిల్లా లోనికి లాగిన్ అవుతోంది..."
 
-#: ../lib/Plugins/Bugzilla.cpp:693
+#: ../lib/Plugins/Bugzilla.cpp:770
 msgid "Checking for duplicates..."
 msgstr "నకిలీల కొరకు పరిశీలించుచున్నది..."
 
-#: ../lib/Plugins/Bugzilla.cpp:714 ../lib/Plugins/Bugzilla.cpp:749
+#: ../lib/Plugins/Bugzilla.cpp:791 ../lib/Plugins/Bugzilla.cpp:826
 msgid "Missing mandatory member 'bugs'"
 msgstr "తప్పనిసరైన సభ్యుని 'bugs' తప్పిపోయినవి"
 
-#: ../lib/Plugins/Bugzilla.cpp:732 ../lib/Plugins/Bugzilla.cpp:765
-#: ../lib/Plugins/Bugzilla.cpp:841
+#: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
+#: ../lib/Plugins/Bugzilla.cpp:918
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() విఫలమైంది. తప్పనిసరైన సమాచారము మొత్తంను సేకరించలేక పోయింది"
 
-#: ../lib/Plugins/Bugzilla.cpp:781
+#: ../lib/Plugins/Bugzilla.cpp:858
 msgid "Creating a new bug..."
 msgstr "కొత్త బగ్‌ను సృష్టించుచున్నది..."
 
-#: ../lib/Plugins/Bugzilla.cpp:786
+#: ../lib/Plugins/Bugzilla.cpp:863
 msgid "Bugzilla entry creation failed"
 msgstr "బగ్‌జిల్లా పద్దు సృష్టించుట విఫలమైంది"
 
-#: ../lib/Plugins/Bugzilla.cpp:796 ../lib/Plugins/Bugzilla.cpp:891
+#: ../lib/Plugins/Bugzilla.cpp:873 ../lib/Plugins/Bugzilla.cpp:968
 msgid "Logging out..."
 msgstr "లాగ్అవుట్ అవుచున్నది..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:815
+#: ../lib/Plugins/Bugzilla.cpp:892
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "బగ్ యిప్పటికే నివేదించబడింది: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:903
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "బగ్‌జిల్లా బగ్ %d యొక్క మాత్రుక(పేరెంట్)ను కనుగొనలేక పోయింది"
 
-#: ../lib/Plugins/Bugzilla.cpp:855 ../lib/Plugins/Bugzilla.cpp:856
+#: ../lib/Plugins/Bugzilla.cpp:932 ../lib/Plugins/Bugzilla.cpp:933
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "%sను CC జాబితాకు జతచేసినది"
 
-#: ../lib/Plugins/Bugzilla.cpp:880
+#: ../lib/Plugins/Bugzilla.cpp:957
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "కొత్త వ్యాఖ్యను బగ్(%d)నకు జతచేయుము"
 
-#: ../lib/Plugins/Bugzilla.cpp:979
+#: ../lib/Plugins/Bugzilla.cpp:1056
 msgid "Reports bugs to bugzilla"
 msgstr "బగ్‌లను బగ్‌జిల్లాకు నివేదించును"
 
-#: ../lib/Plugins/CCpp.cpp:189
+#: ../lib/Plugins/CCpp.cpp:201
 msgid "Generating backtrace"
 msgstr "బాక్‌ట్రేస్ వుద్భవింపచేయుట"
 
-#: ../lib/Plugins/CCpp.cpp:357
+#: ../lib/Plugins/CCpp.cpp:369
 msgid "Starting the debuginfo installation"
 msgstr "డీబగ్‌యిన్ఫో సంస్థాపనను ప్రారంభించుచున్నది"
 
-#: ../lib/Plugins/CCpp.cpp:640
+#: ../lib/Plugins/CCpp.cpp:652
 msgid "Skipping the debuginfo installation"
 msgstr "డీబగ్‌సమాచార సంస్థాపనను దాటవేస్తోంది"
 
-#: ../lib/Plugins/CCpp.cpp:658
+#: ../lib/Plugins/CCpp.cpp:670
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr ""
 
-#: ../lib/Plugins/CCpp.cpp:934
+#: ../lib/Plugins/CCpp.cpp:967
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "C/C++ ప్రోగ్రాములనందలి క్రాష్‌లను విశ్లేషించుము"
 
@@ -166,7 +166,7 @@ msgstr "నివేదికను సృష్టించుచున్న�
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr "కెర్నల్ oops సమాచారమును kerneloops.orgకు పంపును"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:200
+#: ../lib/Plugins/KerneloopsScanner.cpp:212
 msgid "Periodically scans for and saves kernel oopses"
 msgstr "కెర్నల్ oops కొరకు సమయానుసారం స్కాన్ చేసి మరియు దాయును"
 
@@ -734,23 +734,23 @@ msgid ""
 "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "డెమోన్‌నుండి అనుకోని డాటా పొందినది (డాటాబేస్ సరిగా నవీకరించబడిందా?)."
 
-#: ../src/Gui/ABRTPlugin.py:62
+#: ../src/Gui/ABRTPlugin.py:71
 msgid "Not loaded plugins"
 msgstr "లోడుకాని ప్లగిన్స్"
 
-#: ../src/Gui/ABRTPlugin.py:63
+#: ../src/Gui/ABRTPlugin.py:72
 msgid "Analyzer plugins"
 msgstr "విశ్లేషకి ప్లగిన్సు"
 
-#: ../src/Gui/ABRTPlugin.py:64
+#: ../src/Gui/ABRTPlugin.py:73
 msgid "Action plugins"
 msgstr "చర్యా ప్లగిన్సు"
 
-#: ../src/Gui/ABRTPlugin.py:65
+#: ../src/Gui/ABRTPlugin.py:74
 msgid "Reporter plugins"
 msgstr "నివేదకి ప్లగిన్సు"
 
-#: ../src/Gui/ABRTPlugin.py:66
+#: ../src/Gui/ABRTPlugin.py:75
 msgid "Database plugins"
 msgstr "డాటాబేస్ ప్లగిన్సు"
 
@@ -1021,29 +1021,30 @@ msgstr ""
 msgid "Error acquiring the report: %s"
 msgstr "నివేదికను పొందుటలో దోషము: %s"
 
-#: ../src/Gui/ConfBackend.py:78
-msgid "Cannot connect to the Gnome Keyring daemon."
+#: ../src/Gui/ConfBackend.py:79
+#, fuzzy
+msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
 msgstr "Gnome కీరింగ్ డెమోన్‌కు అనుసంధానము కాలేకపోయింది."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
-#: ../src/Gui/ConfBackend.py:84
+#: ../src/Gui/ConfBackend.py:86
 msgid "Cannot get the default keyring."
 msgstr "అప్రమేయ కీరింగ్‌ను పొందలేక పోయింది."
 
-#: ../src/Gui/ConfBackend.py:103 ../src/Gui/ConfBackend.py:119
+#: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
 msgid ""
 "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr "gnome-keyringకు యాక్సెస్ తిరస్కరించబడింది, ప్లగిన్ల అమరికలు దాయబడవు."
 
 #. we tried 2 times, so giving up the authorization
-#: ../src/Gui/ConfBackend.py:153
+#: ../src/Gui/ConfBackend.py:155
 #, python-format
 msgid ""
 "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "gnome-keyringకు యాక్సెస్ తిరస్కరించబడింది, %s కొరకు అమరికలను లోడు చేయలేక పోయింది!"
 
-#: ../src/Gui/ConfBackend.py:206
+#: ../src/Gui/ConfBackend.py:208
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr "gnome-keyringకు యాక్సెస్ తిరస్కరించబడింది, అమరికలను లోడు చేయలేక పోయింది."
 
@@ -1263,7 +1264,7 @@ msgstr "నివేదిక అయినది"
 msgid "Cannot find PluginDialog widget in the UI description!"
 msgstr "UI వివరణనందు ప్లగిన్‌డైలాగు విడ్జట్‌ను కనుగొనలేక పోయింది!"
 
-#: ../src/Gui/PluginSettingsUI.py:25
+#: ../src/Gui/PluginSettingsUI.py:33
 #, python-format
 msgid ""
 "No UI for the plugin <b>%s</b>, this is probably a bug.\n"
@@ -1274,11 +1275,11 @@ msgstr ""
 "దయచేసి దీనిని <a href=\"https://fedorahosted.org/abrt/newticket\">https://"
 "fedorahosted.org/abrt/newticket</a> వద్ద నివేదించుము."
 
-#: ../src/Gui/PluginSettingsUI.py:60 ../src/Gui/PluginSettingsUI.py:86
+#: ../src/Gui/PluginSettingsUI.py:68 ../src/Gui/PluginSettingsUI.py:94
 msgid "Combo box is not implemented"
 msgstr "కాంబో పెట్టె అభివృద్ది పరచలేదు"
 
-#: ../src/Gui/PluginSettingsUI.py:69
+#: ../src/Gui/PluginSettingsUI.py:77
 msgid "Nothing to hydrate!"
 msgstr "హైడ్రేట్ అగుటకు ఏమీలేదు!"
 

@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.1-1-x.gu\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-05 09:27+0000\n"
+"POT-Creation-Date: 2011-01-07 15:40+0100\n"
 "PO-Revision-Date: 2011-01-05 16:24+0530\n"
 "Last-Translator: Sweta Kothari <swkothar@redhat.com>\n"
 "Language-Team: Gujarati\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "\n"
@@ -96,24 +96,24 @@ msgstr "ભૂલ(%d) માં નવી ટિપ્પણીને ઉમે�
 msgid "Reports bugs to bugzilla"
 msgstr "bugzilla માં ભૂલોનો અહેવાલ થાય છે"
 
-#: ../lib/Plugins/CCpp.cpp:189
+#: ../lib/Plugins/CCpp.cpp:201
 msgid "Generating backtrace"
 msgstr "બેકટ્રેસને ઉત્પન્ન કરી રહ્યા છે"
 
-#: ../lib/Plugins/CCpp.cpp:357
+#: ../lib/Plugins/CCpp.cpp:369
 msgid "Starting the debuginfo installation"
 msgstr "ડિબગ જાણકારી સ્થાપન ને શરૂ કરી રહ્યા છે"
 
-#: ../lib/Plugins/CCpp.cpp:640
+#: ../lib/Plugins/CCpp.cpp:652
 msgid "Skipping the debuginfo installation"
 msgstr "ડિબગ જાણકારી સ્થાપન ને છોડી રહ્યા છે"
 
-#: ../lib/Plugins/CCpp.cpp:658
+#: ../lib/Plugins/CCpp.cpp:670
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "%s માટે બેકટ્રેસ પાર્સિંગ નિષ્ફળ"
 
-#: ../lib/Plugins/CCpp.cpp:934
+#: ../lib/Plugins/CCpp.cpp:967
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "C/C++ કાર્યક્રમોમાં ભંગાણોનું પૃથ્થકરણ થાય છે"
 
@@ -196,7 +196,8 @@ msgid "Creating a ReportUploader report..."
 msgstr "ReportUploader અહેવાલને બનાવી રહ્યા છે..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid ""
+"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 ".tar.gz ફાઇલમાં પેકેજોની ભંગાણ માહિતી, વૈકલ્પિક રીતે FTP/SCP/etc મારફતે તેને અપલોડ "
 "કરાય છે"
@@ -379,7 +380,8 @@ msgid "Warning"
 msgstr "ચેતવણી"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
 msgstr "સૂચના વિસ્તાર એપલેટ કે જે ABRT દ્દારા શોધેલ મુદ્દાઓ વિશે વપરાશકર્તાને સૂચિત કરે છે"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
@@ -669,8 +671,8 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
-"મહેરબાની કરીને આદેશની મદદથી જાતે જ debuginfo ને સ્થાપિત કરવાનો પ્રયત્ન કરો: \"debuginfo-"
-"install %s\" અને ફરીથી પ્રયત્ન કરો\n"
+"મહેરબાની કરીને આદેશની મદદથી જાતે જ debuginfo ને સ્થાપિત કરવાનો પ્રયત્ન કરો: "
+"\"debuginfo-install %s\" અને ફરીથી પ્રયત્ન કરો\n"
 
 #: ../src/CLI/report.cpp:749
 msgid "Error loading reporter settings"
@@ -710,26 +712,27 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "બીજો ક્લાઇન્ટ પહેલેથી જ ચાલી રહ્યો છે, તેને ઝગાડવા માટે પ્રયત્ન કરી રહ્યા છે..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgid ""
+"Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "ડિમન માંથી અનિચ્છનીય માહિતી મળી (શું યોગ્ય રીતે ડેટાબેઝ સુધારેલ છે?)."
 
-#: ../src/Gui/ABRTPlugin.py:62
+#: ../src/Gui/ABRTPlugin.py:71
 msgid "Not loaded plugins"
 msgstr "પ્લગઇનોને લાવેલ નથી"
 
-#: ../src/Gui/ABRTPlugin.py:63
+#: ../src/Gui/ABRTPlugin.py:72
 msgid "Analyzer plugins"
 msgstr "Analyzer પલ્ગઇનો"
 
-#: ../src/Gui/ABRTPlugin.py:64
+#: ../src/Gui/ABRTPlugin.py:73
 msgid "Action plugins"
 msgstr "Action પ્લગઇનો"
 
-#: ../src/Gui/ABRTPlugin.py:65
+#: ../src/Gui/ABRTPlugin.py:74
 msgid "Reporter plugins"
 msgstr "Reporter પ્લગઇનો"
 
-#: ../src/Gui/ABRTPlugin.py:66
+#: ../src/Gui/ABRTPlugin.py:75
 msgid "Database plugins"
 msgstr "Database પ્લગઇનો"
 
@@ -1004,27 +1007,32 @@ msgstr ""
 msgid "Error acquiring the report: %s"
 msgstr "અહેવાલને મેળવી રહ્યા હોય ત્યારે ભૂલ: %s"
 
-#: ../src/Gui/ConfBackend.py:78
-msgid "Cannot connect to the Gnome Keyring daemon."
+#: ../src/Gui/ConfBackend.py:79
+#, fuzzy
+msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
 msgstr "Gnome કિરીંગ ડિમનને જોડી શકાતુ નથી."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
-#: ../src/Gui/ConfBackend.py:84
+#: ../src/Gui/ConfBackend.py:86
 msgid "Cannot get the default keyring."
 msgstr "મૂળભૂત કિરીંગને મેળવી શકાતુ નથી."
 
-#: ../src/Gui/ConfBackend.py:103 ../src/Gui/ConfBackend.py:119
-msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr "gnome-keyring નાં વપરાશને નામંજૂર કરી દેવામાં આવ્યુ છે, પ્લગઇન સુયોજનો સંગ્રહ થયેલ હશે નહિં."
+#: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgstr ""
+"gnome-keyring નાં વપરાશને નામંજૂર કરી દેવામાં આવ્યુ છે, પ્લગઇન સુયોજનો સંગ્રહ થયેલ હશે નહિં."
 
 #. we tried 2 times, so giving up the authorization
-#: ../src/Gui/ConfBackend.py:153
+#: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr "gnome-keyring નાં વપરાશને નામંજૂર કરી દેવામાં આવ્યુ છે, %s માટે સુયોજનોને લાવી શકાતુ નથી!"
+msgid ""
+"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgstr ""
+"gnome-keyring નાં વપરાશને નામંજૂર કરી દેવામાં આવ્યુ છે, %s માટે સુયોજનોને લાવી શકાતુ નથી!"
 
-#: ../src/Gui/ConfBackend.py:206
+#: ../src/Gui/ConfBackend.py:208
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr "gnome-keyring નાં વપરાશને નામંજૂર કરી દેવામાં આવ્યુ છે, સુયોજનોને લાવી શકાતુ નથી."
 
@@ -1143,7 +1151,8 @@ msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "કેવી રીતે આ ભંગાણ થયુ (એક પછી એક પગલાં)? કેવી રીતે તેને પુન:ઉત્પન્ન કર્યુ?"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid "Are there any comments you would like to share with the software maintainers?"
+msgid ""
+"Are there any comments you would like to share with the software maintainers?"
 msgstr "શું તમે ત્યાં કોઇપણ ટિપ્પણીઓને સોફ્ટવેર સંચાલક સાથે વહેંચવા માંગો છો?"
 
 #: ../src/Gui/CReporterAssistant.py:723
@@ -1161,7 +1170,8 @@ msgid "Confirm and send the report"
 msgstr "ખાતરી કરો અને અહેવાલને મોકલો"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "નીચે તમારા ભૂલ અહેવાલનું સારાંશ છે. મહેરબાની કરીને તેને જમા કરવા માટે 'લાગુ કરો' પર ક્લિક "
 "કરો."
@@ -1244,7 +1254,7 @@ msgstr "પૂરુ થઇ ગયુ છે તેનો અહેવાલ ક
 msgid "Cannot find PluginDialog widget in the UI description!"
 msgstr "UI વર્ણનમાં PluginDialog વિજેટ શોધી શકાતી નથી!"
 
-#: ../src/Gui/PluginSettingsUI.py:25
+#: ../src/Gui/PluginSettingsUI.py:33
 #, python-format
 msgid ""
 "No UI for the plugin <b>%s</b>, this is probably a bug.\n"
@@ -1255,11 +1265,11 @@ msgstr ""
 "મહેરબાની કરીને <a href=\"https://fedorahosted.org/abrt/newticket\">https://"
 "fedorahosted.org/abrt/newticket</a> પર તેનો અહેવાલ કરો"
 
-#: ../src/Gui/PluginSettingsUI.py:60 ../src/Gui/PluginSettingsUI.py:86
+#: ../src/Gui/PluginSettingsUI.py:68 ../src/Gui/PluginSettingsUI.py:94
 msgid "Combo box is not implemented"
 msgstr "કોમ્બો બોક્સ નું અમલીકરણ થયેલ નથી"
 
-#: ../src/Gui/PluginSettingsUI.py:69
+#: ../src/Gui/PluginSettingsUI.py:77
 msgid "Nothing to hydrate!"
 msgstr "hydrate માટે કંઇ નથી!"
 
@@ -1493,4 +1503,3 @@ msgstr ""
 "ખોટા સુયોજનો સક્રિય થયેલ રિપોર્ટર પ્લગઇનોનાં અમુક માટે શોધાયેલ હતુ. મહેરબાની કરીને અનૂકુળ "
 "રૂપરેખાંકનને ખોલવા માટે નીચે બટનોને વાપરો અને તમે આગળ વધો તે પહેલાં તેને સુધારો, નહિં તો, "
 "અહેવાલીકરણ પ્રક્રિયા નિષ્ફળ જઇ શકે છે.\n"
-

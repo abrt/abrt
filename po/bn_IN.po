@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-11-17 18:42+0100\n"
+"POT-Creation-Date: 2011-01-07 15:40+0100\n"
 "PO-Revision-Date: 2010-08-02 14:04+0530\n"
 "Last-Translator: Runa Bhattacharjee <runab@redhat.com>\n"
 "Language-Team: Bengali INDIA <anubad@lists.ankur.org.in>\n"
@@ -18,12 +18,12 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../lib/Plugins/Bugzilla.cpp:466
+#: ../lib/Plugins/Bugzilla.cpp:543
 #, c-format
 msgid "New bug id: %i"
 msgstr "নতুন বাগ id: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:561
+#: ../lib/Plugins/Bugzilla.cpp:638
 #, c-format
 msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
@@ -32,7 +32,7 @@ msgstr ""
 "লগ-ইন করতে ব্যর্থ। সম্পাদনা->প্লাগ-ইন->Bugzilla ও /etc/abrt/plugins/Bugzilla."
 "conf দেখুন। সার্ভার থেকে প্রাপ্ত বার্তা: %s"
 
-#: ../lib/Plugins/Bugzilla.cpp:681
+#: ../lib/Plugins/Bugzilla.cpp:758
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -40,78 +40,78 @@ msgstr ""
 "লগ-ইন ও পাসওয়ার্ড লেখা হয়নি।\n"
 "অনুগ্রহ করে পরীক্ষা করুন "
 
-#: ../lib/Plugins/Bugzilla.cpp:690
+#: ../lib/Plugins/Bugzilla.cpp:767
 msgid "Logging into bugzilla..."
 msgstr "bugzilla-তে লগ-ইন করা হচ্ছে..."
 
-#: ../lib/Plugins/Bugzilla.cpp:693
+#: ../lib/Plugins/Bugzilla.cpp:770
 msgid "Checking for duplicates..."
 msgstr "প্রতিলিপি পরীক্ষা করা হচ্ছে..."
 
-#: ../lib/Plugins/Bugzilla.cpp:714 ../lib/Plugins/Bugzilla.cpp:749
+#: ../lib/Plugins/Bugzilla.cpp:791 ../lib/Plugins/Bugzilla.cpp:826
 msgid "Missing mandatory member 'bugs'"
 msgstr "আবশ্যক তথ্য 'bugs' অনুপস্থিত"
 
-#: ../lib/Plugins/Bugzilla.cpp:732 ../lib/Plugins/Bugzilla.cpp:765
-#: ../lib/Plugins/Bugzilla.cpp:841
+#: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
+#: ../lib/Plugins/Bugzilla.cpp:918
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() বিফল। সকল আবশ্যক তথ্য সংগ্রহ করা যায়নি"
 
-#: ../lib/Plugins/Bugzilla.cpp:781
+#: ../lib/Plugins/Bugzilla.cpp:858
 msgid "Creating a new bug..."
 msgstr "নতুন বাগ তৈরি করা হচ্ছে..."
 
-#: ../lib/Plugins/Bugzilla.cpp:786
+#: ../lib/Plugins/Bugzilla.cpp:863
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla-র এনট্রি নির্মাণ করতে ব্যর্থ"
 
-#: ../lib/Plugins/Bugzilla.cpp:796 ../lib/Plugins/Bugzilla.cpp:891
+#: ../lib/Plugins/Bugzilla.cpp:873 ../lib/Plugins/Bugzilla.cpp:968
 msgid "Logging out..."
 msgstr "লগ-আউট করা হচ্ছে..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:815
+#: ../lib/Plugins/Bugzilla.cpp:892
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "বাগ পূর্বেই দায়ের করা হয়েছে: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:903
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla দ্বারা বাগ %d-র ঊর্ধ্বতন বাগ সনাক্ত করা সম্ভব হয়নি"
 
-#: ../lib/Plugins/Bugzilla.cpp:855 ../lib/Plugins/Bugzilla.cpp:856
+#: ../lib/Plugins/Bugzilla.cpp:932 ../lib/Plugins/Bugzilla.cpp:933
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "%s-কে প্রতিলিপি প্রাপকদের (CC) তালিকায় সংযোজন করুন"
 
-#: ../lib/Plugins/Bugzilla.cpp:880
+#: ../lib/Plugins/Bugzilla.cpp:957
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "বাগ(%d)-র মধ্যে নতুন বিবৃতি সংযোজন করুন"
 
-#: ../lib/Plugins/Bugzilla.cpp:979
+#: ../lib/Plugins/Bugzilla.cpp:1056
 msgid "Reports bugs to bugzilla"
 msgstr "bugzilla-তে বাগ রিপোর্ট দায়ের করা হয়"
 
-#: ../lib/Plugins/CCpp.cpp:189
+#: ../lib/Plugins/CCpp.cpp:201
 msgid "Generating backtrace"
 msgstr "ব্যাক-ট্রেস সৃষ্টি করা হচ্ছে"
 
-#: ../lib/Plugins/CCpp.cpp:357
+#: ../lib/Plugins/CCpp.cpp:369
 msgid "Starting the debuginfo installation"
 msgstr "debuginfo ইনস্টলেশন আরম্ভ করা হচ্ছে"
 
-#: ../lib/Plugins/CCpp.cpp:640
+#: ../lib/Plugins/CCpp.cpp:652
 msgid "Skipping the debuginfo installation"
 msgstr "debuginfo ইনস্টলেশন উপেক্ষা করা হবে"
 
-#: ../lib/Plugins/CCpp.cpp:658
+#: ../lib/Plugins/CCpp.cpp:670
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr ""
 
-#: ../lib/Plugins/CCpp.cpp:934
+#: ../lib/Plugins/CCpp.cpp:967
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "C/C++ প্রোগ্রামের মধ্যে বিপর্যয় বিশ্লেষণ করা হয়"
 
@@ -149,7 +149,7 @@ msgstr "রিপোর্ট নির্মাণ করে দায়ের �
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr "কার্নেল oops সংক্রান্ত তথ্য kerneloops.org-এ পাঠানো হয়"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:200
+#: ../lib/Plugins/KerneloopsScanner.cpp:212
 msgid "Periodically scans for and saves kernel oopses"
 msgstr "কার্নেল oops-গুলি নিয়মিতরূপে স্ক্যান করে সংরক্ষণ করা হয়"
 
@@ -724,23 +724,23 @@ msgid ""
 msgstr ""
 "ডেমন থেকে অপ্রত্যাশিত তথ্য পাওয়া গিয়েছে (ডাটাবেস কি সঠিকভাবে আপডেট করা হয়েছে?)।"
 
-#: ../src/Gui/ABRTPlugin.py:62
+#: ../src/Gui/ABRTPlugin.py:71
 msgid "Not loaded plugins"
 msgstr "প্লাগ-ইন লোড করা হয়নি"
 
-#: ../src/Gui/ABRTPlugin.py:63
+#: ../src/Gui/ABRTPlugin.py:72
 msgid "Analyzer plugins"
 msgstr "বিশ্লেষণের প্লাগ-ইন"
 
-#: ../src/Gui/ABRTPlugin.py:64
+#: ../src/Gui/ABRTPlugin.py:73
 msgid "Action plugins"
 msgstr "কাজের প্লাগ-ইন"
 
-#: ../src/Gui/ABRTPlugin.py:65
+#: ../src/Gui/ABRTPlugin.py:74
 msgid "Reporter plugins"
 msgstr "রিপোর্টার প্লাগ-ইন"
 
-#: ../src/Gui/ABRTPlugin.py:66
+#: ../src/Gui/ABRTPlugin.py:75
 msgid "Database plugins"
 msgstr "ডাটাবেস প্লাগ-ইন"
 
@@ -1014,17 +1014,18 @@ msgstr ""
 msgid "Error acquiring the report: %s"
 msgstr "রিপোর্ট প্রাপ্ত করতে ব্যর্থ: %s"
 
-#: ../src/Gui/ConfBackend.py:78
-msgid "Cannot connect to the Gnome Keyring daemon."
+#: ../src/Gui/ConfBackend.py:79
+#, fuzzy
+msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
 msgstr "Gnome Keyring ডেমনের সাথে সংযোগ স্থাপন করতে ব্যর্থ"
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
-#: ../src/Gui/ConfBackend.py:84
+#: ../src/Gui/ConfBackend.py:86
 msgid "Cannot get the default keyring."
 msgstr "ডিফল্ট কি-রিং প্রাপ্ত করতে ব্যর্থ।"
 
-#: ../src/Gui/ConfBackend.py:103 ../src/Gui/ConfBackend.py:119
+#: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
 msgid ""
 "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
@@ -1032,14 +1033,14 @@ msgstr ""
 "করা হবে না।"
 
 #. we tried 2 times, so giving up the authorization
-#: ../src/Gui/ConfBackend.py:153
+#: ../src/Gui/ConfBackend.py:155
 #, python-format
 msgid ""
 "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr ""
 "gnome-keyring ব্যবহারের অনুমতি প্রত্যাখ্যান করা হয়েছে, %s-র বৈশিষ্ট্য লোড করতে ব্যর্থ!"
 
-#: ../src/Gui/ConfBackend.py:206
+#: ../src/Gui/ConfBackend.py:208
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr ""
 "gnome-keyring ব্যবহারের অনুমতি প্রত্যাখ্যান করা হয়েছে, বৈশিষ্ট্য লোড করতে ব্যর্থ।"
@@ -1269,7 +1270,7 @@ msgstr "রিপোর্ট দায়ের করা হয়েছে"
 msgid "Cannot find PluginDialog widget in the UI description!"
 msgstr "ইউজার ইন্টারফেসের বিবরণের মধ্যে PluginDialog উইজেট পাওয়া যায়নি!"
 
-#: ../src/Gui/PluginSettingsUI.py:25
+#: ../src/Gui/PluginSettingsUI.py:33
 #, python-format
 msgid ""
 "No UI for the plugin <b>%s</b>, this is probably a bug.\n"
@@ -1280,11 +1281,11 @@ msgstr ""
 "অনুগ্রহ করে <a href=\"https://fedorahosted.org/abrt/newticket\">https://"
 "fedorahosted.org/abrt/newticket</a>-এ এই সমস্যা সম্পর্কে সূচিত করুন।"
 
-#: ../src/Gui/PluginSettingsUI.py:60 ../src/Gui/PluginSettingsUI.py:86
+#: ../src/Gui/PluginSettingsUI.py:68 ../src/Gui/PluginSettingsUI.py:94
 msgid "Combo box is not implemented"
 msgstr "কম্বো-বক্স বাস্তবায়িত হয়নি"
 
-#: ../src/Gui/PluginSettingsUI.py:69
+#: ../src/Gui/PluginSettingsUI.py:77
 msgid "Nothing to hydrate!"
 msgstr "প্রদর্শনযোগ্য কোনো বস্তু উপস্থিত নেই!"
 
