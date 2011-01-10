@@ -1,23 +1,26 @@
+# translation of abrt.1-1-x.po to Malayalam
 # translation of ml.po to
 # translation of abrt.master.ml.po to
 # translation of abrt.master.abrt.ml.po to
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# ANI PETER <apeter@redhat.com>, 2009
 #
+# ANI PETER <apeter@redhat.com>, 2009.
+# Ani Peter <apeter@redhat.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.master.ml\n"
+"Project-Id-Version: abrt.1-1-x\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-07 15:40+0100\n"
-"PO-Revision-Date: 2010-08-03 08:57+0530\n"
-"Last-Translator: \n"
-"Language-Team:  <en@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2011-01-10 11:08+0000\n"
+"PO-Revision-Date: 2011-01-10 16:49+0530\n"
+"Last-Translator: Ani Peter <apeter@redhat.com>\n"
+"Language-Team: Malayalam <smc-discuss@googlegorups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: ../lib/Plugins/Bugzilla.cpp:543
 #, c-format
@@ -112,7 +115,7 @@ msgstr "debuginfo ഇന്‍സ്റ്റലേഷന്‍ ഉപേക്�
 #: ../lib/Plugins/CCpp.cpp:670
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "%s-നുള്ള ബാക്ക്ട്രെയിസ് പാഴ്സിങ് പരാജയപ്പെട്ടു"
 
 #: ../lib/Plugins/CCpp.cpp:967
 msgid "Analyzes crashes in C/C++ programs"
@@ -197,19 +200,16 @@ msgid "Creating a ReportUploader report..."
 msgstr "ഒരു ReportUploader റിപോര്‍ട്ട് തയ്യാറാക്കുന്നു..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-msgstr ""
-".tar.gz ഫയലിലേക്ക് തകരാറുകള്ള ഡേറ്റാ സൂക്ഷിയ്ക്കുന്നു, FTP/SCP/etc വഴിയും അപ്‌ലോഡ് ചെയ്യുന്നു"
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgstr ".tar.gz ഫയലിലേക്ക് തകരാറുകള്ള ഡേറ്റാ സൂക്ഷിയ്ക്കുന്നു, FTP/SCP/etc വഴിയും അപ്‌ലോഡ് ചെയ്യുന്നു"
 
 #: ../lib/Plugins/RHTSupport.cpp:233
 msgid "Creating a new case..."
 msgstr "പുതിയ ബഗ് തയ്യാറക്കുന്നു..."
 
 #: ../lib/Plugins/RHTSupport.cpp:309
-#, fuzzy
 msgid "Reports bugs to Red Hat support"
-msgstr "ബഗ്സിലയിലേക്ക് ബഗുകള്‍ രേഖപ്പെടുത്തുന്നു"
+msgstr "Red Hat സപ്പോര്‍ട്ടിലേക്കു് ബഗുകള്‍ രേഖപ്പെടുത്തുന്നു"
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
@@ -381,8 +381,7 @@ msgid "Warning"
 msgstr "മുന്നറിയിപ്പു്"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT കണ്ടുപിടിക്കുന്ന പ്രശ്നങ്ങളെപ്പറ്റി ഉപയോക്താവിനെ അറിയിക്കുന്നതിനായുള്ള ആപ്ലെറ്റ്"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
@@ -424,7 +423,7 @@ msgid "\tHostname   : %s\n"
 msgstr "\tHostname   : %s\n"
 
 #: ../src/CLI/CLI.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
 "Last crash:         %s\n"
@@ -444,19 +443,17 @@ msgstr ""
 "Command:            %s\n"
 "Executable:         %s\n"
 "System:             %s, kernel %s\n"
-"Rating:             %s\n"
-"Coredump file:      %s\n"
 "Reason:             %s\n"
 
 #: ../src/CLI/CLI.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Coredump file:      %s\n"
-msgstr "Crash function:     %s\n"
+msgstr "Coredump file:      %s\n"
 
 #: ../src/CLI/CLI.cpp:135
-#, fuzzy, c-format
+#, c-format
 msgid "Rating:             %s\n"
-msgstr "Hostname:           %s\n"
+msgstr "Rating:             %s\n"
 
 #: ../src/CLI/CLI.cpp:140
 #, c-format
@@ -631,11 +628,11 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/CLI/report.cpp:545
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: ../src/CLI/report.cpp:546
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:647
@@ -656,18 +653,17 @@ msgid "Reporting..."
 msgstr "റിപോര്‍ട്ട് ചെയ്യുന്നു..."
 
 #: ../src/CLI/report.cpp:721
-#, fuzzy, c-format
+#, c-format
 msgid "Report using %s?"
-msgstr "%s ഉപയോഗിച്ചു് റിപോര്‍ട്ട് ചെയ്യുക? [y/N]: "
+msgstr "%s ഉപയോഗിച്ചു് റിപോര്‍ട്ട് ചെയ്യണമോ?"
 
 #: ../src/CLI/report.cpp:724
 msgid "Skipping..."
 msgstr "ഉപേക്ഷിയ്ക്കുന്നു..."
 
 #: ../src/CLI/report.cpp:736
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "ബാക്ക്ട്രെയിസ് ഉപയോഗപ്രദമല്ല, അതിനാല്‍ റിപോര്‍ട്ട് ചെയ്യുന്നതു് നിര്‍ജീവമാക്കിയിരിക്കുന്നു."
+msgstr "ബാക്ക്ട്രെയിസ് ഉപയോഗപ്രദമല്ല, അതിനാല്‍ റിപോര്‍ട്ട് ചെയ്യുന്നതു് നിര്‍ജീവമാക്കിയിരിക്കുന്നു"
 
 #: ../src/CLI/report.cpp:740
 #, c-format
@@ -675,11 +671,12 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
+"ദയവായി \"debuginfo-install %s\" എന്ന കമാന്‍ഡ് ഉപയോഗിച്ചു് "
+"debuginfo ഇന്‍സ്റ്റോള്‍ ചെയ്യുവാന്‍ വീണ്ടും ശ്രമിയ്ക്കുക\n"
 
 #: ../src/CLI/report.cpp:749
-#, fuzzy
 msgid "Error loading reporter settings"
-msgstr "റിപോര്‍ട്ട് ലഭിക്കുന്നതില്‍ പിശക്: %s"
+msgstr "റിപോര്‍ട്ടര്‍ സജ്ജീകരണങ്ങള്‍ ലഭ്യമാക്കുന്നതില്‍ പിശക്"
 
 #: ../src/CLI/report.cpp:768
 #, c-format
@@ -704,8 +701,7 @@ msgstr ""
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
-msgstr ""
-"ഡേറ്റാബെയിസ് പ്ലഗിന്‍ വ്യക്തമാക്കിയിട്ടില്ല. ദയവായി abrtd സജ്ജീകരണങ്ങള്‍ പരിശോധിയ്ക്കുക."
+msgstr "ഡേറ്റാബെയിസ് പ്ലഗിന്‍ വ്യക്തമാക്കിയിട്ടില്ല. ദയവായി abrtd സജ്ജീകരണങ്ങള്‍ പരിശോധിയ്ക്കുക."
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -716,10 +712,8 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "മറ്റൊരു ക്ലൈന്റ് പ്രവര്‍ത്തിക്കുന്നു, ലഭ്യമാക്കുവാന്‍ ശ്രമിക്കുന്നു..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
-msgstr ""
-"ഡെമണില്‍ നിന്നും അപ്രതീക്ഷിതമായ ഡേറ്റാ ലഭിച്ചു (ഈ ഡേറ്റാബെയിസ് ശരിയായി പുതുക്കിയോ?). "
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgstr "ഡെമണില്‍ നിന്നും അപ്രതീക്ഷിതമായ ഡേറ്റാ ലഭിച്ചു (ഈ ഡേറ്റാബെയിസ് ശരിയായി പുതുക്കിയോ?). "
 
 #: ../src/Gui/ABRTPlugin.py:71
 msgid "Not loaded plugins"
@@ -1010,9 +1004,8 @@ msgid "Error acquiring the report: %s"
 msgstr "റിപോര്‍ട്ട് ലഭിക്കുന്നതില്‍ പിശക്: %s"
 
 #: ../src/Gui/ConfBackend.py:79
-#, fuzzy
 msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
-msgstr "ഗ്നോം കീറിങ് ഡെമണിലേക്ക് കണക്ട് ചെയ്യുവാന്‍ സാധ്യമല്ല"
+msgstr "ഗ്നോം കീറിങ് ഡെമണിലേക്ക് കണക്ട് ചെയ്യുവാന്‍ സാധ്യമല്ല, മാറ്റങ്ങള്‍ അതിനാല്‍ സൂക്ഷിയ്ക്കുന്നതല്ല."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
@@ -1021,24 +1014,20 @@ msgid "Cannot get the default keyring."
 msgstr "സ്വതവേയുള്ള കീറിങ് ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല."
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr ""
-"gnome-keyring-ലേക്കുള്ള പ്രവേശനം നിഷേധിച്ചിരിയ്ക്കുന്നു, പ്ലഗിന്‍ സജ്ജീകരണങ്ങള്‍ സൂക്ഷിയ്ക്കുന്നതല്ല."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgstr "gnome-keyring-ലേക്കുള്ള പ്രവേശനം നിഷേധിച്ചിരിയ്ക്കുന്നു, പ്ലഗിന്‍ സജ്ജീകരണങ്ങള്‍ സൂക്ഷിയ്ക്കുന്നതല്ല."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr ""
 "gnome-keyring-ലേക്കുള്ള പ്രവേശനം നിഷേധിച്ചിരിയ്ക്കുന്നു, %s-നുള്ള സജ്ജീകരണങ്ങള്‍ ലഭ്യമാക്കുവാന്‍ "
 "സാധ്യമല്ല!"
 
 #: ../src/Gui/ConfBackend.py:208
 msgid "Access to gnome-keyring has been denied, cannot load settings."
-msgstr ""
-"gnome-keyring-ലേക്കുള്ള പ്രവേശനം നിഷേധിച്ചിരിയ്ക്കുന്നു, സജ്ജീകരണങ്ങള്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല."
+msgstr "gnome-keyring-ലേക്കുള്ള പ്രവേശനം നിഷേധിച്ചിരിയ്ക്കുന്നു, സജ്ജീകരണങ്ങള്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല."
 
 #: ../src/Gui/CReporterAssistant.py:21
 msgid "Crash info doesn't contain a backtrace"
@@ -1145,15 +1134,14 @@ msgstr "ബാക്ക്ട്രെയിസ് അംഗീകരിയ്�
 
 #: ../src/Gui/CReporterAssistant.py:659
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "തുടരുന്നതിനു് മുമ്പു് എങ്ങനെയെന്നുള്ളതു് പൂരിപ്പിയ്ക്കുക..."
 
 #: ../src/Gui/CReporterAssistant.py:682
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "എങ്ങനെ തകരാര്‍ സംഭവിച്ചു? ഇതു് വീണ്ടും എങ്ങനെ ലഭ്യമാക്കാം?"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr ""
 "നിങ്ങള്‍ക്കു് സോഫ്റ്റ്‌വെയര്‍ മെയിന്റെയിനേര്‍സിനെ അറിയിയ്ക്കുവാന്‍ എന്തെങ്കിലും അഭിപ്രായങ്ങളോ "
 "നിര്‍ദ്ദേശങ്ങളോ ഉണ്ടോ?"
@@ -1175,8 +1163,7 @@ msgid "Confirm and send the report"
 msgstr "റിപോര്‍ട്ട് ഉറപ്പാക്കി അയയ്ക്കുക"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "നിങ്ങള്‍ റിപോര്‍ട്ട് ചെയ്ത ബഗ് താഴെ ചുരുക്കത്തില്‍ കാണാം. 'സൂക്ഷിയ്ക്കുക' ക്ലിക്ക് ചെയ്തു് ഇതു് "
 "സമര്‍പ്പിയ്ക്കുക."
@@ -1373,8 +1360,7 @@ msgstr "ബാക്ക്ട്രെയിസ് വീണ്ടും ലഭ�
 
 #: ../src/Gui/report.glade.h:19
 msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
-msgstr ""
-"ബാക്ക്ട്രെയിസ് പരിശോധിച്ചു് സെന്‍സിറ്റീവ് ഡേറ്റാ നീക്കം ചെയ്തിരിക്കുന്നു (രഹസ്യവാക്കുകള്‍ എന്നിവ)"
+msgstr "ബാക്ക്ട്രെയിസ് പരിശോധിച്ചു് സെന്‍സിറ്റീവ് ഡേറ്റാ നീക്കം ചെയ്തിരിക്കുന്നു (രഹസ്യവാക്കുകള്‍ എന്നിവ)"
 
 #: ../src/Gui/report.glade.h:20
 msgid "N/A"
@@ -1510,5 +1496,3 @@ msgstr ""
 "കാണിച്ചിരിയ്ക്കുന്ന ബട്ടണുകള്‍ ഉപയോഗിച്ചു് അതതു് ക്രമീകരണം തുറന്നു് അവ പരിഹരിച്ചു് മുമ്പോട്ടു് നീങ്ങുക, "
 "അല്ലെങ്കില്‍ റിപോര്‍ട്ട് ചെയ്യുവാന്‍ സാധ്യമാകുന്നതല്ല.\n"
 
-#~ msgid "Getting global universal unique identification..."
-#~ msgstr "ഗ്ലോബല്‍ യൂണിവേഴ്സല്‍ യുണീക്ക് തിരിച്ചറിയല്‍ ലഭിക്കുന്നു..."
