@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.1-1-x.gu\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-07 15:40+0100\n"
-"PO-Revision-Date: 2011-01-05 16:24+0530\n"
+"POT-Creation-Date: 2011-01-10 11:08+0000\n"
+"PO-Revision-Date: 2011-01-10 18:07+0530\n"
 "Last-Translator: Sweta Kothari <swkothar@redhat.com>\n"
 "Language-Team: Gujarati\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "\n"
@@ -196,8 +196,7 @@ msgid "Creating a ReportUploader report..."
 msgstr "ReportUploader અહેવાલને બનાવી રહ્યા છે..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 ".tar.gz ફાઇલમાં પેકેજોની ભંગાણ માહિતી, વૈકલ્પિક રીતે FTP/SCP/etc મારફતે તેને અપલોડ "
 "કરાય છે"
@@ -380,8 +379,7 @@ msgid "Warning"
 msgstr "ચેતવણી"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "સૂચના વિસ્તાર એપલેટ કે જે ABRT દ્દારા શોધેલ મુદ્દાઓ વિશે વપરાશકર્તાને સૂચિત કરે છે"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
@@ -712,8 +710,7 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "બીજો ક્લાઇન્ટ પહેલેથી જ ચાલી રહ્યો છે, તેને ઝગાડવા માટે પ્રયત્ન કરી રહ્યા છે..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "ડિમન માંથી અનિચ્છનીય માહિતી મળી (શું યોગ્ય રીતે ડેટાબેઝ સુધારેલ છે?)."
 
 #: ../src/Gui/ABRTPlugin.py:71
@@ -1008,9 +1005,8 @@ msgid "Error acquiring the report: %s"
 msgstr "અહેવાલને મેળવી રહ્યા હોય ત્યારે ભૂલ: %s"
 
 #: ../src/Gui/ConfBackend.py:79
-#, fuzzy
 msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
-msgstr "Gnome કિરીંગ ડિમનને જોડી શકાતુ નથી."
+msgstr "gnome-keyring-daemon ડિમનને જોડી શકાતુ નથી. ફેરફારોનો સંગ્રહ થશે નહિં."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
@@ -1019,18 +1015,14 @@ msgid "Cannot get the default keyring."
 msgstr "મૂળભૂત કિરીંગને મેળવી શકાતુ નથી."
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr ""
-"gnome-keyring નાં વપરાશને નામંજૂર કરી દેવામાં આવ્યુ છે, પ્લગઇન સુયોજનો સંગ્રહ થયેલ હશે નહિં."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgstr "gnome-keyring નાં વપરાશને નામંજૂર કરી દેવામાં આવ્યુ છે, પ્લગઇન સુયોજનો સંગ્રહ થયેલ હશે નહિં."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr ""
-"gnome-keyring નાં વપરાશને નામંજૂર કરી દેવામાં આવ્યુ છે, %s માટે સુયોજનોને લાવી શકાતુ નથી!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgstr "gnome-keyring નાં વપરાશને નામંજૂર કરી દેવામાં આવ્યુ છે, %s માટે સુયોજનોને લાવી શકાતુ નથી!"
 
 #: ../src/Gui/ConfBackend.py:208
 msgid "Access to gnome-keyring has been denied, cannot load settings."
@@ -1151,8 +1143,7 @@ msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "કેવી રીતે આ ભંગાણ થયુ (એક પછી એક પગલાં)? કેવી રીતે તેને પુન:ઉત્પન્ન કર્યુ?"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr "શું તમે ત્યાં કોઇપણ ટિપ્પણીઓને સોફ્ટવેર સંચાલક સાથે વહેંચવા માંગો છો?"
 
 #: ../src/Gui/CReporterAssistant.py:723
@@ -1170,8 +1161,7 @@ msgid "Confirm and send the report"
 msgstr "ખાતરી કરો અને અહેવાલને મોકલો"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "નીચે તમારા ભૂલ અહેવાલનું સારાંશ છે. મહેરબાની કરીને તેને જમા કરવા માટે 'લાગુ કરો' પર ક્લિક "
 "કરો."
@@ -1503,3 +1493,4 @@ msgstr ""
 "ખોટા સુયોજનો સક્રિય થયેલ રિપોર્ટર પ્લગઇનોનાં અમુક માટે શોધાયેલ હતુ. મહેરબાની કરીને અનૂકુળ "
 "રૂપરેખાંકનને ખોલવા માટે નીચે બટનોને વાપરો અને તમે આગળ વધો તે પહેલાં તેને સુધારો, નહિં તો, "
 "અહેવાલીકરણ પ્રક્રિયા નિષ્ફળ જઇ શકે છે.\n"
+
