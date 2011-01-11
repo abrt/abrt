@@ -119,7 +119,7 @@ GTK+ wizard for convenient bug reporting.
 %package addon-ccpp
 Summary: %{name}'s C/C++ addon
 Group: System Environment/Libraries
-Requires: elfutils
+Requires: elfutils, cpio
 Requires: %{name} = %{version}-%{release}
 
 %description addon-ccpp
