@@ -1,12 +1,12 @@
 bin_SCRIPTS = \
     abrt-handle-upload
-libexec_PROGRAMS = \
-    abrt-action-save-package-data
 
 bin_PROGRAMS = \
-    abrt-handle-crashdump
+    abrt-handle-crashdump \
+    abrt-action-save-package-data
 
-sbin_PROGRAMS = abrtd \
+sbin_PROGRAMS = \
+    abrtd \
     abrt-server
 
 abrtd_SOURCES = \

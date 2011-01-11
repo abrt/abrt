@@ -87,13 +87,6 @@ int main(int argc, char **argv)
 
     /* -e EVENT: run event */
 
-    /* Need to add LIBEXEC_DIR to PATH, because otherwise abrt-action-*
-     * are not found by exec()
-     */
-    const char *env_path = getenv("PATH");
-    if (!env_path) env_path = "";
-    putenv(xasprintf("PATH=%s%s%s", LIBEXEC_DIR, (!env_path[0] ? "" : ":"), env_path));
-
     struct run_event_state *run_state = new_run_event_state();
     run_state->logging_callback = do_log;
     int r = run_event_on_dir_name(run_state, dump_dir_name ? dump_dir_name : ".", event);

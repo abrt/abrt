@@ -1,7 +1,19 @@
 pluginslibdir = $(PLUGINS_LIB_DIR)
 
-libexec_SCRIPTS = \
+bin_SCRIPTS = \
     abrt-action-install-debuginfo.py
+
+bin_PROGRAMS = \
+    abrt-action-analyze-c \
+    abrt-action-analyze-python \
+    abrt-action-analyze-oops \
+    abrt-action-generate-backtrace \
+    abrt-action-bugzilla \
+    abrt-action-rhtsupport \
+    abrt-action-kerneloops \
+    abrt-action-upload \
+    abrt-action-mailx \
+    abrt-action-print
 
 pluginslib_LTLIBRARIES = \
     libCCpp.la \
@@ -77,18 +89,6 @@ libKerneloopsScanner_la_CPPFLAGS = \
 libKerneloopsScanner_la_LDFLAGS = \
     -avoid-version \
     $(GLIB_LIBS)
-
-libexec_PROGRAMS = \
-    abrt-action-analyze-c \
-    abrt-action-analyze-python \
-    abrt-action-analyze-oops \
-    abrt-action-generate-backtrace \
-    abrt-action-bugzilla \
-    abrt-action-rhtsupport \
-    abrt-action-kerneloops \
-    abrt-action-upload \
-    abrt-action-mailx \
-    abrt-action-print
 
 abrt_action_analyze_c_SOURCES = \
     abrt-action-analyze-c.c

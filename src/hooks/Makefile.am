@@ -1,4 +1,5 @@
 libexec_PROGRAMS = abrt-hook-ccpp
+
 bin_PROGRAMS = dumpoops
 
 # abrt-hook-ccpp

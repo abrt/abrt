@@ -349,7 +349,7 @@ fi
 %{_sbindir}/abrt-server
 %{_bindir}/abrt-handle-upload
 %{_bindir}/abrt-handle-crashdump
-%{_libexecdir}/abrt-action-save-package-data
+%{_bindir}/abrt-action-save-package-data
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt_event.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
@@ -416,9 +416,9 @@ fi
 %dir %{_localstatedir}/cache/abrt-di
 %{_libdir}/%{name}/libCCpp.so*
 %{_libexecdir}/abrt-hook-ccpp
-%{_libexecdir}/abrt-action-analyze-c
-%{_libexecdir}/abrt-action-install-debuginfo.py*
-%{_libexecdir}/abrt-action-generate-backtrace
+%{_bindir}/abrt-action-analyze-c
+%{_bindir}/abrt-action-install-debuginfo.py*
+%{_bindir}/abrt-action-generate-backtrace
 
 %files addon-kerneloops
 %defattr(-,root,root,-)
@@ -428,48 +428,48 @@ fi
 %{_mandir}/man7/abrt-KerneloopsScanner.7.gz
 %{_libdir}/%{name}/KerneloopsReporter.glade
 %{_mandir}/man7/abrt-KerneloopsReporter.7.gz
-%{_libexecdir}/abrt-action-analyze-oops
-%{_libexecdir}/abrt-action-kerneloops
+%{_bindir}/abrt-action-analyze-oops
+%{_bindir}/abrt-action-kerneloops
 
 %files plugin-logger
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Logger.conf
 %{_libdir}/%{name}/Logger.glade
 %{_mandir}/man7/abrt-Logger.7.gz
-%{_libexecdir}/abrt-action-print
+%{_bindir}/abrt-action-print
 
 %files plugin-mailx
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Mailx.conf
 %{_libdir}/%{name}/Mailx.glade
 %{_mandir}/man7/abrt-Mailx.7.gz
-%{_libexecdir}/abrt-action-mailx
+%{_bindir}/abrt-action-mailx
 
 %files plugin-bugzilla
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Bugzilla.conf
 %{_libdir}/%{name}/Bugzilla.glade
 %{_mandir}/man7/abrt-Bugzilla.7.gz
-%{_libexecdir}/abrt-action-bugzilla
+%{_bindir}/abrt-action-bugzilla
 
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/RHTSupport.conf
 %{_libdir}/%{name}/RHTSupport.glade
 # {_mandir}/man7/abrt-RHTSupport.7.gz
-%{_libexecdir}/abrt-action-rhtsupport
+%{_bindir}/abrt-action-rhtsupport
 
 %files plugin-reportuploader
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Upload.conf
 %{_libdir}/%{name}/Upload.glade
 %{_mandir}/man7/abrt-Upload.7.gz
-%{_libexecdir}/abrt-action-upload
+%{_bindir}/abrt-action-upload
 
 %files addon-python
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Python.conf
-%{_libexecdir}/abrt-action-analyze-python
+%{_bindir}/abrt-action-analyze-python
 %{python_site}/*.py*
 %{python_site}/abrt.pth
 
