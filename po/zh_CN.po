@@ -1,7 +1,7 @@
-# translation of abrt.master.zh_CN(2).po to Wei Liu
+# translation of abrt.1-1-x.po to Wei Liu
 # Eunju Kim <eukim@redhat.com>, 2009.
 # cyrushmh <cyrushmh@vip.qq.com;cyrusyzgtt@gmail.com>, 2009.
-# Leah Liu <lliu@redhat.com>, 2009, 2010.
+# Leah Liu <lliu@redhat.com>, 2009, 2010, 2011.
 # chenhuan <chenhuan.gt@gmail.com>, 2010.
 # Huan Chen <chenhuan.gt@gmail.com>, 2010.
 # Huan Chen <chenhuan.gt at gmail.com>, 2010.
@@ -10,16 +10,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.master.zh_CN(2)\n"
+"Project-Id-Version: abrt.1-1-x\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-07 15:40+0100\n"
-"PO-Revision-Date: 2010-07-30 10:40+1000\n"
+"POT-Creation-Date: 2011-01-10 11:08+0000\n"
+"PO-Revision-Date: 2011-01-11 00:29+1000\n"
 "Last-Translator: Leah Liu <lliu@redhat.com>\n"
 "Language-Team: Wei Liu\n"
-"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: KBabel 1.11.4\n"
 
@@ -114,7 +114,7 @@ msgstr "跳过调试信息的安装"
 #: ../lib/Plugins/CCpp.cpp:670
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "%s 回溯解析失败"
 
 #: ../lib/Plugins/CCpp.cpp:967
 msgid "Analyzes crashes in C/C++ programs"
@@ -199,8 +199,7 @@ msgid "Creating a ReportUploader report..."
 msgstr "正在生成 ReportUploader 报告......"
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr "将崩溃数据打包成 .tar.gz 文件，并可使用 FTP/SCP/etc 将其上传。"
 
 #: ../lib/Plugins/RHTSupport.cpp:233
@@ -208,9 +207,8 @@ msgid "Creating a new case..."
 msgstr "正在创建新案例……"
 
 #: ../lib/Plugins/RHTSupport.cpp:309
-#, fuzzy
 msgid "Reports bugs to Red Hat support"
-msgstr "向 bugzilla 报告 bug"
+msgstr "向红帽支持报告 bug"
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
@@ -382,8 +380,7 @@ msgid "Warning"
 msgstr "警告"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "用来通知用户 ABRT 所探测到问题的通告区小应用程序"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
@@ -425,7 +422,7 @@ msgid "\tHostname   : %s\n"
 msgstr "\tHostname   : %s\n"
 
 #: ../src/CLI/CLI.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
 "Last crash:         %s\n"
@@ -445,19 +442,17 @@ msgstr ""
 "命令：               %s\n"
 "可执行：             %s\n"
 "系统：               %s, kernel %s\n"
-"等级：               %s\n"
-"核转储文件：         %s\n"
 "原因：               %s\n"
 
 #: ../src/CLI/CLI.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Coredump file:      %s\n"
-msgstr "崩溃功能：     %s\n"
+msgstr "核心转储文件：     %s\n"
 
 #: ../src/CLI/CLI.cpp:135
-#, fuzzy, c-format
+#, c-format
 msgid "Rating:             %s\n"
-msgstr "主机名：           %s\n"
+msgstr "分级：           %s\n"
 
 #: ../src/CLI/CLI.cpp:140
 #, c-format
@@ -632,11 +627,11 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/CLI/report.cpp:545
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: ../src/CLI/report.cpp:546
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:647
@@ -657,30 +652,28 @@ msgid "Reporting..."
 msgstr "报告中……"
 
 #: ../src/CLI/report.cpp:721
-#, fuzzy, c-format
+#, c-format
 msgid "Report using %s?"
-msgstr "用 %s 报告？［y/N］："
+msgstr "用 %s 报告？"
 
 #: ../src/CLI/report.cpp:724
 msgid "Skipping..."
 msgstr "跳过中……"
 
 #: ../src/CLI/report.cpp:736
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "不能报告因为回溯不可用。"
+msgstr "禁用报告因为回溯不可用"
 
 #: ../src/CLI/report.cpp:740
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
-msgstr ""
+msgstr "请使用命令 \"debuginfo-install %s\" 尝试手动安装 debuginfo，并再试一次\n"
 
 #: ../src/CLI/report.cpp:749
-#, fuzzy
 msgid "Error loading reporter settings"
-msgstr "获取报告时出错：%s"
+msgstr "载入报告程序设置出错"
 
 #: ../src/CLI/report.cpp:768
 #, c-format
@@ -699,8 +692,7 @@ msgstr "“如何再现”过长"
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
-msgstr ""
-"报告大小已超出配额。请检查在 abrt.conf 文件中系统的 MaxCrashReportsSize 值。"
+msgstr "报告大小已超出配额。请检查在 abrt.conf 文件中系统的 MaxCrashReportsSize 值。"
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
@@ -715,8 +707,7 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "另一客户端已经在运行，正在尝试唤醒它......"
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "从守护进程得到意外数据（数据库是否正常更新？）。"
 
 #: ../src/Gui/ABRTPlugin.py:71
@@ -1003,9 +994,8 @@ msgid "Error acquiring the report: %s"
 msgstr "获取报告时出错：%s"
 
 #: ../src/Gui/ConfBackend.py:79
-#, fuzzy
 msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
-msgstr "无法连接到 Gnome 密钥环守护进程。"
+msgstr "无法连接到 gnome-keyring-daemon，无法保存更改。"
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
@@ -1014,15 +1004,13 @@ msgid "Cannot get the default keyring."
 msgstr "不能获取默认密钥环。"
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr "对 gnome 密钥环的访问被拒绝，插件设置将不会被保存。"
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "对 gnome 密钥环的访问被拒绝，无法载入 %s 的设置！"
 
 #: ../src/Gui/ConfBackend.py:208
@@ -1135,15 +1123,14 @@ msgstr "同意回溯"
 
 #: ../src/Gui/CReporterAssistant.py:659
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "您可以执行前需要填写内容......"
 
 #: ../src/Gui/CReporterAssistant.py:682
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "此崩溃是如何发生的（具体步骤）？您如何重复它？"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr "您有什么要与软件维护者分享的评论吗？"
 
 #: ../src/Gui/CReporterAssistant.py:723
@@ -1161,8 +1148,7 @@ msgid "Confirm and send the report"
 msgstr "确认并发送报告"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr "下面是您的 bug 报告的摘要。请点击‘应用’提交。"
 
 #: ../src/Gui/CReporterAssistant.py:777
@@ -1492,5 +1478,3 @@ msgstr ""
 "探测到有些启用的报告程序插件有错误设置。请使用以下按钮打开对应的配置并在继续"
 "报告前修复它，否则报告过程会失败。\n"
 
-#~ msgid "Getting global universal unique identification..."
-#~ msgstr "正在取得全局的通用唯一标识......"
