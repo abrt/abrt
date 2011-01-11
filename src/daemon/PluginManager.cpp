@@ -131,10 +131,11 @@ CPlugin* CPluginManager::LoadPlugin(const char *pName, bool enabled_only)
         /* Kerneloops{,Scanner,Reporter} share the same .conf file */
         conf_name = "Kerneloops";
     }
-    string conf_fullname = ssprintf(PLUGINS_CONF_DIR"/%s."PLUGINS_CONF_EXTENSION, conf_name);
+    char *conf_fullname = xasprintf(PLUGINS_CONF_DIR"/%s."PLUGINS_CONF_EXTENSION, conf_name);
     map_string_h *pluginSettings = new_map_string();
-    if (load_conf_file(conf_fullname.c_str(), pluginSettings, /*skip key w/o values:*/ true))
+    if (load_conf_file(conf_fullname, pluginSettings, /*skip key w/o values:*/ true))
         VERB3 log("Loaded %s.conf", conf_name);
+    free(conf_fullname);
 
     if (enabled_only)
     {
@@ -154,14 +155,16 @@ CPlugin* CPluginManager::LoadPlugin(const char *pName, bool enabled_only)
         }
     }
 
-    string libPath = ssprintf(PLUGINS_LIB_DIR"/"PLUGINS_LIB_PREFIX"%s."PLUGINS_LIB_EXTENSION, pName);
-    void *handle = dlopen(libPath.c_str(), RTLD_NOW);
+    char *libPath = xasprintf(PLUGINS_LIB_DIR"/"PLUGINS_LIB_PREFIX"%s."PLUGINS_LIB_EXTENSION, pName);
+    void *handle = dlopen(libPath, RTLD_NOW);
     if (!handle)
     {
-        error_msg("Can't load '%s': %s", libPath.c_str(), dlerror());
+        error_msg("Can't load '%s': %s", libPath, dlerror());
+        free(libPath);
         free_map_string(pluginSettings);
         return NULL; /* error */
     }
+    free(libPath);
     CLoadedModule *module = new CLoadedModule(handle, pName);
     if (module->GetMagicNumber() != PLUGINS_MAGIC_NUMBER
      || module->GetType() < 0

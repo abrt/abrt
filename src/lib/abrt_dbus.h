@@ -125,6 +125,20 @@ int load_vector_of_crash_data(DBusMessageIter* iter, vector_of_crash_data_t **va
  * Helpers for building DBus messages
  */
 
+static inline std::string ssprintf(const char *format, ...)
+{
+    va_list p;
+    char *string_ptr;
+
+    va_start(p, format);
+    string_ptr = xvasprintf(format, p);
+    va_end(p);
+
+    std::string res = string_ptr;
+    free(string_ptr);
+    return res;
+}
+
 //static inline void store_val(DBusMessageIter* iter, bool val)               { store_bool(iter, val); }
 static inline void store_val(DBusMessageIter* iter, int32_t val)            { store_int32(iter, val); }
 static inline void store_val(DBusMessageIter* iter, uint32_t val)           { store_uint32(iter, val); }

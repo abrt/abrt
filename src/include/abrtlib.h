@@ -283,23 +283,4 @@ bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWith
 }
 #endif
 
-
-/* C++ style stuff */
-#ifdef __cplusplus
-// TODO: npajkovs: full rewrite ssprintf -> xasprintf
-static inline std::string ssprintf(const char *format, ...)
-{
-    va_list p;
-    char *string_ptr;
-
-    va_start(p, format);
-    string_ptr = xvasprintf(format, p);
-    va_end(p);
-
-    std::string res = string_ptr;
-    free(string_ptr);
-    return res;
-}
-#endif
-
 #endif
