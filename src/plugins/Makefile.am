@@ -74,7 +74,8 @@ libexec_PROGRAMS = \
     abrt-action-kerneloops \
     abrt-action-upload \
     abrt-action-mailx \
-    abrt-action-print
+    abrt-action-print \
+    abrt-retrace-client
 
 abrt_action_analyze_c_SOURCES = \
     abrt-action-analyze-c.c
@@ -186,8 +187,7 @@ abrt_action_rhtsupport_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Werror
+    -D_GNU_SOURCE 
 abrt_action_rhtsupport_LDFLAGS = -ltar
 abrt_action_rhtsupport_LDADD = \
     $(GLIB_LIBS) \
@@ -278,5 +278,24 @@ abrt_action_print_CPPFLAGS = \
 # libABRTdUtils is used only because of make_description_logger:
 abrt_action_print_LDADD = \
     ../lib/libabrt.la
+
+abrt_retrace_client_SOURCES = \
+    abrt-retrace-client.c
+abrt_retrace_client_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    -DBIN_DIR=\"$(bindir)\" \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    -D_GNU_SOURCE \
+    -Wall -Werror
+abrt_retrace_client_LDADD = \
+    ../lib/libabrt.la \
+    ../btparser/libbtparser.la
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
