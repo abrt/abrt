@@ -1,23 +1,23 @@
 # translation of abrt.master.pa.po to Punjabi
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Jaswinder Singh <jsingh@redhat.com>, 2009, 2010.
 # A S Alam <aalam@users.sf.net>, 2009.
+# Jaswinder Singh <j.phulewala@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.pa\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-07 15:40+0100\n"
-"PO-Revision-Date: 2010-07-30 10:56+0530\n"
-"Last-Translator: Jaswinder Singh <jsingh@redhat.com>\n"
-"Language-Team: Punjabi/Panjabi <kde-i18n-doc@kde.org>\n"
+"POT-Creation-Date: 2011-01-11 01:45+0000\n"
+"PO-Revision-Date: 2011-01-11 09:34+0530\n"
+"Last-Translator: Jaswinder Singh <j.phulewala@gmail.com>\n"
+"Language-Team: PLTG\n"
 "Language: pa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.0\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.6.1\n"
 
 #: ../lib/Plugins/Bugzilla.cpp:543
 #, c-format
@@ -110,7 +110,7 @@ msgstr "debuginfo ਇੰਸਟਾਲੇਸ਼ਨ ਛੱਡੀ ਜਾ ਰਹੀ ਹ�
 #: ../lib/Plugins/CCpp.cpp:670
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "%s ਲਈ ਬੈਕਟਰੇਸ ਪਾਰਸਿੰਗ ਫੇਲ ਹੋਈ ਹੈ"
 
 #: ../lib/Plugins/CCpp.cpp:967
 msgid "Analyzes crashes in C/C++ programs"
@@ -206,9 +206,8 @@ msgid "Creating a new case..."
 msgstr "ਨਵਾਂ ਮੁੱਦਾ ਬਣਾ ਰਿਹਾ ਹੈ..."
 
 #: ../lib/Plugins/RHTSupport.cpp:309
-#, fuzzy
 msgid "Reports bugs to Red Hat support"
-msgstr "ਬੱਗਜ਼ੀਲਾ ਵਿੱਚ ਬੱਗ ਰਿਪੋਰਟ ਕਰਦਾ ਹੈ"
+msgstr "Red Hat ਸਪੋਰਟ ਨੂੰ ਬੱਗ ਰਿਪੋਰਟ ਕਰਦਾ ਹੈ"
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
@@ -423,7 +422,7 @@ msgid "\tHostname   : %s\n"
 msgstr "\tHostname   : %s\n"
 
 #: ../src/CLI/CLI.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
 "Last crash:         %s\n"
@@ -443,19 +442,17 @@ msgstr ""
 "Command:            %s\n"
 "Executable:         %s\n"
 "System:             %s, kernel %s\n"
-"Rating:             %s\n"
-"Coredump file:      %s\n"
 "Reason:             %s\n"
 
 #: ../src/CLI/CLI.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Coredump file:      %s\n"
-msgstr "ਕਰੈਸ਼ ਫੰਕਸ਼ਨ:     %s\n"
+msgstr "Coredump ਫਾਇਲ:      %s\n"
 
 #: ../src/CLI/CLI.cpp:135
-#, fuzzy, c-format
+#, c-format
 msgid "Rating:             %s\n"
-msgstr "Hostname:           %s\n"
+msgstr "ਰੇਟਿੰਗ:             %s\n"
 
 #: ../src/CLI/CLI.cpp:140
 #, c-format
@@ -630,11 +627,11 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/CLI/report.cpp:545
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: ../src/CLI/report.cpp:546
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:647
@@ -655,30 +652,29 @@ msgid "Reporting..."
 msgstr "ਰਿਪੋਰਟ ਕਰ ਰਿਹਾ ਹੈ..."
 
 #: ../src/CLI/report.cpp:721
-#, fuzzy, c-format
+#, c-format
 msgid "Report using %s?"
-msgstr "%s ਵਰਤ ਕੇ ਰਿਪੋਰਟ ਕਰੋ? [y/N]: "
+msgstr "%s ਵਰਤ ਕੇ ਰਿਪੋਰਟ ਕਰੋ?"
 
 #: ../src/CLI/report.cpp:724
 msgid "Skipping..."
 msgstr "ਛੱਡ ਰਿਹਾ ਹੈ..."
 
 #: ../src/CLI/report.cpp:736
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "ਰਿਪੋਰਟਿੰਗ ਅਯੋਗ ਹੈ, ਕਿਰਪਾ ਕਰਕੇ ਉੱਪਰ ਦਿੱਤੀ ਸਮੱਸਿਆ ਹੱਲ ਕਰੋ।"
+msgstr "ਰਿਪੋਰਟਿੰਗ ਅਯੋਗ ਹੋਈ ਕਿਉਂਕਿ ਬੈਕਟਰੇਸ ਵਰਤੋਂ ਯੋਗ ਨਹੀਂ ਹੈ"
 
 #: ../src/CLI/report.cpp:740
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
-msgstr ""
+msgstr "ਕਿਰਪਾ ਕਰਕੇ debuginfo ਨੂੰ ਇਹ ਕਮਾਂਡ ਵਰਤ ਕੇ ਦਸਤੀ ਇੰਸਟਾਲ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ: "
+"\"debuginfo-install %s\" ਅਤੇ ਫਿਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ\n"
 
 #: ../src/CLI/report.cpp:749
-#, fuzzy
 msgid "Error loading reporter settings"
-msgstr "ਰਿਪੋਰਟ ਲੈਣ ਵੇਲੇ ਗਲਤੀ: %s"
+msgstr "ਰਿਪੋਰਟਰ ਸੈਟਿੰਗ ਲੋਡ ਕਰਨ ਸਮੇਂ ਗਲਤੀ ਆਈ ਹੈ"
 
 #: ../src/CLI/report.cpp:768
 #, c-format
@@ -936,8 +932,8 @@ msgid ""
 "then use the Refresh button to regenerate the backtrace."
 msgstr ""
 "ਰਿਪੋਰਟ ਦੇਣੀ ਆਯੋਗ ਹੈ ਕਿਉਂਕਿ ਬੈਕਟਰੇਸ ਬੇਕਾਰ ਹੈ!\n"
-"ਇਸ ਕਮਾਂਡ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਇੰਸਟਾਲ ਕਰਕੇ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜੀ: <b> debuginfo-install "
-"%s </b>\n"
+"ਇਸ ਕਮਾਂਡ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਇੰਸਟਾਲ ਕਰਕੇ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜੀ: <b> debuginfo-install %"
+"s </b>\n"
 " ਤਦ ਬੈਕਟਰੇਸ ਮੁੜ-ਬਣਾਉਣ ਲਈ ਤਾਜ਼ਾ ਕਰੋ ਬਟਨ ਵਰਤੋਂ।"
 
 #: ../src/Gui/CCReporterDialog.py:120
@@ -1005,9 +1001,8 @@ msgid "Error acquiring the report: %s"
 msgstr "ਰਿਪੋਰਟ ਲੈਣ ਵੇਲੇ ਗਲਤੀ: %s"
 
 #: ../src/Gui/ConfBackend.py:79
-#, fuzzy
 msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
-msgstr "ਸਿਸਟਮ ਡੀਬੱਸ ਨਾਲ ਕੁਨੈਕਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ।"
+msgstr "gnome-keyring-daemon ਨਾਲ ਜੁੜ ਨਹੀਂ ਸਕਿਆ, ਤਬਦੀਲੀਆਂ ਸੰਭਾਲੀਆਂ ਨਹੀਂ ਜਾਣਗੀਆਂ।"
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
@@ -1142,7 +1137,7 @@ msgstr "ਬੈਕਟਰੇਸ ਮਨਜੂਰ ਕਰੋ"
 
 #: ../src/Gui/CReporterAssistant.py:659
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "ਤੁਹਾਨੂੰ ਅੱਗੇ ਜਾਣ ਤੋਂ ਪਹਿਲਾਂ ਸਵਾਲਾਂ ਦੇ ਜਵਾਬ ਦੇਣੇ ਪੈਣਗੇ..."
 
 #: ../src/Gui/CReporterAssistant.py:682
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
