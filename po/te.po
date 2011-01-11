@@ -3,19 +3,20 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Krishna Babu K <kkrothap@redhat.com>, 2009, 2010.
+# Krishnababu Krothapalli <kkrothap@redhat.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.te\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-07 15:40+0100\n"
-"PO-Revision-Date: 2010-07-30 14:44+0530\n"
-"Last-Translator: Krishna Babu K <kkrothap@redhat.com>\n"
+"POT-Creation-Date: 2011-01-11 01:45+0000\n"
+"PO-Revision-Date: 2011-01-11 11:47+0530\n"
+"Last-Translator: Krishnababu Krothapalli <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
-"Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"Language: te\n"
+"X-Generator: Lokalize 1.1\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "\n"
 "\n"
@@ -126,7 +127,7 @@ msgstr "డీబగ్‌సమాచార సంస్థాపనను ద�
 #: ../lib/Plugins/CCpp.cpp:670
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "%s కొరకు బాక్‌ట్రేస్ పార్శింగ్ విఫలమైంది"
 
 #: ../lib/Plugins/CCpp.cpp:967
 msgid "Analyzes crashes in C/C++ programs"
@@ -211,19 +212,16 @@ msgid "Creating a ReportUploader report..."
 msgstr "రిపోర్ట్అప్‌లోడర్ నివేదికను సృష్టించుచున్నది..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-msgstr ""
-"క్రాష్ డాటాను .tar.gz ఫైలునకు పాక్ చేయును, ఐచ్చికంగా దానిని FTP/SCP/etc ద్వారా అప్‌లోడ్ చేయును"
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgstr "క్రాష్ డాటాను .tar.gz ఫైలునకు పాక్ చేయును, ఐచ్చికంగా దానిని FTP/SCP/etc ద్వారా అప్‌లోడ్ చేయును"
 
 #: ../lib/Plugins/RHTSupport.cpp:233
 msgid "Creating a new case..."
 msgstr "కొత్త కేస్‌ను సృష్టించుచున్నది..."
 
 #: ../lib/Plugins/RHTSupport.cpp:309
-#, fuzzy
 msgid "Reports bugs to Red Hat support"
-msgstr "బగ్‌లను బగ్‌జిల్లాకు నివేదించును"
+msgstr "Red Hat తోడ్పాటునకు బగ్‌లను నివేదించును"
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
@@ -395,8 +393,7 @@ msgid "Warning"
 msgstr "హెచ్చరిక"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT చేత గుర్తించబడిన సమస్యల గురించి వినియోగదారికి తెలుపుటకు నోటిఫికేషన్ ప్రాంతపు ఆప్లెట్"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
@@ -438,7 +435,7 @@ msgid "\tHostname   : %s\n"
 msgstr "\tహోస్టునామము   : %s\n"
 
 #: ../src/CLI/CLI.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
 "Last crash:         %s\n"
@@ -458,19 +455,17 @@ msgstr ""
 "ఆదేశం:            %s\n"
 "ఎగ్జిక్యూటబుల్:         %s\n"
 "సిస్టమ్:             %s, కెర్నల్ %s\n"
-"రేటింగ్:             %s\n"
-"కోర్‌డంప్ ఫైల్:      %s\n"
 "కారణం:             %s\n"
 
 #: ../src/CLI/CLI.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Coredump file:      %s\n"
-msgstr "క్రాష్ ఫంక్షన్:     %s\n"
+msgstr "కోర్‌డంప్ ఫైల్:     %s\n"
 
 #: ../src/CLI/CLI.cpp:135
-#, fuzzy, c-format
+#, c-format
 msgid "Rating:             %s\n"
-msgstr "హోస్టునామము:           %s\n"
+msgstr "రేటింగ్:           %s\n"
 
 #: ../src/CLI/CLI.cpp:140
 #, c-format
@@ -646,11 +641,11 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/CLI/report.cpp:545
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: ../src/CLI/report.cpp:546
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:647
@@ -671,18 +666,17 @@ msgid "Reporting..."
 msgstr "నివేదించుచున్నది..."
 
 #: ../src/CLI/report.cpp:721
-#, fuzzy, c-format
+#, c-format
 msgid "Report using %s?"
-msgstr "నివేదిక %s వుపయోగించునా? [y/N]: "
+msgstr "%s వుపయోగించి నివేదించు?"
 
 #: ../src/CLI/report.cpp:724
 msgid "Skipping..."
 msgstr "వదిలివేయుచున్నది..."
 
 #: ../src/CLI/report.cpp:736
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "బ్యాక్‌ట్రేస్ నిరుపయోగమైంది కావున నివేదీకరణ అచేతనపరచడమైంది."
+msgstr "బ్యాక్‌ట్రేస్ నిరుపయోగమైంది కావున నివేదీకరణ అచేతనపరచడమైంది"
 
 #: ../src/CLI/report.cpp:740
 #, c-format
@@ -690,11 +684,12 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
+"ఈ ఆదేశమును వుపయోగించి డీబగ్ సమాచారమును మానవీయంగా సంస్థాపించుటకు ప్రయత్నించుము: \"debuginfo-"
+"install %s\" తిరిగి ప్రయత్నించు\n"
 
 #: ../src/CLI/report.cpp:749
-#, fuzzy
 msgid "Error loading reporter settings"
-msgstr "నివేదికను పొందుటలో దోషము: %s"
+msgstr "నివేదిక అమరికలు లోడ్ చేయుటలో దోషము"
 
 #: ../src/CLI/report.cpp:768
 #, c-format
@@ -730,8 +725,7 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "వేరొక క్లైంటు యిప్పటికే నడుచుచున్నది, దానిని మేల్కొలుపుటకు యత్నించుచున్నది..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "డెమోన్‌నుండి అనుకోని డాటా పొందినది (డాటాబేస్ సరిగా నవీకరించబడిందా?)."
 
 #: ../src/Gui/ABRTPlugin.py:71
@@ -952,8 +946,8 @@ msgid ""
 "then use the Refresh button to regenerate the backtrace."
 msgstr ""
 "నివేదీకరణ అచేతనము చేయబడింది యెంచేతంటే బాక్‌ట్రేస్ నిరుపయోగమైంది.\n"
-"ఈ ఆదేశాన్ని వుపయోగించి డీబగ్‌యిన్ఫోను మానవీయంగా సంస్థాపించుటకు ప్రయత్నించండి: <b>debuginfo-install "
-"%s</b> \n"
+"ఈ ఆదేశాన్ని వుపయోగించి డీబగ్‌యిన్ఫోను మానవీయంగా సంస్థాపించుటకు ప్రయత్నించండి: <b>debuginfo-install %"
+"s</b> \n"
 "అప్పుడు బాక్‌ట్రేస్‌ను తిరిగి వుద్భవింపచేయుటకు రీఫ్రెష్ బటన్ వుపయోగించండి."
 
 #: ../src/Gui/CCReporterDialog.py:120
@@ -1022,9 +1016,8 @@ msgid "Error acquiring the report: %s"
 msgstr "నివేదికను పొందుటలో దోషము: %s"
 
 #: ../src/Gui/ConfBackend.py:79
-#, fuzzy
 msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
-msgstr "Gnome కీరింగ్ డెమోన్‌కు అనుసంధానము కాలేకపోయింది."
+msgstr "gnome-keyring-daemonకు అనుసంధానము కాలేకపోయింది, మార్పులు దాయబడవు."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
@@ -1033,15 +1026,13 @@ msgid "Cannot get the default keyring."
 msgstr "అప్రమేయ కీరింగ్‌ను పొందలేక పోయింది."
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr "gnome-keyringకు యాక్సెస్ తిరస్కరించబడింది, ప్లగిన్ల అమరికలు దాయబడవు."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "gnome-keyringకు యాక్సెస్ తిరస్కరించబడింది, %s కొరకు అమరికలను లోడు చేయలేక పోయింది!"
 
 #: ../src/Gui/ConfBackend.py:208
@@ -1155,15 +1146,14 @@ msgstr "బ్యాక్‌ట్రేస్‌ను ఆమోదించ�
 
 #: ../src/Gui/CReporterAssistant.py:659
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "మీరు కొనసాగుటకు ముందుగా యెలా అనేది పూరింప వలసివుంటుంది..."
 
 #: ../src/Gui/CReporterAssistant.py:682
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "ఈ క్రాష్ యెలా సంభవించినది (అంచెలంచెలుగా)? మీరు దానిని తిరిగి యెలా రాబట్టుతారు?"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr "మీరు సాఫ్టువేరు నిర్వాహకులతో పంచుకొవాలని అనుకొనుచున్న వ్యాఖ్యలు యేమైనా వున్నాయా?"
 
 #: ../src/Gui/CReporterAssistant.py:723
@@ -1174,16 +1164,14 @@ msgstr "అదనపు వివరములను అందించుము"
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
-msgstr ""
-"<b>చిట్కా:</b> మీ వ్యాఖ్యలు గోప్యం కావు. దయచేసి తదనుగుణంగా మీరు యేమి మాట్లాడుచున్నారో గమనించుకోండి."
+msgstr "<b>చిట్కా:</b> మీ వ్యాఖ్యలు గోప్యం కావు. దయచేసి తదనుగుణంగా మీరు యేమి మాట్లాడుచున్నారో గమనించుకోండి."
 
 #: ../src/Gui/CReporterAssistant.py:770
 msgid "Confirm and send the report"
 msgstr "ఖాయపరచుము మరియు నివేదికను పంపుము"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr "కిందిది మీ బగ్ నివేదిక యొక్క సంక్షిప్తసమాచారము. దానిని అప్పచెప్పుటకు దయచేసి 'ఆపాదించు' నొక్కుము."
 
 #: ../src/Gui/CReporterAssistant.py:777
