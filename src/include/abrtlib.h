@@ -234,8 +234,10 @@ double get_dirsize_find_largest_dir(
 );
 
 /* Emit a string of hex representation of bytes */
+#define bin2hex abrt_bin2hex
 char* bin2hex(char *dst, const char *str, int count);
 /* Convert "xxxxxxxx" hex string to binary, no more than COUNT bytes */
+#define hex2bin abrt_hex2bin
 char* hex2bin(char *dst, const char *str, int count);
 
 /* Returns command line of running program.
