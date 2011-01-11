@@ -1,21 +1,21 @@
-# translation of mr.po to Marathi
+# translation of abrt.1-1-x.po to Marathi
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Sandeep Shedmake <sshedmak@redhat.com>, 2010, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: mr\n"
+"Project-Id-Version: abrt.1-1-x\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-10 11:08+0000\n"
-"PO-Revision-Date: 2011-01-11 06:14+0530\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2011-01-11 01:45+0000\n"
+"PO-Revision-Date: 2011-01-11 10:42+0530\n"
+"Last-Translator: Sandeep Shedmake <sshedmak@redhat.com>\n"
 "Language-Team: Marathi <fedora-trans-mr@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: mr\n"
-"X-Generator: Lokalize 1.1\n"
+"X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: ../lib/Plugins/Bugzilla.cpp:543
@@ -29,7 +29,7 @@ msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
 "conf. Server said: %s"
 msgstr ""
-"प्रवेश अशक्य. संपादीत करा->प्लगइन्स्->Bugzilla व /etc/abrt/plugins/Bugzilla.conf "
+"प्रवेश अशक्य. संपादीत करा->प्लगइन्स्->बगजीला व /etc/abrt/plugins/Bugzilla.conf "
 "तपासा. सर्व्हर म्हणतो: %s"
 
 #: ../lib/Plugins/Bugzilla.cpp:758
@@ -88,7 +88,7 @@ msgstr "CC सूचीत %s समावेश करा"
 #: ../lib/Plugins/Bugzilla.cpp:957
 #, c-format
 msgid "Adding new comment to bug %d"
-msgstr "बग(%d) मध्ये नवीन टिपण्णी समावेश करा"
+msgstr "बग %d मध्ये नवीन टिपण्णी समावेश करा"
 
 #: ../lib/Plugins/Bugzilla.cpp:1056
 msgid "Reports bugs to bugzilla"
@@ -659,7 +659,7 @@ msgstr "वगळत आहे..."
 
 #: ../src/CLI/report.cpp:736
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "बॅकट्रेस वापरण्याजोगी नसल्यामुळे रिपोर्टिंग बंद केले."
+msgstr "बॅकट्रेस वापरण्याजोगी नसल्यामुळे रिपोर्टिंग बंद केले"
 
 #: ../src/CLI/report.cpp:740
 #, c-format
@@ -667,12 +667,12 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
-"आदेश: \"debuginfo-install %s\", चालवून कृपया debuginfo स्वतः प्रतिष्ठापीत करण्याचा प्रयत्न करा व "
-"पुन्हा प्रयत्न करा\n"
+"आदेश: \"debuginfo-install %s\", चालवून कृपया debuginfo स्वतः प्रतिष्ठापीत करण्याचा "
+"प्रयत्न करा व पुन्हा प्रयत्न करा\n"
 
 #: ../src/CLI/report.cpp:749
 msgid "Error loading reporter settings"
-msgstr "रिपोर्टर संरचना लोड करतेवेळी त्रुटी्रुटी: %"
+msgstr "रिपोर्टर संरचना लोड करतेवेळी त्रुटी"
 
 #: ../src/CLI/report.cpp:768
 #, c-format
@@ -701,7 +701,7 @@ msgstr "डाटाबेस प्लगइन निर्देशीत न
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr "ऍप्लिकेशन क्रॅश पहा व कळवा"
+msgstr "ॲप्लिकेशन क्रॅश पहा व कळवा"
 
 #: ../src/Gui/ABRTExceptions.py:7
 msgid "Another client is already running, trying to wake it..."
@@ -717,7 +717,7 @@ msgstr "प्लगइन्स् लोड केले नाही"
 
 #: ../src/Gui/ABRTPlugin.py:72
 msgid "Analyzer plugins"
-msgstr "अनलाइजर प्लगइन्स्"
+msgstr "ॲनलाइजर प्लगइन्स्"
 
 #: ../src/Gui/ABRTPlugin.py:73
 msgid "Action plugins"
@@ -843,7 +843,7 @@ msgstr "कळवले"
 
 #: ../src/Gui/CCMainWindow.py:71
 msgid "Application"
-msgstr "ऍप्लिकेशन"
+msgstr "ॲप्लिकेशन"
 
 #: ../src/Gui/CCMainWindow.py:73
 msgid "Hostname"
@@ -1030,20 +1030,20 @@ msgstr "क्रॅश माहितीत बॅकट्रेस आढळ
 #: ../src/Gui/CReporterAssistant.py:284
 #, python-format
 msgid "Rating is required by the %s plugin"
-msgstr "%s प्लगइन द्वारे गुणवत्ताश्रेणी आवश्यक आहे"
+msgstr "%s प्लगइन द्वारे दर्जा आवश्यक आहे"
 
 #: ../src/Gui/CReporterAssistant.py:286
 msgid "Rating is not required by any plugin, skipping the check..."
-msgstr "कुठल्याही प्लगइनकरीता गुणवत्ताश्रेणी आवश्यक नाही, तपास वगळत आहे..."
+msgstr "कुठल्याही प्लगइनकरीता दर्जा आवश्यक नाही, तपास वगळत आहे..."
 
 #: ../src/Gui/CReporterAssistant.py:290
 #, python-format
 msgid "Rating is %s"
-msgstr "गुणवत्ताश्रेणी %s आहे"
+msgstr "दर्जा %s आहे"
 
 #: ../src/Gui/CReporterAssistant.py:293
 msgid "Crashdump doesn't have rating => we suppose it's not required"
-msgstr "क्रॅशडम्पमध्ये गुणवत्ताश्रेणी आढळले नाही => गुणवत्ताश्रेणीची आवश्यकता नाही"
+msgstr "क्रॅशडम्पमध्ये दर्जा आढळले नाही => दर्जाची आवश्यकता नाही"
 
 #: ../src/Gui/CReporterAssistant.py:298
 msgid "You should check the backtrace for sensitive data."
@@ -1080,7 +1080,7 @@ msgid ""
 "Select where you would like to report the bug, and press 'Forward' to "
 "continue."
 msgstr ""
-"संकुल <b>%s</b> पासून तुमच्या प्रणालीवर ऍप्लिकेशन क्रॅश झाले, असे आढळले. या अडचणीविषयी "
+"संकुल <b>%s</b> पासून तुमच्या प्रणालीवर ॲप्लिकेशन क्रॅश झाले, असे आढळले. या अडचणीविषयी "
 "कळवण्यासाठी बग अहवाल सादर करणे चांगले पर्याय आहे. रिपोर्ट सॉफ्टवेअर मेइन्टेनर्सला बगचे "
 "निवारण पुरवण्याबाबत आवश्यक माहिती पुरवेल.\n"
 "\n"
@@ -1390,7 +1390,7 @@ msgstr "ही कृती काढून टाका"
 
 #: ../src/Gui/settings.glade.h:1
 msgid "<b>Analyzer plugin</b>"
-msgstr "<b>अनलाइजर प्लगइन</b>"
+msgstr "<b>ॲनलाइजर प्लगइन</b>"
 
 #: ../src/Gui/settings.glade.h:2
 msgid "<b>Associated action</b>"
@@ -1410,7 +1410,7 @@ msgstr "<b>वेळ (किंवा कार्यकाळ)</b>"
 
 #: ../src/Gui/settings.glade.h:6
 msgid "Analyzers, Actions, Reporters"
-msgstr "अनलाइजर्स्, कृती, रिपोर्टर्स्"
+msgstr "ॲनलाइजर्स्, कृती, रिपोर्टर्स्"
 
 #: ../src/Gui/settings.glade.h:7
 msgid "Author:"
@@ -1490,5 +1490,3 @@ msgstr ""
 "उघडण्यासाठी कृपया खालील बटणांचा वापर करा व पुढे जाण्यापूर्वी त्यांस ठिक करा, नाहीतर, "
 "रिपोर्टिंग प्रक्रिया अपयशी ठरेल.\n"
 
-#~ msgid "Getting global universal unique identification..."
-#~ msgstr "लोकल ग्लोबल एकमेव ओळख प्राप्त करत आहे..."
