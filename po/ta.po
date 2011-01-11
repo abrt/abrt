@@ -3,21 +3,22 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # I. Felix <ifelix@redhat.com>, 2009, 2010.
-# I Felix <ifelix@redhat.com>, 2010.
+# I Felix <ifelix@redhat.com>, 2010, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.ta\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-07 15:40+0100\n"
-"PO-Revision-Date: 2010-08-03 11:58+0530\n"
+"POT-Creation-Date: 2011-01-11 01:45+0000\n"
+"PO-Revision-Date: 2011-01-11 13:48+0530\n"
 "Last-Translator: I Felix <ifelix@redhat.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.0\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\\n\n"
+"Language: \n"
+"X-Generator: Lokalize 1.1\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\\n"
+"\n"
 
 #: ../lib/Plugins/Bugzilla.cpp:543
 #, c-format
@@ -56,8 +57,7 @@ msgstr "விடுபட்ட அவசியமான உறுப்பி�
 #: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
 #: ../lib/Plugins/Bugzilla.cpp:918
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
-"get_bug_info() செயலிழக்கப்பட்டது. அனைத்து அவசிய தகவலையும் சேகரிக்க முடியவில்லை"
+msgstr "get_bug_info() செயலிழக்கப்பட்டது. அனைத்து அவசிய தகவலையும் சேகரிக்க முடியவில்லை"
 
 #: ../lib/Plugins/Bugzilla.cpp:858
 msgid "Creating a new bug..."
@@ -111,7 +111,7 @@ msgstr "debuginfo நிறுவலை தவிர்த்தது"
 #: ../lib/Plugins/CCpp.cpp:670
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "%sக்கு பேக்ட்ரேஸ் பிணைத்தல் தோல்வி"
 
 #: ../lib/Plugins/CCpp.cpp:967
 msgid "Analyzes crashes in C/C++ programs"
@@ -196,8 +196,7 @@ msgid "Creating a ReportUploader report..."
 msgstr "ஒரு ReportUploader அறிக்கையை உருவாக்குகிறது..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 ".tar.gz கோப்பாக சிதைத்த தரவை பேக் செய்கிறது, விருப்பமான FTP/SCP/etc வழியாக அதை "
 "பதிவேற்றுகிறது"
@@ -207,9 +206,8 @@ msgid "Creating a new case..."
 msgstr "ஒரு புதிய வழக்கை உருவாக்குகிறது..."
 
 #: ../lib/Plugins/RHTSupport.cpp:309
-#, fuzzy
 msgid "Reports bugs to Red Hat support"
-msgstr "bugzilla-வுக்கு பிழைகளை அறிக்கையிடுகிறது"
+msgstr "Red Hat சேவைக்கு பிழைகளை அறிக்கையிடுகிறது"
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
@@ -381,8 +379,7 @@ msgid "Warning"
 msgstr "எச்சரிக்கை"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "ABRT ஆல் கண்டுபிடிக்கப்பட்ட சிக்கல்களைப் பற்றி அப்லெட்டில் உள்ள அறிக்கைப் பகுதியில் பயனர் "
 "குறிப்பிட வேண்டும்"
@@ -426,7 +423,7 @@ msgid "\tHostname   : %s\n"
 msgstr "\tபுரவலன் பெயர்   : %s\n"
 
 #: ../src/CLI/CLI.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
 "Last crash:         %s\n"
@@ -445,20 +442,18 @@ msgstr ""
 "தொகுப்பு:            %s\n"
 "கட்டளை:            %s\n"
 "இயங்கக்கூடியது:         %s\n"
-"கணினி:             %s, kernel %s\n"
-"மதிப்பீடு:             %s\n"
-"Coredump கோப்பு:      %s\n"
+"கணினி:             %s, கர்னல் %s\n"
 "காரணம்:             %s\n"
 
 #: ../src/CLI/CLI.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Coredump file:      %s\n"
-msgstr "க்ராஷ் செயல்முறை:     %s\n"
+msgstr "Coredump கோப்பு:     %s\n"
 
 #: ../src/CLI/CLI.cpp:135
-#, fuzzy, c-format
+#, c-format
 msgid "Rating:             %s\n"
-msgstr "புரவலன் பெயர்:          %s\n"
+msgstr "மதிப்பிடுதல்:          %s\n"
 
 #: ../src/CLI/CLI.cpp:140
 #, c-format
@@ -633,11 +628,11 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/CLI/report.cpp:545
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: ../src/CLI/report.cpp:546
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:647
@@ -658,18 +653,17 @@ msgid "Reporting..."
 msgstr "அறிக்கையிடுகிறது..."
 
 #: ../src/CLI/report.cpp:721
-#, fuzzy, c-format
+#, c-format
 msgid "Report using %s?"
-msgstr "அறிக்கை %sஐ பயன்படுத்துகிறதா? [y/N]: "
+msgstr "அறிக்கை %sஐ பயன்படுத்துகிறதா?"
 
 #: ../src/CLI/report.cpp:724
 msgid "Skipping..."
 msgstr "தவிர்க்கிறது..."
 
 #: ../src/CLI/report.cpp:736
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "அறிக்கை செயல்நீக்கப்பட்டது, மேலே காட்டப்பட்ட சிக்கல்களை பொருத்தவும்."
+msgstr "அறிக்கை செயல்நீக்கப்பட்டது ஏனெனில் ட்ரேஸ்பேக் பயன்படுத்தக்கூடியதல்ல"
 
 #: ../src/CLI/report.cpp:740
 #, c-format
@@ -677,11 +671,12 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
+"debuginfoஐ: \"debuginfo-install %s\" கட்டளையை பயன்படுத்தி கைமுறையாக நிறுவ முயற்சித்து "
+"மீண்டும் முயற்சிக்கவும்\n"
 
 #: ../src/CLI/report.cpp:749
-#, fuzzy
 msgid "Error loading reporter settings"
-msgstr "அறிக்கையை பெறும் போது பிழை: %s"
+msgstr "அறிக்கையாளர் அமைவுகளை ஏற்றும் போது பிழை: "
 
 #: ../src/CLI/report.cpp:768
 #, c-format
@@ -717,8 +712,7 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "வேறு கிளையன்ட் ஏற்கனவே இயங்கிக்கொண்டிருக்கிறது, அதனை எழுப்ப முயற்சிக்கிறது..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "டீமானுக்கு எதிர்பாராத தரவு பெறப்பட்டது (தரவுத்தளம் சரியாக மேம்படுத்தப்பட்டதா?)."
 
 #: ../src/Gui/ABRTPlugin.py:71
@@ -941,8 +935,8 @@ msgid ""
 "then use the Refresh button to regenerate the backtrace."
 msgstr ""
 "backtrace பயன்படுத்தபடவில்லை.\n"
-"இந்தக் கட்டளையைப் பயன்படுத்தி debuginfo கைமுறையாக நிறுவவும்:<b>debuginfo-install "
-"%s</b> \n"
+"இந்தக் கட்டளையைப் பயன்படுத்தி debuginfo கைமுறையாக நிறுவவும்:<b>debuginfo-install %"
+"s</b> \n"
 " பின் backtraceஐ மீண்டும் உருவாக்க புதுப்பி பொத்தானை பயன்படுத்தவும்."
 
 #: ../src/Gui/CCReporterDialog.py:120
@@ -1012,9 +1006,8 @@ msgid "Error acquiring the report: %s"
 msgstr "அறிக்கையை பெறும் போது பிழை: %s"
 
 #: ../src/Gui/ConfBackend.py:79
-#, fuzzy
 msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
-msgstr "Gnome Keyring டீமானோடு இணைக்க முடியவில்லை."
+msgstr "gnome-keyring-daemon இணைக்க முடியவில்லை, மாற்றங்கள் சேமிக்கப்படாது."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
@@ -1023,16 +1016,13 @@ msgid "Cannot get the default keyring."
 msgstr "முன்னிருப்பு கீரிங்கை பெற முடியவில்லை"
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr ""
-"gnome-keyringஐ அணுகுவது மறுக்கப்பட்டது, கூடுதல் இணைப்பு அமைவுகள் சேமிக்கப்படவில்லை."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgstr "gnome-keyringஐ அணுகுவது மறுக்கப்பட்டது, கூடுதல் இணைப்பு அமைவுகள் சேமிக்கப்படவில்லை."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "gnome-keyringஐ அணுகுவது மறுக்கப்பட்டது, %s-க்கு அமைவுகளை ஏற்ற முடியவில்லை!"
 
 #: ../src/Gui/ConfBackend.py:208
@@ -1150,7 +1140,7 @@ msgstr "பேக்ட்ரேஸை அனுமதி"
 
 #: ../src/Gui/CReporterAssistant.py:659
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "நீங்கள் எவ்வாறு தொடரப்போகிறீர்கள் என நிரப்ப வேண்டும்...நீங்கள் எவங"
 
 #: ../src/Gui/CReporterAssistant.py:682
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
@@ -1158,8 +1148,7 @@ msgstr ""
 "இந்த க்ராஷ் எவ்வாறு ஏற்பட்டது (படிப்படியாக)? நீங்கள் அதை எவ்வாறு மறு உற்பத்தி செய்தீர்கள்?"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr "மென்பொருள் பராமரிப்பவர்களிடம் ஏதாவது கருத்தங்களை பகிர்ந்து கொள்ள வேண்டுமா?"
 
 #: ../src/Gui/CReporterAssistant.py:723
@@ -1178,8 +1167,7 @@ msgid "Confirm and send the report"
 msgstr "உறுதிப்படுத்தி அறிக்கையை அனுப்பு"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "கீழே உள்ளது உங்கள் பிழை அறிக்கையின் ஒரு சுருக்கம். 'செயல்படுத்து' என்பதை கிளிக் செய்து "
 "சமர்பிக்கவும்."
