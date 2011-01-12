@@ -1,6 +1,6 @@
 AC_INIT([abrt], [1.2.0], [crash-catcher@fedorahosted.org])
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([-Wall foreign silent-rules])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign silent-rules])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 
 AC_ARG_ENABLE(debug,
@@ -17,7 +17,7 @@ AC_SYS_LARGEFILE
 CXXFLAGS="$CXXFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
           -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing "
 CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
-          -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing -std=gnu99"
+          -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing -std=gnu99 -Wall"
 
 dnl ****** INTERNATIONALIZATION **********************
 GETTEXT_PACKAGE=abrt
