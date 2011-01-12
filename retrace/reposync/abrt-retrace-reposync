@@ -1,37 +1,50 @@
 #!/bin/bash
-if    [ $3 ] && [ ! $4 ] \
-   && ( [ $1 = "fedora" ] || [ $1 = "rhel" ] ) \
+
+if      [ $3 ] && [ ! $4 ] \
+   &&   [ $1 = "fedora" ] \
    && ( [ $3 = "i686" ] || [ $3 = "x86_64" ] )
 then
-    cd /var/cache/abrt-retrace
+    LOG="/var/log/abrt-retrace/$1-$2-$3.log"
+    LOCK="/var/lock/subsys/abrt-retrace-$1-$2-$3"
+    REPODIR="/var/cache/abrt-retrace/"
 
-    LOG="$1-$2-$3.log"
-    date >> $LOG
+    date >> "$LOG"
 
-    if [ $1 = "fedora" ]
+    if [ -f "$LOCK" ]
     then
-        reposync -a $3 \
-        --repoid="$1-$2-$3" \
-        --repoid="$1-$2-$3-debuginfo" \
-        --repoid="$1-$2-$3-updates" \
-        --repoid="$1-$2-$3-updates-debuginfo" \
-        --repoid="$1-$2-$3-updates-testing" \
-        --repoid="$1-$2-$3-updates-testing-debuginfo" | grep "Downloading" >> $LOG
-
-#    createrepo "$1-$2-$3" >> $LOG
-#    createrepo "$1-$2-$3-debuginfo" >> $LOG
-        createrepo "$1-$2-$3-updates" > /dev/null
-        createrepo "$1-$2-$3-updates-debuginfo" > /dev/null
-        createrepo "$1-$2-$3-updates-testing" > /dev/null
-        createrepo "$1-$2-$3-updates-testing-debuginfo" > /dev/null
-    else
-        reposync -a $3 --repoid="$1-$2-$3" | grep "Downloading" >> $LOG
+        echo "The repository synchronization is running at the moment." >> "$LOG"
+        exit 2
     fi
+
+    touch "$LOCK"
+
+    cd "$REPODIR"
+
+    reposync -a $3 \
+      --repoid="$1-$2-$3" \
+      --repoid="$1-$2-$3-debuginfo" \
+      --repoid="$1-$2-$3-updates" \
+      --repoid="$1-$2-$3-updates-debuginfo" \
+      --repoid="$1-$2-$3-updates-testing" \
+      --repoid="$1-$2-$3-updates-testing-debuginfo" \
+      | grep "Downloading" \
+      | sed -e "s/^\[\([^:]*\).*\] Downloading /\1 /" \
+      | sed -e "s/Packages\///" \
+      >> "$LOG"
+
+#    createrepo "$1-$2-$3" > /dev/null
+#    createrepo "$1-$2-$3-debuginfo" > /dev/null
+    createrepo "$1-$2-$3-updates" > /dev/null
+    createrepo "$1-$2-$3-updates-debuginfo" > /dev/null
+    createrepo "$1-$2-$3-updates-testing" > /dev/null
+    createrepo "$1-$2-$3-updates-testing-debuginfo" > /dev/null
+
+    rm -f "$LOCK"
 else
     echo "Usage: $0 distribution version architecture"
     echo
     echo "where"
-    echo "distributuon = [fedora|rhel]"
+    echo "distributuon = [fedora]"
     echo "version = release version"
     echo "architecture = [i686|x86_64]"
 

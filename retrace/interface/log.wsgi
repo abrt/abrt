@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-# /usr/share/abrt-retrace/log.wsgi
-
 import sys
 sys.path = ["/usr/share/abrt-retrace"] + sys.path
 
@@ -33,10 +31,6 @@ def application(environ, start_response):
     if not "X-Task-Password" in request.headers or request.headers["X-Task-Password"] != pwd:
         return response(start_response, "403 Forbidden")
 
-    newpass = gen_task_password(taskdir)
-    if not newpass:
-        return response(start_response, "500 Internal Server Error", "Unable to generate new password")
-
     logpath = taskdir + "/retrace_log"
     if not os.path.isfile(logpath):
         return response(start_response, "404 Not Found")
@@ -47,5 +41,9 @@ def application(environ, start_response):
         logfile.close()
     except:
         return response(start_response, "500 Internal Server Error", "Unable to read log file at server")
+
+    newpass = gen_task_password(taskdir)
+    if not newpass:
+        return response(start_response, "500 Internal Server Error", "Unable to generate new password")
 
     return response(start_response, "200 OK", output, [("X-Task-Password", newpass)])

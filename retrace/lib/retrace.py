@@ -1,27 +1,39 @@
 #!/usr/bin/python
+
 import os
 import re
 import ConfigParser
 import random
+import sqlite3
 from webob import Request
 from subprocess import *
 
-REQUIRED_FILES = ["architecture", "coredump", "packages", "release"]
+REQUIRED_FILES = ["architecture", "coredump", "release"]
 
+DF_BIN = "/bin/df"
+TAR_BIN = "/bin/tar"
+XZ_BIN = "/usr/local/bin/xz"
+
+TASKID_PARSER = re.compile("^.*/([0-9]+)/*$")
+PACKAGE_PARSER = re.compile("^(.+)-([0-9]+(\.[0-9]+)*-[0-9]+)\.([^-]+)$")
 DF_OUTPUT_PARSER = re.compile("^([^ ^\t]*)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+%)[ \t]+(.*)$")
-XZ_OUTPUT_PARSER = re.compile("^totals[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+\.[0-9]+)[ \t]+([^ ^\t]+)[ \t]+([0-9]+)$")
+XZ_OUTPUT_PARSER = re.compile("^totals[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+\.[0-9]+)[ \t]+([^ ^\t]+)[ \t]+([0-9]+)")
 URL_PARSER = re.compile("^/([0-9]+)/")
+RELEASE_PARSERS = {
+  "fedora": re.compile("^Fedora[^0-9]+([0-9]+)[^\(]\(([^\)]+)\)$"),
+}
 
 TASKPASS_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 CONFIG_FILE = "/etc/abrt/retrace.conf"
 CONFIG = {
+    "TaskIdLength": 9,
     "TaskPassLength": 32,
-    "MaxParallelTasks": 2,
     "MaxPackedSize": 30,
     "MaxUnpackedSize": 600,
     "MinStorageLeft": 10240,
     "WorkDir": "/var/spool/abrt-retrace",
+    "DBFile": "stats.db",
 }
 
 def read_config():
@@ -44,7 +56,7 @@ def read_config():
             pass
 
 def free_space(path):
-    pipe = Popen(["df", path], stdout=PIPE).stdout
+    pipe = Popen([DF_BIN, path], stdout=PIPE).stdout
     for line in pipe.readlines():
         match = DF_OUTPUT_PARSER.match(line)
         if match:
@@ -55,7 +67,7 @@ def free_space(path):
     return None
 
 def unpacked_size(archive):
-    pipe = Popen(["/usr/bin/xz", "--list", "--robot", archive], stdout=PIPE).stdout
+    pipe = Popen([XZ_BIN, "--list", "--robot", archive], stdout=PIPE).stdout
     for line in pipe.readlines():
         match = XZ_OUTPUT_PARSER.match(line)
         if match:
@@ -66,9 +78,10 @@ def unpacked_size(archive):
     return None
 
 def gen_task_password(taskdir):
+    generator = random.SystemRandom()
     taskpass = ""
     for j in xrange(CONFIG["TaskPassLength"]):
-        taskpass += random.choice(TASKPASS_ALPHABET)
+        taskpass += generator.choice(TASKPASS_ALPHABET)
 
     try:
         passfile = open(taskdir + "/password", "w")
@@ -79,12 +92,15 @@ def gen_task_password(taskdir):
 
     return taskpass
 
+def get_task_est_time(taskdir):
+    return 180
+
 def new_task():
     i = 0
     newdir = CONFIG["WorkDir"]
     while os.path.exists(newdir) and i < 50:
         i += 1
-        taskid = random.randint(100000000, 999999999)
+        taskid = random.randint(pow(10, CONFIG["TaskIdLength"] - 1), pow(10, CONFIG["TaskIdLength"]) - 1)
         newdir = CONFIG["WorkDir"] + "/" + str(taskid)
 
     try:
@@ -92,20 +108,77 @@ def new_task():
         taskpass = gen_task_password(newdir)
         if not taskpass:
             os.system("rm -rf " + newdir)
-            raise
+            raise Exception
 
         return taskid, taskpass, newdir
     except:
         return None, None, None
 
 def unpack(archive):
-    pipe = Popen(["tar", "xJf", archive])
+    pipe = Popen([TAR_BIN, "xJf", archive])
     pipe.wait()
     return pipe.returncode
-
-def get_task_est_time(crashdir):
-    return 180
 
 def response(start_response, status, body="", extra_headers=[]):
     start_response(status, [("Content-Type", "text/plain"), ("Content-Length", str(len(body)))] + extra_headers)
     return [body]
+
+def get_active_tasks():
+    tasks = []
+    for filename in os.listdir(CONFIG["WorkDir"]):
+        if len(filename) != 9:
+            continue
+
+        try:
+            taskid = int(filename)
+        except:
+            continue
+
+        path = "%s/%s" % (CONFIG["WorkDir"], filename)
+        if os.path.isdir(path) and not os.path.isfile("%s/retrace_log" % path):
+            tasks.append(taskid)
+
+    return tasks
+
+def init_crashstats_db():
+    try:
+        con = sqlite3.connect("%s/%s" % (CONFIG["WorkDir"], CONFIG["DBFile"]))
+        query = con.cursor()
+        query.execute("""
+          CREATE TABLE IF NOT EXISTS
+          retracestats(
+            taskid INT NOT NULL,
+            package VARCHAR(255) NOT NULL,
+            version VARCHAR(16) NOT NULL,
+            release VARCHAR(16) NOT NULL,
+            arch VARCHAR(8) NOT NULL,
+            starttime INT NOT NULL,
+            duration INT NOT NULL,
+            prerunning TINYINT NOT NULL,
+            postrunning TINYINT NOT NULL
+          )
+        """)
+        con.commit()
+        con.close()
+
+        return True
+    except:
+        return False
+
+def save_crashstats(crashstats):
+    try:
+        con = sqlite3.connect("%s/%s" % (CONFIG["WorkDir"], CONFIG["DBFile"]))
+        query = con.cursor()
+        query.execute("""
+          INSERT INTO retracestats(taskid, package, version, release, arch, starttime, duration,
+          prerunning, postrunning) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
+          """,
+          (crashstats["taskid"], crashstats["package"], crashstats["version"], crashstats["release"], crashstats["arch"], crashstats["starttime"], crashstats["duration"], crashstats["prerunning"], crashstats["postrunning"])
+        )
+        con.commit()
+        con.close()
+
+        return True
+    except Exception, e:
+        print e
+        return False

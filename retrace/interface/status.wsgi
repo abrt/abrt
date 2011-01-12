@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-# /usr/share/abrt-retrace/status.wsgi
-
 import sys
 sys.path = ["/usr/share/abrt-retrace"] + sys.path
 
@@ -22,7 +20,7 @@ def application(environ, start_response):
     pwdpath = taskdir + "/password"
     try:
         if not os.path.isfile(pwdpath):
-            raise
+            raise Exception
 
         pwdfile = open(pwdpath, "r")
         pwd = pwdfile.read()
@@ -43,5 +41,9 @@ def application(environ, start_response):
             status = "FINISHED_SUCCESS"
         else:
             status = "FINISHED_FAILURE"
+
+    newpass = gen_task_password(taskdir)
+    if not newpass:
+        return response(start_response, "500 Internal Server Error", "Unable to generate new password")
 
     return response(start_response, "200 OK", status, [("X-Task-Status", status), ("X-Task-Password", newpass)])

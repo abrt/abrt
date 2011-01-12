@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-# /usr/share/abrt-retrace/create.wsgi
-
 import sys
 sys.path = ["/usr/share/abrt-retrace"] + sys.path
 
@@ -63,10 +61,10 @@ def application(environ, start_response):
         os.unlink(archive.name)
 
         if unpack_retcode != 0:
-            raise
+            raise Exception
     except:
         os.chdir("/")
-        os.system("rm -rf " + taksdir)
+        Popen(["rm", "-rf", taskdir])
         return response(start_response, "500 Internal Server Error", "Unable to unpack archive")
 
     files = os.listdir(".")
@@ -74,9 +72,9 @@ def application(environ, start_response):
     for required_file in REQUIRED_FILES:
         if not required_file in files:
             os.chdir("/")
-            os.system("rm -rf " + taskdir)
+            Popen(["rm", "-rf", taskdir])
             return response(start_response, "403 Forbidden")
 
-    # ToDo Spawn worker
+    Popen(["/usr/sbin/abrt-retrace-worker", taskdir])
 
-    return response(start_response, "201 Created", "", [("X-Task-Id", str(taskid)), ("X-Task-Password", taskpass), ("X-Task-Est-Time", str(get_task_est_time(taskdir)))])
+    return response(start_response, "201 Created", "", [("X-Task-Id", str(taskid)), ("X-Task-Password", taskpass)])
