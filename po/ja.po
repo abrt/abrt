@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Kiyoto Hashida <khashida@redhat.com>, 2009, 2010.
+# Kiyoto Hashida <khashida@redhat.com>, 2009, 2010, 2011.
 # Hyu_gabaru Ryu_ichi <hyu_gabaru@yahoo.co.jp>, 2009.
 # Noriko Mizumoto <noriko@fedoraproject.org>, 2010.
 # Makoto Mizukami <makoto@fedoraporject.org>, 2010, 2010.
@@ -10,16 +10,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-07 15:40+0100\n"
-"PO-Revision-Date: 2010-07-30 09:47+0900\n"
+"POT-Creation-Date: 2011-01-12 07:52+0000\n"
+"PO-Revision-Date: 2011-01-12 18:31+0900\n"
 "Last-Translator: Kiyoto Hashida <khashida@redhat.com>\n"
 "Language-Team: Japanese <jp@li.org>\n"
-"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
 "\n"
 "\n"
 
@@ -60,8 +60,7 @@ msgstr "必須のメンバー「バグ」の欠如"
 #: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
 #: ../lib/Plugins/Bugzilla.cpp:918
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
-"get_bug_info() の実行に失敗しました。全ての必須情報を収集できませんでした"
+msgstr "get_bug_info() の実行に失敗しました。全ての必須情報を収集できませんでした"
 
 #: ../lib/Plugins/Bugzilla.cpp:858
 msgid "Creating a new bug..."
@@ -115,7 +114,7 @@ msgstr "debuginfo のインストールをスキップします"
 #: ../lib/Plugins/CCpp.cpp:670
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "%s のバックトレースパースに失敗"
 
 #: ../lib/Plugins/CCpp.cpp:967
 msgid "Analyzes crashes in C/C++ programs"
@@ -200,8 +199,7 @@ msgid "Creating a ReportUploader report..."
 msgstr "ReportUploader の報告を作成しています..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 "クラッシュデータを .tar.gz ファイルに圧縮します。オプションとして FTP/SCP/"
 "etc 経由でアップロードします"
@@ -211,9 +209,8 @@ msgid "Creating a new case..."
 msgstr "新しいケースを作成中..."
 
 #: ../lib/Plugins/RHTSupport.cpp:309
-#, fuzzy
 msgid "Reports bugs to Red Hat support"
-msgstr "bugzilla にバグを報告します"
+msgstr "Red Hat サポートにバグを報告します"
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
@@ -385,10 +382,8 @@ msgid "Warning"
 msgstr "警告"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
-msgstr ""
-"ABRT によって検出された問題をユーザーに通知するための通知エリアアプレット"
+msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgstr "ABRT によって検出された問題をユーザーに通知するための通知エリアアプレット"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
 msgid "translator-credits"
@@ -429,7 +424,7 @@ msgid "\tHostname   : %s\n"
 msgstr "\tホスト名   : %s\n"
 
 #: ../src/CLI/CLI.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
 "Last crash:         %s\n"
@@ -442,26 +437,24 @@ msgid ""
 "Reason:             %s\n"
 msgstr ""
 "クラッシュ ID:           %s:%s\n"
-"最後のクラッシュ:         %s\n"
+"前回のクラッシュ:         %s\n"
 "解析者:           %s\n"
 "コンポーネント:          %s\n"
 "パッケージ:            %s\n"
 "コマンド:            %s\n"
-"実行可能性:         %s\n"
+"実行可能:         %s\n"
 "システム:             %s, カーネル %s\n"
-"評価:             %s\n"
-"コアダンプファイル:      %s\n"
-"理由:             %s\n"
+"理由:            %s\n"
 
 #: ../src/CLI/CLI.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Coredump file:      %s\n"
-msgstr "クラッシュ関数:     %s\n"
+msgstr "コアダンプファイル:     %s\n"
 
 #: ../src/CLI/CLI.cpp:135
-#, fuzzy, c-format
+#, c-format
 msgid "Rating:             %s\n"
-msgstr "ホスト名:           %s\n"
+msgstr "評価:           %s\n"
 
 #: ../src/CLI/CLI.cpp:140
 #, c-format
@@ -634,11 +627,11 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/CLI/report.cpp:545
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: ../src/CLI/report.cpp:546
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:647
@@ -659,18 +652,17 @@ msgid "Reporting..."
 msgstr "報告中..."
 
 #: ../src/CLI/report.cpp:721
-#, fuzzy, c-format
+#, c-format
 msgid "Report using %s?"
-msgstr "%s を使用して報告しますか? [y/N]: "
+msgstr "%s を使用して報告しますか?"
 
 #: ../src/CLI/report.cpp:724
 msgid "Skipping..."
 msgstr "スキップ中..."
 
 #: ../src/CLI/report.cpp:736
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "バックトレースが利用できないため、レポート機能が無効になっています。"
+msgstr "バックトレースが利用できないため、レポート機能が無効です"
 
 #: ../src/CLI/report.cpp:740
 #, c-format
@@ -678,11 +670,12 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
+"コマンド : \"debuginfo-install %s\" の使用で debuginfo を手動でインストール "
+"して、再度試行して下さい\n"
 
 #: ../src/CLI/report.cpp:749
-#, fuzzy
 msgid "Error loading reporter settings"
-msgstr "報告取得中のエラー: %s"
+msgstr "レポーター設定の読み込みでエラー"
 
 #: ../src/CLI/report.cpp:768
 #, c-format
@@ -707,8 +700,7 @@ msgstr ""
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
-msgstr ""
-"データベースプラグインが指定されていません。 abrtd の設定を確認してください。"
+msgstr "データベースプラグインが指定されていません。 abrtd の設定を確認してください。"
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -719,8 +711,7 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "別のクライアントが稼働していますので、それを呼び出しています..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr ""
 "デーモンから予想外のデータを受け取りました(データベースは正常に更新されていま"
 "すか?)。"
@@ -958,8 +949,7 @@ msgstr "バックトレースを使用できません。この問題を報告で
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
-msgstr ""
-"バックトレースが不完全です。再現手順が書かれているかどうか確認してください。"
+msgstr "バックトレースが不完全です。再現手順が書かれているかどうか確認してください。"
 
 #: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
@@ -1016,9 +1006,8 @@ msgid "Error acquiring the report: %s"
 msgstr "報告取得中のエラー: %s"
 
 #: ../src/Gui/ConfBackend.py:79
-#, fuzzy
 msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
-msgstr "Gnome Keyring デーモンに接続できません。"
+msgstr "Gnome Keyring デーモンに接続できません。変更は保存されません。"
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
@@ -1027,8 +1016,7 @@ msgid "Cannot get the default keyring."
 msgstr "デフォルトキーリングを取得できません。"
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
 "gnome-keyring へのアクセスが拒否されました。プラグインの設定は保存されませ"
 "ん。"
@@ -1036,8 +1024,7 @@ msgstr ""
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "gnome-keyring へのアクセスが拒否されました。%s の設定を読み込めません!"
 
 #: ../src/Gui/ConfBackend.py:208
@@ -1153,7 +1140,7 @@ msgstr "バックトレースを承認する"
 
 #: ../src/Gui/CReporterAssistant.py:659
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "進行する前にその方法を記入する必要があります..."
 
 #: ../src/Gui/CReporterAssistant.py:682
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
@@ -1162,8 +1149,7 @@ msgstr ""
 "できますか?"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr "ソフトウェア管理者と共有したいコメントがありますか?"
 
 #: ../src/Gui/CReporterAssistant.py:723
@@ -1174,16 +1160,14 @@ msgstr "その他の情報を提供する"
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
-msgstr ""
-"<b>ヒント:</b> コメントは公開されます。そのつもりで発言には注意して下さい。"
+msgstr "<b>ヒント:</b> コメントは公開されます。そのつもりで発言には注意して下さい。"
 
 #: ../src/Gui/CReporterAssistant.py:770
 msgid "Confirm and send the report"
 msgstr "レポートを確認して送信する"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "バグレポートの要約を以下に示します。提出するには「適用」をクリックして下さ"
 "い。"
@@ -1516,5 +1500,3 @@ msgstr ""
 "下のボタンを使用して各設定を開き、それらを修正してから進んで下さい。このまま"
 "では報告のプロセスは失敗するでしょう。\n"
 
-#~ msgid "Getting global universal unique identification..."
-#~ msgstr "グローバルで普遍的な独自の識別を取得しています..."
