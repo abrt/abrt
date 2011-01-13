@@ -16,6 +16,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include <glob.h>
 #include "abrtlib.h"
 
 struct run_event_state *new_run_event_state()
@@ -28,14 +29,15 @@ void free_run_event_state(struct run_event_state *state)
     free(state);
 }
 
-int run_event_on_dir_name(struct run_event_state *state,
+static int run_event_helper(struct run_event_state *state,
                 const char *dump_dir_name,
-                const char *event
+                const char *event,
+                const char *conf_file_name
 ) {
-    FILE *conffile = fopen(CONF_DIR"/abrt_event.conf", "r");
+    FILE *conffile = fopen(conf_file_name, "r");
     if (!conffile)
     {
-        error_msg("Can't open '%s'", CONF_DIR"/abrt_event.conf");
+        error_msg("Can't open '%s'", conf_file_name);
         return 1;
     }
     close_on_exec_on(fileno(conffile));
@@ -53,15 +55,64 @@ int run_event_on_dir_name(struct run_event_state *state,
     /* Read, match, and execute lines from abrt_event.conf */
     int retval = -1;
     struct dump_dir *dd = NULL;
-    char *line;
-    while ((line = xmalloc_fgetline(conffile)) != NULL)
+    char *next_line = xmalloc_fgetline(conffile);
+    while (next_line)
     {
+        char *line = next_line;
+        while (1)
+        {
+            next_line = xmalloc_fgetline(conffile);
+            if (!next_line || !isblank(next_line[0]))
+                break;
+            char *old_line = line;
+            line = xasprintf("%s\n%s", line, next_line);
+            free(old_line);
+            free(next_line);
+        }
+
         /* Line has form: [VAR=VAL]... PROG [ARGS] */
         char *p = skip_whitespace(line);
         if (*p == '\0' || *p == '#')
             goto next_line; /* empty or comment line, skip */
 
         VERB3 log("%s: line '%s'", __func__, p);
+
+        if (strncmp(p, "include", strlen("include")) == 0 && isblank(p[strlen("include")]))
+        {
+            /* include GLOB_PATTERN */
+            p = skip_whitespace(p + strlen("include"));
+
+            const char *last_slash;
+            char *name_to_glob;
+            if (*p != '/'
+             && (last_slash = strrchr(conf_file_name, '/')) != NULL
+            )
+                /* GLOB_PATTERN is relative, and this include is in path/to/file.conf
+                 * Construct path/to/GLOB_PATTERN:
+                 */
+                name_to_glob = xasprintf("%.*s%s", (int)(last_slash - conf_file_name + 1), conf_file_name, p);
+            else
+                /* Either GLOB_PATTERN is absolute, or this include is in file.conf
+                 * (no slashes in its name). Use unchanged GLOB_PATTERN:
+                 */
+                name_to_glob = xstrdup(p);
+
+            glob_t globbuf;
+            memset(&globbuf, 0, sizeof(globbuf));
+            VERB3 log("%s: globbing '%s'", __func__, name_to_glob);
+            glob(name_to_glob, 0, NULL, &globbuf);
+            free(name_to_glob);
+            char **name = globbuf.gl_pathv;
+            if (name) while (*name)
+            {
+                VERB3 log("%s: recursing into '%s'", __func__, *name);
+                run_event_helper(state, dump_dir_name, event, *name);
+                VERB3 log("%s: returned from '%s'", __func__, *name);
+                name++;
+            }
+            globfree(&globbuf);
+            goto next_line;
+        }
 
         while (1) /* word loop */
         {
@@ -93,7 +144,11 @@ int run_event_on_dir_name(struct run_event_state *state,
                 {
                     dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
                     if (!dd)
+                    {
+                        free(line);
+                        free(next_line);
                         goto stop; /* error (note: dd_opendir logged error msg) */
+                    }
                 }
                 real_val = malloced_val = dd_load_text_ext(dd, p, DD_FAIL_QUIETLY);
             }
@@ -176,11 +231,17 @@ int run_event_on_dir_name(struct run_event_state *state,
     } /* end of line loop */
 
  stop:
-    free(line);
     dd_close(dd);
     fclose(conffile);
 
     return retval;
+}
+
+int run_event_on_dir_name(struct run_event_state *state,
+                const char *dump_dir_name,
+                const char *event
+) {
+    return run_event_helper(state, dump_dir_name, event, CONF_DIR"/abrt_event.conf");
 }
 
 int run_event_on_crash_data(struct run_event_state *state, crash_data_t *data, const char *event)
@@ -202,13 +263,19 @@ int run_event_on_crash_data(struct run_event_state *state, crash_data_t *data, c
     return r;
 }
 
-char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const char *pfx)
-{
-    FILE *conffile = fopen(CONF_DIR"/abrt_event.conf", "r");
+
+/* TODO: very similar to run_event_helper, try to combine into one fn? */
+static void list_possible_events_helper(struct strbuf *result,
+                struct dump_dir *dd,
+                const char *dump_dir_name,
+                const char *pfx,
+                const char *conf_file_name
+) {
+    FILE *conffile = fopen(conf_file_name, "r");
     if (!conffile)
     {
-        error_msg("Can't open '%s'", CONF_DIR"/abrt_event.conf");
-        return NULL;
+        error_msg("Can't open '%s'", conf_file_name);
+        return;
     }
 
     /* We check "dump_dir_name == NULL" later.
@@ -219,16 +286,64 @@ char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const
         dump_dir_name = NULL;
 
     unsigned pfx_len = strlen(pfx);
-    struct strbuf *result = strbuf_new();
-    char *line;
-    while ((line = xmalloc_fgetline(conffile)) != NULL)
+    char *next_line = xmalloc_fgetline(conffile);
+    while (next_line)
     {
+        char *line = next_line;
+        while (1)
+        {
+            next_line = xmalloc_fgetline(conffile);
+            if (!next_line || !isblank(next_line[0]))
+                break;
+            char *old_line = line;
+            line = xasprintf("%s\n%s", line, next_line);
+            free(old_line);
+            free(next_line);
+        }
+
         /* Line has form: [VAR=VAL]... PROG [ARGS] */
         char *p = skip_whitespace(line);
         if (*p == '\0' || *p == '#')
             goto next_line; /* empty or comment line, skip */
 
         VERB3 log("%s: line '%s'", __func__, p);
+
+        if (strncmp(p, "include", strlen("include")) == 0 && isblank(p[strlen("include")]))
+        {
+            /* include GLOB_PATTERN */
+            p = skip_whitespace(p + strlen("include"));
+
+            const char *last_slash;
+            char *name_to_glob;
+            if (*p != '/'
+             && (last_slash = strrchr(conf_file_name, '/')) != NULL
+            )
+                /* GLOB_PATTERN is relative, and this include is in path/to/file.conf
+                 * Construct path/to/GLOB_PATTERN:
+                 */
+                name_to_glob = xasprintf("%.*s%s", (int)(last_slash - conf_file_name + 1), conf_file_name, p);
+            else
+                /* Either GLOB_PATTERN is absolute, or this include is in file.conf
+                 * (no slashes in its name). Use unchanged GLOB_PATTERN:
+                 */
+                name_to_glob = xstrdup(p);
+
+            glob_t globbuf;
+            memset(&globbuf, 0, sizeof(globbuf));
+            VERB3 log("%s: globbing '%s'", __func__, name_to_glob);
+            glob(name_to_glob, 0, NULL, &globbuf);
+            free(name_to_glob);
+            char **name = globbuf.gl_pathv;
+            if (name) while (*name)
+            {
+                VERB3 log("%s: recursing into '%s'", __func__, *name);
+                list_possible_events_helper(result, dd, dump_dir_name, pfx, *name);
+                VERB3 log("%s: returned from '%s'", __func__, *name);
+                name++;
+            }
+            globfree(&globbuf);
+            goto next_line;
+        }
 
         while (1) /* word loop */
         {
@@ -262,7 +377,11 @@ char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const
                         goto next_word;
                     dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
                     if (!dd)
+                    {
+                        free(line);
+                        free(next_line);
                         goto stop; /* error (note: dd_opendir logged error msg) */
+                    }
                 }
                 char *real_val = dd_load_text_ext(dd, p, DD_FAIL_QUIETLY);
                 /* Does VAL match? */
@@ -294,10 +413,14 @@ char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const
     } /* end of line loop */
 
  stop:
-    free(line);
     if (dump_dir_name != NULL)
         dd_close(dd);
     fclose(conffile);
+}
 
+char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const char *pfx)
+{
+    struct strbuf *result = strbuf_new();
+    list_possible_events_helper(result, dd, dump_dir_name, pfx, CONF_DIR"/abrt_event.conf");
     return strbuf_free_nobuf(result);
 }
