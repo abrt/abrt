@@ -39,7 +39,7 @@ struct options {
 #define OPT_STRING(s, l, v, a, h)    { OPTION_STRING, (s), (l), (v), (a), (h) }
 #define OPT_OPTSTRING(s, l, v, a, h) { OPTION_OPTSTRING, (s), (l), (v), (a), (h) }
 
-#define OPT__VERBOSE(v)     OPT_BOOL('v', "verbose", (v), "be verbose")
+#define OPT__VERBOSE(v)     OPT_BOOL('v', "verbose", (v), "Be verbose")
 
 #define parse_opts abrt_parse_opts
 unsigned parse_opts(int argc, char **argv, const struct options *opt,

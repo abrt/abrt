@@ -234,7 +234,7 @@ int main(int argc, char** argv)
             error_msg_and_die(
                 "Usage: abrt-applet [-v]\n"
                 "\nOptions:"
-                "\n\t-v\tVerbose"
+                "\n\t-v\tBe verbose"
             );
         }
     }

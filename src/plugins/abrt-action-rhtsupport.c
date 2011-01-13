@@ -289,7 +289,7 @@ int main(int argc, char **argv)
                 "\nOptions:"
                 "\n	-c FILE	Configuration file (may be given many times)"
                 "\n	-d DIR	Crash dump directory"
-                "\n	-v	Verbose"
+                "\n	-v	Be verbose"
                 "\n	-s	Log to syslog"
             );
         }

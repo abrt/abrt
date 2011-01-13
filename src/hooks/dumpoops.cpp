@@ -61,7 +61,7 @@ usage:
                         "Options:\n"
                         "\t-d\tCreate ABRT dump for every oops found\n"
                         "\t-s\tPrint found oopses on standard output\n"
-                        "\t-v\tVerbose\n"
+                        "\t-v\tBe verbose\n"
                         , program_name
                         );
         }
