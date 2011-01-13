@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-07 15:40+0100\n"
+"POT-Creation-Date: 2011-01-13 14:56+0100\n"
 "PO-Revision-Date: 2010-07-30 15:55+1000\n"
 "Last-Translator: Terry Chuang <tchuang@redhat.com>\n"
 "Language-Team: Traditional Chinese <zh_TW@li.org>\n"
@@ -200,11 +200,16 @@ msgid ""
 "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr "將當機資料整理入 .tar.gz 檔案中，選用性的透過 FTP/SCP/etc 來上傳它"
 
-#: ../lib/Plugins/RHTSupport.cpp:233
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#: ../lib/Plugins/RHTSupport.cpp:106
+msgid "Compressing data"
+msgstr ""
+
+#: ../lib/Plugins/RHTSupport.cpp:236
 msgid "Creating a new case..."
 msgstr "正在建立新的案例…"
 
-#: ../lib/Plugins/RHTSupport.cpp:309
+#: ../lib/Plugins/RHTSupport.cpp:312
 #, fuzzy
 msgid "Reports bugs to Red Hat support"
 msgstr "將錯誤回報至 bugzilla"
@@ -348,6 +353,11 @@ msgstr "登入名稱："
 #: ../lib/Plugins/RHTSupport.glade.h:4
 msgid "RHTSupport URL:"
 msgstr "RHTSupport 網址："
+
+#: ../lib/Utils/abrt_curl.cpp:180
+#, c-format
+msgid "Uploaded: %llu of %llu kbytes"
+msgstr ""
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"

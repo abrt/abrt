@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.1-1-x\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-11 01:45+0000\n"
+"POT-Creation-Date: 2011-01-13 14:56+0100\n"
 "PO-Revision-Date: 2011-01-11 10:42+0530\n"
 "Last-Translator: Sandeep Shedmake <sshedmak@redhat.com>\n"
 "Language-Team: Marathi <fedora-trans-mr@redhat.com>\n"
+"Language: mr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: mr\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
@@ -194,16 +194,22 @@ msgid "Creating a ReportUploader report..."
 msgstr "ReportUploader अहवाल निर्माण करत आहे..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid ""
+"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 "डाटा क्रॅशला .tar.gz फाइलमध्ये पॅक करतो, वैकल्पिकरित्या FTP/SCP/etc चा वापर करून "
 "अपलोड करतो"
 
-#: ../lib/Plugins/RHTSupport.cpp:233
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#: ../lib/Plugins/RHTSupport.cpp:106
+msgid "Compressing data"
+msgstr ""
+
+#: ../lib/Plugins/RHTSupport.cpp:236
 msgid "Creating a new case..."
 msgstr "नवीन केस निर्माण करत आहे..."
 
-#: ../lib/Plugins/RHTSupport.cpp:309
+#: ../lib/Plugins/RHTSupport.cpp:312
 msgid "Reports bugs to Red Hat support"
 msgstr "Red Hat सपोर्टकरीता बग्स् कळवतो"
 
@@ -348,6 +354,11 @@ msgstr "प्रवेश करा:"
 msgid "RHTSupport URL:"
 msgstr "RHTSupport URL:"
 
+#: ../lib/Utils/abrt_curl.cpp:180
+#, c-format
+msgid "Uploaded: %llu of %llu kbytes"
+msgstr ""
+
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
 msgstr "ABRT सूचना ऍप्लेट"
@@ -377,7 +388,8 @@ msgid "Warning"
 msgstr "सावधानता"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
 msgstr "सूचना क्षेत्र ऍप्लेट जे वापरकर्त्याला ABRT द्वारे आढळलेल्या अडचणींविषयी अवगत करते"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
@@ -708,7 +720,8 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "इतर क्लाएंट आधिपासूनच कार्यरत आहे, सक्रिय करण्याचा प्रयत्न करत आहे..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgid ""
+"Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "डिमनपासून अनपेक्षीत डाटा प्राप्त झाले (माहितीकोष योग्यरित्या सुधारीत केले?)."
 
 #: ../src/Gui/ABRTPlugin.py:71
@@ -1010,13 +1023,15 @@ msgid "Cannot get the default keyring."
 msgstr "पूर्वनिर्धारीत किरींग प्राप्त करणे अशक्य."
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr "gnome-keyring करीता प्रवेश नकारले, प्लगइंस् संरचना साठवणे अशक्य."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid ""
+"Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "gnome-keyring करीता प्रवेश नकारले, %s करीता संरचना लोड करणे शक्य नाही!"
 
 #: ../src/Gui/ConfBackend.py:208
@@ -1139,7 +1154,8 @@ msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "हे क्रॅश कसे झाले (प्रक्रिया)? पुनःनिर्माण कसे करायचे?"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid "Are there any comments you would like to share with the software maintainers?"
+msgid ""
+"Are there any comments you would like to share with the software maintainers?"
 msgstr "सॉफ्टवेअर मेइन्टेनर्स् सह काहिक टिपण्णी तुम्हाला सहभाग करायला आवडेल?"
 
 #: ../src/Gui/CReporterAssistant.py:723
@@ -1159,8 +1175,10 @@ msgid "Confirm and send the report"
 msgstr "अहवाल निश्चित करा व पाठवा"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
-msgstr "खालील तुमच्या बग अहवालाचे सारांश आहे. कृपया सादर करण्यासाठी 'लागू करा' यावर क्लिक करा."
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgstr ""
+"खालील तुमच्या बग अहवालाचे सारांश आहे. कृपया सादर करण्यासाठी 'लागू करा' यावर क्लिक करा."
 
 #: ../src/Gui/CReporterAssistant.py:777
 msgid "<b>Basic details</b>"
@@ -1489,4 +1507,3 @@ msgstr ""
 "काहिक सुरू असलेले रिपोर्टर प्लगइन्स् करीता चुकिच्या संरचना आढळले. ठराविक संयोजना "
 "उघडण्यासाठी कृपया खालील बटणांचा वापर करा व पुढे जाण्यापूर्वी त्यांस ठिक करा, नाहीतर, "
 "रिपोर्टिंग प्रक्रिया अपयशी ठरेल.\n"
-

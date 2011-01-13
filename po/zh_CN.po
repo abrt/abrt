@@ -12,14 +12,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.1-1-x\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-10 11:08+0000\n"
+"POT-Creation-Date: 2011-01-13 14:56+0100\n"
 "PO-Revision-Date: 2011-01-11 00:29+1000\n"
 "Last-Translator: Leah Liu <lliu@redhat.com>\n"
 "Language-Team: Wei Liu\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: KBabel 1.11.4\n"
 
@@ -199,14 +199,20 @@ msgid "Creating a ReportUploader report..."
 msgstr "正在生成 ReportUploader 报告......"
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid ""
+"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr "将崩溃数据打包成 .tar.gz 文件，并可使用 FTP/SCP/etc 将其上传。"
 
-#: ../lib/Plugins/RHTSupport.cpp:233
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#: ../lib/Plugins/RHTSupport.cpp:106
+msgid "Compressing data"
+msgstr ""
+
+#: ../lib/Plugins/RHTSupport.cpp:236
 msgid "Creating a new case..."
 msgstr "正在创建新案例……"
 
-#: ../lib/Plugins/RHTSupport.cpp:309
+#: ../lib/Plugins/RHTSupport.cpp:312
 msgid "Reports bugs to Red Hat support"
 msgstr "向红帽支持报告 bug"
 
@@ -351,6 +357,11 @@ msgstr "登录："
 msgid "RHTSupport URL:"
 msgstr "RHTSupport URL："
 
+#: ../lib/Utils/abrt_curl.cpp:180
+#, c-format
+msgid "Uploaded: %llu of %llu kbytes"
+msgstr ""
+
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
 msgstr "ABRT 通知程序"
@@ -380,7 +391,8 @@ msgid "Warning"
 msgstr "警告"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
 msgstr "用来通知用户 ABRT 所探测到问题的通告区小应用程序"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
@@ -669,7 +681,8 @@ msgstr "禁用报告因为回溯不可用"
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
-msgstr "请使用命令 \"debuginfo-install %s\" 尝试手动安装 debuginfo，并再试一次\n"
+msgstr ""
+"请使用命令 \"debuginfo-install %s\" 尝试手动安装 debuginfo，并再试一次\n"
 
 #: ../src/CLI/report.cpp:749
 msgid "Error loading reporter settings"
@@ -692,7 +705,8 @@ msgstr "“如何再现”过长"
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
-msgstr "报告大小已超出配额。请检查在 abrt.conf 文件中系统的 MaxCrashReportsSize 值。"
+msgstr ""
+"报告大小已超出配额。请检查在 abrt.conf 文件中系统的 MaxCrashReportsSize 值。"
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
@@ -707,7 +721,8 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "另一客户端已经在运行，正在尝试唤醒它......"
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgid ""
+"Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "从守护进程得到意外数据（数据库是否正常更新？）。"
 
 #: ../src/Gui/ABRTPlugin.py:71
@@ -1004,13 +1019,15 @@ msgid "Cannot get the default keyring."
 msgstr "不能获取默认密钥环。"
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr "对 gnome 密钥环的访问被拒绝，插件设置将不会被保存。"
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid ""
+"Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "对 gnome 密钥环的访问被拒绝，无法载入 %s 的设置！"
 
 #: ../src/Gui/ConfBackend.py:208
@@ -1130,7 +1147,8 @@ msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "此崩溃是如何发生的（具体步骤）？您如何重复它？"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid "Are there any comments you would like to share with the software maintainers?"
+msgid ""
+"Are there any comments you would like to share with the software maintainers?"
 msgstr "您有什么要与软件维护者分享的评论吗？"
 
 #: ../src/Gui/CReporterAssistant.py:723
@@ -1148,7 +1166,8 @@ msgid "Confirm and send the report"
 msgstr "确认并发送报告"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr "下面是您的 bug 报告的摘要。请点击‘应用’提交。"
 
 #: ../src/Gui/CReporterAssistant.py:777
@@ -1477,4 +1496,3 @@ msgid ""
 msgstr ""
 "探测到有些启用的报告程序插件有错误设置。请使用以下按钮打开对应的配置并在继续"
 "报告前修复它，否则报告过程会失败。\n"
-

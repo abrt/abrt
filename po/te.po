@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.te\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-11 01:45+0000\n"
+"POT-Creation-Date: 2011-01-13 14:56+0100\n"
 "PO-Revision-Date: 2011-01-11 11:47+0530\n"
 "Last-Translator: Krishnababu Krothapalli <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
+"Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: te\n"
 "X-Generator: Lokalize 1.1\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "\n"
@@ -212,14 +212,21 @@ msgid "Creating a ReportUploader report..."
 msgstr "రిపోర్ట్అప్‌లోడర్ నివేదికను సృష్టించుచున్నది..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-msgstr "క్రాష్ డాటాను .tar.gz ఫైలునకు పాక్ చేయును, ఐచ్చికంగా దానిని FTP/SCP/etc ద్వారా అప్‌లోడ్ చేయును"
+msgid ""
+"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgstr ""
+"క్రాష్ డాటాను .tar.gz ఫైలునకు పాక్ చేయును, ఐచ్చికంగా దానిని FTP/SCP/etc ద్వారా అప్‌లోడ్ చేయును"
 
-#: ../lib/Plugins/RHTSupport.cpp:233
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#: ../lib/Plugins/RHTSupport.cpp:106
+msgid "Compressing data"
+msgstr ""
+
+#: ../lib/Plugins/RHTSupport.cpp:236
 msgid "Creating a new case..."
 msgstr "కొత్త కేస్‌ను సృష్టించుచున్నది..."
 
-#: ../lib/Plugins/RHTSupport.cpp:309
+#: ../lib/Plugins/RHTSupport.cpp:312
 msgid "Reports bugs to Red Hat support"
 msgstr "Red Hat తోడ్పాటునకు బగ్‌లను నివేదించును"
 
@@ -364,6 +371,11 @@ msgstr "లాగిన్:"
 msgid "RHTSupport URL:"
 msgstr "RHTమద్దతు URL:"
 
+#: ../lib/Utils/abrt_curl.cpp:180
+#, c-format
+msgid "Uploaded: %llu of %llu kbytes"
+msgstr ""
+
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
 msgstr "ABRT ప్రకటన ఆప్లెట్"
@@ -393,7 +405,8 @@ msgid "Warning"
 msgstr "హెచ్చరిక"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT చేత గుర్తించబడిన సమస్యల గురించి వినియోగదారికి తెలుపుటకు నోటిఫికేషన్ ప్రాంతపు ఆప్లెట్"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
@@ -725,7 +738,8 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "వేరొక క్లైంటు యిప్పటికే నడుచుచున్నది, దానిని మేల్కొలుపుటకు యత్నించుచున్నది..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgid ""
+"Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "డెమోన్‌నుండి అనుకోని డాటా పొందినది (డాటాబేస్ సరిగా నవీకరించబడిందా?)."
 
 #: ../src/Gui/ABRTPlugin.py:71
@@ -946,8 +960,8 @@ msgid ""
 "then use the Refresh button to regenerate the backtrace."
 msgstr ""
 "నివేదీకరణ అచేతనము చేయబడింది యెంచేతంటే బాక్‌ట్రేస్ నిరుపయోగమైంది.\n"
-"ఈ ఆదేశాన్ని వుపయోగించి డీబగ్‌యిన్ఫోను మానవీయంగా సంస్థాపించుటకు ప్రయత్నించండి: <b>debuginfo-install %"
-"s</b> \n"
+"ఈ ఆదేశాన్ని వుపయోగించి డీబగ్‌యిన్ఫోను మానవీయంగా సంస్థాపించుటకు ప్రయత్నించండి: <b>debuginfo-install "
+"%s</b> \n"
 "అప్పుడు బాక్‌ట్రేస్‌ను తిరిగి వుద్భవింపచేయుటకు రీఫ్రెష్ బటన్ వుపయోగించండి."
 
 #: ../src/Gui/CCReporterDialog.py:120
@@ -1026,13 +1040,15 @@ msgid "Cannot get the default keyring."
 msgstr "అప్రమేయ కీరింగ్‌ను పొందలేక పోయింది."
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr "gnome-keyringకు యాక్సెస్ తిరస్కరించబడింది, ప్లగిన్ల అమరికలు దాయబడవు."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid ""
+"Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "gnome-keyringకు యాక్సెస్ తిరస్కరించబడింది, %s కొరకు అమరికలను లోడు చేయలేక పోయింది!"
 
 #: ../src/Gui/ConfBackend.py:208
@@ -1153,7 +1169,8 @@ msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "ఈ క్రాష్ యెలా సంభవించినది (అంచెలంచెలుగా)? మీరు దానిని తిరిగి యెలా రాబట్టుతారు?"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid "Are there any comments you would like to share with the software maintainers?"
+msgid ""
+"Are there any comments you would like to share with the software maintainers?"
 msgstr "మీరు సాఫ్టువేరు నిర్వాహకులతో పంచుకొవాలని అనుకొనుచున్న వ్యాఖ్యలు యేమైనా వున్నాయా?"
 
 #: ../src/Gui/CReporterAssistant.py:723
@@ -1164,14 +1181,16 @@ msgstr "అదనపు వివరములను అందించుము"
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
-msgstr "<b>చిట్కా:</b> మీ వ్యాఖ్యలు గోప్యం కావు. దయచేసి తదనుగుణంగా మీరు యేమి మాట్లాడుచున్నారో గమనించుకోండి."
+msgstr ""
+"<b>చిట్కా:</b> మీ వ్యాఖ్యలు గోప్యం కావు. దయచేసి తదనుగుణంగా మీరు యేమి మాట్లాడుచున్నారో గమనించుకోండి."
 
 #: ../src/Gui/CReporterAssistant.py:770
 msgid "Confirm and send the report"
 msgstr "ఖాయపరచుము మరియు నివేదికను పంపుము"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr "కిందిది మీ బగ్ నివేదిక యొక్క సంక్షిప్తసమాచారము. దానిని అప్పచెప్పుటకు దయచేసి 'ఆపాదించు' నొక్కుము."
 
 #: ../src/Gui/CReporterAssistant.py:777

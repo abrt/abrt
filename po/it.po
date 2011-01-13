@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt-master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-07 15:40+0100\n"
+"POT-Creation-Date: 2011-01-13 14:56+0100\n"
 "PO-Revision-Date: 2010-11-19 15:41+0100\n"
 "Last-Translator: Francesco <fdaluisio@fedoraproject.org>\n"
 "Language-Team: Italian <trans-it@fedoraproject.org>\n"
@@ -209,11 +209,16 @@ msgstr ""
 "Raggruppa i dati relativi al crash in un file .tar.gz, e facoltativamente li "
 "carica tramite FTP/SCP/etc"
 
-#: ../lib/Plugins/RHTSupport.cpp:233
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#: ../lib/Plugins/RHTSupport.cpp:106
+msgid "Compressing data"
+msgstr ""
+
+#: ../lib/Plugins/RHTSupport.cpp:236
 msgid "Creating a new case..."
 msgstr "Creazione di un nuovo caso..."
 
-#: ../lib/Plugins/RHTSupport.cpp:309
+#: ../lib/Plugins/RHTSupport.cpp:312
 msgid "Reports bugs to Red Hat support"
 msgstr "Notifica bug al supporto Red Hat"
 
@@ -357,6 +362,11 @@ msgstr "Login:"
 #: ../lib/Plugins/RHTSupport.glade.h:4
 msgid "RHTSupport URL:"
 msgstr "URL RHTSupport:"
+
+#: ../lib/Utils/abrt_curl.cpp:180
+#, c-format
+msgid "Uploaded: %llu of %llu kbytes"
+msgstr ""
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
