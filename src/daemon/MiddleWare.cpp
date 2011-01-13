@@ -173,6 +173,8 @@ static mw_result_t CreateCrashReport(const char *dump_dir_name,
     }
 
  ret:
+    if (*crash_data == NULL)
+        *crash_data = new_crash_data();
     VERB3 log("CreateCrashReport() returns %d", r);
     return r;
 }
