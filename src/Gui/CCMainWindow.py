@@ -89,9 +89,10 @@ class MainWindow():
         self.wTree.get_widget("bReport").connect("clicked", self.on_bReport_clicked)
         self.wTree.get_widget("b_close").connect("clicked", self.on_bQuit_clicked)
         self.wTree.get_widget("b_copy").connect("clicked", self.on_b_copy_clicked)
-        self.wTree.get_widget("b_help").connect("clicked", self.on_miAbout_clicked)
+        self.wTree.get_widget("b_help").connect("clicked", self.on_miOnlineHelp_clicked)
         self.wTree.get_widget("miQuit").connect("activate", self.on_bQuit_clicked)
         self.wTree.get_widget("miAbout").connect("activate", self.on_miAbout_clicked)
+        self.wTree.get_widget("miOnlineHelp").connect("activate", self.on_miOnlineHelp_clicked)
         self.wTree.get_widget("miPlugins").connect("activate", self.on_miPreferences_clicked)
         self.wTree.get_widget("miPreferences").connect("activate", self.on_miSettings_clicked)
         self.wTree.get_widget("miReport").connect("activate", self.on_bReport_clicked)
@@ -129,6 +130,10 @@ class MainWindow():
         dialog = self.wTree.get_widget("about")
         result = dialog.run()
         dialog.hide()
+
+    def on_miOnlineHelp_clicked(self, widget):
+        # opens default browser and shows ABRT chapter from deployment guide
+        gtk.show_uri(None, "http://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/ch-abrt.html", gtk.gdk.CURRENT_TIME)
 
     def on_miPreferences_clicked(self, widget):
         dialog = PluginsSettingsDialog(self.window,self.ccdaemon)
