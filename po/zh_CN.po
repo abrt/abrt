@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.1-1-x\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-13 14:56+0100\n"
+"POT-Creation-Date: 2011-01-14 16:16+0100\n"
 "PO-Revision-Date: 2011-01-11 00:29+1000\n"
 "Last-Translator: Leah Liu <lliu@redhat.com>\n"
 "Language-Team: Wei Liu\n"
@@ -395,7 +395,7 @@ msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "用来通知用户 ABRT 所探测到问题的通告区小应用程序"
 
-#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
+#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr "译者名单"
 
@@ -403,7 +403,7 @@ msgstr "译者名单"
 msgid "Hide"
 msgstr "隐藏"
 
-#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:13
+#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "报告"
 
@@ -802,11 +802,15 @@ msgstr "关于 ABRT"
 msgid "Copy to Clipboard"
 msgstr "复制到剪切板"
 
-#: ../src/Gui/ccgui.glade.h:12 ../src/Gui/settings.glade.h:19
+#: ../src/Gui/ccgui.glade.h:12
+msgid "Online _Help"
+msgstr ""
+
+#: ../src/Gui/ccgui.glade.h:13 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "插件"
 
-#: ../src/Gui/ccgui.glade.h:14
+#: ../src/Gui/ccgui.glade.h:15
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -830,19 +834,19 @@ msgstr ""
 "您应该已收到了附于本程序的 GNU 通用公共授权的副本。若没有收到，请查看 "
 "<http://www.gnu.org/licenses/>。"
 
-#: ../src/Gui/ccgui.glade.h:19
+#: ../src/Gui/ccgui.glade.h:20
 msgid "View log"
 msgstr "查看日志"
 
-#: ../src/Gui/ccgui.glade.h:20
+#: ../src/Gui/ccgui.glade.h:21
 msgid "_Edit"
 msgstr "编辑（_E）"
 
-#: ../src/Gui/ccgui.glade.h:21
+#: ../src/Gui/ccgui.glade.h:22
 msgid "_File"
 msgstr "文件（_F）"
 
-#: ../src/Gui/ccgui.glade.h:22
+#: ../src/Gui/ccgui.glade.h:23
 msgid "_Help"
 msgstr "帮助（_H）"
 
@@ -863,7 +867,7 @@ msgstr "主机名"
 msgid "Latest Crash"
 msgstr "最近的崩溃"
 
-#: ../src/Gui/CCMainWindow.py:143
+#: ../src/Gui/CCMainWindow.py:148
 #, python-format
 msgid ""
 "Cannot show the settings dialog.\n"
@@ -872,7 +876,7 @@ msgstr ""
 "无法显示设置对话。\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:148
+#: ../src/Gui/CCMainWindow.py:153
 #, python-format
 msgid ""
 "Unable to finish the current task!\n"
@@ -882,7 +886,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:183
+#: ../src/Gui/CCMainWindow.py:188
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -891,7 +895,7 @@ msgstr ""
 "载入转储列表时出错。\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:241
+#: ../src/Gui/CCMainWindow.py:246
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -900,11 +904,11 @@ msgstr ""
 "<b>%s 崩溃</b>\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:337
+#: ../src/Gui/CCMainWindow.py:342
 msgid "You have to select a crash to copy."
 msgstr "您必须选择一个崩溃来复制。"
 
-#: ../src/Gui/CCMainWindow.py:422
+#: ../src/Gui/CCMainWindow.py:427
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -914,7 +918,7 @@ msgstr ""
 "\t-v[vv]\t\t\t\t冗长的\n"
 "\t--report=崩溃标识\t\t直接报告带有此崩溃标识的崩溃"
 
-#: ../src/Gui/CCMainWindow.py:445
+#: ../src/Gui/CCMainWindow.py:450
 #, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"

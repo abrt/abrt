@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.de\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-13 14:56+0100\n"
+"POT-Creation-Date: 2011-01-14 16:16+0100\n"
 "PO-Revision-Date: 2010-07-29 22:39+1000\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -406,7 +406,7 @@ msgstr ""
 "Info-Applet, das Benutzer über die von ABRT entdeckten Probleme "
 "benachrichtigt"
 
-#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
+#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr "translator-credits"
 
@@ -414,7 +414,7 @@ msgstr "translator-credits"
 msgid "Hide"
 msgstr "Verstecken"
 
-#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:13
+#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "Bericht"
 
@@ -823,11 +823,15 @@ msgstr "Über ABRT"
 msgid "Copy to Clipboard"
 msgstr "In die Zwischenablage kopieren"
 
-#: ../src/Gui/ccgui.glade.h:12 ../src/Gui/settings.glade.h:19
+#: ../src/Gui/ccgui.glade.h:12
+msgid "Online _Help"
+msgstr ""
+
+#: ../src/Gui/ccgui.glade.h:13 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "Plugins"
 
-#: ../src/Gui/ccgui.glade.h:14
+#: ../src/Gui/ccgui.glade.h:15
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -855,19 +859,19 @@ msgstr ""
 "Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem "
 "Programm erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:19
+#: ../src/Gui/ccgui.glade.h:20
 msgid "View log"
 msgstr "Log betrachten"
 
-#: ../src/Gui/ccgui.glade.h:20
+#: ../src/Gui/ccgui.glade.h:21
 msgid "_Edit"
 msgstr "_Bearbeiten"
 
-#: ../src/Gui/ccgui.glade.h:21
+#: ../src/Gui/ccgui.glade.h:22
 msgid "_File"
 msgstr "_Datei"
 
-#: ../src/Gui/ccgui.glade.h:22
+#: ../src/Gui/ccgui.glade.h:23
 msgid "_Help"
 msgstr "_Hilfe"
 
@@ -888,7 +892,7 @@ msgstr "Hostname"
 msgid "Latest Crash"
 msgstr "Letzter Absturz"
 
-#: ../src/Gui/CCMainWindow.py:143
+#: ../src/Gui/CCMainWindow.py:148
 #, python-format
 msgid ""
 "Cannot show the settings dialog.\n"
@@ -897,7 +901,7 @@ msgstr ""
 "Der Einstellungsdialog kann nicht angezeigt werden.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:148
+#: ../src/Gui/CCMainWindow.py:153
 #, python-format
 msgid ""
 "Unable to finish the current task!\n"
@@ -907,7 +911,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:183
+#: ../src/Gui/CCMainWindow.py:188
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -916,7 +920,7 @@ msgstr ""
 "Fehler beim Laden der Dump-Liste.\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:241
+#: ../src/Gui/CCMainWindow.py:246
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -925,11 +929,11 @@ msgstr ""
 "<b>%s Absturz</b>\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:337
+#: ../src/Gui/CCMainWindow.py:342
 msgid "You have to select a crash to copy."
 msgstr "Sie müssen einen Absturz auswählen, der kopiert werden soll."
 
-#: ../src/Gui/CCMainWindow.py:422
+#: ../src/Gui/CCMainWindow.py:427
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -939,7 +943,7 @@ msgstr ""
 "\t-v[vv]\t\t\tVerbose\n"
 "\t--report=CRASH_ID\tAbsturz direkt melden mit CRASH_ID"
 
-#: ../src/Gui/CCMainWindow.py:445
+#: ../src/Gui/CCMainWindow.py:450
 #, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"

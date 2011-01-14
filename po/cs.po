@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt 1.1.x\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-13 14:56+0100\n"
+"POT-Creation-Date: 2011-01-14 16:16+0100\n"
 "PO-Revision-Date: 2010-12-06 15:09+0100\n"
 "Last-Translator: Petr Pisar <ppisar@redhat.com>\n"
 "Language-Team: Czech Fedora <diskuse@lists.l10n.cz>\n"
@@ -403,7 +403,7 @@ msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "Applet upozorňující uživatele na chyby nalezené démonem ABRT"
 
-#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
+#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr ""
 "Jiří Moskovčák <jmoskovc@redhat.com>Radek Vokál <rvokal@redhat.com>Nikola "
@@ -413,7 +413,7 @@ msgstr ""
 msgid "Hide"
 msgstr "Skrýt"
 
-#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:13
+#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "Nahlásit"
 
@@ -816,11 +816,15 @@ msgstr "O aplikaci ABRT"
 msgid "Copy to Clipboard"
 msgstr "Zkopírovat do schránky"
 
-#: ../src/Gui/ccgui.glade.h:12 ../src/Gui/settings.glade.h:19
+#: ../src/Gui/ccgui.glade.h:12
+msgid "Online _Help"
+msgstr ""
+
+#: ../src/Gui/ccgui.glade.h:13 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "Moduly"
 
-#: ../src/Gui/ccgui.glade.h:14
+#: ../src/Gui/ccgui.glade.h:15
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -847,19 +851,19 @@ msgstr ""
 "Kopii Obecné veřejné licence GNU byste měli dostat spolu s tímto programem. "
 "Nestalo-li se tak, vize <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:19
+#: ../src/Gui/ccgui.glade.h:20
 msgid "View log"
 msgstr "Zobrazit log"
 
-#: ../src/Gui/ccgui.glade.h:20
+#: ../src/Gui/ccgui.glade.h:21
 msgid "_Edit"
 msgstr "_Upravit"
 
-#: ../src/Gui/ccgui.glade.h:21
+#: ../src/Gui/ccgui.glade.h:22
 msgid "_File"
 msgstr "_Soubor"
 
-#: ../src/Gui/ccgui.glade.h:22
+#: ../src/Gui/ccgui.glade.h:23
 msgid "_Help"
 msgstr "_Pomoc"
 
@@ -880,7 +884,7 @@ msgstr "Název stroje"
 msgid "Latest Crash"
 msgstr "Poslední pád"
 
-#: ../src/Gui/CCMainWindow.py:143
+#: ../src/Gui/CCMainWindow.py:148
 #, python-format
 msgid ""
 "Cannot show the settings dialog.\n"
@@ -889,7 +893,7 @@ msgstr ""
 "Dialog s nastavením nelze zobrazit.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:148
+#: ../src/Gui/CCMainWindow.py:153
 #, python-format
 msgid ""
 "Unable to finish the current task!\n"
@@ -899,7 +903,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:183
+#: ../src/Gui/CCMainWindow.py:188
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -908,7 +912,7 @@ msgstr ""
 "Nepodařilo se získat dumplist.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:241
+#: ../src/Gui/CCMainWindow.py:246
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -917,11 +921,11 @@ msgstr ""
 "<b>%s Pád</b>\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:337
+#: ../src/Gui/CCMainWindow.py:342
 msgid "You have to select a crash to copy."
 msgstr "Pro kopii je třeba vybrat pád."
 
-#: ../src/Gui/CCMainWindow.py:422
+#: ../src/Gui/CCMainWindow.py:427
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -931,7 +935,7 @@ msgstr ""
 "\t-v[vv]\t\t\tPodrobný režim\n"
 "\t--report=ID_PÁDU\tNahlásit rovnou pád s ID_PÁDU"
 
-#: ../src/Gui/CCMainWindow.py:445
+#: ../src/Gui/CCMainWindow.py:450
 #, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"

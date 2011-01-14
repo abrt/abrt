@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-13 14:56+0100\n"
+"POT-Creation-Date: 2011-01-14 16:16+0100\n"
 "PO-Revision-Date: 2010-06-05 20:15+0100\n"
 "Last-Translator: Rui Gouveia <rui.gouveia@gmail.com>\n"
 "Language-Team: trans-pt@lists.fedoraproject.org\n"
@@ -398,7 +398,7 @@ msgstr ""
 "Applet da área de notificação para informar o utilizador sobre os problemas "
 "detectados pela ABRT"
 
-#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
+#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr "Rui Gouveia <rui.gouveia@gmail.com>"
 
@@ -406,7 +406,7 @@ msgstr "Rui Gouveia <rui.gouveia@gmail.com>"
 msgid "Hide"
 msgstr "Esconder"
 
-#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:13
+#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "Relatório"
 
@@ -774,11 +774,15 @@ msgstr "Acerca do ABRT"
 msgid "Copy to Clipboard"
 msgstr "Copiar para a área de transferência"
 
-#: ../src/Gui/ccgui.glade.h:12 ../src/Gui/settings.glade.h:19
+#: ../src/Gui/ccgui.glade.h:12
+msgid "Online _Help"
+msgstr ""
+
+#: ../src/Gui/ccgui.glade.h:13 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "Plugins"
 
-#: ../src/Gui/ccgui.glade.h:14
+#: ../src/Gui/ccgui.glade.h:15
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -805,19 +809,19 @@ msgstr ""
 "Deve ter recebido uma cópia da GNU General Public License juntamente com "
 "este programa.  Se não, veja <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:19
+#: ../src/Gui/ccgui.glade.h:20
 msgid "View log"
 msgstr "Mostrar registo"
 
-#: ../src/Gui/ccgui.glade.h:20
+#: ../src/Gui/ccgui.glade.h:21
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../src/Gui/ccgui.glade.h:21
+#: ../src/Gui/ccgui.glade.h:22
 msgid "_File"
 msgstr "_Ficheiro"
 
-#: ../src/Gui/ccgui.glade.h:22
+#: ../src/Gui/ccgui.glade.h:23
 msgid "_Help"
 msgstr "_Ajuda"
 
@@ -838,7 +842,7 @@ msgstr ""
 msgid "Latest Crash"
 msgstr "Último crash"
 
-#: ../src/Gui/CCMainWindow.py:143
+#: ../src/Gui/CCMainWindow.py:148
 #, fuzzy, python-format
 msgid ""
 "Cannot show the settings dialog.\n"
@@ -847,7 +851,7 @@ msgstr ""
 "Impossível mostrar a janela de definições\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:148
+#: ../src/Gui/CCMainWindow.py:153
 #, fuzzy, python-format
 msgid ""
 "Unable to finish the current task!\n"
@@ -857,7 +861,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:183
+#: ../src/Gui/CCMainWindow.py:188
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -866,7 +870,7 @@ msgstr ""
 "Erro ao carregar a lista de dump.\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:241
+#: ../src/Gui/CCMainWindow.py:246
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -875,11 +879,11 @@ msgstr ""
 "<b>%s Crash</b>\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:337
+#: ../src/Gui/CCMainWindow.py:342
 msgid "You have to select a crash to copy."
 msgstr "Tem de seleccionar um crash para copiar."
 
-#: ../src/Gui/CCMainWindow.py:422
+#: ../src/Gui/CCMainWindow.py:427
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -889,7 +893,7 @@ msgstr ""
 "\t-v[vv]\t\t\tVerboso\n"
 "\t--report=CRASH_ID\tReportar directamente crash com CRASH_ID"
 
-#: ../src/Gui/CCMainWindow.py:445
+#: ../src/Gui/CCMainWindow.py:450
 #, fuzzy, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"
