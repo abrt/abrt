@@ -64,7 +64,7 @@ int main(int argc, char **argv)
 
     unsigned opts = parse_opts(argc, argv, program_options, program_usage);
     if (!(opts & (OPT_e|OPT_l)))
-        parse_usage_and_die(program_usage, program_options);
+        show_usage_and_die(program_usage, program_options);
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     if (opts & OPT_s)
     {

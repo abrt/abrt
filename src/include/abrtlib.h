@@ -147,24 +147,24 @@ int xatoi_positive(const char *numstr);
 //unsigned monotonic_sec(void);
 
 enum {
-	/* on return, pipefds[1] is fd to which parent may write
-	 * and deliver data to child's stdin: */
-	EXECFLG_INPUT      = 1 << 0,
-	/* on return, pipefds[0] is fd from which parent may read
-	 * child's stdout: */
-	EXECFLG_OUTPUT     = 1 << 1,
-	/* open child's stdin to /dev/null: */
-	EXECFLG_INPUT_NUL  = 1 << 2,
-	/* open child's stdout to /dev/null: */
-	EXECFLG_OUTPUT_NUL = 1 << 3,
-	/* redirect child's stderr to stdout: */
-	EXECFLG_ERR2OUT    = 1 << 4,
-	/* open child's stderr to /dev/null: */
-	EXECFLG_ERR_NUL    = 1 << 5,
-	/* suppress perror_msg("Can't execute 'foo'") if exec fails */
-	EXECFLG_QUIET      = 1 << 6,
-	EXECFLG_SETGUID    = 1 << 7,
-	EXECFLG_SETSID     = 1 << 8,
+        /* on return, pipefds[1] is fd to which parent may write
+         * and deliver data to child's stdin: */
+        EXECFLG_INPUT      = 1 << 0,
+        /* on return, pipefds[0] is fd from which parent may read
+         * child's stdout: */
+        EXECFLG_OUTPUT     = 1 << 1,
+        /* open child's stdin to /dev/null: */
+        EXECFLG_INPUT_NUL  = 1 << 2,
+        /* open child's stdout to /dev/null: */
+        EXECFLG_OUTPUT_NUL = 1 << 3,
+        /* redirect child's stderr to stdout: */
+        EXECFLG_ERR2OUT    = 1 << 4,
+        /* open child's stderr to /dev/null: */
+        EXECFLG_ERR_NUL    = 1 << 5,
+        /* suppress perror_msg("Can't execute 'foo'") if exec fails */
+        EXECFLG_QUIET      = 1 << 6,
+        EXECFLG_SETGUID    = 1 << 7,
+        EXECFLG_SETSID     = 1 << 8,
 };
 /* Returns pid */
 #define fork_execv_on_steroids abrt_fork_execv_on_steroids
@@ -178,49 +178,9 @@ pid_t fork_execv_on_steroids(int flags,
  * after the last byte (this NUL is not accounted for in *size_p) */
 #define run_in_shell_and_save_output abrt_run_in_shell_and_save_output
 char *run_in_shell_and_save_output(int flags,
-		const char *cmd,
-		const char *dir,
-		size_t *size_p);
-
-//unused for now
-///* Networking helpers */
-//typedef struct len_and_sockaddr {
-//	socklen_t len;
-//	union {
-//		struct sockaddr sa;
-//		struct sockaddr_in sin;
-//		struct sockaddr_in6 sin6;
-//	} u;
-//} len_and_sockaddr;
-//enum {
-//	LSA_LEN_SIZE = offsetof(len_and_sockaddr, u),
-//	LSA_SIZEOF_SA = sizeof(struct sockaddr) > sizeof(struct sockaddr_in6) ?
-//			sizeof(struct sockaddr) : sizeof(struct sockaddr_in6),
-//};
-//void setsockopt_reuseaddr(int fd);
-//int setsockopt_broadcast(int fd);
-//int setsockopt_bindtodevice(int fd, const char *iface);
-//len_and_sockaddr* get_sock_lsa(int fd);
-//void xconnect(int s, const struct sockaddr *s_addr, socklen_t addrlen);
-//unsigned lookup_port(const char *port, const char *protocol, unsigned default_port);
-//int get_nport(const struct sockaddr *sa);
-//void set_nport(len_and_sockaddr *lsa, unsigned port);
-//len_and_sockaddr* host_and_af2sockaddr(const char *host, int port, sa_family_t af);
-//len_and_sockaddr* xhost_and_af2sockaddr(const char *host, int port, sa_family_t af);
-//len_and_sockaddr* host2sockaddr(const char *host, int port);
-//len_and_sockaddr* xhost2sockaddr(const char *host, int port);
-//len_and_sockaddr* xdotted2sockaddr(const char *host, int port);
-//int xsocket_type(len_and_sockaddr **lsap, int family, int sock_type);
-//int xsocket_stream(len_and_sockaddr **lsap);
-//int create_and_bind_stream_or_die(const char *bindaddr, int port);
-//int create_and_bind_dgram_or_die(const char *bindaddr, int port);
-//int create_and_connect_stream_or_die(const char *peer, int port);
-//int xconnect_stream(const len_and_sockaddr *lsa);
-//char* xmalloc_sockaddr2host(const struct sockaddr *sa);
-//char* xmalloc_sockaddr2host_noport(const struct sockaddr *sa);
-//char* xmalloc_sockaddr2hostonly_noport(const struct sockaddr *sa);
-//char* xmalloc_sockaddr2dotted(const struct sockaddr *sa);
-//char* xmalloc_sockaddr2dotted_noport(const struct sockaddr *sa);
+                const char *cmd,
+                const char *dir,
+                size_t *size_p);
 
 /* Random utility functions */
 
