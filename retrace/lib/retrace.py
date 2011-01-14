@@ -12,7 +12,7 @@ REQUIRED_FILES = ["architecture", "coredump", "release"]
 
 DF_BIN = "/bin/df"
 TAR_BIN = "/bin/tar"
-XZ_BIN = "/usr/local/bin/xz"
+XZ_BIN = "/usr/bin/xz"
 
 TASKID_PARSER = re.compile("^.*/([0-9]+)/*$")
 PACKAGE_PARSER = re.compile("^(.+)-([0-9]+(\.[0-9]+)*-[0-9]+)\.([^-]+)$")
@@ -182,3 +182,6 @@ def save_crashstats(crashstats):
     except Exception, e:
         print e
         return False
+
+### read config on import ###
+read_config()

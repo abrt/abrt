@@ -7,8 +7,6 @@ from retrace import *
 from tempfile import *
 
 def application(environ, start_response):
-    read_config()
-
     request = Request(environ)
 
     if request.method != "POST":
