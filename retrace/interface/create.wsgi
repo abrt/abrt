@@ -9,6 +9,12 @@ from tempfile import *
 def application(environ, start_response):
     request = Request(environ)
 
+    if request.scheme != "https":
+        return response(start_response, "403 Forbidden", "You must use HTTPS.")
+
+    if len(get_active_tasks()) >= CONFIG["MaxParallelTasks"]:
+        return response(start_response, "503 Service Unavailable")
+
     if request.method != "POST":
         return response(start_response, "405 Method Not Allowed")
 
@@ -29,7 +35,7 @@ def application(environ, start_response):
         return response(start_response, "507 Insufficient Storage")
 
     try:
-        archive = NamedTemporaryFile(mode = "wb", delete = False, suffix = ".tar.xz")
+        archive = NamedTemporaryFile(mode="wb", delete=False, suffix=".tar.xz")
         archive.write(request.body)
         archive.close()
     except:
