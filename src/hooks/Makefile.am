@@ -1,7 +1,5 @@
 libexec_PROGRAMS = abrt-hook-ccpp
 
-bin_PROGRAMS = dumpoops
-
 # abrt-hook-ccpp
 abrt_hook_ccpp_SOURCES = \
     abrt-hook-ccpp.c
@@ -15,26 +13,6 @@ abrt_hook_ccpp_CPPFLAGS = \
     -Wall \
     -D_GNU_SOURCE
 abrt_hook_ccpp_LDADD = \
-    ../lib/libreport.la
-
-# dumpoops
-dumpoops_SOURCES = \
-    dumpoops.cpp
-dumpoops_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-    -I$(srcdir)/../plugins \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    $(GLIB_CFLAGS) \
-    -Wall -Werror \
-    -D_GNU_SOURCE
-# build will succeed without it, but at runtime plugins do need libabrt_daemon
-dumpoops_LDADD = \
-    ../lib/libabrt_daemon.la \
     ../lib/libreport.la
 
 python_PYTHON = abrt.pth abrt_exception_handler.py

@@ -17,8 +17,7 @@ bin_PROGRAMS = \
     abrt-action-print
 
 pluginslib_LTLIBRARIES = \
-    libCCpp.la \
-    libKerneloopsScanner.la
+    libCCpp.la
 
 dist_pluginslib_DATA = \
     Logger.glade \
@@ -42,7 +41,6 @@ dist_pluginsconf_DATA = \
 
 man_MANS = \
     abrt-Bugzilla.7 \
-    abrt-KerneloopsScanner.7 \
     abrt-KerneloopsReporter.7 \
     abrt-Logger.7 \
     abrt-Mailx.7 \
@@ -75,21 +73,6 @@ libCCpp_la_CPPFLAGS = \
 #    -DHOSTILE_KERNEL
 libCCpp_la_LDFLAGS = \
     -avoid-version
-
-# KerneloopsScanner
-libKerneloopsScanner_la_SOURCES = \
-    KerneloopsScanner.cpp KerneloopsScanner.h \
-    KerneloopsSysLog.c KerneloopsSysLog.h
-libKerneloopsScanner_la_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    $(GLIB_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Werror
-libKerneloopsScanner_la_LDFLAGS = \
-    -avoid-version \
-    $(GLIB_LIBS)
 
 abrt_dump_oops_SOURCES = \
     abrt-dump-oops.c

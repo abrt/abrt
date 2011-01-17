@@ -423,9 +423,6 @@ fi
 %files addon-kerneloops
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Kerneloops.conf
-%{_bindir}/dumpoops
-%{_libdir}/%{name}/libKerneloopsScanner.so*
-%{_mandir}/man7/abrt-KerneloopsScanner.7.gz
 %{_libdir}/%{name}/KerneloopsReporter.glade
 %{_mandir}/man7/abrt-KerneloopsReporter.7.gz
 %{_bindir}/abrt-dump-oops
