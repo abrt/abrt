@@ -90,6 +90,7 @@ static volatile sig_atomic_t s_sig_caught;
 static int s_signal_pipe[2];
 static int s_signal_pipe_write = -1;
 static int s_upload_watch = -1;
+static pid_t log_scanner_pid = -1;
 static unsigned s_timeout;
 static bool s_exiting;
 
@@ -432,12 +433,22 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
             s_exiting = 1;
         else
         {
-            if (socket_client_count)
-                socket_client_count--;
-            if (!socket_channel_cb_id)
+            pid_t pid;
+            while ((pid = waitpid(-1, NULL, WNOHANG)) > 0)
             {
-                log("Accepting connections on '%s'", SOCKET_FILE);
-                socket_channel_cb_id = add_watch_or_die(socket_channel, G_IO_IN | G_IO_PRI, server_socket_cb);
+                if (pid == log_scanner_pid)
+                {
+                    log("log scanner exited");
+                    log_scanner_pid = -1;
+                    continue;
+                }
+                if (socket_client_count)
+                    socket_client_count--;
+                if (!socket_channel_cb_id)
+                {
+                    log("Accepting connections on '%s'", SOCKET_FILE);
+                    socket_channel_cb_id = add_watch_or_die(socket_channel, G_IO_IN | G_IO_PRI, server_socket_cb);
+                }
             }
         }
         return TRUE;
@@ -648,6 +659,7 @@ static void start_syslog_logging()
     xdup2(STDIN_FILENO, STDERR_FILENO);
     openlog("abrtd", 0, LOG_DAEMON);
     logmode = LOGMODE_SYSLOG;
+    putenv((char*)"ABRT_SYSLOG=1");
 }
 
 static void ensure_writable_dir(const char *dir, mode_t mode, const char *user)
@@ -719,9 +731,10 @@ int main(int argc, char** argv)
 
     unsigned opts = parse_opts(argc, argv, abrtd_options, abrtd_usage);
 
-    if (opts & OPT_s)
-        start_syslog_logging();
+    msg_prefix = "abrtd"; /* for log(), error_msg() and such */
 
+    unsetenv("ABRT_SYSLOG");
+    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     /* When dbus daemon starts us, it doesn't set PATH
      * (I saw it set only DBUS_STARTER_ADDRESS and DBUS_STARTER_BUS_TYPE).
      * In this case, set something sane:
@@ -730,9 +743,8 @@ int main(int argc, char** argv)
     if (!env_path || !env_path[0])
         putenv((char*)"PATH=/usr/sbin:/usr/bin:/sbin:/bin");
 
-    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-
-    msg_prefix = "abrtd"; /* for log(), error_msg() and such */
+    if (opts & OPT_s)
+        start_syslog_logging();
 
     xpipe(s_signal_pipe);
     close_on_exec_on(s_signal_pipe[0]);
@@ -879,6 +891,22 @@ int main(int argc, char** argv)
     /* Only now we want signal pipe to work */
     s_signal_pipe_write = s_signal_pipe[1];
 
+    if (g_settings_sLogScanners)
+    {
+        const char *scanner_argv[] = {
+            "/bin/sh", "-c",
+            g_settings_sLogScanners,
+            NULL
+        };
+        log_scanner_pid = fork_execv_on_steroids(EXECFLG_INPUT_NUL,
+                (char**)scanner_argv,
+                /*pipefds:*/ NULL,
+                /*unsetenv_vec:*/ NULL,
+                /*dir:*/ NULL,
+                /*uid:*/ 0);
+        VERB1 log("Started log scanner, pid:%d", (int)log_scanner_pid);
+    }
+
     /* Enter the event loop */
     log("Init complete, entering main loop");
     run_main_loop(pMainloop);
@@ -913,10 +941,17 @@ int main(int argc, char** argv)
         g_main_loop_unref(pMainloop);
 
     settings_free();
+
+    if (log_scanner_pid > 0)
+    {
+        VERB2 log("Sending SIGTERM to %d", log_scanner_pid);
+        kill(log_scanner_pid, SIGTERM);
+    }
+
     /* Exiting */
     if (s_sig_caught && s_sig_caught != SIGALRM && s_sig_caught != SIGCHLD)
     {
-        error_msg_and_die("Got signal %d, exiting", s_sig_caught);
+        error_msg("Got signal %d, exiting", s_sig_caught);
         signal(s_sig_caught, SIG_DFL);
         raise(s_sig_caught);
     }

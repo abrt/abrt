@@ -4,6 +4,7 @@ bin_SCRIPTS = \
     abrt-action-install-debuginfo.py
 
 bin_PROGRAMS = \
+    abrt-dump-oops \
     abrt-action-analyze-c \
     abrt-action-analyze-python \
     abrt-action-analyze-oops \
@@ -89,6 +90,25 @@ libKerneloopsScanner_la_CPPFLAGS = \
 libKerneloopsScanner_la_LDFLAGS = \
     -avoid-version \
     $(GLIB_LIBS)
+
+abrt_dump_oops_SOURCES = \
+    abrt-dump-oops.c
+abrt_dump_oops_CPPFLAGS = \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    -DBIN_DIR=\"$(bindir)\" \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    $(GLIB_CFLAGS) \
+    -D_GNU_SOURCE \
+    -Wall -Werror
+abrt_dump_oops_LDADD = \
+    ../lib/libreport.la
 
 abrt_action_analyze_c_SOURCES = \
     abrt-action-analyze-c.c

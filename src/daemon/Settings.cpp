@@ -19,8 +19,9 @@
 #include "abrtlib.h"
 #include "Settings.h"
 
-#define SECTION_COMMON      "Common"
-#define SECTION_CRON        "Cron"
+#define SECTION_COMMON       "Common"
+#define SECTION_LOG_SCANNERS "LogScanners"
+#define SECTION_CRON         "Cron"
 
 /* Conf file has this format:
  * [ section_name1 ]
@@ -47,12 +48,15 @@ static map_string_t s_mapSectionCron;
 /* one line: "OpenGPGCheck = value" */
 bool          g_settings_bOpenGPGCheck = false;
 /* one line: "OpenGPGPublicKeys = value1,value2" */
-GList *g_settings_setOpenGPGPublicKeys = NULL;
-GList *g_settings_setBlackListedPkgs = NULL;
-GList *g_settings_setBlackListedPaths = NULL;
-char *g_settings_sWatchCrashdumpArchiveDir = NULL;
+GList *       g_settings_setOpenGPGPublicKeys = NULL;
+GList *       g_settings_setBlackListedPkgs = NULL;
+GList *       g_settings_setBlackListedPaths = NULL;
+char *        g_settings_sWatchCrashdumpArchiveDir = NULL;
 unsigned int  g_settings_nMaxCrashReportsSize = 1000;
 bool          g_settings_bProcessUnpackaged = false;
+
+/* [ LogScanners ] */
+char *        g_settings_sLogScanners = NULL;
 
 /* [ Cron ] */
 /* many lines, one per key: "map_key = aa_first,bb_first(bb_second),cc_first" */
@@ -277,7 +281,7 @@ static int ReadConfigurationFromFile(FILE *fp)
                 value += line[ii];
                 continue;
             }
-            if (isspace(line[ii]) && !is_quote)
+            if (isspace(line[ii]) && !is_quote && is_key)
             {
                 continue;
             }
@@ -304,8 +308,9 @@ static int ReadConfigurationFromFile(FILE *fp)
                 section += line[ii];
                 continue;
             }
-            if (line[ii] == '=' && !is_quote)
+            if (is_key && line[ii] == '=' && !is_quote)
             {
+		while (isspace(line[ii + 1])) ii++;
                 is_key = false;
                 key = value;
                 value = "";
@@ -350,6 +355,10 @@ static int ReadConfigurationFromFile(FILE *fp)
             if (s_mapSectionCommon[key] != "")
                 s_mapSectionCommon[key] += ",";
             s_mapSectionCommon[key] += value;
+        }
+        else if (section == SECTION_LOG_SCANNERS)
+        {
+            g_settings_sLogScanners = xstrdup(value.c_str());
         }
         else if (section == SECTION_CRON)
         {
