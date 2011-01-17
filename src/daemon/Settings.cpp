@@ -21,7 +21,6 @@
 
 #define SECTION_COMMON       "Common"
 #define SECTION_LOG_SCANNERS "LogScanners"
-#define SECTION_CRON         "Cron"
 
 /* Conf file has this format:
  * [ section_name1 ]
@@ -38,8 +37,6 @@
  * If the same name found on more than one line,
  * the values are appended, separated by comma: map["name"] = "value1,value2" */
 static map_string_t s_mapSectionCommon;
-/* ... from [ Cron ] */
-static map_string_t s_mapSectionCron;
 
 /* Public data */
 /* Written out exactly in this order by SaveSettings() */
@@ -57,10 +54,6 @@ bool          g_settings_bProcessUnpackaged = false;
 
 /* [ LogScanners ] */
 char *        g_settings_sLogScanners = NULL;
-
-/* [ Cron ] */
-/* many lines, one per key: "map_key = aa_first,bb_first(bb_second),cc_first" */
-map_cron_t    g_settings_mapCron;
 
 
 /*
@@ -88,101 +81,6 @@ static GList *parse_list(const char* list)
 
     strbuf_free(item);
     return l;
-}
-
-/* Format: name, name(param),name("param with spaces \"and quotes\"") */
-static vector_pair_string_string_t ParseListWithArgs(const char *pValue, int *err)
-{
-    VERB3 log(" ParseListWithArgs(%s)", pValue);
-
-    vector_pair_string_string_t pluginsWithArgs;
-    std::string item;
-    std::string action;
-    bool is_quote = false;
-    bool is_arg = false;
-    for (int ii = 0; pValue[ii]; ii++)
-    {
-        if (is_quote && pValue[ii] == '\\' && pValue[ii + 1])
-        {
-            ii++;
-            item += pValue[ii];
-            continue;
-        }
-        if (pValue[ii] == '"')
-        {
-            is_quote = !is_quote;
-            /*item += pValue[ii]; - wrong! name("param") must be == name(param) */
-            continue;
-        }
-        if (is_quote)
-        {
-            item += pValue[ii];
-            continue;
-        }
-        if (pValue[ii] == '(')
-        {
-            if (!is_arg)
-            {
-                action = item;
-                item = "";
-                is_arg = true;
-            }
-            else
-            {
-                *err = 1;
-                error_msg("Parser error: Invalid syntax on column %d in \"%s\"", ii, pValue);
-            }
-
-            continue;
-        }
-        if (pValue[ii] == ')')
-        {
-            if (is_arg)
-            {
-                VERB3 log(" adding (%s,%s)", action.c_str(), item.c_str());
-                pluginsWithArgs.push_back(make_pair(action, item));
-                item = "";
-                is_arg = false;
-                action = "";
-            }
-            else
-            {
-                *err = 1;
-                error_msg("Parser error: Invalid syntax on column %d in \"%s\"", ii, pValue);
-            }
-
-            continue;
-        }
-        if (pValue[ii] == ',' && !is_arg)
-        {
-            if (item != "")
-            {
-                VERB3 log(" adding (%s,%s)", item.c_str(), "");
-                pluginsWithArgs.push_back(make_pair(item, ""));
-                item = "";
-            }
-            continue;
-        }
-        item += pValue[ii];
-    }
-
-    if (is_quote)
-    {
-        *err = 1;
-        error_msg("Parser error: Unclosed quote in \"%s\"", pValue);
-    }
-
-    if (is_arg)
-    {
-        *err = 1;
-        error_msg("Parser error: Unclosed argument in \"%s\"", pValue);
-    }
-    else if (item != "")
-    {
-        VERB3 log(" adding (%s,%s)", item.c_str(), "");
-        pluginsWithArgs.push_back(make_pair(item, ""));
-    }
-    return pluginsWithArgs;
 }
 
 static int ParseCommon()
@@ -217,20 +115,6 @@ static int ParseCommon()
     if (it != end)
     {
         g_settings_bProcessUnpackaged = string_to_bool(it->second.c_str());
-    }
-    return 0; /* no error */
-}
-
-static int ParseCron()
-{
-    map_string_t::iterator it = s_mapSectionCron.begin();
-    for (; it != s_mapSectionCron.end(); it++)
-    {
-        int err = 0;
-        vector_pair_string_string_t actionsAndReporters = ParseListWithArgs(it->second.c_str(), &err);
-        if (err)
-            return err;
-        g_settings_mapCron[it->first] = actionsAndReporters;
     }
     return 0; /* no error */
 }
@@ -360,12 +244,6 @@ static int ReadConfigurationFromFile(FILE *fp)
         {
             g_settings_sLogScanners = xstrdup(value.c_str());
         }
-        else if (section == SECTION_CRON)
-        {
-            if (s_mapSectionCron[key] != "")
-                s_mapSectionCron[key] += ",";
-            s_mapSectionCron[key] += value;
-        }
         else
         {
             error_msg("abrt.conf: Ignoring entry in invalid section [%s]", section.c_str());
@@ -396,8 +274,6 @@ int LoadSettings()
 
     if (err == 0)
         err = ParseCommon();
-    if (err == 0)
-        err = ParseCron();
 
     if (err == 0)
     {
@@ -420,7 +296,6 @@ map_abrt_settings_t GetSettings()
     map_abrt_settings_t ABRTSettings;
 
     ABRTSettings[SECTION_COMMON] = s_mapSectionCommon;
-    ABRTSettings[SECTION_CRON] = s_mapSectionCron;
 
     return ABRTSettings;
 }
@@ -434,12 +309,6 @@ void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
     {
         s_mapSectionCommon = it->second;
         ParseCommon();
-    }
-    it = pSettings.find(SECTION_CRON);
-    if (it != end)
-    {
-        s_mapSectionCron = it->second;
-        ParseCron();
     }
 }
 
