@@ -250,8 +250,6 @@ make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
 install -m 755 %SOURCE1 ${RPM_BUILD_ROOT}/%{_initrddir}/abrtd
-# /var/cache/abrt is to be removed in 1.3.x timeframe
-mkdir -p $RPM_BUILD_ROOT/var/cache/abrt
 mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-di
 mkdir -p $RPM_BUILD_ROOT/var/run/abrt
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt
@@ -277,26 +275,26 @@ exit 0
 
 %post
 if [ $1 -eq 1 ]; then
-/sbin/chkconfig --add %{name}d
+/sbin/chkconfig --add abrtd
 fi
 #systemd
 %if %{?with_systemd}
 #if [ $1 -eq 1 ]; then
 # Enable (but don't start) the units by default
-  /bin/systemctl enable %{name}d.service >/dev/null 2>&1 || :
+  /bin/systemctl enable abrtd.service >/dev/null 2>&1 || :
 #fi
 %endif
 
 %preun
 if [ "$1" -eq "0" ] ; then
-  service %{name}d stop >/dev/null 2>&1
-  /sbin/chkconfig --del %{name}d
+  service abrtd stop >/dev/null 2>&1
+  /sbin/chkconfig --del abrtd
 fi
 #systemd
 %if %{?with_systemd}
 if [ "$1" -eq "0" ] ; then
-  /bin/systemctl stop %{name}d.service >/dev/null 2>&1 || :
-  /bin/systemctl disable %{name}d.service >/dev/null 2>&1 || :
+  /bin/systemctl stop abrtd.service >/dev/null 2>&1 || :
+  /bin/systemctl disable abrtd.service >/dev/null 2>&1 || :
 fi
 %endif
 
@@ -328,12 +326,12 @@ fi
 
 %posttrans
 if [ "$1" -eq "0" ]; then
-    service %{name}d condrestart >/dev/null 2>&1 || :
+    service abrtd condrestart >/dev/null 2>&1 || :
 fi
 #systemd
 %if %{?with_systemd}
 if [ "$1" -eq "0" ]; then
-    /bin/systemctl try-restart %{name}d.service >/dev/null 2>&1 || :
+    /bin/systemctl try-restart abrtd.service >/dev/null 2>&1 || :
 fi
 %endif
 
@@ -354,9 +352,7 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/abrt_event.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
-%{_initrddir}/%{name}d
-# /var/cache/abrt is to be removed in 1.3.x timeframe
-%dir %attr(0755, abrt, abrt) %{_localstatedir}/cache/%{name}
+%{_initrddir}/abrtd
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/spool/%{name}
 %dir %attr(0700, abrt, abrt) %{_localstatedir}/spool/%{name}-upload
 %dir /var/run/%{name}
