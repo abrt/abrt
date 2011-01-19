@@ -29,6 +29,7 @@ CONFIG_FILE = "/etc/abrt/retrace.conf"
 CONFIG = {
     "TaskIdLength": 9,
     "TaskPassLength": 32,
+    "MaxParallelTasks": 10,
     "MaxPackedSize": 30,
     "MaxUnpackedSize": 600,
     "MinStorageLeft": 10240,
