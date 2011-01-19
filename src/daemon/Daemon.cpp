@@ -676,10 +676,6 @@ int main(int argc, char** argv)
                                                   handle_inotify_cb,
                                                   NULL);
 
-        VERB1 log("Loading plugins from "PLUGINS_LIB_DIR);
-        g_pPluginManager = new CPluginManager();
-        g_pPluginManager->LoadPlugins();
-
         /* Add an event source which waits for INT/TERM signal */
         VERB1 log("Adding signal pipe watch to glib main loop");
         channel_signal = g_io_channel_unix_new(s_signal_pipe[0]);
@@ -771,12 +767,7 @@ int main(int argc, char** argv)
         g_io_channel_unref(channel_inotify);
 
     delete g_pCommLayer;
-    if (g_pPluginManager)
-    {
-        /* This restores /proc/sys/kernel/core_pattern, among other things: */
-        g_pPluginManager->UnLoadPlugins();
-        delete g_pPluginManager;
-    }
+
     if (pMainloop)
         g_main_loop_unref(pMainloop);
 

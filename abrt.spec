@@ -28,6 +28,7 @@ Group: Applications/System
 URL: https://fedorahosted.org/abrt/
 Source: https://fedorahosted.org/released/%{name}/%{name}-%{version}.tar.gz
 Source1: abrt.init
+Source2: abrt-ccpp.init
 BuildRequires: dbus-devel
 BuildRequires: gtk2-devel
 BuildRequires: curl-devel
@@ -250,6 +251,7 @@ make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
 install -m 755 %SOURCE1 ${RPM_BUILD_ROOT}/%{_initrddir}/abrtd
+install -m 755 %SOURCE2 ${RPM_BUILD_ROOT}/%{_initrddir}/abrt-ccpp
 mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-di
 mkdir -p $RPM_BUILD_ROOT/var/run/abrt
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt
@@ -285,6 +287,12 @@ fi
 #fi
 %endif
 
+%post addon-ccpp
+if [ $1 -eq 1 ]; then
+/sbin/chkconfig --add abrt-ccpp
+fi
+#systemd: TODO
+
 %preun
 if [ "$1" -eq "0" ] ; then
   service abrtd stop >/dev/null 2>&1
@@ -297,6 +305,13 @@ if [ "$1" -eq "0" ] ; then
   /bin/systemctl disable abrtd.service >/dev/null 2>&1 || :
 fi
 %endif
+
+%preun addon-ccpp
+if [ "$1" -eq "0" ] ; then
+  service abrt-ccpp stop >/dev/null 2>&1
+  /sbin/chkconfig --del abrt-ccpp
+fi
+#systemd: TODO
 
 %postun
 #systemd
@@ -334,6 +349,12 @@ if [ "$1" -eq "0" ]; then
     /bin/systemctl try-restart abrtd.service >/dev/null 2>&1 || :
 fi
 %endif
+
+%posttrans addon-ccpp
+if [ "$1" -eq "0" ]; then
+    service abrt-ccpp condrestart >/dev/null 2>&1 || :
+fi
+#systemd: TODO
 
 
 %files -f %{name}.lang
@@ -410,6 +431,7 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
 %dir %{_localstatedir}/cache/abrt-di
+%{_initrddir}/abrt-ccpp
 %{_libdir}/%{name}/libCCpp.so*
 %{_libexecdir}/abrt-hook-ccpp
 %{_bindir}/abrt-action-analyze-c
