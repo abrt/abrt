@@ -19,6 +19,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
+#include "plugin.h"
 #include "Daemon.h"
 #include "Settings.h"
 #include "comm_layer_inner.h"
@@ -26,14 +27,6 @@
 #include "MiddleWare.h"
 
 using namespace std;
-
-/**
- * An instance of CPluginManager. When MiddleWare wants to do something
- * with plugins, it calls the plugin manager.
- * @see PluginManager.h
- */
-CPluginManager* g_pPluginManager;
-
 
 /**
  * Get one crash info. If getting is successful,
@@ -177,19 +170,6 @@ static mw_result_t CreateCrashReport(const char *dump_dir_name,
         *crash_data = new_crash_data();
     VERB3 log("CreateCrashReport() returns %d", r);
     return r;
-}
-
-void RunAction(const char *pActionDir,
-                            const char *pPluginName,
-                            const char *pPluginArgs)
-{
-    CAction* action = g_pPluginManager->GetAction(pPluginName);
-    if (!action)
-    {
-        /* GetAction() already complained */
-        return;
-    }
-    action->Run(pActionDir, pPluginArgs, /*force:*/ 0);
 }
 
 struct logging_state {

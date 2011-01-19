@@ -10,7 +10,6 @@ sbin_PROGRAMS = \
     abrt-server
 
 abrtd_SOURCES = \
-    PluginManager.h PluginManager.cpp \
     MiddleWare.h MiddleWare.cpp \
     CrashWatcher.h CrashWatcher.cpp \
     CommLayerServer.h CommLayerServer.cpp \

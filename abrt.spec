@@ -432,7 +432,6 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
 %dir %{_localstatedir}/cache/abrt-di
 %{_initrddir}/abrt-ccpp
-%{_libdir}/%{name}/libCCpp.so*
 %{_libexecdir}/abrt-hook-ccpp
 %{_bindir}/abrt-action-analyze-c
 %{_bindir}/abrt-action-install-debuginfo.py*

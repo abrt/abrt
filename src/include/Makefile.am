@@ -13,6 +13,4 @@ libabrt_include_HEADERS = \
     dbus_common.h \
     observer.h \
     plugin.h \
-    action.h \
-    analyzer.h \
     xfuncs.h

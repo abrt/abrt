@@ -16,9 +16,6 @@ bin_PROGRAMS = \
     abrt-action-mailx \
     abrt-action-print
 
-pluginslib_LTLIBRARIES = \
-    libCCpp.la
-
 dist_pluginslib_DATA = \
     Logger.glade \
     Mailx.glade \
@@ -57,22 +54,6 @@ $(DESTDIR)/$(DEBUG_INFO_DIR):
 install-data-hook: $(DESTDIR)/$(DEBUG_INFO_DIR)
 	sed 's: = /var/: = $(localstatedir)/:g' -i \
 	    $(DESTDIR)$(sysconfdir)/abrt/plugins/Logger.conf
-
-# CCpp
-libCCpp_la_SOURCES = \
-    CCpp.cpp CCpp.h
-libCCpp_la_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-    -DCCPP_HOOK_PATH=\"${libexecdir}/abrt-hook-ccpp\" \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
-    $(GLIB_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Werror
-#    -DHOSTILE_KERNEL
-libCCpp_la_LDFLAGS = \
-    -avoid-version
 
 abrt_dump_oops_SOURCES = \
     abrt-dump-oops.c

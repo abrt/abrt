@@ -23,7 +23,6 @@
 #define MIDDLEWARE_H_
 
 #include "abrt_types.h"
-#include "PluginManager.h"
 
 /**
  * An enum contains all return codes.
@@ -45,15 +44,6 @@ typedef enum {
 } report_status_items_t;
 
 
-/**
- * Activates particular action plugin.
- * @param pActionDir A directory, which is passed as working to a action plugin.
- * @param pPluginName An action plugin name.
- * @param pPluginArgs Action plugin's arguments.
- */
-void RunAction(const char *pActionDir,
-               const char *pPluginName,
-               const char *pPluginArgs);
 /**
  * Reports a crash report to particular receiver. It
  * takes an user uid, tries to find user config file and load it. If it

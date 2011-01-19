@@ -25,12 +25,8 @@
 
 class CCrashWatcher;
 class CCommLayerServer;
-class CPluginManager;
 
 /* Used for sending dbus signals */
 extern CCommLayerServer *g_pCommLayer;
-
-/* Collection of loaded plugins */
-extern CPluginManager* g_pPluginManager;
 
 #endif

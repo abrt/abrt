@@ -78,8 +78,7 @@ libabrt_dbus_la_LIBADD = \
     $(DBUS_LIBS)
 
 libabrt_daemon_la_SOURCES = \
-    CommLayerInner.cpp \
-    Plugin.cpp
+    CommLayerInner.cpp
 libabrt_daemon_la_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
@@ -93,8 +92,7 @@ libabrt_daemon_la_CPPFLAGS = \
     -D_GNU_SOURCE
 libabrt_daemon_la_LDFLAGS = \
     -version-info 0:1:0
-libabrt_daemon_la_LIBADD = \
-    -ldl
+libabrt_daemon_la_LIBADD =
 
 libabrt_web_la_SOURCES = \
     abrt_curl.h abrt_curl.c \
