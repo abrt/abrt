@@ -38,7 +38,6 @@
 using namespace std;
 
 
-#define VAR_RUN_LOCK_FILE   VAR_RUN"/abrt/abrtd.lock"
 #define VAR_RUN_PIDFILE     VAR_RUN"/abrtd.pid"
 
 #define SOCKET_FILE VAR_RUN"/abrt/abrt.socket"
@@ -203,46 +202,34 @@ static void dumpsocket_shutdown()
     }
 }
 
-static int CreatePidFile()
+static int create_pidfile()
 {
-    int fd;
-
-    /* JIC */
-    unlink(VAR_RUN_PIDFILE);
-
-    /* open the pidfile */
-    fd = open(VAR_RUN_PIDFILE, O_WRONLY|O_CREAT|O_EXCL, 0644);
+    /* Note:
+     * No O_EXCL: we would happily overwrite stale pidfile from previous boot.
+     * No O_TRUNC: we must first try to lock the file, and if lock fails,
+     * there is another live abrtd. O_TRUNCing the file in this case
+     * would be wrong - it'll erase the pid to empty string!
+     */
+    int fd = open(VAR_RUN_PIDFILE, O_WRONLY|O_CREAT, 0644);
     if (fd >= 0)
     {
+        if (lockf(fd, F_TLOCK, 0) < 0)
+        {
+            perror_msg("Can't lock file '%s'", VAR_RUN_PIDFILE);
+            return -1;
+        }
+        close_on_exec_on(fd);
         /* write our pid to it */
         char buf[sizeof(long)*3 + 2];
         int len = sprintf(buf, "%lu\n", (long)getpid());
         write(fd, buf, len);
-        close(fd);
+        ftruncate(fd, len);
+        /* we leak opened+locked fd intentionally */
         return 0;
     }
 
-    /* something went wrong */
     perror_msg("Can't open '%s'", VAR_RUN_PIDFILE);
     return -1;
-}
-
-static int Lock()
-{
-    int lfd = open(VAR_RUN_LOCK_FILE, O_RDWR|O_CREAT, 0640);
-    if (lfd < 0)
-    {
-        perror_msg("Can't open '%s'", VAR_RUN_LOCK_FILE);
-        return -1;
-    }
-    if (lockf(lfd, F_TLOCK, 0) < 0)
-    {
-        perror_msg("Can't lock file '%s'", VAR_RUN_LOCK_FILE);
-        return -1;
-    }
-    close_on_exec_on(lfd);
-    return 0;
-    /* we leak opened lfd intentionally */
 }
 
 static void handle_signal(int signo)
@@ -637,7 +624,6 @@ int main(int argc, char** argv)
     guint channel_inotify_event_id = 0;
     GIOChannel* channel_signal = NULL;
     guint channel_signal_event_id = 0;
-    bool lockfile_created = false;
     bool pidfile_created = false;
     CCrashWatcher watcher;
 
@@ -650,24 +636,32 @@ int main(int argc, char** argv)
         if (LoadSettings() != 0)
             throw 1;
 
+        sanitize_dump_dir_rights();
+
         VERB1 log("Creating glib main loop");
         pMainloop = g_main_loop_new(NULL, FALSE);
 
         VERB1 log("Initializing inotify");
-        sanitize_dump_dir_rights();
         errno = 0;
         int inotify_fd = inotify_init();
         if (inotify_fd == -1)
             perror_msg_and_die("inotify_init failed");
         close_on_exec_on(inotify_fd);
+
         /* Watching DEBUG_DUMPS_DIR for new files... */
         if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE | IN_MOVED_TO) < 0)
-            perror_msg_and_die("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
+        {
+            perror_msg("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
+            throw 1;
+        }
         if (g_settings_sWatchCrashdumpArchiveDir)
         {
             s_upload_watch = inotify_add_watch(inotify_fd, g_settings_sWatchCrashdumpArchiveDir, IN_CLOSE_WRITE|IN_MOVED_TO);
             if (s_upload_watch < 0)
-                perror_msg_and_die("inotify_add_watch failed on '%s'", g_settings_sWatchCrashdumpArchiveDir);
+            {
+                perror_msg("inotify_add_watch failed on '%s'", g_settings_sWatchCrashdumpArchiveDir);
+                throw 1;
+            }
         }
         VERB1 log("Adding inotify watch to glib main loop");
         channel_inotify = g_io_channel_unix_new(inotify_fd);
@@ -685,12 +679,8 @@ int main(int argc, char** argv)
                                                  NULL);
 
         /* Mark the territory */
-        VERB1 log("Creating lock file");
-        if (Lock() != 0)
-            throw 1;
-        lockfile_created = true;
         VERB1 log("Creating pid file");
-        if (CreatePidFile() != 0)
+        if (create_pidfile() != 0)
             throw 1;
         pidfile_created = true;
 
@@ -754,8 +744,6 @@ int main(int argc, char** argv)
     dumpsocket_shutdown();
     if (pidfile_created)
         unlink(VAR_RUN_PIDFILE);
-    if (lockfile_created)
-        unlink(VAR_RUN_LOCK_FILE);
 
     if (channel_signal_event_id > 0)
         g_source_remove(channel_signal_event_id);
