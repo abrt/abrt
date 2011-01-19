@@ -150,7 +150,6 @@ bool CheckHash(const char* pPackage, const char* pPath)
         goto error;
 
     rpmfi fi = rpmfiNew(ts, header, RPMTAG_BASENAMES, RPMFI_NOHEADER);
-    pgpHashAlgo hashAlgo;
     std::string headerHash;
     char computedHash[1024] = "";
 
@@ -158,8 +157,8 @@ bool CheckHash(const char* pPackage, const char* pPath)
     {
         if (strcmp(pPath, rpmfiFN(fi)) == 0)
         {
-            headerHash = rpmfiFDigestHex(fi, &hashAlgo);
-            rpmDoDigest(hashAlgo, pPath, 1, (unsigned char*) computedHash, NULL);
+            headerHash = rpmfiFDigestHex(fi, NULL);
+            rpmDoDigest(rpmfiDigestAlgo(fi), pPath, 1, (unsigned char*) computedHash, NULL);
             ret = (headerHash != "" && headerHash == computedHash);
             break;
         }
