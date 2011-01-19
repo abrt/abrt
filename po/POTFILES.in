@@ -2,7 +2,7 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
 src/applet/abrt-applet.desktop.in
-src/applet/Applet.cpp
+src/applet/applet.c
 src/applet/applet_gtk.c
 src/cli/CLI.cpp
 src/cli/report.cpp
@@ -42,15 +42,14 @@ src/plugins/abrt-action-analyze-python.c
 src/plugins/abrt-action-bugzilla.cpp
 src/plugins/abrt-action-generate-backtrace.c
 src/plugins/abrt-action-install-debuginfo.py
-src/plugins/abrt-action-kerneloops.cpp
-src/plugins/abrt-action-mailx.cpp
-src/plugins/abrt-action-print.cpp
-src/plugins/abrt-action-rhtsupport.cpp
-src/plugins/abrt-action-upload.cpp
+src/plugins/abrt-action-kerneloops.c
+src/plugins/abrt-action-mailx.c
+src/plugins/abrt-action-print.c
+src/plugins/abrt-action-rhtsupport.c
+src/plugins/abrt-action-upload.c
+src/plugins/abrt-dump-oops.c
 src/plugins/Bugzilla.glade
-src/plugins/CCpp.cpp
 src/plugins/KerneloopsReporter.glade
-src/plugins/KerneloopsScanner.cpp
 src/plugins/Logger.glade
 src/plugins/Mailx.glade
 src/plugins/RHTSupport.glade
