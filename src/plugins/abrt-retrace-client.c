@@ -23,21 +23,40 @@
 #include <pk11pub.h>
 #include <ssl.h>
 #include <sslproto.h>
+#include <sslerr.h>
+#include <secerr.h>
 
-static const char *dump_dir_name = ".";
-static const char abrt_retrace_client_usage[] = "abrt-retrace-client [options] -d DIR";
+static const char *dump_dir_name = NULL;
+static const char *coredump = NULL;
+static const char *task_id = NULL;
+static const char *task_password = NULL;
+static const char abrt_retrace_client_usage[] = "abrt-retrace-client <operation> [options]\nOperations: create/status/backtrace/log";
 
 enum {
-    OPT_v = 1 << 0,
-    OPT_d = 1 << 1,
-    OPT_s = 1 << 2,
+    OPT_verbose  = 1 << 0,
+    OPT_syslog   = 1 << 1,
+    OPT_insecure = 1 << 2,
+    OPT_dir      = 1 << 3,
+    OPT_core     = 1 << 4,
+    OPT_wait     = 1 << 5,
+    OPT_bttodir  = 1 << 6,
+    OPT_task     = 1 << 7,
+    OPT_password = 1 << 8
 };
 
 /* Keep enum above and order of options below in sync! */
 static struct options abrt_retrace_client_options[] = {
     OPT__VERBOSE(&g_verbose),
-    OPT_STRING( 'd', NULL, &dump_dir_name, "DIR", "Crash dump directory"),
-    OPT_BOOL(   's', NULL, NULL,                  "Log to syslog"),
+    OPT_BOOL(   's', "syslog", NULL, "log to syslog"),
+    OPT_BOOL(   'k', "insecure", NULL, "allow insecure connection to retrace server"),
+    OPT_GROUP("For create operation"),
+    OPT_STRING( 'd', "dir", &dump_dir_name, "DIR", "read data from ABRT crash dump directory"),
+    OPT_STRING( 'c', "core", &coredump, "COREDUMP", "read data from coredump"),
+    OPT_BOOL(   'w', "wait", NULL, "keep connected to the server, display progress and then backtrace"),
+    OPT_BOOL(   'r', "bttodir", NULL, "if both --dir and --wait are provided, store the backtrace to the DIR when it becomes available"),
+    OPT_GROUP("For status, backtrace, and log operations"),
+    OPT_STRING( 't', "task", &task_id, "ID", "id of your task on server"),
+    OPT_STRING( 'p', "password", &task_password, "PWD", "password of your task on server"),
     OPT_END()
 };
 
@@ -45,10 +64,10 @@ static struct options abrt_retrace_client_options[] = {
  * dump directory. The entry is added to argindex offset to the array,
  * and the argindex is then increased.
  */
-void args_add_if_exists(const char *args[],
-                        struct dump_dir *dd,
-                        const char *name,
-                        int *argindex)
+static void args_add_if_exists(const char *args[],
+                               struct dump_dir *dd,
+                               const char *name,
+                               int *argindex)
 {
     if (dd_exist(dd, name))
     {
@@ -60,7 +79,7 @@ void args_add_if_exists(const char *args[],
 /* Create an archive with files required for retrace server and return
  * a file descriptor. Returns -1 if it fails.
  */
-int create_archive(const char *dump_dir_name)
+static int create_archive(const char *dump_dir_name)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
@@ -71,7 +90,7 @@ int create_archive(const char *dump_dir_name)
     int tempfd = mkstemps(filename, /*suffixlen:*/7);
     if (tempfd == -1)
         perror_msg_and_die("Cannot open temporary file");
-    //xunlink(filename);
+    xunlink(filename);
     free(filename);
 
     /* Run xz:
@@ -140,12 +159,98 @@ int create_archive(const char *dump_dir_name)
     waitpid(xz_child, &status, 0);
     VERB1 log_msg("Done...");
 
+    xlseek(tempfd, 0, SEEK_SET);
     return tempfd;
 }
 
-void ssl_connect(const char *host, PRFileDesc **tcp_sock, PRFileDesc **ssl_sock)
+static SECStatus ssl_bad_cert_handler(void *arg, PRFileDesc *sock)
 {
-    NSS_Init("/etc/ssl");
+    PRErrorCode err = PR_GetError();
+    CERTCertificate *cert = SSL_PeerCertificate(sock);
+    char *subject = CERT_NameToAscii(&cert->subject);
+    char *subject_cn = CERT_GetCommonName(&cert->subject);
+    char *issuer = CERT_NameToAscii(&cert->issuer);
+    CERT_DestroyCertificate(cert);
+    char *target_host = SSL_RevealURL(sock);
+    if (!target_host)
+        target_host = xstrdup("(unknown)");
+    bool allow_insecure = (bool)arg;
+
+    switch (err)
+    {
+    case SEC_ERROR_CA_CERT_INVALID:
+        error_msg("Issuer certificate is invalid: '%s'.", issuer);
+        break;
+    case SEC_ERROR_UNTRUSTED_ISSUER:
+        error_msg("Certificate is signed by an untrusted issuer: '%s'.", issuer);
+        break;
+    case SSL_ERROR_BAD_CERT_DOMAIN:
+        error_msg("Certificate subject name '%s' does not match target host name '%s'.",
+                subject_cn, target_host);
+        break;
+    case SEC_ERROR_EXPIRED_CERTIFICATE:
+        error_msg("Remote certificate has expired.");
+        break;
+    case SEC_ERROR_UNKNOWN_ISSUER:
+        error_msg("Certificate issuer is not recognized: '%s'", issuer);
+        break;
+    default:
+        error_msg("Bad certifiacte received. Subject '%s', issuer '%s'.",
+                subject, issuer);
+        break;
+    }
+
+
+    PR_Free(target_host);
+    return allow_insecure ? SECSuccess : SECFailure;
+}
+
+static SECStatus ssl_handshake_callback(PRFileDesc *sock, void *arg)
+{
+    return SECSuccess;
+}
+
+static const char *ssl_get_configdir()
+{
+    struct stat buf;
+
+    if (getenv("SSL_DIR"))
+    {
+        if (0 == stat(getenv("SSL_DIR"), &buf) &&
+            S_ISDIR(buf.st_mode))
+        {
+            return getenv("SSL_DIR");
+        }
+    }
+
+    if (0 == stat("/etc/pki/nssdb", &buf) &&
+        S_ISDIR(buf.st_mode))
+    {
+        return "/etc/pki/nssdb";
+    }
+
+    return NULL;
+}
+
+static char *ssl_get_password(PK11SlotInfo *slot, PRBool retry, void *arg)
+{
+    return NULL;
+}
+
+static void ssl_connect(const char *host,
+                        PRFileDesc **tcp_sock,
+                        PRFileDesc **ssl_sock,
+                        bool allow_insecure)
+{
+    const char *configdir = ssl_get_configdir();
+    if (configdir)
+        NSS_Initialize(configdir, "", "", "", NSS_INIT_READONLY);
+    else
+        NSS_NoDB_Init(NULL);
+
+    PK11_SetPasswordFunc(ssl_get_password);
+    NSS_SetDomesticPolicy();
+
     *tcp_sock = PR_NewTCPSocket();
     if (!*tcp_sock)
         error_msg_and_die("Failed to create a TCP socket");
@@ -153,7 +258,6 @@ void ssl_connect(const char *host, PRFileDesc **tcp_sock, PRFileDesc **ssl_sock)
     PRSocketOptionData sock_option;
     sock_option.option  = PR_SockOpt_Nonblocking;
     sock_option.value.non_blocking = PR_FALSE;
-
     PRStatus pr_status = PR_SetSocketOption(*tcp_sock, &sock_option);
     if (PR_SUCCESS != pr_status)
     {
@@ -175,12 +279,12 @@ void ssl_connect(const char *host, PRFileDesc **tcp_sock, PRFileDesc **ssl_sock)
         error_msg_and_die("Failed to enable client handshake to SSL socket.");
     }
 
-    sec_status = SSL_OptionSet(*ssl_sock, SSL_ENABLE_FDX, PR_TRUE);
-    if (SECSuccess != sec_status)
-    {
-        PR_Close(*ssl_sock);
-        error_msg_and_die("Failed to set full duplex to SSL socket.");
-    }
+    if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_SSL2, PR_TRUE))
+        error_msg_and_die("Failed to enable client handshake to SSL socket.");
+    if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_SSL3, PR_TRUE))
+        error_msg_and_die("Failed to enable client handshake to SSL socket.");
+    if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_TLS, PR_TRUE))
+        error_msg_and_die("Failed to enable client handshake to SSL socket.");
 
     sec_status = SSL_SetURL(*ssl_sock, host);
     if (SECSuccess != sec_status)
@@ -218,7 +322,21 @@ void ssl_connect(const char *host, PRFileDesc **tcp_sock, PRFileDesc **ssl_sock)
         error_msg_and_die("Failed to connect SSL address.");
     }
 
-    sec_status = SSL_ResetHandshake(*ssl_sock, PR_FALSE);
+    if (SECSuccess != SSL_BadCertHook(*ssl_sock,
+                                      (SSLBadCertHandler)ssl_bad_cert_handler,
+                                      (void*)allow_insecure))
+    {
+        PR_Close(*ssl_sock);
+        error_msg_and_die("Failed to set certificate hook.");
+    }
+
+    if (SECSuccess != SSL_HandshakeCallback(*ssl_sock, (SSLHandshakeCallback)ssl_handshake_callback, NULL))
+    {
+        PR_Close(*ssl_sock);
+        error_msg_and_die("Failed to set handshake callback.");
+    }
+
+    sec_status = SSL_ResetHandshake(*ssl_sock, /*asServer:*/PR_FALSE);
     if (SECSuccess != sec_status)
     {
         PR_Close(*ssl_sock);
@@ -229,11 +347,12 @@ void ssl_connect(const char *host, PRFileDesc **tcp_sock, PRFileDesc **ssl_sock)
     if (SECSuccess != sec_status)
     {
         PR_Close(*ssl_sock);
-        error_msg_and_die("Failed to force handshake.");
+        error_msg_and_die("Failed to force handshake: NSS error %d",
+                          PR_GetError());
     }
 }
 
-void ssl_disconnect(PRFileDesc *ssl_sock)
+static void ssl_disconnect(PRFileDesc *ssl_sock)
 {
     PRStatus pr_status = PR_Close(ssl_sock);
     if (PR_SUCCESS != pr_status)
@@ -248,29 +367,23 @@ void ssl_disconnect(PRFileDesc *ssl_sock)
     PR_Cleanup();
 }
 
-int main(int argc, char **argv)
+static int run_create(const char *dump_dir,
+                      const char *coredump,
+                      bool wait,
+                      bool bttodir,
+                      bool ssl_allow_insecure)
 {
-    char *env_verbose = getenv("ABRT_VERBOSE");
-    if (env_verbose)
-        g_verbose = atoi(env_verbose);
-
-    unsigned opts = parse_opts(argc, argv, abrt_retrace_client_options,
-                               abrt_retrace_client_usage);
-
-    if (opts & OPT_s)
-    {
-        openlog(msg_prefix, 0, LOG_DAEMON);
-        logmode = LOGMODE_SYSLOG;
-    }
-
     int tempfd = create_archive(dump_dir_name);
+    if (-1 == tempfd)
+        return 1;
 
     /* Get the file size. */
     struct stat tempfd_buf;
     fstat(tempfd, &tempfd_buf);
 
     PRFileDesc *tcp_sock, *ssl_sock;
-    ssl_connect("retrace01.fedoraproject.org", &tcp_sock, &ssl_sock);
+    ssl_connect("retrace01.fedoraproject.org", &tcp_sock, &ssl_sock,
+                ssl_allow_insecure);
 
     /* Upload the archive. */
     struct strbuf *request = strbuf_new();
@@ -286,17 +399,12 @@ int main(int argc, char **argv)
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
     {
-        char *error = xmalloc(PR_GetErrorTextLength());
-        PRInt32 count = PR_GetErrorText(error);
         PR_Close(ssl_sock);
-        if (count)
-            error_msg_and_die("Failed to send HTTP header of length %d: %s", request->len, error);
-        else
-            error_msg_and_die("Failed to send HTTP header of length %d: pr_error == %d",
-                              request->len, PR_GetError());
+        error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
+                          request->len, PR_GetError());
     }
 
-    xlseek(tempfd, 0, SEEK_SET);
+    strbuf_free(request);
 
     while (1)
     {
@@ -318,14 +426,146 @@ int main(int argc, char **argv)
         if (written == -1)
         {
             PR_Close(ssl_sock);
-            error_msg_and_die("Failed to send data.");
+            error_msg_and_die("Failed to send data: NSS error %d", PR_GetError());
         }
     }
 
-    //PRInt32 received = PR_Recv(tcp_sock, buf, amount, /*flags:*/0,
-    //                           PR_INTERVAL_NO_TIMEOUT);
+    close(tempfd);
+
+    char buf[32768];
+    PRInt32 received = 0;
+    do {
+        received = PR_Recv(tcp_sock, buf, sizeof(buf) - 1, /*flags:*/0,
+                           PR_INTERVAL_NO_TIMEOUT);
+        if (received > 0)
+            write(STDOUT_FILENO, buf, received);
+
+        if (received == -1)
+            error_msg_and_die("Receiving of data failed: NSS error %d", PR_GetError());
+
+    } while (received > 0);
 
     ssl_disconnect(ssl_sock);
-    close(tempfd);
+    return 0;
+}
+
+static int run_status(const char *taskid,
+                      const char *password,
+                      bool ssl_allow_insecure)
+{
+    PRFileDesc *tcp_sock, *ssl_sock;
+    ssl_connect("retrace01.fedoraproject.org", &tcp_sock, &ssl_sock,
+                ssl_allow_insecure);
+
+    struct strbuf *request = strbuf_new();
+    strbuf_append_strf(request,
+                       "POST /%s/status HTTP/1.1\r\n"
+                       "Host: retrace01.fedoraproject.org\r\n"
+                       "X-Task-Password: %s\r\n"
+                       "Content-Length: 0\r\n"
+                       "Connection: close\r\n"
+                       "\r\n", taskid, password);
+
+    PRInt32 written = PR_Send(tcp_sock, request->buf, request->len,
+                              /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
+    if (written == -1)
+    {
+        PR_Close(ssl_sock);
+        error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
+                          request->len, PR_GetError());
+    }
+
+    strbuf_free(request);
+
+    char buf[32768];
+    PRInt32 received = 0;
+    do {
+        received = PR_Recv(tcp_sock, buf, sizeof(buf) - 1, /*flags:*/0,
+                           PR_INTERVAL_NO_TIMEOUT);
+        if (received > 0)
+            write(STDOUT_FILENO, buf, received);
+
+        if (received == -1)
+            error_msg_and_die("Receiving of data failed: NSS error %d", PR_GetError());
+
+    } while (received > 0);
+
+    ssl_disconnect(ssl_sock);
+    return 0;
+}
+
+static int run_backtrace(const char *taskid,
+                         const char *password,
+                         bool ssl_allow_insecure)
+{
+    return 0;
+}
+
+static int run_log(const char *taskid,
+                   const char *password,
+                   bool ssl_allow_insecure)
+{
+    return 0;
+}
+
+int main(int argc, char **argv)
+{
+    char *env_verbose = getenv("ABRT_VERBOSE");
+    if (env_verbose)
+        g_verbose = atoi(env_verbose);
+
+    unsigned opts = parse_opts(argc, argv,
+                               abrt_retrace_client_options,
+                               abrt_retrace_client_usage);
+
+    if (opts & OPT_syslog)
+    {
+        openlog(msg_prefix, 0, LOG_DAEMON);
+        logmode = LOGMODE_SYSLOG;
+    }
+
+    const char *operation = NULL;
+    if (optind < argc)
+        operation = argv[optind];
+    else
+    {
+        parse_usage_and_die(abrt_retrace_client_usage,
+                            abrt_retrace_client_options);
+    }
+
+    if (0 == strcasecmp(operation, "create"))
+    {
+        if (!dump_dir_name && !coredump)
+            error_msg_and_die("Either dump directory or coredump is needed.");
+        return run_create(dump_dir_name, coredump, opts & OPT_wait,
+                          opts & OPT_bttodir, opts & OPT_insecure);
+    }
+    else if (0 == strcasecmp(operation, "status"))
+    {
+        if (!task_id)
+            error_msg_and_die("Task id is needed.");
+        if (!task_password)
+            error_msg_and_die("Task password is needed.");
+        return run_status(task_id, task_password, opts & OPT_insecure);
+    }
+    else if (0 == strcasecmp(operation, "backtrace"))
+    {
+        if (!task_id)
+            error_msg_and_die("Task id is needed.");
+        if (!task_password)
+            error_msg_and_die("Task password is needed.");
+        return run_backtrace(task_id, task_password, opts & OPT_insecure);
+    }
+    else if (0 == strcasecmp(operation, "log"))
+    {
+        if (!task_id)
+            error_msg_and_die("Task id is needed.");
+        if (!task_password)
+            error_msg_and_die("Task password is needed.");
+        return run_log(task_id, task_password, opts & OPT_insecure);
+    }
+    else
+        error_msg_and_die("Unknown operation: %s", operation);
+
     return 0;
 }
