@@ -32,6 +32,7 @@ libreport_la_SOURCES = \
     dirsize.c \
     dump_dir.c \
     get_cmdline.c \
+    glib_support.c \
     daemon_is_ok.c \
     load_plugin_settings.c \
     make_descr.c \

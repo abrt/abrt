@@ -675,9 +675,7 @@ int main(int argc, char **argv)
                     log("%d errors while dumping oopses", errors);
             }
         }
-        for (GList *li = oops_list; li; li = g_list_next(li))
-            free((char*)li->data);
-        g_list_free(oops_list);
+        list_free_with_free(oops_list);
         oops_list = NULL;
 
         /* Done if no -w */

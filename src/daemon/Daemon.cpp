@@ -25,7 +25,6 @@
 #include <string>
 #include <sys/inotify.h>
 #include <sys/ioctl.h> /* ioctl(FIONREAD) */
-#include <glib.h>
 #include "abrtlib.h"
 #include "comm_layer_inner.h"
 #include "Settings.h"
@@ -633,7 +632,7 @@ int main(int argc, char** argv)
         init_daemon_logging(&watcher);
 
         VERB1 log("Loading settings");
-        if (LoadSettings() != 0)
+        if (load_settings() != 0)
             throw 1;
 
         sanitize_dump_dir_rights();
@@ -759,7 +758,7 @@ int main(int argc, char** argv)
     if (pMainloop)
         g_main_loop_unref(pMainloop);
 
-    settings_free();
+    free_settings();
 
     if (log_scanner_pid > 0)
     {

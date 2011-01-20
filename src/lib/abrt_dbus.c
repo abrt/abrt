@@ -17,7 +17,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <dbus/dbus.h>
-#include <glib.h>
 #include "abrtlib.h"
 #include "abrt_dbus.h"
 

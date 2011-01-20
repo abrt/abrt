@@ -19,8 +19,6 @@
 #ifndef ABRT_TYPES_H_
 #define ABRT_TYPES_H_
 
-#include <glib.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif

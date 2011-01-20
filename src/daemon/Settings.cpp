@@ -31,7 +31,7 @@
  */
 
 /* Static data */
-/* Filled by LoadSettings() */
+/* Filled by load_settings() */
 
 /* map["name"] = "value" strings from [ Common ] section.
  * If the same name found on more than one line,
@@ -258,7 +258,7 @@ static int ReadConfigurationFromFile(FILE *fp)
 }
 
 /* abrt daemon loads .conf file */
-int LoadSettings()
+int load_settings()
 {
     int err = 0;
 
@@ -311,26 +311,20 @@ map_abrt_settings_t GetSettings()
 //    }
 //}
 
-void settings_free()
+void free_settings()
 {
-    for (GList *li = g_settings_setOpenGPGPublicKeys; li != NULL; li = g_list_next(li))
-        free((char*)li->data);
-
-    g_list_free(g_settings_setOpenGPGPublicKeys);
+    list_free_with_free(g_settings_setOpenGPGPublicKeys);
     g_settings_setOpenGPGPublicKeys = NULL;
 
-    for (GList *li = g_settings_setBlackListedPkgs; li != NULL; li = g_list_next(li))
-        free((char*)li->data);
-
-    g_list_free(g_settings_setBlackListedPkgs);
+    list_free_with_free(g_settings_setBlackListedPkgs);
     g_settings_setBlackListedPkgs = NULL;
 
-    for (GList *li = g_settings_setBlackListedPaths; li != NULL; li = g_list_next(li))
-        free((char*)li->data);
-
-    g_list_free(g_settings_setBlackListedPaths);
+    list_free_with_free(g_settings_setBlackListedPaths);
     g_settings_setBlackListedPaths = NULL;
 
     free(g_settings_sWatchCrashdumpArchiveDir);
     g_settings_sWatchCrashdumpArchiveDir = NULL;
+
+    free(g_settings_sLogScanners);
+    g_settings_sLogScanners = NULL;
 }

@@ -42,6 +42,7 @@
 #ifdef __cplusplus
 # include <string>
 #endif
+#include <glib.h>
 
 #ifdef HAVE_CONFIG_H
 # include "config.h"
@@ -183,6 +184,12 @@ char *run_in_shell_and_save_output(int flags,
                 size_t *size_p);
 
 /* Random utility functions */
+
+/* Frees every element'd data using free(),
+ * then frees list itself using g_list_free(list):
+ */
+#define list_free_with_free abrt_list_free_with_free
+void list_free_with_free(GList *list);
 
 #define get_dirsize abrt_get_dirsize
 double get_dirsize(const char *pPath);

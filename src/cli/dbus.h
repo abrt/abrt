@@ -18,7 +18,6 @@
 #ifndef ABRT_CLI_DBUS_H
 #define ABRT_CLI_DBUS_H
 
-#include <glib.h>
 #include "abrt_dbus.h"
 #include "abrt_crash_data.h"
 

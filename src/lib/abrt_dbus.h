@@ -20,7 +20,6 @@
 #define ABRT_DBUS_H
 
 #include <dbus/dbus.h>
-#include <glib.h>
 #include "abrtlib.h"
 
 

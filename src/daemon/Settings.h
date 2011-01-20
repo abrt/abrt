@@ -20,7 +20,6 @@
 #define SETTINGS_H_
 
 #include "abrt_types.h"
-#include <glib.h>
 
 #ifdef __cplusplus
 
@@ -43,9 +42,8 @@ extern char *        g_settings_sWatchCrashdumpArchiveDir;
 
 extern char *        g_settings_sLogScanners;
 
-int LoadSettings();
-
-void settings_free();
+int load_settings();
+void free_settings();
 
 #ifdef __cplusplus
 }

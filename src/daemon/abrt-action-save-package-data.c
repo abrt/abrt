@@ -304,8 +304,8 @@ int main(int argc, char **argv)
     }
 
     VERB1 log("Loading settings");
-    if (LoadSettings() != 0)
-        return 1; /* syntax error (looged already by LoadSettings) */
+    if (load_settings() != 0)
+        return 1; /* syntax error (logged already by load_settings) */
 
     VERB1 log("Initializing rpm library");
     rpm_init();
