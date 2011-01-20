@@ -8,8 +8,6 @@ libabrt_includedir = $(includedir)/abrt
 libabrt_include_HEADERS = \
     abrtlib.h \
     abrt_types.h \
-    comm_layer_inner.h \
     abrt_crash_data.h \
     dbus_common.h \
-    observer.h \
     xfuncs.h

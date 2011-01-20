@@ -11,10 +11,10 @@ sbin_PROGRAMS = \
 
 abrtd_SOURCES = \
     MiddleWare.h MiddleWare.cpp \
-    CrashWatcher.h CrashWatcher.cpp \
     CommLayerServer.h CommLayerServer.cpp \
     CommLayerServerDBus.h CommLayerServerDBus.cpp \
     Settings.h Settings.cpp \
+    comm_layer_inner.h comm_layer_inner.cpp \
     Daemon.h Daemon.cpp
 abrtd_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
@@ -36,7 +36,6 @@ abrtd_LDADD = \
     $(DL_LIBS) \
     $(DBUS_LIBS) \
     ../lib/libreport.la \
-    ../lib/libabrt_daemon.la \
     ../lib/libabrt_dbus.la
 
 abrt_server_SOURCES = \

@@ -29,7 +29,6 @@
 #include "comm_layer_inner.h"
 #include "Settings.h"
 #include "CommLayerServerDBus.h"
-#include "CrashWatcher.h"
 #include "MiddleWare.h"
 #include "Daemon.h"
 #include "parse_options.h"
@@ -624,12 +623,11 @@ int main(int argc, char** argv)
     GIOChannel* channel_signal = NULL;
     guint channel_signal_event_id = 0;
     bool pidfile_created = false;
-    CCrashWatcher watcher;
 
     /* Initialization */
     try
     {
-        init_daemon_logging(&watcher);
+        init_daemon_logging();
 
         VERB1 log("Loading settings");
         if (load_settings() != 0)

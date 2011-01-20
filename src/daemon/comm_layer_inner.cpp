@@ -19,9 +19,8 @@
 #include <pthread.h>
 #include <map>
 #include "abrtlib.h"
+#include "Daemon.h"
 #include "comm_layer_inner.h"
-
-static CObserver *s_pObs;
 
 typedef std::map<uint64_t, std::string> map_uint_str_t;
 static map_uint_str_t s_mapClientID;
@@ -31,9 +30,6 @@ static bool s_map_mutex_inited;
 /* called via [p]error_msg() */
 static void warn_client(const char *msg)
 {
-    if (!s_pObs)
-        return;
-
     uint64_t key = uint64_t(pthread_self());
 
     pthread_mutex_lock(&s_map_mutex);
@@ -42,12 +38,15 @@ static void warn_client(const char *msg)
     pthread_mutex_unlock(&s_map_mutex);
 
     if (peer)
-        s_pObs->Warning(msg, peer);
+    {
+        VERB1 log("Warning('%s'): %s", peer, msg);
+        if (g_pCommLayer != NULL)
+            g_pCommLayer->Warning(msg, peer);
+    }
 }
 
-void init_daemon_logging(CObserver *pObs)
+void init_daemon_logging(void)
 {
-    s_pObs = pObs;
     if (!s_map_mutex_inited)
     {
         s_map_mutex_inited = true;
@@ -71,9 +70,6 @@ void set_client_name(const char *name)
 
 void update_client(const char *fmt, ...)
 {
-    if (!s_pObs)
-        return;
-
     uint64_t key = uint64_t(pthread_self());
 
     pthread_mutex_lock(&s_map_mutex);
@@ -89,6 +85,9 @@ void update_client(const char *fmt, ...)
     char *msg = xvasprintf(fmt, p);
     va_end(p);
 
-    s_pObs->Status(msg, peer);
+    VERB1 log("Update('%s'): %s", peer, msg);
+    if (g_pCommLayer != NULL)
+        g_pCommLayer->Update(msg, peer);
+
     free(msg);
 }

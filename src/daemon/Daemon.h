@@ -21,9 +21,7 @@
 
 #include <pthread.h>
 #include "abrt_types.h"
-
-class CCrashWatcher;
-class CCommLayerServer;
+#include "CommLayerServer.h"
 
 /* Used for sending dbus signals */
 extern CCommLayerServer *g_pCommLayer;

@@ -1,10 +1,8 @@
 # libreport - the stuff shared among most of abrt (like xmalloc, logging)
-# libabrt_daemon - only daemon related things are here
 # libabrt_dbus - daemon, cli and applet use this
 # libabrt_web - for abrt-action-foo where foo deals with network/web/ftp/...
 lib_LTLIBRARIES = \
     libreport.la \
-    libabrt_daemon.la \
     libabrt_dbus.la \
     libabrt_web.la
 
@@ -77,23 +75,6 @@ libabrt_dbus_la_LDFLAGS = \
 libabrt_dbus_la_LIBADD = \
     $(GLIB_LIBS) \
     $(DBUS_LIBS)
-
-libabrt_daemon_la_SOURCES = \
-    CommLayerInner.cpp
-libabrt_daemon_la_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    $(GLIB_CFLAGS) \
-    -Wall \
-    -Werror \
-    -D_GNU_SOURCE
-libabrt_daemon_la_LDFLAGS = \
-    -version-info 0:1:0
-libabrt_daemon_la_LIBADD =
 
 libabrt_web_la_SOURCES = \
     abrt_curl.h abrt_curl.c \
