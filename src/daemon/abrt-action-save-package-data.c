@@ -267,36 +267,36 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     return error;
 }
 
-static const char *dump_dir_name = ".";
-static const char abrt_action_save_package_data_usage[] =
-    PROGNAME" [options] -d DIR\n"
-    "\n"
-    "Query package database and save package name, component, and description";
-enum {
-    OPT_v = 1 << 0,
-    OPT_d = 1 << 1,
-    OPT_s = 1 << 2,
-};
-/* Keep enum above and order of options below in sync! */
-static struct options abrt_action_save_package_data_options[] = {
-    OPT__VERBOSE(&g_verbose),
-    OPT_STRING('d', NULL, &dump_dir_name, "DIR", "Crash dump directory"),
-    OPT_BOOL(  's', NULL, NULL, "Log to syslog"),
-    OPT_END()
-};
-
 int main(int argc, char **argv)
 {
     char *env_verbose = getenv("ABRT_VERBOSE");
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    unsigned opts = parse_opts(argc, argv, abrt_action_save_package_data_options,
-                           abrt_action_save_package_data_usage);
+    const char *dump_dir_name = ".";
+
+    /* Can't keep these strings/structs static: _() doesn't support that */
+    const char *program_usage_string = _(
+        PROGNAME" [options] -d DIR\n"
+        "\n"
+        "Query package database and save package name, component, and description"
+    );
+    enum {
+        OPT_v = 1 << 0,
+        OPT_d = 1 << 1,
+        OPT_s = 1 << 2,
+    };
+    /* Keep enum above and order of options below in sync! */
+    struct options program_options[] = {
+        OPT__VERBOSE(&g_verbose),
+        OPT_STRING('d', NULL, &dump_dir_name, "DIR", _("Crash dump directory")),
+        OPT_BOOL(  's', NULL, NULL          ,        _("Log to syslog")),
+        OPT_END()
+    };
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     msg_prefix = PROGNAME;
-
     if (opts & OPT_s)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);

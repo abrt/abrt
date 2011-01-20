@@ -34,6 +34,8 @@
 #include "Daemon.h"
 #include "parse_options.h"
 
+#define PROGNAME "abrtd"
+
 using namespace std;
 
 
@@ -463,10 +465,10 @@ static void run_main_loop(GMainLoop* loop)
             fds = (GPollFD *)xrealloc(fds, fds_size * sizeof(fds[0]));
         }
 
-        if (s_timeout)
+        if (s_timeout != 0)
             alarm(s_timeout);
         g_poll(fds, nfds, timeout);
-        if (s_timeout)
+        if (s_timeout != 0)
             alarm(0);
 
         some_ready = g_main_context_check(context, max_priority, fds, nfds);
@@ -486,7 +488,7 @@ static void start_syslog_logging()
      * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
     xdup2(STDIN_FILENO, STDOUT_FILENO);
     xdup2(STDIN_FILENO, STDERR_FILENO);
-    openlog("abrtd", 0, LOG_DAEMON);
+    openlog(PROGNAME, 0, LOG_DAEMON);
     logmode = LOGMODE_SYSLOG;
     putenv((char*)"ABRT_SYSLOG=1");
 }
@@ -523,23 +525,6 @@ static void sanitize_dump_dir_rights()
     ensure_writable_dir(VAR_RUN"/abrt", 0755, "root");
 }
 
-static char *timeout_opt;
-static const char* abrtd_usage = _("abrtd [options]");
-enum {
-    OPT_v = 1 << 0,
-    OPT_d = 1 << 1,
-    OPT_s = 1 << 2,
-    OPT_t = 1 << 3,
-};
-/* Keep enum above and order of options below in sync! */
-static struct options abrtd_options[] = {
-    OPT__VERBOSE(&g_verbose),
-    OPT_BOOL( 'd' , 0, NULL, _("Do not daemonize")),
-    OPT_BOOL( 's' , 0, NULL, _("Log to syslog even with -d")),
-    OPT_INTEGER( 't' , 0, &timeout_opt, _("Exit after SEC seconds of inactivity")),
-    OPT_END()
-};
-
 int main(int argc, char** argv)
 {
     int parent_pid = getpid();
@@ -558,9 +543,24 @@ int main(int argc, char** argv)
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    unsigned opts = parse_opts(argc, argv, abrtd_options, abrtd_usage);
-
-    msg_prefix = "abrtd"; /* for log(), error_msg() and such */
+    const char *program_usage_string = _(
+        PROGNAME" [options]"
+    );
+    enum {
+        OPT_v = 1 << 0,
+        OPT_d = 1 << 1,
+        OPT_s = 1 << 2,
+        OPT_t = 1 << 3,
+    };
+    /* Keep enum above and order of options below in sync! */
+    struct options program_options[] = {
+        OPT__VERBOSE(&g_verbose),
+        OPT_BOOL(   'd', NULL, NULL      , _("Do not daemonize")),
+        OPT_BOOL(   's', NULL, NULL      , _("Log to syslog even with -d")),
+        OPT_INTEGER('t', NULL, &s_timeout, _("Exit after SEC seconds of inactivity")),
+        OPT_END()
+    };
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     unsetenv("ABRT_SYSLOG");
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
@@ -571,7 +571,7 @@ int main(int argc, char** argv)
     const char *env_path = getenv("PATH");
     if (!env_path || !env_path[0])
         putenv((char*)"PATH=/usr/sbin:/usr/bin:/sbin:/bin");
-
+    msg_prefix = PROGNAME; /* for log(), error_msg() and such */
     if (opts & OPT_s)
         start_syslog_logging();
 
@@ -581,7 +581,7 @@ int main(int argc, char** argv)
     signal(SIGTERM, handle_signal);
     signal(SIGINT,  handle_signal);
     signal(SIGCHLD, handle_signal);
-    if (s_timeout)
+    if (s_timeout != 0)
         signal(SIGALRM, handle_signal);
 
     /* Daemonize unless -d */

@@ -28,7 +28,7 @@
 #define DEBUGINFO_CACHE_DIR     LOCALSTATEDIR"/cache/abrt-di"
 
 static const char *dump_dir_name = ".";
-static const char *debuginfo_dirs;
+static const char *debuginfo_dirs = DEBUGINFO_CACHE_DIR;
 static int exec_timeout_sec = 60;
 
 
@@ -244,47 +244,47 @@ static char *get_backtrace(struct dump_dir *dd)
     return bt;
 }
 
-static char *i_opt;
-static const char abrt_action_generage_backtrace_usage[] = PROGNAME" [options] -d DIR";
-enum {
-    OPT_v = 1 << 0,
-    OPT_d = 1 << 1,
-    OPT_i = 1 << 2,
-    OPT_t = 1 << 3,
-    OPT_s = 1 << 4,
-};
-/* Keep enum above and order of options below in sync! */
-static struct options abrt_action_generate_backtrace_options[] = {
-    OPT__VERBOSE(&g_verbose),
-    OPT_STRING( 'd', NULL, &dump_dir_name, "DIR", "Crash dump directory"),
-    OPT_STRING( 'i', NULL, &i_opt, "dir1[:dir2]...", "Additional debuginfo directories"),
-    OPT_INTEGER('t', NULL, &exec_timeout_sec, "Kill gdb if it runs for more than N seconds"),
-    OPT_BOOL(   's', NULL, NULL, "Log to syslog"),
-    OPT_END()
-};
-
 int main(int argc, char **argv)
 {
     char *env_verbose = getenv("ABRT_VERBOSE");
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    unsigned opts = parse_opts(argc, argv, abrt_action_generate_backtrace_options,
-                           abrt_action_generage_backtrace_usage);
+    char *i_opt = NULL;
 
-    debuginfo_dirs = DEBUGINFO_CACHE_DIR;
-    if (i_opt)
-    {
-        debuginfo_dirs = xasprintf("%s:%s", DEBUGINFO_CACHE_DIR, i_opt);
-    }
+    /* Can't keep these strings/structs static: _() doesn't support that */
+    const char *program_usage_string = _(
+        PROGNAME" [options] -d DIR"
+    );
+    enum {
+        OPT_v = 1 << 0,
+        OPT_d = 1 << 1,
+        OPT_i = 1 << 2,
+        OPT_t = 1 << 3,
+        OPT_s = 1 << 4,
+    };
+    /* Keep enum above and order of options below in sync! */
+    struct options program_options[] = {
+        OPT__VERBOSE(&g_verbose),
+        OPT_STRING( 'd', NULL, &dump_dir_name   , "DIR"           , _("Crash dump directory")),
+        OPT_STRING( 'i', NULL, &i_opt           , "dir1[:dir2]...", _("Additional debuginfo directories")),
+        OPT_INTEGER('t', NULL, &exec_timeout_sec,                   _("Kill gdb if it runs for more than N seconds")),
+        OPT_BOOL(   's', NULL, NULL             ,                   _("Log to syslog")),
+        OPT_END()
+    };
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     msg_prefix = PROGNAME;
-
     if (opts & OPT_s)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;
+    }
+
+    if (i_opt)
+    {
+        debuginfo_dirs = xasprintf("%s:%s", DEBUGINFO_CACHE_DIR, i_opt);
     }
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);

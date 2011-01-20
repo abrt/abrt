@@ -126,28 +126,28 @@ int main(int argc, char **argv)
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
+    const char *dump_dir_name = ".";
+
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
         PROGNAME" [-vs] -d DIR\n\n"
         "Calculates and saves UUID and DUPHASH of oops crash dumps"
         );
-    const char *dump_dir_name = ".";
     enum {
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
-        OPT_s = 1 << 2,
+//        OPT_s = 1 << 2,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR", _("Crash dump directory")),
-        OPT_BOOL(  's', NULL, NULL,                  _("Log to syslog"       )),
+//        OPT_BOOL(  's', NULL, NULL,                  _("Log to syslog"       )),
         OPT_END()
     };
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-
     msg_prefix = PROGNAME;
 //Maybe we will want this... later
 //    if (opts & OPT_s)

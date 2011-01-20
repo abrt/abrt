@@ -244,7 +244,8 @@ int main(int argc, char **argv)
     const char *conf_file = NULL;
     const char *url = NULL;
 
-    const char *program_usage = _(
+    /* Can't keep these strings/structs static: _() doesn't support that */
+    const char *program_usage_string = _(
         PROGNAME" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
         "\n"
         "Upload compressed tarball of crash dump"
@@ -263,12 +264,11 @@ int main(int argc, char **argv)
         OPT_STRING('u', NULL, &url          , "URL"     , _("Base URL to upload to")),
         OPT_END()
     };
-
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage);
+    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     //msg_prefix = PROGNAME;
-    //if (optflags & OPT_s)
+    //if (opts & OPT_s)
     //{
     //    openlog(msg_prefix, 0, LOG_DAEMON);
     //    logmode = LOGMODE_SYSLOG;

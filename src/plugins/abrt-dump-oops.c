@@ -534,9 +534,8 @@ int main(int argc, char **argv)
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    const char *filename = "/var/log/messages";
-
-    const char *program_usage = _(
+    /* Can't keep these strings/structs static: _() doesn't support that */
+    const char *program_usage_string = _(
         PROGNAME" [-vsrdow] FILE\n"
         "\n"
         "Extract oops from syslog/dmesg file"
@@ -559,12 +558,7 @@ int main(int argc, char **argv)
         OPT_BOOL('w', NULL, NULL, _("Do not exit, watch the file for new oopses")),
         OPT_END()
     };
-
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage);
-    argv += optind;
-    if (!argv[0])
-        show_usage_and_die(program_usage, program_options);
-    filename = argv[0];
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     msg_prefix = PROGNAME;
@@ -574,6 +568,11 @@ int main(int argc, char **argv)
         openlog(msg_prefix, 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;
     }
+
+    argv += optind;
+    if (!argv[0])
+        show_usage_and_die(program_usage_string, program_options);
+    const char *filename = argv[0];
 
     int inotify_fd = -1;
     if (opts & OPT_w)

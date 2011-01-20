@@ -906,7 +906,7 @@ int main(int argc, char **argv)
     enum {
         OPT_s = (1 << 0),
     };
-    int optflags = 0;
+    int opts = 0;
     int opt;
     while ((opt = getopt(argc, argv, "c:d:vs")) != -1)
     {
@@ -924,7 +924,7 @@ int main(int argc, char **argv)
             g_verbose++;
             break;
         case 's':
-            optflags |= OPT_s;
+            opts |= OPT_s;
             break;
         default:
             /* Careful: the string below contains tabs, dont replace with spaces */
@@ -943,11 +943,9 @@ int main(int argc, char **argv)
     }
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-
 //DONT! our stdout/stderr goes directly to daemon, don't want to have prefix there.
 //    msg_prefix = xasprintf("abrt-action-bugzilla[%u]", getpid());
-
-    if (optflags & OPT_s)
+    if (opts & OPT_s)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;

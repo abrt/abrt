@@ -34,10 +34,12 @@ int main(int argc, char **argv)
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    const char *program_usage = _(
+    /* Can't keep these strings/structs static: _() doesn't support that */
+    const char *program_usage_string = _(
         PROGNAME" [-v] [-o FILE] -d DIR\n"
         "\n"
-        "Print information about the crash to standard output");
+        "Print information about the crash to standard output"
+    );
     enum {
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
@@ -50,8 +52,7 @@ int main(int argc, char **argv)
         OPT_STRING('o', NULL, &output_file  , "FILE", _("Output file")),
         OPT_END()
     };
-
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage);
+    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     //msg_prefix = PROGNAME;
