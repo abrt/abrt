@@ -3,20 +3,20 @@
 # This file is distributed under the same license as the abrt package.
 #
 # Maxim Dzumanenko <dziumanenko@gmail.com>, 2010.
-# Yuri Chornoivan <yurchor@ukr.net>, 2010.
+# Yuri Chornoivan <yurchor@ukr.net>, 2010, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-12-03 20:47+0000\n"
-"PO-Revision-Date: 2010-12-04 09:42+0200\n"
+"POT-Creation-Date: 2011-01-19 20:42+0000\n"
+"PO-Revision-Date: 2011-01-20 18:42+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: uk\n"
-"X-Generator: Lokalize 1.1\n"
+"X-Generator: Lokalize 1.2\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -29,16 +29,16 @@ msgstr "Аплет сповіщення ABRT"
 msgid "Automatic Bug Reporting Tool"
 msgstr "ABRT — автоматичне звітування про помилки"
 
-#: ../src/applet/Applet.cpp:86
+#: ../src/applet/applet.c:86
 #, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "Було виявлено збій у пакунку %s"
 
-#: ../src/applet/Applet.cpp:88
+#: ../src/applet/applet.c:88
 msgid "A crash has been detected"
 msgstr "Виявлено збій у пакеті"
 
-#: ../src/applet/Applet.cpp:285
+#: ../src/applet/applet.c:285
 msgid "ABRT service is not running"
 msgstr "Службу ABRT не запущено"
 
@@ -72,7 +72,7 @@ msgstr "Повідомити"
 msgid "Open ABRT"
 msgstr "Відкрити ABRT"
 
-#: ../src/cli/CLI.cpp:47
+#: ../src/cli/CLI.cpp:46
 #, c-format
 msgid ""
 "\tCrash dump : %s\n"
@@ -117,27 +117,27 @@ msgstr ""
 "Система:            %s, ядро %s\n"
 "Причина:            %s\n"
 
-#: ../src/cli/CLI.cpp:125
+#: ../src/cli/CLI.cpp:126
 #, c-format
 msgid "Coredump file:      %s\n"
 msgstr "Файл coredump:      %s\n"
 
-#: ../src/cli/CLI.cpp:129
+#: ../src/cli/CLI.cpp:130
 #, c-format
 msgid "Rating:             %s\n"
 msgstr "Оцінка:             %s\n"
 
-#: ../src/cli/CLI.cpp:134
+#: ../src/cli/CLI.cpp:135
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr "Аварійна функція:   %s\n"
 
-#: ../src/cli/CLI.cpp:138
+#: ../src/cli/CLI.cpp:139
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr "Назва вузла:        %s\n"
 
-#: ../src/cli/CLI.cpp:142
+#: ../src/cli/CLI.cpp:143
 #, c-format
 msgid ""
 "\n"
@@ -148,7 +148,7 @@ msgstr ""
 "Спосіб відтворення:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:146
+#: ../src/cli/CLI.cpp:147
 #, c-format
 msgid ""
 "\n"
@@ -159,7 +159,7 @@ msgstr ""
 "Коментар:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:152
+#: ../src/cli/CLI.cpp:153
 #, c-format
 msgid ""
 "\n"
@@ -171,7 +171,7 @@ msgstr ""
 "%s\n"
 
 #. Message has embedded tabs.
-#: ../src/cli/CLI.cpp:244
+#: ../src/cli/CLI.cpp:248
 #, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
@@ -217,7 +217,7 @@ msgstr ""
 "\t@N  — виконання дії над N-им збоєм (у списку, показаному командою з "
 "параметрами --list --full)\n"
 
-#: ../src/cli/CLI.cpp:288
+#: ../src/cli/CLI.cpp:292
 msgid "You must specify exactly one operation"
 msgstr "Вам слід вказати точно одну дію"
 
@@ -284,7 +284,7 @@ msgstr ""
 "Не вдалося запустити vi: не встановлено значень змінних $TERM, $VISUAL і "
 "$EDITOR"
 
-#: ../src/cli/report.cpp:411
+#: ../src/cli/report.cpp:407
 msgid ""
 "\n"
 "The report has been updated"
@@ -292,7 +292,7 @@ msgstr ""
 "\n"
 "Звіт було оновлено"
 
-#: ../src/cli/report.cpp:413
+#: ../src/cli/report.cpp:409
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -301,46 +301,46 @@ msgstr ""
 "Не виявлено жодних змін у звіті"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:445
+#: ../src/cli/report.cpp:441
 msgid "y"
 msgstr "y"
 
-#: ../src/cli/report.cpp:446
+#: ../src/cli/report.cpp:442
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:563
+#: ../src/cli/report.cpp:569
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Виявлено помилкові параметри модуля %s\n"
 
-#: ../src/cli/report.cpp:567
+#: ../src/cli/report.cpp:573
 msgid "Enter your login: "
 msgstr "Введіть ваше ім’я користувача: "
 
-#: ../src/cli/report.cpp:573
+#: ../src/cli/report.cpp:579
 msgid "Enter your password: "
 msgstr "Введіть ваш пароль: "
 
-#: ../src/cli/report.cpp:635
+#: ../src/cli/report.cpp:645
 msgid "Reporting..."
 msgstr "Звітування…"
 
-#: ../src/cli/report.cpp:654
+#: ../src/cli/report.cpp:664
 #, c-format
 msgid "Report using %s?"
 msgstr "Створити звіт за допомогою %s?"
 
-#: ../src/cli/report.cpp:657
+#: ../src/cli/report.cpp:667
 msgid "Skipping..."
 msgstr "Пропускаємо…"
 
-#: ../src/cli/report.cpp:669
+#: ../src/cli/report.cpp:679
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Звітування вимкнено, оскільки зворотне трасування є непридатним"
 
-#: ../src/cli/report.cpp:673
+#: ../src/cli/report.cpp:683
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -349,11 +349,11 @@ msgstr ""
 "Спробуйте встановити debuginfo вручну: «debuginfo-install %s», потім "
 "повторіть спробу\n"
 
-#: ../src/cli/report.cpp:682
+#: ../src/cli/report.cpp:692
 msgid "Error loading reporter settings"
 msgstr "Помилка при завантаженні параметрів звітування"
 
-#: ../src/cli/report.cpp:702
+#: ../src/cli/report.cpp:713
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "Повідомлення щодо збою створено на основі %d подій (%d помилок)\n"
@@ -370,6 +370,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-c.c:167
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
+#: ../src/plugins/abrt-dump-oops.c:555
 msgid "Log to syslog"
 msgstr "Записувати до журналу syslog"
 
@@ -377,9 +378,9 @@ msgstr "Записувати до журналу syslog"
 #: ../src/plugins/abrt-action-analyze-c.c:166
 #: ../src/plugins/abrt-action-analyze-oops.c:143
 #: ../src/plugins/abrt-action-analyze-python.c:48
-#: ../src/plugins/abrt-action-mailx.cpp:150
-#: ../src/plugins/abrt-action-print.cpp:50
-#: ../src/plugins/abrt-action-upload.cpp:266
+#: ../src/plugins/abrt-action-mailx.c:149
+#: ../src/plugins/abrt-action-print.c:49
+#: ../src/plugins/abrt-action-upload.c:261
 msgid "Crash dump directory"
 msgstr "Каталог дампу аварійного завершення"
 
@@ -391,15 +392,15 @@ msgstr "Обробити ПОДІЮ"
 msgid "List possible events [which start with PFX]"
 msgstr "Список записів можливих подій [що починаються з PFX]"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:229
+#: ../src/daemon/CommLayerServerDBus.cpp:238
 msgid "Comment is too long"
 msgstr "Занадто довгий коментар"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:233
+#: ../src/daemon/CommLayerServerDBus.cpp:242
 msgid "'How to reproduce' is too long"
 msgstr "Занадто довгий запис «Спосіб відтворення»"
 
-#: ../src/daemon/Daemon.cpp:534
+#: ../src/daemon/Daemon.cpp:374
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -407,19 +408,19 @@ msgstr ""
 "Розмір звіту перевищує припустимий. Змініть значення MaxCrashReportsSize у "
 "файлі abrt.conf"
 
-#: ../src/daemon/Daemon.cpp:699
+#: ../src/daemon/Daemon.cpp:528
 msgid "abrtd [options]"
 msgstr "abrtd [параметри]"
 
-#: ../src/daemon/Daemon.cpp:709
+#: ../src/daemon/Daemon.cpp:538
 msgid "Do not daemonize"
 msgstr "Не запускати фонової служби"
 
-#: ../src/daemon/Daemon.cpp:710
+#: ../src/daemon/Daemon.cpp:539
 msgid "Log to syslog even with -d"
 msgstr "Записувати до журналу syslog навіть з параметром -d"
 
-#: ../src/daemon/Daemon.cpp:711
+#: ../src/daemon/Daemon.cpp:540
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Завершувати роботу після SEC секунд бездіяльності"
 
@@ -1240,12 +1241,12 @@ msgstr ""
 "виправлень не буде внесено, у процесі звітування про ваду можуть виникнути "
 "помилки.\n"
 
-#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.cpp:47
+#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:46
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Вивантажено: %llu з %llu кілобайтів"
 
-#: ../src/lib/parse_options.c:11
+#: ../src/lib/parse_options.c:29
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Використання: %s\n"
@@ -1280,70 +1281,65 @@ msgstr ""
 "\n"
 "Обчислює і зберігає UUID та DUPHASH аварійних дампів Python"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:532
+#: ../src/plugins/abrt-action-bugzilla.cpp:531
 #, c-format
 msgid "New bug id: %i"
 msgstr "Новий ідентифікатор запиту: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:645
-#, c-format
-msgid "Can't open '%s'"
-msgstr "Не вдалося відкрити «%s»"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:665
+#: ../src/plugins/abrt-action-bugzilla.cpp:659
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr "Порожнє ім'я або пароль. Перевірте %s"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:683
+#: ../src/plugins/abrt-action-bugzilla.cpp:677
 msgid "Logging into bugzilla..."
 msgstr "Триває вхід до Bugzilla…"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:686
+#: ../src/plugins/abrt-action-bugzilla.cpp:680
 msgid "Checking for duplicates..."
 msgstr "Пошук дублікатів…"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:707
-#: ../src/plugins/abrt-action-bugzilla.cpp:743
+#: ../src/plugins/abrt-action-bugzilla.cpp:701
+#: ../src/plugins/abrt-action-bugzilla.cpp:737
 msgid "Missing mandatory member 'bugs'"
 msgstr "Не вказано обов’язкового учасника «bugs»"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:726
-#: ../src/plugins/abrt-action-bugzilla.cpp:759
-#: ../src/plugins/abrt-action-bugzilla.cpp:834
+#: ../src/plugins/abrt-action-bugzilla.cpp:720
+#: ../src/plugins/abrt-action-bugzilla.cpp:753
+#: ../src/plugins/abrt-action-bugzilla.cpp:830
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "Збій get_bug_info(). Не вдалося зібрати потрібну інформацію."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:775
+#: ../src/plugins/abrt-action-bugzilla.cpp:769
 msgid "Creating a new bug..."
 msgstr "Створення нового повідомлення про ваду…"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:780
+#: ../src/plugins/abrt-action-bugzilla.cpp:774
 msgid "Bugzilla entry creation failed"
 msgstr "Не вдалося створити запис у Bugzilla"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:790
-#: ../src/plugins/abrt-action-bugzilla.cpp:887
+#: ../src/plugins/abrt-action-bugzilla.cpp:786
+#: ../src/plugins/abrt-action-bugzilla.cpp:883
 msgid "Logging out..."
 msgstr "Виконується вихід…"
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:808
+#: ../src/plugins/abrt-action-bugzilla.cpp:804
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Запит вже існує: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:819
+#: ../src/plugins/abrt-action-bugzilla.cpp:815
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla не вдалося знайти батьківський запит для %d"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:848
+#: ../src/plugins/abrt-action-bugzilla.cpp:844
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Додати %s до списку CC"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:872
+#: ../src/plugins/abrt-action-bugzilla.cpp:868
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Додавання коментаря до запиту (%d)"
@@ -1465,16 +1461,16 @@ msgstr "Всі дані для діагностики доступні"
 msgid "Complete!"
 msgstr "Завершено!"
 
-#: ../src/plugins/abrt-action-kerneloops.cpp:111
+#: ../src/plugins/abrt-action-kerneloops.c:105
 #, c-format
 msgid "Submitting oops report to %s"
 msgstr "Надсилання звіту про збій до %s"
 
-#: ../src/plugins/abrt-action-mailx.cpp:114
+#: ../src/plugins/abrt-action-mailx.c:111
 msgid "Sending an email..."
 msgstr "Надсилання пошти…"
 
-#: ../src/plugins/abrt-action-mailx.cpp:138
+#: ../src/plugins/abrt-action-mailx.c:137
 msgid ""
 " [-v] -d DIR [-c CONFFILE]\n"
 "\n"
@@ -1484,12 +1480,12 @@ msgstr ""
 "\n"
 "Вивантажити стиснутий архів дампу збою"
 
-#: ../src/plugins/abrt-action-mailx.cpp:151
-#: ../src/plugins/abrt-action-upload.cpp:267
+#: ../src/plugins/abrt-action-mailx.c:150
+#: ../src/plugins/abrt-action-upload.c:262
 msgid "Config file"
 msgstr "Файл налаштувань"
 
-#: ../src/plugins/abrt-action-print.cpp:39
+#: ../src/plugins/abrt-action-print.c:38
 msgid ""
 " [-v] [-o FILE] -d DIR\n"
 "\n"
@@ -1499,16 +1495,16 @@ msgstr ""
 "\n"
 "Вивести дані щодо збою до стандартного виводу"
 
-#: ../src/plugins/abrt-action-print.cpp:51
+#: ../src/plugins/abrt-action-print.c:50
 msgid "Output file"
 msgstr "Вихідний файл"
 
-#: ../src/plugins/abrt-action-print.cpp:100
+#: ../src/plugins/abrt-action-print.c:91
 #, c-format
 msgid "The report was appended to %s"
 msgstr "Звіт було долучено до %s"
 
-#: ../src/plugins/abrt-action-print.cpp:100
+#: ../src/plugins/abrt-action-print.c:91
 #, c-format
 msgid "The report was stored to %s"
 msgstr "Звіт було збережено до %s"
@@ -1516,36 +1512,36 @@ msgstr "Звіт було збережено до %s"
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../src/plugins/abrt-action-rhtsupport.cpp:43
-#: ../src/plugins/abrt-action-upload.cpp:121
+#: ../src/plugins/abrt-action-rhtsupport.c:41
+#: ../src/plugins/abrt-action-upload.c:120
 msgid "Compressing data"
 msgstr "Стискання даних"
 
-#: ../src/plugins/abrt-action-rhtsupport.cpp:78
+#: ../src/plugins/abrt-action-rhtsupport.c:69
 msgid "Empty login or password, please check RHTSupport.conf"
 msgstr "Порожнє ім'я або пароль. Перевірте, чи немає помилок у RHTSupport.conf"
 
-#: ../src/plugins/abrt-action-rhtsupport.cpp:194
+#: ../src/plugins/abrt-action-rhtsupport.c:188
 msgid "Creating a new case..."
 msgstr "Створення нового випадку…"
 
-#: ../src/plugins/abrt-action-upload.cpp:65
+#: ../src/plugins/abrt-action-upload.c:64
 #, c-format
 msgid "Sending %s to %s"
 msgstr "Надсилання %s до %s"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/abrt-action-upload.cpp:98
+#: ../src/plugins/abrt-action-upload.c:97
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "Успішно надіслано %s до %s"
 
-#: ../src/plugins/abrt-action-upload.cpp:219
+#: ../src/plugins/abrt-action-upload.c:214
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "Створено архів: «%s»"
 
-#: ../src/plugins/abrt-action-upload.cpp:253
+#: ../src/plugins/abrt-action-upload.c:248
 msgid ""
 " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1555,9 +1551,38 @@ msgstr ""
 "\n"
 "Вивантажити стиснутий архів дампу збою"
 
-#: ../src/plugins/abrt-action-upload.cpp:268
+#: ../src/plugins/abrt-action-upload.c:263
 msgid "Base URL to upload to"
 msgstr "Базова адреса для вивантаження даних"
+
+#: ../src/plugins/abrt-dump-oops.c:540
+msgid ""
+" [-vsrdow] FILE\n"
+"\n"
+"Extract oops from syslog/dmesg file"
+msgstr ""
+" [-vsrdow] ФАЙЛ\n"
+"\n"
+"Видобути повідомлення про аварії (oops) з файла syslog/dmesg"
+
+#: ../src/plugins/abrt-dump-oops.c:556
+msgid "Parse kernel's message buffer before parsing FILE"
+msgstr "Обробити буфер повідомлень ядра до обробки ФАЙЛа"
+
+#: ../src/plugins/abrt-dump-oops.c:557
+msgid "Create ABRT dump for every oops found"
+msgstr ""
+"Створити дамп ABRT для кожного знайденого повідомлення про аварію (oops)"
+
+#: ../src/plugins/abrt-dump-oops.c:558
+msgid "Print found oopses on standard output"
+msgstr "Вивести знайдені повідомлення про аварії (oops) до стандартного виводу"
+
+#: ../src/plugins/abrt-dump-oops.c:559
+msgid "Do not exit, watch the file for new oopses"
+msgstr ""
+"Не завершувати роботу, спостерігати за появою нових повідомлень про аварії "
+"(oops) у файлі"
 
 #: ../src/plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
@@ -1595,10 +1620,6 @@ msgstr ""
 "Ви можете створити його <a href=\"https://bugzilla.redhat.com/createaccount."
 "cgi\">тут</a>"
 
-#: ../src/plugins/CCpp.cpp:277
-msgid "Analyzes crashes in C/C++ programs"
-msgstr "Аналізує аварійні завершення роботи програм C/C++"
-
 #: ../src/plugins/KerneloopsReporter.glade.h:1
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
 msgstr "<b>Налаштування модуля звітування до Kerneloops</b>"
@@ -1606,10 +1627,6 @@ msgstr "<b>Налаштування модуля звітування до Kerne
 #: ../src/plugins/KerneloopsReporter.glade.h:2
 msgid "Submit URL:"
 msgstr "Адреса надсилання:"
-
-#: ../src/plugins/KerneloopsScanner.cpp:227
-msgid "Periodically scans for and saves kernel oopses"
-msgstr "Виконує періодичні сканування і зберігає дані щодо помилок у ядрі"
 
 #: ../src/plugins/Logger.glade.h:1
 msgid "<b>Logger plugin configuration</b>"
@@ -1674,6 +1691,15 @@ msgstr "Адреса:"
 #: ../src/plugins/Upload.glade.h:5
 msgid "Use encryption"
 msgstr "Використовувати шифрування"
+
+#~ msgid "Can't open '%s'"
+#~ msgstr "Не вдалося відкрити «%s»"
+
+#~ msgid "Analyzes crashes in C/C++ programs"
+#~ msgstr "Аналізує аварійні завершення роботи програм C/C++"
+
+#~ msgid "Periodically scans for and saves kernel oopses"
+#~ msgstr "Виконує періодичні сканування і зберігає дані щодо помилок у ядрі"
 
 #~ msgid "Database plugin not specified. Please check abrtd settings."
 #~ msgstr ""
