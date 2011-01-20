@@ -76,7 +76,7 @@ static GList *parse_list(const char* list)
     }
 
     if (item->len > 0)
-            l = g_list_append(l, xstrdup(item->buf));
+        l = g_list_append(l, xstrdup(item->buf));
 
     strbuf_free(item);
     return l;

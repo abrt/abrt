@@ -101,6 +101,7 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
                 break;
             case OPTION_INTEGER:
             case OPTION_STRING:
+            case OPTION_LIST:
                 curopt->has_arg = required_argument;
                 if (opt[ii].short_name)
                     strbuf_append_strf(shortopts, "%c:", opt[ii].short_name);
@@ -165,15 +166,18 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
                 if (opt[ii].value != NULL) switch (opt[ii].type)
                 {
                     case OPTION_BOOL:
-                        *(int*)opt[ii].value += 1;
+                        *(int*)(opt[ii].value) += 1;
                         break;
                     case OPTION_INTEGER:
-                        *(int*)opt[ii].value = xatoi(optarg);
+                        *(int*)(opt[ii].value) = xatoi(optarg);
                         break;
                     case OPTION_STRING:
                     case OPTION_OPTSTRING:
                         if (optarg)
-                            *(char**)opt[ii].value = (char*)optarg;
+                            *(char**)(opt[ii].value) = (char*)optarg;
+                        break;
+                    case OPTION_LIST:
+                        *(GList**)(opt[ii].value) = g_list_append(*(GList**)(opt[ii].value), optarg);
                         break;
                     case OPTION_END:
                         break;

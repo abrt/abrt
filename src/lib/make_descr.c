@@ -17,7 +17,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "abrt_crash_data.h"
 
 // caller is responsible for freeing **dsc
 static void add_content(bool *was_multiline, char **dsc, const char *header, const char *content)

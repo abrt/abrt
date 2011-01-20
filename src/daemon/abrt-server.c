@@ -17,7 +17,6 @@
 */
 #include "abrtlib.h"
 #include "dump_dir.h"
-#include "abrt_crash_data.h" /* FILENAME_foo */
 #include "hooklib.h"
 #include "parse_options.h"
 

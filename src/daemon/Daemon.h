@@ -21,7 +21,7 @@
 
 #include <pthread.h>
 #include "abrt_types.h"
-#include "abrt_crash_data.h"
+//#include "abrt_crash_data.h"
 
 class CCrashWatcher;
 class CCommLayerServer;

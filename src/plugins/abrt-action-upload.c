@@ -21,7 +21,6 @@
 #include <curl/curl.h>
 #include "abrtlib.h"
 #include "parse_options.h"
-#include "abrt_crash_data.h"
 
 #define PROGNAME "abrt-action-upload"
 

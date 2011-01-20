@@ -19,7 +19,7 @@
 
 #include <curl/curl.h>
 #include "abrtlib.h"
-#include "abrt_crash_data.h"
+#include "parse_options.h"
 
 #define PROGNAME "abrt-action-kerneloops"
 
@@ -126,44 +126,29 @@ int main(int argc, char **argv)
 
     map_string_h *settings = new_map_string();
     const char *dump_dir_name = ".";
+    GList *conf_file = NULL;
+
+    /* Can't keep these strings/structs static: _() doesn't support that */
+    const char *program_usage_string = _(
+        PROGNAME" [-vs] -c CONFFILE -d DIR"
+        "\n"
+        "\nReport a kernel oops to kerneloops.org (or similar) site"
+    );
     enum {
-        OPT_s = (1 << 0),
+        OPT_v = 1 << 0,
+        OPT_s = 1 << 1,
+        OPT_d = 1 << 2,
+        OPT_c = 1 << 3,
     };
-    int opts = 0;
-    int opt;
-    while ((opt = getopt(argc, argv, "c:d:vs")) != -1)
-    {
-        switch (opt)
-        {
-        case 'c':
-            VERB1 log("Loading settings from '%s'", optarg);
-            load_conf_file(optarg, settings, /*skip key w/o values:*/ true);
-            VERB3 log("Loaded '%s'", optarg);
-            break;
-        case 'd':
-            dump_dir_name = optarg;
-            break;
-        case 'v':
-            g_verbose++;
-            break;
-        case 's':
-            opts |= OPT_s;
-            break;
-        default:
-            /* Careful: the string below contains tabs, dont replace with spaces */
-            error_msg_and_die(
-                "Usage: "PROGNAME" -c CONFFILE -d DIR [-vs]"
-                "\n"
-                "\nReport a kernel oops to kerneloops.org (or similar) site"
-                "\n"
-                "\nOptions:"
-                "\n	-c FILE	Configuration file (may be given many times)"
-                "\n	-d DIR	Crash dump directory"
-                "\n	-v	Be verbose"
-                "\n	-s	Log to syslog"
-            );
-        }
-    }
+    /* Keep enum above and order of options below in sync! */
+    struct options program_options[] = {
+        OPT__VERBOSE(&g_verbose),
+        OPT_BOOL(  's', NULL, NULL          ,         _("Log to syslog")),
+        OPT_STRING('d', NULL, &dump_dir_name, "DIR" , _("Crash dump directory")),
+        OPT_LIST(  'c', NULL, &conf_file    , "FILE", _("Configuration file (may be given many times)")),
+        OPT_END()
+    };
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
 //DONT! our stdout/stderr goes directly to daemon, don't want to have prefix there.
@@ -172,6 +157,15 @@ int main(int argc, char **argv)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;
+    }
+
+    while (conf_file)
+    {
+        char *fn = (char *)conf_file->data;
+        VERB1 log("Loading settings from '%s'", fn);
+        load_conf_file(fn, settings, /*skip key w/o values:*/ true);
+        VERB3 log("Loaded '%s'", fn);
+        conf_file = g_list_remove(conf_file, fn);
     }
 
     report_to_kerneloops(dump_dir_name, settings);
