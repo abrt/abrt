@@ -299,17 +299,17 @@ map_abrt_settings_t GetSettings()
     return ABRTSettings;
 }
 
-/* dbus call to change some .conf file data */
-void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
-{
-    map_abrt_settings_t::const_iterator it = pSettings.find(SECTION_COMMON);
-    map_abrt_settings_t::const_iterator end = pSettings.end();
-    if (it != end)
-    {
-        s_mapSectionCommon = it->second;
-        ParseCommon();
-    }
-}
+///* dbus call to change some .conf file data */
+//void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
+//{
+//    map_abrt_settings_t::const_iterator it = pSettings.find(SECTION_COMMON);
+//    map_abrt_settings_t::const_iterator end = pSettings.end();
+//    if (it != end)
+//    {
+//        s_mapSectionCommon = it->second;
+//        ParseCommon();
+//    }
+//}
 
 void settings_free()
 {

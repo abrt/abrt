@@ -211,11 +211,13 @@ class DBusManager(gobject.GObject):
     def getSettings(self):
         return self.daemon().GetSettings()
 
-    def setSettings(self, settings):
-        # FIXME: STUB!!!!
-        log1("setSettings stub")
-        retval = self.daemon().SetSettings(self.daemon().GetSettings())
-        print ">>>", retval
+    ### looks unused to me.
+    ### Ok to grep for setSettings and delete after 2011-04-01.
+    ### def setSettings(self, settings):
+    ###     # FIXME: STUB!!!!
+    ###     log1("setSettings stub")
+    ###     retval = self.daemon().SetSettings(self.daemon().GetSettings())
+    ###     print ">>>", retval
 
     def __del__(self):
         log1("CCDBusBackend is about to be deleted")

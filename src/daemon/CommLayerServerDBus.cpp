@@ -363,25 +363,25 @@ static int handle_GetSettings(DBusMessage* call, DBusMessage* reply)
     return 0;
 }
 
-static int handle_SetSettings(DBusMessage* call, DBusMessage* reply)
-{
-    int r;
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(call, &in_iter);
-    map_abrt_settings_t param1;
-    r = load_val(&in_iter, param1);
-    if (r != ABRT_DBUS_LAST_FIELD)
-    {
-        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-        return -1;
-    }
-
-    const char * sender = dbus_message_get_sender(call);
-    SetSettings(param1, sender);
-
-    send_flush_and_unref(reply);
-    return 0;
-}
+//static int handle_SetSettings(DBusMessage* call, DBusMessage* reply)
+//{
+//    int r;
+//    DBusMessageIter in_iter;
+//    dbus_message_iter_init(call, &in_iter);
+//    map_abrt_settings_t param1;
+//    r = load_val(&in_iter, param1);
+//    if (r != ABRT_DBUS_LAST_FIELD)
+//    {
+//        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
+//        return -1;
+//    }
+//
+//    const char * sender = dbus_message_get_sender(call);
+//    SetSettings(param1, sender);
+//
+//    send_flush_and_unref(reply);
+//    return 0;
+//}
 
 
 /*
@@ -414,8 +414,11 @@ static DBusHandlerResult message_received(DBusConnection* conn, DBusMessage* msg
         r = handle_GetPluginSettings(msg, reply);
     else if (strcmp(member, "GetSettings") == 0)
         r = handle_GetSettings(msg, reply);
-    else if (strcmp(member, "SetSettings") == 0)
-        r = handle_SetSettings(msg, reply);
+// looks unused to me.
+// Ok to grep for SetSettings and delete after 2011-04-01.
+//  else if (strcmp(member, "SetSettings") == 0)
+//      r = handle_SetSettings(msg, reply);
+
 // NB: C++ binding also handles "Introspect" method, which returns a string.
 // It was sending "dummy" introspection answer whick looks like this:
 // "<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\"\n"

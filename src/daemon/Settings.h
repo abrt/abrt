@@ -25,7 +25,9 @@
 #ifdef __cplusplus
 
 typedef map_map_string_t map_abrt_settings_t;
-void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender);
+// looks unused to me.
+// Ok to grep for SetSettings and delete after 2011-04-01.
+// void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender);
 map_abrt_settings_t GetSettings();
 
 extern "C" {

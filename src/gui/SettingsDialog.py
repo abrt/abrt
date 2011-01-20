@@ -237,7 +237,10 @@ class SettingsDialog:
         self.add_AnalyzerAction()
 
     def dehydrate(self):
-        self.ccdaemon.setSettings(self.settings)
+        pass
+        ### looks unused to me.
+        ### Ok to grep for setSettings and delete after 2011-04-01.
+        ### self.ccdaemon.setSettings(self.settings)
 
     def show(self):
         self.window.show()
