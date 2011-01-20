@@ -82,6 +82,10 @@ static PyObject *p_get_crash_data_item(PyObject *pself, PyObject *args)
         return NULL;
     }
     struct crash_item *ci = get_crash_data_item_or_NULL(self->cd, key);
+    if (ci == NULL)
+    {
+        Py_RETURN_NONE;
+    }
     return Py_BuildValue("sI", ci->content, ci->flags);
 }
 
