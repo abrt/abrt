@@ -12,5 +12,4 @@ libabrt_include_HEADERS = \
     abrt_crash_data.h \
     dbus_common.h \
     observer.h \
-    plugin.h \
     xfuncs.h

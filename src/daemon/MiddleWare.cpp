@@ -19,7 +19,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "plugin.h"
 #include "Daemon.h"
 #include "Settings.h"
 #include "comm_layer_inner.h"
@@ -786,7 +785,7 @@ void GetPluginsInfo(map_map_string_t &map_of_plugin_info)
         if (!is_regular_file(dent, PLUGINS_CONF_DIR))
             continue;
         char *ext = strrchr(dent->d_name, '.');
-        if (!ext || strcmp(ext + 1, PLUGINS_CONF_EXTENSION) != 0)
+        if (!ext || strcmp(ext + 1, "conf") != 0)
             continue;
         VERB3 log("Found %s", dent->d_name);
         *ext = '\0';
