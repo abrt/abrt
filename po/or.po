@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.or\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-12-09 09:15+0000\n"
-"PO-Revision-Date: 2011-01-17 12:58+0530\n"
+"POT-Creation-Date: 2011-01-19 20:42+0000\n"
+"PO-Revision-Date: 2011-01-20 14:36+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya <Translation-team-or@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -50,16 +50,16 @@ msgstr "ABRT ବିଜ୍ଞପ୍ତି ଆପଲେଟ"
 msgid "Automatic Bug Reporting Tool"
 msgstr "ସ୍ୱୟଂଚାଳିତ ତ୍ରୁଟି ନିବାରଣ ସାଧନ"
 
-#: ../src/applet/Applet.cpp:86
+#: ../src/applet/applet.c:86
 #, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "ପ୍ୟାକେଜ %s ରେ ଗୋଟିଏ ବିନାଶ ଚିହ୍ନାପଡ଼ିଛି"
 
-#: ../src/applet/Applet.cpp:88
+#: ../src/applet/applet.c:88
 msgid "A crash has been detected"
 msgstr "ଗୋଟିଏ ବିନାଶ ଚିହ୍ନାପଡ଼ିଛି"
 
-#: ../src/applet/Applet.cpp:285
+#: ../src/applet/applet.c:285
 msgid "ABRT service is not running"
 msgstr "ABRT ସର୍ଭିସଟି ଚାଲୁନାହିଁ"
 
@@ -298,7 +298,7 @@ msgstr "# ପ୍ରଚାଳନ ତନ୍ତ୍ରର ବାକ୍ୟଖଣ୍�
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr "vi କୁ ଚଲାଇପାରିବେ ନାହିଁ: $TERM, $VISUAL ଏବଂ $EDITOR କୁ ସେଟକରାଯାଇନାହିଁ"
 
-#: ../src/cli/report.cpp:411
+#: ../src/cli/report.cpp:407
 msgid ""
 "\n"
 "The report has been updated"
@@ -306,7 +306,7 @@ msgstr ""
 "\n"
 "ବିବରଣୀକୁ ଅଦ୍ୟତନ କରାଯାଇଛି"
 
-#: ../src/cli/report.cpp:413
+#: ../src/cli/report.cpp:409
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -315,59 +315,59 @@ msgstr ""
 "ବିବରଣୀରେ କୌଣସି ପରିବର୍ତ୍ତନ ଚିହ୍ନାପଡ଼ି ନାହିଁ"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:445
+#: ../src/cli/report.cpp:441
 msgid "y"
 msgstr "y"
 
-#: ../src/cli/report.cpp:446
+#: ../src/cli/report.cpp:442
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:572
+#: ../src/cli/report.cpp:569
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "ପ୍ଲଗଇନ %s ପାଇଁ ଭୁଲ ବିନ୍ୟାସ ଚିହ୍ନାହୋଇଛି\n"
 
-#: ../src/cli/report.cpp:576
+#: ../src/cli/report.cpp:573
 msgid "Enter your login: "
 msgstr "ଆପଣଙ୍କର ଲଗଇନକୁ ଭରଣ କରନ୍ତୁ: "
 
-#: ../src/cli/report.cpp:582
+#: ../src/cli/report.cpp:579
 msgid "Enter your password: "
 msgstr "ଆପଣଙ୍କର ପ୍ରବେଶ ସଂକେତକୁ ଭରଣ କରନ୍ତୁ: "
 
-#: ../src/cli/report.cpp:648
+#: ../src/cli/report.cpp:645
 msgid "Reporting..."
 msgstr "ଖବର କରୁଅଛି..."
 
-#: ../src/cli/report.cpp:667
+#: ../src/cli/report.cpp:664
 #, c-format
 msgid "Report using %s?"
 msgstr "%s କୁ ବ୍ୟବହାର କରି ଖବର କରିବେ କି?"
 
-#: ../src/cli/report.cpp:670
+#: ../src/cli/report.cpp:667
 msgid "Skipping..."
 msgstr "ଏଡ଼ାଇଦେଉଛି..."
 
-#: ../src/cli/report.cpp:682
+#: ../src/cli/report.cpp:679
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "ଖବର କରିବା ପଦ୍ଧତିକୁ ନିଷ୍କ୍ରିୟ କରାଯାଇଛି, ଉପରେ ଦର୍ଶାଯାଇଥିବା ସମସ୍ୟାଗୁଡ଼ିକୁ ଦୟାକରି ସମାଧାନ କରନ୍ତୁ"
 
-#: ../src/cli/report.cpp:686
+#: ../src/cli/report.cpp:683
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
-"ଦୟାକରି ତ୍ରୁଟି ନିବାରଣ ସୂଚନାକୁ ଏହି ନିର୍ଦ୍ଦେଶକୁ ବ୍ୟବହାର କରି ହସ୍ତକୃତ ଭାବରେ ସ୍ଥାପନ କରନ୍ତୁ: \"debuginfo-"
-"install %s\" ଏବଂ ପୁଣିଥରେ ଚେଷ୍ଟାକରନ୍ତୁ\n"
+"ଦୟାକରି ତ୍ରୁଟି ନିବାରଣ ସୂଚନାକୁ ଏହି ନିର୍ଦ୍ଦେଶକୁ ବ୍ୟବହାର କରି ହସ୍ତକୃତ ଭାବରେ ସ୍ଥାପନ କରନ୍ତୁ: "
+"\"debuginfo-install %s\" ଏବଂ ପୁଣିଥରେ ଚେଷ୍ଟାକରନ୍ତୁ\n"
 
-#: ../src/cli/report.cpp:695
+#: ../src/cli/report.cpp:692
 msgid "Error loading reporter settings"
 msgstr "ବିବରଣୀ ସେଟିଙ୍ଗଗୁଡ଼ିକୁ ଧାରଣ କରିବାରେ ତ୍ରୁଟି"
 
-#: ../src/cli/report.cpp:716
+#: ../src/cli/report.cpp:713
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "%d ବିବରଣୀ ଘଟଣାଗୁଡ଼ିକ ମାଧ୍ଯମରେ ବିନାଶକୁ ଖବର କରାଯାଇଥିଲା (%d ତ୍ରୁଟି)\n"
@@ -384,6 +384,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-c.c:167
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
+#: ../src/plugins/abrt-dump-oops.c:555
 msgid "Log to syslog"
 msgstr "syslog ପାଇଁ ଲଗ"
 
@@ -391,9 +392,9 @@ msgstr "syslog ପାଇଁ ଲଗ"
 #: ../src/plugins/abrt-action-analyze-c.c:166
 #: ../src/plugins/abrt-action-analyze-oops.c:143
 #: ../src/plugins/abrt-action-analyze-python.c:48
-#: ../src/plugins/abrt-action-mailx.cpp:147
-#: ../src/plugins/abrt-action-print.cpp:49
-#: ../src/plugins/abrt-action-upload.cpp:261
+#: ../src/plugins/abrt-action-mailx.c:149
+#: ../src/plugins/abrt-action-print.c:49
+#: ../src/plugins/abrt-action-upload.c:261
 msgid "Crash dump directory"
 msgstr "ନଷ୍ଟ ଡମ୍ପ ଡିରେକ୍ଟୋରି"
 
@@ -413,7 +414,7 @@ msgstr "ଟିପ୍ପଣୀଟି ଅତ୍ୟଧିକ ବଡ଼ ଅଟେ"
 msgid "'How to reproduce' is too long"
 msgstr "'କିପରି ପୁନଃ ଉତ୍ପନ୍ନ କରାଯିବ' ଟି ଅତ୍ୟଧିକ ବଡ଼ ଅଟେ"
 
-#: ../src/daemon/Daemon.cpp:533
+#: ../src/daemon/Daemon.cpp:374
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -421,19 +422,19 @@ msgstr ""
 "ବିବରଣୀ ଆକାର ସଂରକ୍ଷଣକୁ ଅତିକ୍ରମ କରିଛି। ଦୟାକରି ତନ୍ତ୍ରର MaxCrashReportsSize ମୂଲ୍ୟକୁ abrt.conf "
 "ରେ ଯାଞ୍ଚ କରନ୍ତୁ।"
 
-#: ../src/daemon/Daemon.cpp:686
+#: ../src/daemon/Daemon.cpp:528
 msgid "abrtd [options]"
 msgstr "abrtd [ବିକଳ୍ପଗୁଡ଼ିକ]"
 
-#: ../src/daemon/Daemon.cpp:696
+#: ../src/daemon/Daemon.cpp:538
 msgid "Do not daemonize"
 msgstr "daemonize କରନ୍ତୁ ନାହିଁ"
 
-#: ../src/daemon/Daemon.cpp:697
+#: ../src/daemon/Daemon.cpp:539
 msgid "Log to syslog even with -d"
 msgstr "-d ସହିତ ମଧ୍ଯ syslog ଘଟଣାକୁ ଲଗ କରନ୍ତୁ"
 
-#: ../src/daemon/Daemon.cpp:698
+#: ../src/daemon/Daemon.cpp:540
 msgid "Exit after SEC seconds of inactivity"
 msgstr "SEC ସେକଣ୍ଡ ନିଷ୍କ୍ରିୟ ହେବା ପରେ ପ୍ରସ୍ଥାନ କରନ୍ତୁ"
 
@@ -1230,12 +1231,12 @@ msgstr ""
 "ସଂରଚନାରେ ବ୍ୟବାହର କରନ୍ତୁ ଏବଂ ଆପଣ ଅଗ୍ରସର ହେବା ପୂର୍ବରୁ ଏହାକୁ ଠିକ କରନ୍ତୁ, ଅନ୍ୟଥା, ଖବର ପ୍ରକ୍ରିୟା "
 "ବିଫଳ ହୋଇପାରେ।\n"
 
-#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.cpp:46
+#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:46
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "ଆହରଣ କରାଯାଇଛି: %llu ର %llu kbytes"
 
-#: ../src/lib/parse_options.c:11
+#: ../src/lib/parse_options.c:29
 #, c-format
 msgid "Usage: %s\n"
 msgstr "ବ୍ଯବହାର ବିଧି: %s\n"
@@ -1278,9 +1279,7 @@ msgstr "ନୂତନ ତ୍ରୁଟି id: %i"
 #: ../src/plugins/abrt-action-bugzilla.cpp:659
 #, c-format
 msgid "Empty login or password, please check %s"
-msgstr ""
-"ଖାଲି ଲଗଇନ କିମ୍ବା ପ୍ରବେଶ ସଂକେତ,"
-"ଦୟାକରି %s କୁ ଯାଞ୍ଚ କରନ୍ତୁ"
+msgstr "ଖାଲି ଲଗଇନ କିମ୍ବା ପ୍ରବେଶ ସଂକେତ,ଦୟାକରି %s କୁ ଯାଞ୍ଚ କରନ୍ତୁ"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:677
 msgid "Logging into bugzilla..."
@@ -1450,16 +1449,16 @@ msgstr "ସମସ୍ତ ତ୍ରୁଟିନିବାରଣ ସୂଚନା ଉ
 msgid "Complete!"
 msgstr "ସମ୍ପୂର୍ଣ୍ଣ ହୋଇଛି!"
 
-#: ../src/plugins/abrt-action-kerneloops.cpp:105
+#: ../src/plugins/abrt-action-kerneloops.c:105
 #, c-format
 msgid "Submitting oops report to %s"
 msgstr "%s ରେ oops ବିବରଣୀ ଦାଖଲ କରୁଅଛି"
 
-#: ../src/plugins/abrt-action-mailx.cpp:109
+#: ../src/plugins/abrt-action-mailx.c:111
 msgid "Sending an email..."
 msgstr "ଗୋଟିଏ ଇମେଲ ପଠାଉଅଛି..."
 
-#: ../src/plugins/abrt-action-mailx.cpp:135
+#: ../src/plugins/abrt-action-mailx.c:137
 msgid ""
 " [-v] -d DIR [-c CONFFILE]\n"
 "\n"
@@ -1469,12 +1468,12 @@ msgstr ""
 "\n"
 "ନଷ୍ଟ ଡମ୍ପର ସଙ୍କୁଚିତ ଟାରବଲକୁ ଧାରଣ କରନ୍ତୁ"
 
-#: ../src/plugins/abrt-action-mailx.cpp:148
-#: ../src/plugins/abrt-action-upload.cpp:262
+#: ../src/plugins/abrt-action-mailx.c:150
+#: ../src/plugins/abrt-action-upload.c:262
 msgid "Config file"
 msgstr "ବିନ୍ୟାସ ଫାଇଲ"
 
-#: ../src/plugins/abrt-action-print.cpp:38
+#: ../src/plugins/abrt-action-print.c:38
 msgid ""
 " [-v] [-o FILE] -d DIR\n"
 "\n"
@@ -1484,16 +1483,16 @@ msgstr ""
 "\n"
 "ମାନକ ଫଳାଫଳ ପାଇଁ ନଷ୍ଟ ବିଷୟରେ ସୂଚନାକୁ ମୁଦ୍ରଣ କରନ୍ତୁ"
 
-#: ../src/plugins/abrt-action-print.cpp:50
+#: ../src/plugins/abrt-action-print.c:50
 msgid "Output file"
 msgstr "ଫଳାଫଳ ଫାଇଲ"
 
-#: ../src/plugins/abrt-action-print.cpp:91
+#: ../src/plugins/abrt-action-print.c:91
 #, c-format
 msgid "The report was appended to %s"
 msgstr "ବିବରଣୀକୁ %s ରେ ଯୋଡ଼ିଥାଏ"
 
-#: ../src/plugins/abrt-action-print.cpp:91
+#: ../src/plugins/abrt-action-print.c:91
 #, c-format
 msgid "The report was stored to %s"
 msgstr "ବିବରଣୀକୁ %s ରେ ସଂରକ୍ଷଣ କରିଥାଏ"
@@ -1501,36 +1500,36 @@ msgstr "ବିବରଣୀକୁ %s ରେ ସଂରକ୍ଷଣ କରିଥା
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../src/plugins/abrt-action-rhtsupport.cpp:41
-#: ../src/plugins/abrt-action-upload.cpp:120
+#: ../src/plugins/abrt-action-rhtsupport.c:41
+#: ../src/plugins/abrt-action-upload.c:120
 msgid "Compressing data"
 msgstr "ତଥ୍ଯ ସଙ୍କୋଚନ କରୁଅଛି"
 
-#: ../src/plugins/abrt-action-rhtsupport.cpp:69
+#: ../src/plugins/abrt-action-rhtsupport.c:69
 msgid "Empty login or password, please check RHTSupport.conf"
 msgstr "ଖାଲି ଲଗଇନ କିମ୍ବା ପ୍ରବେଶ ସଂକେତ, ଦୟାକରି RHTSupport.conf କୁ ଯାଞ୍ଚ କରନ୍ତୁ"
 
-#: ../src/plugins/abrt-action-rhtsupport.cpp:188
+#: ../src/plugins/abrt-action-rhtsupport.c:188
 msgid "Creating a new case..."
 msgstr "ଗୋଟିଏ ନୂତନ ପରିସ୍ଥିତି ନିର୍ମାଣ କରୁଅଛି..."
 
-#: ../src/plugins/abrt-action-upload.cpp:64
+#: ../src/plugins/abrt-action-upload.c:64
 #, c-format
 msgid "Sending %s to %s"
 msgstr "%s କୁ %s ମଧ୍ଯକୁ ପଠାଉଛି"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/abrt-action-upload.cpp:97
+#: ../src/plugins/abrt-action-upload.c:97
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "%s କୁ %s ମଧ୍ଯକୁ ସଫଳଭାବରେ ପଠାହେଲ"
 
-#: ../src/plugins/abrt-action-upload.cpp:214
+#: ../src/plugins/abrt-action-upload.c:214
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "ଅଭିଲେଖ ନିର୍ମାଣ ହୋଇଛି: '%s'"
 
-#: ../src/plugins/abrt-action-upload.cpp:248
+#: ../src/plugins/abrt-action-upload.c:248
 msgid ""
 " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1540,9 +1539,35 @@ msgstr ""
 "\n"
 "ନଷ୍ଟ ଡମ୍ପର ସଙ୍କୁଚିତ ଟାରବଲକୁ ଧାରଣ କରନ୍ତୁ"
 
-#: ../src/plugins/abrt-action-upload.cpp:263
+#: ../src/plugins/abrt-action-upload.c:263
 msgid "Base URL to upload to"
 msgstr "ଧାରଣ କରିବା ପାଇଁ ଆଧାର URL"
+
+#: ../src/plugins/abrt-dump-oops.c:540
+msgid ""
+" [-vsrdow] FILE\n"
+"\n"
+"Extract oops from syslog/dmesg file"
+msgstr ""
+" [-vsrdow] FILE\n"
+"\n"
+"oopsକୁ syslog/dmesg ଫାଇଲରୁ ବାହାର କରନ୍ତୁ"
+
+#: ../src/plugins/abrt-dump-oops.c:556
+msgid "Parse kernel's message buffer before parsing FILE"
+msgstr "କର୍ଣ୍ଣଲ ସନ୍ଦେଶ ବଫରକୁ FILE ବିଶ୍ଳେଷଣ କରିବା ପୂର୍ବରୁ ବିଶ୍ଳେଷଣ କରନ୍ତୁ"
+
+#: ../src/plugins/abrt-dump-oops.c:557
+msgid "Create ABRT dump for every oops found"
+msgstr "ମିଳିଥିବା ପ୍ରତ୍ୟେକ oops ପାଇଁ ABRT ଡମ୍ପ ନିର୍ମାଣ କରନ୍ତୁ"
+
+#: ../src/plugins/abrt-dump-oops.c:558
+msgid "Print found oopses on standard output"
+msgstr "ମାନକ ଫଳାଫଳ ଉପରେ ମୁଦ୍ରଣୀ oopses ପାଇଛି"
+
+#: ../src/plugins/abrt-dump-oops.c:559
+msgid "Do not exit, watch the file for new oopses"
+msgstr "ପ୍ରସ୍ଥାନ କରନ୍ତୁ ନାହିଁ, ନୂତନ oopses ପାଇଁ ଫାଇଲକୁ ଦେଖନ୍ତୁ"
 
 #: ../src/plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
@@ -1580,10 +1605,6 @@ msgstr ""
 "ଆପଣ ଏହାକୁ <a href=\"https://bugzilla.redhat.com/createaccount.cgi\">ଏଠାରେ</a> "
 "ନିର୍ମାଣ କରିପାରିବେ"
 
-#: ../src/plugins/CCpp.cpp:265
-msgid "Analyzes crashes in C/C++ programs"
-msgstr "C/C++ ପ୍ରଗ୍ରାମଗୁଡ଼ିକରେ ନଷ୍ଟ ବିବରଣୀକୁ ବିଶ୍ଳେଷଣ କରିଥାଏ"
-
 #: ../src/plugins/KerneloopsReporter.glade.h:1
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
 msgstr "<b>Kerneloops ବିବରଣୀକାରୀ ପ୍ଲଗଇନ ସଂରଚନା</b>"
@@ -1591,10 +1612,6 @@ msgstr "<b>Kerneloops ବିବରଣୀକାରୀ ପ୍ଲଗଇନ ସଂ�
 #: ../src/plugins/KerneloopsReporter.glade.h:2
 msgid "Submit URL:"
 msgstr "URL ଦାଖଲ କରନ୍ତୁ:"
-
-#: ../src/plugins/KerneloopsScanner.cpp:226
-msgid "Periodically scans for and saves kernel oopses"
-msgstr "ନିୟମିତ ଭାବରେ କର୍ଣ୍ଣଲ ସମସ୍ୟାଗୁଡ଼ିକୁ କ୍ରମବୀକ୍ଷଣ କରି ସଂରକ୍ଷଣ କରିଥାଏ"
 
 #: ../src/plugins/Logger.glade.h:1
 msgid "<b>Logger plugin configuration</b>"
@@ -1659,6 +1676,12 @@ msgstr "URL:"
 #: ../src/plugins/Upload.glade.h:5
 msgid "Use encryption"
 msgstr "ସଂଗୁପ୍ତକରଣକୁ ବ୍ୟବହାର କରନ୍ତୁ"
+
+#~ msgid "Analyzes crashes in C/C++ programs"
+#~ msgstr "C/C++ ପ୍ରଗ୍ରାମଗୁଡ଼ିକରେ ନଷ୍ଟ ବିବରଣୀକୁ ବିଶ୍ଳେଷଣ କରିଥାଏ"
+
+#~ msgid "Periodically scans for and saves kernel oopses"
+#~ msgstr "ନିୟମିତ ଭାବରେ କର୍ଣ୍ଣଲ ସମସ୍ୟାଗୁଡ଼ିକୁ କ୍ରମବୀକ୍ଷଣ କରି ସଂରକ୍ଷଣ କରିଥାଏ"
 
 #~ msgid "Database plugin not specified. Please check abrtd settings."
 #~ msgstr "ତଥ୍ୟାଧାର ପ୍ଲଗଇନ ଉଲ୍ଲେଖ କରାଯାଇନାହିଁ। ଦୟାକରି abrtd ସଂରଚନାକୁ ଯାଞ୍ଚ କରନ୍ତୁ।"
