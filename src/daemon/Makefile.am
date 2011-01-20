@@ -80,7 +80,7 @@ abrt_handle_crashdump_LDADD = \
 abrt_action_save_package_data_SOURCES = \
     rpm.h rpm.c \
     Settings.h Settings.cpp \
-    abrt-action-save-package-data.cpp
+    abrt-action-save-package-data.c
 abrt_action_save_package_data_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \

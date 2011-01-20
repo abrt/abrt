@@ -22,11 +22,18 @@
 #include "abrt_types.h"
 #include <glib.h>
 
-typedef map_map_string_t map_abrt_settings_t;
+#ifdef __cplusplus
 
-extern GList *g_settings_setOpenGPGPublicKeys;
-extern GList *g_settings_setBlackListedPkgs;
-extern GList *g_settings_setBlackListedPaths;
+typedef map_map_string_t map_abrt_settings_t;
+void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender);
+map_abrt_settings_t GetSettings();
+
+extern "C" {
+#endif
+
+extern GList *       g_settings_setOpenGPGPublicKeys;
+extern GList *       g_settings_setBlackListedPkgs;
+extern GList *       g_settings_setBlackListedPaths;
 extern unsigned int  g_settings_nMaxCrashReportsSize;
 extern bool          g_settings_bOpenGPGCheck;
 extern bool          g_settings_bProcessUnpackaged;
@@ -35,10 +42,11 @@ extern char *        g_settings_sWatchCrashdumpArchiveDir;
 extern char *        g_settings_sLogScanners;
 
 int LoadSettings();
-void SaveSettings();
-void SetSettings(const map_abrt_settings_t& pSettings, const char * dbus_sender);
-map_abrt_settings_t GetSettings();
 
 void settings_free();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

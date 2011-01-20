@@ -39,7 +39,6 @@
 static map_string_t s_mapSectionCommon;
 
 /* Public data */
-/* Written out exactly in this order by SaveSettings() */
 
 /* [ Common ] */
 /* one line: "OpenGPGCheck = value" */
