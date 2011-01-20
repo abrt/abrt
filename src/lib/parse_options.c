@@ -28,21 +28,12 @@ void show_usage_and_die(const char *usage, const struct options *opt)
 {
     fprintf(stderr, _("Usage: %s\n"), usage);
 
-    if (opt->type != OPTION_GROUP)
-        fputc('\n', stderr);
+    fputc('\n', stderr);
 
     for (; opt->type != OPTION_END; opt++)
     {
         size_t pos;
         int pad;
-
-        if (opt->type == OPTION_GROUP)
-        {
-            fputc('\n', stderr);
-            if (*opt->help)
-                fprintf(stderr, "%s\n", opt->help);
-            continue;
-        }
 
         pos = fprintf(stderr, "    ");
         if (opt->short_name)
@@ -119,7 +110,6 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
                 if (opt[ii].short_name)
                     strbuf_append_strf(shortopts, "%c::", opt[ii].short_name);
                 break;
-            case OPTION_GROUP:
             case OPTION_END:
                 break;
         }
@@ -185,7 +175,6 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
                         if (optarg)
                             *(char**)opt[ii].value = (char*)optarg;
                         break;
-                    case OPTION_GROUP:
                     case OPTION_END:
                         break;
                 }
