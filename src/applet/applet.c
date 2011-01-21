@@ -113,7 +113,7 @@ static void Crash(DBusMessage* signal)
     show_crash_notification(applet, crash_id, message, package_name);
 }
 
-static void QuotaExceed(DBusMessage* signal)
+static void QuotaExceeded(DBusMessage* signal)
 {
     int r;
     DBusMessageIter in_iter;
@@ -186,8 +186,8 @@ static DBusHandlerResult handle_message(DBusConnection* conn, DBusMessage* msg, 
         NameOwnerChanged(msg);
     else if (strcmp(member, "Crash") == 0)
         Crash(msg);
-    else if (strcmp(member, "QuotaExceed") == 0)
-        QuotaExceed(msg);
+    else if (strcmp(member, "QuotaExceeded") == 0)
+        QuotaExceeded(msg);
 
     return DBUS_HANDLER_RESULT_HANDLED;
 }

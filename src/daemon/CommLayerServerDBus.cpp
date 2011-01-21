@@ -83,13 +83,13 @@ void CCommLayerServerDBus::Crash(const char *package_name,
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::QuotaExceed(const char* str)
+void CCommLayerServerDBus::QuotaExceeded(const char* str)
 {
-    DBusMessage* msg = new_signal_msg("QuotaExceed");
+    DBusMessage* msg = new_signal_msg("QuotaExceeded");
     dbus_message_append_args(msg,
             DBUS_TYPE_STRING, &str,
             DBUS_TYPE_INVALID);
-    VERB2 log("Sending signal QuotaExceed('%s')", str);
+    VERB2 log("Sending signal QuotaExceeded('%s')", str);
     send_flush_and_unref(msg);
 }
 

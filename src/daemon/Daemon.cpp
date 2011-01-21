@@ -371,7 +371,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
              && worst_dir
             ) {
                 log("Size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize, worst_dir);
-                g_pCommLayer->QuotaExceed(_("The size of the report exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."));
+                g_pCommLayer->QuotaExceeded(_("The size of the report exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."));
                 /* deletes both directory and DB record */
                 char *d = concat_path_file(DEBUG_DUMPS_DIR, worst_dir);
                 free(worst_dir);

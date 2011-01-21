@@ -35,7 +35,7 @@ class CCommLayerServerDBus
                         const char *uid_str
         );
         virtual void JobDone(const char* peer);
-        virtual void QuotaExceed(const char* str);
+        virtual void QuotaExceeded(const char* str);
 
         virtual void Update(const char* pMessage, const char* peer);
         virtual void Warning(const char* pMessage, const char* peer);
