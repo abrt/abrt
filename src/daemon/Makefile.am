@@ -11,11 +11,10 @@ sbin_PROGRAMS = \
 
 abrtd_SOURCES = \
     MiddleWare.h MiddleWare.cpp \
-    CommLayerServer.h CommLayerServer.cpp \
     CommLayerServerDBus.h CommLayerServerDBus.cpp \
     Settings.h Settings.cpp \
     comm_layer_inner.h comm_layer_inner.cpp \
-    Daemon.h Daemon.cpp
+    Daemon.cpp
 abrtd_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \

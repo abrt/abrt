@@ -30,7 +30,6 @@
 #include "Settings.h"
 #include "CommLayerServerDBus.h"
 #include "MiddleWare.h"
-#include "Daemon.h"
 #include "parse_options.h"
 
 #define PROGNAME "abrtd"
@@ -83,8 +82,6 @@ using namespace std;
  *      Both are sent as unicast to last client set by set_client_name(name).
  *      If set_client_name(NULL) was done, they are not sent.
  */
-CCommLayerServer* g_pCommLayer;
-
 static volatile sig_atomic_t s_sig_caught;
 static int s_signal_pipe[2];
 static int s_signal_pipe_write = -1;
@@ -371,7 +368,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
              && worst_dir
             ) {
                 log("Size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize, worst_dir);
-                g_pCommLayer->QuotaExceeded(_("The size of the report exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."));
+                send_dbus_sig_QuotaExceeded(_("The size of the report exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."));
                 /* deletes both directory and DB record */
                 char *d = concat_path_file(DEBUG_DUMPS_DIR, worst_dir);
                 free(worst_dir);
@@ -411,8 +408,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                                 get_crash_item_content_or_NULL(crash_data, FILENAME_UID),
                                 get_crash_item_content_or_NULL(crash_data, FILENAME_UUID)
                 );
-                /* Send dbus signal */
-                g_pCommLayer->Crash(get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE),
+                send_dbus_sig_Crash(get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE),
                                 crash_id, //TODO: stop passing this param, it is unused
                                 fullname,
                                 uid_str
@@ -688,8 +684,7 @@ int main(int argc, char** argv)
          * therefore it should be the last thing to initialize.
          */
         VERB1 log("Initializing dbus");
-        g_pCommLayer = new CCommLayerServerDBus();
-        if (g_pCommLayer->m_init_error)
+        if (init_dbus() != 0)
             throw 1;
     }
     catch (...)
@@ -751,7 +746,7 @@ int main(int argc, char** argv)
     if (channel_inotify)
         g_io_channel_unref(channel_inotify);
 
-    delete g_pCommLayer;
+    deinit_dbus();
 
     if (pMainloop)
         g_main_loop_unref(pMainloop);

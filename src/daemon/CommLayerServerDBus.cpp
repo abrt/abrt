@@ -23,7 +23,6 @@
 #include "dbus_common.h"
 #include "MiddleWare.h"
 #include "Settings.h"
-#include "Daemon.h"
 #include "CommLayerServerDBus.h"
 
 // 16kB message limit
@@ -47,6 +46,11 @@ static DBusMessage* new_signal_msg(const char* member, const char* peer = NULL)
 }
 static void send_flush_and_unref(DBusMessage* msg)
 {
+    if (!g_dbus_conn)
+    {
+        /* Not logging this, it may recurse */
+        return;
+    }
     if (!dbus_connection_send(g_dbus_conn, msg, NULL /* &serial */))
         error_msg_and_die("Error sending DBus message");
     dbus_connection_flush(g_dbus_conn);
@@ -55,7 +59,7 @@ static void send_flush_and_unref(DBusMessage* msg)
 }
 
 /* Notify the clients (UI) about a new crash */
-void CCommLayerServerDBus::Crash(const char *package_name,
+void send_dbus_sig_Crash(const char *package_name,
                                   const char *crash_id,
                                   const char *dir,
                                   const char *uid_str
@@ -83,7 +87,7 @@ void CCommLayerServerDBus::Crash(const char *package_name,
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::QuotaExceeded(const char* str)
+void send_dbus_sig_QuotaExceeded(const char* str)
 {
     DBusMessage* msg = new_signal_msg("QuotaExceeded");
     dbus_message_append_args(msg,
@@ -93,14 +97,14 @@ void CCommLayerServerDBus::QuotaExceeded(const char* str)
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::JobDone(const char* peer)
+void send_dbus_sig_JobDone(const char* peer)
 {
     DBusMessage* msg = new_signal_msg("JobDone", peer);
     VERB2 log("Sending signal JobDone() to peer %s", peer);
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::Update(const char* pMessage, const char* peer)
+void send_dbus_sig_Update(const char* pMessage, const char* peer)
 {
     DBusMessage* msg = new_signal_msg("Update", peer);
     dbus_message_append_args(msg,
@@ -109,7 +113,7 @@ void CCommLayerServerDBus::Update(const char* pMessage, const char* peer)
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::Warning(const char* pMessage, const char* peer)
+void send_dbus_sig_Warning(const char* pMessage, const char* peer)
 {
     DBusMessage* msg = new_signal_msg("Warning", peer);
     dbus_message_append_args(msg,
@@ -464,7 +468,7 @@ static void handle_dbus_err(bool error_flag, DBusError *err)
             ABRTD_DBUS_NAME);
 }
 
-CCommLayerServerDBus::CCommLayerServerDBus()
+int init_dbus()
 {
     DBusConnection* conn;
     DBusError err;
@@ -514,9 +518,11 @@ CCommLayerServerDBus::CCommLayerServerDBus()
     int cnt = 10;
     while (dbus_connection_dispatch(conn) != DBUS_DISPATCH_COMPLETE && --cnt)
         VERB3 log("processed initial buffered dbus message");
+
+    return 0;
 }
 
-CCommLayerServerDBus::~CCommLayerServerDBus()
+void deinit_dbus()
 {
     dbus_connection_unref(g_dbus_conn);
 }

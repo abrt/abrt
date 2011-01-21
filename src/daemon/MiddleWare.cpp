@@ -19,10 +19,9 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "Daemon.h"
 #include "Settings.h"
 #include "comm_layer_inner.h"
-#include "CommLayerServer.h"
+#include "CommLayerServerDBus.h"
 #include "MiddleWare.h"
 
 using namespace std;
@@ -703,7 +702,7 @@ static void* create_report(void* arg)
     log("Creating report...");
     crash_data_t *crash_data = NULL;
     CreateReport(thread_data->crash_id, thread_data->caller_uid, thread_data->force, &crash_data);
-    g_pCommLayer->JobDone(thread_data->peer);
+    send_dbus_sig_JobDone(thread_data->peer);
     set_client_name(NULL);
 
     /* free strduped strings */

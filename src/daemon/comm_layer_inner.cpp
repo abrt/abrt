@@ -19,7 +19,7 @@
 #include <pthread.h>
 #include <map>
 #include "abrtlib.h"
-#include "Daemon.h"
+#include "CommLayerServerDBus.h"
 #include "comm_layer_inner.h"
 
 typedef std::map<uint64_t, std::string> map_uint_str_t;
@@ -39,9 +39,7 @@ static void warn_client(const char *msg)
 
     if (peer)
     {
-        VERB1 log("Warning('%s'): %s", peer, msg);
-        if (g_pCommLayer != NULL)
-            g_pCommLayer->Warning(msg, peer);
+        send_dbus_sig_Warning(msg, peer);
     }
 }
 
@@ -86,8 +84,7 @@ void update_client(const char *fmt, ...)
     va_end(p);
 
     VERB1 log("Update('%s'): %s", peer, msg);
-    if (g_pCommLayer != NULL)
-        g_pCommLayer->Update(msg, peer);
+    send_dbus_sig_Update(msg, peer);
 
     free(msg);
 }
