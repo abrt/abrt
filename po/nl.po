@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-19 20:42+0000\n"
-"PO-Revision-Date: 2011-01-20 12:35+0200\n"
+"POT-Creation-Date: 2011-01-20 22:43+0000\n"
+"PO-Revision-Date: 2011-01-21 13:02+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
 "Language: nl\n"
@@ -220,20 +220,20 @@ msgstr ""
 msgid "You must specify exactly one operation"
 msgstr "Je moet exact een bewerking specificeren."
 
-#: ../src/cli/report.cpp:166
+#: ../src/cli/report.cpp:164
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# Dit veld is alleen-lezen.\n"
 
-#: ../src/cli/report.cpp:186
+#: ../src/cli/report.cpp:184
 msgid "# Describe the circumstances of this crash below"
 msgstr "# Beschrijf hieronder de omstandigheden van deze crash."
 
-#: ../src/cli/report.cpp:188
+#: ../src/cli/report.cpp:186
 msgid "# How to reproduce the crash?"
 msgstr "# Hoe is deze crash te reproduceren?"
 
-#: ../src/cli/report.cpp:190
+#: ../src/cli/report.cpp:188
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -241,47 +241,47 @@ msgstr ""
 "# Backtrace\n"
 "# Controleer of deze geen gevoelige data bevat (wachtwoorden, enz.)"
 
-#: ../src/cli/report.cpp:192
+#: ../src/cli/report.cpp:190
 msgid "# Architecture"
 msgstr "# Architectuur"
 
-#: ../src/cli/report.cpp:193
+#: ../src/cli/report.cpp:191
 msgid "# Command line"
 msgstr "# Commando-regel"
 
-#: ../src/cli/report.cpp:194
+#: ../src/cli/report.cpp:192
 msgid "# Component"
 msgstr "# Onderdeel"
 
-#: ../src/cli/report.cpp:195
+#: ../src/cli/report.cpp:193
 msgid "# Core dump"
 msgstr "# Core dump"
 
-#: ../src/cli/report.cpp:196
+#: ../src/cli/report.cpp:194
 msgid "# Executable"
 msgstr "# Uitvoerbaar programma"
 
-#: ../src/cli/report.cpp:197
+#: ../src/cli/report.cpp:195
 msgid "# Kernel version"
 msgstr "# Kernel versie"
 
-#: ../src/cli/report.cpp:198
+#: ../src/cli/report.cpp:196
 msgid "# Package"
 msgstr "# Pakket"
 
-#: ../src/cli/report.cpp:199
+#: ../src/cli/report.cpp:197
 msgid "# Reason of crash"
 msgstr "# Reden van de crash"
 
-#: ../src/cli/report.cpp:200
+#: ../src/cli/report.cpp:198
 msgid "# Release string of the operating system"
 msgstr "# Vrijgave boodschap van het besturingssysteem"
 
-#: ../src/cli/report.cpp:323
+#: ../src/cli/report.cpp:321
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr "Kan vi niet draaien: $TERM, $VISUAL en $EDITOR zijn niet ingesteld"
 
-#: ../src/cli/report.cpp:407
+#: ../src/cli/report.cpp:405
 msgid ""
 "\n"
 "The report has been updated"
@@ -289,7 +289,7 @@ msgstr ""
 "\n"
 "Het rapport is vernieuwd"
 
-#: ../src/cli/report.cpp:409
+#: ../src/cli/report.cpp:407
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -298,46 +298,46 @@ msgstr ""
 "Er zijn geen veranderingen in het rapport ontdekt"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:441
+#: ../src/cli/report.cpp:439
 msgid "y"
 msgstr "j"
 
-#: ../src/cli/report.cpp:442
+#: ../src/cli/report.cpp:440
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:569
+#: ../src/cli/report.cpp:567
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Voor plug-in %s zijn verkeerde instellingen ontdekt\n"
 
-#: ../src/cli/report.cpp:573
+#: ../src/cli/report.cpp:571
 msgid "Enter your login: "
 msgstr "Voer jouw gebruikersnaam in:"
 
-#: ../src/cli/report.cpp:579
+#: ../src/cli/report.cpp:577
 msgid "Enter your password: "
 msgstr "Voer jouw wachtwoord in:"
 
-#: ../src/cli/report.cpp:645
+#: ../src/cli/report.cpp:643
 msgid "Reporting..."
 msgstr "Rapporteren..."
 
-#: ../src/cli/report.cpp:664
+#: ../src/cli/report.cpp:662
 #, c-format
 msgid "Report using %s?"
 msgstr "Rapporteren met gebruik van %s? "
 
-#: ../src/cli/report.cpp:667
+#: ../src/cli/report.cpp:665
 msgid "Skipping..."
 msgstr "Overslaan..."
 
-#: ../src/cli/report.cpp:679
+#: ../src/cli/report.cpp:677
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Rapporteren is uitgezet omdat de backtrace onbruikbaar is."
 
-#: ../src/cli/report.cpp:683
+#: ../src/cli/report.cpp:681
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -346,16 +346,16 @@ msgstr ""
 "Probeer debuginfo handmatig te installeren met het commando: \"debuginfo-"
 "install %s\" en probeer het opnieuw\n"
 
-#: ../src/cli/report.cpp:692
+#: ../src/cli/report.cpp:690
 msgid "Error loading reporter settings"
 msgstr "Fout tijdens het laden van rapporteer instellingen"
 
-#: ../src/cli/report.cpp:713
+#: ../src/cli/report.cpp:711
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "Crash gerapporteerd via %d rapport gebeurtenissen (%d fouten)\n"
 
-#: ../src/daemon/abrt-handle-crashdump.c:42
+#: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
 " [-vs] -d DIR -e EVENT\n"
 "   or: "
@@ -363,29 +363,34 @@ msgstr ""
 " [-vs] -d DIR -e EVENT\n"
 "   of: "
 
-#: ../src/daemon/abrt-handle-crashdump.c:57
-#: ../src/plugins/abrt-action-analyze-c.c:167
-#: ../src/plugins/abrt-action-analyze-oops.c:144
-#: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-dump-oops.c:555
+#: ../src/daemon/abrt-handle-crashdump.c:59
+#: ../src/plugins/abrt-action-bugzilla.cpp:926
+#: ../src/plugins/abrt-action-generate-backtrace.c:272
+#: ../src/plugins/abrt-action-kerneloops.c:146
+#: ../src/plugins/abrt-action-rhtsupport.c:276
+#: ../src/plugins/abrt-dump-oops.c:554
 msgid "Log to syslog"
 msgstr "Loggen naar syslog"
 
-#: ../src/daemon/abrt-handle-crashdump.c:58
-#: ../src/plugins/abrt-action-analyze-c.c:166
-#: ../src/plugins/abrt-action-analyze-oops.c:143
-#: ../src/plugins/abrt-action-analyze-python.c:48
+#: ../src/daemon/abrt-handle-crashdump.c:60
+#: ../src/plugins/abrt-action-analyze-c.c:167
+#: ../src/plugins/abrt-action-analyze-oops.c:144
+#: ../src/plugins/abrt-action-analyze-python.c:49
+#: ../src/plugins/abrt-action-bugzilla.cpp:927
+#: ../src/plugins/abrt-action-generate-backtrace.c:269
+#: ../src/plugins/abrt-action-kerneloops.c:147
 #: ../src/plugins/abrt-action-mailx.c:149
-#: ../src/plugins/abrt-action-print.c:49
+#: ../src/plugins/abrt-action-print.c:50
+#: ../src/plugins/abrt-action-rhtsupport.c:277
 #: ../src/plugins/abrt-action-upload.c:261
 msgid "Crash dump directory"
 msgstr "Crash dump map"
 
-#: ../src/daemon/abrt-handle-crashdump.c:59
+#: ../src/daemon/abrt-handle-crashdump.c:61
 msgid "Handle EVENT"
 msgstr "Handel gebeurtenis af"
 
-#: ../src/daemon/abrt-handle-crashdump.c:60
+#: ../src/daemon/abrt-handle-crashdump.c:62
 msgid "List possible events [which start with PFX]"
 msgstr "Laat mogelijke gebeurtenissen zien [die beginnen met PFX]"
 
@@ -397,7 +402,7 @@ msgstr "Commentaar is te lang"
 msgid "'How to reproduce' is too long"
 msgstr "'Hoe te reproduceren' is te lang"
 
-#: ../src/daemon/Daemon.cpp:374
+#: ../src/daemon/Daemon.cpp:375
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -405,19 +410,19 @@ msgstr ""
 "De grootte van het rapport overschreed de quota. Controleer de "
 "MaxCrashReportsSize waarde van het systeem in abrt.conf."
 
-#: ../src/daemon/Daemon.cpp:528
-msgid "abrtd [options]"
-msgstr "abrtd [opties]"
+#: ../src/daemon/Daemon.cpp:547
+msgid " [options]"
+msgstr " [opties]"
 
-#: ../src/daemon/Daemon.cpp:538
+#: ../src/daemon/Daemon.cpp:558
 msgid "Do not daemonize"
 msgstr "Niet instellen als daemon"
 
-#: ../src/daemon/Daemon.cpp:539
+#: ../src/daemon/Daemon.cpp:559
 msgid "Log to syslog even with -d"
 msgstr "Loggen naar syslog zelfs met -d"
 
-#: ../src/daemon/Daemon.cpp:540
+#: ../src/daemon/Daemon.cpp:560
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Afsluiten na SEC seconden van inactiviteit"
 
@@ -1236,7 +1241,7 @@ msgstr ""
 "configuratie te openen en te repareren voordat je verdergaat, omdat het "
 "rapporteer proces anders kan mislukken.\n"
 
-#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:46
+#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Upload: %llu van %llu KB"
@@ -1246,17 +1251,17 @@ msgstr "Upload: %llu van %llu KB"
 msgid "Usage: %s\n"
 msgstr "Gebruik: %s\n"
 
-#: ../src/plugins/abrt-action-analyze-c.c:154
+#: ../src/plugins/abrt-action-analyze-c.c:156
 msgid ""
-" [-vs] -d DIR\n"
+" [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredumps"
 msgstr ""
-" [-vs] -d DIR\n"
+" [-v] -d DIR\n"
 "\n"
 "Berekent en slaat UUID van coredumps op"
 
-#: ../src/plugins/abrt-action-analyze-oops.c:131
+#: ../src/plugins/abrt-action-analyze-oops.c:133
 msgid ""
 " [-vs] -d DIR\n"
 "\n"
@@ -1266,79 +1271,107 @@ msgstr ""
 "\n"
 "Berekent en slaat UUID en DUPHASH van oops crash dumps op"
 
-#: ../src/plugins/abrt-action-analyze-python.c:36
+#: ../src/plugins/abrt-action-analyze-python.c:38
 msgid ""
-" [-vs] -d DIR\n"
+" [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
-" [-vs] -d DIR\n"
+" [-v] -d DIR\n"
 "\n"
 "Berekent en slaat UUID en DUPHASH van python crash dumps op"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:531
+#: ../src/plugins/abrt-action-bugzilla.cpp:534
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nieuwe bug id: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:659
+#: ../src/plugins/abrt-action-bugzilla.cpp:662
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr "Lege inlog of wachtwoord, controleer %s "
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:677
+#: ../src/plugins/abrt-action-bugzilla.cpp:680
 msgid "Logging into bugzilla..."
 msgstr "Inloggen bij bugzilla..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:680
+#: ../src/plugins/abrt-action-bugzilla.cpp:683
 msgid "Checking for duplicates..."
 msgstr "Controleren voor dubbele..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:701
-#: ../src/plugins/abrt-action-bugzilla.cpp:737
+#: ../src/plugins/abrt-action-bugzilla.cpp:704
+#: ../src/plugins/abrt-action-bugzilla.cpp:740
 msgid "Missing mandatory member 'bugs'"
 msgstr "Verplicht onderdeel 'bugs' ontbreekt"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:720
-#: ../src/plugins/abrt-action-bugzilla.cpp:753
-#: ../src/plugins/abrt-action-bugzilla.cpp:830
+#: ../src/plugins/abrt-action-bugzilla.cpp:723
+#: ../src/plugins/abrt-action-bugzilla.cpp:756
+#: ../src/plugins/abrt-action-bugzilla.cpp:833
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() faalde. Kon alle noodzakelijke informatie niet verzamelen"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:769
+#: ../src/plugins/abrt-action-bugzilla.cpp:772
 msgid "Creating a new bug..."
 msgstr "Nieuwe bug aanmaken..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:774
+#: ../src/plugins/abrt-action-bugzilla.cpp:777
 msgid "Bugzilla entry creation failed"
 msgstr "Het aanmaken van een Bugzilla ingang mislukte"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:786
-#: ../src/plugins/abrt-action-bugzilla.cpp:883
+#: ../src/plugins/abrt-action-bugzilla.cpp:789
+#: ../src/plugins/abrt-action-bugzilla.cpp:886
 msgid "Logging out..."
 msgstr "Uitloggen..."
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:804
+#: ../src/plugins/abrt-action-bugzilla.cpp:807
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Bug is al aangemeld: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:815
+#: ../src/plugins/abrt-action-bugzilla.cpp:818
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla kon de ouder van bug %d  niet vinden"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:844
+#: ../src/plugins/abrt-action-bugzilla.cpp:847
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Voeg %s toe aan CC lijst"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:868
+#: ../src/plugins/abrt-action-bugzilla.cpp:871
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Voeg nieuw commentaar toe aan bug(%d)"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:913
+msgid ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"Report a crash to Bugzilla"
+msgstr ""
+" [-vs] -c CONF-BESTAND -d MAP\n"
+"\n"
+"Rapporteert een crash aan Bugzilla"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:928
+#: ../src/plugins/abrt-action-kerneloops.c:148
+#: ../src/plugins/abrt-action-rhtsupport.c:278
+msgid "Configuration file (may be given many times)"
+msgstr "Configuratiebestand (kan meerdere keren gegeven worden)"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:257
+msgid " [options] -d DIR"
+msgstr " [opties] -d MAP"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:270
+msgid "Additional debuginfo directories"
+msgstr "Extra debuginfo mappen"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:271
+msgid "Kill gdb if it runs for more than N seconds"
+msgstr "Sluit gdb af als het meer dan N secondes draait"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:319
 #, c-format
@@ -1460,7 +1493,17 @@ msgstr "Compleet!"
 msgid "Submitting oops report to %s"
 msgstr "Stuur oops rapport naar %s"
 
-#: ../src/plugins/abrt-action-mailx.c:111
+#: ../src/plugins/abrt-action-kerneloops.c:133
+msgid ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"Report a kernel oops to kerneloops.org (or similar) site"
+msgstr ""
+" [-vs] -c CONF-BESTAND -d MAP\n"
+"\n"
+"Rapporteer een kernel oops aan kerneloops.org (of vergelijkbare) site"
+
+#: ../src/plugins/abrt-action-mailx.c:110
 msgid "Sending an email..."
 msgstr "Versturen van een email..."
 
@@ -1489,7 +1532,7 @@ msgstr ""
 "\n"
 "Print informatie over de crash naar standaard output"
 
-#: ../src/plugins/abrt-action-print.c:50
+#: ../src/plugins/abrt-action-print.c:51
 msgid "Output file"
 msgstr "Output bestand"
 
@@ -1507,7 +1550,7 @@ msgstr "Het rapport werd opgeslagen in %s"
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
-#: ../src/plugins/abrt-action-upload.c:120
+#: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
 msgstr "Data comprimeren"
 
@@ -1519,18 +1562,28 @@ msgstr "Lege inlog of wachtwoord, controleer RHTSupport.conf"
 msgid "Creating a new case..."
 msgstr "Een nieuwe zaak aanmaken..."
 
-#: ../src/plugins/abrt-action-upload.c:64
+#: ../src/plugins/abrt-action-rhtsupport.c:263
+msgid ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"Report a crash to RHTSupport"
+msgstr ""
+" [-vs] -c CONF-BESTAND -d MAP\n"
+"\n"
+"Rapporteer een crash aan RHTSupport"
+
+#: ../src/plugins/abrt-action-upload.c:63
 #, c-format
 msgid "Sending %s to %s"
 msgstr "%s versturen naar %s"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/abrt-action-upload.c:97
+#: ../src/plugins/abrt-action-upload.c:96
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "%s met succes verzonden naar %s"
 
-#: ../src/plugins/abrt-action-upload.c:214
+#: ../src/plugins/abrt-action-upload.c:213
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "Archief is gemaakt: '%s'"
@@ -1549,7 +1602,7 @@ msgstr ""
 msgid "Base URL to upload to"
 msgstr "Basis URL om naar te uploaden"
 
-#: ../src/plugins/abrt-dump-oops.c:540
+#: ../src/plugins/abrt-dump-oops.c:539
 msgid ""
 " [-vsrdow] FILE\n"
 "\n"
@@ -1559,19 +1612,19 @@ msgstr ""
 "\n"
 "Extraheer oops uit syslog/dmesg bestand"
 
-#: ../src/plugins/abrt-dump-oops.c:556
+#: ../src/plugins/abrt-dump-oops.c:555
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "ontleed boodschap buffer van kernel voor het ontleden van BESTAND"
 
-#: ../src/plugins/abrt-dump-oops.c:557
+#: ../src/plugins/abrt-dump-oops.c:556
 msgid "Create ABRT dump for every oops found"
 msgstr "Maak ABRT dump aan voor iedere gevonden oops"
 
-#: ../src/plugins/abrt-dump-oops.c:558
+#: ../src/plugins/abrt-dump-oops.c:557
 msgid "Print found oopses on standard output"
 msgstr "Print gevonden oops naar standaard output"
 
-#: ../src/plugins/abrt-dump-oops.c:559
+#: ../src/plugins/abrt-dump-oops.c:558
 msgid "Do not exit, watch the file for new oopses"
 msgstr "Sluit niet af, bekijk het bestand voor nieuwe oopses"
 
