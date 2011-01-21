@@ -33,15 +33,16 @@ static const char *task_password = NULL;
 static const char abrt_retrace_client_usage[] = "abrt-retrace-client <operation> [options]\nOperations: create/status/backtrace/log";
 
 enum {
-    OPT_verbose  = 1 << 0,
-    OPT_syslog   = 1 << 1,
-    OPT_insecure = 1 << 2,
-    OPT_dir      = 1 << 3,
-    OPT_core     = 1 << 4,
-    OPT_wait     = 1 << 5,
-    OPT_bttodir  = 1 << 6,
-    OPT_task     = 1 << 7,
-    OPT_password = 1 << 8
+    OPT_verbose   = 1 << 0,
+    OPT_syslog    = 1 << 1,
+    OPT_insecure  = 1 << 2,
+    OPT_dir       = 1 << 3,
+    OPT_core      = 1 << 4,
+    OPT_wait      = 1 << 5,
+    OPT_bttodir   = 1 << 6,
+    OPT_no_unlink = 1 << 7,
+    OPT_task      = 1 << 8,
+    OPT_password  = 1 << 9
 };
 
 /* Keep enum above and order of options below in sync! */
@@ -54,6 +55,7 @@ static struct options abrt_retrace_client_options[] = {
     OPT_STRING( 'c', "core", &coredump, "COREDUMP", "read data from coredump"),
     OPT_BOOL(   'w', "wait", NULL, "keep connected to the server, display progress and then backtrace"),
     OPT_BOOL(   'r', "bttodir", NULL, "if both --dir and --wait are provided, store the backtrace to the DIR when it becomes available"),
+    OPT_BOOL(   'u', "no-unlink", NULL, "(debug) do not delete temporary archive created from dump dir in /tmp"),
     OPT_GROUP("For status, backtrace, and log operations"),
     OPT_STRING( 't', "task", &task_id, "ID", "id of your task on server"),
     OPT_STRING( 'p', "password", &task_password, "PWD", "password of your task on server"),
@@ -79,7 +81,7 @@ static void args_add_if_exists(const char *args[],
 /* Create an archive with files required for retrace server and return
  * a file descriptor. Returns -1 if it fails.
  */
-static int create_archive(const char *dump_dir_name)
+static int create_archive(const char *dump_dir_name, bool unlink_temp)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
@@ -90,7 +92,8 @@ static int create_archive(const char *dump_dir_name)
     int tempfd = mkstemps(filename, /*suffixlen:*/7);
     if (tempfd == -1)
         perror_msg_and_die("Cannot open temporary file");
-    xunlink(filename);
+    if (unlink_temp)
+        xunlink(filename);
     free(filename);
 
     /* Run xz:
@@ -371,9 +374,10 @@ static int run_create(const char *dump_dir,
                       const char *coredump,
                       bool wait,
                       bool bttodir,
-                      bool ssl_allow_insecure)
+                      bool ssl_allow_insecure,
+                      bool delete_temp_archive)
 {
-    int tempfd = create_archive(dump_dir_name);
+    int tempfd = create_archive(dump_dir_name, delete_temp_archive);
     if (-1 == tempfd)
         return 1;
 
@@ -406,6 +410,8 @@ static int run_create(const char *dump_dir,
 
     strbuf_free(request);
 
+    int result = 0;
+
     while (1)
     {
         char buf[32768];
@@ -425,8 +431,15 @@ static int run_create(const char *dump_dir,
                           /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
         if (written == -1)
         {
-            PR_Close(ssl_sock);
-            error_msg_and_die("Failed to send data: NSS error %d", PR_GetError());
+            /* Print error message, but do not exit.  We need to check
+               if the server send some explanation regarding the
+               error. */
+            result = 1;
+            error_msg("Failed to send data: NSS error %d (%s): %s",
+                      PR_GetError(),
+                      PR_ErrorToName(PR_GetError()),
+                      PR_ErrorToString(PR_GetError(), PR_LANGUAGE_I_DEFAULT));
+            break;
         }
     }
 
@@ -446,7 +459,7 @@ static int run_create(const char *dump_dir,
     } while (received > 0);
 
     ssl_disconnect(ssl_sock);
-    return 0;
+    return result;
 }
 
 static int run_status(const char *taskid,
@@ -459,7 +472,7 @@ static int run_status(const char *taskid,
 
     struct strbuf *request = strbuf_new();
     strbuf_append_strf(request,
-                       "POST /%s/status HTTP/1.1\r\n"
+                       "GET /%s HTTP/1.1\r\n"
                        "Host: retrace01.fedoraproject.org\r\n"
                        "X-Task-Password: %s\r\n"
                        "Content-Length: 0\r\n"
@@ -498,6 +511,44 @@ static int run_backtrace(const char *taskid,
                          const char *password,
                          bool ssl_allow_insecure)
 {
+    PRFileDesc *tcp_sock, *ssl_sock;
+    ssl_connect("retrace01.fedoraproject.org", &tcp_sock, &ssl_sock,
+                ssl_allow_insecure);
+
+    struct strbuf *request = strbuf_new();
+    strbuf_append_strf(request,
+                       "GET /%s/backtrace HTTP/1.1\r\n"
+                       "Host: retrace01.fedoraproject.org\r\n"
+                       "X-Task-Password: %s\r\n"
+                       "Content-Length: 0\r\n"
+                       "Connection: close\r\n"
+                       "\r\n", taskid, password);
+
+    PRInt32 written = PR_Send(tcp_sock, request->buf, request->len,
+                              /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
+    if (written == -1)
+    {
+        PR_Close(ssl_sock);
+        error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
+                          request->len, PR_GetError());
+    }
+
+    strbuf_free(request);
+
+    char buf[32768];
+    PRInt32 received = 0;
+    do {
+        received = PR_Recv(tcp_sock, buf, sizeof(buf) - 1, /*flags:*/0,
+                           PR_INTERVAL_NO_TIMEOUT);
+        if (received > 0)
+            write(STDOUT_FILENO, buf, received);
+
+        if (received == -1)
+            error_msg_and_die("Receiving of data failed: NSS error %d", PR_GetError());
+
+    } while (received > 0);
+
+    ssl_disconnect(ssl_sock);
     return 0;
 }
 
@@ -505,6 +556,44 @@ static int run_log(const char *taskid,
                    const char *password,
                    bool ssl_allow_insecure)
 {
+    PRFileDesc *tcp_sock, *ssl_sock;
+    ssl_connect("retrace01.fedoraproject.org", &tcp_sock, &ssl_sock,
+                ssl_allow_insecure);
+
+    struct strbuf *request = strbuf_new();
+    strbuf_append_strf(request,
+                       "GET /%s/log HTTP/1.1\r\n"
+                       "Host: retrace01.fedoraproject.org\r\n"
+                       "X-Task-Password: %s\r\n"
+                       "Content-Length: 0\r\n"
+                       "Connection: close\r\n"
+                       "\r\n", taskid, password);
+
+    PRInt32 written = PR_Send(tcp_sock, request->buf, request->len,
+                              /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
+    if (written == -1)
+    {
+        PR_Close(ssl_sock);
+        error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
+                          request->len, PR_GetError());
+    }
+
+    strbuf_free(request);
+
+    char buf[32768];
+    PRInt32 received = 0;
+    do {
+        received = PR_Recv(tcp_sock, buf, sizeof(buf) - 1, /*flags:*/0,
+                           PR_INTERVAL_NO_TIMEOUT);
+        if (received > 0)
+            write(STDOUT_FILENO, buf, received);
+
+        if (received == -1)
+            error_msg_and_die("Receiving of data failed: NSS error %d", PR_GetError());
+
+    } while (received > 0);
+
+    ssl_disconnect(ssl_sock);
     return 0;
 }
 
@@ -538,7 +627,8 @@ int main(int argc, char **argv)
         if (!dump_dir_name && !coredump)
             error_msg_and_die("Either dump directory or coredump is needed.");
         return run_create(dump_dir_name, coredump, opts & OPT_wait,
-                          opts & OPT_bttodir, opts & OPT_insecure);
+                          opts & OPT_bttodir, opts & OPT_insecure,
+                          opts & OPT_no_unlink);
     }
     else if (0 == strcasecmp(operation, "status"))
     {
