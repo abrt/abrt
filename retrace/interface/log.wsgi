@@ -42,8 +42,4 @@ def application(environ, start_response):
     except:
         return response(start_response, "500 Internal Server Error", "Unable to read log file at server")
 
-    newpass = gen_task_password(taskdir)
-    if not newpass:
-        return response(start_response, "500 Internal Server Error", "Unable to generate new password")
-
-    return response(start_response, "200 OK", output, [("X-Task-Password", newpass)])
+    return response(start_response, "200 OK", output)
