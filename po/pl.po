@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-19 18:40+0000\n"
-"PO-Revision-Date: 2011-01-19 19:43+0100\n"
+"POT-Creation-Date: 2011-01-20 22:43+0000\n"
+"PO-Revision-Date: 2011-01-21 17:19+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -218,20 +218,20 @@ msgstr ""
 msgid "You must specify exactly one operation"
 msgstr "Należy podać dokładnie jedne działanie"
 
-#: ../src/cli/report.cpp:166
+#: ../src/cli/report.cpp:164
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# To pole jest tylko do odczytu\n"
 
-#: ../src/cli/report.cpp:186
+#: ../src/cli/report.cpp:184
 msgid "# Describe the circumstances of this crash below"
 msgstr "# Niżej należy opisać okoliczności tej awarii (w języku angielskim)"
 
-#: ../src/cli/report.cpp:188
+#: ../src/cli/report.cpp:186
 msgid "# How to reproduce the crash?"
 msgstr "# Jak powtórzyć awarię (w języku angielskim)?"
 
-#: ../src/cli/report.cpp:190
+#: ../src/cli/report.cpp:188
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -239,49 +239,49 @@ msgstr ""
 "# Wyjątek\n"
 "# Proszę sprawdzić, czy nie zawiera żadnych prywatnych danych (hasła itp.)"
 
-#: ../src/cli/report.cpp:192
+#: ../src/cli/report.cpp:190
 msgid "# Architecture"
 msgstr "# Architektura"
 
-#: ../src/cli/report.cpp:193
+#: ../src/cli/report.cpp:191
 msgid "# Command line"
 msgstr "# Wiersz poleceń"
 
-#: ../src/cli/report.cpp:194
+#: ../src/cli/report.cpp:192
 msgid "# Component"
 msgstr "# Składnik"
 
-#: ../src/cli/report.cpp:195
+#: ../src/cli/report.cpp:193
 msgid "# Core dump"
 msgstr "# Zrzut pamięci"
 
-#: ../src/cli/report.cpp:196
+#: ../src/cli/report.cpp:194
 msgid "# Executable"
 msgstr "# Plik wykonywalny"
 
-#: ../src/cli/report.cpp:197
+#: ../src/cli/report.cpp:195
 msgid "# Kernel version"
 msgstr "# Wersja jądra"
 
-#: ../src/cli/report.cpp:198
+#: ../src/cli/report.cpp:196
 msgid "# Package"
 msgstr "# Pakiet"
 
-#: ../src/cli/report.cpp:199
+#: ../src/cli/report.cpp:197
 msgid "# Reason of crash"
 msgstr "# Przyczyna awarii (w języku angielskim)"
 
-#: ../src/cli/report.cpp:200
+#: ../src/cli/report.cpp:198
 msgid "# Release string of the operating system"
 msgstr "# Ciąg wydania systemu operacyjnego"
 
-#: ../src/cli/report.cpp:323
+#: ../src/cli/report.cpp:321
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
 "Nie można uruchomić programu vi: nie ustawiono zmiennych $TERM, $VISUAL ani "
 "$EDITOR"
 
-#: ../src/cli/report.cpp:407
+#: ../src/cli/report.cpp:405
 msgid ""
 "\n"
 "The report has been updated"
@@ -289,7 +289,7 @@ msgstr ""
 "\n"
 "Zgłoszenie zostało zaktualizowane"
 
-#: ../src/cli/report.cpp:409
+#: ../src/cli/report.cpp:407
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -298,46 +298,46 @@ msgstr ""
 "Nie wykryto zmian w zgłoszeniu"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:441
+#: ../src/cli/report.cpp:439
 msgid "y"
 msgstr "t"
 
-#: ../src/cli/report.cpp:442
+#: ../src/cli/report.cpp:440
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:569
+#: ../src/cli/report.cpp:567
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Wykryto błędne ustawienia dla wtyczki %s\n"
 
-#: ../src/cli/report.cpp:573
+#: ../src/cli/report.cpp:571
 msgid "Enter your login: "
 msgstr "Proszę podać login: "
 
-#: ../src/cli/report.cpp:579
+#: ../src/cli/report.cpp:577
 msgid "Enter your password: "
 msgstr "Proszę podać hasło: "
 
-#: ../src/cli/report.cpp:645
+#: ../src/cli/report.cpp:643
 msgid "Reporting..."
 msgstr "Zgłaszanie..."
 
-#: ../src/cli/report.cpp:664
+#: ../src/cli/report.cpp:662
 #, c-format
 msgid "Report using %s?"
 msgstr "Zgłosić używając %s?"
 
-#: ../src/cli/report.cpp:667
+#: ../src/cli/report.cpp:665
 msgid "Skipping..."
 msgstr "Pomijanie..."
 
-#: ../src/cli/report.cpp:679
+#: ../src/cli/report.cpp:677
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Zgłaszanie jest wyłączone, ponieważ nie można użyć wyjątku"
 
-#: ../src/cli/report.cpp:683
+#: ../src/cli/report.cpp:681
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -346,16 +346,16 @@ msgstr ""
 "Proszę spróbować zainstalować pakiet debuginfo ręcznie, używając polecenia: "
 "\"debuginfo-install %s\" i spróbować ponownie\n"
 
-#: ../src/cli/report.cpp:692
+#: ../src/cli/report.cpp:690
 msgid "Error loading reporter settings"
 msgstr "Błąd podczas wczytywania ustawień zgłaszania"
 
-#: ../src/cli/report.cpp:713
+#: ../src/cli/report.cpp:711
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "Zgłoszono awarię przez %d wtyczki zgłaszania (%d błędów)\n"
 
-#: ../src/daemon/abrt-handle-crashdump.c:42
+#: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
 " [-vs] -d DIR -e EVENT\n"
 "   or: "
@@ -363,29 +363,34 @@ msgstr ""
 " [-vs] -d KAT -e ZDARZENIE\n"
 "  lub: "
 
-#: ../src/daemon/abrt-handle-crashdump.c:57
-#: ../src/plugins/abrt-action-analyze-c.c:167
-#: ../src/plugins/abrt-action-analyze-oops.c:144
-#: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-dump-oops.c:555
+#: ../src/daemon/abrt-handle-crashdump.c:59
+#: ../src/plugins/abrt-action-bugzilla.cpp:926
+#: ../src/plugins/abrt-action-generate-backtrace.c:272
+#: ../src/plugins/abrt-action-kerneloops.c:146
+#: ../src/plugins/abrt-action-rhtsupport.c:276
+#: ../src/plugins/abrt-dump-oops.c:554
 msgid "Log to syslog"
 msgstr "Przekazuje komunikaty do dziennika systemowego"
 
-#: ../src/daemon/abrt-handle-crashdump.c:58
-#: ../src/plugins/abrt-action-analyze-c.c:166
-#: ../src/plugins/abrt-action-analyze-oops.c:143
-#: ../src/plugins/abrt-action-analyze-python.c:48
+#: ../src/daemon/abrt-handle-crashdump.c:60
+#: ../src/plugins/abrt-action-analyze-c.c:167
+#: ../src/plugins/abrt-action-analyze-oops.c:144
+#: ../src/plugins/abrt-action-analyze-python.c:49
+#: ../src/plugins/abrt-action-bugzilla.cpp:927
+#: ../src/plugins/abrt-action-generate-backtrace.c:269
+#: ../src/plugins/abrt-action-kerneloops.c:147
 #: ../src/plugins/abrt-action-mailx.c:149
-#: ../src/plugins/abrt-action-print.c:49
+#: ../src/plugins/abrt-action-print.c:50
+#: ../src/plugins/abrt-action-rhtsupport.c:277
 #: ../src/plugins/abrt-action-upload.c:261
 msgid "Crash dump directory"
 msgstr "Katalog zrzutów awarii"
 
-#: ../src/daemon/abrt-handle-crashdump.c:59
+#: ../src/daemon/abrt-handle-crashdump.c:61
 msgid "Handle EVENT"
 msgstr "Obsługa ZDARZEŃ"
 
-#: ../src/daemon/abrt-handle-crashdump.c:60
+#: ../src/daemon/abrt-handle-crashdump.c:62
 msgid "List possible events [which start with PFX]"
 msgstr "Wyświetla możliwe zdarzenia (zaczynające się od PFX)"
 
@@ -397,7 +402,7 @@ msgstr "Komentarz jest za długi"
 msgid "'How to reproduce' is too long"
 msgstr "\"Jak powtórzyć awarię\" jest za długie"
 
-#: ../src/daemon/Daemon.cpp:374
+#: ../src/daemon/Daemon.cpp:375
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -405,20 +410,20 @@ msgstr ""
 "Wielkość zgłoszenia przekroczyła dozwolone ograniczenie. Proszę sprawdzić "
 "wartość zmiennej MaxCrashReportsSize w pliku abrt.conf."
 
-#: ../src/daemon/Daemon.cpp:528
-msgid "abrtd [options]"
-msgstr "abrtd [opcje]"
+#: ../src/daemon/Daemon.cpp:547
+msgid " [options]"
+msgstr " [opcje]"
 
-#: ../src/daemon/Daemon.cpp:538
+#: ../src/daemon/Daemon.cpp:558
 msgid "Do not daemonize"
 msgstr "Bez tworzenia demona"
 
-#: ../src/daemon/Daemon.cpp:539
+#: ../src/daemon/Daemon.cpp:559
 msgid "Log to syslog even with -d"
 msgstr ""
 "Przekazuje komunikaty do dziennika systemowego, nawet jeśli podano opcję -d"
 
-#: ../src/daemon/Daemon.cpp:540
+#: ../src/daemon/Daemon.cpp:560
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Kończy działanie po SEKUNDACH nieaktywności"
 
@@ -1242,7 +1247,7 @@ msgstr ""
 "naprawić ją przed kontynuowaniem. W innym przypadku proces zgłoszenia się "
 "nie powiedzie.\n"
 
-#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:46
+#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Wysłano: %llu z %llu kilobajtów"
@@ -1252,17 +1257,17 @@ msgstr "Wysłano: %llu z %llu kilobajtów"
 msgid "Usage: %s\n"
 msgstr "Użycie: %s\n"
 
-#: ../src/plugins/abrt-action-analyze-c.c:154
+#: ../src/plugins/abrt-action-analyze-c.c:156
 msgid ""
-" [-vs] -d DIR\n"
+" [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredumps"
 msgstr ""
-" [-vs] -d KAT\n"
+" [-v] -d KAT\n"
 "\n"
 "Oblicza i zapisuje UUID zrzutów core"
 
-#: ../src/plugins/abrt-action-analyze-oops.c:131
+#: ../src/plugins/abrt-action-analyze-oops.c:133
 msgid ""
 " [-vs] -d DIR\n"
 "\n"
@@ -1272,80 +1277,108 @@ msgstr ""
 "\n"
 "Oblicza i zapisuje UUID oraz SUMĘ_DUPLIKATU zrzutów core awarii jądra"
 
-#: ../src/plugins/abrt-action-analyze-python.c:36
+#: ../src/plugins/abrt-action-analyze-python.c:38
 msgid ""
-" [-vs] -d DIR\n"
+" [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
-" [-vs] -d KAT\n"
+" [-v] -d KAT\n"
 "\n"
-"Oblicza i zapisuje UUID oraz SUMĘ_DUPLIKATU zrzutów core języka Python"
+"Oblicza i zapisuje UUID oraz SUMĘ_DUPLIKATU zrzutów awarii języka Python"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:531
+#: ../src/plugins/abrt-action-bugzilla.cpp:534
 #, c-format
 msgid "New bug id: %i"
 msgstr "Identyfikator nowego błędu: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:659
+#: ../src/plugins/abrt-action-bugzilla.cpp:662
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr "Pusty login lub hasło, proszę sprawdzić %s"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:677
+#: ../src/plugins/abrt-action-bugzilla.cpp:680
 msgid "Logging into bugzilla..."
 msgstr "Logowanie do Bugzilli..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:680
+#: ../src/plugins/abrt-action-bugzilla.cpp:683
 msgid "Checking for duplicates..."
 msgstr "Sprawdzanie duplikatów..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:701
-#: ../src/plugins/abrt-action-bugzilla.cpp:737
+#: ../src/plugins/abrt-action-bugzilla.cpp:704
+#: ../src/plugins/abrt-action-bugzilla.cpp:740
 msgid "Missing mandatory member 'bugs'"
 msgstr "Brak obowiązkowego elementu \"bugs\""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:720
-#: ../src/plugins/abrt-action-bugzilla.cpp:753
-#: ../src/plugins/abrt-action-bugzilla.cpp:830
+#: ../src/plugins/abrt-action-bugzilla.cpp:723
+#: ../src/plugins/abrt-action-bugzilla.cpp:756
+#: ../src/plugins/abrt-action-bugzilla.cpp:833
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() nie powiodło się. Nie można zebrać wszystkich obowiązkowych "
 "informacji"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:769
+#: ../src/plugins/abrt-action-bugzilla.cpp:772
 msgid "Creating a new bug..."
 msgstr "Tworzenie nowego błędu..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:774
+#: ../src/plugins/abrt-action-bugzilla.cpp:777
 msgid "Bugzilla entry creation failed"
 msgstr "Utworzenie wpisu w Bugzilli nie powiodło się"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:786
-#: ../src/plugins/abrt-action-bugzilla.cpp:883
+#: ../src/plugins/abrt-action-bugzilla.cpp:789
+#: ../src/plugins/abrt-action-bugzilla.cpp:886
 msgid "Logging out..."
 msgstr "Wylogowywanie..."
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:804
+#: ../src/plugins/abrt-action-bugzilla.cpp:807
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Błąd został już zgłoszony: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:815
+#: ../src/plugins/abrt-action-bugzilla.cpp:818
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla nie może odnaleźć nadrzędnego błędu %d"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:844
+#: ../src/plugins/abrt-action-bugzilla.cpp:847
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Dodanie %s do listy CC"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:868
+#: ../src/plugins/abrt-action-bugzilla.cpp:871
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Dodawanie nowego komentarza do błędu %d"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:913
+msgid ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"Report a crash to Bugzilla"
+msgstr ""
+" [-vs] -c PLIK_KONFIDURACJI -d KAT\n"
+"\n"
+"Zgłasza awarię w Bugzilli"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:928
+#: ../src/plugins/abrt-action-kerneloops.c:148
+#: ../src/plugins/abrt-action-rhtsupport.c:278
+msgid "Configuration file (may be given many times)"
+msgstr "Plik konfiguracji (może być podawany wiele razy)"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:257
+msgid " [options] -d DIR"
+msgstr " [opcje] -d KAT"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:270
+msgid "Additional debuginfo directories"
+msgstr "Dodatkowe katalogi debuginfo"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:271
+msgid "Kill gdb if it runs for more than N seconds"
+msgstr "Kończy działanie GDB, jeśli jest uruchomione dłużej niż N sekund"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:319
 #, c-format
@@ -1469,7 +1502,17 @@ msgstr "Ukończono."
 msgid "Submitting oops report to %s"
 msgstr "Wysyłanie zgłoszenia awarii jądra do %s"
 
-#: ../src/plugins/abrt-action-mailx.c:111
+#: ../src/plugins/abrt-action-kerneloops.c:133
+msgid ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"Report a kernel oops to kerneloops.org (or similar) site"
+msgstr ""
+" [-vs] -c PLIK_KONFIGURACJI -d KAT\n"
+"\n"
+"Zgłasza awarię jądra w witrynie kerneloops.org (lub podobnej)"
+
+#: ../src/plugins/abrt-action-mailx.c:110
 msgid "Sending an email..."
 msgstr "Wysłanie wiadomości e-mail..."
 
@@ -1498,7 +1541,7 @@ msgstr ""
 "\n"
 "Wyświetla informacje o awarii w standardowym wyjściu"
 
-#: ../src/plugins/abrt-action-print.c:50
+#: ../src/plugins/abrt-action-print.c:51
 msgid "Output file"
 msgstr "Plik wyjściowy"
 
@@ -1516,7 +1559,7 @@ msgstr "Zgłoszenie zostało przechowane w %s"
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
-#: ../src/plugins/abrt-action-upload.c:120
+#: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
 msgstr "Kompresowanie danych"
 
@@ -1528,18 +1571,28 @@ msgstr "Pusty login lub hasło, proszę sprawdzić plik RHTSupport.conf"
 msgid "Creating a new case..."
 msgstr "Dodawanie nowego przypadku..."
 
-#: ../src/plugins/abrt-action-upload.c:64
+#: ../src/plugins/abrt-action-rhtsupport.c:263
+msgid ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"Report a crash to RHTSupport"
+msgstr ""
+" [-vs] -c PLIK_KONFIGURACJI -d KAT\n"
+"\n"
+"Zgłasza awarię w RHTSupport"
+
+#: ../src/plugins/abrt-action-upload.c:63
 #, c-format
 msgid "Sending %s to %s"
 msgstr "Wysyłanie %s do %s"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/abrt-action-upload.c:97
+#: ../src/plugins/abrt-action-upload.c:96
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "Pomyślnie wysłano %s do %s"
 
-#: ../src/plugins/abrt-action-upload.c:214
+#: ../src/plugins/abrt-action-upload.c:213
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "Utworzono archiwum: \"%s\""
@@ -1558,7 +1611,7 @@ msgstr ""
 msgid "Base URL to upload to"
 msgstr "Podstawowy adres URL, do którego wysłać"
 
-#: ../src/plugins/abrt-dump-oops.c:540
+#: ../src/plugins/abrt-dump-oops.c:539
 msgid ""
 " [-vsrdow] FILE\n"
 "\n"
@@ -1568,19 +1621,19 @@ msgstr ""
 "\n"
 "Wydobywa awarie z pliku syslog/dmesg"
 
-#: ../src/plugins/abrt-dump-oops.c:556
+#: ../src/plugins/abrt-dump-oops.c:555
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "Przetwarza bufor komunikatów jądra przed przetworzeniem PLIKU"
 
-#: ../src/plugins/abrt-dump-oops.c:557
+#: ../src/plugins/abrt-dump-oops.c:556
 msgid "Create ABRT dump for every oops found"
 msgstr "Tworzy zrzut ABRT dla każdej odnalezionej awarii"
 
-#: ../src/plugins/abrt-dump-oops.c:558
+#: ../src/plugins/abrt-dump-oops.c:557
 msgid "Print found oopses on standard output"
 msgstr "Wyświetla odnalezione awarie w standardowym wyjściu"
 
-#: ../src/plugins/abrt-dump-oops.c:559
+#: ../src/plugins/abrt-dump-oops.c:558
 msgid "Do not exit, watch the file for new oopses"
 msgstr "Bez kończenia działania, obserwuje pliki pod kątem nowych awarii"
 
