@@ -188,6 +188,7 @@ Plugin to uploading files to a server.
 %package addon-python
 Summary: %{name}'s addon for catching and analyzing Python exceptions
 Group: System Environment/Libraries
+Requires: python
 Requires: %{name} = %{version}-%{release}
 Obsoletes: gnome-python2-bugbuddy
 Provides: gnome-python2-bugbuddy
