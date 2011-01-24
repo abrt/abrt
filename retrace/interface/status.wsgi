@@ -31,10 +31,6 @@ def application(environ, start_response):
     if not "X-Task-Password" in request.headers or request.headers["X-Task-Password"] != pwd:
         return response(start_response, "403 Forbidden")
 
-    newpass = gen_task_password(taskdir)
-    if not newpass:
-        return response(start_response, "500 Internal Server Error", "Unable to generate new password")
-
     status = "PENDING"
     if os.path.isfile(taskdir + "/retrace_log"):
         if os.path.isfile(taskdir + "/retrace_backtrace"):
@@ -42,8 +38,4 @@ def application(environ, start_response):
         else:
             status = "FINISHED_FAILURE"
 
-    newpass = gen_task_password(taskdir)
-    if not newpass:
-        return response(start_response, "500 Internal Server Error", "Unable to generate new password")
-
-    return response(start_response, "200 OK", status, [("X-Task-Status", status), ("X-Task-Password", newpass)])
+    return response(start_response, "200 OK", status, [("X-Task-Status", status)])
