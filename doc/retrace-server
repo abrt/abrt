@@ -108,7 +108,7 @@ the server must return the "411 Length Required" HTTP error code. If a
 'Content-Type' other than 'application/x-tar', 'application/x-gzip',
 'application/x-xz' is used, the server must return the "415
 unsupported Media Type" HTTP error code. If the 'Content-Length' value
-is greater than a limit set in the server configuration file (30 MB by
+is greater than a limit set in the server configuration file (50 MB by
 default), or the real HTTP request size gets larger than the limit +
 10 KB for headers, then the server must return the "413 Request Entity
 Too Large" HTTP error code, and provide an explanation, including the
