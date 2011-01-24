@@ -370,6 +370,60 @@ static void ssl_disconnect(PRFileDesc *ssl_sock)
     PR_Cleanup();
 }
 
+/**
+ * Parse a header's value from HTTP message. Only alnum values are supported.
+ * @returns
+ * Caller must free the returned value.
+ * If no header is found, NULL is returned.
+ */
+static char *http_get_header_value(const char *message,
+                                   const char *header_name)
+{
+    char *headers_end = strstr(message, "\r\n\r\n");
+    if (!headers_end)
+        return NULL;
+
+    char *search_string = xasprintf("\r\n%s:", header_name);
+    char *header = strcasestr(message, search_string);
+    if (header > headers_end)
+        return NULL;
+
+    header += strlen(search_string);
+    free(search_string);
+    while (*header == ' ')
+        ++header;
+    int len = 0;
+    while (isalnum(header[len]))
+        ++len;
+    return xstrndup(header, len);
+}
+
+/**
+ * @returns
+ * Caller must free the returned value.
+ */
+static char *tcp_read_response(PRFileDesc *tcp_sock)
+{
+    struct strbuf *strbuf = strbuf_new();
+    char buf[32768];
+    PRInt32 received = 0;
+    do {
+        received = PR_Recv(tcp_sock, buf, sizeof(buf) - 1, /*flags:*/0,
+                           PR_INTERVAL_NO_TIMEOUT);
+        if (received > 0)
+        {
+            buf[received] = '\0';
+            strbuf_append_str(strbuf, buf);
+        }
+
+        if (received == -1)
+            error_msg_and_die("Receiving of data failed: NSS error %d", PR_GetError());
+
+    } while (received > 0);
+
+    return strbuf_free_nobuf(strbuf);
+}
+
 static int run_create(const char *dump_dir,
                       const char *coredump,
                       bool wait,
@@ -390,8 +444,8 @@ static int run_create(const char *dump_dir,
                 ssl_allow_insecure);
 
     /* Upload the archive. */
-    struct strbuf *request = strbuf_new();
-    strbuf_append_strf(request,
+    struct strbuf *http_request = strbuf_new();
+    strbuf_append_strf(http_request,
                        "POST /create HTTP/1.1\r\n"
                        "Host: retrace01.fedoraproject.org\r\n"
                        "Content-Type: application/x-xz-compressed-tar\r\n"
@@ -399,16 +453,16 @@ static int run_create(const char *dump_dir,
                        "Connection: close\r\n"
                        "\r\n", (long long)tempfd_buf.st_size);
 
-    PRInt32 written = PR_Send(tcp_sock, request->buf, request->len,
+    PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
     {
         PR_Close(ssl_sock);
         error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
-                          request->len, PR_GetError());
+                          http_request->len, PR_GetError());
     }
 
-    strbuf_free(request);
+    strbuf_free(http_request);
 
     int result = 0;
 
@@ -445,18 +499,26 @@ static int run_create(const char *dump_dir,
 
     close(tempfd);
 
-    char buf[32768];
-    PRInt32 received = 0;
-    do {
-        received = PR_Recv(tcp_sock, buf, sizeof(buf) - 1, /*flags:*/0,
-                           PR_INTERVAL_NO_TIMEOUT);
-        if (received > 0)
-            write(STDOUT_FILENO, buf, received);
+    /* Read the HTTP header of the response from server. */
+    char *http_response = tcp_read_response(tcp_sock);
+    char *task_id = http_get_header_value(http_response, "X-Task-Id");
+    if (!task_id)
+    {
+        PR_Close(ssl_sock);
+        error_msg_and_die("Invalid response from server: missing X-Task-Id");
+    }
 
-        if (received == -1)
-            error_msg_and_die("Receiving of data failed: NSS error %d", PR_GetError());
+    char *task_password = http_get_header_value(http_response, "X-Task-Password");
+    if (!task_password)
+    {
+        PR_Close(ssl_sock);
+        error_msg_and_die("Invalid response from server: missing X-Task-Password");
+    }
 
-    } while (received > 0);
+    printf("Task Id: %s\nTask Password: %s\n", task_id, task_password);
+    free(http_response);
+    free(task_id);
+    free(task_password);
 
     ssl_disconnect(ssl_sock);
     return result;
@@ -470,8 +532,8 @@ static int run_status(const char *taskid,
     ssl_connect("retrace01.fedoraproject.org", &tcp_sock, &ssl_sock,
                 ssl_allow_insecure);
 
-    struct strbuf *request = strbuf_new();
-    strbuf_append_strf(request,
+    struct strbuf *http_request = strbuf_new();
+    strbuf_append_strf(http_request,
                        "GET /%s HTTP/1.1\r\n"
                        "Host: retrace01.fedoraproject.org\r\n"
                        "X-Task-Password: %s\r\n"
@@ -479,29 +541,20 @@ static int run_status(const char *taskid,
                        "Connection: close\r\n"
                        "\r\n", taskid, password);
 
-    PRInt32 written = PR_Send(tcp_sock, request->buf, request->len,
+    PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
     {
         PR_Close(ssl_sock);
         error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
-                          request->len, PR_GetError());
+                          http_request->len, PR_GetError());
     }
 
-    strbuf_free(request);
+    strbuf_free(http_request);
 
-    char buf[32768];
-    PRInt32 received = 0;
-    do {
-        received = PR_Recv(tcp_sock, buf, sizeof(buf) - 1, /*flags:*/0,
-                           PR_INTERVAL_NO_TIMEOUT);
-        if (received > 0)
-            write(STDOUT_FILENO, buf, received);
-
-        if (received == -1)
-            error_msg_and_die("Receiving of data failed: NSS error %d", PR_GetError());
-
-    } while (received > 0);
+    char *http_response = tcp_read_response(tcp_sock);
+    printf(http_response);
+    free(http_response);
 
     ssl_disconnect(ssl_sock);
     return 0;
@@ -515,8 +568,8 @@ static int run_backtrace(const char *taskid,
     ssl_connect("retrace01.fedoraproject.org", &tcp_sock, &ssl_sock,
                 ssl_allow_insecure);
 
-    struct strbuf *request = strbuf_new();
-    strbuf_append_strf(request,
+    struct strbuf *http_request = strbuf_new();
+    strbuf_append_strf(http_request,
                        "GET /%s/backtrace HTTP/1.1\r\n"
                        "Host: retrace01.fedoraproject.org\r\n"
                        "X-Task-Password: %s\r\n"
@@ -524,29 +577,20 @@ static int run_backtrace(const char *taskid,
                        "Connection: close\r\n"
                        "\r\n", taskid, password);
 
-    PRInt32 written = PR_Send(tcp_sock, request->buf, request->len,
+    PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
     {
         PR_Close(ssl_sock);
         error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
-                          request->len, PR_GetError());
+                          http_request->len, PR_GetError());
     }
 
-    strbuf_free(request);
+    strbuf_free(http_request);
 
-    char buf[32768];
-    PRInt32 received = 0;
-    do {
-        received = PR_Recv(tcp_sock, buf, sizeof(buf) - 1, /*flags:*/0,
-                           PR_INTERVAL_NO_TIMEOUT);
-        if (received > 0)
-            write(STDOUT_FILENO, buf, received);
-
-        if (received == -1)
-            error_msg_and_die("Receiving of data failed: NSS error %d", PR_GetError());
-
-    } while (received > 0);
+    char *http_response = tcp_read_response(tcp_sock);
+    printf(http_response);
+    free(http_response);
 
     ssl_disconnect(ssl_sock);
     return 0;
@@ -560,8 +604,8 @@ static int run_log(const char *taskid,
     ssl_connect("retrace01.fedoraproject.org", &tcp_sock, &ssl_sock,
                 ssl_allow_insecure);
 
-    struct strbuf *request = strbuf_new();
-    strbuf_append_strf(request,
+    struct strbuf *http_request = strbuf_new();
+    strbuf_append_strf(http_request,
                        "GET /%s/log HTTP/1.1\r\n"
                        "Host: retrace01.fedoraproject.org\r\n"
                        "X-Task-Password: %s\r\n"
@@ -569,29 +613,20 @@ static int run_log(const char *taskid,
                        "Connection: close\r\n"
                        "\r\n", taskid, password);
 
-    PRInt32 written = PR_Send(tcp_sock, request->buf, request->len,
+    PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
     {
         PR_Close(ssl_sock);
         error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
-                          request->len, PR_GetError());
+                          http_request->len, PR_GetError());
     }
 
-    strbuf_free(request);
+    strbuf_free(http_request);
 
-    char buf[32768];
-    PRInt32 received = 0;
-    do {
-        received = PR_Recv(tcp_sock, buf, sizeof(buf) - 1, /*flags:*/0,
-                           PR_INTERVAL_NO_TIMEOUT);
-        if (received > 0)
-            write(STDOUT_FILENO, buf, received);
-
-        if (received == -1)
-            error_msg_and_die("Receiving of data failed: NSS error %d", PR_GetError());
-
-    } while (received > 0);
+    char *http_response = tcp_read_response(tcp_sock);
+    printf(http_response);
+    free(http_response);
 
     ssl_disconnect(ssl_sock);
     return 0;
