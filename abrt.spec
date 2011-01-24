@@ -271,8 +271,10 @@ desktop-file-install \
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-getent group abrt >/dev/null || groupadd -f --system abrt
-getent passwd abrt >/dev/null || useradd --system -g abrt -d /etc/abrt -s /sbin/nologin abrt
+#uidgid pair 173:173 reserved in setup rhbz#670231
+%define abrt_gid_uid 173
+getent group abrt >/dev/null || groupadd -f -g %{abrt_gid_uid} --system abrt
+getent passwd abrt >/dev/null || useradd --system -g abrt -u %{abrt_gid_uid} -d /etc/abrt -s /sbin/nologin abrt
 exit 0
 
 %post
