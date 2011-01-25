@@ -302,6 +302,7 @@ send_report_to_new_case(const char* baseURL,
                 const char* username,
                 const char* password,
                 bool ssl_verify,
+                const char* os_release,
                 const char* summary,
                 const char* description,
                 const char* component,
@@ -309,9 +310,19 @@ send_report_to_new_case(const char* baseURL,
 {
     string case_url = concat_path_file(baseURL, "/cases");
 
-    char *case_data = make_case_data(summary, description,
-                                         "Red Hat Enterprise Linux", "6.0",
-                                         component);
+    char *product = NULL;
+    char *version = NULL;
+    parse_release(os_release, &product, &version);
+
+    char *case_data = make_case_data(
+                summary,
+                description,
+                (product ? product : os_release),
+                (version ? version : "unknown"),
+                component
+    );
+    free(product);
+    free(version);
 
     int redirect_count = 0;
     char *errmsg;

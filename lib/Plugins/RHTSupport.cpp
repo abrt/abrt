@@ -233,11 +233,14 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
     }
 
     {
+        map_crash_data_t::const_iterator it = pCrashData.find(FILENAME_RELEASE);
+        const char *release = (it != pCrashData.end()) ? it->second[CD_CONTENT].c_str() : "";
         update_client(_("Creating a new case..."));
         char* result = send_report_to_new_case(URL.c_str(),
                 login.c_str(),
                 password.c_str(),
                 ssl_verify,
+                release,
                 summary.c_str(),
                 description.c_str(),
                 package.c_str(),
