@@ -312,7 +312,7 @@ send_report_to_new_case(const char* baseURL,
 
     char *product = NULL;
     char *version = NULL;
-    parse_release(os_release, &product, &version);
+    parse_release_for_rhts(os_release, &product, &version);
 
     char *case_data = make_case_data(
                 summary,
