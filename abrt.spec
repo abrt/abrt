@@ -190,6 +190,7 @@ Plugin to report bugs into anonymous FTP site associated with ticketing system.
 %package addon-python
 Summary: %{name}'s addon for catching and analyzing Python exceptions
 Group: System Environment/Libraries
+Requires: python
 Requires: %{name} = %{version}-%{release}
 Obsoletes: gnome-python2-bugbuddy > 0.0.1
 Provides: gnome-python2-bugbuddy
@@ -271,8 +272,10 @@ desktop-file-install \
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-getent group abrt >/dev/null || groupadd -f --system abrt
-getent passwd abrt >/dev/null || useradd --system -g abrt -d /etc/abrt -s /sbin/nologin abrt
+#uidgid pair 173:173 reserved in setup rhbz#670231
+%define abrt_gid_uid 173
+getent group abrt >/dev/null || groupadd -f -g %{abrt_gid_uid} --system abrt
+getent passwd abrt >/dev/null || useradd --system -g abrt -u %{abrt_gid_uid} -d /etc/abrt -s /sbin/nologin abrt
 exit 0
 
 %post
