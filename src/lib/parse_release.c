@@ -19,7 +19,7 @@
 #include "abrtlib.h"
 
 // caller is reposible for freeing *product* and *version*
-void parse_release(const char *release, char** product, char** version)
+static void parse_release(const char *release, char** product, char** version, bool append_rhel_version)
 {
     if (strstr(release, "Rawhide"))
     {
@@ -33,21 +33,31 @@ void parse_release(const char *release, char** product, char** version)
     if (strstr(release, "Fedora"))
         strbuf_append_str(buf_product, "Fedora");
     else if (strstr(release, "Red Hat Enterprise Linux"))
-        strbuf_append_str(buf_product, "Red Hat Enterprise Linux ");
+        strbuf_append_str(buf_product, "Red Hat Enterprise Linux");
+    else
+    {
+        /* TODO: add logic for parsing other distros' names here */
+        strbuf_append_str(buf_product, release);
+    }
 
     const char *r = strstr(release, "release");
     const char *space = r ? strchr(r, ' ') : NULL;
 
     struct strbuf *buf_version = strbuf_new();
-    if (space++)
+    if (space)
     {
+        space++;
         while (*space != '\0' && *space != ' ')
         {
             /* Eat string like "5.2" */
             strbuf_append_char(buf_version, *space);
-            if ((strcmp(buf_product->buf, "Red Hat Enterprise Linux ") == 0))
+            if (append_rhel_version
+             && strcmp(buf_product->buf, "Red Hat Enterprise Linux") == 0
+            ) {
+                strbuf_append_char(buf_product, ' ');
                 strbuf_append_char(buf_product, *space);
-
+            }
+            append_rhel_version = false;
             space++;
         }
     }
@@ -56,4 +66,16 @@ void parse_release(const char *release, char** product, char** version)
     *product = strbuf_free_nobuf(buf_product);
 
     VERB3 log("%s: version:'%s' product:'%s'", __func__, *version, *product);
+}
+
+void parse_release_for_bz(const char *release, char** product, char** version)
+{
+    /* Fedora/RH bugzilla uses "Red Hat Enterprise Linux N" product RHEL */
+    parse_release(release, product, version, /*append_rhel_version:*/ true);
+}
+
+void parse_release_for_rhts(const char *release, char** product, char** version)
+{
+    /* RHTS uses "Red Hat Enterprise Linux" product for RHEL */
+    parse_release(release, product, version, /*append_rhel_version:*/ false);
 }

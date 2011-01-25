@@ -328,7 +328,7 @@ xmlrpc_value* ctx::call_quicksearch_duphash(const char* component, const char* r
     {
         char *product = NULL;
         char *version = NULL;
-        parse_release(release, &product, &version);
+        parse_release_for_bz(release, &product, &version);
         query = xasprintf("ALL component:\"%s\" whiteboard:\"%s\" product:\"%s\"",
                                                             component, duphash, product
         );
@@ -482,7 +482,7 @@ xmlrpc_int32 ctx::new_bug(crash_data_t *crash_data, int depend_on_bugno)
 
     char *product = NULL;
     char *version = NULL;
-    parse_release(release, &product, &version);
+    parse_release_for_bz(release, &product, &version);
 
     xmlrpc_value* result = NULL;
     char *summary = strbuf_free_nobuf(buf_summary);
@@ -684,7 +684,7 @@ static void report_to_bugzilla(
 
     char *product = NULL;
     char *version = NULL;
-    parse_release(release, &product, &version);
+    parse_release_for_bz(release, &product, &version);
     free(version);
 
     xmlrpc_value *result;
