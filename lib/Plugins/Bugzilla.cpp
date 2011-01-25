@@ -772,6 +772,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     char *product = NULL;
     char *version = NULL;
     parse_release(release, &product, &version);
+    free(version);
 
     xmlrpc_value *result;
     if (strcmp(product, "Fedora") == 0)
@@ -846,8 +847,8 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
                 xmlrpc_DECREF(all_bugs);
         }
     }
+//FIXME: we leak product on many error paths above!
     free(product);
-    free(version);
 
     if (all_bugs_size < 0)
     {
