@@ -685,6 +685,7 @@ static void report_to_bugzilla(
     char *product = NULL;
     char *version = NULL;
     parse_release(release, &product, &version);
+    free(version);
 
     xmlrpc_value *result;
     if (strcmp(product, "Fedora") == 0)
@@ -761,7 +762,6 @@ static void report_to_bugzilla(
         }
     }
     free(product);
-    free(version);
 
     if (all_bugs_size < 0)
     {
