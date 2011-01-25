@@ -391,6 +391,15 @@ send_report_to_new_case(const char* baseURL,
     char *case_location = find_header_in_abrt_post_state(case_state, "Location:");
     switch (case_state->http_resp_code)
     {
+    case 404:
+        /* Not strictly necessary (default branch would deal with it too),
+         * but makes this typical error less cryptic:
+         * instead of returning html-encoded body, we show short concise message,
+         * and show offending URL (typos in which is a typical cause) */
+        retval = xasprintf("error in case creation, "
+                        "HTTP code: 404 (Not found), URL:'%s'", case_url);
+        break;
+
     case 301: /* "301 Moved Permanently" (for example, used to move http:// to https://) */
     case 302: /* "302 Found" (just in case) */
     case 305: /* "305 Use Proxy" */
@@ -401,18 +410,9 @@ send_report_to_new_case(const char* baseURL,
             free_abrt_post_state(case_state);
             goto redirect_case;
         }
-        goto bad_resp_code;
-
-    case 404:
-        /* Not strictly necessary, but makes this typical error less cryptic:
-         * instead of returning html-encoded body, we show short concise message,
-         * and show offending URL (typos in which is a typical cause) */
-        retval = xasprintf("error in case creation, "
-                        "HTTP code: 404 (Not found), URL:'%s'", case_url);
-        break;
+        /* fall through */
 
     default:
- bad_resp_code:
         errmsg = case_state->curl_error_msg;
         if (errmsg)
             retval = xasprintf("error in case creation: %s", errmsg);
