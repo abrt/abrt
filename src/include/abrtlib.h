@@ -228,8 +228,10 @@ char* make_description_logger(crash_data_t *crash_data);
 #define make_description_mailx abrt_make_description_mailx
 char* make_description_mailx(crash_data_t *crash_data);
 
-#define parse_release abrt_parse_release
-void parse_release(const char *pRelease, char **product, char **version);
+#define parse_release_for_bz abrt_parse_release_for_bz
+void parse_release_for_bz(const char *pRelease, char **product, char **version);
+#define parse_release_for_rhts abrt_parse_release_for_rhts
+void parse_release_for_rhts(const char *pRelease, char **product, char **version);
 
 /**
  * Loads settings and stores it in second parameter. On success it
