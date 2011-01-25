@@ -217,68 +217,6 @@ reportfile_free(reportfile_t* file)
 
 
 //
-// post_signature()
-//
-char*
-post_signature(const char* baseURL, bool ssl_verify, const char* signature)
-{
-    string URL = concat_path_file(baseURL, "/signatures");
-
-    abrt_post_state *state = new_abrt_post_state(0
-                + ABRT_POST_WANT_HEADERS
-                + ABRT_POST_WANT_BODY
-                + ABRT_POST_WANT_ERROR_MSG
-                + (ssl_verify ? ABRT_POST_WANT_SSL_VERIFY : 0)
-    );
-    int http_resp_code = abrt_post_string(state, URL.c_str(), "application/xml", signature);
-
-    char *retval;
-    const char *strata_msg;
-    switch (http_resp_code)
-    {
-    case 200:
-    case 201:
-        if (state->body)
-        {
-            retval = state->body;
-            state->body = NULL;
-            break;
-        }
-        strata_msg = find_header_in_abrt_post_state(state, "Strata-Message:");
-        if (strata_msg && strcmp(strata_msg, "CREATED") != 0) {
-            retval = xstrdup(strata_msg);
-            break;
-        }
-        retval = xstrdup("Signature submitted successfully");
-        break;
-
-    default:
-        strata_msg = find_header_in_abrt_post_state(state, "Strata-Message:");
-        if (strata_msg)
-        {
-            retval = xasprintf("Error (HTTP response %d): %s",
-                        http_resp_code,
-                        strata_msg);
-            break;
-        }
-        if (state->curl_error_msg)
-        {
-            if (http_resp_code >= 0)
-                retval = xasprintf("Error (HTTP response %d): %s", http_resp_code, state->curl_error_msg);
-            else
-                retval = xasprintf("Error in HTTP transaction: %s", state->curl_error_msg);
-            break;
-        }
-        retval = xasprintf("Error (HTTP response %d), body:\n%s", http_resp_code, state->body);
-        break;
-    }
-
-    free_abrt_post_state(state);
-    return retval;
-}
-
-
-//
 // send_report_to_new_case()
 //
 

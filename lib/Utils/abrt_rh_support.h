@@ -33,7 +33,6 @@ void reportfile_add_binding_from_namedfile(reportfile_t* file,
 
 const char* reportfile_as_string(reportfile_t* file);
 
-char* post_signature(const char* baseURL, bool ssl_verify, const char* signature);
 char*
 send_report_to_new_case(const char* baseURL,
                 const char* username,
