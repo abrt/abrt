@@ -210,7 +210,7 @@ class DebugInfoDownload(YumBase):
                     installed_size += float(pkg[0].installedsize)
                     total_pkgs += 1
 
-                log2("found pkg for %s" % debuginfo_path)
+                log2("found pkg for %s : %s" % (debuginfo_path, pkg[0]))
             else:
                 log2("not found pkg for %s" % debuginfo_path)
                 not_found.append(debuginfo_path)
@@ -271,13 +271,13 @@ class DebugInfoDownload(YumBase):
 
             downloaded_pkgs += 1
 
-        if not self.keeprpms:
+        if not self.keeprpms and os.path.exists(self.tmpdir):
             print (_("All downloaded packages have been extracted, removing %s")
                  % self.tmpdir)
             try:
                 os.rmdir(self.tmpdir)
             except OSError:
-                print _("Can't remove %s, probably contains an error log")
+                print _("Can't remove %s, probably contains an error log" % self.tmpdir)
 
 verbose = 0
 def log1(message):
