@@ -1,8 +1,8 @@
 bin_SCRIPTS = abrt-gui
 
 PYTHON_FILES = CCDBusBackend.py CCDumpList.py CCDump.py CC_gui_functions.py \
-               CCReporterDialog.py abrt_utils.py \
-               CCMainWindow.py CellRenderers.py ABRTExceptions.py \
+               abrt_utils.py \
+               CCMainWindow.py ABRTExceptions.py \
                SettingsDialog.py ABRTPlugin.py PluginList.py PluginSettingsUI.py \
                PluginsSettingsDialog.py ConfBackend.py CReporterAssistant.py
 
