@@ -21,7 +21,6 @@ import CCDBusBackend
 from CC_gui_functions import *
 from CCDumpList import getDumpList
 from CCDump import *   # FILENAME_xxx, CD_xxx
-from CCReporterDialog import ReporterDialog, ReporterSelector
 from CReporterAssistant import ReporterAssistant
 from PluginsSettingsDialog import PluginsSettingsDialog
 from SettingsDialog import SettingsDialog
@@ -38,6 +37,7 @@ class MainWindow():
         #Set the Glade file
         self.gladefile = "%s/ccgui.glade" % sys.path[0]
         self.wTree = gtk.glade.XML(self.gladefile)
+
 
         #Get the Main Window, and connect the "destroy" event
         self.window = self.wTree.get_widget("main_window")
@@ -102,7 +102,7 @@ class MainWindow():
         #self.ccdaemon.connect("update", self.update_cb)
         # for now, just treat them the same (w/o this, we don't even see daemon warnings in logs!):
         #self.ccdaemon.connect("warning", self.update_cb)
-        self.ccdaemon.connect("show", self.show_cb)
+        self.ccdaemon.connect("show_gui", self.show_cb)
         self.ccdaemon.connect("daemon-state-changed", self.on_daemon_state_changed_cb)
         self.ccdaemon.connect("report-done", self.on_report_done_cb)
 
@@ -394,7 +394,7 @@ class MainWindow():
             sys.exit()
 
     def show(self):
-        self.window.show()
+        self.window.show_all()
 
     def show_cb(self, daemon):
         if self.window:

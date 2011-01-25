@@ -21,6 +21,7 @@ class DBusManager(gobject.GObject):
     # and later with policyKit
     bus = None
     def __init__(self):
+
         session = None
         # binds the dbus to glib mainloop
         DBusGMainLoop(set_as_default=True)
@@ -60,7 +61,7 @@ class DBusManager(gobject.GObject):
         # signal emited to update gui with current status
         gobject.signal_new("update", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
         # signal emited to show gui if user try to run it again
-        gobject.signal_new("show", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
+        gobject.signal_new("show_gui", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
         gobject.signal_new("daemon-state-changed", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
         gobject.signal_new("report-done", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
 
