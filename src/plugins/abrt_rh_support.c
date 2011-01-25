@@ -211,6 +211,7 @@ reportfile_free(reportfile_t* file)
 }
 
 
+#if 0 //unused
 //
 // post_signature()
 //
@@ -272,6 +273,7 @@ post_signature(const char* baseURL, bool ssl_verify, const char* signature)
     free_abrt_post_state(state);
     return retval;
 }
+#endif
 
 
 //
