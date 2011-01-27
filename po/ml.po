@@ -1,4 +1,4 @@
-# translation of abrt.1-1-x.po to Malayalam
+# translation of abrt.1-1-x.ml.po to
 # translation of ml.po to
 # translation of abrt.master.ml.po to
 # translation of abrt.master.abrt.ml.po to
@@ -9,16 +9,16 @@
 # Ani Peter <apeter@redhat.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.1-1-x\n"
+"Project-Id-Version: abrt.1-1-x.ml\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-14 16:16+0100\n"
-"PO-Revision-Date: 2011-01-10 16:49+0530\n"
-"Last-Translator: Ani Peter <apeter@redhat.com>\n"
-"Language-Team: Malayalam <smc-discuss@googlegorups.com>\n"
-"Language: \n"
+"POT-Creation-Date: 2011-01-27 07:45+0000\n"
+"PO-Revision-Date: 2011-01-27 20:50+0530\n"
+"Last-Translator:  Ani Peter <apeter@redhat.com>\n"
+"Language-Team:  Swathantra Malayalam computing\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
@@ -52,51 +52,51 @@ msgstr "ബഗ്സിലയിലേക്ക് പ്രവേശിക്�
 msgid "Checking for duplicates..."
 msgstr "ഒരേപോലുള്ളവയ്ക്കായി തെരയുന്നു..."
 
-#: ../lib/Plugins/Bugzilla.cpp:791 ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:792 ../lib/Plugins/Bugzilla.cpp:827
 msgid "Missing mandatory member 'bugs'"
 msgstr "നിര്‍ബന്ധമായും ആവശ്യമുള്ള 'ബഗുകള്‍' ലഭ്യമല്ല"
 
-#: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
-#: ../lib/Plugins/Bugzilla.cpp:918
+#: ../lib/Plugins/Bugzilla.cpp:810 ../lib/Plugins/Bugzilla.cpp:843
+#: ../lib/Plugins/Bugzilla.cpp:919
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() പരാജയപ്പെട്ടു. നിര്‍ബന്ധമായും ആവശ്യമുള്ള എല്ലാ വിവരങ്ങളും ശേഖരിക്കുവാന്‍ "
 "സാധ്യമായില്ല"
 
-#: ../lib/Plugins/Bugzilla.cpp:858
+#: ../lib/Plugins/Bugzilla.cpp:859
 msgid "Creating a new bug..."
 msgstr "പുതിയ ബഗ് തയ്യാറാക്കുന്നു..."
 
-#: ../lib/Plugins/Bugzilla.cpp:863
+#: ../lib/Plugins/Bugzilla.cpp:864
 msgid "Bugzilla entry creation failed"
 msgstr "ബഗ്സിലാ എന്‍ട്രി തയ്യാറാക്കല്‍ പരാജയപ്പെട്ടു"
 
-#: ../lib/Plugins/Bugzilla.cpp:873 ../lib/Plugins/Bugzilla.cpp:968
+#: ../lib/Plugins/Bugzilla.cpp:874 ../lib/Plugins/Bugzilla.cpp:969
 msgid "Logging out..."
 msgstr "ലോഗൌട്ട് ചെയ്യുന്നു..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:892
+#: ../lib/Plugins/Bugzilla.cpp:893
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "ബഗ് രേഖപ്പെടുത്തിയിട്ടുണ്ടു്: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:903
+#: ../lib/Plugins/Bugzilla.cpp:904
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "%d ബഗിന്റെ പേരന്റ് കണ്ടുപിടിക്കുവാന്‍ ബഗ്സിലയ്ക്കു് സാധ്യമായില്ല"
 
-#: ../lib/Plugins/Bugzilla.cpp:932 ../lib/Plugins/Bugzilla.cpp:933
+#: ../lib/Plugins/Bugzilla.cpp:933 ../lib/Plugins/Bugzilla.cpp:934
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "CC പട്ടികയിലേക്കു് %s ചേര്‍ക്കുക"
 
-#: ../lib/Plugins/Bugzilla.cpp:957
+#: ../lib/Plugins/Bugzilla.cpp:958
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "ബഗിലേക്കു് പുതിയ കമന്റ് ചേര്‍ക്കുക(%d)"
 
-#: ../lib/Plugins/Bugzilla.cpp:1056
+#: ../lib/Plugins/Bugzilla.cpp:1057
 msgid "Reports bugs to bugzilla"
 msgstr "ബഗ്സിലയിലേക്ക് ബഗുകള്‍ രേഖപ്പെടുത്തുന്നു"
 
@@ -200,21 +200,19 @@ msgid "Creating a ReportUploader report..."
 msgstr "ഒരു ReportUploader റിപോര്‍ട്ട് തയ്യാറാക്കുന്നു..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-msgstr ""
-".tar.gz ഫയലിലേക്ക് തകരാറുകള്ള ഡേറ്റാ സൂക്ഷിയ്ക്കുന്നു, FTP/SCP/etc വഴിയും അപ്‌ലോഡ് ചെയ്യുന്നു"
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgstr ".tar.gz ഫയലിലേക്ക് തകരാറുകള്ള ഡേറ്റാ സൂക്ഷിയ്ക്കുന്നു, FTP/SCP/etc വഴിയും അപ്‌ലോഡ് ചെയ്യുന്നു"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../lib/Plugins/RHTSupport.cpp:106
 msgid "Compressing data"
-msgstr ""
+msgstr "ഡേറ്റാ ചുരുക്കുന്നു"
 
-#: ../lib/Plugins/RHTSupport.cpp:236
+#: ../lib/Plugins/RHTSupport.cpp:238
 msgid "Creating a new case..."
 msgstr "പുതിയ ബഗ് തയ്യാറക്കുന്നു..."
 
-#: ../lib/Plugins/RHTSupport.cpp:312
+#: ../lib/Plugins/RHTSupport.cpp:315
 msgid "Reports bugs to Red Hat support"
 msgstr "Red Hat സപ്പോര്‍ട്ടിലേക്കു് ബഗുകള്‍ രേഖപ്പെടുത്തുന്നു"
 
@@ -362,7 +360,7 @@ msgstr "RHTSupport യുആര്‍എല്‍:"
 #: ../lib/Utils/abrt_curl.cpp:180
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
-msgstr ""
+msgstr "അപ്‌ലോഡ് ചെയ്തവ: %llu/%llu kbytes"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -387,29 +385,28 @@ msgstr "ഒരു തകരാര്‍ കണ്ടുപിടിച്ചി�
 msgid "ABRT service is not running"
 msgstr "ABRT സര്‍വീസ് പ്രവര്‍ത്തിക്കുന്നില്ല"
 
-#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
-#: ../src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:41 ../src/Applet/CCApplet.cpp:43
+#: ../src/Applet/CCApplet.cpp:266 ../src/Applet/CCApplet.cpp:293
 msgid "Warning"
 msgstr "മുന്നറിയിപ്പു്"
 
-#: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+#: ../src/Applet/CCApplet.cpp:95
+msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT കണ്ടുപിടിക്കുന്ന പ്രശ്നങ്ങളെപ്പറ്റി ഉപയോക്താവിനെ അറിയിക്കുന്നതിനായുള്ള ആപ്ലെറ്റ്"
 
-#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:24
+#: ../src/Applet/CCApplet.cpp:111 ../src/Gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr "Ani Peter | അനി പീറ്റര്‍ <apeter@redhat.com>"
 
-#: ../src/Applet/CCApplet.cpp:115
+#: ../src/Applet/CCApplet.cpp:121
 msgid "Hide"
 msgstr "അദൃശ്യമാക്കുക"
 
-#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:14
+#: ../src/Applet/CCApplet.cpp:259 ../src/Gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "റിപോര്‍ട്ട്"
 
-#: ../src/Applet/CCApplet.cpp:256 ../src/Applet/CCApplet.cpp:284
+#: ../src/Applet/CCApplet.cpp:262 ../src/Applet/CCApplet.cpp:290
 msgid "Open ABRT"
 msgstr "ABRT തുറക്കുക"
 
@@ -714,8 +711,7 @@ msgstr ""
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
-msgstr ""
-"ഡേറ്റാബെയിസ് പ്ലഗിന്‍ വ്യക്തമാക്കിയിട്ടില്ല. ദയവായി abrtd സജ്ജീകരണങ്ങള്‍ പരിശോധിയ്ക്കുക."
+msgstr "ഡേറ്റാബെയിസ് പ്ലഗിന്‍ വ്യക്തമാക്കിയിട്ടില്ല. ദയവായി abrtd സജ്ജീകരണങ്ങള്‍ പരിശോധിയ്ക്കുക."
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -726,10 +722,8 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "മറ്റൊരു ക്ലൈന്റ് പ്രവര്‍ത്തിക്കുന്നു, ലഭ്യമാക്കുവാന്‍ ശ്രമിക്കുന്നു..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
-msgstr ""
-"ഡെമണില്‍ നിന്നും അപ്രതീക്ഷിതമായ ഡേറ്റാ ലഭിച്ചു (ഈ ഡേറ്റാബെയിസ് ശരിയായി പുതുക്കിയോ?). "
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgstr "ഡെമണില്‍ നിന്നും അപ്രതീക്ഷിതമായ ഡേറ്റാ ലഭിച്ചു (ഈ ഡേറ്റാബെയിസ് ശരിയായി പുതുക്കിയോ?). "
 
 #: ../src/Gui/ABRTPlugin.py:71
 msgid "Not loaded plugins"
@@ -810,7 +804,7 @@ msgstr "ക്ലിപ്പ്ബോര്‍ഡിലേക്ക് പക�
 
 #: ../src/Gui/ccgui.glade.h:12
 msgid "Online _Help"
-msgstr ""
+msgstr "ഓണ്‍ലൈന്‍ _സഹായം"
 
 #: ../src/Gui/ccgui.glade.h:13 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
@@ -1025,8 +1019,7 @@ msgstr "റിപോര്‍ട്ട് ലഭിക്കുന്നതി�
 
 #: ../src/Gui/ConfBackend.py:79
 msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
-msgstr ""
-"ഗ്നോം കീറിങ് ഡെമണിലേക്ക് കണക്ട് ചെയ്യുവാന്‍ സാധ്യമല്ല, മാറ്റങ്ങള്‍ അതിനാല്‍ സൂക്ഷിയ്ക്കുന്നതല്ല."
+msgstr "ഗ്നോം കീറിങ് ഡെമണിലേക്ക് കണക്ട് ചെയ്യുവാന്‍ സാധ്യമല്ല, മാറ്റങ്ങള്‍ അതിനാല്‍ സൂക്ഷിയ്ക്കുന്നതല്ല."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
@@ -1035,24 +1028,20 @@ msgid "Cannot get the default keyring."
 msgstr "സ്വതവേയുള്ള കീറിങ് ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല."
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr ""
-"gnome-keyring-ലേക്കുള്ള പ്രവേശനം നിഷേധിച്ചിരിയ്ക്കുന്നു, പ്ലഗിന്‍ സജ്ജീകരണങ്ങള്‍ സൂക്ഷിയ്ക്കുന്നതല്ല."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgstr "gnome-keyring-ലേക്കുള്ള പ്രവേശനം നിഷേധിച്ചിരിയ്ക്കുന്നു, പ്ലഗിന്‍ സജ്ജീകരണങ്ങള്‍ സൂക്ഷിയ്ക്കുന്നതല്ല."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr ""
 "gnome-keyring-ലേക്കുള്ള പ്രവേശനം നിഷേധിച്ചിരിയ്ക്കുന്നു, %s-നുള്ള സജ്ജീകരണങ്ങള്‍ ലഭ്യമാക്കുവാന്‍ "
 "സാധ്യമല്ല!"
 
 #: ../src/Gui/ConfBackend.py:208
 msgid "Access to gnome-keyring has been denied, cannot load settings."
-msgstr ""
-"gnome-keyring-ലേക്കുള്ള പ്രവേശനം നിഷേധിച്ചിരിയ്ക്കുന്നു, സജ്ജീകരണങ്ങള്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല."
+msgstr "gnome-keyring-ലേക്കുള്ള പ്രവേശനം നിഷേധിച്ചിരിയ്ക്കുന്നു, സജ്ജീകരണങ്ങള്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല."
 
 #: ../src/Gui/CReporterAssistant.py:21
 msgid "Crash info doesn't contain a backtrace"
@@ -1166,8 +1155,7 @@ msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "എങ്ങനെ തകരാര്‍ സംഭവിച്ചു? ഇതു് വീണ്ടും എങ്ങനെ ലഭ്യമാക്കാം?"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr ""
 "നിങ്ങള്‍ക്കു് സോഫ്റ്റ്‌വെയര്‍ മെയിന്റെയിനേര്‍സിനെ അറിയിയ്ക്കുവാന്‍ എന്തെങ്കിലും അഭിപ്രായങ്ങളോ "
 "നിര്‍ദ്ദേശങ്ങളോ ഉണ്ടോ?"
@@ -1189,8 +1177,7 @@ msgid "Confirm and send the report"
 msgstr "റിപോര്‍ട്ട് ഉറപ്പാക്കി അയയ്ക്കുക"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "നിങ്ങള്‍ റിപോര്‍ട്ട് ചെയ്ത ബഗ് താഴെ ചുരുക്കത്തില്‍ കാണാം. 'സൂക്ഷിയ്ക്കുക' ക്ലിക്ക് ചെയ്തു് ഇതു് "
 "സമര്‍പ്പിയ്ക്കുക."
@@ -1387,8 +1374,7 @@ msgstr "ബാക്ക്ട്രെയിസ് വീണ്ടും ലഭ�
 
 #: ../src/Gui/report.glade.h:19
 msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
-msgstr ""
-"ബാക്ക്ട്രെയിസ് പരിശോധിച്ചു് സെന്‍സിറ്റീവ് ഡേറ്റാ നീക്കം ചെയ്തിരിക്കുന്നു (രഹസ്യവാക്കുകള്‍ എന്നിവ)"
+msgstr "ബാക്ക്ട്രെയിസ് പരിശോധിച്ചു് സെന്‍സിറ്റീവ് ഡേറ്റാ നീക്കം ചെയ്തിരിക്കുന്നു (രഹസ്യവാക്കുകള്‍ എന്നിവ)"
 
 #: ../src/Gui/report.glade.h:20
 msgid "N/A"
@@ -1523,3 +1509,4 @@ msgstr ""
 "സജ്ജമാക്കിയ ചില റിപോര്‍ട്ടര്‍ പ്ലഗിനുകള്‍ക്കു് തെറ്റായ സജ്ജീകരണങ്ങള്‍ കണ്ടുപിടിച്ചിരിയ്ക്കുന്നു. താഴെ "
 "കാണിച്ചിരിയ്ക്കുന്ന ബട്ടണുകള്‍ ഉപയോഗിച്ചു് അതതു് ക്രമീകരണം തുറന്നു് അവ പരിഹരിച്ചു് മുമ്പോട്ടു് നീങ്ങുക, "
 "അല്ലെങ്കില്‍ റിപോര്‍ട്ട് ചെയ്യുവാന്‍ സാധ്യമാകുന്നതല്ല.\n"
+
