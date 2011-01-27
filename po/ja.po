@@ -10,16 +10,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-14 16:16+0100\n"
-"PO-Revision-Date: 2011-01-12 18:31+0900\n"
+"POT-Creation-Date: 2011-01-27 05:40+0000\n"
+"PO-Revision-Date: 2011-01-27 15:18+0900\n"
 "Last-Translator: Kiyoto Hashida <khashida@redhat.com>\n"
 "Language-Team: Japanese <jp@li.org>\n"
-"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
 "\n"
 "\n"
 "\n"
@@ -54,50 +54,49 @@ msgstr "bugzilla にログインしています..."
 msgid "Checking for duplicates..."
 msgstr "重複をチェックしています..."
 
-#: ../lib/Plugins/Bugzilla.cpp:791 ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:792 ../lib/Plugins/Bugzilla.cpp:827
 msgid "Missing mandatory member 'bugs'"
 msgstr "必須のメンバー「バグ」の欠如"
 
-#: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
-#: ../lib/Plugins/Bugzilla.cpp:918
+#: ../lib/Plugins/Bugzilla.cpp:810 ../lib/Plugins/Bugzilla.cpp:843
+#: ../lib/Plugins/Bugzilla.cpp:919
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
-"get_bug_info() の実行に失敗しました。全ての必須情報を収集できませんでした"
+msgstr "get_bug_info() の実行に失敗しました。全ての必須情報を収集できませんでした"
 
-#: ../lib/Plugins/Bugzilla.cpp:858
+#: ../lib/Plugins/Bugzilla.cpp:859
 msgid "Creating a new bug..."
 msgstr "新しいバグを作成中..."
 
-#: ../lib/Plugins/Bugzilla.cpp:863
+#: ../lib/Plugins/Bugzilla.cpp:864
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla エントリの作成に失敗しました"
 
-#: ../lib/Plugins/Bugzilla.cpp:873 ../lib/Plugins/Bugzilla.cpp:968
+#: ../lib/Plugins/Bugzilla.cpp:874 ../lib/Plugins/Bugzilla.cpp:969
 msgid "Logging out..."
 msgstr "ログアウトしています..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:892
+#: ../lib/Plugins/Bugzilla.cpp:893
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "バグは既に報告済みです: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:903
+#: ../lib/Plugins/Bugzilla.cpp:904
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla はバグ %d の親を見つけることが出来ませんでした"
 
-#: ../lib/Plugins/Bugzilla.cpp:932 ../lib/Plugins/Bugzilla.cpp:933
+#: ../lib/Plugins/Bugzilla.cpp:933 ../lib/Plugins/Bugzilla.cpp:934
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "CC 一覧に %s を追加"
 
-#: ../lib/Plugins/Bugzilla.cpp:957
+#: ../lib/Plugins/Bugzilla.cpp:958
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "バグ (%d) に新しいコメントを追加"
 
-#: ../lib/Plugins/Bugzilla.cpp:1056
+#: ../lib/Plugins/Bugzilla.cpp:1057
 msgid "Reports bugs to bugzilla"
 msgstr "bugzilla にバグを報告します"
 
@@ -201,8 +200,7 @@ msgid "Creating a ReportUploader report..."
 msgstr "ReportUploader の報告を作成しています..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 "クラッシュデータを .tar.gz ファイルに圧縮します。オプションとして FTP/SCP/"
 "etc 経由でアップロードします"
@@ -210,13 +208,13 @@ msgstr ""
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../lib/Plugins/RHTSupport.cpp:106
 msgid "Compressing data"
-msgstr ""
+msgstr "データを圧縮しています"
 
-#: ../lib/Plugins/RHTSupport.cpp:236
+#: ../lib/Plugins/RHTSupport.cpp:238
 msgid "Creating a new case..."
 msgstr "新しいケースを作成中..."
 
-#: ../lib/Plugins/RHTSupport.cpp:312
+#: ../lib/Plugins/RHTSupport.cpp:315
 msgid "Reports bugs to Red Hat support"
 msgstr "Red Hat サポートにバグを報告します"
 
@@ -364,7 +362,7 @@ msgstr "RHTSupport URL:"
 #: ../lib/Utils/abrt_curl.cpp:180
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
-msgstr ""
+msgstr "アップロード完了: %llu キロバイト中の %llu"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -389,30 +387,28 @@ msgstr "クラッシュが検出されました"
 msgid "ABRT service is not running"
 msgstr "ABRT サービスが稼働していません。"
 
-#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
-#: ../src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:41 ../src/Applet/CCApplet.cpp:43
+#: ../src/Applet/CCApplet.cpp:266 ../src/Applet/CCApplet.cpp:293
 msgid "Warning"
 msgstr "警告"
 
-#: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
-msgstr ""
-"ABRT によって検出された問題をユーザーに通知するための通知エリアアプレット"
+#: ../src/Applet/CCApplet.cpp:95
+msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgstr "ABRT によって検出された問題をユーザーに通知するための通知エリアアプレット"
 
-#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:24
+#: ../src/Applet/CCApplet.cpp:111 ../src/Gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr "翻訳者クレジット"
 
-#: ../src/Applet/CCApplet.cpp:115
+#: ../src/Applet/CCApplet.cpp:121
 msgid "Hide"
 msgstr "隠す"
 
-#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:14
+#: ../src/Applet/CCApplet.cpp:259 ../src/Gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "報告"
 
-#: ../src/Applet/CCApplet.cpp:256 ../src/Applet/CCApplet.cpp:284
+#: ../src/Applet/CCApplet.cpp:262 ../src/Applet/CCApplet.cpp:290
 msgid "Open ABRT"
 msgstr "ABRT を開く"
 
@@ -715,8 +711,7 @@ msgstr ""
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
-msgstr ""
-"データベースプラグインが指定されていません。 abrtd の設定を確認してください。"
+msgstr "データベースプラグインが指定されていません。 abrtd の設定を確認してください。"
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -727,8 +722,7 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "別のクライアントが稼働していますので、それを呼び出しています..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr ""
 "デーモンから予想外のデータを受け取りました(データベースは正常に更新されていま"
 "すか?)。"
@@ -812,7 +806,7 @@ msgstr "クリップボードにコピー"
 
 #: ../src/Gui/ccgui.glade.h:12
 msgid "Online _Help"
-msgstr ""
+msgstr "オンラインヘルプ (_H) "
 
 #: ../src/Gui/ccgui.glade.h:13 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
@@ -970,8 +964,7 @@ msgstr "バックトレースを使用できません。この問題を報告で
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
-msgstr ""
-"バックトレースが不完全です。再現手順が書かれているかどうか確認してください。"
+msgstr "バックトレースが不完全です。再現手順が書かれているかどうか確認してください。"
 
 #: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
@@ -1038,8 +1031,7 @@ msgid "Cannot get the default keyring."
 msgstr "デフォルトキーリングを取得できません。"
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
 "gnome-keyring へのアクセスが拒否されました。プラグインの設定は保存されませ"
 "ん。"
@@ -1047,8 +1039,7 @@ msgstr ""
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "gnome-keyring へのアクセスが拒否されました。%s の設定を読み込めません!"
 
 #: ../src/Gui/ConfBackend.py:208
@@ -1173,8 +1164,7 @@ msgstr ""
 "できますか?"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr "ソフトウェア管理者と共有したいコメントがありますか?"
 
 #: ../src/Gui/CReporterAssistant.py:723
@@ -1185,16 +1175,14 @@ msgstr "その他の情報を提供する"
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
-msgstr ""
-"<b>ヒント:</b> コメントは公開されます。そのつもりで発言には注意して下さい。"
+msgstr "<b>ヒント:</b> コメントは公開されます。そのつもりで発言には注意して下さい。"
 
 #: ../src/Gui/CReporterAssistant.py:770
 msgid "Confirm and send the report"
 msgstr "レポートを確認して送信する"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "バグレポートの要約を以下に示します。提出するには「適用」をクリックして下さ"
 "い。"
@@ -1526,3 +1514,4 @@ msgstr ""
 "有効になっているレポータープラグインの一部に不適切な設定が検出されました。以"
 "下のボタンを使用して各設定を開き、それらを修正してから進んで下さい。このまま"
 "では報告のプロセスは失敗するでしょう。\n"
+
