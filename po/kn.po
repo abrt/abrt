@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.kn\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-14 16:16+0100\n"
-"PO-Revision-Date: 2010-07-30 16:13+0530\n"
+"POT-Creation-Date: 2011-01-27 07:45+0000\n"
+"PO-Revision-Date: 2011-01-27 18:08+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: kn_IN <kde-i18n-doc@kde.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "X-Generator: Lokalize 1.0\n"
-"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../lib/Plugins/Bugzilla.cpp:543
 #, c-format
@@ -25,12 +25,8 @@ msgstr "ಹೊಸ ದೋಷ ವರದಿಯ ಐಡಿ: %i"
 
 #: ../lib/Plugins/Bugzilla.cpp:638
 #, c-format
-msgid ""
-"Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
-"conf. Server said: %s"
-msgstr ""
-"ಪ್ರವೇಶಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ. ಸಂಪಾದನೆ->ಪ್ಲಗ್‌ಇನ್‌ಗಳು->ಬಗ್‌ಝಿಲ್ಲಾ ಹಾಗು /etc/abrt/plugins/"
-"Bugzilla ಅನ್ನು ನೋಡಿ.conf. Server ಹೀಗೆ ಹೇಳಿದೆ : %s"
+msgid "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla.conf. Server said: %s"
+msgstr "ಪ್ರವೇಶಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ. ಸಂಪಾದನೆ->ಪ್ಲಗ್‌ಇನ್‌ಗಳು->ಬಗ್‌ಝಿಲ್ಲಾ ಹಾಗು /etc/abrt/plugins/Bugzilla ಅನ್ನು ನೋಡಿ.conf. Server ಹೀಗೆ ಹೇಳಿದೆ : %s"
 
 #: ../lib/Plugins/Bugzilla.cpp:758
 msgid ""
@@ -48,49 +44,53 @@ msgstr "ಬಗ್‌ಝಿಲ್ಲಾಗೆ ಪ್ರವೇಶಿಸಲಾಗ�
 msgid "Checking for duplicates..."
 msgstr "ದ್ವಿಪ್ರತಿಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:791 ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:792
+#: ../lib/Plugins/Bugzilla.cpp:827
 msgid "Missing mandatory member 'bugs'"
 msgstr "'ದೋಷಗಳು' ಎಂಬ ಅಗತ್ಯ ನಮೂದು ಕಾಣಿಸುತ್ತಿಲ್ಲ"
 
-#: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
-#: ../lib/Plugins/Bugzilla.cpp:918
+#: ../lib/Plugins/Bugzilla.cpp:810
+#: ../lib/Plugins/Bugzilla.cpp:843
+#: ../lib/Plugins/Bugzilla.cpp:919
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() ವಿಫಲಗೊಂಡಿದೆ. ಎಲ್ಲಾ ಅಗತ್ಯ ಮಾಹಿತಿಯನ್ನು ಸಂಗ್ರಹಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../lib/Plugins/Bugzilla.cpp:858
+#: ../lib/Plugins/Bugzilla.cpp:859
 msgid "Creating a new bug..."
 msgstr "ಹೊಸ ದೋಷವನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:863
+#: ../lib/Plugins/Bugzilla.cpp:864
 msgid "Bugzilla entry creation failed"
 msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ನಮೂದನ್ನು ರಚಿಸುವಿಕೆಯು ವಿಫಲಗೊಂಡಿದೆ"
 
-#: ../lib/Plugins/Bugzilla.cpp:873 ../lib/Plugins/Bugzilla.cpp:968
+#: ../lib/Plugins/Bugzilla.cpp:874
+#: ../lib/Plugins/Bugzilla.cpp:969
 msgid "Logging out..."
 msgstr "ನಿರ್ಗಮಿಸಲಾಗುತ್ತಿದೆ..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:892
+#: ../lib/Plugins/Bugzilla.cpp:893
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "ದೋಷವನ್ನು ಈಗಾಗಲೆ ವರದಿ ಮಾಡಲಾಗಿದೆ: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:903
+#: ../lib/Plugins/Bugzilla.cpp:904
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "ದೋಷ %d ಮೂಲವನ್ನು ಪತ್ತೆ ಮಾಡಲು ಬಗ್‌ಝಿಲ್ಲಾದಿಂದ ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../lib/Plugins/Bugzilla.cpp:932 ../lib/Plugins/Bugzilla.cpp:933
+#: ../lib/Plugins/Bugzilla.cpp:933
+#: ../lib/Plugins/Bugzilla.cpp:934
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "%s ರವರನ್ನು CC ಪಟ್ಟಿಗೆ ಸೇರಿಸು"
 
-#: ../lib/Plugins/Bugzilla.cpp:957
+#: ../lib/Plugins/Bugzilla.cpp:958
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "ದೋಷಕ್ಕೆ(%d) ಒಂದು ಹೊಸ ಟಿಪ್ಪಣಿಯನ್ನು ಸೇರಿಸಿ"
 
-#: ../lib/Plugins/Bugzilla.cpp:1056
+#: ../lib/Plugins/Bugzilla.cpp:1057
 msgid "Reports bugs to bugzilla"
 msgstr "ದೋಷಗಳನ್ನು ಬಗ್‌ಝಿಲ್ಲಾಗೆ ವರದಿ ಮಾಡುತ್ತದೆ"
 
@@ -109,17 +109,19 @@ msgstr "debuginfo ಅನುಸ್ಥಾಪನೆಯನ್ನು ಉಪೇಕ್�
 #: ../lib/Plugins/CCpp.cpp:670
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "%s ಗಾಗಿ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ವಿಫಲಗೊಂಡಿದೆ"
 
 #: ../lib/Plugins/CCpp.cpp:967
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "C/C++ ಪ್ರೊಗ್ರಾಮ್‌ಗಳಲ್ಲಿನ ಕುಸಿತಗಳನ್ನು ವಿಶ್ಲೇಷಿಸುತ್ತದೆ"
 
-#: ../lib/Plugins/FileTransfer.cpp:52 ../lib/Plugins/ReportUploader.cpp:97
+#: ../lib/Plugins/FileTransfer.cpp:52
+#: ../lib/Plugins/ReportUploader.cpp:97
 msgid "FileTransfer: URL not specified"
 msgstr "ಕಡತ ವರ್ಗಾವಣೆ: URL ಅನ್ನು ಸೂಚಿಸಲಾಗಿಲ್ಲ"
 
-#: ../lib/Plugins/FileTransfer.cpp:56 ../lib/Plugins/ReportUploader.cpp:101
+#: ../lib/Plugins/FileTransfer.cpp:56
+#: ../lib/Plugins/ReportUploader.cpp:101
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "ಆರ್ಕೈವ್ %s ಅನ್ನು %s ಗೆ ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ"
@@ -128,7 +130,8 @@ msgstr "ಆರ್ಕೈವ್ %s ಅನ್ನು %s ಗೆ ಕಳುಹಿಸಲ
 msgid "FileTransfer: Creating a report..."
 msgstr "ಕಡತ ವರ್ಗಾವಣೆ: ಒಂದು ವರದಿಯನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/FileTransfer.cpp:263 ../lib/Plugins/FileTransfer.cpp:292
+#: ../lib/Plugins/FileTransfer.cpp:263
+#: ../lib/Plugins/FileTransfer.cpp:292
 #, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "ಒಂದು ಆರ್ಕೈವ್ ಅನ್ನು ರಚಿಸಲು ಹಾಗು ಕಳುಹಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
@@ -194,25 +197,21 @@ msgid "Creating a ReportUploader report..."
 msgstr "ಒಂದು ReportUploader ವರದಿಯನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-msgstr ""
-"ಕುಸಿತದ ದತ್ತಾಂಶವನ್ನು .tar.gz ಕಡತಕ್ಕೆ ಸೇರಿಸಲಾಗುತ್ತಿದೆ, ಅಗತ್ಯವಿದ್ದಲ್ಲಿ FTP/SCP/etc ಗೂ "
-"ಸಹ ಅಪ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ"
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgstr "ಕುಸಿತದ ದತ್ತಾಂಶವನ್ನು .tar.gz ಕಡತಕ್ಕೆ ಸೇರಿಸಲಾಗುತ್ತಿದೆ, ಅಗತ್ಯವಿದ್ದಲ್ಲಿ FTP/SCP/etc ಗೂ ಸಹ ಅಪ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../lib/Plugins/RHTSupport.cpp:106
 msgid "Compressing data"
-msgstr ""
+msgstr "ದತ್ತಾಂಶವನ್ನು ಸಂಕುಚನಗೊಳಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../lib/Plugins/RHTSupport.cpp:236
+#: ../lib/Plugins/RHTSupport.cpp:238
 msgid "Creating a new case..."
 msgstr "ಹೊಸ ಸನ್ನಿವೇಶವನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/RHTSupport.cpp:312
-#, fuzzy
+#: ../lib/Plugins/RHTSupport.cpp:315
 msgid "Reports bugs to Red Hat support"
-msgstr "ದೋಷಗಳನ್ನು ಬಗ್‌ಝಿಲ್ಲಾಗೆ ವರದಿ ಮಾಡುತ್ತದೆ"
+msgstr "ದೋಷಗಳನ್ನು Red Hat ಸಪೂರ್ಟಿಗೆ ವರದಿ ಮಾಡುತ್ತದೆ"
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
@@ -251,25 +250,24 @@ msgstr "ಇನ್ನೂ ಸಹ ಒಂದು ಖಾತೆಯನ್ನು ಹೊ�
 msgid "Login(email):"
 msgstr "ಲಾಗಿನ್(ಇಮೈಲ್):"
 
-#: ../lib/Plugins/Bugzilla.glade.h:5 ../lib/Plugins/RHTSupport.glade.h:3
+#: ../lib/Plugins/Bugzilla.glade.h:5
+#: ../lib/Plugins/RHTSupport.glade.h:3
 msgid "Password:"
 msgstr "ಗುಪ್ತಪದ:"
 
-#: ../lib/Plugins/Bugzilla.glade.h:6 ../lib/Plugins/RHTSupport.glade.h:5
+#: ../lib/Plugins/Bugzilla.glade.h:6
+#: ../lib/Plugins/RHTSupport.glade.h:5
 msgid "SSL verify"
 msgstr "SSL ಪರಿಶೀಲನೆ"
 
-#: ../lib/Plugins/Bugzilla.glade.h:7 ../lib/Plugins/RHTSupport.glade.h:6
+#: ../lib/Plugins/Bugzilla.glade.h:7
+#: ../lib/Plugins/RHTSupport.glade.h:6
 msgid "Show password"
 msgstr "ಗುಪ್ತಪದವನ್ನು ತೋರಿಸು"
 
 #: ../lib/Plugins/Bugzilla.glade.h:8
-msgid ""
-"You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
-"\">here</a>"
-msgstr ""
-"ಅದನ್ನು ನೀವು <a href=\"https://bugzilla.redhat.com/createaccount.cgi\">ಇಲ್ಲಿ</"
-"a> ರಚಿಸಬಹುದು"
+msgid "You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi\">here</a>"
+msgstr "ಅದನ್ನು ನೀವು <a href=\"https://bugzilla.redhat.com/createaccount.cgi\">ಇಲ್ಲಿ</a> ರಚಿಸಬಹುದು"
 
 #: ../lib/Plugins/KerneloopsReporter.glade.h:1
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
@@ -358,14 +356,16 @@ msgstr "RHTSupport URL:"
 #: ../lib/Utils/abrt_curl.cpp:180
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
-msgstr ""
+msgstr "%llu ಅನ್ನು (%llu kbytes ನಲ್ಲಿ) ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
 msgstr "ABRT ಸೂಚನಾ ಆಪ್ಲೆಟ್"
 
-#: ../src/Applet/abrt-applet.desktop.in.h:2 ../src/Gui/abrt.desktop.in.h:1
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/CCMainWindow.py:8
+#: ../src/Applet/abrt-applet.desktop.in.h:2
+#: ../src/Gui/abrt.desktop.in.h:1
+#: ../src/Gui/ccgui.glade.h:10
+#: ../src/Gui/CCMainWindow.py:8
 #: ../src/Gui/report.glade.h:16
 msgid "Automatic Bug Reporting Tool"
 msgstr "ಸ್ವಯಂಚಾಲಿತ ದೋಷ ವರದಿ ಮಾಡುವ ಉಪಕರಣ"
@@ -383,29 +383,33 @@ msgstr "ಒಂದು ಕುಸಿತವನ್ನು ಪತ್ತೆ ಮಾಡಲ
 msgid "ABRT service is not running"
 msgstr "ABRT ಸೇವೆಯು ಚಾಲನೆಯಲ್ಲಿಲ್ಲ"
 
-#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
-#: ../src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:41
+#: ../src/Applet/CCApplet.cpp:43
+#: ../src/Applet/CCApplet.cpp:266
+#: ../src/Applet/CCApplet.cpp:293
 msgid "Warning"
 msgstr "ಎಚ್ಚರಿಕೆ"
 
-#: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+#: ../src/Applet/CCApplet.cpp:95
+msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT ಇಂದ ಪತ್ತೆ ಮಾಡಲಾದ ತೊಂದರೆಗಳನ್ನು ಬಳಕೆದಾರರಿಗೆ ಸೂಚಿಸುವ ಸೂಚನಾ ಸ್ಥಳದ ಆಪ್ಲೆಟ್"
 
-#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:24
+#: ../src/Applet/CCApplet.cpp:111
+#: ../src/Gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr "ಶಂಕರ್ ಪ್ರಸಾದ್ <svenkate@redhat.com>"
 
-#: ../src/Applet/CCApplet.cpp:115
+#: ../src/Applet/CCApplet.cpp:121
 msgid "Hide"
 msgstr "ಅಡಗಿಸು"
 
-#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:14
+#: ../src/Applet/CCApplet.cpp:259
+#: ../src/Gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "ವರದಿ"
 
-#: ../src/Applet/CCApplet.cpp:256 ../src/Applet/CCApplet.cpp:284
+#: ../src/Applet/CCApplet.cpp:262
+#: ../src/Applet/CCApplet.cpp:290
 msgid "Open ABRT"
 msgstr "ABRT ಅನ್ನು ತೆರೆ"
 
@@ -432,7 +436,7 @@ msgid "\tHostname   : %s\n"
 msgstr "\tಆತಿಥೇಯದ ಹೆಸರು   : %s\n"
 
 #: ../src/CLI/CLI.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
 "Last crash:         %s\n"
@@ -452,19 +456,17 @@ msgstr ""
 "ಆಜ್ಞೆ:            %s\n"
 "ಎಕ್ಸಿಗ್ಯೂಟೆಬಲ್:         %s\n"
 "ವ್ಯವಸ್ಥೆ:             %s, kernel %s\n"
-"ಗುಣನಿಶ್ಚಯ:             %s\n"
-"ಕೋರ್-ಡಂಪ್ ಕಡತ:      %s\n"
 "ಕಾರಣ:             %s\n"
 
 #: ../src/CLI/CLI.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Coredump file:      %s\n"
-msgstr "ಕುಸಿತದ ಕ್ರಿಯೆ:     %s\n"
+msgstr "ಕೋರ್ ಡಂಪ್ ಕಡತ:     %s\n"
 
 #: ../src/CLI/CLI.cpp:135
-#, fuzzy, c-format
+#, c-format
 msgid "Rating:             %s\n"
-msgstr "ಅತಿಥೇಯದ ಹೆಸರು:          %s\n"
+msgstr "ಗುಣ ನಿಶ್ಚಯ:          %s\n"
 
 #: ../src/CLI/CLI.cpp:140
 #, c-format
@@ -521,14 +523,12 @@ msgid ""
 "\n"
 "Actions:\n"
 "\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
-"\t      -f, --full\tprint a list of all crashes, including the already "
-"reported ones\n"
+"\t      -f, --full\tprint a list of all crashes, including the already reported ones\n"
 "\t-r, --report CRASH_ID\tcreate and send a report\n"
 "\t      -y, --always\tcreate and send a report without asking\n"
 "\t-d, --delete CRASH_ID\tremove a crash\n"
 "\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
-"\t      -b, --backtrace\tprint detailed information about a crash including "
-"backtrace\n"
+"\t      -b, --backtrace\tprint detailed information about a crash including backtrace\n"
 "CRASH_ID can be:\n"
 "\tUID:UUID pair,\n"
 "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
@@ -542,14 +542,12 @@ msgstr ""
 "\n"
 "Actions:\n"
 "\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
-"\t      -f, --full\tprint a list of all crashes, including the already "
-"reported ones\n"
+"\t      -f, --full\tprint a list of all crashes, including the already reported ones\n"
 "\t-r, --report CRASH_ID\tcreate and send a report\n"
 "\t      -y, --always\tcreate and send a report without asking\n"
 "\t-d, --delete CRASH_ID\tremove a crash\n"
 "\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
-"\t      -b, --backtrace\tprint detailed information about a crash including "
-"backtrace\n"
+"\t      -b, --backtrace\tprint detailed information about a crash including backtrace\n"
 "CRASH_ID can be:\n"
 "\tUID:UUID pair,\n"
 "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
@@ -618,8 +616,7 @@ msgstr "# ಕಾರ್ಯ ವ್ಯವಸ್ಥೆಯ ಬಿಡುಗಡೆ ವ�
 
 #: ../src/CLI/report.cpp:336
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr ""
-"vi ಅನ್ನು ಚಲಾಯಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: $TERM, $VISUAL ಹಾಗು $EDITOR ಅನ್ನು ಹೊಂದಿಸಲಾಗಿಲ್ಲ"
+msgstr "vi ಅನ್ನು ಚಲಾಯಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: $TERM, $VISUAL ಹಾಗು $EDITOR ಅನ್ನು ಹೊಂದಿಸಲಾಗಿಲ್ಲ"
 
 #: ../src/CLI/report.cpp:424
 msgid ""
@@ -640,11 +637,11 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/CLI/report.cpp:545
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: ../src/CLI/report.cpp:546
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:647
@@ -665,30 +662,26 @@ msgid "Reporting..."
 msgstr "ವರದಿ ಮಾಡಲಾಗುತ್ತಿದೆ..."
 
 #: ../src/CLI/report.cpp:721
-#, fuzzy, c-format
+#, c-format
 msgid "Report using %s?"
-msgstr "%s ಅನ್ನು ಬಳಸುತ್ತಿದೆಯೆ? [y/N]: "
+msgstr "%s ಅನ್ನು ಬಳಸಿಕೊಂಡು ವರದಿ ಮಾಡಬೇಕೆ?"
 
 #: ../src/CLI/report.cpp:724
 msgid "Skipping..."
 msgstr "ಕಡೆಗಣಿಸಲಾಗುತ್ತಿದೆ..."
 
 #: ../src/CLI/report.cpp:736
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಬಳಸಲು ಯೋಗ್ಯವಾಗಿರದೆ ಇರುವುದರಿಂದ ವರದಿ ಮಾಡುವುದನ್ನು ಅಶಕ್ತಗೊಳಿಸಲಾಗಿದೆ."
 
 #: ../src/CLI/report.cpp:740
 #, c-format
-msgid ""
-"Please try to install debuginfo manually using the command: \"debuginfo-"
-"install %s\" and try again\n"
-msgstr ""
+msgid "Please try to install debuginfo manually using the command: \"debuginfo-install %s\" and try again\n"
+msgstr "ದಯವಿಟ್ಟು ಈ ಆಜ್ಞೆಯನ್ನು ಬಳಸಿಕೊಂಡು ದೋಷನಿವಾರಣಾ ಮಾಹಿತಿಯನ್ನು ಕೈಯಾರೆ ಅನುಸ್ಥಾಪಿಸಲು ಪ್ರಯತ್ನಿಸಿ: \"debuginfo-install %s\" ಹಾಗು ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ\n"
 
 #: ../src/CLI/report.cpp:749
-#, fuzzy
 msgid "Error loading reporter settings"
-msgstr "ವರದಿಯನ್ನು ಪಡೆಯುವಲ್ಲಿ ದೋಷ ಉಂಟಾಗಿದೆ: %s"
+msgstr "ವರದಿಯ ಸಿದ್ಧತೆಗಳನ್ನು ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ದೋಷ ಉಂಟಾಗಿದೆ"
 
 #: ../src/CLI/report.cpp:768
 #, c-format
@@ -704,12 +697,8 @@ msgid "'How to reproduce' is too long"
 msgstr "'ಹೇಗೆ ಮರಳಿ ಉತ್ಪಾದಿಸಬಹುದು' ಎನ್ನುವುದು ಬಹಳ ಉದ್ದವಾಗಿದೆ"
 
 #: ../src/Daemon/Daemon.cpp:517
-msgid ""
-"The size of the report exceeded the quota. Please check system's "
-"MaxCrashReportsSize value in abrt.conf."
-msgstr ""
-"ವರದಿಯ ಗಾತ್ರವು ಕೋಟವನ್ನು ಮೀರಿದೆ. abrt.conf ನಲ್ಲಿ ವ್ಯವಸ್ಥೆಯ MaxCrashReportsSize ಅನ್ನು "
-"ಪರಿಶೀಲಿಸಿ."
+msgid "The size of the report exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
+msgstr "ವರದಿಯ ಗಾತ್ರವು ಕೋಟವನ್ನು ಮೀರಿದೆ. abrt.conf ನಲ್ಲಿ ವ್ಯವಸ್ಥೆಯ MaxCrashReportsSize ಅನ್ನು ಪರಿಶೀಲಿಸಿ."
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
@@ -721,15 +710,11 @@ msgstr "ಅನ್ವಯದ ಕುಸಿತವನ್ನು ನೋಡಿ ಹಾಗ
 
 #: ../src/Gui/ABRTExceptions.py:7
 msgid "Another client is already running, trying to wake it..."
-msgstr ""
-"ಇನ್ನೊಂದು ಕ್ಲೈಂಟ್‌ ಈಗಾಗಲೆ ಚಾಲನೆಯಲ್ಲಿದೆ, ಅದನ್ನು ಎಚ್ಚರಗೊಳಿಸಲು ಪ್ರಯತ್ನಿಸಲಾಗುತ್ತಿದೆ..."
+msgstr "ಇನ್ನೊಂದು ಕ್ಲೈಂಟ್‌ ಈಗಾಗಲೆ ಚಾಲನೆಯಲ್ಲಿದೆ, ಅದನ್ನು ಎಚ್ಚರಗೊಳಿಸಲು ಪ್ರಯತ್ನಿಸಲಾಗುತ್ತಿದೆ..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
-msgstr ""
-"ಡೆಮನ್‌ನಿಂದ ಅನಿರೀಕ್ಷಿತವಾದ ದತ್ತಾಂಶವು ಮರಳಿದೆ (ದತ್ತಸಂಚಯವನ್ನು ಸಮರ್ಪಕವಾಗಿ ಅಪ್‌ಡೇಟ್ "
-"ಮಾಡಲಾಗಿದೆಯೆ?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgstr "ಡೆಮನ್‌ನಿಂದ ಅನಿರೀಕ್ಷಿತವಾದ ದತ್ತಾಂಶವು ಮರಳಿದೆ (ದತ್ತಸಂಚಯವನ್ನು ಸಮರ್ಪಕವಾಗಿ ಅಪ್‌ಡೇಟ್ ಮಾಡಲಾಗಿದೆಯೆ?)."
 
 #: ../src/Gui/ABRTPlugin.py:71
 msgid "Not loaded plugins"
@@ -751,11 +736,13 @@ msgstr "ವರದಿಗಾರ ಪ್ಲಗ್‌ಇನ್‌ಗಳು"
 msgid "Database plugins"
 msgstr "ದತ್ತಸಂಚಯ ಪ್ಲಗ್‌ಇನ್‌ಗಳು"
 
-#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:74
+#: ../src/Gui/CCDBusBackend.py:97
 msgid "Cannot connect to system dbus."
 msgstr "ವ್ಯವಸ್ಥೆಯ dbus ನೊಂದಿಗೆ ಸಂಪರ್ಕ ಕಲ್ಪಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
 
-#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
+#: ../src/Gui/CCDBusBackend.py:120
+#: ../src/Gui/CCDBusBackend.py:123
 msgid "Please check if the abrt daemon is running."
 msgstr "abrt ಡೆಮನ್ ಚಾಲನೆಯಲ್ಲಿದೆಯೆ ಎಂದು ಪರಿಶೀಲಿಸಿ."
 
@@ -810,39 +797,26 @@ msgstr "ನಕಲುಫಲಕಕ್ಕೆ(ಕ್ಲಿಪ್‌ಬೋರ್ಡ�
 
 #: ../src/Gui/ccgui.glade.h:12
 msgid "Online _Help"
-msgstr ""
+msgstr "ಆನ್‌ಲೈನ್ ನೆರವು (_H)"
 
-#: ../src/Gui/ccgui.glade.h:13 ../src/Gui/settings.glade.h:19
+#: ../src/Gui/ccgui.glade.h:13
+#: ../src/Gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "ಪ್ಲಗ್‌ಇನ್‌ಗಳು"
 
 #: ../src/Gui/ccgui.glade.h:15
 msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
 
 #: ../src/Gui/ccgui.glade.h:20
 msgid "View log"
@@ -938,45 +912,39 @@ msgstr ""
 "crashid=%s"
 
 #. default texts
-#: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:20
+#: ../src/Gui/CCReporterDialog.py:22
+#: ../src/Gui/CReporterAssistant.py:20
 msgid "Brief description of how to reproduce this or what you did..."
-msgstr ""
-"ಇದನ್ನು ಪುನಃ ಮಾಡುವುದು ಹೇಗೆ ಅಥವ ನೀವು ಏನು ಮಾಡಿದ್ದೀರಿ ಎನ್ನುವುದರ ಬಗೆಗಿನ ಸಂಕ್ಷಿಪ್ತ "
-"ವಿವರಣೆ..."
+msgstr "ಇದನ್ನು ಪುನಃ ಮಾಡುವುದು ಹೇಗೆ ಅಥವ ನೀವು ಏನು ಮಾಡಿದ್ದೀರಿ ಎನ್ನುವುದರ ಬಗೆಗಿನ ಸಂಕ್ಷಿಪ್ತ ವಿವರಣೆ..."
 
 #: ../src/Gui/CCReporterDialog.py:107
 msgid "You must check the backtrace for sensitive data."
 msgstr "ಸಂವೇದಾತ್ಮಕವಾದ ದತ್ತಾಂಶಕ್ಕಾಗಿ ನೀವು ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ನೋಡಬೇಕು"
 
-#: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:312
+#: ../src/Gui/CCReporterDialog.py:118
+#: ../src/Gui/CReporterAssistant.py:312
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using the command: <b>debuginfo-"
-"install %s</b> \n"
+"Please try to install debuginfo manually using the command: <b>debuginfo-install %s</b> \n"
 "then use the Refresh button to regenerate the backtrace."
 msgstr ""
 "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಬಳಸಲು ಯೋಗ್ಯವಾಗಿರದೆ ಇರುವದರಿಂದ ವರದಿ ಮಾಡುವುದನ್ನು ಅಶಕ್ತಗೊಳಿಸಲಾಗಿದೆ.\n"
 "<b>debuginfo-install %s</b> ಆಜ್ಞೆಯನ್ನು ಬಳಸಿಕೊಂಡು \n"
-"ದೋಷನಿವಾರಣಾ ಮಾಹಿತಿಯನ್ನು ಅನುಸ್ಥಾಪಿಸಿ ನಂತರ ಪುನಶ್ಚೇತನಗೊಳಿಸು ಗುಂಡಿಯನ್ನು ಬಳಸಿಕೊಂಡು "
-"ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಮರಳಿ ಉತ್ಪಾದಿಸಿ."
+"ದೋಷನಿವಾರಣಾ ಮಾಹಿತಿಯನ್ನು ಅನುಸ್ಥಾಪಿಸಿ ನಂತರ ಪುನಶ್ಚೇತನಗೊಳಿಸು ಗುಂಡಿಯನ್ನು ಬಳಸಿಕೊಂಡು ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಮರಳಿ ಉತ್ಪಾದಿಸಿ."
 
 #: ../src/Gui/CCReporterDialog.py:120
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಬಳಸಲು ಯೋಗ್ಯವಾಗಿಲ್ಲ. ನೀವು ಇದನ್ನು ವರದಿ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ!"
 
-#: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:318
-msgid ""
-"The backtrace is incomplete, please make sure you provide the steps to "
-"reproduce."
-msgstr ""
-"ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅಪೂರ್ಣಗೊಂಡಿದೆ, ಇದನ್ನು ಮರಳಿ ಉತ್ಪಾದಿಸಲು ವಿವರಣೆಯುಕ್ತ ಸೂಚನೆಗಳನ್ನು "
-"ಒದಗಿಸಿದ್ದೀರಿ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ."
+#: ../src/Gui/CCReporterDialog.py:124
+#: ../src/Gui/CReporterAssistant.py:318
+msgid "The backtrace is incomplete, please make sure you provide the steps to reproduce."
+msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅಪೂರ್ಣಗೊಂಡಿದೆ, ಇದನ್ನು ಮರಳಿ ಉತ್ಪಾದಿಸಲು ವಿವರಣೆಯುಕ್ತ ಸೂಚನೆಗಳನ್ನು ಒದಗಿಸಿದ್ದೀರಿ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ."
 
 #: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
-msgstr ""
-"ವರದಿ ಮಾಡುವುದನ್ನು ಅಶಕ್ತಗೊಳಿಸಲಾಗಿದೆ, ದಯವಿಟ್ಟು ಮೇಲೆ ತಿಳಿಸಲಾದ ತೊಂದರೆಗಳನ್ನು ಸರಿಪಡಿಸಿ."
+msgstr "ವರದಿ ಮಾಡುವುದನ್ನು ಅಶಕ್ತಗೊಳಿಸಲಾಗಿದೆ, ದಯವಿಟ್ಟು ಮೇಲೆ ತಿಳಿಸಲಾದ ತೊಂದರೆಗಳನ್ನು ಸರಿಪಡಿಸಿ."
 
 #: ../src/Gui/CCReporterDialog.py:132
 msgid "Sends the report using the selected plugin."
@@ -990,7 +958,8 @@ msgstr ""
 "ದಯವಿಟ್ಟು ಈ ಬಗೆಯ ಕುಸಿತಕ್ಕಾಗಿ ಒಂದು ವರದಿಗಾರ ಪ್ಲಗ್‌ಇನ್ ಲಭ್ಯವಿಲ್ಲ\n"
 "ದಯವಿಟ್ಟು abrt.conf ಅನ್ನು ಪರೀಕ್ಷಿಸಿ."
 
-#: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:205
+#: ../src/Gui/CCReporterDialog.py:418
+#: ../src/Gui/CReporterAssistant.py:205
 #: ../src/Gui/PluginsSettingsDialog.py:170
 #, python-format
 msgid ""
@@ -1000,12 +969,14 @@ msgstr ""
 "ಪ್ಲಗ್ಇನ್ ಸಿದ್ಧತೆಗಳನ್ನು ಉಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:448 ../src/Gui/CReporterAssistant.py:235
+#: ../src/Gui/CCReporterDialog.py:448
+#: ../src/Gui/CReporterAssistant.py:235
 #, python-format
 msgid "Configure %s options"
 msgstr "%s ಆಯ್ಕೆಗಳನ್ನು ಸಂರಚಿಸು"
 
-#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:899
+#: ../src/Gui/CCReporterDialog.py:498
+#: ../src/Gui/CReporterAssistant.py:899
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -1013,7 +984,8 @@ msgstr ""
 "ವರದಿಯನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ!\n"
 "ದೋಷನಿವಾರಣಾ ಮಾಹಿತಿಯು ಕಾಣಿಸುತ್ತಿಲ್ಲವೆ?"
 
-#: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:403
+#: ../src/Gui/CCReporterDialog.py:527
+#: ../src/Gui/CReporterAssistant.py:403
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -1022,16 +994,16 @@ msgstr ""
 "ವರದಿ ಮಾಡುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
+#: ../src/Gui/CCReporterDialog.py:553
+#: ../src/Gui/CCReporterDialog.py:574
 #: ../src/Gui/CReporterAssistant.py:938
 #, python-format
 msgid "Error acquiring the report: %s"
 msgstr "ವರದಿಯನ್ನು ಪಡೆಯುವಲ್ಲಿ ದೋಷ ಉಂಟಾಗಿದೆ: %s"
 
 #: ../src/Gui/ConfBackend.py:79
-#, fuzzy
 msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
-msgstr "Gnome ಕೀರಿಂಗ್ ಡೆಮನ್‌ನೊಂದಿಗೆ ಸಂಪರ್ಕಸಾಧಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
+msgstr "Gnome ಕೀರಿಂಗ್ ಡೆಮನ್‌ನೊಂದಿಗೆ ಸಂಪರ್ಕಸಾಧಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ, ಬದಲಾವಣೆಗಳನ್ನು ಉಳಿಸಲಾಗುವುದಿಲ್ಲ."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
@@ -1039,27 +1011,20 @@ msgstr "Gnome ಕೀರಿಂಗ್ ಡೆಮನ್‌ನೊಂದಿಗೆ ಸ�
 msgid "Cannot get the default keyring."
 msgstr "ಪೂರ್ವನಿಯೋಜಿತ ಕೀಲಿಸುರುಳಿಯನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
 
-#: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr ""
-"gnome-ಕೀಲಿಸುರುಳಿಯನ್ನು ನಿಲುಕಿಸಿಕೊಳ್ಳುವುದನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ, ಪ್ಲಗ್‌ಇನ್‌ಗಳ ಸಿದ್ಧತೆಗಳನ್ನು "
-"ಉಳಿಸಲಾಗುವುದಿಲ್ಲ."
+#: ../src/Gui/ConfBackend.py:105
+#: ../src/Gui/ConfBackend.py:121
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgstr "gnome-ಕೀಲಿಸುರುಳಿಯನ್ನು ನಿಲುಕಿಸಿಕೊಳ್ಳುವುದನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ, ಪ್ಲಗ್‌ಇನ್‌ಗಳ ಸಿದ್ಧತೆಗಳನ್ನು ಉಳಿಸಲಾಗುವುದಿಲ್ಲ."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr ""
-"gnome-ಕೀಲಿಸುರುಳಿಯನ್ನು ನಿಲುಕಿಸಿಕೊಳ್ಳುವುದನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ, %s ಗಾಗಿನ "
-"ಸಿದ್ಧತೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgstr "gnome-ಕೀಲಿಸುರುಳಿಯನ್ನು ನಿಲುಕಿಸಿಕೊಳ್ಳುವುದನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ, %s ಗಾಗಿನ ಸಿದ್ಧತೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ!"
 
 #: ../src/Gui/ConfBackend.py:208
 msgid "Access to gnome-keyring has been denied, cannot load settings."
-msgstr ""
-"gnome-ಕೀಲಿಸುರುಳಿಯನ್ನು ನಿಲುಕಿಸಿಕೊಳ್ಳುವುದನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ, ಸಿದ್ಧತೆಗಳನ್ನು ಲೋಡ್ "
-"ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ."
+msgstr "gnome-ಕೀಲಿಸುರುಳಿಯನ್ನು ನಿಲುಕಿಸಿಕೊಳ್ಳುವುದನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ, ಸಿದ್ಧತೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ."
 
 #: ../src/Gui/CReporterAssistant.py:21
 msgid "Crash info doesn't contain a backtrace"
@@ -1072,8 +1037,7 @@ msgstr "%s ಪ್ಲಗ್‌ಇನ್‌ನಿಂದ ಗುಣನಿಶ್ಚ�
 
 #: ../src/Gui/CReporterAssistant.py:286
 msgid "Rating is not required by any plugin, skipping the check..."
-msgstr ""
-"ಯಾವುದೆ ಪ್ಲಗ್‌ಇನ್‌ನಿಂದ ಗುಣನಿಶ್ಚಯದ ಅಗತ್ಯವಿಲ್ಲ, ಪರಿಶೀಲಿಸದೆ ಹಾಗೆ ಮುಂದುವರೆಯಲಾಗುತ್ತದೆ..."
+msgstr "ಯಾವುದೆ ಪ್ಲಗ್‌ಇನ್‌ನಿಂದ ಗುಣನಿಶ್ಚಯದ ಅಗತ್ಯವಿಲ್ಲ, ಪರಿಶೀಲಿಸದೆ ಹಾಗೆ ಮುಂದುವರೆಯಲಾಗುತ್ತದೆ..."
 
 #: ../src/Gui/CReporterAssistant.py:290
 #, python-format
@@ -1082,8 +1046,7 @@ msgstr "ಗುಣನಿಶ್ಚಯವು %s ಆಗಿದೆ"
 
 #: ../src/Gui/CReporterAssistant.py:293
 msgid "Crashdump doesn't have rating => we suppose it's not required"
-msgstr ""
-"ಕುಸಿತದ ಬಿಸುಡು(ಕ್ರಾಶ್ ಡಂಪ್) ಒಂದು ಗುಣನಿಶ್ಚಯವನ್ನು ಹೊಂದಿಲ್ಲ => ನಮ್ಮ ಪ್ರಕಾರ ಅದರ ಅಗತ್ಯವಿಲ್ಲ"
+msgstr "ಕುಸಿತದ ಬಿಸುಡು(ಕ್ರಾಶ್ ಡಂಪ್) ಒಂದು ಗುಣನಿಶ್ಚಯವನ್ನು ಹೊಂದಿಲ್ಲ => ನಮ್ಮ ಪ್ರಕಾರ ಅದರ ಅಗತ್ಯವಿಲ್ಲ"
 
 #: ../src/Gui/CReporterAssistant.py:298
 msgid "You should check the backtrace for sensitive data."
@@ -1108,28 +1071,17 @@ msgstr "ನೀವು ಯಾವುದೆ ಟಿಪ್ಪಣಿಗಳನ್ನು 
 #: ../src/Gui/CReporterAssistant.py:455
 #, python-format
 msgid ""
-"It looks like an application from the package <b>%s</b> has crashed on your "
-"system. It is a good idea to send a bug report about this issue. The report "
-"will provide software maintainers with information essential in figuring out "
-"how to provide a bug fix for you.\n"
+"It looks like an application from the package <b>%s</b> has crashed on your system. It is a good idea to send a bug report about this issue. The report will provide software maintainers with information essential in figuring out how to provide a bug fix for you.\n"
 "\n"
-"Please review the information that follows and modify it as needed to ensure "
-"your bug report does not contain any sensitive data you would rather not "
-"share.\n"
+"Please review the information that follows and modify it as needed to ensure your bug report does not contain any sensitive data you would rather not share.\n"
 "\n"
-"Select where you would like to report the bug, and press 'Forward' to "
-"continue."
+"Select where you would like to report the bug, and press 'Forward' to continue."
 msgstr ""
-"<b>%s</b> ಎಂಬ ಪ್ಯಾಕೇಜಿನಲ್ಲಿನ ಒಂದು ಅನ್ವಯವು ನಿಮ್ಮ ವ್ಯವಸ್ಥೆಯಲ್ಲಿ ಕುಸಿತಗೊಂಡಿದೆ. ಈ "
-"ಸಮಸ್ಯೆಯ ಬಗೆಗೆ ಒಂದು ದೋಷ ವರದಿಯನ್ನು ಸಲ್ಲಿಸುವುದು ಉತ್ತಮ. ನಿಮ್ಮ ದೋಷದ ಪರಿಹಾರವನ್ನು ಹೇಗೆ "
-"ಸಿದ್ಧಗೊಳಿಸಬಹುದು ಎಂಬುದರ ಬಗೆಗಿನ ಅಗತ್ಯವಾದ ಮಾಹಿತಿಯನ್ನು ಈ ನಿಮ್ಮ ವರದಿಯು ತಂತ್ರಾಂಶ "
-"ಮೇಲ್ವಿಚಾರಕರಿಗೆ ಒದಗಿಸುತ್ತದೆ.\n"
+"<b>%s</b> ಎಂಬ ಪ್ಯಾಕೇಜಿನಲ್ಲಿನ ಒಂದು ಅನ್ವಯವು ನಿಮ್ಮ ವ್ಯವಸ್ಥೆಯಲ್ಲಿ ಕುಸಿತಗೊಂಡಿದೆ. ಈ ಸಮಸ್ಯೆಯ ಬಗೆಗೆ ಒಂದು ದೋಷ ವರದಿಯನ್ನು ಸಲ್ಲಿಸುವುದು ಉತ್ತಮ. ನಿಮ್ಮ ದೋಷದ ಪರಿಹಾರವನ್ನು ಹೇಗೆ ಸಿದ್ಧಗೊಳಿಸಬಹುದು ಎಂಬುದರ ಬಗೆಗಿನ ಅಗತ್ಯವಾದ ಮಾಹಿತಿಯನ್ನು ಈ ನಿಮ್ಮ ವರದಿಯು ತಂತ್ರಾಂಶ ಮೇಲ್ವಿಚಾರಕರಿಗೆ ಒದಗಿಸುತ್ತದೆ.\n"
 "\n"
-"ದಯವಿಟ್ಟು ಈ ವರದಿಯನ್ನು ಅವಲೋಕಿಸಿ ಹಾಗು ನೀವು ಸಾರ್ವಜನಿಕವಾಗಿ ಹಂಚಿಕೊಳ್ಳಲು ಬಯಸದೆ ಇರುವಂತಹ "
-"ಸೂಕ್ಷ್ಮ ಸಂವೇದನಾ ಮಾಹಿತಿಯನ್ನು ಇದು ಹೊಂದಿಲ್ಲ ಎಂದು ಖಚಿತ ಪಡಿಸಿಕೊಳ್ಳಿ.\n"
+"ದಯವಿಟ್ಟು ಈ ವರದಿಯನ್ನು ಅವಲೋಕಿಸಿ ಹಾಗು ನೀವು ಸಾರ್ವಜನಿಕವಾಗಿ ಹಂಚಿಕೊಳ್ಳಲು ಬಯಸದೆ ಇರುವಂತಹ ಸೂಕ್ಷ್ಮ ಸಂವೇದನಾ ಮಾಹಿತಿಯನ್ನು ಇದು ಹೊಂದಿಲ್ಲ ಎಂದು ಖಚಿತ ಪಡಿಸಿಕೊಳ್ಳಿ.\n"
 "\n"
-"ದೋಷವನ್ನು ನೀವು ಎಲ್ಲಿ ಸಲ್ಲಿಸಬೇಕು ಎಂಬುದನ್ನು ಆಯ್ಕೆ ಮಾಡಿ, ಹಾಗು ಮುಂದುವರೆಯಲು 'ಮುಂದಕ್ಕೆ' "
-"ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ."
+"ದೋಷವನ್ನು ನೀವು ಎಲ್ಲಿ ಸಲ್ಲಿಸಬೇಕು ಎಂಬುದನ್ನು ಆಯ್ಕೆ ಮಾಡಿ, ಹಾಗು ಮುಂದುವರೆಯಲು 'ಮುಂದಕ್ಕೆ' ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ."
 
 #: ../src/Gui/CReporterAssistant.py:515
 msgid "Only one reporter plugin is configured."
@@ -1141,19 +1093,13 @@ msgstr "ಒಂದು ವರದಿಯನ್ನು ಕಳುಹಿಸಿ"
 
 #: ../src/Gui/CReporterAssistant.py:559
 msgid ""
-"Below is the backtrace associated with your crash. A crash backtrace "
-"provides developers with details about how the crash happened, helping them "
-"track down the source of the problem.\n"
+"Below is the backtrace associated with your crash. A crash backtrace provides developers with details about how the crash happened, helping them track down the source of the problem.\n"
 "\n"
-"Please review the backtrace below and modify it as needed to ensure your bug "
-"report does not contain any sensitive data you would rather not share:"
+"Please review the backtrace below and modify it as needed to ensure your bug report does not contain any sensitive data you would rather not share:"
 msgstr ""
-"ನಿಮ್ಮ ಕುಸಿತಕ್ಕೆ ಸಂಬಂಧಿಸಿದ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಈ ಕೆಳಗೆ ನೀಡಲಾಗಿದೆ. ವಿಕಸನಗಾರರಿಗೆ "
-"ಸಂಭವಿಸಿದ ಕುಸಿತದ ಬಗೆಗಿನ ಮಾಹಿತಿಯನ್ನು ಕುಸಿತದ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಒದಗಿಸುತ್ತದೆ, ಇದರಿಂದಾಗಿ "
-"ತೊಂದರೆಯ ಮೂಲವನ್ನು ಶೋಧಿಸಲು ನೆರವಾಗುತ್ತದೆ.\n"
+"ನಿಮ್ಮ ಕುಸಿತಕ್ಕೆ ಸಂಬಂಧಿಸಿದ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಈ ಕೆಳಗೆ ನೀಡಲಾಗಿದೆ. ವಿಕಸನಗಾರರಿಗೆ ಸಂಭವಿಸಿದ ಕುಸಿತದ ಬಗೆಗಿನ ಮಾಹಿತಿಯನ್ನು ಕುಸಿತದ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಒದಗಿಸುತ್ತದೆ, ಇದರಿಂದಾಗಿ ತೊಂದರೆಯ ಮೂಲವನ್ನು ಶೋಧಿಸಲು ನೆರವಾಗುತ್ತದೆ.\n"
 "\n"
-"ದಯವಿಟ್ಟು ಈ ವರದಿಯನ್ನು ಅವಲೋಕಿಸಿ ಹಾಗು ನೀವು ಸಾರ್ವಜನಿಕವಾಗಿ ಹಂಚಿಕೊಳ್ಳಲು ಬಯಸದೆ ಇರುವಂತಹ "
-"ಸೂಕ್ಷ್ಮ ಸಂವೇದನಾ ಮಾಹಿತಿಯನ್ನು ಇದು ಹೊಂದಿಲ್ಲ ಎಂದು ಖಚಿತ ಪಡಿಸಿಕೊಳ್ಳಿ:"
+"ದಯವಿಟ್ಟು ಈ ವರದಿಯನ್ನು ಅವಲೋಕಿಸಿ ಹಾಗು ನೀವು ಸಾರ್ವಜನಿಕವಾಗಿ ಹಂಚಿಕೊಳ್ಳಲು ಬಯಸದೆ ಇರುವಂತಹ ಸೂಕ್ಷ್ಮ ಸಂವೇದನಾ ಮಾಹಿತಿಯನ್ನು ಇದು ಹೊಂದಿಲ್ಲ ಎಂದು ಖಚಿತ ಪಡಿಸಿಕೊಳ್ಳಿ:"
 
 #: ../src/Gui/CReporterAssistant.py:603
 msgid "Refresh"
@@ -1173,16 +1119,14 @@ msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಅನುಮೋ�
 
 #: ../src/Gui/CReporterAssistant.py:659
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "ನೀವು ಮುಂದುವರೆಯುವ ಮೊದಲು ಹೇಗೆ ಎನ್ನುವುದನ್ನು ಭರ್ತಿ ಮಾಡಬೇಕು..."
 
 #: ../src/Gui/CReporterAssistant.py:682
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
-msgstr ""
-"ಈ ಕುಸಿತವು ಹೇಗೆ ಸಂಭವಿಸಿತು (ಹಂತ ಹಂತವಾಗಿ)? ನೀವದನ್ನು ಹೇಗೆ ಮರಳಿ ಉತ್ಪಾದಿಸಬಲ್ಲಿರಿ?"
+msgstr "ಈ ಕುಸಿತವು ಹೇಗೆ ಸಂಭವಿಸಿತು (ಹಂತ ಹಂತವಾಗಿ)? ನೀವದನ್ನು ಹೇಗೆ ಮರಳಿ ಉತ್ಪಾದಿಸಬಲ್ಲಿರಿ?"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr "ನೀವು ತಂತ್ರಾಂಶ ಮೇಲ್ವಿಚಾರಕರೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಬಹುದಾದ ಯಾವುದಾದರೂ ವಿಷಯಗಳಿವೆಯೆ?"
 
 #: ../src/Gui/CReporterAssistant.py:723
@@ -1190,22 +1134,16 @@ msgid "Provide additional details"
 msgstr "ಹೆಚ್ಚುವರಿ ವಿವರಗಳನ್ನು ಒದಗಿಸಿ"
 
 #: ../src/Gui/CReporterAssistant.py:729
-msgid ""
-"<b>Tip:</b> Your comments are not private. Please watch what you say "
-"accordingly."
-msgstr ""
-"<b>ಸೂಚನೆ:</b> ನಿಮ್ಮ ಟಿಪ್ಪಣಿಗಳು ಖಾಸಗಿಯಾಗಿರುವದಿಲ್ಲ. ಆದ್ದರಿಂದ ಯೋಚಿಸಿ ನಂತರ ಬರೆಯಿರಿ."
+msgid "<b>Tip:</b> Your comments are not private. Please watch what you say accordingly."
+msgstr "<b>ಸೂಚನೆ:</b> ನಿಮ್ಮ ಟಿಪ್ಪಣಿಗಳು ಖಾಸಗಿಯಾಗಿರುವದಿಲ್ಲ. ಆದ್ದರಿಂದ ಯೋಚಿಸಿ ನಂತರ ಬರೆಯಿರಿ."
 
 #: ../src/Gui/CReporterAssistant.py:770
 msgid "Confirm and send the report"
 msgstr "ವರದಿಯನ್ನು ಖಚಿತಪಡಿಸಿ ಹಾಗು ಕಳುಹಿಸಿ"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
-msgstr ""
-"ದೋಷ ವರದಿಯ ಸಾರಾಂಶವನ್ನು ಈ ಕೆಳಗೆ ನೀಡಲಾಗಿದೆ. ಸಲ್ಲಿಸಲು ದಯವಿಟ್ಟು 'ಅನ್ವಯಿಸು' ಅನ್ನು ಕ್ಲಿಕ್ "
-"ಮಾಡಿ."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgstr "ದೋಷ ವರದಿಯ ಸಾರಾಂಶವನ್ನು ಈ ಕೆಳಗೆ ನೀಡಲಾಗಿದೆ. ಸಲ್ಲಿಸಲು ದಯವಿಟ್ಟು 'ಅನ್ವಯಿಸು' ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ."
 
 #: ../src/Gui/CReporterAssistant.py:777
 msgid "<b>Basic details</b>"
@@ -1245,7 +1183,8 @@ msgstr "ಬಿಡುಗಡೆ"
 msgid "Reason"
 msgstr "ಕಾರಣ"
 
-#: ../src/Gui/CReporterAssistant.py:803 ../src/Gui/report.glade.h:3
+#: ../src/Gui/CReporterAssistant.py:803
+#: ../src/Gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>ಬ್ಯಾಕ್‌ಟ್ರೇಸ್</b>"
 
@@ -1289,14 +1228,13 @@ msgstr "UI ವಿವರಣೆಯಲ್ಲಿ PluginDialog ವಿಜೆಟ್ ಕ
 #, python-format
 msgid ""
 "No UI for the plugin <b>%s</b>, this is probably a bug.\n"
-"Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
-"\">https://fedorahosted.org/abrt/newticket</a>"
+"Please report it at <a href=\"https://fedorahosted.org/abrt/newticket\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
 "<b>%s</b> ಎಂಬ ಪ್ಲಗ್‌ಇನ್‌ಗಾಗಿ ಯಾವುದೆ UI ಇಲ್ಲ, ಇದು ಬಹುಷಃ ಒಂದು ದೋಷವಿರಬಹುದು.\n"
-"ದಯವಿಟ್ಟು ಇದನ್ನು <a href=\"https://fedorahosted.org/abrt/newticket\">https://"
-"fedorahosted.org/abrt/newticket</a> ಎಂಬಲ್ಲಿ ವರದಿ ಮಾಡಿ"
+"ದಯವಿಟ್ಟು ಇದನ್ನು <a href=\"https://fedorahosted.org/abrt/newticket\">https://fedorahosted.org/abrt/newticket</a> ಎಂಬಲ್ಲಿ ವರದಿ ಮಾಡಿ"
 
-#: ../src/Gui/PluginSettingsUI.py:68 ../src/Gui/PluginSettingsUI.py:94
+#: ../src/Gui/PluginSettingsUI.py:68
+#: ../src/Gui/PluginSettingsUI.py:94
 msgid "Combo box is not implemented"
 msgstr "ಸಂಯೋಜನಾ ಚೌಕವನ್ನು ಅನ್ವಯಿಸಲಾಗಿಲ್ಲ"
 
@@ -1329,11 +1267,13 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/Gui/progress_window.glade.h:1 ../src/Gui/report.glade.h:17
+#: ../src/Gui/progress_window.glade.h:1
+#: ../src/Gui/report.glade.h:17
 msgid "Details"
 msgstr "ವಿವರಗಳು"
 
-#: ../src/Gui/progress_window.glade.h:2 ../src/Gui/report.glade.h:21
+#: ../src/Gui/progress_window.glade.h:2
+#: ../src/Gui/report.glade.h:21
 msgid "Please wait..."
 msgstr "ದಯವಿಟ್ಟು ಕಾಯಿರಿ..."
 
@@ -1399,9 +1339,7 @@ msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು  ಮರಳಿ �
 
 #: ../src/Gui/report.glade.h:19
 msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
-msgstr ""
-"ನಾನು ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿದ್ದೀನಿ ಹಾಗು ಸಂವೇದಿ ಮಾಹಿತಿಯನ್ನು (ಗುಪ್ತಪದಗಳು, ಇತ್ಯಾದಿ) "
-"ತೆಗೆದು ಹಾಕಿದ್ದೇನೆ"
+msgstr "ನಾನು ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿದ್ದೀನಿ ಹಾಗು ಸಂವೇದಿ ಮಾಹಿತಿಯನ್ನು (ಗುಪ್ತಪದಗಳು, ಇತ್ಯಾದಿ) ತೆಗೆದು ಹಾಕಿದ್ದೇನೆ"
 
 #: ../src/Gui/report.glade.h:20
 msgid "N/A"
@@ -1419,7 +1357,8 @@ msgstr "ವರದಿಯನ್ನು ತೋರಿಸು"
 msgid "Show log"
 msgstr "ದಾಖಲೆಯನ್ನು ತೋರಿಸು"
 
-#: ../src/Gui/SettingsDialog.py:34 ../src/Gui/SettingsDialog.py:51
+#: ../src/Gui/SettingsDialog.py:34
+#: ../src/Gui/SettingsDialog.py:51
 msgid "<b>Select plugin</b>"
 msgstr "<b>ಪ್ಲಗ್‌ಇನ್ ಅನ್ನು ಆರಿಸಿ</b>"
 
@@ -1528,14 +1467,8 @@ msgid "Wrong Settings Detected"
 msgstr "ತಪ್ಪು ಸಿದ್ಧತೆಗಳು ಕಂಡು ಬಂದಿದೆ"
 
 #: ../src/Gui/settings_wizard.glade.h:3
-msgid ""
-"Wrong settings were detected for some of the enabled reporter plugins. "
-"Please use the buttons below to open the respective configuration and fix it "
-"before you proceed, otherwise, the reporting process may fail.\n"
-msgstr ""
-"ಶಕ್ತಗೊಳಿಸಲಾದ ವರದಿ ಮಾಡುವ ಪ್ಲಗ್‌ಇನ್‌ಗಳಲ್ಲಿ ತಪ್ಪು ಸಿದ್ಧತೆಗಳು ಕಂಡು ಬಂದಿವೆ. ಆಯಾಯ "
-"ಸಂರಚನೆಯನ್ನು ತೆರೆಯಲು ಈ ಕೆಳಗಿನ ಗುಂಡಿಯನ್ನು ಬಳಸಿ ಹಾಗು ಮುಂದುವರೆಯುವ ಮೊದಲು ಅವನ್ನು "
-"ಸರಿಪಡಿಸಿ, ಇಲ್ಲದೆ ಹೋದಲ್ಲಿ ವರದಿ ಮಾಡುವಿಕೆಯು ವಿಫಲಗೊಳ್ಳಬಹುದು.\n"
+msgid "Wrong settings were detected for some of the enabled reporter plugins. Please use the buttons below to open the respective configuration and fix it before you proceed, otherwise, the reporting process may fail.\n"
+msgstr "ಶಕ್ತಗೊಳಿಸಲಾದ ವರದಿ ಮಾಡುವ ಪ್ಲಗ್‌ಇನ್‌ಗಳಲ್ಲಿ ತಪ್ಪು ಸಿದ್ಧತೆಗಳು ಕಂಡು ಬಂದಿವೆ. ಆಯಾಯ ಸಂರಚನೆಯನ್ನು ತೆರೆಯಲು ಈ ಕೆಳಗಿನ ಗುಂಡಿಯನ್ನು ಬಳಸಿ ಹಾಗು ಮುಂದುವರೆಯುವ ಮೊದಲು ಅವನ್ನು ಸರಿಪಡಿಸಿ, ಇಲ್ಲದೆ ಹೋದಲ್ಲಿ ವರದಿ ಮಾಡುವಿಕೆಯು ವಿಫಲಗೊಳ್ಳಬಹುದು.\n"
 
 #~ msgid "Getting global universal unique identification..."
 #~ msgstr "ಸಾರ್ವತ್ರಿಕ ಜಾಗತಿಕ ವಿಶಿಷ್ಟ ಗುರುತನ್ನು ಪಡೆಯಲಾಗುತ್ತಿದೆ..."
