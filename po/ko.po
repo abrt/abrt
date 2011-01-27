@@ -1,21 +1,22 @@
-# translation of abrt.master.ko.po to Korean
+# translation of abrt.1-1-x.ko.po to
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Eunju Kim <eukim@redhat.com>, 2009.
 # Hyunsok Oh <hoh@redhat.com>, 2010.
+# Eun-Ju Kim <eukim@redhat.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.master.ko\n"
+"Project-Id-Version: abrt.1-1-x.ko\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-14 16:16+0100\n"
-"PO-Revision-Date: 2010-08-03 16:26+1000\n"
-"Last-Translator: \n"
-"Language-Team: Korean <en@li.org>\n"
-"Language: ko\n"
+"POT-Creation-Date: 2011-01-26 07:45+0000\n"
+"PO-Revision-Date: 2011-01-27 15:54+1000\n"
+"Last-Translator: Eun-Ju Kim <eukim@redhat.com>\n"
+"Language-Team:  <ko@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ko\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=1; plural=0;\n"
 "\n"
@@ -50,49 +51,49 @@ msgstr "bugzilla에 로그인 중..."
 msgid "Checking for duplicates..."
 msgstr "중복 확인 중..."
 
-#: ../lib/Plugins/Bugzilla.cpp:791 ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:792 ../lib/Plugins/Bugzilla.cpp:827
 msgid "Missing mandatory member 'bugs'"
 msgstr "필수 요소 'bugs'가 빠짐"
 
-#: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
-#: ../lib/Plugins/Bugzilla.cpp:918
+#: ../lib/Plugins/Bugzilla.cpp:810 ../lib/Plugins/Bugzilla.cpp:843
+#: ../lib/Plugins/Bugzilla.cpp:919
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info()가 실패했습니다. 모든 필수 정보를 얻어올 수 없었습니다."
 
-#: ../lib/Plugins/Bugzilla.cpp:858
+#: ../lib/Plugins/Bugzilla.cpp:859
 msgid "Creating a new bug..."
 msgstr "새 버그 생성 중..."
 
-#: ../lib/Plugins/Bugzilla.cpp:863
+#: ../lib/Plugins/Bugzilla.cpp:864
 msgid "Bugzilla entry creation failed"
 msgstr "버그질라 엔트리 생성에 실패했습니다"
 
-#: ../lib/Plugins/Bugzilla.cpp:873 ../lib/Plugins/Bugzilla.cpp:968
+#: ../lib/Plugins/Bugzilla.cpp:874 ../lib/Plugins/Bugzilla.cpp:969
 msgid "Logging out..."
 msgstr "로그아웃 중..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:892
+#: ../lib/Plugins/Bugzilla.cpp:893
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "이미 버그를 보고하였습니다: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:903
+#: ../lib/Plugins/Bugzilla.cpp:904
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "버그질라가 버그(%d)의 부모를 찾을 수 없습니다"
 
-#: ../lib/Plugins/Bugzilla.cpp:932 ../lib/Plugins/Bugzilla.cpp:933
+#: ../lib/Plugins/Bugzilla.cpp:933 ../lib/Plugins/Bugzilla.cpp:934
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "%s를 CC 목록에 추가합니다"
 
-#: ../lib/Plugins/Bugzilla.cpp:957
+#: ../lib/Plugins/Bugzilla.cpp:958
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "버그(%d)에 새로운 주석을 추가합니다"
 
-#: ../lib/Plugins/Bugzilla.cpp:1056
+#: ../lib/Plugins/Bugzilla.cpp:1057
 msgid "Reports bugs to bugzilla"
 msgstr "버그를 Bugzilla에 보고"
 
@@ -113,7 +114,7 @@ msgstr "debuginfo 설치 생략"
 #: ../lib/Plugins/CCpp.cpp:670
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "%s에 대한 역추적 구문 분석 실패  "
 
 #: ../lib/Plugins/CCpp.cpp:967
 msgid "Analyzes crashes in C/C++ programs"
@@ -199,8 +200,7 @@ msgid "Creating a ReportUploader report..."
 msgstr "보고서 작성 및 제출 중..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 "크래시 정보를 .tar.gz파일로 압축하고, 원하면 FTP/SCP/등을 사용해 업로드합니"
 "다."
@@ -208,16 +208,15 @@ msgstr ""
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../lib/Plugins/RHTSupport.cpp:106
 msgid "Compressing data"
-msgstr ""
+msgstr "데이터 압축 중  "
 
-#: ../lib/Plugins/RHTSupport.cpp:236
+#: ../lib/Plugins/RHTSupport.cpp:238
 msgid "Creating a new case..."
 msgstr "새 버그 생성 중..."
 
-#: ../lib/Plugins/RHTSupport.cpp:312
-#, fuzzy
+#: ../lib/Plugins/RHTSupport.cpp:315
 msgid "Reports bugs to Red Hat support"
-msgstr "버그를 Bugzilla에 보고"
+msgstr "Red Hat 지원팀에 버그 보고 "
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
@@ -363,7 +362,7 @@ msgstr "RHTSupport URL:"
 #: ../lib/Utils/abrt_curl.cpp:180
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
-msgstr ""
+msgstr "업로드됨: %llu 중 %llu 킬로바이트  "
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -388,31 +387,30 @@ msgstr "크래시가 감지되었습니다"
 msgid "ABRT service is not running"
 msgstr "ABRT 서비스가 실행되고 있지 않습니다"
 
-#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
-#: ../src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:41 ../src/Applet/CCApplet.cpp:43
+#: ../src/Applet/CCApplet.cpp:266 ../src/Applet/CCApplet.cpp:293
 msgid "Warning"
 msgstr "경고"
 
-#: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+#: ../src/Applet/CCApplet.cpp:95
+msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT가 감지한 문제를 사용자에게 통지하기 위한 통지 영역 애플릿"
 
-#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:24
+#: ../src/Applet/CCApplet.cpp:111 ../src/Gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr ""
-"김은주<eukim@redhat.com>\n"
-"오현석<hoh@redhat.com>"
+"김은주 (eukim@redhat.com), "
+"오현석 (hoh@redhat.com)    "
 
-#: ../src/Applet/CCApplet.cpp:115
+#: ../src/Applet/CCApplet.cpp:121
 msgid "Hide"
 msgstr "숨기기"
 
-#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:14
+#: ../src/Applet/CCApplet.cpp:259 ../src/Gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "보고  "
 
-#: ../src/Applet/CCApplet.cpp:256 ../src/Applet/CCApplet.cpp:284
+#: ../src/Applet/CCApplet.cpp:262 ../src/Applet/CCApplet.cpp:290
 msgid "Open ABRT"
 msgstr "ABRT 열기"
 
@@ -428,18 +426,18 @@ msgid ""
 msgstr ""
 "\tUID        : %s\n"
 "\tUUID       : %s\n"
-"\tPackage    : %s\n"
-"\tExecutable : %s\n"
-"\tCrash Time : %s\n"
-"\tCrash Count: %s\n"
+"\t패키지     : %s\n"
+"\t실행 가능 : %s\n"
+"\t크래시 시간 : %s\n"
+"\t크래시 횟수: %s\n"
 
 #: ../src/CLI/CLI.cpp:74
 #, c-format
 msgid "\tHostname   : %s\n"
-msgstr "\tHostname   : %s\n"
+msgstr "\t호스트명   : %s\n"
 
 #: ../src/CLI/CLI.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
 "Last crash:         %s\n"
@@ -451,37 +449,35 @@ msgid ""
 "System:             %s, kernel %s\n"
 "Reason:             %s\n"
 msgstr ""
-"Crash ID:           %s:%s\n"
-"Last crash:         %s\n"
-"Analyzer:           %s\n"
-"Component:          %s\n"
-"Package:            %s\n"
-"Command:            %s\n"
-"Executable:         %s\n"
-"System:             %s, kernel %s\n"
-"Rating:             %s\n"
-"Coredump file:      %s\n"
-"Reason:             %s\n"
+"크래시 ID:           %s:%s\n"
+"마지막 크래시:         %s\n"
+"분석가:           %s\n"
+"구성 요소:          %s\n"
+"패키지:            %s\n"
+"명령:            %s\n"
+"실행 가능:         %s\n"
+"시스템:             %s, 커널 %s\n"
+"이유:             %s\n"
 
 #: ../src/CLI/CLI.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Coredump file:      %s\n"
-msgstr "Crash function:     %s\n"
+msgstr "코어 덤프 파일:      %s\n"
 
 #: ../src/CLI/CLI.cpp:135
-#, fuzzy, c-format
+#, c-format
 msgid "Rating:             %s\n"
-msgstr "Hostname:           %s\n"
+msgstr "점수 매기기:             %s\n"
 
 #: ../src/CLI/CLI.cpp:140
 #, c-format
 msgid "Crash function:     %s\n"
-msgstr "Crash function:     %s\n"
+msgstr "크래시 기능:     %s\n"
 
 #: ../src/CLI/CLI.cpp:144
 #, c-format
 msgid "Hostname:           %s\n"
-msgstr "Hostname:           %s\n"
+msgstr "호스트명:           %s\n"
 
 #: ../src/CLI/CLI.cpp:148
 #, c-format
@@ -491,7 +487,7 @@ msgid ""
 "%s\n"
 msgstr ""
 "\n"
-"How to reproduce:\n"
+"재현 방법:\n"
 "%s\n"
 
 #: ../src/CLI/CLI.cpp:152
@@ -502,7 +498,7 @@ msgid ""
 "%s\n"
 msgstr ""
 "\n"
-"Comment:\n"
+"코맨트:\n"
 "%s\n"
 
 #: ../src/CLI/CLI.cpp:158
@@ -513,7 +509,7 @@ msgid ""
 "%s\n"
 msgstr ""
 "\n"
-"Backtrace:\n"
+"역추적:\n"
 "%s\n"
 
 #. Message has embedded tabs.
@@ -623,8 +619,7 @@ msgstr "# 운영 체제 릴리즈 문자열"
 
 #: ../src/CLI/report.cpp:336
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr ""
-"vi를 실행할 수 없습니다: $TERM, $VISUAL, $EDITOR등이 설정되지 않았습니다"
+msgstr "vi를 실행할 수 없습니다: $TERM, $VISUAL, $EDITOR등이 설정되지 않았습니다"
 
 #: ../src/CLI/report.cpp:424
 msgid ""
@@ -645,11 +640,11 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/CLI/report.cpp:545
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: ../src/CLI/report.cpp:546
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:647
@@ -670,30 +665,28 @@ msgid "Reporting..."
 msgstr "보고..."
 
 #: ../src/CLI/report.cpp:721
-#, fuzzy, c-format
+#, c-format
 msgid "Report using %s?"
-msgstr "%s로 보고하겠습니까? [y/N]:"
+msgstr "%s 사용을 보고하시겠습니까?    "
 
 #: ../src/CLI/report.cpp:724
 msgid "Skipping..."
 msgstr "건너뜀..."
 
 #: ../src/CLI/report.cpp:736
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "역추적이 비활성화되었기 때문에 보고가 비활성화 되었습니다."
+msgstr "역추적을 사용할 수 없기 때문에 보고가 비활성화됨 "
 
 #: ../src/CLI/report.cpp:740
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
-msgstr ""
+msgstr "\"debuginfo-install %s\" 명령을 사용하여 수동으로 debuginfo를 설치하고 다시 시도하십시오\n"
 
 #: ../src/CLI/report.cpp:749
-#, fuzzy
 msgid "Error loading reporter settings"
-msgstr "보고서를 가져오는 도중 오류 발생: %s"
+msgstr "보고서 설정을 가져오는 도중 오류 발생 "
 
 #: ../src/CLI/report.cpp:768
 #, c-format
@@ -718,8 +711,7 @@ msgstr ""
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
-msgstr ""
-"데이터베이스 플러그인이 지정되지 않았습니다. abrtd 설정을 살펴보십시오."
+msgstr "데이터베이스 플러그인이 지정되지 않았습니다. abrtd 설정을 살펴보십시오."
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -730,8 +722,7 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "다른 클라이언트가 이미 실행되고 있으므로 이를 호출합니다."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr ""
 "데몬에서 예기치 못한 데이터를 수신했습니다 (데이터베이스가 올바르게 업데이트"
 "되었습니까?).  "
@@ -815,7 +806,7 @@ msgstr "클립보드에 복사"
 
 #: ../src/Gui/ccgui.glade.h:12
 msgid "Online _Help"
-msgstr ""
+msgstr "온라인 도움말 (_H) "
 
 #: ../src/Gui/ccgui.glade.h:13 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
@@ -949,8 +940,7 @@ msgstr "재현 방법 또는 여러분이 실행한 내용에 대한 간단한 �
 
 #: ../src/Gui/CCReporterDialog.py:107
 msgid "You must check the backtrace for sensitive data."
-msgstr ""
-"민감한 정보가 들어있지 않은지 역추적(backtrace)을 검토해 보셔야 합니다."
+msgstr "민감한 정보가 들어있지 않은지 역추적(backtrace)을 검토해 보셔야 합니다."
 
 #: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:312
 #, python-format
@@ -973,8 +963,7 @@ msgstr "역추적 정보를 사용할 수 없습니다. 이를 보고할 수 없
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
-msgstr ""
-"역추적이 불완전합니다. 재현을 위한 올바른 단계를 제공했는지 확인하십시오.  "
+msgstr "역추적이 불완전합니다. 재현을 위한 올바른 단계를 제공했는지 확인하십시오.  "
 
 #: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
@@ -1031,9 +1020,8 @@ msgid "Error acquiring the report: %s"
 msgstr "보고서를 가져오는 도중 오류 발생: %s"
 
 #: ../src/Gui/ConfBackend.py:79
-#, fuzzy
 msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
-msgstr "그놈 키링 데몬에 연결할 수 없음."
+msgstr "gnome-keyring 데몬에 연결할 수 없습니다. 변경 사항이 저장되지 않습니다.   "
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
@@ -1042,8 +1030,7 @@ msgid "Cannot get the default keyring."
 msgstr "디폴트 키링을 가져올 수 없음."
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
 "gnome-keyring에 대한 억세스가 거부되었습니다. 플러그인 설정이 저장되지 않을 "
 "것입니다."
@@ -1051,10 +1038,8 @@ msgstr ""
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr ""
-"gnome-keyring에 대한 억세스가 거부되었습니다. %s의 설정을 가져올 수 없습니다!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgstr "gnome-keyring에 대한 억세스가 거부되었습니다. %s의 설정을 가져올 수 없습니다!"
 
 #: ../src/Gui/ConfBackend.py:208
 msgid "Access to gnome-keyring has been denied, cannot load settings."
@@ -1084,8 +1069,7 @@ msgstr "크래스덤프에 점수가 없습니다 => 점수가 필요하지 않�
 
 #: ../src/Gui/CReporterAssistant.py:298
 msgid "You should check the backtrace for sensitive data."
-msgstr ""
-"민감한 정보가 포함되지는 않았는지 역추적(backtrace)을 검토하셔야 합니다."
+msgstr "민감한 정보가 포함되지는 않았는지 역추적(backtrace)을 검토하셔야 합니다."
 
 #: ../src/Gui/CReporterAssistant.py:299
 msgid "You must agree with sending the backtrace."
@@ -1170,16 +1154,14 @@ msgstr "역추적 정보 승인"
 
 #: ../src/Gui/CReporterAssistant.py:659
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "진행하기 전에 그 방법을 기입해야 합니다 ... "
 
 #: ../src/Gui/CReporterAssistant.py:682
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
-msgstr ""
-"어떻게 이 크래시가 발생했습니까(단계별)? 어떻게 다시 재현할 수 있습니까?"
+msgstr "어떻게 이 크래시가 발생했습니까(단계별)? 어떻게 다시 재현할 수 있습니까?"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr "소프트웨어 관리자들에게 말씀하고 싶은 내용이 있습니까?"
 
 #: ../src/Gui/CReporterAssistant.py:723
@@ -1199,8 +1181,7 @@ msgid "Confirm and send the report"
 msgstr "확인 및 보고 보내기"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "다음은 여러분의 버그 보고서의 요약입니다. 전송하기 위해서는 '적용' 버튼을 누"
 "르십시오."
@@ -1533,5 +1514,3 @@ msgstr ""
 "기 전에 아래의 버튼을 사용해 해당 설정을 열고, 문제를 수정해 주십시오. 그렇"
 "지 않으면 보고서를 작성해 전송하는 데 실패할 수 있습니다.\n"
 
-#~ msgid "Getting global universal unique identification..."
-#~ msgstr "글로벌 UUID를 가져오는 중..."
