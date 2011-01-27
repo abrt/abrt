@@ -1,24 +1,23 @@
-# translation of abrt.master.es.po to Spanish
+# translation of abrt.1-1-x.es.po to Spanish
 # Fedora Spanish translation of abrt.master
 # This file is distributed under the same license as the abrt.master package.
 #
 #
 # Fernando Gonzalez <fgonz@fedoraproject.org>, 2009.
-# Gladys Guerrero Lozano <gguerrer@redhat.com>, 2009, 2010.
+# Gladys Guerrero Lozano <gguerrer@redhat.com>, 2009, 2010, 2011.
 # Héctor Daniel Cabrera <logan@fedoraproject.org>, 2009, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.master.es\n"
+"Project-Id-Version: abrt.1-1-x.es\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-14 16:16+0100\n"
-"PO-Revision-Date: 2011-01-10 16:03-0300\n"
-"Last-Translator: Claudio Rodrigo Pereyra Diaz <claudiorodrigo@pereyradiaz."
-"com.ar>\n"
+"POT-Creation-Date: 2011-01-27 05:40+0000\n"
+"PO-Revision-Date: 2011-01-27 17:14+1000\n"
+"Last-Translator: Gladys Guerrero <gguerrer@redhat.com>\n"
 "Language-Team: Spanish <en@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "X-Poedit-Language: Spanish\n"
 "X-Generator: KBabel 1.11.4\n"
 "X-Poedit-Country: ARGENTINA\n"
@@ -53,50 +52,49 @@ msgstr "Ingresando a bugzilla..."
 msgid "Checking for duplicates..."
 msgstr "Comprobando si hay duplicados..."
 
-#: ../lib/Plugins/Bugzilla.cpp:791 ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:792 ../lib/Plugins/Bugzilla.cpp:827
 msgid "Missing mandatory member 'bugs'"
 msgstr "Falta miembro obligatorio 'bugs'"
 
-#: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
-#: ../lib/Plugins/Bugzilla.cpp:918
+#: ../lib/Plugins/Bugzilla.cpp:810 ../lib/Plugins/Bugzilla.cpp:843
+#: ../lib/Plugins/Bugzilla.cpp:919
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
-"Falló get_bug_info(). No se ha podido reunir toda la información obligatoria"
+msgstr "Falló get_bug_info(). No se ha podido reunir toda la información obligatoria"
 
-#: ../lib/Plugins/Bugzilla.cpp:858
+#: ../lib/Plugins/Bugzilla.cpp:859
 msgid "Creating a new bug..."
 msgstr "Creando un nuevo informe..."
 
-#: ../lib/Plugins/Bugzilla.cpp:863
+#: ../lib/Plugins/Bugzilla.cpp:864
 msgid "Bugzilla entry creation failed"
 msgstr "Falló la creación de entrada en Bugzilla"
 
-#: ../lib/Plugins/Bugzilla.cpp:873 ../lib/Plugins/Bugzilla.cpp:968
+#: ../lib/Plugins/Bugzilla.cpp:874 ../lib/Plugins/Bugzilla.cpp:969
 msgid "Logging out..."
 msgstr "Saliendo..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:892
+#: ../lib/Plugins/Bugzilla.cpp:893
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "El error ya ha sido informado: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:903
+#: ../lib/Plugins/Bugzilla.cpp:904
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla no pudo encontrar un error directamente relacionado con %d "
 
-#: ../lib/Plugins/Bugzilla.cpp:932 ../lib/Plugins/Bugzilla.cpp:933
+#: ../lib/Plugins/Bugzilla.cpp:933 ../lib/Plugins/Bugzilla.cpp:934
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "Agregar %s a la lista CC"
 
-#: ../lib/Plugins/Bugzilla.cpp:957
+#: ../lib/Plugins/Bugzilla.cpp:958
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Agregar comentario en el error(%d)"
 
-#: ../lib/Plugins/Bugzilla.cpp:1056
+#: ../lib/Plugins/Bugzilla.cpp:1057
 msgid "Reports bugs to bugzilla"
 msgstr "Informa errores en bugzilla"
 
@@ -200,8 +198,7 @@ msgid "Creating a ReportUploader report..."
 msgstr "Creando un informe ReportUploader..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 "Empaqueta los datos de la caída en un archivo .tar.gz, y opcionalmente lo "
 "sube vía FTP/SCP/etc"
@@ -209,13 +206,13 @@ msgstr ""
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../lib/Plugins/RHTSupport.cpp:106
 msgid "Compressing data"
-msgstr ""
+msgstr "Comprimir datos"
 
-#: ../lib/Plugins/RHTSupport.cpp:236
+#: ../lib/Plugins/RHTSupport.cpp:238
 msgid "Creating a new case..."
 msgstr "Creando un nuevo caso..."
 
-#: ../lib/Plugins/RHTSupport.cpp:312
+#: ../lib/Plugins/RHTSupport.cpp:315
 msgid "Reports bugs to Red Hat support"
 msgstr "Informa errores al soporte de Red Hat"
 
@@ -363,7 +360,7 @@ msgstr "URL de RHTSupport:"
 #: ../lib/Utils/abrt_curl.cpp:180
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
-msgstr ""
+msgstr "Carga: %llu de %llu kbytes"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -388,34 +385,33 @@ msgstr "Ha sido detectada una caída"
 msgid "ABRT service is not running"
 msgstr "El servicio ABRT no se está ejecutando"
 
-#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
-#: ../src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:41 ../src/Applet/CCApplet.cpp:43
+#: ../src/Applet/CCApplet.cpp:266 ../src/Applet/CCApplet.cpp:293
 msgid "Warning"
 msgstr "Advertencia"
 
-#: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+#: ../src/Applet/CCApplet.cpp:95
+msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "El applet del área de notificaciones informa al usuario los problemas "
 "detectados por ABRT"
 
-#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:24
+#: ../src/Applet/CCApplet.cpp:111 ../src/Gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr ""
 "traductores: Claudio Rodrigo Pereyra Diaz <claudio@pereyradiaz.com.ar>, "
 "Domingo Becker <domingobecker@gmail.com>, Héctor Daniel Cabrera "
 "<logan@fedoraproject.org>, Dennis Tobar <dennis.tobar@gmail.com>."
 
-#: ../src/Applet/CCApplet.cpp:115
+#: ../src/Applet/CCApplet.cpp:121
 msgid "Hide"
 msgstr "Ocultar"
 
-#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:14
+#: ../src/Applet/CCApplet.cpp:259 ../src/Gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "Informe"
 
-#: ../src/Applet/CCApplet.cpp:256 ../src/Applet/CCApplet.cpp:284
+#: ../src/Applet/CCApplet.cpp:262 ../src/Applet/CCApplet.cpp:290
 msgid "Open ABRT"
 msgstr "Abrir ABRT"
 
@@ -628,8 +624,7 @@ msgstr "# Cadena de lanzamiento del sistema operativo"
 
 #: ../src/CLI/report.cpp:336
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr ""
-"No se pudo ejecutar vi: $TERM, $VISUAL y $EDITOR no fueron configurados"
+msgstr "No se pudo ejecutar vi: $TERM, $VISUAL y $EDITOR no fueron configurados"
 
 #: ../src/CLI/report.cpp:424
 msgid ""
@@ -736,8 +731,7 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "Otro cliente ya se está ejecutado, intentando despertarlo..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr ""
 "Se obtienen datos inesperados del demonio (¿está la base de datos "
 "correctamente actualizada?)."
@@ -821,7 +815,7 @@ msgstr "Copiar al portapapeles"
 
 #: ../src/Gui/ccgui.glade.h:12
 msgid "Online _Help"
-msgstr ""
+msgstr "Ayuda en _línea"
 
 #: ../src/Gui/ccgui.glade.h:13 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
@@ -1053,8 +1047,7 @@ msgid "Cannot get the default keyring."
 msgstr "No se puede obtener llavero predeterminado."
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
 "El acceso a gnome-keyring ha sido denegado, la configuración del complemento "
 "no se guardará."
@@ -1062,8 +1055,7 @@ msgstr ""
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr ""
 "El acceso a gnome-keyring ha sido denegado, ¡no se puede cargar la "
 "configuración para %s!"
@@ -1193,8 +1185,7 @@ msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "¿Cómo ocurrió esta caída (paso a paso)? ¿Cómo puede ser reproducida?"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr ""
 "¿Hay algún comentario que usted quiera compartir con los mantenedores del "
 "software?"
@@ -1216,8 +1207,7 @@ msgid "Confirm and send the report"
 msgstr "Confirmar y enviar el informe"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Debajo esta el resumen de su informe de error. Por favor haga clic en "
 "'Aplicar' para enviarlo."
@@ -1334,8 +1324,7 @@ msgstr "Nombre"
 
 #: ../src/Gui/PluginsSettingsDialog.py:149
 msgid "Please select a plugin from the list to edit it's options."
-msgstr ""
-"Por favor seleccione un complemento de la lista para editar sus opciones."
+msgstr "Por favor seleccione un complemento de la lista para editar sus opciones."
 
 #: ../src/Gui/PluginsSettingsDialog.py:157
 #, python-format
@@ -1418,8 +1407,7 @@ msgstr "Obliga a ABRT a generar nuevamente el trazado."
 
 #: ../src/Gui/report.glade.h:19
 msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
-msgstr ""
-"He verificado el trazado y eliminado datos sensibles (contraseñas, etc)"
+msgstr "He verificado el trazado y eliminado datos sensibles (contraseñas, etc)"
 
 #: ../src/Gui/report.glade.h:20
 msgid "N/A"
@@ -1556,5 +1544,3 @@ msgstr ""
 "configuración y corríjala antes de continuar, sino el proceso de informe "
 "puede fallar.\n"
 
-#~ msgid "Getting global universal unique identification..."
-#~ msgstr "Obteniendo la identificación única universal global..."
