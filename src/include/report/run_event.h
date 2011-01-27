@@ -28,8 +28,12 @@ extern "C" {
 struct dump_dir;
 
 struct run_event_state {
+    /* Used only for post-create dup detection. TODO: document its API */
     int (*post_run_callback)(const char *dump_dir_name, void *param);
     void *post_run_param;
+    /* Can take ownership of log_line, which is malloced. In this case, return NULL.
+     * Otherwise should return log_line (it will be freed by caller)
+     */
     char* (*logging_callback)(char *log_line, void *param);
     void *logging_param;
 };

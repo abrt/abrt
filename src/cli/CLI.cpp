@@ -30,10 +30,10 @@ static char *localize_crash_time(const char *timestr)
 {
     long time = xatou(timestr);
     char timeloc[256];
-    int success = strftime(timeloc, 128, "%c", localtime(&time));
+    int success = strftime(timeloc, sizeof(timeloc), "%c", localtime(&time));
     if (!success)
-        error_msg_and_die("Error while converting time to string");
-    return xasprintf("%s", timeloc);
+        error_msg_and_die("Error while converting time '%s' to string", timestr);
+    return xstrdup(timeloc);
 }
 
 /** Prints basic information about a crash to stdout. */
@@ -41,7 +41,7 @@ static void print_crash(crash_data_t *crash_data)
 {
     /* Create a localized string from crash time. */
     const char *timestr = get_crash_item_content_or_die(crash_data, FILENAME_TIME);
-    const char *timeloc = localize_crash_time(timestr);
+    char *timeloc = localize_crash_time(timestr);
 
     printf(_("\tCrash dump : %s\n"
              "\tUID        : %s\n"
@@ -57,7 +57,7 @@ static void print_crash(crash_data_t *crash_data)
            get_crash_item_content_or_NULL(crash_data, FILENAME_COUNT)
     );
 
-    free((void *)timeloc);
+    free(timeloc);
 
     /* Print the hostname if it's available. */
     const char *hostname = get_crash_item_content_or_NULL(crash_data, FILENAME_HOSTNAME);
@@ -93,7 +93,7 @@ static void print_crash_list(vector_of_crash_data_t *crash_list, bool include_re
 static void print_crash_info(crash_data_t *crash_data, bool show_backtrace)
 {
     const char *timestr = get_crash_item_content_or_die(crash_data, FILENAME_TIME);
-    const char *timeloc = localize_crash_time(timestr);
+    char *timeloc = localize_crash_time(timestr);
 
     printf(_("Dump directory:     %s\n"
              "Last crash:         %s\n"
@@ -116,7 +116,7 @@ static void print_crash_info(crash_data_t *crash_data, bool show_backtrace)
            get_crash_item_content_or_die(crash_data, FILENAME_REASON)
     );
 
-    free((void *)timeloc);
+    free(timeloc);
 
     /* Print optional fields only if they are available */
 
@@ -152,45 +152,6 @@ static void print_crash_info(crash_data_t *crash_data, bool show_backtrace)
         if (backtrace)
             printf(_("\nBacktrace:\n%s\n"), backtrace);
     }
-}
-
-/**
- * Converts crash reference from user's input to crash dump dir name.
- * The returned string must be released by caller.
- */
-static char *guess_crash_id(const char *str)
-{
-    vector_of_crash_data_t *ci = call_GetCrashInfos();
-    unsigned num_crashinfos = ci->len;
-    if (str[0] == '@') /* "--report @N" syntax */
-    {
-        unsigned position = xatoi_positive(str + 1);
-        if (position >= num_crashinfos)
-            error_msg_and_die("There are only %u crash infos", num_crashinfos);
-        crash_data_t *info = get_crash_data(ci, position);
-        char *res = xstrdup(get_crash_item_content_or_die(info, CD_DUMPDIR));
-        free_vector_of_crash_data(ci);
-        return res;
-    }
-
-    unsigned len = strlen(str);
-    unsigned ii;
-    char *result = NULL;
-    for (ii = 0; ii < num_crashinfos; ii++)
-    {
-        crash_data_t *info = get_crash_data(ci, ii);
-        const char *this_dir = get_crash_item_content_or_die(info, CD_DUMPDIR);
-        if (strncmp(str, this_dir, len) == 0)
-        {
-            if (result)
-                error_msg_and_die("Crash prefix '%s' is not unique", str);
-            result = xstrdup(this_dir);
-        }
-    }
-    free_vector_of_crash_data(ci);
-    if (!result)
-        error_msg_and_die("Crash dump directory '%s' not found", str);
-    return result;
 }
 
 /* Program options */
@@ -247,9 +208,8 @@ static void usage(char *argv0)
     /* Message has embedded tabs. */
     printf(_("Usage: %s [OPTION]\n\n"
         "Startup:\n"
-        "	-V, --version		display the version of %s and exit\n"
+        "	-V, --version		display the version and exit\n"
         "	-v, --verbose		increase verbosity\n"
-        "	-?, --help		print this help\n\n"
         "Actions:\n"
         "	-l, --list		print a list of all crashes which are not yet reported\n"
         "	      -f, --full	print a list of all crashes, including the already reported ones\n"
@@ -262,14 +222,14 @@ static void usage(char *argv0)
         "	a name of dump directory, or\n"
         "	@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
         ),
-        name, name);
+        name);
 
     exit(1);
 }
 
 int main(int argc, char** argv)
 {
-    const char* crash_id = NULL;
+    char *dump_dir_name = NULL;
     int op = -1;
     bool full = false;
     bool always = false;
@@ -286,16 +246,16 @@ int main(int argc, char** argv)
         /* Do not use colons, arguments are handled after parsing all options. */
         int c = getopt_long(argc, argv, "?Vvrdlfyib", longopts, NULL);
 
-#define SET_OP(newop)                                                \
-        if (op != -1 && op != newop)                                 \
-        {                                                            \
-            error_msg(_("You must specify exactly one operation"));  \
-            return 1;                                                \
-        }                                                            \
-        op = newop;
+#define SET_OP(newop)                                                        \
+        do {                                                                 \
+          if (op != -1 && op != newop)                                       \
+            error_msg_and_die(_("You must specify exactly one operation"));  \
+          op = newop;                                                        \
+        } while (0)
 
         switch (c)
         {
+        case -1: goto end_of_arg_parsing;
         case 'r': SET_OP(OPT_REPORT);   break;
         case 'd': SET_OP(OPT_DELETE);   break;
         case 'l': SET_OP(OPT_GET_LIST); break;
@@ -304,22 +264,20 @@ int main(int argc, char** argv)
         case 'y': always = true;        break;
         case 'b': backtrace = true;     break;
         case 'v': g_verbose++;          break;
-        case -1: /* end of options */   break;
-        default: /* some error */
-        case '?':
-            usage(argv[0]); /* exits app */
         case 'V':
             printf("%s "VERSION"\n", progname(argv[0]));
             return 0;
+        case '?':
+        default: /* some error */
+            usage(argv[0]); /* exits app */
         }
 #undef SET_OP
-        if (c == -1)
-            break;
     }
+ end_of_arg_parsing: ;
 
     /* Handle option arguments. */
-    int arg_count = argc - optind;
-    switch (arg_count)
+    argc -= optind;
+    switch (argc)
     {
     case 0:
         if (op == OPT_REPORT || op == OPT_DELETE || op == OPT_INFO)
@@ -328,7 +286,7 @@ int main(int argc, char** argv)
     case 1:
         if (op != OPT_REPORT && op != OPT_DELETE && op != OPT_INFO)
             usage(argv[0]);
-        crash_id = argv[optind];
+        dump_dir_name = argv[optind];
         break;
     default:
         usage(argv[0]);
@@ -364,43 +322,18 @@ int main(int argc, char** argv)
         }
         case OPT_REPORT:
         {
-            int flags = CLI_REPORT_SILENT_IF_NOT_FOUND;
-            if (always)
-                flags |= CLI_REPORT_BATCH;
-            exitcode = report(crash_id, flags);
-            if (exitcode == -1) /* no such crash_id */
-            {
-                crash_id = guess_crash_id(crash_id);
-                exitcode = report(crash_id, always ? CLI_REPORT_BATCH : 0);
-                if (exitcode == -1)
-                {
-                    error_msg("Crash '%s' not found", crash_id);
-                    free((void *)crash_id);
-                    xfunc_die();
-                }
-
-                free((void *)crash_id);
-            }
+            exitcode = report(dump_dir_name, (always ? CLI_REPORT_BATCH : 0));
+            if (exitcode == -1)
+                error_msg_and_die("Crash '%s' not found", dump_dir_name);
             break;
         }
         case OPT_DELETE:
         {
-            exitcode = call_DeleteDebugDump(crash_id);
+            exitcode = call_DeleteDebugDump(dump_dir_name);
             if (exitcode == ENOENT)
-            {
-                crash_id = guess_crash_id(crash_id);
-                exitcode = call_DeleteDebugDump(crash_id);
-                if (exitcode == ENOENT)
-                {
-                    error_msg("Crash '%s' not found", crash_id);
-                    free((void *)crash_id);
-                    xfunc_die();
-                }
-
-                free((void *)crash_id);
-            }
+                error_msg_and_die("Crash '%s' not found", dump_dir_name);
             if (exitcode != 0)
-                error_msg_and_die("Can't delete debug dump '%s'", crash_id);
+                error_msg_and_die("Can't delete debug dump '%s'", dump_dir_name);
             break;
         }
         case OPT_INFO:
@@ -408,20 +341,9 @@ int main(int argc, char** argv)
             int old_logmode = logmode;
             logmode = 0;
 
-            crash_data_t *crash_data = call_CreateReport(crash_id);
-            if (!crash_data) /* no such crash_id */
-            {
-                crash_id = guess_crash_id(crash_id);
-                crash_data = call_CreateReport(crash_id);
-                if (!crash_data)
-                {
-                    error_msg("Crash '%s' not found", crash_id);
-                    free((void *)crash_id);
-                    xfunc_die();
-                }
-
-                free((void *)crash_id);
-            }
+            crash_data_t *crash_data = call_CreateReport(dump_dir_name);
+            if (!crash_data)
+                error_msg_and_die("Crash '%s' not found", dump_dir_name);
 
             logmode = old_logmode;
 

@@ -166,7 +166,7 @@ struct abrt_dbus_type< std::map<K,V> > {
     static std::string sig() { return ssprintf("a{%s%s}", ABRT_DBUS_SIG(K), ABRT_DBUS_SIG(V)); }
 };
 
-template<typename E>
+template <typename E>
 static void store_vector(DBusMessageIter* iter, const std::vector<E>& val)
 {
     DBusMessageIter sub_iter;
@@ -189,7 +189,7 @@ static void store_vector(DBus::MessageIter &iter, const std::vector<uint8_t>& va
     if we use such vector, MUST add specialized code here (see in dbus-c++ source)
 }
 */
-template<typename K, typename V>
+template <typename K, typename V>
 static void store_map(DBusMessageIter* iter, const std::map<K,V>& val)
 {
     DBusMessageIter sub_iter;
@@ -214,9 +214,9 @@ static void store_map(DBusMessageIter* iter, const std::map<K,V>& val)
         die_out_of_memory();
 }
 
-template<typename E>
+template <typename E>
 static inline void store_val(DBusMessageIter* iter, const std::vector<E>& val) { store_vector(iter, val); }
-template<typename K, typename V>
+template <typename K, typename V>
 static inline void store_val(DBusMessageIter* iter, const std::map<K,V>& val)  { store_map(iter, val); }
 
 /* next patch will rewrite this into c */
@@ -267,7 +267,7 @@ static inline int load_val(DBusMessageIter* iter, std::string& val)
 }
 
 /* Templates for vector and map */
-template<typename E>
+template <typename E>
 static int load_vector(DBusMessageIter* iter, std::vector<E>& val)
 {
     int type = dbus_message_iter_get_arg_type(iter);
@@ -306,7 +306,7 @@ static int load_vector(DBusMessageIter* iter, std::vector<uint8_t>& val)
     if we use such vector, MUST add specialized code here (see in dbus-c++ source)
 }
 */
-template<typename K, typename V>
+template <typename K, typename V>
 static int load_map(DBusMessageIter* iter, std::map<K,V>& val)
 {
     int type = dbus_message_iter_get_arg_type(iter);
@@ -361,9 +361,9 @@ static int load_map(DBusMessageIter* iter, std::map<K,V>& val)
     return dbus_message_iter_next(iter);
 }
 
-template<typename E>
+template <typename E>
 static inline int load_val(DBusMessageIter* iter, std::vector<E>& val) { return load_vector(iter, val); }
-template<typename K, typename V>
+template <typename K, typename V>
 static inline int load_val(DBusMessageIter* iter, std::map<K,V>& val)  { return load_map(iter, val); }
 
 #endif /* __cplusplus */

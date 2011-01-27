@@ -781,10 +781,10 @@ void GetPluginsInfo(map_map_string_t &map_of_plugin_info)
     struct dirent *dent;
     while ((dent = readdir(dir)) != NULL)
     {
-        if (!is_regular_file(dent, PLUGINS_CONF_DIR))
-            continue;
         char *ext = strrchr(dent->d_name, '.');
         if (!ext || strcmp(ext + 1, "conf") != 0)
+            continue;
+        if (!is_regular_file(dent, PLUGINS_CONF_DIR))
             continue;
         VERB3 log("Found %s", dent->d_name);
         *ext = '\0';

@@ -387,7 +387,10 @@ static void list_possible_events_helper(struct strbuf *result,
                 /* Does VAL match? */
                 if (strcmp(real_val, line_val) != 0)
                 {
-                    VERB3 log("var '%s': '%s'!='%s', skipping line", p, real_val, line_val);
+                    VERB3 log("var '%s': '%.*s'!='%s', skipping line",
+                            p,
+                            (int)(strchrnul(real_val, '\n') - real_val), real_val,
+                            line_val);
                     free(real_val);
                     goto next_line; /* no */
                 }

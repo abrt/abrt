@@ -52,14 +52,12 @@ typedef enum {
  * ...).
  * @param crash_data
  *  A crash report.
- * @param reporters
- *  List of allowed reporters. Which reporters will be used depends
- *  on the analyzer of the crash_data. Reporters missing from this list
- *  will not be used.
+ * @param events
+ *  List of events to run.
  * @param caller_uid
  *  An user uid.
  * @return
- *  A report status, which reporters ends successfuly with messages.
+ *  A report status: which events finished successfully, with messages.
  */
 report_status_t Report(crash_data_t *crash_data,
                        const vector_string_t& events,

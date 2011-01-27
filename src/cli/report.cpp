@@ -33,13 +33,10 @@ static char *trim(char *str)
         return NULL;
 
     // Remove leading spaces.
-    char *ibuf;
-    ibuf = skip_whitespace(str);
-    int i = strlen(ibuf);
-    if (str != ibuf)
-        memmove(str, ibuf, i + 1);
+    overlapping_strcpy(str, skip_whitespace(str));
 
     // Remove trailing spaces.
+    int i = strlen(str);
     while (--i >= 0)
     {
         if (!isspace(str[i]))
@@ -450,28 +447,17 @@ static bool ask_yesno(const char *question)
 }
 
 /* Returns true if echo has been changed from another state. */
-static bool set_echo(bool enabled)
+static bool set_echo(bool enable)
 {
-    if (isatty(STDIN_FILENO) == 0)
-    {
-        /* Clean errno, which is set by isatty. */
-        errno = 0;
-        return false;
-    }
-
     struct termios t;
     if (tcgetattr(STDIN_FILENO, &t) < 0)
         return false;
 
-    /* No change needed. */
-    if ((bool)(t.c_lflag & ECHO) == enabled)
+    /* No change needed? */
+    if ((bool)(t.c_lflag & ECHO) == enable)
         return false;
 
-    if (enabled)
-        t.c_lflag |= ECHO;
-    else
-        t.c_lflag &= ~ECHO;
-
+    t.c_lflag ^= ECHO;
     if (tcsetattr(STDIN_FILENO, TCSANOW, &t) < 0)
         perror_msg_and_die("tcsetattr");
 
@@ -510,7 +496,7 @@ static GHashTable *get_reporter_plugin_settings(const vector_string_t& reporters
     }
 
     /* Second, load user-specific settings, which override
-       the system-wide settings. */
+     * the system-wide settings. */
     struct passwd* pw = getpwuid(geteuid());
     const char* homedir = pw ? pw->pw_dir : NULL;
     if (homedir)
@@ -584,15 +570,11 @@ static void ask_for_missing_settings(const char *plugin_name, map_string_t &sing
     }
 }
 
-/* Reports the crash with corresponding crash_id over DBus. */
-int report(const char *crash_id, int flags)
+/* Reports the crash over DBus. */
+int report(const char *dump_dir_name, int flags)
 {
-    int old_logmode = logmode;
-    if (flags & CLI_REPORT_SILENT_IF_NOT_FOUND)
-        logmode = 0;
     // Ask for an initial report.
-    crash_data_t *crash_data = call_CreateReport(crash_id);
-    logmode = old_logmode;
+    crash_data_t *crash_data = call_CreateReport(dump_dir_name);
     if (!crash_data || g_hash_table_size(crash_data) == 0)
     {
         free_crash_data(crash_data);
@@ -616,7 +598,7 @@ int report(const char *crash_id, int flags)
 
     /* Get possible reporters associated with this particular crash. */
     const char *events = get_crash_item_content_or_NULL(crash_data, CD_EVENTS);
-    vector_string_t reporters;
+    vector_string_t report_events;
     if (events) while (*events)
     {
         const char *end = strchrnul(events, '\n');
@@ -624,7 +606,7 @@ int report(const char *crash_id, int flags)
          && (events[6] == '\0' || events[6] == '_')
         ) {
             char *tmp = xstrndup(events, end - events);
-            reporters.push_back(tmp);
+            report_events.push_back(tmp);
             free(tmp);
         }
         events = end;
@@ -634,14 +616,14 @@ int report(const char *crash_id, int flags)
     }
 
     /* Get settings */
-    GHashTable *reporters_settings = get_reporter_plugin_settings(reporters);
+    GHashTable *reporters_settings = get_reporter_plugin_settings(report_events);
 
     int errors = 0;
     int plugins = 0;
     if (flags & CLI_REPORT_BATCH)
     {
         puts(_("Reporting..."));
-        report_status_t r = call_Report(crash_data, reporters, reporters_settings);
+        report_status_t r = call_Report(crash_data, report_events, reporters_settings);
         report_status_t::iterator it = r.begin();
         while (it != r.end())
         {
@@ -656,10 +638,10 @@ int report(const char *crash_id, int flags)
     else
     {
         /* For every reporter, ask if user really wants to report using it. */
-        for (vector_string_t::const_iterator it = reporters.begin(); it != reporters.end(); ++it)
+        for (vector_string_t::const_iterator it = report_events.begin(); it != report_events.end(); ++it)
         {
             char question[255];
-            snprintf(question, 255, _("Report using %s?"), it->c_str());
+            snprintf(question, sizeof(question), _("Report using %s?"), it->c_str());
             if (!ask_yesno(question))
             {
                 puts(_("Skipping..."));
@@ -695,8 +677,8 @@ int report(const char *crash_id, int flags)
 
             ask_for_missing_settings(it->c_str(), *settings);
 
-            vector_string_t cur_reporter(1, *it);
-            report_status_t r = call_Report(crash_data, cur_reporter, reporters_settings);
+            vector_string_t cur_event(1, *it);
+            report_status_t r = call_Report(crash_data, cur_event, reporters_settings);
             assert(r.size() == 1); /* one reporter --> one report status */
             vector_string_t &v = r.begin()->second;
             printf("%s: %s\n", r.begin()->first.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
