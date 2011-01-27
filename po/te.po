@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.te\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-14 16:16+0100\n"
-"PO-Revision-Date: 2011-01-11 11:47+0530\n"
+"POT-Creation-Date: 2011-01-27 07:45+0000\n"
+"PO-Revision-Date: 2011-01-27 16:01+0530\n"
 "Last-Translator: Krishnababu Krothapalli <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
-"Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: te\n"
 "X-Generator: Lokalize 1.1\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "\n"
@@ -66,49 +66,49 @@ msgstr "బగ్‌జిల్లా లోనికి లాగిన్ అ
 msgid "Checking for duplicates..."
 msgstr "నకిలీల కొరకు పరిశీలించుచున్నది..."
 
-#: ../lib/Plugins/Bugzilla.cpp:791 ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:792 ../lib/Plugins/Bugzilla.cpp:827
 msgid "Missing mandatory member 'bugs'"
 msgstr "తప్పనిసరైన సభ్యుని 'bugs' తప్పిపోయినవి"
 
-#: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
-#: ../lib/Plugins/Bugzilla.cpp:918
+#: ../lib/Plugins/Bugzilla.cpp:810 ../lib/Plugins/Bugzilla.cpp:843
+#: ../lib/Plugins/Bugzilla.cpp:919
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() విఫలమైంది. తప్పనిసరైన సమాచారము మొత్తంను సేకరించలేక పోయింది"
 
-#: ../lib/Plugins/Bugzilla.cpp:858
+#: ../lib/Plugins/Bugzilla.cpp:859
 msgid "Creating a new bug..."
 msgstr "కొత్త బగ్‌ను సృష్టించుచున్నది..."
 
-#: ../lib/Plugins/Bugzilla.cpp:863
+#: ../lib/Plugins/Bugzilla.cpp:864
 msgid "Bugzilla entry creation failed"
 msgstr "బగ్‌జిల్లా పద్దు సృష్టించుట విఫలమైంది"
 
-#: ../lib/Plugins/Bugzilla.cpp:873 ../lib/Plugins/Bugzilla.cpp:968
+#: ../lib/Plugins/Bugzilla.cpp:874 ../lib/Plugins/Bugzilla.cpp:969
 msgid "Logging out..."
 msgstr "లాగ్అవుట్ అవుచున్నది..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:892
+#: ../lib/Plugins/Bugzilla.cpp:893
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "బగ్ యిప్పటికే నివేదించబడింది: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:903
+#: ../lib/Plugins/Bugzilla.cpp:904
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "బగ్‌జిల్లా బగ్ %d యొక్క మాత్రుక(పేరెంట్)ను కనుగొనలేక పోయింది"
 
-#: ../lib/Plugins/Bugzilla.cpp:932 ../lib/Plugins/Bugzilla.cpp:933
+#: ../lib/Plugins/Bugzilla.cpp:933 ../lib/Plugins/Bugzilla.cpp:934
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "%sను CC జాబితాకు జతచేసినది"
 
-#: ../lib/Plugins/Bugzilla.cpp:957
+#: ../lib/Plugins/Bugzilla.cpp:958
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "కొత్త వ్యాఖ్యను బగ్(%d)నకు జతచేయుము"
 
-#: ../lib/Plugins/Bugzilla.cpp:1056
+#: ../lib/Plugins/Bugzilla.cpp:1057
 msgid "Reports bugs to bugzilla"
 msgstr "బగ్‌లను బగ్‌జిల్లాకు నివేదించును"
 
@@ -212,21 +212,19 @@ msgid "Creating a ReportUploader report..."
 msgstr "రిపోర్ట్అప్‌లోడర్ నివేదికను సృష్టించుచున్నది..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-msgstr ""
-"క్రాష్ డాటాను .tar.gz ఫైలునకు పాక్ చేయును, ఐచ్చికంగా దానిని FTP/SCP/etc ద్వారా అప్‌లోడ్ చేయును"
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgstr "క్రాష్ డాటాను .tar.gz ఫైలునకు పాక్ చేయును, ఐచ్చికంగా దానిని FTP/SCP/etc ద్వారా అప్‌లోడ్ చేయును"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../lib/Plugins/RHTSupport.cpp:106
 msgid "Compressing data"
-msgstr ""
+msgstr "డాటాను కుదించుచున్నది"
 
-#: ../lib/Plugins/RHTSupport.cpp:236
+#: ../lib/Plugins/RHTSupport.cpp:238
 msgid "Creating a new case..."
 msgstr "కొత్త కేస్‌ను సృష్టించుచున్నది..."
 
-#: ../lib/Plugins/RHTSupport.cpp:312
+#: ../lib/Plugins/RHTSupport.cpp:315
 msgid "Reports bugs to Red Hat support"
 msgstr "Red Hat తోడ్పాటునకు బగ్‌లను నివేదించును"
 
@@ -374,7 +372,7 @@ msgstr "RHTమద్దతు URL:"
 #: ../lib/Utils/abrt_curl.cpp:180
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
-msgstr ""
+msgstr "అప్‌లోడైంది: %llu మొత్తం %llu కిబైట్లలో"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -399,29 +397,28 @@ msgstr "ఒక క్రాష్ గుర్తించబడెను"
 msgid "ABRT service is not running"
 msgstr "ABRT సేవ నడుచుటలేదు"
 
-#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
-#: ../src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:41 ../src/Applet/CCApplet.cpp:43
+#: ../src/Applet/CCApplet.cpp:266 ../src/Applet/CCApplet.cpp:293
 msgid "Warning"
 msgstr "హెచ్చరిక"
 
-#: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+#: ../src/Applet/CCApplet.cpp:95
+msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT చేత గుర్తించబడిన సమస్యల గురించి వినియోగదారికి తెలుపుటకు నోటిఫికేషన్ ప్రాంతపు ఆప్లెట్"
 
-#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:24
+#: ../src/Applet/CCApplet.cpp:111 ../src/Gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr "కృష్ణబాబు క్రొత్తపల్లి <kkrothap@redhat.com> 2009,2010."
 
-#: ../src/Applet/CCApplet.cpp:115
+#: ../src/Applet/CCApplet.cpp:121
 msgid "Hide"
 msgstr "మరుగునవుంచుము"
 
-#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:14
+#: ../src/Applet/CCApplet.cpp:259 ../src/Gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "నివేదించు"
 
-#: ../src/Applet/CCApplet.cpp:256 ../src/Applet/CCApplet.cpp:284
+#: ../src/Applet/CCApplet.cpp:262 ../src/Applet/CCApplet.cpp:290
 msgid "Open ABRT"
 msgstr "ABRT తెరువుము"
 
@@ -738,8 +735,7 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "వేరొక క్లైంటు యిప్పటికే నడుచుచున్నది, దానిని మేల్కొలుపుటకు యత్నించుచున్నది..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "డెమోన్‌నుండి అనుకోని డాటా పొందినది (డాటాబేస్ సరిగా నవీకరించబడిందా?)."
 
 #: ../src/Gui/ABRTPlugin.py:71
@@ -821,7 +817,7 @@ msgstr "క్లిప్‌బోర్డునకు నకలుతీయ�
 
 #: ../src/Gui/ccgui.glade.h:12
 msgid "Online _Help"
-msgstr ""
+msgstr "ఆన్‌లైన్ సహాయం (_H)"
 
 #: ../src/Gui/ccgui.glade.h:13 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
@@ -964,8 +960,8 @@ msgid ""
 "then use the Refresh button to regenerate the backtrace."
 msgstr ""
 "నివేదీకరణ అచేతనము చేయబడింది యెంచేతంటే బాక్‌ట్రేస్ నిరుపయోగమైంది.\n"
-"ఈ ఆదేశాన్ని వుపయోగించి డీబగ్‌యిన్ఫోను మానవీయంగా సంస్థాపించుటకు ప్రయత్నించండి: <b>debuginfo-install "
-"%s</b> \n"
+"ఈ ఆదేశాన్ని వుపయోగించి డీబగ్‌యిన్ఫోను మానవీయంగా సంస్థాపించుటకు ప్రయత్నించండి: <b>debuginfo-install %"
+"s</b> \n"
 "అప్పుడు బాక్‌ట్రేస్‌ను తిరిగి వుద్భవింపచేయుటకు రీఫ్రెష్ బటన్ వుపయోగించండి."
 
 #: ../src/Gui/CCReporterDialog.py:120
@@ -1044,15 +1040,13 @@ msgid "Cannot get the default keyring."
 msgstr "అప్రమేయ కీరింగ్‌ను పొందలేక పోయింది."
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr "gnome-keyringకు యాక్సెస్ తిరస్కరించబడింది, ప్లగిన్ల అమరికలు దాయబడవు."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "gnome-keyringకు యాక్సెస్ తిరస్కరించబడింది, %s కొరకు అమరికలను లోడు చేయలేక పోయింది!"
 
 #: ../src/Gui/ConfBackend.py:208
@@ -1173,8 +1167,7 @@ msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "ఈ క్రాష్ యెలా సంభవించినది (అంచెలంచెలుగా)? మీరు దానిని తిరిగి యెలా రాబట్టుతారు?"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr "మీరు సాఫ్టువేరు నిర్వాహకులతో పంచుకొవాలని అనుకొనుచున్న వ్యాఖ్యలు యేమైనా వున్నాయా?"
 
 #: ../src/Gui/CReporterAssistant.py:723
@@ -1185,16 +1178,14 @@ msgstr "అదనపు వివరములను అందించుము"
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
-msgstr ""
-"<b>చిట్కా:</b> మీ వ్యాఖ్యలు గోప్యం కావు. దయచేసి తదనుగుణంగా మీరు యేమి మాట్లాడుచున్నారో గమనించుకోండి."
+msgstr "<b>చిట్కా:</b> మీ వ్యాఖ్యలు గోప్యం కావు. దయచేసి తదనుగుణంగా మీరు యేమి మాట్లాడుచున్నారో గమనించుకోండి."
 
 #: ../src/Gui/CReporterAssistant.py:770
 msgid "Confirm and send the report"
 msgstr "ఖాయపరచుము మరియు నివేదికను పంపుము"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr "కిందిది మీ బగ్ నివేదిక యొక్క సంక్షిప్తసమాచారము. దానిని అప్పచెప్పుటకు దయచేసి 'ఆపాదించు' నొక్కుము."
 
 #: ../src/Gui/CReporterAssistant.py:777
