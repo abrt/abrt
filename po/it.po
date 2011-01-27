@@ -12,17 +12,17 @@
 # Francesco <fdaluisio@fedoraproject.org>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt-master\n"
+"Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-14 16:16+0100\n"
-"PO-Revision-Date: 2010-11-19 15:41+0100\n"
-"Last-Translator: Francesco <fdaluisio@fedoraproject.org>\n"
-"Language-Team: Italian <trans-it@fedoraproject.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2011-01-27 07:45+0000\n"
+"PO-Revision-Date: 2011-01-28 09:39+1000\n"
+"Last-Translator: \n"
+"Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.1\n"
+"Language: \n"
+"X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../lib/Plugins/Bugzilla.cpp:543
@@ -55,51 +55,51 @@ msgstr "Accesso in bugzilla in corso..."
 msgid "Checking for duplicates..."
 msgstr "Controllo di duplicati..."
 
-#: ../lib/Plugins/Bugzilla.cpp:791 ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:792 ../lib/Plugins/Bugzilla.cpp:827
 msgid "Missing mandatory member 'bugs'"
 msgstr "Elemento obbligatorio 'bugs' non presente"
 
-#: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
-#: ../lib/Plugins/Bugzilla.cpp:918
+#: ../lib/Plugins/Bugzilla.cpp:810 ../lib/Plugins/Bugzilla.cpp:843
+#: ../lib/Plugins/Bugzilla.cpp:919
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() fallito. Impossibile raccogliere tutte le informazioni "
 "obbligatorie"
 
-#: ../lib/Plugins/Bugzilla.cpp:858
+#: ../lib/Plugins/Bugzilla.cpp:859
 msgid "Creating a new bug..."
 msgstr "Creazione di un nuovo bug..."
 
-#: ../lib/Plugins/Bugzilla.cpp:863
+#: ../lib/Plugins/Bugzilla.cpp:864
 msgid "Bugzilla entry creation failed"
 msgstr "Creazione della entry su Bugzilla fallita"
 
-#: ../lib/Plugins/Bugzilla.cpp:873 ../lib/Plugins/Bugzilla.cpp:968
+#: ../lib/Plugins/Bugzilla.cpp:874 ../lib/Plugins/Bugzilla.cpp:969
 msgid "Logging out..."
 msgstr "Disconnessione..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:892
+#: ../lib/Plugins/Bugzilla.cpp:893
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Il bug è già riportato: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:903
+#: ../lib/Plugins/Bugzilla.cpp:904
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla non ha trovato il genitore del bug (%d)"
 
-#: ../lib/Plugins/Bugzilla.cpp:932 ../lib/Plugins/Bugzilla.cpp:933
+#: ../lib/Plugins/Bugzilla.cpp:933 ../lib/Plugins/Bugzilla.cpp:934
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "Aggiungi %s in copia"
 
-#: ../lib/Plugins/Bugzilla.cpp:957
+#: ../lib/Plugins/Bugzilla.cpp:958
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Aggiungi un nuovo commento al bug(%d)"
 
-#: ../lib/Plugins/Bugzilla.cpp:1056
+#: ../lib/Plugins/Bugzilla.cpp:1057
 msgid "Reports bugs to bugzilla"
 msgstr "Notifica bug a bugzilla"
 
@@ -203,8 +203,7 @@ msgid "Creating a ReportUploader report..."
 msgstr "Creazione di una notifica ReportUploader in corso..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 "Raggruppa i dati relativi al crash in un file .tar.gz, e facoltativamente li "
 "carica tramite FTP/SCP/etc"
@@ -212,13 +211,13 @@ msgstr ""
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../lib/Plugins/RHTSupport.cpp:106
 msgid "Compressing data"
-msgstr ""
+msgstr "Compressione dati in corso"
 
-#: ../lib/Plugins/RHTSupport.cpp:236
+#: ../lib/Plugins/RHTSupport.cpp:238
 msgid "Creating a new case..."
 msgstr "Creazione di un nuovo caso..."
 
-#: ../lib/Plugins/RHTSupport.cpp:312
+#: ../lib/Plugins/RHTSupport.cpp:315
 msgid "Reports bugs to Red Hat support"
 msgstr "Notifica bug al supporto Red Hat"
 
@@ -366,7 +365,7 @@ msgstr "URL RHTSupport:"
 #: ../lib/Utils/abrt_curl.cpp:180
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
-msgstr ""
+msgstr "Caricato: %llu di %llu kbyte"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -391,31 +390,30 @@ msgstr "È stato rilevato un crash"
 msgid "ABRT service is not running"
 msgstr "Il servizio ABRT non è in esecuzione"
 
-#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
-#: ../src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:41 ../src/Applet/CCApplet.cpp:43
+#: ../src/Applet/CCApplet.cpp:266 ../src/Applet/CCApplet.cpp:293
 msgid "Warning"
 msgstr "Attenzione"
 
-#: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+#: ../src/Applet/CCApplet.cpp:95
+msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "Applet area di notifica che informa gli utenti sulla presenza di "
 "problematiche rilevate da ABRT"
 
-#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:24
+#: ../src/Applet/CCApplet.cpp:111 ../src/Gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr "crediti-traduttore"
 
-#: ../src/Applet/CCApplet.cpp:115
+#: ../src/Applet/CCApplet.cpp:121
 msgid "Hide"
 msgstr "Nascondi"
 
-#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:14
+#: ../src/Applet/CCApplet.cpp:259 ../src/Gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "Report"
 
-#: ../src/Applet/CCApplet.cpp:256 ../src/Applet/CCApplet.cpp:284
+#: ../src/Applet/CCApplet.cpp:262 ../src/Applet/CCApplet.cpp:290
 msgid "Open ABRT"
 msgstr "Apri ABRT"
 
@@ -627,8 +625,7 @@ msgstr "# Stringa della release del sistema operativo"
 
 #: ../src/CLI/report.cpp:336
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr ""
-"Impossibile eseguire vi: $TERM, $VISUAL e $EDITOR non sono stati impostati"
+msgstr "Impossibile eseguire vi: $TERM, $VISUAL e $EDITOR non sono stati impostati"
 
 #: ../src/CLI/report.cpp:424
 msgid ""
@@ -722,8 +719,7 @@ msgstr ""
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
-msgstr ""
-"Plugin del database non specificato. Controllare le impostazioni di abrtd."
+msgstr "Plugin del database non specificato. Controllare le impostazioni di abrtd."
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -734,10 +730,8 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "Un altro client è già in esecuzione, tento il ripristino..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
-msgstr ""
-"Ricevuti dati inattesi dal demone (il database è aggiornato correttamente?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgstr "Ricevuti dati inattesi dal demone (il database è aggiornato correttamente?)."
 
 #: ../src/Gui/ABRTPlugin.py:71
 msgid "Not loaded plugins"
@@ -818,7 +812,7 @@ msgstr "Copia sugli Appunti"
 
 #: ../src/Gui/ccgui.glade.h:12
 msgid "Online _Help"
-msgstr ""
+msgstr "(_H) Aiuto online"
 
 #: ../src/Gui/ccgui.glade.h:13 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
@@ -954,8 +948,7 @@ msgstr ""
 
 #: ../src/Gui/CCReporterDialog.py:107
 msgid "You must check the backtrace for sensitive data."
-msgstr ""
-"E' necessario verificare il backtrace per la presenza di dati sensibili."
+msgstr "E' necessario verificare il backtrace per la presenza di dati sensibili."
 
 #: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:312
 #, python-format
@@ -1037,9 +1030,8 @@ msgid "Error acquiring the report: %s"
 msgstr "Errore durante l'acquisizione del report: %s"
 
 #: ../src/Gui/ConfBackend.py:79
-#, fuzzy
 msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
-msgstr "Impossibile connettersi al demone Gnome Keyring."
+msgstr "Impossibile connettersi al gnome-keyring-daemon, le modifiche non verranno salvate."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
@@ -1048,8 +1040,7 @@ msgid "Cannot get the default keyring."
 msgstr "Impossibile acquisire il keyring predefinito."
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
 "L'accesso al gnome-keyring è stato negato, le impostazioni dei plugin non "
 "saranno salvati."
@@ -1057,8 +1048,7 @@ msgstr ""
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr ""
 "L'accesso al gnome-keyring è stato negato, impossibile caricare le "
 "impostazioni per %s!"
@@ -1093,8 +1083,7 @@ msgstr "Crashdump non ha alcuna valutazione => si suppone non sia necessaria"
 
 #: ../src/Gui/CReporterAssistant.py:298
 msgid "You should check the backtrace for sensitive data."
-msgstr ""
-"È consigliato verificare il backtrace per la presenza di dati sensibili."
+msgstr "È consigliato verificare il backtrace per la presenza di dati sensibili."
 
 #: ../src/Gui/CReporterAssistant.py:299
 msgid "You must agree with sending the backtrace."
@@ -1127,8 +1116,8 @@ msgid ""
 "Select where you would like to report the bug, and press 'Forward' to "
 "continue."
 msgstr ""
-"Sembra che si sia verificato un crash di una applicazione del pacchetto <b>"
-"%s</b> sul sistema. È consigliato inviare un bug report relativo a questo "
+"Sembra che si sia verificato un crash di una applicazione del pacchetto <b>%"
+"s</b> sul sistema. È consigliato inviare un bug report relativo a questo "
 "problema. La notifica fornirà le informazioni necessarie ai manutentori "
 "software in modo da fornire il bug fix necessario\n"
 "\n"
@@ -1190,8 +1179,7 @@ msgstr ""
 "questo problema?"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr "Condividere alcun commento con i manutentori software?"
 
 #: ../src/Gui/CReporterAssistant.py:723
@@ -1211,8 +1199,7 @@ msgid "Confirm and send the report"
 msgstr "Conferma ed invia la notifica"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Di seguito viene riportato un sommario del bug report. Fare clic su "
 "'Applica' per inviarlo."
@@ -1409,8 +1396,7 @@ msgstr "Forza ABRT alla rigenerazione del backtrace."
 
 #: ../src/Gui/report.glade.h:19
 msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
-msgstr ""
-"Ho controllato il backtrace ed ho rimosso i dati sensibili (password, ecc)"
+msgstr "Ho controllato il backtrace ed ho rimosso i dati sensibili (password, ecc)"
 
 #: ../src/Gui/report.glade.h:20
 msgid "N/A"
@@ -1547,5 +1533,3 @@ msgstr ""
 "correggerla prima di procedere, in caso contrario il processo di notifica "
 "potrà fallire.\n"
 
-#~ msgid "Getting global universal unique identification..."
-#~ msgstr "Acquisizione identificazione univoca universale globale..."
