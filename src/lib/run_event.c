@@ -21,7 +21,7 @@
 
 struct run_event_state *new_run_event_state()
 {
-    return (struct run_event_state*)xzalloc(sizeof(struct run_event_state));
+    return xzalloc(sizeof(struct run_event_state));
 }
 
 void free_run_event_state(struct run_event_state *state)
@@ -177,6 +177,12 @@ static int run_event_helper(struct run_event_state *state,
         {
             VERB1 log("Executing '%s'", p);
 
+            /* We count it even if fork fails. The counter isn't meant
+             * to count *successful* forks, it is meant to let caller know
+             * whether the event we run has *any* handlers configured, or not.
+             */
+            state->children_count++;
+
             /* /bin/sh -c 'cmd [args]' NULL */
             char *argv[4];
             char **pp = argv;
@@ -241,22 +247,28 @@ int run_event_on_dir_name(struct run_event_state *state,
                 const char *dump_dir_name,
                 const char *event
 ) {
+    state->children_count = 0;
+
     return run_event_helper(state, dump_dir_name, event, CONF_DIR"/abrt_event.conf");
 }
 
 int run_event_on_crash_data(struct run_event_state *state, crash_data_t *data, const char *event)
 {
+    state->children_count = 0;
+
     struct dump_dir *dd = create_dump_dir_from_crash_data(data, NULL);
     if (!dd)
         return -1;
     char *dir_name = xstrdup(dd->dd_dir);
     dd_close(dd);
+
     int r = run_event_on_dir_name(state, dir_name, event);
+
+    g_hash_table_remove_all(data);
     dd = dd_opendir(dir_name, 0);
     free(dir_name);
     if (dd)
     {
-        g_hash_table_remove_all(data);
         load_crash_data_from_dump_dir(data, dd);
         dd_delete(dd);
     }

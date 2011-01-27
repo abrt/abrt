@@ -28,6 +28,7 @@ extern "C" {
 struct dump_dir;
 
 struct run_event_state {
+    int children_count;
     /* Used only for post-create dup detection. TODO: document its API */
     int (*post_run_callback)(const char *dump_dir_name, void *param);
     void *post_run_param;
