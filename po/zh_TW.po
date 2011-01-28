@@ -1,22 +1,22 @@
-# translation of abrt.master.po to Traditional Chinese
+# translation of abrt.1-1-x.po to Traditional Chinese
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Eunju Kim <eukim@redhat.com>, 2009.
-# Terry Chuang <tchuang@redhat.com>, 2009, 2010.
+# Terry Chuang <tchuang@redhat.com>, 2009, 2010, 2011.
 # Terry Chuang <tchuang at redhat>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.master\n"
+"Project-Id-Version: abrt.1-1-x\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-14 16:16+0100\n"
-"PO-Revision-Date: 2010-07-30 15:55+1000\n"
+"POT-Creation-Date: 2011-01-27 07:45+0000\n"
+"PO-Revision-Date: 2011-01-28 12:49+1000\n"
 "Last-Translator: Terry Chuang <tchuang@redhat.com>\n"
-"Language-Team: Traditional Chinese <zh_TW@li.org>\n"
-"Language: \n"
+"Language-Team: Traditional Chinese <zh@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
@@ -50,49 +50,49 @@ msgstr "正在登入 bugzilla…"
 msgid "Checking for duplicates..."
 msgstr "正在檢查是否有重覆…"
 
-#: ../lib/Plugins/Bugzilla.cpp:791 ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:792 ../lib/Plugins/Bugzilla.cpp:827
 msgid "Missing mandatory member 'bugs'"
 msgstr "必要的成員 'bugs' 遺失"
 
-#: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
-#: ../lib/Plugins/Bugzilla.cpp:918
+#: ../lib/Plugins/Bugzilla.cpp:810 ../lib/Plugins/Bugzilla.cpp:843
+#: ../lib/Plugins/Bugzilla.cpp:919
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() 失敗。無法蒐集所有必要的資訊"
 
-#: ../lib/Plugins/Bugzilla.cpp:858
+#: ../lib/Plugins/Bugzilla.cpp:859
 msgid "Creating a new bug..."
 msgstr "正在建立新的 bug…"
 
-#: ../lib/Plugins/Bugzilla.cpp:863
+#: ../lib/Plugins/Bugzilla.cpp:864
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla 項目建立失敗"
 
-#: ../lib/Plugins/Bugzilla.cpp:873 ../lib/Plugins/Bugzilla.cpp:968
+#: ../lib/Plugins/Bugzilla.cpp:874 ../lib/Plugins/Bugzilla.cpp:969
 msgid "Logging out..."
 msgstr "正在登出…"
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:892
+#: ../lib/Plugins/Bugzilla.cpp:893
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "錯誤已回報：%i"
 
-#: ../lib/Plugins/Bugzilla.cpp:903
+#: ../lib/Plugins/Bugzilla.cpp:904
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla 找不到錯誤 %d 的 parent"
 
-#: ../lib/Plugins/Bugzilla.cpp:932 ../lib/Plugins/Bugzilla.cpp:933
+#: ../lib/Plugins/Bugzilla.cpp:933 ../lib/Plugins/Bugzilla.cpp:934
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "將 %s 新增至 CC 清單中"
 
-#: ../lib/Plugins/Bugzilla.cpp:957
+#: ../lib/Plugins/Bugzilla.cpp:958
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "在錯誤（%d）中新增註釋"
 
-#: ../lib/Plugins/Bugzilla.cpp:1056
+#: ../lib/Plugins/Bugzilla.cpp:1057
 msgid "Reports bugs to bugzilla"
 msgstr "將錯誤回報至 bugzilla"
 
@@ -111,7 +111,7 @@ msgstr "跳過 debuginfo 的安裝"
 #: ../lib/Plugins/CCpp.cpp:670
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "%s 的 backtrace 剖析失敗"
 
 #: ../lib/Plugins/CCpp.cpp:967
 msgid "Analyzes crashes in C/C++ programs"
@@ -196,23 +196,21 @@ msgid "Creating a ReportUploader report..."
 msgstr "正在建立 ReportUploader 報告中..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr "將當機資料整理入 .tar.gz 檔案中，選用性的透過 FTP/SCP/etc 來上傳它"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../lib/Plugins/RHTSupport.cpp:106
 msgid "Compressing data"
-msgstr ""
+msgstr "正在壓縮資料"
 
-#: ../lib/Plugins/RHTSupport.cpp:236
+#: ../lib/Plugins/RHTSupport.cpp:238
 msgid "Creating a new case..."
 msgstr "正在建立新的案例…"
 
-#: ../lib/Plugins/RHTSupport.cpp:312
-#, fuzzy
+#: ../lib/Plugins/RHTSupport.cpp:315
 msgid "Reports bugs to Red Hat support"
-msgstr "將錯誤回報至 bugzilla"
+msgstr "將錯誤回報給 Red Hat 支援人員"
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
@@ -267,8 +265,7 @@ msgstr "顯示密碼"
 msgid ""
 "You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
 "\">here</a>"
-msgstr ""
-"您可在<a href=\"https://bugzilla.redhat.com/createaccount.cgi\">此</a>建立"
+msgstr "您可在<a href=\"https://bugzilla.redhat.com/createaccount.cgi\">此</a>建立"
 
 #: ../lib/Plugins/KerneloopsReporter.glade.h:1
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
@@ -357,7 +354,7 @@ msgstr "RHTSupport 網址："
 #: ../lib/Utils/abrt_curl.cpp:180
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
-msgstr ""
+msgstr "上載了：%llu 個位元組（完整為 %llu 個位元組）"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -382,29 +379,28 @@ msgstr "已偵測到了錯誤"
 msgid "ABRT service is not running"
 msgstr "ABRT 服務沒有在運作"
 
-#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
-#: ../src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:41 ../src/Applet/CCApplet.cpp:43
+#: ../src/Applet/CCApplet.cpp:266 ../src/Applet/CCApplet.cpp:293
 msgid "Warning"
 msgstr "警告"
 
-#: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+#: ../src/Applet/CCApplet.cpp:95
+msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "會通知使用者有關於 ABRT 所發現的問題的 Notification area applet"
 
-#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:24
+#: ../src/Applet/CCApplet.cpp:111 ../src/Gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr "譯者姓名"
 
-#: ../src/Applet/CCApplet.cpp:115
+#: ../src/Applet/CCApplet.cpp:121
 msgid "Hide"
 msgstr "隱藏"
 
-#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:14
+#: ../src/Applet/CCApplet.cpp:259 ../src/Gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "報告"
 
-#: ../src/Applet/CCApplet.cpp:256 ../src/Applet/CCApplet.cpp:284
+#: ../src/Applet/CCApplet.cpp:262 ../src/Applet/CCApplet.cpp:290
 msgid "Open ABRT"
 msgstr "開啟 ABRT"
 
@@ -431,7 +427,7 @@ msgid "\tHostname   : %s\n"
 msgstr "\tHostname   : %s\n"
 
 #: ../src/CLI/CLI.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
 "Last crash:         %s\n"
@@ -451,19 +447,17 @@ msgstr ""
 "Command:            %s\n"
 "Executable:         %s\n"
 "System:             %s, kernel %s\n"
-"Rating:             %s\n"
-"Coredump file:      %s\n"
 "Reason:             %s\n"
 
 #: ../src/CLI/CLI.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Coredump file:      %s\n"
-msgstr "Crash function:     %s\n"
+msgstr "Coredump file:      %s\n"
 
 #: ../src/CLI/CLI.cpp:135
-#, fuzzy, c-format
+#, c-format
 msgid "Rating:             %s\n"
-msgstr "Hostname:           %s\n"
+msgstr "Rating:             %s\n"
 
 #: ../src/CLI/CLI.cpp:140
 #, c-format
@@ -638,11 +632,11 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/CLI/report.cpp:545
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: ../src/CLI/report.cpp:546
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:647
@@ -663,30 +657,28 @@ msgid "Reporting..."
 msgstr "正在回報..."
 
 #: ../src/CLI/report.cpp:721
-#, fuzzy, c-format
+#, c-format
 msgid "Report using %s?"
-msgstr "使用 %s? [y/N] 來回報："
+msgstr "使用 %s 來回報？"
 
 #: ../src/CLI/report.cpp:724
 msgid "Skipping..."
 msgstr "跳過..."
 
 #: ../src/CLI/report.cpp:736
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "已停用回報，因為無法使用 backtrace。"
+msgstr "已停用回報，因為無法使用 backtrace"
 
 #: ../src/CLI/report.cpp:740
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
-msgstr ""
+msgstr "請嘗試透過「debuginfo-install %s」指令來手動式地安裝 debuginfo，然後再試一次\n"
 
 #: ../src/CLI/report.cpp:749
-#, fuzzy
 msgid "Error loading reporter settings"
-msgstr "嘗試取得報告時發生了錯誤：%s"
+msgstr "嘗試載入回報程式設定時發生了錯誤"
 
 #: ../src/CLI/report.cpp:768
 #, c-format
@@ -705,8 +697,7 @@ msgstr "'如何重新產生' 過長"
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
-msgstr ""
-"報告配額大小超出。請檢查您在 abrt.conf 中，系統的 MaxCrashReportsSize 數值。"
+msgstr "報告配額大小超出。請檢查您在 abrt.conf 中，系統的 MaxCrashReportsSize 數值。"
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
@@ -721,8 +712,7 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "另一用戶端已在運作中，正在嘗試將其喚醒..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "由 daemon 取得了非預期的資料（資料庫是否已正確更新？）。"
 
 #: ../src/Gui/ABRTPlugin.py:71
@@ -804,7 +794,7 @@ msgstr "複製到剪貼簿"
 
 #: ../src/Gui/ccgui.glade.h:12
 msgid "Online _Help"
-msgstr ""
+msgstr "線上說明(_H)"
 
 #: ../src/Gui/ccgui.glade.h:13 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
@@ -1014,9 +1004,8 @@ msgid "Error acquiring the report: %s"
 msgstr "嘗試取得報告時發生了錯誤：%s"
 
 #: ../src/Gui/ConfBackend.py:79
-#, fuzzy
 msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
-msgstr "無法連上 Gnome Keyring daemon"
+msgstr "無法連上 gnome-keyring-daemon，變更將不會被儲存。"
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
@@ -1025,15 +1014,13 @@ msgid "Cannot get the default keyring."
 msgstr "無法取得預設的 keyring。"
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr "存取 gnome-keyring 已被拒絕，外掛設定將不會被儲存。"
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "存取 gnome-keyring 已被拒絕，無法載入 %s 的設定！"
 
 #: ../src/Gui/ConfBackend.py:208
@@ -1147,15 +1134,14 @@ msgstr "允許 backtrace"
 
 #: ../src/Gui/CReporterAssistant.py:659
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "繼續進行之前，您必須先填入下列資訊..."
 
 #: ../src/Gui/CReporterAssistant.py:682
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "這項錯誤如何發生的（按步驟）？您如何能夠使它重新產生？"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr "您是否有任何希望提供給軟體維護人員的意見？"
 
 #: ../src/Gui/CReporterAssistant.py:723
@@ -1173,8 +1159,7 @@ msgid "Confirm and send the report"
 msgstr "確認並傳送報告"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr "以下為您錯誤報告的總覽。請點選「套用」來提交它。"
 
 #: ../src/Gui/CReporterAssistant.py:777
@@ -1357,7 +1342,7 @@ msgstr "<span fgcolor=\"blue\">套件：</span>"
 
 #: ../src/Gui/report.glade.h:14
 msgid "<span fgcolor=\"blue\">Reason:</span>"
-msgstr "<span fgcolor=\"blue\">原因：:/span>"
+msgstr "<span fgcolor=\"blue\">原因：</span>"
 
 #: ../src/Gui/report.glade.h:15
 msgid "<span fgcolor=\"blue\">Release:</span>"
@@ -1504,5 +1489,3 @@ msgstr ""
 "偵測到了一些已啟用的 reporter 外掛程式上的錯誤設定。請使用下列按鈕來開啟相應"
 "的配置，並在您進行前將其修正。否則，回報程序可能會失敗。\n"
 
-#~ msgid "Getting global universal unique identification..."
-#~ msgstr "正在取得全域特殊標示符號..."
