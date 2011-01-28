@@ -277,7 +277,7 @@ int run_event_on_crash_data(struct run_event_state *state, crash_data_t *data, c
 
 
 /* TODO: very similar to run_event_helper, try to combine into one fn? */
-static void list_possible_events_helper(struct strbuf *result,
+static int list_possible_events_helper(struct strbuf *result,
                 struct dump_dir *dd,
                 const char *dump_dir_name,
                 const char *pfx,
@@ -287,7 +287,7 @@ static void list_possible_events_helper(struct strbuf *result,
     if (!conffile)
     {
         error_msg("Can't open '%s'", conf_file_name);
-        return;
+        return 0;
     }
 
     /* We check "dump_dir_name == NULL" later.
@@ -297,6 +297,7 @@ static void list_possible_events_helper(struct strbuf *result,
     if (dd)
         dump_dir_name = NULL;
 
+    int error = 0;
     unsigned pfx_len = strlen(pfx);
     char *next_line = xmalloc_fgetline(conffile);
     while (next_line)
@@ -349,8 +350,10 @@ static void list_possible_events_helper(struct strbuf *result,
             if (name) while (*name)
             {
                 VERB3 log("%s: recursing into '%s'", __func__, *name);
-                list_possible_events_helper(result, dd, dump_dir_name, pfx, *name);
+                error = list_possible_events_helper(result, dd, dump_dir_name, pfx, *name);
                 VERB3 log("%s: returned from '%s'", __func__, *name);
+                if (error)
+                    break;
                 name++;
             }
             globfree(&globbuf);
@@ -390,6 +393,7 @@ static void list_possible_events_helper(struct strbuf *result,
                     dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
                     if (!dd)
                     {
+                        error = -1;
                         free(line);
                         free(next_line);
                         goto stop; /* error (note: dd_opendir logged error msg) */
@@ -431,11 +435,15 @@ static void list_possible_events_helper(struct strbuf *result,
     if (dump_dir_name != NULL)
         dd_close(dd);
     fclose(conffile);
+
+    return error;
 }
 
 char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const char *pfx)
 {
     struct strbuf *result = strbuf_new();
-    list_possible_events_helper(result, dd, dump_dir_name, pfx, CONF_DIR"/abrt_event.conf");
+    int error = list_possible_events_helper(result, dd, dump_dir_name, pfx, CONF_DIR"/abrt_event.conf");
+    if (error)
+        strbuf_clear(result);
     return strbuf_free_nobuf(result);
 }
