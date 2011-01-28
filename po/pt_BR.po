@@ -1,22 +1,22 @@
-# translation of abrt.master.pt_BR.po to Portuguese
+# translation of abrt.1-1-x.pt_BR.po to Portuguese
 # Brazilian Portuguese translation of ABRT.
 # This file is distributed under the same license as the ABRT package.
 #
 # Igor Pires Soares <igor@projetofedora.org>, 2009.
-# Glaucia Cintra <gcintra@redhat.com>, 2009, 2010.
+# Glaucia Cintra <gcintra@redhat.com>, 2009, 2010, 2011.
 # Taylon Silmer <taylonsilva@gmail.com>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.master.pt_BR\n"
+"Project-Id-Version: abrt.1-1-x.pt_BR\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-14 16:16+0100\n"
-"PO-Revision-Date: 2010-07-31 21:17+1000\n"
+"POT-Creation-Date: 2011-01-27 07:45+0000\n"
+"PO-Revision-Date: 2011-01-28 10:20+1000\n"
 "Last-Translator: Glaucia Cintra <gcintra@redhat.com>\n"
 "Language-Team: Portuguese <en@li.org>\n"
-"Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pt\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-Country: BRAZIL\n"
@@ -52,51 +52,51 @@ msgstr "Autenticando no bugzilla..."
 msgid "Checking for duplicates..."
 msgstr "Verificando duplicatas..."
 
-#: ../lib/Plugins/Bugzilla.cpp:791 ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:792 ../lib/Plugins/Bugzilla.cpp:827
 msgid "Missing mandatory member 'bugs'"
 msgstr "Membro 'bugs' obrigatórios faltando"
 
-#: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
-#: ../lib/Plugins/Bugzilla.cpp:918
+#: ../lib/Plugins/Bugzilla.cpp:810 ../lib/Plugins/Bugzilla.cpp:843
+#: ../lib/Plugins/Bugzilla.cpp:919
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info()falhou. Não foi possível coletar todas as informações "
 "obrigatórias."
 
-#: ../lib/Plugins/Bugzilla.cpp:858
+#: ../lib/Plugins/Bugzilla.cpp:859
 msgid "Creating a new bug..."
 msgstr "Criando novo erro... "
 
-#: ../lib/Plugins/Bugzilla.cpp:863
+#: ../lib/Plugins/Bugzilla.cpp:864
 msgid "Bugzilla entry creation failed"
 msgstr "Criação da entrada do bugzilla falhou"
 
-#: ../lib/Plugins/Bugzilla.cpp:873 ../lib/Plugins/Bugzilla.cpp:968
+#: ../lib/Plugins/Bugzilla.cpp:874 ../lib/Plugins/Bugzilla.cpp:969
 msgid "Logging out..."
 msgstr "Encerrando sessão..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:892
+#: ../lib/Plugins/Bugzilla.cpp:893
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "O erro já foi relatado: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:903
+#: ../lib/Plugins/Bugzilla.cpp:904
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "O Bugzilla não conseguiu encontrar o pai do bug %d"
 
-#: ../lib/Plugins/Bugzilla.cpp:932 ../lib/Plugins/Bugzilla.cpp:933
+#: ../lib/Plugins/Bugzilla.cpp:933 ../lib/Plugins/Bugzilla.cpp:934
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "Adicionar o %s â lista CC"
 
-#: ../lib/Plugins/Bugzilla.cpp:957
+#: ../lib/Plugins/Bugzilla.cpp:958
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Adicionar novo comentário ao bug (%d)"
 
-#: ../lib/Plugins/Bugzilla.cpp:1056
+#: ../lib/Plugins/Bugzilla.cpp:1057
 msgid "Reports bugs to bugzilla"
 msgstr "Relatos de erros no bugzilla"
 
@@ -115,7 +115,7 @@ msgstr "Pulando instalação do debuginfo "
 #: ../lib/Plugins/CCpp.cpp:670
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "Backtrace analisando os falhos para %s"
 
 #: ../lib/Plugins/CCpp.cpp:967
 msgid "Analyzes crashes in C/C++ programs"
@@ -200,8 +200,7 @@ msgid "Creating a ReportUploader report..."
 msgstr "Criando um relatório de ReportUploader"
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 "Empacota dados de travamentos no arquivo .tar.gz, e carrega opcionalmente "
 "via FTP/SCP/etc"
@@ -209,16 +208,15 @@ msgstr ""
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../lib/Plugins/RHTSupport.cpp:106
 msgid "Compressing data"
-msgstr ""
+msgstr "Comprimindo dados"
 
-#: ../lib/Plugins/RHTSupport.cpp:236
+#: ../lib/Plugins/RHTSupport.cpp:238
 msgid "Creating a new case..."
 msgstr "Criando novo caso..."
 
-#: ../lib/Plugins/RHTSupport.cpp:312
-#, fuzzy
+#: ../lib/Plugins/RHTSupport.cpp:315
 msgid "Reports bugs to Red Hat support"
-msgstr "Relatos de erros no bugzilla"
+msgstr "Relata erros no suporte da Red Hat"
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
@@ -364,7 +362,7 @@ msgstr "URL do Suporte de RHT:"
 #: ../lib/Utils/abrt_curl.cpp:180
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
-msgstr ""
+msgstr "Carregado:  %llu of %llu kbytes"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -389,33 +387,32 @@ msgstr "Um travamento foi detectado"
 msgid "ABRT service is not running"
 msgstr "O serviço do ABRT não está em execução"
 
-#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
-#: ../src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:41 ../src/Applet/CCApplet.cpp:43
+#: ../src/Applet/CCApplet.cpp:266 ../src/Applet/CCApplet.cpp:293
 msgid "Warning"
 msgstr "Aviso"
 
-#: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+#: ../src/Applet/CCApplet.cpp:95
+msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "O mini aplicativo da área de notificação para notificar o usuário sobre os "
 "problemas detectados pelo ABRT "
 
-#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:24
+#: ../src/Applet/CCApplet.cpp:111 ../src/Gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr ""
 "Glaucia Cintra\n"
 "Taylon Silmer <taylonsilva@gmail.com>"
 
-#: ../src/Applet/CCApplet.cpp:115
+#: ../src/Applet/CCApplet.cpp:121
 msgid "Hide"
 msgstr "Esconder"
 
-#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:14
+#: ../src/Applet/CCApplet.cpp:259 ../src/Gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "Relatar"
 
-#: ../src/Applet/CCApplet.cpp:256 ../src/Applet/CCApplet.cpp:284
+#: ../src/Applet/CCApplet.cpp:262 ../src/Applet/CCApplet.cpp:290
 msgid "Open ABRT"
 msgstr "Abrir ABRT"
 
@@ -442,7 +439,7 @@ msgid "\tHostname   : %s\n"
 msgstr "\tHostname   : %s\n"
 
 #: ../src/CLI/CLI.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
 "Last crash:         %s\n"
@@ -462,19 +459,17 @@ msgstr ""
 "Command:            %s\n"
 "Executable:         %s\n"
 "System:             %s, kernel %s\n"
-"Rating:             %s\n"
-"Coredump file:      %s\n"
 "Reason:             %s\n"
 
 #: ../src/CLI/CLI.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "Coredump file:      %s\n"
-msgstr "Função de travamento      %s\n"
+msgstr "Arquivo Coredump:      %s\n"
 
 #: ../src/CLI/CLI.cpp:135
-#, fuzzy, c-format
+#, c-format
 msgid "Rating:             %s\n"
-msgstr "Hostname:           %s\n"
+msgstr "Classificação:           %s\n"
 
 #: ../src/CLI/CLI.cpp:140
 #, c-format
@@ -629,8 +624,7 @@ msgstr "#Faixa de lançamento do sistema operacional"
 
 #: ../src/CLI/report.cpp:336
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr ""
-"Não foi possível executar  vi: $TERM, $VISUAL e $EDITOR não está configurado "
+msgstr "Não foi possível executar  vi: $TERM, $VISUAL e $EDITOR não está configurado "
 
 #: ../src/CLI/report.cpp:424
 msgid ""
@@ -651,11 +645,11 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/CLI/report.cpp:545
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: ../src/CLI/report.cpp:546
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:647
@@ -676,30 +670,28 @@ msgid "Reporting..."
 msgstr "Relatando..."
 
 #: ../src/CLI/report.cpp:721
-#, fuzzy, c-format
+#, c-format
 msgid "Report using %s?"
-msgstr "Reportar utilizando o %s? [y/N]:"
+msgstr "Reportar utilizando o %s?"
 
 #: ../src/CLI/report.cpp:724
 msgid "Skipping..."
 msgstr "Pulando..."
 
 #: ../src/CLI/report.cpp:736
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "Relatório desabilitado, porque o backtrace está inutilizado."
+msgstr "Reportando desabilitado, porque o backtrace está inutilizado."
 
 #: ../src/CLI/report.cpp:740
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
-msgstr ""
+msgstr "Por favor, tente instalar o debuginfo manualmente usando o comando: \"debuginfo-install %s\" e tente novamente \n"
 
 #: ../src/CLI/report.cpp:749
-#, fuzzy
 msgid "Error loading reporter settings"
-msgstr "Erro ao obter o relatório: %s "
+msgstr "Erro ao carregar configurações de relatório"
 
 #: ../src/CLI/report.cpp:768
 #, c-format
@@ -737,8 +729,7 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "Outro cliente já está em execução, tentando acordá-lo..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr ""
 "Dados inesperados obtidos do daemon (o banco de dados está devidamente "
 "atualizado?). "
@@ -822,7 +813,7 @@ msgstr "Copiar para Área de Transferência"
 
 #: ../src/Gui/ccgui.glade.h:12
 msgid "Online _Help"
-msgstr ""
+msgstr "Ajuda_Online"
 
 #: ../src/Gui/ccgui.glade.h:13 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
@@ -985,8 +976,7 @@ msgstr ""
 
 #: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
-msgstr ""
-"Relatório desabilitado, por favor, repare os problemas demonstrados acima."
+msgstr "Relatório desabilitado, por favor, repare os problemas demonstrados acima."
 
 #: ../src/Gui/CCReporterDialog.py:132
 msgid "Sends the report using the selected plugin."
@@ -1039,9 +1029,8 @@ msgid "Error acquiring the report: %s"
 msgstr "Erro ao obter o relatório: %s "
 
 #: ../src/Gui/ConfBackend.py:79
-#, fuzzy
 msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
-msgstr "Não foi possível conectar ao daemon do Gnome Keyring."
+msgstr "Não foi possível conectar ao daemon do gnome-keyring, as modificações não foram salvas"
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
@@ -1050,8 +1039,7 @@ msgid "Cannot get the default keyring."
 msgstr "Não foi possível obter o keyring padrão."
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
 "Acesso ao gnome-keyring foi negado, as configurações do plugins não foram "
 "salvas."
@@ -1059,16 +1047,14 @@ msgstr ""
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr ""
 "Acesso ao gnome-keyring foi negado, não foi possível carregar as "
 "configurações para %s!"
 
 #: ../src/Gui/ConfBackend.py:208
 msgid "Access to gnome-keyring has been denied, cannot load settings."
-msgstr ""
-"Acesso ao gnome-keyring foi negado, não foi possível carregar configurações."
+msgstr "Acesso ao gnome-keyring foi negado, não foi possível carregar configurações."
 
 #: ../src/Gui/CReporterAssistant.py:21
 msgid "Crash info doesn't contain a backtrace"
@@ -1182,18 +1168,15 @@ msgstr "Aprovar o backtrace"
 
 #: ../src/Gui/CReporterAssistant.py:659
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "Você precisa preencher o item 'como ' antes de continuar..."
 
 #: ../src/Gui/CReporterAssistant.py:682
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
-msgstr ""
-"Como este travamento aconteceu (passo-a-passo)? Como você o reproduziria?"
+msgstr "Como este travamento aconteceu (passo-a-passo)? Como você o reproduziria?"
 
 #: ../src/Gui/CReporterAssistant.py:703
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
-msgstr ""
-"Existe algum comentário que você deseja fazer aos mantedores de software?"
+msgid "Are there any comments you would like to share with the software maintainers?"
+msgstr "Existe algum comentário que você deseja fazer aos mantedores de software?"
 
 #: ../src/Gui/CReporterAssistant.py:723
 msgid "Provide additional details"
@@ -1212,8 +1195,7 @@ msgid "Confirm and send the report"
 msgstr "Confirmar e enviar o relatório"
 
 #: ../src/Gui/CReporterAssistant.py:772
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Abaixo encontra-se o sumário de seu relatório de erro. Por favor, verifique "
 "o botão 'Aplicar' e submeta-o."
@@ -1330,8 +1312,7 @@ msgstr "Nome: "
 
 #: ../src/Gui/PluginsSettingsDialog.py:149
 msgid "Please select a plugin from the list to edit it's options."
-msgstr ""
-"Por favor, selecione um plugin a partir da lista para editar sua opção:"
+msgstr "Por favor, selecione um plugin a partir da lista para editar sua opção:"
 
 #: ../src/Gui/PluginsSettingsDialog.py:157
 #, python-format
@@ -1551,5 +1532,3 @@ msgstr ""
 "respectiva e repare-a antes de proceder, caso contrário o processo de "
 "reportagem pode falhar.\n"
 
-#~ msgid "Getting global universal unique identification..."
-#~ msgstr "Obtendo identificação global universal única..."
