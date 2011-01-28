@@ -88,7 +88,7 @@ static int get_and_set_lock(const char* lock_file, const char* pid)
         }
         if (isdigit_str(pid_buf))
         {
-            char pid_str[sizeof("/proc/") + strlen(pid_buf)];
+            char pid_str[sizeof("/proc/") + sizeof(pid_buf)];
             sprintf(pid_str, "/proc/%s", pid_buf);
             if (access(pid_str, F_OK) == 0)
             {
@@ -301,7 +301,7 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
      */
     if (mkdir(dir, 0750) == -1)
     {
-        perror_msg("Can't create dir '%s'", dir);
+        perror_msg("Can't create directory '%s'", dir);
         dd_close(dd);
         return NULL;
     }
@@ -342,6 +342,10 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
 
     char long_str[sizeof(long) * 3 + 2];
 
+    time_t t = time(NULL);
+    sprintf(long_str, "%lu", (long)t);
+    dd_save_text(dd, FILENAME_TIME, long_str);
+
     sprintf(long_str, "%lu", (long)uid);
     dd_save_text(dd, FILENAME_UID, long_str);
 
@@ -349,14 +353,14 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
     uname(&buf); /* never fails */
     dd_save_text(dd, FILENAME_KERNEL, buf.release);
     dd_save_text(dd, FILENAME_ARCHITECTURE, buf.machine);
-    char *release = load_text_file("/etc/redhat-release", /*flags:*/ 0);
+
+    char *release = load_text_file("/etc/system-release",
+                DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    if (!release)
+        release = load_text_file("/etc/redhat-release", /*flags:*/ 0);
     strchrnul(release, '\n')[0] = '\0';
     dd_save_text(dd, FILENAME_RELEASE, release);
     free(release);
-
-    time_t t = time(NULL);
-    sprintf(long_str, "%lu", (long)t);
-    dd_save_text(dd, FILENAME_TIME, long_str);
 
     return dd;
 }
@@ -389,7 +393,7 @@ static void delete_file_dir(const char *dir)
     closedir(d);
     if (rmdir(dir) == -1)
     {
-        error_msg("Can't remove dir '%s'", dir);
+        error_msg("Can't remove directory '%s'", dir);
     }
 }
 
@@ -511,7 +515,7 @@ DIR *dd_init_next_file(struct dump_dir *dd)
     dd->next_dir = opendir(dd->dd_dir);
     if (!dd->next_dir)
     {
-        error_msg("Can't open dir '%s'", dd->dd_dir);
+        error_msg("Can't open directory '%s'", dd->dd_dir);
     }
 
     return dd->next_dir;

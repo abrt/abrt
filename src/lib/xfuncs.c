@@ -280,7 +280,7 @@ int xopen(const char *pathname, int flags)
 void xunlink(const char *pathname)
 {
     if (unlink(pathname))
-        perror_msg_and_die("can't remove file '%s'", pathname);
+        perror_msg_and_die("Can't remove file '%s'", pathname);
 }
 
 #if 0 //UNUSED

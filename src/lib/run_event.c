@@ -191,7 +191,8 @@ static int run_event_helper(struct run_event_state *state,
             *pp++ = (char*)p;
             *pp = NULL;
             int pipefds[2];
-            pid_t pid = fork_execv_on_steroids(EXECFLG_INPUT_NUL + EXECFLG_OUTPUT + EXECFLG_ERR2OUT,
+            pid_t pid = fork_execv_on_steroids(
+                        EXECFLG_INPUT_NUL + EXECFLG_OUTPUT + EXECFLG_ERR2OUT,
                         argv,
                         pipefds,
                         /* unsetenv_vec: */ NULL,
