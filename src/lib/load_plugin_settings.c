@@ -35,7 +35,6 @@ bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWith
     while ((line = xmalloc_fgetline(fp)) != NULL)
     {
         unsigned ii;
-        bool is_value = false;
         bool valid = false;
         bool in_quote = false;
         /* We are reusing line buffer to form temporary
@@ -61,7 +60,6 @@ bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWith
             }
             if (line[ii] == '=' && !in_quote)
             {
-                is_value = true;
                 valid = true;
                 *cur++ = '\0'; /* terminate key */
                 value = cur; /* remember where value starts */
