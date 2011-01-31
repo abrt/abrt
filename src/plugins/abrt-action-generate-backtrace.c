@@ -29,7 +29,8 @@
 
 static const char *dump_dir_name = ".";
 static const char *debuginfo_dirs = DEBUGINFO_CACHE_DIR;
-static int exec_timeout_sec = 60;
+/* 60 seconds was too limiting on slow machines */
+static int exec_timeout_sec = 240;
 
 
 static void create_hash(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *pInput)
