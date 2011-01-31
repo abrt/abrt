@@ -313,14 +313,43 @@ btp_thread_parse(char **input,
         return NULL;
     }
 
-    /* Read the thread identification number. */
-    digits = btp_skip_unsigned_integer(&local_input);
+    /* Read the thread identification number. It can be either in
+     * decimal or hexadecimal form.
+     * Examples:
+     * "Thread 10 (Thread 2476):"
+     * "Thread 8 (Thread 0xb07fdb70 (LWP 6357)):"
+     */
+    digits = btp_skip_hexadecimal_number(&local_input);
+    if (0 == digits)
+        digits = btp_skip_unsigned_integer(&local_input);
     location->column += digits;
     if (0 == digits)
     {
         location->message = "The thread identification number expected.";
         btp_thread_free(imthread);
         return NULL;
+    }
+
+    /* Handle the optional " (LWP [0-9]+)" section. */
+    chars = btp_skip_string(&local_input, " (LWP ");
+    if (0 < chars)
+    {
+        location->column += chars;
+        digits = btp_skip_unsigned_integer(&local_input);
+        if (0 == digits)
+        {
+            location->message = "The LWP number expected.";
+            btp_thread_free(imthread);
+            return NULL;
+        }
+        location->column += digits;
+        if (!btp_skip_char(&local_input, ')'))
+        {
+            location->message = "Closing parenthesis for LWP expected.";
+            btp_thread_free(imthread);
+            return NULL;
+        }
+        location->column += 1;
     }
 
     /* Read the end of the parenthesis. */
