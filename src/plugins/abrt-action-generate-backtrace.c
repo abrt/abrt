@@ -318,16 +318,22 @@ int main(int argc, char **argv)
     {
         VERB1 log(_("Backtrace parsing failed for %s"), dump_dir_name);
         VERB1 log("%d:%d: %s", location.line, location.column, location.message);
-        /* If the parser failed compute the UUID from the executable
-           and package only.  This is not supposed to happen often.
-           Do not store the rating, as we do not know how good the
-           backtrace is. */
+        /* If the parser failed, compute the UUID from the executable
+         * and package only.  This is not supposed to happen often.
+         */
         struct strbuf *emptybt = strbuf_new();
         strbuf_prepend_str(emptybt, executable);
         strbuf_prepend_str(emptybt, package);
         char hash_str[SHA1_RESULT_LEN*2 + 1];
         create_hash(hash_str, emptybt->buf);
         dd_save_text(dd, FILENAME_DUPHASH, hash_str);
+
+        /* Other parts of ABRT assume that if no rating is available,
+         * it is ok to allow reporting of the bug. To be sure no bad
+         * backtrace is reported, rate the backtrace with the lowest
+         * rating.
+         */
+        dd_save_text(dd, FILENAME_RATING, "0");
 
         strbuf_free(emptybt);
         free(backtrace_str);
