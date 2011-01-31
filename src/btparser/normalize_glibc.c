@@ -106,7 +106,10 @@ btp_normalize_glibc_thread(struct btp_thread *thread)
             btp_frame_calls_func(frame, "___vsnprintf_chk") ||
             btp_frame_calls_func(frame, "__snprintf_chk") ||
             btp_frame_calls_func(frame, "___snprintf_chk") ||
-            btp_frame_calls_func(frame, "__vasprintf_chk");
+            btp_frame_calls_func(frame, "__vasprintf_chk") ||
+            btp_frame_calls_func_in_file(frame, "malloc_consolidate", "malloc.c") ||
+            btp_frame_calls_func_in_file(frame, "_int_malloc", "malloc.c") ||
+            btp_frame_calls_func_in_file(frame, "__libc_calloc", "malloc.c");
         if (removable)
         {
             bool success = btp_thread_remove_frames_above(thread, frame);
