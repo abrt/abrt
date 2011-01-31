@@ -66,8 +66,12 @@ static void report_to_rhtsupport(
 
     if (!login[0] || !password[0])
     {
-        errmsg = _("Empty login or password, please check RHTSupport.conf");
-        goto ret;
+        free_crash_data(crash_data);
+        free(url);
+        free(login);
+        free(password);
+        error_msg_and_die(_("Empty login or password, please check RHTSupport.conf"));
+        return;
     }
 
     package  = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
