@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.pa\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-12-09 09:15+0000\n"
-"PO-Revision-Date: 2011-01-13 15:10+0530\n"
+"POT-Creation-Date: 2011-01-24 21:06+0000\n"
+"PO-Revision-Date: 2011-01-31 15:21+0530\n"
 "Last-Translator: Jaswinder Singh <j.phulewala@gmail.com>\n"
 "Language-Team: PLTG\n"
 "Language: pa\n"
@@ -29,16 +29,16 @@ msgstr "ABRT ਸੂਚਨਾ ਐਪਲਿਟ"
 msgid "Automatic Bug Reporting Tool"
 msgstr "ਆਟੋਮੈਟਿਕ ਬੱਗ ਰਿਪੋਰਟਿੰਗ ਟੂਲ"
 
-#: ../src/applet/Applet.cpp:86
+#: ../src/applet/applet.c:86
 #, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "%s ਪੈਕੇਜ ਵਿੱਚ ਇੱਕ ਕਰੈਸ ਮਿਲਿਆ ਹੈ"
 
-#: ../src/applet/Applet.cpp:88
+#: ../src/applet/applet.c:88
 msgid "A crash has been detected"
 msgstr "ਇੱਕ ਕਰੈਸ ਮਿਲਿਆ ਹੈ"
 
-#: ../src/applet/Applet.cpp:285
+#: ../src/applet/applet.c:285
 msgid "ABRT service is not running"
 msgstr "ABRT ਸਰਵਿਸ ਨਹੀਂ ਚੱਲ ਰਹੀ ਹੈ"
 
@@ -216,20 +216,20 @@ msgstr ""
 msgid "You must specify exactly one operation"
 msgstr "ਤੁਹਾਨੂੰ ਇੱਕ ਕਾਰਵਾਈ ਦੇਣੀ ਚਾਹੀਦੀ ਹੈ"
 
-#: ../src/cli/report.cpp:166
+#: ../src/cli/report.cpp:164
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# ਇਹ ਖੇਤਰ ਸਿਰਫ ਪੜ੍ਹਨ ਲਈ ਹੈ\n"
 
-#: ../src/cli/report.cpp:186
+#: ../src/cli/report.cpp:184
 msgid "# Describe the circumstances of this crash below"
 msgstr "# ਇਸ ਕਰੈਸ਼ ਦੀਆਂ ਹਾਲਤਾਂ ਹੇਠਾਂ ਦਿਓ"
 
-#: ../src/cli/report.cpp:188
+#: ../src/cli/report.cpp:186
 msgid "# How to reproduce the crash?"
 msgstr "# ਕਰੈਸ਼ ਦੁਬਾਰਾ ਕਿਵੇਂ ਵੇਖਣਾ ਹੈ?"
 
-#: ../src/cli/report.cpp:190
+#: ../src/cli/report.cpp:188
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -237,47 +237,47 @@ msgstr ""
 "# ਬੈਕਟਰੇਸ\n"
 "# ਜਾਂਚ ਕਰੋ ਕਿ ਇਸ ਵਿੱਚ ਕੋਈ ਜਰੂਰੀ ਡਾਟਾ (ਪਾਸਵਰਡ, ਆਦਿ) ਨਹੀਂ ਹੈ"
 
-#: ../src/cli/report.cpp:192
+#: ../src/cli/report.cpp:190
 msgid "# Architecture"
 msgstr "# ਹਾਰਡਵੇਅਰ"
 
-#: ../src/cli/report.cpp:193
+#: ../src/cli/report.cpp:191
 msgid "# Command line"
 msgstr "# ਕਮਾਂਡ ਲਾਈਨ"
 
-#: ../src/cli/report.cpp:194
+#: ../src/cli/report.cpp:192
 msgid "# Component"
 msgstr "# ਹਿੱਸੇ"
 
-#: ../src/cli/report.cpp:195
+#: ../src/cli/report.cpp:193
 msgid "# Core dump"
 msgstr "# ਕੋਰ ਡੰਪ"
 
-#: ../src/cli/report.cpp:196
+#: ../src/cli/report.cpp:194
 msgid "# Executable"
 msgstr "# ਐਗਜ਼ੀਕਿਊਟੇਬਲ"
 
-#: ../src/cli/report.cpp:197
+#: ../src/cli/report.cpp:195
 msgid "# Kernel version"
 msgstr "# ਕਰਨਲ ਵਰਜਨ"
 
-#: ../src/cli/report.cpp:198
+#: ../src/cli/report.cpp:196
 msgid "# Package"
 msgstr "# ਪੈਕੇਜ"
 
-#: ../src/cli/report.cpp:199
+#: ../src/cli/report.cpp:197
 msgid "# Reason of crash"
 msgstr "# ਕਰੈਸ਼ ਹੋਣ ਦਾ ਕਾਰਨ"
 
-#: ../src/cli/report.cpp:200
+#: ../src/cli/report.cpp:198
 msgid "# Release string of the operating system"
 msgstr "# ਓਪਰੇਟਿੰਗ ਸਿਸਟਮ ਦੀ ਰੀਲਜ਼ ਜਾਣਕਾਰੀ"
 
-#: ../src/cli/report.cpp:323
+#: ../src/cli/report.cpp:321
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr "vi ਨਹੀਂ ਚਲਾ ਸਕਿਆ: $TERM, $VISUAL ਅਤੇ $EDITOR ਸੈੱਟ ਨਹੀਂ ਕੀਤੇ"
 
-#: ../src/cli/report.cpp:411
+#: ../src/cli/report.cpp:405
 msgid ""
 "\n"
 "The report has been updated"
@@ -285,7 +285,7 @@ msgstr ""
 "\n"
 "ਰਿਪੋਰਟ ਅੱਪਡੇਟ ਕੀਤੀ ਗਈ ਹੈ"
 
-#: ../src/cli/report.cpp:413
+#: ../src/cli/report.cpp:407
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -294,63 +294,64 @@ msgstr ""
 "ਰਿਪੋਰਟ ਵਿੰਚ ਕੋਈ ਤਬਦੀਲੀ ਨਹੀਂ ਆਈ ਹੈ"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:445
+#: ../src/cli/report.cpp:439
 msgid "y"
 msgstr "y"
 
-#: ../src/cli/report.cpp:446
+#: ../src/cli/report.cpp:440
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:572
+#: ../src/cli/report.cpp:567
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "ਪਲੱਗਇਨ %s ਲਈ ਗਲਤ ਸੈਟਿੰਗ ਮਿਲੀ ਹੈ\n"
 
-#: ../src/cli/report.cpp:576
+#: ../src/cli/report.cpp:571
 msgid "Enter your login: "
 msgstr "ਆਪਣਾ ਲਾਗਇਨ ਦਿਓ: "
 
-#: ../src/cli/report.cpp:582
+#: ../src/cli/report.cpp:577
 msgid "Enter your password: "
 msgstr "ਆਪਣਾ ਪਾਸਵਰਡ ਦਿਓ: "
 
-#: ../src/cli/report.cpp:648
+#: ../src/cli/report.cpp:643
 msgid "Reporting..."
 msgstr "ਰਿਪੋਰਟ ਕਰ ਰਿਹਾ ਹੈ..."
 
-#: ../src/cli/report.cpp:667
+#: ../src/cli/report.cpp:662
 #, c-format
 msgid "Report using %s?"
 msgstr "%s ਵਰਤ ਕੇ ਰਿਪੋਰਟ ਕਰੋ?"
 
-#: ../src/cli/report.cpp:670
+#: ../src/cli/report.cpp:665
 msgid "Skipping..."
 msgstr "ਛੱਡ ਰਿਹਾ ਹੈ..."
 
-#: ../src/cli/report.cpp:682
+#: ../src/cli/report.cpp:677
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "ਰਿਪੋਰਟਿੰਗ ਅਯੋਗ ਹੋਈ ਕਿਉਂਕਿ ਬੈਕਟਰੇਸ ਵਰਤੋਂ ਯੋਗ ਨਹੀਂ ਹੈ"
 
-#: ../src/cli/report.cpp:686
+#: ../src/cli/report.cpp:681
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
-msgstr "ਕਿਰਪਾ ਕਰਕੇ debuginfo ਨੂੰ ਦਸਤੀ ਇੰਸਟਾਲ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ, ਇਹ ਕਮਾਂਡ ਵਰਤ ਕੇ: "
-"\"debuginfo-install %s\" ਅਤੇ ਫਿਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ\n"
+msgstr ""
+"ਕਿਰਪਾ ਕਰਕੇ debuginfo ਨੂੰ ਦਸਤੀ ਇੰਸਟਾਲ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ, ਇਹ ਕਮਾਂਡ ਵਰਤ ਕੇ: \"debuginfo-"
+"install %s\" ਅਤੇ ਫਿਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ\n"
 
-#: ../src/cli/report.cpp:695
+#: ../src/cli/report.cpp:690
 msgid "Error loading reporter settings"
 msgstr "ਰਿਪੋਰਟਰ ਸੈਟਿੰਗ ਲੋਡ ਕਰਨ ਵੇਲੇ ਗਲਤੀ"
 
-#: ../src/cli/report.cpp:716
+#: ../src/cli/report.cpp:711
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "ਕਰੈਸ਼ ਨੂੰ %d ਰਿਪੋਰਟ ਈਵੈਂਟ ਦੁਆਰਾ ਰਿਪੋਰਟ ਕੀਤਾ ਗਿਆ ਹੈ (%d ਗਲਤੀਆਂ)\n"
 
-#: ../src/daemon/abrt-handle-crashdump.c:42
+#: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
 " [-vs] -d DIR -e EVENT\n"
 "   or: "
@@ -358,40 +359,46 @@ msgstr ""
 " [-vs] -d DIR -e EVENT\n"
 "   or: "
 
-#: ../src/daemon/abrt-handle-crashdump.c:57
-#: ../src/plugins/abrt-action-analyze-c.c:167
-#: ../src/plugins/abrt-action-analyze-oops.c:144
-#: ../src/plugins/abrt-action-analyze-python.c:49
+#: ../src/daemon/abrt-handle-crashdump.c:59
+#: ../src/plugins/abrt-action-bugzilla.cpp:926
+#: ../src/plugins/abrt-action-generate-backtrace.c:272
+#: ../src/plugins/abrt-action-kerneloops.c:146
+#: ../src/plugins/abrt-action-rhtsupport.c:276
+#: ../src/plugins/abrt-dump-oops.c:554
 msgid "Log to syslog"
 msgstr "syslog ਵਿੱਚ ਲਾਗ ਕਰੋ"
 
-#: ../src/daemon/abrt-handle-crashdump.c:58
-#: ../src/plugins/abrt-action-analyze-c.c:166
-#: ../src/plugins/abrt-action-analyze-oops.c:143
-#: ../src/plugins/abrt-action-analyze-python.c:48
-#: ../src/plugins/abrt-action-mailx.cpp:147
-#: ../src/plugins/abrt-action-print.cpp:49
-#: ../src/plugins/abrt-action-upload.cpp:261
+#: ../src/daemon/abrt-handle-crashdump.c:60
+#: ../src/plugins/abrt-action-analyze-c.c:167
+#: ../src/plugins/abrt-action-analyze-oops.c:144
+#: ../src/plugins/abrt-action-analyze-python.c:49
+#: ../src/plugins/abrt-action-bugzilla.cpp:927
+#: ../src/plugins/abrt-action-generate-backtrace.c:269
+#: ../src/plugins/abrt-action-kerneloops.c:147
+#: ../src/plugins/abrt-action-mailx.c:149
+#: ../src/plugins/abrt-action-print.c:50
+#: ../src/plugins/abrt-action-rhtsupport.c:277
+#: ../src/plugins/abrt-action-upload.c:261
 msgid "Crash dump directory"
 msgstr "ਕਰੈਸ਼ ਡੰਪ ਡਾਇਰੈਕਟਰੀ"
 
-#: ../src/daemon/abrt-handle-crashdump.c:59
+#: ../src/daemon/abrt-handle-crashdump.c:61
 msgid "Handle EVENT"
 msgstr "EVENT ਦਾ ਪਰਬੰਧਨ ਕਰੋ"
 
-#: ../src/daemon/abrt-handle-crashdump.c:60
+#: ../src/daemon/abrt-handle-crashdump.c:62
 msgid "List possible events [which start with PFX]"
 msgstr "ਸੰਭਵ ਈਵੈਂਟ ਵੇਖਾਓ [ਜੇ PFX ਨਾਲ ਚਾਲੂ ਹੁੰਦੇ ਹਨ]"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:238
+#: ../src/daemon/CommLayerServerDBus.cpp:242
 msgid "Comment is too long"
 msgstr "ਟਿੱਪਣੀ ਬਹੁਤ ਲੰਬੀ ਹੈ"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:242
+#: ../src/daemon/CommLayerServerDBus.cpp:246
 msgid "'How to reproduce' is too long"
 msgstr "'How to reproduce' ਬਹੁਤ ਲੰਬਾ ਹੈ"
 
-#: ../src/daemon/Daemon.cpp:533
+#: ../src/daemon/Daemon.cpp:371
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -399,19 +406,19 @@ msgstr ""
 "ਰਿਪੋਰਟ ਅਕਾਰ ਦਾ ਕੋਟਾ ਖਤਮ ਹੋ ਗਿਆ ਹੈ। abrt.conf ਵਿੱਚ ਸਿਸਟਮ ਦਾ MaxCrashReportsSize ਮੁੱਲ "
 "ਚੈੱਕ ਕਰੋ ਜੀ।"
 
-#: ../src/daemon/Daemon.cpp:686
-msgid "abrtd [options]"
-msgstr "abrtd [options]"
+#: ../src/daemon/Daemon.cpp:542
+msgid " [options]"
+msgstr " [options]"
 
-#: ../src/daemon/Daemon.cpp:696
+#: ../src/daemon/Daemon.cpp:553
 msgid "Do not daemonize"
 msgstr "ਡੈਮਨਾਈਜ਼ ਨਾ ਕਰੋ"
 
-#: ../src/daemon/Daemon.cpp:697
+#: ../src/daemon/Daemon.cpp:554
 msgid "Log to syslog even with -d"
 msgstr "syslog ਵਿੱਚ ਭਾਵੇਂ -d ਚੋਣ ਨਾਲ ਲਾਗ ਕਰੋ"
 
-#: ../src/daemon/Daemon.cpp:698
+#: ../src/daemon/Daemon.cpp:555
 msgid "Exit after SEC seconds of inactivity"
 msgstr "ਨਾ-ਸਰਗਰਮੀ ਦੇ SEC ਸਕਿੰਟਾਂ ਤੋਂ ਬਾਅਦ ਬੰਦ ਕਰੋ"
 
@@ -1212,27 +1219,27 @@ msgstr ""
 "Please use the buttons below to open the respective configuration and fix it "
 "before you proceed, otherwise, the reporting process may fail.\n"
 
-#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.cpp:46
+#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "ਅੱਪਲੋਡ: %llu of %llu kbytes"
 
-#: ../src/lib/parse_options.c:11
+#: ../src/lib/parse_options.c:29
 #, c-format
 msgid "Usage: %s\n"
 msgstr "ਵਰਤੋਂ: %s\n"
 
-#: ../src/plugins/abrt-action-analyze-c.c:154
+#: ../src/plugins/abrt-action-analyze-c.c:156
 msgid ""
-" [-vs] -d DIR\n"
+" [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredumps"
 msgstr ""
-" [-vs] -d DIR\n"
+" [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredumps"
 
-#: ../src/plugins/abrt-action-analyze-oops.c:131
+#: ../src/plugins/abrt-action-analyze-oops.c:133
 msgid ""
 " [-vs] -d DIR\n"
 "\n"
@@ -1242,78 +1249,106 @@ msgstr ""
 "\n"
 "Calculates and saves UUID and DUPHASH of oops crash dumps"
 
-#: ../src/plugins/abrt-action-analyze-python.c:36
+#: ../src/plugins/abrt-action-analyze-python.c:38
 msgid ""
-" [-vs] -d DIR\n"
+" [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
-" [-vs] -d DIR\n"
+" [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:531
+#: ../src/plugins/abrt-action-bugzilla.cpp:534
 #, c-format
 msgid "New bug id: %i"
 msgstr "ਨਵਾਂ ਬੱਗ id: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:659
+#: ../src/plugins/abrt-action-bugzilla.cpp:662
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr "ਖਾਲੀ ਲਾਗਇਨ ਜਾਂ ਪਾਸਵਰਡ, ਕਿਰਪਾ ਕਰਕੇ %s ਦੀ ਜਾਂਚ ਕਰੋ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:677
+#: ../src/plugins/abrt-action-bugzilla.cpp:680
 msgid "Logging into bugzilla..."
 msgstr "ਬੱਗਜ਼ੀਲਾ ਉੱਤੇ ਲਾਗਇਨ ਕੀਤਾ ਜਾਂਦਾ ਹੈ..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:680
+#: ../src/plugins/abrt-action-bugzilla.cpp:683
 msgid "Checking for duplicates..."
 msgstr "ਡੁਪਲੀਕੇਟ ਲਈ ਜਾਂਚ ਜਾਰੀ..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:701
-#: ../src/plugins/abrt-action-bugzilla.cpp:737
+#: ../src/plugins/abrt-action-bugzilla.cpp:704
+#: ../src/plugins/abrt-action-bugzilla.cpp:740
 msgid "Missing mandatory member 'bugs'"
 msgstr "ਗੈਰ-ਮੌਜੂਦ ਜਰੂਰੀ ਮੈਂਬਰ 'ਬੱਗ'"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:720
-#: ../src/plugins/abrt-action-bugzilla.cpp:753
-#: ../src/plugins/abrt-action-bugzilla.cpp:830
+#: ../src/plugins/abrt-action-bugzilla.cpp:723
+#: ../src/plugins/abrt-action-bugzilla.cpp:756
+#: ../src/plugins/abrt-action-bugzilla.cpp:833
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() ਫੇਲ ਹੈ। ਸਭ ਜਰੂਰੀ ਜਾਣਕਾਰੀ ਇਕੱਠੀ ਨਹੀਂ ਕਰ ਸਕਿਆ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:769
+#: ../src/plugins/abrt-action-bugzilla.cpp:772
 msgid "Creating a new bug..."
 msgstr "ਨਵਾਂ ਬੱਗ ਬਣਾ ਰਿਹਾ ਹੈ..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:774
+#: ../src/plugins/abrt-action-bugzilla.cpp:777
 msgid "Bugzilla entry creation failed"
 msgstr "ਬੱਗਜ਼ੀਲਾ ਐਂਟਰੀ ਬਣਾਉਣ ਵਿੱਚ ਫੇਲ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:786
-#: ../src/plugins/abrt-action-bugzilla.cpp:883
+#: ../src/plugins/abrt-action-bugzilla.cpp:789
+#: ../src/plugins/abrt-action-bugzilla.cpp:886
 msgid "Logging out..."
 msgstr "ਲਾਗਆਉਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:804
+#: ../src/plugins/abrt-action-bugzilla.cpp:807
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "ਬੱਗ ਪਹਿਲਾਂ ਹੀ ਰਿਪੋਰਟ ਕੀਤਾ ਹੈ: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:815
+#: ../src/plugins/abrt-action-bugzilla.cpp:818
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "ਬੱਗਜ਼ੀਲਾ ਨੂੰ bug %d ਦਾ ਅਧਾਰ ਨਹੀਂ ਲੱਭਿਆ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:844
+#: ../src/plugins/abrt-action-bugzilla.cpp:847
 #, c-format
 msgid "Add %s to CC list"
 msgstr "%s ਨੂੰ CC ਲਿਸਟ ਵਿੱਚ ਜੋੜੋ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:868
+#: ../src/plugins/abrt-action-bugzilla.cpp:871
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "bug(%d) ਵਿੱਚ ਨਵੀਂ ਟਿੱਪਣੀ ਜੋੜੋ"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:913
+msgid ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"Report a crash to Bugzilla"
+msgstr ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"ਕਰੈਸ਼ ਰਿਪੋਰਟ ਬੱਗਜ਼ੀਲਾ ਤੇ ਦਿਓ"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:928
+#: ../src/plugins/abrt-action-kerneloops.c:148
+#: ../src/plugins/abrt-action-rhtsupport.c:278
+msgid "Configuration file (may be given many times)"
+msgstr "ਸੰਰਚਨਾ ਫਾਇਲ (ਹੋ ਸਕਦਾ ਕਈ ਵਾਰ ਦਿੱਤੀ ਹੋਵੇ)"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:257
+msgid " [options] -d DIR"
+msgstr " [options] -d DIR"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:270
+msgid "Additional debuginfo directories"
+msgstr "ਵਾਧੂ debuginfo ਡਾਇਰੈਕਟਰੀਆਂ"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:271
+msgid "Kill gdb if it runs for more than N seconds"
+msgstr "gdb ਕਿੱਲ ਕਰੋ ਜੇ ਇਹ N ਸਕਿੰਟਾਂ ਤੋਂ ਜਿਆਦਾ ਦੇਰ ਤੋਂ ਚੱਲ ਰਿਹਾ ਹੋ"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:319
 #, c-format
@@ -1430,16 +1465,26 @@ msgstr "ਸਭ debuginfo ਉਪਲੱਬਧ ਜਾਪਦੀ ਹੈ"
 msgid "Complete!"
 msgstr "ਮੁਕੰਮਲ!"
 
-#: ../src/plugins/abrt-action-kerneloops.cpp:105
+#: ../src/plugins/abrt-action-kerneloops.c:105
 #, c-format
 msgid "Submitting oops report to %s"
 msgstr "oops ਰਿਪੋਰਟ %s ਨੂੰ ਪੇਸ਼ ਕਰ ਰਿਹਾ ਹੈ"
 
-#: ../src/plugins/abrt-action-mailx.cpp:109
+#: ../src/plugins/abrt-action-kerneloops.c:133
+msgid ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"Report a kernel oops to kerneloops.org (or similar) site"
+msgstr ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"Report a kernel oops to kerneloops.org (or similar) site"
+
+#: ../src/plugins/abrt-action-mailx.c:110
 msgid "Sending an email..."
 msgstr "ਈਮੇਲ ਭੇਜੀ ਜਾ ਰਹੀ ਹੈ..."
 
-#: ../src/plugins/abrt-action-mailx.cpp:135
+#: ../src/plugins/abrt-action-mailx.c:137
 msgid ""
 " [-v] -d DIR [-c CONFFILE]\n"
 "\n"
@@ -1449,12 +1494,12 @@ msgstr ""
 "\n"
 "Upload compressed tarball of crash dump"
 
-#: ../src/plugins/abrt-action-mailx.cpp:148
-#: ../src/plugins/abrt-action-upload.cpp:262
+#: ../src/plugins/abrt-action-mailx.c:150
+#: ../src/plugins/abrt-action-upload.c:262
 msgid "Config file"
 msgstr "ਸੰਰਚਨਾ ਫਾਇਲ"
 
-#: ../src/plugins/abrt-action-print.cpp:38
+#: ../src/plugins/abrt-action-print.c:38
 msgid ""
 " [-v] [-o FILE] -d DIR\n"
 "\n"
@@ -1464,16 +1509,16 @@ msgstr ""
 "\n"
 "Print information about the crash to standard output"
 
-#: ../src/plugins/abrt-action-print.cpp:50
+#: ../src/plugins/abrt-action-print.c:51
 msgid "Output file"
 msgstr "ਆਊਟਪੁੱਟ ਫਾਇਲ"
 
-#: ../src/plugins/abrt-action-print.cpp:91
+#: ../src/plugins/abrt-action-print.c:91
 #, c-format
 msgid "The report was appended to %s"
 msgstr "ਰਿਪੋਰਟ %s ਵਿੱਚ ਸ਼ਾਮਿਲ ਕੀਤੀ ਗਈ ਸੀ"
 
-#: ../src/plugins/abrt-action-print.cpp:91
+#: ../src/plugins/abrt-action-print.c:91
 #, c-format
 msgid "The report was stored to %s"
 msgstr "ਰਿਪੋਰਟ %s ਵਿੱਚ ਸੰਭਾਲੀ ਗਈ ਸੀ"
@@ -1481,36 +1526,46 @@ msgstr "ਰਿਪੋਰਟ %s ਵਿੱਚ ਸੰਭਾਲੀ ਗਈ ਸੀ"
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../src/plugins/abrt-action-rhtsupport.cpp:41
-#: ../src/plugins/abrt-action-upload.cpp:120
+#: ../src/plugins/abrt-action-rhtsupport.c:41
+#: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
 msgstr "ਡਾਟਾ ਘੁੱਟ ਰਿਹਾ ਹੈ"
 
-#: ../src/plugins/abrt-action-rhtsupport.cpp:69
+#: ../src/plugins/abrt-action-rhtsupport.c:69
 msgid "Empty login or password, please check RHTSupport.conf"
 msgstr "ਖਾਲੀ ਲਾਗਇਨ ਜਾਂ ਪਾਸਵਰਡ, ਕਿਰਪਾ ਕਰਕੇ RHTSupport.conf ਦਾ ਜਾਂਚ ਕਰੋ"
 
-#: ../src/plugins/abrt-action-rhtsupport.cpp:188
+#: ../src/plugins/abrt-action-rhtsupport.c:188
 msgid "Creating a new case..."
 msgstr "ਨਵਾਂ ਮੁੱਦਾ ਬਣਾ ਰਿਹਾ ਹੈ..."
 
-#: ../src/plugins/abrt-action-upload.cpp:64
+#: ../src/plugins/abrt-action-rhtsupport.c:263
+msgid ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"Report a crash to RHTSupport"
+msgstr ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"ਕਰੈਸ਼ ਰਿਪੋਰਟ RHTSupport ਤੇ ਦਿਓ"
+
+#: ../src/plugins/abrt-action-upload.c:63
 #, c-format
 msgid "Sending %s to %s"
 msgstr "%s ਨੂੰ %s ਵੱਲ ਭੇਜਿਆ ਜਾ ਰਿਹਾ ਹੈ"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/abrt-action-upload.cpp:97
+#: ../src/plugins/abrt-action-upload.c:96
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "%s ਨੂੰ %s ਵੱਲ ਸਫਲਤਾਪੂਰਕ ਭੇਜ ਦਿੱਤਾ ਹੈ"
 
-#: ../src/plugins/abrt-action-upload.cpp:214
+#: ../src/plugins/abrt-action-upload.c:213
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "ਆਰਚੀਵ ਬਣਾਈ ਗਈ ਹੈ: '%s'"
 
-#: ../src/plugins/abrt-action-upload.cpp:248
+#: ../src/plugins/abrt-action-upload.c:248
 msgid ""
 " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1520,9 +1575,35 @@ msgstr ""
 "\n"
 "Upload compressed tarball of crash dump"
 
-#: ../src/plugins/abrt-action-upload.cpp:263
+#: ../src/plugins/abrt-action-upload.c:263
 msgid "Base URL to upload to"
 msgstr "ਬੇਸ URL ਜਿੱਥੇ ਅੱਪਲੋਡ ਕਰਨਾ ਹੈ"
+
+#: ../src/plugins/abrt-dump-oops.c:539
+msgid ""
+" [-vsrdow] FILE\n"
+"\n"
+"Extract oops from syslog/dmesg file"
+msgstr ""
+" [-vsrdow] FILE\n"
+"\n"
+"oops ਨੂੰ syslog/dmesg ਫਾਇਲ ਤੋਂ ਲਵੋ"
+
+#: ../src/plugins/abrt-dump-oops.c:555
+msgid "Parse kernel's message buffer before parsing FILE"
+msgstr "FILE ਪਾਰਸ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਕਰਨਲ ਦੇ ਮੈਸੇਜ ਬਫਰ ਨੂੰ ਪਾਰਸ ਕਰੋ"
+
+#: ../src/plugins/abrt-dump-oops.c:556
+msgid "Create ABRT dump for every oops found"
+msgstr "ਹਰੇਕ ਲੱਭੇ ਗਏ oops ਲਈ ABRT ਡੰਪ ਬਣਾਓ"
+
+#: ../src/plugins/abrt-dump-oops.c:557
+msgid "Print found oopses on standard output"
+msgstr "Print found oopses on standard output"
+
+#: ../src/plugins/abrt-dump-oops.c:558
+msgid "Do not exit, watch the file for new oopses"
+msgstr "ਬੰਦ ਨਾ ਕਰੋ, ਨਵੇਂ oopses ਲਈ ਫਾਇਲ ਵੇਖੋ"
 
 #: ../src/plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
@@ -1560,10 +1641,6 @@ msgstr ""
 "ਤੁਸੀਂ ਇਸਨੂੰ <a href=\"https://bugzilla.redhat.com/createaccount.cgi\">ਇੱਥੇ</a> ਬਣਾ "
 "ਸਕਦੇ ਹੋ"
 
-#: ../src/plugins/CCpp.cpp:265
-msgid "Analyzes crashes in C/C++ programs"
-msgstr "C/C++ ਪਰੋਗਰਾਮਾਂ ਵਿਚਲੇ ਕਰੈਸ਼ਾਂ ਦੀ ਜਾਂਚ ਕਰਦਾ ਹੈ"
-
 #: ../src/plugins/KerneloopsReporter.glade.h:1
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
 msgstr "<b>kerneloops ਰਿਪੋਰਟਰ ਪਲੱਗਇਨ ਸੰਰਚਿਤ</b>"
@@ -1571,10 +1648,6 @@ msgstr "<b>kerneloops ਰਿਪੋਰਟਰ ਪਲੱਗਇਨ ਸੰਰਚਿ�
 #: ../src/plugins/KerneloopsReporter.glade.h:2
 msgid "Submit URL:"
 msgstr "URL ਦਿਓ:"
-
-#: ../src/plugins/KerneloopsScanner.cpp:226
-msgid "Periodically scans for and saves kernel oopses"
-msgstr "ਕਰਨਲ oopses ਨੂੰ ਲਗਾਤਾਰ ਸਕੈਨ ਕਰਦਾ ਹੈ ਅਤੇ ਸੰਭਾਲਦਾ ਹੈ"
 
 #: ../src/plugins/Logger.glade.h:1
 msgid "<b>Logger plugin configuration</b>"
@@ -1639,6 +1712,12 @@ msgstr "URL:"
 #: ../src/plugins/Upload.glade.h:5
 msgid "Use encryption"
 msgstr "ਇਨਕ੍ਰਿਪਸ਼ਨ ਵਰਤੋ"
+
+#~ msgid "Analyzes crashes in C/C++ programs"
+#~ msgstr "C/C++ ਪਰੋਗਰਾਮਾਂ ਵਿਚਲੇ ਕਰੈਸ਼ਾਂ ਦੀ ਜਾਂਚ ਕਰਦਾ ਹੈ"
+
+#~ msgid "Periodically scans for and saves kernel oopses"
+#~ msgstr "ਕਰਨਲ oopses ਨੂੰ ਲਗਾਤਾਰ ਸਕੈਨ ਕਰਦਾ ਹੈ ਅਤੇ ਸੰਭਾਲਦਾ ਹੈ"
 
 #~ msgid "Database plugin not specified. Please check abrtd settings."
 #~ msgstr "ਡਾਟਾਬੇਸ ਪਲੱਗਇਨ ਨਹੀਂ ਦਿੱਤਾ ਹੈ। abrtd ਸੈਟਿੰਗ ਚੈੱਕ ਕਰੋ ਜੀ।"
