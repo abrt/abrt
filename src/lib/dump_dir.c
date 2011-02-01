@@ -20,11 +20,70 @@
 #include "abrtlib.h"
 #include "strbuf.h"
 
-// TODO:
+// Locking logic:
 //
-// Perhaps dd_opendir should do some sanity checking like
-// "if there is no "uid" file in the directory, it's not a crash dump",
-// and fail.
+// The directory is locked by creating a symlink named .lock inside it,
+// whose value (where it "points to") is the pid of locking process.
+// We use symlink, not an ordinary file, because symlink creation
+// is an atomic operation.
+//
+// There are two cases where after .lock creation, we might discover
+// that directory is not really free:
+// * another process just created new directory, but didn't manage
+//   to lock it before us.
+// * another process is deleting the directory, and we managed to sneak in
+//   and create .lock after it deleted all files (including .lock)
+//   but before it rmdir'ed the empty directory.
+//
+// Both these cases are detected by the fact that file named "time"
+// is not present (it must be present in any valid dump dir).
+// If after locking the dir we don't see time file, we remove the lock
+// at once and back off. What happens in concurrent processes
+// we interfered with?
+// * "create new dump dir" process just re-tries locking.
+// * "delete dump dir" process just retries rmdir.
+//
+// There is another case when we don't find time file:
+// when the directory is not really a *dump* dir - user gave us
+// an ordinary directory name by mistake.
+// We detect it by bailing out of "lock, check time file; sleep
+// and retry if it doesn't exist" loop using a counter.
+//
+// To make locking work reliably, it's important to set timeouts
+// correctly. For example, dd_create should retry locking
+// its newly-created directory much faster than dd_opendir
+// tries to lock the directory it tries to open.
+
+
+// How long to sleep between "symlink fails with EEXIST,
+// readlink fails with ENOENT" tries. Someone just unlocked the dir.
+// We never bail out in this case, we retry forever.
+// The value can be really small:
+#define SYMLINK_RETRY_USLEEP           (10*1000)
+
+// How long to sleep when lock file with valid pid is seen by dd_opendir
+// (we are waiting for other process to unlock or die):
+#define WAIT_FOR_OTHER_PROCESS_USLEEP (500*1000)
+
+// How long to sleep when lock file with valid pid is seen by dd_create
+// (some idiot jumped the gun and locked the dir we just created).
+// Must not be the same as WAIT_FOR_OTHER_PROCESS_USLEEP (we depend on this)
+// and should be small (we have the priority in locking, this is OUR dir):
+#define CREATE_LOCK_USLEEP             (10*1000)
+
+// How long to sleep after we locked a dir, found no time file
+// (either we are racing with someone, or it's not a dump dir)
+// and unlocked it;
+// and after how many tries to give up and declare it's not a dump dir:
+#define NO_TIME_FILE_USLEEP            (50*1000)
+#define NO_TIME_FILE_COUNT                   10
+
+// How long to sleep after we unlocked an empty dir, but then rmdir failed
+// (some idiot jumped the gun and locked the dir we are deleting);
+// and after how many tries to give up:
+#define RMDIR_FAIL_USLEEP              (10*1000)
+#define RMDIR_FAIL_COUNT                     50
+
 
 static char *load_text_file(const char *path, unsigned flags);
 
@@ -62,7 +121,8 @@ static int get_and_set_lock(const char* lock_file, const char* pid)
     {
         if (errno != EEXIST)
         {
-            perror_msg("Can't create lock file '%s'", lock_file);
+            if (errno != ENOENT && errno != ENOTDIR)
+                perror_msg("Can't create lock file '%s'", lock_file);
             return -1;
         }
 
@@ -73,7 +133,7 @@ static int get_and_set_lock(const char* lock_file, const char* pid)
             if (errno == ENOENT)
             {
                 /* Looks like lock_file was deleted */
-                usleep(10 * 1000); /* avoid CPU eating loop */
+                usleep(SYMLINK_RETRY_USLEEP); /* avoid CPU eating loop */
                 continue;
             }
             perror_msg("Can't read lock file '%s'", lock_file);
@@ -109,16 +169,21 @@ static int get_and_set_lock(const char* lock_file, const char* pid)
     return 1;
 }
 
-static int dd_lock(struct dump_dir *dd)
+static int dd_lock(struct dump_dir *dd, unsigned sleep_usec)
 {
     if (dd->locked)
         error_msg_and_die("Locking bug on '%s'", dd->dd_dir);
 
-    char lock_buf[strlen(dd->dd_dir) + sizeof(".lock")];
-    sprintf(lock_buf, "%s.lock", dd->dd_dir);
-
     char pid_buf[sizeof(long)*3 + 2];
     sprintf(pid_buf, "%lu", (long)getpid());
+
+    unsigned dirname_len = strlen(dd->dd_dir);
+    char lock_buf[dirname_len + sizeof("/.lock")];
+    strcpy(lock_buf, dd->dd_dir);
+    strcpy(lock_buf + dirname_len, "/.lock");
+
+    unsigned count = NO_TIME_FILE_COUNT;
+ retry:
     while (1)
     {
         int r = get_and_set_lock(lock_buf, pid_buf);
@@ -126,8 +191,34 @@ static int dd_lock(struct dump_dir *dd)
             return r; /* error */
         if (r > 0)
             break; /* locked successfully */
-        sleep(1); /* was 0.5 seconds */
+        /* Other process has the lock, wait for it to go away */
+        usleep(sleep_usec);
     }
+
+    /* Are we called by dd_opendir (as opposed to dd_create)? */
+    if (sleep_usec == WAIT_FOR_OTHER_PROCESS_USLEEP) /* yes */
+    {
+        strcpy(lock_buf + dirname_len, "/time");
+        if (access(lock_buf, F_OK) != 0)
+        {
+            /* time file doesn't exist. We managed to lock the directory
+             * which was just created by somebody else, or is almost deleted
+             * by delete_file_dir.
+             * Unlock and back off.
+             */
+            strcpy(lock_buf + dirname_len, "/.lock");
+            xunlink(lock_buf);
+            VERB1 log("Unlocked '%s' (no time file)", lock_buf);
+            if (--count == 0)
+            {
+                errno = EISDIR; /* "this is an ordinary dir, not dump dir" */
+                return -1;
+            }
+            usleep(NO_TIME_FILE_USLEEP);
+            goto retry;
+        }
+    }
+
     dd->locked = true;
     return 0;
 }
@@ -137,9 +228,13 @@ static void dd_unlock(struct dump_dir *dd)
     if (dd->locked)
     {
         dd->locked = 0;
-        char lock_buf[strlen(dd->dd_dir) + sizeof(".lock")];
-        sprintf(lock_buf, "%s.lock", dd->dd_dir);
+
+        unsigned dirname_len = strlen(dd->dd_dir);
+        char lock_buf[dirname_len + sizeof("/.lock")];
+        strcpy(lock_buf, dd->dd_dir);
+        strcpy(lock_buf + dirname_len, "/.lock");
         xunlink(lock_buf);
+
         VERB1 log("Unlocked '%s'", lock_buf);
     }
 }
@@ -185,34 +280,46 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
 {
     struct dump_dir *dd = dd_init();
 
-    /* Used to use rm_trailing_slashes(dir) here, but with dir = "."
-     * or "..", or if the last component is a symlink,
-     * then lock file is created in the wrong place.
-     * IOW: this breaks locking.
-     */
-    dd->dd_dir = realpath(dir, NULL);
-    if (!dd->dd_dir)
+    dir = dd->dd_dir = rm_trailing_slashes(dir);
+
+    if (dd_lock(dd, WAIT_FOR_OTHER_PROCESS_USLEEP) < 0)
     {
-        if (!(flags & DD_FAIL_QUIETLY))
-            error_msg("'%s' does not exist", dir);
+        if (errno == EISDIR)
+        {
+            /* EISDIR: dd_lock can lock the dir, but it sees no time file there,
+             * even after it retried many times. It must be an ordinary directory!
+             *
+             * Without this check, e.g. abrt-action-print happily prints any current
+             * directory when run without arguments, because its option -d DIR
+             * defaults to "."!
+             */
+            /*if (!(flags & DD_FAIL_QUIETLY))... - no, DD_FAIL_QUIETLY only means
+             * "it's ok if it doesn exist", not "ok if contents is bogus"!
+             */
+            error_msg("'%s' is not a crash dump directory", dir);
+            dd_close(dd);
+            return NULL;
+        }
+
+        if (errno == ENOENT || errno == ENOTDIR)
+        {
+            if (!(flags & DD_FAIL_QUIETLY))
+                error_msg("'%s' does not exist", dir);
+        }
+        else
+        {
+            perror_msg("Can't access '%s'", dir);
+        }
         dd_close(dd);
         return NULL;
     }
-    dir = dd->dd_dir;
-
-    if (dd_lock(dd) < 0)
-    {
-        dd_close(dd);
-        return NULL;
-    }
-
-    struct stat stat_buf;
 
     dd->dd_uid = (uid_t)-1L;
     dd->dd_gid = (gid_t)-1L;
     if (geteuid() == 0)
     {
         /* In case caller would want to create more files, he'll need uid:gid */
+        struct stat stat_buf;
         if (stat(dir, &stat_buf) != 0 || !S_ISDIR(stat_buf.st_mode))
         {
             if (!(flags & DD_FAIL_QUIETLY))
@@ -222,24 +329,6 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
         }
         dd->dd_uid = stat_buf.st_uid;
         dd->dd_gid = stat_buf.st_gid;
-    }
-
-    /* Without this check, e.g. abrt-action-print happily prints any current
-     * directory when run without arguments, because its option -d DIR
-     * defaults to "."! Let's require that at least some crash dump dir
-     * specific files exist before we declare open successful:
-     */
-    char *name = concat_path_file(dir, FILENAME_UID);
-    int bad = (lstat(name, &stat_buf) != 0 || !S_ISREG(stat_buf.st_mode));
-    free(name);
-    if (bad)
-    {
-        /*if (!(flags & DD_FAIL_QUIETLY))... - no, DD_FAIL_QUIETLY only means
-         * "it's ok if it doesn exist", not "ok if contents is bogus"!
-         */
-        error_msg("'%s' is not a crash dump directory", dir);
-        dd_close(dd);
-        return NULL;
     }
 
     return dd;
@@ -289,12 +378,6 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
         return NULL;
     }
 
-    if (dd_lock(dd) < 0)
-    {
-        dd_close(dd);
-        return NULL;
-    }
-
     /* Was creating it with mode 0700 and user as the owner, but this allows
      * the user to replace any file in the directory, changing security-sensitive data
      * (e.g. "uid", "analyzer", "executable")
@@ -305,6 +388,13 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
         dd_close(dd);
         return NULL;
     }
+
+    if (dd_lock(dd, CREATE_LOCK_USLEEP) < 0)
+    {
+        dd_close(dd);
+        return NULL;
+    }
+
     /* mkdir's mode (above) can be affected by umask, fix it */
     if (chmod(dir, 0750) == -1)
     {
@@ -365,41 +455,90 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
     return dd;
 }
 
-static void delete_file_dir(const char *dir)
+static int delete_file_dir(const char *dir, bool skip_lock_file)
 {
     DIR *d = opendir(dir);
     if (!d)
-        return;
+    {
+        /* The caller expects us to error out only if the directory
+         * still exists (not deleted). If directory
+         * *doesn't exist*, return 0 and clear errno.
+         */
+        if (errno == ENOENT || errno == ENOTDIR)
+        {
+            errno = 0;
+            return 0;
+        }
+        return -1;
+    }
 
+    bool unlink_lock_file = false;
     struct dirent *dent;
     while ((dent = readdir(d)) != NULL)
     {
         if (dot_or_dotdot(dent->d_name))
             continue;
+        if (skip_lock_file && strcmp(dent->d_name, ".lock") == 0)
+        {
+            unlink_lock_file = true;
+            continue;
+        }
         char *full_path = concat_path_file(dir, dent->d_name);
         if (unlink(full_path) == -1 && errno != ENOENT)
         {
-            if (errno != EISDIR)
+            int err = 0;
+            if (errno == EISDIR)
             {
-                error_msg("Can't remove '%s'", full_path);
+                errno = 0;
+                err = delete_file_dir(full_path, /*skip_lock_file:*/ false);
+            }
+            if (errno || err)
+            {
+                perror_msg("Can't remove '%s'", full_path);
                 free(full_path);
                 closedir(d);
-                return;
+                return -1;
             }
-            delete_file_dir(full_path);
         }
         free(full_path);
     }
     closedir(d);
-    if (rmdir(dir) == -1)
+
+    /* Here we know for sure that all files/subdirs we found via readdir
+     * were deleted successfully. If rmdir below fails, we assume someone
+     * is racing with us and created a new file.
+     */
+
+    if (unlink_lock_file)
     {
-        error_msg("Can't remove directory '%s'", dir);
+        char *full_path = concat_path_file(dir, ".lock");
+        xunlink(full_path);
+        free(full_path);
+
+        unsigned cnt = RMDIR_FAIL_COUNT;
+        do {
+            if (rmdir(dir) == 0)
+                return 0;
+            /* Someone locked the dir after unlink, but before rmdir.
+             * This "someone" must be dd_lock().
+             * It detects this (by seeing that there is no time file)
+             * and backs off at once. So we need to just retry rmdir,
+             * with minimal sleep.
+             */
+            usleep(RMDIR_FAIL_USLEEP);
+        } while (--cnt != 0);
     }
+
+    int r = rmdir(dir);
+    if (r)
+        perror_msg("Can't remove directory '%s'", dir);
+    return r;
 }
 
 void dd_delete(struct dump_dir *dd)
 {
-    delete_file_dir(dd->dd_dir);
+    delete_file_dir(dd->dd_dir, /*skip_lock_file:*/ true);
+    dd->locked = 0; /* delete_file_dir already removed .lock */
     dd_close(dd);
 }
 
