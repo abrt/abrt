@@ -43,7 +43,6 @@ void free_run_event_state(struct run_event_state *state);
 
 /* Returns exitcode of first failed action, or first nonzero return value
  * of post_run_callback. If all actions are successful, returns 0.
- * If no actions were run for the event, returns -1.
  */
 int run_event_on_dir_name(struct run_event_state *state, const char *dump_dir_name, const char *event);
 int run_event_on_crash_data(struct run_event_state *state, crash_data_t *data, const char *event);
