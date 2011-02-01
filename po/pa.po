@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.pa\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-24 21:06+0000\n"
-"PO-Revision-Date: 2011-01-31 15:21+0530\n"
+"POT-Creation-Date: 2011-02-01 02:32+0000\n"
+"PO-Revision-Date: 2011-02-01 08:41+0530\n"
 "Last-Translator: Jaswinder Singh <j.phulewala@gmail.com>\n"
 "Language-Team: PLTG\n"
 "Language: pa\n"
@@ -167,16 +167,14 @@ msgstr ""
 "%s\n"
 
 #. Message has embedded tabs.
-#: ../src/cli/CLI.cpp:248
+#: ../src/cli/CLI.cpp:209
 #, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
 "\n"
 "Startup:\n"
-"\t-V, --version\t\tdisplay the version of %s and exit\n"
+"\t-V, --version\t\tdisplay the version and exit\n"
 "\t-v, --verbose\t\tincrease verbosity\n"
-"\t-?, --help\t\tprint this help\n"
-"\n"
 "Actions:\n"
 "\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
 "\t      -f, --full\tprint a list of all crashes, including the already "
@@ -194,10 +192,8 @@ msgstr ""
 "Usage: %s [OPTION]\n"
 "\n"
 "Startup:\n"
-"\t-V, --version\t\tdisplay the version of %s and exit\n"
+"\t-V, --version\t\tdisplay the version and exit\n"
 "\t-v, --verbose\t\tincrease verbosity\n"
-"\t-?, --help\t\tprint this help\n"
-"\n"
 "Actions:\n"
 "\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
 "\t      -f, --full\tprint a list of all crashes, including the already "
@@ -212,24 +208,24 @@ msgstr ""
 "\ta name of dump directory, or\n"
 "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
 
-#: ../src/cli/CLI.cpp:292
+#: ../src/cli/CLI.cpp:252
 msgid "You must specify exactly one operation"
 msgstr "ਤੁਹਾਨੂੰ ਇੱਕ ਕਾਰਵਾਈ ਦੇਣੀ ਚਾਹੀਦੀ ਹੈ"
 
-#: ../src/cli/report.cpp:164
+#: ../src/cli/report.cpp:161
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# ਇਹ ਖੇਤਰ ਸਿਰਫ ਪੜ੍ਹਨ ਲਈ ਹੈ\n"
 
-#: ../src/cli/report.cpp:184
+#: ../src/cli/report.cpp:181
 msgid "# Describe the circumstances of this crash below"
 msgstr "# ਇਸ ਕਰੈਸ਼ ਦੀਆਂ ਹਾਲਤਾਂ ਹੇਠਾਂ ਦਿਓ"
 
-#: ../src/cli/report.cpp:186
+#: ../src/cli/report.cpp:183
 msgid "# How to reproduce the crash?"
 msgstr "# ਕਰੈਸ਼ ਦੁਬਾਰਾ ਕਿਵੇਂ ਵੇਖਣਾ ਹੈ?"
 
-#: ../src/cli/report.cpp:188
+#: ../src/cli/report.cpp:185
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -237,47 +233,47 @@ msgstr ""
 "# ਬੈਕਟਰੇਸ\n"
 "# ਜਾਂਚ ਕਰੋ ਕਿ ਇਸ ਵਿੱਚ ਕੋਈ ਜਰੂਰੀ ਡਾਟਾ (ਪਾਸਵਰਡ, ਆਦਿ) ਨਹੀਂ ਹੈ"
 
-#: ../src/cli/report.cpp:190
+#: ../src/cli/report.cpp:187
 msgid "# Architecture"
 msgstr "# ਹਾਰਡਵੇਅਰ"
 
-#: ../src/cli/report.cpp:191
+#: ../src/cli/report.cpp:188
 msgid "# Command line"
 msgstr "# ਕਮਾਂਡ ਲਾਈਨ"
 
-#: ../src/cli/report.cpp:192
+#: ../src/cli/report.cpp:189
 msgid "# Component"
 msgstr "# ਹਿੱਸੇ"
 
-#: ../src/cli/report.cpp:193
+#: ../src/cli/report.cpp:190
 msgid "# Core dump"
 msgstr "# ਕੋਰ ਡੰਪ"
 
-#: ../src/cli/report.cpp:194
+#: ../src/cli/report.cpp:191
 msgid "# Executable"
 msgstr "# ਐਗਜ਼ੀਕਿਊਟੇਬਲ"
 
-#: ../src/cli/report.cpp:195
+#: ../src/cli/report.cpp:192
 msgid "# Kernel version"
 msgstr "# ਕਰਨਲ ਵਰਜਨ"
 
-#: ../src/cli/report.cpp:196
+#: ../src/cli/report.cpp:193
 msgid "# Package"
 msgstr "# ਪੈਕੇਜ"
 
-#: ../src/cli/report.cpp:197
+#: ../src/cli/report.cpp:194
 msgid "# Reason of crash"
 msgstr "# ਕਰੈਸ਼ ਹੋਣ ਦਾ ਕਾਰਨ"
 
-#: ../src/cli/report.cpp:198
+#: ../src/cli/report.cpp:195
 msgid "# Release string of the operating system"
 msgstr "# ਓਪਰੇਟਿੰਗ ਸਿਸਟਮ ਦੀ ਰੀਲਜ਼ ਜਾਣਕਾਰੀ"
 
-#: ../src/cli/report.cpp:321
+#: ../src/cli/report.cpp:318
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr "vi ਨਹੀਂ ਚਲਾ ਸਕਿਆ: $TERM, $VISUAL ਅਤੇ $EDITOR ਸੈੱਟ ਨਹੀਂ ਕੀਤੇ"
 
-#: ../src/cli/report.cpp:405
+#: ../src/cli/report.cpp:402
 msgid ""
 "\n"
 "The report has been updated"
@@ -285,7 +281,7 @@ msgstr ""
 "\n"
 "ਰਿਪੋਰਟ ਅੱਪਡੇਟ ਕੀਤੀ ਗਈ ਹੈ"
 
-#: ../src/cli/report.cpp:407
+#: ../src/cli/report.cpp:404
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -294,46 +290,46 @@ msgstr ""
 "ਰਿਪੋਰਟ ਵਿੰਚ ਕੋਈ ਤਬਦੀਲੀ ਨਹੀਂ ਆਈ ਹੈ"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:439
+#: ../src/cli/report.cpp:436
 msgid "y"
 msgstr "y"
 
-#: ../src/cli/report.cpp:440
+#: ../src/cli/report.cpp:437
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:567
+#: ../src/cli/report.cpp:553
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "ਪਲੱਗਇਨ %s ਲਈ ਗਲਤ ਸੈਟਿੰਗ ਮਿਲੀ ਹੈ\n"
 
-#: ../src/cli/report.cpp:571
+#: ../src/cli/report.cpp:557
 msgid "Enter your login: "
 msgstr "ਆਪਣਾ ਲਾਗਇਨ ਦਿਓ: "
 
-#: ../src/cli/report.cpp:577
+#: ../src/cli/report.cpp:563
 msgid "Enter your password: "
 msgstr "ਆਪਣਾ ਪਾਸਵਰਡ ਦਿਓ: "
 
-#: ../src/cli/report.cpp:643
+#: ../src/cli/report.cpp:625
 msgid "Reporting..."
 msgstr "ਰਿਪੋਰਟ ਕਰ ਰਿਹਾ ਹੈ..."
 
-#: ../src/cli/report.cpp:662
+#: ../src/cli/report.cpp:644
 #, c-format
 msgid "Report using %s?"
 msgstr "%s ਵਰਤ ਕੇ ਰਿਪੋਰਟ ਕਰੋ?"
 
-#: ../src/cli/report.cpp:665
+#: ../src/cli/report.cpp:647
 msgid "Skipping..."
 msgstr "ਛੱਡ ਰਿਹਾ ਹੈ..."
 
-#: ../src/cli/report.cpp:677
+#: ../src/cli/report.cpp:659
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "ਰਿਪੋਰਟਿੰਗ ਅਯੋਗ ਹੋਈ ਕਿਉਂਕਿ ਬੈਕਟਰੇਸ ਵਰਤੋਂ ਯੋਗ ਨਹੀਂ ਹੈ"
 
-#: ../src/cli/report.cpp:681
+#: ../src/cli/report.cpp:663
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -342,14 +338,49 @@ msgstr ""
 "ਕਿਰਪਾ ਕਰਕੇ debuginfo ਨੂੰ ਦਸਤੀ ਇੰਸਟਾਲ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ, ਇਹ ਕਮਾਂਡ ਵਰਤ ਕੇ: \"debuginfo-"
 "install %s\" ਅਤੇ ਫਿਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ\n"
 
-#: ../src/cli/report.cpp:690
+#: ../src/cli/report.cpp:672
 msgid "Error loading reporter settings"
 msgstr "ਰਿਪੋਰਟਰ ਸੈਟਿੰਗ ਲੋਡ ਕਰਨ ਵੇਲੇ ਗਲਤੀ"
 
-#: ../src/cli/report.cpp:711
+#: ../src/cli/report.cpp:693
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "ਕਰੈਸ਼ ਨੂੰ %d ਰਿਪੋਰਟ ਈਵੈਂਟ ਦੁਆਰਾ ਰਿਪੋਰਟ ਕੀਤਾ ਗਿਆ ਹੈ (%d ਗਲਤੀਆਂ)\n"
+
+#: ../src/daemon/abrt-action-save-package-data.c:280
+msgid ""
+" [options] -d DIR\n"
+"\n"
+"Query package database and save package name, component, and description"
+msgstr ""
+" [options] -d DIR\n"
+"\n"
+"ਪੈਕੇਜ ਡਾਟਾਬੇਸ ਵਿੱਚ ਕਿਊਰੀ ਕਰੋ ਅਤੇ ਪੈਕੇਜ ਨਾਂ ਸੰਭਾਲੋ, ਕੰਪੋਨੈਂਟ, ਅਤੇ ਵਰਣਨ"
+
+#: ../src/daemon/abrt-action-save-package-data.c:292
+#: ../src/daemon/abrt-handle-crashdump.c:60
+#: ../src/plugins/abrt-action-analyze-c.c:167
+#: ../src/plugins/abrt-action-analyze-oops.c:144
+#: ../src/plugins/abrt-action-analyze-python.c:49
+#: ../src/plugins/abrt-action-bugzilla.cpp:927
+#: ../src/plugins/abrt-action-generate-backtrace.c:270
+#: ../src/plugins/abrt-action-kerneloops.c:147
+#: ../src/plugins/abrt-action-mailx.c:149
+#: ../src/plugins/abrt-action-print.c:50
+#: ../src/plugins/abrt-action-rhtsupport.c:277
+#: ../src/plugins/abrt-action-upload.c:261
+msgid "Crash dump directory"
+msgstr "ਕਰੈਸ਼ ਡੰਪ ਡਾਇਰੈਕਟਰੀ"
+
+#: ../src/daemon/abrt-action-save-package-data.c:293
+#: ../src/daemon/abrt-handle-crashdump.c:59 ../src/daemon/abrt-server.c:296
+#: ../src/plugins/abrt-action-bugzilla.cpp:926
+#: ../src/plugins/abrt-action-generate-backtrace.c:273
+#: ../src/plugins/abrt-action-kerneloops.c:146
+#: ../src/plugins/abrt-action-rhtsupport.c:276
+#: ../src/plugins/abrt-dump-oops.c:554
+msgid "Log to syslog"
+msgstr "syslog ਵਿੱਚ ਲਾਗ ਕਰੋ"
 
 #: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
@@ -359,29 +390,6 @@ msgstr ""
 " [-vs] -d DIR -e EVENT\n"
 "   or: "
 
-#: ../src/daemon/abrt-handle-crashdump.c:59
-#: ../src/plugins/abrt-action-bugzilla.cpp:926
-#: ../src/plugins/abrt-action-generate-backtrace.c:272
-#: ../src/plugins/abrt-action-kerneloops.c:146
-#: ../src/plugins/abrt-action-rhtsupport.c:276
-#: ../src/plugins/abrt-dump-oops.c:554
-msgid "Log to syslog"
-msgstr "syslog ਵਿੱਚ ਲਾਗ ਕਰੋ"
-
-#: ../src/daemon/abrt-handle-crashdump.c:60
-#: ../src/plugins/abrt-action-analyze-c.c:167
-#: ../src/plugins/abrt-action-analyze-oops.c:144
-#: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-action-bugzilla.cpp:927
-#: ../src/plugins/abrt-action-generate-backtrace.c:269
-#: ../src/plugins/abrt-action-kerneloops.c:147
-#: ../src/plugins/abrt-action-mailx.c:149
-#: ../src/plugins/abrt-action-print.c:50
-#: ../src/plugins/abrt-action-rhtsupport.c:277
-#: ../src/plugins/abrt-action-upload.c:261
-msgid "Crash dump directory"
-msgstr "ਕਰੈਸ਼ ਡੰਪ ਡਾਇਰੈਕਟਰੀ"
-
 #: ../src/daemon/abrt-handle-crashdump.c:61
 msgid "Handle EVENT"
 msgstr "EVENT ਦਾ ਪਰਬੰਧਨ ਕਰੋ"
@@ -389,6 +397,14 @@ msgstr "EVENT ਦਾ ਪਰਬੰਧਨ ਕਰੋ"
 #: ../src/daemon/abrt-handle-crashdump.c:62
 msgid "List possible events [which start with PFX]"
 msgstr "ਸੰਭਵ ਈਵੈਂਟ ਵੇਖਾਓ [ਜੇ PFX ਨਾਲ ਚਾਲੂ ਹੁੰਦੇ ਹਨ]"
+
+#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:542
+msgid " [options]"
+msgstr " [options]"
+
+#: ../src/daemon/abrt-server.c:295
+msgid "Use UID as client uid"
+msgstr "UID ਨੂੰ ਕਲਾਂਈਟ uid ਤੌਰ ਤੇ ਵਰਤੋ"
 
 #: ../src/daemon/CommLayerServerDBus.cpp:242
 msgid "Comment is too long"
@@ -405,10 +421,6 @@ msgid ""
 msgstr ""
 "ਰਿਪੋਰਟ ਅਕਾਰ ਦਾ ਕੋਟਾ ਖਤਮ ਹੋ ਗਿਆ ਹੈ। abrt.conf ਵਿੱਚ ਸਿਸਟਮ ਦਾ MaxCrashReportsSize ਮੁੱਲ "
 "ਚੈੱਕ ਕਰੋ ਜੀ।"
-
-#: ../src/daemon/Daemon.cpp:542
-msgid " [options]"
-msgstr " [options]"
 
 #: ../src/daemon/Daemon.cpp:553
 msgid "Do not daemonize"
@@ -455,16 +467,16 @@ msgstr "ਰਿਪੋਰਟਰ ਪਲੱਗਇਨ"
 msgid "Database plugins"
 msgstr "ਡਾਟਾਬੇਸ ਪਲੱਗਇਨ"
 
-#: ../src/gui/CCDBusBackend.py:74 ../src/gui/CCDBusBackend.py:97
+#: ../src/gui/CCDBusBackend.py:75 ../src/gui/CCDBusBackend.py:98
 msgid "Cannot connect to system dbus."
 msgstr "ਸਿਸਟਮ ਡੀਬੱਸ ਨਾਲ ਕੁਨੈਕਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ।"
 
-#: ../src/gui/CCDBusBackend.py:120 ../src/gui/CCDBusBackend.py:123
+#: ../src/gui/CCDBusBackend.py:121 ../src/gui/CCDBusBackend.py:124
 msgid "Please check if the abrt daemon is running."
 msgstr "ਚੈੱਕ ਕਰੋ ਕਿ ਕੀ abrt ਡੈਮਨ ਚੱਲ ਰਹੀ ਹੈ।"
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:169
+#: ../src/gui/CCDBusBackend.py:170
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
@@ -635,93 +647,6 @@ msgstr ""
 "ਡਾਟਾਬੇਸ ਵਿੱਚ ਅਜਿਹਾ ਕੋਈ ਕਰੈਸ਼ ਨਹੀਂ ਹੈ, ਸੰਭਵ ਹੈ ਕਿ ਕੋਈ ਗਲਤ crashid ਹੈ।\n"
 "crashid=%s"
 
-#. default texts
-#: ../src/gui/CCReporterDialog.py:22 ../src/gui/CReporterAssistant.py:20
-msgid "Brief description of how to reproduce this or what you did..."
-msgstr "ਇਸ ਨੂੰ ਪੈਦਾ ਕਰਨ ਬਾਰੇ ਸੰਖੇਪ ਜਾਣਕਾਰੀ ਜਾਂ ਤੁਸੀਂ ਕੀ ਕੀਤਾ ਹੈ..."
-
-#: ../src/gui/CCReporterDialog.py:107
-msgid "You must check the backtrace for sensitive data."
-msgstr "ਤੁਹਾਨੂੰ ਜਰੂਰੀ ਡਾਟੇ ਲਈ ਬੈਕਟਰੇਸ ਦੀ ਜਾਂਚ ਕਰਨੀ ਪਵੇਗੀ"
-
-#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:392
-#, python-format
-msgid ""
-"Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using the command: <b>debuginfo-"
-"install %s</b> \n"
-"then use the Refresh button to regenerate the backtrace."
-msgstr ""
-"ਰਿਪੋਰਟ ਦੇਣੀ ਆਯੋਗ ਹੈ ਕਿਉਂਕਿ ਬੈਕਟਰੇਸ ਬੇਕਾਰ ਹੈ!\n"
-"ਇਸ ਕਮਾਂਡ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਇੰਸਟਾਲ ਕਰਕੇ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜੀ: <b> debuginfo-install %"
-"s </b>\n"
-" ਤਦ ਬੈਕਟਰੇਸ ਮੁੜ-ਬਣਾਉਣ ਲਈ ਤਾਜ਼ਾ ਕਰੋ ਬਟਨ ਵਰਤੋਂ।"
-
-#: ../src/gui/CCReporterDialog.py:120
-msgid "The backtrace is unusable, you cannot report this!"
-msgstr "ਬੈਕਟਰੇਸ ਬੇਕਾਰ ਹੈ, ਤੁਸੀਂ ਇਹ ਰਿਪੋਰਟ ਨਹੀਂ ਭੇਜ ਸਕਦੇ ਹੋ!"
-
-#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:370
-#: ../src/gui/CReporterAssistant.py:398
-msgid ""
-"The backtrace is incomplete, please make sure you provide the steps to "
-"reproduce."
-msgstr "ਬੈਕਟਰੇਸ ਅਧੂਰਾ ਹੈ, ਯਕੀਨੀ ਬਣਾਉ ਕਿ ਤੁਸੀਂ ਇਹ ਬਣਾਉਣ ਲਈ ਠੀਕ ਕਦਮ ਚੁੱਕੇ ਹਨ।"
-
-#: ../src/gui/CCReporterDialog.py:130
-msgid "Reporting disabled, please fix the problems shown above."
-msgstr "ਰਿਪੋਰਟਿੰਗ ਅਯੋਗ ਹੈ, ਕਿਰਪਾ ਕਰਕੇ ਉੱਪਰ ਦਿੱਤੀ ਸਮੱਸਿਆ ਹੱਲ ਕਰੋ।"
-
-#: ../src/gui/CCReporterDialog.py:132
-msgid "Sends the report using the selected plugin."
-msgstr "ਚੁਣੇ ਪਲੱਗਇਨ ਵਰਤ ਕੇ ਰਿਪੋਰਟ ਭੇਜਦਾ ਹੈ।"
-
-#: ../src/gui/CCReporterDialog.py:398
-msgid ""
-"No reporter plugin available for this type of crash.\n"
-"Please check abrt.conf."
-msgstr ""
-"ਕੋਈ ਰਿਪੋਰਟਰ ਪਲੱਗਇਨ ਇਸ ਕਿਸਮ ਦੇ ਕਰੈਸ਼ ਲਈ ਉਪਲੱਬਧ ਨਹੀਂ ਹੈ।\n"
-"abrt.conf ਦੀ ਜਾਂਚ ਕਰੋ ਜੀ।"
-
-#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:277
-#: ../src/gui/PluginsSettingsDialog.py:136
-#, python-format
-msgid ""
-"Cannot save plugin settings:\n"
-" %s"
-msgstr ""
-"ਪਲੱਗਇਨ ਸੈਟਿੰਗ ਸੰਭਾਲ ਨਹੀਂ ਸਕਦਾ:\n"
-" %s"
-
-#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:307
-#, python-format
-msgid "Configure %s options"
-msgstr "%s ਚੋਣ ਸੰਰਚਨਾ"
-
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1102
-msgid ""
-"Unable to get report!\n"
-"Is debuginfo missing?"
-msgstr ""
-"ਰਿਪਰੋਟ ਲੈਣ ਵਿੱਚ ਅਸਮਰੱਥ!\n"
-"ਕੀ ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਮੌਜੂਦ ਨਹੀਂ ਹੈ?"
-
-#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:483
-#, python-format
-msgid ""
-"Reporting failed!\n"
-"%s"
-msgstr ""
-"ਰਿਪੋਰਟਿੰਗ ਫੇਲ੍ਹ ਹੋਈ!\n"
-"%s"
-
-#: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:1139
-#, python-format
-msgid "Error acquiring the report: %s"
-msgstr "ਰਿਪੋਰਟ ਲੈਣ ਵੇਲੇ ਗਲਤੀ: %s"
-
 #: ../src/gui/ConfBackend.py:78
 msgid "Cannot connect to the Gnome Keyring daemon."
 msgstr "ਸਿਸਟਮ ਡੀਬੱਸ ਨਾਲ ਕੁਨੈਕਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ।"
@@ -748,9 +673,28 @@ msgstr "gnome-keyring ਦੀ ਵਰਤੋਂ ਰੋਕੀ ਗਈ ਹੈ, %s ਲ�
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr "gnome-keyring ਦੀ ਵਰਤੋਂ ਰੋਕੀ ਗਈ ਹੈ, ਸੈਟਿੰਗ ਲੋਡ ਨਹੀਂ ਕਰ ਸਕਿਆ।"
 
+#: ../src/gui/CReporterAssistant.py:20
+msgid "Brief description of how to reproduce this or what you did..."
+msgstr "ਇਸ ਨੂੰ ਪੈਦਾ ਕਰਨ ਬਾਰੇ ਸੰਖੇਪ ਜਾਣਕਾਰੀ ਜਾਂ ਤੁਸੀਂ ਕੀ ਕੀਤਾ ਹੈ..."
+
 #: ../src/gui/CReporterAssistant.py:21
 msgid "Crash info doesn't contain a backtrace"
 msgstr "ਕਰੈਸ਼ ਜਾਣਕਾਰੀ ਵਿੱਚ ਬੈਕਟਰੇਸ ਸ਼ਾਮਿਲ ਨਹੀਂ ਹੈ"
+
+#: ../src/gui/CReporterAssistant.py:277
+#: ../src/gui/PluginsSettingsDialog.py:136
+#, python-format
+msgid ""
+"Cannot save plugin settings:\n"
+" %s"
+msgstr ""
+"ਪਲੱਗਇਨ ਸੈਟਿੰਗ ਸੰਭਾਲ ਨਹੀਂ ਸਕਦਾ:\n"
+" %s"
+
+#: ../src/gui/CReporterAssistant.py:307
+#, python-format
+msgid "Configure %s options"
+msgstr "%s ਚੋਣ ਸੰਰਚਨਾ"
 
 #: ../src/gui/CReporterAssistant.py:362
 #, python-format
@@ -761,6 +705,12 @@ msgstr "ਰੇਟਿੰਗ ਹੈ %s"
 msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr "Crashdump ਦੀ ਰੇਟਿੰਗ ਨਹੀਂ ਹੈ => ਅਸੀਂ ਮੰਨਦੇ ਹਾਂ ਕਿ ਇਸ ਦੀ ਲੋੜ ਨਹੀਂ ਹੈ।"
 
+#: ../src/gui/CReporterAssistant.py:370 ../src/gui/CReporterAssistant.py:398
+msgid ""
+"The backtrace is incomplete, please make sure you provide the steps to "
+"reproduce."
+msgstr "ਬੈਕਟਰੇਸ ਅਧੂਰਾ ਹੈ, ਯਕੀਨੀ ਬਣਾਉ ਕਿ ਤੁਸੀਂ ਇਹ ਬਣਾਉਣ ਲਈ ਠੀਕ ਕਦਮ ਚੁੱਕੇ ਹਨ।"
+
 #: ../src/gui/CReporterAssistant.py:378
 msgid "You should check the backtrace for sensitive data."
 msgstr "ਤੁਹਾਨੂੰ ਜਰੂਰੀ ਡਾਟੇ ਲਈ ਬੈਕਟਰੇਸ ਦੀ ਜਾਂਚ ਕਰਨੀ ਪਵੇਗੀ।"
@@ -768,6 +718,19 @@ msgstr "ਤੁਹਾਨੂੰ ਜਰੂਰੀ ਡਾਟੇ ਲਈ ਬੈਕਟ�
 #: ../src/gui/CReporterAssistant.py:379
 msgid "You must agree with sending the backtrace."
 msgstr "ਤੁਹਾਨੂੰ ਬੈਕਟਰੇਸ ਪੇਸ਼ ਕਰਨ ਲਈ ਸਹਿਮਤ ਹੋਣਾ ਜਰੂਰੀ ਹੈ।"
+
+#: ../src/gui/CReporterAssistant.py:392
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable.\n"
+"Please try to install debuginfo manually using the command: <b>debuginfo-"
+"install %s</b> \n"
+"then use the Refresh button to regenerate the backtrace."
+msgstr ""
+"ਰਿਪੋਰਟ ਦੇਣੀ ਆਯੋਗ ਹੈ ਕਿਉਂਕਿ ਬੈਕਟਰੇਸ ਬੇਕਾਰ ਹੈ!\n"
+"ਇਸ ਕਮਾਂਡ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਇੰਸਟਾਲ ਕਰਕੇ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜੀ: <b> debuginfo-install %"
+"s </b>\n"
+" ਤਦ ਬੈਕਟਰੇਸ ਮੁੜ-ਬਣਾਉਣ ਲਈ ਤਾਜ਼ਾ ਕਰੋ ਬਟਨ ਵਰਤੋਂ।"
 
 #: ../src/gui/CReporterAssistant.py:394
 msgid "Reporting disabled because the backtrace is unusable."
@@ -780,6 +743,15 @@ msgstr "ਤੁਸੀਂ ਦੁਬਾਰਾ ਵੇਖਣ ਲਈ ਕੋਈ ਪਗ 
 #: ../src/gui/CReporterAssistant.py:454
 msgid "You did not provide any comments."
 msgstr "ਤੁਸੀਂ ਕੋਈ ਟਿੱਪਣੀ ਨਹੀਂ ਦਿੱਤੀ।"
+
+#: ../src/gui/CReporterAssistant.py:483
+#, python-format
+msgid ""
+"Reporting failed!\n"
+"%s"
+msgstr ""
+"ਰਿਪੋਰਟਿੰਗ ਫੇਲ੍ਹ ਹੋਈ!\n"
+"%s"
 
 #: ../src/gui/CReporterAssistant.py:535
 #, python-format
@@ -956,6 +928,19 @@ msgstr "ਬੱਗ ਰਿਪੋਰਟ ਭੇਜਣਾ ਮੁਕੰਮਲ ਹੋ�
 #: ../src/gui/CReporterAssistant.py:1085
 msgid "<b>Bug reports:</b>"
 msgstr "<b>ਬੱਗ ਰਿਪੋਰਟਾਂ:</b>"
+
+#: ../src/gui/CReporterAssistant.py:1102
+msgid ""
+"Unable to get report!\n"
+"Is debuginfo missing?"
+msgstr ""
+"ਰਿਪਰੋਟ ਲੈਣ ਵਿੱਚ ਅਸਮਰੱਥ!\n"
+"ਕੀ ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਮੌਜੂਦ ਨਹੀਂ ਹੈ?"
+
+#: ../src/gui/CReporterAssistant.py:1139
+#, python-format
+msgid "Error acquiring the report: %s"
+msgstr "ਰਿਪੋਰਟ ਲੈਣ ਵੇਲੇ ਗਲਤੀ: %s"
 
 #: ../src/gui/dialogs.glade.h:1
 msgid "Log"
@@ -1277,13 +1262,13 @@ msgstr "ਬੱਗਜ਼ੀਲਾ ਉੱਤੇ ਲਾਗਇਨ ਕੀਤਾ ਜਾ�
 msgid "Checking for duplicates..."
 msgstr "ਡੁਪਲੀਕੇਟ ਲਈ ਜਾਂਚ ਜਾਰੀ..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:704
-#: ../src/plugins/abrt-action-bugzilla.cpp:740
+#: ../src/plugins/abrt-action-bugzilla.cpp:705
+#: ../src/plugins/abrt-action-bugzilla.cpp:741
 msgid "Missing mandatory member 'bugs'"
 msgstr "ਗੈਰ-ਮੌਜੂਦ ਜਰੂਰੀ ਮੈਂਬਰ 'ਬੱਗ'"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:723
-#: ../src/plugins/abrt-action-bugzilla.cpp:756
+#: ../src/plugins/abrt-action-bugzilla.cpp:724
+#: ../src/plugins/abrt-action-bugzilla.cpp:757
 #: ../src/plugins/abrt-action-bugzilla.cpp:833
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() ਫੇਲ ਹੈ। ਸਭ ਜਰੂਰੀ ਜਾਣਕਾਰੀ ਇਕੱਠੀ ਨਹੀਂ ਕਰ ਸਕਿਆ"
@@ -1338,19 +1323,19 @@ msgstr ""
 msgid "Configuration file (may be given many times)"
 msgstr "ਸੰਰਚਨਾ ਫਾਇਲ (ਹੋ ਸਕਦਾ ਕਈ ਵਾਰ ਦਿੱਤੀ ਹੋਵੇ)"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:257
+#: ../src/plugins/abrt-action-generate-backtrace.c:258
 msgid " [options] -d DIR"
 msgstr " [options] -d DIR"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:270
+#: ../src/plugins/abrt-action-generate-backtrace.c:271
 msgid "Additional debuginfo directories"
 msgstr "ਵਾਧੂ debuginfo ਡਾਇਰੈਕਟਰੀਆਂ"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:271
+#: ../src/plugins/abrt-action-generate-backtrace.c:272
 msgid "Kill gdb if it runs for more than N seconds"
 msgstr "gdb ਕਿੱਲ ਕਰੋ ਜੇ ਇਹ N ਸਕਿੰਟਾਂ ਤੋਂ ਜਿਆਦਾ ਦੇਰ ਤੋਂ ਚੱਲ ਰਿਹਾ ਹੋ"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:319
+#: ../src/plugins/abrt-action-generate-backtrace.c:320
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "%s ਲਈ ਬੈਕਟਰੇਸ ਪਾਰਸਿੰਗ ਫੇਲ ਹੋਈ ਹੈ"
@@ -1712,6 +1697,25 @@ msgstr "URL:"
 #: ../src/plugins/Upload.glade.h:5
 msgid "Use encryption"
 msgstr "ਇਨਕ੍ਰਿਪਸ਼ਨ ਵਰਤੋ"
+
+#~ msgid "You must check the backtrace for sensitive data."
+#~ msgstr "ਤੁਹਾਨੂੰ ਜਰੂਰੀ ਡਾਟੇ ਲਈ ਬੈਕਟਰੇਸ ਦੀ ਜਾਂਚ ਕਰਨੀ ਪਵੇਗੀ"
+
+#~ msgid "The backtrace is unusable, you cannot report this!"
+#~ msgstr "ਬੈਕਟਰੇਸ ਬੇਕਾਰ ਹੈ, ਤੁਸੀਂ ਇਹ ਰਿਪੋਰਟ ਨਹੀਂ ਭੇਜ ਸਕਦੇ ਹੋ!"
+
+#~ msgid "Reporting disabled, please fix the problems shown above."
+#~ msgstr "ਰਿਪੋਰਟਿੰਗ ਅਯੋਗ ਹੈ, ਕਿਰਪਾ ਕਰਕੇ ਉੱਪਰ ਦਿੱਤੀ ਸਮੱਸਿਆ ਹੱਲ ਕਰੋ।"
+
+#~ msgid "Sends the report using the selected plugin."
+#~ msgstr "ਚੁਣੇ ਪਲੱਗਇਨ ਵਰਤ ਕੇ ਰਿਪੋਰਟ ਭੇਜਦਾ ਹੈ।"
+
+#~ msgid ""
+#~ "No reporter plugin available for this type of crash.\n"
+#~ "Please check abrt.conf."
+#~ msgstr ""
+#~ "ਕੋਈ ਰਿਪੋਰਟਰ ਪਲੱਗਇਨ ਇਸ ਕਿਸਮ ਦੇ ਕਰੈਸ਼ ਲਈ ਉਪਲੱਬਧ ਨਹੀਂ ਹੈ।\n"
+#~ "abrt.conf ਦੀ ਜਾਂਚ ਕਰੋ ਜੀ।"
 
 #~ msgid "Analyzes crashes in C/C++ programs"
 #~ msgstr "C/C++ ਪਰੋਗਰਾਮਾਂ ਵਿਚਲੇ ਕਰੈਸ਼ਾਂ ਦੀ ਜਾਂਚ ਕਰਦਾ ਹੈ"
