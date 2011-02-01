@@ -18,6 +18,8 @@
 #ifndef ABRT_CLI_REPORT_H
 #define ABRT_CLI_REPORT_H
 
+int run_analyze_event(const char *dump_dir_name);
+
 /* Report the crash */
 enum {
     CLI_REPORT_BATCH = 1 << 0,

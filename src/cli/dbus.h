@@ -23,45 +23,7 @@
 
 extern DBusConnection* s_dbus_conn;
 
-vector_of_crash_data_t *call_GetCrashInfos();
-
-crash_data_t *call_CreateReport(const char *crash_id);
-
-/** Sends report using enabled Reporter plugins.
- * @param report
- *  The report sent to Reporter plugins.
- * @param reporters
- *  List of names of Reporters which should be called.
- * @param plugins
- *  Optional settings for Reporter plugins, can be empty.
- *  Format: plugins["PluginName"]["SettingsKey"] = "SettingsValue"
- *  If it contains settings for some plugin, it must contain _all fields_
- *  obtained by call_GetPluginSettings, otherwise the plugin might ignore
- *  the settings.
- */
-report_status_t call_Report(crash_data_t *report,
-			    const vector_string_t& reporters,
-			    GHashTable *plugins);
-
 int32_t call_DeleteDebugDump(const char* crash_id);
-
-/* Gets basic data about all installed plugins.
- * @todo
- *  Return more semantically structured output - maybe a struct instead of a map.
- */
-map_map_string_t call_GetPluginsInfo();
-
-/** Gets default plugin settings.
- * @param name
- *    Corresponds to name obtained from call_GetPluginsInfo.
- */
-map_plugin_settings_t call_GetPluginSettings(const char *name);
-
-/** Gets global daemon settings.
- * @todo
- *   Return more semantically structured output - maybe a struct instead of a map.
- */
-map_map_string_t call_GetSettings();
 
 void handle_dbus_err(bool error_flag, DBusError *err);
 

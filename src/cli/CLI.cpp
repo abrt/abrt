@@ -36,6 +36,51 @@ static char *localize_crash_time(const char *timestr)
     return xstrdup(timeloc);
 }
 
+static crash_data_t *FillCrashInfo(const char *dump_dir_name)
+{
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        return NULL;
+
+    crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
+//  char *events = list_possible_events(dd, NULL, "");
+    dd_close(dd);
+//  add_to_crash_data_ext(crash_data, CD_EVENTS, events, CD_FLAG_SYS + CD_FLAG_ISNOTEDITABLE);
+//  free(events);
+    add_to_crash_data_ext(crash_data, CD_DUMPDIR, dump_dir_name, CD_FLAG_SYS + CD_FLAG_ISNOTEDITABLE);
+
+    return crash_data;
+}
+
+static void GetCrashInfos(vector_of_crash_data_t *retval, const char *dir_name)
+{
+    VERB1 log("Loading dumps from '%s'", dir_name);
+
+    DIR *dir = opendir(dir_name);
+    if (dir != NULL)
+    {
+        struct dirent *dent;
+        while ((dent = readdir(dir)) != NULL)
+        {
+            if (dot_or_dotdot(dent->d_name))
+                continue; /* skip "." and ".." */
+
+            char *dump_dir_name = concat_path_file(dir_name, dent->d_name);
+
+            struct stat statbuf;
+            if (stat(dump_dir_name, &statbuf) == 0
+             && S_ISDIR(statbuf.st_mode)
+            ) {
+                crash_data_t *crash_data = FillCrashInfo(dump_dir_name);
+                if (crash_data)
+                    g_ptr_array_add(retval, crash_data);
+            }
+            free(dump_dir_name);
+        }
+        closedir(dir);
+    }
+}
+
 /** Prints basic information about a crash to stdout. */
 static void print_crash(crash_data_t *crash_data)
 {
@@ -200,35 +245,41 @@ static const char *progname(const char *argv0)
  * Prints abrt-cli version and some help text.
  * Then exits the program with return value 1.
  */
-static void usage(char *argv0)
+static void print_usage_and_die(char *argv0)
 {
     const char *name = progname(argv0);
     printf("%s "VERSION"\n\n", name);
 
     /* Message has embedded tabs. */
-    printf(_("Usage: %s [OPTION]\n\n"
-        "Startup:\n"
-        "	-V, --version		display the version and exit\n"
-        "	-v, --verbose		increase verbosity\n"
-        "Actions:\n"
-        "	-l, --list		print a list of all crashes which are not yet reported\n"
-        "	      -f, --full	print a list of all crashes, including the already reported ones\n"
-        "	-r, --report CRASH_ID	create and send a report\n"
-        "	      -y, --always	create and send a report without asking\n"
-        "	-d, --delete CRASH_ID	remove a crash\n"
-        "	-i, --info CRASH_ID	print detailed information about a crash\n"
-        "	      -b, --backtrace	print detailed information about a crash including backtrace\n"
-        "CRASH_ID can be:\n"
-        "	a name of dump directory, or\n"
-        "	@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
+    printf(_(
+        "Usage: %s -l[f] [-D BASE_DIR]...]\n"
+	"   or: %s -r[y] CRASH_DIR\n"
+	"   or: %s -i[b] CRASH_DIR\n"
+	"   or: %s -d CRASH_DIR\n"
+        "\n"
+        "	-l, --list		List not yet reported crashes\n"
+        "	  -f, --full		List all crashes\n"
+        "	-D BASE_DIR		Directory to list crashes from\n"
+        "				(default: -D $HOME/abrt/spool -D %s)\n"
+        "\n"
+        "	-r, --report		Send a report about CRASH_DIR\n"
+        "	  -y, --always		...without editing and asking\n"
+        "	-i, --info		Print detailed information about CRASH_DIR\n"
+        "	  -b, --backtrace	...including backtrace\n"
+        "	-d, --delete		Remove CRASH_DIR\n"
+        "\n"
+        "	-V, --version		Display version and exit\n"
+        "	-v, --verbose		Be verbose\n"
         ),
-        name);
-
+        name, name, name, name,
+        DEBUG_DUMPS_DIR
+    );
     exit(1);
 }
 
 int main(int argc, char** argv)
 {
+    GList *D_list = NULL;
     char *dump_dir_name = NULL;
     int op = -1;
     bool full = false;
@@ -264,12 +315,15 @@ int main(int argc, char** argv)
         case 'y': always = true;        break;
         case 'b': backtrace = true;     break;
         case 'v': g_verbose++;          break;
+        case 'D':
+            D_list = g_list_append(D_list, optarg);
+            break;
         case 'V':
             printf("%s "VERSION"\n", progname(argv[0]));
             return 0;
         case '?':
         default: /* some error */
-            usage(argv[0]); /* exits app */
+            print_usage_and_die(argv[0]); /* exits app */
         }
 #undef SET_OP
     }
@@ -281,15 +335,15 @@ int main(int argc, char** argv)
     {
     case 0:
         if (op == OPT_REPORT || op == OPT_DELETE || op == OPT_INFO)
-            usage(argv[0]);
+            print_usage_and_die(argv[0]);
         break;
     case 1:
         if (op != OPT_REPORT && op != OPT_DELETE && op != OPT_INFO)
-            usage(argv[0]);
+            print_usage_and_die(argv[0]);
         dump_dir_name = argv[optind];
         break;
     default:
-        usage(argv[0]);
+        print_usage_and_die(argv[0]);
     }
 
     /* Check if we have an operation.
@@ -300,8 +354,7 @@ int main(int argc, char** argv)
         (backtrace && op != OPT_INFO) ||
         op == -1)
     {
-        usage(argv[0]);
-        return 1;
+        print_usage_and_die(argv[0]);
     }
 
     DBusError err;
@@ -315,7 +368,20 @@ int main(int argc, char** argv)
     {
         case OPT_GET_LIST:
         {
-            vector_of_crash_data_t *ci = call_GetCrashInfos();
+            if (!D_list)
+            {
+                char *home = getenv("HOME");
+                if (home)
+                    D_list = g_list_append(D_list, concat_path_file(home, "abrt/spool"));
+                D_list = g_list_append(D_list, (void*)DEBUG_DUMPS_DIR);
+            }
+            vector_of_crash_data_t *ci = new_vector_of_crash_data();
+            while (D_list)
+            {
+                char *dir = (char *)D_list->data;
+                GetCrashInfos(ci, dir);
+                D_list = g_list_remove(D_list, dir);
+            }
             print_crash_list(ci, full);
             free_vector_of_crash_data(ci);
             break;
@@ -338,14 +404,16 @@ int main(int argc, char** argv)
         }
         case OPT_INFO:
         {
-            int old_logmode = logmode;
-            logmode = 0;
+            if (run_analyze_event(dump_dir_name) != 0)
+                return 1;
 
-            crash_data_t *crash_data = call_CreateReport(dump_dir_name);
-            if (!crash_data)
-                error_msg_and_die("Crash '%s' not found", dump_dir_name);
-
-            logmode = old_logmode;
+            /* Load crash_data from (possibly updated by analyze) dump dir */
+            struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+            if (!dd)
+                return -1;
+            crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
+            dd_close(dd);
+            add_to_crash_data_ext(crash_data, CD_DUMPDIR, dump_dir_name, CD_FLAG_SYS + CD_FLAG_ISNOTEDITABLE);
 
             print_crash_info(crash_data, backtrace);
             free_crash_data(crash_data);

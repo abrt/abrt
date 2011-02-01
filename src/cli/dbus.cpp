@@ -121,72 +121,21 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
     }
 }
 
-vector_of_crash_data_t *call_GetCrashInfos()
+void handle_dbus_err(bool error_flag, DBusError *err)
 {
-    DBusMessage* msg = new_call_msg(__func__ + 5);
-    DBusMessage *reply = send_get_reply_and_unref(msg);
-
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(reply, &in_iter);
-
-    vector_of_crash_data_t *argout = NULL;
-    int r = load_vector_of_crash_data(&in_iter, &argout);
-    if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
-        error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
-
-    dbus_message_unref(reply);
-    return argout;
-}
-
-crash_data_t *call_CreateReport(const char* crash_id)
-{
-    DBusMessage* msg = new_call_msg(__func__ + 5);
-    dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &crash_id,
-            DBUS_TYPE_INVALID);
-
-    DBusMessage *reply = send_get_reply_and_unref(msg);
-
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(reply, &in_iter);
-
-    crash_data_t *argout = NULL;
-    int r = load_crash_data(&in_iter, &argout);
-    if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
-        error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
-
-    dbus_message_unref(reply);
-    return argout;
-}
-
-report_status_t call_Report(crash_data_t *report,
-			    const vector_string_t& reporters,
-			    GHashTable *plugins)
-{
-    DBusMessage* msg = new_call_msg(__func__ + 5);
-    DBusMessageIter out_iter;
-    dbus_message_iter_init_append(msg, &out_iter);
-
-    /* parameter #1: report data */
-    store_crash_data(&out_iter, report);
-    /* parameter #2: reporters to use */
-    store_val(&out_iter, reporters);
-    /* parameter #3 (opt): plugin config */
-    if (g_hash_table_size(plugins))
-        store_hash_table_map_string_t(&out_iter, plugins);
-
-    DBusMessage *reply = send_get_reply_and_unref(msg);
-
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(reply, &in_iter);
-
-    report_status_t result;
-    int r = load_val(&in_iter, result);
-    if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
-        error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
-
-    dbus_message_unref(reply);
-    return result;
+    if (dbus_error_is_set(err))
+    {
+        error_msg("dbus error: %s", err->message);
+        /* dbus_error_free(&err); */
+        error_flag = true;
+    }
+    if (!error_flag)
+        return;
+    error_msg_and_die(
+            "error requesting DBus name %s, possible reasons: "
+            "abrt run by non-root; dbus config is incorrect; "
+            "or dbus daemon needs to be restarted to reload dbus config",
+            ABRTD_DBUS_NAME);
 }
 
 int32_t call_DeleteDebugDump(const char* crash_id)
@@ -208,75 +157,4 @@ int32_t call_DeleteDebugDump(const char* crash_id)
 
     dbus_message_unref(reply);
     return result;
-}
-
-map_map_string_t call_GetPluginsInfo()
-{
-    DBusMessage *msg = new_call_msg(__func__ + 5);
-    DBusMessage *reply = send_get_reply_and_unref(msg);
-
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(reply, &in_iter);
-
-    map_map_string_t argout;
-    int r = load_val(&in_iter, argout);
-    if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
-        error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
-
-    dbus_message_unref(reply);
-    return argout;
-}
-
-map_plugin_settings_t call_GetPluginSettings(const char *name)
-{
-    DBusMessage *msg = new_call_msg(__func__ + 5);
-    dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &name,
-            DBUS_TYPE_INVALID);
-
-    DBusMessage *reply = send_get_reply_and_unref(msg);
-
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(reply, &in_iter);
-
-    map_string_t argout;
-    int r = load_val(&in_iter, argout);
-    if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
-        error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
-
-    dbus_message_unref(reply);
-    return argout;
-}
-
-map_map_string_t call_GetSettings()
-{
-    DBusMessage *msg = new_call_msg(__func__ + 5);
-    DBusMessage *reply = send_get_reply_and_unref(msg);
-
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(reply, &in_iter);
-    map_map_string_t argout;
-    int r = load_val(&in_iter, argout);
-    if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
-        error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
-
-    dbus_message_unref(reply);
-    return argout;
-}
-
-void handle_dbus_err(bool error_flag, DBusError *err)
-{
-    if (dbus_error_is_set(err))
-    {
-        error_msg("dbus error: %s", err->message);
-        /* dbus_error_free(&err); */
-        error_flag = true;
-    }
-    if (!error_flag)
-        return;
-    error_msg_and_die(
-            "error requesting DBus name %s, possible reasons: "
-            "abrt run by non-root; dbus config is incorrect; "
-            "or dbus daemon needs to be restarted to reload dbus config",
-            ABRTD_DBUS_NAME);
 }

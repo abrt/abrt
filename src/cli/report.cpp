@@ -464,36 +464,51 @@ static bool set_echo(bool enable)
     return true;
 }
 
-static void free_map_string_t(gpointer data)
-{
-    delete (map_string_t *)data;
-}
 
 /**
  * Gets reporter plugin settings.
- * @param reporters
- *   List of reporter names. Settings of these reporters are handled.
  * @return settings
  *   A structure filled with reporter plugin settings.
  *   It's GHashTable<char *, map_plugin_t *> and must be passed to
  *   g_hash_table_destroy();
  */
-static GHashTable *get_reporter_plugin_settings(const vector_string_t& reporters)
+static void get_plugin_system_settings(GHashTable *settings)
 {
-    /* First of all, load system-wide report plugin settings. */
-    GHashTable *settings = g_hash_table_new_full(g_str_hash, g_str_equal,
-                                                 free, free_map_string_t);
+    DIR *dir = opendir(PLUGINS_CONF_DIR);
+    if (!dir)
+        return;
 
-    for (vector_string_t::const_iterator it = reporters.begin(); it != reporters.end(); ++it)
+    struct dirent *dent;
+    while ((dent = readdir(dir)) != NULL)
     {
-        map_string_t *single_plugin_settings = new map_string_t;
-        *single_plugin_settings = call_GetPluginSettings(it->c_str());
+        char *ext = strrchr(dent->d_name, '.');
+        if (!ext || strcmp(ext + 1, "conf") != 0)
+            continue;
+        if (!is_regular_file(dent, PLUGINS_CONF_DIR))
+            continue;
+        VERB3 log("Found %s", dent->d_name);
 
-        // Copy the received settings as defaults.
-        // Plugins won't work without it, if some value is missing
-        // they use their default values for all fields.
-        g_hash_table_replace(settings, xstrdup(it->c_str()), single_plugin_settings);
+        char *conf_file = concat_path_file(PLUGINS_CONF_DIR, dent->d_name);
+        map_string_h *single_plugin_settings = new_map_string();
+        if (load_conf_file(conf_file, single_plugin_settings, /*skip w/o value:*/ false))
+            VERB3 log("Loaded %s", dent->d_name);
+        free(conf_file);
+
+        *ext = '\0';
+        g_hash_table_replace(settings, xstrdup(dent->d_name), single_plugin_settings);
     }
+    closedir(dir);
+}
+
+static GHashTable *get_plugin_settings(void)
+{
+    /* First of all, load system-wide plugin settings. */
+    GHashTable *settings = g_hash_table_new_full(
+                g_str_hash, g_str_equal,
+                free, (void (*)(void*))free_map_string
+    );
+
+    get_plugin_system_settings(settings);
 
     /* Second, load user-specific settings, which override
      * the system-wide settings. */
@@ -503,7 +518,7 @@ static GHashTable *get_reporter_plugin_settings(const vector_string_t& reporters
     {
         GHashTableIter iter;
         char *plugin_name;
-        map_string_t *plugin_settings;
+        map_string_h *plugin_settings;
         g_hash_table_iter_init(&iter, settings);
         while (g_hash_table_iter_next(&iter, (void**)&plugin_name, (void**)&plugin_settings))
         {
@@ -528,7 +543,7 @@ static GHashTable *get_reporter_plugin_settings(const vector_string_t& reporters
             char *value;
             g_hash_table_iter_init(&iter2, single_plugin_settings);
             while (g_hash_table_iter_next(&iter2, (void**)&key, (void**)&value))
-                (*plugin_settings)[key] = xstrdup(value);
+                g_hash_table_replace(plugin_settings, xstrdup(key), xstrdup(value));
 
             free_map_string(single_plugin_settings);
         }
@@ -539,13 +554,13 @@ static GHashTable *get_reporter_plugin_settings(const vector_string_t& reporters
 /**
  *  Asks user for missing login information
  */
-static void ask_for_missing_settings(const char *plugin_name, map_string_t &single_plugin_settings)
+static void ask_for_missing_settings(const char *plugin_name, map_string_h *single_plugin_settings)
 {
     // Login information is missing.
-    bool loginMissing = single_plugin_settings.find("Login") != single_plugin_settings.end()
-        && 0 == strcmp(single_plugin_settings["Login"].c_str(), "");
-    bool passwordMissing = single_plugin_settings.find("Password") != single_plugin_settings.end()
-        && 0 == strcmp(single_plugin_settings["Password"].c_str(), "");
+    const char *login = get_map_string_item_or_NULL(single_plugin_settings, "Login");
+    const char *password = get_map_string_item_or_NULL(single_plugin_settings, "Password");
+    bool loginMissing = (login && login[0] == '\0');
+    bool passwordMissing = (password && password[0] == '\0');
     if (!loginMissing && !passwordMissing)
         return;
 
@@ -555,7 +570,7 @@ static void ask_for_missing_settings(const char *plugin_name, map_string_t &sing
     if (loginMissing)
     {
         read_from_stdin(_("Enter your login: "), result, 64);
-        single_plugin_settings["Login"] = std::string(result);
+        g_hash_table_replace(single_plugin_settings, xstrdup("Login"), xstrdup(result));
     }
     if (passwordMissing)
     {
@@ -566,77 +581,224 @@ static void ask_for_missing_settings(const char *plugin_name, map_string_t &sing
 
         // Newline was not added by pressing Enter because ECHO was disabled, so add it now.
         puts("");
-        single_plugin_settings["Password"] = std::string(result);
+        g_hash_table_replace(single_plugin_settings, xstrdup("Password"), xstrdup(result));
     }
 }
 
-/* Reports the crash over DBus. */
-int report(const char *dump_dir_name, int flags)
+
+struct logging_state {
+    char *last_line;
+};
+static char *do_log_and_save_line(char *log_line, void *param)
 {
-    // Ask for an initial report.
-    crash_data_t *crash_data = call_CreateReport(dump_dir_name);
-    if (!crash_data || g_hash_table_size(crash_data) == 0)
+    struct logging_state *l_state = (struct logging_state *)param;
+    log("%s", log_line);
+    free(l_state->last_line);
+    l_state->last_line = log_line;
+    return NULL;
+}
+static int run_events(const char *dump_dir_name,
+                const vector_string_t& events,
+                GHashTable *map_map_settings
+) {
+    int error_cnt = 0;
+    GList *env_list = NULL;
+
+    // Export overridden settings as environment variables
+    GHashTableIter iter;
+    char *plugin_name;
+    map_string_h *single_plugin_settings;
+    g_hash_table_iter_init(&iter, map_map_settings);
+    while (g_hash_table_iter_next(&iter, (void**)&plugin_name, (void**)&single_plugin_settings))
     {
-        free_crash_data(crash_data);
-        return -1;
+        GHashTableIter iter2;
+        char *key;
+        char *value;
+        g_hash_table_iter_init(&iter2, single_plugin_settings);
+        while (g_hash_table_iter_next(&iter2, (void**)&key, (void**)&value))
+        {
+            char *s = xasprintf("%s_%s=%s", plugin_name, key, value);
+            VERB3 log("Exporting '%s'", s);
+            putenv(s);
+            env_list = g_list_append(env_list, s);
+        }
     }
 
-    const char *rating_str = get_crash_item_content_or_NULL(crash_data, FILENAME_RATING);
-    unsigned rating = rating_str ? xatou(rating_str) : 4;
+    // Run events
+    bool at_least_one_reporter_succeeded = false;
+    std::string message;
+    struct logging_state l_state;
+    l_state.last_line = NULL;
+    struct run_event_state *run_state = new_run_event_state();
+    run_state->logging_callback = do_log_and_save_line;
+    run_state->logging_param = &l_state;
+    for (unsigned i = 0; i < events.size(); i++)
+    {
+        std::string event = events[i];
 
-    /* Open text editor and give a chance to review the backtrace etc. */
+        int r = run_event_on_dir_name(run_state, dump_dir_name, event.c_str());
+        if (r == -1)
+        {
+            l_state.last_line = xasprintf("Error: no processing is specified for event '%s'", event.c_str());
+        }
+        if (r == 0)
+        {
+            at_least_one_reporter_succeeded = true;
+            printf("%s: %s\n", event.c_str(), (l_state.last_line ? : "Reporting succeeded"));
+            if (message != "")
+                message += ";";
+            message += (l_state.last_line ? : "Reporting succeeded");
+        }
+        else
+        {
+            error_msg("Reporting via '%s' was not successful%s%s",
+                    event.c_str(),
+                    l_state.last_line ? ": " : "",
+                    l_state.last_line ? l_state.last_line : ""
+            );
+            error_cnt++;
+        }
+        free(l_state.last_line);
+        l_state.last_line = NULL;
+    }
+    free_run_event_state(run_state);
+
+    // Unexport overridden settings
+    for (GList *li = env_list; li; li = g_list_next(li))
+    {
+        char *s = (char*)li->data;
+        /* Need to make a copy: just cutting s at '=' and unsetenv'ing
+         * the result would be a bug! s _itself_ is in environment now,
+         * we must not modify it there!
+         */
+        char *name = xstrndup(s, strchrnul(s, '=') - s);
+        VERB3 log("Unexporting '%s'", name);
+        unsetenv(name);
+        free(name);
+        free(s);
+    }
+    g_list_free(env_list);
+
+    // Save reporting results
+    if (at_least_one_reporter_succeeded)
+    {
+        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        if (dd)
+        {
+            dd_save_text(dd, FILENAME_MESSAGE, message.c_str());
+            dd_close(dd);
+        }
+    }
+
+    return error_cnt;
+}
+
+
+static char *do_log(char *log_line, void *param)
+{
+    log("%s", log_line);
+    return log_line;
+}
+int run_analyze_event(const char *dump_dir_name)
+{
+    VERB2 log("run_analyze_event('%s')", dump_dir_name);
+
+    struct run_event_state *run_state = new_run_event_state();
+    run_state->logging_callback = do_log;
+    int res = run_event_on_dir_name(run_state, dump_dir_name, "analyze");
+    free_run_event_state(run_state);
+
+    if (res != 0 && res != -1) /* -1 is "nothing was done", here it is ok */
+    {
+        error_msg("Error while running analyze event on '%s'", dump_dir_name);
+        return 1;
+    }
+    return 0;
+}
+
+
+/* Report the crash */
+int report(const char *dump_dir_name, int flags)
+{
+    if (run_analyze_event(dump_dir_name) != 0)
+	return 1;
+
+    /* Load crash_data from (possibly updated by analyze) dump dir */
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+	return -1;
+
+    crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
+    char *events_as_lines = list_possible_events(dd, NULL, "");
+    dd_close(dd);
+
     if (!(flags & CLI_REPORT_BATCH))
     {
+        /* Open text editor and give a chance to review the backtrace etc */
         create_fields_for_editor(crash_data);
         int result = run_report_editor(crash_data);
         if (result != 0)
         {
             free_crash_data(crash_data);
-            return result;
+            free(events_as_lines);
+            return 1;
+        }
+        /* Save comment, "how to reproduce", backtrace */
+        dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        if (dd)
+        {
+//TODO: we should iterate through crash_data and modify all modifiable fields
+            const char *comment = get_crash_item_content_or_NULL(crash_data, FILENAME_COMMENT);
+            const char *reproduce = get_crash_item_content_or_NULL(crash_data, FILENAME_REPRODUCE);
+            const char *backtrace = get_crash_item_content_or_NULL(crash_data, FILENAME_BACKTRACE);
+            if (comment)
+                dd_save_text(dd, FILENAME_COMMENT, comment);
+            if (reproduce)
+                dd_save_text(dd, FILENAME_REPRODUCE, reproduce);
+            if (backtrace)
+                dd_save_text(dd, FILENAME_BACKTRACE, backtrace);
+            dd_close(dd);
         }
     }
 
-    /* Get possible reporters associated with this particular crash. */
-    const char *events = get_crash_item_content_or_NULL(crash_data, CD_EVENTS);
+    /* Get possible reporters associated with this particular crash */
     vector_string_t report_events;
-    if (events) while (*events)
+    if (events_as_lines)
     {
-        const char *end = strchrnul(events, '\n');
-        if (strncmp(events, "report", 6) == 0
-         && (events[6] == '\0' || events[6] == '_')
-        ) {
-            char *tmp = xstrndup(events, end - events);
-            report_events.push_back(tmp);
-            free(tmp);
+        char *events = events_as_lines;
+        while (*events)
+        {
+            char *end = strchrnul(events, '\n');
+            if (strncmp(events, "report", 6) == 0
+             && (events[6] == '\0' || events[6] == '_')
+            ) {
+                char *tmp = xstrndup(events, end - events);
+                report_events.push_back(tmp);
+                free(tmp);
+            }
+            events = end;
+            if (!*events)
+                break;
+            events++;
         }
-        events = end;
-        if (!*events)
-            break;
-        events++;
     }
 
     /* Get settings */
-    GHashTable *reporters_settings = get_reporter_plugin_settings(report_events);
+    GHashTable *map_map_settings = get_plugin_settings();
 
     int errors = 0;
     int plugins = 0;
     if (flags & CLI_REPORT_BATCH)
     {
         puts(_("Reporting..."));
-        report_status_t r = call_Report(crash_data, report_events, reporters_settings);
-        report_status_t::iterator it = r.begin();
-        while (it != r.end())
-        {
-            vector_string_t &v = it->second;
-            printf("%s: %s\n", it->first.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
-            plugins++;
-            if (v[REPORT_STATUS_IDX_FLAG] == "0")
-                errors++;
-            it++;
-        }
+        errors += run_events(dump_dir_name, report_events, map_map_settings);
+        plugins += report_events.size();
     }
     else
     {
+        const char *rating_str = get_crash_item_content_or_NULL(crash_data, FILENAME_RATING);
+        unsigned rating = rating_str ? xatou(rating_str) : 4;
+
         /* For every reporter, ask if user really wants to report using it. */
         for (vector_string_t::const_iterator it = report_events.begin(); it != report_events.end(); ++it)
         {
@@ -648,48 +810,42 @@ int report(const char *dump_dir_name, int flags)
                 continue;
             }
 
-            map_string_t *settings = (map_string_t *)g_hash_table_lookup(reporters_settings, it->c_str());
-            if (settings)
+//TODO: rethink how we associate report events with configs
+            if (strncmp(it->c_str(), "report_", strlen("report_")) == 0)
             {
-                map_string_t::iterator rating_setting = settings->find("RatingRequired");
-                if (rating_setting != settings->end()
-                        && string_to_bool(rating_setting->second.c_str())
-                        && rating < 3)
+                const char *config_name = it->c_str() + strlen("report_");
+                map_string_h *single_plugin_settings = (map_string_h *)g_hash_table_lookup(map_map_settings, config_name);
+                if (single_plugin_settings)
                 {
-                    puts(_("Reporting disabled because the backtrace is unusable"));
+                    const char *rating_required = get_map_string_item_or_NULL(single_plugin_settings, "RatingRequired");
+                    if (rating_required
+                     && string_to_bool(rating_required) == true
+                     && rating < 3
+                    ) {
+                        puts(_("Reporting disabled because the backtrace is unusable"));
 
-                    const char *package = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
-                    if (package && package[0])
-                        printf(_("Please try to install debuginfo manually using the command: \"debuginfo-install %s\" and try again\n"), package);
+                        const char *package = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
+                        if (package && package[0])
+                            printf(_("Please try to install debuginfo manually using the command: \"debuginfo-install %s\" and try again\n"), package);
 
-                    plugins++;
-                    errors++;
-                    continue;
+                        plugins++;
+                        errors++;
+                        continue;
+                    }
+                    ask_for_missing_settings(it->c_str(), single_plugin_settings);
                 }
             }
-            else
-            {
-                puts(_("Error loading reporter settings"));
-                plugins++;
-                errors++;
-                continue;
-            }
-
-            ask_for_missing_settings(it->c_str(), *settings);
 
             vector_string_t cur_event(1, *it);
-            report_status_t r = call_Report(crash_data, cur_event, reporters_settings);
-            assert(r.size() == 1); /* one reporter --> one report status */
-            vector_string_t &v = r.begin()->second;
-            printf("%s: %s\n", r.begin()->first.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
+            errors += run_events(dump_dir_name, cur_event, map_map_settings);
             plugins++;
-            if (v[REPORT_STATUS_IDX_FLAG] == "0")
-                errors++;
         }
     }
 
-    g_hash_table_destroy(reporters_settings);
-    free_crash_data(crash_data);
+    g_hash_table_destroy(map_map_settings);
+
     printf(_("Crash reported via %d report events (%d errors)\n"), plugins, errors);
-    return errors != 0;
+    free_crash_data(crash_data);
+    free(events_as_lines);
+    return errors;
 }
