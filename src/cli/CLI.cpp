@@ -38,7 +38,7 @@ static char *localize_crash_time(const char *timestr)
 
 static crash_data_t *FillCrashInfo(const char *dump_dir_name)
 {
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ DD_OPEN_READONLY);
     if (!dd)
         return NULL;
 
@@ -199,6 +199,46 @@ static void print_crash_info(crash_data_t *crash_data, bool show_backtrace)
     }
 }
 
+static struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name)
+{
+    const char *base_name = strrchr(dump_dir_name, '/');
+    if (base_name)
+        base_name++;
+    else
+        base_name = dump_dir_name;
+
+    struct dump_dir *dd_dst;
+    unsigned count = 100;
+    char *dst_dir_name = concat_path_file(base_dir, base_name);
+    while (1)
+    {
+        dd_dst = dd_create(dst_dir_name, (uid_t)-1);
+        free(dst_dir_name);
+        if (dd_dst)
+            break;
+        if (--count == 0)
+        {
+            error_msg("Can't create new dump dir in '%s'", base_dir);
+            goto ret;
+        }
+        struct timeval tv;
+        gettimeofday(&tv, NULL);
+        dst_dir_name = xasprintf("%s/%s.%u", base_dir, base_name, (int)tv.tv_usec);
+    }
+
+    log("Creating copy in '%s'", dd_dst->dd_dir);
+    if (copy_file_recursive(dump_dir_name, dd_dst->dd_dir) < 0)
+    {
+        /* error. copy_file_recursive already emitted error message */
+        dd_close(dd_dst);
+        xfunc_die();
+    }
+
+ ret:
+    return dd_dst;
+}
+
+
 /* Program options */
 enum
 {
@@ -329,6 +369,14 @@ int main(int argc, char** argv)
     }
  end_of_arg_parsing: ;
 
+    if (!D_list)
+    {
+        char *home = getenv("HOME");
+        if (home)
+            D_list = g_list_append(D_list, concat_path_file(home, "abrt/spool"));
+        D_list = g_list_append(D_list, (void*)DEBUG_DUMPS_DIR);
+    }
+
     /* Handle option arguments. */
     argc -= optind;
     switch (argc)
@@ -368,13 +416,6 @@ int main(int argc, char** argv)
     {
         case OPT_GET_LIST:
         {
-            if (!D_list)
-            {
-                char *home = getenv("HOME");
-                if (home)
-                    D_list = g_list_append(D_list, concat_path_file(home, "abrt/spool"));
-                D_list = g_list_append(D_list, (void*)DEBUG_DUMPS_DIR);
-            }
             vector_of_crash_data_t *ci = new_vector_of_crash_data();
             while (D_list)
             {
@@ -388,6 +429,23 @@ int main(int argc, char** argv)
         }
         case OPT_REPORT:
         {
+            struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
+            if (!dd)
+                break;
+            int readonly = !dd->locked;
+            dd_close(dd);
+            if (readonly)
+            {
+                log("'%s' is not writable", dump_dir_name);
+                /* D_list can't be NULL here */
+                struct dump_dir *dd_copy = steal_directory((char *)D_list->data, dump_dir_name);
+                if (dd_copy)
+                {
+                    dump_dir_name = xstrdup(dd_copy->dd_dir);
+                    dd_close(dd_copy);
+                }
+            }
+
             exitcode = report(dump_dir_name, (always ? CLI_REPORT_BATCH : 0));
             if (exitcode == -1)
                 error_msg_and_die("Crash '%s' not found", dump_dir_name);

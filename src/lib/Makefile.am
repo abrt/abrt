@@ -20,6 +20,7 @@ libreport_la_SOURCES = \
     read_write.c read_write.h \
     logging.c logging.h \
     copyfd.c \
+    copy_file_recursive.c \
     concat_path_file.c \
     append_to_malloced_string.c \
     overlapping_strcpy.c \

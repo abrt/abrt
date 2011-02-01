@@ -497,6 +497,7 @@ int main(int argc, char** argv)
     struct dump_dir *dd = dd_create(path, uid);
     if (dd)
     {
+        dd_create_basic_files(dd, uid);
         char *cmdline = get_cmdline(pid); /* never NULL */
         char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)", executable, signal_str, signame ? signame : signal_str);
         dd_save_text(dd, FILENAME_ANALYZER, "CCpp");

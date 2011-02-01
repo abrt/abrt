@@ -282,8 +282,21 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
 
     dir = dd->dd_dir = rm_trailing_slashes(dir);
 
+    errno = 0;
     if (dd_lock(dd, WAIT_FOR_OTHER_PROCESS_USLEEP) < 0)
     {
+        if ((flags & DD_OPEN_READONLY) && errno == EACCES)
+        {
+            /* Directory is not writable. If it seems to be readable,
+             * return "read only" dd, not NULL */
+            struct stat stat_buf;
+            if (stat(dir, &stat_buf) == 0
+             && S_ISDIR(stat_buf.st_mode)
+             && access(dir, R_OK) == 0
+            ) {
+                return dd;
+            }
+        }
         if (errno == EISDIR)
         {
             /* EISDIR: dd_lock can lock the dir, but it sees no time file there,
@@ -378,12 +391,31 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
         return NULL;
     }
 
+    bool created_parents = false;
+ try_again:
     /* Was creating it with mode 0700 and user as the owner, but this allows
      * the user to replace any file in the directory, changing security-sensitive data
      * (e.g. "uid", "analyzer", "executable")
      */
     if (mkdir(dir, 0750) == -1)
     {
+        int err = errno;
+        if (!created_parents && errno == ENOENT)
+        {
+            char *p = dd->dd_dir + 1;
+            while ((p = strchr(p, '/')) != NULL)
+            {
+                *p = '\0';
+                int r = (mkdir(dd->dd_dir, 0755) == 0 || errno == EEXIST);
+                *p++ = '/';
+                if (!r)
+                    goto report_err;
+            }
+            created_parents = true;
+            goto try_again;
+        }
+ report_err:
+        errno = err;
         perror_msg("Can't create directory '%s'", dir);
         dd_close(dd);
         return NULL;
@@ -430,12 +462,19 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
         }
     }
 
+    return dd;
+}
+
+void dd_create_basic_files(struct dump_dir *dd, uid_t uid)
+{
     char long_str[sizeof(long) * 3 + 2];
 
     time_t t = time(NULL);
     sprintf(long_str, "%lu", (long)t);
     dd_save_text(dd, FILENAME_TIME, long_str);
 
+    if (uid == (uid_t)-1)
+        uid = getuid();
     sprintf(long_str, "%lu", (long)uid);
     dd_save_text(dd, FILENAME_UID, long_str);
 
@@ -448,11 +487,8 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
                 DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     if (!release)
         release = load_text_file("/etc/redhat-release", /*flags:*/ 0);
-    strchrnul(release, '\n')[0] = '\0';
     dd_save_text(dd, FILENAME_RELEASE, release);
     free(release);
-
-    return dd;
 }
 
 static int delete_file_dir(const char *dir, bool skip_lock_file)
@@ -608,8 +644,8 @@ static bool save_binary_file(const char *path, const char* data, unsigned size, 
 
 char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned flags)
 {
-    if (!dd->locked)
-        error_msg_and_die("dump_dir is not opened"); /* bug */
+//    if (!dd->locked)
+//        error_msg_and_die("dump_dir is not opened"); /* bug */
 
     char *full_path = concat_path_file(dd->dd_dir, name);
     char *ret = load_text_file(full_path, flags);
@@ -645,8 +681,8 @@ void dd_save_binary(struct dump_dir* dd, const char* name, const char* data, uns
 
 DIR *dd_init_next_file(struct dump_dir *dd)
 {
-    if (!dd->locked)
-        error_msg_and_die("dump_dir is not opened"); /* bug */
+//    if (!dd->locked)
+//        error_msg_and_die("dump_dir is not opened"); /* bug */
 
     if (dd->next_dir)
         closedir(dd->next_dir);

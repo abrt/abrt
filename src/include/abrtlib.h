@@ -123,6 +123,8 @@ off_t copyfd_size(int src_fd, int dst_fd, off_t size, int flags);
 void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
 #define copy_file abrt_copy_file
 off_t copy_file(const char *src_name, const char *dst_name, int mode);
+#define copy_file_recursive abrt_copy_file_recursive
+int copy_file_recursive(const char *source, const char *dest);
 
 /* Returns malloc'ed block */
 #define encode_base64 abrt_encode_base64

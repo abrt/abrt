@@ -506,6 +506,7 @@ static int save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
         struct dump_dir *dd = dd_create(path, /*uid:*/ 0);
         if (dd)
         {
+            dd_create_basic_files(dd, /*uid:*/ 0);
             dd_save_text(dd, FILENAME_ANALYZER, "Kerneloops");
             dd_save_text(dd, FILENAME_EXECUTABLE, "kernel");
             dd_save_text(dd, FILENAME_KERNEL, first_line);
