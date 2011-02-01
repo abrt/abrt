@@ -637,9 +637,10 @@ static int run_events(const char *dump_dir_name,
         std::string event = events[i];
 
         int r = run_event_on_dir_name(run_state, dump_dir_name, event.c_str());
-        if (r == -1)
+        if (r == 0 && run_state->children_count == 0)
         {
             l_state.last_line = xasprintf("Error: no processing is specified for event '%s'", event.c_str());
+            r = -1;
         }
         if (r == 0)
         {
@@ -707,13 +708,7 @@ int run_analyze_event(const char *dump_dir_name)
     run_state->logging_callback = do_log;
     int res = run_event_on_dir_name(run_state, dump_dir_name, "analyze");
     free_run_event_state(run_state);
-
-    if (res != 0 && res != -1) /* -1 is "nothing was done", here it is ok */
-    {
-        error_msg("Error while running analyze event on '%s'", dump_dir_name);
-        return 1;
-    }
-    return 0;
+    return res;
 }
 
 

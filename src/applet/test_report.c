@@ -51,7 +51,7 @@ int main(int argc, char** argv)
     struct run_event_state *run_state = new_run_event_state();
     run_state->logging_callback = do_log;
     int r = run_event_on_dir_name(run_state, dir_name, event);
-    if (r == -1)
+    if (r == 0 && run_state->children_count == 0)
         printf("No actions are found for event '%s'\n", event);
     free_run_event_state(run_state);
 

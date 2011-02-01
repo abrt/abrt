@@ -53,7 +53,7 @@ static int run_event_helper(struct run_event_state *state,
     setenv("EVENT", event, 1);
 
     /* Read, match, and execute lines from abrt_event.conf */
-    int retval = -1;
+    int retval = 0;
     struct dump_dir *dd = NULL;
     char *next_line = xmalloc_fgetline(conffile);
     while (next_line)

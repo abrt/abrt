@@ -147,7 +147,7 @@ static mw_result_t CreateCrashReport(const char *dump_dir_name,
     run_state->logging_callback = do_log_and_update_client;
     res = run_event_on_dir_name(run_state, dump_dir_name, force ? "reanalyze" : "analyze");
     free_run_event_state(run_state);
-    if (res != 0 && res != -1) /* -1 is "nothing was done", here it is ok */
+    if (res != 0)
     {
         r = MW_PLUGIN_ERROR;
         goto ret;
@@ -317,9 +317,10 @@ report_status_t Report(crash_data_t *client_report,
 
         l_state.last_line = NULL;
         int r = run_event_on_dir_name(run_state, dump_dir_name, event.c_str());
-        if (r == -1)
+        if (r == 0 && run_state->children_count == 0)
         {
             l_state.last_line = xasprintf("Error: no processing is specified for event '%s'", event.c_str());
+            r = -1;
         }
         if (r == 0)
         {
