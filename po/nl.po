@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-02-01 02:32+0000\n"
-"PO-Revision-Date: 2011-02-01 11:40+0200\n"
+"POT-Creation-Date: 2011-02-02 02:29+0000\n"
+"PO-Revision-Date: 2011-02-02 13:03+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
 "Language: nl\n"
@@ -71,7 +71,7 @@ msgstr "Rapport"
 msgid "Open ABRT"
 msgstr "Open ABRT"
 
-#: ../src/cli/CLI.cpp:46
+#: ../src/cli/CLI.cpp:91
 #, c-format
 msgid ""
 "\tCrash dump : %s\n"
@@ -88,12 +88,12 @@ msgstr ""
 "\tCrash tijd      : %s\n"
 "\tCrash telling   : %s\n"
 
-#: ../src/cli/CLI.cpp:65
+#: ../src/cli/CLI.cpp:110
 #, c-format
 msgid "\tHostname   : %s\n"
 msgstr "\tHost naam   : %s\n"
 
-#: ../src/cli/CLI.cpp:98
+#: ../src/cli/CLI.cpp:143
 #, c-format
 msgid ""
 "Dump directory:     %s\n"
@@ -116,27 +116,27 @@ msgstr ""
 "Systeem:            %s, kernel %s\n"
 "Reden:              %s\n"
 
-#: ../src/cli/CLI.cpp:126
+#: ../src/cli/CLI.cpp:171
 #, c-format
 msgid "Coredump file:      %s\n"
 msgstr "Coredump bestand:   %s\n"
 
-#: ../src/cli/CLI.cpp:130
+#: ../src/cli/CLI.cpp:175
 #, c-format
 msgid "Rating:             %s\n"
 msgstr "Beoordeling:        %s\n"
 
-#: ../src/cli/CLI.cpp:135
+#: ../src/cli/CLI.cpp:180
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr "Crash functie:      %s\n"
 
-#: ../src/cli/CLI.cpp:139
+#: ../src/cli/CLI.cpp:184
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr "Host naam:          %s\n"
 
-#: ../src/cli/CLI.cpp:143
+#: ../src/cli/CLI.cpp:188
 #, c-format
 msgid ""
 "\n"
@@ -147,7 +147,7 @@ msgstr ""
 "Hoe te reproduceren:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:147
+#: ../src/cli/CLI.cpp:192
 #, c-format
 msgid ""
 "\n"
@@ -158,7 +158,7 @@ msgstr ""
 "Commentaar:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:153
+#: ../src/cli/CLI.cpp:198
 #, c-format
 msgid ""
 "\n"
@@ -169,50 +169,48 @@ msgstr ""
 "Backtrace:\n"
 "%s\n"
 
-#. Message has embedded tabs.
-#: ../src/cli/CLI.cpp:209
+#: ../src/cli/CLI.cpp:295
 #, c-format
 msgid ""
-"Usage: %s [OPTION]\n"
+"Usage: %s -l[f] [-D BASE_DIR]...]\n"
+"   or: %s -r[y] CRASH_DIR\n"
+"   or: %s -i[b] CRASH_DIR\n"
+"   or: %s -d CRASH_DIR\n"
 "\n"
-"Startup:\n"
-"\t-V, --version\t\tdisplay the version and exit\n"
-"\t-v, --verbose\t\tincrease verbosity\n"
-"Actions:\n"
-"\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
-"\t      -f, --full\tprint a list of all crashes, including the already "
-"reported ones\n"
-"\t-r, --report CRASH_ID\tcreate and send a report\n"
-"\t      -y, --always\tcreate and send a report without asking\n"
-"\t-d, --delete CRASH_ID\tremove a crash\n"
-"\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
-"\t      -b, --backtrace\tprint detailed information about a crash including "
-"backtrace\n"
-"CRASH_ID can be:\n"
-"\ta name of dump directory, or\n"
-"\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
+"\t-l, --list\t\tList not yet reported crashes\n"
+"\t  -f, --full\t\tList all crashes\n"
+"\t-D BASE_DIR\t\tDirectory to list crashes from\n"
+"\t\t\t\t(default: -D $HOME/abrt/spool -D %s)\n"
+"\n"
+"\t-r, --report\t\tSend a report about CRASH_DIR\n"
+"\t  -y, --always\t\t...without editing and asking\n"
+"\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
+"\t  -b, --backtrace\t...including backtrace\n"
+"\t-d, --delete\t\tRemove CRASH_DIR\n"
+"\n"
+"\t-V, --version\t\tDisplay version and exit\n"
+"\t-v, --verbose\t\tBe verbose\n"
 msgstr ""
-"Gebruik: %s [OPTIE]\n"
+"Gebruik: %s -l[f] [-D BASE_DIR]...]\n"
+"     of: %s -r[y] CRASH_DIR\n"
+"     of: %s -i[b] CRASH_DIR\n"
+"     of: %s -d CRASH_DIR\n"
 "\n"
-"Opstarten:\n"
-"\t-V, --version\t\tlaat de versie zien en sluit af\n"
-"\t-v, --verbose\t\tgeef meer detail\n"
-"Acties:\n"
-"\t-l, --list\t\tlaat lijst van crashes zien die nog niet gerapporteerd zijn\n"
-"\t\t-f, --full\tlaat lijst van alle crashes zien, inclusief de reeds "
-"gerapporteerde\n"
-"\t-r, --report CRASH_ID\tmaak een rapport aan en verstuur deze\n"
-"\t\t-y, --always \tmaak een rapport aan en verstuur deze zonder te vragen\n"
-"\t-d, --delete CRASH_ID\tverwijder een crash\n"
-"\t-i, --info CRASH_ID\tlaat gedetailleerde informatie over crash zien\n"
-"\t\t-b, --backtrace\tlaat gedetailleerde informatie over crash zien inclusief "
-"backtrace\n"
-"CRASH_ID kan zijn:\n"
-"\teen naam van een dump map of\n"
-"\t@N  - N-de crash (zoals getoond door --list --full) waarop actie ondernomen "
-"zal worden\n"
+"\t-l, --list\t\tToon nog niet gerapporteerde crashes\n"
+"\t  -f, --full\t\tToon alle crashes\n"
+"\t-D BASE_DIR\t\tMap waaruit crashes getoond worden\n"
+"\t\t\t\t(standaard: -D $HOME/abrt/spool -D %s)\n"
+"\n"
+"\t-r, --report\t\tStuur een rapport over CRASH_DIR\n"
+"\t  -y, --always\t\t...zonder bewerken en vragen\n"
+"\t-i, --info\t\tGeef gedetailleerde informatie over CRASH_DIR\n"
+"\t  -b, --backtrace\t...inclusief backtrace\n"
+"\t-d, --delete\t\tVerwijder CRASH_DIR\n"
+"\n"
+"\t-V, --version\t\tToon versie en sluit af\n"
+"\t-v, --verbose\t\tGeef uitgebreide informatie\n"
 
-#: ../src/cli/CLI.cpp:252
+#: ../src/cli/CLI.cpp:343
 msgid "You must specify exactly one operation"
 msgstr "Je moet exact een bewerking specificeren."
 
@@ -303,37 +301,37 @@ msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:553
+#: ../src/cli/report.cpp:568
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Voor plug-in %s zijn verkeerde instellingen ontdekt\n"
 
-#: ../src/cli/report.cpp:557
+#: ../src/cli/report.cpp:572
 msgid "Enter your login: "
 msgstr "Voer jouw gebruikersnaam in:"
 
-#: ../src/cli/report.cpp:563
+#: ../src/cli/report.cpp:578
 msgid "Enter your password: "
 msgstr "Voer jouw wachtwoord in:"
 
-#: ../src/cli/report.cpp:625
+#: ../src/cli/report.cpp:788
 msgid "Reporting..."
 msgstr "Rapporteren..."
 
-#: ../src/cli/report.cpp:644
+#: ../src/cli/report.cpp:801
 #, c-format
 msgid "Report using %s?"
 msgstr "Rapporteren met gebruik van %s? "
 
-#: ../src/cli/report.cpp:647
+#: ../src/cli/report.cpp:804
 msgid "Skipping..."
 msgstr "Overslaan..."
 
-#: ../src/cli/report.cpp:659
+#: ../src/cli/report.cpp:820
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Rapporteren is uitgezet omdat de backtrace onbruikbaar is."
 
-#: ../src/cli/report.cpp:663
+#: ../src/cli/report.cpp:824
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -342,11 +340,7 @@ msgstr ""
 "Probeer debuginfo handmatig te installeren met het commando: \"debuginfo-"
 "install %s\" en probeer het opnieuw\n"
 
-#: ../src/cli/report.cpp:672
-msgid "Error loading reporter settings"
-msgstr "Fout tijdens het laden van rapporteer instellingen"
-
-#: ../src/cli/report.cpp:693
+#: ../src/cli/report.cpp:842
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "Crash gerapporteerd via %d rapport gebeurtenissen (%d fouten)\n"
@@ -371,18 +365,18 @@ msgstr ""
 #: ../src/plugins/abrt-action-kerneloops.c:147
 #: ../src/plugins/abrt-action-mailx.c:149
 #: ../src/plugins/abrt-action-print.c:50
-#: ../src/plugins/abrt-action-rhtsupport.c:277
+#: ../src/plugins/abrt-action-rhtsupport.c:281
 #: ../src/plugins/abrt-action-upload.c:261
 msgid "Crash dump directory"
 msgstr "Crash dump map"
 
 #: ../src/daemon/abrt-action-save-package-data.c:293
-#: ../src/daemon/abrt-handle-crashdump.c:59 ../src/daemon/abrt-server.c:296
+#: ../src/daemon/abrt-handle-crashdump.c:59 ../src/daemon/abrt-server.c:297
 #: ../src/plugins/abrt-action-bugzilla.cpp:926
 #: ../src/plugins/abrt-action-generate-backtrace.c:273
 #: ../src/plugins/abrt-action-kerneloops.c:146
-#: ../src/plugins/abrt-action-rhtsupport.c:276
-#: ../src/plugins/abrt-dump-oops.c:554
+#: ../src/plugins/abrt-action-rhtsupport.c:280
+#: ../src/plugins/abrt-dump-oops.c:555
 msgid "Log to syslog"
 msgstr "Loggen naar syslog"
 
@@ -402,11 +396,11 @@ msgstr "Handel gebeurtenis af"
 msgid "List possible events [which start with PFX]"
 msgstr "Laat mogelijke gebeurtenissen zien [die beginnen met PFX]"
 
-#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:542
+#: ../src/daemon/abrt-server.c:286 ../src/daemon/Daemon.cpp:542
 msgid " [options]"
 msgstr " [opties]"
 
-#: ../src/daemon/abrt-server.c:295
+#: ../src/daemon/abrt-server.c:296
 msgid "Use UID as client uid"
 msgstr "Gebruik UID als cliënt uid"
 
@@ -1342,7 +1336,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:928
 #: ../src/plugins/abrt-action-kerneloops.c:148
-#: ../src/plugins/abrt-action-rhtsupport.c:278
+#: ../src/plugins/abrt-action-rhtsupport.c:282
 msgid "Configuration file (may be given many times)"
 msgstr "Configuratiebestand (kan meerdere keren gegeven worden)"
 
@@ -1539,15 +1533,15 @@ msgstr "Het rapport werd opgeslagen in %s"
 msgid "Compressing data"
 msgstr "Data comprimeren"
 
-#: ../src/plugins/abrt-action-rhtsupport.c:69
+#: ../src/plugins/abrt-action-rhtsupport.c:73
 msgid "Empty login or password, please check RHTSupport.conf"
 msgstr "Lege inlog of wachtwoord, controleer RHTSupport.conf"
 
-#: ../src/plugins/abrt-action-rhtsupport.c:188
+#: ../src/plugins/abrt-action-rhtsupport.c:192
 msgid "Creating a new case..."
 msgstr "Een nieuwe zaak aanmaken..."
 
-#: ../src/plugins/abrt-action-rhtsupport.c:263
+#: ../src/plugins/abrt-action-rhtsupport.c:267
 msgid ""
 " [-vs] -c CONFFILE -d DIR\n"
 "\n"
@@ -1587,7 +1581,7 @@ msgstr ""
 msgid "Base URL to upload to"
 msgstr "Basis URL om naar te uploaden"
 
-#: ../src/plugins/abrt-dump-oops.c:539
+#: ../src/plugins/abrt-dump-oops.c:540
 msgid ""
 " [-vsrdow] FILE\n"
 "\n"
@@ -1597,19 +1591,19 @@ msgstr ""
 "\n"
 "Extraheer oops uit syslog/dmesg bestand"
 
-#: ../src/plugins/abrt-dump-oops.c:555
+#: ../src/plugins/abrt-dump-oops.c:556
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "ontleed boodschap buffer van kernel voor het ontleden van BESTAND"
 
-#: ../src/plugins/abrt-dump-oops.c:556
+#: ../src/plugins/abrt-dump-oops.c:557
 msgid "Create ABRT dump for every oops found"
 msgstr "Maak ABRT dump aan voor iedere gevonden oops"
 
-#: ../src/plugins/abrt-dump-oops.c:557
+#: ../src/plugins/abrt-dump-oops.c:558
 msgid "Print found oopses on standard output"
 msgstr "Print gevonden oops naar standaard output"
 
-#: ../src/plugins/abrt-dump-oops.c:558
+#: ../src/plugins/abrt-dump-oops.c:559
 msgid "Do not exit, watch the file for new oopses"
 msgstr "Sluit niet af, bekijk het bestand voor nieuwe oopses"
 
@@ -1720,6 +1714,51 @@ msgstr "URL:"
 #: ../src/plugins/Upload.glade.h:5
 msgid "Use encryption"
 msgstr "Gebruik encryptie"
+
+#~ msgid ""
+#~ "Usage: %s [OPTION]\n"
+#~ "\n"
+#~ "Startup:\n"
+#~ "\t-V, --version\t\tdisplay the version and exit\n"
+#~ "\t-v, --verbose\t\tincrease verbosity\n"
+#~ "Actions:\n"
+#~ "\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
+#~ "\t      -f, --full\tprint a list of all crashes, including the already "
+#~ "reported ones\n"
+#~ "\t-r, --report CRASH_ID\tcreate and send a report\n"
+#~ "\t      -y, --always\tcreate and send a report without asking\n"
+#~ "\t-d, --delete CRASH_ID\tremove a crash\n"
+#~ "\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
+#~ "\t      -b, --backtrace\tprint detailed information about a crash "
+#~ "including backtrace\n"
+#~ "CRASH_ID can be:\n"
+#~ "\ta name of dump directory, or\n"
+#~ "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
+#~ msgstr ""
+#~ "Gebruik: %s [OPTIE]\n"
+#~ "\n"
+#~ "Opstarten:\n"
+#~ "\t-V, --version\t\tlaat de versie zien en sluit af\n"
+#~ "\t-v, --verbose\t\tgeef meer detail\n"
+#~ "Acties:\n"
+#~ "\t-l, --list\t\tlaat lijst van crashes zien die nog niet gerapporteerd "
+#~ "zijn\n"
+#~ "\t\t-f, --full\tlaat lijst van alle crashes zien, inclusief de reeds "
+#~ "gerapporteerde\n"
+#~ "\t-r, --report CRASH_ID\tmaak een rapport aan en verstuur deze\n"
+#~ "\t\t-y, --always \tmaak een rapport aan en verstuur deze zonder te "
+#~ "vragen\n"
+#~ "\t-d, --delete CRASH_ID\tverwijder een crash\n"
+#~ "\t-i, --info CRASH_ID\tlaat gedetailleerde informatie over crash zien\n"
+#~ "\t\t-b, --backtrace\tlaat gedetailleerde informatie over crash zien "
+#~ "inclusief backtrace\n"
+#~ "CRASH_ID kan zijn:\n"
+#~ "\teen naam van een dump map of\n"
+#~ "\t@N  - N-de crash (zoals getoond door --list --full) waarop actie "
+#~ "ondernomen zal worden\n"
+
+#~ msgid "Error loading reporter settings"
+#~ msgstr "Fout tijdens het laden van rapporteer instellingen"
 
 #~ msgid "You must check the backtrace for sensitive data."
 #~ msgstr "Je moet de backtrace controleren op gevoelige data."
