@@ -300,7 +300,7 @@ static void print_usage_and_die(char *argv0)
         "	-l, --list		List not yet reported crashes\n"
         "	  -f, --full		List all crashes\n"
         "	-D BASE_DIR		Directory to list crashes from\n"
-        "				(default: -D $HOME/abrt/spool -D %s)\n"
+        "				(default: -D $HOME/.abrt/spool -D %s)\n"
         "\n"
         "	-r, --report		Send a report about CRASH_DIR\n"
         "	  -y, --always		...without editing and asking\n"
@@ -373,7 +373,7 @@ int main(int argc, char** argv)
     {
         char *home = getenv("HOME");
         if (home)
-            D_list = g_list_append(D_list, concat_path_file(home, "abrt/spool"));
+            D_list = g_list_append(D_list, concat_path_file(home, ".abrt/spool"));
         D_list = g_list_append(D_list, (void*)DEBUG_DUMPS_DIR);
     }
 
