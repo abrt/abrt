@@ -126,6 +126,7 @@ char* make_description_bz(crash_data_t *crash_data)
     g_hash_table_iter_init(&iter, crash_data);
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
+        struct stat statbuf;
         unsigned flags = value->flags;
         const char *content = value->content;
         if (flags & CD_FLAG_TXT)
@@ -167,13 +168,33 @@ char* make_description_bz(crash_data_t *crash_data)
                     strbuf_append_str(buf_dsc, tmp);
 
                 free(tmp);
-            } else {
-                bool was_multiline = 0;
-                char *dsc = NULL;
-                add_content(&was_multiline, &dsc, "Attached file", name);
-                strbuf_append_str(buf_dsc, dsc);
-                free(dsc);
             }
+            else
+            {
+                statbuf.st_size = strlen(content);
+                goto add_attachment_info;
+            }
+        }
+        if (flags & CD_FLAG_BIN)
+        {
+            /* In many cases, it is useful to know how big binary files are
+             * (for example, helps with diagnosing bug upload problems)
+             */
+            if (stat(content, &statbuf) != 0)
+                statbuf.st_size = (off_t) -1;
+
+ add_attachment_info: ;
+            char *descr;
+            if (statbuf.st_size >= 0)
+                descr = xasprintf("%s, %llu bytes", name, (long long)statbuf.st_size);
+            else
+                descr = xstrdup(name);
+            bool was_multiline = 0;
+            char *tmp = NULL;
+            add_content(&was_multiline, &tmp, "Attached file", descr);
+            free(descr);
+            strbuf_append_str(buf_dsc, tmp);
+            free(tmp);
         }
     }
 
