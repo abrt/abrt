@@ -354,6 +354,11 @@ abrt_post(abrt_post_state_t *state,
         goto ret;
     }
 
+    // curl-7.20.1 doesn't do it, we get NULL body in the log message below
+    // unless we fflush the body memstream ourself
+    if (body_stream)
+        fflush(body_stream);
+
     // Headers/body are already saved (if requested), extract more info
     curl_err = curl_easy_getinfo(handle, CURLINFO_RESPONSE_CODE, &response_code);
     die_if_curl_error(curl_err);
