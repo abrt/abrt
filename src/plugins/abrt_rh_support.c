@@ -211,71 +211,6 @@ reportfile_free(reportfile_t* file)
 }
 
 
-#if 0 //unused
-//
-// post_signature()
-//
-char*
-post_signature(const char* baseURL, bool ssl_verify, const char* signature)
-{
-    char *URL = concat_path_file(baseURL, "/signatures");
-
-    abrt_post_state_t *state = new_abrt_post_state(0
-                + ABRT_POST_WANT_HEADERS
-                + ABRT_POST_WANT_BODY
-                + ABRT_POST_WANT_ERROR_MSG
-                + (ssl_verify ? ABRT_POST_WANT_SSL_VERIFY : 0)
-    );
-    int http_resp_code = abrt_post_string(state, URL, "application/xml", signature);
-    free(URL);
-
-    char *retval;
-    const char *strata_msg;
-    switch (http_resp_code)
-    {
-    case 200:
-    case 201:
-        if (state->body)
-        {
-            retval = state->body;
-            state->body = NULL;
-            break;
-        }
-        strata_msg = find_header_in_abrt_post_state(state, "Strata-Message:");
-        if (strata_msg && strcmp(strata_msg, "CREATED") != 0) {
-            retval = xstrdup(strata_msg);
-            break;
-        }
-        retval = xstrdup("Signature submitted successfully");
-        break;
-
-    default:
-        strata_msg = find_header_in_abrt_post_state(state, "Strata-Message:");
-        if (strata_msg)
-        {
-            retval = xasprintf("Error (HTTP response %d): %s",
-                        http_resp_code,
-                        strata_msg);
-            break;
-        }
-        if (state->curl_error_msg)
-        {
-            if (http_resp_code >= 0)
-                retval = xasprintf("Error (HTTP response %d): %s", http_resp_code, state->curl_error_msg);
-            else
-                retval = xasprintf("Error in HTTP transaction: %s", state->curl_error_msg);
-            break;
-        }
-        retval = xasprintf("Error (HTTP response %d), body:\n%s", http_resp_code, state->body);
-        break;
-    }
-
-    free_abrt_post_state(state);
-    return retval;
-}
-#endif
-
-
 //
 // send_report_to_new_case()
 //
@@ -416,14 +351,12 @@ send_report_to_new_case(const char* baseURL,
 
     default:
         errmsg = case_state->curl_error_msg;
-        if (errmsg)
+        if (errmsg && errmsg[0])
             retval = xasprintf("error in case creation: %s", errmsg);
         else
         {
-            errmsg = find_header_in_abrt_post_state(case_state, "Strata-Message:");
-            if ((!errmsg || !errmsg[0]) && case_state->body && case_state->body[0])
-                errmsg = case_state->body;
-            if (errmsg)
+            errmsg = case_state->body;
+            if (errmsg && errmsg[0])
                 retval = xasprintf("error in case creation, HTTP code: %d, server says: '%s'",
                         case_state->http_resp_code, errmsg);
             else
@@ -469,9 +402,7 @@ send_report_to_new_case(const char* baseURL,
 
         default:
             /* Case Creation Succeeded, attachement FAILED */
-            errmsg = find_header_in_abrt_post_state(atch_state, "Strata-Message:");
-            if (!errmsg || !errmsg[0])
-                errmsg = atch_state->curl_error_msg;
+            errmsg = atch_state->curl_error_msg;
             if (atch_state->body && atch_state->body[0])
             {
                 if (errmsg && errmsg[0]
