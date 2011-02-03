@@ -1,5 +1,5 @@
 #!/bin/sh
 
-yum -y -C erase 'abrt*' 'libreport*'
+yum -y -C erase 'abrt*' 'libreport*' 'report*'
 yum -y -C --nogpgcheck localinstall *.rpm
 killall -HUP dbus-daemon

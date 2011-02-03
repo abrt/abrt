@@ -1,30 +1,48 @@
 #!/bin/sh
 
-test -f abrt.spec || exit 1
-ABRTVER=`grep ^Version: abrt.spec | head -n1 | sed 's/.* //'`
+#set -e
 
-if ! test -f configure; then
+#git clone git://git.fedorahosted.org/git/abrt.git
+#SRCDIR="abrt"
+#BUILDDIR="abrt"
+
+SRCDIR="."
+BUILDDIR="../`basename "$PWD"`.builddir"
+
+if ! test -f "$SRCDIR/configure"; then
         echo "Autogenerating configure"
-        ./autogen.sh || { rm -f configure; exit 1; }
+        (cd "$SRCDIR" && ./autogen.sh) || { rm -f "$SRCDIR/configure"; exit 1; }
 fi
 
+test -f "$SRCDIR/abrt.spec" || exit 1
+ABRTVER=`grep ^Version: "$SRCDIR/abrt.spec" | head -n1 | sed 's/.* //'`
 
-T=/tmp/$$_$RANDOM
-test -d "$T" && exit 1
+rm -rf "$BUILDDIR"
+mkdir "$BUILDDIR" 2>/dev/null
 
-rm -rf BUILDROOT "abrt-$ABRTVER" "abrt-$ABRTVER".tar "abrt-$ABRTVER".tar.gz \
-    abrt*.rpm libreport*.rpm \
-    2>/dev/null
+cp -a "$SRCDIR" "$BUILDDIR"/abrt-$ABRTVER
 
-mkdir -p "$T"/"abrt-$ABRTVER" || exit
-cp -a * "$T"/"abrt-$ABRTVER" || exit
-(cd "$T" && tar -c "abrt-$ABRTVER") >"abrt-$ABRTVER".tar || exit
-rm -rf "$T" || exit
+cd "$BUILDDIR" || exit 1
 
-gzip "abrt-$ABRTVER".tar || exit
+tar -czf abrt-$ABRTVER.tar.gz abrt-$ABRTVER
+cp abrt-$ABRTVER/abrt.spec .
+cp abrt-$ABRTVER/abrt.init .
+cp abrt-$ABRTVER/abrt-ccpp.init .
+#cp abrt-$ABRTVER/dbg_* .
+rm -rf abrt-$ABRTVER
 
 # Less ugly way to pass exitcode (without bashisms)?
-{ nice -n10 ./dbg_rpmbuildlocal -bb abrt.spec 2>&1; echo $? >"EXITCODE"; } | tee -a "$0.log"
+{ nice -n10 rpmbuild \
+  --define "_topdir $PWD" \
+  --define "_builddir $PWD" \
+  --define "_rpmdir $PWD" \
+  --define "_sourcedir $PWD" \
+  --define "_specdir $PWD" \
+  --define "_srcrpmdir $PWD" \
+  --define "_build_name_fmt %%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm" \
+  -bb abrt.spec 2>&1
+echo $? >"EXITCODE"
+} | tee -a "$0.log"
 ret=`cat EXITCODE`
 rm EXITCODE
 exit "$ret"
