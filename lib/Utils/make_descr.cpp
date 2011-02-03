@@ -93,6 +93,7 @@ string make_description_bz(const map_crash_data_t& pCrashData)
     map_crash_data_t::const_iterator it = pCrashData.begin();
     for (; it != pCrashData.end(); it++)
     {
+        struct stat statbuf;
         const string& itemname = it->first;
         const string& type = it->second[CD_TYPE];
         const string& content = it->second[CD_CONTENT];
@@ -134,10 +135,29 @@ string make_description_bz(const map_crash_data_t& pCrashData)
                 {
                     description += tmp;
                 }
-            } else {
-                bool was_multiline = 0;
-                add_content(was_multiline, description, "Attached file", itemname.c_str());
             }
+            else
+            {
+                statbuf.st_size = content.size();
+                goto add_attachment_info;
+            }
+        }
+        if (type == CD_BIN)
+        {
+            /* In many cases, it is useful to know how big binary files are
+             * (for example, helps with diagnosing bug upload problems)
+             */
+            if (stat(content.c_str(), &statbuf) != 0)
+                statbuf.st_size = (off_t) -1;
+ add_attachment_info:
+            char *descr;
+            if (statbuf.st_size >= 0)
+                descr = xasprintf("%s, %llu bytes", itemname.c_str(), (long long)statbuf.st_size);
+            else
+                descr = xstrdup(itemname.c_str());
+            bool was_multiline = 0;
+            add_content(was_multiline, description, "Attached file", descr);
+            free(descr);
         }
     }
 
