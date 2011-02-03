@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.kn\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-02-01 02:32+0000\n"
-"PO-Revision-Date: 2011-02-01 16:50+0530\n"
+"POT-Creation-Date: 2011-02-03 02:30+0000\n"
+"PO-Revision-Date: 2011-02-03 14:32+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: kn_IN <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -66,7 +66,7 @@ msgstr "ವರದಿ"
 msgid "Open ABRT"
 msgstr "ABRT ಅನ್ನು ತೆರೆ"
 
-#: ../src/cli/CLI.cpp:46
+#: ../src/cli/CLI.cpp:91
 #, c-format
 msgid ""
 "\tCrash dump : %s\n"
@@ -83,12 +83,12 @@ msgstr ""
 "\tಕುಸಿತದ ಸಮಯ : %s\n"
 "\tಕುಸಿತದ ಎಣಿಕೆ: %s\n"
 
-#: ../src/cli/CLI.cpp:65
+#: ../src/cli/CLI.cpp:110
 #, c-format
 msgid "\tHostname   : %s\n"
 msgstr "\tಆತಿಥೇಯದ ಹೆಸರು   : %s\n"
 
-#: ../src/cli/CLI.cpp:98
+#: ../src/cli/CLI.cpp:143
 #, c-format
 msgid ""
 "Dump directory:     %s\n"
@@ -111,27 +111,27 @@ msgstr ""
 "ವ್ಯವಸ್ಥೆ:             %s, ಕರ್ನಲ್ %s\n"
 "ಕಾರಣ:             %s\n"
 
-#: ../src/cli/CLI.cpp:126
+#: ../src/cli/CLI.cpp:171
 #, c-format
 msgid "Coredump file:      %s\n"
 msgstr "ಕೋರ್ ಡಂಪ್ ಕಡತ:     %s\n"
 
-#: ../src/cli/CLI.cpp:130
+#: ../src/cli/CLI.cpp:175
 #, c-format
 msgid "Rating:             %s\n"
 msgstr "ಗುಣ ನಿಶ್ಚಯ:          %s\n"
 
-#: ../src/cli/CLI.cpp:135
+#: ../src/cli/CLI.cpp:180
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr "ಕುಸಿತದ ಕ್ರಿಯೆ:     %s\n"
 
-#: ../src/cli/CLI.cpp:139
+#: ../src/cli/CLI.cpp:184
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr "ಅತಿಥೇಯದ ಹೆಸರು:          %s\n"
 
-#: ../src/cli/CLI.cpp:143
+#: ../src/cli/CLI.cpp:188
 #, c-format
 msgid ""
 "\n"
@@ -142,7 +142,7 @@ msgstr ""
 "ಹೇಗೆ ಮರಳಿ ಉತ್ಪಾದಿಸಬಹುದು:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:147
+#: ../src/cli/CLI.cpp:192
 #, c-format
 msgid ""
 "\n"
@@ -153,7 +153,7 @@ msgstr ""
 "ಟಿಪ್ಪಣಿ:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:153
+#: ../src/cli/CLI.cpp:198
 #, c-format
 msgid ""
 "\n"
@@ -164,49 +164,48 @@ msgstr ""
 "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್:\n"
 "%s\n"
 
-#. Message has embedded tabs.
-#: ../src/cli/CLI.cpp:209
+#: ../src/cli/CLI.cpp:295
 #, c-format
 msgid ""
-"Usage: %s [OPTION]\n"
+"Usage: %s -l[f] [-D BASE_DIR]...]\n"
+"   or: %s -r[y] CRASH_DIR\n"
+"   or: %s -i[b] CRASH_DIR\n"
+"   or: %s -d CRASH_DIR\n"
 "\n"
-"Startup:\n"
-"\t-V, --version\t\tdisplay the version and exit\n"
-"\t-v, --verbose\t\tincrease verbosity\n"
-"Actions:\n"
-"\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
-"\t      -f, --full\tprint a list of all crashes, including the already "
-"reported ones\n"
-"\t-r, --report CRASH_ID\tcreate and send a report\n"
-"\t      -y, --always\tcreate and send a report without asking\n"
-"\t-d, --delete CRASH_ID\tremove a crash\n"
-"\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
-"\t      -b, --backtrace\tprint detailed information about a crash including "
-"backtrace\n"
-"CRASH_ID can be:\n"
-"\ta name of dump directory, or\n"
-"\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
+"\t-l, --list\t\tList not yet reported crashes\n"
+"\t  -f, --full\t\tList all crashes\n"
+"\t-D BASE_DIR\t\tDirectory to list crashes from\n"
+"\t\t\t\t(default: -D $HOME/abrt/spool -D %s)\n"
+"\n"
+"\t-r, --report\t\tSend a report about CRASH_DIR\n"
+"\t  -y, --always\t\t...without editing and asking\n"
+"\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
+"\t  -b, --backtrace\t...including backtrace\n"
+"\t-d, --delete\t\tRemove CRASH_DIR\n"
+"\n"
+"\t-V, --version\t\tDisplay version and exit\n"
+"\t-v, --verbose\t\tBe verbose\n"
 msgstr ""
-"Usage: %s [OPTION]\n"
+"Usage: %s -l[f] [-D BASE_DIR]...]\n"
+"   or: %s -r[y] CRASH_DIR\n"
+"   or: %s -i[b] CRASH_DIR\n"
+"   or: %s -d CRASH_DIR\n"
 "\n"
-"Startup:\n"
-"\t-V, --version\t\tdisplay the version and exit\n"
-"\t-v, --verbose\t\tincrease verbosity\n"
-"Actions:\n"
-"\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
-"\t      -f, --full\tprint a list of all crashes, including the already "
-"reported ones\n"
-"\t-r, --report CRASH_ID\tcreate and send a report\n"
-"\t      -y, --always\tcreate and send a report without asking\n"
-"\t-d, --delete CRASH_ID\tremove a crash\n"
-"\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
-"\t      -b, --backtrace\tprint detailed information about a crash including "
-"backtrace\n"
-"CRASH_ID can be:\n"
-"\ta name of dump directory, or\n"
-"\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
+"\t-l, --list\t\tList not yet reported crashes\n"
+"\t  -f, --full\t\tList all crashes\n"
+"\t-D BASE_DIR\t\tDirectory to list crashes from\n"
+"\t\t\t\t(default: -D $HOME/abrt/spool -D %s)\n"
+"\n"
+"\t-r, --report\t\tSend a report about CRASH_DIR\n"
+"\t  -y, --always\t\t...without editing and asking\n"
+"\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
+"\t  -b, --backtrace\t...including backtrace\n"
+"\t-d, --delete\t\tRemove CRASH_DIR\n"
+"\n"
+"\t-V, --version\t\tDisplay version and exit\n"
+"\t-v, --verbose\t\tBe verbose\n"
 
-#: ../src/cli/CLI.cpp:252
+#: ../src/cli/CLI.cpp:343
 msgid "You must specify exactly one operation"
 msgstr "ನೀವು ಕನಿಷ್ಟ ಒಂದು ಕಾರ್ಯವನ್ನಾದರೂ ಸೂಚಿಸಬೇಕು"
 
@@ -297,37 +296,37 @@ msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:553
+#: ../src/cli/report.cpp:568
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "%s ಎಂಬ ಪ್ಲಗ್‌ಇನ್‌ಗಾಗಿ ತಪ್ಪು ಸಿದ್ಧತೆಗಳು ಕಂಡು ಬಂದಿದೆ\n"
 
-#: ../src/cli/report.cpp:557
+#: ../src/cli/report.cpp:572
 msgid "Enter your login: "
 msgstr "ನಿಮ್ಮ ಲಾಗಿನ್ ಅನ್ನು ನಮೂದಿಸಿ: "
 
-#: ../src/cli/report.cpp:563
+#: ../src/cli/report.cpp:578
 msgid "Enter your password: "
 msgstr "ನಿಮ್ಮ ಗುಪ್ತಪದವನ್ನು ನಮೂದಿಸಿ: "
 
-#: ../src/cli/report.cpp:625
+#: ../src/cli/report.cpp:788
 msgid "Reporting..."
 msgstr "ವರದಿ ಮಾಡಲಾಗುತ್ತಿದೆ..."
 
-#: ../src/cli/report.cpp:644
+#: ../src/cli/report.cpp:801
 #, c-format
 msgid "Report using %s?"
 msgstr "%s ಅನ್ನು ಬಳಸಿಕೊಂಡು ವರದಿ  ಮಾಡಬೇಕೆ? "
 
-#: ../src/cli/report.cpp:647
+#: ../src/cli/report.cpp:804
 msgid "Skipping..."
 msgstr "ಕಡೆಗಣಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../src/cli/report.cpp:659
+#: ../src/cli/report.cpp:820
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಬಳಸಲು ಯೋಗ್ಯವಾಗಿರದೆ ಇರುವುದರಿಂದ ವರದಿ ಮಾಡುವುದನ್ನು ಅಶಕ್ತಗೊಳಿಸಲಾಗಿದೆ"
 
-#: ../src/cli/report.cpp:663
+#: ../src/cli/report.cpp:824
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -336,11 +335,7 @@ msgstr ""
 "ಈ ಆಜ್ಞೆಯನ್ನು ಬಳಸಿಕೊಂಡು ದೋಷನಿವಾರಣಾ ಮಾಹಿತಿಯನ್ನು ಕೈಯಾರೆ ಅನುಸ್ಥಾಪಿಸಿ: \"debuginfo-"
 "install %s\" ಹಾಗು ನಂತರ ಪುನಃ ಪ್ರಯತ್ನಿಸಿ\n"
 
-#: ../src/cli/report.cpp:672
-msgid "Error loading reporter settings"
-msgstr "ವರದಿಗಾರನ ಸಿದ್ಧತೆಗಳನ್ನು ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ದೋಷ ಉಂಟಾಗಿದೆ"
-
-#: ../src/cli/report.cpp:693
+#: ../src/cli/report.cpp:842
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "ಕುಸಿತವನ್ನು %d ವರದಿ ಘಟನೆಗಳ ಮೂಲಕ ವರದಿ ಮಾಡಲಾಗಿದೆ (%d ದೋಷಗಳು)\n"
@@ -365,18 +360,18 @@ msgstr ""
 #: ../src/plugins/abrt-action-kerneloops.c:147
 #: ../src/plugins/abrt-action-mailx.c:149
 #: ../src/plugins/abrt-action-print.c:50
-#: ../src/plugins/abrt-action-rhtsupport.c:277
+#: ../src/plugins/abrt-action-rhtsupport.c:281
 #: ../src/plugins/abrt-action-upload.c:261
 msgid "Crash dump directory"
 msgstr "ಕುಸಿತದ ಡಂಪ್ ಕೋಶ"
 
 #: ../src/daemon/abrt-action-save-package-data.c:293
-#: ../src/daemon/abrt-handle-crashdump.c:59 ../src/daemon/abrt-server.c:296
+#: ../src/daemon/abrt-handle-crashdump.c:59 ../src/daemon/abrt-server.c:297
 #: ../src/plugins/abrt-action-bugzilla.cpp:926
 #: ../src/plugins/abrt-action-generate-backtrace.c:273
 #: ../src/plugins/abrt-action-kerneloops.c:146
-#: ../src/plugins/abrt-action-rhtsupport.c:276
-#: ../src/plugins/abrt-dump-oops.c:554
+#: ../src/plugins/abrt-action-rhtsupport.c:280
+#: ../src/plugins/abrt-dump-oops.c:555
 msgid "Log to syslog"
 msgstr "syslog ಗೆ ದಾಖಲಿಸು"
 
@@ -396,11 +391,11 @@ msgstr "ಹ್ಯಾಂಡಲ್ EVENT"
 msgid "List possible events [which start with PFX]"
 msgstr "ಸಾಧ್ಯವಿರುವ ಘಟನೆಗಳನ್ನು ಪಟ್ಟಿ ಮಾಡಿ [PFX ನೊಂದಿಗೆ ಆರಂಭಗೊಳ್ಳುವುದು]"
 
-#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:542
+#: ../src/daemon/abrt-server.c:286 ../src/daemon/Daemon.cpp:542
 msgid " [options]"
 msgstr "[ಆಯ್ಕೆಗಳು]"
 
-#: ../src/daemon/abrt-server.c:295
+#: ../src/daemon/abrt-server.c:296
 msgid "Use UID as client uid"
 msgstr "UID ಅನ್ನು ಕ್ಲೈಂಟ್ uid ಆಗಿ ಬಳಸಿ"
 
@@ -1330,7 +1325,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:928
 #: ../src/plugins/abrt-action-kerneloops.c:148
-#: ../src/plugins/abrt-action-rhtsupport.c:278
+#: ../src/plugins/abrt-action-rhtsupport.c:282
 msgid "Configuration file (may be given many times)"
 msgstr "ಸಂರಚನಾ ಕಡತ (ಹಲವು ಬಾರಿ ನೀಡಬಹುದಾಗಿರುತ್ತದೆ)"
 
@@ -1527,15 +1522,15 @@ msgstr "ವರದಿಯನ್ನು %s ಗೆ ಶೇಖರಿಸಲಾಗಿದ�
 msgid "Compressing data"
 msgstr "ದತ್ತಾಂಶ ಸಂಕುಚನಗೊಳಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/abrt-action-rhtsupport.c:69
+#: ../src/plugins/abrt-action-rhtsupport.c:73
 msgid "Empty login or password, please check RHTSupport.conf"
 msgstr "ಬಳಕೆದಾರ ಹೆಸರು ಅಥವ ಗುಪ್ತಪದವು ಖಾಲಿ ಇದೆ. ದಯವಿಟ್ಟು ಅನ್ನು RHTSupport.conf ಪರಿಶೀಲಿಸಿ"
 
-#: ../src/plugins/abrt-action-rhtsupport.c:188
+#: ../src/plugins/abrt-action-rhtsupport.c:192
 msgid "Creating a new case..."
 msgstr "ಹೊಸ ಸನ್ನಿವೇಶವನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../src/plugins/abrt-action-rhtsupport.c:263
+#: ../src/plugins/abrt-action-rhtsupport.c:267
 msgid ""
 " [-vs] -c CONFFILE -d DIR\n"
 "\n"
@@ -1575,7 +1570,7 @@ msgstr ""
 msgid "Base URL to upload to"
 msgstr "ಅಪ್‌ಲೋಡ್ ಮಾಡಲು ಮೂಲ URL"
 
-#: ../src/plugins/abrt-dump-oops.c:539
+#: ../src/plugins/abrt-dump-oops.c:540
 msgid ""
 " [-vsrdow] FILE\n"
 "\n"
@@ -1585,19 +1580,19 @@ msgstr ""
 "\n"
 "oops ಅನ್ನು syslog/dmesg ಕಡತದಿಂದ ಹೊರತೆಗೆ"
 
-#: ../src/plugins/abrt-dump-oops.c:555
+#: ../src/plugins/abrt-dump-oops.c:556
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "FILE ಅನ್ನು ಪಾರ್ಸ್ ಮಾಡುವ ಮೊದಲೆ ಕರ್ನಲ್‌ನ ಸಂದೇಶ ಬಫರ್ ಅನ್ನು ಪಾರ್ಸ್ ಮಾಡು"
 
-#: ../src/plugins/abrt-dump-oops.c:556
+#: ../src/plugins/abrt-dump-oops.c:557
 msgid "Create ABRT dump for every oops found"
 msgstr "ಕಂಡು ಬಂದ ಪ್ರತಿಯೊಂದು oops ಗಾಗಿ ABRT ಡಂಪ್ ಅನ್ನು ರಚಿಸಿ"
 
-#: ../src/plugins/abrt-dump-oops.c:557
+#: ../src/plugins/abrt-dump-oops.c:558
 msgid "Print found oopses on standard output"
 msgstr "ಕಂಡು ಬಂದ oops ಗಳನ್ನು ಶಿಷ್ಟವಾದ ಔಟ್‌ಪುಟ್‌ಗೆ ಮುದ್ರಿಸು"
 
-#: ../src/plugins/abrt-dump-oops.c:558
+#: ../src/plugins/abrt-dump-oops.c:559
 msgid "Do not exit, watch the file for new oopses"
 msgstr "ನಿರ್ಗಮಿಸಬೇಡ, ಹೊಸ oops ಗಳಿಗಾಗಿ ಕಡತವನ್ನು ನೋಡು"
 
@@ -1708,6 +1703,48 @@ msgstr "URL:"
 #: ../src/plugins/Upload.glade.h:5
 msgid "Use encryption"
 msgstr "ವಿವರಣೆಯನ್ನು ಬಳಸಿ:"
+
+#~ msgid ""
+#~ "Usage: %s [OPTION]\n"
+#~ "\n"
+#~ "Startup:\n"
+#~ "\t-V, --version\t\tdisplay the version and exit\n"
+#~ "\t-v, --verbose\t\tincrease verbosity\n"
+#~ "Actions:\n"
+#~ "\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
+#~ "\t      -f, --full\tprint a list of all crashes, including the already "
+#~ "reported ones\n"
+#~ "\t-r, --report CRASH_ID\tcreate and send a report\n"
+#~ "\t      -y, --always\tcreate and send a report without asking\n"
+#~ "\t-d, --delete CRASH_ID\tremove a crash\n"
+#~ "\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
+#~ "\t      -b, --backtrace\tprint detailed information about a crash "
+#~ "including backtrace\n"
+#~ "CRASH_ID can be:\n"
+#~ "\ta name of dump directory, or\n"
+#~ "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
+#~ msgstr ""
+#~ "Usage: %s [OPTION]\n"
+#~ "\n"
+#~ "Startup:\n"
+#~ "\t-V, --version\t\tdisplay the version and exit\n"
+#~ "\t-v, --verbose\t\tincrease verbosity\n"
+#~ "Actions:\n"
+#~ "\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
+#~ "\t      -f, --full\tprint a list of all crashes, including the already "
+#~ "reported ones\n"
+#~ "\t-r, --report CRASH_ID\tcreate and send a report\n"
+#~ "\t      -y, --always\tcreate and send a report without asking\n"
+#~ "\t-d, --delete CRASH_ID\tremove a crash\n"
+#~ "\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
+#~ "\t      -b, --backtrace\tprint detailed information about a crash "
+#~ "including backtrace\n"
+#~ "CRASH_ID can be:\n"
+#~ "\ta name of dump directory, or\n"
+#~ "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
+
+#~ msgid "Error loading reporter settings"
+#~ msgstr "ವರದಿಗಾರನ ಸಿದ್ಧತೆಗಳನ್ನು ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ದೋಷ ಉಂಟಾಗಿದೆ"
 
 #~ msgid "You must check the backtrace for sensitive data."
 #~ msgstr "ಸಂವೇದಾತ್ಮಕವಾದ ದತ್ತಾಂಶಕ್ಕಾಗಿ ನೀವು ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ನೋಡಬೇಕು"
