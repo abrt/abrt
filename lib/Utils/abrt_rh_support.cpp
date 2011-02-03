@@ -365,14 +365,12 @@ send_report_to_new_case(const char* baseURL,
 
     default:
         errmsg = case_state->curl_error_msg;
-        if (errmsg)
+        if (errmsg && errmsg[0])
             retval = xasprintf("error in case creation: %s", errmsg);
         else
         {
-            errmsg = find_header_in_abrt_post_state(case_state, "Strata-Message:");
-            if ((!errmsg || !errmsg[0]) && case_state->body && case_state->body[0])
-                errmsg = case_state->body;
-            if (errmsg)
+            errmsg = case_state->body;
+            if (errmsg && errmsg[0])
                 retval = xasprintf("error in case creation, HTTP code: %d, server says: '%s'",
                         case_state->http_resp_code, errmsg);
             else
@@ -416,9 +414,7 @@ send_report_to_new_case(const char* baseURL,
 
         default:
             /* Case Creation Succeeded, attachement FAILED */
-            errmsg = find_header_in_abrt_post_state(atch_state, "Strata-Message:");
-            if (!errmsg || !errmsg[0])
-                errmsg = atch_state->curl_error_msg;
+            errmsg = atch_state->curl_error_msg;
             if (atch_state->body && atch_state->body[0])
             {
                 if (errmsg && errmsg[0]
