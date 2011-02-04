@@ -341,7 +341,12 @@ int main(int argc, char **argv)
         free(package);
         free(executable);
         dd_close(dd);
-        return 2;
+
+        /* Report success even if the parser failed, as the backtrace
+         * has been created and rated. The failure is caused by a flaw
+         * in the parser, not in the backtrace.
+         */
+        return 0;
     }
     free(backtrace_str);
 
