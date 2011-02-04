@@ -297,8 +297,10 @@ abrt_post(abrt_post_state_t *state,
         // truncates data_size on 32-bit arch. Need xcurl_easy_setopt_long_long()?
         // Also, I'm not sure CURLOPT_POSTFIELDSIZE_LARGE special-cases -1.
     }
-    // Override "Content-Type:"
+
     struct curl_slist *httpheader_list = NULL;
+
+    // Override "Content-Type:"
     if (data_size != ABRT_POST_DATA_FROMFILE_AS_FORM_DATA)
     {
         char *content_type_header = xasprintf("Content-Type: %s", content_type);
@@ -309,6 +311,12 @@ abrt_post(abrt_post_state_t *state,
         free(content_type_header);
         xcurl_easy_setopt_ptr(handle, CURLOPT_HTTPHEADER, httpheader_list);
     }
+
+    // Override "Accept: text/plain": helps convince server to send plain-text
+    // error messages in the body of HTTP error responses [not verified to work]
+    httpheader_list = curl_slist_append(httpheader_list, "Accept: text/plain");
+    if (!httpheader_list)
+        error_msg_and_die("out of memory");
 
 // Disabled: was observed to also handle "305 Use proxy" redirect,
 // apparently with POST->GET remapping - which server didn't like at all.
@@ -365,7 +373,7 @@ abrt_post(abrt_post_state_t *state,
     }
 
     // curl-7.20.1 doesn't do it, we get NULL body in the log message below
-    // unless we fflush the body memestream ourself
+    // unless we fflush the body memstream ourself
     if (body_stream)
         fflush(body_stream);
 
