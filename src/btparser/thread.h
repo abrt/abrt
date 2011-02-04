@@ -197,6 +197,17 @@ struct btp_thread *
 btp_thread_parse(char **input,
                  struct btp_location *location);
 
+/**
+ * If the input contains a LWP section in form of "(LWP [0-9]+), move
+ * the input pointer after this section. Otherwise do not modify
+ * input.
+ * @returns
+ * The number of characters parsed from input. 0 if the input does not
+ * contain a LWP section.
+ */
+int
+btp_thread_skip_lwp(char **input);
+
 #ifdef __cplusplus
 }
 #endif

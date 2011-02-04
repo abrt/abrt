@@ -71,9 +71,12 @@ btp_normalize_glibc_thread(struct btp_thread *thread)
 
         /* Normalize frame names. */
 #define NORMALIZE_ARCH_SPECIFIC(func)                                   \
-        if (btp_frame_calls_func_in_file2(frame, "__" func "_sse2", func ".S", "libc.so") || \
-            btp_frame_calls_func_in_file2(frame, "__" func "_ssse3", func ".S", "libc.so") || \
-            btp_frame_calls_func_in_file2(frame, "__" func "_ia32", func ".S", "libc.so")) \
+        if (btp_frame_calls_func_in_file3(frame, "__" func "_sse2", func, "/sysdeps/", "libc.so") || \
+            btp_frame_calls_func_in_file3(frame, "__" func "_sse2_bsf", func, "/sysdeps/", "libc.so") || \
+            btp_frame_calls_func_in_file3(frame, "__" func "_ssse3", func, "/sysdeps/", "libc.so") /* ssse3, not sse3! */ || \
+            btp_frame_calls_func_in_file3(frame, "__" func "_ssse3_rep", func, "/sysdeps/", "libc.so") || \
+            btp_frame_calls_func_in_file3(frame, "__" func "_sse42", func, "/sysdeps/", "libc.so") || \
+            btp_frame_calls_func_in_file3(frame, "__" func "_ia32", func, "/sysdeps", "libc.so")) \
         {                                                               \
             strcpy(frame->function_name, func);                         \
         }
@@ -81,8 +84,11 @@ btp_normalize_glibc_thread(struct btp_thread *thread)
         NORMALIZE_ARCH_SPECIFIC("memchr");
         NORMALIZE_ARCH_SPECIFIC("memcmp");
         NORMALIZE_ARCH_SPECIFIC("memcpy");
+        NORMALIZE_ARCH_SPECIFIC("memmove");
         NORMALIZE_ARCH_SPECIFIC("memset");
         NORMALIZE_ARCH_SPECIFIC("rawmemchr");
+        NORMALIZE_ARCH_SPECIFIC("strcasecmp");
+        NORMALIZE_ARCH_SPECIFIC("strcasecmp_l");
         NORMALIZE_ARCH_SPECIFIC("strcat");
         NORMALIZE_ARCH_SPECIFIC("strchr");
         NORMALIZE_ARCH_SPECIFIC("strchrnul");
@@ -91,9 +97,11 @@ btp_normalize_glibc_thread(struct btp_thread *thread)
         NORMALIZE_ARCH_SPECIFIC("strcspn");
         NORMALIZE_ARCH_SPECIFIC("strlen");
         NORMALIZE_ARCH_SPECIFIC("strncmp");
+        NORMALIZE_ARCH_SPECIFIC("strncpy");
         NORMALIZE_ARCH_SPECIFIC("strpbrk");
         NORMALIZE_ARCH_SPECIFIC("strrchr");
         NORMALIZE_ARCH_SPECIFIC("strspn");
+        NORMALIZE_ARCH_SPECIFIC("strstr");
         NORMALIZE_ARCH_SPECIFIC("strtok");
 
         /* Remove frames which are not a cause of the crash. */

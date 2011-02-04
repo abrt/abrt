@@ -275,6 +275,14 @@ int main(void)
 	"            tv_sec = 1273231242, tv_nsec = 190522021}, __unused = {0, 0, 0}}\n",
 	&thread);
 
+  /* Another format of the header. */
+  check("Thread 3 (LWP 635):\n"
+	"#0  0x000000322160e7fd in fsync () at ../sysdeps/unix/syscall-template.S:82\n"
+	"No locals.\n"
+	"#1  0x000000322222987a in write_to_temp_file () at gfileutils.c:980\n"
+	"No locals.\n",
+	&thread);
+
   return 0;
 }
 ]])
@@ -343,6 +351,45 @@ int main(void)
 
   /* Not a single frame. */
   check("Thread 3 (Thread 11917):\n\n", 2, 0);
+
+  return 0;
+}
+]])
+
+## ------------------- ##
+## btp_thread_skip_lwp ##
+## ------------------- ##
+
+AT_TESTFUN([btp_thread_skip_lwp],
+[[
+#include <thread.h>
+#include <assert.h>
+#include <stdlib.h>
+
+void check(char *input,
+           int expected_count)
+{
+  char *old_input = input;
+  assert(expected_count == btp_thread_skip_lwp(&input));
+  assert(input - old_input == expected_count);
+}
+
+int main(void)
+{
+  check("(LWP 20)", 8);
+  check("(LWP 20)10", 8);
+  check("(LWP 245443452355454343450)", 27);
+  check("(LWP 245443452355454343450)  ", 27);
+
+  check("", 0);
+  check(" ", 0);
+  check(" (LWP 20)", 0);
+  check("(LWP", 0);
+  check("(LWP 20", 0);
+  check("(LWP )", 0);
+  check("(LWP 20()", 0);
+  check("(LWP 0x0)", 0);
+  check("(LWP 20(", 0);
 
   return 0;
 }
