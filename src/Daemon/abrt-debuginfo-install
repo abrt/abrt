@@ -1,418 +1,465 @@
-#!/bin/sh
-# Called by abrtd before producing a backtrace.
-# The task of this script is to install debuginfos.
-#
-# Just using [pk-]debuginfo-install does not work well.
-# - they can't install more than one version of debuginfo
-#   for a package
-# - their output is unsuitable for scripting
-# - debuginfo-install aborts if yum lock is busy
-# - pk-debuginfo-install was observed to hang
-#
-# Usage: abrt-debuginfo-install CORE TEMPDIR [CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]]
-# If CACHEDIR is specified, debuginfos should be installed there.
-# If not, debuginfos should be installed into TEMPDIR.
-#
-# Currently, we are called with CACHEDIR set to "/var/cache/abrt-di",
-# but in the future it may be omitted or set to something else.
-# Script must be ready for those cases too. Consider, for example,
-# corner cases of "" and "/".
-#
-# Output goes to GUI as debuginfo install log. The script should be careful
-# to give useful, but not overly cluttered info to stdout.
-# Additionally, abrt daemon handles "MISSING:xxxx" messages specially:
-# it is used to inform about missing debuginfos.
-#
-# Exitcodes:
-# 0 - all debuginfos are installed
-# 1 - not all debuginfos are installed
-# 2+ - serious problem
-#
-# Algorithm:
-# - Create TEMPDIR
-# - Extract build-ids from coredump
-# - For every build-id, check /usr/lib/debug/.build-id/XX/XXXX.debug
-#   and CACHEDIR/usr/lib/debug/.build-id/XX/XXXX.debug
-# - If they all exist, exit 0
-# - Using "yum provides /usr/lib/debug/.build-id/XX/XXXX.debug",
-#   figure out which debuginfo packages are needed
-# - Download them using "yumdownloader PACKAGE..."
-# - Unpack them with rpm2cpio | cpio to TEMPDIR
-# - If CACHEDIR is specified, copy usr/lib/debug/.build-id/XX/XXXX.debug
-#   to CACHEDIR/usr/lib/debug/.build-id/XX/XXXX.debug and delete TEMPDIR
-# - Report which XX/XXXX.debug are still missing.
-#
-# For better debuggability, eu_unstrip.OUT, yum_provides.OUT etc files
-# are saved in TEMPDIR, and TEMPDIR is not deleted if we exit with exitcode 2
-# ("serious problem").
+#! /usr/bin/python -u
+# -*- coding: utf-8 -*-
+
+# WARNING: python -u means unbuffered I/O without it the messages are
+# passed to the parent asynchronously which looks bad in clients..
+from subprocess import Popen, PIPE
+import sys
+import os
+import getopt
+import shutil
+from yum import _, YumBase
+from yum.callbacks import DownloadBaseCallback
+
+# everything was ok
+RETURN_OK = 0
+# serious problem, should be logged somewhere
+RETURN_FAILURE = 2
 
 
-debug=false
-# Useful if you need to see saved rpms, command outputs etc
-keep_tmp=false
+GETTEXT_PROGNAME = "abrt"
+import locale
+import gettext
+
+_ = lambda x: gettext.lgettext(x)
+
+def init_gettext():
+    try:
+        locale.setlocale(locale.LC_ALL, "")
+    except locale.Error:
+        import os
+        os.environ['LC_ALL'] = 'C'
+        locale.setlocale(locale.LC_ALL, "")
+    gettext.bind_textdomain_codeset(GETTEXT_PROGNAME, locale.nl_langinfo(locale.CODESET))
+    gettext.bindtextdomain(GETTEXT_PROGNAME, '/usr/share/locale')
+    gettext.textdomain(GETTEXT_PROGNAME)
 
 
-# Handle options
-if test x"$1" = x"--"; then
-    shift
-else
-    if test x"$1" = x"-v"; then
-	debug=true
-	shift
-    fi
-    if test $# -lt 2 || test x"$1" = x"--help"; then
-	echo "Usage:"
-	echo
-	echo "abrt-debuginfo-install [-v] CORE TEMPDIR [CACHEDIR[:DEBUGINFODIR...]]"
-	echo
-	echo "TEMPDIR must be a name of a new temporary directory. It must not exist."
-	echo "If CACHEDIR is specified, debuginfos are installed in CACHEDIR,"
-	echo "and TEMPDIR is deleted on exit."
-	echo "Otherwise, debuginfos are installed into TEMPDIR, which is not deleted."
-	echo
-	echo "Options:"
-	echo "	-v	Verbose (for debugging)"
-	echo
-	exit
-    fi
-fi
+old_stdout = -1
+def mute_stdout():
+    if verbose < 2:
+        global old_stdout
+        old_stdout = sys.stdout
+        sys.stdout = open("/dev/null", "w")
 
+def unmute_stdout():
+    if verbose < 2:
+        if old_stdout != -1:
+            sys.stdout = old_stdout
+        else:
+            print "ERR: unmute called without mute?"
+
+def ask_yes_no(prompt, retries=4):
+    while True:
+        response = raw_input(prompt)
+        if response in ('y', 'Y'):
+            return True
+        if response in ('n', 'N', ''):
+            return False
+        retries = retries - 1
+        if retries < 0:
+            break
+    return False
+
+# TODO: unpack just required debuginfo and not entire rpm?
+# ..that can lead to: foo.c No such file and directory
+# files is not used...
+def unpack_rpm(package_nevra, files, tmp_dir, destdir, keeprpm):
+    package_file_suffix = ".rpm"
+    package_full_path = tmp_dir + "/" + package_nevra + package_file_suffix
+    log1("Extracting %s to %s" % (package_full_path, destdir))
+    log2(files)
+    print (_("Extracting cpio from %s") % (package_full_path))
+    unpacked_cpio_path = tmp_dir + "/unpacked.cpio"
+    try:
+        unpacked_cpio = open(unpacked_cpio_path, 'wb')
+    except IOError, ex:
+        print (_("Can't write to:"), (unpacked_cpio_path,ex))
+        return RETURN_FAILURE
+    rpm2cpio = Popen(["rpm2cpio", package_full_path],
+                       stdout=unpacked_cpio, bufsize=-1)
+    retcode = rpm2cpio.wait()
+
+    if retcode == 0:
+        log1("cpio written OK")
+        if not keeprpm:
+            log1("keeprpms = False, removing %s" % package_full_path)
+            print _("Removing the temporary rpm file")
+            os.unlink(package_full_path)
+    else:
+        unpacked_cpio.close()
+        print (_("Can't extract package: %s") % package_full_path)
+        return RETURN_FAILURE
+
+    # close the file
+    unpacked_cpio.close()
+    # and open it for reading
+    unpacked_cpio = open(unpacked_cpio_path, 'rb')
+
+    print (_("Caching files from %s made from %s") %
+            (unpacked_cpio_path, package_full_path))
+    cpio = Popen(["cpio","-i", "-d", "--quiet"],
+                  stdin=unpacked_cpio, cwd=destdir, bufsize=-1)
+    retcode = cpio.wait()
+
+    if retcode == 0:
+        log1("files extracted OK")
+        print _("Removing the temporary cpio file")
+        os.unlink(unpacked_cpio_path)
+    else:
+        print (_("Can't extract files from: %s") % unpacked_cpio_path)
+        return RETURN_FAILURE
+
+class MyDownloadCallback(DownloadBaseCallback):
+    def __init__(self, total_pkgs):
+        self.total_pkgs = total_pkgs
+        self.downloaded_pkgs = 0
+        self.last_pct = 0
+        DownloadBaseCallback.__init__(self)
+
+    def updateProgress(self, name, frac, fread, ftime):
+        pct = int( frac*100 )
+        if pct == self.last_pct:
+            log2("percentage is the same, not updating progress")
+            return
+
+        self.last_pct = pct
+        # if run from terminal we can have a fancy output
+        if sys.stdout.isatty():
+            sys.stdout.write("\033[sDownloading (%i of %i) %.30s : %.3s %%\033[u"
+                                % (self.downloaded_pkgs + 1, self.total_pkgs,
+                                    name, pct)
+                            )
+            if pct == 100:
+                print _("Downloading (%i of %i) %.30s : %.3s %%"
+                                % (self.downloaded_pkgs + 1, self.total_pkgs,
+                                    name, pct)
+                        )
+        # but we want machine friendly output when spawned from abrt-server
+        else:
+            print (_("Downloading (%i of %i) %.30s : %.3s %%")
+                      % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
+                    )
+
+        sys.stdout.flush()
+
+class DebugInfoDownload(YumBase):
+    """abrt-debuginfo-install --core=CORE tmpdir cachedir"""
+    def __init__(self, cache, tmp, keep_rpms=False):
+        self.cachedir = cache
+        self.tmpdir = tmp
+        self.keeprpms = keep_rpms
+        YumBase.__init__(self)
+        mute_stdout()
+        #self.conf.cache = os.geteuid() != 0
+        # Setup yum (Ts, RPM db, Repo & Sack)
+        self.doConfigSetup()
+        unmute_stdout()
+
+    def download(self, files):
+        """ @files - """
+        installed_size = 0
+        total_pkgs = 0
+        todownload_size = 0
+        downloaded_pkgs = 0
+        # nothing to download?
+        if not files:
+            return
+
+        print _("Searching the missing debuginfo packages")
+        # this suppress yum messages about setting up repositories
+        mute_stdout()
+
+        # make yumdownloader work as non root user.
+        if not self.setCacheDir():
+            self.logger.error("Error: Could not make cachedir, exiting")
+            sys.exit(50)
+
+        # disable all not needed
+        for repo in self.repos.listEnabled():
+            repo.close()
+            self.repos.disableRepo(repo.id)
+        # enable -debuginfo repos
+        for repo in self.repos.findRepos(pattern="*debuginfo*"):
+            #print repo
+            repo.enable()
+            rid = self.repos.enableRepo(repo.id)
+            log1("enabled repo %s" % rid)
+            setattr(repo, "skip_if_unavailable", True)
+        self.repos.doSetup()
+        # This is somewhat "magic", it unpacks the metadata making it usable.
+        self.repos.populateSack(mdtype='metadata', cacheonly=1)
+        self.repos.populateSack(mdtype='filelists', cacheonly=1)
+
+        # re-enable the output to stdout
+        unmute_stdout()
+
+        not_found = []
+        package_files_dict = {}
+        for debuginfo_path in files:
+            log2("yum whatprovides %s" %debuginfo_path)
+            pkg = self.pkgSack.searchFiles(debuginfo_path)
+            # sometimes one file is provided by more rpms, we can use either of
+            # them, so let's use the first match
+            if pkg:
+                if pkg[0] in package_files_dict.keys():
+                    package_files_dict[pkg[0]].append(debuginfo_path)
+                else:
+                    package_files_dict[pkg[0]] = [debuginfo_path]
+                    todownload_size += float(pkg[0].size)
+                    installed_size += float(pkg[0].installedsize)
+                    total_pkgs += 1
+
+                log2("found pkg for %s : %s" % (debuginfo_path, pkg[0]))
+            else:
+                log2("not found pkg for %s" % debuginfo_path)
+                not_found.append(debuginfo_path)
+
+        # connect our progress update callback
+        dnlcb = MyDownloadCallback(total_pkgs)
+        self.repos.setProgressBar( dnlcb )
+
+        log1("%i files in %i packages" % (len(files), total_pkgs))
+
+        print (_("To download: (%.2f) M / Installed size: %.2f M" %
+                (
+                 todownload_size / (1024**2),
+                 installed_size / (1024**2))
+                )
+              )
+        #print _("%i debug infos not found" % len(not_found))
+
+        log1("packages: %i\nTo download: %f \nUnpacked size: %f" %
+            (total_pkgs,
+             todownload_size / (1024**2),
+             installed_size / (1024**2)))
+
+        # ask only if we have terminal, because for now we don't have a way
+        # how to pass the question to gui and the response back
+        if noninteractive == False and sys.stdout.isatty():
+            if not ask_yes_no(_("Is this ok? [y/N] ")):
+                return RETURN_OK
+
+        for pkg, files in package_files_dict.iteritems():
+            dnlcb.downloaded_pkgs = downloaded_pkgs
+            repo.cache = 0
+            remote = pkg.returnSimple('relativepath')
+            local = os.path.basename(remote)
+            if not os.path.exists(self.tmpdir):
+                os.makedirs(self.tmpdir)
+            if not os.path.exists(self.cachedir):
+                os.makedirs(self.cachedir)
+            local = os.path.join(self.tmpdir, local)
+            pkg.localpath = local # Hack: to set the localpath we want
+            ret = self.downloadPkgs(pkglist=[pkg])
+            # downloadPkgs return an non empty list on succes
+            if ret:
+                print (_("Downloading package %s failed") % pkg)
+            else:
+                # normalize the name
+                # just str(pkg) doesn't work because it can have epoch
+                pkg_nvra = (pkg.name +"-"+ pkg.version +"-"+
+                            pkg.release +"."+ pkg.arch)
+
+                unpack_result = unpack_rpm(pkg_nvra, files, self.tmpdir,
+                                           self.cachedir, keeprpms)
+                if unpack_result == RETURN_FAILURE:
+                    # recursively delete the temp dir on failure
+                    print _("Unpacking failed, aborting download...")
+                    clean_up()
+                    return RETURN_FAILURE
+
+            downloaded_pkgs += 1
+
+        if not self.keeprpms and os.path.exists(self.tmpdir):
+            print (_("All downloaded packages have been extracted, removing %s")
+                 % self.tmpdir)
+            try:
+                os.rmdir(self.tmpdir)
+            except OSError:
+                print _("Can't remove %s, probably contains an error log" % self.tmpdir)
+
+verbose = 0
+def log1(message):
+    """ prints log message if verbosity > 0 """
+    if verbose > 0:
+        print "LOG1:", message
+
+def log2(message):
+    """ prints log message if verbosity > 1 """
+    if verbose > 1:
+        print "LOG2:", message
+
+#eu_unstrip_OUT=`eu-unstrip "--core=$core" -n 2>eu_unstrip.ERR`
+def extract_info_from_core(corefile):
+    """
+    Extracts builds with filenames,
+    Returns a list of tuples (build_id, filename)
+    """
+    #OFFSET = 0
+    BUILD_ID = 1
+    LIBRARY = 2
+    #SEP = 3
+    EXECUTABLE = 4
+
+    print (_("Analyzing corefile: %(corefile_path)s") %
+            {"corefile_path":corefile})
+    eu_unstrip_OUT = Popen(["eu-unstrip","--core=%s" % corefile, "-n"], stdout=PIPE, bufsize=-1).communicate()[0]
+    # parse eu_unstrip_OUT and return the list of build_ids
+
+    # eu_unstrip_OUT = ("0x7f42362ca000+0x204000 c4d35d993598a6242f7525d024b5ec3becf5b447@0x7f42362ca1a0 /usr/lib64/libcanberra-gtk.so.0 - libcanberra-gtk.so.0\n"
+                     # "0x3afa400000+0x210000 607308f916c13c3ad9ee503008d31fa671ba73ce@0x3afa4001a0 /usr/lib64/libcanberra.so.0 - libcanberra.so.0\n"
+                     # "0x3afa400000+0x210000 607308f916c13c3ad9ee503008d31fa671ba73ce@0x3afa4001a0 /usr/lib64/libcanberra.so.0 - libcanberra.so.0\n"
+                     # "0x3bc7000000+0x208000 3be016bb723e85779a23e111a8ab1a520b209422@0x3bc70001a0 /usr/lib64/libvorbisfile.so.3 - libvorbisfile.so.3\n"
+                     # "0x7f423609e000+0x22c000 87f9c7d9844f364c73aa2566d6cfc9c5fa36d35d@0x7f423609e1a0 /usr/lib64/libvorbis.so.0 - libvorbis.so.0\n"
+                     # "0x7f4235e99000+0x205000 b5bc98c125a11b571cf4f2746268a6d3cfa95b68@0x7f4235e991a0 /usr/lib64/libogg.so.0 - libogg.so.0\n"
+                     # "0x7f4235c8b000+0x20e000 f1ff6c8ee30dba27e90ef0c5b013df2833da2889@0x7f4235c8b1a0 /usr/lib64/libtdb.so.1 - libtdb.so.1\n"
+                     # "0x3bc3000000+0x209000 8ef56f789fd914e8d0678eb0cdfda1bfebb00b40@0x3bc30001a0 /usr/lib64/libltdl.so.7 - libltdl.so.7\n"
+                     # "0x7f4231b64000+0x22b000 3ca5b83798349f78b362b1ea51c8a4bc8114b8b1@0x7f4231b641a0 /usr/lib64/gio/modules/libgvfsdbus.so - libgvfsdbus.so\n"
+                     # "0x7f423192a000+0x218000 ad024a01ad132737a8cfc7c95beb7c77733a652d@0x7f423192a1a0 /usr/lib64/libgvfscommon.so.0 - libgvfscommon.so.0\n"
+                     # "0x7f423192a000+0x218000 ad024a01ad132737a8cfc7c95beb7c77733a652d@0x7f423192a1a0 /usr/lib64/libgvfscommon.so.0 - libgvfscommon.so.0\n"
+                     # "0x3bb8e00000+0x20e000 d240ac5755184a95c783bb98a2d05530e0cf958a@0x3bb8e001a0 /lib64/libudev.so.0 - libudev.so.0")
+    #
+    #print eu_unstrip_OUT
+    # we failed to get build ids from the core -> die
+    if not eu_unstrip_OUT:
+        log1("can't get build ids from the core")
+        return RETURN_FAILURE
+
+    lines = eu_unstrip_OUT.split('\n')
+    # using set ensures the unique values
+    build_ids = set()
+    libraries = set()
+    build_ids = set()
+
+    for line in lines:
+        b_ids_line = line.split()
+        if len(b_ids_line) > 2:
+            # [exe] -> the executable itself
+            # linux-vdso.so.1 -> Virtual Dynamic Shared Object
+            if b_ids_line[EXECUTABLE] not in ["linux-vdso.so.1"]:
+                build_id = b_ids_line[BUILD_ID].split('@')[0]
+                build_ids.add(build_id)
+                library = b_ids_line[LIBRARY]
+                libraries.add(library)
+                build_ids.add(build_id)
+            else:
+                log2("skipping line %s" % line)
+    log1("Found %i build_ids" % len(build_ids))
+    log1("Found %i libs" % len(libraries))
+    return build_ids
+
+def build_ids_to_path(build_ids):
+    """
+    build_id1=${build_id:0:2}
+    build_id2=${build_id:2}
+    file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
+	"""
+    return ["/usr/lib/debug/.build-id/%s/%s.debug" % (b_id[:2], b_id[2:]) for b_id in build_ids]
+
+# beware this finds only missing libraries, but not the executable itself ..
+
+def filter_installed_debuginfos(build_ids, cache_dir):
+    # 1st pass -> search in /usr/lib
+    missing_di = []
+    files = build_ids_to_path(build_ids)
+    for debuginfo_path in files:
+        cache_debuginfo_path = cache_dir + debuginfo_path
+        log2("checking path: %s" % debuginfo_path)
+        if os.path.exists(debuginfo_path):
+            log2("found: %s" % debuginfo_path)
+            continue
+        if os.path.exists(cache_debuginfo_path):
+            log2("found: %s" % cache_debuginfo_path)
+            continue
+        log2("not found: %s" % (cache_debuginfo_path))
+        missing_di.append(debuginfo_path)
+    return missing_di
+
+tmpdir = None
+def clean_up():
+    try:
+        shutil.rmtree(tmpdir)
+    except OSError, ex:
+        print (_("Can't remove %(tmpdir_path)s: %(reason)s")
+                % {"tmpdir_path":tmpdir, "reason": ex }
+                 )
+
+def sigterm_handler(signum, frame):
+    clean_up()
+    exit(RETURN_OK)
+
+def sigint_handler(signum, frame):
+    clean_up()
+    print "\n", _("Exiting on user Command")
+    exit(RETURN_OK)
+
+import signal
+if __name__ == "__main__":
+    # abrt-server can send SIGTERM to abort the download
+    signal.signal(signal.SIGTERM, sigterm_handler)
+    # ctrl-c
+    signal.signal(signal.SIGINT, sigint_handler)
+    core = None
+    cachedir = None
+    tmpdir = None
+    keeprpms = False
+    result = RETURN_OK
+    noninteractive = False
+
+    # localization
+    init_gettext()
+
+    help_text = ("Usage:\n"
+	 "abrt-debuginfo-install [-v] CORE TEMPDIR [CACHEDIR[:DEBUGINFODIR...]]\n"
+	 "TEMPDIR must be a name of a new temporary directory. It must not exist.\n"
+	 "If CACHEDIR is specified, debuginfos are installed in CACHEDIR,\n"
+	 "and TEMPDIR is deleted on exit.\n"
+	 "Otherwise, debuginfos are installed into TEMPDIR, which is not deleted.\n"
+
+	 "Options:"
+	 "	-v	Verbose (for debugging)"
+	 )
 
 # Parse params
-core="$1"
-tempdir="$2"
-debuginfodirs="${3//:/ }"
-cachedir="${3%%:*}"
+    if len(sys.argv) != 4:
+        print help_text
+        exit(RETURN_FAILURE)
 
+    core = sys.argv[1]
+    tmpdir = sys.argv[2]
+    cachedir= sys.argv[3].split(":")[0]
+    debuginfodirs = sys.argv[1:]
 
-# stderr may be used for status messages too
-exec 2>&1
+    if not core:
+        print _("You have to specify the path to coredump.")
+        print help_text
+        exit(RETURN_FAILURE)
+    if not cachedir:
+        print _("You have to specify the path to cachedir.")
+        print help_text
+        exit(RETURN_FAILURE)
+    if not tmpdir:
+        print _("You have to specify the path to tmpdir.")
+        print help_text
+        exit(RETURN_FAILURE)
 
+    b_ids = extract_info_from_core(core)
+    if b_ids == RETURN_FAILURE:
+        exit(RETURN_FAILURE)
+    missing = filter_installed_debuginfos(b_ids, cachedir)
+    if missing:
+        log2(missing)
+        downloader = DebugInfoDownload(cache=cachedir, tmp=tmpdir)
+        result = downloader.download(missing)
+    else:
+        print _("All debuginfo seems to be available")
+        exit(RETURN_OK)
 
-error_msg_and_die() {
-    echo "$*"
-    exit 2
-}
+    missing = filter_installed_debuginfos(b_ids, cachedir)
+    for bid in missing:
+        log1("MISSING:%s" % bid)
 
-count_words() {
-    echo $#
-}
+    print _("Complete!")
+    exit(result)
 
-print_missing_build_ids() {
-    local build_id
-    local build_id1
-    local build_id2
-    local file
-    local d
-    for build_id in $build_ids; do
-	build_id1=${build_id:0:2}
-	build_id2=${build_id:2}
-	file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
-	test -f "/$file" && continue
-	# On 2nd pass, we may already have some debuginfos in tempdir
-	test -f "$tempdir/$file" && continue
-	# Check cachedir if we have one
-	for d in $debuginfodirs; do
-	    test -f "$d/$file" && continue 2
-	done
-	echo -n "$build_id "
-    done
-}
-
-# Note: it is run in `backticks`, use >&2 for error messages
-print_missing_debuginfos() {
-    local build_id
-    local build_id1
-    local build_id2
-    local file
-    local d
-    for build_id in $build_ids; do
-	build_id1=${build_id:0:2}
-	build_id2=${build_id:2}
-	file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
-	test -f "/$file" && continue
-	# On 2nd pass, we may already have some debuginfos in tempdir
-	test -f "$tempdir/$file" && continue
-	# Check cachedir if we have one
-	if test x"$cachedir" != x""; then
-	    for d in $debuginfodirs; do
-		test -f "$d/$file" && continue 2
-	    done
-	fi
-	echo -n "/$file "
-    done
-}
-
-cleanup_and_report_missing() {
-# Which debuginfo files are still missing, including those we just unpacked?
-    missing_build_ids=`print_missing_build_ids`
-    $debug && echo "missing_build_ids:$missing_build_ids" >&2
-
-    # If cachedir is specified, tempdir is just a staging area. Delete it
-    if test x"$cachedir" != x""; then
-        $keep_tmp && echo "NOT removing $tempdir (keep_tmp debugging is on)" >&2
-        $keep_tmp || { $debug && echo "Removing $tempdir" >&2; rm -rf "$tempdir"; }
-    fi
-
-    for missing in $missing_build_ids; do
-        echo "MISSING:$missing" >&2
-    done
-
-    test x"$missing_build_ids" != x"" && echo "`count_words $missing_build_ids` debuginfos can't be found" >&2
-}
-
-# $1: iteration (1,2...)
-# Note: it is run in `backticks`, use >&2 for error messages
-print_package_names() {
-    # We'll run something like:
-    #   yum --enablerepo=*debuginfo* --quiet provides \
-    #   /usr/lib/debug/.build-id/bb/11528d59940983f495e9cb099cafb0cb206051.debug \
-    #   /usr/lib/debug/.build-id/c5/b84c0ad3676509dc30bfa7d42191574dac5b06.debug ...
-    local yumopts=""
-    if test x"$1" = x"1"; then
-	yumopts="-C"
-	echo "`count_words $missing_debuginfo_files` missing debuginfos, getting package list from cache" >&2
-    else
-	echo "`count_words $missing_debuginfo_files` missing debuginfos, getting package list from repositories" >&2
-    fi
-    # --showduplicates: do not just show the latest package
-    # (tried to use -R2 to abort on stuck yum lock but -R is not about that)
-    local cmd="yum $yumopts $yum_repo_opts --showduplicates --quiet provides $missing_debuginfo_files"
-    echo "$cmd" >"yum_provides.$1.OUT"
-    $debug && echo "Running: $cmd" >&2
-    # eval is needed to strip away ''s in $yum_repo_opts; cant remove them and just use
-    # unquoted $cmd, that would perform globbing on '*'
-    local yum_provides_OUT="`eval $cmd 2>&1`"
-    local err=$?
-    printf "%s\nyum exitcode:%s\n" "$yum_provides_OUT" $err >>"yum_provides.$1.OUT"
-    test $err = 0 || error_msg_and_die "yum provides... exited with $err:
-`head yum_provides.$1.OUT`" >&2
-
-    # The output is pretty machine-unfriendly:
-    #   glibc-debuginfo-2.10.90-24.x86_64 : Debug information for package glibc
-    #   Repo        : rawhide-debuginfo
-    #   Matched from:
-    #   Filename    : /usr/lib/debug/.build-id/5b/c784c8d63f87dbdeb747a773940956a18ecd2f.debug
-    #
-    #   1:dbus-debuginfo-1.2.12-2.fc11.x86_64 : Debug information for package dbus
-    #   Repo        : updates-debuginfo
-    #   Matched from:
-    #   Filename    : /usr/lib/debug/.build-id/bc/da7d09eb6c9ee380dae0ed3d591d4311decc31.debug
-    # Need to massage it a lot.
-    # There can be duplicates (one package may provide many debuginfos).
-    printf "%s\n" "$yum_provides_OUT" \
-    | grep -- -debuginfo- \
-    | sed 's/^[0-9]*://' \
-    | sed -e 's/ .*//' -e 's/:.*//' \
-    | sort | uniq | xargs
-}
-
-abort_if_low_on_disk_space() {
-    local mb
-    # free_blocks * block_size / (1024*1024), careful to not overflow:
-    mb=$((`stat -f -c "%a / 8192 * %S / 128" "$tempdir"`))
-    if test $mb -lt $1; then
-	$debug && echo "Removing $tempdir" >&2
-	rm -rf "$tempdir"
-        error_msg_and_die "Less than $1 Mb of free space in $tempdir: $mb Mb"
-    fi
-    if test x"$cachedir" != x"" && test -d "$cachedir"; then
-	mb=$((`stat -f -c "%a / 8192 * %S / 128" "$cachedir"`))
-	if test $mb -lt $1; then
-	    $debug && echo "Removing $tempdir" >&2
-	    rm -rf "$tempdir"
-	    error_msg_and_die "Less than $1 Mb of free space in $cachedir: $mb Mb"
-	fi
-    fi
-}
-
-download_packages() {
-    local pkg
-    local err
-    local file
-    local build_id
-    local build_id1
-    local build_id2
-    local d
-
-    ## Download with one command (too silent):
-    ## Redirecting, since progress bar stuff only messes up our output
-    ##yumdownloader --enablerepo=*debuginfo* --quiet $packages >yumdownloader.OUT 2>&1
-    ##err=$?
-    ##echo "exitcode:$err" >>yumdownloader.OUT
-    ##test $err = 0 || error_msg_and_die ...
-    >yumdownloader.OUT
-    i=1
-    for pkg in $packages; do
-	echo "Download $i/$num_packages: $pkg"
-	echo "Download $i/$num_packages: $pkg" >>yumdownloader.OUT
-	cmd="yumdownloader $yum_repo_opts --quiet $pkg"
-	$debug && echo "Running: $cmd" >&2
-	# eval is needed to strip away ''s in $yum_repo_opts
-	eval $cmd >>yumdownloader.OUT 2>&1 &
-	# using EXIT handler and this, make sure we kill yumdownloader if we exit:
-	CHILD_PID=$!
-	wait
-	err=$?
-	CHILD_PID=""
-	echo "exitcode:$err" >>yumdownloader.OUT
-	echo >>yumdownloader.OUT
-	test $err = 0 || echo "Download of $pkg failed!"
-	abort_if_low_on_disk_space 256
-
-	# Process and delete the *.rpm file just downloaded
-	# We do it right after download: some users have smallish disks...
-	for file in *.rpm; do
-	    # Happens if no .rpm's were downloaded (yumdownloader problem)
-	    # In this case, $f is the literal "*.rpm" string
-	    test -f "$file" || { echo "No rpm file downloaded"; continue; }
-	    echo "Unpacking: $file"
-	    echo "Processing: $file" >>unpack.OUT
-	    rpm2cpio <"$file" >"unpacked.cpio" 2>>unpack.OUT || error_msg_and_die "Can't convert '$file' to cpio"
-	    $keep_tmp || rm "$file"
-	    abort_if_low_on_disk_space 256
-	    cpio -id <"unpacked.cpio" >>unpack.OUT 2>&1 || error_msg_and_die "Can't unpack '$file' cpio archive"
-	    rm "unpacked.cpio"
-	    abort_if_low_on_disk_space 256
-	    # Copy debuginfo files to cachedir
-	    if test x"$cachedir" != x"" && test -d "$cachedir"; then
-		# For every needed debuginfo, check whether we have it
-		for build_id in $build_ids; do
-		    build_id1=${build_id:0:2}
-		    build_id2=${build_id:2}
-		    file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
-		    # Do not copy it if it can be found in any of $debuginfodirs
-		    test -f "/$file" && continue
-		    if test x"$cachedir" != x""; then
-			for d in $debuginfodirs; do
-			    test -f "$d/$file" && continue 2
-			done
-		    fi
-		    if test -f "$file"; then
-			# File is one of those we just installed, cache it
-			mkdir -p "$cachedir/usr/lib/debug/.build-id/$build_id1"
-			# Note: this does not preserve symlinks. This is intentional
-			$debug && echo Copying "$file" to "$cachedir/$file" >&2
-			echo "Caching debuginfo: $file"
-			cp --remove-destination "$file" "$cachedir/$file" || error_msg_and_die "Can't copy $file (disk full?)"
-			continue
-		    fi
-		done
-	    fi
-	    # Delete remaining files unpacked from .cpio
-	    # which we didn't need after all
-	    rm -r etc bin sbin usr var opt 2>/dev/null
-	done
-	: $((i++))
-    done
-}
-
-
-# Sanity checking
-test -f "$core" || error_msg_and_die "not a file: '$core'"
-# cachedir is optional
-test x"$cachedir" = x"" || test -d "$cachedir" || error_msg_and_die "bad cachedir '$cachedir'"
-# tempdir must not exist
-test -e "$tempdir" && error_msg_and_die "tempdir exists: '$tempdir'"
-
-# Intentionally not using -p: we want to abort if tempdir exists
-mkdir -- "$tempdir" || exit 2
-cd "$tempdir" || exit 2
-
-
-abort_if_low_on_disk_space 1024
-
-
-# A hook to stop yumdownloader, in case we are terminated by kill -TERM etc.
-CHILD_PID=""
-trap 'test x"$CHILD_PID" != x"" && kill -- "$CHILD_PID"' EXIT
-
-
-$debug && echo "Downloading rpms to $tempdir"
-
-
-echo "Getting list of build IDs"
-# Observed errors:
-# eu-unstrip: /var/spool/abrt/ccpp-1256301004-2754/coredump: Callback returned failure
-eu_unstrip_OUT=`eu-unstrip "--core=$core" -n 2>eu_unstrip.ERR`
-err=$?
-printf "%s\neu-unstrip exitcode:%s\n" "$eu_unstrip_OUT" $err >eu_unstrip.OUT
-test $err = 0 || error_msg_and_die "eu-unstrip exited with $err:
-`cat eu_unstrip.ERR`
-`head eu_unstrip.OUT`"
-
-# eu-unstrip output example:
-# 0x400000+0x209000 23c77451cf6adff77fc1f5ee2a01d75de6511dda@0x40024c - - [exe]
-#   or
-# 0x400000+0x20d000 233aa1a57e9ffda65f53efdaf5e5058657a39993@0x40024c /usr/libexec/im-settings-daemon /usr/lib/debug/usr/libexec/im-settings-daemon.debug [exe]
-# 0x7fff5cdff000+0x1000 0d3eb4326fd7489fcf9b598269f1edc420e2c560@0x7fff5cdff2f8 . - linux-vdso.so.1
-# 0x3d15600000+0x208000 20196628d1bc062279622615cc9955554e5bb227@0x3d156001a0 /usr/lib64/libnotify.so.1.1.3 /usr/lib/debug/usr/lib64/libnotify.so.1.1.3.debug libnotify.so.1
-# 0x7fd8ae931000+0x62d000 dd49f44f958b5a11a1635523b2f09cb2e45c1734@0x7fd8ae9311a0 /usr/lib64/libgtk-x11-2.0.so.0.1600.6 /usr/lib/debug/usr/lib64/libgtk-x11-2.0.so.0.1600.6.debug
-#
-# Get space-separated list of all build-ids
-# There can be duplicates (observed in real world)
-build_ids=`printf "%s\n" "$eu_unstrip_OUT" \
-| while read junk1 build_id binary_file di_file lib_name junk2; do
-    build_id=${build_id%%@*}
-
-    # This filters out linux-vdso.so, among others
-    test x"$lib_name" != x"[exe]" && test x"${binary_file:0:1}" != x"/" && continue
-    # Sanitize build_id: must be longer than 2 chars
-    test ${#build_id} -le 2 && continue
-    # Sanitize build_id: must have only hex digits
-    test x"${build_id//[0-9a-f]/}" != x"" && continue
-
-    echo "$build_id"
-done | sort | uniq | xargs`
-$debug && echo "build_ids:$build_ids"
-
-
-# Prepare list of repos to use.
-# When we look for debuginfo we need only -debuginfo* repos, we can disable the rest
-# and thus make it faster.
-yum_repo_opts="'--disablerepo=*'"
-#// Disabled. Too often, debuginfo repos have names which do not conform to "foo-debuginfo" scheme,
-#// and users get bad backtraces.
-#// # (Without -C, yum for some reason wants to talk to repos! If one is down, it becomes S..L..O..W)
-#// for enabled_repo in `LANG=C yum -C repolist all | grep 'enabled:' | cut -f1 -d' ' | grep -v -- '-debuginfo'`; do
-#//     yum_repo_opts="$yum_repo_opts '--enablerepo=${enabled_repo}-debuginfo*'"
-#// done
-yum_repo_opts="$yum_repo_opts '--enablerepo=*-debug*'"
-
-
-# We try to not run yum without -C unless absolutely necessary.
-# Therefore we loop. yum is run by print_package_names function,
-# on first iteration it is run with -C, on second - without,
-# which usually causes yum to download updated filelists,
-# which in turn takes several minutes and annoys users.
-iter=0
-while test $((++iter)) -le 2; do
-    # Analyze $build_ids and check which debuginfos are present
-    missing_debuginfo_files=`print_missing_debuginfos`
-    # Did print_missing_debuginfos fail?
-    test $? = 0 || exit 2
-    $debug && echo "missing_debuginfo_files:$missing_debuginfo_files"
-
-    test x"$missing_debuginfo_files" = x"" && break
-
-    # Map $missing_debuginfo_files to package names.
-    # yum is run here.
-    packages=`print_package_names $iter`
-    # Did print_package_names fail?
-    test $? = 0 || exit 2
-    $debug && echo "packages ($iter):$packages"
-
-    # yum may return "" here if it found no packages (say, if coredump
-    # is from a new, unreleased package fresh from koji).
-    test x"$packages" = x"" && continue
-
-    num_packages=`count_words $packages`
-    echo "Downloading $num_packages packages"
-    download_packages
-done
-
-cleanup_and_report_missing
-
-test x"$missing_build_ids" != x"" && exit 1
-echo "All needed debuginfos are present"
-exit 0
