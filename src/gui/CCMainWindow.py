@@ -348,7 +348,7 @@ class MainWindow():
                     ("Command:", dump.cmdline),
                     ("Reason:", dump.reason),
                     ("Comment:", dump.comment),
-                    ("Bug Reports:", dump.Message),
+                    ("Bug Reports:", dump.message),
         ]
         dumpinfo_text = ""
         for line in dumpinfo:
