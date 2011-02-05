@@ -9,7 +9,6 @@
     <property name="window_position">center-on-parent</property>
     <property name="icon_name">abrt</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <property name="program_name">ABRT</property>
     <property name="version">@VER@</property>
     <property name="copyright" translatable="yes">(C) 2009, 2010 Red Hat, Inc.</property>
@@ -125,6 +124,20 @@ M&#xE1;ir&#xED;n Duffy &lt;duffy@redhat.com&gt;</property>
                       <widget class="GtkMenuItem" id="mi_view_log">
                         <property name="label" translatable="yes">View log</property>
                         <property name="use_underline">True</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="miOnlineHelp">
+                        <property name="label" translatable="yes">Online _Help</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">False</property>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="image2">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-help</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                     <child>
@@ -589,11 +602,34 @@ M&#xE1;ir&#xED;n Duffy &lt;duffy@redhat.com&gt;</property>
             <property name="homogeneous">True</property>
             <child>
               <widget class="GtkButton" id="b_help">
-                <property name="label">gtk-help</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
+                <child>
+                  <widget class="GtkHBox" id="hbox5">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkImage" id="image1">
+                        <property name="visible">True</property>
+                        <property name="yalign">0</property>
+                        <property name="stock">gtk-help</property>
+                      </widget>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label6">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="yes">Online _Help</property>
+                        <property name="use_underline">True</property>
+                      </widget>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </widget>
+                </child>
               </widget>
               <packing>
                 <property name="padding">10</property>
