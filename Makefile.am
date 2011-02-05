@@ -5,6 +5,7 @@ DISTCHECK_CONFIGURE_FLAGS = \
         --with-systemdsystemunitdir=$$dc_install_base/$(systemdsystemunitdir)
 
 EXTRA_DIST = doc/coding-style abrt.spec abrt.pc.in doc/abrt-plugin/ doc/howto-write-reporter
+BUILDID =  `date +%G%m%d%H%M%S`
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = abrt.pc
@@ -26,8 +27,8 @@ test-rpm: dist
 		$(RPM_DIRS) -ba abrt.spec
 
 test-srpm: dist
-	rpmbuild --define "_buildid `date +%G%m%d%H%M%S`" \
+	rpmbuild --define "_buildid $(BUILDID)" \
 		$(RPM_DIRS) -bs abrt.spec
 
-scratch-build: srpm
-	koji build --scratch dist-f12 $(PACKAGE)-$(VERSION)-1.fc12.src.rpm
+scratch-build: test-srpm
+	koji build --scratch dist-rawhide $(PACKAGE)-$(VERSION)-0.$(BUILDID).fc14.src.rpm
