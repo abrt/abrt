@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.1-1-x.ko\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-26 07:45+0000\n"
+"POT-Creation-Date: 2011-02-06 00:29+0100\n"
 "PO-Revision-Date: 2011-01-27 15:54+1000\n"
 "Last-Translator: Eun-Ju Kim <eukim@redhat.com>\n"
 "Language-Team:  <ko@li.org>\n"
+"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ko\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=1; plural=0;\n"
 "\n"
@@ -116,7 +116,7 @@ msgstr "debuginfo 설치 생략"
 msgid "Backtrace parsing failed for %s"
 msgstr "%s에 대한 역추적 구문 분석 실패  "
 
-#: ../lib/Plugins/CCpp.cpp:967
+#: ../lib/Plugins/CCpp.cpp:973
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "C/C++ 프로그램의 크래시 분석"
 
@@ -200,7 +200,8 @@ msgid "Creating a ReportUploader report..."
 msgstr "보고서 작성 및 제출 중..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid ""
+"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 "크래시 정보를 .tar.gz파일로 압축하고, 원하면 FTP/SCP/등을 사용해 업로드합니"
 "다."
@@ -393,14 +394,13 @@ msgid "Warning"
 msgstr "경고"
 
 #: ../src/Applet/CCApplet.cpp:95
-msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT가 감지한 문제를 사용자에게 통지하기 위한 통지 영역 애플릿"
 
 #: ../src/Applet/CCApplet.cpp:111 ../src/Gui/ccgui.glade.h:24
 msgid "translator-credits"
-msgstr ""
-"김은주 (eukim@redhat.com), "
-"오현석 (hoh@redhat.com)    "
+msgstr "김은주 (eukim@redhat.com), 오현석 (hoh@redhat.com)    "
 
 #: ../src/Applet/CCApplet.cpp:121
 msgid "Hide"
@@ -619,7 +619,8 @@ msgstr "# 운영 체제 릴리즈 문자열"
 
 #: ../src/CLI/report.cpp:336
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr "vi를 실행할 수 없습니다: $TERM, $VISUAL, $EDITOR등이 설정되지 않았습니다"
+msgstr ""
+"vi를 실행할 수 없습니다: $TERM, $VISUAL, $EDITOR등이 설정되지 않았습니다"
 
 #: ../src/CLI/report.cpp:424
 msgid ""
@@ -682,7 +683,9 @@ msgstr "역추적을 사용할 수 없기 때문에 보고가 비활성화됨 "
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
-msgstr "\"debuginfo-install %s\" 명령을 사용하여 수동으로 debuginfo를 설치하고 다시 시도하십시오\n"
+msgstr ""
+"\"debuginfo-install %s\" 명령을 사용하여 수동으로 debuginfo를 설치하고 다시 "
+"시도하십시오\n"
 
 #: ../src/CLI/report.cpp:749
 msgid "Error loading reporter settings"
@@ -711,7 +714,116 @@ msgstr ""
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
-msgstr "데이터베이스 플러그인이 지정되지 않았습니다. abrtd 설정을 살펴보십시오."
+msgstr ""
+"데이터베이스 플러그인이 지정되지 않았습니다. abrtd 설정을 살펴보십시오."
+
+#: ../src/Daemon/abrt-debuginfo-install:72
+#, c-format
+msgid "Extracting cpio from %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:77
+msgid "Can't write to:"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:87
+msgid "Removing the temporary rpm file"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:91
+#, c-format
+msgid "Can't extract package: %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:99
+#, c-format
+msgid "Caching files from %s made from %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:107
+msgid "Removing the temporary cpio file"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:110
+#, c-format
+msgid "Can't extract files from: %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:134
+#: ../src/Daemon/abrt-debuginfo-install:140
+#, c-format
+msgid "Downloading (%i of %i) %.30s : %.3s %%"
+msgstr ""
+
+#
+#: ../src/Daemon/abrt-debuginfo-install:169
+#, fuzzy
+msgid "Searching the missing debuginfo packages"
+msgstr "debuginfo 설치 시작"
+
+#: ../src/Daemon/abrt-debuginfo-install:224
+#, c-format
+msgid "To download: (%.2f) M / Installed size: %.2f M"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:240
+msgid "Is this ok? [y/N] "
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:257
+#, c-format
+msgid "Downloading package %s failed"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:268
+msgid "Unpacking failed, aborting download..."
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:275
+#, c-format
+msgid "All downloaded packages have been extracted, removing %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:280
+#, c-format
+msgid "Can't remove %s, probably contains an error log"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:305
+msgid "Analyzing corefile: %(corefile_path)s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:384
+msgid "Can't remove %(tmpdir_path)s: %(reason)s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:394
+msgid "Exiting on user Command"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:435
+#, fuzzy
+msgid "You have to specify the path to coredump."
+msgstr "복사할 크래시를 선택해야만 합니다."
+
+#: ../src/Daemon/abrt-debuginfo-install:439
+#, fuzzy
+msgid "You have to specify the path to cachedir."
+msgstr "복사할 크래시를 선택해야만 합니다."
+
+#: ../src/Daemon/abrt-debuginfo-install:443
+#, fuzzy
+msgid "You have to specify the path to tmpdir."
+msgstr "복사할 크래시를 선택해야만 합니다."
+
+#: ../src/Daemon/abrt-debuginfo-install:456
+msgid "All debuginfo seems to be available"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:463
+#, fuzzy
+msgid "Complete!"
+msgstr "구성 요소"
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -722,7 +834,8 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "다른 클라이언트가 이미 실행되고 있으므로 이를 호출합니다."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgid ""
+"Got unexpected data from the daemon (is the database properly updated?)."
 msgstr ""
 "데몬에서 예기치 못한 데이터를 수신했습니다 (데이터베이스가 올바르게 업데이트"
 "되었습니까?).  "
@@ -747,16 +860,16 @@ msgstr "Reporter 플러그인  "
 msgid "Database plugins"
 msgstr "Database 플러그인 "
 
-#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:75 ../src/Gui/CCDBusBackend.py:98
 msgid "Cannot connect to system dbus."
 msgstr "시스템 dbus에 연결할 수 없음 "
 
-#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
+#: ../src/Gui/CCDBusBackend.py:121 ../src/Gui/CCDBusBackend.py:124
 msgid "Please check if the abrt daemon is running."
 msgstr "abrt 데몬이 실행되고 있는지 확인하십시오."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/Gui/CCDBusBackend.py:174
+#: ../src/Gui/CCDBusBackend.py:175
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
@@ -840,7 +953,7 @@ msgstr ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:20
+#: ../src/Gui/ccgui.glade.h:20 ../src/Gui/CReporterAssistant.py:111
 msgid "View log"
 msgstr "로그 보기"
 
@@ -933,16 +1046,87 @@ msgstr ""
 "데이터베이스에 해당 크래시가 없습니다. 잘못된 crashid일 수 있습니다.\n"
 "crashid=%s"
 
-#. default texts
-#: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:20
+#: ../src/Gui/ConfBackend.py:79
+msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
+msgstr ""
+"gnome-keyring 데몬에 연결할 수 없습니다. 변경 사항이 저장되지 않습니다.   "
+
+#. could happen if keyring daemon is running, but we run gui under
+#. user who is not the owner of the running session - using su
+#: ../src/Gui/ConfBackend.py:86
+msgid "Cannot get the default keyring."
+msgstr "디폴트 키링을 가져올 수 없음."
+
+#: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgstr ""
+"gnome-keyring에 대한 억세스가 거부되었습니다. 플러그인 설정이 저장되지 않을 "
+"것입니다."
+
+#. we tried 2 times, so giving up the authorization
+#: ../src/Gui/ConfBackend.py:155
+#, python-format
+msgid ""
+"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgstr ""
+"gnome-keyring에 대한 억세스가 거부되었습니다. %s의 설정을 가져올 수 없습니다!"
+
+#: ../src/Gui/ConfBackend.py:208
+msgid "Access to gnome-keyring has been denied, cannot load settings."
+msgstr "gnome-keyring에 대한 억세스가 거부되었습니다. 설정을 읽을 수 없습니다."
+
+#: ../src/Gui/CReporterAssistant.py:20
 msgid "Brief description of how to reproduce this or what you did..."
 msgstr "재현 방법 또는 여러분이 실행한 내용에 대한 간단한 설명..."
 
-#: ../src/Gui/CCReporterDialog.py:107
-msgid "You must check the backtrace for sensitive data."
-msgstr "민감한 정보가 들어있지 않은지 역추적(backtrace)을 검토해 보셔야 합니다."
+#: ../src/Gui/CReporterAssistant.py:21
+msgid "Crash info doesn't contain a backtrace"
+msgstr "크래시 정보에 역추적이 들어있지 않습니다"
 
-#: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:312
+#: ../src/Gui/CReporterAssistant.py:277
+#: ../src/Gui/PluginsSettingsDialog.py:170
+#, python-format
+msgid ""
+"Cannot save plugin settings:\n"
+" %s"
+msgstr ""
+"플러그인 설정을 저장할 수 없음:\n"
+" %s "
+
+#: ../src/Gui/CReporterAssistant.py:307
+#, python-format
+msgid "Configure %s options"
+msgstr "%s 옵션 설정"
+
+#: ../src/Gui/CReporterAssistant.py:356
+#, python-format
+msgid "Rating is required by the %s plugin"
+msgstr "%s 플러그인은 점수를 메길것을 요구합니다"
+
+#: ../src/Gui/CReporterAssistant.py:358
+msgid "Rating is not required by any plugin, skipping the check..."
+msgstr "점수메기기를 필요로 하는 플러그인이 없습니다. 검사를 생략합니다..."
+
+#: ../src/Gui/CReporterAssistant.py:362
+#, python-format
+msgid "Rating is %s"
+msgstr "점수는 %s입니다"
+
+#: ../src/Gui/CReporterAssistant.py:365
+msgid "Crashdump doesn't have rating => we suppose it's not required"
+msgstr "크래스덤프에 점수가 없습니다 => 점수가 필요하지 않은 것으로 간주합니다"
+
+#: ../src/Gui/CReporterAssistant.py:370
+msgid "You should check the backtrace for sensitive data."
+msgstr ""
+"민감한 정보가 포함되지는 않았는지 역추적(backtrace)을 검토하셔야 합니다."
+
+#: ../src/Gui/CReporterAssistant.py:371
+msgid "You must agree with sending the backtrace."
+msgstr "역추적을 전송하는 것에 동의하셔야 합니다."
+
+#: ../src/Gui/CReporterAssistant.py:384
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -955,56 +1139,26 @@ msgstr ""
 "%s</b> \n"
 "그 후 새로고침 버튼을 사용하여 역추적 정보를 다시 생성합니다."
 
-#: ../src/Gui/CCReporterDialog.py:120
-msgid "The backtrace is unusable, you cannot report this!"
-msgstr "역추적 정보를 사용할 수 없습니다. 이를 보고할 수 없습니다!"
+#: ../src/Gui/CReporterAssistant.py:386
+msgid "Reporting disabled because the backtrace is unusable."
+msgstr "역추적이 비활성화되었기 때문에 보고가 비활성화 되었습니다."
 
-#: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:318
+#: ../src/Gui/CReporterAssistant.py:390
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
-msgstr "역추적이 불완전합니다. 재현을 위한 올바른 단계를 제공했는지 확인하십시오.  "
-
-#: ../src/Gui/CCReporterDialog.py:130
-msgid "Reporting disabled, please fix the problems shown above."
-msgstr "보고가 비활성화 되어있습니다. 위에 표시된 문제들을 해결해 주십시오."
-
-#: ../src/Gui/CCReporterDialog.py:132
-msgid "Sends the report using the selected plugin."
-msgstr "선택된 플러그인을 사용해 보고 보내기."
-
-#: ../src/Gui/CCReporterDialog.py:398
-msgid ""
-"No reporter plugin available for this type of crash.\n"
-"Please check abrt.conf."
 msgstr ""
-"이런 종류의 크래시에 사용 가능한 reporter 플러그인이 없습니다\n"
-"abrt.conf를 체크해 주십시오."
+"역추적이 불완전합니다. 재현을 위한 올바른 단계를 제공했는지 확인하십시오.  "
 
-#: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:205
-#: ../src/Gui/PluginsSettingsDialog.py:170
-#, python-format
-msgid ""
-"Cannot save plugin settings:\n"
-" %s"
-msgstr ""
-"플러그인 설정을 저장할 수 없음:\n"
-" %s "
+#: ../src/Gui/CReporterAssistant.py:432
+msgid "You did not provide any steps to reproduce."
+msgstr "재현을 위한 방법을 제공하지 않으셨습니다."
 
-#: ../src/Gui/CCReporterDialog.py:448 ../src/Gui/CReporterAssistant.py:235
-#, python-format
-msgid "Configure %s options"
-msgstr "%s 옵션 설정"
+#: ../src/Gui/CReporterAssistant.py:446
+msgid "You did not provide any comments."
+msgstr "설명을 제공하지 않으셨습니다."
 
-#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:899
-msgid ""
-"Unable to get report!\n"
-"Is debuginfo missing?"
-msgstr ""
-"보고서를 가져올 수 없습니다!\n"
-"Debuginfo가 없습니까?"
-
-#: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:403
+#: ../src/Gui/CReporterAssistant.py:475
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -1013,81 +1167,7 @@ msgstr ""
 "보고 실패했습니다!\n"
 "%s "
 
-#: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
-#: ../src/Gui/CReporterAssistant.py:938
-#, python-format
-msgid "Error acquiring the report: %s"
-msgstr "보고서를 가져오는 도중 오류 발생: %s"
-
-#: ../src/Gui/ConfBackend.py:79
-msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
-msgstr "gnome-keyring 데몬에 연결할 수 없습니다. 변경 사항이 저장되지 않습니다.   "
-
-#. could happen if keyring daemon is running, but we run gui under
-#. user who is not the owner of the running session - using su
-#: ../src/Gui/ConfBackend.py:86
-msgid "Cannot get the default keyring."
-msgstr "디폴트 키링을 가져올 수 없음."
-
-#: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr ""
-"gnome-keyring에 대한 억세스가 거부되었습니다. 플러그인 설정이 저장되지 않을 "
-"것입니다."
-
-#. we tried 2 times, so giving up the authorization
-#: ../src/Gui/ConfBackend.py:155
-#, python-format
-msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr "gnome-keyring에 대한 억세스가 거부되었습니다. %s의 설정을 가져올 수 없습니다!"
-
-#: ../src/Gui/ConfBackend.py:208
-msgid "Access to gnome-keyring has been denied, cannot load settings."
-msgstr "gnome-keyring에 대한 억세스가 거부되었습니다. 설정을 읽을 수 없습니다."
-
-#: ../src/Gui/CReporterAssistant.py:21
-msgid "Crash info doesn't contain a backtrace"
-msgstr "크래시 정보에 역추적이 들어있지 않습니다"
-
-#: ../src/Gui/CReporterAssistant.py:284
-#, python-format
-msgid "Rating is required by the %s plugin"
-msgstr "%s 플러그인은 점수를 메길것을 요구합니다"
-
-#: ../src/Gui/CReporterAssistant.py:286
-msgid "Rating is not required by any plugin, skipping the check..."
-msgstr "점수메기기를 필요로 하는 플러그인이 없습니다. 검사를 생략합니다..."
-
-#: ../src/Gui/CReporterAssistant.py:290
-#, python-format
-msgid "Rating is %s"
-msgstr "점수는 %s입니다"
-
-#: ../src/Gui/CReporterAssistant.py:293
-msgid "Crashdump doesn't have rating => we suppose it's not required"
-msgstr "크래스덤프에 점수가 없습니다 => 점수가 필요하지 않은 것으로 간주합니다"
-
-#: ../src/Gui/CReporterAssistant.py:298
-msgid "You should check the backtrace for sensitive data."
-msgstr "민감한 정보가 포함되지는 않았는지 역추적(backtrace)을 검토하셔야 합니다."
-
-#: ../src/Gui/CReporterAssistant.py:299
-msgid "You must agree with sending the backtrace."
-msgstr "역추적을 전송하는 것에 동의하셔야 합니다."
-
-#: ../src/Gui/CReporterAssistant.py:314
-msgid "Reporting disabled because the backtrace is unusable."
-msgstr "역추적이 비활성화되었기 때문에 보고가 비활성화 되었습니다."
-
-#: ../src/Gui/CReporterAssistant.py:360
-msgid "You did not provide any steps to reproduce."
-msgstr "재현을 위한 방법을 제공하지 않으셨습니다."
-
-#: ../src/Gui/CReporterAssistant.py:374
-msgid "You did not provide any comments."
-msgstr "설명을 제공하지 않으셨습니다."
-
-#: ../src/Gui/CReporterAssistant.py:455
+#: ../src/Gui/CReporterAssistant.py:527
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -1112,15 +1192,15 @@ msgstr ""
 "\n"
 "버그를 보고하고 싶은 곳을 선택하고, 계속하려면 '다음' 버튼을 눌러주십시오.."
 
-#: ../src/Gui/CReporterAssistant.py:515
+#: ../src/Gui/CReporterAssistant.py:587
 msgid "Only one reporter plugin is configured."
 msgstr "하나의 reporter 플러그인만 설정되었습니다."
 
-#: ../src/Gui/CReporterAssistant.py:521
+#: ../src/Gui/CReporterAssistant.py:593
 msgid "Send a bug report"
 msgstr "보고 보내기"
 
-#: ../src/Gui/CReporterAssistant.py:559
+#: ../src/Gui/CReporterAssistant.py:631
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -1136,39 +1216,51 @@ msgstr ""
 "다음의 역추적 정보를 검토하시고, 여러분의 버그 보고서에 공유해서는 안되는 민"
 "감한 정보들이 포함되지나 않았는지 확인해 주십시오:"
 
-#: ../src/Gui/CReporterAssistant.py:603
+#: ../src/Gui/CReporterAssistant.py:702 ../src/Gui/CReporterAssistant.py:715
+#: ../src/Gui/CReporterAssistant.py:749
+#, python-format
+msgid "Found %i occurence(s) [at: %i of %i]"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:786
+msgid "Search:"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:817
 msgid "Refresh"
 msgstr "새로고침"
 
-#: ../src/Gui/CReporterAssistant.py:605
+#: ../src/Gui/CReporterAssistant.py:819
 msgid "Copy"
 msgstr "복사"
 
-#: ../src/Gui/CReporterAssistant.py:611
+#: ../src/Gui/CReporterAssistant.py:825
 msgid "I agree with submitting the backtrace"
 msgstr "이 역추적 정보를 전송하는데 동의합니다"
 
-#: ../src/Gui/CReporterAssistant.py:616
+#: ../src/Gui/CReporterAssistant.py:830
 msgid "Approve the backtrace"
 msgstr "역추적 정보 승인"
 
-#: ../src/Gui/CReporterAssistant.py:659
+#: ../src/Gui/CReporterAssistant.py:873
 msgid "You need to fill the how to before you can proceed..."
 msgstr "진행하기 전에 그 방법을 기입해야 합니다 ... "
 
-#: ../src/Gui/CReporterAssistant.py:682
+#: ../src/Gui/CReporterAssistant.py:896
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
-msgstr "어떻게 이 크래시가 발생했습니까(단계별)? 어떻게 다시 재현할 수 있습니까?"
+msgstr ""
+"어떻게 이 크래시가 발생했습니까(단계별)? 어떻게 다시 재현할 수 있습니까?"
 
-#: ../src/Gui/CReporterAssistant.py:703
-msgid "Are there any comments you would like to share with the software maintainers?"
+#: ../src/Gui/CReporterAssistant.py:917
+msgid ""
+"Are there any comments you would like to share with the software maintainers?"
 msgstr "소프트웨어 관리자들에게 말씀하고 싶은 내용이 있습니까?"
 
-#: ../src/Gui/CReporterAssistant.py:723
+#: ../src/Gui/CReporterAssistant.py:937
 msgid "Provide additional details"
 msgstr "추가 상세 정보 제공"
 
-#: ../src/Gui/CReporterAssistant.py:729
+#: ../src/Gui/CReporterAssistant.py:943
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
@@ -1176,81 +1268,95 @@ msgstr ""
 "<b>도움말:</b> 여러분의 설명을 외부에서 볼 수 있습니다. 여러분이 적은 내용이 "
 "적절한지 검토하십시오."
 
-#: ../src/Gui/CReporterAssistant.py:770
+#: ../src/Gui/CReporterAssistant.py:984
 msgid "Confirm and send the report"
 msgstr "확인 및 보고 보내기"
 
-#: ../src/Gui/CReporterAssistant.py:772
-msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
+#: ../src/Gui/CReporterAssistant.py:986
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "다음은 여러분의 버그 보고서의 요약입니다. 전송하기 위해서는 '적용' 버튼을 누"
 "르십시오."
 
-#: ../src/Gui/CReporterAssistant.py:777
+#: ../src/Gui/CReporterAssistant.py:991
 msgid "<b>Basic details</b>"
 msgstr "<b>상세 정보</b>"
 
 #. left table
-#: ../src/Gui/CReporterAssistant.py:784
+#: ../src/Gui/CReporterAssistant.py:998
 msgid "Component"
 msgstr "구성 요소"
 
-#: ../src/Gui/CReporterAssistant.py:785
+#: ../src/Gui/CReporterAssistant.py:999
 msgid "Package"
 msgstr "패키지"
 
-#: ../src/Gui/CReporterAssistant.py:786
+#: ../src/Gui/CReporterAssistant.py:1000
 msgid "Executable"
 msgstr "실행파일"
 
-#: ../src/Gui/CReporterAssistant.py:787
+#: ../src/Gui/CReporterAssistant.py:1001
 msgid "Cmdline"
 msgstr "명령행"
 
 #. right table
-#: ../src/Gui/CReporterAssistant.py:789
+#: ../src/Gui/CReporterAssistant.py:1003
 msgid "Architecture"
 msgstr "아키텍쳐"
 
-#: ../src/Gui/CReporterAssistant.py:790
+#: ../src/Gui/CReporterAssistant.py:1004
 msgid "Kernel"
 msgstr "커널"
 
-#: ../src/Gui/CReporterAssistant.py:791
+#: ../src/Gui/CReporterAssistant.py:1005
 msgid "Release"
 msgstr "릴리즈"
 
-#: ../src/Gui/CReporterAssistant.py:792
+#: ../src/Gui/CReporterAssistant.py:1006
 msgid "Reason"
 msgstr "원인"
 
-#: ../src/Gui/CReporterAssistant.py:803 ../src/Gui/report.glade.h:3
+#: ../src/Gui/CReporterAssistant.py:1017 ../src/Gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>역추적(backtrace)</b>"
 
-#: ../src/Gui/CReporterAssistant.py:806
+#: ../src/Gui/CReporterAssistant.py:1020
 msgid "Click to view..."
 msgstr "보시려면 클릭하십시오..."
 
-#: ../src/Gui/CReporterAssistant.py:818
+#: ../src/Gui/CReporterAssistant.py:1032
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>재현하기 위한 세부 단계</b>"
 
-#: ../src/Gui/CReporterAssistant.py:839
+#: ../src/Gui/CReporterAssistant.py:1053
 msgid "<b>Comments:</b>"
 msgstr "<b>설명:</b>"
 
-#: ../src/Gui/CReporterAssistant.py:842
+#: ../src/Gui/CReporterAssistant.py:1056
 msgid "No comment provided!"
 msgstr "설명이 없습니다!"
 
-#: ../src/Gui/CReporterAssistant.py:878
+#: ../src/Gui/CReporterAssistant.py:1092
 msgid "Finished sending the bug report"
 msgstr "보고 보내기가 끝났습니다"
 
-#: ../src/Gui/CReporterAssistant.py:882
+#: ../src/Gui/CReporterAssistant.py:1096
 msgid "<b>Bug reports:</b>"
 msgstr "<b>버그 보고:</b>"
+
+#: ../src/Gui/CReporterAssistant.py:1113
+msgid ""
+"Unable to get report!\n"
+"Is debuginfo missing?"
+msgstr ""
+"보고서를 가져올 수 없습니다!\n"
+"Debuginfo가 없습니까?"
+
+#: ../src/Gui/CReporterAssistant.py:1150
+#, python-format
+msgid "Error acquiring the report: %s"
+msgstr "보고서를 가져오는 도중 오류 발생: %s"
 
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Log"
@@ -1514,3 +1620,22 @@ msgstr ""
 "기 전에 아래의 버튼을 사용해 해당 설정을 열고, 문제를 수정해 주십시오. 그렇"
 "지 않으면 보고서를 작성해 전송하는 데 실패할 수 있습니다.\n"
 
+#~ msgid "You must check the backtrace for sensitive data."
+#~ msgstr ""
+#~ "민감한 정보가 들어있지 않은지 역추적(backtrace)을 검토해 보셔야 합니다."
+
+#~ msgid "The backtrace is unusable, you cannot report this!"
+#~ msgstr "역추적 정보를 사용할 수 없습니다. 이를 보고할 수 없습니다!"
+
+#~ msgid "Reporting disabled, please fix the problems shown above."
+#~ msgstr "보고가 비활성화 되어있습니다. 위에 표시된 문제들을 해결해 주십시오."
+
+#~ msgid "Sends the report using the selected plugin."
+#~ msgstr "선택된 플러그인을 사용해 보고 보내기."
+
+#~ msgid ""
+#~ "No reporter plugin available for this type of crash.\n"
+#~ "Please check abrt.conf."
+#~ msgstr ""
+#~ "이런 종류의 크래시에 사용 가능한 reporter 플러그인이 없습니다\n"
+#~ "abrt.conf를 체크해 주십시오."

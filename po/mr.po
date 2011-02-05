@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.1-1-x\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-27 07:45+0000\n"
+"POT-Creation-Date: 2011-02-06 00:29+0100\n"
 "PO-Revision-Date: 2011-01-27 14:11+0530\n"
 "Last-Translator: Sandeep Shedmake <sshedmak@redhat.com>\n"
 "Language-Team: Marathi <fedora-trans-mr@redhat.com>\n"
+"Language: mr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: mr\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
@@ -111,7 +111,7 @@ msgstr "debuginfo प्रतिष्ठापन वगळत आहे"
 msgid "Backtrace parsing failed for %s"
 msgstr "%s करीता बॅकट्रेस पार्सिंग अपयशी"
 
-#: ../lib/Plugins/CCpp.cpp:967
+#: ../lib/Plugins/CCpp.cpp:973
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "C/C++ प्रोग्राम्स् मधील क्रॅशचे विश्लेषण करतो"
 
@@ -194,7 +194,8 @@ msgid "Creating a ReportUploader report..."
 msgstr "ReportUploader अहवाल निर्माण करत आहे..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid ""
+"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 "डाटा क्रॅशला .tar.gz फाइलमध्ये पॅक करतो, वैकल्पिकरित्या FTP/SCP/etc चा वापर करून "
 "अपलोड करतो"
@@ -387,7 +388,8 @@ msgid "Warning"
 msgstr "सावधानता"
 
 #: ../src/Applet/CCApplet.cpp:95
-msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
 msgstr "सूचना क्षेत्र ऍप्लेट जे वापरकर्त्याला ABRT द्वारे आढळलेल्या अडचणींविषयी अवगत करते"
 
 #: ../src/Applet/CCApplet.cpp:111 ../src/Gui/ccgui.glade.h:24
@@ -709,6 +711,113 @@ msgstr ""
 msgid "Database plugin not specified. Please check abrtd settings."
 msgstr "डाटाबेस प्लगइन निर्देशीत नाही. कृपया abrtd संरचना तपासा."
 
+#: ../src/Daemon/abrt-debuginfo-install:72
+#, c-format
+msgid "Extracting cpio from %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:77
+msgid "Can't write to:"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:87
+msgid "Removing the temporary rpm file"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:91
+#, c-format
+msgid "Can't extract package: %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:99
+#, c-format
+msgid "Caching files from %s made from %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:107
+msgid "Removing the temporary cpio file"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:110
+#, c-format
+msgid "Can't extract files from: %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:134
+#: ../src/Daemon/abrt-debuginfo-install:140
+#, c-format
+msgid "Downloading (%i of %i) %.30s : %.3s %%"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:169
+#, fuzzy
+msgid "Searching the missing debuginfo packages"
+msgstr "debuginfo प्रतिष्ठापन सुरू करत आहे"
+
+#: ../src/Daemon/abrt-debuginfo-install:224
+#, c-format
+msgid "To download: (%.2f) M / Installed size: %.2f M"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:240
+msgid "Is this ok? [y/N] "
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:257
+#, c-format
+msgid "Downloading package %s failed"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:268
+msgid "Unpacking failed, aborting download..."
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:275
+#, c-format
+msgid "All downloaded packages have been extracted, removing %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:280
+#, c-format
+msgid "Can't remove %s, probably contains an error log"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:305
+msgid "Analyzing corefile: %(corefile_path)s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:384
+msgid "Can't remove %(tmpdir_path)s: %(reason)s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:394
+msgid "Exiting on user Command"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:435
+#, fuzzy
+msgid "You have to specify the path to coredump."
+msgstr "प्रत बनवण्यासाठी तुम्हाला क्रॅश नीवडावे लागेल."
+
+#: ../src/Daemon/abrt-debuginfo-install:439
+#, fuzzy
+msgid "You have to specify the path to cachedir."
+msgstr "प्रत बनवण्यासाठी तुम्हाला क्रॅश नीवडावे लागेल."
+
+#: ../src/Daemon/abrt-debuginfo-install:443
+#, fuzzy
+msgid "You have to specify the path to tmpdir."
+msgstr "प्रत बनवण्यासाठी तुम्हाला क्रॅश नीवडावे लागेल."
+
+#: ../src/Daemon/abrt-debuginfo-install:456
+msgid "All debuginfo seems to be available"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:463
+#, fuzzy
+msgid "Complete!"
+msgstr "घटक"
+
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
 msgstr "ॲप्लिकेशन क्रॅश पहा व कळवा"
@@ -718,7 +827,8 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "इतर क्लाएंट आधिपासूनच कार्यरत आहे, सक्रिय करण्याचा प्रयत्न करत आहे..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgid ""
+"Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "डिमनपासून अनपेक्षीत डाटा प्राप्त झाले (माहितीकोष योग्यरित्या सुधारीत केले?)."
 
 #: ../src/Gui/ABRTPlugin.py:71
@@ -741,16 +851,16 @@ msgstr "रिपोर्टर प्लगइन्स्"
 msgid "Database plugins"
 msgstr "डाटाबेस प्लगइन्स्"
 
-#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:75 ../src/Gui/CCDBusBackend.py:98
 msgid "Cannot connect to system dbus."
 msgstr "प्रणाली dbus शी जुळवणी करण्यास अशक्य."
 
-#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
+#: ../src/Gui/CCDBusBackend.py:121 ../src/Gui/CCDBusBackend.py:124
 msgid "Please check if the abrt daemon is running."
 msgstr "कृपया abrt डीमन कार्यरत आहे याची तपासणी करा."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/Gui/CCDBusBackend.py:174
+#: ../src/Gui/CCDBusBackend.py:175
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
@@ -834,7 +944,7 @@ msgstr ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:20
+#: ../src/Gui/ccgui.glade.h:20 ../src/Gui/CReporterAssistant.py:111
 msgid "View log"
 msgstr "लॉगचे दृष्य"
 
@@ -927,16 +1037,82 @@ msgstr ""
 "डाटाबेसमध्ये या प्रकारचे क्रॅश आढळले नाही, संभाव्यतया चुकिचे crashid.\n"
 "crashid=%s"
 
-#. default texts
-#: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:20
+#: ../src/Gui/ConfBackend.py:79
+msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
+msgstr "gnome-keyring-daemon सह जोडणी करणे अशक्य, बदल साठवणे अशक्य."
+
+#. could happen if keyring daemon is running, but we run gui under
+#. user who is not the owner of the running session - using su
+#: ../src/Gui/ConfBackend.py:86
+msgid "Cannot get the default keyring."
+msgstr "पूर्वनिर्धारीत किरींग प्राप्त करणे अशक्य."
+
+#: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgstr "gnome-keyring करीता प्रवेश नकारले, प्लगइंस् संरचना साठवणे अशक्य."
+
+#. we tried 2 times, so giving up the authorization
+#: ../src/Gui/ConfBackend.py:155
+#, python-format
+msgid ""
+"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgstr "gnome-keyring करीता प्रवेश नकारले, %s करीता संरचना लोड करणे शक्य नाही!"
+
+#: ../src/Gui/ConfBackend.py:208
+msgid "Access to gnome-keyring has been denied, cannot load settings."
+msgstr "gnome-keyring करीता प्रवेश नकारले, संरचना लोड करणे अशक्य."
+
+#: ../src/Gui/CReporterAssistant.py:20
 msgid "Brief description of how to reproduce this or what you did..."
 msgstr "हे कसे पुनः निर्माण करायचे किंवा तुम्ही काय केले याचे थोडक्यात वर्णन..."
 
-#: ../src/Gui/CCReporterDialog.py:107
-msgid "You must check the backtrace for sensitive data."
-msgstr "संवेदनशील डाटाकरीता तुम्ही बॅकट्रेस तपासायला हवे."
+#: ../src/Gui/CReporterAssistant.py:21
+msgid "Crash info doesn't contain a backtrace"
+msgstr "क्रॅश माहितीत बॅकट्रेस आढळले नाही"
 
-#: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:312
+#: ../src/Gui/CReporterAssistant.py:277
+#: ../src/Gui/PluginsSettingsDialog.py:170
+#, python-format
+msgid ""
+"Cannot save plugin settings:\n"
+" %s"
+msgstr ""
+"प्लगइन संरचना साठवणे अशक्य:\n"
+" %s"
+
+#: ../src/Gui/CReporterAssistant.py:307
+#, python-format
+msgid "Configure %s options"
+msgstr "%s पर्याय संरचीत करा"
+
+#: ../src/Gui/CReporterAssistant.py:356
+#, python-format
+msgid "Rating is required by the %s plugin"
+msgstr "%s प्लगइन द्वारे दर्जा आवश्यक आहे"
+
+#: ../src/Gui/CReporterAssistant.py:358
+msgid "Rating is not required by any plugin, skipping the check..."
+msgstr "कुठल्याही प्लगइनकरीता दर्जा आवश्यक नाही, तपास वगळत आहे..."
+
+#: ../src/Gui/CReporterAssistant.py:362
+#, python-format
+msgid "Rating is %s"
+msgstr "दर्जा %s आहे"
+
+#: ../src/Gui/CReporterAssistant.py:365
+msgid "Crashdump doesn't have rating => we suppose it's not required"
+msgstr "क्रॅशडम्पमध्ये दर्जा आढळले नाही => दर्जाची आवश्यकता नाही"
+
+#: ../src/Gui/CReporterAssistant.py:370
+msgid "You should check the backtrace for sensitive data."
+msgstr "संवेदनशील डाटाकरीता बॅकट्रेस तपासाणे आवश्यक आहे."
+
+#: ../src/Gui/CReporterAssistant.py:371
+msgid "You must agree with sending the backtrace."
+msgstr "बॅकट्रेस पाठण्याकरीता आपली मान्यता आवश्यक आहे."
+
+#: ../src/Gui/CReporterAssistant.py:384
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -949,56 +1125,25 @@ msgstr ""
 "प्रतिष्ठापीत करण्याचा प्रयत्न करा \n"
 "व त्यानंतर बॅकट्रेस पुनः निर्माण करण्यासाठी पुनः ताजे करा बटनचा वापर करा."
 
-#: ../src/Gui/CCReporterDialog.py:120
-msgid "The backtrace is unusable, you cannot report this!"
-msgstr "बॅकट्रेस वापरण्याजोगी नाही, यास कळवणे शक्य नाही!"
+#: ../src/Gui/CReporterAssistant.py:386
+msgid "Reporting disabled because the backtrace is unusable."
+msgstr "बॅकट्रेस् वापरण्याजोगी नसल्यामुळे रिपोर्टिंग बंद केले."
 
-#: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:318
+#: ../src/Gui/CReporterAssistant.py:390
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "बॅकट्रेस् अपूर्ण आहे, पुनःनिर्माण करण्यासाठी कृपया योग्य पद्धत पुरवण्याची खात्री करा."
 
-#: ../src/Gui/CCReporterDialog.py:130
-msgid "Reporting disabled, please fix the problems shown above."
-msgstr "रिपोर्टिंग बंद केले, कृपया वरील निर्देशीत अडचणींचे निवारण करा."
+#: ../src/Gui/CReporterAssistant.py:432
+msgid "You did not provide any steps to reproduce."
+msgstr "पुनःनिर्माणकरीता तुम्ही पद्धती पुरवले नाही."
 
-#: ../src/Gui/CCReporterDialog.py:132
-msgid "Sends the report using the selected plugin."
-msgstr "नीवडलेल्या प्लगइनचा वापर करून अहवाल पाठवतो."
+#: ../src/Gui/CReporterAssistant.py:446
+msgid "You did not provide any comments."
+msgstr "तुम्ही कुठलेही टिपण्णी पुरवले नाही."
 
-#: ../src/Gui/CCReporterDialog.py:398
-msgid ""
-"No reporter plugin available for this type of crash.\n"
-"Please check abrt.conf."
-msgstr ""
-"या प्रकारच्या क्रॅशकरीता रिपोर्टर प्लगइन उपलब्ध नाही.\n"
-"कृपया abrt.conf तपासा."
-
-#: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:205
-#: ../src/Gui/PluginsSettingsDialog.py:170
-#, python-format
-msgid ""
-"Cannot save plugin settings:\n"
-" %s"
-msgstr ""
-"प्लगइन संरचना साठवणे अशक्य:\n"
-" %s"
-
-#: ../src/Gui/CCReporterDialog.py:448 ../src/Gui/CReporterAssistant.py:235
-#, python-format
-msgid "Configure %s options"
-msgstr "%s पर्याय संरचीत करा"
-
-#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:899
-msgid ""
-"Unable to get report!\n"
-"Is debuginfo missing?"
-msgstr ""
-"रिपोर्ट प्राप्त करण्यास अशक्य!\n"
-"debuginfo आढळले नाही?"
-
-#: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:403
+#: ../src/Gui/CReporterAssistant.py:475
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -1007,79 +1152,7 @@ msgstr ""
 "रिपोर्टिंग अपयशी!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
-#: ../src/Gui/CReporterAssistant.py:938
-#, python-format
-msgid "Error acquiring the report: %s"
-msgstr "अहवाल प्राप्त करतेवेळी त्रुटी: %s"
-
-#: ../src/Gui/ConfBackend.py:79
-msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
-msgstr "gnome-keyring-daemon सह जोडणी करणे अशक्य, बदल साठवणे अशक्य."
-
-#. could happen if keyring daemon is running, but we run gui under
-#. user who is not the owner of the running session - using su
-#: ../src/Gui/ConfBackend.py:86
-msgid "Cannot get the default keyring."
-msgstr "पूर्वनिर्धारीत किरींग प्राप्त करणे अशक्य."
-
-#: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr "gnome-keyring करीता प्रवेश नकारले, प्लगइंस् संरचना साठवणे अशक्य."
-
-#. we tried 2 times, so giving up the authorization
-#: ../src/Gui/ConfBackend.py:155
-#, python-format
-msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr "gnome-keyring करीता प्रवेश नकारले, %s करीता संरचना लोड करणे शक्य नाही!"
-
-#: ../src/Gui/ConfBackend.py:208
-msgid "Access to gnome-keyring has been denied, cannot load settings."
-msgstr "gnome-keyring करीता प्रवेश नकारले, संरचना लोड करणे अशक्य."
-
-#: ../src/Gui/CReporterAssistant.py:21
-msgid "Crash info doesn't contain a backtrace"
-msgstr "क्रॅश माहितीत बॅकट्रेस आढळले नाही"
-
-#: ../src/Gui/CReporterAssistant.py:284
-#, python-format
-msgid "Rating is required by the %s plugin"
-msgstr "%s प्लगइन द्वारे दर्जा आवश्यक आहे"
-
-#: ../src/Gui/CReporterAssistant.py:286
-msgid "Rating is not required by any plugin, skipping the check..."
-msgstr "कुठल्याही प्लगइनकरीता दर्जा आवश्यक नाही, तपास वगळत आहे..."
-
-#: ../src/Gui/CReporterAssistant.py:290
-#, python-format
-msgid "Rating is %s"
-msgstr "दर्जा %s आहे"
-
-#: ../src/Gui/CReporterAssistant.py:293
-msgid "Crashdump doesn't have rating => we suppose it's not required"
-msgstr "क्रॅशडम्पमध्ये दर्जा आढळले नाही => दर्जाची आवश्यकता नाही"
-
-#: ../src/Gui/CReporterAssistant.py:298
-msgid "You should check the backtrace for sensitive data."
-msgstr "संवेदनशील डाटाकरीता बॅकट्रेस तपासाणे आवश्यक आहे."
-
-#: ../src/Gui/CReporterAssistant.py:299
-msgid "You must agree with sending the backtrace."
-msgstr "बॅकट्रेस पाठण्याकरीता आपली मान्यता आवश्यक आहे."
-
-#: ../src/Gui/CReporterAssistant.py:314
-msgid "Reporting disabled because the backtrace is unusable."
-msgstr "बॅकट्रेस् वापरण्याजोगी नसल्यामुळे रिपोर्टिंग बंद केले."
-
-#: ../src/Gui/CReporterAssistant.py:360
-msgid "You did not provide any steps to reproduce."
-msgstr "पुनःनिर्माणकरीता तुम्ही पद्धती पुरवले नाही."
-
-#: ../src/Gui/CReporterAssistant.py:374
-msgid "You did not provide any comments."
-msgstr "तुम्ही कुठलेही टिपण्णी पुरवले नाही."
-
-#: ../src/Gui/CReporterAssistant.py:455
+#: ../src/Gui/CReporterAssistant.py:527
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -1104,15 +1177,15 @@ msgstr ""
 "\n"
 "बग कुठे कळवायचे त्याची नीवड करा, व पुढे जाण्यासाठी 'पुढे' दाबा."
 
-#: ../src/Gui/CReporterAssistant.py:515
+#: ../src/Gui/CReporterAssistant.py:587
 msgid "Only one reporter plugin is configured."
 msgstr "फक्त एकच रिपोर्टर प्लगइन संरचीत केले."
 
-#: ../src/Gui/CReporterAssistant.py:521
+#: ../src/Gui/CReporterAssistant.py:593
 msgid "Send a bug report"
 msgstr "बग अहवाल पाठवा"
 
-#: ../src/Gui/CReporterAssistant.py:559
+#: ../src/Gui/CReporterAssistant.py:631
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -1128,39 +1201,50 @@ msgstr ""
 "कुठल्याही प्रकारची सार्वजणीकपणे उघडकीस न करण्याजोगी संवेदनशील माहिती नाही याची खात्री "
 "करा:"
 
-#: ../src/Gui/CReporterAssistant.py:603
+#: ../src/Gui/CReporterAssistant.py:702 ../src/Gui/CReporterAssistant.py:715
+#: ../src/Gui/CReporterAssistant.py:749
+#, python-format
+msgid "Found %i occurence(s) [at: %i of %i]"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:786
+msgid "Search:"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:817
 msgid "Refresh"
 msgstr "पुनः ताजे करा"
 
-#: ../src/Gui/CReporterAssistant.py:605
+#: ../src/Gui/CReporterAssistant.py:819
 msgid "Copy"
 msgstr "प्रत बनवा"
 
-#: ../src/Gui/CReporterAssistant.py:611
+#: ../src/Gui/CReporterAssistant.py:825
 msgid "I agree with submitting the backtrace"
 msgstr "बॅकट्रेस सादर करण्यासाठी माझी मान्यता आहे"
 
-#: ../src/Gui/CReporterAssistant.py:616
+#: ../src/Gui/CReporterAssistant.py:830
 msgid "Approve the backtrace"
 msgstr "बॅकट्रेस वैध करा"
 
-#: ../src/Gui/CReporterAssistant.py:659
+#: ../src/Gui/CReporterAssistant.py:873
 msgid "You need to fill the how to before you can proceed..."
 msgstr "पुढे जाण्यापूर्वी तुम्हाला कसे भरायचे ते भरावे लागेल..."
 
-#: ../src/Gui/CReporterAssistant.py:682
+#: ../src/Gui/CReporterAssistant.py:896
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "हे क्रॅश कसे झाले (प्रक्रिया)? पुनःनिर्माण कसे करायचे?"
 
-#: ../src/Gui/CReporterAssistant.py:703
-msgid "Are there any comments you would like to share with the software maintainers?"
+#: ../src/Gui/CReporterAssistant.py:917
+msgid ""
+"Are there any comments you would like to share with the software maintainers?"
 msgstr "सॉफ्टवेअर मेइन्टेनर्स् सह काहिक टिपण्णी तुम्हाला सहभाग करायला आवडेल?"
 
-#: ../src/Gui/CReporterAssistant.py:723
+#: ../src/Gui/CReporterAssistant.py:937
 msgid "Provide additional details"
 msgstr "अगाऊ तपशील पुरवा"
 
-#: ../src/Gui/CReporterAssistant.py:729
+#: ../src/Gui/CReporterAssistant.py:943
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
@@ -1168,79 +1252,94 @@ msgstr ""
 "<b>टिप:</b> आपल्या टिपण्णी व्यक्तिगत नाही. कृपया आपण काय बोलत आहात याची काळजीपूर्वक "
 "खात्री करा."
 
-#: ../src/Gui/CReporterAssistant.py:770
+#: ../src/Gui/CReporterAssistant.py:984
 msgid "Confirm and send the report"
 msgstr "अहवाल निश्चित करा व पाठवा"
 
-#: ../src/Gui/CReporterAssistant.py:772
-msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
-msgstr "खालील तुमच्या बग अहवालाचे सारांश आहे. कृपया सादर करण्यासाठी 'लागू करा' यावर क्लिक करा."
+#: ../src/Gui/CReporterAssistant.py:986
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgstr ""
+"खालील तुमच्या बग अहवालाचे सारांश आहे. कृपया सादर करण्यासाठी 'लागू करा' यावर क्लिक करा."
 
-#: ../src/Gui/CReporterAssistant.py:777
+#: ../src/Gui/CReporterAssistant.py:991
 msgid "<b>Basic details</b>"
 msgstr "<b>मूळ तपशील</b>"
 
 #. left table
-#: ../src/Gui/CReporterAssistant.py:784
+#: ../src/Gui/CReporterAssistant.py:998
 msgid "Component"
 msgstr "घटक"
 
-#: ../src/Gui/CReporterAssistant.py:785
+#: ../src/Gui/CReporterAssistant.py:999
 msgid "Package"
 msgstr "संकुल"
 
-#: ../src/Gui/CReporterAssistant.py:786
+#: ../src/Gui/CReporterAssistant.py:1000
 msgid "Executable"
 msgstr "एक्जीक्यूटेबल"
 
-#: ../src/Gui/CReporterAssistant.py:787
+#: ../src/Gui/CReporterAssistant.py:1001
 msgid "Cmdline"
 msgstr "आदेशओळ"
 
 #. right table
-#: ../src/Gui/CReporterAssistant.py:789
+#: ../src/Gui/CReporterAssistant.py:1003
 msgid "Architecture"
 msgstr "आर्किटेक्चर"
 
-#: ../src/Gui/CReporterAssistant.py:790
+#: ../src/Gui/CReporterAssistant.py:1004
 msgid "Kernel"
 msgstr "कर्नल"
 
-#: ../src/Gui/CReporterAssistant.py:791
+#: ../src/Gui/CReporterAssistant.py:1005
 msgid "Release"
 msgstr "प्रकाशन"
 
-#: ../src/Gui/CReporterAssistant.py:792
+#: ../src/Gui/CReporterAssistant.py:1006
 msgid "Reason"
 msgstr "कारण"
 
-#: ../src/Gui/CReporterAssistant.py:803 ../src/Gui/report.glade.h:3
+#: ../src/Gui/CReporterAssistant.py:1017 ../src/Gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>बॅकट्रेस</b>"
 
-#: ../src/Gui/CReporterAssistant.py:806
+#: ../src/Gui/CReporterAssistant.py:1020
 msgid "Click to view..."
 msgstr "पहाण्याकरीता क्लिक करा..."
 
-#: ../src/Gui/CReporterAssistant.py:818
+#: ../src/Gui/CReporterAssistant.py:1032
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>पुनःनिर्माण करण्यासाठी पद्धती:</b>"
 
-#: ../src/Gui/CReporterAssistant.py:839
+#: ../src/Gui/CReporterAssistant.py:1053
 msgid "<b>Comments:</b>"
 msgstr "<b>टिपण्णी:</b>"
 
-#: ../src/Gui/CReporterAssistant.py:842
+#: ../src/Gui/CReporterAssistant.py:1056
 msgid "No comment provided!"
 msgstr "टिपण्णी पुरवली नाही!"
 
-#: ../src/Gui/CReporterAssistant.py:878
+#: ../src/Gui/CReporterAssistant.py:1092
 msgid "Finished sending the bug report"
 msgstr "बग अहवाल पाठवणे पूर्ण झाले"
 
-#: ../src/Gui/CReporterAssistant.py:882
+#: ../src/Gui/CReporterAssistant.py:1096
 msgid "<b>Bug reports:</b>"
 msgstr "<b>बग अहवाल:</b>"
+
+#: ../src/Gui/CReporterAssistant.py:1113
+msgid ""
+"Unable to get report!\n"
+"Is debuginfo missing?"
+msgstr ""
+"रिपोर्ट प्राप्त करण्यास अशक्य!\n"
+"debuginfo आढळले नाही?"
+
+#: ../src/Gui/CReporterAssistant.py:1150
+#, python-format
+msgid "Error acquiring the report: %s"
+msgstr "अहवाल प्राप्त करतेवेळी त्रुटी: %s"
 
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Log"
@@ -1504,3 +1603,21 @@ msgstr ""
 "उघडण्यासाठी कृपया खालील बटणांचा वापर करा व पुढे जाण्यापूर्वी त्यांस ठिक करा, नाहीतर, "
 "रिपोर्टिंग प्रक्रिया अपयशी ठरेल.\n"
 
+#~ msgid "You must check the backtrace for sensitive data."
+#~ msgstr "संवेदनशील डाटाकरीता तुम्ही बॅकट्रेस तपासायला हवे."
+
+#~ msgid "The backtrace is unusable, you cannot report this!"
+#~ msgstr "बॅकट्रेस वापरण्याजोगी नाही, यास कळवणे शक्य नाही!"
+
+#~ msgid "Reporting disabled, please fix the problems shown above."
+#~ msgstr "रिपोर्टिंग बंद केले, कृपया वरील निर्देशीत अडचणींचे निवारण करा."
+
+#~ msgid "Sends the report using the selected plugin."
+#~ msgstr "नीवडलेल्या प्लगइनचा वापर करून अहवाल पाठवतो."
+
+#~ msgid ""
+#~ "No reporter plugin available for this type of crash.\n"
+#~ "Please check abrt.conf."
+#~ msgstr ""
+#~ "या प्रकारच्या क्रॅशकरीता रिपोर्टर प्लगइन उपलब्ध नाही.\n"
+#~ "कृपया abrt.conf तपासा."

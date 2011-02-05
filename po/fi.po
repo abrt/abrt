@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-14 16:16+0100\n"
+"POT-Creation-Date: 2011-02-06 00:29+0100\n"
 "PO-Revision-Date: 2010-12-16 00:25+0200\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -47,50 +47,50 @@ msgstr "Kirjaudutaan bugzillaan..."
 msgid "Checking for duplicates..."
 msgstr "Etsitään samanlaisia..."
 
-#: ../lib/Plugins/Bugzilla.cpp:791 ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/Plugins/Bugzilla.cpp:792 ../lib/Plugins/Bugzilla.cpp:827
 msgid "Missing mandatory member 'bugs'"
 msgstr "Puuttuva pakollinen osa ”bugs”"
 
-#: ../lib/Plugins/Bugzilla.cpp:809 ../lib/Plugins/Bugzilla.cpp:842
-#: ../lib/Plugins/Bugzilla.cpp:918
+#: ../lib/Plugins/Bugzilla.cpp:810 ../lib/Plugins/Bugzilla.cpp:843
+#: ../lib/Plugins/Bugzilla.cpp:919
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() epäonnistui. Kaikkia pakollisia tietoja ei voitu kerätä."
 
-#: ../lib/Plugins/Bugzilla.cpp:858
+#: ../lib/Plugins/Bugzilla.cpp:859
 msgid "Creating a new bug..."
 msgstr "Luodaan uusi ohjelmavirheilmoitus..."
 
-#: ../lib/Plugins/Bugzilla.cpp:863
+#: ../lib/Plugins/Bugzilla.cpp:864
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla-ilmoituksen luominen epäonnistui"
 
-#: ../lib/Plugins/Bugzilla.cpp:873 ../lib/Plugins/Bugzilla.cpp:968
+#: ../lib/Plugins/Bugzilla.cpp:874 ../lib/Plugins/Bugzilla.cpp:969
 msgid "Logging out..."
 msgstr "Kirjaudutaan ulos..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:892
+#: ../lib/Plugins/Bugzilla.cpp:893
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Ohjelmavirheestä on jo tehty ilmoitus: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:903
+#: ../lib/Plugins/Bugzilla.cpp:904
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla ei löytänyt ylemmän tason vikailmoitusta ilmoitukselle %d"
 
-#: ../lib/Plugins/Bugzilla.cpp:932 ../lib/Plugins/Bugzilla.cpp:933
+#: ../lib/Plugins/Bugzilla.cpp:933 ../lib/Plugins/Bugzilla.cpp:934
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "Lisää %s CC-luetteloon"
 
-#: ../lib/Plugins/Bugzilla.cpp:957
+#: ../lib/Plugins/Bugzilla.cpp:958
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "﻿Lisää uusi kommentti vikailmoitukseen (%d)"
 
-#: ../lib/Plugins/Bugzilla.cpp:1056
+#: ../lib/Plugins/Bugzilla.cpp:1057
 msgid "Reports bugs to bugzilla"
 msgstr "Raportoi ohjelmavirheitä Bugzillaan"
 
@@ -111,7 +111,7 @@ msgstr "Ohitetaan debuginfon asennus"
 msgid "Backtrace parsing failed for %s"
 msgstr "Kohteen %s pinolistauksen jäsentäminen epäonnistui"
 
-#: ../lib/Plugins/CCpp.cpp:967
+#: ../lib/Plugins/CCpp.cpp:973
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Analysoi C/C++-ohjelmien kaatumisia"
 
@@ -205,11 +205,11 @@ msgstr ""
 msgid "Compressing data"
 msgstr ""
 
-#: ../lib/Plugins/RHTSupport.cpp:236
+#: ../lib/Plugins/RHTSupport.cpp:238
 msgid "Creating a new case..."
 msgstr "Luodaan uusi tapaus..."
 
-#: ../lib/Plugins/RHTSupport.cpp:312
+#: ../lib/Plugins/RHTSupport.cpp:315
 msgid "Reports bugs to Red Hat support"
 msgstr "Raportoi ohjelmavirheitä Red Hatin käyttötukeen"
 
@@ -382,30 +382,30 @@ msgstr "Kaatuminen on huomattu"
 msgid "ABRT service is not running"
 msgstr "ABRT-palvelu ei ole käytössä"
 
-#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
-#: ../src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:41 ../src/Applet/CCApplet.cpp:43
+#: ../src/Applet/CCApplet.cpp:266 ../src/Applet/CCApplet.cpp:293
 msgid "Warning"
 msgstr "Varoitus"
 
-#: ../src/Applet/CCApplet.cpp:89
+#: ../src/Applet/CCApplet.cpp:95
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "Ilmoitusalueen kuvake, joka kertoo käyttäjälle ABRT:n huomaamista ongelmista"
 
-#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:24
+#: ../src/Applet/CCApplet.cpp:111 ../src/Gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr "Ville-Pekka Vainio, 2009-2010."
 
-#: ../src/Applet/CCApplet.cpp:115
+#: ../src/Applet/CCApplet.cpp:121
 msgid "Hide"
 msgstr "Piilota"
 
-#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:14
+#: ../src/Applet/CCApplet.cpp:259 ../src/Gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "Raportti"
 
-#: ../src/Applet/CCApplet.cpp:256 ../src/Applet/CCApplet.cpp:284
+#: ../src/Applet/CCApplet.cpp:262 ../src/Applet/CCApplet.cpp:290
 msgid "Open ABRT"
 msgstr "Avaa ABRT"
 
@@ -718,6 +718,113 @@ msgstr ""
 msgid "Database plugin not specified. Please check abrtd settings."
 msgstr "Tietokantaliitännäistä ei ole määritetty. Tarkista abrtd:n asetukset."
 
+#: ../src/Daemon/abrt-debuginfo-install:72
+#, c-format
+msgid "Extracting cpio from %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:77
+msgid "Can't write to:"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:87
+msgid "Removing the temporary rpm file"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:91
+#, c-format
+msgid "Can't extract package: %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:99
+#, c-format
+msgid "Caching files from %s made from %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:107
+msgid "Removing the temporary cpio file"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:110
+#, c-format
+msgid "Can't extract files from: %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:134
+#: ../src/Daemon/abrt-debuginfo-install:140
+#, c-format
+msgid "Downloading (%i of %i) %.30s : %.3s %%"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:169
+#, fuzzy
+msgid "Searching the missing debuginfo packages"
+msgstr "Etsitään debug-info-paketteja..."
+
+#: ../src/Daemon/abrt-debuginfo-install:224
+#, c-format
+msgid "To download: (%.2f) M / Installed size: %.2f M"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:240
+msgid "Is this ok? [y/N] "
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:257
+#, c-format
+msgid "Downloading package %s failed"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:268
+msgid "Unpacking failed, aborting download..."
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:275
+#, c-format
+msgid "All downloaded packages have been extracted, removing %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:280
+#, c-format
+msgid "Can't remove %s, probably contains an error log"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:305
+msgid "Analyzing corefile: %(corefile_path)s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:384
+msgid "Can't remove %(tmpdir_path)s: %(reason)s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:394
+msgid "Exiting on user Command"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:435
+#, fuzzy
+msgid "You have to specify the path to coredump."
+msgstr "Kopioitava kaatuminen on valittava."
+
+#: ../src/Daemon/abrt-debuginfo-install:439
+#, fuzzy
+msgid "You have to specify the path to cachedir."
+msgstr "Kopioitava kaatuminen on valittava."
+
+#: ../src/Daemon/abrt-debuginfo-install:443
+#, fuzzy
+msgid "You have to specify the path to tmpdir."
+msgstr "Kopioitava kaatuminen on valittava."
+
+#: ../src/Daemon/abrt-debuginfo-install:456
+msgid "All debuginfo seems to be available"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:463
+#, fuzzy
+msgid "Complete!"
+msgstr "Komponentti"
+
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
 msgstr "Katsele ja raportoi ohjelmien kaatumisia"
@@ -752,16 +859,16 @@ msgstr "Raportointiliitännäiset"
 msgid "Database plugins"
 msgstr "Tietokantaliitännäiset"
 
-#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:75 ../src/Gui/CCDBusBackend.py:98
 msgid "Cannot connect to system dbus."
 msgstr "Järjestelmäväylään ei saatu yhteyttä."
 
-#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
+#: ../src/Gui/CCDBusBackend.py:121 ../src/Gui/CCDBusBackend.py:124
 msgid "Please check if the abrt daemon is running."
 msgstr "Tarkista onko abrt-taustaprosessi käynnissä."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/Gui/CCDBusBackend.py:174
+#: ../src/Gui/CCDBusBackend.py:175
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
@@ -844,7 +951,7 @@ msgstr ""
 "Tämän ohjelman mukana pitäisi tulla kopio GPL-lisenssistä. Jos näin ei ole, "
 "katso <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:20
+#: ../src/Gui/ccgui.glade.h:20 ../src/Gui/CReporterAssistant.py:111
 msgid "View log"
 msgstr "Näytä loki"
 
@@ -937,97 +1044,6 @@ msgstr ""
 "Tätä kaatumista ei ole tietokannassa, crashid on ehkä väärä.\n"
 "crashid=%s"
 
-#. default texts
-#: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:20
-msgid "Brief description of how to reproduce this or what you did..."
-msgstr ""
-"Lyhyt kuvaus siitä, miten tämän pystyy toistamaan tai mitä olit tekemässä..."
-
-#: ../src/Gui/CCReporterDialog.py:107
-msgid "You must check the backtrace for sensitive data."
-msgstr "Tarkista pinolistaus arkaluontoisten tietojen varalta."
-
-#: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:312
-#, python-format
-msgid ""
-"Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using the command: <b>debuginfo-"
-"install %s</b> \n"
-"then use the Refresh button to regenerate the backtrace."
-msgstr ""
-"Raportointi on poistettu käytöstä, koska virheenjäljitystiedot ovat "
-"hyödyttömät.\n"
-"Yritä asentaa debuginfo manuaalisesti komennolla: <b>debuginfo-install %s</"
-"b>\n"
-"Käytä sitten Päivitä-painiketta virheenjäljitystietojen generoimiseksi "
-"uudelleen."
-
-#: ../src/Gui/CCReporterDialog.py:120
-msgid "The backtrace is unusable, you cannot report this!"
-msgstr "Virheenjäljitystiedot ovat hyödyttömät, tätä ei voi raportoida!"
-
-#: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:318
-msgid ""
-"The backtrace is incomplete, please make sure you provide the steps to "
-"reproduce."
-msgstr ""
-"Virheenjäljitystiedot ovat epätäydelliset, varmista että olet kertonut "
-"tarkat vaiheet virheen toistamiseen."
-
-#: ../src/Gui/CCReporterDialog.py:130
-msgid "Reporting disabled, please fix the problems shown above."
-msgstr "Raportointi on poistettu käytöstä, korjaa yllä mainitut ongelmat."
-
-#: ../src/Gui/CCReporterDialog.py:132
-msgid "Sends the report using the selected plugin."
-msgstr "Lähettää raportin käyttäen valittua liitännäistä."
-
-#: ../src/Gui/CCReporterDialog.py:398
-msgid ""
-"No reporter plugin available for this type of crash.\n"
-"Please check abrt.conf."
-msgstr ""
-"Tämäntyyppiselle kaatumiselle ei ole saatavilla raportoijaliitännäistä.\n"
-"Tarkista abrt.conf."
-
-#: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:205
-#: ../src/Gui/PluginsSettingsDialog.py:170
-#, python-format
-msgid ""
-"Cannot save plugin settings:\n"
-" %s"
-msgstr ""
-"Liitännäisen asetuksia ei voida tallentaa:\n"
-" %s"
-
-#: ../src/Gui/CCReporterDialog.py:448 ../src/Gui/CReporterAssistant.py:235
-#, python-format
-msgid "Configure %s options"
-msgstr "Tee liitännäisen %s asetukset"
-
-#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:899
-msgid ""
-"Unable to get report!\n"
-"Is debuginfo missing?"
-msgstr ""
-"Raporttia ei saatu!\n"
-"Puuttuuko debuginfo?"
-
-#: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:403
-#, python-format
-msgid ""
-"Reporting failed!\n"
-"%s"
-msgstr ""
-"Raportin tekeminen epäonnistui!\n"
-"%s"
-
-#: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
-#: ../src/Gui/CReporterAssistant.py:938
-#, python-format
-msgid "Error acquiring the report: %s"
-msgstr "Raportin hankkiminen epäonnistui: %s"
-
 #: ../src/Gui/ConfBackend.py:79
 #, fuzzy
 msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
@@ -1059,49 +1075,101 @@ msgstr ""
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr "Gnomen avainnippuun on pääsy kielletty, asetuksia ei voi ladata."
 
+#: ../src/Gui/CReporterAssistant.py:20
+msgid "Brief description of how to reproduce this or what you did..."
+msgstr ""
+"Lyhyt kuvaus siitä, miten tämän pystyy toistamaan tai mitä olit tekemässä..."
+
 #: ../src/Gui/CReporterAssistant.py:21
 msgid "Crash info doesn't contain a backtrace"
 msgstr "Kaatumistiedot eivät sisällä pinolistausta"
 
-#: ../src/Gui/CReporterAssistant.py:284
+#: ../src/Gui/CReporterAssistant.py:277
+#: ../src/Gui/PluginsSettingsDialog.py:170
+#, python-format
+msgid ""
+"Cannot save plugin settings:\n"
+" %s"
+msgstr ""
+"Liitännäisen asetuksia ei voida tallentaa:\n"
+" %s"
+
+#: ../src/Gui/CReporterAssistant.py:307
+#, python-format
+msgid "Configure %s options"
+msgstr "Tee liitännäisen %s asetukset"
+
+#: ../src/Gui/CReporterAssistant.py:356
 #, python-format
 msgid "Rating is required by the %s plugin"
 msgstr "Liitännäinen %s vaatii arvostelun"
 
-#: ../src/Gui/CReporterAssistant.py:286
+#: ../src/Gui/CReporterAssistant.py:358
 msgid "Rating is not required by any plugin, skipping the check..."
 msgstr "Mikään liitännäinen ei vaadi arvostelua, ohitetaan tarkistus..."
 
-#: ../src/Gui/CReporterAssistant.py:290
+#: ../src/Gui/CReporterAssistant.py:362
 #, python-format
 msgid "Rating is %s"
 msgstr "Arvostelu on %s"
 
-#: ../src/Gui/CReporterAssistant.py:293
+#: ../src/Gui/CReporterAssistant.py:365
 msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr "Kaatumisella ei ole arvostelua, oletetaan ettei sitä vaadita"
 
-#: ../src/Gui/CReporterAssistant.py:298
+#: ../src/Gui/CReporterAssistant.py:370
 msgid "You should check the backtrace for sensitive data."
 msgstr "Tarkista pinolistaus luottamuksellisien tietojen varalta."
 
-#: ../src/Gui/CReporterAssistant.py:299
+#: ../src/Gui/CReporterAssistant.py:371
 msgid "You must agree with sending the backtrace."
 msgstr "Pinolistauksen lähettäminen on hyväksyttävä."
 
-#: ../src/Gui/CReporterAssistant.py:314
+#: ../src/Gui/CReporterAssistant.py:384
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable.\n"
+"Please try to install debuginfo manually using the command: <b>debuginfo-"
+"install %s</b> \n"
+"then use the Refresh button to regenerate the backtrace."
+msgstr ""
+"Raportointi on poistettu käytöstä, koska virheenjäljitystiedot ovat "
+"hyödyttömät.\n"
+"Yritä asentaa debuginfo manuaalisesti komennolla: <b>debuginfo-install %s</"
+"b>\n"
+"Käytä sitten Päivitä-painiketta virheenjäljitystietojen generoimiseksi "
+"uudelleen."
+
+#: ../src/Gui/CReporterAssistant.py:386
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Raportointi on poistettu käytöstä, koska pinolistaus on hyödytön."
 
-#: ../src/Gui/CReporterAssistant.py:360
+#: ../src/Gui/CReporterAssistant.py:390
+msgid ""
+"The backtrace is incomplete, please make sure you provide the steps to "
+"reproduce."
+msgstr ""
+"Virheenjäljitystiedot ovat epätäydelliset, varmista että olet kertonut "
+"tarkat vaiheet virheen toistamiseen."
+
+#: ../src/Gui/CReporterAssistant.py:432
 msgid "You did not provide any steps to reproduce."
 msgstr "Vian toistamiseksi tarvittavia vaiheita ei ole annettu."
 
-#: ../src/Gui/CReporterAssistant.py:374
+#: ../src/Gui/CReporterAssistant.py:446
 msgid "You did not provide any comments."
 msgstr "Kommentteja ei ole annettu."
 
-#: ../src/Gui/CReporterAssistant.py:455
+#: ../src/Gui/CReporterAssistant.py:475
+#, python-format
+msgid ""
+"Reporting failed!\n"
+"%s"
+msgstr ""
+"Raportin tekeminen epäonnistui!\n"
+"%s"
+
+#: ../src/Gui/CReporterAssistant.py:527
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -1125,15 +1193,15 @@ msgstr ""
 "\n"
 "Valitse minne vikailmoitus tehdään ja napsauta ”Eteenpäin”."
 
-#: ../src/Gui/CReporterAssistant.py:515
+#: ../src/Gui/CReporterAssistant.py:587
 msgid "Only one reporter plugin is configured."
 msgstr "Vain yksi raportoijaliitännäinen on määritetty."
 
-#: ../src/Gui/CReporterAssistant.py:521
+#: ../src/Gui/CReporterAssistant.py:593
 msgid "Send a bug report"
 msgstr "Lähetä vikaraportti"
 
-#: ../src/Gui/CReporterAssistant.py:559
+#: ../src/Gui/CReporterAssistant.py:631
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -1148,120 +1216,143 @@ msgstr ""
 "Tarkista pinolistaus ja muokkaa sitä tarvittaessa siten, että raportissa ei "
 "ole mitään yksityistä tietoa, mitä et halua jakaa:"
 
-#: ../src/Gui/CReporterAssistant.py:603
+#: ../src/Gui/CReporterAssistant.py:702 ../src/Gui/CReporterAssistant.py:715
+#: ../src/Gui/CReporterAssistant.py:749
+#, python-format
+msgid "Found %i occurence(s) [at: %i of %i]"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:786
+msgid "Search:"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:817
 msgid "Refresh"
 msgstr "Päivitä"
 
-#: ../src/Gui/CReporterAssistant.py:605
+#: ../src/Gui/CReporterAssistant.py:819
 msgid "Copy"
 msgstr "Kopioi"
 
-#: ../src/Gui/CReporterAssistant.py:611
+#: ../src/Gui/CReporterAssistant.py:825
 msgid "I agree with submitting the backtrace"
 msgstr "Pinolistauksen saa lähettää"
 
-#: ../src/Gui/CReporterAssistant.py:616
+#: ../src/Gui/CReporterAssistant.py:830
 msgid "Approve the backtrace"
 msgstr "Hyväksy pinolistaus"
 
-#: ../src/Gui/CReporterAssistant.py:659
+#: ../src/Gui/CReporterAssistant.py:873
 msgid "You need to fill the how to before you can proceed..."
 msgstr "Toisto-ohjeet on täytettävä ennen kuin voit jatkaa…"
 
-#: ../src/Gui/CReporterAssistant.py:682
+#: ../src/Gui/CReporterAssistant.py:896
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "Kuinka tämä kaatuminen tapahtui? Kuinka sen pystyy toistamaan?"
 
-#: ../src/Gui/CReporterAssistant.py:703
+#: ../src/Gui/CReporterAssistant.py:917
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr "Haluatko lähettää ohjelmistoylläpitäjille jotain kommentteja?"
 
-#: ../src/Gui/CReporterAssistant.py:723
+#: ../src/Gui/CReporterAssistant.py:937
 msgid "Provide additional details"
 msgstr "Anna lisätietoja"
 
-#: ../src/Gui/CReporterAssistant.py:729
+#: ../src/Gui/CReporterAssistant.py:943
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr "<b>Vinkki:</b> Kommentit ovat julkisia."
 
-#: ../src/Gui/CReporterAssistant.py:770
+#: ../src/Gui/CReporterAssistant.py:984
 msgid "Confirm and send the report"
 msgstr "Vahvista ja lähetä raportti"
 
-#: ../src/Gui/CReporterAssistant.py:772
+#: ../src/Gui/CReporterAssistant.py:986
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Alla on yhteenveto vikaraportista. Napsauta ”Toteuta” sen lähettämiseksi."
 
-#: ../src/Gui/CReporterAssistant.py:777
+#: ../src/Gui/CReporterAssistant.py:991
 msgid "<b>Basic details</b>"
 msgstr "<b>Perustiedot</b>"
 
 #. left table
-#: ../src/Gui/CReporterAssistant.py:784
+#: ../src/Gui/CReporterAssistant.py:998
 msgid "Component"
 msgstr "Komponentti"
 
-#: ../src/Gui/CReporterAssistant.py:785
+#: ../src/Gui/CReporterAssistant.py:999
 msgid "Package"
 msgstr "Paketti"
 
-#: ../src/Gui/CReporterAssistant.py:786
+#: ../src/Gui/CReporterAssistant.py:1000
 msgid "Executable"
 msgstr "Suoritettava tiedosto"
 
-#: ../src/Gui/CReporterAssistant.py:787
+#: ../src/Gui/CReporterAssistant.py:1001
 msgid "Cmdline"
 msgstr "Komentorivi"
 
 #. right table
-#: ../src/Gui/CReporterAssistant.py:789
+#: ../src/Gui/CReporterAssistant.py:1003
 msgid "Architecture"
 msgstr "Arkkitehtuuri"
 
-#: ../src/Gui/CReporterAssistant.py:790
+#: ../src/Gui/CReporterAssistant.py:1004
 msgid "Kernel"
 msgstr "Ydin"
 
-#: ../src/Gui/CReporterAssistant.py:791
+#: ../src/Gui/CReporterAssistant.py:1005
 msgid "Release"
 msgstr "Julkaisu"
 
-#: ../src/Gui/CReporterAssistant.py:792
+#: ../src/Gui/CReporterAssistant.py:1006
 msgid "Reason"
 msgstr "Syy"
 
-#: ../src/Gui/CReporterAssistant.py:803 ../src/Gui/report.glade.h:3
+#: ../src/Gui/CReporterAssistant.py:1017 ../src/Gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>Pinolistaus</b>"
 
-#: ../src/Gui/CReporterAssistant.py:806
+#: ../src/Gui/CReporterAssistant.py:1020
 msgid "Click to view..."
 msgstr "Näytä napsauttamalla..."
 
-#: ../src/Gui/CReporterAssistant.py:818
+#: ../src/Gui/CReporterAssistant.py:1032
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Ohjeet ongelman toistamiseen:</b>"
 
-#: ../src/Gui/CReporterAssistant.py:839
+#: ../src/Gui/CReporterAssistant.py:1053
 msgid "<b>Comments:</b>"
 msgstr "<b>Kommentit:</b>"
 
-#: ../src/Gui/CReporterAssistant.py:842
+#: ../src/Gui/CReporterAssistant.py:1056
 msgid "No comment provided!"
 msgstr "Kommentteja ei ole annettu!"
 
-#: ../src/Gui/CReporterAssistant.py:878
+#: ../src/Gui/CReporterAssistant.py:1092
 msgid "Finished sending the bug report"
 msgstr "Vikaraportin lähetys valmistui"
 
-#: ../src/Gui/CReporterAssistant.py:882
+#: ../src/Gui/CReporterAssistant.py:1096
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Vikaraportit:</b>"
+
+#: ../src/Gui/CReporterAssistant.py:1113
+msgid ""
+"Unable to get report!\n"
+"Is debuginfo missing?"
+msgstr ""
+"Raporttia ei saatu!\n"
+"Puuttuuko debuginfo?"
+
+#: ../src/Gui/CReporterAssistant.py:1150
+#, python-format
+msgid "Error acquiring the report: %s"
+msgstr "Raportin hankkiminen epäonnistui: %s"
 
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Log"
@@ -1528,6 +1619,25 @@ msgstr ""
 "virheellisiksi. Käytä alla olevia painikkeita liitännäisten asetusten "
 "avaamiseksi ja korjaa virheet tai raportointi saattaa epäonnistua.\n"
 
+#~ msgid "You must check the backtrace for sensitive data."
+#~ msgstr "Tarkista pinolistaus arkaluontoisten tietojen varalta."
+
+#~ msgid "The backtrace is unusable, you cannot report this!"
+#~ msgstr "Virheenjäljitystiedot ovat hyödyttömät, tätä ei voi raportoida!"
+
+#~ msgid "Reporting disabled, please fix the problems shown above."
+#~ msgstr "Raportointi on poistettu käytöstä, korjaa yllä mainitut ongelmat."
+
+#~ msgid "Sends the report using the selected plugin."
+#~ msgstr "Lähettää raportin käyttäen valittua liitännäistä."
+
+#~ msgid ""
+#~ "No reporter plugin available for this type of crash.\n"
+#~ "Please check abrt.conf."
+#~ msgstr ""
+#~ "Tämäntyyppiselle kaatumiselle ei ole saatavilla raportoijaliitännäistä.\n"
+#~ "Tarkista abrt.conf."
+
 #~ msgid "Getting global universal unique identification..."
 #~ msgstr "Haetaan yleinen ainutkertainen tunnus..."
 
@@ -1695,9 +1805,6 @@ msgstr ""
 
 #~ msgid "gtk-remove"
 #~ msgstr "gtk-remove"
-
-#~ msgid "Searching for debug-info packages..."
-#~ msgstr "Etsitään debug-info-paketteja..."
 
 #~ msgid "Downloading and installing debug-info packages..."
 #~ msgstr "Ladataan ja asennetaan debug-info-paketteja..."

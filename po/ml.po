@@ -11,14 +11,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.1-1-x.ml\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-27 07:45+0000\n"
+"POT-Creation-Date: 2011-02-06 00:29+0100\n"
 "PO-Revision-Date: 2011-01-27 20:50+0530\n"
 "Last-Translator:  Ani Peter <apeter@redhat.com>\n"
 "Language-Team:  Swathantra Malayalam computing\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
@@ -117,7 +117,7 @@ msgstr "debuginfo ഇന്‍സ്റ്റലേഷന്‍ ഉപേക്�
 msgid "Backtrace parsing failed for %s"
 msgstr "%s-നുള്ള ബാക്ക്ട്രെയിസ് പാഴ്സിങ് പരാജയപ്പെട്ടു"
 
-#: ../lib/Plugins/CCpp.cpp:967
+#: ../lib/Plugins/CCpp.cpp:973
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "C/C++ പ്രോഗ്രാമുകളിലുള്ള തകരാറുകള്‍ നിരീക്ഷിയ്ക്കുക"
 
@@ -200,8 +200,10 @@ msgid "Creating a ReportUploader report..."
 msgstr "ഒരു ReportUploader റിപോര്‍ട്ട് തയ്യാറാക്കുന്നു..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-msgstr ".tar.gz ഫയലിലേക്ക് തകരാറുകള്ള ഡേറ്റാ സൂക്ഷിയ്ക്കുന്നു, FTP/SCP/etc വഴിയും അപ്‌ലോഡ് ചെയ്യുന്നു"
+msgid ""
+"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgstr ""
+".tar.gz ഫയലിലേക്ക് തകരാറുകള്ള ഡേറ്റാ സൂക്ഷിയ്ക്കുന്നു, FTP/SCP/etc വഴിയും അപ്‌ലോഡ് ചെയ്യുന്നു"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../lib/Plugins/RHTSupport.cpp:106
@@ -391,7 +393,8 @@ msgid "Warning"
 msgstr "മുന്നറിയിപ്പു്"
 
 #: ../src/Applet/CCApplet.cpp:95
-msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT കണ്ടുപിടിക്കുന്ന പ്രശ്നങ്ങളെപ്പറ്റി ഉപയോക്താവിനെ അറിയിക്കുന്നതിനായുള്ള ആപ്ലെറ്റ്"
 
 #: ../src/Applet/CCApplet.cpp:111 ../src/Gui/ccgui.glade.h:24
@@ -711,7 +714,115 @@ msgstr ""
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
-msgstr "ഡേറ്റാബെയിസ് പ്ലഗിന്‍ വ്യക്തമാക്കിയിട്ടില്ല. ദയവായി abrtd സജ്ജീകരണങ്ങള്‍ പരിശോധിയ്ക്കുക."
+msgstr ""
+"ഡേറ്റാബെയിസ് പ്ലഗിന്‍ വ്യക്തമാക്കിയിട്ടില്ല. ദയവായി abrtd സജ്ജീകരണങ്ങള്‍ പരിശോധിയ്ക്കുക."
+
+#: ../src/Daemon/abrt-debuginfo-install:72
+#, c-format
+msgid "Extracting cpio from %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:77
+msgid "Can't write to:"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:87
+msgid "Removing the temporary rpm file"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:91
+#, c-format
+msgid "Can't extract package: %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:99
+#, c-format
+msgid "Caching files from %s made from %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:107
+msgid "Removing the temporary cpio file"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:110
+#, c-format
+msgid "Can't extract files from: %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:134
+#: ../src/Daemon/abrt-debuginfo-install:140
+#, c-format
+msgid "Downloading (%i of %i) %.30s : %.3s %%"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:169
+#, fuzzy
+msgid "Searching the missing debuginfo packages"
+msgstr "debuginfo ഇന്‍സ്റ്റലേഷന്‍ ആരംഭിക്കുന്നു"
+
+#: ../src/Daemon/abrt-debuginfo-install:224
+#, c-format
+msgid "To download: (%.2f) M / Installed size: %.2f M"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:240
+msgid "Is this ok? [y/N] "
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:257
+#, c-format
+msgid "Downloading package %s failed"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:268
+msgid "Unpacking failed, aborting download..."
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:275
+#, c-format
+msgid "All downloaded packages have been extracted, removing %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:280
+#, c-format
+msgid "Can't remove %s, probably contains an error log"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:305
+msgid "Analyzing corefile: %(corefile_path)s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:384
+msgid "Can't remove %(tmpdir_path)s: %(reason)s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:394
+msgid "Exiting on user Command"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:435
+#, fuzzy
+msgid "You have to specify the path to coredump."
+msgstr "പകര്‍ത്തുവാനുള്ള ഒരു പകര്‍പ്പു് തെരഞ്ഞെടുക്കേണ്ടതുണ്ടു്."
+
+#: ../src/Daemon/abrt-debuginfo-install:439
+#, fuzzy
+msgid "You have to specify the path to cachedir."
+msgstr "പകര്‍ത്തുവാനുള്ള ഒരു പകര്‍പ്പു് തെരഞ്ഞെടുക്കേണ്ടതുണ്ടു്."
+
+#: ../src/Daemon/abrt-debuginfo-install:443
+#, fuzzy
+msgid "You have to specify the path to tmpdir."
+msgstr "പകര്‍ത്തുവാനുള്ള ഒരു പകര്‍പ്പു് തെരഞ്ഞെടുക്കേണ്ടതുണ്ടു്."
+
+#: ../src/Daemon/abrt-debuginfo-install:456
+msgid "All debuginfo seems to be available"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:463
+#, fuzzy
+msgid "Complete!"
+msgstr "ഘടകം"
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -722,8 +833,10 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "മറ്റൊരു ക്ലൈന്റ് പ്രവര്‍ത്തിക്കുന്നു, ലഭ്യമാക്കുവാന്‍ ശ്രമിക്കുന്നു..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid "Got unexpected data from the daemon (is the database properly updated?)."
-msgstr "ഡെമണില്‍ നിന്നും അപ്രതീക്ഷിതമായ ഡേറ്റാ ലഭിച്ചു (ഈ ഡേറ്റാബെയിസ് ശരിയായി പുതുക്കിയോ?). "
+msgid ""
+"Got unexpected data from the daemon (is the database properly updated?)."
+msgstr ""
+"ഡെമണില്‍ നിന്നും അപ്രതീക്ഷിതമായ ഡേറ്റാ ലഭിച്ചു (ഈ ഡേറ്റാബെയിസ് ശരിയായി പുതുക്കിയോ?). "
 
 #: ../src/Gui/ABRTPlugin.py:71
 msgid "Not loaded plugins"
@@ -745,16 +858,16 @@ msgstr "റിപോര്‍ട്ടര്‍ പ്ലഗിനുകള്�
 msgid "Database plugins"
 msgstr "ഡേറ്റാബെയിസ് പ്ലഗിനുകള്‍"
 
-#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:75 ../src/Gui/CCDBusBackend.py:98
 msgid "Cannot connect to system dbus."
 msgstr "സിസ്റ്റം dbus-ലേക്ക് കണക്ട് ചെയ്യുവാന്‍ സാധ്യമല്ല."
 
-#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
+#: ../src/Gui/CCDBusBackend.py:121 ../src/Gui/CCDBusBackend.py:124
 msgid "Please check if the abrt daemon is running."
 msgstr "abrt ഡെമണ്‍ പ്രവര്‍ത്തിക്കുന്നുണ്ടോ എന്നു് പരിശോധിക്കുക."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/Gui/CCDBusBackend.py:174
+#: ../src/Gui/CCDBusBackend.py:175
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
@@ -836,7 +949,7 @@ msgstr ""
 "ഈ പ്രോഗ്രാമിനൊപ്പം നിങ്ങള്‍ക്കു് ഗ്നു ജനറല്‍ പബ്ളിക് ലൈസന്‍സിന്റെ ഒരു പകര്‍പ്പും ലഭിച്ചിരിക്കണം, "
 "ഇല്ലായെങ്കില്‍,  <http://www.gnu.org/licenses/> കാണുക."
 
-#: ../src/Gui/ccgui.glade.h:20
+#: ../src/Gui/ccgui.glade.h:20 ../src/Gui/CReporterAssistant.py:111
 msgid "View log"
 msgstr "ലോഗ് കാണുക"
 
@@ -929,16 +1042,87 @@ msgstr ""
 "ഡേറ്റാബെയ്സില്‍ അത്തരമൊരു തകരാര്‍ ലഭ്യമല്ല, തെറ്റായ crashid ആവാം.\n"
 "crashid=%s"
 
-#. default texts
-#: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:20
+#: ../src/Gui/ConfBackend.py:79
+msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
+msgstr ""
+"ഗ്നോം കീറിങ് ഡെമണിലേക്ക് കണക്ട് ചെയ്യുവാന്‍ സാധ്യമല്ല, മാറ്റങ്ങള്‍ അതിനാല്‍ സൂക്ഷിയ്ക്കുന്നതല്ല."
+
+#. could happen if keyring daemon is running, but we run gui under
+#. user who is not the owner of the running session - using su
+#: ../src/Gui/ConfBackend.py:86
+msgid "Cannot get the default keyring."
+msgstr "സ്വതവേയുള്ള കീറിങ് ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല."
+
+#: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgstr ""
+"gnome-keyring-ലേക്കുള്ള പ്രവേശനം നിഷേധിച്ചിരിയ്ക്കുന്നു, പ്ലഗിന്‍ സജ്ജീകരണങ്ങള്‍ സൂക്ഷിയ്ക്കുന്നതല്ല."
+
+#. we tried 2 times, so giving up the authorization
+#: ../src/Gui/ConfBackend.py:155
+#, python-format
+msgid ""
+"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgstr ""
+"gnome-keyring-ലേക്കുള്ള പ്രവേശനം നിഷേധിച്ചിരിയ്ക്കുന്നു, %s-നുള്ള സജ്ജീകരണങ്ങള്‍ ലഭ്യമാക്കുവാന്‍ "
+"സാധ്യമല്ല!"
+
+#: ../src/Gui/ConfBackend.py:208
+msgid "Access to gnome-keyring has been denied, cannot load settings."
+msgstr ""
+"gnome-keyring-ലേക്കുള്ള പ്രവേശനം നിഷേധിച്ചിരിയ്ക്കുന്നു, സജ്ജീകരണങ്ങള്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല."
+
+#: ../src/Gui/CReporterAssistant.py:20
 msgid "Brief description of how to reproduce this or what you did..."
 msgstr "ഇതെങ്ങനെ ഉണ്ടായി എന്നുള്ളതിന്റെ വിവരണം..."
 
-#: ../src/Gui/CCReporterDialog.py:107
-msgid "You must check the backtrace for sensitive data."
+#: ../src/Gui/CReporterAssistant.py:21
+msgid "Crash info doesn't contain a backtrace"
+msgstr "തകാറിനെപ്പറ്റിയുള്ള വിവരത്തില്‍ ബാക്ക്ട്രെയിസ് ലഭ്യമല്ല"
+
+#: ../src/Gui/CReporterAssistant.py:277
+#: ../src/Gui/PluginsSettingsDialog.py:170
+#, python-format
+msgid ""
+"Cannot save plugin settings:\n"
+" %s"
+msgstr ""
+"പ്ലഗിന്‍ സജ്ജീകരണങ്ങള്‍ സൂക്ഷിക്കുവാന്‍ സാധ്യമല്ല:\n"
+" %s"
+
+#: ../src/Gui/CReporterAssistant.py:307
+#, python-format
+msgid "Configure %s options"
+msgstr "%s ഐഛികങ്ങള്‍ ക്രമീകരിക്കുക"
+
+#: ../src/Gui/CReporterAssistant.py:356
+#, python-format
+msgid "Rating is required by the %s plugin"
+msgstr "%s പ്ലഗിനു് റേറ്റിങ് ആവശ്യമുണ്ടു്"
+
+#: ../src/Gui/CReporterAssistant.py:358
+msgid "Rating is not required by any plugin, skipping the check..."
+msgstr "ഒരു പ്ലഗിനും റേറ്റിങ് ആവശ്യമില്ല, പരിശോധന ഉപേക്ഷിയ്ക്കുന്നു..."
+
+#: ../src/Gui/CReporterAssistant.py:362
+#, python-format
+msgid "Rating is %s"
+msgstr "റേറ്റിങ്: %s"
+
+#: ../src/Gui/CReporterAssistant.py:365
+msgid "Crashdump doesn't have rating => we suppose it's not required"
+msgstr "ക്രാഷ്ഡമ്പിനു് റേറ്റിങ് ലഭ്യമല്ല => ആവശ്യമില്ലെന്നു് കരുതുന്നു"
+
+#: ../src/Gui/CReporterAssistant.py:370
+msgid "You should check the backtrace for sensitive data."
 msgstr "സെന്‍സിറ്റീവ് ഡേറ്റയ്ക്കായി ബാക്ക്ട്രെയിസ് പരിശോധിക്കണം."
 
-#: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:312
+#: ../src/Gui/CReporterAssistant.py:371
+msgid "You must agree with sending the backtrace."
+msgstr "ബാക്ക്ട്രെയിസ് അയയ്ക്കുവാന്‍ സമ്മതിയ്ക്കുക."
+
+#: ../src/Gui/CReporterAssistant.py:384
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -951,58 +1135,25 @@ msgstr ""
 "install %s</b> \n"
 "ശേഷം പുതുക്കുക ബട്ടണ്‍ ഉപയോഗിച്ചു് ബാക്ക്ട്രെയിസ് തയ്യാറാക്കുവാന്‍ ശ്രമിക്കുക."
 
-#: ../src/Gui/CCReporterDialog.py:120
-msgid "The backtrace is unusable, you cannot report this!"
-msgstr "ബാക്ക്ട്രെയിസ് ഉപയോഗിക്കുവാന്‍ സാധ്യമല്ല, ഇതു് രേഖപ്പെടുത്തുവാന്‍ പാടില്ല!"
+#: ../src/Gui/CReporterAssistant.py:386
+msgid "Reporting disabled because the backtrace is unusable."
+msgstr "ബാക്ക്ട്രെയിസ് ഉപയോഗപ്രദമല്ല, അതിനാല്‍ റിപോര്‍ട്ട് ചെയ്യുന്നതു് നിര്‍ജീവമാക്കിയിരിക്കുന്നു."
 
-#: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:318
+#: ../src/Gui/CReporterAssistant.py:390
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "ബാക്ക്ട്രെയിസ് പൂര്‍ണ്ണമല്ല, തയ്യാറാക്കുന്നതിനുള്ള ഉത്തമ രീതികള്‍ ദയവായി നല്‍കുക."
 
-#: ../src/Gui/CCReporterDialog.py:130
-msgid "Reporting disabled, please fix the problems shown above."
-msgstr ""
-"റിപോര്‍ട്ട് ചെയ്യുന്നതു് നിര്‍ജീവമാക്കിയിരിക്കുന്നു, ദയവായി മുകളില്‍ പറഞ്ഞിരിക്കുന്ന പ്രശ്നങ്ങള്‍ "
-"പരിഹരിക്കുക."
+#: ../src/Gui/CReporterAssistant.py:432
+msgid "You did not provide any steps to reproduce."
+msgstr "തകരാര്‍ ലഭ്യമാക്കുന്നതിനുള്ള നടപടികള്‍ നല്‍കിയിട്ടില്ല."
 
-#: ../src/Gui/CCReporterDialog.py:132
-msgid "Sends the report using the selected plugin."
-msgstr "തെരഞ്ഞെടുത്ത പ്ലഗിന്‍ ഉപയോഗിച്ചു് റിപോര്‍ട്ട് അയയ്ക്കുന്നു."
+#: ../src/Gui/CReporterAssistant.py:446
+msgid "You did not provide any comments."
+msgstr "ഒരു അഭിപ്രായങ്ങളും നല്‍കിയിട്ടില്ല."
 
-#: ../src/Gui/CCReporterDialog.py:398
-msgid ""
-"No reporter plugin available for this type of crash.\n"
-"Please check abrt.conf."
-msgstr ""
-"ഈ തരത്തിലുള്ള തകരാറുകള്‍ക്കുള്ള പ്ലഗിന്‍ ലഭ്യമല്ല.\n"
-"ദയവായി abrt.conf പരിശോധിക്കുക."
-
-#: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:205
-#: ../src/Gui/PluginsSettingsDialog.py:170
-#, python-format
-msgid ""
-"Cannot save plugin settings:\n"
-" %s"
-msgstr ""
-"പ്ലഗിന്‍ സജ്ജീകരണങ്ങള്‍ സൂക്ഷിക്കുവാന്‍ സാധ്യമല്ല:\n"
-" %s"
-
-#: ../src/Gui/CCReporterDialog.py:448 ../src/Gui/CReporterAssistant.py:235
-#, python-format
-msgid "Configure %s options"
-msgstr "%s ഐഛികങ്ങള്‍ ക്രമീകരിക്കുക"
-
-#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:899
-msgid ""
-"Unable to get report!\n"
-"Is debuginfo missing?"
-msgstr ""
-"റിപോര്‍ട്ട് ലഭിക്കുവാന്‍ സാധിച്ചില്ല!\n"
-"Debuginfo ലഭ്യമല്ലേ?"
-
-#: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:403
+#: ../src/Gui/CReporterAssistant.py:475
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -1011,81 +1162,7 @@ msgstr ""
 "റിപോര്‍ട്ട് പരാജയപ്പെട്ടു!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
-#: ../src/Gui/CReporterAssistant.py:938
-#, python-format
-msgid "Error acquiring the report: %s"
-msgstr "റിപോര്‍ട്ട് ലഭിക്കുന്നതില്‍ പിശക്: %s"
-
-#: ../src/Gui/ConfBackend.py:79
-msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
-msgstr "ഗ്നോം കീറിങ് ഡെമണിലേക്ക് കണക്ട് ചെയ്യുവാന്‍ സാധ്യമല്ല, മാറ്റങ്ങള്‍ അതിനാല്‍ സൂക്ഷിയ്ക്കുന്നതല്ല."
-
-#. could happen if keyring daemon is running, but we run gui under
-#. user who is not the owner of the running session - using su
-#: ../src/Gui/ConfBackend.py:86
-msgid "Cannot get the default keyring."
-msgstr "സ്വതവേയുള്ള കീറിങ് ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല."
-
-#: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr "gnome-keyring-ലേക്കുള്ള പ്രവേശനം നിഷേധിച്ചിരിയ്ക്കുന്നു, പ്ലഗിന്‍ സജ്ജീകരണങ്ങള്‍ സൂക്ഷിയ്ക്കുന്നതല്ല."
-
-#. we tried 2 times, so giving up the authorization
-#: ../src/Gui/ConfBackend.py:155
-#, python-format
-msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr ""
-"gnome-keyring-ലേക്കുള്ള പ്രവേശനം നിഷേധിച്ചിരിയ്ക്കുന്നു, %s-നുള്ള സജ്ജീകരണങ്ങള്‍ ലഭ്യമാക്കുവാന്‍ "
-"സാധ്യമല്ല!"
-
-#: ../src/Gui/ConfBackend.py:208
-msgid "Access to gnome-keyring has been denied, cannot load settings."
-msgstr "gnome-keyring-ലേക്കുള്ള പ്രവേശനം നിഷേധിച്ചിരിയ്ക്കുന്നു, സജ്ജീകരണങ്ങള്‍ ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല."
-
-#: ../src/Gui/CReporterAssistant.py:21
-msgid "Crash info doesn't contain a backtrace"
-msgstr "തകാറിനെപ്പറ്റിയുള്ള വിവരത്തില്‍ ബാക്ക്ട്രെയിസ് ലഭ്യമല്ല"
-
-#: ../src/Gui/CReporterAssistant.py:284
-#, python-format
-msgid "Rating is required by the %s plugin"
-msgstr "%s പ്ലഗിനു് റേറ്റിങ് ആവശ്യമുണ്ടു്"
-
-#: ../src/Gui/CReporterAssistant.py:286
-msgid "Rating is not required by any plugin, skipping the check..."
-msgstr "ഒരു പ്ലഗിനും റേറ്റിങ് ആവശ്യമില്ല, പരിശോധന ഉപേക്ഷിയ്ക്കുന്നു..."
-
-#: ../src/Gui/CReporterAssistant.py:290
-#, python-format
-msgid "Rating is %s"
-msgstr "റേറ്റിങ്: %s"
-
-#: ../src/Gui/CReporterAssistant.py:293
-msgid "Crashdump doesn't have rating => we suppose it's not required"
-msgstr "ക്രാഷ്ഡമ്പിനു് റേറ്റിങ് ലഭ്യമല്ല => ആവശ്യമില്ലെന്നു് കരുതുന്നു"
-
-#: ../src/Gui/CReporterAssistant.py:298
-msgid "You should check the backtrace for sensitive data."
-msgstr "സെന്‍സിറ്റീവ് ഡേറ്റയ്ക്കായി ബാക്ക്ട്രെയിസ് പരിശോധിക്കണം."
-
-#: ../src/Gui/CReporterAssistant.py:299
-msgid "You must agree with sending the backtrace."
-msgstr "ബാക്ക്ട്രെയിസ് അയയ്ക്കുവാന്‍ സമ്മതിയ്ക്കുക."
-
-#: ../src/Gui/CReporterAssistant.py:314
-msgid "Reporting disabled because the backtrace is unusable."
-msgstr "ബാക്ക്ട്രെയിസ് ഉപയോഗപ്രദമല്ല, അതിനാല്‍ റിപോര്‍ട്ട് ചെയ്യുന്നതു് നിര്‍ജീവമാക്കിയിരിക്കുന്നു."
-
-#: ../src/Gui/CReporterAssistant.py:360
-msgid "You did not provide any steps to reproduce."
-msgstr "തകരാര്‍ ലഭ്യമാക്കുന്നതിനുള്ള നടപടികള്‍ നല്‍കിയിട്ടില്ല."
-
-#: ../src/Gui/CReporterAssistant.py:374
-msgid "You did not provide any comments."
-msgstr "ഒരു അഭിപ്രായങ്ങളും നല്‍കിയിട്ടില്ല."
-
-#: ../src/Gui/CReporterAssistant.py:455
+#: ../src/Gui/CReporterAssistant.py:527
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -1107,15 +1184,15 @@ msgstr ""
 "\n"
 "ഈ ബഗ് എവിടെ രേഖപ്പെടുത്തണമെന്നു് തെരഞ്ഞെടുത്തു്, 'മുമ്പോട്ട്' അമര്‍ത്തി തുടരുക."
 
-#: ../src/Gui/CReporterAssistant.py:515
+#: ../src/Gui/CReporterAssistant.py:587
 msgid "Only one reporter plugin is configured."
 msgstr "ഒരൊറ്റ് റിപോര്‍ട്ടര്‍ പ്ലഗിന്‍ മാത്രമേ ക്രമീകരിച്ചിട്ടുള്ളൂ."
 
-#: ../src/Gui/CReporterAssistant.py:521
+#: ../src/Gui/CReporterAssistant.py:593
 msgid "Send a bug report"
 msgstr "ഒരു ബഗ് റിപോര്‍ട്ട് അയയ്ക്കുക"
 
-#: ../src/Gui/CReporterAssistant.py:559
+#: ../src/Gui/CReporterAssistant.py:631
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -1130,41 +1207,52 @@ msgstr ""
 "\n"
 "ദയവായി നിങ്ങളുടെ റിപോര്‍ട്ട് ഒരിക്കല്‍ കൂടി പരിശോധിച്ചു് സെന്‍സിറ്റീവ് ഡേറ്റാ ഇല്ലെന്നുറപ്പാക്കുക:"
 
-#: ../src/Gui/CReporterAssistant.py:603
+#: ../src/Gui/CReporterAssistant.py:702 ../src/Gui/CReporterAssistant.py:715
+#: ../src/Gui/CReporterAssistant.py:749
+#, python-format
+msgid "Found %i occurence(s) [at: %i of %i]"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:786
+msgid "Search:"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:817
 msgid "Refresh"
 msgstr "പുതുക്കുക"
 
-#: ../src/Gui/CReporterAssistant.py:605
+#: ../src/Gui/CReporterAssistant.py:819
 msgid "Copy"
 msgstr "പകര്‍ത്തുക"
 
-#: ../src/Gui/CReporterAssistant.py:611
+#: ../src/Gui/CReporterAssistant.py:825
 msgid "I agree with submitting the backtrace"
 msgstr "ബാക്ക്ട്രെയിസ് അയയ്ക്കാം"
 
-#: ../src/Gui/CReporterAssistant.py:616
+#: ../src/Gui/CReporterAssistant.py:830
 msgid "Approve the backtrace"
 msgstr "ബാക്ക്ട്രെയിസ് അംഗീകരിയ്ക്കുക"
 
-#: ../src/Gui/CReporterAssistant.py:659
+#: ../src/Gui/CReporterAssistant.py:873
 msgid "You need to fill the how to before you can proceed..."
 msgstr "തുടരുന്നതിനു് മുമ്പു് എങ്ങനെയെന്നുള്ളതു് പൂരിപ്പിയ്ക്കുക..."
 
-#: ../src/Gui/CReporterAssistant.py:682
+#: ../src/Gui/CReporterAssistant.py:896
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "എങ്ങനെ തകരാര്‍ സംഭവിച്ചു? ഇതു് വീണ്ടും എങ്ങനെ ലഭ്യമാക്കാം?"
 
-#: ../src/Gui/CReporterAssistant.py:703
-msgid "Are there any comments you would like to share with the software maintainers?"
+#: ../src/Gui/CReporterAssistant.py:917
+msgid ""
+"Are there any comments you would like to share with the software maintainers?"
 msgstr ""
 "നിങ്ങള്‍ക്കു് സോഫ്റ്റ്‌വെയര്‍ മെയിന്റെയിനേര്‍സിനെ അറിയിയ്ക്കുവാന്‍ എന്തെങ്കിലും അഭിപ്രായങ്ങളോ "
 "നിര്‍ദ്ദേശങ്ങളോ ഉണ്ടോ?"
 
-#: ../src/Gui/CReporterAssistant.py:723
+#: ../src/Gui/CReporterAssistant.py:937
 msgid "Provide additional details"
 msgstr "കൂടുതല്‍ വിവരങ്ങള്‍ ലഭ്യമാക്കുക"
 
-#: ../src/Gui/CReporterAssistant.py:729
+#: ../src/Gui/CReporterAssistant.py:943
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
@@ -1172,81 +1260,95 @@ msgstr ""
 "<b>സൂചന:</b> നിങ്ങളുടെ അഭിപ്രായങ്ങളും നിര്‍ദ്ദേശങ്ങളും സ്വകാര്യമല്ല, എല്ലാവര്‍ക്കും കാണുവാന്‍ "
 "സാധിയ്ക്കുന്നു."
 
-#: ../src/Gui/CReporterAssistant.py:770
+#: ../src/Gui/CReporterAssistant.py:984
 msgid "Confirm and send the report"
 msgstr "റിപോര്‍ട്ട് ഉറപ്പാക്കി അയയ്ക്കുക"
 
-#: ../src/Gui/CReporterAssistant.py:772
-msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
+#: ../src/Gui/CReporterAssistant.py:986
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "നിങ്ങള്‍ റിപോര്‍ട്ട് ചെയ്ത ബഗ് താഴെ ചുരുക്കത്തില്‍ കാണാം. 'സൂക്ഷിയ്ക്കുക' ക്ലിക്ക് ചെയ്തു് ഇതു് "
 "സമര്‍പ്പിയ്ക്കുക."
 
-#: ../src/Gui/CReporterAssistant.py:777
+#: ../src/Gui/CReporterAssistant.py:991
 msgid "<b>Basic details</b>"
 msgstr "<b>അടിസ്ഥാന വിശദാംശങ്ങള്‍</b>"
 
 #. left table
-#: ../src/Gui/CReporterAssistant.py:784
+#: ../src/Gui/CReporterAssistant.py:998
 msgid "Component"
 msgstr "ഘടകം"
 
-#: ../src/Gui/CReporterAssistant.py:785
+#: ../src/Gui/CReporterAssistant.py:999
 msgid "Package"
 msgstr "പാക്കേജ്"
 
-#: ../src/Gui/CReporterAssistant.py:786
+#: ../src/Gui/CReporterAssistant.py:1000
 msgid "Executable"
 msgstr "എക്സിക്യൂട്ടബിള്‍"
 
-#: ../src/Gui/CReporterAssistant.py:787
+#: ../src/Gui/CReporterAssistant.py:1001
 msgid "Cmdline"
 msgstr "Cmdline"
 
 #. right table
-#: ../src/Gui/CReporterAssistant.py:789
+#: ../src/Gui/CReporterAssistant.py:1003
 msgid "Architecture"
 msgstr "ആര്‍ക്കിടക്ചര്‍"
 
-#: ../src/Gui/CReporterAssistant.py:790
+#: ../src/Gui/CReporterAssistant.py:1004
 msgid "Kernel"
 msgstr "കേര്‍ണല്‍"
 
-#: ../src/Gui/CReporterAssistant.py:791
+#: ../src/Gui/CReporterAssistant.py:1005
 msgid "Release"
 msgstr "ലക്കം"
 
-#: ../src/Gui/CReporterAssistant.py:792
+#: ../src/Gui/CReporterAssistant.py:1006
 msgid "Reason"
 msgstr "കാരണം"
 
-#: ../src/Gui/CReporterAssistant.py:803 ../src/Gui/report.glade.h:3
+#: ../src/Gui/CReporterAssistant.py:1017 ../src/Gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>ബാക്ക്ട്രെയിസ്</b>"
 
-#: ../src/Gui/CReporterAssistant.py:806
+#: ../src/Gui/CReporterAssistant.py:1020
 msgid "Click to view..."
 msgstr "കാണുവാന്‍ ക്ലിക്ക് ചെയ്യുക..."
 
-#: ../src/Gui/CReporterAssistant.py:818
+#: ../src/Gui/CReporterAssistant.py:1032
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>നടപടികള്‍:</b>"
 
-#: ../src/Gui/CReporterAssistant.py:839
+#: ../src/Gui/CReporterAssistant.py:1053
 msgid "<b>Comments:</b>"
 msgstr "<b>അഭിപ്രായം:</b>"
 
-#: ../src/Gui/CReporterAssistant.py:842
+#: ../src/Gui/CReporterAssistant.py:1056
 msgid "No comment provided!"
 msgstr "അഭിപ്രായം ലഭ്യമല്ല!"
 
-#: ../src/Gui/CReporterAssistant.py:878
+#: ../src/Gui/CReporterAssistant.py:1092
 msgid "Finished sending the bug report"
 msgstr "ബഗ് റിപോര്‍ട്ട് അയച്ചു കഴിഞ്ഞിരിയ്ക്കുന്നു"
 
-#: ../src/Gui/CReporterAssistant.py:882
+#: ../src/Gui/CReporterAssistant.py:1096
 msgid "<b>Bug reports:</b>"
 msgstr "<b>ബഗ് റിപ്പോര്‍ട്ടുകള്‍:</b>"
+
+#: ../src/Gui/CReporterAssistant.py:1113
+msgid ""
+"Unable to get report!\n"
+"Is debuginfo missing?"
+msgstr ""
+"റിപോര്‍ട്ട് ലഭിക്കുവാന്‍ സാധിച്ചില്ല!\n"
+"Debuginfo ലഭ്യമല്ലേ?"
+
+#: ../src/Gui/CReporterAssistant.py:1150
+#, python-format
+msgid "Error acquiring the report: %s"
+msgstr "റിപോര്‍ട്ട് ലഭിക്കുന്നതില്‍ പിശക്: %s"
 
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Log"
@@ -1374,7 +1476,8 @@ msgstr "ബാക്ക്ട്രെയിസ് വീണ്ടും ലഭ�
 
 #: ../src/Gui/report.glade.h:19
 msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
-msgstr "ബാക്ക്ട്രെയിസ് പരിശോധിച്ചു് സെന്‍സിറ്റീവ് ഡേറ്റാ നീക്കം ചെയ്തിരിക്കുന്നു (രഹസ്യവാക്കുകള്‍ എന്നിവ)"
+msgstr ""
+"ബാക്ക്ട്രെയിസ് പരിശോധിച്ചു് സെന്‍സിറ്റീവ് ഡേറ്റാ നീക്കം ചെയ്തിരിക്കുന്നു (രഹസ്യവാക്കുകള്‍ എന്നിവ)"
 
 #: ../src/Gui/report.glade.h:20
 msgid "N/A"
@@ -1510,3 +1613,23 @@ msgstr ""
 "കാണിച്ചിരിയ്ക്കുന്ന ബട്ടണുകള്‍ ഉപയോഗിച്ചു് അതതു് ക്രമീകരണം തുറന്നു് അവ പരിഹരിച്ചു് മുമ്പോട്ടു് നീങ്ങുക, "
 "അല്ലെങ്കില്‍ റിപോര്‍ട്ട് ചെയ്യുവാന്‍ സാധ്യമാകുന്നതല്ല.\n"
 
+#~ msgid "You must check the backtrace for sensitive data."
+#~ msgstr "സെന്‍സിറ്റീവ് ഡേറ്റയ്ക്കായി ബാക്ക്ട്രെയിസ് പരിശോധിക്കണം."
+
+#~ msgid "The backtrace is unusable, you cannot report this!"
+#~ msgstr "ബാക്ക്ട്രെയിസ് ഉപയോഗിക്കുവാന്‍ സാധ്യമല്ല, ഇതു് രേഖപ്പെടുത്തുവാന്‍ പാടില്ല!"
+
+#~ msgid "Reporting disabled, please fix the problems shown above."
+#~ msgstr ""
+#~ "റിപോര്‍ട്ട് ചെയ്യുന്നതു് നിര്‍ജീവമാക്കിയിരിക്കുന്നു, ദയവായി മുകളില്‍ പറഞ്ഞിരിക്കുന്ന പ്രശ്നങ്ങള്‍ "
+#~ "പരിഹരിക്കുക."
+
+#~ msgid "Sends the report using the selected plugin."
+#~ msgstr "തെരഞ്ഞെടുത്ത പ്ലഗിന്‍ ഉപയോഗിച്ചു് റിപോര്‍ട്ട് അയയ്ക്കുന്നു."
+
+#~ msgid ""
+#~ "No reporter plugin available for this type of crash.\n"
+#~ "Please check abrt.conf."
+#~ msgstr ""
+#~ "ഈ തരത്തിലുള്ള തകരാറുകള്‍ക്കുള്ള പ്ലഗിന്‍ ലഭ്യമല്ല.\n"
+#~ "ദയവായി abrt.conf പരിശോധിക്കുക."

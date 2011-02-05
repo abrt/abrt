@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.1-1-x\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-27 07:45+0000\n"
+"POT-Creation-Date: 2011-02-06 00:29+0100\n"
 "PO-Revision-Date: 2011-01-28 12:49+1000\n"
 "Last-Translator: Terry Chuang <tchuang@redhat.com>\n"
 "Language-Team: Traditional Chinese <zh@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
@@ -113,7 +113,7 @@ msgstr "跳過 debuginfo 的安裝"
 msgid "Backtrace parsing failed for %s"
 msgstr "%s 的 backtrace 剖析失敗"
 
-#: ../lib/Plugins/CCpp.cpp:967
+#: ../lib/Plugins/CCpp.cpp:973
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "分析 C/C++ 程式中的錯誤"
 
@@ -196,7 +196,8 @@ msgid "Creating a ReportUploader report..."
 msgstr "正在建立 ReportUploader 報告中..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid ""
+"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr "將當機資料整理入 .tar.gz 檔案中，選用性的透過 FTP/SCP/etc 來上傳它"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
@@ -265,7 +266,8 @@ msgstr "顯示密碼"
 msgid ""
 "You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
 "\">here</a>"
-msgstr "您可在<a href=\"https://bugzilla.redhat.com/createaccount.cgi\">此</a>建立"
+msgstr ""
+"您可在<a href=\"https://bugzilla.redhat.com/createaccount.cgi\">此</a>建立"
 
 #: ../lib/Plugins/KerneloopsReporter.glade.h:1
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
@@ -385,7 +387,8 @@ msgid "Warning"
 msgstr "警告"
 
 #: ../src/Applet/CCApplet.cpp:95
-msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
 msgstr "會通知使用者有關於 ABRT 所發現的問題的 Notification area applet"
 
 #: ../src/Applet/CCApplet.cpp:111 ../src/Gui/ccgui.glade.h:24
@@ -674,7 +677,9 @@ msgstr "已停用回報，因為無法使用 backtrace"
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
-msgstr "請嘗試透過「debuginfo-install %s」指令來手動式地安裝 debuginfo，然後再試一次\n"
+msgstr ""
+"請嘗試透過「debuginfo-install %s」指令來手動式地安裝 debuginfo，然後再試一"
+"次\n"
 
 #: ../src/CLI/report.cpp:749
 msgid "Error loading reporter settings"
@@ -697,11 +702,119 @@ msgstr "'如何重新產生' 過長"
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
-msgstr "報告配額大小超出。請檢查您在 abrt.conf 中，系統的 MaxCrashReportsSize 數值。"
+msgstr ""
+"報告配額大小超出。請檢查您在 abrt.conf 中，系統的 MaxCrashReportsSize 數值。"
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
 msgstr "資料庫外掛尚未指定。請檢查 abrtd 設定。"
+
+#: ../src/Daemon/abrt-debuginfo-install:72
+#, c-format
+msgid "Extracting cpio from %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:77
+msgid "Can't write to:"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:87
+msgid "Removing the temporary rpm file"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:91
+#, c-format
+msgid "Can't extract package: %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:99
+#, c-format
+msgid "Caching files from %s made from %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:107
+msgid "Removing the temporary cpio file"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:110
+#, c-format
+msgid "Can't extract files from: %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:134
+#: ../src/Daemon/abrt-debuginfo-install:140
+#, c-format
+msgid "Downloading (%i of %i) %.30s : %.3s %%"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:169
+#, fuzzy
+msgid "Searching the missing debuginfo packages"
+msgstr "開始進行 debuginfo 的安裝"
+
+#: ../src/Daemon/abrt-debuginfo-install:224
+#, c-format
+msgid "To download: (%.2f) M / Installed size: %.2f M"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:240
+msgid "Is this ok? [y/N] "
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:257
+#, c-format
+msgid "Downloading package %s failed"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:268
+msgid "Unpacking failed, aborting download..."
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:275
+#, c-format
+msgid "All downloaded packages have been extracted, removing %s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:280
+#, c-format
+msgid "Can't remove %s, probably contains an error log"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:305
+msgid "Analyzing corefile: %(corefile_path)s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:384
+msgid "Can't remove %(tmpdir_path)s: %(reason)s"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:394
+msgid "Exiting on user Command"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:435
+#, fuzzy
+msgid "You have to specify the path to coredump."
+msgstr "您必須選擇欲複製的當機。"
+
+#: ../src/Daemon/abrt-debuginfo-install:439
+#, fuzzy
+msgid "You have to specify the path to cachedir."
+msgstr "您必須選擇欲複製的當機。"
+
+#: ../src/Daemon/abrt-debuginfo-install:443
+#, fuzzy
+msgid "You have to specify the path to tmpdir."
+msgstr "您必須選擇欲複製的當機。"
+
+#: ../src/Daemon/abrt-debuginfo-install:456
+msgid "All debuginfo seems to be available"
+msgstr ""
+
+#: ../src/Daemon/abrt-debuginfo-install:463
+#, fuzzy
+msgid "Complete!"
+msgstr "元件"
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -712,7 +825,8 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "另一用戶端已在運作中，正在嘗試將其喚醒..."
 
 #: ../src/Gui/ABRTExceptions.py:14
-msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgid ""
+"Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "由 daemon 取得了非預期的資料（資料庫是否已正確更新？）。"
 
 #: ../src/Gui/ABRTPlugin.py:71
@@ -735,16 +849,16 @@ msgstr "Reporter 外掛程式"
 msgid "Database plugins"
 msgstr "Database 外掛程式"
 
-#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:75 ../src/Gui/CCDBusBackend.py:98
 msgid "Cannot connect to system dbus."
 msgstr "無法連上系統 dbus。"
 
-#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
+#: ../src/Gui/CCDBusBackend.py:121 ../src/Gui/CCDBusBackend.py:124
 msgid "Please check if the abrt daemon is running."
 msgstr "請檢查 abrt daemon 是否運作中。"
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/Gui/CCDBusBackend.py:174
+#: ../src/Gui/CCDBusBackend.py:175
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
@@ -825,7 +939,7 @@ msgstr ""
 "您應該已收到了附隨於本程式的 GNU 通用公共授權的副本。若沒有收到的話，請至 "
 "<http://www.gnu.org/licenses/>。"
 
-#: ../src/Gui/ccgui.glade.h:20
+#: ../src/Gui/ccgui.glade.h:20 ../src/Gui/CReporterAssistant.py:111
 msgid "View log"
 msgstr "查看紀錄"
 
@@ -918,91 +1032,6 @@ msgstr ""
 "資料庫中不含有此當機錯誤，crashid 可能有誤。\n"
 "crashid=%s"
 
-#. default texts
-#: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:20
-msgid "Brief description of how to reproduce this or what you did..."
-msgstr "簡述如何可再次讓這項問題出現，或描述您做過甚麼…"
-
-#: ../src/Gui/CCReporterDialog.py:107
-msgid "You must check the backtrace for sensitive data."
-msgstr "您必須檢查 backtrace 以找尋敏感資料。"
-
-#: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:312
-#, python-format
-msgid ""
-"Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using the command: <b>debuginfo-"
-"install %s</b> \n"
-"then use the Refresh button to regenerate the backtrace."
-msgstr ""
-"回報已停用，因為無法使用 backtrace。\n"
-"請嘗試透過使用這項指令來手動式安裝 debuginfo：<b>debuginfo-install %s</b> \n"
-"接著請使用「更新」按鈕來重新產生 backtrace。"
-
-#: ../src/Gui/CCReporterDialog.py:120
-msgid "The backtrace is unusable, you cannot report this!"
-msgstr "backtrace 無法使用，您無法回報這項錯誤"
-
-#: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:318
-msgid ""
-"The backtrace is incomplete, please make sure you provide the steps to "
-"reproduce."
-msgstr "backtrace 不完整，請確認您提供了適當的步驟以進行重新產生。"
-
-#: ../src/Gui/CCReporterDialog.py:130
-msgid "Reporting disabled, please fix the problems shown above."
-msgstr "已停用回報，請修正以上問題。"
-
-#: ../src/Gui/CCReporterDialog.py:132
-msgid "Sends the report using the selected plugin."
-msgstr "使用選擇的外掛程式來傳送回報。"
-
-#: ../src/Gui/CCReporterDialog.py:398
-msgid ""
-"No reporter plugin available for this type of crash.\n"
-"Please check abrt.conf."
-msgstr ""
-"此類型的當機錯誤沒有可用的回報外掛程式。\n"
-"請檢查 abrt.conf。"
-
-#: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:205
-#: ../src/Gui/PluginsSettingsDialog.py:170
-#, python-format
-msgid ""
-"Cannot save plugin settings:\n"
-" %s"
-msgstr ""
-"無法儲存外掛程式設定：\n"
-" %s"
-
-#: ../src/Gui/CCReporterDialog.py:448 ../src/Gui/CReporterAssistant.py:235
-#, python-format
-msgid "Configure %s options"
-msgstr "配置 %s 選項"
-
-#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:899
-msgid ""
-"Unable to get report!\n"
-"Is debuginfo missing?"
-msgstr ""
-"無法取得回報！\n"
-"debuginfo 是否遺失？"
-
-#: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:403
-#, python-format
-msgid ""
-"Reporting failed!\n"
-"%s"
-msgstr ""
-"回報失敗！\n"
-"%s"
-
-#: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
-#: ../src/Gui/CReporterAssistant.py:938
-#, python-format
-msgid "Error acquiring the report: %s"
-msgstr "嘗試取得報告時發生了錯誤：%s"
-
 #: ../src/Gui/ConfBackend.py:79
 msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
 msgstr "無法連上 gnome-keyring-daemon，變更將不會被儲存。"
@@ -1014,62 +1043,110 @@ msgid "Cannot get the default keyring."
 msgstr "無法取得預設的 keyring。"
 
 #: ../src/Gui/ConfBackend.py:105 ../src/Gui/ConfBackend.py:121
-msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr "存取 gnome-keyring 已被拒絕，外掛設定將不會被儲存。"
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:155
 #, python-format
-msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid ""
+"Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "存取 gnome-keyring 已被拒絕，無法載入 %s 的設定！"
 
 #: ../src/Gui/ConfBackend.py:208
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr "存取 gnome-keyring 已被拒絕，無法載入設定。"
 
+#: ../src/Gui/CReporterAssistant.py:20
+msgid "Brief description of how to reproduce this or what you did..."
+msgstr "簡述如何可再次讓這項問題出現，或描述您做過甚麼…"
+
 #: ../src/Gui/CReporterAssistant.py:21
 msgid "Crash info doesn't contain a backtrace"
 msgstr "當機資訊不包含 backtrace"
 
-#: ../src/Gui/CReporterAssistant.py:284
+#: ../src/Gui/CReporterAssistant.py:277
+#: ../src/Gui/PluginsSettingsDialog.py:170
+#, python-format
+msgid ""
+"Cannot save plugin settings:\n"
+" %s"
+msgstr ""
+"無法儲存外掛程式設定：\n"
+" %s"
+
+#: ../src/Gui/CReporterAssistant.py:307
+#, python-format
+msgid "Configure %s options"
+msgstr "配置 %s 選項"
+
+#: ../src/Gui/CReporterAssistant.py:356
 #, python-format
 msgid "Rating is required by the %s plugin"
 msgstr "%s 外掛程式需要額定值"
 
-#: ../src/Gui/CReporterAssistant.py:286
+#: ../src/Gui/CReporterAssistant.py:358
 msgid "Rating is not required by any plugin, skipping the check..."
 msgstr "所有外掛程式皆不需要額定值，正在略過檢查..."
 
-#: ../src/Gui/CReporterAssistant.py:290
+#: ../src/Gui/CReporterAssistant.py:362
 #, python-format
 msgid "Rating is %s"
 msgstr "額定值為 %s"
 
-#: ../src/Gui/CReporterAssistant.py:293
+#: ../src/Gui/CReporterAssistant.py:365
 msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr "Crashdump 沒有額定值 => 我們假設不需要"
 
-#: ../src/Gui/CReporterAssistant.py:298
+#: ../src/Gui/CReporterAssistant.py:370
 msgid "You should check the backtrace for sensitive data."
 msgstr "您必須檢查 backtrace 以找尋敏感資料。"
 
-#: ../src/Gui/CReporterAssistant.py:299
+#: ../src/Gui/CReporterAssistant.py:371
 msgid "You must agree with sending the backtrace."
 msgstr "您必須接受傳送 backtrace。"
 
-#: ../src/Gui/CReporterAssistant.py:314
+#: ../src/Gui/CReporterAssistant.py:384
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable.\n"
+"Please try to install debuginfo manually using the command: <b>debuginfo-"
+"install %s</b> \n"
+"then use the Refresh button to regenerate the backtrace."
+msgstr ""
+"回報已停用，因為無法使用 backtrace。\n"
+"請嘗試透過使用這項指令來手動式安裝 debuginfo：<b>debuginfo-install %s</b> \n"
+"接著請使用「更新」按鈕來重新產生 backtrace。"
+
+#: ../src/Gui/CReporterAssistant.py:386
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "已停用回報，因為無法使用 backtrace。"
 
-#: ../src/Gui/CReporterAssistant.py:360
+#: ../src/Gui/CReporterAssistant.py:390
+msgid ""
+"The backtrace is incomplete, please make sure you provide the steps to "
+"reproduce."
+msgstr "backtrace 不完整，請確認您提供了適當的步驟以進行重新產生。"
+
+#: ../src/Gui/CReporterAssistant.py:432
 msgid "You did not provide any steps to reproduce."
 msgstr "您並未提供任何步驟以重新產生錯誤。"
 
-#: ../src/Gui/CReporterAssistant.py:374
+#: ../src/Gui/CReporterAssistant.py:446
 msgid "You did not provide any comments."
 msgstr "您並未提供任何註解。"
 
-#: ../src/Gui/CReporterAssistant.py:455
+#: ../src/Gui/CReporterAssistant.py:475
+#, python-format
+msgid ""
+"Reporting failed!\n"
+"%s"
+msgstr ""
+"回報失敗！\n"
+"%s"
+
+#: ../src/Gui/CReporterAssistant.py:527
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -1093,15 +1170,15 @@ msgstr ""
 "\n"
 "選擇您希望將錯誤回報至哪裡，然後按下「下一步」以繼續進行。"
 
-#: ../src/Gui/CReporterAssistant.py:515
+#: ../src/Gui/CReporterAssistant.py:587
 msgid "Only one reporter plugin is configured."
 msgstr "只配置了一個 reporter 外掛程式。"
 
-#: ../src/Gui/CReporterAssistant.py:521
+#: ../src/Gui/CReporterAssistant.py:593
 msgid "Send a bug report"
 msgstr "傳送錯誤報告"
 
-#: ../src/Gui/CReporterAssistant.py:559
+#: ../src/Gui/CReporterAssistant.py:631
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -1116,117 +1193,142 @@ msgstr ""
 "請檢視下列 backtrace 並依照需求修改它們，以確保您的錯誤報告未包含任何您所不希"
 "望共享的敏感資料："
 
-#: ../src/Gui/CReporterAssistant.py:603
+#: ../src/Gui/CReporterAssistant.py:702 ../src/Gui/CReporterAssistant.py:715
+#: ../src/Gui/CReporterAssistant.py:749
+#, python-format
+msgid "Found %i occurence(s) [at: %i of %i]"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:786
+msgid "Search:"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:817
 msgid "Refresh"
 msgstr "更新"
 
-#: ../src/Gui/CReporterAssistant.py:605
+#: ../src/Gui/CReporterAssistant.py:819
 msgid "Copy"
 msgstr "複製"
 
-#: ../src/Gui/CReporterAssistant.py:611
+#: ../src/Gui/CReporterAssistant.py:825
 msgid "I agree with submitting the backtrace"
 msgstr "我接受提交 backtrace"
 
-#: ../src/Gui/CReporterAssistant.py:616
+#: ../src/Gui/CReporterAssistant.py:830
 msgid "Approve the backtrace"
 msgstr "允許 backtrace"
 
-#: ../src/Gui/CReporterAssistant.py:659
+#: ../src/Gui/CReporterAssistant.py:873
 msgid "You need to fill the how to before you can proceed..."
 msgstr "繼續進行之前，您必須先填入下列資訊..."
 
-#: ../src/Gui/CReporterAssistant.py:682
+#: ../src/Gui/CReporterAssistant.py:896
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "這項錯誤如何發生的（按步驟）？您如何能夠使它重新產生？"
 
-#: ../src/Gui/CReporterAssistant.py:703
-msgid "Are there any comments you would like to share with the software maintainers?"
+#: ../src/Gui/CReporterAssistant.py:917
+msgid ""
+"Are there any comments you would like to share with the software maintainers?"
 msgstr "您是否有任何希望提供給軟體維護人員的意見？"
 
-#: ../src/Gui/CReporterAssistant.py:723
+#: ../src/Gui/CReporterAssistant.py:937
 msgid "Provide additional details"
 msgstr "提供額外詳細資訊"
 
-#: ../src/Gui/CReporterAssistant.py:729
+#: ../src/Gui/CReporterAssistant.py:943
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr "<b>提示：</b>您的意見並非私密的。請注意您所提出的意見。"
 
-#: ../src/Gui/CReporterAssistant.py:770
+#: ../src/Gui/CReporterAssistant.py:984
 msgid "Confirm and send the report"
 msgstr "確認並傳送報告"
 
-#: ../src/Gui/CReporterAssistant.py:772
-msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
+#: ../src/Gui/CReporterAssistant.py:986
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr "以下為您錯誤報告的總覽。請點選「套用」來提交它。"
 
-#: ../src/Gui/CReporterAssistant.py:777
+#: ../src/Gui/CReporterAssistant.py:991
 msgid "<b>Basic details</b>"
 msgstr "<b>基本資訊</b>"
 
 #. left table
-#: ../src/Gui/CReporterAssistant.py:784
+#: ../src/Gui/CReporterAssistant.py:998
 msgid "Component"
 msgstr "元件"
 
-#: ../src/Gui/CReporterAssistant.py:785
+#: ../src/Gui/CReporterAssistant.py:999
 msgid "Package"
 msgstr "套件"
 
-#: ../src/Gui/CReporterAssistant.py:786
+#: ../src/Gui/CReporterAssistant.py:1000
 msgid "Executable"
 msgstr "可執行檔"
 
-#: ../src/Gui/CReporterAssistant.py:787
+#: ../src/Gui/CReporterAssistant.py:1001
 msgid "Cmdline"
 msgstr "Cmdline"
 
 #. right table
-#: ../src/Gui/CReporterAssistant.py:789
+#: ../src/Gui/CReporterAssistant.py:1003
 msgid "Architecture"
 msgstr "架構"
 
-#: ../src/Gui/CReporterAssistant.py:790
+#: ../src/Gui/CReporterAssistant.py:1004
 msgid "Kernel"
 msgstr "Kernel"
 
-#: ../src/Gui/CReporterAssistant.py:791
+#: ../src/Gui/CReporterAssistant.py:1005
 msgid "Release"
 msgstr "發行版"
 
-#: ../src/Gui/CReporterAssistant.py:792
+#: ../src/Gui/CReporterAssistant.py:1006
 msgid "Reason"
 msgstr "原因"
 
-#: ../src/Gui/CReporterAssistant.py:803 ../src/Gui/report.glade.h:3
+#: ../src/Gui/CReporterAssistant.py:1017 ../src/Gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>Backtrace</b>"
 
-#: ../src/Gui/CReporterAssistant.py:806
+#: ../src/Gui/CReporterAssistant.py:1020
 msgid "Click to view..."
 msgstr "點選以檢視..."
 
-#: ../src/Gui/CReporterAssistant.py:818
+#: ../src/Gui/CReporterAssistant.py:1032
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>重新產生錯誤的步驟：</b>"
 
-#: ../src/Gui/CReporterAssistant.py:839
+#: ../src/Gui/CReporterAssistant.py:1053
 msgid "<b>Comments:</b>"
 msgstr "<b>註解：</b>"
 
-#: ../src/Gui/CReporterAssistant.py:842
+#: ../src/Gui/CReporterAssistant.py:1056
 msgid "No comment provided!"
 msgstr "未提供任何註解！"
 
-#: ../src/Gui/CReporterAssistant.py:878
+#: ../src/Gui/CReporterAssistant.py:1092
 msgid "Finished sending the bug report"
 msgstr "已完成傳送錯誤報告"
 
-#: ../src/Gui/CReporterAssistant.py:882
+#: ../src/Gui/CReporterAssistant.py:1096
 msgid "<b>Bug reports:</b>"
 msgstr "<b>錯誤報告：</b>"
+
+#: ../src/Gui/CReporterAssistant.py:1113
+msgid ""
+"Unable to get report!\n"
+"Is debuginfo missing?"
+msgstr ""
+"無法取得回報！\n"
+"debuginfo 是否遺失？"
+
+#: ../src/Gui/CReporterAssistant.py:1150
+#, python-format
+msgid "Error acquiring the report: %s"
+msgstr "嘗試取得報告時發生了錯誤：%s"
 
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Log"
@@ -1489,3 +1591,21 @@ msgstr ""
 "偵測到了一些已啟用的 reporter 外掛程式上的錯誤設定。請使用下列按鈕來開啟相應"
 "的配置，並在您進行前將其修正。否則，回報程序可能會失敗。\n"
 
+#~ msgid "You must check the backtrace for sensitive data."
+#~ msgstr "您必須檢查 backtrace 以找尋敏感資料。"
+
+#~ msgid "The backtrace is unusable, you cannot report this!"
+#~ msgstr "backtrace 無法使用，您無法回報這項錯誤"
+
+#~ msgid "Reporting disabled, please fix the problems shown above."
+#~ msgstr "已停用回報，請修正以上問題。"
+
+#~ msgid "Sends the report using the selected plugin."
+#~ msgstr "使用選擇的外掛程式來傳送回報。"
+
+#~ msgid ""
+#~ "No reporter plugin available for this type of crash.\n"
+#~ "Please check abrt.conf."
+#~ msgstr ""
+#~ "此類型的當機錯誤沒有可用的回報外掛程式。\n"
+#~ "請檢查 abrt.conf。"
