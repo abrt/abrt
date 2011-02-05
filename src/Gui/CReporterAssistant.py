@@ -23,12 +23,48 @@ MISSING_BACKTRACE_TEXT = _("Crash info doesn't contain a backtrace")
 DEFAULT_WIDTH = 800
 DEFAULT_HEIGHT = 500
 
+
+class Log(gtk.ScrolledWindow):
+    def __init__(self, log=""):
+        gtk.ScrolledWindow.__init__(self)
+        self.tv = gtk.TextView()
+        self.tv.set_editable(False)
+        self.add(self.tv)
+        # FIXME: log shouldn't be None
+        self.buff = gtk.TextBuffer()
+        self.buff.set_text(log)
+        self.tv.set_buffer(self.buff)
+        self.scroll = False
+
+    def append_line(self, text):
+        end_iter = self.buff.get_end_iter()
+        self.buff.insert(end_iter, "%s\n" % text)
+        self.scroll_to_end()
+
+
+    def append_warning(self, text):
+        """ stub """
+        pass
+
+    def append_error(self, text):
+        """ do we need this? shouldn't error be an exception? """
+        pass
+
+    def set_scroll(self, scroll):
+        """ enables/disables scrolling to end, when new text is added """
+        self.scroll = scroll
+
+    def scroll_to_end(self):
+        if self.scroll:
+            mark = self.buff.get_insert()
+            self.tv.scroll_mark_onscreen(mark)
+
 class ReporterAssistant():
     def __init__(self, report, daemon, log=None, parent=None):
         self.connected_signals = []
         self.plugins_cb = []
         self.daemon = daemon
-        self.updates = ""
+        self.updates = []
         self.pdict = {}
         self.report = report
         self.parent = parent
@@ -37,6 +73,8 @@ class ReporterAssistant():
         self.report_has_bt = False
         self.selected_reporters = []
         self.ev_warning = None
+        self.log = Log()
+        self.log.set_scroll(True)
         """ create the assistant """
         self.assistant = gtk.Assistant()
         self.assistant.set_icon_name("abrt")
@@ -61,10 +99,37 @@ class ReporterAssistant():
         self.pBarWindow = self.builder.get_object("pBarWindow")
         if self.pBarWindow:
             self.connect_signal(self.pBarWindow, "delete_event", self.sw_delete_event_cb)
+        pb_log_expander = self.builder.get_object("pb_log_expander")
+        pb_log_expander.add(self.log)
 
         self.connect_signal(daemon, "analyze-complete", self.on_analyze_complete_cb, self.pBarWindow)
         self.connect_signal(daemon, "report-done", self.on_report_done_cb)
         self.connect_signal(daemon, "update", self.update_cb)
+
+        # add view log button, when in verbose mode
+        if get_verbose_level():
+            b_view_log = gtk.Button(_("View log"))
+            b_view_log.connect("clicked", self.on_show_log_cb)
+            self.assistant.add_action_widget(b_view_log)
+            b_view_log.show()
+
+
+    def on_show_log_cb(self, button):
+        viewer = gtk.Window()
+        viewer.set_icon_name("abrt")
+        viewer.set_default_size(600,500)
+        viewer.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
+        viewer.set_transient_for(self.assistant)
+        vbox = gtk.VBox()
+        viewer.add(vbox)
+        log = Log()
+        for line in self.updates:
+            log.append_line(line)
+        vbox.pack_start(log)
+        b_close = gtk.Button(stock=gtk.STOCK_CLOSE)
+        b_close.connect("clicked",lambda *w: viewer.destroy())
+        vbox.pack_start(b_close, False)
+        viewer.show_all()
 
     # call to update the progressbar
     def progress_update_cb(self, *args):
@@ -129,17 +194,10 @@ class ReporterAssistant():
             gtk.main_quit()
 
     def update_cb(self, daemon, message):
-        self.updates += message
-        if self.updates[-1] != '\n':
-            self.updates += '\n'
+        self.updates.append(message)
         message = message.replace('\n',' ')
         self.builder.get_object("lStatus").set_text(message)
-        buff = gtk.TextBuffer()
-        buff.set_text(self.updates)
-        end = buff.get_insert()
-        tvUpdates = self.builder.get_object("tvUpdates")
-        tvUpdates.set_buffer(buff)
-        tvUpdates.scroll_mark_onscreen(end)
+        self.log.append_line(message)
 
     def sw_delete_event_cb(self, widget, event, data=None):
         if self.timer:
@@ -1074,9 +1132,7 @@ class ReporterAssistant():
             self.prepare_page_3()
             self.prepare_page_4()
             self.prepare_page_5()
-        self.updates = ""
         # FIXME don't duplicate the code, move to function
-        #self.pBar.show()
         self.show_progress()
         self.timer = gobject.timeout_add(100, self.progress_update_cb)
 
