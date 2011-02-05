@@ -133,7 +133,7 @@ class MainWindow():
 
     def on_miOnlineHelp_clicked(self, widget):
         # opens default browser and shows ABRT chapter from deployment guide
-        gtk.show_uri(None, "http://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/ch-abrt.html", gtk.gdk.CURRENT_TIME)
+        gtk.show_uri(None, "http://docs.fedoraproject.org/en-US/Fedora/14/html/Deployment_Guide/ch-abrt.html", gtk.gdk.CURRENT_TIME)
 
     def on_miPreferences_clicked(self, widget):
         dialog = PluginsSettingsDialog(self.window,self.ccdaemon)
