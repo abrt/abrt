@@ -6,14 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-02-06 00:29+0100\n"
-"PO-Revision-Date: 2011-01-18 15:29+0100\n"
+"POT-Creation-Date: 2011-02-06 07:45+0000\n"
+"PO-Revision-Date: 2011-02-06 13:47+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
-"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pl\n"
 
 #: ../lib/Plugins/Bugzilla.cpp:543
 #, c-format
@@ -721,109 +721,104 @@ msgstr ""
 #: ../src/Daemon/abrt-debuginfo-install:72
 #, c-format
 msgid "Extracting cpio from %s"
-msgstr ""
+msgstr "Wypakowywanie cpio z %s"
 
 #: ../src/Daemon/abrt-debuginfo-install:77
 msgid "Can't write to:"
-msgstr ""
+msgstr "Nie można zapisać do:"
 
 #: ../src/Daemon/abrt-debuginfo-install:87
 msgid "Removing the temporary rpm file"
-msgstr ""
+msgstr "Usuwanie tymczasowego pliku RPM"
 
 #: ../src/Daemon/abrt-debuginfo-install:91
 #, c-format
 msgid "Can't extract package: %s"
-msgstr ""
+msgstr "Nie można wypakować pakietu: %s"
 
 #: ../src/Daemon/abrt-debuginfo-install:99
 #, c-format
 msgid "Caching files from %s made from %s"
-msgstr ""
+msgstr "Umieszczanie plików z %s wykonanych z %s w pamięci podręcznej"
 
 #: ../src/Daemon/abrt-debuginfo-install:107
 msgid "Removing the temporary cpio file"
-msgstr ""
+msgstr "Usuwanie tymczasowego pliku cpio"
 
 #: ../src/Daemon/abrt-debuginfo-install:110
 #, c-format
 msgid "Can't extract files from: %s"
-msgstr ""
+msgstr "Nie można wypakować plików z: %s"
 
 #: ../src/Daemon/abrt-debuginfo-install:134
 #: ../src/Daemon/abrt-debuginfo-install:140
 #, c-format
 msgid "Downloading (%i of %i) %.30s : %.3s %%"
-msgstr ""
+msgstr "Pobieranie (%i z %i) %.30s: %.3s %%"
 
 #: ../src/Daemon/abrt-debuginfo-install:169
-#, fuzzy
 msgid "Searching the missing debuginfo packages"
-msgstr "Uruchamianie instalacji pakietów debuginfo"
+msgstr "Wyszukiwanie brakujących pakietów debuginfo"
 
 #: ../src/Daemon/abrt-debuginfo-install:224
 #, c-format
 msgid "To download: (%.2f) M / Installed size: %.2f M"
-msgstr ""
+msgstr "Do pobrania: (%.2f) M/Rozmiar po zainstalowaniu: %.2f M"
 
 #: ../src/Daemon/abrt-debuginfo-install:240
 msgid "Is this ok? [y/N] "
-msgstr ""
+msgstr "W porządku? [t/N] "
 
 #: ../src/Daemon/abrt-debuginfo-install:257
 #, c-format
 msgid "Downloading package %s failed"
-msgstr ""
+msgstr "Pobranie pakietu %s nie powiodło się"
 
 #: ../src/Daemon/abrt-debuginfo-install:268
 msgid "Unpacking failed, aborting download..."
-msgstr ""
+msgstr "Rozpakowanie nie powiodło się, anulowanie pobierania..."
 
 #: ../src/Daemon/abrt-debuginfo-install:275
 #, c-format
 msgid "All downloaded packages have been extracted, removing %s"
-msgstr ""
+msgstr "Wszystkie pobrane pakiety zostały wypakowane, usuwanie %s"
 
 #: ../src/Daemon/abrt-debuginfo-install:280
 #, c-format
 msgid "Can't remove %s, probably contains an error log"
-msgstr ""
+msgstr "Nie można usunąć %s, prawdopodobnie zawiera dziennik błędów"
 
 #: ../src/Daemon/abrt-debuginfo-install:305
 msgid "Analyzing corefile: %(corefile_path)s"
-msgstr ""
+msgstr "Analizowanie pliku core: %(corefile_path)s"
 
 #: ../src/Daemon/abrt-debuginfo-install:384
 msgid "Can't remove %(tmpdir_path)s: %(reason)s"
-msgstr ""
+msgstr "Nie można usunąć %(tmpdir_path)s: %(reason)s"
 
 #: ../src/Daemon/abrt-debuginfo-install:394
 msgid "Exiting on user Command"
-msgstr ""
+msgstr "Wyłączanie na polecenie użytkownika"
 
 #: ../src/Daemon/abrt-debuginfo-install:435
-#, fuzzy
 msgid "You have to specify the path to coredump."
-msgstr "Należy wybrać awarię do skopiowania."
+msgstr "Należy podać ścieżkę do zrzutu core."
 
 #: ../src/Daemon/abrt-debuginfo-install:439
-#, fuzzy
 msgid "You have to specify the path to cachedir."
-msgstr "Należy wybrać awarię do skopiowania."
+msgstr "Należy podać ścieżkę do katalogu pamięci podręcznej."
 
 #: ../src/Daemon/abrt-debuginfo-install:443
-#, fuzzy
 msgid "You have to specify the path to tmpdir."
-msgstr "Należy wybrać awarię do skopiowania."
+msgstr "Należy podać ścieżkę do katalogu tymczasowego."
 
 #: ../src/Daemon/abrt-debuginfo-install:456
 msgid "All debuginfo seems to be available"
-msgstr ""
+msgstr "Wszystkie pakiety debuginfo są dostępne"
 
 #: ../src/Daemon/abrt-debuginfo-install:463
-#, fuzzy
 msgid "Complete!"
-msgstr "Składnik"
+msgstr "Ukończono."
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -1228,11 +1223,11 @@ msgstr ""
 #: ../src/Gui/CReporterAssistant.py:749
 #, python-format
 msgid "Found %i occurence(s) [at: %i of %i]"
-msgstr ""
+msgstr "Odnaleziono %i wystąpienia [w: %i z %i]"
 
 #: ../src/Gui/CReporterAssistant.py:786
 msgid "Search:"
-msgstr ""
+msgstr "Wyszukiwanie:"
 
 #: ../src/Gui/CReporterAssistant.py:817
 msgid "Refresh"
@@ -1632,22 +1627,3 @@ msgstr ""
 "Proszę użyć poniższych przycisków, aby otworzyć odpowiednią konfigurację i "
 "naprawić ją przed kontynuowaniem. W innym przypadku proces zgłoszenia się "
 "nie powiedzie.\n"
-
-#~ msgid "You must check the backtrace for sensitive data."
-#~ msgstr "Należy sprawdzić, czy wyjątek zawiera prywatne dane."
-
-#~ msgid "The backtrace is unusable, you cannot report this!"
-#~ msgstr "Nie można użyć tego wyjątku, więc nie można tego zgłosić."
-
-#~ msgid "Reporting disabled, please fix the problems shown above."
-#~ msgstr "Zgłaszanie jest wyłączone. Proszę naprawić powyższe problemy."
-
-#~ msgid "Sends the report using the selected plugin."
-#~ msgstr "Wysyła zgłoszenie używając wybranej wtyczki."
-
-#~ msgid ""
-#~ "No reporter plugin available for this type of crash.\n"
-#~ "Please check abrt.conf."
-#~ msgstr ""
-#~ "Brak dostępnej wtyczki zgłaszania dla tego typu awarii.\n"
-#~ "Proszę sprawdzić plik abrt.conf."
