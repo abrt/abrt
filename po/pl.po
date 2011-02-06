@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-02-04 11:14+0000\n"
-"PO-Revision-Date: 2011-02-04 12:17+0100\n"
+"POT-Creation-Date: 2011-02-06 02:46+0000\n"
+"PO-Revision-Date: 2011-02-06 13:42+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -50,7 +50,7 @@ msgstr ""
 "Aplet obszaru powiadamiania informujący użytkownika o problemach wykrytych "
 "przez program ABRT"
 
-#: ../src/applet/applet_gtk.c:246 ../src/gui/ccgui.glade.h:23
+#: ../src/applet/applet_gtk.c:246 ../src/gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr ""
 "Piotr Drąg <piotrdrag@gmail.com>, 2009\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Hide"
 msgstr "Ukryj"
 
-#: ../src/applet/applet_gtk.c:360 ../src/gui/ccgui.glade.h:13
+#: ../src/applet/applet_gtk.c:360 ../src/gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "Zgłoś"
 
@@ -524,11 +524,15 @@ msgstr "O programie ABRT"
 msgid "Copy to Clipboard"
 msgstr "Skopiuj do schowka"
 
-#: ../src/gui/ccgui.glade.h:12 ../src/gui/settings.glade.h:19
+#: ../src/gui/ccgui.glade.h:12
+msgid "Online _Help"
+msgstr "Pomo_c online"
+
+#: ../src/gui/ccgui.glade.h:13 ../src/gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "Wtyczki"
 
-#: ../src/gui/ccgui.glade.h:14
+#: ../src/gui/ccgui.glade.h:15
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -558,19 +562,19 @@ msgstr ""
 "Powszechnej Licencji Publicznej GNU (GNU General Public License); jeśli nie "
 "- proszę odwiedzić stronę internetową <http://www.gnu.org/licenses/>."
 
-#: ../src/gui/ccgui.glade.h:19 ../src/gui/CReporterAssistant.py:111
+#: ../src/gui/ccgui.glade.h:20 ../src/gui/CReporterAssistant.py:111
 msgid "View log"
 msgstr "Wyświetl dziennik"
 
-#: ../src/gui/ccgui.glade.h:20
+#: ../src/gui/ccgui.glade.h:21
 msgid "_Edit"
 msgstr "_Edycja"
 
-#: ../src/gui/ccgui.glade.h:21
+#: ../src/gui/ccgui.glade.h:22
 msgid "_File"
 msgstr "_Plik"
 
-#: ../src/gui/ccgui.glade.h:22
+#: ../src/gui/ccgui.glade.h:23
 msgid "_Help"
 msgstr "Pomo_c"
 
@@ -591,7 +595,7 @@ msgstr "Nazwa komputera"
 msgid "Latest Crash"
 msgstr "Ostatnia awaria"
 
-#: ../src/gui/CCMainWindow.py:143
+#: ../src/gui/CCMainWindow.py:148
 #, python-format
 msgid ""
 "Cannot show the settings dialog.\n"
@@ -600,7 +604,7 @@ msgstr ""
 "Nie można wyświetlić okna ustawień.\n"
 "%s"
 
-#: ../src/gui/CCMainWindow.py:148
+#: ../src/gui/CCMainWindow.py:153
 #, python-format
 msgid ""
 "Unable to finish the current task!\n"
@@ -610,7 +614,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/gui/CCMainWindow.py:183
+#: ../src/gui/CCMainWindow.py:188
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -619,7 +623,7 @@ msgstr ""
 "Błąd podczas wczytywania listy zrzutów.\n"
 "%s"
 
-#: ../src/gui/CCMainWindow.py:241
+#: ../src/gui/CCMainWindow.py:246
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -628,11 +632,11 @@ msgstr ""
 "<b>Awaria programu %s</b>\n"
 "%s"
 
-#: ../src/gui/CCMainWindow.py:337
+#: ../src/gui/CCMainWindow.py:343
 msgid "You have to select a crash to copy."
 msgstr "Należy wybrać awarię do skopiowania."
 
-#: ../src/gui/CCMainWindow.py:421
+#: ../src/gui/CCMainWindow.py:427
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -643,7 +647,7 @@ msgstr ""
 "\t--report=IDENTYFIKATOR_AWARII\tBezpośrednio zgłasza awarię z "
 "IDENTYFIKATOREM_AWARII"
 
-#: ../src/gui/CCMainWindow.py:444
+#: ../src/gui/CCMainWindow.py:450
 #, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"
