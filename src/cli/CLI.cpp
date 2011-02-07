@@ -230,7 +230,8 @@ static struct dump_dir *steal_directory(const char *base_dir, const char *dump_d
     if (copy_file_recursive(dump_dir_name, dd_dst->dd_dir) < 0)
     {
         /* error. copy_file_recursive already emitted error message */
-        dd_close(dd_dst);
+        /* Don't leave half-copied dir lying around */
+        dd_delete(dd_dst);
         xfunc_die();
     }
 
@@ -453,6 +454,18 @@ int main(int argc, char** argv)
         }
         case OPT_DELETE:
         {
+            /* Try to delete it ourselves */
+            struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
+            if (dd)
+            {
+                if (dd->locked) /* it is not readonly */
+                {
+                    dd_delete(dd);
+                    break;
+                }
+                dd_close(dd);
+            }
+            /* Ask abrtd to do it for us */
             exitcode = call_DeleteDebugDump(dump_dir_name);
             if (exitcode == ENOENT)
                 error_msg_and_die("Crash '%s' not found", dump_dir_name);
