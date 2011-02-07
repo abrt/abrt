@@ -38,7 +38,11 @@ static char *localize_crash_time(const char *timestr)
 
 static crash_data_t *FillCrashInfo(const char *dump_dir_name)
 {
+    int sv_logmode = logmode;
+    logmode = 0; /* suppress EPERM/EACCES errors in opendir */
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ DD_OPEN_READONLY);
+    logmode = sv_logmode;
+
     if (!dd)
         return NULL;
 
