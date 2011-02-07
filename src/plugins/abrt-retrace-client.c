@@ -385,7 +385,7 @@ static char *http_get_header_value(const char *message,
 
     char *search_string = xasprintf("\r\n%s:", header_name);
     char *header = strcasestr(message, search_string);
-    if (header > headers_end)
+    if (!header || header > headers_end)
         return NULL;
 
     header += strlen(search_string);
