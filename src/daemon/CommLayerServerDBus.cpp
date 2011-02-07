@@ -524,5 +524,6 @@ int init_dbus()
 
 void deinit_dbus()
 {
-    dbus_connection_unref(g_dbus_conn);
+    if(g_dbus_conn != NULL)
+        dbus_connection_unref(g_dbus_conn);
 }
