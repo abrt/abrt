@@ -80,10 +80,12 @@ static crash_data_t *DebugDumpToCrashReport(const char *dump_dir_name)
     char *events = list_possible_events(dd, NULL, "");
     dd_close(dd);
 
-    add_to_crash_data_ext(crash_data, CD_EVENTS, events, CD_FLAG_SYS + CD_FLAG_ISNOTEDITABLE);
+    add_to_crash_data_ext(crash_data, CD_EVENTS, events,
+                          CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
     free(events);
 
-    add_to_crash_data_ext(crash_data, CD_DUMPDIR, dump_dir_name, CD_FLAG_SYS + CD_FLAG_ISNOTEDITABLE);
+    add_to_crash_data_ext(crash_data, CD_DUMPDIR, dump_dir_name,
+                          CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
 
     return crash_data;
 }
@@ -581,10 +583,12 @@ static crash_data_t *FillCrashInfo(const char *dump_dir_name)
     char *events = list_possible_events(dd, NULL, "");
     dd_close(dd);
 
-    add_to_crash_data_ext(crash_data, CD_EVENTS, events, CD_FLAG_SYS + CD_FLAG_ISNOTEDITABLE);
+    add_to_crash_data_ext(crash_data, CD_EVENTS, events,
+                          CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
     free(events);
 
-    add_to_crash_data_ext(crash_data, CD_DUMPDIR, dump_dir_name, CD_FLAG_SYS + CD_FLAG_ISNOTEDITABLE);
+    add_to_crash_data_ext(crash_data, CD_DUMPDIR, dump_dir_name,
+                          CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
 
     return crash_data;
 }

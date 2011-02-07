@@ -147,12 +147,6 @@ static void write_crash_report_field(FILE *fp, crash_data_t *crash_data,
         return;
     }
 
-    if (value->flags & CD_FLAG_SYS)
-    {
-        error_msg("Cannot update field %s because it is a system value", field);
-        return;
-    }
-
     fprintf(fp, "%s%s\n", FIELD_SEP, field);
 
     fprintf(fp, "%s\n", description);
@@ -223,12 +217,6 @@ static int read_crash_report_field(const char *text, crash_data_t *report,
     if (!value)
     {
         error_msg("Field %s not found", field);
-        return 0;
-    }
-
-    if (value->flags & CD_FLAG_SYS)
-    {
-        error_msg("Cannot update field %s because it is a system value", field);
         return 0;
     }
 

@@ -45,11 +45,8 @@ static crash_data_t *FillCrashInfo(const char *dump_dir_name)
         return NULL;
 
     crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
-//  char *events = list_possible_events(dd, NULL, "");
     dd_close(dd);
-//  add_to_crash_data_ext(crash_data, CD_EVENTS, events, CD_FLAG_SYS + CD_FLAG_ISNOTEDITABLE);
-//  free(events);
-    add_to_crash_data_ext(crash_data, CD_DUMPDIR, dump_dir_name, CD_FLAG_SYS + CD_FLAG_ISNOTEDITABLE);
+    add_to_crash_data_ext(crash_data, CD_DUMPDIR, dump_dir_name, CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
 
     return crash_data;
 }
@@ -479,7 +476,8 @@ int main(int argc, char** argv)
                 return -1;
             crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
             dd_close(dd);
-            add_to_crash_data_ext(crash_data, CD_DUMPDIR, dump_dir_name, CD_FLAG_SYS + CD_FLAG_ISNOTEDITABLE);
+            add_to_crash_data_ext(crash_data, CD_DUMPDIR, dump_dir_name,
+                                  CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
 
             print_crash_info(crash_data, backtrace);
             free_crash_data(crash_data);

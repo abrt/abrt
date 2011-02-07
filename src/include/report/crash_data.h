@@ -28,11 +28,10 @@ extern "C" {
 struct dump_dir;
 
 enum {
-    CD_FLAG_SYS           = (1 << 0),
-    CD_FLAG_BIN           = (1 << 1),
-    CD_FLAG_TXT           = (1 << 2),
-    CD_FLAG_ISEDITABLE    = (1 << 3),
-    CD_FLAG_ISNOTEDITABLE = (1 << 4),
+    CD_FLAG_BIN           = (1 << 0),
+    CD_FLAG_TXT           = (1 << 1),
+    CD_FLAG_ISEDITABLE    = (1 << 2),
+    CD_FLAG_ISNOTEDITABLE = (1 << 3),
 };
 
 struct crash_item {

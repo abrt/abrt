@@ -68,7 +68,6 @@ init_pyreport(void)
     /* init type objects */
     Py_INCREF(&p_crash_data_type);
     PyModule_AddObject(m, "crash_data", (PyObject *)&p_crash_data_type);
-    PyModule_AddObject(m, "CD_FLAG_SYS"          , Py_BuildValue("i", CD_FLAG_SYS          ));
     PyModule_AddObject(m, "CD_FLAG_BIN"          , Py_BuildValue("i", CD_FLAG_BIN          ));
     PyModule_AddObject(m, "CD_FLAG_TXT"          , Py_BuildValue("i", CD_FLAG_TXT          ));
     PyModule_AddObject(m, "CD_FLAG_ISEDITABLE"   , Py_BuildValue("i", CD_FLAG_ISEDITABLE   ));

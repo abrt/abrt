@@ -42,7 +42,7 @@ void add_to_crash_data_ext(crash_data_t *crash_data,
                 const char *content,
                 unsigned flags)
 {
-    if (!(flags & (CD_FLAG_SYS|CD_FLAG_BIN|CD_FLAG_TXT)))
+    if (!(flags & (CD_FLAG_BIN|CD_FLAG_TXT)))
         flags |= CD_FLAG_TXT;
     if (!(flags & (CD_FLAG_ISEDITABLE|CD_FLAG_ISNOTEDITABLE)))
         flags |= CD_FLAG_ISNOTEDITABLE;
