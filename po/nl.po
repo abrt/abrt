@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-02-04 11:14+0000\n"
-"PO-Revision-Date: 2011-02-04 19:08+0200\n"
+"POT-Creation-Date: 2011-02-07 02:41+0000\n"
+"PO-Revision-Date: 2011-02-07 13:04+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
 "Language: nl\n"
@@ -55,7 +55,7 @@ msgstr ""
 "Mededelingen gebied applet om gebruiker te berichten over problemen ontdekt "
 "door ABRT"
 
-#: ../src/applet/applet_gtk.c:246 ../src/gui/ccgui.glade.h:23
+#: ../src/applet/applet_gtk.c:246 ../src/gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr "Geert Warrink <geert.warrink@onsnet.nu>"
 
@@ -63,7 +63,7 @@ msgstr "Geert Warrink <geert.warrink@onsnet.nu>"
 msgid "Hide"
 msgstr "Verbergen"
 
-#: ../src/applet/applet_gtk.c:360 ../src/gui/ccgui.glade.h:13
+#: ../src/applet/applet_gtk.c:360 ../src/gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "Rapport"
 
@@ -523,11 +523,15 @@ msgstr "Over ABRT"
 msgid "Copy to Clipboard"
 msgstr "Kopieer naar klembord"
 
-#: ../src/gui/ccgui.glade.h:12 ../src/gui/settings.glade.h:19
+#: ../src/gui/ccgui.glade.h:12
+msgid "Online _Help"
+msgstr "Online _Hulp"
+
+#: ../src/gui/ccgui.glade.h:13 ../src/gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "Plug-ins"
 
-#: ../src/gui/ccgui.glade.h:14
+#: ../src/gui/ccgui.glade.h:15
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -555,19 +559,19 @@ msgstr ""
 "Je moet een kopie van de GNU General Public License tezamen met dit "
 "programma ontvangen hebben.  Zo niet, zie <http://www.gnu.org/licenses/>."
 
-#: ../src/gui/ccgui.glade.h:19 ../src/gui/CReporterAssistant.py:111
+#: ../src/gui/ccgui.glade.h:20 ../src/gui/CReporterAssistant.py:111
 msgid "View log"
 msgstr "Bekijk log"
 
-#: ../src/gui/ccgui.glade.h:20
+#: ../src/gui/ccgui.glade.h:21
 msgid "_Edit"
 msgstr "Be_werken"
 
-#: ../src/gui/ccgui.glade.h:21
+#: ../src/gui/ccgui.glade.h:22
 msgid "_File"
 msgstr "_Bestand"
 
-#: ../src/gui/ccgui.glade.h:22
+#: ../src/gui/ccgui.glade.h:23
 msgid "_Help"
 msgstr "_Hulp"
 
@@ -588,7 +592,7 @@ msgstr "Host naam"
 msgid "Latest Crash"
 msgstr "Laatste crash"
 
-#: ../src/gui/CCMainWindow.py:143
+#: ../src/gui/CCMainWindow.py:148
 #, python-format
 msgid ""
 "Cannot show the settings dialog.\n"
@@ -597,7 +601,7 @@ msgstr ""
 "Kan de instellingen dialoog niet tonen.\n"
 "%s"
 
-#: ../src/gui/CCMainWindow.py:148
+#: ../src/gui/CCMainWindow.py:153
 #, python-format
 msgid ""
 "Unable to finish the current task!\n"
@@ -607,7 +611,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/gui/CCMainWindow.py:183
+#: ../src/gui/CCMainWindow.py:188
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -616,7 +620,7 @@ msgstr ""
 "Fout tijdens het laden van de dump lijst.\n"
 "%s"
 
-#: ../src/gui/CCMainWindow.py:241
+#: ../src/gui/CCMainWindow.py:246
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -625,11 +629,11 @@ msgstr ""
 "<b>%s crash</b>\n"
 "%s"
 
-#: ../src/gui/CCMainWindow.py:337
+#: ../src/gui/CCMainWindow.py:343
 msgid "You have to select a crash to copy."
 msgstr "Je moet een crash selecteren om te kopiëren."
 
-#: ../src/gui/CCMainWindow.py:421
+#: ../src/gui/CCMainWindow.py:427
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -639,7 +643,7 @@ msgstr ""
 "\t-v[vv]\t\t\tBreedsprakig\n"
 "\t--report=CRASH_ID\tRapporteer crash direct met CRASH_ID"
 
-#: ../src/gui/CCMainWindow.py:444
+#: ../src/gui/CCMainWindow.py:450
 #, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"
