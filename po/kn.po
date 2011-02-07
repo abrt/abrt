@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.kn\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-02-03 02:30+0000\n"
-"PO-Revision-Date: 2011-02-03 14:32+0530\n"
+"POT-Creation-Date: 2011-02-07 02:41+0000\n"
+"PO-Revision-Date: 2011-02-07 15:19+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: kn_IN <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -50,7 +50,7 @@ msgstr "ಎಚ್ಚರಿಕೆ"
 msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT ಇಂದ ಪತ್ತೆ ಮಾಡಲಾದ ತೊಂದರೆಗಳನ್ನು ಬಳಕೆದಾರರಿಗೆ ಸೂಚಿಸುವ ಸೂಚನಾ ಸ್ಥಳದ ಆಪ್ಲೆಟ್"
 
-#: ../src/applet/applet_gtk.c:246 ../src/gui/ccgui.glade.h:23
+#: ../src/applet/applet_gtk.c:246 ../src/gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr "ಶಂಕರ್ ಪ್ರಸಾದ್ <svenkate@redhat.com>"
 
@@ -58,7 +58,7 @@ msgstr "ಶಂಕರ್ ಪ್ರಸಾದ್ <svenkate@redhat.com>"
 msgid "Hide"
 msgstr "ಅಡಗಿಸು"
 
-#: ../src/applet/applet_gtk.c:360 ../src/gui/ccgui.glade.h:13
+#: ../src/applet/applet_gtk.c:360 ../src/gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "ವರದಿ"
 
@@ -175,7 +175,7 @@ msgid ""
 "\t-l, --list\t\tList not yet reported crashes\n"
 "\t  -f, --full\t\tList all crashes\n"
 "\t-D BASE_DIR\t\tDirectory to list crashes from\n"
-"\t\t\t\t(default: -D $HOME/abrt/spool -D %s)\n"
+"\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
 "\n"
 "\t-r, --report\t\tSend a report about CRASH_DIR\n"
 "\t  -y, --always\t\t...without editing and asking\n"
@@ -194,7 +194,7 @@ msgstr ""
 "\t-l, --list\t\tList not yet reported crashes\n"
 "\t  -f, --full\t\tList all crashes\n"
 "\t-D BASE_DIR\t\tDirectory to list crashes from\n"
-"\t\t\t\t(default: -D $HOME/abrt/spool -D %s)\n"
+"\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
 "\n"
 "\t-r, --report\t\tSend a report about CRASH_DIR\n"
 "\t  -y, --always\t\t...without editing and asking\n"
@@ -519,11 +519,15 @@ msgstr "ABRT ಬಗೆಗಿನ ಮಾಹಿತಿ"
 msgid "Copy to Clipboard"
 msgstr "ನಕಲುಫಲಕಕ್ಕೆ(ಕ್ಲಿಪ್‌ಬೋರ್ಡಿಗೆ) ಕಾಪಿ ಮಾಡು"
 
-#: ../src/gui/ccgui.glade.h:12 ../src/gui/settings.glade.h:19
+#: ../src/gui/ccgui.glade.h:12
+msgid "Online _Help"
+msgstr "ಆನ್‌ಲೈನ್‌ ನೆರವು (_H)"
+
+#: ../src/gui/ccgui.glade.h:13 ../src/gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "ಪ್ಲಗ್‌ಇನ್‌ಗಳು"
 
-#: ../src/gui/ccgui.glade.h:14
+#: ../src/gui/ccgui.glade.h:15
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -551,19 +555,19 @@ msgstr ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 
-#: ../src/gui/ccgui.glade.h:19 ../src/gui/CReporterAssistant.py:111
+#: ../src/gui/ccgui.glade.h:20 ../src/gui/CReporterAssistant.py:111
 msgid "View log"
 msgstr "ದಾಖಲೆಯನ್ನು ನೋಡು"
 
-#: ../src/gui/ccgui.glade.h:20
+#: ../src/gui/ccgui.glade.h:21
 msgid "_Edit"
 msgstr "ಸಂಪಾದನೆ (_E)"
 
-#: ../src/gui/ccgui.glade.h:21
+#: ../src/gui/ccgui.glade.h:22
 msgid "_File"
 msgstr "ಕಡತ(_F)"
 
-#: ../src/gui/ccgui.glade.h:22
+#: ../src/gui/ccgui.glade.h:23
 msgid "_Help"
 msgstr "ಸಹಾಯ (_H)"
 
@@ -584,7 +588,7 @@ msgstr "ಅತಿಥೇಯದ ಹೆಸರು"
 msgid "Latest Crash"
 msgstr "ಇತ್ತೀಚಿನ ಕುಸಿತ"
 
-#: ../src/gui/CCMainWindow.py:143
+#: ../src/gui/CCMainWindow.py:148
 #, python-format
 msgid ""
 "Cannot show the settings dialog.\n"
@@ -593,7 +597,7 @@ msgstr ""
 "ಸಿದ್ಧತೆಗಳ ಸಂವಾದವನ್ನು ತೋರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ\n"
 "%s"
 
-#: ../src/gui/CCMainWindow.py:148
+#: ../src/gui/CCMainWindow.py:153
 #, python-format
 msgid ""
 "Unable to finish the current task!\n"
@@ -603,7 +607,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/gui/CCMainWindow.py:183
+#: ../src/gui/CCMainWindow.py:188
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -612,7 +616,7 @@ msgstr ""
 "ಬಿಸುಡುಪಟ್ಟಿಯನ್ನು(ಡಂಪ್‌ಲಿಸ್ಟ್) ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ.\n"
 " %s"
 
-#: ../src/gui/CCMainWindow.py:241
+#: ../src/gui/CCMainWindow.py:246
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -621,11 +625,11 @@ msgstr ""
 "<b>%s ಕುಸಿತ</b>\n"
 "%s"
 
-#: ../src/gui/CCMainWindow.py:337
+#: ../src/gui/CCMainWindow.py:343
 msgid "You have to select a crash to copy."
 msgstr "ನೀವು ಒಂದು ಕುಸಿತದ ಪ್ರತಿಯನ್ನು ಆಯ್ಕೆ ಮಾಡಬೇಕು."
 
-#: ../src/gui/CCMainWindow.py:421
+#: ../src/gui/CCMainWindow.py:427
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -635,7 +639,7 @@ msgstr ""
 "\t-v[vv]\t\t\tVerbose\n"
 "\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
 
-#: ../src/gui/CCMainWindow.py:444
+#: ../src/gui/CCMainWindow.py:450
 #, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"
