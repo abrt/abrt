@@ -31,7 +31,7 @@ void add_directory_to_dirlist(const char *dirname)
                 | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
                 | DD_FAIL_QUIETLY
     );
-    const char *reported = (msg ? "Yes" : "No");
+    const char *reported = (msg ? GTK_STOCK_YES : GTK_STOCK_NO);
     free(msg);
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
     char *hostname = dd_load_text(dd, FILENAME_HOSTNAME);
@@ -81,10 +81,10 @@ static void add_columns(GtkTreeView *treeview)
     GtkTreeViewColumn *column;
 
     /* column reported */
-    renderer = gtk_cell_renderer_text_new();
+    renderer = gtk_cell_renderer_pixbuf_new();
     column = gtk_tree_view_column_new_with_attributes(_("Reported"),
                                                      renderer,
-                                                     "text",
+                                                     "stock_id",
                                                      COLUMN_REPORTED,
                                                      NULL);
     gtk_tree_view_column_set_sort_column_id(column, COLUMN_REPORTED);
