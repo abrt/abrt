@@ -418,6 +418,7 @@ fi
 %files gui
 %defattr(-,root,root,-)
 %{_bindir}/abrt-gui
+%{_bindir}/abrt-gtk
 %dir %{_datadir}/%{name}
 # all glade, gtkbuilder and py files for gui
 %{_datadir}/%{name}/*.py*
