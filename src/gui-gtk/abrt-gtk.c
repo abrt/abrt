@@ -1,24 +1,19 @@
-#include <abrtlib.h>
 #include <gtk/gtk.h>
-#include <time.h>
-#include <stdlib.h>
-#include "list_dir.h"
 #include "abrtlib.h"
+#include "list_dir.h"
 
-
-
-GtkListStore *dumps_list_store;
-GtkTreeIter iter;
+static GtkListStore *dumps_list_store;
+static GtkTreeIter iter___;
 
 enum
 {
-  COLUMN_REPORTED,
-  COLUMN_APPLICATION,
-  COLUMN_HOSTNAME,
-  COLUMN_LATEST_CRASH_STR,
-  COLUMN_LATEST_CRASH,
-  COLUMN_DUMP_DIR,
-  NUM_COLUMNS
+    COLUMN_REPORTED,
+    COLUMN_APPLICATION,
+    COLUMN_HOSTNAME,
+    COLUMN_LATEST_CRASH_STR,
+    COLUMN_LATEST_CRASH,
+    COLUMN_DUMP_DIR,
+    NUM_COLUMNS
 };
 
 /*
@@ -29,17 +24,16 @@ void gtk_tree_model_get_value (GtkTreeModel *tree_model,
                                          GValue *value);
 */
 
-
-void on_row_activated_cb(GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
+static void on_row_activated_cb(GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
 {
     GtkTreeIter iter;
     GtkTreeSelection *selection = gtk_tree_view_get_selection(tree_view);
     GtkTreeModel *dump_list_store = gtk_tree_view_get_model(tree_view);
     gtk_tree_model_get_iter(dump_list_store, &iter, path);
     GValue d_dir = {0};
-    if(selection != NULL)
+    if (selection != NULL)
     {
-        if(gtk_tree_selection_get_selected(selection, &dump_list_store, &iter) == TRUE)
+        if (gtk_tree_selection_get_selected(selection, &dump_list_store, &iter) == TRUE)
         {
             gtk_tree_model_get_value(dump_list_store, &iter, COLUMN_DUMP_DIR, &d_dir);
             g_print("CALL: run_event(%s)\n", g_value_get_string(&d_dir));
@@ -47,14 +41,12 @@ void on_row_activated_cb(GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewC
     }
 }
 
-void view_store_add_item(gpointer item, gpointer data)
+static void view_store_add_item(gpointer item, gpointer data)
 {
     char *dir = (char *)item;
-    struct dump_dir *dd;
 
-    dd = dd_opendir(dir, DD_OPEN_READONLY);
-
-    if(dd == NULL)
+    struct dump_dir *dd = dd_opendir(dir, DD_OPEN_READONLY);
+    if (!dd)
         return;
 
     time_t time = atoi(dd_load_text(dd, FILENAME_TIME));
@@ -63,8 +55,8 @@ void view_store_add_item(gpointer item, gpointer data)
     size_t time_len = strftime(time_buf, 59, "%c",  ptm);
     time_buf[time_len] = '\0';
 
-    gtk_list_store_append(dumps_list_store, &iter);
-    gtk_list_store_set(dumps_list_store, &iter,
+    gtk_list_store_append(dumps_list_store, &iter___);
+    gtk_list_store_set(dumps_list_store, &iter___,
                           COLUMN_REPORTED, "??",
                           COLUMN_APPLICATION, dd_load_text(dd, FILENAME_EXECUTABLE),
                           COLUMN_HOSTNAME, dd_load_text(dd, FILENAME_HOSTNAME),
@@ -77,52 +69,51 @@ void view_store_add_item(gpointer item, gpointer data)
     VERB1 log("added: %s\n", dir);
 }
 
-static void
-add_columns (GtkTreeView *treeview)
+static void add_columns(GtkTreeView *treeview)
 {
-  GtkCellRenderer *renderer;
-  GtkTreeViewColumn *column;
+    GtkCellRenderer *renderer;
+    GtkTreeViewColumn *column;
 
-  /* column reported */
-  renderer = gtk_cell_renderer_text_new();
-  column = gtk_tree_view_column_new_with_attributes(_("Reported"),
+    /* column reported */
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(_("Reported"),
                                                      renderer,
                                                      "text",
                                                      COLUMN_REPORTED,
                                                      NULL);
-  gtk_tree_view_column_set_sort_column_id(column, COLUMN_REPORTED);
-  gtk_tree_view_append_column(treeview, column);
+    gtk_tree_view_column_set_sort_column_id(column, COLUMN_REPORTED);
+    gtk_tree_view_append_column(treeview, column);
 
-  /* column for executable path */
-  renderer = gtk_cell_renderer_text_new();
-  column = gtk_tree_view_column_new_with_attributes(_("Application"),
+    /* column for executable path */
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(_("Application"),
                                                      renderer,
                                                      "text",
                                                      COLUMN_APPLICATION,
                                                      NULL);
-  gtk_tree_view_column_set_resizable(column, TRUE);
-  gtk_tree_view_column_set_sort_column_id(column, COLUMN_APPLICATION);
-  gtk_tree_view_append_column(treeview, column);
+    gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_sort_column_id(column, COLUMN_APPLICATION);
+    gtk_tree_view_append_column(treeview, column);
 
-  /* column for hostname */
-  renderer = gtk_cell_renderer_text_new();
-  column = gtk_tree_view_column_new_with_attributes(_("Hostname"),
+    /* column for hostname */
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(_("Hostname"),
                                                      renderer,
                                                      "text",
                                                      COLUMN_HOSTNAME,
                                                      NULL);
-  gtk_tree_view_column_set_sort_column_id(column, COLUMN_HOSTNAME);
-  gtk_tree_view_append_column(treeview, column);
+    gtk_tree_view_column_set_sort_column_id(column, COLUMN_HOSTNAME);
+    gtk_tree_view_append_column(treeview, column);
 
-  /* column for the date of the last crash */
-  renderer = gtk_cell_renderer_text_new();
-  column = gtk_tree_view_column_new_with_attributes(_("Last Crash"),
+    /* column for the date of the last crash */
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(_("Last Crash"),
                                                      renderer,
                                                      "text",
                                                      COLUMN_LATEST_CRASH_STR,
                                                      NULL);
-  gtk_tree_view_column_set_sort_column_id(column, COLUMN_LATEST_CRASH);
-  gtk_tree_view_append_column(treeview, column);
+    gtk_tree_view_column_set_sort_column_id(column, COLUMN_LATEST_CRASH);
+    gtk_tree_view_append_column(treeview, column);
 
 }
 
@@ -166,7 +157,7 @@ GtkWidget *main_window_create()
                                                        G_TYPE_STRING, /* time */
                                                        G_TYPE_INT,    /* unix time - used for sort */
                                                        G_TYPE_STRING);/* dump dir path */
-    //if(dumps_list_store == NULL)
+    //if (dumps_list_store == NULL)
     //    return NULL;
     gtk_tree_view_set_model(GTK_TREE_VIEW(dump_tv), GTK_TREE_MODEL(dumps_list_store));
     g_signal_connect(dump_tv, "row-activated", G_CALLBACK(on_row_activated_cb), NULL);
