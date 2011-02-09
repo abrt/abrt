@@ -11,14 +11,16 @@ from subprocess import *
 REQUIRED_FILES = ["architecture", "coredump", "release"]
 
 DF_BIN = "/bin/df"
+DU_BIN = "/usr/bin/du"
 TAR_BIN = "/bin/tar"
 XZ_BIN = "/usr/bin/xz"
 
 TASKID_PARSER = re.compile("^.*/([0-9]+)/*$")
 PACKAGE_PARSER = re.compile("^(.+)-([0-9]+(\.[0-9]+)*-[0-9]+)\.([^-]+)$")
 DF_OUTPUT_PARSER = re.compile("^([^ ^\t]*)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+%)[ \t]+(.*)$")
+DU_OUTPUT_PARSER = re.compile("^([0-9]+)")
 XZ_OUTPUT_PARSER = re.compile("^totals[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+\.[0-9]+)[ \t]+([^ ^\t]+)[ \t]+([0-9]+)")
-URL_PARSER = re.compile("^/([0-9]+)/?")
+URL_PARSER = re.compile("^/([0-9]+)/")
 RELEASE_PARSERS = {
   "fedora": re.compile("^Fedora[^0-9]+([0-9]+)[^\(]\(([^\)]+)\)$"),
 }
@@ -66,6 +68,17 @@ def free_space(path):
 
     pipe.close()
     return None
+
+def dir_size(path):
+    pipe = Popen([DU_BIN, "-s", path], stdout=PIPE).stdout
+    for line in pipe.readlines():
+        match = DU_OUTPUT_PARSER.match(line)
+        if match:
+            pipe.close()
+            return 1024 * int(match.group(1))
+
+    pipe.close()
+    return 0
 
 def unpacked_size(archive):
     pipe = Popen([XZ_BIN, "--list", "--robot", archive], stdout=PIPE).stdout
@@ -156,7 +169,8 @@ def init_crashstats_db():
             starttime INT NOT NULL,
             duration INT NOT NULL,
             prerunning TINYINT NOT NULL,
-            postrunning TINYINT NOT NULL
+            postrunning TINYINT NOT NULL,
+            chrootsize BIGINT NOT NULL
           )
         """)
         con.commit()
@@ -172,9 +186,9 @@ def save_crashstats(crashstats):
         query = con.cursor()
         query.execute("""
           INSERT INTO retracestats(taskid, package, version, release, arch, starttime, duration,
-          prerunning, postrunning) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
+          prerunning, postrunning, chrootsize) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
           """,
-          (crashstats["taskid"], crashstats["package"], crashstats["version"], crashstats["release"], crashstats["arch"], crashstats["starttime"], crashstats["duration"], crashstats["prerunning"], crashstats["postrunning"])
+          (crashstats["taskid"], crashstats["package"], crashstats["version"], crashstats["release"], crashstats["arch"], crashstats["starttime"], crashstats["duration"], crashstats["prerunning"], crashstats["postrunning"], crashstats["chrootsize"])
         )
         con.commit()
         con.close()

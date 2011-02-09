@@ -5,21 +5,18 @@ import time
 from retrace import *
 
 def retrace_run(errorcode, cmd):
-    """
-    Runs cmd using subprocess.Popen and kills script with errorcode on failure
-    """
+    "Runs cmd using subprocess.Popen and kills script with errorcode on failure"
     try:
-        process = Popen(cmd, stdout = PIPE, stderr = STDOUT)
+        process = Popen(cmd, stdout=PIPE, stderr=STDOUT)
         process.wait()
         output = process.stdout.read()
         process.stdout.close()
     except Exception as ex:
-        extype, exvalue, extraceback = sys.exc_info()
         process = None
-        output = "An unhandled exception " + str(extype) + " occured: " + str(exvalue)
+        output = "An unhandled exception occured: %s" % ex
 
     if not process or process.returncode != 0:
-        print "Error"
+        print "Error %d" % errorcode
         print "--- OUTPUT ---"
         print output
         sys.exit(errorcode)
@@ -30,13 +27,13 @@ if __name__ == "__main__":
     starttime = time.time()
 
     if len(sys.argv) != 2:
-        print "Usage: " + sys.argv[0] + " retrace_directory"
+        print "Usage: %s retrace_directory" % sys.argv[0]
         sys.exit(11)
 
     workdir = sys.argv[1]
 
     if not os.path.isdir(workdir):
-        print workdir + " is not a directory"
+        print "'%s' is not a directory" % workdir
         sys.exit(12)
 
     taskid_match = TASKID_PARSER.match(workdir)
@@ -48,13 +45,13 @@ if __name__ == "__main__":
 
     # check the crash directory for required files
     for required_file in REQUIRED_FILES:
-        if not os.path.isfile(workdir + "/crash/" + required_file):
-            print "Directory '" + workdir + "' does not contain required file \"" + required_file + "\""
+        if not os.path.isfile("%s/crash/%s" % (workdir, required_file)):
+            print "Directory '%s' does not contain required file '%s'" % (workdir, required_file)
             sys.exit(14)
 
     # read architecture file
     try:
-        arch_file = open(workdir + "/crash/architecture", "r")
+        arch_file = open("%s/crash/architecture" % workdir, "r")
         arch = repoarch = arch_file.read()
         arch_file.close()
     except:
@@ -67,7 +64,7 @@ if __name__ == "__main__":
 
     # read release, distribution and version from release file
     try:
-        release_file = open(workdir + "/crash/release", "r")
+        release_file = open("%s/crash/release" % workdir, "r")
         release = release_file.read()
         release_file.close()
     except:
@@ -83,12 +80,12 @@ if __name__ == "__main__":
             break
 
     if not version or not distribution:
-        print "Release '" + release + "' is not supported"
+        print "Release '%s' is not supported" % release
         sys.exit(17)
 
     # read package file
     try:
-        package_file = open(workdir + "/crash/package", "r")
+        package_file = open("%s/crash/package" % workdir, "r")
         crash_package = package_file.read()
         package_file.close()
     except:
@@ -96,15 +93,15 @@ if __name__ == "__main__":
         sys.exit(18)
 
     # read required packages from coredump
-    packages = crash_package + "." + arch
+    packages = "%s.%s" % (crash_package, arch)
     try:
         # ToDo: deal with not found build-ids
-        pipe = Popen(["/usr/share/abrt-retrace/coredump2packages.py", workdir + "/crash/coredump", "--repos=retrace-*"], stdout = PIPE).stdout
+        pipe = Popen(["/usr/share/abrt-retrace/coredump2packages", "%s/crash/coredump" % workdir, "--repos=retrace-%s-%s-%s*" % (distribution, version, arch)], stdout=PIPE).stdout
         for line in pipe.readlines():
             if line == "\n":
                 break
 
-            packages += " " + line.rstrip("\n")
+            packages += " %s" % line.rstrip("\n")
 
         pipe.close()
     except:
@@ -114,10 +111,10 @@ if __name__ == "__main__":
     # create mock config file
     try:
         mockcfg = open(workdir + "/mock.cfg", "w")
-        mockcfg.write("config_opts['root'] = '" + taskid + "'\n")
-        mockcfg.write("config_opts['target_arch'] = '" + arch + "'\n")
-        mockcfg.write("config_opts['chroot_setup_cmd'] = 'install " + packages + " shadow-utils abrt-addon-ccpp gdb'\n")
-        mockcfg.write("config_opts['basedir'] = '" + workdir + "'\n")
+        mockcfg.write("config_opts['root'] = 'chroot'\n")
+        mockcfg.write("config_opts['target_arch'] = '%s'\n" % arch)
+        mockcfg.write("config_opts['chroot_setup_cmd'] = 'install %s shadow-utils abrt-addon-ccpp gdb'\n" % packages)
+        mockcfg.write("config_opts['basedir'] = '%s'\n" % workdir)
         mockcfg.write("config_opts['plugin_conf']['ccache_enable'] = False\n")
         mockcfg.write("config_opts['plugin_conf']['yum_cache_enable'] = False\n")
         mockcfg.write("config_opts['plugin_conf']['root_cache_enable'] = False\n")
@@ -139,44 +136,44 @@ if __name__ == "__main__":
         mockcfg.write("\n")
         mockcfg.write("[fedora]\n")
         mockcfg.write("name=fedora\n")
-        mockcfg.write("baseurl=file:///var/cache/abrt-retrace/" + distribution + "-" + version + "-" + arch + "/\n")
+        mockcfg.write("baseurl=file:///var/cache/abrt-retrace/%s-%s-%s/\n" % (distribution, version, arch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         mockcfg.write("[fedora-debuginfo]\n")
         mockcfg.write("name=fedora-debuginfo\n")
-        mockcfg.write("baseurl=file:///var/cache/abrt-retrace/" + distribution + "-" + version + "-" + arch + "-debuginfo/\n")
+        mockcfg.write("baseurl=file:///var/cache/abrt-retrace/%s-%s-%s-debuginfo/\n" % (distribution, version, arch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         mockcfg.write("[updates]\n")
         mockcfg.write("name=updates\n")
-        mockcfg.write("baseurl=file:///var/cache/abrt-retrace/" + distribution + "-" + version + "-" + arch + "-updates/\n")
+        mockcfg.write("baseurl=file:///var/cache/abrt-retrace/%s-%s-%s-updates/\n" % (distribution, version, arch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         mockcfg.write("[updates-debuginfo]\n")
         mockcfg.write("name=updates-debuginfo\n")
-        mockcfg.write("baseurl=file:///var/cache/abrt-retrace/" + distribution + "-" + version + "-" + arch + "-updates-debuginfo/\n")
+        mockcfg.write("baseurl=file:///var/cache/abrt-retrace/%s-%s-%s-updates-debuginfo/\n" % (distribution, version, arch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         mockcfg.write("[updates-testing]\n")
         mockcfg.write("name=updates-testing\n")
-        mockcfg.write("baseurl=file:///var/cache/abrt-retrace/" + distribution + "-" + version + "-" + arch + "-updates-testing/\n")
+        mockcfg.write("baseurl=file:///var/cache/abrt-retrace/%s-%s-%s-updates-testing/\n" % (distribution, version, arch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         mockcfg.write("[updates-testing-debuginfo]\n")
         mockcfg.write("name=updates-testing-debuginfo\n")
-        mockcfg.write("baseurl=file:///var/cache/abrt-retrace/" + distribution + "-" + version + "-" + arch + "-updates-testing-debuginfo/\n")
+        mockcfg.write("baseurl=file:///var/cache/abrt-retrace/%s-%s-%s-updates-testing-debuginfo/\n" % (distribution, version, arch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         # custom ABRT repo with ABRT 2.0 binaries - obsolete after release of ABRT 2.0
         mockcfg.write("[abrt]\n")
         mockcfg.write("name=abrt\n")
-        mockcfg.write("baseurl=http://repos.fedorapeople.org/repos/mtoman/abrt20/" + distribution + "-" + version + "/" + repoarch + "/\n")
+        mockcfg.write("baseurl=http://repos.fedorapeople.org/repos/mtoman/abrt20/%s-%s/%s/\n" % (distribution, version, repoarch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         mockcfg.write("\"\"\"\n")
         mockcfg.close()
-    except:
-        print "Unable to create mock config file"
+    except Exception as ex:
+        print "Unable to create mock config file: %s" % ex
         sys.exit(20)
 
     # get count of tasks running before starting
@@ -188,23 +185,33 @@ if __name__ == "__main__":
     print "Initializing virtual root...",
 
     retrace_run(21, ["mock", "init", "-r", mockr])
-    retrace_run(22, ["mock", "-r", mockr, "--copyin", workdir + "/crash", "/var/spool/abrt/crash"])
+    retrace_run(22, ["mock", "-r", mockr, "--copyin", "%s/crash" % workdir, "/var/spool/abrt/crash"])
+    retrace_run(23, ["touch", "%s/chroot/root/var/spool/abrt/crash/time" % workdir])
 
     print "OK"
     sys.stdout.flush()
+
+    try:
+        rootfile = open("%s/chroot/result/root.log" % workdir, "r")
+        rootlog = rootfile.read()
+        rootfile.close()
+    except Exception as ex:
+        print "Error reading root log: %s" % ex
 
     print "Generating backtrace...",
 
-    retrace_run(24, ["mock", "shell", "-r", mockr, "--", "/usr/libexec/abrt-action-generate-backtrace -d /var/spool/abrt/crash"])
+    retrace_run(24, ["mock", "shell", "-r", mockr, "--", "/usr/bin/abrt-action-generate-backtrace", "-d", "/var/spool/abrt/crash/"])
     retrace_run(25, ["mock", "-r", mockr, "--copyout", "/var/spool/abrt/crash/backtrace", workdir])
-    retrace_run(26, ["chmod", "a+r", workdir + "/backtrace"])
+    retrace_run(26, ["chmod", "a+r", "%s/backtrace" % workdir])
 
     print "OK"
     sys.stdout.flush()
 
+    chroot_size = dir_size("%s/chroot/root" % workdir)
+
     print "Cleaning up...",
     retrace_run(27, ["mock", "-r", mockr, "--scrub=all"])
-    retrace_run(28, ["rm", "-rf", workdir + "/mock.cfg", workdir + "/crash"])
+    retrace_run(28, ["rm", "-rf", "%s/mock.cfg" % workdir, "%s/crash" % workdir])
 
     print "OK"
     sys.stdout.flush()
@@ -233,13 +240,19 @@ if __name__ == "__main__":
       "duration": duration,
       "prerunning": prerunning,
       "postrunning": len(get_active_tasks()) - 1,
+      "chrootsize": chroot_size
     }
 
     print "Saving crash statistics...",
 
     if not init_crashstats_db() or not save_crashstats(crashstats):
-        print "Error"
+        print "Error: %s" % crashstats
     else:
         print "OK"
 
     sys.stdout.flush()
+
+
+    print
+    print "=== ROOT LOG ==="
+    print rootlog
