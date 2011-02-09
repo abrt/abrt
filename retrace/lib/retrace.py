@@ -35,6 +35,8 @@ CONFIG = {
     "MaxPackedSize": 30,
     "MaxUnpackedSize": 600,
     "MinStorageLeft": 10240,
+    "DeleteTaskAfter": 120,
+    "LogDir": "/var/log/abrt-retrace",
     "WorkDir": "/var/spool/abrt-retrace",
     "DBFile": "stats.db",
 }
