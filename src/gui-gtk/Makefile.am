@@ -1,10 +1,7 @@
 bin_PROGRAMS = abrt-gtk
 
 abrt_gtk_SOURCES = \
-    list_dir.c \
-    list_dir.h \
-    abrt-gtk.h \
-    abrt-gtk.c \
+    abrt-gtk.h abrt-gtk.c \
     main.c
 abrt_gtk_CFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \

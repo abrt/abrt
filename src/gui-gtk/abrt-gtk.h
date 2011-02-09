@@ -1,2 +1,2 @@
-int dump_list_hydrate(char *path);
-GtkWidget *main_window_create();
+GtkWidget *create_main_window(void);
+void add_directory_to_dirlist(const char *dirname);

@@ -1,6 +1,6 @@
 #include <gtk/gtk.h>
 #include "abrtlib.h"
-#include "list_dir.h"
+#include "abrt-gtk.h"
 
 static GtkListStore *dumps_list_store;
 static GtkTreeIter iter___;
@@ -17,8 +17,7 @@ enum
 };
 
 /*
-
-void gtk_tree_model_get_value (GtkTreeModel *tree_model,
+void gtk_tree_model_get_value(GtkTreeModel *tree_model,
                                          GtkTreeIter *iter,
                                          gint column,
                                          GValue *value);
@@ -26,13 +25,13 @@ void gtk_tree_model_get_value (GtkTreeModel *tree_model,
 
 static void on_row_activated_cb(GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
 {
-    GtkTreeIter iter;
     GtkTreeSelection *selection = gtk_tree_view_get_selection(tree_view);
-    GtkTreeModel *dump_list_store = gtk_tree_view_get_model(tree_view);
-    gtk_tree_model_get_iter(dump_list_store, &iter, path);
-    GValue d_dir = {0};
-    if (selection != NULL)
+    if (selection)
     {
+        GtkTreeIter iter;
+        GtkTreeModel *dump_list_store = gtk_tree_view_get_model(tree_view);
+        gtk_tree_model_get_iter(dump_list_store, &iter, path);
+        GValue d_dir = { 0 };
         if (gtk_tree_selection_get_selected(selection, &dump_list_store, &iter) == TRUE)
         {
             gtk_tree_model_get_value(dump_list_store, &iter, COLUMN_DUMP_DIR, &d_dir);
@@ -41,11 +40,9 @@ static void on_row_activated_cb(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
     }
 }
 
-static void view_store_add_item(gpointer item, gpointer data)
+void add_directory_to_dirlist(const char *dirname)
 {
-    char *dir = (char *)item;
-
-    struct dump_dir *dd = dd_opendir(dir, DD_OPEN_READONLY);
+    struct dump_dir *dd = dd_opendir(dirname, DD_OPEN_READONLY);
     if (!dd)
         return;
 
@@ -63,10 +60,10 @@ static void view_store_add_item(gpointer item, gpointer data)
                           //OPTION: time format
                           COLUMN_LATEST_CRASH_STR, time_buf,
                           COLUMN_LATEST_CRASH, (int)time,
-                          COLUMN_DUMP_DIR, dir,
+                          COLUMN_DUMP_DIR, dirname,
                           -1);
     dd_close(dd);
-    VERB1 log("added: %s\n", dir);
+    VERB1 log("added: %s\n", dirname);
 }
 
 static void add_columns(GtkTreeView *treeview)
@@ -117,15 +114,7 @@ static void add_columns(GtkTreeView *treeview)
 
 }
 
-int dump_list_hydrate(char *path)
-{
-    GList *dumps = get_dump_list(path);
-    g_list_foreach(dumps, view_store_add_item, NULL);
-
-    return 0;
-}
-
-GtkWidget *main_window_create()
+GtkWidget *create_main_window(void)
 {
     /* main window */
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
