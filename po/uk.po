@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-02-06 00:29+0100\n"
-"PO-Revision-Date: 2011-01-24 22:31+0200\n"
+"POT-Creation-Date: 2011-02-09 07:45+0000\n"
+"PO-Revision-Date: 2011-02-10 08:49+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
-"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: uk\n"
 "X-Generator: Lokalize 1.2\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
@@ -726,109 +726,104 @@ msgstr ""
 #: ../src/Daemon/abrt-debuginfo-install:72
 #, c-format
 msgid "Extracting cpio from %s"
-msgstr ""
+msgstr "Видобування cpio з %s"
 
 #: ../src/Daemon/abrt-debuginfo-install:77
 msgid "Can't write to:"
-msgstr ""
+msgstr "Не вдалося записати до:"
 
 #: ../src/Daemon/abrt-debuginfo-install:87
 msgid "Removing the temporary rpm file"
-msgstr ""
+msgstr "Вилучення тимчасового файла rpm"
 
 #: ../src/Daemon/abrt-debuginfo-install:91
 #, c-format
 msgid "Can't extract package: %s"
-msgstr ""
+msgstr "Не вдалося видобути пакунок: %s"
 
 #: ../src/Daemon/abrt-debuginfo-install:99
 #, c-format
 msgid "Caching files from %s made from %s"
-msgstr ""
+msgstr "Кешування файлів з %s, створених на основі %s"
 
 #: ../src/Daemon/abrt-debuginfo-install:107
 msgid "Removing the temporary cpio file"
-msgstr ""
+msgstr "Вилучення тимчасового файла cpio"
 
 #: ../src/Daemon/abrt-debuginfo-install:110
 #, c-format
 msgid "Can't extract files from: %s"
-msgstr ""
+msgstr "Не вдалося видобути файли з: %s"
 
 #: ../src/Daemon/abrt-debuginfo-install:134
 #: ../src/Daemon/abrt-debuginfo-install:140
 #, c-format
 msgid "Downloading (%i of %i) %.30s : %.3s %%"
-msgstr ""
+msgstr "Звантаження (%i з %i) %.30s : %.3s %%"
 
 #: ../src/Daemon/abrt-debuginfo-install:169
-#, fuzzy
 msgid "Searching the missing debuginfo packages"
-msgstr "Запускається встановлення debuginfo"
+msgstr "Пошук потрібних пакунків діагностичних даних"
 
 #: ../src/Daemon/abrt-debuginfo-install:224
 #, c-format
 msgid "To download: (%.2f) M / Installed size: %.2f M"
-msgstr ""
+msgstr "Об’єм звантаження: (%.2f) МБ / Об’єм встановлення: %.2f МБ"
 
 #: ../src/Daemon/abrt-debuginfo-install:240
 msgid "Is this ok? [y/N] "
-msgstr ""
+msgstr "Погоджуєтеся? [y/N] "
 
 #: ../src/Daemon/abrt-debuginfo-install:257
 #, c-format
 msgid "Downloading package %s failed"
-msgstr ""
+msgstr "Спроба звантаження пакунка %s зазнала невдачі"
 
 #: ../src/Daemon/abrt-debuginfo-install:268
 msgid "Unpacking failed, aborting download..."
-msgstr ""
+msgstr "Спроба розпакування зазнала невдачі, перериваємо звантаження…"
 
 #: ../src/Daemon/abrt-debuginfo-install:275
 #, c-format
 msgid "All downloaded packages have been extracted, removing %s"
-msgstr ""
+msgstr "Дані всіх звантажених пакунків було видобуто, вилучаємо %s"
 
 #: ../src/Daemon/abrt-debuginfo-install:280
 #, c-format
 msgid "Can't remove %s, probably contains an error log"
-msgstr ""
+msgstr "Не вдалося вилучити %s, ймовірно, містить журнал помилки"
 
 #: ../src/Daemon/abrt-debuginfo-install:305
 msgid "Analyzing corefile: %(corefile_path)s"
-msgstr ""
+msgstr "Аналіз файла ядра: %(corefile_path)s"
 
 #: ../src/Daemon/abrt-debuginfo-install:384
 msgid "Can't remove %(tmpdir_path)s: %(reason)s"
-msgstr ""
+msgstr "Не вдалося вилучити %(tmpdir_path)s: %(reason)s"
 
 #: ../src/Daemon/abrt-debuginfo-install:394
 msgid "Exiting on user Command"
-msgstr ""
+msgstr "Завершення роботи за бажанням користувача"
 
 #: ../src/Daemon/abrt-debuginfo-install:435
-#, fuzzy
 msgid "You have to specify the path to coredump."
-msgstr "Слід вибрати файл аварійного завершенням для копіювання."
+msgstr "Вам слід вказати адресу, за якою зберігається дамп ядра."
 
 #: ../src/Daemon/abrt-debuginfo-install:439
-#, fuzzy
 msgid "You have to specify the path to cachedir."
-msgstr "Слід вибрати файл аварійного завершенням для копіювання."
+msgstr "Вам слід вказати адресу, за якою зберігаються дані кешу."
 
 #: ../src/Daemon/abrt-debuginfo-install:443
-#, fuzzy
 msgid "You have to specify the path to tmpdir."
-msgstr "Слід вибрати файл аварійного завершенням для копіювання."
+msgstr "Вам слід вказати адресу, за якою зберігаються тимчасові дані."
 
 #: ../src/Daemon/abrt-debuginfo-install:456
 msgid "All debuginfo seems to be available"
-msgstr ""
+msgstr "Всі дані для діагностики доступні"
 
 #: ../src/Daemon/abrt-debuginfo-install:463
-#, fuzzy
 msgid "Complete!"
-msgstr "Компонент"
+msgstr "Завершено!"
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
