@@ -1,0 +1,49 @@
+        Planned changes to crash_data and dump_dir structures
+
+    Time field(s)
+
+Need to add CD_FLAG_UNIXTIME bit for struct crash_item's flags field.
+It should be set on cd["time"] item when we do
+
+    cd = call create_crash_data_from_dump_dir(dd);
+
+Note that later we may add other elements beside "time" which contain
+unix time.
+
+Need to add a function which formats time elements for printing.
+Something like this:
+
+const char *printable_form_of_crash_item(const char *content, unsigned flags);
+
+For most fields it should return them as-is, for CD_FLAG_UNIXTIME
+fields it should return malloced "YYYY-MM-DD hh:mm:ss" string.
+
+Later, if/when we will get more CD_FLAG_FOO flags, some of them also
+may need special formatting, and this function can deal with them too.
+
+[Implementation note: use the following trick to avoid needing to return
+malloced data (which isn't convenient for caller, it needs to free it):
+
+printable_form_of_crash_item(...)
+{
+    ...
+    if (need to use malloced string)
+    {
+        s = malloc_and_format_string();
+
+        static unsigned malloced_idx = 0;
+        static char *malloced_vec[8];
+
+        malloced_idx = (malloced_idx+1) % 8;
+        free(malloced_vec[malloced_idx]);
+        malloced_vec[malloced_idx] = s;
+    }
+    else
+        s = some_non_malloced_string;
+    ...
+    return s;
+}
+]
+
+dd_load_text_ext(dd, "time", flags) may benefit from a new flag DD_LOAD_TEXT_PRINTABLE,
+which makes it generate printable representation of fields.
