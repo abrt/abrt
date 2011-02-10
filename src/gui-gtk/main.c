@@ -5,8 +5,6 @@
 
 #define PROGNAME "abrt-gtk"
 
-static DBusConnection* s_dbus_conn;
-
 static void scan_directory_and_add_to_dirlist(const char *path)
 {
     DIR *dp = opendir(path);
@@ -30,34 +28,6 @@ static void scan_directory_and_add_to_dirlist(const char *path)
         free(full_name);
     }
     closedir(dp);
-}
-
-void delete_dump_dir_possibly_via_dbus(const char *dump_dir_name)
-{
-    /* Try to delete it ourselves */
-    struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
-    if (dd)
-    {
-        if (dd->locked) /* it is not readonly */
-        {
-            dd_delete(dd);
-            break;
-        }
-        dd_close(dd);
-    }
-
-    /* Ask abrtd to do it for us */
-    DBusError err;
-    dbus_error_init(&err);
-    s_dbus_conn = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
-    handle_dbus_err(s_dbus_conn == NULL, &err);
-
-    exitcode = call_DeleteDebugDump(dump_dir_name);
-    if (exitcode == ENOENT)
-        error_msg_and_die("Crash '%s' not found", dump_dir_name);
-    if (exitcode != 0)
-        error_msg_and_die("Can't delete debug dump '%s'", dump_dir_name);
-    break;
 }
 
 int main(int argc, char **argv)
