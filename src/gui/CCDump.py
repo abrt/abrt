@@ -128,7 +128,11 @@ class Dump():
         return self.analyzer
 
     def get_release(self):
-        return self.release
+        # Old dump dir format compat. Delete in abrt-2.1:
+        try:
+            return self.os_release
+        except AttributeError:
+            return self.release # old name
 
     def get_reason(self):
         return self.reason

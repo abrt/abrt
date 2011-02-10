@@ -63,10 +63,16 @@ static crash_data_t *DebugDumpToCrashReport(const char *dump_dir_name)
     {
         if (!dd_exist(dd, *v))
         {
+            /* Old dump dir format compat. Remove in abrt-2.1 */
+            if (strcmp(*v, FILENAME_OS_RELEASE) == 0)
+                if (dd_exist(dd, "release"))
+                    goto ok;
+
             dd_close(dd);
             log("Important file '%s/%s' is missing", dump_dir_name, *v);
             return NULL;
         }
+ ok:
         v++;
     }
 
