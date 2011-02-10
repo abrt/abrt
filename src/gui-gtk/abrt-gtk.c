@@ -1,4 +1,5 @@
 #include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
 #include "abrtlib.h"
 #include "abrt-gtk.h"
 
@@ -58,21 +59,45 @@ void add_directory_to_dirlist(const char *dirname)
 
 /* create_main_window and helpers */
 
-static void on_row_activated_cb(GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
+static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
 {
-    GtkTreeSelection *selection = gtk_tree_view_get_selection(tree_view);
+    GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
     if (selection)
     {
         GtkTreeIter iter;
-        GtkTreeModel *dump_list_store = gtk_tree_view_get_model(tree_view);
-        gtk_tree_model_get_iter(dump_list_store, &iter, path);
-        GValue d_dir = { 0 };
-        if (gtk_tree_selection_get_selected(selection, &dump_list_store, &iter) == TRUE)
+        GtkTreeModel *store = gtk_tree_view_get_model(treeview);
+        //gtk_tree_model_get_iter(store, &iter, path);
+        if (gtk_tree_selection_get_selected(selection, &store, &iter) == TRUE)
         {
-            gtk_tree_model_get_value(dump_list_store, &iter, COLUMN_DUMP_DIR, &d_dir);
+            GValue d_dir = { 0 };
+            gtk_tree_model_get_value(store, &iter, COLUMN_DUMP_DIR, &d_dir);
             g_print("CALL: run_event(%s)\n", g_value_get_string(&d_dir));
         }
     }
+}
+
+static gint on_key_press_event_cb(GtkTreeView *treeview, GdkEventKey *key, gpointer unused)
+{
+    int k = key->keyval;
+
+    if (k == GDK_Delete || k == GDK_KP_Delete)
+    {
+        GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
+        if (selection)
+        {
+            GtkTreeIter iter;
+            GtkTreeModel *store = gtk_tree_view_get_model(treeview);
+            if (gtk_tree_selection_get_selected(selection, &store, &iter) == TRUE)
+            {
+                GValue d_dir = { 0 };
+                gtk_tree_model_get_value(store, &iter, COLUMN_DUMP_DIR, &d_dir);
+                g_print("CALL: del_event(%s)\n", g_value_get_string(&d_dir));
+            }
+        }
+
+        return TRUE;
+    }
+    return FALSE;
 }
 
 static void add_columns(GtkTreeView *treeview)
@@ -156,7 +181,7 @@ GtkWidget *create_main_window(void)
     /* Double click/Enter handler */
     g_signal_connect(treeview, "row-activated", G_CALLBACK(on_row_activated_cb), NULL);
     /* Delete handler */
-    //g_signal_connect(treeview, "??????", G_CALLBACK(on_row_deleted_cb), NULL);
+    g_signal_connect(treeview, "key-press-event", G_CALLBACK(on_key_press_event_cb), NULL);
     /* Quit when user closes the main window */
     g_signal_connect(main_window, "destroy", gtk_main_quit, NULL);
 
