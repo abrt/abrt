@@ -104,3 +104,28 @@ for (each crash_data element)
 
 Can it be done better, so that we dont need to rewrite each of these places
 every time we add a new field?
+
+
+    "log" element
+
+Currently, we only save last reporter's message into "message" element.
+
+Is there a value in replacing/extending this functionality with multi-line,
+timestamped log saved in dump dir? Something along the lines of:
+
+YYYY-MM-DD hh:mm:ss <stat> <text>
+
+<text> is output lines of run_event_on_FOO() calls.
+One special case is when reporter exits (or dies from signal like SIGSEGV)
+without producing any output. In this case, we ourself may generate
+a message like "abrt-action-bugzilla: killed byu SIGSEGV".
+
+<stat> is a failure indicator. We already consider last line logged
+from event processing as its success/failure message, but we don't save
+success/failure status per se. <stat> is this place.
+In the most simple case it may be a '+' or '-' char, or space
+for non-final log messages.
+
+In order to not overflow the log, I propose to delete oldest lines
+when we reach, say, 10000 lines (which limits it to ~100k).
+
