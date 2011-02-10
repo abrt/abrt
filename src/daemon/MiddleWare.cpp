@@ -54,7 +54,7 @@ static crash_data_t *DebugDumpToCrashReport(const char *dump_dir_name)
 	FILENAME_KERNEL      ,
 	FILENAME_PACKAGE     ,
 	FILENAME_COMPONENT   ,
-	FILENAME_RELEASE     ,
+	FILENAME_OS_RELEASE  ,
 	FILENAME_EXECUTABLE  ,
 	NULL
     };

@@ -192,7 +192,7 @@ static void write_crash_report(crash_data_t *report, FILE *fp)
     write_crash_report_field(fp, report, FILENAME_KERNEL, _("# Kernel version"));
     write_crash_report_field(fp, report, FILENAME_PACKAGE, _("# Package"));
     write_crash_report_field(fp, report, FILENAME_REASON, _("# Reason of crash"));
-    write_crash_report_field(fp, report, FILENAME_RELEASE, _("# Release string of the operating system"));
+    write_crash_report_field(fp, report, FILENAME_OS_RELEASE, _("# Release string of the operating system"));
 }
 
 /*
@@ -279,7 +279,7 @@ static int read_crash_report(crash_data_t *report, const char *text)
     result |= read_crash_report_field(text, report, FILENAME_KERNEL);
     result |= read_crash_report_field(text, report, FILENAME_PACKAGE);
     result |= read_crash_report_field(text, report, FILENAME_REASON);
-    result |= read_crash_report_field(text, report, FILENAME_RELEASE);
+    result |= read_crash_report_field(text, report, FILENAME_OS_RELEASE);
     return result;
 }
 

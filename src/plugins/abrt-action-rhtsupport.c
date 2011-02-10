@@ -129,7 +129,6 @@ static void report_to_rhtsupport(
             if (strcmp(name, CD_DUMPDIR) == 0) continue;
             if (strcmp(name, FILENAME_INFORMALL) == 0) continue;
             if (strcmp(name, FILENAME_MESSAGE) == 0) continue; // plugin's status message (if we already reported it yesterday)
-            if (strcmp(name, FILENAME_DESCRIPTION) == 0) continue; // package description
 
             const char *content = value->content;
             if (value->flags & CD_FLAG_TXT)

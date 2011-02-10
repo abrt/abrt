@@ -160,7 +160,7 @@ static void print_crash_info(crash_data_t *crash_data, bool show_backtrace)
            get_crash_item_content_or_die(crash_data, FILENAME_PACKAGE),
            get_crash_item_content_or_die(crash_data, FILENAME_CMDLINE),
            get_crash_item_content_or_die(crash_data, FILENAME_EXECUTABLE),
-           get_crash_item_content_or_die(crash_data, FILENAME_RELEASE),
+           get_crash_item_content_or_die(crash_data, FILENAME_OS_RELEASE),
            get_crash_item_content_or_die(crash_data, FILENAME_KERNEL),
            get_crash_item_content_or_die(crash_data, FILENAME_REASON)
     );

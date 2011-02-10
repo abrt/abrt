@@ -58,12 +58,6 @@ void rpm_load_gpgkey(const char* filename);
 int rpm_chk_fingerprint(const char* pkg);
 
 /**
- * Gets a package description.
- * @param pkg A package name.
- * @return A package description.
- */
-char* rpm_get_description(const char* pkg);
-/**
  * Gets a package name. This package contains particular
  * file. If the file doesn't belong to any package, empty string is
  * returned.

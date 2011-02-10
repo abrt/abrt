@@ -448,7 +448,7 @@ xmlrpc_int32 ctx::new_bug(crash_data_t *crash_data, int depend_on_bugno)
 {
     const char *package         = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
     const char *component       = get_crash_item_content_or_NULL(crash_data, FILENAME_COMPONENT);
-    const char *release         = get_crash_item_content_or_NULL(crash_data, FILENAME_RELEASE);
+    const char *release         = get_crash_item_content_or_NULL(crash_data, FILENAME_OS_RELEASE);
     const char *arch            = get_crash_item_content_or_NULL(crash_data, FILENAME_ARCHITECTURE);
     const char *duphash         = get_crash_item_content_or_NULL(crash_data, FILENAME_DUPHASH);
     const char *reason          = get_crash_item_content_or_NULL(crash_data, FILENAME_REASON);
@@ -673,7 +673,7 @@ static void report_to_bugzilla(
 
     const char *component = get_crash_item_content_or_NULL(crash_data, FILENAME_COMPONENT);
     const char *duphash   = get_crash_item_content_or_NULL(crash_data, FILENAME_DUPHASH);
-    const char *release   = get_crash_item_content_or_NULL(crash_data, FILENAME_RELEASE);
+    const char *release   = get_crash_item_content_or_NULL(crash_data, FILENAME_OS_RELEASE);
 
     ctx bz_server(bugzilla_xmlrpc, ssl_verify);
 
@@ -858,7 +858,7 @@ static void report_to_bugzilla(
         if (dsc)
         {
             const char* package    = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
-            const char* release    = get_crash_item_content_or_NULL(crash_data, FILENAME_RELEASE);
+            const char* release    = get_crash_item_content_or_NULL(crash_data, FILENAME_OS_RELEASE);
             const char* arch       = get_crash_item_content_or_NULL(crash_data, FILENAME_ARCHITECTURE);
             const char* is_private = get_crash_item_content_or_NULL(crash_data, "is_private");
 

@@ -170,27 +170,6 @@ error:
 }
 */
 
-char* rpm_get_description(const char* pkg)
-{
-    char *dsc = NULL;
-    const char *errmsg = NULL;
-    rpmts ts = rpmtsCreate();
-
-    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pkg, 0);
-    Header header = rpmdbNextIterator(iter);
-    if (!header)
-        goto error;
-
-    dsc = headerFormat(header, "%{SUMMARY}\n\n%{DESCRIPTION}", &errmsg);
-    if (!dsc && errmsg)
-        error_msg("cannot get summary and description. reason: %s", errmsg);
-
-error:
-    rpmdbFreeIterator(iter);
-    rpmtsFree(ts);
-    return dsc;
-}
-
 char* rpm_get_component(const char* filename)
 {
     char *ret = NULL;

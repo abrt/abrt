@@ -45,11 +45,11 @@
 #define FILENAME_ARCHITECTURE "architecture"
 #define FILENAME_KERNEL       "kernel"
 #define FILENAME_TIME         "time"
-#define FILENAME_RELEASE      "release"  /* from /etc/redhat-release */
-// filled by <what?>
+// From /etc/syste-release or /etc/redhat-release
+#define FILENAME_OS_RELEASE   "os_release"
+// Filled by <what?>
 #define FILENAME_PACKAGE      "package"
 #define FILENAME_COMPONENT    "component"
-#define FILENAME_DESCRIPTION  "description" /* package descr (not crash descr) */
 #define FILENAME_COMMENT      "comment"
 #define FILENAME_REPRODUCE    "reproduce"
 #define FILENAME_RATING       "rating"

@@ -60,7 +60,6 @@ static void add_content(bool *was_multiline, char **dsc, const char *header, con
 static const char *const blacklisted_items[] = {
     FILENAME_ANALYZER ,
     FILENAME_COREDUMP ,
-    FILENAME_DESCRIPTION, /* package description - basically useless */
     FILENAME_HOSTNAME ,
     FILENAME_DUPHASH  ,
     FILENAME_UUID     ,

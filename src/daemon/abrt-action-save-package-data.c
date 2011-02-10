@@ -91,7 +91,6 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     char *package_short_name = NULL;
     char *component = NULL;
     char *script_name = NULL; /* only if "interpreter /path/to/script" */
-    char *dsc = NULL;
     /* note: "goto ret" statements below free all the above variables,
      * but they don't dd_close(dd) */
 
@@ -100,7 +99,6 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
         component = xstrdup("kernel");
         package_full_name = xstrdup("kernel");
         package_short_name = xstrdup("kernel");
-        dsc = rpm_get_description(package_short_name);
     }
     else
     {
@@ -124,7 +122,6 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
                 if (!dd)
                     goto ret; /* return 1 (failure) */
                 dd_save_text(dd, FILENAME_PACKAGE, "");
-                dd_save_text(dd, FILENAME_DESCRIPTION, "Crashed executable does not belong to any installed package");
                 dd_save_text(dd, FILENAME_COMPONENT, "");
 //TODO: move hostname saving to a more logical place
                 if (!remote)
@@ -220,7 +217,6 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
         }
 
         component = rpm_get_component(executable);
-        dsc = rpm_get_description(package_short_name);
 
         dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (!dd)
@@ -230,10 +226,6 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     if (package_full_name)
     {
         dd_save_text(dd, FILENAME_PACKAGE, package_full_name);
-    }
-    if (dsc)
-    {
-        dd_save_text(dd, FILENAME_DESCRIPTION, dsc);
     }
     if (component)
     {
@@ -262,7 +254,6 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     free(package_short_name);
     free(component);
     free(script_name);
-    free(dsc);
 
     return error;
 }
