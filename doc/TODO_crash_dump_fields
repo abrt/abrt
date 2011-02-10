@@ -64,4 +64,43 @@ for (each crash_data element)
     ...
 }
 
-Can it be done with a flag?
+    write_crash_report_field(fp, report, FILENAME_COMMENT,
+            _("# Describe the circumstances of this crash below"));
+    write_crash_report_field(fp, report, FILENAME_REPRODUCE,
+            _("# How to reproduce the crash?"));
+    write_crash_report_field(fp, report, FILENAME_BACKTRACE,
+            _("# Backtrace\n# Check that it does not contain any sensitive data (passwords, etc.)"));
+    write_crash_report_field(fp, report, FILENAME_DUPHASH, "# DUPHASH");
+    write_crash_report_field(fp, report, FILENAME_ARCHITECTURE, _("# Architecture"));
+    write_crash_report_field(fp, report, FILENAME_CMDLINE, _("# Command line"));
+    write_crash_report_field(fp, report, FILENAME_COMPONENT, _("# Component"));
+    write_crash_report_field(fp, report, FILENAME_COREDUMP, _("# Core dump"));
+    write_crash_report_field(fp, report, FILENAME_EXECUTABLE, _("# Executable"));
+    write_crash_report_field(fp, report, FILENAME_KERNEL, _("# Kernel version"));
+    write_crash_report_field(fp, report, FILENAME_PACKAGE, _("# Package"));
+    write_crash_report_field(fp, report, FILENAME_REASON, _("# Reason of crash"));
+    write_crash_report_field(fp, report, FILENAME_OS_RELEASE, _("# Release string of the operating system"));
+
+    printf(_("Dump directory:     %s\n"
+             "Last crash:         %s\n"
+             "Analyzer:           %s\n"
+             "Component:          %s\n"
+             "Package:            %s\n"
+             "Command:            %s\n"
+             "Executable:         %s\n"
+             "System:             %s, kernel %s\n"
+             "Reason:             %s\n"),
+           get_crash_item_content_or_die(crash_data, CD_DUMPDIR),
+           timeloc,
+           get_crash_item_content_or_die(crash_data, FILENAME_ANALYZER),
+           get_crash_item_content_or_die(crash_data, FILENAME_COMPONENT),
+           get_crash_item_content_or_die(crash_data, FILENAME_PACKAGE),
+           get_crash_item_content_or_die(crash_data, FILENAME_CMDLINE),
+           get_crash_item_content_or_die(crash_data, FILENAME_EXECUTABLE),
+           get_crash_item_content_or_die(crash_data, FILENAME_OS_RELEASE),
+           get_crash_item_content_or_die(crash_data, FILENAME_KERNEL),
+           get_crash_item_content_or_die(crash_data, FILENAME_REASON)
+    );
+
+Can it be done better, so that we dont need to rewrite each of these places
+every time we add a new field?
