@@ -9,5 +9,4 @@ libabrt_include_HEADERS = \
     abrtlib.h \
     abrt_types.h \
     abrt_crash_data.h \
-    dbus_common.h \
     xfuncs.h

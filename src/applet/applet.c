@@ -24,7 +24,6 @@
 #include <dbus/dbus-glib-lowlevel.h>
 #include "abrtlib.h"
 #include "abrt_dbus.h"
-#include "dbus_common.h"
 #include "applet_gtk.h"
 
 

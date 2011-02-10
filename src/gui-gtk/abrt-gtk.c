@@ -1,6 +1,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include "abrtlib.h"
+#include "abrt_dbus.h"
 #include "abrt-gtk.h"
 
 static GtkListStore *dumps_list_store;
@@ -91,7 +92,27 @@ static gint on_key_press_event_cb(GtkTreeView *treeview, GdkEventKey *key, gpoin
             {
                 GValue d_dir = { 0 };
                 gtk_tree_model_get_value(store, &iter, COLUMN_DUMP_DIR, &d_dir);
-                g_print("CALL: del_event(%s)\n", g_value_get_string(&d_dir));
+                const char *dump_dir_name = g_value_get_string(&d_dir);
+
+                g_print("CALL: del_event(%s)\n", dump_dir_name);
+
+                /* Try to delete it ourselves */
+                struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
+                if (dd)
+                {
+                    if (dd->locked) /* it is not readonly */
+                    {
+                        dd_delete(dd);
+                        return TRUE;
+                    }
+                    dd_close(dd);
+                }
+
+                /* Ask abrtd to do it for us */
+                connect_to_abrtd_and_call_DeleteDebugDump(dump_dir_name);
+
+//TODO: refresh the list of crashes
+
             }
         }
 

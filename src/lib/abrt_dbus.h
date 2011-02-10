@@ -23,6 +23,11 @@
 #include "abrtlib.h"
 
 
+#define ABRTD_DBUS_NAME "com.redhat.abrt"
+#define ABRTD_DBUS_PATH "/com/redhat/abrt"
+#define ABRTD_DBUS_IFACE "com.redhat.abrt"
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -53,6 +58,7 @@ extern DBusConnection* g_dbus_conn;
  *  // (note: "iface.sig.emitted.from" is not optional for signals!)
  *  dbus_message_set_destination(msg, "peer"); // optional
  *  dbus_connection_send(conn, msg, &serial); // &serial can be NULL
+ *  dbus_connection_unref(conn); // if you don't want to *stay* connected
  *
  * - client which receives and processes signals:
  *  conn = dbus_bus_get(DBUS_BUS_SYSTEM/SESSION, &err);
@@ -72,6 +78,18 @@ void attach_dbus_conn_to_glib_main_loop(DBusConnection* conn,
     /* makes sense only if you use object_path_to_register: */
     DBusHandlerResult (*message_received_func)(DBusConnection *conn, DBusMessage *msg, void* data)
 );
+
+/* Log dbus error if err has it set. Then log msg if it's !NULL.
+ * In both cases return 1. Otherwise return 0.
+ */
+int log_dbus_error(const char *msg, DBusError *err);
+
+/* Perform "DeleteDebugDump" call over g_dbus_conn */
+int32_t call_DeleteDebugDump(const char *dump_dir_name);
+
+/* Connect to system bus, find abrtd, perform "DeleteDebugDump" call, close g_dbus_conn */
+int connect_to_abrtd_and_call_DeleteDebugDump(const char *dump_dir_name);
+
 
 /*
  * Helpers for building DBus messages
@@ -114,7 +132,10 @@ int load_vector_of_crash_data(DBusMessageIter* iter, vector_of_crash_data_t **va
 #endif
 
 
-/* C++ style stuff */
+/*
+ * C++ style stuff
+ */
+
 #ifdef __cplusplus
 
 #include <map>

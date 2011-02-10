@@ -17,7 +17,6 @@
 */
 #include "report.h"
 #include "run-command.h"
-#include "dbus.h"
 #include "abrtlib.h"
 
 /* Field separator for the crash report file that is edited by user. */

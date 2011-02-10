@@ -598,8 +598,29 @@ static void unregister_vtable(DBusConnection *conn, void* data)
     VERB3 log("%s()", __func__);
 }
 
+
 /*
- * Initialization works as follows:
+ * Simple logging handler for dbus errors.
+ */
+int log_dbus_error(const char *msg, DBusError *err)
+{
+    int ret = 0;
+    if (dbus_error_is_set(err))
+    {
+        error_msg("dbus error: %s", err->message);
+        ret = 1;
+    }
+    if (msg)
+    {
+        error_msg(msg);
+        ret = 1;
+    }
+    return ret;
+}
+
+
+/*
+ * Initialization. Works as follows:
  *
  * we have a DBusConnection* (say, obtained with dbus_bus_get)
  * we call dbus_connection_set_watch_functions
@@ -672,4 +693,158 @@ void attach_dbus_conn_to_glib_main_loop(DBusConnection* conn,
             die_out_of_memory();
         }
     }
+}
+
+
+/*
+ * Support functions for clients
+ */
+
+/* helpers */
+static DBusMessage* new_call_msg(const char* method)
+{
+    DBusMessage* msg = dbus_message_new_method_call(ABRTD_DBUS_NAME, ABRTD_DBUS_PATH, ABRTD_DBUS_IFACE, method);
+    if (!msg)
+        die_out_of_memory();
+    return msg;
+}
+
+static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
+{
+    dbus_uint32_t serial;
+    if (TRUE != dbus_connection_send(g_dbus_conn, msg, &serial))
+        error_msg_and_die("Error sending DBus message");
+    dbus_message_unref(msg);
+
+    while (true)
+    {
+        DBusMessage *received = dbus_connection_pop_message(g_dbus_conn);
+        if (!received)
+        {
+            if (FALSE == dbus_connection_read_write(g_dbus_conn, -1))
+                error_msg_and_die("dbus connection closed");
+            continue;
+        }
+
+        int tp = dbus_message_get_type(received);
+        const char *error_str = dbus_message_get_error_name(received);
+#if 0
+        /* Debugging */
+        printf("type:%u (CALL:%u, RETURN:%u, ERROR:%u, SIGNAL:%u)\n", tp,
+                                DBUS_MESSAGE_TYPE_METHOD_CALL,
+                                DBUS_MESSAGE_TYPE_METHOD_RETURN,
+                                DBUS_MESSAGE_TYPE_ERROR,
+                                DBUS_MESSAGE_TYPE_SIGNAL
+        );
+        const char *sender = dbus_message_get_sender(received);
+        if (sender)
+            printf("sender: %s\n", sender);
+        const char *path = dbus_message_get_path(received);
+        if (path)
+            printf("path: %s\n", path);
+        const char *member = dbus_message_get_member(received);
+        if (member)
+            printf("member: %s\n", member);
+        const char *interface = dbus_message_get_interface(received);
+        if (interface)
+            printf("interface: %s\n", interface);
+        const char *destination = dbus_message_get_destination(received);
+        if (destination)
+            printf("destination: %s\n", destination);
+        if (error_str)
+            printf("error: '%s'\n", error_str);
+#endif
+
+        DBusError err;
+        dbus_error_init(&err);
+
+        if (dbus_message_is_signal(received, ABRTD_DBUS_IFACE, "Update"))
+        {
+            const char *update_msg;
+            if (!dbus_message_get_args(received, &err,
+                                   DBUS_TYPE_STRING, &update_msg,
+                                   DBUS_TYPE_INVALID))
+            {
+                error_msg_and_die("dbus Update message: arguments mismatch");
+            }
+            printf(">> %s\n", update_msg);
+        }
+        else if (dbus_message_is_signal(received, ABRTD_DBUS_IFACE, "Warning"))
+        {
+            const char *warning_msg;
+            if (!dbus_message_get_args(received, &err,
+                                   DBUS_TYPE_STRING, &warning_msg,
+                                   DBUS_TYPE_INVALID))
+            {
+                error_msg_and_die("dbus Warning message: arguments mismatch");
+            }
+            log(">! %s\n", warning_msg);
+        }
+        else
+        if (tp == DBUS_MESSAGE_TYPE_METHOD_RETURN
+         && dbus_message_get_reply_serial(received) == serial
+        ) {
+            return received;
+        }
+        else
+        if (tp == DBUS_MESSAGE_TYPE_ERROR
+         && dbus_message_get_reply_serial(received) == serial
+        ) {
+            error_msg_and_die("dbus call returned error: '%s'", error_str);
+        }
+
+        dbus_message_unref(received);
+    }
+}
+
+int32_t call_DeleteDebugDump(const char *dump_dir_name)
+{
+    DBusMessage* msg = new_call_msg(__func__ + 5);
+    dbus_message_append_args(msg,
+            DBUS_TYPE_STRING, &dump_dir_name,
+            DBUS_TYPE_INVALID);
+
+    DBusMessage *reply = send_get_reply_and_unref(msg);
+
+    DBusMessageIter in_iter;
+    dbus_message_iter_init(reply, &in_iter);
+
+    int32_t result;
+    int r = load_int32(&in_iter, &result);
+    if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
+        error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
+
+    dbus_message_unref(reply);
+    return result;
+}
+
+int connect_to_abrtd_and_call_DeleteDebugDump(const char *dump_dir_name)
+{
+    DBusError err;
+    dbus_error_init(&err);
+    g_dbus_conn = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
+    if (log_dbus_error(
+                g_dbus_conn ? NULL :
+                "error requesting system DBus, possible reasons: "
+                "dbus config is incorrect; dbus-daemon is not running, "
+                "or dbus daemon needs to be restarted to reload dbus config",
+                &err
+        )
+    ) {
+        if (g_dbus_conn)
+            dbus_connection_unref(g_dbus_conn);
+        g_dbus_conn = NULL;
+        return 1;
+    }
+
+    int ret = call_DeleteDebugDump(dump_dir_name);
+    if (ret == ENOENT)
+        error_msg("Dump directory '%s' is not found", dump_dir_name);
+    else if (ret != 0)
+        error_msg("Can't delete dump directory '%s'", dump_dir_name);
+
+    dbus_connection_unref(g_dbus_conn);
+    g_dbus_conn = NULL;
+
+    return ret;
 }

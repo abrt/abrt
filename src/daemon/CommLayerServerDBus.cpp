@@ -20,7 +20,6 @@
 #include "abrtlib.h"
 #include "abrt_dbus.h"
 #include "comm_layer_inner.h"
-#include "dbus_common.h"
 #include "MiddleWare.h"
 #include "Settings.h"
 #include "CommLayerServerDBus.h"
@@ -524,6 +523,9 @@ int init_dbus()
 
 void deinit_dbus()
 {
-    if(g_dbus_conn != NULL)
+    if (g_dbus_conn != NULL)
+    {
         dbus_connection_unref(g_dbus_conn);
+        g_dbus_conn = NULL;
+    }
 }

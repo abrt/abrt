@@ -14,9 +14,9 @@ abrt_gtk_CFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DICON_DIR=\"${datadir}/abrt/icons/hicolor/48x48/status\" \
     $(GTK_CFLAGS) \
+    $(DBUS_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Werror
-#    $(DBUS_CFLAGS)
 #    -I/usr/include/glib-2.0
 #    -I/usr/lib/glib-2.0/include
 #    $(LIBNOTIFY_CFLAGS)
@@ -26,8 +26,8 @@ abrt_gtk_LDADD = \
     ../lib/libabrt_dbus.la \
     -lglib-2.0 \
     -lgthread-2.0 \
-    $(GTK_LIBS)
-#    $(DBUS_LIBS)
+    $(GTK_LIBS) \
+    $(DBUS_LIBS)
 #    $(LIBNOTIFY_LIBS)
 
 #test_report_SOURCES = \

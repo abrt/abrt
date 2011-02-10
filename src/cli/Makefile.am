@@ -3,8 +3,7 @@ bin_PROGRAMS = abrt-cli
 abrt_cli_SOURCES = \
     CLI.cpp \
     run-command.h run-command.c \
-    report.h report.cpp \
-    dbus.h dbus.cpp
+    report.h report.cpp
 abrt_cli_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \

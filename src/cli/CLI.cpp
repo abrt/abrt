@@ -21,9 +21,7 @@
 #include <getopt.h>
 #include "abrtlib.h"
 #include "abrt_dbus.h"
-#include "dbus_common.h"
 #include "report.h"
-#include "dbus.h"
 
 /** Creates a localized string from crash time. */
 static char *localize_crash_time(const char *timestr)
@@ -410,11 +408,6 @@ int main(int argc, char** argv)
         print_usage_and_die(argv[0]);
     }
 
-    DBusError err;
-    dbus_error_init(&err);
-    s_dbus_conn = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
-    handle_dbus_err(s_dbus_conn == NULL, &err);
-
     /* Do the selected operation. */
     int exitcode = 0;
     switch (op)
@@ -469,12 +462,10 @@ int main(int argc, char** argv)
                 }
                 dd_close(dd);
             }
+
             /* Ask abrtd to do it for us */
-            exitcode = call_DeleteDebugDump(dump_dir_name);
-            if (exitcode == ENOENT)
-                error_msg_and_die("Crash '%s' not found", dump_dir_name);
-            if (exitcode != 0)
-                error_msg_and_die("Can't delete debug dump '%s'", dump_dir_name);
+            exitcode = connect_to_abrtd_and_call_DeleteDebugDump(dump_dir_name);
+
             break;
         }
         case OPT_INFO:
