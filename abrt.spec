@@ -86,6 +86,13 @@ Group: System Environment/Libraries
 %description -n libreport-python
 Python bindings for report-libs.
 
+%package -n libreport-gtk
+Summary: GTK frontend for libreport
+Group: User Interface/Desktops
+
+%description -n libreport-gtk
+Applications for reporting bugs using libreport backend.
+
 %package libs
 Summary: Libraries for %{name}
 Group: System Environment/Libraries
@@ -401,6 +408,10 @@ fi
 %files -n libreport-python
 %defattr(-,root,root,-)
 %{python_sitearch}/report/*
+
+%files -n libreport-gtk
+%defattr(-,root,root,-)
+%{_bindir}/bug-reporting-wizard
 
 %files libs
 %defattr(-,root,root,-)
