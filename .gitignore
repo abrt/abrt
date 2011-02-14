@@ -1,16 +1,55 @@
-\#*
-cscope.out
+# NOTE! Please use 'git ls-files -i --exclude-standard'
+# command after changing this file, to see if there are
+# any tracked files which get ignored after the change.
+
+# normal rules
 *.o
 *.lo
 *.la
-abrt-*.rpm
-abrt-?.?.*.tar.gz
-abrt-?.?.*/
-i686/
-po/*.gmo
+
+# ignore binaries
+src/plugins/abrt-action-analyze-c
+src/plugins/abrt-action-analyze-oops
+src/plugins/abrt-action-bugzilla
+src/plugins/abrt-action-rhtsupport
+src/plugins/abrt-action-kerneloops
+src/plugins/abrt-action-analyze-python
+src/plugins/abrt-action-generate-backtrace
+src/plugins/abrt-action-upload
+src/plugins/abrt-action-mailx
+src/plugins/abrt-action-print
+src/plugins/abrt-dump-oops
+
+src/daemon/abrt-action-save-package-data
+src/daemon/abrt-handle-crashdump
+src/daemon/abrt-server
+src/daemon/abrtd
+
+src/gui-gtk/abrt-gtk
+
+src/applet/abrt-applet
+
+src/cli/abrt-cli
+
+src/hooks/abrt_exception_handler.py
+src/hooks/abrt-hook-ccpp
+
+src/applet/abrt-applet.desktop
+src/gui/abrt.desktop
+
+# cscope files
+cscope.*
+ncscope.*
+
+# gnu global files
+GPATH
+GRTAGS
+GSYMS
+GTAGS
+
+# autotools
 .deps
 .libs
-*~
 Makefile
 Makefile.in
 m4
@@ -31,7 +70,12 @@ depcomp
 install-sh
 libtool
 ltmain.sh
-ylwrap
+py-compile
+stamp-h1
+tests/atconfig
+tests/atlocal
+
+# po files
 po/Makevars.template
 po/notexist
 po/POTFILES
@@ -46,27 +90,19 @@ po/remove-potcdate.sed
 po/remove-potcdate.sin
 po/stamp-po
 po/stamp-it
-py-compile
-src/applet/abrt-applet
-src/applet/abrt-applet.desktop
-src/cli/abrt-cli
-src/daemon/abrtd
-src/gui/abrt.desktop
-src/hooks/abrt_exception_handler.py
-src/hooks/abrt-hook-ccpp
-stamp-h1
-x86_64/
+po/*.gmo
+
+# compiled python files
 *.pyc
-src/daemon/abrt-action-save-package-data
-src/daemon/abrt-handle-crashdump
-src/daemon/abrt-server
-src/plugins/abrt-action-analyze-c
-src/plugins/abrt-action-analyze-oops
-src/plugins/abrt-action-bugzilla
-src/plugins/abrt-action-rhtsupport
-src/plugins/abrt-action-kerneloops
-src/plugins/abrt-action-analyze-python
-src/plugins/abrt-action-generate-backtrace
-src/plugins/abrt-action-upload
-src/plugins/abrt-action-mailx
-src/plugins/abrt-action-print
+
+# misc
+\#*
+*~
+
+# if you want to enable them, be aware of that 'git clean -df' won't clean them
+# and you have to do it *manually*
+# x86_64/
+# abrt-*.rpm
+# abrt-?.?.*.tar.gz
+# abrt-?.?.*/
+# i686/
