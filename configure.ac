@@ -64,9 +64,6 @@ AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$with_systemdsystemunitdir"])
 AC_CHECK_HEADER([libtar.h], [],
    [AC_MSG_ERROR([libtar.h is needed to build abrt])])
 
-AC_CHECK_HEADER([bzlib.h], [],
-   [AC_MSG_ERROR([bzlib.h is needed to build abrt])])
-
 AC_CHECK_HEADER([sys/inotify.h], [],
    [AC_MSG_ERROR([sys/inotify.h is needed to build abrt])])
 
