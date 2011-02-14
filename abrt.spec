@@ -34,17 +34,15 @@ BuildRequires: gtk2-devel
 BuildRequires: curl-devel
 BuildRequires: rpm-devel >= 4.6
 BuildRequires: desktop-file-utils
-#BuildRequires: nss-devel
 BuildRequires: libnotify-devel
 BuildRequires: xmlrpc-c-devel
-BuildRequires: xmlrpc-c-client
 BuildRequires: file-devel
 BuildRequires: python-devel
 BuildRequires: gettext
 BuildRequires: libxml2-devel
-BuildRequires: libtar-devel, bzip2-devel, zlib-devel
+BuildRequires: libtar-devel
 BuildRequires: intltool
-BuildRequires: bison
+BuildRequires: libtool
 %if %{?with_systemd}
 Requires: systemd-units
 %endif
