@@ -4,7 +4,8 @@
 #include "abrt_dbus.h"
 #include "abrt-gtk.h"
 
-static GtkListStore *dumps_list_store;
+static GtkListStore *s_dumps_list_store;
+static GtkWidget *s_treeview;
 
 enum
 {
@@ -39,8 +40,8 @@ void add_directory_to_dirlist(const char *dirname)
     char *hostname = dd_load_text(dd, FILENAME_HOSTNAME);
 
     GtkTreeIter iter;
-    gtk_list_store_append(dumps_list_store, &iter);
-    gtk_list_store_set(dumps_list_store, &iter,
+    gtk_list_store_append(s_dumps_list_store, &iter);
+    gtk_list_store_set(s_dumps_list_store, &iter,
                           COLUMN_REPORTED, reported,
                           COLUMN_APPLICATION, executable,
                           COLUMN_HOSTNAME, hostname,
@@ -103,16 +104,25 @@ static gint on_key_press_event_cb(GtkTreeView *treeview, GdkEventKey *key, gpoin
                     if (dd->locked) /* it is not readonly */
                     {
                         dd_delete(dd);
-                        return TRUE;
+                        goto deleted_ok;
                     }
                     dd_close(dd);
                 }
 
                 /* Ask abrtd to do it for us */
-                connect_to_abrtd_and_call_DeleteDebugDump(dump_dir_name);
-
-//TODO: refresh the list of crashes
-
+                if (connect_to_abrtd_and_call_DeleteDebugDump(dump_dir_name) == 0)
+                {
+ deleted_ok:
+                    gtk_list_store_remove(s_dumps_list_store, &iter);
+                }
+                else
+                {
+                    /* Strange. Deletion did not succeed. Someone else deleted it?
+                     * Rescan the whole list */
+                    gtk_list_store_clear(s_dumps_list_store);
+                    scan_dirs_and_add_to_dirlist();
+                    sanitize_cursor();
+                }
             }
         }
 
@@ -186,25 +196,47 @@ GtkWidget *create_main_window(void)
     gtk_container_add(GTK_CONTAINER(main_window), scroll_win);
 
     /* tree view inside scrolled region */
-    GtkWidget *treeview = gtk_tree_view_new();
-    add_columns(GTK_TREE_VIEW(treeview));
-    gtk_container_add(GTK_CONTAINER(scroll_win), treeview);
+    s_treeview = gtk_tree_view_new();
+    add_columns(GTK_TREE_VIEW(s_treeview));
+    gtk_container_add(GTK_CONTAINER(scroll_win), s_treeview);
 
     /* Create data store for the list and attach it */
-    dumps_list_store = gtk_list_store_new(NUM_COLUMNS, G_TYPE_STRING, /* reported */
+    s_dumps_list_store = gtk_list_store_new(NUM_COLUMNS, G_TYPE_STRING, /* reported */
                                                        G_TYPE_STRING, /* executable */
                                                        G_TYPE_STRING, /* hostname */
                                                        G_TYPE_STRING, /* time */
                                                        G_TYPE_INT,    /* unix time - used for sort */
                                                        G_TYPE_STRING);/* dump dir path */
-    gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(dumps_list_store));
+    gtk_tree_view_set_model(GTK_TREE_VIEW(s_treeview), GTK_TREE_MODEL(s_dumps_list_store));
 
     /* Double click/Enter handler */
-    g_signal_connect(treeview, "row-activated", G_CALLBACK(on_row_activated_cb), NULL);
+    g_signal_connect(s_treeview, "row-activated", G_CALLBACK(on_row_activated_cb), NULL);
     /* Delete handler */
-    g_signal_connect(treeview, "key-press-event", G_CALLBACK(on_key_press_event_cb), NULL);
+    g_signal_connect(s_treeview, "key-press-event", G_CALLBACK(on_key_press_event_cb), NULL);
     /* Quit when user closes the main window */
     g_signal_connect(main_window, "destroy", gtk_main_quit, NULL);
 
     return main_window;
+}
+
+void sanitize_cursor(void)
+{
+    GtkTreePath *path;
+    gtk_tree_view_get_cursor(GTK_TREE_VIEW(s_treeview), &path, /* GtkTreeViewColumn** */ NULL);
+    if (path)
+    {
+	/* Cursor exists already */
+        gtk_tree_path_free(path);
+        return;
+    }
+
+    GtkTreeIter iter;
+    if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(s_dumps_list_store), &iter))
+    {
+	/* We have at least one element, put cursor on it */
+        path = gtk_tree_model_get_path(GTK_TREE_MODEL(s_dumps_list_store), &iter);
+        gtk_tree_view_set_cursor(GTK_TREE_VIEW(s_treeview), path,
+                /* GtkTreeViewColumn *focus_column */ NULL, /* start_editing */ false);
+        gtk_tree_path_free(path);
+    }
 }
