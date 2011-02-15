@@ -7,7 +7,9 @@
 #BUILDDIR="abrt"
 
 SRCDIR="."
-BUILDDIR="../`basename "$PWD"`.builddir"
+BUILDDIR="00_builddir"
+
+rm -rf "$BUILDDIR"
 
 if ! test -f "$SRCDIR/configure"; then
         echo "Autogenerating configure"
@@ -17,20 +19,25 @@ fi
 test -f "$SRCDIR/abrt.spec" || exit 1
 ABRTVER=`grep ^Version: "$SRCDIR/abrt.spec" | head -n1 | sed 's/.* //'`
 
-rm -rf "$BUILDDIR"
+T=`mktemp -d`
+
+# Prepare source snapshot
+cp -a "$SRCDIR" "$T"/"abrt-$ABRTVER"
+
+# Can't do it before copying, BUILDDIR may be a subdir of SRCDIR
 mkdir "$BUILDDIR" 2>/dev/null
 
-cp -a "$SRCDIR" "$BUILDDIR"/abrt-$ABRTVER
+# Prepare sources for rpmbuild
+(tar -czf - -C "$T" "abrt-$ABRTVER") >"$BUILDDIR"/"abrt-$ABRTVER".tar.gz
+rm -rf "$T"
+cp "$SRCDIR"/abrt.spec "$BUILDDIR"
+cp "$SRCDIR"/abrt.init "$BUILDDIR"
+cp "$SRCDIR"/abrt-ccpp.init "$BUILDDIR"
+cp "$SRCDIR"/dbg_* "$BUILDDIR" 2>/dev/null # developers' toys
 
 cd "$BUILDDIR" || exit 1
 
-tar -czf abrt-$ABRTVER.tar.gz abrt-$ABRTVER
-cp abrt-$ABRTVER/abrt.spec .
-cp abrt-$ABRTVER/abrt.init .
-cp abrt-$ABRTVER/abrt-ccpp.init .
-#cp abrt-$ABRTVER/dbg_* .
-rm -rf abrt-$ABRTVER
-
+# Build them
 # Less ugly way to pass exitcode (without bashisms)?
 { nice -n10 rpmbuild \
   --define "_topdir $PWD" \
