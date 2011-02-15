@@ -83,7 +83,7 @@ int main(int argc, char **argv)
 
     gtk_widget_show_all(main_window);
 
-    sanitize_cursor();
+    sanitize_cursor(NULL);
 
     /* Prevent zombies when we spawn wizard */
     signal(SIGCHLD, SIG_IGN);

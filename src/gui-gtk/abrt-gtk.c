@@ -91,6 +91,8 @@ static gint on_key_press_event_cb(GtkTreeView *treeview, GdkEventKey *key, gpoin
             GtkTreeModel *store = gtk_tree_view_get_model(treeview);
             if (gtk_tree_selection_get_selected(selection, &store, &iter) == TRUE)
             {
+		GtkTreePath *old_path = gtk_tree_model_get_path(store, &iter);
+
                 GValue d_dir = { 0 };
                 gtk_tree_model_get_value(store, &iter, COLUMN_DUMP_DIR, &d_dir);
                 const char *dump_dir_name = g_value_get_string(&d_dir);
@@ -121,8 +123,11 @@ static gint on_key_press_event_cb(GtkTreeView *treeview, GdkEventKey *key, gpoin
                      * Rescan the whole list */
                     gtk_list_store_clear(s_dumps_list_store);
                     scan_dirs_and_add_to_dirlist();
-                    sanitize_cursor();
                 }
+
+                /* Try to retain the same cursor position */
+                sanitize_cursor(old_path);
+                gtk_tree_path_free(old_path);
             }
         }
 
@@ -219,24 +224,46 @@ GtkWidget *create_main_window(void)
     return main_window;
 }
 
-void sanitize_cursor(void)
+void sanitize_cursor(GtkTreePath *preferred_path)
 {
     GtkTreePath *path;
+
     gtk_tree_view_get_cursor(GTK_TREE_VIEW(s_treeview), &path, /* GtkTreeViewColumn** */ NULL);
     if (path)
     {
-	/* Cursor exists already */
+        /* Cursor exists already */
         gtk_tree_path_free(path);
-        return;
+        goto ret;
     }
 
+    if (preferred_path)
+    {
+        /* Try to position cursor on preferred_path */
+        gtk_tree_view_set_cursor(GTK_TREE_VIEW(s_treeview), preferred_path,
+                /* GtkTreeViewColumn *focus_column */ NULL, /* start_editing */ false);
+
+        /* Did it work? */
+        gtk_tree_view_get_cursor(GTK_TREE_VIEW(s_treeview), &path, /* GtkTreeViewColumn** */ NULL);
+        if (path) /* yes */
+        {
+            gtk_tree_path_free(path);
+            goto ret;
+        }
+    }
+
+    /* Try to position cursor on 1st element */
     GtkTreeIter iter;
     if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(s_dumps_list_store), &iter))
     {
-	/* We have at least one element, put cursor on it */
+        /* We have at least one element, put cursor on it */
         path = gtk_tree_model_get_path(GTK_TREE_MODEL(s_dumps_list_store), &iter);
         gtk_tree_view_set_cursor(GTK_TREE_VIEW(s_treeview), path,
                 /* GtkTreeViewColumn *focus_column */ NULL, /* start_editing */ false);
         gtk_tree_path_free(path);
     }
+    /* else we have no elements */
+
+ ret:
+    /* Without this, the *header* of the list gets the focus. Ugly. */
+    gtk_widget_grab_focus(s_treeview);
 }
