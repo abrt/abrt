@@ -130,7 +130,7 @@ AC_CONFIG_FILES([
 	src/applet/Makefile
 	src/gui/Makefile
 	src/gui-gtk/Makefile
-	src/gtk-wizard/Makefile
+	src/gui-wizard-gtk/Makefile
 	src/cli/Makefile
 	po/Makefile.in
 	icons/Makefile
