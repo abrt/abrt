@@ -13,19 +13,58 @@
         <property name="border_width">10</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel" id="lbl_page1">
-            <property name="width_request">750</property>
+          <object class="GtkVBox" id="vbox7">
             <property name="visible">True</property>
-            <property name="xalign">0.05000000074505806</property>
-            <property name="yalign">0.05000000074505806</property>
-            <property name="label" translatable="yes">It looks like an application from the package &lt;b&gt;APPLICATION&lt;/b&gt; has crashed on your system. It is a good idea to send a bug report about this issue. The report will provide software maintainers with information essential in figuring out how to provide a bug fix for you.
-
-Please review the information that follows and modify it as needed to ensure your bug report does not contain any sensitive data you would rather not share.
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkLabel" id="lbl_page1">
+                <property name="width_request">750</property>
+                <property name="visible">True</property>
+                <property name="xalign">0.05000000074505806</property>
+                <property name="yalign">0.05000000074505806</property>
+                <property name="label" translatable="yes">There has been a problem detected on your computer:</property>
+                <property name="justify">fill</property>
+                <property name="wrap">True</property>
+              </object>
+              <packing>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_page7">
+                <property name="width_request">750</property>
+                <property name="visible">True</property>
+                <property name="xalign">0.05000000074505806</property>
+                <property name="yalign">0.05000000074505806</property>
+                <property name="label" translatable="yes">Process /usr/bin/transmission-gtk was killed by signal 11 (SIGSEGV)</property>
+                <property name="justify">center</property>
+                <property name="wrap">True</property>
+                <attributes>
+                  <attribute name="style" value="normal"/>
+                  <attribute name="weight" value="bold"/>
+                  <attribute name="foreground" value="#ffff00000000"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_page5">
+                <property name="width_request">750</property>
+                <property name="visible">True</property>
+                <property name="xalign">0.05000000074505806</property>
+                <property name="yalign">0.05000000074505806</property>
+                <property name="label" translatable="yes">Please review the information that follows and modify it as needed to ensure your bug report does not contain any sensitive data you would rather not share.
 
 Select where you would like to analyze the bug, and press 'Forward' to continue.</property>
-            <property name="use_markup">True</property>
-            <property name="justify">fill</property>
-            <property name="wrap">True</property>
+                <property name="justify">fill</property>
+                <property name="wrap">True</property>
+              </object>
+              <packing>
+                <property name="position">2</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="position">0</property>
@@ -104,9 +143,15 @@ Select where you would like to analyze the bug, and press 'Forward' to continue.
             <property name="visible">True</property>
             <property name="xalign">0.05000000074505806</property>
             <property name="yalign">0.05000000074505806</property>
-            <property name="label" translatable="yes">Please wait while ABRT is analyzing the problem...</property>
+            <property name="label" translatable="yes">Please wait until the problem analysis is finished..
+
+You can see the progress in the window below.</property>
+            <property name="use_markup">True</property>
+            <property name="justify">fill</property>
+            <property name="wrap">True</property>
           </object>
           <packing>
+            <property name="expand">False</property>
             <property name="position">0</property>
           </packing>
         </child>
@@ -114,6 +159,7 @@ Select where you would like to analyze the bug, and press 'Forward' to continue.
           <object class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="border_width">10</property>
             <property name="hscrollbar_policy">automatic</property>
             <property name="vscrollbar_policy">automatic</property>
             <child>
@@ -121,6 +167,7 @@ Select where you would like to analyze the bug, and press 'Forward' to continue.
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="editable">False</property>
+                <property name="wrap_mode">word</property>
                 <property name="accepts_tab">False</property>
               </object>
             </child>
@@ -156,10 +203,10 @@ Select where you would like to analyze the bug, and press 'Forward' to continue.
             <property name="visible">True</property>
             <property name="xalign">0.05000000074505806</property>
             <property name="yalign">0.05000000074505806</property>
-            <property name="label" translatable="yes">
-Select where you would like to report the bug, and press 'Forward' to continue.</property>
+            <property name="label" translatable="yes">Select. where you would like to report the bug, and press 'Forward' to continue.</property>
             <property name="use_markup">True</property>
-            <property name="width_chars">80</property>
+            <property name="justify">fill</property>
+            <property name="wrap">True</property>
           </object>
           <packing>
             <property name="position">0</property>
@@ -605,20 +652,198 @@ Please review the backtrace below and modify it as needed to ensure your bug rep
         <property name="border_width">10</property>
         <property name="orientation">vertical</property>
         <child>
-          <placeholder/>
-        </child>
-        <child>
           <object class="GtkLabel" id="lbl_page6">
+            <property name="width_request">750</property>
             <property name="visible">True</property>
-            <property name="label" translatable="yes">Page 6</property>
+            <property name="xalign">0.05000000074505806</property>
+            <property name="yalign">0.05000000074505806</property>
+            <property name="label" translatable="yes">Below are the information to be sent out, please review them.</property>
+            <property name="justify">fill</property>
             <property name="wrap">True</property>
           </object>
           <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkTable" id="table1">
+            <property name="visible">True</property>
+            <property name="border_width">10</property>
+            <property name="n_rows">4</property>
+            <property name="n_columns">2</property>
+            <property name="column_spacing">10</property>
+            <child>
+              <object class="GtkLabel" id="label4">
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">Size:</property>
+                <property name="justify">right</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label5">
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes"># files:</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label6">
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">ETA to upload:</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="top_attach">3</property>
+                <property name="bottom_attach">4</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label8">
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">Reporter(s):</property>
+                <property name="justify">right</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label9">
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">Bugzilla, Logger</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label10">
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">328kB</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label11">
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">27</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label12">
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">2 minutes</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">3</property>
+                <property name="bottom_attach">4</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
             <property name="position">1</property>
           </packing>
         </child>
         <child>
-          <placeholder/>
+          <object class="GtkExpander" id="expander1">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <child>
+              <object class="GtkVBox" id="vbox8">
+                <property name="visible">True</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow5">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hscrollbar_policy">automatic</property>
+                    <property name="vscrollbar_policy">automatic</property>
+                    <child>
+                      <object class="GtkTreeView" id="treeview1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="button1">
+                    <property name="label" translatable="yes">View</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label13">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Details</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="position">2</property>
+          </packing>
         </child>
       </object>
     </child>
@@ -632,19 +857,53 @@ Please review the backtrace below and modify it as needed to ensure your bug rep
         <property name="border_width">10</property>
         <property name="orientation">vertical</property>
         <child>
-          <placeholder/>
+          <object class="GtkLabel" id="lbl_page8">
+            <property name="width_request">750</property>
+            <property name="visible">True</property>
+            <property name="xalign">0.05000000074505806</property>
+            <property name="yalign">0.05000000074505806</property>
+            <property name="label" translatable="yes">Please wait until the problem is reported.
+
+You can see the progress in the window below.</property>
+            <property name="use_markup">True</property>
+            <property name="justify">fill</property>
+            <property name="wrap">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">0</property>
+          </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label7">
+          <object class="GtkScrolledWindow" id="scrolledwindow6">
             <property name="visible">True</property>
-            <property name="label" translatable="yes">Page 7</property>
+            <property name="can_focus">True</property>
+            <property name="border_width">10</property>
+            <property name="hscrollbar_policy">automatic</property>
+            <property name="vscrollbar_policy">automatic</property>
+            <child>
+              <object class="GtkTextView" id="analyze_log1">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="editable">False</property>
+                <property name="wrap_mode">word</property>
+                <property name="accepts_tab">False</property>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="position">1</property>
           </packing>
         </child>
         <child>
-          <placeholder/>
+          <object class="GtkProgressBar" id="pb_analyze1">
+            <property name="visible">True</property>
+            <property name="activity_mode">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">2</property>
+          </packing>
         </child>
       </object>
     </child>
