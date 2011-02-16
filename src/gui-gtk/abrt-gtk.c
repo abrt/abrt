@@ -237,7 +237,6 @@ void sanitize_cursor(GtkTreePath *preferred_path)
     if (path)
     {
         /* Cursor exists already */
-        gtk_tree_path_free(path);
         goto ret;
     }
 
@@ -251,7 +250,6 @@ void sanitize_cursor(GtkTreePath *preferred_path)
         gtk_tree_view_get_cursor(GTK_TREE_VIEW(s_treeview), &path, /* GtkTreeViewColumn** */ NULL);
         if (path) /* yes */
         {
-            gtk_tree_path_free(path);
             goto ret;
         }
     }
@@ -261,14 +259,19 @@ void sanitize_cursor(GtkTreePath *preferred_path)
     if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(s_dumps_list_store), &iter))
     {
         /* We have at least one element, put cursor on it */
+
+        /* Get path from iter pointing to 1st element */
         path = gtk_tree_model_get_path(GTK_TREE_MODEL(s_dumps_list_store), &iter);
+
+        /* Use it to set cursor */
         gtk_tree_view_set_cursor(GTK_TREE_VIEW(s_treeview), path,
                 /* GtkTreeViewColumn *focus_column */ NULL, /* start_editing */ false);
-        gtk_tree_path_free(path);
     }
     /* else we have no elements */
 
  ret:
+    gtk_tree_path_free(path);
+
     /* Without this, the *header* of the list gets the focus. Ugly. */
     gtk_widget_grab_focus(s_treeview);
 }
