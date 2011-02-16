@@ -69,7 +69,7 @@ int main(int argc, char **argv)
         NULL,
         NULL,
     };
-    argv++;
+    argv += optind;
     if (!argv[0])
     {
         char *home = getenv("HOME");

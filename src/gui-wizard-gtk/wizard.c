@@ -75,7 +75,7 @@ static void add_pages()
 
     for (int i = 0; page_names[i] != NULL; i++)
     {
-	GtkWidget *page = GTK_WIDGET(gtk_builder_get_object(builder, page_names[i]));
+        GtkWidget *page = GTK_WIDGET(gtk_builder_get_object(builder, page_names[i]));
         if (page == NULL)
             continue;
 
