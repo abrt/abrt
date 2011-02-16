@@ -59,8 +59,8 @@ def application(environ, start_response):
         return response(start_response, "500 Internal Server Error", "Unable to create new task")
 
     try:
-        os.mkdir(taskdir + "/crash/")
-        os.chdir(taskdir + "/crash/")
+        os.mkdir("%s/crash/" % taskdir)
+        os.chdir("%s/crash/" % taskdir)
         unpack_retcode = unpack(archive.name)
         os.unlink(archive.name)
 
@@ -79,6 +79,6 @@ def application(environ, start_response):
             Popen(["rm", "-rf", taskdir])
             return response(start_response, "403 Forbidden")
 
-    Popen(["/usr/sbin/abrt-retrace-worker", taskdir])
+    Popen(["/usr/sbin/abrt-retrace-worker", "%d" % taskid])
 
-    return response(start_response, "201 Created", "", [("X-Task-Id", str(taskid)), ("X-Task-Password", taskpass)])
+    return response(start_response, "201 Created", "", [("X-Task-Id", "%d" % taskid), ("X-Task-Password", taskpass)])

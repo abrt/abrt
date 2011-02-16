@@ -4,6 +4,8 @@ import sys
 import time
 from retrace import *
 
+LOG = None
+
 def retrace_run(errorcode, cmd):
     "Runs cmd using subprocess.Popen and kills script with errorcode on failure"
     try:
@@ -16,9 +18,8 @@ def retrace_run(errorcode, cmd):
         output = "An unhandled exception occured: %s" % ex
 
     if not process or process.returncode != 0:
-        print "Error %d" % errorcode
-        print "--- OUTPUT ---"
-        print output
+        LOG.write("Error %d:\n=== OUTPUT ===\n%s\n" % (errorcode, output))
+        LOG.close()
         sys.exit(errorcode)
 
     return output
@@ -27,36 +28,44 @@ if __name__ == "__main__":
     starttime = time.time()
 
     if len(sys.argv) != 2:
-        print "Usage: %s retrace_directory" % sys.argv[0]
+        sys.stderr.write("Usage: %s task_id\n" % sys.argv[0])
         sys.exit(11)
 
-    workdir = sys.argv[1]
-
-    if not os.path.isdir(workdir):
-        print "'%s' is not a directory" % workdir
+    taskid = sys.argv[1]
+    try:
+        int(taskid)
+    except:
+        sys.stderr.write("Task ID may only contain digits.\n")
         sys.exit(12)
 
-    taskid_match = TASKID_PARSER.match(workdir)
-    if not taskid_match:
-        print "Unable to obtain task ID from given directory"
+    workdir = "%s/%s" % (CONFIG["WorkDir"], taskid)
+
+    if not os.path.isdir(workdir):
+        sys.stderr.write("Task '%s' does not exist.\n" % workdir)
         sys.exit(13)
-    else:
-        taskid = taskid_match.group(1)
+
+    try:
+        LOG = logger(workdir)
+    except Exception as ex:
+        sys.stderr.write("Unable to start logging for task '%s': %s.\n" % (taskid, ex))
+        sys.exit(14)
 
     # check the crash directory for required files
     for required_file in REQUIRED_FILES:
         if not os.path.isfile("%s/crash/%s" % (workdir, required_file)):
-            print "Directory '%s' does not contain required file '%s'" % (workdir, required_file)
-            sys.exit(14)
+            LOG.write("Crash directory does not contain required file '%s'.\n" % required_file)
+            LOG.close()
+            sys.exit(15)
 
     # read architecture file
     try:
         arch_file = open("%s/crash/architecture" % workdir, "r")
         arch = repoarch = arch_file.read()
         arch_file.close()
-    except:
-        print "Unable to read architecture from 'architecture' file"
-        sys.exit(15)
+    except Exception as ex:
+        LOG.write("Unable to read architecture from 'architecture' file: %s.\n" % ex)
+        LOG.close()
+        sys.exit(16)
 
     # required hack for public repos
     if arch == "i686":
@@ -67,9 +76,10 @@ if __name__ == "__main__":
         release_file = open("%s/crash/release" % workdir, "r")
         release = release_file.read()
         release_file.close()
-    except:
-        print "Unable to read distribution and version from 'release' file"
-        sys.exit(16)
+    except Exception as ex:
+        LOG.write("Unable to read distribution and version from 'release' file: %s.\n" % ex)
+        LOG.close()
+        sys.exit(17)
 
     version = distribution = None
     for distro in RELEASE_PARSERS.keys():
@@ -80,23 +90,25 @@ if __name__ == "__main__":
             break
 
     if not version or not distribution:
-        print "Release '%s' is not supported" % release
-        sys.exit(17)
+        LOG.write("Release '%s' is not supported.\n" % release)
+        LOG.close()
+        sys.exit(18)
 
     # read package file
     try:
         package_file = open("%s/crash/package" % workdir, "r")
         crash_package = package_file.read()
         package_file.close()
-    except:
-        print "Unable to read crash package from 'package' file"
-        sys.exit(18)
+    except Exception as ex:
+        LOG.write("Unable to read crash package from 'package' file: %s.\n" % ex)
+        LOG.close()
+        sys.exit(19)
 
     # read required packages from coredump
     packages = "%s.%s" % (crash_package, arch)
     try:
         # ToDo: deal with not found build-ids
-        pipe = Popen(["/usr/share/abrt-retrace/coredump2packages", "%s/crash/coredump" % workdir, "--repos=retrace-%s-%s-%s*" % (distribution, version, arch)], stdout=PIPE).stdout
+        pipe = Popen(["/usr/share/abrt-retrace/coredump2packages.py", "%s/crash/coredump" % workdir, "--repos=retrace-%s-%s-%s*" % (distribution, version, arch)], stdout=PIPE).stdout
         for line in pipe.readlines():
             if line == "\n":
                 break
@@ -104,13 +116,14 @@ if __name__ == "__main__":
             packages += " %s" % line.rstrip("\n")
 
         pipe.close()
-    except:
-        print "Unable to obtain packages from 'coredump' file"
-        sys.exit(19)
+    except Exception as ex:
+        LOG.write("Unable to obtain packages from 'coredump' file: %s.\n" % ex)
+        LOG.close()
+        sys.exit(20)
 
     # create mock config file
     try:
-        mockcfg = open(workdir + "/mock.cfg", "w")
+        mockcfg = open("%s/mock.cfg" % workdir, "w")
         mockcfg.write("config_opts['root'] = 'chroot'\n")
         mockcfg.write("config_opts['target_arch'] = '%s'\n" % arch)
         mockcfg.write("config_opts['chroot_setup_cmd'] = 'install %s shadow-utils abrt-addon-ccpp gdb'\n" % packages)
@@ -173,52 +186,52 @@ if __name__ == "__main__":
         mockcfg.write("\"\"\"\n")
         mockcfg.close()
     except Exception as ex:
-        print "Unable to create mock config file: %s" % ex
-        sys.exit(20)
+        LOG.write("Unable to create mock config file: %s.\n" % ex)
+        LOG.close()
+        sys.exit(21)
 
     # get count of tasks running before starting
     prerunning = len(get_active_tasks()) - 1
 
     # run retrace
-    mockr = "../../" + workdir + "/mock"
+    mockr = "../../%s/mock" % workdir
 
-    print "Initializing virtual root...",
+    LOG.write("Initializing virtual root... ")
 
-    retrace_run(21, ["mock", "init", "-r", mockr])
-    retrace_run(22, ["mock", "-r", mockr, "--copyin", "%s/crash" % workdir, "/var/spool/abrt/crash"])
-    retrace_run(23, ["touch", "%s/chroot/root/var/spool/abrt/crash/time" % workdir])
+    retrace_run(25, ["mock", "init", "-r", mockr])
+    retrace_run(26, ["mock", "-r", mockr, "--copyin", "%s/crash" % workdir, "/var/spool/abrt/crash"])
+    retrace_run(27, ["touch", "%s/chroot/root/var/spool/abrt/crash/time" % workdir])
 
-    print "OK"
-    sys.stdout.flush()
+    LOG.write("OK\n")
 
     try:
         rootfile = open("%s/chroot/result/root.log" % workdir, "r")
         rootlog = rootfile.read()
         rootfile.close()
     except Exception as ex:
-        print "Error reading root log: %s" % ex
+        LOG.write("Error reading root log: %s.\n" % ex)
+        rootlog = "Not found"
 
-    print "Generating backtrace...",
+    LOG.write("Generating backtrace... ")
 
-    retrace_run(24, ["mock", "shell", "-r", mockr, "--", "/usr/bin/abrt-action-generate-backtrace", "-d", "/var/spool/abrt/crash/"])
-    retrace_run(25, ["mock", "-r", mockr, "--copyout", "/var/spool/abrt/crash/backtrace", workdir])
-    retrace_run(26, ["chmod", "a+r", "%s/backtrace" % workdir])
+    retrace_run(28, ["mock", "shell", "-r", mockr, "--", "/usr/bin/abrt-action-generate-backtrace", "-d", "/var/spool/abrt/crash/"])
+    retrace_run(29, ["mock", "-r", mockr, "--copyout", "/var/spool/abrt/crash/backtrace", workdir])
+    retrace_run(30, ["chmod", "a+r", "%s/backtrace" % workdir])
 
-    print "OK"
-    sys.stdout.flush()
+    LOG.write("OK\n")
 
     chroot_size = dir_size("%s/chroot/root" % workdir)
 
-    print "Cleaning up...",
-    retrace_run(27, ["mock", "-r", mockr, "--scrub=all"])
-    retrace_run(28, ["rm", "-rf", "%s/mock.cfg" % workdir, "%s/crash" % workdir])
+    LOG.write("Cleaning up... ")
 
-    print "OK"
-    sys.stdout.flush()
+    retrace_run(31, ["mock", "-r", mockr, "--scrub=all"])
+    retrace_run(32, ["rm", "-rf", "%s/mock.cfg" % workdir, "%s/crash" % workdir])
+
+    LOG.write("OK\n")
 
     # save crash statistics
     duration = int(time.time() - starttime)
-    print "Retrace took %d seconds" % duration
+    LOG.write("Retrace took %d seconds.\n" % duration)
 
     package_match = PACKAGE_PARSER.match(crash_package)
     if not package_match:
@@ -243,16 +256,23 @@ if __name__ == "__main__":
       "chrootsize": chroot_size
     }
 
-    print "Saving crash statistics...",
+    LOG.write("Saving crash statistics... ")
 
     if not init_crashstats_db() or not save_crashstats(crashstats):
-        print "Error: %s" % crashstats
+        LOG.write("Error: %s\n" % crashstats)
     else:
-        print "OK"
+        LOG.write("OK\n")
 
-    sys.stdout.flush()
+    LOG.write("Finishing task... ")
 
+    try:
+        os.rename("%s/backtrace" % workdir, "%s/retrace_backtrace" % workdir)
+    except Exception as ex:
+        LOG.write("Error: %s\n" % ex)
+        LOG.close()
+        sys.exit(35)
 
-    print
-    print "=== ROOT LOG ==="
-    print rootlog
+    LOG.write("OK\n")
+
+    LOG.write("\n=== ROOT LOG ===\n%s\n" % rootlog)
+    LOG.close()

@@ -200,5 +200,22 @@ def save_crashstats(crashstats):
         print e
         return False
 
+class logger():
+    def __init__(self, savedir):
+        "Starts logging into savedir."
+        self._logfile = open("%s/log" % savedir, "w")
+
+    def write(self, msg):
+        "Writes msg into log file."
+        if not self._logfile.closed:
+            self._logfile.write(msg)
+            self._logfile.flush()
+
+    def close(self):
+        "Finishes logging and renames file to retrace_log."
+        if not self._logfile.closed:
+            self._logfile.close()
+            os.rename(self._logfile.name, self._logfile.name.replace("/log", "/retrace_log"))
+
 ### read config on import ###
 read_config()
