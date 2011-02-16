@@ -410,6 +410,8 @@ fi
 %files -n libreport-gtk
 %defattr(-,root,root,-)
 %{_bindir}/bug-reporting-wizard
+# If you want to deploy external glade file:
+#%{_datadir}/%{name}/wizard.glade
 
 %files libs
 %defattr(-,root,root,-)

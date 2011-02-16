@@ -5,6 +5,8 @@
 
 #define PROGNAME "bug-reporting-wizard"
 
+char *g_glade_file = NULL;
+
 static crash_data_t *cd;
 
 int main(int argc, char **argv)
@@ -13,15 +15,17 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        PROGNAME" [-v] DIR\n\n"
-        "GUI tool to run analyze and report ABRT crash in specified DIR"
+        PROGNAME" [-v] [-g GUI_FILE] DIR\n\n"
+        "GUI tool to analyze and report ABRT crash in specified DIR"
     );
     enum {
         OPT_v = 1 << 0,
+        OPT_g = 1 << 1,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
+        OPT_STRING('g', NULL, &g_glade_file, "FILE" , _("Alternate GUI file")),
         OPT_END()
     };
 

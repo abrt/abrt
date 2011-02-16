@@ -1,7 +1,6 @@
 #include <gtk/gtk.h>
 #include "abrtlib.h"
-
-#include "wizard_glade.c"
+#include "wizard.h"
 
 /* THE PAGE FLOW
  * page_1: analyze action selection
@@ -66,13 +65,21 @@ void on_b_refresh_clicked(GtkButton *button)
     g_print("Refresh clicked!\n");
 }
 
+/* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
+#include "wizard_glade.c"
+
 static void add_pages()
 {
     GError *error = NULL;
-    gtk_builder_add_objects_from_string(builder,
+    if (!g_glade_file)
+        /* Load UI from internal string */
+        gtk_builder_add_objects_from_string(builder,
                 WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
                 (gchar**)page_names,
                 &error);
+    else
+        /* -g FILE: load IU from it */
+        gtk_builder_add_objects_from_file(builder, g_glade_file, (gchar**)page_names, &error);
     if (error != NULL)
     {
         error_msg_and_die("can't load %s: %s", "wizard.glade", error->message);
