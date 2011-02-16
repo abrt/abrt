@@ -44,6 +44,8 @@ int main(int argc, char **argv)
     /* I18n */
     setlocale(LC_ALL, "");
 
+    gtk_init(&argc, &argv);
+
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
         PROGNAME" [-v] [DIR]...\n\n"
@@ -59,8 +61,6 @@ int main(int argc, char **argv)
         OPT_END()
     };
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
-
-    gtk_init(&argc, &argv);
 
     GtkWidget *main_window = create_main_window();
 

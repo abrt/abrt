@@ -73,7 +73,12 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
         {
             GValue d_dir = { 0 };
             gtk_tree_model_get_value(store, &iter, COLUMN_DUMP_DIR, &d_dir);
-            g_print("CALL: run_event(%s)\n", g_value_get_string(&d_dir));
+
+            pid_t pid = vfork();
+            if (pid == 0) {
+                execlp("bug-reporting-wizard", "bug-reporting-wizard", g_value_get_string(&d_dir), NULL);
+                perror_msg_and_die("Can't execute %s", "bug-reporting-wizard");
+            }
         }
     }
 }
