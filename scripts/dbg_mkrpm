@@ -33,7 +33,7 @@ rm -rf "$T"
 cp "$SRCDIR"/abrt.spec "$BUILDDIR"
 cp "$SRCDIR"/abrt.init "$BUILDDIR"
 cp "$SRCDIR"/abrt-ccpp.init "$BUILDDIR"
-cp "$SRCDIR"/dbg_* "$BUILDDIR" 2>/dev/null # developers' toys
+#cp "$SRCDIR"/dbg_* "$BUILDDIR" 2>/dev/null # developers' toys
 
 cd "$BUILDDIR" || exit 1
 
