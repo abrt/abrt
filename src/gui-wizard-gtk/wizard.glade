@@ -3,14 +3,18 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="window1">
-    <property name="width_request">750</property>
-    <property name="height_request">400</property>
+    <property name="width_request">800</property>
+    <property name="height_request">500</property>
     <child>
       <object class="GtkVBox" id="page_1">
+        <property name="width_request">750</property>
+        <property name="height_request">400</property>
         <property name="visible">True</property>
+        <property name="border_width">10</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel" id="label1">
+          <object class="GtkLabel" id="lbl_page1">
+            <property name="width_request">750</property>
             <property name="visible">True</property>
             <property name="xalign">0.05000000074505806</property>
             <property name="yalign">0.05000000074505806</property>
@@ -20,7 +24,8 @@ Please review the information that follows and modify it as needed to ensure you
 
 Select where you would like to analyze the bug, and press 'Forward' to continue.</property>
             <property name="use_markup">True</property>
-            <property name="width_chars">80</property>
+            <property name="justify">fill</property>
+            <property name="wrap">True</property>
           </object>
           <packing>
             <property name="position">0</property>
@@ -86,14 +91,16 @@ Select where you would like to analyze the bug, and press 'Forward' to continue.
     </child>
   </object>
   <object class="GtkWindow" id="window2">
-    <property name="width_request">750</property>
-    <property name="height_request">400</property>
+    <property name="width_request">800</property>
+    <property name="height_request">500</property>
     <child>
       <object class="GtkVBox" id="page_2">
         <property name="visible">True</property>
+        <property name="border_width">10</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel" id="label2">
+          <object class="GtkLabel" id="lbl_page2">
+            <property name="width_request">750</property>
             <property name="visible">True</property>
             <property name="xalign">0.05000000074505806</property>
             <property name="yalign">0.05000000074505806</property>
@@ -136,14 +143,16 @@ Select where you would like to analyze the bug, and press 'Forward' to continue.
     </child>
   </object>
   <object class="GtkWindow" id="window3">
-    <property name="width_request">750</property>
-    <property name="height_request">400</property>
+    <property name="width_request">800</property>
+    <property name="height_request">500</property>
     <child>
       <object class="GtkVBox" id="page_3">
         <property name="visible">True</property>
+        <property name="border_width">10</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel" id="label3">
+          <object class="GtkLabel" id="lbl_page3">
+            <property name="width_request">750</property>
             <property name="visible">True</property>
             <property name="xalign">0.05000000074505806</property>
             <property name="yalign">0.05000000074505806</property>
@@ -208,49 +217,47 @@ Select where you would like to report the bug, and press 'Forward' to continue.<
     </child>
   </object>
   <object class="GtkWindow" id="window4">
-    <property name="width_request">750</property>
-    <property name="height_request">400</property>
+    <property name="width_request">800</property>
+    <property name="height_request">500</property>
     <child>
       <object class="GtkVBox" id="page_4">
         <property name="visible">True</property>
+        <property name="border_width">10</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel" id="label4">
+          <object class="GtkLabel" id="lbl_page4">
+            <property name="width_request">750</property>
             <property name="visible">True</property>
             <property name="xalign">0.05000000074505806</property>
             <property name="yalign">0.05000000074505806</property>
             <property name="label" translatable="yes">Below is the backtrace associated with your crash. A crash backtrace provides developers with details about how the crash happened, helping them track down the source of the problem.
+
 Please review the backtrace below and modify it as needed to ensure your bug report does not contain any sensitive data you would rather not share:</property>
+            <property name="wrap">True</property>
           </object>
           <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <object class="GtkScrolledWindow" id="scrolledwindow2">
+          <object class="GtkVBox" id="vbox5">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">automatic</property>
-            <property name="vscrollbar_policy">automatic</property>
+            <property name="orientation">vertical</property>
             <child>
-              <object class="GtkTextView" id="textview1">
+              <object class="GtkScrolledWindow" id="scrolledwindow2">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkHBox" id="hbox1">
-            <property name="visible">True</property>
-            <child>
-              <object class="GtkAlignment" id="alignment1">
-                <property name="visible">True</property>
+                <property name="border_width">10</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
                 <child>
-                  <placeholder/>
+                  <object class="GtkTextView" id="textview1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="wrap_mode">word</property>
+                  </object>
                 </child>
               </object>
               <packing>
@@ -258,39 +265,60 @@ Please review the backtrace below and modify it as needed to ensure your bug rep
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="hbox2">
+              <object class="GtkHBox" id="hbox1">
                 <property name="visible">True</property>
                 <child>
-                  <object class="GtkEntry" id="entry1">
+                  <object class="GtkAlignment" id="alignment1">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="invisible_char">&#x25CF;</property>
-                    <property name="secondary_icon_stock">gtk-find</property>
+                    <child>
+                      <placeholder/>
+                    </child>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkVBox" id="vbox2">
+                  <object class="GtkHBox" id="hbox2">
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkArrow" id="arrow1">
+                      <object class="GtkEntry" id="entry1">
                         <property name="visible">True</property>
-                        <property name="arrow_type">up</property>
+                        <property name="can_focus">True</property>
+                        <property name="invisible_char">&#x25CF;</property>
+                        <property name="secondary_icon_stock">gtk-find</property>
                       </object>
                       <packing>
+                        <property name="expand">False</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkArrow" id="arrow2">
+                      <object class="GtkVBox" id="vbox2">
                         <property name="visible">True</property>
-                        <property name="arrow_type">down</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkArrow" id="arrow1">
+                            <property name="visible">True</property>
+                            <property name="arrow_type">up</property>
+                          </object>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkArrow" id="arrow2">
+                            <property name="visible">True</property>
+                            <property name="arrow_type">down</property>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -299,6 +327,77 @@ Please review the backtrace below and modify it as needed to ensure your bug rep
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="hbox5">
+            <property name="visible">True</property>
+            <property name="no_show_all">True</property>
+            <child>
+              <object class="GtkImage" id="image1">
+                <property name="visible">True</property>
+                <property name="stock">gtk-dialog-warning</property>
+                <property name="icon-size">6</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="vbox6">
+                <property name="visible">True</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel" id="lbl_warning_1">
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                    <property name="label" translatable="yes">&#x2022; The backtrace is incomplete, please make sure you provide the steps to reproduce.</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="lbl_warning_2">
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                    <property name="label" translatable="yes">&#x2022; You should check the backtrace for sensitive data.</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="lbl_warning_3">
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                    <property name="label" translatable="yes">&#x2022; You must agree with sending the backtrace.</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
               </object>
@@ -384,40 +483,135 @@ Please review the backtrace below and modify it as needed to ensure your bug rep
     </child>
   </object>
   <object class="GtkWindow" id="window5">
+    <property name="width_request">800</property>
+    <property name="height_request">500</property>
     <child>
       <object class="GtkVBox" id="page_5">
         <property name="visible">True</property>
+        <property name="border_width">10</property>
         <property name="orientation">vertical</property>
         <child>
-          <placeholder/>
-        </child>
-        <child>
-          <object class="GtkLabel" id="label5">
+          <object class="GtkVBox" id="vbox1">
             <property name="visible">True</property>
-            <property name="label" translatable="yes">Page 5</property>
+            <property name="border_width">10</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">5</property>
+            <child>
+              <object class="GtkVBox" id="vbox3">
+                <property name="visible">True</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel" id="label1">
+                    <property name="visible">True</property>
+                    <property name="xalign">1.1175871339474952e-09</property>
+                    <property name="yalign">0</property>
+                    <property name="label" translatable="yes">How did this crash happen (step-by-step)? How would you reproduce it?</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow3">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hscrollbar_policy">automatic</property>
+                    <property name="vscrollbar_policy">automatic</property>
+                    <child>
+                      <object class="GtkTextView" id="textview2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="wrap_mode">word</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="vbox4">
+                <property name="visible">True</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel" id="label2">
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                    <property name="label" translatable="yes">Are there any comments you would like to share with the software maintainers?</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow4">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hscrollbar_policy">automatic</property>
+                    <property name="vscrollbar_policy">automatic</property>
+                    <child>
+                      <object class="GtkTextView" id="textview3">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="wrap_mode">word</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
           </object>
           <packing>
-            <property name="position">1</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <placeholder/>
+          <object class="GtkLabel" id="label3">
+            <property name="visible">True</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0</property>
+            <property name="ypad">5</property>
+            <property name="label" translatable="yes">&lt;b&gt;Tip:&lt;/b&gt; Your comments are not private. Please watch what you say accordingly.</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">1</property>
+          </packing>
         </child>
       </object>
     </child>
   </object>
   <object class="GtkWindow" id="window6">
+    <property name="width_request">800</property>
+    <property name="height_request">500</property>
     <child>
       <object class="GtkVBox" id="page_6">
         <property name="visible">True</property>
+        <property name="border_width">10</property>
         <property name="orientation">vertical</property>
         <child>
           <placeholder/>
         </child>
         <child>
-          <object class="GtkLabel" id="label6">
+          <object class="GtkLabel" id="lbl_page6">
             <property name="visible">True</property>
             <property name="label" translatable="yes">Page 6</property>
+            <property name="wrap">True</property>
           </object>
           <packing>
             <property name="position">1</property>
@@ -430,9 +624,12 @@ Please review the backtrace below and modify it as needed to ensure your bug rep
     </child>
   </object>
   <object class="GtkWindow" id="window7">
+    <property name="width_request">800</property>
+    <property name="height_request">500</property>
     <child>
       <object class="GtkVBox" id="page_7">
         <property name="visible">True</property>
+        <property name="border_width">10</property>
         <property name="orientation">vertical</property>
         <child>
           <placeholder/>
