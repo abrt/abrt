@@ -196,7 +196,7 @@ static void store_crash_item(DBusMessageIter* iter, struct crash_item *val)
      * type, editable, content.
      * This doesn't match daemon-side representation: { content, flags } struct
      */
-    store_string(&sub_iter, (val->flags & CD_FLAG_SYS ? "s" : (val->flags & CD_FLAG_BIN ? "b" : "t")));
+    store_string(&sub_iter, (val->flags & CD_FLAG_BIN ? "b" : "t"));
     store_string(&sub_iter, (val->flags & CD_FLAG_ISEDITABLE ? "y" : "n"));
     store_string(&sub_iter, val->content);
 
@@ -363,7 +363,6 @@ static int load_crash_item(DBusMessageIter* iter, struct crash_item *item)
         return -1;
     }
     item->flags = 0;
-    if (typestr[0] == 's') item->flags |= CD_FLAG_SYS;
     if (typestr[0] == 'b') item->flags |= CD_FLAG_BIN;
     if (typestr[0] == 't') item->flags |= CD_FLAG_TXT;
     if (editable[0] == 'y') item->flags |= CD_FLAG_ISEDITABLE;
