@@ -188,6 +188,45 @@ static void add_columns(GtkTreeView *treeview)
     gtk_tree_view_append_column(treeview, column);
 }
 
+GtkWidget *create_menu(void)
+{
+    /* main bar */
+    GtkWidget *menu = gtk_menu_bar_new();
+    GtkWidget *file_item = gtk_menu_item_new_with_mnemonic(_("_File"));
+    GtkWidget *edit_item = gtk_menu_item_new_with_mnemonic(_("_Edit"));
+    GtkWidget *help_item = gtk_menu_item_new_with_mnemonic(_("_Help"));
+
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), file_item);
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), edit_item);
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), help_item);
+
+    /* file submenu */
+    GtkWidget *file_submenu = gtk_menu_new();
+    GtkWidget *quit_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT, NULL);
+    gtk_menu_shell_append(GTK_MENU_SHELL(file_submenu), quit_item);
+    gtk_menu_item_set_submenu(GTK_MENU_ITEM(file_item), file_submenu);
+
+    /* edit submenu */
+    GtkWidget *edit_submenu = gtk_menu_new();
+    GtkWidget *plugins_item = gtk_menu_item_new_with_mnemonic(_("_Plugins"));
+    GtkWidget *preferences_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_PREFERENCES, NULL);
+    gtk_menu_shell_append(GTK_MENU_SHELL(edit_submenu), plugins_item);
+    gtk_menu_shell_append(GTK_MENU_SHELL(edit_submenu), preferences_item);
+    gtk_menu_item_set_submenu(GTK_MENU_ITEM(edit_item), edit_submenu);
+
+    /* help submenu */
+    GtkWidget *help_submenu = gtk_menu_new();
+    GtkWidget *log_item = gtk_menu_item_new_with_mnemonic(_("View _log"));
+    GtkWidget *online_help_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_HELP, NULL);
+    GtkWidget *about_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_ABOUT, NULL);
+    gtk_menu_shell_append(GTK_MENU_SHELL(help_submenu), log_item);
+    gtk_menu_shell_append(GTK_MENU_SHELL(help_submenu), online_help_item);
+    gtk_menu_shell_append(GTK_MENU_SHELL(help_submenu), about_item);
+    gtk_menu_item_set_submenu(GTK_MENU_ITEM(help_item), help_submenu);
+
+    return menu;
+}
+
 GtkWidget *create_main_window(void)
 {
     /* main window */
@@ -196,6 +235,9 @@ GtkWidget *create_main_window(void)
     gtk_window_set_title(GTK_WINDOW(main_window), _("Automatic Bug Reporting Tool"));
     gtk_window_set_icon_name(GTK_WINDOW(main_window), "abrt");
 
+
+    GtkWidget *main_vbox = gtk_vbox_new(false, 0);
+
     /* scrolled region inside main window */
     GtkWidget *scroll_win = gtk_scrolled_window_new(NULL, NULL);
     gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scroll_win),
@@ -203,7 +245,10 @@ GtkWidget *create_main_window(void)
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
                                           GTK_POLICY_AUTOMATIC,
                                           GTK_POLICY_AUTOMATIC);
-    gtk_container_add(GTK_CONTAINER(main_window), scroll_win);
+
+    gtk_box_pack_start(GTK_BOX(main_vbox), create_menu(), false, false, 0);
+    gtk_box_pack_start(GTK_BOX(main_vbox), scroll_win, true, true, 0);
+    gtk_container_add(GTK_CONTAINER(main_window), main_vbox);
 
     /* tree view inside scrolled region */
     s_treeview = gtk_tree_view_new();
