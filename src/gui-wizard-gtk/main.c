@@ -9,6 +9,8 @@ static crash_data_t *cd;
 
 int main(int argc, char **argv)
 {
+    gtk_init(&argc, &argv);
+
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
         PROGNAME" [-v] DIR\n\n"
@@ -34,8 +36,6 @@ int main(int argc, char **argv)
         return 1;
     cd = create_crash_data_from_dump_dir(dd);
     dd_close(dd);
-
-    gtk_init(&argc, &argv);
 
     GtkWidget *assistant = create_assistant();
     gtk_widget_show_all(assistant);

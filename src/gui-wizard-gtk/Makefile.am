@@ -1,6 +1,7 @@
 bin_PROGRAMS = bug-reporting-wizard
 
 bug_reporting_wizard_SOURCES = \
+    wizard_glade.c \
     wizard.h wizard.c \
     main.c
 
@@ -29,6 +30,13 @@ bug_reporting_wizard_LDADD = \
     -lgthread-2.0 \
     -lgmodule-2.0 \
     $(GTK_LIBS)
+
+wizard_glade.c:
+	{ \
+	  echo '#define WIZARD_GLADE_CONTENTS "\'; \
+	  cat $(srcdir)/wizard.glade | sed -e 's/"/\\"/g' -e 's/?/\\?/g' -e 's/$$/\\/g'; \
+	  echo '"'; \
+	} >wizard_glade.c
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
