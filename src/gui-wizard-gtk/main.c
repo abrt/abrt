@@ -5,8 +5,6 @@
 
 int main(int argc, char **argv)
 {
-    //GtkWidget *assistant;
-
     gtk_init(&argc, &argv);
 
     GtkWidget *assistant = create_assistant();
@@ -14,5 +12,6 @@ int main(int argc, char **argv)
 
     /* Enter main loop */
     gtk_main();
+
     return 0;
 }
