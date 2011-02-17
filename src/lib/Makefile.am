@@ -42,7 +42,7 @@ libreport_la_SOURCES = \
     hooklib.c hooklib.h \
     parse_release.c \
     parse_options.c parse_options.h \
-    steal_directory.c steal_directory.h
+    steal_directory.c
 libreport_la_CPPFLAGS = \
     -Wall -Werror \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
