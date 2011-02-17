@@ -8,6 +8,12 @@ then
     LOCK="/var/lock/subsys/abrt-retrace-$1-$2-$3"
     REPODIR="/var/cache/abrt-retrace/"
 
+    REPODIR_CUSTOM=`cat "/etc/abrt/retrace.conf" | grep "RepoDir" | sed "s/^ *RepoDir *= *//"`
+    if [ -d $REPODIR_CUSTOM ] || mkdir -p $REPODIR_CUSTOM > /dev/null 2>&1
+    then
+        REPODIR="$REPODIR_CUSTOM"
+    fi
+
     date >> "$LOG"
 
     if [ -f "$LOCK" ]
@@ -16,13 +22,15 @@ then
         exit 2
     fi
 
-    touch "$LOCK"
+    if ! touch "$LOCK"
+    then
+        echo "Unable to set lock."
+        exit 3
+    fi
 
     cd "$REPODIR"
 
     reposync -a $3 \
-      --repoid="$1-$2-$3" \
-      --repoid="$1-$2-$3-debuginfo" \
       --repoid="$1-$2-$3-updates" \
       --repoid="$1-$2-$3-updates-debuginfo" \
       --repoid="$1-$2-$3-updates-testing" \
@@ -32,8 +40,6 @@ then
       | sed -e "s/Packages\///" \
       >> "$LOG"
 
-#    createrepo "$1-$2-$3" > /dev/null
-#    createrepo "$1-$2-$3-debuginfo" > /dev/null
     createrepo "$1-$2-$3-updates" > /dev/null
     createrepo "$1-$2-$3-updates-debuginfo" > /dev/null
     createrepo "$1-$2-$3-updates-testing" > /dev/null

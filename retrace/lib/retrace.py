@@ -37,6 +37,7 @@ CONFIG = {
   "MinStorageLeft": 10240,
   "DeleteTaskAfter": 120,
   "LogDir": "/var/log/abrt-retrace",
+  "RepoDir": "/var/cache/abrt-retrace",
   "SaveDir": "/var/spool/abrt-retrace",
   "WorkDir": "/tmp/abrt-retrace",
   "UseWorkDir": False,
