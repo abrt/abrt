@@ -39,6 +39,7 @@ int main(int argc, char **argv)
     if (!dd)
         return 1;
     cd = create_crash_data_from_dump_dir(dd);
+    char *analyze_events = list_possible_events(dd, /*dump_dir_name*/ NULL, "analyze");
     dd_close(dd);
 
     GtkWidget *assistant = create_assistant();
@@ -46,6 +47,22 @@ int main(int argc, char **argv)
     const char *reason = get_crash_item_content_or_NULL(cd, FILENAME_REASON);
     if (reason)
         gtk_label_set_text(g_lbl_cd_reason, reason);
+
+    GtkWidget *first_rb = NULL;
+    if (analyze_events[0])
+    {
+        char *event_name = analyze_events;
+        char *event_name_end = strchr(event_name, '\n');
+        *event_name_end = '\0';
+        GtkWidget *rb = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(first_rb), event_name);
+        *event_name_end = '\n';
+        event_name = event_name_end + 1;
+
+        if (!first_rb)
+            first_rb = rb;
+        gtk_box_pack_start(GTK_BOX(g_vb_analyzers), rb, /*expand*/ false, /*fill*/ false, /*padding*/ 0);
+    }
+    else { /*???*/ }
 
     gtk_widget_show_all(assistant);
 

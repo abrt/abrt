@@ -46,6 +46,7 @@ void free_run_event_state(struct run_event_state *state);
  */
 int run_event_on_dir_name(struct run_event_state *state, const char *dump_dir_name, const char *event);
 int run_event_on_crash_data(struct run_event_state *state, crash_data_t *data, const char *event);
+/* Returns a malloced string with '\n'-terminated event names */
 char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const char *pfx);
 
 #ifdef __cplusplus
