@@ -30,7 +30,8 @@ static const char *dump_dir_name = NULL;
 static const char *coredump = NULL;
 static const char *task_id = NULL;
 static const char *task_password = NULL;
-static const char abrt_retrace_client_usage[] = "abrt-retrace-client <operation> [options]\nOperations: create/status/backtrace/log";
+static const char abrt_retrace_client_usage[] = "abrt-retrace-client"
+    " <operation> [options]\nOperations: create/status/backtrace/log";
 
 enum {
     OPT_verbose   = 1 << 0,
@@ -48,17 +49,27 @@ enum {
 /* Keep enum above and order of options below in sync! */
 static struct options abrt_retrace_client_options[] = {
     OPT__VERBOSE(&g_verbose),
-    OPT_BOOL(   's', "syslog", NULL, "log to syslog"),
-    OPT_BOOL(   'k', "insecure", NULL, "allow insecure connection to retrace server"),
+    OPT_BOOL('s', "syslog", NULL, "log to syslog"),
+    OPT_BOOL('k', "insecure", NULL,
+             "allow insecure connection to retrace server"),
     OPT_GROUP("For create operation"),
-    OPT_STRING( 'd', "dir", &dump_dir_name, "DIR", "read data from ABRT crash dump directory"),
-    OPT_STRING( 'c', "core", &coredump, "COREDUMP", "read data from coredump"),
-    OPT_BOOL(   'w', "wait", NULL, "keep connected to the server, display progress and then backtrace"),
-    OPT_BOOL(   'r', "bttodir", NULL, "if both --dir and --wait are provided, store the backtrace to the DIR when it becomes available"),
-    OPT_BOOL(   'u', "no-unlink", NULL, "(debug) do not delete temporary archive created from dump dir in /tmp"),
+    OPT_STRING('d', "dir", &dump_dir_name, "DIR",
+               "read data from ABRT crash dump directory"),
+    OPT_STRING('c', "core", &coredump,
+               "COREDUMP", "read data from coredump"),
+    OPT_BOOL('w', "wait", NULL,
+             "keep connected to the server, display progress and"
+             " then backtrace"),
+    OPT_BOOL('r', "bttodir", NULL,
+             "if both --dir and --wait are provided, store the backtrace"
+             " to the DIR when it becomes available"),
+    OPT_BOOL('u', "no-unlink", NULL,
+             "(debug) do not delete temporary archive created"
+             " from dump dir in /tmp"),
     OPT_GROUP("For status, backtrace, and log operations"),
-    OPT_STRING( 't', "task", &task_id, "ID", "id of your task on server"),
-    OPT_STRING( 'p', "password", &task_password, "PWD", "password of your task on server"),
+    OPT_STRING('t', "task", &task_id, "ID", "id of your task on server"),
+    OPT_STRING('p', "password", &task_password, "PWD", "password of"
+               " your task on server"),
     OPT_END()
 };
 
@@ -307,7 +318,10 @@ static void ssl_connect(const char *host,
         if (count)
             error_msg_and_die("Failed to get host by name: %s", error);
         else
-            error_msg_and_die("Failed to get host by name: pr_status == %d, pr_error == %d", pr_status, PR_GetError());
+        {
+            error_msg_and_die("Failed to get host by name: pr_status == %d, pr_error == %d",
+                              pr_status, PR_GetError());
+        }
     }
 
     PRNetAddr addr;
@@ -333,7 +347,9 @@ static void ssl_connect(const char *host,
         error_msg_and_die("Failed to set certificate hook.");
     }
 
-    if (SECSuccess != SSL_HandshakeCallback(*ssl_sock, (SSLHandshakeCallback)ssl_handshake_callback, NULL))
+    if (SECSuccess != SSL_HandshakeCallback(*ssl_sock,
+                                            (SSLHandshakeCallback)ssl_handshake_callback,
+                                            NULL))
     {
         PR_Close(*ssl_sock);
         error_msg_and_die("Failed to set handshake callback.");
@@ -417,7 +433,10 @@ static char *tcp_read_response(PRFileDesc *tcp_sock)
         }
 
         if (received == -1)
-            error_msg_and_die("Receiving of data failed: NSS error %d", PR_GetError());
+        {
+            error_msg_and_die("Receiving of data failed: NSS error %d",
+                              PR_GetError());
+        }
 
     } while (received > 0);
 
