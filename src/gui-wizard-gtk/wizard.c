@@ -25,6 +25,7 @@
 
 GtkLabel *g_lbl_cd_reason;
 GtkVBox *g_vb_analyzers;
+GtkTextView *g_analyze_log;
 
 static const gchar *const page_names[] =
 {
@@ -51,7 +52,7 @@ static const gchar *const page_titles[] =
 
 static const GtkAssistantPageType page_types[] =
 {
-    GTK_ASSISTANT_PAGE_INTRO,
+    GTK_ASSISTANT_PAGE_CONFIRM, /* need this type to get "apply" signal */
     GTK_ASSISTANT_PAGE_PROGRESS,
     GTK_ASSISTANT_PAGE_CONTENT,
     GTK_ASSISTANT_PAGE_CONTENT,
@@ -127,7 +128,7 @@ void *append_item_to_details_ls(gpointer name, gpointer value, gpointer data)
         gtk_list_store_set(details_ls, &iter,
                               COLUMN_NAME, (char *)name,
                               COLUMN_VALUE, item->content,
-                              COLUMN_PATH, xasprintf("%s%s", dump_dir_path, name),
+                              COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
                               -1);
     }
     else
@@ -135,7 +136,7 @@ void *append_item_to_details_ls(gpointer name, gpointer value, gpointer data)
         gtk_list_store_set(details_ls, &iter,
                               COLUMN_NAME, (char *)name,
                               COLUMN_VALUE, _("Content is too long, please use the \"View\" button to display it."),
-                              COLUMN_PATH, xasprintf("%s%s", dump_dir_path, name),
+                              COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
                               -1);
     }
 
@@ -179,22 +180,52 @@ static void add_pages()
         gtk_assistant_set_page_title(GTK_ASSISTANT(assistant), page, page_titles[i]);
         gtk_assistant_set_page_type(GTK_ASSISTANT(assistant), page, page_types[i]);
 
-        g_print("added page: %s\n", page_names[i]);
+        log("added page: %s", page_names[i]);
     }
 
     /* Set pointer to fields we might need to change */
     g_lbl_cd_reason = GTK_LABEL(gtk_builder_get_object(builder, "lbl_cd_reason"));
-
     g_vb_analyzers = GTK_VBOX(gtk_builder_get_object(builder, "vb_analyzers"));
+    g_analyze_log = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "analyze_log"));
+}
+
+static char *add_log_to_analyze_log(char *log_line, void *param)
+{
+    GtkTextBuffer *tb = gtk_text_view_get_buffer(g_analyze_log);
+
+    gtk_text_buffer_insert_at_cursor(tb, log_line, -1);
+    gtk_text_buffer_insert_at_cursor(tb, "\n", 1);
+
+    return log_line;
+}
+
+static void next_page(GtkAssistant *assistant, gpointer user_data)
+{
+    int page_no = gtk_assistant_get_current_page(assistant);
+    log("page_no:%d", page_no);
+
+    if (g_analyze_label_selected != NULL)
+    {
+        struct run_event_state *run_state = new_run_event_state();
+        run_state->logging_callback = add_log_to_analyze_log;
+// Need async version of run_event_on_dir_name() here! This one will freeze GUI until completion:
+        log("running event '%s' on '%s'", g_analyze_label_selected, g_dump_dir_name);
+        int res = run_event_on_dir_name(run_state, g_dump_dir_name, g_analyze_label_selected);
+        free_run_event_state(run_state);
+        log("done running event '%s' on '%s': %d", g_analyze_label_selected, g_dump_dir_name, res);
+    }
 }
 
 GtkWidget *create_assistant()
 {
     assistant = gtk_assistant_new();
     gtk_window_set_default_size(GTK_WINDOW(assistant), DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    gtk_window_set_title(GTK_WINDOW(assistant), g_dump_dir_name);
+    gtk_window_set_icon_name(GTK_WINDOW(assistant), "abrt");
 
     g_signal_connect(G_OBJECT(assistant), "cancel", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(G_OBJECT(assistant), "close", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(G_OBJECT(assistant), "apply", G_CALLBACK(next_page), NULL);
 
     builder = gtk_builder_new();
     add_pages();
