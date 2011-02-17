@@ -75,7 +75,10 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
             gtk_tree_model_get_value(store, &iter, COLUMN_DUMP_DIR, &d_dir);
 
             pid_t pid = vfork();
-            if (pid == 0) {
+            if (pid == 0)
+            {
+                /* Undo signal(SIGCHLD, SIG_IGN), or child inherits it and gets terribly confused */
+                signal(SIGCHLD, SIG_DFL);
                 execlp("bug-reporting-wizard", "bug-reporting-wizard", g_value_get_string(&d_dir), NULL);
                 perror_msg_and_die("Can't execute %s", "bug-reporting-wizard");
             }
@@ -234,7 +237,6 @@ GtkWidget *create_main_window(void)
     gtk_window_set_default_size(GTK_WINDOW(main_window), 600, 700);
     gtk_window_set_title(GTK_WINDOW(main_window), _("Automatic Bug Reporting Tool"));
     gtk_window_set_icon_name(GTK_WINDOW(main_window), "abrt");
-
 
     GtkWidget *main_vbox = gtk_vbox_new(false, 0);
 
