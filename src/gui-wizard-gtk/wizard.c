@@ -60,8 +60,17 @@ static const GtkAssistantPageType page_types[] =
     GTK_ASSISTANT_PAGE_SUMMARY,
 };
 
-static GtkBuilder *builder;
+enum
+{
+    COLUMN_NAME,
+    COLUMN_VALUE,
+    COLUMN_PATH,
+    COLUMN_COUNT
+};
+
 static GtkWidget *assistant;
+static GtkListStore *details_ls;
+static GtkBuilder *builder;
 
 void on_b_refresh_clicked(GtkButton *button)
 {
@@ -70,6 +79,75 @@ void on_b_refresh_clicked(GtkButton *button)
 
 /* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
 #include "wizard_glade.c"
+
+
+GtkTreeView *create_details_treeview()
+{
+    GtkTreeView *details_tv = GTK_TREE_VIEW(gtk_builder_get_object(builder, "details_tv"));
+    GtkCellRenderer *renderer;
+    GtkTreeViewColumn *column;
+
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(_("Name"),
+                                                     renderer,
+                                                     "text",
+                                                     COLUMN_NAME,
+                                                     NULL);
+    gtk_tree_view_column_set_sort_column_id(column, COLUMN_NAME);
+    gtk_tree_view_append_column(details_tv, column);
+
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(_("Value"),
+                                                     renderer,
+                                                     "text",
+                                                     COLUMN_VALUE,
+                                                     NULL);
+    gtk_tree_view_append_column(details_tv, column);
+
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(_("Path"),
+                                                     renderer,
+                                                     "text",
+                                                     COLUMN_PATH,
+                                                     NULL);
+    gtk_tree_view_append_column(details_tv, column);
+    return details_tv;
+}
+
+void *append_item_to_details_ls(gpointer name, gpointer value, gpointer data)
+{
+    crash_item *item = (crash_item*)value;
+    GtkTreeIter iter;
+
+    gtk_list_store_append(details_ls, &iter);
+
+    //FIXME: use the vaule representation here
+    if(strlen(item->content) < 30)
+    {
+        gtk_list_store_set(details_ls, &iter,
+                              COLUMN_NAME, (char *)name,
+                              COLUMN_VALUE, item->content,
+                              COLUMN_PATH, xasprintf("%s%s", dump_dir_path, name),
+                              -1);
+    }
+    else
+    {
+        gtk_list_store_set(details_ls, &iter,
+                              COLUMN_NAME, (char *)name,
+                              COLUMN_VALUE, _("Content is too long, please use the \"View\" button to display it."),
+                              COLUMN_PATH, xasprintf("%s%s", dump_dir_path, name),
+                              -1);
+    }
+
+    return NULL;
+}
+
+void fill_details(GtkTreeView *treeview)
+{
+    details_ls = gtk_list_store_new(COLUMN_COUNT, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+    g_hash_table_foreach(cd, (GHFunc)append_item_to_details_ls, NULL);
+    gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(details_ls));
+}
 
 static void add_pages()
 {
@@ -120,6 +198,8 @@ GtkWidget *create_assistant()
 
     builder = gtk_builder_new();
     add_pages();
+    GtkTreeView *details_tv = create_details_treeview();
+    fill_details(details_tv);
     gtk_builder_connect_signals(builder, NULL);
 
     return assistant;

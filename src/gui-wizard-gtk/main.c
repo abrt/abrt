@@ -6,8 +6,9 @@
 #define PROGNAME "bug-reporting-wizard"
 
 char *g_glade_file = NULL;
+char *dump_dir_path = NULL;
 
-static crash_data_t *cd;
+crash_data_t *cd;
 
 int main(int argc, char **argv)
 {
@@ -35,7 +36,8 @@ int main(int argc, char **argv)
     if (!argv[0] || argv[1]) /* zero or >1 arguments */
         show_usage_and_die(program_usage_string, program_options);
 
-    struct dump_dir *dd = dd_opendir(argv[0], 0);
+    dump_dir_path = argv[0];
+    struct dump_dir *dd = dd_opendir(dump_dir_path, 0);
     if (!dd)
         return 1;
     cd = create_crash_data_from_dump_dir(dd);
