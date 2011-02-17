@@ -12,16 +12,13 @@ def application(environ, start_response):
     if not match:
         return response(start_response, "404 Not Found")
 
-    taskdir = CONFIG["WorkDir"] + "/" + match.group(1)
+    taskdir = "%s/%s" % (CONFIG["SaveDir"], match.group(1))
 
     if not os.path.isdir(taskdir):
         return response(start_response, "404 Not Found")
 
-    pwdpath = taskdir + "/password"
+    pwdpath = "%s/password" % taskdir
     try:
-        if not os.path.isfile(pwdpath):
-            raise
-
         pwdfile = open(pwdpath, "r")
         pwd = pwdfile.read()
         pwdfile.close()
@@ -31,7 +28,7 @@ def application(environ, start_response):
     if not "X-Task-Password" in request.headers or request.headers["X-Task-Password"] != pwd:
         return response(start_response, "403 Forbidden")
 
-    btpath = taskdir + "/retrace_backtrace"
+    btpath = "%s/retrace_backtrace" % taskdir
     if not os.path.isfile(btpath):
         return response(start_response, "404 Not Found")
 

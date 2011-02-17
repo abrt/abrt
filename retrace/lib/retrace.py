@@ -20,7 +20,7 @@ PACKAGE_PARSER = re.compile("^(.+)-([0-9]+(\.[0-9]+)*-[0-9]+)\.([^-]+)$")
 DF_OUTPUT_PARSER = re.compile("^([^ ^\t]*)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+%)[ \t]+(.*)$")
 DU_OUTPUT_PARSER = re.compile("^([0-9]+)")
 XZ_OUTPUT_PARSER = re.compile("^totals[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+\.[0-9]+)[ \t]+([^ ^\t]+)[ \t]+([0-9]+)")
-URL_PARSER = re.compile("^/([0-9]+)/")
+URL_PARSER = re.compile("^/([0-9]+)/?")
 RELEASE_PARSERS = {
   "fedora": re.compile("^Fedora[^0-9]+([0-9]+)[^\(]\(([^\)]+)\)$"),
 }
@@ -29,16 +29,18 @@ TASKPASS_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVW
 
 CONFIG_FILE = "/etc/abrt/retrace.conf"
 CONFIG = {
-    "TaskIdLength": 9,
-    "TaskPassLength": 32,
-    "MaxParallelTasks": 10,
-    "MaxPackedSize": 30,
-    "MaxUnpackedSize": 600,
-    "MinStorageLeft": 10240,
-    "DeleteTaskAfter": 120,
-    "LogDir": "/var/log/abrt-retrace",
-    "WorkDir": "/var/spool/abrt-retrace",
-    "DBFile": "stats.db",
+  "TaskIdLength": 9,
+  "TaskPassLength": 32,
+  "MaxParallelTasks": 10,
+  "MaxPackedSize": 30,
+  "MaxUnpackedSize": 600,
+  "MinStorageLeft": 10240,
+  "DeleteTaskAfter": 120,
+  "LogDir": "/var/log/abrt-retrace",
+  "SaveDir": "/var/spool/abrt-retrace",
+  "WorkDir": "/tmp/abrt-retrace",
+  "UseWorkDir": False,
+  "DBFile": "stats.db",
 }
 
 def read_config():
@@ -49,7 +51,7 @@ def read_config():
         if vartype is int:
             get = parser.getint
         elif vartype is bool:
-            get = parser.getbool
+            get = parser.getboolean
         elif vartype is float:
             get = parser.getfloat
         else:
@@ -100,7 +102,7 @@ def gen_task_password(taskdir):
         taskpass += generator.choice(TASKPASS_ALPHABET)
 
     try:
-        passfile = open(taskdir + "/password", "w")
+        passfile = open("%s/password" % taskdir, "w")
         passfile.write(taskpass)
         passfile.close()
     except:
@@ -113,17 +115,17 @@ def get_task_est_time(taskdir):
 
 def new_task():
     i = 0
-    newdir = CONFIG["WorkDir"]
+    newdir = CONFIG["SaveDir"]
     while os.path.exists(newdir) and i < 50:
         i += 1
         taskid = random.randint(pow(10, CONFIG["TaskIdLength"] - 1), pow(10, CONFIG["TaskIdLength"]) - 1)
-        newdir = CONFIG["WorkDir"] + "/" + str(taskid)
+        newdir = "%s/%d" % (CONFIG["SaveDir"], taskid)
 
     try:
         os.mkdir(newdir)
         taskpass = gen_task_password(newdir)
         if not taskpass:
-            os.system("rm -rf " + newdir)
+            Popen(["rm", "-rf", newdir])
             raise Exception
 
         return taskid, taskpass, newdir
@@ -136,13 +138,18 @@ def unpack(archive):
     return pipe.returncode
 
 def response(start_response, status, body="", extra_headers=[]):
-    start_response(status, [("Content-Type", "text/plain"), ("Content-Length", str(len(body)))] + extra_headers)
+    start_response(status, [("Content-Type", "text/plain"), ("Content-Length", "%d" % len(body))] + extra_headers)
     return [body]
 
 def get_active_tasks():
     tasks = []
-    for filename in os.listdir(CONFIG["WorkDir"]):
-        if len(filename) != 9:
+    if CONFIG["UseWorkDir"]:
+        tasksdir = CONFIG["WorkDir"]
+    else:
+        tasksdir = CONFIG["SaveDir"]
+
+    for filename in os.listdir(tasksdir):
+        if len(filename) != CONFIG["TaskIdLength"]:
             continue
 
         try:
@@ -150,7 +157,7 @@ def get_active_tasks():
         except:
             continue
 
-        path = "%s/%s" % (CONFIG["WorkDir"], filename)
+        path = "%s/%s" % (tasksdir, filename)
         if os.path.isdir(path) and not os.path.isfile("%s/retrace_log" % path):
             tasks.append(taskid)
 
@@ -158,7 +165,7 @@ def get_active_tasks():
 
 def init_crashstats_db():
     try:
-        con = sqlite3.connect("%s/%s" % (CONFIG["WorkDir"], CONFIG["DBFile"]))
+        con = sqlite3.connect("%s/%s" % (CONFIG["SaveDir"], CONFIG["DBFile"]))
         query = con.cursor()
         query.execute("""
           CREATE TABLE IF NOT EXISTS
@@ -184,26 +191,29 @@ def init_crashstats_db():
 
 def save_crashstats(crashstats):
     try:
-        con = sqlite3.connect("%s/%s" % (CONFIG["WorkDir"], CONFIG["DBFile"]))
+        con = sqlite3.connect("%s/%s" % (CONFIG["SaveDir"], CONFIG["DBFile"]))
         query = con.cursor()
         query.execute("""
-          INSERT INTO retracestats(taskid, package, version, release, arch, starttime, duration,
-          prerunning, postrunning, chrootsize) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          INSERT INTO retracestats(taskid, package, version, release, arch,
+          starttime, duration, prerunning, postrunning, chrootsize)
+          VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
           """,
-          (crashstats["taskid"], crashstats["package"], crashstats["version"], crashstats["release"], crashstats["arch"], crashstats["starttime"], crashstats["duration"], crashstats["prerunning"], crashstats["postrunning"], crashstats["chrootsize"])
+          (crashstats["taskid"], crashstats["package"], crashstats["version"],
+           crashstats["release"], crashstats["arch"], crashstats["starttime"],
+           crashstats["duration"], crashstats["prerunning"],
+           crashstats["postrunning"], crashstats["chrootsize"])
         )
         con.commit()
         con.close()
 
         return True
-    except Exception, e:
-        print e
+    except:
         return False
 
 class logger():
-    def __init__(self, savedir):
+    def __init__(self, taskid):
         "Starts logging into savedir."
-        self._logfile = open("%s/log" % savedir, "w")
+        self._logfile = open("%s/%s/log" % (CONFIG["SaveDir"], taskid), "w")
 
     def write(self, msg):
         "Writes msg into log file."

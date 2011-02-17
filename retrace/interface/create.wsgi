@@ -27,7 +27,19 @@ def application(environ, start_response):
     if request.content_length > CONFIG["MaxPackedSize"] * 1048576:
         return response(start_response, "413 Request Entity Too Large")
 
-    space = free_space(CONFIG["WorkDir"])
+    if CONFIG["UseWorkDir"]:
+        workdir = CONFIG["WorkDir"]
+    else:
+        workdir = CONFIG["SaveDir"]
+
+    if not os.path.isdir(workdir):
+        try:
+            os.makedirs(workdir)
+        except:
+            return response(start_response, "500 Internal Server Error", "Unable to create working directory")
+
+    space = free_space(workdir)
+
     if not space:
         return response(start_response, "500 Internal Server Error", "Unable to obtain disk free space")
 

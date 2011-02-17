@@ -12,16 +12,13 @@ def application(environ, start_response):
     if not match:
         return response(start_response, "404 Not Found")
 
-    taskdir = CONFIG["WorkDir"] + "/" + match.group(1)
+    taskdir = "%s/%s" % (CONFIG["SaveDir"], match.group(1))
 
     if not os.path.isdir(taskdir):
         return response(start_response, "404 Not Found")
 
-    pwdpath = taskdir + "/password"
+    pwdpath = "%s/password" % taskdir
     try:
-        if not os.path.isfile(pwdpath):
-            raise Exception
-
         pwdfile = open(pwdpath, "r")
         pwd = pwdfile.read()
         pwdfile.close()
@@ -32,8 +29,8 @@ def application(environ, start_response):
         return response(start_response, "403 Forbidden")
 
     status = "PENDING"
-    if os.path.isfile(taskdir + "/retrace_log"):
-        if os.path.isfile(taskdir + "/retrace_backtrace"):
+    if os.path.isfile("%s/retrace_log" % taskdir):
+        if os.path.isfile("%s/retrace_backtrace" % taskdir):
             status = "FINISHED_SUCCESS"
         else:
             status = "FINISHED_FAILURE"
