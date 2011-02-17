@@ -28,19 +28,20 @@
 
 static const char *dump_dir_name = NULL;
 static const char *coredump = NULL;
+static const char *url = "retrace01.fedoraproject.org";
 static const char *task_id = NULL;
 static const char *task_password = NULL;
 static const char abrt_retrace_client_usage[] = "abrt-retrace-client"
-    " <operation> [options]\nOperations: create/status/backtrace/log";
+    " <operation> [options]\nOperations: create/status/backtrace/log/batch";
 
 enum {
     OPT_verbose   = 1 << 0,
     OPT_syslog    = 1 << 1,
     OPT_insecure  = 1 << 2,
-    OPT_dir       = 1 << 3,
-    OPT_core      = 1 << 4,
-    OPT_wait      = 1 << 5,
-    OPT_bttodir   = 1 << 6,
+    OPT_url       = 1 << 3,
+    OPT_headers   = 1 << 4,
+    OPT_dir       = 1 << 5,
+    OPT_core      = 1 << 6,
     OPT_no_unlink = 1 << 7,
     OPT_task      = 1 << 8,
     OPT_password  = 1 << 9
@@ -52,24 +53,23 @@ static struct options abrt_retrace_client_options[] = {
     OPT_BOOL('s', "syslog", NULL, "log to syslog"),
     OPT_BOOL('k', "insecure", NULL,
              "allow insecure connection to retrace server"),
-    OPT_GROUP("For create operation"),
+    OPT_STRING(0, "url", &url, "URL",
+               "retrace server URL"),
+    OPT_BOOL(0, "headers", NULL,
+             "(debug) show received HTTP headers"),
+    OPT_GROUP("For create and batch operations"),
     OPT_STRING('d', "dir", &dump_dir_name, "DIR",
                "read data from ABRT crash dump directory"),
-    OPT_STRING('c', "core", &coredump,
-               "COREDUMP", "read data from coredump"),
-    OPT_BOOL('w', "wait", NULL,
-             "keep connected to the server, display progress and"
-             " then backtrace"),
-    OPT_BOOL('r', "bttodir", NULL,
-             "if both --dir and --wait are provided, store the backtrace"
-             " to the DIR when it becomes available"),
-    OPT_BOOL('u', "no-unlink", NULL,
+    OPT_STRING('c', "core", &coredump, "COREDUMP",
+               "read data from coredump"),
+    OPT_BOOL(0, "no-unlink", NULL,
              "(debug) do not delete temporary archive created"
              " from dump dir in /tmp"),
     OPT_GROUP("For status, backtrace, and log operations"),
-    OPT_STRING('t', "task", &task_id, "ID", "id of your task on server"),
-    OPT_STRING('p', "password", &task_password, "PWD", "password of"
-               " your task on server"),
+    OPT_STRING('t', "task", &task_id, "ID",
+               "id of your task on server"),
+    OPT_STRING('p', "password", &task_password, "PWD",
+               "password of your task on server"),
     OPT_END()
 };
 
@@ -148,7 +148,6 @@ static int create_archive(const char *dump_dir_name, bool unlink_temp)
     args_add_if_exists(tar_args, dd, FILENAME_PACKAGE, &argindex);
     args_add_if_exists(tar_args, dd, FILENAME_RELEASE, &argindex);
     tar_args[argindex] = NULL;
-
     dd_close(dd);
 
     pid_t tar_child = fork();
@@ -172,7 +171,6 @@ static int create_archive(const char *dump_dir_name, bool unlink_temp)
     VERB1 log_msg("Waiting for xz...");
     waitpid(xz_child, &status, 0);
     VERB1 log_msg("Done...");
-
     xlseek(tempfd, 0, SEEK_SET);
     return tempfd;
 }
@@ -189,7 +187,6 @@ static SECStatus ssl_bad_cert_handler(void *arg, PRFileDesc *sock)
     if (!target_host)
         target_host = xstrdup("(unknown)");
     bool allow_insecure = (bool)arg;
-
     switch (err)
     {
     case SEC_ERROR_CA_CERT_INVALID:
@@ -213,8 +210,6 @@ static SECStatus ssl_bad_cert_handler(void *arg, PRFileDesc *sock)
                 subject, issuer);
         break;
     }
-
-
     PR_Free(target_host);
     return allow_insecure ? SECSuccess : SECFailure;
 }
@@ -227,7 +222,6 @@ static SECStatus ssl_handshake_callback(PRFileDesc *sock, void *arg)
 static const char *ssl_get_configdir()
 {
     struct stat buf;
-
     if (getenv("SSL_DIR"))
     {
         if (0 == stat(getenv("SSL_DIR"), &buf) &&
@@ -236,13 +230,11 @@ static const char *ssl_get_configdir()
             return getenv("SSL_DIR");
         }
     }
-
     if (0 == stat("/etc/pki/nssdb", &buf) &&
         S_ISDIR(buf.st_mode))
     {
         return "/etc/pki/nssdb";
     }
-
     return NULL;
 }
 
@@ -261,14 +253,11 @@ static void ssl_connect(const char *host,
         NSS_Initialize(configdir, "", "", "", NSS_INIT_READONLY);
     else
         NSS_NoDB_Init(NULL);
-
     PK11_SetPasswordFunc(ssl_get_password);
     NSS_SetDomesticPolicy();
-
     *tcp_sock = PR_NewTCPSocket();
     if (!*tcp_sock)
         error_msg_and_die("Failed to create a TCP socket");
-
     PRSocketOptionData sock_option;
     sock_option.option  = PR_SockOpt_Nonblocking;
     sock_option.value.non_blocking = PR_FALSE;
@@ -278,35 +267,30 @@ static void ssl_connect(const char *host,
         PR_Close(*tcp_sock);
         error_msg_and_die("Failed to set socket blocking mode.");
     }
-
     *ssl_sock = SSL_ImportFD(NULL, *tcp_sock);
     if (!*ssl_sock)
     {
         PR_Close(*tcp_sock);
         error_msg_and_die("Failed to wrap TCP socket by SSL");
     }
-
     SECStatus sec_status = SSL_OptionSet(*ssl_sock, SSL_HANDSHAKE_AS_CLIENT, PR_TRUE);
     if (SECSuccess != sec_status)
     {
         PR_Close(*ssl_sock);
         error_msg_and_die("Failed to enable client handshake to SSL socket.");
     }
-
     if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_SSL2, PR_TRUE))
         error_msg_and_die("Failed to enable client handshake to SSL socket.");
     if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_SSL3, PR_TRUE))
         error_msg_and_die("Failed to enable client handshake to SSL socket.");
     if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_TLS, PR_TRUE))
         error_msg_and_die("Failed to enable client handshake to SSL socket.");
-
     sec_status = SSL_SetURL(*ssl_sock, host);
     if (SECSuccess != sec_status)
     {
         PR_Close(*ssl_sock);
         error_msg_and_die("Failed to set URL to SSL socket.");
     }
-
     char buffer[PR_NETDB_BUF_SIZE];
     PRHostEnt host_entry;
     pr_status = PR_GetHostByName(host, buffer, sizeof(buffer), &host_entry);
@@ -323,7 +307,6 @@ static void ssl_connect(const char *host,
                               pr_status, PR_GetError());
         }
     }
-
     PRNetAddr addr;
     PRInt32 rv = PR_EnumerateHostEnt(0, &host_entry, /*port:*/443, &addr);
     if (rv < 0)
@@ -331,14 +314,12 @@ static void ssl_connect(const char *host,
         PR_Close(*ssl_sock);
         error_msg_and_die("Failed to enumerate host ent.");
     }
-
     pr_status = PR_Connect(*ssl_sock, &addr, PR_INTERVAL_NO_TIMEOUT);
     if (PR_SUCCESS != pr_status)
     {
         PR_Close(*ssl_sock);
         error_msg_and_die("Failed to connect SSL address.");
     }
-
     if (SECSuccess != SSL_BadCertHook(*ssl_sock,
                                       (SSLBadCertHandler)ssl_bad_cert_handler,
                                       (void*)allow_insecure))
@@ -346,7 +327,6 @@ static void ssl_connect(const char *host,
         PR_Close(*ssl_sock);
         error_msg_and_die("Failed to set certificate hook.");
     }
-
     if (SECSuccess != SSL_HandshakeCallback(*ssl_sock,
                                             (SSLHandshakeCallback)ssl_handshake_callback,
                                             NULL))
@@ -354,14 +334,12 @@ static void ssl_connect(const char *host,
         PR_Close(*ssl_sock);
         error_msg_and_die("Failed to set handshake callback.");
     }
-
     sec_status = SSL_ResetHandshake(*ssl_sock, /*asServer:*/PR_FALSE);
     if (SECSuccess != sec_status)
     {
         PR_Close(*ssl_sock);
         error_msg_and_die("Failed to reset handshake.");
     }
-
     sec_status = SSL_ForceHandshake(*ssl_sock);
     if (SECSuccess != sec_status)
     {
@@ -398,20 +376,46 @@ static char *http_get_header_value(const char *message,
     char *headers_end = strstr(message, "\r\n\r\n");
     if (!headers_end)
         return NULL;
-
     char *search_string = xasprintf("\r\n%s:", header_name);
     char *header = strcasestr(message, search_string);
     if (!header || header > headers_end)
         return NULL;
-
     header += strlen(search_string);
     free(search_string);
     while (*header == ' ')
         ++header;
     int len = 0;
-    while (isalnum(header[len]))
+    while (header[len] && header[len] != '\r' && header[len] != '\n')
         ++len;
+    while (header[len - 1] == ' ') /* strip spaces from right */
+        --len;
     return xstrndup(header, len);
+}
+
+static int http_get_response_code(const char *message)
+{
+    if (0 != strncmp(message, "HTTP/", strlen("HTTP/")))
+        error_msg_and_die("Invalid response from server: HTTP header not found.");
+    char *space = strstr(message, " ");
+    if (!space)
+        error_msg_and_die("Invalid response from server: HTTP header not found.");
+    int response_code;
+    if (1 != sscanf(space + 1, "%d", &response_code))
+        error_msg_and_die("Invalid response from server: HTTP header not found.");
+    return response_code;
+}
+
+static void http_print_headers(FILE *file, const char *message)
+{
+    const char *headers_end = strstr(message, "\r\n\r\n");
+    if (!headers_end)
+        headers_end = message + strlen(message);
+    for (const char *c = message; c != headers_end + 2; ++c)
+    {
+        if (*c == '\r')
+            continue;
+        putc(*c, file);
+    }
 }
 
 /**
@@ -431,47 +435,40 @@ static char *tcp_read_response(PRFileDesc *tcp_sock)
             buf[received] = '\0';
             strbuf_append_str(strbuf, buf);
         }
-
         if (received == -1)
         {
             error_msg_and_die("Receiving of data failed: NSS error %d",
                               PR_GetError());
         }
-
     } while (received > 0);
-
     return strbuf_free_nobuf(strbuf);
 }
 
-static int run_create(const char *dump_dir,
-                      const char *coredump,
-                      bool wait,
-                      bool bttodir,
-                      bool ssl_allow_insecure,
-                      bool delete_temp_archive)
+static int create(const char *dump_dir,
+                  const char *coredump,
+                  bool ssl_allow_insecure,
+                  bool delete_temp_archive,
+                  bool http_show_headers,
+                  char **task_id,
+                  char **task_password)
 {
     int tempfd = create_archive(dump_dir_name, delete_temp_archive);
     if (-1 == tempfd)
         return 1;
-
     /* Get the file size. */
     struct stat tempfd_buf;
     fstat(tempfd, &tempfd_buf);
-
     PRFileDesc *tcp_sock, *ssl_sock;
-    ssl_connect("retrace01.fedoraproject.org", &tcp_sock, &ssl_sock,
-                ssl_allow_insecure);
-
+    ssl_connect(url, &tcp_sock, &ssl_sock, ssl_allow_insecure);
     /* Upload the archive. */
     struct strbuf *http_request = strbuf_new();
     strbuf_append_strf(http_request,
                        "POST /create HTTP/1.1\r\n"
-                       "Host: retrace01.fedoraproject.org\r\n"
+                       "Host: %s\r\n"
                        "Content-Type: application/x-xz-compressed-tar\r\n"
                        "Content-Length: %lld\r\n"
                        "Connection: close\r\n"
-                       "\r\n", (long long)tempfd_buf.st_size);
-
+                       "\r\n", url, (long long)tempfd_buf.st_size);
     PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
@@ -480,11 +477,8 @@ static int run_create(const char *dump_dir,
         error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
                           http_request->len, PR_GetError());
     }
-
     strbuf_free(http_request);
-
     int result = 0;
-
     while (1)
     {
         char buf[32768];
@@ -499,7 +493,6 @@ static int run_create(const char *dump_dir,
             }
             break;
         }
-
         written = PR_Send(tcp_sock, buf, r,
                           /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
         if (written == -1)
@@ -515,51 +508,56 @@ static int run_create(const char *dump_dir,
             break;
         }
     }
-
     close(tempfd);
-
     /* Read the HTTP header of the response from server. */
     char *http_response = tcp_read_response(tcp_sock);
-    char *task_id = http_get_header_value(http_response, "X-Task-Id");
-    if (!task_id)
-    {
-        PR_Close(ssl_sock);
+    if (http_show_headers)
+        http_print_headers(stderr, http_response);
+    int response_code = http_get_response_code(http_response);
+    if (response_code != 201)
+        error_msg_and_die("Unexpected HTTP response from server: %d\n%s", response_code, http_response);
+    *task_id = http_get_header_value(http_response, "X-Task-Id");
+    if (!*task_id)
         error_msg_and_die("Invalid response from server: missing X-Task-Id");
-    }
-
-    char *task_password = http_get_header_value(http_response, "X-Task-Password");
-    if (!task_password)
-    {
-        PR_Close(ssl_sock);
+    *task_password = http_get_header_value(http_response, "X-Task-Password");
+    if (!*task_password)
         error_msg_and_die("Invalid response from server: missing X-Task-Password");
-    }
-
-    printf("Task Id: %s\nTask Password: %s\n", task_id, task_password);
     free(http_response);
-    free(task_id);
-    free(task_password);
-
     ssl_disconnect(ssl_sock);
     return result;
 }
 
-static int run_status(const char *taskid,
-                      const char *password,
-                      bool ssl_allow_insecure)
+static int run_create(const char *dump_dir,
+                      const char *coredump,
+                      bool ssl_allow_insecure,
+                      bool delete_temp_archive,
+                      bool http_show_headers)
+{
+    char *task_id, *task_password;
+    int result = create(dump_dir, coredump, ssl_allow_insecure, delete_temp_archive,
+                        http_show_headers, &task_id, &task_password);
+    printf("Task Id: %s\nTask Password: %s\n", task_id, task_password);
+    free(task_id);
+    free(task_password);
+    return result;
+}
+
+static void status(const char *task_id,
+                   const char *task_password,
+                   bool ssl_allow_insecure,
+                   bool http_show_headers,
+                   char **task_status)
 {
     PRFileDesc *tcp_sock, *ssl_sock;
-    ssl_connect("retrace01.fedoraproject.org", &tcp_sock, &ssl_sock,
-                ssl_allow_insecure);
-
+    ssl_connect(url, &tcp_sock, &ssl_sock, ssl_allow_insecure);
     struct strbuf *http_request = strbuf_new();
     strbuf_append_strf(http_request,
                        "GET /%s HTTP/1.1\r\n"
-                       "Host: retrace01.fedoraproject.org\r\n"
+                       "Host: %s\r\n"
                        "X-Task-Password: %s\r\n"
                        "Content-Length: 0\r\n"
                        "Connection: close\r\n"
-                       "\r\n", taskid, password);
-
+                       "\r\n", task_id, url, task_password);
     PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
@@ -568,34 +566,51 @@ static int run_status(const char *taskid,
         error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
                           http_request->len, PR_GetError());
     }
-
     strbuf_free(http_request);
-
     char *http_response = tcp_read_response(tcp_sock);
-    printf(http_response);
+    if (http_show_headers)
+        http_print_headers(stderr, http_response);
+    int response_code = http_get_response_code(http_response);
+    if (response_code != 200)
+    {
+        error_msg_and_die("Unexpected HTTP response from server: %d\n%s",
+                          response_code, http_response);
+    }
+    *task_status = http_get_header_value(http_response, "X-Task-Status");
+    if (!*task_status)
+        error_msg_and_die("Invalid response from server: missing X-Task-Status");
     free(http_response);
-
     ssl_disconnect(ssl_sock);
-    return 0;
 }
 
-static int run_backtrace(const char *taskid,
-                         const char *password,
-                         bool ssl_allow_insecure)
+static void run_status(const char *task_id,
+                       const char *task_password,
+                       bool ssl_allow_insecure,
+                       bool http_show_headers)
+{
+    char *task_status;
+    status(task_id, task_password, ssl_allow_insecure,
+           http_show_headers, &task_status);
+    printf("Task Status: %s\n", task_status);
+    free(task_status);
+}
+
+static int run_backtrace(const char *task_id,
+                         const char *task_password,
+                         bool ssl_allow_insecure,
+                         bool http_show_headers)
 {
     PRFileDesc *tcp_sock, *ssl_sock;
-    ssl_connect("retrace01.fedoraproject.org", &tcp_sock, &ssl_sock,
+    ssl_connect(url, &tcp_sock, &ssl_sock,
                 ssl_allow_insecure);
-
     struct strbuf *http_request = strbuf_new();
     strbuf_append_strf(http_request,
                        "GET /%s/backtrace HTTP/1.1\r\n"
-                       "Host: retrace01.fedoraproject.org\r\n"
+                       "Host: %s\r\n"
                        "X-Task-Password: %s\r\n"
                        "Content-Length: 0\r\n"
                        "Connection: close\r\n"
-                       "\r\n", taskid, password);
-
+                       "\r\n", task_id, url, task_password);
     PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
@@ -604,34 +619,46 @@ static int run_backtrace(const char *taskid,
         error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
                           http_request->len, PR_GetError());
     }
-
     strbuf_free(http_request);
-
     char *http_response = tcp_read_response(tcp_sock);
-    printf(http_response);
+    if (http_show_headers)
+        http_print_headers(stderr, http_response);
+    int response_code = http_get_response_code(http_response);
+    if (response_code != 200)
+    {
+        error_msg_and_die("Unexpected HTTP response from server: %d\n%s",
+                          response_code, http_response);
+    }
+    char *headers_end = strstr(http_response, "\r\n\r\n");
+    if (!headers_end)
+        error_msg_and_die("Invalid response from server: missing HTTP message body.");
+    for (char *c = headers_end + 4; *c; ++c)
+    {
+        if (*c == '\r')
+            continue;
+        putc(*c, stdout);
+    }
     free(http_response);
-
     ssl_disconnect(ssl_sock);
     return 0;
 }
 
-static int run_log(const char *taskid,
-                   const char *password,
-                   bool ssl_allow_insecure)
+static int run_log(const char *task_id,
+                   const char *task_password,
+                   bool ssl_allow_insecure,
+                   bool http_show_headers)
 {
     PRFileDesc *tcp_sock, *ssl_sock;
-    ssl_connect("retrace01.fedoraproject.org", &tcp_sock, &ssl_sock,
+    ssl_connect(url, &tcp_sock, &ssl_sock,
                 ssl_allow_insecure);
-
     struct strbuf *http_request = strbuf_new();
     strbuf_append_strf(http_request,
                        "GET /%s/log HTTP/1.1\r\n"
-                       "Host: retrace01.fedoraproject.org\r\n"
+                       "Host: %s\r\n"
                        "X-Task-Password: %s\r\n"
                        "Content-Length: 0\r\n"
                        "Connection: close\r\n"
-                       "\r\n", taskid, password);
-
+                       "\r\n", task_id, url, task_password);
     PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
@@ -640,15 +667,65 @@ static int run_log(const char *taskid,
         error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
                           http_request->len, PR_GetError());
     }
-
     strbuf_free(http_request);
-
     char *http_response = tcp_read_response(tcp_sock);
-    printf(http_response);
+    if (http_show_headers)
+        http_print_headers(stderr, http_response);
+    int response_code = http_get_response_code(http_response);
+    if (response_code != 200)
+    {
+        error_msg_and_die("Unexpected HTTP response from server: %d\n%s",
+                          response_code, http_response);
+    }
+    char *headers_end = strstr(http_response, "\r\n\r\n");
+    if (!headers_end)
+        error_msg_and_die("Invalid response from server: missing HTTP message body.");
+    for (char *c = headers_end + 4; *c; ++c)
+    {
+        if (*c == '\r')
+            continue;
+        putc(*c, stdout);
+    }
     free(http_response);
-
     ssl_disconnect(ssl_sock);
     return 0;
+}
+
+
+static int run_batch(const char *dump_dir,
+                     const char *coredump,
+                     bool ssl_allow_insecure,
+                     bool delete_temp_archive,
+                     bool http_show_headers)
+{
+    char *task_id, *task_password;
+    int retcode = create(dump_dir, coredump, ssl_allow_insecure,
+                         delete_temp_archive, http_show_headers,
+                         &task_id, &task_password);
+    if (0 != retcode)
+        return retcode;
+    char *task_status = xstrdup("");
+    while (0 != strncmp(task_status, "FINISHED", strlen("finished")))
+    {
+        free(task_status);
+        status(task_id, task_password, ssl_allow_insecure,
+               http_show_headers, &task_status);
+        puts(task_status);
+    }
+    if (0 == strcmp(task_status, "FINISHED_SUCCESS"))
+    {
+        retcode = run_backtrace(task_id, task_password,
+                                ssl_allow_insecure, http_show_headers);
+    }
+    else
+    {
+        retcode = run_log(task_id, task_password, ssl_allow_insecure,
+                          http_show_headers);
+    }
+    free(task_status);
+    free(task_id);
+    free(task_password);
+    return retcode;
 }
 
 int main(int argc, char **argv)
@@ -656,17 +733,14 @@ int main(int argc, char **argv)
     char *env_verbose = getenv("ABRT_VERBOSE");
     if (env_verbose)
         g_verbose = atoi(env_verbose);
-
     unsigned opts = parse_opts(argc, argv,
                                abrt_retrace_client_options,
                                abrt_retrace_client_usage);
-
     if (opts & OPT_syslog)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;
     }
-
     const char *operation = NULL;
     if (optind < argc)
         operation = argv[optind];
@@ -675,14 +749,19 @@ int main(int argc, char **argv)
         parse_usage_and_die(abrt_retrace_client_usage,
                             abrt_retrace_client_options);
     }
-
     if (0 == strcasecmp(operation, "create"))
     {
         if (!dump_dir_name && !coredump)
             error_msg_and_die("Either dump directory or coredump is needed.");
-        return run_create(dump_dir_name, coredump, opts & OPT_wait,
-                          opts & OPT_bttodir, opts & OPT_insecure,
-                          opts & OPT_no_unlink);
+        return run_create(dump_dir_name, coredump, opts & OPT_insecure,
+                          opts & OPT_no_unlink, opts & OPT_headers);
+    }
+    else if (0 == strcasecmp(operation, "batch"))
+    {
+        if (!dump_dir_name && !coredump)
+            error_msg_and_die("Either dump directory or coredump is needed.");
+        return run_batch(dump_dir_name, coredump, opts & OPT_insecure,
+                         opts & OPT_no_unlink, opts & OPT_headers);
     }
     else if (0 == strcasecmp(operation, "status"))
     {
@@ -690,7 +769,8 @@ int main(int argc, char **argv)
             error_msg_and_die("Task id is needed.");
         if (!task_password)
             error_msg_and_die("Task password is needed.");
-        return run_status(task_id, task_password, opts & OPT_insecure);
+        run_status(task_id, task_password, opts & OPT_insecure,
+                   opts & OPT_headers);
     }
     else if (0 == strcasecmp(operation, "backtrace"))
     {
@@ -698,7 +778,8 @@ int main(int argc, char **argv)
             error_msg_and_die("Task id is needed.");
         if (!task_password)
             error_msg_and_die("Task password is needed.");
-        return run_backtrace(task_id, task_password, opts & OPT_insecure);
+        return run_backtrace(task_id, task_password, opts & OPT_insecure,
+                             opts & OPT_headers);
     }
     else if (0 == strcasecmp(operation, "log"))
     {
@@ -706,10 +787,10 @@ int main(int argc, char **argv)
             error_msg_and_die("Task id is needed.");
         if (!task_password)
             error_msg_and_die("Task password is needed.");
-        return run_log(task_id, task_password, opts & OPT_insecure);
+        return run_log(task_id, task_password, opts & OPT_insecure,
+                       opts & OPT_headers);
     }
     else
         error_msg_and_die("Unknown operation: %s", operation);
-
     return 0;
 }
