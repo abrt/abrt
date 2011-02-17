@@ -23,6 +23,9 @@
 #define DEFAULT_WIDTH   800
 #define DEFAULT_HEIGHT  500
 
+GtkLabel *g_lbl_cd_reason;
+GtkVBox *g_vb_analyzers;
+
 static const gchar *const page_names[] =
 {
     "page_1",
@@ -100,14 +103,21 @@ static void add_pages()
 
         g_print("added page: %s\n", page_names[i]);
     }
+
+    /* Set pointer to fields we might need to change */
+    g_lbl_cd_reason = GTK_LABEL(gtk_builder_get_object(builder, "lbl_cd_reason"));
+
+    g_vb_analyzers = GTK_VBOX(gtk_builder_get_object(builder, "vb_analyzers"));
 }
 
 GtkWidget *create_assistant()
 {
     assistant = gtk_assistant_new();
     gtk_window_set_default_size(GTK_WINDOW(assistant), DEFAULT_WIDTH, DEFAULT_HEIGHT);
+
     g_signal_connect(G_OBJECT(assistant), "cancel", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(G_OBJECT(assistant), "close", G_CALLBACK(gtk_main_quit), NULL);
+
     builder = gtk_builder_new();
     add_pages();
     gtk_builder_connect_signals(builder, NULL);

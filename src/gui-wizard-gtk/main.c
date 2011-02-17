@@ -42,6 +42,11 @@ int main(int argc, char **argv)
     dd_close(dd);
 
     GtkWidget *assistant = create_assistant();
+
+    const char *reason = get_crash_item_content_or_NULL(cd, FILENAME_REASON);
+    if (reason)
+        gtk_label_set_text(g_lbl_cd_reason, reason);
+
     gtk_widget_show_all(assistant);
 
     /* Enter main loop */
