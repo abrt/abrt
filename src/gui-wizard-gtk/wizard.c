@@ -79,6 +79,19 @@ void on_b_refresh_clicked(GtkButton *button)
 /* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
 #include "wizard_glade.c"
 
+void fill_backtrace()
+{
+    crash_item *ci = NULL;
+    GtkTextView *backtrace_tev = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "bactrace_tev"));
+    GtkTextBuffer *backtrace_buf = gtk_text_buffer_new(NULL);
+    ci = g_hash_table_lookup(cd, FILENAME_BACKTRACE);
+    if(ci != NULL)
+    {
+        //g_print(ci->content);
+        gtk_text_buffer_set_text(backtrace_buf, ci->content, -1);
+        gtk_text_view_set_buffer(backtrace_tev, backtrace_buf);
+    }
+}
 
 GtkTreeView *create_details_treeview()
 {
@@ -103,6 +116,7 @@ GtkTreeView *create_details_treeview()
                                                      NULL);
     gtk_tree_view_append_column(details_tv, column);
 
+    /*
     renderer = gtk_cell_renderer_text_new();
     column = gtk_tree_view_column_new_with_attributes(_("Path"),
                                                      renderer,
@@ -110,6 +124,7 @@ GtkTreeView *create_details_treeview()
                                                      COLUMN_PATH,
                                                      NULL);
     gtk_tree_view_append_column(details_tv, column);
+    */
     return details_tv;
 }
 
@@ -216,6 +231,21 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
     }
 }
 
+void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
+{
+    page_obj_t *pgs = pages;
+
+    while(pgs != NULL)
+    {
+        if(pgs->page == page)
+            break;
+        ++pgs;
+    }
+
+    if(strcmp(pgs->name, PAGE_BACKTRACE_APPROVAL) == 0)
+        fill_backtrace();
+}
+
 GtkWidget *create_assistant()
 {
     assistant = gtk_assistant_new();
@@ -226,6 +256,7 @@ GtkWidget *create_assistant()
     g_signal_connect(G_OBJECT(assistant), "cancel", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(G_OBJECT(assistant), "close", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(G_OBJECT(assistant), "apply", G_CALLBACK(next_page), NULL);
+    g_signal_connect(G_OBJECT(assistant), "prepare", G_CALLBACK(on_page_prepare), NULL);
 
     builder = gtk_builder_new();
     add_pages();
