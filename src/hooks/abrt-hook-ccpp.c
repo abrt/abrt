@@ -499,17 +499,15 @@ int main(int argc, char** argv)
     {
         dd_create_basic_files(dd, uid);
 
-        char path_maps_in[sizeof("/proc/%lu/maps") + sizeof(long)*3];
-        sprintf(path_maps_in, "/proc/%lu/maps", (long)pid);
-        char *path_maps_out = concat_path_file(dd->dd_dir, FILENAME_MAPS);
-        copy_file(path_maps_in, path_maps_out, 0);
-        free(path_maps_out);
-
-        char path_smaps_in[sizeof("/proc/%lu/smaps") + sizeof(long)*3];
-        sprintf(path_smaps_in, "/proc/%lu/smaps", (long)pid);
-        char *path_smaps_out = concat_path_file(dd->dd_dir, FILENAME_SMAPS);
-        copy_file(path_smaps_in, path_smaps_out, 0);
-        free(path_smaps_out);
+        char source_filename[sizeof("/proc/%lu/smaps") + sizeof(long)*3];
+        int base_name = sprintf(source_filename, "/proc/%lu/smaps", (long)pid);
+        base_name -= strlen("smaps");
+        char *dest_filename = concat_path_file(dd->dd_dir, FILENAME_SMAPS);
+        copy_file(source_filename, dest_filename, 0);
+        strcpy(source_filename + base_name, "maps");
+        strcpy(strrchr(dest_filename, '/') + 1, FILENAME_MAPS);
+        copy_file(source_filename, dest_filename, 0);
+        free(dest_filename);
 
         char *cmdline = get_cmdline(pid); /* never NULL */
         char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)",
