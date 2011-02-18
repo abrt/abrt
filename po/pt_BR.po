@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.pt_BR\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-02-16 02:52+0000\n"
-"PO-Revision-Date: 2011-02-16 23:44-0200\n"
+"POT-Creation-Date: 2011-02-17 02:58+0000\n"
+"PO-Revision-Date: 2011-02-17 23:06-0200\n"
 "Last-Translator: \n"
 "Language-Team: Brazilian Portuguese <trans-pt_br@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -75,7 +75,7 @@ msgstr "Relatar"
 msgid "Open ABRT"
 msgstr "Abrir ABRT"
 
-#: ../src/cli/CLI.cpp:93
+#: ../src/cli/CLI.cpp:90
 #, fuzzy, c-format
 msgid ""
 "\tCrash dump : %s\n"
@@ -92,12 +92,12 @@ msgstr ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 
-#: ../src/cli/CLI.cpp:112
+#: ../src/cli/CLI.cpp:109
 #, c-format
 msgid "\tHostname   : %s\n"
 msgstr "\tHostname   : %s\n"
 
-#: ../src/cli/CLI.cpp:145
+#: ../src/cli/CLI.cpp:142
 #, fuzzy, c-format
 msgid ""
 "Dump directory:     %s\n"
@@ -120,27 +120,27 @@ msgstr ""
 "Sistema:             %s, kernel %s\n"
 "Razão:             %s\n"
 
-#: ../src/cli/CLI.cpp:173
+#: ../src/cli/CLI.cpp:170
 #, c-format
 msgid "Coredump file:      %s\n"
 msgstr "Arquivo de travamento      %s\n"
 
-#: ../src/cli/CLI.cpp:177
+#: ../src/cli/CLI.cpp:174
 #, c-format
 msgid "Rating:             %s\n"
 msgstr "Avaliação:           %s\n"
 
-#: ../src/cli/CLI.cpp:182
+#: ../src/cli/CLI.cpp:179
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr "Função de travamento      %s\n"
 
-#: ../src/cli/CLI.cpp:186
+#: ../src/cli/CLI.cpp:183
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr "Hostname:           %s\n"
 
-#: ../src/cli/CLI.cpp:190
+#: ../src/cli/CLI.cpp:187
 #, c-format
 msgid ""
 "\n"
@@ -151,7 +151,7 @@ msgstr ""
 "#Como reproduzir:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:194
+#: ../src/cli/CLI.cpp:191
 #, c-format
 msgid ""
 "\n"
@@ -162,7 +162,7 @@ msgstr ""
 "Comentário:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:200
+#: ../src/cli/CLI.cpp:197
 #, c-format
 msgid ""
 "\n"
@@ -173,7 +173,7 @@ msgstr ""
 "Backtrace:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:298
+#: ../src/cli/CLI.cpp:295
 #, c-format
 msgid ""
 "Usage: %s -l[f] [-D BASE_DIR]...]\n"
@@ -196,24 +196,24 @@ msgid ""
 "\t-v, --verbose\t\tBe verbose\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:346
+#: ../src/cli/CLI.cpp:343
 msgid "You must specify exactly one operation"
 msgstr "Você precisa especificar exatamente uma operação"
 
-#: ../src/cli/report.cpp:160
+#: ../src/cli/report.cpp:154
 #, c-format
 msgid "# This field is read only\n"
 msgstr "#Este campo é somente leitura\n"
 
-#: ../src/cli/report.cpp:180
+#: ../src/cli/report.cpp:174
 msgid "# Describe the circumstances of this crash below"
 msgstr "#Descreva as circunstâncias deste travamento abaixo"
 
-#: ../src/cli/report.cpp:182
+#: ../src/cli/report.cpp:176
 msgid "# How to reproduce the crash?"
 msgstr "#Como reproduzir o travamento?"
 
-#: ../src/cli/report.cpp:184
+#: ../src/cli/report.cpp:178
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -221,48 +221,48 @@ msgstr ""
 "# Backtrace\n"
 "# Verificar se não contém algum dado sensível (senhas, etc)"
 
-#: ../src/cli/report.cpp:186
+#: ../src/cli/report.cpp:180
 msgid "# Architecture"
 msgstr "#Arquitetura"
 
-#: ../src/cli/report.cpp:187
+#: ../src/cli/report.cpp:181
 msgid "# Command line"
 msgstr "# Linha de Comando"
 
-#: ../src/cli/report.cpp:188
+#: ../src/cli/report.cpp:182
 msgid "# Component"
 msgstr "#Componente"
 
-#: ../src/cli/report.cpp:189
+#: ../src/cli/report.cpp:183
 msgid "# Core dump"
 msgstr "#Despejo de Núcleo"
 
-#: ../src/cli/report.cpp:190
+#: ../src/cli/report.cpp:184
 msgid "# Executable"
 msgstr "#Executável"
 
-#: ../src/cli/report.cpp:191
+#: ../src/cli/report.cpp:185
 msgid "# Kernel version"
 msgstr "#Versão do Kernel"
 
-#: ../src/cli/report.cpp:192
+#: ../src/cli/report.cpp:186
 msgid "# Package"
 msgstr "#Pacote"
 
-#: ../src/cli/report.cpp:193
+#: ../src/cli/report.cpp:187
 msgid "# Reason of crash"
 msgstr "#Razão para o travamento"
 
-#: ../src/cli/report.cpp:194
+#: ../src/cli/report.cpp:188
 msgid "# Release string of the operating system"
 msgstr "#Faixa de lançamento do sistema operacional"
 
-#: ../src/cli/report.cpp:317
+#: ../src/cli/report.cpp:305
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
 "Não foi possível executar  vi: $TERM, $VISUAL e $EDITOR não está configurado "
 
-#: ../src/cli/report.cpp:401
+#: ../src/cli/report.cpp:389
 msgid ""
 "\n"
 "The report has been updated"
@@ -270,7 +270,7 @@ msgstr ""
 "\n"
 "Um relatório foi atualizado"
 
-#: ../src/cli/report.cpp:403
+#: ../src/cli/report.cpp:391
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -279,46 +279,46 @@ msgstr ""
 " Não foi detectada nenhuma mudança no relatório"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:435
+#: ../src/cli/report.cpp:423
 msgid "y"
 msgstr "y"
 
-#: ../src/cli/report.cpp:436
+#: ../src/cli/report.cpp:424
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:567
+#: ../src/cli/report.cpp:555
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Configurações erradas foram detectadas no plugin %s\n"
 
-#: ../src/cli/report.cpp:571
+#: ../src/cli/report.cpp:559
 msgid "Enter your login: "
 msgstr "Insira seu login:"
 
-#: ../src/cli/report.cpp:577
+#: ../src/cli/report.cpp:565
 msgid "Enter your password: "
 msgstr "Insira sua senha:"
 
-#: ../src/cli/report.cpp:787
+#: ../src/cli/report.cpp:775
 msgid "Reporting..."
 msgstr "Relatando..."
 
-#: ../src/cli/report.cpp:800
+#: ../src/cli/report.cpp:788
 #, c-format
 msgid "Report using %s?"
 msgstr "Relatar utilizando o %s?"
 
-#: ../src/cli/report.cpp:803
+#: ../src/cli/report.cpp:791
 msgid "Skipping..."
 msgstr "Pulando..."
 
-#: ../src/cli/report.cpp:819
+#: ../src/cli/report.cpp:807
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Relatório desabilitado porque o backtrace está inutilizado"
 
-#: ../src/cli/report.cpp:823
+#: ../src/cli/report.cpp:811
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -327,7 +327,7 @@ msgstr ""
 "Por favor, tente instalar o debuginfo manualmente usando o comando: "
 "\"debuginfo-install %s\" e tente novamente\n"
 
-#: ../src/cli/report.cpp:841
+#: ../src/cli/report.cpp:829
 #, fuzzy, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "Travamento reportado via %d plugins (%d erros)\n"
@@ -338,8 +338,13 @@ msgid ""
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
+" [options] -d DIR\n"
+"\n"
+"Consulta a base de dados do pacote, salva o nome do pacote, componente e a "
+"descrição"
 
 #: ../src/daemon/abrt-action-save-package-data.c:283
+#, fuzzy
 #: ../src/daemon/abrt-handle-crashdump.c:60
 #: ../src/plugins/abrt-action-analyze-c.c:167
 #: ../src/plugins/abrt-action-analyze-oops.c:144
@@ -352,7 +357,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-rhtsupport.c:280
 #: ../src/plugins/abrt-action-upload.c:260
 msgid "Crash dump directory"
-msgstr ""
+msgstr "Cdump no diretóridir"
 
 #: ../src/daemon/abrt-action-save-package-data.c:284
 #: ../src/daemon/abrt-handle-crashdump.c:59 ../src/daemon/abrt-server.c:297
@@ -369,10 +374,12 @@ msgid ""
 " [-vs] -d DIR -e EVENT\n"
 "   or: "
 msgstr ""
+" [-vs] -d DIRETÓRIOS -e EVENTOS\n"
+"   ou: "
 
 #: ../src/daemon/abrt-handle-crashdump.c:61
 msgid "Handle EVENT"
-msgstr ""
+msgstr "Manipular EVENTOS"
 
 #: ../src/daemon/abrt-handle-crashdump.c:62
 msgid "List possible events [which start with PFX]"
@@ -510,7 +517,7 @@ msgstr "Copiar para Área de Transferência"
 msgid "Online _Help"
 msgstr "Ajuda Online"
 
-#: ../src/gui/ccgui.glade.h:13 ../src/gui/settings.glade.h:19
+#: ../src/gui/ccgui.glade.h:13 ../src/gui/settings.glade.h:12
 msgid "Plugins"
 msgstr "Plugins"
 
@@ -828,7 +835,7 @@ msgstr "Aprovar o backtrace"
 
 #: ../src/gui/CReporterAssistant.py:862
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "Você precisa preencher o campo antes de prosseguir...o"
 
 #: ../src/gui/CReporterAssistant.py:885
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
@@ -1091,103 +1098,67 @@ msgstr "Enviar relatório"
 msgid "Show log"
 msgstr "Exibir log"
 
-#: ../src/gui/SettingsDialog.py:34 ../src/gui/SettingsDialog.py:51
-msgid "<b>Select plugin</b>"
-msgstr "<b>Selecionar plugin</b>"
-
-#: ../src/gui/SettingsDialog.py:37
-msgid "<b>Select database backend</b>"
-msgstr "<b>Selecione o backend de banco de dados</b>"
-
-#: ../src/gui/SettingsDialog.py:170
+#: ../src/gui/SettingsDialog.py:122
 msgid "Remove this job"
 msgstr "Remover este trabalho"
 
-#: ../src/gui/SettingsDialog.py:214
+#: ../src/gui/SettingsDialog.py:166
 msgid "Remove this action"
 msgstr "Remover esta ação"
 
 #: ../src/gui/settings.glade.h:1
-msgid "<b>Analyzer plugin</b>"
-msgstr "<b>Plugins de análise</b>"
-
-#: ../src/gui/settings.glade.h:2
-msgid "<b>Associated action</b>"
-msgstr "<b>Ação associada</b>"
-
-#: ../src/gui/settings.glade.h:3
 msgid "<b>Plugin details</b>"
 msgstr "<b>Detalhes do plugin</b>"
 
-#: ../src/gui/settings.glade.h:4
-msgid "<b>Plugin</b>"
-msgstr "<b>Plugin</b>"
-
-#: ../src/gui/settings.glade.h:5
-msgid "<b>Time (or period)</b>"
-msgstr "<b>Tempo (ou período)</b>"
-
-#: ../src/gui/settings.glade.h:6
-msgid "Analyzers, Actions, Reporters"
-msgstr "Analisadores, ações e relatores"
-
-#: ../src/gui/settings.glade.h:7
+#: ../src/gui/settings.glade.h:2
 msgid "Author:"
 msgstr "Autor:"
 
-#: ../src/gui/settings.glade.h:8
+#: ../src/gui/settings.glade.h:3
 msgid "Blacklisted packages: "
 msgstr "Pacotes excluídos: "
 
-#: ../src/gui/settings.glade.h:9
+#: ../src/gui/settings.glade.h:4
 msgid "C_onfigure Plugin"
 msgstr "C_onfigurar plugin "
 
-#: ../src/gui/settings.glade.h:10
+#: ../src/gui/settings.glade.h:5
 msgid "Check package GPG signature"
 msgstr "Verificar assinatura GPG do pacote"
 
-#: ../src/gui/settings.glade.h:11
+#: ../src/gui/settings.glade.h:6
 msgid "Common"
 msgstr "Comum"
 
-#: ../src/gui/settings.glade.h:12
-msgid "Cron"
-msgstr "Cron"
-
-#: ../src/gui/settings.glade.h:13
-msgid "Database backend: "
-msgstr "Backend de banco de dados: "
-
-#: ../src/gui/settings.glade.h:14
+#: ../src/gui/settings.glade.h:7
 msgid "Description:"
 msgstr "Descrição:"
 
-#: ../src/gui/settings.glade.h:15
+#: ../src/gui/settings.glade.h:8
 msgid "GPG Keys"
 msgstr "Chaves GPG"
 
-#: ../src/gui/settings.glade.h:16
+#: ../src/gui/settings.glade.h:9
 msgid "GPG keys: "
 msgstr "Chaves GPG: "
 
-#: ../src/gui/settings.glade.h:17
+#: ../src/gui/settings.glade.h:10
 msgid "Max coredump storage size (MB):"
 msgstr "Tamanho máximo (em MB) do despejo do núcleo:"
 
-#: ../src/gui/settings.glade.h:18
+#: ../src/gui/settings.glade.h:11
 msgid "Name:"
 msgstr "Nome:"
 
-#: ../src/gui/settings.glade.h:20
+#: ../src/gui/settings.glade.h:13
 msgid "Preferences"
 msgstr "Preferências"
 
-#: ../src/gui/settings.glade.h:21
+#: ../src/gui/settings.glade.h:14
 msgid "Version:"
 msgstr "Versão:"
 
-#: ../src/gui/settings.glade.h:22
+#: ../src/gui/settings.glade.h:15
 msgid "Web Site:"
 msgstr "Web site:"
 
@@ -1226,6 +1197,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredumps"
 msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"Calculados e salvos UUID do coredumps"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:133
 msgid ""
@@ -1412,12 +1386,12 @@ msgstr "Não é possível remover %s, provávelmente contém erros no log"
 #: ../src/plugins/abrt-action-install-debuginfo.py:305
 #, python-format
 msgid "Analyzing corefile: %(corefile_path)s"
-msgstr ""
+msgstr "Analizando arquivo central:  %(corefile_path)sc"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:384
 #, python-format
 msgid "Can't remove %(tmpdir_path)s: %(reason)s"
-msgstr ""
+msgstr "Não remova %(tmpdir_path)s: %(reason)s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:394
 msgid "Exiting on user Command"
@@ -1685,6 +1659,33 @@ msgstr "URL:"
 #: ../src/plugins/Upload.glade.h:5
 msgid "Use encryption"
 msgstr "Usar criptografia:"
+
+#~ msgid "<b>Select plugin</b>"
+#~ msgstr "<b>Selecionar plugin</b>"
+
+#~ msgid "<b>Select database backend</b>"
+#~ msgstr "<b>Selecione o backend de banco de dados</b>"
+
+#~ msgid "<b>Analyzer plugin</b>"
+#~ msgstr "<b>Plugins de análise</b>"
+
+#~ msgid "<b>Associated action</b>"
+#~ msgstr "<b>Ação associada</b>"
+
+#~ msgid "<b>Plugin</b>"
+#~ msgstr "<b>Plugin</b>"
+
+#~ msgid "<b>Time (or period)</b>"
+#~ msgstr "<b>Tempo (ou período)</b>"
+
+#~ msgid "Analyzers, Actions, Reporters"
+#~ msgstr "Analisadores, ações e relatores"
+
+#~ msgid "Cron"
+#~ msgstr "Cron"
+
+#~ msgid "Database backend: "
+#~ msgstr "Backend de banco de dados: "
 
 #, fuzzy
 #~ msgid ""
