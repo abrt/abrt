@@ -498,8 +498,23 @@ int main(int argc, char** argv)
     if (dd)
     {
         dd_create_basic_files(dd, uid);
+
+        char path_maps_in[sizeof("/proc/%lu/maps") + sizeof(long)*3];
+        sprintf(path_maps_in, "/proc/%lu/maps", (long)pid);
+        char *path_maps_out = concat_path_file(dd->dd_dir, FILENAME_MAPS);
+        copy_file(path_maps_in, path_maps_out, 0);
+        free(path_maps_out);
+
+        char path_smaps_in[sizeof("/proc/%lu/smaps") + sizeof(long)*3];
+        sprintf(path_smaps_in, "/proc/%lu/smaps", (long)pid);
+        char *path_smaps_out = concat_path_file(dd->dd_dir, FILENAME_SMAPS);
+        copy_file(path_smaps_in, path_smaps_out, 0);
+        free(path_smaps_out);
+
         char *cmdline = get_cmdline(pid); /* never NULL */
-        char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)", executable, signal_str, signame ? signame : signal_str);
+        char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)",
+                                 executable, signal_str, signame ? signame : signal_str);
+
         dd_save_text(dd, FILENAME_ANALYZER, "CCpp");
         dd_save_text(dd, FILENAME_EXECUTABLE, executable);
         dd_save_text(dd, FILENAME_CMDLINE, cmdline);
