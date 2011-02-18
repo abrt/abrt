@@ -33,11 +33,11 @@ bug_reporting_wizard_LDADD = \
     -lgmodule-2.0 \
     $(GTK_LIBS)
 
-
-# If you want to deploy external glade file:
-#GLADE_FILES = wizard.glade
+# we don't want to install it, just make it part of tarball
+# created by make dist
+GLADE_FILES = wizard.glade
 #pkgdata_DATA = $(GLADE_FILES)
-#EXTRA_DIST = $(GLADE_FILES)
+EXTRA_DIST = $(GLADE_FILES)
 
 
 # For internal glade file storage in the binary:
