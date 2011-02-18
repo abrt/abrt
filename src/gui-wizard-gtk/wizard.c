@@ -29,36 +29,34 @@ GtkTextView *g_analyze_log;
 
 static const gchar *const page_names[] =
 {
-    "page_1",
-    "page_2",
-    "page_3",
-    "page_4",
-    "page_5",
-    "page_6",
-    "page_7",
+    PAGE_ANALYZE_ACTION_SELECTOR,
+    PAGE_ANALYZE_PROGRESS,
+    PAGE_REPORTER_SELECTOR,
+    PAGE_BACKTRACE_APPROVAL,
+    PAGE_HOWTO,
+    PAGE_SUMMARY,
+    PAGE_REPORT,
     NULL
 };
 
-static const gchar *const page_titles[] =
+typedef struct
 {
-    "Select analyzer",
-    "Analyzing problem",
-    "Select reporter",
-    "Approve the backtrace",
-    "Provide additional information",
-    "Confirm and send the report",
-    "Approve the backtrace",
-};
+    const gchar *name;
+    const gchar *title;
+    GtkAssistantPageType type;
+    GtkWidget *page;
+} page_obj_t;
 
-static const GtkAssistantPageType page_types[] =
+static page_obj_t pages[8] =
 {
-    GTK_ASSISTANT_PAGE_CONFIRM, /* need this type to get "apply" signal */
-    GTK_ASSISTANT_PAGE_PROGRESS,
-    GTK_ASSISTANT_PAGE_CONTENT,
-    GTK_ASSISTANT_PAGE_CONTENT,
-    GTK_ASSISTANT_PAGE_CONTENT,
-    GTK_ASSISTANT_PAGE_CONFIRM,
-    GTK_ASSISTANT_PAGE_SUMMARY,
+    {PAGE_ANALYZE_ACTION_SELECTOR, "Select analyzer", GTK_ASSISTANT_PAGE_CONFIRM, NULL}, /* need this type to get "apply" signal */
+    {PAGE_ANALYZE_PROGRESS, "Analyzing reporter", GTK_ASSISTANT_PAGE_PROGRESS, NULL},
+    {PAGE_REPORTER_SELECTOR, "Select reporter", GTK_ASSISTANT_PAGE_CONTENT, NULL},
+    {PAGE_BACKTRACE_APPROVAL, "Approve the backtrace", GTK_ASSISTANT_PAGE_CONTENT, NULL},
+    {PAGE_HOWTO, "Provide additional information", GTK_ASSISTANT_PAGE_CONTENT, NULL},
+    {PAGE_SUMMARY, "Confirm and send the report", GTK_ASSISTANT_PAGE_CONFIRM, NULL},
+    {PAGE_REPORT, "Approve the backtrace", GTK_ASSISTANT_PAGE_SUMMARY, NULL},
+    {NULL}
 };
 
 enum
@@ -173,12 +171,14 @@ static void add_pages()
         if (page == NULL)
             continue;
 
+        pages[i].page = page;
+
         gtk_assistant_append_page(GTK_ASSISTANT(assistant), page);
         //FIXME: shouldn't be complete until something is selected!
         gtk_assistant_set_page_complete(GTK_ASSISTANT(assistant), page, true);
 
-        gtk_assistant_set_page_title(GTK_ASSISTANT(assistant), page, page_titles[i]);
-        gtk_assistant_set_page_type(GTK_ASSISTANT(assistant), page, page_types[i]);
+        gtk_assistant_set_page_title(GTK_ASSISTANT(assistant), page, pages[i].title);
+        gtk_assistant_set_page_type(GTK_ASSISTANT(assistant), page, pages[i].type);
 
         log("added page: %s", page_names[i]);
     }
