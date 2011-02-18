@@ -123,19 +123,6 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
                     goto ret; /* return 1 (failure) */
                 dd_save_text(dd, FILENAME_PACKAGE, "");
                 dd_save_text(dd, FILENAME_COMPONENT, "");
-//TODO: move hostname saving to a more logical place
-                if (!remote)
-                {
-                    char host[HOST_NAME_MAX + 1];
-                    int ret = gethostname(host, HOST_NAME_MAX);
-                    if (ret < 0)
-                    {
-                        perror_msg("gethostname");
-                        host[0] = '\0';
-                    }
-                    host[HOST_NAME_MAX] = '\0';
-                    dd_save_text(dd, FILENAME_HOSTNAME, host);
-                }
                 goto ret0; /* no error */
             }
             log("Executable '%s' doesn't belong to any package", executable);
@@ -230,19 +217,6 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     if (component)
     {
         dd_save_text(dd, FILENAME_COMPONENT, component);
-    }
-//TODO: move hostname saving to a more logical place
-    if (!remote)
-    {
-        char host[HOST_NAME_MAX + 1];
-        int ret = gethostname(host, HOST_NAME_MAX);
-        if (ret < 0)
-        {
-            perror_msg("gethostname");
-            host[0] = '\0';
-        }
-        host[HOST_NAME_MAX] = '\0';
-        dd_save_text(dd, FILENAME_HOSTNAME, host);
     }
 
     dd_close(dd);

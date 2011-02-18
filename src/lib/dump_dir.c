@@ -482,6 +482,7 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid)
     uname(&buf); /* never fails */
     dd_save_text(dd, FILENAME_KERNEL, buf.release);
     dd_save_text(dd, FILENAME_ARCHITECTURE, buf.machine);
+    dd_save_text(dd, FILENAME_HOSTNAME, buf.nodename);
 
     char *release = load_text_file("/etc/system-release",
                 DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
