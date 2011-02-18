@@ -271,6 +271,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
      */
     xmove_fd(evd->run_state->command_out_fd, evd->fd);
     evd->run_state->command_out_fd = evd->fd; /* just to keep it consistent */
+    ndelay_on(evd->fd);
 
     return TRUE; /* "please don't remove this event (yet)" */
 }
@@ -304,6 +305,7 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
         struct analyze_event_data *evd = xzalloc(sizeof(*evd));
         evd->run_state = state;
         evd->fd = state->command_out_fd;
+        ndelay_on(evd->fd);
         evd->channel = g_io_channel_unix_new(evd->fd);
         /*evd->event_source_id = */ g_io_add_watch(evd->channel,
                 G_IO_IN | G_IO_ERR | G_IO_HUP, /* need HUP to detect EOF w/o any data */

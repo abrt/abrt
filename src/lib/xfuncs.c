@@ -26,12 +26,18 @@
 /* Turn on nonblocking I/O on a fd */
 int ndelay_on(int fd)
 {
-    return fcntl(fd, F_SETFL, fcntl(fd, F_GETFL) | O_NONBLOCK);
+    int flags = fcntl(fd, F_GETFL);
+    if (flags & O_NONBLOCK)
+        return 0;
+    return fcntl(fd, F_SETFL, flags | O_NONBLOCK);
 }
 
 int ndelay_off(int fd)
 {
-    return fcntl(fd, F_SETFL, fcntl(fd, F_GETFL) & ~O_NONBLOCK);
+    int flags = fcntl(fd, F_GETFL);
+    if (!(flags & O_NONBLOCK))
+        return 0;
+    return fcntl(fd, F_SETFL, flags & ~O_NONBLOCK);
 }
 
 int close_on_exec_on(int fd)
