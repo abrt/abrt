@@ -43,7 +43,7 @@ bug_reporting_wizard_LDADD = \
 # For internal glade file storage in the binary:
 wizard.c: wizard_glade.c
 
-wizard_glade.c:
+wizard_glade.c: wizard.glade
 	{ \
 	  echo '#define WIZARD_GLADE_CONTENTS "\'; \
 	  cat $(srcdir)/wizard.glade | sed -e 's/"/\\"/g' -e 's/?/\\?/g' -e 's/$$/\\/g'; \
