@@ -36,7 +36,8 @@
 #define FILENAME_REASON       "reason"
 #define FILENAME_COREDUMP     "coredump"
 #define FILENAME_BACKTRACE    "backtrace"
-#define FILENAME_MEMORYMAP    "memorymap"
+#define FILENAME_MAPS         "maps"
+#define FILENAME_SMAPS        "smaps"
 #define FILENAME_DUPHASH      "global_uuid" /* name is compat, to be renamed to "duphash" */
 // Name of the function where the application crashed.
 // Optional.
