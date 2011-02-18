@@ -58,107 +58,152 @@ log.write("{0}\n".format(unstrip))
 if not unstrip:
     exit(1)
 
-#
-# Parse the eu-unstrip output, and search for packages via yum.
-#
-# List of packages found in yum repositories and matching the
-# coredump.
-package_list = []
-package_to_object = {}
-# List of pairs (library/executable path, build id) which were not
-# found via yum.
-missing_debuginfo_list = []
-# List of pairs (library/executable path, build id) which were not
-# found via yum, but the debuginfo package for them was found.  If
-# this happens, the repositories or their medatada are wrong.
-missing_package_list = []
-for line in unstrip.split('\n'):
-    parts = line.split()
-    if not parts or len(parts) < 3:
-        continue
-    build_id = parts[1].split('@')[0]
-    binobj_path = parts[2]
-    if binobj_path[0] != '/' and parts[4] != '[exe]':
-        continue
-    # Ask for a known path from debuginfo package.
-    debuginfo_path = "/usr/lib/debug/.build-id/{0}/{1}.debug".format(build_id[:2], build_id[2:])
-    log.write("Yum search for {0}...\n".format(debuginfo_path))
-    debuginfo_package_list = yumbase.pkgSack.searchFiles(debuginfo_path)
-    if not debuginfo_package_list:
-        missing_debuginfo_list.append([binobj_path, build_id])
-        continue
-    for debuginfo_package in debuginfo_package_list:
-        log.write(" - {0}\n".format(str(debuginfo_package)))
-        if str(debuginfo_package) in package_list:
-            continue
-
-        # New debuginfo package was found.  Store it and search for
-        # corresponding package with the library/executable binary
-        # itself.
-        package_list.append(str(debuginfo_package))
-        package_to_object[str(debuginfo_package)] = debuginfo_package
-
-
-        if binobj_path == '-': # [exe] without binary name
-            log.write("   Yum search for [exe] without binary name, "
-                      "packages with NVR {0}:{1}-{2}.{3}...\n".format(debuginfo_package.epoch,
-                                                                      debuginfo_package.ver,
-                                                                      debuginfo_package.rel,
-                                                                      debuginfo_package.arch))
-            # Append all packages with the same base package name.
-            # Other possibility is to download the debuginfo RPM,
-            # unpack it, and get the name of the binary from the
-            # /usr/lib/debug/.build-id/xx/yyyyyy symlink.
-            evra_list = yumbase.pkgSack.searchNevra(epoch=debuginfo_package.epoch,
-                                                    ver=debuginfo_package.ver,
-                                                    rel=debuginfo_package.rel,
-                                                    arch=debuginfo_package.arch)
-            for package in evra_list:
-                log.write("    - {0}: base name \"{1}\"\n".format(str(package), package.base_package_name))
-                if package.base_package_name != debuginfo_package.base_package_name:
-                    continue
-                if not str(package) in package_list:
-                    package_list.append(str(package))
-                    package_to_object[str(package)] = package
-            continue
-
+def binary_packages_from_debuginfo_package(debuginfo_package, binobj_path):
+    """
+    Returns a list of packages corresponding to the provided debuginfo
+    package. One of the packages in the list contains the binary
+    specified in binobj_path; this is a list because if binobj_patch
+    is not specified (and sometimes it is not, binobj_path might
+    contain just '-'), we do not know which package contains the
+    binary, we know only packages from the same SRPM as the debuginfo
+    package.
+    """
+    package_list = []
+    if binobj_path == '-': # [exe] without binary name
+        log.write("   Yum search for [exe] without binary name, "
+                  "packages with NVR {0}:{1}-{2}.{3}...\n".format(debuginfo_package.epoch,
+                                                                  debuginfo_package.ver,
+                                                                  debuginfo_package.rel,
+                                                                  debuginfo_package.arch))
+        # Append all packages with the same base package name.
+        # Other possibility is to download the debuginfo RPM,
+        # unpack it, and get the name of the binary from the
+        # /usr/lib/debug/.build-id/xx/yyyyyy symlink.
+        evra_list = yumbase.pkgSack.searchNevra(epoch=debuginfo_package.epoch,
+                                                ver=debuginfo_package.ver,
+                                                rel=debuginfo_package.rel,
+                                                arch=debuginfo_package.arch)
+        for package in evra_list:
+            log.write("    - {0}: base name \"{1}\"\n".format(str(package), package.base_package_name))
+            if package.base_package_name != debuginfo_package.base_package_name:
+                continue
+            package_list.append(package)
+    else:
         log.write("   Yum search for {0}...\n".format(binobj_path))
         binobj_package_list = yumbase.pkgSack.searchFiles(binobj_path)
-        if not binobj_package_list:
-            missing_package_list.append([binobj_path, build_id])
-            continue
-        package_found = False
         for binobj_package in binobj_package_list:
             log.write("    - {0}".format(str(binobj_package)))
             if 0 != binobj_package.returnEVR().compare(debuginfo_package.returnEVR()):
                 log.write(": NVR doesn't match\n")
                 continue
             log.write(": NVR matches\n")
-            if not str(binobj_package) in package_list:
-                package_list.append(str(binobj_package))
-                package_to_object[str(binobj_package)] = binobj_package
-            package_found = True
-            break
-        if not package_found:
-            missing_package_list.append([binobj_path, build_id])
+            package_list.append(binobj_package)
+    return package_list
+
+def process_unstrip_entry(build_id, binobj_path):
+    """
+    Returns a tuple of two items.
+
+    First item is a list of packages which we found to be associated
+    with the unstrip entry defined by build_id and binobj_path.
+
+    Second item is a list of package versions (same package name,
+    different epoch-version-release), which contain the binary object
+    (an executable or shared library) corresponding to this unstrip
+    entry. If this method failed to find an unique package name (with
+    only different versions), this list contains the list of base
+    package names. This item can be used to associate a coredump with
+    some crashing package.
+    """
+    package_list = []
+    coredump_package_list = []
+    coredump_base_package_list = []
+    # Ask for a known path from debuginfo package.
+    debuginfo_path = "/usr/lib/debug/.build-id/{0}/{1}.debug".format(build_id[:2], build_id[2:])
+    log.write("Yum search for {0}...\n".format(debuginfo_path))
+    debuginfo_package_list = yumbase.pkgSack.searchFiles(debuginfo_path)
+
+    # A problem here is that some libraries lack debuginfo. Either
+    # they were stripped during build, or they were not stripped by
+    # /usr/lib/rpm/find-debuginfo.sh because of wrong permissions or
+    # something. The proper solution is to detect such libraries and
+    # fix the packages.
+    for debuginfo_package in debuginfo_package_list:
+        log.write(" - {0}\n".format(str(debuginfo_package)))
+        package_list.append(debuginfo_package)
+        binary_packages = binary_packages_from_debuginfo_package(debuginfo_package, binobj_path)
+        coredump_base_package_list.append(debuginfo_package.base_package_name)
+        if len(binary_packages) == 1:
+            coredump_package_list.append(str(binary_packages[0]))
+        package_list.extend(binary_packages)
+    if len(coredump_package_list) == len(coredump_base_package_list):
+        return package_list, coredump_package_list
+    else:
+        return package_list, coredump_base_package_list
+
+
+def process_unstrip_output():
+    """
+    Parse the eu-unstrip output, and search for packages via yum.
+
+    Returns a tuple containing three items:
+      - a list of package objects
+      - a list of missing buildid entries
+      - a list of coredump package adepts
+    """
+    # List of packages found in yum repositories and matching the
+    # coredump.
+    package_list = []
+    # List of pairs (library/executable path, build id) which were not
+    # found via yum.
+    missing_buildid_list = []
+    # coredump package adepts
+    coredump_package_list = []
+    first_entry = True
+    for line in unstrip.split('\n'):
+        parts = line.split()
+        if not parts or len(parts) < 3:
+            continue
+        build_id = parts[1].split('@')[0]
+        binobj_path = parts[2]
+        if binobj_path[0] != '/' and parts[4] != '[exe]':
+            continue
+        entry_package_list, entry_coredump_package_list = process_unstrip_entry(build_id, binobj_path)
+        if first_entry:
+            coredump_package_list = entry_coredump_package_list
+            first_entry = False
+        if len(entry_package_list) == 0:
+            missing_buildid_list.append([binobj_path, build_id])
+        else:
+            for entry_package in entry_package_list:
+                found = False
+                for package in package_list:
+                    if str(entry_package) == str(package):
+                        found = True
+                        break
+                if not found:
+                    package_list.append(entry_package)
+    return package_list, missing_buildid_list, coredump_package_list
+
+package_list, missing_buildid_list, coredump_package_list = process_unstrip_output()
 
 #
 # The package list might contain multiple packages with the same name,
 # but different version. This happens because some binary had the same
 # build id over multiple package releases.
 #
-def find_duplicates(package_objects):
-    for p1 in range(0, len(package_objects) - 1):
-        package1 = package_objects[p1]
-        for p2 in range(p1 + 1, len(package_objects)):
-            package2 = package_objects[p2]
+def find_duplicates(package_list):
+    for p1 in range(0, len(package_list) - 1):
+        package1 = package_list[p1]
+        for p2 in range(p1 + 1, len(package_list)):
+            package2 = package_list[p2]
             if package1.name == package2.name:
                 return package1, package2
     return None, None
 
-def count_removals(package_objects, base_package_name, epoch, ver, rel, arch):
+def count_removals(package_list, base_package_name, epoch, ver, rel, arch):
     count = 0
-    for package in package_objects:
+    for package in package_list:
         if package.base_package_name != base_package_name:
             continue
         if package.epoch != epoch or package.ver != ver or package.rel != rel or package.arch != arch:
@@ -168,16 +213,16 @@ def count_removals(package_objects, base_package_name, epoch, ver, rel, arch):
 
 log.write("Checking for duplicates...\n")
 while True:
-    package1, package2 = find_duplicates(package_to_object.values())
+    package1, package2 = find_duplicates(package_list)
     if package1 is None:
         break
-    p1removals = count_removals(package_to_object.values(),
+    p1removals = count_removals(package_list,
                                 package1.base_package_name,
                                 package1.epoch,
                                 package1.ver,
                                 package1.rel,
                                 package1.arch)
-    p2removals = count_removals(package_to_object.values(),
+    p2removals = count_removals(package_list,
                                 package2.base_package_name,
                                 package2.epoch,
                                 package2.ver,
@@ -216,22 +261,33 @@ while True:
                                                                                                    removal_candidate.ver,
                                                                                                    removal_candidate.rel,
                                                                                                    removal_candidate.arch))
-
-    # Remove the removal_candidate packages from the list
+    # Remove the removal_candidate packages from the package list
     for package in package_list[:]:
-        if package_to_object[package].base_package_name == removal_candidate.base_package_name and \
-                0 == package_to_object[package].returnEVR().compare(removal_candidate.returnEVR()):
+        if package.base_package_name == removal_candidate.base_package_name and \
+                0 == package.returnEVR().compare(removal_candidate.returnEVR()):
             package_list.remove(package)
-            del package_to_object[package]
+
+# Clean coredump_package_list:
+for coredump_package in coredump_package_list[:]:
+    found = False
+    for package in package_list:
+        if str(package) == coredump_package or package.base_package_name == coredump_package:
+            found = True
+            break
+    if not found:
+        coredump_package_list.remove(coredump_package)
 
 #
 # Print names of found packages first, then a newline separator, and
 # then objects for which the packages were not found.
 #
-for package in sorted(package_list):
-    print package
+if len(coredump_package_list) == 1:
+    print coredump_package_list[0]
+else:
+    print "-"
 print
-for path, build_id in missing_debuginfo_list:
-    print "{0} {1}".format(path, build_id)
-for path, build_id in missing_package_list:
+for package in sorted(package_list):
+    print str(package)
+print
+for path, build_id in missing_buildid_list:
     print "{0} {1}".format(path, build_id)
