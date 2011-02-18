@@ -2,6 +2,17 @@
 #include "abrtlib.h"
 #include "wizard.h"
 
+#define DEFAULT_WIDTH   800
+#define DEFAULT_HEIGHT  500
+
+GtkLabel *g_lbl_cd_reason;
+GtkVBox *g_vb_analyzers;
+GtkTextView *g_analyze_log;
+
+static GtkWidget *assistant;
+static GtkListStore *details_ls;
+static GtkBuilder *builder;
+
 /* THE PAGE FLOW
  * page_1: analyze action selection
  * page_2: analyze progress
@@ -12,20 +23,27 @@
  * page_7: reporting progress
  */
 
-#define PAGE_ANALYZE_ACTION_SELECTOR "page_1"
-#define PAGE_ANALYZE_PROGRESS        "page_2"
-#define PAGE_REPORTER_SELECTOR       "page_3"
-#define PAGE_BACKTRACE_APPROVAL      "page_4"
-#define PAGE_HOWTO                   "page_5"
-#define PAGE_SUMMARY                 "page_6"
-#define PAGE_REPORT                  "page_7"
+enum {
+    PAGENO_ANALYZE_ACTION_SELECTOR = 0,
+    PAGENO_ANALYZE_PROGRESS,
+    PAGENO_REPORTER_SELECTOR,
+    PAGENO_BACKTRACE_APPROVAL,
+    PAGENO_HOWTO,
+    PAGENO_SUMMARY,
+    PAGENO_REPORT,
+};
 
-#define DEFAULT_WIDTH   800
-#define DEFAULT_HEIGHT  500
-
-GtkLabel *g_lbl_cd_reason;
-GtkVBox *g_vb_analyzers;
-GtkTextView *g_analyze_log;
+/* Use of arrays (instead of, say, #defines to C strings)
+ * allows cheaper page_obj_t->name == PAGE_FOO comparisons
+ * instead of strcmp.
+ */
+static const gchar PAGE_ANALYZE_ACTION_SELECTOR[] = "page_1";
+static const gchar PAGE_ANALYZE_PROGRESS[]        = "page_2";
+static const gchar PAGE_REPORTER_SELECTOR[]       = "page_3";
+static const gchar PAGE_BACKTRACE_APPROVAL[]      = "page_4";
+static const gchar PAGE_HOWTO[]                   = "page_5";
+static const gchar PAGE_SUMMARY[]                 = "page_6";
+static const gchar PAGE_REPORT[]                  = "page_7";
 
 static const gchar *const page_names[] =
 {
@@ -44,7 +62,7 @@ typedef struct
     const gchar *name;
     const gchar *title;
     GtkAssistantPageType type;
-    GtkWidget *page;
+    GtkWidget *page_widget;
 } page_obj_t;
 
 static page_obj_t pages[8] =
@@ -67,19 +85,12 @@ enum
     COLUMN_COUNT
 };
 
-static GtkWidget *assistant;
-static GtkListStore *details_ls;
-static GtkBuilder *builder;
-
 void on_b_refresh_clicked(GtkButton *button)
 {
     g_print("Refresh clicked!\n");
 }
 
-/* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
-#include "wizard_glade.c"
-
-void fill_backtrace()
+static void fill_backtrace()
 {
     crash_item *ci = NULL;
     GtkTextView *backtrace_tev = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "bactrace_tev"));
@@ -128,7 +139,7 @@ GtkTreeView *create_details_treeview()
     return details_tv;
 }
 
-void *append_item_to_details_ls(gpointer name, gpointer value, gpointer data)
+static void *append_item_to_details_ls(gpointer name, gpointer value, gpointer data)
 {
     crash_item *item = (crash_item*)value;
     GtkTreeIter iter;
@@ -156,12 +167,15 @@ void *append_item_to_details_ls(gpointer name, gpointer value, gpointer data)
     return NULL;
 }
 
-void fill_details(GtkTreeView *treeview)
+static void fill_details(GtkTreeView *treeview)
 {
     details_ls = gtk_list_store_new(COLUMN_COUNT, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
     g_hash_table_foreach(cd, (GHFunc)append_item_to_details_ls, NULL);
     gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(details_ls));
 }
+
+/* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
+#include "wizard_glade.c"
 
 static void add_pages()
 {
@@ -186,7 +200,7 @@ static void add_pages()
         if (page == NULL)
             continue;
 
-        pages[i].page = page;
+        pages[i].page_widget = page;
 
         gtk_assistant_append_page(GTK_ASSISTANT(assistant), page);
         //FIXME: shouldn't be complete until something is selected!
@@ -204,14 +218,61 @@ static void add_pages()
     g_analyze_log = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "analyze_log"));
 }
 
-static char *add_log_to_analyze_log(char *log_line, void *param)
+
+/* "Next page" button handler. So far it only starts analyze event run */
+
+struct analyze_event_data {
+    struct run_event_state *run_state;
+    GIOChannel *channel;
+    int fd;
+    /*guint event_source_id;*/
+};
+
+static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, gpointer data)
 {
+    struct analyze_event_data *evd = data;
+
     GtkTextBuffer *tb = gtk_text_view_get_buffer(g_analyze_log);
+    char buf[128]; /* usually we get one line, no need to have big buf */
+    int r;
+    while ((r = read(evd->fd, buf, sizeof(buf))) > 0)
+    {
+        gtk_text_buffer_insert_at_cursor(tb, buf, r);
+    }
 
-    gtk_text_buffer_insert_at_cursor(tb, log_line, -1);
-    gtk_text_buffer_insert_at_cursor(tb, "\n", 1);
+    if (r < 0 && errno == EAGAIN)
+        /* We got all data, but fd is still open. Done for now */
+        return TRUE; /* "please don't remove this event (yet)" */
 
-    return log_line;
+    /* EOF/error. Wait for child to actually exit, collect status */
+    int status;
+    waitpid(evd->run_state->command_pid, &status, 0);
+    int retval = WEXITSTATUS(status);
+    if (WIFSIGNALED(status))
+        retval = WTERMSIG(status) + 128;
+
+    /* Stop if exitcode is not 0, or no more commands */
+    if (retval != 0
+     || spawn_next_command(evd->run_state, g_dump_dir_name, /*event:*/ g_analyze_label_selected) < 0
+    ) {
+        log("done running event '%s' on '%s': %d", g_analyze_label_selected, g_dump_dir_name, retval);
+        /*g_source_remove(evd->event_source_id);*/
+        close(evd->fd);
+        free_run_event_state(evd->run_state);
+        free(evd);
+//TODO: unfreeze assistant here
+        return FALSE; /* "please remove this event" */
+    }
+
+    /* New command was started. Continue waiting for input */
+
+    /* Transplant cmd's output fd onto old one, so that main loop
+     * is none the wiser that fd it waits on has changed
+     */
+    xmove_fd(evd->run_state->command_out_fd, evd->fd);
+    evd->run_state->command_out_fd = evd->fd; /* just to keep it consistent */
+
+    return TRUE; /* "please don't remove this event (yet)" */
 }
 
 static void next_page(GtkAssistant *assistant, gpointer user_data)
@@ -219,32 +280,55 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
     int page_no = gtk_assistant_get_current_page(assistant);
     log("page_no:%d", page_no);
 
-    if (g_analyze_label_selected != NULL)
+    if (page_no == PAGENO_ANALYZE_ACTION_SELECTOR
+     && g_analyze_label_selected != NULL)
     {
-        struct run_event_state *run_state = new_run_event_state();
-        run_state->logging_callback = add_log_to_analyze_log;
-// Need async version of run_event_on_dir_name() here! This one will freeze GUI until completion:
+        /* Start event asyncronously on the dump dir
+         * (syncronous run would freeze GUI until completion)
+         */
+        struct run_event_state *state = new_run_event_state();
+
+        if (prepare_commands(state, g_dump_dir_name, /*event:*/ g_analyze_label_selected) == 0
+         || spawn_next_command(state, g_dump_dir_name, /*event:*/ g_analyze_label_selected) < 0
+        ) {
+            /* No commands needed */
+            free_run_event_state(state);
+            return;
+        }
+
+        /* At least one command is needed, and we started first one.
+         * Hook its output fd up to the main loop.
+         */
         log("running event '%s' on '%s'", g_analyze_label_selected, g_dump_dir_name);
-        int res = run_event_on_dir_name(run_state, g_dump_dir_name, g_analyze_label_selected);
-        free_run_event_state(run_state);
-        log("done running event '%s' on '%s': %d", g_analyze_label_selected, g_dump_dir_name, res);
+
+        struct analyze_event_data *evd = xzalloc(sizeof(*evd));
+        evd->run_state = state;
+        evd->fd = state->command_out_fd;
+        evd->channel = g_io_channel_unix_new(evd->fd);
+        /*evd->event_source_id = */ g_io_add_watch(evd->channel,
+                G_IO_IN | G_IO_ERR | G_IO_HUP, /* need HUP to detect EOF w/o any data */
+                consume_cmd_output,
+                evd
+        );
+//TODO: freeze assistant so it can't move away from the page until analyzing is done!
     }
 }
 
-void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
-{
-    page_obj_t *pgs = pages;
 
-    while(pgs != NULL)
+static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
+{
+    page_obj_t *cur_page = pages;
+    while (cur_page->page_widget != page)
     {
-        if(pgs->page == page)
-            break;
-        ++pgs;
+        if (!cur_page->page_widget)
+            return; /* end of pages[] */
+        ++cur_page;
     }
 
-    if(strcmp(pgs->name, PAGE_BACKTRACE_APPROVAL) == 0)
+    if (cur_page->name == PAGE_BACKTRACE_APPROVAL)
         fill_backtrace();
 }
+
 
 GtkWidget *create_assistant()
 {
