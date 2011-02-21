@@ -445,7 +445,8 @@ fi
 %files addon-ccpp
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
-%dir %{_localstatedir}/cache/abrt-di
+%attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
+%attr(2755, abrt, abrt) %{_bindir}/abrt-action-install-debuginfo
 %{_initrddir}/abrt-ccpp
 %{_libexecdir}/abrt-hook-ccpp
 %{_bindir}/abrt-action-analyze-c

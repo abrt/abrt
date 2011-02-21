@@ -51,7 +51,11 @@ def unmute_stdout():
 
 def ask_yes_no(prompt, retries=4):
     while True:
-        response = raw_input(prompt)
+        try:
+            response = raw_input(prompt)
+        except EOFError:
+            log1("got eof, probably executed from helper, assuming - yes")
+            response = 'y'
         if response in ('y', 'Y'):
             return True
         if response in ('n', 'N', ''):
@@ -412,7 +416,7 @@ if __name__ == "__main__":
 
     help_text = _("Usage: %s --core=<COREFILE> "
                             "--tmpdir=<TMPDIR> "
-                            "--cachedir=<CACHEDIR>") % sys.argv[0]
+                            "--cache=<CACHEDIR>") % sys.argv[0]
     try:
         opts, args = getopt.getopt(sys.argv[1:], "vyhc:", ["help", "core=",
                                                           "cache=", "tmpdir=",
@@ -443,7 +447,7 @@ if __name__ == "__main__":
         print help_text
         exit(RETURN_FAILURE)
     if not cachedir:
-        print _("You have to specify the path to cachedir.")
+        print _("You have to specify the path to cache.")
         print help_text
         exit(RETURN_FAILURE)
     if not tmpdir:
@@ -469,4 +473,3 @@ if __name__ == "__main__":
 
     print _("Complete!")
     exit(result)
-

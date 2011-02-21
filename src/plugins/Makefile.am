@@ -14,7 +14,8 @@ bin_PROGRAMS = \
     abrt-action-kerneloops \
     abrt-action-upload \
     abrt-action-mailx \
-    abrt-action-print
+    abrt-action-print \
+    abrt-action-install-debuginfo
 
 dist_pluginslib_DATA = \
     Logger.glade \
@@ -277,5 +278,14 @@ abrt_action_print_CPPFLAGS = \
     -Wall -Werror
 abrt_action_print_LDADD = \
     ../lib/libreport.la
+
+abrt_action_install_debuginfo_SOURCES = \
+    abrt-action-install-debuginfo.c
+abrt_action_install_debuginfo_CPPFLAGS = \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    -D_GNU_SOURCE \
+    -Wall
+abrt_action_install_debuginfo_LDADD =
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@

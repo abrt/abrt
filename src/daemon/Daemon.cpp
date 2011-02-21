@@ -515,7 +515,7 @@ static void sanitize_dump_dir_rights()
     /* 00777 bits are usual "rwxrwxrwx" access rights */
     ensure_writable_dir(DEBUG_DUMPS_DIR, 0755, "abrt");
     /* debuginfo cache */
-    ensure_writable_dir(DEBUG_INFO_DIR, 0755, "root");
+    ensure_writable_dir(DEBUG_INFO_DIR, 0775, "abrt");
     /* temp dir */
     ensure_writable_dir(VAR_RUN"/abrt", 0755, "root");
 }
