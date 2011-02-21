@@ -1,5 +1,15 @@
+enum {
+    PAGENO_ANALYZE_ACTION_SELECTOR = 0,
+    PAGENO_ANALYZE_PROGRESS,
+    PAGENO_REPORTER_SELECTOR,
+    PAGENO_BACKTRACE_APPROVAL,
+    PAGENO_HOWTO,
+    PAGENO_SUMMARY,
+    PAGENO_REPORT,
+};
 extern GtkLabel *g_lbl_cd_reason;
-extern GtkVBox *g_vb_analyzers;
+extern GtkBox *g_box_analyzers;
+extern GtkBox *g_box_reporters;
 GtkWidget *create_assistant(void);
 
 

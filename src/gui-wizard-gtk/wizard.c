@@ -6,7 +6,8 @@
 #define DEFAULT_HEIGHT  500
 
 GtkLabel *g_lbl_cd_reason;
-GtkVBox *g_vb_analyzers;
+GtkBox *g_box_analyzers;
+GtkBox *g_box_reporters;
 GtkTextView *g_analyze_log;
 
 static GtkWidget *assistant;
@@ -22,16 +23,6 @@ static GtkBuilder *builder;
  * page_6: summary
  * page_7: reporting progress
  */
-
-enum {
-    PAGENO_ANALYZE_ACTION_SELECTOR = 0,
-    PAGENO_ANALYZE_PROGRESS,
-    PAGENO_REPORTER_SELECTOR,
-    PAGENO_BACKTRACE_APPROVAL,
-    PAGENO_HOWTO,
-    PAGENO_SUMMARY,
-    PAGENO_REPORT,
-};
 
 /* Use of arrays (instead of, say, #defines to C strings)
  * allows cheaper page_obj_t->name == PAGE_FOO comparisons
@@ -67,7 +58,8 @@ typedef struct
 
 static page_obj_t pages[8] =
 {
-    {PAGE_ANALYZE_ACTION_SELECTOR, "Select analyzer", GTK_ASSISTANT_PAGE_CONFIRM, NULL}, /* need this type to get "apply" signal */
+    /* need this type to get "apply" signal */
+    {PAGE_ANALYZE_ACTION_SELECTOR, "Select analyzer", GTK_ASSISTANT_PAGE_CONFIRM, NULL},
     {PAGE_ANALYZE_PROGRESS, "Analyzing reporter", GTK_ASSISTANT_PAGE_PROGRESS, NULL},
     {PAGE_REPORTER_SELECTOR, "Select reporter", GTK_ASSISTANT_PAGE_CONTENT, NULL},
     {PAGE_BACKTRACE_APPROVAL, "Approve the backtrace", GTK_ASSISTANT_PAGE_CONTENT, NULL},
@@ -214,7 +206,8 @@ static void add_pages()
 
     /* Set pointer to fields we might need to change */
     g_lbl_cd_reason = GTK_LABEL(gtk_builder_get_object(builder, "lbl_cd_reason"));
-    g_vb_analyzers = GTK_VBOX(gtk_builder_get_object(builder, "vb_analyzers"));
+    g_box_analyzers = GTK_BOX(gtk_builder_get_object(builder, "vb_analyzers"));
+    g_box_reporters = GTK_BOX(gtk_builder_get_object(builder, "vb_reporters"));
     g_analyze_log = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "analyze_log"));
 }
 
@@ -233,6 +226,13 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     struct analyze_event_data *evd = data;
 
     GtkTextBuffer *tb = gtk_text_view_get_buffer(g_analyze_log);
+
+    /* Ensure we insert text at the end */
+    GtkTextIter text_iter;
+    gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
+    gtk_text_buffer_place_cursor(tb, &text_iter);
+
+    /* Read and insert the output into the log pane */
     char buf[128]; /* usually we get one line, no need to have big buf */
     int r;
     while ((r = read(evd->fd, buf, sizeof(buf))) > 0)
