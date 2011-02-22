@@ -6,6 +6,7 @@
 #define DEFAULT_HEIGHT  500
 
 GtkLabel *g_lbl_cd_reason;
+GtkLabel *g_lbl_analyze_log;
 GtkBox *g_box_analyzers;
 GtkBox *g_box_reporters;
 GtkTextView *g_analyze_log;
@@ -206,6 +207,7 @@ static void add_pages()
 
     /* Set pointer to fields we might need to change */
     g_lbl_cd_reason = GTK_LABEL(gtk_builder_get_object(builder, "lbl_cd_reason"));
+    g_lbl_analyze_log = GTK_LABEL(gtk_builder_get_object(builder, "lbl_analyze_log"));
     g_box_analyzers = GTK_BOX(gtk_builder_get_object(builder, "vb_analyzers"));
     g_box_reporters = GTK_BOX(gtk_builder_get_object(builder, "vb_reporters"));
     g_analyze_log = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "analyze_log"));
@@ -240,6 +242,11 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         gtk_text_buffer_insert_at_cursor(tb, buf, r);
     }
 
+    /* Scroll so that end of the log is visible */
+    gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
+    gtk_text_view_scroll_to_iter(g_analyze_log, &text_iter,
+                /*within_margin:*/ 0.0, /*use_align:*/ FALSE, /*xalign:*/ 0, /*yalign:*/ 0);
+
     if (r < 0 && errno == EAGAIN)
         /* We got all data, but fd is still open. Done for now */
         return TRUE; /* "please don't remove this event (yet)" */
@@ -260,7 +267,12 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         close(evd->fd);
         free_run_event_state(evd->run_state);
         free(evd);
-//TODO: unfreeze assistant here
+        char *msg = xasprintf(_("Analyze finished with exitcode %d"), retval);
+        gtk_label_set_text(g_lbl_analyze_log, msg);
+        free(msg);
+        /* Unfreeze assistant */
+        gtk_assistant_set_page_complete(GTK_ASSISTANT(assistant),
+                        pages[PAGENO_ANALYZE_ACTION_SELECTOR].page_widget, true);
         return FALSE; /* "please remove this event" */
     }
 
@@ -279,6 +291,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 static void next_page(GtkAssistant *assistant, gpointer user_data)
 {
     int page_no = gtk_assistant_get_current_page(assistant);
+    GtkWidget *cur_page_widget = pages[page_no].page_widget;
     log("page_no:%d", page_no);
 
     if (page_no == PAGENO_ANALYZE_ACTION_SELECTOR
@@ -312,7 +325,10 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
                 consume_cmd_output,
                 evd
         );
-//TODO: freeze assistant so it can't move away from the page until analyzing is done!
+        gtk_label_set_text(g_lbl_analyze_log, _("Analyzing..."));
+        /* Freeze assistant so it can't move away from the page until analyzing is done */
+//doesn't seem to have effect
+        gtk_assistant_set_page_complete(GTK_ASSISTANT(assistant), cur_page_widget, false);
     }
 }
 

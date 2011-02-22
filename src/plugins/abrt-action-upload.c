@@ -128,7 +128,7 @@ static int create_and_upload_archive(
 
     /* Create a child gzip which will compress the data */
     /* SELinux guys are not happy with /tmp, using /var/run/abrt */
-    tempfile = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%lu-%lu.tar.gz", (long)getpid(), (long)time(NULL));
+    tempfile = xasprintf(LOCALSTATEDIR"/run/abrt/upload-%lu-%lu.tar.gz", (long)getpid(), (long)time(NULL));
     int pipe_from_parent_to_child[2];
     xpipe(pipe_from_parent_to_child);
     child = fork();

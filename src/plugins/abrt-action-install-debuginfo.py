@@ -131,18 +131,18 @@ class MyDownloadCallback(DownloadBaseCallback):
         self.last_pct = pct
         # if run from terminal we can have a fancy output
         if sys.stdout.isatty():
-            sys.stdout.write("\033[sDownloading (%i of %i) %s: %.3s %%\033[u"
+            sys.stdout.write("\033[sDownloading (%i of %i) %s: %3u%%\033[u"
                                 % (self.downloaded_pkgs + 1, self.total_pkgs,
                                     name, pct)
                             )
             if pct == 100:
-                print _("Downloading (%i of %i) %s: %.3s %%"
+                print _("Downloading (%i of %i) %s: %3u%%"
                                 % (self.downloaded_pkgs + 1, self.total_pkgs,
                                     name, pct)
                         )
         # but we want machine friendly output when spawned from abrt-server
         else:
-            print (_("Downloading (%i of %i) %s: %.3s %%")
+            print (_("Downloading (%i of %i) %s: %3u%%")
                       % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
                     )
 

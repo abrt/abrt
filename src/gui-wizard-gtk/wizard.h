@@ -8,6 +8,7 @@ enum {
     PAGENO_REPORT,
 };
 extern GtkLabel *g_lbl_cd_reason;
+extern GtkLabel *g_lbl_analyze_log;
 extern GtkBox *g_box_analyzers;
 extern GtkBox *g_box_reporters;
 GtkWidget *create_assistant(void);
