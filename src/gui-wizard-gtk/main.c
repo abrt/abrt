@@ -130,6 +130,11 @@ VERB2 log("g_report_events:'%s'", g_report_events);
     }
 
     add_event_buttons(g_box_reporters, g_report_events, /*callback:*/ NULL, /*radio:*/ false);
+
+    /* We can't just do gtk_widget_show_all once in main:
+     * We created new widgets (buttons). Need to make them visible.
+     */
+    gtk_widget_show_all(GTK_WIDGET(g_assistant));
 }
 
 int main(int argc, char **argv)
@@ -166,11 +171,9 @@ int main(int argc, char **argv)
 
     g_dump_dir_name = argv[0];
 
-    GtkWidget *assistant = create_assistant();
+    create_assistant();
 
     reload_dump_dir();
-
-    gtk_widget_show_all(assistant);
 
     /* Enter main loop */
     gtk_main();

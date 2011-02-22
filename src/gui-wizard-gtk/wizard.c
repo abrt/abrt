@@ -5,6 +5,7 @@
 #define DEFAULT_WIDTH   800
 #define DEFAULT_HEIGHT  500
 
+GtkAssistant *g_assistant;
 GtkLabel *g_lbl_cd_reason;
 GtkLabel *g_lbl_analyze_log;
 GtkBox *g_box_analyzers;
@@ -14,7 +15,6 @@ GtkTextView *g_tv_backtrace;
 GtkTreeView *g_tv_details;
 GtkListStore *g_ls_details;
 
-static GtkWidget *assistant;
 static GtkBuilder *builder;
 
 /* THE PAGE FLOW
@@ -143,7 +143,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         free(msg);
         reload_dump_dir();
         /* Unfreeze assistant */
-        gtk_assistant_set_page_complete(GTK_ASSISTANT(assistant),
+        gtk_assistant_set_page_complete(g_assistant,
                         pages[PAGENO_ANALYZE_PROGRESS].page_widget, true);
         return FALSE; /* "please remove this event" */
     }
@@ -201,7 +201,7 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
         );
         gtk_label_set_text(g_lbl_analyze_log, _("Analyzing..."));
         /* Freeze assistant so it can't move away from the page until analyzing is done */
-        gtk_assistant_set_page_complete(GTK_ASSISTANT(assistant),
+        gtk_assistant_set_page_complete(g_assistant,
                         pages[PAGENO_ANALYZE_PROGRESS].page_widget, false);
     }
 }
@@ -274,12 +274,12 @@ static void add_pages()
 
         pages[i].page_widget = page;
 
-        gtk_assistant_append_page(GTK_ASSISTANT(assistant), page);
+        gtk_assistant_append_page(g_assistant, page);
         //FIXME: shouldn't be complete until something is selected!
-        gtk_assistant_set_page_complete(GTK_ASSISTANT(assistant), page, true);
+        gtk_assistant_set_page_complete(g_assistant, page, true);
 
-        gtk_assistant_set_page_title(GTK_ASSISTANT(assistant), page, pages[i].title);
-        gtk_assistant_set_page_type(GTK_ASSISTANT(assistant), page, pages[i].type);
+        gtk_assistant_set_page_title(g_assistant, page, pages[i].title);
+        gtk_assistant_set_page_type(g_assistant, page, pages[i].type);
 
         VERB1 log("added page: %s", page_names[i]);
     }
@@ -294,23 +294,27 @@ static void add_pages()
     g_tv_details = GTK_TREE_VIEW(gtk_builder_get_object(builder, "tv_details"));
 }
 
-GtkWidget *create_assistant()
+void create_assistant()
 {
-    assistant = gtk_assistant_new();
-    gtk_window_set_default_size(GTK_WINDOW(assistant), DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    gtk_window_set_title(GTK_WINDOW(assistant), g_dump_dir_name);
-    gtk_window_set_icon_name(GTK_WINDOW(assistant), "abrt");
+    g_assistant = GTK_ASSISTANT(gtk_assistant_new());
 
-    g_signal_connect(G_OBJECT(assistant), "cancel", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(G_OBJECT(assistant), "close", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(G_OBJECT(assistant), "apply", G_CALLBACK(next_page), NULL);
+    GtkWindow *wnd_assistant = GTK_WINDOW(g_assistant);
+    gtk_window_set_default_size(wnd_assistant, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    gtk_window_set_title(wnd_assistant, g_dump_dir_name);
+    gtk_window_set_icon_name(wnd_assistant, "abrt");
+
+    GObject *obj_assistant = G_OBJECT(g_assistant);
+    g_signal_connect(obj_assistant, "cancel", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(obj_assistant, "close", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(obj_assistant, "apply", G_CALLBACK(next_page), NULL);
 
     builder = gtk_builder_new();
+
     add_pages();
+
     create_details_treeview();
     g_ls_details = gtk_list_store_new(DETAIL_NUM_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
     gtk_tree_view_set_model(g_tv_details, GTK_TREE_MODEL(g_ls_details));
-    gtk_builder_connect_signals(builder, NULL);
 
-    return assistant;
+    gtk_builder_connect_signals(builder, NULL);
 }

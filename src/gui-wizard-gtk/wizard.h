@@ -8,6 +8,7 @@ enum {
     PAGENO_REPORT,
     PAGENO_REPORT_PROGRESS,
 };
+extern GtkAssistant *g_assistant;
 extern GtkLabel *g_lbl_cd_reason;
 extern GtkLabel *g_lbl_analyze_log;
 extern GtkBox *g_box_analyzers;
@@ -22,7 +23,7 @@ enum
 };
 extern GtkTreeView *g_tv_details;
 extern GtkListStore *g_ls_details;
-GtkWidget *create_assistant(void);
+void create_assistant(void);
 
 
 extern char *g_glade_file;
