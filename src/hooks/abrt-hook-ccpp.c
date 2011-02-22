@@ -419,7 +419,7 @@ int main(int argc, char** argv)
 
     if (!daemon_is_ok())
     {
-        /* not an error, exit with exitcode 0 */
+        /* not an error, exit with exit code 0 */
         log("abrt daemon is not running. If it crashed, "
             "/proc/sys/kernel/core_pattern contains a stale value, "
             "consider resetting it to 'core'"

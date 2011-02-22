@@ -61,7 +61,7 @@ void free_commands(struct run_event_state *state);
 
 /* Syncronous command execution */
 
-/* Returns exitcode of first failed action, or first nonzero return value
+/* Returns exit code of first failed action, or first nonzero return value
  * of post_run_callback. If all actions are successful, returns 0.
  */
 int run_event_on_dir_name(struct run_event_state *state, const char *dump_dir_name, const char *event);

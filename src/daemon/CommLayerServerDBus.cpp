@@ -488,7 +488,7 @@ int init_dbus()
     //
     // dbus-daemon drops connections if it recvs a malformed message
     // (we actually observed this when we sent bad UTF-8 string).
-    // Currently, in this case abrtd just exits with exitcode 1.
+    // Currently, in this case abrtd just exits with exit code 1.
     // (symptom: last two log messages are "abrtd: remove_watch()")
     // If we want to have better logging or other nontrivial handling,
     // here we need to do:

@@ -74,7 +74,8 @@ static page_obj_t pages[] =
     { PAGE_BACKTRACE_APPROVAL , "Review the backtrace"  , GTK_ASSISTANT_PAGE_CONTENT  },
     { PAGE_HOWTO              , "Provide additional information", GTK_ASSISTANT_PAGE_CONTENT },
     { PAGE_REPORT             , "Confirm data to report", GTK_ASSISTANT_PAGE_CONFIRM  },
-    { PAGE_REPORT_PROGRESS    , "Reporting"             , GTK_ASSISTANT_PAGE_PROGRESS },
+    /* Was GTK_ASSISTANT_PAGE_PROGRESS */
+    { PAGE_REPORT_PROGRESS    , "Reporting"             , GTK_ASSISTANT_PAGE_SUMMARY  },
     { NULL }
 };
 
@@ -82,6 +83,41 @@ static page_obj_t pages[] =
 void on_b_refresh_clicked(GtkButton *button)
 {
     g_print("Refresh clicked!\n");
+}
+
+
+static gint next_page_no(gint current_page_no, gpointer data)
+{
+    switch (current_page_no)
+    {
+    case PAGENO_SUMMARY:
+        if (!g_analyze_events[0])
+        {
+            //TODO: if (!g_reporter_events[0]) /* no reporters available */ then what?
+            return PAGENO_REPORTER_SELECTOR; /* skip analyze pages */
+        }
+        break;
+
+    case PAGENO_REPORTER_SELECTOR:
+        if (get_crash_item_content_or_NULL(g_cd, FILENAME_BACKTRACE))
+            break;
+        current_page_no++; /* no backtrace, skip next page */
+        /* fall through */
+
+#if 0
+    case PAGENO_BACKTRACE_APPROVAL:
+        if (get_crash_item_content_or_NULL(g_cd, FILENAME_COMMENT)
+         || get_crash_item_content_or_NULL(g_cd, FILENAME_REPRODUCE)
+        ) {
+            break;
+        }
+        current_page_no++; /* no comment, skip next page */
+        /* fall through */
+#endif
+
+    }
+
+    return current_page_no + 1;
 }
 
 
@@ -129,7 +165,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     if (WIFSIGNALED(status))
         retval = WTERMSIG(status) + 128;
 
-    /* Stop if exitcode is not 0, or no more commands */
+    /* Stop if exit code is not 0, or no more commands */
     if (retval != 0
      || spawn_next_command(evd->run_state, g_dump_dir_name, /*event:*/ g_analyze_label_selected) < 0
     ) {
@@ -138,7 +174,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         close(evd->fd);
         free_run_event_state(evd->run_state);
         free(evd);
-        char *msg = xasprintf(_("Analyze finished with exitcode %d"), retval);
+        char *msg = xasprintf(_("Analyze finished with exit code %d"), retval);
         gtk_label_set_text(g_lbl_analyze_log, msg);
         free(msg);
         reload_dump_dir();
@@ -297,6 +333,8 @@ static void add_pages()
 void create_assistant()
 {
     g_assistant = GTK_ASSISTANT(gtk_assistant_new());
+
+    gtk_assistant_set_forward_page_func(g_assistant, next_page_no, NULL, NULL);
 
     GtkWindow *wnd_assistant = GTK_WINDOW(g_assistant);
     gtk_window_set_default_size(wnd_assistant, DEFAULT_WIDTH, DEFAULT_HEIGHT);

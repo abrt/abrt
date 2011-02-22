@@ -104,7 +104,7 @@ static char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
 
     if (status != 0)
     {
-        /* unstrip didnt exit with exitcode 0 */
+        /* unstrip didnt exit with exit code 0 */
         strbuf_free(buf_out);
         return NULL;
     }
