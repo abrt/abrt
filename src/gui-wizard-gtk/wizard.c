@@ -135,6 +135,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         char *msg = xasprintf(_("Analyze finished with exitcode %d"), retval);
         gtk_label_set_text(g_lbl_analyze_log, msg);
         free(msg);
+        reload_dump_dir();
         /* Unfreeze assistant */
         gtk_assistant_set_page_complete(GTK_ASSISTANT(assistant),
                         pages[PAGENO_ANALYZE_PROGRESS].page_widget, true);
