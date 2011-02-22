@@ -123,7 +123,7 @@ class MyDownloadCallback(DownloadBaseCallback):
         DownloadBaseCallback.__init__(self)
 
     def updateProgress(self, name, frac, fread, ftime):
-        pct = int( frac*100 )
+        pct = int(frac * 100)
         if pct == self.last_pct:
             log2("percentage is the same, not updating progress")
             return
@@ -131,18 +131,18 @@ class MyDownloadCallback(DownloadBaseCallback):
         self.last_pct = pct
         # if run from terminal we can have a fancy output
         if sys.stdout.isatty():
-            sys.stdout.write("\033[sDownloading (%i of %i) %.30s : %.3s %%\033[u"
+            sys.stdout.write("\033[sDownloading (%i of %i) %s: %.3s %%\033[u"
                                 % (self.downloaded_pkgs + 1, self.total_pkgs,
                                     name, pct)
                             )
             if pct == 100:
-                print _("Downloading (%i of %i) %.30s : %.3s %%"
+                print _("Downloading (%i of %i) %s: %.3s %%"
                                 % (self.downloaded_pkgs + 1, self.total_pkgs,
                                     name, pct)
                         )
         # but we want machine friendly output when spawned from abrt-server
         else:
-            print (_("Downloading (%i of %i) %.30s : %.3s %%")
+            print (_("Downloading (%i of %i) %s: %.3s %%")
                       % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
                     )
 
@@ -222,7 +222,7 @@ class DebugInfoDownload(YumBase):
 
         # connect our progress update callback
         dnlcb = MyDownloadCallback(total_pkgs)
-        self.repos.setProgressBar( dnlcb )
+        self.repos.setProgressBar(dnlcb)
 
         log1("%i files in %i packages" % (len(files), total_pkgs))
 
@@ -431,7 +431,7 @@ if __name__ == "__main__":
             verbose += 1
         elif opt == "-y":
             noninteractive = True
-        elif opt in ("--core","-c"):
+        elif opt in ("--core", "-c"):
             core = arg
         elif opt in ("--cache"):
             cachedir = arg
