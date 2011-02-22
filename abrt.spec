@@ -387,6 +387,7 @@ fi
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/run/%{name}
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
+%dir %{_sysconfdir}/%{name}/events.d
 %dir %{_libdir}/%{name}
 %{_mandir}/man8/abrtd.8.gz
 %{_mandir}/man5/%{name}.conf.5.gz
@@ -452,6 +453,7 @@ fi
 %{_bindir}/abrt-action-analyze-c
 %{_bindir}/abrt-action-install-debuginfo.py*
 %{_bindir}/abrt-action-generate-backtrace
+%{_sysconfdir}/%{name}/events.d/ccpp_events.conf
 
 %files addon-kerneloops
 %defattr(-,root,root,-)

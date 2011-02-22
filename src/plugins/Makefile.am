@@ -37,6 +37,11 @@ dist_pluginsconf_DATA = \
     RHTSupport.conf \
     Upload.conf
 
+eventsconfdir = $(EVENTS_CONF_DIR)
+
+dist_eventsconf_DATA = \
+    ccpp_events.conf
+
 man_MANS = \
     abrt-Bugzilla.7 \
     abrt-KerneloopsReporter.7 \
