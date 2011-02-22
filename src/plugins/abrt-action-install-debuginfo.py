@@ -6,6 +6,7 @@
 from subprocess import Popen, PIPE
 import sys
 import os
+import time
 import getopt
 import shutil
 from yum import _, YumBase
@@ -447,13 +448,9 @@ if __name__ == "__main__":
         print help_text
         exit(RETURN_FAILURE)
     if not cachedir:
-        print _("You have to specify the path to cache.")
-        print help_text
-        exit(RETURN_FAILURE)
+        cachedir = "/var/cache/abrt-di"
     if not tmpdir:
-        print _("You have to specify the path to tmpdir.")
-        print help_text
-        exit(RETURN_FAILURE)
+        tmpdir = "/var/run/abrt/install-debuginfo-%s.%u" % (time.strftime("%Y-%m-%d-%H:%M:%S"), os.getpid())
 
     b_ids = extract_info_from_core(core)
     if b_ids == RETURN_FAILURE:
