@@ -72,95 +72,10 @@ static page_obj_t pages[8] =
     {NULL}
 };
 
+
 void on_b_refresh_clicked(GtkButton *button)
 {
     g_print("Refresh clicked!\n");
-}
-
-static GtkTreeView *create_details_treeview()
-{
-    GtkTreeView *details_tv = GTK_TREE_VIEW(gtk_builder_get_object(builder, "details_tv"));
-    GtkCellRenderer *renderer;
-    GtkTreeViewColumn *column;
-
-    renderer = gtk_cell_renderer_text_new();
-    column = gtk_tree_view_column_new_with_attributes(_("Name"),
-                                                     renderer,
-                                                     "text",
-                                                     COLUMN_NAME,
-                                                     NULL);
-    gtk_tree_view_column_set_sort_column_id(column, COLUMN_NAME);
-    gtk_tree_view_append_column(details_tv, column);
-
-    renderer = gtk_cell_renderer_text_new();
-    column = gtk_tree_view_column_new_with_attributes(_("Value"),
-                                                     renderer,
-                                                     "text",
-                                                     COLUMN_VALUE,
-                                                     NULL);
-    gtk_tree_view_append_column(details_tv, column);
-
-    /*
-    renderer = gtk_cell_renderer_text_new();
-    column = gtk_tree_view_column_new_with_attributes(_("Path"),
-                                                     renderer,
-                                                     "text",
-                                                     COLUMN_PATH,
-                                                     NULL);
-    gtk_tree_view_append_column(details_tv, column);
-    */
-    return details_tv;
-}
-
-/* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
-#include "wizard_glade.c"
-
-static void add_pages()
-{
-    GError *error = NULL;
-    if (!g_glade_file)
-    {
-        /* Load UI from internal string */
-        gtk_builder_add_objects_from_string(builder,
-                WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
-                (gchar**)page_names,
-                &error);
-        if (error != NULL)
-            error_msg_and_die("Error loading glade data: %s", error->message);
-    }
-    else
-    {
-        /* -g FILE: load IU from it */
-        gtk_builder_add_objects_from_file(builder, g_glade_file, (gchar**)page_names, &error);
-        if (error != NULL)
-            error_msg_and_die("Can't load %s: %s", g_glade_file, error->message);
-    }
-
-    for (int i = 0; page_names[i] != NULL; i++)
-    {
-        GtkWidget *page = GTK_WIDGET(gtk_builder_get_object(builder, page_names[i]));
-        if (page == NULL)
-            continue;
-
-        pages[i].page_widget = page;
-
-        gtk_assistant_append_page(GTK_ASSISTANT(assistant), page);
-        //FIXME: shouldn't be complete until something is selected!
-        gtk_assistant_set_page_complete(GTK_ASSISTANT(assistant), page, true);
-
-        gtk_assistant_set_page_title(GTK_ASSISTANT(assistant), page, pages[i].title);
-        gtk_assistant_set_page_type(GTK_ASSISTANT(assistant), page, pages[i].type);
-
-        log("added page: %s", page_names[i]);
-    }
-
-    /* Set pointer to fields we might need to change */
-    g_lbl_cd_reason = GTK_LABEL(gtk_builder_get_object(builder, "lbl_cd_reason"));
-    g_lbl_analyze_log = GTK_LABEL(gtk_builder_get_object(builder, "lbl_analyze_log"));
-    g_box_analyzers = GTK_BOX(gtk_builder_get_object(builder, "vb_analyzers"));
-    g_box_reporters = GTK_BOX(gtk_builder_get_object(builder, "vb_reporters"));
-    g_analyze_log = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "analyze_log"));
-    g_backtrace_tv = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "bactrace_tev"));
 }
 
 
@@ -212,7 +127,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     if (retval != 0
      || spawn_next_command(evd->run_state, g_dump_dir_name, /*event:*/ g_analyze_label_selected) < 0
     ) {
-        log("done running event '%s' on '%s': %d", g_analyze_label_selected, g_dump_dir_name, retval);
+        VERB1 log("done running event '%s' on '%s': %d", g_analyze_label_selected, g_dump_dir_name, retval);
         /*g_source_remove(evd->event_source_id);*/
         close(evd->fd);
         free_run_event_state(evd->run_state);
@@ -244,7 +159,7 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
      * function is called before assistant goes to the next_page
      */
     int page_no = gtk_assistant_get_current_page(assistant);
-    log("page_no:%d", page_no);
+    VERB2 log("page_no:%d", page_no);
 
     if (page_no == PAGENO_ANALYZE_ACTION_SELECTOR
      && g_analyze_label_selected != NULL)
@@ -265,7 +180,7 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
         /* At least one command is needed, and we started first one.
          * Hook its output fd up to the main loop.
          */
-        log("running event '%s' on '%s'", g_analyze_label_selected, g_dump_dir_name);
+        VERB1 log("running event '%s' on '%s'", g_analyze_label_selected, g_dump_dir_name);
 
         struct analyze_event_data *evd = xzalloc(sizeof(*evd));
         evd->run_state = state;
@@ -279,9 +194,98 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
         );
         gtk_label_set_text(g_lbl_analyze_log, _("Analyzing..."));
         /* Freeze assistant so it can't move away from the page until analyzing is done */
-//doesn't seem to have effect
-        gtk_assistant_set_page_complete(GTK_ASSISTANT(assistant), pages[PAGENO_ANALYZE_PROGRESS].page_widget, false);
+        gtk_assistant_set_page_complete(GTK_ASSISTANT(assistant),
+                        pages[PAGENO_ANALYZE_PROGRESS].page_widget, false);
     }
+}
+
+
+/* Initialization */
+
+static GtkTreeView *create_details_treeview()
+{
+    GtkTreeView *details_tv = GTK_TREE_VIEW(gtk_builder_get_object(builder, "details_tv"));
+    GtkCellRenderer *renderer;
+    GtkTreeViewColumn *column;
+
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(_("Name"),
+                                                     renderer,
+                                                     "text",
+                                                     DETAIL_COLUMN_NAME,
+                                                     NULL);
+    gtk_tree_view_column_set_sort_column_id(column, DETAIL_COLUMN_NAME);
+    gtk_tree_view_append_column(details_tv, column);
+
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(_("Value"),
+                                                     renderer,
+                                                     "text",
+                                                     DETAIL_COLUMN_VALUE,
+                                                     NULL);
+    gtk_tree_view_append_column(details_tv, column);
+
+    /*
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(_("Path"),
+                                                     renderer,
+                                                     "text",
+                                                     DETAIL_COLUMN_PATH,
+                                                     NULL);
+    gtk_tree_view_append_column(details_tv, column);
+    */
+    return details_tv;
+}
+
+/* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
+#include "wizard_glade.c"
+
+static void add_pages()
+{
+    GError *error = NULL;
+    if (!g_glade_file)
+    {
+        /* Load UI from internal string */
+        gtk_builder_add_objects_from_string(builder,
+                WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
+                (gchar**)page_names,
+                &error);
+        if (error != NULL)
+            error_msg_and_die("Error loading glade data: %s", error->message);
+    }
+    else
+    {
+        /* -g FILE: load IU from it */
+        gtk_builder_add_objects_from_file(builder, g_glade_file, (gchar**)page_names, &error);
+        if (error != NULL)
+            error_msg_and_die("Can't load %s: %s", g_glade_file, error->message);
+    }
+
+    for (int i = 0; page_names[i] != NULL; i++)
+    {
+        GtkWidget *page = GTK_WIDGET(gtk_builder_get_object(builder, page_names[i]));
+        if (page == NULL)
+            continue;
+
+        pages[i].page_widget = page;
+
+        gtk_assistant_append_page(GTK_ASSISTANT(assistant), page);
+        //FIXME: shouldn't be complete until something is selected!
+        gtk_assistant_set_page_complete(GTK_ASSISTANT(assistant), page, true);
+
+        gtk_assistant_set_page_title(GTK_ASSISTANT(assistant), page, pages[i].title);
+        gtk_assistant_set_page_type(GTK_ASSISTANT(assistant), page, pages[i].type);
+
+        VERB1 log("added page: %s", page_names[i]);
+    }
+
+    /* Set pointer to fields we might need to change */
+    g_lbl_cd_reason = GTK_LABEL(gtk_builder_get_object(builder, "lbl_cd_reason"));
+    g_lbl_analyze_log = GTK_LABEL(gtk_builder_get_object(builder, "lbl_analyze_log"));
+    g_box_analyzers = GTK_BOX(gtk_builder_get_object(builder, "vb_analyzers"));
+    g_box_reporters = GTK_BOX(gtk_builder_get_object(builder, "vb_reporters"));
+    g_analyze_log = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "analyze_log"));
+    g_backtrace_tv = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "bactrace_tev"));
 }
 
 GtkWidget *create_assistant()
@@ -298,7 +302,7 @@ GtkWidget *create_assistant()
     builder = gtk_builder_new();
     add_pages();
     g_details_tv = create_details_treeview();
-    g_details_ls = gtk_list_store_new(COLUMN_COUNT, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+    g_details_ls = gtk_list_store_new(DETAIL_NUM_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
     gtk_tree_view_set_model(g_details_tv, GTK_TREE_MODEL(g_details_ls));
     gtk_builder_connect_signals(builder, NULL);
 

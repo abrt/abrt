@@ -14,10 +14,10 @@ extern GtkBox *g_box_reporters;
 extern GtkTextView *g_backtrace_tv;
 enum
 {
-    COLUMN_NAME,
-    COLUMN_VALUE,
-    COLUMN_PATH,
-    COLUMN_COUNT,
+    DETAIL_COLUMN_NAME,
+    DETAIL_COLUMN_VALUE,
+    //COLUMN_PATH,
+    DETAIL_NUM_COLUMNS,
 };
 extern GtkTreeView *g_details_tv;
 extern GtkListStore *g_details_ls;

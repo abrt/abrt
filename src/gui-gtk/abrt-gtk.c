@@ -55,7 +55,7 @@ void add_directory_to_dirlist(const char *dirname)
     free(executable);
 
     dd_close(dd);
-    VERB1 log("added: %s\n", dirname);
+    VERB1 log("added: %s", dirname);
 }
 
 

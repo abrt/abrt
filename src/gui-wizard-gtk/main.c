@@ -63,23 +63,23 @@ static void append_item_to_details_ls(gpointer name, gpointer value, gpointer da
     gtk_list_store_append(g_details_ls, &iter);
 
     //FIXME: use the value representation here
-    /* If  text and not multiline... */
+    /* If text and not multiline... */
     if ((item->flags & CD_FLAG_TXT) && !strchr(item->content, '\n'))
     {
         gtk_list_store_set(g_details_ls, &iter,
-                              COLUMN_NAME, (char *)name,
-                              COLUMN_VALUE, item->content,
-                              COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
+                              DETAIL_COLUMN_NAME, (char *)name,
+                              DETAIL_COLUMN_VALUE, item->content,
+                              //DETAIL_COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
                               -1);
     }
     else
     {
         gtk_list_store_set(g_details_ls, &iter,
-                              COLUMN_NAME, (char *)name,
-                              COLUMN_VALUE, _("Content is too long, please use the \"View\" button to display it."),
-                              COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
+                              DETAIL_COLUMN_NAME, (char *)name,
+                              DETAIL_COLUMN_VALUE, _("Content is too long, please use the \"View\" button to display it."),
+                              //DETAIL_COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
                               -1);
-//FIXME: we leak xasprintf results above?
+        //WARNING: will leak xasprintf results above if uncommented
     }
 }
 
@@ -107,30 +107,25 @@ void reload_dump_dir(void)
     const char *bt = g_cd ? get_crash_item_content_or_NULL(g_cd, FILENAME_BACKTRACE) : NULL;
     gtk_text_buffer_set_text(backtrace_buf, bt ? bt : "", -1);
 
-    if (g_analyze_events[0])
+//Doesn't work: shows empty page
+//    if (!g_analyze_events[0])
+//    {
+//        /* No available analyze events, go to reporter selector page */
+//        gtk_assistant_set_current_page(GTK_ASSISTANT(assistant), PAGENO_REPORTER_SELECTOR);
+//    }
+
+    GtkWidget *first_rb = add_event_buttons(g_box_analyzers, g_analyze_events, G_CALLBACK(analyze_rb_was_toggled), /*radio:*/ true);
+    if (first_rb)
     {
-        GtkWidget *first_rb = add_event_buttons(g_box_analyzers, g_analyze_events, G_CALLBACK(analyze_rb_was_toggled), /*radio:*/ true);
-        if (first_rb)
+        const char *label = gtk_button_get_label(GTK_BUTTON(first_rb));
+        if (label)
         {
-            const char *label = gtk_button_get_label(GTK_BUTTON(first_rb));
-            if (label)
-            {
-                free(g_analyze_label_selected);
-                g_analyze_label_selected = xstrdup(label);
-            }
+            free(g_analyze_label_selected);
+            g_analyze_label_selected = xstrdup(label);
         }
     }
-    else
-    {
-        /* No available analyze events, go to reporter selector page */
-//Doesn't work: shows empty page
-//        gtk_assistant_set_current_page(GTK_ASSISTANT(assistant), PAGENO_REPORTER_SELECTOR);
-    }
 
-    if (g_report_events[0])
-    {
-        add_event_buttons(g_box_reporters, g_report_events, /*callback:*/NULL, /*radio:*/ false);
-    }
+    add_event_buttons(g_box_reporters, g_report_events, /*callback:*/ NULL, /*radio:*/ false);
 }
 
 int main(int argc, char **argv)
