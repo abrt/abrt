@@ -272,7 +272,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         free(msg);
         /* Unfreeze assistant */
         gtk_assistant_set_page_complete(GTK_ASSISTANT(assistant),
-                        pages[PAGENO_ANALYZE_ACTION_SELECTOR].page_widget, true);
+                        pages[PAGENO_ANALYZE_PROGRESS].page_widget, true);
         return FALSE; /* "please remove this event" */
     }
 
@@ -290,8 +290,10 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 
 static void next_page(GtkAssistant *assistant, gpointer user_data)
 {
+    /* page_no is actually the previous page, because this
+     * function is called before assistant goes to the next_page
+     */
     int page_no = gtk_assistant_get_current_page(assistant);
-    GtkWidget *cur_page_widget = pages[page_no].page_widget;
     log("page_no:%d", page_no);
 
     if (page_no == PAGENO_ANALYZE_ACTION_SELECTOR
@@ -328,7 +330,7 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
         gtk_label_set_text(g_lbl_analyze_log, _("Analyzing..."));
         /* Freeze assistant so it can't move away from the page until analyzing is done */
 //doesn't seem to have effect
-        gtk_assistant_set_page_complete(GTK_ASSISTANT(assistant), cur_page_widget, false);
+        gtk_assistant_set_page_complete(GTK_ASSISTANT(assistant), pages[PAGENO_ANALYZE_PROGRESS].page_widget, false);
     }
 }
 
