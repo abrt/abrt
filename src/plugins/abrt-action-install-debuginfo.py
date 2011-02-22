@@ -450,7 +450,9 @@ if __name__ == "__main__":
     if not cachedir:
         cachedir = "/var/cache/abrt-di"
     if not tmpdir:
-        tmpdir = "/var/run/abrt/install-debuginfo-%s.%u" % (time.strftime("%Y-%m-%d-%H:%M:%S"), os.getpid())
+        # security people prefer temp subdirs in app's private dir, like /var/run/abrt
+        # for now, we use /tmp...
+        tmpdir = "/tmp/abrt-tmp-debuginfo-%s.%u" % (time.strftime("%Y-%m-%d-%H:%M:%S"), os.getpid())
 
     b_ids = extract_info_from_core(core)
     if b_ids == RETURN_FAILURE:
