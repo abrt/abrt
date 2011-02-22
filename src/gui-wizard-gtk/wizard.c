@@ -10,9 +10,9 @@ GtkLabel *g_lbl_analyze_log;
 GtkBox *g_box_analyzers;
 GtkBox *g_box_reporters;
 GtkTextView *g_analyze_log;
-GtkTextView *g_backtrace_tv;
-GtkTreeView *g_details_tv;
-GtkListStore *g_details_ls;
+GtkTextView *g_tv_backtrace;
+GtkTreeView *g_tv_details;
+GtkListStore *g_ls_details;
 
 static GtkWidget *assistant;
 static GtkBuilder *builder;
@@ -31,23 +31,25 @@ static GtkBuilder *builder;
  * allows cheaper page_obj_t->name == PAGE_FOO comparisons
  * instead of strcmp.
  */
-static const gchar PAGE_ANALYZE_ACTION_SELECTOR[] = "page_1";
-static const gchar PAGE_ANALYZE_PROGRESS[]        = "page_2";
-static const gchar PAGE_REPORTER_SELECTOR[]       = "page_3";
-static const gchar PAGE_BACKTRACE_APPROVAL[]      = "page_4";
-static const gchar PAGE_HOWTO[]                   = "page_5";
-static const gchar PAGE_SUMMARY[]                 = "page_6";
-static const gchar PAGE_REPORT[]                  = "page_7";
+static const gchar PAGE_SUMMARY[]            = "page_0";
+static const gchar PAGE_ANALYZE_SELECTOR[]   = "page_1";
+static const gchar PAGE_ANALYZE_PROGRESS[]   = "page_2";
+static const gchar PAGE_REPORTER_SELECTOR[]  = "page_3";
+static const gchar PAGE_BACKTRACE_APPROVAL[] = "page_4";
+static const gchar PAGE_HOWTO[]              = "page_5";
+static const gchar PAGE_REPORT[]             = "page_6";
+static const gchar PAGE_REPORT_PROGRESS[]    = "page_7";
 
 static const gchar *const page_names[] =
 {
-    PAGE_ANALYZE_ACTION_SELECTOR,
+    PAGE_SUMMARY,
+    PAGE_ANALYZE_SELECTOR,
     PAGE_ANALYZE_PROGRESS,
     PAGE_REPORTER_SELECTOR,
     PAGE_BACKTRACE_APPROVAL,
     PAGE_HOWTO,
-    PAGE_SUMMARY,
     PAGE_REPORT,
+    PAGE_REPORT_PROGRESS,
     NULL
 };
 
@@ -59,17 +61,21 @@ typedef struct
     GtkWidget *page_widget;
 } page_obj_t;
 
-static page_obj_t pages[8] =
+static page_obj_t pages[] =
 {
+    { PAGE_SUMMARY            , "Problem description"   , GTK_ASSISTANT_PAGE_CONTENT  },
     /* need this type to get "apply" signal */
-    {PAGE_ANALYZE_ACTION_SELECTOR, "Select analyzer", GTK_ASSISTANT_PAGE_CONFIRM, NULL},
-    {PAGE_ANALYZE_PROGRESS, "Analyzing reporter", GTK_ASSISTANT_PAGE_PROGRESS, NULL},
-    {PAGE_REPORTER_SELECTOR, "Select reporter", GTK_ASSISTANT_PAGE_CONTENT, NULL},
-    {PAGE_BACKTRACE_APPROVAL, "Approve the backtrace", GTK_ASSISTANT_PAGE_CONTENT, NULL},
-    {PAGE_HOWTO, "Provide additional information", GTK_ASSISTANT_PAGE_CONTENT, NULL},
-    {PAGE_SUMMARY, "Confirm and send the report", GTK_ASSISTANT_PAGE_CONFIRM, NULL},
-    {PAGE_REPORT, "Approve the backtrace", GTK_ASSISTANT_PAGE_SUMMARY, NULL},
-    {NULL}
+    { PAGE_ANALYZE_SELECTOR   , "Select analyzer"       , GTK_ASSISTANT_PAGE_CONFIRM  },
+    { PAGE_ANALYZE_PROGRESS   , "Analyzing"             , GTK_ASSISTANT_PAGE_PROGRESS },
+    /* Some reporters don't need backtrace, we can skip bt page for them.
+     * Therefore we want to know reporters _before_ we go to bt page
+     */
+    { PAGE_REPORTER_SELECTOR  , "Select reporter"       , GTK_ASSISTANT_PAGE_CONTENT  },
+    { PAGE_BACKTRACE_APPROVAL , "Review the backtrace"  , GTK_ASSISTANT_PAGE_CONTENT  },
+    { PAGE_HOWTO              , "Provide additional information", GTK_ASSISTANT_PAGE_CONTENT },
+    { PAGE_REPORT             , "Confirm data to report", GTK_ASSISTANT_PAGE_CONFIRM  },
+    { PAGE_REPORT_PROGRESS    , "Reporting"             , GTK_ASSISTANT_PAGE_PROGRESS },
+    { NULL }
 };
 
 
@@ -162,7 +168,7 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
     int page_no = gtk_assistant_get_current_page(assistant);
     VERB2 log("page_no:%d", page_no);
 
-    if (page_no == PAGENO_ANALYZE_ACTION_SELECTOR
+    if (page_no == PAGENO_ANALYZE_SELECTOR
      && g_analyze_label_selected != NULL)
     {
         /* Start event asyncronously on the dump dir
@@ -203,9 +209,8 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
 
 /* Initialization */
 
-static GtkTreeView *create_details_treeview()
+static void create_details_treeview()
 {
-    GtkTreeView *details_tv = GTK_TREE_VIEW(gtk_builder_get_object(builder, "details_tv"));
     GtkCellRenderer *renderer;
     GtkTreeViewColumn *column;
 
@@ -216,7 +221,7 @@ static GtkTreeView *create_details_treeview()
                                                      DETAIL_COLUMN_NAME,
                                                      NULL);
     gtk_tree_view_column_set_sort_column_id(column, DETAIL_COLUMN_NAME);
-    gtk_tree_view_append_column(details_tv, column);
+    gtk_tree_view_append_column(g_tv_details, column);
 
     renderer = gtk_cell_renderer_text_new();
     column = gtk_tree_view_column_new_with_attributes(_("Value"),
@@ -224,7 +229,7 @@ static GtkTreeView *create_details_treeview()
                                                      "text",
                                                      DETAIL_COLUMN_VALUE,
                                                      NULL);
-    gtk_tree_view_append_column(details_tv, column);
+    gtk_tree_view_append_column(g_tv_details, column);
 
     /*
     renderer = gtk_cell_renderer_text_new();
@@ -233,9 +238,8 @@ static GtkTreeView *create_details_treeview()
                                                      "text",
                                                      DETAIL_COLUMN_PATH,
                                                      NULL);
-    gtk_tree_view_append_column(details_tv, column);
+    gtk_tree_view_append_column(g_tv_details, column);
     */
-    return details_tv;
 }
 
 /* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
@@ -286,7 +290,8 @@ static void add_pages()
     g_box_analyzers = GTK_BOX(gtk_builder_get_object(builder, "vb_analyzers"));
     g_box_reporters = GTK_BOX(gtk_builder_get_object(builder, "vb_reporters"));
     g_analyze_log = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "analyze_log"));
-    g_backtrace_tv = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "bactrace_tev"));
+    g_tv_backtrace = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "tv_backtrace"));
+    g_tv_details = GTK_TREE_VIEW(gtk_builder_get_object(builder, "tv_details"));
 }
 
 GtkWidget *create_assistant()
@@ -302,9 +307,9 @@ GtkWidget *create_assistant()
 
     builder = gtk_builder_new();
     add_pages();
-    g_details_tv = create_details_treeview();
-    g_details_ls = gtk_list_store_new(DETAIL_NUM_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
-    gtk_tree_view_set_model(g_details_tv, GTK_TREE_MODEL(g_details_ls));
+    create_details_treeview();
+    g_ls_details = gtk_list_store_new(DETAIL_NUM_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+    gtk_tree_view_set_model(g_tv_details, GTK_TREE_MODEL(g_ls_details));
     gtk_builder_connect_signals(builder, NULL);
 
     return assistant;

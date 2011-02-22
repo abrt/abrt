@@ -68,7 +68,6 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
     {
         GtkTreeIter iter;
         GtkTreeModel *store = gtk_tree_view_get_model(treeview);
-        //gtk_tree_model_get_iter(store, &iter, path);
         if (gtk_tree_selection_get_selected(selection, &store, &iter) == TRUE)
         {
             GValue d_dir = { 0 };
@@ -79,7 +78,10 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
             {
                 /* Undo signal(SIGCHLD, SIG_IGN), or child inherits it and gets terribly confused */
                 signal(SIGCHLD, SIG_DFL);
-                execlp("bug-reporting-wizard", "bug-reporting-wizard", g_value_get_string(&d_dir), NULL);
+
+                const char *dirname= g_value_get_string(&d_dir);
+                VERB1 log("Executing: %s %s", "bug-reporting-wizard", dirname);
+                execlp("bug-reporting-wizard", "bug-reporting-wizard", dirname, NULL);
                 perror_msg_and_die("Can't execute %s", "bug-reporting-wizard");
             }
         }
@@ -105,7 +107,7 @@ static gint on_key_press_event_cb(GtkTreeView *treeview, GdkEventKey *key, gpoin
                 gtk_tree_model_get_value(store, &iter, COLUMN_DUMP_DIR, &d_dir);
                 const char *dump_dir_name = g_value_get_string(&d_dir);
 
-                g_print("CALL: del_event(%s)\n", dump_dir_name);
+                VERB1 log("Deleting '%s'", dump_dir_name);
 
                 /* Try to delete it ourselves */
                 struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
@@ -120,6 +122,7 @@ static gint on_key_press_event_cb(GtkTreeView *treeview, GdkEventKey *key, gpoin
                 }
 
                 /* Ask abrtd to do it for us */
+                VERB1 log("Deleting '%s' via abrtd dbus call", dump_dir_name);
                 if (connect_to_abrtd_and_call_DeleteDebugDump(dump_dir_name) == 0)
                 {
  deleted_ok:

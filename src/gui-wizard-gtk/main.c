@@ -30,6 +30,7 @@ static void remove_child_widget(GtkWidget *widget, gpointer container)
 
 static GtkWidget *add_event_buttons(GtkBox *box, char *event_name, GCallback func, bool radio)
 {
+VERB2 log("removing all buttons from box %p", box);
     gtk_container_foreach(GTK_CONTAINER(box), &remove_child_widget, box);
 
     GtkWidget *first_button = NULL;
@@ -38,6 +39,7 @@ static GtkWidget *add_event_buttons(GtkBox *box, char *event_name, GCallback fun
         char *event_name_end = strchr(event_name, '\n');
         *event_name_end = '\0';
 
+VERB2 log("adding button '%s' to box %p", event_name, box);
         GtkWidget *button = radio
                 ? gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(first_button), event_name)
                 : gtk_check_button_new_with_label(event_name);
@@ -60,13 +62,13 @@ static void append_item_to_details_ls(gpointer name, gpointer value, gpointer da
     crash_item *item = (crash_item*)value;
     GtkTreeIter iter;
 
-    gtk_list_store_append(g_details_ls, &iter);
+    gtk_list_store_append(g_ls_details, &iter);
 
     //FIXME: use the value representation here
     /* If text and not multiline... */
     if ((item->flags & CD_FLAG_TXT) && !strchr(item->content, '\n'))
     {
-        gtk_list_store_set(g_details_ls, &iter,
+        gtk_list_store_set(g_ls_details, &iter,
                               DETAIL_COLUMN_NAME, (char *)name,
                               DETAIL_COLUMN_VALUE, item->content,
                               //DETAIL_COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
@@ -74,9 +76,9 @@ static void append_item_to_details_ls(gpointer name, gpointer value, gpointer da
     }
     else
     {
-        gtk_list_store_set(g_details_ls, &iter,
+        gtk_list_store_set(g_ls_details, &iter,
                               DETAIL_COLUMN_NAME, (char *)name,
-                              DETAIL_COLUMN_VALUE, _("Content is too long, please use the \"View\" button to display it."),
+                              DETAIL_COLUMN_VALUE, _("(click here to view/edit)"),
                               //DETAIL_COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
                               -1);
         //WARNING: will leak xasprintf results above if uncommented
@@ -95,15 +97,17 @@ void reload_dump_dir(void)
     g_cd = create_crash_data_from_dump_dir(dd);
     g_analyze_events = list_possible_events(dd, g_dump_dir_name, "analyze");
     g_report_events = list_possible_events(dd, g_dump_dir_name, "report");
+VERB2 log("g_analyze_events:'%s'", g_analyze_events);
+VERB2 log("g_report_events:'%s'", g_report_events);
     dd_close(dd);
 
     const char *reason = get_crash_item_content_or_NULL(g_cd, FILENAME_REASON);
     gtk_label_set_text(g_lbl_cd_reason, reason ? reason : _("(no description)"));
 
-    gtk_list_store_clear(g_details_ls);
+    gtk_list_store_clear(g_ls_details);
     g_hash_table_foreach(g_cd, append_item_to_details_ls, NULL);
 
-    GtkTextBuffer *backtrace_buf = gtk_text_view_get_buffer(g_backtrace_tv);
+    GtkTextBuffer *backtrace_buf = gtk_text_view_get_buffer(g_tv_backtrace);
     const char *bt = g_cd ? get_crash_item_content_or_NULL(g_cd, FILENAME_BACKTRACE) : NULL;
     gtk_text_buffer_set_text(backtrace_buf, bt ? bt : "", -1);
 

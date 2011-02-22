@@ -2,6 +2,63 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
+  <object class="GtkWindow" id="window0">
+    <property name="width_request">800</property>
+    <property name="height_request">500</property>
+    <child>
+      <object class="GtkVBox" id="page_0">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkLabel" id="lbl_cd_reason">
+            <property name="width_request">750</property>
+            <property name="visible">True</property>
+            <property name="xalign">0</property>
+            <property name="ypad">5</property>
+            <property name="wrap">True</property>
+            <attributes>
+              <attribute name="style" value="normal"/>
+              <attribute name="weight" value="bold"/>
+              <attribute name="foreground" value="#ffff00000000"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="scrolledwindow5">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="hscrollbar_policy">automatic</property>
+            <property name="vscrollbar_policy">automatic</property>
+            <child>
+              <object class="GtkTreeView" id="tv_details">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label7">
+            <property name="visible">True</property>
+            <property name="xalign">1</property>
+            <property name="ypad">5</property>
+            <property name="label" translatable="yes">Use Forward button to analyze and report this problem</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkWindow" id="window1">
     <property name="width_request">800</property>
     <property name="height_request">500</property>
@@ -13,47 +70,11 @@
         <property name="border_width">10</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkVBox" id="vbox7">
+          <object class="GtkLabel" id="lbl_page5">
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
-            <child>
-              <object class="GtkLabel" id="lbl_page1">
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">A problem was detected on your computer:</property>
-                <property name="wrap">True</property>
-              </object>
-              <packing>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="lbl_cd_reason">
-                <property name="width_request">750</property>
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="wrap">True</property>
-                <attributes>
-                  <attribute name="style" value="normal"/>
-                  <attribute name="weight" value="bold"/>
-                  <attribute name="foreground" value="#ffff00000000"/>
-                </attributes>
-              </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="lbl_page5">
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">Select how you would like to analyze the problem:</property>
-                <property name="wrap">True</property>
-              </object>
-              <packing>
-                <property name="position">2</property>
-              </packing>
-            </child>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">Select how you would like to analyze the problem:</property>
+            <property name="wrap">True</property>
           </object>
           <packing>
             <property name="position">0</property>
@@ -92,9 +113,9 @@
           <object class="GtkLabel" id="lbl_analyze_log">
             <property name="width_request">750</property>
             <property name="visible">True</property>
+            <property name="xalign">0</property>
             <property name="label" translatable="yes">Analyzing did not start yet</property>
             <property name="use_markup">True</property>
-            <property name="justify">fill</property>
             <property name="wrap">True</property>
           </object>
           <packing>
@@ -113,7 +134,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="editable">False</property>
-                <property name="wrap_mode">word</property>
                 <property name="accepts_tab">False</property>
               </object>
             </child>
@@ -137,9 +157,8 @@
           <object class="GtkLabel" id="lbl_page3">
             <property name="width_request">750</property>
             <property name="visible">True</property>
-            <property name="xalign">0.05000000074505806</property>
-            <property name="yalign">0.05000000074505806</property>
-            <property name="label" translatable="yes">Select. where you would like to report the bug, and press 'Forward' to continue.</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">Select how you would like to report the problem:</property>
             <property name="use_markup">True</property>
             <property name="justify">fill</property>
             <property name="wrap">True</property>
@@ -206,7 +225,7 @@ Please review the backtrace below and modify it as needed to ensure your bug rep
                 <property name="hscrollbar_policy">automatic</property>
                 <property name="vscrollbar_policy">automatic</property>
                 <child>
-                  <object class="GtkTextView" id="bactrace_tev">
+                  <object class="GtkTextView" id="tv_backtrace">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="wrap_mode">word</property>
@@ -458,7 +477,7 @@ Please review the backtrace below and modify it as needed to ensure your bug rep
                     <property name="visible">True</property>
                     <property name="xalign">1.1175871339474952e-09</property>
                     <property name="yalign">0</property>
-                    <property name="label" translatable="yes">How did this crash happen (step-by-step)? How would you reproduce it?</property>
+                    <property name="label" translatable="yes">How did this crash happen (step-by-step)? How can it be reproduced?</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -538,7 +557,7 @@ Please review the backtrace below and modify it as needed to ensure your bug rep
             <property name="xalign">0</property>
             <property name="yalign">0</property>
             <property name="ypad">5</property>
-            <property name="label" translatable="yes">&lt;b&gt;Tip:&lt;/b&gt; Your comments are not private. Please watch what you say accordingly.</property>
+            <property name="label" translatable="yes">&lt;b&gt;Your comments are not private.&lt;/b&gt; They may be included into publicly-visible problem reports.</property>
             <property name="use_markup">True</property>
           </object>
           <packing>
@@ -561,9 +580,7 @@ Please review the backtrace below and modify it as needed to ensure your bug rep
           <object class="GtkLabel" id="lbl_page6">
             <property name="width_request">750</property>
             <property name="visible">True</property>
-            <property name="xalign">0.05000000074505806</property>
-            <property name="yalign">0.05000000074505806</property>
-            <property name="label" translatable="yes">Below are the information to be sent out, please review them.</property>
+            <property name="label" translatable="yes">Below is the information to be reported, please review it.</property>
             <property name="justify">fill</property>
             <property name="wrap">True</property>
           </object>
@@ -702,54 +719,7 @@ Please review the backtrace below and modify it as needed to ensure your bug rep
           </packing>
         </child>
         <child>
-          <object class="GtkExpander" id="expander1">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <child>
-              <object class="GtkVBox" id="vbox8">
-                <property name="visible">True</property>
-                <property name="orientation">vertical</property>
-                <child>
-                  <object class="GtkScrolledWindow" id="scrolledwindow5">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="hscrollbar_policy">automatic</property>
-                    <property name="vscrollbar_policy">automatic</property>
-                    <child>
-                      <object class="GtkTreeView" id="details_tv">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="button1">
-                    <property name="label" translatable="yes">View</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-            </child>
-            <child type="label">
-              <object class="GtkLabel" id="label13">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Details</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="position">2</property>
-          </packing>
+          <placeholder/>
         </child>
       </object>
     </child>
@@ -763,16 +733,12 @@ Please review the backtrace below and modify it as needed to ensure your bug rep
         <property name="border_width">10</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel" id="lbl_page8">
+          <object class="GtkLabel" id="lbl_report_log">
             <property name="width_request">750</property>
             <property name="visible">True</property>
-            <property name="xalign">0.05000000074505806</property>
-            <property name="yalign">0.05000000074505806</property>
-            <property name="label" translatable="yes">Please wait until the problem is reported.
-
-You can see the progress in the window below.</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">Reporting did not start yet</property>
             <property name="use_markup">True</property>
-            <property name="justify">fill</property>
             <property name="wrap">True</property>
           </object>
           <packing>
@@ -786,29 +752,17 @@ You can see the progress in the window below.</property>
             <property name="can_focus">True</property>
             <property name="border_width">10</property>
             <property name="hscrollbar_policy">automatic</property>
-            <property name="vscrollbar_policy">automatic</property>
             <child>
-              <object class="GtkTextView" id="analyze_log1">
+              <object class="GtkTextView" id="report_log">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="editable">False</property>
-                <property name="wrap_mode">word</property>
                 <property name="accepts_tab">False</property>
               </object>
             </child>
           </object>
           <packing>
             <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkProgressBar" id="pb_analyze1">
-            <property name="visible">True</property>
-            <property name="activity_mode">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="position">2</property>
           </packing>
         </child>
       </object>

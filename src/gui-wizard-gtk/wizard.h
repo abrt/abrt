@@ -1,17 +1,18 @@
 enum {
-    PAGENO_ANALYZE_ACTION_SELECTOR = 0,
+    PAGENO_SUMMARY,
+    PAGENO_ANALYZE_SELECTOR,
     PAGENO_ANALYZE_PROGRESS,
     PAGENO_REPORTER_SELECTOR,
     PAGENO_BACKTRACE_APPROVAL,
     PAGENO_HOWTO,
-    PAGENO_SUMMARY,
     PAGENO_REPORT,
+    PAGENO_REPORT_PROGRESS,
 };
 extern GtkLabel *g_lbl_cd_reason;
 extern GtkLabel *g_lbl_analyze_log;
 extern GtkBox *g_box_analyzers;
 extern GtkBox *g_box_reporters;
-extern GtkTextView *g_backtrace_tv;
+extern GtkTextView *g_tv_backtrace;
 enum
 {
     DETAIL_COLUMN_NAME,
@@ -19,8 +20,8 @@ enum
     //COLUMN_PATH,
     DETAIL_NUM_COLUMNS,
 };
-extern GtkTreeView *g_details_tv;
-extern GtkListStore *g_details_ls;
+extern GtkTreeView *g_tv_details;
+extern GtkListStore *g_ls_details;
 GtkWidget *create_assistant(void);
 
 
