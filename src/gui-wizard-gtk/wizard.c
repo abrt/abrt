@@ -66,7 +66,10 @@ static page_obj_t pages[] =
     { PAGE_SUMMARY            , "Problem description"   , GTK_ASSISTANT_PAGE_CONTENT  },
     /* need this type to get "apply" signal */
     { PAGE_ANALYZE_SELECTOR   , "Select analyzer"       , GTK_ASSISTANT_PAGE_CONFIRM  },
-    { PAGE_ANALYZE_PROGRESS   , "Analyzing"             , GTK_ASSISTANT_PAGE_PROGRESS },
+    /* Was GTK_ASSISTANT_PAGE_PROGRESS
+     * if we leave it as _PROGRESS the back button skips the page
+     */
+    { PAGE_ANALYZE_PROGRESS   , "Analyzing"             , GTK_ASSISTANT_PAGE_CONTENT },
     /* Some reporters don't need backtrace, we can skip bt page for them.
      * Therefore we want to know reporters _before_ we go to bt page
      */
