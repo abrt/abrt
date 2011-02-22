@@ -46,6 +46,10 @@ int main(int argc, char **argv)
 
     gtk_init(&argc, &argv);
 
+    char *env_verbose = getenv("ABRT_VERBOSE");
+    if (env_verbose)
+        g_verbose = atoi(env_verbose);
+
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
         PROGNAME" [-v] [DIR]...\n\n"
@@ -61,6 +65,8 @@ int main(int argc, char **argv)
         OPT_END()
     };
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+
+    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
 
     GtkWidget *main_window = create_main_window();
 

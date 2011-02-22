@@ -10,9 +10,11 @@ GtkLabel *g_lbl_analyze_log;
 GtkBox *g_box_analyzers;
 GtkBox *g_box_reporters;
 GtkTextView *g_analyze_log;
+GtkTextView *g_backtrace_tv;
+GtkTreeView *g_details_tv;
+GtkListStore *g_details_ls;
 
 static GtkWidget *assistant;
-static GtkListStore *details_ls;
 static GtkBuilder *builder;
 
 /* THE PAGE FLOW
@@ -70,34 +72,12 @@ static page_obj_t pages[8] =
     {NULL}
 };
 
-enum
-{
-    COLUMN_NAME,
-    COLUMN_VALUE,
-    COLUMN_PATH,
-    COLUMN_COUNT
-};
-
 void on_b_refresh_clicked(GtkButton *button)
 {
     g_print("Refresh clicked!\n");
 }
 
-static void fill_backtrace()
-{
-    crash_item *ci = NULL;
-    GtkTextView *backtrace_tev = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "bactrace_tev"));
-    GtkTextBuffer *backtrace_buf = gtk_text_buffer_new(NULL);
-    ci = g_hash_table_lookup(cd, FILENAME_BACKTRACE);
-    if(ci != NULL)
-    {
-        //g_print(ci->content);
-        gtk_text_buffer_set_text(backtrace_buf, ci->content, -1);
-        gtk_text_view_set_buffer(backtrace_tev, backtrace_buf);
-    }
-}
-
-GtkTreeView *create_details_treeview()
+static GtkTreeView *create_details_treeview()
 {
     GtkTreeView *details_tv = GTK_TREE_VIEW(gtk_builder_get_object(builder, "details_tv"));
     GtkCellRenderer *renderer;
@@ -132,41 +112,6 @@ GtkTreeView *create_details_treeview()
     return details_tv;
 }
 
-static void *append_item_to_details_ls(gpointer name, gpointer value, gpointer data)
-{
-    crash_item *item = (crash_item*)value;
-    GtkTreeIter iter;
-
-    gtk_list_store_append(details_ls, &iter);
-
-    //FIXME: use the vaule representation here
-    if(strlen(item->content) < 30)
-    {
-        gtk_list_store_set(details_ls, &iter,
-                              COLUMN_NAME, (char *)name,
-                              COLUMN_VALUE, item->content,
-                              COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
-                              -1);
-    }
-    else
-    {
-        gtk_list_store_set(details_ls, &iter,
-                              COLUMN_NAME, (char *)name,
-                              COLUMN_VALUE, _("Content is too long, please use the \"View\" button to display it."),
-                              COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
-                              -1);
-    }
-
-    return NULL;
-}
-
-static void fill_details(GtkTreeView *treeview)
-{
-    details_ls = gtk_list_store_new(COLUMN_COUNT, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
-    g_hash_table_foreach(cd, (GHFunc)append_item_to_details_ls, NULL);
-    gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(details_ls));
-}
-
 /* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
 #include "wizard_glade.c"
 
@@ -174,17 +119,21 @@ static void add_pages()
 {
     GError *error = NULL;
     if (!g_glade_file)
+    {
         /* Load UI from internal string */
         gtk_builder_add_objects_from_string(builder,
                 WIZARD_GLADE_CONTENTS, sizeof(WIZARD_GLADE_CONTENTS) - 1,
                 (gchar**)page_names,
                 &error);
+        if (error != NULL)
+            error_msg_and_die("Error loading glade data: %s", error->message);
+    }
     else
+    {
         /* -g FILE: load IU from it */
         gtk_builder_add_objects_from_file(builder, g_glade_file, (gchar**)page_names, &error);
-    if (error != NULL)
-    {
-        error_msg_and_die("can't load %s: %s", "wizard.glade", error->message);
+        if (error != NULL)
+            error_msg_and_die("Can't load %s: %s", g_glade_file, error->message);
     }
 
     for (int i = 0; page_names[i] != NULL; i++)
@@ -211,6 +160,7 @@ static void add_pages()
     g_box_analyzers = GTK_BOX(gtk_builder_get_object(builder, "vb_analyzers"));
     g_box_reporters = GTK_BOX(gtk_builder_get_object(builder, "vb_reporters"));
     g_analyze_log = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "analyze_log"));
+    g_backtrace_tv = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "bactrace_tev"));
 }
 
 
@@ -334,22 +284,6 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
     }
 }
 
-
-static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
-{
-    page_obj_t *cur_page = pages;
-    while (cur_page->page_widget != page)
-    {
-        if (!cur_page->page_widget)
-            return; /* end of pages[] */
-        ++cur_page;
-    }
-
-    if (cur_page->name == PAGE_BACKTRACE_APPROVAL)
-        fill_backtrace();
-}
-
-
 GtkWidget *create_assistant()
 {
     assistant = gtk_assistant_new();
@@ -360,12 +294,12 @@ GtkWidget *create_assistant()
     g_signal_connect(G_OBJECT(assistant), "cancel", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(G_OBJECT(assistant), "close", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(G_OBJECT(assistant), "apply", G_CALLBACK(next_page), NULL);
-    g_signal_connect(G_OBJECT(assistant), "prepare", G_CALLBACK(on_page_prepare), NULL);
 
     builder = gtk_builder_new();
     add_pages();
-    GtkTreeView *details_tv = create_details_treeview();
-    fill_details(details_tv);
+    g_details_tv = create_details_treeview();
+    g_details_ls = gtk_list_store_new(COLUMN_COUNT, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+    gtk_tree_view_set_model(g_details_tv, GTK_TREE_MODEL(g_details_ls));
     gtk_builder_connect_signals(builder, NULL);
 
     return assistant;

@@ -18,10 +18,9 @@
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkLabel" id="lbl_page1">
-                <property name="width_request">750</property>
                 <property name="visible">True</property>
+                <property name="xalign">0</property>
                 <property name="label" translatable="yes">A problem was detected on your computer:</property>
-                <property name="justify">fill</property>
                 <property name="wrap">True</property>
               </object>
               <packing>
@@ -32,8 +31,7 @@
               <object class="GtkLabel" id="lbl_cd_reason">
                 <property name="width_request">750</property>
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">(no description)</property>
-                <property name="justify">center</property>
+                <property name="xalign">0</property>
                 <property name="wrap">True</property>
                 <attributes>
                   <attribute name="style" value="normal"/>
@@ -47,10 +45,9 @@
             </child>
             <child>
               <object class="GtkLabel" id="lbl_page5">
-                <property name="width_request">750</property>
                 <property name="visible">True</property>
+                <property name="xalign">0</property>
                 <property name="label" translatable="yes">Select how you would like to analyze the problem:</property>
-                <property name="justify">fill</property>
                 <property name="wrap">True</property>
               </object>
               <packing>
