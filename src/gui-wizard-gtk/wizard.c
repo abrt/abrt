@@ -6,11 +6,15 @@
 #define DEFAULT_HEIGHT  500
 
 GtkAssistant *g_assistant;
-GtkLabel *g_lbl_cd_reason;
-GtkLabel *g_lbl_analyze_log;
+
 GtkBox *g_box_analyzers;
-GtkBox *g_box_reporters;
+GtkLabel *g_lbl_analyze_log;
 GtkTextView *g_tv_analyze_log;
+GtkBox *g_box_reporters;
+GtkLabel *g_lbl_report_log;
+GtkTextView *g_tv_report_log;
+
+GtkLabel *g_lbl_cd_reason;
 GtkTextView *g_tv_backtrace;
 GtkTreeView *g_tv_details;
 GtkListStore *g_ls_details;
@@ -126,10 +130,15 @@ static gint next_page_no(gint current_page_no, gpointer data)
 }
 
 
-/* "Next page" button handler. So far it only starts analyze event run */
+/* start_event_run */
 
 struct analyze_event_data {
     struct run_event_state *run_state;
+    const char *event_name;
+    GtkWidget *page_widget;
+    GtkLabel *status_label;
+    GtkTextView *tv_log;
+    const char *end_msg;
     GIOChannel *channel;
     int fd;
     /*guint event_source_id;*/
@@ -139,7 +148,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 {
     struct analyze_event_data *evd = data;
 
-    GtkTextBuffer *tb = gtk_text_view_get_buffer(g_tv_analyze_log);
+    GtkTextBuffer *tb = gtk_text_view_get_buffer(evd->tv_log);
 
     /* Ensure we insert text at the end */
     GtkTextIter text_iter;
@@ -154,9 +163,9 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         gtk_text_buffer_insert_at_cursor(tb, buf, r);
     }
 
-    /* Scroll so that end of the log is visible */
+    /* Scroll so that the end of the log is visible */
     gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
-    gtk_text_view_scroll_to_iter(g_tv_analyze_log, &text_iter,
+    gtk_text_view_scroll_to_iter(evd->tv_log, &text_iter,
                 /*within_margin:*/ 0.0, /*use_align:*/ FALSE, /*xalign:*/ 0, /*yalign:*/ 0);
 
     if (r < 0 && errno == EAGAIN)
@@ -172,20 +181,19 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 
     /* Stop if exit code is not 0, or no more commands */
     if (retval != 0
-     || spawn_next_command(evd->run_state, g_dump_dir_name, /*event:*/ g_analyze_label_selected) < 0
+     || spawn_next_command(evd->run_state, g_dump_dir_name, evd->event_name) < 0
     ) {
-        VERB1 log("done running event '%s' on '%s': %d", g_analyze_label_selected, g_dump_dir_name, retval);
+        VERB1 log("done running event on '%s': %d", g_dump_dir_name, retval);
         /*g_source_remove(evd->event_source_id);*/
         close(evd->fd);
         free_run_event_state(evd->run_state);
-        free(evd);
-        char *msg = xasprintf(_("Analyze finished with exit code %d"), retval);
-        gtk_label_set_text(g_lbl_analyze_log, msg);
+        char *msg = xasprintf(evd->end_msg, retval);
+        gtk_label_set_text(evd->status_label, msg);
         free(msg);
-        reload_dump_dir();
         /* Unfreeze assistant */
-        gtk_assistant_set_page_complete(g_assistant,
-                        pages[PAGENO_ANALYZE_PROGRESS].page_widget, true);
+        gtk_assistant_set_page_complete(g_assistant, evd->page_widget, true);
+        free(evd);
+        reload_dump_dir();
         return FALSE; /* "please remove this event" */
     }
 
@@ -201,6 +209,60 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     return TRUE; /* "please don't remove this event (yet)" */
 }
 
+static void start_event_run(const char *event_name,
+                GList *more_events, // unused, TODO
+                GtkWidget *page,
+                GtkTextView *tv_log,
+                GtkLabel *status_label,
+                const char *start_msg,
+                const char *end_msg
+) {
+    /* Start event asyncronously on the dump dir
+     * (syncronous run would freeze GUI until completion)
+     */
+    struct run_event_state *state = new_run_event_state();
+
+    if (prepare_commands(state, g_dump_dir_name, event_name) == 0
+     || spawn_next_command(state, g_dump_dir_name, event_name) < 0
+    ) {
+        /* No commands needed?! (This is untypical) */
+//TODO: better msg?
+        char *msg = xasprintf(_("No processing for event '%s' is defined"), event_name);
+        gtk_label_set_text(status_label, msg);
+        free(msg);
+        free_run_event_state(state);
+        return;
+    }
+
+    /* At least one command is needed, and we started first one.
+     * Hook its output fd up to the main loop.
+     */
+    VERB1 log("running event '%s' on '%s'", event_name, g_dump_dir_name);
+
+    struct analyze_event_data *evd = xzalloc(sizeof(*evd));
+    evd->run_state = state;
+    evd->event_name = event_name;
+    evd->page_widget = page;
+    evd->status_label = status_label;
+    evd->tv_log = tv_log;
+    evd->end_msg = end_msg;
+    evd->fd = state->command_out_fd;
+    ndelay_on(evd->fd);
+    evd->channel = g_io_channel_unix_new(evd->fd);
+
+    /*evd->event_source_id = */ g_io_add_watch(evd->channel,
+            G_IO_IN | G_IO_ERR | G_IO_HUP, /* need HUP to detect EOF w/o any data */
+            consume_cmd_output,
+            evd
+    );
+
+    gtk_label_set_text(status_label, start_msg);
+    /* Freeze assistant so it can't move away from the page until analyzing is done */
+    gtk_assistant_set_page_complete(g_assistant, page, false);
+}
+
+
+/* "Next page" button handler */
 static void next_page(GtkAssistant *assistant, gpointer user_data)
 {
     /* page_no is actually the previous page, because this
@@ -212,38 +274,44 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
     if (page_no == PAGENO_ANALYZE_SELECTOR
      && g_analyze_label_selected != NULL)
     {
-        /* Start event asyncronously on the dump dir
-         * (syncronous run would freeze GUI until completion)
-         */
-        struct run_event_state *state = new_run_event_state();
-
-        if (prepare_commands(state, g_dump_dir_name, /*event:*/ g_analyze_label_selected) == 0
-         || spawn_next_command(state, g_dump_dir_name, /*event:*/ g_analyze_label_selected) < 0
-        ) {
-            /* No commands needed */
-            free_run_event_state(state);
-            return;
-        }
-
-        /* At least one command is needed, and we started first one.
-         * Hook its output fd up to the main loop.
-         */
-        VERB1 log("running event '%s' on '%s'", g_analyze_label_selected, g_dump_dir_name);
-
-        struct analyze_event_data *evd = xzalloc(sizeof(*evd));
-        evd->run_state = state;
-        evd->fd = state->command_out_fd;
-        ndelay_on(evd->fd);
-        evd->channel = g_io_channel_unix_new(evd->fd);
-        /*evd->event_source_id = */ g_io_add_watch(evd->channel,
-                G_IO_IN | G_IO_ERR | G_IO_HUP, /* need HUP to detect EOF w/o any data */
-                consume_cmd_output,
-                evd
+        start_event_run(/*event_name:*/ g_analyze_label_selected,
+                NULL,
+                pages[PAGENO_ANALYZE_PROGRESS].page_widget,
+                g_tv_analyze_log,
+                g_lbl_analyze_log,
+                _("Analyzing..."),
+                _("Analyzing finished with exit code %d")
         );
-        gtk_label_set_text(g_lbl_analyze_log, _("Analyzing..."));
-        /* Freeze assistant so it can't move away from the page until analyzing is done */
-        gtk_assistant_set_page_complete(g_assistant,
-                        pages[PAGENO_ANALYZE_PROGRESS].page_widget, false);
+    }
+
+    if (page_no == PAGENO_REPORT)
+    {
+        GList *reporters = gtk_container_get_children(GTK_CONTAINER(g_box_reporters));
+        if (reporters)
+        {
+            for (GList *li = reporters; li; li = li->next)
+            {
+                if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
+                    li->data = (gpointer)gtk_button_get_label(GTK_BUTTON(li->data));
+                else
+                    li->data = NULL;
+            }
+            reporters = g_list_remove_all(reporters, NULL);
+            if (reporters)
+            {
+                char *first_event_name = reporters->data;
+                reporters = g_list_remove(reporters, first_event_name);
+                start_event_run(first_event_name,
+                        reporters,
+                        pages[PAGENO_REPORT_PROGRESS].page_widget,
+                        g_tv_report_log,
+                        g_lbl_report_log,
+                        _("Reporting..."),
+                        _("Reporting finished with exit code %d")
+                );
+                g_list_free(reporters);
+            }
+        }
     }
 }
 
@@ -325,12 +393,14 @@ static void add_pages()
         VERB1 log("added page: %s", page_names[i]);
     }
 
-    /* Set pointer to fields we might need to change */
+    /* Set pointers to objects we might need to work with */
     g_lbl_cd_reason = GTK_LABEL(gtk_builder_get_object(builder, "lbl_cd_reason"));
-    g_lbl_analyze_log = GTK_LABEL(gtk_builder_get_object(builder, "lbl_analyze_log"));
     g_box_analyzers = GTK_BOX(gtk_builder_get_object(builder, "vb_analyzers"));
-    g_box_reporters = GTK_BOX(gtk_builder_get_object(builder, "vb_reporters"));
+    g_lbl_analyze_log = GTK_LABEL(gtk_builder_get_object(builder, "lbl_analyze_log"));
     g_tv_analyze_log = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "tv_analyze_log"));
+    g_box_reporters = GTK_BOX(gtk_builder_get_object(builder, "vb_reporters"));
+    g_lbl_report_log = GTK_LABEL(gtk_builder_get_object(builder, "lbl_report_log"));
+    g_tv_report_log = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "tv_report_log"));
     g_tv_backtrace = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "tv_backtrace"));
     g_tv_details = GTK_TREE_VIEW(gtk_builder_get_object(builder, "tv_details"));
 }
