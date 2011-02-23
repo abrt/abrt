@@ -72,6 +72,8 @@ typedef struct
 static page_obj_t pages[] =
 {
     /* Page types:
+     * INTRO: only [Fwd] button is shown
+     * CONTENT: normal page
      * CONFIRM: has [Apply] instead of [Fwd] and emits "apply" signal
      * PROGRESS: skipped on backward navigation
      * SUMMARY: has only [Close] button
@@ -320,6 +322,85 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
 }
 
 
+/* Backtrace checkbox handling */
+
+static void add_warning(const char *warning)
+{
+    char *label_str = xasprintf("• %s", warning);
+    GtkWidget *warning_lbl = gtk_label_new(label_str);
+    gtk_misc_set_alignment(GTK_MISC(warning_lbl), 0.0, 0.0);
+    gtk_label_set_justify(GTK_LABEL(warning_lbl), GTK_JUSTIFY_LEFT);
+    gtk_box_pack_start(g_box_warning_labels, warning_lbl, false, false, 0);
+    gtk_widget_show(warning_lbl);
+    /* should be safe to free it, gtk calls strdup() to copy it */
+    free(label_str);
+}
+
+static void check_backtrace_and_allow_send(void)
+{
+    bool send = true;
+    bool warn = false;
+
+    /* erase all warnings */
+    gtk_widget_hide(g_widget_warnings_area);
+    gtk_container_foreach(GTK_CONTAINER(g_box_warning_labels), &remove_child_widget, NULL);
+
+    /*
+     * FIXME: this should be bind to a reporter not to a compoment
+     * but we don't rate oopses, so for now we skip the "kernel" manually
+     */
+    const char *component = get_crash_item_content_or_NULL(g_cd, FILENAME_COMPONENT);
+    if (strcmp(component, "kernel") != 0)
+    {
+        const char *rating = get_crash_item_content_or_NULL(g_cd, FILENAME_RATING);
+        if (rating) switch (*rating)
+        {
+            case '4': //bt is ok - no warning here
+                break;
+            case '3': //bt is usable, but not complete, so show a warning
+                add_warning(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."));
+                warn = true;
+                break;
+            case '2':
+            case '1':
+                //FIXME: see CreporterAssistant: 394 for ideas
+                add_warning(_("Reporting disabled because the backtrace is unusable."));
+                send = false;
+                warn = true;
+                break;
+        }
+    }
+
+    if (!gtk_toggle_button_get_active(g_tb_approve_bt))
+    {
+        add_warning(_("You should check the backtrace for sensitive data."));
+        add_warning(_("You must agree with sending the backtrace."));
+        send = false;
+        warn = true;
+    }
+
+    gtk_assistant_set_page_complete(g_assistant,
+                                    pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
+                                    send);
+    if (warn)
+        gtk_widget_show(g_widget_warnings_area);
+}
+
+static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_data)
+{
+    check_backtrace_and_allow_send();
+}
+
+
+static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
+{
+    if (pages[PAGENO_BACKTRACE_APPROVAL].page_widget == page)
+    {
+        check_backtrace_and_allow_send();
+    }
+}
+
+
 /* Initialization */
 
 static void create_details_treeview()
@@ -419,81 +500,6 @@ static void add_pages(void)
     //gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_REPORTER_SELECTOR].page_widget, false);
     gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
                 gtk_toggle_button_get_active(g_tb_approve_bt));
-}
-
-static void add_warning(const char *warning)
-{
-    char *label_str = xasprintf("• %s", warning);
-    GtkWidget *warning_lbl = gtk_label_new(label_str);
-    gtk_misc_set_alignment(GTK_MISC(warning_lbl), 0.0, 0.0);
-    gtk_label_set_justify(GTK_LABEL(warning_lbl), GTK_JUSTIFY_LEFT);
-    gtk_box_pack_start(g_box_warning_labels, warning_lbl, false, false, 0);
-    gtk_widget_show(warning_lbl);
-    /* should be safe to free it, gtk calls strdup() to copy it */
-    free(label_str);
-}
-
-static void check_backtrace_and_allow_send(void)
-{
-    bool send = true;
-    bool warn = false;
-
-    /* erase all warnings */
-    gtk_widget_hide(g_widget_warnings_area);
-    gtk_container_foreach(GTK_CONTAINER(g_box_warning_labels), &remove_child_widget, NULL);
-
-    /*
-     * FIXME: this should be bind to a reporter not to a compoment
-     * but we don't rate oopses, so for now we skip the "kernel" manually
-     */
-    const char *component = get_crash_item_content_or_NULL(g_cd, FILENAME_COMPONENT);
-    if (strcmp(component, "kernel") != 0)
-    {
-        const char *rating = get_crash_item_content_or_NULL(g_cd, FILENAME_RATING);
-        if (rating) switch (*rating)
-        {
-            case '4': //bt is ok - no warning here
-                break;
-            case '3': //bt is usable, but not complete, so show a warning
-                add_warning(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."));
-                warn = true;
-                break;
-            case '2':
-            case '1':
-                //FIXME: see CreporterAssistant: 394 for ideas
-                add_warning(_("Reporting disabled because the backtrace is unusable."));
-                send = false;
-                warn = true;
-                break;
-        }
-    }
-
-    if (!gtk_toggle_button_get_active(g_tb_approve_bt))
-    {
-        add_warning(_("You should check the backtrace for sensitive data."));
-        add_warning(_("You must agree with sending the backtrace."));
-        send = false;
-        warn = true;
-    }
-
-    gtk_assistant_set_page_complete(g_assistant,
-                                    pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
-                                    send);
-    if (warn)
-        gtk_widget_show(g_widget_warnings_area);
-}
-
-static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_data)
-{
-    check_backtrace_and_allow_send();
-}
-
-static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
-{
-    if (pages[PAGENO_BACKTRACE_APPROVAL].page_widget == page)
-    {
-        check_backtrace_and_allow_send();
-    }
 }
 
 void create_assistant()
