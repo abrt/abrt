@@ -333,6 +333,27 @@ static void add_pages()
     g_tv_details = GTK_TREE_VIEW(gtk_builder_get_object(builder, "tv_details"));
 }
 
+void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_data)
+{
+    gtk_assistant_set_page_complete(g_assistant,
+                                    pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
+                                    gtk_toggle_button_get_active(togglebutton));
+}
+
+//FIXME: hide/show warnings about rating and bt approval
+void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
+{
+    if(pages[PAGENO_BACKTRACE_APPROVAL].page_widget == page)
+    {
+        GtkToggleButton* tb_approve_bt = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "cb_approve_bt"));
+        g_signal_connect(tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
+        gtk_assistant_set_page_complete(g_assistant,
+            pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
+            false
+            );
+    }
+}
+
 void create_assistant()
 {
     g_assistant = GTK_ASSISTANT(gtk_assistant_new());
@@ -348,6 +369,9 @@ void create_assistant()
     g_signal_connect(obj_assistant, "cancel", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(obj_assistant, "close", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(obj_assistant, "apply", G_CALLBACK(next_page), NULL);
+
+    g_signal_connect(obj_assistant, "prepare", G_CALLBACK(on_page_prepare), NULL);
+
 
     builder = gtk_builder_new();
 
