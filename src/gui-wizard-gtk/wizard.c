@@ -433,6 +433,7 @@ static void add_warning(const char *warning)
 
 static void check_backtrace_and_allow_send()
 {
+    bool send = true;
     gtk_widget_hide(GTK_WIDGET(g_box_warnings_area));
     /* erase all warnings */
     gtk_container_foreach(GTK_CONTAINER(g_box_warning_labels), &remove_child_widget, NULL);
@@ -454,6 +455,9 @@ VERB2 log("rating is 3 - adding warning");
                 break;
             case '2':
             case '1':
+                //FIXME: see CreporterAssistant: 394 for ideas
+                add_warning(_("Reporting disabled because the backtrace is unusable."));
+                send = false;
                 break;
         }
     }
@@ -463,18 +467,20 @@ VERB2 log("rating is 3 - adding warning");
 VERB2 log("bt is not approved");
         add_warning(_("You should check the backtrace for sensitive data."));
         add_warning(_("You must agree with sending the backtrace."));
+        send = false;
     }
 
     //use a variable like bool show_warnings instead of this??
     if(g_list_length(gtk_container_get_children(GTK_CONTAINER(g_box_warning_labels))) > 0)
         gtk_widget_show(GTK_WIDGET(g_box_warnings_area));
+
+    gtk_assistant_set_page_complete(g_assistant,
+                                    pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
+                                    send);
 }
 
 static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_data)
 {
-    gtk_assistant_set_page_complete(g_assistant,
-                                    pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
-                                    gtk_toggle_button_get_active(togglebutton));
     check_backtrace_and_allow_send();
 }
 
