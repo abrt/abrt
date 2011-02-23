@@ -10,7 +10,7 @@ GtkLabel *g_lbl_cd_reason;
 GtkLabel *g_lbl_analyze_log;
 GtkBox *g_box_analyzers;
 GtkBox *g_box_reporters;
-GtkTextView *g_analyze_log;
+GtkTextView *g_tv_analyze_log;
 GtkTextView *g_tv_backtrace;
 GtkTreeView *g_tv_details;
 GtkListStore *g_ls_details;
@@ -63,19 +63,21 @@ typedef struct
 
 static page_obj_t pages[] =
 {
-    { PAGE_SUMMARY            , "Problem description"   , GTK_ASSISTANT_PAGE_CONTENT  },
-    /* need this type to get "apply" signal */
-    { PAGE_ANALYZE_SELECTOR   , "Select analyzer"       , GTK_ASSISTANT_PAGE_CONFIRM  },
-    /* Was GTK_ASSISTANT_PAGE_PROGRESS
-     * if we leave it as _PROGRESS the back button skips the page
+    /* Page types:
+     * CONFIRM: has [Apply] instead of [Fwd] and emits "apply" signal
+     * PROGRESS: skipped on backward navigation
+     * SUMMARY: has only [Close] button
      */
-    { PAGE_ANALYZE_PROGRESS   , "Analyzing"             , GTK_ASSISTANT_PAGE_CONTENT },
+    /* glade element name     , on-screen text          , type */
+    { PAGE_SUMMARY            , "Problem description"   , GTK_ASSISTANT_PAGE_CONTENT  },
+    { PAGE_ANALYZE_SELECTOR   , "Select analyzer"       , GTK_ASSISTANT_PAGE_CONFIRM  },
+    { PAGE_ANALYZE_PROGRESS   , "Analyzing"             , GTK_ASSISTANT_PAGE_CONTENT  },
     /* Some reporters don't need backtrace, we can skip bt page for them.
      * Therefore we want to know reporters _before_ we go to bt page
      */
     { PAGE_REPORTER_SELECTOR  , "Select reporter"       , GTK_ASSISTANT_PAGE_CONTENT  },
     { PAGE_BACKTRACE_APPROVAL , "Review the backtrace"  , GTK_ASSISTANT_PAGE_CONTENT  },
-    { PAGE_HOWTO              , "Provide additional information", GTK_ASSISTANT_PAGE_CONTENT },
+    { PAGE_HOWTO      , "Provide additional information", GTK_ASSISTANT_PAGE_CONTENT  },
     { PAGE_REPORT             , "Confirm data to report", GTK_ASSISTANT_PAGE_CONFIRM  },
     /* Was GTK_ASSISTANT_PAGE_PROGRESS */
     { PAGE_REPORT_PROGRESS    , "Reporting"             , GTK_ASSISTANT_PAGE_SUMMARY  },
@@ -137,7 +139,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 {
     struct analyze_event_data *evd = data;
 
-    GtkTextBuffer *tb = gtk_text_view_get_buffer(g_analyze_log);
+    GtkTextBuffer *tb = gtk_text_view_get_buffer(g_tv_analyze_log);
 
     /* Ensure we insert text at the end */
     GtkTextIter text_iter;
@@ -154,7 +156,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 
     /* Scroll so that end of the log is visible */
     gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
-    gtk_text_view_scroll_to_iter(g_analyze_log, &text_iter,
+    gtk_text_view_scroll_to_iter(g_tv_analyze_log, &text_iter,
                 /*within_margin:*/ 0.0, /*use_align:*/ FALSE, /*xalign:*/ 0, /*yalign:*/ 0);
 
     if (r < 0 && errno == EAGAIN)
@@ -328,7 +330,7 @@ static void add_pages()
     g_lbl_analyze_log = GTK_LABEL(gtk_builder_get_object(builder, "lbl_analyze_log"));
     g_box_analyzers = GTK_BOX(gtk_builder_get_object(builder, "vb_analyzers"));
     g_box_reporters = GTK_BOX(gtk_builder_get_object(builder, "vb_reporters"));
-    g_analyze_log = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "analyze_log"));
+    g_tv_analyze_log = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "tv_analyze_log"));
     g_tv_backtrace = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "tv_backtrace"));
     g_tv_details = GTK_TREE_VIEW(gtk_builder_get_object(builder, "tv_details"));
 }
@@ -343,7 +345,7 @@ void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_data)
 //FIXME: hide/show warnings about rating and bt approval
 void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
 {
-    if(pages[PAGENO_BACKTRACE_APPROVAL].page_widget == page)
+    if (pages[PAGENO_BACKTRACE_APPROVAL].page_widget == page)
     {
         GtkToggleButton* tb_approve_bt = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "cb_approve_bt"));
         g_signal_connect(tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
@@ -369,9 +371,7 @@ void create_assistant()
     g_signal_connect(obj_assistant, "cancel", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(obj_assistant, "close", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(obj_assistant, "apply", G_CALLBACK(next_page), NULL);
-
     g_signal_connect(obj_assistant, "prepare", G_CALLBACK(on_page_prepare), NULL);
-
 
     builder = gtk_builder_new();
 

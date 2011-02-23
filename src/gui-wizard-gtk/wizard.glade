@@ -28,31 +28,43 @@
           </packing>
         </child>
         <child>
-          <object class="GtkScrolledWindow" id="scrolledwindow5">
+          <object class="GtkLabel" id="label7">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">automatic</property>
-            <property name="vscrollbar_policy">automatic</property>
-            <child>
-              <object class="GtkTreeView" id="tv_details">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-              </object>
-            </child>
+            <property name="xalign">0</property>
+            <property name="ypad">5</property>
+            <property name="label" translatable="yes">Press 'Forward' to proceed with analyzing and reporting this problem.</property>
           </object>
           <packing>
+            <property name="expand">False</property>
             <property name="position">1</property>
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label7">
+          <object class="GtkExpander" id="expander1">
             <property name="visible">True</property>
-            <property name="xalign">1</property>
-            <property name="ypad">5</property>
-            <property name="label" translatable="yes">Use Forward button to analyze and report this problem</property>
+            <property name="can_focus">True</property>
+            <child>
+              <object class="GtkScrolledWindow" id="scrolledwindow5">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
+                <child>
+                  <object class="GtkTreeView" id="tv_details">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="dump_elements">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Details</property>
+              </object>
+            </child>
           </object>
           <packing>
-            <property name="expand">False</property>
             <property name="position">2</property>
           </packing>
         </child>
@@ -130,7 +142,7 @@
             <property name="border_width">10</property>
             <property name="hscrollbar_policy">automatic</property>
             <child>
-              <object class="GtkTextView" id="analyze_log">
+              <object class="GtkTextView" id="tv_analyze_log">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="editable">False</property>
@@ -200,11 +212,9 @@
           <object class="GtkLabel" id="lbl_page4">
             <property name="width_request">750</property>
             <property name="visible">True</property>
-            <property name="xalign">0.05000000074505806</property>
-            <property name="yalign">0.05000000074505806</property>
-            <property name="label" translatable="yes">Below is the backtrace associated with your crash. A crash backtrace provides developers with details about how the crash happened, helping them track down the source of the problem.
-
-Please review the backtrace below and modify it as needed to ensure your bug report does not contain any sensitive data you would rather not share:</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0</property>
+            <property name="label" translatable="yes">Below is the backtrace. It provides developers with details of the crash, helping them track down the source of the problem. Please review it and remove any sensitive data you would rather not share:</property>
             <property name="wrap">True</property>
           </object>
           <packing>
@@ -557,7 +567,7 @@ Please review the backtrace below and modify it as needed to ensure your bug rep
             <property name="xalign">0</property>
             <property name="yalign">0</property>
             <property name="ypad">5</property>
-            <property name="label" translatable="yes">&lt;b&gt;Your comments are not private.&lt;/b&gt; They may be included into publicly-visible problem reports.</property>
+            <property name="label" translatable="yes">&lt;b&gt;Your comments are not private.&lt;/b&gt; They may be included into publicly visible problem reports.</property>
             <property name="use_markup">True</property>
           </object>
           <packing>
@@ -753,7 +763,7 @@ Please review the backtrace below and modify it as needed to ensure your bug rep
             <property name="border_width">10</property>
             <property name="hscrollbar_policy">automatic</property>
             <child>
-              <object class="GtkTextView" id="report_log">
+              <object class="GtkTextView" id="tv_report_log">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="editable">False</property>
