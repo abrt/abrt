@@ -126,6 +126,7 @@
             <property name="width_request">750</property>
             <property name="visible">True</property>
             <property name="xalign">0</property>
+            <property name="ypad">5</property>
             <property name="label" translatable="yes">Analyzing did not start yet</property>
             <property name="use_markup">True</property>
             <property name="wrap">True</property>
@@ -139,7 +140,6 @@
           <object class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="border_width">10</property>
             <property name="hscrollbar_policy">automatic</property>
             <child>
               <object class="GtkTextView" id="tv_analyze_log">
@@ -445,7 +445,6 @@
         <child>
           <object class="GtkVBox" id="vbox1">
             <property name="visible">True</property>
-            <property name="border_width">10</property>
             <property name="orientation">vertical</property>
             <property name="spacing">5</property>
             <child>
@@ -457,6 +456,7 @@
                     <property name="visible">True</property>
                     <property name="xalign">1.1175871339474952e-09</property>
                     <property name="yalign">0</property>
+                    <property name="ypad">5</property>
                     <property name="label" translatable="yes">How did this crash happen (step-by-step)? How can it be reproduced?</property>
                   </object>
                   <packing>
@@ -717,6 +717,7 @@
             <property name="width_request">750</property>
             <property name="visible">True</property>
             <property name="xalign">0</property>
+            <property name="ypad">5</property>
             <property name="label" translatable="yes">Reporting did not start yet</property>
             <property name="use_markup">True</property>
             <property name="wrap">True</property>
@@ -730,7 +731,6 @@
           <object class="GtkScrolledWindow" id="scrolledwindow6">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="border_width">10</property>
             <property name="hscrollbar_policy">automatic</property>
             <child>
               <object class="GtkTextView" id="tv_report_log">

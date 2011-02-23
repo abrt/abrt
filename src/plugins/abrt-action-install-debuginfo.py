@@ -70,30 +70,30 @@ def ask_yes_no(prompt, retries=4):
 # ..that can lead to: foo.c No such file and directory
 # files is not used...
 def unpack_rpm(package_nevra, files, tmp_dir, destdir, keeprpm):
-    package_file_suffix = ".rpm"
-    package_full_path = tmp_dir + "/" + package_nevra + package_file_suffix
+    package_name = package_nevra + ".rpm"
+    package_full_path = tmp_dir + "/" + package_name
     log1("Extracting %s to %s" % (package_full_path, destdir))
     log2(files)
-    print (_("Extracting cpio from %s") % (package_full_path))
+    print _("Extracting cpio from %s") % (package_full_path)
     unpacked_cpio_path = tmp_dir + "/unpacked.cpio"
     try:
         unpacked_cpio = open(unpacked_cpio_path, 'wb')
     except IOError, ex:
-        print (_("Can't write to:"), (unpacked_cpio_path,ex))
+        print _("Can't write to '%s': %s") % (unpacked_cpio_path, ex)
         return RETURN_FAILURE
     rpm2cpio = Popen(["rpm2cpio", package_full_path],
-                       stdout=unpacked_cpio, bufsize=-1)
+                       stdout = unpacked_cpio, bufsize = -1)
     retcode = rpm2cpio.wait()
 
     if retcode == 0:
         log1("cpio written OK")
         if not keeprpm:
             log1("keeprpms = False, removing %s" % package_full_path)
-            print _("Removing the temporary rpm file")
+            #print _("Removing temporary rpm file")
             os.unlink(package_full_path)
     else:
         unpacked_cpio.close()
-        print (_("Can't extract package: %s") % package_full_path)
+        print _("Can't extract package '%s'") % package_full_path
         return RETURN_FAILURE
 
     # close the file
@@ -101,18 +101,17 @@ def unpack_rpm(package_nevra, files, tmp_dir, destdir, keeprpm):
     # and open it for reading
     unpacked_cpio = open(unpacked_cpio_path, 'rb')
 
-    print (_("Caching files from %s made from %s") %
-            (unpacked_cpio_path, package_full_path))
+    print _("Caching files from %s made from %s") % ("unpacked.cpio", package_name)
     cpio = Popen(["cpio","-i", "-d", "--quiet"],
                   stdin=unpacked_cpio, cwd=destdir, bufsize=-1)
     retcode = cpio.wait()
 
     if retcode == 0:
         log1("files extracted OK")
-        print _("Removing the temporary cpio file")
+        #print _("Removing temporary cpio file")
         os.unlink(unpacked_cpio_path)
     else:
-        print (_("Can't extract files from: %s") % unpacked_cpio_path)
+        print _("Can't extract files from '%s'") % unpacked_cpio_path
         return RETURN_FAILURE
 
 class MyDownloadCallback(DownloadBaseCallback):
@@ -120,6 +119,7 @@ class MyDownloadCallback(DownloadBaseCallback):
         self.total_pkgs = total_pkgs
         self.downloaded_pkgs = 0
         self.last_pct = 0
+        self.last_time = 0
         DownloadBaseCallback.__init__(self)
 
     def updateProgress(self, name, frac, fread, ftime):
@@ -129,27 +129,32 @@ class MyDownloadCallback(DownloadBaseCallback):
             return
 
         self.last_pct = pct
-        # if run from terminal we can have a fancy output
+        # if run from terminal we can have fancy output
         if sys.stdout.isatty():
             sys.stdout.write("\033[sDownloading (%i of %i) %s: %3u%%\033[u"
-                                % (self.downloaded_pkgs + 1, self.total_pkgs,
-                                    name, pct)
-                            )
+                    % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
+            )
             if pct == 100:
-                print _("Downloading (%i of %i) %s: %3u%%"
-                                % (self.downloaded_pkgs + 1, self.total_pkgs,
-                                    name, pct)
-                        )
+                print (_("Downloading (%i of %i) %s: %3u%%")
+                        % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
+                )
         # but we want machine friendly output when spawned from abrt-server
         else:
-            print (_("Downloading (%i of %i) %s: %3u%%")
-                      % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
-                    )
+            t = time.time()
+            if self.last_time == 0:
+                self.last_time = t
+            # update only every 10 seconds
+            if pct == 100 or self.last_time > t or t - self.last_time >= 10:
+                print (_("Downloading (%i of %i) %s: %3u%%")
+                        % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
+                )
+                self.last_time = t
+                if pct == 100:
+                    self.last_time = 0
 
         sys.stdout.flush()
 
 class DebugInfoDownload(YumBase):
-    """abrt-debuginfo-install --core=CORE tmpdir cachedir"""
     def __init__(self, cache, tmp, keep_rpms=False):
         self.cachedir = cache
         self.tmpdir = tmp
@@ -171,13 +176,16 @@ class DebugInfoDownload(YumBase):
         if not files:
             return
 
-        print _("Searching the missing debuginfo packages")
-        # this suppress yum messages about setting up repositories
-        mute_stdout()
+	if verbose != 0 or len(files) != 0:
+	    print _("Searching for packages for %u debuginfo files") % len(files)
+
+        if verbose == 0:
+            # this suppress yum messages about setting up repositories
+            mute_stdout()
 
         # make yumdownloader work as non root user.
         if not self.setCacheDir():
-            self.logger.error("Error: Could not make cachedir, exiting")
+            self.logger.error("Error: can't make cachedir, exiting")
             sys.exit(50)
 
         # disable all not needed
@@ -196,13 +204,14 @@ class DebugInfoDownload(YumBase):
         self.repos.populateSack(mdtype='metadata', cacheonly=1)
         self.repos.populateSack(mdtype='filelists', cacheonly=1)
 
-        # re-enable the output to stdout
-        unmute_stdout()
+        if verbose == 0:
+            # re-enable the output to stdout
+            unmute_stdout()
 
         not_found = []
         package_files_dict = {}
         for debuginfo_path in files:
-            log2("yum whatprovides %s" %debuginfo_path)
+            log2("yum whatprovides %s" % debuginfo_path)
             pkg = self.pkgSack.searchFiles(debuginfo_path)
             # sometimes one file is provided by more rpms, we can use either of
             # them, so let's use the first match
@@ -215,7 +224,7 @@ class DebugInfoDownload(YumBase):
                     installed_size += float(pkg[0].installedsize)
                     total_pkgs += 1
 
-                log2("found pkg for %s : %s" % (debuginfo_path, pkg[0]))
+                log2("found pkg for %s: %s" % (debuginfo_path, pkg[0]))
             else:
                 log2("not found pkg for %s" % debuginfo_path)
                 not_found.append(debuginfo_path)
@@ -224,20 +233,14 @@ class DebugInfoDownload(YumBase):
         dnlcb = MyDownloadCallback(total_pkgs)
         self.repos.setProgressBar(dnlcb)
 
-        log1("%i files in %i packages" % (len(files), total_pkgs))
-
-        print (_("To download: (%.2f) M / Installed size: %.2f M" %
-                (
-                 todownload_size / (1024**2),
-                 installed_size / (1024**2))
-                )
-              )
-        #print _("%i debug infos not found" % len(not_found))
-
-        log1("packages: %i\nTo download: %f \nUnpacked size: %f" %
-            (total_pkgs,
-             todownload_size / (1024**2),
-             installed_size / (1024**2)))
+	if verbose != 0 or len(not_found) != 0:
+	    print _("Packages for %u debuginfo files were not found") % len(not_found)
+	if verbose != 0 or total_pkgs != 0:
+	    print _("Found %u packages to download") % total_pkgs
+	    print _("Downloading %.2fMb, installed size: %.2fMb") % (
+	             todownload_size / (1024**2),
+	             installed_size / (1024**2)
+	            )
 
         # ask only if we have terminal, because for now we don't have a way
         # how to pass the question to gui and the response back
@@ -307,8 +310,7 @@ def extract_info_from_core(corefile):
     #SEP = 3
     EXECUTABLE = 4
 
-    print (_("Analyzing corefile: %(corefile_path)s") %
-            {"corefile_path":corefile})
+    print _("Analyzing corefile '%s'") % corefile
     eu_unstrip_OUT = Popen(["eu-unstrip","--core=%s" % corefile, "-n"], stdout=PIPE, bufsize=-1).communicate()[0]
     # parse eu_unstrip_OUT and return the list of build_ids
 
@@ -328,7 +330,7 @@ def extract_info_from_core(corefile):
     #print eu_unstrip_OUT
     # we failed to get build ids from the core -> die
     if not eu_unstrip_OUT:
-        log1("can't get build ids from the core")
+        print "Can't get build ids from %s" % corefile
         return RETURN_FAILURE
 
     lines = eu_unstrip_OUT.split('\n')
@@ -349,7 +351,7 @@ def extract_info_from_core(corefile):
                 libraries.add(library)
                 build_ids.add(build_id)
             else:
-                log2("skipping line %s" % line)
+                log2("skipping line '%s'" % line)
     log1("Found %i build_ids" % len(build_ids))
     log1("Found %i libs" % len(libraries))
     return build_ids
@@ -359,7 +361,7 @@ def build_ids_to_path(build_ids):
     build_id1=${build_id:0:2}
     build_id2=${build_id:2}
     file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
-	"""
+    """
     return ["/usr/lib/debug/.build-id/%s/%s.debug" % (b_id[:2], b_id[2:]) for b_id in build_ids]
 
 # beware this finds only missing libraries, but not the executable itself ..
@@ -386,9 +388,7 @@ def clean_up():
     try:
         shutil.rmtree(tmpdir)
     except OSError, ex:
-        print (_("Can't remove %(tmpdir_path)s: %(reason)s")
-                % {"tmpdir_path":tmpdir, "reason": ex }
-                 )
+        print _("Can't remove '%s': %s") % (tmpdir, ex)
 
 def sigterm_handler(signum, frame):
     clean_up()
@@ -396,10 +396,11 @@ def sigterm_handler(signum, frame):
 
 def sigint_handler(signum, frame):
     clean_up()
-    print "\n", _("Exiting on user Command")
+    print "\n", _("Exiting on user command")
     exit(RETURN_OK)
 
 import signal
+
 if __name__ == "__main__":
     # abrt-server can send SIGTERM to abort the download
     signal.signal(signal.SIGTERM, sigterm_handler)
@@ -409,15 +410,14 @@ if __name__ == "__main__":
     cachedir = None
     tmpdir = None
     keeprpms = False
-    result = RETURN_OK
     noninteractive = False
 
     # localization
     init_gettext()
 
-    help_text = _("Usage: %s --core=<COREFILE> "
-                            "--tmpdir=<TMPDIR> "
-                            "--cache=<CACHEDIR>") % sys.argv[0]
+    help_text = _("Usage: %s --core=COREFILE "
+                            "--tmpdir=TMPDIR "
+                            "--cache=CACHEDIR") % sys.argv[0]
     try:
         opts, args = getopt.getopt(sys.argv[1:], "vyhc:", ["help", "core=",
                                                           "cache=", "tmpdir=",
@@ -462,13 +462,10 @@ if __name__ == "__main__":
         log2(missing)
         downloader = DebugInfoDownload(cache=cachedir, tmp=tmpdir)
         result = downloader.download(missing)
-    else:
-        print _("All debuginfo seems to be available")
-        exit(RETURN_OK)
+        missing = filter_installed_debuginfos(b_ids, cachedir)
+        for bid in missing:
+            print _("Missing debuginfo file: %s") % bid
+        exit(result)
 
-    missing = filter_installed_debuginfos(b_ids, cachedir)
-    for bid in missing:
-        log1("MISSING:%s" % bid)
-
-    print _("Complete!")
-    exit(result)
+    print _("All debuginfo files are available")
+    exit(RETURN_OK)

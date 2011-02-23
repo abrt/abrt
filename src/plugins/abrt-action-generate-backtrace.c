@@ -276,7 +276,7 @@ int main(int argc, char **argv)
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-    msg_prefix = PROGNAME;
+    //msg_prefix = PROGNAME;
     if (opts & OPT_s)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
@@ -295,41 +295,53 @@ int main(int argc, char **argv)
     char *package = dd_load_text(dd, FILENAME_PACKAGE);
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
 
-    /* Create and store backtrace */
+    /* Create gdb backtrace */
     /* NB: get_backtrace() closes dd */
     char *backtrace_str = get_backtrace(dd);
     if (!backtrace_str)
     {
         backtrace_str = xstrdup("");
-        VERB3 log("get_backtrace() returns NULL, broken core/gdb?");
+        log("get_backtrace() returns NULL, broken core/gdb?");
     }
 
-    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return 1;
-
-    dd_save_text(dd, FILENAME_BACKTRACE, backtrace_str);
-
-    /* Compute and store backtrace hash. */
+    /* Compute backtrace hash */
     struct btp_location location;
     btp_location_init(&location);
     char *backtrace_str_ptr = backtrace_str;
     struct btp_backtrace *backtrace = btp_backtrace_parse(&backtrace_str_ptr, &location);
+
+    /* Store gdb backtrace */
+
+    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        return 1;
+    dd_save_text(dd, FILENAME_BACKTRACE, backtrace_str);
+    /* Don't be completely silent. gdb run takes a few seconds,
+     * it is useful to let user know it (maybe) worked.
+     */
+    log(_("Backtrace is generated and saved, %u bytes"), (int)strlen(backtrace_str));
+    free(backtrace_str);
+
+    /* Store backtrace hash */
+
     if (!backtrace)
     {
-        VERB1 log(_("Backtrace parsing failed for %s"), dump_dir_name);
-        VERB1 log("%d:%d: %s", location.line, location.column, location.message);
-        /* If the parser failed, compute the UUID from the executable
+        /*
+         * The parser failed. Compute the UUID from the executable
          * and package only.  This is not supposed to happen often.
          */
+        VERB1 log(_("Backtrace parsing failed for %s"), dump_dir_name);
+        VERB1 log("%d:%d: %s", location.line, location.column, location.message);
         struct strbuf *emptybt = strbuf_new();
         strbuf_prepend_str(emptybt, executable);
         strbuf_prepend_str(emptybt, package);
+
         char hash_str[SHA1_RESULT_LEN*2 + 1];
         create_hash(hash_str, emptybt->buf);
-        dd_save_text(dd, FILENAME_DUPHASH, hash_str);
 
-        /* Other parts of ABRT assume that if no rating is available,
+        dd_save_text(dd, FILENAME_DUPHASH, hash_str);
+        /*
+         * Other parts of ABRT assume that if no rating is available,
          * it is ok to allow reporting of the bug. To be sure no bad
          * backtrace is reported, rate the backtrace with the lowest
          * rating.
@@ -337,7 +349,6 @@ int main(int argc, char **argv)
         dd_save_text(dd, FILENAME_RATING, "0");
 
         strbuf_free(emptybt);
-        free(backtrace_str);
         free(package);
         free(executable);
         dd_close(dd);
@@ -348,7 +359,6 @@ int main(int argc, char **argv)
          */
         return 0;
     }
-    free(backtrace_str);
 
     /* Compute duplication hash. */
     char *str_hash_core = btp_backtrace_get_duplication_hash(backtrace);
@@ -356,8 +366,10 @@ int main(int argc, char **argv)
     strbuf_append_str(str_hash, package);
     strbuf_append_str(str_hash, executable);
     strbuf_append_str(str_hash, str_hash_core);
+
     char hash_str[SHA1_RESULT_LEN*2 + 1];
     create_hash(hash_str, str_hash->buf);
+
     dd_save_text(dd, FILENAME_DUPHASH, hash_str);
     strbuf_free(str_hash);
     free(str_hash_core);
@@ -380,14 +392,14 @@ int main(int argc, char **argv)
     /* Get the function name from the crash frame. */
     struct btp_frame *crash_frame = btp_backtrace_get_crash_frame(backtrace);
     if (crash_frame)
-     {
+    {
         if (crash_frame->function_name &&
             0 != strcmp(crash_frame->function_name, "??"))
         {
             dd_save_text(dd, FILENAME_CRASH_FUNCTION, crash_frame->function_name);
         }
         btp_frame_free(crash_frame);
-     }
+    }
     btp_backtrace_free(backtrace);
     dd_close(dd);
 
