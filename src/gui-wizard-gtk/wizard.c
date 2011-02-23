@@ -388,19 +388,18 @@ static void add_pages(void)
         pages[i].page_widget = page;
 
         gtk_assistant_append_page(g_assistant, page);
-        /* if we set all pages to complete the wizard thinks there is nothing
-        *  to do and shows the button "Last" which allows user to skip all pages
-        *  so we need to set them all as incomplete and complete them one by one
-        *  on proper place - on_page_prepare() ?
-        */
-        //gtk_assistant_set_page_complete(g_assistant, page, true);
+        /* If we set all pages to complete the wizard thinks there is nothing
+         * to do and shows the button "Last" which allows user to skip all pages
+         * so we need to set them all as incomplete and complete them one by one
+         * on proper place - on_page_prepare() ?
+         */
+        gtk_assistant_set_page_complete(g_assistant, page, true);
 
         gtk_assistant_set_page_title(g_assistant, page, pages[i].title);
         gtk_assistant_set_page_type(g_assistant, page, pages[i].type);
 
         VERB1 log("added page: %s", page_names[i]);
     }
-
     /* Set pointers to objects we might need to work with */
     g_lbl_cd_reason = GTK_LABEL(gtk_builder_get_object(builder, "lbl_cd_reason"));
     g_box_analyzers = GTK_BOX(gtk_builder_get_object(builder, "vb_analyzers"));
@@ -416,6 +415,10 @@ static void add_pages(void)
     g_widget_warnings_area = GTK_WIDGET(gtk_builder_get_object(builder, "hb_warnings_area"));
     ///* hide the warnings by default */
     //gtk_widget_hide(g_widget_warnings_area);
+
+    //gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_REPORTER_SELECTOR].page_widget, false);
+    gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
+                gtk_toggle_button_get_active(g_tb_approve_bt));
 }
 
 static void add_warning(const char *warning)
@@ -433,6 +436,7 @@ static void add_warning(const char *warning)
 static void check_backtrace_and_allow_send(void)
 {
     bool send = true;
+    bool warn = false;
 
     /* erase all warnings */
     gtk_widget_hide(g_widget_warnings_area);
@@ -452,13 +456,14 @@ static void check_backtrace_and_allow_send(void)
                 break;
             case '3': //bt is usable, but not complete, so show a warning
                 add_warning(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."));
-                send = false;
+                warn = true;
                 break;
             case '2':
             case '1':
                 //FIXME: see CreporterAssistant: 394 for ideas
                 add_warning(_("Reporting disabled because the backtrace is unusable."));
                 send = false;
+                warn = true;
                 break;
         }
     }
@@ -468,12 +473,13 @@ static void check_backtrace_and_allow_send(void)
         add_warning(_("You should check the backtrace for sensitive data."));
         add_warning(_("You must agree with sending the backtrace."));
         send = false;
+        warn = true;
     }
 
     gtk_assistant_set_page_complete(g_assistant,
                                     pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
                                     send);
-    if (!send)
+    if (warn)
         gtk_widget_show(g_widget_warnings_area);
 }
 
@@ -484,14 +490,6 @@ static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_da
 
 static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
 {
-    //FIXME: move some of this to the add_pages??
-    if (pages[PAGENO_SUMMARY].page_widget == page)
-    {
-        /* the first page doesn't require any action to be completed,
-         * so lets make it complete and enable the "Forward" button
-         */
-        gtk_assistant_set_page_complete(assistant, page, true);
-    }
     if (pages[PAGENO_BACKTRACE_APPROVAL].page_widget == page)
     {
         check_backtrace_and_allow_send();
