@@ -208,6 +208,8 @@ int prepare_commands(struct run_event_state *state,
                 const char *dump_dir_name,
                 const char *event
 ) {
+    free_commands(state);
+
     state->children_count = 0;
 
     GList *commands = load_event_config(NULL, dump_dir_name, event, CONF_DIR"/abrt_event.conf");

@@ -56,7 +56,7 @@ int prepare_commands(struct run_event_state *state, const char *dump_dir_name, c
  * else sets state->command_pid and state->command_out_fd and returns >=0
  */
 int spawn_next_command(struct run_event_state *state, const char *dump_dir_name, const char *event);
-/* Cleans up internal state created in  prepare_commands */
+/* Cleans up internal state created in prepare_commands */
 void free_commands(struct run_event_state *state);
 
 /* Syncronous command execution */

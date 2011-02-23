@@ -141,6 +141,7 @@ static gint next_page_no(gint current_page_no, gpointer data)
 struct analyze_event_data {
     struct run_event_state *run_state;
     const char *event_name;
+    GList *more_events;
     GtkWidget *page_widget;
     GtkLabel *status_label;
     GtkTextView *tv_log;
@@ -150,29 +151,34 @@ struct analyze_event_data {
     /*guint event_source_id;*/
 };
 
-static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, gpointer data)
+static void append_to_textview(GtkTextView *tv, const char *str, int len)
 {
-    struct analyze_event_data *evd = data;
-
-    GtkTextBuffer *tb = gtk_text_view_get_buffer(evd->tv_log);
+    GtkTextBuffer *tb = gtk_text_view_get_buffer(tv);
 
     /* Ensure we insert text at the end */
     GtkTextIter text_iter;
     gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
     gtk_text_buffer_place_cursor(tb, &text_iter);
 
+    gtk_text_buffer_insert_at_cursor(tb, str, len >= 0 ? len : strlen(str));
+
+    /* Scroll so that the end of the log is visible */
+    gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
+    gtk_text_view_scroll_to_iter(tv, &text_iter,
+                /*within_margin:*/ 0.0, /*use_align:*/ FALSE, /*xalign:*/ 0, /*yalign:*/ 0);
+}
+
+static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, gpointer data)
+{
+    struct analyze_event_data *evd = data;
+
     /* Read and insert the output into the log pane */
     char buf[128]; /* usually we get one line, no need to have big buf */
     int r;
     while ((r = read(evd->fd, buf, sizeof(buf))) > 0)
     {
-        gtk_text_buffer_insert_at_cursor(tb, buf, r);
+        append_to_textview(evd->tv_log, buf, r);
     }
-
-    /* Scroll so that the end of the log is visible */
-    gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
-    gtk_text_view_scroll_to_iter(evd->tv_log, &text_iter,
-                /*within_margin:*/ 0.0, /*use_align:*/ FALSE, /*xalign:*/ 0, /*yalign:*/ 0);
 
     if (r < 0 && errno == EAGAIN)
         /* We got all data, but fd is still open. Done for now */
@@ -190,17 +196,40 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
      || spawn_next_command(evd->run_state, g_dump_dir_name, evd->event_name) < 0
     ) {
         VERB1 log("done running event on '%s': %d", g_dump_dir_name, retval);
-        /*g_source_remove(evd->event_source_id);*/
-        close(evd->fd);
-        free_run_event_state(evd->run_state);
-        char *msg = xasprintf(evd->end_msg, retval);
-        gtk_label_set_text(evd->status_label, msg);
-        free(msg);
-        /* Unfreeze assistant */
-        gtk_assistant_set_page_complete(g_assistant, evd->page_widget, true);
-        free(evd);
-        reload_dump_dir();
-        return FALSE; /* "please remove this event" */
+//append_to_textview(evd->tv_log, msg);
+
+        for (;;)
+        {
+            if (!evd->more_events)
+            {
+                char *msg = xasprintf(evd->end_msg, retval);
+                gtk_label_set_text(evd->status_label, msg);
+                free(msg);
+                /* Unfreeze assistant */
+                gtk_assistant_set_page_complete(g_assistant, evd->page_widget, true);
+
+                /*g_source_remove(evd->event_source_id);*/
+                close(evd->fd);
+                free_run_event_state(evd->run_state);
+                free(evd);
+
+                reload_dump_dir();
+                return FALSE; /* "please remove this event" */
+            }
+
+            evd->event_name = evd->more_events->data;
+            evd->more_events = g_list_remove(evd->more_events, evd->more_events->data);
+
+            if (prepare_commands(evd->run_state, g_dump_dir_name, evd->event_name) != 0
+             && spawn_next_command(evd->run_state, g_dump_dir_name, evd->event_name) >= 0
+            ) {
+                VERB1 log("running event '%s' on '%s'", evd->event_name, g_dump_dir_name);
+                break;
+            }
+            /* No commands needed?! (This is untypical) */
+//TODO: msg?
+//append_to_textview(evd->tv_log, msg);
+        }
     }
 
     /* New command was started. Continue waiting for input */
@@ -232,11 +261,11 @@ static void start_event_run(const char *event_name,
      || spawn_next_command(state, g_dump_dir_name, event_name) < 0
     ) {
         /* No commands needed?! (This is untypical) */
+        free_run_event_state(state);
 //TODO: better msg?
         char *msg = xasprintf(_("No processing for event '%s' is defined"), event_name);
         gtk_label_set_text(status_label, msg);
         free(msg);
-        free_run_event_state(state);
         return;
     }
 
@@ -248,6 +277,7 @@ static void start_event_run(const char *event_name,
     struct analyze_event_data *evd = xzalloc(sizeof(*evd));
     evd->run_state = state;
     evd->event_name = event_name;
+    evd->more_events = more_events;
     evd->page_widget = page;
     evd->status_label = status_label;
     evd->tv_log = tv_log;
@@ -306,7 +336,7 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
             if (reporters)
             {
                 char *first_event_name = reporters->data;
-                reporters = g_list_remove(reporters, first_event_name);
+                reporters = g_list_remove(reporters, reporters->data);
                 start_event_run(first_event_name,
                         reporters,
                         pages[PAGENO_REPORT_PROGRESS].page_widget,
@@ -315,7 +345,6 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
                         _("Reporting..."),
                         _("Reporting finished with exit code %d")
                 );
-                g_list_free(reporters);
             }
         }
     }
