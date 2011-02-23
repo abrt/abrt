@@ -33,3 +33,4 @@ extern char *g_analyze_events;
 extern char *g_report_events;
 extern crash_data_t *g_cd;
 void reload_dump_dir(void);
+void remove_child_widget(GtkWidget *widget, gpointer container);

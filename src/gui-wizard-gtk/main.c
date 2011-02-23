@@ -23,9 +23,12 @@ static void analyze_rb_was_toggled(GtkToggleButton *button, gpointer user_data)
     }
 }
 
-static void remove_child_widget(GtkWidget *widget, gpointer container)
+void remove_child_widget(GtkWidget *widget, gpointer container)
 {
-    gtk_container_remove(container, widget);
+    /*destroy will safely remove it and free the memory if there are no refs
+     * left
+     */
+    gtk_widget_destroy(widget);
 }
 
 static GtkWidget *add_event_buttons(GtkBox *box, char *event_name, GCallback func, bool radio)

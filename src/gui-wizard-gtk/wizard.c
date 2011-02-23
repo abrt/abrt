@@ -18,6 +18,10 @@ GtkLabel *g_lbl_cd_reason;
 GtkTextView *g_tv_backtrace;
 GtkTreeView *g_tv_details;
 GtkListStore *g_ls_details;
+GtkBox *g_box_warnings_area;
+GtkBox *g_box_warning_labels;
+GtkToggleButton * g_tb_approve_bt;
+
 
 static GtkBuilder *builder;
 
@@ -384,8 +388,12 @@ static void add_pages()
         pages[i].page_widget = page;
 
         gtk_assistant_append_page(g_assistant, page);
-        //FIXME: shouldn't be complete until something is selected!
-        gtk_assistant_set_page_complete(g_assistant, page, true);
+        /* if we set all pages to complete the wizard thinks there is nothing
+        *  to do and shows the button "Last" which allows user to skip all pages
+        *  so we need to set them all as incomplete and complete them one by one
+        *  on proper place - on_page_prepare() ?
+        */
+        //gtk_assistant_set_page_complete(g_assistant, page, true);
 
         gtk_assistant_set_page_title(g_assistant, page, pages[i].title);
         gtk_assistant_set_page_type(g_assistant, page, pages[i].type);
@@ -403,26 +411,91 @@ static void add_pages()
     g_tv_report_log = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "tv_report_log"));
     g_tv_backtrace = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "tv_backtrace"));
     g_tv_details = GTK_TREE_VIEW(gtk_builder_get_object(builder, "tv_details"));
+    g_box_warnings_area = GTK_BOX(gtk_builder_get_object(builder, "hb_warnings_area"));
+    /* hide the warnings by default */
+    gtk_widget_hide(GTK_WIDGET(g_box_warnings_area));
+    g_box_warning_labels = GTK_BOX(gtk_builder_get_object(builder, "hb_warning_labels"));
+    g_tb_approve_bt = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "cb_approve_bt"));
+
 }
 
-void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_data)
+static void add_warning(const char *warning)
+{
+    char *label_str = xasprintf("• %s", warning);
+    GtkWidget *warning_lbl = gtk_label_new(label_str);
+    gtk_misc_set_alignment(GTK_MISC(warning_lbl), 0.0, 0.0);
+    gtk_label_set_justify(GTK_LABEL(warning_lbl), GTK_JUSTIFY_LEFT);
+    gtk_box_pack_start(g_box_warning_labels, warning_lbl, false, false, 0);
+    gtk_widget_show(GTK_WIDGET(warning_lbl));
+    /* should be safe to free it, gtk calls strdup() to copy it */
+    free(label_str);
+}
+
+static void check_backtrace_and_allow_send()
+{
+    gtk_widget_hide(GTK_WIDGET(g_box_warnings_area));
+    /* erase all warnings */
+    gtk_container_foreach(GTK_CONTAINER(g_box_warning_labels), &remove_child_widget, NULL);
+    /* FIXME: this should be bind to a reporter not to a compoment
+     * but we don't rate oopses, so for now we skip the "kernel" manually
+     */
+    const char *component = get_crash_item_content_or_NULL(g_cd, FILENAME_COMPONENT);
+    if(strcmp(component, "kernel") != 0)
+    {
+        const char *rating = get_crash_item_content_or_NULL(g_cd, FILENAME_RATING);
+        switch(*rating)
+        {
+            case '4': //bt is ok - no warning here
+VERB2 log("rating is 4\n");
+                break;
+            case '3': //bt is usable, but not complete, so show a warning
+VERB2 log("rating is 3 - adding warning");
+                add_warning(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."));
+                break;
+            case '2':
+            case '1':
+                break;
+        }
+    }
+
+    if(!gtk_toggle_button_get_active(g_tb_approve_bt))
+    {
+VERB2 log("bt is not approved");
+        add_warning(_("You should check the backtrace for sensitive data."));
+        add_warning(_("You must agree with sending the backtrace."));
+    }
+
+    //use a variable like bool show_warnings instead of this??
+    if(g_list_length(gtk_container_get_children(GTK_CONTAINER(g_box_warning_labels))) > 0)
+        gtk_widget_show(GTK_WIDGET(g_box_warnings_area));
+}
+
+static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_data)
 {
     gtk_assistant_set_page_complete(g_assistant,
                                     pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
                                     gtk_toggle_button_get_active(togglebutton));
+    check_backtrace_and_allow_send();
 }
 
-//FIXME: hide/show warnings about rating and bt approval
 void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
 {
+    //FIXME: move some of this to the add_pages??
+    if(pages[PAGENO_SUMMARY].page_widget == page)
+    {
+        /* the first page doesn't require any action to be completed,
+         * so lets make it complete and enable the "Forawrd" button
+         */
+        gtk_assistant_set_page_complete(assistant, page, true);
+    }
     if (pages[PAGENO_BACKTRACE_APPROVAL].page_widget == page)
     {
-        GtkToggleButton* tb_approve_bt = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "cb_approve_bt"));
-        g_signal_connect(tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
+        g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
         gtk_assistant_set_page_complete(g_assistant,
             pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
             false
             );
+        check_backtrace_and_allow_send();
     }
 }
 
