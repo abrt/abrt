@@ -23,6 +23,10 @@ GtkBox *g_box_warning_labels;
 GtkToggleButton *g_tb_approve_bt;
 GtkButton *g_btn_refresh;
 
+/* required for search in bt */
+guint g_timeout = 0;
+GtkEntry * g_search_entry_bt;
+
 
 static GtkBuilder *builder;
 static PangoFontDescription *monospace_font;
@@ -433,7 +437,8 @@ static void check_backtrace_and_allow_send(void)
 
     /*
      * FIXME: this should be bind to a reporter not to a compoment
-     * but we don't rate oopses, so for now we skip the "kernel" manually
+     * but so far only oopses doesn't have rating, so for now we
+     * skip the "kernel" manually
      */
     const char *component = get_crash_item_content_or_NULL(g_cd, FILENAME_COMPONENT);
     if (strcmp(component, "kernel") != 0)
@@ -588,6 +593,25 @@ static gint next_page_no(gint current_page_no, gpointer data)
     return current_page_no + 1;
 }
 
+static gboolean highlight_search(gpointer user_data)
+{
+    GtkEntry *entry = GTK_ENTRY(user_data);
+    g_print("searching: %s\n", gtk_entry_get_text(entry));
+    //returning will make gtk to remove this event
+    return false;
+}
+
+static void search_timeout(GtkEntry *entry)
+{
+    /* this little hack makes the search start after 500 milisec after
+     * user stops writing into entry box
+     * if this part is removed, then the search will be started on every
+     * char written into the entry
+     */
+    if(g_timeout != 0)
+        g_source_remove(g_timeout);
+    g_timeout = g_timeout_add(500, &highlight_search, (gpointer)entry);
+}
 
 /* Initialization */
 
@@ -683,6 +707,7 @@ static void add_pages(void)
     g_tb_approve_bt        = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "cb_approve_bt"));
     g_widget_warnings_area = GTK_WIDGET(       gtk_builder_get_object(builder, "b_warnings_area"));
     g_btn_refresh          = GTK_BUTTON(       gtk_builder_get_object(builder, "btn_refresh"));
+    g_search_entry_bt      = GTK_ENTRY(        gtk_builder_get_object(builder, "entry_search_bt"));
 
     gtk_widget_modify_font(GTK_WIDGET(g_tv_analyze_log), monospace_font);
     gtk_widget_modify_font(GTK_WIDGET(g_tv_report_log), monospace_font);
@@ -727,6 +752,14 @@ void create_assistant()
 
     g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
     g_signal_connect(g_btn_refresh, "clicked", G_CALLBACK(on_btn_refresh_clicked), NULL);
+
+    /* init search */
+    GtkTextBuffer *backtrace_buf = gtk_text_view_get_buffer(g_tv_backtrace);
+    /* found items background */
+    gtk_text_buffer_create_tag(backtrace_buf, "search_result_bg", "background", "red", NULL);
+    /* current position */
+    gtk_text_buffer_create_tag(backtrace_buf, "current_pos_bg", "background", "yellow", NULL);
+    g_signal_connect(g_search_entry_bt, "changed", G_CALLBACK(search_timeout), NULL);
 
     gtk_assistant_set_page_complete(g_assistant,
                 pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
