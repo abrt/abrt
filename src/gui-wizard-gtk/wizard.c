@@ -101,41 +101,6 @@ void on_b_refresh_clicked(GtkButton *button)
 }
 
 
-static gint next_page_no(gint current_page_no, gpointer data)
-{
-    switch (current_page_no)
-    {
-    case PAGENO_SUMMARY:
-        if (!g_analyze_events[0])
-        {
-            //TODO: if (!g_reporter_events[0]) /* no reporters available */ then what?
-            return PAGENO_REPORTER_SELECTOR; /* skip analyze pages */
-        }
-        break;
-
-    case PAGENO_REPORTER_SELECTOR:
-        if (get_crash_item_content_or_NULL(g_cd, FILENAME_BACKTRACE))
-            break;
-        current_page_no++; /* no backtrace, skip next page */
-        /* fall through */
-
-#if 0
-    case PAGENO_BACKTRACE_APPROVAL:
-        if (get_crash_item_content_or_NULL(g_cd, FILENAME_COMMENT)
-         || get_crash_item_content_or_NULL(g_cd, FILENAME_REPRODUCE)
-        ) {
-            break;
-        }
-        current_page_no++; /* no comment, skip next page */
-        /* fall through */
-#endif
-
-    }
-
-    return current_page_no + 1;
-}
-
-
 /* start_event_run */
 
 struct analyze_event_data {
@@ -245,7 +210,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
 }
 
 static void start_event_run(const char *event_name,
-                GList *more_events, // unused, TODO
+                GList *more_events,
                 GtkWidget *page,
                 GtkTextView *tv_log,
                 GtkLabel *status_label,
@@ -295,59 +260,6 @@ static void start_event_run(const char *event_name,
     gtk_label_set_text(status_label, start_msg);
     /* Freeze assistant so it can't move away from the page until analyzing is done */
     gtk_assistant_set_page_complete(g_assistant, page, false);
-}
-
-
-/* "Next page" button handler */
-static void next_page(GtkAssistant *assistant, gpointer user_data)
-{
-    /* page_no is actually the previous page, because this
-     * function is called before assistant goes to the next_page
-     */
-    int page_no = gtk_assistant_get_current_page(assistant);
-    VERB2 log("page_no:%d", page_no);
-
-    if (page_no == PAGENO_ANALYZE_SELECTOR
-     && g_analyze_label_selected != NULL)
-    {
-        start_event_run(/*event_name:*/ g_analyze_label_selected,
-                NULL,
-                pages[PAGENO_ANALYZE_PROGRESS].page_widget,
-                g_tv_analyze_log,
-                g_lbl_analyze_log,
-                _("Analyzing..."),
-                _("Analyzing finished with exit code %d")
-        );
-    }
-
-    if (page_no == PAGENO_REPORT)
-    {
-        GList *reporters = gtk_container_get_children(GTK_CONTAINER(g_box_reporters));
-        if (reporters)
-        {
-            for (GList *li = reporters; li; li = li->next)
-            {
-                if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
-                    li->data = (gpointer)gtk_button_get_label(GTK_BUTTON(li->data));
-                else
-                    li->data = NULL;
-            }
-            reporters = g_list_remove_all(reporters, NULL);
-            if (reporters)
-            {
-                char *first_event_name = reporters->data;
-                reporters = g_list_remove(reporters, reporters->data);
-                start_event_run(first_event_name,
-                        reporters,
-                        pages[PAGENO_REPORT_PROGRESS].page_widget,
-                        g_tv_report_log,
-                        g_lbl_report_log,
-                        _("Reporting..."),
-                        _("Reporting finished with exit code %d")
-                );
-            }
-        }
-    }
 }
 
 
@@ -421,12 +333,99 @@ static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_da
 }
 
 
+/* Page navigation handlers */
+
+static void next_page(GtkAssistant *assistant, gpointer user_data)
+{
+    /* page_no is actually the previous page, because this
+     * function is called before assistant goes to the next_page
+     */
+    int page_no = gtk_assistant_get_current_page(assistant);
+    VERB2 log("page_no:%d", page_no);
+
+    if (page_no == PAGENO_ANALYZE_SELECTOR
+     && g_analyze_label_selected != NULL)
+    {
+        start_event_run(/*event_name:*/ g_analyze_label_selected,
+                NULL,
+                pages[PAGENO_ANALYZE_PROGRESS].page_widget,
+                g_tv_analyze_log,
+                g_lbl_analyze_log,
+                _("Analyzing..."),
+                _("Analyzing finished with exit code %d")
+        );
+    }
+
+    if (page_no == PAGENO_REPORT)
+    {
+        GList *reporters = gtk_container_get_children(GTK_CONTAINER(g_box_reporters));
+        if (reporters)
+        {
+            for (GList *li = reporters; li; li = li->next)
+            {
+                if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
+                    li->data = (gpointer)gtk_button_get_label(GTK_BUTTON(li->data));
+                else
+                    li->data = NULL;
+            }
+            reporters = g_list_remove_all(reporters, NULL);
+            if (reporters)
+            {
+                char *first_event_name = reporters->data;
+                reporters = g_list_remove(reporters, reporters->data);
+                start_event_run(first_event_name,
+                        reporters,
+                        pages[PAGENO_REPORT_PROGRESS].page_widget,
+                        g_tv_report_log,
+                        g_lbl_report_log,
+                        _("Reporting..."),
+                        _("Reporting finished with exit code %d")
+                );
+            }
+        }
+    }
+}
+
 static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
 {
     if (pages[PAGENO_BACKTRACE_APPROVAL].page_widget == page)
     {
         check_backtrace_and_allow_send();
     }
+}
+
+static gint next_page_no(gint current_page_no, gpointer data)
+{
+    switch (current_page_no)
+    {
+    case PAGENO_SUMMARY:
+        if (!g_analyze_events[0])
+        {
+            //TODO: if (!g_reporter_events[0]) /* no reporters available */ then what?
+            return PAGENO_REPORTER_SELECTOR; /* skip analyze pages */
+        }
+        break;
+
+    case PAGENO_REPORTER_SELECTOR:
+        if (get_crash_item_content_or_NULL(g_cd, FILENAME_BACKTRACE))
+            break;
+        current_page_no++; /* no backtrace, skip next page */
+        /* fall through */
+
+#if 0
+    case PAGENO_BACKTRACE_APPROVAL:
+        if (get_crash_item_content_or_NULL(g_cd, FILENAME_COMMENT)
+         || get_crash_item_content_or_NULL(g_cd, FILENAME_REPRODUCE)
+        ) {
+            break;
+        }
+        current_page_no++; /* no comment, skip next page */
+        /* fall through */
+#endif
+
+    }
+
+    return current_page_no + 1;
 }
 
 
