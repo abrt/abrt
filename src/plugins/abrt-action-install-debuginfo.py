@@ -176,9 +176,6 @@ class DebugInfoDownload(YumBase):
         if not files:
             return
 
-	if verbose != 0 or len(files) != 0:
-	    print _("Searching for packages for %u debuginfo files") % len(files)
-
         if verbose == 0:
             # this suppress yum messages about setting up repositories
             mute_stdout()
@@ -234,7 +231,7 @@ class DebugInfoDownload(YumBase):
         self.repos.setProgressBar(dnlcb)
 
 	if verbose != 0 or len(not_found) != 0:
-	    print _("Packages for %u debuginfo files were not found") % len(not_found)
+	    print _("Can't find packages for %u debuginfo files") % len(not_found)
 	if verbose != 0 or total_pkgs != 0:
 	    print _("Found %u packages to download") % total_pkgs
 	    print _("Downloading %.2fMb, installed size: %.2fMb") % (
@@ -457,9 +454,11 @@ if __name__ == "__main__":
     b_ids = extract_info_from_core(core)
     if b_ids == RETURN_FAILURE:
         exit(RETURN_FAILURE)
+
     missing = filter_installed_debuginfos(b_ids, cachedir)
     if missing:
         log2(missing)
+        print _("Coredump references %u debuginfo files, %u of them are not installed") % (len(b_ids), len(missing))
         downloader = DebugInfoDownload(cache=cachedir, tmp=tmpdir)
         result = downloader.download(missing)
         missing = filter_installed_debuginfos(b_ids, cachedir)
@@ -467,5 +466,5 @@ if __name__ == "__main__":
             print _("Missing debuginfo file: %s") % bid
         exit(result)
 
-    print _("All debuginfo files are available")
+    print _("All %u debuginfo files are available") % len(b_ids)
     exit(RETURN_OK)

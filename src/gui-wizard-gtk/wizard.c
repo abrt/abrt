@@ -25,6 +25,8 @@ GtkButton *g_btn_refresh;
 
 
 static GtkBuilder *builder;
+static PangoFontDescription *monospace_font;
+
 
 /* THE PAGE FLOW
  * page_1: analyze action selection
@@ -668,19 +670,23 @@ static void add_pages(void)
         VERB1 log("added page: %s", page_names[i]);
     }
     /* Set pointers to objects we might need to work with */
-    g_lbl_cd_reason = GTK_LABEL(gtk_builder_get_object(builder, "lbl_cd_reason"));
-    g_box_analyzers = GTK_BOX(gtk_builder_get_object(builder, "vb_analyzers"));
-    g_lbl_analyze_log = GTK_LABEL(gtk_builder_get_object(builder, "lbl_analyze_log"));
-    g_tv_analyze_log = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "tv_analyze_log"));
-    g_box_reporters = GTK_BOX(gtk_builder_get_object(builder, "vb_reporters"));
-    g_lbl_report_log = GTK_LABEL(gtk_builder_get_object(builder, "lbl_report_log"));
-    g_tv_report_log = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "tv_report_log"));
-    g_tv_backtrace = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "tv_backtrace"));
-    g_tv_details = GTK_TREE_VIEW(gtk_builder_get_object(builder, "tv_details"));
-    g_box_warning_labels = GTK_BOX(gtk_builder_get_object(builder, "b_warning_labels"));
-    g_tb_approve_bt = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "cb_approve_bt"));
-    g_widget_warnings_area = GTK_WIDGET(gtk_builder_get_object(builder, "b_warnings_area"));
-    g_btn_refresh = GTK_BUTTON(gtk_builder_get_object(builder, "btn_refresh"));
+    g_lbl_cd_reason        = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_cd_reason"));
+    g_box_analyzers        = GTK_BOX(          gtk_builder_get_object(builder, "vb_analyzers"));
+    g_lbl_analyze_log      = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_analyze_log"));
+    g_tv_analyze_log       = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_analyze_log"));
+    g_box_reporters        = GTK_BOX(          gtk_builder_get_object(builder, "vb_reporters"));
+    g_lbl_report_log       = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_report_log"));
+    g_tv_report_log        = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_report_log"));
+    g_tv_backtrace         = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_backtrace"));
+    g_tv_details           = GTK_TREE_VIEW(    gtk_builder_get_object(builder, "tv_details"));
+    g_box_warning_labels   = GTK_BOX(          gtk_builder_get_object(builder, "b_warning_labels"));
+    g_tb_approve_bt        = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "cb_approve_bt"));
+    g_widget_warnings_area = GTK_WIDGET(       gtk_builder_get_object(builder, "b_warnings_area"));
+    g_btn_refresh          = GTK_BUTTON(       gtk_builder_get_object(builder, "btn_refresh"));
+
+    gtk_widget_modify_font(GTK_WIDGET(g_tv_analyze_log), monospace_font);
+    gtk_widget_modify_font(GTK_WIDGET(g_tv_report_log), monospace_font);
+    gtk_widget_modify_font(GTK_WIDGET(g_tv_backtrace), monospace_font);
 
     ///* hide the warnings by default */
     //gtk_widget_hide(g_widget_warnings_area);
@@ -692,6 +698,10 @@ static void add_pages(void)
 
 void create_assistant()
 {
+    monospace_font = pango_font_description_from_string("monospace");
+
+    builder = gtk_builder_new();
+
     g_assistant = GTK_ASSISTANT(gtk_assistant_new());
 
     gtk_assistant_set_forward_page_func(g_assistant, next_page_no, NULL, NULL);
@@ -706,8 +716,6 @@ void create_assistant()
     g_signal_connect(obj_assistant, "close", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(obj_assistant, "apply", G_CALLBACK(next_page), NULL);
     g_signal_connect(obj_assistant, "prepare", G_CALLBACK(on_page_prepare), NULL);
-
-    builder = gtk_builder_new();
 
     add_pages();
 
