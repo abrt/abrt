@@ -69,7 +69,10 @@ int run_event_on_crash_data(struct run_event_state *state, crash_data_t *data, c
 
 /* Querying for possible events */
 
-/* Returns a malloced string with '\n'-terminated event names */
+/* Scans event.conf for events starting with pfx which are applicable
+ * to dd, or (if dd is NULL), to dump_dir.
+ * Returns a malloced string with '\n'-terminated event names.
+ */
 char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const char *pfx);
 
 #ifdef __cplusplus

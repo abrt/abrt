@@ -20,7 +20,8 @@ GtkTreeView *g_tv_details;
 GtkListStore *g_ls_details;
 GtkWidget *g_widget_warnings_area;
 GtkBox *g_box_warning_labels;
-GtkToggleButton * g_tb_approve_bt;
+GtkToggleButton *g_tb_approve_bt;
+GtkButton *g_btn_refresh;
 
 
 static GtkBuilder *builder;
@@ -101,12 +102,6 @@ static void remove_child_widget(GtkWidget *widget, gpointer container)
      * left
      */
     gtk_widget_destroy(widget);
-}
-
-
-void on_b_refresh_clicked(GtkButton *button)
-{
-    g_print("Refresh clicked!\n");
 }
 
 
@@ -237,6 +232,11 @@ void update_gui_state_from_crash_data(void)
      * We created new widgets (buttons). Need to make them visible.
      */
     gtk_widget_show_all(GTK_WIDGET(g_assistant));
+
+    if (g_reanalyze_events[0])
+        gtk_widget_show(GTK_WIDGET(g_btn_refresh));
+    else
+        gtk_widget_hide(GTK_WIDGET(g_btn_refresh));
 }
 
 
@@ -411,12 +411,13 @@ static void add_warning(const char *warning)
 {
     char *label_str = xasprintf("• %s", warning);
     GtkWidget *warning_lbl = gtk_label_new(label_str);
+    /* should be safe to free it, gtk calls strdup() to copy it */
+    free(label_str);
+
     gtk_misc_set_alignment(GTK_MISC(warning_lbl), 0.0, 0.0);
     gtk_label_set_justify(GTK_LABEL(warning_lbl), GTK_JUSTIFY_LEFT);
     gtk_box_pack_start(g_box_warning_labels, warning_lbl, false, false, 0);
     gtk_widget_show(warning_lbl);
-    /* should be safe to free it, gtk calls strdup() to copy it */
-    free(label_str);
 }
 
 static void check_backtrace_and_allow_send(void)
@@ -472,6 +473,21 @@ static void check_backtrace_and_allow_send(void)
 static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_data)
 {
     check_backtrace_and_allow_send();
+}
+
+
+/* Refresh button handling */
+
+void on_btn_refresh_clicked(GtkButton *button)
+{
+    g_analyze_events = append_to_malloced_string(g_analyze_events, g_reanalyze_events);
+    if (g_analyze_events[0])
+    {
+        /* Refresh GUI so that we see new  analyze+reanalyze buttons */
+        update_gui_state_from_crash_data();
+        /* Let user play with them */
+        gtk_assistant_set_current_page(g_assistant, PAGENO_ANALYZE_SELECTOR);
+    }
 }
 
 
@@ -661,9 +677,11 @@ static void add_pages(void)
     g_tv_report_log = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "tv_report_log"));
     g_tv_backtrace = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "tv_backtrace"));
     g_tv_details = GTK_TREE_VIEW(gtk_builder_get_object(builder, "tv_details"));
-    g_box_warning_labels = GTK_BOX(gtk_builder_get_object(builder, "hb_warning_labels"));
+    g_box_warning_labels = GTK_BOX(gtk_builder_get_object(builder, "b_warning_labels"));
     g_tb_approve_bt = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "cb_approve_bt"));
-    g_widget_warnings_area = GTK_WIDGET(gtk_builder_get_object(builder, "hb_warnings_area"));
+    g_widget_warnings_area = GTK_WIDGET(gtk_builder_get_object(builder, "b_warnings_area"));
+    g_btn_refresh = GTK_BUTTON(gtk_builder_get_object(builder, "btn_refresh"));
+
     ///* hide the warnings by default */
     //gtk_widget_hide(g_widget_warnings_area);
 
@@ -697,9 +715,11 @@ void create_assistant()
     g_ls_details = gtk_list_store_new(DETAIL_NUM_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
     gtk_tree_view_set_model(g_tv_details, GTK_TREE_MODEL(g_ls_details));
 
-    gtk_builder_connect_signals(builder, NULL);
+//    gtk_builder_connect_signals(builder, NULL);
 
     g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
+    g_signal_connect(g_btn_refresh, "clicked", G_CALLBACK(on_btn_refresh_clicked), NULL);
+
     gtk_assistant_set_page_complete(g_assistant,
                 pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
                 gtk_toggle_button_get_active(g_tb_approve_bt)

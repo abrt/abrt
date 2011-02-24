@@ -9,6 +9,7 @@ char *g_glade_file = NULL;
 char *g_dump_dir_name = NULL;
 char *g_analyze_label_selected = NULL;
 char *g_analyze_events = NULL;
+char *g_reanalyze_events = NULL;
 char *g_report_events = NULL;
 crash_data_t *g_cd;
 
@@ -17,14 +18,16 @@ void reload_crash_data_from_dump_dir(void)
 {
     free_crash_data(g_cd);
     free(g_analyze_events);
+    free(g_reanalyze_events);
     free(g_report_events);
 
     struct dump_dir *dd = dd_opendir(g_dump_dir_name, 0);
     if (!dd)
         xfunc_die(); /* dd_opendir already logged error msg */
     g_cd = create_crash_data_from_dump_dir(dd);
-    g_analyze_events = list_possible_events(dd, g_dump_dir_name, "analyze");
-    g_report_events = list_possible_events(dd, g_dump_dir_name, "report");
+    g_analyze_events = list_possible_events(dd, NULL, "analyze");
+    g_reanalyze_events = list_possible_events(dd, NULL, "reanalyze");
+    g_report_events = list_possible_events(dd, NULL, "report");
     dd_close(dd);
 }
 

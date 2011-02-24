@@ -31,6 +31,7 @@ extern char *g_glade_file;
 extern char *g_dump_dir_name;
 extern char *g_analyze_label_selected;
 extern char *g_analyze_events;
+extern char *g_reanalyze_events;
 extern char *g_report_events;
 extern crash_data_t *g_cd;
 void reload_crash_data_from_dump_dir(void);

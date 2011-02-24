@@ -6,8 +6,9 @@ bug_reporting_wizard_SOURCES = \
     main.c \
     wizard_glade.c
 
-# -Wl,--export-dynamic and lgmodule-2.0
-# is required for gtk_builder_connect_signals() to work correctly
+# Required for gtk_builder_connect_signals() to work correctly:
+# -g
+# -Wl,--export-dynamic
 bug_reporting_wizard_CFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
@@ -19,19 +20,20 @@ bug_reporting_wizard_CFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DICON_DIR=\"${datadir}/abrt/icons/hicolor/48x48/status\" \
+    $(GLIB_CFLAGS) \
     $(GTK_CFLAGS) \
     -D_GNU_SOURCE \
-    -g \
-    -Wl,--export-dynamic \
     -Wall -Werror
 
+# Required for gtk_builder_connect_signals() to work correctly:
+# -lgmodule-2.0
+# -lgthread-2.0
 bug_reporting_wizard_LDADD = \
     ../lib/libreport.la \
     ../lib/libabrt_dbus.la \
-    -lglib-2.0 \
-    -lgthread-2.0 \
-    -lgmodule-2.0 \
+    $(GLIB_LIBS) \
     $(GTK_LIBS)
+
 
 # we don't want to install it, just make it part of tarball
 # created by make dist
