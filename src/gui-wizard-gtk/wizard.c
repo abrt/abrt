@@ -95,15 +95,155 @@ static page_obj_t pages[] =
 };
 
 
+static void remove_child_widget(GtkWidget *widget, gpointer container)
+{
+    /*destroy will safely remove it and free the memory if there are no refs
+     * left
+     */
+    gtk_widget_destroy(widget);
+}
+
+
 void on_b_refresh_clicked(GtkButton *button)
 {
     g_print("Refresh clicked!\n");
 }
 
 
+/* update_gui_state_from_crash_data */
+
+static void analyze_rb_was_toggled(GtkButton *button, gpointer user_data)
+{
+    const char *label = gtk_button_get_label(button);
+    if (label)
+    {
+        free(g_analyze_label_selected);
+        g_analyze_label_selected = xstrdup(label);
+    }
+}
+
+static void report_tb_was_toggled(GtkButton *button, gpointer user_data)
+{
+    GList *reporters = gtk_container_get_children(GTK_CONTAINER(g_box_reporters));
+    GList *li = reporters;
+    if (reporters)
+    {
+        for (; li; li = li->next)
+            if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
+                break;
+    }
+    g_list_free(reporters);
+    gtk_assistant_set_page_complete(g_assistant,
+                pages[PAGENO_REPORTER_SELECTOR].page_widget,
+                li != NULL /* true if at least one checkbox is active */
+    );
+}
+
+static GtkWidget *add_event_buttons(GtkBox *box, char *event_name, GCallback func, bool radio)
+{
+VERB2 log("removing all buttons from box %p", box);
+    gtk_container_foreach(GTK_CONTAINER(box), &remove_child_widget, box);
+
+    GtkWidget *first_button = NULL;
+    while (event_name[0])
+    {
+        char *event_name_end = strchr(event_name, '\n');
+        *event_name_end = '\0';
+
+VERB2 log("adding button '%s' to box %p", event_name, box);
+        GtkWidget *button = radio
+                ? gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(first_button), event_name)
+                : gtk_check_button_new_with_label(event_name);
+        if (!first_button)
+            first_button = button;
+
+        *event_name_end = '\n';
+        event_name = event_name_end + 1;
+
+        gtk_box_pack_start(box, button, /*expand*/ false, /*fill*/ false, /*padding*/ 0);
+
+        if (func)
+            g_signal_connect(G_OBJECT(button), "toggled", func, NULL);
+    }
+    return first_button;
+}
+
+static void append_item_to_details_ls(gpointer name, gpointer value, gpointer data)
+{
+    crash_item *item = (crash_item*)value;
+    GtkTreeIter iter;
+
+    gtk_list_store_append(g_ls_details, &iter);
+
+    //FIXME: use the value representation here
+    /* If text and not multiline... */
+    if ((item->flags & CD_FLAG_TXT) && !strchr(item->content, '\n'))
+    {
+        gtk_list_store_set(g_ls_details, &iter,
+                              DETAIL_COLUMN_NAME, (char *)name,
+                              DETAIL_COLUMN_VALUE, item->content,
+                              //DETAIL_COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
+                              -1);
+    }
+    else
+    {
+        gtk_list_store_set(g_ls_details, &iter,
+                              DETAIL_COLUMN_NAME, (char *)name,
+                              DETAIL_COLUMN_VALUE, _("(click here to view/edit)"),
+                              //DETAIL_COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
+                              -1);
+        //WARNING: will leak xasprintf results above if uncommented
+    }
+}
+
+void update_gui_state_from_crash_data(void)
+{
+    const char *reason = get_crash_item_content_or_NULL(g_cd, FILENAME_REASON);
+    gtk_label_set_text(g_lbl_cd_reason, reason ? reason : _("(no description)"));
+
+    gtk_list_store_clear(g_ls_details);
+    g_hash_table_foreach(g_cd, append_item_to_details_ls, NULL);
+
+    GtkTextBuffer *backtrace_buf = gtk_text_view_get_buffer(g_tv_backtrace);
+    const char *bt = g_cd ? get_crash_item_content_or_NULL(g_cd, FILENAME_BACKTRACE) : NULL;
+    gtk_text_buffer_set_text(backtrace_buf, bt ? bt : "", -1);
+
+//Doesn't work: shows empty page
+//    if (!g_analyze_events[0])
+//    {
+//        /* No available analyze events, go to reporter selector page */
+//        gtk_assistant_set_current_page(GTK_ASSISTANT(assistant), PAGENO_REPORTER_SELECTOR);
+//    }
+
+    /* Update analyze radio buttons */
+    GtkWidget *first_rb = add_event_buttons(g_box_analyzers, g_analyze_events, G_CALLBACK(analyze_rb_was_toggled), /*radio:*/ true);
+    /* Update the value of currently selected analyzer */
+    if (first_rb)
+    {
+        const char *label = gtk_button_get_label(GTK_BUTTON(first_rb));
+        if (label)
+        {
+            free(g_analyze_label_selected);
+            g_analyze_label_selected = xstrdup(label);
+        }
+    }
+
+    /* Update reporter checkboxes */
+    add_event_buttons(g_box_reporters, g_report_events, /*callback:*/ G_CALLBACK(report_tb_was_toggled), /*radio:*/ false);
+    /* Update readiness state of reporter selector page: */
+    report_tb_was_toggled(NULL, NULL);
+
+    /* We can't just do gtk_widget_show_all once in main:
+     * We created new widgets (buttons). Need to make them visible.
+     */
+    gtk_widget_show_all(GTK_WIDGET(g_assistant));
+}
+
+
 /* start_event_run */
 
-struct analyze_event_data {
+struct analyze_event_data
+{
     struct run_event_state *run_state;
     const char *event_name;
     GList *more_events;
@@ -178,7 +318,9 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                 free_run_event_state(evd->run_state);
                 free(evd);
 
-                reload_dump_dir();
+                reload_crash_data_from_dump_dir();
+                update_gui_state_from_crash_data();
+
                 return FALSE; /* "please remove this event" */
             }
 

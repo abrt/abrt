@@ -24,6 +24,7 @@ enum
 extern GtkTreeView *g_tv_details;
 extern GtkListStore *g_ls_details;
 void create_assistant(void);
+void update_gui_state_from_crash_data(void);
 
 
 extern char *g_glade_file;
@@ -32,5 +33,4 @@ extern char *g_analyze_label_selected;
 extern char *g_analyze_events;
 extern char *g_report_events;
 extern crash_data_t *g_cd;
-void reload_dump_dir(void);
-void remove_child_widget(GtkWidget *widget, gpointer container);
+void reload_crash_data_from_dump_dir(void);
