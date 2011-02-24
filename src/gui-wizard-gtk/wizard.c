@@ -16,6 +16,8 @@ GtkTextView *g_tv_report_log;
 
 GtkLabel *g_lbl_cd_reason;
 GtkTextView *g_tv_backtrace;
+GtkTextView *g_tv_reproduce;
+GtkTextView *g_tv_comment;
 GtkTreeView *g_tv_details;
 GtkListStore *g_ls_details;
 GtkWidget *g_widget_warnings_area;
@@ -102,12 +104,55 @@ static page_obj_t pages[] =
 };
 
 
+/* Utility functions */
+
 static void remove_child_widget(GtkWidget *widget, gpointer container)
 {
-    /*destroy will safely remove it and free the memory if there are no refs
-     * left
+    /* Destroy will safely remove it and free the memory
+     * if there are no refs left
      */
     gtk_widget_destroy(widget);
+}
+
+static void load_text_to_text_view(GtkTextView *tv, const char *name)
+{
+    const char *str = g_cd ? get_crash_item_content_or_NULL(g_cd, name) : NULL;
+    gtk_text_buffer_set_text(gtk_text_view_get_buffer(tv), (str ? str : ""), -1);
+}
+
+static gchar *get_malloced_string_from_text_view(GtkTextView *tv)
+{
+    GtkTextBuffer *buffer = gtk_text_view_get_buffer(tv);
+    GtkTextIter start;
+    GtkTextIter end;
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+    return gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
+}
+
+static void save_text_if_changed(const char *name, const char *new_value)
+{
+    const char *old_value = g_cd ? get_crash_item_content_or_NULL(g_cd, name) : "";
+    if (!old_value)
+        old_value = "";
+    if (strcmp(new_value, old_value) != 0)
+    {
+        add_to_crash_data_ext(g_cd, name, new_value, CD_FLAG_TXT | CD_FLAG_ISEDITABLE);
+
+        struct dump_dir *dd = dd_opendir(g_dump_dir_name, 0);
+//FIXME: (1) stealing? (2) better handling if directory was deleted?
+        if (!dd)
+            xfunc_die();
+        dd_save_text(dd, name, new_value);
+        dd_close(dd);
+    }
+}
+
+static void save_text_from_text_view(GtkTextView *tv, const char *name)
+{
+    gchar *new_str = get_malloced_string_from_text_view(tv);
+    save_text_if_changed(name, new_str);
+    free(new_str);
 }
 
 
@@ -205,9 +250,9 @@ void update_gui_state_from_crash_data(void)
     gtk_list_store_clear(g_ls_details);
     g_hash_table_foreach(g_cd, append_item_to_details_ls, NULL);
 
-    GtkTextBuffer *backtrace_buf = gtk_text_view_get_buffer(g_tv_backtrace);
-    const char *bt = g_cd ? get_crash_item_content_or_NULL(g_cd, FILENAME_BACKTRACE) : NULL;
-    gtk_text_buffer_set_text(backtrace_buf, bt ? bt : "", -1);
+    load_text_to_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
+    load_text_to_text_view(g_tv_reproduce, FILENAME_REPRODUCE);
+    load_text_to_text_view(g_tv_comment, FILENAME_COMMENT);
 
 //Doesn't work: shows empty page
 //    if (!g_analyze_events[0])
@@ -426,7 +471,7 @@ static void add_warning(const char *warning)
     gtk_widget_show(warning_lbl);
 }
 
-static void check_backtrace_and_allow_send(void)
+static void check_backtrace_and_allow_send(void) //TODO: rename, this checks rating, not backtrace
 {
     bool send = true;
     bool warn = false;
@@ -490,7 +535,7 @@ void on_btn_refresh_clicked(GtkButton *button)
     g_analyze_events = append_to_malloced_string(g_analyze_events, g_reanalyze_events);
     if (g_analyze_events[0])
     {
-        /* Refresh GUI so that we see new  analyze+reanalyze buttons */
+        /* Refresh GUI so that we see new analyze+reanalyze buttons */
         update_gui_state_from_crash_data();
         /* Let user play with them */
         gtk_assistant_set_current_page(g_assistant, PAGENO_ANALYZE_SELECTOR);
@@ -557,6 +602,19 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
     {
         check_backtrace_and_allow_send();
     }
+
+    if (pages[PAGENO_HOWTO].page_widget == page)
+    {
+        /* User just pressed [Fwd] on backtrace page. Save backtrace text if changed */
+        save_text_from_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
+    }
+
+    if (pages[PAGENO_REPORT].page_widget == page)
+    {
+        /* User just pressed [Fwd] on comment page. Same as above */
+        save_text_from_text_view(g_tv_reproduce, FILENAME_REPRODUCE);
+        save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
+    }
 }
 
 static gint next_page_no(gint current_page_no, gpointer data)
@@ -592,6 +650,7 @@ static gint next_page_no(gint current_page_no, gpointer data)
 
     return current_page_no + 1;
 }
+
 
 static gboolean highlight_search(gpointer user_data)
 {
@@ -702,6 +761,8 @@ static void add_pages(void)
     g_lbl_report_log       = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_report_log"));
     g_tv_report_log        = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_report_log"));
     g_tv_backtrace         = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_backtrace"));
+    g_tv_reproduce         = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_reproduce"));
+    g_tv_comment           = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_comment"));
     g_tv_details           = GTK_TREE_VIEW(    gtk_builder_get_object(builder, "tv_details"));
     g_box_warning_labels   = GTK_BOX(          gtk_builder_get_object(builder, "b_warning_labels"));
     g_tb_approve_bt        = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "cb_approve_bt"));
