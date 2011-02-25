@@ -88,7 +88,8 @@ int log_dbus_error(const char *msg, DBusError *err);
 int32_t call_DeleteDebugDump(const char *dump_dir_name);
 
 /* Connect to system bus, find abrtd, perform "DeleteDebugDump" call, close g_dbus_conn */
-int connect_to_abrtd_and_call_DeleteDebugDump(const char *dump_dir_name);
+/* now static: int connect_to_abrtd_and_call_DeleteDebugDump(const char *dump_dir_name); */
+int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name);
 
 
 /*

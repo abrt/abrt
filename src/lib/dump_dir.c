@@ -572,11 +572,12 @@ static int delete_file_dir(const char *dir, bool skip_lock_file)
     return r;
 }
 
-void dd_delete(struct dump_dir *dd)
+int dd_delete(struct dump_dir *dd)
 {
-    delete_file_dir(dd->dd_dir, /*skip_lock_file:*/ true);
+    int r = delete_file_dir(dd->dd_dir, /*skip_lock_file:*/ true);
     dd->locked = 0; /* delete_file_dir already removed .lock */
     dd_close(dd);
+    return r;
 }
 
 static char *load_text_file(const char *path, unsigned flags)

@@ -108,24 +108,8 @@ static gint on_key_press_event_cb(GtkTreeView *treeview, GdkEventKey *key, gpoin
                 const char *dump_dir_name = g_value_get_string(&d_dir);
 
                 VERB1 log("Deleting '%s'", dump_dir_name);
-
-                /* Try to delete it ourselves */
-                struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
-                if (dd)
+                if (delete_dump_dir_possibly_using_abrtd(dump_dir_name) == 0)
                 {
-                    if (dd->locked) /* it is not readonly */
-                    {
-                        dd_delete(dd);
-                        goto deleted_ok;
-                    }
-                    dd_close(dd);
-                }
-
-                /* Ask abrtd to do it for us */
-                VERB1 log("Deleting '%s' via abrtd dbus call", dump_dir_name);
-                if (connect_to_abrtd_and_call_DeleteDebugDump(dump_dir_name) == 0)
-                {
- deleted_ok:
                     gtk_list_store_remove(s_dumps_list_store, &iter);
                 }
                 else

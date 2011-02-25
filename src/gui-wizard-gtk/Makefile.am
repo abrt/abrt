@@ -22,6 +22,7 @@ bug_reporting_wizard_CFLAGS = \
     -DICON_DIR=\"${datadir}/abrt/icons/hicolor/48x48/status\" \
     $(GLIB_CFLAGS) \
     $(GTK_CFLAGS) \
+    $(DBUS_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Werror
 
@@ -32,7 +33,8 @@ bug_reporting_wizard_LDADD = \
     ../lib/libreport.la \
     ../lib/libabrt_dbus.la \
     $(GLIB_LIBS) \
-    $(GTK_LIBS)
+    $(GTK_LIBS) \
+    $(DBUS_LIBS)
 
 
 # we don't want to install it, just make it part of tarball

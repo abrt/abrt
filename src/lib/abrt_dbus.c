@@ -817,7 +817,7 @@ int32_t call_DeleteDebugDump(const char *dump_dir_name)
     return result;
 }
 
-int connect_to_abrtd_and_call_DeleteDebugDump(const char *dump_dir_name)
+static int connect_to_abrtd_and_call_DeleteDebugDump(const char *dump_dir_name)
 {
     DBusError err;
     dbus_error_init(&err);
@@ -846,4 +846,19 @@ int connect_to_abrtd_and_call_DeleteDebugDump(const char *dump_dir_name)
     g_dbus_conn = NULL;
 
     return ret;
+}
+
+int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name)
+{
+    /* Try to delete it ourselves */
+    struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
+    if (dd)
+    {
+        if (dd->locked) /* it is not readonly */
+            return dd_delete(dd);
+        dd_close(dd);
+    }
+
+    VERB1 log("Deleting '%s' via abrtd dbus call", dump_dir_name);
+    return connect_to_abrtd_and_call_DeleteDebugDump(dump_dir_name);
 }

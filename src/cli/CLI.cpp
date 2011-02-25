@@ -395,6 +395,7 @@ int main(int argc, char** argv)
                 struct dump_dir *dd_copy = steal_directory((char *)D_list->data, dump_dir_name);
                 if (dd_copy)
                 {
+                    delete_dump_dir_possibly_using_abrtd(dump_dir_name);
                     dump_dir_name = xstrdup(dd_copy->dd_dir);
                     dd_close(dd_copy);
                 }
@@ -407,21 +408,7 @@ int main(int argc, char** argv)
         }
         case OPT_DELETE:
         {
-            /* Try to delete it ourselves */
-            struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
-            if (dd)
-            {
-                if (dd->locked) /* it is not readonly */
-                {
-                    dd_delete(dd);
-                    break;
-                }
-                dd_close(dd);
-            }
-
-            /* Ask abrtd to do it for us */
-            exitcode = connect_to_abrtd_and_call_DeleteDebugDump(dump_dir_name);
-
+            exitcode = delete_dump_dir_possibly_using_abrtd(dump_dir_name);
             break;
         }
         case OPT_INFO:

@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include "abrtlib.h"
+#include "abrt_dbus.h"
 #include "wizard.h"
 
 #define DEFAULT_WIDTH   800
@@ -141,7 +142,7 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
                 GTK_MESSAGE_QUESTION,
                 GTK_BUTTONS_OK_CANCEL,
                 _("Need writable directory, but '%s' is not writable."
-                " Create a copy in '%s' and operate on the copy?"),
+                " Move it to '%s' and operate on the moved copy?"),
                 g_dump_dir_name, HOME
     );
     gint response = GTK_RESPONSE_CANCEL;
@@ -156,6 +157,8 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
     if (!dd)
 //FIXME: show error dialog?
         return NULL;
+
+    delete_dump_dir_possibly_using_abrtd(g_dump_dir_name);
 
     g_dump_dir_name = xstrdup(dd->dd_dir);
     gtk_window_set_title(GTK_WINDOW(g_assistant), g_dump_dir_name);
