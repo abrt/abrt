@@ -63,9 +63,11 @@ int main(int argc, char **argv)
     if (!argv[0] || argv[1]) /* zero or >1 arguments */
         show_usage_and_die(program_usage_string, program_options);
 
-    g_dump_dir_name = argv[0];
+    g_dump_dir_name = xstrdup(argv[0]);
 
     create_assistant();
+
+    g_custom_logger = &show_error_as_msgbox;
 
     reload_crash_data_from_dump_dir();
 

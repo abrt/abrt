@@ -20,7 +20,7 @@ struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name
         if (--count == 0)
         {
             error_msg("Can't create new dump dir in '%s'", base_dir);
-            goto ret;
+            return NULL;
         }
         struct timeval tv;
         gettimeofday(&tv, NULL);
@@ -33,10 +33,8 @@ struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name
         /* error. copy_file_recursive already emitted error message */
         /* Don't leave half-copied dir lying around */
         dd_delete(dd_dst);
-//FIXME: return NULL instead? GUI doesn't want to die in this situation!
-        xfunc_die();
+        return NULL;
     }
 
- ret:
     return dd_dst;
 }

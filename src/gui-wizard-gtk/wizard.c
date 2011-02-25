@@ -122,9 +122,8 @@ static void save_dialog_response(GtkDialog *dialog, gint response_id, gpointer u
 
 struct dump_dir *steal_if_needed(struct dump_dir *dd)
 {
-//FIXME: show error dialog?
     if (!dd)
-        xfunc_die();
+        xfunc_die(); /* error msg was already logged */
 
     if (dd->locked)
         return dd;
@@ -155,15 +154,37 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
 
     dd = steal_directory(HOME, g_dump_dir_name);
     if (!dd)
-//FIXME: show error dialog?
-        return NULL;
+        return NULL; /* Stealing failed. Error msg was already logged */
 
-    delete_dump_dir_possibly_using_abrtd(g_dump_dir_name);
-
+    /* Delete old dir and switch to new one.
+     * Don't want to keep new dd open across deletion,
+     * therefore it's a bit more complicated.
+     */
+    char *old_name = g_dump_dir_name;
     g_dump_dir_name = xstrdup(dd->dd_dir);
+    dd_close(dd);
+
     gtk_window_set_title(GTK_WINDOW(g_assistant), g_dump_dir_name);
+    delete_dump_dir_possibly_using_abrtd(old_name); //TODO: if (deletion_failed) error_msg("BAD")?
+    free(old_name);
+
+    dd = dd_opendir(g_dump_dir_name, 0);
+    if (!dd)
+        xfunc_die(); /* error msg was already logged */
 
     return dd;
+}
+
+void show_error_as_msgbox(const char *msg)
+{
+    GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+                GTK_DIALOG_DESTROY_WITH_PARENT,
+                GTK_MESSAGE_WARNING,
+                GTK_BUTTONS_CLOSE,
+                "%s", msg
+    );
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
 }
 
 static void load_text_to_text_view(GtkTextView *tv, const char *name)

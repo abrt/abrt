@@ -25,6 +25,7 @@ extern GtkTreeView *g_tv_details;
 extern GtkListStore *g_ls_details;
 void create_assistant(void);
 void update_gui_state_from_crash_data(void);
+void show_error_as_msgbox(const char *msg);
 
 
 extern char *g_glade_file;

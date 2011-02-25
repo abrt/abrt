@@ -250,6 +250,8 @@ void parse_release_for_rhts(const char *pRelease, char **product, char **version
 #define load_conf_file abrt_load_conf_file
 bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWithoutValue);
 
+/* Tries to create a copy of dump_dir_name in base_dir, with same or similar basename.
+ * Returns NULL if copying failed. In this case, logs a message before returning. */
 #define steal_directory abrt_steal_directory
 struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name);
 
