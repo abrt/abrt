@@ -132,7 +132,7 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
 
     char *HOME = getenv("HOME");
     if (HOME && HOME[0])
-        HOME = concat_path_file(HOME, ".abrt");
+        HOME = concat_path_file(HOME, ".abrt/spool");
     else
         HOME = xstrdup("/tmp");
 
