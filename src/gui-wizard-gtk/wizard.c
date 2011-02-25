@@ -185,11 +185,12 @@ static void report_tb_was_toggled(GtkButton *button, gpointer user_data)
     );
 }
 
-static GtkWidget *add_event_buttons(GtkBox *box, char *event_name, GCallback func, bool radio)
+static GtkWidget *add_event_buttons(GtkBox *box, char *event_name, GCallback func, bool radio, const char *prev_selected)
 {
 VERB2 log("removing all buttons from box %p", box);
     gtk_container_foreach(GTK_CONTAINER(box), &remove_child_widget, box);
 
+    bool have_activated_btn = false;
     GtkWidget *first_button = NULL;
     while (event_name[0])
     {
@@ -203,6 +204,13 @@ VERB2 log("adding button '%s' to box %p", event_name, box);
         if (!first_button)
             first_button = button;
 
+        if (prev_selected && strcmp(prev_selected, event_name) == 0)
+        {
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), true);
+            have_activated_btn = true;
+            prev_selected = NULL;
+        }
+
         *event_name_end = '\n';
         event_name = event_name_end + 1;
 
@@ -211,7 +219,7 @@ VERB2 log("adding button '%s' to box %p", event_name, box);
         if (func)
             g_signal_connect(G_OBJECT(button), "toggled", func, NULL);
     }
-    return first_button;
+    return (have_activated_btn ? NULL : first_button);
 }
 
 static void append_item_to_details_ls(gpointer name, gpointer value, gpointer data)
@@ -262,7 +270,7 @@ void update_gui_state_from_crash_data(void)
 //    }
 
     /* Update analyze radio buttons */
-    GtkWidget *first_rb = add_event_buttons(g_box_analyzers, g_analyze_events, G_CALLBACK(analyze_rb_was_toggled), /*radio:*/ true);
+    GtkWidget *first_rb = add_event_buttons(g_box_analyzers, g_analyze_events, G_CALLBACK(analyze_rb_was_toggled), /*radio:*/ true, /*prev:*/ g_analyze_label_selected);
     /* Update the value of currently selected analyzer */
     if (first_rb)
     {
@@ -275,8 +283,35 @@ void update_gui_state_from_crash_data(void)
     }
 
     /* Update reporter checkboxes */
-    add_event_buttons(g_box_reporters, g_report_events, /*callback:*/ G_CALLBACK(report_tb_was_toggled), /*radio:*/ false);
-    /* Update readiness state of reporter selector page: */
+    /* Remember names of selected reporters */
+    GList *old_reporters = gtk_container_get_children(GTK_CONTAINER(g_box_reporters));
+    for (GList *li = old_reporters; li; li = li->next)
+    {
+        if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
+            li->data = xstrdup(gtk_button_get_label(GTK_BUTTON(li->data)));
+        else
+            li->data = NULL;
+    }
+    old_reporters = g_list_remove_all(old_reporters, NULL);
+    /* Delete old checkboxes and create new ones */
+    add_event_buttons(g_box_reporters, g_report_events, /*callback:*/ G_CALLBACK(report_tb_was_toggled), /*radio:*/ false, /*prev:*/ NULL);
+    /* Re-select new reporters which were selected before we deleted them */
+    GList *new_reporters = gtk_container_get_children(GTK_CONTAINER(g_box_reporters));
+    for (GList *li_new = new_reporters; li_new; li_new = li_new->next)
+    {
+        const char *new_name = gtk_button_get_label(GTK_BUTTON(li_new->data));
+        for (GList *li_old = old_reporters; li_old; li_old = li_old->next)
+        {
+            if (strcmp(new_name, li_old->data) == 0)
+            {
+                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(li_new->data), true);
+                break;
+            }
+        }
+    }
+    g_list_free(new_reporters);
+    list_free_with_free(old_reporters);
+    /* Update readiness state of reporter selector page */
     report_tb_was_toggled(NULL, NULL);
 
     /* We can't just do gtk_widget_show_all once in main:
@@ -329,7 +364,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     struct analyze_event_data *evd = data;
 
     /* Read and insert the output into the log pane */
-    char buf[128]; /* usually we get one line, no need to have big buf */
+    char buf[256]; /* usually we get one line, no need to have big buf */
     int r;
     while ((r = read(evd->fd, buf, sizeof(buf))) > 0)
     {
@@ -530,14 +565,17 @@ static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_da
 
 /* Refresh button handling */
 
-void on_btn_refresh_clicked(GtkButton *button)
+static void on_btn_refresh_clicked(GtkButton *button)
 {
-    g_analyze_events = append_to_malloced_string(g_analyze_events, g_reanalyze_events);
-    if (g_analyze_events[0])
+    if (g_reanalyze_events[0])
     {
+        g_analyze_events = append_to_malloced_string(g_analyze_events, g_reanalyze_events);
+        g_reanalyze_events[0] = '\0';
+        /* Save backtrace text if changed */
+        save_text_from_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
         /* Refresh GUI so that we see new analyze+reanalyze buttons */
         update_gui_state_from_crash_data();
-        /* Let user play with them */
+        /* Change page to analyzer selector - let user play with them */
         gtk_assistant_set_current_page(g_assistant, PAGENO_ANALYZE_SELECTOR);
     }
 }
@@ -671,6 +709,7 @@ static void search_timeout(GtkEntry *entry)
         g_source_remove(g_timeout);
     g_timeout = g_timeout_add(500, &highlight_search, (gpointer)entry);
 }
+
 
 /* Initialization */
 
