@@ -114,6 +114,55 @@ static void remove_child_widget(GtkWidget *widget, gpointer container)
     gtk_widget_destroy(widget);
 }
 
+static void save_dialog_response(GtkDialog *dialog, gint response_id, gpointer user_data)
+{
+    *(gint*)user_data = response_id;
+}
+
+struct dump_dir *steal_if_needed(struct dump_dir *dd)
+{
+//FIXME: show error dialog?
+    if (!dd)
+        xfunc_die();
+
+    if (dd->locked)
+        return dd;
+
+    dd_close(dd);
+
+    char *HOME = getenv("HOME");
+    if (HOME && HOME[0])
+        HOME = concat_path_file(HOME, ".abrt");
+    else
+        HOME = xstrdup("/tmp");
+
+    GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
+                GTK_DIALOG_DESTROY_WITH_PARENT,
+                GTK_MESSAGE_QUESTION,
+                GTK_BUTTONS_OK_CANCEL,
+                _("Need writable directory, but '%s' is not writable."
+                " Create a copy in '%s' and operate on the copy?"),
+                g_dump_dir_name, HOME
+    );
+    gint response = GTK_RESPONSE_CANCEL;
+    g_signal_connect(G_OBJECT(dialog), "response", G_CALLBACK(save_dialog_response), &response);
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
+
+    if (response != GTK_RESPONSE_OK)
+        return NULL;
+
+    dd = steal_directory(HOME, g_dump_dir_name);
+    if (!dd)
+//FIXME: show error dialog?
+        return NULL;
+
+    g_dump_dir_name = xstrdup(dd->dd_dir);
+    gtk_window_set_title(GTK_WINDOW(g_assistant), g_dump_dir_name);
+
+    return dd;
+}
+
 static void load_text_to_text_view(GtkTextView *tv, const char *name)
 {
     const char *str = g_cd ? get_crash_item_content_or_NULL(g_cd, name) : NULL;
@@ -137,13 +186,14 @@ static void save_text_if_changed(const char *name, const char *new_value)
         old_value = "";
     if (strcmp(new_value, old_value) != 0)
     {
-        add_to_crash_data_ext(g_cd, name, new_value, CD_FLAG_TXT | CD_FLAG_ISEDITABLE);
-
-        struct dump_dir *dd = dd_opendir(g_dump_dir_name, 0);
-//FIXME: (1) stealing? (2) better handling if directory was deleted?
-        if (!dd)
-            xfunc_die();
-        dd_save_text(dd, name, new_value);
+        struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
+        dd = steal_if_needed(dd);
+        if (dd && dd->locked)
+        {
+            dd_save_text(dd, name, new_value);
+            add_to_crash_data_ext(g_cd, name, new_value, CD_FLAG_TXT | CD_FLAG_ISEDITABLE);
+        }
+//FIXME: else: what to do with still-unsaved data in the widget??
         dd_close(dd);
     }
 }
@@ -450,9 +500,9 @@ static void start_event_run(const char *event_name,
      */
     struct run_event_state *state = new_run_event_state();
 
-    if (prepare_commands(state, g_dump_dir_name, event_name) == 0
-     || spawn_next_command(state, g_dump_dir_name, event_name) < 0
-    ) {
+    if (prepare_commands(state, g_dump_dir_name, event_name) == 0)
+    {
+ no_cmds:
         /* No commands needed?! (This is untypical) */
         free_run_event_state(state);
 //TODO: better msg?
@@ -462,11 +512,21 @@ static void start_event_run(const char *event_name,
         return;
     }
 
-    /* At least one command is needed, and we started first one.
-     * Hook its output fd up to the main loop.
-     */
+    struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
+    dd = steal_if_needed(dd);
+    int locked = (dd && dd->locked);
+    dd_close(dd);
+    if (!locked)
+        return; /* user refused to steal, or write error, etc... */
+
+    if (spawn_next_command(state, g_dump_dir_name, event_name) < 0)
+        goto no_cmds;
+
     VERB1 log("running event '%s' on '%s'", event_name, g_dump_dir_name);
 
+    /* At least one command is needed, and we started first one.
+     * Hook its output fd to the main loop.
+     */
     struct analyze_event_data *evd = xzalloc(sizeof(*evd));
     evd->run_state = state;
     evd->event_name = event_name;
@@ -478,7 +538,6 @@ static void start_event_run(const char *event_name,
     evd->fd = state->command_out_fd;
     ndelay_on(evd->fd);
     evd->channel = g_io_channel_unix_new(evd->fd);
-
     /*evd->event_source_id = */ g_io_add_watch(evd->channel,
             G_IO_IN | G_IO_ERR | G_IO_HUP, /* need HUP to detect EOF w/o any data */
             consume_cmd_output,

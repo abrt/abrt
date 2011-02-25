@@ -27,12 +27,13 @@ struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name
         dst_dir_name = xasprintf("%s/%s.%u", base_dir, base_name, (int)tv.tv_usec);
     }
 
-    log("Creating copy in '%s'", dd_dst->dd_dir);
+    VERB1 log("Creating copy in '%s'", dd_dst->dd_dir);
     if (copy_file_recursive(dump_dir_name, dd_dst->dd_dir) < 0)
     {
         /* error. copy_file_recursive already emitted error message */
         /* Don't leave half-copied dir lying around */
         dd_delete(dd_dst);
+//FIXME: return NULL instead? GUI doesn't want to die in this situation!
         xfunc_die();
     }
 

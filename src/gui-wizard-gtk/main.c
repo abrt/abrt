@@ -21,7 +21,7 @@ void reload_crash_data_from_dump_dir(void)
     free(g_reanalyze_events);
     free(g_report_events);
 
-    struct dump_dir *dd = dd_opendir(g_dump_dir_name, 0);
+    struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
     if (!dd)
         xfunc_die(); /* dd_opendir already logged error msg */
     g_cd = create_crash_data_from_dump_dir(dd);
