@@ -10,8 +10,8 @@ static GtkWidget *s_treeview;
 enum
 {
     COLUMN_REPORTED,
-    COLUMN_APPLICATION,
-    COLUMN_HOSTNAME,
+    COLUMN_REASON,
+    COLUMN_DIRNAME,
     COLUMN_LATEST_CRASH_STR,
     COLUMN_LATEST_CRASH,
     COLUMN_DUMP_DIR,
@@ -36,23 +36,21 @@ void add_directory_to_dirlist(const char *dirname)
     );
     const char *reported = (msg ? GTK_STOCK_YES : GTK_STOCK_NO);
     free(msg);
-    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
-    char *hostname = dd_load_text(dd, FILENAME_HOSTNAME);
+    char *reason = dd_load_text(dd, FILENAME_REASON);
 
     GtkTreeIter iter;
     gtk_list_store_append(s_dumps_list_store, &iter);
     gtk_list_store_set(s_dumps_list_store, &iter,
                           COLUMN_REPORTED, reported,
-                          COLUMN_APPLICATION, executable,
-                          COLUMN_HOSTNAME, hostname,
+                          COLUMN_REASON, reason,
+                          COLUMN_DIRNAME, dd->dd_dir,
                           //OPTION: time format
                           COLUMN_LATEST_CRASH_STR, time_buf,
                           COLUMN_LATEST_CRASH, (int)time,
                           COLUMN_DUMP_DIR, dirname,
                           -1);
 
-    free(hostname);
-    free(executable);
+    free(reason);
 
     dd_close(dd);
     VERB1 log("added: %s", dirname);
@@ -136,40 +134,38 @@ static void add_columns(GtkTreeView *treeview)
     GtkCellRenderer *renderer;
     GtkTreeViewColumn *column;
 
-    /* column reported */
     renderer = gtk_cell_renderer_pixbuf_new();
     column = gtk_tree_view_column_new_with_attributes(_("Reported"),
                                                      renderer,
                                                      "stock_id",
                                                      COLUMN_REPORTED,
                                                      NULL);
+    gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COLUMN_REPORTED);
     gtk_tree_view_append_column(treeview, column);
 
-    /* column for executable path */
     renderer = gtk_cell_renderer_text_new();
-    column = gtk_tree_view_column_new_with_attributes(_("Application"),
+    column = gtk_tree_view_column_new_with_attributes(_("Problem"),
                                                      renderer,
                                                      "text",
-                                                     COLUMN_APPLICATION,
+                                                     COLUMN_REASON,
                                                      NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
-    gtk_tree_view_column_set_sort_column_id(column, COLUMN_APPLICATION);
+    gtk_tree_view_column_set_sort_column_id(column, COLUMN_REASON);
     gtk_tree_view_append_column(treeview, column);
 
-    /* column for hostname */
     renderer = gtk_cell_renderer_text_new();
-    column = gtk_tree_view_column_new_with_attributes(_("Hostname"),
+    column = gtk_tree_view_column_new_with_attributes(_("Stored in"),
                                                      renderer,
                                                      "text",
-                                                     COLUMN_HOSTNAME,
+                                                     COLUMN_DIRNAME,
                                                      NULL);
-    gtk_tree_view_column_set_sort_column_id(column, COLUMN_HOSTNAME);
+    gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_sort_column_id(column, COLUMN_DIRNAME);
     gtk_tree_view_append_column(treeview, column);
 
-    /* column for the date of the last crash */
     renderer = gtk_cell_renderer_text_new();
-    column = gtk_tree_view_column_new_with_attributes(_("Last Crash"),
+    column = gtk_tree_view_column_new_with_attributes(_("Last occurrence"),
                                                      renderer,
                                                      "text",
                                                      COLUMN_LATEST_CRASH_STR,

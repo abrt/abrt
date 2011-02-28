@@ -221,6 +221,12 @@ char* get_cmdline(pid_t pid);
 #define daemon_is_ok abrt_daemon_is_ok
 int daemon_is_ok();
 
+/* Takes ptr to time_t, or NULL if you want to use current time.
+ * Returns "YYYY-MM-DD-hh:mm:ss" string.
+ */
+#define iso_date_string abrt_iso_date_string
+char *iso_date_string(time_t *pt);
+
 #define make_description_bz abrt_make_description_bz
 char* make_description_bz(crash_data_t *crash_data);
 #define make_description_reproduce_comment abrt_make_description_reproduce_comment

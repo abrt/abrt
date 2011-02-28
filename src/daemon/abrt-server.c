@@ -107,9 +107,9 @@ static void create_debug_dump()
        This directory is renamed to final directory name after
        all files have been stored into it.
     */
-    char *path = xasprintf(DEBUG_DUMPS_DIR"/%s-%ld-%u.new",
+    char *path = xasprintf(DEBUG_DUMPS_DIR"/%s-%s-%u.new",
                            dir_basename,
-                           (long)time(NULL),
+                           iso_date_string(NULL),
                            pid);
     /* No need to check the path length, as all variables used are limited, and dd_create()
        fails if the path is too long. */

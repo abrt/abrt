@@ -25,13 +25,14 @@ libreport_la_SOURCES = \
     append_to_malloced_string.c \
     overlapping_strcpy.c \
     skip_whitespace.c \
+    glib_support.c \
+    iso_date_string.c \
     strbuf.c strbuf.h \
     xatonum.c \
     spawn.c \
     dirsize.c \
     dump_dir.c \
     get_cmdline.c \
-    glib_support.c \
     daemon_is_ok.c \
     load_plugin_settings.c \
     make_descr.c \

@@ -95,7 +95,7 @@ static void report_to_rhtsupport(
     file = new_reportfile();
 
     /* SELinux guys are not happy with /tmp, using /var/run/abrt */
-    tempfile = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%lu-%lu.tar.gz", (long)getpid(), (long)time(NULL));
+    tempfile = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%s-%lu.tar.gz", iso_date_string(NULL), (long)getpid());
 
     int pipe_from_parent_to_child[2];
     xpipe(pipe_from_parent_to_child);

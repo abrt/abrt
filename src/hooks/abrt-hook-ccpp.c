@@ -489,8 +489,8 @@ int main(int argc, char** argv)
         return 0;
     }
 
-    unsigned path_len = snprintf(path, sizeof(path), "%s/ccpp-%ld-%lu.new",
-            dddir, (long)time(NULL), (long)pid);
+    unsigned path_len = snprintf(path, sizeof(path), "%s/ccpp-%s-%lu.new",
+            dddir, iso_date_string(NULL), (long)pid);
     if (path_len >= (sizeof(path) - sizeof("/"FILENAME_COREDUMP)))
         return 1;
 

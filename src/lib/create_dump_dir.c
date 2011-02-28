@@ -31,8 +31,8 @@ static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir
 
 struct dump_dir *create_dump_dir_from_crash_data(crash_data_t *crash_data, const char *base_dir_name)
 {
-    char dir_name[sizeof("abrt-tmp-%lu-%lu") + sizeof(long)*3 * 2];
-    sprintf(dir_name, "abrt-tmp-%lu-%lu", (long)getpid(), (long)time(NULL));
+    char dir_name[sizeof("abrt-tmp-YYYY-MM-DD-HH:MM:SS-%lu") + sizeof(long)*3];
+    sprintf(dir_name, "abrt-tmp-%s-%lu", iso_date_string(NULL), (long)getpid());
 
     struct dump_dir *dd;
     if (base_dir_name)
@@ -53,6 +53,7 @@ struct dump_dir *create_dump_dir_from_crash_data(crash_data_t *crash_data, const
                 free(home);
             }
         }
+//TODO: try user's home dir obtained by getpwuid(getuid())?
         /* Try /tmp */
         if (!dd)
             dd = try_dd_create("/tmp", dir_name);
