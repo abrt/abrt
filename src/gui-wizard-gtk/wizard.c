@@ -14,6 +14,8 @@ GtkTextView *g_tv_analyze_log;
 GtkBox *g_box_reporters;
 GtkLabel *g_lbl_report_log;
 GtkTextView *g_tv_report_log;
+GtkContainer *g_container_details1;
+GtkContainer *g_container_details2;
 
 GtkLabel *g_lbl_cd_reason;
 GtkTextView *g_tv_backtrace;
@@ -736,6 +738,19 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
         save_text_from_text_view(g_tv_reproduce, FILENAME_REPRODUCE);
         save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
     }
+
+    if (pages[PAGENO_SUMMARY].page_widget == page
+     || pages[PAGENO_REPORT].page_widget == page
+    ) {
+        GtkWidget *w = GTK_WIDGET(g_tv_details);
+        GtkContainer *c = GTK_CONTAINER(gtk_widget_get_parent(w));
+        if (c)
+            gtk_container_remove(c, w);
+        gtk_container_add(pages[PAGENO_SUMMARY].page_widget == page ?
+                        g_container_details1 : g_container_details2,
+                w
+        );
+    }
 }
 
 static gint next_page_no(gint current_page_no, gpointer data)
@@ -891,6 +906,8 @@ static void add_pages(void)
     g_widget_warnings_area = GTK_WIDGET(       gtk_builder_get_object(builder, "box_warning_area"));
     g_btn_refresh          = GTK_BUTTON(       gtk_builder_get_object(builder, "btn_refresh"));
     g_search_entry_bt      = GTK_ENTRY(        gtk_builder_get_object(builder, "entry_search_bt"));
+    g_container_details1   = GTK_CONTAINER(    gtk_builder_get_object(builder, "container_details1"));
+    g_container_details2   = GTK_CONTAINER(    gtk_builder_get_object(builder, "container_details2"));
 
     gtk_widget_modify_font(GTK_WIDGET(g_tv_analyze_log), monospace_font);
     gtk_widget_modify_font(GTK_WIDGET(g_tv_report_log), monospace_font);
