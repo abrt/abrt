@@ -336,7 +336,7 @@ int run_event_on_crash_data(struct run_event_state *state, crash_data_t *data, c
     struct dump_dir *dd = create_dump_dir_from_crash_data(data, NULL);
     if (!dd)
         return -1;
-    char *dir_name = xstrdup(dd->dd_dir);
+    char *dir_name = xstrdup(dd->dd_dirname);
     dd_close(dd);
 
     int r = run_event_on_dir_name(state, dir_name, event);

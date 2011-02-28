@@ -396,7 +396,7 @@ int main(int argc, char** argv)
                 if (dd_copy)
                 {
                     delete_dump_dir_possibly_using_abrtd(dump_dir_name);
-                    dump_dir_name = xstrdup(dd_copy->dd_dir);
+                    dump_dir_name = xstrdup(dd_copy->dd_dirname);
                     dd_close(dd_copy);
                 }
             }

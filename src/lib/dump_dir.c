@@ -172,14 +172,14 @@ static int get_and_set_lock(const char* lock_file, const char* pid)
 static int dd_lock(struct dump_dir *dd, unsigned sleep_usec)
 {
     if (dd->locked)
-        error_msg_and_die("Locking bug on '%s'", dd->dd_dir);
+        error_msg_and_die("Locking bug on '%s'", dd->dd_dirname);
 
     char pid_buf[sizeof(long)*3 + 2];
     sprintf(pid_buf, "%lu", (long)getpid());
 
-    unsigned dirname_len = strlen(dd->dd_dir);
+    unsigned dirname_len = strlen(dd->dd_dirname);
     char lock_buf[dirname_len + sizeof("/.lock")];
-    strcpy(lock_buf, dd->dd_dir);
+    strcpy(lock_buf, dd->dd_dirname);
     strcpy(lock_buf + dirname_len, "/.lock");
 
     unsigned count = NO_TIME_FILE_COUNT;
@@ -229,9 +229,9 @@ static void dd_unlock(struct dump_dir *dd)
     {
         dd->locked = 0;
 
-        unsigned dirname_len = strlen(dd->dd_dir);
+        unsigned dirname_len = strlen(dd->dd_dirname);
         char lock_buf[dirname_len + sizeof("/.lock")];
-        strcpy(lock_buf, dd->dd_dir);
+        strcpy(lock_buf, dd->dd_dirname);
         strcpy(lock_buf + dirname_len, "/.lock");
         xunlink(lock_buf);
 
@@ -246,7 +246,7 @@ static inline struct dump_dir *dd_init(void)
 
 int dd_exist(struct dump_dir *dd, const char *path)
 {
-    char *full_path = concat_path_file(dd->dd_dir, path);
+    char *full_path = concat_path_file(dd->dd_dirname, path);
     int ret = exist_file_dir(full_path);
     free(full_path);
     return ret;
@@ -264,7 +264,7 @@ void dd_close(struct dump_dir *dd)
         /* free(dd->next_dir); - WRONG! */
     }
 
-    free(dd->dd_dir);
+    free(dd->dd_dirname);
     free(dd);
 }
 
@@ -280,7 +280,7 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
 {
     struct dump_dir *dd = dd_init();
 
-    dir = dd->dd_dir = rm_trailing_slashes(dir);
+    dir = dd->dd_dirname = rm_trailing_slashes(dir);
 
     errno = 0;
     if (dd_lock(dd, WAIT_FOR_OTHER_PROCESS_USLEEP) < 0)
@@ -374,7 +374,7 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
      * realpath will always return NULL. We don't really have to:
      * dd_opendir(".") makes sense, dd_create(".") does not.
      */
-    dir = dd->dd_dir = rm_trailing_slashes(dir);
+    dir = dd->dd_dirname = rm_trailing_slashes(dir);
 
     const char *last_component = strrchr(dir, '/');
     if (last_component)
@@ -402,11 +402,11 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
         int err = errno;
         if (!created_parents && errno == ENOENT)
         {
-            char *p = dd->dd_dir + 1;
+            char *p = dd->dd_dirname + 1;
             while ((p = strchr(p, '/')) != NULL)
             {
                 *p = '\0';
-                int r = (mkdir(dd->dd_dir, 0755) == 0 || errno == EEXIST);
+                int r = (mkdir(dd->dd_dirname, 0755) == 0 || errno == EEXIST);
                 *p++ = '/';
                 if (!r)
                     goto report_err;
@@ -574,7 +574,7 @@ static int delete_file_dir(const char *dir, bool skip_lock_file)
 
 int dd_delete(struct dump_dir *dd)
 {
-    int r = delete_file_dir(dd->dd_dir, /*skip_lock_file:*/ true);
+    int r = delete_file_dir(dd->dd_dirname, /*skip_lock_file:*/ true);
     dd->locked = 0; /* delete_file_dir already removed .lock */
     dd_close(dd);
     return r;
@@ -653,7 +653,7 @@ char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned fla
     if (strcmp(name, "release") == 0)
         name = FILENAME_OS_RELEASE;
 
-    char *full_path = concat_path_file(dd->dd_dir, name);
+    char *full_path = concat_path_file(dd->dd_dirname, name);
     char *ret = load_text_file(full_path, flags);
     free(full_path);
 
@@ -670,7 +670,7 @@ void dd_save_text(struct dump_dir *dd, const char *name, const char *data)
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
-    char *full_path = concat_path_file(dd->dd_dir, name);
+    char *full_path = concat_path_file(dd->dd_dirname, name);
     save_binary_file(full_path, data, strlen(data), dd->dd_uid, dd->dd_gid);
     free(full_path);
 }
@@ -680,7 +680,7 @@ void dd_save_binary(struct dump_dir* dd, const char* name, const char* data, uns
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
-    char *full_path = concat_path_file(dd->dd_dir, name);
+    char *full_path = concat_path_file(dd->dd_dirname, name);
     save_binary_file(full_path, data, size, dd->dd_uid, dd->dd_gid);
     free(full_path);
 }
@@ -693,10 +693,10 @@ DIR *dd_init_next_file(struct dump_dir *dd)
     if (dd->next_dir)
         closedir(dd->next_dir);
 
-    dd->next_dir = opendir(dd->dd_dir);
+    dd->next_dir = opendir(dd->dd_dirname);
     if (!dd->next_dir)
     {
-        error_msg("Can't open directory '%s'", dd->dd_dir);
+        error_msg("Can't open directory '%s'", dd->dd_dirname);
     }
 
     return dd->next_dir;
@@ -710,12 +710,12 @@ int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name)
     struct dirent *dent;
     while ((dent = readdir(dd->next_dir)) != NULL)
     {
-        if (is_regular_file(dent, dd->dd_dir))
+        if (is_regular_file(dent, dd->dd_dirname))
         {
             if (short_name)
                 *short_name = xstrdup(dent->d_name);
             if (full_name)
-                *full_name = concat_path_file(dd->dd_dir, dent->d_name);
+                *full_name = concat_path_file(dd->dd_dirname, dent->d_name);
             return 1;
         }
     }
@@ -726,9 +726,9 @@ int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name)
 }
 
 /* Utility function */
-void delete_dump_dir(const char *dd_dir)
+void delete_dump_dir(const char *dirname)
 {
-    struct dump_dir *dd = dd_opendir(dd_dir, /*flags:*/ 0);
+    struct dump_dir *dd = dd_opendir(dirname, /*flags:*/ 0);
     if (dd)
     {
         dd_delete(dd);

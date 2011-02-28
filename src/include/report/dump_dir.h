@@ -35,7 +35,7 @@ enum {
 };
 
 struct dump_dir {
-    char *dd_dir;
+    char *dd_dirname;
     DIR *next_dir;
     int locked;
     uid_t dd_uid;
@@ -65,7 +65,7 @@ void dd_save_binary(struct dump_dir *dd, const char *name, const char *data, uns
 /* Returns 0 if directory is deleted or not found */
 int dd_delete(struct dump_dir *dd);
 
-void delete_dump_dir(const char *dd_dir);
+void delete_dump_dir(const char *dirname);
 
 #ifdef __cplusplus
 }

@@ -167,7 +167,7 @@ static PyObject *get_name(PyObject *pself, void *unused)
 {
     p_dump_dir *self = (p_dump_dir*)pself;
     if (self->dd)
-        return Py_BuildValue("s", self->dd->dd_dir);
+        return Py_BuildValue("s", self->dd->dd_dirname);
     Py_RETURN_NONE;
 }
 
@@ -253,12 +253,12 @@ PyObject *p_dd_create(PyObject *module, PyObject *args)
     return (PyObject*)new_dd;
 }
 
-/* void delete_dump_dir(const char *dd_dir); */
+/* void delete_dump_dir(const char *dirname); */
 PyObject *p_delete_dump_dir(PyObject *pself, PyObject *args)
 {
-    const char *dir;
-    if (!PyArg_ParseTuple(args, "s", &dir))
+    const char *dirname;
+    if (!PyArg_ParseTuple(args, "s", &dirname))
         return NULL;
-    delete_dump_dir(dir);
+    delete_dump_dir(dirname);
     Py_RETURN_NONE;
 }

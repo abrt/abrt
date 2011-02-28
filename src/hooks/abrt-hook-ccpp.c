@@ -502,7 +502,7 @@ int main(int argc, char** argv)
         char source_filename[sizeof("/proc/%lu/smaps") + sizeof(long)*3];
         int base_name = sprintf(source_filename, "/proc/%lu/smaps", (long)pid);
         base_name -= strlen("smaps");
-        char *dest_filename = concat_path_file(dd->dd_dir, FILENAME_SMAPS);
+        char *dest_filename = concat_path_file(dd->dd_dirname, FILENAME_SMAPS);
         copy_file(source_filename, dest_filename, S_IRUSR | S_IRGRP | S_IWUSR);
         chown(dest_filename, dd->dd_uid, dd->dd_gid);
         strcpy(source_filename + base_name, "maps");

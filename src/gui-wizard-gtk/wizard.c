@@ -161,7 +161,7 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
      * therefore it's a bit more complicated.
      */
     char *old_name = g_dump_dir_name;
-    g_dump_dir_name = xstrdup(dd->dd_dir);
+    g_dump_dir_name = xstrdup(dd->dd_dirname);
     dd_close(dd);
 
     gtk_window_set_title(GTK_WINDOW(g_assistant), g_dump_dir_name);

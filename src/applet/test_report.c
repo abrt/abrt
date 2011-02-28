@@ -43,7 +43,7 @@ int main(int argc, char** argv)
     free_crash_data(crash_data);
     if (!dd)
         return 1;
-    char *dir_name = strdup(dd->dd_dir);
+    char *dir_name = strdup(dd->dd_dirname);
     dd_close(dd);
 
     printf("Temp dump dir: '%s'\n", dir_name);
