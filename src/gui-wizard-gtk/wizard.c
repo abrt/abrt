@@ -886,9 +886,9 @@ static void add_pages(void)
     g_tv_reproduce         = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_reproduce"));
     g_tv_comment           = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_comment"));
     g_tv_details           = GTK_TREE_VIEW(    gtk_builder_get_object(builder, "tv_details"));
-    g_box_warning_labels   = GTK_BOX(          gtk_builder_get_object(builder, "b_warning_labels"));
+    g_box_warning_labels   = GTK_BOX(          gtk_builder_get_object(builder, "box_warning_labels"));
     g_tb_approve_bt        = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "cb_approve_bt"));
-    g_widget_warnings_area = GTK_WIDGET(       gtk_builder_get_object(builder, "b_warnings_area"));
+    g_widget_warnings_area = GTK_WIDGET(       gtk_builder_get_object(builder, "box_warning_area"));
     g_btn_refresh          = GTK_BUTTON(       gtk_builder_get_object(builder, "btn_refresh"));
     g_search_entry_bt      = GTK_ENTRY(        gtk_builder_get_object(builder, "entry_search_bt"));
 

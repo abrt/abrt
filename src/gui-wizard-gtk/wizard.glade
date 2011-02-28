@@ -247,7 +247,7 @@
             <property name="visible">True</property>
             <property name="border_width">5</property>
             <child>
-              <object class="GtkHBox" id="b_warnings_area">
+              <object class="GtkHBox" id="box_warning_area">
                 <property name="visible">True</property>
                 <property name="no_show_all">True</property>
                 <child>
@@ -278,7 +278,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkVBox" id="b_warning_labels">
+                      <object class="GtkVBox" id="box_warning_labels">
                         <property name="visible">True</property>
                         <property name="orientation">vertical</property>
                         <child>
@@ -543,6 +543,7 @@
           <object class="GtkLabel" id="lbl_page6">
             <property name="width_request">750</property>
             <property name="visible">True</property>
+            <property name="xalign">0</property>
             <property name="label" translatable="yes">Below is the information to be reported, please review it.</property>
             <property name="justify">fill</property>
             <property name="wrap">True</property>
