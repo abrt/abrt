@@ -296,9 +296,11 @@ abrt_action_install_debuginfo_LDADD =
 abrt_retrace_client_SOURCES = \
     abrt-retrace-client.c
  abrt_retrace_client_CFLAGS = \
+     -I$(srcdir)/../include/report \
      -I$(srcdir)/../include \
      -I$(srcdir)/../lib \
      $(NSS_CFLAGS) \
+     $(GLIB_CFLAGS) \
      -D_GNU_SOURCE \
      -Wall -Werror
  abrt_retrace_client_LDADD = \
