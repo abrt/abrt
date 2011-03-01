@@ -243,7 +243,8 @@ Summary: %{name}'s retrace server using HTTP protocol
 Group: System Environment/Daemons
 Requires: abrt-addon-ccpp
 Requires: gdb >= 7.0-3
-Requires: httpd, mod_wsgi, python-webob
+Requires: httpd, mod_wsgi, mod_ssl, python-webob
+Requires: mock, xz, elfutils, createrepo
 
 %description retrace-server
 The retrace server provides a coredump analysis and backtrace
