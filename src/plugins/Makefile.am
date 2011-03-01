@@ -195,7 +195,8 @@ abrt_action_rhtsupport_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
-    -D_GNU_SOURCE -Wall
+    -D_GNU_SOURCE \
+    -Wall -Werror
 abrt_action_rhtsupport_LDFLAGS = -ltar
 abrt_action_rhtsupport_LDADD = \
     $(GLIB_LIBS) \
