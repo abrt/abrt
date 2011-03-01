@@ -304,7 +304,7 @@ abrt_retrace_client_SOURCES = \
      -D_GNU_SOURCE \
      -Wall -Werror
  abrt_retrace_client_LDADD = \
-     ../lib/libabrt.la \
+     ../lib/libreport.la \
      ../btparser/libbtparser.la \
      $(NSS_LIBS)
 

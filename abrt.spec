@@ -388,7 +388,7 @@ fi
 %{_bindir}/abrt-handle-upload
 %{_bindir}/abrt-handle-crashdump
 %{_bindir}/abrt-action-save-package-data
-%{_libexecdir}/abrt-retrace-client
+%{_bindir}/abrt-retrace-client
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt_event.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys

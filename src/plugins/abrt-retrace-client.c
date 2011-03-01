@@ -31,47 +31,6 @@ static const char *coredump = NULL;
 static const char *url = "retrace01.fedoraproject.org";
 static const char *task_id = NULL;
 static const char *task_password = NULL;
-static const char abrt_retrace_client_usage[] = "abrt-retrace-client"
-    " <operation> [options]\nOperations: create/status/backtrace/log/batch";
-
-enum {
-    OPT_verbose   = 1 << 0,
-    OPT_syslog    = 1 << 1,
-    OPT_insecure  = 1 << 2,
-    OPT_url       = 1 << 3,
-    OPT_headers   = 1 << 4,
-    OPT_dir       = 1 << 5,
-    OPT_core      = 1 << 6,
-    OPT_no_unlink = 1 << 7,
-    OPT_task      = 1 << 8,
-    OPT_password  = 1 << 9
-};
-
-/* Keep enum above and order of options below in sync! */
-static struct options abrt_retrace_client_options[] = {
-    OPT__VERBOSE(&g_verbose),
-    OPT_BOOL('s', "syslog", NULL, "log to syslog"),
-    OPT_BOOL('k', "insecure", NULL,
-             "allow insecure connection to retrace server"),
-    OPT_STRING(0, "url", &url, "URL",
-               "retrace server URL"),
-    OPT_BOOL(0, "headers", NULL,
-             "(debug) show received HTTP headers"),
-    OPT_GROUP("For create and batch operations"),
-    OPT_STRING('d', "dir", &dump_dir_name, "DIR",
-               "read data from ABRT crash dump directory"),
-    OPT_STRING('c', "core", &coredump, "COREDUMP",
-               "read data from coredump"),
-    OPT_BOOL(0, "no-unlink", NULL,
-             "(debug) do not delete temporary archive created"
-             " from dump dir in /tmp"),
-    OPT_GROUP("For status, backtrace, and log operations"),
-    OPT_STRING('t', "task", &task_id, "ID",
-               "id of your task on server"),
-    OPT_STRING('p', "password", &task_password, "PWD",
-               "password of your task on server"),
-    OPT_END()
-};
 
 /* Add an entry name to the args array if the entry name exists in a
  * dump directory. The entry is added to argindex offset to the array,
@@ -146,7 +105,7 @@ static int create_archive(const char *dump_dir_name, bool unlink_temp)
     args_add_if_exists(tar_args, dd, FILENAME_ARCHITECTURE, &argindex);
     args_add_if_exists(tar_args, dd, FILENAME_EXECUTABLE, &argindex);
     args_add_if_exists(tar_args, dd, FILENAME_PACKAGE, &argindex);
-    args_add_if_exists(tar_args, dd, FILENAME_RELEASE, &argindex);
+    args_add_if_exists(tar_args, dd, FILENAME_OS_RELEASE, &argindex);
     tar_args[argindex] = NULL;
     dd_close(dd);
 
@@ -730,12 +689,52 @@ static int run_batch(const char *dump_dir,
 
 int main(int argc, char **argv)
 {
+    enum {
+        OPT_verbose   = 1 << 0,
+        OPT_syslog    = 1 << 1,
+        OPT_insecure  = 1 << 2,
+        OPT_url       = 1 << 3,
+        OPT_headers   = 1 << 4,
+        OPT_dir       = 1 << 5,
+        OPT_core      = 1 << 6,
+        OPT_no_unlink = 1 << 7,
+        OPT_task      = 1 << 8,
+        OPT_password  = 1 << 9
+    };
+
+    /* Keep enum above and order of options below in sync! */
+    struct options options[] = {
+        OPT__VERBOSE(&g_verbose),
+        OPT_BOOL('s', "syslog", NULL, _("log to syslog")),
+        OPT_BOOL('k', "insecure", NULL,
+                 "allow insecure connection to retrace server"),
+        OPT_STRING(0, "url", &url, "URL",
+                   "retrace server URL"),
+        OPT_BOOL(0, "headers", NULL,
+                 "(debug) show received HTTP headers"),
+        OPT_GROUP("For create and batch operations"),
+        OPT_STRING('d', "dir", &dump_dir_name, "DIR",
+                   "read data from ABRT crash dump directory"),
+        OPT_STRING('c', "core", &coredump, "COREDUMP",
+                   "read data from coredump"),
+        OPT_BOOL(0, "no-unlink", NULL,
+                 "(debug) do not delete temporary archive created"
+                 " from dump dir in /tmp"),
+        OPT_GROUP("For status, backtrace, and log operations"),
+        OPT_STRING('t', "task", &task_id, "ID",
+                   "id of your task on server"),
+        OPT_STRING('p', "password", &task_password, "PWD",
+                   "password of your task on server"),
+        OPT_END()
+    };
+
+    const char usage[] = "abrt-retrace-client <operation> [options]\n"
+        "Operations: create/status/backtrace/log/batch";
+
     char *env_verbose = getenv("ABRT_VERBOSE");
     if (env_verbose)
         g_verbose = atoi(env_verbose);
-    unsigned opts = parse_opts(argc, argv,
-                               abrt_retrace_client_options,
-                               abrt_retrace_client_usage);
+    unsigned opts = parse_opts(argc, argv, options, usage);
     if (opts & OPT_syslog)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
@@ -745,10 +744,7 @@ int main(int argc, char **argv)
     if (optind < argc)
         operation = argv[optind];
     else
-    {
-        parse_usage_and_die(abrt_retrace_client_usage,
-                            abrt_retrace_client_options);
-    }
+        show_usage_and_die(usage, options);
     if (0 == strcasecmp(operation, "create"))
     {
         if (!dump_dir_name && !coredump)
