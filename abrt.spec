@@ -337,6 +337,7 @@ fi
 %{_bindir}/abrt-handle-upload
 %{_bindir}/abrt-handle-crashdump
 %{_libexecdir}/abrt-action-save-package-data
+%{_libexecdir}/abrt-retrace-client
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt_event.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
@@ -457,6 +458,8 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/retrace.conf
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/retrace_httpd.conf
+%config(noreplace) %{_sysconfdir}/yum.repos.d/retrace-local.repo
+%config(noreplace) %{_sysconfdir}/yum.repos.d/retrace.repo
 %{_bindir}/abrt-retrace-reposync
 %{_bindir}/abrt-retrace-worker
 %{_datadir}/abrt-retrace/*.py*

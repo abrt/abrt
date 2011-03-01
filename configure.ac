@@ -127,15 +127,10 @@ AC_CONFIG_FILES([
 	src/applet/Makefile
 	src/gui/Makefile
 	src/cli/Makefile
+	src/retrace/Makefile
 	po/Makefile.in
 	icons/Makefile
 	tests/btparser/Makefile
-	retrace/Makefile
-	retrace/config/Makefile
-	retrace/interface/Makefile
-	retrace/lib/Makefile
-	retrace/reposync/Makefile
-	retrace/worker/Makefile
 ])
 
 AC_OUTPUT
