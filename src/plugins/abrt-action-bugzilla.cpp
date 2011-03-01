@@ -18,8 +18,10 @@
 */
 #include "abrtlib.h"
 #include "abrt_xmlrpc.h"
-#include "abrt_crash_dump.h"
-#include "abrt_exception.h"
+#include "abrt_crash_data.h"
+#include "parse_options.h"
+
+#define PROGNAME "abrt-action-bugzilla"
 
 #define XML_RPC_SUFFIX      "/xmlrpc.cgi"
 #define MAX_HOPS            5
@@ -112,8 +114,8 @@ struct ctx: public abrt_xmlrpc_conn {
     xmlrpc_int32 get_bug_dup_id(xmlrpc_value* result_xml);
     void         get_bug_cc(xmlrpc_value* result_xml, struct bug_info* bz);
     int          add_plus_one_cc(xmlrpc_int32 bug_id, const char* login);
-    xmlrpc_int32 new_bug(const map_crash_data_t& pCrashData, int depend_on_bugno);
-    int          add_attachments(const char* bug_id_str, const map_crash_data_t& pCrashData);
+    xmlrpc_int32 new_bug(crash_data_t *crash_data, int depend_on_bugno);
+    int          add_attachments(const char* bug_id_str, crash_data_t *crash_data);
     int          get_bug_info(struct bug_info* bz, xmlrpc_int32 bug_id);
     int          add_comment(xmlrpc_int32 bug_id, const char* comment, bool is_private);
 
@@ -326,7 +328,7 @@ xmlrpc_value* ctx::call_quicksearch_duphash(const char* component, const char* r
     {
         char *product = NULL;
         char *version = NULL;
-        parse_release(release, &product, &version);
+        parse_release_for_bz(release, &product, &version);
         query = xasprintf("ALL component:\"%s\" whiteboard:\"%s\" product:\"%s\"",
                                                             component, duphash, product
         );
@@ -442,17 +444,17 @@ static const char *tainted_string(unsigned tainted)
     return taint_warnings[idx];
 }
 
-xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData, int depend_on_bugno)
+xmlrpc_int32 ctx::new_bug(crash_data_t *crash_data, int depend_on_bugno)
 {
-    const char *package         = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_PACKAGE);
-    const char *component       = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_COMPONENT);
-    const char *release         = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_RELEASE);
-    const char *arch            = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_ARCHITECTURE);
-    const char *duphash         = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_DUPHASH);
-    const char *reason          = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_REASON);
-    const char *function        = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_CRASH_FUNCTION);
-    const char *analyzer        = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_ANALYZER);
-    const char *tainted_str     = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_TAINTED);
+    const char *package         = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
+    const char *component       = get_crash_item_content_or_NULL(crash_data, FILENAME_COMPONENT);
+    const char *release         = get_crash_item_content_or_NULL(crash_data, FILENAME_OS_RELEASE);
+    const char *arch            = get_crash_item_content_or_NULL(crash_data, FILENAME_ARCHITECTURE);
+    const char *duphash         = get_crash_item_content_or_NULL(crash_data, FILENAME_DUPHASH);
+    const char *reason          = get_crash_item_content_or_NULL(crash_data, FILENAME_REASON);
+    const char *function        = get_crash_item_content_or_NULL(crash_data, FILENAME_CRASH_FUNCTION);
+    const char *analyzer        = get_crash_item_content_or_NULL(crash_data, FILENAME_ANALYZER);
+    const char *tainted_str     = get_crash_item_content_or_NULL(crash_data, FILENAME_TAINTED);
 
     struct strbuf *buf_summary = strbuf_new();
     strbuf_append_strf(buf_summary, "[abrt] %s", package);
@@ -466,7 +468,7 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData, int depend_on_bugn
     if (tainted_str && analyzer
         && (strcmp(analyzer, "Kerneloops") == 0)
     ) {
-        unsigned long tainted = xatoi_u(tainted_str);
+        unsigned long tainted = xatoi_positive(tainted_str);
         const char *tainted_warning = tainted_string(tainted);
         if (tainted_warning)
             strbuf_append_strf(buf_summary, ": TAINTED %s", tainted_warning);
@@ -474,13 +476,13 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData, int depend_on_bugn
 
     char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);
 
-    char *bz_dsc = make_description_bz(pCrashData);
+    char *bz_dsc = make_description_bz(crash_data);
     char *full_dsc = xasprintf("abrt version: "VERSION"\n%s", bz_dsc);
     free(bz_dsc);
 
     char *product = NULL;
     char *version = NULL;
-    parse_release(release, &product, &version);
+    parse_release_for_bz(release, &product, &version);
 
     xmlrpc_value* result = NULL;
     char *summary = strbuf_free_nobuf(buf_summary);
@@ -534,23 +536,24 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData, int depend_on_bugn
     return bug_id;
 }
 
-int ctx::add_attachments(const char* bug_id_str, const map_crash_data_t& pCrashData)
+int ctx::add_attachments(const char* bug_id_str, crash_data_t *crash_data)
 {
-    map_crash_data_t::const_iterator it = pCrashData.begin();
-    for (; it != pCrashData.end(); it++)
+    GHashTableIter iter;
+    char *name;
+    struct crash_item *value;
+    g_hash_table_iter_init(&iter, crash_data);
+    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
-        const char *itemname = it->first.c_str();
-        const char *type = it->second[CD_TYPE].c_str();
-        const char *content = it->second[CD_CONTENT].c_str();
+        const char *content = value->content;
 
-        if ((strcmp(type, CD_TXT) == 0)
-         && (strlen(content) > CD_TEXT_ATT_SIZE || (strcmp(itemname, FILENAME_BACKTRACE) == 0))
+        if ((value->flags & CD_FLAG_TXT)
+         && (strlen(content) > CD_TEXT_ATT_SIZE || (strcmp(name, FILENAME_BACKTRACE) == 0))
         ) {
             char *encoded64 = encode_base64(content, strlen(content));
-            char *filename = xasprintf("File: %s", itemname);
+            char *filename = xasprintf("File: %s", name);
             xmlrpc_value* result = call("bugzilla.addAttachment", "(s{s:s,s:s,s:s,s:s})", bug_id_str,
                                         "description", filename,
-                                        "filename", itemname,
+                                        "filename", name,
                                         "contenttype", "text/plain",
                                         "data", encoded64
                                       );
@@ -567,7 +570,9 @@ int ctx::add_attachments(const char* bug_id_str, const map_crash_data_t& pCrashD
 
 int ctx::get_bug_info(struct bug_info* bz, xmlrpc_int32 bug_id)
 {
-    xmlrpc_value* result = call("bugzilla.getBug", "(s)", to_string(bug_id).c_str());
+    char bug_id_str[sizeof(long)*3 + 2];
+    sprintf(bug_id_str, "%lu", (long)bug_id);
+    xmlrpc_value* result = call("bugzilla.getBug", "(s)", bug_id_str);
     if (!result)
         return -1;
 
@@ -611,15 +616,10 @@ int ctx::get_bug_info(struct bug_info* bz, xmlrpc_int32 bug_id)
 void ctx::login(const char* login, const char* passwd)
 {
     xmlrpc_value* result = call("User.login", "({s:s,s:s})", "login", login, "password", passwd);
-
     if (!result)
-    {
-        char *errmsg = xasprintf("Can't login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla.conf. Server said: %s", env.fault_string);
-        error_msg("%s", errmsg); // show error in daemon log
-        CABRTException e(EXCEP_PLUGIN,  errmsg);
-        free(errmsg);
-        throw e;
-    }
+        error_msg_and_die("Can't login. Check Edit->Plugins->Bugzilla "
+                        "and /etc/abrt/plugins/Bugzilla.conf. Server said: %s",
+                        env.fault_string);
     xmlrpc_DECREF(result);
 }
 
@@ -637,15 +637,12 @@ void ctx::logout()
 
 static void report_to_bugzilla(
                 const char *dump_dir_name,
-                /*const*/ map_plugin_settings_t& settings)
+                map_string_h *settings)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
-    {
-        throw CABRTException(EXCEP_PLUGIN, _("Can't open '%s'"), dump_dir_name);
-    }
-    map_crash_data_t pCrashData;
-    load_crash_data_from_crash_dump_dir(dd, pCrashData);
+        xfunc_die(); /* dd_opendir already emitted error msg */
+    crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
     dd_close(dd);
 
     const char *env;
@@ -656,27 +653,27 @@ static void report_to_bugzilla(
     bool ssl_verify;
 
     env = getenv("Bugzilla_Login");
-    login = env ? env : settings["Login"].c_str();
+    login = env ? env : get_map_string_item_or_empty(settings, "Login");
     env = getenv("Bugzilla_Password");
-    password = env ? env : settings["Password"].c_str();
+    password = env ? env : get_map_string_item_or_empty(settings, "Password");
     if (!login[0] || !password[0])
     {
         VERB3 log("Empty login and password");
-        throw CABRTException(EXCEP_PLUGIN, _("Empty login or password, please check %s"), PLUGINS_CONF_DIR"/Bugzilla.conf");
+        error_msg_and_die(_("Empty login or password, please check %s"), PLUGINS_CONF_DIR"/Bugzilla.conf");
     }
 
     env = getenv("Bugzilla_BugzillaURL");
-    bugzilla_url = env ? env : settings["BugzillaURL"].c_str();
+    bugzilla_url = env ? env : get_map_string_item_or_empty(settings, "BugzillaURL");
     if (!bugzilla_url[0])
         bugzilla_url = "https://bugzilla.redhat.com";
     bugzilla_xmlrpc = xasprintf("%s"XML_RPC_SUFFIX, bugzilla_url);
 
     env = getenv("Bugzilla_SSLVerify");
-    ssl_verify = string_to_bool(env ? env : settings["SSLVerify"].c_str());
+    ssl_verify = string_to_bool(env ? env : get_map_string_item_or_empty(settings, "SSLVerify"));
 
-    const char *component = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_COMPONENT);
-    const char *duphash   = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_DUPHASH);
-    const char *release   = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_RELEASE);
+    const char *component = get_crash_item_content_or_NULL(crash_data, FILENAME_COMPONENT);
+    const char *duphash   = get_crash_item_content_or_NULL(crash_data, FILENAME_DUPHASH);
+    const char *release   = get_crash_item_content_or_NULL(crash_data, FILENAME_OS_RELEASE);
 
     ctx bz_server(bugzilla_xmlrpc, ssl_verify);
 
@@ -687,7 +684,8 @@ static void report_to_bugzilla(
 
     char *product = NULL;
     char *version = NULL;
-    parse_release(release, &product, &version);
+    parse_release_for_bz(release, &product, &version);
+    free(version);
 
     xmlrpc_value *result;
     if (strcmp(product, "Fedora") == 0)
@@ -704,7 +702,7 @@ static void report_to_bugzilla(
     if (!all_bugs)
     {
         throw_if_xml_fault_occurred(&bz_server.env);
-        throw CABRTException(EXCEP_PLUGIN, _("Missing mandatory member 'bugs'"));
+        error_msg_and_die(_("Missing mandatory member 'bugs'"));
     }
 
     xmlrpc_int32 bug_id = -1;
@@ -723,7 +721,7 @@ static void report_to_bugzilla(
         {
             bug_info_destroy(&bz);
             throw_if_xml_fault_occurred(&bz_server.env);
-            throw CABRTException(EXCEP_PLUGIN, _("get_bug_info() failed. Could not collect all mandatory information"));
+            error_msg_and_die(_("get_bug_info() failed. Could not collect all mandatory information"));
         }
 
         if (strcmp(bz.bug_product, product) != 0)
@@ -740,7 +738,7 @@ static void report_to_bugzilla(
             if (!all_bugs)
             {
                 throw_if_xml_fault_occurred(&bz_server.env);
-                throw CABRTException(EXCEP_PLUGIN, _("Missing mandatory member 'bugs'"));
+                error_msg_and_die(_("Missing mandatory member 'bugs'"));
             }
 
             all_bugs_size = bz_server.get_array_size(all_bugs);
@@ -756,7 +754,7 @@ static void report_to_bugzilla(
                 {
                     bug_info_destroy(&bz);
                     throw_if_xml_fault_occurred(&bz_server.env);
-                    throw CABRTException(EXCEP_PLUGIN, _("get_bug_info() failed. Could not collect all mandatory information"));
+                    error_msg_and_die(_("get_bug_info() failed. Could not collect all mandatory information"));
                 }
             }
             else
@@ -764,7 +762,6 @@ static void report_to_bugzilla(
         }
     }
     free(product);
-    free(version);
 
     if (all_bugs_size < 0)
     {
@@ -773,15 +770,17 @@ static void report_to_bugzilla(
     else if (all_bugs_size == 0) // Create new bug
     {
         log(_("Creating a new bug..."));
-        bug_id = bz_server.new_bug(pCrashData, depend_on_bugno);
+        bug_id = bz_server.new_bug(crash_data, depend_on_bugno);
         if (bug_id < 0)
         {
             throw_if_xml_fault_occurred(&bz_server.env);
-            throw CABRTException(EXCEP_PLUGIN, _("Bugzilla entry creation failed"));
+            error_msg_and_die(_("Bugzilla entry creation failed"));
         }
 
-        log("Adding attachments to bug %d...", bug_id);
-        int ret = bz_server.add_attachments(to_string(bug_id).c_str(), pCrashData);
+        log("Adding attachments to bug %ld...", (long)bug_id);
+        char bug_id_str[sizeof(long)*3 + 2];
+        sprintf(bug_id_str, "%ld", (long) bug_id);
+        int ret = bz_server.add_attachments(bug_id_str, crash_data);
         if (ret == -1)
         {
             throw_if_xml_fault_occurred(&bz_server.env);
@@ -816,7 +815,7 @@ static void report_to_bugzilla(
             {
                 VERB3 log("Bugzilla could not find a parent of bug %d", (int)original_bug_id);
                 bug_info_destroy(&bz);
-                throw CABRTException(EXCEP_PLUGIN, _("Bugzilla couldn't find parent of bug %d"), (int)original_bug_id);
+                error_msg_and_die(_("Bugzilla couldn't find parent of bug %d"), (int)original_bug_id);
             }
 
             log("Bug %d is a duplicate, using parent bug %d", bug_id, (int)bz.bug_dup_id);
@@ -831,7 +830,7 @@ static void report_to_bugzilla(
                 {
                     throw_if_xml_fault_occurred(&bz_server.env);
                 }
-                throw CABRTException(EXCEP_PLUGIN, _("get_bug_info() failed. Could not collect all mandatory information"));
+                error_msg_and_die(_("get_bug_info() failed. Could not collect all mandatory information"));
             }
 
             // found a bug which is not CLOSED as DUPLICATE
@@ -855,13 +854,13 @@ static void report_to_bugzilla(
             throw_if_xml_fault_occurred(&bz_server.env);
         }
 
-        char *dsc = make_description_reproduce_comment(pCrashData);
+        char *dsc = make_description_reproduce_comment(crash_data);
         if (dsc)
         {
-            const char* package    = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_PACKAGE);
-            const char* release    = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_RELEASE);
-            const char* arch       = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_ARCHITECTURE);
-            const char* is_private = get_crash_data_item_content_or_NULL(pCrashData, "is_private");
+            const char* package    = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
+            const char* release    = get_crash_item_content_or_NULL(crash_data, FILENAME_OS_RELEASE);
+            const char* arch       = get_crash_item_content_or_NULL(crash_data, FILENAME_ARCHITECTURE);
+            const char* is_private = get_crash_item_content_or_NULL(crash_data, "is_private");
 
             char *full_dsc = xasprintf("Package: %s\n"
                                 "Architecture: %s\n"
@@ -895,6 +894,7 @@ static void report_to_bugzilla(
                 (int)bug_id
     );
 
+    free_crash_data(crash_data);
     bug_info_destroy(&bz);
 }
 
@@ -904,57 +904,48 @@ int main(int argc, char **argv)
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    map_plugin_settings_t settings;
-
+    map_string_h *settings = new_map_string();
     const char *dump_dir_name = ".";
+    GList *conf_file = NULL;
+
+    /* Can't keep these strings/structs static: _() doesn't support that */
+    const char *program_usage_string = _(
+        PROGNAME" [-vs] -c CONFFILE -d DIR"
+        "\n"
+        "\nReport a crash to Bugzilla"
+    );
     enum {
-        OPT_s = (1 << 0),
+        OPT_v = 1 << 0,
+        OPT_s = 1 << 1,
+        OPT_d = 1 << 2,
+        OPT_c = 1 << 3,
     };
-    int optflags = 0;
-    int opt;
-    while ((opt = getopt(argc, argv, "c:d:vs")) != -1)
-    {
-        switch (opt)
-        {
-        case 'c':
-            VERB1 log("Loading settings from '%s'", optarg);
-            LoadPluginSettings(optarg, settings);
-            VERB3 log("Loaded '%s'", optarg);
-            break;
-        case 'd':
-            dump_dir_name = optarg;
-            break;
-        case 'v':
-            g_verbose++;
-            break;
-        case 's':
-            optflags |= OPT_s;
-            break;
-        default:
-            /* Careful: the string below contains tabs, dont replace with spaces */
-            error_msg_and_die(
-                "Usage: abrt-action-bugzilla -c CONFFILE -d DIR [-vs]"
-                "\n"
-                "\nReport a crash to Bugzilla"
-                "\n"
-                "\nOptions:"
-                "\n	-c FILE	Configuration file (may be given many times)"
-                "\n	-d DIR	Crash dump directory"
-                "\n	-v	Verbose"
-                "\n	-s	Log to syslog"
-            );
-        }
-    }
+    /* Keep enum above and order of options below in sync! */
+    struct options program_options[] = {
+        OPT__VERBOSE(&g_verbose),
+        OPT_BOOL(  's', NULL, NULL          ,         _("Log to syslog")),
+        OPT_STRING('d', NULL, &dump_dir_name, "DIR" , _("Crash dump directory")),
+        OPT_LIST(  'c', NULL, &conf_file    , "FILE", _("Configuration file (may be given many times)")),
+        OPT_END()
+    };
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-
 //DONT! our stdout/stderr goes directly to daemon, don't want to have prefix there.
-//    msg_prefix = xasprintf("abrt-action-bugzilla[%u]", getpid());
-
-    if (optflags & OPT_s)
+//    msg_prefix = xasprintf(PROGNAME"[%u]", getpid());
+    if (opts & OPT_s)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;
+    }
+
+    while (conf_file)
+    {
+        char *fn = (char *)conf_file->data;
+        VERB1 log("Loading settings from '%s'", fn);
+        load_conf_file(fn, settings, /*skip key w/o values:*/ true);
+        VERB3 log("Loaded '%s'", fn);
+        conf_file = g_list_remove(conf_file, fn);
     }
 
     VERB1 log("Initializing XML-RPC library");
@@ -965,14 +956,8 @@ int main(int argc, char **argv)
         error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
     xmlrpc_env_clean(&env);
 
-    try
-    {
-        report_to_bugzilla(dump_dir_name, settings);
-    }
-    catch (CABRTException& e)
-    {
-        error_msg_and_die("%s", e.what());
-    }
+    report_to_bugzilla(dump_dir_name, settings);
 
+    free_map_string(settings);
     return 0;
 }

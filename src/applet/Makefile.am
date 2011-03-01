@@ -1,14 +1,12 @@
 bin_PROGRAMS = abrt-applet
+#test-report
 
 abrt_applet_SOURCES = \
-    Applet.cpp \
+    applet.c \
     applet_gtk.h applet_gtk.c
 abrt_applet_CPPFLAGS = \
-    -Wall -Werror \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -I/usr/include/glib-2.0 \
-    -I/usr/lib/glib-2.0/include \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
@@ -18,17 +16,30 @@ abrt_applet_CPPFLAGS = \
     -DICON_DIR=\"${datadir}/abrt/icons/hicolor/48x48/status\" \
     $(GTK_CFLAGS) \
     $(DBUS_CFLAGS) \
-    -D_GNU_SOURCE
+    -D_GNU_SOURCE \
+    -Wall -Werror
+#    -I/usr/include/glib-2.0
+#    -I/usr/lib/glib-2.0/include
 #    $(LIBNOTIFY_CFLAGS)
 #    $(DBUS_GLIB_CFLAGS)
 abrt_applet_LDADD = \
-    ../lib/libabrt.la \
+    ../lib/libreport.la \
     ../lib/libabrt_dbus.la \
     -lglib-2.0 \
     -lgthread-2.0 \
     $(DBUS_LIBS) \
     $(LIBNOTIFY_LIBS) \
     $(GTK_LIBS)
+
+#test_report_SOURCES = \
+#    test_report.c
+#test_report_CPPFLAGS = \
+#    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+#    $(GLIB_CFLAGS) \
+#    -D_GNU_SOURCE \
+#    -Wall -Werror
+#test_report_LDADD = \
+#    ../lib/libreport.la
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 

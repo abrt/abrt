@@ -1,0 +1,13 @@
+#!/usr/bin/python
+
+from report import *
+
+def func():
+    return 0
+
+res = run_event_state()
+print res
+print res.post_run_callback
+res.post_run_callback = func
+res.logging_callback = func
+print res.post_run_callback

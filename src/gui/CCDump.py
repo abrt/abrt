@@ -3,7 +3,7 @@ from datetime import datetime
 
 from abrt_utils import _, init_logging, log, log1, log2
 
-# Keep in sync with [abrt_]crash_dump.h!
+# Keep in sync with [abrt_]crash_data.h!
 CD_TYPE     = 0
 CD_EDITABLE = 1
 CD_CONTENT  = 2
@@ -25,10 +25,9 @@ FILENAME_CRASH_FUNCTION = "crash_function"
 FILENAME_ARCHITECTURE = "architecture"
 FILENAME_KERNEL       = "kernel"
 FILENAME_TIME         = "time"
-FILENAME_RELEASE      = "release"
+FILENAME_OS_RELEASE   = "os_release"
 FILENAME_PACKAGE      = "package"
 FILENAME_COMPONENT    = "component"
-FILENAME_DESCRIPTION  = "description"
 FILENAME_COMMENT      = "comment"
 FILENAME_REPRODUCE    = "reproduce"
 FILENAME_RATING       = "rating"
@@ -129,7 +128,11 @@ class Dump():
         return self.analyzer
 
     def get_release(self):
-        return self.release
+        # Old dump dir format compat. Delete in abrt-2.1:
+        try:
+            return self.os_release
+        except AttributeError:
+            return self.release # old name
 
     def get_reason(self):
         return self.reason

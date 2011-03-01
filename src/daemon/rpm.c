@@ -16,7 +16,6 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include <glib.h>
 #include "abrtlib.h"
 #include "rpm.h"
 
@@ -150,7 +149,6 @@ bool CheckHash(const char* pPackage, const char* pPath)
         goto error;
 
     rpmfi fi = rpmfiNew(ts, header, RPMTAG_BASENAMES, RPMFI_NOHEADER);
-    pgpHashAlgo hashAlgo;
     std::string headerHash;
     char computedHash[1024] = "";
 
@@ -158,8 +156,8 @@ bool CheckHash(const char* pPackage, const char* pPath)
     {
         if (strcmp(pPath, rpmfiFN(fi)) == 0)
         {
-            headerHash = rpmfiFDigestHex(fi, &hashAlgo);
-            rpmDoDigest(hashAlgo, pPath, 1, (unsigned char*) computedHash, NULL);
+            headerHash = rpmfiFDigestHex(fi, NULL);
+            rpmDoDigest(rpmfiDigestAlgo(fi), pPath, 1, (unsigned char*) computedHash, NULL);
             ret = (headerHash != "" && headerHash == computedHash);
             break;
         }
@@ -171,27 +169,6 @@ error:
     return ret;
 }
 */
-
-char* rpm_get_description(const char* pkg)
-{
-    char *dsc = NULL;
-    const char *errmsg = NULL;
-    rpmts ts = rpmtsCreate();
-
-    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pkg, 0);
-    Header header = rpmdbNextIterator(iter);
-    if (!header)
-        goto error;
-
-    dsc = headerFormat(header, "%{SUMMARY}\n\n%{DESCRIPTION}", &errmsg);
-    if (!dsc && errmsg)
-        error_msg("cannot get summary and description. reason: %s", errmsg);
-
-error:
-    rpmdbFreeIterator(iter);
-    rpmtsFree(ts);
-    return dsc;
-}
 
 char* rpm_get_component(const char* filename)
 {

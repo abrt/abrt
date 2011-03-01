@@ -27,28 +27,10 @@ class SettingsDialog:
         self.window = self.builder.get_object("wGlobalSettings")
         self.builder.get_object("bSaveSettings").connect("clicked", self.on_ok_clicked)
         self.builder.get_object("bCancelSettings").connect("clicked", self.on_cancel_clicked)
-        self.builder.get_object("bAddCronJob").connect("clicked", self.on_bAddCronJob_clicked)
-
-        # action plugin list for Cron tab
-        self.actionPluginsListStore = gtk.ListStore(str, object)
-        self.actionPluginsListStore.append([_("<b>Select plugin</b>"), None])
-        # database plugin list
-        self.databasePluginsListStore = gtk.ListStore(str, object)
-        self.databasePluginsListStore.append([_("<b>Select database backend</b>"), None])
-
-        self.dbcombo = self.builder.get_object("cbDatabase")
-        self.dbcombo.set_model(self.databasePluginsListStore)
-        cell = gtk.CellRendererText()
-        self.dbcombo.pack_start(cell)
-        self.dbcombo.add_attribute(cell, "markup", 0)
         # blacklist edit
         self.builder.get_object("bEditBlackList").connect("clicked", self.on_blacklistEdit_clicked)
 
         self.builder.get_object("bOpenGPGPublicKeys").connect("clicked", self.on_GPGKeysEdit_clicked)
-        self.builder.get_object("bAddAction").connect("clicked", self.on_bAddAction_clicked)
-        # AnalyzerActionsAndReporters
-        self.analyzerPluginsListStore = gtk.ListStore(str, object)
-        self.analyzerPluginsListStore.append([_("<b>Select plugin</b>"), None])
         # GPG keys
         self.wGPGKeys = self.builder.get_object("wGPGKeys")
         self.GPGKeysListStore = gtk.ListStore(str)
@@ -77,18 +59,6 @@ class SettingsDialog:
         except Exception, e:
             raise Exception("Comunication with daemon has failed, have you restarted the daemon after update?")
 
-        ## hydrate cron jobs:
-        for key,val in self.settings["Cron"].iteritems():
-            # actions are separated by ','
-            actions = val.split(',')
-            self.settings["Cron"][key] = actions
-        for plugin in self.pluginlist.getActionPlugins():
-            it = self.actionPluginsListStore.append([plugin.getName(), plugin])
-            for key,val in self.settings["Cron"].iteritems():
-                if plugin.getName() in val:
-                    cron_job = (key,it)
-                    self.add_CronJob(cron_job)
-                    self.settings["Cron"][key].remove(plugin.getName())
         # hydrate common
         common = self.settings["Common"]
         # ensure that all expected keys exist:
@@ -96,11 +66,6 @@ class SettingsDialog:
             common["OpenGPGCheck"] = "no" # check unsigned pkgs too
         ## gpgcheck
         self.builder.get_object("cbOpenGPGCheck").set_active(common["OpenGPGCheck"] == 'yes')
-        ## database
-        for dbplugin in self.pluginlist.getDatabasePlugins():
-            it = self.databasePluginsListStore.append([dbplugin.getName(), dbplugin])
-            if common["Database"] == dbplugin.getName():
-                self.dbcombo.set_active_iter(it)
         ## MaxCrashSize
         self.builder.get_object("sbMaxCrashReportsSize").set_value(float(common["MaxCrashReportsSize"]))
         ## GPG keys
@@ -114,13 +79,6 @@ class SettingsDialog:
 
         ## blacklist
         self.builder.get_object("eBlacklist").set_text(common["BlackList"])
-        # hydrate AnalyzerActionsAndReporters
-        AnalyzerActionsAndReporters = self.settings["AnalyzerActionsAndReporters"]
-        for analplugin in self.pluginlist.getAnalyzerPlugins():
-            it = self.analyzerPluginsListStore.append([analplugin.getName(), analplugin])
-            if analplugin.getName() in AnalyzerActionsAndReporters:
-                action = (AnalyzerActionsAndReporters[analplugin.getName()], it)
-                self.add_AnalyzerAction(action)
 
     def on_bCancelGPGKeys_clicked(self, button):
         self.wGPGKeys.hide()
@@ -146,12 +104,6 @@ class SettingsDialog:
 
     def on_cancel_clicked(self, button):
         self.window.hide()
-
-    def on_remove_CronJob_clicked(self, button, job_hbox):
-        self.removeHBoxWihtChildren(job_hbox)
-
-    def on_remove_Action_clicked(self, button, binding_hbox):
-        self.removeHBoxWihtChildren(binding_hbox)
 
     def removeHBoxWihtChildren(self, job_hbox):
         job_hbox.get_parent().remove(job_hbox)
@@ -237,7 +189,10 @@ class SettingsDialog:
         self.add_AnalyzerAction()
 
     def dehydrate(self):
-        self.ccdaemon.setSettings(self.settings)
+        pass
+        ### looks unused to me.
+        ### Ok to grep for setSettings and delete after 2011-04-01.
+        ### self.ccdaemon.setSettings(self.settings)
 
     def show(self):
         self.window.show()

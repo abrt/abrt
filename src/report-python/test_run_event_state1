@@ -1,0 +1,27 @@
+#!/usr/bin/python
+
+import sys
+from report import *
+
+def post_run_callback(dump_dir_name):
+    return 0
+
+def logging_callback(line):
+    print "LOG:", line
+    return
+
+res = run_event_state()
+res.post_run_callback = post_run_callback
+res.logging_callback = logging_callback
+
+dd = dd_create("testdir")
+if not dd:
+    sys.exit(1)
+dd.save_text("analyzer", "foo")
+dd.close()
+
+res.run_event_on_dir_name("testdir", "post-create")
+
+dd = dd_opendir("testdir")
+dd.delete()
+dd.close()

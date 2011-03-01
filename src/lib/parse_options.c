@@ -1,3 +1,21 @@
+/*
+    Copyright (C) 2010  ABRT team
+    Copyright (C) 2010  RedHat Inc
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
 
 #include <getopt.h>
 #include "abrtlib.h"
@@ -6,25 +24,16 @@
 #define USAGE_OPTS_WIDTH 24
 #define USAGE_GAP         2
 
-void parse_usage_and_die(const char *usage, const struct options *opt)
+void show_usage_and_die(const char *usage, const struct options *opt)
 {
     fprintf(stderr, _("Usage: %s\n"), usage);
 
-    if (opt->type != OPTION_GROUP)
-        fputc('\n', stderr);
+    fputc('\n', stderr);
 
     for (; opt->type != OPTION_END; opt++)
     {
         size_t pos;
         int pad;
-
-        if (opt->type == OPTION_GROUP)
-        {
-            fputc('\n', stderr);
-            if (*opt->help)
-                fprintf(stderr, "%s\n", opt->help);
-            continue;
-        }
 
         pos = fprintf(stderr, "    ");
         if (opt->short_name)
@@ -92,6 +101,7 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
                 break;
             case OPTION_INTEGER:
             case OPTION_STRING:
+            case OPTION_LIST:
                 curopt->has_arg = required_argument;
                 if (opt[ii].short_name)
                     strbuf_append_strf(shortopts, "%c:", opt[ii].short_name);
@@ -101,7 +111,6 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
                 if (opt[ii].short_name)
                     strbuf_append_strf(shortopts, "%c::", opt[ii].short_name);
                 break;
-            case OPTION_GROUP:
             case OPTION_END:
                 break;
         }
@@ -144,7 +153,7 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
         {
             free(longopts);
             strbuf_free(shortopts);
-            parse_usage_and_die(usage, opt);
+            show_usage_and_die(usage, opt);
         }
 
         for (ii = 0; ii < size; ++ii)
@@ -157,17 +166,19 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
                 if (opt[ii].value != NULL) switch (opt[ii].type)
                 {
                     case OPTION_BOOL:
-                        *(int*)opt[ii].value += 1;
+                        *(int*)(opt[ii].value) += 1;
                         break;
                     case OPTION_INTEGER:
-                        *(int*)opt[ii].value = xatoi(optarg);
+                        *(int*)(opt[ii].value) = xatoi(optarg);
                         break;
                     case OPTION_STRING:
                     case OPTION_OPTSTRING:
                         if (optarg)
-                            *(char**)opt[ii].value = (char*)optarg;
+                            *(char**)(opt[ii].value) = (char*)optarg;
                         break;
-                    case OPTION_GROUP:
+                    case OPTION_LIST:
+                        *(GList**)(opt[ii].value) = g_list_append(*(GList**)(opt[ii].value), optarg);
+                        break;
                     case OPTION_END:
                         break;
                 }

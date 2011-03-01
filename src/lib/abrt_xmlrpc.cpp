@@ -18,15 +18,10 @@
 */
 #include "abrtlib.h"
 #include "abrt_xmlrpc.h"
-#include "abrt_exception.h"
 
 void throw_xml_fault(xmlrpc_env *env)
 {
-    std::string errmsg = ssprintf("XML-RPC Fault(%d): %s", env->fault_code, env->fault_string);
-    xmlrpc_env_clean(env); // this is needed ONLY if fault_occurred
-    xmlrpc_env_init(env); // just in case user catches ex and _continues_ to use env
-    error_msg("%s", errmsg.c_str()); // show error in daemon log
-    throw CABRTException(EXCEP_PLUGIN, errmsg.c_str());
+    error_msg_and_die("XML-RPC Fault(%d): %s", env->fault_code, env->fault_string);
 }
 
 void throw_if_xml_fault_occurred(xmlrpc_env *env)
@@ -48,6 +43,17 @@ void abrt_xmlrpc_conn::new_xmlrpc_client(const char* url, bool ssl_verify)
     /* This should be done at program startup, once.
      * We do it in abrtd's main */
     /* xmlrpc_client_setup_global_const(&env); */
+
+    /* URL - bugzilla.redhat.com/show_bug.cgi?id=666893 Unable to make sense of
+     * XML-RPC response from server
+     *
+     * By default, XML data from the network may be no larger than 512K.
+     * XMLRPC_XML_SIZE_LIMIT_DEFAULT is #defined to (512*1024) in xmlrpc-c/base.h
+     *
+     * Users reported trouble with 733402 byte long responses, hope raising the
+     * limit to 2*512k is enough
+     */
+    xmlrpc_limit_set(XMLRPC_XML_SIZE_LIMIT_ID, 2 * XMLRPC_XML_SIZE_LIMIT_DEFAULT);
 
     struct xmlrpc_curl_xportparms curlParms;
     memset(&curlParms, 0, sizeof(curlParms));

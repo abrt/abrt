@@ -1,0 +1,25 @@
+#!/usr/bin/python
+
+from report import *
+
+dd = dd_create("testdir")
+print dd
+
+if dd:
+    print "dd is nonzero"
+else:
+    print "dd is zero"
+
+print "name:", dd.name
+print "closing"
+dd.close()
+
+if dd:
+    print "dd is nonzero"
+else:
+    print "dd is zero"
+
+# Should fail here
+dd.name = "qwe"
+
+print "Done"

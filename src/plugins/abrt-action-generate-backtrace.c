@@ -28,8 +28,9 @@
 #define DEBUGINFO_CACHE_DIR     LOCALSTATEDIR"/cache/abrt-di"
 
 static const char *dump_dir_name = ".";
-static const char *debuginfo_dirs;
-static int exec_timeout_sec = 60;
+static const char *debuginfo_dirs = DEBUGINFO_CACHE_DIR;
+/* 60 seconds was too limiting on slow machines */
+static int exec_timeout_sec = 240;
 
 
 static void create_hash(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *pInput)
@@ -131,7 +132,7 @@ static char* exec_vp(char **args, uid_t uid, int redirect_stderr, int *status)
 static char *get_backtrace(struct dump_dir *dd)
 {
     char *uid_str = dd_load_text(dd, FILENAME_UID);
-    uid_t uid = xatoi_u(uid_str);
+    uid_t uid = xatoi_positive(uid_str);
     free(uid_str);
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
     dd_close(dd);
@@ -244,47 +245,47 @@ static char *get_backtrace(struct dump_dir *dd)
     return bt;
 }
 
-static char *i_opt;
-static const char abrt_action_generage_backtrace_usage[] = PROGNAME" [options] -d DIR";
-enum {
-    OPT_v = 1 << 0,
-    OPT_d = 1 << 1,
-    OPT_i = 1 << 2,
-    OPT_t = 1 << 3,
-    OPT_s = 1 << 4,
-};
-/* Keep enum above and order of options below in sync! */
-static struct options abrt_action_generate_backtrace_options[] = {
-    OPT__VERBOSE(&g_verbose),
-    OPT_STRING( 'd', NULL, &dump_dir_name, "DIR", "Crash dump directory"),
-    OPT_STRING( 'i', NULL, &i_opt, "dir1[:dir2]...", "Additional debuginfo directories"),
-    OPT_INTEGER('t', NULL, &exec_timeout_sec, "Kill gdb if it runs for more than N seconds"),
-    OPT_BOOL(   's', NULL, NULL, "Log to syslog"),
-    OPT_END()
-};
-
 int main(int argc, char **argv)
 {
     char *env_verbose = getenv("ABRT_VERBOSE");
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    unsigned opts = parse_opts(argc, argv, abrt_action_generate_backtrace_options,
-                           abrt_action_generage_backtrace_usage);
+    char *i_opt = NULL;
 
-    debuginfo_dirs = DEBUGINFO_CACHE_DIR;
-    if (i_opt)
-    {
-        debuginfo_dirs = xasprintf("%s:%s", DEBUGINFO_CACHE_DIR, i_opt);
-    }
+    /* Can't keep these strings/structs static: _() doesn't support that */
+    const char *program_usage_string = _(
+        PROGNAME" [options] -d DIR"
+    );
+    enum {
+        OPT_v = 1 << 0,
+        OPT_d = 1 << 1,
+        OPT_i = 1 << 2,
+        OPT_t = 1 << 3,
+        OPT_s = 1 << 4,
+    };
+    /* Keep enum above and order of options below in sync! */
+    struct options program_options[] = {
+        OPT__VERBOSE(&g_verbose),
+        OPT_STRING( 'd', NULL, &dump_dir_name   , "DIR"           , _("Crash dump directory")),
+        OPT_STRING( 'i', NULL, &i_opt           , "dir1[:dir2]...", _("Additional debuginfo directories")),
+        OPT_INTEGER('t', NULL, &exec_timeout_sec,                   _("Kill gdb if it runs for more than N seconds")),
+        OPT_BOOL(   's', NULL, NULL             ,                   _("Log to syslog")),
+        OPT_END()
+    };
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-    msg_prefix = PROGNAME;
-
+    //msg_prefix = PROGNAME;
     if (opts & OPT_s)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;
+    }
+
+    if (i_opt)
+    {
+        debuginfo_dirs = xasprintf("%s:%s", DEBUGINFO_CACHE_DIR, i_opt);
     }
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
@@ -294,49 +295,70 @@ int main(int argc, char **argv)
     char *package = dd_load_text(dd, FILENAME_PACKAGE);
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
 
-    /* Create and store backtrace */
+    /* Create gdb backtrace */
     /* NB: get_backtrace() closes dd */
     char *backtrace_str = get_backtrace(dd);
     if (!backtrace_str)
     {
         backtrace_str = xstrdup("");
-        VERB3 log("get_backtrace() returns NULL, broken core/gdb?");
+        log("get_backtrace() returns NULL, broken core/gdb?");
     }
 
-    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return 1;
-
-    dd_save_text(dd, FILENAME_BACKTRACE, backtrace_str);
-
-    /* Compute and store backtrace hash. */
+    /* Compute backtrace hash */
     struct btp_location location;
     btp_location_init(&location);
     char *backtrace_str_ptr = backtrace_str;
     struct btp_backtrace *backtrace = btp_backtrace_parse(&backtrace_str_ptr, &location);
+
+    /* Store gdb backtrace */
+
+    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        return 1;
+    dd_save_text(dd, FILENAME_BACKTRACE, backtrace_str);
+    /* Don't be completely silent. gdb run takes a few seconds,
+     * it is useful to let user know it (maybe) worked.
+     */
+    log(_("Backtrace is generated and saved, %u bytes"), (int)strlen(backtrace_str));
+    free(backtrace_str);
+
+    /* Store backtrace hash */
+
     if (!backtrace)
     {
+        /*
+         * The parser failed. Compute the UUID from the executable
+         * and package only.  This is not supposed to happen often.
+         */
         VERB1 log(_("Backtrace parsing failed for %s"), dump_dir_name);
         VERB1 log("%d:%d: %s", location.line, location.column, location.message);
-        /* If the parser failed compute the UUID from the executable
-           and package only.  This is not supposed to happen often.
-           Do not store the rating, as we do not know how good the
-           backtrace is. */
         struct strbuf *emptybt = strbuf_new();
         strbuf_prepend_str(emptybt, executable);
         strbuf_prepend_str(emptybt, package);
+
         char hash_str[SHA1_RESULT_LEN*2 + 1];
         create_hash(hash_str, emptybt->buf);
+
         dd_save_text(dd, FILENAME_DUPHASH, hash_str);
+        /*
+         * Other parts of ABRT assume that if no rating is available,
+         * it is ok to allow reporting of the bug. To be sure no bad
+         * backtrace is reported, rate the backtrace with the lowest
+         * rating.
+         */
+        dd_save_text(dd, FILENAME_RATING, "0");
 
         strbuf_free(emptybt);
-        free(backtrace_str);
         free(package);
         free(executable);
         dd_close(dd);
-        return 2;
+
+        /* Report success even if the parser failed, as the backtrace
+         * has been created and rated. The failure is caused by a flaw
+         * in the parser, not in the backtrace.
+         */
+        return 0;
     }
-    free(backtrace_str);
 
     /* Compute duplication hash. */
     char *str_hash_core = btp_backtrace_get_duplication_hash(backtrace);
@@ -344,8 +366,10 @@ int main(int argc, char **argv)
     strbuf_append_str(str_hash, package);
     strbuf_append_str(str_hash, executable);
     strbuf_append_str(str_hash, str_hash_core);
+
     char hash_str[SHA1_RESULT_LEN*2 + 1];
     create_hash(hash_str, str_hash->buf);
+
     dd_save_text(dd, FILENAME_DUPHASH, hash_str);
     strbuf_free(str_hash);
     free(str_hash_core);
@@ -368,14 +392,14 @@ int main(int argc, char **argv)
     /* Get the function name from the crash frame. */
     struct btp_frame *crash_frame = btp_backtrace_get_crash_frame(backtrace);
     if (crash_frame)
-     {
+    {
         if (crash_frame->function_name &&
             0 != strcmp(crash_frame->function_name, "??"))
         {
             dd_save_text(dd, FILENAME_CRASH_FUNCTION, crash_frame->function_name);
         }
         btp_frame_free(crash_frame);
-     }
+    }
     btp_backtrace_free(backtrace);
     dd_close(dd);
 

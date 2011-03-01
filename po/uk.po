@@ -3,20 +3,20 @@
 # This file is distributed under the same license as the abrt package.
 #
 # Maxim Dzumanenko <dziumanenko@gmail.com>, 2010.
-# Yuri Chornoivan <yurchor@ukr.net>, 2010.
+# Yuri Chornoivan <yurchor@ukr.net>, 2010, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-11-29 13:51+0100\n"
-"PO-Revision-Date: 2010-10-15 18:47+0300\n"
+"POT-Creation-Date: 2011-02-06 02:46+0000\n"
+"PO-Revision-Date: 2011-02-06 09:36+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
-"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.1\n"
+"Language: uk\n"
+"X-Generator: Lokalize 1.2\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -29,16 +29,16 @@ msgstr "Аплет сповіщення ABRT"
 msgid "Automatic Bug Reporting Tool"
 msgstr "ABRT — автоматичне звітування про помилки"
 
-#: ../src/applet/Applet.cpp:86
+#: ../src/applet/applet.c:86
 #, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "Було виявлено збій у пакунку %s"
 
-#: ../src/applet/Applet.cpp:88
+#: ../src/applet/applet.c:88
 msgid "A crash has been detected"
 msgstr "Виявлено збій у пакеті"
 
-#: ../src/applet/Applet.cpp:285
+#: ../src/applet/applet.c:285
 msgid "ABRT service is not running"
 msgstr "Службу ABRT не запущено"
 
@@ -54,7 +54,7 @@ msgstr ""
 "Аплет у області сповіщень для попередження користувача про виявлені ABRT "
 "проблеми"
 
-#: ../src/applet/applet_gtk.c:246 ../src/gui/ccgui.glade.h:23
+#: ../src/applet/applet_gtk.c:246 ../src/gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr ""
 "Максим Дзюманенко <dziumanenko@gmail.com>\n"
@@ -64,7 +64,7 @@ msgstr ""
 msgid "Hide"
 msgstr "Сховати"
 
-#: ../src/applet/applet_gtk.c:360 ../src/gui/ccgui.glade.h:13
+#: ../src/applet/applet_gtk.c:360 ../src/gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "Повідомити"
 
@@ -72,8 +72,8 @@ msgstr "Повідомити"
 msgid "Open ABRT"
 msgstr "Відкрити ABRT"
 
-#: ../src/cli/CLI.cpp:47
-#, fuzzy, c-format
+#: ../src/cli/CLI.cpp:91
+#, c-format
 msgid ""
 "\tCrash dump : %s\n"
 "\tUID        : %s\n"
@@ -82,20 +82,20 @@ msgid ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 msgstr ""
+"\tДамп збою  : %s\n"
 "\tUID        : %s\n"
-"\tUUID       : %s\n"
 "\tПакунок    : %s\n"
 "\tВик. файл  : %s\n"
 "\tЧас збою   : %s\n"
 "\tКількість  : %s\n"
 
-#: ../src/cli/CLI.cpp:65
+#: ../src/cli/CLI.cpp:110
 #, c-format
 msgid "\tHostname   : %s\n"
 msgstr "\tНазва вузла: %s\n"
 
-#: ../src/cli/CLI.cpp:98
-#, fuzzy, c-format
+#: ../src/cli/CLI.cpp:143
+#, c-format
 msgid ""
 "Dump directory:     %s\n"
 "Last crash:         %s\n"
@@ -107,7 +107,7 @@ msgid ""
 "System:             %s, kernel %s\n"
 "Reason:             %s\n"
 msgstr ""
-"Ідентифікатор збою: %s:%s\n"
+"Каталог дампу:      %s\n"
 "Останній збій:      %s\n"
 "Аналізатор:         %s\n"
 "Компонент:          %s\n"
@@ -117,27 +117,27 @@ msgstr ""
 "Система:            %s, ядро %s\n"
 "Причина:            %s\n"
 
-#: ../src/cli/CLI.cpp:125
+#: ../src/cli/CLI.cpp:171
 #, c-format
 msgid "Coredump file:      %s\n"
 msgstr "Файл coredump:      %s\n"
 
-#: ../src/cli/CLI.cpp:129
+#: ../src/cli/CLI.cpp:175
 #, c-format
 msgid "Rating:             %s\n"
 msgstr "Оцінка:             %s\n"
 
-#: ../src/cli/CLI.cpp:134
+#: ../src/cli/CLI.cpp:180
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr "Аварійна функція:   %s\n"
 
-#: ../src/cli/CLI.cpp:138
+#: ../src/cli/CLI.cpp:184
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr "Назва вузла:        %s\n"
 
-#: ../src/cli/CLI.cpp:142
+#: ../src/cli/CLI.cpp:188
 #, c-format
 msgid ""
 "\n"
@@ -148,7 +148,7 @@ msgstr ""
 "Спосіб відтворення:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:146
+#: ../src/cli/CLI.cpp:192
 #, c-format
 msgid ""
 "\n"
@@ -159,7 +159,7 @@ msgstr ""
 "Коментар:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:152
+#: ../src/cli/CLI.cpp:198
 #, c-format
 msgid ""
 "\n"
@@ -170,71 +170,65 @@ msgstr ""
 "Зворотне трасування:\n"
 "%s\n"
 
-#. Message has embedded tabs.
-#: ../src/cli/CLI.cpp:243
-#, fuzzy, c-format
+#: ../src/cli/CLI.cpp:295
+#, c-format
 msgid ""
-"Usage: %s [OPTION]\n"
+"Usage: %s -l[f] [-D BASE_DIR]...]\n"
+"   or: %s -r[y] CRASH_DIR\n"
+"   or: %s -i[b] CRASH_DIR\n"
+"   or: %s -d CRASH_DIR\n"
 "\n"
-"Startup:\n"
-"\t-V, --version\t\tdisplay the version of %s and exit\n"
-"\t-?, --help\t\tprint this help\n"
+"\t-l, --list\t\tList not yet reported crashes\n"
+"\t  -f, --full\t\tList all crashes\n"
+"\t-D BASE_DIR\t\tDirectory to list crashes from\n"
+"\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
 "\n"
-"Actions:\n"
-"\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
-"\t      -f, --full\tprint a list of all crashes, including the already "
-"reported ones\n"
-"\t-r, --report CRASH_ID\tcreate and send a report\n"
-"\t      -y, --always\tcreate and send a report without asking\n"
-"\t-d, --delete CRASH_ID\tremove a crash\n"
-"\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
-"\t      -b, --backtrace\tprint detailed information about a crash including "
-"backtrace\n"
-"CRASH_ID can be:\n"
-"\ta name of dump directory, or\n"
-"\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
+"\t-r, --report\t\tSend a report about CRASH_DIR\n"
+"\t  -y, --always\t\t...without editing and asking\n"
+"\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
+"\t  -b, --backtrace\t...including backtrace\n"
+"\t-d, --delete\t\tRemove CRASH_DIR\n"
+"\n"
+"\t-V, --version\t\tDisplay version and exit\n"
+"\t-v, --verbose\t\tBe verbose\n"
 msgstr ""
-"Використання: %s [ПАРАМЕТР]\n"
+"Використання: %s -l[f] [-D BASE_DIR]...]\n"
+"   або %s -r[y] CRASH_DIR\n"
+"   або %s -i[b] CRASH_DIR\n"
+"   або %s -d CRASH_DIR\n"
 "\n"
-"Запуск:\n"
-"\t-V, --version\t\tпоказати дані щодо версії %s і завершити роботу\n"
-"\t-?, --help\t\tпоказати цю довідкову інформацію\n"
+"\t-l, --list\t\tПоказати список аварій, щодо яких не надіслано звітів.\n"
+"\t  -f, --full\t\tПоказати список всіх аварій.\n"
+"\t-D BASE_DIR\t\tВказати каталог, за яким слід будувати списки\n"
+"\t\t\t\t(типове значення: -D $HOME/.abrt/spool -D %s).\n"
 "\n"
-"Дії:\n"
-"\t-l, --list\t\tпоказати список всіх збоїв, щодо яких ще не створено звітів\n"
-"\t      -f, --full\tвивести список всіх збоїв, зокрема збоїв, щодо яких "
-"створено звіти\n"
-"\t-r, --report ІДЕНТИФІКАТОР\tстворити і надіслати звіт\n"
-"\t      -y, --always\tстворити і надіслати звіт без підтвердження\n"
-"\t-d, --delete ІДЕНТИФІКАТОР\tвилучити звіт\n"
-"\t-i, --info ІДЕНТИФІКАТОР\tвивести докладну інформацію щодо збою\n"
-"\t      -b, --backtrace\tвивести докладну інформацію щодо збою, зокрема "
-"зворотне трасування\n"
-"Значенням ІДЕНТИФІКАТОР може бути:\n"
-"\tпара UID:UUID,\n"
-"\tунікальний префікс UUID — дію буде виконано над записом збою з відповідним "
-"UUID\n"
-"\t@N  — виконати дію над N-им збоєм (у списку, показаному командою з "
-"параметрами --list --full)\n"
+"\t-r, --report\t\tНадіслати звіт щодо CRASH_DIR\n"
+"\t  -y, --always\t\t...з редагуванням та питаннями.\n"
+"\t-i, --info\t\tПоказати докладні дані щодо CRASH_DIR\n"
+"\t  -b, --backtrace\t...зі зворотним трасуванням.\n"
+"\t-d, --delete\t\tВилучити CRASH_DIR.\n"
+"\n"
+"\t-V, --version\t\tПоказати дані щодо версії і завершити роботу.\n"
+"\t-v, --verbose\t\tПоказувати докладні повідомлення.\n"
 
-#: ../src/cli/CLI.cpp:287
+#: ../src/cli/CLI.cpp:343
 msgid "You must specify exactly one operation"
 msgstr "Вам слід вказати точно одну дію"
 
-#: ../src/cli/report.cpp:166
+#: ../src/cli/report.cpp:161
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# Значення у цьому полі не можна змінювати\n"
 
-#: ../src/cli/report.cpp:186
+#: ../src/cli/report.cpp:181
 msgid "# Describe the circumstances of this crash below"
 msgstr "# Опишіть обставини цього збою нижче"
 
-#: ../src/cli/report.cpp:188
+#: ../src/cli/report.cpp:183
 msgid "# How to reproduce the crash?"
 msgstr "# Як можна відтворити збій?"
 
-#: ../src/cli/report.cpp:190
+#: ../src/cli/report.cpp:185
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -242,49 +236,49 @@ msgstr ""
 "# Зворотне трасування\n"
 "# Не забудьте вилучити з цих даних будь-які конфіденційні дані (паролі тощо)"
 
-#: ../src/cli/report.cpp:192
+#: ../src/cli/report.cpp:187
 msgid "# Architecture"
 msgstr "# Архітектура"
 
-#: ../src/cli/report.cpp:193
+#: ../src/cli/report.cpp:188
 msgid "# Command line"
 msgstr "# Командний рядок"
 
-#: ../src/cli/report.cpp:194
+#: ../src/cli/report.cpp:189
 msgid "# Component"
 msgstr "# Компонент"
 
-#: ../src/cli/report.cpp:195
+#: ../src/cli/report.cpp:190
 msgid "# Core dump"
 msgstr "# Дамп ядра"
 
-#: ../src/cli/report.cpp:196
+#: ../src/cli/report.cpp:191
 msgid "# Executable"
 msgstr "# Виконуваний файл"
 
-#: ../src/cli/report.cpp:197
+#: ../src/cli/report.cpp:192
 msgid "# Kernel version"
 msgstr "# Версія ядра"
 
-#: ../src/cli/report.cpp:198
+#: ../src/cli/report.cpp:193
 msgid "# Package"
 msgstr "# Пакунок"
 
-#: ../src/cli/report.cpp:199
+#: ../src/cli/report.cpp:194
 msgid "# Reason of crash"
 msgstr "# Причина збою"
 
-#: ../src/cli/report.cpp:200
+#: ../src/cli/report.cpp:195
 msgid "# Release string of the operating system"
 msgstr "# Рядок з даними щодо випуску операційної системи"
 
-#: ../src/cli/report.cpp:323
+#: ../src/cli/report.cpp:318
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
 "Не вдалося запустити vi: не встановлено значень змінних $TERM, $VISUAL і "
 "$EDITOR"
 
-#: ../src/cli/report.cpp:411
+#: ../src/cli/report.cpp:402
 msgid ""
 "\n"
 "The report has been updated"
@@ -292,7 +286,7 @@ msgstr ""
 "\n"
 "Звіт було оновлено"
 
-#: ../src/cli/report.cpp:413
+#: ../src/cli/report.cpp:404
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -301,46 +295,46 @@ msgstr ""
 "Не виявлено жодних змін у звіті"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:464
+#: ../src/cli/report.cpp:436
 msgid "y"
 msgstr "y"
 
-#: ../src/cli/report.cpp:465
+#: ../src/cli/report.cpp:437
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:565
+#: ../src/cli/report.cpp:568
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Виявлено помилкові параметри модуля %s\n"
 
-#: ../src/cli/report.cpp:569
+#: ../src/cli/report.cpp:572
 msgid "Enter your login: "
 msgstr "Введіть ваше ім’я користувача: "
 
-#: ../src/cli/report.cpp:575
+#: ../src/cli/report.cpp:578
 msgid "Enter your password: "
 msgstr "Введіть ваш пароль: "
 
-#: ../src/cli/report.cpp:638
+#: ../src/cli/report.cpp:788
 msgid "Reporting..."
 msgstr "Звітування…"
 
-#: ../src/cli/report.cpp:657
+#: ../src/cli/report.cpp:801
 #, c-format
 msgid "Report using %s?"
 msgstr "Створити звіт за допомогою %s?"
 
-#: ../src/cli/report.cpp:660
+#: ../src/cli/report.cpp:804
 msgid "Skipping..."
 msgstr "Пропускаємо…"
 
-#: ../src/cli/report.cpp:672
+#: ../src/cli/report.cpp:820
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Звітування вимкнено, оскільки зворотне трасування є непридатним"
 
-#: ../src/cli/report.cpp:676
+#: ../src/cli/report.cpp:824
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -349,55 +343,80 @@ msgstr ""
 "Спробуйте встановити debuginfo вручну: «debuginfo-install %s», потім "
 "повторіть спробу\n"
 
-#: ../src/cli/report.cpp:685
-msgid "Error loading reporter settings"
-msgstr "Помилка при завантаженні параметрів звітування"
-
-#: ../src/cli/report.cpp:704
-#, fuzzy, c-format
+#: ../src/cli/report.cpp:842
+#, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
-msgstr "Повідомлення щодо збою створено за допомогою %d модулів (%d помилок)\n"
+msgstr "Повідомлення щодо збою створено на основі %d подій (%d помилок)\n"
 
-#: ../src/daemon/abrt-handle-crashdump.c:42
+#: ../src/daemon/abrt-action-save-package-data.c:280
+msgid ""
+" [options] -d DIR\n"
+"\n"
+"Query package database and save package name, component, and description"
+msgstr ""
+" [параметри] -d КАТАЛОГ\n"
+"\n"
+"Отримати дані з бази даних пакунків і зберегти назву пакунка, компонент та "
+"опис"
+
+#: ../src/daemon/abrt-action-save-package-data.c:292
+#: ../src/daemon/abrt-handle-crashdump.c:60
+#: ../src/plugins/abrt-action-analyze-c.c:167
+#: ../src/plugins/abrt-action-analyze-oops.c:144
+#: ../src/plugins/abrt-action-analyze-python.c:49
+#: ../src/plugins/abrt-action-bugzilla.cpp:927
+#: ../src/plugins/abrt-action-generate-backtrace.c:270
+#: ../src/plugins/abrt-action-kerneloops.c:147
+#: ../src/plugins/abrt-action-mailx.c:149
+#: ../src/plugins/abrt-action-print.c:50
+#: ../src/plugins/abrt-action-rhtsupport.c:281
+#: ../src/plugins/abrt-action-upload.c:261
+msgid "Crash dump directory"
+msgstr "Каталог дампу аварійного завершення"
+
+#: ../src/daemon/abrt-action-save-package-data.c:293
+#: ../src/daemon/abrt-handle-crashdump.c:59 ../src/daemon/abrt-server.c:297
+#: ../src/plugins/abrt-action-bugzilla.cpp:926
+#: ../src/plugins/abrt-action-generate-backtrace.c:273
+#: ../src/plugins/abrt-action-kerneloops.c:146
+#: ../src/plugins/abrt-action-rhtsupport.c:280
+#: ../src/plugins/abrt-dump-oops.c:555
+msgid "Log to syslog"
+msgstr "Записувати до журналу syslog"
+
+#: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
 " [-vs] -d DIR -e EVENT\n"
 "   or: "
 msgstr ""
+" [-vs] -d КАТАЛОГ -e ПОДІЯ\n"
+"   або: "
 
-#: ../src/daemon/abrt-handle-crashdump.c:57
-#: ../src/plugins/abrt-action-analyze-c.c:167
-#: ../src/plugins/abrt-action-analyze-oops.c:144
-#: ../src/plugins/abrt-action-analyze-python.c:49
-msgid "Log to syslog"
-msgstr "Записувати до журналу syslog"
-
-#: ../src/daemon/abrt-handle-crashdump.c:58
-#: ../src/plugins/abrt-action-analyze-c.c:166
-#: ../src/plugins/abrt-action-analyze-oops.c:143
-#: ../src/plugins/abrt-action-analyze-python.c:48
-#: ../src/plugins/abrt-action-mailx.cpp:150
-#: ../src/plugins/abrt-action-print.cpp:50
-#: ../src/plugins/abrt-action-upload.cpp:266
-msgid "Crash dump directory"
-msgstr "Каталог дампу аварійного завершення"
-
-#: ../src/daemon/abrt-handle-crashdump.c:59
+#: ../src/daemon/abrt-handle-crashdump.c:61
 msgid "Handle EVENT"
-msgstr ""
+msgstr "Обробити ПОДІЮ"
 
-#: ../src/daemon/abrt-handle-crashdump.c:60
+#: ../src/daemon/abrt-handle-crashdump.c:62
 msgid "List possible events [which start with PFX]"
-msgstr ""
+msgstr "Список записів можливих подій [що починаються з PFX]"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:229
+#: ../src/daemon/abrt-server.c:286 ../src/daemon/Daemon.cpp:542
+msgid " [options]"
+msgstr " [параметри]"
+
+#: ../src/daemon/abrt-server.c:296
+msgid "Use UID as client uid"
+msgstr "Використати UID як унікальний ідентифікатор клієнта"
+
+#: ../src/daemon/CommLayerServerDBus.cpp:242
 msgid "Comment is too long"
 msgstr "Занадто довгий коментар"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:233
+#: ../src/daemon/CommLayerServerDBus.cpp:246
 msgid "'How to reproduce' is too long"
 msgstr "Занадто довгий запис «Спосіб відтворення»"
 
-#: ../src/daemon/Daemon.cpp:534
+#: ../src/daemon/Daemon.cpp:371
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -405,19 +424,15 @@ msgstr ""
 "Розмір звіту перевищує припустимий. Змініть значення MaxCrashReportsSize у "
 "файлі abrt.conf"
 
-#: ../src/daemon/Daemon.cpp:699
-msgid "abrtd [options]"
-msgstr "abrtd [параметри]"
-
-#: ../src/daemon/Daemon.cpp:709
+#: ../src/daemon/Daemon.cpp:553
 msgid "Do not daemonize"
 msgstr "Не запускати фонової служби"
 
-#: ../src/daemon/Daemon.cpp:710
+#: ../src/daemon/Daemon.cpp:554
 msgid "Log to syslog even with -d"
 msgstr "Записувати до журналу syslog навіть з параметром -d"
 
-#: ../src/daemon/Daemon.cpp:711
+#: ../src/daemon/Daemon.cpp:555
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Завершувати роботу після SEC секунд бездіяльності"
 
@@ -455,16 +470,16 @@ msgstr "Модулі звітування"
 msgid "Database plugins"
 msgstr "Модулі бази даних"
 
-#: ../src/gui/CCDBusBackend.py:74 ../src/gui/CCDBusBackend.py:97
+#: ../src/gui/CCDBusBackend.py:75 ../src/gui/CCDBusBackend.py:98
 msgid "Cannot connect to system dbus."
 msgstr "Не вдається з'єднатися з системною dbus"
 
-#: ../src/gui/CCDBusBackend.py:120 ../src/gui/CCDBusBackend.py:123
+#: ../src/gui/CCDBusBackend.py:121 ../src/gui/CCDBusBackend.py:124
 msgid "Please check if the abrt daemon is running."
 msgstr "Перевірте, чи запущено службу abrt."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:169
+#: ../src/gui/CCDBusBackend.py:170
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
@@ -512,11 +527,15 @@ msgstr "Про ABRT"
 msgid "Copy to Clipboard"
 msgstr "Скопіювати до буфера"
 
-#: ../src/gui/ccgui.glade.h:12 ../src/gui/settings.glade.h:19
+#: ../src/gui/ccgui.glade.h:12
+msgid "Online _Help"
+msgstr "Інтернет-_довідка"
+
+#: ../src/gui/ccgui.glade.h:13 ../src/gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "Модулі"
 
-#: ../src/gui/ccgui.glade.h:14
+#: ../src/gui/ccgui.glade.h:15
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -543,19 +562,19 @@ msgstr ""
 "Копія ліцензії GNU надається разом із цією програмою. \n"
 "Її також можна знайти на сайті <http://www.gnu.org/licenses/>."
 
-#: ../src/gui/ccgui.glade.h:19 ../src/gui/CReporterAssistant.py:71
+#: ../src/gui/ccgui.glade.h:20 ../src/gui/CReporterAssistant.py:111
 msgid "View log"
 msgstr "Показати журнал"
 
-#: ../src/gui/ccgui.glade.h:20
+#: ../src/gui/ccgui.glade.h:21
 msgid "_Edit"
 msgstr "_Правка"
 
-#: ../src/gui/ccgui.glade.h:21
+#: ../src/gui/ccgui.glade.h:22
 msgid "_File"
 msgstr "_Файл"
 
-#: ../src/gui/ccgui.glade.h:22
+#: ../src/gui/ccgui.glade.h:23
 msgid "_Help"
 msgstr "_Довідка"
 
@@ -576,7 +595,7 @@ msgstr "Назва вузла"
 msgid "Latest Crash"
 msgstr "Останнє аварійне завершення"
 
-#: ../src/gui/CCMainWindow.py:143
+#: ../src/gui/CCMainWindow.py:148
 #, python-format
 msgid ""
 "Cannot show the settings dialog.\n"
@@ -585,7 +604,7 @@ msgstr ""
 "Неможливо показати вікно параметрів.\n"
 "%s"
 
-#: ../src/gui/CCMainWindow.py:148
+#: ../src/gui/CCMainWindow.py:153
 #, python-format
 msgid ""
 "Unable to finish the current task!\n"
@@ -595,7 +614,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/gui/CCMainWindow.py:183
+#: ../src/gui/CCMainWindow.py:188
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -604,7 +623,7 @@ msgstr ""
 "Помилка при завантаженні dumplist. \n"
 "%s"
 
-#: ../src/gui/CCMainWindow.py:241
+#: ../src/gui/CCMainWindow.py:246
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -613,11 +632,11 @@ msgstr ""
 "<b>Аварійне завершення %s</b>\n"
 "%s"
 
-#: ../src/gui/CCMainWindow.py:337
+#: ../src/gui/CCMainWindow.py:343
 msgid "You have to select a crash to copy."
 msgstr "Слід вибрати файл аварійного завершенням для копіювання."
 
-#: ../src/gui/CCMainWindow.py:421
+#: ../src/gui/CCMainWindow.py:427
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -628,7 +647,7 @@ msgstr ""
 "\t--report=ІДЕНТИФІКАТОР\tПовідомити про збій безпосередньо за його "
 "ідентифікатором"
 
-#: ../src/gui/CCMainWindow.py:444
+#: ../src/gui/CCMainWindow.py:450
 #, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"
@@ -636,95 +655,6 @@ msgid ""
 msgstr ""
 "У базі даних немає такого збою, можливо, помилковий ідентифікатор.\n"
 "ідентифікатор=%s"
-
-#. default texts
-#: ../src/gui/CCReporterDialog.py:22 ../src/gui/CReporterAssistant.py:20
-msgid "Brief description of how to reproduce this or what you did..."
-msgstr "Коротко опишіть дії, за допомогою яких можна відтворити помилку…"
-
-#: ../src/gui/CCReporterDialog.py:107
-msgid "You must check the backtrace for sensitive data."
-msgstr ""
-"Вам слід вилучити з даних зворотного трасування всі конфіденційні дані."
-
-#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:364
-#, python-format
-msgid ""
-"Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using the command: <b>debuginfo-"
-"install %s</b> \n"
-"then use the Refresh button to regenerate the backtrace."
-msgstr ""
-"Звітування вимкнено, оскільки відомості трасуванні непридатні.\n"
-"Спробуйте встановити debuginfo вручну: <b>debuginfo-install %s</b>\n"
-"а потім натисніть кнопку оновлення для повторного створення трасування."
-
-#: ../src/gui/CCReporterDialog.py:120
-msgid "The backtrace is unusable, you cannot report this!"
-msgstr "Непридатні відомості трасування. Їх не можна надсилати."
-
-#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:342
-#: ../src/gui/CReporterAssistant.py:370
-msgid ""
-"The backtrace is incomplete, please make sure you provide the steps to "
-"reproduce."
-msgstr ""
-"Неповні відомості трасування. Вам доведеться вказати чіткі кроки з "
-"відтворення помилки."
-
-#: ../src/gui/CCReporterDialog.py:130
-msgid "Reporting disabled, please fix the problems shown above."
-msgstr "Звітування вимкнено, виправте вказані вище проблеми."
-
-#: ../src/gui/CCReporterDialog.py:132
-msgid "Sends the report using the selected plugin."
-msgstr "Надсилає звіт за допомогою вказано модуля."
-
-#: ../src/gui/CCReporterDialog.py:398
-msgid ""
-"No reporter plugin available for this type of crash.\n"
-"Please check abrt.conf."
-msgstr ""
-"Немає модулів звітування для цього типу збоїв.\n"
-"Будь ласка, внесіть зміни до abrt.conf"
-
-#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:249
-#: ../src/gui/PluginsSettingsDialog.py:136
-#, python-format
-msgid ""
-"Cannot save plugin settings:\n"
-" %s"
-msgstr ""
-"Не вдалося зберегти параметри модуля:\n"
-" %s"
-
-#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:279
-#, python-format
-msgid "Configure %s options"
-msgstr "Налаштувати параметри %s"
-
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1074
-msgid ""
-"Unable to get report!\n"
-"Is debuginfo missing?"
-msgstr ""
-"Не вдається отримати звіт.\n"
-"Немає debuginfo?"
-
-#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:455
-#, python-format
-msgid ""
-"Reporting failed!\n"
-"%s"
-msgstr ""
-"Помилка під час спроби надсилання звіту!\n"
-"%s"
-
-#: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:1113
-#, python-format
-msgid "Error acquiring the report: %s"
-msgstr "Помилка при отриманні звіту: %s"
 
 #: ../src/gui/ConfBackend.py:78
 msgid "Cannot connect to the Gnome Keyring daemon."
@@ -755,41 +685,89 @@ msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr ""
 "Доступ до gnome-keyring було заборонено, параметри неможливо завантажити."
 
+#: ../src/gui/CReporterAssistant.py:20
+msgid "Brief description of how to reproduce this or what you did..."
+msgstr "Коротко опишіть дії, за допомогою яких можна відтворити помилку…"
+
 #: ../src/gui/CReporterAssistant.py:21
 msgid "Crash info doesn't contain a backtrace"
 msgstr "Відомості щодо збою не містять зворотного трасування"
 
-#: ../src/gui/CReporterAssistant.py:334
+#: ../src/gui/CReporterAssistant.py:277
+#: ../src/gui/PluginsSettingsDialog.py:136
+#, python-format
+msgid ""
+"Cannot save plugin settings:\n"
+" %s"
+msgstr ""
+"Не вдалося зберегти параметри модуля:\n"
+" %s"
+
+#: ../src/gui/CReporterAssistant.py:307
+#, python-format
+msgid "Configure %s options"
+msgstr "Налаштувати параметри %s"
+
+#: ../src/gui/CReporterAssistant.py:362
 #, python-format
 msgid "Rating is %s"
 msgstr "Оцінка: %s"
 
-#: ../src/gui/CReporterAssistant.py:337
+#: ../src/gui/CReporterAssistant.py:365
 msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr "Дамп збою не містить оцінки => припускаємо, що вона не потрібна"
 
-#: ../src/gui/CReporterAssistant.py:350
+#: ../src/gui/CReporterAssistant.py:370 ../src/gui/CReporterAssistant.py:398
+msgid ""
+"The backtrace is incomplete, please make sure you provide the steps to "
+"reproduce."
+msgstr ""
+"Неповні відомості трасування. Вам доведеться вказати чіткі кроки з "
+"відтворення помилки."
+
+#: ../src/gui/CReporterAssistant.py:378
 msgid "You should check the backtrace for sensitive data."
 msgstr ""
 "Вам слід вилучити з даних зворотного трасування всі конфіденційні дані."
 
-#: ../src/gui/CReporterAssistant.py:351
+#: ../src/gui/CReporterAssistant.py:379
 msgid "You must agree with sending the backtrace."
 msgstr "Вам слід погодитися на надсилання зворотного трасування."
 
-#: ../src/gui/CReporterAssistant.py:366
+#: ../src/gui/CReporterAssistant.py:392
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable.\n"
+"Please try to install debuginfo manually using the command: <b>debuginfo-"
+"install %s</b> \n"
+"then use the Refresh button to regenerate the backtrace."
+msgstr ""
+"Звітування вимкнено, оскільки відомості трасуванні непридатні.\n"
+"Спробуйте встановити debuginfo вручну: <b>debuginfo-install %s</b>\n"
+"а потім натисніть кнопку оновлення для повторного створення трасування."
+
+#: ../src/gui/CReporterAssistant.py:394
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Звітування вимкнено, оскільки зворотне трасування є непридатним."
 
-#: ../src/gui/CReporterAssistant.py:412
+#: ../src/gui/CReporterAssistant.py:440
 msgid "You did not provide any steps to reproduce."
 msgstr "Ви не вказали кроків щодо відтворення збою."
 
-#: ../src/gui/CReporterAssistant.py:426
+#: ../src/gui/CReporterAssistant.py:454
 msgid "You did not provide any comments."
 msgstr "Ви не зазначили жодних коментарів."
 
-#: ../src/gui/CReporterAssistant.py:507
+#: ../src/gui/CReporterAssistant.py:483
+#, python-format
+msgid ""
+"Reporting failed!\n"
+"%s"
+msgstr ""
+"Помилка під час спроби надсилання звіту!\n"
+"%s"
+
+#: ../src/gui/CReporterAssistant.py:535
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -816,15 +794,15 @@ msgstr ""
 "Виберіть отримувача звіту про ваду і натисніть кнопку «Далі», щоб продовжити "
 "процес звітування."
 
-#: ../src/gui/CReporterAssistant.py:548
+#: ../src/gui/CReporterAssistant.py:576
 msgid "Only one reporter plugin is configured."
 msgstr "Налаштовано лише один модуль звітування."
 
-#: ../src/gui/CReporterAssistant.py:554
+#: ../src/gui/CReporterAssistant.py:582
 msgid "Send a bug report"
 msgstr "Надіслати звіт про ваду"
 
-#: ../src/gui/CReporterAssistant.py:592
+#: ../src/gui/CReporterAssistant.py:620
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -841,52 +819,52 @@ msgstr ""
 "Будь ласка, ознайомтеся з наведеними нижче даними і вилучіть з них будь-які "
 "конфіденційні дані, якими ви не бажаєте ділитися зі сторонніми особами:"
 
-#: ../src/gui/CReporterAssistant.py:663 ../src/gui/CReporterAssistant.py:676
-#: ../src/gui/CReporterAssistant.py:710
+#: ../src/gui/CReporterAssistant.py:691 ../src/gui/CReporterAssistant.py:704
+#: ../src/gui/CReporterAssistant.py:738
 #, python-format
 msgid "Found %i occurence(s) [at: %i of %i]"
 msgstr "Знайдено %i збіги [у %i з %i]"
 
-#: ../src/gui/CReporterAssistant.py:747
+#: ../src/gui/CReporterAssistant.py:775
 msgid "Search:"
 msgstr "Пошук:"
 
-#: ../src/gui/CReporterAssistant.py:778
+#: ../src/gui/CReporterAssistant.py:806
 msgid "Refresh"
 msgstr "Оновити"
 
-#: ../src/gui/CReporterAssistant.py:780
+#: ../src/gui/CReporterAssistant.py:808
 msgid "Copy"
 msgstr "Копіювати"
 
-#: ../src/gui/CReporterAssistant.py:786
+#: ../src/gui/CReporterAssistant.py:814
 msgid "I agree with submitting the backtrace"
 msgstr "Я погоджуюсь на надсилання зворотного трасування"
 
-#: ../src/gui/CReporterAssistant.py:791
+#: ../src/gui/CReporterAssistant.py:819
 msgid "Approve the backtrace"
 msgstr "Згода з надсиланням зворотного трасування"
 
-#: ../src/gui/CReporterAssistant.py:834
+#: ../src/gui/CReporterAssistant.py:862
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "Вам слід вказати настанови з відтворення, щоб обробку було продовжено…"
 
-#: ../src/gui/CReporterAssistant.py:857
+#: ../src/gui/CReporterAssistant.py:885
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "Покрокові дії, які призвели до збою. Як відтворити збій?"
 
-#: ../src/gui/CReporterAssistant.py:877
+#: ../src/gui/CReporterAssistant.py:905
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr ""
 "Чи маєте ви якісь коментарі, про які варто знати розробникам програмного "
 "забезпечення?"
 
-#: ../src/gui/CReporterAssistant.py:897
+#: ../src/gui/CReporterAssistant.py:925
 msgid "Provide additional details"
 msgstr "Надати додаткові дані"
 
-#: ../src/gui/CReporterAssistant.py:904
+#: ../src/gui/CReporterAssistant.py:932
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
@@ -894,82 +872,95 @@ msgstr ""
 "<b>Підказка:</b> доступ до ваших коментарів є відкритим. Будь ласка, будьте "
 "стримані у висловлюваннях."
 
-#: ../src/gui/CReporterAssistant.py:945
+#: ../src/gui/CReporterAssistant.py:973
 msgid "Confirm and send the report"
 msgstr "Підтвердити і надіслати звіт"
 
-#: ../src/gui/CReporterAssistant.py:947
+#: ../src/gui/CReporterAssistant.py:975
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Нижче наведено резюме вашого звіту про ваду. Натисніть кнопку «Застосувати», "
 "щоб надіслати його."
 
-#: ../src/gui/CReporterAssistant.py:952
+#: ../src/gui/CReporterAssistant.py:980
 msgid "<b>Basic details</b>"
 msgstr "<b>Основні дані</b>"
 
 #. left table
-#: ../src/gui/CReporterAssistant.py:959
+#: ../src/gui/CReporterAssistant.py:987
 msgid "Component"
 msgstr "Компонент"
 
-#: ../src/gui/CReporterAssistant.py:960
+#: ../src/gui/CReporterAssistant.py:988
 msgid "Package"
 msgstr "Пакунок"
 
-#: ../src/gui/CReporterAssistant.py:961
+#: ../src/gui/CReporterAssistant.py:989
 msgid "Executable"
 msgstr "Виконуваний файл"
 
-#: ../src/gui/CReporterAssistant.py:962
+#: ../src/gui/CReporterAssistant.py:990
 msgid "Cmdline"
 msgstr "Командний рядок"
 
 #. right table
-#: ../src/gui/CReporterAssistant.py:964
+#: ../src/gui/CReporterAssistant.py:992
 msgid "Architecture"
 msgstr "Архітектура"
 
-#: ../src/gui/CReporterAssistant.py:965
+#: ../src/gui/CReporterAssistant.py:993
 msgid "Kernel"
 msgstr "Ядро"
 
-#: ../src/gui/CReporterAssistant.py:966
+#: ../src/gui/CReporterAssistant.py:994
 msgid "Release"
 msgstr "Випуск"
 
-#: ../src/gui/CReporterAssistant.py:967
+#: ../src/gui/CReporterAssistant.py:995
 msgid "Reason"
 msgstr "Причина"
 
-#: ../src/gui/CReporterAssistant.py:978 ../src/gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:1006 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>Зворотне трасування</b>"
 
-#: ../src/gui/CReporterAssistant.py:981
+#: ../src/gui/CReporterAssistant.py:1009
 msgid "Click to view..."
 msgstr "Натисніть, щоб переглянути…"
 
-#: ../src/gui/CReporterAssistant.py:993
+#: ../src/gui/CReporterAssistant.py:1021
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Кроки з відтворення:</b>"
 
-#: ../src/gui/CReporterAssistant.py:1014
+#: ../src/gui/CReporterAssistant.py:1042
 msgid "<b>Comments:</b>"
 msgstr "<b>Коментарі:</b>"
 
-#: ../src/gui/CReporterAssistant.py:1017
+#: ../src/gui/CReporterAssistant.py:1045
 msgid "No comment provided!"
 msgstr "Не надано жодних коментарів!"
 
-#: ../src/gui/CReporterAssistant.py:1053
+#: ../src/gui/CReporterAssistant.py:1081
 msgid "Finished sending the bug report"
 msgstr "Надсилання звіту про ваду завершено"
 
-#: ../src/gui/CReporterAssistant.py:1057
+#: ../src/gui/CReporterAssistant.py:1085
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Звіти про вади:</b>"
+
+#: ../src/gui/CReporterAssistant.py:1102
+msgid ""
+"Unable to get report!\n"
+"Is debuginfo missing?"
+msgstr ""
+"Не вдається отримати звіт.\n"
+"Немає debuginfo?"
+
+#: ../src/gui/CReporterAssistant.py:1139
+#, python-format
+msgid "Error acquiring the report: %s"
+msgstr "Помилка при отриманні звіту: %s"
 
 #: ../src/gui/dialogs.glade.h:1
 msgid "Log"
@@ -1238,28 +1229,27 @@ msgstr ""
 "виправлень не буде внесено, у процесі звітування про ваду можуть виникнути "
 "помилки.\n"
 
-#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.cpp:47
+#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Вивантажено: %llu з %llu кілобайтів"
 
-#: ../src/lib/parse_options.c:11
+#: ../src/lib/parse_options.c:29
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Використання: %s\n"
 
-#: ../src/plugins/abrt-action-analyze-c.c:154
+#: ../src/plugins/abrt-action-analyze-c.c:156
 msgid ""
-" [-vs] -d DIR\n"
+" [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredumps"
 msgstr ""
-" [-vs] -d КАТАЛОГ\n"
+" [-v] -d КАТАЛОГ\n"
 "\n"
 "Обчислює і зберігає UUID дампів ядра"
 
-#: ../src/plugins/abrt-action-analyze-oops.c:131
-#, fuzzy
+#: ../src/plugins/abrt-action-analyze-oops.c:133
 msgid ""
 " [-vs] -d DIR\n"
 "\n"
@@ -1267,88 +1257,110 @@ msgid ""
 msgstr ""
 " [-vs] -d КАТАЛОГ\n"
 "\n"
-"Обчислює і зберігає UUID дампів ядра"
+"Обчислює і зберігає UUID та DUPHASH аварійних дампів ядра"
 
-#: ../src/plugins/abrt-action-analyze-python.c:36
-#, fuzzy
+#: ../src/plugins/abrt-action-analyze-python.c:38
 msgid ""
-" [-vs] -d DIR\n"
+" [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
-" [-vs] -d КАТАЛОГ\n"
+" [-v] -d КАТАЛОГ\n"
 "\n"
-"Обчислює і зберігає UUID дампів ядра"
+"Обчислює і зберігає UUID та DUPHASH аварійних дампів Python"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:532
+#: ../src/plugins/abrt-action-bugzilla.cpp:534
 #, c-format
 msgid "New bug id: %i"
 msgstr "Новий ідентифікатор запиту: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:645
-#, c-format
-msgid "Can't open '%s'"
-msgstr "Не вдалося відкрити «%s»"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:665
+#: ../src/plugins/abrt-action-bugzilla.cpp:662
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr "Порожнє ім'я або пароль. Перевірте %s"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:683
+#: ../src/plugins/abrt-action-bugzilla.cpp:680
 msgid "Logging into bugzilla..."
 msgstr "Триває вхід до Bugzilla…"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:686
+#: ../src/plugins/abrt-action-bugzilla.cpp:683
 msgid "Checking for duplicates..."
 msgstr "Пошук дублікатів…"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:707
-#: ../src/plugins/abrt-action-bugzilla.cpp:743
+#: ../src/plugins/abrt-action-bugzilla.cpp:705
+#: ../src/plugins/abrt-action-bugzilla.cpp:741
 msgid "Missing mandatory member 'bugs'"
 msgstr "Не вказано обов’язкового учасника «bugs»"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:726
-#: ../src/plugins/abrt-action-bugzilla.cpp:759
-#: ../src/plugins/abrt-action-bugzilla.cpp:834
+#: ../src/plugins/abrt-action-bugzilla.cpp:724
+#: ../src/plugins/abrt-action-bugzilla.cpp:757
+#: ../src/plugins/abrt-action-bugzilla.cpp:833
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "Збій get_bug_info(). Не вдалося зібрати потрібну інформацію."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:775
+#: ../src/plugins/abrt-action-bugzilla.cpp:772
 msgid "Creating a new bug..."
 msgstr "Створення нового повідомлення про ваду…"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:780
+#: ../src/plugins/abrt-action-bugzilla.cpp:777
 msgid "Bugzilla entry creation failed"
 msgstr "Не вдалося створити запис у Bugzilla"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:790
-#: ../src/plugins/abrt-action-bugzilla.cpp:887
+#: ../src/plugins/abrt-action-bugzilla.cpp:789
+#: ../src/plugins/abrt-action-bugzilla.cpp:886
 msgid "Logging out..."
 msgstr "Виконується вихід…"
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:808
+#: ../src/plugins/abrt-action-bugzilla.cpp:807
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Запит вже існує: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:819
+#: ../src/plugins/abrt-action-bugzilla.cpp:818
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla не вдалося знайти батьківський запит для %d"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:848
+#: ../src/plugins/abrt-action-bugzilla.cpp:847
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Додати %s до списку CC"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:872
+#: ../src/plugins/abrt-action-bugzilla.cpp:871
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Додавання коментаря до запиту (%d)"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:319
+#: ../src/plugins/abrt-action-bugzilla.cpp:913
+msgid ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"Report a crash to Bugzilla"
+msgstr ""
+" [-vs] -c ФАЙЛ_НАЛАШТУВАНЬ -d КАТАЛОГ\n"
+"\n"
+"Повідомити про аварійне завершення на Bugzilla"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:928
+#: ../src/plugins/abrt-action-kerneloops.c:148
+#: ../src/plugins/abrt-action-rhtsupport.c:282
+msgid "Configuration file (may be given many times)"
+msgstr "Файл налаштувань (можна вказувати декілька файлів)"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:258
+msgid " [options] -d DIR"
+msgstr " [параметри] -d КАТАЛОГ"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:271
+msgid "Additional debuginfo directories"
+msgstr "Додаткові каталоги діагностичних даних"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:272
+msgid "Kill gdb if it runs for more than N seconds"
+msgstr "Завершити роботу gdb, якщо вона триває понад N секунд"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:320
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "Не вдалося обробити дані зворотного трасування для %s"
@@ -1356,157 +1368,169 @@ msgstr "Не вдалося обробити дані зворотного тр�
 #: ../src/plugins/abrt-action-install-debuginfo.py:72
 #, python-format
 msgid "Extracting cpio from %s"
-msgstr ""
+msgstr "Видобування cpio з %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:77
 msgid "Can't write to:"
-msgstr ""
+msgstr "Не вдалося записати до:"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:87
 msgid "Removing the temporary rpm file"
-msgstr ""
+msgstr "Вилучення тимчасового файла rpm"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:91
 #, python-format
 msgid "Can't extract package: %s"
-msgstr ""
+msgstr "Не вдалося видобути пакунок: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:99
 #, python-format
 msgid "Caching files from %s made from %s"
-msgstr ""
+msgstr "Кешування файлів з %s виконано з %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:107
 msgid "Removing the temporary cpio file"
-msgstr ""
+msgstr "Вилучення тимчасового файла cpio"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:110
 #, python-format
 msgid "Can't extract files from: %s"
-msgstr ""
+msgstr "Не вдалося видобути файли з: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:134
 #: ../src/plugins/abrt-action-install-debuginfo.py:140
 #, python-format
 msgid "Downloading (%i of %i) %.30s : %.3s %%"
-msgstr ""
+msgstr "Звантаження (%i з %i) %.30s : %.3s %%"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:169
-#, fuzzy
 msgid "Searching the missing debuginfo packages"
-msgstr "Запускається встановлення debuginfo"
+msgstr "Пошук потрібних пакунків діагностичних даних"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:224
 #, python-format
 msgid "To download: (%.2f) M / Installed size: %.2f M"
-msgstr ""
+msgstr "Об’єм звантаження: (%.2f) МБ / Об’єм встановлення: %.2f МБ"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:240
 msgid "Is this ok? [y/N] "
-msgstr ""
+msgstr "Виконати дію? [y/N] "
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:257
 #, python-format
 msgid "Downloading package %s failed"
-msgstr ""
+msgstr "Спроба звантаження пакунка %s зазнала невдачі"
 
 #. recursively delete the temp dir on failure
 #: ../src/plugins/abrt-action-install-debuginfo.py:268
 msgid "Unpacking failed, aborting download..."
-msgstr ""
+msgstr "Спроба розпакування зазнала невдачі, перериваємо звантаження…"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:275
 #, python-format
 msgid "All downloaded packages have been extracted, removing %s"
-msgstr ""
+msgstr "Дані всіх звантажених пакунків було видобуто, вилучаємо %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:280
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
-msgstr ""
+msgstr "Не вдалося вилучити %s, ймовірно, містить журнал помилки"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:305
 #, python-format
 msgid "Analyzing corefile: %(corefile_path)s"
-msgstr ""
+msgstr "Аналіз файла ядра: %(corefile_path)s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:384
 #, python-format
 msgid "Can't remove %(tmpdir_path)s: %(reason)s"
-msgstr ""
+msgstr "Не вдалося вилучити %(tmpdir_path)s: %(reason)s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:394
 msgid "Exiting on user Command"
-msgstr ""
+msgstr "Завершення роботи за бажанням користувача"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:413
 #, python-format
 msgid "Usage: %s --core=<COREFILE> --tmpdir=<TMPDIR> --cachedir=<CACHEDIR>"
 msgstr ""
+"Використання: %s --core=<ФАЙЛ_ЯДРА> --tmpdir=<КАТАЛОГ_ТИМЧАСОВИХ_ДАНИХ> --"
+"cachedir=<КАТАЛОГ_КЕШУ>"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:442
-#, fuzzy
 msgid "You have to specify the path to coredump."
-msgstr "Слід вибрати файл аварійного завершенням для копіювання."
+msgstr "Вам слід вказати адресу, за якою зберігається дамп ядра."
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:446
-#, fuzzy
 msgid "You have to specify the path to cachedir."
-msgstr "Слід вибрати файл аварійного завершенням для копіювання."
+msgstr "Вам слід вказати адресу, за якою зберігаються дані кешу."
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:450
-#, fuzzy
 msgid "You have to specify the path to tmpdir."
-msgstr "Слід вибрати файл аварійного завершенням для копіювання."
+msgstr "Вам слід вказати адресу, за якою зберігаються тимчасові дані."
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:463
 msgid "All debuginfo seems to be available"
-msgstr ""
+msgstr "Всі дані для діагностики доступні"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:470
-#, fuzzy
 msgid "Complete!"
-msgstr "Компонент"
+msgstr "Завершено!"
 
-#: ../src/plugins/abrt-action-kerneloops.cpp:111
-#, fuzzy, c-format
+#: ../src/plugins/abrt-action-kerneloops.c:105
+#, c-format
 msgid "Submitting oops report to %s"
-msgstr "Звіт записується у «%s»"
+msgstr "Надсилання звіту про збій до %s"
 
-#: ../src/plugins/abrt-action-mailx.cpp:114
+#: ../src/plugins/abrt-action-kerneloops.c:133
+msgid ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"Report a kernel oops to kerneloops.org (or similar) site"
+msgstr ""
+" [-vs] -c ФАЙЛ_НАЛАШТУВАНЬ -d КАТАЛОГ\n"
+"\n"
+"Повідомити про аварію ядра (oops) на сайті kerneloops.org (або подібному)"
+
+#: ../src/plugins/abrt-action-mailx.c:110
 msgid "Sending an email..."
 msgstr "Надсилання пошти…"
 
-#: ../src/plugins/abrt-action-mailx.cpp:138
+#: ../src/plugins/abrt-action-mailx.c:137
 msgid ""
 " [-v] -d DIR [-c CONFFILE]\n"
 "\n"
 "Upload compressed tarball of crash dump"
 msgstr ""
+" [-v] -d КАТАЛОГ [-c ФАЙЛ_НАЛАШТУВАННЯ]\n"
+"\n"
+"Вивантажити стиснутий архів дампу збою"
 
-#: ../src/plugins/abrt-action-mailx.cpp:151
-#: ../src/plugins/abrt-action-upload.cpp:267
-#, fuzzy
+#: ../src/plugins/abrt-action-mailx.c:150
+#: ../src/plugins/abrt-action-upload.c:262
 msgid "Config file"
-msgstr "Файл журналу:"
+msgstr "Файл налаштувань"
 
-#: ../src/plugins/abrt-action-print.cpp:39
+#: ../src/plugins/abrt-action-print.c:38
 msgid ""
 " [-v] [-o FILE] -d DIR\n"
 "\n"
 "Print information about the crash to standard output"
 msgstr ""
+" [-v] [-o ФАЙЛ] -d КАТАЛОГ\n"
+"\n"
+"Вивести дані щодо збою до стандартного виводу"
 
-#: ../src/plugins/abrt-action-print.cpp:51
+#: ../src/plugins/abrt-action-print.c:51
 msgid "Output file"
-msgstr ""
+msgstr "Вихідний файл"
 
-#: ../src/plugins/abrt-action-print.cpp:100
+#: ../src/plugins/abrt-action-print.c:91
 #, c-format
 msgid "The report was appended to %s"
 msgstr "Звіт було долучено до %s"
 
-#: ../src/plugins/abrt-action-print.cpp:100
+#: ../src/plugins/abrt-action-print.c:91
 #, c-format
 msgid "The report was stored to %s"
 msgstr "Звіт було збережено до %s"
@@ -1514,46 +1538,87 @@ msgstr "Звіт було збережено до %s"
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../src/plugins/abrt-action-rhtsupport.cpp:43
-#: ../src/plugins/abrt-action-upload.cpp:121
+#: ../src/plugins/abrt-action-rhtsupport.c:41
+#: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
 msgstr "Стискання даних"
 
-#: ../src/plugins/abrt-action-rhtsupport.cpp:78
-#, fuzzy
+#: ../src/plugins/abrt-action-rhtsupport.c:73
 msgid "Empty login or password, please check RHTSupport.conf"
-msgstr "Порожнє ім'я або пароль. Перевірте %s"
+msgstr "Порожнє ім'я або пароль. Перевірте, чи немає помилок у RHTSupport.conf"
 
-#: ../src/plugins/abrt-action-rhtsupport.cpp:194
+#: ../src/plugins/abrt-action-rhtsupport.c:192
 msgid "Creating a new case..."
 msgstr "Створення нового випадку…"
 
-#: ../src/plugins/abrt-action-upload.cpp:65
-#, fuzzy, c-format
+#: ../src/plugins/abrt-action-rhtsupport.c:267
+msgid ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"Report a crash to RHTSupport"
+msgstr ""
+" [-vs] -c ФАЙЛ_НАЛАШТУВАНЬ -d КАТАЛОГ\n"
+"\n"
+"Повідомити про аварійне завершення на сайті підтримки (RHTSupport)"
+
+#: ../src/plugins/abrt-action-upload.c:63
+#, c-format
 msgid "Sending %s to %s"
-msgstr "Архів %s надсилається %s"
+msgstr "Надсилання %s до %s"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/abrt-action-upload.cpp:98
+#: ../src/plugins/abrt-action-upload.c:96
 #, c-format
 msgid "Successfully sent %s to %s"
-msgstr ""
+msgstr "Успішно надіслано %s до %s"
 
-#: ../src/plugins/abrt-action-upload.cpp:219
+#: ../src/plugins/abrt-action-upload.c:213
 #, c-format
 msgid "Archive is created: '%s'"
-msgstr ""
+msgstr "Створено архів: «%s»"
 
-#: ../src/plugins/abrt-action-upload.cpp:253
+#: ../src/plugins/abrt-action-upload.c:248
 msgid ""
 " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
 "Upload compressed tarball of crash dump"
 msgstr ""
+" [-v] -d КАТАЛОГ [-c ФАЙЛ_НАЛАШТУВАННЯ] [-u АДРЕСА]\n"
+"\n"
+"Вивантажити стиснутий архів дампу збою"
 
-#: ../src/plugins/abrt-action-upload.cpp:268
+#: ../src/plugins/abrt-action-upload.c:263
 msgid "Base URL to upload to"
+msgstr "Базова адреса для вивантаження даних"
+
+#: ../src/plugins/abrt-dump-oops.c:540
+msgid ""
+" [-vsrdow] FILE\n"
+"\n"
+"Extract oops from syslog/dmesg file"
 msgstr ""
+" [-vsrdow] ФАЙЛ\n"
+"\n"
+"Видобути повідомлення про аварії (oops) з файла syslog/dmesg"
+
+#: ../src/plugins/abrt-dump-oops.c:556
+msgid "Parse kernel's message buffer before parsing FILE"
+msgstr "Обробити буфер повідомлень ядра до обробки ФАЙЛа"
+
+#: ../src/plugins/abrt-dump-oops.c:557
+msgid "Create ABRT dump for every oops found"
+msgstr ""
+"Створити дамп ABRT для кожного знайденого повідомлення про аварію (oops)"
+
+#: ../src/plugins/abrt-dump-oops.c:558
+msgid "Print found oopses on standard output"
+msgstr "Вивести знайдені повідомлення про аварії (oops) до стандартного виводу"
+
+#: ../src/plugins/abrt-dump-oops.c:559
+msgid "Do not exit, watch the file for new oopses"
+msgstr ""
+"Не завершувати роботу, спостерігати за появою нових повідомлень про аварії "
+"(oops) у файлі"
 
 #: ../src/plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
@@ -1591,10 +1656,6 @@ msgstr ""
 "Ви можете створити його <a href=\"https://bugzilla.redhat.com/createaccount."
 "cgi\">тут</a>"
 
-#: ../src/plugins/CCpp.cpp:277
-msgid "Analyzes crashes in C/C++ programs"
-msgstr "Аналізує аварійні завершення роботи програм C/C++"
-
 #: ../src/plugins/KerneloopsReporter.glade.h:1
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
 msgstr "<b>Налаштування модуля звітування до Kerneloops</b>"
@@ -1602,10 +1663,6 @@ msgstr "<b>Налаштування модуля звітування до Kerne
 #: ../src/plugins/KerneloopsReporter.glade.h:2
 msgid "Submit URL:"
 msgstr "Адреса надсилання:"
-
-#: ../src/plugins/KerneloopsScanner.cpp:227
-msgid "Periodically scans for and saves kernel oopses"
-msgstr "Виконує періодичні сканування і зберігає дані щодо помилок у ядрі"
 
 #: ../src/plugins/Logger.glade.h:1
 msgid "<b>Logger plugin configuration</b>"
@@ -1652,9 +1709,8 @@ msgid "RHTSupport URL:"
 msgstr "Адреса RHTSupport:"
 
 #: ../src/plugins/Upload.glade.h:1
-#, fuzzy
 msgid "<b>Upload plugin configuration</b>"
-msgstr "<b>Налаштування додатка вивантаження звітів</b>"
+msgstr "<b>Налаштування додатка вивантаження даних</b>"
 
 #: ../src/plugins/Upload.glade.h:2
 msgid "Retry count:"
@@ -1671,6 +1727,79 @@ msgstr "Адреса:"
 #: ../src/plugins/Upload.glade.h:5
 msgid "Use encryption"
 msgstr "Використовувати шифрування"
+
+#~ msgid ""
+#~ "Usage: %s [OPTION]\n"
+#~ "\n"
+#~ "Startup:\n"
+#~ "\t-V, --version\t\tdisplay the version and exit\n"
+#~ "\t-v, --verbose\t\tincrease verbosity\n"
+#~ "Actions:\n"
+#~ "\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
+#~ "\t      -f, --full\tprint a list of all crashes, including the already "
+#~ "reported ones\n"
+#~ "\t-r, --report CRASH_ID\tcreate and send a report\n"
+#~ "\t      -y, --always\tcreate and send a report without asking\n"
+#~ "\t-d, --delete CRASH_ID\tremove a crash\n"
+#~ "\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
+#~ "\t      -b, --backtrace\tprint detailed information about a crash "
+#~ "including backtrace\n"
+#~ "CRASH_ID can be:\n"
+#~ "\ta name of dump directory, or\n"
+#~ "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
+#~ msgstr ""
+#~ "Використання: %s [ПАРАМЕТР]\n"
+#~ "\n"
+#~ "Запуск:\n"
+#~ "\t-V, --version\t\tпоказати дані щодо версії і завершити роботу\n"
+#~ "\t-v, --verbose\t\tзробити повідомлення докладнішими\n"
+#~ "Дії:\n"
+#~ "\t-l, --list\t\tпоказати список всіх збоїв, щодо яких ще не створено "
+#~ "звітів\n"
+#~ "\t      -f, --full\tвивести список всіх збоїв, зокрема збоїв, щодо яких "
+#~ "створено звіти\n"
+#~ "\t-r, --report ІДЕНТИФІКАТОР\tстворити і надіслати звіт\n"
+#~ "\t      -y, --always\tстворити і надіслати звіт без підтвердження\n"
+#~ "\t-d, --delete ІДЕНТИФІКАТОР\tвилучити звіт\n"
+#~ "\t-i, --info ІДЕНТИФІКАТОР\tвивести докладну інформацію щодо збою\n"
+#~ "\t      -b, --backtrace\tвивести докладну інформацію щодо збою, зокрема "
+#~ "зворотне трасування\n"
+#~ "Значенням ІДЕНТИФІКАТОР може бути:\n"
+#~ "\tназва каталогу з дампом або\n"
+#~ "\t@N  — виконання дії над N-им збоєм (у списку, показаному командою з "
+#~ "параметрами --list --full)\n"
+
+#~ msgid "Error loading reporter settings"
+#~ msgstr "Помилка при завантаженні параметрів звітування"
+
+#~ msgid "You must check the backtrace for sensitive data."
+#~ msgstr ""
+#~ "Вам слід вилучити з даних зворотного трасування всі конфіденційні дані."
+
+#~ msgid "The backtrace is unusable, you cannot report this!"
+#~ msgstr "Непридатні відомості трасування. Їх не можна надсилати."
+
+#~ msgid "Reporting disabled, please fix the problems shown above."
+#~ msgstr "Звітування вимкнено, виправте вказані вище проблеми."
+
+#~ msgid "Sends the report using the selected plugin."
+#~ msgstr "Надсилає звіт за допомогою вказано модуля."
+
+#~ msgid ""
+#~ "No reporter plugin available for this type of crash.\n"
+#~ "Please check abrt.conf."
+#~ msgstr ""
+#~ "Немає модулів звітування для цього типу збоїв.\n"
+#~ "Будь ласка, внесіть зміни до abrt.conf"
+
+#~ msgid "Can't open '%s'"
+#~ msgstr "Не вдалося відкрити «%s»"
+
+#~ msgid "Analyzes crashes in C/C++ programs"
+#~ msgstr "Аналізує аварійні завершення роботи програм C/C++"
+
+#~ msgid "Periodically scans for and saves kernel oopses"
+#~ msgstr "Виконує періодичні сканування і зберігає дані щодо помилок у ядрі"
 
 #~ msgid "Database plugin not specified. Please check abrtd settings."
 #~ msgstr ""

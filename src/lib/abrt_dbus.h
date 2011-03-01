@@ -23,6 +23,11 @@
 #include "abrtlib.h"
 
 
+#define ABRTD_DBUS_NAME "com.redhat.abrt"
+#define ABRTD_DBUS_PATH "/com/redhat/abrt"
+#define ABRTD_DBUS_IFACE "com.redhat.abrt"
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -53,6 +58,7 @@ extern DBusConnection* g_dbus_conn;
  *  // (note: "iface.sig.emitted.from" is not optional for signals!)
  *  dbus_message_set_destination(msg, "peer"); // optional
  *  dbus_connection_send(conn, msg, &serial); // &serial can be NULL
+ *  dbus_connection_unref(conn); // if you don't want to *stay* connected
  *
  * - client which receives and processes signals:
  *  conn = dbus_bus_get(DBUS_BUS_SYSTEM/SESSION, &err);
@@ -73,6 +79,19 @@ void attach_dbus_conn_to_glib_main_loop(DBusConnection* conn,
     DBusHandlerResult (*message_received_func)(DBusConnection *conn, DBusMessage *msg, void* data)
 );
 
+/* Log dbus error if err has it set. Then log msg if it's !NULL.
+ * In both cases return 1. Otherwise return 0.
+ */
+int log_dbus_error(const char *msg, DBusError *err);
+
+/* Perform "DeleteDebugDump" call over g_dbus_conn */
+int32_t call_DeleteDebugDump(const char *dump_dir_name);
+
+/* Connect to system bus, find abrtd, perform "DeleteDebugDump" call, close g_dbus_conn */
+/* now static: int connect_to_abrtd_and_call_DeleteDebugDump(const char *dump_dir_name); */
+int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name);
+
+
 /*
  * Helpers for building DBus messages
  */
@@ -82,6 +101,9 @@ void store_uint32(DBusMessageIter* iter, uint32_t val);
 void store_int64(DBusMessageIter* iter, int64_t val);
 void store_uint64(DBusMessageIter* iter, uint64_t val);
 void store_string(DBusMessageIter* iter, const char* val);
+void store_crash_data(DBusMessageIter* iter, crash_data_t *val);
+void store_vector_of_crash_data(DBusMessageIter* iter, vector_of_crash_data_t *val);
+void store_map_string(DBusMessageIter* iter, map_string_h *val);
 
 /*
  * Helpers for parsing DBus messages
@@ -103,13 +125,18 @@ int load_uint32(DBusMessageIter* iter, uint32_t *val);
 int load_int64(DBusMessageIter* iter, int64_t *val);
 int load_uint64(DBusMessageIter* iter, uint64_t *val);
 int load_charp(DBusMessageIter* iter, const char **val);
+int load_crash_data(DBusMessageIter* iter, crash_data_t **val);
+int load_vector_of_crash_data(DBusMessageIter* iter, vector_of_crash_data_t **val);
 
 #ifdef __cplusplus
 }
 #endif
 
 
-/* C++ style stuff */
+/*
+ * C++ style stuff
+ */
+
 #ifdef __cplusplus
 
 #include <map>
@@ -118,6 +145,20 @@ int load_charp(DBusMessageIter* iter, const char **val);
 /*
  * Helpers for building DBus messages
  */
+
+static inline std::string ssprintf(const char *format, ...)
+{
+    va_list p;
+    char *string_ptr;
+
+    va_start(p, format);
+    string_ptr = xvasprintf(format, p);
+    va_end(p);
+
+    std::string res = string_ptr;
+    free(string_ptr);
+    return res;
+}
 
 //static inline void store_val(DBusMessageIter* iter, bool val)               { store_bool(iter, val); }
 static inline void store_val(DBusMessageIter* iter, int32_t val)            { store_int32(iter, val); }
@@ -147,7 +188,7 @@ struct abrt_dbus_type< std::map<K,V> > {
     static std::string sig() { return ssprintf("a{%s%s}", ABRT_DBUS_SIG(K), ABRT_DBUS_SIG(V)); }
 };
 
-template<typename E>
+template <typename E>
 static void store_vector(DBusMessageIter* iter, const std::vector<E>& val)
 {
     DBusMessageIter sub_iter;
@@ -170,7 +211,7 @@ static void store_vector(DBus::MessageIter &iter, const std::vector<uint8_t>& va
     if we use such vector, MUST add specialized code here (see in dbus-c++ source)
 }
 */
-template<typename K, typename V>
+template <typename K, typename V>
 static void store_map(DBusMessageIter* iter, const std::map<K,V>& val)
 {
     DBusMessageIter sub_iter;
@@ -195,9 +236,9 @@ static void store_map(DBusMessageIter* iter, const std::map<K,V>& val)
         die_out_of_memory();
 }
 
-template<typename E>
+template <typename E>
 static inline void store_val(DBusMessageIter* iter, const std::vector<E>& val) { store_vector(iter, val); }
-template<typename K, typename V>
+template <typename K, typename V>
 static inline void store_val(DBusMessageIter* iter, const std::map<K,V>& val)  { store_map(iter, val); }
 
 
@@ -220,7 +261,7 @@ static inline int load_val(DBusMessageIter* iter, std::string& val)
 }
 
 /* Templates for vector and map */
-template<typename E>
+template <typename E>
 static int load_vector(DBusMessageIter* iter, std::vector<E>& val)
 {
     int type = dbus_message_iter_get_arg_type(iter);
@@ -259,7 +300,7 @@ static int load_vector(DBusMessageIter* iter, std::vector<uint8_t>& val)
     if we use such vector, MUST add specialized code here (see in dbus-c++ source)
 }
 */
-template<typename K, typename V>
+template <typename K, typename V>
 static int load_map(DBusMessageIter* iter, std::map<K,V>& val)
 {
     int type = dbus_message_iter_get_arg_type(iter);
@@ -314,9 +355,9 @@ static int load_map(DBusMessageIter* iter, std::map<K,V>& val)
     return dbus_message_iter_next(iter);
 }
 
-template<typename E>
+template <typename E>
 static inline int load_val(DBusMessageIter* iter, std::vector<E>& val) { return load_vector(iter, val); }
-template<typename K, typename V>
+template <typename K, typename V>
 static inline int load_val(DBusMessageIter* iter, std::map<K,V>& val)  { return load_map(iter, val); }
 
 #endif /* __cplusplus */

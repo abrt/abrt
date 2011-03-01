@@ -21,7 +21,6 @@ import CCDBusBackend
 from CC_gui_functions import *
 from CCDumpList import getDumpList
 from CCDump import *   # FILENAME_xxx, CD_xxx
-from CCReporterDialog import ReporterDialog, ReporterSelector
 from CReporterAssistant import ReporterAssistant
 from PluginsSettingsDialog import PluginsSettingsDialog
 from SettingsDialog import SettingsDialog
@@ -38,6 +37,7 @@ class MainWindow():
         #Set the Glade file
         self.gladefile = "%s/ccgui.glade" % sys.path[0]
         self.wTree = gtk.glade.XML(self.gladefile)
+
 
         #Get the Main Window, and connect the "destroy" event
         self.window = self.wTree.get_widget("main_window")
@@ -89,9 +89,10 @@ class MainWindow():
         self.wTree.get_widget("bReport").connect("clicked", self.on_bReport_clicked)
         self.wTree.get_widget("b_close").connect("clicked", self.on_bQuit_clicked)
         self.wTree.get_widget("b_copy").connect("clicked", self.on_b_copy_clicked)
-        self.wTree.get_widget("b_help").connect("clicked", self.on_miAbout_clicked)
+        self.wTree.get_widget("b_help").connect("clicked", self.on_miOnlineHelp_clicked)
         self.wTree.get_widget("miQuit").connect("activate", self.on_bQuit_clicked)
         self.wTree.get_widget("miAbout").connect("activate", self.on_miAbout_clicked)
+        self.wTree.get_widget("miOnlineHelp").connect("activate", self.on_miOnlineHelp_clicked)
         self.wTree.get_widget("miPlugins").connect("activate", self.on_miPreferences_clicked)
         self.wTree.get_widget("miPreferences").connect("activate", self.on_miSettings_clicked)
         self.wTree.get_widget("miReport").connect("activate", self.on_bReport_clicked)
@@ -102,7 +103,7 @@ class MainWindow():
         #self.ccdaemon.connect("update", self.update_cb)
         # for now, just treat them the same (w/o this, we don't even see daemon warnings in logs!):
         #self.ccdaemon.connect("warning", self.update_cb)
-        self.ccdaemon.connect("show", self.show_cb)
+        self.ccdaemon.connect("show_gui", self.show_cb)
         self.ccdaemon.connect("daemon-state-changed", self.on_daemon_state_changed_cb)
         self.ccdaemon.connect("report-done", self.on_report_done_cb)
 
@@ -129,6 +130,10 @@ class MainWindow():
         dialog = self.wTree.get_widget("about")
         result = dialog.run()
         dialog.hide()
+
+    def on_miOnlineHelp_clicked(self, widget):
+        # opens default browser and shows ABRT chapter from deployment guide
+        gtk.show_uri(None, "http://docs.fedoraproject.org/en-US/Fedora/14/html/Deployment_Guide/ch-abrt.html", gtk.gdk.CURRENT_TIME)
 
     def on_miPreferences_clicked(self, widget):
         dialog = PluginsSettingsDialog(self.window,self.ccdaemon)
@@ -243,6 +248,7 @@ class MainWindow():
         # process the labels in sw_details
         # hide the fields that are not filled by daemon - e.g. comments
         # and how to reproduce
+
         for field in dump.not_required_fields:
             self.wTree.get_widget("l_%s" % field.lower()).hide()
             self.wTree.get_widget("l_%s_heading" % field.lower()).hide()
@@ -342,7 +348,7 @@ class MainWindow():
                     ("Command:", dump.cmdline),
                     ("Reason:", dump.reason),
                     ("Comment:", dump.comment),
-                    ("Bug Reports:", dump.Message),
+                    ("Bug Reports:", dump.message),
         ]
         dumpinfo_text = ""
         for line in dumpinfo:
@@ -394,7 +400,7 @@ class MainWindow():
             sys.exit()
 
     def show(self):
-        self.window.show()
+        self.window.show_all()
 
     def show_cb(self, daemon):
         if self.window:

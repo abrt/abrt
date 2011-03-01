@@ -1,12 +1,3 @@
 #!/bin/sh
 
-yum -C -y erase 'abrt*'
-
-exit
-
-while rpm -qa | grep abrt >/dev/null; do
-    rpm -qa | grep abrt | while read package; do
-        echo "$package: rpm -e `basename "$package" .rpm`"
-        rpm -e "`basename "$package" .rpm`"
-    done
-done
+yum -C -y erase 'abrt*' 'libreport*' 'report*'

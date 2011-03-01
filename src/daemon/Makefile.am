@@ -1,24 +1,22 @@
 bin_SCRIPTS = \
     abrt-handle-upload
-libexec_PROGRAMS = \
-    abrt-action-save-package-data
 
 bin_PROGRAMS = \
-    abrt-handle-crashdump
+    abrt-handle-crashdump \
+    abrt-action-save-package-data
 
-sbin_PROGRAMS = abrtd \
+sbin_PROGRAMS = \
+    abrtd \
     abrt-server
 
 abrtd_SOURCES = \
-    PluginManager.h PluginManager.cpp \
     MiddleWare.h MiddleWare.cpp \
-    CrashWatcher.h CrashWatcher.cpp \
-    CommLayerServer.h CommLayerServer.cpp \
     CommLayerServerDBus.h CommLayerServerDBus.cpp \
     Settings.h Settings.cpp \
-    Daemon.h Daemon.cpp
+    comm_layer_inner.h comm_layer_inner.cpp \
+    Daemon.cpp
 abrtd_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -36,14 +34,13 @@ abrtd_CPPFLAGS = \
 abrtd_LDADD = \
     $(DL_LIBS) \
     $(DBUS_LIBS) \
-    ../lib/libabrt.la \
-    ../lib/libabrt_daemon.la \
+    ../lib/libreport.la \
     ../lib/libabrt_dbus.la
 
 abrt_server_SOURCES = \
     abrt-server.c
 abrt_server_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -52,15 +49,16 @@ abrt_server_CPPFLAGS = \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_server_LDADD = \
-    ../lib/libabrt.la
+    ../lib/libreport.la
 
 abrt_handle_crashdump_SOURCES = \
     abrt-handle-crashdump.c
 abrt_handle_crashdump_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -71,17 +69,18 @@ abrt_handle_crashdump_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DLIBEXEC_DIR=\"$(LIBEXEC_DIR)\" \
+    $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_handle_crashdump_LDADD = \
-    ../lib/libabrt.la
+    ../lib/libreport.la
 
 abrt_action_save_package_data_SOURCES = \
     rpm.h rpm.c \
     Settings.h Settings.cpp \
-    abrt-action-save-package-data.cpp
+    abrt-action-save-package-data.c
 abrt_action_save_package_data_CPPFLAGS = \
-    -I$(srcdir)/../include \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -96,7 +95,7 @@ abrt_action_save_package_data_CPPFLAGS = \
     -Wall -Werror
 abrt_action_save_package_data_LDADD = \
     $(RPM_LIBS) \
-    ../lib/libabrt.la
+    ../lib/libreport.la
 
 dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/
 dist_dbusabrtconf_DATA = dbus-abrt.conf

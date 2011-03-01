@@ -52,7 +52,7 @@ static char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
         return NULL;
     char *uid_str = dd_load_text(dd, FILENAME_UID);
     dd_close(dd);
-    unsigned uid = xatoi_u(uid_str);
+    unsigned uid = xatoi_positive(uid_str);
     free(uid_str);
 
     int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_SETGUID | EXECFLG_SETSID | EXECFLG_QUIET;
@@ -104,7 +104,7 @@ static char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
 
     if (status != 0)
     {
-        /* unstrip didnt exit with exitcode 0 */
+        /* unstrip didnt exit with exit code 0 */
         strbuf_free(buf_out);
         return NULL;
     }
@@ -149,28 +149,28 @@ int main(int argc, char **argv)
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
+    const char *dump_dir_name = ".";
+
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        PROGNAME" [-vs] -d DIR\n\n"
+        PROGNAME" [-v] -d DIR\n\n"
         "Calculates and saves UUID of coredumps"
-        );
-    const char *dump_dir_name = ".";
+    );
     enum {
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
-        OPT_s = 1 << 2,
+//        OPT_s = 1 << 2,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR", _("Crash dump directory")),
-        OPT_BOOL(  's', NULL, NULL,                  _("Log to syslog"       )),
+//        OPT_BOOL(  's', NULL, NULL,                  _("Log to syslog"       )),
         OPT_END()
     };
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-
     msg_prefix = PROGNAME;
 //Maybe we will want this... later
 //    if (opts & OPT_s)

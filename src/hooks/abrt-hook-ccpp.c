@@ -161,9 +161,22 @@ static char* get_cwd(pid_t pid)
     return malloc_readlink(buf);
 }
 
-static char core_basename[sizeof("core.%lu") + sizeof(long)*3] = "core";
+/*
+ * %s - signal number
+ * %c - ulimit -c value
+ * %p - pid
+ * %u - uid
+ * %g - gid
+ * %t - UNIX time of dump
+ * %h - hostname
+ * %e - executable filename
+ * %% - output one "%"
+ */
+/* Must match CORE_PATTERN order in daemon! */
+static const char percent_specifiers[] = "%scpugthe";
+static char *core_basename = "core";
 
-static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid)
+static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid, char **percent_values)
 {
     struct passwd* pw = getpwuid(uid);
     gid_t gid = pw ? pw->pw_gid : uid;
@@ -178,20 +191,63 @@ static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid)
         return -1;
     }
 
-    /* Mimic "core.PID" if requested */
-    char buf[] = "0\n";
-    int fd = open("/proc/sys/kernel/core_uses_pid", O_RDONLY);
-    if (fd >= 0)
+    if (strcmp(core_basename, "core") == 0)
     {
-        read(fd, buf, sizeof(buf));
-        close(fd);
+        /* Mimic "core.PID" if requested */
+        char buf[] = "0\n";
+        int fd = open("/proc/sys/kernel/core_uses_pid", O_RDONLY);
+        if (fd >= 0)
+        {
+            read(fd, buf, sizeof(buf));
+            close(fd);
+        }
+        if (strcmp(buf, "1\n") == 0)
+        {
+            core_basename = xasprintf("%s.%lu", core_basename, (long)pid);
+        }
     }
-    if (strcmp(buf, "1\n") == 0)
+    else
     {
-        sprintf(core_basename, "core.%lu", (long)pid);
+        /* Expand old core pattern, put expanded name in core_basename */
+        core_basename = xstrdup(core_basename);
+        unsigned idx = 0;
+        while (1)
+        {
+            char c = core_basename[idx];
+            if (!c)
+                break;
+            idx++;
+            if (c != '%')
+                continue;
+
+            /* We just copied %, look at following char and expand %c */
+            c = core_basename[idx];
+            unsigned specifier_num = strchrnul(percent_specifiers, c) - percent_specifiers;
+            if (percent_specifiers[specifier_num] != '\0') /* valid %c (might be %% too) */
+            {
+                const char *val = "%";
+                if (specifier_num > 0) /* not %% */
+                    val = percent_values[specifier_num - 1];
+                //log("c:'%c'", c);
+                //log("val:'%s'", val);
+
+                /* Replace %c at core_basename[idx] by its value */
+                idx--;
+                char *old = core_basename;
+                core_basename = xasprintf("%.*s%s%s", idx, core_basename, val, core_basename + idx + 2);
+                //log("pos:'%*s|'", idx, "");
+                //log("new:'%s'", core_basename);
+                //log("old:'%s'", old);
+                free(old);
+                idx += strlen(val);
+            }
+            /* else: invalid %c, % is already copied verbatim,
+             * next loop iteration will copy c */
+        }
     }
 
-    /* man core:
+    /* Open (create) compat core file.
+     * man core:
      * There are various circumstances in which a core dump file
      * is not produced:
      *
@@ -209,8 +265,7 @@ static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid)
      *
      * The RLIMIT_CORE or RLIMIT_FSIZE resource limits for the process
      * are set to zero.
-     * [shouldn't it be checked by kernel? 2.6.30.9-96 doesn't, still
-     * calls us even if "ulimit -c 0"]
+     * [we check RLIMIT_CORE, but how can we check RLIMIT_FSIZE?]
      *
      * The binary being executed by the process does not have
      * read permission enabled. [how we can check it here?]
@@ -221,7 +276,6 @@ static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid)
      * (However, see the description of the prctl(2) PR_SET_DUMPABLE operation,
      * and the description of the /proc/sys/fs/suid_dumpable file in proc(5).)
      */
-
     /* Do not O_TRUNC: if later checks fail, we do not want to have file already modified here */
     struct stat sb;
     errno = 0;
@@ -240,6 +294,7 @@ static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid)
     if (ftruncate(user_core_fd, 0) != 0) {
         /* perror first, otherwise unlink may trash errno */
         perror_msg("truncate %s/%s", user_pwd, core_basename);
+        unlink(core_basename);
         return -1;
     }
 
@@ -248,23 +303,28 @@ static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid)
 
 int main(int argc, char** argv)
 {
-    int i;
     struct stat sb;
 
-    if (argc < 5)
+    if (argc < 10) /* no argv[9]? */
     {
-        error_msg_and_die("Usage: %s: DUMPDIR PID SIGNO UID CORE_SIZE_LIMIT", argv[0]);
+        /* percent specifier:                %s    %c              %p  %u  %g  %t   %h       %e */
+        /* argv:                 [0] [1]     [2]   [3]             [4] [5] [6] [7]  [8]      [9]         [10] */
+        error_msg_and_die("Usage: %s DUMPDIR SIGNO CORE_SIZE_LIMIT PID UID GID TIME HOSTNAME BINARY_NAME [OLD_PATTERN]", argv[0]);
     }
 
     /* Not needed on 2.6.30.
      * At least 2.6.18 has a bug where
-     * argv[1] = "DUMPDIR PID SIGNO UID CORE_SIZE_LIMIT"
-     * argv[2] = "PID SIGNO UID CORE_SIZE_LIMIT"
+     * argv[1] = "DUMPDIR SIGNO CORE_SIZE_LIMIT ..."
+     * argv[2] = "SIGNO CORE_SIZE_LIMIT ..."
      * and so on. Fixing it:
      */
-    for (i = 1; argv[i]; i++)
+    if (strchr(argv[1], ' '))
     {
-        strchrnul(argv[i], ' ')[0] = '\0';
+        int i;
+        for (i = 1; argv[i]; i++)
+        {
+            strchrnul(argv[i], ' ')[0] = '\0';
+        }
     }
 
     openlog("abrt", LOG_PID, LOG_DAEMON);
@@ -272,19 +332,38 @@ int main(int argc, char** argv)
 
     errno = 0;
     const char* dddir = argv[1];
-    pid_t pid = xatoi_u(argv[2]);
-    const char* signal_str = argv[3];
-    int signal_no = xatoi_u(argv[3]);
-    uid_t uid = xatoi_u(argv[4]);
-    off_t ulimit_c = strtoull(argv[5], NULL, 10);
+    const char* signal_str = argv[2];
+    int signal_no = xatoi_positive(signal_str);
+    off_t ulimit_c = strtoull(argv[3], NULL, 10);
     if (ulimit_c < 0) /* unlimited? */
     {
         /* set to max possible >0 value */
         ulimit_c = ~((off_t)1 << (sizeof(off_t)*8-1));
     }
+    pid_t pid = xatoi_positive(argv[4]);
+    uid_t uid = xatoi_positive(argv[5]);
     if (errno || pid <= 0)
     {
-        error_msg_and_die("pid '%s' or limit '%s' is bogus", argv[2], argv[5]);
+        perror_msg_and_die("pid '%s' or limit '%s' is bogus", argv[4], argv[3]);
+    }
+    if (argv[10]) /* OLD_PATTERN */
+    {
+        char *buf = (char*) xzalloc(strlen(argv[10]) / 2 + 2);
+        char *end = hex2bin(buf, argv[10], strlen(argv[10]));
+        if (end && end > buf && end[-1] == '\0')
+        {
+            core_basename = buf;
+            //log("core_basename:'%s'", core_basename);
+        }
+        else
+        {
+            /* Until recently, kernels were truncating expanded core pattern.
+             * In this case, we end up here...
+             */
+            error_msg("bad old pattern '%s', ignoring and using 'core'", argv[10]);
+            /* core_basename = "core"; - already is */
+            free(buf);
+        }
     }
 
     int src_fd_binary;
@@ -311,8 +390,8 @@ int main(int argc, char** argv)
     /* Open a fd to compat coredump, if requested and is possible */
     int user_core_fd = -1;
     if (setting_MakeCompatCore && ulimit_c != 0)
-        /* note: checks "user_pwd == NULL" inside */
-        user_core_fd = open_user_core(user_pwd, uid, pid);
+        /* note: checks "user_pwd == NULL" inside, updates core_basename */
+        user_core_fd = open_user_core(user_pwd, uid, pid, &argv[2]);
 
     if (executable == NULL)
     {
@@ -340,7 +419,7 @@ int main(int argc, char** argv)
 
     if (!daemon_is_ok())
     {
-        /* not an error, exit with exitcode 0 */
+        /* not an error, exit with exit code 0 */
         log("abrt daemon is not running. If it crashed, "
             "/proc/sys/kernel/core_pattern contains a stale value, "
             "consider resetting it to 'core'"
@@ -410,16 +489,32 @@ int main(int argc, char** argv)
         return 0;
     }
 
-    unsigned path_len = snprintf(path, sizeof(path), "%s/ccpp-%ld-%lu.new",
-            dddir, (long)time(NULL), (long)pid);
+    unsigned path_len = snprintf(path, sizeof(path), "%s/ccpp-%s-%lu.new",
+            dddir, iso_date_string(NULL), (long)pid);
     if (path_len >= (sizeof(path) - sizeof("/"FILENAME_COREDUMP)))
         return 1;
 
     struct dump_dir *dd = dd_create(path, uid);
     if (dd)
     {
+        dd_create_basic_files(dd, uid);
+
+        char source_filename[sizeof("/proc/%lu/smaps") + sizeof(long)*3];
+        int base_name = sprintf(source_filename, "/proc/%lu/smaps", (long)pid);
+        base_name -= strlen("smaps");
+        char *dest_filename = concat_path_file(dd->dd_dirname, FILENAME_SMAPS);
+        copy_file(source_filename, dest_filename, S_IRUSR | S_IRGRP | S_IWUSR);
+        chown(dest_filename, dd->dd_uid, dd->dd_gid);
+        strcpy(source_filename + base_name, "maps");
+        strcpy(strrchr(dest_filename, '/') + 1, FILENAME_MAPS);
+        copy_file(source_filename, dest_filename, S_IRUSR | S_IRGRP | S_IWUSR);
+        chown(dest_filename, dd->dd_uid, dd->dd_gid);
+        free(dest_filename);
+
         char *cmdline = get_cmdline(pid); /* never NULL */
-        char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)", executable, signal_str, signame ? signame : signal_str);
+        char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)",
+                                 executable, signal_str, signame ? signame : signal_str);
+
         dd_save_text(dd, FILENAME_ANALYZER, "CCpp");
         dd_save_text(dd, FILENAME_EXECUTABLE, executable);
         dd_save_text(dd, FILENAME_CMDLINE, cmdline);
@@ -498,8 +593,8 @@ int main(int argc, char** argv)
         }
 
         /* We close dumpdir before we start catering for crash storm case.
-         * Otherwise, delete_crash_dump_dir's from other concurrent
-         * CCpp's won't be able to delete our dump (their delete_crash_dump_dir
+         * Otherwise, delete_dump_dir's from other concurrent
+         * CCpp's won't be able to delete our dump (their delete_dump_dir
          * will wait for us), and we won't be able to delete their dumps.
          * Classic deadlock.
          */

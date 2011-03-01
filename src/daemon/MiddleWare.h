@@ -23,7 +23,6 @@
 #define MIDDLEWARE_H_
 
 #include "abrt_types.h"
-#include "PluginManager.h"
 
 /**
  * An enum contains all return codes.
@@ -46,29 +45,6 @@ typedef enum {
 
 
 /**
- * Takes care of getting all additional data needed
- * for computing UUIDs and creating a report for particular analyzer
- * plugin. This report could be send somewhere afterwards. If a creation
- * is successful, then  a crash report is filled.
- * @param pAnalyzer A name of an analyzer plugin.
- * @param pDebugDumpPath A debugdump dir containing all necessary data.
- * @param pCrashData A filled crash report.
- * @return It return results of operation. See mw_result_t.
- */
-mw_result_t CreateCrashReport(const char *dump_dir_name,
-                              long caller_uid,
-                              int force,
-                              map_crash_data_t& pCrashData);
-/**
- * Activates particular action plugin.
- * @param pActionDir A directory, which is passed as working to a action plugin.
- * @param pPluginName An action plugin name.
- * @param pPluginArgs Action plugin's arguments.
- */
-void RunAction(const char *pActionDir,
-               const char *pPluginName,
-               const char *pPluginArgs);
-/**
  * Reports a crash report to particular receiver. It
  * takes an user uid, tries to find user config file and load it. If it
  * fails, then default config is used. If pUID is emply string, default
@@ -76,16 +52,14 @@ void RunAction(const char *pActionDir,
  * ...).
  * @param crash_data
  *  A crash report.
- * @param reporters
- *  List of allowed reporters. Which reporters will be used depends
- *  on the analyzer of the crash_data. Reporters missing from this list
- *  will not be used.
+ * @param events
+ *  List of events to run.
  * @param caller_uid
  *  An user uid.
  * @return
- *  A report status, which reporters ends successfuly with messages.
+ *  A report status: which events finished successfully, with messages.
  */
-report_status_t Report(const map_crash_data_t& crash_data,
+report_status_t Report(crash_data_t *crash_data,
                        const vector_string_t& events,
                        const map_map_string_t& settings,
                        long caller_uid);
@@ -97,15 +71,14 @@ report_status_t Report(const map_crash_data_t& crash_data,
  * @param pCrashData A crash info.
  * @return It return results of operation. See mw_result_t.
  */
-mw_result_t LoadDebugDump(const char *dump_dir_name,
-                        map_crash_data_t& pCrashData);
+mw_result_t LoadDebugDump(const char *dump_dir_name, crash_data_t **crash_data);
 
-vector_map_crash_data_t GetCrashInfos(long caller_uid);
+vector_of_crash_data_t *GetCrashInfos(long caller_uid);
 int  CreateReportThread(const char* dump_dir_name, long caller_uid, int force, const char* pSender);
-void CreateReport(const char* dump_dir_name, long caller_uid, int force, map_crash_data_t&);
+void CreateReport(const char* dump_dir_name, long caller_uid, int force, crash_data_t **crash_data);
 int  DeleteDebugDump(const char *dump_dir_name, long caller_uid);
 
 void GetPluginsInfo(map_map_string_t &map_of_plugin_info);
-void GetPluginSettings(const char *plugin_name, map_plugin_settings_t &plugin_settings);
+map_string_h *GetPluginSettings(const char *plugin_name);
 
 #endif /*MIDDLEWARE_H_*/

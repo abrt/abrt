@@ -28,27 +28,27 @@ Group: Applications/System
 URL: https://fedorahosted.org/abrt/
 Source: https://fedorahosted.org/released/%{name}/%{name}-%{version}.tar.gz
 Source1: abrt.init
+Source2: abrt-ccpp.init
 BuildRequires: dbus-devel
 BuildRequires: gtk2-devel
 BuildRequires: curl-devel
 BuildRequires: rpm-devel >= 4.6
 BuildRequires: desktop-file-utils
-#BuildRequires: nss-devel
 BuildRequires: libnotify-devel
 BuildRequires: xmlrpc-c-devel
-BuildRequires: xmlrpc-c-client
 BuildRequires: file-devel
 BuildRequires: python-devel
 BuildRequires: gettext
 BuildRequires: libxml2-devel
-BuildRequires: libtar-devel, bzip2-devel, zlib-devel
+BuildRequires: libtar-devel
 BuildRequires: intltool
-BuildRequires: bison
+BuildRequires: libtool
 %if %{?with_systemd}
 Requires: systemd-units
 %endif
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
+Requires: libreport
 Requires(pre): shadow-utils
 Obsoletes: abrt-plugin-sqlite3 > 0.0.1
 # required for transition from 1.1.13, can be removed after some time
@@ -60,6 +60,36 @@ Obsoletes: abrt-plugin-sosreport > 0.0.1
 %{name} is a tool to help users to detect defects in applications and
 to create a bug report with all informations needed by maintainer to fix it.
 It uses plugin system to extend its functionality.
+
+%package -n libreport
+Summary: Libraries for reporting crashes to different targets.
+Group: System Environment/Libraries
+
+%description -n libreport
+Libraries providing API for reporting different problems in applications
+to different bug targets like bugzilla, ftp, trac, etc...
+
+%package -n libreport-devel
+Summary: Development libraries and headers for libreport.
+Group: Development/Libraries
+
+%description -n libreport-devel
+Development libraries and headers for libreport.
+
+%package -n libreport-python
+Summary: Python bindings for report-libs.
+# Is group correct here? -
+Group: System Environment/Libraries
+
+%description -n libreport-python
+Python bindings for report-libs.
+
+%package -n libreport-gtk
+Summary: GTK frontend for libreport
+Group: User Interface/Desktops
+
+%description -n libreport-gtk
+Applications for reporting bugs using libreport backend.
 
 %package libs
 Summary: Libraries for %{name}
@@ -95,7 +125,7 @@ GTK+ wizard for convenient bug reporting.
 %package addon-ccpp
 Summary: %{name}'s C/C++ addon
 Group: System Environment/Libraries
-Requires: elfutils
+Requires: elfutils, cpio
 Requires: %{name} = %{version}-%{release}
 
 %description addon-ccpp
@@ -165,6 +195,7 @@ Plugin to report bugs into anonymous FTP site associated with ticketing system.
 %package addon-python
 Summary: %{name}'s addon for catching and analyzing Python exceptions
 Group: System Environment/Libraries
+Requires: python
 Requires: %{name} = %{version}-%{release}
 Obsoletes: gnome-python2-bugbuddy > 0.0.1
 Provides: gnome-python2-bugbuddy
@@ -237,8 +268,7 @@ make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
 install -m 755 %SOURCE1 ${RPM_BUILD_ROOT}/%{_initrddir}/abrtd
-# /var/cache/abrt is to be removed in 1.3.x timeframe
-mkdir -p $RPM_BUILD_ROOT/var/cache/abrt
+install -m 755 %SOURCE2 ${RPM_BUILD_ROOT}/%{_initrddir}/abrt-ccpp
 mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-di
 mkdir -p $RPM_BUILD_ROOT/var/run/abrt
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt
@@ -258,34 +288,49 @@ desktop-file-install \
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-getent group abrt >/dev/null || groupadd -f --system abrt
-getent passwd abrt >/dev/null || useradd --system -g abrt -d /etc/abrt -s /sbin/nologin abrt
+#uidgid pair 173:173 reserved in setup rhbz#670231
+%define abrt_gid_uid 173
+getent group abrt >/dev/null || groupadd -f -g %{abrt_gid_uid} --system abrt
+getent passwd abrt >/dev/null || useradd --system -g abrt -u %{abrt_gid_uid} -d /etc/abrt -s /sbin/nologin abrt
 exit 0
 
 %post
 if [ $1 -eq 1 ]; then
-/sbin/chkconfig --add %{name}d
+/sbin/chkconfig --add abrtd
 fi
 #systemd
 %if %{?with_systemd}
 #if [ $1 -eq 1 ]; then
 # Enable (but don't start) the units by default
-  /bin/systemctl enable %{name}d.service >/dev/null 2>&1 || :
+  /bin/systemctl enable abrtd.service >/dev/null 2>&1 || :
 #fi
 %endif
 
+%post addon-ccpp
+if [ $1 -eq 1 ]; then
+/sbin/chkconfig --add abrt-ccpp
+fi
+#systemd: TODO
+
 %preun
 if [ "$1" -eq "0" ] ; then
-  service %{name}d stop >/dev/null 2>&1
-  /sbin/chkconfig --del %{name}d
+  service abrtd stop >/dev/null 2>&1
+  /sbin/chkconfig --del abrtd
 fi
 #systemd
 %if %{?with_systemd}
 if [ "$1" -eq "0" ] ; then
-  /bin/systemctl stop %{name}d.service >/dev/null 2>&1 || :
-  /bin/systemctl disable %{name}d.service >/dev/null 2>&1 || :
+  /bin/systemctl stop abrtd.service >/dev/null 2>&1 || :
+  /bin/systemctl disable abrtd.service >/dev/null 2>&1 || :
 fi
 %endif
+
+%preun addon-ccpp
+if [ "$1" -eq "0" ] ; then
+  service abrt-ccpp stop >/dev/null 2>&1
+  /sbin/chkconfig --del abrt-ccpp
+fi
+#systemd: TODO
 
 %postun
 #systemd
@@ -315,14 +360,20 @@ fi
 
 %posttrans
 if [ "$1" -eq "0" ]; then
-    service %{name}d condrestart >/dev/null 2>&1 || :
+    service abrtd condrestart >/dev/null 2>&1 || :
 fi
 #systemd
 %if %{?with_systemd}
 if [ "$1" -eq "0" ]; then
-    /bin/systemctl try-restart %{name}d.service >/dev/null 2>&1 || :
+    /bin/systemctl try-restart abrtd.service >/dev/null 2>&1 || :
 fi
 %endif
+
+%posttrans addon-ccpp
+if [ "$1" -eq "0" ]; then
+    service abrt-ccpp condrestart >/dev/null 2>&1 || :
+fi
+#systemd: TODO
 
 
 %files -f %{name}.lang
@@ -336,20 +387,19 @@ fi
 %{_sbindir}/abrt-server
 %{_bindir}/abrt-handle-upload
 %{_bindir}/abrt-handle-crashdump
-%{_libexecdir}/abrt-action-save-package-data
+%{_bindir}/abrt-action-save-package-data
 %{_libexecdir}/abrt-retrace-client
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt_event.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
-%{_initrddir}/%{name}d
-# /var/cache/abrt is to be removed in 1.3.x timeframe
-%dir %attr(0755, abrt, abrt) %{_localstatedir}/cache/%{name}
+%{_initrddir}/abrtd
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/spool/%{name}
 %dir %attr(0700, abrt, abrt) %{_localstatedir}/spool/%{name}-upload
-%dir /var/run/%{name}
+%dir %attr(0775, abrt, abrt) %{_localstatedir}/run/%{name}
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
+%dir %{_sysconfdir}/%{name}/events.d
 %dir %{_libdir}/%{name}
 %{_mandir}/man8/abrtd.8.gz
 %{_mandir}/man5/%{name}.conf.5.gz
@@ -357,20 +407,42 @@ fi
 %{_mandir}/man7/%{name}-plugins.7.gz
 %{_datadir}/dbus-1/system-services/com.redhat.abrt.service
 
+%files -n libreport
+%defattr(-,root,root,-)
+%{_libdir}/libreport.so.*
+
+%files -n libreport-devel
+%defattr(-,root,root,-)
+%{_includedir}/report/*
+%{_libdir}/libreport.so
+
+%files -n libreport-python
+%defattr(-,root,root,-)
+%{python_sitearch}/report/*
+
+%files -n libreport-gtk
+%defattr(-,root,root,-)
+%{_bindir}/bug-reporting-wizard
+# If you want to deploy external glade file:
+#%{_datadir}/%{name}/wizard.glade
+
 %files libs
 %defattr(-,root,root,-)
-%{_libdir}/lib*.so.*
+%{_libdir}/libabrt*.so.*
+%{_libdir}/libbtparser.so.*
 
 %files devel
 %defattr(-,root,root,-)
-%{_includedir}/*
-%{_libdir}/lib*.so
+%{_includedir}/abrt/*
+%{_libdir}/libabrt*.so
+%{_libdir}/libbtparser.so
 %{_libdir}/pkgconfig/*
 %doc doc/abrt-plugin doc/howto-write-reporter
 
 %files gui
 %defattr(-,root,root,-)
 %{_bindir}/abrt-gui
+%{_bindir}/abrt-gtk
 %dir %{_datadir}/%{name}
 # all glade, gtkbuilder and py files for gui
 %{_datadir}/%{name}/*.py*
@@ -380,68 +452,69 @@ fi
 %{_datadir}/icons/hicolor/*/status/*
 %{_datadir}/%{name}/icons/hicolor/*/status/*
 %{_bindir}/abrt-applet
+#%{_bindir}/test-report
 %{_sysconfdir}/xdg/autostart/abrt-applet.desktop
 
 %files addon-ccpp
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
-%dir %{_localstatedir}/cache/abrt-di
-%{_libdir}/%{name}/libCCpp.so*
+%dir %attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
+%attr(2755, abrt, abrt) %{_bindir}/abrt-action-install-debuginfo
+%{_initrddir}/abrt-ccpp
 %{_libexecdir}/abrt-hook-ccpp
-%{_libexecdir}/abrt-action-analyze-c
-%{_libexecdir}/abrt-action-install-debuginfo.py*
-%{_libexecdir}/abrt-action-generate-backtrace
+%{_bindir}/abrt-action-analyze-c
+%{_bindir}/abrt-action-install-debuginfo.py*
+%{_bindir}/abrt-action-generate-backtrace
+%{_sysconfdir}/%{name}/events.d/ccpp_events.conf
 
 %files addon-kerneloops
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Kerneloops.conf
-%{_bindir}/dumpoops
-%{_libdir}/%{name}/libKerneloopsScanner.so*
-%{_mandir}/man7/abrt-KerneloopsScanner.7.gz
 %{_libdir}/%{name}/KerneloopsReporter.glade
 %{_mandir}/man7/abrt-KerneloopsReporter.7.gz
-%{_libexecdir}/abrt-action-analyze-oops
-%{_libexecdir}/abrt-action-kerneloops
+%{_bindir}/abrt-dump-oops
+%{_bindir}/abrt-action-analyze-oops
+%{_bindir}/abrt-action-kerneloops
 
 %files plugin-logger
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Logger.conf
 %{_libdir}/%{name}/Logger.glade
 %{_mandir}/man7/abrt-Logger.7.gz
-%{_libexecdir}/abrt-action-print
+%{_bindir}/abrt-action-print
 
 %files plugin-mailx
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Mailx.conf
 %{_libdir}/%{name}/Mailx.glade
 %{_mandir}/man7/abrt-Mailx.7.gz
-%{_libexecdir}/abrt-action-mailx
+%{_bindir}/abrt-action-mailx
 
 %files plugin-bugzilla
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Bugzilla.conf
 %{_libdir}/%{name}/Bugzilla.glade
 %{_mandir}/man7/abrt-Bugzilla.7.gz
-%{_libexecdir}/abrt-action-bugzilla
+%{_bindir}/abrt-action-bugzilla
 
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/RHTSupport.conf
 %{_libdir}/%{name}/RHTSupport.glade
 # {_mandir}/man7/abrt-RHTSupport.7.gz
-%{_libexecdir}/abrt-action-rhtsupport
+%{_bindir}/abrt-action-rhtsupport
 
 %files plugin-reportuploader
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Upload.conf
 %{_libdir}/%{name}/Upload.glade
 %{_mandir}/man7/abrt-Upload.7.gz
-%{_libexecdir}/abrt-action-upload
+%{_bindir}/abrt-action-upload
 
 %files addon-python
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Python.conf
-%{_libexecdir}/abrt-action-analyze-python
+%{_bindir}/abrt-action-analyze-python
 %{python_site}/*.py*
 %{python_site}/abrt.pth
 

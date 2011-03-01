@@ -19,8 +19,8 @@
 #include "abrtlib.h"
 #include "Settings.h"
 
-#define SECTION_COMMON      "Common"
-#define SECTION_CRON        "Cron"
+#define SECTION_COMMON       "Common"
+#define SECTION_LOG_SCANNERS "LogScanners"
 
 /* Conf file has this format:
  * [ section_name1 ]
@@ -31,32 +31,28 @@
  */
 
 /* Static data */
-/* Filled by LoadSettings() */
+/* Filled by load_settings() */
 
 /* map["name"] = "value" strings from [ Common ] section.
  * If the same name found on more than one line,
  * the values are appended, separated by comma: map["name"] = "value1,value2" */
 static map_string_t s_mapSectionCommon;
-/* ... from [ Cron ] */
-static map_string_t s_mapSectionCron;
 
 /* Public data */
-/* Written out exactly in this order by SaveSettings() */
 
 /* [ Common ] */
 /* one line: "OpenGPGCheck = value" */
 bool          g_settings_bOpenGPGCheck = false;
 /* one line: "OpenGPGPublicKeys = value1,value2" */
-GList *g_settings_setOpenGPGPublicKeys = NULL;
-GList *g_settings_setBlackListedPkgs = NULL;
-GList *g_settings_setBlackListedPaths = NULL;
-char *g_settings_sWatchCrashdumpArchiveDir = NULL;
+GList *       g_settings_setOpenGPGPublicKeys = NULL;
+GList *       g_settings_setBlackListedPkgs = NULL;
+GList *       g_settings_setBlackListedPaths = NULL;
+char *        g_settings_sWatchCrashdumpArchiveDir = NULL;
 unsigned int  g_settings_nMaxCrashReportsSize = 1000;
 bool          g_settings_bProcessUnpackaged = false;
 
-/* [ Cron ] */
-/* many lines, one per key: "map_key = aa_first,bb_first(bb_second),cc_first" */
-map_cron_t    g_settings_mapCron;
+/* [ LogScanners ] */
+char *        g_settings_sLogScanners = NULL;
 
 
 /*
@@ -80,105 +76,10 @@ static GList *parse_list(const char* list)
     }
 
     if (item->len > 0)
-            l = g_list_append(l, xstrdup(item->buf));
+        l = g_list_append(l, xstrdup(item->buf));
 
     strbuf_free(item);
     return l;
-}
-
-/* Format: name, name(param),name("param with spaces \"and quotes\"") */
-static vector_pair_string_string_t ParseListWithArgs(const char *pValue, int *err)
-{
-    VERB3 log(" ParseListWithArgs(%s)", pValue);
-
-    vector_pair_string_string_t pluginsWithArgs;
-    std::string item;
-    std::string action;
-    bool is_quote = false;
-    bool is_arg = false;
-    for (int ii = 0; pValue[ii]; ii++)
-    {
-        if (is_quote && pValue[ii] == '\\' && pValue[ii + 1])
-        {
-            ii++;
-            item += pValue[ii];
-            continue;
-        }
-        if (pValue[ii] == '"')
-        {
-            is_quote = !is_quote;
-            /*item += pValue[ii]; - wrong! name("param") must be == name(param) */
-            continue;
-        }
-        if (is_quote)
-        {
-            item += pValue[ii];
-            continue;
-        }
-        if (pValue[ii] == '(')
-        {
-            if (!is_arg)
-            {
-                action = item;
-                item = "";
-                is_arg = true;
-            }
-            else
-            {
-                *err = 1;
-                error_msg("Parser error: Invalid syntax on column %d in \"%s\"", ii, pValue);
-            }
-
-            continue;
-        }
-        if (pValue[ii] == ')')
-        {
-            if (is_arg)
-            {
-                VERB3 log(" adding (%s,%s)", action.c_str(), item.c_str());
-                pluginsWithArgs.push_back(make_pair(action, item));
-                item = "";
-                is_arg = false;
-                action = "";
-            }
-            else
-            {
-                *err = 1;
-                error_msg("Parser error: Invalid syntax on column %d in \"%s\"", ii, pValue);
-            }
-
-            continue;
-        }
-        if (pValue[ii] == ',' && !is_arg)
-        {
-            if (item != "")
-            {
-                VERB3 log(" adding (%s,%s)", item.c_str(), "");
-                pluginsWithArgs.push_back(make_pair(item, ""));
-                item = "";
-            }
-            continue;
-        }
-        item += pValue[ii];
-    }
-
-    if (is_quote)
-    {
-        *err = 1;
-        error_msg("Parser error: Unclosed quote in \"%s\"", pValue);
-    }
-
-    if (is_arg)
-    {
-        *err = 1;
-        error_msg("Parser error: Unclosed argument in \"%s\"", pValue);
-    }
-    else if (item != "")
-    {
-        VERB3 log(" adding (%s,%s)", item.c_str(), "");
-        pluginsWithArgs.push_back(make_pair(item, ""));
-    }
-    return pluginsWithArgs;
 }
 
 static int ParseCommon()
@@ -207,26 +108,12 @@ static int ParseCommon()
     it = s_mapSectionCommon.find("MaxCrashReportsSize");
     if (it != end)
     {
-        g_settings_nMaxCrashReportsSize = xatoi_u(it->second.c_str());
+        g_settings_nMaxCrashReportsSize = xatoi_positive(it->second.c_str());
     }
     it = s_mapSectionCommon.find("ProcessUnpackaged");
     if (it != end)
     {
         g_settings_bProcessUnpackaged = string_to_bool(it->second.c_str());
-    }
-    return 0; /* no error */
-}
-
-static int ParseCron()
-{
-    map_string_t::iterator it = s_mapSectionCron.begin();
-    for (; it != s_mapSectionCron.end(); it++)
-    {
-        int err = 0;
-        vector_pair_string_string_t actionsAndReporters = ParseListWithArgs(it->second.c_str(), &err);
-        if (err)
-            return err;
-        g_settings_mapCron[it->first] = actionsAndReporters;
     }
     return 0; /* no error */
 }
@@ -277,7 +164,7 @@ static int ReadConfigurationFromFile(FILE *fp)
                 value += line[ii];
                 continue;
             }
-            if (isspace(line[ii]) && !is_quote)
+            if (isspace(line[ii]) && !is_quote && is_key)
             {
                 continue;
             }
@@ -304,8 +191,9 @@ static int ReadConfigurationFromFile(FILE *fp)
                 section += line[ii];
                 continue;
             }
-            if (line[ii] == '=' && !is_quote)
+            if (is_key && line[ii] == '=' && !is_quote)
             {
+		while (isspace(line[ii + 1])) ii++;
                 is_key = false;
                 key = value;
                 value = "";
@@ -351,11 +239,9 @@ static int ReadConfigurationFromFile(FILE *fp)
                 s_mapSectionCommon[key] += ",";
             s_mapSectionCommon[key] += value;
         }
-        else if (section == SECTION_CRON)
+        else if (section == SECTION_LOG_SCANNERS)
         {
-            if (s_mapSectionCron[key] != "")
-                s_mapSectionCron[key] += ",";
-            s_mapSectionCron[key] += value;
+            g_settings_sLogScanners = xstrdup(value.c_str());
         }
         else
         {
@@ -372,7 +258,7 @@ static int ReadConfigurationFromFile(FILE *fp)
 }
 
 /* abrt daemon loads .conf file */
-int LoadSettings()
+int load_settings()
 {
     int err = 0;
 
@@ -387,8 +273,6 @@ int LoadSettings()
 
     if (err == 0)
         err = ParseCommon();
-    if (err == 0)
-        err = ParseCron();
 
     if (err == 0)
     {
@@ -411,49 +295,36 @@ map_abrt_settings_t GetSettings()
     map_abrt_settings_t ABRTSettings;
 
     ABRTSettings[SECTION_COMMON] = s_mapSectionCommon;
-    ABRTSettings[SECTION_CRON] = s_mapSectionCron;
 
     return ABRTSettings;
 }
 
-/* dbus call to change some .conf file data */
-void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
-{
-    map_abrt_settings_t::const_iterator it = pSettings.find(SECTION_COMMON);
-    map_abrt_settings_t::const_iterator end = pSettings.end();
-    if (it != end)
-    {
-        s_mapSectionCommon = it->second;
-        ParseCommon();
-    }
-    it = pSettings.find(SECTION_CRON);
-    if (it != end)
-    {
-        s_mapSectionCron = it->second;
-        ParseCron();
-    }
-}
+///* dbus call to change some .conf file data */
+//void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
+//{
+//    map_abrt_settings_t::const_iterator it = pSettings.find(SECTION_COMMON);
+//    map_abrt_settings_t::const_iterator end = pSettings.end();
+//    if (it != end)
+//    {
+//        s_mapSectionCommon = it->second;
+//        ParseCommon();
+//    }
+//}
 
-void settings_free()
+void free_settings()
 {
-    for (GList *li = g_settings_setOpenGPGPublicKeys; li != NULL; li = g_list_next(li))
-        free((char*)li->data);
-
-    g_list_free(g_settings_setOpenGPGPublicKeys);
+    list_free_with_free(g_settings_setOpenGPGPublicKeys);
     g_settings_setOpenGPGPublicKeys = NULL;
 
-    for (GList *li = g_settings_setBlackListedPkgs; li != NULL; li = g_list_next(li))
-        free((char*)li->data);
-
-    g_list_free(g_settings_setBlackListedPkgs);
+    list_free_with_free(g_settings_setBlackListedPkgs);
     g_settings_setBlackListedPkgs = NULL;
 
-    for (GList *li = g_settings_setBlackListedPaths; li != NULL; li = g_list_next(li))
-        free((char*)li->data);
-
-    g_list_free(g_settings_setBlackListedPaths);
+    list_free_with_free(g_settings_setBlackListedPaths);
     g_settings_setBlackListedPaths = NULL;
 
     free(g_settings_sWatchCrashdumpArchiveDir);
     g_settings_sWatchCrashdumpArchiveDir = NULL;
+
+    free(g_settings_sLogScanners);
+    g_settings_sLogScanners = NULL;
 }

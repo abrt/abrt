@@ -20,25 +20,33 @@
 #define SETTINGS_H_
 
 #include "abrt_types.h"
-#include <glib.h>
 
-typedef map_vector_pair_string_string_t map_cron_t;
+#ifdef __cplusplus
+
 typedef map_map_string_t map_abrt_settings_t;
+// looks unused to me.
+// Ok to grep for SetSettings and delete after 2011-04-01.
+// void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender);
+map_abrt_settings_t GetSettings();
 
-extern GList *g_settings_setOpenGPGPublicKeys;
-extern GList *g_settings_setBlackListedPkgs;
-extern GList *g_settings_setBlackListedPaths;
+extern "C" {
+#endif
+
+extern GList *       g_settings_setOpenGPGPublicKeys;
+extern GList *       g_settings_setBlackListedPkgs;
+extern GList *       g_settings_setBlackListedPaths;
 extern unsigned int  g_settings_nMaxCrashReportsSize;
 extern bool          g_settings_bOpenGPGCheck;
 extern bool          g_settings_bProcessUnpackaged;
-extern char *g_settings_sWatchCrashdumpArchiveDir;
-extern map_cron_t    g_settings_mapCron;
+extern char *        g_settings_sWatchCrashdumpArchiveDir;
 
-int LoadSettings();
-void SaveSettings();
-void SetSettings(const map_abrt_settings_t& pSettings, const char * dbus_sender);
-map_abrt_settings_t GetSettings();
+extern char *        g_settings_sLogScanners;
 
-void settings_free();
+int load_settings();
+void free_settings();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -16,11 +16,10 @@
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "dump_dir.h"
-#include "abrt_crash_dump.h" /* FILENAME_foo */
 #include "hooklib.h"
 #include "parse_options.h"
 
+#define PROGNAME "abrt-server"
 
 /* Maximal length of backtrace. */
 #define MAX_BACKTRACE_SIZE (1024*1024)
@@ -108,9 +107,9 @@ static void create_debug_dump()
        This directory is renamed to final directory name after
        all files have been stored into it.
     */
-    char *path = xasprintf(DEBUG_DUMPS_DIR"/%s-%ld-%u.new",
+    char *path = xasprintf(DEBUG_DUMPS_DIR"/%s-%s-%u.new",
                            dir_basename,
-                           (long)time(NULL),
+                           iso_date_string(NULL),
                            pid);
     /* No need to check the path length, as all variables used are limited, and dd_create()
        fails if the path is too long. */
@@ -120,6 +119,7 @@ static void create_debug_dump()
     {
         error_msg_and_die("Error creating crash dump %s", path);
     }
+    dd_create_basic_files(dd, client_uid);
 
     dd_save_text(dd, FILENAME_ANALYZER, analyzer);
     dd_save_text(dd, FILENAME_EXECUTABLE, executable);
@@ -275,31 +275,32 @@ static void process_message(const char *message)
 
 static void dummy_handler(int sig_unused) {}
 
-static const char abrt_server_usage[] = "abrt-server [options]";
-enum {
-    OPT_v = 1 << 0,
-    OPT_u = 1 << 1,
-    OPT_s = 1 << 2,
-};
-/* Keep enum above and order of options below in sync! */
-static struct options abrt_server_options[] = {
-    OPT__VERBOSE(&g_verbose),
-    OPT_INTEGER( 'u' , 0, &client_uid, "Use UID as client uid"),
-    OPT_BOOL( 's' , 0, NULL, "Log to syslog"),
-    OPT_END()
-};
-
 int main(int argc, char **argv)
 {
     char *env_verbose = getenv("ABRT_VERBOSE");
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    unsigned opts = parse_opts(argc, argv, abrt_server_options,
-                           abrt_server_usage);
+    /* Can't keep these strings/structs static: _() doesn't support that */
+    const char *program_usage_string = _(
+        PROGNAME" [options]"
+    );
+    enum {
+        OPT_v = 1 << 0,
+        OPT_u = 1 << 1,
+        OPT_s = 1 << 2,
+    };
+    /* Keep enum above and order of options below in sync! */
+    struct options program_options[] = {
+        OPT__VERBOSE(&g_verbose),
+        OPT_INTEGER('u', NULL, &client_uid, _("Use UID as client uid")),
+        OPT_BOOL(   's', NULL, NULL       , _("Log to syslog")),
+        OPT_END()
+    };
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-    msg_prefix = xasprintf("abrt-server[%u]", getpid());
+    msg_prefix = xasprintf(PROGNAME"[%u]", getpid());
     if (opts & OPT_s)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);

@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the ABRT package.
 # Petr Pisar <ppisar@redhat.com>, 2010.
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2010.
+# Milan Kerslager <milan@kerslager.cz>, 2010.
 #
 # backtrace → výpis/zásobník volání
 # component → komponenta
@@ -16,16 +17,15 @@
 #   http://www.bugzilla.cz/index.html
 #   http://bugzilla.abclinuxu.cz/
 # bug → (obecně) požadavek, v případě druhu chyba připouštím chybové hlášení.
-# Milan Kerslager <milan@kerslager.cz>, 2010.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt 1.1.13\n"
+"Project-Id-Version: abrt master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-11-29 13:51+0100\n"
-"PO-Revision-Date: 2010-09-10 10:59+0200\n"
-"Last-Translator: Milan Kerslager <milan@kerslager.cz>\n"
-"Language-Team: Czech <Czech <cs-users@lists.fedoraproject.org>>\n"
-"Language: \n"
+"POT-Creation-Date: 2010-12-06 08:55+0000\n"
+"PO-Revision-Date: 2010-12-06 14:57+0100\n"
+"Last-Translator: Petr Pisar <ppisar@redhat.com>\n"
+"Language-Team: <cs-users@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -85,7 +85,7 @@ msgstr "Spustit ABRT"
 
 # Align collon to longest string (Hostname)
 #: ../src/cli/CLI.cpp:47
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\tCrash dump : %s\n"
 "\tUID        : %s\n"
@@ -94,8 +94,8 @@ msgid ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 msgstr ""
+"\tVýpis pádu  : %s\n"
 "\tUID         : %s\n"
-"\tUUID        : %s\n"
 "\tBalík       : %s\n"
 "\tProgram     : %s\n"
 "\tDoba pádu   : %s\n"
@@ -107,7 +107,7 @@ msgid "\tHostname   : %s\n"
 msgstr "\tNázev stroje: %s\n"
 
 #: ../src/cli/CLI.cpp:98
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Dump directory:     %s\n"
 "Last crash:         %s\n"
@@ -119,7 +119,7 @@ msgid ""
 "System:             %s, kernel %s\n"
 "Reason:             %s\n"
 msgstr ""
-"ID pádu:            %s:%s\n"
+"Adresář s výpisy    %s\n"
 "Poslední pád:       %s\n"
 "Analyzátor:         %s\n"
 "Komponenta:         %s\n"
@@ -183,13 +183,14 @@ msgstr ""
 "%s\n"
 
 #. Message has embedded tabs.
-#: ../src/cli/CLI.cpp:243
-#, fuzzy, c-format
+#: ../src/cli/CLI.cpp:244
+#, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
 "\n"
 "Startup:\n"
 "\t-V, --version\t\tdisplay the version of %s and exit\n"
+"\t-v, --verbose\t\tincrease verbosity\n"
 "\t-?, --help\t\tprint this help\n"
 "\n"
 "Actions:\n"
@@ -210,6 +211,7 @@ msgstr ""
 "\n"
 "Rozjezd:\n"
 "\t-V, --version\t\tzobrazí verzi %s a skončí\n"
+"\t-v, --verbose\t\tpodrobnější výpisy\n"
 "\t-?, --help\t\tzobrazí tuto nápovědu\n"
 "\n"
 "Akce:\n"
@@ -222,11 +224,10 @@ msgstr ""
 "\t      -b, --backtrace\tvypíše podrobné údaje o pádu včetně zásobníku "
 "volání\n"
 "ID_PÁDU může být:\n"
-"\tdvojice UID:UUID,\n"
-"\tjednoznačná předpona UUID – zpracuje se pád s odpovídajícím UUID\n"
-"\t@N – zpracuje se N-tý pád (pořadí určeno výpisem --get-list-full)\n"
+"\tnázev adresáře s výpisy pádu nebo\n"
+"\t@N – zpracuje se N-tý pád (pořadí určeno výpisem --list --full)\n"
 
-#: ../src/cli/CLI.cpp:287
+#: ../src/cli/CLI.cpp:288
 msgid "You must specify exactly one operation"
 msgstr "Musíte zadat právě jednu operaci"
 
@@ -309,76 +310,78 @@ msgstr ""
 "V hlášení nebyly nalezeny žádné změny"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:464
+#: ../src/cli/report.cpp:445
 msgid "y"
 msgstr "a"
 
-#: ../src/cli/report.cpp:465
+#: ../src/cli/report.cpp:446
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:565
+#: ../src/cli/report.cpp:563
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Zjištěno chybné nastavení modulu %s\n"
 
-#: ../src/cli/report.cpp:569
+#: ../src/cli/report.cpp:567
 msgid "Enter your login: "
 msgstr "Zadejte vaše přihlašovací jméno: "
 
-#: ../src/cli/report.cpp:575
+#: ../src/cli/report.cpp:573
 msgid "Enter your password: "
 msgstr "Zadejte vaše heslo: "
 
-#: ../src/cli/report.cpp:638
+#: ../src/cli/report.cpp:635
 msgid "Reporting..."
 msgstr "Nahlašuje se…"
 
-#: ../src/cli/report.cpp:657
+#: ../src/cli/report.cpp:654
 #, c-format
 msgid "Report using %s?"
 msgstr "Nahlásit prostřednictvím %s?"
 
-#: ../src/cli/report.cpp:660
+#: ../src/cli/report.cpp:657
 msgid "Skipping..."
 msgstr "Vynecháno…"
 
-#: ../src/cli/report.cpp:672
+#: ../src/cli/report.cpp:669
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Nahlašování zakázáno, protože výpis volání není použitelný"
 
-#: ../src/cli/report.cpp:676
+#: ../src/cli/report.cpp:673
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
-"Zkuste nainstalovat debuginfo balíčky ručně pomocí \"debuginfo-install %s\" "
-"a zkuste to znovu\n"
+"Zkuste nainstalovat balíčky s ladicími údaji ručně pomocí "
+"„debuginfo-install %s“ a zkuste to znovu\n"
 
-#: ../src/cli/report.cpp:685
+#: ../src/cli/report.cpp:682
 msgid "Error loading reporter settings"
 msgstr "Chyba při nahrávání údajů ohlašovatele"
 
 # FIXME: Plurals
-#: ../src/cli/report.cpp:704
-#, fuzzy, c-format
+#: ../src/cli/report.cpp:702
+#, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
-msgstr "Pád nahlášen prostřednictvím %d modulů (%d chyb)\n"
+msgstr "Pád nahlášen prostřednictvím %d oznamovacích událostí (%d chyb)\n"
 
 #: ../src/daemon/abrt-handle-crashdump.c:42
 msgid ""
 " [-vs] -d DIR -e EVENT\n"
 "   or: "
 msgstr ""
+" [-vs] -d ADRESÁŘ -e UDÁLOST\n"
+" nebo: "
 
 #: ../src/daemon/abrt-handle-crashdump.c:57
 #: ../src/plugins/abrt-action-analyze-c.c:167
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
 msgid "Log to syslog"
-msgstr ""
+msgstr "Protokolovat do syslogu"
 
 #: ../src/daemon/abrt-handle-crashdump.c:58
 #: ../src/plugins/abrt-action-analyze-c.c:166
@@ -388,15 +391,15 @@ msgstr ""
 #: ../src/plugins/abrt-action-print.cpp:50
 #: ../src/plugins/abrt-action-upload.cpp:266
 msgid "Crash dump directory"
-msgstr ""
+msgstr "Adresář s výpisy pádu"
 
 #: ../src/daemon/abrt-handle-crashdump.c:59
 msgid "Handle EVENT"
-msgstr ""
+msgstr "Obstarat UDÁLOST"
 
 #: ../src/daemon/abrt-handle-crashdump.c:60
 msgid "List possible events [which start with PFX]"
-msgstr ""
+msgstr "Vypsat možné události [které začínají na PFX]"
 
 #: ../src/daemon/CommLayerServerDBus.cpp:229
 msgid "Comment is too long"
@@ -416,19 +419,19 @@ msgstr ""
 
 #: ../src/daemon/Daemon.cpp:699
 msgid "abrtd [options]"
-msgstr ""
+msgstr "abrtd [PŘEPÍNAČE]"
 
 #: ../src/daemon/Daemon.cpp:709
 msgid "Do not daemonize"
-msgstr ""
+msgstr "Nedémonizuje se"
 
 #: ../src/daemon/Daemon.cpp:710
 msgid "Log to syslog even with -d"
-msgstr ""
+msgstr "Protokoluje do syslogu i s -d"
 
 #: ../src/daemon/Daemon.cpp:711
 msgid "Exit after SEC seconds of inactivity"
-msgstr ""
+msgstr "Skončí po N sekundách nečinnosti"
 
 #: ../src/gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -551,7 +554,7 @@ msgstr ""
 "Kopii Obecné veřejné licence GNU byste měli dostat spolu s tímto programem. "
 "Nestalo-li se tak, vize <http://www.gnu.org/licenses/>."
 
-#: ../src/gui/ccgui.glade.h:19 ../src/gui/CReporterAssistant.py:71
+#: ../src/gui/ccgui.glade.h:19 ../src/gui/CReporterAssistant.py:111
 msgid "View log"
 msgstr "Zobrazit log"
 
@@ -653,7 +656,7 @@ msgstr "Zde stručně popište, jak pád vyprovokovat nebo co jste dělali…"
 msgid "You must check the backtrace for sensitive data."
 msgstr "Výpis volání je třeba zkontrolovat na citlivá data."
 
-#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:364
+#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:392
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -670,8 +673,8 @@ msgstr ""
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "Výpis volání je nepoužitelný, toto nelze odeslat!"
 
-#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:342
-#: ../src/gui/CReporterAssistant.py:370
+#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:370
+#: ../src/gui/CReporterAssistant.py:398
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -695,7 +698,7 @@ msgstr ""
 "Pro tento druh pádu není přiřazený žádný ohlašovací modul.\n"
 "Prosím, zkontrolujte abrt.conf."
 
-#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:249
+#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:277
 #: ../src/gui/PluginsSettingsDialog.py:136
 #, python-format
 msgid ""
@@ -705,12 +708,12 @@ msgstr ""
 "Nastavení modulu se nepodařilo uložit:\n"
 " %s"
 
-#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:279
+#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:307
 #, python-format
 msgid "Configure %s options"
 msgstr "Nastavit modul %s"
 
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1074
+#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1102
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -718,7 +721,7 @@ msgstr ""
 "Hlášení se nepodařilo se získat!\n"
 "Nechybí ladicí informace?"
 
-#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:455
+#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:483
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -728,7 +731,7 @@ msgstr ""
 "%s"
 
 #: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:1113
+#: ../src/gui/CReporterAssistant.py:1139
 #, python-format
 msgid "Error acquiring the report: %s"
 msgstr "Chyba při získávání hlášení: %s"
@@ -765,38 +768,38 @@ msgstr "Přístup ke gnome-keyring byl zamítnut. Nastavení nelze načíst."
 msgid "Crash info doesn't contain a backtrace"
 msgstr "Údaje o pádu neobsahují výpis volání"
 
-#: ../src/gui/CReporterAssistant.py:334
+#: ../src/gui/CReporterAssistant.py:362
 #, python-format
 msgid "Rating is %s"
 msgstr "Hodnocení je %s"
 
-#: ../src/gui/CReporterAssistant.py:337
+#: ../src/gui/CReporterAssistant.py:365
 msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr "Výpis pádu neobsahuje hodnocení → předpokládá se, že nebude potřeba"
 
-#: ../src/gui/CReporterAssistant.py:350
+#: ../src/gui/CReporterAssistant.py:378
 msgid "You should check the backtrace for sensitive data."
 msgstr "Ve výpisu volání byste měli zkontrolovat citlivá data."
 
-#: ../src/gui/CReporterAssistant.py:351
+#: ../src/gui/CReporterAssistant.py:379
 msgid "You must agree with sending the backtrace."
 msgstr "S odesláním výpisu volání musíte souhlasit."
 
-#: ../src/gui/CReporterAssistant.py:366
+#: ../src/gui/CReporterAssistant.py:394
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr ""
 "Odeslání hlášení není povoleno, protože výpis volání je nepoužitelný."
 "Odeslání hlášení není povoleno, protože výpis volání je nepoužitelný."
 
-#: ../src/gui/CReporterAssistant.py:412
+#: ../src/gui/CReporterAssistant.py:440
 msgid "You did not provide any steps to reproduce."
 msgstr "Neposkytli jste žádný návod, jak problém vyvolat."
 
-#: ../src/gui/CReporterAssistant.py:426
+#: ../src/gui/CReporterAssistant.py:454
 msgid "You did not provide any comments."
 msgstr "Neposkytli jste žádné komentáře."
 
-#: ../src/gui/CReporterAssistant.py:507
+#: ../src/gui/CReporterAssistant.py:535
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -821,15 +824,15 @@ msgstr ""
 "\n"
 "Zvolte, kam si přejete chybu nahlásit, pokračujte stisknutím „Další“."
 
-#: ../src/gui/CReporterAssistant.py:548
+#: ../src/gui/CReporterAssistant.py:576
 msgid "Only one reporter plugin is configured."
 msgstr "Nastavený je pouze jeden ohlašovací modul."
 
-#: ../src/gui/CReporterAssistant.py:554
+#: ../src/gui/CReporterAssistant.py:582
 msgid "Send a bug report"
 msgstr "Odeslat chybové hlášení"
 
-#: ../src/gui/CReporterAssistant.py:592
+#: ../src/gui/CReporterAssistant.py:620
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -845,50 +848,51 @@ msgstr ""
 "Prosím, prohlédněte si následující výpis a případně je upravte tak, aby "
 "neobsahoval citlivé údaje, které si chcete uchovat v soukromí:"
 
-#: ../src/gui/CReporterAssistant.py:663 ../src/gui/CReporterAssistant.py:676
-#: ../src/gui/CReporterAssistant.py:710
+# FIXME: Plurals
+#: ../src/gui/CReporterAssistant.py:691 ../src/gui/CReporterAssistant.py:704
+#: ../src/gui/CReporterAssistant.py:738
 #, python-format
 msgid "Found %i occurence(s) [at: %i of %i]"
-msgstr ""
+msgstr "Nalezeno výskytů: %i [v: %i z %i]"
 
-#: ../src/gui/CReporterAssistant.py:747
+#: ../src/gui/CReporterAssistant.py:775
 msgid "Search:"
-msgstr ""
+msgstr "Najít:"
 
-#: ../src/gui/CReporterAssistant.py:778
+#: ../src/gui/CReporterAssistant.py:806
 msgid "Refresh"
 msgstr "Obnovit"
 
-#: ../src/gui/CReporterAssistant.py:780
+#: ../src/gui/CReporterAssistant.py:808
 msgid "Copy"
 msgstr "Kopírovat"
 
-#: ../src/gui/CReporterAssistant.py:786
+#: ../src/gui/CReporterAssistant.py:814
 msgid "I agree with submitting the backtrace"
 msgstr "Souhlasím s odesláním výpisu volání"
 
-#: ../src/gui/CReporterAssistant.py:791
+#: ../src/gui/CReporterAssistant.py:819
 msgid "Approve the backtrace"
 msgstr "Schválit výpis volání"
 
-#: ../src/gui/CReporterAssistant.py:834
+#: ../src/gui/CReporterAssistant.py:862
 msgid "You need to fill the how to before you can proceed..."
-msgstr ""
+msgstr "Než budete moci pokračovat, je třeba vyplnit jak přivodit pád…"
 
-#: ../src/gui/CReporterAssistant.py:857
+#: ../src/gui/CReporterAssistant.py:885
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "Jak došlo k pádu (krok za krokem)? Je byste jej vyvolali?"
 
-#: ../src/gui/CReporterAssistant.py:877
+#: ../src/gui/CReporterAssistant.py:905
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr "Máte nějaké připomínky, které byste rádi předali správcům programu?"
 
-#: ../src/gui/CReporterAssistant.py:897
+#: ../src/gui/CReporterAssistant.py:925
 msgid "Provide additional details"
 msgstr "Poskytnout dodatečné údaje"
 
-#: ../src/gui/CReporterAssistant.py:904
+#: ../src/gui/CReporterAssistant.py:932
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
@@ -896,80 +900,80 @@ msgstr ""
 "<b>Připomínka:</b> Komentář nebude soukromý. Prosím, dejte si pozor na to, "
 "co říkáte."
 
-#: ../src/gui/CReporterAssistant.py:945
+#: ../src/gui/CReporterAssistant.py:973
 msgid "Confirm and send the report"
 msgstr "Potvrdit a odeslat hlášení"
 
-#: ../src/gui/CReporterAssistant.py:947
+#: ../src/gui/CReporterAssistant.py:975
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Níže je shrnuto vaše chybového hlášení. Prosím, hlášení odešlete klikněte na "
 "„Použít“."
 
-#: ../src/gui/CReporterAssistant.py:952
+#: ../src/gui/CReporterAssistant.py:980
 msgid "<b>Basic details</b>"
 msgstr "<b>Základní údaje</b>"
 
 #. left table
-#: ../src/gui/CReporterAssistant.py:959
+#: ../src/gui/CReporterAssistant.py:987
 msgid "Component"
 msgstr "Komponenta"
 
-#: ../src/gui/CReporterAssistant.py:960
+#: ../src/gui/CReporterAssistant.py:988
 msgid "Package"
 msgstr "Balíček"
 
-#: ../src/gui/CReporterAssistant.py:961
+#: ../src/gui/CReporterAssistant.py:989
 msgid "Executable"
 msgstr "Program"
 
-#: ../src/gui/CReporterAssistant.py:962
+#: ../src/gui/CReporterAssistant.py:990
 msgid "Cmdline"
 msgstr "Příkaz"
 
 #. right table
-#: ../src/gui/CReporterAssistant.py:964
+#: ../src/gui/CReporterAssistant.py:992
 msgid "Architecture"
 msgstr "Architektura"
 
-#: ../src/gui/CReporterAssistant.py:965
+#: ../src/gui/CReporterAssistant.py:993
 msgid "Kernel"
 msgstr "Jádro"
 
-#: ../src/gui/CReporterAssistant.py:966
+#: ../src/gui/CReporterAssistant.py:994
 msgid "Release"
 msgstr "Vydání"
 
-#: ../src/gui/CReporterAssistant.py:967
+#: ../src/gui/CReporterAssistant.py:995
 msgid "Reason"
 msgstr "Důvod"
 
-#: ../src/gui/CReporterAssistant.py:978 ../src/gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:1006 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>Výpis volání</b>"
 
-#: ../src/gui/CReporterAssistant.py:981
+#: ../src/gui/CReporterAssistant.py:1009
 msgid "Click to view..."
 msgstr "Zobraz kliknutím…"
 
-#: ../src/gui/CReporterAssistant.py:993
+#: ../src/gui/CReporterAssistant.py:1021
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Jak vyvolat:</b>"
 
-#: ../src/gui/CReporterAssistant.py:1014
+#: ../src/gui/CReporterAssistant.py:1042
 msgid "<b>Comments:</b>"
 msgstr "<b>Komentáře:</b>"
 
-#: ../src/gui/CReporterAssistant.py:1017
+#: ../src/gui/CReporterAssistant.py:1045
 msgid "No comment provided!"
 msgstr "Žádné komentáře nepřipojeny!"
 
-#: ../src/gui/CReporterAssistant.py:1053
+#: ../src/gui/CReporterAssistant.py:1081
 msgid "Finished sending the bug report"
 msgstr "Odesílání chybového hlášení dokončeno"
 
-#: ../src/gui/CReporterAssistant.py:1057
+#: ../src/gui/CReporterAssistant.py:1085
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Chybová hlášení:</b>"
 
@@ -1015,7 +1019,6 @@ msgid "Name"
 msgstr "Název"
 
 #: ../src/gui/PluginsSettingsDialog.py:118
-#, fuzzy
 msgid "Please select a plugin from the list to edit its options."
 msgstr "Prosím, ze seznamu vyberte modul, jehož nastavení chcete upravit."
 
@@ -1246,7 +1249,7 @@ msgstr "Nahráno: %'llu z %'llu kilobajtů"
 #: ../src/lib/parse_options.c:11
 #, c-format
 msgid "Usage: %s\n"
-msgstr ""
+msgstr "Použití: %s\n"
 
 #: ../src/plugins/abrt-action-analyze-c.c:154
 msgid ""
@@ -1254,6 +1257,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredumps"
 msgstr ""
+" [-vs] -d ADRESÁŘ\n"
+"\n"
+"Vypočte a uloží UUID obrazů paměti"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:131
 msgid ""
@@ -1261,6 +1267,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH of oops crash dumps"
 msgstr ""
+" [-vs] -d ADRESÁŘ\n"
+"\n"
+"Vypočte a uloží UUID a DUPHASH výpisů pádů oops"
 
 #: ../src/plugins/abrt-action-analyze-python.c:36
 msgid ""
@@ -1268,6 +1277,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
+" [-vs] -d ADRESÁŘ\n"
+"\n"
+"Vypočte a uloží UUID a DUPHASH výpisů pádů pythonu"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:532
 #, c-format
@@ -1277,14 +1289,12 @@ msgstr "Číslo nové chyby: %i"
 #: ../src/plugins/abrt-action-bugzilla.cpp:645
 #, c-format
 msgid "Can't open '%s'"
-msgstr ""
+msgstr "„%s“ nelze otevřít"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:665
-#, fuzzy, c-format
+#, c-format
 msgid "Empty login or password, please check %s"
-msgstr ""
-"Prázdné přihlašovací jméno nebo heslo.\n"
-"Zkontrolujte správnost "
+msgstr "Prázdné přihlašovací jméno nebo heslo, prosím, zkontrolujte %s"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:683
 msgid "Logging into bugzilla..."
@@ -1342,127 +1352,125 @@ msgstr "K chybě %d se přidává nový komentář"
 #: ../src/plugins/abrt-action-generate-backtrace.c:319
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "Rozbor zásobníku volání v %s se nezdařil"
 
+# extracting = unpacking RPM package
 #: ../src/plugins/abrt-action-install-debuginfo.py:72
 #, python-format
 msgid "Extracting cpio from %s"
-msgstr ""
+msgstr "Z %s se vybaluje cpio"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:77
 msgid "Can't write to:"
-msgstr ""
+msgstr "Nelze zapsat do:"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:87
 msgid "Removing the temporary rpm file"
-msgstr ""
+msgstr "Odstraňuje se dočasný RPM soubor"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:91
 #, python-format
 msgid "Can't extract package: %s"
-msgstr ""
+msgstr "Balík nelze rozbalit: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:99
 #, python-format
 msgid "Caching files from %s made from %s"
-msgstr ""
+msgstr "Zapamatovávají se soubory z %s vyrobené z %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:107
 msgid "Removing the temporary cpio file"
-msgstr ""
+msgstr "Odstraňuje se dočasný cpio soubor"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:110
 #, python-format
 msgid "Can't extract files from: %s"
-msgstr ""
+msgstr "Soubory nelze vybalit z: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:134
 #: ../src/plugins/abrt-action-install-debuginfo.py:140
 #, python-format
 msgid "Downloading (%i of %i) %.30s : %.3s %%"
-msgstr ""
+msgstr "Stahuje se (%i z %i) %.30s : %.3s %%"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:169
-#, fuzzy
 msgid "Searching the missing debuginfo packages"
-msgstr "Vyhledávám debug-info balíčky..."
+msgstr "Hledají se chybějící balíčky s ladicími údaji"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:224
 #, python-format
 msgid "To download: (%.2f) M / Installed size: %.2f M"
-msgstr ""
+msgstr "Ke stažení: (%.2f) M / Instalovaná velikost: %.2f M"
 
+# ask_yes_no() not i18ned.
 #: ../src/plugins/abrt-action-install-debuginfo.py:240
 msgid "Is this ok? [y/N] "
-msgstr ""
+msgstr "Je to v pořádku [y=ano/N=ne] "
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:257
 #, python-format
 msgid "Downloading package %s failed"
-msgstr ""
+msgstr "Balíček %s se nepodařilo stáhnout"
 
 #. recursively delete the temp dir on failure
 #: ../src/plugins/abrt-action-install-debuginfo.py:268
 msgid "Unpacking failed, aborting download..."
-msgstr ""
+msgstr "Rozbalování selhalo, stahovaní bude ukončeno…"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:275
 #, python-format
 msgid "All downloaded packages have been extracted, removing %s"
-msgstr ""
+msgstr "Všechny stažené balíčky byly rozbaleny, odstraňuje se %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:280
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
-msgstr ""
+msgstr "%s nelze odstranit, zřejmě obsahuje chybový protokol"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:305
 #, python-format
 msgid "Analyzing corefile: %(corefile_path)s"
-msgstr ""
+msgstr "Analyzuje se obraz paměti: %(corefile_path)s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:384
 #, python-format
 msgid "Can't remove %(tmpdir_path)s: %(reason)s"
-msgstr ""
+msgstr "%(tmpdir_path)s nelze odstranit: %(reason)s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:394
 msgid "Exiting on user Command"
-msgstr ""
+msgstr "Ukončeno na příkaz uživatele"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:413
 #, python-format
 msgid "Usage: %s --core=<COREFILE> --tmpdir=<TMPDIR> --cachedir=<CACHEDIR>"
-msgstr ""
+msgstr "Použití: %s --core=<OBRAZ_PAMĚTI> --tmpdir=<POMOCNÝ_ADRESÁŘ> "
+"--cachedir=<VYROVNÁVACÍ_ADRESÁŘ>"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:442
-#, fuzzy
 msgid "You have to specify the path to coredump."
-msgstr "Pro kopii je třeba vybrat pád."
+msgstr "Musíte zadat cestu k souboru s obrazem paměti."
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:446
-#, fuzzy
 msgid "You have to specify the path to cachedir."
-msgstr "Pro kopii je třeba vybrat pád."
+msgstr "Musíte zadat cestu k vyrovnávacímu adresáři."
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:450
-#, fuzzy
 msgid "You have to specify the path to tmpdir."
-msgstr "Pro kopii je třeba vybrat pád."
+msgstr "Musíte zadat cestu k pomocnému adresáři."
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:463
 msgid "All debuginfo seems to be available"
-msgstr ""
+msgstr "Všechny ladicí údaje se zdají být dostupné"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:470
-#, fuzzy
 msgid "Complete!"
-msgstr "Komponenta"
+msgstr "Hotovo!"
 
 #: ../src/plugins/abrt-action-kerneloops.cpp:111
-#, fuzzy, c-format
+#, c-format
 msgid "Submitting oops report to %s"
-msgstr "Hlášení se zapisuje do „%s“"
+msgstr "Hlášení s oops se odesílá na %s"
 
 #: ../src/plugins/abrt-action-mailx.cpp:114
 msgid "Sending an email..."
@@ -1474,12 +1482,14 @@ msgid ""
 "\n"
 "Upload compressed tarball of crash dump"
 msgstr ""
+" [-v] -d ADRESÁŘ [-c KONFIGURAČNÍ_SOUBOR]\n"
+"\n"
+"Nahraje komprimovaný archiv tar s výpisem pádu."
 
 #: ../src/plugins/abrt-action-mailx.cpp:151
 #: ../src/plugins/abrt-action-upload.cpp:267
-#, fuzzy
 msgid "Config file"
-msgstr "Log soubor:"
+msgstr "Konfigurační soubor"
 
 #: ../src/plugins/abrt-action-print.cpp:39
 msgid ""
@@ -1487,10 +1497,13 @@ msgid ""
 "\n"
 "Print information about the crash to standard output"
 msgstr ""
+" [-v] [-o SOUBOR] -d ADRESÁŘ\n"
+"\n"
+"Vypíše údaje o pádu na standardní výstup."
 
 #: ../src/plugins/abrt-action-print.cpp:51
 msgid "Output file"
-msgstr ""
+msgstr "Výstupní soubor"
 
 #: ../src/plugins/abrt-action-print.cpp:100
 #, c-format
@@ -1511,31 +1524,29 @@ msgid "Compressing data"
 msgstr "Komprimují se data"
 
 #: ../src/plugins/abrt-action-rhtsupport.cpp:78
-#, fuzzy
 msgid "Empty login or password, please check RHTSupport.conf"
 msgstr ""
-"Prázdné přihlašovací jméno nebo heslo.\n"
-"Zkontrolujte správnost "
+"Prázdné přihlašovací jméno nebo heslo, prosím, zkontrolujte RHTSupport.conf"
 
 #: ../src/plugins/abrt-action-rhtsupport.cpp:194
 msgid "Creating a new case..."
 msgstr "Vytváří se nový případ…"
 
 #: ../src/plugins/abrt-action-upload.cpp:65
-#, fuzzy, c-format
+#, c-format
 msgid "Sending %s to %s"
-msgstr "Soubor %s se odesílá na %s"
+msgstr "%s se odesílá na %s"
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/plugins/abrt-action-upload.cpp:98
 #, c-format
 msgid "Successfully sent %s to %s"
-msgstr ""
+msgstr "%s úspěšně odesláno na %s"
 
 #: ../src/plugins/abrt-action-upload.cpp:219
 #, c-format
 msgid "Archive is created: '%s'"
-msgstr ""
+msgstr "Archiv byl vytvořen: „%s“"
 
 #: ../src/plugins/abrt-action-upload.cpp:253
 msgid ""
@@ -1543,10 +1554,13 @@ msgid ""
 "\n"
 "Upload compressed tarball of crash dump"
 msgstr ""
+" [-v] -d DIR [-c KONFIGURAČNÍ_SOUBOR] [-u URL]\n"
+"\n"
+"Nahraje komprimovaný archiv tar s výpisem pádu."
 
 #: ../src/plugins/abrt-action-upload.cpp:268
 msgid "Base URL to upload to"
-msgstr ""
+msgstr "Základ URL, kam nahrávat"
 
 #: ../src/plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
@@ -1645,9 +1659,8 @@ msgid "RHTSupport URL:"
 msgstr "RHTSupport URL:"
 
 #: ../src/plugins/Upload.glade.h:1
-#, fuzzy
 msgid "<b>Upload plugin configuration</b>"
-msgstr "<b>Konfigurace pluginu Report Uploader</b>"
+msgstr "<b>Konfigurace modulu</b>"
 
 #: ../src/plugins/Upload.glade.h:2
 msgid "Retry count:"

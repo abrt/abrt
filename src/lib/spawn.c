@@ -108,7 +108,7 @@ pid_t fork_execv_on_steroids(int flags,
 		execvp(argv[0], argv);
 		if (!(flags & EXECFLG_QUIET))
 			perror_msg("Can't execute '%s'", argv[0]);
-		exit(127); /* shell uses this exitcode in this case */
+		exit(127); /* shell uses this exit code in this case */
 	}
 
 	if (flags & EXECFLG_INPUT) {

@@ -25,21 +25,18 @@
 #include <string>
 #include <sys/inotify.h>
 #include <sys/ioctl.h> /* ioctl(FIONREAD) */
-#include <glib.h>
 #include "abrtlib.h"
-#include "abrt_exception.h"
 #include "comm_layer_inner.h"
 #include "Settings.h"
 #include "CommLayerServerDBus.h"
-#include "CrashWatcher.h"
 #include "MiddleWare.h"
-#include "Daemon.h"
 #include "parse_options.h"
+
+#define PROGNAME "abrtd"
 
 using namespace std;
 
 
-#define VAR_RUN_LOCK_FILE   VAR_RUN"/abrt/abrtd.lock"
 #define VAR_RUN_PIDFILE     VAR_RUN"/abrtd.pid"
 
 #define SOCKET_FILE VAR_RUN"/abrt/abrt.socket"
@@ -55,15 +52,15 @@ using namespace std;
  * - signal: we got SIGTERM or SIGINT
  *
  * DBus methods we have:
- * - GetCrashInfos(): returns a vector_map_crash_data_t (vector_map_vector_string_t)
+ * - GetCrashInfos(): returns a vector_of_crash_data
  *      of crashes for given uid
  *      v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
  * - StartJob(crash_id,force): starts creating a report for /var/spool/abrt/DIR with this UID:UUID.
  *      Returns job id (uint64).
  *      After thread returns, when report creation thread has finished,
  *      JobDone() dbus signal is emitted.
- * - CreateReport(crash_id): returns map_crash_data_t (map_vector_string_t)
- * - Report(map_crash_data_t (map_vector_string_t[, map_map_string_t])):
+ * - CreateReport(crash_id): returns crash data (hash table of struct crash_item)
+ * - Report(crash_data[, map_map_string_t]):
  *      "Please report this crash": calls Report() of all registered reporter plugins.
  *      Returns report_status_t (map_vector_string_t) - the status of each call.
  *      2nd parameter is the contents of user's abrt.conf.
@@ -85,12 +82,11 @@ using namespace std;
  *      Both are sent as unicast to last client set by set_client_name(name).
  *      If set_client_name(NULL) was done, they are not sent.
  */
-CCommLayerServer* g_pCommLayer;
-
 static volatile sig_atomic_t s_sig_caught;
 static int s_signal_pipe[2];
 static int s_signal_pipe_write = -1;
 static int s_upload_watch = -1;
+static pid_t log_scanner_pid = -1;
 static unsigned s_timeout;
 static bool s_exiting;
 
@@ -203,203 +199,34 @@ static void dumpsocket_shutdown()
     }
 }
 
-
-/* Cron handling */
-
-typedef struct cron_callback_data_t
+static int create_pidfile()
 {
-    std::string m_sPluginName;
-    std::string m_sPluginArgs;
-    unsigned int m_nTimeout;
-
-    cron_callback_data_t(
-                      const std::string& pPluginName,
-                      const std::string& pPluginArgs,
-                      const unsigned int& pTimeout) :
-        m_sPluginName(pPluginName),
-        m_sPluginArgs(pPluginArgs),
-        m_nTimeout(pTimeout)
-    {}
-} cron_callback_data_t;
-
-static void cron_delete_callback_data_cb(gpointer data)
-{
-    cron_callback_data_t* cronDeleteCallbackData = static_cast<cron_callback_data_t*>(data);
-    delete cronDeleteCallbackData;
-}
-
-static gboolean cron_activation_periodic_cb(gpointer data)
-{
-    cron_callback_data_t* cronPeriodicCallbackData = static_cast<cron_callback_data_t*>(data);
-    VERB1 log("Activating plugin: %s", cronPeriodicCallbackData->m_sPluginName.c_str());
-    RunAction(DEBUG_DUMPS_DIR,
-            cronPeriodicCallbackData->m_sPluginName.c_str(),
-            cronPeriodicCallbackData->m_sPluginArgs.c_str()
-    );
-    return TRUE;
-}
-static gboolean cron_activation_one_cb(gpointer data)
-{
-    cron_callback_data_t* cronOneCallbackData = static_cast<cron_callback_data_t*>(data);
-    VERB1 log("Activating plugin: %s", cronOneCallbackData->m_sPluginName.c_str());
-    RunAction(DEBUG_DUMPS_DIR,
-            cronOneCallbackData->m_sPluginName.c_str(),
-            cronOneCallbackData->m_sPluginArgs.c_str()
-    );
-    return FALSE;
-}
-static gboolean cron_activation_reshedule_cb(gpointer data)
-{
-    cron_callback_data_t* cronResheduleCallbackData = static_cast<cron_callback_data_t*>(data);
-    VERB1 log("Rescheduling plugin: %s", cronResheduleCallbackData->m_sPluginName.c_str());
-    cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t(cronResheduleCallbackData->m_sPluginName,
-                                                                              cronResheduleCallbackData->m_sPluginArgs,
-                                                                              cronResheduleCallbackData->m_nTimeout);
-    g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
-                               cronPeriodicCallbackData->m_nTimeout,
-                               cron_activation_periodic_cb,
-                               static_cast<gpointer>(cronPeriodicCallbackData),
-                               cron_delete_callback_data_cb
-    );
-    return FALSE;
-}
-
-static int SetUpCron()
-{
-    map_cron_t::iterator it_c = g_settings_mapCron.begin();
-    for (; it_c != g_settings_mapCron.end(); it_c++)
-    {
-        std::string::size_type pos = it_c->first.find(":");
-        int timeout = 0;
-        int nH = -1;
-        int nM = -1;
-        int nS = -1;
-
-//TODO: rewrite using good old sscanf?
-
-        if (pos != std::string::npos)
-        {
-            std::string sH;
-            std::string sM;
-
-            sH = it_c->first.substr(0, pos);
-            nH = xatou(sH.c_str());
-            nH = nH > 23 ? 23 : nH;
-            nH = nH < 0 ? 0 : nH;
-            timeout += nH * 60 * 60;
-            sM = it_c->first.substr(pos + 1);
-            nM = xatou(sM.c_str());
-            nM = nM > 59 ? 59 : nM;
-            nM = nM < 0 ? 0 : nM;
-            timeout += nM * 60;
-        }
-        else
-        {
-            std::string sS;
-
-            sS = it_c->first;
-            nS = xatou(sS.c_str());
-            nS = nS <= 0 ? 1 : nS;
-            timeout = nS;
-        }
-
-        if (nS != -1)
-        {
-            vector_pair_string_string_t::iterator it_ar = it_c->second.begin();
-            for (; it_ar != it_c->second.end(); it_ar++)
-            {
-                cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t(it_ar->first, it_ar->second, timeout);
-                g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
-                                           timeout,
-                                           cron_activation_periodic_cb,
-                                           static_cast<gpointer>(cronPeriodicCallbackData),
-                                           cron_delete_callback_data_cb);
-            }
-        }
-        else
-        {
-            time_t actTime = time(NULL);
-            struct tm locTime;
-            localtime_r(&actTime, &locTime);
-            locTime.tm_hour = nH;
-            locTime.tm_min = nM;
-            locTime.tm_sec = 0;
-            time_t nextTime = mktime(&locTime);
-            if (nextTime == ((time_t)-1))
-            {
-                /* paranoia */
-                perror_msg("Can't set up cron time");
-                return -1;
-            }
-            if (actTime > nextTime)
-            {
-                timeout = 24*60*60 + (nextTime - actTime);
-            }
-            else
-            {
-                timeout = nextTime - actTime;
-            }
-            vector_pair_string_string_t::iterator it_ar = it_c->second.begin();
-            for (; it_ar != it_c->second.end(); it_ar++)
-            {
-                cron_callback_data_t* cronOneCallbackData = new cron_callback_data_t(it_ar->first, it_ar->second, timeout);
-                g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
-                                           timeout,
-                                           cron_activation_one_cb,
-                                           static_cast<gpointer>(cronOneCallbackData),
-                                           cron_delete_callback_data_cb);
-                cron_callback_data_t* cronResheduleCallbackData = new cron_callback_data_t(it_ar->first, it_ar->second, 24 * 60 * 60);
-                g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
-                                           timeout,
-                                           cron_activation_reshedule_cb,
-                                           static_cast<gpointer>(cronResheduleCallbackData),
-                                           cron_delete_callback_data_cb);
-            }
-        }
-    }
-    return 0;
-}
-
-static int CreatePidFile()
-{
-    int fd;
-
-    /* JIC */
-    unlink(VAR_RUN_PIDFILE);
-
-    /* open the pidfile */
-    fd = open(VAR_RUN_PIDFILE, O_WRONLY|O_CREAT|O_EXCL, 0644);
+    /* Note:
+     * No O_EXCL: we would happily overwrite stale pidfile from previous boot.
+     * No O_TRUNC: we must first try to lock the file, and if lock fails,
+     * there is another live abrtd. O_TRUNCing the file in this case
+     * would be wrong - it'll erase the pid to empty string!
+     */
+    int fd = open(VAR_RUN_PIDFILE, O_WRONLY|O_CREAT, 0644);
     if (fd >= 0)
     {
+        if (lockf(fd, F_TLOCK, 0) < 0)
+        {
+            perror_msg("Can't lock file '%s'", VAR_RUN_PIDFILE);
+            return -1;
+        }
+        close_on_exec_on(fd);
         /* write our pid to it */
         char buf[sizeof(long)*3 + 2];
         int len = sprintf(buf, "%lu\n", (long)getpid());
         write(fd, buf, len);
-        close(fd);
+        ftruncate(fd, len);
+        /* we leak opened+locked fd intentionally */
         return 0;
     }
 
-    /* something went wrong */
     perror_msg("Can't open '%s'", VAR_RUN_PIDFILE);
     return -1;
-}
-
-static int Lock()
-{
-    int lfd = open(VAR_RUN_LOCK_FILE, O_RDWR|O_CREAT, 0640);
-    if (lfd < 0)
-    {
-        perror_msg("Can't open '%s'", VAR_RUN_LOCK_FILE);
-        return -1;
-    }
-    if (lockf(lfd, F_TLOCK, 0) < 0)
-    {
-        perror_msg("Can't lock file '%s'", VAR_RUN_LOCK_FILE);
-        return -1;
-    }
-    close_on_exec_on(lfd);
-    return 0;
-    /* we leak opened lfd intentionally */
 }
 
 static void handle_signal(int signo)
@@ -433,12 +260,22 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
             s_exiting = 1;
         else
         {
-            if (socket_client_count)
-                socket_client_count--;
-            if (!socket_channel_cb_id)
+            pid_t pid;
+            while ((pid = waitpid(-1, NULL, WNOHANG)) > 0)
             {
-                log("Accepting connections on '%s'", SOCKET_FILE);
-                socket_channel_cb_id = add_watch_or_die(socket_channel, G_IO_IN | G_IO_PRI, server_socket_cb);
+                if (pid == log_scanner_pid)
+                {
+                    log("log scanner exited");
+                    log_scanner_pid = -1;
+                    continue;
+                }
+                if (socket_client_count)
+                    socket_client_count--;
+                if (!socket_channel_cb_id)
+                {
+                    log("Accepting connections on '%s'", SOCKET_FILE);
+                    socket_channel_cb_id = add_watch_or_die(socket_channel, G_IO_IN | G_IO_PRI, server_socket_cb);
+                }
             }
         }
         return TRUE;
@@ -531,76 +368,63 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
              && worst_dir
             ) {
                 log("Size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize, worst_dir);
-                g_pCommLayer->QuotaExceed(_("The size of the report exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."));
+                send_dbus_sig_QuotaExceeded(_("The size of the report exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."));
                 /* deletes both directory and DB record */
                 char *d = concat_path_file(DEBUG_DUMPS_DIR, worst_dir);
                 free(worst_dir);
                 worst_dir = NULL;
-                delete_crash_dump_dir(d);
+                delete_dump_dir(d);
                 free(d);
             }
         }
 
         char *fullname = NULL;
-        try
+        crash_data_t *crash_data = NULL;
+        fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
+        mw_result_t res = LoadDebugDump(fullname, &crash_data);
+        switch (res)
         {
-            fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
-            map_crash_data_t crashinfo;
-            mw_result_t res = LoadDebugDump(fullname, crashinfo);
-            switch (res)
+            case MW_OK:
+                log("New crash %s, processing", fullname);
+                /* Fall through */
+
+            case MW_OCCURRED: /* dup */
             {
-                case MW_OK:
-                    log("New crash %s, processing", fullname);
-                    /* Fall through */
-
-                case MW_OCCURRED: /* dup */
+                if (res != MW_OK)
                 {
-                    if (res != MW_OK)
-                    {
-                        const char *first = get_crash_data_item_content_or_NULL(crashinfo, CD_DUMPDIR);
-                        log("Deleting crash %s (dup of %s), sending dbus signal",
-                                strrchr(fullname, '/') + 1,
-                                strrchr(first, '/') + 1);
-                        delete_crash_dump_dir(fullname);
-                    }
-
-                    const char *uid_str = get_crash_data_item_content_or_NULL(crashinfo, FILENAME_UID);
-                    const char *inform_all = get_crash_data_item_content_or_NULL(crashinfo, FILENAME_INFORMALL);
-
-                    if (inform_all && string_to_bool(inform_all))
-                        uid_str = NULL;
-                    char *crash_id = xasprintf("%s:%s",
-                                    get_crash_data_item_content_or_NULL(crashinfo, FILENAME_UID),
-                                    get_crash_data_item_content_or_NULL(crashinfo, FILENAME_UUID)
-                    );
-                    /* Send dbus signal */
-                    g_pCommLayer->Crash(get_crash_data_item_content_or_NULL(crashinfo, FILENAME_PACKAGE),
-                                    crash_id, //TODO: stop passing this param, it is unused
-                                    fullname,
-                                    uid_str
-                    );
-                    free(crash_id);
-                    break;
+                    const char *first = get_crash_item_content_or_NULL(crash_data, CD_DUMPDIR);
+                    log("Deleting crash %s (dup of %s), sending dbus signal",
+                            strrchr(fullname, '/') + 1,
+                            strrchr(first, '/') + 1);
+                    delete_dump_dir(fullname);
                 }
-                case MW_CORRUPTED:
-                case MW_GPG_ERROR:
-                default:
-                    log("Corrupted or bad crash %s (res:%d), deleting", fullname, (int)res);
-                    delete_crash_dump_dir(fullname);
-                    break;
+
+                const char *uid_str = get_crash_item_content_or_NULL(crash_data, FILENAME_UID);
+                const char *inform_all = get_crash_item_content_or_NULL(crash_data, FILENAME_INFORMALL);
+
+                if (inform_all && string_to_bool(inform_all))
+                    uid_str = NULL;
+                char *crash_id = xasprintf("%s:%s",
+                                get_crash_item_content_or_NULL(crash_data, FILENAME_UID),
+                                get_crash_item_content_or_NULL(crash_data, FILENAME_UUID)
+                );
+                send_dbus_sig_Crash(get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE),
+                                crash_id, //TODO: stop passing this param, it is unused
+                                fullname,
+                                uid_str
+                );
+                free(crash_id);
+                break;
             }
-        }
-        catch (CABRTException& e)
-        {
-            error_msg("%s", e.what());
-        }
-        catch (...)
-        {
-            free(fullname);
-            free(buf);
-            throw;
+            case MW_CORRUPTED:
+            case MW_GPG_ERROR:
+            default:
+                log("Corrupted or bad crash %s (res:%d), deleting", fullname, (int)res);
+                delete_dump_dir(fullname);
+                break;
         }
         free(fullname);
+        free_crash_data(crash_data);
     } /* while */
 
     free(buf);
@@ -636,10 +460,10 @@ static void run_main_loop(GMainLoop* loop)
             fds = (GPollFD *)xrealloc(fds, fds_size * sizeof(fds[0]));
         }
 
-        if (s_timeout)
+        if (s_timeout != 0)
             alarm(s_timeout);
         g_poll(fds, nfds, timeout);
-        if (s_timeout)
+        if (s_timeout != 0)
             alarm(0);
 
         some_ready = g_main_context_check(context, max_priority, fds, nfds);
@@ -659,8 +483,9 @@ static void start_syslog_logging()
      * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
     xdup2(STDIN_FILENO, STDOUT_FILENO);
     xdup2(STDIN_FILENO, STDERR_FILENO);
-    openlog("abrtd", 0, LOG_DAEMON);
+    openlog(PROGNAME, 0, LOG_DAEMON);
     logmode = LOGMODE_SYSLOG;
+    putenv((char*)"ABRT_SYSLOG=1");
 }
 
 static void ensure_writable_dir(const char *dir, mode_t mode, const char *user)
@@ -690,27 +515,10 @@ static void sanitize_dump_dir_rights()
     /* 00777 bits are usual "rwxrwxrwx" access rights */
     ensure_writable_dir(DEBUG_DUMPS_DIR, 0755, "abrt");
     /* debuginfo cache */
-    ensure_writable_dir(DEBUG_INFO_DIR, 0755, "root");
+    ensure_writable_dir(DEBUG_INFO_DIR, 0775, "abrt");
     /* temp dir */
     ensure_writable_dir(VAR_RUN"/abrt", 0755, "root");
 }
-
-static char *timeout_opt;
-static const char* abrtd_usage = _("abrtd [options]");
-enum {
-    OPT_v = 1 << 0,
-    OPT_d = 1 << 1,
-    OPT_s = 1 << 2,
-    OPT_t = 1 << 3,
-};
-/* Keep enum above and order of options below in sync! */
-static struct options abrtd_options[] = {
-    OPT__VERBOSE(&g_verbose),
-    OPT_BOOL( 'd' , 0, NULL, _("Do not daemonize")),
-    OPT_BOOL( 's' , 0, NULL, _("Log to syslog even with -d")),
-    OPT_INTEGER( 't' , 0, &timeout_opt, _("Exit after SEC seconds of inactivity")),
-    OPT_END()
-};
 
 int main(int argc, char** argv)
 {
@@ -730,26 +538,37 @@ int main(int argc, char** argv)
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    unsigned opts = parse_opts(argc, argv, abrtd_options, abrtd_usage);
+    const char *program_usage_string = _(
+        PROGNAME" [options]"
+    );
+    enum {
+        OPT_v = 1 << 0,
+        OPT_d = 1 << 1,
+        OPT_s = 1 << 2,
+        OPT_t = 1 << 3,
+    };
+    /* Keep enum above and order of options below in sync! */
+    struct options program_options[] = {
+        OPT__VERBOSE(&g_verbose),
+        OPT_BOOL(   'd', NULL, NULL      , _("Do not daemonize")),
+        OPT_BOOL(   's', NULL, NULL      , _("Log to syslog even with -d")),
+        OPT_INTEGER('t', NULL, &s_timeout, _("Exit after SEC seconds of inactivity")),
+        OPT_END()
+    };
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
-    if (opts & OPT_s)
-        start_syslog_logging();
-
+    unsetenv("ABRT_SYSLOG");
+    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     /* When dbus daemon starts us, it doesn't set PATH
      * (I saw it set only DBUS_STARTER_ADDRESS and DBUS_STARTER_BUS_TYPE).
      * In this case, set something sane:
      */
-    /* Need to add LIBEXEC_DIR to PATH, because otherwise abrt-action-*
-     * are not found by exec()
-     */
     const char *env_path = getenv("PATH");
     if (!env_path || !env_path[0])
-        env_path = "/usr/sbin:/usr/bin:/sbin:/bin";
-    putenv(xasprintf("PATH=%s:%s", LIBEXEC_DIR, env_path));
-
-    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-
-    msg_prefix = "abrtd"; /* for log(), error_msg() and such */
+        putenv((char*)"PATH=/usr/sbin:/usr/bin:/sbin:/bin");
+    msg_prefix = PROGNAME; /* for log(), error_msg() and such */
+    if (opts & OPT_s)
+        start_syslog_logging();
 
     xpipe(s_signal_pipe);
     close_on_exec_on(s_signal_pipe[0]);
@@ -757,7 +576,7 @@ int main(int argc, char** argv)
     signal(SIGTERM, handle_signal);
     signal(SIGINT,  handle_signal);
     signal(SIGCHLD, handle_signal);
-    if (s_timeout)
+    if (s_timeout != 0)
         signal(SIGALRM, handle_signal);
 
     /* Daemonize unless -d */
@@ -799,37 +618,43 @@ int main(int argc, char** argv)
     guint channel_inotify_event_id = 0;
     GIOChannel* channel_signal = NULL;
     guint channel_signal_event_id = 0;
-    bool lockfile_created = false;
     bool pidfile_created = false;
-    CCrashWatcher watcher;
 
     /* Initialization */
     try
     {
-        init_daemon_logging(&watcher);
+        init_daemon_logging();
 
         VERB1 log("Loading settings");
-        if (LoadSettings() != 0)
+        if (load_settings() != 0)
             throw 1;
+
+        sanitize_dump_dir_rights();
 
         VERB1 log("Creating glib main loop");
         pMainloop = g_main_loop_new(NULL, FALSE);
 
         VERB1 log("Initializing inotify");
-        sanitize_dump_dir_rights();
         errno = 0;
         int inotify_fd = inotify_init();
         if (inotify_fd == -1)
             perror_msg_and_die("inotify_init failed");
         close_on_exec_on(inotify_fd);
+
         /* Watching DEBUG_DUMPS_DIR for new files... */
         if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE | IN_MOVED_TO) < 0)
-            perror_msg_and_die("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
+        {
+            perror_msg("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
+            throw 1;
+        }
         if (g_settings_sWatchCrashdumpArchiveDir)
         {
             s_upload_watch = inotify_add_watch(inotify_fd, g_settings_sWatchCrashdumpArchiveDir, IN_CLOSE_WRITE|IN_MOVED_TO);
             if (s_upload_watch < 0)
-                perror_msg_and_die("inotify_add_watch failed on '%s'", g_settings_sWatchCrashdumpArchiveDir);
+            {
+                perror_msg("inotify_add_watch failed on '%s'", g_settings_sWatchCrashdumpArchiveDir);
+                throw 1;
+            }
         }
         VERB1 log("Adding inotify watch to glib main loop");
         channel_inotify = g_io_channel_unix_new(inotify_fd);
@@ -837,13 +662,6 @@ int main(int argc, char** argv)
                                                   G_IO_IN,
                                                   handle_inotify_cb,
                                                   NULL);
-
-        VERB1 log("Loading plugins from "PLUGINS_LIB_DIR);
-        g_pPluginManager = new CPluginManager();
-        g_pPluginManager->LoadPlugins();
-
-        if (SetUpCron() != 0)
-            throw 1;
 
         /* Add an event source which waits for INT/TERM signal */
         VERB1 log("Adding signal pipe watch to glib main loop");
@@ -854,12 +672,8 @@ int main(int argc, char** argv)
                                                  NULL);
 
         /* Mark the territory */
-        VERB1 log("Creating lock file");
-        if (Lock() != 0)
-            throw 1;
-        lockfile_created = true;
         VERB1 log("Creating pid file");
-        if (CreatePidFile() != 0)
+        if (create_pidfile() != 0)
             throw 1;
         pidfile_created = true;
 
@@ -870,8 +684,7 @@ int main(int argc, char** argv)
          * therefore it should be the last thing to initialize.
          */
         VERB1 log("Initializing dbus");
-        g_pCommLayer = new CCommLayerServerDBus();
-        if (g_pCommLayer->m_init_error)
+        if (init_dbus() != 0)
             throw 1;
     }
     catch (...)
@@ -896,20 +709,25 @@ int main(int argc, char** argv)
     /* Only now we want signal pipe to work */
     s_signal_pipe_write = s_signal_pipe[1];
 
+    if (g_settings_sLogScanners)
+    {
+        const char *scanner_argv[] = {
+            "/bin/sh", "-c",
+            g_settings_sLogScanners,
+            NULL
+        };
+        log_scanner_pid = fork_execv_on_steroids(EXECFLG_INPUT_NUL,
+                (char**)scanner_argv,
+                /*pipefds:*/ NULL,
+                /*unsetenv_vec:*/ NULL,
+                /*dir:*/ NULL,
+                /*uid:*/ 0);
+        VERB1 log("Started log scanner, pid:%d", (int)log_scanner_pid);
+    }
+
     /* Enter the event loop */
-    try
-    {
-        log("Init complete, entering main loop");
-        run_main_loop(pMainloop);
-    }
-    catch (CABRTException& e)
-    {
-        error_msg("Error: %s", e.what());
-    }
-    catch (std::exception& e)
-    {
-        error_msg("Error: %s", e.what());
-    }
+    log("Init complete, entering main loop");
+    run_main_loop(pMainloop);
 
  cleanup:
     /* Error or INT/TERM. Clean up, in reverse order.
@@ -918,8 +736,6 @@ int main(int argc, char** argv)
     dumpsocket_shutdown();
     if (pidfile_created)
         unlink(VAR_RUN_PIDFILE);
-    if (lockfile_created)
-        unlink(VAR_RUN_LOCK_FILE);
 
     if (channel_signal_event_id > 0)
         g_source_remove(channel_signal_event_id);
@@ -930,21 +746,23 @@ int main(int argc, char** argv)
     if (channel_inotify)
         g_io_channel_unref(channel_inotify);
 
-    delete g_pCommLayer;
-    if (g_pPluginManager)
-    {
-        /* This restores /proc/sys/kernel/core_pattern, among other things: */
-        g_pPluginManager->UnLoadPlugins();
-        delete g_pPluginManager;
-    }
+    deinit_dbus();
+
     if (pMainloop)
         g_main_loop_unref(pMainloop);
 
-    settings_free();
+    free_settings();
+
+    if (log_scanner_pid > 0)
+    {
+        VERB2 log("Sending SIGTERM to %d", log_scanner_pid);
+        kill(log_scanner_pid, SIGTERM);
+    }
+
     /* Exiting */
     if (s_sig_caught && s_sig_caught != SIGALRM && s_sig_caught != SIGCHLD)
     {
-        error_msg_and_die("Got signal %d, exiting", s_sig_caught);
+        error_msg("Got signal %d, exiting", s_sig_caught);
         signal(s_sig_caught, SIG_DFL);
         raise(s_sig_caught);
     }

@@ -19,22 +19,12 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "Daemon.h"
 #include "Settings.h"
-#include "abrt_exception.h"
 #include "comm_layer_inner.h"
-#include "CommLayerServer.h"
+#include "CommLayerServerDBus.h"
 #include "MiddleWare.h"
 
 using namespace std;
-
-/**
- * An instance of CPluginManager. When MiddleWare wants to do something
- * with plugins, it calls the plugin manager.
- * @see PluginManager.h
- */
-CPluginManager* g_pPluginManager;
-
 
 /**
  * Get one crash info. If getting is successful,
@@ -43,8 +33,7 @@ CPluginManager* g_pPluginManager;
  * @param pCrashData A crash info.
  * @return It return results of operation. See mw_result_t.
  */
-static mw_result_t FillCrashInfo(const char *dump_dir_name,
-                        map_crash_data_t& pCrashData);
+static crash_data_t *FillCrashInfo(const char *dump_dir_name);
 
 /**
  * Transforms a debugdump directory to inner crash
@@ -52,36 +41,53 @@ static mw_result_t FillCrashInfo(const char *dump_dir_name,
  * @param dump_dir_name A debugdump dir containing all necessary data.
  * @param pCrashData A created crash report.
  */
-static bool DebugDumpToCrashReport(const char *dump_dir_name, map_crash_data_t& pCrashData)
+static crash_data_t *DebugDumpToCrashReport(const char *dump_dir_name)
 {
     VERB3 log(" DebugDumpToCrashReport('%s')", dump_dir_name);
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
-        return false;
+        return NULL;
 
+    static const char *const must_have_files[] = {
+	FILENAME_ARCHITECTURE,
+	FILENAME_KERNEL      ,
+	FILENAME_PACKAGE     ,
+	FILENAME_COMPONENT   ,
+	FILENAME_OS_RELEASE  ,
+	FILENAME_EXECUTABLE  ,
+	NULL
+    };
     const char *const *v = must_have_files;
     while (*v)
     {
         if (!dd_exist(dd, *v))
         {
+            /* Old dump dir format compat. Remove in abrt-2.1 */
+            if (strcmp(*v, FILENAME_OS_RELEASE) == 0)
+                if (dd_exist(dd, "release"))
+                    goto ok;
+
             dd_close(dd);
             log("Important file '%s/%s' is missing", dump_dir_name, *v);
-            return false;
+            return NULL;
         }
+ ok:
         v++;
     }
 
-    load_crash_data_from_crash_dump_dir(dd, pCrashData);
+    crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
     char *events = list_possible_events(dd, NULL, "");
     dd_close(dd);
 
-    add_to_crash_data_ext(pCrashData, CD_EVENTS, CD_SYS, CD_ISNOTEDITABLE, events);
+    add_to_crash_data_ext(crash_data, CD_EVENTS, events,
+                          CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
     free(events);
 
-    add_to_crash_data_ext(pCrashData, CD_DUMPDIR, CD_SYS, CD_ISNOTEDITABLE, dump_dir_name);
+    add_to_crash_data_ext(crash_data, CD_DUMPDIR, dump_dir_name,
+                          CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
 
-    return true;
+    return crash_data;
 }
 
 static char *do_log_and_update_client(char *log_line, void *param)
@@ -91,22 +97,36 @@ static char *do_log_and_update_client(char *log_line, void *param)
     return log_line;
 }
 
+/**
+ * Takes care of getting all additional data needed
+ * for computing UUIDs and creating a report for particular analyzer
+ * plugin. This report could be send somewhere afterwards. If a creation
+ * is successful, then  a crash report is filled.
+ * @param pAnalyzer A name of an analyzer plugin.
+ * @param pDebugDumpPath A debugdump dir containing all necessary data.
+ * @param pCrashData A filled crash report.
+ * @return It return results of operation. See mw_result_t.
+ */
 /*
  * Called in two cases:
  * (1) by StartJob dbus call -> CreateReportThread(), in the thread
  * (2) by CreateReport dbus call
  */
-mw_result_t CreateCrashReport(const char *dump_dir_name,
+static mw_result_t CreateCrashReport(const char *dump_dir_name,
                 long caller_uid,
                 int force,
-                map_crash_data_t& pCrashData)
+                crash_data_t **crash_data)
 {
-    VERB2 log("CreateCrashReport('%s',%ld,result)", dump_dir_name, caller_uid);
+    VERB2 log("CreateCrashReport('%s',%ld)", dump_dir_name, caller_uid);
+
+    *crash_data = NULL;
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return MW_NOENT_ERROR;
 
+    struct run_event_state *run_state;
+    int res;
     mw_result_t r = MW_OK;
 
     if (caller_uid != 0) /* not called by root */
@@ -131,61 +151,31 @@ mw_result_t CreateCrashReport(const char *dump_dir_name,
     }
     dd_close(dd);
 
-    try
+    run_state = new_run_event_state();
+    run_state->logging_callback = do_log_and_update_client;
+    res = run_event_on_dir_name(run_state, dump_dir_name, force ? "reanalyze" : "analyze");
+    free_run_event_state(run_state);
+    if (res != 0)
     {
-        struct run_event_state *run_state = new_run_event_state();
-        run_state->logging_callback = do_log_and_update_client;
-        int res = run_event(run_state, dump_dir_name, force ? "reanalyze" : "analyze");
-        free_run_event_state(run_state);
-        if (res != 0 && res != -1) /* -1 is "nothing was done", here it is ok */
-        {
-            r = MW_PLUGIN_ERROR;
-            goto ret;
-        }
-
-        /* Do a load_crash_data_from_crash_dump_dir from (possibly updated)
-         * crash dump dir
-         */
-        if (!DebugDumpToCrashReport(dump_dir_name, pCrashData))
-        {
-            error_msg("Error loading crash data");
-            r = MW_ERROR;
-            goto ret;
-        }
+        r = MW_PLUGIN_ERROR;
+        goto ret;
     }
-    catch (CABRTException& e)
+
+    /* Do a create_crash_data_from_dump_dir from (possibly updated)
+     * crash dump dir
+     */
+    *crash_data = DebugDumpToCrashReport(dump_dir_name);
+    if (!*crash_data)
     {
-        r = MW_CORRUPTED;
-        error_msg("%s", e.what());
-        if (e.type() == EXCEP_PLUGIN)
-        {
-            r = MW_PLUGIN_ERROR;
-        }
+        error_msg("Error loading crash data");
+        r = MW_ERROR;
     }
 
  ret:
+    if (*crash_data == NULL)
+        *crash_data = new_crash_data();
     VERB3 log("CreateCrashReport() returns %d", r);
     return r;
-}
-
-void RunAction(const char *pActionDir,
-                            const char *pPluginName,
-                            const char *pPluginArgs)
-{
-    CAction* action = g_pPluginManager->GetAction(pPluginName);
-    if (!action)
-    {
-        /* GetAction() already complained */
-        return;
-    }
-    try
-    {
-        action->Run(pActionDir, pPluginArgs, /*force:*/ 0);
-    }
-    catch (CABRTException& e)
-    {
-        error_msg("Execution of '%s' was not successful: %s", pPluginName, e.what());
-    }
 }
 
 struct logging_state {
@@ -205,43 +195,55 @@ static char *do_log_and_save_line(char *log_line, void *param)
 
 // Do not trust client_report here!
 // dbus handler passes it from user without checking
-report_status_t Report(const map_crash_data_t& client_report,
+report_status_t Report(crash_data_t *client_report,
                        const vector_string_t& events,
                        const map_map_string_t& settings,
                        long caller_uid)
 {
-    // Get ID fields
-    const char *UID = get_crash_data_item_content_or_NULL(client_report, FILENAME_UID);
-    const char *dump_dir_name = get_crash_data_item_content_or_NULL(client_report, CD_DUMPDIR);
-    if (!UID || !dump_dir_name)
+    report_status_t ret;
+    const char *dump_dir_name = get_crash_item_content_or_NULL(client_report, CD_DUMPDIR);
+    if (!dump_dir_name)
     {
-        throw CABRTException(EXCEP_ERROR, "Report(): UID or DUMPDIR is missing in client's report data");
+        update_client("Reporting error: %s", "DUMPDIR is missing in client's report data");
+        ret[""].push_back("0");      // REPORT_STATUS_IDX_FLAG
+        ret[""].push_back("DUMPDIR is missing in client's report data"); // REPORT_STATUS_IDX_MSG
+        return ret;
     }
 
     // Retrieve corresponding stored record
-    map_crash_data_t stored_report;
-    mw_result_t r = FillCrashInfo(dump_dir_name, stored_report);
-    if (r != MW_OK)
+    crash_data_t *stored_report = FillCrashInfo(dump_dir_name);
+    if (!stored_report)
     {
         return report_status_t();
     }
 
     // Is it allowed for this user to report?
-    if (caller_uid != 0   // not called by root
-     && strcmp(to_string(caller_uid).c_str(), UID) != 0
-    ) {
-        const char *inform_all = get_crash_data_item_content_or_NULL(stored_report, FILENAME_INFORMALL);
-        if (!inform_all || !string_to_bool(inform_all))
-            throw CABRTException(EXCEP_ERROR, "Report(): user with uid %ld can't report crash %s",
-                        caller_uid, dump_dir_name);
+    if (caller_uid != 0)   // not called by root
+    {
+        char caller_uid_str[sizeof(long)*3 + 2];
+        sprintf(caller_uid_str, "%ld", caller_uid);
+        if (strcmp(caller_uid_str, get_crash_item_content_or_die(stored_report, FILENAME_UID)) != 0)
+        {
+            const char *inform_all = get_crash_item_content_or_NULL(stored_report, FILENAME_INFORMALL);
+            if (!inform_all || !string_to_bool(inform_all))
+            {
+                free_crash_data(stored_report);
+                char *errmsg = xasprintf("user with uid %ld can't report crash %s", caller_uid, dump_dir_name);
+                update_client("Reporting error: %s", errmsg);
+                ret[""].push_back("0");      // REPORT_STATUS_IDX_FLAG
+                ret[""].push_back(errmsg); // REPORT_STATUS_IDX_MSG
+                free(errmsg);
+                return ret;
+            }
+        }
     }
 
     // Save comment, "how to reproduce", backtrace
 //TODO: we should iterate through stored_report and modify all
 //modifiable fields which have new data in client_report
-    const char *comment = get_crash_data_item_content_or_NULL(client_report, FILENAME_COMMENT);
-    const char *reproduce = get_crash_data_item_content_or_NULL(client_report, FILENAME_REPRODUCE);
-    const char *backtrace = get_crash_data_item_content_or_NULL(client_report, FILENAME_BACKTRACE);
+    const char *comment = get_crash_item_content_or_NULL(client_report, FILENAME_COMMENT);
+    const char *reproduce = get_crash_item_content_or_NULL(client_report, FILENAME_REPRODUCE);
+    const char *backtrace = get_crash_item_content_or_NULL(client_report, FILENAME_BACKTRACE);
     if (comment || reproduce || backtrace)
     {
         struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
@@ -250,45 +252,47 @@ report_status_t Report(const map_crash_data_t& client_report,
             if (comment)
             {
                 dd_save_text(dd, FILENAME_COMMENT, comment);
-                add_to_crash_data_ext(stored_report, FILENAME_COMMENT, CD_TXT, CD_ISEDITABLE, comment);
+                add_to_crash_data_ext(stored_report, FILENAME_COMMENT, comment, CD_FLAG_TXT + CD_FLAG_ISEDITABLE);
             }
             if (reproduce)
             {
                 dd_save_text(dd, FILENAME_REPRODUCE, reproduce);
-                add_to_crash_data_ext(stored_report, FILENAME_REPRODUCE, CD_TXT, CD_ISEDITABLE, reproduce);
+                add_to_crash_data_ext(stored_report, FILENAME_REPRODUCE, reproduce, CD_FLAG_TXT + CD_FLAG_ISEDITABLE);
             }
             if (backtrace)
             {
                 dd_save_text(dd, FILENAME_BACKTRACE, backtrace);
-                add_to_crash_data_ext(stored_report, FILENAME_BACKTRACE, CD_TXT, CD_ISEDITABLE, backtrace);
+                add_to_crash_data_ext(stored_report, FILENAME_BACKTRACE, backtrace, CD_FLAG_TXT + CD_FLAG_ISEDITABLE);
             }
             dd_close(dd);
         }
     }
 
     /* Remove BIN filenames from stored_report if they are not present in client's data */
-    map_crash_data_t::const_iterator its = stored_report.begin();
-    while (its != stored_report.end())
+    GHashTableIter iter;
+    char *name;
+    struct crash_item *value;
+    g_hash_table_iter_init(&iter, stored_report);
+    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
-        if (its->second[CD_TYPE] == CD_BIN)
+        if (value->flags & CD_FLAG_BIN)
         {
-            std::string key = its->first;
-            if (get_crash_data_item_content_or_NULL(client_report, key.c_str()) == NULL)
+            if (get_crash_item_content_or_NULL(client_report, name) == NULL)
             {
                 /* client does not have it -> does not want it passed to events */
-                VERB3 log("Won't report BIN file %s:'%s'", key.c_str(), its->second[CD_CONTENT].c_str());
-                its++; /* move off the element we will erase */
-                stored_report.erase(key);
+                VERB3 log("Won't report BIN file %s:'%s'", name, value->content);
+                g_hash_table_iter_remove(&iter);
                 continue;
             }
         }
-        its++;
     }
 
     VERB3 {
-        log_map_crash_data(client_report, " client_report");
-        log_map_crash_data(stored_report, " stored_report");
+        log_crash_data(client_report, " client_report");
+        log_crash_data(stored_report, " stored_report");
     }
+    free_crash_data(stored_report);
+#define stored_report stored_report_must_not_be_used_below
 #define client_report client_report_must_not_be_used_below
 
     // Export overridden settings as environment variables
@@ -310,7 +314,6 @@ report_status_t Report(const map_crash_data_t& client_report,
 
     // Run events
     bool at_least_one_reporter_succeeded = false;
-    report_status_t ret;
     std::string message;
     struct logging_state l_state;
     struct run_event_state *run_state = new_run_event_state();
@@ -321,10 +324,11 @@ report_status_t Report(const map_crash_data_t& client_report,
         std::string event = events[i];
 
         l_state.last_line = NULL;
-        int r = run_event(run_state, dump_dir_name, event.c_str());
-        if (r == -1)
+        int r = run_event_on_dir_name(run_state, dump_dir_name, event.c_str());
+        if (r == 0 && run_state->children_count == 0)
         {
             l_state.last_line = xasprintf("Error: no processing is specified for event '%s'", event.c_str());
+            r = -1;
         }
         if (r == 0)
         {
@@ -390,6 +394,7 @@ report_status_t Report(const map_crash_data_t& client_report,
     }
 
     return ret;
+#undef stored_report
 #undef client_report
 }
 
@@ -470,8 +475,7 @@ static char *do_log(char *log_line, void *param)
     return log_line;
 }
 
-mw_result_t LoadDebugDump(const char *dump_dir_name,
-                          map_crash_data_t& pCrashData)
+mw_result_t LoadDebugDump(const char *dump_dir_name, crash_data_t **crash_data)
 {
     mw_result_t res;
 
@@ -492,7 +496,7 @@ mw_result_t LoadDebugDump(const char *dump_dir_name,
     run_state->post_run_callback = is_crash_a_dup;
     run_state->post_run_param = &state;
     run_state->logging_callback = do_log;
-    int r = run_event(run_state, dump_dir_name, "post-create");
+    int r = run_event_on_dir_name(run_state, dump_dir_name, "post-create");
     free_run_event_state(run_state);
 
 //TODO: consider this case:
@@ -527,7 +531,7 @@ mw_result_t LoadDebugDump(const char *dump_dir_name,
         dump_dir_name = state.crash_dump_dup_name;
     }
 
-    /* Loads pCrashData (from the *first debugdump dir* if this one is a dup)
+    /* Loads crash_data (from the *first debugdump dir* if this one is a dup)
      * Returns:
      * MW_OCCURRED: "crash count is != 1" (iow: it is > 1 - dup)
      * MW_OK: "crash count is 1" (iow: this is a new crash, not a dup)
@@ -548,9 +552,10 @@ mw_result_t LoadDebugDump(const char *dump_dir_name,
         dd_save_text(dd, FILENAME_COUNT, new_count_str);
         dd_close(dd);
 
-        res = FillCrashInfo(dump_dir_name, pCrashData);
-        if (res == MW_OK)
+        *crash_data = FillCrashInfo(dump_dir_name);
+        if (*crash_data != NULL)
         {
+            res = MW_OK;
             if (count > 1)
             {
                 log("Crash dump is a duplicate of %s", dump_dir_name);
@@ -568,99 +573,89 @@ mw_result_t LoadDebugDump(const char *dump_dir_name,
     return res;
 }
 
-static mw_result_t FillCrashInfo(const char *dump_dir_name,
-                          map_crash_data_t& pCrashData)
+static crash_data_t *FillCrashInfo(const char *dump_dir_name)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
-        return MW_ERROR;
+        return NULL;
 
-    load_crash_data_from_crash_dump_dir(dd, pCrashData);
+    crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
     char *events = list_possible_events(dd, NULL, "");
     dd_close(dd);
 
-    add_to_crash_data_ext(pCrashData, CD_EVENTS, CD_SYS, CD_ISNOTEDITABLE, events);
+    add_to_crash_data_ext(crash_data, CD_EVENTS, events,
+                          CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
     free(events);
 
-    add_to_crash_data_ext(pCrashData, CD_DUMPDIR, CD_SYS, CD_ISNOTEDITABLE, dump_dir_name);
+    add_to_crash_data_ext(crash_data, CD_DUMPDIR, dump_dir_name,
+                          CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
 
-    return MW_OK;
+    return crash_data;
 }
 
-vector_map_crash_data_t GetCrashInfos(long caller_uid)
+vector_of_crash_data_t *GetCrashInfos(long caller_uid)
 {
-    vector_map_crash_data_t retval;
+    vector_of_crash_data_t *retval = new_vector_of_crash_data();
     log("Getting crash infos...");
 
     DIR *dir = opendir(DEBUG_DUMPS_DIR);
     if (dir != NULL)
     {
-        try
+        struct dirent *dent;
+        while ((dent = readdir(dir)) != NULL)
         {
-            struct dirent *dent;
-            while ((dent = readdir(dir)) != NULL)
-            {
-                if (dot_or_dotdot(dent->d_name))
-                    continue; /* skip "." and ".." */
+            if (dot_or_dotdot(dent->d_name))
+                continue; /* skip "." and ".." */
 
-                char *dump_dir_name = concat_path_file(DEBUG_DUMPS_DIR, dent->d_name);
+            char *dump_dir_name = concat_path_file(DEBUG_DUMPS_DIR, dent->d_name);
 
-                struct stat statbuf;
-                if (stat(dump_dir_name, &statbuf) != 0
-                 || !S_ISDIR(statbuf.st_mode)
-                ) {
-                    goto next; /* not a dir, skip */
-                }
-
-                /* Skip directories which are not for this uid */
-                if (caller_uid != 0) /* not called by root? */
-                {
-                    char *uid;
-                    char caller_uid_str[sizeof(long) * 3 + 2];
-
-                    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-                    if (!dd)
-                        goto next;
-
-                    sprintf(caller_uid_str, "%ld", caller_uid);
-                    uid = dd_load_text(dd, FILENAME_UID);
-                    if (strcmp(uid, caller_uid_str) != 0)
-                    {
-                        char *inform_all = dd_load_text_ext(dd, FILENAME_INFORMALL, DD_FAIL_QUIETLY);
-                        bool for_all = string_to_bool(inform_all);
-                        free(inform_all);
-                        if (!for_all)
-                        {
-                            dd_close(dd);
-                            goto next;
-                        }
-                    }
-                    dd_close(dd);
-                }
-
-                {
-                    map_crash_data_t info;
-                    mw_result_t res = FillCrashInfo(dump_dir_name, info);
-                    switch (res)
-                    {
-                        case MW_OK:
-                            retval.push_back(info);
-                            break;
-                        case MW_ERROR:
-                            error_msg("Dump directory %s doesn't exist or misses crucial files, deleting", dump_dir_name);
-                            delete_crash_dump_dir(dump_dir_name);
-                            break;
-                        default:
-                            break;
-                    }
-                }
- next:
-                free(dump_dir_name);
+            struct stat statbuf;
+            if (stat(dump_dir_name, &statbuf) != 0
+             || !S_ISDIR(statbuf.st_mode)
+            ) {
+                goto next; /* not a dir, skip */
             }
-        }
-        catch (CABRTException& e)
-        {
-            error_msg("%s", e.what());
+
+            /* Skip directories which are not for this uid */
+            if (caller_uid != 0) /* not called by root? */
+            {
+                char *uid;
+                char caller_uid_str[sizeof(long) * 3 + 2];
+
+                struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+                if (!dd)
+                    goto next;
+
+                sprintf(caller_uid_str, "%ld", caller_uid);
+                uid = dd_load_text(dd, FILENAME_UID);
+                if (strcmp(uid, caller_uid_str) != 0)
+                {
+                    char *inform_all = dd_load_text_ext(dd, FILENAME_INFORMALL, DD_FAIL_QUIETLY);
+                    bool for_all = string_to_bool(inform_all);
+                    free(inform_all);
+                    if (!for_all)
+                    {
+                        dd_close(dd);
+                        goto next;
+                    }
+                }
+                dd_close(dd);
+            }
+
+            {
+                crash_data_t *crash_data = FillCrashInfo(dump_dir_name);
+                if (!crash_data)
+                {
+                    error_msg("Dump directory %s doesn't exist or misses crucial files, deleting", dump_dir_name);
+                    delete_dump_dir(dump_dir_name);
+                }
+                else
+                {
+                    g_ptr_array_add(retval, crash_data);
+                }
+            }
+ next:
+            free(dump_dir_name);
         }
         closedir(dir);
     }
@@ -676,14 +671,14 @@ vector_map_crash_data_t GetCrashInfos(long caller_uid)
  * StartJob dbus call already did all the processing, and we just retrieve
  * the result from dump directory, which is fast.
  */
-void CreateReport(const char* crash_id, long caller_uid, int force, map_crash_data_t& crashReport)
+void CreateReport(const char* crash_id, long caller_uid, int force, crash_data_t **crash_data)
 {
     /* FIXME: starting from here, any shared data must be protected with a mutex. */
-    mw_result_t res = CreateCrashReport(crash_id, caller_uid, force, crashReport);
+    mw_result_t res = CreateCrashReport(crash_id, caller_uid, force, crash_data);
     switch (res)
     {
         case MW_OK:
-            VERB2 log_map_crash_data(crashReport, "crashReport");
+            VERB2 log_crash_data(*crash_data, "crashReport");
             break;
         case MW_NOENT_ERROR:
             error_msg("Can't find crash with id '%s'", crash_id);
@@ -715,18 +710,10 @@ static void* create_report(void* arg)
     /* Client name is per-thread, need to set it */
     set_client_name(thread_data->peer);
 
-    try
-    {
-        log("Creating report...");
-        map_crash_data_t crashReport;
-        CreateReport(thread_data->crash_id, thread_data->caller_uid, thread_data->force, crashReport);
-        g_pCommLayer->JobDone(thread_data->peer);
-    }
-    catch (CABRTException& e)
-    {
-        error_msg("%s", e.what());
-    }
-    catch (...) {}
+    log("Creating report...");
+    crash_data_t *crash_data = NULL;
+    CreateReport(thread_data->crash_id, thread_data->caller_uid, thread_data->force, &crash_data);
+    send_dbus_sig_JobDone(thread_data->peer);
     set_client_name(NULL);
 
     /* free strduped strings */
@@ -805,10 +792,10 @@ void GetPluginsInfo(map_map_string_t &map_of_plugin_info)
     struct dirent *dent;
     while ((dent = readdir(dir)) != NULL)
     {
-        if (!is_regular_file(dent, PLUGINS_CONF_DIR))
-            continue;
         char *ext = strrchr(dent->d_name, '.');
-        if (!ext || strcmp(ext + 1, PLUGINS_CONF_EXTENSION) != 0)
+        if (!ext || strcmp(ext + 1, "conf") != 0)
+            continue;
+        if (!is_regular_file(dent, PLUGINS_CONF_DIR))
             continue;
         VERB3 log("Found %s", dent->d_name);
         *ext = '\0';
@@ -853,10 +840,12 @@ void GetPluginsInfo(map_map_string_t &map_of_plugin_info)
     closedir(dir);
 }
 
-void GetPluginSettings(const char *plugin_name, map_plugin_settings_t &plugin_settings)
+map_string_h *GetPluginSettings(const char *plugin_name)
 {
     char *conf_file = xasprintf(PLUGINS_CONF_DIR"/%s.conf", plugin_name);
-    if (LoadPluginSettings(conf_file, plugin_settings, /*skip w/o value:*/ false))
+    map_string_h *settings = new_map_string();
+    if (load_conf_file(conf_file, settings, /*skip w/o value:*/ false))
         VERB3 log("Loaded %s.conf", plugin_name);
     free(conf_file);
+    return settings;
 }

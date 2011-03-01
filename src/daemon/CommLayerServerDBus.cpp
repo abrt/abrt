@@ -19,12 +19,9 @@
 #include <dbus/dbus.h>
 #include "abrtlib.h"
 #include "abrt_dbus.h"
-#include "abrt_exception.h"
 #include "comm_layer_inner.h"
-#include "dbus_common.h"
 #include "MiddleWare.h"
 #include "Settings.h"
-#include "Daemon.h"
 #include "CommLayerServerDBus.h"
 
 // 16kB message limit
@@ -48,6 +45,11 @@ static DBusMessage* new_signal_msg(const char* member, const char* peer = NULL)
 }
 static void send_flush_and_unref(DBusMessage* msg)
 {
+    if (!g_dbus_conn)
+    {
+        /* Not logging this, it may recurse */
+        return;
+    }
     if (!dbus_connection_send(g_dbus_conn, msg, NULL /* &serial */))
         error_msg_and_die("Error sending DBus message");
     dbus_connection_flush(g_dbus_conn);
@@ -56,7 +58,7 @@ static void send_flush_and_unref(DBusMessage* msg)
 }
 
 /* Notify the clients (UI) about a new crash */
-void CCommLayerServerDBus::Crash(const char *package_name,
+void send_dbus_sig_Crash(const char *package_name,
                                   const char *crash_id,
                                   const char *dir,
                                   const char *uid_str
@@ -84,24 +86,24 @@ void CCommLayerServerDBus::Crash(const char *package_name,
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::QuotaExceed(const char* str)
+void send_dbus_sig_QuotaExceeded(const char* str)
 {
-    DBusMessage* msg = new_signal_msg("QuotaExceed");
+    DBusMessage* msg = new_signal_msg("QuotaExceeded");
     dbus_message_append_args(msg,
             DBUS_TYPE_STRING, &str,
             DBUS_TYPE_INVALID);
-    VERB2 log("Sending signal QuotaExceed('%s')", str);
+    VERB2 log("Sending signal QuotaExceeded('%s')", str);
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::JobDone(const char* peer)
+void send_dbus_sig_JobDone(const char* peer)
 {
     DBusMessage* msg = new_signal_msg("JobDone", peer);
     VERB2 log("Sending signal JobDone() to peer %s", peer);
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::Update(const char* pMessage, const char* peer)
+void send_dbus_sig_Update(const char* pMessage, const char* peer)
 {
     DBusMessage* msg = new_signal_msg("Update", peer);
     dbus_message_append_args(msg,
@@ -110,7 +112,7 @@ void CCommLayerServerDBus::Update(const char* pMessage, const char* peer)
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::Warning(const char* pMessage, const char* peer)
+void send_dbus_sig_Warning(const char* pMessage, const char* peer)
 {
     DBusMessage* msg = new_signal_msg("Warning", peer);
     dbus_message_append_args(msg,
@@ -144,11 +146,12 @@ static long get_remote_uid(DBusMessage* call, const char** ppSender = NULL)
 static int handle_GetCrashInfos(DBusMessage* call, DBusMessage* reply)
 {
     long unix_uid = get_remote_uid(call);
-    vector_map_crash_data_t argout1 = GetCrashInfos(unix_uid);
+    vector_of_crash_data_t *argout1 = GetCrashInfos(unix_uid);
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
-    store_val(&out_iter, argout1);
+    store_vector_of_crash_data(&out_iter, argout1);
+    free_vector_of_crash_data(argout1);
 
     send_flush_and_unref(reply);
     return 0;
@@ -197,12 +200,12 @@ static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
     }
 
     long unix_uid = get_remote_uid(call);
-    map_crash_data_t report;
-    CreateReport(crash_id, unix_uid, /*force:*/ 0, report);
+    crash_data_t *report = NULL;
+    CreateReport(crash_id, unix_uid, /*force:*/ 0, &report);
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
-    store_val(&out_iter, report);
+    store_crash_data(&out_iter, report);
 
     send_flush_and_unref(reply);
     return 0;
@@ -211,19 +214,28 @@ static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
 static int handle_Report(DBusMessage* call, DBusMessage* reply)
 {
     int r;
+    long unix_uid;
+    report_status_t argout1;
+    map_map_string_t user_conf_data;
+    vector_string_t events;
+    const char* comment = NULL;
+    const char* reproduce = NULL;
+    const char* errmsg = NULL;
     DBusMessageIter in_iter;
+
     dbus_message_iter_init(call, &in_iter);
 
-    map_crash_data_t argin1;
-    r = load_val(&in_iter, argin1);
+    crash_data_t *crash_data = NULL;
+    r = load_crash_data(&in_iter, &crash_data);
     if (r != ABRT_DBUS_MORE_FIELDS)
     {
         error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-        return -1;
+        r = -1;
+        goto ret;
     }
-    const char* comment = get_crash_data_item_content_or_NULL(argin1, FILENAME_COMMENT) ? : "";
-    const char* reproduce = get_crash_data_item_content_or_NULL(argin1, FILENAME_REPRODUCE) ? : "";
-    const char* errmsg = NULL;
+//TODO? get_crash_item_content_or_die_or_empty?
+    comment = get_crash_item_content_or_NULL(crash_data, FILENAME_COMMENT) ? : "";
+    reproduce = get_crash_item_content_or_NULL(crash_data, FILENAME_REPRODUCE) ? : "";
     if (strlen(comment) > LIMIT_MESSAGE)
     {
         errmsg = _("Comment is too long");
@@ -239,52 +251,43 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
         if (!reply)
             die_out_of_memory();
         send_flush_and_unref(reply);
-        return 0;
+        r = 0;
+        goto ret;
     }
 
     /* Second parameter: list of events to run */
-    vector_string_t events;
     r = load_val(&in_iter, events);
     if (r == ABRT_DBUS_ERROR)
     {
         error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-        return -1;
+        r = -1;
+        goto ret;
     }
 
     /* Third parameter (optional): configuration data for plugins */
-    map_map_string_t user_conf_data;
     if (r == ABRT_DBUS_MORE_FIELDS)
     {
         r = load_val(&in_iter, user_conf_data);
         if (r != ABRT_DBUS_LAST_FIELD)
         {
             error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-            return -1;
+            r = -1;
+            goto ret;
         }
     }
 
-    long unix_uid = get_remote_uid(call);
-    report_status_t argout1;
-    try
-    {
-        argout1 = Report(argin1, events, user_conf_data, unix_uid);
-    }
-    catch (CABRTException &e)
-    {
-        dbus_message_unref(reply);
-        reply = dbus_message_new_error(call, DBUS_ERROR_FAILED, e.what());
-        if (!reply)
-            die_out_of_memory();
-        send_flush_and_unref(reply);
-        return 0;
-    }
+    unix_uid = get_remote_uid(call);
+    argout1 = Report(crash_data, events, user_conf_data, unix_uid);
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
     store_val(&out_iter, argout1);
 
     send_flush_and_unref(reply);
-    return 0;
+    r = 0;
+ ret:
+    free_crash_data(crash_data);
+    return r;
 }
 
 static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
@@ -339,12 +342,13 @@ static int handle_GetPluginSettings(DBusMessage* call, DBusMessage* reply)
 
     //long unix_uid = get_remote_uid(call);
     //VERB1 log("got %s('%s') call from uid %ld", "GetPluginSettings", PluginName, unix_uid);
-    map_plugin_settings_t plugin_settings;
-    GetPluginSettings(PluginName, plugin_settings);
+    map_string_h *plugin_settings = GetPluginSettings(PluginName);
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
-    store_val(&out_iter, plugin_settings);
+    store_map_string(&out_iter, plugin_settings);
+
+    free_map_string(plugin_settings);
 
     send_flush_and_unref(reply);
     return 0;
@@ -362,25 +366,25 @@ static int handle_GetSettings(DBusMessage* call, DBusMessage* reply)
     return 0;
 }
 
-static int handle_SetSettings(DBusMessage* call, DBusMessage* reply)
-{
-    int r;
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(call, &in_iter);
-    map_abrt_settings_t param1;
-    r = load_val(&in_iter, param1);
-    if (r != ABRT_DBUS_LAST_FIELD)
-    {
-        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-        return -1;
-    }
-
-    const char * sender = dbus_message_get_sender(call);
-    SetSettings(param1, sender);
-
-    send_flush_and_unref(reply);
-    return 0;
-}
+//static int handle_SetSettings(DBusMessage* call, DBusMessage* reply)
+//{
+//    int r;
+//    DBusMessageIter in_iter;
+//    dbus_message_iter_init(call, &in_iter);
+//    map_abrt_settings_t param1;
+//    r = load_val(&in_iter, param1);
+//    if (r != ABRT_DBUS_LAST_FIELD)
+//    {
+//        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
+//        return -1;
+//    }
+//
+//    const char * sender = dbus_message_get_sender(call);
+//    SetSettings(param1, sender);
+//
+//    send_flush_and_unref(reply);
+//    return 0;
+//}
 
 
 /*
@@ -413,8 +417,11 @@ static DBusHandlerResult message_received(DBusConnection* conn, DBusMessage* msg
         r = handle_GetPluginSettings(msg, reply);
     else if (strcmp(member, "GetSettings") == 0)
         r = handle_GetSettings(msg, reply);
-    else if (strcmp(member, "SetSettings") == 0)
-        r = handle_SetSettings(msg, reply);
+// looks unused to me.
+// Ok to grep for SetSettings and delete after 2011-04-01.
+//  else if (strcmp(member, "SetSettings") == 0)
+//      r = handle_SetSettings(msg, reply);
+
 // NB: C++ binding also handles "Introspect" method, which returns a string.
 // It was sending "dummy" introspection answer whick looks like this:
 // "<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\"\n"
@@ -460,7 +467,7 @@ static void handle_dbus_err(bool error_flag, DBusError *err)
             ABRTD_DBUS_NAME);
 }
 
-CCommLayerServerDBus::CCommLayerServerDBus()
+int init_dbus()
 {
     DBusConnection* conn;
     DBusError err;
@@ -481,7 +488,7 @@ CCommLayerServerDBus::CCommLayerServerDBus()
     //
     // dbus-daemon drops connections if it recvs a malformed message
     // (we actually observed this when we sent bad UTF-8 string).
-    // Currently, in this case abrtd just exits with exitcode 1.
+    // Currently, in this case abrtd just exits with exit code 1.
     // (symptom: last two log messages are "abrtd: remove_watch()")
     // If we want to have better logging or other nontrivial handling,
     // here we need to do:
@@ -510,9 +517,15 @@ CCommLayerServerDBus::CCommLayerServerDBus()
     int cnt = 10;
     while (dbus_connection_dispatch(conn) != DBUS_DISPATCH_COMPLETE && --cnt)
         VERB3 log("processed initial buffered dbus message");
+
+    return 0;
 }
 
-CCommLayerServerDBus::~CCommLayerServerDBus()
+void deinit_dbus()
 {
-    dbus_connection_unref(g_dbus_conn);
+    if (g_dbus_conn != NULL)
+    {
+        dbus_connection_unref(g_dbus_conn);
+        g_dbus_conn = NULL;
+    }
 }

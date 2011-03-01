@@ -47,6 +47,12 @@ PKG_CHECK_MODULES([LIBNOTIFY], [libnotify])
 PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([XMLRPC], [xmlrpc])
 PKG_CHECK_MODULES([XMLRPC_CLIENT], [xmlrpc_client])
+# Just PKG_CHECK_MODULES([PYTHON], [python]) works only with python2.7+
+# Below, if python is not found, we set up for python2.6 w/o checking:
+PKG_CHECK_MODULES([PYTHON], [python],,[
+    PYTHON_LIBS='-L/usr/lib64 -lpython2.6'
+    PYTHON_CFLAGS='-I/usr/include/python2.6'
+])
 
 PKG_PROG_PKG_CONFIG
 AC_ARG_WITH([systemdsystemunitdir],
@@ -58,15 +64,13 @@ AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$with_systemdsystemunitdir"])
 AC_CHECK_HEADER([libtar.h], [],
    [AC_MSG_ERROR([libtar.h is needed to build abrt])])
 
-AC_CHECK_HEADER([bzlib.h], [],
-   [AC_MSG_ERROR([bzlib.h is needed to build abrt])])
-
 AC_CHECK_HEADER([sys/inotify.h], [],
    [AC_MSG_ERROR([sys/inotify.h is needed to build abrt])])
 
 CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
 VAR_RUN='${localstatedir}/run'
 PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
+EVENTS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/events.d'
 PLUGINS_LIB_DIR='${libdir}/${PACKAGE_NAME}'
 ENABLE_SOCKET_OR_DBUS='-DENABLE_DBUS=1'
 LIBEXEC_DIR='${libexecdir}'
@@ -99,10 +103,10 @@ AC_SUBST(ENABLE_SOCKET_OR_DBUS)
 AC_SUBST(CONF_DIR)
 AC_SUBST(VAR_RUN)
 AC_SUBST(PLUGINS_CONF_DIR)
+AC_SUBST(EVENTS_CONF_DIR)
 AC_SUBST(PLUGINS_LIB_DIR)
 AC_SUBST(DEBUG_DUMPS_DIR)
 AC_SUBST(DEBUG_INFO_DIR)
-AC_SUBST(DL_LIBS, -ldl)
 AC_SUBST(LIBEXEC_DIR)
 
 # Initialize the test suite.
@@ -119,6 +123,7 @@ AC_CONFIG_FILES([
 	abrt.pc
 	src/include/Makefile
 	src/lib/Makefile
+	src/report-python/Makefile
 	src/plugins/Makefile
 	src/Makefile
 	src/btparser/Makefile
@@ -126,6 +131,8 @@ AC_CONFIG_FILES([
 	src/hooks/Makefile
 	src/applet/Makefile
 	src/gui/Makefile
+	src/gui-gtk/Makefile
+	src/gui-wizard-gtk/Makefile
 	src/cli/Makefile
 	src/retrace/Makefile
 	po/Makefile.in

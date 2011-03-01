@@ -1,0 +1,151 @@
+#!/bin/bash
+# Install abrt coredump hook
+#
+# chkconfig: 35 82 16
+# description: Installs coredump handler which saves segfault data
+### BEGIN INIT INFO
+# Provides: abrt-ccpp
+# Required-Start: $abrtd
+# Default-Stop: 0 1 2 6
+# Default-Start: 3 5
+# Short-Description: Installs coredump handler which saves segfault data
+# Description: Installs coredump handler which saves segfault data
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# For debugging
+dry_run=false
+verbose=false
+
+# We don't have pid files, therefore have to use
+# a flag file in /var/lock/subsys to enable GUI service tools
+# to figure out our status
+LOCK="/var/lock/subsys/abrt-ccpp"
+
+PATTERN_FILE="/proc/sys/kernel/core_pattern"
+SAVED_PATTERN_FILE="/var/run/abrt/saved_core_pattern"
+HOOK_BIN="/usr/libexec/abrt-hook-ccpp"
+PATTERN="|$HOOK_BIN /var/spool/abrt %s %c %p %u %g %t %h %e"
+
+# core_pipe_limit specifies how many dump_helpers can run at the same time
+# 0 - means unlimited, but it's not guaranteed that /proc/<pid> of crashing
+#     process will be available for dump_helper.
+# 4 - means that 4 dump_helpers can run at the same time (the rest will also
+#     run, but they will fail to read /proc/<pid>).
+#
+# This should be enough for ABRT, we can miss some crashes, but what are
+# the odds that more processes crash at the same time? And moreover,
+# do people want to save EVERY ONE of the crashes when they have
+# a crash storm? I don't think so.
+# The value of 4 has been recommended by nhorman.
+#
+CORE_PIPE_LIMIT_FILE="/proc/sys/kernel/core_pipe_limit"
+CORE_PIPE_LIMIT="4"
+
+RETVAL=0
+
+check() {
+	# Check that we're a privileged user
+	[ "`id -u`" = 0 ] || exit 4
+}
+
+start() {
+	check
+
+	cur=`cat "$PATTERN_FILE"`
+	cur_first=`printf "%s" "$cur" | sed 's/ .*//'`
+
+	$verbose && printf "cur:'%s'\n" "$cur"
+	# Is it already installed?
+	if test x"$cur_first" != x"|$HOOK_BIN"; then   # no
+		# It is not installed
+		printf "%s\n" "$cur" >"$SAVED_PATTERN_FILE"
+		OLD_PATTERN=""
+		# Does old pattern start with '|'?
+		if test x"${cur#|}" = x"$cur"; then   # no
+			# Encode it as hex string, NUL terminated
+			OLD_PATTERN=`printf "%s" "$cur" | od -tx1 | sed 's/000[^ ]*//' | xargs | sed 's/ //g'`
+			$verbose && printf "OLD_PATTERN:'%s'\n" "$OLD_PATTERN"
+			OLD_PATTERN=" ${OLD_PATTERN}00"
+		fi
+		# Install new handler
+		$verbose && printf "Installing to %s:'%s'\n" "$PATTERN_FILE" "${PATTERN}${OLD_PATTERN}"
+		$dry_run || echo "${PATTERN}${OLD_PATTERN}" >"$PATTERN_FILE"
+		$dry_run || touch -- "$LOCK"
+
+		# Check core_pipe_limit and change it if it's 0,
+		# otherwise the abrt-hook-ccpp won't be able to read /proc/<pid>
+		# of the crashing process
+		if test x"`cat "$CORE_PIPE_LIMIT_FILE"`" = x"0"; then
+			echo "$CORE_PIPE_LIMIT" >"$CORE_PIPE_LIMIT_FILE"
+		fi
+	fi
+	return $RETVAL
+}
+
+stop() {
+	check
+
+	if test -f "$SAVED_PATTERN_FILE"; then
+		$verbose && printf "Restoring to %s:'%s'\n" "$PATTERN_FILE" "`cat "$SAVED_PATTERN_FILE"`"
+		$dry_run || cat "$SAVED_PATTERN_FILE" >"$PATTERN_FILE"
+	fi
+	$dry_run || rm -f -- "$LOCK"
+	return $RETVAL
+}
+
+restart() {
+	stop
+	start
+}
+
+reload() {
+	restart
+}
+
+case "$1" in
+start)
+	start
+	;;
+stop)
+	stop
+	;;
+reload)
+	reload
+	;;
+force-reload)
+	echo "$0: Unimplemented feature."
+	RETVAL=3
+	;;
+restart)
+	restart
+	;;
+condrestart)
+	cur=`cat "$PATTERN_FILE"`
+	cur_first=`printf "%s" "$cur" | sed 's/ .*//'`
+	# Is it already installed?
+	if test x"$cur_first" = x"|$HOOK_BIN"; then   # yes
+		$verbose && printf "Installed, re-installing\n"
+		restart
+	fi
+	;;
+status)
+	cur=`cat "$PATTERN_FILE"`
+	cur_first=`printf "%s" "$cur" | sed 's/ .*//'`
+	# Is it already installed?
+	if test x"$cur_first" = x"|$HOOK_BIN"; then   # yes
+		$verbose && printf "Installed\n"
+		RETVAL=0
+	else
+		$verbose && printf "Not installed\n"
+		RETVAL=3  # "stopped normally"
+	fi
+	;;
+*)
+	echo $"Usage: $0 {start|stop|status|restart|condrestart|reload|force-reload}"
+	RETVAL=2
+esac
+
+exit $RETVAL

@@ -18,7 +18,6 @@
 */
 
 #include <abrt/abrtlib.h>
-#include <abrt/abrt_exception.h>
 #include "abrt-reporter-hello-world.h"
 
 std::string CHelloWorld::Report(const map_crash_data_t& pCrashData,

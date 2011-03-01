@@ -1,0 +1,131 @@
+        Planned changes to crash_data and dump_dir structures
+
+    Time field(s)
+
+Need to add CD_FLAG_UNIXTIME bit for struct crash_item's flags field.
+It should be set on cd["time"] item when we do
+
+    cd = call create_crash_data_from_dump_dir(dd);
+
+Note that later we may add other elements beside "time" which contain
+unix time.
+
+Need to add a function which formats time elements for printing.
+Something like this:
+
+const char *printable_form_of_crash_item(const char *content, unsigned flags);
+
+For most fields it should return them as-is, for CD_FLAG_UNIXTIME
+fields it should return malloced "YYYY-MM-DD hh:mm:ss" string.
+
+Later, if/when we will get more CD_FLAG_FOO flags, some of them also
+may need special formatting, and this function can deal with them too.
+
+[Implementation note: use the following trick to avoid needing to return
+malloced data (which isn't convenient for caller, it needs to free it):
+
+printable_form_of_crash_item(...)
+{
+    ...
+    if (need to use malloced string)
+    {
+        s = malloc_and_format_string();
+
+        static unsigned malloced_idx = 0;
+        static char *malloced_vec[8];
+
+        malloced_idx = (malloced_idx+1) % 8;
+        free(malloced_vec[malloced_idx]);
+        malloced_vec[malloced_idx] = s;
+    }
+    else
+        s = some_non_malloced_string;
+    ...
+    return s;
+}
+]
+
+dd_load_text_ext(dd, "time", flags) may benefit from a new flag DD_LOAD_TEXT_PRINTABLE,
+which makes it generate printable representation of fields.
+
+
+    Reduce amount of special-casing in the code which works with crash_data
+
+Examples:
+
+Reporters use something like this to exclude "non-interesting" fields:
+
+for (each crash_data element)
+{
+    if (strcmp(short_name, FILENAME_COUNT) == 0) goto next;
+    if (strcmp(short_name, CD_DUMPDIR) == 0) goto next;
+    if (strcmp(short_name, FILENAME_INFORMALL) == 0) goto next;
+    if (strcmp(short_name, FILENAME_MESSAGE) == 0) goto next; // plugin's status message (if we already reported it yesterday)
+    ...
+}
+
+    write_crash_report_field(fp, report, FILENAME_COMMENT,
+            _("# Describe the circumstances of this crash below"));
+    write_crash_report_field(fp, report, FILENAME_REPRODUCE,
+            _("# How to reproduce the crash?"));
+    write_crash_report_field(fp, report, FILENAME_BACKTRACE,
+            _("# Backtrace\n# Check that it does not contain any sensitive data (passwords, etc.)"));
+    write_crash_report_field(fp, report, FILENAME_DUPHASH, "# DUPHASH");
+    write_crash_report_field(fp, report, FILENAME_ARCHITECTURE, _("# Architecture"));
+    write_crash_report_field(fp, report, FILENAME_CMDLINE, _("# Command line"));
+    write_crash_report_field(fp, report, FILENAME_COMPONENT, _("# Component"));
+    write_crash_report_field(fp, report, FILENAME_COREDUMP, _("# Core dump"));
+    write_crash_report_field(fp, report, FILENAME_EXECUTABLE, _("# Executable"));
+    write_crash_report_field(fp, report, FILENAME_KERNEL, _("# Kernel version"));
+    write_crash_report_field(fp, report, FILENAME_PACKAGE, _("# Package"));
+    write_crash_report_field(fp, report, FILENAME_REASON, _("# Reason of crash"));
+    write_crash_report_field(fp, report, FILENAME_OS_RELEASE, _("# Release string of the operating system"));
+
+    printf(_("Dump directory:     %s\n"
+             "Last crash:         %s\n"
+             "Analyzer:           %s\n"
+             "Component:          %s\n"
+             "Package:            %s\n"
+             "Command:            %s\n"
+             "Executable:         %s\n"
+             "System:             %s, kernel %s\n"
+             "Reason:             %s\n"),
+           get_crash_item_content_or_die(crash_data, CD_DUMPDIR),
+           timeloc,
+           get_crash_item_content_or_die(crash_data, FILENAME_ANALYZER),
+           get_crash_item_content_or_die(crash_data, FILENAME_COMPONENT),
+           get_crash_item_content_or_die(crash_data, FILENAME_PACKAGE),
+           get_crash_item_content_or_die(crash_data, FILENAME_CMDLINE),
+           get_crash_item_content_or_die(crash_data, FILENAME_EXECUTABLE),
+           get_crash_item_content_or_die(crash_data, FILENAME_OS_RELEASE),
+           get_crash_item_content_or_die(crash_data, FILENAME_KERNEL),
+           get_crash_item_content_or_die(crash_data, FILENAME_REASON)
+    );
+
+Can it be done better, so that we dont need to rewrite each of these places
+every time we add a new field?
+
+
+    "log" element
+
+Currently, we only save last reporter's message into "message" element.
+
+Is there a value in replacing/extending this functionality with multi-line,
+timestamped log saved in dump dir? Something along the lines of:
+
+YYYY-MM-DD hh:mm:ss <stat> <text>
+
+<text> is output lines of run_event_on_FOO() calls.
+One special case is when reporter exits (or dies from signal like SIGSEGV)
+without producing any output. In this case, we ourself may generate
+a message like "abrt-action-bugzilla: killed byu SIGSEGV".
+
+<stat> is a failure indicator. We already consider last line logged
+from event processing as its success/failure message, but we don't save
+success/failure status per se. <stat> is this place.
+In the most simple case it may be a '+' or '-' char, or space
+for non-final log messages.
+
+In order to not overflow the log, I propose to delete oldest lines
+when we reach, say, 10000 lines (which limits it to ~100k).
+

@@ -17,7 +17,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <dbus/dbus.h>
-#include <glib.h>
 #include "abrtlib.h"
 #include "abrt_dbus.h"
 
@@ -156,6 +155,98 @@ void store_string(DBusMessageIter* iter, const char* val)
     free((char*)sanitized);
 }
 
+/* Helper for storing map_string */
+void store_map_string(DBusMessageIter* dbus_iter, map_string_h *val)
+{
+    DBusMessageIter sub_iter;
+    /* map_string is a map. map in dbus is an array of two element structs "({...})":
+     * "s" (string) for key and "s" for value (in this case, also string) */
+    if (!dbus_message_iter_open_container(dbus_iter, DBUS_TYPE_ARRAY, "{ss}", &sub_iter))
+        die_out_of_memory();
+
+    GHashTableIter iter;
+    char *name;
+    char *value;
+    g_hash_table_iter_init(&iter, val);
+    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
+    {
+        DBusMessageIter sub_sub_iter;
+        if (!dbus_message_iter_open_container(&sub_iter, DBUS_TYPE_DICT_ENTRY, NULL, &sub_sub_iter))
+            die_out_of_memory();
+        store_string(&sub_sub_iter, name);
+        store_string(&sub_sub_iter, value);
+        if (!dbus_message_iter_close_container(&sub_iter, &sub_sub_iter))
+            die_out_of_memory();
+    }
+
+    if (!dbus_message_iter_close_container(dbus_iter, &sub_iter))
+        die_out_of_memory();
+}
+
+/* Helpers for storing crash_data */
+
+static void store_crash_item(DBusMessageIter* iter, struct crash_item *val)
+{
+    DBusMessageIter sub_iter;
+    if (!dbus_message_iter_open_container(iter, DBUS_TYPE_ARRAY, "s", &sub_iter))
+        die_out_of_memory();
+
+    /* Compat with python/cli:
+     * Crash item is represented in dbus as 3-element vector of strings:
+     * type, editable, content.
+     * This doesn't match daemon-side representation: { content, flags } struct
+     */
+    store_string(&sub_iter, (val->flags & CD_FLAG_BIN ? "b" : "t"));
+    store_string(&sub_iter, (val->flags & CD_FLAG_ISEDITABLE ? "y" : "n"));
+    store_string(&sub_iter, val->content);
+
+    if (!dbus_message_iter_close_container(iter, &sub_iter))
+        die_out_of_memory();
+}
+void store_crash_data(DBusMessageIter* dbus_iter, crash_data_t *val)
+{
+    DBusMessageIter sub_iter;
+    /* crash_data is a map. map in dbus is an array of two element structs "({...})":
+     * "s" (string) for key and "as" for value (in this case, array of strings) */
+    if (!dbus_message_iter_open_container(dbus_iter, DBUS_TYPE_ARRAY, "{sas}", &sub_iter))
+        die_out_of_memory();
+
+    GHashTableIter iter;
+    char *name;
+    struct crash_item *value;
+    g_hash_table_iter_init(&iter, val);
+    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
+    {
+        DBusMessageIter sub_sub_iter;
+        if (!dbus_message_iter_open_container(&sub_iter, DBUS_TYPE_DICT_ENTRY, NULL, &sub_sub_iter))
+            die_out_of_memory();
+        store_string(&sub_sub_iter, name);
+        store_crash_item(&sub_sub_iter, value);
+        if (!dbus_message_iter_close_container(&sub_iter, &sub_sub_iter))
+            die_out_of_memory();
+    }
+
+    if (!dbus_message_iter_close_container(dbus_iter, &sub_iter))
+        die_out_of_memory();
+}
+void store_vector_of_crash_data(DBusMessageIter* iter, vector_of_crash_data_t *val)
+{
+    DBusMessageIter sub_iter;
+    /* "array of maps". map in dbus is an array ("a") of two element structs "({...})":
+     * "s" (string) for key and "as" for value (in this case, array of strings) */
+    if (!dbus_message_iter_open_container(iter, DBUS_TYPE_ARRAY, "a{sas}", &sub_iter))
+        die_out_of_memory();
+
+    for (unsigned i = 0; i < val->len; i++)
+    {
+        crash_data_t *crash_data = get_crash_data(val, i);
+        store_crash_data(&sub_iter, crash_data);
+    }
+
+    if (!dbus_message_iter_close_container(iter, &sub_iter))
+        die_out_of_memory();
+}
+
 
 /*
  * Helpers for parsing DBus messages
@@ -217,6 +308,8 @@ int load_uint64(DBusMessageIter* iter, uint64_t *val)
 }
 int load_charp(DBusMessageIter* iter, const char** val)
 {
+    *val = NULL;
+
     int type = dbus_message_iter_get_arg_type(iter);
     if (type != DBUS_TYPE_STRING)
     {
@@ -226,6 +319,157 @@ int load_charp(DBusMessageIter* iter, const char** val)
     dbus_message_iter_get_basic(iter, val);
 //log("load_charp:'%s'", *val);
     return dbus_message_iter_next(iter);
+}
+
+/* Helpers for loading crash_data */
+
+static int load_crash_item(DBusMessageIter* iter, struct crash_item *item)
+{
+    int type = dbus_message_iter_get_arg_type(iter);
+    if (type != DBUS_TYPE_ARRAY)
+    {
+        error_msg("array expected in dbus message, but not found ('%c')", type);
+        return -1;
+    }
+
+    /* Compat with python/cli:
+     * Crash item is represented in dbus as 3-element vector of strings:
+     * type, editable, content.
+     * This doesn't match daemon-side representation: { content, flags } struct
+     */
+
+    DBusMessageIter sub_iter;
+    dbus_message_iter_recurse(iter, &sub_iter);
+
+    const char *typestr;
+    int r = load_charp(&sub_iter, &typestr);
+    if (r != ABRT_DBUS_MORE_FIELDS)
+    {
+        error_msg("malformed crash_item element in dbus message");
+        return -1;
+    }
+    const char *editable;
+    r = load_charp(&sub_iter, &editable);
+    if (r != ABRT_DBUS_MORE_FIELDS)
+    {
+        error_msg("malformed crash_item element in dbus message");
+        return -1;
+    }
+    const char *content;
+    r = load_charp(&sub_iter, &content);
+    if (r != ABRT_DBUS_LAST_FIELD)
+    {
+        error_msg("malformed crash_item element in dbus message");
+        return -1;
+    }
+    item->flags = 0;
+    if (typestr[0] == 'b') item->flags |= CD_FLAG_BIN;
+    if (typestr[0] == 't') item->flags |= CD_FLAG_TXT;
+    if (editable[0] == 'y') item->flags |= CD_FLAG_ISEDITABLE;
+    if (editable[0] == 'n') item->flags |= CD_FLAG_ISNOTEDITABLE;
+    item->content = xstrdup(content);
+    return 0;
+}
+int load_crash_data(DBusMessageIter* iter, crash_data_t **val)
+{
+    *val = NULL;
+
+    int type = dbus_message_iter_get_arg_type(iter);
+    if (type != DBUS_TYPE_ARRAY)
+    {
+        error_msg("array expected in dbus message, but not found ('%c')", type);
+        return -1;
+    }
+
+    crash_data_t *result = new_crash_data();
+
+    DBusMessageIter sub_iter;
+    dbus_message_iter_recurse(iter, &sub_iter);
+
+    bool next_exists;
+    int r;
+//int cnt = 0;
+    do {
+        type = dbus_message_iter_get_arg_type(&sub_iter);
+        if (type != DBUS_TYPE_DICT_ENTRY)
+        {
+            /* When the map has 0 elements, we see DBUS_TYPE_INVALID (on the first iteration) */
+            if (type == DBUS_TYPE_INVALID)
+                break;
+            error_msg("sub_iter type is not DBUS_TYPE_DICT_ENTRY (%c)!", type);
+            free_crash_data(result);
+            return -1;
+        }
+
+        DBusMessageIter sub_sub_iter;
+        dbus_message_iter_recurse(&sub_iter, &sub_sub_iter);
+
+        const char *key;
+        r = load_charp(&sub_sub_iter, &key);
+        if (r != ABRT_DBUS_MORE_FIELDS)
+        {
+            if (r == ABRT_DBUS_LAST_FIELD)
+                error_msg("malformed map element in dbus message");
+            free_crash_data(result);
+            return -1;
+        }
+        struct crash_item *value = xzalloc(sizeof(*value));
+        r = load_crash_item(&sub_sub_iter, value);
+        if (r != ABRT_DBUS_LAST_FIELD)
+        {
+            if (r == ABRT_DBUS_MORE_FIELDS)
+                error_msg("malformed map element in dbus message");
+            free(value);
+            free_crash_data(result);
+            return -1;
+        }
+        g_hash_table_replace(result, xstrdup(key), value);
+//cnt++;
+        next_exists = dbus_message_iter_next(&sub_iter);
+    } while (next_exists);
+//log("%s: %d elems", __func__, cnt);
+
+    *val = result;
+    return dbus_message_iter_next(iter); /* note: this can't fail (returns bool, thus never < 0) */
+}
+int load_vector_of_crash_data(DBusMessageIter* iter, vector_of_crash_data_t **val)
+{
+    *val = NULL;
+
+    int type = dbus_message_iter_get_arg_type(iter);
+    if (type != DBUS_TYPE_ARRAY)
+    {
+        error_msg("array expected in dbus message, but not found ('%c')", type);
+        return -1;
+    }
+
+    DBusMessageIter sub_iter;
+    dbus_message_iter_recurse(iter, &sub_iter);
+
+    vector_of_crash_data_t *result = new_vector_of_crash_data();
+
+    int r;
+//int cnt = 0;
+    /* When the vector has 0 elements, we see DBUS_TYPE_INVALID here */
+    type = dbus_message_iter_get_arg_type(&sub_iter);
+    if (type != DBUS_TYPE_INVALID)
+    {
+        do {
+            crash_data_t *cd = NULL;
+//cnt++;
+            r = load_crash_data(&sub_iter, &cd);
+            if (r < 0)
+            {
+                free_vector_of_crash_data(result);
+                return r;
+            }
+            g_ptr_array_add(result, cd);
+        } while (r == ABRT_DBUS_MORE_FIELDS);
+    }
+//log("%s: %d elems", __func__, cnt);
+
+    *val = result;
+    return dbus_message_iter_next(iter); /* note: this can't fail (returns bool, thus never < 0) */
 }
 
 
@@ -353,8 +597,29 @@ static void unregister_vtable(DBusConnection *conn, void* data)
     VERB3 log("%s()", __func__);
 }
 
+
 /*
- * Initialization works as follows:
+ * Simple logging handler for dbus errors.
+ */
+int log_dbus_error(const char *msg, DBusError *err)
+{
+    int ret = 0;
+    if (dbus_error_is_set(err))
+    {
+        error_msg("dbus error: %s", err->message);
+        ret = 1;
+    }
+    if (msg)
+    {
+        error_msg(msg);
+        ret = 1;
+    }
+    return ret;
+}
+
+
+/*
+ * Initialization. Works as follows:
  *
  * we have a DBusConnection* (say, obtained with dbus_bus_get)
  * we call dbus_connection_set_watch_functions
@@ -427,4 +692,173 @@ void attach_dbus_conn_to_glib_main_loop(DBusConnection* conn,
             die_out_of_memory();
         }
     }
+}
+
+
+/*
+ * Support functions for clients
+ */
+
+/* helpers */
+static DBusMessage* new_call_msg(const char* method)
+{
+    DBusMessage* msg = dbus_message_new_method_call(ABRTD_DBUS_NAME, ABRTD_DBUS_PATH, ABRTD_DBUS_IFACE, method);
+    if (!msg)
+        die_out_of_memory();
+    return msg;
+}
+
+static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
+{
+    dbus_uint32_t serial;
+    if (TRUE != dbus_connection_send(g_dbus_conn, msg, &serial))
+        error_msg_and_die("Error sending DBus message");
+    dbus_message_unref(msg);
+
+    while (true)
+    {
+        DBusMessage *received = dbus_connection_pop_message(g_dbus_conn);
+        if (!received)
+        {
+            if (FALSE == dbus_connection_read_write(g_dbus_conn, -1))
+                error_msg_and_die("dbus connection closed");
+            continue;
+        }
+
+        int tp = dbus_message_get_type(received);
+        const char *error_str = dbus_message_get_error_name(received);
+#if 0
+        /* Debugging */
+        printf("type:%u (CALL:%u, RETURN:%u, ERROR:%u, SIGNAL:%u)\n", tp,
+                                DBUS_MESSAGE_TYPE_METHOD_CALL,
+                                DBUS_MESSAGE_TYPE_METHOD_RETURN,
+                                DBUS_MESSAGE_TYPE_ERROR,
+                                DBUS_MESSAGE_TYPE_SIGNAL
+        );
+        const char *sender = dbus_message_get_sender(received);
+        if (sender)
+            printf("sender: %s\n", sender);
+        const char *path = dbus_message_get_path(received);
+        if (path)
+            printf("path: %s\n", path);
+        const char *member = dbus_message_get_member(received);
+        if (member)
+            printf("member: %s\n", member);
+        const char *interface = dbus_message_get_interface(received);
+        if (interface)
+            printf("interface: %s\n", interface);
+        const char *destination = dbus_message_get_destination(received);
+        if (destination)
+            printf("destination: %s\n", destination);
+        if (error_str)
+            printf("error: '%s'\n", error_str);
+#endif
+
+        DBusError err;
+        dbus_error_init(&err);
+
+        if (dbus_message_is_signal(received, ABRTD_DBUS_IFACE, "Update"))
+        {
+            const char *update_msg;
+            if (!dbus_message_get_args(received, &err,
+                                   DBUS_TYPE_STRING, &update_msg,
+                                   DBUS_TYPE_INVALID))
+            {
+                error_msg_and_die("dbus Update message: arguments mismatch");
+            }
+            printf(">> %s\n", update_msg);
+        }
+        else if (dbus_message_is_signal(received, ABRTD_DBUS_IFACE, "Warning"))
+        {
+            const char *warning_msg;
+            if (!dbus_message_get_args(received, &err,
+                                   DBUS_TYPE_STRING, &warning_msg,
+                                   DBUS_TYPE_INVALID))
+            {
+                error_msg_and_die("dbus Warning message: arguments mismatch");
+            }
+            log(">! %s\n", warning_msg);
+        }
+        else
+        if (tp == DBUS_MESSAGE_TYPE_METHOD_RETURN
+         && dbus_message_get_reply_serial(received) == serial
+        ) {
+            return received;
+        }
+        else
+        if (tp == DBUS_MESSAGE_TYPE_ERROR
+         && dbus_message_get_reply_serial(received) == serial
+        ) {
+            error_msg_and_die("dbus call returned error: '%s'", error_str);
+        }
+
+        dbus_message_unref(received);
+    }
+}
+
+int32_t call_DeleteDebugDump(const char *dump_dir_name)
+{
+    DBusMessage* msg = new_call_msg(__func__ + 5);
+    dbus_message_append_args(msg,
+            DBUS_TYPE_STRING, &dump_dir_name,
+            DBUS_TYPE_INVALID);
+
+    DBusMessage *reply = send_get_reply_and_unref(msg);
+
+    DBusMessageIter in_iter;
+    dbus_message_iter_init(reply, &in_iter);
+
+    int32_t result;
+    int r = load_int32(&in_iter, &result);
+    if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
+        error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
+
+    dbus_message_unref(reply);
+    return result;
+}
+
+static int connect_to_abrtd_and_call_DeleteDebugDump(const char *dump_dir_name)
+{
+    DBusError err;
+    dbus_error_init(&err);
+    g_dbus_conn = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
+    if (log_dbus_error(
+                g_dbus_conn ? NULL :
+                "error requesting system DBus, possible reasons: "
+                "dbus config is incorrect; dbus-daemon is not running, "
+                "or dbus daemon needs to be restarted to reload dbus config",
+                &err
+        )
+    ) {
+        if (g_dbus_conn)
+            dbus_connection_unref(g_dbus_conn);
+        g_dbus_conn = NULL;
+        return 1;
+    }
+
+    int ret = call_DeleteDebugDump(dump_dir_name);
+    if (ret == ENOENT)
+        error_msg("Dump directory '%s' is not found", dump_dir_name);
+    else if (ret != 0)
+        error_msg("Can't delete dump directory '%s'", dump_dir_name);
+
+    dbus_connection_unref(g_dbus_conn);
+    g_dbus_conn = NULL;
+
+    return ret;
+}
+
+int delete_dump_dir_possibly_using_abrtd(const char *dump_dir_name)
+{
+    /* Try to delete it ourselves */
+    struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
+    if (dd)
+    {
+        if (dd->locked) /* it is not readonly */
+            return dd_delete(dd);
+        dd_close(dd);
+    }
+
+    VERB1 log("Deleting '%s' via abrtd dbus call", dump_dir_name);
+    return connect_to_abrtd_and_call_DeleteDebugDump(dump_dir_name);
 }

@@ -132,7 +132,7 @@ void trim_debug_dumps(unsigned setting_MaxCrashReportsSize, const char *exclude_
         char *d = concat_path_file(DEBUG_DUMPS_DIR, worst_dir);
         free(worst_dir);
         worst_dir = NULL;
-        delete_crash_dump_dir(d);
+        delete_dump_dir(d);
         free(d);
     }
 }

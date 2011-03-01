@@ -38,11 +38,13 @@ int main(int argc, char **argv)
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    const char *program_usage = _(
+    /* Can't keep these strings/structs static: _() doesn't support that */
+    const char *program_usage_string = _(
         PROGNAME" [-vs]" /*" [-c CONFFILE]"*/ " -d DIR -e EVENT\n"
         "   or: "PROGNAME" [-vs]" /*" [-c CONFFILE]"*/ " [-d DIR] -l[PFX]\n"
         "\n"
-        "Handle crash dump according to rules in abrt_event.conf");
+        "Handle crash dump according to rules in abrt_event.conf"
+    );
     enum {
         OPT_v = 1 << 0,
         OPT_s = 1 << 1,
@@ -61,11 +63,12 @@ int main(int argc, char **argv)
 //      OPT_STRING(   'c', NULL, &conf_filename, "CONFFILE", _("Configuration file"  )),
         OPT_END()
     };
-
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage);
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
     if (!(opts & (OPT_e|OPT_l)))
-        parse_usage_and_die(program_usage, program_options);
+        show_usage_and_die(program_usage_string, program_options);
+
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
+    msg_prefix = PROGNAME;
     if (opts & OPT_s)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
@@ -87,17 +90,10 @@ int main(int argc, char **argv)
 
     /* -e EVENT: run event */
 
-    /* Need to add LIBEXEC_DIR to PATH, because otherwise abrt-action-*
-     * are not found by exec()
-     */
-    const char *env_path = getenv("PATH");
-    if (!env_path) env_path = "";
-    putenv(xasprintf("PATH=%s%s%s", LIBEXEC_DIR, (!env_path[0] ? "" : ":"), env_path));
-
     struct run_event_state *run_state = new_run_event_state();
     run_state->logging_callback = do_log;
-    int r = run_event(run_state, dump_dir_name ? dump_dir_name : ".", event);
-    if (r == -1)
+    int r = run_event_on_dir_name(run_state, dump_dir_name ? dump_dir_name : ".", event);
+    if (r == 0 && run_state->children_count == 0)
         error_msg_and_die("No actions are found for event '%s'", event);
     free_run_event_state(run_state);
 

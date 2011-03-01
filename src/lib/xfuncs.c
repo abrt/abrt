@@ -26,28 +26,24 @@
 /* Turn on nonblocking I/O on a fd */
 int ndelay_on(int fd)
 {
-    return fcntl(fd, F_SETFL, fcntl(fd, F_GETFL) | O_NONBLOCK);
+    int flags = fcntl(fd, F_GETFL);
+    if (flags & O_NONBLOCK)
+        return 0;
+    return fcntl(fd, F_SETFL, flags | O_NONBLOCK);
 }
 
 int ndelay_off(int fd)
 {
-    return fcntl(fd, F_SETFL, fcntl(fd, F_GETFL) & ~O_NONBLOCK);
+    int flags = fcntl(fd, F_GETFL);
+    if (!(flags & O_NONBLOCK))
+        return 0;
+    return fcntl(fd, F_SETFL, flags & ~O_NONBLOCK);
 }
 
 int close_on_exec_on(int fd)
 {
     return fcntl(fd, F_SETFD, FD_CLOEXEC);
 }
-
-#if 0 /* unused */
-void *xcalloc(size_t nmemb, size_t size)
-{
-    void *ptr = calloc(nmemb, size);
-    if (!ptr && nmemb && size)
-        die_out_of_memory();
-    return ptr;
-}
-#endif
 
 // Die if we can't allocate size bytes of memory.
 void* xmalloc(size_t size)
@@ -290,7 +286,7 @@ int xopen(const char *pathname, int flags)
 void xunlink(const char *pathname)
 {
     if (unlink(pathname))
-        perror_msg_and_die("can't remove file '%s'", pathname);
+        perror_msg_and_die("Can't remove file '%s'", pathname);
 }
 
 #if 0 //UNUSED

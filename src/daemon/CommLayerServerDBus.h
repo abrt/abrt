@@ -19,26 +19,26 @@
 #ifndef COMMLAYERSERVERDBUS_H_
 #define COMMLAYERSERVERDBUS_H_
 
-#include "CommLayerServer.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-class CCommLayerServerDBus
-: public CCommLayerServer
-{
-    public:
-        CCommLayerServerDBus();
-        virtual ~CCommLayerServerDBus();
+int init_dbus(void);
+void deinit_dbus(void);
 
-        /* DBus signal senders */
-        virtual void Crash(const char *package_name,
+void send_dbus_sig_Crash(const char *package_name,
                         const char *crash_id,
                         const char *dir,
                         const char *uid_str
-        );
-        virtual void JobDone(const char* peer);
-        virtual void QuotaExceed(const char* str);
+);
+void send_dbus_sig_JobDone(const char* peer);
+void send_dbus_sig_QuotaExceeded(const char* str);
 
-        virtual void Update(const char* pMessage, const char* peer);
-        virtual void Warning(const char* pMessage, const char* peer);
-};
+void send_dbus_sig_Update(const char* pMessage, const char* peer);
+void send_dbus_sig_Warning(const char* pMessage, const char* peer);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
