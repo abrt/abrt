@@ -788,20 +788,41 @@ static gint next_page_no(gint current_page_no, gpointer data)
 }
 
 
+
 static gboolean highlight_search(gpointer user_data)
 {
     GtkEntry *entry = GTK_ENTRY(user_data);
-    g_print("searching: %s\n", gtk_entry_get_text(entry));
-    //returning will make gtk to remove this event
+    GtkTextBuffer *buffer = gtk_text_view_get_buffer(g_tv_backtrace);
+    GtkTextIter start_find;
+    GtkTextIter end_find;
+    GtkTextIter start_match;
+    GtkTextIter end_match;
+    int offset = 0;
+
+    gtk_text_buffer_get_start_iter(buffer, &start_find);
+    gtk_text_buffer_get_end_iter(buffer, &end_find);
+    gtk_text_buffer_remove_tag_by_name(buffer, "search_result_bg", &start_find, &end_find);
+    VERB1 log("searching: %s\n", gtk_entry_get_text(entry));
+    while(gtk_text_iter_forward_search(&start_find, gtk_entry_get_text(entry),
+                                 GTK_TEXT_SEARCH_TEXT_ONLY, &start_match,
+                                 &end_match, NULL))
+    {
+        gtk_text_buffer_apply_tag_by_name(buffer, "search_result_bg",
+                                          &start_match, &end_match);
+        offset = gtk_text_iter_get_offset(&end_match);
+        gtk_text_buffer_get_iter_at_offset(buffer, &start_find, offset);
+    }
+
+    //returning false will make glib to remove this event
     return false;
 }
 
 static void search_timeout(GtkEntry *entry)
 {
-    /* this little hack makes the search start after 500 milisec after
+    /* this little hack makes the search start searching after 500 milisec after
      * user stops writing into entry box
      * if this part is removed, then the search will be started on every
-     * char written into the entry
+     * change of the search entry
      */
     if(g_timeout != 0)
         g_source_remove(g_timeout);
@@ -953,12 +974,10 @@ void create_assistant()
     g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
     g_signal_connect(g_btn_refresh, "clicked", G_CALLBACK(on_btn_refresh_clicked), NULL);
 
-    /* init search */
+    /* init searching */
     GtkTextBuffer *backtrace_buf = gtk_text_view_get_buffer(g_tv_backtrace);
     /* found items background */
     gtk_text_buffer_create_tag(backtrace_buf, "search_result_bg", "background", "red", NULL);
-    /* current position */
-    gtk_text_buffer_create_tag(backtrace_buf, "current_pos_bg", "background", "yellow", NULL);
     g_signal_connect(g_search_entry_bt, "changed", G_CALLBACK(search_timeout), NULL);
 
     gtk_assistant_set_page_complete(g_assistant,
