@@ -1,5 +1,5 @@
-libreport2_includedir = $(includedir)/report
-libreport2_include_HEADERS = \
+libreport_includedir = $(includedir)/report
+libreport_include_HEADERS = \
     report/crash_data.h \
     report/dump_dir.h \
     report/run_event.h

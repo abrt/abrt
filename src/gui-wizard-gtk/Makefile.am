@@ -30,7 +30,7 @@ bug_reporting_wizard_CFLAGS = \
 # -lgmodule-2.0
 # -lgthread-2.0
 bug_reporting_wizard_LDADD = \
-    ../lib/libreport2.la \
+    ../lib/libreport.la \
     ../lib/libabrt_dbus.la \
     $(GLIB_LIBS) \
     $(GTK_LIBS) \

@@ -23,7 +23,7 @@ abrt_applet_CPPFLAGS = \
 #    $(LIBNOTIFY_CFLAGS)
 #    $(DBUS_GLIB_CFLAGS)
 abrt_applet_LDADD = \
-    ../lib/libreport2.la \
+    ../lib/libreport.la \
     ../lib/libabrt_dbus.la \
     -lglib-2.0 \
     -lgthread-2.0 \
@@ -39,7 +39,7 @@ abrt_applet_LDADD = \
 #    -D_GNU_SOURCE \
 #    -Wall -Werror
 #test_report_LDADD = \
-#    ../lib/libreport2.la
+#    ../lib/libreport.la
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 

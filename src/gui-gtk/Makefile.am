@@ -22,7 +22,7 @@ abrt_gtk_CFLAGS = \
 #    $(LIBNOTIFY_CFLAGS)
 #    $(DBUS_GLIB_CFLAGS)
 abrt_gtk_LDADD = \
-    ../lib/libreport2.la \
+    ../lib/libreport.la \
     ../lib/libabrt_dbus.la \
     -lglib-2.0 \
     -lgthread-2.0 \
@@ -38,7 +38,7 @@ abrt_gtk_LDADD = \
 #    -D_GNU_SOURCE \
 #    -Wall -Werror
 #test_report_LDADD = \
-#    ../lib/libreport2.la
+#    ../lib/libreport.la
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
