@@ -1,105 +1,5 @@
-[fedora-13-i686]
-name=Fedora 13 - i686
-failovermethod=priority
-mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=fedora-13&arch=i386
-enabled=0
-metadata_expire=6h
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-i386
-
-[fedora-13-i686-debuginfo]
-name=Fedora 13 - i686 - Debug
-failovermethod=priority
-mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=fedora-debug-13&arch=i386
-enabled=0
-metadata_expire=6h
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-i386
-
-[fedora-13-i686-updates]
-name=Fedora 13 - i686 - Updates
-failovermethod=priority
-mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-released-f13&arch=i386
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-i386
-
-[fedora-13-i686-updates-debuginfo]
-name=Fedora 13 - i686 - Updates - Debug
-failovermethod=priority
-mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-released-debug-f13&arch=i386
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-i386
-
-[fedora-13-i686-updates-testing]
-name=Fedora 13 - i686 - Test Updates
-failovermethod=priority
-mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-testing-f13&arch=i386
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-i386
-
-[fedora-13-i686-updates-testing-debuginfo]
-name=Fedora 13 - i686 - Test Updates Debug
-failovermethod=priority
-mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-testing-debug-f13&arch=i386
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-i386
-
-[fedora-13-x86_64]
-name=Fedora 13 - x86_64
-failovermethod=priority
-mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=fedora-13&arch=x86_64
-enabled=0
-metadata_expire=6h
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-x86_64
-
-[fedora-13-x86_64-debuginfo]
-name=Fedora 13 - x86_64 - Debug
-failovermethod=priority
-mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=fedora-debug-13&arch=x86_64
-enabled=0
-metadata_expire=6h
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-x86_64
-
-[fedora-13-x86_64-updates]
-name=Fedora 13 - x86_64 - Updates
-failovermethod=priority
-mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-released-f13&arch=x86_64
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-x86_64
-
-[fedora-13-x86_64-updates-debuginfo]
-name=Fedora 13 - x86_64 - Updates - Debug
-failovermethod=priority
-mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-released-debug-f13&arch=x86_64
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-x86_64
-
-[fedora-13-x86_64-updates-testing]
-name=Fedora 13 - x86_64 - Test Updates
-failovermethod=priority
-mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-testing-f13&arch=x86_64
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-x86_64
-
-[fedora-13-x86_64-updates-testing-debuginfo]
-name=Fedora 13 - x86_64 - Test Updates Debug
-failovermethod=priority
-mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-testing-debug-f13&arch=x86_64
-enabled=0
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-x86_64
-
-[fedora-14-i686]
-name=Fedora 14 - i686
+[fedora-14-i386]
+name=Fedora 14 - i386
 failovermethod=priority
 mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=fedora-14&arch=i386
 enabled=0
@@ -107,8 +7,8 @@ metadata_expire=6h
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-i386
 
-[fedora-14-i686-debuginfo]
-name=Fedora 14 - i686 - Debug
+[fedora-14-i386-debuginfo]
+name=Fedora 14 - i386 - Debug
 failovermethod=priority
 mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=fedora-debug-14&arch=i386
 enabled=0
@@ -116,32 +16,32 @@ metadata_expire=6h
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-i386
 
-[fedora-14-i686-updates]
-name=Fedora 14 - i686 - Updates
+[fedora-14-i386-updates]
+name=Fedora 14 - i386 - Updates
 failovermethod=priority
 mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-released-f14&arch=i386
 enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-i386
 
-[fedora-14-i686-updates-debuginfo]
-name=Fedora 14 - i686 - Updates - Debug
+[fedora-14-i386-updates-debuginfo]
+name=Fedora 14 - i386 - Updates - Debug
 failovermethod=priority
 mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-released-debug-f14&arch=i386
 enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-i386
 
-[fedora-14-i686-updates-testing]
-name=Fedora 14 - i686 - Test Updates
+[fedora-14-i386-updates-testing]
+name=Fedora 14 - i386 - Test Updates
 failovermethod=priority
 mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-testing-f14&arch=i386
 enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-i386
 
-[fedora-14-i686-updates-testing-debuginfo]
-name=Fedora 14 - i686 - Test Updates Debug
+[fedora-14-i386-updates-testing-debuginfo]
+name=Fedora 14 - i386 - Test Updates Debug
 failovermethod=priority
 mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-testing-debug-f14&arch=i386
 enabled=0
@@ -194,6 +94,106 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-x86_64
 name=Fedora 14 - x86_64 - Test Updates Debug
 failovermethod=priority
 mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-testing-debug-f14&arch=x86_64
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-x86_64
+
+[fedora-15-i386]
+name=Fedora 15 - i386
+failovermethod=priority
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=fedora-15&arch=i386
+enabled=0
+metadata_expire=6h
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-i386
+
+[fedora-15-i386-debuginfo]
+name=Fedora 15 - i386 - Debug
+failovermethod=priority
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=fedora-debug-15&arch=i386
+enabled=0
+metadata_expire=6h
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-i386
+
+[fedora-15-i386-updates]
+name=Fedora 15 - i386 - Updates
+failovermethod=priority
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-released-f15&arch=i386
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-i386
+
+[fedora-15-i386-updates-debuginfo]
+name=Fedora 15 - i386 - Updates - Debug
+failovermethod=priority
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-released-debug-f15&arch=i386
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-i386
+
+[fedora-15-i386-updates-testing]
+name=Fedora 15 - i386 - Test Updates
+failovermethod=priority
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-testing-f15&arch=i386
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-i386
+
+[fedora-15-i386-updates-testing-debuginfo]
+name=Fedora 15 - i386 - Test Updates Debug
+failovermethod=priority
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-testing-debug-f15&arch=i386
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-i386
+
+[fedora-15-x86_64]
+name=Fedora 15 - x86_64
+failovermethod=priority
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=fedora-15&arch=x86_64
+enabled=0
+metadata_expire=6h
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-x86_64
+
+[fedora-15-x86_64-debuginfo]
+name=Fedora 15 - x86_64 - Debug
+failovermethod=priority
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=fedora-debug-15&arch=x86_64
+enabled=0
+metadata_expire=6h
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-x86_64
+
+[fedora-15-x86_64-updates]
+name=Fedora 15 - x86_64 - Updates
+failovermethod=priority
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-released-f15&arch=x86_64
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-x86_64
+
+[fedora-15-x86_64-updates-debuginfo]
+name=Fedora 15 - x86_64 - Updates - Debug
+failovermethod=priority
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-released-debug-f15&arch=x86_64
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-x86_64
+
+[fedora-15-x86_64-updates-testing]
+name=Fedora 15 - x86_64 - Test Updates
+failovermethod=priority
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-testing-f15&arch=x86_64
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-x86_64
+
+[fedora-15-x86_64-updates-testing-debuginfo]
+name=Fedora 15 - x86_64 - Test Updates Debug
+failovermethod=priority
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=updates-testing-debug-f15&arch=x86_64
 enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-x86_64
