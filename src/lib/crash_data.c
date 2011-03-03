@@ -89,7 +89,6 @@ vector_of_crash_data_t *new_vector_of_crash_data(void)
 
 static const char *const editable_files[] = {
 	FILENAME_COMMENT    ,
-	FILENAME_REPRODUCE  ,
 	FILENAME_BACKTRACE  ,
 	NULL
 };

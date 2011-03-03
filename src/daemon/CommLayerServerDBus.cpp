@@ -219,7 +219,6 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
     map_map_string_t user_conf_data;
     vector_string_t events;
     const char* comment = NULL;
-    const char* reproduce = NULL;
     const char* errmsg = NULL;
     DBusMessageIter in_iter;
 
@@ -235,14 +234,9 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
     }
 //TODO? get_crash_item_content_or_die_or_empty?
     comment = get_crash_item_content_or_NULL(crash_data, FILENAME_COMMENT) ? : "";
-    reproduce = get_crash_item_content_or_NULL(crash_data, FILENAME_REPRODUCE) ? : "";
     if (strlen(comment) > LIMIT_MESSAGE)
     {
         errmsg = _("Comment is too long");
-    }
-    else if (strlen(reproduce) > LIMIT_MESSAGE)
-    {
-        errmsg = _("'How to reproduce' is too long");
     }
     if (errmsg)
     {

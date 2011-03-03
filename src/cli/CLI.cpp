@@ -182,10 +182,6 @@ static void print_crash_info(crash_data_t *crash_data, bool show_backtrace)
     if (hostname)
         printf(_("Hostname:           %s\n"), hostname);
 
-    const char *reproduce = get_crash_item_content_or_NULL(crash_data, FILENAME_REPRODUCE);
-    if (reproduce)
-        printf(_("\nHow to reproduce:\n%s\n"), reproduce);
-
     const char *comment = get_crash_item_content_or_NULL(crash_data, FILENAME_COMMENT);
     if (comment)
         printf(_("\nComment:\n%s\n"), comment);

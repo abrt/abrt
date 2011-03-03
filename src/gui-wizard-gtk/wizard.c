@@ -19,7 +19,6 @@ GtkContainer *g_container_details2;
 
 GtkLabel *g_lbl_cd_reason;
 GtkTextView *g_tv_backtrace;
-GtkTextView *g_tv_reproduce;
 GtkTextView *g_tv_comment;
 GtkTreeView *g_tv_details;
 GtkListStore *g_ls_details;
@@ -335,7 +334,6 @@ void update_gui_state_from_crash_data(void)
     g_hash_table_foreach(g_cd, append_item_to_details_ls, NULL);
 
     load_text_to_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
-    load_text_to_text_view(g_tv_reproduce, FILENAME_REPRODUCE);
     load_text_to_text_view(g_tv_comment, FILENAME_COMMENT);
 
 //Doesn't work: shows empty page
@@ -735,7 +733,6 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
     if (pages[PAGENO_REPORT].page_widget == page)
     {
         /* User just pressed [Fwd] on comment page. Same as above */
-        save_text_from_text_view(g_tv_reproduce, FILENAME_REPRODUCE);
         save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
     }
 
@@ -773,9 +770,7 @@ static gint next_page_no(gint current_page_no, gpointer data)
 
 #if 0
     case PAGENO_BACKTRACE_APPROVAL:
-        if (get_crash_item_content_or_NULL(g_cd, FILENAME_COMMENT)
-         || get_crash_item_content_or_NULL(g_cd, FILENAME_REPRODUCE)
-        ) {
+        if (get_crash_item_content_or_NULL(g_cd, FILENAME_COMMENT)) {
             break;
         }
         current_page_no++; /* no comment, skip next page */
@@ -919,7 +914,6 @@ static void add_pages(void)
     g_lbl_report_log       = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_report_log"));
     g_tv_report_log        = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_report_log"));
     g_tv_backtrace         = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_backtrace"));
-    g_tv_reproduce         = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_reproduce"));
     g_tv_comment           = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_comment"));
     g_tv_details           = GTK_TREE_VIEW(    gtk_builder_get_object(builder, "tv_details"));
     g_box_warning_labels   = GTK_BOX(          gtk_builder_get_object(builder, "box_warning_labels"));

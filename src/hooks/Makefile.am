@@ -13,7 +13,7 @@ abrt_hook_ccpp_CPPFLAGS = \
     -Wall \
     -D_GNU_SOURCE
 abrt_hook_ccpp_LDADD = \
-    ../lib/libreport.la
+    ../lib/libreport2.la
 
 python_PYTHON = abrt.pth abrt_exception_handler.py
 EXTRA_DIST = abrt_exception_handler.py.in $(man_MANS)
