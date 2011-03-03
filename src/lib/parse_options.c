@@ -89,6 +89,7 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
 {
     int help = 0;
     int size = parse_opt_size(opt);
+    const int LONGOPT_OFFSET = 256;
 
     struct strbuf *shortopts = strbuf_new();
 
@@ -99,7 +100,10 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
     {
         curopt->name = opt[ii].long_name;
         /*curopt->flag = 0; - xzalloc did it */
-        curopt->val = opt[ii].short_name;
+        if (opt[ii].short_name)
+            curopt->val = opt[ii].short_name;
+        else
+            curopt->val = LONGOPT_OFFSET + ii;
 
         switch (opt[ii].type)
         {
@@ -168,7 +172,7 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
 
         for (ii = 0; ii < size; ++ii)
         {
-            if (opt[ii].short_name == c)
+            if (opt[ii].short_name == c || LONGOPT_OFFSET + ii == c)
             {
                 if (ii < sizeof(retval)*8)
                     retval |= (1 << ii);
