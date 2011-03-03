@@ -43,6 +43,7 @@ BuildRequires: libxml2-devel
 BuildRequires: libtar-devel
 BuildRequires: intltool
 BuildRequires: libtool
+BuildRequires: nss-devel
 %if %{?with_systemd}
 Requires: systemd-units
 %endif
