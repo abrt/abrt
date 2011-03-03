@@ -29,8 +29,8 @@
 static const char *dump_dir_name = NULL;
 static const char *coredump = NULL;
 static const char *url = "retrace01.fedoraproject.org";
-static const char *task_id = NULL;
-static const char *task_password = NULL;
+static bool ssl_allow_insecure = false;
+static bool http_show_headers = false;
 
 /* Add an entry name to the args array if the entry name exists in a
  * dump directory. The entry is added to argindex offset to the array,
@@ -51,7 +51,7 @@ static void args_add_if_exists(const char *args[],
 /* Create an archive with files required for retrace server and return
  * a file descriptor. Returns -1 if it fails.
  */
-static int create_archive(const char *dump_dir_name, bool unlink_temp)
+static int create_archive(bool unlink_temp)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
@@ -145,7 +145,6 @@ static SECStatus ssl_bad_cert_handler(void *arg, PRFileDesc *sock)
     char *target_host = SSL_RevealURL(sock);
     if (!target_host)
         target_host = xstrdup("(unknown)");
-    bool allow_insecure = (bool)arg;
     switch (err)
     {
     case SEC_ERROR_CA_CERT_INVALID:
@@ -170,7 +169,7 @@ static SECStatus ssl_bad_cert_handler(void *arg, PRFileDesc *sock)
         break;
     }
     PR_Free(target_host);
-    return allow_insecure ? SECSuccess : SECFailure;
+    return ssl_allow_insecure ? SECSuccess : SECFailure;
 }
 
 static SECStatus ssl_handshake_callback(PRFileDesc *sock, void *arg)
@@ -202,10 +201,8 @@ static char *ssl_get_password(PK11SlotInfo *slot, PRBool retry, void *arg)
     return NULL;
 }
 
-static void ssl_connect(const char *host,
-                        PRFileDesc **tcp_sock,
-                        PRFileDesc **ssl_sock,
-                        bool allow_insecure)
+static void ssl_connect(PRFileDesc **tcp_sock,
+                        PRFileDesc **ssl_sock)
 {
     const char *configdir = ssl_get_configdir();
     if (configdir)
@@ -244,7 +241,7 @@ static void ssl_connect(const char *host,
         error_msg_and_die("Failed to enable client handshake to SSL socket.");
     if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_TLS, PR_TRUE))
         error_msg_and_die("Failed to enable client handshake to SSL socket.");
-    sec_status = SSL_SetURL(*ssl_sock, host);
+    sec_status = SSL_SetURL(*ssl_sock, url);
     if (SECSuccess != sec_status)
     {
         PR_Close(*ssl_sock);
@@ -252,7 +249,7 @@ static void ssl_connect(const char *host,
     }
     char buffer[PR_NETDB_BUF_SIZE];
     PRHostEnt host_entry;
-    pr_status = PR_GetHostByName(host, buffer, sizeof(buffer), &host_entry);
+    pr_status = PR_GetHostByName(url, buffer, sizeof(buffer), &host_entry);
     if (PR_SUCCESS != pr_status)
     {
         char *error = xmalloc(PR_GetErrorTextLength());
@@ -281,7 +278,7 @@ static void ssl_connect(const char *host,
     }
     if (SECSuccess != SSL_BadCertHook(*ssl_sock,
                                       (SSLBadCertHandler)ssl_bad_cert_handler,
-                                      (void*)allow_insecure))
+                                      NULL))
     {
         PR_Close(*ssl_sock);
         error_msg_and_die("Failed to set certificate hook.");
@@ -403,22 +400,18 @@ static char *tcp_read_response(PRFileDesc *tcp_sock)
     return strbuf_free_nobuf(strbuf);
 }
 
-static int create(const char *dump_dir,
-                  const char *coredump,
-                  bool ssl_allow_insecure,
-                  bool delete_temp_archive,
-                  bool http_show_headers,
+static int create(bool delete_temp_archive,
                   char **task_id,
                   char **task_password)
 {
-    int tempfd = create_archive(dump_dir_name, delete_temp_archive);
+    int tempfd = create_archive(delete_temp_archive);
     if (-1 == tempfd)
         return 1;
     /* Get the file size. */
     struct stat tempfd_buf;
     fstat(tempfd, &tempfd_buf);
     PRFileDesc *tcp_sock, *ssl_sock;
-    ssl_connect(url, &tcp_sock, &ssl_sock, ssl_allow_insecure);
+    ssl_connect(&tcp_sock, &ssl_sock);
     /* Upload the archive. */
     struct strbuf *http_request = strbuf_new();
     strbuf_append_strf(http_request,
@@ -486,29 +479,24 @@ static int create(const char *dump_dir,
     return result;
 }
 
-static int run_create(const char *dump_dir,
-                      const char *coredump,
-                      bool ssl_allow_insecure,
-                      bool delete_temp_archive,
-                      bool http_show_headers)
+static int run_create(bool delete_temp_archive)
 {
     char *task_id, *task_password;
-    int result = create(dump_dir, coredump, ssl_allow_insecure, delete_temp_archive,
-                        http_show_headers, &task_id, &task_password);
+    int result = create(delete_temp_archive, &task_id, &task_password);
+    if (0 != result)
+        return result;
     printf("Task Id: %s\nTask Password: %s\n", task_id, task_password);
     free(task_id);
     free(task_password);
-    return result;
+    return 0;
 }
 
 static void status(const char *task_id,
                    const char *task_password,
-                   bool ssl_allow_insecure,
-                   bool http_show_headers,
                    char **task_status)
 {
     PRFileDesc *tcp_sock, *ssl_sock;
-    ssl_connect(url, &tcp_sock, &ssl_sock, ssl_allow_insecure);
+    ssl_connect(&tcp_sock, &ssl_sock);
     struct strbuf *http_request = strbuf_new();
     strbuf_append_strf(http_request,
                        "GET /%s HTTP/1.1\r\n"
@@ -542,26 +530,19 @@ static void status(const char *task_id,
     ssl_disconnect(ssl_sock);
 }
 
-static void run_status(const char *task_id,
-                       const char *task_password,
-                       bool ssl_allow_insecure,
-                       bool http_show_headers)
+static void run_status(const char *task_id, const char *task_password)
 {
     char *task_status;
-    status(task_id, task_password, ssl_allow_insecure,
-           http_show_headers, &task_status);
+    status(task_id, task_password, &task_status);
     printf("Task Status: %s\n", task_status);
     free(task_status);
 }
 
-static int run_backtrace(const char *task_id,
-                         const char *task_password,
-                         bool ssl_allow_insecure,
-                         bool http_show_headers)
+static void backtrace(const char *task_id, const char *task_password,
+                      char **backtrace)
 {
     PRFileDesc *tcp_sock, *ssl_sock;
-    ssl_connect(url, &tcp_sock, &ssl_sock,
-                ssl_allow_insecure);
+    ssl_connect(&tcp_sock, &ssl_sock);
     struct strbuf *http_request = strbuf_new();
     strbuf_append_strf(http_request,
                        "GET /%s/backtrace HTTP/1.1\r\n"
@@ -591,25 +572,34 @@ static int run_backtrace(const char *task_id,
     char *headers_end = strstr(http_response, "\r\n\r\n");
     if (!headers_end)
         error_msg_and_die("Invalid response from server: missing HTTP message body.");
-    for (char *c = headers_end + 4; *c; ++c)
+    int length = strlen(http_response) + (headers_end - http_response) + strlen("\r\n\r\n");
+    /* Slightly more space than needed might be allocated, because
+     * '\r' characters are not copied to the backtrace. */
+    *backtrace = xmalloc(length);
+    char *b = *backtrace;
+    for (char *c = headers_end + strlen("\r\n\r\n"); *c; ++c)
     {
         if (*c == '\r')
             continue;
-        putc(*c, stdout);
+        *b = *c;
+        ++b;
     }
     free(http_response);
     ssl_disconnect(ssl_sock);
-    return 0;
 }
 
-static int run_log(const char *task_id,
-                   const char *task_password,
-                   bool ssl_allow_insecure,
-                   bool http_show_headers)
+static void run_backtrace(const char *task_id, const char *task_password)
+{
+    char *backtrace_text;
+    backtrace(task_id, task_password, &backtrace_text);
+    printf("%s", backtrace_text);
+    free(backtrace_text);
+}
+
+static void run_log(const char *task_id, const char *task_password)
 {
     PRFileDesc *tcp_sock, *ssl_sock;
-    ssl_connect(url, &tcp_sock, &ssl_sock,
-                ssl_allow_insecure);
+    ssl_connect(&tcp_sock, &ssl_sock);
     struct strbuf *http_request = strbuf_new();
     strbuf_append_strf(http_request,
                        "GET /%s/log HTTP/1.1\r\n"
@@ -647,59 +637,63 @@ static int run_log(const char *task_id,
     }
     free(http_response);
     ssl_disconnect(ssl_sock);
-    return 0;
 }
 
-
-static int run_batch(const char *dump_dir,
-                     const char *coredump,
-                     bool ssl_allow_insecure,
-                     bool delete_temp_archive,
-                     bool http_show_headers)
+static int run_batch(bool delete_temp_archive)
 {
     char *task_id, *task_password;
-    int retcode = create(dump_dir, coredump, ssl_allow_insecure,
-                         delete_temp_archive, http_show_headers,
-                         &task_id, &task_password);
+    int retcode = create(delete_temp_archive, &task_id, &task_password);
     if (0 != retcode)
         return retcode;
     char *task_status = xstrdup("");
     while (0 != strncmp(task_status, "FINISHED", strlen("finished")))
     {
         free(task_status);
-        status(task_id, task_password, ssl_allow_insecure,
-               http_show_headers, &task_status);
+        status(task_id, task_password, &task_status);
         puts(task_status);
     }
     if (0 == strcmp(task_status, "FINISHED_SUCCESS"))
     {
-        retcode = run_backtrace(task_id, task_password,
-                                ssl_allow_insecure, http_show_headers);
+        char *backtrace_text;
+        backtrace(task_id, task_password, &backtrace_text);
+        if (dump_dir_name)
+        {
+            char *backtrace_path = xasprintf("%s/backtrace", dump_dir_name);
+            int backtrace_fd = xopen3(backtrace_path, O_WRONLY | O_CREAT | O_TRUNC, 0640);
+            xwrite(backtrace_fd, backtrace_text, strlen(backtrace_text));
+            close(backtrace_fd);
+            free(backtrace_path);
+        }
+        else
+            printf("%s", backtrace_text);
+        free(backtrace_text);
     }
     else
-    {
-        retcode = run_log(task_id, task_password, ssl_allow_insecure,
-                          http_show_headers);
-    }
+        run_log(task_id, task_password);
     free(task_status);
     free(task_id);
     free(task_password);
-    return retcode;
+    return 0;
 }
 
 int main(int argc, char **argv)
 {
+    const char *task_id = NULL;
+    const char *task_password = NULL;
+
     enum {
         OPT_verbose   = 1 << 0,
         OPT_syslog    = 1 << 1,
         OPT_insecure  = 1 << 2,
         OPT_url       = 1 << 3,
         OPT_headers   = 1 << 4,
-        OPT_dir       = 1 << 5,
-        OPT_core      = 1 << 6,
-        OPT_no_unlink = 1 << 7,
-        OPT_task      = 1 << 8,
-        OPT_password  = 1 << 9
+        OPT_group_1   = 1 << 5,
+        OPT_dir       = 1 << 6,
+        OPT_core      = 1 << 7,
+        OPT_no_unlink = 1 << 8,
+        OPT_group_2   = 1 << 9,
+        OPT_task      = 1 << 10,
+        OPT_password  = 1 << 11
     };
 
     /* Keep enum above and order of options below in sync! */
@@ -745,19 +739,19 @@ int main(int argc, char **argv)
         operation = argv[optind];
     else
         show_usage_and_die(usage, options);
+    ssl_allow_insecure = opts & OPT_insecure;
+    http_show_headers = opts & OPT_headers;
     if (0 == strcasecmp(operation, "create"))
     {
         if (!dump_dir_name && !coredump)
             error_msg_and_die("Either dump directory or coredump is needed.");
-        return run_create(dump_dir_name, coredump, opts & OPT_insecure,
-                          opts & OPT_no_unlink, opts & OPT_headers);
+        return run_create(0 == (opts & OPT_no_unlink));
     }
     else if (0 == strcasecmp(operation, "batch"))
     {
         if (!dump_dir_name && !coredump)
             error_msg_and_die("Either dump directory or coredump is needed.");
-        return run_batch(dump_dir_name, coredump, opts & OPT_insecure,
-                         opts & OPT_no_unlink, opts & OPT_headers);
+        return run_batch(0 == (opts & OPT_no_unlink));
     }
     else if (0 == strcasecmp(operation, "status"))
     {
@@ -765,8 +759,7 @@ int main(int argc, char **argv)
             error_msg_and_die("Task id is needed.");
         if (!task_password)
             error_msg_and_die("Task password is needed.");
-        run_status(task_id, task_password, opts & OPT_insecure,
-                   opts & OPT_headers);
+        run_status(task_id, task_password);
     }
     else if (0 == strcasecmp(operation, "backtrace"))
     {
@@ -774,8 +767,7 @@ int main(int argc, char **argv)
             error_msg_and_die("Task id is needed.");
         if (!task_password)
             error_msg_and_die("Task password is needed.");
-        return run_backtrace(task_id, task_password, opts & OPT_insecure,
-                             opts & OPT_headers);
+        run_backtrace(task_id, task_password);
     }
     else if (0 == strcasecmp(operation, "log"))
     {
@@ -783,8 +775,7 @@ int main(int argc, char **argv)
             error_msg_and_die("Task id is needed.");
         if (!task_password)
             error_msg_and_die("Task password is needed.");
-        return run_log(task_id, task_password, opts & OPT_insecure,
-                       opts & OPT_headers);
+        run_log(task_id, task_password);
     }
     else
         error_msg_and_die("Unknown operation: %s", operation);
