@@ -172,8 +172,6 @@ static void write_crash_report(crash_data_t *report, FILE *fp)
 
     write_crash_report_field(fp, report, FILENAME_COMMENT,
             _("# Describe the circumstances of this crash below"));
-    write_crash_report_field(fp, report, FILENAME_REPRODUCE,
-            _("# How to reproduce the crash?"));
     write_crash_report_field(fp, report, FILENAME_BACKTRACE,
             _("# Backtrace\n# Check that it does not contain any sensitive data (passwords, etc.)"));
     write_crash_report_field(fp, report, FILENAME_DUPHASH, "# DUPHASH");
@@ -255,7 +253,6 @@ static int read_crash_report(crash_data_t *report, const char *text)
 {
     int result = 0;
     result |= read_crash_report_field(text, report, FILENAME_COMMENT);
-    result |= read_crash_report_field(text, report, FILENAME_REPRODUCE);
     result |= read_crash_report_field(text, report, FILENAME_BACKTRACE);
     result |= read_crash_report_field(text, report, FILENAME_DUPHASH);
     result |= read_crash_report_field(text, report, FILENAME_ARCHITECTURE);
@@ -272,15 +269,12 @@ static int read_crash_report(crash_data_t *report, const char *text)
 
 /**
  * Ensures that the fields needed for editor are present in the crash data.
- * Fields: comments, how to reproduce.
+ * Fields: comments.
  */
 static void create_fields_for_editor(crash_data_t *crash_data)
 {
     if (!get_crash_data_item_or_NULL(crash_data, FILENAME_COMMENT))
         add_to_crash_data_ext(crash_data, FILENAME_COMMENT, "", CD_FLAG_TXT + CD_FLAG_ISEDITABLE);
-
-    if (!get_crash_data_item_or_NULL(crash_data, FILENAME_REPRODUCE))
-        add_to_crash_data_ext(crash_data, FILENAME_REPRODUCE, "1. \n2. \n3. \n", CD_FLAG_TXT + CD_FLAG_ISEDITABLE);
 }
 
 /**
@@ -725,18 +719,15 @@ int report(const char *dump_dir_name, int flags)
             free(events_as_lines);
             return 1;
         }
-        /* Save comment, "how to reproduce", backtrace */
+        /* Save comment, backtrace */
         dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (dd)
         {
 //TODO: we should iterate through crash_data and modify all modifiable fields
             const char *comment = get_crash_item_content_or_NULL(crash_data, FILENAME_COMMENT);
-            const char *reproduce = get_crash_item_content_or_NULL(crash_data, FILENAME_REPRODUCE);
             const char *backtrace = get_crash_item_content_or_NULL(crash_data, FILENAME_BACKTRACE);
             if (comment)
                 dd_save_text(dd, FILENAME_COMMENT, comment);
-            if (reproduce)
-                dd_save_text(dd, FILENAME_REPRODUCE, reproduce);
             if (backtrace)
                 dd_save_text(dd, FILENAME_BACKTRACE, backtrace);
             dd_close(dd);

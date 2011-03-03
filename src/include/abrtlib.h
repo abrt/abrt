@@ -229,8 +229,8 @@ char *iso_date_string(time_t *pt);
 
 #define make_description_bz abrt_make_description_bz
 char* make_description_bz(crash_data_t *crash_data);
-#define make_description_reproduce_comment abrt_make_description_reproduce_comment
-char* make_description_reproduce_comment(crash_data_t *crash_data);
+#define make_description_comment abrt_make_description_comment
+char* make_description_comment(crash_data_t *crash_data);
 #define make_description_logger abrt_make_description_logger
 char* make_description_logger(crash_data_t *crash_data);
 #define make_description_mailx abrt_make_description_mailx

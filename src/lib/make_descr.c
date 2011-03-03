@@ -140,20 +140,13 @@ char* make_description_bz(crash_data_t *crash_data)
             }
             if (*bl)
                 continue; /* blacklisted */
-            if (strcmp(content, "1.\n2.\n3.\n") == 0)
-                continue; /* user did not change default "How to reproduce" */
 
             if (strlen(content) <= CD_TEXT_ATT_SIZE)
             {
                 /* Add small (less than few kb) text items inline */
                 bool was_multiline = 0;
                 char *tmp = NULL;
-                add_content(&was_multiline,
-                        &tmp,
-			/* "reproduce: blah" looks ugly, fixing: */
-                        (strcmp(name, FILENAME_REPRODUCE) == 0) ? "How to reproduce" : name,
-                        content
-                );
+                add_content(&was_multiline, &tmp, name, content);
 
                 if (was_multiline)
                 {
@@ -233,8 +226,6 @@ char* make_description_logger(crash_data_t *crash_data)
             }
             if (*bl)
                 continue; /* blacklisted */
-            if (strcmp(content, "1.\n2.\n3.\n") == 0)
-                continue; /* user did not change default "How to reproduce" */
 
             bool was_multiline = 0;
             char *tmp = NULL;
@@ -262,21 +253,10 @@ char* make_description_logger(crash_data_t *crash_data)
     return strbuf_free_nobuf(buf_dsc);
 }
 
-char* make_description_reproduce_comment(crash_data_t *crash_data)
+char* make_description_comment(crash_data_t *crash_data)
 {
-    char *repro = NULL;
     char *comment = NULL;
     struct crash_item *value;
-
-    value = get_crash_data_item_or_NULL(crash_data, FILENAME_REPRODUCE);
-    if (value)
-    {
-        if (value->content[0]
-         && strcmp(value->content, "1.\n2.\n3.\n") != 0
-        ) {
-            repro = xasprintf("\n\nHow to reproduce\n-----\n%s", value->content);
-        }
-    }
 
     value = get_crash_data_item_or_NULL(crash_data, FILENAME_COMMENT);
     if (value)
@@ -285,18 +265,14 @@ char* make_description_reproduce_comment(crash_data_t *crash_data)
             comment = xasprintf("\n\nComment\n-----\n%s", value->content);
     }
 
-    if (!repro && !comment)
+    if (!comment)
         return NULL;
 
     struct strbuf *buf_dsc = strbuf_new();
 
-    if (repro)
-        strbuf_append_str(buf_dsc, repro);
-
     if (comment)
         strbuf_append_str(buf_dsc, comment);
 
-    free(repro);
     free(comment);
 
     return strbuf_free_nobuf(buf_dsc);

@@ -854,7 +854,7 @@ static void report_to_bugzilla(
             throw_if_xml_fault_occurred(&bz_server.env);
         }
 
-        char *dsc = make_description_reproduce_comment(crash_data);
+        char *dsc = make_description_comment(crash_data);
         if (dsc)
         {
             const char* package    = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);

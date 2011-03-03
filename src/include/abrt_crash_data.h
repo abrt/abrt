@@ -52,7 +52,6 @@
 #define FILENAME_PACKAGE      "package"
 #define FILENAME_COMPONENT    "component"
 #define FILENAME_COMMENT      "comment"
-#define FILENAME_REPRODUCE    "reproduce"
 #define FILENAME_RATING       "rating"
 #define FILENAME_HOSTNAME     "hostname"
 // Optional. Set to "1" by abrt-handle-upload for every unpacked crashdump

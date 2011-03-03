@@ -238,13 +238,12 @@ report_status_t Report(crash_data_t *client_report,
         }
     }
 
-    // Save comment, "how to reproduce", backtrace
+    // Save comment, backtrace
 //TODO: we should iterate through stored_report and modify all
 //modifiable fields which have new data in client_report
     const char *comment = get_crash_item_content_or_NULL(client_report, FILENAME_COMMENT);
-    const char *reproduce = get_crash_item_content_or_NULL(client_report, FILENAME_REPRODUCE);
     const char *backtrace = get_crash_item_content_or_NULL(client_report, FILENAME_BACKTRACE);
-    if (comment || reproduce || backtrace)
+    if (comment || backtrace)
     {
         struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (dd)
@@ -253,11 +252,6 @@ report_status_t Report(crash_data_t *client_report,
             {
                 dd_save_text(dd, FILENAME_COMMENT, comment);
                 add_to_crash_data_ext(stored_report, FILENAME_COMMENT, comment, CD_FLAG_TXT + CD_FLAG_ISEDITABLE);
-            }
-            if (reproduce)
-            {
-                dd_save_text(dd, FILENAME_REPRODUCE, reproduce);
-                add_to_crash_data_ext(stored_report, FILENAME_REPRODUCE, reproduce, CD_FLAG_TXT + CD_FLAG_ISEDITABLE);
             }
             if (backtrace)
             {
