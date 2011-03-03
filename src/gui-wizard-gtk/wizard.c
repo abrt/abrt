@@ -18,6 +18,7 @@ GtkContainer *g_container_details1;
 GtkContainer *g_container_details2;
 
 GtkLabel *g_lbl_cd_reason;
+GtkLabel *g_lbl_dirname;
 GtkTextView *g_tv_backtrace;
 GtkTextView *g_tv_comment;
 GtkTreeView *g_tv_details;
@@ -37,11 +38,11 @@ static PangoFontDescription *monospace_font;
 
 
 /* THE PAGE FLOW
+ * page_5: user comments
  * page_1: analyze action selection
  * page_2: analyze progress
  * page_3: reporter selection
  * page_4: backtrace editor
- * page_5: how to + user comments
  * page_6: summary
  * page_7: reporting progress
  */
@@ -51,22 +52,22 @@ static PangoFontDescription *monospace_font;
  * instead of strcmp.
  */
 static const gchar PAGE_SUMMARY[]            = "page_0";
-static const gchar PAGE_ANALYZE_SELECTOR[]   = "page_1";
-static const gchar PAGE_ANALYZE_PROGRESS[]   = "page_2";
-static const gchar PAGE_REPORTER_SELECTOR[]  = "page_3";
-static const gchar PAGE_BACKTRACE_APPROVAL[] = "page_4";
-static const gchar PAGE_HOWTO[]              = "page_5";
+static const gchar PAGE_COMMENT[]            = "page_1";
+static const gchar PAGE_ANALYZE_SELECTOR[]   = "page_2";
+static const gchar PAGE_ANALYZE_PROGRESS[]   = "page_3";
+static const gchar PAGE_REPORTER_SELECTOR[]  = "page_4";
+static const gchar PAGE_BACKTRACE_APPROVAL[] = "page_5";
 static const gchar PAGE_REPORT[]             = "page_6";
 static const gchar PAGE_REPORT_PROGRESS[]    = "page_7";
 
 static const gchar *const page_names[] =
 {
     PAGE_SUMMARY,
+    PAGE_COMMENT,
     PAGE_ANALYZE_SELECTOR,
     PAGE_ANALYZE_PROGRESS,
     PAGE_REPORTER_SELECTOR,
     PAGE_BACKTRACE_APPROVAL,
-    PAGE_HOWTO,
     PAGE_REPORT,
     PAGE_REPORT_PROGRESS,
     NULL
@@ -91,6 +92,7 @@ static page_obj_t pages[] =
      */
     /* glade element name     , on-screen text          , type */
     { PAGE_SUMMARY            , "Problem description"   , GTK_ASSISTANT_PAGE_CONTENT  },
+    { PAGE_COMMENT    , "Provide additional information", GTK_ASSISTANT_PAGE_CONTENT  },
     { PAGE_ANALYZE_SELECTOR   , "Select analyzer"       , GTK_ASSISTANT_PAGE_CONFIRM  },
     { PAGE_ANALYZE_PROGRESS   , "Analyzing"             , GTK_ASSISTANT_PAGE_CONTENT  },
     /* Some reporters don't need backtrace, we can skip bt page for them.
@@ -98,7 +100,6 @@ static page_obj_t pages[] =
      */
     { PAGE_REPORTER_SELECTOR  , "Select reporter"       , GTK_ASSISTANT_PAGE_CONTENT  },
     { PAGE_BACKTRACE_APPROVAL , "Review the backtrace"  , GTK_ASSISTANT_PAGE_CONTENT  },
-    { PAGE_HOWTO      , "Provide additional information", GTK_ASSISTANT_PAGE_CONTENT  },
     { PAGE_REPORT             , "Confirm data to report", GTK_ASSISTANT_PAGE_CONFIRM  },
     /* Was GTK_ASSISTANT_PAGE_PROGRESS */
     { PAGE_REPORT_PROGRESS    , "Reporting"             , GTK_ASSISTANT_PAGE_SUMMARY  },
@@ -327,6 +328,8 @@ static void append_item_to_details_ls(gpointer name, gpointer value, gpointer da
 
 void update_gui_state_from_crash_data(void)
 {
+    gtk_label_set_text(g_lbl_dirname, g_dump_dir_name);
+
     const char *reason = get_crash_item_content_or_NULL(g_cd, FILENAME_REASON);
     gtk_label_set_text(g_lbl_cd_reason, reason ? reason : _("(no description)"));
 
@@ -724,13 +727,13 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
         check_backtrace_and_allow_send();
     }
 
-    if (pages[PAGENO_HOWTO].page_widget == page)
+    if (pages[PAGENO_BACKTRACE_APPROVAL + 1].page_widget == page)
     {
         /* User just pressed [Fwd] on backtrace page. Save backtrace text if changed */
         save_text_from_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
     }
 
-    if (pages[PAGENO_REPORT].page_widget == page)
+    if (pages[PAGENO_COMMENT + 1].page_widget == page)
     {
         /* User just pressed [Fwd] on comment page. Same as above */
         save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
@@ -752,36 +755,34 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
 
 static gint next_page_no(gint current_page_no, gpointer data)
 {
+ again:
+    current_page_no++;
     switch (current_page_no)
     {
-    case PAGENO_SUMMARY:
+#if 0
+    case PAGENO_COMMENT:
+        if (get_crash_item_content_or_NULL(g_cd, FILENAME_COMMENT))
+            break;
+        goto again; /* no comment, skip next page */
+#endif
+
+    case PAGENO_BACKTRACE_APPROVAL:
+        if (get_crash_item_content_or_NULL(g_cd, FILENAME_BACKTRACE))
+            break;
+        goto again; /* no backtrace, skip next page */
+
+    case PAGENO_ANALYZE_SELECTOR:
         if (!g_analyze_events[0])
         {
             //TODO: if (!g_reporter_events[0]) /* no reporters available */ then what?
             return PAGENO_REPORTER_SELECTOR; /* skip analyze pages */
         }
         break;
-
-    case PAGENO_REPORTER_SELECTOR:
-        if (get_crash_item_content_or_NULL(g_cd, FILENAME_BACKTRACE))
-            break;
-        current_page_no++; /* no backtrace, skip next page */
-        /* fall through */
-
-#if 0
-    case PAGENO_BACKTRACE_APPROVAL:
-        if (get_crash_item_content_or_NULL(g_cd, FILENAME_COMMENT)) {
-            break;
-        }
-        current_page_no++; /* no comment, skip next page */
-        /* fall through */
-#endif
-
     }
 
-    return current_page_no + 1;
+    VERB2 log("next page_no:%d", current_page_no);
+    return current_page_no;
 }
-
 
 
 static gboolean highlight_search(gpointer user_data)
@@ -907,6 +908,7 @@ static void add_pages(void)
     }
     /* Set pointers to objects we might need to work with */
     g_lbl_cd_reason        = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_cd_reason"));
+    g_lbl_dirname          = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_dirname"));
     g_box_analyzers        = GTK_BOX(          gtk_builder_get_object(builder, "vb_analyzers"));
     g_lbl_analyze_log      = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_analyze_log"));
     g_tv_analyze_log       = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_analyze_log"));

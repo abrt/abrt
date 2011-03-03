@@ -1,8 +1,8 @@
-# libreport2 - the stuff shared among most of abrt (like xmalloc, logging)
+# libreport - the stuff shared among most of abrt (like xmalloc, logging)
 # libabrt_dbus - daemon, cli and applet use this
 # libabrt_web - for abrt-action-foo where foo deals with network/web/ftp/...
 lib_LTLIBRARIES = \
-    libreport2.la \
+    libreport.la \
     libabrt_dbus.la \
     libabrt_web.la
 
@@ -10,7 +10,7 @@ lib_LTLIBRARIES = \
 # time.cpp
 # xconnect.cpp
 
-libreport2_la_SOURCES = \
+libreport_la_SOURCES = \
     xfuncs.c \
     encbase64.c \
     binhex.c \
@@ -44,7 +44,7 @@ libreport2_la_SOURCES = \
     parse_release.c \
     parse_options.c parse_options.h \
     steal_directory.c
-libreport2_la_CPPFLAGS = \
+libreport_la_CPPFLAGS = \
     -Wall -Werror \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
@@ -55,9 +55,9 @@ libreport2_la_CPPFLAGS = \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE
-libreport2_la_LDFLAGS = \
+libreport_la_LDFLAGS = \
     -version-info 0:1:0
-libreport2_la_LIBADD = \
+libreport_la_LIBADD = \
     $(GLIB_LIBS)
 
 libabrt_dbus_la_SOURCES = \
