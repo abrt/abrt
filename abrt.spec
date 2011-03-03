@@ -411,12 +411,12 @@ fi
 
 %files -n libreport
 %defattr(-,root,root,-)
-%{_libdir}/libreport.so.*
+%{_libdir}/libreport2.so.*
 
 %files -n libreport-devel
 %defattr(-,root,root,-)
 %{_includedir}/report/*
-%{_libdir}/libreport.so
+%{_libdir}/libreport2.so
 
 %files -n libreport-python
 %defattr(-,root,root,-)

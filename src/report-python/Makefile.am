@@ -29,7 +29,7 @@ _pyreport_la_LDFLAGS = \
     -avoid-version \
     -export-symbols-regex init_pyreport
 _pyreport_la_LIBADD = \
-    ../lib/libreport.la
+    ../lib/libreport2.la
 
 # report compat:
 
