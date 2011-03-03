@@ -7,11 +7,11 @@ SCRIPTDIR="/usr/share/abrt-retrace"
 SRCDIR="."
 WORKDIR="/var/spool/abrt-retrace"
 
-INTFILES="$SRCDIR/interface/create.wsgi $SRCDIR/interface/status.wsgi \
-          $SRCDIR/interface/log.wsgi $SRCDIR/interface/backtrace.wsgi"
-LIBFILES="$SRCDIR/lib/retrace.py"
-REPOSYNCFILES="$SRCDIR/reposync/abrt-retrace-reposync"
-WORKERFILES="$SRCDIR/worker/worker.py $SRCDIR/worker/coredump2packages.py"
+FILES="$SRCDIR/create.wsgi $SRCDIR/status.wsgi \
+       $SRCDIR/log.wsgi $SRCDIR/backtrace.wsgi \
+       $SRCDIR/retrace.py $SRCDIR/abrt-retrace-reposync \
+       $SRCDIR/worker.py $SRCDIR/coredump2packages.py \
+       $SRCDIR/abrt-retrace-cleanup.py"
 
 if [ ! $EUID = "0" ]
 then
@@ -43,9 +43,9 @@ then
   exit 5
 fi
 
-if ! rpm -q yum-utils > /dev/null 2>&1
+if ! rpm -q elfutils > /dev/null 2>&1
 then
-  echo "yum-utils package is required to install Retrace Server"
+  echo "elfutils package is required to install Retrace Server"
   exit 6
 fi
 
@@ -143,7 +143,7 @@ then
   fi
 fi
 
-if ! gcc -pedantic -Wall -Wextra -Werror -o "/usr/sbin/abrt-retrace-worker" "$SRCDIR/worker/worker.c" \
+if ! gcc -pedantic -Wall -Wextra -Werror -o "/usr/sbin/abrt-retrace-worker" "$SRCDIR/worker.c" \
    || ! chmod u+s "/usr/sbin/abrt-retrace-worker"
 then
   echo "Error compiling abrt-retrace-worker"
@@ -152,7 +152,7 @@ fi
 
 echo "abrt-retrace-worker compiled"
 
-for FILE in $LIBFILES
+for FILE in $FILES
 do
   if cp "$FILE" "$SCRIPTDIR"
   then
@@ -163,58 +163,26 @@ do
   fi
 done
 
-for FILE in $INTFILES
-do
-  if cp "$FILE" "$SCRIPTDIR"
-  then
-    echo "Installed '$FILE'"
-  else
-    echo "Error installing '$FILE'"
-    exit 20
-  fi
-done
-
-for FILE in $WORKERFILES
-do
-  if cp "$FILE" "$SCRIPTDIR"
-  then
-    echo "Installed '$FILE'"
-  else
-    echo "Error installing '$FILE'"
-    exit 21
-  fi
-done
-
-for FILE in $REPOSYNCFILES
-do
-  if cp "$FILE" "$SCRIPTDIR"
-  then
-    echo "Installed '$FILE'"
-  else
-    echo "Error installing '$FILE'"
-    exit 22
-  fi
-done
-
-if cp "$SRCDIR/config/retrace.conf" "/etc/abrt/retrace.conf"
+if cp "$SRCDIR/retrace.conf" "/etc/abrt/retrace.conf"
 then
-  echo "Copied '$SRCDIR/config/retrace.conf' to '/etc/abrt/retrace.conf'"
+  echo "Copied '$SRCDIR/retrace.conf' to '/etc/abrt/retrace.conf'"
 else
-  echo "Error copying '$SRCDIR/config/retrace.conf'"
+  echo "Error copying '$SRCDIR/retrace.conf'"
   exit 23
 fi
 
-if cp "$SRCDIR/config/retrace.repo" "/etc/yum.repos.d/retrace.repo" \
-   && cp "$SRCDIR/config/retrace-local.repo" "/etc/yum.repos.d/retrace-local.repo"
+if cp "$SRCDIR/retrace.repo" "/etc/yum.repos.d/retrace.repo" \
+   && cp "$SRCDIR/retrace-local.repo" "/etc/yum.repos.d/retrace-local.repo"
 then
-  echo "Copied '$SRCDIR/config/retrace.repo' to '/etc/yum.repos.d/retrace.repo'"
+  echo "Copied '$SRCDIR/retrace.repo' to '/etc/yum.repos.d/retrace.repo'"
+  echo "Copied '$SRCDIR/retrace-local.repo' to '/etc/yum.repos.d/retrace-local.repo'"
   echo "Running initial repository download. This will take some time."
-  "$SCRIPTDIR/abrt-retrace-reposync" fedora 14 i686
-  createrepo "$REPODIR/fedora-14-i686" > /dev/null
-  createrepo "$REPODIR/fedora-14-i686-debuginfo" > /dev/null
-  "$SCRIPTDIR/abrt-retrace-reposync" fedora 14 x86_64
-  createrepo "$REPODIR/fedora-14-x86_64" > /dev/null
-  createrepo "$REPODIR/fedora-14-x86_64-debuginfo" > /dev/null
+#  "$SCRIPTDIR/abrt-retrace-reposync" fedora 14 i686
+#  createrepo "$REPODIR/fedora-14-i686" > /dev/null
+#  createrepo "$REPODIR/fedora-14-i686-debuginfo" > /dev/null
+#  "$SCRIPTDIR/abrt-retrace-reposync" fedora 14 x86_64
+#  createrepo "$REPODIR/fedora-14-x86_64" > /dev/null
+#  createrepo "$REPODIR/fedora-14-x86_64-debuginfo" > /dev/null
 #  "$SCRIPTDIR/abrt-retrace-reposync" fedora 15 i686
 #  createrepo "$REPODIR/fedora-15-i686"
 #  createrepo "$REPODIR/fedora-15-i686-debuginfo"
@@ -222,16 +190,16 @@ then
 #  createrepo "$REPODIR/fedora-15-x86_64"
 #  createrepo "$REPODIR/fedora-15-x86_64-debuginfo"
 else
-  echo "Error copying '$SRCDIR/config/retrace.repo'"
+  echo "Error copying '$SRCDIR/retrace.repo' or '$SRCDIR/retrace-local.repo'"
   exit 24
 fi
 
-if cp "$SRCDIR/config/retrace_httpd.conf" "/etc/httpd/conf.d/retrace.conf"
+if cp "$SRCDIR/retrace_httpd.conf" "/etc/httpd/conf.d/retrace.conf"
 then
-  echo "Copied '$SRCDIR/config/retrace_httpd.conf' to '/etc/httpd/conf.d/retrace.conf'"
+  echo "Copied '$SRCDIR/retrace_httpd.conf' to '/etc/httpd/conf.d/retrace.conf'"
   service httpd restart
 else
-  echo "Error copying '$SRCDIR/config/retrace_httpd.conf'"
+  echo "Error copying '$SRCDIR/retrace_httpd.conf'"
   exit 25
 fi
 
