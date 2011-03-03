@@ -18,6 +18,7 @@ GtkContainer *g_container_details1;
 GtkContainer *g_container_details2;
 
 GtkLabel *g_lbl_cd_reason;
+GtkLabel *g_lbl_dirname;
 GtkTextView *g_tv_backtrace;
 GtkTextView *g_tv_comment;
 GtkTreeView *g_tv_details;
@@ -327,6 +328,8 @@ static void append_item_to_details_ls(gpointer name, gpointer value, gpointer da
 
 void update_gui_state_from_crash_data(void)
 {
+    gtk_label_set_text(g_lbl_dirname, g_dump_dir_name);
+
     const char *reason = get_crash_item_content_or_NULL(g_cd, FILENAME_REASON);
     gtk_label_set_text(g_lbl_cd_reason, reason ? reason : _("(no description)"));
 
@@ -907,6 +910,7 @@ static void add_pages(void)
     }
     /* Set pointers to objects we might need to work with */
     g_lbl_cd_reason        = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_cd_reason"));
+    g_lbl_dirname          = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_dirname"));
     g_box_analyzers        = GTK_BOX(          gtk_builder_get_object(builder, "vb_analyzers"));
     g_lbl_analyze_log      = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_analyze_log"));
     g_tv_analyze_log       = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_analyze_log"));
