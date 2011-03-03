@@ -2,13 +2,13 @@
 
 if      [ $3 ] && [ ! $4 ] \
    &&   [ $1 = "fedora" ] \
-   && ( [ $3 = "i686" ] || [ $3 = "x86_64" ] )
+   && ( [ $3 = "i386" ] || [ $3 = "i686" ] || [ $3 = "x86_64" ] )
 then
     LOG="/var/log/abrt-retrace/$1-$2-$3.log"
     LOCK="/var/lock/subsys/abrt-retrace-$1-$2-$3"
     REPODIR="/var/cache/abrt-retrace/"
 
-    REPODIR_CUSTOM=`cat "/etc/abrt/retrace.conf" | grep "RepoDir" | sed "s/^ *RepoDir *= *//"`
+    REPODIR_CUSTOM=`cat "/etc/abrt/retrace.conf" | grep "^ *RepoDir *= *" | sed "s/^ *RepoDir *= *//"`
     if [ -d $REPODIR_CUSTOM ] || mkdir -p $REPODIR_CUSTOM > /dev/null 2>&1
     then
         REPODIR="$REPODIR_CUSTOM"
@@ -30,20 +30,49 @@ then
 
     cd "$REPODIR"
 
+    if [ $3 = "i686" ]
+    then
+        REPOARCH="i386"
+    else
+        REPOARCH=$3
+    fi
+
+    # F15 pushes updates directly to fedora repo
+    if [ $1 = "fedora" ] && [ $2 = "15" ]
+    then
+        reposync -a $3 \
+          --repoid="$1-$2-$REPOARCH" \
+          --repoid="$1-$2-$REPOARCH-debuginfo" \
+        | grep "Downloading" \
+        | sed -e "s/^\[\([^:]*\).*\] Downloading /\1 /" \
+        | sed -e "s/Packages\///" \
+        >> "$LOG"
+
+        createrepo "$1-$2-$REPOARCH" > /dev/null
+        createrepo "$1-$2-$REPOARCH-debuginfo" > /dev/null
+    else
+        reposync -a $3 \
+          --repoid="$1-$2-$REPOARCH-updates" \
+          --repoid="$1-$2-$REPOARCH-updates-debuginfo" \
+        | grep "Downloading" \
+        | sed -e "s/^\[\([^:]*\).*\] Downloading /\1 /" \
+        | sed -e "s/Packages\///" \
+        >> "$LOG"
+
+        createrepo "$1-$2-$REPOARCH-updates" > /dev/null
+        createrepo "$1-$2-$REPOARCH-updates-debuginfo" > /dev/null
+    fi
+
     reposync -a $3 \
-      --repoid="$1-$2-$3-updates" \
-      --repoid="$1-$2-$3-updates-debuginfo" \
-      --repoid="$1-$2-$3-updates-testing" \
-      --repoid="$1-$2-$3-updates-testing-debuginfo" \
+      --repoid="$1-$2-$REPOARCH-updates-testing" \
+      --repoid="$1-$2-$REPOARCH-updates-testing-debuginfo" \
       | grep "Downloading" \
       | sed -e "s/^\[\([^:]*\).*\] Downloading /\1 /" \
       | sed -e "s/Packages\///" \
       >> "$LOG"
 
-    createrepo "$1-$2-$3-updates" > /dev/null
-    createrepo "$1-$2-$3-updates-debuginfo" > /dev/null
-    createrepo "$1-$2-$3-updates-testing" > /dev/null
-    createrepo "$1-$2-$3-updates-testing-debuginfo" > /dev/null
+    createrepo "$1-$2-$REPOARCH-updates-testing" > /dev/null
+    createrepo "$1-$2-$REPOARCH-updates-testing-debuginfo" > /dev/null
 
     rm -f "$LOCK"
 else
@@ -52,7 +81,7 @@ else
     echo "where"
     echo "distributuon = [fedora]"
     echo "version = release version"
-    echo "architecture = [i686|x86_64]"
+    echo "architecture = [i386|i686|x86_64]"
 
     exit 1
 fi

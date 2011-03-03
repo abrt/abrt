@@ -111,7 +111,7 @@ if __name__ == "__main__":
     packages = "%s.%s" % (crash_package, arch)
     try:
         # ToDo: deal with not found build-ids
-        pipe = Popen(["/usr/share/abrt-retrace/coredump2packages.py", "%s/crash/coredump" % savedir, "--repos=retrace-%s-%s-%s*" % (distribution, version, arch)], stdout=PIPE).stdout
+        pipe = Popen(["/usr/share/abrt-retrace/coredump2packages.py", "%s/crash/coredump" % savedir, "--repos=retrace-%s-%s-%s*" % (distribution, version, repoarch)], stdout=PIPE).stdout
         section = 0
         crash_package_or_component = None
         for line in pipe.readlines():
@@ -159,32 +159,32 @@ if __name__ == "__main__":
         mockcfg.write("\n")
         mockcfg.write("[fedora]\n")
         mockcfg.write("name=fedora\n")
-        mockcfg.write("baseurl=file://%s/%s-%s-%s/\n" % (CONFIG["RepoDir"], distribution, version, arch))
+        mockcfg.write("baseurl=file://%s/%s-%s-%s/\n" % (CONFIG["RepoDir"], distribution, version, repoarch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         mockcfg.write("[fedora-debuginfo]\n")
         mockcfg.write("name=fedora-debuginfo\n")
-        mockcfg.write("baseurl=file://%s/%s-%s-%s-debuginfo/\n" % (CONFIG["RepoDir"], distribution, version, arch))
+        mockcfg.write("baseurl=file://%s/%s-%s-%s-debuginfo/\n" % (CONFIG["RepoDir"], distribution, version, repoarch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         mockcfg.write("[updates]\n")
         mockcfg.write("name=updates\n")
-        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates/\n" % (CONFIG["RepoDir"], distribution, version, arch))
+        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates/\n" % (CONFIG["RepoDir"], distribution, version, repoarch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         mockcfg.write("[updates-debuginfo]\n")
         mockcfg.write("name=updates-debuginfo\n")
-        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates-debuginfo/\n" % (CONFIG["RepoDir"], distribution, version, arch))
+        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates-debuginfo/\n" % (CONFIG["RepoDir"], distribution, version, repoarch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         mockcfg.write("[updates-testing]\n")
         mockcfg.write("name=updates-testing\n")
-        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates-testing/\n" % (CONFIG["RepoDir"], distribution, version, arch))
+        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates-testing/\n" % (CONFIG["RepoDir"], distribution, version, repoarch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         mockcfg.write("[updates-testing-debuginfo]\n")
         mockcfg.write("name=updates-testing-debuginfo\n")
-        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates-testing-debuginfo/\n" % (CONFIG["RepoDir"], distribution, version, arch))
+        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates-testing-debuginfo/\n" % (CONFIG["RepoDir"], distribution, version, repoarch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         # custom ABRT repo with ABRT 2.0 binaries - obsolete after release of ABRT 2.0

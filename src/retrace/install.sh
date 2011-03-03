@@ -177,16 +177,16 @@ then
   echo "Copied '$SRCDIR/retrace.repo' to '/etc/yum.repos.d/retrace.repo'"
   echo "Copied '$SRCDIR/retrace-local.repo' to '/etc/yum.repos.d/retrace-local.repo'"
   echo "Running initial repository download. This will take some time."
-#  "$SCRIPTDIR/abrt-retrace-reposync" fedora 14 i686
-#  createrepo "$REPODIR/fedora-14-i686" > /dev/null
-#  createrepo "$REPODIR/fedora-14-i686-debuginfo" > /dev/null
-#  "$SCRIPTDIR/abrt-retrace-reposync" fedora 14 x86_64
-#  createrepo "$REPODIR/fedora-14-x86_64" > /dev/null
-#  createrepo "$REPODIR/fedora-14-x86_64-debuginfo" > /dev/null
-#  "$SCRIPTDIR/abrt-retrace-reposync" fedora 15 i686
+  "$SCRIPTDIR/abrt-retrace-reposync" fedora 14 i686
+  createrepo "$REPODIR/fedora-14-i686" > /dev/null
+  createrepo "$REPODIR/fedora-14-i686-debuginfo" > /dev/null
+  "$SCRIPTDIR/abrt-retrace-reposync" fedora 14 x86_64
+  createrepo "$REPODIR/fedora-14-x86_64" > /dev/null
+  createrepo "$REPODIR/fedora-14-x86_64-debuginfo" > /dev/null
+  "$SCRIPTDIR/abrt-retrace-reposync" fedora 15 i686
 #  createrepo "$REPODIR/fedora-15-i686"
 #  createrepo "$REPODIR/fedora-15-i686-debuginfo"
-#  "$SCRIPTDIR/abrt-retrace-reposync" fedora 15 x86_64
+  "$SCRIPTDIR/abrt-retrace-reposync" fedora 15 x86_64
 #  createrepo "$REPODIR/fedora-15-x86_64"
 #  createrepo "$REPODIR/fedora-15-x86_64-debuginfo"
 else
@@ -208,5 +208,5 @@ echo "Retrace Server setup OK."
 echo "You should set up cron to periodically synchronize local repositories. The recommended configuration is:"
 echo "0 0,8,16 * * * $SCRIPTDIR/abrt-retrace-reposync fedora 14 i686"
 echo "0 2,10,18 * * * $SCRIPTDIR/abrt-retrace-reposync fedora 14 x86_64"
-#echo "0 4,12,20 * * * $SCRIPTDIR/abrt-retrace-reposync fedora 15 i686"
-#echo "0 6,14,22 * * * $SCRIPTDIR/abrt-retrace-reposync fedora 15 x86_64"
+echo "0 4,12,20 * * * $SCRIPTDIR/abrt-retrace-reposync fedora 15 i686"
+echo "0 6,14,22 * * * $SCRIPTDIR/abrt-retrace-reposync fedora 15 x86_64"
