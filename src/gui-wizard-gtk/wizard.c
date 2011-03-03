@@ -168,6 +168,7 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
     dd_close(dd);
 
     gtk_window_set_title(GTK_WINDOW(g_assistant), g_dump_dir_name);
+    gtk_label_set_text(g_lbl_dirname, g_dump_dir_name);
     delete_dump_dir_possibly_using_abrtd(old_name); //TODO: if (deletion_failed) error_msg("BAD")?
     free(old_name);
 
@@ -329,6 +330,7 @@ static void append_item_to_details_ls(gpointer name, gpointer value, gpointer da
 
 void update_gui_state_from_crash_data(void)
 {
+    gtk_window_set_title(GTK_WINDOW(g_assistant), g_dump_dir_name);
     gtk_label_set_text(g_lbl_dirname, g_dump_dir_name);
 
     const char *reason = get_crash_item_content_or_NULL(g_cd, FILENAME_REASON);
@@ -943,7 +945,6 @@ void create_assistant()
 
     GtkWindow *wnd_assistant = GTK_WINDOW(g_assistant);
     gtk_window_set_default_size(wnd_assistant, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    gtk_window_set_title(wnd_assistant, g_dump_dir_name);
     gtk_window_set_icon_name(wnd_assistant, "abrt");
 
     GObject *obj_assistant = G_OBJECT(g_assistant);

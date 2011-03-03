@@ -160,7 +160,7 @@ static GList *load_event_config(GList *list,
                 /* Get this name from dump dir */
                 if (!dd)
                 {
-                    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+                    dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
                     if (!dd)
                     {
                         free(line);
@@ -342,7 +342,7 @@ int run_event_on_crash_data(struct run_event_state *state, crash_data_t *data, c
     int r = run_event_on_dir_name(state, dir_name, event);
 
     g_hash_table_remove_all(data);
-    dd = dd_opendir(dir_name, 0);
+    dd = dd_opendir(dir_name, /*flags:*/ 0);
     free(dir_name);
     if (dd)
     {
