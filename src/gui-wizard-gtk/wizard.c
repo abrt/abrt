@@ -136,6 +136,7 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
     if (HOME && HOME[0])
         HOME = concat_path_file(HOME, ".abrt/spool");
     else
+//TODO: try to find homedir in password db?
         HOME = xstrdup("/tmp");
 
     GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
@@ -727,17 +728,9 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
         check_backtrace_and_allow_send();
     }
 
-    if (pages[PAGENO_BACKTRACE_APPROVAL + 1].page_widget == page)
-    {
-        /* User just pressed [Fwd] on backtrace page. Save backtrace text if changed */
-        save_text_from_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
-    }
-
-    if (pages[PAGENO_COMMENT + 1].page_widget == page)
-    {
-        /* User just pressed [Fwd] on comment page. Same as above */
-        save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
-    }
+    /* Save text fields if changed */
+    save_text_from_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
+    save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
 
     if (pages[PAGENO_SUMMARY].page_widget == page
      || pages[PAGENO_REPORT].page_widget == page

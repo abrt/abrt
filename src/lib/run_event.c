@@ -168,7 +168,7 @@ static GList *load_event_config(GList *list,
                         goto stop; /* error (note: dd_opendir logged error msg) */
                     }
                 }
-                real_val = malloced_val = dd_load_text_ext(dd, p, DD_FAIL_QUIETLY);
+                real_val = malloced_val = dd_load_text_ext(dd, p, DD_FAIL_QUIETLY_ENOENT);
             }
 
             /* Does VAL match? */
@@ -476,7 +476,7 @@ static int list_possible_events_helper(struct strbuf *result,
                         goto stop; /* error (note: dd_opendir logged error msg) */
                     }
                 }
-                char *real_val = dd_load_text_ext(dd, p, DD_FAIL_QUIETLY);
+                char *real_val = dd_load_text_ext(dd, p, DD_FAIL_QUIETLY_ENOENT);
                 /* Does VAL match? */
                 if (strcmp(real_val, line_val) != 0)
                 {

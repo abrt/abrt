@@ -32,7 +32,8 @@ void add_directory_to_dirlist(const char *dirname)
 
     char *msg = dd_load_text_ext(dd, FILENAME_MESSAGE, 0
                 | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
-                | DD_FAIL_QUIETLY
+                | DD_FAIL_QUIETLY_ENOENT
+                | DD_FAIL_QUIETLY_EACCES
     );
     const char *reported = (msg ? GTK_STOCK_YES : GTK_STOCK_NO);
     free(msg);

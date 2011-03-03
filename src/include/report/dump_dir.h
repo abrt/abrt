@@ -30,8 +30,9 @@ extern "C" {
 #endif
 
 enum {
-    DD_FAIL_QUIETLY = (1 << 0),
-    DD_OPEN_READONLY = (1 << 1),
+    DD_FAIL_QUIETLY_ENOENT = (1 << 0),
+    DD_FAIL_QUIETLY_EACCES = (1 << 1),
+    DD_OPEN_READONLY = (1 << 2),
 };
 
 struct dump_dir {
@@ -55,8 +56,8 @@ DIR *dd_init_next_file(struct dump_dir *dd);
 int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name);
 
 enum {
-    /* DD_FAIL_QUIETLY bit is valid for dd_load_text_ext too, */
-    DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE = (1 << 2),
+    /* DD_FAIL_QUIETLY_ENOENT bit is valid for dd_load_text_ext too, */
+    DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE = (DD_OPEN_READONLY << 1),
 };
 char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned flags);
 char* dd_load_text(const struct dump_dir *dd, const char *name);
