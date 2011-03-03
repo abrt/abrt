@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.kn\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-02-07 02:41+0000\n"
+"POT-Creation-Date: 2011-03-03 21:09+0100\n"
 "PO-Revision-Date: 2011-02-07 15:19+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: kn_IN <kde-i18n-doc@kde.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Generator: Lokalize 1.1\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
@@ -28,16 +28,16 @@ msgstr "ABRT ಸೂಚನಾ ಆಪ್ಲೆಟ್"
 msgid "Automatic Bug Reporting Tool"
 msgstr "ಸ್ವಯಂಚಾಲಿತ ದೋಷ ವರದಿ ಮಾಡುವ ಉಪಕರಣ"
 
-#: ../src/applet/applet.c:86
+#: ../src/applet/applet.c:85
 #, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "%s ಎಂಬ ಪ್ಯಾಕೇಜ್‌ನಲ್ಲಿ ಒಂದು ಕುಸಿತವು ಕಂಡುಬಂದಿದೆ"
 
-#: ../src/applet/applet.c:88
+#: ../src/applet/applet.c:87
 msgid "A crash has been detected"
 msgstr "ಒಂದು ಕುಸಿತವನ್ನು ಪತ್ತೆ ಮಾಡಲಾಗಿದೆ"
 
-#: ../src/applet/applet.c:285
+#: ../src/applet/applet.c:284
 msgid "ABRT service is not running"
 msgstr "ABRT ಸೇವೆಯು ಚಾಲನೆಯಲ್ಲಿಲ್ಲ"
 
@@ -47,7 +47,8 @@ msgid "Warning"
 msgstr "ಎಚ್ಚರಿಕೆ"
 
 #: ../src/applet/applet_gtk.c:230
-msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT ಇಂದ ಪತ್ತೆ ಮಾಡಲಾದ ತೊಂದರೆಗಳನ್ನು ಬಳಕೆದಾರರಿಗೆ ಸೂಚಿಸುವ ಸೂಚನಾ ಸ್ಥಳದ ಆಪ್ಲೆಟ್"
 
 #: ../src/applet/applet_gtk.c:246 ../src/gui/ccgui.glade.h:24
@@ -66,7 +67,7 @@ msgstr "ವರದಿ"
 msgid "Open ABRT"
 msgstr "ABRT ಅನ್ನು ತೆರೆ"
 
-#: ../src/cli/CLI.cpp:91
+#: ../src/cli/CLI.cpp:90
 #, c-format
 msgid ""
 "\tCrash dump : %s\n"
@@ -83,12 +84,12 @@ msgstr ""
 "\tಕುಸಿತದ ಸಮಯ : %s\n"
 "\tಕುಸಿತದ ಎಣಿಕೆ: %s\n"
 
-#: ../src/cli/CLI.cpp:110
+#: ../src/cli/CLI.cpp:109
 #, c-format
 msgid "\tHostname   : %s\n"
 msgstr "\tಆತಿಥೇಯದ ಹೆಸರು   : %s\n"
 
-#: ../src/cli/CLI.cpp:143
+#: ../src/cli/CLI.cpp:142
 #, c-format
 msgid ""
 "Dump directory:     %s\n"
@@ -111,38 +112,27 @@ msgstr ""
 "ವ್ಯವಸ್ಥೆ:             %s, ಕರ್ನಲ್ %s\n"
 "ಕಾರಣ:             %s\n"
 
-#: ../src/cli/CLI.cpp:171
+#: ../src/cli/CLI.cpp:170
 #, c-format
 msgid "Coredump file:      %s\n"
 msgstr "ಕೋರ್ ಡಂಪ್ ಕಡತ:     %s\n"
 
-#: ../src/cli/CLI.cpp:175
+#: ../src/cli/CLI.cpp:174
 #, c-format
 msgid "Rating:             %s\n"
 msgstr "ಗುಣ ನಿಶ್ಚಯ:          %s\n"
 
-#: ../src/cli/CLI.cpp:180
+#: ../src/cli/CLI.cpp:179
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr "ಕುಸಿತದ ಕ್ರಿಯೆ:     %s\n"
 
-#: ../src/cli/CLI.cpp:184
+#: ../src/cli/CLI.cpp:183
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr "ಅತಿಥೇಯದ ಹೆಸರು:          %s\n"
 
-#: ../src/cli/CLI.cpp:188
-#, c-format
-msgid ""
-"\n"
-"How to reproduce:\n"
-"%s\n"
-msgstr ""
-"\n"
-"ಹೇಗೆ ಮರಳಿ ಉತ್ಪಾದಿಸಬಹುದು:\n"
-"%s\n"
-
-#: ../src/cli/CLI.cpp:192
+#: ../src/cli/CLI.cpp:187
 #, c-format
 msgid ""
 "\n"
@@ -153,7 +143,7 @@ msgstr ""
 "ಟಿಪ್ಪಣಿ:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:198
+#: ../src/cli/CLI.cpp:193
 #, c-format
 msgid ""
 "\n"
@@ -164,7 +154,7 @@ msgstr ""
 "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:295
+#: ../src/cli/CLI.cpp:250
 #, c-format
 msgid ""
 "Usage: %s -l[f] [-D BASE_DIR]...]\n"
@@ -205,24 +195,20 @@ msgstr ""
 "\t-V, --version\t\tDisplay version and exit\n"
 "\t-v, --verbose\t\tBe verbose\n"
 
-#: ../src/cli/CLI.cpp:343
+#: ../src/cli/CLI.cpp:298
 msgid "You must specify exactly one operation"
 msgstr "ನೀವು ಕನಿಷ್ಟ ಒಂದು ಕಾರ್ಯವನ್ನಾದರೂ ಸೂಚಿಸಬೇಕು"
 
-#: ../src/cli/report.cpp:161
+#: ../src/cli/report.cpp:154
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# ಕ್ಷೇತ್ರವು ಓದಲು ಮಾತ್ರವೆ ಆಗಿದೆ\n"
 
-#: ../src/cli/report.cpp:181
+#: ../src/cli/report.cpp:174
 msgid "# Describe the circumstances of this crash below"
 msgstr "# ಈ ಕುಸಿತದ ಸಂದರ್ಭವನ್ನು ಇಲ್ಲಿ ವಿವರಿಸಿ"
 
-#: ../src/cli/report.cpp:183
-msgid "# How to reproduce the crash?"
-msgstr "# ಕುಸಿತವನ್ನು ಹೇಗೆ ಮರಳಿ ಉತ್ಪಾದಿಸಬಹುದು?"
-
-#: ../src/cli/report.cpp:185
+#: ../src/cli/report.cpp:176
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -230,47 +216,48 @@ msgstr ""
 "#ಬ್ಯಾಕ್‌ಟ್ರೇಸ್\n"
 "# ಅದು ಯಾವುದೆ ಸಂವೇದಿ ಮಾಹಿತಿಯನ್ನು (ಗುಪ್ತಪದಗಳು, ಇತ್ಯಾದಿ) ಹೊಂದಿದೆಯೆ ಎಂದು ಪರಿಶೀಲಿಸಿ"
 
-#: ../src/cli/report.cpp:187
+#: ../src/cli/report.cpp:178
 msgid "# Architecture"
 msgstr "#ಆರ್ಕಿಟೆಕ್ಚರ್"
 
-#: ../src/cli/report.cpp:188
+#: ../src/cli/report.cpp:179
 msgid "# Command line"
 msgstr "# ಆಜ್ಞಾ ಸಾಲು"
 
-#: ../src/cli/report.cpp:189
+#: ../src/cli/report.cpp:180
 msgid "# Component"
 msgstr "# ಘಟಕ"
 
-#: ../src/cli/report.cpp:190
+#: ../src/cli/report.cpp:181
 msgid "# Core dump"
 msgstr "# ಕೋರ್ ಡಂಪ್"
 
-#: ../src/cli/report.cpp:191
+#: ../src/cli/report.cpp:182
 msgid "# Executable"
 msgstr "# ಎಕ್ಸಿಗ್ಯೂಟೆಬಲ್"
 
-#: ../src/cli/report.cpp:192
+#: ../src/cli/report.cpp:183
 msgid "# Kernel version"
 msgstr "# ಕರ್ನಲ್ ಆವೃತ್ತಿ"
 
-#: ../src/cli/report.cpp:193
+#: ../src/cli/report.cpp:184
 msgid "# Package"
 msgstr "# ಪ್ಯಾಕೇಜ್"
 
-#: ../src/cli/report.cpp:194
+#: ../src/cli/report.cpp:185
 msgid "# Reason of crash"
 msgstr "# ಕುಸಿತದ ಕಾರಣ"
 
-#: ../src/cli/report.cpp:195
+#: ../src/cli/report.cpp:186
 msgid "# Release string of the operating system"
 msgstr "# ಕಾರ್ಯ ವ್ಯವಸ್ಥೆಯ ಬಿಡುಗಡೆ ವಾಕ್ಯಾಂಶ"
 
-#: ../src/cli/report.cpp:318
+#: ../src/cli/report.cpp:299
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr "vi ಅನ್ನು ಚಲಾಯಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: $TERM, $VISUAL ಹಾಗು $EDITOR ಅನ್ನು ಹೊಂದಿಸಲಾಗಿಲ್ಲ"
+msgstr ""
+"vi ಅನ್ನು ಚಲಾಯಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: $TERM, $VISUAL ಹಾಗು $EDITOR ಅನ್ನು ಹೊಂದಿಸಲಾಗಿಲ್ಲ"
 
-#: ../src/cli/report.cpp:402
+#: ../src/cli/report.cpp:383
 msgid ""
 "\n"
 "The report has been updated"
@@ -278,7 +265,7 @@ msgstr ""
 "\n"
 "ವರದಿಯನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಲಾಗಿದೆ"
 
-#: ../src/cli/report.cpp:404
+#: ../src/cli/report.cpp:385
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -287,46 +274,46 @@ msgstr ""
 "ವರದಿಯಲ್ಲಿ ಯಾವುದೆ ಬದಲಾವಣೆಯು ಕಂಡು ಬಂದಿಲ್ಲ"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:436
+#: ../src/cli/report.cpp:417
 msgid "y"
 msgstr "y"
 
-#: ../src/cli/report.cpp:437
+#: ../src/cli/report.cpp:418
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:568
+#: ../src/cli/report.cpp:549
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "%s ಎಂಬ ಪ್ಲಗ್‌ಇನ್‌ಗಾಗಿ ತಪ್ಪು ಸಿದ್ಧತೆಗಳು ಕಂಡು ಬಂದಿದೆ\n"
 
-#: ../src/cli/report.cpp:572
+#: ../src/cli/report.cpp:553
 msgid "Enter your login: "
 msgstr "ನಿಮ್ಮ ಲಾಗಿನ್ ಅನ್ನು ನಮೂದಿಸಿ: "
 
-#: ../src/cli/report.cpp:578
+#: ../src/cli/report.cpp:559
 msgid "Enter your password: "
 msgstr "ನಿಮ್ಮ ಗುಪ್ತಪದವನ್ನು ನಮೂದಿಸಿ: "
 
-#: ../src/cli/report.cpp:788
+#: ../src/cli/report.cpp:766
 msgid "Reporting..."
 msgstr "ವರದಿ ಮಾಡಲಾಗುತ್ತಿದೆ..."
 
-#: ../src/cli/report.cpp:801
+#: ../src/cli/report.cpp:779
 #, c-format
 msgid "Report using %s?"
 msgstr "%s ಅನ್ನು ಬಳಸಿಕೊಂಡು ವರದಿ  ಮಾಡಬೇಕೆ? "
 
-#: ../src/cli/report.cpp:804
+#: ../src/cli/report.cpp:782
 msgid "Skipping..."
 msgstr "ಕಡೆಗಣಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../src/cli/report.cpp:820
+#: ../src/cli/report.cpp:798
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಬಳಸಲು ಯೋಗ್ಯವಾಗಿರದೆ ಇರುವುದರಿಂದ ವರದಿ ಮಾಡುವುದನ್ನು ಅಶಕ್ತಗೊಳಿಸಲಾಗಿದೆ"
 
-#: ../src/cli/report.cpp:824
+#: ../src/cli/report.cpp:802
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -335,12 +322,12 @@ msgstr ""
 "ಈ ಆಜ್ಞೆಯನ್ನು ಬಳಸಿಕೊಂಡು ದೋಷನಿವಾರಣಾ ಮಾಹಿತಿಯನ್ನು ಕೈಯಾರೆ ಅನುಸ್ಥಾಪಿಸಿ: \"debuginfo-"
 "install %s\" ಹಾಗು ನಂತರ ಪುನಃ ಪ್ರಯತ್ನಿಸಿ\n"
 
-#: ../src/cli/report.cpp:842
+#: ../src/cli/report.cpp:820
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "ಕುಸಿತವನ್ನು %d ವರದಿ ಘಟನೆಗಳ ಮೂಲಕ ವರದಿ ಮಾಡಲಾಗಿದೆ (%d ದೋಷಗಳು)\n"
 
-#: ../src/daemon/abrt-action-save-package-data.c:280
+#: ../src/daemon/abrt-action-save-package-data.c:245
 msgid ""
 " [options] -d DIR\n"
 "\n"
@@ -350,27 +337,27 @@ msgstr ""
 "\n"
 "ಪ್ಯಾಕೇಜ್ ದತ್ತಸಂಚಯಕ್ಕೆ ಮನವಿ ಸಲ್ಲಿಸಿ ಹಾಗು ಪ್ಯಾಕೇಜ್ ಹೆಸರು, ಘಟಕ ಹಾಗು ವಿವರಣೆಯನ್ನು ಉಳಿಸಿ"
 
-#: ../src/daemon/abrt-action-save-package-data.c:292
+#: ../src/daemon/abrt-action-save-package-data.c:257
 #: ../src/daemon/abrt-handle-crashdump.c:60
 #: ../src/plugins/abrt-action-analyze-c.c:167
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-action-bugzilla.cpp:927
+#: ../src/plugins/abrt-action-bugzilla.cpp:933
 #: ../src/plugins/abrt-action-generate-backtrace.c:270
 #: ../src/plugins/abrt-action-kerneloops.c:147
 #: ../src/plugins/abrt-action-mailx.c:149
 #: ../src/plugins/abrt-action-print.c:50
-#: ../src/plugins/abrt-action-rhtsupport.c:281
-#: ../src/plugins/abrt-action-upload.c:261
+#: ../src/plugins/abrt-action-rhtsupport.c:280
+#: ../src/plugins/abrt-action-upload.c:260
 msgid "Crash dump directory"
 msgstr "ಕುಸಿತದ ಡಂಪ್ ಕೋಶ"
 
-#: ../src/daemon/abrt-action-save-package-data.c:293
+#: ../src/daemon/abrt-action-save-package-data.c:258
 #: ../src/daemon/abrt-handle-crashdump.c:59 ../src/daemon/abrt-server.c:297
-#: ../src/plugins/abrt-action-bugzilla.cpp:926
+#: ../src/plugins/abrt-action-bugzilla.cpp:932
 #: ../src/plugins/abrt-action-generate-backtrace.c:273
 #: ../src/plugins/abrt-action-kerneloops.c:146
-#: ../src/plugins/abrt-action-rhtsupport.c:280
+#: ../src/plugins/abrt-action-rhtsupport.c:279
 #: ../src/plugins/abrt-dump-oops.c:555
 msgid "Log to syslog"
 msgstr "syslog ಗೆ ದಾಖಲಿಸು"
@@ -399,13 +386,9 @@ msgstr "[ಆಯ್ಕೆಗಳು]"
 msgid "Use UID as client uid"
 msgstr "UID ಅನ್ನು ಕ್ಲೈಂಟ್ uid ಆಗಿ ಬಳಸಿ"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:242
+#: ../src/daemon/CommLayerServerDBus.cpp:239
 msgid "Comment is too long"
 msgstr "ಟಿಪ್ಪಣಿಯು ಬಹಳ ಉದ್ದವಾಗಿದೆ"
-
-#: ../src/daemon/CommLayerServerDBus.cpp:246
-msgid "'How to reproduce' is too long"
-msgstr "'ಹೇಗೆ ಮರಳಿ ಉತ್ಪಾದಿಸಬಹುದು' ಎನ್ನುವುದು ಬಹಳ ಉದ್ದವಾಗಿದೆ"
 
 #: ../src/daemon/Daemon.cpp:371
 msgid ""
@@ -437,7 +420,8 @@ msgstr ""
 "ಇನ್ನೊಂದು ಕ್ಲೈಂಟ್‌ ಈಗಾಗಲೆ ಚಾಲನೆಯಲ್ಲಿದೆ, ಅದನ್ನು ಎಚ್ಚರಗೊಳಿಸಲು ಪ್ರಯತ್ನಿಸಲಾಗುತ್ತಿದೆ..."
 
 #: ../src/gui/ABRTExceptions.py:14
-msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgid ""
+"Got unexpected data from the daemon (is the database properly updated?)."
 msgstr ""
 "ಡೆಮನ್‌ನಿಂದ ಅನಿರೀಕ್ಷಿತವಾದ ದತ್ತಾಂಶವು ಮರಳಿದೆ (ದತ್ತಸಂಚಯವನ್ನು ಸಮರ್ಪಕವಾಗಿ ಅಪ್‌ಡೇಟ್ "
 "ಮಾಡಲಾಗಿದೆಯೆ?)."
@@ -523,7 +507,7 @@ msgstr "ನಕಲುಫಲಕಕ್ಕೆ(ಕ್ಲಿಪ್‌ಬೋರ್ಡ�
 msgid "Online _Help"
 msgstr "ಆನ್‌ಲೈನ್‌ ನೆರವು (_H)"
 
-#: ../src/gui/ccgui.glade.h:13 ../src/gui/settings.glade.h:19
+#: ../src/gui/ccgui.glade.h:13 ../src/gui/settings.glade.h:12
 msgid "Plugins"
 msgstr "ಪ್ಲಗ್‌ಇನ್‌ಗಳು"
 
@@ -659,7 +643,8 @@ msgid "Cannot get the default keyring."
 msgstr "ಪೂರ್ವನಿಯೋಜಿತ ಕೀಲಿಸುರುಳಿಯನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
 
 #: ../src/gui/ConfBackend.py:103 ../src/gui/ConfBackend.py:120
-msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
 "gnome-ಕೀಲಿಸುರುಳಿಯನ್ನು ನಿಲುಕಿಸಿಕೊಳ್ಳುವುದನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ, ಪ್ಲಗ್‌ಇನ್‌ಗಳ ಸಿದ್ಧತೆಗಳನ್ನು "
 "ಉಳಿಸಲಾಗುವುದಿಲ್ಲ."
@@ -667,7 +652,8 @@ msgstr ""
 #. we tried 2 times, so giving up the authorization
 #: ../src/gui/ConfBackend.py:154
 #, python-format
-msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid ""
+"Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr ""
 "gnome-ಕೀಲಿಸುರುಳಿಯನ್ನು ನಿಲುಕಿಸಿಕೊಳ್ಳುವುದನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ, %s ಗಾಗಿನ "
 "ಸಿದ್ಧತೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ!"
@@ -845,10 +831,12 @@ msgstr "ನೀವು ಮುಂದುವರೆಯುವ ಮೊದಲು ಹೇಗ
 
 #: ../src/gui/CReporterAssistant.py:885
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
-msgstr "ಈ ಕುಸಿತವು ಹೇಗೆ ಸಂಭವಿಸಿತು (ಹಂತ ಹಂತವಾಗಿ)? ನೀವದನ್ನು ಹೇಗೆ ಮರಳಿ ಉತ್ಪಾದಿಸಬಲ್ಲಿರಿ?"
+msgstr ""
+"ಈ ಕುಸಿತವು ಹೇಗೆ ಸಂಭವಿಸಿತು (ಹಂತ ಹಂತವಾಗಿ)? ನೀವದನ್ನು ಹೇಗೆ ಮರಳಿ ಉತ್ಪಾದಿಸಬಲ್ಲಿರಿ?"
 
 #: ../src/gui/CReporterAssistant.py:905
-msgid "Are there any comments you would like to share with the software maintainers?"
+msgid ""
+"Are there any comments you would like to share with the software maintainers?"
 msgstr "ನೀವು ತಂತ್ರಾಂಶ ಮೇಲ್ವಿಚಾರಕರೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಬಹುದಾದ ಯಾವುದಾದರೂ ವಿಷಯಗಳಿವೆಯೆ?"
 
 #: ../src/gui/CReporterAssistant.py:925
@@ -859,14 +847,16 @@ msgstr "ಹೆಚ್ಚುವರಿ ವಿವರಗಳನ್ನು ಒದಗಿ�
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
-msgstr "<b>ಸೂಚನೆ:</b> ನಿಮ್ಮ ಟಿಪ್ಪಣಿಗಳು ಖಾಸಗಿಯಾಗಿರುವದಿಲ್ಲ. ಆದ್ದರಿಂದ ಯೋಚಿಸಿ ನಂತರ ಬರೆಯಿರಿ."
+msgstr ""
+"<b>ಸೂಚನೆ:</b> ನಿಮ್ಮ ಟಿಪ್ಪಣಿಗಳು ಖಾಸಗಿಯಾಗಿರುವದಿಲ್ಲ. ಆದ್ದರಿಂದ ಯೋಚಿಸಿ ನಂತರ ಬರೆಯಿರಿ."
 
 #: ../src/gui/CReporterAssistant.py:973
 msgid "Confirm and send the report"
 msgstr "ವರದಿಯನ್ನು ಖಚಿತಪಡಿಸಿ ಹಾಗು ಕಳುಹಿಸಿ"
 
 #: ../src/gui/CReporterAssistant.py:975
-msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "ದೋಷ ವರದಿಯ ಸಾರಾಂಶವನ್ನು ಈ ಕೆಳಗೆ ನೀಡಲಾಗಿದೆ. ಸಲ್ಲಿಸಲು ದಯವಿಟ್ಟು 'ಅನ್ವಯಿಸು' ಅನ್ನು ಕ್ಲಿಕ್ "
 "ಮಾಡಿ."
@@ -1096,103 +1086,67 @@ msgstr "ವರದಿಯನ್ನು ತೋರಿಸು"
 msgid "Show log"
 msgstr "ದಾಖಲೆಯನ್ನು ತೋರಿಸು"
 
-#: ../src/gui/SettingsDialog.py:34 ../src/gui/SettingsDialog.py:51
-msgid "<b>Select plugin</b>"
-msgstr "<b>ಪ್ಲಗ್‌ಇನ್ ಅನ್ನು ಆರಿಸಿ</b>"
-
-#: ../src/gui/SettingsDialog.py:37
-msgid "<b>Select database backend</b>"
-msgstr "<b>ದತ್ತಸಂಚಯ ಬ್ಯಾಕೆಂಡ್ ಅನ್ನು ಆರಿಸಿ</b>"
-
-#: ../src/gui/SettingsDialog.py:170
+#: ../src/gui/SettingsDialog.py:122
 msgid "Remove this job"
 msgstr "ಈ ಕಾರ್ಯವನ್ನು ತೆಗೆದು ಹಾಕಿ"
 
-#: ../src/gui/SettingsDialog.py:214
+#: ../src/gui/SettingsDialog.py:166
 msgid "Remove this action"
 msgstr "ಈ ಕ್ರಿಯೆಯನ್ನು ತೆಗೆದು ಹಾಕಿ"
 
 #: ../src/gui/settings.glade.h:1
-msgid "<b>Analyzer plugin</b>"
-msgstr "<b>ವಿಶ್ಲೇಷಕದ ಪ್ಲಗ್‌ಇನ್‌ಗಳು</b>"
-
-#: ../src/gui/settings.glade.h:2
-msgid "<b>Associated action</b>"
-msgstr "<b>ಸಂಬಂಧಿತ ಕಾರ್ಯ</b>"
-
-#: ../src/gui/settings.glade.h:3
 msgid "<b>Plugin details</b>"
 msgstr "<b>ಪ್ಲಗ್‌ಇನ್ ವಿವರಗಳು</b>"
 
-#: ../src/gui/settings.glade.h:4
-msgid "<b>Plugin</b>"
-msgstr "<b>ಪ್ಲಗ್‌ಇನ್</b>"
-
-#: ../src/gui/settings.glade.h:5
-msgid "<b>Time (or period)</b>"
-msgstr "<b>ಸಮಯ (ಅಥವ ಕಾಲಾವಧಿ)</b>"
-
-#: ../src/gui/settings.glade.h:6
-msgid "Analyzers, Actions, Reporters"
-msgstr "ವಿಶ್ಲೇಷಕಗಳು, ಕ್ರಿಯೆಗಳು, ವರದಿಗಾರರು"
-
-#: ../src/gui/settings.glade.h:7
+#: ../src/gui/settings.glade.h:2
 msgid "Author:"
 msgstr "ಕತೃ:"
 
-#: ../src/gui/settings.glade.h:8
+#: ../src/gui/settings.glade.h:3
 msgid "Blacklisted packages: "
 msgstr "ಕಪ್ಪುಪಟ್ಟಿಗೆ ಸೇರಿಸಲಾದ ಪ್ಯಾಕೇಜುಗಳು: "
 
-#: ../src/gui/settings.glade.h:9
+#: ../src/gui/settings.glade.h:4
 msgid "C_onfigure Plugin"
 msgstr "ಪ್ಲಗ್ಇನ್ ಅನ್ನು ಸಂರಚಿಸು(_o)"
 
-#: ../src/gui/settings.glade.h:10
+#: ../src/gui/settings.glade.h:5
 msgid "Check package GPG signature"
 msgstr "ಪ್ಯಾಕೇಜಿನ GPG ಸಹಿಯನ್ನು ಪರಿಶೀಲಿಸು"
 
-#: ../src/gui/settings.glade.h:11
+#: ../src/gui/settings.glade.h:6
 msgid "Common"
 msgstr "ಸಾಮಾನ್ಯ"
 
-#: ../src/gui/settings.glade.h:12
-msgid "Cron"
-msgstr "Cron"
-
-#: ../src/gui/settings.glade.h:13
-msgid "Database backend: "
-msgstr "ದತ್ತಸಂಚಯ ಬ್ಯಾಕೆಂಡ್: "
-
-#: ../src/gui/settings.glade.h:14
+#: ../src/gui/settings.glade.h:7
 msgid "Description:"
 msgstr "ವಿವರಣೆ:"
 
-#: ../src/gui/settings.glade.h:15
+#: ../src/gui/settings.glade.h:8
 msgid "GPG Keys"
 msgstr "GPG ಕೀಲಿಗಳು"
 
-#: ../src/gui/settings.glade.h:16
+#: ../src/gui/settings.glade.h:9
 msgid "GPG keys: "
 msgstr "GPG ಕೀಲಿಗಳು: "
 
-#: ../src/gui/settings.glade.h:17
+#: ../src/gui/settings.glade.h:10
 msgid "Max coredump storage size (MB):"
 msgstr "ಗರಿಷ್ಟ ಕೋರ್ ಡಂಪ್ ಶೇಖರಣಾ ಗಾತ್ರ(MB):"
 
-#: ../src/gui/settings.glade.h:18
+#: ../src/gui/settings.glade.h:11
 msgid "Name:"
 msgstr "ಹೆಸರು:"
 
-#: ../src/gui/settings.glade.h:20
+#: ../src/gui/settings.glade.h:13
 msgid "Preferences"
 msgstr "ಆದ್ಯತೆಗಳು"
 
-#: ../src/gui/settings.glade.h:21
+#: ../src/gui/settings.glade.h:14
 msgid "Version:"
 msgstr "ಆವೃತ್ತಿ:"
 
-#: ../src/gui/settings.glade.h:22
+#: ../src/gui/settings.glade.h:15
 msgid "Web Site:"
 msgstr "ಜಾಲತಾಣ:"
 
@@ -1254,70 +1208,70 @@ msgstr ""
 "\n"
 "ಪೈತಾನ್ ಕುಸಿತದ ಡಂಪ್‌ಗಳ UUID ಹಾಗು DUPHASH ಅನ್ನು ಲೆಕ್ಕ ಹಾಕಿ ಶೇಖರಿಸಿಡುತ್ತದೆ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:534
+#: ../src/plugins/abrt-action-bugzilla.cpp:536
 #, c-format
 msgid "New bug id: %i"
 msgstr "ಹೊಸ ದೋಷ ವರದಿಯ ಐಡಿ: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:662
+#: ../src/plugins/abrt-action-bugzilla.cpp:664
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr "ಬಳಕೆದಾರ ಹೆಸರು ಅಥವ ಗುಪ್ತಪದವು ಖಾಲಿ ಇದೆ. ದಯವಿಟ್ಟು %s ಅನ್ನು ಪರಿಶೀಲಿಸಿ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:680
+#: ../src/plugins/abrt-action-bugzilla.cpp:684
 msgid "Logging into bugzilla..."
 msgstr "ಬಗ್‌ಝಿಲ್ಲಾಗೆ ಪ್ರವೇಶಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:683
+#: ../src/plugins/abrt-action-bugzilla.cpp:687
 msgid "Checking for duplicates..."
 msgstr "ದ್ವಿಪ್ರತಿಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:705
-#: ../src/plugins/abrt-action-bugzilla.cpp:741
+#: ../src/plugins/abrt-action-bugzilla.cpp:709
+#: ../src/plugins/abrt-action-bugzilla.cpp:745
 msgid "Missing mandatory member 'bugs'"
 msgstr "'ದೋಷಗಳು' ಎಂಬ ಅಗತ್ಯ ನಮೂದು ಕಾಣಿಸುತ್ತಿಲ್ಲ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:724
-#: ../src/plugins/abrt-action-bugzilla.cpp:757
-#: ../src/plugins/abrt-action-bugzilla.cpp:833
+#: ../src/plugins/abrt-action-bugzilla.cpp:728
+#: ../src/plugins/abrt-action-bugzilla.cpp:761
+#: ../src/plugins/abrt-action-bugzilla.cpp:837
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() ವಿಫಲಗೊಂಡಿದೆ. ಎಲ್ಲಾ ಅಗತ್ಯ ಮಾಹಿತಿಯನ್ನು ಸಂಗ್ರಹಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:772
+#: ../src/plugins/abrt-action-bugzilla.cpp:776
 msgid "Creating a new bug..."
 msgstr "ಹೊಸ ದೋಷವನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:777
+#: ../src/plugins/abrt-action-bugzilla.cpp:781
 msgid "Bugzilla entry creation failed"
 msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ನಮೂದನ್ನು ರಚಿಸುವಿಕೆಯು ವಿಫಲಗೊಂಡಿದೆ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:789
-#: ../src/plugins/abrt-action-bugzilla.cpp:886
+#: ../src/plugins/abrt-action-bugzilla.cpp:793
+#: ../src/plugins/abrt-action-bugzilla.cpp:892
 msgid "Logging out..."
 msgstr "ನಿರ್ಗಮಿಸಲಾಗುತ್ತಿದೆ..."
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:807
+#: ../src/plugins/abrt-action-bugzilla.cpp:811
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "ದೋಷವನ್ನು ಈಗಾಗಲೆ ವರದಿ ಮಾಡಲಾಗಿದೆ: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:818
+#: ../src/plugins/abrt-action-bugzilla.cpp:822
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "ದೋಷ %d ಮೂಲವನ್ನು ಪತ್ತೆ ಮಾಡಲು ಬಗ್‌ಝಿಲ್ಲಾದಿಂದ ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:847
+#: ../src/plugins/abrt-action-bugzilla.cpp:851
 #, c-format
 msgid "Add %s to CC list"
 msgstr "%s ಅನ್ನು CC ಪಟ್ಟಿಗೆ ಸೇರಿಸು"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:871
+#: ../src/plugins/abrt-action-bugzilla.cpp:877
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "ದೋಷಕ್ಕೆ(%d) ಒಂದು ಹೊಸ ಟಿಪ್ಪಣಿಯನ್ನು ಸೇರಿಸಿ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:913
+#: ../src/plugins/abrt-action-bugzilla.cpp:919
 msgid ""
 " [-vs] -c CONFFILE -d DIR\n"
 "\n"
@@ -1327,9 +1281,9 @@ msgstr ""
 "\n"
 "ಕುಸಿತವನ್ನು ಬಗ್‌ಝಿಲ್ಲಾಕ್ಕೆ ವರದಿ ಮಾಡುತ್ತದೆ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:928
+#: ../src/plugins/abrt-action-bugzilla.cpp:934
 #: ../src/plugins/abrt-action-kerneloops.c:148
-#: ../src/plugins/abrt-action-rhtsupport.c:282
+#: ../src/plugins/abrt-action-rhtsupport.c:281
 msgid "Configuration file (may be given many times)"
 msgstr "ಸಂರಚನಾ ಕಡತ (ಹಲವು ಬಾರಿ ನೀಡಬಹುದಾಗಿರುತ್ತದೆ)"
 
@@ -1345,120 +1299,131 @@ msgstr "ಹೆಚ್ಚುವರಿ ದೋಷನಿವಾರಣ ಮಾಹಿತ�
 msgid "Kill gdb if it runs for more than N seconds"
 msgstr "gdb ಯು N ಸೆಕೆಂಡುಗಳಿಗಿಂತ ಹೆಚ್ಚು ಸಮಯ ಚಲಾಯಿತಗೊಂಡಲ್ಲಿ ಅದನ್ನು ಕೊಲ್ಲು"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:320
+#. Don't be completely silent. gdb run takes a few seconds,
+#. * it is useful to let user know it (maybe) worked.
+#.
+#: ../src/plugins/abrt-action-generate-backtrace.c:322
+#, c-format
+msgid "Backtrace is generated and saved, %u bytes"
+msgstr ""
+
+#.
+#. * The parser failed. Compute the UUID from the executable
+#. * and package only.  This is not supposed to happen often.
+#.
+#: ../src/plugins/abrt-action-generate-backtrace.c:333
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "%s ಗಾಗಿ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಪಾರ್ಸಿಂಗ್ ವಿಫಲಗೊಂಡಿದೆ"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:72
+#: ../src/plugins/abrt-action-install-debuginfo.py:77
 #, python-format
 msgid "Extracting cpio from %s"
 msgstr "%s ಇಂದ cpio ಅನ್ನು ಹೊರತೆಗೆಯಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:77
-msgid "Can't write to:"
+#: ../src/plugins/abrt-action-install-debuginfo.py:82
+#, fuzzy, python-format
+msgid "Can't write to '%s': %s"
 msgstr "ಇದಕ್ಕೆ ಬರೆಯಲಾಗಲಿಲ್ಲ:"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:87
-msgid "Removing the temporary rpm file"
-msgstr "ತಾತ್ಕಾಲಿಕ rpm ಕಡತವನ್ನು ತೆಗೆದು ಹಾಕಲಾಗುತ್ತಿದೆ"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:91
-#, python-format
-msgid "Can't extract package: %s"
+#: ../src/plugins/abrt-action-install-debuginfo.py:96
+#, fuzzy, python-format
+msgid "Can't extract package '%s'"
 msgstr "ಈ ಪ್ಯಾಕೇಜ್ ಅನ್ನು ಹೊರತೆಗೆಯಲಾಗಲಿಲ್ಲ: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:99
+#: ../src/plugins/abrt-action-install-debuginfo.py:104
 #, python-format
 msgid "Caching files from %s made from %s"
 msgstr "%s ಇಂದ %s ಇಂದ ಮಾಡಲಾದ ಕಡತಗಳನ್ನು ಶೇಖರಿಸಿಡಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:107
-msgid "Removing the temporary cpio file"
-msgstr "ತಾತ್ಕಾಲಿಕ cpio ಕಡತವನ್ನು ತೆಗೆದು ಹಾಕಲಾಗುತ್ತಿದೆ"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:110
-#, python-format
-msgid "Can't extract files from: %s"
+#: ../src/plugins/abrt-action-install-debuginfo.py:114
+#, fuzzy, python-format
+msgid "Can't extract files from '%s'"
 msgstr "ಇಂದ ಕಡತಗಳನ್ನು ಹೊರತೆಗೆಯಲಾಗಲಿಲ್ಲ: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:134
-#: ../src/plugins/abrt-action-install-debuginfo.py:140
-#, python-format
-msgid "Downloading (%i of %i) %.30s : %.3s %%"
+#: ../src/plugins/abrt-action-install-debuginfo.py:138
+#: ../src/plugins/abrt-action-install-debuginfo.py:148
+#, fuzzy, python-format
+msgid "Downloading (%i of %i) %s: %3u%%"
 msgstr "(%i, %i ನಲ್ಲಿ) %.30s ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ : %.3s %%"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:169
-msgid "Searching the missing debuginfo packages"
-msgstr "ಕಾಣೆಯಾದ ದೋಷನಿವಾರಣ ಮಾಹಿತಿ ಪ್ಯಾಕೇಜುಗಳಿಗಾಗಿ ಹುಡುಕಲಾಗುತ್ತಿದೆ"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:224
+#: ../src/plugins/abrt-action-install-debuginfo.py:234
 #, python-format
-msgid "To download: (%.2f) M / Installed size: %.2f M"
+msgid "Can't find packages for %u debuginfo files"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:236
+#, python-format
+msgid "Found %u packages to download"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:237
+#, fuzzy, python-format
+msgid "Downloading %.2fMb, installed size: %.2fMb"
 msgstr "ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಬಾಕಿ ಇರುವುದು: (%.2f) M / ಅನುಸ್ಥಾಪಿಸಲಾದ ಗಾತ್ರ: %.2f M"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:240
+#: ../src/plugins/abrt-action-install-debuginfo.py:245
 msgid "Is this ok? [y/N] "
 msgstr "ಇದು ಸರಿಯಾಗಿದೆಯೆ? [y/N] "
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:257
+#: ../src/plugins/abrt-action-install-debuginfo.py:262
 #, python-format
 msgid "Downloading package %s failed"
 msgstr "%s  ಪ್ಯಾಕೇಜನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡುವಿಕೆಯು ವಿಫಲಗೊಂಡಿದೆ"
 
 #. recursively delete the temp dir on failure
-#: ../src/plugins/abrt-action-install-debuginfo.py:268
+#: ../src/plugins/abrt-action-install-debuginfo.py:273
 msgid "Unpacking failed, aborting download..."
 msgstr "ಹೊರತೆಗೆಯುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ, ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ನಿಲ್ಲಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:275
+#: ../src/plugins/abrt-action-install-debuginfo.py:280
 #, python-format
 msgid "All downloaded packages have been extracted, removing %s"
 msgstr "ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾದ ಎಲ್ಲಾ ಪ್ಯಾಕೇಜುಗಳನ್ನು ಹೊರತೆಗೆಯಲಾಗಿದೆ, %s ಅನ್ನು ತೆಗೆಯಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:280
+#: ../src/plugins/abrt-action-install-debuginfo.py:285
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr "%s ಅನ್ನು ತೆಗೆಯಲಾಗಿಲ್ಲ, ಬಹುಷಃ ದೋಷಯುಕ್ತ ದಾಖಲೆಯನ್ನು ಹೊಂದಿರಬಹುದು"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:305
-#, python-format
-msgid "Analyzing corefile: %(corefile_path)s"
+#: ../src/plugins/abrt-action-install-debuginfo.py:310
+#, fuzzy, python-format
+msgid "Analyzing corefile '%s'"
 msgstr "corefile ಅನ್ನು ವಿಶ್ಲೇಷಿಸಲಾಗುತ್ತಿದೆ: %(corefile_path)s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:384
-#, python-format
-msgid "Can't remove %(tmpdir_path)s: %(reason)s"
+#: ../src/plugins/abrt-action-install-debuginfo.py:388
+#, fuzzy, python-format
+msgid "Can't remove '%s': %s"
 msgstr "%(tmpdir_path)s ಅನ್ನು ತೆಗೆದು ಹಾಕಲಾಗಲಿಲ್ಲ: %(reason)s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:394
-msgid "Exiting on user Command"
+#: ../src/plugins/abrt-action-install-debuginfo.py:396
+#, fuzzy
+msgid "Exiting on user command"
 msgstr "ಬಳಕೆದಾರರನ ಆಜ್ಞೆಯ ಮೇರೆಗೆ ನಿರ್ಗಮಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:413
-#, python-format
-msgid "Usage: %s --core=<COREFILE> --tmpdir=<TMPDIR> --cachedir=<CACHEDIR>"
+#: ../src/plugins/abrt-action-install-debuginfo.py:415
+#, fuzzy, python-format
+msgid "Usage: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 msgstr "ಬಳಕೆ: %s --core=<COREFILE> --tmpdir=<TMPDIR> --cachedir=<CACHEDIR>"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:442
+#: ../src/plugins/abrt-action-install-debuginfo.py:444
 msgid "You have to specify the path to coredump."
 msgstr "ನೀವು ಕೋರ್ ಡಂಪ್‌ಗೆ ಮಾರ್ಗವನ್ನು ಸೂಚಿಸಬೇಕು."
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:446
-msgid "You have to specify the path to cachedir."
-msgstr "ನೀವು cachedirಗೆ ಮಾರ್ಗವನ್ನು ಸೂಚಿಸಬೇಕು."
+#: ../src/plugins/abrt-action-install-debuginfo.py:461
+#, python-format
+msgid "Coredump references %u debuginfo files, %u of them are not installed"
+msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:450
-msgid "You have to specify the path to tmpdir."
-msgstr "ನೀವು tmpdirಗೆ ಮಾರ್ಗವನ್ನು ಸೂಚಿಸಬೇಕು."
+#: ../src/plugins/abrt-action-install-debuginfo.py:466
+#, python-format
+msgid "Missing debuginfo file: %s"
+msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:463
-msgid "All debuginfo seems to be available"
+#: ../src/plugins/abrt-action-install-debuginfo.py:469
+#, fuzzy, python-format
+msgid "All %u debuginfo files are available"
 msgstr "ಎಲ್ಲಾ ದೋಷನಿವಾರಣಾ ಮಾಹಿತಿಯು ಲಭ್ಯವಿರುವಂತೆ ತೋರುತ್ತಿದೆ"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:470
-msgid "Complete!"
-msgstr "ಪೂರ್ಣಗೊಂಡಿದೆ!"
 
 #: ../src/plugins/abrt-action-kerneloops.c:105
 #, c-format
@@ -1490,7 +1455,7 @@ msgstr ""
 "ಸಂಕುಚನಗೊಳಿಸಲಾದ ಟಾರ್ಬಾಲ್ ಅನ್ನು ಕ್ರಾಶ್ ಡಂಪ್‌ಗೆ ಅಪ್‌ಲೋಡ್‌ ಮಾಡು"
 
 #: ../src/plugins/abrt-action-mailx.c:150
-#: ../src/plugins/abrt-action-upload.c:262
+#: ../src/plugins/abrt-action-upload.c:261
 msgid "Config file"
 msgstr "ಸಂಕುಚನ ಕಡತ"
 
@@ -1528,13 +1493,14 @@ msgstr "ದತ್ತಾಂಶ ಸಂಕುಚನಗೊಳಿಸಲಾಗುತ�
 
 #: ../src/plugins/abrt-action-rhtsupport.c:73
 msgid "Empty login or password, please check RHTSupport.conf"
-msgstr "ಬಳಕೆದಾರ ಹೆಸರು ಅಥವ ಗುಪ್ತಪದವು ಖಾಲಿ ಇದೆ. ದಯವಿಟ್ಟು ಅನ್ನು RHTSupport.conf ಪರಿಶೀಲಿಸಿ"
+msgstr ""
+"ಬಳಕೆದಾರ ಹೆಸರು ಅಥವ ಗುಪ್ತಪದವು ಖಾಲಿ ಇದೆ. ದಯವಿಟ್ಟು ಅನ್ನು RHTSupport.conf ಪರಿಶೀಲಿಸಿ"
 
-#: ../src/plugins/abrt-action-rhtsupport.c:192
+#: ../src/plugins/abrt-action-rhtsupport.c:191
 msgid "Creating a new case..."
 msgstr "ಹೊಸ ಸನ್ನಿವೇಶವನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../src/plugins/abrt-action-rhtsupport.c:267
+#: ../src/plugins/abrt-action-rhtsupport.c:266
 msgid ""
 " [-vs] -c CONFFILE -d DIR\n"
 "\n"
@@ -1555,12 +1521,12 @@ msgstr "%s ಅನ್ನು %s ಗೆ ಕಳುಹಿಸಲಾಗುತ್ತಿ�
 msgid "Successfully sent %s to %s"
 msgstr "%s ಅನ್ನು %s ಗೆ ಯಶಸ್ವಿಯಾಗಿ ಕಳುಹಿಸಲಾಗಿದೆ"
 
-#: ../src/plugins/abrt-action-upload.c:213
+#: ../src/plugins/abrt-action-upload.c:212
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "ಆರ್ಕೈವ್ ಅನ್ನು ನಿರ್ಮಿಸಲಾಗಿದೆ: '%s'"
 
-#: ../src/plugins/abrt-action-upload.c:248
+#: ../src/plugins/abrt-action-upload.c:247
 msgid ""
 " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1570,7 +1536,7 @@ msgstr ""
 "\n"
 "ಸಂಕುಚನಗೊಳಿಸಲಾದ ಟಾರ್ಬಾಲ್ ಅನ್ನು ಕ್ರಾಶ್ ಡಂಪ್‌ಗೆ ಅಪ್‌ಲೋಡ್‌ ಮಾಡು"
 
-#: ../src/plugins/abrt-action-upload.c:263
+#: ../src/plugins/abrt-action-upload.c:262
 msgid "Base URL to upload to"
 msgstr "ಅಪ್‌ಲೋಡ್ ಮಾಡಲು ಮೂಲ URL"
 
@@ -1707,6 +1673,66 @@ msgstr "URL:"
 #: ../src/plugins/Upload.glade.h:5
 msgid "Use encryption"
 msgstr "ವಿವರಣೆಯನ್ನು ಬಳಸಿ:"
+
+#~ msgid ""
+#~ "\n"
+#~ "How to reproduce:\n"
+#~ "%s\n"
+#~ msgstr ""
+#~ "\n"
+#~ "ಹೇಗೆ ಮರಳಿ ಉತ್ಪಾದಿಸಬಹುದು:\n"
+#~ "%s\n"
+
+#~ msgid "# How to reproduce the crash?"
+#~ msgstr "# ಕುಸಿತವನ್ನು ಹೇಗೆ ಮರಳಿ ಉತ್ಪಾದಿಸಬಹುದು?"
+
+#~ msgid "'How to reproduce' is too long"
+#~ msgstr "'ಹೇಗೆ ಮರಳಿ ಉತ್ಪಾದಿಸಬಹುದು' ಎನ್ನುವುದು ಬಹಳ ಉದ್ದವಾಗಿದೆ"
+
+#~ msgid "<b>Select plugin</b>"
+#~ msgstr "<b>ಪ್ಲಗ್‌ಇನ್ ಅನ್ನು ಆರಿಸಿ</b>"
+
+#~ msgid "<b>Select database backend</b>"
+#~ msgstr "<b>ದತ್ತಸಂಚಯ ಬ್ಯಾಕೆಂಡ್ ಅನ್ನು ಆರಿಸಿ</b>"
+
+#~ msgid "<b>Analyzer plugin</b>"
+#~ msgstr "<b>ವಿಶ್ಲೇಷಕದ ಪ್ಲಗ್‌ಇನ್‌ಗಳು</b>"
+
+#~ msgid "<b>Associated action</b>"
+#~ msgstr "<b>ಸಂಬಂಧಿತ ಕಾರ್ಯ</b>"
+
+#~ msgid "<b>Plugin</b>"
+#~ msgstr "<b>ಪ್ಲಗ್‌ಇನ್</b>"
+
+#~ msgid "<b>Time (or period)</b>"
+#~ msgstr "<b>ಸಮಯ (ಅಥವ ಕಾಲಾವಧಿ)</b>"
+
+#~ msgid "Analyzers, Actions, Reporters"
+#~ msgstr "ವಿಶ್ಲೇಷಕಗಳು, ಕ್ರಿಯೆಗಳು, ವರದಿಗಾರರು"
+
+#~ msgid "Cron"
+#~ msgstr "Cron"
+
+#~ msgid "Database backend: "
+#~ msgstr "ದತ್ತಸಂಚಯ ಬ್ಯಾಕೆಂಡ್: "
+
+#~ msgid "Removing the temporary rpm file"
+#~ msgstr "ತಾತ್ಕಾಲಿಕ rpm ಕಡತವನ್ನು ತೆಗೆದು ಹಾಕಲಾಗುತ್ತಿದೆ"
+
+#~ msgid "Removing the temporary cpio file"
+#~ msgstr "ತಾತ್ಕಾಲಿಕ cpio ಕಡತವನ್ನು ತೆಗೆದು ಹಾಕಲಾಗುತ್ತಿದೆ"
+
+#~ msgid "Searching the missing debuginfo packages"
+#~ msgstr "ಕಾಣೆಯಾದ ದೋಷನಿವಾರಣ ಮಾಹಿತಿ ಪ್ಯಾಕೇಜುಗಳಿಗಾಗಿ ಹುಡುಕಲಾಗುತ್ತಿದೆ"
+
+#~ msgid "You have to specify the path to cachedir."
+#~ msgstr "ನೀವು cachedirಗೆ ಮಾರ್ಗವನ್ನು ಸೂಚಿಸಬೇಕು."
+
+#~ msgid "You have to specify the path to tmpdir."
+#~ msgstr "ನೀವು tmpdirಗೆ ಮಾರ್ಗವನ್ನು ಸೂಚಿಸಬೇಕು."
+
+#~ msgid "Complete!"
+#~ msgstr "ಪೂರ್ಣಗೊಂಡಿದೆ!"
 
 #~ msgid ""
 #~ "Usage: %s [OPTION]\n"

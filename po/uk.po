@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-02-06 02:46+0000\n"
+"POT-Creation-Date: 2011-03-03 21:09+0100\n"
 "PO-Revision-Date: 2011-02-06 09:36+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
+"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: uk\n"
 "X-Generator: Lokalize 1.2\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
@@ -29,16 +29,16 @@ msgstr "Аплет сповіщення ABRT"
 msgid "Automatic Bug Reporting Tool"
 msgstr "ABRT — автоматичне звітування про помилки"
 
-#: ../src/applet/applet.c:86
+#: ../src/applet/applet.c:85
 #, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "Було виявлено збій у пакунку %s"
 
-#: ../src/applet/applet.c:88
+#: ../src/applet/applet.c:87
 msgid "A crash has been detected"
 msgstr "Виявлено збій у пакеті"
 
-#: ../src/applet/applet.c:285
+#: ../src/applet/applet.c:284
 msgid "ABRT service is not running"
 msgstr "Службу ABRT не запущено"
 
@@ -72,7 +72,7 @@ msgstr "Повідомити"
 msgid "Open ABRT"
 msgstr "Відкрити ABRT"
 
-#: ../src/cli/CLI.cpp:91
+#: ../src/cli/CLI.cpp:90
 #, c-format
 msgid ""
 "\tCrash dump : %s\n"
@@ -89,12 +89,12 @@ msgstr ""
 "\tЧас збою   : %s\n"
 "\tКількість  : %s\n"
 
-#: ../src/cli/CLI.cpp:110
+#: ../src/cli/CLI.cpp:109
 #, c-format
 msgid "\tHostname   : %s\n"
 msgstr "\tНазва вузла: %s\n"
 
-#: ../src/cli/CLI.cpp:143
+#: ../src/cli/CLI.cpp:142
 #, c-format
 msgid ""
 "Dump directory:     %s\n"
@@ -117,38 +117,27 @@ msgstr ""
 "Система:            %s, ядро %s\n"
 "Причина:            %s\n"
 
-#: ../src/cli/CLI.cpp:171
+#: ../src/cli/CLI.cpp:170
 #, c-format
 msgid "Coredump file:      %s\n"
 msgstr "Файл coredump:      %s\n"
 
-#: ../src/cli/CLI.cpp:175
+#: ../src/cli/CLI.cpp:174
 #, c-format
 msgid "Rating:             %s\n"
 msgstr "Оцінка:             %s\n"
 
-#: ../src/cli/CLI.cpp:180
+#: ../src/cli/CLI.cpp:179
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr "Аварійна функція:   %s\n"
 
-#: ../src/cli/CLI.cpp:184
+#: ../src/cli/CLI.cpp:183
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr "Назва вузла:        %s\n"
 
-#: ../src/cli/CLI.cpp:188
-#, c-format
-msgid ""
-"\n"
-"How to reproduce:\n"
-"%s\n"
-msgstr ""
-"\n"
-"Спосіб відтворення:\n"
-"%s\n"
-
-#: ../src/cli/CLI.cpp:192
+#: ../src/cli/CLI.cpp:187
 #, c-format
 msgid ""
 "\n"
@@ -159,7 +148,7 @@ msgstr ""
 "Коментар:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:198
+#: ../src/cli/CLI.cpp:193
 #, c-format
 msgid ""
 "\n"
@@ -170,7 +159,7 @@ msgstr ""
 "Зворотне трасування:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:295
+#: ../src/cli/CLI.cpp:250
 #, c-format
 msgid ""
 "Usage: %s -l[f] [-D BASE_DIR]...]\n"
@@ -211,24 +200,20 @@ msgstr ""
 "\t-V, --version\t\tПоказати дані щодо версії і завершити роботу.\n"
 "\t-v, --verbose\t\tПоказувати докладні повідомлення.\n"
 
-#: ../src/cli/CLI.cpp:343
+#: ../src/cli/CLI.cpp:298
 msgid "You must specify exactly one operation"
 msgstr "Вам слід вказати точно одну дію"
 
-#: ../src/cli/report.cpp:161
+#: ../src/cli/report.cpp:154
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# Значення у цьому полі не можна змінювати\n"
 
-#: ../src/cli/report.cpp:181
+#: ../src/cli/report.cpp:174
 msgid "# Describe the circumstances of this crash below"
 msgstr "# Опишіть обставини цього збою нижче"
 
-#: ../src/cli/report.cpp:183
-msgid "# How to reproduce the crash?"
-msgstr "# Як можна відтворити збій?"
-
-#: ../src/cli/report.cpp:185
+#: ../src/cli/report.cpp:176
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -236,49 +221,49 @@ msgstr ""
 "# Зворотне трасування\n"
 "# Не забудьте вилучити з цих даних будь-які конфіденційні дані (паролі тощо)"
 
-#: ../src/cli/report.cpp:187
+#: ../src/cli/report.cpp:178
 msgid "# Architecture"
 msgstr "# Архітектура"
 
-#: ../src/cli/report.cpp:188
+#: ../src/cli/report.cpp:179
 msgid "# Command line"
 msgstr "# Командний рядок"
 
-#: ../src/cli/report.cpp:189
+#: ../src/cli/report.cpp:180
 msgid "# Component"
 msgstr "# Компонент"
 
-#: ../src/cli/report.cpp:190
+#: ../src/cli/report.cpp:181
 msgid "# Core dump"
 msgstr "# Дамп ядра"
 
-#: ../src/cli/report.cpp:191
+#: ../src/cli/report.cpp:182
 msgid "# Executable"
 msgstr "# Виконуваний файл"
 
-#: ../src/cli/report.cpp:192
+#: ../src/cli/report.cpp:183
 msgid "# Kernel version"
 msgstr "# Версія ядра"
 
-#: ../src/cli/report.cpp:193
+#: ../src/cli/report.cpp:184
 msgid "# Package"
 msgstr "# Пакунок"
 
-#: ../src/cli/report.cpp:194
+#: ../src/cli/report.cpp:185
 msgid "# Reason of crash"
 msgstr "# Причина збою"
 
-#: ../src/cli/report.cpp:195
+#: ../src/cli/report.cpp:186
 msgid "# Release string of the operating system"
 msgstr "# Рядок з даними щодо випуску операційної системи"
 
-#: ../src/cli/report.cpp:318
+#: ../src/cli/report.cpp:299
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
 "Не вдалося запустити vi: не встановлено значень змінних $TERM, $VISUAL і "
 "$EDITOR"
 
-#: ../src/cli/report.cpp:402
+#: ../src/cli/report.cpp:383
 msgid ""
 "\n"
 "The report has been updated"
@@ -286,7 +271,7 @@ msgstr ""
 "\n"
 "Звіт було оновлено"
 
-#: ../src/cli/report.cpp:404
+#: ../src/cli/report.cpp:385
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -295,46 +280,46 @@ msgstr ""
 "Не виявлено жодних змін у звіті"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:436
+#: ../src/cli/report.cpp:417
 msgid "y"
 msgstr "y"
 
-#: ../src/cli/report.cpp:437
+#: ../src/cli/report.cpp:418
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:568
+#: ../src/cli/report.cpp:549
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Виявлено помилкові параметри модуля %s\n"
 
-#: ../src/cli/report.cpp:572
+#: ../src/cli/report.cpp:553
 msgid "Enter your login: "
 msgstr "Введіть ваше ім’я користувача: "
 
-#: ../src/cli/report.cpp:578
+#: ../src/cli/report.cpp:559
 msgid "Enter your password: "
 msgstr "Введіть ваш пароль: "
 
-#: ../src/cli/report.cpp:788
+#: ../src/cli/report.cpp:766
 msgid "Reporting..."
 msgstr "Звітування…"
 
-#: ../src/cli/report.cpp:801
+#: ../src/cli/report.cpp:779
 #, c-format
 msgid "Report using %s?"
 msgstr "Створити звіт за допомогою %s?"
 
-#: ../src/cli/report.cpp:804
+#: ../src/cli/report.cpp:782
 msgid "Skipping..."
 msgstr "Пропускаємо…"
 
-#: ../src/cli/report.cpp:820
+#: ../src/cli/report.cpp:798
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Звітування вимкнено, оскільки зворотне трасування є непридатним"
 
-#: ../src/cli/report.cpp:824
+#: ../src/cli/report.cpp:802
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -343,12 +328,12 @@ msgstr ""
 "Спробуйте встановити debuginfo вручну: «debuginfo-install %s», потім "
 "повторіть спробу\n"
 
-#: ../src/cli/report.cpp:842
+#: ../src/cli/report.cpp:820
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "Повідомлення щодо збою створено на основі %d подій (%d помилок)\n"
 
-#: ../src/daemon/abrt-action-save-package-data.c:280
+#: ../src/daemon/abrt-action-save-package-data.c:245
 msgid ""
 " [options] -d DIR\n"
 "\n"
@@ -359,27 +344,27 @@ msgstr ""
 "Отримати дані з бази даних пакунків і зберегти назву пакунка, компонент та "
 "опис"
 
-#: ../src/daemon/abrt-action-save-package-data.c:292
+#: ../src/daemon/abrt-action-save-package-data.c:257
 #: ../src/daemon/abrt-handle-crashdump.c:60
 #: ../src/plugins/abrt-action-analyze-c.c:167
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-action-bugzilla.cpp:927
+#: ../src/plugins/abrt-action-bugzilla.cpp:933
 #: ../src/plugins/abrt-action-generate-backtrace.c:270
 #: ../src/plugins/abrt-action-kerneloops.c:147
 #: ../src/plugins/abrt-action-mailx.c:149
 #: ../src/plugins/abrt-action-print.c:50
-#: ../src/plugins/abrt-action-rhtsupport.c:281
-#: ../src/plugins/abrt-action-upload.c:261
+#: ../src/plugins/abrt-action-rhtsupport.c:280
+#: ../src/plugins/abrt-action-upload.c:260
 msgid "Crash dump directory"
 msgstr "Каталог дампу аварійного завершення"
 
-#: ../src/daemon/abrt-action-save-package-data.c:293
+#: ../src/daemon/abrt-action-save-package-data.c:258
 #: ../src/daemon/abrt-handle-crashdump.c:59 ../src/daemon/abrt-server.c:297
-#: ../src/plugins/abrt-action-bugzilla.cpp:926
+#: ../src/plugins/abrt-action-bugzilla.cpp:932
 #: ../src/plugins/abrt-action-generate-backtrace.c:273
 #: ../src/plugins/abrt-action-kerneloops.c:146
-#: ../src/plugins/abrt-action-rhtsupport.c:280
+#: ../src/plugins/abrt-action-rhtsupport.c:279
 #: ../src/plugins/abrt-dump-oops.c:555
 msgid "Log to syslog"
 msgstr "Записувати до журналу syslog"
@@ -408,13 +393,9 @@ msgstr " [параметри]"
 msgid "Use UID as client uid"
 msgstr "Використати UID як унікальний ідентифікатор клієнта"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:242
+#: ../src/daemon/CommLayerServerDBus.cpp:239
 msgid "Comment is too long"
 msgstr "Занадто довгий коментар"
-
-#: ../src/daemon/CommLayerServerDBus.cpp:246
-msgid "'How to reproduce' is too long"
-msgstr "Занадто довгий запис «Спосіб відтворення»"
 
 #: ../src/daemon/Daemon.cpp:371
 msgid ""
@@ -531,7 +512,7 @@ msgstr "Скопіювати до буфера"
 msgid "Online _Help"
 msgstr "Інтернет-_довідка"
 
-#: ../src/gui/ccgui.glade.h:13 ../src/gui/settings.glade.h:19
+#: ../src/gui/ccgui.glade.h:13 ../src/gui/settings.glade.h:12
 msgid "Plugins"
 msgstr "Модулі"
 
@@ -1109,103 +1090,67 @@ msgstr "Надіслати звіт"
 msgid "Show log"
 msgstr "Показати журнал"
 
-#: ../src/gui/SettingsDialog.py:34 ../src/gui/SettingsDialog.py:51
-msgid "<b>Select plugin</b>"
-msgstr "<b>Виберіть модуль</b>"
-
-#: ../src/gui/SettingsDialog.py:37
-msgid "<b>Select database backend</b>"
-msgstr "<b>Виберіть сервер бази даних</b>"
-
-#: ../src/gui/SettingsDialog.py:170
+#: ../src/gui/SettingsDialog.py:122
 msgid "Remove this job"
 msgstr "Вилучити це завдання"
 
-#: ../src/gui/SettingsDialog.py:214
+#: ../src/gui/SettingsDialog.py:166
 msgid "Remove this action"
 msgstr "Вилучити цю дію"
 
 #: ../src/gui/settings.glade.h:1
-msgid "<b>Analyzer plugin</b>"
-msgstr "<b>Модуль аналізу</b>"
-
-#: ../src/gui/settings.glade.h:2
-msgid "<b>Associated action</b>"
-msgstr "<b>Пов'язана дія</b>"
-
-#: ../src/gui/settings.glade.h:3
 msgid "<b>Plugin details</b>"
 msgstr "<b>Відомості про модуль</b>"
 
-#: ../src/gui/settings.glade.h:4
-msgid "<b>Plugin</b>"
-msgstr "<b>Модуль</b>"
-
-#: ../src/gui/settings.glade.h:5
-msgid "<b>Time (or period)</b>"
-msgstr "<b>Час (період часу)</b>"
-
-#: ../src/gui/settings.glade.h:6
-msgid "Analyzers, Actions, Reporters"
-msgstr "Аналізатори, дії, укладачі звітів"
-
-#: ../src/gui/settings.glade.h:7
+#: ../src/gui/settings.glade.h:2
 msgid "Author:"
 msgstr "Автор:"
 
-#: ../src/gui/settings.glade.h:8
+#: ../src/gui/settings.glade.h:3
 msgid "Blacklisted packages: "
 msgstr "Чорний список пакетів: "
 
-#: ../src/gui/settings.glade.h:9
+#: ../src/gui/settings.glade.h:4
 msgid "C_onfigure Plugin"
 msgstr "_Налаштувати модуль"
 
-#: ../src/gui/settings.glade.h:10
+#: ../src/gui/settings.glade.h:5
 msgid "Check package GPG signature"
 msgstr "Перевірити GPG-підпис пакунка"
 
-#: ../src/gui/settings.glade.h:11
+#: ../src/gui/settings.glade.h:6
 msgid "Common"
 msgstr "Загальне"
 
-#: ../src/gui/settings.glade.h:12
-msgid "Cron"
-msgstr "Cron"
-
-#: ../src/gui/settings.glade.h:13
-msgid "Database backend: "
-msgstr "База даних: "
-
-#: ../src/gui/settings.glade.h:14
+#: ../src/gui/settings.glade.h:7
 msgid "Description:"
 msgstr "Опис:"
 
-#: ../src/gui/settings.glade.h:15
+#: ../src/gui/settings.glade.h:8
 msgid "GPG Keys"
 msgstr "Ключі GPG"
 
-#: ../src/gui/settings.glade.h:16
+#: ../src/gui/settings.glade.h:9
 msgid "GPG keys: "
 msgstr "Ключі GPG: "
 
-#: ../src/gui/settings.glade.h:17
+#: ../src/gui/settings.glade.h:10
 msgid "Max coredump storage size (MB):"
 msgstr "Макс. розмір coredump (МБ):"
 
-#: ../src/gui/settings.glade.h:18
+#: ../src/gui/settings.glade.h:11
 msgid "Name:"
 msgstr "Назва:"
 
-#: ../src/gui/settings.glade.h:20
+#: ../src/gui/settings.glade.h:13
 msgid "Preferences"
 msgstr "Параметри"
 
-#: ../src/gui/settings.glade.h:21
+#: ../src/gui/settings.glade.h:14
 msgid "Version:"
 msgstr "Версія:"
 
-#: ../src/gui/settings.glade.h:22
+#: ../src/gui/settings.glade.h:15
 msgid "Web Site:"
 msgstr "Веб-сайт:"
 
@@ -1269,70 +1214,70 @@ msgstr ""
 "\n"
 "Обчислює і зберігає UUID та DUPHASH аварійних дампів Python"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:534
+#: ../src/plugins/abrt-action-bugzilla.cpp:536
 #, c-format
 msgid "New bug id: %i"
 msgstr "Новий ідентифікатор запиту: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:662
+#: ../src/plugins/abrt-action-bugzilla.cpp:664
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr "Порожнє ім'я або пароль. Перевірте %s"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:680
+#: ../src/plugins/abrt-action-bugzilla.cpp:684
 msgid "Logging into bugzilla..."
 msgstr "Триває вхід до Bugzilla…"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:683
+#: ../src/plugins/abrt-action-bugzilla.cpp:687
 msgid "Checking for duplicates..."
 msgstr "Пошук дублікатів…"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:705
-#: ../src/plugins/abrt-action-bugzilla.cpp:741
+#: ../src/plugins/abrt-action-bugzilla.cpp:709
+#: ../src/plugins/abrt-action-bugzilla.cpp:745
 msgid "Missing mandatory member 'bugs'"
 msgstr "Не вказано обов’язкового учасника «bugs»"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:724
-#: ../src/plugins/abrt-action-bugzilla.cpp:757
-#: ../src/plugins/abrt-action-bugzilla.cpp:833
+#: ../src/plugins/abrt-action-bugzilla.cpp:728
+#: ../src/plugins/abrt-action-bugzilla.cpp:761
+#: ../src/plugins/abrt-action-bugzilla.cpp:837
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "Збій get_bug_info(). Не вдалося зібрати потрібну інформацію."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:772
+#: ../src/plugins/abrt-action-bugzilla.cpp:776
 msgid "Creating a new bug..."
 msgstr "Створення нового повідомлення про ваду…"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:777
+#: ../src/plugins/abrt-action-bugzilla.cpp:781
 msgid "Bugzilla entry creation failed"
 msgstr "Не вдалося створити запис у Bugzilla"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:789
-#: ../src/plugins/abrt-action-bugzilla.cpp:886
+#: ../src/plugins/abrt-action-bugzilla.cpp:793
+#: ../src/plugins/abrt-action-bugzilla.cpp:892
 msgid "Logging out..."
 msgstr "Виконується вихід…"
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:807
+#: ../src/plugins/abrt-action-bugzilla.cpp:811
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Запит вже існує: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:818
+#: ../src/plugins/abrt-action-bugzilla.cpp:822
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla не вдалося знайти батьківський запит для %d"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:847
+#: ../src/plugins/abrt-action-bugzilla.cpp:851
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Додати %s до списку CC"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:871
+#: ../src/plugins/abrt-action-bugzilla.cpp:877
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Додавання коментаря до запиту (%d)"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:913
+#: ../src/plugins/abrt-action-bugzilla.cpp:919
 msgid ""
 " [-vs] -c CONFFILE -d DIR\n"
 "\n"
@@ -1342,9 +1287,9 @@ msgstr ""
 "\n"
 "Повідомити про аварійне завершення на Bugzilla"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:928
+#: ../src/plugins/abrt-action-bugzilla.cpp:934
 #: ../src/plugins/abrt-action-kerneloops.c:148
-#: ../src/plugins/abrt-action-rhtsupport.c:282
+#: ../src/plugins/abrt-action-rhtsupport.c:281
 msgid "Configuration file (may be given many times)"
 msgstr "Файл налаштувань (можна вказувати декілька файлів)"
 
@@ -1360,122 +1305,133 @@ msgstr "Додаткові каталоги діагностичних дани�
 msgid "Kill gdb if it runs for more than N seconds"
 msgstr "Завершити роботу gdb, якщо вона триває понад N секунд"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:320
+#. Don't be completely silent. gdb run takes a few seconds,
+#. * it is useful to let user know it (maybe) worked.
+#.
+#: ../src/plugins/abrt-action-generate-backtrace.c:322
+#, c-format
+msgid "Backtrace is generated and saved, %u bytes"
+msgstr ""
+
+#.
+#. * The parser failed. Compute the UUID from the executable
+#. * and package only.  This is not supposed to happen often.
+#.
+#: ../src/plugins/abrt-action-generate-backtrace.c:333
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "Не вдалося обробити дані зворотного трасування для %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:72
+#: ../src/plugins/abrt-action-install-debuginfo.py:77
 #, python-format
 msgid "Extracting cpio from %s"
 msgstr "Видобування cpio з %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:77
-msgid "Can't write to:"
+#: ../src/plugins/abrt-action-install-debuginfo.py:82
+#, fuzzy, python-format
+msgid "Can't write to '%s': %s"
 msgstr "Не вдалося записати до:"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:87
-msgid "Removing the temporary rpm file"
-msgstr "Вилучення тимчасового файла rpm"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:91
-#, python-format
-msgid "Can't extract package: %s"
+#: ../src/plugins/abrt-action-install-debuginfo.py:96
+#, fuzzy, python-format
+msgid "Can't extract package '%s'"
 msgstr "Не вдалося видобути пакунок: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:99
+#: ../src/plugins/abrt-action-install-debuginfo.py:104
 #, python-format
 msgid "Caching files from %s made from %s"
 msgstr "Кешування файлів з %s виконано з %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:107
-msgid "Removing the temporary cpio file"
-msgstr "Вилучення тимчасового файла cpio"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:110
-#, python-format
-msgid "Can't extract files from: %s"
+#: ../src/plugins/abrt-action-install-debuginfo.py:114
+#, fuzzy, python-format
+msgid "Can't extract files from '%s'"
 msgstr "Не вдалося видобути файли з: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:134
-#: ../src/plugins/abrt-action-install-debuginfo.py:140
-#, python-format
-msgid "Downloading (%i of %i) %.30s : %.3s %%"
+#: ../src/plugins/abrt-action-install-debuginfo.py:138
+#: ../src/plugins/abrt-action-install-debuginfo.py:148
+#, fuzzy, python-format
+msgid "Downloading (%i of %i) %s: %3u%%"
 msgstr "Звантаження (%i з %i) %.30s : %.3s %%"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:169
-msgid "Searching the missing debuginfo packages"
-msgstr "Пошук потрібних пакунків діагностичних даних"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:224
+#: ../src/plugins/abrt-action-install-debuginfo.py:234
 #, python-format
-msgid "To download: (%.2f) M / Installed size: %.2f M"
+msgid "Can't find packages for %u debuginfo files"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:236
+#, python-format
+msgid "Found %u packages to download"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:237
+#, fuzzy, python-format
+msgid "Downloading %.2fMb, installed size: %.2fMb"
 msgstr "Об’єм звантаження: (%.2f) МБ / Об’єм встановлення: %.2f МБ"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:240
+#: ../src/plugins/abrt-action-install-debuginfo.py:245
 msgid "Is this ok? [y/N] "
 msgstr "Виконати дію? [y/N] "
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:257
+#: ../src/plugins/abrt-action-install-debuginfo.py:262
 #, python-format
 msgid "Downloading package %s failed"
 msgstr "Спроба звантаження пакунка %s зазнала невдачі"
 
 #. recursively delete the temp dir on failure
-#: ../src/plugins/abrt-action-install-debuginfo.py:268
+#: ../src/plugins/abrt-action-install-debuginfo.py:273
 msgid "Unpacking failed, aborting download..."
 msgstr "Спроба розпакування зазнала невдачі, перериваємо звантаження…"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:275
+#: ../src/plugins/abrt-action-install-debuginfo.py:280
 #, python-format
 msgid "All downloaded packages have been extracted, removing %s"
 msgstr "Дані всіх звантажених пакунків було видобуто, вилучаємо %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:280
+#: ../src/plugins/abrt-action-install-debuginfo.py:285
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr "Не вдалося вилучити %s, ймовірно, містить журнал помилки"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:305
-#, python-format
-msgid "Analyzing corefile: %(corefile_path)s"
+#: ../src/plugins/abrt-action-install-debuginfo.py:310
+#, fuzzy, python-format
+msgid "Analyzing corefile '%s'"
 msgstr "Аналіз файла ядра: %(corefile_path)s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:384
-#, python-format
-msgid "Can't remove %(tmpdir_path)s: %(reason)s"
-msgstr "Не вдалося вилучити %(tmpdir_path)s: %(reason)s"
+#: ../src/plugins/abrt-action-install-debuginfo.py:388
+#, fuzzy, python-format
+msgid "Can't remove '%s': %s"
+msgstr "Не вдалося відкрити «%s»"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:394
-msgid "Exiting on user Command"
+#: ../src/plugins/abrt-action-install-debuginfo.py:396
+#, fuzzy
+msgid "Exiting on user command"
 msgstr "Завершення роботи за бажанням користувача"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:413
-#, python-format
-msgid "Usage: %s --core=<COREFILE> --tmpdir=<TMPDIR> --cachedir=<CACHEDIR>"
+#: ../src/plugins/abrt-action-install-debuginfo.py:415
+#, fuzzy, python-format
+msgid "Usage: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 msgstr ""
 "Використання: %s --core=<ФАЙЛ_ЯДРА> --tmpdir=<КАТАЛОГ_ТИМЧАСОВИХ_ДАНИХ> --"
 "cachedir=<КАТАЛОГ_КЕШУ>"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:442
+#: ../src/plugins/abrt-action-install-debuginfo.py:444
 msgid "You have to specify the path to coredump."
 msgstr "Вам слід вказати адресу, за якою зберігається дамп ядра."
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:446
-msgid "You have to specify the path to cachedir."
-msgstr "Вам слід вказати адресу, за якою зберігаються дані кешу."
+#: ../src/plugins/abrt-action-install-debuginfo.py:461
+#, python-format
+msgid "Coredump references %u debuginfo files, %u of them are not installed"
+msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:450
-msgid "You have to specify the path to tmpdir."
-msgstr "Вам слід вказати адресу, за якою зберігаються тимчасові дані."
+#: ../src/plugins/abrt-action-install-debuginfo.py:466
+#, python-format
+msgid "Missing debuginfo file: %s"
+msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:463
-msgid "All debuginfo seems to be available"
+#: ../src/plugins/abrt-action-install-debuginfo.py:469
+#, fuzzy, python-format
+msgid "All %u debuginfo files are available"
 msgstr "Всі дані для діагностики доступні"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:470
-msgid "Complete!"
-msgstr "Завершено!"
 
 #: ../src/plugins/abrt-action-kerneloops.c:105
 #, c-format
@@ -1507,7 +1463,7 @@ msgstr ""
 "Вивантажити стиснутий архів дампу збою"
 
 #: ../src/plugins/abrt-action-mailx.c:150
-#: ../src/plugins/abrt-action-upload.c:262
+#: ../src/plugins/abrt-action-upload.c:261
 msgid "Config file"
 msgstr "Файл налаштувань"
 
@@ -1547,11 +1503,11 @@ msgstr "Стискання даних"
 msgid "Empty login or password, please check RHTSupport.conf"
 msgstr "Порожнє ім'я або пароль. Перевірте, чи немає помилок у RHTSupport.conf"
 
-#: ../src/plugins/abrt-action-rhtsupport.c:192
+#: ../src/plugins/abrt-action-rhtsupport.c:191
 msgid "Creating a new case..."
 msgstr "Створення нового випадку…"
 
-#: ../src/plugins/abrt-action-rhtsupport.c:267
+#: ../src/plugins/abrt-action-rhtsupport.c:266
 msgid ""
 " [-vs] -c CONFFILE -d DIR\n"
 "\n"
@@ -1572,12 +1528,12 @@ msgstr "Надсилання %s до %s"
 msgid "Successfully sent %s to %s"
 msgstr "Успішно надіслано %s до %s"
 
-#: ../src/plugins/abrt-action-upload.c:213
+#: ../src/plugins/abrt-action-upload.c:212
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "Створено архів: «%s»"
 
-#: ../src/plugins/abrt-action-upload.c:248
+#: ../src/plugins/abrt-action-upload.c:247
 msgid ""
 " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
@@ -1587,7 +1543,7 @@ msgstr ""
 "\n"
 "Вивантажити стиснутий архів дампу збою"
 
-#: ../src/plugins/abrt-action-upload.c:263
+#: ../src/plugins/abrt-action-upload.c:262
 msgid "Base URL to upload to"
 msgstr "Базова адреса для вивантаження даних"
 
@@ -1729,6 +1685,69 @@ msgid "Use encryption"
 msgstr "Використовувати шифрування"
 
 #~ msgid ""
+#~ "\n"
+#~ "How to reproduce:\n"
+#~ "%s\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Спосіб відтворення:\n"
+#~ "%s\n"
+
+#~ msgid "# How to reproduce the crash?"
+#~ msgstr "# Як можна відтворити збій?"
+
+#~ msgid "'How to reproduce' is too long"
+#~ msgstr "Занадто довгий запис «Спосіб відтворення»"
+
+#~ msgid "<b>Select plugin</b>"
+#~ msgstr "<b>Виберіть модуль</b>"
+
+#~ msgid "<b>Select database backend</b>"
+#~ msgstr "<b>Виберіть сервер бази даних</b>"
+
+#~ msgid "<b>Analyzer plugin</b>"
+#~ msgstr "<b>Модуль аналізу</b>"
+
+#~ msgid "<b>Associated action</b>"
+#~ msgstr "<b>Пов'язана дія</b>"
+
+#~ msgid "<b>Plugin</b>"
+#~ msgstr "<b>Модуль</b>"
+
+#~ msgid "<b>Time (or period)</b>"
+#~ msgstr "<b>Час (період часу)</b>"
+
+#~ msgid "Analyzers, Actions, Reporters"
+#~ msgstr "Аналізатори, дії, укладачі звітів"
+
+#~ msgid "Cron"
+#~ msgstr "Cron"
+
+#~ msgid "Database backend: "
+#~ msgstr "База даних: "
+
+#~ msgid "Removing the temporary rpm file"
+#~ msgstr "Вилучення тимчасового файла rpm"
+
+#~ msgid "Removing the temporary cpio file"
+#~ msgstr "Вилучення тимчасового файла cpio"
+
+#~ msgid "Searching the missing debuginfo packages"
+#~ msgstr "Пошук потрібних пакунків діагностичних даних"
+
+#~ msgid "Can't remove %(tmpdir_path)s: %(reason)s"
+#~ msgstr "Не вдалося вилучити %(tmpdir_path)s: %(reason)s"
+
+#~ msgid "You have to specify the path to cachedir."
+#~ msgstr "Вам слід вказати адресу, за якою зберігаються дані кешу."
+
+#~ msgid "You have to specify the path to tmpdir."
+#~ msgstr "Вам слід вказати адресу, за якою зберігаються тимчасові дані."
+
+#~ msgid "Complete!"
+#~ msgstr "Завершено!"
+
+#~ msgid ""
 #~ "Usage: %s [OPTION]\n"
 #~ "\n"
 #~ "Startup:\n"
@@ -1791,9 +1810,6 @@ msgstr "Використовувати шифрування"
 #~ msgstr ""
 #~ "Немає модулів звітування для цього типу збоїв.\n"
 #~ "Будь ласка, внесіть зміни до abrt.conf"
-
-#~ msgid "Can't open '%s'"
-#~ msgstr "Не вдалося відкрити «%s»"
 
 #~ msgid "Analyzes crashes in C/C++ programs"
 #~ msgstr "Аналізує аварійні завершення роботи програм C/C++"
