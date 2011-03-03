@@ -89,7 +89,7 @@ def application(environ, start_response):
         if not required_file in files:
             os.chdir("/")
             Popen(["rm", "-rf", taskdir])
-            return response(start_response, "403 Forbidden")
+            return response(start_response, "403 Forbidden", "Required file \"{0}\" is missing".format(required_file))
 
     Popen(["/usr/sbin/abrt-retrace-worker", "%d" % taskid])
 
