@@ -219,10 +219,11 @@ static void save_text_if_changed(const char *name, const char *new_value)
         if (dd && dd->locked)
         {
             dd_save_text(dd, name, new_value);
-            add_to_crash_data_ext(g_cd, name, new_value, CD_FLAG_TXT | CD_FLAG_ISEDITABLE);
         }
 //FIXME: else: what to do with still-unsaved data in the widget??
         dd_close(dd);
+        reload_crash_data_from_dump_dir();
+        update_gui_state_from_crash_data();
     }
 }
 
@@ -658,12 +659,14 @@ static void on_btn_refresh_clicked(GtkButton *button)
 {
     if (g_reanalyze_events[0])
     {
-        g_analyze_events = append_to_malloced_string(g_analyze_events, g_reanalyze_events);
-        g_reanalyze_events[0] = '\0';
         /* Save backtrace text if changed */
         save_text_from_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
+
+        g_analyze_events = append_to_malloced_string(g_analyze_events, g_reanalyze_events);
+        g_reanalyze_events[0] = '\0';
         /* Refresh GUI so that we see new analyze+reanalyze buttons */
         update_gui_state_from_crash_data();
+
         /* Change page to analyzer selector - let user play with them */
         gtk_assistant_set_current_page(g_assistant, PAGENO_ANALYZE_SELECTOR);
     }
