@@ -87,27 +87,32 @@ vector_of_crash_data_t *new_vector_of_crash_data(void)
 
 /* Miscellaneous helpers */
 
+static bool is_in_list(const char *name, const char *const *v)
+{
+    while (*v)
+    {
+        if (strcmp(*v, name) == 0)
+            return true;
+        v++;
+    }
+    return false;
+}
+
 static const char *const editable_files[] = {
-	FILENAME_COMMENT    ,
-	FILENAME_BACKTRACE  ,
-	NULL
+    FILENAME_COMMENT  ,
+    FILENAME_BACKTRACE,
+    NULL
 };
-
-static bool is_editable(const char *name, const char *const *v)
+static bool is_editable_file(const char *file_name)
 {
-	while (*v) {
-		if (strcmp(*v, name) == 0)
-			return true;
-		v++;
-	}
-	return false;
+    return is_in_list(file_name, editable_files);
 }
 
-bool is_editable_file(const char *file_name)
-{
-	return is_editable(file_name, editable_files);
-}
-
+static const char *const always_text_files[] = {
+    FILENAME_CMDLINE  ,
+    FILENAME_BACKTRACE,
+    NULL
+};
 static char* is_text_file(const char *name, ssize_t *sz)
 {
     /* We were using magic.h API to check for file being text, but it thinks
@@ -123,9 +128,11 @@ static char* is_text_file(const char *name, ssize_t *sz)
      * fields declared "text" may end up in editing fields and such.
      * We don't want to accidentally end up with 100meg text in a textbox!
      * So, don't remove this. If you really need to, raise the limit.
+     *
+     * Bumped up to 200k: saw 124740 byte /proc/PID/smaps file
      */
     off_t size = lseek(fd, 0, SEEK_END);
-    if (size < 0 || size > 64*1024)
+    if (size < 0 || size > 200*1024)
     {
         close(fd);
         return NULL; /* it's not a SMALL text */
@@ -149,11 +156,8 @@ static char* is_text_file(const char *name, ssize_t *sz)
     if (base)
     {
         base++;
-        if (strcmp(base, FILENAME_BACKTRACE) == 0
-         || strcmp(base, FILENAME_CMDLINE) == 0
-        ) {
+        if (is_in_list(base, always_text_files))
             return buf;
-        }
     }
 
     /* Every once in a while, even a text file contains a few garbled
