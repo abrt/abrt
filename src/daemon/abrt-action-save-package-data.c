@@ -80,7 +80,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     if (!dd)
         return 1;
 
-    char *remote_str = dd_load_text(dd, FILENAME_REMOTE);
+    char *remote_str = dd_load_text_ext(dd, FILENAME_REMOTE, DD_FAIL_QUIETLY_ENOENT);
     bool remote = (remote_str[0] == '1');
     free(remote_str);
 
