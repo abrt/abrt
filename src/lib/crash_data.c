@@ -133,13 +133,16 @@ static char* is_text_file(const char *name, ssize_t *sz)
     lseek(fd, 0, SEEK_SET);
 
     char *buf = (char*)xmalloc(*sz);
-    ssize_t r = *sz = full_read(fd, buf, *sz);
+    ssize_t r = full_read(fd, buf, *sz);
     close(fd);
     if (r < 0)
     {
         free(buf);
         return NULL; /* it's not text (because we can't read it) */
     }
+    if (r < *sz)
+        buf[r] = '\0';
+    *sz = r;
 
     /* Some files in our dump directories are known to always be textual */
     const char *base = strrchr(name, '/');
@@ -211,11 +214,20 @@ void load_crash_data_from_dump_dir(crash_data_t *crash_data, struct dump_dir *dd
         }
 
         char *content;
-        if (sz < 4*1024) /* is_text_file did read entire file */
-            content = xstrndup(text, sz); //TODO: can avoid this copying if is_text_file() adds NUL
-        else /* no, need to read it all */
+        if (sz < 4*1024) /* did is_text_file read entire file? */
+        {
+            content = text;
+            /* Strip '\n' from one-line elements: */
+            char *nl = strchr(content, '\n');
+            if (nl && nl[1] == '\0')
+                *nl = '\0';
+        }
+        else
+        {
+            /* no, need to read it all */
+            free(text);
             content = dd_load_text(dd, short_name);
-        free(text);
+        }
 
         add_to_crash_data_ext(crash_data,
                 short_name,
