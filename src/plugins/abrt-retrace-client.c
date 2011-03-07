@@ -101,8 +101,6 @@ static int create_archive(bool unlink_temp)
     tar_args[2] = xasprintf("--directory=%s", dump_dir_name);
     int argindex = 3;
     tar_args[argindex++] = FILENAME_COREDUMP;
-    args_add_if_exists(tar_args, dd, FILENAME_ANALYZER, &argindex);
-    args_add_if_exists(tar_args, dd, FILENAME_ARCHITECTURE, &argindex);
     args_add_if_exists(tar_args, dd, FILENAME_EXECUTABLE, &argindex);
     args_add_if_exists(tar_args, dd, FILENAME_PACKAGE, &argindex);
     args_add_if_exists(tar_args, dd, FILENAME_OS_RELEASE, &argindex);
