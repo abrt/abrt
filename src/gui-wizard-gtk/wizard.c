@@ -484,23 +484,27 @@ static GList *export_event_config(const char *event_name)
 {
     GList *env_list = NULL;
 
-    GHashTableIter iter;
-    char *name;
-    event_config_t *cfg;
-    g_hash_table_iter_init(&iter, g_event_config_list);
-    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&cfg))
+    if (g_event_config_list)
     {
-        if (strcmp(cfg->name, event_name) != 0)
-            continue;
-        for (GList *lopt = cfg->options; lopt; lopt = lopt->next)
+        GHashTableIter iter;
+        char *name;
+        event_config_t *cfg;
+        g_hash_table_iter_init(&iter, g_event_config_list);
+        while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&cfg))
         {
-            event_option_t *opt = lopt->data;
-            char *var_val = xasprintf("%s=%s", opt->name, opt->value);
+            if (strcmp(cfg->name, event_name) != 0)
+                continue;
+            for (GList *lopt = cfg->options; lopt; lopt = lopt->next)
+            {
+                event_option_t *opt = lopt->data;
+                char *var_val = xasprintf("%s=%s", opt->name, opt->value);
 VERB3 log("Exporting '%s'", var_val);
-            env_list = g_list_prepend(env_list, var_val);
-            putenv(var_val);
+                env_list = g_list_prepend(env_list, var_val);
+                putenv(var_val);
+            }
         }
     }
+
     return env_list;
 }
 
