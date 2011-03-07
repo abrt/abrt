@@ -60,19 +60,13 @@ if __name__ == "__main__":
             LOG.close()
             sys.exit(15)
 
-    # read architecture file
-    try:
-        arch_file = open("%s/crash/architecture" % savedir, "r")
-        arch = repoarch = arch_file.read()
-        arch_file.close()
-    except Exception as ex:
-        LOG.write("Unable to read architecture from 'architecture' file: %s.\n" % ex)
+    # read architecture from coredump
+    arch = guess_arch("%s/crash/coredump" % savedir)
+
+    if not arch:
+        LOG.write("Unable to read architecture from 'coredump' file.\n")
         LOG.close()
         sys.exit(16)
-
-    # required hack for public repos
-    if arch == "i686":
-        repoarch = "i386"
 
     # read release, distribution and version from release file
     release_path = "%s/crash/os_release" % savedir
@@ -111,11 +105,12 @@ if __name__ == "__main__":
         LOG.close()
         sys.exit(19)
 
+    packages = crash_package
+
     # read required packages from coredump
-    packages = "%s.%s" % (crash_package, arch)
     try:
         # ToDo: deal with not found build-ids
-        pipe = Popen(["/usr/share/abrt-retrace/coredump2packages.py", "%s/crash/coredump" % savedir, "--repos=retrace-%s-%s-%s*" % (distribution, version, repoarch)], stdout=PIPE).stdout
+        pipe = Popen(["/usr/share/abrt-retrace/coredump2packages.py", "%s/crash/coredump" % savedir, "--repos=retrace-%s-%s-%s*" % (distribution, version, arch)], stdout=PIPE).stdout
         section = 0
         crash_package_or_component = None
         for line in pipe.readlines():
@@ -163,38 +158,38 @@ if __name__ == "__main__":
         mockcfg.write("\n")
         mockcfg.write("[fedora]\n")
         mockcfg.write("name=fedora\n")
-        mockcfg.write("baseurl=file://%s/%s-%s-%s/\n" % (CONFIG["RepoDir"], distribution, version, repoarch))
+        mockcfg.write("baseurl=file://%s/%s-%s-%s/\n" % (CONFIG["RepoDir"], distribution, version, arch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         mockcfg.write("[fedora-debuginfo]\n")
         mockcfg.write("name=fedora-debuginfo\n")
-        mockcfg.write("baseurl=file://%s/%s-%s-%s-debuginfo/\n" % (CONFIG["RepoDir"], distribution, version, repoarch))
+        mockcfg.write("baseurl=file://%s/%s-%s-%s-debuginfo/\n" % (CONFIG["RepoDir"], distribution, version, arch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         mockcfg.write("[updates]\n")
         mockcfg.write("name=updates\n")
-        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates/\n" % (CONFIG["RepoDir"], distribution, version, repoarch))
+        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates/\n" % (CONFIG["RepoDir"], distribution, version, arch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         mockcfg.write("[updates-debuginfo]\n")
         mockcfg.write("name=updates-debuginfo\n")
-        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates-debuginfo/\n" % (CONFIG["RepoDir"], distribution, version, repoarch))
+        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates-debuginfo/\n" % (CONFIG["RepoDir"], distribution, version, arch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         mockcfg.write("[updates-testing]\n")
         mockcfg.write("name=updates-testing\n")
-        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates-testing/\n" % (CONFIG["RepoDir"], distribution, version, repoarch))
+        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates-testing/\n" % (CONFIG["RepoDir"], distribution, version, arch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         mockcfg.write("[updates-testing-debuginfo]\n")
         mockcfg.write("name=updates-testing-debuginfo\n")
-        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates-testing-debuginfo/\n" % (CONFIG["RepoDir"], distribution, version, repoarch))
+        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates-testing-debuginfo/\n" % (CONFIG["RepoDir"], distribution, version, arch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         # custom ABRT repo with ABRT 2.0 binaries - obsolete after release of ABRT 2.0
         mockcfg.write("[abrt]\n")
         mockcfg.write("name=abrt\n")
-        mockcfg.write("baseurl=http://repos.fedorapeople.org/repos/mtoman/abrt20/%s-%s/%s/\n" % (distribution, version, repoarch))
+        mockcfg.write("baseurl=http://repos.fedorapeople.org/repos/mtoman/abrt20/%s-%s/%s/\n" % (distribution, version, arch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
         mockcfg.write("\"\"\"\n")

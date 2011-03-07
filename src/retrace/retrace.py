@@ -8,7 +8,7 @@ import sqlite3
 from webob import Request
 from subprocess import *
 
-REQUIRED_FILES = ["architecture", "coredump", "executable", "package"]
+REQUIRED_FILES = ["coredump", "executable", "package"]
 
 DF_BIN = "/bin/df"
 DU_BIN = "/usr/bin/du"
@@ -94,6 +94,19 @@ def unpacked_size(archive):
             return int(match.group(4))
 
     pipe.close()
+    return None
+
+def guess_arch(coredump_path):
+    pipe = Popen(["file", coredump_path], stdout=PIPE).stdout
+    output = pipe.read()
+    pipe.close()
+
+    if "x86-64" in output:
+        return "x86_64"
+
+    if "80386" in output:
+        return "i386"
+
     return None
 
 def gen_task_password(taskdir):
