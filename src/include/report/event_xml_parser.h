@@ -22,21 +22,21 @@ typedef enum
  */
 typedef struct
 {
-    const char* label;
-    const char* name; //name of the value which should be used for env variable
+    char *name; //name of the value which should be used for env variable
     char *value;
+    char *label;
     option_type_t type;
-    const char* description; //can be used as tooltip in gtk app
-    const char* allowed_value;
+    char *description; //can be used as tooltip in gtk app
+    char *allowed_value;
     int required;
 } event_option_obj_t;
 
 //structure to hold the option data
 typedef struct
 {
-    const char *name;  //name of the event "Bugzilla" "RedHat Support Uploader"
-    const char *title; //window title - not used right now, maybe the "name" is enough?
-    const char *action;//action description to show in gui like: Upload report to the Red Hat bugzilla"
+    char *name;  //name of the event "Bugzilla" "RedHat Support Uploader"
+    char *title; //window title - not used right now, maybe the "name" is enough?
+    char *action;//action description to show in gui like: Upload report to the Red Hat bugzilla"
     GList *options;
 } event_obj_t;
 
