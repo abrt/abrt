@@ -649,6 +649,7 @@ static int run_batch(bool delete_temp_archive)
     while (0 != strncmp(task_status, "FINISHED", strlen("finished")))
     {
         free(task_status);
+        sleep(10);
         status(task_id, task_password, &task_status);
         puts(task_status);
     }
