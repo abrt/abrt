@@ -75,8 +75,12 @@ if __name__ == "__main__":
         repoarch = "i386"
 
     # read release, distribution and version from release file
+    release_path = "%s/crash/os_release" % savedir
+    if not os.path.isfile(release_path):
+        release_path = "%s/crash/release" % savedir
+
     try:
-        release_file = open("%s/crash/release" % savedir, "r")
+        release_file = open(release_path, "r")
         release = release_file.read()
         release_file.close()
     except Exception as ex:
@@ -211,6 +215,18 @@ if __name__ == "__main__":
     retrace_run(25, ["mock", "init", "-r", mockr])
     retrace_run(26, ["mock", "-r", mockr, "--copyin", "%s/crash" % savedir, "/var/spool/abrt/crash"])
     retrace_run(27, ["touch", "%s/chroot/root/var/spool/abrt/crash/time" % workdir])
+
+    # if uid file is not present, create it
+    uidpath = "%s/chroot/root/var/spool/abrt/crash/uid" % workdir;
+    if not os.path.isfile(uidpath):
+        try:
+            uid = open(uidpath, "w")
+            uid.write("500")
+            uid.close()
+        except:
+            LOG.write("Unable to create uid file.\n")
+            LOG.close()
+            sys.exit(28)
 
     LOG.write("OK\n")
 

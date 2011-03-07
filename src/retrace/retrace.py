@@ -8,7 +8,7 @@ import sqlite3
 from webob import Request
 from subprocess import *
 
-REQUIRED_FILES = ["architecture", "coredump", "release"]
+REQUIRED_FILES = ["architecture", "coredump", "executable", "package"]
 
 DF_BIN = "/bin/df"
 DU_BIN = "/usr/bin/du"
