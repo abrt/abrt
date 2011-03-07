@@ -33,14 +33,14 @@ void start_element(GMarkupParseContext *context,
 {
     //g_print("start: %s\n", element_name);
 
-    event_obj_t *ui = (event_obj_t *)user_data;
+    event_config_t *ui = (event_config_t *)user_data;
 
     if(strcmp(element_name, OPTION_ELEMENT) == 0)
     {
         if(in_option == 0)
         {
             in_option = 1;
-            event_option_obj_t *option = (event_option_obj_t *)malloc(sizeof(event_option_obj_t));
+            event_option_t *option = (event_option_t *)malloc(sizeof(event_option_t));
             //we need to prepend, so ui->options always points to the last created option
             ui->options = g_list_prepend(ui->options, option);
 
@@ -76,7 +76,7 @@ void end_element(GMarkupParseContext *context,
                           gpointer             user_data,
                           GError             **error)
 {
-    event_obj_t *ui = (event_obj_t *)user_data;
+    event_config_t *ui = (event_config_t *)user_data;
     if(strcmp(element_name, OPTION_ELEMENT) == 0)
     {
         in_option = 0;
@@ -97,14 +97,14 @@ void text(GMarkupParseContext *context,
          gpointer             user_data,
          GError             **error)
 {
-    event_obj_t *ui = (event_obj_t *)user_data;
+    event_config_t *ui = (event_config_t *)user_data;
     const gchar * inner_element = g_markup_parse_context_get_element(context);
     char *_text = (char *)malloc(text_len+1);
     strncpy(_text, text, text_len);
     _text[text_len] = '\0';
     if(in_option == 1)
     {
-        event_option_obj_t *option = (event_option_obj_t *)((ui->options)->data);
+        event_option_t *option = (event_option_t *)((ui->options)->data);
         if(strcmp(inner_element, LABEL_ELEMENT) == 0)
         {
             //g_print("\tnew label: \t\t%s\n", _text);
@@ -157,13 +157,13 @@ void error(GMarkupParseContext *context,
 }
 
 /* this function takes 2 parameters
-  * ui -> pointer to event_obj_t
+  * ui -> pointer to event_config_t
   * filename -> filename to read
- * event_obj_t contains list of options, which is malloced by hits function
+ * event_config_t contains list of options, which is malloced by hits function
  * and must be freed by the caller
  */
 
-void load_event_description_from_file(event_obj_t *ui, const char* filename)
+void load_event_description_from_file(event_config_t *event_config, const char* filename)
 {
     GMarkupParser parser;
     parser.start_element = &start_element;
@@ -173,7 +173,7 @@ void load_event_description_from_file(event_obj_t *ui, const char* filename)
     parser.error = &error;
     GMarkupParseContext *context = g_markup_parse_context_new(
                     &parser, G_MARKUP_TREAT_CDATA_AS_TEXT,
-                    ui, NULL);
+                    event_config, NULL);
     FILE* fin = fopen(filename, "r");
     size_t read_bytes = 0;
     char buff[1024] = {'\0'};

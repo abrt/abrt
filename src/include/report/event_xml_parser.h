@@ -29,7 +29,7 @@ typedef struct
     char *description; //can be used as tooltip in gtk app
     char *allowed_value;
     int required;
-} event_option_obj_t;
+} event_option_t;
 
 //structure to hold the option data
 typedef struct
@@ -38,6 +38,6 @@ typedef struct
     char *title; //window title - not used right now, maybe the "name" is enough?
     char *action;//action description to show in gui like: Upload report to the Red Hat bugzilla"
     GList *options;
-} event_obj_t;
+} event_config_t;
 
-void load_event_description_from_file(event_obj_t *event_desc, const char* filename);
+void load_event_description_from_file(event_config_t *event_config, const char* filename);
