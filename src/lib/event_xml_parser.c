@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "event_xml_parser.h"
+#include "event_config.h"
 
 #define EVENT_ELEMENT       "event"
 #define LABEL_ELEMENT       "label"

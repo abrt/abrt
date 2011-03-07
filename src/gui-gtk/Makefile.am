@@ -2,6 +2,7 @@ bin_PROGRAMS = abrt-gtk
 
 abrt_gtk_SOURCES = \
     abrt-gtk.h abrt-gtk.c \
+    event_config_dialog.c \
     main.c
 abrt_gtk_CFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \

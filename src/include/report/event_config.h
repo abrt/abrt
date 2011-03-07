@@ -41,3 +41,11 @@ typedef struct
 } event_config_t;
 
 void load_event_description_from_file(event_config_t *event_config, const char* filename);
+
+// (Re)loads data from /etc/abrt/events/*.{conf,xml}
+void load_event_config_data(void);
+/* Frees all loaded data */
+void free_event_config_data(void);
+event_config_t *get_event_config(const char *name);
+
+extern GList *g_event_config_list;   // for iterating through entire list of all loaded configs

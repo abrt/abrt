@@ -82,7 +82,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "abrt_types.h"
 #include "dump_dir.h"
 #include "run_event.h"
-#include "event_xml_parser.h"
+#include "event_config.h"
 
 
 #ifdef __cplusplus
