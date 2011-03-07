@@ -351,14 +351,8 @@ report_status_t Report(crash_data_t *client_report,
     for (GList *li = env_list; li; li = g_list_next(li))
     {
         char *s = (char*)li->data;
-        /* Need to make a copy: just cutting s at '=' and unsetenv'ing
-         * the result would be a bug! s _itself_ is in environment now,
-         * we must not modify it there!
-         */
-        char *name = xstrndup(s, strchrnul(s, '=') - s);
-        VERB3 log("Unexporting '%s'", name);
-        unsetenv(name);
-        free(name);
+        VERB3 log("Unexporting '%s'", s);
+        safe_unsetenv(s);
         free(s);
     }
     g_list_free(env_list);

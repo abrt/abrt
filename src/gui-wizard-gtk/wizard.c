@@ -237,6 +237,23 @@ static void save_text_from_text_view(GtkTextView *tv, const char *name)
     free(new_str);
 }
 
+static void append_to_textview(GtkTextView *tv, const char *str, int len)
+{
+    GtkTextBuffer *tb = gtk_text_view_get_buffer(tv);
+
+    /* Ensure we insert text at the end */
+    GtkTextIter text_iter;
+    gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
+    gtk_text_buffer_place_cursor(tb, &text_iter);
+
+    gtk_text_buffer_insert_at_cursor(tb, str, len >= 0 ? len : strlen(str));
+
+    /* Scroll so that the end of the log is visible */
+    gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
+    gtk_text_view_scroll_to_iter(tv, &text_iter,
+                /*within_margin:*/ 0.0, /*use_align:*/ FALSE, /*xalign:*/ 0, /*yalign:*/ 0);
+}
+
 
 /* update_gui_state_from_crash_data */
 
@@ -453,6 +470,7 @@ struct analyze_event_data
     struct run_event_state *run_state;
     const char *event_name;
     GList *more_events;
+    GList *env_list;
     GtkWidget *page_widget;
     GtkLabel *status_label;
     GtkTextView *tv_log;
@@ -462,21 +480,52 @@ struct analyze_event_data
     /*guint event_source_id;*/
 };
 
-static void append_to_textview(GtkTextView *tv, const char *str, int len)
+static GList *export_event_config(const char *event_name)
 {
-    GtkTextBuffer *tb = gtk_text_view_get_buffer(tv);
+    GList *env_list = NULL;
 
-    /* Ensure we insert text at the end */
-    GtkTextIter text_iter;
-    gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
-    gtk_text_buffer_place_cursor(tb, &text_iter);
+    GHashTableIter iter;
+    char *name;
+    event_config_t *cfg;
+    g_hash_table_iter_init(&iter, g_event_config_list);
+    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&cfg))
+    {
+        if (strcmp(cfg->name, event_name) != 0)
+            continue;
+        for (GList *lopt = cfg->options; lopt; lopt = lopt->next)
+        {
+            event_option_t *opt = lopt->data;
+            char *var_val = xasprintf("%s=%s", opt->name, opt->value);
+VERB3 log("Exporting '%s'", var_val);
+            env_list = g_list_prepend(env_list, var_val);
+            putenv(var_val);
+        }
+    }
+    return env_list;
+}
 
-    gtk_text_buffer_insert_at_cursor(tb, str, len >= 0 ? len : strlen(str));
+static void unexport_event_config(GList *env_list)
+{
+    while (env_list)
+    {
+        char *var_val = env_list->data;
+VERB3 log("Unexporting '%s'", var_val);
+        safe_unsetenv(var_val);
+        env_list = g_list_remove(env_list, var_val);
+        free(var_val);
+    }
+}
 
-    /* Scroll so that the end of the log is visible */
-    gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
-    gtk_text_view_scroll_to_iter(tv, &text_iter,
-                /*within_margin:*/ 0.0, /*use_align:*/ FALSE, /*xalign:*/ 0, /*yalign:*/ 0);
+static int spawn_next_command_in_evd(struct analyze_event_data *evd)
+{
+    evd->env_list = export_event_config(evd->event_name);
+    int r = spawn_next_command(evd->run_state, g_dump_dir_name, evd->event_name);
+    if (r < 0)
+    {
+        unexport_event_config(evd->env_list);
+        evd->env_list = NULL;
+    }
+    return r;
 }
 
 static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, gpointer data)
@@ -492,7 +541,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     }
 
     if (r < 0 && errno == EAGAIN)
-        /* We got all data, but fd is still open. Done for now */
+        /* We got all buffered data, but fd is still open. Done for now */
         return TRUE; /* "please don't remove this event (yet)" */
 
     /* EOF/error. Wait for child to actually exit, collect status */
@@ -502,9 +551,12 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     if (WIFSIGNALED(status))
         retval = WTERMSIG(status) + 128;
 
+    unexport_event_config(evd->env_list);
+    evd->env_list = NULL;
+
     /* Stop if exit code is not 0, or no more commands */
     if (retval != 0
-     || spawn_next_command(evd->run_state, g_dump_dir_name, evd->event_name) < 0
+     || spawn_next_command_in_evd(evd) < 0
     ) {
         VERB1 log("done running event on '%s': %d", g_dump_dir_name, retval);
 //append_to_textview(evd->tv_log, msg);
@@ -534,7 +586,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             evd->more_events = g_list_remove(evd->more_events, evd->more_events->data);
 
             if (prepare_commands(evd->run_state, g_dump_dir_name, evd->event_name) != 0
-             && spawn_next_command(evd->run_state, g_dump_dir_name, evd->event_name) >= 0
+             && spawn_next_command_in_evd(evd) >= 0
             ) {
                 VERB1 log("running event '%s' on '%s'", evd->event_name, g_dump_dir_name);
                 break;
@@ -589,8 +641,12 @@ static void start_event_run(const char *event_name,
     if (!locked)
         return; /* user refused to steal, or write error, etc... */
 
+    GList *env_list = export_event_config(event_name);
     if (spawn_next_command(state, g_dump_dir_name, event_name) < 0)
+    {
+        unexport_event_config(env_list);
         goto no_cmds;
+    }
 
     VERB1 log("running event '%s' on '%s'", event_name, g_dump_dir_name);
 
@@ -601,6 +657,7 @@ static void start_event_run(const char *event_name,
     evd->run_state = state;
     evd->event_name = event_name;
     evd->more_events = more_events;
+    evd->env_list = env_list;
     evd->page_widget = page;
     evd->status_label = status_label;
     evd->tv_log = tv_log;
