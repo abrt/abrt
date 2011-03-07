@@ -163,7 +163,7 @@ void error(GMarkupParseContext *context,
  * and must be freed by the caller
  */
 
-void load_event_from_file(event_obj_t *ui, const char* filename)
+void load_event_description_from_file(event_obj_t *ui, const char* filename)
 {
     GMarkupParser parser;
     parser.start_element = &start_element;

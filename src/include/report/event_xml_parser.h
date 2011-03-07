@@ -39,3 +39,5 @@ typedef struct
     const char *action;//action description to show in gui like: Upload report to the Red Hat bugzilla"
     GList *options;
 } event_obj_t;
+
+void load_event_description_from_file(event_obj_t *event_desc, const char* filename);
