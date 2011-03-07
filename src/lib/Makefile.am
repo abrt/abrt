@@ -44,7 +44,8 @@ libreport_la_SOURCES = \
     parse_release.c \
     parse_options.c parse_options.h \
     steal_directory.c \
-    event_xml_parser.c
+    event_xml_parser.c \
+    event_config.c
 libreport_la_CPPFLAGS = \
     -Wall -Werror \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \

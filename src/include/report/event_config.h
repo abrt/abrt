@@ -48,4 +48,4 @@ void load_event_config_data(void);
 void free_event_config_data(void);
 event_config_t *get_event_config(const char *name);
 
-extern GList *g_event_config_list;   // for iterating through entire list of all loaded configs
+extern GHashTable *g_event_config_list;   // for iterating through entire list of all loaded configs
