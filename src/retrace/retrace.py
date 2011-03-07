@@ -25,6 +25,10 @@ RELEASE_PARSERS = {
   "fedora": re.compile("^Fedora[^0-9]+([0-9]+)[^\(]\(([^\)]+)\)$"),
 }
 
+GUESS_RELEASE_PARSERS = {
+  "fedora": re.compile("\.fc([0-9]+)"),
+}
+
 TASKPASS_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 CONFIG_FILE = "/etc/abrt/retrace.conf"
@@ -108,6 +112,14 @@ def guess_arch(coredump_path):
         return "i386"
 
     return None
+
+def guess_release(package):
+    for distro in GUESS_RELEASE_PARSERS.keys():
+        match = GUESS_RELEASE_PARSERS[distro].search(package)
+        if match:
+            return distro, match.group(1)
+
+    return None, None
 
 def gen_task_password(taskdir):
     generator = random.SystemRandom()
