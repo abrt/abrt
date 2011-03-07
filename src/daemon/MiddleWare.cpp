@@ -137,7 +137,7 @@ static mw_result_t CreateCrashReport(const char *dump_dir_name,
         char *uid = dd_load_text(dd, FILENAME_UID);
         if (strcmp(uid, caller_uid_str) != 0)
         {
-            char *inform_all = dd_load_text_ext(dd, FILENAME_INFORMALL, DD_FAIL_QUIETLY);
+            char *inform_all = dd_load_text_ext(dd, FILENAME_INFORMALL, DD_FAIL_QUIETLY_ENOENT);
             bool for_all = string_to_bool(inform_all);
             free(inform_all);
             if (!for_all)
@@ -410,7 +410,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
     if (!dd)
         return 0; /* wtf? (error, but will be handled elsewhere later) */
     state->uuid = dd_load_text_ext(dd, FILENAME_UUID,
-                DD_FAIL_QUIETLY + DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                DD_FAIL_QUIETLY_ENOENT + DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
     );
     dd_close(dd);
     if (!state->uuid)
@@ -538,7 +538,7 @@ mw_result_t LoadDebugDump(const char *dump_dir_name, crash_data_t **crash_data)
             res = MW_ERROR;
             goto ret;
         }
-        char *count_str = dd_load_text_ext(dd, FILENAME_COUNT, DD_FAIL_QUIETLY);
+        char *count_str = dd_load_text_ext(dd, FILENAME_COUNT, DD_FAIL_QUIETLY_ENOENT);
         unsigned long count = strtoul(count_str, NULL, 10);
         count++;
         char new_count_str[sizeof(long)*3 + 2];
@@ -624,7 +624,7 @@ vector_of_crash_data_t *GetCrashInfos(long caller_uid)
                 uid = dd_load_text(dd, FILENAME_UID);
                 if (strcmp(uid, caller_uid_str) != 0)
                 {
-                    char *inform_all = dd_load_text_ext(dd, FILENAME_INFORMALL, DD_FAIL_QUIETLY);
+                    char *inform_all = dd_load_text_ext(dd, FILENAME_INFORMALL, DD_FAIL_QUIETLY_ENOENT);
                     bool for_all = string_to_bool(inform_all);
                     free(inform_all);
                     if (!for_all)
@@ -762,7 +762,7 @@ int DeleteDebugDump(const char *dump_dir_name, long caller_uid)
         char *uid = dd_load_text(dd, FILENAME_UID);
         if (strcmp(uid, caller_uid_str) != 0)
         {
-            char *inform_all = dd_load_text_ext(dd, FILENAME_INFORMALL, DD_FAIL_QUIETLY);
+            char *inform_all = dd_load_text_ext(dd, FILENAME_INFORMALL, DD_FAIL_QUIETLY_ENOENT);
             if (!string_to_bool(inform_all))
             {
                 dd_close(dd);

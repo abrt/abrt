@@ -160,7 +160,7 @@ static GList *load_event_config(GList *list,
                 /* Get this name from dump dir */
                 if (!dd)
                 {
-                    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+                    dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
                     if (!dd)
                     {
                         free(line);
@@ -168,7 +168,7 @@ static GList *load_event_config(GList *list,
                         goto stop; /* error (note: dd_opendir logged error msg) */
                     }
                 }
-                real_val = malloced_val = dd_load_text_ext(dd, p, DD_FAIL_QUIETLY);
+                real_val = malloced_val = dd_load_text_ext(dd, p, DD_FAIL_QUIETLY_ENOENT);
             }
 
             /* Does VAL match? */
@@ -342,7 +342,7 @@ int run_event_on_crash_data(struct run_event_state *state, crash_data_t *data, c
     int r = run_event_on_dir_name(state, dir_name, event);
 
     g_hash_table_remove_all(data);
-    dd = dd_opendir(dir_name, 0);
+    dd = dd_opendir(dir_name, /*flags:*/ 0);
     free(dir_name);
     if (dd)
     {
@@ -476,7 +476,7 @@ static int list_possible_events_helper(struct strbuf *result,
                         goto stop; /* error (note: dd_opendir logged error msg) */
                     }
                 }
-                char *real_val = dd_load_text_ext(dd, p, DD_FAIL_QUIETLY);
+                char *real_val = dd_load_text_ext(dd, p, DD_FAIL_QUIETLY_ENOENT);
                 /* Does VAL match? */
                 if (strcmp(real_val, line_val) != 0)
                 {

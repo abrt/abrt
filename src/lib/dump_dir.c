@@ -111,7 +111,7 @@ static bool exist_file_dir(const char *path)
 }
 
 /* Return values:
- * -1: error
+ * -1: error (in this case, errno is 0 if error message is already logged)
  *  0: failed to lock (someone else has it locked)
  *  1: success
  */
@@ -121,8 +121,11 @@ static int get_and_set_lock(const char* lock_file, const char* pid)
     {
         if (errno != EEXIST)
         {
-            if (errno != ENOENT && errno != ENOTDIR)
+            if (errno != ENOENT && errno != ENOTDIR && errno != EACCES)
+            {
                 perror_msg("Can't create lock file '%s'", lock_file);
+                errno = 0;
+            }
             return -1;
         }
 
@@ -137,6 +140,7 @@ static int get_and_set_lock(const char* lock_file, const char* pid)
                 continue;
             }
             perror_msg("Can't read lock file '%s'", lock_file);
+            errno = 0;
             return -1;
         }
         pid_buf[r] = '\0';
@@ -161,6 +165,7 @@ static int get_and_set_lock(const char* lock_file, const char* pid)
         if (unlink(lock_file) != 0 && errno != ENOENT)
         {
             perror_msg("Can't remove stale lock file '%s'", lock_file);
+            errno = 0;
             return -1;
         }
     }
@@ -169,7 +174,7 @@ static int get_and_set_lock(const char* lock_file, const char* pid)
     return 1;
 }
 
-static int dd_lock(struct dump_dir *dd, unsigned sleep_usec)
+static int dd_lock(struct dump_dir *dd, unsigned sleep_usec, int flags)
 {
     if (dd->locked)
         error_msg_and_die("Locking bug on '%s'", dd->dd_dirname);
@@ -283,7 +288,7 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
     dir = dd->dd_dirname = rm_trailing_slashes(dir);
 
     errno = 0;
-    if (dd_lock(dd, WAIT_FOR_OTHER_PROCESS_USLEEP) < 0)
+    if (dd_lock(dd, WAIT_FOR_OTHER_PROCESS_USLEEP, flags) < 0)
     {
         if ((flags & DD_OPEN_READONLY) && errno == EACCES)
         {
@@ -306,22 +311,17 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
              * directory when run without arguments, because its option -d DIR
              * defaults to "."!
              */
-            /*if (!(flags & DD_FAIL_QUIETLY))... - no, DD_FAIL_QUIETLY only means
-             * "it's ok if it doesn exist", not "ok if contents is bogus"!
-             */
             error_msg("'%s' is not a crash dump directory", dir);
-            dd_close(dd);
-            return NULL;
         }
-
-        if (errno == ENOENT || errno == ENOTDIR)
+        else if (errno == ENOENT || errno == ENOTDIR)
         {
-            if (!(flags & DD_FAIL_QUIETLY))
+            if (!(flags & DD_FAIL_QUIETLY_ENOENT))
                 error_msg("'%s' does not exist", dir);
         }
         else
         {
-            perror_msg("Can't access '%s'", dir);
+            if (!(flags & DD_FAIL_QUIETLY_EACCES))
+                perror_msg("Can't access '%s'", dir);
         }
         dd_close(dd);
         return NULL;
@@ -335,8 +335,7 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
         struct stat stat_buf;
         if (stat(dir, &stat_buf) != 0 || !S_ISDIR(stat_buf.st_mode))
         {
-            if (!(flags & DD_FAIL_QUIETLY))
-                error_msg("'%s' does not exist", dir);
+            error_msg("Can't stat '%s', or it is not a directory", dir);
             dd_close(dd);
             return NULL;
         }
@@ -421,7 +420,7 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
         return NULL;
     }
 
-    if (dd_lock(dd, CREATE_LOCK_USLEEP) < 0)
+    if (dd_lock(dd, CREATE_LOCK_USLEEP, /*flags:*/ 0) < 0)
     {
         dd_close(dd);
         return NULL;
@@ -585,7 +584,7 @@ static char *load_text_file(const char *path, unsigned flags)
     FILE *fp = fopen(path, "r");
     if (!fp)
     {
-        if (!(flags & DD_FAIL_QUIETLY))
+        if (!(flags & DD_FAIL_QUIETLY_ENOENT))
             perror_msg("Can't open file '%s'", path);
         return (flags & DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE ? NULL : xstrdup(""));
     }

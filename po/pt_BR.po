@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.pt_BR\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-02-17 02:58+0000\n"
+"POT-Creation-Date: 2011-03-03 21:09+0100\n"
 "PO-Revision-Date: 2011-02-17 23:06-0200\n"
 "Last-Translator: \n"
 "Language-Team: Brazilian Portuguese <trans-pt_br@lists.fedoraproject.org>\n"
+"Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-Country: BRAZIL\n"
@@ -144,17 +144,6 @@ msgstr "Hostname:           %s\n"
 #, c-format
 msgid ""
 "\n"
-"How to reproduce:\n"
-"%s\n"
-msgstr ""
-"\n"
-"#Como reproduzir:\n"
-"%s\n"
-
-#: ../src/cli/CLI.cpp:191
-#, c-format
-msgid ""
-"\n"
 "Comment:\n"
 "%s\n"
 msgstr ""
@@ -162,7 +151,7 @@ msgstr ""
 "Comentário:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:197
+#: ../src/cli/CLI.cpp:193
 #, c-format
 msgid ""
 "\n"
@@ -173,7 +162,7 @@ msgstr ""
 "Backtrace:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:295
+#: ../src/cli/CLI.cpp:250
 #, c-format
 msgid ""
 "Usage: %s -l[f] [-D BASE_DIR]...]\n"
@@ -196,7 +185,7 @@ msgid ""
 "\t-v, --verbose\t\tBe verbose\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:343
+#: ../src/cli/CLI.cpp:298
 msgid "You must specify exactly one operation"
 msgstr "Você precisa especificar exatamente uma operação"
 
@@ -210,10 +199,6 @@ msgid "# Describe the circumstances of this crash below"
 msgstr "#Descreva as circunstâncias deste travamento abaixo"
 
 #: ../src/cli/report.cpp:176
-msgid "# How to reproduce the crash?"
-msgstr "#Como reproduzir o travamento?"
-
-#: ../src/cli/report.cpp:178
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -221,48 +206,48 @@ msgstr ""
 "# Backtrace\n"
 "# Verificar se não contém algum dado sensível (senhas, etc)"
 
-#: ../src/cli/report.cpp:180
+#: ../src/cli/report.cpp:178
 msgid "# Architecture"
 msgstr "#Arquitetura"
 
-#: ../src/cli/report.cpp:181
+#: ../src/cli/report.cpp:179
 msgid "# Command line"
 msgstr "# Linha de Comando"
 
-#: ../src/cli/report.cpp:182
+#: ../src/cli/report.cpp:180
 msgid "# Component"
 msgstr "#Componente"
 
-#: ../src/cli/report.cpp:183
+#: ../src/cli/report.cpp:181
 msgid "# Core dump"
 msgstr "#Despejo de Núcleo"
 
-#: ../src/cli/report.cpp:184
+#: ../src/cli/report.cpp:182
 msgid "# Executable"
 msgstr "#Executável"
 
-#: ../src/cli/report.cpp:185
+#: ../src/cli/report.cpp:183
 msgid "# Kernel version"
 msgstr "#Versão do Kernel"
 
-#: ../src/cli/report.cpp:186
+#: ../src/cli/report.cpp:184
 msgid "# Package"
 msgstr "#Pacote"
 
-#: ../src/cli/report.cpp:187
+#: ../src/cli/report.cpp:185
 msgid "# Reason of crash"
 msgstr "#Razão para o travamento"
 
-#: ../src/cli/report.cpp:188
+#: ../src/cli/report.cpp:186
 msgid "# Release string of the operating system"
 msgstr "#Faixa de lançamento do sistema operacional"
 
-#: ../src/cli/report.cpp:305
+#: ../src/cli/report.cpp:299
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
 "Não foi possível executar  vi: $TERM, $VISUAL e $EDITOR não está configurado "
 
-#: ../src/cli/report.cpp:389
+#: ../src/cli/report.cpp:383
 msgid ""
 "\n"
 "The report has been updated"
@@ -270,7 +255,7 @@ msgstr ""
 "\n"
 "Um relatório foi atualizado"
 
-#: ../src/cli/report.cpp:391
+#: ../src/cli/report.cpp:385
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -279,46 +264,46 @@ msgstr ""
 " Não foi detectada nenhuma mudança no relatório"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:423
+#: ../src/cli/report.cpp:417
 msgid "y"
 msgstr "y"
 
-#: ../src/cli/report.cpp:424
+#: ../src/cli/report.cpp:418
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:555
+#: ../src/cli/report.cpp:549
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Configurações erradas foram detectadas no plugin %s\n"
 
-#: ../src/cli/report.cpp:559
+#: ../src/cli/report.cpp:553
 msgid "Enter your login: "
 msgstr "Insira seu login:"
 
-#: ../src/cli/report.cpp:565
+#: ../src/cli/report.cpp:559
 msgid "Enter your password: "
 msgstr "Insira sua senha:"
 
-#: ../src/cli/report.cpp:775
+#: ../src/cli/report.cpp:766
 msgid "Reporting..."
 msgstr "Relatando..."
 
-#: ../src/cli/report.cpp:788
+#: ../src/cli/report.cpp:779
 #, c-format
 msgid "Report using %s?"
 msgstr "Relatar utilizando o %s?"
 
-#: ../src/cli/report.cpp:791
+#: ../src/cli/report.cpp:782
 msgid "Skipping..."
 msgstr "Pulando..."
 
-#: ../src/cli/report.cpp:807
+#: ../src/cli/report.cpp:798
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Relatório desabilitado porque o backtrace está inutilizado"
 
-#: ../src/cli/report.cpp:811
+#: ../src/cli/report.cpp:802
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -327,12 +312,12 @@ msgstr ""
 "Por favor, tente instalar o debuginfo manualmente usando o comando: "
 "\"debuginfo-install %s\" e tente novamente\n"
 
-#: ../src/cli/report.cpp:829
+#: ../src/cli/report.cpp:820
 #, fuzzy, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "Travamento reportado via %d plugins (%d erros)\n"
 
-#: ../src/daemon/abrt-action-save-package-data.c:271
+#: ../src/daemon/abrt-action-save-package-data.c:245
 msgid ""
 " [options] -d DIR\n"
 "\n"
@@ -343,25 +328,25 @@ msgstr ""
 "Consulta a base de dados do pacote, salva o nome do pacote, componente e a "
 "descrição"
 
-#: ../src/daemon/abrt-action-save-package-data.c:283
-#, fuzzy
+#: ../src/daemon/abrt-action-save-package-data.c:257
 #: ../src/daemon/abrt-handle-crashdump.c:60
 #: ../src/plugins/abrt-action-analyze-c.c:167
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-action-bugzilla.cpp:927
+#: ../src/plugins/abrt-action-bugzilla.cpp:933
 #: ../src/plugins/abrt-action-generate-backtrace.c:270
 #: ../src/plugins/abrt-action-kerneloops.c:147
 #: ../src/plugins/abrt-action-mailx.c:149
 #: ../src/plugins/abrt-action-print.c:50
 #: ../src/plugins/abrt-action-rhtsupport.c:280
 #: ../src/plugins/abrt-action-upload.c:260
+#, fuzzy
 msgid "Crash dump directory"
 msgstr "Cdump no diretóridir"
 
-#: ../src/daemon/abrt-action-save-package-data.c:284
+#: ../src/daemon/abrt-action-save-package-data.c:258
 #: ../src/daemon/abrt-handle-crashdump.c:59 ../src/daemon/abrt-server.c:297
-#: ../src/plugins/abrt-action-bugzilla.cpp:926
+#: ../src/plugins/abrt-action-bugzilla.cpp:932
 #: ../src/plugins/abrt-action-generate-backtrace.c:273
 #: ../src/plugins/abrt-action-kerneloops.c:146
 #: ../src/plugins/abrt-action-rhtsupport.c:279
@@ -393,13 +378,9 @@ msgstr "[opções]"
 msgid "Use UID as client uid"
 msgstr "Use UID como cliente uid"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:241
+#: ../src/daemon/CommLayerServerDBus.cpp:239
 msgid "Comment is too long"
 msgstr "Comentário muito longo"
-
-#: ../src/daemon/CommLayerServerDBus.cpp:245
-msgid "'How to reproduce' is too long"
-msgstr "'Como reproduzir' está muito longo"
 
 #: ../src/daemon/Daemon.cpp:371
 msgid ""
@@ -1215,81 +1196,81 @@ msgid ""
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:534
+#: ../src/plugins/abrt-action-bugzilla.cpp:536
 #, c-format
 msgid "New bug id: %i"
 msgstr "Novo id do erro: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:662
+#: ../src/plugins/abrt-action-bugzilla.cpp:664
 #, fuzzy, c-format
 msgid "Empty login or password, please check %s"
 msgstr ""
 "Login ou senha vazios.\n"
 "Por favor, verifique"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:680
+#: ../src/plugins/abrt-action-bugzilla.cpp:684
 msgid "Logging into bugzilla..."
 msgstr "Autenticando no bugzilla..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:683
+#: ../src/plugins/abrt-action-bugzilla.cpp:687
 msgid "Checking for duplicates..."
 msgstr "Verificando duplicatas..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:705
-#: ../src/plugins/abrt-action-bugzilla.cpp:741
+#: ../src/plugins/abrt-action-bugzilla.cpp:709
+#: ../src/plugins/abrt-action-bugzilla.cpp:745
 msgid "Missing mandatory member 'bugs'"
 msgstr "Membro 'bugs' obrigatórios faltando"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:724
-#: ../src/plugins/abrt-action-bugzilla.cpp:757
-#: ../src/plugins/abrt-action-bugzilla.cpp:833
+#: ../src/plugins/abrt-action-bugzilla.cpp:728
+#: ../src/plugins/abrt-action-bugzilla.cpp:761
+#: ../src/plugins/abrt-action-bugzilla.cpp:837
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info()falhou. Não foi possível coletar todas as informações "
 "obrigatórias."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:772
+#: ../src/plugins/abrt-action-bugzilla.cpp:776
 msgid "Creating a new bug..."
 msgstr "Criando novo erro... "
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:777
+#: ../src/plugins/abrt-action-bugzilla.cpp:781
 msgid "Bugzilla entry creation failed"
 msgstr "Criação da entrada do bugzilla falhou"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:789
-#: ../src/plugins/abrt-action-bugzilla.cpp:886
+#: ../src/plugins/abrt-action-bugzilla.cpp:793
+#: ../src/plugins/abrt-action-bugzilla.cpp:892
 msgid "Logging out..."
 msgstr "Encerrando sessão..."
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:807
+#: ../src/plugins/abrt-action-bugzilla.cpp:811
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "O erro já foi relatado: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:818
+#: ../src/plugins/abrt-action-bugzilla.cpp:822
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "O Bugzilla não conseguiu encontrar o pai do bug %d"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:847
+#: ../src/plugins/abrt-action-bugzilla.cpp:851
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Adicionar o %s à lista CC"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:871
+#: ../src/plugins/abrt-action-bugzilla.cpp:877
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Adicionar novo comentário ao bug (%d)"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:913
+#: ../src/plugins/abrt-action-bugzilla.cpp:919
 msgid ""
 " [-vs] -c CONFFILE -d DIR\n"
 "\n"
 "Report a crash to Bugzilla"
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:928
+#: ../src/plugins/abrt-action-bugzilla.cpp:934
 #: ../src/plugins/abrt-action-kerneloops.c:148
 #: ../src/plugins/abrt-action-rhtsupport.c:281
 msgid "Configuration file (may be given many times)"
@@ -1307,124 +1288,131 @@ msgstr "Diretórios de informações de depuração adicionaistri"
 msgid "Kill gdb if it runs for more than N seconds"
 msgstr "Matar gdb se este executar por mais de N segundos"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:320
+#. Don't be completely silent. gdb run takes a few seconds,
+#. * it is useful to let user know it (maybe) worked.
+#.
+#: ../src/plugins/abrt-action-generate-backtrace.c:322
+#, c-format
+msgid "Backtrace is generated and saved, %u bytes"
+msgstr ""
+
+#.
+#. * The parser failed. Compute the UUID from the executable
+#. * and package only.  This is not supposed to happen often.
+#.
+#: ../src/plugins/abrt-action-generate-backtrace.c:333
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:72
+#: ../src/plugins/abrt-action-install-debuginfo.py:77
 #, python-format
 msgid "Extracting cpio from %s"
 msgstr "Extraindo cpio de %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:77
-msgid "Can't write to:"
+#: ../src/plugins/abrt-action-install-debuginfo.py:82
+#, fuzzy, python-format
+msgid "Can't write to '%s': %s"
 msgstr "Não é possível gravar:"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:87
-msgid "Removing the temporary rpm file"
-msgstr "Removendo arquivo rpm temporário"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:91
-#, python-format
-msgid "Can't extract package: %s"
+#: ../src/plugins/abrt-action-install-debuginfo.py:96
+#, fuzzy, python-format
+msgid "Can't extract package '%s'"
 msgstr "Não é possível extrair o pacote: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:99
+#: ../src/plugins/abrt-action-install-debuginfo.py:104
 #, python-format
 msgid "Caching files from %s made from %s"
 msgstr "Efetuar cache de arquivos de %s a partir de %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:107
-msgid "Removing the temporary cpio file"
-msgstr "Removendo arquivo cpio temporáriote"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:110
-#, python-format
-msgid "Can't extract files from: %s"
+#: ../src/plugins/abrt-action-install-debuginfo.py:114
+#, fuzzy, python-format
+msgid "Can't extract files from '%s'"
 msgstr "Não é possível extrair arquivos de:  %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:134
-#: ../src/plugins/abrt-action-install-debuginfo.py:140
-#, python-format
-msgid "Downloading (%i of %i) %.30s : %.3s %%"
+#: ../src/plugins/abrt-action-install-debuginfo.py:138
+#: ../src/plugins/abrt-action-install-debuginfo.py:148
+#, fuzzy, python-format
+msgid "Downloading (%i of %i) %s: %3u%%"
 msgstr "Baixando (%i de %i) %.30s : %.3s %%n"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:169
-msgid "Searching the missing debuginfo packages"
-msgstr "Procurando pacotes perdidos do debuginfo "
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:224
+#: ../src/plugins/abrt-action-install-debuginfo.py:234
 #, python-format
-msgid "To download: (%.2f) M / Installed size: %.2f M"
+msgid "Can't find packages for %u debuginfo files"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:236
+#, python-format
+msgid "Found %u packages to download"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:237
+#, fuzzy, python-format
+msgid "Downloading %.2fMb, installed size: %.2fMb"
 msgstr "Para download:  (%.2f) M / Tamanho instalado: %.2f M"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:240
+#: ../src/plugins/abrt-action-install-debuginfo.py:245
 msgid "Is this ok? [y/N] "
 msgstr "Esta correto? [y/N]"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:257
+#: ../src/plugins/abrt-action-install-debuginfo.py:262
 #, python-format
 msgid "Downloading package %s failed"
 msgstr "Baixando pacote %s falhou"
 
 #. recursively delete the temp dir on failure
-#: ../src/plugins/abrt-action-install-debuginfo.py:268
+#: ../src/plugins/abrt-action-install-debuginfo.py:273
 msgid "Unpacking failed, aborting download..."
 msgstr "Descompactação falhou, cancelando download..."
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:275
+#: ../src/plugins/abrt-action-install-debuginfo.py:280
 #, python-format
 msgid "All downloaded packages have been extracted, removing %s"
 msgstr "Todos os pacotes baixados foram extraidos, removendo %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:280
+#: ../src/plugins/abrt-action-install-debuginfo.py:285
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr "Não é possível remover %s, provávelmente contém erros no log"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:305
-#, python-format
-msgid "Analyzing corefile: %(corefile_path)s"
+#: ../src/plugins/abrt-action-install-debuginfo.py:310
+#, fuzzy, python-format
+msgid "Analyzing corefile '%s'"
 msgstr "Analizando arquivo central:  %(corefile_path)sc"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:384
-#, python-format
-msgid "Can't remove %(tmpdir_path)s: %(reason)s"
+#: ../src/plugins/abrt-action-install-debuginfo.py:388
+#, fuzzy, python-format
+msgid "Can't remove '%s': %s"
 msgstr "Não remova %(tmpdir_path)s: %(reason)s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:394
-msgid "Exiting on user Command"
+#: ../src/plugins/abrt-action-install-debuginfo.py:396
+msgid "Exiting on user command"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:413
+#: ../src/plugins/abrt-action-install-debuginfo.py:415
 #, python-format
-msgid "Usage: %s --core=<COREFILE> --tmpdir=<TMPDIR> --cachedir=<CACHEDIR>"
+msgid "Usage: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:442
+#: ../src/plugins/abrt-action-install-debuginfo.py:444
 #, fuzzy
 msgid "You have to specify the path to coredump."
 msgstr "Você selecionou um travamento para cópia"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:446
-#, fuzzy
-msgid "You have to specify the path to cachedir."
-msgstr "Você selecionou um travamento para cópia"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:450
-#, fuzzy
-msgid "You have to specify the path to tmpdir."
-msgstr "Você selecionou um travamento para cópia"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:463
-msgid "All debuginfo seems to be available"
+#: ../src/plugins/abrt-action-install-debuginfo.py:461
+#, python-format
+msgid "Coredump references %u debuginfo files, %u of them are not installed"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:470
-#, fuzzy
-msgid "Complete!"
-msgstr "Componente"
+#: ../src/plugins/abrt-action-install-debuginfo.py:466
+#, python-format
+msgid "Missing debuginfo file: %s"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:469
+#, python-format
+msgid "All %u debuginfo files are available"
+msgstr ""
 
 #: ../src/plugins/abrt-action-kerneloops.c:105
 #, fuzzy, c-format
@@ -1659,6 +1647,42 @@ msgstr "URL:"
 #: ../src/plugins/Upload.glade.h:5
 msgid "Use encryption"
 msgstr "Usar criptografia:"
+
+#~ msgid ""
+#~ "\n"
+#~ "How to reproduce:\n"
+#~ "%s\n"
+#~ msgstr ""
+#~ "\n"
+#~ "#Como reproduzir:\n"
+#~ "%s\n"
+
+#~ msgid "# How to reproduce the crash?"
+#~ msgstr "#Como reproduzir o travamento?"
+
+#~ msgid "'How to reproduce' is too long"
+#~ msgstr "'Como reproduzir' está muito longo"
+
+#~ msgid "Removing the temporary rpm file"
+#~ msgstr "Removendo arquivo rpm temporário"
+
+#~ msgid "Removing the temporary cpio file"
+#~ msgstr "Removendo arquivo cpio temporáriote"
+
+#~ msgid "Searching the missing debuginfo packages"
+#~ msgstr "Procurando pacotes perdidos do debuginfo "
+
+#, fuzzy
+#~ msgid "You have to specify the path to cachedir."
+#~ msgstr "Você selecionou um travamento para cópia"
+
+#, fuzzy
+#~ msgid "You have to specify the path to tmpdir."
+#~ msgstr "Você selecionou um travamento para cópia"
+
+#, fuzzy
+#~ msgid "Complete!"
+#~ msgstr "Componente"
 
 #~ msgid "<b>Select plugin</b>"
 #~ msgstr "<b>Selecionar plugin</b>"

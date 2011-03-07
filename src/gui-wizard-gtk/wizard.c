@@ -28,10 +28,13 @@ GtkBox *g_box_warning_labels;
 GtkToggleButton *g_tb_approve_bt;
 GtkButton *g_btn_refresh;
 
-/* required for search in bt */
-guint g_timeout = 0;
-GtkEntry * g_search_entry_bt;
+GtkLabel *g_lbl_reporters;
+GtkLabel *g_lbl_size;
 
+
+/* required for search in bt */
+static guint g_timeout = 0;
+static GtkEntry *g_search_entry_bt;
 
 static GtkBuilder *builder;
 static PangoFontDescription *monospace_font;
@@ -136,6 +139,7 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
     if (HOME && HOME[0])
         HOME = concat_path_file(HOME, ".abrt/spool");
     else
+//TODO: try to find homedir in password db?
         HOME = xstrdup("/tmp");
 
     GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
@@ -167,6 +171,7 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
     dd_close(dd);
 
     gtk_window_set_title(GTK_WINDOW(g_assistant), g_dump_dir_name);
+    gtk_label_set_text(g_lbl_dirname, g_dump_dir_name);
     delete_dump_dir_possibly_using_abrtd(old_name); //TODO: if (deletion_failed) error_msg("BAD")?
     free(old_name);
 
@@ -217,10 +222,11 @@ static void save_text_if_changed(const char *name, const char *new_value)
         if (dd && dd->locked)
         {
             dd_save_text(dd, name, new_value);
-            add_to_crash_data_ext(g_cd, name, new_value, CD_FLAG_TXT | CD_FLAG_ISEDITABLE);
         }
 //FIXME: else: what to do with still-unsaved data in the widget??
         dd_close(dd);
+        reload_crash_data_from_dump_dir();
+        update_gui_state_from_crash_data();
     }
 }
 
@@ -298,43 +304,73 @@ VERB2 log("adding button '%s' to box %p", event_name, box);
     return (have_activated_btn ? NULL : first_button);
 }
 
-static void append_item_to_details_ls(gpointer name, gpointer value, gpointer data)
+struct cd_stats {
+    off_t filesize;
+    unsigned filecount;
+};
+
+static void append_item_to_ls_details(gpointer name, gpointer value, gpointer data)
 {
     crash_item *item = (crash_item*)value;
+    struct cd_stats *stats = data;
     GtkTreeIter iter;
 
     gtk_list_store_append(g_ls_details, &iter);
+    stats->filecount++;
 
     //FIXME: use the value representation here
     /* If text and not multiline... */
-    if ((item->flags & CD_FLAG_TXT) && !strchr(item->content, '\n'))
+    if (item->flags & CD_FLAG_TXT)
     {
-        gtk_list_store_set(g_ls_details, &iter,
+        stats->filesize += strlen(item->content);
+        if (!strchr(item->content, '\n'))
+        {
+            gtk_list_store_set(g_ls_details, &iter,
                               DETAIL_COLUMN_NAME, (char *)name,
                               DETAIL_COLUMN_VALUE, item->content,
                               //DETAIL_COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
                               -1);
-    }
-    else
-    {
-        gtk_list_store_set(g_ls_details, &iter,
+        }
+        else
+        {
+            gtk_list_store_set(g_ls_details, &iter,
                               DETAIL_COLUMN_NAME, (char *)name,
                               DETAIL_COLUMN_VALUE, _("(click here to view/edit)"),
                               //DETAIL_COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
                               -1);
-        //WARNING: will leak xasprintf results above if uncommented
+            //WARNING: will leak xasprintf results above if uncommented
+        }
+    }
+    else if (item->flags & CD_FLAG_BIN)
+    {
+        struct stat statbuf;
+        statbuf.st_size = 0;
+        stat(item->content, &statbuf);
+        stats->filesize += statbuf.st_size;
+        char *msg = xasprintf(_("(binary file, %llu bytes)"), (long long)statbuf.st_size);
+        gtk_list_store_set(g_ls_details, &iter,
+                              DETAIL_COLUMN_NAME, (char *)name,
+                              DETAIL_COLUMN_VALUE, msg,
+                              //DETAIL_COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
+                              -1);
+        free(msg);
     }
 }
 
 void update_gui_state_from_crash_data(void)
 {
+    gtk_window_set_title(GTK_WINDOW(g_assistant), g_dump_dir_name);
     gtk_label_set_text(g_lbl_dirname, g_dump_dir_name);
 
     const char *reason = get_crash_item_content_or_NULL(g_cd, FILENAME_REASON);
     gtk_label_set_text(g_lbl_cd_reason, reason ? reason : _("(no description)"));
 
     gtk_list_store_clear(g_ls_details);
-    g_hash_table_foreach(g_cd, append_item_to_details_ls, NULL);
+    struct cd_stats stats = { 0 };
+    g_hash_table_foreach(g_cd, append_item_to_ls_details, &stats);
+    char *msg = xasprintf(_("%llu bytes, %u files"), (long long)stats.filesize, stats.filecount);
+    gtk_label_set_text(g_lbl_size, msg);
+    free(msg);
 
     load_text_to_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
     load_text_to_text_view(g_tv_comment, FILENAME_COMMENT);
@@ -374,9 +410,13 @@ void update_gui_state_from_crash_data(void)
     add_event_buttons(g_box_reporters, g_report_events, /*callback:*/ G_CALLBACK(report_tb_was_toggled), /*radio:*/ false, /*prev:*/ NULL);
     /* Re-select new reporters which were selected before we deleted them */
     GList *new_reporters = gtk_container_get_children(GTK_CONTAINER(g_box_reporters));
+    struct strbuf *reporters_string = strbuf_new();
     for (GList *li_new = new_reporters; li_new; li_new = li_new->next)
     {
         const char *new_name = gtk_button_get_label(GTK_BUTTON(li_new->data));
+
+        strbuf_append_strf(reporters_string, "%s%s", (reporters_string->len ? ", " : ""), new_name);
+
         for (GList *li_old = old_reporters; li_old; li_old = li_old->next)
         {
             if (strcmp(new_name, li_old->data) == 0)
@@ -388,8 +428,11 @@ void update_gui_state_from_crash_data(void)
     }
     g_list_free(new_reporters);
     list_free_with_free(old_reporters);
+    /* Update "list of reporters" label */
+    gtk_label_set_text(g_lbl_reporters, strbuf_free_nobuf(reporters_string));
     /* Update readiness state of reporter selector page */
     report_tb_was_toggled(NULL, NULL);
+
 
     /* We can't just do gtk_widget_show_all once in main:
      * We created new widgets (buttons). Need to make them visible.
@@ -655,12 +698,14 @@ static void on_btn_refresh_clicked(GtkButton *button)
 {
     if (g_reanalyze_events[0])
     {
-        g_analyze_events = append_to_malloced_string(g_analyze_events, g_reanalyze_events);
-        g_reanalyze_events[0] = '\0';
         /* Save backtrace text if changed */
         save_text_from_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
+
+        g_analyze_events = append_to_malloced_string(g_analyze_events, g_reanalyze_events);
+        g_reanalyze_events[0] = '\0';
         /* Refresh GUI so that we see new analyze+reanalyze buttons */
         update_gui_state_from_crash_data();
+
         /* Change page to analyzer selector - let user play with them */
         gtk_assistant_set_current_page(g_assistant, PAGENO_ANALYZE_SELECTOR);
     }
@@ -727,17 +772,9 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
         check_backtrace_and_allow_send();
     }
 
-    if (pages[PAGENO_BACKTRACE_APPROVAL + 1].page_widget == page)
-    {
-        /* User just pressed [Fwd] on backtrace page. Save backtrace text if changed */
-        save_text_from_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
-    }
-
-    if (pages[PAGENO_COMMENT + 1].page_widget == page)
-    {
-        /* User just pressed [Fwd] on comment page. Same as above */
-        save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
-    }
+    /* Save text fields if changed */
+    save_text_from_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
+    save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
 
     if (pages[PAGENO_SUMMARY].page_widget == page
      || pages[PAGENO_REPORT].page_widget == page
@@ -820,7 +857,7 @@ static void search_timeout(GtkEntry *entry)
      * if this part is removed, then the search will be started on every
      * change of the search entry
      */
-    if(g_timeout != 0)
+    if (g_timeout != 0)
         g_source_remove(g_timeout);
     g_timeout = g_timeout_add(500, &highlight_search, (gpointer)entry);
 }
@@ -925,6 +962,8 @@ static void add_pages(void)
     g_search_entry_bt      = GTK_ENTRY(        gtk_builder_get_object(builder, "entry_search_bt"));
     g_container_details1   = GTK_CONTAINER(    gtk_builder_get_object(builder, "container_details1"));
     g_container_details2   = GTK_CONTAINER(    gtk_builder_get_object(builder, "container_details2"));
+    g_lbl_reporters        = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_reporters"));
+    g_lbl_size             = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_size"));
 
     gtk_widget_modify_font(GTK_WIDGET(g_tv_analyze_log), monospace_font);
     gtk_widget_modify_font(GTK_WIDGET(g_tv_report_log), monospace_font);
@@ -950,7 +989,6 @@ void create_assistant()
 
     GtkWindow *wnd_assistant = GTK_WINDOW(g_assistant);
     gtk_window_set_default_size(wnd_assistant, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    gtk_window_set_title(wnd_assistant, g_dump_dir_name);
     gtk_window_set_icon_name(wnd_assistant, "abrt");
 
     GObject *obj_assistant = G_OBJECT(g_assistant);

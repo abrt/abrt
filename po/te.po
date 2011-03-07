@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.te\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-01-24 21:06+0000\n"
+"POT-Creation-Date: 2011-03-03 21:09+0100\n"
 "PO-Revision-Date: 2011-01-27 16:01+0530\n"
 "Last-Translator: Krishnababu Krothapalli <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
@@ -46,16 +46,16 @@ msgstr "ABRT ప్రకటన ఆప్లెట్"
 msgid "Automatic Bug Reporting Tool"
 msgstr "స్వయంచాలక బగ్ నివేదీకరణ సాధనము"
 
-#: ../src/applet/applet.c:86
+#: ../src/applet/applet.c:85
 #, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "ప్యాకేజీ %s నందు వొక క్రాష్ గుర్తించబడింది"
 
-#: ../src/applet/applet.c:88
+#: ../src/applet/applet.c:87
 msgid "A crash has been detected"
 msgstr "ఒక క్రాష్ గుర్తించబడెను"
 
-#: ../src/applet/applet.c:285
+#: ../src/applet/applet.c:284
 msgid "ABRT service is not running"
 msgstr "ABRT సేవ నడుచుటలేదు"
 
@@ -69,7 +69,7 @@ msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT చేత గుర్తించబడిన సమస్యల గురించి వినియోగదారికి తెలుపుటకు నోటిఫికేషన్ ప్రాంతపు ఆప్లెట్"
 
-#: ../src/applet/applet_gtk.c:246 ../src/gui/ccgui.glade.h:23
+#: ../src/applet/applet_gtk.c:246 ../src/gui/ccgui.glade.h:24
 msgid "translator-credits"
 msgstr "కృష్ణబాబు క్రొత్తపల్లి <kkrothap@redhat.com> 2009,2010."
 
@@ -77,7 +77,7 @@ msgstr "కృష్ణబాబు క్రొత్తపల్లి <kkroth
 msgid "Hide"
 msgstr "మరుగునవుంచుము"
 
-#: ../src/applet/applet_gtk.c:360 ../src/gui/ccgui.glade.h:13
+#: ../src/applet/applet_gtk.c:360 ../src/gui/ccgui.glade.h:14
 msgid "Report"
 msgstr "నివేదించు"
 
@@ -85,7 +85,7 @@ msgstr "నివేదించు"
 msgid "Open ABRT"
 msgstr "ABRT తెరువుము"
 
-#: ../src/cli/CLI.cpp:46
+#: ../src/cli/CLI.cpp:90
 #, fuzzy, c-format
 msgid ""
 "\tCrash dump : %s\n"
@@ -102,12 +102,12 @@ msgstr ""
 "\tక్రాష్ సమయం : %s\n"
 "\tక్రాష్ లెక్క: %s\n"
 
-#: ../src/cli/CLI.cpp:65
+#: ../src/cli/CLI.cpp:109
 #, c-format
 msgid "\tHostname   : %s\n"
 msgstr "\tహోస్టునామము   : %s\n"
 
-#: ../src/cli/CLI.cpp:98
+#: ../src/cli/CLI.cpp:142
 #, fuzzy, c-format
 msgid ""
 "Dump directory:     %s\n"
@@ -130,38 +130,27 @@ msgstr ""
 "సిస్టమ్:             %s, కెర్నల్ %s\n"
 "కారణం:             %s\n"
 
-#: ../src/cli/CLI.cpp:126
+#: ../src/cli/CLI.cpp:170
 #, c-format
 msgid "Coredump file:      %s\n"
 msgstr "కోర్‌డంప్ ఫైల్:     %s\n"
 
-#: ../src/cli/CLI.cpp:130
+#: ../src/cli/CLI.cpp:174
 #, c-format
 msgid "Rating:             %s\n"
 msgstr "రేటింగ్:           %s\n"
 
-#: ../src/cli/CLI.cpp:135
+#: ../src/cli/CLI.cpp:179
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr "క్రాష్ ఫంక్షన్:     %s\n"
 
-#: ../src/cli/CLI.cpp:139
+#: ../src/cli/CLI.cpp:183
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr "హోస్టునామము:           %s\n"
 
-#: ../src/cli/CLI.cpp:143
-#, c-format
-msgid ""
-"\n"
-"How to reproduce:\n"
-"%s\n"
-msgstr ""
-"\n"
-"ఎలా తిరిగి పొందవచ్చు:\n"
-"%s\n"
-
-#: ../src/cli/CLI.cpp:147
+#: ../src/cli/CLI.cpp:187
 #, c-format
 msgid ""
 "\n"
@@ -172,7 +161,7 @@ msgstr ""
 "వ్యాఖ్యానము:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:153
+#: ../src/cli/CLI.cpp:193
 #, c-format
 msgid ""
 "\n"
@@ -183,70 +172,43 @@ msgstr ""
 "బ్యాక్‌ట్రేస్:\n"
 "%s\n"
 
-#. Message has embedded tabs.
-#: ../src/cli/CLI.cpp:248
-#, fuzzy, c-format
+#: ../src/cli/CLI.cpp:250
+#, c-format
 msgid ""
-"Usage: %s [OPTION]\n"
+"Usage: %s -l[f] [-D BASE_DIR]...]\n"
+"   or: %s -r[y] CRASH_DIR\n"
+"   or: %s -i[b] CRASH_DIR\n"
+"   or: %s -d CRASH_DIR\n"
 "\n"
-"Startup:\n"
-"\t-V, --version\t\tdisplay the version of %s and exit\n"
-"\t-v, --verbose\t\tincrease verbosity\n"
-"\t-?, --help\t\tprint this help\n"
+"\t-l, --list\t\tList not yet reported crashes\n"
+"\t  -f, --full\t\tList all crashes\n"
+"\t-D BASE_DIR\t\tDirectory to list crashes from\n"
+"\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
 "\n"
-"Actions:\n"
-"\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
-"\t      -f, --full\tprint a list of all crashes, including the already "
-"reported ones\n"
-"\t-r, --report CRASH_ID\tcreate and send a report\n"
-"\t      -y, --always\tcreate and send a report without asking\n"
-"\t-d, --delete CRASH_ID\tremove a crash\n"
-"\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
-"\t      -b, --backtrace\tprint detailed information about a crash including "
-"backtrace\n"
-"CRASH_ID can be:\n"
-"\ta name of dump directory, or\n"
-"\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
+"\t-r, --report\t\tSend a report about CRASH_DIR\n"
+"\t  -y, --always\t\t...without editing and asking\n"
+"\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
+"\t  -b, --backtrace\t...including backtrace\n"
+"\t-d, --delete\t\tRemove CRASH_DIR\n"
+"\n"
+"\t-V, --version\t\tDisplay version and exit\n"
+"\t-v, --verbose\t\tBe verbose\n"
 msgstr ""
-"Usage: %s [OPTION]\n"
-"\n"
-"Startup:\n"
-"\t-V, --version\t\tdisplay the version of %s and exit\n"
-"\t-?, --help\t\tprint this help\n"
-"\n"
-"Actions:\n"
-"\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
-"\t      -f, --full\tprint a list of all crashes, including the already "
-"reported ones\n"
-"\t-r, --report CRASH_ID\tcreate and send a report\n"
-"\t      -y, --always\tcreate and send a report without asking\n"
-"\t-d, --delete CRASH_ID\tremove a crash\n"
-"\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
-"\t      -b, --backtrace\tprint detailed information about a crash including "
-"backtrace\n"
-"CRASH_ID can be:\n"
-"\tUID:UUID pair,\n"
-"\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
-"\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
 
-#: ../src/cli/CLI.cpp:292
+#: ../src/cli/CLI.cpp:298
 msgid "You must specify exactly one operation"
 msgstr "మీరు తప్పక ఖచ్చితంగా వొక ఆపరేషన్‌ను తెలపాలి"
 
-#: ../src/cli/report.cpp:164
+#: ../src/cli/report.cpp:154
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# ఈ క్షేత్రము చదువుటకు మాత్రమే\n"
 
-#: ../src/cli/report.cpp:184
+#: ../src/cli/report.cpp:174
 msgid "# Describe the circumstances of this crash below"
 msgstr "# ఈ క్రాష్ యొక్క పరిస్థితులను కిందన వివరించుము"
 
-#: ../src/cli/report.cpp:186
-msgid "# How to reproduce the crash?"
-msgstr "# క్రాష్‌ను యెలా తిరిగి పొందవచ్చు?"
-
-#: ../src/cli/report.cpp:188
+#: ../src/cli/report.cpp:176
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -255,47 +217,47 @@ msgstr ""
 "# ఇది యేవిధమైన సున్నితమైన డాటాను కలిగివుండకుండా వుండునట్లు పరిశీలించుము (సంకేతపదములు, "
 "మొదలగునవి.)"
 
-#: ../src/cli/report.cpp:190
+#: ../src/cli/report.cpp:178
 msgid "# Architecture"
 msgstr "# ఆకృతి"
 
-#: ../src/cli/report.cpp:191
+#: ../src/cli/report.cpp:179
 msgid "# Command line"
 msgstr "# కమాండ్ లైన్"
 
-#: ../src/cli/report.cpp:192
+#: ../src/cli/report.cpp:180
 msgid "# Component"
 msgstr "# మూలకం"
 
-#: ../src/cli/report.cpp:193
+#: ../src/cli/report.cpp:181
 msgid "# Core dump"
 msgstr "# కోర్ డంప్"
 
-#: ../src/cli/report.cpp:194
+#: ../src/cli/report.cpp:182
 msgid "# Executable"
 msgstr "# ఎగ్జిక్యూటబుల్"
 
-#: ../src/cli/report.cpp:195
+#: ../src/cli/report.cpp:183
 msgid "# Kernel version"
 msgstr "# కెర్నల్ వర్షన్"
 
-#: ../src/cli/report.cpp:196
+#: ../src/cli/report.cpp:184
 msgid "# Package"
 msgstr "# ప్యాకేజి"
 
-#: ../src/cli/report.cpp:197
+#: ../src/cli/report.cpp:185
 msgid "# Reason of crash"
 msgstr "# క్రాష్ యొక్క కారణం"
 
-#: ../src/cli/report.cpp:198
+#: ../src/cli/report.cpp:186
 msgid "# Release string of the operating system"
 msgstr "# ఆపరేటింగ్ సిస్టమ్ యొక్క స్ట్రింగ్‌ను విడుదలచేయుము"
 
-#: ../src/cli/report.cpp:321
+#: ../src/cli/report.cpp:299
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr "vi నడుపలేము: $TERM, $VISUAL మరియు $EDITOR సిద్దపరచబడలేదు"
 
-#: ../src/cli/report.cpp:405
+#: ../src/cli/report.cpp:383
 msgid ""
 "\n"
 "The report has been updated"
@@ -303,7 +265,7 @@ msgstr ""
 "\n"
 "నివేదిక నవీకరించబడింది"
 
-#: ../src/cli/report.cpp:407
+#: ../src/cli/report.cpp:385
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -312,46 +274,46 @@ msgstr ""
 "నివేదికనందు యే మార్పులు గుర్తించబడలేదు"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:439
+#: ../src/cli/report.cpp:417
 msgid "y"
 msgstr "y"
 
-#: ../src/cli/report.cpp:440
+#: ../src/cli/report.cpp:418
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:567
+#: ../src/cli/report.cpp:549
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "ప్లగిన్ %s కొరకు తప్పుడు అమరికలు గుర్తించబడినవి\n"
 
-#: ../src/cli/report.cpp:571
+#: ../src/cli/report.cpp:553
 msgid "Enter your login: "
 msgstr "మీ లాగిన్ ప్రవేశపెట్టుము: "
 
-#: ../src/cli/report.cpp:577
+#: ../src/cli/report.cpp:559
 msgid "Enter your password: "
 msgstr "మీ సంకేతపదమును ప్రవేశపెట్టుము: "
 
-#: ../src/cli/report.cpp:643
+#: ../src/cli/report.cpp:766
 msgid "Reporting..."
 msgstr "నివేదించుచున్నది..."
 
-#: ../src/cli/report.cpp:662
+#: ../src/cli/report.cpp:779
 #, c-format
 msgid "Report using %s?"
 msgstr "%s వుపయోగించి నివేదించు?"
 
-#: ../src/cli/report.cpp:665
+#: ../src/cli/report.cpp:782
 msgid "Skipping..."
 msgstr "వదిలివేయుచున్నది..."
 
-#: ../src/cli/report.cpp:677
+#: ../src/cli/report.cpp:798
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "బ్యాక్‌ట్రేస్ నిరుపయోగమైంది కావున నివేదీకరణ అచేతనపరచడమైంది"
 
-#: ../src/cli/report.cpp:681
+#: ../src/cli/report.cpp:802
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -360,42 +322,47 @@ msgstr ""
 "ఈ ఆదేశమును వుపయోగించి డీబగ్ సమాచారమును మానవీయంగా సంస్థాపించుటకు ప్రయత్నించుము: \"debuginfo-"
 "install %s\" తిరిగి ప్రయత్నించు\n"
 
-#: ../src/cli/report.cpp:690
-msgid "Error loading reporter settings"
-msgstr "నివేదిక అమరికలు లోడ్ చేయుటలో దోషము"
-
-#: ../src/cli/report.cpp:711
+#: ../src/cli/report.cpp:820
 #, fuzzy, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "%d ప్లగిన్సు ద్వారా క్రాష్ నివేదించబడింది (%d దోషములు)\n"
+
+#: ../src/daemon/abrt-action-save-package-data.c:245
+msgid ""
+" [options] -d DIR\n"
+"\n"
+"Query package database and save package name, component, and description"
+msgstr ""
+
+#: ../src/daemon/abrt-action-save-package-data.c:257
+#: ../src/daemon/abrt-handle-crashdump.c:60
+#: ../src/plugins/abrt-action-analyze-c.c:167
+#: ../src/plugins/abrt-action-analyze-oops.c:144
+#: ../src/plugins/abrt-action-analyze-python.c:49
+#: ../src/plugins/abrt-action-bugzilla.cpp:933
+#: ../src/plugins/abrt-action-generate-backtrace.c:270
+#: ../src/plugins/abrt-action-kerneloops.c:147
+#: ../src/plugins/abrt-action-mailx.c:149
+#: ../src/plugins/abrt-action-print.c:50
+#: ../src/plugins/abrt-action-rhtsupport.c:280
+#: ../src/plugins/abrt-action-upload.c:260
+msgid "Crash dump directory"
+msgstr ""
+
+#: ../src/daemon/abrt-action-save-package-data.c:258
+#: ../src/daemon/abrt-handle-crashdump.c:59 ../src/daemon/abrt-server.c:297
+#: ../src/plugins/abrt-action-bugzilla.cpp:932
+#: ../src/plugins/abrt-action-generate-backtrace.c:273
+#: ../src/plugins/abrt-action-kerneloops.c:146
+#: ../src/plugins/abrt-action-rhtsupport.c:279
+#: ../src/plugins/abrt-dump-oops.c:555
+msgid "Log to syslog"
+msgstr ""
 
 #: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
 " [-vs] -d DIR -e EVENT\n"
 "   or: "
-msgstr ""
-
-#: ../src/daemon/abrt-handle-crashdump.c:59
-#: ../src/plugins/abrt-action-bugzilla.cpp:926
-#: ../src/plugins/abrt-action-generate-backtrace.c:272
-#: ../src/plugins/abrt-action-kerneloops.c:146
-#: ../src/plugins/abrt-action-rhtsupport.c:276
-#: ../src/plugins/abrt-dump-oops.c:554
-msgid "Log to syslog"
-msgstr ""
-
-#: ../src/daemon/abrt-handle-crashdump.c:60
-#: ../src/plugins/abrt-action-analyze-c.c:167
-#: ../src/plugins/abrt-action-analyze-oops.c:144
-#: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-action-bugzilla.cpp:927
-#: ../src/plugins/abrt-action-generate-backtrace.c:269
-#: ../src/plugins/abrt-action-kerneloops.c:147
-#: ../src/plugins/abrt-action-mailx.c:149
-#: ../src/plugins/abrt-action-print.c:50
-#: ../src/plugins/abrt-action-rhtsupport.c:277
-#: ../src/plugins/abrt-action-upload.c:261
-msgid "Crash dump directory"
 msgstr ""
 
 #: ../src/daemon/abrt-handle-crashdump.c:61
@@ -406,13 +373,17 @@ msgstr ""
 msgid "List possible events [which start with PFX]"
 msgstr ""
 
-#: ../src/daemon/CommLayerServerDBus.cpp:242
+#: ../src/daemon/abrt-server.c:286 ../src/daemon/Daemon.cpp:542
+msgid " [options]"
+msgstr ""
+
+#: ../src/daemon/abrt-server.c:296
+msgid "Use UID as client uid"
+msgstr ""
+
+#: ../src/daemon/CommLayerServerDBus.cpp:239
 msgid "Comment is too long"
 msgstr "వ్యాఖ్యా మరీ పొడవైంది"
-
-#: ../src/daemon/CommLayerServerDBus.cpp:246
-msgid "'How to reproduce' is too long"
-msgstr "'ఎలా తిరిగి పొందవచ్చు' అనునది మరీ పొడవైంది"
 
 #: ../src/daemon/Daemon.cpp:371
 msgid ""
@@ -421,10 +392,6 @@ msgid ""
 msgstr ""
 "నివేదిక పరిమాణము కోటాను మించినది. abrt.conf నందు సిస్టమ్ యొక్క MaxCrashReportsSize విలువను "
 "పరిశీలించండి."
-
-#: ../src/daemon/Daemon.cpp:542
-msgid " [options]"
-msgstr ""
 
 #: ../src/daemon/Daemon.cpp:553
 msgid "Do not daemonize"
@@ -471,16 +438,16 @@ msgstr "నివేదకి ప్లగిన్సు"
 msgid "Database plugins"
 msgstr "డాటాబేస్ ప్లగిన్సు"
 
-#: ../src/gui/CCDBusBackend.py:74 ../src/gui/CCDBusBackend.py:97
+#: ../src/gui/CCDBusBackend.py:75 ../src/gui/CCDBusBackend.py:98
 msgid "Cannot connect to system dbus."
 msgstr "సిస్టమ్ dbusకు అనుసంధానము కాలేకపోయింది"
 
-#: ../src/gui/CCDBusBackend.py:120 ../src/gui/CCDBusBackend.py:123
+#: ../src/gui/CCDBusBackend.py:121 ../src/gui/CCDBusBackend.py:124
 msgid "Please check if the abrt daemon is running."
 msgstr "abrt డెమోన్ నడుస్తుంటే దయచేసి పరిశీలించుము."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:169
+#: ../src/gui/CCDBusBackend.py:170
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
@@ -528,11 +495,15 @@ msgstr "ABRT గురించి"
 msgid "Copy to Clipboard"
 msgstr "క్లిప్‌బోర్డునకు నకలుతీయి"
 
-#: ../src/gui/ccgui.glade.h:12 ../src/gui/settings.glade.h:19
+#: ../src/gui/ccgui.glade.h:12
+msgid "Online _Help"
+msgstr "ఆన్‌లైన్ సహాయం (_H)"
+
+#: ../src/gui/ccgui.glade.h:13 ../src/gui/settings.glade.h:12
 msgid "Plugins"
 msgstr "ప్లగిన్లు"
 
-#: ../src/gui/ccgui.glade.h:14
+#: ../src/gui/ccgui.glade.h:15
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -558,19 +529,19 @@ msgstr ""
 "ఈ ప్రోగ్రామ్ తో మీరు GNU జనరల్ పబ్లిక్ లైసెన్సు నకలును పొంది ఉంటారు. పొందకపోతే, <http://www.gnu."
 "org/licenses/> చూడండి."
 
-#: ../src/gui/ccgui.glade.h:19 ../src/gui/CReporterAssistant.py:111
+#: ../src/gui/ccgui.glade.h:20 ../src/gui/CReporterAssistant.py:111
 msgid "View log"
 msgstr "లాగ్‌ను దర్శించు"
 
-#: ../src/gui/ccgui.glade.h:20
+#: ../src/gui/ccgui.glade.h:21
 msgid "_Edit"
 msgstr "సరికూర్చు (_E)"
 
-#: ../src/gui/ccgui.glade.h:21
+#: ../src/gui/ccgui.glade.h:22
 msgid "_File"
 msgstr "ఫైలు (_F)"
 
-#: ../src/gui/ccgui.glade.h:22
+#: ../src/gui/ccgui.glade.h:23
 msgid "_Help"
 msgstr "సహాయము (_H)"
 
@@ -591,7 +562,7 @@ msgstr "హోస్టునామము"
 msgid "Latest Crash"
 msgstr "సరికొత్త క్రాష్"
 
-#: ../src/gui/CCMainWindow.py:143
+#: ../src/gui/CCMainWindow.py:148
 #, python-format
 msgid ""
 "Cannot show the settings dialog.\n"
@@ -600,7 +571,7 @@ msgstr ""
 "అమరికల డైలాగ్‌ను చూపలేదు.\n"
 "%s"
 
-#: ../src/gui/CCMainWindow.py:148
+#: ../src/gui/CCMainWindow.py:153
 #, python-format
 msgid ""
 "Unable to finish the current task!\n"
@@ -610,7 +581,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/gui/CCMainWindow.py:183
+#: ../src/gui/CCMainWindow.py:188
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -619,7 +590,7 @@ msgstr ""
 "డంపుజాబితాను లోడుచేయుటలో దోషము.\n"
 "%s"
 
-#: ../src/gui/CCMainWindow.py:241
+#: ../src/gui/CCMainWindow.py:246
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -628,11 +599,11 @@ msgstr ""
 "<b>%s క్రాష్</b>\n"
 "%s"
 
-#: ../src/gui/CCMainWindow.py:337
+#: ../src/gui/CCMainWindow.py:343
 msgid "You have to select a crash to copy."
 msgstr "నకలుతీయుటకు మీరు వొక క్రాష్‌ను యెంపికచేయాలి."
 
-#: ../src/gui/CCMainWindow.py:421
+#: ../src/gui/CCMainWindow.py:427
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -642,7 +613,7 @@ msgstr ""
 "\t-v[vv]\t\t\tVerbose\n"
 "\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
 
-#: ../src/gui/CCMainWindow.py:444
+#: ../src/gui/CCMainWindow.py:450
 #, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"
@@ -650,94 +621,6 @@ msgid ""
 msgstr ""
 "డాటాబేస్ నందు అటువంటి క్రాష్ లేదు, బహుశా తప్పుడు క్రాష్‌ఐడి.\n"
 "crashid=%s"
-
-#. default texts
-#: ../src/gui/CCReporterDialog.py:22 ../src/gui/CReporterAssistant.py:20
-msgid "Brief description of how to reproduce this or what you did..."
-msgstr "దీనిని మరలా యెలా రాబట్టాలి అనేదాని గురించి మరియు మీరు యేమి చేయాలి అనేదాని గురించి సోదాహరణము..."
-
-#: ../src/gui/CCReporterDialog.py:107
-msgid "You must check the backtrace for sensitive data."
-msgstr "సున్నితమైన డాటా కొరకు మీరు బ్యాక్‌ట్రేస్‌ను తప్పక పరిశీలించవలెను."
-
-#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:392
-#, python-format
-msgid ""
-"Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using the command: <b>debuginfo-"
-"install %s</b> \n"
-"then use the Refresh button to regenerate the backtrace."
-msgstr ""
-"నివేదీకరణ అచేతనము చేయబడింది యెంచేతంటే బాక్‌ట్రేస్ నిరుపయోగమైంది.\n"
-"ఈ ఆదేశాన్ని వుపయోగించి డీబగ్‌యిన్ఫోను మానవీయంగా సంస్థాపించుటకు ప్రయత్నించండి: <b>debuginfo-install "
-"%s</b> \n"
-"అప్పుడు బాక్‌ట్రేస్‌ను తిరిగి వుద్భవింపచేయుటకు రీఫ్రెష్ బటన్ వుపయోగించండి."
-
-#: ../src/gui/CCReporterDialog.py:120
-msgid "The backtrace is unusable, you cannot report this!"
-msgstr "బాక్‌ట్రేస్ వుపయోగించుటకు వీలుకాకుండా వుంది, దీనిని మీరు నివేదించలేరు!"
-
-#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:370
-#: ../src/gui/CReporterAssistant.py:398
-msgid ""
-"The backtrace is incomplete, please make sure you provide the steps to "
-"reproduce."
-msgstr ""
-"బాక్‌ట్రేస్ అసంపూర్తిగా వుంది, దానిని తిరిగివుత్పన్నం చేయుటకు దయచేసి మీరు స్టెప్సును యిచ్చునట్లు చూచుకోండి."
-
-#: ../src/gui/CCReporterDialog.py:130
-msgid "Reporting disabled, please fix the problems shown above."
-msgstr "నివేదించుట అచేతనపరచడమైంది, పైన చూపిన సమస్యలను దయచేసి పరిష్కరించుము."
-
-#: ../src/gui/CCReporterDialog.py:132
-msgid "Sends the report using the selected plugin."
-msgstr "ఎంపికచేసిన ప్లగిన్ వుపయోగించి నివేదికను పంపును."
-
-#: ../src/gui/CCReporterDialog.py:398
-msgid ""
-"No reporter plugin available for this type of crash.\n"
-"Please check abrt.conf."
-msgstr ""
-"ఈ రకమైన క్రాష్ కొరకు ఏ నివేదిక ప్లగిన్ అందుబాటులో లేదు.\n"
-"దయచేసి abrt.conf పరిశీలించుము."
-
-#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:277
-#: ../src/gui/PluginsSettingsDialog.py:136
-#, python-format
-msgid ""
-"Cannot save plugin settings:\n"
-" %s"
-msgstr ""
-"ప్లగిన్ అమరికలను దాయలేదు:\n"
-" %s"
-
-#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:307
-#, python-format
-msgid "Configure %s options"
-msgstr "%s ఐచ్చికములను ఆకృతీకరించుము"
-
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1102
-msgid ""
-"Unable to get report!\n"
-"Is debuginfo missing?"
-msgstr ""
-"నివేదికను పొందలేక పోయింది!\n"
-"డీబగ్‌సమాచారము తప్పిపోయిందా?"
-
-#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:483
-#, python-format
-msgid ""
-"Reporting failed!\n"
-"%s"
-msgstr ""
-"నివేదించుట విఫలమైంది!\n"
-"%s"
-
-#: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:1139
-#, python-format
-msgid "Error acquiring the report: %s"
-msgstr "నివేదికను పొందుటలో దోషము: %s"
 
 #: ../src/gui/ConfBackend.py:78
 #, fuzzy
@@ -766,9 +649,28 @@ msgstr "gnome-keyringకు యాక్సెస్ తిరస్కరిం
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr "gnome-keyringకు యాక్సెస్ తిరస్కరించబడింది, అమరికలను లోడు చేయలేక పోయింది."
 
+#: ../src/gui/CReporterAssistant.py:20
+msgid "Brief description of how to reproduce this or what you did..."
+msgstr "దీనిని మరలా యెలా రాబట్టాలి అనేదాని గురించి మరియు మీరు యేమి చేయాలి అనేదాని గురించి సోదాహరణము..."
+
 #: ../src/gui/CReporterAssistant.py:21
 msgid "Crash info doesn't contain a backtrace"
 msgstr "క్రాష్ సమాచారము బ్యాక్‌ట్రేస్‌ను కలిగిలేదు"
+
+#: ../src/gui/CReporterAssistant.py:277
+#: ../src/gui/PluginsSettingsDialog.py:136
+#, python-format
+msgid ""
+"Cannot save plugin settings:\n"
+" %s"
+msgstr ""
+"ప్లగిన్ అమరికలను దాయలేదు:\n"
+" %s"
+
+#: ../src/gui/CReporterAssistant.py:307
+#, python-format
+msgid "Configure %s options"
+msgstr "%s ఐచ్చికములను ఆకృతీకరించుము"
 
 #: ../src/gui/CReporterAssistant.py:362
 #, python-format
@@ -779,6 +681,13 @@ msgstr "రేటింగ్ %s"
 msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr "క్రాష్‌డంప్ రేటింగ్‌ను కలిగిలేదు => అది అవసరము లేదని మేము అనుకొనుచున్నాము"
 
+#: ../src/gui/CReporterAssistant.py:370 ../src/gui/CReporterAssistant.py:398
+msgid ""
+"The backtrace is incomplete, please make sure you provide the steps to "
+"reproduce."
+msgstr ""
+"బాక్‌ట్రేస్ అసంపూర్తిగా వుంది, దానిని తిరిగివుత్పన్నం చేయుటకు దయచేసి మీరు స్టెప్సును యిచ్చునట్లు చూచుకోండి."
+
 #: ../src/gui/CReporterAssistant.py:378
 msgid "You should check the backtrace for sensitive data."
 msgstr "సున్నితమైన డాటా కొరకు మీరు బ్యాక్‌ట్రేస్‌ను పరిశీలించవలెను."
@@ -786,6 +695,19 @@ msgstr "సున్నితమైన డాటా కొరకు మీరు
 #: ../src/gui/CReporterAssistant.py:379
 msgid "You must agree with sending the backtrace."
 msgstr "బ్యాక్‌ట్రేస్‌ను పంపుటను మీరు తప్పక అంగీకరించాలి."
+
+#: ../src/gui/CReporterAssistant.py:392
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable.\n"
+"Please try to install debuginfo manually using the command: <b>debuginfo-"
+"install %s</b> \n"
+"then use the Refresh button to regenerate the backtrace."
+msgstr ""
+"నివేదీకరణ అచేతనము చేయబడింది యెంచేతంటే బాక్‌ట్రేస్ నిరుపయోగమైంది.\n"
+"ఈ ఆదేశాన్ని వుపయోగించి డీబగ్‌యిన్ఫోను మానవీయంగా సంస్థాపించుటకు ప్రయత్నించండి: <b>debuginfo-install "
+"%s</b> \n"
+"అప్పుడు బాక్‌ట్రేస్‌ను తిరిగి వుద్భవింపచేయుటకు రీఫ్రెష్ బటన్ వుపయోగించండి."
 
 #: ../src/gui/CReporterAssistant.py:394
 msgid "Reporting disabled because the backtrace is unusable."
@@ -798,6 +720,15 @@ msgstr "తిరిగి వుత్పన్నం చేయుటకు మ
 #: ../src/gui/CReporterAssistant.py:454
 msgid "You did not provide any comments."
 msgstr "మీరు యే వ్యాఖ్యానాలను యీయలేదు."
+
+#: ../src/gui/CReporterAssistant.py:483
+#, python-format
+msgid ""
+"Reporting failed!\n"
+"%s"
+msgstr ""
+"నివేదించుట విఫలమైంది!\n"
+"%s"
 
 #: ../src/gui/CReporterAssistant.py:535
 #, python-format
@@ -971,6 +902,19 @@ msgstr "బగ్ నివేదికను పంపుట పూర్తై
 msgid "<b>Bug reports:</b>"
 msgstr "<b>బగ్ నివేదికలు:</b>"
 
+#: ../src/gui/CReporterAssistant.py:1102
+msgid ""
+"Unable to get report!\n"
+"Is debuginfo missing?"
+msgstr ""
+"నివేదికను పొందలేక పోయింది!\n"
+"డీబగ్‌సమాచారము తప్పిపోయిందా?"
+
+#: ../src/gui/CReporterAssistant.py:1139
+#, python-format
+msgid "Error acquiring the report: %s"
+msgstr "నివేదికను పొందుటలో దోషము: %s"
+
 #: ../src/gui/dialogs.glade.h:1
 msgid "Log"
 msgstr "లాగ్"
@@ -1116,103 +1060,67 @@ msgstr "నివేదికను పంపుము"
 msgid "Show log"
 msgstr "లాగ్‌ను చూపుము"
 
-#: ../src/gui/SettingsDialog.py:34 ../src/gui/SettingsDialog.py:51
-msgid "<b>Select plugin</b>"
-msgstr "<b>ప్లగిన్ యెంచుకొనుము</b>"
-
-#: ../src/gui/SettingsDialog.py:37
-msgid "<b>Select database backend</b>"
-msgstr "<b>డాటాబేస్ బ్యాకెండ్ యెంపికచేయుము</b>"
-
-#: ../src/gui/SettingsDialog.py:170
+#: ../src/gui/SettingsDialog.py:122
 msgid "Remove this job"
 msgstr "ఈ జాబ్‌ను తీసివేయుము"
 
-#: ../src/gui/SettingsDialog.py:214
+#: ../src/gui/SettingsDialog.py:166
 msgid "Remove this action"
 msgstr "ఈ చర్యను తీసివేయుము"
 
 #: ../src/gui/settings.glade.h:1
-msgid "<b>Analyzer plugin</b>"
-msgstr "<b>విశ్లేషకి ప్లగిన్సు</b>"
-
-#: ../src/gui/settings.glade.h:2
-msgid "<b>Associated action</b>"
-msgstr "<b>సంభందిత చర్య</b>"
-
-#: ../src/gui/settings.glade.h:3
 msgid "<b>Plugin details</b>"
 msgstr "<b>ప్లగిన్ వివరములు</b>"
 
-#: ../src/gui/settings.glade.h:4
-msgid "<b>Plugin</b>"
-msgstr "<b>ప్లగిన్</b>"
-
-#: ../src/gui/settings.glade.h:5
-msgid "<b>Time (or period)</b>"
-msgstr "<b>సమయం (లేదా కాలం)</b>"
-
-#: ../src/gui/settings.glade.h:6
-msgid "Analyzers, Actions, Reporters"
-msgstr "విశ్లేషకిలు, చర్యలు, నివేదికలు"
-
-#: ../src/gui/settings.glade.h:7
+#: ../src/gui/settings.glade.h:2
 msgid "Author:"
 msgstr "మూలకర్త:"
 
-#: ../src/gui/settings.glade.h:8
+#: ../src/gui/settings.glade.h:3
 msgid "Blacklisted packages: "
 msgstr "బ్లాక్‌లిస్టైన ప్యాకేజీలు: "
 
-#: ../src/gui/settings.glade.h:9
+#: ../src/gui/settings.glade.h:4
 msgid "C_onfigure Plugin"
 msgstr "ప్లగిన్ ఆకృతీకరించుము (_o)"
 
-#: ../src/gui/settings.glade.h:10
+#: ../src/gui/settings.glade.h:5
 msgid "Check package GPG signature"
 msgstr "ప్యాకేజీ GPG సంతకమును పరిశీలించుము"
 
-#: ../src/gui/settings.glade.h:11
+#: ../src/gui/settings.glade.h:6
 msgid "Common"
 msgstr "ఉమ్మడి"
 
-#: ../src/gui/settings.glade.h:12
-msgid "Cron"
-msgstr "క్రాన్"
-
-#: ../src/gui/settings.glade.h:13
-msgid "Database backend: "
-msgstr "డాటాబేస్ బ్యాకెండ్: "
-
-#: ../src/gui/settings.glade.h:14
+#: ../src/gui/settings.glade.h:7
 msgid "Description:"
 msgstr "వివరణ:"
 
-#: ../src/gui/settings.glade.h:15
+#: ../src/gui/settings.glade.h:8
 msgid "GPG Keys"
 msgstr "GPG కీలు"
 
-#: ../src/gui/settings.glade.h:16
+#: ../src/gui/settings.glade.h:9
 msgid "GPG keys: "
 msgstr "GPG కీలు: "
 
-#: ../src/gui/settings.glade.h:17
+#: ../src/gui/settings.glade.h:10
 msgid "Max coredump storage size (MB):"
 msgstr "గరిష్ట కొర్‌డంప్ నిల్వ పరిమాణము (MB):"
 
-#: ../src/gui/settings.glade.h:18
+#: ../src/gui/settings.glade.h:11
 msgid "Name:"
 msgstr "నామము:"
 
-#: ../src/gui/settings.glade.h:20
+#: ../src/gui/settings.glade.h:13
 msgid "Preferences"
 msgstr "అభీష్టాలు"
 
-#: ../src/gui/settings.glade.h:21
+#: ../src/gui/settings.glade.h:14
 msgid "Version:"
 msgstr "వర్షన్:"
 
-#: ../src/gui/settings.glade.h:22
+#: ../src/gui/settings.glade.h:15
 msgid "Web Site:"
 msgstr "వెబ్ సైటు:"
 
@@ -1265,215 +1173,221 @@ msgid ""
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:534
+#: ../src/plugins/abrt-action-bugzilla.cpp:536
 #, c-format
 msgid "New bug id: %i"
 msgstr "కొత్త బగ్ id: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:662
+#: ../src/plugins/abrt-action-bugzilla.cpp:664
 #, fuzzy, c-format
 msgid "Empty login or password, please check %s"
 msgstr ""
 "ఖాళీ లాగిన్ లేదా సంకేతపదము.\n"
 "దయచేసి సరిచూసుకొనుము "
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:680
+#: ../src/plugins/abrt-action-bugzilla.cpp:684
 msgid "Logging into bugzilla..."
 msgstr "బగ్‌జిల్లా లోనికి లాగిన్ అవుతోంది..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:683
+#: ../src/plugins/abrt-action-bugzilla.cpp:687
 msgid "Checking for duplicates..."
 msgstr "నకిలీల కొరకు పరిశీలించుచున్నది..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:704
-#: ../src/plugins/abrt-action-bugzilla.cpp:740
+#: ../src/plugins/abrt-action-bugzilla.cpp:709
+#: ../src/plugins/abrt-action-bugzilla.cpp:745
 msgid "Missing mandatory member 'bugs'"
 msgstr "తప్పనిసరైన సభ్యుని 'bugs' తప్పిపోయినవి"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:723
-#: ../src/plugins/abrt-action-bugzilla.cpp:756
-#: ../src/plugins/abrt-action-bugzilla.cpp:833
+#: ../src/plugins/abrt-action-bugzilla.cpp:728
+#: ../src/plugins/abrt-action-bugzilla.cpp:761
+#: ../src/plugins/abrt-action-bugzilla.cpp:837
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() విఫలమైంది. తప్పనిసరైన సమాచారము మొత్తంను సేకరించలేక పోయింది"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:772
+#: ../src/plugins/abrt-action-bugzilla.cpp:776
 msgid "Creating a new bug..."
 msgstr "కొత్త బగ్‌ను సృష్టించుచున్నది..."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:777
+#: ../src/plugins/abrt-action-bugzilla.cpp:781
 msgid "Bugzilla entry creation failed"
 msgstr "బగ్‌జిల్లా పద్దు సృష్టించుట విఫలమైంది"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:789
-#: ../src/plugins/abrt-action-bugzilla.cpp:886
+#: ../src/plugins/abrt-action-bugzilla.cpp:793
+#: ../src/plugins/abrt-action-bugzilla.cpp:892
 msgid "Logging out..."
 msgstr "లాగ్అవుట్ అవుచున్నది..."
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:807
+#: ../src/plugins/abrt-action-bugzilla.cpp:811
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "బగ్ యిప్పటికే నివేదించబడింది: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:818
+#: ../src/plugins/abrt-action-bugzilla.cpp:822
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "బగ్‌జిల్లా బగ్ %d యొక్క మాత్రుక(పేరెంట్)ను కనుగొనలేక పోయింది"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:847
+#: ../src/plugins/abrt-action-bugzilla.cpp:851
 #, fuzzy, c-format
 msgid "Add %s to CC list"
 msgstr "%sను CC జాబితాకు జతచేసినది"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:871
+#: ../src/plugins/abrt-action-bugzilla.cpp:877
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "కొత్త వ్యాఖ్యను బగ్(%d)నకు జతచేయుము"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:913
+#: ../src/plugins/abrt-action-bugzilla.cpp:919
 msgid ""
 " [-vs] -c CONFFILE -d DIR\n"
 "\n"
 "Report a crash to Bugzilla"
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:928
+#: ../src/plugins/abrt-action-bugzilla.cpp:934
 #: ../src/plugins/abrt-action-kerneloops.c:148
-#: ../src/plugins/abrt-action-rhtsupport.c:278
+#: ../src/plugins/abrt-action-rhtsupport.c:281
 msgid "Configuration file (may be given many times)"
 msgstr ""
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:257
+#: ../src/plugins/abrt-action-generate-backtrace.c:258
 msgid " [options] -d DIR"
 msgstr ""
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:270
+#: ../src/plugins/abrt-action-generate-backtrace.c:271
 msgid "Additional debuginfo directories"
 msgstr ""
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:271
+#: ../src/plugins/abrt-action-generate-backtrace.c:272
 msgid "Kill gdb if it runs for more than N seconds"
 msgstr ""
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:319
+#. Don't be completely silent. gdb run takes a few seconds,
+#. * it is useful to let user know it (maybe) worked.
+#.
+#: ../src/plugins/abrt-action-generate-backtrace.c:322
+#, c-format
+msgid "Backtrace is generated and saved, %u bytes"
+msgstr ""
+
+#.
+#. * The parser failed. Compute the UUID from the executable
+#. * and package only.  This is not supposed to happen often.
+#.
+#: ../src/plugins/abrt-action-generate-backtrace.c:333
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "%s కొరకు బాక్‌ట్రేస్ పార్శింగ్ విఫలమైంది"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:72
+#: ../src/plugins/abrt-action-install-debuginfo.py:77
 #, python-format
 msgid "Extracting cpio from %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:77
-msgid "Can't write to:"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:87
-msgid "Removing the temporary rpm file"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:91
+#: ../src/plugins/abrt-action-install-debuginfo.py:82
 #, python-format
-msgid "Can't extract package: %s"
+msgid "Can't write to '%s': %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:99
+#: ../src/plugins/abrt-action-install-debuginfo.py:96
+#, python-format
+msgid "Can't extract package '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:104
 #, python-format
 msgid "Caching files from %s made from %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:107
-msgid "Removing the temporary cpio file"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:110
+#: ../src/plugins/abrt-action-install-debuginfo.py:114
 #, python-format
-msgid "Can't extract files from: %s"
+msgid "Can't extract files from '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:134
-#: ../src/plugins/abrt-action-install-debuginfo.py:140
+#: ../src/plugins/abrt-action-install-debuginfo.py:138
+#: ../src/plugins/abrt-action-install-debuginfo.py:148
 #, python-format
-msgid "Downloading (%i of %i) %.30s : %.3s %%"
+msgid "Downloading (%i of %i) %s: %3u%%"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:169
-#, fuzzy
-msgid "Searching the missing debuginfo packages"
-msgstr "డీబగ్‌యిన్ఫో సంస్థాపనను ప్రారంభించుచున్నది"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:224
+#: ../src/plugins/abrt-action-install-debuginfo.py:234
 #, python-format
-msgid "To download: (%.2f) M / Installed size: %.2f M"
+msgid "Can't find packages for %u debuginfo files"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:240
+#: ../src/plugins/abrt-action-install-debuginfo.py:236
+#, python-format
+msgid "Found %u packages to download"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:237
+#, python-format
+msgid "Downloading %.2fMb, installed size: %.2fMb"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:245
 msgid "Is this ok? [y/N] "
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:257
+#: ../src/plugins/abrt-action-install-debuginfo.py:262
 #, python-format
 msgid "Downloading package %s failed"
 msgstr ""
 
 #. recursively delete the temp dir on failure
-#: ../src/plugins/abrt-action-install-debuginfo.py:268
+#: ../src/plugins/abrt-action-install-debuginfo.py:273
 msgid "Unpacking failed, aborting download..."
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:275
-#, python-format
-msgid "All downloaded packages have been extracted, removing %s"
 msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:280
 #, python-format
+msgid "All downloaded packages have been extracted, removing %s"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:285
+#, python-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:305
+#: ../src/plugins/abrt-action-install-debuginfo.py:310
 #, python-format
-msgid "Analyzing corefile: %(corefile_path)s"
+msgid "Analyzing corefile '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:384
+#: ../src/plugins/abrt-action-install-debuginfo.py:388
 #, python-format
-msgid "Can't remove %(tmpdir_path)s: %(reason)s"
+msgid "Can't remove '%s': %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:394
-msgid "Exiting on user Command"
+#: ../src/plugins/abrt-action-install-debuginfo.py:396
+msgid "Exiting on user command"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:413
+#: ../src/plugins/abrt-action-install-debuginfo.py:415
 #, python-format
-msgid "Usage: %s --core=<COREFILE> --tmpdir=<TMPDIR> --cachedir=<CACHEDIR>"
+msgid "Usage: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:442
+#: ../src/plugins/abrt-action-install-debuginfo.py:444
 #, fuzzy
 msgid "You have to specify the path to coredump."
 msgstr "నకలుతీయుటకు మీరు వొక క్రాష్‌ను యెంపికచేయాలి."
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:446
-#, fuzzy
-msgid "You have to specify the path to cachedir."
-msgstr "నకలుతీయుటకు మీరు వొక క్రాష్‌ను యెంపికచేయాలి."
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:450
-#, fuzzy
-msgid "You have to specify the path to tmpdir."
-msgstr "నకలుతీయుటకు మీరు వొక క్రాష్‌ను యెంపికచేయాలి."
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:463
-msgid "All debuginfo seems to be available"
+#: ../src/plugins/abrt-action-install-debuginfo.py:461
+#, python-format
+msgid "Coredump references %u debuginfo files, %u of them are not installed"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:470
-#, fuzzy
-msgid "Complete!"
-msgstr "మూలకం"
+#: ../src/plugins/abrt-action-install-debuginfo.py:466
+#, python-format
+msgid "Missing debuginfo file: %s"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:469
+#, python-format
+msgid "All %u debuginfo files are available"
+msgstr ""
 
 #: ../src/plugins/abrt-action-kerneloops.c:105
 #, fuzzy, c-format
@@ -1499,7 +1413,7 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/abrt-action-mailx.c:150
-#: ../src/plugins/abrt-action-upload.c:262
+#: ../src/plugins/abrt-action-upload.c:261
 #, fuzzy
 msgid "Config file"
 msgstr "లాగర్ ఫైల్:"
@@ -1533,18 +1447,18 @@ msgstr "నివేదిక %sకు నిల్వవుంచబడిం�
 msgid "Compressing data"
 msgstr "డాటాను కుదించుచున్నది"
 
-#: ../src/plugins/abrt-action-rhtsupport.c:69
+#: ../src/plugins/abrt-action-rhtsupport.c:73
 #, fuzzy
 msgid "Empty login or password, please check RHTSupport.conf"
 msgstr ""
 "ఖాళీ లాగిన్ లేదా సంకేతపదము.\n"
 "దయచేసి సరిచూసుకొనుము "
 
-#: ../src/plugins/abrt-action-rhtsupport.c:188
+#: ../src/plugins/abrt-action-rhtsupport.c:191
 msgid "Creating a new case..."
 msgstr "కొత్త కేస్‌ను సృష్టించుచున్నది..."
 
-#: ../src/plugins/abrt-action-rhtsupport.c:263
+#: ../src/plugins/abrt-action-rhtsupport.c:266
 msgid ""
 " [-vs] -c CONFFILE -d DIR\n"
 "\n"
@@ -1562,42 +1476,42 @@ msgstr "ఆర్చివ్ %sను %s కు పంపుచున్నద�
 msgid "Successfully sent %s to %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-upload.c:213
+#: ../src/plugins/abrt-action-upload.c:212
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-upload.c:248
+#: ../src/plugins/abrt-action-upload.c:247
 msgid ""
 " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
 "Upload compressed tarball of crash dump"
 msgstr ""
 
-#: ../src/plugins/abrt-action-upload.c:263
+#: ../src/plugins/abrt-action-upload.c:262
 msgid "Base URL to upload to"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:539
+#: ../src/plugins/abrt-dump-oops.c:540
 msgid ""
 " [-vsrdow] FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:555
+#: ../src/plugins/abrt-dump-oops.c:556
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:556
+#: ../src/plugins/abrt-dump-oops.c:557
 msgid "Create ABRT dump for every oops found"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:557
+#: ../src/plugins/abrt-dump-oops.c:558
 msgid "Print found oopses on standard output"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:558
+#: ../src/plugins/abrt-dump-oops.c:559
 msgid "Do not exit, watch the file for new oopses"
 msgstr ""
 
@@ -1711,6 +1625,130 @@ msgid "Use encryption"
 msgstr "ఎన్క్రిప్షన్ వుపయోగించుము"
 
 #~ msgid ""
+#~ "\n"
+#~ "How to reproduce:\n"
+#~ "%s\n"
+#~ msgstr ""
+#~ "\n"
+#~ "ఎలా తిరిగి పొందవచ్చు:\n"
+#~ "%s\n"
+
+#, fuzzy
+#~ msgid ""
+#~ "Usage: %s [OPTION]\n"
+#~ "\n"
+#~ "Startup:\n"
+#~ "\t-V, --version\t\tdisplay the version of %s and exit\n"
+#~ "\t-v, --verbose\t\tincrease verbosity\n"
+#~ "\t-?, --help\t\tprint this help\n"
+#~ "\n"
+#~ "Actions:\n"
+#~ "\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
+#~ "\t      -f, --full\tprint a list of all crashes, including the already "
+#~ "reported ones\n"
+#~ "\t-r, --report CRASH_ID\tcreate and send a report\n"
+#~ "\t      -y, --always\tcreate and send a report without asking\n"
+#~ "\t-d, --delete CRASH_ID\tremove a crash\n"
+#~ "\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
+#~ "\t      -b, --backtrace\tprint detailed information about a crash "
+#~ "including backtrace\n"
+#~ "CRASH_ID can be:\n"
+#~ "\ta name of dump directory, or\n"
+#~ "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
+#~ msgstr ""
+#~ "Usage: %s [OPTION]\n"
+#~ "\n"
+#~ "Startup:\n"
+#~ "\t-V, --version\t\tdisplay the version of %s and exit\n"
+#~ "\t-?, --help\t\tprint this help\n"
+#~ "\n"
+#~ "Actions:\n"
+#~ "\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
+#~ "\t      -f, --full\tprint a list of all crashes, including the already "
+#~ "reported ones\n"
+#~ "\t-r, --report CRASH_ID\tcreate and send a report\n"
+#~ "\t      -y, --always\tcreate and send a report without asking\n"
+#~ "\t-d, --delete CRASH_ID\tremove a crash\n"
+#~ "\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
+#~ "\t      -b, --backtrace\tprint detailed information about a crash "
+#~ "including backtrace\n"
+#~ "CRASH_ID can be:\n"
+#~ "\tUID:UUID pair,\n"
+#~ "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
+#~ "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
+
+#~ msgid "# How to reproduce the crash?"
+#~ msgstr "# క్రాష్‌ను యెలా తిరిగి పొందవచ్చు?"
+
+#~ msgid "Error loading reporter settings"
+#~ msgstr "నివేదిక అమరికలు లోడ్ చేయుటలో దోషము"
+
+#~ msgid "'How to reproduce' is too long"
+#~ msgstr "'ఎలా తిరిగి పొందవచ్చు' అనునది మరీ పొడవైంది"
+
+#~ msgid "You must check the backtrace for sensitive data."
+#~ msgstr "సున్నితమైన డాటా కొరకు మీరు బ్యాక్‌ట్రేస్‌ను తప్పక పరిశీలించవలెను."
+
+#~ msgid "The backtrace is unusable, you cannot report this!"
+#~ msgstr "బాక్‌ట్రేస్ వుపయోగించుటకు వీలుకాకుండా వుంది, దీనిని మీరు నివేదించలేరు!"
+
+#~ msgid "Reporting disabled, please fix the problems shown above."
+#~ msgstr "నివేదించుట అచేతనపరచడమైంది, పైన చూపిన సమస్యలను దయచేసి పరిష్కరించుము."
+
+#~ msgid "Sends the report using the selected plugin."
+#~ msgstr "ఎంపికచేసిన ప్లగిన్ వుపయోగించి నివేదికను పంపును."
+
+#~ msgid ""
+#~ "No reporter plugin available for this type of crash.\n"
+#~ "Please check abrt.conf."
+#~ msgstr ""
+#~ "ఈ రకమైన క్రాష్ కొరకు ఏ నివేదిక ప్లగిన్ అందుబాటులో లేదు.\n"
+#~ "దయచేసి abrt.conf పరిశీలించుము."
+
+#~ msgid "<b>Select plugin</b>"
+#~ msgstr "<b>ప్లగిన్ యెంచుకొనుము</b>"
+
+#~ msgid "<b>Select database backend</b>"
+#~ msgstr "<b>డాటాబేస్ బ్యాకెండ్ యెంపికచేయుము</b>"
+
+#~ msgid "<b>Analyzer plugin</b>"
+#~ msgstr "<b>విశ్లేషకి ప్లగిన్సు</b>"
+
+#~ msgid "<b>Associated action</b>"
+#~ msgstr "<b>సంభందిత చర్య</b>"
+
+#~ msgid "<b>Plugin</b>"
+#~ msgstr "<b>ప్లగిన్</b>"
+
+#~ msgid "<b>Time (or period)</b>"
+#~ msgstr "<b>సమయం (లేదా కాలం)</b>"
+
+#~ msgid "Analyzers, Actions, Reporters"
+#~ msgstr "విశ్లేషకిలు, చర్యలు, నివేదికలు"
+
+#~ msgid "Cron"
+#~ msgstr "క్రాన్"
+
+#~ msgid "Database backend: "
+#~ msgstr "డాటాబేస్ బ్యాకెండ్: "
+
+#, fuzzy
+#~ msgid "Searching the missing debuginfo packages"
+#~ msgstr "డీబగ్‌యిన్ఫో సంస్థాపనను ప్రారంభించుచున్నది"
+
+#, fuzzy
+#~ msgid "You have to specify the path to cachedir."
+#~ msgstr "నకలుతీయుటకు మీరు వొక క్రాష్‌ను యెంపికచేయాలి."
+
+#, fuzzy
+#~ msgid "You have to specify the path to tmpdir."
+#~ msgstr "నకలుతీయుటకు మీరు వొక క్రాష్‌ను యెంపికచేయాలి."
+
+#, fuzzy
+#~ msgid "Complete!"
+#~ msgstr "మూలకం"
+
+#~ msgid ""
 #~ "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/"
 #~ "Bugzilla.conf. Server said: %s"
 #~ msgstr ""
@@ -1802,9 +1840,6 @@ msgstr "ఎన్క్రిప్షన్ వుపయోగించుమ�
 
 #~ msgid "Database plugin not specified. Please check abrtd settings."
 #~ msgstr "డాటాబేస్ ప్లగిన్ తెలుపబడలేదు. దయచేసి abrtd అమరికలను పరిశీలించండి."
-
-#~ msgid "Online _Help"
-#~ msgstr "ఆన్‌లైన్ సహాయం (_H)"
 
 #~ msgid "Can't connect to gnome-keyring-daemon, changes won't be saved."
 #~ msgstr "gnome-keyring-daemonకు అనుసంధానము కాలేకపోయింది, మార్పులు దాయబడవు."
