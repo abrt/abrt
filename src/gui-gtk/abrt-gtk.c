@@ -3,9 +3,11 @@
 #include "abrtlib.h"
 #include "abrt_dbus.h"
 #include "abrt-gtk.h"
+#include "event_config_dialog.h"
 
 static GtkListStore *s_dumps_list_store;
 static GtkWidget *s_treeview;
+static GtkWidget *g_main_window;
 
 enum
 {
@@ -130,6 +132,11 @@ static gint on_key_press_event_cb(GtkTreeView *treeview, GdkEventKey *key, gpoin
     return FALSE;
 }
 
+void show_events_list_dialog_cb(GtkMenuItem *menuitem, gpointer user_data)
+{
+    show_events_list_dialog(GTK_WINDOW(g_main_window));
+}
+
 static void add_columns(GtkTreeView *treeview)
 {
     GtkCellRenderer *renderer;
@@ -193,6 +200,8 @@ GtkWidget *create_menu(void)
     gtk_menu_shell_append(GTK_MENU_SHELL(file_submenu), quit_item);
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(file_item), file_submenu);
 
+    g_signal_connect(quit_item, "activate", &gtk_main_quit, NULL);
+
     /* edit submenu */
     GtkWidget *edit_submenu = gtk_menu_new();
     GtkWidget *plugins_item = gtk_menu_item_new_with_mnemonic(_("_Plugins"));
@@ -200,6 +209,9 @@ GtkWidget *create_menu(void)
     gtk_menu_shell_append(GTK_MENU_SHELL(edit_submenu), plugins_item);
     gtk_menu_shell_append(GTK_MENU_SHELL(edit_submenu), preferences_item);
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(edit_item), edit_submenu);
+
+    g_signal_connect(plugins_item, "activate", G_CALLBACK(show_events_list_dialog_cb), NULL);
+
 
     /* help submenu */
     GtkWidget *help_submenu = gtk_menu_new();
@@ -217,10 +229,10 @@ GtkWidget *create_menu(void)
 GtkWidget *create_main_window(void)
 {
     /* main window */
-    GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_default_size(GTK_WINDOW(main_window), 600, 700);
-    gtk_window_set_title(GTK_WINDOW(main_window), _("Automatic Bug Reporting Tool"));
-    gtk_window_set_icon_name(GTK_WINDOW(main_window), "abrt");
+    g_main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_default_size(GTK_WINDOW(g_main_window), 600, 700);
+    gtk_window_set_title(GTK_WINDOW(g_main_window), _("Automatic Bug Reporting Tool"));
+    gtk_window_set_icon_name(GTK_WINDOW(g_main_window), "abrt");
 
     GtkWidget *main_vbox = gtk_vbox_new(false, 0);
 
@@ -234,7 +246,7 @@ GtkWidget *create_main_window(void)
 
     gtk_box_pack_start(GTK_BOX(main_vbox), create_menu(), false, false, 0);
     gtk_box_pack_start(GTK_BOX(main_vbox), scroll_win, true, true, 0);
-    gtk_container_add(GTK_CONTAINER(main_window), main_vbox);
+    gtk_container_add(GTK_CONTAINER(g_main_window), main_vbox);
 
     /* tree view inside scrolled region */
     s_treeview = gtk_tree_view_new();
@@ -255,9 +267,9 @@ GtkWidget *create_main_window(void)
     /* Delete handler */
     g_signal_connect(s_treeview, "key-press-event", G_CALLBACK(on_key_press_event_cb), NULL);
     /* Quit when user closes the main window */
-    g_signal_connect(main_window, "destroy", gtk_main_quit, NULL);
+    g_signal_connect(g_main_window, "destroy", gtk_main_quit, NULL);
 
-    return main_window;
+    return g_main_window;
 }
 
 void sanitize_cursor(GtkTreePath *preferred_path)
