@@ -719,7 +719,7 @@ int main(int argc, char** argv)
         log_scanner_pid = fork_execv_on_steroids(EXECFLG_INPUT_NUL,
                 (char**)scanner_argv,
                 /*pipefds:*/ NULL,
-                /*unsetenv_vec:*/ NULL,
+                /*env_vec:*/ NULL,
                 /*dir:*/ NULL,
                 /*uid:*/ 0);
         VERB1 log("Started log scanner, pid:%d", (int)log_scanner_pid);

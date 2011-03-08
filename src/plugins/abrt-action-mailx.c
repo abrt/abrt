@@ -32,7 +32,7 @@ static void exec_and_feed_input(uid_t uid, const char* text, char **args)
                 EXECFLG_INPUT | EXECFLG_QUIET | EXECFLG_SETGUID,
                 args,
                 pipein,
-                /*unsetenv_vec:*/ NULL,
+                /*env_vec:*/ NULL,
                 /*dir:*/ NULL,
                 uid);
 

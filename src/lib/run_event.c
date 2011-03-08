@@ -245,18 +245,19 @@ int spawn_next_command(struct run_event_state *state,
     VERB1 log("Executing '%s'", cmd);
 
     /* Export some useful environment variables for children */
+    char *env_vec[3];
     /* Just exporting dump_dir_name isn't always ok: it can be "."
      * and some children want to cd to other directory but still
      * be able to find dump directory by using $DUMP_DIR...
      */
     char *full_name = realpath(dump_dir_name, NULL);
-    setenv("DUMP_DIR", (full_name ? full_name : dump_dir_name), 1);
+    env_vec[0] = xasprintf("DUMP_DIR=%s", (full_name ? full_name : dump_dir_name));
     free(full_name);
-    setenv("EVENT", event, 1);
-//FIXME: set vars in the child, not here! Need to improve fork_execv_on_steroids...
+    env_vec[1] = xasprintf("EVENT=%s", event);
+    env_vec[2] = NULL;
 
     char *argv[4];
-    argv[0] = (char*)"/bin/sh";
+    argv[0] = (char*)"/bin/sh"; // TODO: honor $SHELL?
     argv[1] = (char*)"-c";
     argv[2] = cmd;
     argv[3] = NULL;
@@ -266,11 +267,14 @@ int spawn_next_command(struct run_event_state *state,
                 EXECFLG_INPUT_NUL + EXECFLG_OUTPUT + EXECFLG_ERR2OUT,
                 argv,
                 pipefds,
-                /* unsetenv_vec: */ NULL,
+                /* env_vec: */ env_vec,
                 /* dir: */ dump_dir_name,
                 /* uid(unused): */ 0
     );
     state->command_out_fd = pipefds[0];
+
+    free(env_vec[0]);
+    free(env_vec[1]);
 
     state->commands = g_list_remove(state->commands, cmd);
 
