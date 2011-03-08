@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "abrtlib.h"
 #include "event_config.h"
 
 #define EVENT_ELEMENT       "event"
@@ -42,12 +43,13 @@ void start_element(GMarkupParseContext *context,
             in_option = 1;
             event_option_t *option = (event_option_t *)malloc(sizeof(event_option_t));
             //we need to prepend, so ui->options always points to the last created option
+            VERB2 log("adding option\n");
             ui->options = g_list_prepend(ui->options, option);
 
             int i;
             for(i = 0; attribute_names[i] != NULL; ++i)
             {
-                //g_print("attr: %s:%s\n", attribute_names[i], attribute_values[i]);
+                VERB2 log("attr: %s:%s\n", attribute_names[i], attribute_values[i]);
                 if(strcmp(attribute_names[i], "name") == 0)
                     option->name = strdup(attribute_values[i]);
                 if(strcmp(attribute_names[i], "type") == 0)
@@ -107,12 +109,12 @@ void text(GMarkupParseContext *context,
         event_option_t *option = (event_option_t *)((ui->options)->data);
         if(strcmp(inner_element, LABEL_ELEMENT) == 0)
         {
-            //g_print("\tnew label: \t\t%s\n", _text);
+            VERB2 log("\tnew label: \t\t%s\n", _text);
             option->label = _text;
         }
         if(strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
         {
-            //g_print("\ttooltip: \t\t%s\n", _text);
+            VERB2 log("\ttooltip: \t\t%s\n", _text);
             option->description = _text;
         }
     }
@@ -144,7 +146,7 @@ void passthrough(GMarkupParseContext *context,
                 gpointer user_data,
                 GError **error)
 {
-    g_print("passthrough\n");
+    VERB2 log("passthrough\n");
 }
 
 // Called on error, including one set by other
