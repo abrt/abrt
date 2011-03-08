@@ -84,11 +84,11 @@ void print_option(gpointer data, gpointer user_data)
 
 void show_event_config_dialog(const char* event_name)
 {
-    event_config_t ui;
-    ui.options = NULL;
-    load_event_description_from_file(&ui, "Bugzilla.xml");
+    event_config_t *ui = new_event_config();
+    load_event_description_from_file(ui, "Bugzilla.xml");
+
     GtkWidget *dialog = gtk_dialog_new_with_buttons(
-                        ui.name,
+                        ui->name,
                         NULL,
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                         GTK_STOCK_OK,
@@ -96,10 +96,12 @@ void show_event_config_dialog(const char* event_name)
                         GTK_STOCK_CANCEL,
                         GTK_RESPONSE_CANCEL,
                         NULL);
-    int length = g_list_length(ui.options);
+    int length = g_list_length(ui->options);
     //g_print("%i\n", length);
     option_table = gtk_table_new(length, 2, 0);
-    g_list_foreach(ui.options, &print_option, NULL);
+    g_list_foreach(ui->options, &print_option, NULL);
+    free_event_config(ui);
+
     GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
     gtk_box_pack_start(GTK_BOX(content), option_table, 0, 0, 10);
     gtk_widget_show_all(option_table);

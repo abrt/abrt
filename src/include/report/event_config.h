@@ -52,6 +52,9 @@ typedef struct
     int required;
 } event_option_t;
 
+event_option_t *new_event_option(void);
+void free_event_option(event_option_t *p);
+
 //structure to hold the option data
 typedef struct
 {
@@ -60,6 +63,10 @@ typedef struct
     char *action;//action description to show in gui like: Upload report to the Red Hat bugzilla"
     GList *options;
 } event_config_t;
+
+event_config_t *new_event_config(void);
+void free_event_config(event_config_t *p);
+
 
 void load_event_description_from_file(event_config_t *event_config, const char* filename);
 
