@@ -61,6 +61,7 @@ typedef struct
     char *name;  //name of the event "Bugzilla" "RedHat Support Uploader"
     char *title; //window title - not used right now, maybe the "name" is enough?
     char *action;//action description to show in gui like: Upload report to the Red Hat bugzilla"
+    char *description;
     GList *options;
 } event_config_t;
 

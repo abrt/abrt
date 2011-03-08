@@ -31,6 +31,7 @@ void free_event_config(event_config_t *p)
     free(p->name);
     free(p->title);
     free(p->action);
+    free(p->description);
     for (GList *opt = p->options; opt; opt = opt->next)
         free_event_option(opt->data);
     g_list_free(p->options);
@@ -42,7 +43,6 @@ void free_event_config(event_config_t *p)
 void load_event_config_data(void)
 {
     free_event_config_data();
-
     DIR *dir = opendir(EVENTS_DIR);
     if (!dir)
         return;
@@ -72,12 +72,14 @@ void load_event_config_data(void)
         char *fullname = concat_path_file(EVENTS_DIR, dent->d_name);
         if (xml)
             load_event_description_from_file(event_config, fullname);
+
 //        if (conf)
 //            load_event_values_from_file(event_config, fullname);
 
         free(fullname);
 
-        *ext = '\0';
+        //we did ext++ so we need ext-- to point to '.'
+        *(--ext) = '\0';
         g_hash_table_replace(g_event_config_list, xstrdup(dent->d_name), event_config);
     }
 }
