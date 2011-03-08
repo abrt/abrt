@@ -32,7 +32,7 @@ static char *concat_str_vector(char **strings)
 pid_t fork_execv_on_steroids(int flags,
 		char **argv,
 		int *pipefds,
-		char **unsetenv_vec,
+		char **env_vec,
 		const char *dir,
 		uid_t uid)
 {
@@ -69,9 +69,11 @@ pid_t fork_execv_on_steroids(int flags,
 			xsetreuid(uid, uid);
 		}
 
-		if (unsetenv_vec) {
-			while (*unsetenv_vec)
-				unsetenv(*unsetenv_vec++);
+		if (env_vec) {
+			/* Note: we use the glibc extension that putenv("var")
+			 * *unsets* $var if "var" string has no '=' */
+			while (*env_vec)
+				putenv(*env_vec++);
 		}
 
 		/* Play with stdio descriptors */
@@ -134,7 +136,7 @@ char *run_in_shell_and_save_output(int flags,
 	const char *argv[] = { "/bin/sh", "-c", cmd, NULL };
 	int pipeout[2];
 	pid_t child = fork_execv_on_steroids(flags, (char **)argv, pipeout,
-		/*unsetenv_vec:*/ NULL, dir, /*uid (unused):*/ 0);
+		/*env_vec:*/ NULL, dir, /*uid (unused):*/ 0);
 
 	size_t pos = 0;
 	char *result = NULL;

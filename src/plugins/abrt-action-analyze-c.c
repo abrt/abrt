@@ -63,7 +63,7 @@ static char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
     args[1] = xasprintf("--core=%s/"FILENAME_COREDUMP, dump_dir_name);
     args[2] = (char*)"-n";
     args[3] = NULL;
-    pid_t child = fork_execv_on_steroids(flags, args, pipeout, /*unsetenv_vec:*/ NULL, /*dir:*/ NULL, uid);
+    pid_t child = fork_execv_on_steroids(flags, args, pipeout, /*env_vec:*/ NULL, /*dir:*/ NULL, uid);
     free(args[1]);
 
     /* Bugs in unstrip or corrupted coredumps can cause it to enter infinite loop.
