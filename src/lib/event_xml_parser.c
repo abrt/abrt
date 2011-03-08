@@ -15,7 +15,7 @@
 
 int in_option = 0;
 
-static const char *option_types[] =
+static const char *const option_types[] =
 {
     "text",
     "bool",
@@ -25,7 +25,7 @@ static const char *option_types[] =
 };
 
 // Called for open tags <foo bar="baz">
-void start_element(GMarkupParseContext *context,
+static void start_element(GMarkupParseContext *context,
                   const gchar *element_name,
                   const gchar **attribute_names,
                   const gchar **attribute_values,
@@ -43,7 +43,7 @@ void start_element(GMarkupParseContext *context,
             in_option = 1;
             event_option_t *option = (event_option_t *)malloc(sizeof(event_option_t));
             //we need to prepend, so ui->options always points to the last created option
-            VERB2 log("adding option\n");
+            VERB2 log("adding option");
             ui->options = g_list_prepend(ui->options, option);
 
             int i;
@@ -66,14 +66,13 @@ void start_element(GMarkupParseContext *context,
         else
         {
             g_print("error, option nested in option!\n");
-            exit(-127);
         }
     }
 
 }
 
  // Called for close tags </foo>
-void end_element(GMarkupParseContext *context,
+static void end_element(GMarkupParseContext *context,
                           const gchar         *element_name,
                           gpointer             user_data,
                           GError             **error)
@@ -93,7 +92,7 @@ void end_element(GMarkupParseContext *context,
 
   // Called for character data
   // text is not nul-terminated
-void text(GMarkupParseContext *context,
+static void text(GMarkupParseContext *context,
          const gchar         *text,
          gsize                text_len,
          gpointer             user_data,
@@ -109,12 +108,12 @@ void text(GMarkupParseContext *context,
         event_option_t *option = (event_option_t *)((ui->options)->data);
         if(strcmp(inner_element, LABEL_ELEMENT) == 0)
         {
-            VERB2 log("\tnew label: \t\t%s\n", _text);
+            VERB2 log("\tnew label: \t\t%s", _text);
             option->label = _text;
         }
         if(strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
         {
-            VERB2 log("\ttooltip: \t\t%s\n", _text);
+            VERB2 log("\ttooltip: \t\t%s", _text);
             option->description = _text;
         }
     }
@@ -123,12 +122,12 @@ void text(GMarkupParseContext *context,
         /* we're not in option, so the description is for the event */
         if(strcmp(inner_element, ACTION_ELEMENT) == 0)
         {
-            //g_print("\taction description: \t%s\n", _text);
+            VERB2 log("\taction description: \t%s", _text);
             ui->action = _text;
         }
         if(strcmp(inner_element, NAME_ELEMENT) == 0)
         {
-            //g_print("\tevent name: \t\t%s\n", _text);
+            VERB2 log("\tevent name: \t\t%s", _text);
             ui->name = _text;
         }
     }
@@ -140,18 +139,18 @@ void text(GMarkupParseContext *context,
   // position, but are not otherwise interpretable.  At the moment
   // this includes comments and processing instructions.
   // text is not nul-terminated
-void passthrough(GMarkupParseContext *context,
+static void passthrough(GMarkupParseContext *context,
                 const gchar *passthrough_text,
                 gsize text_len,
                 gpointer user_data,
                 GError **error)
 {
-    VERB2 log("passthrough\n");
+    VERB2 log("passthrough");
 }
 
 // Called on error, including one set by other
 // methods in the vtable. The GError should not be freed.
-void error(GMarkupParseContext *context,
+static void error(GMarkupParseContext *context,
           GError *error,
           gpointer user_data)
 {
@@ -178,11 +177,11 @@ void load_event_description_from_file(event_config_t *event_config, const char* 
                     event_config, NULL);
     FILE* fin = fopen(filename, "r");
     size_t read_bytes = 0;
-    char buff[1024] = {'\0'};
+    char buff[1024];
     while((read_bytes = fread(buff, 1, 1024, fin)))
     {
         g_markup_parse_context_parse(context, buff, read_bytes, NULL);
     }
     fclose(fin);
-    free(context);
+    g_markup_parse_context_free(context);
 }
