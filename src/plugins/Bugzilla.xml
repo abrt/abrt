@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<event>
+    <name>Bugzilla</name>
+    <action>_Report this problem to the Red Hat bug tracker</action>
+    <options>
+        <option type="text" name="Bugzilla_BugzillaURL">
+           <label>Bugzilla URL</label>
+           <allow-empty>no</allow-empty>
+           <description>Address of the bugzilla server</description>
+           <property>Address of the bugzilla server</property>
+           <notused1>blahblahblah</notused1>
+       </option>
+       <option type="text" name="Bugzilla_Login">
+           <label>User name</label>
+           <allow-empty>no</allow-empty>
+           <description>Username to use to log into your bugzilla account</description>
+       </option>
+       <option type="password" name="Bugzilla_Password">
+           <label>Password</label>
+           <allow-empty>no</allow-empty>
+           <description>Password for your bugzilla account</description>
+       </option>
+       <option type="bool" name="Bugzilla_SSLVerify">
+           <label>SSL Verify</label>
+           <description>Check the ssl key validity</description>
+       </option>
+    </options>
+</event>
+

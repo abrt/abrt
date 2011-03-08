@@ -38,6 +38,11 @@ dist_pluginsconf_DATA = \
     RHTSupport.conf \
     Upload.conf
 
+eventsdir = $(EVENTS_DIR)
+
+dist_events_DATA = \
+    Bugzilla.xml
+
 eventsconfdir = $(EVENTS_CONF_DIR)
 
 dist_eventsconf_DATA = \
