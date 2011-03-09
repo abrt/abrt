@@ -44,6 +44,7 @@ BuildRequires: libtar-devel
 BuildRequires: intltool
 BuildRequires: libtool
 BuildRequires: nss-devel
+BuildRequires: texinfo
 %if %{?with_systemd}
 Requires: systemd-units
 %endif
@@ -247,6 +248,8 @@ Requires: abrt-addon-ccpp
 Requires: gdb >= 7.0-3
 Requires: httpd, mod_wsgi, mod_ssl, python-webob
 Requires: mock, xz, elfutils, createrepo
+Requires(preun): /sbin/install-info
+Requires(post): /sbin/install-info
 
 %description retrace-server
 The retrace server provides a coredump analysis and backtrace
@@ -287,6 +290,9 @@ desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_sysconfdir}/xdg/autostart \
         src/applet/abrt-applet.desktop
 
+# After everything is installed, remove info dir
+rm -f %{buildroot}%{_infodir}/dir
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -315,6 +321,9 @@ if [ $1 -eq 1 ]; then
 fi
 #systemd: TODO
 
+%post retrace-server
+/sbin/install-info %{_infodir}/abrt-retrace-server %{_infodir}/dir 2> /dev/null || :
+
 %preun
 if [ "$1" -eq "0" ] ; then
   service abrtd stop >/dev/null 2>&1
@@ -334,6 +343,11 @@ if [ "$1" -eq "0" ] ; then
   /sbin/chkconfig --del abrt-ccpp
 fi
 #systemd: TODO
+
+%preun retrace-server
+if [ "$1" = 0 ]; then
+  /sbin/install-info --delete %{_infodir}/abrt-retrace-server %{_infodir}/dir 2> /dev/null || :
+fi
 
 %postun
 #systemd
@@ -540,6 +554,7 @@ fi
 %{_bindir}/abrt-retrace-worker
 %{_datadir}/abrt-retrace/*.py*
 %{_datadir}/abrt-retrace/*.wsgi
+%{_infodir}/abrt-retrace-server*
 
 %changelog
 * Wed Jun 09 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.5-1

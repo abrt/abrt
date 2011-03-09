@@ -1,1 +1,1 @@
-info_TEXINFOS = retrace-server.texi
+info_TEXINFOS = abrt-retrace-server.texi
