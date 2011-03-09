@@ -14,6 +14,18 @@ enum
 
 static void show_event_config_dialog(event_config_t* event);
 
+static void show_error_message(const char* message)
+{
+    GtkWidget *dialog = gtk_message_dialog_new(NULL,
+                                               GTK_DIALOG_MODAL,
+                                               GTK_MESSAGE_ERROR,
+                                               GTK_BUTTONS_CLOSE,
+                                               message
+                                               );
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
+}
+
 GtkWidget *gtk_label_new_justify_left(const gchar *label_str)
 {
     GtkWidget *label = gtk_label_new(label_str);
@@ -179,7 +191,11 @@ void show_events_list_dialog(GtkWindow *parent)
         if(g_event_config_list == NULL)
             load_event_config_data();
         if(g_event_config_list == NULL)
-            g_print("can't load event's config\n");
+        {
+            VERB1 log("can't load event's config\n");
+            show_error_message(_("Can't load event descriptions"));
+            return;
+        }
         parent_dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
         gtk_window_set_title(GTK_WINDOW(parent_dialog), _("Event Config"));
         gtk_window_set_default_size(GTK_WINDOW(parent_dialog), 450, 400);
