@@ -233,10 +233,21 @@ void load_crash_data_from_dump_dir(crash_data_t *crash_data, struct dump_dir *dd
             content = dd_load_text(dd, short_name);
         }
 
+        int flags = 0;
+
+        if (editable)
+            flags |= CD_FLAG_TXT | CD_FLAG_ISEDITABLE;
+        else
+            flags |= CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE;
+
+        int oneline = strchr(content, '\n') == NULL;
+        if (oneline)
+            flags |= CD_FLAG_ONELINE;
+
         add_to_crash_data_ext(crash_data,
                 short_name,
                 content,
-                (editable ? CD_FLAG_TXT + CD_FLAG_ISEDITABLE : CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE)
+                flags
         );
         free(short_name);
         free(full_name);

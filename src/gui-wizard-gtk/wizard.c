@@ -326,6 +326,39 @@ struct cd_stats {
     unsigned filecount;
 };
 
+static void tv_details_edit_cb(GtkTreeView       *tree_view,
+                               GtkTreePath       *path,
+                               GtkTreeViewColumn *column,
+                               gpointer           user_data)
+{
+    GtkTreeModel *model;
+    GtkTreeIter iter;
+    GtkTreeSelection* selection = gtk_tree_view_get_selection(tree_view);
+    if (!gtk_tree_selection_get_selected(selection, &model, &iter))
+        return;
+
+    gchar *column_name;
+    gtk_tree_model_get(model, &iter, DETAIL_COLUMN_NAME, &column_name, -1);
+    struct crash_item *item = get_crash_data_item_or_NULL(g_cd, column_name);
+    if (!item || !IS_TXT(item->flags))
+        return;
+
+    if (item && IS_ONELINE(item->flags))
+        return;
+
+    gchar *arg[3];
+    arg[0] = "xdg-open";
+    arg[1] = concat_path_file(g_dump_dir_name, column_name);
+    arg[2] = NULL;
+    g_free(column_name);
+
+    g_spawn_sync(NULL, arg, NULL,
+                 G_SPAWN_SEARCH_PATH | G_SPAWN_STDOUT_TO_DEV_NULL,
+                 NULL, NULL, NULL, NULL, NULL, NULL);
+
+    free(arg[1]);
+}
+
 static void append_item_to_ls_details(gpointer name, gpointer value, gpointer data)
 {
     crash_item *item = (crash_item*)value;
@@ -1068,6 +1101,7 @@ void create_assistant()
 
     g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
     g_signal_connect(g_btn_refresh, "clicked", G_CALLBACK(on_btn_refresh_clicked), NULL);
+    g_signal_connect(g_tv_details, "row-activated", G_CALLBACK(tv_details_edit_cb), NULL);
 
     /* init searching */
     GtkTextBuffer *backtrace_buf = gtk_text_view_get_buffer(g_tv_backtrace);

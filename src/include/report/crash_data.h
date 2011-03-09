@@ -32,7 +32,11 @@ enum {
     CD_FLAG_TXT           = (1 << 1),
     CD_FLAG_ISEDITABLE    = (1 << 2),
     CD_FLAG_ISNOTEDITABLE = (1 << 3),
+    CD_FLAG_ONELINE       = (1 << 4),
 };
+
+#define IS_TXT(flag) ((flag) & CD_FLAG_TXT)
+#define IS_ONELINE(flag) ((flag) & CD_FLAG_ONELINE)
 
 struct crash_item {
     char    *content;
