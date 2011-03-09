@@ -135,13 +135,15 @@ static void text(GMarkupParseContext *context,
             ui->name = _text;
             return;
         }
-        if(strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
+        if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
         {
             VERB2 log("event description:'%s'", _text);
             free(ui->description);
             ui->description = _text;
+            return;
         }
     }
+    free(_text);
 }
 
   // Called for strings that should be re-saved verbatim in this same
@@ -186,11 +188,11 @@ void load_event_description_from_file(event_config_t *event_config, const char* 
                     event_config, /*GDestroyNotify:*/ NULL);
 
     FILE* fin = fopen(filename, "r");
-    if(fin != NULL)
+    if (fin != NULL)
     {
         size_t read_bytes = 0;
         char buff[1024];
-        while ((read_bytes = fread(buff, 1, 1024, fin)))
+        while ((read_bytes = fread(buff, 1, 1024, fin)) != 0)
         {
             g_markup_parse_context_parse(context, buff, read_bytes, NULL);
         }
