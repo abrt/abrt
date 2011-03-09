@@ -76,7 +76,7 @@ static void p_run_event_state_dealloc(PyObject *pself)
 static int post_run_callback(const char *dump_dir_name, void *param)
 {
     PyObject *obj = (PyObject*)param;
-    PyObject *ret = PyObject_CallMethod(obj, "post_run_callback", "(s)", dump_dir_name);
+    PyObject *ret = PyObject_CallMethod(obj, (char*) "post_run_callback", (char*) "(s)", dump_dir_name);
     int r = 0;
     if (ret)
     {
@@ -89,7 +89,7 @@ static int post_run_callback(const char *dump_dir_name, void *param)
 static char *logging_callback(char *log_line, void *param)
 {
     PyObject *obj = (PyObject*)param;
-    PyObject *ret = PyObject_CallMethod(obj, "logging_callback", "(s)", log_line);
+    PyObject *ret = PyObject_CallMethod(obj, (char*) "logging_callback", (char*) "(s)", log_line);
     Py_XDECREF(ret);
     // TODO: handle exceptions: if (PyErr_Occurred()) ...
     return log_line; /* signaling to caller that we didnt consume the string */
@@ -200,8 +200,8 @@ static PyMethodDef p_run_event_state_methods[] = {
 
 static PyGetSetDef p_run_event_state_getset[] = {
     /* attr_name, getter_func, setter_func, doc_string, void_param */
-    { "post_run_callback", get_post_run_callback, set_post_run_callback },
-    { "logging_callback" , get_logging_callback , set_logging_callback  },
+    { (char*) "post_run_callback", get_post_run_callback, set_post_run_callback },
+    { (char*) "logging_callback" , get_logging_callback , set_logging_callback  },
     { NULL }
 };
 

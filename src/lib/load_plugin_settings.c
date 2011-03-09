@@ -34,47 +34,47 @@ bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWith
     char *line;
     while ((line = xmalloc_fgetline(fp)) != NULL)
     {
-        unsigned ii;
-        bool valid = false;
         bool in_quote = false;
         /* We are reusing line buffer to form temporary
          * "key\0value\0..." in its beginning
          */
-        char *key = line;
-        char *value = line;
-        char *cur = line;
-
-        for (ii = 0; line[ii] != '\0'; ii++)
+        char *value = NULL;
+        char *src;
+        char *dst;
+        for (src = dst = line; *src; src++)
         {
-            if (line[ii] == '"')
+            char c = *src;
+            if (c == '"')
             {
                 in_quote = !in_quote;
             }
-            if (isspace(line[ii]) && !in_quote)
+            if (!in_quote)
             {
-                continue;
+                if (isspace(c))
+                {
+                    continue;
+                }
+                if (c == '#' && dst == line)
+                {
+                    break;
+                }
+                if (c == '=')
+                {
+                    *dst++ = '\0'; /* terminate key */
+                    value = dst; /* remember where value starts */
+                    continue;
+                }
             }
-            if (line[ii] == '#' && !in_quote && cur == line)
-            {
-                break;
-            }
-            if (line[ii] == '=' && !in_quote)
-            {
-                valid = true;
-                *cur++ = '\0'; /* terminate key */
-                value = cur; /* remember where value starts */
-                continue;
-            }
-            *cur++ = line[ii]; /* store next key or value char */
+            *dst++ = c; /* store next key or value char */
         }
-	*cur++ = '\0'; /* terminate value */
+	*dst = '\0'; /* terminate value */
 
         /* Skip broken or empty lines. */
-        if (!valid)
+        if (!value)
             goto free_line;
 
         /* Skip lines with empty key. */
-        if (key[0] == '\0')
+        if (line[0] == '\0')
             goto free_line;
 
         if (skipKeysWithoutValue && value[0] == '\0')
@@ -84,7 +84,7 @@ bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWith
         if (in_quote)
             goto free_line;
 
-        g_hash_table_replace(settings, xstrdup(key), xstrdup(value));
+        g_hash_table_replace(settings, xstrdup(line), xstrdup(value));
  free_line:
         free(line);
     }

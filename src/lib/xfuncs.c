@@ -215,6 +215,20 @@ void xsetenv(const char *key, const char *value)
         die_out_of_memory();
 }
 
+void safe_unsetenv(const char *var_val)
+{
+    //char *name = xstrndup(var_val, strchrnul(var_val, '=') - var_val);
+    //unsetenv(name);
+    //free(name);
+
+    /* Avoid malloc/free (name is usually very short) */
+    unsigned len = strchrnul(var_val, '=') - var_val;
+    char name[len + 1];
+    memcpy(name, var_val, len);
+    name[len] = '\0';
+    unsetenv(name);
+}
+
 // Die with an error message if we can't open a new socket.
 int xsocket(int domain, int type, int protocol)
 {

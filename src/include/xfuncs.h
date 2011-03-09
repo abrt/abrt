@@ -74,6 +74,19 @@ char* xasprintf(const char *format, ...);
 
 #define xsetenv abrt_xsetenv
 void xsetenv(const char *key, const char *value);
+/*
+ * Utility function to unsetenv a string which was possibly putenv'ed.
+ * The problem here is that "natural" optimization:
+ * strchrnul(var_val, '=')[0] = '\0';
+ * unsetenv(var_val);
+ * is BUGGY: if string was put into environment via putenv,
+ * its modification (s/=/NUL/) is illegal, and unsetenv will fail to unset it.
+ * Of course, saving/restoring the char wouldn't work either.
+ * This helper creates a copy up to '=', unsetenv's it, and frees:
+ */
+#define safe_unsetenv abrt_safe_unsetenv
+void safe_unsetenv(const char *var_val);
+
 #define xsocket abrt_xsocket
 int xsocket(int domain, int type, int protocol);
 #define xbind abrt_xbind

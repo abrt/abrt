@@ -13,7 +13,7 @@ abrt_cli_CPPFLAGS = \
     $(ENABLE_SOCKET_OR_DBUS) \
     $(DBUS_CFLAGS) $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Werror
+    -Wall -Wwrite-strings -Werror
 #    $(GTK_CFLAGS)
 abrt_cli_LDADD = \
     ../lib/libreport.la \

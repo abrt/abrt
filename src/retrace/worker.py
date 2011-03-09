@@ -68,6 +68,16 @@ if __name__ == "__main__":
         LOG.close()
         sys.exit(16)
 
+    # read package file
+    try:
+        package_file = open("%s/crash/package" % savedir, "r")
+        crash_package = package_file.read()
+        package_file.close()
+    except Exception as ex:
+        LOG.write("Unable to read crash package from 'package' file: %s.\n" % ex)
+        LOG.close()
+        sys.exit(17)
+
     # read release, distribution and version from release file
     release_path = "%s/crash/os_release" % savedir
     if not os.path.isfile(release_path):
@@ -77,23 +87,28 @@ if __name__ == "__main__":
         release_file = open(release_path, "r")
         release = release_file.read()
         release_file.close()
+
+        version = distribution = None
+        for distro in RELEASE_PARSERS.keys():
+            match = RELEASE_PARSERS[distro].match(release)
+            if match:
+                version = match.group(1)
+                distribution = distro
+                break
+
+        if not version or not distribution:
+            raise Exception, "Release '%s' is not supported.\n"
+
     except Exception as ex:
         LOG.write("Unable to read distribution and version from 'release' file: %s.\n" % ex)
-        LOG.close()
-        sys.exit(17)
-
-    version = distribution = None
-    for distro in RELEASE_PARSERS.keys():
-        match = RELEASE_PARSERS[distro].match(release)
-        if match:
-            version = match.group(1)
-            distribution = distro
-            break
-
-    if not version or not distribution:
-        LOG.write("Release '%s' is not supported.\n" % release)
-        LOG.close()
-        sys.exit(18)
+        LOG.write("Trying to guess distribution and version... ")
+        distribution, version = guess_release(crash_package)
+        if distribution and version:
+            LOG.write("%s-%s\n" % (distribution, version))
+        else:
+            LOG.write("Failure\n")
+            LOG.close()
+            sys.exit(18)
 
     # read package file
     try:
@@ -135,7 +150,7 @@ if __name__ == "__main__":
         mockcfg = open("%s/mock.cfg" % savedir, "w")
         mockcfg.write("config_opts['root'] = 'chroot'\n")
         mockcfg.write("config_opts['target_arch'] = '%s'\n" % arch)
-        mockcfg.write("config_opts['chroot_setup_cmd'] = 'install %s shadow-utils abrt-addon-ccpp gdb'\n" % packages)
+        mockcfg.write("config_opts['chroot_setup_cmd'] = 'install %s shadow-utils gdb'\n" % packages)
         mockcfg.write("config_opts['basedir'] = '%s'\n" % workdir)
         mockcfg.write("config_opts['plugin_conf']['ccache_enable'] = False\n")
         mockcfg.write("config_opts['plugin_conf']['yum_cache_enable'] = False\n")
@@ -186,12 +201,6 @@ if __name__ == "__main__":
         mockcfg.write("baseurl=file://%s/%s-%s-%s-updates-testing-debuginfo/\n" % (CONFIG["RepoDir"], distribution, version, arch))
         mockcfg.write("failovermethod=priority\n")
         mockcfg.write("\n")
-        # custom ABRT repo with ABRT 2.0 binaries - obsolete after release of ABRT 2.0
-        mockcfg.write("[abrt]\n")
-        mockcfg.write("name=abrt\n")
-        mockcfg.write("baseurl=http://repos.fedorapeople.org/repos/mtoman/abrt20/%s-%s/%s/\n" % (distribution, version, arch))
-        mockcfg.write("failovermethod=priority\n")
-        mockcfg.write("\n")
         mockcfg.write("\"\"\"\n")
         mockcfg.close()
     except Exception as ex:
@@ -236,9 +245,21 @@ if __name__ == "__main__":
     # generate backtrace
     LOG.write("Generating backtrace... ")
 
-    retrace_run(28, ["mock", "shell", "-r", mockr, "--", "/usr/bin/abrt-action-generate-backtrace", "-d", "/var/spool/abrt/crash/"])
-    retrace_run(29, ["mock", "-r", mockr, "--copyout", "/var/spool/abrt/crash/backtrace", savedir])
-    retrace_run(30, ["chmod", "a+r", "%s/backtrace" % savedir])
+    backtrace = run_gdb(savedir)
+
+    if not backtrace:
+        LOG.write("Error\n")
+        LOG.close()
+        sys.exit(29)
+
+    try:
+        bt_file = open("%s/backtrace" % savedir, "w")
+        bt_file.write(backtrace)
+        bt_file.close()
+    except Exception as ex:
+        LOG.write("Error: %s.\n" % ex)
+        LOG.close()
+        sys.exit(30)
 
     LOG.write("OK\n")
 

@@ -76,6 +76,11 @@ static char* exec_vp(char **args, uid_t uid, int redirect_stderr, int *status)
         "LC_MONETARY",
         "LC_NUMERIC",
         "LC_TIME",
+        /* Workaround for
+         * http://sourceware.org/bugzilla/show_bug.cgi?id=9622
+         * (gdb emitting ESC sequences even with -batch)
+         */
+        "TERM",
         NULL
     };
 
@@ -136,12 +141,6 @@ static char *get_backtrace(struct dump_dir *dd)
     free(uid_str);
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
     dd_close(dd);
-
-    // Workaround for
-    // http://sourceware.org/bugzilla/show_bug.cgi?id=9622
-    unsetenv("TERM");
-    // This is not necessary
-    //putenv((char*)"TERM=dumb");
 
     char *args[21];
     args[0] = (char*)"gdb";

@@ -510,6 +510,7 @@ fi
 %files plugin-bugzilla
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Bugzilla.conf
+%{_sysconfdir}/%{name}/events/Bugzilla.xml
 %{_libdir}/%{name}/Bugzilla.glade
 %{_mandir}/man7/abrt-Bugzilla.7.gz
 %{_bindir}/abrt-action-bugzilla

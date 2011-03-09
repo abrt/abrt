@@ -17,7 +17,7 @@ abrt_applet_CPPFLAGS = \
     $(GTK_CFLAGS) \
     $(DBUS_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Werror
+    -Wall -Wwrite-strings -Werror
 #    -I/usr/include/glib-2.0
 #    -I/usr/lib/glib-2.0/include
 #    $(LIBNOTIFY_CFLAGS)
@@ -37,7 +37,7 @@ abrt_applet_LDADD = \
 #    -I$(srcdir)/../include/report -I$(srcdir)/../include \
 #    $(GLIB_CFLAGS) \
 #    -D_GNU_SOURCE \
-#    -Wall -Werror
+#    -Wall -Wwrite-strings -Werror
 #test_report_LDADD = \
 #    ../lib/libreport.la
 

@@ -82,6 +82,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "abrt_types.h"
 #include "dump_dir.h"
 #include "run_event.h"
+#include "event_config.h"
 
 
 #ifdef __cplusplus
@@ -169,12 +170,17 @@ enum {
         EXECFLG_SETGUID    = 1 << 7,
         EXECFLG_SETSID     = 1 << 8,
 };
-/* Returns pid */
+/*
+ * env_vec: list of variables to set in environment (if string has
+ * "VAR=VAL" form) or unset in environment (if string has no '=' char).
+ *
+ * Returns pid.
+ */
 #define fork_execv_on_steroids abrt_fork_execv_on_steroids
 pid_t fork_execv_on_steroids(int flags,
                 char **argv,
                 int *pipefds,
-                char **unsetenv_vec,
+                char **env_vec,
                 const char *dir,
                 uid_t uid);
 /* Returns malloc'ed string. NULs are retained, and extra one is appended

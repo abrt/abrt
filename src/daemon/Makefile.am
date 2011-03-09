@@ -30,7 +30,7 @@ abrtd_CPPFLAGS = \
     $(DBUS_CFLAGS) \
     $(ENABLE_SOCKET_OR_DBUS) \
     -D_GNU_SOURCE \
-    -Wall
+    -Wall -Wwrite-strings
 abrtd_LDADD = \
     $(DL_LIBS) \
     $(DBUS_LIBS) \
@@ -51,7 +51,7 @@ abrt_server_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Werror
+    -Wall -Wwrite-strings -Werror
 abrt_server_LDADD = \
     ../lib/libreport.la
 
@@ -71,7 +71,7 @@ abrt_handle_crashdump_CPPFLAGS = \
     -DLIBEXEC_DIR=\"$(LIBEXEC_DIR)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Werror
+    -Wall -Wwrite-strings -Werror
 abrt_handle_crashdump_LDADD = \
     ../lib/libreport.la
 
@@ -92,7 +92,7 @@ abrt_action_save_package_data_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Werror
+    -Wall -Wwrite-strings -Werror
 abrt_action_save_package_data_LDADD = \
     $(RPM_LIBS) \
     ../lib/libreport.la

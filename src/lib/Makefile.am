@@ -43,16 +43,19 @@ libreport_la_SOURCES = \
     hooklib.c hooklib.h \
     parse_release.c \
     parse_options.c parse_options.h \
-    steal_directory.c
+    steal_directory.c \
+    event_xml_parser.c \
+    event_config.c
 libreport_la_CPPFLAGS = \
-    -Wall -Werror \
+    -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE
 libreport_la_LDFLAGS = \
@@ -64,14 +67,16 @@ libabrt_dbus_la_SOURCES = \
     abrt_dbus.c abrt_dbus.h
 libabrt_dbus_la_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
     $(GLIB_CFLAGS) \
     $(DBUS_CFLAGS) \
-    -Wall -Werror \
+    -Wall -Wwrite-strings -Werror \
     -D_GNU_SOURCE
 libabrt_dbus_la_LDFLAGS = \
     -version-info 0:1:0
@@ -83,13 +88,15 @@ libabrt_web_la_SOURCES = \
     abrt_curl.h abrt_curl.c \
     abrt_xmlrpc.h abrt_xmlrpc.cpp
 libabrt_web_la_CPPFLAGS = \
-    -Wall -Werror \
+    -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
     $(GLIB_CFLAGS) \
     $(CURL_CFLAGS) \
     $(LIBXML_CFLAGS) \

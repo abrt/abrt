@@ -93,7 +93,7 @@ static GList *load_event_config(GList *list,
         if (*p == '\0' || *p == '#')
             goto next_line; /* empty or comment line, skip */
 
-        VERB3 log("%s: line '%s'", __func__, p);
+        //VERB3 log("%s: line '%s'", __func__, p);
 
         if (strncmp(p, "include", strlen("include")) == 0 && isblank(p[strlen("include")]))
         {
@@ -117,15 +117,15 @@ static GList *load_event_config(GList *list,
 
             glob_t globbuf;
             memset(&globbuf, 0, sizeof(globbuf));
-            VERB3 log("%s: globbing '%s'", __func__, name_to_glob);
+            //VERB3 log("%s: globbing '%s'", __func__, name_to_glob);
             glob(name_to_glob, 0, NULL, &globbuf);
             free(name_to_glob);
             char **name = globbuf.gl_pathv;
             if (name) while (*name)
             {
-                VERB3 log("%s: recursing into '%s'", __func__, *name);
+                //VERB3 log("%s: recursing into '%s'", __func__, *name);
                 list = load_event_config(list, dump_dir_name, event, *name);
-                VERB3 log("%s: returned from '%s'", __func__, *name);
+                //VERB3 log("%s: returned from '%s'", __func__, *name);
                 name++;
             }
             globfree(&globbuf);
@@ -174,10 +174,10 @@ static GList *load_event_config(GList *list,
             /* Does VAL match? */
             if (strcmp(real_val, line_val) != 0)
             {
-                VERB3 log("var '%s': '%.*s'!='%s', skipping line",
-                        p,
-                        (int)(strchrnul(real_val, '\n') - real_val), real_val,
-                        line_val);
+                //VERB3 log("var '%s': '%.*s'!='%s', skipping line",
+                //        p,
+                //        (int)(strchrnul(real_val, '\n') - real_val), real_val,
+                //        line_val);
                 free(malloced_val);
                 goto next_line; /* no */
             }
@@ -245,18 +245,19 @@ int spawn_next_command(struct run_event_state *state,
     VERB1 log("Executing '%s'", cmd);
 
     /* Export some useful environment variables for children */
+    char *env_vec[3];
     /* Just exporting dump_dir_name isn't always ok: it can be "."
      * and some children want to cd to other directory but still
      * be able to find dump directory by using $DUMP_DIR...
      */
     char *full_name = realpath(dump_dir_name, NULL);
-    setenv("DUMP_DIR", (full_name ? full_name : dump_dir_name), 1);
+    env_vec[0] = xasprintf("DUMP_DIR=%s", (full_name ? full_name : dump_dir_name));
     free(full_name);
-    setenv("EVENT", event, 1);
-//FIXME: set vars in the child, not here! Need to improve fork_execv_on_steroids...
+    env_vec[1] = xasprintf("EVENT=%s", event);
+    env_vec[2] = NULL;
 
     char *argv[4];
-    argv[0] = (char*)"/bin/sh";
+    argv[0] = (char*)"/bin/sh"; // TODO: honor $SHELL?
     argv[1] = (char*)"-c";
     argv[2] = cmd;
     argv[3] = NULL;
@@ -266,11 +267,14 @@ int spawn_next_command(struct run_event_state *state,
                 EXECFLG_INPUT_NUL + EXECFLG_OUTPUT + EXECFLG_ERR2OUT,
                 argv,
                 pipefds,
-                /* unsetenv_vec: */ NULL,
+                /* env_vec: */ env_vec,
                 /* dir: */ dump_dir_name,
                 /* uid(unused): */ 0
     );
     state->command_out_fd = pipefds[0];
+
+    free(env_vec[0]);
+    free(env_vec[1]);
 
     state->commands = g_list_remove(state->commands, cmd);
 
@@ -396,7 +400,7 @@ static int list_possible_events_helper(struct strbuf *result,
         if (*p == '\0' || *p == '#')
             goto next_line; /* empty or comment line, skip */
 
-        VERB3 log("%s: line '%s'", __func__, p);
+        //VERB3 log("%s: line '%s'", __func__, p);
 
         if (strncmp(p, "include", strlen("include")) == 0 && isblank(p[strlen("include")]))
         {
@@ -420,15 +424,15 @@ static int list_possible_events_helper(struct strbuf *result,
 
             glob_t globbuf;
             memset(&globbuf, 0, sizeof(globbuf));
-            VERB3 log("%s: globbing '%s'", __func__, name_to_glob);
+            //VERB3 log("%s: globbing '%s'", __func__, name_to_glob);
             glob(name_to_glob, 0, NULL, &globbuf);
             free(name_to_glob);
             char **name = globbuf.gl_pathv;
             if (name) while (*name)
             {
-                VERB3 log("%s: recursing into '%s'", __func__, *name);
+                //VERB3 log("%s: recursing into '%s'", __func__, *name);
                 error = list_possible_events_helper(result, dd, dump_dir_name, pfx, *name);
-                VERB3 log("%s: returned from '%s'", __func__, *name);
+                //VERB3 log("%s: returned from '%s'", __func__, *name);
                 if (error)
                     break;
                 name++;
@@ -480,10 +484,10 @@ static int list_possible_events_helper(struct strbuf *result,
                 /* Does VAL match? */
                 if (strcmp(real_val, line_val) != 0)
                 {
-                    VERB3 log("var '%s': '%.*s'!='%s', skipping line",
-                            p,
-                            (int)(strchrnul(real_val, '\n') - real_val), real_val,
-                            line_val);
+                    //VERB3 log("var '%s': '%.*s'!='%s', skipping line",
+                    //        p,
+                    //        (int)(strchrnul(real_val, '\n') - real_val), real_val,
+                    //        line_val);
                     free(real_val);
                     goto next_line; /* no */
                 }

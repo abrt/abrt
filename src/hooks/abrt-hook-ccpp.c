@@ -174,7 +174,7 @@ static char* get_cwd(pid_t pid)
  */
 /* Must match CORE_PATTERN order in daemon! */
 static const char percent_specifiers[] = "%scpugthe";
-static char *core_basename = "core";
+static char *core_basename = (char*) "core";
 
 static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid, char **percent_values)
 {
@@ -380,7 +380,7 @@ int main(int argc, char** argv)
     unsigned setting_MaxCrashReportsSize = 0;
     bool setting_MakeCompatCore = false;
     bool setting_SaveBinaryImage = false;
-    parse_conf(CONF_DIR"/plugins/CCpp.conf", &setting_MaxCrashReportsSize, &setting_MakeCompatCore, &setting_SaveBinaryImage);
+    parse_conf(PLUGINS_CONF_DIR"/CCpp.conf", &setting_MaxCrashReportsSize, &setting_MakeCompatCore, &setting_SaveBinaryImage);
     if (!setting_SaveBinaryImage && src_fd_binary >= 0)
     {
         close(src_fd_binary);
