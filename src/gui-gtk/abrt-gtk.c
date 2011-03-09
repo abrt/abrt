@@ -89,47 +89,68 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
     }
 }
 
+static void on_btn_report_cb(GtkButton *button, gpointer user_data)
+{
+    on_row_activated_cb(GTK_TREE_VIEW(s_treeview), NULL, NULL, NULL);
+}
+
+static void delete_report(GtkTreeView *treeview)
+{
+    GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
+    if (selection)
+    {
+        GtkTreeIter iter;
+        GtkTreeModel *store = gtk_tree_view_get_model(treeview);
+        if (gtk_tree_selection_get_selected(selection, &store, &iter) == TRUE)
+        {
+            GtkTreePath *old_path = gtk_tree_model_get_path(store, &iter);
+
+            GValue d_dir = { 0 };
+            gtk_tree_model_get_value(store, &iter, COLUMN_DUMP_DIR, &d_dir);
+            const char *dump_dir_name = g_value_get_string(&d_dir);
+
+            VERB1 log("Deleting '%s'", dump_dir_name);
+            if (delete_dump_dir_possibly_using_abrtd(dump_dir_name) == 0)
+            {
+                gtk_list_store_remove(s_dumps_list_store, &iter);
+            }
+            else
+            {
+                /* Strange. Deletion did not succeed. Someone else deleted it?
+                 * Rescan the whole list */
+                gtk_list_store_clear(s_dumps_list_store);
+                scan_dirs_and_add_to_dirlist();
+            }
+
+            /* Try to retain the same cursor position */
+            sanitize_cursor(old_path);
+            gtk_tree_path_free(old_path);
+        }
+    }
+}
+
 static gint on_key_press_event_cb(GtkTreeView *treeview, GdkEventKey *key, gpointer unused)
 {
     int k = key->keyval;
 
     if (k == GDK_Delete || k == GDK_KP_Delete)
     {
-        GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
-        if (selection)
-        {
-            GtkTreeIter iter;
-            GtkTreeModel *store = gtk_tree_view_get_model(treeview);
-            if (gtk_tree_selection_get_selected(selection, &store, &iter) == TRUE)
-            {
-		GtkTreePath *old_path = gtk_tree_model_get_path(store, &iter);
-
-                GValue d_dir = { 0 };
-                gtk_tree_model_get_value(store, &iter, COLUMN_DUMP_DIR, &d_dir);
-                const char *dump_dir_name = g_value_get_string(&d_dir);
-
-                VERB1 log("Deleting '%s'", dump_dir_name);
-                if (delete_dump_dir_possibly_using_abrtd(dump_dir_name) == 0)
-                {
-                    gtk_list_store_remove(s_dumps_list_store, &iter);
-                }
-                else
-                {
-                    /* Strange. Deletion did not succeed. Someone else deleted it?
-                     * Rescan the whole list */
-                    gtk_list_store_clear(s_dumps_list_store);
-                    scan_dirs_and_add_to_dirlist();
-                }
-
-                /* Try to retain the same cursor position */
-                sanitize_cursor(old_path);
-                gtk_tree_path_free(old_path);
-            }
-        }
-
+        delete_report(treeview);
         return TRUE;
     }
     return FALSE;
+}
+
+static void on_btn_delete_cb(GtkButton *button, gpointer unused)
+{
+    delete_report(GTK_TREE_VIEW(s_treeview));
+}
+
+static void on_btn_online_help_cb(GtkButton *button, gpointer unused)
+{
+    gtk_show_uri(NULL,"http://docs.fedoraproject.org/en-US/Fedor"
+                 "a/14/html/Deployment_Guide/ch-abrt.html",
+                 GDK_CURRENT_TIME, NULL);
 }
 
 void show_events_list_dialog_cb(GtkMenuItem *menuitem, gpointer user_data)
@@ -262,13 +283,41 @@ GtkWidget *create_main_window(void)
                                                        G_TYPE_STRING);/* dump dir path */
     gtk_tree_view_set_model(GTK_TREE_VIEW(s_treeview), GTK_TREE_MODEL(s_dumps_list_store));
 
+    /* buttons are homogenous so set size only for one button and it will
+     * work for the rest buttons in same gtk_hbox_new() */
+    GtkWidget *btn_report = gtk_button_new_with_label(_("Report"));
+    gtk_widget_set_size_request(btn_report, 200, 30);
+
+    GtkWidget *btn_delete = gtk_button_new_from_stock(GTK_STOCK_DELETE);
+
+    GtkWidget *hbox_report_delete = gtk_hbox_new(true, 4);
+    gtk_box_pack_start(GTK_BOX(hbox_report_delete), btn_delete, true, true, 0);
+    gtk_box_pack_start(GTK_BOX(hbox_report_delete), btn_report, true, true, 0);
+
+    GtkWidget *halign =  gtk_alignment_new(1, 0, 0, 0);
+    gtk_container_add(GTK_CONTAINER(halign), hbox_report_delete);
+
+    GtkWidget *hbox_help_close = gtk_hbutton_box_new();
+    GtkWidget *btn_online_help = gtk_button_new_with_label(_("Online Help"));
+    GtkWidget *btn_close = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
+    gtk_box_pack_end(GTK_BOX(hbox_help_close), btn_online_help, false, false, 0);
+    gtk_box_pack_end(GTK_BOX(hbox_help_close), btn_close, false, false, 0);
+
+    gtk_box_pack_start(GTK_BOX(main_vbox), halign, false, false, 10);
+    gtk_box_pack_start(GTK_BOX(main_vbox), hbox_help_close, false, false, 10);
+
     /* Double click/Enter handler */
     g_signal_connect(s_treeview, "row-activated", G_CALLBACK(on_row_activated_cb), NULL);
+    g_signal_connect(btn_report, "clicked", G_CALLBACK(on_btn_report_cb), NULL);
     /* Delete handler */
     g_signal_connect(s_treeview, "key-press-event", G_CALLBACK(on_key_press_event_cb), NULL);
+    g_signal_connect(btn_delete, "clicked", G_CALLBACK(on_btn_delete_cb), NULL);
     /* Quit when user closes the main window */
     g_signal_connect(g_main_window, "destroy", gtk_main_quit, NULL);
-
+    /* Quit when user click on Cancel button */
+    g_signal_connect(btn_close, "clicked", gtk_main_quit, NULL);
+    /* Show online help */
+    g_signal_connect(btn_online_help, "clicked", G_CALLBACK(on_btn_online_help_cb), NULL);
     return g_main_window;
 }
 
