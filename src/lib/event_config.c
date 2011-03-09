@@ -43,6 +43,7 @@ void free_event_config(event_config_t *p)
 void load_event_config_data(void)
 {
     free_event_config_data();
+
     DIR *dir = opendir(EVENTS_DIR);
     if (!dir)
         return;
@@ -70,7 +71,8 @@ void load_event_config_data(void)
 
         *ext = '\0';
         event_config_t *event_config = get_event_config(dent->d_name);
-        if (!event_config)
+        bool new_config = (!event_config);
+        if (new_config)
             event_config = new_event_config();
 
         if (xml)
@@ -110,7 +112,8 @@ void load_event_config_data(void)
 
         free(fullname);
 
-        g_hash_table_replace(g_event_config_list, xstrdup(dent->d_name), event_config);
+        if (new_config)
+            g_hash_table_replace(g_event_config_list, xstrdup(dent->d_name), event_config);
     }
 }
 

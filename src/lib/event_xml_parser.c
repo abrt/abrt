@@ -37,7 +37,7 @@ static void start_element(GMarkupParseContext *context,
         if (in_option == 0)
         {
             in_option = 1;
-            event_option_t *option = xzalloc(sizeof(*option));
+            event_option_t *option = new_event_option();
             //we need to prepend, so ui->options always points to the last created option
             VERB2 log("adding option");
             ui->options = g_list_prepend(ui->options, option);

@@ -93,7 +93,7 @@ static GList *load_event_config(GList *list,
         if (*p == '\0' || *p == '#')
             goto next_line; /* empty or comment line, skip */
 
-        VERB3 log("%s: line '%s'", __func__, p);
+        //VERB3 log("%s: line '%s'", __func__, p);
 
         if (strncmp(p, "include", strlen("include")) == 0 && isblank(p[strlen("include")]))
         {
@@ -117,15 +117,15 @@ static GList *load_event_config(GList *list,
 
             glob_t globbuf;
             memset(&globbuf, 0, sizeof(globbuf));
-            VERB3 log("%s: globbing '%s'", __func__, name_to_glob);
+            //VERB3 log("%s: globbing '%s'", __func__, name_to_glob);
             glob(name_to_glob, 0, NULL, &globbuf);
             free(name_to_glob);
             char **name = globbuf.gl_pathv;
             if (name) while (*name)
             {
-                VERB3 log("%s: recursing into '%s'", __func__, *name);
+                //VERB3 log("%s: recursing into '%s'", __func__, *name);
                 list = load_event_config(list, dump_dir_name, event, *name);
-                VERB3 log("%s: returned from '%s'", __func__, *name);
+                //VERB3 log("%s: returned from '%s'", __func__, *name);
                 name++;
             }
             globfree(&globbuf);
@@ -174,10 +174,10 @@ static GList *load_event_config(GList *list,
             /* Does VAL match? */
             if (strcmp(real_val, line_val) != 0)
             {
-                VERB3 log("var '%s': '%.*s'!='%s', skipping line",
-                        p,
-                        (int)(strchrnul(real_val, '\n') - real_val), real_val,
-                        line_val);
+                //VERB3 log("var '%s': '%.*s'!='%s', skipping line",
+                //        p,
+                //        (int)(strchrnul(real_val, '\n') - real_val), real_val,
+                //        line_val);
                 free(malloced_val);
                 goto next_line; /* no */
             }
@@ -400,7 +400,7 @@ static int list_possible_events_helper(struct strbuf *result,
         if (*p == '\0' || *p == '#')
             goto next_line; /* empty or comment line, skip */
 
-        VERB3 log("%s: line '%s'", __func__, p);
+        //VERB3 log("%s: line '%s'", __func__, p);
 
         if (strncmp(p, "include", strlen("include")) == 0 && isblank(p[strlen("include")]))
         {
@@ -424,15 +424,15 @@ static int list_possible_events_helper(struct strbuf *result,
 
             glob_t globbuf;
             memset(&globbuf, 0, sizeof(globbuf));
-            VERB3 log("%s: globbing '%s'", __func__, name_to_glob);
+            //VERB3 log("%s: globbing '%s'", __func__, name_to_glob);
             glob(name_to_glob, 0, NULL, &globbuf);
             free(name_to_glob);
             char **name = globbuf.gl_pathv;
             if (name) while (*name)
             {
-                VERB3 log("%s: recursing into '%s'", __func__, *name);
+                //VERB3 log("%s: recursing into '%s'", __func__, *name);
                 error = list_possible_events_helper(result, dd, dump_dir_name, pfx, *name);
-                VERB3 log("%s: returned from '%s'", __func__, *name);
+                //VERB3 log("%s: returned from '%s'", __func__, *name);
                 if (error)
                     break;
                 name++;
@@ -484,10 +484,10 @@ static int list_possible_events_helper(struct strbuf *result,
                 /* Does VAL match? */
                 if (strcmp(real_val, line_val) != 0)
                 {
-                    VERB3 log("var '%s': '%.*s'!='%s', skipping line",
-                            p,
-                            (int)(strchrnul(real_val, '\n') - real_val), real_val,
-                            line_val);
+                    //VERB3 log("var '%s': '%.*s'!='%s', skipping line",
+                    //        p,
+                    //        (int)(strchrnul(real_val, '\n') - real_val), real_val,
+                    //        line_val);
                     free(real_val);
                     goto next_line; /* no */
                 }
