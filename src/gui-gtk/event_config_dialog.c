@@ -54,11 +54,17 @@ static void add_option_to_dialog(event_option_t *option)
     GtkWidget *label;
     GtkWidget *option_input;
     GtkWidget *option_hbox = gtk_hbox_new(FALSE, 0);
+    char *option_label;
+    if(option->label != NULL)
+        option_label = option->label;
+    else
+        option_label = option->name;
+
     switch(option->type)
     {
         case OPTION_TYPE_TEXT:
         case OPTION_TYPE_NUMBER:
-            label = gtk_label_new_justify_left(option->label);
+            label = gtk_label_new_justify_left(option_label);
             gtk_table_attach(GTK_TABLE(option_table), label,
                              0, 1,
                              last_row, last_row+1,
@@ -75,7 +81,7 @@ static void add_option_to_dialog(event_option_t *option)
             add_option_widget(option_input, option);
             break;
         case OPTION_TYPE_BOOL:
-            option_input = gtk_check_button_new_with_label(option->label);
+            option_input = gtk_check_button_new_with_label(option_label);
             gtk_table_attach(GTK_TABLE(option_table), option_input,
                              0, 2,
                              last_row, last_row+1,
@@ -87,7 +93,7 @@ static void add_option_to_dialog(event_option_t *option)
             add_option_widget(option_input, option);
             break;
         case OPTION_TYPE_PASSWORD:
-            label = gtk_label_new_justify_left(option->label);
+            label = gtk_label_new_justify_left(option_label);
             gtk_table_attach(GTK_TABLE(option_table), label,
                              0, 1,
                              last_row, last_row+1,
