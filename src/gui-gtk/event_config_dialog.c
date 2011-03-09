@@ -124,7 +124,10 @@ static void on_configure_event_cb(GtkWidget *button, gpointer user_data)
 {
     GtkTreeView *events_tv = (GtkTreeView *)user_data;
     event_config_t *ec = get_event_config_from_row(events_tv);
-    show_event_config_dialog(ec);
+    if(ec != NULL)
+        show_event_config_dialog(ec);
+    else
+        show_error_message(_("Please select a plugin from the list to edit its options."));
 }
 
 static void on_event_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
