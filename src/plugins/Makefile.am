@@ -41,7 +41,7 @@ dist_pluginsconf_DATA = \
 eventsdir = $(EVENTS_DIR)
 
 dist_events_DATA = \
-    Bugzilla.xml
+    report_Bugzilla.xml
 
 eventsconfdir = $(EVENTS_CONF_DIR)
 
