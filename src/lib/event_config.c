@@ -66,9 +66,13 @@ void load_event_config_data(void)
         if (!conf && !xml)
             continue;
 
-        event_config_t *event_config = new_event_config();
-
         char *fullname = concat_path_file(EVENTS_DIR, dent->d_name);
+
+        *ext = '\0';
+        event_config_t *event_config = get_event_config(dent->d_name);
+        if (!event_config)
+            event_config = new_event_config();
+
         if (xml)
             load_event_description_from_file(event_config, fullname);
         if (conf)
@@ -103,9 +107,9 @@ void load_event_config_data(void)
 
             free_map_string(keys_and_values);
         }
+
         free(fullname);
 
-        *ext = '\0';
         g_hash_table_replace(g_event_config_list, xstrdup(dent->d_name), event_config);
     }
 }
