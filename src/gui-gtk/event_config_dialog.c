@@ -3,6 +3,7 @@
 
 static GtkWidget *option_table;
 static GtkWidget *parent_dialog;
+static GList *option_widget_list;
 static int last_row = 0;
 
 enum
@@ -11,6 +12,12 @@ enum
     COLUMN_EVENT,
     NUM_COLUMNS
 };
+
+typedef struct
+{
+    event_option_t *option;
+    GtkWidget *widget;
+} option_widget_t;
 
 static void show_event_config_dialog(event_config_t* event);
 
@@ -34,6 +41,14 @@ GtkWidget *gtk_label_new_justify_left(const gchar *label_str)
     return label;
 }
 
+static void add_option_widget(GtkWidget *widget, event_option_t *option)
+{
+    option_widget_t *ow = (option_widget_t *)xmalloc(sizeof(option_widget_t));
+    ow->widget = widget;
+    ow->option = option;
+    option_widget_list = g_list_prepend(option_widget_list, ow);
+}
+
 static void add_option_to_dialog(event_option_t *option)
 {
     GtkWidget *label;
@@ -50,12 +65,14 @@ static void add_option_to_dialog(event_option_t *option)
                              GTK_FILL, GTK_FILL,
                              0,0);
             option_input = gtk_entry_new();
+            if(option->value != NULL)
+                gtk_entry_set_text(GTK_ENTRY(option_input), option->value);
             gtk_table_attach(GTK_TABLE(option_table), option_input,
                              1, 2,
                              last_row, last_row+1,
                              GTK_FILL, GTK_FILL,
                              0,0);
-
+            add_option_widget(option_input, option);
             break;
         case OPTION_TYPE_BOOL:
             option_input = gtk_check_button_new_with_label(option->label);
@@ -64,6 +81,10 @@ static void add_option_to_dialog(event_option_t *option)
                              last_row, last_row+1,
                              GTK_FILL, GTK_FILL,
                              0,0);
+            if(option->value != NULL)
+                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(option_input),
+                                    (strcmp("yes",option->value)==0));
+            add_option_widget(option_input, option);
             break;
         case OPTION_TYPE_PASSWORD:
             label = gtk_label_new_justify_left(option->label);
@@ -73,6 +94,8 @@ static void add_option_to_dialog(event_option_t *option)
                              GTK_FILL, GTK_FILL,
                              0,0);
             option_input = gtk_entry_new();
+            if(option->value != NULL)
+                gtk_entry_set_text(GTK_ENTRY(option_input), option->value);
             gtk_table_attach(GTK_TABLE(option_table), option_input,
                              1, 2,
                              last_row, last_row+1,
@@ -80,9 +103,10 @@ static void add_option_to_dialog(event_option_t *option)
                              0,0);
 
             gtk_entry_set_visibility(GTK_ENTRY(option_input), 0);
+            add_option_widget(option_input, option);
             break;
         default:
-            option_input = gtk_label_new_justify_left("WTF?");
+            //option_input = gtk_label_new_justify_left("WTF?");
             g_print("unsupported option type\n");
     }
     last_row++;
@@ -141,8 +165,8 @@ static void add_event_to_liststore(gpointer key, gpointer value, gpointer user_d
     GtkListStore *events_list_store = (GtkListStore *)user_data;
     event_config_t *ec = (event_config_t *)value;
     char *event_label = NULL;
-    if(ec->name != NULL && ec->description != NULL)
-        event_label = xasprintf("<b>%s</b>\n%s", ec->name, ec->description);
+    if(ec->screen_name != NULL && ec->description != NULL)
+        event_label = xasprintf("<b>%s</b>\n%s", ec->screen_name, ec->description);
     else
         //if event has no xml description
         event_label = xasprintf("<b>%s</b>\nNo description available", key);
@@ -155,10 +179,41 @@ static void add_event_to_liststore(gpointer key, gpointer value, gpointer user_d
                       -1);
 }
 
+static void save_value_from_widget(gpointer data, gpointer user_data)
+{
+    option_widget_t *ow = (option_widget_t *)data;
+    switch(ow->option->type)
+    {
+        case OPTION_TYPE_TEXT:
+        case OPTION_TYPE_NUMBER:
+        case OPTION_TYPE_PASSWORD:
+            ow->option->value = (char *)gtk_entry_get_text(GTK_ENTRY(ow->widget));
+            break;
+        case OPTION_TYPE_BOOL:
+            ow->option->value = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ow->widget)) ? xstrdup("yes") : xstrdup("no");
+            break;
+        default:
+            g_print("unsupported option type\n");
+    }
+    VERB1 log("saved: %s:%s", ow->option->name, ow->option->value);
+}
+
+static void dehydrate_config_dialog()
+{
+    if(option_widget_list != NULL)
+        g_list_foreach(option_widget_list, &save_value_from_widget, NULL);
+}
+
 static void show_event_config_dialog(event_config_t* event)
 {
+    if(option_widget_list != NULL)
+    {
+        g_list_free(option_widget_list);
+        option_widget_list = NULL;
+    }
+
     GtkWidget *dialog = gtk_dialog_new_with_buttons(
-                        event->name,
+                        event->screen_name,
                         GTK_WINDOW(parent_dialog),
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                         GTK_STOCK_OK,
@@ -180,7 +235,7 @@ static void show_event_config_dialog(event_config_t* event)
     gtk_widget_show_all(option_table);
     int result = gtk_dialog_run(GTK_DIALOG(dialog));
     if(result == GTK_RESPONSE_APPLY)
-        g_print("apply\n");
+        dehydrate_config_dialog();
     else if(result == GTK_RESPONSE_CANCEL)
         g_print("cancel\n");
     gtk_widget_destroy(GTK_WIDGET(dialog));
