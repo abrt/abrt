@@ -61,9 +61,8 @@ void load_event_config_data(void)
         char *ext = strrchr(dent->d_name, '.');
         if (!ext)
             continue;
-        ext++;
-        bool conf = strcmp(ext, "conf") == 0;
-        bool xml = strcmp(ext, "xml") == 0;
+        bool conf = strcmp(ext + 1, "conf") == 0;
+        bool xml = strcmp(ext + 1, "xml") == 0;
         if (!conf && !xml)
             continue;
 
@@ -72,14 +71,41 @@ void load_event_config_data(void)
         char *fullname = concat_path_file(EVENTS_DIR, dent->d_name);
         if (xml)
             load_event_description_from_file(event_config, fullname);
+        if (conf)
+        {
+            map_string_h *keys_and_values = new_map_string();
 
-//        if (conf)
-//            load_event_values_from_file(event_config, fullname);
+            load_conf_file(fullname, keys_and_values, /*skipKeysWithoutValue:*/ false);
 
+            /* Insert or replace every key/value from keys_and_values to event_config->option */
+            GHashTableIter iter;
+            char *name;
+            char *value;
+            g_hash_table_iter_init(&iter, keys_and_values);
+            while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
+            {
+                event_option_t *opt;
+                GList *elem = g_list_find(event_config->options, name);
+                if (elem)
+                {
+                    opt = elem->data;
+                    free(opt->value);
+                }
+                else
+                {
+                    opt = new_event_option();
+                    opt->name = xstrdup(name);
+                }
+                opt->value = xstrdup(value);
+                if (!elem)
+                    event_config->options = g_list_append(event_config->options, opt);
+            }
+
+            free_map_string(keys_and_values);
+        }
         free(fullname);
 
-        //we did ext++ so we need ext-- to point to '.'
-        *(--ext) = '\0';
+        *ext = '\0';
         g_hash_table_replace(g_event_config_list, xstrdup(dent->d_name), event_config);
     }
 }
