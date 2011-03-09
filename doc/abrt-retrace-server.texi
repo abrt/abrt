@@ -113,8 +113,8 @@ connections are enabled.
 A client might create a new task by sending a HTTP request to the
 @indicateurl{https://server/create} URL, and providing an archive as the
 request content. The archive must contain crash data files. The crash
-data files are a subset of the local
-@file{/var/spool/abrt/ccpp-time-pid/} directory contents, so the client
+data files are a subset of some local
+@file{/var/spool/abrt/ccpp-time-pid} directory contents, so the client
 must only pack and upload them.
 
 The server must support uncompressed tar archives, and tar archives
@@ -132,35 +132,35 @@ the data.
 
 The HTTP request for a new task must use the POST method. It must
 contain a proper @var{Content-Length} and @var{Content-Type} fields. If
-the method is not POST, the server must return the "405 Method Not
-Allowed" HTTP error code. If the @var{Content-Length} field is missing,
-the server must return the "411 Length Required" HTTP error code. If an
-@var{Content-Type} other than @samp{application/x-tar},
+the method is not POST, the server must return the @code{405 Method Not
+Allowed} HTTP error code. If the @var{Content-Length} field is missing,
+the server must return the @code{411 Length Required} HTTP error
+code. If an @var{Content-Type} other than @samp{application/x-tar},
 @samp{application/x-gzip}, @samp{application/x-xz} is used, the server
-must return the "415 unsupported Media Type" HTTP error code. If the
-@var{Content-Length} value is greater than a limit set in the server
+must return the @code{415 unsupported Media Type} HTTP error code. If
+the @var{Content-Length} value is greater than a limit set in the server
 configuration file (50 MB by default), or the real HTTP request size
 gets larger than the limit + 10 KB for headers, then the server must
-return the "413 Request Entity Too Large" HTTP error code, and provide
-an explanation, including the limit, in the response body. The limit
-must be changeable from the server configuration file.
+return the @code{413 Request Entity Too Large} HTTP error code, and
+provide an explanation, including the limit, in the response body. The
+limit must be changeable from the server configuration file.
 
 If there is less than 20 GB of free disk space in the
-@file{/var/spool/abrt-retrace} directory, the server must return
-the "507 Insufficient Storage" HTTP error code. The server must return
+@file{/var/spool/abrt-retrace} directory, the server must return the
+@code{507 Insufficient Storage} HTTP error code. The server must return
 the same HTTP error code if decompressing the received archive would
 cause the free disk space to become less than 20 GB. The 20 GB limit
 must be changeable from the server configuration file.
 
-If the data from the received archive would take more than 500
-MB of disk space when uncompressed, the server must return the "413
-Request Entity Too Large" HTTP error code, and provide an explanation,
+If the data from the received archive would take more than 500 MB of
+disk space when uncompressed, the server must return the @code{413
+Request Entity Too Large} HTTP error code, and provide an explanation,
 including the limit, in the response body. The size limit must be
-changeable from the server configuration file. It can be set pretty
-high because coredumps, that take most disk space, are stored on the
-server only temporarily until the backtrace is generated. When the
-backtrace is generated the coredump is deleted by the
-@command{abrt-retrace-worker}, so most disk space is released.
+changeable from the server configuration file. It can be set pretty high
+because coredumps, that take most disk space, are stored on the server
+only temporarily until the backtrace is generated. When the backtrace is
+generated the coredump is deleted by the @command{abrt-retrace-worker},
+so most disk space is released.
 
 The uncompressed data size for xz archives can be obtained by calling
 @code{`xz --list file.tar.xz`}. The @option{--list} option has been
@@ -192,16 +192,16 @@ The following files from the local crash directory are required to be
 present in the archive: @file{coredump}, @file{architecture},
 @file{release}, @file{packages} (this one does not exist yet). If one or
 more files are not present in the archive, or some other file is present
-in the archive, the server must return the "403 Forbidden" HTTP error
-code. If the size of any file except the coredump exceeds 100 KB, the
-server must return the "413 Request Entity Too Large" HTTP error code,
-and provide an explanation, including the limit, in the response
-body. The 100 KB limit must be changeable from the server configuration
-file.
+in the archive, the server must return the @code{403 Forbidden} HTTP
+error code. If the size of any file except the coredump exceeds 100 KB,
+the server must return the @code{413 Request Entity Too Large} HTTP
+error code, and provide an explanation, including the limit, in the
+response body. The 100 KB limit must be changeable from the server
+configuration file.
 
-If the file check succeeds, the server HTTP response must have the "201
-Created" HTTP code. The response must include the following HTTP header
-fields:
+If the file check succeeds, the server HTTP response must have the
+@code{201 Created} HTTP code. The response must include the following
+HTTP header fields:
 @itemize
 @item
 @var{X-Task-Id} containing a new server-unique numerical
@@ -289,14 +289,14 @@ the @indicateurl{https://someserver/@var{id}} URL, where @var{id} is the
 numerical task id returned in the @var{X-Task-Id} field by
 @indicateurl{https://someserver/create}. If the @var{id} is not in the
 valid format, or the task @var{id} does not exist, the server must
-return the "404 Not Found" HTTP error code.
+return the @code{404 Not Found} HTTP error code.
 
 The client request must contain the @var{X-Task-Password} field, and its
 content must match the password stored in the
 @file{/var/spool/abrt-retrace/@var{id}/password} file. If the password is
-not valid, the server must return the "403 Forbidden" HTTP error code.
+not valid, the server must return the @code{403 Forbidden} HTTP error code.
 
-If the checks pass, the server returns the "200 OK" HTTP code, and
+If the checks pass, the server returns the @code{200 OK} HTTP code, and
 includes a field @var{X-Task-Status} containing one of the following
 values: @samp{FINISHED_SUCCESS}, @samp{FINISHED_FAILURE},
 @samp{PENDING}.
@@ -325,16 +325,16 @@ A client might request a backtrace by sending a HTTP GET request to the
 is the numerical task id returned in the @var{X-Task-Id} field by
 @indicateurl{https://someserver/create}. If the @var{id} is not in the
 valid format, or the task @var{id} does not exist, the server must
-return the "404 Not Found" HTTP error code.
+return the @code{404 Not Found} HTTP error code.
 
 The client request must contain the @var{X-Task-Password} field, and its
 content must match the password stored in the
 @file{/var/spool/abrt-retrace/@var{id}/password} file. If the password
-is not valid, the server must return the "403 Forbidden" HTTP error
+is not valid, the server must return the @code{403 Forbidden} HTTP error
 code.
 
 If the file @file{/var/spool/abrt-retrace/@var{id}/backtrace} does not
-exist, the server must return the "404 Not Found" HTTP error code.
+exist, the server must return the @code{404 Not Found} HTTP error code.
 Otherwise it returns the file contents, and the @var{Content-Type} field
 must contain @samp{text/plain}.
 
@@ -346,15 +346,15 @@ A client might request a task log by sending a HTTP GET request to the
 numerical task id returned in the @var{X-Task-Id} field by
 @indicateurl{https://someserver/create}. If the @var{id} is not in the
 valid format, or the task @var{id} does not exist, the server must
-return the "404 Not Found" HTTP error code.
+return the @code{404 Not Found} HTTP error code.
 
 The client request must contain the @var{X-Task-Password} field, and its
 content must match the password stored in the
 @file{/var/spool/abrt-retrace/@var{id}/password} file. If the password is
-not valid, the server must return the "403 Forbidden" HTTP error code.
+not valid, the server must return the @code{403 Forbidden} HTTP error code.
 
 If the file @file{/var/spool/abrt-retrace/@var{id}/retrace-log} does not
-exist, the server must return the "404 Not Found" HTTP error code.
+exist, the server must return the @code{404 Not Found} HTTP error code.
 Otherwise it returns the file contents, and the "Content-Type" must
 contain "text/plain".
 
@@ -402,10 +402,10 @@ database:
 @node Limiting traffic
 @section Limiting traffic
 
-The maximum number of simultaneously running tasks must be limited
-to 20 by the server. The limit must be changeable from the server
+The maximum number of simultaneously running tasks must be limited to 20
+by the server. The limit must be changeable from the server
 configuration file. If a new request comes when the server is fully
-occupied, the server must return the "503 Service Unavailable" HTTP
+occupied, the server must return the @code{503 Service Unavailable} HTTP
 error code.
 
 The archive extraction, chroot preparation, and gdb analysis is
