@@ -193,7 +193,7 @@ static PyMethodDef p_dump_dir_methods[] = {
 
 static PyGetSetDef p_dump_dir_getset[] = {
     /* attr_name, getter_func, setter_func, doc_string, void_param */
-    { "name", get_name, NULL /*set_name*/ },
+    { (char*) "name", get_name, NULL /*set_name*/ },
     { NULL }
 };
 

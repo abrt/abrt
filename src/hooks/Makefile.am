@@ -11,7 +11,7 @@ abrt_hook_ccpp_CPPFLAGS = \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
-    -Wall \
+    -Wall -Wwrite-strings \
     -D_GNU_SOURCE
 abrt_hook_ccpp_LDADD = \
     ../lib/libreport.la

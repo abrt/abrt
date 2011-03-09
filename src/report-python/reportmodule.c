@@ -61,7 +61,7 @@ init_pyreport(void)
     }
 
     /* init the exception object */
-    ReportError = PyErr_NewException("_pyreport.error", NULL, NULL);
+    ReportError = PyErr_NewException((char*) "_pyreport.error", NULL, NULL);
     Py_INCREF(ReportError);
     PyModule_AddObject(m, "error", ReportError);
 

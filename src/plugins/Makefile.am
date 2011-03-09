@@ -82,7 +82,7 @@ abrt_dump_oops_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Werror
+    -Wall -Wwrite-strings -Werror
 abrt_dump_oops_LDADD = \
     ../lib/libreport.la
 
@@ -101,7 +101,7 @@ abrt_action_analyze_c_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Werror
+    -Wall -Wwrite-strings -Werror
 abrt_action_analyze_c_LDADD = \
     ../lib/libreport.la
 
@@ -120,7 +120,7 @@ abrt_action_analyze_python_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Werror
+    -Wall -Wwrite-strings -Werror
 abrt_action_analyze_python_LDADD = \
     ../lib/libreport.la
 
@@ -139,7 +139,7 @@ abrt_action_analyze_oops_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Werror
+    -Wall -Wwrite-strings -Werror
 abrt_action_analyze_oops_LDADD = \
     ../lib/libreport.la
 
@@ -158,7 +158,7 @@ abrt_action_generate_backtrace_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Werror
+    -Wall -Wwrite-strings -Werror
 abrt_action_generate_backtrace_LDADD = \
     ../lib/libreport.la \
     ../btparser/libbtparser.la
@@ -178,7 +178,7 @@ abrt_action_bugzilla_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Werror
+    -Wall -Wwrite-strings -Werror
 abrt_action_bugzilla_LDADD = \
     $(GLIB_LIBS) \
     ../lib/libabrt_web.la \
@@ -201,7 +201,7 @@ abrt_action_rhtsupport_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Werror
+    -Wall -Wwrite-strings -Werror
 abrt_action_rhtsupport_LDFLAGS = -ltar
 abrt_action_rhtsupport_LDADD = \
     $(GLIB_LIBS) \
@@ -225,7 +225,7 @@ abrt_action_upload_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(CURL_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Werror
+    -Wall -Wwrite-strings -Werror
 abrt_action_upload_LDFLAGS = -ltar
 abrt_action_upload_LDADD = \
     $(GLIB_LIBS) \
@@ -247,7 +247,7 @@ abrt_action_kerneloops_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Werror
+    -Wall -Wwrite-strings -Werror
 abrt_action_kerneloops_LDADD = \
     ../lib/libabrt_web.la \
     ../lib/libreport.la
@@ -267,7 +267,7 @@ abrt_action_mailx_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Werror
+    -Wall -Wwrite-strings -Werror
 abrt_action_mailx_LDADD = \
     ../lib/libreport.la
 
@@ -286,7 +286,7 @@ abrt_action_print_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Werror
+    -Wall -Wwrite-strings -Werror
 abrt_action_print_LDADD = \
     ../lib/libreport.la
 
@@ -296,7 +296,7 @@ abrt_action_install_debuginfo_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -D_GNU_SOURCE \
-    -Wall
+    -Wall -Wwrite-strings
 abrt_action_install_debuginfo_LDADD =
 
 abrt_retrace_client_SOURCES = \
@@ -308,7 +308,7 @@ abrt_retrace_client_SOURCES = \
      $(NSS_CFLAGS) \
      $(GLIB_CFLAGS) \
      -D_GNU_SOURCE \
-     -Wall -Werror
+     -Wall -Wwrite-strings -Werror
  abrt_retrace_client_LDADD = \
      ../lib/libreport.la \
      ../btparser/libbtparser.la \

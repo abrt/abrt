@@ -47,7 +47,7 @@ libreport_la_SOURCES = \
     event_xml_parser.c \
     event_config.c
 libreport_la_CPPFLAGS = \
-    -Wall -Werror \
+    -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -76,7 +76,7 @@ libabrt_dbus_la_CPPFLAGS = \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
     $(GLIB_CFLAGS) \
     $(DBUS_CFLAGS) \
-    -Wall -Werror \
+    -Wall -Wwrite-strings -Werror \
     -D_GNU_SOURCE
 libabrt_dbus_la_LDFLAGS = \
     -version-info 0:1:0
@@ -88,7 +88,7 @@ libabrt_web_la_SOURCES = \
     abrt_curl.h abrt_curl.c \
     abrt_xmlrpc.h abrt_xmlrpc.cpp
 libabrt_web_la_CPPFLAGS = \
-    -Wall -Werror \
+    -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DVAR_RUN=\"$(VAR_RUN)\" \

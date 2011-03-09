@@ -174,7 +174,7 @@ static char* get_cwd(pid_t pid)
  */
 /* Must match CORE_PATTERN order in daemon! */
 static const char percent_specifiers[] = "%scpugthe";
-static char *core_basename = "core";
+static char *core_basename = (char*) "core";
 
 static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid, char **percent_values)
 {

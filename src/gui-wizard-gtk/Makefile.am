@@ -24,7 +24,7 @@ bug_reporting_wizard_CFLAGS = \
     $(GTK_CFLAGS) \
     $(DBUS_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Werror
+    -Wall -Wwrite-strings -Werror
 
 # Required for gtk_builder_connect_signals() to work correctly:
 # -lgmodule-2.0

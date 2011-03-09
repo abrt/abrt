@@ -347,7 +347,7 @@ static void tv_details_edit_cb(GtkTreeView       *tree_view,
         return;
 
     gchar *arg[3];
-    arg[0] = "xdg-open";
+    arg[0] = (char *) "xdg-open";
     arg[1] = concat_path_file(g_dump_dir_name, column_name);
     arg[2] = NULL;
     g_free(column_name);
