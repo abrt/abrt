@@ -382,6 +382,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         crash_data_t *crash_data = NULL;
         fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
         mw_result_t res = LoadDebugDump(fullname, &crash_data);
+        const char *first = get_crash_item_content_or_NULL(crash_data, CD_DUMPDIR);
         switch (res)
         {
             case MW_OK:
@@ -392,7 +393,6 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             {
                 if (res != MW_OK)
                 {
-                    const char *first = get_crash_item_content_or_NULL(crash_data, CD_DUMPDIR);
                     log("Deleting crash %s (dup of %s), sending dbus signal",
                             strrchr(fullname, '/') + 1,
                             strrchr(first, '/') + 1);
@@ -408,10 +408,12 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                                 get_crash_item_content_or_NULL(crash_data, FILENAME_UID),
                                 get_crash_item_content_or_NULL(crash_data, FILENAME_UUID)
                 );
+                /* when dupe occurs we need to return first occure not the one which
+                 * is deleted */
                 send_dbus_sig_Crash(get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE),
-                                crash_id, //TODO: stop passing this param, it is unused
-                                fullname,
-                                uid_str
+                                    crash_id, //TODO: stop passing this param, it is unused
+                                    (first)? first: fullname,
+                                    uid_str
                 );
                 free(crash_id);
                 break;

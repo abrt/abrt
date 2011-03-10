@@ -112,11 +112,7 @@ Development libraries and headers for %{name}.
 Summary: %{name}'s gui
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
-Requires: dbus-python, pygtk2, pygtk2-libglade,
-Requires: gnome-python2-gnomekeyring
 Requires: libreport-gtk
-# only if gtk2 version < 2.17:
-#Requires: python-sexy
 # we used to have abrt-applet, now abrt-gui includes it:
 Provides: abrt-applet = %{version}-%{release}
 Obsoletes: abrt-applet < 0.0.5
@@ -459,11 +455,8 @@ fi
 %files gui
 %defattr(-,root,root,-)
 %{_bindir}/abrt-gui
-%{_bindir}/abrt-gtk
 %dir %{_datadir}/%{name}
 # all glade, gtkbuilder and py files for gui
-%{_datadir}/%{name}/*.py*
-%{_datadir}/%{name}/*.glade
 %{_datadir}/applications/fedora-%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/*
 %{_datadir}/icons/hicolor/*/status/*

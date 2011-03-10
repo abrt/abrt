@@ -1,10 +1,10 @@
-bin_PROGRAMS = abrt-gtk
+bin_PROGRAMS = abrt-gui
 
-abrt_gtk_SOURCES = \
+abrt_gui_SOURCES = \
     abrt-gtk.h abrt-gtk.c \
     event_config_dialog.h event_config_dialog.c \
     main.c
-abrt_gtk_CFLAGS = \
+abrt_gui_CFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
@@ -22,7 +22,7 @@ abrt_gtk_CFLAGS = \
 #    -I/usr/lib/glib-2.0/include
 #    $(LIBNOTIFY_CFLAGS)
 #    $(DBUS_GLIB_CFLAGS)
-abrt_gtk_LDADD = \
+abrt_gui_LDADD = \
     ../lib/libreport.la \
     ../lib/libabrt_dbus.la \
     -lglib-2.0 \
@@ -44,3 +44,8 @@ abrt_gtk_LDADD = \
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 @INTLTOOL_DESKTOP_RULE@
+desktopdir = $(datadir)/applications
+desktop_in_files = abrt.desktop.in
+desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
+
+EXTRA_DIST = $(desktop_in_files)
