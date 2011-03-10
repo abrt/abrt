@@ -6,7 +6,7 @@
 #define DESCRIPTION_ELEMENT "description"
 #define ALLOW_EMPTY_ELEMENT "allow-empty"
 #define OPTION_ELEMENT      "option"
-#define ACTION_ELEMENT      "action"
+//#define ACTION_ELEMENT      "action"
 #define NAME_ELEMENT        "name"
 
 static int in_option = 0; //FIXME
@@ -110,6 +110,7 @@ static void text(GMarkupParseContext *context,
             option->label = _text;
             return;
         }
+        /*
         if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
         {
             VERB2 log("tooltip:'%s'", _text);
@@ -117,10 +118,12 @@ static void text(GMarkupParseContext *context,
             option->description = _text;
             return;
         }
+        */
     }
     else
     {
         /* we're not in option, so the description is for the event */
+        /*
         if (strcmp(inner_element, ACTION_ELEMENT) == 0)
         {
             VERB2 log("action description:'%s'", _text);
@@ -128,11 +131,12 @@ static void text(GMarkupParseContext *context,
             ui->action = _text;
             return;
         }
+        */
         if (strcmp(inner_element, NAME_ELEMENT) == 0)
         {
             VERB2 log("event name:'%s'", _text);
-            free(ui->name);
-            ui->name = _text;
+            free(ui->screen_name);
+            ui->screen_name = _text;
             return;
         }
         if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)

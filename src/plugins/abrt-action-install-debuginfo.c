@@ -1,7 +1,8 @@
 #include <unistd.h>
 #include <string.h>
 
-#define EXECUTABLE "abrt-action-install-debuginfo.py"
+// TODO: honor configure --prefix here:
+#define EXECUTABLE "/usr/bin/abrt-action-install-debuginfo.py"
 
 static void error_msg_and_die(const char *msg, const char *arg)
 {
@@ -38,6 +39,10 @@ int main(int argc, char **argv)
             error_msg_and_die("bad option", arg);
     }
 
-    execvp(EXECUTABLE, argv);
+    /* We use full path, and execv instead of execvp in order to
+     * disallow user to execute his own abrt-action-install-debuginfo.py
+     * in his dir by setting up corresponding malicious $PATH.
+     */
+    execv(EXECUTABLE, argv);
     error_msg_and_die("Can't execute", EXECUTABLE);
 }

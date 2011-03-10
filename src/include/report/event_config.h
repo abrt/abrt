@@ -47,9 +47,9 @@ typedef struct
     char *value;
     char *label;
     option_type_t type;
-    char *description; //can be used as tooltip in gtk app
-    char *allowed_value;
-    int required;
+    //char *description; //can be used as tooltip in gtk app
+    //char *allowed_value;
+    //int required;
 } event_option_t;
 
 event_option_t *new_event_option(void);
@@ -58,10 +58,10 @@ void free_event_option(event_option_t *p);
 //structure to hold the option data
 typedef struct
 {
-    char *name;  //name of the event "Bugzilla" "RedHat Support Uploader"
-    char *title; //window title - not used right now, maybe the "name" is enough?
-    char *action;//action description to show in gui like: Upload report to the Red Hat bugzilla"
-    char *description;
+    char *screen_name;  //name of the event "Bugzilla" "RedHat Support Uploader"
+    //char *title; //window title - not used right now, maybe the "name" is enough?
+    //char *action;//action description to show in gui like: Upload report to the Red Hat bugzilla"
+    char *description; // "Report to ...."/"Save to file"
     GList *options;
 } event_config_t;
 
@@ -75,7 +75,7 @@ void load_event_description_from_file(event_config_t *event_config, const char* 
 void load_event_config_data(void);
 /* Frees all loaded data */
 void free_event_config_data(void);
-event_config_t *get_event_config(const char *name);
+event_config_t *get_event_config(const char *event_name);
 
 extern GHashTable *g_event_config_list;   // for iterating through entire list of all loaded configs
 

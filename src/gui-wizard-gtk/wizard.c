@@ -525,7 +525,7 @@ static GList *export_event_config(const char *event_name)
         g_hash_table_iter_init(&iter, g_event_config_list);
         while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&cfg))
         {
-            if (strcmp(cfg->name, event_name) != 0)
+            if (strcmp(name, event_name) != 0)
                 continue;
             for (GList *lopt = cfg->options; lopt; lopt = lopt->next)
             {

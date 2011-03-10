@@ -19,8 +19,8 @@ void free_event_option(event_option_t *p)
     free(p->name);
     free(p->value);
     free(p->label);
-    free(p->description);
-    free(p->allowed_value);
+    //free(p->description);
+    //free(p->allowed_value);
     free(p);
 }
 
@@ -28,9 +28,9 @@ void free_event_config(event_config_t *p)
 {
     if (!p)
         return;
-    free(p->name);
-    free(p->title);
-    free(p->action);
+    free(p->screen_name);
+    //free(p->title);
+    //free(p->action);
     free(p->description);
     for (GList *opt = p->options; opt; opt = opt->next)
         free_event_option(opt->data);
@@ -38,6 +38,11 @@ void free_event_config(event_config_t *p)
     free(p);
 }
 
+
+static int mystrcmp(gconstpointer a, gconstpointer b)
+{
+    return strcmp( ((event_option_t *)a)->name, (char *)b);
+}
 
 // (Re)loads data from /etc/abrt/events/*.{conf,xml}
 void load_event_config_data(void)
@@ -91,7 +96,7 @@ void load_event_config_data(void)
             while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
             {
                 event_option_t *opt;
-                GList *elem = g_list_find(event_config->options, name);
+                GList *elem = g_list_find_custom(event_config->options, name, &mystrcmp);
                 if (elem)
                 {
                     opt = elem->data;
