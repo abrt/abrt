@@ -530,6 +530,8 @@ static GList *export_event_config(const char *event_name)
             for (GList *lopt = cfg->options; lopt; lopt = lopt->next)
             {
                 event_option_t *opt = lopt->data;
+                if (!opt->value)
+                    continue;
                 char *var_val = xasprintf("%s=%s", opt->name, opt->value);
 VERB3 log("Exporting '%s'", var_val);
                 env_list = g_list_prepend(env_list, var_val);
