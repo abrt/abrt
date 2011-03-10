@@ -496,6 +496,7 @@ fi
 %files plugin-logger
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Logger.conf
+%{_sysconfdir}/%{name}/events/report_Logger.conf
 %{_libdir}/%{name}/Logger.glade
 %{_mandir}/man7/abrt-Logger.7.gz
 %{_bindir}/abrt-action-print
@@ -511,6 +512,8 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Bugzilla.conf
 %{_sysconfdir}/%{name}/events/report_Bugzilla.xml
+%config(noreplace) %{_sysconfdir}/%{name}/events/report_Bugzilla.conf
+# FIXME: remove with the old gui
 %{_libdir}/%{name}/Bugzilla.glade
 %{_mandir}/man7/abrt-Bugzilla.7.gz
 %{_bindir}/abrt-action-bugzilla

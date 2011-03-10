@@ -5,6 +5,9 @@
 #include "abrt-gtk.h"
 #include "event_config_dialog.h"
 
+static const char * const help_uri ="http://docs.fedoraproject.org/en-US/"
+    "Fedora/14/html/Deployment_Guide/ch-abrt.html";
+
 static GtkListStore *s_dumps_list_store;
 static GtkWidget *s_treeview;
 static GtkWidget *g_main_window;
@@ -148,9 +151,64 @@ static void on_btn_delete_cb(GtkButton *button, gpointer unused)
 
 static void on_btn_online_help_cb(GtkButton *button, gpointer unused)
 {
-    gtk_show_uri(NULL,"http://docs.fedoraproject.org/en-US/Fedor"
-                 "a/14/html/Deployment_Guide/ch-abrt.html",
-                 GDK_CURRENT_TIME, NULL);
+    gtk_show_uri(NULL, help_uri, GDK_CURRENT_TIME, NULL);
+}
+
+static void on_menu_help_cb(GtkMenuItem *menuitem, gpointer unused)
+{
+    gtk_show_uri(NULL, help_uri, GDK_CURRENT_TIME, NULL);
+}
+
+static void on_menu_about_cb(GtkMenuItem *menuitem, gpointer unused)
+{
+    const char *copyright_str = "Copyright © 2009, 2010, 2011 Red Hat, Inc";
+
+    const char *license_str = "This program is free software; you can redistribut"
+        "e it and/or modify it under the terms of the GNU General Public License "
+        "as published by the Free Software Foundation; either version 2 of the Li"
+        "cense, or (at your option) any later version.\n\nThis program is distrib"
+        "uted in the hope that it will be useful, but WITHOUT ANY WARRANTY; witho"
+        "ut even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICU"
+        "LAR PURPOSE.  See the GNU General Public License for more details.\n\nYo"
+        "u should have received a copy of the GNU General Public License along wi"
+        "th this program.  If not, see <http://www.gnu.org/licenses/>.";
+
+    const char *website_url = "https://fedorahosted.org/abrt/";
+
+    const char *authors[] = {
+        "Anton Arapov <aarapov@redhat.com>",
+        "Karel Klic <kklic@redhat.com>",
+        "Jiri Moskovcak <jmoskovc@redhat.com>",
+        "Nikola Pajkovsky <npajkovs@redhat.com>",
+        "Denys Vlasenko <dvlasenk@redhat.com>",
+        "Michal Toman <mtoman@redhat.com>",
+        "Zdenek Prikryl",
+        NULL
+    };
+
+    const char *artists[] = {
+        "Patrick Connelly <pcon@fedoraproject.org>",
+        "Máirín Duffy <duffy@fedoraproject.org>",
+        "Lapo Calamandrei",
+        NULL
+    };
+
+    GtkWidget *about_d = gtk_about_dialog_new();
+
+    gtk_window_set_default_icon_name("abrt");
+    gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(about_d), VERSION);
+    gtk_about_dialog_set_logo_icon_name(GTK_ABOUT_DIALOG(about_d), "abrt");
+    gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(about_d), "ABRT");
+    gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(about_d), copyright_str);
+    gtk_about_dialog_set_license(GTK_ABOUT_DIALOG(about_d), license_str);
+    gtk_about_dialog_set_wrap_license(GTK_ABOUT_DIALOG(about_d),true);
+    gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(about_d), website_url);
+    gtk_about_dialog_set_authors(GTK_ABOUT_DIALOG(about_d), authors);
+    gtk_about_dialog_set_artists(GTK_ABOUT_DIALOG(about_d), artists);
+    gtk_about_dialog_set_translator_credits(GTK_ABOUT_DIALOG(about_d), _("translator-credits"));
+
+    gtk_dialog_run(GTK_DIALOG(about_d));
+    gtk_widget_hide(GTK_WIDGET(about_d));
 }
 
 void show_events_list_dialog_cb(GtkMenuItem *menuitem, gpointer user_data)
@@ -236,13 +294,14 @@ GtkWidget *create_menu(void)
 
     /* help submenu */
     GtkWidget *help_submenu = gtk_menu_new();
-    GtkWidget *log_item = gtk_menu_item_new_with_mnemonic(_("View _log"));
     GtkWidget *online_help_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_HELP, NULL);
     GtkWidget *about_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_ABOUT, NULL);
-    gtk_menu_shell_append(GTK_MENU_SHELL(help_submenu), log_item);
     gtk_menu_shell_append(GTK_MENU_SHELL(help_submenu), online_help_item);
     gtk_menu_shell_append(GTK_MENU_SHELL(help_submenu), about_item);
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(help_item), help_submenu);
+
+    g_signal_connect(online_help_item, "activate", G_CALLBACK(on_menu_help_cb), NULL);
+    g_signal_connect(about_item, "activate", G_CALLBACK(on_menu_about_cb), NULL);
 
     return menu;
 }
@@ -285,7 +344,7 @@ GtkWidget *create_main_window(void)
 
     /* buttons are homogenous so set size only for one button and it will
      * work for the rest buttons in same gtk_hbox_new() */
-    GtkWidget *btn_report = gtk_button_new_with_label(_("Report"));
+    GtkWidget *btn_report = gtk_button_new_with_mnemonic(_("_Report"));
     gtk_widget_set_size_request(btn_report, 200, 30);
 
     GtkWidget *btn_delete = gtk_button_new_from_stock(GTK_STOCK_DELETE);
@@ -298,7 +357,7 @@ GtkWidget *create_main_window(void)
     gtk_container_add(GTK_CONTAINER(halign), hbox_report_delete);
 
     GtkWidget *hbox_help_close = gtk_hbutton_box_new();
-    GtkWidget *btn_online_help = gtk_button_new_with_label(_("Online Help"));
+    GtkWidget *btn_online_help = gtk_button_new_with_mnemonic(_("_Online Help"));
     GtkWidget *btn_close = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
     gtk_box_pack_end(GTK_BOX(hbox_help_close), btn_online_help, false, false, 0);
     gtk_box_pack_end(GTK_BOX(hbox_help_close), btn_close, false, false, 0);

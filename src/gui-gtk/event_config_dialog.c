@@ -49,6 +49,12 @@ static void add_option_widget(GtkWidget *widget, event_option_t *option)
     option_widget_list = g_list_prepend(option_widget_list, ow);
 }
 
+static void on_show_pass_cb(GtkToggleButton *tb, gpointer user_data)
+{
+    GtkEntry *entry = (GtkEntry *)user_data;
+    gtk_entry_set_visibility(entry, gtk_toggle_button_get_active(tb));
+}
+
 static void add_option_to_dialog(event_option_t *option)
 {
     GtkWidget *label;
@@ -107,9 +113,16 @@ static void add_option_to_dialog(event_option_t *option)
                              last_row, last_row+1,
                              GTK_FILL, GTK_FILL,
                              0,0);
-
             gtk_entry_set_visibility(GTK_ENTRY(option_input), 0);
             add_option_widget(option_input, option);
+            last_row++;
+            GtkWidget *pass_cb = gtk_check_button_new_with_label(_("Show password"));
+            gtk_table_attach(GTK_TABLE(option_table), pass_cb,
+                             1, 2,
+                             last_row, last_row+1,
+                             GTK_FILL, GTK_FILL,
+                             0,0);
+            g_signal_connect(pass_cb, "toggled", G_CALLBACK(on_show_pass_cb), option_input);
             break;
         default:
             //option_input = gtk_label_new_justify_left("WTF?");
@@ -218,8 +231,14 @@ static void show_event_config_dialog(event_config_t* event)
         option_widget_list = NULL;
     }
 
+    char *title;
+    if(event->screen_name != NULL)
+        title = event->screen_name;
+    else
+        title = _("Event Configuration");
+
     GtkWidget *dialog = gtk_dialog_new_with_buttons(
-                        event->screen_name,
+                        title,
                         GTK_WINDOW(parent_dialog),
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                         GTK_STOCK_OK,
@@ -237,7 +256,7 @@ static void show_event_config_dialog(event_config_t* event)
     g_list_foreach(event->options, &add_option, NULL);
 
     GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-    gtk_box_pack_start(GTK_BOX(content), option_table, 0, 0, 10);
+    gtk_box_pack_start(GTK_BOX(content), option_table, false, false, 20);
     gtk_widget_show_all(option_table);
     int result = gtk_dialog_run(GTK_DIALOG(dialog));
     if(result == GTK_RESPONSE_APPLY)
@@ -261,7 +280,7 @@ void show_events_list_dialog(GtkWindow *parent)
             return;
         }
         parent_dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-        gtk_window_set_title(GTK_WINDOW(parent_dialog), _("Event Config"));
+        gtk_window_set_title(GTK_WINDOW(parent_dialog), _("Events"));
         gtk_window_set_default_size(GTK_WINDOW(parent_dialog), 450, 400);
         if(parent != NULL)
         {
@@ -312,7 +331,7 @@ void show_events_list_dialog(GtkWindow *parent)
 
         gtk_container_add(GTK_CONTAINER(events_scroll), events_tv);
 
-        GtkWidget *configure_event_btn = gtk_button_new_with_label(_("Configure"));
+        GtkWidget *configure_event_btn = gtk_button_new_with_mnemonic(_("Configure E_vent"));
         g_signal_connect(configure_event_btn, "clicked", G_CALLBACK(on_configure_event_cb), events_tv);
 
         GtkWidget *close_btn = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
