@@ -236,10 +236,8 @@ GtkWidget *create_menu(void)
 
     /* help submenu */
     GtkWidget *help_submenu = gtk_menu_new();
-    GtkWidget *log_item = gtk_menu_item_new_with_mnemonic(_("View _log"));
     GtkWidget *online_help_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_HELP, NULL);
     GtkWidget *about_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_ABOUT, NULL);
-    gtk_menu_shell_append(GTK_MENU_SHELL(help_submenu), log_item);
     gtk_menu_shell_append(GTK_MENU_SHELL(help_submenu), online_help_item);
     gtk_menu_shell_append(GTK_MENU_SHELL(help_submenu), about_item);
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(help_item), help_submenu);
