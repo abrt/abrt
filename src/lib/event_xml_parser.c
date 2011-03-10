@@ -9,7 +9,11 @@
 //#define ACTION_ELEMENT      "action"
 #define NAME_ELEMENT        "name"
 
-static int in_option = 0; //FIXME
+struct my_parse_data
+{
+    event_config_t *event_config;
+    event_option_t *cur_option;
+};
 
 static const char *const option_types[] =
 {
@@ -19,6 +23,52 @@ static const char *const option_types[] =
     "number",
     NULL
 };
+
+static int cmp_event_option_name_with_string(gconstpointer a, gconstpointer b)
+{
+    return strcmp(((event_option_t *)a)->name, (char *)b);
+}
+
+static void consume_cur_option(struct my_parse_data *parse_data)
+{
+    event_option_t *opt = parse_data->cur_option;
+    if (!opt)
+        return;
+
+    parse_data->cur_option = NULL;
+
+    if (!opt->name)
+    {
+//TODO: "option w/o name" error msg?
+        free_event_option(opt);
+        return;
+    }
+
+    event_config_t *event_config = parse_data->event_config;
+    GList *elem = g_list_find_custom(event_config->options, opt->name, &cmp_event_option_name_with_string);
+    if (elem)
+    {
+        /* we already have option with such name */
+        event_option_t *old_opt = elem->data;
+        if (old_opt->value)
+        {
+            /* ...and it already has a value, which
+             * overrides xml-defined default one:
+             */
+            free(opt->value);
+            opt->value = old_opt->value;
+            old_opt->value = NULL;
+        }
+        //log("xml: replacing '%s' value:'%s'->'%s'", opt->name, old_opt->value, opt->value);
+        free_event_option(old_opt);
+        elem->data = opt;
+    }
+    else
+    {
+        //log("xml: new value %s='%s'", opt->name, opt->value);
+        event_config->options = g_list_append(event_config->options, opt);
+    }
+}
 
 // Called for open tags <foo bar="baz">
 static void start_element(GMarkupParseContext *context,
@@ -30,44 +80,38 @@ static void start_element(GMarkupParseContext *context,
 {
     //g_print("start: %s\n", element_name);
 
-    event_config_t *ui = user_data;
+    struct my_parse_data *parse_data = user_data;
 
     if (strcmp(element_name, OPTION_ELEMENT) == 0)
     {
-        if (in_option == 0)
+        if (parse_data->cur_option)
         {
-            in_option = 1;
-            event_option_t *option = new_event_option();
-            //we need to prepend, so ui->options always points to the last created option
-            VERB2 log("adding option");
-            ui->options = g_list_prepend(ui->options, option);
+            error_msg("error, option nested in option");
+            return;
+        }
 
-            int i;
-            for (i = 0; attribute_names[i] != NULL; ++i)
+        event_option_t *opt = parse_data->cur_option = new_event_option();
+
+        int i;
+        for (i = 0; attribute_names[i] != NULL; ++i)
+        {
+            VERB2 log("attr: %s:%s", attribute_names[i], attribute_values[i]);
+            if (strcmp(attribute_names[i], "name") == 0)
             {
-                VERB2 log("attr: %s:%s", attribute_names[i], attribute_values[i]);
-                if (strcmp(attribute_names[i], "name") == 0)
+                free(opt->name);
+                opt->name = xstrdup(attribute_values[i]);
+            }
+            else if (strcmp(attribute_names[i], "type") == 0)
+            {
+                option_type_t type;
+                for (type = OPTION_TYPE_TEXT; type < OPTION_TYPE_INVALID; ++type)
                 {
-                    free(option->name);
-                    option->name = xstrdup(attribute_values[i]);
-                }
-                else if (strcmp(attribute_names[i], "type") == 0)
-                {
-                    option_type_t type;
-                    for (type = OPTION_TYPE_TEXT; type < OPTION_TYPE_INVALID; ++type)
-                    {
-                        if (strcmp(option_types[type], attribute_values[i]) == 0)
-                            option->type = type;
-                    }
+                    if (strcmp(option_types[type], attribute_values[i]) == 0)
+                        opt->type = type;
                 }
             }
         }
-        else
-        {
-            error_msg("error, option nested in option");
-        }
     }
-
 }
 
 // Called for close tags </foo>
@@ -76,16 +120,15 @@ static void end_element(GMarkupParseContext *context,
                           gpointer             user_data,
                           GError             **error)
 {
-    event_config_t *ui = user_data;
+    struct my_parse_data *parse_data = user_data;
+
     if (strcmp(element_name, OPTION_ELEMENT) == 0)
     {
-        in_option = 0;
+        consume_cur_option(parse_data);
     }
     if (strcmp(element_name, EVENT_ELEMENT) == 0)
     {
-        //we need to reverse the list, because we we're prepending
-        ui->options = g_list_reverse(ui->options);
-        in_option = 0;
+        consume_cur_option(parse_data);
     }
 }
 
@@ -97,25 +140,27 @@ static void text(GMarkupParseContext *context,
          gpointer             user_data,
          GError             **error)
 {
-    event_config_t *ui = user_data;
-    const gchar * inner_element = g_markup_parse_context_get_element(context);
-    char *_text = xstrndup(text, text_len);
-    if (in_option == 1)
+    struct my_parse_data *parse_data = user_data;
+    event_config_t *ui = parse_data->event_config;
+
+    const gchar *inner_element = g_markup_parse_context_get_element(context);
+    char *text_copy = xstrndup(text, text_len);
+    event_option_t *opt = parse_data->cur_option;
+    if (opt)
     {
-        event_option_t *option = ui->options->data;
         if (strcmp(inner_element, LABEL_ELEMENT) == 0)
         {
-            VERB2 log("new label:'%s'", _text);
-            free(option->label);
-            option->label = _text;
+            VERB2 log("new label:'%s'", text_copy);
+            free(opt->label);
+            opt->label = text_copy;
             return;
         }
         /*
         if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
         {
-            VERB2 log("tooltip:'%s'", _text);
-            free(option->description);
-            option->description = _text;
+            VERB2 log("tooltip:'%s'", text_copy);
+            free(opt->description);
+            opt->description = text_copy;
             return;
         }
         */
@@ -126,28 +171,28 @@ static void text(GMarkupParseContext *context,
         /*
         if (strcmp(inner_element, ACTION_ELEMENT) == 0)
         {
-            VERB2 log("action description:'%s'", _text);
+            VERB2 log("action description:'%s'", text_copy);
             free(ui->action);
-            ui->action = _text;
+            ui->action = text_copy;
             return;
         }
         */
         if (strcmp(inner_element, NAME_ELEMENT) == 0)
         {
-            VERB2 log("event name:'%s'", _text);
+            VERB2 log("event name:'%s'", text_copy);
             free(ui->screen_name);
-            ui->screen_name = _text;
+            ui->screen_name = text_copy;
             return;
         }
         if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
         {
-            VERB2 log("event description:'%s'", _text);
+            VERB2 log("event description:'%s'", text_copy);
             free(ui->description);
-            ui->description = _text;
+            ui->description = text_copy;
             return;
         }
     }
-    free(_text);
+    free(text_copy);
 }
 
   // Called for strings that should be re-saved verbatim in this same
@@ -181,15 +226,19 @@ static void error(GMarkupParseContext *context,
 
 void load_event_description_from_file(event_config_t *event_config, const char* filename)
 {
+    struct my_parse_data parse_data = { event_config, NULL };
+
     GMarkupParser parser;
+    memset(&parser, 0, sizeof(parser)); /* just in case */
     parser.start_element = &start_element;
     parser.end_element = &end_element;
     parser.text = &text;
     parser.passthrough = &passthrough;
     parser.error = &error;
+
     GMarkupParseContext *context = g_markup_parse_context_new(
                     &parser, G_MARKUP_TREAT_CDATA_AS_TEXT,
-                    event_config, /*GDestroyNotify:*/ NULL);
+                    &parse_data, /*GDestroyNotify:*/ NULL);
 
     FILE* fin = fopen(filename, "r");
     if (fin != NULL)
@@ -204,4 +253,6 @@ void load_event_description_from_file(event_config_t *event_config, const char* 
     }
 
     g_markup_parse_context_free(context);
+
+    consume_cur_option(&parse_data); /* just in case */
 }

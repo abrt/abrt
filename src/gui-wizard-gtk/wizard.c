@@ -978,6 +978,18 @@ static void create_details_treeview()
     gtk_tree_view_append_column(g_tv_details, column);
 
     renderer = gtk_cell_renderer_text_new();
+    /* Allow user to select the text with mouse.
+     * Has undesirable side-effect of allowing user to "edit" the text,
+     * but changes aren't saved (the old text reappears as soon as user
+     * leaves the field). Need to disable editing somehow.
+     * Also, it interferes with "(click here to view/edit)" values.
+     * Need to find a way to _selectively_ enable editing only
+     * on some cells, not all at once.
+     */
+    //g_object_set(G_OBJECT(renderer),
+    //            "editable", TRUE,
+    //            // "editable-set", TRUE,
+    //            NULL);
     column = gtk_tree_view_column_new_with_attributes(_("Value"),
                                                      renderer,
                                                      "text",

@@ -39,9 +39,9 @@ void free_event_config(event_config_t *p)
 }
 
 
-static int mystrcmp(gconstpointer a, gconstpointer b)
+static int cmp_event_option_name_with_string(gconstpointer a, gconstpointer b)
 {
-    return strcmp( ((event_option_t *)a)->name, (char *)b);
+    return strcmp(((event_option_t *)a)->name, (char *)b);
 }
 
 // (Re)loads data from /etc/abrt/events/*.{conf,xml}
@@ -96,14 +96,16 @@ void load_event_config_data(void)
             while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
             {
                 event_option_t *opt;
-                GList *elem = g_list_find_custom(event_config->options, name, &mystrcmp);
+                GList *elem = g_list_find_custom(event_config->options, name, &cmp_event_option_name_with_string);
                 if (elem)
                 {
                     opt = elem->data;
+                    //log("%s: replacing '%s' value:'%s'->'%s'", fullname, name, opt->value, value);
                     free(opt->value);
                 }
                 else
                 {
+                    //log("%s: new value %s='%s'", fullname, name, value);
                     opt = new_event_option();
                     opt->name = xstrdup(name);
                 }
