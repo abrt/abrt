@@ -176,7 +176,14 @@ static void on_configure_event_cb(GtkWidget *button, gpointer user_data)
 static void on_event_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
 {
     event_config_t *ec = get_event_config_from_row(treeview);
-    show_event_config_dialog(ec);
+    if(ec->options != NULL)
+        show_event_config_dialog(ec);
+}
+
+static void on_event_row_changed_cb(GtkTreeView *treeview, gpointer user_data)
+{
+    event_config_t *ec = get_event_config_from_row(treeview);
+    gtk_widget_set_sensitive(GTK_WIDGET(user_data), ec->options != NULL);
 }
 
 static void add_event_to_liststore(gpointer key, gpointer value, gpointer user_data)
@@ -332,7 +339,9 @@ void show_events_list_dialog(GtkWindow *parent)
         gtk_container_add(GTK_CONTAINER(events_scroll), events_tv);
 
         GtkWidget *configure_event_btn = gtk_button_new_with_mnemonic(_("Configure E_vent"));
+        gtk_widget_set_sensitive(configure_event_btn, false);
         g_signal_connect(configure_event_btn, "clicked", G_CALLBACK(on_configure_event_cb), events_tv);
+        g_signal_connect(events_tv, "cursor-changed", G_CALLBACK(on_event_row_changed_cb), configure_event_btn);
 
         GtkWidget *close_btn = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
         g_signal_connect(close_btn, "clicked", G_CALLBACK(on_close_event_list_cb), parent_dialog);
