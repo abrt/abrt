@@ -511,6 +511,8 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Bugzilla.conf
 %{_sysconfdir}/%{name}/events/report_Bugzilla.xml
+%config(noreplace) %{_sysconfdir}/%{name}/events/report_Bugzilla.conf
+# FIXME: remove with the old gui
 %{_libdir}/%{name}/Bugzilla.glade
 %{_mandir}/man7/abrt-Bugzilla.7.gz
 %{_bindir}/abrt-action-bugzilla
