@@ -5,6 +5,9 @@
 #include "abrt-gtk.h"
 #include "event_config_dialog.h"
 
+static const char * const help_uri ="http://docs.fedoraproject.org/en-US/"
+    "Fedora/14/html/Deployment_Guide/ch-abrt.html";
+
 static GtkListStore *s_dumps_list_store;
 static GtkWidget *s_treeview;
 static GtkWidget *g_main_window;
@@ -148,9 +151,12 @@ static void on_btn_delete_cb(GtkButton *button, gpointer unused)
 
 static void on_btn_online_help_cb(GtkButton *button, gpointer unused)
 {
-    gtk_show_uri(NULL,"http://docs.fedoraproject.org/en-US/Fedor"
-                 "a/14/html/Deployment_Guide/ch-abrt.html",
-                 GDK_CURRENT_TIME, NULL);
+    gtk_show_uri(NULL, help_uri, GDK_CURRENT_TIME, NULL);
+}
+
+static void on_menu_help_cb(GtkMenuItem *menuitem, gpointer unused)
+{
+    gtk_show_uri(NULL, help_uri, GDK_CURRENT_TIME, NULL);
 }
 
 void show_events_list_dialog_cb(GtkMenuItem *menuitem, gpointer user_data)
@@ -241,6 +247,8 @@ GtkWidget *create_menu(void)
     gtk_menu_shell_append(GTK_MENU_SHELL(help_submenu), online_help_item);
     gtk_menu_shell_append(GTK_MENU_SHELL(help_submenu), about_item);
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(help_item), help_submenu);
+
+    g_signal_connect(online_help_item, "activate", G_CALLBACK(on_menu_help_cb), NULL);
 
     return menu;
 }
