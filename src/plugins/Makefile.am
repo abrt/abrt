@@ -41,7 +41,9 @@ dist_pluginsconf_DATA = \
 eventsdir = $(EVENTS_DIR)
 
 dist_events_DATA = \
-    report_Bugzilla.xml
+    report_Bugzilla.xml \
+    analyze_LocalGDB.xml \
+    analyze_RetraceServer.xml
 
 eventsconfdir = $(EVENTS_CONF_DIR)
 

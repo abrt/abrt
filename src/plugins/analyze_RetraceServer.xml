@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<event>
+    <name>Retrace Server</name>
+    <description>Sends core dumps to remote retrace server for analysis</description>
+    <options>
+        <option type="text" name="RETRACE_SERVER_URL">
+           <label>Retrace server URL</label>
+	   <default-value>retrace01.fedoraproject.org</default-value>
+           <allow-empty>no</allow-empty>
+           <description>Address of the retrace server</description>
+       </option>
+    </options>
+</event>
