@@ -42,7 +42,8 @@ eventsdir = $(EVENTS_DIR)
 
 dist_events_DATA = \
     report_Bugzilla.xml \
-    report_Bugzilla.conf
+    report_Bugzilla.conf \
+    report_Logger.conf
 
 eventsconfdir = $(EVENTS_CONF_DIR)
 
