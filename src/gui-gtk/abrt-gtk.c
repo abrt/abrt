@@ -159,6 +159,58 @@ static void on_menu_help_cb(GtkMenuItem *menuitem, gpointer unused)
     gtk_show_uri(NULL, help_uri, GDK_CURRENT_TIME, NULL);
 }
 
+static void on_menu_about_cb(GtkMenuItem *menuitem, gpointer unused)
+{
+    const char *copyright_str = "Copyright © 2009, 2010, 2011 Red Hat, Inc";
+
+    const char *license_str = "This program is free software; you can redistribut"
+        "e it and/or modify it under the terms of the GNU General Public License "
+        "as published by the Free Software Foundation; either version 2 of the Li"
+        "cense, or (at your option) any later version.\n\nThis program is distrib"
+        "uted in the hope that it will be useful, but WITHOUT ANY WARRANTY; witho"
+        "ut even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICU"
+        "LAR PURPOSE.  See the GNU General Public License for more details.\n\nYo"
+        "u should have received a copy of the GNU General Public License along wi"
+        "th this program.  If not, see <http://www.gnu.org/licenses/>.";
+
+    const char *website_url = "https://fedorahosted.org/abrt/";
+
+    const char *authors[] = {
+        "Anton Arapov <aarapov@redhat.com>",
+        "Karel Klic <kklic@redhat.com>",
+        "Jiri Moskovcak <jmoskovc@redhat.com>",
+        "Nikola Pajkovsky <npajkovs@redhat.com>",
+        "Denys Vlasenko <dvlasenk@redhat.com>",
+        "Michal Toman <mtoman@redhat.com>",
+        "Zdenek Prikryl",
+        NULL
+    };
+
+    const char *artists[] = {
+        "Patrick Connelly <pcon@fedoraproject.org>",
+        "Máirín Duffy <duffy@fedoraproject.org>",
+        "Lapo Calamandrei",
+        NULL
+    };
+
+    GtkWidget *about_d = gtk_about_dialog_new();
+
+    gtk_window_set_default_icon_name("abrt");
+    gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(about_d), VERSION);
+    gtk_about_dialog_set_logo_icon_name(GTK_ABOUT_DIALOG(about_d), "abrt");
+    gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(about_d), "ABRT");
+    gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(about_d), copyright_str);
+    gtk_about_dialog_set_license(GTK_ABOUT_DIALOG(about_d), license_str);
+    gtk_about_dialog_set_wrap_license(GTK_ABOUT_DIALOG(about_d),true);
+    gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(about_d), website_url);
+    gtk_about_dialog_set_authors(GTK_ABOUT_DIALOG(about_d), authors);
+    gtk_about_dialog_set_artists(GTK_ABOUT_DIALOG(about_d), artists);
+    gtk_about_dialog_set_translator_credits(GTK_ABOUT_DIALOG(about_d), _("translator-credits"));
+
+    gtk_dialog_run(GTK_DIALOG(about_d));
+    gtk_widget_hide(GTK_WIDGET(about_d));
+}
+
 void show_events_list_dialog_cb(GtkMenuItem *menuitem, gpointer user_data)
 {
     show_events_list_dialog(GTK_WINDOW(g_main_window));
@@ -249,6 +301,7 @@ GtkWidget *create_menu(void)
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(help_item), help_submenu);
 
     g_signal_connect(online_help_item, "activate", G_CALLBACK(on_menu_help_cb), NULL);
+    g_signal_connect(about_item, "activate", G_CALLBACK(on_menu_about_cb), NULL);
 
     return menu;
 }
