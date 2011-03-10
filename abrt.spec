@@ -483,6 +483,8 @@ fi
 %{_bindir}/abrt-action-install-debuginfo.py*
 %{_bindir}/abrt-action-generate-backtrace
 %{_sysconfdir}/%{name}/events.d/ccpp_events.conf
+%{_sysconfdir}/%{name}/events/analyze_LocalGDB.xml
+%{_sysconfdir}/%{name}/events/analyze_RetraceServer.xml
 
 %files addon-kerneloops
 %defattr(-,root,root,-)
