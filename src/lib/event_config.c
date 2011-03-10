@@ -44,14 +44,10 @@ static int cmp_event_option_name_with_string(gconstpointer a, gconstpointer b)
     return strcmp(((event_option_t *)a)->name, (char *)b);
 }
 
-// (Re)loads data from /etc/abrt/events/*.{conf,xml}
+/* (Re)loads data from /etc/abrt/events/foo.{xml,conf} */
 void load_event_config_data(void)
 {
     free_event_config_data();
-
-    DIR *dir = opendir(EVENTS_DIR);
-    if (!dir)
-        return;
 
     if (!g_event_config_list)
         g_event_config_list = g_hash_table_new_full(
@@ -61,15 +57,19 @@ void load_event_config_data(void)
                 /*value_destroy_func:*/ (GDestroyNotify) free_event_config
         );
 
+    DIR *dir;
     struct dirent *dent;
+
+    /* Load .xml files */
+    dir = opendir(EVENTS_DIR);
+    if (!dir)
+        return;
     while ((dent = readdir(dir)) != NULL)
     {
         char *ext = strrchr(dent->d_name, '.');
         if (!ext)
             continue;
-        bool conf = strcmp(ext + 1, "conf") == 0;
-        bool xml = strcmp(ext + 1, "xml") == 0;
-        if (!conf && !xml)
+        if (strcmp(ext + 1, "xml") != 0)
             continue;
 
         char *fullname = concat_path_file(EVENTS_DIR, dent->d_name);
@@ -80,48 +80,71 @@ void load_event_config_data(void)
         if (new_config)
             event_config = new_event_config();
 
-        if (xml)
-            load_event_description_from_file(event_config, fullname);
-        if (conf)
-        {
-            map_string_h *keys_and_values = new_map_string();
-
-            load_conf_file(fullname, keys_and_values, /*skipKeysWithoutValue:*/ false);
-
-            /* Insert or replace every key/value from keys_and_values to event_config->option */
-            GHashTableIter iter;
-            char *name;
-            char *value;
-            g_hash_table_iter_init(&iter, keys_and_values);
-            while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
-            {
-                event_option_t *opt;
-                GList *elem = g_list_find_custom(event_config->options, name, &cmp_event_option_name_with_string);
-                if (elem)
-                {
-                    opt = elem->data;
-                    //log("%s: replacing '%s' value:'%s'->'%s'", fullname, name, opt->value, value);
-                    free(opt->value);
-                }
-                else
-                {
-                    //log("%s: new value %s='%s'", fullname, name, value);
-                    opt = new_event_option();
-                    opt->name = xstrdup(name);
-                }
-                opt->value = xstrdup(value);
-                if (!elem)
-                    event_config->options = g_list_append(event_config->options, opt);
-            }
-
-            free_map_string(keys_and_values);
-        }
-
+        load_event_description_from_file(event_config, fullname);
         free(fullname);
 
         if (new_config)
             g_hash_table_replace(g_event_config_list, xstrdup(dent->d_name), event_config);
     }
+    closedir(dir);
+
+    /* Load .conf files */
+    dir = opendir(EVENTS_DIR);
+    if (!dir)
+        return;
+    while ((dent = readdir(dir)) != NULL)
+    {
+        char *ext = strrchr(dent->d_name, '.');
+        if (!ext)
+            continue;
+        if (strcmp(ext + 1, "conf") != 0)
+            continue;
+
+        char *fullname = concat_path_file(EVENTS_DIR, dent->d_name);
+
+        *ext = '\0';
+        event_config_t *event_config = get_event_config(dent->d_name);
+        bool new_config = (!event_config);
+        if (new_config)
+            event_config = new_event_config();
+
+        map_string_h *keys_and_values = new_map_string();
+
+        load_conf_file(fullname, keys_and_values, /*skipKeysWithoutValue:*/ false);
+        free(fullname);
+
+        /* Insert or replace every key/value from keys_and_values to event_config->option */
+        GHashTableIter iter;
+        char *name;
+        char *value;
+        g_hash_table_iter_init(&iter, keys_and_values);
+        while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
+        {
+            event_option_t *opt;
+            GList *elem = g_list_find_custom(event_config->options, name, &cmp_event_option_name_with_string);
+            if (elem)
+            {
+                opt = elem->data;
+                //log("conf: replacing '%s' value:'%s'->'%s'", name, opt->value, value);
+                free(opt->value);
+            }
+            else
+            {
+                //log("conf: new value %s='%s'", name, value);
+                opt = new_event_option();
+                opt->name = xstrdup(name);
+            }
+            opt->value = xstrdup(value);
+            if (!elem)
+                event_config->options = g_list_append(event_config->options, opt);
+        }
+
+        free_map_string(keys_and_values);
+
+        if (new_config)
+            g_hash_table_replace(g_event_config_list, xstrdup(dent->d_name), event_config);
+    }
+    closedir(dir);
 }
 
 /* Frees all loaded data */
