@@ -257,8 +257,8 @@ static void ssl_connect(PRFileDesc **tcp_sock,
             error_msg_and_die("Failed to get host by name: %s", error);
         else
         {
-            error_msg_and_die("Failed to get host by name: pr_status == %d, pr_error == %d",
-                              pr_status, PR_GetError());
+            error_msg_and_die("Failed to get host by name: pr_status == %d, pr_error == %d, url '%s'",
+                              pr_status, PR_GetError(), url);
         }
     }
     PRNetAddr addr;
@@ -727,6 +727,10 @@ int main(int argc, char **argv)
     char *env_verbose = getenv("ABRT_VERBOSE");
     if (env_verbose)
         g_verbose = atoi(env_verbose);
+    char *env_url = getenv("RETRACE_SERVER_URL");
+    if (env_url)
+        url = env_url;
+
     unsigned opts = parse_opts(argc, argv, options, usage);
     if (opts & OPT_syslog)
     {
