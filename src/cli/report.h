@@ -18,6 +18,10 @@
 #ifndef ABRT_CLI_REPORT_H
 #define ABRT_CLI_REPORT_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int run_analyze_event(const char *dump_dir_name);
 
 /* Report the crash */
@@ -25,5 +29,9 @@ enum {
     CLI_REPORT_BATCH = 1 << 0,
 };
 int report(const char *dump_dir_name, int flags);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

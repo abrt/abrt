@@ -1,7 +1,7 @@
 bin_PROGRAMS = abrt-cli
 
 abrt_cli_SOURCES = \
-    CLI.cpp \
+    cli.c \
     run-command.h run-command.c \
     report.h report.cpp
 abrt_cli_CPPFLAGS = \
