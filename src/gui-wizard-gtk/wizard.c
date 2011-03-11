@@ -6,33 +6,42 @@
 #define DEFAULT_WIDTH   800
 #define DEFAULT_HEIGHT  500
 
-GtkAssistant *g_assistant;
+static GtkAssistant *g_assistant;
 
-GtkBox *g_box_analyzers;
-GtkLabel *g_lbl_analyze_log;
-GtkTextView *g_tv_analyze_log;
-GtkBox *g_box_reporters;
-GtkLabel *g_lbl_report_log;
-GtkTextView *g_tv_report_log;
-GtkContainer *g_container_details1;
-GtkContainer *g_container_details2;
+static char *g_analyze_label_selected;
 
-GtkLabel *g_lbl_cd_reason;
-GtkLabel *g_lbl_dirname;
-GtkTextView *g_tv_backtrace;
-GtkTextView *g_tv_comment;
-GtkTreeView *g_tv_details;
-GtkListStore *g_ls_details;
-GtkWidget *g_widget_warnings_area;
-GtkBox *g_box_warning_labels;
-GtkToggleButton *g_tb_approve_bt;
-GtkButton *g_btn_refresh;
+static GtkBox *g_box_analyzers;
+static GtkLabel *g_lbl_analyze_log;
+static GtkTextView *g_tv_analyze_log;
+static GtkBox *g_box_reporters;
+static GtkLabel *g_lbl_report_log;
+static GtkTextView *g_tv_report_log;
+static GtkContainer *g_container_details1;
+static GtkContainer *g_container_details2;
 
-GtkLabel *g_lbl_reporters;
-GtkLabel *g_lbl_size;
+static GtkLabel *g_lbl_cd_reason;
+static GtkTextView *g_tv_backtrace;
+static GtkTextView *g_tv_comment;
+static GtkTreeView *g_tv_details;
+static GtkWidget *g_widget_warnings_area;
+static GtkBox *g_box_warning_labels;
+static GtkToggleButton *g_tb_approve_bt;
+static GtkButton *g_btn_refresh;
 
+static GtkLabel *g_lbl_reporters;
+static GtkLabel *g_lbl_size;
 
-/* required for search in bt */
+static GtkCellRenderer *g_tv_details_col2;
+static GtkListStore *g_ls_details;
+enum
+{
+    DETAIL_COLUMN_NAME,
+    DETAIL_COLUMN_VALUE,
+    //COLUMN_PATH,
+    DETAIL_NUM_COLUMNS,
+};
+
+/* Search in bt */
 static guint g_timeout = 0;
 static GtkEntry *g_search_entry_bt;
 
@@ -49,6 +58,16 @@ static PangoFontDescription *monospace_font;
  * page_6: summary
  * page_7: reporting progress
  */
+enum {
+    PAGENO_SUMMARY,
+    PAGENO_COMMENT,
+    PAGENO_ANALYZE_SELECTOR,
+    PAGENO_ANALYZE_PROGRESS,
+    PAGENO_REPORTER_SELECTOR,
+    PAGENO_BACKTRACE_APPROVAL,
+    PAGENO_REPORT,
+    PAGENO_REPORT_PROGRESS,
+};
 
 /* Use of arrays (instead of, say, #defines to C strings)
  * allows cheaper page_obj_t->name == PAGE_FOO comparisons
@@ -171,7 +190,6 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
     dd_close(dd);
 
     gtk_window_set_title(GTK_WINDOW(g_assistant), g_dump_dir_name);
-    gtk_label_set_text(g_lbl_dirname, g_dump_dir_name);
     delete_dump_dir_possibly_using_abrtd(old_name); //TODO: if (deletion_failed) error_msg("BAD")?
     free(old_name);
 
@@ -255,6 +273,74 @@ static void append_to_textview(GtkTextView *tv, const char *str, int len)
 }
 
 
+/* tv_details handling */
+
+static void tv_details_row_activated(
+                        GtkTreeView       *tree_view,
+                        GtkTreePath       *path,
+                        GtkTreeViewColumn *column,
+                        gpointer           user_data)
+{
+    GtkTreeModel *model;
+    GtkTreeIter iter;
+    GtkTreeSelection* selection = gtk_tree_view_get_selection(tree_view);
+    if (!gtk_tree_selection_get_selected(selection, &model, &iter))
+        return;
+
+    gchar *column_name;
+    gtk_tree_model_get(model, &iter, DETAIL_COLUMN_NAME, &column_name, -1);
+    struct crash_item *item = get_crash_data_item_or_NULL(g_cd, column_name);
+    if (!item || !(item->flags & CD_FLAG_TXT))
+        return;
+    if (item->flags & CD_FLAG_ONELINE)
+        return;
+
+    gchar *arg[3];
+    arg[0] = (char *) "xdg-open";
+    arg[1] = concat_path_file(g_dump_dir_name, column_name);
+    arg[2] = NULL;
+    g_free(column_name);
+
+    g_spawn_sync(NULL, arg, NULL,
+                 G_SPAWN_SEARCH_PATH | G_SPAWN_STDOUT_TO_DEV_NULL,
+                 NULL, NULL, NULL, NULL, NULL, NULL);
+
+    free(arg[1]);
+}
+
+/* static gboolean tv_details_select_cursor_row(
+                        GtkTreeView *tree_view,
+                        gboolean arg1,
+                        gpointer user_data) {...} */
+
+static void tv_details_cursor_changed(
+                        GtkTreeView *tree_view,
+                        gpointer     user_data)
+{
+    GtkTreeModel *model;
+    GtkTreeIter iter;
+    GtkTreeSelection* selection = gtk_tree_view_get_selection(tree_view);
+    if (!gtk_tree_selection_get_selected(selection, &model, &iter))
+        return;
+
+    gchar *column_name;
+    gtk_tree_model_get(model, &iter, DETAIL_COLUMN_NAME, &column_name, -1);
+    struct crash_item *item = get_crash_data_item_or_NULL(g_cd, column_name);
+
+    gboolean editable = (item && (item->flags & (CD_FLAG_TXT|CD_FLAG_ONELINE)) == (CD_FLAG_TXT|CD_FLAG_ONELINE));
+
+    /* Allow user to select the text with mouse.
+     * Has undesirable side-effect of allowing user to "edit" the text,
+     * but changes aren't saved (the old text reappears as soon as user
+     * leaves the field). Need to disable editing somehow.
+     */
+    g_object_set(G_OBJECT(g_tv_details_col2),
+                "editable", editable,
+                // "editable-set", editable,
+                NULL);
+}
+
+
 /* update_gui_state_from_crash_data */
 
 static void analyze_rb_was_toggled(GtkButton *button, gpointer user_data)
@@ -326,39 +412,6 @@ struct cd_stats {
     unsigned filecount;
 };
 
-static void tv_details_edit_cb(GtkTreeView       *tree_view,
-                               GtkTreePath       *path,
-                               GtkTreeViewColumn *column,
-                               gpointer           user_data)
-{
-    GtkTreeModel *model;
-    GtkTreeIter iter;
-    GtkTreeSelection* selection = gtk_tree_view_get_selection(tree_view);
-    if (!gtk_tree_selection_get_selected(selection, &model, &iter))
-        return;
-
-    gchar *column_name;
-    gtk_tree_model_get(model, &iter, DETAIL_COLUMN_NAME, &column_name, -1);
-    struct crash_item *item = get_crash_data_item_or_NULL(g_cd, column_name);
-    if (!item || !IS_TXT(item->flags))
-        return;
-
-    if (item && IS_ONELINE(item->flags))
-        return;
-
-    gchar *arg[3];
-    arg[0] = (char *) "xdg-open";
-    arg[1] = concat_path_file(g_dump_dir_name, column_name);
-    arg[2] = NULL;
-    g_free(column_name);
-
-    g_spawn_sync(NULL, arg, NULL,
-                 G_SPAWN_SEARCH_PATH | G_SPAWN_STDOUT_TO_DEV_NULL,
-                 NULL, NULL, NULL, NULL, NULL, NULL);
-
-    free(arg[1]);
-}
-
 static void append_item_to_ls_details(gpointer name, gpointer value, gpointer data)
 {
     crash_item *item = (crash_item*)value;
@@ -410,7 +463,6 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
 void update_gui_state_from_crash_data(void)
 {
     gtk_window_set_title(GTK_WINDOW(g_assistant), g_dump_dir_name);
-    gtk_label_set_text(g_lbl_dirname, g_dump_dir_name);
 
     const char *reason = get_crash_item_content_or_NULL(g_cd, FILENAME_REASON);
     gtk_label_set_text(g_lbl_cd_reason, reason ? reason : _("(no description)"));
@@ -424,13 +476,6 @@ void update_gui_state_from_crash_data(void)
 
     load_text_to_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
     load_text_to_text_view(g_tv_comment, FILENAME_COMMENT);
-
-//Doesn't work: shows empty page
-//    if (!g_analyze_events[0])
-//    {
-//        /* No available analyze events, go to reporter selector page */
-//        gtk_assistant_set_current_page(GTK_ASSISTANT(assistant), PAGENO_REPORTER_SELECTOR);
-//    }
 
     /* Update analyze radio buttons */
     GtkWidget *first_rb = add_event_buttons(g_box_analyzers, g_analyze_events, G_CALLBACK(analyze_rb_was_toggled), /*radio:*/ true, /*prev:*/ g_analyze_label_selected);
@@ -979,19 +1024,7 @@ static void create_details_treeview()
     gtk_tree_view_column_set_sort_column_id(column, DETAIL_COLUMN_NAME);
     gtk_tree_view_append_column(g_tv_details, column);
 
-    renderer = gtk_cell_renderer_text_new();
-    /* Allow user to select the text with mouse.
-     * Has undesirable side-effect of allowing user to "edit" the text,
-     * but changes aren't saved (the old text reappears as soon as user
-     * leaves the field). Need to disable editing somehow.
-     * Also, it interferes with "(click here to view/edit)" values.
-     * Need to find a way to _selectively_ enable editing only
-     * on some cells, not all at once.
-     */
-    //g_object_set(G_OBJECT(renderer),
-    //            "editable", TRUE,
-    //            // "editable-set", TRUE,
-    //            NULL);
+    g_tv_details_col2 = renderer = gtk_cell_renderer_text_new();
     column = gtk_tree_view_column_new_with_attributes(_("Value"),
                                                      renderer,
                                                      "text",
@@ -1057,7 +1090,6 @@ static void add_pages(void)
     }
     /* Set pointers to objects we might need to work with */
     g_lbl_cd_reason        = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_cd_reason"));
-    g_lbl_dirname          = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_dirname"));
     g_box_analyzers        = GTK_BOX(          gtk_builder_get_object(builder, "vb_analyzers"));
     g_lbl_analyze_log      = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_analyze_log"));
     g_tv_analyze_log       = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_analyze_log"));
@@ -1119,7 +1151,9 @@ void create_assistant()
 
     g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
     g_signal_connect(g_btn_refresh, "clicked", G_CALLBACK(on_btn_refresh_clicked), NULL);
-    g_signal_connect(g_tv_details, "row-activated", G_CALLBACK(tv_details_edit_cb), NULL);
+    g_signal_connect(g_tv_details, "row-activated", G_CALLBACK(tv_details_row_activated), NULL);
+    /* [Enter] on a row: g_signal_connect(g_tv_details, "select-cursor-row", G_CALLBACK(tv_details_select_cursor_row), NULL); */
+    g_signal_connect(g_tv_details, "cursor-changed", G_CALLBACK(tv_details_cursor_changed), NULL);
 
     /* init searching */
     GtkTextBuffer *backtrace_buf = gtk_text_view_get_buffer(g_tv_backtrace);
