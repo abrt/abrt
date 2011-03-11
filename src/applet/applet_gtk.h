@@ -56,7 +56,7 @@ void applet_destroy(struct applet *applet);
 void show_icon(struct applet *applet);
 void hide_icon(struct applet *applet);
 void set_icon_tooltip(struct applet *applet, const char *format, ...);
-void show_crash_notification(struct applet *applet, const char* crash_id, const char *format, ...);
+void show_crash_notification(struct applet *applet, const char* crash_dir, const char *format, ...);
 void show_msg_notification(struct applet *applet, const char *format, ...);
 void disable(struct applet *applet, const char *reason);
 void enable(struct applet *applet, const char *reason);

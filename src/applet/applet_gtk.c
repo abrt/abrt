@@ -65,12 +65,13 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
             perror_msg("vfork");
         if (pid == 0)
         { /* child */
-            char *buf = xasprintf("--report=%s", applet->ap_last_crash_id);
             signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
-            execl(BIN_DIR"/abrt-gui", "abrt-gui", buf, (char*) NULL);
+            execl(BIN_DIR"/bug-reporting-wizard", "bug-reporting-wizard",
+                  applet->ap_last_crash_id, (char*) NULL);
             /* Did not find abrt-gui in installation directory. Oh well */
             /* Trying to find it in PATH */
-            execlp("abrt-gui", "abrt-gui", buf, (char*) NULL);
+            execlp("bug-reporting-wizard", "bug-reporting-wizard",
+                   applet->ap_last_crash_id, (char*) NULL);
             perror_msg_and_die("Can't execute abrt-gui");
         }
         GError *err = NULL;
@@ -348,9 +349,9 @@ void set_icon_tooltip(struct applet *applet, const char *format, ...)
     free(buf);
 }
 
-void show_crash_notification(struct applet *applet, const char* crash_id, const char *format, ...)
+void show_crash_notification(struct applet *applet, const char* crash_dir, const char *format, ...)
 {
-    applet->ap_last_crash_id = crash_id;
+    applet->ap_last_crash_id = crash_dir;
     va_list args;
     va_start(args, format);
     char *buf = xvasprintf(format, args);

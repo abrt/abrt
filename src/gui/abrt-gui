@@ -1,8 +1,0 @@
-#!/bin/sh
-if test x"$1" = x"--version"; then
-    echo "abrt-gui VERSION"
-    exit 0
-fi
-export PYTHONPATH=/usr/share/abrt
-export XLOGNAME=$LOGNAME
-exec /usr/bin/python /usr/share/abrt/CCMainWindow.py "$@"

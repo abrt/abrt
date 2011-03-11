@@ -46,8 +46,8 @@ static void Crash(DBusMessage* signal)
         error_msg("dbus signal %s: parameter type mismatch", __func__);
         return;
     }
-    const char* crash_id = NULL;
-    r = load_charp(&in_iter, &crash_id);
+    const char* crash_dir = NULL;
+    r = load_charp(&in_iter, &crash_dir);
 
     /* 3rd param: dir */
 //dir parameter is not used for now, use is planned in the future
@@ -94,10 +94,10 @@ static void Crash(DBusMessage* signal)
      */
     static time_t last_time = 0;
     static char* last_package_name = NULL;
-    static char* last_crash_id = NULL;
+    static char* last_crash_dir = NULL;
     time_t cur_time = time(NULL);
     if (last_package_name && strcmp(last_package_name, package_name) == 0
-     && last_crash_id && strcmp(last_crash_id, crash_id) == 0
+     && last_crash_dir && strcmp(last_crash_dir, crash_dir) == 0
      && (unsigned)(cur_time - last_time) < 2 * 60 * 60
     ) {
         log_msg("repeated crash in %s, not showing the notification", package_name);
@@ -106,10 +106,10 @@ static void Crash(DBusMessage* signal)
     last_time = cur_time;
     free(last_package_name);
     last_package_name = xstrdup(package_name);
-    free(last_crash_id);
-    last_crash_id = xstrdup(crash_id);
+    free(last_crash_dir);
+    last_crash_dir = xstrdup(dir);
 
-    show_crash_notification(applet, crash_id, message, package_name);
+    show_crash_notification(applet, dir, message, package_name);
 }
 
 static void QuotaExceeded(DBusMessage* signal)

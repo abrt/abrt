@@ -133,7 +133,6 @@ AC_CONFIG_FILES([
 	src/daemon/Makefile
 	src/hooks/Makefile
 	src/applet/Makefile
-	src/gui/Makefile
 	src/gui-gtk/Makefile
 	src/gui-wizard-gtk/Makefile
 	src/cli/Makefile
