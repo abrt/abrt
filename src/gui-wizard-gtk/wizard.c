@@ -345,29 +345,43 @@ static void tv_details_cursor_changed(
 
 static void analyze_rb_was_toggled(GtkButton *button, gpointer user_data)
 {
-    const char *label = gtk_button_get_label(button);
-    if (label)
+    const char *event_name = gtk_widget_get_tooltip_text(GTK_WIDGET(button));
+    if (event_name)
     {
         free(g_analyze_label_selected);
-        g_analyze_label_selected = xstrdup(label);
+        g_analyze_label_selected = xstrdup(event_name);
     }
 }
 
-static void report_tb_was_toggled(GtkButton *button, gpointer user_data)
+static void report_tb_was_toggled(GtkButton *button_unused, gpointer user_data_unused)
 {
+    struct strbuf *reporters_string = strbuf_new();
     GList *reporters = gtk_container_get_children(GTK_CONTAINER(g_box_reporters));
     GList *li = reporters;
     if (reporters)
     {
         for (; li; li = li->next)
+        {
             if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
-                break;
+            {
+                const char *event_name = gtk_widget_get_tooltip_text(GTK_WIDGET(li->data));
+                strbuf_append_strf(reporters_string,
+                                "%s%s",
+                                (reporters_string->len != 0 ? ", " : ""),
+                                event_name
+                );
+            }
+        }
     }
     g_list_free(reporters);
+
     gtk_assistant_set_page_complete(g_assistant,
                 pages[PAGENO_REPORTER_SELECTOR].page_widget,
-                li != NULL /* true if at least one checkbox is active */
+                reporters_string->len != 0 /* true if at least one checkbox is active */
     );
+
+    /* Update "list of reporters" label */
+    gtk_label_set_text(g_lbl_reporters, strbuf_free_nobuf(reporters_string));
 }
 
 static GtkWidget *add_event_buttons(GtkBox *box, char *event_name, GCallback func, bool radio, const char *prev_selected)
@@ -382,12 +396,37 @@ VERB2 log("removing all buttons from box %p", box);
         char *event_name_end = strchr(event_name, '\n');
         *event_name_end = '\0';
 
+        /* Form a pretty text representation of event */
+        /* By default, use event name, just strip "foo_" prefix if it exists: */
+        const char *event_screen_name = strchr(event_name, '_');
+        if (event_screen_name)
+            event_screen_name++;
+        else
+            event_screen_name = event_name;
+        const char *event_description = NULL;
+        event_config_t *cfg = g_hash_table_lookup(g_event_config_list, event_name);
+        if (cfg)
+        {
+            /* .xml has (presumably) prettier description, use it: */
+            if (cfg->screen_name)
+                event_screen_name = cfg->screen_name;
+            event_description = cfg->description;
+        }
+        char *event_label = xasprintf("%s%s%s",
+                        event_screen_name,
+                        (event_description ? " - " : ""),
+                        event_description ? event_description : ""
+        );
+
 VERB2 log("adding button '%s' to box %p", event_name, box);
         GtkWidget *button = radio
-                ? gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(first_button), event_name)
-                : gtk_check_button_new_with_label(event_name);
+                ? gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(first_button), event_label)
+                : gtk_check_button_new_with_label(event_label);
         if (!first_button)
             first_button = button;
+        free(event_label);
+        /* Important: tooltip isn't used merely as decoration. We retrieve event name in the toggle handlers! */
+        gtk_widget_set_tooltip_text(button, event_name);
 
         if (prev_selected && strcmp(prev_selected, event_name) == 0)
         {
@@ -505,12 +544,9 @@ void update_gui_state_from_crash_data(void)
     add_event_buttons(g_box_reporters, g_report_events, /*callback:*/ G_CALLBACK(report_tb_was_toggled), /*radio:*/ false, /*prev:*/ NULL);
     /* Re-select new reporters which were selected before we deleted them */
     GList *new_reporters = gtk_container_get_children(GTK_CONTAINER(g_box_reporters));
-    struct strbuf *reporters_string = strbuf_new();
     for (GList *li_new = new_reporters; li_new; li_new = li_new->next)
     {
         const char *new_name = gtk_button_get_label(GTK_BUTTON(li_new->data));
-
-        strbuf_append_strf(reporters_string, "%s%s", (reporters_string->len ? ", " : ""), new_name);
 
         for (GList *li_old = old_reporters; li_old; li_old = li_old->next)
         {
@@ -523,11 +559,9 @@ void update_gui_state_from_crash_data(void)
     }
     g_list_free(new_reporters);
     list_free_with_free(old_reporters);
-    /* Update "list of reporters" label */
-    gtk_label_set_text(g_lbl_reporters, strbuf_free_nobuf(reporters_string));
-    /* Update readiness state of reporter selector page */
-    report_tb_was_toggled(NULL, NULL);
 
+    /* Update readiness state of reporter selector page and "list of reporters" label  */
+    report_tb_was_toggled(NULL, NULL);
 
     /* We can't just do gtk_widget_show_all once in main:
      * We created new widgets (buttons). Need to make them visible.

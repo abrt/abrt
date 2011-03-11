@@ -31,6 +31,10 @@ void reload_crash_data_from_dump_dir(void)
     g_reanalyze_events = list_possible_events(dd, NULL, "reanalyze");
     g_report_events = list_possible_events(dd, NULL, "report");
     dd_close(dd);
+
+    /* Load /etc/abrt/events/foo.{conf,xml} stuff */
+    load_event_config_data();
+//TODO: load overrides from keyring? Load ~/.abrt/events/foo.conf?
 }
 
 int main(int argc, char **argv)
