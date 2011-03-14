@@ -3,11 +3,6 @@ AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign silent-rules])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 
-AC_ARG_ENABLE(debug,
-              [AC_HELP_STRING([--enable-debug],
-                             [Enable debug information])],
-              [CXXFLAGS="$CXXFLAGS -DDEBUG -ggdb -g"])
-
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 AC_PROG_CC
@@ -18,6 +13,11 @@ CXXFLAGS="$CXXFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
           -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing "
 CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
           -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing -std=gnu99 -Wall"
+
+AC_ARG_ENABLE(debug,
+              [AC_HELP_STRING([--enable-debug],
+                             [Enable debug information])],
+              [CXXFLAGS="$CXXFLAGS -DDEBUG -ggdb -g" CFLAGS="$CFLAGS -DDEBUG -ggdb -g"])
 
 dnl ****** INTERNATIONALIZATION **********************
 GETTEXT_PACKAGE=abrt
