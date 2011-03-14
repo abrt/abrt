@@ -26,11 +26,12 @@ static guint32 search_item_id(const char *event_name)
     return item_id;
 }
 
-void abrt_keyring_save_settings(const char *event_name, event_config_t *ec)
+void abrt_keyring_save_settings(const char *event_name)
 {
     GList *l;
     GnomeKeyringAttributeList *attrs = gnome_keyring_attribute_list_new();
     guint32 item_id;
+    event_config_t *ec = get_event_config(event_name);
     /* add string id which we use to search for items */
     gnome_keyring_attribute_list_append_string(attrs, "libreportEventConfig", event_name);
     for(l = g_list_first(ec->options); l != NULL; l = g_list_next(l))
@@ -68,7 +69,7 @@ void abrt_keyring_save_settings(const char *event_name, event_config_t *ec)
     VERB2 log("saved");
 }
 
-void abrt_keyring_load_settings(const char *event_name, event_config_t *ec)
+static void abrt_keyring_load_settings(const char *event_name, event_config_t *ec)
 {
     GnomeKeyringAttributeList *attrs = gnome_keyring_attribute_list_new();
     guint item_id = search_item_id(event_name);
@@ -82,15 +83,25 @@ void abrt_keyring_load_settings(const char *event_name, event_config_t *ec)
     if(result != GNOME_KEYRING_RESULT_OK)
         return;
     guint index;
+
     for(index = 0; index < attrs->len; index++)
     {
-        VERB2 log("load %s", g_array_index(attrs, GnomeKeyringAttribute, index).name);
+        char *name = g_array_index(attrs, GnomeKeyringAttribute, index).name;
+VERB2 log("load %s", name);
+        event_option_t *option = get_event_option_from_list(name, ec->options);
+        if(option)
+            option->value = g_array_index(attrs, GnomeKeyringAttribute, index).value.string;
+VERB2 log("loaded %s", name);
         //VERB2 log("load %s", g_array_index(attrs, GnomeKeyringAttribute, index).value);
+
     }
 }
 
-void init_gnome_keyring()
+static void init_keyring()
 {
+    //called again?
+    if(keyring)
+        return;
     if(!gnome_keyring_is_available())
     {
         VERB2 log("Cannot connect to the Gnome Keyring daemon.");
@@ -105,4 +116,24 @@ void init_gnome_keyring()
     use gnome_keyring_list_keyring_names () to list all and pick the first one?
     */
     VERB2 log("%s", keyring);
+}
+
+void load_event_config(gpointer key, gpointer value, gpointer user_data)
+{
+    char* event_name = (char*)key;
+    event_config_t *ec = (event_config_t *)value;
+VERB2 log("from keyring loading: %s\n", event_name);
+    abrt_keyring_load_settings(event_name, ec);
+
+}
+
+/*
+ * Tries to load settings for all events in g_event_config_list
+*/
+void load_event_config_data_from_keyring()
+{
+    init_keyring();
+    if(!keyring)
+        return;
+    g_hash_table_foreach(g_event_config_list, &load_event_config, NULL);
 }

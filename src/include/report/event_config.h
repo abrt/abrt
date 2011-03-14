@@ -76,6 +76,7 @@ void load_event_config_data(void);
 /* Frees all loaded data */
 void free_event_config_data(void);
 event_config_t *get_event_config(const char *event_name);
+event_option_t *get_event_option_from_list(const char *option_name, GList *event_options);
 
 extern GHashTable *g_event_config_list;   // for iterating through entire list of all loaded configs
 
