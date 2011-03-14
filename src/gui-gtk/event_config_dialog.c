@@ -213,7 +213,7 @@ static void save_value_from_widget(gpointer data, gpointer user_data)
         case OPTION_TYPE_TEXT:
         case OPTION_TYPE_NUMBER:
         case OPTION_TYPE_PASSWORD:
-            ow->option->value = (char *)gtk_entry_get_text(GTK_ENTRY(ow->widget));
+            ow->option->value = xstrdup((char *)gtk_entry_get_text(GTK_ENTRY(ow->widget)));
             break;
         case OPTION_TYPE_BOOL:
             ow->option->value = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ow->widget)) ? xstrdup("yes") : xstrdup("no");
