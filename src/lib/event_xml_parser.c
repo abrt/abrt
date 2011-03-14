@@ -1,13 +1,14 @@
 #include "abrtlib.h"
 #include "event_config.h"
 
-#define EVENT_ELEMENT       "event"
-#define LABEL_ELEMENT       "label"
-#define DESCRIPTION_ELEMENT "description"
-#define ALLOW_EMPTY_ELEMENT "allow-empty"
-#define OPTION_ELEMENT      "option"
-//#define ACTION_ELEMENT      "action"
-#define NAME_ELEMENT        "name"
+#define EVENT_ELEMENT           "event"
+#define LABEL_ELEMENT           "label"
+#define DESCRIPTION_ELEMENT     "description"
+#define ALLOW_EMPTY_ELEMENT     "allow-empty"
+#define OPTION_ELEMENT          "option"
+//#define ACTION_ELEMENT        "action"
+#define NAME_ELEMENT            "name"
+#define DEFAULT_VALUE_ELEMENT   "default-value"
 
 struct my_parse_data
 {
@@ -153,6 +154,19 @@ static void text(GMarkupParseContext *context,
             VERB2 log("new label:'%s'", text_copy);
             free(opt->label);
             opt->label = text_copy;
+            return;
+        }
+        /*
+        * we can add a separate filed for the default value
+        * in that case we can implement features like "reset to default value"
+        * but for now using "value" should be enough and clients doesn't
+        * have to know about the "defaul-value"
+        */
+        if (strcmp(inner_element, DEFAULT_VALUE_ELEMENT) == 0)
+        {
+            VERB2 log("default value:'%s'", text_copy);
+            free(opt->value);
+            opt->value = text_copy;
             return;
         }
         /*

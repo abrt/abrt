@@ -42,9 +42,13 @@ void add_to_crash_data_ext(crash_data_t *crash_data,
                 const char *content,
                 unsigned flags)
 {
-    if (!(flags & (CD_FLAG_BIN|CD_FLAG_TXT)))
+    if (!(flags & CD_FLAG_BIN))
+    {
         flags |= CD_FLAG_TXT;
-    if (!(flags & (CD_FLAG_ISEDITABLE|CD_FLAG_ISNOTEDITABLE)))
+        if (!strchr(content, '\n'))
+            flags |= CD_FLAG_ONELINE;
+    }
+    if (!(flags & CD_FLAG_ISEDITABLE))
         flags |= CD_FLAG_ISNOTEDITABLE;
 
     struct crash_item *item = (struct crash_item *)xzalloc(sizeof(*item));

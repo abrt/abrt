@@ -344,7 +344,7 @@ GtkWidget *create_main_window(void)
 
     /* buttons are homogenous so set size only for one button and it will
      * work for the rest buttons in same gtk_hbox_new() */
-    GtkWidget *btn_report = gtk_button_new_with_mnemonic(_("_Report"));
+    GtkWidget *btn_report = gtk_button_new_with_mnemonic(_("O_pen"));
     gtk_widget_set_size_request(btn_report, 200, 30);
 
     GtkWidget *btn_delete = gtk_button_new_from_stock(GTK_STOCK_DELETE);
