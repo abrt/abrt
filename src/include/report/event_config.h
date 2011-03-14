@@ -58,7 +58,7 @@ void free_event_option(event_option_t *p);
 //structure to hold the option data
 typedef struct
 {
-    char *screen_name;  //name of the event "Bugzilla" "RedHat Support Uploader"
+    char *screen_name;  //ui friendly name of the event "Bugzilla" "RedHat Support Uploader"
     //char *title; //window title - not used right now, maybe the "name" is enough?
     //char *action;//action description to show in gui like: Upload report to the Red Hat bugzilla"
     char *description; // "Report to ...."/"Save to file"

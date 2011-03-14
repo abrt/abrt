@@ -3,7 +3,7 @@
 #include "abrtlib.h"
 #include "abrt_dbus.h"
 #include "abrt-gtk.h"
-#include "event_config_dialog.h"
+#include "libreport-gtk.h"
 
 static const char * const help_uri ="http://docs.fedoraproject.org/en-US/"
     "Fedora/14/html/Deployment_Guide/ch-abrt.html";
@@ -20,6 +20,7 @@ enum
     COLUMN_LATEST_CRASH_STR,
     COLUMN_LATEST_CRASH,
     COLUMN_DUMP_DIR,
+    COLUMN_BG,
     NUM_COLUMNS
 };
 
@@ -44,6 +45,8 @@ void add_directory_to_dirlist(const char *dirname)
     free(msg);
     char *reason = dd_load_text(dd, FILENAME_REASON);
 
+    static bool grey_bg = false;
+
     GtkTreeIter iter;
     gtk_list_store_append(s_dumps_list_store, &iter);
     gtk_list_store_set(s_dumps_list_store, &iter,
@@ -54,8 +57,9 @@ void add_directory_to_dirlist(const char *dirname)
                           COLUMN_LATEST_CRASH_STR, time_buf,
                           COLUMN_LATEST_CRASH, (int)time,
                           COLUMN_DUMP_DIR, dirname,
+                          COLUMN_BG, grey_bg ? "#EEEEEE" : "#FFFFFF",
                           -1);
-
+    grey_bg = !grey_bg;
     free(reason);
 
     dd_close(dd);
@@ -226,6 +230,8 @@ static void add_columns(GtkTreeView *treeview)
                                                      renderer,
                                                      "stock_id",
                                                      COLUMN_REPORTED,
+                                                     "cell-background",
+                                                     COLUMN_BG,
                                                      NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COLUMN_REPORTED);
@@ -236,11 +242,14 @@ static void add_columns(GtkTreeView *treeview)
                                                      renderer,
                                                      "text",
                                                      COLUMN_REASON,
+                                                     "cell-background",
+                                                     COLUMN_BG,
                                                      NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COLUMN_REASON);
     gtk_tree_view_append_column(treeview, column);
 
+    /*
     renderer = gtk_cell_renderer_text_new();
     column = gtk_tree_view_column_new_with_attributes(_("Stored in"),
                                                      renderer,
@@ -250,12 +259,14 @@ static void add_columns(GtkTreeView *treeview)
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COLUMN_DIRNAME);
     gtk_tree_view_append_column(treeview, column);
-
+    */
     renderer = gtk_cell_renderer_text_new();
     column = gtk_tree_view_column_new_with_attributes(_("Last occurrence"),
                                                      renderer,
                                                      "text",
                                                      COLUMN_LATEST_CRASH_STR,
+                                                     "cell-background",
+                                                     COLUMN_BG,
                                                      NULL);
     gtk_tree_view_column_set_sort_column_id(column, COLUMN_LATEST_CRASH);
     gtk_tree_view_append_column(treeview, column);
@@ -310,7 +321,7 @@ GtkWidget *create_main_window(void)
 {
     /* main window */
     g_main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_default_size(GTK_WINDOW(g_main_window), 600, 700);
+    gtk_window_set_default_size(GTK_WINDOW(g_main_window), 700, 700);
     gtk_window_set_title(GTK_WINDOW(g_main_window), _("Automatic Bug Reporting Tool"));
     gtk_window_set_icon_name(GTK_WINDOW(g_main_window), "abrt");
 
@@ -339,12 +350,14 @@ GtkWidget *create_main_window(void)
                                                        G_TYPE_STRING, /* hostname */
                                                        G_TYPE_STRING, /* time */
                                                        G_TYPE_INT,    /* unix time - used for sort */
-                                                       G_TYPE_STRING);/* dump dir path */
+                                                       G_TYPE_STRING, /* dump dir path */
+                                                       G_TYPE_STRING);/* row background */
+
     gtk_tree_view_set_model(GTK_TREE_VIEW(s_treeview), GTK_TREE_MODEL(s_dumps_list_store));
 
     /* buttons are homogenous so set size only for one button and it will
      * work for the rest buttons in same gtk_hbox_new() */
-    GtkWidget *btn_report = gtk_button_new_with_mnemonic(_("O_pen"));
+    GtkWidget *btn_report = gtk_button_new_from_stock(GTK_STOCK_OPEN);
     gtk_widget_set_size_request(btn_report, 200, 30);
 
     GtkWidget *btn_delete = gtk_button_new_from_stock(GTK_STOCK_DELETE);

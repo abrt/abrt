@@ -436,8 +436,7 @@ fi
 %files -n libreport-gtk
 %defattr(-,root,root,-)
 %{_bindir}/bug-reporting-wizard
-# If you want to deploy external glade file:
-#%{_datadir}/%{name}/wizard.glade
+%{_libdir}/libreportgtk.so.*
 
 %files libs
 %defattr(-,root,root,-)
@@ -449,6 +448,8 @@ fi
 %{_includedir}/abrt/*
 %{_libdir}/libabrt*.so
 %{_libdir}/libbtparser.so
+#FIXME: this should go to libreportgtk-devel package
+%{_libdir}/libreportgtk.so*
 %{_libdir}/pkgconfig/*
 %doc doc/abrt-plugin doc/howto-write-reporter
 
