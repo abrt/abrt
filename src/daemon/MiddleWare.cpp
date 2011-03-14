@@ -744,6 +744,16 @@ int CreateReportThread(const char* crash_id, long caller_uid, int force, const c
 /* Remove dump dir */
 int DeleteDebugDump(const char *dump_dir_name, long caller_uid)
 {
+    /* If doesn't start with "DEBUG_DUMPS_DIR/"... */
+    if (strncmp(dump_dir_name, DEBUG_DUMPS_DIR"/", strlen(DEBUG_DUMPS_DIR"/")) != 0
+    /* or contains "/." anywhere (-> might contain ".." component) */
+     || strstr(dump_dir_name + strlen(DEBUG_DUMPS_DIR), "/.")
+    ) {
+        /* Then refuse to operate on it (someone is attacking us??) */
+        error_msg("Bad dump directory name '%s', not deleting", dump_dir_name);
+        return MW_ERROR;
+    }
+
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return MW_NOENT_ERROR;
@@ -760,7 +770,7 @@ int DeleteDebugDump(const char *dump_dir_name, long caller_uid)
             if (!string_to_bool(inform_all))
             {
                 dd_close(dd);
-                error_msg("crash '%s' can't be accessed by user with uid %ld", dump_dir_name, caller_uid);
+                error_msg("Dump directory '%s' can't be accessed by user with uid %ld", dump_dir_name, caller_uid);
                 return 1;
             }
         }
