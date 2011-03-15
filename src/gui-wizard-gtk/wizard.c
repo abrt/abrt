@@ -20,6 +20,7 @@
 #include "abrtlib.h"
 #include "abrt_dbus.h"
 #include "wizard.h"
+#include "libreport-gtk.h"
 
 #define DEFAULT_WIDTH   800
 #define DEFAULT_HEIGHT  500
@@ -868,7 +869,8 @@ static void start_event_run(const char *event_name,
 
     /* Load /etc/abrt/events/foo.{conf,xml} stuff */
     load_event_config_data();
-//TODO: load overrides from keyring? Load ~/.abrt/events/foo.conf?
+    load_event_config_data_from_keyring();
+    //TODO: Load ~/.abrt/events/foo.conf?
 
     GList *env_list = export_event_config(event_name);
     if (spawn_next_command(state, g_dump_dir_name, event_name) < 0)
@@ -1053,6 +1055,11 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
     }
 }
 
+static void on_show_event_list_cb(GtkWidget *button, gpointer user_data)
+{
+    show_events_list_dialog(GTK_WINDOW(g_assistant));
+}
+
 static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
 {
     if (pages[PAGENO_BACKTRACE_APPROVAL].page_widget == page)
@@ -1217,6 +1224,23 @@ static void add_pages(void)
             continue;
 
         pages[i].page_widget = page;
+
+        /* add a configure button wherever it makes sense to configure events */
+        if (i == PAGENO_ANALYZE_SELECTOR
+          ||i == PAGENO_REPORTER_SELECTOR)
+        {
+            GtkWidget *configure = gtk_button_new_from_stock(GTK_STOCK_PREFERENCES);
+            g_signal_connect(G_OBJECT(configure), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
+            GtkWidget *align = gtk_alignment_new(0, 0, 0, 0);
+            GtkWidget *hbutton_box = gtk_hbox_new(false, 0);
+
+            gtk_box_pack_start(GTK_BOX(hbutton_box), configure, false, false, 0);
+            gtk_box_pack_start(GTK_BOX(hbutton_box), align, false, true, 0);
+
+            //we can do this only because we know that the page is gtk_vbox
+            gtk_box_pack_start(GTK_BOX(page), hbutton_box, false, false, 0);
+            gtk_widget_show_all(hbutton_box);
+        }
 
         gtk_assistant_append_page(g_assistant, page);
         /* If we set all pages to complete the wizard thinks there is nothing

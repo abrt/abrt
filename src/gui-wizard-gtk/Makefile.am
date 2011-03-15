@@ -12,6 +12,7 @@ bug_reporting_wizard_SOURCES = \
 bug_reporting_wizard_CFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
+    -I$(srcdir)/../gtk-helpers \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
@@ -32,6 +33,7 @@ bug_reporting_wizard_CFLAGS = \
 bug_reporting_wizard_LDADD = \
     ../lib/libreport.la \
     ../lib/libabrt_dbus.la \
+    ../gtk-helpers/libreportgtk.la \
     $(GLIB_LIBS) \
     $(GTK_LIBS) \
     $(DBUS_LIBS)
