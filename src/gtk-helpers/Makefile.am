@@ -20,4 +20,4 @@ libreportgtk_la_LDFLAGS = \
 libreportgtk_la_LIBADD = \
     $(GTK_LIBS) \
     $(GLIB_LIBS) \
-    $(GNOME_KEYRING_CFLAGS)
+    $(GNOME_KEYRING_LIBS)

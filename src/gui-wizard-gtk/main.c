@@ -20,6 +20,7 @@
 #include "abrtlib.h"
 #include "parse_options.h"
 #include "wizard.h"
+#include "libreport-gtk.h"
 
 #define PROGNAME "bug-reporting-wizard"
 
@@ -52,7 +53,8 @@ void reload_crash_data_from_dump_dir(void)
 
     /* Load /etc/abrt/events/foo.{conf,xml} stuff */
     load_event_config_data();
-//TODO: load overrides from keyring? Load ~/.abrt/events/foo.conf?
+    load_event_config_data_from_keyring();
+//TODO: Load ~/.abrt/events/foo.conf?
 }
 
 int main(int argc, char **argv)

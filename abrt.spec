@@ -45,6 +45,7 @@ BuildRequires: intltool
 BuildRequires: libtool
 BuildRequires: nss-devel
 BuildRequires: texinfo
+BuildRequires: libgnome-keyring-devel
 %if %{?with_systemd}
 Requires: systemd-units
 %endif
