@@ -16,7 +16,6 @@ abrt_gui_CFLAGS = \
     -DICON_DIR=\"${datadir}/abrt/icons/hicolor/48x48/status\" \
     $(GTK_CFLAGS) \
     $(DBUS_CFLAGS) \
-    $(GNOME_KEYRING_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 #    -I/usr/include/glib-2.0
@@ -30,8 +29,7 @@ abrt_gui_LDADD = \
     -lglib-2.0 \
     -lgthread-2.0 \
     $(GTK_LIBS) \
-    $(DBUS_LIBS) \
-    $(GNOME_KEYRING_LIBS)
+    $(DBUS_LIBS)
 #    $(LIBNOTIFY_LIBS)
 
 #test_report_SOURCES = \
