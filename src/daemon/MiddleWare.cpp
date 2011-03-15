@@ -532,6 +532,11 @@ mw_result_t LoadDebugDump(const char *dump_dir_name, crash_data_t **crash_data)
             res = MW_ERROR;
             goto ret;
         }
+
+        /* Reset mode/uig/gid to correct values for all files created by event run */
+        dd_sanitize_mode_and_owner(dd);
+
+        /* Update count */
         char *count_str = dd_load_text_ext(dd, FILENAME_COUNT, DD_FAIL_QUIETLY_ENOENT);
         unsigned long count = strtoul(count_str, NULL, 10);
         count++;

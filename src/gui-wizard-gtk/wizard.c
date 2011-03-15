@@ -779,6 +779,17 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     strbuf_clear(evd->event_log);
     evd->event_log_state = LOGSTATE_FIRSTLINE;
 
+    if (geteuid() == 0)
+    {
+        /* Reset mode/uig/gid to correct values for all files created by event run */
+        struct dump_dir *dd = dd_opendir(g_dump_dir_name, 0);
+        if (dd)
+        {
+            dd_sanitize_mode_and_owner(dd);
+            dd_close(dd);
+        }
+    }
+
     /* Stop if exit code is not 0, or no more commands */
     if (retval != 0
      || spawn_next_command_in_evd(evd) < 0
@@ -904,6 +915,8 @@ static void start_event_run(const char *event_name,
     );
 
     gtk_label_set_text(status_label, start_msg);
+//TODO: save_to_event_log(evd, "message that we run event foo")?
+
     /* Freeze assistant so it can't move away from the page until event run is done */
     gtk_assistant_set_page_complete(g_assistant, page, false);
 }
