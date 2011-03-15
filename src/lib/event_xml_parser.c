@@ -79,7 +79,7 @@ static void start_element(GMarkupParseContext *context,
                   gpointer user_data,
                   GError **error)
 {
-    //g_print("start: %s\n", element_name);
+    //log("start: %s", element_name);
 
     struct my_parse_data *parse_data = user_data;
 

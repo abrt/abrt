@@ -215,7 +215,7 @@ static void on_menu_about_cb(GtkMenuItem *menuitem, gpointer unused)
     gtk_widget_hide(GTK_WIDGET(about_d));
 }
 
-void show_events_list_dialog_cb(GtkMenuItem *menuitem, gpointer user_data)
+static void show_events_list_dialog_cb(GtkMenuItem *menuitem, gpointer user_data)
 {
     show_events_list_dialog(GTK_WINDOW(g_main_window));
 }

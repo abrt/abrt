@@ -16,9 +16,9 @@ static guint32 search_item_id(const char *event_name)
                                 GNOME_KEYRING_ITEM_GENERIC_SECRET,
                                 attrs,
                                 &found);
-    if(result != GNOME_KEYRING_RESULT_OK)
+    if (result != GNOME_KEYRING_RESULT_OK)
         return item_id;
-    if(found)
+    if (found)
     {
         item_id = ((GnomeKeyringFound *)found->data)->item_id;
         gnome_keyring_found_list_free(found);
@@ -34,7 +34,7 @@ void abrt_keyring_save_settings(const char *event_name)
     event_config_t *ec = get_event_config(event_name);
     /* add string id which we use to search for items */
     gnome_keyring_attribute_list_append_string(attrs, "libreportEventConfig", event_name);
-    for(l = g_list_first(ec->options); l != NULL; l = g_list_next(l))
+    for (l = g_list_first(ec->options); l != NULL; l = g_list_next(l))
     {
         event_option_t *op = (event_option_t *)l->data;
         gnome_keyring_attribute_list_append_string(attrs, op->name, op->value);
@@ -42,7 +42,7 @@ void abrt_keyring_save_settings(const char *event_name)
 
     GnomeKeyringResult result;
     item_id = search_item_id(event_name);
-    if(item_id)
+    if (item_id)
     {
         VERB2 log("updating item with id: %i", item_id);
         /* found existing item, so just update the values */
@@ -61,7 +61,7 @@ void abrt_keyring_save_settings(const char *event_name)
         VERB2 log("created new item with id: %i", item_id);
     }
 
-    if(result != GNOME_KEYRING_RESULT_OK)
+    if (result != GNOME_KEYRING_RESULT_OK)
     {
         VERB2 log("error occured, settings is not saved!");
         return;
@@ -73,23 +73,23 @@ static void abrt_keyring_load_settings(const char *event_name, event_config_t *e
 {
     GnomeKeyringAttributeList *attrs = gnome_keyring_attribute_list_new();
     guint item_id = search_item_id(event_name);
-    if(!item_id)
+    if (!item_id)
         return;
     GnomeKeyringResult result = gnome_keyring_item_get_attributes_sync(
                                     keyring,
                                     item_id,
                                     &attrs);
     VERB2 log("num attrs %i", attrs->len);
-    if(result != GNOME_KEYRING_RESULT_OK)
+    if (result != GNOME_KEYRING_RESULT_OK)
         return;
     guint index;
 
-    for(index = 0; index < attrs->len; index++)
+    for (index = 0; index < attrs->len; index++)
     {
         char *name = g_array_index(attrs, GnomeKeyringAttribute, index).name;
 VERB2 log("load %s", name);
         event_option_t *option = get_event_option_from_list(name, ec->options);
-        if(option)
+        if (option)
             option->value = g_array_index(attrs, GnomeKeyringAttribute, index).value.string;
 VERB2 log("loaded %s", name);
         //VERB2 log("load %s", g_array_index(attrs, GnomeKeyringAttribute, index).value);
@@ -100,15 +100,15 @@ VERB2 log("loaded %s", name);
 static void init_keyring()
 {
     //called again?
-    if(keyring)
+    if (keyring)
         return;
-    if(!gnome_keyring_is_available())
+    if (!gnome_keyring_is_available())
     {
         VERB2 log("Cannot connect to the Gnome Keyring daemon.");
         return;
     }
     GnomeKeyringResult result = gnome_keyring_get_default_keyring_sync(&keyring);
-    if(result != GNOME_KEYRING_RESULT_OK || keyring == NULL)
+    if (result != GNOME_KEYRING_RESULT_OK || keyring == NULL)
         VERB2 log("can't get the default kerying");
     /*
     The default keyring might not be set - in that case result = OK, but the
@@ -122,7 +122,7 @@ void load_event_config(gpointer key, gpointer value, gpointer user_data)
 {
     char* event_name = (char*)key;
     event_config_t *ec = (event_config_t *)value;
-VERB2 log("from keyring loading: %s\n", event_name);
+VERB2 log("from keyring loading: %s", event_name);
     abrt_keyring_load_settings(event_name, ec);
 
 }
@@ -133,7 +133,7 @@ VERB2 log("from keyring loading: %s\n", event_name);
 void load_event_config_data_from_keyring()
 {
     init_keyring();
-    if(!keyring)
+    if (!keyring)
         return;
     g_hash_table_foreach(g_event_config_list, &load_event_config, NULL);
 }

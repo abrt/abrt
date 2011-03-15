@@ -47,7 +47,7 @@ static int cmp_event_option_name_with_string(gconstpointer a, gconstpointer b)
 event_option_t *get_event_option_from_list(const char *name, GList *options)
 {
     GList *elem = g_list_find_custom(options, name, &cmp_event_option_name_with_string);
-    if(elem)
+    if (elem)
         return (event_option_t *)elem->data;
     return NULL;
 }

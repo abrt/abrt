@@ -1105,8 +1105,8 @@ static gboolean highlight_search(gpointer user_data)
     gtk_text_buffer_get_start_iter(buffer, &start_find);
     gtk_text_buffer_get_end_iter(buffer, &end_find);
     gtk_text_buffer_remove_tag_by_name(buffer, "search_result_bg", &start_find, &end_find);
-    VERB1 log("searching: %s\n", gtk_entry_get_text(entry));
-    while(gtk_text_iter_forward_search(&start_find, gtk_entry_get_text(entry),
+    VERB1 log("searching: %s", gtk_entry_get_text(entry));
+    while (gtk_text_iter_forward_search(&start_find, gtk_entry_get_text(entry),
                                  GTK_TEXT_SEARCH_TEXT_ONLY, &start_match,
                                  &end_match, NULL))
     {
