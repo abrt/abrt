@@ -1,5 +1,6 @@
 #include "abrtlib.h"
 #include <gtk/gtk.h>
+#include "libreport-gtk.h"
 
 static GtkWidget *option_table;
 static GtkWidget *parent_dialog;
@@ -8,8 +9,9 @@ static int last_row = 0;
 
 enum
 {
+    COLUMN_EVENT_UINAME,
     COLUMN_EVENT_NAME,
-    COLUMN_EVENT,
+    COLUMN_EVENT_BG,
     NUM_COLUMNS
 };
 
@@ -19,16 +21,17 @@ typedef struct
     GtkWidget *widget;
 } option_widget_t;
 
-static void show_event_config_dialog(event_config_t* event);
+static void show_event_config_dialog(const char *event_name);
 
-static void show_error_message(const char* message)
+static void show_error_message(const char* message, GtkWindow *parent)
 {
-    GtkWidget *dialog = gtk_message_dialog_new(NULL,
+    GtkWidget *dialog = gtk_message_dialog_new(parent,
                                                GTK_DIALOG_MODAL,
                                                GTK_MESSAGE_ERROR,
                                                GTK_BUTTONS_CLOSE,
                                                message
                                                );
+    gtk_window_set_icon_name(GTK_WINDOW(dialog), "abrt");
     gtk_dialog_run(GTK_DIALOG(dialog));
     gtk_widget_destroy(dialog);
 }
@@ -145,10 +148,10 @@ static void on_close_event_list_cb(GtkWidget *button, gpointer user_data)
     gtk_widget_destroy(window);
 }
 
-static event_config_t *get_event_config_from_row(GtkTreeView *treeview)
+static char *get_event_name_from_row(GtkTreeView *treeview)
 {
     GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
-    event_config_t *event_config = NULL;
+    char *event_name = NULL;
     if (selection)
     {
         GtkTreeIter iter;
@@ -156,38 +159,40 @@ static event_config_t *get_event_config_from_row(GtkTreeView *treeview)
         if (gtk_tree_selection_get_selected(selection, &store, &iter) == TRUE)
         {
             GValue value = { 0 };
-            gtk_tree_model_get_value(store, &iter, COLUMN_EVENT, &value);
-            event_config = (event_config_t*)g_value_get_pointer(&value);
+            gtk_tree_model_get_value(store, &iter, COLUMN_EVENT_NAME, &value);
+            event_name = (char *)g_value_get_string(&value);
         }
     }
-    return event_config;
+    return event_name;
 }
 
 static void on_configure_event_cb(GtkWidget *button, gpointer user_data)
 {
     GtkTreeView *events_tv = (GtkTreeView *)user_data;
-    event_config_t *ec = get_event_config_from_row(events_tv);
-    if(ec != NULL)
-        show_event_config_dialog(ec);
+    char *event_name = get_event_name_from_row(events_tv);
+    if(event_name != NULL)
+        show_event_config_dialog(event_name);
     else
-        show_error_message(_("Please select a plugin from the list to edit its options."));
+        show_error_message(_("Please select a plugin from the list to edit its options."), NULL);
 }
 
 static void on_event_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
 {
-    event_config_t *ec = get_event_config_from_row(treeview);
-    if(ec->options != NULL)
-        show_event_config_dialog(ec);
+    char *event_name = get_event_name_from_row(treeview);
+    event_config_t *ec = get_event_config(event_name);
+    if(ec->options != NULL) //We need to have some options to show
+        show_event_config_dialog(event_name);
 }
 
 static void on_event_row_changed_cb(GtkTreeView *treeview, gpointer user_data)
 {
-    event_config_t *ec = get_event_config_from_row(treeview);
+    event_config_t *ec = get_event_config(get_event_name_from_row(treeview));
     gtk_widget_set_sensitive(GTK_WIDGET(user_data), ec->options != NULL);
 }
 
 static void add_event_to_liststore(gpointer key, gpointer value, gpointer user_data)
 {
+    static bool grey_bg = false;
     GtkListStore *events_list_store = (GtkListStore *)user_data;
     event_config_t *ec = (event_config_t *)value;
     char *event_label = NULL;
@@ -200,9 +205,11 @@ static void add_event_to_liststore(gpointer key, gpointer value, gpointer user_d
     GtkTreeIter iter;
     gtk_list_store_append(events_list_store, &iter);
     gtk_list_store_set(events_list_store, &iter,
-                      COLUMN_EVENT_NAME, event_label,
-                      COLUMN_EVENT, value,
+                      COLUMN_EVENT_UINAME, event_label,
+                      COLUMN_EVENT_NAME, key,
+                      COLUMN_EVENT_BG, grey_bg ? "#EEEEEE" : "#FFFFFF",
                       -1);
+    grey_bg = !grey_bg;
 }
 
 static void save_value_from_widget(gpointer data, gpointer user_data)
@@ -230,7 +237,7 @@ static void dehydrate_config_dialog()
         g_list_foreach(option_widget_list, &save_value_from_widget, NULL);
 }
 
-static void show_event_config_dialog(event_config_t* event)
+static void show_event_config_dialog(const char *event_name)
 {
     if(option_widget_list != NULL)
     {
@@ -238,6 +245,7 @@ static void show_event_config_dialog(event_config_t* event)
         option_widget_list = NULL;
     }
 
+    event_config_t *event = get_event_config(event_name);
     char *title;
     if(event->screen_name != NULL)
         title = event->screen_name;
@@ -267,7 +275,10 @@ static void show_event_config_dialog(event_config_t* event)
     gtk_widget_show_all(option_table);
     int result = gtk_dialog_run(GTK_DIALOG(dialog));
     if(result == GTK_RESPONSE_APPLY)
+    {
         dehydrate_config_dialog();
+        abrt_keyring_save_settings(event_name);
+    }
     else if(result == GTK_RESPONSE_CANCEL)
         g_print("cancel\n");
     gtk_widget_destroy(GTK_WIDGET(dialog));
@@ -279,11 +290,14 @@ void show_events_list_dialog(GtkWindow *parent)
          *everytime we show the config dialog
          */
         if(g_event_config_list == NULL)
+        {
             load_event_config_data();
+            load_event_config_data_from_keyring();
+        }
         if(g_event_config_list == NULL)
         {
             VERB1 log("can't load event's config\n");
-            show_error_message(_("Can't load event descriptions"));
+            show_error_message(_("Can't load event descriptions"), parent);
             return;
         }
         parent_dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -301,7 +315,7 @@ void show_events_list_dialog(GtkWindow *parent)
         GtkWidget *main_vbox = gtk_vbox_new(0, 0);
         GtkWidget *events_scroll = gtk_scrolled_window_new(NULL, NULL);
         gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(events_scroll),
-                                        GTK_POLICY_AUTOMATIC,
+                                        GTK_POLICY_NEVER,
                                         GTK_POLICY_AUTOMATIC);
         /* event list treeview */
         GtkWidget *events_tv = gtk_tree_view_new();
@@ -314,19 +328,24 @@ void show_events_list_dialog(GtkWindow *parent)
         column = gtk_tree_view_column_new_with_attributes(_("Event"),
                                                      renderer,
                                                      "markup",
-                                                     COLUMN_EVENT_NAME,
+                                                     COLUMN_EVENT_UINAME,
+                                                     "background",
+                                                     COLUMN_EVENT_BG,
                                                      NULL);
         gtk_tree_view_column_set_resizable(column, TRUE);
+        g_object_set(G_OBJECT(renderer), "wrap-mode", PANGO_WRAP_WORD, NULL);
+        g_object_set(G_OBJECT(renderer), "wrap-width", 440, NULL);
         gtk_tree_view_column_set_sort_column_id(column, COLUMN_EVENT_NAME);
         gtk_tree_view_append_column(GTK_TREE_VIEW(events_tv), column);
 
         /* Create data store for the list and attach it
-        * COLUMN_EVENT_NAME -> name+description
-        * COLUMN_EVENT -> event_conf_t* so we can retrieve the event_config from the row
+        * COLUMN_EVENT_UINAME -> name+description
+        * COLUMN_EVENT_NAME -> event name so we can retrieve it from the row
         */
         GtkListStore *events_list_store = gtk_list_store_new(NUM_COLUMNS,
                                                     G_TYPE_STRING, /* Event name + description */
-                                                    G_TYPE_POINTER);
+                                                    G_TYPE_STRING, /* event name */
+                                                    G_TYPE_STRING);/* bg color */
         gtk_tree_view_set_model(GTK_TREE_VIEW(events_tv), GTK_TREE_MODEL(events_list_store));
 
         g_hash_table_foreach(g_event_config_list,

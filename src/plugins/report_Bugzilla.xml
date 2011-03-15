@@ -7,6 +7,7 @@
            <label>Bugzilla URL</label>
            <allow-empty>no</allow-empty>
            <description>Address of the bugzilla server</description>
+           <default-value>https://bugzilla.redhat.com</default-value>
            <property>Address of the bugzilla server</property>
            <notused1>blahblahblah</notused1>
        </option>
@@ -23,6 +24,7 @@
        <option type="bool" name="Bugzilla_SSLVerify">
            <label>SSL Verify</label>
            <description>Check the ssl key validity</description>
+           <default-value>yes</default-value>
        </option>
     </options>
 </event>

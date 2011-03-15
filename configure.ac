@@ -3,11 +3,6 @@ AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign silent-rules])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 
-AC_ARG_ENABLE(debug,
-              [AC_HELP_STRING([--enable-debug],
-                             [Enable debug information])],
-              [CXXFLAGS="$CXXFLAGS -DDEBUG -ggdb -g"])
-
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 AC_PROG_CC
@@ -18,6 +13,11 @@ CXXFLAGS="$CXXFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
           -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing "
 CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
           -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing -std=gnu99 -Wall"
+
+AC_ARG_ENABLE(debug,
+              [AC_HELP_STRING([--enable-debug],
+                             [Enable debug information])],
+              [CXXFLAGS="$CXXFLAGS -DDEBUG -ggdb -g" CFLAGS="$CFLAGS -DDEBUG -ggdb -g"])
 
 dnl ****** INTERNATIONALIZATION **********************
 GETTEXT_PACKAGE=abrt
@@ -47,6 +47,7 @@ PKG_CHECK_MODULES([LIBNOTIFY], [libnotify])
 PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([XMLRPC], [xmlrpc])
 PKG_CHECK_MODULES([XMLRPC_CLIENT], [xmlrpc_client])
+PKG_CHECK_MODULES([GNOME_KEYRING], [gnome-keyring-1])
 # Just PKG_CHECK_MODULES([PYTHON], [python]) works only with python2.7+
 # Below, if python is not found, we set up for python2.6 w/o checking:
 PKG_CHECK_MODULES([PYTHON], [python],,[
@@ -133,6 +134,7 @@ AC_CONFIG_FILES([
 	src/daemon/Makefile
 	src/hooks/Makefile
 	src/applet/Makefile
+	src/gtk-helpers/Makefile
 	src/gui-gtk/Makefile
 	src/gui-wizard-gtk/Makefile
 	src/cli/Makefile
