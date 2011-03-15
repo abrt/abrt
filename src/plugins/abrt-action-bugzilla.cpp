@@ -41,9 +41,10 @@ struct bug_info {
     const char* bug_reporter;
     const char* bug_product;
     xmlrpc_int32 bug_dup_id;
-    std::vector<char*> bug_cc;
+    GList* bug_cc;
 };
 
+/* xzalloc */
 static void bug_info_init(struct bug_info* bz)
 {
     bz->bug_status = NULL;
@@ -60,27 +61,7 @@ static void bug_info_destroy(struct bug_info* bz)
     free((void*)bz->bug_reporter);
     free((void*)bz->bug_product);
 
-    if (!bz->bug_cc.empty())
-    {
-        for (unsigned ii = 0; ii < bz->bug_cc.size(); ii++)
-            free(bz->bug_cc[ii]);
-
-        bz->bug_cc.clear();
-    }
-}
-
-static int am_i_in_cc(const struct bug_info* bz, const char* login)
-{
-    if (bz->bug_cc.empty())
-        return -1;
-
-    int size = bz->bug_cc.size();
-    for (int ii = 0; ii < size; ii++)
-    {
-        if (strcmp(login, bz->bug_cc[ii]) == 0)
-            return 0;
-    }
-    return -1;
+    list_free_with_free(bz->bug_cc);
 }
 
 /*
@@ -308,7 +289,7 @@ void ctx::get_bug_cc(xmlrpc_value* result_xml, struct bug_info* bz)
 
             if (*cc != '\0')
             {
-                bz->bug_cc.push_back((char*)cc);
+                bz->bug_cc = g_list_append(bz->bug_cc, (char*)cc);
                 VERB3 log("member on cc is %s", cc);
                 continue;
             }
@@ -846,7 +827,8 @@ static void report_to_bugzilla(
     if (strcmp(bz.bug_status, "CLOSED") != 0)
     {
         int status = 0;
-        if ((strcmp(bz.bug_reporter, login) != 0) && (am_i_in_cc(&bz, login)))
+        if ((strcmp(bz.bug_reporter, login) != 0)
+            && (g_list_find(bz.bug_cc, login)))
         {
             log(_("Add %s to CC list"), login);
             status = bz_server.add_plus_one_cc(bug_id, login);
