@@ -106,9 +106,9 @@ void load_event_config_data(void)
             if (!ext || 0 != strcmp(ext + 1, "xml"))
                 error_msg_and_die("Invalid event symlink '%s': expected it to point to another xml file", fullname);
             *ext = '\0';
-            g_hash_table_replace(g_event_config_symlinks, xstrdup(dent->d_name), basename);
+            g_hash_table_replace(g_event_config_symlinks, xstrdup(dent->d_name), target);
             g_free(link);
-            /* don't free basename, it is owned by the hash table now */
+            /* don't free target, it is owned by the hash table now */
             continue;
         }
 
