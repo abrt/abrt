@@ -1225,23 +1225,6 @@ static void add_pages(void)
 
         pages[i].page_widget = page;
 
-        /* add a configure button wherever it makes sense to configure events */
-        if (i == PAGENO_ANALYZE_SELECTOR
-          ||i == PAGENO_REPORTER_SELECTOR)
-        {
-            GtkWidget *configure = gtk_button_new_from_stock(GTK_STOCK_PREFERENCES);
-            g_signal_connect(G_OBJECT(configure), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
-            GtkWidget *align = gtk_alignment_new(0, 0, 0, 0);
-            GtkWidget *hbutton_box = gtk_hbox_new(false, 0);
-
-            gtk_box_pack_start(GTK_BOX(hbutton_box), configure, false, false, 0);
-            gtk_box_pack_start(GTK_BOX(hbutton_box), align, false, true, 0);
-
-            //we can do this only because we know that the page is gtk_vbox
-            gtk_box_pack_start(GTK_BOX(page), hbutton_box, false, false, 0);
-            gtk_widget_show_all(hbutton_box);
-        }
-
         gtk_assistant_append_page(g_assistant, page);
         /* If we set all pages to complete the wizard thinks there is nothing
          * to do and shows the button "Last" which allows user to skip all pages
@@ -1286,6 +1269,16 @@ static void add_pages(void)
     //gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_REPORTER_SELECTOR].page_widget, false);
     gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
                 gtk_toggle_button_get_active(g_tb_approve_bt));
+
+    /* configure btn on select analyzers page */
+    GtkWidget *config_btn = GTK_WIDGET(gtk_builder_get_object(builder, "button_cfg1"));
+    if (config_btn)
+        g_signal_connect(G_OBJECT(config_btn), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
+
+    /* configure btn on select reporters page */
+    config_btn = GTK_WIDGET(gtk_builder_get_object(builder, "button_cfg2"));
+    if (config_btn)
+        g_signal_connect(G_OBJECT(config_btn), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
 }
 
 void create_assistant()
