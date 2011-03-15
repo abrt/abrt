@@ -25,15 +25,15 @@
 // Text bigger than this usually is attached, not added inline
 #define CD_TEXT_ATT_SIZE (2*1024)
 
-// Keep in sync with CCDump.py:
-
 // Filenames in dump directory:
 // filled by a hook:
+#define FILENAME_REASON       "reason"      /* mandatory */
+#define FILENAME_UID          "uid"         /* mandatory */
+#define FILENAME_TIME         "time"        /* mandatory */
 #define FILENAME_ANALYZER     "analyzer"
 #define FILENAME_EXECUTABLE   "executable"
 #define FILENAME_BINARY       "binary"
 #define FILENAME_CMDLINE      "cmdline"
-#define FILENAME_REASON       "reason"
 #define FILENAME_COREDUMP     "coredump"
 #define FILENAME_BACKTRACE    "backtrace"
 #define FILENAME_MAPS         "maps"
@@ -45,8 +45,7 @@
 // filled by CDebugDump::Create() (which also fills FILENAME_UID):
 #define FILENAME_ARCHITECTURE "architecture"
 #define FILENAME_KERNEL       "kernel"
-#define FILENAME_TIME         "time"
-// From /etc/syste-release or /etc/redhat-release
+// From /etc/system-release or /etc/redhat-release
 #define FILENAME_OS_RELEASE   "os_release"
 // Filled by <what?>
 #define FILENAME_PACKAGE      "package"
@@ -59,17 +58,24 @@
 #define FILENAME_TAINTED      "kernel_tainted"
 // TODO: TicketUploader also has open-coded "TICKET", "CUSTOMER" files
 
-#define FILENAME_UID       "uid"
-#define FILENAME_UUID      "uuid"
-#define FILENAME_INFORMALL "inform_all_users"
-#define FILENAME_COUNT     "count"
-#define FILENAME_MESSAGE   "message"
+#define FILENAME_UUID         "uuid"
+#define FILENAME_INFORMALL    "inform_all_users"
+#define FILENAME_COUNT        "count"
+#define FILENAME_MESSAGE      "message"
+#define FILENAME_EVENT_LOG    "event_log"
 // Not stored as files, added "on the fly":
 #define CD_DUMPDIR         "DumpDir"
 // "Which events are possible (make sense) on this crash dump?"
 // (a string with "\n" terminated event names)
 #define CD_EVENTS          "Events"
 
+/* FILENAME_EVENT_LOG is trimmed to below LOW_WATERMARK
+ * when it reaches HIGH_WATERMARK size
+ */
+enum {
+    EVENT_LOG_HIGH_WATERMARK = 30 * 1024,
+    EVENT_LOG_LOW_WATERMARK  = 20 * 1024,
+};
 
 #ifdef __cplusplus
 extern "C" {
