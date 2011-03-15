@@ -588,8 +588,16 @@ struct analyze_event_data
     GtkTextView *tv_log;
     const char *end_msg;
     GIOChannel *channel;
+    struct strbuf *event_log;
+    int event_log_state;
     int fd;
     /*guint event_source_id;*/
+};
+enum {
+    LOGSTATE_FIRSTLINE = 0,
+    LOGSTATE_BEGLINE,
+    LOGSTATE_ERRLINE,
+    LOGSTATE_MIDLINE,
 };
 
 static GList *export_event_config(const char *event_name)
@@ -638,31 +646,119 @@ static int spawn_next_command_in_evd(struct analyze_event_data *evd)
     return r;
 }
 
+static void save_to_event_log(struct analyze_event_data *evd, const char *str)
+{
+    static const char delim[] = {
+        [LOGSTATE_FIRSTLINE] = '>',
+        [LOGSTATE_BEGLINE] = ' ',
+        [LOGSTATE_ERRLINE] = '*',
+    };
+
+    while (str[0])
+    {
+        char *end = strchrnul(str, '\n');
+        char end_char = *end;
+        if (end_char == '\n')
+            end++;
+        switch (evd->event_log_state)
+        {
+            case LOGSTATE_FIRSTLINE:
+            case LOGSTATE_BEGLINE:
+            case LOGSTATE_ERRLINE:
+                /* skip empty lines */
+                if (str[0] == '\n')
+                    goto next;
+                strbuf_append_strf(evd->event_log, "%s%c %.*s",
+                        iso_date_string(NULL),
+                        delim[evd->event_log_state],
+                        (int)(end - str), str
+                );
+                break;
+            case LOGSTATE_MIDLINE:
+                strbuf_append_strf(evd->event_log, "%.*s", (int)(end - str), str);
+                break;
+        }
+        evd->event_log_state = LOGSTATE_MIDLINE;
+        if (end_char != '\n')
+            break;
+        evd->event_log_state = LOGSTATE_BEGLINE;
+ next:
+        str = end;
+    }
+}
+
+static void update_event_log_on_disk(const char *str)
+{
+    struct dump_dir *dd = dd_opendir(g_dump_dir_name, 0);
+    if (!dd)
+        return;
+    char *event_log = dd_load_text_ext(dd, FILENAME_EVENT_LOG, DD_FAIL_QUIETLY_ENOENT);
+
+    event_log = append_to_malloced_string(event_log, str);
+    char *new_log = event_log;
+    unsigned len = strlen(event_log);
+    if (len > EVENT_LOG_HIGH_WATERMARK)
+    {
+        new_log += len - EVENT_LOG_LOW_WATERMARK;
+        new_log = strchrnul(new_log, '\n');
+        if (new_log[0])
+            new_log++;
+    }
+
+    dd_save_text(dd, FILENAME_EVENT_LOG, new_log);
+    free(event_log);
+    dd_close(dd);
+}
+
 static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, gpointer data)
 {
     struct analyze_event_data *evd = data;
 
     /* Read and insert the output into the log pane */
-    char buf[256]; /* usually we get one line, no need to have big buf */
+    char buf[257]; /* usually we get one line, no need to have big buf */
     int r;
-    while ((r = read(evd->fd, buf, sizeof(buf))) > 0)
+    while ((r = read(evd->fd, buf, sizeof(buf)-1)) > 0)
     {
+        buf[r] = '\0';
         append_to_textview(evd->tv_log, buf, r);
+        save_to_event_log(evd, buf);
     }
 
     if (r < 0 && errno == EAGAIN)
         /* We got all buffered data, but fd is still open. Done for now */
         return TRUE; /* "please don't remove this event (yet)" */
 
-    /* EOF/error. Wait for child to actually exit, collect status */
+    /* EOF/error */
+
+    unexport_event_config(evd->env_list);
+    evd->env_list = NULL;
+
+    /* Wait for child to actually exit, collect status */
     int status;
     waitpid(evd->run_state->command_pid, &status, 0);
     int retval = WEXITSTATUS(status);
     if (WIFSIGNALED(status))
         retval = WTERMSIG(status) + 128;
 
-    unexport_event_config(evd->env_list);
-    evd->env_list = NULL;
+    /* Write a final message to the log */
+    if (evd->event_log->len != 0 && evd->event_log->buf[evd->event_log->len - 1] != '\n')
+        save_to_event_log(evd, "\n");
+    if (retval != 0)
+    {
+        evd->event_log_state = LOGSTATE_ERRLINE;
+        char *msg;
+        if (WIFSIGNALED(status))
+            msg = xasprintf("(killed by signal %d)\n", WTERMSIG(status));
+        else
+            msg = xasprintf("(exited with %d)\n", retval);
+        save_to_event_log(evd, msg);
+        free(msg);
+    }
+
+    /* Append log to FILENAME_EVENT_LOG */
+    update_event_log_on_disk(evd->event_log->buf);
+    strbuf_clear(evd->event_log);
+    evd->event_log_state = LOGSTATE_FIRSTLINE;
 
     /* Stop if exit code is not 0, or no more commands */
     if (retval != 0
@@ -684,6 +780,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                 /*g_source_remove(evd->event_source_id);*/
                 close(evd->fd);
                 free_run_event_state(evd->run_state);
+                strbuf_free(evd->event_log);
                 free(evd);
 
                 reload_crash_data_from_dump_dir();
@@ -776,6 +873,7 @@ static void start_event_run(const char *event_name,
     evd->status_label = status_label;
     evd->tv_log = tv_log;
     evd->end_msg = end_msg;
+    evd->event_log = strbuf_new();
     evd->fd = state->command_out_fd;
     ndelay_on(evd->fd);
     evd->channel = g_io_channel_unix_new(evd->fd);
@@ -786,7 +884,7 @@ static void start_event_run(const char *event_name,
     );
 
     gtk_label_set_text(status_label, start_msg);
-    /* Freeze assistant so it can't move away from the page until analyzing is done */
+    /* Freeze assistant so it can't move away from the page until event run is done */
     gtk_assistant_set_page_complete(g_assistant, page, false);
 }
 
@@ -914,7 +1012,8 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
             for (GList *li = reporters; li; li = li->next)
             {
                 if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
-                    li->data = (gpointer)gtk_button_get_label(GTK_BUTTON(li->data));
+                    /* Button's tooltip contains event_name */
+                    li->data = (gpointer)gtk_widget_get_tooltip_text(GTK_WIDGET(li->data));
                 else
                     li->data = NULL;
             }
