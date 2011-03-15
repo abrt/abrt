@@ -1,6 +1,7 @@
 #include "abrtlib.h"
 
 GHashTable *g_event_config_list;
+static GHashTable *g_event_config_symlinks;
 
 event_option_t *new_event_option(void)
 {
@@ -56,6 +57,13 @@ void load_event_config_data(void)
                 /*key_destroy_func:*/ free,
                 /*value_destroy_func:*/ (GDestroyNotify) free_event_config
         );
+    if (!g_event_config_symlinks)
+        g_event_config_symlinks = g_hash_table_new_full(
+                /*hash_func*/ g_str_hash,
+                /*key_equal_func:*/ g_str_equal,
+                /*key_destroy_func:*/ free,
+                /*value_destroy_func:*/ free
+        );
 
     DIR *dir;
     struct dirent *dent;
@@ -73,8 +81,29 @@ void load_event_config_data(void)
             continue;
 
         char *fullname = concat_path_file(EVENTS_DIR, dent->d_name);
-
         *ext = '\0';
+
+        struct stat buf;
+        if (0 != lstat(fullname, &buf))
+            continue;
+        if (S_ISLNK(buf.st_mode))
+        {
+            GError *error = NULL;
+            gchar *link = g_file_read_link(fullname, &error);
+            if (error != NULL)
+                error_msg_and_die("Error reading symlink '%s': %s", fullname, error->message);
+
+            gchar *target = g_path_get_basename(link);
+            char *ext = strrchr(target, '.');
+            if (!ext || 0 != strcmp(ext + 1, "xml"))
+                error_msg_and_die("Invalid event symlink '%s': expected it to point to another xml file", fullname);
+            *ext = '\0';
+            g_hash_table_replace(g_event_config_symlinks, xstrdup(dent->d_name), basename);
+            g_free(link);
+            /* don't free basename, it is owned by the hash table now */
+            continue;
+        }
+
         event_config_t *event_config = get_event_config(dent->d_name);
         bool new_config = (!event_config);
         if (new_config)
@@ -155,11 +184,22 @@ void free_event_config_data(void)
         g_hash_table_destroy(g_event_config_list);
         g_event_config_list = NULL;
     }
+    if (g_event_config_symlinks)
+    {
+        g_hash_table_destroy(g_event_config_symlinks);
+        g_event_config_symlinks = NULL;
+    }
 }
 
 event_config_t *get_event_config(const char *name)
 {
     if (!g_event_config_list)
         return NULL;
+    if (g_event_config_symlinks)
+    {
+        char *link = g_hash_table_lookup(g_event_config_symlinks, name);
+        if (link)
+            name = link;
+    }
     return g_hash_table_lookup(g_event_config_list, name);
 }
