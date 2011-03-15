@@ -1,3 +1,21 @@
+/*
+    Copyright (C) 2011  ABRT Team
+    Copyright (C) 2011  RedHat inc.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
 #include "abrtlib.h"
 
 GHashTable *g_event_config_list;
@@ -48,7 +66,7 @@ static int cmp_event_option_name_with_string(gconstpointer a, gconstpointer b)
 event_option_t *get_event_option_from_list(const char *name, GList *options)
 {
     GList *elem = g_list_find_custom(options, name, &cmp_event_option_name_with_string);
-    if(elem)
+    if (elem)
         return (event_option_t *)elem->data;
     return NULL;
 }

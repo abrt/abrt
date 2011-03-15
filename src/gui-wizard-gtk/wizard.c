@@ -1,7 +1,26 @@
+/*
+    Copyright (C) 2011  ABRT Team
+    Copyright (C) 2011  RedHat inc.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
 #include <gtk/gtk.h>
 #include "abrtlib.h"
 #include "abrt_dbus.h"
 #include "wizard.h"
+#include "libreport-gtk.h"
 
 #define DEFAULT_WIDTH   800
 #define DEFAULT_HEIGHT  500
@@ -760,6 +779,17 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     strbuf_clear(evd->event_log);
     evd->event_log_state = LOGSTATE_FIRSTLINE;
 
+    if (geteuid() == 0)
+    {
+        /* Reset mode/uig/gid to correct values for all files created by event run */
+        struct dump_dir *dd = dd_opendir(g_dump_dir_name, 0);
+        if (dd)
+        {
+            dd_sanitize_mode_and_owner(dd);
+            dd_close(dd);
+        }
+    }
+
     /* Stop if exit code is not 0, or no more commands */
     if (retval != 0
      || spawn_next_command_in_evd(evd) < 0
@@ -850,7 +880,8 @@ static void start_event_run(const char *event_name,
 
     /* Load /etc/abrt/events/foo.{conf,xml} stuff */
     load_event_config_data();
-//TODO: load overrides from keyring? Load ~/.abrt/events/foo.conf?
+    load_event_config_data_from_keyring();
+    //TODO: Load ~/.abrt/events/foo.conf?
 
     GList *env_list = export_event_config(event_name);
     if (spawn_next_command(state, g_dump_dir_name, event_name) < 0)
@@ -884,6 +915,8 @@ static void start_event_run(const char *event_name,
     );
 
     gtk_label_set_text(status_label, start_msg);
+//TODO: save_to_event_log(evd, "message that we run event foo")?
+
     /* Freeze assistant so it can't move away from the page until event run is done */
     gtk_assistant_set_page_complete(g_assistant, page, false);
 }
@@ -1035,6 +1068,11 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
     }
 }
 
+static void on_show_event_list_cb(GtkWidget *button, gpointer user_data)
+{
+    show_events_list_dialog(GTK_WINDOW(g_assistant));
+}
+
 static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
 {
     if (pages[PAGENO_BACKTRACE_APPROVAL].page_widget == page)
@@ -1105,8 +1143,8 @@ static gboolean highlight_search(gpointer user_data)
     gtk_text_buffer_get_start_iter(buffer, &start_find);
     gtk_text_buffer_get_end_iter(buffer, &end_find);
     gtk_text_buffer_remove_tag_by_name(buffer, "search_result_bg", &start_find, &end_find);
-    VERB1 log("searching: %s\n", gtk_entry_get_text(entry));
-    while(gtk_text_iter_forward_search(&start_find, gtk_entry_get_text(entry),
+    VERB1 log("searching: %s", gtk_entry_get_text(entry));
+    while (gtk_text_iter_forward_search(&start_find, gtk_entry_get_text(entry),
                                  GTK_TEXT_SEARCH_TEXT_ONLY, &start_match,
                                  &end_match, NULL))
     {
@@ -1244,6 +1282,16 @@ static void add_pages(void)
     //gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_REPORTER_SELECTOR].page_widget, false);
     gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
                 gtk_toggle_button_get_active(g_tb_approve_bt));
+
+    /* configure btn on select analyzers page */
+    GtkWidget *config_btn = GTK_WIDGET(gtk_builder_get_object(builder, "button_cfg1"));
+    if (config_btn)
+        g_signal_connect(G_OBJECT(config_btn), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
+
+    /* configure btn on select reporters page */
+    config_btn = GTK_WIDGET(gtk_builder_get_object(builder, "button_cfg2"));
+    if (config_btn)
+        g_signal_connect(G_OBJECT(config_btn), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
 }
 
 void create_assistant()

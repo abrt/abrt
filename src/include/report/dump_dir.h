@@ -50,8 +50,11 @@ struct dump_dir *dd_opendir(const char *dir, int flags);
  * (IOW: if you aren't running under root):
  */
 struct dump_dir *dd_create(const char *dir, uid_t uid);
+
 void dd_create_basic_files(struct dump_dir *dd, uid_t uid);
 int dd_exist(struct dump_dir *dd, const char *path);
+void dd_sanitize_mode_and_owner(struct dump_dir *dd);
+
 DIR *dd_init_next_file(struct dump_dir *dd);
 int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name);
 

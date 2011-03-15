@@ -1,6 +1,4 @@
 /*
-    Mailx.cpp
-
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
     Copyright (C) 2009  RedHat inc.
 
