@@ -1,32 +1,28 @@
-# translation of abrt.master.po to Dutch
-# abrt translation to Dutc.
+# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Geert Warrink <geert.warrink@onsnet.nu>, 2009, 2010, 2011.
-# Richard van der Luit <nippur@fedoraproject.org>, 2009.
-# Geert Warrink <geert.warrink@onsnet.nu>, 2009, 2010, 2011.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.master\n"
+"Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-03 21:09+0100\n"
-"PO-Revision-Date: 2011-02-07 13:04+0200\n"
-"Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
-"Language-Team: Fedora\n"
+"POT-Creation-Date: 2011-03-15 20:32+0100\n"
+"PO-Revision-Date: 2011-03-06 14:05+0000\n"
+"Last-Translator: warrink <geert.warrink@onsnet.nu>\n"
+"Language-Team: Dutch <>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.6.1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
 msgstr "ABRT bericht applet "
 
-#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui/abrt.desktop.in.h:1
-#: ../src/gui/ccgui.glade.h:10 ../src/gui/CCMainWindow.py:8
-#: ../src/gui/report.glade.h:16
+#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt-gtk.c:345
+#: ../src/gui-gtk/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "Automatisch bug rapporteer gereedschap"
 
@@ -43,35 +39,35 @@ msgstr "Een crash is ontdekt"
 msgid "ABRT service is not running"
 msgstr "ABRT service draait niet"
 
-#: ../src/applet/applet_gtk.c:176 ../src/applet/applet_gtk.c:178
-#: ../src/applet/applet_gtk.c:367 ../src/applet/applet_gtk.c:394
+#: ../src/applet/applet_gtk.c:177 ../src/applet/applet_gtk.c:179
+#: ../src/applet/applet_gtk.c:368 ../src/applet/applet_gtk.c:395
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: ../src/applet/applet_gtk.c:230
+#: ../src/applet/applet_gtk.c:231
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "Mededelingen gebied applet om gebruiker te berichten over problemen ontdekt "
 "door ABRT"
 
-#: ../src/applet/applet_gtk.c:246 ../src/gui/ccgui.glade.h:24
+#: ../src/applet/applet_gtk.c:247 ../src/gui-gtk/abrt-gtk.c:230
 msgid "translator-credits"
 msgstr "Geert Warrink <geert.warrink@onsnet.nu>"
 
-#: ../src/applet/applet_gtk.c:256
+#: ../src/applet/applet_gtk.c:257
 msgid "Hide"
 msgstr "Verbergen"
 
-#: ../src/applet/applet_gtk.c:360 ../src/gui/ccgui.glade.h:14
+#: ../src/applet/applet_gtk.c:361
 msgid "Report"
 msgstr "Rapport"
 
-#: ../src/applet/applet_gtk.c:363 ../src/applet/applet_gtk.c:391
+#: ../src/applet/applet_gtk.c:364 ../src/applet/applet_gtk.c:392
 msgid "Open ABRT"
 msgstr "Open ABRT"
 
-#: ../src/cli/CLI.cpp:90
+#: ../src/cli/cli.c:90
 #, c-format
 msgid ""
 "\tCrash dump : %s\n"
@@ -88,12 +84,12 @@ msgstr ""
 "\tCrash tijd      : %s\n"
 "\tCrash telling   : %s\n"
 
-#: ../src/cli/CLI.cpp:109
+#: ../src/cli/cli.c:109
 #, c-format
 msgid "\tHostname   : %s\n"
 msgstr "\tHost naam   : %s\n"
 
-#: ../src/cli/CLI.cpp:142
+#: ../src/cli/cli.c:142
 #, c-format
 msgid ""
 "Dump directory:     %s\n"
@@ -116,27 +112,27 @@ msgstr ""
 "Systeem:            %s, kernel %s\n"
 "Reden:              %s\n"
 
-#: ../src/cli/CLI.cpp:170
+#: ../src/cli/cli.c:170
 #, c-format
 msgid "Coredump file:      %s\n"
 msgstr "Coredump bestand:   %s\n"
 
-#: ../src/cli/CLI.cpp:174
+#: ../src/cli/cli.c:174
 #, c-format
 msgid "Rating:             %s\n"
 msgstr "Beoordeling:        %s\n"
 
-#: ../src/cli/CLI.cpp:179
+#: ../src/cli/cli.c:179
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr "Crash functie:      %s\n"
 
-#: ../src/cli/CLI.cpp:183
+#: ../src/cli/cli.c:183
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr "Host naam:          %s\n"
 
-#: ../src/cli/CLI.cpp:187
+#: ../src/cli/cli.c:187
 #, c-format
 msgid ""
 "\n"
@@ -147,7 +143,7 @@ msgstr ""
 "Commentaar:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:193
+#: ../src/cli/cli.c:193
 #, c-format
 msgid ""
 "\n"
@@ -158,7 +154,7 @@ msgstr ""
 "Backtrace:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:250
+#: ../src/cli/cli.c:250
 #, c-format
 msgid ""
 "Usage: %s -l[f] [-D BASE_DIR]...]\n"
@@ -199,7 +195,7 @@ msgstr ""
 "\t-V, --version\t\tToon versie en sluit af\n"
 "\t-v, --verbose\t\tGeef uitgebreide informatie\n"
 
-#: ../src/cli/CLI.cpp:298
+#: ../src/cli/cli.c:298
 msgid "You must specify exactly one operation"
 msgstr "Je moet exact een bewerking specificeren."
 
@@ -299,24 +295,24 @@ msgstr "Voer jouw gebruikersnaam in:"
 msgid "Enter your password: "
 msgstr "Voer jouw wachtwoord in:"
 
-#: ../src/cli/report.cpp:766
+#: ../src/cli/report.cpp:760 ../src/gui-wizard-gtk/wizard.c:1063
 msgid "Reporting..."
 msgstr "Rapporteren..."
 
-#: ../src/cli/report.cpp:779
+#: ../src/cli/report.cpp:773
 #, c-format
 msgid "Report using %s?"
 msgstr "Rapporteren met gebruik van %s? "
 
-#: ../src/cli/report.cpp:782
+#: ../src/cli/report.cpp:776
 msgid "Skipping..."
 msgstr "Overslaan..."
 
-#: ../src/cli/report.cpp:798
+#: ../src/cli/report.cpp:792
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Rapporteren is uitgezet omdat de backtrace onbruikbaar is."
 
-#: ../src/cli/report.cpp:802
+#: ../src/cli/report.cpp:796
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -325,7 +321,7 @@ msgstr ""
 "Probeer debuginfo handmatig te installeren met het commando: \"debuginfo-"
 "install %s\" en probeer het opnieuw\n"
 
-#: ../src/cli/report.cpp:820
+#: ../src/cli/report.cpp:814
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "Crash gerapporteerd via %d rapport gebeurtenissen (%d fouten)\n"
@@ -346,9 +342,9 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
 #: ../src/plugins/abrt-action-bugzilla.cpp:933
-#: ../src/plugins/abrt-action-generate-backtrace.c:270
+#: ../src/plugins/abrt-action-generate-backtrace.c:269
 #: ../src/plugins/abrt-action-kerneloops.c:147
-#: ../src/plugins/abrt-action-mailx.c:149
+#: ../src/plugins/abrt-action-mailx.c:147
 #: ../src/plugins/abrt-action-print.c:50
 #: ../src/plugins/abrt-action-rhtsupport.c:280
 #: ../src/plugins/abrt-action-upload.c:260
@@ -358,7 +354,7 @@ msgstr "Crash dump map"
 #: ../src/daemon/abrt-action-save-package-data.c:258
 #: ../src/daemon/abrt-handle-crashdump.c:59 ../src/daemon/abrt-server.c:297
 #: ../src/plugins/abrt-action-bugzilla.cpp:932
-#: ../src/plugins/abrt-action-generate-backtrace.c:273
+#: ../src/plugins/abrt-action-generate-backtrace.c:272
 #: ../src/plugins/abrt-action-kerneloops.c:146
 #: ../src/plugins/abrt-action-rhtsupport.c:279
 #: ../src/plugins/abrt-dump-oops.c:555
@@ -381,7 +377,7 @@ msgstr "Handel gebeurtenis af"
 msgid "List possible events [which start with PFX]"
 msgstr "Laat mogelijke gebeurtenissen zien [die beginnen met PFX]"
 
-#: ../src/daemon/abrt-server.c:286 ../src/daemon/Daemon.cpp:542
+#: ../src/daemon/abrt-server.c:286 ../src/daemon/Daemon.cpp:544
 msgid " [options]"
 msgstr " [opties]"
 
@@ -401,305 +397,124 @@ msgstr ""
 "De grootte van het rapport overschreed de quota. Controleer de "
 "MaxCrashReportsSize waarde van het systeem in abrt.conf."
 
-#: ../src/daemon/Daemon.cpp:553
+#: ../src/daemon/Daemon.cpp:555
 msgid "Do not daemonize"
 msgstr "Niet instellen als daemon"
 
-#: ../src/daemon/Daemon.cpp:554
+#: ../src/daemon/Daemon.cpp:556
 msgid "Log to syslog even with -d"
 msgstr "Loggen naar syslog zelfs met -d"
 
-#: ../src/daemon/Daemon.cpp:555
+#: ../src/daemon/Daemon.cpp:557
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Afsluiten na SEC seconden van inactiviteit"
 
-#: ../src/gui/abrt.desktop.in.h:2
-msgid "View and report application crashes"
-msgstr "Bekijk en rapporteer crashes van toepassingen"
+#: ../src/gtk-helpers/event_config_dialog.c:127
+#: ../src/plugins/Bugzilla.glade.h:7 ../src/plugins/RHTSupport.glade.h:6
+msgid "Show password"
+msgstr "Wachtwoord tonen"
 
-#: ../src/gui/ABRTExceptions.py:7
-msgid "Another client is already running, trying to wake it..."
-msgstr "Een andere cliënt draait al, probeer het te wekken..."
+#: ../src/gtk-helpers/event_config_dialog.c:258
+#, fuzzy
+msgid "Event Configuration"
+msgstr "Configureer %s opties"
 
-#: ../src/gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
+#: ../src/gtk-helpers/event_config_dialog.c:303
+msgid "Events"
 msgstr ""
-"Kreeg onverwachte data van de daemon (is de database correct vernieuwd?)."
 
-#: ../src/gui/ABRTPlugin.py:64
-msgid "Not loaded plugins"
-msgstr "Niet geladen plug-ins"
-
-#: ../src/gui/ABRTPlugin.py:65
-msgid "Analyzer plugins"
-msgstr "Analyse plug-ins"
-
-#: ../src/gui/ABRTPlugin.py:66
-msgid "Action plugins"
-msgstr "Actie plug-ins"
-
-#: ../src/gui/ABRTPlugin.py:67
-msgid "Reporter plugins"
-msgstr "Aanmeld plug-ins"
-
-#: ../src/gui/ABRTPlugin.py:68
-msgid "Database plugins"
-msgstr "Database plug-ins"
-
-#: ../src/gui/CCDBusBackend.py:75 ../src/gui/CCDBusBackend.py:98
-msgid "Cannot connect to system dbus."
-msgstr "Kan niet verbinden met systeem dbus."
-
-#: ../src/gui/CCDBusBackend.py:121 ../src/gui/CCDBusBackend.py:124
-msgid "Please check if the abrt daemon is running."
-msgstr "Controleer of de abrt daemon draait."
-
-#. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:170
-msgid ""
-"Daemon did not return a valid report info.\n"
-"Is debuginfo missing?"
+#: ../src/gtk-helpers/event_config_dialog.c:327
+msgid "Event"
 msgstr ""
-"Daemon gaf geen geldige rapport info terug.\n"
-"Mist debuginfo?"
 
-#: ../src/gui/ccgui.glade.h:1
-msgid "(C) 2009, 2010 Red Hat, Inc."
-msgstr "(C) 2009, 2010 Red Hat, Inc."
+#: ../src/gtk-helpers/event_config_dialog.c:359
+#, fuzzy
+msgid "Configure E_vent"
+msgstr "C_onfigureer plug-in"
 
-#: ../src/gui/ccgui.glade.h:2
-msgid "<b>Bug Reports:</b>"
-msgstr "<b>Bug rapporten:</b>"
-
-#: ../src/gui/ccgui.glade.h:3
-msgid "<b>Command:</b>"
-msgstr "<b>Commando:</b>"
-
-#: ../src/gui/ccgui.glade.h:4
-msgid "<b>Comment:</b>"
-msgstr "<b>Commentaar:</b>"
-
-#: ../src/gui/ccgui.glade.h:5
-msgid "<b>Crash Count:</b>"
-msgstr "<b>Crash telling:</b>"
-
-#: ../src/gui/ccgui.glade.h:6
-msgid "<b>Latest Crash:</b>"
-msgstr "<b>Laatste crash:</b>"
-
-#: ../src/gui/ccgui.glade.h:7
-msgid "<b>Reason:</b>"
-msgstr "<b>Reden:</b>"
-
-#: ../src/gui/ccgui.glade.h:8
-msgid "<b>User:</b>"
-msgstr "<b>Gebruiker:</b>"
-
-#: ../src/gui/ccgui.glade.h:9
-msgid "About ABRT"
-msgstr "Over ABRT"
-
-#: ../src/gui/ccgui.glade.h:11
-msgid "Copy to Clipboard"
-msgstr "Kopieer naar klembord"
-
-#: ../src/gui/ccgui.glade.h:12
-msgid "Online _Help"
-msgstr "Online _Hulp"
-
-#: ../src/gui/ccgui.glade.h:13 ../src/gui/settings.glade.h:12
-msgid "Plugins"
-msgstr "Plug-ins"
-
-#: ../src/gui/ccgui.glade.h:15
-msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
-msgstr ""
-"Dit programma is vrije software; je kunt het heruitgeven en/of veranderen "
-"volgens de regels van de GNU General Public License zoals gepubliceerd door "
-"de Free Software Foundation; volgens of versie 2 van de licentie, of (zoals "
-"je wilt) elke latere versie.\n"
-"\n"
-"Dit programma wordt uitgegeven in de hoop dat het nuttig zal zijn, maar "
-"ZONDER ENIGE GARANTIE; zonder zelfs de impliciete garantie van "
-"VERKOOPBAARHEID of GESCHIKT VOOR EEN BEPAALD DOEL. Zie de GNU General Public "
-"License voor meer details.\n"
-"\n"
-"Je moet een kopie van de GNU General Public License tezamen met dit "
-"programma ontvangen hebben.  Zo niet, zie <http://www.gnu.org/licenses/>."
-
-#: ../src/gui/ccgui.glade.h:20 ../src/gui/CReporterAssistant.py:111
-msgid "View log"
-msgstr "Bekijk log"
-
-#: ../src/gui/ccgui.glade.h:21
-msgid "_Edit"
-msgstr "Be_werken"
-
-#: ../src/gui/ccgui.glade.h:22
-msgid "_File"
-msgstr "_Bestand"
-
-#: ../src/gui/ccgui.glade.h:23
-msgid "_Help"
-msgstr "_Hulp"
-
-#. add pixbuff separatelly
-#: ../src/gui/CCMainWindow.py:63
+#: ../src/gui-gtk/abrt-gtk.c:249
 msgid "Reported"
 msgstr "Gerapporteerd"
 
-#: ../src/gui/CCMainWindow.py:71
-msgid "Application"
-msgstr "Toepassing"
+#: ../src/gui-gtk/abrt-gtk.c:261
+msgid "Problem"
+msgstr ""
 
-#: ../src/gui/CCMainWindow.py:73
-msgid "Hostname"
-msgstr "Host naam"
+#: ../src/gui-gtk/abrt-gtk.c:284
+msgid "Last occurrence"
+msgstr ""
 
-#: ../src/gui/CCMainWindow.py:75
-msgid "Latest Crash"
-msgstr "Laatste crash"
+#: ../src/gui-gtk/abrt-gtk.c:299
+msgid "_File"
+msgstr "_Bestand"
 
-#: ../src/gui/CCMainWindow.py:148
-#, python-format
+#: ../src/gui-gtk/abrt-gtk.c:300
+msgid "_Edit"
+msgstr "Be_werken"
+
+#: ../src/gui-gtk/abrt-gtk.c:301
+msgid "_Help"
+msgstr "_Hulp"
+
+#: ../src/gui-gtk/abrt-gtk.c:317
+#, fuzzy
+msgid "_Plugins"
+msgstr "Plug-ins"
+
+#: ../src/gui-gtk/abrt-gtk.c:393
+#, fuzzy
+msgid "_Online Help"
+msgstr "Online _Hulp"
+
+#: ../src/gui-gtk/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "Bekijk en rapporteer crashes van toepassingen"
+
+#: ../src/gui-wizard-gtk/main.c:70
 msgid ""
-"Cannot show the settings dialog.\n"
-"%s"
+" [-v] [-g GUI_FILE] DIR\n"
+"\n"
+"GUI tool to analyze and report ABRT crash in specified DIR"
 msgstr ""
-"Kan de instellingen dialoog niet tonen.\n"
-"%s"
 
-#: ../src/gui/CCMainWindow.py:153
-#, python-format
+#: ../src/gui-wizard-gtk/main.c:80
+msgid "Alternate GUI file"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:187
+#, c-format
 msgid ""
-"Unable to finish the current task!\n"
-"%s"
+"Need writable directory, but '%s' is not writable. Move it to '%s' and "
+"operate on the moved copy?"
 msgstr ""
-"Kan de huidige taak niet afmaken!\n"
-"%s"
 
-#. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/gui/CCMainWindow.py:188
-#, python-format
-msgid ""
-"Error while loading the dumplist.\n"
-"%s"
+#: ../src/gui-wizard-gtk/wizard.c:499
+msgid "(click here to view/edit)"
 msgstr ""
-"Fout tijdens het laden van de dump lijst.\n"
-"%s"
 
-#: ../src/gui/CCMainWindow.py:246
-#, python-format
-msgid ""
-"<b>%s Crash</b>\n"
-"%s"
+#: ../src/gui-wizard-gtk/wizard.c:511
+#, c-format
+msgid "(binary file, %llu bytes)"
 msgstr ""
-"<b>%s crash</b>\n"
-"%s"
 
-#: ../src/gui/CCMainWindow.py:343
-msgid "You have to select a crash to copy."
-msgstr "Je moet een crash selecteren om te kopiëren."
+#: ../src/gui-wizard-gtk/wizard.c:526
+#, fuzzy
+msgid "(no description)"
+msgstr "Beschrijving:"
 
-#: ../src/gui/CCMainWindow.py:427
-msgid ""
-"Usage: abrt-gui [OPTIONS]\n"
-"\t-v[vv]\t\t\tVerbose\n"
-"\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
+#: ../src/gui-wizard-gtk/wizard.c:531
+#, c-format
+msgid "%llu bytes, %u files"
 msgstr ""
-"Gebruik: abrt-gui [OPTIES]\n"
-"\t-v[vv]\t\t\tBreedsprakig\n"
-"\t--report=CRASH_ID\tRapporteer crash direct met CRASH_ID"
 
-#: ../src/gui/CCMainWindow.py:450
-#, python-format
-msgid ""
-"No such crash in the database, probably wrong crashid.\n"
-"crashid=%s"
+#. TODO: better msg?
+#: ../src/gui-wizard-gtk/wizard.c:868
+#, c-format
+msgid "No processing for event '%s' is defined"
 msgstr ""
-"Zo'n crash is niet in de database, waarschijnlijk verkeerde crashid.\n"
-"crashid=%s"
 
-#: ../src/gui/ConfBackend.py:78
-msgid "Cannot connect to the Gnome Keyring daemon."
-msgstr "Kan niet verbinden met de Gnome sleutelbos daemon."
-
-#. could happen if keyring daemon is running, but we run gui under
-#. user who is not the owner of the running session - using su
-#: ../src/gui/ConfBackend.py:84
-msgid "Cannot get the default keyring."
-msgstr "Kan standaard sleutelbos niet verkrijgen."
-
-#: ../src/gui/ConfBackend.py:103 ../src/gui/ConfBackend.py:120
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr ""
-"Toegang tot gnome-keyring werd niet toegestaan, plug-ins instellingen worden "
-"niet opgeslagen."
-
-#. we tried 2 times, so giving up the authorization
-#: ../src/gui/ConfBackend.py:154
-#, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr ""
-"Toegang tot gnome-keyring werd niet toegestaan, kan de instellingen voor %s "
-"niet laden!"
-
-#: ../src/gui/ConfBackend.py:207
-msgid "Access to gnome-keyring has been denied, cannot load settings."
-msgstr ""
-"Toegang tot gnome-keyring werd niet toegestaan, kan de instellingen niet "
-"laden!"
-
-#: ../src/gui/CReporterAssistant.py:20
-msgid "Brief description of how to reproduce this or what you did..."
-msgstr "Korte beschrijving hoe dit te reproduceren is of wat je hebt gedaan..."
-
-#: ../src/gui/CReporterAssistant.py:21
-msgid "Crash info doesn't contain a backtrace"
-msgstr "Crash info bevat geen backtrace"
-
-#: ../src/gui/CReporterAssistant.py:277
-#: ../src/gui/PluginsSettingsDialog.py:136
-#, python-format
-msgid ""
-"Cannot save plugin settings:\n"
-" %s"
-msgstr ""
-"Kan de plug-in instellingen niet opslaan:\n"
-" %s"
-
-#: ../src/gui/CReporterAssistant.py:307
-#, python-format
-msgid "Configure %s options"
-msgstr "Configureer %s opties"
-
-#: ../src/gui/CReporterAssistant.py:362
-#, python-format
-msgid "Rating is %s"
-msgstr "Kwalificatie is %s"
-
-#: ../src/gui/CReporterAssistant.py:365
-msgid "Crashdump doesn't have rating => we suppose it's not required"
-msgstr ""
-"Crash dump heeft geen kwalificatie => we veronderstellen dat het niet nodig "
-"is"
-
-#: ../src/gui/CReporterAssistant.py:370 ../src/gui/CReporterAssistant.py:398
+#. bt is usable, but not complete, so show a warning
+#: ../src/gui-wizard-gtk/wizard.c:963
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -707,91 +522,61 @@ msgstr ""
 "De backtrace is niet compleet, zorg ervoor om voor het reproduceren de "
 "juiste stappen op te volgen."
 
-#: ../src/gui/CReporterAssistant.py:378
-msgid "You should check the backtrace for sensitive data."
-msgstr "Je moet de backtrace controleren op gevoelige data."
-
-#: ../src/gui/CReporterAssistant.py:379
-msgid "You must agree with sending the backtrace."
-msgstr "Je moet instemmen met het versturen van de backtrace."
-
-#: ../src/gui/CReporterAssistant.py:392
-#, python-format
-msgid ""
-"Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using the command: <b>debuginfo-"
-"install %s</b> \n"
-"then use the Refresh button to regenerate the backtrace."
-msgstr ""
-"Rapportage uitgeschakeld omdat de backtrace onbruikbaar is.\n"
-"Probeer debuginfo handmatig te installeren met het commando: <b>debuginfo-"
-"install %s</b> \n"
-"en gebruik dan de Verversen knop om de backtrace opnieuw te genereren."
-
-#: ../src/gui/CReporterAssistant.py:394
+#. FIXME: see CreporterAssistant: 394 for ideas
+#: ../src/gui-wizard-gtk/wizard.c:969
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Rapportage is uitgezet omdat de backtrace onbruikbaar is."
 
-#: ../src/gui/CReporterAssistant.py:440
-msgid "You did not provide any steps to reproduce."
-msgstr "Je hebt geen stappen opgegeven voor reproductie."
+#: ../src/gui-wizard-gtk/wizard.c:978
+msgid "You should check the backtrace for sensitive data."
+msgstr "Je moet de backtrace controleren op gevoelige data."
 
-#: ../src/gui/CReporterAssistant.py:454
-msgid "You did not provide any comments."
-msgstr "Je hebt geen commentaar opgegeven."
+#: ../src/gui-wizard-gtk/wizard.c:979
+msgid "You must agree with sending the backtrace."
+msgstr "Je moet instemmen met het versturen van de backtrace."
 
-#: ../src/gui/CReporterAssistant.py:483
-#, python-format
-msgid ""
-"Reporting failed!\n"
-"%s"
+#: ../src/gui-wizard-gtk/wizard.c:1035
+msgid "Analyzing..."
 msgstr ""
-"Rapporteren mislukte!\n"
-"%s"
 
-#: ../src/gui/CReporterAssistant.py:535
-#, python-format
-msgid ""
-"It looks like an application from the package <b>%s</b> has crashed on your "
-"system. It is a good idea to send a bug report about this issue. The report "
-"will provide software maintainers with information essential in figuring out "
-"how to provide a bug fix for you.\n"
-"\n"
-"Please review the information that follows and modify it as needed to ensure "
-"your bug report does not contain any sensitive data you would rather not "
-"share.\n"
-"\n"
-"Select where you would like to report the bug, and press 'Forward' to "
-"continue."
+#: ../src/gui-wizard-gtk/wizard.c:1036
+#, c-format
+msgid "Analyzing finished with exit code %d"
 msgstr ""
-"Het ziet er naar uit dat een toepassing van het pakket <b>%s</b> is "
-"gecrashed op jouw systeem. Het is een goed idee om voor dit probleem een bug "
-"rapport in te sturen. Het rapport zal software onderhouders voorzien van "
-"informatie die essentieel is om een reparatie voor jou te maken.\n"
-"\n"
-"Bekijk a.u.b. de volgende informatie en verander het indien nodig om er "
-"zeker van te zijn dat jouw bug rapport geen gevoelige informatie bevat die "
-"je liever niet wilt delen.\n"
-"\n"
-"Selecteer waar je deze bug wil rapporteren, en druk op 'Vooruit' om verder "
-"te gaan."
 
-#: ../src/gui/CReporterAssistant.py:576
-msgid "Only one reporter plugin is configured."
-msgstr "Er is slechts een rapporteer plug-in geconfigureerd."
+#: ../src/gui-wizard-gtk/wizard.c:1064
+#, c-format
+msgid "Reporting finished with exit code %d"
+msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:582
-msgid "Send a bug report"
-msgstr "Verstuur een bug rapport"
+#: ../src/gui-wizard-gtk/wizard.c:1182
+msgid "Name"
+msgstr "Naam"
 
-#: ../src/gui/CReporterAssistant.py:620
+#: ../src/gui-wizard-gtk/wizard.c:1191
+msgid "Value"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
-"Below is the backtrace associated with your crash. A crash backtrace "
-"provides developers with details about how the crash happened, helping them "
-"track down the source of the problem.\n"
-"\n"
-"Please review the backtrace below and modify it as needed to ensure your bug "
-"report does not contain any sensitive data you would rather not share:"
+"<b>Your comments are not private.</b> They may be included into publicly "
+"visible problem reports."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:2
+msgid "Analyzing did not start yet"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:3
+msgid "Any additional comments useful for diagnosing the problem?"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:4
+#, fuzzy
+msgid ""
+"Backtrace provides developers with details of the crash, helping them track "
+"down the source of the problem. Please review it and remove any sensitive "
+"data you would rather not share:"
 msgstr ""
 "Hieronder staat de backtrace die hoort bij jouw crash. Een crash backtrace "
 "geeft ontwikkelaars details over het ontstaan van de crash, wat ze helpt om "
@@ -801,373 +586,69 @@ msgstr ""
 "zijn dat jouw bug rapport geen gevoelige data bevat die je liever niet wilt "
 "delen:"
 
-#: ../src/gui/CReporterAssistant.py:691 ../src/gui/CReporterAssistant.py:704
-#: ../src/gui/CReporterAssistant.py:738
-#, python-format
-msgid "Found %i occurence(s) [at: %i of %i]"
-msgstr "Vond %i voorval(len) [bij: %i of %i]"
-
-#: ../src/gui/CReporterAssistant.py:775
-msgid "Search:"
-msgstr "Zoeken:"
-
-#: ../src/gui/CReporterAssistant.py:806
-msgid "Refresh"
-msgstr "Verversen"
-
-#: ../src/gui/CReporterAssistant.py:808
-msgid "Copy"
-msgstr "Kopiëren"
-
-#: ../src/gui/CReporterAssistant.py:814
-msgid "I agree with submitting the backtrace"
-msgstr "Ik stem in met het versturen van de backtrace"
-
-#: ../src/gui/CReporterAssistant.py:819
-msgid "Approve the backtrace"
-msgstr "De backtrace goedkeuren"
-
-#: ../src/gui/CReporterAssistant.py:862
-msgid "You need to fill the how to before you can proceed..."
-msgstr "Je moet hoe te reproduceren invullen voor je verder kan gaan..."
-
-#: ../src/gui/CReporterAssistant.py:885
-msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
-msgstr "Hoe ontstaat deze crash (stap-voor-stap)? Hoe kun je het reproduceren?"
-
-#: ../src/gui/CReporterAssistant.py:905
+#: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
-"Are there any comments you would like to share with the software maintainers?"
-msgstr "Heb je commentaar die je wilt delen met de software onderhouders?"
-
-#: ../src/gui/CReporterAssistant.py:925
-msgid "Provide additional details"
-msgstr "Bied extra details"
-
-#: ../src/gui/CReporterAssistant.py:932
-msgid ""
-"<b>Tip:</b> Your comments are not private. Please watch what you say "
-"accordingly."
-msgstr "<b>Tip:</b> Jouw commentaar is niet privé. Let dus op wat je zegt."
-
-#: ../src/gui/CReporterAssistant.py:973
-msgid "Confirm and send the report"
-msgstr "Bevestig en verstuur het rapport"
-
-#: ../src/gui/CReporterAssistant.py:975
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+"Can create more informative backtrace if you installed additional debug "
+"packages"
 msgstr ""
-"Hieronder is een samenvatting van jouw bug rapport. Klik op 'Toepassen' om "
-"het te versturen."
 
-#: ../src/gui/CReporterAssistant.py:980
-msgid "<b>Basic details</b>"
-msgstr "<b>Bais details</b>"
-
-#. left table
-#: ../src/gui/CReporterAssistant.py:987
-msgid "Component"
-msgstr "Onderdeel"
-
-#: ../src/gui/CReporterAssistant.py:988
-msgid "Package"
-msgstr "Pakket"
-
-#: ../src/gui/CReporterAssistant.py:989
-msgid "Executable"
-msgstr "Uitvoerbaar programma"
-
-#: ../src/gui/CReporterAssistant.py:990
-msgid "Cmdline"
-msgstr "Commando-regel"
-
-#. right table
-#: ../src/gui/CReporterAssistant.py:992
-msgid "Architecture"
-msgstr "Architectuur"
-
-#: ../src/gui/CReporterAssistant.py:993
-msgid "Kernel"
-msgstr "Kernel"
-
-#: ../src/gui/CReporterAssistant.py:994
-msgid "Release"
-msgstr "Vrijgave"
-
-#: ../src/gui/CReporterAssistant.py:995
-msgid "Reason"
-msgstr "Reden"
-
-#: ../src/gui/CReporterAssistant.py:1006 ../src/gui/report.glade.h:3
-msgid "<b>Backtrace</b>"
-msgstr "<b>Backtrace</b>"
-
-#: ../src/gui/CReporterAssistant.py:1009
-msgid "Click to view..."
-msgstr "Klik om te bekijken..."
-
-#: ../src/gui/CReporterAssistant.py:1021
-msgid "<b>Steps to reproduce:</b>"
-msgstr "<b>Stappen om te reproduceren:</b>"
-
-#: ../src/gui/CReporterAssistant.py:1042
-msgid "<b>Comments:</b>"
-msgstr "<b>Commentaar:</b>"
-
-#: ../src/gui/CReporterAssistant.py:1045
-msgid "No comment provided!"
-msgstr "Geen commentaar gegeven!"
-
-#: ../src/gui/CReporterAssistant.py:1081
-msgid "Finished sending the bug report"
-msgstr "Het versturen van het bug rapport is klaar"
-
-#: ../src/gui/CReporterAssistant.py:1085
-msgid "<b>Bug reports:</b>"
-msgstr "<b>Bug rapporten:</b>"
-
-#: ../src/gui/CReporterAssistant.py:1102
-msgid ""
-"Unable to get report!\n"
-"Is debuginfo missing?"
+#: ../src/gui-wizard-gtk/wizard.glade.h:6
+msgid "Click 'Apply' to start reporting"
 msgstr ""
-"Kan geen rapport krijgen!\n"
-"Mist debuginfo?"
 
-#: ../src/gui/CReporterAssistant.py:1139
-#, python-format
-msgid "Error acquiring the report: %s"
-msgstr "Fout tijdens het verkrijgen van het rapport: %s"
-
-#: ../src/gui/dialogs.glade.h:1
-msgid "Log"
-msgstr "Log"
-
-#: ../src/gui/dialogs.glade.h:2
-msgid "Report done"
-msgstr "Rapport klaar"
-
-#: ../src/gui/PluginSettingsUI.py:18
-msgid "Cannot find PluginDialog widget in the UI description!"
-msgstr "Kan PluginDialog widget in UI beschrijving niet vinden!"
-
-#: ../src/gui/PluginSettingsUI.py:25
-#, python-format
-msgid ""
-"No UI for the plugin <b>%s</b>, this is probably a bug.\n"
-"Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
-"\">https://fedorahosted.org/abrt/newticket</a>"
+#: ../src/gui-wizard-gtk/wizard.glade.h:7
+msgid "Click 'Forward' to proceed with analyzing and reporting this problem."
 msgstr ""
-"Geen UI voor de plug-in <b>%s</b>, dit is waarschijnlijk een bug.\n"
-"Rapporteer dit op <a href=\"https://fedorahosted.org/abrt/newticket"
-"\">https://fedorahosted.org/abrt/newticket</a>"
 
-#: ../src/gui/PluginSettingsUI.py:60 ../src/gui/PluginSettingsUI.py:86
-msgid "Combo box is not implemented"
-msgstr "Combo box is niet geïmplementeerd"
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
+#, fuzzy
+msgid "Configure Events"
+msgstr "Configureer %s opties"
 
-#: ../src/gui/PluginSettingsUI.py:69
-msgid "Nothing to hydrate!"
-msgstr "Kan het niet hard maken!"
-
-#: ../src/gui/PluginsSettingsDialog.py:25
-msgid "Cannot load the GUI description for SettingsDialog!"
-msgstr "Kan de gui beschrijving voor SettingsDialog niet laden!"
-
-#. Create/configure columns and add them to pluginlist
-#. column "name" has two kind of cells:
-#: ../src/gui/PluginsSettingsDialog.py:42
-msgid "Name"
-msgstr "Naam"
-
-#: ../src/gui/PluginsSettingsDialog.py:118
-msgid "Please select a plugin from the list to edit its options."
-msgstr "Selecteer een plug-in in de list om de opties hiervan te bewerken."
-
-#: ../src/gui/PluginsSettingsDialog.py:126
-#, python-format
-msgid ""
-"Error while opening the plugin settings UI: \n"
-"\n"
-"%s"
-msgstr ""
-"Fout tijdens het openen van de plug-in instellingen UI: \n"
-"\n"
-"%s"
-
-#: ../src/gui/progress_window.glade.h:1 ../src/gui/report.glade.h:17
+#: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
 msgstr "Details"
 
-#: ../src/gui/progress_window.glade.h:2 ../src/gui/report.glade.h:21
-msgid "Please wait..."
-msgstr "Wacht even..."
+#: ../src/gui-wizard-gtk/wizard.glade.h:10
+#, fuzzy
+msgid "How did this problem happen (step-by-step)? How can it be reproduced?"
+msgstr "Hoe ontstaat deze crash (stap-voor-stap)? Hoe kun je het reproduceren?"
 
-#: ../src/gui/report.glade.h:1
-msgid " "
-msgstr " "
+#: ../src/gui-wizard-gtk/wizard.glade.h:11
+msgid "I agree with submitting the backtrace"
+msgstr "Ik stem in met het versturen van de backtrace"
 
-#: ../src/gui/report.glade.h:2
-msgid "<b>Attachments</b>"
-msgstr "<b>Bijlagen</b>"
-
-#: ../src/gui/report.glade.h:4
-msgid "<b>Comment</b>"
-msgstr "<b>Commentaar</b>"
-
-#: ../src/gui/report.glade.h:5
-msgid "<b>How to reproduce (in a few simple steps)</b>"
-msgstr "<b>Hoe te reproduceren (in een paar eenvoudige stappen)</b>"
-
-#: ../src/gui/report.glade.h:6
-msgid "<b>Please fix the following problems:</b>"
-msgstr "<b>Los de volgende problemen op:</b>"
-
-#: ../src/gui/report.glade.h:7
-msgid "<b>Where do you want to report this incident?</b>"
-msgstr "<b>Waar wil je dit incident rapporteren?</b>"
-
-#: ../src/gui/report.glade.h:8
-msgid "<span fgcolor=\"blue\">Architecture:</span>"
-msgstr "<span fgcolor=\"blue\">Architectuur:</span>"
-
-#: ../src/gui/report.glade.h:9
-msgid "<span fgcolor=\"blue\">Cmdline:</span>"
-msgstr "<span fgcolor=\"blue\">Cmdregel:</span>"
-
-#: ../src/gui/report.glade.h:10
-msgid "<span fgcolor=\"blue\">Component:</span>"
-msgstr "<span fgcolor=\"blue\">Onderdeel:</span>"
-
-#: ../src/gui/report.glade.h:11
-msgid "<span fgcolor=\"blue\">Executable:</span>"
-msgstr "<span fgcolor=\"blue\">Uitvoerbaar programma:</span>"
-
-#: ../src/gui/report.glade.h:12
-msgid "<span fgcolor=\"blue\">Kernel:</span>"
-msgstr "<span fgcolor=\"blue\">Kernel:</span>"
-
-#: ../src/gui/report.glade.h:13
-msgid "<span fgcolor=\"blue\">Package:</span>"
-msgstr "<span fgcolor=\"blue\">Pakket:</span>"
-
-#: ../src/gui/report.glade.h:14
-msgid "<span fgcolor=\"blue\">Reason:</span>"
-msgstr "<span fgcolor=\"blue\">Reden:</span>"
-
-#: ../src/gui/report.glade.h:15
-msgid "<span fgcolor=\"blue\">Release:</span>"
-msgstr "<span fgcolor=\"blue\">Vrijgave:</span>"
-
-#: ../src/gui/report.glade.h:18
-msgid "Forces ABRT to regenerate the backtrace."
+#: ../src/gui-wizard-gtk/wizard.glade.h:12
+#, fuzzy
+msgid "Regenerate backtrace"
 msgstr "Forceer ABRT om de backtrace opnieuw te genereren."
 
-#: ../src/gui/report.glade.h:19
-msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
+#, fuzzy
+msgid "Reporter(s):"
+msgstr "Gerapporteerd"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:14
+msgid "Reporting did not start yet"
 msgstr ""
-"Ik heb de backtrace gecontroleerd en gevoelige data verwijderd "
-"(wachtwoorden, enz.)"
 
-#: ../src/gui/report.glade.h:20
-msgid "N/A"
-msgstr "n.v.t."
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
+msgid "Select how you would like to analyze the problem:"
+msgstr ""
 
-#: ../src/gui/report.glade.h:22
-msgid "Reporter Selector"
-msgstr "Aanmeld selectie"
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
+msgid "Select how you would like to report the problem:"
+msgstr ""
 
-#: ../src/gui/report.glade.h:23
-msgid "Send report"
-msgstr "Verstuur rapport"
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
+msgid "Size:"
+msgstr ""
 
-#: ../src/gui/report.glade.h:24
-msgid "Show log"
-msgstr "Laat log zien"
-
-#: ../src/gui/SettingsDialog.py:122
-msgid "Remove this job"
-msgstr "Verwijder deze taak"
-
-#: ../src/gui/SettingsDialog.py:166
-msgid "Remove this action"
-msgstr "Verwijder deze actie"
-
-#: ../src/gui/settings.glade.h:1
-msgid "<b>Plugin details</b>"
-msgstr "<b>Plug-in details</b>"
-
-#: ../src/gui/settings.glade.h:2
-msgid "Author:"
-msgstr "Schrijver:"
-
-#: ../src/gui/settings.glade.h:3
-msgid "Blacklisted packages: "
-msgstr "Pakketten op de zwarte lijst:"
-
-#: ../src/gui/settings.glade.h:4
-msgid "C_onfigure Plugin"
-msgstr "C_onfigureer plug-in"
-
-#: ../src/gui/settings.glade.h:5
-msgid "Check package GPG signature"
-msgstr "Controleer GPG ondertekening van pakket"
-
-#: ../src/gui/settings.glade.h:6
-msgid "Common"
-msgstr "Algemeen"
-
-#: ../src/gui/settings.glade.h:7
-msgid "Description:"
-msgstr "Beschrijving:"
-
-#: ../src/gui/settings.glade.h:8
-msgid "GPG Keys"
-msgstr "GPG sleutels"
-
-#: ../src/gui/settings.glade.h:9
-msgid "GPG keys: "
-msgstr "GPG sleutels: "
-
-#: ../src/gui/settings.glade.h:10
-msgid "Max coredump storage size (MB):"
-msgstr "Max coredump opslag grootte (MB):"
-
-#: ../src/gui/settings.glade.h:11
-msgid "Name:"
-msgstr "Naam:"
-
-#: ../src/gui/settings.glade.h:13
-msgid "Preferences"
-msgstr "Voorkeuren"
-
-#: ../src/gui/settings.glade.h:14
-msgid "Version:"
-msgstr "Versie:"
-
-#: ../src/gui/settings.glade.h:15
-msgid "Web Site:"
-msgstr "Website:"
-
-#: ../src/gui/settings_wizard.glade.h:1
-msgid "<b>Do you want to continue?</b>"
-msgstr "<b>Wil je verdergaan?</b>"
-
-#: ../src/gui/settings_wizard.glade.h:2
-msgid "Wrong Settings Detected"
-msgstr "Verkeerde instellingen ontdekt"
-
-#: ../src/gui/settings_wizard.glade.h:3
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid ""
-"Wrong settings were detected for some of the enabled reporter plugins. "
-"Please use the buttons below to open the respective configuration and fix it "
-"before you proceed, otherwise, the reporting process may fail.\n"
+"Use this button to generate more informative backtrace after you installed "
+"additional debug packages"
 msgstr ""
-"Er zijn verkeerde instellingen ontdekt voor sommige van de aangezette "
-"rapporteer plug-ins. Gebruik de knoppen hieronder om hun respectievelijke "
-"configuratie te openen en te repareren voordat je verdergaat, omdat het "
-"rapporteer proces anders kan mislukken.\n"
 
 #: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
 #, c-format
@@ -1289,31 +770,31 @@ msgstr ""
 msgid "Configuration file (may be given many times)"
 msgstr "Configuratiebestand (kan meerdere keren gegeven worden)"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:258
+#: ../src/plugins/abrt-action-generate-backtrace.c:257
 msgid " [options] -d DIR"
 msgstr " [opties] -d MAP"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:271
+#: ../src/plugins/abrt-action-generate-backtrace.c:270
 msgid "Additional debuginfo directories"
 msgstr "Extra debuginfo mappen"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:272
+#: ../src/plugins/abrt-action-generate-backtrace.c:271
 msgid "Kill gdb if it runs for more than N seconds"
 msgstr "Sluit gdb af als het meer dan N secondes draait"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
 #.
-#: ../src/plugins/abrt-action-generate-backtrace.c:322
+#: ../src/plugins/abrt-action-generate-backtrace.c:321
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr ""
+msgstr "Backtrace wordt gegenereerd en opgeslagen, %u bytes"
 
 #.
 #. * The parser failed. Compute the UUID from the executable
 #. * and package only.  This is not supposed to happen often.
 #.
-#: ../src/plugins/abrt-action-generate-backtrace.c:333
+#: ../src/plugins/abrt-action-generate-backtrace.c:332
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "Backtrace ontleden mislukte voor %s"
@@ -1324,14 +805,14 @@ msgid "Extracting cpio from %s"
 msgstr "Cpio extraheren uit %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:82
-#, fuzzy, python-format
+#, python-format
 msgid "Can't write to '%s': %s"
-msgstr "Kan niet schrijven naar:"
+msgstr "Kan niet naar '%s' schrijven: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:96
-#, fuzzy, python-format
+#, python-format
 msgid "Can't extract package '%s'"
-msgstr "Kan pakket niet extraheren: %s"
+msgstr "Kan pakket '%s' niet uitpakken"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:104
 #, python-format
@@ -1339,30 +820,30 @@ msgid "Caching files from %s made from %s"
 msgstr "Bestanden van %s gemaakt van %s in cache opslaan"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:114
-#, fuzzy, python-format
+#, python-format
 msgid "Can't extract files from '%s'"
-msgstr "Kan geen bestanden extraheren van: %s"
+msgstr "Kan geen bestanden uitpakken uit '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:138
 #: ../src/plugins/abrt-action-install-debuginfo.py:148
-#, fuzzy, python-format
+#, python-format
 msgid "Downloading (%i of %i) %s: %3u%%"
-msgstr "Downloaden (%i van %i) %.30s : %.3s %%"
+msgstr "Downloaden (%i van %i) %s: %3u%%"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:234
 #, python-format
 msgid "Can't find packages for %u debuginfo files"
-msgstr ""
+msgstr "Kan geen pakketten voor %u debuginfo bestanden vinden"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:236
 #, python-format
 msgid "Found %u packages to download"
-msgstr ""
+msgstr "%u pakketten gevonden om te downloaden"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:237
-#, fuzzy, python-format
+#, python-format
 msgid "Downloading %.2fMb, installed size: %.2fMb"
-msgstr "Te downloaden: (%.2f) M / Geïnstalleerde grootte: %.2f M"
+msgstr "Downloaden van %.2fMB, geïnstalleerde grootte: %.2fMB"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:245
 msgid "Is this ok? [y/N] "
@@ -1389,24 +870,23 @@ msgid "Can't remove %s, probably contains an error log"
 msgstr "Kan %s niet verwijderen, bevat waarschijnlijk een fout log"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:310
-#, fuzzy, python-format
+#, python-format
 msgid "Analyzing corefile '%s'"
-msgstr "Core bestand analyseren:  %(corefile_path)s"
+msgstr "Corefile '%s' analiseren"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:388
-#, fuzzy, python-format
+#, python-format
 msgid "Can't remove '%s': %s"
-msgstr "Kan '%s' niet openen"
+msgstr "Kan '%s' niet verwijderen: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:396
-#, fuzzy
 msgid "Exiting on user command"
-msgstr "Afsluiten door gebruikerscommando"
+msgstr "Verlaten op gebruikerscommando"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:415
-#, fuzzy, python-format
+#, python-format
 msgid "Usage: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
-msgstr "Gebruik: %s --core=<COREFILE> --tmpdir=<TMPDIR> --cachedir=<CACHEDIR>"
+msgstr "Gebruik: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:444
 msgid "You have to specify the path to coredump."
@@ -1416,16 +896,18 @@ msgstr "Je moet het pad naar coredump opgeven."
 #, python-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
 msgstr ""
+"Coredump refereert naar %u debuginfo bestanden, %u ervan zijn niet "
+"geïnstalleerd"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:466
 #, python-format
 msgid "Missing debuginfo file: %s"
-msgstr ""
+msgstr "Ontbrekend debuginfo bestand:  %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:469
-#, fuzzy, python-format
+#, python-format
 msgid "All %u debuginfo files are available"
-msgstr "Alle debuginfo schijnt beschikbaar te zijn"
+msgstr "Alle %u debuginfo bestanden zijn beschikbaar"
 
 #: ../src/plugins/abrt-action-kerneloops.c:105
 #, c-format
@@ -1442,11 +924,11 @@ msgstr ""
 "\n"
 "Rapporteer een kernel oops aan kerneloops.org (of vergelijkbare) site"
 
-#: ../src/plugins/abrt-action-mailx.c:110
+#: ../src/plugins/abrt-action-mailx.c:108
 msgid "Sending an email..."
 msgstr "Versturen van een email..."
 
-#: ../src/plugins/abrt-action-mailx.c:137
+#: ../src/plugins/abrt-action-mailx.c:135
 msgid ""
 " [-v] -d DIR [-c CONFFILE]\n"
 "\n"
@@ -1456,7 +938,7 @@ msgstr ""
 "\n"
 "Upload gecomprimeerde tarball of crash dump"
 
-#: ../src/plugins/abrt-action-mailx.c:150
+#: ../src/plugins/abrt-action-mailx.c:148
 #: ../src/plugins/abrt-action-upload.c:261
 msgid "Config file"
 msgstr "Config bestand"
@@ -1475,12 +957,12 @@ msgstr ""
 msgid "Output file"
 msgstr "Output bestand"
 
-#: ../src/plugins/abrt-action-print.c:91
+#: ../src/plugins/abrt-action-print.c:87
 #, c-format
 msgid "The report was appended to %s"
 msgstr "Het rapport werd toegevoegd aan %s"
 
-#: ../src/plugins/abrt-action-print.c:91
+#: ../src/plugins/abrt-action-print.c:87
 #, c-format
 msgid "The report was stored to %s"
 msgstr "Het rapport werd opgeslagen in %s"
@@ -1567,6 +1049,11 @@ msgstr "Print gevonden oops naar standaard output"
 msgid "Do not exit, watch the file for new oopses"
 msgstr "Sluit niet af, bekijk het bestand voor nieuwe oopses"
 
+#: ../src/plugins/abrt-retrace-client.c:701
+#, fuzzy
+msgid "log to syslog"
+msgstr "Loggen naar syslog"
+
 #: ../src/plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
 msgstr "<b>Bugzilla plug-in configuratie</b>"
@@ -1590,10 +1077,6 @@ msgstr "Wachtwoord:"
 #: ../src/plugins/Bugzilla.glade.h:6 ../src/plugins/RHTSupport.glade.h:5
 msgid "SSL verify"
 msgstr "SSL controleren"
-
-#: ../src/plugins/Bugzilla.glade.h:7 ../src/plugins/RHTSupport.glade.h:6
-msgid "Show password"
-msgstr "Wachtwoord tonen"
 
 #: ../src/plugins/Bugzilla.glade.h:8
 msgid ""
@@ -1675,574 +1158,512 @@ msgstr "URL:"
 msgid "Use encryption"
 msgstr "Gebruik encryptie"
 
+#~ msgid "Another client is already running, trying to wake it..."
+#~ msgstr "Een andere cliënt draait al, probeer het te wekken..."
+
 #~ msgid ""
+#~ "Got unexpected data from the daemon (is the database properly updated?)."
+#~ msgstr ""
+#~ "Kreeg onverwachte data van de daemon (is de database correct vernieuwd?)."
+
+#~ msgid "Not loaded plugins"
+#~ msgstr "Niet geladen plug-ins"
+
+#~ msgid "Analyzer plugins"
+#~ msgstr "Analyse plug-ins"
+
+#~ msgid "Action plugins"
+#~ msgstr "Actie plug-ins"
+
+#~ msgid "Reporter plugins"
+#~ msgstr "Aanmeld plug-ins"
+
+#~ msgid "Database plugins"
+#~ msgstr "Database plug-ins"
+
+#~ msgid "Cannot connect to system dbus."
+#~ msgstr "Kan niet verbinden met systeem dbus."
+
+#~ msgid "Please check if the abrt daemon is running."
+#~ msgstr "Controleer of de abrt daemon draait."
+
+#~ msgid ""
+#~ "Daemon did not return a valid report info.\n"
+#~ "Is debuginfo missing?"
+#~ msgstr ""
+#~ "Daemon gaf geen geldige rapport info terug.\n"
+#~ "Mist debuginfo?"
+
+#~ msgid "(C) 2009, 2010 Red Hat, Inc."
+#~ msgstr "(C) 2009, 2010 Red Hat, Inc."
+
+#~ msgid "<b>Bug Reports:</b>"
+#~ msgstr "<b>Bug rapporten:</b>"
+
+#~ msgid "<b>Command:</b>"
+#~ msgstr "<b>Commando:</b>"
+
+#~ msgid "<b>Comment:</b>"
+#~ msgstr "<b>Commentaar:</b>"
+
+#~ msgid "<b>Crash Count:</b>"
+#~ msgstr "<b>Crash telling:</b>"
+
+#~ msgid "<b>Latest Crash:</b>"
+#~ msgstr "<b>Laatste crash:</b>"
+
+#~ msgid "<b>Reason:</b>"
+#~ msgstr "<b>Reden:</b>"
+
+#~ msgid "<b>User:</b>"
+#~ msgstr "<b>Gebruiker:</b>"
+
+#~ msgid "About ABRT"
+#~ msgstr "Over ABRT"
+
+#~ msgid "Copy to Clipboard"
+#~ msgstr "Kopieer naar klembord"
+
+#~ msgid ""
+#~ "This program is free software; you can redistribute it and/or modify it "
+#~ "under the terms of the GNU General Public License as published by the "
+#~ "Free Software Foundation; either version 2 of the License, or (at your "
+#~ "option) any later version.\n"
 #~ "\n"
-#~ "How to reproduce:\n"
-#~ "%s\n"
-#~ msgstr ""
+#~ "This program is distributed in the hope that it will be useful, but "
+#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
+#~ "Public License for more details.\n"
 #~ "\n"
-#~ "Hoe te reproduceren:\n"
-#~ "%s\n"
-
-#~ msgid "# How to reproduce the crash?"
-#~ msgstr "# Hoe is deze crash te reproduceren?"
-
-#~ msgid "'How to reproduce' is too long"
-#~ msgstr "'Hoe te reproduceren' is te lang"
-
-#~ msgid "<b>Select plugin</b>"
-#~ msgstr "<b>Selecteer plug-in</b>"
-
-#~ msgid "<b>Select database backend</b>"
-#~ msgstr "<b>Selecteer database back-end</b>"
-
-#~ msgid "<b>Analyzer plugin</b>"
-#~ msgstr "<b>Analyse plug-in</b>"
-
-#~ msgid "<b>Associated action</b>"
-#~ msgstr "<b>Geassocieerde actie</b>"
-
-#~ msgid "<b>Plugin</b>"
-#~ msgstr "<b>Plug-in</b>"
-
-#~ msgid "<b>Time (or period)</b>"
-#~ msgstr "<b>Tijd (of periode)</b>"
-
-#~ msgid "Analyzers, Actions, Reporters"
-#~ msgstr "Analisten, acties, aanmelders"
-
-#~ msgid "Cron"
-#~ msgstr "Cron"
-
-#~ msgid "Database backend: "
-#~ msgstr "Database back-end: "
-
-#~ msgid "Removing the temporary rpm file"
-#~ msgstr "Het tijdelijke rpm bestand verwijderen"
-
-#~ msgid "Removing the temporary cpio file"
-#~ msgstr "Het tijdelijke cpio bestand verwijderen"
-
-#~ msgid "Searching the missing debuginfo packages"
-#~ msgstr "Zoeken naar ontbrekende debuginfo pakketten"
-
-#~ msgid "Can't remove %(tmpdir_path)s: %(reason)s"
-#~ msgstr "Kan %(tmpdir_path)s niet verwijderen: %(reason)s"
-
-#~ msgid "You have to specify the path to cachedir."
-#~ msgstr "Je moet het pad naar cachedir opgeven."
-
-#~ msgid "You have to specify the path to tmpdir."
-#~ msgstr "Je moet het pad naar tmpdir opgeven."
-
-#~ msgid "Complete!"
-#~ msgstr "Compleet!"
-
-#~ msgid ""
-#~ "Usage: %s [OPTION]\n"
+#~ "You should have received a copy of the GNU General Public License along "
+#~ "with this program.  If not, see <http://www.gnu.org/licenses/>."
+#~ msgstr ""
+#~ "Dit programma is vrije software; je kunt het heruitgeven en/of veranderen "
+#~ "volgens de regels van de GNU General Public License zoals gepubliceerd "
+#~ "door de Free Software Foundation; volgens of versie 2 van de licentie, of "
+#~ "(zoals je wilt) elke latere versie.\n"
 #~ "\n"
-#~ "Startup:\n"
-#~ "\t-V, --version\t\tdisplay the version and exit\n"
-#~ "\t-v, --verbose\t\tincrease verbosity\n"
-#~ "Actions:\n"
-#~ "\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
-#~ "\t      -f, --full\tprint a list of all crashes, including the already "
-#~ "reported ones\n"
-#~ "\t-r, --report CRASH_ID\tcreate and send a report\n"
-#~ "\t      -y, --always\tcreate and send a report without asking\n"
-#~ "\t-d, --delete CRASH_ID\tremove a crash\n"
-#~ "\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
-#~ "\t      -b, --backtrace\tprint detailed information about a crash "
-#~ "including backtrace\n"
-#~ "CRASH_ID can be:\n"
-#~ "\ta name of dump directory, or\n"
-#~ "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
-#~ msgstr ""
-#~ "Gebruik: %s [OPTIE]\n"
+#~ "Dit programma wordt uitgegeven in de hoop dat het nuttig zal zijn, maar "
+#~ "ZONDER ENIGE GARANTIE; zonder zelfs de impliciete garantie van "
+#~ "VERKOOPBAARHEID of GESCHIKT VOOR EEN BEPAALD DOEL. Zie de GNU General "
+#~ "Public License voor meer details.\n"
 #~ "\n"
-#~ "Opstarten:\n"
-#~ "\t-V, --version\t\tlaat de versie zien en sluit af\n"
-#~ "\t-v, --verbose\t\tgeef meer detail\n"
-#~ "Acties:\n"
-#~ "\t-l, --list\t\tlaat lijst van crashes zien die nog niet gerapporteerd "
-#~ "zijn\n"
-#~ "\t\t-f, --full\tlaat lijst van alle crashes zien, inclusief de reeds "
-#~ "gerapporteerde\n"
-#~ "\t-r, --report CRASH_ID\tmaak een rapport aan en verstuur deze\n"
-#~ "\t\t-y, --always \tmaak een rapport aan en verstuur deze zonder te "
-#~ "vragen\n"
-#~ "\t-d, --delete CRASH_ID\tverwijder een crash\n"
-#~ "\t-i, --info CRASH_ID\tlaat gedetailleerde informatie over crash zien\n"
-#~ "\t\t-b, --backtrace\tlaat gedetailleerde informatie over crash zien "
-#~ "inclusief backtrace\n"
-#~ "CRASH_ID kan zijn:\n"
-#~ "\teen naam van een dump map of\n"
-#~ "\t@N  - N-de crash (zoals getoond door --list --full) waarop actie "
-#~ "ondernomen zal worden\n"
+#~ "Je moet een kopie van de GNU General Public License tezamen met dit "
+#~ "programma ontvangen hebben.  Zo niet, zie <http://www.gnu.org/licenses/>."
 
-#~ msgid "Error loading reporter settings"
-#~ msgstr "Fout tijdens het laden van rapporteer instellingen"
+#~ msgid "View log"
+#~ msgstr "Bekijk log"
 
-#~ msgid "You must check the backtrace for sensitive data."
-#~ msgstr "Je moet de backtrace controleren op gevoelige data."
+#~ msgid "Application"
+#~ msgstr "Toepassing"
 
-#~ msgid "The backtrace is unusable, you cannot report this!"
-#~ msgstr "De backtrace in onbruikbaar, je kunt dit niet rapporteren!"
+#~ msgid "Hostname"
+#~ msgstr "Host naam"
 
-#~ msgid "Reporting disabled, please fix the problems shown above."
-#~ msgstr "Rapporteren is uitgezet, los de hierboven getoonde problemen op."
-
-#~ msgid "Sends the report using the selected plugin."
-#~ msgstr "Verstuur het rapport met de geselecteerde plug-in."
+#~ msgid "Latest Crash"
+#~ msgstr "Laatste crash"
 
 #~ msgid ""
-#~ "No reporter plugin available for this type of crash.\n"
-#~ "Please check abrt.conf."
+#~ "Cannot show the settings dialog.\n"
+#~ "%s"
 #~ msgstr ""
-#~ "Er is geen rapportage plug-in beschikbaar voor dit type crash\n"
-#~ "Controleer abrt.conf."
-
-#~ msgid "Analyzes crashes in C/C++ programs"
-#~ msgstr "Analyseert crashes in C/C++ programma's"
-
-#~ msgid "Periodically scans for and saves kernel oopses"
-#~ msgstr "Regelmatig scannen en opslaan van kernel oopses"
-
-#~ msgid "Database plugin not specified. Please check abrtd settings."
-#~ msgstr ""
-#~ "Database plug-in niet gespecificeerd. Controleer de artd instellingen."
-
-#~ msgid "Keeps SQLite3 database about all crashes"
-#~ msgstr "Bewaart SQLite3 database over alle crashes"
-
-#~ msgid "Reports bugs to bugzilla"
-#~ msgstr "Bugs rapporteren aan bugzilla"
-
-#~ msgid "FileTransfer: URL not specified"
-#~ msgstr "FileTransfer: URL niet opgegeven"
-
-#~ msgid "Sending archive %s to %s"
-#~ msgstr "Versturen van archief %s naar %s"
-
-#~ msgid "FileTransfer: Creating a report..."
-#~ msgstr "FileTransfer: Een rapport maken..."
-
-#~ msgid "Cannot create and send an archive: %s"
-#~ msgstr "Kan geen archief aanmaken en versturen: %s"
-
-#~ msgid "Sends a report via FTP or SCTP"
-#~ msgstr "Stuurt een rapport via FTP of SCTP"
-
-#~ msgid "Analyzes kernel oopses"
-#~ msgstr "Analyseert kernel oopses"
-
-#~ msgid "Sends kernel oops information to kerneloops.org"
-#~ msgstr "Stuurt kernel oops informatie naar kerneloops.org"
-
-#~ msgid "Writes report to a file"
-#~ msgstr "Rapport rapport naar een bestand"
-
-#~ msgid "Sends an email with a report (via mailx command)"
-#~ msgstr "Stuurt een email met een rapport (via mailx commando)"
-
-#~ msgid "Analyzes crashes in Python programs"
-#~ msgstr "Analyseert crashes in Python programma's"
-
-#~ msgid "Sending failed, trying again. %s"
-#~ msgstr "Versturen mislukte, opnieuw proberen: %s"
-
-#~ msgid "Creating a ReportUploader report..."
-#~ msgstr "Een ReportUploader rapport aanmaken..."
+#~ "Kan de instellingen dialoog niet tonen.\n"
+#~ "%s"
 
 #~ msgid ""
-#~ "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+#~ "Unable to finish the current task!\n"
+#~ "%s"
 #~ msgstr ""
-#~ "Verpakt crash data in een .tar.gz bestand, en uploadt het optioneel via "
-#~ "FTP/SCP/enz."
-
-#~ msgid "Reports bugs to Red Hat support"
-#~ msgstr "Bugs rapporteren aan Red Hat ondersteuning"
-
-#~ msgid "Runs a command, saves its output"
-#~ msgstr "Drait een commando, slaat de output op"
-
-#~ msgid "Running sosreport: %s"
-#~ msgstr "Sosreport draaien: %s"
-
-#~ msgid "Finished running sosreport"
-#~ msgstr "Klaar met het draaien van sosreport"
-
-#~ msgid "Unable to open debug dump '%s'"
-#~ msgstr "Kan debug dump '%s' niet openen"
-
-#~ msgid "Runs sosreport, saves the output"
-#~ msgstr "Draait sosreport, slaat de output op"
-
-#~ msgid "Customer:"
-#~ msgstr "Klant:"
-
-#~ msgid "Ticket:"
-#~ msgstr "Ticket:"
-
-#~ msgid "Upload"
-#~ msgstr "Uploaden"
-
-#~ msgid "Rating is required by the %s plugin"
-#~ msgstr "Kwalificatie wordt vereist door de %s plug-in"
-
-#~ msgid "Rating is not required by any plugin, skipping the check..."
-#~ msgstr ""
-#~ "Kwalificatie wordt niet vereist door een plug-in, de check overslaan..."
-
-#~ msgid "Generating backtrace"
-#~ msgstr "Backtrace aanmaken"
-
-#~ msgid "Starting the debuginfo installation"
-#~ msgstr "Start de debuginfo installatie"
-
-#~ msgid "Getting global universal unique identification..."
-#~ msgstr "Verkrijgen van globale universele unieke identificatie..."
-
-#~ msgid "Skipping the debuginfo installation"
-#~ msgstr "Sla de debuginfo installatie over"
-
-#~ msgid "Creating and submitting a report..."
-#~ msgstr "Aanmaken en indienen van een rapport..."
-
-#~ msgid "Show this help message"
-#~ msgstr "Deze hulp boodschap tonen"
-
-#~ msgid "Verbose"
-#~ msgstr "Breedsprakig"
+#~ "Kan de huidige taak niet afmaken!\n"
+#~ "%s"
 
 #~ msgid ""
-#~ "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/"
-#~ "Bugzilla.conf. Server said: %s"
+#~ "Error while loading the dumplist.\n"
+#~ "%s"
 #~ msgstr ""
-#~ "Kan niet inloggen. Controleer Bewerken->Plug-ins->Bugzilla en /etc/abrt/"
-#~ "plugins/Bugzilla.conf. Server melde: %s"
+#~ "Fout tijdens het laden van de dump lijst.\n"
+#~ "%s"
 
-#~ msgid "Can't create and send an archive %s"
-#~ msgstr "Kan archief %s niet aanmaken en versturen"
-
-#~ msgid "send_string: URL not specified"
-#~ msgstr "send_string: URL niet opgegeven"
-
-#~ msgid "Sending failed, try it again: %s"
-#~ msgstr "Versturen mislukte, probeer het opnieuw: %s"
-
-#~ msgid "send_file: URL not specified"
-#~ msgstr "send_file: URL niet opgegeven"
-
-#~ msgid "New bug id: %s"
-#~ msgstr "Nieuwe bug id: %s"
-
-#~ msgid "error returned by requestUpload: %s"
-#~ msgstr "fout teruggegeven door requestUpload: %s"
-
-#~ msgid "error returned by requestUpload: %d"
-#~ msgstr "fout teruggegeven door requestUpload: %d"
-
-#~ msgid "no URL returned by requestUpload, and no errno"
-#~ msgstr "geen URL teruggegeven door requestUpload, en geen errno"
-
-#~ msgid "requestUpload returned URL: %s"
-#~ msgstr "requestUpload gaf URL terug: %s"
-
-#~ msgid "Attaching (text): %s"
-#~ msgstr "Toegevoegd (tekst): %s"
-
-#~ msgid "rebased URL: %s"
-#~ msgstr "bevestigde URL: %s"
-
-#~ msgid "Attaching binary: %s"
-#~ msgstr "Toegevoegd (binair bestand): %s"
-
-#~ msgid "Creating a signature..."
-#~ msgstr "Een ondertekening aanmaken..."
-
-#~ msgid "Binary file %s will not be reported"
-#~ msgstr "Binair bestand %s zal niet gerapporteerd worden"
-
-#~ msgid "Jump to bug %d"
-#~ msgstr "Ga naar bug %d"
-
-#~ msgid "Getting local universal unique identification"
-#~ msgstr "Verkrijgen van locale universele unieke identificatie"
-
-#, fuzzy
 #~ msgid ""
-#~ "Thank you for your bug report. It has been successfully submitted. You "
-#~ "can see the results below."
+#~ "<b>%s Crash</b>\n"
+#~ "%s"
 #~ msgstr ""
-#~ "Dank je voor jouw bug rapport. Het is met succes verstuurd. Je kunt jouw "
-#~ "bug rapport on-line bekijken met het web adres hieronder:"
+#~ "<b>%s crash</b>\n"
+#~ "%s"
 
-#~ msgid "Not reported"
-#~ msgstr "Niet gerapporteerd"
-
-#~ msgid "This bug really sucks!"
-#~ msgstr "Dit is een erg vervelende bug!"
+#~ msgid "You have to select a crash to copy."
+#~ msgstr "Je moet een crash selecteren om te kopiëren."
 
 #~ msgid ""
 #~ "Usage: abrt-gui [OPTIONS]\n"
-#~ "\t-h, --help         \tthis help message\n"
-#~ "\t-v[vv]             \tverbosity level\n"
-#~ "\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+#~ "\t-v[vv]\t\t\tVerbose\n"
+#~ "\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
 #~ msgstr ""
 #~ "Gebruik: abrt-gui [OPTIES]\n"
-#~ "\t-h, --help         \tdeze help boodschap\n"
-#~ "\t-v[vv]             \tniveau van uitgebreidheid\n"
-#~ "\t--report=<crashid>\trapporteer crash direct met crashid=<crashid>"
-
-#~ msgid "Icon"
-#~ msgstr "Icoon"
-
-#~ msgid "Date"
-#~ msgstr "Datum"
-
-#~ msgid "User"
-#~ msgstr "Gebruiker"
-
-#~ msgid "This crash has been reported:\n"
-#~ msgstr "Deze crash is gerapporteerd:\n"
-
-#~ msgid "<b>This crash has been reported:</b>\n"
-#~ msgstr "<b>Deze crash is gerapporteerd:</b>\n"
+#~ "\t-v[vv]\t\t\tBreedsprakig\n"
+#~ "\t--report=CRASH_ID\tRapporteer crash direct met CRASH_ID"
 
 #~ msgid ""
-#~ "aalam@fedoraproject.org\n"
-#~ "amitakhya@fedoraproject.org\n"
-#~ "andrealafauci@fedoraproject.org\n"
-#~ "anipeter@fedoraproject.org\n"
-#~ "astur@fedoraproject.org\n"
-#~ "beckerde@fedoraproject.org\n"
-#~ "bruce89@fedoraproject.org\n"
-#~ "charnik@fedoraproject.org\n"
-#~ "chenh@fedoraproject.org\n"
-#~ "cyrushmh@fedoraproject.org\n"
-#~ "dennistobar@fedoraproject.org\n"
-#~ "dheche@fedoraproject.org\n"
-#~ "diegobz@fedoraproject.org\n"
-#~ "dominiksandjaja@fedoraproject.org\n"
-#~ "elad@fedoraproject.org\n"
-#~ "elsupergomez@fedoraproject.org\n"
-#~ "eukim@fedoraproject.org\n"
-#~ "fab@fedoraproject.org\n"
-#~ "feonsu@fedoraproject.org\n"
-#~ "fgonz@fedoraproject.org\n"
-#~ "fvalen@fedoraproject.org\n"
-#~ "gcintra@fedoraproject.org\n"
-#~ "gguerrer@fedoraproject.org\n"
-#~ "goeran@fedoraproject.org\n"
-#~ "hedda@fedoraproject.org\n"
-#~ "hyuuga@fedoraproject.org\n"
-#~ "ifelix@fedoraproject.org\n"
-#~ "igorbounov@fedoraproject.org\n"
-#~ "igor@fedoraproject.org\n"
-#~ "jassy@fedoraproject.org\n"
-#~ "jensm@fedoraproject.org\n"
-#~ "jmoskovc@redhat.com\n"
-#~ "joe74@fedoraproject.org\n"
-#~ "jorgelopes@fedoraproject.org\n"
-#~ "kenda@fedoraproject.org\n"
-#~ "khasida@fedoraproject.org\n"
-#~ "kkrothap@fedoraproject.org\n"
-#~ "kmaraas@fedoraproject.org\n"
-#~ "kmilos@fedoraproject.org\n"
-#~ "kristho@fedoraproject.org\n"
-#~ "leahliu@fedoraproject.org\n"
-#~ "logan@fedoraproject.org\n"
-#~ "mgiri@fedoraproject.org\n"
-#~ "mideal@fedoraproject.org\n"
-#~ "nagyesta@fedoraproject.org\n"
-#~ "nippur@fedoraproject.org\n"
-#~ "perplex@fedoraproject.org\n"
-#~ "peti@fedoraproject.org\n"
-#~ "pkst@fedoraproject.org\n"
-#~ "ppapadeas@fedoraproject.org\n"
-#~ "ptr@fedoraproject.org\n"
-#~ "raada@fedoraproject.org\n"
-#~ "rajesh@fedoraproject.org\n"
-#~ "ratal@fedoraproject.org\n"
-#~ "raven@fedoraproject.org\n"
-#~ "ricardopinto@fedoraproject.org\n"
-#~ "ruigo@fedoraproject.org\n"
-#~ "runab@fedoraproject.org\n"
-#~ "samfreemanz@fedoraproject.org\n"
-#~ "sandeeps@fedoraproject.org\n"
-#~ "sergiomesquita@fedoraproject.org\n"
-#~ "shanky@fedoraproject.org\n"
-#~ "shnurapet@fedoraproject.org\n"
-#~ "snicore@fedoraproject.org\n"
-#~ "swkothar@fedoraproject.org\n"
-#~ "tch@fedoraproject.org\n"
-#~ "tchuang@fedoraproject.org\n"
-#~ "thalia@fedoraproject.org\n"
-#~ "tomchiukc@fedoraproject.org\n"
-#~ "vpv@fedoraproject.org\n"
-#~ "warrink@fedoraproject.org\n"
-#~ "xconde@fedoraproject.org\n"
-#~ "ypoyarko@fedoraproject.org\n"
-#~ "zoltanh721@fedoraproject.org"
+#~ "No such crash in the database, probably wrong crashid.\n"
+#~ "crashid=%s"
 #~ msgstr ""
-#~ "aalam@fedoraproject.org\n"
-#~ "amitakhya@fedoraproject.org\n"
-#~ "andrealafauci@fedoraproject.org\n"
-#~ "anipeter@fedoraproject.org\n"
-#~ "astur@fedoraproject.org\n"
-#~ "beckerde@fedoraproject.org\n"
-#~ "bruce89@fedoraproject.org\n"
-#~ "charnik@fedoraproject.org\n"
-#~ "chenh@fedoraproject.org\n"
-#~ "cyrushmh@fedoraproject.org\n"
-#~ "dennistobar@fedoraproject.org\n"
-#~ "dheche@fedoraproject.org\n"
-#~ "diegobz@fedoraproject.org\n"
-#~ "dominiksandjaja@fedoraproject.org\n"
-#~ "elad@fedoraproject.org\n"
-#~ "elsupergomez@fedoraproject.org\n"
-#~ "eukim@fedoraproject.org\n"
-#~ "fab@fedoraproject.org\n"
-#~ "feonsu@fedoraproject.org\n"
-#~ "fgonz@fedoraproject.org\n"
-#~ "fvalen@fedoraproject.org\n"
-#~ "gcintra@fedoraproject.org\n"
-#~ "gguerrer@fedoraproject.org\n"
-#~ "goeran@fedoraproject.org\n"
-#~ "hedda@fedoraproject.org\n"
-#~ "hyuuga@fedoraproject.org\n"
-#~ "ifelix@fedoraproject.org\n"
-#~ "igorbounov@fedoraproject.org\n"
-#~ "igor@fedoraproject.org\n"
-#~ "jassy@fedoraproject.org\n"
-#~ "jensm@fedoraproject.org\n"
-#~ "jmoskovc@redhat.com\n"
-#~ "joe74@fedoraproject.org\n"
-#~ "jorgelopes@fedoraproject.org\n"
-#~ "kenda@fedoraproject.org\n"
-#~ "khasida@fedoraproject.org\n"
-#~ "kkrothap@fedoraproject.org\n"
-#~ "kmaraas@fedoraproject.org\n"
-#~ "kmilos@fedoraproject.org\n"
-#~ "kristho@fedoraproject.org\n"
-#~ "leahliu@fedoraproject.org\n"
-#~ "logan@fedoraproject.org\n"
-#~ "mgiri@fedoraproject.org\n"
-#~ "mideal@fedoraproject.org\n"
-#~ "nagyesta@fedoraproject.org\n"
-#~ "nippur@fedoraproject.org\n"
-#~ "perplex@fedoraproject.org\n"
-#~ "peti@fedoraproject.org\n"
-#~ "pkst@fedoraproject.org\n"
-#~ "ppapadeas@fedoraproject.org\n"
-#~ "ptr@fedoraproject.org\n"
-#~ "raada@fedoraproject.org\n"
-#~ "rajesh@fedoraproject.org\n"
-#~ "ratal@fedoraproject.org\n"
-#~ "raven@fedoraproject.org\n"
-#~ "ricardopinto@fedoraproject.org\n"
-#~ "ruigo@fedoraproject.org\n"
-#~ "runab@fedoraproject.org\n"
-#~ "samfreemanz@fedoraproject.org\n"
-#~ "sandeeps@fedoraproject.org\n"
-#~ "sergiomesquita@fedoraproject.org\n"
-#~ "shanky@fedoraproject.org\n"
-#~ "shnurapet@fedoraproject.org\n"
-#~ "snicore@fedoraproject.org\n"
-#~ "swkothar@fedoraproject.org\n"
-#~ "tch@fedoraproject.org\n"
-#~ "tchuang@fedoraproject.org\n"
-#~ "thalia@fedoraproject.org\n"
-#~ "tomchiukc@fedoraproject.org\n"
-#~ "vpv@fedoraproject.org\n"
-#~ "warrink@fedoraproject.org\n"
-#~ "xconde@fedoraproject.org\n"
-#~ "ypoyarko@fedoraproject.org\n"
-#~ "zoltanh721@fedoraproject.org"
+#~ "Zo'n crash is niet in de database, waarschijnlijk verkeerde crashid.\n"
+#~ "crashid=%s"
 
-#~ msgid "No UI for plugin %s"
-#~ msgstr "Geen UI voor plugin %s"
+#~ msgid "Cannot connect to the Gnome Keyring daemon."
+#~ msgstr "Kan niet verbinden met de Gnome sleutelbos daemon."
 
-#~ msgid "Creating kernel oops crash reports..."
-#~ msgstr "Aanmaken van kernel oops crash rapporten..."
-
-#~ msgid "Missing member 'reporter'"
-#~ msgstr "Onderdeel 'aanmelder' ontbreekt"
-
-#~ msgid "Missing member 'cc'"
-#~ msgstr "Onderdeel 'cc' ontbreekt"
-
-#~ msgid "Missing member 'bug_id'"
-#~ msgstr "Onderdeel 'bug_id' ontbreekt"
-
-#~ msgid "Checking CC..."
-#~ msgstr "Controleren van CC..."
-
-#~ msgid "Settings"
-#~ msgstr "Instellingen"
-
-#~ msgid "Global Settings"
-#~ msgstr "Globale instellingen"
-
-#~ msgid "gtk-cancel"
-#~ msgstr "gtk-cancel"
-
-#~ msgid "gtk-ok"
-#~ msgstr "gtk-ok"
-
-#~ msgid "Getting local universal unique identification..."
-#~ msgstr "Verkrijgen van locale universele unieke identificatie..."
-
-#~ msgid "I agree to submit this backtrace, which could contain sensitive data"
-#~ msgstr ""
-#~ "Ik ben er mee eens om deze backtrace in te dienen, hoewel hij gevoelige "
-#~ "data kan bevatten"
-
-#~ msgid "Send"
-#~ msgstr "Verzenden"
-
-#~ msgid "Executing SOSreport plugin..."
-#~ msgstr "Uitvoeren van SOSreport plugin..."
-
-#~ msgid "Plugin name is not set, can't load its settings"
-#~ msgstr "Plugin naam is niet ingesteld, kan zijn instellingen niet laden"
+#~ msgid "Cannot get the default keyring."
+#~ msgstr "Kan standaard sleutelbos niet verkrijgen."
 
 #~ msgid ""
-#~ "<b>WARNING</b>, you're about to send data which might contain sensitive "
-#~ "information.\n"
-#~ "Do you really want to send <b>%s</b>?\n"
+#~ "Access to gnome-keyring has been denied, plugins settings will not be "
+#~ "saved."
 #~ msgstr ""
-#~ "<b>WAARSCHUWING</b>, je staat op het punt om data te versturen die "
-#~ "gevoelige informatie kan bevatten\n"
-#~ "Wil je <b>%s</b> echt versturen?\n"
+#~ "Toegang tot gnome-keyring werd niet toegestaan, plug-ins instellingen "
+#~ "worden niet opgeslagen."
 
-#~ msgid "<b>Following items will be sent</b>"
-#~ msgstr "<b>De volgende items zullen verzonden worden</b>"
+#~ msgid ""
+#~ "Access to gnome-keyring has been denied, cannot load the settings for %s!"
+#~ msgstr ""
+#~ "Toegang tot gnome-keyring werd niet toegestaan, kan de instellingen voor "
+#~ "%s niet laden!"
 
-#~ msgid "Downloading and installing debug-info packages..."
-#~ msgstr "Downloaden en installeren van debug-info pakketten..."
+#~ msgid "Access to gnome-keyring has been denied, cannot load settings."
+#~ msgstr ""
+#~ "Toegang tot gnome-keyring werd niet toegestaan, kan de instellingen niet "
+#~ "laden!"
 
-#~ msgid "Starting report creation..."
-#~ msgstr "Beginnen met rapport aanmaken..."
+#~ msgid "Brief description of how to reproduce this or what you did..."
+#~ msgstr ""
+#~ "Korte beschrijving hoe dit te reproduceren is of wat je hebt gedaan..."
 
-#~ msgid "Can't get username for uid %s"
-#~ msgstr "Kan geen gebruikersnaam voor uid %s krijgen"
+#~ msgid "Crash info doesn't contain a backtrace"
+#~ msgstr "Crash info bevat geen backtrace"
 
-#~ msgid "Edit blacklisted packages"
-#~ msgstr "Bewerk pakketten op de zwarte lijst"
+#~ msgid ""
+#~ "Cannot save plugin settings:\n"
+#~ " %s"
+#~ msgstr ""
+#~ "Kan de plug-in instellingen niet opslaan:\n"
+#~ " %s"
 
-#~ msgid "This function is not implemented yet!"
-#~ msgstr "Deze functie is nog niet geïmplementeerd!"
+#~ msgid "Rating is %s"
+#~ msgstr "Kwalificatie is %s"
 
-#~ msgid "gtk-add"
-#~ msgstr "gtk-add"
+#~ msgid "Crashdump doesn't have rating => we suppose it's not required"
+#~ msgstr ""
+#~ "Crash dump heeft geen kwalificatie => we veronderstellen dat het niet "
+#~ "nodig is"
 
-#~ msgid "gtk-close"
-#~ msgstr "gtk-close"
+#~ msgid ""
+#~ "Reporting disabled because the backtrace is unusable.\n"
+#~ "Please try to install debuginfo manually using the command: <b>debuginfo-"
+#~ "install %s</b> \n"
+#~ "then use the Refresh button to regenerate the backtrace."
+#~ msgstr ""
+#~ "Rapportage uitgeschakeld omdat de backtrace onbruikbaar is.\n"
+#~ "Probeer debuginfo handmatig te installeren met het commando: <b>debuginfo-"
+#~ "install %s</b> \n"
+#~ "en gebruik dan de Verversen knop om de backtrace opnieuw te genereren."
 
-#~ msgid "gtk-remove"
-#~ msgstr "gtk-remove"
+#~ msgid "You did not provide any steps to reproduce."
+#~ msgstr "Je hebt geen stappen opgegeven voor reproductie."
 
-#~ msgid "Executing RunApp plugin..."
-#~ msgstr "RunApp plugin draaien..."
+#~ msgid "You did not provide any comments."
+#~ msgstr "Je hebt geen commentaar opgegeven."
+
+#~ msgid ""
+#~ "Reporting failed!\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Rapporteren mislukte!\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "It looks like an application from the package <b>%s</b> has crashed on "
+#~ "your system. It is a good idea to send a bug report about this issue. The "
+#~ "report will provide software maintainers with information essential in "
+#~ "figuring out how to provide a bug fix for you.\n"
+#~ "\n"
+#~ "Please review the information that follows and modify it as needed to "
+#~ "ensure your bug report does not contain any sensitive data you would "
+#~ "rather not share.\n"
+#~ "\n"
+#~ "Select where you would like to report the bug, and press 'Forward' to "
+#~ "continue."
+#~ msgstr ""
+#~ "Het ziet er naar uit dat een toepassing van het pakket <b>%s</b> is "
+#~ "gecrashed op jouw systeem. Het is een goed idee om voor dit probleem een "
+#~ "bug rapport in te sturen. Het rapport zal software onderhouders voorzien "
+#~ "van informatie die essentieel is om een reparatie voor jou te maken.\n"
+#~ "\n"
+#~ "Bekijk a.u.b. de volgende informatie en verander het indien nodig om er "
+#~ "zeker van te zijn dat jouw bug rapport geen gevoelige informatie bevat "
+#~ "die je liever niet wilt delen.\n"
+#~ "\n"
+#~ "Selecteer waar je deze bug wil rapporteren, en druk op 'Vooruit' om "
+#~ "verder te gaan."
+
+#~ msgid "Only one reporter plugin is configured."
+#~ msgstr "Er is slechts een rapporteer plug-in geconfigureerd."
+
+#~ msgid "Send a bug report"
+#~ msgstr "Verstuur een bug rapport"
+
+#~ msgid "Found %i occurence(s) [at: %i of %i]"
+#~ msgstr "Vond %i voorval(len) [bij: %i of %i]"
+
+#~ msgid "Search:"
+#~ msgstr "Zoeken:"
+
+#~ msgid "Refresh"
+#~ msgstr "Verversen"
+
+#~ msgid "Copy"
+#~ msgstr "Kopiëren"
+
+#~ msgid "Approve the backtrace"
+#~ msgstr "De backtrace goedkeuren"
+
+#~ msgid "You need to fill the how to before you can proceed..."
+#~ msgstr "Je moet hoe te reproduceren invullen voor je verder kan gaan..."
+
+#~ msgid ""
+#~ "Are there any comments you would like to share with the software "
+#~ "maintainers?"
+#~ msgstr "Heb je commentaar die je wilt delen met de software onderhouders?"
+
+#~ msgid "Provide additional details"
+#~ msgstr "Bied extra details"
+
+#~ msgid ""
+#~ "<b>Tip:</b> Your comments are not private. Please watch what you say "
+#~ "accordingly."
+#~ msgstr "<b>Tip:</b> Jouw commentaar is niet privé. Let dus op wat je zegt."
+
+#~ msgid "Confirm and send the report"
+#~ msgstr "Bevestig en verstuur het rapport"
+
+#~ msgid ""
+#~ "Below is a summary of your bug report. Please click 'Apply' to submit it."
+#~ msgstr ""
+#~ "Hieronder is een samenvatting van jouw bug rapport. Klik op 'Toepassen' "
+#~ "om het te versturen."
+
+#~ msgid "<b>Basic details</b>"
+#~ msgstr "<b>Bais details</b>"
+
+#~ msgid "Component"
+#~ msgstr "Onderdeel"
+
+#~ msgid "Package"
+#~ msgstr "Pakket"
+
+#~ msgid "Executable"
+#~ msgstr "Uitvoerbaar programma"
+
+#~ msgid "Cmdline"
+#~ msgstr "Commando-regel"
+
+#~ msgid "Architecture"
+#~ msgstr "Architectuur"
+
+#~ msgid "Kernel"
+#~ msgstr "Kernel"
+
+#~ msgid "Release"
+#~ msgstr "Vrijgave"
+
+#~ msgid "Reason"
+#~ msgstr "Reden"
+
+#~ msgid "<b>Backtrace</b>"
+#~ msgstr "<b>Backtrace</b>"
+
+#~ msgid "Click to view..."
+#~ msgstr "Klik om te bekijken..."
+
+#~ msgid "<b>Steps to reproduce:</b>"
+#~ msgstr "<b>Stappen om te reproduceren:</b>"
+
+#~ msgid "<b>Comments:</b>"
+#~ msgstr "<b>Commentaar:</b>"
+
+#~ msgid "No comment provided!"
+#~ msgstr "Geen commentaar gegeven!"
+
+#~ msgid "Finished sending the bug report"
+#~ msgstr "Het versturen van het bug rapport is klaar"
+
+#~ msgid "<b>Bug reports:</b>"
+#~ msgstr "<b>Bug rapporten:</b>"
+
+#~ msgid ""
+#~ "Unable to get report!\n"
+#~ "Is debuginfo missing?"
+#~ msgstr ""
+#~ "Kan geen rapport krijgen!\n"
+#~ "Mist debuginfo?"
+
+#~ msgid "Error acquiring the report: %s"
+#~ msgstr "Fout tijdens het verkrijgen van het rapport: %s"
+
+#~ msgid "Log"
+#~ msgstr "Log"
+
+#~ msgid "Report done"
+#~ msgstr "Rapport klaar"
+
+#~ msgid "Cannot find PluginDialog widget in the UI description!"
+#~ msgstr "Kan PluginDialog widget in UI beschrijving niet vinden!"
+
+#~ msgid ""
+#~ "No UI for the plugin <b>%s</b>, this is probably a bug.\n"
+#~ "Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
+#~ "\">https://fedorahosted.org/abrt/newticket</a>"
+#~ msgstr ""
+#~ "Geen UI voor de plug-in <b>%s</b>, dit is waarschijnlijk een bug.\n"
+#~ "Rapporteer dit op <a href=\"https://fedorahosted.org/abrt/newticket"
+#~ "\">https://fedorahosted.org/abrt/newticket</a>"
+
+#~ msgid "Combo box is not implemented"
+#~ msgstr "Combo box is niet geïmplementeerd"
+
+#~ msgid "Nothing to hydrate!"
+#~ msgstr "Kan het niet hard maken!"
+
+#~ msgid "Cannot load the GUI description for SettingsDialog!"
+#~ msgstr "Kan de gui beschrijving voor SettingsDialog niet laden!"
+
+#~ msgid "Please select a plugin from the list to edit its options."
+#~ msgstr "Selecteer een plug-in in de list om de opties hiervan te bewerken."
+
+#~ msgid ""
+#~ "Error while opening the plugin settings UI: \n"
+#~ "\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Fout tijdens het openen van de plug-in instellingen UI: \n"
+#~ "\n"
+#~ "%s"
+
+#~ msgid "Please wait..."
+#~ msgstr "Wacht even..."
+
+#~ msgid " "
+#~ msgstr " "
+
+#~ msgid "<b>Attachments</b>"
+#~ msgstr "<b>Bijlagen</b>"
+
+#~ msgid "<b>Comment</b>"
+#~ msgstr "<b>Commentaar</b>"
+
+#~ msgid "<b>How to reproduce (in a few simple steps)</b>"
+#~ msgstr "<b>Hoe te reproduceren (in een paar eenvoudige stappen)</b>"
+
+#~ msgid "<b>Please fix the following problems:</b>"
+#~ msgstr "<b>Los de volgende problemen op:</b>"
+
+#~ msgid "<b>Where do you want to report this incident?</b>"
+#~ msgstr "<b>Waar wil je dit incident rapporteren?</b>"
+
+#~ msgid "<span fgcolor=\"blue\">Architecture:</span>"
+#~ msgstr "<span fgcolor=\"blue\">Architectuur:</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+#~ msgstr "<span fgcolor=\"blue\">Cmdregel:</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Component:</span>"
+#~ msgstr "<span fgcolor=\"blue\">Onderdeel:</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Executable:</span>"
+#~ msgstr "<span fgcolor=\"blue\">Uitvoerbaar programma:</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Kernel:</span>"
+#~ msgstr "<span fgcolor=\"blue\">Kernel:</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Package:</span>"
+#~ msgstr "<span fgcolor=\"blue\">Pakket:</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Reason:</span>"
+#~ msgstr "<span fgcolor=\"blue\">Reden:</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Release:</span>"
+#~ msgstr "<span fgcolor=\"blue\">Vrijgave:</span>"
+
+#~ msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
+#~ msgstr ""
+#~ "Ik heb de backtrace gecontroleerd en gevoelige data verwijderd "
+#~ "(wachtwoorden, enz.)"
+
+#~ msgid "N/A"
+#~ msgstr "n.v.t."
+
+#~ msgid "Reporter Selector"
+#~ msgstr "Aanmeld selectie"
+
+#~ msgid "Send report"
+#~ msgstr "Verstuur rapport"
+
+#~ msgid "Show log"
+#~ msgstr "Laat log zien"
+
+#~ msgid "Remove this job"
+#~ msgstr "Verwijder deze taak"
+
+#~ msgid "Remove this action"
+#~ msgstr "Verwijder deze actie"
+
+#~ msgid "<b>Plugin details</b>"
+#~ msgstr "<b>Plug-in details</b>"
+
+#~ msgid "Author:"
+#~ msgstr "Schrijver:"
+
+#~ msgid "Blacklisted packages: "
+#~ msgstr "Pakketten op de zwarte lijst:"
+
+#~ msgid "Check package GPG signature"
+#~ msgstr "Controleer GPG ondertekening van pakket"
+
+#~ msgid "Common"
+#~ msgstr "Algemeen"
+
+#~ msgid "GPG Keys"
+#~ msgstr "GPG sleutels"
+
+#~ msgid "GPG keys: "
+#~ msgstr "GPG sleutels: "
+
+#~ msgid "Max coredump storage size (MB):"
+#~ msgstr "Max coredump opslag grootte (MB):"
+
+#~ msgid "Name:"
+#~ msgstr "Naam:"
+
+#~ msgid "Preferences"
+#~ msgstr "Voorkeuren"
+
+#~ msgid "Version:"
+#~ msgstr "Versie:"
+
+#~ msgid "Web Site:"
+#~ msgstr "Website:"
+
+#~ msgid "<b>Do you want to continue?</b>"
+#~ msgstr "<b>Wil je verdergaan?</b>"
+
+#~ msgid "Wrong Settings Detected"
+#~ msgstr "Verkeerde instellingen ontdekt"
+
+#~ msgid ""
+#~ "Wrong settings were detected for some of the enabled reporter plugins. "
+#~ "Please use the buttons below to open the respective configuration and fix "
+#~ "it before you proceed, otherwise, the reporting process may fail.\n"
+#~ msgstr ""
+#~ "Er zijn verkeerde instellingen ontdekt voor sommige van de aangezette "
+#~ "rapporteer plug-ins. Gebruik de knoppen hieronder om hun respectievelijke "
+#~ "configuratie te openen en te repareren voordat je verdergaat, omdat het "
+#~ "rapporteer proces anders kan mislukken.\n"

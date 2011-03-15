@@ -1,29 +1,28 @@
-# Sérgio Mesquita <sergiomesquita@cm-porto.pt>, 2010.
-# Rui Gouveia <rui.gouveia@gmail.com>, 2010.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt\n"
+"Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-03 21:09+0100\n"
-"PO-Revision-Date: 2010-09-01 11:45+0100\n"
-"Last-Translator: Sérgio Mesquita <smesquita@gmail.com>\n"
-"Language-Team: trans-pt@lists.fedoraproject.org\n"
+"POT-Creation-Date: 2011-03-15 20:32+0100\n"
+"PO-Revision-Date: 2011-03-09 12:12+0000\n"
+"Last-Translator: ruigo <rui.gouveia@gmail.com>\n"
+"Language-Team: Portuguese <trans-pt@lists.fedoraproject.org>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.6.1\n"
-"X-Poedit-Language: Portuguese\n"
-"X-Poedit-Country: PORTUGAL\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
 msgstr "Applet de notificação do ABRT"
 
-#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui/abrt.desktop.in.h:1
-#: ../src/gui/ccgui.glade.h:10 ../src/gui/CCMainWindow.py:8
-#: ../src/gui/report.glade.h:16
+#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt-gtk.c:345
+#: ../src/gui-gtk/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "Ferramenta automática para reportar erros"
 
@@ -40,36 +39,36 @@ msgstr "Foi detectado uma falha"
 msgid "ABRT service is not running"
 msgstr "O serviço ABRT não está a correr"
 
-#: ../src/applet/applet_gtk.c:176 ../src/applet/applet_gtk.c:178
-#: ../src/applet/applet_gtk.c:367 ../src/applet/applet_gtk.c:394
+#: ../src/applet/applet_gtk.c:177 ../src/applet/applet_gtk.c:179
+#: ../src/applet/applet_gtk.c:368 ../src/applet/applet_gtk.c:395
 msgid "Warning"
 msgstr "Aviso"
 
-#: ../src/applet/applet_gtk.c:230
+#: ../src/applet/applet_gtk.c:231
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "Applet da área de notificação que informa os utilizadores sobre os problemas "
 "detectados pela ABRT"
 
-#: ../src/applet/applet_gtk.c:246 ../src/gui/ccgui.glade.h:24
+#: ../src/applet/applet_gtk.c:247 ../src/gui-gtk/abrt-gtk.c:230
 msgid "translator-credits"
 msgstr "Rui Gouveia <rui.gouveia@gmail.com>"
 
-#: ../src/applet/applet_gtk.c:256
+#: ../src/applet/applet_gtk.c:257
 msgid "Hide"
 msgstr "Esconder"
 
-#: ../src/applet/applet_gtk.c:360 ../src/gui/ccgui.glade.h:14
+#: ../src/applet/applet_gtk.c:361
 msgid "Report"
 msgstr "Relatório"
 
-#: ../src/applet/applet_gtk.c:363 ../src/applet/applet_gtk.c:391
+#: ../src/applet/applet_gtk.c:364 ../src/applet/applet_gtk.c:392
 msgid "Open ABRT"
 msgstr "Abrir ABRT"
 
-#: ../src/cli/CLI.cpp:90
-#, fuzzy, c-format
+#: ../src/cli/cli.c:90
+#, c-format
 msgid ""
 "\tCrash dump : %s\n"
 "\tUID        : %s\n"
@@ -78,20 +77,20 @@ msgid ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 msgstr ""
-"\tUID        : %s\n"
-"\tUUID       : %s\n"
+"\tDump da falha : %s\n"
+"\tUID       : %s\n"
 "\tPacote      : %s\n"
 "\tExecutável : %s\n"
 "\tHora da falha: %s\n"
 "\tNúmero de falhas: %s\n"
 
-#: ../src/cli/CLI.cpp:109
+#: ../src/cli/cli.c:109
 #, c-format
 msgid "\tHostname   : %s\n"
 msgstr "\tMáquina   : %s\n"
 
-#: ../src/cli/CLI.cpp:142
-#, fuzzy, c-format
+#: ../src/cli/cli.c:142
+#, c-format
 msgid ""
 "Dump directory:     %s\n"
 "Last crash:         %s\n"
@@ -103,7 +102,7 @@ msgid ""
 "System:             %s, kernel %s\n"
 "Reason:             %s\n"
 msgstr ""
-"ID da falha:        %s:%s\n"
+"Directório da falha:        %s\n"
 "Última falha:      %s\n"
 "Analisador:           %s\n"
 "Componente:         %s\n"
@@ -113,27 +112,27 @@ msgstr ""
 "Sistema:             %s, kernel %s\n"
 "Motivo:               %s\n"
 
-#: ../src/cli/CLI.cpp:170
+#: ../src/cli/cli.c:170
 #, c-format
 msgid "Coredump file:      %s\n"
 msgstr "Ficheiro de coredump: %s\n"
 
-#: ../src/cli/CLI.cpp:174
+#: ../src/cli/cli.c:174
 #, c-format
 msgid "Rating:             %s\n"
 msgstr "Classificação:   %s\n"
 
-#: ../src/cli/CLI.cpp:179
+#: ../src/cli/cli.c:179
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr "falha na função:    %s\n"
 
-#: ../src/cli/CLI.cpp:183
+#: ../src/cli/cli.c:183
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr "Máquina:           %s\n"
 
-#: ../src/cli/CLI.cpp:187
+#: ../src/cli/cli.c:187
 #, c-format
 msgid ""
 "\n"
@@ -144,7 +143,7 @@ msgstr ""
 "Comentário:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:193
+#: ../src/cli/cli.c:193
 #, c-format
 msgid ""
 "\n"
@@ -155,7 +154,7 @@ msgstr ""
 "Traçagem:\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:250
+#: ../src/cli/cli.c:250
 #, c-format
 msgid ""
 "Usage: %s -l[f] [-D BASE_DIR]...]\n"
@@ -177,8 +176,26 @@ msgid ""
 "\t-V, --version\t\tDisplay version and exit\n"
 "\t-v, --verbose\t\tBe verbose\n"
 msgstr ""
+"Utilização: %s -l[f] [-D BASE_DIR]...]\n"
+"   ou: %s -r[y] CRASH_DIR\n"
+"   ou: %s -i[b] CRASH_DIR\n"
+"   ou: %s -d CRASH_DIR\n"
+"\n"
+"\t-l, --list\t\tListar erros ainda não reportados\n"
+"\t-f, --full\t\tListar todos os erros\n"
+"\t-D BASE_DIR\tListar erros deste directório\n"
+"\t\t\t\t(por omissão: -D $HOME/.abrt/spool -D %s)\n"
+"\n"
+"\t-r, --report\tEnviar um relatório acerca de CRASH_DIR\n"
+"\t-y, --always\t\t...sem edição nem perguntas\n"
+"\t-i, --info\t\tMostrar informações detalhadas acerca de CRASH_DIR\n"
+"\t-b, --backtrace\t...incluindo traçagem\n"
+"\t-d, --delete\tRemover CRASH_DIR\n"
+"\n"
+"\t-V, --version\tApresentar versão e sair\n"
+"\t-v, --verbose\tSer verboso\n"
 
-#: ../src/cli/CLI.cpp:298
+#: ../src/cli/cli.c:298
 msgid "You must specify exactly one operation"
 msgstr "Tem de especificar exactamente uma operação"
 
@@ -278,24 +295,24 @@ msgstr "Digite o seu nome de utilizador:"
 msgid "Enter your password: "
 msgstr "Digite a sua senha:"
 
-#: ../src/cli/report.cpp:766
+#: ../src/cli/report.cpp:760 ../src/gui-wizard-gtk/wizard.c:1063
 msgid "Reporting..."
 msgstr "A reportar..."
 
-#: ../src/cli/report.cpp:779
+#: ../src/cli/report.cpp:773
 #, c-format
 msgid "Report using %s?"
 msgstr "Reportar utilizando %s?"
 
-#: ../src/cli/report.cpp:782
+#: ../src/cli/report.cpp:776
 msgid "Skipping..."
 msgstr "A passar à frente..."
 
-#: ../src/cli/report.cpp:798
+#: ../src/cli/report.cpp:792
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Relatório desactivado porque a traçagem não é utilizável"
 
-#: ../src/cli/report.cpp:802
+#: ../src/cli/report.cpp:796
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -304,10 +321,10 @@ msgstr ""
 "Por favor, tente instalar o debuginfo manualmente utilizando o comando: "
 "\"debuginfo-install %s\" e tente novamente\n"
 
-#: ../src/cli/report.cpp:820
-#, fuzzy, c-format
+#: ../src/cli/report.cpp:814
+#, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
-msgstr "Falha reportada via %d plugins (%d erros)\n"
+msgstr "Falha reportada via %d relatório de eventos (%d erros)\n"
 
 #: ../src/daemon/abrt-action-save-package-data.c:245
 msgid ""
@@ -315,6 +332,10 @@ msgid ""
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
+" [opções] -d DIR\n"
+"\n"
+"Consultar a base de dados e gravar o nome, componentes e descrição dos "
+"pacotes"
 
 #: ../src/daemon/abrt-action-save-package-data.c:257
 #: ../src/daemon/abrt-handle-crashdump.c:60
@@ -322,46 +343,48 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
 #: ../src/plugins/abrt-action-bugzilla.cpp:933
-#: ../src/plugins/abrt-action-generate-backtrace.c:270
+#: ../src/plugins/abrt-action-generate-backtrace.c:269
 #: ../src/plugins/abrt-action-kerneloops.c:147
-#: ../src/plugins/abrt-action-mailx.c:149
+#: ../src/plugins/abrt-action-mailx.c:147
 #: ../src/plugins/abrt-action-print.c:50
 #: ../src/plugins/abrt-action-rhtsupport.c:280
 #: ../src/plugins/abrt-action-upload.c:260
 msgid "Crash dump directory"
-msgstr ""
+msgstr "Directório de dump das falhas"
 
 #: ../src/daemon/abrt-action-save-package-data.c:258
 #: ../src/daemon/abrt-handle-crashdump.c:59 ../src/daemon/abrt-server.c:297
 #: ../src/plugins/abrt-action-bugzilla.cpp:932
-#: ../src/plugins/abrt-action-generate-backtrace.c:273
+#: ../src/plugins/abrt-action-generate-backtrace.c:272
 #: ../src/plugins/abrt-action-kerneloops.c:146
 #: ../src/plugins/abrt-action-rhtsupport.c:279
 #: ../src/plugins/abrt-dump-oops.c:555
 msgid "Log to syslog"
-msgstr ""
+msgstr "Registar no syslog"
 
 #: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
 " [-vs] -d DIR -e EVENT\n"
 "   or: "
 msgstr ""
+" [-vs] -d DIR -e EVENT\n"
+"   ou: "
 
 #: ../src/daemon/abrt-handle-crashdump.c:61
 msgid "Handle EVENT"
-msgstr ""
+msgstr "Lidar com o EVENTO"
 
 #: ../src/daemon/abrt-handle-crashdump.c:62
 msgid "List possible events [which start with PFX]"
-msgstr ""
+msgstr "Listar eventos possíveis [que começam com PFX]"
 
-#: ../src/daemon/abrt-server.c:286 ../src/daemon/Daemon.cpp:542
+#: ../src/daemon/abrt-server.c:286 ../src/daemon/Daemon.cpp:544
 msgid " [options]"
-msgstr ""
+msgstr " [options]"
 
 #: ../src/daemon/abrt-server.c:296
 msgid "Use UID as client uid"
-msgstr ""
+msgstr "Utilizar UID como uid do cliente"
 
 #: ../src/daemon/CommLayerServerDBus.cpp:239
 msgid "Comment is too long"
@@ -375,301 +398,124 @@ msgstr ""
 "O tamanho do relatório excedeu a cota. Por favor, verifique o valor de "
 "MaxCrashReportsSize em abrt.conf."
 
-#: ../src/daemon/Daemon.cpp:553
-msgid "Do not daemonize"
-msgstr ""
-
-#: ../src/daemon/Daemon.cpp:554
-msgid "Log to syslog even with -d"
-msgstr ""
-
 #: ../src/daemon/Daemon.cpp:555
+msgid "Do not daemonize"
+msgstr "Não enviar para segundo plano"
+
+#: ../src/daemon/Daemon.cpp:556
+msgid "Log to syslog even with -d"
+msgstr "Registar para o syslog mesmo com o -d"
+
+#: ../src/daemon/Daemon.cpp:557
 msgid "Exit after SEC seconds of inactivity"
+msgstr "Sair após SEC segundos de inactividade"
+
+#: ../src/gtk-helpers/event_config_dialog.c:127
+#: ../src/plugins/Bugzilla.glade.h:7 ../src/plugins/RHTSupport.glade.h:6
+msgid "Show password"
+msgstr "Apresentar senha"
+
+#: ../src/gtk-helpers/event_config_dialog.c:258
+#, fuzzy
+msgid "Event Configuration"
+msgstr "Configurar %s opções"
+
+#: ../src/gtk-helpers/event_config_dialog.c:303
+msgid "Events"
 msgstr ""
 
-#: ../src/gui/abrt.desktop.in.h:2
-msgid "View and report application crashes"
-msgstr "Ver e reportar as falhas de aplicações"
-
-#: ../src/gui/ABRTExceptions.py:7
-msgid "Another client is already running, trying to wake it..."
-msgstr "Outro cliente já está em execução. A tentar despertá-lo."
-
-#: ../src/gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
-msgstr ""
-"Obteve-se dados inesperados do serviço (a base de dados está actualizada?)"
-
-#: ../src/gui/ABRTPlugin.py:64
-msgid "Not loaded plugins"
-msgstr "Plugins não carregados"
-
-#: ../src/gui/ABRTPlugin.py:65
-msgid "Analyzer plugins"
-msgstr "Plugins de análise"
-
-#: ../src/gui/ABRTPlugin.py:66
-msgid "Action plugins"
-msgstr "Plugins de acções"
-
-#: ../src/gui/ABRTPlugin.py:67
-msgid "Reporter plugins"
-msgstr "Plugins de relatórios"
-
-#: ../src/gui/ABRTPlugin.py:68
-msgid "Database plugins"
-msgstr "Plugins de bases de dados"
-
-#: ../src/gui/CCDBusBackend.py:75 ../src/gui/CCDBusBackend.py:98
-msgid "Cannot connect to system dbus."
-msgstr "Incapaz de ligar ao sistema dbus."
-
-#: ../src/gui/CCDBusBackend.py:121 ../src/gui/CCDBusBackend.py:124
-msgid "Please check if the abrt daemon is running."
-msgstr "Por favor, verifique se o serviço abrt está a correr."
-
-#. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:170
-msgid ""
-"Daemon did not return a valid report info.\n"
-"Is debuginfo missing?"
-msgstr ""
-"O serviço não retornou um relatório com informação válida\n"
-"O debuginfo está em falta?"
-
-#: ../src/gui/ccgui.glade.h:1
-msgid "(C) 2009, 2010 Red Hat, Inc."
-msgstr "(C) 2009, 2010 Red Hat, Inc."
-
-#: ../src/gui/ccgui.glade.h:2
-msgid "<b>Bug Reports:</b>"
-msgstr "<b>Relatórios de erros:</b>"
-
-#: ../src/gui/ccgui.glade.h:3
-msgid "<b>Command:</b>"
-msgstr "<b>Comando:</b>"
-
-#: ../src/gui/ccgui.glade.h:4
-msgid "<b>Comment:</b>"
-msgstr "<b>Comentário:</b>"
-
-#: ../src/gui/ccgui.glade.h:5
-msgid "<b>Crash Count:</b>"
-msgstr "<b>Contagem de falhas:</b>"
-
-#: ../src/gui/ccgui.glade.h:6
-msgid "<b>Latest Crash:</b>"
-msgstr "<b>Última falha:</b>"
-
-#: ../src/gui/ccgui.glade.h:7
-msgid "<b>Reason:</b>"
-msgstr "<b>Motivo:</b>"
-
-#: ../src/gui/ccgui.glade.h:8
-msgid "<b>User:</b>"
-msgstr "<b>Utilizador:</b>"
-
-#: ../src/gui/ccgui.glade.h:9
-msgid "About ABRT"
-msgstr "Acerca do ABRT"
-
-#: ../src/gui/ccgui.glade.h:11
-msgid "Copy to Clipboard"
-msgstr "Copiar para a área de transferência"
-
-#: ../src/gui/ccgui.glade.h:12
-msgid "Online _Help"
+#: ../src/gtk-helpers/event_config_dialog.c:327
+msgid "Event"
 msgstr ""
 
-#: ../src/gui/ccgui.glade.h:13 ../src/gui/settings.glade.h:12
-msgid "Plugins"
-msgstr "Plugins"
+#: ../src/gtk-helpers/event_config_dialog.c:359
+#, fuzzy
+msgid "Configure E_vent"
+msgstr "C_onfigurar plugin"
 
-#: ../src/gui/ccgui.glade.h:15
-msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
-msgstr ""
-"Este programa é software livre; pode redistribuí-lo e/ou modifica-lo sob os "
-"termos da GNU General Public License como publicado pela Free Software "
-"Foundation; quer na versão 2 da licença, ou (como opção sua) qualquer versão "
-"mais recente.\n"
-"\n"
-"Este programa é distribuído com a esperança de ser útil, mas SEM QUALQUER "
-"GARANTIA; sem mesmo a garantia implícita de  COMERCIABILIDADE ou ADEQUAÇÃO A "
-"UM DETERMINADO FIM.  Veja a GNU General Public License para mais detalhes.\n"
-"\n"
-"Deve ter recebido uma cópia da GNU General Public License juntamente com "
-"este programa.  Se não, veja <http://www.gnu.org/licenses/>."
-
-#: ../src/gui/ccgui.glade.h:20 ../src/gui/CReporterAssistant.py:111
-msgid "View log"
-msgstr "Mostrar registo"
-
-#: ../src/gui/ccgui.glade.h:21
-msgid "_Edit"
-msgstr "_Editar"
-
-#: ../src/gui/ccgui.glade.h:22
-msgid "_File"
-msgstr "_Ficheiro"
-
-#: ../src/gui/ccgui.glade.h:23
-msgid "_Help"
-msgstr "_Ajuda"
-
-#. add pixbuff separatelly
-#: ../src/gui/CCMainWindow.py:63
+#: ../src/gui-gtk/abrt-gtk.c:249
 msgid "Reported"
 msgstr "Reportado"
 
-#: ../src/gui/CCMainWindow.py:71
-msgid "Application"
-msgstr "Aplicação"
+#: ../src/gui-gtk/abrt-gtk.c:261
+msgid "Problem"
+msgstr ""
 
-#: ../src/gui/CCMainWindow.py:73
-msgid "Hostname"
-msgstr "Nome da máquina"
+#: ../src/gui-gtk/abrt-gtk.c:284
+msgid "Last occurrence"
+msgstr ""
 
-#: ../src/gui/CCMainWindow.py:75
-msgid "Latest Crash"
-msgstr "Última falha"
+#: ../src/gui-gtk/abrt-gtk.c:299
+msgid "_File"
+msgstr "_Ficheiro"
 
-#: ../src/gui/CCMainWindow.py:148
-#, python-format
+#: ../src/gui-gtk/abrt-gtk.c:300
+msgid "_Edit"
+msgstr "_Editar"
+
+#: ../src/gui-gtk/abrt-gtk.c:301
+msgid "_Help"
+msgstr "_Ajuda"
+
+#: ../src/gui-gtk/abrt-gtk.c:317
+#, fuzzy
+msgid "_Plugins"
+msgstr "Plugins"
+
+#: ../src/gui-gtk/abrt-gtk.c:393
+#, fuzzy
+msgid "_Online Help"
+msgstr "_Ajuda online"
+
+#: ../src/gui-gtk/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "Ver e reportar as falhas de aplicações"
+
+#: ../src/gui-wizard-gtk/main.c:70
 msgid ""
-"Cannot show the settings dialog.\n"
-"%s"
+" [-v] [-g GUI_FILE] DIR\n"
+"\n"
+"GUI tool to analyze and report ABRT crash in specified DIR"
 msgstr ""
-"Impossível mostrar a janela de configurações\n"
-"%s"
 
-#: ../src/gui/CCMainWindow.py:153
-#, python-format
+#: ../src/gui-wizard-gtk/main.c:80
+msgid "Alternate GUI file"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.c:187
+#, c-format
 msgid ""
-"Unable to finish the current task!\n"
-"%s"
+"Need writable directory, but '%s' is not writable. Move it to '%s' and "
+"operate on the moved copy?"
 msgstr ""
-"Impossível terminar a tarefa actual!\n"
-"%s"
 
-#. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/gui/CCMainWindow.py:188
-#, python-format
-msgid ""
-"Error while loading the dumplist.\n"
-"%s"
+#: ../src/gui-wizard-gtk/wizard.c:499
+msgid "(click here to view/edit)"
 msgstr ""
-"Erro ao carregar a lista de dump.\n"
-" %s"
 
-#: ../src/gui/CCMainWindow.py:246
-#, python-format
-msgid ""
-"<b>%s Crash</b>\n"
-"%s"
+#: ../src/gui-wizard-gtk/wizard.c:511
+#, c-format
+msgid "(binary file, %llu bytes)"
 msgstr ""
-"<b>%s Falha</b>\n"
-"%s"
 
-#: ../src/gui/CCMainWindow.py:343
-msgid "You have to select a crash to copy."
-msgstr "Tem de seleccionar uma falha para copiar."
+#: ../src/gui-wizard-gtk/wizard.c:526
+#, fuzzy
+msgid "(no description)"
+msgstr "Descrição:"
 
-#: ../src/gui/CCMainWindow.py:427
-msgid ""
-"Usage: abrt-gui [OPTIONS]\n"
-"\t-v[vv]\t\t\tVerbose\n"
-"\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
+#: ../src/gui-wizard-gtk/wizard.c:531
+#, c-format
+msgid "%llu bytes, %u files"
 msgstr ""
-"Utilização: abrt-gui [OPÇÕES]\n"
-"\t-v[vv]\t\t\t\tVerboso\n"
-"\t--report=CRASH_ID\tReportar directamente a falha com CRASH_ID"
 
-#: ../src/gui/CCMainWindow.py:450
-#, python-format
-msgid ""
-"No such crash in the database, probably wrong crashid.\n"
-"crashid=%s"
+#. TODO: better msg?
+#: ../src/gui-wizard-gtk/wizard.c:868
+#, c-format
+msgid "No processing for event '%s' is defined"
 msgstr ""
-"Falha não existe na base de dados. Provavelmente crashid errado.\n"
-"crashid=%s"
 
-#: ../src/gui/ConfBackend.py:78
-msgid "Cannot connect to the Gnome Keyring daemon."
-msgstr "Incapaz de ligar ao serviço chaveiro do Gnome."
-
-#. could happen if keyring daemon is running, but we run gui under
-#. user who is not the owner of the running session - using su
-#: ../src/gui/ConfBackend.py:84
-msgid "Cannot get the default keyring."
-msgstr "Não é possível obter o chaveiro por omissão."
-
-#: ../src/gui/ConfBackend.py:103 ../src/gui/ConfBackend.py:120
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr ""
-"O acesso ao gnome-keyring foi negado, as configurações do plugins não serão "
-"gravadas."
-
-#. we tried 2 times, so giving up the authorization
-#: ../src/gui/ConfBackend.py:154
-#, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr ""
-"O acesso ao gnome-keyring foi negado, incapaz de carregar as configurações "
-"para %s!"
-
-#: ../src/gui/ConfBackend.py:207
-msgid "Access to gnome-keyring has been denied, cannot load settings."
-msgstr ""
-"O acesso ao gnome-keyring foi negado, incapaz de carregar configurações."
-
-#: ../src/gui/CReporterAssistant.py:20
-msgid "Brief description of how to reproduce this or what you did..."
-msgstr "Breve descrição de como reproduzir isto ou o que fez..."
-
-#: ../src/gui/CReporterAssistant.py:21
-msgid "Crash info doesn't contain a backtrace"
-msgstr "As informações da falha não contêm uma traçagem"
-
-#: ../src/gui/CReporterAssistant.py:277
-#: ../src/gui/PluginsSettingsDialog.py:136
-#, python-format
-msgid ""
-"Cannot save plugin settings:\n"
-" %s"
-msgstr ""
-"Incapaz de gravar as configurações do plugin:\n"
-"%s"
-
-#: ../src/gui/CReporterAssistant.py:307
-#, python-format
-msgid "Configure %s options"
-msgstr "Configurar %s opções"
-
-#: ../src/gui/CReporterAssistant.py:362
-#, python-format
-msgid "Rating is %s"
-msgstr "A classificação é %s"
-
-#: ../src/gui/CReporterAssistant.py:365
-msgid "Crashdump doesn't have rating => we suppose it's not required"
-msgstr "O dump da falha não tem classificação => supomos que não é necessária"
-
-#: ../src/gui/CReporterAssistant.py:370 ../src/gui/CReporterAssistant.py:398
+#. bt is usable, but not complete, so show a warning
+#: ../src/gui-wizard-gtk/wizard.c:963
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -677,91 +523,61 @@ msgstr ""
 "A traçagem está incompleta. Por favor, tenha a certeza que fornece os passos "
 "para reproduzir."
 
-#: ../src/gui/CReporterAssistant.py:378
-msgid "You should check the backtrace for sensitive data."
-msgstr "Deve verificar a traçagem por dados sensíveis."
-
-#: ../src/gui/CReporterAssistant.py:379
-msgid "You must agree with sending the backtrace."
-msgstr "Tem de concordar com o envio da traçagem."
-
-#: ../src/gui/CReporterAssistant.py:392
-#, python-format
-msgid ""
-"Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using the command: <b>debuginfo-"
-"install %s</b> \n"
-"then use the Refresh button to regenerate the backtrace."
-msgstr ""
-"Relatórios desactivados porque a traçagem não é usável!\n"
-"Por favor, tente instalar o debuginfo manualmente utilizando o comando:"
-"<b>debuginfo-install %s </b> \n"
-"depois utilize o botão Recarregar para gerar uma nova traçagem."
-
-#: ../src/gui/CReporterAssistant.py:394
+#. FIXME: see CreporterAssistant: 394 for ideas
+#: ../src/gui-wizard-gtk/wizard.c:969
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Relatório desactivado porque a traçagem não é utilizável."
 
-#: ../src/gui/CReporterAssistant.py:440
-msgid "You did not provide any steps to reproduce."
-msgstr "Não forneceu nenhuns passos para reproduzir o erro."
+#: ../src/gui-wizard-gtk/wizard.c:978
+msgid "You should check the backtrace for sensitive data."
+msgstr "Deve verificar a traçagem por dados sensíveis."
 
-#: ../src/gui/CReporterAssistant.py:454
-msgid "You did not provide any comments."
-msgstr "Não forneceu nenhum comentário."
+#: ../src/gui-wizard-gtk/wizard.c:979
+msgid "You must agree with sending the backtrace."
+msgstr "Tem de concordar com o envio da traçagem."
 
-#: ../src/gui/CReporterAssistant.py:483
-#, python-format
-msgid ""
-"Reporting failed!\n"
-"%s"
+#: ../src/gui-wizard-gtk/wizard.c:1035
+msgid "Analyzing..."
 msgstr ""
-"Relatório falhou!\n"
-"%s"
 
-#: ../src/gui/CReporterAssistant.py:535
-#, python-format
-msgid ""
-"It looks like an application from the package <b>%s</b> has crashed on your "
-"system. It is a good idea to send a bug report about this issue. The report "
-"will provide software maintainers with information essential in figuring out "
-"how to provide a bug fix for you.\n"
-"\n"
-"Please review the information that follows and modify it as needed to ensure "
-"your bug report does not contain any sensitive data you would rather not "
-"share.\n"
-"\n"
-"Select where you would like to report the bug, and press 'Forward' to "
-"continue."
+#: ../src/gui-wizard-gtk/wizard.c:1036
+#, c-format
+msgid "Analyzing finished with exit code %d"
 msgstr ""
-"Aparentemente uma aplicação do pacote <b>%s</b> falhou no seu sistema. É uma "
-"boa ideia enviar um relatório de erro sobre este problema. O relatório "
-"fornecerá aos programadores do software informações essenciais para perceber "
-"como fornecer uma correcção deste erro.\n"
-"\n"
-"Por favor, verifique as informações que se seguem e modifique-as conforme o "
-"necessário para garantir que o relatório não contém qualquer dado sensível "
-"que preferiria não partilhar.\n"
-"\n"
-"Seleccione onde gostaria de reportar o erro, e pressione 'Seguinte' para "
-"continuar."
 
-#: ../src/gui/CReporterAssistant.py:576
-msgid "Only one reporter plugin is configured."
-msgstr "Apenas um plugin repórter está configurado."
+#: ../src/gui-wizard-gtk/wizard.c:1064
+#, c-format
+msgid "Reporting finished with exit code %d"
+msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:582
-msgid "Send a bug report"
-msgstr "Enviar um relatório de erro"
+#: ../src/gui-wizard-gtk/wizard.c:1182
+msgid "Name"
+msgstr "Nome"
 
-#: ../src/gui/CReporterAssistant.py:620
+#: ../src/gui-wizard-gtk/wizard.c:1191
+msgid "Value"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
-"Below is the backtrace associated with your crash. A crash backtrace "
-"provides developers with details about how the crash happened, helping them "
-"track down the source of the problem.\n"
-"\n"
-"Please review the backtrace below and modify it as needed to ensure your bug "
-"report does not contain any sensitive data you would rather not share:"
+"<b>Your comments are not private.</b> They may be included into publicly "
+"visible problem reports."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:2
+msgid "Analyzing did not start yet"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:3
+msgid "Any additional comments useful for diagnosing the problem?"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:4
+#, fuzzy
+msgid ""
+"Backtrace provides developers with details of the crash, helping them track "
+"down the source of the problem. Please review it and remove any sensitive "
+"data you would rather not share:"
 msgstr ""
 "Abaixo está a traçagem associada com a falha. Uma traçagem fornece aos "
 "programadores informações sobre como a falha aconteceu, ajudando-os a "
@@ -771,375 +587,69 @@ msgstr ""
 "necessário para garantir que o relatório não contém qualquer dado sensível "
 "que preferiria não partilhar:"
 
-#: ../src/gui/CReporterAssistant.py:691 ../src/gui/CReporterAssistant.py:704
-#: ../src/gui/CReporterAssistant.py:738
-#, python-format
-msgid "Found %i occurence(s) [at: %i of %i]"
-msgstr ""
-
-#: ../src/gui/CReporterAssistant.py:775
-msgid "Search:"
-msgstr ""
-
-#: ../src/gui/CReporterAssistant.py:806
-msgid "Refresh"
-msgstr "Actualizar"
-
-#: ../src/gui/CReporterAssistant.py:808
-msgid "Copy"
-msgstr "Copiar"
-
-#: ../src/gui/CReporterAssistant.py:814
-msgid "I agree with submitting the backtrace"
-msgstr "Concordo com o envio da traçagem"
-
-#: ../src/gui/CReporterAssistant.py:819
-msgid "Approve the backtrace"
-msgstr "Aprovar a traçagem"
-
-#: ../src/gui/CReporterAssistant.py:862
-msgid "You need to fill the how to before you can proceed..."
-msgstr ""
-
-#: ../src/gui/CReporterAssistant.py:885
-msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
-msgstr "Como aconteceu esta falha (passo-a-passo)? Como se pode reproduzir?"
-
-#: ../src/gui/CReporterAssistant.py:905
+#: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+"Can create more informative backtrace if you installed additional debug "
+"packages"
 msgstr ""
-"Tem comentários que gostaria de partilhar com os programadores do software?"
 
-#: ../src/gui/CReporterAssistant.py:925
-msgid "Provide additional details"
-msgstr "Fornecer detalhes adicionais"
-
-#: ../src/gui/CReporterAssistant.py:932
-msgid ""
-"<b>Tip:</b> Your comments are not private. Please watch what you say "
-"accordingly."
+#: ../src/gui-wizard-gtk/wizard.glade.h:6
+msgid "Click 'Apply' to start reporting"
 msgstr ""
-"<b>Dica:</b> Os seus comentários não são privados. Por favor, reveja o que "
-"diz em conformidade"
 
-#: ../src/gui/CReporterAssistant.py:973
-msgid "Confirm and send the report"
-msgstr "Confirmar e enviar o relatório"
-
-#: ../src/gui/CReporterAssistant.py:975
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+#: ../src/gui-wizard-gtk/wizard.glade.h:7
+msgid "Click 'Forward' to proceed with analyzing and reporting this problem."
 msgstr ""
-"Abaixo está um resumo de seu relatório de erro. Por favor, clique em "
-"\"Aplicar\" para o submeter."
 
-#: ../src/gui/CReporterAssistant.py:980
-msgid "<b>Basic details</b>"
-msgstr "<b>Detalhes básicos</b>"
-
-#. left table
-#: ../src/gui/CReporterAssistant.py:987
-msgid "Component"
-msgstr "Componente"
-
-#: ../src/gui/CReporterAssistant.py:988
-msgid "Package"
-msgstr "Pacote"
-
-#: ../src/gui/CReporterAssistant.py:989
-msgid "Executable"
-msgstr "Executável"
-
-#: ../src/gui/CReporterAssistant.py:990
-msgid "Cmdline"
-msgstr "Comando"
-
-#. right table
-#: ../src/gui/CReporterAssistant.py:992
-msgid "Architecture"
-msgstr "Arquitectura"
-
-#: ../src/gui/CReporterAssistant.py:993
-msgid "Kernel"
-msgstr "Kernel"
-
-#: ../src/gui/CReporterAssistant.py:994
-msgid "Release"
-msgstr "Versão"
-
-#: ../src/gui/CReporterAssistant.py:995
-msgid "Reason"
-msgstr "Motivo"
-
-#: ../src/gui/CReporterAssistant.py:1006 ../src/gui/report.glade.h:3
-msgid "<b>Backtrace</b>"
-msgstr "<b>Traçagem</b>"
-
-#: ../src/gui/CReporterAssistant.py:1009
-msgid "Click to view..."
-msgstr "Clique para ver..."
-
-#: ../src/gui/CReporterAssistant.py:1021
-msgid "<b>Steps to reproduce:</b>"
-msgstr "<b>Passos para reproduzir:</b>"
-
-#: ../src/gui/CReporterAssistant.py:1042
-msgid "<b>Comments:</b>"
-msgstr "<b>Comentários:</b>"
-
-#: ../src/gui/CReporterAssistant.py:1045
-msgid "No comment provided!"
-msgstr "Nenhum comentário disponibilizado!"
-
-#: ../src/gui/CReporterAssistant.py:1081
-msgid "Finished sending the bug report"
-msgstr "Envio do relatório de erro concluído"
-
-#: ../src/gui/CReporterAssistant.py:1085
-msgid "<b>Bug reports:</b>"
-msgstr "<b>Relatórios de erros:</b>"
-
-#: ../src/gui/CReporterAssistant.py:1102
-msgid ""
-"Unable to get report!\n"
-"Is debuginfo missing?"
-msgstr ""
-"Não foi possível obter o relatório!\n"
-"O debuginfo está em falta?"
-
-#: ../src/gui/CReporterAssistant.py:1139
-#, python-format
-msgid "Error acquiring the report: %s"
-msgstr "Erro ao obter o relatório: %s"
-
-#: ../src/gui/dialogs.glade.h:1
-msgid "Log"
-msgstr "Registo"
-
-#: ../src/gui/dialogs.glade.h:2
-msgid "Report done"
-msgstr "Relatório terminado"
-
-#: ../src/gui/PluginSettingsUI.py:18
-msgid "Cannot find PluginDialog widget in the UI description!"
-msgstr "Incapaz de encontrar o objecto PluginDialog na descrição do UI!"
-
-#: ../src/gui/PluginSettingsUI.py:25
-#, python-format
-msgid ""
-"No UI for the plugin <b>%s</b>, this is probably a bug.\n"
-"Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
-"\">https://fedorahosted.org/abrt/newticket</a>"
-msgstr ""
-"No UI para o plugin <b>%s</b>, isto é provavelmente um erro.\n"
-"Por favor, reporte-o em <a href=\"https://fedorahosted.org/abrt/newticket"
-"\">https://fedorahosted.org/abrt/newticket</a>"
-
-#: ../src/gui/PluginSettingsUI.py:60 ../src/gui/PluginSettingsUI.py:86
-msgid "Combo box is not implemented"
-msgstr "Caixa de combinação não está implementada"
-
-#: ../src/gui/PluginSettingsUI.py:69
-msgid "Nothing to hydrate!"
-msgstr "Nada para fazer!"
-
-#: ../src/gui/PluginsSettingsDialog.py:25
-msgid "Cannot load the GUI description for SettingsDialog!"
-msgstr "Incapaz de carregar a descrição GUI para o SettingsDialog!"
-
-#. Create/configure columns and add them to pluginlist
-#. column "name" has two kind of cells:
-#: ../src/gui/PluginsSettingsDialog.py:42
-msgid "Name"
-msgstr "Nome"
-
-#: ../src/gui/PluginsSettingsDialog.py:118
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
 #, fuzzy
-msgid "Please select a plugin from the list to edit its options."
-msgstr "Por favor, seleccione um plugin da lista para editar as suas opções."
+msgid "Configure Events"
+msgstr "Configurar %s opções"
 
-#: ../src/gui/PluginsSettingsDialog.py:126
-#, python-format
-msgid ""
-"Error while opening the plugin settings UI: \n"
-"\n"
-"%s"
-msgstr ""
-"Erro ao abrir as configurações do UI do plugin:\n"
-"\n"
-"%s"
-
-#: ../src/gui/progress_window.glade.h:1 ../src/gui/report.glade.h:17
+#: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
 msgstr "Detalhes"
 
-#: ../src/gui/progress_window.glade.h:2 ../src/gui/report.glade.h:21
-msgid "Please wait..."
-msgstr "Por favor, aguarde..."
+#: ../src/gui-wizard-gtk/wizard.glade.h:10
+#, fuzzy
+msgid "How did this problem happen (step-by-step)? How can it be reproduced?"
+msgstr "Como aconteceu esta falha (passo-a-passo)? Como se pode reproduzir?"
 
-#: ../src/gui/report.glade.h:1
-msgid " "
-msgstr " "
+#: ../src/gui-wizard-gtk/wizard.glade.h:11
+msgid "I agree with submitting the backtrace"
+msgstr "Concordo com o envio da traçagem"
 
-#: ../src/gui/report.glade.h:2
-msgid "<b>Attachments</b>"
-msgstr "<b>Anexos</b>"
-
-#: ../src/gui/report.glade.h:4
-msgid "<b>Comment</b>"
-msgstr "<b>Comentário</b>"
-
-#: ../src/gui/report.glade.h:5
-msgid "<b>How to reproduce (in a few simple steps)</b>"
-msgstr "<b>Como reproduzir (em poucos passos simples)</b>"
-
-#: ../src/gui/report.glade.h:6
-msgid "<b>Please fix the following problems:</b>"
-msgstr "<b>Por favor, corrija os seguintes problemas:</b>"
-
-#: ../src/gui/report.glade.h:7
-msgid "<b>Where do you want to report this incident?</b>"
-msgstr "<b>Onde quer reportar este incidente?</b>"
-
-#: ../src/gui/report.glade.h:8
-msgid "<span fgcolor=\"blue\">Architecture:</span>"
-msgstr "<span fgcolor=\"blue\">Arquitectura:</span>"
-
-#: ../src/gui/report.glade.h:9
-msgid "<span fgcolor=\"blue\">Cmdline:</span>"
-msgstr "<span fgcolor=\"blue\">Linha de comando:</span>"
-
-#: ../src/gui/report.glade.h:10
-msgid "<span fgcolor=\"blue\">Component:</span>"
-msgstr "<span fgcolor=\"blue\">Componente:</span>"
-
-#: ../src/gui/report.glade.h:11
-msgid "<span fgcolor=\"blue\">Executable:</span>"
-msgstr "<span fgcolor=\"blue\">Executável:</span>"
-
-#: ../src/gui/report.glade.h:12
-msgid "<span fgcolor=\"blue\">Kernel:</span>"
-msgstr "<span fgcolor=\"blue\">Kernel:</span>"
-
-#: ../src/gui/report.glade.h:13
-msgid "<span fgcolor=\"blue\">Package:</span>"
-msgstr "<span fgcolor=\"blue\">Pacote:</span>"
-
-#: ../src/gui/report.glade.h:14
-msgid "<span fgcolor=\"blue\">Reason:</span>"
-msgstr "<span fgcolor=\"blue\">Razão:</span>"
-
-#: ../src/gui/report.glade.h:15
-msgid "<span fgcolor=\"blue\">Release:</span>"
-msgstr "<span fgcolor=\"blue\">Lançamento:</span>"
-
-#: ../src/gui/report.glade.h:18
-msgid "Forces ABRT to regenerate the backtrace."
+#: ../src/gui-wizard-gtk/wizard.glade.h:12
+#, fuzzy
+msgid "Regenerate backtrace"
 msgstr "Força o ABRT a regenerar a traçagem."
 
-#: ../src/gui/report.glade.h:19
-msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
-msgstr "Eu verifiquei a traçagem e removi os dados sensíveis (senhas, etc)"
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
+#, fuzzy
+msgid "Reporter(s):"
+msgstr "Reportado"
 
-#: ../src/gui/report.glade.h:20
-msgid "N/A"
-msgstr "N/D"
-
-#: ../src/gui/report.glade.h:22
-msgid "Reporter Selector"
-msgstr "Seleccionador de relatórios"
-
-#: ../src/gui/report.glade.h:23
-msgid "Send report"
-msgstr "Enviar relatório"
-
-#: ../src/gui/report.glade.h:24
-msgid "Show log"
-msgstr "Mostrar registo"
-
-#: ../src/gui/SettingsDialog.py:122
-msgid "Remove this job"
-msgstr "Remover esta tarefa"
-
-#: ../src/gui/SettingsDialog.py:166
-msgid "Remove this action"
-msgstr "Remover esta acção"
-
-#: ../src/gui/settings.glade.h:1
-msgid "<b>Plugin details</b>"
-msgstr "<b>Detalhes do plugin</b>"
-
-#: ../src/gui/settings.glade.h:2
-msgid "Author:"
-msgstr "Autor:"
-
-#: ../src/gui/settings.glade.h:3
-msgid "Blacklisted packages: "
-msgstr "Pacotes na lista negra: "
-
-#: ../src/gui/settings.glade.h:4
-msgid "C_onfigure Plugin"
-msgstr "C_onfigurar plugin"
-
-#: ../src/gui/settings.glade.h:5
-msgid "Check package GPG signature"
-msgstr "Verifique a assinatura GPG do pacote"
-
-#: ../src/gui/settings.glade.h:6
-msgid "Common"
-msgstr "Comum"
-
-#: ../src/gui/settings.glade.h:7
-msgid "Description:"
-msgstr "Descrição:"
-
-#: ../src/gui/settings.glade.h:8
-msgid "GPG Keys"
-msgstr "Chaves GPG"
-
-#: ../src/gui/settings.glade.h:9
-msgid "GPG keys: "
-msgstr "Chaves GPG:"
-
-#: ../src/gui/settings.glade.h:10
-msgid "Max coredump storage size (MB):"
-msgstr "Máximo espaço de armazenamento para dumps (MB):"
-
-#: ../src/gui/settings.glade.h:11
-msgid "Name:"
-msgstr "Nome:"
-
-#: ../src/gui/settings.glade.h:13
-msgid "Preferences"
-msgstr "Preferências"
-
-#: ../src/gui/settings.glade.h:14
-msgid "Version:"
-msgstr "Versão:"
-
-#: ../src/gui/settings.glade.h:15
-msgid "Web Site:"
-msgstr "Sítio web:"
-
-#: ../src/gui/settings_wizard.glade.h:1
-msgid "<b>Do you want to continue?</b>"
-msgstr "<b>Deseja continuar?</b>"
-
-#: ../src/gui/settings_wizard.glade.h:2
-msgid "Wrong Settings Detected"
-msgstr "Detectadas configurações erradas"
-
-#: ../src/gui/settings_wizard.glade.h:3
-msgid ""
-"Wrong settings were detected for some of the enabled reporter plugins. "
-"Please use the buttons below to open the respective configuration and fix it "
-"before you proceed, otherwise, the reporting process may fail.\n"
+#: ../src/gui-wizard-gtk/wizard.glade.h:14
+msgid "Reporting did not start yet"
 msgstr ""
-"Foram detectadas configurações erradas para alguns dos plugins repórter "
-"activos. Por favor, utilize os botões abaixo para abrir a configuração "
-"respectiva e corrigi-los antes de continuar, caso contrário, o processo pode "
-"falhar.\n"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
+msgid "Select how you would like to analyze the problem:"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
+msgid "Select how you would like to report the problem:"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
+msgid "Size:"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
+msgid ""
+"Use this button to generate more informative backtrace after you installed "
+"additional debug packages"
+msgstr ""
 
 #: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
 #, c-format
@@ -1149,7 +659,7 @@ msgstr "Enviado: %llu de %llu kbytes"
 #: ../src/lib/parse_options.c:29
 #, c-format
 msgid "Usage: %s\n"
-msgstr ""
+msgstr "Utilização: %s\n"
 
 #: ../src/plugins/abrt-action-analyze-c.c:156
 msgid ""
@@ -1157,6 +667,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredumps"
 msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"Calcula e grava os UUID dos coredumps"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:133
 msgid ""
@@ -1164,6 +677,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH of oops crash dumps"
 msgstr ""
+" [-vs] -d DIR\n"
+"\n"
+"Calcula e grava os UUID e DUPHASH dos dumps dos erros oops"
 
 #: ../src/plugins/abrt-action-analyze-python.c:38
 msgid ""
@@ -1171,6 +687,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
+" [-vs] -d DIR\n"
+"\n"
+"Calcula e grava os UUID e DUPHASH dos dumps dos erros de python"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:536
 #, c-format
@@ -1178,11 +697,9 @@ msgid "New bug id: %i"
 msgstr "Novo ID de erro: %i"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:664
-#, fuzzy, c-format
+#, c-format
 msgid "Empty login or password, please check %s"
-msgstr ""
-"Nome de utilizador e senha vazios.\n"
-"Por favor, verifique"
+msgstr "Utilizador e senha vazios, por favor verifique %s"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:684
 msgid "Logging into bugzilla..."
@@ -1245,155 +762,159 @@ msgid ""
 "\n"
 "Report a crash to Bugzilla"
 msgstr ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"Reportar um erro para o Bugzilla"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:934
 #: ../src/plugins/abrt-action-kerneloops.c:148
 #: ../src/plugins/abrt-action-rhtsupport.c:281
 msgid "Configuration file (may be given many times)"
-msgstr ""
+msgstr "Ficheiro de configuração (pode ser inserido várias vezes)"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:258
+#: ../src/plugins/abrt-action-generate-backtrace.c:257
 msgid " [options] -d DIR"
-msgstr ""
+msgstr " [options] -d DIR"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:270
+msgid "Additional debuginfo directories"
+msgstr "Directórios adicionais de debuginfo"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:271
-msgid "Additional debuginfo directories"
-msgstr ""
-
-#: ../src/plugins/abrt-action-generate-backtrace.c:272
 msgid "Kill gdb if it runs for more than N seconds"
-msgstr ""
+msgstr "Matar o gdb se este executar por mais de N segundos"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
 #.
-#: ../src/plugins/abrt-action-generate-backtrace.c:322
+#: ../src/plugins/abrt-action-generate-backtrace.c:321
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr ""
+msgstr "Traçagem foi gerada e gravada, %u bytes"
 
 #.
 #. * The parser failed. Compute the UUID from the executable
 #. * and package only.  This is not supposed to happen often.
 #.
-#: ../src/plugins/abrt-action-generate-backtrace.c:333
+#: ../src/plugins/abrt-action-generate-backtrace.c:332
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "Processamento da traçagem falhou para %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:77
 #, python-format
 msgid "Extracting cpio from %s"
-msgstr ""
+msgstr "A extrair cpio de %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:82
 #, python-format
 msgid "Can't write to '%s': %s"
-msgstr ""
+msgstr "Incapaz de escrever para '%s': %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:96
 #, python-format
 msgid "Can't extract package '%s'"
-msgstr ""
+msgstr "Incapaz de extrair pacote '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:104
 #, python-format
 msgid "Caching files from %s made from %s"
-msgstr ""
+msgstr "A fazer cache de ficheiros de %s feitos a partir de %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:114
 #, python-format
 msgid "Can't extract files from '%s'"
-msgstr ""
+msgstr "Incapaz de extrair ficheiros de '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:138
 #: ../src/plugins/abrt-action-install-debuginfo.py:148
 #, python-format
 msgid "Downloading (%i of %i) %s: %3u%%"
-msgstr ""
+msgstr "A transferir (%i de %i) %s: %3u%%"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:234
 #, python-format
 msgid "Can't find packages for %u debuginfo files"
-msgstr ""
+msgstr "Incapaz de encontrar pacotes para ficheiros debuginfo do %u"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:236
 #, python-format
 msgid "Found %u packages to download"
-msgstr ""
+msgstr "Encontrados %u pacotes para descarregar"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:237
 #, python-format
 msgid "Downloading %.2fMb, installed size: %.2fMb"
-msgstr ""
+msgstr "A transferir %.2fMb, instalado: %.2fMb"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:245
 msgid "Is this ok? [y/N] "
-msgstr ""
+msgstr "Isto está ok? [s/N]"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:262
 #, python-format
 msgid "Downloading package %s failed"
-msgstr ""
+msgstr "A transferência do pacote %s falhou"
 
 #. recursively delete the temp dir on failure
 #: ../src/plugins/abrt-action-install-debuginfo.py:273
 msgid "Unpacking failed, aborting download..."
-msgstr ""
+msgstr "Desempacotamento falhou, a abortar transferência..."
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:280
 #, python-format
 msgid "All downloaded packages have been extracted, removing %s"
-msgstr ""
+msgstr "Todos os pacotes transferidos foram extraídos, a remover %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:285
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
-msgstr ""
+msgstr "Incapaz de remover %s, provavelmente contém um registo de erro"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:310
 #, python-format
 msgid "Analyzing corefile '%s'"
-msgstr ""
+msgstr "A analisar 'corefile' '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:388
 #, python-format
 msgid "Can't remove '%s': %s"
-msgstr ""
+msgstr "Incapaz de remover '%s': %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:396
 msgid "Exiting on user command"
-msgstr ""
+msgstr "A sair por comando do utilizador"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:415
 #, python-format
 msgid "Usage: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
-msgstr ""
+msgstr "Utilização: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:444
-#, fuzzy
 msgid "You have to specify the path to coredump."
-msgstr "Tem de seleccionar uma falha para copiar."
+msgstr "Tem de especificar o caminho para o 'coredump'."
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:461
 #, python-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
 msgstr ""
+"\"Coredump\" referencia %u ficheiros de debuginfo, %u dos quais não estão "
+"instalados"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:466
 #, python-format
 msgid "Missing debuginfo file: %s"
-msgstr ""
+msgstr "Ficheiro de debuginfo em falta: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:469
 #, python-format
 msgid "All %u debuginfo files are available"
-msgstr ""
+msgstr "Todos os %u ficheiros de debuginfo estão disponíveis"
 
 #: ../src/plugins/abrt-action-kerneloops.c:105
-#, fuzzy, c-format
+#, c-format
 msgid "Submitting oops report to %s"
-msgstr "A escrever relatório para '%s'"
+msgstr "A submeter relatório oops para %s"
 
 #: ../src/plugins/abrt-action-kerneloops.c:133
 msgid ""
@@ -1401,23 +922,28 @@ msgid ""
 "\n"
 "Report a kernel oops to kerneloops.org (or similar) site"
 msgstr ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"Reportar um kernel oops para o sítio web kerneloops.org (ou similar)"
 
-#: ../src/plugins/abrt-action-mailx.c:110
+#: ../src/plugins/abrt-action-mailx.c:108
 msgid "Sending an email..."
 msgstr "A enviar E-mail..."
 
-#: ../src/plugins/abrt-action-mailx.c:137
+#: ../src/plugins/abrt-action-mailx.c:135
 msgid ""
 " [-v] -d DIR [-c CONFFILE]\n"
 "\n"
 "Upload compressed tarball of crash dump"
 msgstr ""
+" [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"Enviar \"tarball\" comprimido do dump do erro"
 
-#: ../src/plugins/abrt-action-mailx.c:150
+#: ../src/plugins/abrt-action-mailx.c:148
 #: ../src/plugins/abrt-action-upload.c:261
-#, fuzzy
 msgid "Config file"
-msgstr "Ficheiro Logger:"
+msgstr "Ficheiro de configuração"
 
 #: ../src/plugins/abrt-action-print.c:38
 msgid ""
@@ -1425,17 +951,20 @@ msgid ""
 "\n"
 "Print information about the crash to standard output"
 msgstr ""
+" [-v] [-o FILE] -d DIR\n"
+"\n"
+"Apresentar informação sobre o erro para a saída standard"
 
 #: ../src/plugins/abrt-action-print.c:51
 msgid "Output file"
-msgstr ""
+msgstr "Ficheiro de resultado"
 
-#: ../src/plugins/abrt-action-print.c:91
+#: ../src/plugins/abrt-action-print.c:87
 #, c-format
 msgid "The report was appended to %s"
 msgstr "O relatório foi anexado a %s"
 
-#: ../src/plugins/abrt-action-print.c:91
+#: ../src/plugins/abrt-action-print.c:87
 #, c-format
 msgid "The report was stored to %s"
 msgstr "O relatório foi armazenado em %s"
@@ -1449,11 +978,8 @@ msgid "Compressing data"
 msgstr "A comprimir dados"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:73
-#, fuzzy
 msgid "Empty login or password, please check RHTSupport.conf"
-msgstr ""
-"Nome de utilizador e senha vazios.\n"
-"Por favor, verifique"
+msgstr "Utilizador e senha vazios, por favor verifique RHTSupport.conf"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:191
 msgid "Creating a new case..."
@@ -1465,22 +991,25 @@ msgid ""
 "\n"
 "Report a crash to RHTSupport"
 msgstr ""
+" [-vs] -c CONFFILE -d DIR\n"
+"\n"
+"Reportar um erro para RHTSupport"
 
 #: ../src/plugins/abrt-action-upload.c:63
-#, fuzzy, c-format
+#, c-format
 msgid "Sending %s to %s"
-msgstr "A enviar arquivo %s para %s"
+msgstr "A enviar %s para %s"
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/plugins/abrt-action-upload.c:96
 #, c-format
 msgid "Successfully sent %s to %s"
-msgstr ""
+msgstr "%s enviado com sucesso para %s"
 
 #: ../src/plugins/abrt-action-upload.c:212
 #, c-format
 msgid "Archive is created: '%s'"
-msgstr ""
+msgstr "Foi criado o arquivo: '%s'"
 
 #: ../src/plugins/abrt-action-upload.c:247
 msgid ""
@@ -1488,10 +1017,13 @@ msgid ""
 "\n"
 "Upload compressed tarball of crash dump"
 msgstr ""
+" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"Enviar \"tarball\" comprimido do dump do erro"
 
 #: ../src/plugins/abrt-action-upload.c:262
 msgid "Base URL to upload to"
-msgstr ""
+msgstr "URL base para enviar para"
 
 #: ../src/plugins/abrt-dump-oops.c:540
 msgid ""
@@ -1499,22 +1031,30 @@ msgid ""
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
+" [-vsrdow] FILE\n"
+"\n"
+"Extrair oops do ficheiro syslog/dmesg"
 
 #: ../src/plugins/abrt-dump-oops.c:556
 msgid "Parse kernel's message buffer before parsing FILE"
-msgstr ""
+msgstr "Processar o buffer de mensagens do kernel antes de processar FILE"
 
 #: ../src/plugins/abrt-dump-oops.c:557
 msgid "Create ABRT dump for every oops found"
-msgstr ""
+msgstr "Criar um dump ABRT para cada oops encontrado"
 
 #: ../src/plugins/abrt-dump-oops.c:558
 msgid "Print found oopses on standard output"
-msgstr ""
+msgstr "Apresentar oopses encontrados na saída standard"
 
 #: ../src/plugins/abrt-dump-oops.c:559
 msgid "Do not exit, watch the file for new oopses"
-msgstr ""
+msgstr "Não sair, monitorar o ficheiro por novos oopses"
+
+#: ../src/plugins/abrt-retrace-client.c:701
+#, fuzzy
+msgid "log to syslog"
+msgstr "Registar no syslog"
 
 #: ../src/plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
@@ -1539,10 +1079,6 @@ msgstr "Senha:"
 #: ../src/plugins/Bugzilla.glade.h:6 ../src/plugins/RHTSupport.glade.h:5
 msgid "SSL verify"
 msgstr "Verificar SSL"
-
-#: ../src/plugins/Bugzilla.glade.h:7 ../src/plugins/RHTSupport.glade.h:6
-msgid "Show password"
-msgstr "Apresentar senha"
 
 #: ../src/plugins/Bugzilla.glade.h:8
 msgid ""
@@ -1605,9 +1141,8 @@ msgid "RHTSupport URL:"
 msgstr "URL do RHTSupport:"
 
 #: ../src/plugins/Upload.glade.h:1
-#, fuzzy
 msgid "<b>Upload plugin configuration</b>"
-msgstr "<b>Plugin de configuração do Report Uploader</b>"
+msgstr "<b>Submeter configuração do plugin</b>"
 
 #: ../src/plugins/Upload.glade.h:2
 msgid "Retry count:"
@@ -1625,569 +1160,511 @@ msgstr "URL:"
 msgid "Use encryption"
 msgstr "Utilizar encriptação"
 
-#~ msgid ""
-#~ "\n"
-#~ "How to reproduce:\n"
-#~ "%s\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Como reproduzir:\n"
-#~ "%s\n"
-
-#, fuzzy
-#~ msgid ""
-#~ "Usage: %s [OPTION]\n"
-#~ "\n"
-#~ "Startup:\n"
-#~ "\t-V, --version\t\tdisplay the version of %s and exit\n"
-#~ "\t-?, --help\t\tprint this help\n"
-#~ "\n"
-#~ "Actions:\n"
-#~ "\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
-#~ "\t      -f, --full\tprint a list of all crashes, including the already "
-#~ "reported ones\n"
-#~ "\t-r, --report CRASH_ID\tcreate and send a report\n"
-#~ "\t      -y, --always\tcreate and send a report without asking\n"
-#~ "\t-d, --delete CRASH_ID\tremove a crash\n"
-#~ "\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
-#~ "\t      -b, --backtrace\tprint detailed information about a crash "
-#~ "including backtrace\n"
-#~ "CRASH_ID can be:\n"
-#~ "\ta name of dump directory, or\n"
-#~ "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
-#~ msgstr ""
-#~ "Utilização: %s [OPTION]\n"
-#~ "\n"
-#~ "Arranque:\n"
-#~ "\t-V, --version\tapresenta a versão do %s e termina\n"
-#~ "\t-?, --help\t\tapresenta esta ajuda\n"
-#~ "\n"
-#~ "Acções:\n"
-#~ "\t-l, --list\t\tapresenta a lista de todas as falhas que ainda não foram  "
-#~ "reportadas\n"
-#~ "\t-f, --full\t\tapresenta a lista de todas as falhas, incluindo as que já "
-#~ "foram reportadas\n"
-#~ "\t-r, --report CRASH_ID\tcria e envia um relatório\n"
-#~ "\t-y, --always\tcria e envia um relatório sem perguntar\n"
-#~ "\t-d, --delete CRASH_ID\tremove uma falha\n"
-#~ "\t-i, --info CRASH_ID\tapresenta informações detalhadas sobre uma falha\n"
-#~ "\t-b, --backtrace\tapresenta informações detalhadas sobre uma falha "
-#~ "incluindo a traçagem\n"
-#~ "CRASH_ID pode ser:\n"
-#~ "\tUID:UUID par,\n"
-#~ "\tprefixo UUID único  - a acção será efectuada sobre a falha com o UUID "
-#~ "correspondente\n"
-#~ "\t@N  - a acção será efectuada sobre a falha número N (tal como "
-#~ "apresentado em --list --full)\n"
-
-#~ msgid "# How to reproduce the crash?"
-#~ msgstr "# Como reproduzir esta falha?"
-
-#~ msgid "Error loading reporter settings"
-#~ msgstr "Erro ao carregar configurações do repórter"
-
-#~ msgid "'How to reproduce' is too long"
-#~ msgstr "'Como reproduzir' é muito longo"
-
-#~ msgid "You must check the backtrace for sensitive data."
-#~ msgstr "Deve verificar a traçagem por dados sensíveis"
-
-#~ msgid "The backtrace is unusable, you cannot report this!"
-#~ msgstr "A traçagem não é usável. Não pode reportar isto!"
-
-#~ msgid "Reporting disabled, please fix the problems shown above."
-#~ msgstr ""
-#~ "Relatórios desactivados. Por favor, corrija os problemas apresentados "
-#~ "acima."
-
-#~ msgid "Sends the report using the selected plugin."
-#~ msgstr "Enviar o relatório utilizando o plugin seleccionado."
+#~ msgid "Another client is already running, trying to wake it..."
+#~ msgstr "Outro cliente já está em execução. A tentar despertá-lo."
 
 #~ msgid ""
-#~ "No reporter plugin available for this type of crash.\n"
-#~ "Please check abrt.conf."
+#~ "Got unexpected data from the daemon (is the database properly updated?)."
 #~ msgstr ""
-#~ "Não está disponível nenhum plugin capaz de reportar esta falha.\n"
-#~ "Por favor, verifique o abrt.conf."
+#~ "Obteve-se dados inesperados do serviço (a base de dados está actualizada?)"
 
-#~ msgid "<b>Select plugin</b>"
-#~ msgstr "<b>Seleccione plugin</b>"
+#~ msgid "Not loaded plugins"
+#~ msgstr "Plugins não carregados"
 
-#~ msgid "<b>Select database backend</b>"
-#~ msgstr "<b>Seleccione base de dados</b>"
+#~ msgid "Analyzer plugins"
+#~ msgstr "Plugins de análise"
 
-#~ msgid "<b>Analyzer plugin</b>"
-#~ msgstr "<b>Plugins de análise</b>"
+#~ msgid "Action plugins"
+#~ msgstr "Plugins de acções"
 
-#~ msgid "<b>Associated action</b>"
-#~ msgstr "<b>Acção associada</b>"
+#~ msgid "Reporter plugins"
+#~ msgstr "Plugins de relatórios"
 
-#~ msgid "<b>Plugin</b>"
-#~ msgstr "<b>Plugin</b>"
+#~ msgid "Database plugins"
+#~ msgstr "Plugins de bases de dados"
 
-#~ msgid "<b>Time (or period)</b>"
-#~ msgstr "<b>Hora (ou período)</b>"
+#~ msgid "Cannot connect to system dbus."
+#~ msgstr "Incapaz de ligar ao sistema dbus."
 
-#~ msgid "Analyzers, Actions, Reporters"
-#~ msgstr "Analisadores, acções, relatórios"
+#~ msgid "Please check if the abrt daemon is running."
+#~ msgstr "Por favor, verifique se o serviço abrt está a correr."
 
-#~ msgid "Cron"
-#~ msgstr "Cron"
+#~ msgid ""
+#~ "Daemon did not return a valid report info.\n"
+#~ "Is debuginfo missing?"
+#~ msgstr ""
+#~ "O serviço não retornou um relatório com informação válida\n"
+#~ "O debuginfo está em falta?"
 
-#~ msgid "Database backend: "
-#~ msgstr "Base de dados:"
+#~ msgid "(C) 2009, 2010 Red Hat, Inc."
+#~ msgstr "(C) 2009, 2010 Red Hat, Inc."
 
-#, fuzzy
-#~ msgid "Searching the missing debuginfo packages"
-#~ msgstr "A pesquisar por pacotes debug-info..."
+#~ msgid "<b>Bug Reports:</b>"
+#~ msgstr "<b>Relatórios de erros:</b>"
 
-#, fuzzy
-#~ msgid "You have to specify the path to cachedir."
+#~ msgid "<b>Command:</b>"
+#~ msgstr "<b>Comando:</b>"
+
+#~ msgid "<b>Comment:</b>"
+#~ msgstr "<b>Comentário:</b>"
+
+#~ msgid "<b>Crash Count:</b>"
+#~ msgstr "<b>Contagem de falhas:</b>"
+
+#~ msgid "<b>Latest Crash:</b>"
+#~ msgstr "<b>Última falha:</b>"
+
+#~ msgid "<b>Reason:</b>"
+#~ msgstr "<b>Motivo:</b>"
+
+#~ msgid "<b>User:</b>"
+#~ msgstr "<b>Utilizador:</b>"
+
+#~ msgid "About ABRT"
+#~ msgstr "Acerca do ABRT"
+
+#~ msgid "Copy to Clipboard"
+#~ msgstr "Copiar para a área de transferência"
+
+#~ msgid ""
+#~ "This program is free software; you can redistribute it and/or modify it "
+#~ "under the terms of the GNU General Public License as published by the "
+#~ "Free Software Foundation; either version 2 of the License, or (at your "
+#~ "option) any later version.\n"
+#~ "\n"
+#~ "This program is distributed in the hope that it will be useful, but "
+#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
+#~ "Public License for more details.\n"
+#~ "\n"
+#~ "You should have received a copy of the GNU General Public License along "
+#~ "with this program.  If not, see <http://www.gnu.org/licenses/>."
+#~ msgstr ""
+#~ "Este programa é software livre; pode redistribuí-lo e/ou modifica-lo sob "
+#~ "os termos da GNU General Public License como publicado pela Free Software "
+#~ "Foundation; quer na versão 2 da licença, ou (como opção sua) qualquer "
+#~ "versão mais recente.\n"
+#~ "\n"
+#~ "Este programa é distribuído com a esperança de ser útil, mas SEM QUALQUER "
+#~ "GARANTIA; sem mesmo a garantia implícita de  COMERCIABILIDADE ou "
+#~ "ADEQUAÇÃO A UM DETERMINADO FIM.  Veja a GNU General Public License para "
+#~ "mais detalhes.\n"
+#~ "\n"
+#~ "Deve ter recebido uma cópia da GNU General Public License juntamente com "
+#~ "este programa.  Se não, veja <http://www.gnu.org/licenses/>."
+
+#~ msgid "View log"
+#~ msgstr "Mostrar registo"
+
+#~ msgid "Application"
+#~ msgstr "Aplicação"
+
+#~ msgid "Hostname"
+#~ msgstr "Nome da máquina"
+
+#~ msgid "Latest Crash"
+#~ msgstr "Última falha"
+
+#~ msgid ""
+#~ "Cannot show the settings dialog.\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Impossível mostrar a janela de configurações\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "Unable to finish the current task!\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Impossível terminar a tarefa actual!\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "Error while loading the dumplist.\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Erro ao carregar a lista de dump.\n"
+#~ " %s"
+
+#~ msgid ""
+#~ "<b>%s Crash</b>\n"
+#~ "%s"
+#~ msgstr ""
+#~ "<b>%s Falha</b>\n"
+#~ "%s"
+
+#~ msgid "You have to select a crash to copy."
 #~ msgstr "Tem de seleccionar uma falha para copiar."
-
-#, fuzzy
-#~ msgid "You have to specify the path to tmpdir."
-#~ msgstr "Tem de seleccionar uma falha para copiar."
-
-#, fuzzy
-#~ msgid "Complete!"
-#~ msgstr "Componente"
-
-#~ msgid "Analyzes crashes in C/C++ programs"
-#~ msgstr "Analisa falhas em programas C/C++"
-
-#~ msgid "Periodically scans for and saves kernel oopses"
-#~ msgstr "Periodicamente verifica a existência e grava erros do kernel"
-
-#~ msgid "Database plugin not specified. Please check abrtd settings."
-#~ msgstr ""
-#~ "Plugin da base de dados não especificado. Por favor, verifique as "
-#~ "configurações do abrtd."
-
-#~ msgid "Keeps SQLite3 database about all crashes"
-#~ msgstr "Mantém a base de dados SQLite3 acerca de todas as falhas"
-
-#~ msgid "Reports bugs to bugzilla"
-#~ msgstr "Reportar erros para o bugzilla"
-
-#~ msgid "Generating backtrace"
-#~ msgstr "A gerar traçagem"
-
-#~ msgid "Starting the debuginfo installation"
-#~ msgstr "A iniciar a instalação debuginfo"
-
-#~ msgid "Getting global universal unique identification..."
-#~ msgstr "A obter identificador único universal global..."
-
-#~ msgid "Skipping the debuginfo installation"
-#~ msgstr "A passar à frente a instalação do debuginfo"
-
-#~ msgid "FileTransfer: URL not specified"
-#~ msgstr "FileTransfer: URL não especificado"
-
-#~ msgid "Sending archive %s to %s"
-#~ msgstr "A enviar arquivo %s para %s"
-
-#~ msgid "FileTransfer: Creating a report..."
-#~ msgstr "Transferência de Ficheiro: A criar relatório..."
-
-#~ msgid "Cannot create and send an archive: %s"
-#~ msgstr "Não foi possível criar e enviar um arquivo: %s"
-
-#~ msgid "Sends a report via FTP or SCTP"
-#~ msgstr "Envia um relatório via FTP ou SCTP"
-
-#~ msgid "Analyzes kernel oopses"
-#~ msgstr "Analisa erros no kernel"
-
-#~ msgid "Creating and submitting a report..."
-#~ msgstr "A criar e enviar relatório..."
-
-#~ msgid "Sends kernel oops information to kerneloops.org"
-#~ msgstr "Envia a informação de erros do kernel para kerneloops.org"
-
-#~ msgid "Writes report to a file"
-#~ msgstr "Gravar relatório num ficheiro"
-
-#~ msgid "Sends an email with a report (via mailx command)"
-#~ msgstr "Envia um e-mail com um relatório (via comando mailx)"
-
-#~ msgid "Analyzes crashes in Python programs"
-#~ msgstr "Analisa falhas em programas Python"
-
-#~ msgid "Sending failed, trying again. %s"
-#~ msgstr "O envio falhou, a tentar novamente. %s"
-
-#~ msgid "Creating a ReportUploader report..."
-#~ msgstr "A criar um relatório ReportUploader..."
-
-#~ msgid ""
-#~ "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-#~ msgstr ""
-#~ "Armazena os dados da falha num ficheiro .tar.gz, e opcionalmente o "
-#~ "submete via FTP/SCP/etc"
-
-#~ msgid "Reports bugs to Red Hat support"
-#~ msgstr "Reportar erros para o suporte da Red Hat"
-
-#~ msgid "Runs a command, saves its output"
-#~ msgstr "Executa um comando, grava os resultados"
-
-#~ msgid "Running sosreport: %s"
-#~ msgstr "A executar sosreport: %s"
-
-#~ msgid "Finished running sosreport"
-#~ msgstr "A execução do sosreport terminou"
-
-#~ msgid "Unable to open debug dump '%s'"
-#~ msgstr "Incapaz de abrir o dump de depuração '%s'"
-
-#~ msgid "Runs sosreport, saves the output"
-#~ msgstr "Executa sosreport, grava o resultado"
-
-#~ msgid "Customer:"
-#~ msgstr "Cliente:"
-
-#~ msgid "Ticket:"
-#~ msgstr "Ticket:"
-
-#~ msgid "Upload"
-#~ msgstr "Submeter"
-
-#~ msgid "Rating is required by the %s plugin"
-#~ msgstr "Uma classificação é exigida pelo plugin %s"
-
-#~ msgid "Rating is not required by any plugin, skipping the check..."
-#~ msgstr ""
-#~ "Uma classificação não é exigida por qualquer plugin, a ignorar a "
-#~ "verificação..."
-
-#~ msgid "Can't create and send an archive %s"
-#~ msgstr "Não foi possível criar e enviar um arquivo %s"
-
-#, fuzzy
-#~ msgid "send_string: URL not specified"
-#~ msgstr "FileTransfer: URL não especificado"
-
-#, fuzzy
-#~ msgid "Sending failed, try it again: %s"
-#~ msgstr "A enviar arquivo %s para %s"
-
-#, fuzzy
-#~ msgid "send_file: URL not specified"
-#~ msgstr "FileTransfer: URL não especificado"
-
-#, fuzzy
-#~ msgid "New bug id: %s"
-#~ msgstr "Novo ID de erro: %i"
-
-#, fuzzy
-#~ msgid "Creating a signature..."
-#~ msgstr "A criar arquivo..."
-
-#, fuzzy
-#~ msgid "Binary file %s will not be reported"
-#~ msgstr "Ficheiro binário %s não será reportado."
-
-#~ msgid "Jump to bug %d"
-#~ msgstr "Ir para o erro %d"
-
-#~ msgid "Getting local universal unique identification"
-#~ msgstr "A obter identificador único universal local"
-
-#, fuzzy
-#~ msgid ""
-#~ "Thank you for your bug report. It has been successfully submitted. You "
-#~ "can see the results below."
-#~ msgstr ""
-#~ "Obrigado pelo seu relatório de erro. Ele foi submetido com sucesso. Pode "
-#~ "ver o seu relatório de erros online utilizando o endereço web abaixo:"
-
-#~ msgid "Not reported"
-#~ msgstr "Não reportado"
 
 #~ msgid ""
 #~ "Usage: abrt-gui [OPTIONS]\n"
-#~ "\t-h, --help         \tthis help message\n"
-#~ "\t-v[vv]             \tverbosity level\n"
-#~ "\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+#~ "\t-v[vv]\t\t\tVerbose\n"
+#~ "\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
 #~ msgstr ""
 #~ "Utilização: abrt-gui [OPÇÕES]\n"
-#~ "\t-h, --help         \testa mensagem de ajuda\n"
-#~ "\t-v[vv]             \tnível de verbosidade\n"
-#~ "\t--report=<crashid>\treportar directamente crash com o crashid=<crashid>"
-
-#~ msgid "Icon"
-#~ msgstr "Ícone"
-
-#~ msgid "Date"
-#~ msgstr "Data"
-
-#~ msgid "User"
-#~ msgstr "Utilizador"
-
-#~ msgid "This crash has been reported:\n"
-#~ msgstr "Este crash foi reportado:\n"
-
-#~ msgid "<b>This crash has been reported:</b>\n"
-#~ msgstr "<b>Este crash foi reportado:</b>\n"
+#~ "\t-v[vv]\t\t\t\tVerboso\n"
+#~ "\t--report=CRASH_ID\tReportar directamente a falha com CRASH_ID"
 
 #~ msgid ""
-#~ "aalam@fedoraproject.org\n"
-#~ "amitakhya@fedoraproject.org\n"
-#~ "andrealafauci@fedoraproject.org\n"
-#~ "anipeter@fedoraproject.org\n"
-#~ "astur@fedoraproject.org\n"
-#~ "beckerde@fedoraproject.org\n"
-#~ "bruce89@fedoraproject.org\n"
-#~ "charnik@fedoraproject.org\n"
-#~ "chenh@fedoraproject.org\n"
-#~ "cyrushmh@fedoraproject.org\n"
-#~ "dennistobar@fedoraproject.org\n"
-#~ "dheche@fedoraproject.org\n"
-#~ "diegobz@fedoraproject.org\n"
-#~ "dominiksandjaja@fedoraproject.org\n"
-#~ "elad@fedoraproject.org\n"
-#~ "elsupergomez@fedoraproject.org\n"
-#~ "eukim@fedoraproject.org\n"
-#~ "fab@fedoraproject.org\n"
-#~ "feonsu@fedoraproject.org\n"
-#~ "fgonz@fedoraproject.org\n"
-#~ "fvalen@fedoraproject.org\n"
-#~ "gcintra@fedoraproject.org\n"
-#~ "gguerrer@fedoraproject.org\n"
-#~ "goeran@fedoraproject.org\n"
-#~ "hedda@fedoraproject.org\n"
-#~ "hyuuga@fedoraproject.org\n"
-#~ "ifelix@fedoraproject.org\n"
-#~ "igorbounov@fedoraproject.org\n"
-#~ "igor@fedoraproject.org\n"
-#~ "jassy@fedoraproject.org\n"
-#~ "jensm@fedoraproject.org\n"
-#~ "jmoskovc@redhat.com\n"
-#~ "joe74@fedoraproject.org\n"
-#~ "jorgelopes@fedoraproject.org\n"
-#~ "kenda@fedoraproject.org\n"
-#~ "khasida@fedoraproject.org\n"
-#~ "kkrothap@fedoraproject.org\n"
-#~ "kmaraas@fedoraproject.org\n"
-#~ "kmilos@fedoraproject.org\n"
-#~ "kristho@fedoraproject.org\n"
-#~ "leahliu@fedoraproject.org\n"
-#~ "logan@fedoraproject.org\n"
-#~ "mgiri@fedoraproject.org\n"
-#~ "mideal@fedoraproject.org\n"
-#~ "nagyesta@fedoraproject.org\n"
-#~ "nippur@fedoraproject.org\n"
-#~ "perplex@fedoraproject.org\n"
-#~ "peti@fedoraproject.org\n"
-#~ "pkst@fedoraproject.org\n"
-#~ "ppapadeas@fedoraproject.org\n"
-#~ "ptr@fedoraproject.org\n"
-#~ "raada@fedoraproject.org\n"
-#~ "rajesh@fedoraproject.org\n"
-#~ "ratal@fedoraproject.org\n"
-#~ "raven@fedoraproject.org\n"
-#~ "ricardopinto@fedoraproject.org\n"
-#~ "ruigo@fedoraproject.org\n"
-#~ "runab@fedoraproject.org\n"
-#~ "samfreemanz@fedoraproject.org\n"
-#~ "sandeeps@fedoraproject.org\n"
-#~ "sergiomesquita@fedoraproject.org\n"
-#~ "shanky@fedoraproject.org\n"
-#~ "shnurapet@fedoraproject.org\n"
-#~ "snicore@fedoraproject.org\n"
-#~ "swkothar@fedoraproject.org\n"
-#~ "tch@fedoraproject.org\n"
-#~ "tchuang@fedoraproject.org\n"
-#~ "thalia@fedoraproject.org\n"
-#~ "tomchiukc@fedoraproject.org\n"
-#~ "vpv@fedoraproject.org\n"
-#~ "warrink@fedoraproject.org\n"
-#~ "xconde@fedoraproject.org\n"
-#~ "ypoyarko@fedoraproject.org\n"
-#~ "zoltanh721@fedoraproject.org"
+#~ "No such crash in the database, probably wrong crashid.\n"
+#~ "crashid=%s"
 #~ msgstr ""
-#~ "aalam@fedoraproject.org\n"
-#~ "amitakhya@fedoraproject.org\n"
-#~ "andrealafauci@fedoraproject.org\n"
-#~ "anipeter@fedoraproject.org\n"
-#~ "astur@fedoraproject.org\n"
-#~ "beckerde@fedoraproject.org\n"
-#~ "bruce89@fedoraproject.org\n"
-#~ "charnik@fedoraproject.org\n"
-#~ "chenh@fedoraproject.org\n"
-#~ "cyrushmh@fedoraproject.org\n"
-#~ "dennistobar@fedoraproject.org\n"
-#~ "dheche@fedoraproject.org\n"
-#~ "diegobz@fedoraproject.org\n"
-#~ "dominiksandjaja@fedoraproject.org\n"
-#~ "elad@fedoraproject.org\n"
-#~ "elsupergomez@fedoraproject.org\n"
-#~ "eukim@fedoraproject.org\n"
-#~ "fab@fedoraproject.org\n"
-#~ "feonsu@fedoraproject.org\n"
-#~ "fgonz@fedoraproject.org\n"
-#~ "fvalen@fedoraproject.org\n"
-#~ "gcintra@fedoraproject.org\n"
-#~ "gguerrer@fedoraproject.org\n"
-#~ "goeran@fedoraproject.org\n"
-#~ "hedda@fedoraproject.org\n"
-#~ "hyuuga@fedoraproject.org\n"
-#~ "ifelix@fedoraproject.org\n"
-#~ "igorbounov@fedoraproject.org\n"
-#~ "igor@fedoraproject.org\n"
-#~ "jassy@fedoraproject.org\n"
-#~ "jensm@fedoraproject.org\n"
-#~ "jmoskovc@redhat.com\n"
-#~ "joe74@fedoraproject.org\n"
-#~ "jorgelopes@fedoraproject.org\n"
-#~ "kenda@fedoraproject.org\n"
-#~ "khasida@fedoraproject.org\n"
-#~ "kkrothap@fedoraproject.org\n"
-#~ "kmaraas@fedoraproject.org\n"
-#~ "kmilos@fedoraproject.org\n"
-#~ "kristho@fedoraproject.org\n"
-#~ "leahliu@fedoraproject.org\n"
-#~ "logan@fedoraproject.org\n"
-#~ "mgiri@fedoraproject.org\n"
-#~ "mideal@fedoraproject.org\n"
-#~ "nagyesta@fedoraproject.org\n"
-#~ "nippur@fedoraproject.org\n"
-#~ "perplex@fedoraproject.org\n"
-#~ "peti@fedoraproject.org\n"
-#~ "pkst@fedoraproject.org\n"
-#~ "ppapadeas@fedoraproject.org\n"
-#~ "ptr@fedoraproject.org\n"
-#~ "raada@fedoraproject.org\n"
-#~ "rajesh@fedoraproject.org\n"
-#~ "ratal@fedoraproject.org\n"
-#~ "raven@fedoraproject.org\n"
-#~ "ricardopinto@fedoraproject.org\n"
-#~ "ruigo@fedoraproject.org\n"
-#~ "runab@fedoraproject.org\n"
-#~ "samfreemanz@fedoraproject.org\n"
-#~ "sandeeps@fedoraproject.org\n"
-#~ "sergiomesquita@fedoraproject.org\n"
-#~ "shanky@fedoraproject.org\n"
-#~ "shnurapet@fedoraproject.org\n"
-#~ "snicore@fedoraproject.org\n"
-#~ "swkothar@fedoraproject.org\n"
-#~ "tch@fedoraproject.org\n"
-#~ "tchuang@fedoraproject.org\n"
-#~ "thalia@fedoraproject.org\n"
-#~ "tomchiukc@fedoraproject.org\n"
-#~ "vpv@fedoraproject.org\n"
-#~ "warrink@fedoraproject.org\n"
-#~ "xconde@fedoraproject.org\n"
-#~ "ypoyarko@fedoraproject.org\n"
-#~ "zoltanh721@fedoraproject.org"
+#~ "Falha não existe na base de dados. Provavelmente crashid errado.\n"
+#~ "crashid=%s"
 
-#~ msgid "No UI for plugin %s"
-#~ msgstr "Não existe interface de utilizador para o plugin %s"
+#~ msgid "Cannot connect to the Gnome Keyring daemon."
+#~ msgstr "Incapaz de ligar ao serviço chaveiro do Gnome."
 
-#~ msgid "Creating kernel oops crash reports..."
-#~ msgstr "A criar relatório oops de crash do kernel..."
-
-#~ msgid "Settings"
-#~ msgstr "Configurações"
-
-#~ msgid "Global Settings"
-#~ msgstr "Configurações Globais"
-
-#~ msgid "gtk-cancel"
-#~ msgstr "gtk-cancel"
-
-#~ msgid "gtk-ok"
-#~ msgstr "gtk-ok"
-
-#~ msgid "Checking CC..."
-#~ msgstr "A verificar CC..."
-
-#~ msgid "Getting local universal unique identification..."
-#~ msgstr "A obter identificador único universal local..."
-
-#~ msgid "Plugin name is not set, can't load its settings"
-#~ msgstr "Nome do plugin não está definido, incapaz de carregar configurações"
+#~ msgid "Cannot get the default keyring."
+#~ msgstr "Não é possível obter o chaveiro por omissão."
 
 #~ msgid ""
-#~ "<b>WARNING</b>, you're about to send data which might contain sensitive "
-#~ "information.\n"
-#~ "Do you really want to send <b>%s</b>?\n"
+#~ "Access to gnome-keyring has been denied, plugins settings will not be "
+#~ "saved."
 #~ msgstr ""
-#~ "<b>AVISO</b>, você está prestes a enviar dados que podem conter "
-#~ "informação sensível.\n"
-#~ "Deseja mesmo enviar <b>%s</b>?\n"
-
-#~ msgid "<b>Following items will be send</b>"
-#~ msgstr "<b>Os itens seguintes serão enviados</b>"
-
-#~ msgid "Send"
-#~ msgstr "Enviar"
-
-#~ msgid "Downloading and installing debug-info packages..."
-#~ msgstr "A transferir e instalar pacotes debug-info..."
-
-#~ msgid "Starting report creation..."
-#~ msgstr "A iniciar a criação do relatório..."
-
-#~ msgid "Executing SOSreport plugin..."
-#~ msgstr "A executar plugin do SOSreport..."
-
-#~ msgid "Can't get username for uid %s"
-#~ msgstr "Incapaz de obter o nome de utilizador para o uid %s"
-
-#~ msgid "Edit blacklisted packages"
-#~ msgstr "Editar pacotes na lista negra"
-
-#~ msgid "This function is not implemented yet!"
-#~ msgstr "Esta função ainda não está implementada!"
-
-#~ msgid "gtk-add"
-#~ msgstr "gtk-add"
-
-#~ msgid "gtk-close"
-#~ msgstr "gtk-close"
-
-#~ msgid "gtk-remove"
-#~ msgstr "gtk-remove"
-
-#~ msgid "Executing RunApp plugin..."
-#~ msgstr "A executar plugin RunApp..."
-
-#~ msgid "Check CC and add coment +1..."
-#~ msgstr "Verifique o campo CC e adicione o comentário +1..."
-
-#~ msgid "Pending events: %i"
-#~ msgstr "Eventos pendentes: %i"
-
-#~ msgid "Can't create menu from the description, popup won't be available!\n"
-#~ msgstr ""
-#~ "Não é possível criar menu a partir da descrição, caixa pop não estará "
-#~ "disponível!\n"
-
-#~ msgid "Applet is already running."
-#~ msgstr "Applet já está a correr."
+#~ "O acesso ao gnome-keyring foi negado, as configurações do plugins não "
+#~ "serão gravadas."
 
 #~ msgid ""
-#~ "This is default handler, you should register your own with "
-#~ "ConnectCrashHandler"
+#~ "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 #~ msgstr ""
-#~ "Isto é o handler por omissão, você deve registar o seu próprio com "
-#~ "ConnectCrashHandler"
+#~ "O acesso ao gnome-keyring foi negado, incapaz de carregar as "
+#~ "configurações para %s!"
+
+#~ msgid "Access to gnome-keyring has been denied, cannot load settings."
+#~ msgstr ""
+#~ "O acesso ao gnome-keyring foi negado, incapaz de carregar configurações."
+
+#~ msgid "Brief description of how to reproduce this or what you did..."
+#~ msgstr "Breve descrição de como reproduzir isto ou o que fez..."
+
+#~ msgid "Crash info doesn't contain a backtrace"
+#~ msgstr "As informações da falha não contêm uma traçagem"
 
 #~ msgid ""
-#~ "This is default handler, you should register your own with "
-#~ "ConnectQuotaExceedHandler"
+#~ "Cannot save plugin settings:\n"
+#~ " %s"
 #~ msgstr ""
-#~ "Isto é o handler por omissão, você deve registar o seu próprio com "
-#~ "ConnectQuotaExceedHandler"
+#~ "Incapaz de gravar as configurações do plugin:\n"
+#~ "%s"
 
-#~ msgid "Out of memory"
-#~ msgstr "Memória esgotada"
+#~ msgid "Rating is %s"
+#~ msgstr "A classificação é %s"
 
-#~ msgid "Getting local/global universal unique identification..."
-#~ msgstr "A obter identificador único universal local/global..."
+#~ msgid "Crashdump doesn't have rating => we suppose it's not required"
+#~ msgstr ""
+#~ "O dump da falha não tem classificação => supomos que não é necessária"
 
-#~ msgid "Enabled"
-#~ msgstr "Activado"
+#~ msgid ""
+#~ "Reporting disabled because the backtrace is unusable.\n"
+#~ "Please try to install debuginfo manually using the command: <b>debuginfo-"
+#~ "install %s</b> \n"
+#~ "then use the Refresh button to regenerate the backtrace."
+#~ msgstr ""
+#~ "Relatórios desactivados porque a traçagem não é usável!\n"
+#~ "Por favor, tente instalar o debuginfo manualmente utilizando o comando:"
+#~ "<b>debuginfo-install %s </b> \n"
+#~ "depois utilize o botão Recarregar para gerar uma nova traçagem."
+
+#~ msgid "You did not provide any steps to reproduce."
+#~ msgstr "Não forneceu nenhuns passos para reproduzir o erro."
+
+#~ msgid "You did not provide any comments."
+#~ msgstr "Não forneceu nenhum comentário."
+
+#~ msgid ""
+#~ "Reporting failed!\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Relatório falhou!\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "It looks like an application from the package <b>%s</b> has crashed on "
+#~ "your system. It is a good idea to send a bug report about this issue. The "
+#~ "report will provide software maintainers with information essential in "
+#~ "figuring out how to provide a bug fix for you.\n"
+#~ "\n"
+#~ "Please review the information that follows and modify it as needed to "
+#~ "ensure your bug report does not contain any sensitive data you would "
+#~ "rather not share.\n"
+#~ "\n"
+#~ "Select where you would like to report the bug, and press 'Forward' to "
+#~ "continue."
+#~ msgstr ""
+#~ "Aparentemente uma aplicação do pacote <b>%s</b> falhou no seu sistema. É "
+#~ "uma boa ideia enviar um relatório de erro sobre este problema. O "
+#~ "relatório fornecerá aos programadores do software informações essenciais "
+#~ "para perceber como fornecer uma correcção deste erro.\n"
+#~ "\n"
+#~ "Por favor, verifique as informações que se seguem e modifique-as conforme "
+#~ "o necessário para garantir que o relatório não contém qualquer dado "
+#~ "sensível que preferiria não partilhar.\n"
+#~ "\n"
+#~ "Seleccione onde gostaria de reportar o erro, e pressione 'Seguinte' para "
+#~ "continuar."
+
+#~ msgid "Only one reporter plugin is configured."
+#~ msgstr "Apenas um plugin repórter está configurado."
+
+#~ msgid "Send a bug report"
+#~ msgstr "Enviar um relatório de erro"
+
+#~ msgid "Found %i occurence(s) [at: %i of %i]"
+#~ msgstr "Encontrada(s) %i ocorrência(s) [em: %i de %i]"
+
+#~ msgid "Search:"
+#~ msgstr "Procurar:"
+
+#~ msgid "Refresh"
+#~ msgstr "Actualizar"
+
+#~ msgid "Copy"
+#~ msgstr "Copiar"
+
+#~ msgid "Approve the backtrace"
+#~ msgstr "Aprovar a traçagem"
+
+#~ msgid "You need to fill the how to before you can proceed..."
+#~ msgstr "Precisa de preencher o como antes de poder prosseguir..."
+
+#~ msgid ""
+#~ "Are there any comments you would like to share with the software "
+#~ "maintainers?"
+#~ msgstr ""
+#~ "Tem comentários que gostaria de partilhar com os programadores do "
+#~ "software?"
+
+#~ msgid "Provide additional details"
+#~ msgstr "Fornecer detalhes adicionais"
+
+#~ msgid ""
+#~ "<b>Tip:</b> Your comments are not private. Please watch what you say "
+#~ "accordingly."
+#~ msgstr ""
+#~ "<b>Dica:</b> Os seus comentários não são privados. Por favor, reveja o "
+#~ "que diz em conformidade"
+
+#~ msgid "Confirm and send the report"
+#~ msgstr "Confirmar e enviar o relatório"
+
+#~ msgid ""
+#~ "Below is a summary of your bug report. Please click 'Apply' to submit it."
+#~ msgstr ""
+#~ "Abaixo está um resumo de seu relatório de erro. Por favor, clique em "
+#~ "\"Aplicar\" para o submeter."
+
+#~ msgid "<b>Basic details</b>"
+#~ msgstr "<b>Detalhes básicos</b>"
+
+#~ msgid "Component"
+#~ msgstr "Componente"
+
+#~ msgid "Package"
+#~ msgstr "Pacote"
+
+#~ msgid "Executable"
+#~ msgstr "Executável"
+
+#~ msgid "Cmdline"
+#~ msgstr "Comando"
+
+#~ msgid "Architecture"
+#~ msgstr "Arquitectura"
+
+#~ msgid "Kernel"
+#~ msgstr "Kernel"
+
+#~ msgid "Release"
+#~ msgstr "Versão"
+
+#~ msgid "Reason"
+#~ msgstr "Motivo"
+
+#~ msgid "<b>Backtrace</b>"
+#~ msgstr "<b>Traçagem</b>"
+
+#~ msgid "Click to view..."
+#~ msgstr "Clique para ver..."
+
+#~ msgid "<b>Steps to reproduce:</b>"
+#~ msgstr "<b>Passos para reproduzir:</b>"
+
+#~ msgid "<b>Comments:</b>"
+#~ msgstr "<b>Comentários:</b>"
+
+#~ msgid "No comment provided!"
+#~ msgstr "Nenhum comentário disponibilizado!"
+
+#~ msgid "Finished sending the bug report"
+#~ msgstr "Envio do relatório de erro concluído"
+
+#~ msgid "<b>Bug reports:</b>"
+#~ msgstr "<b>Relatórios de erros:</b>"
+
+#~ msgid ""
+#~ "Unable to get report!\n"
+#~ "Is debuginfo missing?"
+#~ msgstr ""
+#~ "Não foi possível obter o relatório!\n"
+#~ "O debuginfo está em falta?"
+
+#~ msgid "Error acquiring the report: %s"
+#~ msgstr "Erro ao obter o relatório: %s"
+
+#~ msgid "Log"
+#~ msgstr "Registo"
+
+#~ msgid "Report done"
+#~ msgstr "Relatório terminado"
+
+#~ msgid "Cannot find PluginDialog widget in the UI description!"
+#~ msgstr "Incapaz de encontrar o objecto PluginDialog na descrição do UI!"
+
+#~ msgid ""
+#~ "No UI for the plugin <b>%s</b>, this is probably a bug.\n"
+#~ "Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
+#~ "\">https://fedorahosted.org/abrt/newticket</a>"
+#~ msgstr ""
+#~ "No UI para o plugin <b>%s</b>, isto é provavelmente um erro.\n"
+#~ "Por favor, reporte-o em <a href=\"https://fedorahosted.org/abrt/newticket"
+#~ "\">https://fedorahosted.org/abrt/newticket</a>"
+
+#~ msgid "Combo box is not implemented"
+#~ msgstr "Caixa de combinação não está implementada"
+
+#~ msgid "Nothing to hydrate!"
+#~ msgstr "Nada para fazer!"
+
+#~ msgid "Cannot load the GUI description for SettingsDialog!"
+#~ msgstr "Incapaz de carregar a descrição GUI para o SettingsDialog!"
+
+#~ msgid "Please select a plugin from the list to edit its options."
+#~ msgstr "Por favor, seleccione um plugin da lista para editar as opções."
+
+#~ msgid ""
+#~ "Error while opening the plugin settings UI: \n"
+#~ "\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Erro ao abrir as configurações do UI do plugin:\n"
+#~ "\n"
+#~ "%s"
+
+#~ msgid "Please wait..."
+#~ msgstr "Por favor, aguarde..."
+
+#~ msgid " "
+#~ msgstr " "
+
+#~ msgid "<b>Attachments</b>"
+#~ msgstr "<b>Anexos</b>"
+
+#~ msgid "<b>Comment</b>"
+#~ msgstr "<b>Comentário</b>"
+
+#~ msgid "<b>How to reproduce (in a few simple steps)</b>"
+#~ msgstr "<b>Como reproduzir (em poucos passos simples)</b>"
+
+#~ msgid "<b>Please fix the following problems:</b>"
+#~ msgstr "<b>Por favor, corrija os seguintes problemas:</b>"
+
+#~ msgid "<b>Where do you want to report this incident?</b>"
+#~ msgstr "<b>Onde quer reportar este incidente?</b>"
+
+#~ msgid "<span fgcolor=\"blue\">Architecture:</span>"
+#~ msgstr "<span fgcolor=\"blue\">Arquitectura:</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+#~ msgstr "<span fgcolor=\"blue\">Linha de comando:</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Component:</span>"
+#~ msgstr "<span fgcolor=\"blue\">Componente:</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Executable:</span>"
+#~ msgstr "<span fgcolor=\"blue\">Executável:</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Kernel:</span>"
+#~ msgstr "<span fgcolor=\"blue\">Kernel:</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Package:</span>"
+#~ msgstr "<span fgcolor=\"blue\">Pacote:</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Reason:</span>"
+#~ msgstr "<span fgcolor=\"blue\">Razão:</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Release:</span>"
+#~ msgstr "<span fgcolor=\"blue\">Lançamento:</span>"
+
+#~ msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
+#~ msgstr "Eu verifiquei a traçagem e removi os dados sensíveis (senhas, etc)"
+
+#~ msgid "N/A"
+#~ msgstr "N/D"
+
+#~ msgid "Reporter Selector"
+#~ msgstr "Seleccionador de relatórios"
+
+#~ msgid "Send report"
+#~ msgstr "Enviar relatório"
+
+#~ msgid "Show log"
+#~ msgstr "Mostrar registo"
+
+#~ msgid "Remove this job"
+#~ msgstr "Remover esta tarefa"
+
+#~ msgid "Remove this action"
+#~ msgstr "Remover esta acção"
+
+#~ msgid "<b>Plugin details</b>"
+#~ msgstr "<b>Detalhes do plugin</b>"
+
+#~ msgid "Author:"
+#~ msgstr "Autor:"
+
+#~ msgid "Blacklisted packages: "
+#~ msgstr "Pacotes na lista negra: "
+
+#~ msgid "Check package GPG signature"
+#~ msgstr "Verifique a assinatura GPG do pacote"
+
+#~ msgid "Common"
+#~ msgstr "Comum"
+
+#~ msgid "GPG Keys"
+#~ msgstr "Chaves GPG"
+
+#~ msgid "GPG keys: "
+#~ msgstr "Chaves GPG:"
+
+#~ msgid "Max coredump storage size (MB):"
+#~ msgstr "Máximo espaço de armazenamento para dumps (MB):"
+
+#~ msgid "Name:"
+#~ msgstr "Nome:"
+
+#~ msgid "Preferences"
+#~ msgstr "Preferências"
+
+#~ msgid "Version:"
+#~ msgstr "Versão:"
+
+#~ msgid "Web Site:"
+#~ msgstr "Sítio web:"
+
+#~ msgid "<b>Do you want to continue?</b>"
+#~ msgstr "<b>Deseja continuar?</b>"
+
+#~ msgid "Wrong Settings Detected"
+#~ msgstr "Detectadas configurações erradas"
+
+#~ msgid ""
+#~ "Wrong settings were detected for some of the enabled reporter plugins. "
+#~ "Please use the buttons below to open the respective configuration and fix "
+#~ "it before you proceed, otherwise, the reporting process may fail.\n"
+#~ msgstr ""
+#~ "Foram detectadas configurações erradas para alguns dos plugins repórter "
+#~ "activos. Por favor, utilize os botões abaixo para abrir a configuração "
+#~ "respectiva e corrigi-los antes de continuar, caso contrário, o processo "
+#~ "pode falhar.\n"
