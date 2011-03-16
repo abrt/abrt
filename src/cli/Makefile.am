@@ -10,7 +10,6 @@ abrt_cli_CPPFLAGS = \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
-    $(ENABLE_SOCKET_OR_DBUS) \
     $(DBUS_CFLAGS) $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror

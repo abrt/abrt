@@ -28,7 +28,6 @@ abrtd_CPPFLAGS = \
     -DLIBEXEC_DIR=\"$(LIBEXEC_DIR)\" \
     $(GLIB_CFLAGS) \
     $(DBUS_CFLAGS) \
-    $(ENABLE_SOCKET_OR_DBUS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings
 abrtd_LDADD = \
