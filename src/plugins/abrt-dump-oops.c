@@ -66,47 +66,47 @@ struct line_info {
     char level;
 };
 
-static int record_oops(GList **oopses, struct line_info* lines_info, int oopsstart, int oopsend)
+static int record_oops(GList **oops_list, struct line_info* lines_info, int oopsstart, int oopsend)
 {
     int q;
     int len;
-    char *oops;
-    char *version;
+    int rv = 1;
 
     len = 2;
     for (q = oopsstart; q <= oopsend; q++)
-            len += strlen(lines_info[q].ptr) + 1;
+        len += strlen(lines_info[q].ptr) + 1;
 
-    oops = (char*)xzalloc(len);
-
-    version = NULL;
-    for (q = oopsstart; q <= oopsend; q++)
-    {
-        if (!version)
-            version = extract_version(lines_info[q].ptr);
-
-        if (lines_info[q].ptr[0])
-        {
-            strcat(oops, lines_info[q].ptr);
-            strcat(oops, "\n");
-        }
-    }
-    int rv = 1;
     /* too short oopses are invalid */
-    if (strlen(oops) > 100)
-        queue_oops(oopses, oops, version ? version : "undefined");
-    else
+    if (len > 100)
     {
-        VERB3 log("Dropped oops: too short");
-        rv = 0;
+        char *oops = (char*)xzalloc(len);
+        char *dst = oops;
+        char *version = NULL;
+        for (q = oopsstart; q <= oopsend; q++)
+        {
+            if (!version)
+                version = extract_version(lines_info[q].ptr);
+            if (lines_info[q].ptr[0])
+            {
+                dst = stpcpy(dst, lines_info[q].ptr);
+                dst = stpcpy(dst, "\n");
+            }
+        }
+        if ((dst - oops) > 100)
+            queue_oops(oops_list, oops, version ? version : "undefined");
+        else
+            /* too short oopses are invalid */
+            rv = 0;
+        free(oops);
+        free(version);
     }
-    free(oops);
-    free(version);
+
+    VERB3 if (rv == 0) log("Dropped oops: too short");
     return rv;
 }
 
 #define REALLOC_CHUNK 1000
-static int extract_oopses(GList **oopses, char *buffer, size_t buflen)
+static int extract_oopses(GList **oops_list, char *buffer, size_t buflen)
 {
     char *c;
     int linecount = 0;
@@ -353,7 +353,7 @@ next_line:
             if (oopsend <= i)
             {
                 VERB3 log("End of oops at line %d (%d): '%s'", oopsend, i, lines_info[oopsend].ptr);
-                if (record_oops(oopses, lines_info, oopsstart, oopsend))
+                if (record_oops(oops_list, lines_info, oopsstart, oopsend))
                     oopsesfound++;
                 oopsstart = -1;
                 inbacktrace = 0;
@@ -388,7 +388,7 @@ next_line:
     {
         int oopsend = i-1;
         VERB3 log("End of oops at line %d (end of file): '%s'", oopsend, lines_info[oopsend].ptr);
-        if (record_oops(oopses, lines_info, oopsstart, oopsend))
+        if (record_oops(oops_list, lines_info, oopsstart, oopsend))
                 oopsesfound++;
     }
 
@@ -420,14 +420,21 @@ static int scan_syslog_file(GList **oops_list, int fd, struct stat *statbuf, int
 
     off_t cur_pos = lseek(fd, 0, SEEK_CUR);
     if (statbuf->st_size <= cur_pos)
+    {
+        /* If file was truncated, treat it as a new file.
+         * (changing inode# causes caller to think that file was closed or renamed)
+         */
+        if (statbuf->st_size < cur_pos)
+            statbuf->st_ino++;
         return partial_line_len; /* we are at EOF, nothing to do */
+    }
 
     VERB3 log("File grew by %llu bytes, from %llu to %llu",
         (long long)(statbuf->st_size - cur_pos),
         (long long)(cur_pos),
         (long long)(statbuf->st_size));
 
-    /* Do not try to allocate an absurd amount of memory. */
+    /* Do not try to allocate an absurd amount of memory */
     int sz = MAX_SCAN_BLOCK - READ_AHEAD;
     if (sz > statbuf->st_size - cur_pos)
         sz = statbuf->st_size - cur_pos;
@@ -476,13 +483,10 @@ static int save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
 {
     unsigned countdown = 16; /* do not report hundreds of oopses */
     unsigned idx = oops_cnt;
-    time_t t = time(NULL);
-    pid_t my_pid = getpid();
 
-    VERB1 log("Saving %u oopses as crash dump dirs", idx >= countdown ? countdown-1 : idx);
+    VERB1 log("Saving %u oopses as dump dirs", idx >= countdown ? countdown-1 : idx);
 
     char *tainted_str = NULL;
-    /* once tainted flag is set to 1, only restart can reset the flag to 0 */
     FILE *tainted_fp = fopen("/proc/sys/kernel/tainted", "r");
     if (tainted_fp)
     {
@@ -490,41 +494,47 @@ static int save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
         fclose(tainted_fp);
     }
     else
-        error_msg("/proc/sys/kernel/tainted does not exist");
+        perror_msg("Can't open '%s'", "/proc/sys/kernel/tainted");
 
+    time_t t = time(NULL);
+    const char *iso_date = iso_date_string(&t);
+    uid_t my_euid = geteuid();
+    pid_t my_pid = getpid();
     int errors = 0;
-
     while (idx != 0 && --countdown != 0)
     {
-        char path[sizeof(DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu-%lu") + 3 * sizeof(long)*3];
-        sprintf(path, DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu-%lu", (long)t, (long)my_pid, (long)idx);
+        char path[sizeof(DEBUG_DUMPS_DIR"/oops-YYYY-MM-DD-hh:mm:ss-%lu-%lu") + 2 * sizeof(long)*3];
+        sprintf(path, DEBUG_DUMPS_DIR"/oops-%s-%lu-%lu", iso_date, (long)my_pid, (long)idx);
 
         char *first_line = (char*)g_list_nth_data(oops_list, --idx);
         char *second_line = (char*)strchr(first_line, '\n'); /* never NULL */
         *second_line++ = '\0';
 
-        struct dump_dir *dd = dd_create(path, /*uid:*/ 0);
+        struct dump_dir *dd = dd_create(path, /*uid:*/ my_euid);
         if (dd)
         {
             dd_create_basic_files(dd, /*uid:*/ 0);
             dd_save_text(dd, FILENAME_ANALYZER, "Kerneloops");
+// TODO: drop FILENAME_EXECUTABLE?
             dd_save_text(dd, FILENAME_EXECUTABLE, "kernel");
             dd_save_text(dd, FILENAME_KERNEL, first_line);
+// TODO: drop FILENAME_CMDLINE?
             dd_save_text(dd, FILENAME_CMDLINE, "not_applicable");
             dd_save_text(dd, FILENAME_BACKTRACE, second_line);
-            /* Optional, makes generated bz more informative */
+// TODO: add "Kernel oops: " prefix, so that all oopses have recognizable FILENAME_REASON?
+// kernel oops 1st line may look quite puzzling otherwise...
             strchrnul(second_line, '\n')[0] = '\0';
             dd_save_text(dd, FILENAME_REASON, second_line);
 
             if (tainted_str && tainted_str[0] != '0')
                 dd_save_text(dd, FILENAME_TAINTED, tainted_str);
 
-            free(tainted_str);
             dd_close(dd);
         }
         else
             errors++;
     }
+    free(tainted_str);
 
     return errors;
 }
@@ -607,7 +617,7 @@ int main(int argc, char **argv)
             ino_t fd_ino = statbuf.st_ino;
             if (stat(filename, &statbuf) != 0 || statbuf.st_ino != fd_ino) /* yes */
             {
-                VERB2 log("Can't stat '%s', closing fd", filename);
+                VERB2 log("Inode# changed, closing fd");
                 close(file_fd);
                 if (wd >= 0)
                     inotify_rm_watch(inotify_fd, wd);
@@ -702,6 +712,10 @@ int main(int argc, char **argv)
              * the code will handle all possibilities.
              */
             VERB3 log("Change in '%s' detected", filename);
+            /* Let them finish writing to the log file. otherwise
+             * we may end up trying to analyze partial oops.
+             */
+            sleep(1);
         }
 
     } /* while (1) */
