@@ -230,7 +230,6 @@ static void on_menu_about_cb(GtkMenuItem *menuitem, gpointer unused)
     gtk_about_dialog_set_translator_credits(GTK_ABOUT_DIALOG(about_d), _("translator-credits"));
 
     gtk_window_set_transient_for(GTK_WINDOW(about_d), GTK_WINDOW(g_main_window));
-    gtk_window_set_position(GTK_WINDOW(about_d), GTK_WIN_POS_CENTER_ON_PARENT);
 
     gtk_dialog_run(GTK_DIALOG(about_d));
     gtk_widget_hide(GTK_WIDGET(about_d));
