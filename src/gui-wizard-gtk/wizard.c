@@ -540,7 +540,7 @@ void update_gui_state_from_crash_data(void)
     /* Update the value of currently selected analyzer */
     if (first_rb)
     {
-        const char *event_name = gtk_widget_get_tooltip_text(GTK_WIDGET((first_rb));
+        const char *event_name = gtk_widget_get_tooltip_text(first_rb);
         if (event_name)
         {
             free(g_analyze_event_selected);
