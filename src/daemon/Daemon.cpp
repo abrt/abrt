@@ -382,18 +382,18 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         crash_data_t *crash_data = NULL;
         fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
         mw_result_t res = LoadDebugDump(fullname, &crash_data);
-        const char *first = get_crash_item_content_or_NULL(crash_data, CD_DUMPDIR);
+        const char *first = crash_data ? get_crash_item_content_or_NULL(crash_data, CD_DUMPDIR) : NULL;
         switch (res)
         {
             case MW_OK:
-                log("New crash %s, processing", fullname);
+                log("New dump directory %s, processing", fullname);
                 /* Fall through */
 
             case MW_OCCURRED: /* dup */
             {
                 if (res != MW_OK)
                 {
-                    log("Deleting crash %s (dup of %s), sending dbus signal",
+                    log("Deleting dump directory %s (dup of %s), sending dbus signal",
                             strrchr(fullname, '/') + 1,
                             strrchr(first, '/') + 1);
                     delete_dump_dir(fullname);
@@ -408,8 +408,9 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                                 get_crash_item_content_or_NULL(crash_data, FILENAME_UID),
                                 get_crash_item_content_or_NULL(crash_data, FILENAME_UUID)
                 );
-                /* when dupe occurs we need to return first occure not the one which
-                 * is deleted */
+                /* When dup occurs we need to return first occurence,
+                 * not the one which is deleted
+                 */
                 send_dbus_sig_Crash(get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE),
                                     crash_id, //TODO: stop passing this param, it is unused
                                     (first)? first: fullname,
@@ -421,7 +422,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             case MW_CORRUPTED:
             case MW_GPG_ERROR:
             default:
-                log("Corrupted or bad crash %s (res:%d), deleting", fullname, (int)res);
+                log("Corrupted or bad dump %s (res:%d), deleting", fullname, (int)res);
                 delete_dump_dir(fullname);
                 break;
         }

@@ -551,7 +551,7 @@ mw_result_t LoadDebugDump(const char *dump_dir_name, crash_data_t **crash_data)
             res = MW_OK;
             if (count > 1)
             {
-                log("Crash dump is a duplicate of %s", dump_dir_name);
+                log("Dump directory is a duplicate of %s", dump_dir_name);
                 res = MW_OCCURRED;
             }
         }
