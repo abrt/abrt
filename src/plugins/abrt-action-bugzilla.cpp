@@ -124,34 +124,33 @@ struct ctx: public abrt_xmlrpc_conn {
 
 xmlrpc_value* ctx::call(const char* method, const char* format, ...)
 {
-    va_list args;
-    xmlrpc_value* param = NULL;
     xmlrpc_value* result = NULL;
-    const char* suffix;
-
-    va_start(args, format);
-    xmlrpc_build_value_va(&env, format, args, &param, &suffix);
-    va_end(args);
 
     if (!env.fault_occurred)
     {
+        xmlrpc_value* param = NULL;
+        va_list args;
+        const char* suffix;
+
+        va_start(args, format);
+        xmlrpc_build_value_va(&env, format, args, &param, &suffix);
+        va_end(args);
+
         if (*suffix != '\0')
         {
             xmlrpc_env_set_fault_formatted(
                 &env, XMLRPC_INTERNAL_ERROR, "Junk after the argument "
                 "specifier: '%s'.  There must be exactly one arument.",
                 suffix);
-
-            xmlrpc_DECREF(param);
-            return NULL;
         }
-
-        xmlrpc_client_call2(&env, m_pClient, m_pServer_info, method, param, &result);
+        else
+        {
+            xmlrpc_client_call2(&env, m_pClient, m_pServer_info, method, param, &result);
+        }
         xmlrpc_DECREF(param);
         if (env.fault_occurred)
             return NULL;
     }
-
 
     return result;
 }
@@ -618,10 +617,13 @@ int ctx::get_bug_info(struct bug_info* bz, xmlrpc_int32 bug_id)
 void ctx::login(const char* login, const char* passwd)
 {
     xmlrpc_value* result = call("User.login", "({s:s,s:s})", "login", login, "password", passwd);
+//TODO: with URL like http://bugzilla.redhat.com (that is, with http: instead of https:)
+//we are getting this error:
+//Logging into Bugzilla at http://bugzilla.redhat.com
+//Can't login. Server said: HTTP response code is 301, not 200
+//But this is a 301 redirect! We _can_ follow it if we configure curl to understand that!
     if (!result)
-        error_msg_and_die("Can't login. Check Edit->Plugins->Bugzilla "
-                        "and /etc/abrt/plugins/Bugzilla.conf. Server said: %s",
-                        env.fault_string);
+        error_msg_and_die("Can't login. Server said: %s", env.fault_string);
     xmlrpc_DECREF(result);
 }
 
@@ -660,7 +662,6 @@ static void report_to_bugzilla(
     password = env ? env : get_map_string_item_or_empty(settings, "Password");
     if (!login[0] || !password[0])
     {
-        VERB3 log("Empty login and password");
         error_msg_and_die(_("Empty login or password, please check %s"), PLUGINS_CONF_DIR"/Bugzilla.conf");
     }
 
@@ -681,10 +682,10 @@ static void report_to_bugzilla(
 
     ctx bz_server(bugzilla_xmlrpc, ssl_verify);
 
-    log(_("Logging into bugzilla..."));
+    log(_("Logging into Bugzilla at %s"), bugzilla_url);
     bz_server.login(login, password);
 
-    log(_("Checking for duplicates..."));
+    log(_("Checking for duplicates"));
 
     char *product = NULL;
     char *version = NULL;
@@ -773,7 +774,7 @@ static void report_to_bugzilla(
     }
     else if (all_bugs_size == 0) // Create new bug
     {
-        log(_("Creating a new bug..."));
+        log(_("Creating a new bug"));
         bug_id = bz_server.new_bug(crash_data, depend_on_bugno);
         if (bug_id < 0)
         {
@@ -781,7 +782,7 @@ static void report_to_bugzilla(
             error_msg_and_die(_("Bugzilla entry creation failed"));
         }
 
-        log("Adding attachments to bug %ld...", (long)bug_id);
+        log("Adding attachments to bug %ld", (long)bug_id);
         char bug_id_str[sizeof(long)*3 + 2];
         sprintf(bug_id_str, "%ld", (long) bug_id);
         int ret = bz_server.add_attachments(bug_id_str, crash_data);
@@ -790,7 +791,7 @@ static void report_to_bugzilla(
             throw_if_xml_fault_occurred(&bz_server.env);
         }
 
-        log(_("Logging out..."));
+        log(_("Logging out"));
         bz_server.logout();
 
         log("Status: NEW %s/show_bug.cgi?id=%u",
@@ -889,7 +890,7 @@ static void report_to_bugzilla(
         }
     }
 
-    log(_("Logging out..."));
+    log(_("Logging out"));
     bz_server.logout();
 
     log("Status: %s%s%s %s/show_bug.cgi?id=%u",

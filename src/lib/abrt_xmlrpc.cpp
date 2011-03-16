@@ -40,8 +40,7 @@ void abrt_xmlrpc_conn::new_xmlrpc_client(const char* url, bool ssl_verify)
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
-    /* This should be done at program startup, once.
-     * We do it in abrtd's main */
+    /* This should be done at program startup, once. We do it in main */
     /* xmlrpc_client_setup_global_const(&env); */
 
     /* URL - bugzilla.redhat.com/show_bug.cgi?id=666893 Unable to make sense of
