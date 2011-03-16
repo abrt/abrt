@@ -117,6 +117,7 @@ char* make_description_mailx(crash_data_t *crash_data)
 char* make_description_bz(crash_data_t *crash_data)
 {
     struct strbuf *buf_dsc = strbuf_new();
+    struct strbuf *buf_big_dsc = strbuf_new();
     struct strbuf *buf_long_dsc = strbuf_new();
 
     GHashTableIter iter;
@@ -126,6 +127,7 @@ char* make_description_bz(crash_data_t *crash_data)
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
         struct stat statbuf;
+        int stat_err = 0;
         unsigned flags = value->flags;
         const char *content = value->content;
         if (flags & CD_FLAG_TXT)
@@ -153,7 +155,6 @@ char* make_description_bz(crash_data_t *crash_data)
                     /* Not one-liner */
                     if (buf_long_dsc->len != 0)
                         strbuf_append_char(buf_long_dsc, '\n');
-
                     strbuf_append_str(buf_long_dsc, tmp);
                 }
                 else
@@ -164,7 +165,7 @@ char* make_description_bz(crash_data_t *crash_data)
             else
             {
                 statbuf.st_size = strlen(content);
-                goto add_attachment_info;
+                goto add_big_file_info;
             }
         }
         if (flags & CD_FLAG_BIN)
@@ -172,28 +173,27 @@ char* make_description_bz(crash_data_t *crash_data)
             /* In many cases, it is useful to know how big binary files are
              * (for example, helps with diagnosing bug upload problems)
              */
-            if (stat(content, &statbuf) != 0)
-                statbuf.st_size = (off_t) -1;
-
- add_attachment_info: ;
-            char *descr;
-            if (statbuf.st_size >= 0)
-                descr = xasprintf("%s, %llu bytes", name, (long long)statbuf.st_size);
-            else
-                descr = xstrdup(name);
-            bool was_multiline = 0;
-            char *tmp = NULL;
-            add_content(&was_multiline, &tmp, "Attached file", descr);
-            free(descr);
-            strbuf_append_str(buf_dsc, tmp);
-            free(tmp);
+            stat_err = stat(content, &statbuf);
+ add_big_file_info:
+            strbuf_append_strf(buf_big_dsc,
+                    (stat_err ? "%s file: %s\n" : "%s file: %s, %llu bytes\n"),
+                    ((flags & CD_FLAG_BIN) ? "Binary" : "Text"),
+                    name,
+                    (long long)statbuf.st_size
+            );
         }
     }
 
-    /* One-liners go first, then multi-line items */
-    if (buf_dsc->len != 0 && buf_long_dsc->len != 0)
-        strbuf_append_char(buf_dsc, '\n');
+    /* One-liners go first, then big files, then multi-line items */
+    if (buf_dsc->len != 0 && (buf_big_dsc->len != 0 || buf_long_dsc->len != 0))
+        strbuf_append_char(buf_dsc, '\n'); /* add empty line */
 
+    if (buf_big_dsc->len != 0 && buf_long_dsc->len != 0)
+        strbuf_append_char(buf_big_dsc, '\n'); /* add empty line */
+
+    char *big_dsc = strbuf_free_nobuf(buf_big_dsc);
+    strbuf_append_str(buf_dsc, big_dsc);
+    free(big_dsc);
 
     char *long_dsc = strbuf_free_nobuf(buf_long_dsc);
     strbuf_append_str(buf_dsc, long_dsc);

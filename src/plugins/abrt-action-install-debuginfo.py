@@ -239,7 +239,7 @@ class DebugInfoDownload(YumBase):
 	if verbose != 0 or len(not_found) != 0:
 	    print _("Can't find packages for %u debuginfo files") % len(not_found)
 	if verbose != 0 or total_pkgs != 0:
-	    print _("Found %u packages to download") % total_pkgs
+	    print _("Packages to download: %u") % total_pkgs
 	    print _("Downloading %.2fMb, installed size: %.2fMb") % (
 	             todownload_size / (1024**2),
 	             installed_size / (1024**2)
@@ -302,7 +302,7 @@ def log2(message):
         print "LOG2:", message
 
 #eu_unstrip_OUT=`eu-unstrip "--core=$core" -n 2>eu_unstrip.ERR`
-def extract_info_from_core(corefile):
+def extract_info_from_core(coredump_name):
     """
     Extracts builds with filenames,
     Returns a list of tuples (build_id, filename)
@@ -313,8 +313,8 @@ def extract_info_from_core(corefile):
     #SEP = 3
     EXECUTABLE = 4
 
-    print _("Analyzing corefile '%s'") % corefile
-    eu_unstrip_OUT = Popen(["eu-unstrip","--core=%s" % corefile, "-n"], stdout=PIPE, bufsize=-1).communicate()[0]
+    print _("Analyzing coredump '%s'") % coredump_name
+    eu_unstrip_OUT = Popen(["eu-unstrip","--core=%s" % coredump_name, "-n"], stdout=PIPE, bufsize=-1).communicate()[0]
     # parse eu_unstrip_OUT and return the list of build_ids
 
     # eu_unstrip_OUT = ("0x7f42362ca000+0x204000 c4d35d993598a6242f7525d024b5ec3becf5b447@0x7f42362ca1a0 /usr/lib64/libcanberra-gtk.so.0 - libcanberra-gtk.so.0\n"
@@ -333,7 +333,7 @@ def extract_info_from_core(corefile):
     #print eu_unstrip_OUT
     # we failed to get build ids from the core -> die
     if not eu_unstrip_OUT:
-        print "Can't get build ids from %s" % corefile
+        print "Can't get build ids from %s" % coredump_name
         return RETURN_FAILURE
 
     lines = eu_unstrip_OUT.split('\n')
