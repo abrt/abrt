@@ -20,6 +20,9 @@
 #include "abrtlib.h"
 #include "parse_options.h"
 #include "abrt-gtk.h"
+#if HAVE_LOCALE_H
+# include <locale.h>
+#endif
 
 #define PROGNAME "abrt-gtk"
 
@@ -61,6 +64,10 @@ int main(int argc, char **argv)
 {
     /* I18n */
     setlocale(LC_ALL, "");
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
 
     gtk_init(&argc, &argv);
 
