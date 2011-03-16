@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <event>
     <name>Bugzilla</name>
-    <description>Report to Red Hat bug tracker</description>
+    <description>Report to Bugzilla bug tracker</description>
     <options>
         <option type="text" name="Bugzilla_BugzillaURL">
-           <label>Bugzilla URL</label>
-           <allow-empty>no</allow-empty>
-           <description>Address of the bugzilla server</description>
-           <default-value>https://bugzilla.redhat.com</default-value>
-           <property>Address of the bugzilla server</property>
-           <notused1>blahblahblah</notused1>
-       </option>
-       <option type="text" name="Bugzilla_Login">
-           <label>User name</label>
-           <allow-empty>no</allow-empty>
-           <description>Username to use to log into your bugzilla account</description>
-       </option>
-       <option type="password" name="Bugzilla_Password">
-           <label>Password</label>
-           <allow-empty>no</allow-empty>
-           <description>Password for your bugzilla account</description>
-       </option>
-       <option type="bool" name="Bugzilla_SSLVerify">
-           <label>SSL Verify</label>
-           <description>Check the ssl key validity</description>
-           <default-value>yes</default-value>
-       </option>
+            <label>Bugzilla URL</label>
+            <allow-empty>no</allow-empty>
+            <description>Address of Bugzilla server</description>
+            <default-value>https://bugzilla.redhat.com</default-value>
+        </option>
+        <option type="text" name="Bugzilla_Login">
+            <label>User name</label>
+            <allow-empty>no</allow-empty>
+            <description>Bugzilla account user name</description>
+        </option>
+        <option type="password" name="Bugzilla_Password">
+            <label>Password</label>
+            <allow-empty>no</allow-empty>
+            <description>Bugzilla account password</description>
+        </option>
+        <option type="bool" name="Bugzilla_SSLVerify">
+            <label>Verify SSL</label>
+            <description>Check SSL key validity</description>
+            <default-value>yes</default-value>
+        </option>
     </options>
 </event>

@@ -770,9 +770,11 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     /* Write a final message to the log */
     if (evd->event_log->len != 0 && evd->event_log->buf[evd->event_log->len - 1] != '\n')
         save_to_event_log(evd, "\n");
-    if (retval != 0)
+    /* If program failed, or if it finished successfully without saying anything... */
+    if (retval != 0 || evd->event_log_state == LOGSTATE_FIRSTLINE)
     {
-        evd->event_log_state = LOGSTATE_ERRLINE;
+        if (retval != 0) /* If program failed, emit error line */
+            evd->event_log_state = LOGSTATE_ERRLINE;
         char *msg;
         if (WIFSIGNALED(status))
             msg = xasprintf("(killed by signal %d)\n", WTERMSIG(status));
