@@ -176,11 +176,11 @@ class DebugInfoDownload(YumBase):
         if not files:
             return
 
-        if verbose == 0:
-            # this suppress yum messages about setting up repositories
-            mute_stdout()
+        #if verbose == 0:
+        #    # this suppress yum messages about setting up repositories
+        #    mute_stdout()
 
-        # make yumdownloader work as non root user.
+        # make yumdownloader work as non root user
         if not self.setCacheDir():
             self.logger.error("Error: can't make cachedir, exiting")
             sys.exit(50)
@@ -196,14 +196,20 @@ class DebugInfoDownload(YumBase):
             rid = self.repos.enableRepo(repo.id)
             log1("enabled repo %s" % rid)
             setattr(repo, "skip_if_unavailable", True)
+
         self.repos.doSetup()
+
         # This is somewhat "magic", it unpacks the metadata making it usable.
+        # Looks like this is the moment when yum talks to remote servers,
+        # which takes time (sometimes minutes), let user know why
+        # we have "paused":
+        print _("Looking for needed packages in repositories")
         self.repos.populateSack(mdtype='metadata', cacheonly=1)
         self.repos.populateSack(mdtype='filelists', cacheonly=1)
 
-        if verbose == 0:
-            # re-enable the output to stdout
-            unmute_stdout()
+        #if verbose == 0:
+        #    # re-enable the output to stdout
+        #    unmute_stdout()
 
         not_found = []
         package_files_dict = {}
@@ -411,6 +417,13 @@ if __name__ == "__main__":
 
     # localization
     init_gettext()
+
+    ABRT_VERBOSE = os.getenv("ABRT_VERBOSE")
+    if (ABRT_VERBOSE):
+        try:
+            verbose = int(ABRT_VERBOSE)
+        except:
+            pass
 
     help_text = _("Usage: %s --core=COREFILE "
                             "--tmpdir=TMPDIR "
