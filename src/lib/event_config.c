@@ -71,7 +71,7 @@ event_option_t *get_event_option_from_list(const char *name, GList *options)
     return NULL;
 }
 
-static void load_config_file(const char *dir_path)
+static void load_config_files(const char *dir_path)
 {
     DIR *dir;
     struct dirent *dent;
@@ -209,13 +209,13 @@ void load_event_config_data(void)
     }
     closedir(dir);
 
-    load_config_file(EVENTS_DIR);
+    load_config_files(EVENTS_DIR);
 
     char *HOME = getenv("HOME");
     if (!HOME || !HOME[0])
         return;
     HOME = concat_path_file(HOME, ".abrt/events");
-    load_config_file(HOME);
+    load_config_files(HOME);
     free(HOME);
 }
 
