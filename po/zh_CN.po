@@ -1,80 +1,71 @@
-# translation of abrt.master.zh_CN(2).po to Wei Liu
-# Eunju Kim <eukim@redhat.com>, 2009.
-# cyrushmh <cyrushmh@vip.qq.com;cyrusyzgtt@gmail.com>, 2009.
-# Leah Liu <lliu@redhat.com>, 2009, 2010.
-# chenhuan <chenhuan.gt@gmail.com>, 2010.
-# Huan Chen <chenhuan.gt@gmail.com>, 2010.
-# Huan Chen <chenhuan.gt at gmail.com>, 2010.
-# Huan Chen <chenhuan dot gt at gmail dot com>, 2010.
+# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Mike Ma <zhtx10@gmail.com>, 2011.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.master.zh_CN(2)\n"
+"Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-03 21:09+0100\n"
-"PO-Revision-Date: 2011-02-17 21:06+0800\n"
-"Last-Translator: Mike Ma <zhtx10@gmail.com>\n"
-"Language-Team: Chinese <zhtx10@gmail.com>\n"
+"POT-Creation-Date: 2011-03-15 20:32+0100\n"
+"PO-Revision-Date: 2011-03-09 00:58+0000\n"
+"Last-Translator: yusuf <yusufma77@yahoo.com>\n"
+"Language-Team: Chinese (China) <None>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: UTF-8\n"
-"Plural-Forms: 0\n"
-"X-Generator: KBabel 1.11.4\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
 msgstr "ABRT 通知程序"
 
-#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui/abrt.desktop.in.h:1
-#: ../src/gui/ccgui.glade.h:10 ../src/gui/CCMainWindow.py:8
-#: ../src/gui/report.glade.h:16
+#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt-gtk.c:345
+#: ../src/gui-gtk/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "自动 bug 报告工具"
 
 #: ../src/applet/applet.c:85
 #, c-format
 msgid "A crash in the %s package has been detected"
-msgstr "已探测到 %s 软件包中的一个崩溃"
+msgstr "检测到 %s 软件包中的一个崩溃"
 
 #: ../src/applet/applet.c:87
 msgid "A crash has been detected"
-msgstr "已发觉一个崩溃"
+msgstr "检测到一个崩溃"
 
 #: ../src/applet/applet.c:284
 msgid "ABRT service is not running"
-msgstr "ABRT 服务不在运行"
+msgstr "ABRT 服务没有运行"
 
-#: ../src/applet/applet_gtk.c:176 ../src/applet/applet_gtk.c:178
-#: ../src/applet/applet_gtk.c:367 ../src/applet/applet_gtk.c:394
+#: ../src/applet/applet_gtk.c:177 ../src/applet/applet_gtk.c:179
+#: ../src/applet/applet_gtk.c:368 ../src/applet/applet_gtk.c:395
 msgid "Warning"
 msgstr "警告"
 
-#: ../src/applet/applet_gtk.c:230
+#: ../src/applet/applet_gtk.c:231
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
-msgstr "用来通知用户 ABRT 所探测到问题的通告区小应用程序"
+msgstr "将 ABRT 所检测到的问题通知给用户的通告区小程序"
 
-#: ../src/applet/applet_gtk.c:246 ../src/gui/ccgui.glade.h:24
+#: ../src/applet/applet_gtk.c:247 ../src/gui-gtk/abrt-gtk.c:230
 msgid "translator-credits"
 msgstr "译者名单"
 
-#: ../src/applet/applet_gtk.c:256
+#: ../src/applet/applet_gtk.c:257
 msgid "Hide"
 msgstr "隐藏"
 
-#: ../src/applet/applet_gtk.c:360 ../src/gui/ccgui.glade.h:14
+#: ../src/applet/applet_gtk.c:361
 msgid "Report"
 msgstr "报告"
 
-#: ../src/applet/applet_gtk.c:363 ../src/applet/applet_gtk.c:391
+#: ../src/applet/applet_gtk.c:364 ../src/applet/applet_gtk.c:392
 msgid "Open ABRT"
 msgstr "打开 ABRT"
 
-#: ../src/cli/CLI.cpp:90
+#: ../src/cli/cli.c:90
 #, c-format
 msgid ""
 "\tCrash dump : %s\n"
@@ -91,12 +82,12 @@ msgstr ""
 "\t崩溃时间： %s\n"
 "\t崩溃计数： %s\n"
 
-#: ../src/cli/CLI.cpp:109
+#: ../src/cli/cli.c:109
 #, c-format
 msgid "\tHostname   : %s\n"
 msgstr "\tHostname   : %s\n"
 
-#: ../src/cli/CLI.cpp:142
+#: ../src/cli/cli.c:142
 #, c-format
 msgid ""
 "Dump directory:     %s\n"
@@ -119,27 +110,27 @@ msgstr ""
 "系统：             %s, kernel %s\n"
 "原因：             %s\n"
 
-#: ../src/cli/CLI.cpp:170
+#: ../src/cli/cli.c:170
 #, c-format
 msgid "Coredump file:      %s\n"
 msgstr "核心转储文件：      %s\n"
 
-#: ../src/cli/CLI.cpp:174
+#: ../src/cli/cli.c:174
 #, c-format
 msgid "Rating:             %s\n"
 msgstr "评分：           %s\n"
 
-#: ../src/cli/CLI.cpp:179
+#: ../src/cli/cli.c:179
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr "崩溃功能：     %s\n"
 
-#: ../src/cli/CLI.cpp:183
+#: ../src/cli/cli.c:183
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr "主机名：           %s\n"
 
-#: ../src/cli/CLI.cpp:187
+#: ../src/cli/cli.c:187
 #, c-format
 msgid ""
 "\n"
@@ -150,7 +141,7 @@ msgstr ""
 "注释：\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:193
+#: ../src/cli/cli.c:193
 #, c-format
 msgid ""
 "\n"
@@ -161,7 +152,7 @@ msgstr ""
 "回溯：\n"
 "%s\n"
 
-#: ../src/cli/CLI.cpp:250
+#: ../src/cli/cli.c:250
 #, c-format
 msgid ""
 "Usage: %s -l[f] [-D BASE_DIR]...]\n"
@@ -202,7 +193,7 @@ msgstr ""
 "\t-V, --version\t\t显示版本再退出\n"
 "\t-v, --verbose\t\t详细\n"
 
-#: ../src/cli/CLI.cpp:298
+#: ../src/cli/cli.c:298
 msgid "You must specify exactly one operation"
 msgstr "您必须指定具体的操作"
 
@@ -292,7 +283,7 @@ msgstr "N"
 #: ../src/cli/report.cpp:549
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
-msgstr "探测到插件 %s 的错误设置。\n"
+msgstr "检测到插件 %s 的错误设置。\n"
 
 #: ../src/cli/report.cpp:553
 msgid "Enter your login: "
@@ -302,31 +293,31 @@ msgstr "输入您的登录名："
 msgid "Enter your password: "
 msgstr "输入您的密码："
 
-#: ../src/cli/report.cpp:766
+#: ../src/cli/report.cpp:760 ../src/gui-wizard-gtk/wizard.c:1063
 msgid "Reporting..."
 msgstr "报告中……"
 
-#: ../src/cli/report.cpp:779
+#: ../src/cli/report.cpp:773
 #, c-format
 msgid "Report using %s?"
 msgstr "用 %s 报告？"
 
-#: ../src/cli/report.cpp:782
+#: ../src/cli/report.cpp:776
 msgid "Skipping..."
 msgstr "跳过中……"
 
-#: ../src/cli/report.cpp:798
+#: ../src/cli/report.cpp:792
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "因为无法使用回溯而禁止报告。"
 
-#: ../src/cli/report.cpp:802
+#: ../src/cli/report.cpp:796
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr "请尝试用命令\"debuginfo-install %s\"手动安装除错信息并重试\n"
 
-#: ../src/cli/report.cpp:820
+#: ../src/cli/report.cpp:814
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "使用 %d 报告的崩溃（%d 错误）\n"
@@ -347,9 +338,9 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
 #: ../src/plugins/abrt-action-bugzilla.cpp:933
-#: ../src/plugins/abrt-action-generate-backtrace.c:270
+#: ../src/plugins/abrt-action-generate-backtrace.c:269
 #: ../src/plugins/abrt-action-kerneloops.c:147
-#: ../src/plugins/abrt-action-mailx.c:149
+#: ../src/plugins/abrt-action-mailx.c:147
 #: ../src/plugins/abrt-action-print.c:50
 #: ../src/plugins/abrt-action-rhtsupport.c:280
 #: ../src/plugins/abrt-action-upload.c:260
@@ -359,7 +350,7 @@ msgstr "崩溃转储目录"
 #: ../src/daemon/abrt-action-save-package-data.c:258
 #: ../src/daemon/abrt-handle-crashdump.c:59 ../src/daemon/abrt-server.c:297
 #: ../src/plugins/abrt-action-bugzilla.cpp:932
-#: ../src/plugins/abrt-action-generate-backtrace.c:273
+#: ../src/plugins/abrt-action-generate-backtrace.c:272
 #: ../src/plugins/abrt-action-kerneloops.c:146
 #: ../src/plugins/abrt-action-rhtsupport.c:279
 #: ../src/plugins/abrt-dump-oops.c:555
@@ -382,13 +373,13 @@ msgstr "处理事件"
 msgid "List possible events [which start with PFX]"
 msgstr "列出可能的事件 [用PFX开始的那个]"
 
-#: ../src/daemon/abrt-server.c:286 ../src/daemon/Daemon.cpp:542
+#: ../src/daemon/abrt-server.c:286 ../src/daemon/Daemon.cpp:544
 msgid " [options]"
 msgstr " [选项]"
 
 #: ../src/daemon/abrt-server.c:296
 msgid "Use UID as client uid"
-msgstr "使用作为客户端uid的UID"
+msgstr "使用UID作为客户端uid"
 
 #: ../src/daemon/CommLayerServerDBus.cpp:239
 msgid "Comment is too long"
@@ -401,377 +392,184 @@ msgid ""
 msgstr ""
 "报告大小已超出配额。请检查在 abrt.conf 文件中系统的 MaxCrashReportsSize 值。"
 
-#: ../src/daemon/Daemon.cpp:553
+#: ../src/daemon/Daemon.cpp:555
 msgid "Do not daemonize"
 msgstr "不要守护进程"
 
-#: ../src/daemon/Daemon.cpp:554
+#: ../src/daemon/Daemon.cpp:556
 msgid "Log to syslog even with -d"
 msgstr "记录到系统日志即使用到-d"
 
-#: ../src/daemon/Daemon.cpp:555
+#: ../src/daemon/Daemon.cpp:557
 msgid "Exit after SEC seconds of inactivity"
 msgstr "在SEC秒闲置后退出"
 
-#: ../src/gui/abrt.desktop.in.h:2
-msgid "View and report application crashes"
-msgstr "查看并报告应用程序崩溃"
+#: ../src/gtk-helpers/event_config_dialog.c:127
+#: ../src/plugins/Bugzilla.glade.h:7 ../src/plugins/RHTSupport.glade.h:6
+msgid "Show password"
+msgstr "显示密码"
 
-#: ../src/gui/ABRTExceptions.py:7
-msgid "Another client is already running, trying to wake it..."
-msgstr "另一客户端已经在运行，正在尝试唤醒它......"
+#: ../src/gtk-helpers/event_config_dialog.c:258
+#, fuzzy
+msgid "Event Configuration"
+msgstr "配置 %s 选项"
 
-#: ../src/gui/ABRTExceptions.py:14
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
-msgstr "从守护进程得到意外数据（数据库是否正常更新？）。"
-
-#: ../src/gui/ABRTPlugin.py:64
-msgid "Not loaded plugins"
-msgstr "未载入的插件"
-
-#: ../src/gui/ABRTPlugin.py:65
-msgid "Analyzer plugins"
-msgstr "分析器插件"
-
-#: ../src/gui/ABRTPlugin.py:66
-msgid "Action plugins"
-msgstr "动作插件"
-
-#: ../src/gui/ABRTPlugin.py:67
-msgid "Reporter plugins"
-msgstr "报告器插件"
-
-#: ../src/gui/ABRTPlugin.py:68
-msgid "Database plugins"
-msgstr "数据库插件"
-
-#: ../src/gui/CCDBusBackend.py:75 ../src/gui/CCDBusBackend.py:98
-msgid "Cannot connect to system dbus."
-msgstr "不能连接到系统 dbus。"
-
-#: ../src/gui/CCDBusBackend.py:121 ../src/gui/CCDBusBackend.py:124
-msgid "Please check if the abrt daemon is running."
-msgstr "请检查 abrt 守护进程是否正在运行。"
-
-#. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:170
-msgid ""
-"Daemon did not return a valid report info.\n"
-"Is debuginfo missing?"
+#: ../src/gtk-helpers/event_config_dialog.c:303
+msgid "Events"
 msgstr ""
-"守护进程未返回有效的报告信息。\n"
-"调试信息是否缺失？"
 
-#: ../src/gui/ccgui.glade.h:1
-msgid "(C) 2009, 2010 Red Hat, Inc."
-msgstr "(C) 2009, 2010 红帽公司."
-
-#: ../src/gui/ccgui.glade.h:2
-msgid "<b>Bug Reports:</b>"
-msgstr "<b> bug 报告：</b>"
-
-#: ../src/gui/ccgui.glade.h:3
-msgid "<b>Command:</b>"
-msgstr "<b>命令：</b>"
-
-#: ../src/gui/ccgui.glade.h:4
-msgid "<b>Comment:</b>"
-msgstr "<b>评论：</b>"
-
-#: ../src/gui/ccgui.glade.h:5
-msgid "<b>Crash Count:</b>"
-msgstr "<b>崩溃次数：</b>"
-
-#: ../src/gui/ccgui.glade.h:6
-msgid "<b>Latest Crash:</b>"
-msgstr "<b>最近的崩溃：</b>"
-
-#: ../src/gui/ccgui.glade.h:7
-msgid "<b>Reason:</b>"
-msgstr "<b>原因：</b>"
-
-#: ../src/gui/ccgui.glade.h:8
-msgid "<b>User:</b>"
-msgstr "<b>用户：</b>"
-
-#: ../src/gui/ccgui.glade.h:9
-msgid "About ABRT"
-msgstr "关于 ABRT"
-
-#: ../src/gui/ccgui.glade.h:11
-msgid "Copy to Clipboard"
-msgstr "复制到剪切板"
-
-#: ../src/gui/ccgui.glade.h:12
-msgid "Online _Help"
-msgstr "在线帮助(_H)"
-
-#: ../src/gui/ccgui.glade.h:13 ../src/gui/settings.glade.h:12
-msgid "Plugins"
-msgstr "插件"
-
-#: ../src/gui/ccgui.glade.h:15
-msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
+#: ../src/gtk-helpers/event_config_dialog.c:327
+msgid "Event"
 msgstr ""
-"本程序为自由软件；您可依据自由软件基金会所发表的 GNU 通用公共许可证对本程序再"
-"发布与／或修改；无论您依据的是本授权的第二版或（您自选的）任何后续版本。\n"
-"\n"
-"本程序是基于使用目的而加以发布，然而不负任何担保责任；亦无对适售性或特定目的"
-"适用性所为的默示性担保。详情请参考 GNU 通用公共许可证。\n"
-"\n"
-"您应该已收到了附于本程序的 GNU 通用公共授权的副本。若没有收到，请查看 "
-"<http://www.gnu.org/licenses/>。"
 
-#: ../src/gui/ccgui.glade.h:20 ../src/gui/CReporterAssistant.py:111
-msgid "View log"
-msgstr "查看日志"
+#: ../src/gtk-helpers/event_config_dialog.c:359
+#, fuzzy
+msgid "Configure E_vent"
+msgstr "配置插件（_O）"
 
-#: ../src/gui/ccgui.glade.h:21
-msgid "_Edit"
-msgstr "编辑（_E）"
-
-#: ../src/gui/ccgui.glade.h:22
-msgid "_File"
-msgstr "文件（_F）"
-
-#: ../src/gui/ccgui.glade.h:23
-msgid "_Help"
-msgstr "帮助（_H）"
-
-#. add pixbuff separatelly
-#: ../src/gui/CCMainWindow.py:63
+#: ../src/gui-gtk/abrt-gtk.c:249
 msgid "Reported"
 msgstr "已报告"
 
-#: ../src/gui/CCMainWindow.py:71
-msgid "Application"
-msgstr "应用程序"
-
-#: ../src/gui/CCMainWindow.py:73
-msgid "Hostname"
-msgstr "主机名"
-
-#: ../src/gui/CCMainWindow.py:75
-msgid "Latest Crash"
-msgstr "最近的崩溃"
-
-#: ../src/gui/CCMainWindow.py:148
-#, python-format
-msgid ""
-"Cannot show the settings dialog.\n"
-"%s"
+#: ../src/gui-gtk/abrt-gtk.c:261
+msgid "Problem"
 msgstr ""
-"无法显示设置对话。\n"
-"%s"
 
-#: ../src/gui/CCMainWindow.py:153
-#, python-format
-msgid ""
-"Unable to finish the current task!\n"
-"%s"
+#: ../src/gui-gtk/abrt-gtk.c:284
+msgid "Last occurrence"
 msgstr ""
-"无法完成当前任务！\n"
-"%s"
 
-#. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/gui/CCMainWindow.py:188
-#, python-format
+#: ../src/gui-gtk/abrt-gtk.c:299
+msgid "_File"
+msgstr "文件（_F）"
+
+#: ../src/gui-gtk/abrt-gtk.c:300
+msgid "_Edit"
+msgstr "编辑（_E）"
+
+#: ../src/gui-gtk/abrt-gtk.c:301
+msgid "_Help"
+msgstr "帮助（_H）"
+
+#: ../src/gui-gtk/abrt-gtk.c:317
+#, fuzzy
+msgid "_Plugins"
+msgstr "插件"
+
+#: ../src/gui-gtk/abrt-gtk.c:393
+#, fuzzy
+msgid "_Online Help"
+msgstr "在线帮助(_H)"
+
+#: ../src/gui-gtk/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "查看并报告应用程序崩溃"
+
+#: ../src/gui-wizard-gtk/main.c:70
 msgid ""
-"Error while loading the dumplist.\n"
-"%s"
+" [-v] [-g GUI_FILE] DIR\n"
+"\n"
+"GUI tool to analyze and report ABRT crash in specified DIR"
 msgstr ""
-"载入转储列表时出错。\n"
-"%s"
 
-#: ../src/gui/CCMainWindow.py:246
-#, python-format
-msgid ""
-"<b>%s Crash</b>\n"
-"%s"
+#: ../src/gui-wizard-gtk/main.c:80
+msgid "Alternate GUI file"
 msgstr ""
-"<b>%s 崩溃</b>\n"
-"%s"
 
-#: ../src/gui/CCMainWindow.py:343
-msgid "You have to select a crash to copy."
-msgstr "您必须选择一个崩溃来复制。"
-
-#: ../src/gui/CCMainWindow.py:427
+#: ../src/gui-wizard-gtk/wizard.c:187
+#, c-format
 msgid ""
-"Usage: abrt-gui [OPTIONS]\n"
-"\t-v[vv]\t\t\tVerbose\n"
-"\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
+"Need writable directory, but '%s' is not writable. Move it to '%s' and "
+"operate on the moved copy?"
 msgstr ""
-"用法：abrt-gui [选项]\n"
-"\t-v[vv]\t\t\t\t冗长的\n"
-"\t--report=崩溃标识\t\t直接报告带有此崩溃标识的崩溃"
 
-#: ../src/gui/CCMainWindow.py:450
-#, python-format
-msgid ""
-"No such crash in the database, probably wrong crashid.\n"
-"crashid=%s"
+#: ../src/gui-wizard-gtk/wizard.c:499
+msgid "(click here to view/edit)"
 msgstr ""
-"数据库中没有这个崩溃，可能是错误的 crashid。\n"
-"crashid=%s"
 
-#: ../src/gui/ConfBackend.py:78
-msgid "Cannot connect to the Gnome Keyring daemon."
-msgstr "无法连接到 Gnome 密钥环守护进程。"
-
-#. could happen if keyring daemon is running, but we run gui under
-#. user who is not the owner of the running session - using su
-#: ../src/gui/ConfBackend.py:84
-msgid "Cannot get the default keyring."
-msgstr "不能获取默认密钥环。"
-
-#: ../src/gui/ConfBackend.py:103 ../src/gui/ConfBackend.py:120
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr "对 gnome 密钥环的访问被拒绝，插件设置将不会被保存。"
-
-#. we tried 2 times, so giving up the authorization
-#: ../src/gui/ConfBackend.py:154
-#, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr "对 gnome 密钥环的访问被拒绝，无法载入 %s 的设置！"
-
-#: ../src/gui/ConfBackend.py:207
-msgid "Access to gnome-keyring has been denied, cannot load settings."
-msgstr "对 gnome 密钥环的访问被拒绝，无法载入设置。"
-
-#: ../src/gui/CReporterAssistant.py:20
-msgid "Brief description of how to reproduce this or what you did..."
-msgstr "简要描述如何重复此崩溃或者您做了什么......"
-
-#: ../src/gui/CReporterAssistant.py:21
-msgid "Crash info doesn't contain a backtrace"
-msgstr "崩溃信息中不包含回溯"
-
-#: ../src/gui/CReporterAssistant.py:277
-#: ../src/gui/PluginsSettingsDialog.py:136
-#, python-format
-msgid ""
-"Cannot save plugin settings:\n"
-" %s"
+#: ../src/gui-wizard-gtk/wizard.c:511
+#, c-format
+msgid "(binary file, %llu bytes)"
 msgstr ""
-"无法保存插件设置：\n"
-" %s"
 
-#: ../src/gui/CReporterAssistant.py:307
-#, python-format
-msgid "Configure %s options"
-msgstr "配置 %s 选项"
+#: ../src/gui-wizard-gtk/wizard.c:526
+#, fuzzy
+msgid "(no description)"
+msgstr "描述："
 
-#: ../src/gui/CReporterAssistant.py:362
-#, python-format
-msgid "Rating is %s"
-msgstr "等级为 %s"
+#: ../src/gui-wizard-gtk/wizard.c:531
+#, c-format
+msgid "%llu bytes, %u files"
+msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:365
-msgid "Crashdump doesn't have rating => we suppose it's not required"
-msgstr "崩溃转储没有等级 => 我们假设它不需要"
+#. TODO: better msg?
+#: ../src/gui-wizard-gtk/wizard.c:868
+#, c-format
+msgid "No processing for event '%s' is defined"
+msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:370 ../src/gui/CReporterAssistant.py:398
+#. bt is usable, but not complete, so show a warning
+#: ../src/gui-wizard-gtk/wizard.c:963
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "回溯是不完整的，请确定您提供了重复该错误的完整步骤。"
 
-#: ../src/gui/CReporterAssistant.py:378
-msgid "You should check the backtrace for sensitive data."
-msgstr "您应该检查回溯中是否有敏感数据。"
-
-#: ../src/gui/CReporterAssistant.py:379
-msgid "You must agree with sending the backtrace."
-msgstr "您必须同意发送此回溯。"
-
-#: ../src/gui/CReporterAssistant.py:392
-#, python-format
-msgid ""
-"Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using the command: <b>debuginfo-"
-"install %s</b> \n"
-"then use the Refresh button to regenerate the backtrace."
-msgstr ""
-"因为回溯不可用，所以不能报告。\n"
-"请尝试用命令 <b>debuginfo-install %s</b> 手动安装调试信息，\n"
-"然后按刷新按钮来重新生成回溯。"
-
-#: ../src/gui/CReporterAssistant.py:394
+#. FIXME: see CreporterAssistant: 394 for ideas
+#: ../src/gui-wizard-gtk/wizard.c:969
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "不能报告因为回溯不可用。"
 
-#: ../src/gui/CReporterAssistant.py:440
-msgid "You did not provide any steps to reproduce."
-msgstr "您未提供任何重复步骤。"
+#: ../src/gui-wizard-gtk/wizard.c:978
+msgid "You should check the backtrace for sensitive data."
+msgstr "您应该检查回溯中是否有敏感数据。"
 
-#: ../src/gui/CReporterAssistant.py:454
-msgid "You did not provide any comments."
-msgstr "您未提供任何评论。"
+#: ../src/gui-wizard-gtk/wizard.c:979
+msgid "You must agree with sending the backtrace."
+msgstr "您必须同意发送此回溯。"
 
-#: ../src/gui/CReporterAssistant.py:483
-#, python-format
-msgid ""
-"Reporting failed!\n"
-"%s"
+#: ../src/gui-wizard-gtk/wizard.c:1035
+msgid "Analyzing..."
 msgstr ""
-"报告失败！\n"
-"%s"
 
-#: ../src/gui/CReporterAssistant.py:535
-#, python-format
-msgid ""
-"It looks like an application from the package <b>%s</b> has crashed on your "
-"system. It is a good idea to send a bug report about this issue. The report "
-"will provide software maintainers with information essential in figuring out "
-"how to provide a bug fix for you.\n"
-"\n"
-"Please review the information that follows and modify it as needed to ensure "
-"your bug report does not contain any sensitive data you would rather not "
-"share.\n"
-"\n"
-"Select where you would like to report the bug, and press 'Forward' to "
-"continue."
+#: ../src/gui-wizard-gtk/wizard.c:1036
+#, c-format
+msgid "Analyzing finished with exit code %d"
 msgstr ""
-"看来您系统中来自软件包 <b>%s</b> 的应用程序已崩溃。您可发送关于这个问题的 "
-"bug 报告。该报告将提供软件维护者找出 bug 修复方法的必要信息。\n"
-"\n"
-"请检查下列信息并在必要时修改之以确保您的 bug 报告中不含您不愿意共享的敏感数"
-"据。\n"
-"\n"
-"选择您要在哪里报告此 bug 并按‘前进’继续。"
 
-#: ../src/gui/CReporterAssistant.py:576
-msgid "Only one reporter plugin is configured."
-msgstr "只配置了一个报告程序插件。"
+#: ../src/gui-wizard-gtk/wizard.c:1064
+#, c-format
+msgid "Reporting finished with exit code %d"
+msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:582
-msgid "Send a bug report"
-msgstr "发送 bug 报告"
+#: ../src/gui-wizard-gtk/wizard.c:1182
+msgid "Name"
+msgstr "名称"
 
-#: ../src/gui/CReporterAssistant.py:620
+#: ../src/gui-wizard-gtk/wizard.c:1191
+msgid "Value"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
-"Below is the backtrace associated with your crash. A crash backtrace "
-"provides developers with details about how the crash happened, helping them "
-"track down the source of the problem.\n"
-"\n"
-"Please review the backtrace below and modify it as needed to ensure your bug "
-"report does not contain any sensitive data you would rather not share:"
+"<b>Your comments are not private.</b> They may be included into publicly "
+"visible problem reports."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:2
+msgid "Analyzing did not start yet"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:3
+msgid "Any additional comments useful for diagnosing the problem?"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:4
+#, fuzzy
+msgid ""
+"Backtrace provides developers with details of the crash, helping them track "
+"down the source of the problem. Please review it and remove any sensitive "
+"data you would rather not share:"
 msgstr ""
 "下面是与您的崩溃关联的回溯。崩溃回溯为开发者提供崩溃是如何发生的详情，帮助他"
 "们追查问题根源。\n"
@@ -779,367 +577,69 @@ msgstr ""
 "请检查下面的回溯并在必要时修改它以确保您的 bug 报告中不含任何您不愿共享的敏感"
 "数据："
 
-#: ../src/gui/CReporterAssistant.py:691 ../src/gui/CReporterAssistant.py:704
-#: ../src/gui/CReporterAssistant.py:738
-#, python-format
-msgid "Found %i occurence(s) [at: %i of %i]"
-msgstr "找到 %i 个发生 [在 %i 之于 %i]"
-
-#: ../src/gui/CReporterAssistant.py:775
-msgid "Search:"
-msgstr "搜索："
-
-#: ../src/gui/CReporterAssistant.py:806
-msgid "Refresh"
-msgstr "刷新"
-
-#: ../src/gui/CReporterAssistant.py:808
-msgid "Copy"
-msgstr "复制"
-
-#: ../src/gui/CReporterAssistant.py:814
-msgid "I agree with submitting the backtrace"
-msgstr "我同意提交回溯"
-
-#: ../src/gui/CReporterAssistant.py:819
-msgid "Approve the backtrace"
-msgstr "同意回溯"
-
-#: ../src/gui/CReporterAssistant.py:862
-msgid "You need to fill the how to before you can proceed..."
-msgstr "在你可以处理前需要填写做法。"
-
-#: ../src/gui/CReporterAssistant.py:885
-msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
-msgstr "此崩溃是如何发生的（具体步骤）？您如何重复它？"
-
-#: ../src/gui/CReporterAssistant.py:905
+#: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
-"Are there any comments you would like to share with the software maintainers?"
-msgstr "您有什么要与软件维护者分享的评论吗？"
-
-#: ../src/gui/CReporterAssistant.py:925
-msgid "Provide additional details"
-msgstr "提供附加细节"
-
-#: ../src/gui/CReporterAssistant.py:932
-msgid ""
-"<b>Tip:</b> Your comments are not private. Please watch what you say "
-"accordingly."
-msgstr "<b>提示：</b>您的评论不是私下的。请注意您的言论。"
-
-#: ../src/gui/CReporterAssistant.py:973
-msgid "Confirm and send the report"
-msgstr "确认并发送报告"
-
-#: ../src/gui/CReporterAssistant.py:975
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
-msgstr "下面是您的 bug 报告的摘要。请点击‘应用’提交。"
-
-#: ../src/gui/CReporterAssistant.py:980
-msgid "<b>Basic details</b>"
-msgstr "<b>基本细节</b>"
-
-#. left table
-#: ../src/gui/CReporterAssistant.py:987
-msgid "Component"
-msgstr "组件"
-
-#: ../src/gui/CReporterAssistant.py:988
-msgid "Package"
-msgstr "软件包"
-
-#: ../src/gui/CReporterAssistant.py:989
-msgid "Executable"
-msgstr "可执行文件"
-
-#: ../src/gui/CReporterAssistant.py:990
-msgid "Cmdline"
-msgstr "命令行"
-
-#. right table
-#: ../src/gui/CReporterAssistant.py:992
-msgid "Architecture"
-msgstr "架构"
-
-#: ../src/gui/CReporterAssistant.py:993
-msgid "Kernel"
-msgstr "内核"
-
-#: ../src/gui/CReporterAssistant.py:994
-msgid "Release"
-msgstr "发行版"
-
-#: ../src/gui/CReporterAssistant.py:995
-msgid "Reason"
-msgstr "原因"
-
-#: ../src/gui/CReporterAssistant.py:1006 ../src/gui/report.glade.h:3
-msgid "<b>Backtrace</b>"
-msgstr "<b>回溯</b>"
-
-#: ../src/gui/CReporterAssistant.py:1009
-msgid "Click to view..."
-msgstr "点击查看......"
-
-#: ../src/gui/CReporterAssistant.py:1021
-msgid "<b>Steps to reproduce:</b>"
-msgstr "<b>再现步骤：</b>"
-
-#: ../src/gui/CReporterAssistant.py:1042
-msgid "<b>Comments:</b>"
-msgstr "<b>评论：</b>"
-
-#: ../src/gui/CReporterAssistant.py:1045
-msgid "No comment provided!"
-msgstr "未提供评论！"
-
-#: ../src/gui/CReporterAssistant.py:1081
-msgid "Finished sending the bug report"
-msgstr " bug 报告发送完毕"
-
-#: ../src/gui/CReporterAssistant.py:1085
-msgid "<b>Bug reports:</b>"
-msgstr "<b> bug 报告：</b>"
-
-#: ../src/gui/CReporterAssistant.py:1102
-msgid ""
-"Unable to get report!\n"
-"Is debuginfo missing?"
+"Can create more informative backtrace if you installed additional debug "
+"packages"
 msgstr ""
-"无法获取报告！\n"
-"调试信息缺失？"
 
-#: ../src/gui/CReporterAssistant.py:1139
-#, python-format
-msgid "Error acquiring the report: %s"
-msgstr "获取报告时出错：%s"
-
-#: ../src/gui/dialogs.glade.h:1
-msgid "Log"
-msgstr "日志"
-
-#: ../src/gui/dialogs.glade.h:2
-msgid "Report done"
-msgstr "报告完成"
-
-#: ../src/gui/PluginSettingsUI.py:18
-msgid "Cannot find PluginDialog widget in the UI description!"
-msgstr "在用户界面描述中未能找到插件对话框小工具！"
-
-#: ../src/gui/PluginSettingsUI.py:25
-#, python-format
-msgid ""
-"No UI for the plugin <b>%s</b>, this is probably a bug.\n"
-"Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
-"\">https://fedorahosted.org/abrt/newticket</a>"
+#: ../src/gui-wizard-gtk/wizard.glade.h:6
+msgid "Click 'Apply' to start reporting"
 msgstr ""
-"没有用于插件 <b>%s</b> 的 UI，这可能是个 bug。\n"
-"请在 <a href=\"https://fedorahosted.org/abrt/newticket\">https://"
-"fedorahosted.org/abrt/newticket</a> 提交报告。"
 
-#: ../src/gui/PluginSettingsUI.py:60 ../src/gui/PluginSettingsUI.py:86
-msgid "Combo box is not implemented"
-msgstr "未使用复合框"
-
-#: ../src/gui/PluginSettingsUI.py:69
-msgid "Nothing to hydrate!"
-msgstr "没有东西来组合！"
-
-#: ../src/gui/PluginsSettingsDialog.py:25
-msgid "Cannot load the GUI description for SettingsDialog!"
-msgstr "无法载入对设置对话的图形用户界面描述！"
-
-#. Create/configure columns and add them to pluginlist
-#. column "name" has two kind of cells:
-#: ../src/gui/PluginsSettingsDialog.py:42
-msgid "Name"
-msgstr "名称"
-
-#: ../src/gui/PluginsSettingsDialog.py:118
-msgid "Please select a plugin from the list to edit its options."
-msgstr "请从以下列表中选择一个插件以编辑其选项。"
-
-#: ../src/gui/PluginsSettingsDialog.py:126
-#, python-format
-msgid ""
-"Error while opening the plugin settings UI: \n"
-"\n"
-"%s"
+#: ../src/gui-wizard-gtk/wizard.glade.h:7
+msgid "Click 'Forward' to proceed with analyzing and reporting this problem."
 msgstr ""
-"打开插件设置用户界面时出错：\n"
-"\n"
-"%s"
 
-#: ../src/gui/progress_window.glade.h:1 ../src/gui/report.glade.h:17
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
+#, fuzzy
+msgid "Configure Events"
+msgstr "配置 %s 选项"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
 msgstr "细节"
 
-#: ../src/gui/progress_window.glade.h:2 ../src/gui/report.glade.h:21
-msgid "Please wait..."
-msgstr "请稍候......"
+#: ../src/gui-wizard-gtk/wizard.glade.h:10
+#, fuzzy
+msgid "How did this problem happen (step-by-step)? How can it be reproduced?"
+msgstr "此崩溃是如何发生的（具体步骤）？您如何重复它？"
 
-#: ../src/gui/report.glade.h:1
-msgid " "
-msgstr " "
+#: ../src/gui-wizard-gtk/wizard.glade.h:11
+msgid "I agree with submitting the backtrace"
+msgstr "我同意提交回溯"
 
-#: ../src/gui/report.glade.h:2
-msgid "<b>Attachments</b>"
-msgstr "<b>附件</b>"
-
-#: ../src/gui/report.glade.h:4
-msgid "<b>Comment</b>"
-msgstr "<b>评论</b>"
-
-#: ../src/gui/report.glade.h:5
-msgid "<b>How to reproduce (in a few simple steps)</b>"
-msgstr "<b>如何再现 bug （用简单几步）</b>"
-
-#: ../src/gui/report.glade.h:6
-msgid "<b>Please fix the following problems:</b>"
-msgstr "<b>请修复下列问题：</b>"
-
-#: ../src/gui/report.glade.h:7
-msgid "<b>Where do you want to report this incident?</b>"
-msgstr "<b>您想在哪里报告此事件？</b>"
-
-#: ../src/gui/report.glade.h:8
-msgid "<span fgcolor=\"blue\">Architecture:</span>"
-msgstr "<span fgcolor=\"blue\">架构：</span>"
-
-#: ../src/gui/report.glade.h:9
-msgid "<span fgcolor=\"blue\">Cmdline:</span>"
-msgstr "<span fgcolor=\"blue\">命令行：</span>"
-
-#: ../src/gui/report.glade.h:10
-msgid "<span fgcolor=\"blue\">Component:</span>"
-msgstr "<span fgcolor=\"blue\">组件：</span>"
-
-#: ../src/gui/report.glade.h:11
-msgid "<span fgcolor=\"blue\">Executable:</span>"
-msgstr "<span fgcolor=\"blue\">可执行文件：</span>"
-
-#: ../src/gui/report.glade.h:12
-msgid "<span fgcolor=\"blue\">Kernel:</span>"
-msgstr "<span fgcolor=\"blue\">内核：</span>"
-
-#: ../src/gui/report.glade.h:13
-msgid "<span fgcolor=\"blue\">Package:</span>"
-msgstr "<span fgcolor=\"blue\">软件包：</span>"
-
-#: ../src/gui/report.glade.h:14
-msgid "<span fgcolor=\"blue\">Reason:</span>"
-msgstr "<span fgcolor=\"blue\">理由：</span>"
-
-#: ../src/gui/report.glade.h:15
-msgid "<span fgcolor=\"blue\">Release:</span>"
-msgstr "<span fgcolor=\"blue\">发布名：</span>"
-
-#: ../src/gui/report.glade.h:18
-msgid "Forces ABRT to regenerate the backtrace."
+#: ../src/gui-wizard-gtk/wizard.glade.h:12
+#, fuzzy
+msgid "Regenerate backtrace"
 msgstr "强制 ABRT 重新生成回溯。"
 
-#: ../src/gui/report.glade.h:19
-msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
-msgstr "我检查了回溯并删除了敏感数据（密码等）"
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
+#, fuzzy
+msgid "Reporter(s):"
+msgstr "已报告"
 
-#: ../src/gui/report.glade.h:20
-msgid "N/A"
-msgstr "不适用"
-
-#: ../src/gui/report.glade.h:22
-msgid "Reporter Selector"
-msgstr "报告器选择器"
-
-#: ../src/gui/report.glade.h:23
-msgid "Send report"
-msgstr "发送报告"
-
-#: ../src/gui/report.glade.h:24
-msgid "Show log"
-msgstr "显示日志"
-
-#: ../src/gui/SettingsDialog.py:122
-msgid "Remove this job"
-msgstr "删除此工作"
-
-#: ../src/gui/SettingsDialog.py:166
-msgid "Remove this action"
-msgstr "删除此动作"
-
-#: ../src/gui/settings.glade.h:1
-msgid "<b>Plugin details</b>"
-msgstr "<b>插件细节</b>"
-
-#: ../src/gui/settings.glade.h:2
-msgid "Author:"
-msgstr "作者："
-
-#: ../src/gui/settings.glade.h:3
-msgid "Blacklisted packages: "
-msgstr "被加入黑名单的软件包："
-
-#: ../src/gui/settings.glade.h:4
-msgid "C_onfigure Plugin"
-msgstr "配置插件（_O）"
-
-#: ../src/gui/settings.glade.h:5
-msgid "Check package GPG signature"
-msgstr "检查软件包的 GPG 签名"
-
-#: ../src/gui/settings.glade.h:6
-msgid "Common"
-msgstr "普通"
-
-#: ../src/gui/settings.glade.h:7
-msgid "Description:"
-msgstr "描述："
-
-#: ../src/gui/settings.glade.h:8
-msgid "GPG Keys"
-msgstr "GPG 密钥"
-
-#: ../src/gui/settings.glade.h:9
-msgid "GPG keys: "
-msgstr "GPG 密钥："
-
-#: ../src/gui/settings.glade.h:10
-msgid "Max coredump storage size (MB):"
-msgstr "最大核心转储存储大小（MB）："
-
-#: ../src/gui/settings.glade.h:11
-msgid "Name:"
-msgstr "名称："
-
-#: ../src/gui/settings.glade.h:13
-msgid "Preferences"
-msgstr "首选项"
-
-#: ../src/gui/settings.glade.h:14
-msgid "Version:"
-msgstr "版本："
-
-#: ../src/gui/settings.glade.h:15
-msgid "Web Site:"
-msgstr "网站："
-
-#: ../src/gui/settings_wizard.glade.h:1
-msgid "<b>Do you want to continue?</b>"
-msgstr "<b>您要继续吗？</b>"
-
-#: ../src/gui/settings_wizard.glade.h:2
-msgid "Wrong Settings Detected"
-msgstr "发觉错误设置"
-
-#: ../src/gui/settings_wizard.glade.h:3
-msgid ""
-"Wrong settings were detected for some of the enabled reporter plugins. "
-"Please use the buttons below to open the respective configuration and fix it "
-"before you proceed, otherwise, the reporting process may fail.\n"
+#: ../src/gui-wizard-gtk/wizard.glade.h:14
+msgid "Reporting did not start yet"
 msgstr ""
-"探测到有些启用的报告程序插件有错误设置。请使用以下按钮打开对应的配置并在继续"
-"报告前修复它，否则报告过程会失败。\n"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
+msgid "Select how you would like to analyze the problem:"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
+msgid "Select how you would like to report the problem:"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
+msgid "Size:"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
+msgid ""
+"Use this button to generate more informative backtrace after you installed "
+"additional debug packages"
+msgstr ""
 
 #: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
 #, c-format
@@ -1260,31 +760,31 @@ msgstr ""
 msgid "Configuration file (may be given many times)"
 msgstr "配置文件（或许需要一点时间）"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:258
+#: ../src/plugins/abrt-action-generate-backtrace.c:257
 msgid " [options] -d DIR"
 msgstr " [选项] -d DIR"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:271
+#: ../src/plugins/abrt-action-generate-backtrace.c:270
 msgid "Additional debuginfo directories"
 msgstr "附加出错信息目录"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:272
+#: ../src/plugins/abrt-action-generate-backtrace.c:271
 msgid "Kill gdb if it runs for more than N seconds"
 msgstr "如果GDB运行超过N秒就杀死它"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
 #.
-#: ../src/plugins/abrt-action-generate-backtrace.c:322
+#: ../src/plugins/abrt-action-generate-backtrace.c:321
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr ""
+msgstr "回溯已经生成并保存，%u 字节"
 
 #.
 #. * The parser failed. Compute the UUID from the executable
 #. * and package only.  This is not supposed to happen often.
 #.
-#: ../src/plugins/abrt-action-generate-backtrace.c:333
+#: ../src/plugins/abrt-action-generate-backtrace.c:332
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "%s的回溯解析失败"
@@ -1295,14 +795,14 @@ msgid "Extracting cpio from %s"
 msgstr "正在从%s提取cpio"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:82
-#, fuzzy, python-format
+#, python-format
 msgid "Can't write to '%s': %s"
-msgstr "不能写入到："
+msgstr "无法写入 '%s': %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:96
-#, fuzzy, python-format
+#, python-format
 msgid "Can't extract package '%s'"
-msgstr "不能提取包 %s"
+msgstr "无法提取软件包 '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:104
 #, python-format
@@ -1310,34 +810,34 @@ msgid "Caching files from %s made from %s"
 msgstr "缓存文件来自%s，创建自%s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:114
-#, fuzzy, python-format
+#, python-format
 msgid "Can't extract files from '%s'"
-msgstr "不能从 %s 提取文件"
+msgstr "无法从 '%s' 提取文件"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:138
 #: ../src/plugins/abrt-action-install-debuginfo.py:148
-#, fuzzy, python-format
+#, python-format
 msgid "Downloading (%i of %i) %s: %3u%%"
-msgstr "正在下载（%i于%i）%30s: %.3s %%"
+msgstr "下载 (%i of %i) %s: %3u%%"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:234
 #, python-format
 msgid "Can't find packages for %u debuginfo files"
-msgstr ""
+msgstr "无法找到 %u debuginfo 文件的软件包"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:236
 #, python-format
 msgid "Found %u packages to download"
-msgstr ""
+msgstr "发现 %u 个要下载的软件包"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:237
-#, fuzzy, python-format
+#, python-format
 msgid "Downloading %.2fMb, installed size: %.2fMb"
-msgstr "要下载： (%.2f) M / 安装大小： %.2f M"
+msgstr "正在下载 %.2fMb, 安装大小: %.2fMb"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:245
 msgid "Is this ok? [y/N] "
-msgstr "这好吗？ [y/N]"
+msgstr "可以吗？ [y/N]"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:262
 #, python-format
@@ -1357,27 +857,26 @@ msgstr "所有已下载的包已提取，正在移除 %s"
 #: ../src/plugins/abrt-action-install-debuginfo.py:285
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
-msgstr "不能移除 %s，可能包含一个错误日志"
+msgstr "无法删除 %s，可能包含一个错误日志"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:310
-#, fuzzy, python-format
+#, python-format
 msgid "Analyzing corefile '%s'"
-msgstr "分析核心文件: %(corefile_path)s"
+msgstr "正在分析核心文件 '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:388
-#, fuzzy, python-format
+#, python-format
 msgid "Can't remove '%s': %s"
-msgstr "不能移除%(tmpdir_path)s: %(reason)s"
+msgstr "无法删除 '%s': %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:396
-#, fuzzy
 msgid "Exiting on user command"
-msgstr "离开用户命令"
+msgstr "应用户命令退出"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:415
-#, fuzzy, python-format
+#, python-format
 msgid "Usage: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
-msgstr "用法： %s --core=<COREFILE> --tmpdir=<TMPDIR> --cachedir=<CACHEDIR>"
+msgstr "用法: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:444
 msgid "You have to specify the path to coredump."
@@ -1386,17 +885,17 @@ msgstr "你必须指定到核心转储的路径。"
 #: ../src/plugins/abrt-action-install-debuginfo.py:461
 #, python-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
-msgstr ""
+msgstr "Coredump 引用 %u 个debuginfo 文件，其中 %u 个尚未安装"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:466
 #, python-format
 msgid "Missing debuginfo file: %s"
-msgstr ""
+msgstr "缺少 debuginfo 文件: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:469
-#, fuzzy, python-format
+#, python-format
 msgid "All %u debuginfo files are available"
-msgstr "所有除错信息看起来可用"
+msgstr "全部 %u 个debuginfo 文件可用"
 
 #: ../src/plugins/abrt-action-kerneloops.c:105
 #, c-format
@@ -1413,11 +912,11 @@ msgstr ""
 "\n"
 "报告一个内核oops到kerneloops.org（或相似）站点"
 
-#: ../src/plugins/abrt-action-mailx.c:110
+#: ../src/plugins/abrt-action-mailx.c:108
 msgid "Sending an email..."
 msgstr "正在发送电子邮件……"
 
-#: ../src/plugins/abrt-action-mailx.c:137
+#: ../src/plugins/abrt-action-mailx.c:135
 msgid ""
 " [-v] -d DIR [-c CONFFILE]\n"
 "\n"
@@ -1427,7 +926,7 @@ msgstr ""
 "\n"
 "上传崩溃转储的压缩归档文件"
 
-#: ../src/plugins/abrt-action-mailx.c:150
+#: ../src/plugins/abrt-action-mailx.c:148
 #: ../src/plugins/abrt-action-upload.c:261
 msgid "Config file"
 msgstr "配置文件"
@@ -1446,12 +945,12 @@ msgstr ""
 msgid "Output file"
 msgstr "输出文件"
 
-#: ../src/plugins/abrt-action-print.c:91
+#: ../src/plugins/abrt-action-print.c:87
 #, c-format
 msgid "The report was appended to %s"
 msgstr "已在 %s 中附加该报告"
 
-#: ../src/plugins/abrt-action-print.c:91
+#: ../src/plugins/abrt-action-print.c:87
 #, c-format
 msgid "The report was stored to %s"
 msgstr "已在 %s 中保存该报告"
@@ -1538,6 +1037,11 @@ msgstr "在标准输出上输出找到的oops"
 msgid "Do not exit, watch the file for new oopses"
 msgstr "别退出，正为新的opps而监视此文件。"
 
+#: ../src/plugins/abrt-retrace-client.c:701
+#, fuzzy
+msgid "log to syslog"
+msgstr "记录到系统日志"
+
 #: ../src/plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
 msgstr "<b>Bugzilla 插件配置</b>"
@@ -1561,10 +1065,6 @@ msgstr "密码："
 #: ../src/plugins/Bugzilla.glade.h:6 ../src/plugins/RHTSupport.glade.h:5
 msgid "SSL verify"
 msgstr "SSL 验证"
-
-#: ../src/plugins/Bugzilla.glade.h:7 ../src/plugins/RHTSupport.glade.h:6
-msgid "Show password"
-msgstr "显示密码"
 
 #: ../src/plugins/Bugzilla.glade.h:8
 msgid ""
@@ -1646,230 +1146,488 @@ msgstr "URL："
 msgid "Use encryption"
 msgstr "使用加密"
 
+#~ msgid "Another client is already running, trying to wake it..."
+#~ msgstr "另一客户端已经在运行，正在尝试唤醒它......"
+
 #~ msgid ""
-#~ "\n"
-#~ "How to reproduce:\n"
-#~ "%s\n"
-#~ msgstr ""
-#~ "\n"
-#~ "如何重复：\n"
-#~ "%s\n"
+#~ "Got unexpected data from the daemon (is the database properly updated?)."
+#~ msgstr "从守护进程得到意外数据（数据库是否正常更新？）。"
 
-#~ msgid "# How to reproduce the crash?"
-#~ msgstr "# 如何再现该崩溃？"
+#~ msgid "Not loaded plugins"
+#~ msgstr "未载入的插件"
 
-#~ msgid "'How to reproduce' is too long"
-#~ msgstr "“如何再现”过长"
+#~ msgid "Analyzer plugins"
+#~ msgstr "分析器插件"
 
-#~ msgid "Removing the temporary rpm file"
-#~ msgstr "正在移除临时rpm文件"
+#~ msgid "Action plugins"
+#~ msgstr "动作插件"
 
-#~ msgid "Removing the temporary cpio file"
-#~ msgstr "正在移除临时cpio文件"
+#~ msgid "Reporter plugins"
+#~ msgstr "报告器插件"
 
-#~ msgid "Searching the missing debuginfo packages"
-#~ msgstr "正在搜索缺少的除错信息包"
+#~ msgid "Database plugins"
+#~ msgstr "数据库插件"
 
-#~ msgid "You have to specify the path to cachedir."
-#~ msgstr "你必须指定到缓存目录的路径。"
+#~ msgid "Cannot connect to system dbus."
+#~ msgstr "不能连接到系统 dbus。"
 
-#~ msgid "You have to specify the path to tmpdir."
-#~ msgstr "你必须制定到临时目录的路径。"
+#~ msgid "Please check if the abrt daemon is running."
+#~ msgstr "请检查 abrt 守护进程是否正在运行。"
 
-#~ msgid "Complete!"
-#~ msgstr "完成！"
-
-#, fuzzy
 #~ msgid ""
-#~ "Usage: %s [OPTION]\n"
-#~ "\n"
-#~ "Startup:\n"
-#~ "\t-V, --version\t\tdisplay the version of %s and exit\n"
-#~ "\t-?, --help\t\tprint this help\n"
-#~ "\n"
-#~ "Actions:\n"
-#~ "\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
-#~ "\t      -f, --full\tprint a list of all crashes, including the already "
-#~ "reported ones\n"
-#~ "\t-r, --report CRASH_ID\tcreate and send a report\n"
-#~ "\t      -y, --always\tcreate and send a report without asking\n"
-#~ "\t-d, --delete CRASH_ID\tremove a crash\n"
-#~ "\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
-#~ "\t      -b, --backtrace\tprint detailed information about a crash "
-#~ "including backtrace\n"
-#~ "CRASH_ID can be:\n"
-#~ "\ta name of dump directory, or\n"
-#~ "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
+#~ "Daemon did not return a valid report info.\n"
+#~ "Is debuginfo missing?"
 #~ msgstr ""
-#~ "用法： %s [OPTION]\n"
-#~ "\n"
-#~ "Startup:\n"
-#~ "\t-V, --version\t\tdisplay the version of %s and exit\n"
-#~ "\t-?, --help\t\tprint this help\n"
-#~ "\n"
-#~ "Actions:\n"
-#~ "\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
-#~ "\t      -f, --full\tprint a list of all crashes, including the already "
-#~ "reported ones\n"
-#~ "\t-r, --report CRASH_ID\tcreate and send a report\n"
-#~ "\t      -y, --always\tcreate and send a report without asking\n"
-#~ "\t-d, --delete CRASH_ID\tremove a crash\n"
-#~ "\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
-#~ "\t      -b, --backtrace\tprint detailed information about a crash "
-#~ "including backtrace\n"
-#~ "CRASH_ID can be:\n"
-#~ "\tUID:UUID pair,\n"
-#~ "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
-#~ "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
+#~ "守护进程未返回有效的报告信息。\n"
+#~ "调试信息是否缺失？"
 
-#, fuzzy
-#~ msgid "Error loading reporter settings"
+#~ msgid "(C) 2009, 2010 Red Hat, Inc."
+#~ msgstr "(C) 2009, 2010 红帽公司."
+
+#~ msgid "<b>Bug Reports:</b>"
+#~ msgstr "<b> bug 报告：</b>"
+
+#~ msgid "<b>Command:</b>"
+#~ msgstr "<b>命令：</b>"
+
+#~ msgid "<b>Comment:</b>"
+#~ msgstr "<b>评论：</b>"
+
+#~ msgid "<b>Crash Count:</b>"
+#~ msgstr "<b>崩溃次数：</b>"
+
+#~ msgid "<b>Latest Crash:</b>"
+#~ msgstr "<b>最近的崩溃：</b>"
+
+#~ msgid "<b>Reason:</b>"
+#~ msgstr "<b>原因：</b>"
+
+#~ msgid "<b>User:</b>"
+#~ msgstr "<b>用户：</b>"
+
+#~ msgid "About ABRT"
+#~ msgstr "关于 ABRT"
+
+#~ msgid "Copy to Clipboard"
+#~ msgstr "复制到剪切板"
+
+#~ msgid ""
+#~ "This program is free software; you can redistribute it and/or modify it "
+#~ "under the terms of the GNU General Public License as published by the "
+#~ "Free Software Foundation; either version 2 of the License, or (at your "
+#~ "option) any later version.\n"
+#~ "\n"
+#~ "This program is distributed in the hope that it will be useful, but "
+#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
+#~ "Public License for more details.\n"
+#~ "\n"
+#~ "You should have received a copy of the GNU General Public License along "
+#~ "with this program.  If not, see <http://www.gnu.org/licenses/>."
+#~ msgstr ""
+#~ "本程序为自由软件；您可依据自由软件基金会所发表的 GNU 通用公共许可证对本程"
+#~ "序再发布与／或修改；无论您依据的是本授权的第二版或（您自选的）任何后续版"
+#~ "本。\n"
+#~ "\n"
+#~ "本程序是基于使用目的而加以发布，然而不负任何担保责任；亦无对适售性或特定目"
+#~ "的适用性所为的默示性担保。详情请参考 GNU 通用公共许可证。\n"
+#~ "\n"
+#~ "您应该已收到了附于本程序的 GNU 通用公共授权的副本。若没有收到，请查看 "
+#~ "<http://www.gnu.org/licenses/>。"
+
+#~ msgid "View log"
+#~ msgstr "查看日志"
+
+#~ msgid "Application"
+#~ msgstr "应用程序"
+
+#~ msgid "Hostname"
+#~ msgstr "主机名"
+
+#~ msgid "Latest Crash"
+#~ msgstr "最近的崩溃"
+
+#~ msgid ""
+#~ "Cannot show the settings dialog.\n"
+#~ "%s"
+#~ msgstr ""
+#~ "无法显示设置对话。\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "Unable to finish the current task!\n"
+#~ "%s"
+#~ msgstr ""
+#~ "无法完成当前任务！\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "Error while loading the dumplist.\n"
+#~ "%s"
+#~ msgstr ""
+#~ "载入转储列表时出错。\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "<b>%s Crash</b>\n"
+#~ "%s"
+#~ msgstr ""
+#~ "<b>%s 崩溃</b>\n"
+#~ "%s"
+
+#~ msgid "You have to select a crash to copy."
+#~ msgstr "您必须选择一个崩溃来复制。"
+
+#~ msgid ""
+#~ "Usage: abrt-gui [OPTIONS]\n"
+#~ "\t-v[vv]\t\t\tVerbose\n"
+#~ "\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
+#~ msgstr ""
+#~ "用法：abrt-gui [选项]\n"
+#~ "\t-v[vv]\t\t\t\t冗长的\n"
+#~ "\t--report=崩溃标识\t\t直接报告带有此崩溃标识的崩溃"
+
+#~ msgid ""
+#~ "No such crash in the database, probably wrong crashid.\n"
+#~ "crashid=%s"
+#~ msgstr ""
+#~ "数据库中没有这个崩溃，可能是错误的 crashid。\n"
+#~ "crashid=%s"
+
+#~ msgid "Cannot connect to the Gnome Keyring daemon."
+#~ msgstr "无法连接到 Gnome 密钥环守护进程。"
+
+#~ msgid "Cannot get the default keyring."
+#~ msgstr "不能获取默认密钥环。"
+
+#~ msgid ""
+#~ "Access to gnome-keyring has been denied, plugins settings will not be "
+#~ "saved."
+#~ msgstr "对 gnome 密钥环的访问被拒绝，插件设置将不会被保存。"
+
+#~ msgid ""
+#~ "Access to gnome-keyring has been denied, cannot load the settings for %s!"
+#~ msgstr "对 gnome 密钥环的访问被拒绝，无法载入 %s 的设置！"
+
+#~ msgid "Access to gnome-keyring has been denied, cannot load settings."
+#~ msgstr "对 gnome 密钥环的访问被拒绝，无法载入设置。"
+
+#~ msgid "Brief description of how to reproduce this or what you did..."
+#~ msgstr "简要描述如何重复此崩溃或者您做了什么......"
+
+#~ msgid "Crash info doesn't contain a backtrace"
+#~ msgstr "崩溃信息中不包含回溯"
+
+#~ msgid ""
+#~ "Cannot save plugin settings:\n"
+#~ " %s"
+#~ msgstr ""
+#~ "无法保存插件设置：\n"
+#~ " %s"
+
+#~ msgid "Rating is %s"
+#~ msgstr "等级为 %s"
+
+#~ msgid "Crashdump doesn't have rating => we suppose it's not required"
+#~ msgstr "崩溃转储没有等级 => 我们假设它不需要"
+
+#~ msgid ""
+#~ "Reporting disabled because the backtrace is unusable.\n"
+#~ "Please try to install debuginfo manually using the command: <b>debuginfo-"
+#~ "install %s</b> \n"
+#~ "then use the Refresh button to regenerate the backtrace."
+#~ msgstr ""
+#~ "因为回溯不可用，所以不能报告。\n"
+#~ "请尝试用命令 <b>debuginfo-install %s</b> 手动安装调试信息，\n"
+#~ "然后按刷新按钮来重新生成回溯。"
+
+#~ msgid "You did not provide any steps to reproduce."
+#~ msgstr "您未提供任何重复步骤。"
+
+#~ msgid "You did not provide any comments."
+#~ msgstr "您未提供任何评论。"
+
+#~ msgid ""
+#~ "Reporting failed!\n"
+#~ "%s"
+#~ msgstr ""
+#~ "报告失败！\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "It looks like an application from the package <b>%s</b> has crashed on "
+#~ "your system. It is a good idea to send a bug report about this issue. The "
+#~ "report will provide software maintainers with information essential in "
+#~ "figuring out how to provide a bug fix for you.\n"
+#~ "\n"
+#~ "Please review the information that follows and modify it as needed to "
+#~ "ensure your bug report does not contain any sensitive data you would "
+#~ "rather not share.\n"
+#~ "\n"
+#~ "Select where you would like to report the bug, and press 'Forward' to "
+#~ "continue."
+#~ msgstr ""
+#~ "看来您系统中来自软件包 <b>%s</b> 的应用程序已崩溃。您可发送关于这个问题的 "
+#~ "bug 报告。该报告将提供软件维护者找出 bug 修复方法的必要信息。\n"
+#~ "\n"
+#~ "请检查下列信息并在必要时修改之以确保您的 bug 报告中不含您不愿意共享的敏感"
+#~ "数据。\n"
+#~ "\n"
+#~ "选择您要在哪里报告此 bug 并按‘前进’继续。"
+
+#~ msgid "Only one reporter plugin is configured."
+#~ msgstr "只配置了一个报告程序插件。"
+
+#~ msgid "Send a bug report"
+#~ msgstr "发送 bug 报告"
+
+#~ msgid "Found %i occurence(s) [at: %i of %i]"
+#~ msgstr "找到 %i 个发生 [在 %i 之于 %i]"
+
+#~ msgid "Search:"
+#~ msgstr "搜索："
+
+#~ msgid "Refresh"
+#~ msgstr "刷新"
+
+#~ msgid "Copy"
+#~ msgstr "复制"
+
+#~ msgid "Approve the backtrace"
+#~ msgstr "批准回溯"
+
+#~ msgid "You need to fill the how to before you can proceed..."
+#~ msgstr "您需要填写您的做法，才能继续下一步..."
+
+#~ msgid ""
+#~ "Are there any comments you would like to share with the software "
+#~ "maintainers?"
+#~ msgstr "您有什么要与软件维护者分享的评论吗？"
+
+#~ msgid "Provide additional details"
+#~ msgstr "提供附加细节"
+
+#~ msgid ""
+#~ "<b>Tip:</b> Your comments are not private. Please watch what you say "
+#~ "accordingly."
+#~ msgstr "<b>提示：</b>您的评论不是私下的。请注意您的言论。"
+
+#~ msgid "Confirm and send the report"
+#~ msgstr "确认并发送报告"
+
+#~ msgid ""
+#~ "Below is a summary of your bug report. Please click 'Apply' to submit it."
+#~ msgstr "下面是您的 bug 报告的摘要。请点击‘应用’提交。"
+
+#~ msgid "<b>Basic details</b>"
+#~ msgstr "<b>基本细节</b>"
+
+#~ msgid "Component"
+#~ msgstr "组件"
+
+#~ msgid "Package"
+#~ msgstr "软件包"
+
+#~ msgid "Executable"
+#~ msgstr "可执行文件"
+
+#~ msgid "Cmdline"
+#~ msgstr "命令行"
+
+#~ msgid "Architecture"
+#~ msgstr "架构"
+
+#~ msgid "Kernel"
+#~ msgstr "内核"
+
+#~ msgid "Release"
+#~ msgstr "发行版"
+
+#~ msgid "Reason"
+#~ msgstr "原因"
+
+#~ msgid "<b>Backtrace</b>"
+#~ msgstr "<b>回溯</b>"
+
+#~ msgid "Click to view..."
+#~ msgstr "点击查看......"
+
+#~ msgid "<b>Steps to reproduce:</b>"
+#~ msgstr "<b>再现步骤：</b>"
+
+#~ msgid "<b>Comments:</b>"
+#~ msgstr "<b>评论：</b>"
+
+#~ msgid "No comment provided!"
+#~ msgstr "未提供评论！"
+
+#~ msgid "Finished sending the bug report"
+#~ msgstr " bug 报告发送完毕"
+
+#~ msgid "<b>Bug reports:</b>"
+#~ msgstr "<b> bug 报告：</b>"
+
+#~ msgid ""
+#~ "Unable to get report!\n"
+#~ "Is debuginfo missing?"
+#~ msgstr ""
+#~ "无法获取报告！\n"
+#~ "调试信息缺失？"
+
+#~ msgid "Error acquiring the report: %s"
 #~ msgstr "获取报告时出错：%s"
 
-#~ msgid "You must check the backtrace for sensitive data."
-#~ msgstr "您必须检查回溯是否包含敏感数据。"
+#~ msgid "Log"
+#~ msgstr "日志"
 
-#~ msgid "The backtrace is unusable, you cannot report this!"
-#~ msgstr "回溯不可用，您不能报告这个 bug！"
+#~ msgid "Report done"
+#~ msgstr "报告完成"
 
-#~ msgid "Reporting disabled, please fix the problems shown above."
-#~ msgstr "不能报告，请修复以上显示的问题。"
-
-#~ msgid "Sends the report using the selected plugin."
-#~ msgstr "用选择的插件发送报告。"
+#~ msgid "Cannot find PluginDialog widget in the UI description!"
+#~ msgstr "在用户界面描述中未能找到插件对话框小工具！"
 
 #~ msgid ""
-#~ "No reporter plugin available for this type of crash.\n"
-#~ "Please check abrt.conf."
+#~ "No UI for the plugin <b>%s</b>, this is probably a bug.\n"
+#~ "Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
+#~ "\">https://fedorahosted.org/abrt/newticket</a>"
 #~ msgstr ""
-#~ "没有可用于该类型崩溃的报告器插件。\n"
-#~ "请检查 abrt.conf。"
+#~ "没有用于插件 <b>%s</b> 的 UI，这可能是个 bug。\n"
+#~ "请在 <a href=\"https://fedorahosted.org/abrt/newticket\">https://"
+#~ "fedorahosted.org/abrt/newticket</a> 提交报告。"
 
-#~ msgid "<b>Select plugin</b>"
-#~ msgstr "<b>选择插件</b>"
+#~ msgid "Combo box is not implemented"
+#~ msgstr "未使用复合框"
 
-#~ msgid "<b>Select database backend</b>"
-#~ msgstr "<b>选择数据库后端</b>"
+#~ msgid "Nothing to hydrate!"
+#~ msgstr "没有东西来组合！"
 
-#~ msgid "<b>Analyzer plugin</b>"
-#~ msgstr "<b>分析器插件</b>"
+#~ msgid "Cannot load the GUI description for SettingsDialog!"
+#~ msgstr "无法载入对设置对话的图形用户界面描述！"
 
-#~ msgid "<b>Associated action</b>"
-#~ msgstr "<b>关联动作</b>"
-
-#~ msgid "<b>Plugin</b>"
-#~ msgstr "<b>插件</b>"
-
-#~ msgid "<b>Time (or period)</b>"
-#~ msgstr "<b>时间（或时段）</b>"
-
-#~ msgid "Analyzers, Actions, Reporters"
-#~ msgstr "分析器, 动作, 报告器"
-
-#~ msgid "Cron"
-#~ msgstr "定时任务"
-
-#~ msgid "Database backend: "
-#~ msgstr "数据库后端："
-
-#~ msgid "Analyzes crashes in C/C++ programs"
-#~ msgstr "使用 C/C++ 程序分析崩溃"
-
-#~ msgid "Periodically scans for and saves kernel oopses"
-#~ msgstr "周期性扫描并保存内核 opps"
-
-#~ msgid "Database plugin not specified. Please check abrtd settings."
-#~ msgstr "没有指定数据库插件。请检查 abrtd 设置。"
-
-#~ msgid "Keeps SQLite3 database about all crashes"
-#~ msgstr "保留 SQLite3 数据库中所有崩溃"
-
-#~ msgid "Reports bugs to bugzilla"
-#~ msgstr "向 bugzilla 报告 bug"
-
-#~ msgid "Generating backtrace"
-#~ msgstr "正在生成回溯"
-
-#~ msgid "Getting global universal unique identification..."
-#~ msgstr "正在取得全局的通用唯一标识......"
-
-#~ msgid "Skipping the debuginfo installation"
-#~ msgstr "跳过调试信息的安装"
-
-#~ msgid "FileTransfer: URL not specified"
-#~ msgstr "文件传送器： URL 未指定"
-
-#~ msgid "FileTransfer: Creating a report..."
-#~ msgstr "文件传送器：正在创建报告......"
-
-#~ msgid "Cannot create and send an archive: %s"
-#~ msgstr "无法生成并及发送归档：%s"
-
-#~ msgid "Sends a report via FTP or SCTP"
-#~ msgstr "使用 FTP 或者 SCTP 发送报告"
-
-#~ msgid "Analyzes kernel oopses"
-#~ msgstr "分析内核 opps"
-
-#~ msgid "Creating and submitting a report..."
-#~ msgstr "正在创建及提交报告……"
-
-#~ msgid "Sends kernel oops information to kerneloops.org"
-#~ msgstr "向 kerneloops.org 发送内核 opps 信息"
-
-#~ msgid "Writes report to a file"
-#~ msgstr "将报告写入文件"
-
-#~ msgid "Sends an email with a report (via mailx command)"
-#~ msgstr "发送带报告的电子邮件（使用 mailx 命令）"
-
-#~ msgid "Analyzes crashes in Python programs"
-#~ msgstr "使用 Python 程序分许崩溃"
-
-#~ msgid "Sending failed, trying again. %s"
-#~ msgstr "发送失败，再试一次。%s"
-
-#~ msgid "Creating a ReportUploader report..."
-#~ msgstr "正在生成 ReportUploader 报告......"
+#~ msgid "Please select a plugin from the list to edit its options."
+#~ msgstr "请从以下列表中选择一个插件以编辑其选项。"
 
 #~ msgid ""
-#~ "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-#~ msgstr "将崩溃数据打包成 .tar.gz 文件，并可使用 FTP/SCP/etc 将其上传。"
-
-#, fuzzy
-#~ msgid "Reports bugs to Red Hat support"
-#~ msgstr "向 bugzilla 报告 bug"
-
-#~ msgid "Runs a command, saves its output"
-#~ msgstr "运行命令保存其输出结果"
-
-#~ msgid "Running sosreport: %s"
-#~ msgstr "正在运行 sosreport：%s"
-
-#~ msgid "Finished running sosreport"
-#~ msgstr "sosreport 运行完毕"
-
-#~ msgid "Runs sosreport, saves the output"
-#~ msgstr "运行 sosreport，保存输出结果。"
-
-#~ msgid "Customer:"
-#~ msgstr "客户："
-
-#~ msgid "Ticket:"
-#~ msgstr "Ticket："
-
-#~ msgid "Upload"
-#~ msgstr "上传"
-
-#~ msgid "Rating is required by the %s plugin"
-#~ msgstr "%s 插件需要等级"
-
-#~ msgid "Rating is not required by any plugin, skipping the check..."
-#~ msgstr "所有插件都不需要等级，跳过这个检查......"
-
-#~ msgid ""
-#~ "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/"
-#~ "Bugzilla.conf. Server said: %s"
+#~ "Error while opening the plugin settings UI: \n"
+#~ "\n"
+#~ "%s"
 #~ msgstr ""
-#~ "无法登录。请检查 编辑->插件->Bugzilla 和 /etc/abrt/plugins/Bugzilla.conf。"
-#~ "服务器回复：%s"
+#~ "打开插件设置用户界面时出错：\n"
+#~ "\n"
+#~ "%s"
+
+#~ msgid "Please wait..."
+#~ msgstr "请稍候......"
+
+#~ msgid " "
+#~ msgstr " "
+
+#~ msgid "<b>Attachments</b>"
+#~ msgstr "<b>附件</b>"
+
+#~ msgid "<b>Comment</b>"
+#~ msgstr "<b>评论</b>"
+
+#~ msgid "<b>How to reproduce (in a few simple steps)</b>"
+#~ msgstr "<b>如何再现 bug （用简单几步）</b>"
+
+#~ msgid "<b>Please fix the following problems:</b>"
+#~ msgstr "<b>请修复下列问题：</b>"
+
+#~ msgid "<b>Where do you want to report this incident?</b>"
+#~ msgstr "<b>您想在哪里报告此事件？</b>"
+
+#~ msgid "<span fgcolor=\"blue\">Architecture:</span>"
+#~ msgstr "<span fgcolor=\"blue\">架构：</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+#~ msgstr "<span fgcolor=\"blue\">命令行：</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Component:</span>"
+#~ msgstr "<span fgcolor=\"blue\">组件：</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Executable:</span>"
+#~ msgstr "<span fgcolor=\"blue\">可执行文件：</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Kernel:</span>"
+#~ msgstr "<span fgcolor=\"blue\">内核：</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Package:</span>"
+#~ msgstr "<span fgcolor=\"blue\">软件包：</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Reason:</span>"
+#~ msgstr "<span fgcolor=\"blue\">理由：</span>"
+
+#~ msgid "<span fgcolor=\"blue\">Release:</span>"
+#~ msgstr "<span fgcolor=\"blue\">发布名：</span>"
+
+#~ msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
+#~ msgstr "我检查了回溯并删除了敏感数据（密码等）"
+
+#~ msgid "N/A"
+#~ msgstr "不适用"
+
+#~ msgid "Reporter Selector"
+#~ msgstr "报告器选择器"
+
+#~ msgid "Send report"
+#~ msgstr "发送报告"
+
+#~ msgid "Show log"
+#~ msgstr "显示日志"
+
+#~ msgid "Remove this job"
+#~ msgstr "删除此工作"
+
+#~ msgid "Remove this action"
+#~ msgstr "删除此动作"
+
+#~ msgid "<b>Plugin details</b>"
+#~ msgstr "<b>插件细节</b>"
+
+#~ msgid "Author:"
+#~ msgstr "作者："
+
+#~ msgid "Blacklisted packages: "
+#~ msgstr "被加入黑名单的软件包："
+
+#~ msgid "Check package GPG signature"
+#~ msgstr "检查软件包的 GPG 签名"
+
+#~ msgid "Common"
+#~ msgstr "普通"
+
+#~ msgid "GPG Keys"
+#~ msgstr "GPG 密钥"
+
+#~ msgid "GPG keys: "
+#~ msgstr "GPG 密钥："
+
+#~ msgid "Max coredump storage size (MB):"
+#~ msgstr "最大核心转储存储大小（MB）："
+
+#~ msgid "Name:"
+#~ msgstr "名称："
+
+#~ msgid "Preferences"
+#~ msgstr "首选项"
+
+#~ msgid "Version:"
+#~ msgstr "版本："
+
+#~ msgid "Web Site:"
+#~ msgstr "网站："
+
+#~ msgid "<b>Do you want to continue?</b>"
+#~ msgstr "<b>您要继续吗？</b>"
+
+#~ msgid "Wrong Settings Detected"
+#~ msgstr "检测到错误设置"
+
+#~ msgid ""
+#~ "Wrong settings were detected for some of the enabled reporter plugins. "
+#~ "Please use the buttons below to open the respective configuration and fix "
+#~ "it before you proceed, otherwise, the reporting process may fail.\n"
+#~ msgstr ""
+#~ "检测到有些启用的报告程序插件有错误设置。请使用以下按钮打开对应的配置并在继"
+#~ "续报告前修复它，否则报告过程会失败。\n"

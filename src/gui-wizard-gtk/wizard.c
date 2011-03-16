@@ -423,7 +423,7 @@ static GtkWidget *add_event_buttons(GtkBox *box, char *event_name, GCallback fun
         else
             event_screen_name = event_name;
         const char *event_description = NULL;
-        event_config_t *cfg = g_hash_table_lookup(g_event_config_list, event_name);
+        event_config_t *cfg = get_event_config(event_name);
         if (cfg)
         {
             /* .xml has (presumably) prettier description, use it: */
