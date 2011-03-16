@@ -390,7 +390,7 @@ GtkWidget *create_main_window(void)
     gtk_container_add(GTK_CONTAINER(halign), hbox_report_delete);
 
     GtkWidget *hbox_help_close = gtk_hbutton_box_new();
-    GtkWidget *btn_online_help = gtk_button_new_with_mnemonic(_("_Online Help"));
+    GtkWidget *btn_online_help = gtk_button_new_with_mnemonic(_("Online _Help"));
     GtkWidget *btn_close = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
     gtk_box_pack_end(GTK_BOX(hbox_help_close), btn_online_help, false, false, 0);
     gtk_box_pack_end(GTK_BOX(hbox_help_close), btn_close, false, false, 0);
