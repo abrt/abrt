@@ -21,6 +21,9 @@
 #include "parse_options.h"
 #include "wizard.h"
 #include "libreport-gtk.h"
+#if HAVE_LOCALE_H
+# include <locale.h>
+#endif
 
 #define PROGNAME "bug-reporting-wizard"
 
@@ -59,6 +62,13 @@ void reload_crash_data_from_dump_dir(void)
 
 int main(int argc, char **argv)
 {
+    /* I18n */
+    setlocale(LC_ALL, "");
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
+
     gtk_init(&argc, &argv);
 
     char *env_verbose = getenv("ABRT_VERBOSE");
