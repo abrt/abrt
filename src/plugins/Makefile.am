@@ -1,7 +1,8 @@
 pluginslibdir = $(PLUGINS_LIB_DIR)
 
 bin_SCRIPTS = \
-    abrt-action-install-debuginfo.py
+    abrt-action-install-debuginfo.py \
+    abrt-action-list-dsos.py
 
 bin_PROGRAMS = \
     abrt-dump-oops \
@@ -60,7 +61,7 @@ man_MANS = \
     abrt-Upload.7 \
     abrt-plugins.7
 
-PYTHON_FILES = abrt-action-install-debuginfo.py
+PYTHON_FILES = abrt-action-install-debuginfo.py abrt-action-list-dsos.py
 
 EXTRA_DIST = $(man_MANS) $(PYTHON_FILES)
 
