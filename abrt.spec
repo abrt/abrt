@@ -21,7 +21,7 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 1.2.0
+Version: 2.0.0
 Release: %{?pkg_release}
 License: GPLv2+
 Group: Applications/System
@@ -562,6 +562,165 @@ fi
 %{_infodir}/abrt-retrace-server*
 
 %changelog
+* Wed Mar 16 2011 Jiri Moskovcak <jmoskovc@redhat.com> 2.0.0-1
+- update to the latest upstream version
+- many improvements
+- FIXME: add closed bugzillas
+
+* Fri Feb 18 2011 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.17-2
+- removed gnome-python2-vfs dependency
+
+* Mon Feb 07 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.1.17-1.1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+
+* Sat Feb 05 2011 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.17-1
+- rewritten abrt-debuginfo-install script to use the yum API
+- GUI: added search box to backtrace view rhbz#612017 (jmoskovc@redhat.com)
+- fixed some gui warnings rhbz#671488 (jmoskovc@redhat.com)
+- btparser/dupechecker improvements:
+  - Better handling of glibc architecture-specific functions (kklic@redhat.com)
+  - support format of thread header: "Thread 8 (LWP 6357):" (kklic@redhat.com)
+
+* Fri Feb 04 2011 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.16-1
+- rhtsupport: added list of attachments to comment rhbz#668875
+- rhtsupport: stop consuming non-standard header rhbz#670492
+- Resolves: #670492, #668875
+
+* Wed Jan 19 2011 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.15-2
+- add a gui/uid to useradd/groupadd command (reserved in setup rhbz#670231)
+- Resolves: #650975
+
+* Wed Jan 19 2011 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.15-1
+- removed unused files (jmoskovc@redhat.com)
+- update po files (jmoskovc@redhat.com)
+- removed some unused files (jmoskovc@redhat.com)
+- pass old pattern to ccpp hook and use it (dvlasenk@redhat.com)
+- GUI: added warning when gnome-keyring can't be accessed rhbz#576866 (jmoskovc@redhat.com)
+- 666893 - Unable to make sense of XML-RPC response from server (npajkovs@redhat.com)
+- PyHook: ignore SystemExit exception rhbz#636913 (jmoskovc@redhat.com)
+- 665405 - ABRT's usage of sos does not grab /var/log/messages (npajkovs@redhat.com)
+- add a note in report if kernel is tainted (npajkovs@redhat.com)
+- KerneloopsScanner.cpp: make a room for NULL byte (npajkovs@redhat.com)
+- fix multicharacter warring (npajkovs@redhat.com)
+- open help page instead of about rhbz#666267
+
+* Wed Jan 19 2011 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.14-3
+- fixed build with rpm 4.9 (thx panu pmatilai for the patch)
+
+* Wed Jan 19 2011 Matthias Clasen <mclasen@redhat.com> 1.1.14-2
+- Rebuild against new rpm
+
+* Wed Nov 17 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.14-1
+- made howto mandatory
+- fixed segv in abrt-hook-ccpp rhbz#652338
+- added warning if kernel was tainted
+- make the "install debuginfo" hint selectable rhbz#644343
+- wrap howto and comments rhbz#625237
+- wrap lines in the backtrace window rhbz#625232
+- changed '*' to '•' rhbz#625236
+- make the bt viewer not-editable rhbz#621871
+- removed unneeded patches
+
+* Wed Nov 10 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.13-3
+- Rebuild for libnotify-0.7
+
+* Wed Aug 25 2010 Jochen Schmitt <Jochen herr-schmitt de> 1.1.13-2
+- Rebuild for python-2.7
+
+* Tue Aug 10 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.13-1
+- updated translation
+- added native systemd file rhbz#617316 (jmoskovc@redhat.com)
+- added ar to LINGUAS (jmoskovc@redhat.com)
+- made /etc/abrt/plugins/Bugzilla.conf world-readable again (jmoskovc@redhat.com)
+- l10n: adding fa locale (lashar@fedoraproject.org)
+- l10n: new Persian (lashar@fedoraproject.org)
+- remove libzip code (npajkovs@redhat.com)
+- add libxml-2.0 into configure (npajkovs@redhat.com)
+- fixed typo in man page rhbz#610748 (jmoskovc@redhat.com)
+- RHTSupport: GUI's SSLVerify checkbox had one missing bit of code (vda.linux@googlemail.com)
+- abrt_curl: discard headers from HTTP redirection (vda.linux@googlemail.com)
+- moved abrt.socket and abrtd.lock into /var/run/abrt making selinux happy (jmoskovc@redhat.com)
+- Mention --info and --backtrace in the abrt-cli man page. (kklic@redhat.com)
+- build fixes for gcc 4.5 (jmoskovc@redhat.com)
+- abrt-hook-ccpp: small fixes prompted by testing on RHEL5 (vda.linux@googlemail.com)
+- Added --info action to abrt-cli (mtoman@redhat.com)
+- wire up SSLVerify in RHTSupport.conf to actually have the desired effect (vda.linux@googlemail.com)
+- fixed tooltip localization rhbz#574693 (jmoskovc@redhat.com)
+- dumpoops/KerneloopsScanner: add pid to crashdump name (vda.linux@googlemail.com)
+- A message change suggested by dhensley (kklic@redhat.com)
+
+* Tue Jul 27 2010 David Malcolm <dmalcolm@redhat.com> - 1.1.10-4
+- rebuild
+
+* Tue Jul 27 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.10-3
+- blacklist /usr/bin/nspluginviewer
+
+* Mon Jul 26 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.10-2
+- minor build fixes
+
+* Mon Jul 26 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.10-1
+- blacklisted mono-core package
+- die with an error message if the database plugin is not accessible when needed (kklic@redhat.com)
+- change RHTSupport URL protocol from HTTP to HTTPS (dvlasenk@redhat.com)
+- the Logger plugin returns a message as the result of Report() call instead of a file URL (kklic@redhat.com)
+- Cut off prelink suffixes from executable name if any (mtoman@redhat.com)
+- CCpp: abrt-debuginfo-install output lines can be long, accomodate them (dvlasenk@redhat.com)
+- do not pop up message on crash if the same crash is the same (dvlasenk@redhat.com)
+- fedora bugs do not depend on rhel bugs (npajkovs@redhat.com)
+- GUI: fixed problem with no gkeyring and just one reporter enabled rhbz#612457 (jmoskovc@redhat.com)
+- added a document about interpreted language integration (kklic@redhat.com)
+- moved devel header files to inc/ and included them in -devel package (jmoskovc@redhat.com, npajkovs@redhat.com)
+- renamed abrt-utils.pc to abrt.pc (jmoskovc@redhat.com)
+- string updates based on a UI text review (kklic@redhat.com)
+- rhtsupport obsoletes the old rh plugins (jmoskovc@redhat.com)
+- list allowed items in RHTSupport.conf (kklic@redhat.com)
+- GUI: fixed package name in warning message when the packge is kernel rhbz#612191 (jmoskovc@redhat.com)
+- remove rating for python crashes (jmoskovc@redhat.com)
+- CCpp: give zero rating to an empty backtrace (jmoskovc@redhat.com)
+- GUI: allow sending crashes without rating (jmoskovc@redhat.com)
+- RHTSupport: set default URL to api.access.redhat.com/rs (dvlasenk@redhat.com)
+- abort initialization on abrt.conf parsing errors (dvlasenk@redhat.com)
+- changing NoSSLVerify to SSLVerify in bugzilla plugin (mtoman@redhat.com)
+- added rating to python crashes
+- show hostname in cli (kklic@redhat.com)
+- updated po files (jmoskovc@redhat.com)
+- added support for package specific actions rhbz#606917 (jmoskovc@redhat.com)
+- renamed TicketUploader to ReportUploader (jmoskovc@redhat.com)
+- bad hostnames on remote crashes (npajkovs@redhat.com)
+- unlimited MaxCrashReportsSize (npajkovs@redhat.com)
+- abrt_rh_support: improve error messages rhbz#608698 (vda.linux@googlemail.com)
+- Added BacktraceRemotes option. (kklic@redhat.com)
+- Allow remote crashes to not to belong to a package. Skip GPG check on remote crashes. (kklic@redhat.com)
+- remove obsolete Catcut and rhfastcheck reporters (vda.linux@googlemail.com)
+- make rhel bug point to correct place rhbz#578397 (npajkovs@redhat.com)
+- Show comment and how to reproduce fields when reporing crashes in abrt-cli (kklic@redhat.com)
+- Bash completion update (kklic@redhat.com)
+- Rename --get-list to --list (kklic@redhat.com)
+- Update man page (kklic@redhat.com)
+- Options overhaul (kklic@redhat.com)
+- abrt should not point to Fedora bugs but create new RHEL bug instead (npajkovs@redhat.com)
+- Don't show global uuid in report (npajkovs@redhat.com)
+- GUI: don't try to use action plugins as reporters (jmoskovc@redhat.com)
+- Added WatchCrashdumpArchiveDir directive to abrt.conf and related code (vda.linux@googlemail.com)
+- GUI: don't show the placehondler icon rhbz#605693 (jmoskovc@redhat.com)
+- Make "Loaded foo.conf" message less confusing (vda.linux@googlemail.com)
+- Fixed a flaw in strbuf_prepend_str (kklic@redhat.com)
+- TicketUploader: do not add '\n' to text files in crashdump (vda.linux@googlemail.com)
+- GUI: skip the plugin selection, if it's not needed (jmoskovc@redhat.com)
+- Check conf file for syntax errors (kklic@redhat.com)
+- move misplaced sanity checks in cron parser (vda.linux@googlemail.com)
+- GUI: don't require the rating for all reporters (jmoskovc@redhat.com)
+- GUI: fixed exception when there is no configure dialog for plugin rhbz#603745 (jmoskovc@redhat.com)
+- Add a GUI config dialog for RHTSupport plugin (vda.linux@googlemail.com)
+- abrt_curl: fix a problem with incorrect content-length on 32-bit arches (vda.linux@googlemail.com)
+- sosreport: save the dump directly to crashdump directory (vda.linux@googlemail.com)
+- plugin rename: rhticket -> RHTSupport (vda.linux@googlemail.com)
+- Daemon socket for reporting crashes (karel@localhost.localdomain)
+- GUI: fixed few typos (jmoskovc@redhat.com)
+
+* Wed Jul 21 2010 David Malcolm <dmalcolm@redhat.com> - 1.1.5-1.1
+- Rebuilt for https://fedoraproject.org/wiki/Features/Python_2.7/MassRebuild
+
 * Wed Jun 09 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.5-1
 - GUI: polished the reporter assistant (jmoskovc@redhat.com)
 - Logger reporter: do not store useless info (vda.linux@googlemail.com)
