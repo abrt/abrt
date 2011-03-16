@@ -668,11 +668,14 @@ static int run_batch(bool delete_temp_archive)
         free(backtrace_text);
     }
     else
+    {
         run_log(task_id, task_password);
+        retcode = 1;
+    }
     free(task_status);
     free(task_id);
     free(task_password);
-    return 0;
+    return retcode;
 }
 
 int main(int argc, char **argv)

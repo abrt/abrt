@@ -91,18 +91,6 @@ AC_ARG_WITH(debuginfosdir,
                            [Directory where debuginfo is stored])],
             [DEBUG_INFO_DIR="$withval"])
 
-
-AC_ARG_ENABLE(socket,
-              [AC_HELP_STRING([--enable-socket],
-                             [Enable socket communication. Disable DBus communication])],
-              [ENABLE_SOCKET_OR_DBUS='-DENABLE_SOCKET=1'])
-
-AC_ARG_ENABLE(dbus,
-              [AC_HELP_STRING([--enable-dbus],
-                             [Enable DBus communication. Disable socket communication @<:@default@:>@])],
-              [ENABLE_SOCKET_OR_DBUS='-DENABLE_DBUS=1'])
-
-AC_SUBST(ENABLE_SOCKET_OR_DBUS)
 AC_SUBST(CONF_DIR)
 AC_SUBST(VAR_RUN)
 AC_SUBST(PLUGINS_CONF_DIR)

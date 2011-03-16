@@ -261,10 +261,10 @@ int main(int argc, char **argv)
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-    msg_prefix = PROGNAME;
+    //msg_prefix = PROGNAME;
     if (opts & OPT_s)
     {
-        openlog(msg_prefix, 0, LOG_DAEMON);
+        openlog(PROGNAME, 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;
     }
 
