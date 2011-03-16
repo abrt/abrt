@@ -430,7 +430,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
             if (strcmp(dump_dir_name, dump_dir_name2) == 0)
                 goto next; /* we are never a dup of ourself */
 
-            dd = dd_opendir(dump_dir_name2, /*flags:*/ 0);
+            dd = dd_opendir(dump_dir_name2, /*flags:*/ DD_FAIL_QUIETLY_ENOENT);
             if (!dd)
                 goto next;
             uid = dd_load_text(dd, FILENAME_UID);
