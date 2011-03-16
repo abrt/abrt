@@ -479,7 +479,9 @@ fi
 %{_bindir}/abrt-action-generate-backtrace
 %{_sysconfdir}/%{name}/events.d/ccpp_events.conf
 %{_sysconfdir}/%{name}/events/analyze_LocalGDB.xml
+%{_sysconfdir}/%{name}/events/reanalyze_LocalGDB.xml
 %{_sysconfdir}/%{name}/events/analyze_RetraceServer.xml
+%{_sysconfdir}/%{name}/events/reanalyze_RetraceServer.xml
 
 %files addon-kerneloops
 %defattr(-,root,root,-)
