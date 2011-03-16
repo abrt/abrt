@@ -27,7 +27,7 @@
 
 static GtkAssistant *g_assistant;
 
-static char *g_analyze_label_selected;
+static char *g_analyze_event_selected;
 
 static GtkBox *g_box_analyzers;
 static GtkLabel *g_lbl_analyze_log;
@@ -367,8 +367,8 @@ static void analyze_rb_was_toggled(GtkButton *button, gpointer user_data)
     const char *event_name = gtk_widget_get_tooltip_text(GTK_WIDGET(button));
     if (event_name)
     {
-        free(g_analyze_label_selected);
-        g_analyze_label_selected = xstrdup(event_name);
+        free(g_analyze_event_selected);
+        g_analyze_event_selected = xstrdup(event_name);
     }
 }
 
@@ -405,7 +405,7 @@ static void report_tb_was_toggled(GtkButton *button_unused, gpointer user_data_u
 
 static GtkWidget *add_event_buttons(GtkBox *box, char *event_name, GCallback func, bool radio, const char *prev_selected)
 {
-VERB2 log("removing all buttons from box %p", box);
+    //VERB2 log("removing all buttons from box %p", box);
     gtk_container_foreach(GTK_CONTAINER(box), &remove_child_widget, box);
 
     bool have_activated_btn = false;
@@ -437,7 +437,7 @@ VERB2 log("removing all buttons from box %p", box);
                         event_description ? event_description : ""
         );
 
-VERB2 log("adding button '%s' to box %p", event_name, box);
+        //VERB2 log("adding button '%s' to box %p", event_name, box);
         GtkWidget *button = radio
                 ? gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(first_button), event_label)
                 : gtk_check_button_new_with_label(event_label);
@@ -536,15 +536,15 @@ void update_gui_state_from_crash_data(void)
     load_text_to_text_view(g_tv_comment, FILENAME_COMMENT);
 
     /* Update analyze radio buttons */
-    GtkWidget *first_rb = add_event_buttons(g_box_analyzers, g_analyze_events, G_CALLBACK(analyze_rb_was_toggled), /*radio:*/ true, /*prev:*/ g_analyze_label_selected);
+    GtkWidget *first_rb = add_event_buttons(g_box_analyzers, g_analyze_events, G_CALLBACK(analyze_rb_was_toggled), /*radio:*/ true, /*prev:*/ g_analyze_event_selected);
     /* Update the value of currently selected analyzer */
     if (first_rb)
     {
-        const char *label = gtk_button_get_label(GTK_BUTTON(first_rb));
-        if (label)
+        const char *event_name = gtk_widget_get_tooltip_text(GTK_WIDGET((first_rb));
+        if (event_name)
         {
-            free(g_analyze_label_selected);
-            g_analyze_label_selected = xstrdup(label);
+            free(g_analyze_event_selected);
+            g_analyze_event_selected = xstrdup(event_name);
         }
     }
 
@@ -1025,9 +1025,9 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
     VERB2 log("page_no:%d", page_no);
 
     if (page_no == PAGENO_ANALYZE_SELECTOR
-     && g_analyze_label_selected != NULL)
-    {
-        start_event_run(/*event_name:*/ g_analyze_label_selected,
+     && g_analyze_event_selected != NULL
+    ) {
+        start_event_run(g_analyze_event_selected,
                 NULL,
                 pages[PAGENO_ANALYZE_PROGRESS].page_widget,
                 g_tv_analyze_log,
