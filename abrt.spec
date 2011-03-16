@@ -245,7 +245,7 @@ Requires: abrt-addon-ccpp
 Requires: gdb >= 7.0-3
 Requires: httpd, mod_wsgi, mod_ssl, python-webob
 Requires: mock, xz, elfutils, createrepo
-Requires: python-argparse
+%{?el6:Requires: python-argparse}
 Requires(preun): /sbin/install-info
 Requires(post): /sbin/install-info
 
