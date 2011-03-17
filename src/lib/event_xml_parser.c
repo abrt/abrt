@@ -64,7 +64,8 @@ static void consume_cur_option(struct my_parse_data *parse_data)
     }
 
     event_config_t *event_config = parse_data->event_config;
-    GList *elem = g_list_find_custom(event_config->options, opt->name, &cmp_event_option_name_with_string);
+    GList *elem = g_list_find_custom(event_config->options, opt->name,
+                                     &cmp_event_option_name_with_string);
     if (elem)
     {
         /* we already have option with such name */
@@ -111,8 +112,7 @@ static void start_element(GMarkupParseContext *context,
 
         event_option_t *opt = parse_data->cur_option = new_event_option();
 
-        int i;
-        for (i = 0; attribute_names[i] != NULL; ++i)
+        for (int i = 0; attribute_names[i] != NULL; ++i)
         {
             VERB2 log("attr: %s:%s", attribute_names[i], attribute_values[i]);
             if (strcmp(attribute_names[i], "name") == 0)
@@ -185,6 +185,13 @@ static void text(GMarkupParseContext *context,
             VERB2 log("default value:'%s'", text_copy);
             free(opt->value);
             opt->value = text_copy;
+            return;
+        }
+
+        if (strcmp(inner_element, ALLOW_EMPTY_ELEMENT) == 0)
+        {
+            VERB2 log("allow-empty:'%s'", text_copy);
+            opt->allow_empty = string_to_bool(text_copy);
             return;
         }
         /*

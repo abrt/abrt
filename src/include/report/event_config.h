@@ -52,6 +52,7 @@ typedef struct
     char *value;
     char *label;
     option_type_t type;
+    int allow_empty;
     //char *description; //can be used as tooltip in gtk app
     //char *allowed_value;
     //int required;
