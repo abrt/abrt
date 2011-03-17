@@ -66,7 +66,7 @@ struct line_info {
     char level;
 };
 
-static int record_oops(GList **oops_list, struct line_info* lines_info, int oopsstart, int oopsend)
+static void record_oops(GList **oops_list, struct line_info* lines_info, int oopsstart, int oopsend)
 {
     int q;
     int len;
@@ -102,15 +102,13 @@ static int record_oops(GList **oops_list, struct line_info* lines_info, int oops
     }
 
     VERB3 if (rv == 0) log("Dropped oops: too short");
-    return rv;
 }
 
-#define REALLOC_CHUNK 1000
-static int extract_oopses(GList **oops_list, char *buffer, size_t buflen)
+static void extract_oopses(GList **oops_list, char *buffer, size_t buflen)
 {
     char *c;
     int linecount = 0;
-    int lines_info_alloc = 0;
+    int lines_info_size = 0;
     struct line_info *lines_info = NULL;
 
     /* Split buffer into lines */
@@ -124,6 +122,7 @@ static int extract_oopses(GList **oops_list, char *buffer, size_t buflen)
         char *c9;
         char *colon;
 
+        linecount++;
         c9 = (char*)memchr(c, '\n', buffer + buflen - c); /* a \n will always be found */
         assert(c9);
         *c9 = '\0'; /* turn the \n into a string termination */
@@ -151,18 +150,19 @@ static int extract_oopses(GList **oops_list, char *buffer, size_t buflen)
 
             /* Skip non-kernel lines */
             char *kernel_str = strstr(c, "kernel: ");
-            if (kernel_str == NULL)
+            if (!kernel_str)
             {
                 /* if we see our own marker:
                  * "hostname abrt: Kerneloops: Reported 1 kernel oopses to Abrt"
                  * we know we submitted everything upto here already */
-                if (strstr(c, "abrt:") && strstr(c, "Abrt"))
+                if (strstr(c, "kernel oopses to Abrt"))
                 {
-                    VERB3 log("Found our marker at line %d, restarting line count from 0", linecount);
-                    linecount = 0;
-                    lines_info_alloc = 0;
+                    VERB3 log("Found our marker at line %d", linecount);
                     free(lines_info);
                     lines_info = NULL;
+                    lines_info_size = 0;
+                    list_free_with_free(*oops_list);
+                    *oops_list = NULL;
                 }
                 goto next_line;
             }
@@ -188,15 +188,13 @@ static int extract_oopses(GList **oops_list, char *buffer, size_t buflen)
                         c++;
             }
         }
-        if (linecount >= lines_info_alloc)
+        if ((lines_info_size & 0xfff) == 0)
         {
-            lines_info_alloc += REALLOC_CHUNK;
-            lines_info = (struct line_info*)xrealloc(lines_info,
-                            lines_info_alloc * sizeof(lines_info[0]));
+            lines_info = xrealloc(lines_info, (lines_info_size + 0x1000) * sizeof(lines_info[0]));
         }
-        lines_info[linecount].ptr = c;
-        lines_info[linecount].level = linelevel;
-        linecount++;
+        lines_info[lines_info_size].ptr = c;
+        lines_info[lines_info_size].level = linelevel;
+        lines_info_size++;
 next_line:
         c = c9 + 1;
     }
@@ -207,10 +205,9 @@ next_line:
     char prevlevel = 0;
     int oopsstart = -1;
     int inbacktrace = 0;
-    int oopsesfound = 0;
 
     i = 0;
-    while (i < linecount)
+    while (i < lines_info_size)
     {
         char *curline = lines_info[i].ptr;
 
@@ -282,7 +279,7 @@ next_line:
                 }
                 /* try to find the end marker */
                 int i2 = i + 1;
-                while (i2 < linecount && i2 < (i+50))
+                while (i2 < lines_info_size && i2 < (i+50))
                 {
                     if (strstr(lines_info[i2].ptr, "---[ end trace"))
                     {
@@ -353,8 +350,7 @@ next_line:
             if (oopsend <= i)
             {
                 VERB3 log("End of oops at line %d (%d): '%s'", oopsend, i, lines_info[oopsend].ptr);
-                if (record_oops(oops_list, lines_info, oopsstart, oopsend))
-                    oopsesfound++;
+                record_oops(oops_list, lines_info, oopsstart, oopsend);
                 oopsstart = -1;
                 inbacktrace = 0;
             }
@@ -381,19 +377,17 @@ next_line:
                 continue;
             }
         }
-    } /* while (i < linecount) */
+    } /* while (i < lines_info_size) */
 
     /* process last oops if we have one */
     if (oopsstart >= 0 && inbacktrace)
     {
         int oopsend = i-1;
         VERB3 log("End of oops at line %d (end of file): '%s'", oopsend, lines_info[oopsend].ptr);
-        if (record_oops(oops_list, lines_info, oopsstart, oopsend))
-                oopsesfound++;
+        record_oops(oops_list, lines_info, oopsstart, oopsend);
     }
 
     free(lines_info);
-    return oopsesfound;
 }
 
 #define MAX_SCAN_BLOCK  (4*1024*1024)
@@ -683,6 +677,16 @@ int main(int argc, char **argv)
                 int errors = save_oops_to_dump_dir(oops_list, oops_cnt);
                 if (errors > 0)
                     log("%d errors while dumping oopses", errors);
+                /*
+                 * This marker in syslog file prevents us from
+                 * re-parsing old oopses. The only problem is that we
+                 * can't be sure here that the file we are watching
+                 * is the same file where syslog(xxx) stuff ends up.
+                 */
+                syslog(LOG_WARNING,
+                        "Reported %u kernel oopses to Abrt",
+                        oops_cnt
+                );
             }
         }
         list_free_with_free(oops_list);
