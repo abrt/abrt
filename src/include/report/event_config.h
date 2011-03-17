@@ -21,6 +21,11 @@
 #ifndef EVENT_CONFIG_H
 #define EVENT_CONFIG_H
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum
 {
     OPTION_TYPE_TEXT,
@@ -79,5 +84,12 @@ event_config_t *get_event_config(const char *event_name);
 event_option_t *get_event_option_from_list(const char *option_name, GList *event_options);
 
 extern GHashTable *g_event_config_list;   // for iterating through entire list of all loaded configs
+
+GList *export_event_config(const char *event_name);
+void unexport_event_config(GList *env_list);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
