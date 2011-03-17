@@ -396,6 +396,7 @@ static int run_report_editor(crash_data_t *crash_data)
  * @param result_size
  *  Maximum byte count to be written.
  */
+#if 0 /* error: ‘void read_from_stdin(const char*, char*, int)’ defined but not used (-Werror)  */
 static void read_from_stdin(const char *question, char *result, int result_size)
 {
     assert(result_size > 1);
@@ -406,6 +407,7 @@ static void read_from_stdin(const char *question, char *result, int result_size)
     // Remove the newline from the login.
     strchrnul(result, '\n')[0] = '\0';
 }
+#endif
 
 /**
  * Asks a [y/n] question on stdin/stdout.
@@ -427,6 +429,7 @@ static bool ask_yesno(const char *question)
     return 0 == strncmp(answer, yes, strlen(yes));
 }
 
+#if 0 /* error: ‘bool set_echo(bool)’ defined but not used (-Werror) */
 /* Returns true if echo has been changed from another state. */
 static bool set_echo(bool enable)
 {
@@ -444,128 +447,48 @@ static bool set_echo(bool enable)
 
     return true;
 }
-
-
-/**
- * Gets reporter plugin settings.
- * @return settings
- *   A structure filled with reporter plugin settings.
- *   It's GHashTable<char *, map_plugin_t *> and must be passed to
- *   g_hash_table_destroy();
- */
-static void get_plugin_system_settings(GHashTable *settings)
-{
-    DIR *dir = opendir(PLUGINS_CONF_DIR);
-    if (!dir)
-        return;
-
-    struct dirent *dent;
-    while ((dent = readdir(dir)) != NULL)
-    {
-        char *ext = strrchr(dent->d_name, '.');
-        if (!ext || strcmp(ext + 1, "conf") != 0)
-            continue;
-        if (!is_regular_file(dent, PLUGINS_CONF_DIR))
-            continue;
-        VERB3 log("Found %s", dent->d_name);
-
-        char *conf_file = concat_path_file(PLUGINS_CONF_DIR, dent->d_name);
-        map_string_h *single_plugin_settings = new_map_string();
-        if (load_conf_file(conf_file, single_plugin_settings, /*skip w/o value:*/ false))
-            VERB3 log("Loaded %s", dent->d_name);
-        free(conf_file);
-
-        *ext = '\0';
-        g_hash_table_replace(settings, xstrdup(dent->d_name), single_plugin_settings);
-    }
-    closedir(dir);
-}
-
-static GHashTable *get_plugin_settings(void)
-{
-    /* First of all, load system-wide plugin settings. */
-    GHashTable *settings = g_hash_table_new_full(
-                g_str_hash, g_str_equal,
-                free, (void (*)(void*))free_map_string
-    );
-
-    get_plugin_system_settings(settings);
-
-    /* Second, load user-specific settings, which override
-     * the system-wide settings. */
-    struct passwd* pw = getpwuid(geteuid());
-    const char* homedir = pw ? pw->pw_dir : NULL;
-    if (homedir)
-    {
-        GHashTableIter iter;
-        char *plugin_name;
-        map_string_h *plugin_settings;
-        g_hash_table_iter_init(&iter, settings);
-        while (g_hash_table_iter_next(&iter, (void**)&plugin_name, (void**)&plugin_settings))
-        {
-            /* Load plugin config in the home dir. Do not skip lines
-             * with empty value (but containing a "key="),
-             * because user may want to override password
-             * from /etc/abrt/plugins/foo.conf, but he prefers to
-             * enter it every time he reports. */
-            map_string_h *single_plugin_settings = new_map_string();
-            char *path = xasprintf("%s/.abrt/%s.conf", homedir, plugin_name);
-            bool success = load_conf_file(path, single_plugin_settings, /*skip key w/o values:*/ false);
-            free(path);
-            if (!success)
-            {
-                free_map_string(single_plugin_settings);
-                continue;
-            }
-
-            /* Merge user's plugin settings into already loaded settings */
-            GHashTableIter iter2;
-            char *key;
-            char *value;
-            g_hash_table_iter_init(&iter2, single_plugin_settings);
-            while (g_hash_table_iter_next(&iter2, (void**)&key, (void**)&value))
-                g_hash_table_replace(plugin_settings, xstrdup(key), xstrdup(value));
-
-            free_map_string(single_plugin_settings);
-        }
-    }
-    return settings;
-}
+#endif
 
 /**
- *  Asks user for missing login information
+ *  Asks user for missing information
  */
-static void ask_for_missing_settings(const char *plugin_name, map_string_h *single_plugin_settings)
+#if 0 /* TODO: npajkovs: FIX ME!!! */
+static void ask_for_missing_settings(const char *event_name)
 {
-    // Login information is missing.
-    const char *login = get_map_string_item_or_NULL(single_plugin_settings, "Login");
-    const char *password = get_map_string_item_or_NULL(single_plugin_settings, "Password");
-    bool loginMissing = (login && login[0] == '\0');
-    bool passwordMissing = (password && password[0] == '\0');
-    if (!loginMissing && !passwordMissing)
+    event_config_t *config = get_event_config(event_name);
+    event_option_t *login, *passwd;
+    login = get_event_option_from_list("Bugzilla_Login", config->options);
+    passwd = get_event_option_from_list("Bugzilla_Password", config->options);
+
+    int login_missing = (login && login->value && login->value[0] == '\0');
+    int passwd_missing = (passwd && passwd->value && passwd->value[0] == '\0');
+    if (!login_missing && !passwd_missing)
         return;
 
     // Read the missing information and push it to plugin settings.
-    printf(_("Wrong settings were detected for plugin %s\n"), plugin_name);
+    printf(_("Wrong settings were detected for plugin %s\n"), event_name);
     char result[64];
-    if (loginMissing)
+    if (login_missing)
     {
+        free(login->value);
         read_from_stdin(_("Enter your login: "), result, 64);
-        g_hash_table_replace(single_plugin_settings, xstrdup("Login"), xstrdup(result));
+        login->value = xstrdup(result);
     }
-    if (passwordMissing)
+
+    if (passwd_missing)
     {
         bool changed = set_echo(false);
+        free(passwd->value);
         read_from_stdin(_("Enter your password: "), result, 64);
         if (changed)
             set_echo(true);
 
+        passwd->value = xstrdup(result);
         // Newline was not added by pressing Enter because ECHO was disabled, so add it now.
         puts("");
-        g_hash_table_replace(single_plugin_settings, xstrdup("Password"), xstrdup(result));
     }
 }
-
+#endif
 
 struct logging_state {
     char *last_line;
@@ -579,31 +502,10 @@ static char *do_log_and_save_line(char *log_line, void *param)
     return NULL;
 }
 static int run_events(const char *dump_dir_name,
-                const vector_string_t& events,
-                GHashTable *map_map_settings
+                      const vector_string_t& events
 ) {
     int error_cnt = 0;
     GList *env_list = NULL;
-
-    // Export overridden settings as environment variables
-    GHashTableIter iter;
-    char *plugin_name;
-    map_string_h *single_plugin_settings;
-    g_hash_table_iter_init(&iter, map_map_settings);
-    while (g_hash_table_iter_next(&iter, (void**)&plugin_name, (void**)&single_plugin_settings))
-    {
-        GHashTableIter iter2;
-        char *key;
-        char *value;
-        g_hash_table_iter_init(&iter2, single_plugin_settings);
-        while (g_hash_table_iter_next(&iter2, (void**)&key, (void**)&value))
-        {
-            char *s = xasprintf("%s_%s=%s", plugin_name, key, value);
-            VERB3 log("Exporting '%s'", s);
-            putenv(s);
-            env_list = g_list_append(env_list, s);
-        }
-    }
 
     // Run events
     bool at_least_one_reporter_succeeded = false;
@@ -616,6 +518,9 @@ static int run_events(const char *dump_dir_name,
     for (unsigned i = 0; i < events.size(); i++)
     {
         std::string event = events[i];
+
+        // Export overridden settings as environment variables
+        env_list = export_event_config(event.c_str());
 
         int r = run_event_on_dir_name(run_state, dump_dir_name, event.c_str());
         if (r == 0 && run_state->children_count == 0)
@@ -642,18 +547,11 @@ static int run_events(const char *dump_dir_name,
         }
         free(l_state.last_line);
         l_state.last_line = NULL;
+
+        // Unexport overridden settings
+        unexport_event_config(env_list);
     }
     free_run_event_state(run_state);
-
-    // Unexport overridden settings
-    for (GList *li = env_list; li; li = g_list_next(li))
-    {
-        char *s = (char*)li->data;
-        VERB3 log("Unexporting '%s'", s);
-        safe_unsetenv(s);
-        free(s);
-    }
-    g_list_free(env_list);
 
     // Save reporting results
     if (at_least_one_reporter_succeeded)
@@ -668,7 +566,6 @@ static int run_events(const char *dump_dir_name,
 
     return error_cnt;
 }
-
 
 static char *do_log(char *log_line, void *param)
 {
@@ -751,14 +648,14 @@ int report(const char *dump_dir_name, int flags)
     }
 
     /* Get settings */
-    GHashTable *map_map_settings = get_plugin_settings();
+    load_event_config_data();
 
     int errors = 0;
     int plugins = 0;
     if (flags & CLI_REPORT_BATCH)
     {
         puts(_("Reporting..."));
-        errors += run_events(dump_dir_name, report_events, map_map_settings);
+        errors += run_events(dump_dir_name, report_events);
         plugins += report_events.size();
     }
     else
@@ -767,7 +664,8 @@ int report(const char *dump_dir_name, int flags)
         unsigned rating = rating_str ? xatou(rating_str) : 4;
 
         /* For every reporter, ask if user really wants to report using it. */
-        for (vector_string_t::const_iterator it = report_events.begin(); it != report_events.end(); ++it)
+        vector_string_t::const_iterator it;
+        for (it = report_events.begin(); it != report_events.end(); ++it)
         {
             char question[255];
             snprintf(question, sizeof(question), _("Report using %s?"), it->c_str());
@@ -778,17 +676,18 @@ int report(const char *dump_dir_name, int flags)
             }
 
 //TODO: rethink how we associate report events with configs
-            if (strncmp(it->c_str(), "report_", strlen("report_")) == 0)
+            if (prefixcmp(it->c_str(), "report_") == 0)
             {
-                const char *config_name = it->c_str() + strlen("report_");
-                map_string_h *single_plugin_settings = (map_string_h *)g_hash_table_lookup(map_map_settings, config_name);
-                if (single_plugin_settings)
+                event_config_t *config = get_event_config(it->c_str());
+
+                if (config)
                 {
-                    const char *rating_required = get_map_string_item_or_NULL(single_plugin_settings, "RatingRequired");
-                    if (rating_required
-                     && string_to_bool(rating_required) == true
-                     && rating < 3
-                    ) {
+                    /* TODO: npajkovs; not implemented yet */
+                    //const char *rating_required = get_map_string_item_or_NULL(single_plugin_settings, "RatingRequired");
+                    //if (rating_required
+                    //    && string_to_bool(rating_required) == true
+                    if (rating < 3)
+                    {
                         puts(_("Reporting disabled because the backtrace is unusable"));
 
                         const char *package = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
@@ -799,17 +698,15 @@ int report(const char *dump_dir_name, int flags)
                         errors++;
                         continue;
                     }
-                    ask_for_missing_settings(it->c_str(), single_plugin_settings);
+                    // ask_for_missing_settings(it->c_str());
                 }
             }
 
             vector_string_t cur_event(1, *it);
-            errors += run_events(dump_dir_name, cur_event, map_map_settings);
+            errors += run_events(dump_dir_name, cur_event);
             plugins++;
         }
     }
-
-    g_hash_table_destroy(map_map_settings);
 
     printf(_("Crash reported via %d report events (%d errors)\n"), plugins, errors);
     free_crash_data(crash_data);
