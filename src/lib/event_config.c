@@ -246,3 +246,37 @@ event_config_t *get_event_config(const char *name)
     }
     return g_hash_table_lookup(g_event_config_list, name);
 }
+
+GList *export_event_config(const char *event_name)
+{
+    GList *env_list = NULL;
+
+    event_config_t *config = get_event_config(event_name);
+    if (config)
+    {
+        for (GList *lopt = config->options; lopt; lopt = lopt->next)
+        {
+            event_option_t *opt = lopt->data;
+            if (!opt->value)
+                continue;
+            char *var_val = xasprintf("%s=%s", opt->name, opt->value);
+            VERB3 log("Exporting '%s'", var_val);
+            env_list = g_list_prepend(env_list, var_val);
+            putenv(var_val);
+        }
+    }
+
+    return env_list;
+}
+
+void unexport_event_config(GList *env_list)
+{
+    while (env_list)
+    {
+        char *var_val = env_list->data;
+        VERB3 log("Unexporting '%s'", var_val);
+        safe_unsetenv(var_val);
+        env_list = g_list_remove(env_list, var_val);
+        free(var_val);
+    }
+}
