@@ -21,7 +21,6 @@ bin_PROGRAMS = \
 
 dist_pluginslib_DATA = \
     Logger.glade \
-    Mailx.glade \
     Bugzilla.glade \
     RHTSupport.glade \
     Upload.glade \
@@ -46,12 +45,14 @@ dist_events_DATA = \
     report_Bugzilla.conf \
     report_Logger.conf \
     analyze_LocalGDB.xml \
-    analyze_RetraceServer.xml
+    analyze_RetraceServer.xml \
+    report_Mailx.xml
 
 eventsconfdir = $(EVENTS_CONF_DIR)
 
 dist_eventsconf_DATA = \
-    ccpp_events.conf
+    ccpp_events.conf \
+    mailx_events.conf
 
 man_MANS = \
     abrt-Bugzilla.7 \

@@ -505,7 +505,8 @@ fi
 %files plugin-mailx
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Mailx.conf
-%{_libdir}/%{name}/Mailx.glade
+%{_sysconfdir}/%{name}/events/report_Mailx.xml
+%{_sysconfdir}/%{name}/events.d/mailx_events.conf
 %{_mandir}/man7/abrt-Mailx.7.gz
 %{_bindir}/abrt-action-mailx
 

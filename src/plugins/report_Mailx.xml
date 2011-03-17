@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<event>
+    <name>Mailx</name>
+    <description>Send the problem report over email</description>
+    <options>
+        <option type="text" name="Mailx_Subject">
+            <label>Subject</label>
+            <allow-empty>no</allow-empty>
+            <description>Message subject</description>
+            <default-value>[abrt] detected a crash</default-value>
+        </option>
+        <option type="text" name="Mailx_EmailFrom">
+            <label>Sender</label>
+            <allow-empty>no</allow-empty>
+            <description>Sender's email</description>
+        </option>
+        <option type="text" name="Mailx_EmailTo">
+            <label>Recipient</label>
+            <allow-empty>no</allow-empty>
+            <description>Recipient's email</description>
+        </option>
+        <option type="bool" name="Mailx_SendBinaryData">
+            <label>Send Binary Data</label>
+            <description>Send binary files like coredump</description>
+            <default-value>no</default-value>
+        </option>
+    </options>
+</event>
