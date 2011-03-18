@@ -122,7 +122,7 @@ static void print_crash_list(vector_of_crash_data_t *crash_list, bool include_re
         if (!include_reported)
         {
             const char *msg = get_crash_item_content_or_NULL(crash, FILENAME_REPORTED_TO);
-            if (!msg)
+            if (msg)
                 continue;
         }
 
