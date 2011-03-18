@@ -20,10 +20,8 @@
 #include <gtk/gtk.h>
 #include "libreport-gtk.h"
 
-static GtkTable  *g_option_table;
 static GtkWindow *g_parent_dialog;
 static GList *option_widget_list;
-static int last_row = 0;
 
 enum
 {
@@ -64,24 +62,46 @@ static void on_show_pass_cb(GtkToggleButton *tb, gpointer user_data)
     gtk_entry_set_visibility(entry, gtk_toggle_button_get_active(tb));
 }
 
-static void add_option_to_dialog(event_option_t *option)
+static unsigned grow_table_by_1(GtkTable *table)
 {
+    guint rows, columns;
+    //needs gtk 2.22: gtk_table_get_size(table, &rows, &columns);
+    g_object_get(table, "n-rows", &rows, NULL);
+    g_object_get(table, "n-columns", &columns, NULL);
+    gtk_table_resize(table, rows + 1, columns);
+    return rows;
+}
+
+static void add_option_to_table(gpointer data, gpointer user_data)
+{
+    event_option_t *option = data;
+    GtkTable *option_table = user_data;
+
     GtkWidget *label;
     GtkWidget *option_input;
+    unsigned last_row;
 
     char *option_label;
     if (option->label != NULL)
-        option_label = option->label;
+        option_label = xstrdup(option->label);
     else
-        option_label = option->name; // TODO: replace ' ' with '_' in it?
+    {
+        option_label = xstrdup(option->name);
+        /* Replace '_' with ' ' */
+        char *p = option_label - 1;
+        while (*++p)
+            if (*p == '_')
+                *p = ' ';
+    }
 
     switch (option->type)
     {
         case OPTION_TYPE_TEXT:
         case OPTION_TYPE_NUMBER:
         case OPTION_TYPE_PASSWORD:
+            last_row = grow_table_by_1(option_table);
             label = gtk_label_new_justify_left(option_label);
-            gtk_table_attach(g_option_table, label,
+            gtk_table_attach(option_table, label,
                              /*left,right_attach:*/ 0, 1,
                              /*top,bottom_attach:*/ last_row, last_row+1,
                              /*x,yoptions:*/ GTK_FILL, GTK_FILL,
@@ -89,7 +109,7 @@ static void add_option_to_dialog(event_option_t *option)
             option_input = gtk_entry_new();
             if (option->value != NULL)
                 gtk_entry_set_text(GTK_ENTRY(option_input), option->value);
-            gtk_table_attach(g_option_table, option_input,
+            gtk_table_attach(option_table, option_input,
                              /*left,right_attach:*/ 1, 2,
                              /*top,bottom_attach:*/ last_row, last_row+1,
                              /*x,yoptions:*/ GTK_FILL | GTK_EXPAND, GTK_FILL,
@@ -98,9 +118,9 @@ static void add_option_to_dialog(event_option_t *option)
             if (option->type == OPTION_TYPE_PASSWORD)
             {
                 gtk_entry_set_visibility(GTK_ENTRY(option_input), 0);
-                last_row++;
+                last_row = grow_table_by_1(option_table);
                 GtkWidget *pass_cb = gtk_check_button_new_with_label(_("Show password"));
-                gtk_table_attach(g_option_table, pass_cb,
+                gtk_table_attach(option_table, pass_cb,
                              /*left,right_attach:*/ 1, 2,
                              /*top,bottom_attach:*/ last_row, last_row+1,
                              /*x,yoptions:*/ GTK_FILL, GTK_FILL,
@@ -108,9 +128,11 @@ static void add_option_to_dialog(event_option_t *option)
                 g_signal_connect(pass_cb, "toggled", G_CALLBACK(on_show_pass_cb), option_input);
             }
             break;
+
         case OPTION_TYPE_BOOL:
+            last_row = grow_table_by_1(option_table);
             option_input = gtk_check_button_new_with_label(option_label);
-            gtk_table_attach(g_option_table, option_input,
+            gtk_table_attach(option_table, option_input,
                              /*left,right_attach:*/ 0, 2,
                              /*top,bottom_attach:*/ last_row, last_row+1,
                              /*x,yoptions:*/ GTK_FILL, GTK_FILL,
@@ -120,17 +142,13 @@ static void add_option_to_dialog(event_option_t *option)
                                     string_to_bool(option->value));
             add_option_widget(option_input, option);
             break;
+
         default:
             //option_input = gtk_label_new_justify_left("WTF?");
             log("unsupported option type");
     }
-    last_row++;
-}
 
-static void add_option(gpointer data, gpointer user_data)
-{
-    event_option_t * option = (event_option_t *)data;
-    add_option_to_dialog(option);
+    free(option_label);
 }
 
 static void on_close_event_list_cb(GtkWidget *button, gpointer user_data)
@@ -263,14 +281,14 @@ static void show_event_config_dialog(const char *event_name)
         gtk_window_set_icon_name(GTK_WINDOW(dialog),
                 gtk_window_get_icon_name(g_parent_dialog));
     }
+
     int length = g_list_length(event->options);
     GtkWidget *option_table = gtk_table_new(length, 2, 0);
-    g_option_table = (GtkTable*)option_table;
-    g_list_foreach(event->options, &add_option, NULL);
-
+    g_list_foreach(event->options, &add_option_to_table, option_table);
     GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
     gtk_box_pack_start(GTK_BOX(content), option_table, false, false, 20);
     gtk_widget_show_all(option_table);
+
     int result = gtk_dialog_run(GTK_DIALOG(dialog));
     if (result == GTK_RESPONSE_APPLY)
     {
@@ -279,7 +297,7 @@ static void show_event_config_dialog(const char *event_name)
     }
     //else if (result == GTK_RESPONSE_CANCEL)
     //    log("log");
-    gtk_widget_destroy(GTK_WIDGET(dialog));
+    gtk_widget_destroy(dialog);
 }
 
 void show_events_list_dialog(GtkWindow *parent)

@@ -314,10 +314,10 @@ GtkWidget *create_menu(void)
 
     /* edit submenu */
     GtkWidget *edit_submenu = gtk_menu_new();
-    GtkWidget *plugins_item = gtk_menu_item_new_with_mnemonic(_("_Plugins"));
-    GtkWidget *preferences_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_PREFERENCES, NULL);
+    GtkWidget *plugins_item = gtk_menu_item_new_with_mnemonic(_("_Event configuration"));
+    //GtkWidget *preferences_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_PREFERENCES, NULL);
     gtk_menu_shell_append(GTK_MENU_SHELL(edit_submenu), plugins_item);
-    gtk_menu_shell_append(GTK_MENU_SHELL(edit_submenu), preferences_item);
+    //gtk_menu_shell_append(GTK_MENU_SHELL(edit_submenu), preferences_item);
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(edit_item), edit_submenu);
 
     g_signal_connect(plugins_item, "activate", G_CALLBACK(show_events_list_dialog_cb), NULL);
