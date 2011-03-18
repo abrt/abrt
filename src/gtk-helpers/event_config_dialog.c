@@ -20,8 +20,8 @@
 #include <gtk/gtk.h>
 #include "libreport-gtk.h"
 
-static GtkWidget *option_table;
-static GtkWidget *parent_dialog;
+static GtkTable  *g_option_table;
+static GtkWindow *g_parent_dialog;
 static GList *option_widget_list;
 static int last_row = 0;
 
@@ -29,7 +29,6 @@ enum
 {
     COLUMN_EVENT_UINAME,
     COLUMN_EVENT_NAME,
-    COLUMN_EVENT_BG,
     NUM_COLUMNS
 };
 
@@ -46,6 +45,8 @@ static GtkWidget *gtk_label_new_justify_left(const gchar *label_str)
     GtkWidget *label = gtk_label_new(label_str);
     gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_LEFT);
     gtk_misc_set_alignment(GTK_MISC(label), /*xalign:*/ 0, /*yalign:*/ 0.5);
+    /* Make some space between label and input field to the right of it: */
+    gtk_misc_set_padding(GTK_MISC(label), /*xpad:*/ 5, /*ypad:*/ 0);
     return label;
 }
 
@@ -67,78 +68,63 @@ static void add_option_to_dialog(event_option_t *option)
 {
     GtkWidget *label;
     GtkWidget *option_input;
-    GtkWidget *option_hbox = gtk_hbox_new(FALSE, 0);
+
     char *option_label;
     if (option->label != NULL)
         option_label = option->label;
     else
-        option_label = option->name;
+        option_label = option->name; // TODO: replace ' ' with '_' in it?
 
     switch (option->type)
     {
         case OPTION_TYPE_TEXT:
         case OPTION_TYPE_NUMBER:
+        case OPTION_TYPE_PASSWORD:
             label = gtk_label_new_justify_left(option_label);
-            gtk_table_attach(GTK_TABLE(option_table), label,
-                             0, 1,
-                             last_row, last_row+1,
-                             GTK_FILL, GTK_FILL,
-                             0,0);
+            gtk_table_attach(g_option_table, label,
+                             /*left,right_attach:*/ 0, 1,
+                             /*top,bottom_attach:*/ last_row, last_row+1,
+                             /*x,yoptions:*/ GTK_FILL, GTK_FILL,
+                             /*x,ypadding:*/ 0, 0);
             option_input = gtk_entry_new();
             if (option->value != NULL)
                 gtk_entry_set_text(GTK_ENTRY(option_input), option->value);
-            gtk_table_attach(GTK_TABLE(option_table), option_input,
-                             1, 2,
-                             last_row, last_row+1,
-                             GTK_FILL, GTK_FILL,
-                             0,0);
+            gtk_table_attach(g_option_table, option_input,
+                             /*left,right_attach:*/ 1, 2,
+                             /*top,bottom_attach:*/ last_row, last_row+1,
+                             /*x,yoptions:*/ GTK_FILL | GTK_EXPAND, GTK_FILL,
+                             /*x,ypadding:*/ 0, 0);
             add_option_widget(option_input, option);
+            if (option->type == OPTION_TYPE_PASSWORD)
+            {
+                gtk_entry_set_visibility(GTK_ENTRY(option_input), 0);
+                last_row++;
+                GtkWidget *pass_cb = gtk_check_button_new_with_label(_("Show password"));
+                gtk_table_attach(g_option_table, pass_cb,
+                             /*left,right_attach:*/ 1, 2,
+                             /*top,bottom_attach:*/ last_row, last_row+1,
+                             /*x,yoptions:*/ GTK_FILL, GTK_FILL,
+                             /*x,ypadding:*/ 0, 0);
+                g_signal_connect(pass_cb, "toggled", G_CALLBACK(on_show_pass_cb), option_input);
+            }
             break;
         case OPTION_TYPE_BOOL:
             option_input = gtk_check_button_new_with_label(option_label);
-            gtk_table_attach(GTK_TABLE(option_table), option_input,
-                             0, 2,
-                             last_row, last_row+1,
-                             GTK_FILL, GTK_FILL,
-                             0,0);
+            gtk_table_attach(g_option_table, option_input,
+                             /*left,right_attach:*/ 0, 2,
+                             /*top,bottom_attach:*/ last_row, last_row+1,
+                             /*x,yoptions:*/ GTK_FILL, GTK_FILL,
+                             /*x,ypadding:*/ 0, 0);
             if (option->value != NULL)
                 gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(option_input),
-                                    (strcmp("yes",option->value)==0));
+                                    string_to_bool(option->value));
             add_option_widget(option_input, option);
-            break;
-        case OPTION_TYPE_PASSWORD:
-            label = gtk_label_new_justify_left(option_label);
-            gtk_table_attach(GTK_TABLE(option_table), label,
-                             0, 1,
-                             last_row, last_row+1,
-                             GTK_FILL, GTK_FILL,
-                             0,0);
-            option_input = gtk_entry_new();
-            if (option->value != NULL)
-                gtk_entry_set_text(GTK_ENTRY(option_input), option->value);
-            gtk_table_attach(GTK_TABLE(option_table), option_input,
-                             1, 2,
-                             last_row, last_row+1,
-                             GTK_FILL, GTK_FILL,
-                             0,0);
-            gtk_entry_set_visibility(GTK_ENTRY(option_input), 0);
-            add_option_widget(option_input, option);
-            last_row++;
-            GtkWidget *pass_cb = gtk_check_button_new_with_label(_("Show password"));
-            gtk_table_attach(GTK_TABLE(option_table), pass_cb,
-                             1, 2,
-                             last_row, last_row+1,
-                             GTK_FILL, GTK_FILL,
-                             0,0);
-            g_signal_connect(pass_cb, "toggled", G_CALLBACK(on_show_pass_cb), option_input);
             break;
         default:
             //option_input = gtk_label_new_justify_left("WTF?");
             log("unsupported option type");
     }
     last_row++;
-
-    gtk_widget_show_all(GTK_WIDGET(option_hbox));
 }
 
 static void add_option(gpointer data, gpointer user_data)
@@ -197,10 +183,10 @@ static void on_event_row_changed_cb(GtkTreeView *treeview, gpointer user_data)
 
 static void add_event_to_liststore(gpointer key, gpointer value, gpointer user_data)
 {
-    static bool grey_bg = false;
     GtkListStore *events_list_store = (GtkListStore *)user_data;
     event_config_t *ec = (event_config_t *)value;
-    char *event_label = NULL;
+
+    char *event_label;
     if (ec->screen_name != NULL && ec->description != NULL)
         event_label = xasprintf("<b>%s</b>\n%s", ec->screen_name, ec->description);
     else
@@ -212,28 +198,34 @@ static void add_event_to_liststore(gpointer key, gpointer value, gpointer user_d
     gtk_list_store_set(events_list_store, &iter,
                       COLUMN_EVENT_UINAME, event_label,
                       COLUMN_EVENT_NAME, key,
-                      COLUMN_EVENT_BG, grey_bg ? "#EEEEEE" : "#FFFFFF",
                       -1);
-    grey_bg = !grey_bg;
+    free(event_label);
 }
 
 static void save_value_from_widget(gpointer data, gpointer user_data)
 {
     option_widget_t *ow = (option_widget_t *)data;
+
+    const char *val = NULL;
     switch (ow->option->type)
     {
         case OPTION_TYPE_TEXT:
         case OPTION_TYPE_NUMBER:
         case OPTION_TYPE_PASSWORD:
-            ow->option->value = xstrdup((char *)gtk_entry_get_text(GTK_ENTRY(ow->widget)));
+            val = (char *)gtk_entry_get_text(GTK_ENTRY(ow->widget));
             break;
         case OPTION_TYPE_BOOL:
-            ow->option->value = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ow->widget)) ? xstrdup("yes") : xstrdup("no");
+            val = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ow->widget)) ? "yes" : "no";
             break;
         default:
             log("unsupported option type");
     }
-    VERB1 log("saved: %s:%s", ow->option->name, ow->option->value);
+    if (val)
+    {
+        free(ow->option->value);
+        ow->option->value = xstrdup(val);
+        VERB1 log("saved: %s:%s", ow->option->name, ow->option->value);
+    }
 }
 
 static void dehydrate_config_dialog()
@@ -259,20 +251,21 @@ static void show_event_config_dialog(const char *event_name)
 
     GtkWidget *dialog = gtk_dialog_new_with_buttons(
                         title,
-                        GTK_WINDOW(parent_dialog),
+                        g_parent_dialog,
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                         GTK_STOCK_OK,
                         GTK_RESPONSE_APPLY,
                         GTK_STOCK_CANCEL,
                         GTK_RESPONSE_CANCEL,
                         NULL);
-    if (parent_dialog != NULL)
+    if (g_parent_dialog != NULL)
     {
         gtk_window_set_icon_name(GTK_WINDOW(dialog),
-                gtk_window_get_icon_name(GTK_WINDOW(parent_dialog)));
+                gtk_window_get_icon_name(g_parent_dialog));
     }
     int length = g_list_length(event->options);
-    option_table = gtk_table_new(length, 2, 0);
+    GtkWidget *option_table = gtk_table_new(length, 2, 0);
+    g_option_table = (GtkTable*)option_table;
     g_list_foreach(event->options, &add_option, NULL);
 
     GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
@@ -299,15 +292,18 @@ void show_events_list_dialog(GtkWindow *parent)
         load_event_config_data();
         load_event_config_data_from_keyring();
     }
-    parent_dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(parent_dialog), _("Events"));
-    gtk_window_set_default_size(GTK_WINDOW(parent_dialog), 450, 400);
+
+    GtkWidget *parent_dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    g_parent_dialog = (GtkWindow*)parent_dialog;
+    gtk_window_set_title(g_parent_dialog, _("Event Configuration"));
+    gtk_window_set_default_size(g_parent_dialog, 450, 400);
+    gtk_window_set_position(g_parent_dialog, parent ? GTK_WIN_POS_CENTER_ON_PARENT : GTK_WIN_POS_CENTER);
     if (parent != NULL)
     {
-        gtk_window_set_transient_for(GTK_WINDOW(parent_dialog), parent);
+        gtk_window_set_transient_for(g_parent_dialog, parent);
         // modal = parent window can't steal focus
-        gtk_window_set_modal(GTK_WINDOW(parent_dialog), true);
-        gtk_window_set_icon_name(GTK_WINDOW(parent_dialog),
+        gtk_window_set_modal(g_parent_dialog, true);
+        gtk_window_set_icon_name(g_parent_dialog,
             gtk_window_get_icon_name(parent));
     }
 
@@ -328,23 +324,24 @@ void show_events_list_dialog(GtkWindow *parent)
                                                  renderer,
                                                  "markup",
                                                  COLUMN_EVENT_UINAME,
-                                                 "background",
-                                                 COLUMN_EVENT_BG,
                                                  NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
     g_object_set(G_OBJECT(renderer), "wrap-mode", PANGO_WRAP_WORD, NULL);
     g_object_set(G_OBJECT(renderer), "wrap-width", 440, NULL);
     gtk_tree_view_column_set_sort_column_id(column, COLUMN_EVENT_NAME);
     gtk_tree_view_append_column(GTK_TREE_VIEW(events_tv), column);
+    /* "Please draw rows in alternating colors": */
+    gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(events_tv), TRUE);
+    // TODO: gtk_tree_view_set_headers_visible(FALSE)? We have only one column anyway...
 
     /* Create data store for the list and attach it
-    * COLUMN_EVENT_UINAME -> name+description
-    * COLUMN_EVENT_NAME -> event name so we can retrieve it from the row
-    */
+     * COLUMN_EVENT_UINAME -> name+description
+     * COLUMN_EVENT_NAME -> event name so we can retrieve it from the row
+     */
     GtkListStore *events_list_store = gtk_list_store_new(NUM_COLUMNS,
                                                 G_TYPE_STRING, /* Event name + description */
-                                                G_TYPE_STRING, /* event name */
-                                                G_TYPE_STRING);/* bg color */
+                                                G_TYPE_STRING  /* event name */
+    );
     gtk_tree_view_set_model(GTK_TREE_VIEW(events_tv), GTK_TREE_MODEL(events_list_store));
 
     g_hash_table_foreach(g_event_config_list,
@@ -362,7 +359,7 @@ void show_events_list_dialog(GtkWindow *parent)
     g_signal_connect(events_tv, "cursor-changed", G_CALLBACK(on_event_row_changed_cb), configure_event_btn);
 
     GtkWidget *close_btn = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
-    g_signal_connect(close_btn, "clicked", G_CALLBACK(on_close_event_list_cb), parent_dialog);
+    g_signal_connect(close_btn, "clicked", G_CALLBACK(on_close_event_list_cb), g_parent_dialog);
 
     GtkWidget *btnbox = gtk_hbutton_box_new();
     gtk_box_pack_end(GTK_BOX(btnbox), configure_event_btn, false, false, 0);
