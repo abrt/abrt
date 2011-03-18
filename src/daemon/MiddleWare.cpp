@@ -376,7 +376,7 @@ report_status_t Report(crash_data_t *client_report,
         struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (dd)
         {
-            dd_save_text(dd, FILENAME_MESSAGE, message.c_str());
+            add_reported_to(dd, message.c_str());
             dd_close(dd);
         }
     }

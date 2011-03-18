@@ -861,7 +861,7 @@ static void report_to_bugzilla(
 
             free(dsc);
 
-            bool is_priv = is_private && (is_private[0] == '1');
+            bool is_priv = is_private && string_to_bool(is_private);
             if (bz_server.add_comment(bug_id, full_dsc, is_priv) == -1)
             {
                 free(full_dsc);
@@ -882,6 +882,15 @@ static void report_to_bugzilla(
                 bugzilla_url,
                 (int)bug_id
     );
+
+    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (dd)
+    {
+        char *msg = xasprintf("Bugzilla: URL=%s/show_bug.cgi?id=%u", bugzilla_url, (int)bug_id);
+        add_reported_to(dd, msg);
+        free(msg);
+        dd_close(dd);
+    }
 
     free_crash_data(crash_data);
     bug_info_destroy(&bz);

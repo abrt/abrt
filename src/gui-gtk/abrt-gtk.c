@@ -54,7 +54,7 @@ void add_directory_to_dirlist(const char *dirname)
     size_t time_len = strftime(time_buf, sizeof(time_buf)-1, "%c", ptm);
     time_buf[time_len] = '\0';
 
-    char *msg = dd_load_text_ext(dd, FILENAME_MESSAGE, 0
+    char *msg = dd_load_text_ext(dd, FILENAME_REPORTED_TO, 0
                 | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
                 | DD_FAIL_QUIETLY_ENOENT
                 | DD_FAIL_QUIETLY_EACCES

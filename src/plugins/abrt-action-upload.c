@@ -160,7 +160,6 @@ static int create_and_upload_archive(
             if (strcmp(short_name, FILENAME_COUNT) == 0) goto next;
             if (strcmp(short_name, CD_DUMPDIR) == 0) goto next;
             if (strcmp(short_name, FILENAME_INFORMALL) == 0) goto next;
-            if (strcmp(short_name, FILENAME_MESSAGE) == 0) goto next; // plugin's status message (if we already reported it yesterday)
             // dd_get_next_file guarantees this:
             //struct stat stbuf;
             //if (stat(full_name, &stbuf) != 0)

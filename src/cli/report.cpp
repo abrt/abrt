@@ -508,8 +508,6 @@ static int run_events(const char *dump_dir_name,
     GList *env_list = NULL;
 
     // Run events
-    bool at_least_one_reporter_succeeded = false;
-    std::string message;
     struct logging_state l_state;
     l_state.last_line = NULL;
     struct run_event_state *run_state = new_run_event_state();
@@ -530,11 +528,7 @@ static int run_events(const char *dump_dir_name,
         }
         if (r == 0)
         {
-            at_least_one_reporter_succeeded = true;
             printf("%s: %s\n", event.c_str(), (l_state.last_line ? : "Reporting succeeded"));
-            if (message != "")
-                message += ";";
-            message += (l_state.last_line ? : "Reporting succeeded");
         }
         else
         {
@@ -552,17 +546,6 @@ static int run_events(const char *dump_dir_name,
         unexport_event_config(env_list);
     }
     free_run_event_state(run_state);
-
-    // Save reporting results
-    if (at_least_one_reporter_succeeded)
-    {
-        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-        if (dd)
-        {
-            dd_save_text(dd, FILENAME_MESSAGE, message.c_str());
-            dd_close(dd);
-        }
-    }
 
     return error_cnt;
 }

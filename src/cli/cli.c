@@ -121,8 +121,8 @@ static void print_crash_list(vector_of_crash_data_t *crash_list, bool include_re
         crash_data_t *crash = get_crash_data(crash_list, i);
         if (!include_reported)
         {
-            const char *msg = get_crash_item_content_or_NULL(crash, FILENAME_MESSAGE);
-            if (!msg || !msg[0])
+            const char *msg = get_crash_item_content_or_NULL(crash, FILENAME_REPORTED_TO);
+            if (!msg)
                 continue;
         }
 

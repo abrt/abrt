@@ -61,7 +61,13 @@
 #define FILENAME_UUID         "uuid"
 #define FILENAME_INFORMALL    "inform_all_users"
 #define FILENAME_COUNT        "count"
-#define FILENAME_MESSAGE      "message"
+/* Multi-line list of places problem was reported.
+ * Recommended line format:
+ * "Reporter: VAR=VAL VAR=VAL"
+ * Use add_reported_to(dd, "line_without_newline"): it adds line
+ * only if it is not already there.
+ */
+#define FILENAME_REPORTED_TO  "reported_to"
 #define FILENAME_EVENT_LOG    "event_log"
 // Not stored as files, added "on the fly":
 #define CD_DUMPDIR         "DumpDir"
@@ -80,6 +86,9 @@ enum {
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define add_reported_to abrt_add_reported_to
+void add_reported_to(struct dump_dir *dd, const char *line);
 
 #define log_crash_data abrt_log_crash_data
 void log_crash_data(crash_data_t *crash_data, const char *pfx);
