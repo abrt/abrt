@@ -18,7 +18,7 @@ def application(environ, start_response):
     if request.method != "POST":
         return response(start_response, "405 Method Not Allowed")
 
-    if not request.content_type in ["application/x-xz", "application/x-xz-compressed-tar", "application/x-gzip", "application/x-tar"]:
+    if not request.content_type in HANDLE_ARCHIVE.keys():
         return response(start_response, "415 Unsupported Media Type")
 
     if not request.content_length:
@@ -53,7 +53,7 @@ def application(environ, start_response):
     except:
         return response(start_response, "500 Internal Server Error", "Unable to save archive")
 
-    size = unpacked_size(archive.name)
+    size = unpacked_size(archive.name, request.content_type)
     if not size:
         os.unlink(archive.name)
         return response(start_response, "500 Internal Server Error", "Unable to obtain unpacked size")
@@ -73,7 +73,7 @@ def application(environ, start_response):
     try:
         os.mkdir("%s/crash/" % taskdir)
         os.chdir("%s/crash/" % taskdir)
-        unpack_retcode = unpack(archive.name)
+        unpack_retcode = unpack(archive.name, request.content_type)
         os.unlink(archive.name)
 
         if unpack_retcode != 0:

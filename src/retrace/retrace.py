@@ -12,6 +12,7 @@ REQUIRED_FILES = ["coredump", "executable", "package"]
 
 DF_BIN = "/bin/df"
 DU_BIN = "/usr/bin/du"
+GZIP_BIN = "/usr/bin/gzip"
 TAR_BIN = "/bin/tar"
 XZ_BIN = "/usr/bin/xz"
 
@@ -19,7 +20,6 @@ TASKID_PARSER = re.compile("^.*/([0-9]+)/*$")
 PACKAGE_PARSER = re.compile("^(.+)-([0-9]+(\.[0-9]+)*-[0-9]+)\.([^-]+)$")
 DF_OUTPUT_PARSER = re.compile("^([^ ^\t]*)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+%)[ \t]+(.*)$")
 DU_OUTPUT_PARSER = re.compile("^([0-9]+)")
-XZ_OUTPUT_PARSER = re.compile("^totals[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+\.[0-9]+)[ \t]+([^ ^\t]+)[ \t]+([0-9]+)")
 URL_PARSER = re.compile("^/([0-9]+)/?")
 RELEASE_PARSERS = {
   "fedora": re.compile("^Fedora[^0-9]+([0-9]+)[^\(]\(([^\)]+)\)$"),
@@ -27,6 +27,23 @@ RELEASE_PARSERS = {
 
 GUESS_RELEASE_PARSERS = {
   "fedora": re.compile("\.fc([0-9]+)"),
+}
+
+HANDLE_ARCHIVE = {
+  "application/x-xz-compressed-tar": {
+    "unpack": [TAR_BIN, "xJf"],
+    "size": ([XZ_BIN, "--list", "--robot"], re.compile("^totals[ \t]+[0-9]+[ \t]+[0-9]+[ \t]+[0-9]+[ \t]+([0-9]+).*")),
+  },
+
+  "application/x-gzip": {
+    "unpack": [TAR_BIN, "xzf"],
+    "size": ([GZIP_BIN, "--list"], re.compile("^[^0-9]*[0-9]+[^0-9]+([0-9]+).*$")),
+  },
+
+  "application/x-tar": {
+    "unpack": [TAR_BIN, "xf"],
+    "size": (["ls", "-l"], re.compile("^[ \t]*[^ ^\t]+[ \t]+[^ ^\t]+[ \t]+[^ ^\t]+[ \t]+[^ ^\t]+[ \t]+([0-9]+).*$")),
+  },
 }
 
 TASKPASS_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -89,13 +106,14 @@ def dir_size(path):
     pipe.close()
     return 0
 
-def unpacked_size(archive):
-    pipe = Popen([XZ_BIN, "--list", "--robot", archive], stdout=PIPE).stdout
+def unpacked_size(archive, mime):
+    command, parser = HANDLE_ARCHIVE[mime]["size"]
+    pipe = Popen(command + [archive], stdout=PIPE).stdout
     for line in pipe.readlines():
-        match = XZ_OUTPUT_PARSER.match(line)
+        match = parser.match(line)
         if match:
             pipe.close()
-            return int(match.group(4))
+            return int(match.group(1))
 
     pipe.close()
     return None
@@ -191,8 +209,8 @@ def new_task():
     except:
         return None, None, None
 
-def unpack(archive):
-    pipe = Popen([TAR_BIN, "xJf", archive])
+def unpack(archive, mime):
+    pipe = Popen(HANDLE_ARCHIVE[mime]["unpack"] + [archive])
     pipe.wait()
     return pipe.returncode
 
