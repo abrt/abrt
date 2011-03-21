@@ -142,7 +142,7 @@ def guess_release(package):
 def run_gdb(savedir):
     try:
         exec_file = open("%s/crash/executable" % savedir, "r")
-        executable = exec_file.read().replace("'", "")
+        executable = exec_file.read().replace("'", "").replace("\"", "")
         exec_file.close()
     except:
         return ""
@@ -155,15 +155,16 @@ def run_gdb(savedir):
         return ""
 
     pipe = Popen(["mock", "shell", "-r", mockr, "--",
-                  "gdb", "-batch",
-                  "-ex", "'file %s'" % executable,
-                  "-ex", "'core-file /var/spool/abrt/crash/coredump'",
-                  "-ex", "'thread apply all backtrace 2048 full'",
-                  "-ex", "'info sharedlib'",
-                  "-ex", "'print (char*)__abort_msg'",
-                  "-ex", "'print (char*)__glib_assert_msg'",
-                  "-ex", "'info registers'",
-                  "-ex", "'disassemble'",
+                  "su", "mockbuild", "-c",
+                  "\" gdb -batch"
+                  " -ex 'file %s'"
+                  " -ex 'core-file /var/spool/abrt/crash/coredump'"
+                  " -ex 'thread apply all backtrace 2048 full'"
+                  " -ex 'info sharedlib'"
+                  " -ex 'print (char*)__abort_msg'"
+                  " -ex 'print (char*)__glib_assert_msg'"
+                  " -ex 'info registers'"
+                  " -ex 'disassemble' \"" % executable,
                   # redirect GDB's stderr, ignore mock's stderr
                   "2>&1"], stdout=PIPE).stdout
 

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <pwd.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -13,6 +14,8 @@ int main(int argc, char **argv)
   char command[256];
   FILE *pipe;
   int i;
+  struct passwd *apache_user;
+  const char *apache_username = "apache";
 
   if (argc != 2)
   {
@@ -33,9 +36,18 @@ int main(int argc, char **argv)
       return 3;
     }
 
-  /* needs to be set to make mock work properly */
-  setenv("SUDO_USER", "root", 1);
-  setenv("SUDO_UID", "0", 1);
+  apache_user = getpwnam(apache_username);
+  if (!apache_user)
+  {
+    fprintf(stderr, "User \"%s\" not found.\n", apache_username);
+    return 4;
+  }
+
+  sprintf(command, "%d", apache_user->pw_uid);
+
+  setenv("SUDO_USER", apache_username, 1);
+  setenv("SUDO_UID", command, 1);
+  /* required by mock to be able to write into result directory */
   setenv("SUDO_GID", "0", 1);
 
   /* launch worker.py */
@@ -44,7 +56,7 @@ int main(int argc, char **argv)
   if (pipe == NULL)
   {
     fputs("Unable to run 'worker.py'.", stderr);
-    return 4;
+    return 5;
   }
 
   return pclose(pipe) >> 8;
