@@ -396,7 +396,6 @@ static int run_report_editor(crash_data_t *crash_data)
  * @param result_size
  *  Maximum byte count to be written.
  */
-#if 0 /* error: ‘void read_from_stdin(const char*, char*, int)’ defined but not used (-Werror)  */
 static void read_from_stdin(const char *question, char *result, int result_size)
 {
     assert(result_size > 1);
@@ -407,7 +406,6 @@ static void read_from_stdin(const char *question, char *result, int result_size)
     // Remove the newline from the login.
     strchrnul(result, '\n')[0] = '\0';
 }
-#endif
 
 /**
  * Asks a [y/n] question on stdin/stdout.
@@ -429,7 +427,6 @@ static bool ask_yesno(const char *question)
     return 0 == strncmp(answer, yes, strlen(yes));
 }
 
-#if 0 /* error: ‘bool set_echo(bool)’ defined but not used (-Werror) */
 /* Returns true if echo has been changed from another state. */
 static bool set_echo(bool enable)
 {
@@ -447,48 +444,81 @@ static bool set_echo(bool enable)
 
     return true;
 }
-#endif
 
 /**
  *  Asks user for missing information
  */
-#if 0 /* TODO: npajkovs: FIX ME!!! */
 static void ask_for_missing_settings(const char *event_name)
 {
-    event_config_t *config = get_event_config(event_name);
-    event_option_t *login, *passwd;
-    login = get_event_option_from_list("Bugzilla_Login", config->options);
-    passwd = get_event_option_from_list("Bugzilla_Password", config->options);
-
-    int login_missing = (login && login->value && login->value[0] == '\0');
-    int passwd_missing = (passwd && passwd->value && passwd->value[0] == '\0');
-    if (!login_missing && !passwd_missing)
-        return;
-
-    // Read the missing information and push it to plugin settings.
-    printf(_("Wrong settings were detected for plugin %s\n"), event_name);
-    char result[64];
-    if (login_missing)
+    for (int i = 0; i < 3; ++i)
     {
-        free(login->value);
-        read_from_stdin(_("Enter your login: "), result, 64);
-        login->value = xstrdup(result);
+        GHashTable *error_table = validate_event(event_name);
+        if (!error_table)
+            return;
+
+        event_config_t *event_config = get_event_config(event_name);
+
+        GHashTableIter iter;
+        char *opt_value, *err_msg;
+        g_hash_table_iter_init(&iter, error_table);
+        while (g_hash_table_iter_next(&iter, (void**)&opt_value, (void**)&err_msg))
+        {
+            event_option_t *opt = get_event_option_from_list(opt_value,
+                                                             event_config->options);
+
+            char result[512];
+
+            char *question = xasprintf("%s: ", (opt->label) ? opt->label: opt->name);
+            switch (opt->type) {
+            case OPTION_TYPE_TEXT:
+            case OPTION_TYPE_NUMBER:
+                read_from_stdin(question, result, 512);
+                opt->value = xstrdup(result);
+                break;
+            case OPTION_TYPE_PASSWORD:
+            {
+                bool changed = set_echo(false);
+                read_from_stdin(question, result, 512);
+                if (changed)
+                    set_echo(true);
+
+                opt->value = xstrdup(result);
+                /* Newline was not added by pressing Enter because ECHO was
+                   disabled, so add it now. */
+                puts("");
+                break;
+            }
+            case OPTION_TYPE_BOOL:
+                if (ask_yesno(question))
+                    opt->value = xstrdup("yes");
+                else
+                    opt->value = xstrdup("no");
+
+                break;
+            case OPTION_TYPE_INVALID:
+                break;
+            };
+
+            free(question);
+        }
+
+        g_hash_table_destroy(error_table);
+
+        error_table = validate_event(event_name);
+        if (!error_table)
+            return;
+
+        log(_("Your input is not valid, because of:"));
+        g_hash_table_iter_init(&iter, error_table);
+        while (g_hash_table_iter_next(&iter, (void**)&opt_value, (void**)&err_msg))
+            log(_("Bad value for '%s': %s"), opt_value, err_msg);
+
+        g_hash_table_destroy(error_table);
     }
 
-    if (passwd_missing)
-    {
-        bool changed = set_echo(false);
-        free(passwd->value);
-        read_from_stdin(_("Enter your password: "), result, 64);
-        if (changed)
-            set_echo(true);
-
-        passwd->value = xstrdup(result);
-        // Newline was not added by pressing Enter because ECHO was disabled, so add it now.
-        puts("");
-    }
+    /* we ask for 3 times and still don't have valid infromation */
+    error_msg_and_die("Invalid input, program exiting...");
 }
-#endif
 
 struct logging_state {
     char *last_line;
@@ -698,7 +728,7 @@ int report(const char *dump_dir_name, int flags)
                         errors++;
                         continue;
                     }
-                    // ask_for_missing_settings(it->c_str());
+                    ask_for_missing_settings(it->c_str());
                 }
             }
 

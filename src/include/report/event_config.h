@@ -89,6 +89,9 @@ extern GHashTable *g_event_config_list;   // for iterating through entire list o
 GList *export_event_config(const char *event_name);
 void unexport_event_config(GList *env_list);
 
+GHashTable *validate_event(const char *event_name);
+char *validate_event_option(event_option_t *opt);
+
 #ifdef __cplusplus
 }
 #endif
