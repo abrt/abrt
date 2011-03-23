@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<event>
+    <name>Red Hat Customer Support</name>
+    <description>Report problems to Red Hat support</description>
+    <options>
+        <option type="text" name="RHTSupport_URL">
+            <label>RH Portal URL</label>
+            <allow-empty>no</allow-empty>
+            <description>Address of the Red Hat support portal</description>
+            <default-value>https://api.access.redhat.com/rs</default-value>
+        </option>
+        <option type="text" name="RHTSupport_Login">
+            <label>Username</label>
+            <description>Red Hat customer user name</description>
+            <allow-empty>no</allow-empty>
+        </option>
+        <option type="password" name="RHTSupport_Password">
+            <label>Password</label>
+            <description>Red Hat customer password</description>
+            <allow-empty>no</allow-empty>
+        </option>
+        <option type="bool" name="RHTSupport_SSLVerify">
+            <label>Verify SSL</label>
+            <description>Check SSL key validity</description>
+            <default-value>yes</default-value>
+        </option>
+    </options>
+</event>
+
+

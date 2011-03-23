@@ -16,7 +16,7 @@
 %if "0%{?_buildid}" != "0"
 %define pkg_release 0.%{?_buildid}%{?dist}
 %else
-%define pkg_release 1%{?dist}
+%define pkg_release 2%{?dist}
 %endif
 
 Summary: Automatic bug detection and reporting tool
@@ -46,6 +46,8 @@ BuildRequires: libtool
 BuildRequires: nss-devel
 BuildRequires: texinfo
 BuildRequires: libgnome-keyring-devel
+# for rhel6
+#BuildRequires: gnome-keyring-devel
 %if %{?with_systemd}
 Requires: systemd-units
 %endif
@@ -257,6 +259,7 @@ generation service over a network using HTTP protocol.
 %setup -q
 
 %build
+autoconf
 %configure
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
@@ -415,7 +418,7 @@ fi
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
 %dir %{_sysconfdir}/%{name}/events.d
-%dir %{_libdir}/%{name}
+#%dir %{_libdir}/%{name}
 %{_mandir}/man8/abrtd.8.gz
 %{_mandir}/man5/%{name}.conf.5.gz
 # {_mandir}/man5/pyhook.conf.5.gz
@@ -488,7 +491,6 @@ fi
 %files addon-kerneloops
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Kerneloops.conf
-%{_libdir}/%{name}/KerneloopsReporter.glade
 %{_mandir}/man7/abrt-KerneloopsReporter.7.gz
 %{_bindir}/abrt-dump-oops
 %{_bindir}/abrt-action-analyze-oops
@@ -498,7 +500,6 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Logger.conf
 %{_sysconfdir}/%{name}/events/report_Logger.conf
-%{_libdir}/%{name}/Logger.glade
 %{_mandir}/man7/abrt-Logger.7.gz
 %{_bindir}/abrt-action-print
 
@@ -516,21 +517,19 @@ fi
 %{_sysconfdir}/%{name}/events/report_Bugzilla.xml
 %config(noreplace) %{_sysconfdir}/%{name}/events/report_Bugzilla.conf
 # FIXME: remove with the old gui
-%{_libdir}/%{name}/Bugzilla.glade
 %{_mandir}/man7/abrt-Bugzilla.7.gz
 %{_bindir}/abrt-action-bugzilla
 
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/RHTSupport.conf
-%{_libdir}/%{name}/RHTSupport.glade
+%{_sysconfdir}/%{name}/events/report_RHTSupport.xml
 # {_mandir}/man7/abrt-RHTSupport.7.gz
 %{_bindir}/abrt-action-rhtsupport
 
 %files plugin-reportuploader
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Upload.conf
-%{_libdir}/%{name}/Upload.glade
 %{_mandir}/man7/abrt-Upload.7.gz
 %{_bindir}/abrt-action-upload
 

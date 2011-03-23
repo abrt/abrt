@@ -19,13 +19,6 @@ bin_PROGRAMS = \
     abrt-action-install-debuginfo \
     abrt-retrace-client
 
-dist_pluginslib_DATA = \
-    Logger.glade \
-    Bugzilla.glade \
-    RHTSupport.glade \
-    Upload.glade \
-    KerneloopsReporter.glade
-
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 
 dist_pluginsconf_DATA = \
@@ -46,7 +39,8 @@ dist_events_DATA = \
     report_Logger.conf \
     analyze_LocalGDB.xml \
     analyze_RetraceServer.xml \
-    report_Mailx.xml
+    report_Mailx.xml \
+    report_RHTSupport.xml
 
 eventsconfdir = $(EVENTS_CONF_DIR)
 
