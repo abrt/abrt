@@ -5,6 +5,7 @@ import re
 import ConfigParser
 import random
 import sqlite3
+from plugins import *
 from webob import Request
 from subprocess import *
 
@@ -64,6 +65,24 @@ CONFIG = {
   "UseWorkDir": False,
   "DBFile": "stats.db",
 }
+
+def lock(lockfile):
+    try:
+        if not os.path.isfile(lockfile):
+            open(lockfile, "w").close()
+    except:
+        return False
+
+    return True
+
+def unlock(lockfile):
+    try:
+        if os.path.getsize(lockfile) == 0:
+            os.unlink(lockfile)
+    except:
+        return False
+
+    return True
 
 def read_config():
     parser = ConfigParser.ConfigParser()
@@ -132,10 +151,10 @@ def guess_arch(coredump_path):
     return None
 
 def guess_release(package):
-    for distro in GUESS_RELEASE_PARSERS.keys():
-        match = GUESS_RELEASE_PARSERS[distro].search(package)
+    for plugin in PLUGINS:
+        match = plugin.guessparser.search(package)
         if match:
-            return distro, match.group(1)
+            return plugin.distribution, match.group(1)
 
     return None, None
 

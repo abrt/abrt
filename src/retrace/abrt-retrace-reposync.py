@@ -1,0 +1,115 @@
+#!/usr/bin/python
+
+import argparse
+import os
+import pwd
+import sys
+from retrace import *
+
+TARGET_USER = "abrt"
+
+if __name__ == "__main__":
+    # parse arguments
+    argparser = argparse.ArgumentParser(description="Retrace Server repository downloader")
+    argparser.add_argument("distribution", type=str, help="Distribution name")
+    argparser.add_argument("version", type=str, help="Release version")
+    argparser.add_argument("architecture", type=str, help="CPU architecture")
+    args = argparser.parse_args()
+
+    distribution = args.distribution
+    version = args.version
+    arch = args.architecture
+
+    if arch == "i686":
+        arch = "i386"
+
+    # drop privilegies if possible
+    try:
+        pw = pwd.getpwnam(TARGET_USER)
+        os.setgid(pw.pw_gid)
+        os.setuid(pw.pw_uid)
+        print "Privilegies set to '%s'." % TARGET_USER
+    except KeyError:
+        print "User '%s' does not exist. Running with default privilegies." % TARGET_USER
+    except OSError:
+        print "Unable to switch UID or GID. Running with default privilegies."
+
+    # load plugin
+    plugin = None
+    for iplugin in PLUGINS:
+        if iplugin.distribution == distribution:
+            plugin = iplugin
+            break
+
+    if not plugin:
+        print "Unknown distribution: '%s'" % distribution
+        sys.exit(1)
+
+    lockfile = "/tmp/abrt-retrace-lock-%s-%s-%s" % (distribution, version, arch)
+
+    if os.path.isfile(lockfile):
+        print "Another process with repository download is running."
+        sys.exit(2)
+
+    # set lock
+    if not lock(lockfile):
+        print "Unable to set lock."
+        sys.exit(3)
+
+    null = open("/dev/null", "w")
+
+    targetdir = "%s/%s-%s-%s" % (CONFIG["RepoDir"], distribution, version, arch)
+
+    # run rsync
+    for repo in plugin.repos:
+        retcode = -1
+        for mirror in repo:
+            repourl = mirror.replace("$ARCH", arch).replace("$VER", version)
+
+            print "Running rsync on '%s'..." % repourl,
+            sys.stdout.flush()
+
+            if repourl.startswith("rsync://"):
+                files = [repourl]
+            else:
+                files = []
+                try:
+                    for package in os.listdir(repourl):
+                        files.append("%s/%s" % (repourl, package))
+                except Exception as ex:
+                    print "Error: %s. Trying another mirror..." % ex
+                    continue
+
+            pipe = Popen(["rsync", "-t"] + files + [targetdir], stdout=null, stderr=null)
+            pipe.wait()
+            retcode = pipe.returncode
+
+            if retcode == 0:
+                print "OK"
+                break
+
+            print "Error. Trying another mirror..."
+
+        if retcode != 0:
+            print "No more mirrors to try."
+
+    # run createrepo
+    print "Running createrepo on '%s'..." % targetdir,
+    sys.stdout.flush()
+
+    pipe = Popen(["createrepo", targetdir], stdout=null, stderr=null)
+    pipe.wait()
+
+    null.close()
+
+    if pipe.returncode != 0:
+        print "Failed"
+        unlock(lockfile)
+        sys.exit(4)
+
+    print "OK"
+
+    # remove lock
+    if not unlock(lockfile):
+        print "Unable to remove lock."
+        sys.exit(5)

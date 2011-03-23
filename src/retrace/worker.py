@@ -89,11 +89,11 @@ if __name__ == "__main__":
         release_file.close()
 
         version = distribution = None
-        for distro in RELEASE_PARSERS.keys():
-            match = RELEASE_PARSERS[distro].match(release)
+        for plugin in PLUGINS:
+            match = plugin.abrtparser.match(release)
             if match:
                 version = match.group(1)
-                distribution = distro
+                distribution = plugin.distribution
                 break
 
         if not version or not distribution:
@@ -171,36 +171,10 @@ if __name__ == "__main__":
         mockcfg.write("\n")
         mockcfg.write("#repos\n")
         mockcfg.write("\n")
-        mockcfg.write("[fedora]\n")
-        mockcfg.write("name=fedora\n")
+        mockcfg.write("[%s]\n" % distribution)
+        mockcfg.write("name=%s\n" % distribution)
         mockcfg.write("baseurl=file://%s/%s-%s-%s/\n" % (CONFIG["RepoDir"], distribution, version, arch))
         mockcfg.write("failovermethod=priority\n")
-        mockcfg.write("\n")
-        mockcfg.write("[fedora-debuginfo]\n")
-        mockcfg.write("name=fedora-debuginfo\n")
-        mockcfg.write("baseurl=file://%s/%s-%s-%s-debuginfo/\n" % (CONFIG["RepoDir"], distribution, version, arch))
-        mockcfg.write("failovermethod=priority\n")
-        mockcfg.write("\n")
-        mockcfg.write("[updates]\n")
-        mockcfg.write("name=updates\n")
-        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates/\n" % (CONFIG["RepoDir"], distribution, version, arch))
-        mockcfg.write("failovermethod=priority\n")
-        mockcfg.write("\n")
-        mockcfg.write("[updates-debuginfo]\n")
-        mockcfg.write("name=updates-debuginfo\n")
-        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates-debuginfo/\n" % (CONFIG["RepoDir"], distribution, version, arch))
-        mockcfg.write("failovermethod=priority\n")
-        mockcfg.write("\n")
-        mockcfg.write("[updates-testing]\n")
-        mockcfg.write("name=updates-testing\n")
-        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates-testing/\n" % (CONFIG["RepoDir"], distribution, version, arch))
-        mockcfg.write("failovermethod=priority\n")
-        mockcfg.write("\n")
-        mockcfg.write("[updates-testing-debuginfo]\n")
-        mockcfg.write("name=updates-testing-debuginfo\n")
-        mockcfg.write("baseurl=file://%s/%s-%s-%s-updates-testing-debuginfo/\n" % (CONFIG["RepoDir"], distribution, version, arch))
-        mockcfg.write("failovermethod=priority\n")
-        mockcfg.write("\n")
         mockcfg.write("\"\"\"\n")
         mockcfg.close()
     except Exception as ex:
