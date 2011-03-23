@@ -554,9 +554,7 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/retrace.conf
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/retrace_httpd.conf
-%config(noreplace) %{_sysconfdir}/yum.repos.d/retrace-local.repo
 %config(noreplace) %{_sysconfdir}/yum.repos.d/retrace.repo
-%{_bindir}/abrt-retrace-reposync
 %{_bindir}/abrt-retrace-worker
 %{_datadir}/abrt-retrace/*.py*
 %{_datadir}/abrt-retrace/*.wsgi
