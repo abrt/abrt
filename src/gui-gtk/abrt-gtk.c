@@ -23,7 +23,7 @@
 #include "abrt-gtk.h"
 #include "libreport-gtk.h"
 
-static const char * const help_uri ="http://docs.fedoraproject.org/en-US/"
+static const char help_uri[] = "http://docs.fedoraproject.org/en-US/"
     "Fedora/14/html/Deployment_Guide/ch-abrt.html";
 
 static GtkListStore *s_dumps_list_store;
@@ -82,6 +82,12 @@ void add_directory_to_dirlist(const char *dirname)
 
     dd_close(dd);
     VERB1 log("added: %s", dirname);
+}
+
+void rescan_dirs_and_add_to_dirlist(void)
+{
+    gtk_list_store_clear(s_dumps_list_store);
+    scan_dirs_and_add_to_dirlist();
 }
 
 
@@ -143,8 +149,7 @@ static void delete_report(GtkTreeView *treeview)
             {
                 /* Strange. Deletion did not succeed. Someone else deleted it?
                  * Rescan the whole list */
-                gtk_list_store_clear(s_dumps_list_store);
-                scan_dirs_and_add_to_dirlist();
+                rescan_dirs_and_add_to_dirlist();
             }
 
             /* Try to retain the same cursor position */
@@ -183,9 +188,9 @@ static void on_menu_help_cb(GtkMenuItem *menuitem, gpointer unused)
 
 static void on_menu_about_cb(GtkMenuItem *menuitem, gpointer unused)
 {
-    const char *copyright_str = "Copyright © 2009, 2010, 2011 Red Hat, Inc";
+    static const char copyright_str[] = "Copyright © 2009, 2010, 2011 Red Hat, Inc";
 
-    const char *license_str = "This program is free software; you can redistribut"
+    static const char license_str[] = "This program is free software; you can redistribut"
         "e it and/or modify it under the terms of the GNU General Public License "
         "as published by the Free Software Foundation; either version 2 of the Li"
         "cense, or (at your option) any later version.\n\nThis program is distrib"
@@ -195,9 +200,9 @@ static void on_menu_about_cb(GtkMenuItem *menuitem, gpointer unused)
         "u should have received a copy of the GNU General Public License along wi"
         "th this program.  If not, see <http://www.gnu.org/licenses/>.";
 
-    const char *website_url = "https://fedorahosted.org/abrt/";
+    static const char website_url[] = "https://fedorahosted.org/abrt/";
 
-    const char *authors[] = {
+    static const char *authors[] = {
         "Anton Arapov <aarapov@redhat.com>",
         "Karel Klic <kklic@redhat.com>",
         "Jiri Moskovcak <jmoskovc@redhat.com>",
@@ -208,7 +213,7 @@ static void on_menu_about_cb(GtkMenuItem *menuitem, gpointer unused)
         NULL
     };
 
-    const char *artists[] = {
+    static const char *artists[] = {
         "Patrick Connelly <pcon@fedoraproject.org>",
         "Máirín Duffy <duffy@fedoraproject.org>",
         "Lapo Calamandrei",
@@ -411,6 +416,22 @@ GtkWidget *create_main_window(void)
     /* Show online help */
     g_signal_connect(btn_online_help, "clicked", G_CALLBACK(on_btn_online_help_cb), NULL);
     return g_main_window;
+}
+
+GtkTreePath *get_cursor(void)
+{
+    GtkTreeView *treeview = GTK_TREE_VIEW(s_treeview);
+    GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
+    if (selection)
+    {
+        GtkTreeIter iter;
+        GtkTreeModel *store = gtk_tree_view_get_model(treeview);
+        if (gtk_tree_selection_get_selected(selection, &store, &iter) == TRUE)
+        {
+            return gtk_tree_model_get_path(store, &iter);
+        }
+    }
+    return NULL;
 }
 
 void sanitize_cursor(GtkTreePath *preferred_path)

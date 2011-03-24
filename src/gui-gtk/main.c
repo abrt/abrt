@@ -17,6 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <gtk/gtk.h>
+#include <sys/inotify.h>
 #include "abrtlib.h"
 #include "parse_options.h"
 #include "abrt-gtk.h"
@@ -26,7 +27,65 @@
 
 #define PROGNAME "abrt-gtk"
 
+static int inotify_fd = -1;
+static GIOChannel *channel_inotify;
+static int channel_inotify_event_id = -1;
 static char **s_dirs;
+
+static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused);
+
+static void init_notify(void)
+{
+    VERB1 log("Initializing inotify");
+    errno = 0;
+    inotify_fd = inotify_init();
+    if (inotify_fd < 0)
+        perror_msg("inotify_init failed");
+    else
+    {
+        close_on_exec_on(inotify_fd);
+        VERB1 log("Adding inotify watch to glib main loop");
+        channel_inotify = g_io_channel_unix_new(inotify_fd);
+        channel_inotify_event_id = g_io_add_watch(channel_inotify,
+                                                  G_IO_IN,
+                                                  handle_inotify_cb,
+                                                  NULL);
+    }
+}
+
+static void close_notify(void)
+{
+    //VERB1 log("g_source_remove:");
+    g_source_remove(channel_inotify_event_id);
+    //VERB1 log("g_io_channel_unref:");
+    g_io_channel_unref(channel_inotify);
+    //VERB1 log("close(inotify_fd):");
+    close(inotify_fd);
+    //VERB1 log("Done");
+}
+
+/* Inotify handler */
+static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
+{
+    GtkTreePath *old_path = get_cursor();
+    //log("old_path1:'%s'", gtk_tree_path_to_string(old_path)); //leak
+
+    /* We don't bother reading inotify fd. We simply close and reopen it.
+     * This happens rarely enough to not bother making it efficient.
+     */
+    close_notify();
+    init_notify();
+
+    rescan_dirs_and_add_to_dirlist();
+
+    /* Try to restore cursor position */
+    //log("old_path2:'%s'", gtk_tree_path_to_string(old_path)); //leak
+    sanitize_cursor(old_path);
+    if (old_path)
+        gtk_tree_path_free(old_path);
+
+    return TRUE; /* "please don't remove this event" */
+}
 
 static void scan_directory_and_add_to_dirlist(const char *path)
 {
@@ -51,6 +110,21 @@ static void scan_directory_and_add_to_dirlist(const char *path)
         free(full_name);
     }
     closedir(dp);
+
+    if (inotify_fd >= 0 && inotify_add_watch(inotify_fd, path, 0
+    //      | IN_ATTRIB         // Metadata changed
+    //      | IN_CLOSE_WRITE    // File opened for writing was closed
+            | IN_CREATE         // File/directory created in watched directory
+            | IN_DELETE         // File/directory deleted from watched directory
+            | IN_DELETE_SELF    // Watched file/directory was itself deleted
+            | IN_MODIFY         // File was modified
+            | IN_MOVE_SELF      // Watched file/directory was itself moved
+            | IN_MOVED_FROM     // File moved out of watched directory
+            | IN_MOVED_TO       // File moved into watched directory
+    ) < 0)
+    {
+        perror_msg("inotify_add_watch failed on '%s'", path);
+    }
 }
 
 void scan_dirs_and_add_to_dirlist(void)
@@ -109,6 +183,8 @@ int main(int argc, char **argv)
         argv = (char**)default_dirs;
     }
     s_dirs = argv;
+
+    init_notify();
 
     scan_dirs_and_add_to_dirlist();
 
