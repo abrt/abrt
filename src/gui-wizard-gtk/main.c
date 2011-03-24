@@ -77,23 +77,31 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        PROGNAME" [-v] [-g GUI_FILE] DIR\n\n"
-        "GUI tool to analyze and report ABRT crash in specified DIR"
+        PROGNAME" [-vp] [-g GUI_FILE] DIR\n"
+        "\n"
+        "GUI tool to analyze and report problem saved in specified DIR"
     );
     enum {
         OPT_v = 1 << 0,
         OPT_g = 1 << 1,
+        OPT_p = 1 << 2,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_STRING('g', NULL, &g_glade_file, "FILE" , _("Alternate GUI file")),
+        OPT_BOOL(  'p', NULL, NULL                  , _("Add program names to log")),
         OPT_END()
     };
 
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
+    if (opts & OPT_p)
+    {
+        msg_prefix = PROGNAME;
+        putenv((char*)"ABRT_PROG_PREFIX=1");
+    }
 
     argv += optind;
     if (!argv[0] || argv[1]) /* zero or >1 arguments */
