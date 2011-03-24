@@ -24,7 +24,6 @@ pluginsconfdir = $(PLUGINS_CONF_DIR)
 dist_pluginsconf_DATA = \
     CCpp.conf \
     Python.conf \
-    Logger.conf \
     Kerneloops.conf \
     Bugzilla.conf \
     Upload.conf
@@ -62,8 +61,6 @@ $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'
 
 install-data-hook: $(DESTDIR)/$(DEBUG_INFO_DIR)
-	sed 's: = /var/: = $(localstatedir)/:g' -i \
-	    $(DESTDIR)$(sysconfdir)/abrt/plugins/Logger.conf
 	$(LN_S) analyze_RetraceServer.xml $(DESTDIR)$(eventsdir)/reanalyze_RetraceServer.xml
 	$(LN_S) analyze_LocalGDB.xml $(DESTDIR)$(eventsdir)/reanalyze_LocalGDB.xml
 
