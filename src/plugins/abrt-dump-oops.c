@@ -492,6 +492,14 @@ static int save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
     else
         perror_msg("Can't open '%s'", "/proc/sys/kernel/tainted");
 
+    char *cmdline_str = NULL;
+    FILE *cmdline_fp = fopen("/proc/cmdline", "r");
+    if (cmdline_fp)
+    {
+        cmdline_str = xmalloc_fgetline(cmdline_fp);
+        fclose(cmdline_fp);
+    }
+
     time_t t = time(NULL);
     const char *iso_date = iso_date_string(&t);
     /* dump should be readable by all if we're run with -x */
@@ -520,11 +528,9 @@ static int save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
         {
             dd_create_basic_files(dd, /*uid:*/ my_euid);
             dd_save_text(dd, FILENAME_ANALYZER, "Kerneloops");
-// TODO: drop FILENAME_EXECUTABLE?
-            dd_save_text(dd, FILENAME_EXECUTABLE, "kernel");
             dd_save_text(dd, FILENAME_KERNEL, first_line);
-// TODO: drop FILENAME_CMDLINE?
-            dd_save_text(dd, FILENAME_CMDLINE, "not_applicable");
+            if (cmdline_str)
+                dd_save_text(dd, FILENAME_CMDLINE, cmdline_str);
             dd_save_text(dd, FILENAME_BACKTRACE, second_line);
 // TODO: add "Kernel oops: " prefix, so that all oopses have recognizable FILENAME_REASON?
 // kernel oops 1st line may look quite puzzling otherwise...
@@ -539,7 +545,9 @@ static int save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
         else
             errors++;
     }
+
     free(tainted_str);
+    free(cmdline_str);
 
     return errors;
 }

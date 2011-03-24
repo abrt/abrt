@@ -80,28 +80,33 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     if (!dd)
         return 1;
 
-    char *remote_str = dd_load_text_ext(dd, FILENAME_REMOTE, DD_FAIL_QUIETLY_ENOENT);
-    bool remote = (remote_str[0] == '1');
-    free(remote_str);
-
-    int error = 1;
-    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
-    char *cmdline = dd_load_text(dd, FILENAME_CMDLINE);
-    char *package_full_name = NULL;
-    char *package_short_name = NULL;
-    char *component = NULL;
+    char *cmdline = NULL;
+    char *executable = NULL;
     char *script_name = NULL; /* only if "interpreter /path/to/script" */
+    char *package_short_name = NULL;
+    char *package_full_name = NULL;
+    char *component = NULL;
+    int error = 1;
     /* note: "goto ret" statements below free all the above variables,
      * but they don't dd_close(dd) */
 
-    if (strcmp(executable, "kernel") == 0)
+    char *analyzer = dd_load_text(dd, FILENAME_ANALYZER);
+    bool kernel = (strcmp(analyzer, "Kerneloops") == 0);
+    free(analyzer);
+    if (kernel)
     {
-        component = xstrdup("kernel");
         package_full_name = xstrdup("kernel");
-        package_short_name = xstrdup("kernel");
+        component = xstrdup("kernel");
     }
     else
     {
+        char *remote_str = dd_load_text_ext(dd, FILENAME_REMOTE, DD_FAIL_QUIETLY_ENOENT);
+        bool remote = string_to_bool(remote_str);
+        free(remote_str);
+
+        cmdline = dd_load_text(dd, FILENAME_CMDLINE);
+        executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+
         /* Close dd while we query package database. It can take some time,
          * don't want to keep dd locked longer than necessary */
         dd_close(dd);
@@ -224,10 +229,12 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
  ret0:
     error = 0;
  ret:
-    free(package_full_name);
-    free(package_short_name);
-    free(component);
+    free(cmdline);
+    free(executable);
     free(script_name);
+    free(package_short_name);
+    free(package_full_name);
+    free(component);
 
     return error;
 }
