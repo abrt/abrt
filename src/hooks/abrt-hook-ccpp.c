@@ -494,7 +494,7 @@ int main(int argc, char** argv)
     if (path_len >= (sizeof(path) - sizeof("/"FILENAME_COREDUMP)))
         return 1;
 
-    struct dump_dir *dd = dd_create(path, uid);
+    struct dump_dir *dd = dd_create(path, uid, 0640);
     if (dd)
     {
         dd_create_basic_files(dd, uid);

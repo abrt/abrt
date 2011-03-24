@@ -287,6 +287,11 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
 
     dir = dd->dd_dirname = rm_trailing_slashes(dir);
 
+    struct stat stat_buf;
+    stat(dir, &stat_buf);
+    /* & 0666 should remove the executable bit */
+    dd->mode = (stat_buf.st_mode & 0666);
+
     errno = 0;
     if (dd_lock(dd, WAIT_FOR_OTHER_PROCESS_USLEEP, flags) < 0)
     {
@@ -294,7 +299,6 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
         {
             /* Directory is not writable. If it seems to be readable,
              * return "read only" dd, not NULL */
-            struct stat stat_buf;
             if (stat(dir, &stat_buf) == 0
              && S_ISDIR(stat_buf.st_mode)
              && access(dir, R_OK) == 0
@@ -355,7 +359,7 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
  *   Crashed application's User Id
  *
  * We currently have only three callers:
- * kernel oops hook: uid=0
+ * kernel oops hook: uid -> not saved, so everyone can steal and work with it
  *  this hook runs under 0:0
  * ccpp hook: uid=uid of crashed user's binary
  *  this hook runs under 0:0
@@ -365,9 +369,13 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
  * Currently, we set dir's gid to passwd(uid)->pw_gid parameter, and we set uid to
  * abrt's user id. We do not allow write access to group.
  */
-struct dump_dir *dd_create(const char *dir, uid_t uid)
+struct dump_dir *dd_create(const char *dir, uid_t uid, mode_t mode)
 {
+    /* a little trick to copy read bits from file mode to exec bit of dir mode*/
+    mode_t dir_mode = mode | ((mode & 0444) >> 2);
     struct dump_dir *dd = dd_init();
+
+    dd->mode = mode;
 
     /* Unlike dd_opendir, can't use realpath: the directory doesn't exist yet,
      * realpath will always return NULL. We don't really have to:
@@ -396,7 +404,7 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
      * the user to replace any file in the directory, changing security-sensitive data
      * (e.g. "uid", "analyzer", "executable")
      */
-    if (mkdir(dir, 0750) == -1)
+    if (mkdir(dir, dir_mode) == -1)
     {
         int err = errno;
         if (!created_parents && errno == ENOENT)
@@ -427,7 +435,7 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
     }
 
     /* mkdir's mode (above) can be affected by umask, fix it */
-    if (chmod(dir, 0750) == -1)
+    if (chmod(dir, dir_mode) == -1)
     {
         perror_msg("can't change mode of '%s'", dir);
         dd_close(dd);
@@ -472,10 +480,12 @@ void dd_create_basic_files(struct dump_dir *dd, uid_t uid)
     sprintf(long_str, "%lu", (long)t);
     dd_save_text(dd, FILENAME_TIME, long_str);
 
-    if (uid == (uid_t)-1)
-        uid = getuid();
-    sprintf(long_str, "%lu", (long)uid);
-    dd_save_text(dd, FILENAME_UID, long_str);
+    /* it doesn't make sense to create the uid file if uid == -1 */
+    if (uid != (uid_t)-1L)
+    {
+        sprintf(long_str, "%li", (long)uid);
+        dd_save_text(dd, FILENAME_UID, long_str);
+    }
 
     struct utsname buf;
     uname(&buf); /* never fails */
@@ -522,8 +532,8 @@ void dd_sanitize_mode_and_owner(struct dump_dir *dd)
         struct stat statbuf;
         if (lstat(full_path, &statbuf) == 0 && S_ISREG(statbuf.st_mode))
         {
-            if ((statbuf.st_mode & 0777) != 0640)
-                chmod(full_path, 0640);
+            if ((statbuf.st_mode & 0777) != dd->mode)
+                chmod(full_path, dd->mode);
             if (statbuf.st_uid != dd->dd_uid || statbuf.st_gid != dd->dd_gid)
             {
                 if (chown(full_path, dd->dd_uid, dd->dd_gid) != 0)
@@ -660,11 +670,11 @@ static char *load_text_file(const char *path, unsigned flags)
     return strbuf_free_nobuf(buf_content);
 }
 
-static bool save_binary_file(const char *path, const char* data, unsigned size, uid_t uid, gid_t gid)
+static bool save_binary_file(const char *path, const char* data, unsigned size, uid_t uid, gid_t gid, mode_t mode)
 {
-    /* "Why 0640?!" See dd_create() for security analysis */
+    /* the mode is set by the caller, see dd_create() for security analysis */
     unlink(path);
-    int fd = open(path, O_WRONLY | O_TRUNC | O_CREAT, 0640);
+    int fd = open(path, O_WRONLY | O_TRUNC | O_CREAT, mode);
     if (fd < 0)
     {
         perror_msg("Can't open file '%s'", path);
@@ -717,7 +727,7 @@ void dd_save_text(struct dump_dir *dd, const char *name, const char *data)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
     char *full_path = concat_path_file(dd->dd_dirname, name);
-    save_binary_file(full_path, data, strlen(data), dd->dd_uid, dd->dd_gid);
+    save_binary_file(full_path, data, strlen(data), dd->dd_uid, dd->dd_gid, dd->mode);
     free(full_path);
 }
 
@@ -727,7 +737,7 @@ void dd_save_binary(struct dump_dir* dd, const char* name, const char* data, uns
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
     char *full_path = concat_path_file(dd->dd_dirname, name);
-    save_binary_file(full_path, data, size, dd->dd_uid, dd->dd_gid);
+    save_binary_file(full_path, data, size, dd->dd_uid, dd->dd_gid, dd->mode);
     free(full_path);
 }
 

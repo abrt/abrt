@@ -249,7 +249,7 @@ PyObject *p_dd_create(PyObject *module, PyObject *args)
     p_dump_dir *new_dd = PyObject_New(p_dump_dir, &p_dump_dir_type);
     if (!new_dd)
         return NULL;
-    new_dd->dd = dd_create(dir, uid);
+    new_dd->dd = dd_create(dir, uid, 0640);
     return (PyObject*)new_dd;
 }
 

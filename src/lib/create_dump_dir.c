@@ -22,7 +22,7 @@
 static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir_name)
 {
     char *path = concat_path_file(base_dir_name, dir_name);
-    struct dump_dir *dd = dd_create(path, (uid_t)-1L);
+    struct dump_dir *dd = dd_create(path, (uid_t)-1L, 0640);
     if (dd)
         dd_create_basic_files(dd, (uid_t)-1L);
     free(path);

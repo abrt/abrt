@@ -768,15 +768,21 @@ int DeleteDebugDump(const char *dump_dir_name, long caller_uid)
         char caller_uid_str[sizeof(long) * 3 + 2];
         sprintf(caller_uid_str, "%ld", caller_uid);
 
-        char *uid = dd_load_text(dd, FILENAME_UID);
-        if (strcmp(uid, caller_uid_str) != 0)
+        char *uid = dd_load_text_ext(dd, FILENAME_UID, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+        /* we assume that the dump_dir can be handled by everyone if uid == NULL
+         * e.g: kerneloops
+        */
+        if (uid != NULL)
         {
-            char *inform_all = dd_load_text_ext(dd, FILENAME_INFORMALL, DD_FAIL_QUIETLY_ENOENT);
-            if (!string_to_bool(inform_all))
+            if (strcmp(uid, caller_uid_str) != 0)
             {
-                dd_close(dd);
-                error_msg("Dump directory '%s' can't be accessed by user with uid %ld", dump_dir_name, caller_uid);
-                return 1;
+                char *inform_all = dd_load_text_ext(dd, FILENAME_INFORMALL, DD_FAIL_QUIETLY_ENOENT);
+                if (!string_to_bool(inform_all))
+                {
+                    dd_close(dd);
+                    error_msg("Dump directory '%s' can't be accessed by user with uid %ld", dump_dir_name, caller_uid);
+                    return 1;
+                }
             }
         }
     }

@@ -25,6 +25,8 @@
 
 #define PROGNAME "abrt-dump-oops"
 
+static bool world_readable_dump = false;
+
 static void queue_oops(GList **vec, const char *data, const char *version)
 {
     char *ver_data = xasprintf("%s\n%s", version, data);
@@ -492,7 +494,16 @@ static int save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
 
     time_t t = time(NULL);
     const char *iso_date = iso_date_string(&t);
-    uid_t my_euid = geteuid();
+    /* dump should be readable by all if we're run with -x */
+    uid_t my_euid = (uid_t)-1L;
+    mode_t mode = 0644;
+    /* and readable only for the owner otherwise */
+    if (!world_readable_dump)
+    {
+        mode = 0644;
+        my_euid = geteuid();
+    }
+
     pid_t my_pid = getpid();
     int errors = 0;
     while (idx != 0 && --countdown != 0)
@@ -504,10 +515,10 @@ static int save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
         char *second_line = (char*)strchr(first_line, '\n'); /* never NULL */
         *second_line++ = '\0';
 
-        struct dump_dir *dd = dd_create(path, /*uid:*/ my_euid);
+        struct dump_dir *dd = dd_create(path, /*uid:*/ my_euid, mode);
         if (dd)
         {
-            dd_create_basic_files(dd, /*uid:*/ 0);
+            dd_create_basic_files(dd, /*uid:*/ my_euid);
             dd_save_text(dd, FILENAME_ANALYZER, "Kerneloops");
 // TODO: drop FILENAME_EXECUTABLE?
             dd_save_text(dd, FILENAME_EXECUTABLE, "kernel");
@@ -552,6 +563,7 @@ int main(int argc, char **argv)
         OPT_d = 1 << 3,
         OPT_o = 1 << 4,
         OPT_w = 1 << 5,
+        OPT_x = 1 << 6,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -561,6 +573,10 @@ int main(int argc, char **argv)
         OPT_BOOL('d', NULL, NULL, _("Create ABRT dump for every oops found")),
         OPT_BOOL('o', NULL, NULL, _("Print found oopses on standard output")),
         OPT_BOOL('w', NULL, NULL, _("Do not exit, watch the file for new oopses")),
+        /* oopses doesn't contain any sensitive info, and even
+         * the old koops app was showing the oopses to all users
+         */
+        OPT_BOOL('x', NULL, NULL, _("Make the dump directory world readable")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -592,6 +608,8 @@ int main(int argc, char **argv)
     if (opts & OPT_r)
         /* Scan dmesg (only once even with -w) */
         scan_dmesg(&oops_list);
+
+    world_readable_dump = (opts & OPT_x);
 
     int partial_line_len = 0;
     struct stat statbuf;
