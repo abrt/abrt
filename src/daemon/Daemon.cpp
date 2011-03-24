@@ -549,6 +549,7 @@ int main(int argc, char** argv)
         OPT_d = 1 << 1,
         OPT_s = 1 << 2,
         OPT_t = 1 << 3,
+        OPT_p = 1 << 4,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -556,12 +557,11 @@ int main(int argc, char** argv)
         OPT_BOOL(   'd', NULL, NULL      , _("Do not daemonize")),
         OPT_BOOL(   's', NULL, NULL      , _("Log to syslog even with -d")),
         OPT_INTEGER('t', NULL, &s_timeout, _("Exit after SEC seconds of inactivity")),
+        OPT_BOOL(   'p', NULL, NULL      , _("Add program names to log")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
-    unsetenv("ABRT_SYSLOG");
-    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     /* When dbus daemon starts us, it doesn't set PATH
      * (I saw it set only DBUS_STARTER_ADDRESS and DBUS_STARTER_BUS_TYPE).
      * In this case, set something sane:
@@ -569,7 +569,12 @@ int main(int argc, char** argv)
     const char *env_path = getenv("PATH");
     if (!env_path || !env_path[0])
         putenv((char*)"PATH=/usr/sbin:/usr/bin:/sbin:/bin");
+
+    unsetenv("ABRT_SYSLOG");
+    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     msg_prefix = PROGNAME; /* for log(), error_msg() and such */
+    if (opts & OPT_p)
+        putenv((char*)"ABRT_PROG_PREFIX=1");
     if (opts & OPT_s)
         start_syslog_logging();
 

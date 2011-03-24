@@ -43,7 +43,7 @@ int main(int argc, char **argv)
         PROGNAME" [-vs]" /*" [-c CONFFILE]"*/ " -d DIR -e EVENT\n"
         "   or: "PROGNAME" [-vs]" /*" [-c CONFFILE]"*/ " [-d DIR] -l[PFX]\n"
         "\n"
-        "Handle crash dump according to rules in abrt_event.conf"
+        "Handles dump directory DIR according to rules in abrt_event.conf"
     );
     enum {
         OPT_v = 1 << 0,
@@ -51,15 +51,17 @@ int main(int argc, char **argv)
         OPT_d = 1 << 2,
         OPT_e = 1 << 3,
         OPT_l = 1 << 4,
+        OPT_p = 1 << 5,
 //      OPT_c = 1 << ?,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_BOOL(     's', NULL, NULL          ,             _("Log to syslog"       )),
-        OPT_STRING(   'd', NULL, &dump_dir_name, "DIR"     , _("Crash dump directory")),
+        OPT_STRING(   'd', NULL, &dump_dir_name, "DIR"     , _("Dump directory")),
         OPT_STRING(   'e', NULL, &event        , "EVENT"   , _("Handle EVENT"        )),
         OPT_OPTSTRING('l', NULL, &pfx          , "PFX"     , _("List possible events [which start with PFX]")),
+        OPT_BOOL(     'p', NULL, NULL          ,             _("Add program names to log")),
 //      OPT_STRING(   'c', NULL, &conf_filename, "CONFFILE", _("Configuration file"  )),
         OPT_END()
     };
@@ -69,6 +71,8 @@ int main(int argc, char **argv)
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     msg_prefix = PROGNAME;
+    if (opts & OPT_p)
+        putenv((char*)"ABRT_PROG_PREFIX=1");
     if (opts & OPT_s)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);

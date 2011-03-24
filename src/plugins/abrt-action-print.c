@@ -38,7 +38,7 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         PROGNAME" [-v] -d DIR [-o FILE] [-a yes/no]\n"
         "\n"
-        "Print problem information to standard output or FILE"
+        "Prints problem information to standard output or FILE"
     );
     enum {
         OPT_v = 1 << 0,
@@ -57,7 +57,10 @@ int main(int argc, char **argv)
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-    //msg_prefix = PROGNAME;
+
+    char *pfx = getenv("ABRT_PROG_PREFIX");
+    if (pfx && string_to_bool(pfx))
+        msg_prefix = PROGNAME;
 
     if (output_file)
     {

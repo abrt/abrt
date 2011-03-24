@@ -262,34 +262,29 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        PROGNAME" [-vs] -c CONFFILE -d DIR"
+        PROGNAME" [-v] -c CONFFILE -d DIR\n"
         "\n"
-        "\nReport a crash to RHTSupport"
+        "Reports a problem to RHTSupport"
     );
     enum {
         OPT_v = 1 << 0,
-        OPT_s = 1 << 1,
-        OPT_d = 1 << 2,
-        OPT_c = 1 << 3,
+        OPT_d = 1 << 1,
+        OPT_c = 1 << 2,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_BOOL(  's', NULL, NULL          ,         _("Log to syslog")),
-        OPT_STRING('d', NULL, &dump_dir_name, "DIR" , _("Crash dump directory")),
+        OPT_STRING('d', NULL, &dump_dir_name, "DIR" , _("Dump directory")),
         OPT_LIST(  'c', NULL, &conf_file    , "FILE", _("Configuration file (may be given many times)")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-//DONT! our stdout/stderr goes directly to daemon, don't want to have prefix there.
-//    msg_prefix = xasprintf(PROGNAME"[%u]", getpid());
-    if (opts & OPT_s)
-    {
-        openlog(msg_prefix, 0, LOG_DAEMON);
-        logmode = LOGMODE_SYSLOG;
-    }
+
+    char *pfx = getenv("ABRT_PROG_PREFIX");
+    if (pfx && string_to_bool(pfx))
+        msg_prefix = PROGNAME;
 
     while (conf_file)
     {

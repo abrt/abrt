@@ -245,7 +245,7 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         PROGNAME" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
         "\n"
-        "Upload compressed tarball of crash dump"
+        "Uploads compressed tarball of dump directory DIR"
     );
     enum {
         OPT_v = 1 << 0,
@@ -256,7 +256,7 @@ int main(int argc, char **argv)
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_STRING('d', NULL, &dump_dir_name, "DIR"     , _("Crash dump directory")),
+        OPT_STRING('d', NULL, &dump_dir_name, "DIR"     , _("Dump directory")),
         OPT_STRING('c', NULL, &conf_file    , "CONFFILE", _("Config file")),
         OPT_STRING('u', NULL, &url          , "URL"     , _("Base URL to upload to")),
         OPT_END()
@@ -264,12 +264,10 @@ int main(int argc, char **argv)
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-    //msg_prefix = PROGNAME;
-    //if (opts & OPT_s)
-    //{
-    //    openlog(msg_prefix, 0, LOG_DAEMON);
-    //    logmode = LOGMODE_SYSLOG;
-    //}
+
+    char *pfx = getenv("ABRT_PROG_PREFIX");
+    if (pfx && string_to_bool(pfx))
+        msg_prefix = PROGNAME;
 
     map_string_h *settings = new_map_string();
     if (url)

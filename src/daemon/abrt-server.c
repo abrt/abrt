@@ -289,18 +289,22 @@ int main(int argc, char **argv)
         OPT_v = 1 << 0,
         OPT_u = 1 << 1,
         OPT_s = 1 << 2,
+        OPT_p = 1 << 3,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_INTEGER('u', NULL, &client_uid, _("Use UID as client uid")),
         OPT_BOOL(   's', NULL, NULL       , _("Log to syslog")),
+        OPT_BOOL(   'p', NULL, NULL       , _("Add program names to log")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     msg_prefix = xasprintf(PROGNAME"[%u]", getpid());
+    if (opts & OPT_p)
+        putenv((char*)"ABRT_PROG_PREFIX=1");
     if (opts & OPT_s)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
