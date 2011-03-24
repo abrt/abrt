@@ -55,13 +55,17 @@ static void init_notify(void)
 
 static void close_notify(void)
 {
-    //VERB1 log("g_source_remove:");
-    g_source_remove(channel_inotify_event_id);
-    //VERB1 log("g_io_channel_unref:");
-    g_io_channel_unref(channel_inotify);
-    //VERB1 log("close(inotify_fd):");
-    close(inotify_fd);
-    //VERB1 log("Done");
+    if (inotify_fd >= 0)
+    {
+        //VERB1 log("g_source_remove:");
+        g_source_remove(channel_inotify_event_id);
+        //VERB1 log("g_io_channel_unref:");
+        g_io_channel_unref(channel_inotify);
+        //VERB1 log("close(inotify_fd):");
+        close(inotify_fd);
+        inotify_fd = -1;
+        //VERB1 log("Done");
+    }
 }
 
 /* Inotify handler */
