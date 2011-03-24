@@ -25,6 +25,7 @@
 
 static const char *dump_dir_name = ".";
 static const char *output_file = NULL;
+static const char *append = "no";
 static const char *open_mode = "w";
 
 int main(int argc, char **argv)
@@ -35,20 +36,22 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        PROGNAME" [-v] [-o FILE] -d DIR\n"
+        PROGNAME" [-v] -d DIR [-o FILE] [-a yes/no]\n"
         "\n"
-        "Print information about the crash to standard output"
+        "Print problem information to standard output or FILE"
     );
     enum {
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
         OPT_o = 1 << 2,
+        OPT_a = 1 << 3,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_STRING('d', NULL, &dump_dir_name, "DIR" , _("Crash dump directory")),
-        OPT_STRING('o', NULL, &output_file  , "FILE", _("Output file")),
+        OPT_STRING('d', NULL, &dump_dir_name, "DIR"   , _("Dump directory")),
+        OPT_STRING('o', NULL, &output_file  , "FILE"  , _("Output file")),
+        OPT_STRING('a', NULL, &append       , "yes/no", _("Append to, or overwrite FILE")),
         OPT_END()
     };
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
@@ -56,18 +59,12 @@ int main(int argc, char **argv)
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     //msg_prefix = PROGNAME;
 
-//TODO: convert to an option:
-    char *env = getenv("Logger_AppendLogs");
-    VERB3 log("Logger_AppendLogs env:'%s'", env);
-    if (env && string_to_bool(env))
-        open_mode = "a";
-
     if (output_file)
     {
+        if (string_to_bool(append))
+            open_mode = "a";
         if (!freopen(output_file, open_mode, stdout))
-        {
             perror_msg_and_die("Can't open '%s'", output_file);
-        }
     }
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);

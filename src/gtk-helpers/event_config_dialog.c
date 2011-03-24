@@ -20,7 +20,7 @@
 #include <gtk/gtk.h>
 #include "libreport-gtk.h"
 
-static GtkWindow *g_parent_dialog;
+static GtkWindow *g_event_list_window;
 static GList *option_widget_list;
 
 enum
@@ -261,25 +261,20 @@ static void show_event_config_dialog(const char *event_name)
     }
 
     event_config_t *event = get_event_config(event_name);
-    char *title;
-    if (event->screen_name != NULL)
-        title = event->screen_name;
-    else
-        title = _("Event Configuration");
 
     GtkWidget *dialog = gtk_dialog_new_with_buttons(
-                        title,
-                        g_parent_dialog,
+                        /*title:*/ event->screen_name ? event->screen_name : event_name,
+                        g_event_list_window,
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                         GTK_STOCK_OK,
                         GTK_RESPONSE_APPLY,
                         GTK_STOCK_CANCEL,
                         GTK_RESPONSE_CANCEL,
                         NULL);
-    if (g_parent_dialog != NULL)
+    if (g_event_list_window != NULL)
     {
         gtk_window_set_icon_name(GTK_WINDOW(dialog),
-                gtk_window_get_icon_name(g_parent_dialog));
+                gtk_window_get_icon_name(g_event_list_window));
     }
 
     int length = g_list_length(event->options);
@@ -311,17 +306,17 @@ void show_events_list_dialog(GtkWindow *parent)
         load_event_config_data_from_keyring();
     }
 
-    GtkWidget *parent_dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    g_parent_dialog = (GtkWindow*)parent_dialog;
-    gtk_window_set_title(g_parent_dialog, _("Event Configuration"));
-    gtk_window_set_default_size(g_parent_dialog, 450, 400);
-    gtk_window_set_position(g_parent_dialog, parent ? GTK_WIN_POS_CENTER_ON_PARENT : GTK_WIN_POS_CENTER);
+    GtkWidget *event_list_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    g_event_list_window = (GtkWindow*)event_list_window;
+    gtk_window_set_title(g_event_list_window, _("Event Configuration"));
+    gtk_window_set_default_size(g_event_list_window, 450, 400);
+    gtk_window_set_position(g_event_list_window, parent ? GTK_WIN_POS_CENTER_ON_PARENT : GTK_WIN_POS_CENTER);
     if (parent != NULL)
     {
-        gtk_window_set_transient_for(g_parent_dialog, parent);
+        gtk_window_set_transient_for(g_event_list_window, parent);
         // modal = parent window can't steal focus
-        gtk_window_set_modal(g_parent_dialog, true);
-        gtk_window_set_icon_name(g_parent_dialog,
+        gtk_window_set_modal(g_event_list_window, true);
+        gtk_window_set_icon_name(g_event_list_window,
             gtk_window_get_icon_name(parent));
     }
 
@@ -377,7 +372,7 @@ void show_events_list_dialog(GtkWindow *parent)
     g_signal_connect(events_tv, "cursor-changed", G_CALLBACK(on_event_row_changed_cb), configure_event_btn);
 
     GtkWidget *close_btn = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
-    g_signal_connect(close_btn, "clicked", G_CALLBACK(on_close_event_list_cb), g_parent_dialog);
+    g_signal_connect(close_btn, "clicked", G_CALLBACK(on_close_event_list_cb), g_event_list_window);
 
     GtkWidget *btnbox = gtk_hbutton_box_new();
     gtk_box_pack_end(GTK_BOX(btnbox), configure_event_btn, false, false, 0);
@@ -385,7 +380,7 @@ void show_events_list_dialog(GtkWindow *parent)
 
     gtk_box_pack_start(GTK_BOX(main_vbox), events_scroll, true, true, 10);
     gtk_box_pack_start(GTK_BOX(main_vbox), btnbox, false, false, 0);
-    gtk_container_add(GTK_CONTAINER(parent_dialog), main_vbox);
+    gtk_container_add(GTK_CONTAINER(event_list_window), main_vbox);
 
-    gtk_widget_show_all(parent_dialog);
+    gtk_widget_show_all(event_list_window);
 }
