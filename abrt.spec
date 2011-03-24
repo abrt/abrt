@@ -505,7 +505,6 @@ fi
 
 %files plugin-mailx
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/%{name}/plugins/Mailx.conf
 %{_sysconfdir}/%{name}/events/report_Mailx.xml
 %{_sysconfdir}/%{name}/events.d/mailx_events.conf
 %{_mandir}/man7/abrt-Mailx.7.gz
@@ -522,7 +521,6 @@ fi
 
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/%{name}/plugins/RHTSupport.conf
 %{_sysconfdir}/%{name}/events/report_RHTSupport.xml
 # {_mandir}/man7/abrt-RHTSupport.7.gz
 %{_bindir}/abrt-action-rhtsupport

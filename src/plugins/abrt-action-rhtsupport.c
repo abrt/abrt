@@ -70,7 +70,7 @@ static void report_to_rhtsupport(
         free(url);
         free(login);
         free(password);
-        error_msg_and_die(_("Empty login or password, please check RHTSupport.conf"));
+        error_msg_and_die(_("Empty RHTS login or password"));
         return;
     }
 

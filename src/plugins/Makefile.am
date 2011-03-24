@@ -24,11 +24,9 @@ pluginsconfdir = $(PLUGINS_CONF_DIR)
 dist_pluginsconf_DATA = \
     CCpp.conf \
     Python.conf \
-    Mailx.conf \
     Logger.conf \
     Kerneloops.conf \
     Bugzilla.conf \
-    RHTSupport.conf \
     Upload.conf
 
 eventsdir = $(EVENTS_DIR)
