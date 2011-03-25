@@ -27,7 +27,6 @@ int init_dbus(void);
 void deinit_dbus(void);
 
 void send_dbus_sig_Crash(const char *package_name,
-                        const char *crash_id,
                         const char *dir,
                         const char *uid_str
 );

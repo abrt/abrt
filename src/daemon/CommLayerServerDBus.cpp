@@ -59,7 +59,6 @@ static void send_flush_and_unref(DBusMessage* msg)
 
 /* Notify the clients (UI) about a new crash */
 void send_dbus_sig_Crash(const char *package_name,
-                                  const char *crash_id,
                                   const char *dir,
                                   const char *uid_str
 ) {
@@ -68,20 +67,18 @@ void send_dbus_sig_Crash(const char *package_name,
     {
         dbus_message_append_args(msg,
                 DBUS_TYPE_STRING, &package_name,
-                DBUS_TYPE_STRING, &crash_id,
                 DBUS_TYPE_STRING, &dir,
                 DBUS_TYPE_STRING, &uid_str,
                 DBUS_TYPE_INVALID);
-        VERB2 log("Sending signal Crash('%s','%s','%s','%s')", package_name, crash_id, dir, uid_str);
+        VERB2 log("Sending signal Crash('%s','%s','%s')", package_name, dir, uid_str);
     }
     else
     {
         dbus_message_append_args(msg,
                 DBUS_TYPE_STRING, &package_name,
-                DBUS_TYPE_STRING, &crash_id,
                 DBUS_TYPE_STRING, &dir,
                 DBUS_TYPE_INVALID);
-        VERB2 log("Sending signal Crash('%s','%s','%s')", package_name, crash_id, dir);
+        VERB2 log("Sending signal Crash('%s','%s')", package_name, dir);
     }
     send_flush_and_unref(msg);
 }

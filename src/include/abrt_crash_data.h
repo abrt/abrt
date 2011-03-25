@@ -59,7 +59,6 @@
 // TODO: TicketUploader also has open-coded "TICKET", "CUSTOMER" files
 
 #define FILENAME_UUID         "uuid"
-#define FILENAME_INFORMALL    "inform_all_users"
 #define FILENAME_COUNT        "count"
 /* Multi-line list of places problem was reported.
  * Recommended line format:

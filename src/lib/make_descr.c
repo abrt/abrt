@@ -63,7 +63,6 @@ static const char *const blacklisted_items[] = {
     FILENAME_HOSTNAME ,
     FILENAME_DUPHASH  ,
     FILENAME_UUID     ,
-    FILENAME_INFORMALL,
     CD_DUMPDIR        ,
     FILENAME_COUNT    ,
     NULL

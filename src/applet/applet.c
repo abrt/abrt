@@ -40,16 +40,7 @@ static void Crash(DBusMessage* signal)
     const char* package_name = NULL;
     r = load_charp(&in_iter, &package_name);
 
-    /* 2nd param: crash_id */
-    if (r != ABRT_DBUS_MORE_FIELDS)
-    {
-        error_msg("dbus signal %s: parameter type mismatch", __func__);
-        return;
-    }
-    const char* crash_dir = NULL;
-    r = load_charp(&in_iter, &crash_dir);
-
-    /* 3rd param: dir */
+    /* 2nd param: dir */
 //dir parameter is not used for now, use is planned in the future
     if (r != ABRT_DBUS_MORE_FIELDS)
     {
@@ -59,7 +50,7 @@ static void Crash(DBusMessage* signal)
     const char* dir = NULL;
     r = load_charp(&in_iter, &dir);
 
-    /* Optional 4th param: uid */
+    /* Optional 3rd param: uid */
     const char* uid_str = NULL;
     if (r == ABRT_DBUS_MORE_FIELDS)
     {
@@ -94,10 +85,10 @@ static void Crash(DBusMessage* signal)
      */
     static time_t last_time = 0;
     static char* last_package_name = NULL;
-    static char* last_crash_dir = NULL;
+    static char* last_dir = NULL;
     time_t cur_time = time(NULL);
     if (last_package_name && strcmp(last_package_name, package_name) == 0
-     && last_crash_dir && strcmp(last_crash_dir, crash_dir) == 0
+     && last_dir && strcmp(last_dir, dir) == 0
      && (unsigned)(cur_time - last_time) < 2 * 60 * 60
     ) {
         log_msg("repeated crash in %s, not showing the notification", package_name);
@@ -106,8 +97,8 @@ static void Crash(DBusMessage* signal)
     last_time = cur_time;
     free(last_package_name);
     last_package_name = xstrdup(package_name);
-    free(last_crash_dir);
-    last_crash_dir = xstrdup(dir);
+    free(last_dir);
+    last_dir = xstrdup(dir);
 
     show_crash_notification(applet, dir, message, package_name);
 }

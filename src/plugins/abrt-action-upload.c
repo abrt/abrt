@@ -159,7 +159,6 @@ static int create_and_upload_archive(
         {
             if (strcmp(short_name, FILENAME_COUNT) == 0) goto next;
             if (strcmp(short_name, CD_DUMPDIR) == 0) goto next;
-            if (strcmp(short_name, FILENAME_INFORMALL) == 0) goto next;
             // dd_get_next_file guarantees this:
             //struct stat stbuf;
             //if (stat(full_name, &stbuf) != 0)

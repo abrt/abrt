@@ -134,19 +134,15 @@ static mw_result_t CreateCrashReport(const char *dump_dir_name,
         char caller_uid_str[sizeof(long) * 3 + 2];
         sprintf(caller_uid_str, "%ld", caller_uid);
 
-        char *uid = dd_load_text(dd, FILENAME_UID);
-        if (strcmp(uid, caller_uid_str) != 0)
+        char *uid = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+        bool uid_matches = (uid == NULL || strcmp(uid, caller_uid_str) == 0);
+        free(uid);
+        if (!uid_matches)
         {
-            char *inform_all = dd_load_text_ext(dd, FILENAME_INFORMALL, DD_FAIL_QUIETLY_ENOENT);
-            bool for_all = string_to_bool(inform_all);
-            free(inform_all);
-            if (!for_all)
-            {
-                dd_close(dd);
-                error_msg("crash '%s' can't be accessed by user with uid %ld", dump_dir_name, caller_uid);
-                r = MW_PERM_ERROR;
-                goto ret;
-            }
+            dd_close(dd);
+            error_msg("Dump directory '%s' can't be accessed by user with uid %ld", dump_dir_name, caller_uid);
+            r = MW_PERM_ERROR;
+            goto ret;
         }
     }
     dd_close(dd);
@@ -222,19 +218,16 @@ report_status_t Report(crash_data_t *client_report,
     {
         char caller_uid_str[sizeof(long)*3 + 2];
         sprintf(caller_uid_str, "%ld", caller_uid);
-        if (strcmp(caller_uid_str, get_crash_item_content_or_die(stored_report, FILENAME_UID)) != 0)
+        const char *uid = get_crash_item_content_or_NULL(stored_report, FILENAME_UID);
+        if (uid && strcmp(caller_uid_str, uid) != 0)
         {
-            const char *inform_all = get_crash_item_content_or_NULL(stored_report, FILENAME_INFORMALL);
-            if (!inform_all || !string_to_bool(inform_all))
-            {
-                free_crash_data(stored_report);
-                char *errmsg = xasprintf("user with uid %ld can't report crash %s", caller_uid, dump_dir_name);
-                update_client("Reporting error: %s", errmsg);
-                ret[""].push_back("0");      // REPORT_STATUS_IDX_FLAG
-                ret[""].push_back(errmsg); // REPORT_STATUS_IDX_MSG
-                free(errmsg);
-                return ret;
-            }
+            free_crash_data(stored_report);
+            char *errmsg = xasprintf("user with uid %ld can't report crash %s", caller_uid, dump_dir_name);
+            update_client("Reporting error: %s", errmsg);
+            ret[""].push_back("0");      // REPORT_STATUS_IDX_FLAG
+            ret[""].push_back(errmsg); // REPORT_STATUS_IDX_MSG
+            free(errmsg);
+            return ret;
         }
     }
 
@@ -621,18 +614,13 @@ vector_of_crash_data_t *GetCrashInfos(long caller_uid)
 
                 sprintf(caller_uid_str, "%ld", caller_uid);
                 uid = dd_load_text(dd, FILENAME_UID);
-                if (strcmp(uid, caller_uid_str) != 0)
-                {
-                    char *inform_all = dd_load_text_ext(dd, FILENAME_INFORMALL, DD_FAIL_QUIETLY_ENOENT);
-                    bool for_all = string_to_bool(inform_all);
-                    free(inform_all);
-                    if (!for_all)
-                    {
-                        dd_close(dd);
-                        goto next;
-                    }
-                }
+                bool uid_matches = (uid == NULL || strcmp(uid, caller_uid_str) == 0);
+                free(uid);
                 dd_close(dd);
+                if (!uid_matches)
+                {
+                    goto next;
+                }
             }
 
             {
@@ -768,21 +756,19 @@ int DeleteDebugDump(const char *dump_dir_name, long caller_uid)
         char caller_uid_str[sizeof(long) * 3 + 2];
         sprintf(caller_uid_str, "%ld", caller_uid);
 
-        char *uid = dd_load_text_ext(dd, FILENAME_UID, DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+        char *uid = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
         /* we assume that the dump_dir can be handled by everyone if uid == NULL
          * e.g: kerneloops
-        */
+         */
         if (uid != NULL)
         {
-            if (strcmp(uid, caller_uid_str) != 0)
+            bool uid_matches = (strcmp(uid, caller_uid_str) == 0);
+            free(uid);
+            if (!uid_matches)
             {
-                char *inform_all = dd_load_text_ext(dd, FILENAME_INFORMALL, DD_FAIL_QUIETLY_ENOENT);
-                if (!string_to_bool(inform_all))
-                {
-                    dd_close(dd);
-                    error_msg("Dump directory '%s' can't be accessed by user with uid %ld", dump_dir_name, caller_uid);
-                    return 1;
-                }
+                dd_close(dd);
+                error_msg("Dump directory '%s' can't be accessed by user with uid %ld", dump_dir_name, caller_uid);
+                return 1;
             }
         }
     }

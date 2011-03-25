@@ -400,23 +400,13 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 }
 
                 const char *uid_str = get_crash_item_content_or_NULL(crash_data, FILENAME_UID);
-                const char *inform_all = get_crash_item_content_or_NULL(crash_data, FILENAME_INFORMALL);
-
-                if (inform_all && string_to_bool(inform_all))
-                    uid_str = NULL;
-                char *crash_id = xasprintf("%s:%s",
-                                get_crash_item_content_or_NULL(crash_data, FILENAME_UID),
-                                get_crash_item_content_or_NULL(crash_data, FILENAME_UUID)
-                );
                 /* When dup occurs we need to return first occurence,
                  * not the one which is deleted
                  */
                 send_dbus_sig_Crash(get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE),
-                                    crash_id, //TODO: stop passing this param, it is unused
                                     (first)? first: fullname,
                                     uid_str
                 );
-                free(crash_id);
                 break;
             }
             case MW_CORRUPTED:
