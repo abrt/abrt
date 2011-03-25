@@ -591,7 +591,7 @@ int run_analyze_event(const char *dump_dir_name)
 
     struct run_event_state *run_state = new_run_event_state();
     run_state->logging_callback = do_log;
-    int res = run_event_on_dir_name(run_state, dump_dir_name, "analyze");
+    int res = run_event_on_dir_name(run_state, dump_dir_name, "analyze_LocalGDB");
     free_run_event_state(run_state);
     return res;
 }
