@@ -404,7 +404,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                  * not the one which is deleted
                  */
                 send_dbus_sig_Crash(get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE),
-                                    (first)? first: fullname,
+                                    (first) ? first : fullname,
                                     uid_str
                 );
                 break;

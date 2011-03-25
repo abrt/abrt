@@ -67,7 +67,7 @@ static char* exec_vp(char **args, uid_t uid, int redirect_stderr, int *status)
     /* Nuke everything which may make setlocale() switch to non-POSIX locale:
      * we need to avoid having gdb output in some obscure language.
      */
-    static const char *const unsetenv_vec[] = {
+    static const char *const env_vec[] = {
         "LANG",
         "LC_ALL",
         "LC_COLLATE",
@@ -84,13 +84,15 @@ static char* exec_vp(char **args, uid_t uid, int redirect_stderr, int *status)
         NULL
     };
 
-    int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_SETGUID | EXECFLG_SETSID | EXECFLG_QUIET;
+    int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_SETSID | EXECFLG_QUIET;
+    if (uid != (uid_t)-1L)
+        flags |= EXECFLG_SETGUID;
     if (redirect_stderr)
         flags |= EXECFLG_ERR2OUT;
     VERB1 flags &= ~EXECFLG_QUIET;
 
     int pipeout[2];
-    pid_t child = fork_execv_on_steroids(flags, args, pipeout, (char**)unsetenv_vec, /*dir:*/ NULL, uid);
+    pid_t child = fork_execv_on_steroids(flags, args, pipeout, (char**)env_vec, /*dir:*/ NULL, uid);
 
     /* We use this function to run gdb and unstrip. Bugs in gdb or corrupted
      * coredumps were observed to cause gdb to enter infinite loop.
@@ -136,9 +138,17 @@ static char* exec_vp(char **args, uid_t uid, int redirect_stderr, int *status)
 
 static char *get_backtrace(struct dump_dir *dd)
 {
-    char *uid_str = dd_load_text(dd, FILENAME_UID);
-    uid_t uid = xatoi_positive(uid_str);
-    free(uid_str);
+    char *uid_str = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    uid_t uid = -1L;
+    if (uid_str)
+    {
+        uid = xatoi_positive(uid_str);
+        free(uid_str);
+        if (uid == geteuid())
+        {
+            uid = -1L; /* no need to setuid/gid if we are already under right uid */
+        }
+    }
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
     dd_close(dd);
 

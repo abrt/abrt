@@ -50,12 +50,23 @@ static char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return NULL;
-    char *uid_str = dd_load_text(dd, FILENAME_UID);
-    dd_close(dd);
-    unsigned uid = xatoi_positive(uid_str);
-    free(uid_str);
 
-    int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_SETGUID | EXECFLG_SETSID | EXECFLG_QUIET;
+    char *uid_str = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    dd_close(dd);
+    uid_t uid = -1L;
+    if (uid_str)
+    {
+        uid = xatoi_positive(uid_str);
+        free(uid_str);
+        if (uid == geteuid())
+        {
+            uid = -1L; /* no need to setuid/gid if we are already under right uid */
+        }
+    }
+
+    int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_SETSID | EXECFLG_QUIET;
+    if (uid != (uid_t)-1L)
+        flags |= EXECFLG_SETGUID;
     VERB1 flags &= ~EXECFLG_QUIET;
     int pipeout[2];
     char* args[4];

@@ -22,17 +22,18 @@
 
 #define PROGNAME "abrt-action-mailx"
 
-static void exec_and_feed_input(uid_t uid, const char* text, char **args)
+static void exec_and_feed_input(const char* text, char **args)
 {
     int pipein[2];
 
     pid_t child = fork_execv_on_steroids(
-                EXECFLG_INPUT | EXECFLG_QUIET | EXECFLG_SETGUID,
+                EXECFLG_INPUT | EXECFLG_QUIET,
                 args,
                 pipein,
                 /*env_vec:*/ NULL,
                 /*dir:*/ NULL,
-                uid);
+                /*uid (ignored):*/ 0
+    );
 
     full_write_str(pipein[1], text);
     close(pipein[1]);
@@ -106,8 +107,7 @@ static void create_and_send_email(
     args = append_str_to_vector(args, &arg_size, email_to);
 
     log(_("Sending an email..."));
-    const char *uid_str = get_crash_item_content_or_NULL(crash_data, FILENAME_UID);
-    exec_and_feed_input(xatoi_positive(uid_str), dsc, args);
+    exec_and_feed_input(dsc, args);
 
     free(dsc);
 
