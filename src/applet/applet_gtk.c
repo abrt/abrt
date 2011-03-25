@@ -19,6 +19,31 @@
 #include "abrtlib.h"
 #include "applet_gtk.h"
 
+static gboolean persistent_notification;
+
+#if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR < 7)
+static gboolean server_has_persistence (void)
+{
+        gboolean has;
+        GList   *caps;
+        GList   *l;
+
+        caps = notify_get_server_caps ();
+        if (caps == NULL) {
+                fprintf (stderr, "Failed to receive server caps.\n");
+                return FALSE;
+        }
+
+        l = g_list_find_custom (caps, "persistence", (GCompareFunc)strcmp);
+        has = l != NULL;
+
+        g_list_foreach (caps, (GFunc) g_free, NULL);
+        g_list_free (caps);
+
+        return has;
+}
+#endif
+
 static bool load_icons(struct applet *applet)
 {
     //FIXME: just a tmp workaround
@@ -81,7 +106,7 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
             error_msg("%s", err->message);
             g_error_free(err);
         }
-        gtk_status_icon_set_visible(applet->ap_status_icon, false);
+        hide_icon(applet);
         stop_animate_icon(applet);
     }
 }
@@ -111,7 +136,7 @@ static void action_open_gui(NotifyNotification *notification, gchar *action, gpo
             error_msg("%s", err->message);
             g_error_free(err);
         }
-        gtk_status_icon_set_visible(applet->ap_status_icon, false);
+        hide_icon(applet);
         stop_animate_icon(applet);
     }
 }
@@ -187,7 +212,9 @@ static NotifyNotification *new_warn_notification()
     if (pixbuf)
         notify_notification_set_icon_from_pixbuf(notification, pixbuf);
     notify_notification_set_urgency(notification, NOTIFY_URGENCY_NORMAL);
-    notify_notification_set_timeout(notification, NOTIFY_EXPIRES_DEFAULT);
+    notify_notification_set_timeout(notification,
+                              persistent_notification ? NOTIFY_EXPIRES_NEVER
+                                                      : NOTIFY_EXPIRES_DEFAULT);
 
     return notification;
 }
@@ -292,7 +319,7 @@ static void on_applet_activate_cb(GtkStatusIcon *status_icon, gpointer user_data
             execlp("abrt-gui", "abrt-gui", (char*) NULL);
             perror_msg_and_die("Can't execute abrt-gui");
         }
-        gtk_status_icon_set_visible(applet->ap_status_icon, false);
+        hide_icon(applet);
         stop_animate_icon(applet);
     }
 }
@@ -301,28 +328,34 @@ struct applet *applet_new(const char* app_name)
 {
     struct applet *applet = (struct applet*)xzalloc(sizeof(struct applet));
     applet->ap_daemon_running = true;
-    /* set-up icon buffers */
-    if (ICON_DEFAULT != 0)
-        applet->ap_animation_stage = ICON_DEFAULT;
-    applet->ap_icons_loaded = load_icons(applet);
-    /* - animation - */
-    if (applet->ap_icons_loaded == true)
+#if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR < 7)
+    persistent_notification = server_has_persistence();
+#endif
+
+    applet->ap_status_icon = NULL;
+    if (!persistent_notification)
     {
-        //FIXME: animation is disabled for now
-        applet->ap_status_icon = gtk_status_icon_new_from_pixbuf(applet->ap_icon_stages_buff[ICON_DEFAULT]);
+        /* set-up icon buffers */
+        if (ICON_DEFAULT != 0)
+            applet->ap_animation_stage = ICON_DEFAULT;
+        applet->ap_icons_loaded = load_icons(applet);
+        /* - animation - */
+        if (applet->ap_icons_loaded == true)
+        {
+            //FIXME: animation is disabled for now
+            applet->ap_status_icon = gtk_status_icon_new_from_pixbuf(applet->ap_icon_stages_buff[ICON_DEFAULT]);
+        }
+        else
+        {
+            applet->ap_status_icon = gtk_status_icon_new_from_icon_name("abrt");
+        }
+        hide_icon(applet);
+        g_signal_connect(G_OBJECT(applet->ap_status_icon), "activate", GTK_SIGNAL_FUNC(on_applet_activate_cb), applet);
+        g_signal_connect(G_OBJECT(applet->ap_status_icon), "popup_menu", GTK_SIGNAL_FUNC(on_menu_popup_cb), applet);
+        applet->ap_menu = create_menu(applet);
     }
-    else
-    {
-        applet->ap_status_icon = gtk_status_icon_new_from_icon_name("abrt");
-    }
+
     notify_init(app_name);
-
-    gtk_status_icon_set_visible(applet->ap_status_icon, FALSE);
-
-    g_signal_connect(G_OBJECT(applet->ap_status_icon), "activate", GTK_SIGNAL_FUNC(on_applet_activate_cb), applet);
-    g_signal_connect(G_OBJECT(applet->ap_status_icon), "popup_menu", GTK_SIGNAL_FUNC(on_menu_popup_cb), applet);
-
-    applet->ap_menu = create_menu(applet);
     return applet;
 }
 
@@ -336,6 +369,9 @@ void applet_destroy(struct applet *applet)
 
 void set_icon_tooltip(struct applet *applet, const char *format, ...)
 {
+    if (applet->ap_status_icon == NULL)
+        return;
+
     va_list args;
     int n;
     char *buf;
@@ -406,6 +442,9 @@ void show_msg_notification(struct applet *applet, const char *format, ...)
 
 void show_icon(struct applet *applet)
 {
+    if (applet->ap_status_icon == NULL)
+        return;
+
     gtk_status_icon_set_visible(applet->ap_status_icon, true);
     /* only animate if all icons are loaded, use the "gtk-warning" instead */
     if (applet->ap_icons_loaded)
@@ -414,37 +453,10 @@ void show_icon(struct applet *applet)
 
 void hide_icon(struct applet *applet)
 {
+    if (applet->ap_status_icon == NULL)
+        return;
+
     gtk_status_icon_set_visible(applet->ap_status_icon, false);
     stop_animate_icon(applet);
 }
 
-void disable(struct applet *applet, const char *reason)
-{
-    /*
-        FIXME: once we have our icon
-    */
-    applet->ap_daemon_running = false;
-    GdkPixbuf *gray_scaled;
-    GdkPixbuf *pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(),
-                GTK_STOCK_DIALOG_WARNING, 24, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
-    if (pixbuf)
-    {
-        gray_scaled = gdk_pixbuf_copy(pixbuf);
-        gdk_pixbuf_saturate_and_pixelate(pixbuf, gray_scaled, 0.0, false);
-        gtk_status_icon_set_from_pixbuf(applet->ap_status_icon, gray_scaled);
-//do we need to free pixbufs nere?
-    }
-    else
-        error_msg("Can't load icon");
-    set_icon_tooltip(applet, reason);
-    show_icon(applet);
-}
-
-void enable(struct applet *applet, const char *reason)
-{
-    /* restore the original icon */
-    applet->ap_daemon_running = true;
-    set_icon_tooltip(applet, reason);
-    gtk_status_icon_set_from_stock(applet->ap_status_icon, GTK_STOCK_DIALOG_WARNING);
-    show_icon(applet);
-}
