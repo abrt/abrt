@@ -37,13 +37,15 @@ dist_events_DATA = \
     analyze_LocalGDB.xml \
     analyze_RetraceServer.xml \
     report_Mailx.xml \
-    report_RHTSupport.xml
+    report_RHTSupport.xml \
+    report_Kerneloops.xml
 
 eventsconfdir = $(EVENTS_CONF_DIR)
 
 dist_eventsconf_DATA = \
     ccpp_events.conf \
-    mailx_events.conf
+    mailx_events.conf \
+    koops_events.conf
 
 man_MANS = \
     abrt-Bugzilla.7 \

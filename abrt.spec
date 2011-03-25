@@ -496,6 +496,8 @@ fi
 %files addon-kerneloops
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Kerneloops.conf
+%{_sysconfdir}/%{name}/events/report_Kerneloops.xml
+%{_sysconfdir}/%{name}/events.d/koops_events.conf
 %{_mandir}/man7/abrt-KerneloopsReporter.7.gz
 %{_bindir}/abrt-dump-oops
 %{_bindir}/abrt-action-analyze-oops
