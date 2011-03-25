@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-15 20:32+0100\n"
-"PO-Revision-Date: 2011-03-14 16:05+0000\n"
-"Last-Translator: michalhrin <michalhrin@aol.com>\n"
+"POT-Creation-Date: 2011-03-25 18:32+0100\n"
+"PO-Revision-Date: 2011-03-25 17:37+0000\n"
+"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Slovak <None>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
@@ -21,47 +21,49 @@ msgstr ""
 msgid "ABRT notification applet"
 msgstr "ABRT applet upozornení"
 
-#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt-gtk.c:345
+#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt-gtk.c:351
 #: ../src/gui-gtk/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "Nástroj na automatické hlásenie chýb"
 
-#: ../src/applet/applet.c:85
+#: ../src/applet/applet.c:76
 #, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "Bol zistený pád balíčku %s"
 
-#: ../src/applet/applet.c:87
+#: ../src/applet/applet.c:78
 msgid "A crash has been detected"
 msgstr "Bol zistený pád"
 
-#: ../src/applet/applet.c:284
+#: ../src/applet/applet.c:275
 msgid "ABRT service is not running"
 msgstr "Služba ABRT nebeží"
 
-#: ../src/applet/applet_gtk.c:177 ../src/applet/applet_gtk.c:179
-#: ../src/applet/applet_gtk.c:368 ../src/applet/applet_gtk.c:395
+#: ../src/applet/applet_gtk.c:202 ../src/applet/applet_gtk.c:204
+#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
 msgid "Warning"
 msgstr "Upozornenie"
 
-#: ../src/applet/applet_gtk.c:231
+#: ../src/applet/applet_gtk.c:259
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
+"Oblasť upozornení pre ABRT applet, ktorý upozorňuje uživateľov na zistené "
+"problémy"
 
-#: ../src/applet/applet_gtk.c:247 ../src/gui-gtk/abrt-gtk.c:230
+#: ../src/applet/applet_gtk.c:275 ../src/gui-gtk/abrt-gtk.c:236
 msgid "translator-credits"
-msgstr ""
+msgstr "Prekladatelia"
 
-#: ../src/applet/applet_gtk.c:257
+#: ../src/applet/applet_gtk.c:285
 msgid "Hide"
 msgstr "Skryť"
 
-#: ../src/applet/applet_gtk.c:361
+#: ../src/applet/applet_gtk.c:398
 msgid "Report"
 msgstr "Nahlásiť"
 
-#: ../src/applet/applet_gtk.c:364 ../src/applet/applet_gtk.c:392
+#: ../src/applet/applet_gtk.c:401 ../src/applet/applet_gtk.c:429
 msgid "Open ABRT"
 msgstr "Otvoriť ABRT"
 
@@ -75,7 +77,7 @@ msgid ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 msgstr ""
-"\tCrash dump : %s\n"
+"\tVýpis pádov: %s\n"
 "\tUID        : %s\n"
 "\tBalíček    : %s\n"
 "\tExecutable : %s\n"
@@ -85,7 +87,7 @@ msgstr ""
 #: ../src/cli/cli.c:109
 #, c-format
 msgid "\tHostname   : %s\n"
-msgstr ""
+msgstr "\tNázov počítača   : %s\n"
 
 #: ../src/cli/cli.c:142
 #, c-format
@@ -100,10 +102,10 @@ msgid ""
 "System:             %s, kernel %s\n"
 "Reason:             %s\n"
 msgstr ""
-"Dump adresár:       %s\n"
+"Adresár s výpismi:  %s\n"
 "Posledný pád:       %s\n"
 "Analyzer:           %s\n"
-"Component:          %s\n"
+"Komponent:          %s\n"
 "Balíček:            %s\n"
 "Príkaz:             %s\n"
 "Executable:         %s\n"
@@ -123,12 +125,12 @@ msgstr "Hodnotenie:         %s\n"
 #: ../src/cli/cli.c:179
 #, c-format
 msgid "Crash function:     %s\n"
-msgstr ""
+msgstr "Pády funkcie:       %s\n"
 
 #: ../src/cli/cli.c:183
 #, c-format
 msgid "Hostname:           %s\n"
-msgstr ""
+msgstr "Názov počítača:     %s\n"
 
 #: ../src/cli/cli.c:187
 #, c-format
@@ -179,12 +181,12 @@ msgstr ""
 "   alebo: %s -i[b] CRASH_DIR\n"
 "   alebo: %s -d CRASH_DIR\n"
 "\n"
-"\t-l, --list\t\tList not yet reported crashes\n"
+"\t-l, --list\t\tZoznam ešte neohlásených pádov\n"
 "\t  -f, --full\t\tZobraziť všetky pády\n"
 "\t-D BASE_DIR\t\tDirectory to list crashes from\n"
-"\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
+"\t\t\t\t(predvolene: -D $HOME/.abrt/spool -D %s)\n"
 "\n"
-"\t-r, --report\t\tSend a report about CRASH_DIR\n"
+"\t-r, --report\t\tOdoslať hlásenie o CRASH_DIR\n"
 "\t  -y, --always\t\t...bez úprav a vypytovania\n"
 "\t-i, --info\t\tVypísať detailné informácie o CRASH_DIR\n"
 "\t  -b, --backtrace\t...vrátane backtrace\n"
@@ -224,15 +226,15 @@ msgstr "# Príkazový riadok"
 
 #: ../src/cli/report.cpp:180
 msgid "# Component"
-msgstr ""
+msgstr "# Súčasť"
 
 #: ../src/cli/report.cpp:181
 msgid "# Core dump"
-msgstr ""
+msgstr "# Výpis jadra"
 
 #: ../src/cli/report.cpp:182
 msgid "# Executable"
-msgstr ""
+msgstr "# Spustiteľný"
 
 #: ../src/cli/report.cpp:183
 msgid "# Kernel version"
@@ -273,44 +275,39 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/cli/report.cpp:417
 msgid "y"
-msgstr "y"
+msgstr "a"
 
 #: ../src/cli/report.cpp:418
 msgid "N"
 msgstr "N"
 
-#. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:549
-#, c-format
-msgid "Wrong settings were detected for plugin %s\n"
-msgstr "Boli zistené zlé nastavenia pre plugin %s\n"
-
-#: ../src/cli/report.cpp:553
-msgid "Enter your login: "
-msgstr "Zadajte Váš login: "
-
-#: ../src/cli/report.cpp:559
-msgid "Enter your password: "
-msgstr "Zadajte Vaše heslo: "
-
-#: ../src/cli/report.cpp:760 ../src/gui-wizard-gtk/wizard.c:1063
-msgid "Reporting..."
+#: ../src/cli/report.cpp:511
+msgid "Your input is not valid, because of:"
 msgstr ""
 
-#: ../src/cli/report.cpp:773
+#: ../src/cli/report.cpp:514
+#, c-format
+msgid "Bad value for '%s': %s"
+msgstr ""
+
+#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1039
+msgid "Reporting..."
+msgstr "Nahlasujem..."
+
+#: ../src/cli/report.cpp:684
 #, c-format
 msgid "Report using %s?"
 msgstr "Ohlásiť použitím %s?"
 
-#: ../src/cli/report.cpp:776
+#: ../src/cli/report.cpp:687
 msgid "Skipping..."
 msgstr "Vynechávam..."
 
-#: ../src/cli/report.cpp:792
+#: ../src/cli/report.cpp:704
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr ""
 
-#: ../src/cli/report.cpp:796
+#: ../src/cli/report.cpp:708
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -319,41 +316,31 @@ msgstr ""
 "Prosím, skúste nainštalovať debuginfo manuálne použitím príkazu: \"debuginfo-"
 "install %s\" a skúste znovu\n"
 
-#: ../src/cli/report.cpp:814
+#: ../src/cli/report.cpp:724
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "Pád ohlásený pomocou %d udalostí (%d chýb)\n"
 
-#: ../src/daemon/abrt-action-save-package-data.c:245
+#: ../src/daemon/abrt-action-save-package-data.c:252
 msgid ""
-" [options] -d DIR\n"
+" [-v] -d DIR\n"
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
 
-#: ../src/daemon/abrt-action-save-package-data.c:257
-#: ../src/daemon/abrt-handle-crashdump.c:60
-#: ../src/plugins/abrt-action-analyze-c.c:167
+#: ../src/daemon/abrt-action-save-package-data.c:263
+#: ../src/daemon/abrt-handle-crashdump.c:61
+#: ../src/plugins/abrt-action-analyze-c.c:178
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-action-bugzilla.cpp:933
-#: ../src/plugins/abrt-action-generate-backtrace.c:269
-#: ../src/plugins/abrt-action-kerneloops.c:147
+#: ../src/plugins/abrt-action-bugzilla.cpp:923
+#: ../src/plugins/abrt-action-generate-backtrace.c:280
+#: ../src/plugins/abrt-action-kerneloops.c:145
 #: ../src/plugins/abrt-action-mailx.c:147
-#: ../src/plugins/abrt-action-print.c:50
-#: ../src/plugins/abrt-action-rhtsupport.c:280
-#: ../src/plugins/abrt-action-upload.c:260
-msgid "Crash dump directory"
-msgstr "Crash dump adresár"
-
-#: ../src/daemon/abrt-action-save-package-data.c:258
-#: ../src/daemon/abrt-handle-crashdump.c:59 ../src/daemon/abrt-server.c:297
-#: ../src/plugins/abrt-action-bugzilla.cpp:932
-#: ../src/plugins/abrt-action-generate-backtrace.c:272
-#: ../src/plugins/abrt-action-kerneloops.c:146
-#: ../src/plugins/abrt-action-rhtsupport.c:279
-#: ../src/plugins/abrt-dump-oops.c:555
-msgid "Log to syslog"
+#: ../src/plugins/abrt-action-print.c:52
+#: ../src/plugins/abrt-action-rhtsupport.c:276
+#: ../src/plugins/abrt-action-upload.c:258
+msgid "Dump directory"
 msgstr ""
 
 #: ../src/daemon/abrt-handle-crashdump.c:43
@@ -361,24 +348,37 @@ msgid ""
 " [-vs] -d DIR -e EVENT\n"
 "   or: "
 msgstr ""
+" [-vs] -d DIR -e EVENT\n"
+"   alebo: "
 
-#: ../src/daemon/abrt-handle-crashdump.c:61
+#: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:298
+#: ../src/plugins/abrt-dump-oops.c:579
+msgid "Log to syslog"
+msgstr "Zalogovať do syslog"
+
+#: ../src/daemon/abrt-handle-crashdump.c:62
 msgid "Handle EVENT"
 msgstr "Obslúžiť EVENT"
 
-#: ../src/daemon/abrt-handle-crashdump.c:62
+#: ../src/daemon/abrt-handle-crashdump.c:63
 msgid "List possible events [which start with PFX]"
-msgstr "Zoznam možných udalostú [kt. začínajú na PFX]"
+msgstr "Zoznam možných udalostí [ktoré začínajú na PFX]"
 
-#: ../src/daemon/abrt-server.c:286 ../src/daemon/Daemon.cpp:544
-msgid " [options]"
+#: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:299
+#: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:170
+#: ../src/gui-wizard-gtk/main.c:93
+msgid "Add program names to log"
 msgstr ""
 
-#: ../src/daemon/abrt-server.c:296
+#: ../src/daemon/abrt-server.c:286 ../src/daemon/Daemon.cpp:535
+msgid " [options]"
+msgstr " [možnosti]"
+
+#: ../src/daemon/abrt-server.c:297
 msgid "Use UID as client uid"
 msgstr "Použiť UID ako klientove uid"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:239
+#: ../src/daemon/CommLayerServerDBus.cpp:236
 msgid "Comment is too long"
 msgstr "Komentár je príliš dlhý"
 
@@ -390,89 +390,88 @@ msgstr ""
 "Veľkosť správy prekročila limit. Prosím skontrolujte systémovú hodnotu "
 "MaxCrashReportsSize v abrt.conf."
 
-#: ../src/daemon/Daemon.cpp:555
+#: ../src/daemon/Daemon.cpp:547
 msgid "Do not daemonize"
-msgstr ""
+msgstr "Nespúšťať ako démona"
 
-#: ../src/daemon/Daemon.cpp:556
+#: ../src/daemon/Daemon.cpp:548
 msgid "Log to syslog even with -d"
 msgstr ""
 
-#: ../src/daemon/Daemon.cpp:557
+#: ../src/daemon/Daemon.cpp:549
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Sončiť po SEC sekundách nečinnosti"
 
-#: ../src/gtk-helpers/event_config_dialog.c:127
-#: ../src/plugins/Bugzilla.glade.h:7 ../src/plugins/RHTSupport.glade.h:6
+#: ../src/gtk-helpers/event_config_dialog.c:122
 msgid "Show password"
 msgstr "Ukázať heslo"
 
-#: ../src/gtk-helpers/event_config_dialog.c:258
-#, fuzzy
+#: ../src/gtk-helpers/event_config_dialog.c:311
 msgid "Event Configuration"
-msgstr "Konfigurovať nastavenia %s"
+msgstr "Konfigurácia Udalostí"
 
-#: ../src/gtk-helpers/event_config_dialog.c:303
-msgid "Events"
-msgstr ""
-
-#: ../src/gtk-helpers/event_config_dialog.c:327
+#: ../src/gtk-helpers/event_config_dialog.c:336
 msgid "Event"
-msgstr ""
+msgstr "Udalosť"
 
-#: ../src/gtk-helpers/event_config_dialog.c:359
-#, fuzzy
+#: ../src/gtk-helpers/event_config_dialog.c:369
 msgid "Configure E_vent"
-msgstr "K_onfigurovať Plugin"
+msgstr "Konfigurovať Udalosť"
 
-#: ../src/gui-gtk/abrt-gtk.c:249
+#: ../src/gui-gtk/abrt-gtk.c:255
 msgid "Reported"
-msgstr "Ohlásené"
+msgstr "Nahlásené"
 
-#: ../src/gui-gtk/abrt-gtk.c:261
+#: ../src/gui-gtk/abrt-gtk.c:267
 msgid "Problem"
-msgstr ""
+msgstr "Problém"
 
-#: ../src/gui-gtk/abrt-gtk.c:284
+#: ../src/gui-gtk/abrt-gtk.c:290
 msgid "Last occurrence"
-msgstr ""
+msgstr "Posledný výskyt"
 
-#: ../src/gui-gtk/abrt-gtk.c:299
+#: ../src/gui-gtk/abrt-gtk.c:305
 msgid "_File"
 msgstr "_Súbor"
 
-#: ../src/gui-gtk/abrt-gtk.c:300
+#: ../src/gui-gtk/abrt-gtk.c:306
 msgid "_Edit"
 msgstr "_Upraviť"
 
-#: ../src/gui-gtk/abrt-gtk.c:301
+#: ../src/gui-gtk/abrt-gtk.c:307
 msgid "_Help"
 msgstr "_Pomocník"
 
-#: ../src/gui-gtk/abrt-gtk.c:317
-#, fuzzy
-msgid "_Plugins"
-msgstr "Moduly"
+#: ../src/gui-gtk/abrt-gtk.c:323
+msgid "_Event configuration"
+msgstr ""
 
-#: ../src/gui-gtk/abrt-gtk.c:393
-#, fuzzy
-msgid "_Online Help"
-msgstr "Online _Pomoc"
+#: ../src/gui-gtk/abrt-gtk.c:399
+msgid "Online _Help"
+msgstr ""
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
 msgstr "Zobrazenie a nahlasovanie pádov aplikácií"
 
-#: ../src/gui-wizard-gtk/main.c:70
+#: ../src/gui-gtk/main.c:158
 msgid ""
-" [-v] [-g GUI_FILE] DIR\n"
+" [-vp] [DIR]...\n"
 "\n"
-"GUI tool to analyze and report ABRT crash in specified DIR"
+"Shows list of ABRT dump directories in specified DIR(s)\n"
+"(default DIRs: "
 msgstr ""
 
 #: ../src/gui-wizard-gtk/main.c:80
-msgid "Alternate GUI file"
+msgid ""
+" [-vp] [-g GUI_FILE] DIR\n"
+"\n"
+"GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
+
+#: ../src/gui-wizard-gtk/main.c:92
+msgid "Alternate GUI file"
+msgstr "Alternatívny súbor pre grafické "
 
 #: ../src/gui-wizard-gtk/wizard.c:187
 #, c-format
@@ -480,196 +479,213 @@ msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
 msgstr ""
+"Je potrebný adredár s právom na zápis, do '%s' nie je možno zapisovať. "
+"Presunťe ho na '%s' a pracujte s presunutou kópiou?"
 
 #: ../src/gui-wizard-gtk/wizard.c:499
 msgid "(click here to view/edit)"
-msgstr ""
+msgstr "(kliknúť sem pre náhľad/úpravy)"
 
 #: ../src/gui-wizard-gtk/wizard.c:511
 #, c-format
 msgid "(binary file, %llu bytes)"
-msgstr ""
+msgstr "(binárny súbor, %llu byte-ov)"
 
 #: ../src/gui-wizard-gtk/wizard.c:526
-#, fuzzy
 msgid "(no description)"
-msgstr "Popis:"
+msgstr "(žiadny popis)"
 
 #: ../src/gui-wizard-gtk/wizard.c:531
 #, c-format
 msgid "%llu bytes, %u files"
-msgstr ""
+msgstr "%llu byte-ov, %u súborov"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:868
+#: ../src/gui-wizard-gtk/wizard.c:844
 #, c-format
 msgid "No processing for event '%s' is defined"
-msgstr ""
+msgstr "Nebolo úrčené žiadne spracovanie pre udalosť '%s'"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:963
+#: ../src/gui-wizard-gtk/wizard.c:939
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:969
+#: ../src/gui-wizard-gtk/wizard.c:945
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:978
+#: ../src/gui-wizard-gtk/wizard.c:954
 msgid "You should check the backtrace for sensitive data."
 msgstr "Mali by ste skontrolovať citlivé dáta v backtrace"
 
-#: ../src/gui-wizard-gtk/wizard.c:979
+#: ../src/gui-wizard-gtk/wizard.c:955
 msgid "You must agree with sending the backtrace."
 msgstr "Musíte súhlasiť s odoslaním backtrace."
 
-#: ../src/gui-wizard-gtk/wizard.c:1035
+#: ../src/gui-wizard-gtk/wizard.c:1011
 msgid "Analyzing..."
-msgstr ""
+msgstr "Prebieha analýza..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1036
+#: ../src/gui-wizard-gtk/wizard.c:1012
 #, c-format
 msgid "Analyzing finished with exit code %d"
-msgstr ""
+msgstr "Analýza skončená s návratovou hodnotou %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1064
+#: ../src/gui-wizard-gtk/wizard.c:1040
 #, c-format
 msgid "Reporting finished with exit code %d"
-msgstr ""
+msgstr "Hlásenie skončilo s návratovou hodnotou %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1182
+#: ../src/gui-wizard-gtk/wizard.c:1158
 msgid "Name"
 msgstr "Meno"
 
-#: ../src/gui-wizard-gtk/wizard.c:1191
+#: ../src/gui-wizard-gtk/wizard.c:1167
 msgid "Value"
-msgstr ""
+msgstr "Hodnota"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr ""
+"<b>Vaše komentáre sú verejné</b> Môžu byť zahrnuté do verejne viditeľných "
+"správ o problémoch."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Analyzing did not start yet"
-msgstr ""
+msgstr "Analýza ešte nebola spustená"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Any additional comments useful for diagnosing the problem?"
 msgstr ""
+"Môžete uviesť nejaké doplňujúce komentáre, ktoré by boli užitočné pre "
+"určenie problému?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
-#, fuzzy
 msgid ""
 "Backtrace provides developers with details of the crash, helping them track "
 "down the source of the problem. Please review it and remove any sensitive "
 "data you would rather not share:"
 msgstr ""
-"Nižšie je backtrace spojený s Vašim pádom. Backtrace o páde poskytuje "
-"vývojárom detaily o tom, ako pád nastal a pomáha im vystopovať zdroj "
-"problému.\n"
-"\n"
-"Prosím, prezrite si nižšie uvedený backtrace a upravte ho, ak je to nutné "
-"aby ste sa uistili, že Vaša chybová správa neobsahuje žiadne citlivé dáta, "
-"ktoré by ste radšej neuverjovali:"
+"Backtrace poskytuje vývojárom informácie o páde a pomáha im nájst zdroj "
+"problému.Prosím, prezrite si backtrace a odstráňťe hocijaké citlivé dáta, "
+"ktoré si neželáte zdieľať:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
 "Can create more informative backtrace if you installed additional debug "
 "packages"
 msgstr ""
+"Môže byť vytvorený backtrace s viac informáciami, ak nainštalujete dodatočné "
+"debug balíčky"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "Click 'Apply' to start reporting"
-msgstr ""
+msgstr "Stlačte 'Použiť' pre nahlásenie problému"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "Click 'Forward' to proceed with analyzing and reporting this problem."
-msgstr ""
+msgstr "Stlačte 'Ďalej' pre pokračovanie analýzy a ohlasovania tohto problému."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
-#, fuzzy
-msgid "Configure Events"
-msgstr "Konfigurovať nastavenia %s"
+msgid "Configure _Events"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
 msgstr "Detaily"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
-#, fuzzy
 msgid "How did this problem happen (step-by-step)? How can it be reproduced?"
-msgstr "Ako nastal tento pád (krok za krokom)? Ako by ste ho zopakovali?"
+msgstr "Ako nastal tento problém (krok-za-krokom)?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
-msgid "I agree with submitting the backtrace"
-msgstr "Súhlasím s odovzdaním backtrace"
+msgid "I _agree with submitting the backtrace"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
-#, fuzzy
 msgid "Regenerate backtrace"
-msgstr "Prinútiť ABRT znovu vygenerovať backtrace."
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:13
-#, fuzzy
 msgid "Reporter(s):"
-msgstr "Ohlásené"
+msgstr "Nahlasovatel(ia):"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid "Reporting did not start yet"
-msgstr ""
+msgstr "Nahlasovanie problému ešte nebolo spustené"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "Select how you would like to analyze the problem:"
-msgstr ""
+msgstr "Vyberte, ako by ste chceli analyzovať tento problém:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "Select how you would like to report the problem:"
-msgstr ""
+msgstr "Vyberte, ako by ste chceli nahlásiť tento problém:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Size:"
-msgstr ""
+msgstr "Veľkosť:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid ""
 "Use this button to generate more informative backtrace after you installed "
 "additional debug packages"
 msgstr ""
+"Použite toto tlačítko pre geneorvanie backtrace s viac informáciami, potom "
+"ako nainštalujetedodatočné debug balíčky"
 
 #: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Odoslaných: %llu z %llu kbyte-ov"
 
+#: ../src/lib/event_config.c:313
+msgid "Missing mandatory value"
+msgstr ""
+
+#: ../src/lib/event_config.c:321
+#, c-format
+msgid "Invalid utf8 character '%c'"
+msgstr ""
+
+#: ../src/lib/event_config.c:332
+#, c-format
+msgid "Invalid number '%s'"
+msgstr ""
+
+#: ../src/lib/event_config.c:343
+#, c-format
+msgid "Invalid boolean value '%s'"
+msgstr ""
+
+#: ../src/lib/event_config.c:347
+msgid "Unsupported option type"
+msgstr ""
+
 #: ../src/lib/parse_options.c:29
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Použitie: %s\n"
 
-#: ../src/plugins/abrt-action-analyze-c.c:156
+#: ../src/plugins/abrt-action-analyze-c.c:167
 msgid ""
 " [-v] -d DIR\n"
 "\n"
-"Calculates and saves UUID of coredumps"
+"Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
-" [-v] -d DIR\n"
-"\n"
-"Vypočíta a uloží UUID pre coredumps"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:133
 msgid ""
 " [-vs] -d DIR\n"
 "\n"
-"Calculates and saves UUID and DUPHASH of oops crash dumps"
+"Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
-" [-vs] -d DIR\n"
-"\n"
-"Vypočíta a uloží UUID a DUPHASH pre oops crash dumps"
 
 #: ../src/plugins/abrt-action-analyze-python.c:38
 msgid ""
@@ -679,104 +695,105 @@ msgid ""
 msgstr ""
 " [-v] -d DIR\n"
 "\n"
-"Vypočíta a uloží UUID a DUPHASH pre python crash dumps"
+"Vypočíta a uloží UUID a DUPHASH výpisy pádov pre python"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:536
+#: ../src/plugins/abrt-action-bugzilla.cpp:516
 #, c-format
 msgid "New bug id: %i"
 msgstr "id novej chyby: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:664
+#: ../src/plugins/abrt-action-bugzilla.cpp:646
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr "Prázdny login alebo heslo, prosím skontrolujte %s"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:684
-msgid "Logging into bugzilla..."
-msgstr "Prihlasovanie do bugzilly..."
+#: ../src/plugins/abrt-action-bugzilla.cpp:666
+#, c-format
+msgid "Logging into Bugzilla at %s"
+msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:687
-msgid "Checking for duplicates..."
-msgstr "Kontrola na duplicitu..."
+#: ../src/plugins/abrt-action-bugzilla.cpp:669
+msgid "Checking for duplicates"
+msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:709
-#: ../src/plugins/abrt-action-bugzilla.cpp:745
+#: ../src/plugins/abrt-action-bugzilla.cpp:691
+#: ../src/plugins/abrt-action-bugzilla.cpp:727
 msgid "Missing mandatory member 'bugs'"
 msgstr "Chýba povinná položka 'bugs'"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:728
-#: ../src/plugins/abrt-action-bugzilla.cpp:761
-#: ../src/plugins/abrt-action-bugzilla.cpp:837
+#: ../src/plugins/abrt-action-bugzilla.cpp:710
+#: ../src/plugins/abrt-action-bugzilla.cpp:743
+#: ../src/plugins/abrt-action-bugzilla.cpp:819
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() zlyhala. Nie je možné zhromaždiť všetky povinné informácie"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:776
-msgid "Creating a new bug..."
-msgstr "Vytváranie novej chyby..."
+#: ../src/plugins/abrt-action-bugzilla.cpp:758
+msgid "Creating a new bug"
+msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:781
+#: ../src/plugins/abrt-action-bugzilla.cpp:763
 msgid "Bugzilla entry creation failed"
 msgstr "Vytvorenie novej položky v Bugzille sa nepodarilo"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:793
-#: ../src/plugins/abrt-action-bugzilla.cpp:892
-msgid "Logging out..."
-msgstr "Odhlasovanie..."
+#: ../src/plugins/abrt-action-bugzilla.cpp:775
+#: ../src/plugins/abrt-action-bugzilla.cpp:875
+msgid "Logging out"
+msgstr ""
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:811
+#: ../src/plugins/abrt-action-bugzilla.cpp:793
 #, c-format
 msgid "Bug is already reported: %i"
-msgstr "Chyba už bola ohlásená: %i"
+msgstr "Chyba už bola nahlásená: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:822
+#: ../src/plugins/abrt-action-bugzilla.cpp:804
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla nemôže nájsť predka chyby %d"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:851
+#: ../src/plugins/abrt-action-bugzilla.cpp:834
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Pridať %s do zoznamu CC"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:877
+#: ../src/plugins/abrt-action-bugzilla.cpp:860
 #, c-format
 msgid "Adding new comment to bug %d"
-msgstr "Pridať nový komentár k bugu (chybe) č. %d"
+msgstr "Pridať nový komentár k chybe č. %d"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:919
+#: ../src/plugins/abrt-action-bugzilla.cpp:911
 msgid ""
-" [-vs] -c CONFFILE -d DIR\n"
+" [-v] -c CONFFILE -d DIR\n"
 "\n"
-"Report a crash to Bugzilla"
+"Reports problem to Bugzilla"
 msgstr ""
-" [-vs] -c CONFFILE -d DIR\n"
-"\n"
-"Ohlásiť pád na Bugzilla"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:934
-#: ../src/plugins/abrt-action-kerneloops.c:148
-#: ../src/plugins/abrt-action-rhtsupport.c:281
+#: ../src/plugins/abrt-action-bugzilla.cpp:924
+#: ../src/plugins/abrt-action-kerneloops.c:146
+#: ../src/plugins/abrt-action-rhtsupport.c:277
 msgid "Configuration file (may be given many times)"
 msgstr "Konfiguračný súbor (môže byť uvedený niekoľkokrát)"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:257
-msgid " [options] -d DIR"
-msgstr " [options] -d DIR"
+#: ../src/plugins/abrt-action-generate-backtrace.c:267
+msgid ""
+" [options] -d DIR\n"
+"\n"
+"Generates and saves backtrace for coredump in dump directory DIR"
+msgstr ""
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:270
+#: ../src/plugins/abrt-action-generate-backtrace.c:281
 msgid "Additional debuginfo directories"
 msgstr "Doplňujúce debuginfo adresáre"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:271
+#: ../src/plugins/abrt-action-generate-backtrace.c:282
 msgid "Kill gdb if it runs for more than N seconds"
 msgstr "Zabiť gdb, ak beží viac ako N sekúnd"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
 #.
-#: ../src/plugins/abrt-action-generate-backtrace.c:321
+#: ../src/plugins/abrt-action-generate-backtrace.c:329
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
 msgstr "Backtrace je vygenerovaný a uložený, %u byte-ov"
@@ -785,7 +802,7 @@ msgstr "Backtrace je vygenerovaný a uložený, %u byte-ov"
 #. * The parser failed. Compute the UUID from the executable
 #. * and package only.  This is not supposed to happen often.
 #.
-#: ../src/plugins/abrt-action-generate-backtrace.c:332
+#: ../src/plugins/abrt-action-generate-backtrace.c:340
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "Parsovanie backtrace zlyhalo pre %s"
@@ -821,80 +838,88 @@ msgstr "Nie je možné rozbaliť súbory z '%s'"
 msgid "Downloading (%i of %i) %s: %3u%%"
 msgstr "Sťahovanie (%i z %i) %s: %3u%%"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:234
+#. This is somewhat "magic", it unpacks the metadata making it usable.
+#. Looks like this is the moment when yum talks to remote servers,
+#. which takes time (sometimes minutes), let user know why
+#. we have "paused":
+#: ../src/plugins/abrt-action-install-debuginfo.py:206
+msgid "Looking for needed packages in repositories"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:240
 #, python-format
 msgid "Can't find packages for %u debuginfo files"
 msgstr "Nie je možné nájsť balíčky pre %u debuginfo súbory"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:236
+#: ../src/plugins/abrt-action-install-debuginfo.py:242
 #, python-format
-msgid "Found %u packages to download"
-msgstr "Najdených %u balíčkov na stiahnutie"
+msgid "Packages to download: %u"
+msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:237
+#: ../src/plugins/abrt-action-install-debuginfo.py:243
 #, python-format
 msgid "Downloading %.2fMb, installed size: %.2fMb"
 msgstr "Sťahovanie %.2fMb, inštalovaná veľkosť: %.2fMb"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:245
+#: ../src/plugins/abrt-action-install-debuginfo.py:251
 msgid "Is this ok? [y/N] "
-msgstr "Je toto vporiadku? [y/N] "
+msgstr "Je toto vporiadku? [a/N] "
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:262
+#: ../src/plugins/abrt-action-install-debuginfo.py:268
 #, python-format
 msgid "Downloading package %s failed"
 msgstr "Sťahovanie balíčku %s zlyhalo"
 
 #. recursively delete the temp dir on failure
-#: ../src/plugins/abrt-action-install-debuginfo.py:273
+#: ../src/plugins/abrt-action-install-debuginfo.py:279
 msgid "Unpacking failed, aborting download..."
 msgstr "Rozvalovanie zlyhalo, prerušujem sťahovanie..."
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:280
+#: ../src/plugins/abrt-action-install-debuginfo.py:286
 #, python-format
 msgid "All downloaded packages have been extracted, removing %s"
 msgstr "Všetky stiahnuté balíčky boli rozbalené, odstraňujem %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:285
+#: ../src/plugins/abrt-action-install-debuginfo.py:291
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr "Nemožno odstrániť %s, pravdepodobne obsahuje chbový výpis (log)"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:310
+#: ../src/plugins/abrt-action-install-debuginfo.py:316
 #, python-format
-msgid "Analyzing corefile '%s'"
-msgstr "Analyzujem corefile '%s'"
+msgid "Analyzing coredump '%s'"
+msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:388
+#: ../src/plugins/abrt-action-install-debuginfo.py:394
 #, python-format
 msgid "Can't remove '%s': %s"
 msgstr "Nemožno odstrániť '%s': %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:396
+#: ../src/plugins/abrt-action-install-debuginfo.py:402
 msgid "Exiting on user command"
-msgstr ""
+msgstr "Ukončujem na príkaz užívateľa"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:415
+#: ../src/plugins/abrt-action-install-debuginfo.py:428
 #, python-format
 msgid "Usage: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 msgstr "Použitie: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:444
+#: ../src/plugins/abrt-action-install-debuginfo.py:457
 msgid "You have to specify the path to coredump."
 msgstr "Musíte upresniť cestu na coredump."
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:461
+#: ../src/plugins/abrt-action-install-debuginfo.py:474
 #, python-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
 msgstr ""
 "Coredump odkazuje na %u debuginfo súbory, %u z nich ne je nainštalovaných"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:466
+#: ../src/plugins/abrt-action-install-debuginfo.py:479
 #, python-format
 msgid "Missing debuginfo file: %s"
 msgstr "Chýba debuginfo súbor: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:469
+#: ../src/plugins/abrt-action-install-debuginfo.py:482
 #, python-format
 msgid "All %u debuginfo files are available"
 msgstr "Všetky %u debuginfo súbory sú dostupné"
@@ -906,15 +931,12 @@ msgstr "Odovzdávanie oops správy na %s"
 
 #: ../src/plugins/abrt-action-kerneloops.c:133
 msgid ""
-" [-vs] -c CONFFILE -d DIR\n"
+" [-v] -c CONFFILE -d DIR\n"
 "\n"
-"Report a kernel oops to kerneloops.org (or similar) site"
+"Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
-" [-vs] -c CONFFILE -d DIR\n"
-"\n"
-"Ohlásiť kernel oops na stránku kerneloops.org (alebo podobú)"
 
-#: ../src/plugins/abrt-action-mailx.c:108
+#: ../src/plugins/abrt-action-mailx.c:109
 msgid "Sending an email..."
 msgstr "Odosielanie emailu..."
 
@@ -922,30 +944,28 @@ msgstr "Odosielanie emailu..."
 msgid ""
 " [-v] -d DIR [-c CONFFILE]\n"
 "\n"
-"Upload compressed tarball of crash dump"
+"Sends compressed tarball of dump directory DIR via email"
 msgstr ""
-" [-v] -d DIR [-c CONFFILE]\n"
-"\n"
-"Odovzdať skomprimovaný (tarball) výpis pádov"
 
 #: ../src/plugins/abrt-action-mailx.c:148
-#: ../src/plugins/abrt-action-upload.c:261
+#: ../src/plugins/abrt-action-upload.c:259
 msgid "Config file"
 msgstr "Konfiguračný súbor"
 
-#: ../src/plugins/abrt-action-print.c:38
+#: ../src/plugins/abrt-action-print.c:39
 msgid ""
-" [-v] [-o FILE] -d DIR\n"
+" [-v] -d DIR [-o FILE] [-a yes/no]\n"
 "\n"
-"Print information about the crash to standard output"
+"Prints problem information to standard output or FILE"
 msgstr ""
-" [-v] [-o FILE] -d DIR\n"
-"\n"
-"Vypísať informácie o páde na standardný výstup"
 
-#: ../src/plugins/abrt-action-print.c:51
+#: ../src/plugins/abrt-action-print.c:53
 msgid "Output file"
 msgstr "Výstupný súbor"
+
+#: ../src/plugins/abrt-action-print.c:54
+msgid "Append to, or overwrite FILE"
+msgstr ""
 
 #: ../src/plugins/abrt-action-print.c:87
 #, c-format
@@ -966,22 +986,19 @@ msgid "Compressing data"
 msgstr "Komprimujem dáta"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:73
-msgid "Empty login or password, please check RHTSupport.conf"
-msgstr "Prázdny login alebo heslo, prosím skontrolujte RHTSupport.conf"
+msgid "Empty RHTS login or password"
+msgstr ""
 
-#: ../src/plugins/abrt-action-rhtsupport.c:191
+#: ../src/plugins/abrt-action-rhtsupport.c:189
 msgid "Creating a new case..."
 msgstr "Vytváranie nového prípadu..."
 
-#: ../src/plugins/abrt-action-rhtsupport.c:266
+#: ../src/plugins/abrt-action-rhtsupport.c:264
 msgid ""
-" [-vs] -c CONFFILE -d DIR\n"
+" [-v] -c CONFFILE -d DIR\n"
 "\n"
-"Report a crash to RHTSupport"
+"Reports a problem to RHTSupport"
 msgstr ""
-" [-vs] -c CONFFILE -d DIR\n"
-"\n"
-"Ohlásiť pád na RHTSupport"
 
 #: ../src/plugins/abrt-action-upload.c:63
 #, c-format
@@ -994,26 +1011,23 @@ msgstr "Odosielam %s na %s"
 msgid "Successfully sent %s to %s"
 msgstr "Úspešne odoslané %s na %s"
 
-#: ../src/plugins/abrt-action-upload.c:212
+#: ../src/plugins/abrt-action-upload.c:210
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "Archív je vytvorený: '%s'"
 
-#: ../src/plugins/abrt-action-upload.c:247
+#: ../src/plugins/abrt-action-upload.c:245
 msgid ""
 " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
-"Upload compressed tarball of crash dump"
+"Uploads compressed tarball of dump directory DIR"
 msgstr ""
-" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
-"\n"
-"Odovzdať skomprimované (tarball) výpisy pádov"
 
-#: ../src/plugins/abrt-action-upload.c:262
+#: ../src/plugins/abrt-action-upload.c:260
 msgid "Base URL to upload to"
 msgstr "Základná URL na odovzdávanie na"
 
-#: ../src/plugins/abrt-dump-oops.c:540
+#: ../src/plugins/abrt-dump-oops.c:563
 msgid ""
 " [-vsrdow] FILE\n"
 "\n"
@@ -1023,615 +1037,29 @@ msgstr ""
 "\n"
 "Vyextrahovať oops z syslog/dmesg súboru"
 
-#: ../src/plugins/abrt-dump-oops.c:556
+#: ../src/plugins/abrt-dump-oops.c:580
 msgid "Parse kernel's message buffer before parsing FILE"
-msgstr ""
+msgstr "Parsovať zásobník správ kernel-u pred parsovaním FILE"
 
-#: ../src/plugins/abrt-dump-oops.c:557
+#: ../src/plugins/abrt-dump-oops.c:581
 msgid "Create ABRT dump for every oops found"
 msgstr "Vytvoriť ABRT výpis pre každý najdený oops"
 
-#: ../src/plugins/abrt-dump-oops.c:558
+#: ../src/plugins/abrt-dump-oops.c:582
 msgid "Print found oopses on standard output"
-msgstr ""
+msgstr "Vypísať nájdené oops na štandardný výstup"
 
-#: ../src/plugins/abrt-dump-oops.c:559
+#: ../src/plugins/abrt-dump-oops.c:583
 msgid "Do not exit, watch the file for new oopses"
+msgstr "Neukončujte, prezerám súpor pre nové oops-y"
+
+#. oopses doesn't contain any sensitive info, and even
+#. * the old koops app was showing the oopses to all users
+#.
+#: ../src/plugins/abrt-dump-oops.c:587
+msgid "Make the dump directory world readable"
 msgstr ""
 
-#: ../src/plugins/abrt-retrace-client.c:701
+#: ../src/plugins/abrt-retrace-client.c:704
 msgid "log to syslog"
-msgstr ""
-
-#: ../src/plugins/Bugzilla.glade.h:1
-msgid "<b>Bugzilla plugin configuration</b>"
-msgstr "<b>Konfigurácia plugin-u Bugzilla</b>"
-
-#: ../src/plugins/Bugzilla.glade.h:2
-msgid "Bugzilla URL:"
-msgstr "Bugzilla URL:"
-
-#: ../src/plugins/Bugzilla.glade.h:3
-msgid "Don't have an account yet?"
-msgstr "Nemáte ešte účet?"
-
-#: ../src/plugins/Bugzilla.glade.h:4
-msgid "Login(email):"
-msgstr "Login(email):"
-
-#: ../src/plugins/Bugzilla.glade.h:5 ../src/plugins/RHTSupport.glade.h:3
-msgid "Password:"
-msgstr "Heslo:"
-
-#: ../src/plugins/Bugzilla.glade.h:6 ../src/plugins/RHTSupport.glade.h:5
-msgid "SSL verify"
-msgstr "SSL overenie"
-
-#: ../src/plugins/Bugzilla.glade.h:8
-msgid ""
-"You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
-"\">here</a>"
-msgstr ""
-"Môžete to vytvoriť <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
-"\">tu</a>"
-
-#: ../src/plugins/KerneloopsReporter.glade.h:1
-msgid "<b>Kerneloops Reporter plugin configuration</b>"
-msgstr "<b>Konfigurácia plugin-u Kerneloops Reporter plugin</b>"
-
-#: ../src/plugins/KerneloopsReporter.glade.h:2
-msgid "Submit URL:"
-msgstr "Odovzdať na URL:"
-
-#: ../src/plugins/Logger.glade.h:1
-msgid "<b>Logger plugin configuration</b>"
-msgstr "<b>Konfigurácia plugin-u Logger</b>"
-
-#: ../src/plugins/Logger.glade.h:2
-msgid "Append new logs"
-msgstr "Pridať nové logy"
-
-#: ../src/plugins/Logger.glade.h:3
-msgid "Logger file:"
-msgstr ""
-
-#: ../src/plugins/Mailx.glade.h:1
-msgid "<b>Mailx plugin configuration</b>"
-msgstr "<b>Konfigurácia plugin-u Mailx</b>"
-
-#: ../src/plugins/Mailx.glade.h:2
-msgid "Recipient's Email:"
-msgstr "Príjemcov Email:"
-
-#: ../src/plugins/Mailx.glade.h:3
-msgid "Send Binary Data"
-msgstr "Odoslať Binárne Dáta"
-
-#: ../src/plugins/Mailx.glade.h:4
-msgid "Subject:"
-msgstr "Predmet:"
-
-#: ../src/plugins/Mailx.glade.h:5
-msgid "Your Email:"
-msgstr "Váš Email:"
-
-#: ../src/plugins/RHTSupport.glade.h:1
-msgid "<b>RHTSupport plugin configuration</b>"
-msgstr "<b>Konfigurácia plugin-u RHTSupport</b>"
-
-#: ../src/plugins/RHTSupport.glade.h:2
-msgid "Login:"
-msgstr "Login:"
-
-#: ../src/plugins/RHTSupport.glade.h:4
-msgid "RHTSupport URL:"
-msgstr "RHTSupport URL:"
-
-#: ../src/plugins/Upload.glade.h:1
-msgid "<b>Upload plugin configuration</b>"
-msgstr "<b>Odovzdať konfiguráciu plugin-u</b>"
-
-#: ../src/plugins/Upload.glade.h:2
-msgid "Retry count:"
-msgstr ""
-
-#: ../src/plugins/Upload.glade.h:3
-msgid "Retry delay:"
-msgstr ""
-
-#: ../src/plugins/Upload.glade.h:4
-msgid "URL:"
-msgstr "URL:"
-
-#: ../src/plugins/Upload.glade.h:5
-msgid "Use encryption"
-msgstr "Použiť šifrovanie"
-
-#~ msgid ""
-#~ "Got unexpected data from the daemon (is the database properly updated?)."
-#~ msgstr ""
-#~ "Dostal nečakané dáta od démona (je databáza správne aktualizovaná?)."
-
-#~ msgid "Not loaded plugins"
-#~ msgstr "Žiadne pluginy nie sú načítané"
-
-#~ msgid "Analyzer plugins"
-#~ msgstr "Analyzačné moduly"
-
-#~ msgid "Action plugins"
-#~ msgstr "Akčné moduly"
-
-#~ msgid "Reporter plugins"
-#~ msgstr "Reportovacie moduly"
-
-#~ msgid "Database plugins"
-#~ msgstr "Databázové moduly"
-
-#~ msgid "Cannot connect to system dbus."
-#~ msgstr "Nedá sa pripojiť k dbus."
-
-#~ msgid "Please check if the abrt daemon is running."
-#~ msgstr "Prosím skontrolujte, či abrt démon beží."
-
-#~ msgid ""
-#~ "Daemon did not return a valid report info.\n"
-#~ "Is debuginfo missing?"
-#~ msgstr ""
-#~ "Démov vrátil neplatné informácie na ohlásenie.\n"
-#~ "Nechýba debuginfo?"
-
-#~ msgid "<b>Bug Reports:</b>"
-#~ msgstr "<b>Chybové správy:</b>"
-
-#~ msgid "<b>Command:</b>"
-#~ msgstr "<b>Príkaz:</b>"
-
-#~ msgid "<b>Comment:</b>"
-#~ msgstr "<b>Komentár:</b>"
-
-#~ msgid "<b>Crash Count:</b>"
-#~ msgstr "<b>Počet pádov:</b>"
-
-#~ msgid "<b>Latest Crash:</b>"
-#~ msgstr "<b>Posledný pád</b>"
-
-#~ msgid "<b>Reason:</b>"
-#~ msgstr "<b>Dôvod:</b>"
-
-#~ msgid "<b>User:</b>"
-#~ msgstr "<b>Užívateľ:</b>"
-
-#~ msgid "About ABRT"
-#~ msgstr "O programe ABRT"
-
-#~ msgid "Copy to Clipboard"
-#~ msgstr "Skopírovať do schránky"
-
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify it "
-#~ "under the terms of the GNU General Public License as published by the "
-#~ "Free Software Foundation; either version 2 of the License, or (at your "
-#~ "option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful, but "
-#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
-#~ "Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License along "
-#~ "with this program.  If not, see <http://www.gnu.org/licenses/>."
-#~ msgstr ""
-#~ "Toto je slobodný software; môžete ho šíriť a/alebo upravovať podľa "
-#~ "ustanovení GNU General Public License vydaných Free Software Foundation; "
-#~ "buď verzia 2 tejto licencie alebo (podľa vášho uváženia) ktorákoľvek "
-#~ "neskoršia verzia.\n"
-#~ "\n"
-#~ "Tento program je šírený v nádeji, že bude užitočný, avšak BEZ AKEJKOĽVEK "
-#~ "ZÁRUKY; neposkytujú sa ani odvodené záruky PREDAJNOSTI alebo VHODNOSTI "
-#~ "PRE URČITÝ ÚČEL. Ďalšie podrobnosti môžete nájsť v GNU General Public "
-#~ "License.\n"
-#~ "\n"
-#~ "Kópiu GNU General Public License by ste mali obdržať spolu s týmto "
-#~ "programom. Ak sa tak nestalo navštívte <http://www.gnu.org/licenses/>."
-
-#~ msgid "View log"
-#~ msgstr "Pozrieť log"
-
-#~ msgid "Application"
-#~ msgstr "Aplikácia"
-
-#~ msgid "Hostname"
-#~ msgstr "Hostname"
-
-#~ msgid "Latest Crash"
-#~ msgstr "Posledný pád"
-
-#~ msgid ""
-#~ "Cannot show the settings dialog.\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Nemožno zobraziť dialóg nastavení.\n"
-#~ "%s"
-
-#~ msgid ""
-#~ "Unable to finish the current task!\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Nemožno dokončiť aktuálnu úlohu!\n"
-#~ "%s"
-
-#~ msgid ""
-#~ "Error while loading the dumplist.\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Chyba počas načítavania dumplist-u.\n"
-#~ "%s"
-
-#~ msgid ""
-#~ "<b>%s Crash</b>\n"
-#~ "%s"
-#~ msgstr ""
-#~ "<b>%s Pád</b>\n"
-#~ "%s"
-
-#~ msgid "You have to select a crash to copy."
-#~ msgstr "Musíte zvoliť konkrétny pád, ktorý sa má skopírovať"
-
-#~ msgid ""
-#~ "Usage: abrt-gui [OPTIONS]\n"
-#~ "\t-v[vv]\t\t\tVerbose\n"
-#~ "\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
-#~ msgstr ""
-#~ "Použitie: abrt-gui [VOĽBY]\n"
-#~ "\t-v[vv]\t\t\tPodrobný\n"
-#~ "\t--report=CRASH_ID\tReportovať pád priamo s CRASH_ID"
-
-#~ msgid ""
-#~ "No such crash in the database, probably wrong crashid.\n"
-#~ "crashid=%s"
-#~ msgstr ""
-#~ "V databáze nie je podobný pád, pravdepodobne je chybné crashid.\n"
-#~ "crashid=%s"
-
-#~ msgid "Cannot connect to the Gnome Keyring daemon."
-#~ msgstr "Pripojenie k démonovi Gnome Keyring nie je možné."
-
-#~ msgid "Cannot get the default keyring."
-#~ msgstr "Nemožno získať predvolenú správu kľúčov."
-
-#~ msgid ""
-#~ "Access to gnome-keyring has been denied, plugins settings will not be "
-#~ "saved."
-#~ msgstr ""
-#~ "Prístup ku gnome-keyring odopretý, nastavenia plugin-ov nebudú môcť byť "
-#~ "uložené."
-
-#~ msgid ""
-#~ "Access to gnome-keyring has been denied, cannot load the settings for %s!"
-#~ msgstr ""
-#~ "Prístup ku gnome-keyring bol odopretý, nemožno načítať nastavenia pre %s!"
-
-#~ msgid "Crash info doesn't contain a backtrace"
-#~ msgstr "Informácia o páde nepbsahuje backtrace"
-
-#~ msgid ""
-#~ "Cannot save plugin settings:\n"
-#~ " %s"
-#~ msgstr ""
-#~ "Nemožno uložiť nastavenia plugin-u:\n"
-#~ " %s"
-
-#~ msgid "Rating is %s"
-#~ msgstr "Hodnotenie je %s"
-
-#~ msgid "Crashdump doesn't have rating => we suppose it's not required"
-#~ msgstr "Crashdump nemá hodnotenie => predpokladáme, že nie je potrebné"
-
-#~ msgid ""
-#~ "Reporting disabled because the backtrace is unusable.\n"
-#~ "Please try to install debuginfo manually using the command: <b>debuginfo-"
-#~ "install %s</b> \n"
-#~ "then use the Refresh button to regenerate the backtrace."
-#~ msgstr ""
-#~ "Ohlasovanie je zakázané, pretože backtrace sa nedá použiť.\n"
-#~ "Prosím skúste nainštalovať debuginfo manuálne pouižtím príkazu: "
-#~ "<b>debuginfo-install %s</b> \n"
-#~ "potom potom použite tlačítko Obnoviť pre vygenerovanie backtrace."
-
-#~ msgid "You did not provide any steps to reproduce."
-#~ msgstr "Neposkytli ste žiadne kroky pre obnovu."
-
-#~ msgid "You did not provide any comments."
-#~ msgstr "Neposkytli ste žaidne komentáre."
-
-#~ msgid ""
-#~ "Reporting failed!\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Nahlásenie zlyhalo!\n"
-#~ "%s"
-
-#~ msgid ""
-#~ "It looks like an application from the package <b>%s</b> has crashed on "
-#~ "your system. It is a good idea to send a bug report about this issue. The "
-#~ "report will provide software maintainers with information essential in "
-#~ "figuring out how to provide a bug fix for you.\n"
-#~ "\n"
-#~ "Please review the information that follows and modify it as needed to "
-#~ "ensure your bug report does not contain any sensitive data you would "
-#~ "rather not share.\n"
-#~ "\n"
-#~ "Select where you would like to report the bug, and press 'Forward' to "
-#~ "continue."
-#~ msgstr ""
-#~ "Zdá sa, že aplikácia z balíčka <b>%s</b> spadla na Vašom systéme. Je "
-#~ "dobrý nápad odoslať chybovú správu o tejto záležitosti. Chybová správa "
-#~ "poskytne softvérovým správcom potrebné informácie, aby Vám pomohli túto "
-#~ "chybu odstrániť.\n"
-#~ "\n"
-#~ "Prečítajte si prosím informácie, ktoré nasledujú a upravite ich podľa "
-#~ "potreby, tak aby ste zabezpečili, že Vaše hlásenie o chybe neobsahuje "
-#~ "žiadne citlivé údaje, ktoré by ste radšej nezdielali.\n"
-#~ "\n"
-#~ "Vyberte kam chcete chybu ohlásiť, a stlačte 'Ďalej' pre pokračovanie."
-
-#~ msgid "Only one reporter plugin is configured."
-#~ msgstr "Iba jeden plugin na ohlasovanie je nakonfigurovaný."
-
-#~ msgid "Send a bug report"
-#~ msgstr "Odoslať hlásenie o chybe"
-
-#~ msgid "Found %i occurence(s) [at: %i of %i]"
-#~ msgstr "Nájdená %i náhoda(y) [na: %i z %i]"
-
-#~ msgid "Search:"
-#~ msgstr "Hladať:"
-
-#~ msgid "Refresh"
-#~ msgstr "Obnoviť"
-
-#~ msgid "Copy"
-#~ msgstr "Kopírovať"
-
-#~ msgid "Approve the backtrace"
-#~ msgstr "Potvrdiť backtrace"
-
-#~ msgid "You need to fill the how to before you can proceed..."
-#~ msgstr "Musíte vyplniť ako, pred tým, ako budete môcť pokračovať..."
-
-#~ msgid ""
-#~ "Are there any comments you would like to share with the software "
-#~ "maintainers?"
-#~ msgstr ""
-#~ "Sú tu nejaké komentáre, ktoré by ste chceli zdieľať so správcami softvéru?"
-
-#~ msgid "Provide additional details"
-#~ msgstr "Poskykytnite viac detailov"
-
-#~ msgid ""
-#~ "<b>Tip:</b> Your comments are not private. Please watch what you say "
-#~ "accordingly."
-#~ msgstr ""
-#~ "<b>Tip:</b> Váše komentáre nie sú súkromné. Prosím správajte sa adekvátne."
-
-#~ msgid "Confirm and send the report"
-#~ msgstr "Potvrdiť a odoslať správu"
-
-#~ msgid ""
-#~ "Below is a summary of your bug report. Please click 'Apply' to submit it."
-#~ msgstr ""
-#~ "Nižšie je prehľad o Vašej chybovej správe. Prosím, kliknite na 'Použiť' "
-#~ "pre jej odoslanie."
-
-#~ msgid "<b>Basic details</b>"
-#~ msgstr "<b>Základné detaily</b>"
-
-#~ msgid "Component"
-#~ msgstr "Komponent"
-
-#~ msgid "Package"
-#~ msgstr "Balíček"
-
-#~ msgid "Executable"
-#~ msgstr "Spustiteľný"
-
-#~ msgid "Cmdline"
-#~ msgstr "Cmdline"
-
-#~ msgid "Architecture"
-#~ msgstr "Architekrúra"
-
-#~ msgid "Kernel"
-#~ msgstr "Kernel"
-
-#~ msgid "Release"
-#~ msgstr "Vydanie"
-
-#~ msgid "Reason"
-#~ msgstr "Dôvod"
-
-#~ msgid "<b>Backtrace</b>"
-#~ msgstr "<b>Backtrace (popis chyby)</b>"
-
-#~ msgid "Click to view..."
-#~ msgstr "Kliknite pre zobraztenie..."
-
-#~ msgid "<b>Steps to reproduce:</b>"
-#~ msgstr "<b>Kroky pre zopakovanie:</b>"
-
-#~ msgid "<b>Comments:</b>"
-#~ msgstr "<b>Komentáre:</b>"
-
-#~ msgid "No comment provided!"
-#~ msgstr "Nebol poskytnutý žiadny komentár!"
-
-#~ msgid "Finished sending the bug report"
-#~ msgstr "Dokončené odosielanie chybovej správy"
-
-#~ msgid "<b>Bug reports:</b>"
-#~ msgstr "<b>Chybové správy:</b>"
-
-#~ msgid ""
-#~ "Unable to get report!\n"
-#~ "Is debuginfo missing?"
-#~ msgstr ""
-#~ "Nie je možné získať správu!\n"
-#~ "Nechýba debuginfo?"
-
-#~ msgid "Error acquiring the report: %s"
-#~ msgstr "Chyba pri získavaní správy: %s"
-
-#~ msgid "Log"
-#~ msgstr "Log"
-
-#~ msgid "Report done"
-#~ msgstr "Úspešne nahlásené"
-
-#~ msgid "Cannot find PluginDialog widget in the UI description!"
-#~ msgstr "Nemožno nájsť PluginDialog widget v popise UI!"
-
-#~ msgid ""
-#~ "No UI for the plugin <b>%s</b>, this is probably a bug.\n"
-#~ "Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
-#~ "\">https://fedorahosted.org/abrt/newticket</a>"
-#~ msgstr ""
-#~ "Žiadne UI nie je pre plugin <b>%s</b>, je to pravdepodobne chyba.\n"
-#~ "Prosím, ohláste to na <a href=\"https://fedorahosted.org/abrt/newticket"
-#~ "\">https://fedorahosted.org/abrt/newticket</a>"
-
-#~ msgid "Combo box is not implemented"
-#~ msgstr "Combo box nie je implementovaný"
-
-#~ msgid "Nothing to hydrate!"
-#~ msgstr "Žiadne dáta na zobrazenie!"
-
-#~ msgid "Cannot load the GUI description for SettingsDialog!"
-#~ msgstr "Nemožno načítať popis GUI pre SettingsDialog!"
-
-#~ msgid "Please select a plugin from the list to edit its options."
-#~ msgstr ""
-#~ "Prosím, vyberte zo zoznamu plugin, ktorého nastavenia chcete upraviť."
-
-#~ msgid ""
-#~ "Error while opening the plugin settings UI: \n"
-#~ "\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Chyba počas otvaránia nastavení UI pre pluginy: \n"
-#~ "\n"
-#~ "%s"
-
-#~ msgid "Please wait..."
-#~ msgstr "Prosím čakajte..."
-
-#~ msgid " "
-#~ msgstr " "
-
-#~ msgid "<b>Attachments</b>"
-#~ msgstr "<b>Prílohy</b>"
-
-#~ msgid "<b>Comment</b>"
-#~ msgstr "<b>Komentár</b>"
-
-#~ msgid "<b>How to reproduce (in a few simple steps)</b>"
-#~ msgstr "<b>Ako to zopakovať (pár jednoduchých krokov)</b>"
-
-#~ msgid "<b>Please fix the following problems:</b>"
-#~ msgstr "<b>Prosím, opravte nasledujúce problémy:</b>"
-
-#~ msgid "<b>Where do you want to report this incident?</b>"
-#~ msgstr "<b>Kam chcete ohlásiť túto nehodu?</b>"
-
-#~ msgid "<span fgcolor=\"blue\">Architecture:</span>"
-#~ msgstr "<span fgcolor=\"blue\">Architektúra:</span>"
-
-#~ msgid "<span fgcolor=\"blue\">Cmdline:</span>"
-#~ msgstr "<span fgcolor=\"blue\">Cmdline:</span>"
-
-#~ msgid "<span fgcolor=\"blue\">Component:</span>"
-#~ msgstr "<span fgcolor=\"blue\">Komponent:</span>"
-
-#~ msgid "<span fgcolor=\"blue\">Executable:</span>"
-#~ msgstr "<span fgcolor=\"blue\">Spustiteľných:</span>"
-
-#~ msgid "<span fgcolor=\"blue\">Kernel:</span>"
-#~ msgstr "<span fgcolor=\"blue\">Kernel:</span>"
-
-#~ msgid "<span fgcolor=\"blue\">Package:</span>"
-#~ msgstr "<span fgcolor=\"blue\">Balíček:</span>"
-
-#~ msgid "<span fgcolor=\"blue\">Reason:</span>"
-#~ msgstr "<span fgcolor=\"blue\">Dôvod:</span>"
-
-#~ msgid "<span fgcolor=\"blue\">Release:</span>"
-#~ msgstr "<span fgcolor=\"blue\">Release:</span>"
-
-#~ msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
-#~ msgstr "Skontroloval som backtrace a odstránil citlivé dáta (heslá, atď)"
-
-#~ msgid "N/A"
-#~ msgstr "Nie je k dispozícii"
-
-#~ msgid "Send report"
-#~ msgstr "Odoslať hlásenie"
-
-#~ msgid "Show log"
-#~ msgstr "Zobraziť log"
-
-#~ msgid "Remove this job"
-#~ msgstr "Odstrániť túto úlohu"
-
-#~ msgid "Remove this action"
-#~ msgstr "Odstrániť túto akciu"
-
-#~ msgid "<b>Plugin details</b>"
-#~ msgstr "<b>Detaily plugin-ov</b>"
-
-#~ msgid "Author:"
-#~ msgstr "Autor:"
-
-#~ msgid "Blacklisted packages: "
-#~ msgstr "Balíčky na čiernej listine: "
-
-#~ msgid "Check package GPG signature"
-#~ msgstr "Skontrolovať GPG podpis balíčka"
-
-#~ msgid "Common"
-#~ msgstr "Všeobecné"
-
-#~ msgid "GPG Keys"
-#~ msgstr "GPG kľúče"
-
-#~ msgid "GPG keys: "
-#~ msgstr "GPG kľúče: "
-
-#~ msgid "Max coredump storage size (MB):"
-#~ msgstr "Maximálna veľkosť coredump (MB):"
-
-#~ msgid "Name:"
-#~ msgstr "Meno:"
-
-#~ msgid "Preferences"
-#~ msgstr "Vlastnosti"
-
-#~ msgid "Version:"
-#~ msgstr "Verzia:"
-
-#~ msgid "Web Site:"
-#~ msgstr "Web stránka:"
-
-#~ msgid "<b>Do you want to continue?</b>"
-#~ msgstr "<b>Chcete pokračovať?</b>"
-
-#~ msgid "Wrong Settings Detected"
-#~ msgstr "Boli zistené zlé nastavenia"
-
-#~ msgid ""
-#~ "Wrong settings were detected for some of the enabled reporter plugins. "
-#~ "Please use the buttons below to open the respective configuration and fix "
-#~ "it before you proceed, otherwise, the reporting process may fail.\n"
-#~ msgstr ""
-#~ "Boli zistené zlé nastavenia pre niektoré z povolených reportérových "
-#~ "plugin-ov. Prosím, použite tlačítka nižšie na otvorenie obmedzujúcej "
-#~ "konfigurácie a opravte ju pred ďalším postupom, inak môže odosielanie "
-#~ "zlyhať\n"
+msgstr "zalogovať do syslog"

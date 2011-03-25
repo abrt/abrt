@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-15 20:32+0100\n"
-"PO-Revision-Date: 2011-03-08 20:22+0000\n"
-"Last-Translator: goeran <goeran@uddeborg.se>\n"
+"POT-Creation-Date: 2011-03-25 18:32+0100\n"
+"PO-Revision-Date: 2011-03-25 17:37+0000\n"
+"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Swedish <None>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
@@ -21,51 +21,51 @@ msgstr ""
 msgid "ABRT notification applet"
 msgstr "ABRT notifieringsapplet"
 
-#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt-gtk.c:345
+#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt-gtk.c:351
 #: ../src/gui-gtk/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "Automatiskt felrapporteringsverktyg"
 
-#: ../src/applet/applet.c:85
+#: ../src/applet/applet.c:76
 #, c-format
 msgid "A crash in the %s package has been detected"
-msgstr "En krash i paketet %s har upptäckts"
+msgstr "En krasch i paketet %s har upptäckts"
 
-#: ../src/applet/applet.c:87
+#: ../src/applet/applet.c:78
 msgid "A crash has been detected"
-msgstr "En krash har upptäckts"
+msgstr "En krasch har upptäckts"
 
-#: ../src/applet/applet.c:284
+#: ../src/applet/applet.c:275
 msgid "ABRT service is not running"
 msgstr "ABRT-tjänsten kör inte"
 
-#: ../src/applet/applet_gtk.c:177 ../src/applet/applet_gtk.c:179
-#: ../src/applet/applet_gtk.c:368 ../src/applet/applet_gtk.c:395
+#: ../src/applet/applet_gtk.c:202 ../src/applet/applet_gtk.c:204
+#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
 msgid "Warning"
 msgstr "Varning"
 
-#: ../src/applet/applet_gtk.c:231
+#: ../src/applet/applet_gtk.c:259
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "Panelprogram för notifieringsområdet för att notifiera användaren om saker "
 "som upptäckts av ABRT"
 
-#: ../src/applet/applet_gtk.c:247 ../src/gui-gtk/abrt-gtk.c:230
+#: ../src/applet/applet_gtk.c:275 ../src/gui-gtk/abrt-gtk.c:236
 msgid "translator-credits"
 msgstr ""
 "Magnus Larsson <fedoratrans@gmail.com>\n"
 "Göran Uddeborg <goeran@uddeborg.se>"
 
-#: ../src/applet/applet_gtk.c:257
+#: ../src/applet/applet_gtk.c:285
 msgid "Hide"
 msgstr "Dölj"
 
-#: ../src/applet/applet_gtk.c:361
+#: ../src/applet/applet_gtk.c:398
 msgid "Report"
 msgstr "Rapport"
 
-#: ../src/applet/applet_gtk.c:364 ../src/applet/applet_gtk.c:392
+#: ../src/applet/applet_gtk.c:401 ../src/applet/applet_gtk.c:429
 msgid "Open ABRT"
 msgstr "Öppna ABRT"
 
@@ -284,38 +284,33 @@ msgstr "j"
 msgid "N"
 msgstr "N"
 
-#. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:549
+#: ../src/cli/report.cpp:511
+msgid "Your input is not valid, because of:"
+msgstr ""
+
+#: ../src/cli/report.cpp:514
 #, c-format
-msgid "Wrong settings were detected for plugin %s\n"
-msgstr "Fel inställningar upptäcktes för insticksmodulen %s\n"
+msgid "Bad value for '%s': %s"
+msgstr ""
 
-#: ../src/cli/report.cpp:553
-msgid "Enter your login: "
-msgstr "Ange din inloggning: "
-
-#: ../src/cli/report.cpp:559
-msgid "Enter your password: "
-msgstr "Ange ditt lösenord: "
-
-#: ../src/cli/report.cpp:760 ../src/gui-wizard-gtk/wizard.c:1063
+#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1039
 msgid "Reporting..."
 msgstr "Rapporterar …"
 
-#: ../src/cli/report.cpp:773
+#: ../src/cli/report.cpp:684
 #, c-format
 msgid "Report using %s?"
 msgstr "Rapportera med %s?"
 
-#: ../src/cli/report.cpp:776
+#: ../src/cli/report.cpp:687
 msgid "Skipping..."
 msgstr "Hoppar över…"
 
-#: ../src/cli/report.cpp:792
+#: ../src/cli/report.cpp:704
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Rapportering avslagen för att stackspåret är oanvändbart"
 
-#: ../src/cli/report.cpp:796
+#: ../src/cli/report.cpp:708
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -324,45 +319,32 @@ msgstr ""
 "Försök att installera felsökningsinformation manuellt med kommandot\n"
 "”debuginfo-install %s” och försök igen\n"
 
-#: ../src/cli/report.cpp:814
+#: ../src/cli/report.cpp:724
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "Krasch rapporterad via %d rapporthändelser (%d fel)\n"
 
-#: ../src/daemon/abrt-action-save-package-data.c:245
+#: ../src/daemon/abrt-action-save-package-data.c:252
 msgid ""
-" [options] -d DIR\n"
+" [-v] -d DIR\n"
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
-" [flaggor] -d KAT\n"
-"\n"
-"Fråga aketdatabasen och spara paketnamn, komponent och beskrivning"
 
-#: ../src/daemon/abrt-action-save-package-data.c:257
-#: ../src/daemon/abrt-handle-crashdump.c:60
-#: ../src/plugins/abrt-action-analyze-c.c:167
+#: ../src/daemon/abrt-action-save-package-data.c:263
+#: ../src/daemon/abrt-handle-crashdump.c:61
+#: ../src/plugins/abrt-action-analyze-c.c:178
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-action-bugzilla.cpp:933
-#: ../src/plugins/abrt-action-generate-backtrace.c:269
-#: ../src/plugins/abrt-action-kerneloops.c:147
+#: ../src/plugins/abrt-action-bugzilla.cpp:923
+#: ../src/plugins/abrt-action-generate-backtrace.c:280
+#: ../src/plugins/abrt-action-kerneloops.c:145
 #: ../src/plugins/abrt-action-mailx.c:147
-#: ../src/plugins/abrt-action-print.c:50
-#: ../src/plugins/abrt-action-rhtsupport.c:280
-#: ../src/plugins/abrt-action-upload.c:260
-msgid "Crash dump directory"
-msgstr "Kraschdumpkatalog"
-
-#: ../src/daemon/abrt-action-save-package-data.c:258
-#: ../src/daemon/abrt-handle-crashdump.c:59 ../src/daemon/abrt-server.c:297
-#: ../src/plugins/abrt-action-bugzilla.cpp:932
-#: ../src/plugins/abrt-action-generate-backtrace.c:272
-#: ../src/plugins/abrt-action-kerneloops.c:146
-#: ../src/plugins/abrt-action-rhtsupport.c:279
-#: ../src/plugins/abrt-dump-oops.c:555
-msgid "Log to syslog"
-msgstr "Logga till syslog"
+#: ../src/plugins/abrt-action-print.c:52
+#: ../src/plugins/abrt-action-rhtsupport.c:276
+#: ../src/plugins/abrt-action-upload.c:258
+msgid "Dump directory"
+msgstr ""
 
 #: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
@@ -372,23 +354,34 @@ msgstr ""
 " [-vs] -d KAT -e HÄNDELSE\n"
 "  eller:   "
 
-#: ../src/daemon/abrt-handle-crashdump.c:61
+#: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:298
+#: ../src/plugins/abrt-dump-oops.c:579
+msgid "Log to syslog"
+msgstr "Logga till syslog"
+
+#: ../src/daemon/abrt-handle-crashdump.c:62
 msgid "Handle EVENT"
 msgstr "Hantera HÄNDELSE"
 
-#: ../src/daemon/abrt-handle-crashdump.c:62
+#: ../src/daemon/abrt-handle-crashdump.c:63
 msgid "List possible events [which start with PFX]"
 msgstr "Lista möjliga händelser [som startar med PFX]"
 
-#: ../src/daemon/abrt-server.c:286 ../src/daemon/Daemon.cpp:544
+#: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:299
+#: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:170
+#: ../src/gui-wizard-gtk/main.c:93
+msgid "Add program names to log"
+msgstr ""
+
+#: ../src/daemon/abrt-server.c:286 ../src/daemon/Daemon.cpp:535
 msgid " [options]"
 msgstr " [flaggor]"
 
-#: ../src/daemon/abrt-server.c:296
+#: ../src/daemon/abrt-server.c:297
 msgid "Use UID as client uid"
 msgstr "Använd UID som klient-uid"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:239
+#: ../src/daemon/CommLayerServerDBus.cpp:236
 msgid "Comment is too long"
 msgstr "Kommentaren är för lång"
 
@@ -400,89 +393,88 @@ msgstr ""
 "Storleken på rapporten överstiger kvoten.  Kontrollera systemets "
 "MaxCrashReportsSize-värde i abrt.conf."
 
-#: ../src/daemon/Daemon.cpp:555
+#: ../src/daemon/Daemon.cpp:547
 msgid "Do not daemonize"
 msgstr "Bli inte demon"
 
-#: ../src/daemon/Daemon.cpp:556
+#: ../src/daemon/Daemon.cpp:548
 msgid "Log to syslog even with -d"
 msgstr "Logga till syslog även med -d"
 
-#: ../src/daemon/Daemon.cpp:557
+#: ../src/daemon/Daemon.cpp:549
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Avsluta efter SEK sekunders inaktivitet"
 
-#: ../src/gtk-helpers/event_config_dialog.c:127
-#: ../src/plugins/Bugzilla.glade.h:7 ../src/plugins/RHTSupport.glade.h:6
+#: ../src/gtk-helpers/event_config_dialog.c:122
 msgid "Show password"
 msgstr "Visa lösenord"
 
-#: ../src/gtk-helpers/event_config_dialog.c:258
-#, fuzzy
+#: ../src/gtk-helpers/event_config_dialog.c:311
 msgid "Event Configuration"
-msgstr "Konfigurera %s-alternativ"
+msgstr "Händelsekonfiguration"
 
-#: ../src/gtk-helpers/event_config_dialog.c:303
-msgid "Events"
-msgstr ""
-
-#: ../src/gtk-helpers/event_config_dialog.c:327
+#: ../src/gtk-helpers/event_config_dialog.c:336
 msgid "Event"
-msgstr ""
+msgstr "Händelse"
 
-#: ../src/gtk-helpers/event_config_dialog.c:359
-#, fuzzy
+#: ../src/gtk-helpers/event_config_dialog.c:369
 msgid "Configure E_vent"
-msgstr "K_onfigurera insticksmodul"
+msgstr "Konfigurera h_ändelse"
 
-#: ../src/gui-gtk/abrt-gtk.c:249
+#: ../src/gui-gtk/abrt-gtk.c:255
 msgid "Reported"
 msgstr "Rapporterat"
 
-#: ../src/gui-gtk/abrt-gtk.c:261
+#: ../src/gui-gtk/abrt-gtk.c:267
 msgid "Problem"
-msgstr ""
+msgstr "Problem"
 
-#: ../src/gui-gtk/abrt-gtk.c:284
+#: ../src/gui-gtk/abrt-gtk.c:290
 msgid "Last occurrence"
-msgstr ""
+msgstr "Senaste förekomst"
 
-#: ../src/gui-gtk/abrt-gtk.c:299
+#: ../src/gui-gtk/abrt-gtk.c:305
 msgid "_File"
 msgstr "_Fil"
 
-#: ../src/gui-gtk/abrt-gtk.c:300
+#: ../src/gui-gtk/abrt-gtk.c:306
 msgid "_Edit"
 msgstr "_Redigera"
 
-#: ../src/gui-gtk/abrt-gtk.c:301
+#: ../src/gui-gtk/abrt-gtk.c:307
 msgid "_Help"
 msgstr "_Hjälp"
 
-#: ../src/gui-gtk/abrt-gtk.c:317
-#, fuzzy
-msgid "_Plugins"
-msgstr "Insticksmoduler"
+#: ../src/gui-gtk/abrt-gtk.c:323
+msgid "_Event configuration"
+msgstr ""
 
-#: ../src/gui-gtk/abrt-gtk.c:393
-#, fuzzy
-msgid "_Online Help"
-msgstr "Online-_hjälp"
+#: ../src/gui-gtk/abrt-gtk.c:399
+msgid "Online _Help"
+msgstr ""
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
 msgstr "Visa och rapportera programkrascher"
 
-#: ../src/gui-wizard-gtk/main.c:70
+#: ../src/gui-gtk/main.c:158
 msgid ""
-" [-v] [-g GUI_FILE] DIR\n"
+" [-vp] [DIR]...\n"
 "\n"
-"GUI tool to analyze and report ABRT crash in specified DIR"
+"Shows list of ABRT dump directories in specified DIR(s)\n"
+"(default DIRs: "
 msgstr ""
 
 #: ../src/gui-wizard-gtk/main.c:80
-msgid "Alternate GUI file"
+msgid ""
+" [-vp] [-g GUI_FILE] DIR\n"
+"\n"
+"GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
+
+#: ../src/gui-wizard-gtk/main.c:92
+msgid "Alternate GUI file"
+msgstr "Alternativ fil för grafiskt gränssnitt"
 
 #: ../src/gui-wizard-gtk/wizard.c:187
 #, c-format
@@ -490,34 +482,35 @@ msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
 msgstr ""
+"Behöver en skrivbar katalog, men ”%s” är inte skrivbar.  Flytta den till "
+"”%s” och arbeta med den flyttade kopian?"
 
 #: ../src/gui-wizard-gtk/wizard.c:499
 msgid "(click here to view/edit)"
-msgstr ""
+msgstr "(klicka här för att se/redigera)"
 
 #: ../src/gui-wizard-gtk/wizard.c:511
 #, c-format
 msgid "(binary file, %llu bytes)"
-msgstr ""
+msgstr "(binär fil, %llu byte)"
 
 #: ../src/gui-wizard-gtk/wizard.c:526
-#, fuzzy
 msgid "(no description)"
-msgstr "Beskrivning:"
+msgstr "(ingen beskrivning)"
 
 #: ../src/gui-wizard-gtk/wizard.c:531
 #, c-format
 msgid "%llu bytes, %u files"
-msgstr ""
+msgstr "%llu byte, %u filer"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:868
+#: ../src/gui-wizard-gtk/wizard.c:844
 #, c-format
 msgid "No processing for event '%s' is defined"
-msgstr ""
+msgstr "Ingen bearbetning för händelsen ”%s” är definierad"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:963
+#: ../src/gui-wizard-gtk/wizard.c:939
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -525,165 +518,182 @@ msgstr ""
 "Stackspåret är ofullständigt, se till att du ger steg för att återskapa."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:969
+#: ../src/gui-wizard-gtk/wizard.c:945
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Rapportering avslagen för att stackspåret är oanvändbart."
 
-#: ../src/gui-wizard-gtk/wizard.c:978
+#: ../src/gui-wizard-gtk/wizard.c:954
 msgid "You should check the backtrace for sensitive data."
 msgstr ""
 "Du måste kontrollera om stackspåret innehåller någon känslig information."
 
-#: ../src/gui-wizard-gtk/wizard.c:979
+#: ../src/gui-wizard-gtk/wizard.c:955
 msgid "You must agree with sending the backtrace."
 msgstr "Du måste godkänna att skicka stackspåret."
 
-#: ../src/gui-wizard-gtk/wizard.c:1035
+#: ../src/gui-wizard-gtk/wizard.c:1011
 msgid "Analyzing..."
-msgstr ""
+msgstr "Analyserar…"
 
-#: ../src/gui-wizard-gtk/wizard.c:1036
+#: ../src/gui-wizard-gtk/wizard.c:1012
 #, c-format
 msgid "Analyzing finished with exit code %d"
-msgstr ""
+msgstr "Analysen avslutad med slutstatus %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1064
+#: ../src/gui-wizard-gtk/wizard.c:1040
 #, c-format
 msgid "Reporting finished with exit code %d"
-msgstr ""
+msgstr "Rapporten avslutad med slutstatus %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1182
+#: ../src/gui-wizard-gtk/wizard.c:1158
 msgid "Name"
 msgstr "Namn"
 
-#: ../src/gui-wizard-gtk/wizard.c:1191
+#: ../src/gui-wizard-gtk/wizard.c:1167
 msgid "Value"
-msgstr ""
+msgstr "Värde"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr ""
+"<b>Dina kommentarer är inte privata.</b>  De kan komma att ingå i allmänt "
+"tillgängliga problemrapporter."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Analyzing did not start yet"
-msgstr ""
+msgstr "Analysen har inte startat ännu"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Any additional comments useful for diagnosing the problem?"
 msgstr ""
+"Några ytterligare kommentarer som kan vara användbara för att diagnostisera "
+"problemet?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
-#, fuzzy
 msgid ""
 "Backtrace provides developers with details of the crash, helping them track "
 "down the source of the problem. Please review it and remove any sensitive "
 "data you would rather not share:"
 msgstr ""
-"Nedan är stackspåret som hör ihop med din krasch.  Ett kraschstackspår ger "
-"utvecklare detaljinformation om hur kraschen inträffade, och hjälper dem att "
-"spåra upp källan till problemet.\n"
-"\n"
-"Titta igenom stackspåret nedan och ändra den om nödvändigt för att se till "
-"att din felrapport inte innehåller någon känslig information du helst inte "
-"vill dela:"
+"Stackspår visar utvecklare detaljer om kraschen, och hjäler dem att spåra "
+"upp källan till problemet.  Se över och ta bort eventuell känslig "
+"information som du helst inte vill dela:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
 "Can create more informative backtrace if you installed additional debug "
 "packages"
 msgstr ""
+"Kan skapa mer informativt stackspår om du installerar ytterligare "
+"felsökningspaket"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "Click 'Apply' to start reporting"
-msgstr ""
+msgstr "Klicka ”Verkställ” för att starta rapporten"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "Click 'Forward' to proceed with analyzing and reporting this problem."
 msgstr ""
+"Klicka ”Framåt” för att gå vidare med analysen och rapporten av detta "
+"problem."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
-#, fuzzy
-msgid "Configure Events"
-msgstr "Konfigurera %s-alternativ"
+msgid "Configure _Events"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
 msgstr "Detaljer"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
-#, fuzzy
 msgid "How did this problem happen (step-by-step)? How can it be reproduced?"
 msgstr ""
-"Hur inträffade den här kraschen (steg för steg)?  Hur skulle du återskapa "
-"den?"
+"Hur hände det här problemet (steg för steg)?  Hur kan det reproduceras?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
-msgid "I agree with submitting the backtrace"
-msgstr "Jag godkänner att skicka stackspåret"
+msgid "I _agree with submitting the backtrace"
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
-#, fuzzy
 msgid "Regenerate backtrace"
-msgstr "Tvingar ABRT att generera om stackspåret."
+msgstr "Generera om stackspår"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:13
-#, fuzzy
 msgid "Reporter(s):"
-msgstr "Rapporterat"
+msgstr "Rapportör(er):"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid "Reporting did not start yet"
-msgstr ""
+msgstr "Rapporten har inte startat än"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "Select how you would like to analyze the problem:"
-msgstr ""
+msgstr "Välj hur du vill analysera problemet:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "Select how you would like to report the problem:"
-msgstr ""
+msgstr "Välj hur du vill rapportera problemet:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Size:"
-msgstr ""
+msgstr "Storlek:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid ""
 "Use this button to generate more informative backtrace after you installed "
 "additional debug packages"
 msgstr ""
+"Använd denna knapp för att generera mer informativt stackspår efter att du "
+"installerat ytterligare felsökningspaket"
 
 #: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Skickade: %llu av %llu kbyte"
 
+#: ../src/lib/event_config.c:313
+msgid "Missing mandatory value"
+msgstr ""
+
+#: ../src/lib/event_config.c:321
+#, c-format
+msgid "Invalid utf8 character '%c'"
+msgstr ""
+
+#: ../src/lib/event_config.c:332
+#, c-format
+msgid "Invalid number '%s'"
+msgstr ""
+
+#: ../src/lib/event_config.c:343
+#, c-format
+msgid "Invalid boolean value '%s'"
+msgstr ""
+
+#: ../src/lib/event_config.c:347
+msgid "Unsupported option type"
+msgstr ""
+
 #: ../src/lib/parse_options.c:29
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Användning: %s\n"
 
-#: ../src/plugins/abrt-action-analyze-c.c:156
+#: ../src/plugins/abrt-action-analyze-c.c:167
 msgid ""
 " [-v] -d DIR\n"
 "\n"
-"Calculates and saves UUID of coredumps"
+"Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
-" [-v] -d KAT\n"
-"\n"
-"Beräknar och sparar UUID för kärndumpar"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:133
 msgid ""
 " [-vs] -d DIR\n"
 "\n"
-"Calculates and saves UUID and DUPHASH of oops crash dumps"
+"Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
-" [-vs] -d KAT\n"
-"\n"
-"Beräknar och sparar UUID och DUPHASH för oops-kraschdumpar"
 
 #: ../src/plugins/abrt-action-analyze-python.c:38
 msgid ""
@@ -695,103 +705,104 @@ msgstr ""
 "\n"
 "Beräknar och sparar UUID och DUPHASH för python-kraschdumpar"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:536
+#: ../src/plugins/abrt-action-bugzilla.cpp:516
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nytt fel-id: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:664
+#: ../src/plugins/abrt-action-bugzilla.cpp:646
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr "Tom inloggning och lösenord, kontrollera %s"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:684
-msgid "Logging into bugzilla..."
-msgstr "Loggar in i bugzilla …"
+#: ../src/plugins/abrt-action-bugzilla.cpp:666
+#, c-format
+msgid "Logging into Bugzilla at %s"
+msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:687
-msgid "Checking for duplicates..."
-msgstr "Letar efter dubletter …"
+#: ../src/plugins/abrt-action-bugzilla.cpp:669
+msgid "Checking for duplicates"
+msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:709
-#: ../src/plugins/abrt-action-bugzilla.cpp:745
+#: ../src/plugins/abrt-action-bugzilla.cpp:691
+#: ../src/plugins/abrt-action-bugzilla.cpp:727
 msgid "Missing mandatory member 'bugs'"
 msgstr "Nödvändigt medlemskap i \"bugs\" saknas"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:728
-#: ../src/plugins/abrt-action-bugzilla.cpp:761
-#: ../src/plugins/abrt-action-bugzilla.cpp:837
+#: ../src/plugins/abrt-action-bugzilla.cpp:710
+#: ../src/plugins/abrt-action-bugzilla.cpp:743
+#: ../src/plugins/abrt-action-bugzilla.cpp:819
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() misslyckades.  Det gick inte att samla all nödvändig "
 "information"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:776
-msgid "Creating a new bug..."
-msgstr "Skapar ett nytt fel …"
+#: ../src/plugins/abrt-action-bugzilla.cpp:758
+msgid "Creating a new bug"
+msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:781
+#: ../src/plugins/abrt-action-bugzilla.cpp:763
 msgid "Bugzilla entry creation failed"
 msgstr "Att skapa ett bugzillaärende misslyckades"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:793
-#: ../src/plugins/abrt-action-bugzilla.cpp:892
-msgid "Logging out..."
-msgstr "Loggar ut …"
+#: ../src/plugins/abrt-action-bugzilla.cpp:775
+#: ../src/plugins/abrt-action-bugzilla.cpp:875
+msgid "Logging out"
+msgstr ""
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:811
+#: ../src/plugins/abrt-action-bugzilla.cpp:793
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Felet är redan rapporterat: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:822
+#: ../src/plugins/abrt-action-bugzilla.cpp:804
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla kunde inte hitta föräldern till felet %d"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:851
+#: ../src/plugins/abrt-action-bugzilla.cpp:834
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Lägg till %s till CC-listan"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:877
+#: ../src/plugins/abrt-action-bugzilla.cpp:860
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Lägg till ny kommentar till fel(%d)"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:919
+#: ../src/plugins/abrt-action-bugzilla.cpp:911
 msgid ""
-" [-vs] -c CONFFILE -d DIR\n"
+" [-v] -c CONFFILE -d DIR\n"
 "\n"
-"Report a crash to Bugzilla"
+"Reports problem to Bugzilla"
 msgstr ""
-" [-vs] -c KONFFIL -d KAT\n"
-"\n"
-"Rapportera en krasch till Bugzilla"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:934
-#: ../src/plugins/abrt-action-kerneloops.c:148
-#: ../src/plugins/abrt-action-rhtsupport.c:281
+#: ../src/plugins/abrt-action-bugzilla.cpp:924
+#: ../src/plugins/abrt-action-kerneloops.c:146
+#: ../src/plugins/abrt-action-rhtsupport.c:277
 msgid "Configuration file (may be given many times)"
 msgstr "Konfigurationsfil (kan anges flera gånger)"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:257
-msgid " [options] -d DIR"
-msgstr " [flaggor] -d KAT"
+#: ../src/plugins/abrt-action-generate-backtrace.c:267
+msgid ""
+" [options] -d DIR\n"
+"\n"
+"Generates and saves backtrace for coredump in dump directory DIR"
+msgstr ""
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:270
+#: ../src/plugins/abrt-action-generate-backtrace.c:281
 msgid "Additional debuginfo directories"
 msgstr "Ytterligare kataloger med felsökningsinformation"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:271
+#: ../src/plugins/abrt-action-generate-backtrace.c:282
 msgid "Kill gdb if it runs for more than N seconds"
 msgstr "Döda gdb om den kör i mer än N sekunder"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
 #.
-#: ../src/plugins/abrt-action-generate-backtrace.c:321
+#: ../src/plugins/abrt-action-generate-backtrace.c:329
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
 msgstr "Stackspår är genererat och sparat, %u byte"
@@ -800,7 +811,7 @@ msgstr "Stackspår är genererat och sparat, %u byte"
 #. * The parser failed. Compute the UUID from the executable
 #. * and package only.  This is not supposed to happen often.
 #.
-#: ../src/plugins/abrt-action-generate-backtrace.c:332
+#: ../src/plugins/abrt-action-generate-backtrace.c:340
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "Stackspårstolkning misslyckades för %s"
@@ -836,81 +847,89 @@ msgstr "Det går inte att extrahera filer från ”%s”"
 msgid "Downloading (%i of %i) %s: %3u%%"
 msgstr "Hämtar (%i av %i) %s: %3u %%"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:234
+#. This is somewhat "magic", it unpacks the metadata making it usable.
+#. Looks like this is the moment when yum talks to remote servers,
+#. which takes time (sometimes minutes), let user know why
+#. we have "paused":
+#: ../src/plugins/abrt-action-install-debuginfo.py:206
+msgid "Looking for needed packages in repositories"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:240
 #, python-format
 msgid "Can't find packages for %u debuginfo files"
 msgstr "Det går inte att hitta paket för %u filer med felsökningsinformation"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:236
+#: ../src/plugins/abrt-action-install-debuginfo.py:242
 #, python-format
-msgid "Found %u packages to download"
-msgstr "Hittade %u paket att hämta"
+msgid "Packages to download: %u"
+msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:237
+#: ../src/plugins/abrt-action-install-debuginfo.py:243
 #, python-format
 msgid "Downloading %.2fMb, installed size: %.2fMb"
 msgstr "Hämtar %.2f MB, installerad storlek: %.2f MB"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:245
+#: ../src/plugins/abrt-action-install-debuginfo.py:251
 msgid "Is this ok? [y/N] "
 msgstr "Är detta ok? [y/N] "
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:262
+#: ../src/plugins/abrt-action-install-debuginfo.py:268
 #, python-format
 msgid "Downloading package %s failed"
 msgstr "Misslyckades att hämta paketet %s"
 
 #. recursively delete the temp dir on failure
-#: ../src/plugins/abrt-action-install-debuginfo.py:273
+#: ../src/plugins/abrt-action-install-debuginfo.py:279
 msgid "Unpacking failed, aborting download..."
 msgstr "Uppackningen misslyckades, avbryter hämtande …"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:280
+#: ../src/plugins/abrt-action-install-debuginfo.py:286
 #, python-format
 msgid "All downloaded packages have been extracted, removing %s"
 msgstr "Alla hämtade paket har extraherats, tar bort %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:285
+#: ../src/plugins/abrt-action-install-debuginfo.py:291
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr "Det går inte att ta bort %s, innehåller förmodligen en fellogg"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:310
+#: ../src/plugins/abrt-action-install-debuginfo.py:316
 #, python-format
-msgid "Analyzing corefile '%s'"
-msgstr "Analyserar kärndumpfilen ”%s”"
+msgid "Analyzing coredump '%s'"
+msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:388
+#: ../src/plugins/abrt-action-install-debuginfo.py:394
 #, python-format
 msgid "Can't remove '%s': %s"
 msgstr "Det går inte att ta bort ”%s”: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:396
+#: ../src/plugins/abrt-action-install-debuginfo.py:402
 msgid "Exiting on user command"
 msgstr "Avslutar på användarens kommando"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:415
+#: ../src/plugins/abrt-action-install-debuginfo.py:428
 #, python-format
 msgid "Usage: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 msgstr "Användning: %s --core=KÄRNFIL --tmpdir=TMPKAT --cache=CACHEKAT"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:444
+#: ../src/plugins/abrt-action-install-debuginfo.py:457
 msgid "You have to specify the path to coredump."
 msgstr "Du måste ange sökvägen till kärndumpen."
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:461
+#: ../src/plugins/abrt-action-install-debuginfo.py:474
 #, python-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
 msgstr ""
 "Kärndumpen refererar %u filer med felsökningsinformation, %u av dem är inte "
 "installerade"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:466
+#: ../src/plugins/abrt-action-install-debuginfo.py:479
 #, python-format
 msgid "Missing debuginfo file: %s"
 msgstr "Saknad fil med felsökningsinformation: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:469
+#: ../src/plugins/abrt-action-install-debuginfo.py:482
 #, python-format
 msgid "All %u debuginfo files are available"
 msgstr "Alla %u filer med felsökningsinformation är tillgängliga"
@@ -922,15 +941,12 @@ msgstr "Skickar oops-rapport till %s"
 
 #: ../src/plugins/abrt-action-kerneloops.c:133
 msgid ""
-" [-vs] -c CONFFILE -d DIR\n"
+" [-v] -c CONFFILE -d DIR\n"
 "\n"
-"Report a kernel oops to kerneloops.org (or similar) site"
+"Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
-" [-vs] -c KONFFIL -d KAT\n"
-"\n"
-"Rapportera en kärn-oops till kerneloops.org (eller liknande) sajt"
 
-#: ../src/plugins/abrt-action-mailx.c:108
+#: ../src/plugins/abrt-action-mailx.c:109
 msgid "Sending an email..."
 msgstr "Skickar ett e-brev …"
 
@@ -938,30 +954,28 @@ msgstr "Skickar ett e-brev …"
 msgid ""
 " [-v] -d DIR [-c CONFFILE]\n"
 "\n"
-"Upload compressed tarball of crash dump"
+"Sends compressed tarball of dump directory DIR via email"
 msgstr ""
-" [-v] -d KAT [-c KONFFIL]\n"
-"\n"
-"Sänd komprimerat tar-arkiv med kraschdump"
 
 #: ../src/plugins/abrt-action-mailx.c:148
-#: ../src/plugins/abrt-action-upload.c:261
+#: ../src/plugins/abrt-action-upload.c:259
 msgid "Config file"
 msgstr "Konfigurationsfil"
 
-#: ../src/plugins/abrt-action-print.c:38
+#: ../src/plugins/abrt-action-print.c:39
 msgid ""
-" [-v] [-o FILE] -d DIR\n"
+" [-v] -d DIR [-o FILE] [-a yes/no]\n"
 "\n"
-"Print information about the crash to standard output"
+"Prints problem information to standard output or FILE"
 msgstr ""
-" [-v] [-o FIL] -d KAT\n"
-"\n"
-"Skriv ut information om kraschen på standard ut"
 
-#: ../src/plugins/abrt-action-print.c:51
+#: ../src/plugins/abrt-action-print.c:53
 msgid "Output file"
 msgstr "Utskriftsfil"
+
+#: ../src/plugins/abrt-action-print.c:54
+msgid "Append to, or overwrite FILE"
+msgstr ""
 
 #: ../src/plugins/abrt-action-print.c:87
 #, c-format
@@ -982,22 +996,19 @@ msgid "Compressing data"
 msgstr "Komprimerar data"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:73
-msgid "Empty login or password, please check RHTSupport.conf"
-msgstr "Tom inloggning eller lösenord, kontrollera RHTSupport.conf"
+msgid "Empty RHTS login or password"
+msgstr ""
 
-#: ../src/plugins/abrt-action-rhtsupport.c:191
+#: ../src/plugins/abrt-action-rhtsupport.c:189
 msgid "Creating a new case..."
 msgstr "Skapa ett nytt ärende …"
 
-#: ../src/plugins/abrt-action-rhtsupport.c:266
+#: ../src/plugins/abrt-action-rhtsupport.c:264
 msgid ""
-" [-vs] -c CONFFILE -d DIR\n"
+" [-v] -c CONFFILE -d DIR\n"
 "\n"
-"Report a crash to RHTSupport"
+"Reports a problem to RHTSupport"
 msgstr ""
-" [-vs] -c KONFFIL -d KAT\n"
-"\n"
-"Rapportera en krasch till RHTSupport"
 
 #: ../src/plugins/abrt-action-upload.c:63
 #, c-format
@@ -1010,26 +1021,23 @@ msgstr "Skickar %s till %s"
 msgid "Successfully sent %s to %s"
 msgstr "Skickade %s till %s"
 
-#: ../src/plugins/abrt-action-upload.c:212
+#: ../src/plugins/abrt-action-upload.c:210
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "Arkivet är skapat: ”%s”"
 
-#: ../src/plugins/abrt-action-upload.c:247
+#: ../src/plugins/abrt-action-upload.c:245
 msgid ""
 " [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
-"Upload compressed tarball of crash dump"
+"Uploads compressed tarball of dump directory DIR"
 msgstr ""
-" [-v] -d KAT [-c KONFFIL] [-u URL]\n"
-"\n"
-"Skicka komprimerat tar-arkiv med kraschdump"
 
-#: ../src/plugins/abrt-action-upload.c:262
+#: ../src/plugins/abrt-action-upload.c:260
 msgid "Base URL to upload to"
 msgstr "Bas-URL att skicka till"
 
-#: ../src/plugins/abrt-dump-oops.c:540
+#: ../src/plugins/abrt-dump-oops.c:563
 msgid ""
 " [-vsrdow] FILE\n"
 "\n"
@@ -1039,641 +1047,29 @@ msgstr ""
 "\n"
 "Extrahera oops från syslog-/dmesg-fil"
 
-#: ../src/plugins/abrt-dump-oops.c:556
+#: ../src/plugins/abrt-dump-oops.c:580
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "Tolka kärnans meddelandebuffer före FIL tolkas"
 
-#: ../src/plugins/abrt-dump-oops.c:557
+#: ../src/plugins/abrt-dump-oops.c:581
 msgid "Create ABRT dump for every oops found"
 msgstr "Skapa ABRT-dump för varje oops som hittas"
 
-#: ../src/plugins/abrt-dump-oops.c:558
+#: ../src/plugins/abrt-dump-oops.c:582
 msgid "Print found oopses on standard output"
 msgstr "Skriv ut hittade oops:ar på standard ut"
 
-#: ../src/plugins/abrt-dump-oops.c:559
+#: ../src/plugins/abrt-dump-oops.c:583
 msgid "Do not exit, watch the file for new oopses"
 msgstr "Avsluta inte, bevaka filen för nya oops:ar"
 
-#: ../src/plugins/abrt-retrace-client.c:701
-#, fuzzy
-msgid "log to syslog"
-msgstr "Logga till syslog"
-
-#: ../src/plugins/Bugzilla.glade.h:1
-msgid "<b>Bugzilla plugin configuration</b>"
-msgstr "<b>Konfiguration av bugzilla-insticksmodul</b>"
-
-#: ../src/plugins/Bugzilla.glade.h:2
-msgid "Bugzilla URL:"
-msgstr "Bugzilla-URL:"
-
-#: ../src/plugins/Bugzilla.glade.h:3
-msgid "Don't have an account yet?"
-msgstr "Har du inget konto ännu?"
-
-#: ../src/plugins/Bugzilla.glade.h:4
-msgid "Login(email):"
-msgstr "Inloggning(epost):"
-
-#: ../src/plugins/Bugzilla.glade.h:5 ../src/plugins/RHTSupport.glade.h:3
-msgid "Password:"
-msgstr "Lösenord:"
-
-#: ../src/plugins/Bugzilla.glade.h:6 ../src/plugins/RHTSupport.glade.h:5
-msgid "SSL verify"
-msgstr "SSL-verifiering"
-
-#: ../src/plugins/Bugzilla.glade.h:8
-msgid ""
-"You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
-"\">here</a>"
+#. oopses doesn't contain any sensitive info, and even
+#. * the old koops app was showing the oopses to all users
+#.
+#: ../src/plugins/abrt-dump-oops.c:587
+msgid "Make the dump directory world readable"
 msgstr ""
-"Du kan skapa den <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
-"\">här</a>"
 
-#: ../src/plugins/KerneloopsReporter.glade.h:1
-msgid "<b>Kerneloops Reporter plugin configuration</b>"
-msgstr "<b>Konfiguration av insticksmodul för att rapportera kärn-oops:ar</b>"
-
-#: ../src/plugins/KerneloopsReporter.glade.h:2
-msgid "Submit URL:"
-msgstr "Sänd-URL:"
-
-#: ../src/plugins/Logger.glade.h:1
-msgid "<b>Logger plugin configuration</b>"
-msgstr "<b>Konfiguration av loggningsinsticksmodul</b>"
-
-#: ../src/plugins/Logger.glade.h:2
-msgid "Append new logs"
-msgstr "Lägg till nya loggar"
-
-#: ../src/plugins/Logger.glade.h:3
-msgid "Logger file:"
-msgstr "Loggningsfil:"
-
-#: ../src/plugins/Mailx.glade.h:1
-msgid "<b>Mailx plugin configuration</b>"
-msgstr "<b>Konfiguration av mailx-insticksmodul</b>"
-
-#: ../src/plugins/Mailx.glade.h:2
-msgid "Recipient's Email:"
-msgstr "Mottagarens epost:"
-
-#: ../src/plugins/Mailx.glade.h:3
-msgid "Send Binary Data"
-msgstr "Skicka binärdata"
-
-#: ../src/plugins/Mailx.glade.h:4
-msgid "Subject:"
-msgstr "Ämne:"
-
-#: ../src/plugins/Mailx.glade.h:5
-msgid "Your Email:"
-msgstr "Din epost:"
-
-#: ../src/plugins/RHTSupport.glade.h:1
-msgid "<b>RHTSupport plugin configuration</b>"
-msgstr "<b>Konfiguration av insticksmodul för RHTSupport</b>"
-
-#: ../src/plugins/RHTSupport.glade.h:2
-msgid "Login:"
-msgstr "Inloggning:"
-
-#: ../src/plugins/RHTSupport.glade.h:4
-msgid "RHTSupport URL:"
-msgstr "RHTSupport-URL:"
-
-#: ../src/plugins/Upload.glade.h:1
-msgid "<b>Upload plugin configuration</b>"
-msgstr "<b>Skicka konfiguration av insticksmoduler</b>"
-
-#: ../src/plugins/Upload.glade.h:2
-msgid "Retry count:"
-msgstr "Antal upprepade försök:"
-
-#: ../src/plugins/Upload.glade.h:3
-msgid "Retry delay:"
-msgstr "Fördröjning mellan upprepade försök:"
-
-#: ../src/plugins/Upload.glade.h:4
-msgid "URL:"
-msgstr "URL:"
-
-#: ../src/plugins/Upload.glade.h:5
-msgid "Use encryption"
-msgstr "Använd kryptering"
-
-#~ msgid "Another client is already running, trying to wake it..."
-#~ msgstr "En annan klient kör redan, försöker väcka den …"
-
-#~ msgid ""
-#~ "Got unexpected data from the daemon (is the database properly updated?)."
-#~ msgstr "Fick oväntade data från demonen (är databasen korrekt uppdaterad?)."
-
-#~ msgid "Not loaded plugins"
-#~ msgstr "Ej inlästa insticksmoduler"
-
-#~ msgid "Analyzer plugins"
-#~ msgstr "Insticksmoduler för analys"
-
-#~ msgid "Action plugins"
-#~ msgstr "Insticksmoduler för åtgärder"
-
-#~ msgid "Reporter plugins"
-#~ msgstr "Insticksmoduler för rapporter"
-
-#~ msgid "Database plugins"
-#~ msgstr "Insticksmoduler för databaser"
-
-#~ msgid "Cannot connect to system dbus."
-#~ msgstr "Det går inte att ansluta till system-dbus:en"
-
-#~ msgid "Please check if the abrt daemon is running."
-#~ msgstr "Kontrollera om abrt-demonen kör."
-
-#~ msgid ""
-#~ "Daemon did not return a valid report info.\n"
-#~ "Is debuginfo missing?"
-#~ msgstr ""
-#~ "Demonen returnerade inte giltig rapportinformation.\n"
-#~ "Saknas felsökningsinformation?"
-
-#~ msgid "(C) 2009, 2010 Red Hat, Inc."
-#~ msgstr "© 2009, 2010 Red Hat, Inc."
-
-#~ msgid "<b>Bug Reports:</b>"
-#~ msgstr "<b>Felrapporter:</b>"
-
-#~ msgid "<b>Command:</b>"
-#~ msgstr "<b>Kommando:</b>"
-
-#~ msgid "<b>Comment:</b>"
-#~ msgstr "<b>Kommentar:</b>"
-
-#~ msgid "<b>Crash Count:</b>"
-#~ msgstr "<b>Kraschantal:</b>"
-
-#~ msgid "<b>Latest Crash:</b>"
-#~ msgstr "<b>Senaste krasch:</b>"
-
-#~ msgid "<b>Reason:</b>"
-#~ msgstr "<b>Anledning:</b>"
-
-#~ msgid "<b>User:</b>"
-#~ msgstr "<b>Användare:</b>"
-
-#~ msgid "About ABRT"
-#~ msgstr "Om ABRT"
-
-#~ msgid "Copy to Clipboard"
-#~ msgstr "Kopiera till urklipp"
-
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify it "
-#~ "under the terms of the GNU General Public License as published by the "
-#~ "Free Software Foundation; either version 2 of the License, or (at your "
-#~ "option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful, but "
-#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
-#~ "Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License along "
-#~ "with this program.  If not, see <http://www.gnu.org/licenses/>."
-#~ msgstr ""
-#~ "Detta program är fri programvara.  Du kan distribuera det och/eller "
-#~ "modifiera det enligt villkoren i GNU General Public License, publicerad "
-#~ "av Free Software Foundation, antingen version 2 eller (om du så vill) "
-#~ "någon senare version.\n"
-#~ "\n"
-#~ "Detta program distribueras i hopp om att det ska vara användbart, men "
-#~ "UTAN NÅGON GARANTI, även utan underförstådd garanti vid KÖP eller "
-#~ "LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL.  Se GNU General Public License "
-#~ "för ytterligare information.\n"
-#~ "\n"
-#~ "Du bör ha fått en kopia av GNU General Public License tillsammans med "
-#~ "detta program. Om inte, se <http://www.gnu.org/licenses/>."
-
-#~ msgid "View log"
-#~ msgstr "Visa logg"
-
-#~ msgid "Application"
-#~ msgstr "Applikation"
-
-#~ msgid "Hostname"
-#~ msgstr "Värdnamn"
-
-#~ msgid "Latest Crash"
-#~ msgstr "Senaste krasch"
-
-#~ msgid ""
-#~ "Cannot show the settings dialog.\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Det går inte att visa inställningsdialogen.\n"
-#~ "%s"
-
-#~ msgid ""
-#~ "Unable to finish the current task!\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Det går inte att avsluta aktuell uppgift!\n"
-#~ "%s"
-
-#~ msgid ""
-#~ "Error while loading the dumplist.\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Fel när dumplistan lästes in.\n"
-#~ "%s"
-
-#~ msgid ""
-#~ "<b>%s Crash</b>\n"
-#~ "%s"
-#~ msgstr ""
-#~ "<b>%s-krash</b>\n"
-#~ "%s"
-
-#~ msgid "You have to select a crash to copy."
-#~ msgstr "Du måste välja en krasch att kopiera."
-
-#~ msgid ""
-#~ "Usage: abrt-gui [OPTIONS]\n"
-#~ "\t-v[vv]\t\t\tVerbose\n"
-#~ "\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
-#~ msgstr ""
-#~ "Användning: abrt-gui [FLAGGOR]\n"
-#~ "\t-v[vv]\t\t\tUtförligt pratsam\n"
-#~ "\t--report=KRASCH_ID\tRapportera direkt krash med KRASCH_ID"
-
-#~ msgid ""
-#~ "No such crash in the database, probably wrong crashid.\n"
-#~ "crashid=%s"
-#~ msgstr ""
-#~ "Ingen sådan krasch i databasen, förmodligen fel kraschid.\n"
-#~ "krashid=%s"
-
-#~ msgid "Cannot connect to the Gnome Keyring daemon."
-#~ msgstr " Det går inte att ansluta till Gnomes nyckelringdemon."
-
-#~ msgid "Cannot get the default keyring."
-#~ msgstr "Kan inte få tag i standardnyckelring."
-
-#~ msgid ""
-#~ "Access to gnome-keyring has been denied, plugins settings will not be "
-#~ "saved."
-#~ msgstr ""
-#~ "Åtkomst till gnome-keyring har nekats, inställningar för insticksmodulen "
-#~ "kommer inte sparas."
-
-#~ msgid ""
-#~ "Access to gnome-keyring has been denied, cannot load the settings for %s!"
-#~ msgstr ""
-#~ "Åtkomst till gnome-keyring har nekats, det går inte att läsa in "
-#~ "inställningar för %s!"
-
-#~ msgid "Access to gnome-keyring has been denied, cannot load settings."
-#~ msgstr ""
-#~ "Åtkomst till gnome-keyring har nekats, det går inte att läsa in "
-#~ "inställningar."
-
-#~ msgid "Brief description of how to reproduce this or what you did..."
-#~ msgstr "Kort beskrivning hur man återskapar detta eller av vad du gjorde …"
-
-#~ msgid "Crash info doesn't contain a backtrace"
-#~ msgstr "Kraschinformationen innehåller inte ett stackspår"
-
-#~ msgid ""
-#~ "Cannot save plugin settings:\n"
-#~ " %s"
-#~ msgstr ""
-#~ "Det går inte att spara inställningar för insticksmoduler:\n"
-#~ " %s"
-
-#~ msgid "Rating is %s"
-#~ msgstr "Graderingen är %s"
-
-#~ msgid "Crashdump doesn't have rating => we suppose it's not required"
-#~ msgstr ""
-#~ "Kraschdumpen har inte någon gradering ⇒ vi antar att det inte behövs"
-
-#~ msgid ""
-#~ "Reporting disabled because the backtrace is unusable.\n"
-#~ "Please try to install debuginfo manually using the command: <b>debuginfo-"
-#~ "install %s</b> \n"
-#~ "then use the Refresh button to regenerate the backtrace."
-#~ msgstr ""
-#~ "Rapporteringen avslagen för att stackspåret är oanvändbart.\n"
-#~ "Försök installera felsökningsinformation manuellt med kommandot "
-#~ "<b>debuginfo-install %s</b>\n"
-#~ "och tryck sedan på Förnya-knappen för att återskapa stackspåret."
-
-#~ msgid "You did not provide any steps to reproduce."
-#~ msgstr "Du angav inte några steg för att återskapa."
-
-#~ msgid "You did not provide any comments."
-#~ msgstr "Du gav inga kommentarer."
-
-#~ msgid ""
-#~ "Reporting failed!\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Rapporteringen misslyckades!\n"
-#~ "%s"
-
-#~ msgid ""
-#~ "It looks like an application from the package <b>%s</b> has crashed on "
-#~ "your system. It is a good idea to send a bug report about this issue. The "
-#~ "report will provide software maintainers with information essential in "
-#~ "figuring out how to provide a bug fix for you.\n"
-#~ "\n"
-#~ "Please review the information that follows and modify it as needed to "
-#~ "ensure your bug report does not contain any sensitive data you would "
-#~ "rather not share.\n"
-#~ "\n"
-#~ "Select where you would like to report the bug, and press 'Forward' to "
-#~ "continue."
-#~ msgstr ""
-#~ "Det verkar som ett program från paketet <b>%s</b> har kraschat på ditt "
-#~ "system.  Det är en bra idé att skicka en felrapport om denna händelse.  "
-#~ "Rapporter ger dem som underhåller programmet viktig information för att "
-#~ "kunna lista ut hur de kan åstadkomma en felrättning för dig\n"
-#~ "\n"
-#~ "Titta igenom informationen som följer och ändra den om nödvändigt för att "
-#~ "se till att din felrapport inte innehåller någon känslig information du "
-#~ "helst inte vill dela\n"
-#~ "\n"
-#~ "Välj var du vill rapportera felet, och tryck 'Framåt' för att fortsätta."
-
-#~ msgid "Only one reporter plugin is configured."
-#~ msgstr "Endast en rapporteringsinsticksmodul är konfigurerad."
-
-#~ msgid "Send a bug report"
-#~ msgstr "Skicka en felrapport"
-
-#~ msgid "Found %i occurence(s) [at: %i of %i]"
-#~ msgstr "Hittade %i förekomster [vid: %i av %i]"
-
-#~ msgid "Search:"
-#~ msgstr "Sök:"
-
-#~ msgid "Refresh"
-#~ msgstr "Förnya"
-
-#~ msgid "Copy"
-#~ msgstr "Kopiera"
-
-#~ msgid "Approve the backtrace"
-#~ msgstr "Godkänn stackspåret"
-
-#~ msgid "You need to fill the how to before you can proceed..."
-#~ msgstr "Du behöver fylla i hur-man-gör före du kan fortsätta …"
-
-#~ msgid ""
-#~ "Are there any comments you would like to share with the software "
-#~ "maintainers?"
-#~ msgstr ""
-#~ "Har du någora kommentarer du vill meddela dem som underhåller programmet?"
-
-#~ msgid "Provide additional details"
-#~ msgstr "Ge ytterligare detaljer"
-
-#~ msgid ""
-#~ "<b>Tip:</b> Your comments are not private. Please watch what you say "
-#~ "accordingly."
-#~ msgstr ""
-#~ "<b>Tips:</b> Dina kommentarer är inte privata.  Se över vad du säger med "
-#~ "tanke på det."
-
-#~ msgid "Confirm and send the report"
-#~ msgstr "Bekräfta och skicka rapporten"
-
-#~ msgid ""
-#~ "Below is a summary of your bug report. Please click 'Apply' to submit it."
-#~ msgstr ""
-#~ "Nedan är en sammanfattning av din felrapport.  Klicka \"Verkställ\" för "
-#~ "att skicka den.\""
-
-#~ msgid "<b>Basic details</b>"
-#~ msgstr "<b>Grundläggande detaljer</b>"
-
-#~ msgid "Component"
-#~ msgstr "Komponent"
-
-#~ msgid "Package"
-#~ msgstr "Paket"
-
-#~ msgid "Executable"
-#~ msgstr "Körbart program"
-
-#~ msgid "Cmdline"
-#~ msgstr "Kommandorad"
-
-#~ msgid "Architecture"
-#~ msgstr "Arkitektur"
-
-#~ msgid "Kernel"
-#~ msgstr "Kärna"
-
-#~ msgid "Release"
-#~ msgstr "Utgåva"
-
-#~ msgid "Reason"
-#~ msgstr "Orsak"
-
-#~ msgid "<b>Backtrace</b>"
-#~ msgstr "<b>Stackspår</b>"
-
-#~ msgid "Click to view..."
-#~ msgstr "Klicka för att visa …"
-
-#~ msgid "<b>Steps to reproduce:</b>"
-#~ msgstr "<b>Steg för att återskapa:</b>"
-
-#~ msgid "<b>Comments:</b>"
-#~ msgstr "<b>Kommentarer:</b>"
-
-#~ msgid "No comment provided!"
-#~ msgstr "Inget kommando angivet!"
-
-#~ msgid "Finished sending the bug report"
-#~ msgstr "Felrapporten är skickad"
-
-#~ msgid "<b>Bug reports:</b>"
-#~ msgstr "<b>Felrapporter:</b>"
-
-#~ msgid ""
-#~ "Unable to get report!\n"
-#~ "Is debuginfo missing?"
-#~ msgstr ""
-#~ "Det går inte att rapportera!\n"
-#~ "Saknas felsökningsinformation?"
-
-#~ msgid "Error acquiring the report: %s"
-#~ msgstr "Fel när rapporten hämtades: %s"
-
-#~ msgid "Log"
-#~ msgstr "Logg"
-
-#~ msgid "Report done"
-#~ msgstr "Rapport klar"
-
-#~ msgid "Cannot find PluginDialog widget in the UI description!"
-#~ msgstr ""
-#~ "Det går inte att hitta inte hitta PluginDialog-widgeten i "
-#~ "gränssnittsbeskrivningen!"
-
-#~ msgid ""
-#~ "No UI for the plugin <b>%s</b>, this is probably a bug.\n"
-#~ "Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
-#~ "\">https://fedorahosted.org/abrt/newticket</a>"
-#~ msgstr ""
-#~ "Inget användargränssnitt för insticksmodulen <b>%s</b>, detta är "
-#~ "förmodligen ett fel.\n"
-#~ "Rapportera det på <a href=\"https://fedorahosted.org/abrt/newticket"
-#~ "\">https://fedorahosted.org/abrt/newticket</a>"
-
-#~ msgid "Combo box is not implemented"
-#~ msgstr "Combobox är inte implementerad"
-
-#~ msgid "Nothing to hydrate!"
-#~ msgstr "Inget att hydrera!"
-
-#~ msgid "Cannot load the GUI description for SettingsDialog!"
-#~ msgstr ""
-#~ "Det går inte att läsa in beskrivningen för det grafiska gränssnittet för "
-#~ "inställnigsdialogen."
-
-#~ msgid "Please select a plugin from the list to edit its options."
-#~ msgstr "Välj en insticksmodul från listan för att redigera dess alternativ."
-
-#~ msgid ""
-#~ "Error while opening the plugin settings UI: \n"
-#~ "\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Fel när gränssnittet för inställningar av insticksmodulen öppnades: \n"
-#~ "\n"
-#~ "%s"
-
-#~ msgid "Please wait..."
-#~ msgstr "Var god vänta …"
-
-#~ msgid " "
-#~ msgstr " "
-
-#~ msgid "<b>Attachments</b>"
-#~ msgstr "<b>Bilagor</b>"
-
-#~ msgid "<b>Comment</b>"
-#~ msgstr "<b>Kommentar</b>"
-
-#~ msgid "<b>How to reproduce (in a few simple steps)</b>"
-#~ msgstr "<b>Hur man återskapar (i några få enkla steg)</b>"
-
-#~ msgid "<b>Please fix the following problems:</b>"
-#~ msgstr "<b>Rätta till följande problem:</b>"
-
-#~ msgid "<b>Where do you want to report this incident?</b>"
-#~ msgstr "<b>Vart vill du rapportera denna incident?</b>"
-
-#~ msgid "<span fgcolor=\"blue\">Architecture:</span>"
-#~ msgstr "<span fgcolor=\"blue\">Arkitektur:</span>"
-
-#~ msgid "<span fgcolor=\"blue\">Cmdline:</span>"
-#~ msgstr "<span fgcolor=\"blue\">Kommandorad:</span>"
-
-#~ msgid "<span fgcolor=\"blue\">Component:</span>"
-#~ msgstr "<span fgcolor=\"blue\">Komponent:</span>"
-
-#~ msgid "<span fgcolor=\"blue\">Executable:</span>"
-#~ msgstr "<span fgcolor=\"blue\">Program:</span>"
-
-#~ msgid "<span fgcolor=\"blue\">Kernel:</span>"
-#~ msgstr "<span fgcolor=\"blue\">Kärna:</span>"
-
-#~ msgid "<span fgcolor=\"blue\">Package:</span>"
-#~ msgstr "<span fgcolor=\"blue\">Paket:</span>"
-
-#~ msgid "<span fgcolor=\"blue\">Reason:</span>"
-#~ msgstr "<span fgcolor=\"blue\">Anledning:</span>"
-
-#~ msgid "<span fgcolor=\"blue\">Release:</span>"
-#~ msgstr "<span fgcolor=\"blue\">Utgåva:</span>"
-
-#~ msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
-#~ msgstr ""
-#~ "Jag kontrollerade stackspåret och tog bort känslig information (lösenord "
-#~ "o.dyl.)"
-
-#~ msgid "N/A"
-#~ msgstr "Ej tillämpligt"
-
-#~ msgid "Reporter Selector"
-#~ msgstr "Rapportörväljare"
-
-#~ msgid "Send report"
-#~ msgstr "Skicka rapport"
-
-#~ msgid "Show log"
-#~ msgstr "Visa logg"
-
-#~ msgid "Remove this job"
-#~ msgstr "Ta bort detta jobb"
-
-#~ msgid "Remove this action"
-#~ msgstr "Ta bort denna åtgärd"
-
-#~ msgid "<b>Plugin details</b>"
-#~ msgstr "<b>Detaljer om insticksmodul</b>"
-
-#~ msgid "Author:"
-#~ msgstr "Författare:"
-
-#~ msgid "Blacklisted packages: "
-#~ msgstr "Svartlistade paket: "
-
-#~ msgid "Check package GPG signature"
-#~ msgstr "Kontrollera paket-GPG-signatur"
-
-#~ msgid "Common"
-#~ msgstr "Allmänt"
-
-#~ msgid "GPG Keys"
-#~ msgstr "GPG-nycklar"
-
-#~ msgid "GPG keys: "
-#~ msgstr "GPG-nycklar: "
-
-#~ msgid "Max coredump storage size (MB):"
-#~ msgstr "Maximal lagringsstorlek för kärndump (MB):"
-
-#~ msgid "Name:"
-#~ msgstr "Namn:"
-
-#~ msgid "Preferences"
-#~ msgstr "Inställningar"
-
-#~ msgid "Version:"
-#~ msgstr "Version:"
-
-#~ msgid "Web Site:"
-#~ msgstr "Webbplats:"
-
-#~ msgid "<b>Do you want to continue?</b>"
-#~ msgstr "<b>Vill du fortsätta?</b>"
-
-#~ msgid "Wrong Settings Detected"
-#~ msgstr "Felaktiga inställningar upptäckta"
-
-#~ msgid ""
-#~ "Wrong settings were detected for some of the enabled reporter plugins. "
-#~ "Please use the buttons below to open the respective configuration and fix "
-#~ "it before you proceed, otherwise, the reporting process may fail.\n"
-#~ msgstr ""
-#~ "Felaktiga inställningar upptäcktes för några av de aktiverade "
-#~ "rapporteringsinsticksmodulerna.  Använd knapparna nedan för att öpna "
-#~ "respektive konfiguration och rätta det innan du fortsätter, annars kan "
-#~ "rapporteringsprocessen misslyckas.\n"
+#: ../src/plugins/abrt-retrace-client.c:704
+msgid "log to syslog"
+msgstr "logga till syslog"
