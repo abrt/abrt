@@ -226,6 +226,7 @@ static GtkWidget *create_about_dialog()
 
     const char *artists[] = {"Patrick Connelly <pcon@fedoraproject.org>",
                              "Lapo Calamandrei",
+                             "Jakub Steinar <jsteiner@redhat.com>",
                                 NULL};
 
     const char *comments = _("Notification area applet that notifies users about "

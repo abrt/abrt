@@ -217,6 +217,7 @@ static void on_menu_about_cb(GtkMenuItem *menuitem, gpointer unused)
         "Patrick Connelly <pcon@fedoraproject.org>",
         "Máirín Duffy <duffy@fedoraproject.org>",
         "Lapo Calamandrei",
+        "Jakub Steinar <jsteiner@redhat.com>",
         NULL
     };
 
