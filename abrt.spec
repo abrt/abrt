@@ -45,9 +45,14 @@ BuildRequires: intltool
 BuildRequires: libtool
 BuildRequires: nss-devel
 BuildRequires: texinfo
-BuildRequires: libgnome-keyring-devel
+
 # for rhel6
-#BuildRequires: gnome-keyring-devel
+%if 0%{?rhel} >= 6
+BuildRequires: gnome-keyring-devel
+%else
+BuildRequires: libgnome-keyring-devel
+%endif
+
 %if %{?with_systemd}
 Requires: systemd-units
 %endif
