@@ -487,6 +487,7 @@ fi
 %attr(2755, abrt, abrt) %{_bindir}/abrt-action-install-debuginfo
 %{_bindir}/abrt-action-install-debuginfo.py*
 %{_bindir}/abrt-action-generate-backtrace
+%{_bindir}/abrt-action-analyze-backtrace
 %{_bindir}/abrt-action-list-dsos.py*
 %{_sysconfdir}/%{name}/events.d/ccpp_events.conf
 %{_sysconfdir}/%{name}/events/analyze_LocalGDB.xml

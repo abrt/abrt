@@ -1,6 +1,6 @@
 /*
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
-    Copyright (C) 2009  RedHat inc.
+    Copyright (C) 2009  Red Hat, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,30 +32,6 @@ static const char *debuginfo_dirs = DEBUGINFO_CACHE_DIR;
 /* 60 seconds was too limiting on slow machines */
 static int exec_timeout_sec = 240;
 
-
-static void create_hash(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *pInput)
-{
-    unsigned len;
-    unsigned char hash2[SHA1_RESULT_LEN];
-    sha1_ctx_t sha1ctx;
-
-    sha1_begin(&sha1ctx);
-    sha1_hash(pInput, strlen(pInput), &sha1ctx);
-    sha1_end(hash2, &sha1ctx);
-    len = SHA1_RESULT_LEN;
-
-    char *d = hash_str;
-    unsigned char *s = hash2;
-    while (len)
-    {
-        *d++ = "0123456789abcdef"[*s >> 4];
-        *d++ = "0123456789abcdef"[*s & 0xf];
-        s++;
-        len--;
-    }
-    *d = '\0';
-    //log("hash2:%s str:'%s'", hash_str, pInput);
-}
 
 /**
  *
@@ -299,119 +275,26 @@ int main(int argc, char **argv)
     if (!dd)
         return 1;
 
-    char *package = dd_load_text(dd, FILENAME_PACKAGE);
-    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
-
     /* Create gdb backtrace */
     /* NB: get_backtrace() closes dd */
-    char *backtrace_str = get_backtrace(dd);
-    if (!backtrace_str)
+    char *backtrace = get_backtrace(dd);
+    if (!backtrace)
     {
-        backtrace_str = xstrdup("");
+        backtrace = xstrdup("");
         log("get_backtrace() returns NULL, broken core/gdb?");
     }
-
-    /* Compute backtrace hash */
-    struct btp_location location;
-    btp_location_init(&location);
-    char *backtrace_str_ptr = backtrace_str;
-    struct btp_backtrace *backtrace = btp_backtrace_parse(&backtrace_str_ptr, &location);
 
     /* Store gdb backtrace */
 
     dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return 1;
-    dd_save_text(dd, FILENAME_BACKTRACE, backtrace_str);
+    dd_save_text(dd, FILENAME_BACKTRACE, backtrace);
     /* Don't be completely silent. gdb run takes a few seconds,
      * it is useful to let user know it (maybe) worked.
      */
-    log(_("Backtrace is generated and saved, %u bytes"), (int)strlen(backtrace_str));
-    free(backtrace_str);
-
-    /* Store backtrace hash */
-
-    if (!backtrace)
-    {
-        /*
-         * The parser failed. Compute the UUID from the executable
-         * and package only.  This is not supposed to happen often.
-         */
-        VERB1 log(_("Backtrace parsing failed for %s"), dump_dir_name);
-        VERB1 log("%d:%d: %s", location.line, location.column, location.message);
-        struct strbuf *emptybt = strbuf_new();
-        strbuf_prepend_str(emptybt, executable);
-        strbuf_prepend_str(emptybt, package);
-
-        char hash_str[SHA1_RESULT_LEN*2 + 1];
-        create_hash(hash_str, emptybt->buf);
-
-        dd_save_text(dd, FILENAME_DUPHASH, hash_str);
-        /*
-         * Other parts of ABRT assume that if no rating is available,
-         * it is ok to allow reporting of the bug. To be sure no bad
-         * backtrace is reported, rate the backtrace with the lowest
-         * rating.
-         */
-        dd_save_text(dd, FILENAME_RATING, "0");
-
-        strbuf_free(emptybt);
-        free(package);
-        free(executable);
-        dd_close(dd);
-
-        /* Report success even if the parser failed, as the backtrace
-         * has been created and rated. The failure is caused by a flaw
-         * in the parser, not in the backtrace.
-         */
-        return 0;
-    }
-
-    /* Compute duplication hash. */
-    char *str_hash_core = btp_backtrace_get_duplication_hash(backtrace);
-    struct strbuf *str_hash = strbuf_new();
-    strbuf_append_str(str_hash, package);
-    strbuf_append_str(str_hash, executable);
-    strbuf_append_str(str_hash, str_hash_core);
-
-    char hash_str[SHA1_RESULT_LEN*2 + 1];
-    create_hash(hash_str, str_hash->buf);
-
-    dd_save_text(dd, FILENAME_DUPHASH, hash_str);
-    strbuf_free(str_hash);
-    free(str_hash_core);
-
-    /* Compute the backtrace rating. */
-    float quality = btp_backtrace_quality_complex(backtrace);
-    const char *rating;
-    if (quality < 0.6f)
-        rating = "0";
-    else if (quality < 0.7f)
-        rating = "1";
-    else if (quality < 0.8f)
-        rating = "2";
-    else if (quality < 0.9f)
-        rating = "3";
-    else
-        rating = "4";
-    dd_save_text(dd, FILENAME_RATING, rating);
-
-    /* Get the function name from the crash frame. */
-    struct btp_frame *crash_frame = btp_backtrace_get_crash_frame(backtrace);
-    if (crash_frame)
-    {
-        if (crash_frame->function_name &&
-            0 != strcmp(crash_frame->function_name, "??"))
-        {
-            dd_save_text(dd, FILENAME_CRASH_FUNCTION, crash_frame->function_name);
-        }
-        btp_frame_free(crash_frame);
-    }
-    btp_backtrace_free(backtrace);
-    dd_close(dd);
-
-    free(executable);
-    free(package);
+    log(_("Backtrace is generated and saved, %u bytes"), (int)strlen(backtrace));
+    free(backtrace);
 
     return 0;
 }
