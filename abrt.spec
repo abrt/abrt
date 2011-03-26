@@ -16,7 +16,7 @@
 %if "0%{?_buildid}" != "0"
 %define pkg_release 0.%{?_buildid}%{?dist}
 %else
-%define pkg_release 2%{?dist}
+%define pkg_release 1%{?dist}
 %endif
 
 Summary: Automatic bug detection and reporting tool
