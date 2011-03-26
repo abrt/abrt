@@ -9,6 +9,7 @@ bin_PROGRAMS = \
     abrt-action-analyze-c \
     abrt-action-analyze-python \
     abrt-action-analyze-oops \
+    abrt-action-trim-files \
     abrt-action-generate-backtrace \
     abrt-action-bugzilla \
     abrt-action-rhtsupport \
@@ -140,6 +141,25 @@ abrt_action_analyze_oops_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_analyze_oops_LDADD = \
+    ../lib/libreport.la
+
+abrt_action_trim_files_SOURCES = \
+    abrt-action-trim-files.c
+abrt_action_trim_files_CPPFLAGS = \
+    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    -DBIN_DIR=\"$(bindir)\" \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    $(GLIB_CFLAGS) \
+    -D_GNU_SOURCE \
+    -Wall -Wwrite-strings -Werror
+abrt_action_trim_files_LDADD = \
     ../lib/libreport.la
 
 abrt_action_generate_backtrace_SOURCES = \

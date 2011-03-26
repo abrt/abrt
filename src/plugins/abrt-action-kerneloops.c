@@ -130,7 +130,7 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        PROGNAME" [-v] -c CONFFILE -d DIR\n"
+        PROGNAME" [-v] [-c CONFFILE]... -d DIR\n"
         "\n"
         "Reports kernel oops to kerneloops.org (or similar) site"
     );
@@ -143,7 +143,7 @@ int main(int argc, char **argv)
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR" , _("Dump directory")),
-        OPT_LIST(  'c', NULL, &conf_file    , "FILE", _("Configuration file (may be given many times)")),
+        OPT_LIST(  'c', NULL, &conf_file    , "FILE", _("Configuration file")),
         OPT_END()
     };
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);

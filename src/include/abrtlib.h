@@ -81,6 +81,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "abrt_crash_data.h"
 #include "abrt_types.h"
 #include "dump_dir.h"
+#include "hooklib.h"
 #include "run_event.h"
 #include "event_config.h"
 

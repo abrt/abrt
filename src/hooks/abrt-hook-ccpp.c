@@ -19,7 +19,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "hooklib.h"
 #include <syslog.h>
 
 static char* malloc_readlink(const char *linkname)
@@ -503,11 +502,11 @@ int main(int argc, char** argv)
         int base_name = sprintf(source_filename, "/proc/%lu/smaps", (long)pid);
         base_name -= strlen("smaps");
         char *dest_filename = concat_path_file(dd->dd_dirname, FILENAME_SMAPS);
-        copy_file(source_filename, dest_filename, S_IRUSR | S_IRGRP | S_IWUSR);
+        copy_file(source_filename, dest_filename, 0640);
         chown(dest_filename, dd->dd_uid, dd->dd_gid);
         strcpy(source_filename + base_name, "maps");
         strcpy(strrchr(dest_filename, '/') + 1, FILENAME_MAPS);
-        copy_file(source_filename, dest_filename, S_IRUSR | S_IRGRP | S_IWUSR);
+        copy_file(source_filename, dest_filename, 0640);
         chown(dest_filename, dd->dd_uid, dd->dd_gid);
         free(dest_filename);
 
@@ -525,7 +524,8 @@ int main(int argc, char** argv)
         if (src_fd_binary > 0)
         {
             strcpy(path + path_len, "/"FILENAME_BINARY);
-            int dst_fd_binary = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+            int dst_fd_binary = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0640);
+            fchown(dst_fd_binary, dd->dd_uid, dd->dd_gid);
             off_t sz = copyfd_eof(src_fd_binary, dst_fd_binary, COPYFD_SPARSE);
             if (sz < 0 || fsync(dst_fd_binary) != 0)
             {
@@ -536,13 +536,8 @@ int main(int argc, char** argv)
             close(src_fd_binary);
         }
 
-        /* We need coredumps to be readable by all, because
-         * when abrt daemon processes coredump,
-         * process producing backtrace is run under the same UID
-         * as the crashed process.
-         * Thus 644, not 600 */
         strcpy(path + path_len, "/"FILENAME_COREDUMP);
-        int abrt_core_fd = open(path, O_RDWR | O_CREAT | O_TRUNC, 0644);
+        int abrt_core_fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0640);
         if (abrt_core_fd < 0)
         {
             int sv_errno = errno;
@@ -555,6 +550,7 @@ int main(int argc, char** argv)
             errno = sv_errno;
             perror_msg_and_die("can't open '%s'", path);
         }
+        fchown(abrt_core_fd, dd->dd_uid, dd->dd_gid);
 
         /* We write both coredumps at once.
          * We can't write user coredump first, since it might be truncated
@@ -608,13 +604,11 @@ int main(int argc, char** argv)
         /* rhbz#539551: "abrt going crazy when crashing process is respawned" */
         if (setting_MaxCrashReportsSize > 0)
         {
-            trim_debug_dumps(setting_MaxCrashReportsSize, path);
+            trim_debug_dumps(DEBUG_DUMPS_DIR, setting_MaxCrashReportsSize * (double)(1024*1024), path);
         }
 
         return 0;
     }
-    else
-        xfunc_die();
 
     /* We didn't create abrt dump, but may need to create compat coredump */
  create_user_core:

@@ -25,10 +25,12 @@ void parse_conf(const char *additional_conf,
         unsigned *setting_MaxCrashReportsSize,
         bool *setting_MakeCompatCore,
         bool *setting_SaveBinaryImage);
+
 #define check_free_space abrt_check_free_space
 void check_free_space(unsigned setting_MaxCrashReportsSize);
+
 #define trim_debug_dumps abrt_trim_debug_dumps
-void trim_debug_dumps(unsigned setting_MaxCrashReportsSize, const char *exclude_path);
+void trim_debug_dumps(const char *dirname, double cap_size, const char *exclude_path);
 
 #ifdef __cplusplus
 }

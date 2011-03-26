@@ -114,24 +114,40 @@ void check_free_space(unsigned setting_MaxCrashReportsSize)
  * Check total size of dump dir, if it overflows,
  * delete oldest/biggest dumps.
  */
-void trim_debug_dumps(unsigned setting_MaxCrashReportsSize, const char *exclude_path)
+void trim_debug_dumps(const char *dirname, double cap_size, const char *exclude_path)
 {
-    int count = 10;
+    const char *excluded_basename = NULL;
+    if (exclude_path)
+    {
+        unsigned len_dirname = strlen(dirname);
+        /* Trim trailing '/'s, but dont trim name "/" to "" */
+        while (len_dirname > 1 && dirname[len_dirname-1] == '/')
+            len_dirname--;
+        if (strncmp(dirname, exclude_path, len_dirname) == 0
+         && exclude_path[len_dirname] == '/'
+        ) {
+            /* exclude_path is "dirname/something" */
+            excluded_basename = exclude_path + len_dirname + 1;
+        }
+    }
+    VERB3 log("excluded_basename:'%s'", excluded_basename);
+
+    int count = 20;
     while (--count >= 0)
     {
-        const char *base_dirname = strrchr(exclude_path, '/') + 1; /* never NULL */
         /* We exclude our own dump from candidates for deletion (3rd param): */
-        char *worst_dir = NULL;
-        double dirsize = get_dirsize_find_largest_dir(DEBUG_DUMPS_DIR, &worst_dir, base_dirname);
-        if (dirsize / (1024*1024) < setting_MaxCrashReportsSize || !worst_dir)
+        char *worst_basename = NULL;
+        double cur_size = get_dirsize_find_largest_dir(dirname, &worst_basename, excluded_basename);
+        if (cur_size <= cap_size || !worst_basename)
         {
-            free(worst_dir);
+            VERB2 log("cur_size:%f cap_size:%f, no (more) trimming", cur_size, cap_size);
+            free(worst_basename);
             break;
         }
-        log("size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, setting_MaxCrashReportsSize, worst_dir);
-        char *d = concat_path_file(DEBUG_DUMPS_DIR, worst_dir);
-        free(worst_dir);
-        worst_dir = NULL;
+        log("%s is %.0f bytes (more than %.0f MB), deleting '%s'",
+                dirname, cur_size, cap_size / (1024*1024), worst_basename);
+        char *d = concat_path_file(dirname, worst_basename);
+        free(worst_basename);
         delete_dump_dir(d);
         free(d);
     }

@@ -16,7 +16,6 @@
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "hooklib.h"
 #include "parse_options.h"
 
 #define PROGNAME "abrt-server"
@@ -153,7 +152,7 @@ static void create_debug_dump()
     if (maxCrashReportsSize > 0)
     {
         check_free_space(maxCrashReportsSize);
-        trim_debug_dumps(maxCrashReportsSize, path);
+        trim_debug_dumps(DEBUG_DUMPS_DIR, maxCrashReportsSize * (double)(1024*1024), path);
     }
 
     free(path);
