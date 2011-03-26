@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-25 18:32+0100\n"
-"PO-Revision-Date: 2011-03-25 17:37+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"POT-Creation-Date: 2011-03-26 23:35+0100\n"
+"PO-Revision-Date: 2011-03-26 05:59+0000\n"
+"Last-Translator: ekd123 <zhtx10@gmail.com>\n"
 "Language-Team: Chinese (China) <None>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
@@ -327,10 +327,11 @@ msgstr ""
 #: ../src/daemon/abrt-action-save-package-data.c:263
 #: ../src/daemon/abrt-handle-crashdump.c:61
 #: ../src/plugins/abrt-action-analyze-c.c:178
+#: ../src/plugins/abrt-action-analyze-backtrace.c:72
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
 #: ../src/plugins/abrt-action-bugzilla.cpp:923
-#: ../src/plugins/abrt-action-generate-backtrace.c:280
+#: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:145
 #: ../src/plugins/abrt-action-mailx.c:147
 #: ../src/plugins/abrt-action-print.c:52
@@ -347,7 +348,7 @@ msgstr ""
 " [-vs] -d DIR -e EVENT\n"
 "   或： "
 
-#: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:298
+#: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:297
 #: ../src/plugins/abrt-dump-oops.c:579
 msgid "Log to syslog"
 msgstr "记录到系统日志"
@@ -360,17 +361,17 @@ msgstr "处理事件"
 msgid "List possible events [which start with PFX]"
 msgstr "列出可能的事件 [用PFX开始的那个]"
 
-#: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:299
+#: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
 #: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:170
 #: ../src/gui-wizard-gtk/main.c:93
 msgid "Add program names to log"
 msgstr ""
 
-#: ../src/daemon/abrt-server.c:286 ../src/daemon/Daemon.cpp:535
+#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:535
 msgid " [options]"
 msgstr " [选项]"
 
-#: ../src/daemon/abrt-server.c:297
+#: ../src/daemon/abrt-server.c:296
 msgid "Use UID as client uid"
 msgstr "使用UID作为客户端uid"
 
@@ -439,11 +440,11 @@ msgstr "帮助（_H）"
 
 #: ../src/gui-gtk/abrt-gtk.c:323
 msgid "_Event configuration"
-msgstr ""
+msgstr "事件配置 (_E)"
 
 #: ../src/gui-gtk/abrt-gtk.c:399
 msgid "Online _Help"
-msgstr ""
+msgstr "在线帮助 (_H)"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -580,7 +581,7 @@ msgstr "点击'前进'来进行分析和报告此问题。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Configure _Events"
-msgstr ""
+msgstr "配置事件 (_E)"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
@@ -663,6 +664,23 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
+
+#: ../src/plugins/abrt-action-analyze-backtrace.c:61
+msgid ""
+" [options] -d DIR\n"
+"\n"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
+"identifies crash function in dump directory DIR"
+msgstr ""
+
+#.
+#. * The parser failed. Compute the UUID from the executable
+#. * and package only.  This is not supposed to happen often.
+#.
+#: ../src/plugins/abrt-action-analyze-backtrace.c:113
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr "%s的回溯解析失败"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:133
 msgid ""
@@ -753,42 +771,32 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:924
-#: ../src/plugins/abrt-action-kerneloops.c:146
 #: ../src/plugins/abrt-action-rhtsupport.c:277
 msgid "Configuration file (may be given many times)"
 msgstr "配置文件（或许需要一点时间）"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:267
+#: ../src/plugins/abrt-action-generate-backtrace.c:243
 msgid ""
 " [options] -d DIR\n"
 "\n"
 "Generates and saves backtrace for coredump in dump directory DIR"
 msgstr ""
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:281
+#: ../src/plugins/abrt-action-generate-backtrace.c:257
 msgid "Additional debuginfo directories"
 msgstr "附加出错信息目录"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:282
+#: ../src/plugins/abrt-action-generate-backtrace.c:258
 msgid "Kill gdb if it runs for more than N seconds"
 msgstr "如果GDB运行超过N秒就杀死它"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
 #.
-#: ../src/plugins/abrt-action-generate-backtrace.c:329
+#: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
 msgstr "回溯已经生成并保存，%u 字节"
-
-#.
-#. * The parser failed. Compute the UUID from the executable
-#. * and package only.  This is not supposed to happen often.
-#.
-#: ../src/plugins/abrt-action-generate-backtrace.c:340
-#, c-format
-msgid "Backtrace parsing failed for %s"
-msgstr "%s的回溯解析失败"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:77
 #, python-format
@@ -913,10 +921,15 @@ msgstr "正在发送oops报告到%s"
 
 #: ../src/plugins/abrt-action-kerneloops.c:133
 msgid ""
-" [-v] -c CONFFILE -d DIR\n"
+" [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
 "Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
+
+#: ../src/plugins/abrt-action-kerneloops.c:146
+#, fuzzy
+msgid "Configuration file"
+msgstr "配置文件"
 
 #: ../src/plugins/abrt-action-mailx.c:109
 msgid "Sending an email..."
@@ -980,6 +993,26 @@ msgid ""
 " [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports a problem to RHTSupport"
+msgstr ""
+
+#: ../src/plugins/abrt-action-trim-files.c:154
+msgid ""
+" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"\n"
+"Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
+msgstr ""
+
+#: ../src/plugins/abrt-action-trim-files.c:167
+msgid "Delete dump dirs"
+msgstr ""
+
+#: ../src/plugins/abrt-action-trim-files.c:168
+#, fuzzy
+msgid "Delete files"
+msgstr "备用 GUI 文件"
+
+#: ../src/plugins/abrt-action-trim-files.c:169
+msgid "Preserve this dump dir"
 msgstr ""
 
 #: ../src/plugins/abrt-action-upload.c:63

@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-25 18:32+0100\n"
-"PO-Revision-Date: 2011-03-25 17:37+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"POT-Creation-Date: 2011-03-26 23:35+0100\n"
+"PO-Revision-Date: 2011-03-26 10:07+0000\n"
+"Last-Translator: vpv <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <None>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
@@ -300,17 +300,18 @@ msgstr ""
 #: ../src/daemon/abrt-action-save-package-data.c:263
 #: ../src/daemon/abrt-handle-crashdump.c:61
 #: ../src/plugins/abrt-action-analyze-c.c:178
+#: ../src/plugins/abrt-action-analyze-backtrace.c:72
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
 #: ../src/plugins/abrt-action-bugzilla.cpp:923
-#: ../src/plugins/abrt-action-generate-backtrace.c:280
+#: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:145
 #: ../src/plugins/abrt-action-mailx.c:147
 #: ../src/plugins/abrt-action-print.c:52
 #: ../src/plugins/abrt-action-rhtsupport.c:276
 #: ../src/plugins/abrt-action-upload.c:258
 msgid "Dump directory"
-msgstr ""
+msgstr "Vedoshakemisto"
 
 #: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
@@ -318,7 +319,7 @@ msgid ""
 "   or: "
 msgstr ""
 
-#: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:298
+#: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:297
 #: ../src/plugins/abrt-dump-oops.c:579
 msgid "Log to syslog"
 msgstr "Kirjoita lokia syslogiin"
@@ -331,17 +332,17 @@ msgstr ""
 msgid "List possible events [which start with PFX]"
 msgstr ""
 
-#: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:299
+#: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
 #: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:170
 #: ../src/gui-wizard-gtk/main.c:93
 msgid "Add program names to log"
 msgstr ""
 
-#: ../src/daemon/abrt-server.c:286 ../src/daemon/Daemon.cpp:535
+#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:535
 msgid " [options]"
 msgstr ""
 
-#: ../src/daemon/abrt-server.c:297
+#: ../src/daemon/abrt-server.c:296
 msgid "Use UID as client uid"
 msgstr ""
 
@@ -411,11 +412,11 @@ msgstr "_Ohje"
 
 #: ../src/gui-gtk/abrt-gtk.c:323
 msgid "_Event configuration"
-msgstr ""
+msgstr "_Tapahtumien asetukset"
 
 #: ../src/gui-gtk/abrt-gtk.c:399
 msgid "Online _Help"
-msgstr ""
+msgstr "Ohje _verkossa"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -563,7 +564,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Configure _Events"
-msgstr ""
+msgstr "Tee tapahtumien _asetukset"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
@@ -575,7 +576,7 @@ msgstr "Kuinka tämä ongelma tapahtui? Kuinka sen voi toistaa?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "I _agree with submitting the backtrace"
-msgstr ""
+msgstr "Pinolistauksen _saa lähettää"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "Regenerate backtrace"
@@ -616,26 +617,26 @@ msgstr "Lähetetty: %llu/%llu kilotavua"
 
 #: ../src/lib/event_config.c:313
 msgid "Missing mandatory value"
-msgstr ""
+msgstr "Puuttuva pakollinen arvo"
 
 #: ../src/lib/event_config.c:321
 #, c-format
 msgid "Invalid utf8 character '%c'"
-msgstr ""
+msgstr "Virheellinen utf-8-merkki ”%c”"
 
 #: ../src/lib/event_config.c:332
 #, c-format
 msgid "Invalid number '%s'"
-msgstr ""
+msgstr "Virheellinen numero ”%s”"
 
 #: ../src/lib/event_config.c:343
 #, c-format
 msgid "Invalid boolean value '%s'"
-msgstr ""
+msgstr "Virheellinen totuusarvo ”%s”"
 
 #: ../src/lib/event_config.c:347
 msgid "Unsupported option type"
-msgstr ""
+msgstr "Valitsimen tyyppiä ei tueta"
 
 #: ../src/lib/parse_options.c:29
 #, c-format
@@ -648,6 +649,23 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
+
+#: ../src/plugins/abrt-action-analyze-backtrace.c:61
+msgid ""
+" [options] -d DIR\n"
+"\n"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
+"identifies crash function in dump directory DIR"
+msgstr ""
+
+#.
+#. * The parser failed. Compute the UUID from the executable
+#. * and package only.  This is not supposed to happen often.
+#.
+#: ../src/plugins/abrt-action-analyze-backtrace.c:113
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr "Kohteen %s pinolistauksen jäsentäminen epäonnistui"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:133
 msgid ""
@@ -676,11 +694,11 @@ msgstr "Käyttäjätunnus tai salasana on tyhjä, tarkista %s"
 #: ../src/plugins/abrt-action-bugzilla.cpp:666
 #, c-format
 msgid "Logging into Bugzilla at %s"
-msgstr ""
+msgstr "Kirjaudutaan Bugzillaan osoitteessa %s"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:669
 msgid "Checking for duplicates"
-msgstr ""
+msgstr "Etsitään duplikaatteja"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:691
 #: ../src/plugins/abrt-action-bugzilla.cpp:727
@@ -696,7 +714,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:758
 msgid "Creating a new bug"
-msgstr ""
+msgstr "Luodaan uusi ohjelmavirheilmoitus"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:763
 msgid "Bugzilla entry creation failed"
@@ -705,7 +723,7 @@ msgstr "Bugzilla-ilmoituksen luominen epäonnistui"
 #: ../src/plugins/abrt-action-bugzilla.cpp:775
 #: ../src/plugins/abrt-action-bugzilla.cpp:875
 msgid "Logging out"
-msgstr ""
+msgstr "Kirjaudutaan ulos"
 
 #. decision based on state
 #: ../src/plugins/abrt-action-bugzilla.cpp:793
@@ -736,42 +754,32 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:924
-#: ../src/plugins/abrt-action-kerneloops.c:146
 #: ../src/plugins/abrt-action-rhtsupport.c:277
 msgid "Configuration file (may be given many times)"
 msgstr "Asetustiedosto (voidaan syöttää useita)"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:267
+#: ../src/plugins/abrt-action-generate-backtrace.c:243
 msgid ""
 " [options] -d DIR\n"
 "\n"
 "Generates and saves backtrace for coredump in dump directory DIR"
 msgstr ""
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:281
+#: ../src/plugins/abrt-action-generate-backtrace.c:257
 msgid "Additional debuginfo directories"
 msgstr "Lisää debuginfoa sisältävät hakemistot"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:282
+#: ../src/plugins/abrt-action-generate-backtrace.c:258
 msgid "Kill gdb if it runs for more than N seconds"
 msgstr "Tapa gdb, jos se sitä on suoritettu enemmän kuin N sekuntia"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
 #.
-#: ../src/plugins/abrt-action-generate-backtrace.c:329
+#: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
 msgstr "Pinolistausta luodaan ja tallennetaan, %u tavua"
-
-#.
-#. * The parser failed. Compute the UUID from the executable
-#. * and package only.  This is not supposed to happen often.
-#.
-#: ../src/plugins/abrt-action-generate-backtrace.c:340
-#, c-format
-msgid "Backtrace parsing failed for %s"
-msgstr "Kohteen %s pinolistauksen jäsentäminen epäonnistui"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:77
 #, python-format
@@ -810,7 +818,7 @@ msgstr "Ladataan (%i/%i) %s: %3u%%"
 #. we have "paused":
 #: ../src/plugins/abrt-action-install-debuginfo.py:206
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "Etsitään tarvittavia paketteja pakettivarastoista"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:240
 #, python-format
@@ -820,7 +828,7 @@ msgstr "%u debuginfo-tiedoston paketteja ei löytynyt"
 #: ../src/plugins/abrt-action-install-debuginfo.py:242
 #, python-format
 msgid "Packages to download: %u"
-msgstr ""
+msgstr "Ladattavat paketit: %u"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:243
 #, python-format
@@ -854,7 +862,7 @@ msgstr "Hakemistoa %s ei voida poistaa, se luultavasti sisältää virhelokin"
 #: ../src/plugins/abrt-action-install-debuginfo.py:316
 #, python-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "Analysoidaan muistivedosta ”%s”"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:394
 #, python-format
@@ -897,10 +905,15 @@ msgstr "Lähetetään oops-raportti osoitteeseen %s"
 
 #: ../src/plugins/abrt-action-kerneloops.c:133
 msgid ""
-" [-v] -c CONFFILE -d DIR\n"
+" [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
 "Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
+
+#: ../src/plugins/abrt-action-kerneloops.c:146
+#, fuzzy
+msgid "Configuration file"
+msgstr "Asetustiedosto"
 
 #: ../src/plugins/abrt-action-mailx.c:109
 msgid "Sending an email..."
@@ -953,7 +966,7 @@ msgstr "Pakataan tietoja"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:73
 msgid "Empty RHTS login or password"
-msgstr ""
+msgstr "Tyhjä RHTS-käyttäjätunnus tai -salasana"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:189
 msgid "Creating a new case..."
@@ -964,6 +977,26 @@ msgid ""
 " [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports a problem to RHTSupport"
+msgstr ""
+
+#: ../src/plugins/abrt-action-trim-files.c:154
+msgid ""
+" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"\n"
+"Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
+msgstr ""
+
+#: ../src/plugins/abrt-action-trim-files.c:167
+msgid "Delete dump dirs"
+msgstr ""
+
+#: ../src/plugins/abrt-action-trim-files.c:168
+#, fuzzy
+msgid "Delete files"
+msgstr "Vaihtoehtoinen GUI-tiedosto"
+
+#: ../src/plugins/abrt-action-trim-files.c:169
+msgid "Preserve this dump dir"
 msgstr ""
 
 #: ../src/plugins/abrt-action-upload.c:63
@@ -1021,7 +1054,7 @@ msgstr ""
 #.
 #: ../src/plugins/abrt-dump-oops.c:587
 msgid "Make the dump directory world readable"
-msgstr ""
+msgstr "Aseta vedoshakemisto kaikkien luettavaksi"
 
 #: ../src/plugins/abrt-retrace-client.c:704
 msgid "log to syslog"

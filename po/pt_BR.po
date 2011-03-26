@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-25 18:32+0100\n"
-"PO-Revision-Date: 2011-03-25 17:37+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"POT-Creation-Date: 2011-03-26 23:35+0100\n"
+"PO-Revision-Date: 2011-03-25 20:58+0000\n"
+"Last-Translator: Taylon <taylon@taylon.eti.br>\n"
 "Language-Team: Portuguese (Brazilian) <trans-pt_br@lists.fedoraproject.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -309,12 +309,12 @@ msgstr "N"
 
 #: ../src/cli/report.cpp:511
 msgid "Your input is not valid, because of:"
-msgstr ""
+msgstr "Sua entrada não é válida devido a:"
 
 #: ../src/cli/report.cpp:514
 #, c-format
 msgid "Bad value for '%s': %s"
-msgstr ""
+msgstr "Valor inválido para '%s': %s"
 
 #: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1039
 msgid "Reporting..."
@@ -353,21 +353,26 @@ msgid ""
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"Consultar a base de dados de pacotes e gravar o nome do pacote, o componente "
+"e a descrição"
 
 #: ../src/daemon/abrt-action-save-package-data.c:263
 #: ../src/daemon/abrt-handle-crashdump.c:61
 #: ../src/plugins/abrt-action-analyze-c.c:178
+#: ../src/plugins/abrt-action-analyze-backtrace.c:72
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
 #: ../src/plugins/abrt-action-bugzilla.cpp:923
-#: ../src/plugins/abrt-action-generate-backtrace.c:280
+#: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:145
 #: ../src/plugins/abrt-action-mailx.c:147
 #: ../src/plugins/abrt-action-print.c:52
 #: ../src/plugins/abrt-action-rhtsupport.c:276
 #: ../src/plugins/abrt-action-upload.c:258
 msgid "Dump directory"
-msgstr ""
+msgstr "Diretório de despejo"
 
 #: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
@@ -377,7 +382,7 @@ msgstr ""
 " [-vs] -d DIRETÓRIOS -e EVENTOS\n"
 "   ou: "
 
-#: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:298
+#: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:297
 #: ../src/plugins/abrt-dump-oops.c:579
 msgid "Log to syslog"
 msgstr "Log para o syslog"
@@ -390,17 +395,17 @@ msgstr "Manipular EVENTOS"
 msgid "List possible events [which start with PFX]"
 msgstr "Lista de possiveis eventos [que iniciam com PFX]i"
 
-#: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:299
+#: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
 #: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:170
 #: ../src/gui-wizard-gtk/main.c:93
 msgid "Add program names to log"
-msgstr ""
+msgstr "Adicionar os nomes dos programas ao log"
 
-#: ../src/daemon/abrt-server.c:286 ../src/daemon/Daemon.cpp:535
+#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:535
 msgid " [options]"
 msgstr "[opções]"
 
-#: ../src/daemon/abrt-server.c:297
+#: ../src/daemon/abrt-server.c:296
 msgid "Use UID as client uid"
 msgstr "Use UID como cliente uid"
 
@@ -470,11 +475,11 @@ msgstr "Aj_uda"
 
 #: ../src/gui-gtk/abrt-gtk.c:323
 msgid "_Event configuration"
-msgstr ""
+msgstr "Configuração de _eventos"
 
 #: ../src/gui-gtk/abrt-gtk.c:399
 msgid "Online _Help"
-msgstr ""
+msgstr "Aj_uda online"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -494,6 +499,10 @@ msgid ""
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
+" [-vp] [-g GUI_FILE] DIR\n"
+"\n"
+"Ferramenta gráfica para analisar e reportar problemas gravados no DIR "
+"especificado"
 
 #: ../src/gui-wizard-gtk/main.c:92
 msgid "Alternate GUI file"
@@ -621,7 +630,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Configure _Events"
-msgstr ""
+msgstr "Configurar _eventos"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
@@ -634,7 +643,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "I _agree with submitting the backtrace"
-msgstr ""
+msgstr "Eu concordo com o envio de b_acktrace"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "Regenerate backtrace"
@@ -675,26 +684,26 @@ msgstr "Enviado: %llu de %llu kbytes"
 
 #: ../src/lib/event_config.c:313
 msgid "Missing mandatory value"
-msgstr ""
+msgstr "Faltando valor obrigatório"
 
 #: ../src/lib/event_config.c:321
 #, c-format
 msgid "Invalid utf8 character '%c'"
-msgstr ""
+msgstr "Caractere utf8 '%c' inválido"
 
 #: ../src/lib/event_config.c:332
 #, c-format
 msgid "Invalid number '%s'"
-msgstr ""
+msgstr "Número inválido '%s'"
 
 #: ../src/lib/event_config.c:343
 #, c-format
 msgid "Invalid boolean value '%s'"
-msgstr ""
+msgstr "Valor boleano inválido '%s'"
 
 #: ../src/lib/event_config.c:347
 msgid "Unsupported option type"
-msgstr ""
+msgstr "Tipo de opção não suportado"
 
 #: ../src/lib/parse_options.c:29
 #, c-format
@@ -707,6 +716,30 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"Calcula e grava o UUID do coredump no diretório de despejo DIR"
+
+#: ../src/plugins/abrt-action-analyze-backtrace.c:61
+#, fuzzy
+msgid ""
+" [options] -d DIR\n"
+"\n"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
+"identifies crash function in dump directory DIR"
+msgstr ""
+" [options] -d DIR\n"
+"\n"
+"Gera e grava o backtrace do coredump no diretório de despejo DIR"
+
+#.
+#. * The parser failed. Compute the UUID from the executable
+#. * and package only.  This is not supposed to happen often.
+#.
+#: ../src/plugins/abrt-action-analyze-backtrace.c:113
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr "Análise do backtrace falhou por %s"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:133
 msgid ""
@@ -714,6 +747,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
+" [-vs] -d DIR\n"
+"\n"
+"Calcula e grava o UUID e o DUPHASH no diretório de despejo oops DIR"
 
 #: ../src/plugins/abrt-action-analyze-python.c:38
 msgid ""
@@ -738,11 +774,11 @@ msgstr "Login ou senha vazios, por favor verifique %s"
 #: ../src/plugins/abrt-action-bugzilla.cpp:666
 #, c-format
 msgid "Logging into Bugzilla at %s"
-msgstr ""
+msgstr "Logar no Bugzilla em %s"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:669
 msgid "Checking for duplicates"
-msgstr ""
+msgstr "Procurar por duplicados"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:691
 #: ../src/plugins/abrt-action-bugzilla.cpp:727
@@ -759,7 +795,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:758
 msgid "Creating a new bug"
-msgstr ""
+msgstr "Criar um novo bug"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:763
 msgid "Bugzilla entry creation failed"
@@ -768,7 +804,7 @@ msgstr "Criação da entrada do bugzilla falhou"
 #: ../src/plugins/abrt-action-bugzilla.cpp:775
 #: ../src/plugins/abrt-action-bugzilla.cpp:875
 msgid "Logging out"
-msgstr ""
+msgstr "Terminar a sessão"
 
 #. decision based on state
 #: ../src/plugins/abrt-action-bugzilla.cpp:793
@@ -797,44 +833,40 @@ msgid ""
 "\n"
 "Reports problem to Bugzilla"
 msgstr ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"Reportar problema ao Bugzilla"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:924
-#: ../src/plugins/abrt-action-kerneloops.c:146
 #: ../src/plugins/abrt-action-rhtsupport.c:277
 msgid "Configuration file (may be given many times)"
 msgstr "Configurando o arquivo (talvez seja feito muitas vezes) c"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:267
+#: ../src/plugins/abrt-action-generate-backtrace.c:243
 msgid ""
 " [options] -d DIR\n"
 "\n"
 "Generates and saves backtrace for coredump in dump directory DIR"
 msgstr ""
+" [options] -d DIR\n"
+"\n"
+"Gera e grava o backtrace do coredump no diretório de despejo DIR"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:281
+#: ../src/plugins/abrt-action-generate-backtrace.c:257
 msgid "Additional debuginfo directories"
 msgstr "Diretórios de informações de depuração adicionaistri"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:282
+#: ../src/plugins/abrt-action-generate-backtrace.c:258
 msgid "Kill gdb if it runs for more than N seconds"
 msgstr "Matar gdb se este executar por mais de N segundos"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
 #.
-#: ../src/plugins/abrt-action-generate-backtrace.c:329
+#: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
 msgstr "O Backtrace foi gerado e salvo, %u bytes"
-
-#.
-#. * The parser failed. Compute the UUID from the executable
-#. * and package only.  This is not supposed to happen often.
-#.
-#: ../src/plugins/abrt-action-generate-backtrace.c:340
-#, c-format
-msgid "Backtrace parsing failed for %s"
-msgstr "Análise do backtrace falhou por %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:77
 #, python-format
@@ -873,7 +905,7 @@ msgstr "Baixando (%i of %i) %s: %3u%%"
 #. we have "paused":
 #: ../src/plugins/abrt-action-install-debuginfo.py:206
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "Procurar por pacotes necessários nos repositórios"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:240
 #, python-format
@@ -883,7 +915,7 @@ msgstr "%u arquivos de depuração não foram encontrados"
 #: ../src/plugins/abrt-action-install-debuginfo.py:242
 #, python-format
 msgid "Packages to download: %u"
-msgstr ""
+msgstr "Pacotes para baixar: %u"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:243
 #, python-format
@@ -917,7 +949,7 @@ msgstr "Não é possível remover %s, provávelmente contém erros no log"
 #: ../src/plugins/abrt-action-install-debuginfo.py:316
 #, python-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "Analizando o coredump '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:394
 #, python-format
@@ -960,11 +992,20 @@ msgid "Submitting oops report to %s"
 msgstr "Submetendo um relatório para %s"
 
 #: ../src/plugins/abrt-action-kerneloops.c:133
+#, fuzzy
 msgid ""
-" [-v] -c CONFFILE -d DIR\n"
+" [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
 "Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"Reportar problema ao Bugzilla"
+
+#: ../src/plugins/abrt-action-kerneloops.c:146
+#, fuzzy
+msgid "Configuration file"
+msgstr "O arquivo de configuração"
 
 #: ../src/plugins/abrt-action-mailx.c:109
 msgid "Sending an email..."
@@ -1028,6 +1069,26 @@ msgid ""
 " [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports a problem to RHTSupport"
+msgstr ""
+
+#: ../src/plugins/abrt-action-trim-files.c:154
+msgid ""
+" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"\n"
+"Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
+msgstr ""
+
+#: ../src/plugins/abrt-action-trim-files.c:167
+msgid "Delete dump dirs"
+msgstr ""
+
+#: ../src/plugins/abrt-action-trim-files.c:168
+#, fuzzy
+msgid "Delete files"
+msgstr "Substituir arquivo GUI"
+
+#: ../src/plugins/abrt-action-trim-files.c:169
+msgid "Preserve this dump dir"
 msgstr ""
 
 #: ../src/plugins/abrt-action-upload.c:63
