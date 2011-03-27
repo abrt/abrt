@@ -780,8 +780,12 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                 char *msg = xasprintf(evd->end_msg, retval);
                 gtk_label_set_text(evd->status_label, msg);
                 free(msg);
-                /* Unfreeze assistant */
-                gtk_assistant_set_page_complete(g_assistant, evd->page_widget, true);
+                /* Unfreeze assistant
+                 * we can't allow user to continue if analyze action fails
+                 * i.e: if gdb fails to generate backtrace
+                */
+                if (retval == 0 || (strncmp(evd->event_name, "analyze", strlen("analyze")) != 0))
+                    gtk_assistant_set_page_complete(g_assistant, evd->page_widget, true);
 
                 /*g_source_remove(evd->event_source_id);*/
                 close(evd->fd);
