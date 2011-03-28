@@ -88,13 +88,7 @@ int main(int argc, char **argv)
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
 
     /* Read backtrace */
-    /* NB: get_backtrace() closes dd */
     char *backtrace_str = dd_load_text(dd, FILENAME_BACKTRACE);
-    if (!backtrace_str)
-    {
-        backtrace_str = xstrdup("");
-        log("Backtrace file is missing");
-    }
 
     /* Compute backtrace hash */
     struct btp_location location;
@@ -110,8 +104,8 @@ int main(int argc, char **argv)
          * The parser failed. Compute the UUID from the executable
          * and package only.  This is not supposed to happen often.
          */
-        VERB1 log(_("Backtrace parsing failed for %s"), dump_dir_name);
-        VERB1 log("%d:%d: %s", location.line, location.column, location.message);
+        log(_("Backtrace parsing failed for %s"), dump_dir_name);
+        log("%d:%d: %s", location.line, location.column, location.message);
         struct strbuf *emptybt = strbuf_new();
         strbuf_prepend_str(emptybt, executable);
         strbuf_prepend_str(emptybt, package);
