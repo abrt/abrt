@@ -299,7 +299,8 @@ void ctx::get_bug_cc(xmlrpc_value* result_xml, struct bug_info* bz)
     return;
 }
 
-xmlrpc_value* ctx::call_quicksearch_duphash(const char* component, const char* release, const char* duphash)
+xmlrpc_value* ctx::call_quicksearch_duphash(const char* component,
+                                            const char* release, const char* duphash)
 {
     char *query = NULL;
     if (!release)
@@ -657,6 +658,14 @@ static void report_to_bugzilla(
 
     const char *component = get_crash_item_content_or_NULL(crash_data, FILENAME_COMPONENT);
     const char *duphash   = get_crash_item_content_or_NULL(crash_data, FILENAME_DUPHASH);
+    if (!duphash)
+        error_msg_and_die(_("Essential file '%s' is missing, can't continue.."),
+                          FILENAME_DUPHASH);
+
+    if (!*duphash)
+        error_msg_and_die(_("Essential file '%s' is empty, can't continue.."),
+                          FILENAME_DUPHASH);
+
     const char *release   = get_crash_item_content_or_NULL(crash_data, FILENAME_OS_RELEASE);
     if (!release) /* Old dump dir format compat. Remove in abrt-2.1 */
         release = get_crash_item_content_or_NULL(crash_data, "release");
