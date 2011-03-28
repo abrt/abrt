@@ -21,26 +21,26 @@
 
 static gboolean persistent_notification;
 
-#if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR < 7)
+#if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR >= 6)
 static gboolean server_has_persistence (void)
 {
-        gboolean has;
-        GList   *caps;
-        GList   *l;
+    gboolean has;
+    GList   *caps;
+    GList   *l;
 
-        caps = notify_get_server_caps ();
-        if (caps == NULL) {
-                fprintf (stderr, "Failed to receive server caps.\n");
-                return FALSE;
-        }
+    caps = notify_get_server_caps ();
+    if (caps == NULL) {
+            fprintf (stderr, "Failed to receive server caps.\n");
+            return FALSE;
+    }
 
-        l = g_list_find_custom (caps, "persistence", (GCompareFunc)strcmp);
-        has = l != NULL;
+    l = g_list_find_custom (caps, "persistence", (GCompareFunc)strcmp);
+    has = l != NULL;
 
-        g_list_foreach (caps, (GFunc) g_free, NULL);
-        g_list_free (caps);
-
-        return has;
+    g_list_foreach (caps, (GFunc) g_free, NULL);
+    g_list_free (caps);
+    VERB1 log("notify server %s support pesistence\n", has ? "DOES" : "DOESN'T");
+    return has;
 }
 #endif
 
@@ -328,7 +328,7 @@ struct applet *applet_new(const char* app_name)
 {
     struct applet *applet = (struct applet*)xzalloc(sizeof(struct applet));
     applet->ap_daemon_running = true;
-#if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR < 7)
+#if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR >= 6)
     persistent_notification = server_has_persistence();
 #endif
 
@@ -398,11 +398,11 @@ void show_crash_notification(struct applet *applet, const char* crash_dir, const
     notify_notification_add_action(notification, "REPORT", _("Report"),
                                     NOTIFY_ACTION_CALLBACK(action_report),
                                     applet, NULL);
-    notify_notification_add_action(notification, "OPEN_MAIN_WINDOW", _("Open ABRT"),
+    notify_notification_add_action(notification, "default", _("Show"),
                                     NOTIFY_ACTION_CALLBACK(action_open_gui),
                                     applet, NULL);
 
-    notify_notification_update(notification, _("Warning"), buf, NULL);
+    notify_notification_update(notification, _("A Problem has Occurred"), buf, NULL);
     free(buf);
     GError *err = NULL;
     notify_notification_show(notification, &err);
@@ -429,7 +429,7 @@ void show_msg_notification(struct applet *applet, const char *format, ...)
     notify_notification_add_action(notification, "OPEN_MAIN_WINDOW", _("Open ABRT"),
                                     NOTIFY_ACTION_CALLBACK(action_open_gui),
                                     applet, NULL);
-    notify_notification_update(notification, _("Warning"), buf, NULL);
+    notify_notification_update(notification, _("A Problem has Occurred"), buf, NULL);
     free(buf);
     GError *err = NULL;
     notify_notification_show(notification, &err);
