@@ -128,6 +128,7 @@ AC_CONFIG_FILES([
 	src/gui-wizard-gtk/Makefile
 	src/cli/Makefile
 	src/retrace/Makefile
+	src/retrace/plugins/Makefile
 	po/Makefile.in
 	icons/Makefile
 	tests/btparser/Makefile

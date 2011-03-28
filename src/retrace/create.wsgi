@@ -91,6 +91,6 @@ def application(environ, start_response):
             Popen(["rm", "-rf", taskdir])
             return response(start_response, "403 Forbidden", "Required file \"{0}\" is missing".format(required_file))
 
-    Popen(["/usr/sbin/abrt-retrace-worker", "%d" % taskid])
+    Popen(["/usr/bin/abrt-retrace-worker", "%d" % taskid])
 
     return response(start_response, "201 Created", "", [("X-Task-Id", "%d" % taskid), ("X-Task-Password", taskpass)])

@@ -251,7 +251,7 @@ Group: System Environment/Daemons
 Requires: abrt-addon-ccpp
 Requires: gdb >= 7.0-3
 Requires: httpd, mod_wsgi, mod_ssl, python-webob
-Requires: mock, xz, elfutils, createrepo
+Requires: mock, xz, elfutils, createrepo, rsync
 %{?el6:Requires: python-argparse}
 Requires(preun): /sbin/install-info
 Requires(post): /sbin/install-info
@@ -284,6 +284,9 @@ install -m 755 %SOURCE2 ${RPM_BUILD_ROOT}/%{_initrddir}/abrt-ccpp
 mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-di
 mkdir -p $RPM_BUILD_ROOT/var/run/abrt
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt
+mkdir -p $RPM_BUILD_ROOT/var/spool/abrt-retrace
+mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-retrace
+mkdir -p $RPM_BUILD_ROOT/var/log/abrt-retrace
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt-upload
 
 desktop-file-install \
@@ -329,6 +332,7 @@ fi
 
 %post retrace-server
 /sbin/install-info %{_infodir}/abrt-retrace-server %{_infodir}/dir 2> /dev/null || :
+/usr/sbin/usermod -G mock apache 2> /dev/null || :
 
 %preun
 if [ "$1" -eq "0" ] ; then
@@ -560,8 +564,12 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/retrace.conf
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/retrace_httpd.conf
 %config(noreplace) %{_sysconfdir}/yum.repos.d/retrace.repo
-%{_bindir}/abrt-retrace-worker
+%dir %attr(0775, apache, abrt) %{_localstatedir}/spool/abrt-retrace
+%dir %attr(0755, abrt, abrt) %{_localstatedir}/cache/abrt-retrace
+%dir %attr(0755, abrt, abrt) %{_localstatedir}/log/abrt-retrace
+%caps(cap_setuid=ep) %{_bindir}/abrt-retrace-worker
 %{_datadir}/abrt-retrace/*.py*
+%{_datadir}/abrt-retrace/plugins/*.py*
 %{_datadir}/abrt-retrace/*.wsgi
 %{_infodir}/abrt-retrace-server*
 

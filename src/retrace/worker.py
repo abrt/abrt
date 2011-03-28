@@ -125,7 +125,11 @@ if __name__ == "__main__":
     # read required packages from coredump
     try:
         # ToDo: deal with not found build-ids
-        pipe = Popen(["/usr/share/abrt-retrace/coredump2packages.py", "%s/crash/coredump" % savedir, "--repos=retrace-%s-%s-%s*" % (distribution, version, arch)], stdout=PIPE).stdout
+        pipe = Popen(["/usr/bin/python",
+                      "/usr/share/abrt-retrace/coredump2packages.py",
+                      "%s/crash/coredump" % savedir,
+                      "--repos=retrace-%s-%s-%s*" % (distribution, version, arch)],
+                     stdout=PIPE).stdout
         section = 0
         crash_package_or_component = None
         for line in pipe.readlines():
