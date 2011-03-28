@@ -22,7 +22,9 @@
 extern "C" {
 #endif
 
-int run_analyze_event(const char *dump_dir_name);
+int run_analyze_event(const char *dump_dir_name, const char *analyzer);
+char *select_event_option(GList *list_options);
+GList *str_to_glist(char *str, int delim);
 
 /* Report the crash */
 enum {
