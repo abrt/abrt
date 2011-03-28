@@ -88,7 +88,13 @@ int main(int argc, char **argv)
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
 
     /* Read backtrace */
-    char *backtrace_str = dd_load_text(dd, FILENAME_BACKTRACE);
+    char *backtrace_str = dd_load_text_ext(dd, FILENAME_BACKTRACE,
+                                           DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    if (!backtrace_str)
+    {
+        dd_close(dd);
+        return 1;
+    }
 
     /* Compute backtrace hash */
     struct btp_location location;
