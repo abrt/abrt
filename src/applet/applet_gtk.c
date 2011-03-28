@@ -355,7 +355,7 @@ struct applet *applet_new(const char* app_name)
         applet->ap_menu = create_menu(applet);
     }
 
-    notify_init(app_name);
+    notify_init("ABRT");
     return applet;
 }
 
