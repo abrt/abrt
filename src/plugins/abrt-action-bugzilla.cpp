@@ -643,9 +643,7 @@ static void report_to_bugzilla(
     env = getenv("Bugzilla_Password");
     password = env ? env : get_map_string_item_or_empty(settings, "Password");
     if (!login[0] || !password[0])
-    {
-        error_msg_and_die(_("Empty login or password, please check %s"), PLUGINS_CONF_DIR"/Bugzilla.conf");
-    }
+        error_msg_and_die(_("Empty login or password, please check your configuration"));
 
     env = getenv("Bugzilla_BugzillaURL");
     bugzilla_url = env ? env : get_map_string_item_or_empty(settings, "BugzillaURL");
