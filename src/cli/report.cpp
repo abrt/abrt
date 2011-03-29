@@ -15,9 +15,9 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include "abrtlib.h"
-#include "run-command.h"
 #include "report.h"
+#include "run-command.h"
+#include "abrtlib.h"
 
 /* Field separator for the crash report file that is edited by user. */
 #define FIELD_SEP "%----"
@@ -553,8 +553,7 @@ static int run_events(const char *dump_dir_name,
         int r = run_event_on_dir_name(run_state, dump_dir_name, event.c_str());
         if (r == 0 && run_state->children_count == 0)
         {
-            l_state.last_line = xasprintf("Error: no processing is specified for event '%s'",
-                                          event.c_str());
+            l_state.last_line = xasprintf("Error: no processing is specified for event '%s'", event.c_str());
             r = -1;
         }
         if (r == 0)
@@ -586,128 +585,31 @@ static char *do_log(char *log_line, void *param)
     log("%s", log_line);
     return log_line;
 }
-
-int run_analyze_event(const char *dump_dir_name, const char *analyzer)
+int run_analyze_event(const char *dump_dir_name)
 {
     VERB2 log("run_analyze_event('%s')", dump_dir_name);
 
     struct run_event_state *run_state = new_run_event_state();
     run_state->logging_callback = do_log;
-    int res = run_event_on_dir_name(run_state, dump_dir_name, analyzer);
+    int res = run_event_on_dir_name(run_state, dump_dir_name, "analyze_LocalGDB");
     free_run_event_state(run_state);
     return res;
 }
 
-/* show even description? */
-char *select_event_option(GList *list_options)
-{
-    if (!list_options)
-        return NULL;
-
-    unsigned count = g_list_length(list_options) - 1;
-    if (!count)
-        return NULL;
-
-    int pos = -1;
-    fprintf(stdout, "Select how you would like to analyze the problem:\n");
-    for (GList *li = list_options; li; li = li->next)
-    {
-        char *opt = (char*)li->data;
-        event_config_t *config = get_event_config(opt);
-        if (config)
-        {
-            ++pos;
-            printf(" %i) %s\n", pos, config->screen_name);
-        }
-    }
-
-    unsigned picked;
-    unsigned ii;
-    for (ii = 0; ii < 3; ++ii)
-    {
-        fprintf(stdout, "Choose option [0 - %u]: ", count);
-        fflush(NULL);
-
-        char answer[16];
-        if (!fgets(answer, sizeof(answer), stdin))
-            continue;
-
-        answer[strlen(answer) - 1] = '\0';
-        if (!*answer)
-            continue;
-
-        picked = xatou(answer);
-        if (picked > count)
-        {
-            log(_("You have chosen number out of range"));
-            continue;
-        }
-
-        break;
-    }
-
-    if (ii == 3)
-        error_msg_and_die(_("Invalid input, porgram exiting..."));
-
-    GList *choosen = g_list_nth(list_options, picked);
-    return xstrdup((char*)choosen->data);
-}
-
-GList *str_to_glist(char *str, int delim)
-{
-    GList *list = NULL;
-    while (*str)
-    {
-        char *end = strchrnul(str, delim);
-        char *tmp = xstrndup(str, end - str);
-        if (*tmp)
-            list = g_list_append(list, tmp);
-
-        str = end;
-        if (!*str)
-            break;
-        str++;
-    }
-
-    if (!list && !g_list_length(list))
-        return NULL;
-
-    return list;
-}
 
 /* Report the crash */
 int report(const char *dump_dir_name, int flags)
 {
+    if (run_analyze_event(dump_dir_name) != 0)
+	return 1;
+
     /* Load crash_data from (possibly updated by analyze) dump dir */
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
 	return -1;
 
-    char *analyze_events_as_lines = list_possible_events(dd, NULL, "analyze");
-    dd_close(dd);
-
-    if (analyze_events_as_lines && *analyze_events_as_lines)
-    {
-        GList *list_analyze_events = str_to_glist(analyze_events_as_lines, '\n');
-        free(analyze_events_as_lines);
-
-        char *event = select_event_option(list_analyze_events);
-        list_free_with_free(list_analyze_events);
-
-        int analyzer_result = run_analyze_event(dump_dir_name, event);
-        free(event);
-
-        if (analyzer_result != 0)
-            return 1;
-    }
-
-    /* Load crash_data from (possibly updated by analyze) dump dir */
-    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-	return -1;
-
-    char *report_events_as_lines = list_possible_events(dd, NULL, "report");
     crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
+    char *events_as_lines = list_possible_events(dd, NULL, "");
     dd_close(dd);
 
     if (!(flags & CLI_REPORT_BATCH))
@@ -718,7 +620,7 @@ int report(const char *dump_dir_name, int flags)
         if (result != 0)
         {
             free_crash_data(crash_data);
-            free(report_events_as_lines);
+            free(events_as_lines);
             return 1;
         }
         /* Save comment, backtrace */
@@ -737,24 +639,26 @@ int report(const char *dump_dir_name, int flags)
     }
 
     /* Get possible reporters associated with this particular crash */
-    /* TODO: npajkovs: remove this annoying c++ vector_string_t */
     vector_string_t report_events;
-    if (report_events_as_lines && *report_events_as_lines)
+    if (events_as_lines)
     {
-        char *events = report_events_as_lines;
+        char *events = events_as_lines;
         while (*events)
         {
             char *end = strchrnul(events, '\n');
-            char *tmp = xstrndup(events, end - events);
-            report_events.push_back(tmp);
-            free(tmp);
+            if (strncmp(events, "report", 6) == 0
+             && (events[6] == '\0' || events[6] == '_')
+            ) {
+                char *tmp = xstrndup(events, end - events);
+                report_events.push_back(tmp);
+                free(tmp);
+            }
             events = end;
             if (!*events)
                 break;
             events++;
         }
     }
-    free(report_events_as_lines);
 
     /* Get settings */
     load_event_config_data();
@@ -819,5 +723,6 @@ int report(const char *dump_dir_name, int flags)
 
     printf(_("Crash reported via %d report events (%d errors)\n"), plugins, errors);
     free_crash_data(crash_data);
+    free(events_as_lines);
     return errors;
 }
