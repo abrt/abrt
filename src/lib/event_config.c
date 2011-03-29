@@ -45,13 +45,15 @@ void free_event_option(event_option_t *p)
 
 void free_event_config(event_config_t *p)
 {
+    GList *opt;
+
     if (!p)
         return;
     free(p->screen_name);
     //free(p->title);
     //free(p->action);
     free(p->description);
-    for (GList *opt = p->options; opt; opt = opt->next)
+    for (opt = p->options; opt; opt = opt->next)
         free_event_option(opt->data);
     g_list_free(p->options);
     free(p);
@@ -254,7 +256,8 @@ GList *export_event_config(const char *event_name)
     event_config_t *config = get_event_config(event_name);
     if (config)
     {
-        for (GList *lopt = config->options; lopt; lopt = lopt->next)
+        GList *lopt;
+        for (lopt = config->options; lopt; lopt = lopt->next)
         {
             event_option_t *opt = lopt->data;
             if (!opt->value)
@@ -289,8 +292,9 @@ GHashTable *validate_event(const char *event_name)
 
 
     GHashTable *errors = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    GList *li;
 
-    for (GList *li = config->options; li; li = li->next)
+    for (li = config->options; li; li = li->next)
     {
         event_option_t *opt = (event_option_t *)li->data;
         char *err = validate_event_option(opt);

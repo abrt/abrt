@@ -64,7 +64,8 @@ static char *get_argv1_if_full_path(const char* cmdline)
 
 static bool is_path_blacklisted(const char *path)
 {
-    for (GList *li = g_settings_setBlackListedPaths; li != NULL; li = g_list_next(li))
+    GList *li;
+    for (li = g_settings_setBlackListedPaths; li != NULL; li = g_list_next(li))
     {
         if (fnmatch((char*)li->data, path, /*flags:*/ 0) == 0)
         {
@@ -184,7 +185,9 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
         package_short_name = get_package_name_from_NVR_or_NULL(package_full_name);
         VERB2 log("Package:'%s' short:'%s'", package_full_name, package_short_name);
 
-        for (GList *li = g_settings_setBlackListedPkgs; li != NULL; li = g_list_next(li))
+        GList *li;
+
+        for (li = g_settings_setBlackListedPkgs; li != NULL; li = g_list_next(li))
         {
             if (strcmp((char*)li->data, package_short_name) == 0)
             {
@@ -278,7 +281,8 @@ int main(int argc, char **argv)
     VERB1 log("Initializing rpm library");
     rpm_init();
 
-    for (GList *li = g_settings_setOpenGPGPublicKeys; li != NULL; li = g_list_next(li))
+    GList *li;
+    for (li = g_settings_setOpenGPGPublicKeys; li != NULL; li = g_list_next(li))
     {
         VERB1 log("Loading GPG key '%s'", (char*)li->data);
         rpm_load_gpgkey((char*)li->data);

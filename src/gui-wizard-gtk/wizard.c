@@ -551,7 +551,8 @@ void update_gui_state_from_crash_data(void)
     /* Update reporter checkboxes */
     /* Remember names of selected reporters */
     GList *old_reporters = gtk_container_get_children(GTK_CONTAINER(g_box_reporters));
-    for (GList *li = old_reporters; li; li = li->next)
+    GList *li;
+    for (li = old_reporters; li; li = li->next)
     {
         if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
             li->data = xstrdup(gtk_button_get_label(GTK_BUTTON(li->data)));
@@ -563,11 +564,13 @@ void update_gui_state_from_crash_data(void)
     add_event_buttons(g_box_reporters, g_report_events, /*callback:*/ G_CALLBACK(report_tb_was_toggled), /*radio:*/ false, /*prev:*/ NULL);
     /* Re-select new reporters which were selected before we deleted them */
     GList *new_reporters = gtk_container_get_children(GTK_CONTAINER(g_box_reporters));
-    for (GList *li_new = new_reporters; li_new; li_new = li_new->next)
+    GList *li_new;
+    for (li_new = new_reporters; li_new; li_new = li_new->next)
     {
         const char *new_name = gtk_button_get_label(GTK_BUTTON(li_new->data));
+        GList *li_old;
 
-        for (GList *li_old = old_reporters; li_old; li_old = li_old->next)
+        for (li_old = old_reporters; li_old; li_old = li_old->next)
         {
             if (strcmp(new_name, li_old->data) == 0)
             {
@@ -1022,7 +1025,8 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
         GList *reporters = gtk_container_get_children(GTK_CONTAINER(g_box_reporters));
         if (reporters)
         {
-            for (GList *li = reporters; li; li = li->next)
+            GList *li;
+            for (li = reporters; li; li = li->next)
             {
                 if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
                     /* Button's tooltip contains event_name */
@@ -1210,7 +1214,8 @@ static void add_pages(void)
             error_msg_and_die("Can't load %s: %s", g_glade_file, error->message);
     }
 
-    for (int i = 0; page_names[i] != NULL; i++)
+    int i;
+    for (i = 0; page_names[i] != NULL; i++)
     {
         GtkWidget *page = GTK_WIDGET(gtk_builder_get_object(builder, page_names[i]));
         if (page == NULL)

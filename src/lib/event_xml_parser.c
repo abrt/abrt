@@ -111,8 +111,9 @@ static void start_element(GMarkupParseContext *context,
         }
 
         event_option_t *opt = parse_data->cur_option = new_event_option();
+        int i;
 
-        for (int i = 0; attribute_names[i] != NULL; ++i)
+        for (i = 0; attribute_names[i] != NULL; ++i)
         {
             VERB2 log("attr: %s:%s", attribute_names[i], attribute_values[i]);
             if (strcmp(attribute_names[i], "name") == 0)

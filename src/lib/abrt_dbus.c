@@ -232,12 +232,13 @@ void store_crash_data(DBusMessageIter* dbus_iter, crash_data_t *val)
 void store_vector_of_crash_data(DBusMessageIter* iter, vector_of_crash_data_t *val)
 {
     DBusMessageIter sub_iter;
+    unsigned i;
     /* "array of maps". map in dbus is an array ("a") of two element structs "({...})":
      * "s" (string) for key and "as" for value (in this case, array of strings) */
     if (!dbus_message_iter_open_container(iter, DBUS_TYPE_ARRAY, "a{sas}", &sub_iter))
         die_out_of_memory();
 
-    for (unsigned i = 0; i < val->len; i++)
+    for (i = 0; i < val->len; i++)
     {
         crash_data_t *crash_data = get_crash_data(val, i);
         store_crash_data(&sub_iter, crash_data);

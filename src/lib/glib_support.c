@@ -20,7 +20,8 @@
 
 void list_free_with_free(GList *list)
 {
-    for (GList *li = list; li; li = g_list_next(li))
+    GList *li;
+    for (li = list; li; li = g_list_next(li))
         free(li->data);
     g_list_free(list);
 }

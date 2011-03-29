@@ -362,9 +362,10 @@ static int http_get_response_code(const char *message)
 static void http_print_headers(FILE *file, const char *message)
 {
     const char *headers_end = strstr(message, "\r\n\r\n");
+    const char *c;
     if (!headers_end)
         headers_end = message + strlen(message);
-    for (const char *c = message; c != headers_end + 2; ++c)
+    for (c = message; c != headers_end + 2; ++c)
     {
         if (*c == '\r')
             continue;
@@ -575,7 +576,8 @@ static void backtrace(const char *task_id, const char *task_password,
      * '\r' characters are not copied to the backtrace. */
     *backtrace = xmalloc(length);
     char *b = *backtrace;
-    for (char *c = headers_end + strlen("\r\n\r\n"); *c; ++c)
+    char *c;
+    for (c = headers_end + strlen("\r\n\r\n"); *c; ++c)
     {
         if (*c == '\r')
             continue;
@@ -625,9 +627,10 @@ static void run_log(const char *task_id, const char *task_password)
                           response_code, http_response);
     }
     char *headers_end = strstr(http_response, "\r\n\r\n");
+    char *c;
     if (!headers_end)
         error_msg_and_die("Invalid response from server: missing HTTP message body.");
-    for (char *c = headers_end + 4; *c; ++c)
+    for (c = headers_end + 4; *c; ++c)
     {
         if (*c == '\r')
             continue;

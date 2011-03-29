@@ -116,7 +116,8 @@ static void print_crash(crash_data_t *crash_data)
  */
 static void print_crash_list(vector_of_crash_data_t *crash_list, bool include_reported)
 {
-    for (unsigned i = 0; i < crash_list->len; ++i)
+    unsigned i;
+    for (i = 0; i < crash_list->len; ++i)
     {
         crash_data_t *crash = get_crash_data(crash_list, i);
         if (!include_reported)
