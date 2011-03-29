@@ -424,6 +424,8 @@ fi
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/spool/%{name}
 %dir %attr(0700, abrt, abrt) %{_localstatedir}/spool/%{name}-upload
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/run/%{name}
+%ghost %attr(0666, -, -) %{_localstatedir}/run/%{name}/abrt.socket
+%ghost %attr(0644, -, -) %{_localstatedir}/run/abrtd.pid
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
 %dir %{_sysconfdir}/%{name}/events.d
