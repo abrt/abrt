@@ -360,6 +360,9 @@ int main(int argc, char** argv)
         print_usage_and_die(argv[0]);
     }
 
+    /* Get settings */
+    load_event_config_data();
+
     /* Do the selected operation. */
     int exitcode = 0;
     switch (op)
@@ -409,15 +412,37 @@ int main(int argc, char** argv)
         }
         case OPT_INFO:
         {
-            if (run_analyze_event(dump_dir_name) != 0)
-                return 1;
-
             /* Load crash_data from (possibly updated by analyze) dump dir */
             struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
             if (!dd)
                 return -1;
+
+            char *analyze_events_as_lines = list_possible_events(dd, NULL, "analyze");
+            dd_close(dd);
+
+            if (analyze_events_as_lines && *analyze_events_as_lines)
+            {
+                GList *list_analyze_events = str_to_glist(analyze_events_as_lines, '\n');
+                free(analyze_events_as_lines);
+
+                char *event = select_event_option(list_analyze_events);
+                list_free_with_free(list_analyze_events);
+
+                int analyzer_result = run_analyze_event(dump_dir_name, event);
+                free(event);
+
+                if (analyzer_result != 0)
+                    return 1;
+            }
+
+            /* Load crash_data from (possibly updated by analyze) dump dir */
+            dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+            if (!dd)
+                return -1;
+
             crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
             dd_close(dd);
+
             add_to_crash_data_ext(crash_data, CD_DUMPDIR, dump_dir_name,
                                   CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
 
