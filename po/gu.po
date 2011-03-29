@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-26 23:35+0100\n"
-"PO-Revision-Date: 2011-03-25 17:37+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"POT-Creation-Date: 2011-03-29 15:09+0200\n"
+"PO-Revision-Date: 2011-03-28 11:26+0000\n"
+"Last-Translator: sweta <swkothar@redhat.com>\n"
 "Language-Team: Gujarati <trans-gu@lists.fedoraproject.org>\n"
 "Language: gu\n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,6 @@ msgid "ABRT service is not running"
 msgstr "ABRT સેવા ચાલી રહી નથી"
 
 #: ../src/applet/applet_gtk.c:202 ../src/applet/applet_gtk.c:204
-#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
 msgid "Warning"
 msgstr "ચેતવણી"
 
@@ -61,7 +60,15 @@ msgstr "છુપાડો"
 msgid "Report"
 msgstr "અહેવાલ"
 
-#: ../src/applet/applet_gtk.c:401 ../src/applet/applet_gtk.c:429
+#: ../src/applet/applet_gtk.c:401
+msgid "Show"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
+msgid "A Problem has Occurred"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:429
 msgid "Open ABRT"
 msgstr "ABRT ખોલો"
 
@@ -281,14 +288,14 @@ msgstr "N"
 
 #: ../src/cli/report.cpp:511
 msgid "Your input is not valid, because of:"
-msgstr ""
+msgstr "આને કારણે તમારુ ઇનપુટ માન્ય નથી:"
 
 #: ../src/cli/report.cpp:514
 #, c-format
 msgid "Bad value for '%s': %s"
-msgstr ""
+msgstr "'%s' માટે ખરાબ કિંમત: %s"
 
-#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1039
+#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1043
 msgid "Reporting..."
 msgstr "અહેવાલ કરી રહ્યા છે..."
 
@@ -334,7 +341,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-backtrace.c:72
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-action-bugzilla.cpp:923
+#: ../src/plugins/abrt-action-bugzilla.cpp:932
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:145
 #: ../src/plugins/abrt-action-mailx.c:147
@@ -342,7 +349,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-rhtsupport.c:276
 #: ../src/plugins/abrt-action-upload.c:258
 msgid "Dump directory"
-msgstr ""
+msgstr "ડમ્પ ડિરેક્ટરી"
 
 #: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
@@ -369,7 +376,7 @@ msgstr "શક્ય ઘટનાઓની યાદી કરો [કે જે
 #: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:170
 #: ../src/gui-wizard-gtk/main.c:93
 msgid "Add program names to log"
-msgstr ""
+msgstr "લૉગ રાખવા માટે કાર્યક્રમ નામો ઉમેરો"
 
 #: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:535
 msgid " [options]"
@@ -445,11 +452,11 @@ msgstr "મદદ (_H)"
 
 #: ../src/gui-gtk/abrt-gtk.c:323
 msgid "_Event configuration"
-msgstr ""
+msgstr "ઘટના રૂપરેખાંકન (_E)"
 
 #: ../src/gui-gtk/abrt-gtk.c:399
 msgid "Online _Help"
-msgstr ""
+msgstr "ઓનલાઇન મદદ (_H)"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -502,13 +509,13 @@ msgid "%llu bytes, %u files"
 msgstr "%llu બાઇટ્સ, %u ફાઇલો"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:844
+#: ../src/gui-wizard-gtk/wizard.c:848
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "ઘટના '%s' માટે પ્રક્રિયા વ્યાખ્યાયિત થયેલ નથી"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:939
+#: ../src/gui-wizard-gtk/wizard.c:943
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -517,37 +524,37 @@ msgstr ""
 "પાડો છો."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:945
+#: ../src/gui-wizard-gtk/wizard.c:949
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "અહેવાલ કરવાનું નિષ્ક્રિય થયેલ છે કારણ કે બેકટ્રેસ ઉપયોગ કરી શકાય તેવુ નથી."
 
-#: ../src/gui-wizard-gtk/wizard.c:954
+#: ../src/gui-wizard-gtk/wizard.c:958
 msgid "You should check the backtrace for sensitive data."
 msgstr "સંવેદનશીલ માહિતી માટે તમારે બેકટ્રેસને ચકાસવુ જ જોઇએ."
 
-#: ../src/gui-wizard-gtk/wizard.c:955
+#: ../src/gui-wizard-gtk/wizard.c:959
 msgid "You must agree with sending the backtrace."
 msgstr "તમારે બેકટ્રેસને મોકલવા સાથે સંમત થવુ જ જોઇએ."
 
-#: ../src/gui-wizard-gtk/wizard.c:1011
+#: ../src/gui-wizard-gtk/wizard.c:1015
 msgid "Analyzing..."
 msgstr "વિશ્લેષણ કરી રહ્યા છે..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1012
+#: ../src/gui-wizard-gtk/wizard.c:1016
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "exit કોડ %d સાથે વિશ્લેષણ કરવાનું સમાપ્ત થયું"
 
-#: ../src/gui-wizard-gtk/wizard.c:1040
+#: ../src/gui-wizard-gtk/wizard.c:1044
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "exit કોડ %d સાથે અહેવાલ કરવાનું સમાપ્ત થયુ"
 
-#: ../src/gui-wizard-gtk/wizard.c:1158
+#: ../src/gui-wizard-gtk/wizard.c:1162
 msgid "Name"
 msgstr "નામ"
 
-#: ../src/gui-wizard-gtk/wizard.c:1167
+#: ../src/gui-wizard-gtk/wizard.c:1171
 msgid "Value"
 msgstr "કિંમત"
 
@@ -596,7 +603,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Configure _Events"
-msgstr ""
+msgstr "ઘટનાને રૂપરેખાંકિત કરો (_E)"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
@@ -654,21 +661,21 @@ msgstr ""
 #: ../src/lib/event_config.c:321
 #, c-format
 msgid "Invalid utf8 character '%c'"
-msgstr ""
+msgstr "અયોગ્ય utf8 અક્ષર '%c'"
 
 #: ../src/lib/event_config.c:332
 #, c-format
 msgid "Invalid number '%s'"
-msgstr ""
+msgstr "અયોગ્ય સંખ્યા '%s'"
 
 #: ../src/lib/event_config.c:343
 #, c-format
 msgid "Invalid boolean value '%s'"
-msgstr ""
+msgstr "અયોગ્ય બુલિયન કિંમત '%s'"
 
 #: ../src/lib/event_config.c:347
 msgid "Unsupported option type"
-msgstr ""
+msgstr "બિનઆધારભૂત વિકલ્પ પ્રકાર"
 
 #: ../src/lib/parse_options.c:29
 #, c-format
@@ -716,78 +723,88 @@ msgstr ""
 "\n"
 "python ભંગાણ ડમ્પોનાં UUID અને DUPHASH નો સંગ્રહ કરે છે અને ગણતરી કરે છે"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:516
+#: ../src/plugins/abrt-action-bugzilla.cpp:517
 #, c-format
 msgid "New bug id: %i"
 msgstr "નવી ભૂલ id: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:646
+#: ../src/plugins/abrt-action-bugzilla.cpp:647
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr "ખાલી લૉગિન અથવા પાસવર્ડ, મહેરબાની કરીને %s ચકાસો"
 
+#: ../src/plugins/abrt-action-bugzilla.cpp:662
+#, c-format
+msgid "Essential file '%s' is missing, can't continue.."
+msgstr ""
+
 #: ../src/plugins/abrt-action-bugzilla.cpp:666
+#, c-format
+msgid "Essential file '%s' is empty, can't continue.."
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:675
 #, c-format
 msgid "Logging into Bugzilla at %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:669
+#: ../src/plugins/abrt-action-bugzilla.cpp:678
 msgid "Checking for duplicates"
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:691
-#: ../src/plugins/abrt-action-bugzilla.cpp:727
+#: ../src/plugins/abrt-action-bugzilla.cpp:700
+#: ../src/plugins/abrt-action-bugzilla.cpp:736
 msgid "Missing mandatory member 'bugs'"
 msgstr "ગુમ થયેલ ફરજિયાત સભ્ય 'ભૂલો'"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:710
-#: ../src/plugins/abrt-action-bugzilla.cpp:743
-#: ../src/plugins/abrt-action-bugzilla.cpp:819
+#: ../src/plugins/abrt-action-bugzilla.cpp:719
+#: ../src/plugins/abrt-action-bugzilla.cpp:752
+#: ../src/plugins/abrt-action-bugzilla.cpp:828
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() નિષ્ફળ. બધી ફરજિયાત જાણકારીને મેળવી શક્યા નહિં"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:758
+#: ../src/plugins/abrt-action-bugzilla.cpp:767
 msgid "Creating a new bug"
-msgstr ""
+msgstr "નવી ભૂલને બનાવી રહ્યા છે"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:763
+#: ../src/plugins/abrt-action-bugzilla.cpp:772
 msgid "Bugzilla entry creation failed"
 msgstr "બગઝીલા નોંધણી બનાવવાનું નિષ્ફળ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:775
-#: ../src/plugins/abrt-action-bugzilla.cpp:875
+#: ../src/plugins/abrt-action-bugzilla.cpp:784
+#: ../src/plugins/abrt-action-bugzilla.cpp:884
 msgid "Logging out"
-msgstr ""
+msgstr "બહાર નીકળી રહ્યા છે"
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:793
+#: ../src/plugins/abrt-action-bugzilla.cpp:802
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "ભૂલ પહેલેથી જ અહેવાલ થયેલ છે: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:804
+#: ../src/plugins/abrt-action-bugzilla.cpp:813
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "બગઝીલા એ ભૂલ %d નાં મુખ્યને શોધી શક્યા નથી"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:834
+#: ../src/plugins/abrt-action-bugzilla.cpp:843
 #, c-format
 msgid "Add %s to CC list"
 msgstr "CC યાદીમાં %s ને ઉમેરો"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:860
+#: ../src/plugins/abrt-action-bugzilla.cpp:869
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "ભૂલ(%d) માં નવી ટિપ્પણીને ઉમેરો"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:911
+#: ../src/plugins/abrt-action-bugzilla.cpp:920
 msgid ""
 " [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports problem to Bugzilla"
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:924
+#: ../src/plugins/abrt-action-bugzilla.cpp:933
 #: ../src/plugins/abrt-action-rhtsupport.c:277
 msgid "Configuration file (may be given many times)"
 msgstr "રૂપરેખાંકન ફાઇલ (ઘણી વખત આપેલ છે)"
@@ -862,7 +879,7 @@ msgstr "%u debuginfo ફાઇલો માટે પેકેજોને શ�
 #: ../src/plugins/abrt-action-install-debuginfo.py:242
 #, python-format
 msgid "Packages to download: %u"
-msgstr ""
+msgstr "ડાઉનલોડ કરવા માટે પેકેજો: %u"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:243
 #, python-format
@@ -944,7 +961,6 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/abrt-action-kerneloops.c:146
-#, fuzzy
 msgid "Configuration file"
 msgstr "રૂપરેખાંકન ફાઇલ"
 
@@ -1021,12 +1037,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:167
 msgid "Delete dump dirs"
-msgstr ""
+msgstr "ડમ્પ ડિરેક્ટરીઓને કાઢી નાંખો"
 
 #: ../src/plugins/abrt-action-trim-files.c:168
-#, fuzzy
 msgid "Delete files"
-msgstr "વારાફરતી GUI ફાઇલ"
+msgstr "ફાઇલો કાઢી નાંખો"
 
 #: ../src/plugins/abrt-action-trim-files.c:169
 msgid "Preserve this dump dir"

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-26 23:35+0100\n"
-"PO-Revision-Date: 2011-03-25 17:37+0000\n"
+"POT-Creation-Date: 2011-03-29 15:09+0200\n"
+"PO-Revision-Date: 2011-03-26 22:40+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Telugu <>\n"
 "Language: te\n"
@@ -40,7 +40,6 @@ msgid "ABRT service is not running"
 msgstr "ABRT సేవ నడుచుటలేదు"
 
 #: ../src/applet/applet_gtk.c:202 ../src/applet/applet_gtk.c:204
-#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
 msgid "Warning"
 msgstr "హెచ్చరిక"
 
@@ -61,7 +60,15 @@ msgstr "మరుగునవుంచుము"
 msgid "Report"
 msgstr "నివేదించు"
 
-#: ../src/applet/applet_gtk.c:401 ../src/applet/applet_gtk.c:429
+#: ../src/applet/applet_gtk.c:401
+msgid "Show"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
+msgid "A Problem has Occurred"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:429
 msgid "Open ABRT"
 msgstr "ABRT తెరువుము"
 
@@ -289,7 +296,7 @@ msgstr ""
 msgid "Bad value for '%s': %s"
 msgstr ""
 
-#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1039
+#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1043
 msgid "Reporting..."
 msgstr "నివేదించుచున్నది..."
 
@@ -333,7 +340,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-backtrace.c:72
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-action-bugzilla.cpp:923
+#: ../src/plugins/abrt-action-bugzilla.cpp:932
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:145
 #: ../src/plugins/abrt-action-mailx.c:147
@@ -500,13 +507,13 @@ msgid "%llu bytes, %u files"
 msgstr "%llu బెట్లు, %u ఫైళ్ళు"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:844
+#: ../src/gui-wizard-gtk/wizard.c:848
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "ఘటన '%s' కొరకు యే క్రమణం నిర్వచించబడలేదు"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:939
+#: ../src/gui-wizard-gtk/wizard.c:943
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -514,37 +521,37 @@ msgstr ""
 "బాక్‌ట్రేస్ అసంపూర్తిగా వుంది, దానిని తిరిగివుత్పన్నం చేయుటకు దయచేసి మీరు స్టెప్సును యిచ్చునట్లు చూచుకోండి."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:945
+#: ../src/gui-wizard-gtk/wizard.c:949
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "బ్యాక్‌ట్రేస్ నిరుపయోగమైంది కావున నివేదీకరణ అచేతనపరచడమైంది."
 
-#: ../src/gui-wizard-gtk/wizard.c:954
+#: ../src/gui-wizard-gtk/wizard.c:958
 msgid "You should check the backtrace for sensitive data."
 msgstr "సున్నితమైన డాటా కొరకు మీరు బ్యాక్‌ట్రేస్‌ను పరిశీలించవలెను."
 
-#: ../src/gui-wizard-gtk/wizard.c:955
+#: ../src/gui-wizard-gtk/wizard.c:959
 msgid "You must agree with sending the backtrace."
 msgstr "బ్యాక్‌ట్రేస్‌ను పంపుటను మీరు తప్పక అంగీకరించాలి."
 
-#: ../src/gui-wizard-gtk/wizard.c:1011
+#: ../src/gui-wizard-gtk/wizard.c:1015
 msgid "Analyzing..."
 msgstr "విశ్లేషించుచున్నది..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1012
+#: ../src/gui-wizard-gtk/wizard.c:1016
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "విశ్లేషణ నిష్క్రమమ కోడ్ %d తో ముగిసినది"
 
-#: ../src/gui-wizard-gtk/wizard.c:1040
+#: ../src/gui-wizard-gtk/wizard.c:1044
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "నివేదీకరణ నిష్క్రమణ కోడ్ %d తో ముగిసినది"
 
-#: ../src/gui-wizard-gtk/wizard.c:1158
+#: ../src/gui-wizard-gtk/wizard.c:1162
 msgid "Name"
 msgstr "నామము"
 
-#: ../src/gui-wizard-gtk/wizard.c:1167
+#: ../src/gui-wizard-gtk/wizard.c:1171
 msgid "Value"
 msgstr "విలువ"
 
@@ -709,78 +716,88 @@ msgstr ""
 "\n"
 "పైథాన్ క్రాష్ డంప్స్ యొక్క UUID మరియు DUPHASH ను దాయును"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:516
+#: ../src/plugins/abrt-action-bugzilla.cpp:517
 #, c-format
 msgid "New bug id: %i"
 msgstr "కొత్త బగ్ id: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:646
+#: ../src/plugins/abrt-action-bugzilla.cpp:647
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr "ఖాళీ లాగిన్ లేదా సంకేతపదము, దయచేసి %s పరిశీలించండి"
 
+#: ../src/plugins/abrt-action-bugzilla.cpp:662
+#, c-format
+msgid "Essential file '%s' is missing, can't continue.."
+msgstr ""
+
 #: ../src/plugins/abrt-action-bugzilla.cpp:666
+#, c-format
+msgid "Essential file '%s' is empty, can't continue.."
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:675
 #, c-format
 msgid "Logging into Bugzilla at %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:669
+#: ../src/plugins/abrt-action-bugzilla.cpp:678
 msgid "Checking for duplicates"
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:691
-#: ../src/plugins/abrt-action-bugzilla.cpp:727
+#: ../src/plugins/abrt-action-bugzilla.cpp:700
+#: ../src/plugins/abrt-action-bugzilla.cpp:736
 msgid "Missing mandatory member 'bugs'"
 msgstr "తప్పనిసరైన సభ్యుని 'bugs' తప్పిపోయినవి"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:710
-#: ../src/plugins/abrt-action-bugzilla.cpp:743
-#: ../src/plugins/abrt-action-bugzilla.cpp:819
+#: ../src/plugins/abrt-action-bugzilla.cpp:719
+#: ../src/plugins/abrt-action-bugzilla.cpp:752
+#: ../src/plugins/abrt-action-bugzilla.cpp:828
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() విఫలమైంది. తప్పనిసరైన సమాచారము మొత్తంను సేకరించలేక పోయింది"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:758
+#: ../src/plugins/abrt-action-bugzilla.cpp:767
 msgid "Creating a new bug"
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:763
+#: ../src/plugins/abrt-action-bugzilla.cpp:772
 msgid "Bugzilla entry creation failed"
 msgstr "బగ్‌జిల్లా పద్దు సృష్టించుట విఫలమైంది"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:775
-#: ../src/plugins/abrt-action-bugzilla.cpp:875
+#: ../src/plugins/abrt-action-bugzilla.cpp:784
+#: ../src/plugins/abrt-action-bugzilla.cpp:884
 msgid "Logging out"
 msgstr ""
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:793
+#: ../src/plugins/abrt-action-bugzilla.cpp:802
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "బగ్ యిప్పటికే నివేదించబడింది: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:804
+#: ../src/plugins/abrt-action-bugzilla.cpp:813
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "బగ్‌జిల్లా బగ్ %d యొక్క మాత్రుక(పేరెంట్)ను కనుగొనలేక పోయింది"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:834
+#: ../src/plugins/abrt-action-bugzilla.cpp:843
 #, c-format
 msgid "Add %s to CC list"
 msgstr "%s ను CC జాబితాకు జతచేయి"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:860
+#: ../src/plugins/abrt-action-bugzilla.cpp:869
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "కొత్త వ్యాఖ్యను బగ్(%d)నకు జతచేయుము"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:911
+#: ../src/plugins/abrt-action-bugzilla.cpp:920
 msgid ""
 " [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports problem to Bugzilla"
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:924
+#: ../src/plugins/abrt-action-bugzilla.cpp:933
 #: ../src/plugins/abrt-action-rhtsupport.c:277
 msgid "Configuration file (may be given many times)"
 msgstr "ఆకృతీకరణ ఫైలు (చాలా సార్లు యిచ్చివుండ వచ్చును)"
@@ -937,9 +954,8 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/abrt-action-kerneloops.c:146
-#, fuzzy
 msgid "Configuration file"
-msgstr "ఆకృతీకరణ ఫైల్"
+msgstr ""
 
 #: ../src/plugins/abrt-action-mailx.c:109
 msgid "Sending an email..."
@@ -1017,9 +1033,8 @@ msgid "Delete dump dirs"
 msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:168
-#, fuzzy
 msgid "Delete files"
-msgstr "ప్రత్యామ్నాయ GUI ఫైల్"
+msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:169
 msgid "Preserve this dump dir"

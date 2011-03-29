@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-26 23:35+0100\n"
-"PO-Revision-Date: 2011-03-25 17:37+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"POT-Creation-Date: 2011-03-29 15:09+0200\n"
+"PO-Revision-Date: 2011-03-27 10:38+0000\n"
+"Last-Translator: zerng07 <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <None>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,6 @@ msgid "ABRT service is not running"
 msgstr "ABRT 服務沒有在運作中"
 
 #: ../src/applet/applet_gtk.c:202 ../src/applet/applet_gtk.c:204
-#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
 msgid "Warning"
 msgstr "警告"
 
@@ -64,7 +63,15 @@ msgstr "隱藏"
 msgid "Report"
 msgstr "回報"
 
-#: ../src/applet/applet_gtk.c:401 ../src/applet/applet_gtk.c:429
+#: ../src/applet/applet_gtk.c:401
+msgid "Show"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
+msgid "A Problem has Occurred"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:429
 msgid "Open ABRT"
 msgstr "開啟 ABRT"
 
@@ -126,7 +133,7 @@ msgstr "評等：             %s\n"
 #: ../src/cli/cli.c:179
 #, c-format
 msgid "Crash function:     %s\n"
-msgstr "Crash function:     %s\n"
+msgstr "當機函式：    %s\n"
 
 #: ../src/cli/cli.c:183
 #, c-format
@@ -284,14 +291,14 @@ msgstr "否 (N)"
 
 #: ../src/cli/report.cpp:511
 msgid "Your input is not valid, because of:"
-msgstr ""
+msgstr "您的輸入並非有效，因為："
 
 #: ../src/cli/report.cpp:514
 #, c-format
 msgid "Bad value for '%s': %s"
-msgstr ""
+msgstr "「%s」的值不良：%s"
 
-#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1039
+#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1043
 msgid "Reporting..."
 msgstr "正在回報..."
 
@@ -326,6 +333,9 @@ msgid ""
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"查詢套件資料庫並儲存套件名稱、元件、描述等。"
 
 #: ../src/daemon/abrt-action-save-package-data.c:263
 #: ../src/daemon/abrt-handle-crashdump.c:61
@@ -333,7 +343,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-backtrace.c:72
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-action-bugzilla.cpp:923
+#: ../src/plugins/abrt-action-bugzilla.cpp:932
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:145
 #: ../src/plugins/abrt-action-mailx.c:147
@@ -341,7 +351,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-rhtsupport.c:276
 #: ../src/plugins/abrt-action-upload.c:258
 msgid "Dump directory"
-msgstr ""
+msgstr "傾印目錄"
 
 #: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
@@ -368,7 +378,7 @@ msgstr "列出可能的事件 [以 PFX 開頭]"
 #: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:170
 #: ../src/gui-wizard-gtk/main.c:93
 msgid "Add program names to log"
-msgstr ""
+msgstr "加入程式名稱至紀錄檔"
 
 #: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:535
 msgid " [options]"
@@ -443,11 +453,11 @@ msgstr "求助(_H)"
 
 #: ../src/gui-gtk/abrt-gtk.c:323
 msgid "_Event configuration"
-msgstr ""
+msgstr "事件組態(_E)"
 
 #: ../src/gui-gtk/abrt-gtk.c:399
 msgid "Online _Help"
-msgstr ""
+msgstr "線上幫助(_H)"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -460,6 +470,10 @@ msgid ""
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 "(default DIRs: "
 msgstr ""
+" [-vp] [DIR]...\n"
+"\n"
+"顯示指定 DIR(s) 內 ABRT 傾印目錄的清單\n"
+"(預設 DIRs："
 
 #: ../src/gui-wizard-gtk/main.c:80
 msgid ""
@@ -467,6 +481,9 @@ msgid ""
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
+" [-vp] [-g GUI_FILE] DIR\n"
+"\n"
+"分析並回報儲存在指定 DIR 內問題的 GUI 工具"
 
 #: ../src/gui-wizard-gtk/main.c:92
 msgid "Alternate GUI file"
@@ -500,50 +517,50 @@ msgid "%llu bytes, %u files"
 msgstr "%llu 位元組，%u 個檔案"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:844
+#: ../src/gui-wizard-gtk/wizard.c:848
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "未定義「%s」事件的處理"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:939
+#: ../src/gui-wizard-gtk/wizard.c:943
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "追蹤資訊不完整，請確認您提供了能夠重現問題的步驟。"
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:945
+#: ../src/gui-wizard-gtk/wizard.c:949
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "已停用回報，因為無法使用追蹤功能。"
 
-#: ../src/gui-wizard-gtk/wizard.c:954
+#: ../src/gui-wizard-gtk/wizard.c:958
 msgid "You should check the backtrace for sensitive data."
 msgstr "您必須檢查追蹤資訊以找尋敏感資料。"
 
-#: ../src/gui-wizard-gtk/wizard.c:955
+#: ../src/gui-wizard-gtk/wizard.c:959
 msgid "You must agree with sending the backtrace."
 msgstr "您必須同意傳送追蹤資訊。"
 
-#: ../src/gui-wizard-gtk/wizard.c:1011
+#: ../src/gui-wizard-gtk/wizard.c:1015
 msgid "Analyzing..."
 msgstr "正在分析..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1012
+#: ../src/gui-wizard-gtk/wizard.c:1016
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "分析完成附帶離開碼 %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1040
+#: ../src/gui-wizard-gtk/wizard.c:1044
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "回報完成附帶離開碼 %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1158
+#: ../src/gui-wizard-gtk/wizard.c:1162
 msgid "Name"
 msgstr "名稱"
 
-#: ../src/gui-wizard-gtk/wizard.c:1167
+#: ../src/gui-wizard-gtk/wizard.c:1171
 msgid "Value"
 msgstr "值"
 
@@ -587,7 +604,7 @@ msgstr "點擊「下一步」繼續分析並回報此問題。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Configure _Events"
-msgstr ""
+msgstr "設定事件(_E)"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
@@ -599,7 +616,7 @@ msgstr "此問題如何發生的 (請分步驟敘述)？該怎麼讓問題重新
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "I _agree with submitting the backtrace"
-msgstr ""
+msgstr "我同意提交追蹤資料"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "Regenerate backtrace"
@@ -638,26 +655,26 @@ msgstr "已上傳：%llu / %llu kbytes"
 
 #: ../src/lib/event_config.c:313
 msgid "Missing mandatory value"
-msgstr ""
+msgstr "遺失必要的值"
 
 #: ../src/lib/event_config.c:321
 #, c-format
 msgid "Invalid utf8 character '%c'"
-msgstr ""
+msgstr "無效的 utf8 字元「%c」"
 
 #: ../src/lib/event_config.c:332
 #, c-format
 msgid "Invalid number '%s'"
-msgstr ""
+msgstr "無效的號碼「%s」"
 
 #: ../src/lib/event_config.c:343
 #, c-format
 msgid "Invalid boolean value '%s'"
-msgstr ""
+msgstr "無效的布林值「%s」"
 
 #: ../src/lib/event_config.c:347
 msgid "Unsupported option type"
-msgstr ""
+msgstr "未支援的選項類型"
 
 #: ../src/lib/parse_options.c:29
 #, c-format
@@ -670,6 +687,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"計算並儲存傾印目錄 DIR 內 coredump 的 UUID"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:61
 msgid ""
@@ -678,6 +698,9 @@ msgid ""
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
 "identifies crash function in dump directory DIR"
 msgstr ""
+" [選項] -d DIR\n"
+"\n"
+"分析 C/C++ 追蹤資料、產生複本雜湊、追蹤評等、並辨識傾印目錄 DIR 內的當機函式"
 
 #.
 #. * The parser failed. Compute the UUID from the executable
@@ -694,6 +717,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
+" [-vs] -d DIR\n"
+"\n"
+"為 oops 傾印目錄 DIR 計算並儲存 UUID 與 DUPHASH"
 
 #: ../src/plugins/abrt-action-analyze-python.c:38
 msgid ""
@@ -705,78 +731,91 @@ msgstr ""
 "\n"
 "計算與儲存 python 當機傾印的 UUID 與 DUPHASH"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:516
+#: ../src/plugins/abrt-action-bugzilla.cpp:517
 #, c-format
 msgid "New bug id: %i"
 msgstr "新的錯誤 id：%i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:646
+#: ../src/plugins/abrt-action-bugzilla.cpp:647
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr "空白登入名稱或密碼，請檢查 %s"
 
+#: ../src/plugins/abrt-action-bugzilla.cpp:662
+#, c-format
+msgid "Essential file '%s' is missing, can't continue.."
+msgstr ""
+
 #: ../src/plugins/abrt-action-bugzilla.cpp:666
 #, c-format
+msgid "Essential file '%s' is empty, can't continue.."
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:675
+#, c-format
 msgid "Logging into Bugzilla at %s"
-msgstr ""
+msgstr "正在登入 Bugzilla 於 %s"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:669
+#: ../src/plugins/abrt-action-bugzilla.cpp:678
 msgid "Checking for duplicates"
-msgstr ""
+msgstr "正在檢查是否有重複"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:691
-#: ../src/plugins/abrt-action-bugzilla.cpp:727
+#: ../src/plugins/abrt-action-bugzilla.cpp:700
+#: ../src/plugins/abrt-action-bugzilla.cpp:736
 msgid "Missing mandatory member 'bugs'"
 msgstr "遺失必要的成員「bugs」"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:710
-#: ../src/plugins/abrt-action-bugzilla.cpp:743
-#: ../src/plugins/abrt-action-bugzilla.cpp:819
+#: ../src/plugins/abrt-action-bugzilla.cpp:719
+#: ../src/plugins/abrt-action-bugzilla.cpp:752
+#: ../src/plugins/abrt-action-bugzilla.cpp:828
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() 失敗。無法蒐集所有必要的資訊"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:758
+#: ../src/plugins/abrt-action-bugzilla.cpp:767
 msgid "Creating a new bug"
-msgstr ""
+msgstr "正在建立新臭蟲"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:763
+#: ../src/plugins/abrt-action-bugzilla.cpp:772
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla 項目建立失敗"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:775
-#: ../src/plugins/abrt-action-bugzilla.cpp:875
+#: ../src/plugins/abrt-action-bugzilla.cpp:784
+#: ../src/plugins/abrt-action-bugzilla.cpp:884
 msgid "Logging out"
-msgstr ""
+msgstr "正在登出"
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:793
+#: ../src/plugins/abrt-action-bugzilla.cpp:802
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "錯誤已回報：%i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:804
+#: ../src/plugins/abrt-action-bugzilla.cpp:813
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla 找不到錯誤 %d 的 親代"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:834
+#: ../src/plugins/abrt-action-bugzilla.cpp:843
 #, c-format
 msgid "Add %s to CC list"
 msgstr "將 %s 加入 CC 副本清單中"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:860
+#: ../src/plugins/abrt-action-bugzilla.cpp:869
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "在錯誤 (%d) 中新增評註"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:911
+#: ../src/plugins/abrt-action-bugzilla.cpp:920
 msgid ""
 " [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports problem to Bugzilla"
 msgstr ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"回報問題至 Bugzilla"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:924
+#: ../src/plugins/abrt-action-bugzilla.cpp:933
 #: ../src/plugins/abrt-action-rhtsupport.c:277
 msgid "Configuration file (may be given many times)"
 msgstr "組態檔案 (可以給定多次)"
@@ -787,6 +826,9 @@ msgid ""
 "\n"
 "Generates and saves backtrace for coredump in dump directory DIR"
 msgstr ""
+" [options] -d DIR\n"
+"\n"
+"為傾印目錄 DIR 內的 coredump 產生追蹤資料並儲存"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:257
 msgid "Additional debuginfo directories"
@@ -841,7 +883,7 @@ msgstr "正在下載 (%i / %i) %s：%3u%%"
 #. we have "paused":
 #: ../src/plugins/abrt-action-install-debuginfo.py:206
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "正在查詢套件庫中所需要的套件"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:240
 #, python-format
@@ -851,7 +893,7 @@ msgstr "找不到 %u debuginfo 檔的套件"
 #: ../src/plugins/abrt-action-install-debuginfo.py:242
 #, python-format
 msgid "Packages to download: %u"
-msgstr ""
+msgstr "要下載的套件：%u"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:243
 #, python-format
@@ -880,12 +922,12 @@ msgstr "所有下載的套件已被解開，正在移除 %s"
 #: ../src/plugins/abrt-action-install-debuginfo.py:291
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
-msgstr "無法移除 %s，可能包含錯誤日誌"
+msgstr "無法移除 %s，可能包含錯誤紀錄"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:316
 #, python-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "正在分析核心傾印「%s」"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:394
 #, python-format
@@ -931,9 +973,11 @@ msgid ""
 "\n"
 "Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
+" [-v] [-c CONFFILE]... -d DIR\n"
+"\n"
+"回報 kernel oops 至 kerneloops.org (或類似) 網站"
 
 #: ../src/plugins/abrt-action-kerneloops.c:146
-#, fuzzy
 msgid "Configuration file"
 msgstr "組態檔"
 
@@ -947,6 +991,9 @@ msgid ""
 "\n"
 "Sends compressed tarball of dump directory DIR via email"
 msgstr ""
+" [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"透過電子郵件傳送傾印目錄 DIR 的壓縮 tarball"
 
 #: ../src/plugins/abrt-action-mailx.c:148
 #: ../src/plugins/abrt-action-upload.c:259
@@ -959,6 +1006,9 @@ msgid ""
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
+" [-v] -d DIR [-o FILE] [-a yes/no]\n"
+"\n"
+"列印問題資訊至標準輸出或 FILE 上"
 
 #: ../src/plugins/abrt-action-print.c:53
 msgid "Output file"
@@ -966,7 +1016,7 @@ msgstr "輸出檔"
 
 #: ../src/plugins/abrt-action-print.c:54
 msgid "Append to, or overwrite FILE"
-msgstr ""
+msgstr "附加至，或是覆寫 FILE"
 
 #: ../src/plugins/abrt-action-print.c:87
 #, c-format
@@ -988,7 +1038,7 @@ msgstr "正在壓縮資料"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:73
 msgid "Empty RHTS login or password"
-msgstr ""
+msgstr "空白的 RHTS 登入名稱或密碼"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:189
 msgid "Creating a new case..."
@@ -1000,6 +1050,9 @@ msgid ""
 "\n"
 "Reports a problem to RHTSupport"
 msgstr ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"回報問題至 RHTSupport"
 
 #: ../src/plugins/abrt-action-trim-files.c:154
 msgid ""
@@ -1007,19 +1060,21 @@ msgid ""
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
+" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"\n"
+"刪除 DIRs 內的傾印目錄 (-d) 或檔案 (-f) 直到其大小小於 SIZE"
 
 #: ../src/plugins/abrt-action-trim-files.c:167
 msgid "Delete dump dirs"
-msgstr ""
+msgstr "刪除傾印目錄"
 
 #: ../src/plugins/abrt-action-trim-files.c:168
-#, fuzzy
 msgid "Delete files"
-msgstr "替代的 GUI 檔案"
+msgstr "刪除檔案"
 
 #: ../src/plugins/abrt-action-trim-files.c:169
 msgid "Preserve this dump dir"
-msgstr ""
+msgstr "保留這個傾印目錄"
 
 #: ../src/plugins/abrt-action-upload.c:63
 #, c-format
@@ -1043,6 +1098,9 @@ msgid ""
 "\n"
 "Uploads compressed tarball of dump directory DIR"
 msgstr ""
+" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"上傳傾印目錄 DIR 的壓縮 tarball"
 
 #: ../src/plugins/abrt-action-upload.c:260
 msgid "Base URL to upload to"
@@ -1079,7 +1137,7 @@ msgstr "不要離開，監視檔案以取得新的 oops"
 #.
 #: ../src/plugins/abrt-dump-oops.c:587
 msgid "Make the dump directory world readable"
-msgstr ""
+msgstr "讓傾印目錄全世界都可以讀取"
 
 #: ../src/plugins/abrt-retrace-client.c:704
 msgid "log to syslog"

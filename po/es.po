@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-26 23:35+0100\n"
-"PO-Revision-Date: 2011-03-25 17:37+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"POT-Creation-Date: 2011-03-29 15:09+0200\n"
+"PO-Revision-Date: 2011-03-28 12:05+0000\n"
+"Last-Translator: beckerde <domingobecker@gmail.com>\n"
 "Language-Team: Spanish (Castilian) <trans-es@lists.fedoraproject.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,6 @@ msgid "ABRT service is not running"
 msgstr "El servicio ABRT no se está ejecutando"
 
 #: ../src/applet/applet_gtk.c:202 ../src/applet/applet_gtk.c:204
-#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
 msgid "Warning"
 msgstr "Advertencia"
 
@@ -66,7 +65,15 @@ msgstr "Ocultar"
 msgid "Report"
 msgstr "Informe"
 
-#: ../src/applet/applet_gtk.c:401 ../src/applet/applet_gtk.c:429
+#: ../src/applet/applet_gtk.c:401
+msgid "Show"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
+msgid "A Problem has Occurred"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:429
 msgid "Open ABRT"
 msgstr "Abrir ABRT"
 
@@ -288,14 +295,14 @@ msgstr "N"
 
 #: ../src/cli/report.cpp:511
 msgid "Your input is not valid, because of:"
-msgstr ""
+msgstr "Su entrada no es válida porque:"
 
 #: ../src/cli/report.cpp:514
 #, c-format
 msgid "Bad value for '%s': %s"
-msgstr ""
+msgstr "Valor incorrecto para '%s': %s"
 
-#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1039
+#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1043
 msgid "Reporting..."
 msgstr "Informando..."
 
@@ -332,6 +339,10 @@ msgid ""
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"Consulta a la base de datos de paquete y guarda el nombre de paquete, "
+"componente y la descripción"
 
 #: ../src/daemon/abrt-action-save-package-data.c:263
 #: ../src/daemon/abrt-handle-crashdump.c:61
@@ -339,7 +350,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-backtrace.c:72
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-action-bugzilla.cpp:923
+#: ../src/plugins/abrt-action-bugzilla.cpp:932
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:145
 #: ../src/plugins/abrt-action-mailx.c:147
@@ -347,7 +358,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-rhtsupport.c:276
 #: ../src/plugins/abrt-action-upload.c:258
 msgid "Dump directory"
-msgstr ""
+msgstr "Listar directorio"
 
 #: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
@@ -374,7 +385,7 @@ msgstr "Muestra los eventos posibles [que empiecen con PFX]"
 #: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:170
 #: ../src/gui-wizard-gtk/main.c:93
 msgid "Add program names to log"
-msgstr ""
+msgstr "Agrega el nombre del programa al log"
 
 #: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:535
 msgid " [options]"
@@ -450,11 +461,11 @@ msgstr "Ay_uda"
 
 #: ../src/gui-gtk/abrt-gtk.c:323
 msgid "_Event configuration"
-msgstr ""
+msgstr "Configuración de _eventos"
 
 #: ../src/gui-gtk/abrt-gtk.c:399
 msgid "Online _Help"
-msgstr ""
+msgstr "Ay_uda en línea"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -467,6 +478,10 @@ msgid ""
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 "(default DIRs: "
 msgstr ""
+" [-vp] [DIR]...\n"
+"\n"
+"Muestra los directorios especificados en DIR(s) que ABRT debe listar (DIRs "
+"por defecto): "
 
 #: ../src/gui-wizard-gtk/main.c:80
 msgid ""
@@ -474,6 +489,10 @@ msgid ""
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
+" [-vp] [-g GUI_FILE] DIR\n"
+"\n"
+"Herramienta gráfica para analizar e informar el problema guardado en el DIR "
+"especificado"
 
 #: ../src/gui-wizard-gtk/main.c:92
 msgid "Alternate GUI file"
@@ -507,13 +526,13 @@ msgid "%llu bytes, %u files"
 msgstr "%llu bytes, %u archivos"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:844
+#: ../src/gui-wizard-gtk/wizard.c:848
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "No se define proceso para evento '%s'"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:939
+#: ../src/gui-wizard-gtk/wizard.c:943
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -522,37 +541,37 @@ msgstr ""
 "para reproducir el error."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:945
+#: ../src/gui-wizard-gtk/wizard.c:949
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Creación de informes inhabilitada debido a que el trazado es inútil."
 
-#: ../src/gui-wizard-gtk/wizard.c:954
+#: ../src/gui-wizard-gtk/wizard.c:958
 msgid "You should check the backtrace for sensitive data."
 msgstr "Debe verificar el trazado de datos confidenciales."
 
-#: ../src/gui-wizard-gtk/wizard.c:955
+#: ../src/gui-wizard-gtk/wizard.c:959
 msgid "You must agree with sending the backtrace."
 msgstr "Debe estar de acuerdo con el envío del trazado."
 
-#: ../src/gui-wizard-gtk/wizard.c:1011
+#: ../src/gui-wizard-gtk/wizard.c:1015
 msgid "Analyzing..."
 msgstr "Analizando..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1012
+#: ../src/gui-wizard-gtk/wizard.c:1016
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "El análisis terminó con código de salida %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1040
+#: ../src/gui-wizard-gtk/wizard.c:1044
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "El reporte terminó con código de salida %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1158
+#: ../src/gui-wizard-gtk/wizard.c:1162
 msgid "Name"
 msgstr "Nombre"
 
-#: ../src/gui-wizard-gtk/wizard.c:1167
+#: ../src/gui-wizard-gtk/wizard.c:1171
 msgid "Value"
 msgstr "Valor"
 
@@ -601,7 +620,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Configure _Events"
-msgstr ""
+msgstr "Configurar _Eventos"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
@@ -614,7 +633,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "I _agree with submitting the backtrace"
-msgstr ""
+msgstr "Estoy de acuerdo con enviar el trazado"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "Regenerate backtrace"
@@ -655,26 +674,26 @@ msgstr "Subidos: %llu de %llu kbytes"
 
 #: ../src/lib/event_config.c:313
 msgid "Missing mandatory value"
-msgstr ""
+msgstr "Falta un campo obligatorio"
 
 #: ../src/lib/event_config.c:321
 #, c-format
 msgid "Invalid utf8 character '%c'"
-msgstr ""
+msgstr "Carácter  utf8 inválido '%c'"
 
 #: ../src/lib/event_config.c:332
 #, c-format
 msgid "Invalid number '%s'"
-msgstr ""
+msgstr "Número '%s' inválido"
 
 #: ../src/lib/event_config.c:343
 #, c-format
 msgid "Invalid boolean value '%s'"
-msgstr ""
+msgstr "Valor booleano inválido '%s'"
 
 #: ../src/lib/event_config.c:347
 msgid "Unsupported option type"
-msgstr ""
+msgstr "Tipo de opción no soportada"
 
 #: ../src/lib/parse_options.c:29
 #, c-format
@@ -687,6 +706,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"Calcula y guarda el UUID del volcado del núcleo en el DIR de volcados"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:61
 msgid ""
@@ -695,6 +717,10 @@ msgid ""
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
 "identifies crash function in dump directory DIR"
 msgstr ""
+" [options] -d DIR\n"
+"\n"
+"Analiza el trazado C/C++, genera un hash de duplicación, taza de trazado e "
+"identifica la función que se colgó en el directorio de volcado DIR"
 
 #.
 #. * The parser failed. Compute the UUID from the executable
@@ -711,6 +737,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
+" [-vs] -d DIR\n"
+"\n"
+"Calcula y guarda el UUID y el DUPHASH para el DIR de volcado de oops"
 
 #: ../src/plugins/abrt-action-analyze-python.c:38
 msgid ""
@@ -722,79 +751,92 @@ msgstr ""
 "\n"
 "Calcula y almacena UUID y DUPHASH de los volcados de las caídas python"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:516
+#: ../src/plugins/abrt-action-bugzilla.cpp:517
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nuevo id del error: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:646
+#: ../src/plugins/abrt-action-bugzilla.cpp:647
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr "Campo de registro o contraseñas vacíos, por favor verifique %s"
 
+#: ../src/plugins/abrt-action-bugzilla.cpp:662
+#, c-format
+msgid "Essential file '%s' is missing, can't continue.."
+msgstr ""
+
 #: ../src/plugins/abrt-action-bugzilla.cpp:666
 #, c-format
+msgid "Essential file '%s' is empty, can't continue.."
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:675
+#, c-format
 msgid "Logging into Bugzilla at %s"
-msgstr ""
+msgstr "Ingresar a Bugzilla en %s"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:669
+#: ../src/plugins/abrt-action-bugzilla.cpp:678
 msgid "Checking for duplicates"
-msgstr ""
+msgstr "Chequeando duplicados"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:691
-#: ../src/plugins/abrt-action-bugzilla.cpp:727
+#: ../src/plugins/abrt-action-bugzilla.cpp:700
+#: ../src/plugins/abrt-action-bugzilla.cpp:736
 msgid "Missing mandatory member 'bugs'"
 msgstr "Falta miembro obligatorio 'bugs'"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:710
-#: ../src/plugins/abrt-action-bugzilla.cpp:743
-#: ../src/plugins/abrt-action-bugzilla.cpp:819
+#: ../src/plugins/abrt-action-bugzilla.cpp:719
+#: ../src/plugins/abrt-action-bugzilla.cpp:752
+#: ../src/plugins/abrt-action-bugzilla.cpp:828
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "Falló get_bug_info(). No se ha podido reunir toda la información obligatoria"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:758
+#: ../src/plugins/abrt-action-bugzilla.cpp:767
 msgid "Creating a new bug"
-msgstr ""
+msgstr "Creando un informe nuevo"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:763
+#: ../src/plugins/abrt-action-bugzilla.cpp:772
 msgid "Bugzilla entry creation failed"
 msgstr "Falló la creación de entrada en Bugzilla"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:775
-#: ../src/plugins/abrt-action-bugzilla.cpp:875
+#: ../src/plugins/abrt-action-bugzilla.cpp:784
+#: ../src/plugins/abrt-action-bugzilla.cpp:884
 msgid "Logging out"
-msgstr ""
+msgstr "Saliendo"
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:793
+#: ../src/plugins/abrt-action-bugzilla.cpp:802
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "El error ya ha sido informado: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:804
+#: ../src/plugins/abrt-action-bugzilla.cpp:813
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla no pudo encontrar un error directamente relacionado con %d "
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:834
+#: ../src/plugins/abrt-action-bugzilla.cpp:843
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Agregar %s a la lista CC"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:860
+#: ../src/plugins/abrt-action-bugzilla.cpp:869
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Agregar comentario en el error(%d)"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:911
+#: ../src/plugins/abrt-action-bugzilla.cpp:920
 msgid ""
 " [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports problem to Bugzilla"
 msgstr ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"Informa un problema a Bugzilla"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:924
+#: ../src/plugins/abrt-action-bugzilla.cpp:933
 #: ../src/plugins/abrt-action-rhtsupport.c:277
 msgid "Configuration file (may be given many times)"
 msgstr "Archivo de configuración (puede ser ofrecido varias veces)"
@@ -805,6 +847,9 @@ msgid ""
 "\n"
 "Generates and saves backtrace for coredump in dump directory DIR"
 msgstr ""
+" [options] -d DIR\n"
+"\n"
+"Genera y guarda un trazado para coredump en el directorio DIR de volcados"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:257
 msgid "Additional debuginfo directories"
@@ -859,7 +904,7 @@ msgstr "Descargando (%i de %i) %s: %3u%%"
 #. we have "paused":
 #: ../src/plugins/abrt-action-install-debuginfo.py:206
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "Buscando los paquetes necesarios en los repositorios"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:240
 #, python-format
@@ -870,7 +915,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-install-debuginfo.py:242
 #, python-format
 msgid "Packages to download: %u"
-msgstr ""
+msgstr "Paquetes a descargar: %u"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:243
 #, python-format
@@ -905,7 +950,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-install-debuginfo.py:316
 #, python-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "Analizando el volcado '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:394
 #, python-format
@@ -954,9 +999,11 @@ msgid ""
 "\n"
 "Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
+" [-v] [-c CONFFILE]... -d DIR\n"
+"\n"
+"Informa oops de kernel al sitio kerneloops.org (o similar)"
 
 #: ../src/plugins/abrt-action-kerneloops.c:146
-#, fuzzy
 msgid "Configuration file"
 msgstr "Archivo de configuración"
 
@@ -970,6 +1017,9 @@ msgid ""
 "\n"
 "Sends compressed tarball of dump directory DIR via email"
 msgstr ""
+" [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"Envía un tarball del directorio DIR de volcado vía correo electrónico"
 
 #: ../src/plugins/abrt-action-mailx.c:148
 #: ../src/plugins/abrt-action-upload.c:259
@@ -982,6 +1032,10 @@ msgid ""
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
+" [-v] -d DIR [-o FILE] [-a yes/no]\n"
+"\n"
+"Muestra la información del problema en la salida estándar o en el archivo "
+"FILE"
 
 #: ../src/plugins/abrt-action-print.c:53
 msgid "Output file"
@@ -989,7 +1043,7 @@ msgstr "Archivo con el resultado"
 
 #: ../src/plugins/abrt-action-print.c:54
 msgid "Append to, or overwrite FILE"
-msgstr ""
+msgstr "Agrega, o sobreescribe el archivo FILE"
 
 #: ../src/plugins/abrt-action-print.c:87
 #, c-format
@@ -1011,7 +1065,7 @@ msgstr "Comprimiendo datos"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:73
 msgid "Empty RHTS login or password"
-msgstr ""
+msgstr "Borra el usuario o contraseña de RHTS"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:189
 msgid "Creating a new case..."
@@ -1023,6 +1077,9 @@ msgid ""
 "\n"
 "Reports a problem to RHTSupport"
 msgstr ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"Informa un problema a RHTSupport"
 
 #: ../src/plugins/abrt-action-trim-files.c:154
 msgid ""
@@ -1030,19 +1087,22 @@ msgid ""
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
+" [-v] [-d TAM:DIR]... [-f TAM:DIR]... [-p DIR]\n"
+"\n"
+"Borra directorios de volcado (-d) o archivos (-f) en DIRs hasta que su "
+"tamaño sea menor que TAM"
 
 #: ../src/plugins/abrt-action-trim-files.c:167
 msgid "Delete dump dirs"
-msgstr ""
+msgstr "Borrar directorios de volcados"
 
 #: ../src/plugins/abrt-action-trim-files.c:168
-#, fuzzy
 msgid "Delete files"
-msgstr "Archivo alterno de GUI"
+msgstr "Borrar archivos"
 
 #: ../src/plugins/abrt-action-trim-files.c:169
 msgid "Preserve this dump dir"
-msgstr ""
+msgstr "Preserve este dir de volcado"
 
 #: ../src/plugins/abrt-action-upload.c:63
 #, c-format
@@ -1066,6 +1126,9 @@ msgid ""
 "\n"
 "Uploads compressed tarball of dump directory DIR"
 msgstr ""
+" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"Sube un tarball del directorio DIR de volcado"
 
 #: ../src/plugins/abrt-action-upload.c:260
 msgid "Base URL to upload to"
@@ -1102,7 +1165,7 @@ msgstr "No finaliza, monitoriza el archivo en busca de nuevos oops"
 #.
 #: ../src/plugins/abrt-dump-oops.c:587
 msgid "Make the dump directory world readable"
-msgstr ""
+msgstr "Hacer que el directorio de volcado sea legible para todos"
 
 #: ../src/plugins/abrt-retrace-client.c:704
 msgid "log to syslog"

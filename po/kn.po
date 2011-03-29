@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-26 23:35+0100\n"
-"PO-Revision-Date: 2011-03-25 17:37+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"POT-Creation-Date: 2011-03-29 15:09+0200\n"
+"PO-Revision-Date: 2011-03-29 09:18+0000\n"
+"Last-Translator: shanky <prasad.mvs@gmail.com>\n"
 "Language-Team: Kannada <None>\n"
 "Language: kn\n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,6 @@ msgid "ABRT service is not running"
 msgstr "ABRT ಸೇವೆಯು ಚಾಲನೆಯಲ್ಲಿಲ್ಲ"
 
 #: ../src/applet/applet_gtk.c:202 ../src/applet/applet_gtk.c:204
-#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
 msgid "Warning"
 msgstr "ಎಚ್ಚರಿಕೆ"
 
@@ -61,7 +60,15 @@ msgstr "ಅಡಗಿಸು"
 msgid "Report"
 msgstr "ವರದಿ"
 
-#: ../src/applet/applet_gtk.c:401 ../src/applet/applet_gtk.c:429
+#: ../src/applet/applet_gtk.c:401
+msgid "Show"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
+msgid "A Problem has Occurred"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:429
 msgid "Open ABRT"
 msgstr "ABRT ಅನ್ನು ತೆರೆ"
 
@@ -282,14 +289,14 @@ msgstr "N"
 
 #: ../src/cli/report.cpp:511
 msgid "Your input is not valid, because of:"
-msgstr ""
+msgstr "ನಿಮ್ಮ ಇನ್‌ಪುಟ್ ಅಮಾನ್ಯವಾಗಿದೆ, ಏಕೆಂದರೆ:"
 
 #: ../src/cli/report.cpp:514
 #, c-format
 msgid "Bad value for '%s': %s"
-msgstr ""
+msgstr "'%s' ಗಾಗಿನ ತಪ್ಪು ಮೌಲ್ಯ: %s"
 
-#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1039
+#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1043
 msgid "Reporting..."
 msgstr "ವರದಿ ಮಾಡಲಾಗುತ್ತಿದೆ..."
 
@@ -326,6 +333,9 @@ msgid ""
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"ಪ್ಯಾಕೇಜ್ ದತ್ತಾಂಶಕ್ಕಾಗಿ ಮನವಿ ಸಲ್ಲಿಸು ಹಾಗು ಪ್ಯಾಕೇಜ್ ಹೆಸರು, ಘಟಕ, ಹಾಗು ವಿವರಣೆಯನ್ನು ಉಳಿಸು"
 
 #: ../src/daemon/abrt-action-save-package-data.c:263
 #: ../src/daemon/abrt-handle-crashdump.c:61
@@ -333,7 +343,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-backtrace.c:72
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-action-bugzilla.cpp:923
+#: ../src/plugins/abrt-action-bugzilla.cpp:932
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:145
 #: ../src/plugins/abrt-action-mailx.c:147
@@ -341,7 +351,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-rhtsupport.c:276
 #: ../src/plugins/abrt-action-upload.c:258
 msgid "Dump directory"
-msgstr ""
+msgstr "ಬಿಸುಡು ಕೋಶ"
 
 #: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
@@ -368,7 +378,7 @@ msgstr "ಸಾಧ್ಯವಿರುವ ಘಟನೆಗಳನ್ನು ಪಟ್�
 #: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:170
 #: ../src/gui-wizard-gtk/main.c:93
 msgid "Add program names to log"
-msgstr ""
+msgstr "ಪ್ರೊಗ್ರಾಮ್‌ನ ಹೆಸರುಗಳನ್ನು ದಾಖಲೆಗೆ ಸೇರಿಸು"
 
 #: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:535
 msgid " [options]"
@@ -444,11 +454,11 @@ msgstr "ಸಹಾಯ (_H)"
 
 #: ../src/gui-gtk/abrt-gtk.c:323
 msgid "_Event configuration"
-msgstr ""
+msgstr "ಘಟನೆ ಸಂರಚನೆ (_E)"
 
 #: ../src/gui-gtk/abrt-gtk.c:399
 msgid "Online _Help"
-msgstr ""
+msgstr "ಆನ್‌ಲೈನ್ ನೆರವು (_H)"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -461,6 +471,10 @@ msgid ""
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 "(default DIRs: "
 msgstr ""
+" [-vp] [DIR]...\n"
+"\n"
+"ಸೂಚಿಸಲಾದ DIR(s) ಯಲ್ಲಿ ABRT ಯ ಬಿಸುಡು ಕೋಶಗಳ ಪಟ್ಟಿಯನ್ನು ತೋರಿಸುತ್ತದೆ \n"
+"(ಪೂರ್ವನಿಯೋಜಿತ DIRಗಳು: "
 
 #: ../src/gui-wizard-gtk/main.c:80
 msgid ""
@@ -468,6 +482,9 @@ msgid ""
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
+" [-vp] [-g GUI_FILE] DIR\n"
+"\n"
+"ಸೂಚಿಸಲಾದ DIR ಯಲ್ಲಿ ಉಳಿಸಲಾದ ತೊಂದರೆಯನ್ನು ವಿಶ್ಲೇಷಿಸುವ ಹಾಗು ವರದಿ ಮಾಡುವ GUI"
 
 #: ../src/gui-wizard-gtk/main.c:92
 msgid "Alternate GUI file"
@@ -501,13 +518,13 @@ msgid "%llu bytes, %u files"
 msgstr "%llu ಬೈಟ್‌ಗಳು, %u ಕಡತಗಳು"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:844
+#: ../src/gui-wizard-gtk/wizard.c:848
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "'%s' ಘಟನೆಗಾಗಿ ಯಾವುದೆ ಸಂಸ್ಕರಣೆಯನ್ನು ಸೂಚಿಸಲಾಗಿಲ್ಲ"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:939
+#: ../src/gui-wizard-gtk/wizard.c:943
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -516,37 +533,37 @@ msgstr ""
 "ಒದಗಿಸಿದ್ದೀರಿ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:945
+#: ../src/gui-wizard-gtk/wizard.c:949
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಬಳಸಲು ಯೋಗ್ಯವಾಗಿರದೆ ಇರುವುದರಿಂದ ವರದಿ ಮಾಡುವುದನ್ನು ಅಶಕ್ತಗೊಳಿಸಲಾಗಿದೆ."
 
-#: ../src/gui-wizard-gtk/wizard.c:954
+#: ../src/gui-wizard-gtk/wizard.c:958
 msgid "You should check the backtrace for sensitive data."
 msgstr "ಸಂವೇದಾತ್ಮಕವಾದ ದತ್ತಾಂಶಕ್ಕಾಗಿ ನೀವು ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ನೋಡಲೇ ಬೇಕಾಗುತ್ತದೆ"
 
-#: ../src/gui-wizard-gtk/wizard.c:955
+#: ../src/gui-wizard-gtk/wizard.c:959
 msgid "You must agree with sending the backtrace."
 msgstr "ನೀವು ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಕಳುಹಿಸಲು ಅಂಗೀಕರಿಸುವುದು ಅಗತ್ಯವಾಗುತ್ತದೆ."
 
-#: ../src/gui-wizard-gtk/wizard.c:1011
+#: ../src/gui-wizard-gtk/wizard.c:1015
 msgid "Analyzing..."
 msgstr "ವಿಶ್ಲೇಷಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1012
+#: ../src/gui-wizard-gtk/wizard.c:1016
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "ವಿಶ್ಲೇಷಣೆಯು %d ಎಂಬ ನಿರ್ಗಮನ ಸಂಕೇತದೊಂದಿಗೆ ಪೂರ್ಣಗೊಂಡಿದೆ"
 
-#: ../src/gui-wizard-gtk/wizard.c:1040
+#: ../src/gui-wizard-gtk/wizard.c:1044
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "ವರದಿ ಮಾಡುವಿಕೆಯು %d ಎಂಬ ನಿರ್ಗಮನ ಸಂಕೇತದೊಂದಿಗೆ ಪೂರ್ಣಗೊಂಡಿದೆ"
 
-#: ../src/gui-wizard-gtk/wizard.c:1158
+#: ../src/gui-wizard-gtk/wizard.c:1162
 msgid "Name"
 msgstr "ಹೆಸರು"
 
-#: ../src/gui-wizard-gtk/wizard.c:1167
+#: ../src/gui-wizard-gtk/wizard.c:1171
 msgid "Value"
 msgstr "ಮೌಲ್ಯ"
 
@@ -597,7 +614,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Configure _Events"
-msgstr ""
+msgstr "ಘಟನೆಗಳನ್ನು ಸಂರಚಿಸು (_E)"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
@@ -610,7 +627,7 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "I _agree with submitting the backtrace"
-msgstr ""
+msgstr "ನಾನು ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಸಲ್ಲಿಸಲು ಅನುಮತಿಸುತ್ತೇನೆ (_a)"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "Regenerate backtrace"
@@ -651,26 +668,26 @@ msgstr "ಆಪ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ: %llu of %llu kbyte
 
 #: ../src/lib/event_config.c:313
 msgid "Missing mandatory value"
-msgstr ""
+msgstr "ಕಡ್ಡಾಯವಾದ ಮೌಲ್ಯವು ಕಾಣಿಸುತ್ತಿಲ್ಲ"
 
 #: ../src/lib/event_config.c:321
 #, c-format
 msgid "Invalid utf8 character '%c'"
-msgstr ""
+msgstr "ಅಮಾನ್ಯವಾದ utf8 ಅಕ್ಷರ '%c'"
 
 #: ../src/lib/event_config.c:332
 #, c-format
 msgid "Invalid number '%s'"
-msgstr ""
+msgstr "ಅಮಾನ್ಯವಾದ ಸಂಖ್ಯೆ '%s'"
 
 #: ../src/lib/event_config.c:343
 #, c-format
 msgid "Invalid boolean value '%s'"
-msgstr ""
+msgstr "ಅಮಾನ್ಯವಾದ ಬೂಲಿಯನ್ ಮೌಲ್ಯ '%s'"
 
 #: ../src/lib/event_config.c:347
 msgid "Unsupported option type"
-msgstr ""
+msgstr "ಬೆಂಬಲವಿಲ್ಲದ ಆಯ್ಕೆಯ ಬಗೆ"
 
 #: ../src/lib/parse_options.c:29
 #, c-format
@@ -683,6 +700,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"ಕೋರ್-ಡಂಪ್‌ನ UUID ಅನ್ನು ಲೆಕ್ಕ ಹಾಕುತ್ತದೆ ಹಾಗು ಬಿಸುಡು ಕೋಶ DIR ನಲ್ಲಿ ಉಳಿಸುತ್ತದೆ"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:61
 msgid ""
@@ -691,6 +711,10 @@ msgid ""
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
 "identifies crash function in dump directory DIR"
 msgstr ""
+" [options] -d DIR\n"
+"\n"
+"C/C++ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ವಿಶ್ಲೇಷಿಸುತ್ತದೆ, ನಕಲಿ ಹ್ಯಾಶ್ ಅನ್ನು ಉತ್ಪಾದಿಸುತ್ತದೆ, ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ "
+"ರೇಟಿಂಗ್ ಮಾಡುತ್ತದೆ, ಹಾಗು ಬಿಸುಡು ಕೋಶ DIR ನಲ್ಲಿ ಕುಸಿತದ ಕ್ರಿಯೆಯನ್ನು ಗುರುತಿಸುತ್ತದೆ"
 
 #.
 #. * The parser failed. Compute the UUID from the executable
@@ -707,6 +731,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
+" [-vs] -d DIR\n"
+"\n"
+"oops ಬಿಸುಡು ಕೋಶ DIR ಗಾಗಿ UUID ಹಾಗು DUPHASH ಅನ್ನು ಲೆಕ್ಕ ಹಾಕುತ್ತದೆ ಹಾಗು ಉಳಿಸುತ್ತದೆ"
 
 #: ../src/plugins/abrt-action-analyze-python.c:38
 msgid ""
@@ -718,78 +745,91 @@ msgstr ""
 "\n"
 "ಪೈತಾನ್ ಕುಸಿತದ ಡಂಪ್‌ಗಳ UUID ಹಾಗು DUPHASH ಅನ್ನು ಲೆಕ್ಕ ಹಾಕಿ ಶೇಖರಿಸಿಡುತ್ತದೆ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:516
+#: ../src/plugins/abrt-action-bugzilla.cpp:517
 #, c-format
 msgid "New bug id: %i"
 msgstr "ಹೊಸ ದೋಷ ವರದಿಯ ಐಡಿ: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:646
+#: ../src/plugins/abrt-action-bugzilla.cpp:647
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr "ಬಳಕೆದಾರ ಹೆಸರು ಅಥವ ಗುಪ್ತಪದವು ಖಾಲಿ ಇದೆ. ದಯವಿಟ್ಟು %s ಅನ್ನು ಪರಿಶೀಲಿಸಿ"
 
+#: ../src/plugins/abrt-action-bugzilla.cpp:662
+#, c-format
+msgid "Essential file '%s' is missing, can't continue.."
+msgstr ""
+
 #: ../src/plugins/abrt-action-bugzilla.cpp:666
 #, c-format
+msgid "Essential file '%s' is empty, can't continue.."
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:675
+#, c-format
 msgid "Logging into Bugzilla at %s"
-msgstr ""
+msgstr "%s ನಲ್ಲಿ ಬಗ್‌ಝಿಲ್ಲಾಗೆ ಪ್ರವೇಶಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:669
+#: ../src/plugins/abrt-action-bugzilla.cpp:678
 msgid "Checking for duplicates"
-msgstr ""
+msgstr "ಪ್ರತಿಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:691
-#: ../src/plugins/abrt-action-bugzilla.cpp:727
+#: ../src/plugins/abrt-action-bugzilla.cpp:700
+#: ../src/plugins/abrt-action-bugzilla.cpp:736
 msgid "Missing mandatory member 'bugs'"
 msgstr "'ದೋಷಗಳು' ಎಂಬ ಅಗತ್ಯ ನಮೂದು ಕಾಣಿಸುತ್ತಿಲ್ಲ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:710
-#: ../src/plugins/abrt-action-bugzilla.cpp:743
-#: ../src/plugins/abrt-action-bugzilla.cpp:819
+#: ../src/plugins/abrt-action-bugzilla.cpp:719
+#: ../src/plugins/abrt-action-bugzilla.cpp:752
+#: ../src/plugins/abrt-action-bugzilla.cpp:828
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() ವಿಫಲಗೊಂಡಿದೆ. ಎಲ್ಲಾ ಅಗತ್ಯ ಮಾಹಿತಿಯನ್ನು ಸಂಗ್ರಹಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:758
+#: ../src/plugins/abrt-action-bugzilla.cpp:767
 msgid "Creating a new bug"
-msgstr ""
+msgstr "ಒಂದು ಹೊಸ ದೋಷವನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:763
+#: ../src/plugins/abrt-action-bugzilla.cpp:772
 msgid "Bugzilla entry creation failed"
 msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ನಮೂದನ್ನು ರಚಿಸುವಿಕೆಯು ವಿಫಲಗೊಂಡಿದೆ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:775
-#: ../src/plugins/abrt-action-bugzilla.cpp:875
+#: ../src/plugins/abrt-action-bugzilla.cpp:784
+#: ../src/plugins/abrt-action-bugzilla.cpp:884
 msgid "Logging out"
-msgstr ""
+msgstr "ನಿರ್ಗಮಿಸಲಾಗುತ್ತಿದೆ"
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:793
+#: ../src/plugins/abrt-action-bugzilla.cpp:802
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "ದೋಷವನ್ನು ಈಗಾಗಲೆ ವರದಿ ಮಾಡಲಾಗಿದೆ: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:804
+#: ../src/plugins/abrt-action-bugzilla.cpp:813
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "ದೋಷ %d ಮೂಲವನ್ನು ಪತ್ತೆ ಮಾಡಲು ಬಗ್‌ಝಿಲ್ಲಾದಿಂದ ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:834
+#: ../src/plugins/abrt-action-bugzilla.cpp:843
 #, c-format
 msgid "Add %s to CC list"
 msgstr "%s ಅನ್ನು CC ಪಟ್ಟಿಗೆ ಸೇರಿಸು"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:860
+#: ../src/plugins/abrt-action-bugzilla.cpp:869
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "ದೋಷಕ್ಕೆ(%d) ಒಂದು ಹೊಸ ಟಿಪ್ಪಣಿಯನ್ನು ಸೇರಿಸಿ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:911
+#: ../src/plugins/abrt-action-bugzilla.cpp:920
 msgid ""
 " [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports problem to Bugzilla"
 msgstr ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"ತೊಂದರೆಗಳನ್ನು ಬಗ್‌ಝಿಲ್ಲಾಕ್ಕೆ ವರದಿ ಮಾಡುತ್ತದೆ"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:924
+#: ../src/plugins/abrt-action-bugzilla.cpp:933
 #: ../src/plugins/abrt-action-rhtsupport.c:277
 msgid "Configuration file (may be given many times)"
 msgstr "ಸಂರಚನಾ ಕಡತ (ಹಲವು ಬಾರಿ ನೀಡಬಹುದಾಗಿರುತ್ತದೆ)"
@@ -800,6 +840,9 @@ msgid ""
 "\n"
 "Generates and saves backtrace for coredump in dump directory DIR"
 msgstr ""
+" [options] -d DIR\n"
+"\n"
+"ಬಿಸುಡು ಕೋಶ DIR ನಲ್ಲಿ ಕೋರ್-ಡಂಪ್‌ಗಾಗಿ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಉತ್ಪಾದಿಸುತ್ತದೆ ಹಾಗು ಉಳಿಸುತ್ತದೆ"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:257
 msgid "Additional debuginfo directories"
@@ -854,7 +897,7 @@ msgstr "(%i, %i ನಲ್ಲಿ) %s ಅನ್ನು ಡೌನ್‌ಲೋಡ್ 
 #. we have "paused":
 #: ../src/plugins/abrt-action-install-debuginfo.py:206
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "ಅಗತ್ಯವಿರುವ ಪ್ಯಾಕೇಜುಗಳಿಗಾಗಿ ರೆಪೊಸಿಟರಿಗಳಲ್ಲಿ ಹುಡುಕಲಾಗುತ್ತಿದೆ"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:240
 #, python-format
@@ -864,7 +907,7 @@ msgstr "%u ದೋಷನಿವಾರಣಾ ಕಡತಗಳಿಗಾಗಿ ಪ್�
 #: ../src/plugins/abrt-action-install-debuginfo.py:242
 #, python-format
 msgid "Packages to download: %u"
-msgstr ""
+msgstr "ಡೌನ್‌ಲೋಡ್ ಮಾಡಬೇಕಿರುವ ಪ್ಯಾಕೇಜ್‌ಗಳು: %u"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:243
 #, python-format
@@ -898,7 +941,7 @@ msgstr "%s ಅನ್ನು ತೆಗೆಯಲಾಗಿಲ್ಲ, ಬಹುಷಃ
 #: ../src/plugins/abrt-action-install-debuginfo.py:316
 #, python-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "'%s' ಕೋರ್-ಡಂಪ್ ಅನ್ನು ವಿಶ್ಲೇಷಿಸಲಾಗುತ್ತಿದೆ"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:394
 #, python-format
@@ -945,11 +988,13 @@ msgid ""
 "\n"
 "Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
+" [-v] [-c CONFFILE]... -d DIR\n"
+"\n"
+"ಕರ್ನಲ್ oops ಅನ್ನು kerneloops.org (ಅಥವ ಅದೇ ರೀತಿಯ) ತಾಣಕ್ಕೆ ವರದಿ ಮಾಡುತ್ತದೆ"
 
 #: ../src/plugins/abrt-action-kerneloops.c:146
-#, fuzzy
 msgid "Configuration file"
-msgstr "ಸಂಕುಚನ ಕಡತ"
+msgstr "ಸಂರಚನಾ ಕಡತ"
 
 #: ../src/plugins/abrt-action-mailx.c:109
 msgid "Sending an email..."
@@ -961,6 +1006,9 @@ msgid ""
 "\n"
 "Sends compressed tarball of dump directory DIR via email"
 msgstr ""
+" [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"ಬಿಸುಡು ಕೋಶ DIR ನ ಸಂಕುಚನಗೊಳಿಸಲಾದ ಟಾರ್ಬಾಲ್ ಅನ್ನು ಇಮೈಲ್ ಮೂಲಕ ಕಳುಹಿಸುತ್ತದೆ"
 
 #: ../src/plugins/abrt-action-mailx.c:148
 #: ../src/plugins/abrt-action-upload.c:259
@@ -973,6 +1021,9 @@ msgid ""
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
+" [-v] -d DIR [-o FILE] [-a yes/no]\n"
+"\n"
+"ತೊಂದರೆಯ ಮಾಹಿತಿಯನ್ನು ಶಿಷ್ಟ ಔಟ್‌ಪುಟ್ ಅಥವ FILE ಗೆ ಮುದ್ರಿಸುತ್ತದೆ"
 
 #: ../src/plugins/abrt-action-print.c:53
 msgid "Output file"
@@ -980,7 +1031,7 @@ msgstr "ಔಟ್‌ಪುಟ್ ಕಡತ"
 
 #: ../src/plugins/abrt-action-print.c:54
 msgid "Append to, or overwrite FILE"
-msgstr ""
+msgstr "FILE ಗೆ ಸೇರಿಸು ಅಥವ ತಿದ್ದಿಬರೆ"
 
 #: ../src/plugins/abrt-action-print.c:87
 #, c-format
@@ -1002,7 +1053,7 @@ msgstr "ದತ್ತಾಂಶ ಸಂಕುಚನಗೊಳಿಸಲಾಗುತ�
 
 #: ../src/plugins/abrt-action-rhtsupport.c:73
 msgid "Empty RHTS login or password"
-msgstr ""
+msgstr "ಖಾಲಿ RHTS ಲಾಗಿನ್ ಅಥವ ಪ್ರವೇಶಪದ"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:189
 msgid "Creating a new case..."
@@ -1014,6 +1065,9 @@ msgid ""
 "\n"
 "Reports a problem to RHTSupport"
 msgstr ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"ತೊಂದರೆಯನ್ನು RHTSupport ಗೆ ವರದಿ ಮಾಡುತ್ತದೆ"
 
 #: ../src/plugins/abrt-action-trim-files.c:154
 msgid ""
@@ -1021,19 +1075,22 @@ msgid ""
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
+" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"\n"
+"DIR ಗಳಲ್ಲಿನ ಬಿಸುಡು ಕೋಶಗಳು (-d) ಅಥವ ಕಡತಗಳು (-f) SIZE ಕ್ಕಿಂತ ಚಿಕ್ಕದಾಗುವವರೆಗೂ "
+"ಅವನ್ನು ಅಳಿಸುತ್ತದೆ"
 
 #: ../src/plugins/abrt-action-trim-files.c:167
 msgid "Delete dump dirs"
-msgstr ""
+msgstr "ಬಿಸುಡು ಕೋಶಗಳನ್ನು ಅಳಿಸು"
 
 #: ../src/plugins/abrt-action-trim-files.c:168
-#, fuzzy
 msgid "Delete files"
-msgstr "ಪರ್ಯಾಯ GUI ಕಡತ"
+msgstr "ಕಡತಗಳನ್ನು ಅಳಿಸು"
 
 #: ../src/plugins/abrt-action-trim-files.c:169
 msgid "Preserve this dump dir"
-msgstr ""
+msgstr "ಈ ಬಿಸುಡು ಕೋಶವನ್ನು ಇರಿಸಿಕೊ"
 
 #: ../src/plugins/abrt-action-upload.c:63
 #, c-format
@@ -1057,6 +1114,9 @@ msgid ""
 "\n"
 "Uploads compressed tarball of dump directory DIR"
 msgstr ""
+" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"ಬಿಸುಡು ಕೋಶ DIR ನ ಸಂಕುಚನಗೊಳಿಸಲಾದ ಟಾರ್ಬಾಲ್ ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ"
 
 #: ../src/plugins/abrt-action-upload.c:260
 msgid "Base URL to upload to"
@@ -1093,7 +1153,7 @@ msgstr "ನಿರ್ಗಮಿಸಬೇಡ, ಹೊಸ oops ಗಳಿಗಾಗಿ 
 #.
 #: ../src/plugins/abrt-dump-oops.c:587
 msgid "Make the dump directory world readable"
-msgstr ""
+msgstr "ಬಿಸುಡು ಕೋಶವನ್ನು ಸಾರ್ವತ್ರಿಕವಾಗಿ ಓದಲಾಗುವಂತೆ ಮಾಡು"
 
 #: ../src/plugins/abrt-retrace-client.c:704
 msgid "log to syslog"

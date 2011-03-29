@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-26 23:35+0100\n"
-"PO-Revision-Date: 2011-03-25 17:37+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"POT-Creation-Date: 2011-03-29 15:09+0200\n"
+"PO-Revision-Date: 2011-03-29 04:42+0000\n"
+"Last-Translator: sandeeps <sshedmak@redhat.com>\n"
 "Language-Team: Marathi <None>\n"
 "Language: mr\n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,6 @@ msgid "ABRT service is not running"
 msgstr "ABRT सेवा कार्यरत नाही"
 
 #: ../src/applet/applet_gtk.c:202 ../src/applet/applet_gtk.c:204
-#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
 msgid "Warning"
 msgstr "सावधानता"
 
@@ -61,7 +60,15 @@ msgstr "लपवा"
 msgid "Report"
 msgstr "रिपोर्ट"
 
-#: ../src/applet/applet_gtk.c:401 ../src/applet/applet_gtk.c:429
+#: ../src/applet/applet_gtk.c:401
+msgid "Show"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
+msgid "A Problem has Occurred"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:429
 msgid "Open ABRT"
 msgstr "ABRT उघडा"
 
@@ -281,14 +288,14 @@ msgstr "N"
 
 #: ../src/cli/report.cpp:511
 msgid "Your input is not valid, because of:"
-msgstr ""
+msgstr "इंपुट वैध नाही, खालील कारणास्तव:"
 
 #: ../src/cli/report.cpp:514
 #, c-format
 msgid "Bad value for '%s': %s"
-msgstr ""
+msgstr "'%s' करीता अयोग्य मूल्य: %s"
 
-#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1039
+#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1043
 msgid "Reporting..."
 msgstr "कळवत आहे..."
 
@@ -325,6 +332,9 @@ msgid ""
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"संकुल कोषात चौकशी करा व संकुल नाव, घटक, व वर्णन साठवा"
 
 #: ../src/daemon/abrt-action-save-package-data.c:263
 #: ../src/daemon/abrt-handle-crashdump.c:61
@@ -332,7 +342,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-backtrace.c:72
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-action-bugzilla.cpp:923
+#: ../src/plugins/abrt-action-bugzilla.cpp:932
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:145
 #: ../src/plugins/abrt-action-mailx.c:147
@@ -340,7 +350,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-rhtsupport.c:276
 #: ../src/plugins/abrt-action-upload.c:258
 msgid "Dump directory"
-msgstr ""
+msgstr "डम्प डिरेक्ट्री"
 
 #: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
@@ -367,7 +377,7 @@ msgstr "संभाव्य इव्हेंटस् दाखवा [ज�
 #: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:170
 #: ../src/gui-wizard-gtk/main.c:93
 msgid "Add program names to log"
-msgstr ""
+msgstr "लॉगमध्ये कार्यक्रम नावे समाविष्ट करा"
 
 #: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:535
 msgid " [options]"
@@ -443,11 +453,11 @@ msgstr "मदत (_H)"
 
 #: ../src/gui-gtk/abrt-gtk.c:323
 msgid "_Event configuration"
-msgstr ""
+msgstr "घटना संरचना (_E)"
 
 #: ../src/gui-gtk/abrt-gtk.c:399
 msgid "Online _Help"
-msgstr ""
+msgstr "ऑनलाइन मदत (_H)"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -460,6 +470,10 @@ msgid ""
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 "(default DIRs: "
 msgstr ""
+" [-vp] [DIR]...\n"
+"\n"
+"निर्देशीत DIR(s) मध्ये ABRT डम्प डिरेक्ट्रिज्ची सूची दाखवा\n"
+"(पूर्वनिर्धारीत DIRs: "
 
 #: ../src/gui-wizard-gtk/main.c:80
 msgid ""
@@ -467,6 +481,9 @@ msgid ""
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
+" [-vp] [-g GUI_FILE] DIR\n"
+"\n"
+"निर्देशीत DIR मधील आढळलेल्या अडचणीचे विश्लेषण व त्यांस कळवण्याकरीता GUI साधन"
 
 #: ../src/gui-wizard-gtk/main.c:92
 msgid "Alternate GUI file"
@@ -500,50 +517,50 @@ msgid "%llu bytes, %u files"
 msgstr "%llu बाईट्स्, %u फाइल्स्"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:844
+#: ../src/gui-wizard-gtk/wizard.c:848
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "घटना '%s' करीता विश्लेषण ठरवले नाही"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:939
+#: ../src/gui-wizard-gtk/wizard.c:943
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "बॅकट्रेस् अपूर्ण आहे, पुनःनिर्माण करण्यासाठी कृपया योग्य पद्धत पुरवण्याची खात्री करा."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:945
+#: ../src/gui-wizard-gtk/wizard.c:949
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "बॅकट्रेस् वापरण्याजोगी नसल्यामुळे रिपोर्टिंग बंद केले."
 
-#: ../src/gui-wizard-gtk/wizard.c:954
+#: ../src/gui-wizard-gtk/wizard.c:958
 msgid "You should check the backtrace for sensitive data."
 msgstr "संवेदनशील डाटाकरीता बॅकट्रेस तपासाणे आवश्यक आहे."
 
-#: ../src/gui-wizard-gtk/wizard.c:955
+#: ../src/gui-wizard-gtk/wizard.c:959
 msgid "You must agree with sending the backtrace."
 msgstr "बॅकट्रेस पाठण्याकरीता आपली मान्यता आवश्यक आहे."
 
-#: ../src/gui-wizard-gtk/wizard.c:1011
+#: ../src/gui-wizard-gtk/wizard.c:1015
 msgid "Analyzing..."
 msgstr "विश्लेषण करत आहे..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1012
+#: ../src/gui-wizard-gtk/wizard.c:1016
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "एक्जिट कोड %d सह विश्लेषण पूर्ण झाले"
 
-#: ../src/gui-wizard-gtk/wizard.c:1040
+#: ../src/gui-wizard-gtk/wizard.c:1044
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "एक्जिट कोड %d सह रिपोर्टिंग पूर्ण झाले"
 
-#: ../src/gui-wizard-gtk/wizard.c:1158
+#: ../src/gui-wizard-gtk/wizard.c:1162
 msgid "Name"
 msgstr "नाव"
 
-#: ../src/gui-wizard-gtk/wizard.c:1167
+#: ../src/gui-wizard-gtk/wizard.c:1171
 msgid "Value"
 msgstr "मूल्य"
 
@@ -588,7 +605,7 @@ msgstr "विश्लेषणसह पुढे जाण्यासाठ�
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Configure _Events"
-msgstr ""
+msgstr "घटना संरचीत करा (_E)"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
@@ -600,7 +617,7 @@ msgstr "ही अडचणी कशी घडली (स्टेप-बाय
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "I _agree with submitting the backtrace"
-msgstr ""
+msgstr "मी बॅकट्रेस सादर करण्यास मान्य करतो (_a)"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "Regenerate backtrace"
@@ -641,26 +658,26 @@ msgstr "अपलोड केले: %llu, %llu kbytes पैकी"
 
 #: ../src/lib/event_config.c:313
 msgid "Missing mandatory value"
-msgstr ""
+msgstr "अनिवार्य मूल्य आढळले नाही"
 
 #: ../src/lib/event_config.c:321
 #, c-format
 msgid "Invalid utf8 character '%c'"
-msgstr ""
+msgstr "अवैध utf8 अक्षर '%c'"
 
 #: ../src/lib/event_config.c:332
 #, c-format
 msgid "Invalid number '%s'"
-msgstr ""
+msgstr "अवैध क्रमांक '%s'"
 
 #: ../src/lib/event_config.c:343
 #, c-format
 msgid "Invalid boolean value '%s'"
-msgstr ""
+msgstr "अवैध बूलियन मूल्य '%s'"
 
 #: ../src/lib/event_config.c:347
 msgid "Unsupported option type"
-msgstr ""
+msgstr "असमर्थीत पर्याय प्रकार"
 
 #: ../src/lib/parse_options.c:29
 #, c-format
@@ -673,6 +690,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"डम्प डिरेक्ट्री DIR मध्ये कोरडम्पच्या UUID ची गणणा करतो व साठवतो"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:61
 msgid ""
@@ -681,6 +701,10 @@ msgid ""
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
 "identifies crash function in dump directory DIR"
 msgstr ""
+" [options] -d DIR\n"
+"\n"
+"C/C++ बॅकट्रेसचे विश्लेषण करतो, हुबेहुब हॅश निर्माण करतो, बॅकट्रेस रेटिंग, व डम्प डिरेक्ट्री DIR "
+"मधील क्रॅश फंक्शन ओळखतो"
 
 #.
 #. * The parser failed. Compute the UUID from the executable
@@ -697,6 +721,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
+" [-vs] -d DIR\n"
+"\n"
+"ऊप्स् डम्प डिरेक्ट्री DIR करीता UUID व DUPHASH ची गणणा करतो व साठवतो"
 
 #: ../src/plugins/abrt-action-analyze-python.c:38
 msgid ""
@@ -708,78 +735,91 @@ msgstr ""
 "\n"
 "पायथन क्रॅश डम्प्स्चे UUID व DUPHASH मोजतो व साठवतो"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:516
+#: ../src/plugins/abrt-action-bugzilla.cpp:517
 #, c-format
 msgid "New bug id: %i"
 msgstr "नवीन बग id: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:646
+#: ../src/plugins/abrt-action-bugzilla.cpp:647
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr "रिकामे लॉगिन किंवा पासवर्ड, कृपया %s तपासा"
 
+#: ../src/plugins/abrt-action-bugzilla.cpp:662
+#, c-format
+msgid "Essential file '%s' is missing, can't continue.."
+msgstr ""
+
 #: ../src/plugins/abrt-action-bugzilla.cpp:666
 #, c-format
+msgid "Essential file '%s' is empty, can't continue.."
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:675
+#, c-format
 msgid "Logging into Bugzilla at %s"
-msgstr ""
+msgstr "%s येथे बगजिलामध्ये प्रवेश करतो"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:669
+#: ../src/plugins/abrt-action-bugzilla.cpp:678
 msgid "Checking for duplicates"
-msgstr ""
+msgstr "हुबेहुबकरीता तपासणी करतो"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:691
-#: ../src/plugins/abrt-action-bugzilla.cpp:727
+#: ../src/plugins/abrt-action-bugzilla.cpp:700
+#: ../src/plugins/abrt-action-bugzilla.cpp:736
 msgid "Missing mandatory member 'bugs'"
 msgstr "आवश्यक सदस्य 'bugs' आढळले नाही"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:710
-#: ../src/plugins/abrt-action-bugzilla.cpp:743
-#: ../src/plugins/abrt-action-bugzilla.cpp:819
+#: ../src/plugins/abrt-action-bugzilla.cpp:719
+#: ../src/plugins/abrt-action-bugzilla.cpp:752
+#: ../src/plugins/abrt-action-bugzilla.cpp:828
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() अपयशी. सर्व आवश्यक माहिती एकत्र करण्यास अशक्य"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:758
+#: ../src/plugins/abrt-action-bugzilla.cpp:767
 msgid "Creating a new bug"
-msgstr ""
+msgstr "नवीन बग निर्माण करत आहे"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:763
+#: ../src/plugins/abrt-action-bugzilla.cpp:772
 msgid "Bugzilla entry creation failed"
 msgstr "बगजीला नोंदणी निर्माण अपयशी"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:775
-#: ../src/plugins/abrt-action-bugzilla.cpp:875
+#: ../src/plugins/abrt-action-bugzilla.cpp:784
+#: ../src/plugins/abrt-action-bugzilla.cpp:884
 msgid "Logging out"
-msgstr ""
+msgstr "बाहेर पडत आहे"
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:793
+#: ../src/plugins/abrt-action-bugzilla.cpp:802
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "बग आधिपासूनच कळवले: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:804
+#: ../src/plugins/abrt-action-bugzilla.cpp:813
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "बग %d चे पॅरेंट शोधण्यास बगजीला अशक्य"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:834
+#: ../src/plugins/abrt-action-bugzilla.cpp:843
 #, c-format
 msgid "Add %s to CC list"
 msgstr "%s ला CC सूचीत समाविष्ट करा"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:860
+#: ../src/plugins/abrt-action-bugzilla.cpp:869
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "बग(%d) मध्ये नवीन टिपण्णी समावेश करा"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:911
+#: ../src/plugins/abrt-action-bugzilla.cpp:920
 msgid ""
 " [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports problem to Bugzilla"
 msgstr ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"बगजिलामध्ये अडचणी कळवतो"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:924
+#: ../src/plugins/abrt-action-bugzilla.cpp:933
 #: ../src/plugins/abrt-action-rhtsupport.c:277
 msgid "Configuration file (may be given many times)"
 msgstr "संरचना फाइल (एकापेक्षा जास्तवेळी देणे शक्य आहे)"
@@ -790,6 +830,9 @@ msgid ""
 "\n"
 "Generates and saves backtrace for coredump in dump directory DIR"
 msgstr ""
+" [पर्याय] -d DIR\n"
+"\n"
+"डम्प डिरेक्ट्री DIR मध्ये कोरडम्पकरीता बॅकट्रेस निर्माण करतो व साठवतो"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:257
 msgid "Additional debuginfo directories"
@@ -844,7 +887,7 @@ msgstr "(%i पैकी %i) %s: %3u%% डाउनलोड करत आहे
 #. we have "paused":
 #: ../src/plugins/abrt-action-install-debuginfo.py:206
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "रेपॉजिटरिजमध्ये आवश्यक संकुलांची तपासणी करतो"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:240
 #, python-format
@@ -854,7 +897,7 @@ msgstr "%u debuginfo फाइल्स् करीता संकुले �
 #: ../src/plugins/abrt-action-install-debuginfo.py:242
 #, python-format
 msgid "Packages to download: %u"
-msgstr ""
+msgstr "डाऊनलोड करण्याजोगी संकुले: %u"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:243
 #, python-format
@@ -888,7 +931,7 @@ msgstr "%s काढून टाकणे अशक्य, संभाव्�
 #: ../src/plugins/abrt-action-install-debuginfo.py:316
 #, python-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "कोरडम्प '%s' चे विश्लेषण करतो"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:394
 #, python-format
@@ -934,9 +977,11 @@ msgid ""
 "\n"
 "Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
+" [-v] [-c CONFFILE]... -d DIR\n"
+"\n"
+"कर्नल ऊप्स्ला kerneloops.org (किंवा समान) स्थळकरीता कळवतो"
 
 #: ../src/plugins/abrt-action-kerneloops.c:146
-#, fuzzy
 msgid "Configuration file"
 msgstr "संरचना फाइल"
 
@@ -950,6 +995,9 @@ msgid ""
 "\n"
 "Sends compressed tarball of dump directory DIR via email"
 msgstr ""
+" [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"डम्प डिरेक्ट्री DIR चे ईमेल द्वारे संकलित टारबॉल पाठवतो"
 
 #: ../src/plugins/abrt-action-mailx.c:148
 #: ../src/plugins/abrt-action-upload.c:259
@@ -962,6 +1010,9 @@ msgid ""
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
+" [-v] -d DIR [-o FILE] [-a yes/no]\n"
+"\n"
+"अडचणीची माहिती मानक आऊटपुट किंवा FILE मध्ये छपाई करतो"
 
 #: ../src/plugins/abrt-action-print.c:53
 msgid "Output file"
@@ -969,7 +1020,7 @@ msgstr "आउटपुट फाइल"
 
 #: ../src/plugins/abrt-action-print.c:54
 msgid "Append to, or overwrite FILE"
-msgstr ""
+msgstr "समाविष्ट करा, किंवा FILE मध्ये खोडून पुनः लिहा"
 
 #: ../src/plugins/abrt-action-print.c:87
 #, c-format
@@ -991,7 +1042,7 @@ msgstr "डाटा संकलित करत आहे"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:73
 msgid "Empty RHTS login or password"
-msgstr ""
+msgstr "रिकामे RHTS प्रवेश किंवा पासवर्ड"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:189
 msgid "Creating a new case..."
@@ -1003,6 +1054,9 @@ msgid ""
 "\n"
 "Reports a problem to RHTSupport"
 msgstr ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"RHTSupport करीता अडचण कळवतो"
 
 #: ../src/plugins/abrt-action-trim-files.c:154
 msgid ""
@@ -1010,19 +1064,21 @@ msgid ""
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
+" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"\n"
+"SIZE पेक्षा लहान असल्यास DIRs मधील डम्प dirs (-d) किंवा फाइल्स् (-f) नष्ट करतो"
 
 #: ../src/plugins/abrt-action-trim-files.c:167
 msgid "Delete dump dirs"
-msgstr ""
+msgstr "डम्प dirs नष्ट करा"
 
 #: ../src/plugins/abrt-action-trim-files.c:168
-#, fuzzy
 msgid "Delete files"
-msgstr "वैकल्पिक GUI फाइल"
+msgstr "फाइल्स् नष्ट करा"
 
 #: ../src/plugins/abrt-action-trim-files.c:169
 msgid "Preserve this dump dir"
-msgstr ""
+msgstr "ही डम्प dir साठवा"
 
 #: ../src/plugins/abrt-action-upload.c:63
 #, c-format
@@ -1046,6 +1102,9 @@ msgid ""
 "\n"
 "Uploads compressed tarball of dump directory DIR"
 msgstr ""
+" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"डम्प डिरेक्ट्री DIR चे संकलित टारबॉल अपलोड करतो"
 
 #: ../src/plugins/abrt-action-upload.c:260
 msgid "Base URL to upload to"
@@ -1082,7 +1141,7 @@ msgstr "बाहेर पडू नका, नवीन ऊप्सेसक�
 #.
 #: ../src/plugins/abrt-dump-oops.c:587
 msgid "Make the dump directory world readable"
-msgstr ""
+msgstr "डम्प डिरेक्ट्रीला वलर्ड रिडेबल बनवा"
 
 #: ../src/plugins/abrt-retrace-client.c:704
 msgid "log to syslog"

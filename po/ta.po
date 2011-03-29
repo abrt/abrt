@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-26 23:35+0100\n"
-"PO-Revision-Date: 2011-03-25 17:37+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"POT-Creation-Date: 2011-03-29 15:09+0200\n"
+"PO-Revision-Date: 2011-03-28 09:31+0000\n"
+"Last-Translator: ifelix <ifelix25@gmail.com>\n"
 "Language-Team: Tamil <tamil-users@lists.fedoraproject.org>\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,6 @@ msgid "ABRT service is not running"
 msgstr "ABRT சேவை இயங்கவில்லை"
 
 #: ../src/applet/applet_gtk.c:202 ../src/applet/applet_gtk.c:204
-#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
 msgid "Warning"
 msgstr "எச்சரிக்கை"
 
@@ -63,7 +62,15 @@ msgstr "மறை"
 msgid "Report"
 msgstr "அறிக்கை"
 
-#: ../src/applet/applet_gtk.c:401 ../src/applet/applet_gtk.c:429
+#: ../src/applet/applet_gtk.c:401
+msgid "Show"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
+msgid "A Problem has Occurred"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:429
 msgid "Open ABRT"
 msgstr "Open ABRT"
 
@@ -176,6 +183,47 @@ msgid ""
 "\t-V, --version\t\tDisplay version and exit\n"
 "\t-v, --verbose\t\tBe verbose\n"
 msgstr ""
+"Usage: %s -l[f] [-D BASE_DIR]...]\n"
+"   or: %s -r[y] CRASH_DIR\n"
+"   or: %s -i[b] CRASH_DIR\n"
+"   or: %s -d CRASH_DIR\n"
+"\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>-l, --list<span class="
+"\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" "
+"title=\"Tab\">»</span>List not yet reported crashes\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>  -f, --full<span "
+"class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace "
+"other\" title=\"Tab\">»</span>List all crashes\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>-D BASE_DIR<span "
+"class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace "
+"other\" title=\"Tab\">»</span>Directory to list crashes from\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span><span class="
+"\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" "
+"title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span>"
+"(default: -D $HOME/.abrt/spool -D %s)\n"
+"\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>-r, --report<span "
+"class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace "
+"other\" title=\"Tab\">»</span>Send a report about CRASH_DIR\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>  -y, --always<span "
+"class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace "
+"other\" title=\"Tab\">»</span>...without editing and asking\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>-i, --info<span class="
+"\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" "
+"title=\"Tab\">»</span>Print detailed information about CRASH_DIR\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>  -b, --"
+"backtrace<span class=\"whitespace other\" title=\"Tab\">»</span>...including "
+"backtrace\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>-d, --delete<span "
+"class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace "
+"other\" title=\"Tab\">»</span>Remove CRASH_DIR\n"
+"\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>-V, --version<span "
+"class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace "
+"other\" title=\"Tab\">»</span>Display version and exit\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>-v, --verbose<span "
+"class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace "
+"other\" title=\"Tab\">»</span>Be verbose\n"
 
 #: ../src/cli/cli.c:298
 msgid "You must specify exactly one operation"
@@ -265,14 +313,14 @@ msgstr "N"
 
 #: ../src/cli/report.cpp:511
 msgid "Your input is not valid, because of:"
-msgstr ""
+msgstr "Your input is not valid, because of:"
 
 #: ../src/cli/report.cpp:514
 #, c-format
 msgid "Bad value for '%s': %s"
-msgstr ""
+msgstr "Bad value for '%s': %s"
 
-#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1039
+#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1043
 msgid "Reporting..."
 msgstr "அறிக்கையிடுகிறது..."
 
@@ -309,6 +357,9 @@ msgid ""
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"Query package database and save package name, component, and description"
 
 #: ../src/daemon/abrt-action-save-package-data.c:263
 #: ../src/daemon/abrt-handle-crashdump.c:61
@@ -316,7 +367,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-backtrace.c:72
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-action-bugzilla.cpp:923
+#: ../src/plugins/abrt-action-bugzilla.cpp:932
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:145
 #: ../src/plugins/abrt-action-mailx.c:147
@@ -324,7 +375,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-rhtsupport.c:276
 #: ../src/plugins/abrt-action-upload.c:258
 msgid "Dump directory"
-msgstr ""
+msgstr "டம்ப் அடைவு"
 
 #: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
@@ -355,7 +406,7 @@ msgstr ""
 
 #: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:535
 msgid " [options]"
-msgstr ""
+msgstr " [விருப்பங்கள் ]"
 
 #: ../src/daemon/abrt-server.c:296
 msgid "Use UID as client uid"
@@ -391,11 +442,11 @@ msgstr "கடவுச்சொல்லை காட்டு"
 
 #: ../src/gtk-helpers/event_config_dialog.c:311
 msgid "Event Configuration"
-msgstr ""
+msgstr "நிகழ்வு கட்டமைப்பு"
 
 #: ../src/gtk-helpers/event_config_dialog.c:336
 msgid "Event"
-msgstr ""
+msgstr "நிகழ்வு"
 
 #: ../src/gtk-helpers/event_config_dialog.c:369
 msgid "Configure E_vent"
@@ -407,11 +458,11 @@ msgstr "அறிக்கையிடப்பட்டது"
 
 #: ../src/gui-gtk/abrt-gtk.c:267
 msgid "Problem"
-msgstr ""
+msgstr "சிக்கல்"
 
 #: ../src/gui-gtk/abrt-gtk.c:290
 msgid "Last occurrence"
-msgstr ""
+msgstr "கடைசி தருவாய்"
 
 #: ../src/gui-gtk/abrt-gtk.c:305
 msgid "_File"
@@ -427,11 +478,11 @@ msgstr "உதவி (_H)"
 
 #: ../src/gui-gtk/abrt-gtk.c:323
 msgid "_Event configuration"
-msgstr ""
+msgstr "நிகழ்வு கட்டமைப்பு (_E)"
 
 #: ../src/gui-gtk/abrt-gtk.c:399
 msgid "Online _Help"
-msgstr ""
+msgstr "வலை உதவி (_H)"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -444,6 +495,10 @@ msgid ""
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 "(default DIRs: "
 msgstr ""
+" [-vp] [DIR]...\n"
+"\n"
+"Shows list of ABRT dump directories in specified DIR(s)\n"
+"(default DIRs: "
 
 #: ../src/gui-wizard-gtk/main.c:80
 msgid ""
@@ -451,6 +506,9 @@ msgid ""
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
+" [-vp] [-g GUI_FILE] DIR\n"
+"\n"
+"GUI tool to analyze and report problem saved in specified DIR"
 
 #: ../src/gui-wizard-gtk/main.c:92
 msgid "Alternate GUI file"
@@ -462,33 +520,35 @@ msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
 msgstr ""
+"Need writable directory, but '%s' is not writable. Move it to '%s' and "
+"operate on the moved copy?"
 
 #: ../src/gui-wizard-gtk/wizard.c:499
 msgid "(click here to view/edit)"
-msgstr ""
+msgstr "(click here to view/edit)"
 
 #: ../src/gui-wizard-gtk/wizard.c:511
 #, c-format
 msgid "(binary file, %llu bytes)"
-msgstr ""
+msgstr "(binary file, %llu bytes)"
 
 #: ../src/gui-wizard-gtk/wizard.c:526
 msgid "(no description)"
-msgstr ""
+msgstr "(no description)"
 
 #: ../src/gui-wizard-gtk/wizard.c:531
 #, c-format
 msgid "%llu bytes, %u files"
-msgstr ""
+msgstr "%llu bytes, %u files"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:844
+#: ../src/gui-wizard-gtk/wizard.c:848
 #, c-format
 msgid "No processing for event '%s' is defined"
-msgstr ""
+msgstr "No processing for event '%s' is defined"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:939
+#: ../src/gui-wizard-gtk/wizard.c:943
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -497,53 +557,54 @@ msgstr ""
 "என உறுதிசெய்யவும்."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:945
+#: ../src/gui-wizard-gtk/wizard.c:949
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "அறிக்கை செயல்நீக்கப்பட்டது, மேலே காட்டப்பட்ட சிக்கல்களை பொருத்தவும்."
 
-#: ../src/gui-wizard-gtk/wizard.c:954
+#: ../src/gui-wizard-gtk/wizard.c:958
 msgid "You should check the backtrace for sensitive data."
 msgstr "உணர்வுள்ள தரவுக்கு பேக்ட்ரேஸை சரி பார்க்க வேண்டும்."
 
-#: ../src/gui-wizard-gtk/wizard.c:955
+#: ../src/gui-wizard-gtk/wizard.c:959
 msgid "You must agree with sending the backtrace."
 msgstr "நீங்கள் பேக்ட்ரேஸுடன் அனுப்பும் போது ஏற்க வேண்டும்."
 
-#: ../src/gui-wizard-gtk/wizard.c:1011
+#: ../src/gui-wizard-gtk/wizard.c:1015
 msgid "Analyzing..."
-msgstr ""
+msgstr "ஆராய்கிறது..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1012
+#: ../src/gui-wizard-gtk/wizard.c:1016
 #, c-format
 msgid "Analyzing finished with exit code %d"
-msgstr ""
+msgstr "Analyzing finished with exit code %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1040
+#: ../src/gui-wizard-gtk/wizard.c:1044
 #, c-format
 msgid "Reporting finished with exit code %d"
-msgstr ""
+msgstr "Reporting finished with exit code %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1158
+#: ../src/gui-wizard-gtk/wizard.c:1162
 msgid "Name"
 msgstr "பெயர்"
 
-#: ../src/gui-wizard-gtk/wizard.c:1167
+#: ../src/gui-wizard-gtk/wizard.c:1171
 msgid "Value"
-msgstr ""
+msgstr "மதிப்பு"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr ""
+"<b>துணுக்கு:</b> உங்கள் கருத்துக்கள் தனிப்பட்டவை அல்ல. நீங்கள் சொல்வதற்கு ஏற்ப பார்க்கவும்."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Analyzing did not start yet"
-msgstr ""
+msgstr "ஆராய்தல் இன்னும் தொடங்கவில்லை"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Any additional comments useful for diagnosing the problem?"
-msgstr ""
+msgstr "Any additional comments useful for diagnosing the problem?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid ""
@@ -551,12 +612,17 @@ msgid ""
 "down the source of the problem. Please review it and remove any sensitive "
 "data you would rather not share:"
 msgstr ""
+"Backtrace provides developers with details of the crash, helping them track "
+"down the source of the problem. Please review it and remove any sensitive "
+"data you would rather not share:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
 "Can create more informative backtrace if you installed additional debug "
 "packages"
 msgstr ""
+"Can create more informative backtrace if you installed additional debug "
+"packages"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "Click 'Apply' to start reporting"
@@ -564,11 +630,11 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "Click 'Forward' to proceed with analyzing and reporting this problem."
-msgstr ""
+msgstr "Click 'Forward' to proceed with analyzing and reporting this problem."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Configure _Events"
-msgstr ""
+msgstr "நிகழ்விகளை கட்டமை (_E)"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
@@ -576,11 +642,11 @@ msgstr "விவரங்கள்"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid "How did this problem happen (step-by-step)? How can it be reproduced?"
-msgstr ""
+msgstr "How did this problem happen (step-by-step)? How can it be reproduced?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "I _agree with submitting the backtrace"
-msgstr ""
+msgstr "I _agree with submitting the backtrace"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "Regenerate backtrace"
@@ -588,11 +654,11 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid "Reporter(s):"
-msgstr ""
+msgstr "அறிக்கையாளர்கள்:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid "Reporting did not start yet"
-msgstr ""
+msgstr "இன்னும் அறிக்கையிடுதல் தொடங்கவில்லை"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "Select how you would like to analyze the problem:"
@@ -604,13 +670,15 @@ msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Size:"
-msgstr ""
+msgstr "அளவு:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid ""
 "Use this button to generate more informative backtrace after you installed "
 "additional debug packages"
 msgstr ""
+"Use this button to generate more informative backtrace after you installed "
+"additional debug packages"
 
 #: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
 #, c-format
@@ -619,26 +687,26 @@ msgstr "பதிவேற்றப்பட்டது: %llu இல் %llu �
 
 #: ../src/lib/event_config.c:313
 msgid "Missing mandatory value"
-msgstr ""
+msgstr "அவசியமான மதிப்பு விடுப்பட்டுள்ளது"
 
 #: ../src/lib/event_config.c:321
 #, c-format
 msgid "Invalid utf8 character '%c'"
-msgstr ""
+msgstr "தவறான utf8 எழுத்து '%c'"
 
 #: ../src/lib/event_config.c:332
 #, c-format
 msgid "Invalid number '%s'"
-msgstr ""
+msgstr "தவறான எண் '%s'"
 
 #: ../src/lib/event_config.c:343
 #, c-format
 msgid "Invalid boolean value '%s'"
-msgstr ""
+msgstr " தவறான பூலியன் மதிப்பு '%s'"
 
 #: ../src/lib/event_config.c:347
 msgid "Unsupported option type"
-msgstr ""
+msgstr "துணைபுரியாத விருப்ப வகை"
 
 #: ../src/lib/parse_options.c:29
 #, c-format
@@ -651,6 +719,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"Calculates and saves UUID of coredump in dump directory DIR"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:61
 msgid ""
@@ -659,6 +730,10 @@ msgid ""
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
 "identifies crash function in dump directory DIR"
 msgstr ""
+" [options] -d DIR\n"
+"\n"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
+"identifies crash function in dump directory DIR"
 
 #.
 #. * The parser failed. Compute the UUID from the executable
@@ -675,6 +750,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 
 #: ../src/plugins/abrt-action-analyze-python.c:38
 msgid ""
@@ -682,80 +760,96 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"Calculates and saves UUID and DUPHASH of python crash dumps"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:516
+#: ../src/plugins/abrt-action-bugzilla.cpp:517
 #, c-format
 msgid "New bug id: %i"
 msgstr "புதிய பிழை குறியீடு: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:646
+#: ../src/plugins/abrt-action-bugzilla.cpp:647
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr "புகுபதிவு அல்லது கடவுச்சொல்லை காலியாக்கு, %sஐ சரி பார்க்கவும்"
 
+#: ../src/plugins/abrt-action-bugzilla.cpp:662
+#, c-format
+msgid "Essential file '%s' is missing, can't continue.."
+msgstr ""
+
 #: ../src/plugins/abrt-action-bugzilla.cpp:666
+#, c-format
+msgid "Essential file '%s' is empty, can't continue.."
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:675
 #, c-format
 msgid "Logging into Bugzilla at %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:669
+#: ../src/plugins/abrt-action-bugzilla.cpp:678
 msgid "Checking for duplicates"
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:691
-#: ../src/plugins/abrt-action-bugzilla.cpp:727
+#: ../src/plugins/abrt-action-bugzilla.cpp:700
+#: ../src/plugins/abrt-action-bugzilla.cpp:736
 msgid "Missing mandatory member 'bugs'"
 msgstr "விடுபட்ட அவசியமான உறுப்பினர் 'பிழைகள்'"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:710
-#: ../src/plugins/abrt-action-bugzilla.cpp:743
-#: ../src/plugins/abrt-action-bugzilla.cpp:819
+#: ../src/plugins/abrt-action-bugzilla.cpp:719
+#: ../src/plugins/abrt-action-bugzilla.cpp:752
+#: ../src/plugins/abrt-action-bugzilla.cpp:828
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() செயலிழக்கப்பட்டது. அனைத்து அவசிய தகவலையும் சேகரிக்க முடியவில்லை"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:758
+#: ../src/plugins/abrt-action-bugzilla.cpp:767
 msgid "Creating a new bug"
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:763
+#: ../src/plugins/abrt-action-bugzilla.cpp:772
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla உள்ளீடு உருவாக்க முடியவில்லை"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:775
-#: ../src/plugins/abrt-action-bugzilla.cpp:875
+#: ../src/plugins/abrt-action-bugzilla.cpp:784
+#: ../src/plugins/abrt-action-bugzilla.cpp:884
 msgid "Logging out"
 msgstr ""
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:793
+#: ../src/plugins/abrt-action-bugzilla.cpp:802
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "பிழை ஏற்கனவே அறிக்கையிடப்பட்டது: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:804
+#: ../src/plugins/abrt-action-bugzilla.cpp:813
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla பிழை(%d) மூலத்தை அறிய முடியவில்லை"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:834
+#: ../src/plugins/abrt-action-bugzilla.cpp:843
 #, c-format
 msgid "Add %s to CC list"
 msgstr "%s ஐ CC பட்டியலுக்குச் சேர்"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:860
+#: ../src/plugins/abrt-action-bugzilla.cpp:869
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "பிழையில் புதிய கட்டளையைச் சேர்(%d)"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:911
+#: ../src/plugins/abrt-action-bugzilla.cpp:920
 msgid ""
 " [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports problem to Bugzilla"
 msgstr ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"Reports problem to Bugzilla"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:924
+#: ../src/plugins/abrt-action-bugzilla.cpp:933
 #: ../src/plugins/abrt-action-rhtsupport.c:277
 msgid "Configuration file (may be given many times)"
 msgstr ""
@@ -766,6 +860,9 @@ msgid ""
 "\n"
 "Generates and saves backtrace for coredump in dump directory DIR"
 msgstr ""
+" [options] -d DIR\n"
+"\n"
+"Generates and saves backtrace for coredump in dump directory DIR"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:257
 msgid "Additional debuginfo directories"
@@ -864,21 +961,21 @@ msgstr "%sஐ நீக்க முடியவில்லை, ஒரு ப�
 #: ../src/plugins/abrt-action-install-debuginfo.py:316
 #, python-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "Analyzing coredump '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:394
 #, python-format
 msgid "Can't remove '%s': %s"
-msgstr ""
+msgstr "Can't remove '%s': %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:402
 msgid "Exiting on user command"
-msgstr ""
+msgstr "Exiting on user command"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:428
 #, python-format
 msgid "Usage: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
-msgstr ""
+msgstr "Usage: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:457
 msgid "You have to specify the path to coredump."
@@ -887,17 +984,17 @@ msgstr " coredump பாதையை நீங்கள் தேர்ந்த
 #: ../src/plugins/abrt-action-install-debuginfo.py:474
 #, python-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
-msgstr ""
+msgstr "Coredump references %u debuginfo files, %u of them are not installed"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:479
 #, python-format
 msgid "Missing debuginfo file: %s"
-msgstr ""
+msgstr "Missing debuginfo file: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:482
 #, python-format
 msgid "All %u debuginfo files are available"
-msgstr ""
+msgstr "All %u debuginfo files are available"
 
 #: ../src/plugins/abrt-action-kerneloops.c:105
 #, c-format
@@ -910,11 +1007,13 @@ msgid ""
 "\n"
 "Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
+" [-v] [-c CONFFILE]... -d DIR\n"
+"\n"
+"Reports kernel oops to kerneloops.org (or similar) site"
 
 #: ../src/plugins/abrt-action-kerneloops.c:146
-#, fuzzy
 msgid "Configuration file"
-msgstr "கோப்பை கட்டமை"
+msgstr ""
 
 #: ../src/plugins/abrt-action-mailx.c:109
 msgid "Sending an email..."
@@ -926,6 +1025,9 @@ msgid ""
 "\n"
 "Sends compressed tarball of dump directory DIR via email"
 msgstr ""
+" [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"Sends compressed tarball of dump directory DIR via email"
 
 #: ../src/plugins/abrt-action-mailx.c:148
 #: ../src/plugins/abrt-action-upload.c:259
@@ -938,6 +1040,9 @@ msgid ""
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
+" [-v] -d DIR [-o FILE] [-a yes/no]\n"
+"\n"
+"Prints problem information to standard output or FILE"
 
 #: ../src/plugins/abrt-action-print.c:53
 msgid "Output file"
@@ -967,7 +1072,7 @@ msgstr "அழுத்தும் தரவு"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:73
 msgid "Empty RHTS login or password"
-msgstr ""
+msgstr "Empty RHTS login or password"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:189
 msgid "Creating a new case..."
@@ -979,6 +1084,9 @@ msgid ""
 "\n"
 "Reports a problem to RHTSupport"
 msgstr ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"Reports a problem to RHTSupport"
 
 #: ../src/plugins/abrt-action-trim-files.c:154
 msgid ""
@@ -986,18 +1094,21 @@ msgid ""
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
+" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"\n"
+"Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 
 #: ../src/plugins/abrt-action-trim-files.c:167
 msgid "Delete dump dirs"
-msgstr ""
+msgstr "Delete dump dirs"
 
 #: ../src/plugins/abrt-action-trim-files.c:168
 msgid "Delete files"
-msgstr ""
+msgstr "கோப்புகளை அழி"
 
 #: ../src/plugins/abrt-action-trim-files.c:169
 msgid "Preserve this dump dir"
-msgstr ""
+msgstr "Preserve this dump dir"
 
 #: ../src/plugins/abrt-action-upload.c:63
 #, c-format
@@ -1021,6 +1132,9 @@ msgid ""
 "\n"
 "Uploads compressed tarball of dump directory DIR"
 msgstr ""
+" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"Uploads compressed tarball of dump directory DIR"
 
 #: ../src/plugins/abrt-action-upload.c:260
 msgid "Base URL to upload to"
@@ -1032,30 +1146,33 @@ msgid ""
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
+" [-vsrdow] FILE\n"
+"\n"
+"Extract oops from syslog/dmesg file"
 
 #: ../src/plugins/abrt-dump-oops.c:580
 msgid "Parse kernel's message buffer before parsing FILE"
-msgstr ""
+msgstr "Parse kernel's message buffer before parsing FILE"
 
 #: ../src/plugins/abrt-dump-oops.c:581
 msgid "Create ABRT dump for every oops found"
-msgstr ""
+msgstr "Create ABRT dump for every oops found"
 
 #: ../src/plugins/abrt-dump-oops.c:582
 msgid "Print found oopses on standard output"
-msgstr ""
+msgstr "Print found oopses on standard output"
 
 #: ../src/plugins/abrt-dump-oops.c:583
 msgid "Do not exit, watch the file for new oopses"
-msgstr ""
+msgstr "Do not exit, watch the file for new oopses"
 
 #. oopses doesn't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
 #.
 #: ../src/plugins/abrt-dump-oops.c:587
 msgid "Make the dump directory world readable"
-msgstr ""
+msgstr "Make the dump directory world readable"
 
 #: ../src/plugins/abrt-retrace-client.c:704
 msgid "log to syslog"
-msgstr ""
+msgstr "log to syslog"

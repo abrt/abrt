@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-26 23:35+0100\n"
-"PO-Revision-Date: 2011-03-25 17:37+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"POT-Creation-Date: 2011-03-29 15:09+0200\n"
+"PO-Revision-Date: 2011-03-29 08:45+0000\n"
+"Last-Translator: shaiton <shaiton@fedoraproject.org>\n"
 "Language-Team: French <trans-fr@lists.fedoraproject.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,6 @@ msgid "ABRT service is not running"
 msgstr "Le service ABRT n'est pas en cours d'exécution"
 
 #: ../src/applet/applet_gtk.c:202 ../src/applet/applet_gtk.c:204
-#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
 msgid "Warning"
 msgstr "Avertissement"
 
@@ -67,7 +66,15 @@ msgstr "Masquer"
 msgid "Report"
 msgstr "Rapporter"
 
-#: ../src/applet/applet_gtk.c:401 ../src/applet/applet_gtk.c:429
+#: ../src/applet/applet_gtk.c:401
+msgid "Show"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
+msgid "A Problem has Occurred"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:429
 msgid "Open ABRT"
 msgstr "Ouvrir ABRT"
 
@@ -288,14 +295,14 @@ msgstr "N"
 
 #: ../src/cli/report.cpp:511
 msgid "Your input is not valid, because of:"
-msgstr ""
+msgstr "Votre entrée n'est pas valide, à cause de :"
 
 #: ../src/cli/report.cpp:514
 #, c-format
 msgid "Bad value for '%s': %s"
-msgstr ""
+msgstr "Valeur incorrecte pour « %s » : %s"
 
-#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1039
+#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1043
 msgid "Reporting..."
 msgstr "Envoi du rapport..."
 
@@ -332,6 +339,10 @@ msgid ""
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
+" [-v] -d REP\n"
+"\n"
+"Requête sur la base de données pour enregistrer le nom du paquet, le "
+"composant et la description"
 
 #: ../src/daemon/abrt-action-save-package-data.c:263
 #: ../src/daemon/abrt-handle-crashdump.c:61
@@ -339,7 +350,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-backtrace.c:72
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-action-bugzilla.cpp:923
+#: ../src/plugins/abrt-action-bugzilla.cpp:932
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:145
 #: ../src/plugins/abrt-action-mailx.c:147
@@ -347,14 +358,14 @@ msgstr ""
 #: ../src/plugins/abrt-action-rhtsupport.c:276
 #: ../src/plugins/abrt-action-upload.c:258
 msgid "Dump directory"
-msgstr ""
+msgstr "Répertoire de trace"
 
 #: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
 " [-vs] -d DIR -e EVENT\n"
 "   or: "
 msgstr ""
-" [-vs] -d DIR -e EVENT\n"
+" [-vs] -d REP -e EVENT\n"
 "   ou : "
 
 #: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:297
@@ -374,7 +385,7 @@ msgstr "Lister les événements possibles [qui commencent avec PFX]"
 #: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:170
 #: ../src/gui-wizard-gtk/main.c:93
 msgid "Add program names to log"
-msgstr ""
+msgstr "Ajouter le nom des programmes dans le journal"
 
 #: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:535
 msgid " [options]"
@@ -414,15 +425,15 @@ msgstr "Afficher le mot de passe"
 
 #: ../src/gtk-helpers/event_config_dialog.c:311
 msgid "Event Configuration"
-msgstr ""
+msgstr "Configuration des événements"
 
 #: ../src/gtk-helpers/event_config_dialog.c:336
 msgid "Event"
-msgstr ""
+msgstr "Événement"
 
 #: ../src/gtk-helpers/event_config_dialog.c:369
 msgid "Configure E_vent"
-msgstr ""
+msgstr "Configurer l'é_vénement"
 
 #: ../src/gui-gtk/abrt-gtk.c:255
 msgid "Reported"
@@ -430,11 +441,11 @@ msgstr "Rapporté"
 
 #: ../src/gui-gtk/abrt-gtk.c:267
 msgid "Problem"
-msgstr ""
+msgstr "Problème"
 
 #: ../src/gui-gtk/abrt-gtk.c:290
 msgid "Last occurrence"
-msgstr ""
+msgstr "Dernière occurrence"
 
 #: ../src/gui-gtk/abrt-gtk.c:305
 msgid "_File"
@@ -450,11 +461,11 @@ msgstr "_Aide"
 
 #: ../src/gui-gtk/abrt-gtk.c:323
 msgid "_Event configuration"
-msgstr ""
+msgstr "Configuration des _événements"
 
 #: ../src/gui-gtk/abrt-gtk.c:399
 msgid "Online _Help"
-msgstr ""
+msgstr "_Aide en ligne"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -467,6 +478,10 @@ msgid ""
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 "(default DIRs: "
 msgstr ""
+" [-vp] [REP]...\n"
+"\n"
+"Afficher une liste des répertoires de trace ABRT situés dans REP\n"
+"(REP par défaut :"
 
 #: ../src/gui-wizard-gtk/main.c:80
 msgid ""
@@ -474,10 +489,14 @@ msgid ""
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
+" [-vp] [-g GUI_FILE] REP\n"
+"\n"
+"Outil graphique pour analyser et rapporter les problèmes enregistrés dans le "
+"répertoir REP"
 
 #: ../src/gui-wizard-gtk/main.c:92
 msgid "Alternate GUI file"
-msgstr ""
+msgstr "Fichier d'IHM graphique alternatif"
 
 #: ../src/gui-wizard-gtk/wizard.c:187
 #, c-format
@@ -485,33 +504,35 @@ msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
 msgstr ""
+"Cela nécessite un repertoire avec droit d'écriture, mais « %s » n'est pas "
+"modifiable. Déplacer dans « %s » afin de travailler sur une copie ?"
 
 #: ../src/gui-wizard-gtk/wizard.c:499
 msgid "(click here to view/edit)"
-msgstr ""
+msgstr "(cliquer ici pour voir/éditer)"
 
 #: ../src/gui-wizard-gtk/wizard.c:511
 #, c-format
 msgid "(binary file, %llu bytes)"
-msgstr ""
+msgstr "(fichier binaire, %llu octets)"
 
 #: ../src/gui-wizard-gtk/wizard.c:526
 msgid "(no description)"
-msgstr ""
+msgstr "(sans description)"
 
 #: ../src/gui-wizard-gtk/wizard.c:531
 #, c-format
 msgid "%llu bytes, %u files"
-msgstr ""
+msgstr "%llu octets, %u fichiers"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:844
+#: ../src/gui-wizard-gtk/wizard.c:848
 #, c-format
 msgid "No processing for event '%s' is defined"
-msgstr ""
+msgstr "Aucune action liée à l'événement « %s » n'a été définie."
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:939
+#: ../src/gui-wizard-gtk/wizard.c:943
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -520,53 +541,55 @@ msgstr ""
 "le reproduire."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:945
+#: ../src/gui-wizard-gtk/wizard.c:949
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "L'envoi du rapport est désactivé car le backtrace est inutilisable."
 
-#: ../src/gui-wizard-gtk/wizard.c:954
+#: ../src/gui-wizard-gtk/wizard.c:958
 msgid "You should check the backtrace for sensitive data."
 msgstr "Vous devriez vérifier si le backtrace contient des données sensibles."
 
-#: ../src/gui-wizard-gtk/wizard.c:955
+#: ../src/gui-wizard-gtk/wizard.c:959
 msgid "You must agree with sending the backtrace."
 msgstr "Vous devez accepter d'envoyer le backtrace."
 
-#: ../src/gui-wizard-gtk/wizard.c:1011
+#: ../src/gui-wizard-gtk/wizard.c:1015
 msgid "Analyzing..."
-msgstr ""
+msgstr "Analyse..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1012
+#: ../src/gui-wizard-gtk/wizard.c:1016
 #, c-format
 msgid "Analyzing finished with exit code %d"
-msgstr ""
+msgstr "Analyse terminée avec le code de sortie %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1040
+#: ../src/gui-wizard-gtk/wizard.c:1044
 #, c-format
 msgid "Reporting finished with exit code %d"
-msgstr ""
+msgstr "Rapport envoyé avec le code de sortie %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1158
+#: ../src/gui-wizard-gtk/wizard.c:1162
 msgid "Name"
 msgstr "Nom"
 
-#: ../src/gui-wizard-gtk/wizard.c:1167
+#: ../src/gui-wizard-gtk/wizard.c:1171
 msgid "Value"
-msgstr ""
+msgstr "Valeur"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr ""
+"<b>Vos commentaires ne sont pas privés.<b> Il peuvent être ajoutés dans des "
+"rapports d'anomalies publiques."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Analyzing did not start yet"
-msgstr ""
+msgstr "L'analyse n'a pas encore commencée"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Any additional comments useful for diagnosing the problem?"
-msgstr ""
+msgstr "Autres commentaires permettant de diagnostiquer le problème ?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid ""
@@ -574,24 +597,31 @@ msgid ""
 "down the source of the problem. Please review it and remove any sensitive "
 "data you would rather not share:"
 msgstr ""
+"Le fichier de trace mémoire fournit aux développeurs des information sur "
+"l'anomalie afin qu'ils identifient le problème. Veuillez le parcourir en "
+"supprimant toutes informations sensibles que vous ne souhaitez pas partager :"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
 "Can create more informative backtrace if you installed additional debug "
 "packages"
 msgstr ""
+"Il est possible de créer un rapport plus détaillé en installant des paquets "
+"de déboguage supplémentaires"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "Click 'Apply' to start reporting"
-msgstr ""
+msgstr "Cliquer sur « Appliquer » afin de commencer le rapport."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "Click 'Forward' to proceed with analyzing and reporting this problem."
 msgstr ""
+"CLiquer sur « Suivant » afin de procéder à l'analyse et au traitement de ce "
+"problème."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Configure _Events"
-msgstr ""
+msgstr "Configurer les _événements"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
@@ -600,40 +630,44 @@ msgstr "Détails"
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid "How did this problem happen (step-by-step)? How can it be reproduced?"
 msgstr ""
+"De quelle manière ce problème est-il survenu (étape par étape) ? Comment le "
+"reproduire ?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "I _agree with submitting the backtrace"
-msgstr ""
+msgstr "J'_accepte de soumettre le fichier de trace mémoire"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "Regenerate backtrace"
-msgstr ""
+msgstr "Regénérer la trace mémorie"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid "Reporter(s):"
-msgstr ""
+msgstr "Rapporteurs :"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid "Reporting did not start yet"
-msgstr ""
+msgstr "L'envoie du rapport n'a pas encore commencé"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "Select how you would like to analyze the problem:"
-msgstr ""
+msgstr "Sélectionnez la manière d'analyser le problème :"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "Select how you would like to report the problem:"
-msgstr ""
+msgstr "Sélectionnez la manière dont vous souhaitez rapporter le problème :"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Size:"
-msgstr ""
+msgstr "Taille :"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid ""
 "Use this button to generate more informative backtrace after you installed "
 "additional debug packages"
 msgstr ""
+"Utiliser ce bouton afin de générer un rapport plus complet une fois que vous "
+"avez installé les paquets de déboguage supplémentaires"
 
 #: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
 #, c-format
@@ -642,26 +676,26 @@ msgstr "Envoi vers le serveur : %llu de %llu kio"
 
 #: ../src/lib/event_config.c:313
 msgid "Missing mandatory value"
-msgstr ""
+msgstr "Une valeur nécessaire est manquante"
 
 #: ../src/lib/event_config.c:321
 #, c-format
 msgid "Invalid utf8 character '%c'"
-msgstr ""
+msgstr "Caractère utf8 invalide « %c »"
 
 #: ../src/lib/event_config.c:332
 #, c-format
 msgid "Invalid number '%s'"
-msgstr ""
+msgstr "Nombre invalide « %s »"
 
 #: ../src/lib/event_config.c:343
 #, c-format
 msgid "Invalid boolean value '%s'"
-msgstr ""
+msgstr "Valeur booléenne invalide : « %s »"
 
 #: ../src/lib/event_config.c:347
 msgid "Unsupported option type"
-msgstr ""
+msgstr "Option de type non supportée"
 
 #: ../src/lib/parse_options.c:29
 #, c-format
@@ -674,6 +708,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
+" [-v] -d REP\n"
+"\n"
+"Calculer et enregistrer l'UUID des traces du répertoire REP"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:61
 msgid ""
@@ -682,6 +719,10 @@ msgid ""
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
 "identifies crash function in dump directory DIR"
 msgstr ""
+" [options] -d REP\n"
+"\n"
+"Analyser les traces de code C/C++, génère un hash duppliqué, valorise les "
+"traces et identifie les fonctions éronnée du répertoire REP"
 
 #.
 #. * The parser failed. Compute the UUID from the executable
@@ -698,6 +739,10 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
+" [-vs] -d REP\n"
+"\n"
+"Calculer et enregistrer l'UUID et le DUPHASH pour le répertoire de trace "
+"oops REP"
 
 #: ../src/plugins/abrt-action-analyze-python.c:38
 msgid ""
@@ -705,86 +750,99 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
-" [-v] -d DIR\n"
+" [-v] -d REP\n"
 "\n"
 "Calculer et enregistrer l'UUID et le DUPHASH des traces mémoires de python"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:516
+#: ../src/plugins/abrt-action-bugzilla.cpp:517
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nouvel ID d'anomalie : %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:646
+#: ../src/plugins/abrt-action-bugzilla.cpp:647
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr ""
 "Pas d'identifiant ni de mot de passe.\n"
 "Veuillez vérifier %s"
 
+#: ../src/plugins/abrt-action-bugzilla.cpp:662
+#, c-format
+msgid "Essential file '%s' is missing, can't continue.."
+msgstr ""
+
 #: ../src/plugins/abrt-action-bugzilla.cpp:666
 #, c-format
+msgid "Essential file '%s' is empty, can't continue.."
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:675
+#, c-format
 msgid "Logging into Bugzilla at %s"
-msgstr ""
+msgstr "Connexion à Bugzilla sur %s"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:669
+#: ../src/plugins/abrt-action-bugzilla.cpp:678
 msgid "Checking for duplicates"
-msgstr ""
+msgstr "Recherche de doublons"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:691
-#: ../src/plugins/abrt-action-bugzilla.cpp:727
+#: ../src/plugins/abrt-action-bugzilla.cpp:700
+#: ../src/plugins/abrt-action-bugzilla.cpp:736
 msgid "Missing mandatory member 'bugs'"
 msgstr "Le membre nécessaire «bugs» est manquant"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:710
-#: ../src/plugins/abrt-action-bugzilla.cpp:743
-#: ../src/plugins/abrt-action-bugzilla.cpp:819
+#: ../src/plugins/abrt-action-bugzilla.cpp:719
+#: ../src/plugins/abrt-action-bugzilla.cpp:752
+#: ../src/plugins/abrt-action-bugzilla.cpp:828
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() a échoué. N'a pas pu collecter toutes les informations "
 "nécessaires"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:758
+#: ../src/plugins/abrt-action-bugzilla.cpp:767
 msgid "Creating a new bug"
-msgstr ""
+msgstr "Création d'une nouvelle anomalie"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:763
+#: ../src/plugins/abrt-action-bugzilla.cpp:772
 msgid "Bugzilla entry creation failed"
 msgstr "Impossible de créer l'entrée dans Bugzilla"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:775
-#: ../src/plugins/abrt-action-bugzilla.cpp:875
+#: ../src/plugins/abrt-action-bugzilla.cpp:784
+#: ../src/plugins/abrt-action-bugzilla.cpp:884
 msgid "Logging out"
-msgstr ""
+msgstr "Déconnexion"
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:793
+#: ../src/plugins/abrt-action-bugzilla.cpp:802
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "L'anomalie est déjà signalée : %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:804
+#: ../src/plugins/abrt-action-bugzilla.cpp:813
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla n'a pas trouvé le parent de l'anomalie %d"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:834
+#: ../src/plugins/abrt-action-bugzilla.cpp:843
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Ajouter %s à la liste CC"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:860
+#: ../src/plugins/abrt-action-bugzilla.cpp:869
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Ajouter un nouveau commentaire à l'anomalie (%d)"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:911
+#: ../src/plugins/abrt-action-bugzilla.cpp:920
 msgid ""
 " [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports problem to Bugzilla"
 msgstr ""
+" [-v] -c CONFFILE -d REP\n"
+"\n"
+"Rapporter une anomalie sur Bugzilla"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:924
+#: ../src/plugins/abrt-action-bugzilla.cpp:933
 #: ../src/plugins/abrt-action-rhtsupport.c:277
 msgid "Configuration file (may be given many times)"
 msgstr "Fichier de configuration (peut être donné plusieurs fois)"
@@ -795,6 +853,10 @@ msgid ""
 "\n"
 "Generates and saves backtrace for coredump in dump directory DIR"
 msgstr ""
+" [options] -d REP\n"
+"\n"
+"Générer et enregistrer la trace mémoire d'un conflit à partir du répertoire "
+"REP"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:257
 msgid "Additional debuginfo directories"
@@ -849,7 +911,7 @@ msgstr "Téléchargement (%i de %i) %s : %3u%%"
 #. we have "paused":
 #: ../src/plugins/abrt-action-install-debuginfo.py:206
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "Recherche des paquets nécessaire dans les dépôts"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:240
 #, python-format
@@ -859,7 +921,7 @@ msgstr "Impossible de trouver les paquets pour les fichiers %u debuginfo"
 #: ../src/plugins/abrt-action-install-debuginfo.py:242
 #, python-format
 msgid "Packages to download: %u"
-msgstr ""
+msgstr "Paquets à télécharger : %u"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:243
 #, python-format
@@ -868,7 +930,7 @@ msgstr "Téléchargement de %.2f Mio, taille une fois installé : %.2f Mio"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:251
 msgid "Is this ok? [y/N] "
-msgstr "Est-ce correct ? [y/N] "
+msgstr "Est-ce correct ? [o/N] "
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:268
 #, python-format
@@ -894,7 +956,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-install-debuginfo.py:316
 #, python-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "Analyse de la trace mémoire « %s »"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:394
 #, python-format
@@ -942,9 +1004,11 @@ msgid ""
 "\n"
 "Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
+" [-v] [-c CONFFILE]... -d REP\n"
+"\n"
+"Soumettre un oops noyau au site kerneloops.org (ou similaire)"
 
 #: ../src/plugins/abrt-action-kerneloops.c:146
-#, fuzzy
 msgid "Configuration file"
 msgstr "Fichier de configuration"
 
@@ -958,6 +1022,9 @@ msgid ""
 "\n"
 "Sends compressed tarball of dump directory DIR via email"
 msgstr ""
+" [-v] -d REP [-c CONFFILE]\n"
+"\n"
+"Envoyer une archive compressée du répertoire de trace REP par email"
 
 #: ../src/plugins/abrt-action-mailx.c:148
 #: ../src/plugins/abrt-action-upload.c:259
@@ -970,6 +1037,9 @@ msgid ""
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
+" [-v] -d REP [-o FICHIER] [-a yes/no]\n"
+"\n"
+"Afficher les détails du problème sur la sortie standard ou le FICHIER"
 
 #: ../src/plugins/abrt-action-print.c:53
 msgid "Output file"
@@ -977,7 +1047,7 @@ msgstr "Fichier de sortie"
 
 #: ../src/plugins/abrt-action-print.c:54
 msgid "Append to, or overwrite FILE"
-msgstr ""
+msgstr "Ajouter ou écraser FICHIER"
 
 #: ../src/plugins/abrt-action-print.c:87
 #, c-format
@@ -999,7 +1069,7 @@ msgstr "Compression des données"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:73
 msgid "Empty RHTS login or password"
-msgstr ""
+msgstr "Identifiant ou mot de passe RHTS non renseigné"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:189
 msgid "Creating a new case..."
@@ -1011,6 +1081,9 @@ msgid ""
 "\n"
 "Reports a problem to RHTSupport"
 msgstr ""
+" [-v] -c CONFFILE -d REP\n"
+"\n"
+"Soumettre une anomalie à RHTSupport"
 
 #: ../src/plugins/abrt-action-trim-files.c:154
 msgid ""
@@ -1018,18 +1091,22 @@ msgid ""
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
+" [-v] [-d TAILLE:REP]... [-f TAILLE:REP]... [-p REP]\n"
+"\n"
+"Supprimer les répertoires (-d) ou fichiers (-f) de trace dans le répertoire "
+"REP jusqu'à ce qu'ils correspondent à la TAILLE"
 
 #: ../src/plugins/abrt-action-trim-files.c:167
 msgid "Delete dump dirs"
-msgstr ""
+msgstr "Supprimer le répertoire de trace"
 
 #: ../src/plugins/abrt-action-trim-files.c:168
 msgid "Delete files"
-msgstr ""
+msgstr "Supprimer les fichiers"
 
 #: ../src/plugins/abrt-action-trim-files.c:169
 msgid "Preserve this dump dir"
-msgstr ""
+msgstr "Préserver ce répertoire de trace"
 
 #: ../src/plugins/abrt-action-upload.c:63
 #, c-format
@@ -1053,10 +1130,13 @@ msgid ""
 "\n"
 "Uploads compressed tarball of dump directory DIR"
 msgstr ""
+" [-v] -d REP [-c CONFFILE] [-u URL]\n"
+"\n"
+"Envoyer une archive compressée du répertoire de trace REP"
 
 #: ../src/plugins/abrt-action-upload.c:260
 msgid "Base URL to upload to"
-msgstr "URL de base ou envoyer"
+msgstr "URL de base où envoyer"
 
 #: ../src/plugins/abrt-dump-oops.c:563
 msgid ""
@@ -1090,8 +1170,8 @@ msgstr "Ne pas sortir, lire le fichier pour de nouveaux oops noyau"
 #.
 #: ../src/plugins/abrt-dump-oops.c:587
 msgid "Make the dump directory world readable"
-msgstr ""
+msgstr "Rendre le répertoire de trace visible par tout le monde"
 
 #: ../src/plugins/abrt-retrace-client.c:704
 msgid "log to syslog"
-msgstr ""
+msgstr "journaliser dans syslog"
