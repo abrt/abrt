@@ -304,10 +304,13 @@ static char *validate_event_option(event_option_t *opt)
         break;
     case OPTION_TYPE_NUMBER:
     {
-        long r = strtol(opt->value, (char **)&s, 10);
+        char *endptr;
+        errno = 0;
+        long r = strtol(opt->value, &endptr, 10);
         (void) r;
-        if (*s || errno)
+        if (errno != 0 || endptr == opt->value || *endptr != '\0')
             return xasprintf(_("Invalid number '%s'"), opt->value);
+
         break;
     }
     case OPTION_TYPE_BOOL:
