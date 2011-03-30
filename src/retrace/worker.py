@@ -196,21 +196,6 @@ if __name__ == "__main__":
 
     retrace_run(25, ["mock", "init", "-r", mockr])
     retrace_run(26, ["mock", "-r", mockr, "--copyin", "%s/crash" % savedir, "/var/spool/abrt/crash"])
-    retrace_run(27, ["touch", "%s/chroot/root/var/spool/abrt/crash/time" % workdir])
-
-    # if uid file is not present, create it
-    uidpath = "%s/chroot/root/var/spool/abrt/crash/uid" % workdir;
-    if not os.path.isfile(uidpath):
-        try:
-            uid = open(uidpath, "w")
-            uid.write("500")
-            uid.close()
-        except:
-            LOG.write("Unable to create uid file.\n")
-            LOG.close()
-            sys.exit(28)
-
-    LOG.write("OK\n")
 
     try:
         rootfile = open("%s/chroot/result/root.log" % workdir, "r")
