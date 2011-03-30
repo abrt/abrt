@@ -459,11 +459,11 @@ static void ask_for_missing_settings(const char *event_name)
         event_config_t *event_config = get_event_config(event_name);
 
         GHashTableIter iter;
-        char *opt_value, *err_msg;
+        char *opt_name, *err_msg;
         g_hash_table_iter_init(&iter, error_table);
-        while (g_hash_table_iter_next(&iter, (void**)&opt_value, (void**)&err_msg))
+        while (g_hash_table_iter_next(&iter, (void**)&opt_name, (void**)&err_msg))
         {
-            event_option_t *opt = get_event_option_from_list(opt_value,
+            event_option_t *opt = get_event_option_from_list(opt_name,
                                                              event_config->options);
 
             char result[512];
@@ -510,8 +510,8 @@ static void ask_for_missing_settings(const char *event_name)
 
         log(_("Your input is not valid, because of:"));
         g_hash_table_iter_init(&iter, error_table);
-        while (g_hash_table_iter_next(&iter, (void**)&opt_value, (void**)&err_msg))
-            log(_("Bad value for '%s': %s"), opt_value, err_msg);
+        while (g_hash_table_iter_next(&iter, (void**)&opt_name, (void**)&err_msg))
+            log(_("Bad value for '%s': %s"), opt_name, err_msg);
 
         g_hash_table_destroy(error_table);
     }
