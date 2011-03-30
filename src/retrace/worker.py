@@ -97,7 +97,7 @@ if __name__ == "__main__":
                 break
 
         if not version or not distribution:
-            raise Exception, "Release '%s' is not supported.\n"
+            raise Exception, "Release '%s' is not supported.\n" % release
 
     except Exception as ex:
         LOG.write("Unable to read distribution and version from 'release' file: %s.\n" % ex)
