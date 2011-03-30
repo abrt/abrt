@@ -26,9 +26,16 @@
 #include "abrt_dbus.h"
 #include "applet_gtk.h"
 
-
+//This variable is not used anywhere, remove or change to "abrt" and use it
+const char * app_name = "abrt-gui";
 static struct applet* applet = NULL;
 
+/* Initialize GUI stuff. */
+static void init_applet()
+{
+    if (applet == NULL)
+        applet = applet_new(app_name);
+}
 
 static void Crash(DBusMessage* signal)
 {
@@ -76,6 +83,7 @@ static void Crash(DBusMessage* signal)
     const char* message = _("A crash in the %s package has been detected");
     if (package_name[0] == '\0')
         message = _("A crash has been detected");
+    init_applet();
     //applet->AddEvent(uid, package_name);
     set_icon_tooltip(applet, message, package_name);
     show_icon(applet);
@@ -118,6 +126,7 @@ static void QuotaExceeded(DBusMessage* signal)
 
     //if (m_pSessionDBus->has_name("com.redhat.abrt.gui"))
     //    return;
+    init_applet();
     show_icon(applet);
     show_msg_notification(applet, "%s", str);
 }
@@ -198,7 +207,6 @@ static void die_if_dbus_error(bool error_flag, DBusError* err, const char* msg)
 
 int main(int argc, char** argv)
 {
-    const char * app_name = "abrt-gui";
     /* I18n */
     setlocale(LC_ALL, "");
 #if ENABLE_NLS
@@ -255,10 +263,6 @@ int main(int argc, char** argv)
     dbus_bus_add_match(system_conn, "type='signal',path='/com/redhat/abrt'", &err);
     die_if_dbus_error(false, &err, "Can't add dbus match");
 
-    /* Initialize GUI stuff.
-     * Note: inside CApplet ctor, libnotify hooks session dbus
-     * to glib main loop */
-    applet = applet_new(app_name);
     /* dbus_abrt cannot handle more than one bus, and we don't really need to.
      * The only thing we want to do is to announce ourself on session dbus */
     DBusConnection* session_conn = dbus_bus_get(DBUS_BUS_SESSION, &err);
