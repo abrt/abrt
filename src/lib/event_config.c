@@ -284,34 +284,8 @@ void unexport_event_config(GList *env_list)
     }
 }
 
-GHashTable *validate_event(const char *event_name)
-{
-    event_config_t *config = get_event_config(event_name);
-    if (!config)
-        return NULL;
-
-
-    GHashTable *errors = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
-    GList *li;
-
-    for (li = config->options; li; li = li->next)
-    {
-        event_option_t *opt = (event_option_t *)li->data;
-        char *err = validate_event_option(opt);
-        if (err)
-            g_hash_table_insert(errors, xstrdup(opt->name), err);
-    }
-
-    if (g_hash_table_size(errors))
-        return errors;
-
-    g_hash_table_destroy(errors);
-
-    return NULL;
-}
-
 /* return NULL if successful otherwise appropriate error message */
-char *validate_event_option(event_option_t *opt)
+static char *validate_event_option(event_option_t *opt)
 {
     if (!opt->allow_empty && (!opt->value || !opt->value[0]))
         return xstrdup(_("Missing mandatory value"));
@@ -350,6 +324,32 @@ char *validate_event_option(event_option_t *opt)
     default:
         return xstrdup(_("Unsupported option type"));
     };
+
+    return NULL;
+}
+
+GHashTable *validate_event(const char *event_name)
+{
+    event_config_t *config = get_event_config(event_name);
+    if (!config)
+        return NULL;
+
+
+    GHashTable *errors = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
+    GList *li;
+
+    for (li = config->options; li; li = li->next)
+    {
+        event_option_t *opt = (event_option_t *)li->data;
+        char *err = validate_event_option(opt);
+        if (err)
+            g_hash_table_insert(errors, xstrdup(opt->name), err);
+    }
+
+    if (g_hash_table_size(errors))
+        return errors;
+
+    g_hash_table_destroy(errors);
 
     return NULL;
 }
