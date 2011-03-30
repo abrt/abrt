@@ -466,6 +466,9 @@ static void ask_for_missing_settings(const char *event_name)
             event_option_t *opt = get_event_option_from_list(opt_name,
                                                              event_config->options);
 
+            free(opt->value);
+            opt->value = NULL;
+
             char result[512];
 
             char *question = xasprintf("%s: ", (opt->label) ? opt->label: opt->name);
