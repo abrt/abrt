@@ -284,6 +284,53 @@ void unexport_event_config(GList *env_list)
     }
 }
 
+/* return NULL if successful otherwise appropriate error message */
+static char *validate_event_option(event_option_t *opt)
+{
+    if (!opt->allow_empty && (!opt->value || !opt->value[0]))
+        return xstrdup(_("Missing mandatory value"));
+
+    /* if value is NULL and allow-empty yes than it doesn't make sence to check it */
+    if (!opt->value)
+        return NULL;
+
+    const gchar *s = NULL;
+    if (!g_utf8_validate(opt->value, -1, &s))
+            return xasprintf(_("Invalid utf8 character '%c'"), *s);
+
+    switch (opt->type) {
+    case OPTION_TYPE_TEXT:
+    case OPTION_TYPE_PASSWORD:
+        break;
+    case OPTION_TYPE_NUMBER:
+    {
+        char *endptr;
+        errno = 0;
+        long r = strtol(opt->value, &endptr, 10);
+        (void) r;
+        if (errno != 0 || endptr == opt->value || *endptr != '\0')
+            return xasprintf(_("Invalid number '%s'"), opt->value);
+
+        break;
+    }
+    case OPTION_TYPE_BOOL:
+        if (strcmp(opt->value, "yes") != 0
+            && strcmp(opt->value, "no") != 0
+            && strcmp(opt->value, "on") != 0
+            && strcmp(opt->value, "off") != 0
+            && strcmp(opt->value, "1") != 0
+            && strcmp(opt->value, "0") != 0)
+        {
+            return xasprintf(_("Invalid boolean value '%s'"), opt->value);
+        }
+        break;
+    default:
+        return xstrdup(_("Unsupported option type"));
+    };
+
+    return NULL;
+}
+
 GHashTable *validate_event(const char *event_name)
 {
     event_config_t *config = get_event_config(event_name);
@@ -306,50 +353,6 @@ GHashTable *validate_event(const char *event_name)
         return errors;
 
     g_hash_table_destroy(errors);
-
-    return NULL;
-}
-
-/* return NULL if successful otherwise appropriate error message */
-char *validate_event_option(event_option_t *opt)
-{
-    if (!opt->allow_empty && (!opt->value || !opt->value[0]))
-        return xstrdup(_("Missing mandatory value"));
-
-    /* if value is NULL and allow-empty yes than it doesn't make sence to check it */
-    if (!opt->value)
-        return NULL;
-
-    const gchar *s = NULL;
-    if (!g_utf8_validate(opt->value, -1, &s))
-            return xasprintf(_("Invalid utf8 character '%c'"), *s);
-
-    switch (opt->type) {
-    case OPTION_TYPE_TEXT:
-    case OPTION_TYPE_PASSWORD:
-        break;
-    case OPTION_TYPE_NUMBER:
-    {
-        long r = strtol(opt->value, (char **)&s, 10);
-        (void) r;
-        if (*s || errno)
-            return xasprintf(_("Invalid number '%s'"), opt->value);
-        break;
-    }
-    case OPTION_TYPE_BOOL:
-        if (strcmp(opt->value, "yes") != 0
-            && strcmp(opt->value, "no") != 0
-            && strcmp(opt->value, "on") != 0
-            && strcmp(opt->value, "off") != 0
-            && strcmp(opt->value, "1") != 0
-            && strcmp(opt->value, "0") != 0)
-        {
-            return xasprintf(_("Invalid boolean value '%s'"), opt->value);
-        }
-        break;
-    default:
-        return xstrdup(_("Unsupported option type"));
-    };
 
     return NULL;
 }
