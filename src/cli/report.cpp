@@ -511,9 +511,8 @@ static char *do_log_and_save_line(char *log_line, void *param)
     l_state->last_line = log_line;
     return NULL;
 }
-static int run_events(const char *dump_dir_name,
-                      const vector_string_t& events
-) {
+static int run_events(const char *dump_dir_name, GList *events)
+{
     int error_cnt = 0;
     GList *env_list = NULL;
 
@@ -523,28 +522,28 @@ static int run_events(const char *dump_dir_name,
     struct run_event_state *run_state = new_run_event_state();
     run_state->logging_callback = do_log_and_save_line;
     run_state->logging_param = &l_state;
-    for (unsigned i = 0; i < events.size(); i++)
+    for (GList *li = events; li; li = li->next)
     {
-        std::string event = events[i];
+        char *event = (char *) li->data;
 
         // Export overridden settings as environment variables
-        env_list = export_event_config(event.c_str());
+        env_list = export_event_config(event);
 
-        int r = run_event_on_dir_name(run_state, dump_dir_name, event.c_str());
+        int r = run_event_on_dir_name(run_state, dump_dir_name, event);
         if (r == 0 && run_state->children_count == 0)
         {
             l_state.last_line = xasprintf("Error: no processing is specified for event '%s'",
-                                          event.c_str());
+                                          event);
             r = -1;
         }
         if (r == 0)
         {
-            printf("%s: %s\n", event.c_str(), (l_state.last_line ? : "Reporting succeeded"));
+            printf("%s: %s\n", event, (l_state.last_line ? : "Reporting succeeded"));
         }
         else
         {
             error_msg("Reporting via '%s' was not successful%s%s",
-                    event.c_str(),
+                    event,
                     l_state.last_line ? ": " : "",
                     l_state.last_line ? l_state.last_line : ""
             );
@@ -718,23 +717,18 @@ int report(const char *dump_dir_name, int flags)
 
     /* Get possible reporters associated with this particular crash */
     /* TODO: npajkovs: remove this annoying c++ vector_string_t */
-    vector_string_t report_events;
+    GList *report_events = NULL;
     if (report_events_as_lines && *report_events_as_lines)
-    {
-        char *events = report_events_as_lines;
-        while (*events)
-        {
-            char *end = strchrnul(events, '\n');
-            char *tmp = xstrndup(events, end - events);
-            report_events.push_back(tmp);
-            free(tmp);
-            events = end;
-            if (!*events)
-                break;
-            events++;
-        }
-    }
+        report_events = str_to_glist(report_events_as_lines, '\n');
+
     free(report_events_as_lines);
+
+    if (!report_events)
+    {
+        free_crash_data(crash_data);
+        error_msg_and_die("The dump directory '%s' has no defined reporters",
+                          dump_dir_name);
+    }
 
     /* Get settings */
     load_event_config_data();
@@ -745,7 +739,7 @@ int report(const char *dump_dir_name, int flags)
     {
         puts(_("Reporting..."));
         errors += run_events(dump_dir_name, report_events);
-        plugins += report_events.size();
+        plugins += g_list_length(report_events);
     }
     else
     {
@@ -753,11 +747,11 @@ int report(const char *dump_dir_name, int flags)
         unsigned rating = rating_str ? xatou(rating_str) : 4;
 
         /* For every reporter, ask if user really wants to report using it. */
-        vector_string_t::const_iterator it;
-        for (it = report_events.begin(); it != report_events.end(); ++it)
+        for (GList *li = report_events; li; li = li->next)
         {
+            char *reporter_name = (char *) li->data;
             char question[255];
-            snprintf(question, sizeof(question), _("Report using %s?"), it->c_str());
+            snprintf(question, sizeof(question), _("Report using %s?"), reporter_name);
             if (!ask_yesno(question))
             {
                 puts(_("Skipping..."));
@@ -765,39 +759,44 @@ int report(const char *dump_dir_name, int flags)
             }
 
 //TODO: rethink how we associate report events with configs
-            if (prefixcmp(it->c_str(), "report_") == 0)
+            event_config_t *config = get_event_config(reporter_name);
+            if (config)
             {
-                event_config_t *config = get_event_config(it->c_str());
-
-                if (config)
+                /* TODO: npajkovs; not implemented yet */
+                //const char *rating_required = get_map_string_item_or_NULL(single_plugin_settings, "RatingRequired");
+                //if (rating_required
+                //    && string_to_bool(rating_required) == true
+                if (rating < 3)
                 {
-                    /* TODO: npajkovs; not implemented yet */
-                    //const char *rating_required = get_map_string_item_or_NULL(single_plugin_settings, "RatingRequired");
-                    //if (rating_required
-                    //    && string_to_bool(rating_required) == true
-                    if (rating < 3)
-                    {
-                        puts(_("Reporting disabled because the backtrace is unusable"));
+                    puts(_("Reporting disabled because the backtrace is unusable"));
 
-                        const char *package = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
-                        if (package && package[0])
-                            printf(_("Please try to install debuginfo manually using the command: \"debuginfo-install %s\" and try again\n"), package);
+                    const char *package = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
+                    if (package && package[0])
+                        printf(_("Please try to install debuginfo manually using the command: \"debuginfo-install %s\" and try again\n"), package);
 
-                        plugins++;
-                        errors++;
-                        continue;
-                    }
-                    ask_for_missing_settings(it->c_str());
+                    plugins++;
+                    errors++;
+                    continue;
                 }
+                ask_for_missing_settings(reporter_name);
             }
 
-            vector_string_t cur_event(1, *it);
+            /*
+             * to avoid creating list with one item, we probably should
+             * provide something like
+             * run_event(char*, char*)
+             */
+            GList *cur_event = NULL;
+            cur_event = g_list_append(cur_event, reporter_name);
             errors += run_events(dump_dir_name, cur_event);
+            g_list_free(cur_event);
+
             plugins++;
         }
     }
 
     printf(_("Crash reported via %d report events (%d errors)\n"), plugins, errors);
     free_crash_data(crash_data);
+    list_free_with_free(report_events);
     return errors;
 }
