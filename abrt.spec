@@ -463,9 +463,10 @@ fi
 %defattr(-,root,root,-)
 %{_includedir}/abrt/*
 %{_libdir}/libabrt*.so
+%{_includedir}/btparser/*
 %{_libdir}/libbtparser.so
 #FIXME: this should go to libreportgtk-devel package
-%{_libdir}/libreportgtk.so*
+%{_libdir}/libreportgtk.so
 %{_libdir}/pkgconfig/*
 %doc doc/abrt-plugin doc/howto-write-reporter
 

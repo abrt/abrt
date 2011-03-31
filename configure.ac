@@ -120,6 +120,7 @@ AC_CONFIG_FILES([
 	src/plugins/Makefile
 	src/Makefile
 	src/btparser/Makefile
+	src/btparser/btparser.pc
 	src/daemon/Makefile
 	src/hooks/Makefile
 	src/applet/Makefile

@@ -17,6 +17,19 @@ libbtparser_la_CFLAGS = -Wall -Wwrite-strings -Werror -D_GNU_SOURCE -I../lib
 libbtparser_la_LDFLAGS = -version-info 1:1:0
 libbtparser_la_LIBADD = ../lib/libreport.la
 
+libbtparser_includedir = $(includedir)/btparser
+libbtparser_include_HEADERS = \
+	backtrace.h \
+	frame.h \
+	location.h \
+	normalize.h \
+	thread.h \
+	utils.h
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = btparser.pc
+EXTRA_DIST = btparser.pc.in
+
 # From http://www.seul.org/docs/autotut/
 # Version consists 3 numbers: CURRENT, REVISION, AGE.
 # CURRENT is the version of the interface the library implements.
