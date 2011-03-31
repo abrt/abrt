@@ -69,6 +69,7 @@ int main(int argc, char **argv)
     textdomain(PACKAGE);
 #endif
 
+    g_set_prgname("abrt");
     gtk_init(&argc, &argv);
 
     char *env_verbose = getenv("ABRT_VERBOSE");
