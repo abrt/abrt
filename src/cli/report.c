@@ -750,36 +750,42 @@ int report(const char *dump_dir_name, int flags)
         for (GList *li = report_events; li; li = li->next)
         {
             char *reporter_name = (char *) li->data;
+            event_config_t *config = get_event_config(reporter_name);
             char question[255];
-            snprintf(question, sizeof(question), _("Report using %s?"), reporter_name);
+            char *show_reporter_name;
+            if (config)
+                show_reporter_name = (config->screen_name) ? config->screen_name : reporter_name;
+            else
+                show_reporter_name = reporter_name;
+
+            snprintf(question, sizeof(question), _("Report using %s?"), show_reporter_name);
+
+            if (!config)
+                VERB1 log("No configuration file found for '%s' reporter", reporter_name);
+
             if (!ask_yesno(question))
             {
                 puts(_("Skipping..."));
                 continue;
             }
 
-//TODO: rethink how we associate report events with configs
-            event_config_t *config = get_event_config(reporter_name);
-            if (config)
+            /* TODO: npajkovs; not implemented yet */
+            //const char *rating_required = get_map_string_item_or_NULL(single_plugin_settings, "RatingRequired");
+            //if (rating_required
+            //    && string_to_bool(rating_required) == true
+            if (rating < 3)
             {
-                /* TODO: npajkovs; not implemented yet */
-                //const char *rating_required = get_map_string_item_or_NULL(single_plugin_settings, "RatingRequired");
-                //if (rating_required
-                //    && string_to_bool(rating_required) == true
-                if (rating < 3)
-                {
-                    puts(_("Reporting disabled because the backtrace is unusable"));
+                puts(_("Reporting disabled because the backtrace is unusable"));
 
-                    const char *package = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
-                    if (package && package[0])
-                        printf(_("Please try to install debuginfo manually using the command: \"debuginfo-install %s\" and try again\n"), package);
+                const char *package = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
+                if (package && package[0])
+                    printf(_("Please try to install debuginfo manually using the command: \"debuginfo-install %s\" and try again\n"), package);
 
-                    plugins++;
-                    errors++;
-                    continue;
-                }
-                ask_for_missing_settings(reporter_name);
+                plugins++;
+                errors++;
+                continue;
             }
+            ask_for_missing_settings(reporter_name);
 
             /*
              * to avoid creating list with one item, we probably should
