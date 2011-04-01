@@ -413,16 +413,17 @@ int main(int argc, char** argv)
         }
         case OPT_INFO:
         {
-            /* Load crash_data from (possibly updated by analyze) dump dir */
+            /* Load crash_data from dump dir */
             struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
             if (!dd)
                 return -1;
 
             char *analyze_events_as_lines = list_possible_events(dd, NULL, "analyze");
-            dd_close(dd);
 
-            if (analyze_events_as_lines && *analyze_events_as_lines)
+            if (backtrace && analyze_events_as_lines && *analyze_events_as_lines)
             {
+                dd_close(dd);
+
                 GList *list_analyze_events = str_to_glist(analyze_events_as_lines, '\n');
                 free(analyze_events_as_lines);
 
@@ -434,12 +435,13 @@ int main(int argc, char** argv)
 
                 if (analyzer_result != 0)
                     return 1;
-            }
 
-            /* Load crash_data from (possibly updated by analyze) dump dir */
-            dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-            if (!dd)
-                return -1;
+                /* Reload crash_data from (possibly updated by analyze) dump dir */
+                dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+                if (!dd)
+                    return -1;
+            } else
+                free(analyze_events_as_lines);
 
             crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
             dd_close(dd);
