@@ -414,7 +414,7 @@ int main(int argc, char** argv)
         case OPT_INFO:
         {
             /* Load crash_data from dump dir */
-            struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+            struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
             if (!dd)
                 return -1;
 
@@ -437,7 +437,7 @@ int main(int argc, char** argv)
                     return 1;
 
                 /* Reload crash_data from (possibly updated by analyze) dump dir */
-                dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+                dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
                 if (!dd)
                     return -1;
             } else
