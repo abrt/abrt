@@ -15,7 +15,7 @@ cleanupdir = $(datadir)/abrt-retrace
 reposync_PYTHON = abrt-retrace-reposync.py
 reposyncdir = $(datadir)/abrt-retrace
 
-interface_PYTHON = backtrace.wsgi create.wsgi log.wsgi status.wsgi
+interface_PYTHON = backtrace.wsgi create.wsgi log.wsgi settings.wsgi status.wsgi
 # interfacedir should probably be $$(pkgdatadir)/retrace
 interfacedir =  $(datadir)/abrt-retrace
 
