@@ -52,6 +52,7 @@ static void bug_info_init(struct bug_info* bz)
     bz->bug_reporter = NULL;
     bz->bug_product = NULL;
     bz->bug_dup_id = -1;
+    bz->bug_cc = NULL;
 }
 
 static void bug_info_destroy(struct bug_info* bz)
