@@ -475,7 +475,7 @@ static int scan_syslog_file(GList **oops_list, int fd, struct stat *statbuf, int
 }
 
 /* returns number of errors */
-static int save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
+static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
 {
     unsigned countdown = 16; /* do not report hundreds of oopses */
     unsigned idx = oops_cnt;
@@ -513,7 +513,7 @@ static int save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
     }
 
     pid_t my_pid = getpid();
-    int errors = 0;
+    unsigned errors = 0;
     while (idx != 0 && --countdown != 0)
     {
         char path[sizeof(DEBUG_DUMPS_DIR"/oops-YYYY-MM-DD-hh:mm:ss-%lu-%lu") + 2 * sizeof(long)*3];
@@ -623,6 +623,7 @@ int main(int argc, char **argv)
     struct stat statbuf;
     int file_fd = -1;
     int wd = -1;
+    unsigned errors = 0;
 
     while (1) /* loops only if -w */
     {
@@ -700,7 +701,7 @@ int main(int argc, char **argv)
             if (opts & OPT_d)
             {
                 log("Creating dump directories");
-                int errors = save_oops_to_dump_dir(oops_list, oops_cnt);
+                errors += save_oops_to_dump_dir(oops_list, oops_cnt);
                 if (errors > 0)
                     log("%d errors while dumping oopses", errors);
                 /*
@@ -750,5 +751,5 @@ int main(int argc, char **argv)
 
     } /* while (1) */
 
-    return 0;
+    return errors;
 }
