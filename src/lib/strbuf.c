@@ -37,6 +37,29 @@ int suffixcmp(const char *str, const char *suffix)
         return strcmp(str + len_minus_suflen, suffix);
 }
 
+/*
+ * Trims whitespace characters both from left and right side of a string.
+ * Modifies the string in-place. Returns the trimmed string.
+ */
+char *strtrim(char *str)
+{
+    if (!str)
+        return NULL;
+
+    // Remove leading spaces.
+    overlapping_strcpy(str, skip_whitespace(str));
+
+    // Remove trailing spaces.
+    int i = strlen(str);
+    while (--i >= 0)
+    {
+        if (!isspace(str[i]))
+            break;
+    }
+    str[++i] = '\0';
+    return str;
+}
+
 struct strbuf *strbuf_new(void)
 {
     struct strbuf *buf = xzalloc(sizeof(*buf));

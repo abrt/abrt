@@ -23,29 +23,6 @@
 #define FIELD_SEP "%----"
 
 /*
- * Trims whitespace characters both from left and right side of a string.
- * Modifies the string in-place. Returns the trimmed string.
- */
-static char *trim(char *str)
-{
-    if (!str)
-        return NULL;
-
-    // Remove leading spaces.
-    overlapping_strcpy(str, skip_whitespace(str));
-
-    // Remove trailing spaces.
-    int i = strlen(str);
-    while (--i >= 0)
-    {
-        if (!isspace(str[i]))
-            break;
-    }
-    str[++i] = '\0';
-    return str;
-}
-
-/*
  * Escapes the field content string to avoid confusion with file comments.
  * Returned field must be free()d by caller.
  */
@@ -226,11 +203,11 @@ static int read_crash_report_field(const char *text, crash_data_t *report,
     char newvalue[length + 1];
     strncpy(newvalue, textfield, length);
     newvalue[length] = '\0';
-    trim(newvalue);
+    strtrim(newvalue);
 
     char oldvalue[strlen(value->content) + 1];
     strcpy(oldvalue, value->content);
-    trim(oldvalue);
+    strtrim(oldvalue);
 
     // Return if no change in the contents detected.
     if (strcmp(newvalue, oldvalue) == 0)
