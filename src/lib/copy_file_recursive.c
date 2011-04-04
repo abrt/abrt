@@ -126,6 +126,16 @@ int copy_file_recursive(const char *source, const char *dest)
 		if (close(dst_fd) < 0) {
 			perror_msg("Error writing to '%s'", dest);
 			retval = -1;
+		} else {
+			/* (Try to) copy atime and mtime */
+			struct timeval atime_mtime[2];
+			atime_mtime[0].tv_sec = source_stat.st_atime;
+			// note: if "st_atim.tv_nsec" doesn't compile, try "st_atimensec":
+			atime_mtime[0].tv_usec = source_stat.st_atim.tv_nsec / 1000;
+			atime_mtime[1].tv_sec = source_stat.st_mtime;
+			atime_mtime[1].tv_usec = source_stat.st_mtim.tv_nsec / 1000;
+			// note: can use utimensat when it is more widely supported:
+			utimes(dest, atime_mtime);
 		}
 		goto ret;
 	}
