@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-29 15:09+0200\n"
+"POT-Creation-Date: 2011-04-05 14:23+0200\n"
 "PO-Revision-Date: 2011-03-29 10:34+0000\n"
 "Last-Translator: rajeshr <rranjan@redhat.com>\n"
 "Language-Team: Hindi <indlinux-hindi@lists.sourceforge.net>\n"
@@ -21,21 +21,21 @@ msgstr ""
 msgid "ABRT notification applet"
 msgstr "ABRT अधिसूचना एप्लेट"
 
-#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt-gtk.c:351
-#: ../src/gui-gtk/abrt.desktop.in.h:1
+#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
+#: ../src/gui-gtk/abrt-gtk.c:351
 msgid "Automatic Bug Reporting Tool"
 msgstr "स्वचालित बग रिपोर्टिंग औजार"
 
-#: ../src/applet/applet.c:76
+#: ../src/applet/applet.c:83
 #, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "%s संकुल में क्रैश को जाँचा गया था"
 
-#: ../src/applet/applet.c:78
+#: ../src/applet/applet.c:85
 msgid "A crash has been detected"
 msgstr "क्रैश पता किया गया है"
 
-#: ../src/applet/applet.c:275
+#: ../src/applet/applet.c:279
 msgid "ABRT service is not running"
 msgstr "ABRT सेवा नहीं चल रहा है"
 
@@ -95,7 +95,7 @@ msgstr ""
 msgid "\tHostname   : %s\n"
 msgstr "\tHostname   : %s\n"
 
-#: ../src/cli/cli.c:142
+#: ../src/cli/cli.c:143
 #, c-format
 msgid ""
 "Dump directory:     %s\n"
@@ -118,27 +118,27 @@ msgstr ""
 "System:             %s, kernel %s\n"
 "Reason:             %s\n"
 
-#: ../src/cli/cli.c:170
+#: ../src/cli/cli.c:171
 #, c-format
 msgid "Coredump file:      %s\n"
 msgstr "कोरडंप फ़ाइल:      %s\n"
 
-#: ../src/cli/cli.c:174
+#: ../src/cli/cli.c:175
 #, c-format
 msgid "Rating:             %s\n"
 msgstr "दर:             %s\n"
 
-#: ../src/cli/cli.c:179
+#: ../src/cli/cli.c:180
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr "क्रैश फंक्शन:     %s\n"
 
-#: ../src/cli/cli.c:183
+#: ../src/cli/cli.c:184
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr "Hostname:           %s\n"
 
-#: ../src/cli/cli.c:187
+#: ../src/cli/cli.c:188
 #, c-format
 msgid ""
 "\n"
@@ -149,7 +149,7 @@ msgstr ""
 "टिप्पणी:\n"
 "%s\n"
 
-#: ../src/cli/cli.c:193
+#: ../src/cli/cli.c:194
 #, c-format
 msgid ""
 "\n"
@@ -160,7 +160,7 @@ msgstr ""
 "बैकट्रेस:\n"
 "%s\n"
 
-#: ../src/cli/cli.c:250
+#: ../src/cli/cli.c:251
 #, c-format
 msgid ""
 "Usage: %s -l[f] [-D BASE_DIR]...]\n"
@@ -201,7 +201,7 @@ msgstr ""
 "\t-V, --version\t\tDisplay version and exit\n"
 "\t-v, --verbose\t\tBe verbose\n"
 
-#: ../src/cli/cli.c:298
+#: ../src/cli/cli.c:299
 msgid "You must specify exactly one operation"
 msgstr "आपको निश्चित रूप से एक संक्रिया निर्दिष्ट करनी चाहिए"
 
@@ -287,33 +287,52 @@ msgstr "y"
 msgid "N"
 msgstr "N"
 
-#: ../src/cli/report.cpp:511
+#: ../src/cli/report.cpp:514
 msgid "Your input is not valid, because of:"
 msgstr "आपका इनपुट इस कारण वैध नहीं है:"
 
-#: ../src/cli/report.cpp:514
+#: ../src/cli/report.cpp:517
 #, c-format
 msgid "Bad value for '%s': %s"
 msgstr "'%s' के लिए गलत मान: %s"
 
-#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1043
+#: ../src/cli/report.cpp:615
+#, fuzzy, c-format
+msgid "Select how you would like to analyze the problem:\n"
+msgstr "चुनें कि कैसे आप इस समस्या का विश्लेषण करना चाहेंगे:"
+
+#: ../src/cli/report.cpp:631
+#, c-format
+msgid "Choose option [0 - %u]: "
+msgstr ""
+
+#: ../src/cli/report.cpp:645
+#, c-format
+msgid "You have chosen number out of range"
+msgstr ""
+
+#: ../src/cli/report.cpp:653
+msgid "Invalid input, program exiting..."
+msgstr ""
+
+#: ../src/cli/report.cpp:769 ../src/gui-wizard-gtk/wizard.c:1047
 msgid "Reporting..."
 msgstr "रिपोर्ट कर रहा है..."
 
-#: ../src/cli/report.cpp:684
+#: ../src/cli/report.cpp:783
 #, c-format
 msgid "Report using %s?"
 msgstr "%s के उपयोग से रिपोर्ट करें?"
 
-#: ../src/cli/report.cpp:687
+#: ../src/cli/report.cpp:786
 msgid "Skipping..."
 msgstr "छोड़ रहा है..."
 
-#: ../src/cli/report.cpp:704
+#: ../src/cli/report.cpp:803
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "रिपोर्टिंग निष्क्रिय क्योंकि बैकट्रेस अप्रयोज्य है."
 
-#: ../src/cli/report.cpp:708
+#: ../src/cli/report.cpp:807
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -322,12 +341,12 @@ msgstr ""
 "इस कमांड से डिबगिइंफो को संस्थापित करने की कोशिश करें: \"debuginfo-install %s\" और "
 "फिर कोशिश करें\n"
 
-#: ../src/cli/report.cpp:724
+#: ../src/cli/report.cpp:823
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "%d रिपोर्ट घटना के द्वारा क्रैश रिपोर्ट किया गया (%d त्रुटि)\n"
 
-#: ../src/daemon/abrt-action-save-package-data.c:252
+#: ../src/daemon/abrt-action-save-package-data.c:255
 msgid ""
 " [-v] -d DIR\n"
 "\n"
@@ -337,13 +356,13 @@ msgstr ""
 "\n"
 "संकुल डाटाबेस को प्रश्न करें और संकुल नाम, घटक और विवरण सहेजें"
 
-#: ../src/daemon/abrt-action-save-package-data.c:263
+#: ../src/daemon/abrt-action-save-package-data.c:266
 #: ../src/daemon/abrt-handle-crashdump.c:61
-#: ../src/plugins/abrt-action-analyze-c.c:178
 #: ../src/plugins/abrt-action-analyze-backtrace.c:72
+#: ../src/plugins/abrt-action-analyze-c.c:178
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-action-bugzilla.cpp:932
+#: ../src/plugins/abrt-action-bugzilla.cpp:931
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:145
 #: ../src/plugins/abrt-action-mailx.c:147
@@ -375,8 +394,8 @@ msgid "List possible events [which start with PFX]"
 msgstr "संभावित घटना की सूची दें [which start with PFX]"
 
 #: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
-#: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:170
-#: ../src/gui-wizard-gtk/main.c:93
+#: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:175
+#: ../src/gui-wizard-gtk/main.c:94
 msgid "Add program names to log"
 msgstr "लाग करने के लिए अधिक प्रोग्राम नाम"
 
@@ -428,6 +447,10 @@ msgstr "घटना"
 msgid "Configure E_vent"
 msgstr "घटना विन्यस्त करें (_v)"
 
+#: ../src/gui-gtk/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "अनुप्रयोग क्रैश को देखें और रिपोर्ट करें"
+
 #: ../src/gui-gtk/abrt-gtk.c:255
 msgid "Reported"
 msgstr "रिपोर्ट किया हुआ"
@@ -460,11 +483,7 @@ msgstr "घटना विन्यास (_E)"
 msgid "Online _Help"
 msgstr "ऑनलाइन मदद"
 
-#: ../src/gui-gtk/abrt.desktop.in.h:2
-msgid "View and report application crashes"
-msgstr "अनुप्रयोग क्रैश को देखें और रिपोर्ट करें"
-
-#: ../src/gui-gtk/main.c:158
+#: ../src/gui-gtk/main.c:163
 msgid ""
 " [-vp] [DIR]...\n"
 "\n"
@@ -476,7 +495,7 @@ msgstr ""
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 "(default DIRs: "
 
-#: ../src/gui-wizard-gtk/main.c:80
+#: ../src/gui-wizard-gtk/main.c:81
 msgid ""
 " [-vp] [-g GUI_FILE] DIR\n"
 "\n"
@@ -486,7 +505,7 @@ msgstr ""
 "\n"
 "GUI औज़ार निर्दिष्ट DIR में सहेजे गए समस्या को विष्लेषित और रिपोर्ट करने के लिए"
 
-#: ../src/gui-wizard-gtk/main.c:92
+#: ../src/gui-wizard-gtk/main.c:93
 msgid "Alternate GUI file"
 msgstr "वैकल्पिक जीयूआई फ़ाइल"
 
@@ -518,50 +537,50 @@ msgid "%llu bytes, %u files"
 msgstr "%llu बाइट्स, %u फ़ाइल"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:848
+#: ../src/gui-wizard-gtk/wizard.c:851
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "घटना '%s' के लिए कोई प्रक्रिया परिभाषित नहीं है"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:943
+#: ../src/gui-wizard-gtk/wizard.c:946
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "बैकट्रेस अपूर्ण है, कृपया सुनिश्चित करें कि आप फिर बनाने के लिए बेहतर चरण देते हैं."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:949
+#: ../src/gui-wizard-gtk/wizard.c:952
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "रिपोर्टिंग निष्क्रिय क्योंकि बैकट्रेस अप्रयोज्य है."
 
-#: ../src/gui-wizard-gtk/wizard.c:958
+#: ../src/gui-wizard-gtk/wizard.c:961
 msgid "You should check the backtrace for sensitive data."
 msgstr "आपको संवेदनशील आँकड़ा के लिए बैकट्रेस जाँचना चाहिए."
 
-#: ../src/gui-wizard-gtk/wizard.c:959
+#: ../src/gui-wizard-gtk/wizard.c:962
 msgid "You must agree with sending the backtrace."
 msgstr "आपको बैकट्रेस भेजने के लिए जरूर सहमत होता चाहिए."
 
-#: ../src/gui-wizard-gtk/wizard.c:1015
+#: ../src/gui-wizard-gtk/wizard.c:1018
 msgid "Analyzing..."
 msgstr "विश्लेषण कर रहा है..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1016
+#: ../src/gui-wizard-gtk/wizard.c:1019
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "बाहर कोड %d के साथ समाप्त का विश्लेषण कर रहा है"
 
-#: ../src/gui-wizard-gtk/wizard.c:1044
+#: ../src/gui-wizard-gtk/wizard.c:1048
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "बाहर कोड %d के साथ समाप्त का रिपोर्ट कर रहा है"
 
-#: ../src/gui-wizard-gtk/wizard.c:1162
+#: ../src/gui-wizard-gtk/wizard.c:1166
 msgid "Name"
 msgstr "नाम"
 
-#: ../src/gui-wizard-gtk/wizard.c:1171
+#: ../src/gui-wizard-gtk/wizard.c:1175
 msgid "Value"
 msgstr "मान"
 
@@ -658,26 +677,26 @@ msgstr ""
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "अद्यतनीकृ: %llu, %llu किलोबाइट्स का"
 
-#: ../src/lib/event_config.c:313
+#: ../src/lib/event_config.c:291
 msgid "Missing mandatory value"
 msgstr "गुम अनिवार्य मान"
 
-#: ../src/lib/event_config.c:321
+#: ../src/lib/event_config.c:299
 #, c-format
 msgid "Invalid utf8 character '%c'"
 msgstr "अवैध utf8 वर्ण '%c'"
 
-#: ../src/lib/event_config.c:332
+#: ../src/lib/event_config.c:312
 #, c-format
 msgid "Invalid number '%s'"
 msgstr "अवैध संख्या '%s'"
 
-#: ../src/lib/event_config.c:343
+#: ../src/lib/event_config.c:324
 #, c-format
 msgid "Invalid boolean value '%s'"
 msgstr "अवैध बुलियन मान '%s'"
 
-#: ../src/lib/event_config.c:347
+#: ../src/lib/event_config.c:328
 msgid "Unsupported option type"
 msgstr "असमर्थित विकल्प प्रकार"
 
@@ -685,16 +704,6 @@ msgstr "असमर्थित विकल्प प्रकार"
 #, c-format
 msgid "Usage: %s\n"
 msgstr "प्रयोग: %s\n"
-
-#: ../src/plugins/abrt-action-analyze-c.c:167
-msgid ""
-" [-v] -d DIR\n"
-"\n"
-"Calculates and saves UUID of coredump in dump directory DIR"
-msgstr ""
-" [-v] -d DIR\n"
-"\n"
-"कोरडंप की UUID को डंप निर्देशिका DIR में गणना और सहेजता है"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:61
 msgid ""
@@ -717,6 +726,16 @@ msgstr ""
 msgid "Backtrace parsing failed for %s"
 msgstr "%s के लिए बैकट्रैस विश्लेषण विफल"
 
+#: ../src/plugins/abrt-action-analyze-c.c:167
+msgid ""
+" [-v] -d DIR\n"
+"\n"
+"Calculates and saves UUID of coredump in dump directory DIR"
+msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"कोरडंप की UUID को डंप निर्देशिका DIR में गणना और सहेजता है"
+
 #: ../src/plugins/abrt-action-analyze-oops.c:133
 msgid ""
 " [-vs] -d DIR\n"
@@ -737,81 +756,81 @@ msgstr ""
 "\n"
 "पाइथन क्रैश डंप के UUID और DUPHASH की गणना करता और सहेजता है"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:517
+#: ../src/plugins/abrt-action-bugzilla.cpp:518
 #, c-format
 msgid "New bug id: %i"
 msgstr "नया बग id: %i"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:647
-#, c-format
-msgid "Empty login or password, please check %s"
+#, fuzzy
+msgid "Empty login or password, please check your configuration"
 msgstr "रिक्त लॉगिन और कूटशब्द कृपया जाँचें %s. "
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:662
+#: ../src/plugins/abrt-action-bugzilla.cpp:661
 #, c-format
 msgid "Essential file '%s' is missing, can't continue.."
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:666
+#: ../src/plugins/abrt-action-bugzilla.cpp:665
 #, c-format
 msgid "Essential file '%s' is empty, can't continue.."
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:675
+#: ../src/plugins/abrt-action-bugzilla.cpp:674
 #, c-format
 msgid "Logging into Bugzilla at %s"
 msgstr "%s पर बगजिला में लॉगिंग करें"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:678
+#: ../src/plugins/abrt-action-bugzilla.cpp:677
 msgid "Checking for duplicates"
 msgstr "अनुकृति के लिए जाँच रहा है"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:700
-#: ../src/plugins/abrt-action-bugzilla.cpp:736
+#: ../src/plugins/abrt-action-bugzilla.cpp:699
+#: ../src/plugins/abrt-action-bugzilla.cpp:735
 msgid "Missing mandatory member 'bugs'"
 msgstr "अनिवार्य सदस्य 'bugs' अनुपस्थित"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:719
-#: ../src/plugins/abrt-action-bugzilla.cpp:752
-#: ../src/plugins/abrt-action-bugzilla.cpp:828
+#: ../src/plugins/abrt-action-bugzilla.cpp:718
+#: ../src/plugins/abrt-action-bugzilla.cpp:751
+#: ../src/plugins/abrt-action-bugzilla.cpp:827
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() विफल. सभी अनिवार्य सूचना को जमा नहीं करता है"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:767
+#: ../src/plugins/abrt-action-bugzilla.cpp:766
 msgid "Creating a new bug"
 msgstr "नया बग बना रहा है"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:772
+#: ../src/plugins/abrt-action-bugzilla.cpp:771
 msgid "Bugzilla entry creation failed"
 msgstr "बगजिला प्रविष्टि निर्माण विफल"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:784
-#: ../src/plugins/abrt-action-bugzilla.cpp:884
+#: ../src/plugins/abrt-action-bugzilla.cpp:783
+#: ../src/plugins/abrt-action-bugzilla.cpp:883
 msgid "Logging out"
 msgstr "लॉगिंग आउट..."
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:802
+#: ../src/plugins/abrt-action-bugzilla.cpp:801
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "बग पहले से रिपोर्ट किया हुआ है: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:813
+#: ../src/plugins/abrt-action-bugzilla.cpp:812
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "बगजिला bug %d का जनक नहीं ढूँढ सका"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:843
+#: ../src/plugins/abrt-action-bugzilla.cpp:842
 #, c-format
 msgid "Add %s to CC list"
 msgstr "सीसी सूची में %s जोड़ें"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:869
+#: ../src/plugins/abrt-action-bugzilla.cpp:868
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "नई टिप्पणी को bug(%d) में जोड़ें"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:920
+#: ../src/plugins/abrt-action-bugzilla.cpp:919
 msgid ""
 " [-v] -c CONFFILE -d DIR\n"
 "\n"
@@ -821,7 +840,7 @@ msgstr ""
 "\n"
 "बगजिला में समस्या रिपोर्ट करें"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:933
+#: ../src/plugins/abrt-action-bugzilla.cpp:932
 #: ../src/plugins/abrt-action-rhtsupport.c:277
 msgid "Configuration file (may be given many times)"
 msgstr "विन्यास फाइल (कई बार दिया जा सकता है)"
@@ -1147,6 +1166,156 @@ msgstr "बाहर मत निकलें, नए वूप्स के �
 msgid "Make the dump directory world readable"
 msgstr "डंप निर्देशिका विश्व को पठनीय बनाता है"
 
-#: ../src/plugins/abrt-retrace-client.c:704
+#: ../src/plugins/abrt-retrace-client.c:707
 msgid "log to syslog"
 msgstr "सिसलॉग में लॉग"
+
+#: ../src/plugins/analyze_LocalGDB.xml.in.h:1
+msgid "Download debuginfo packages and generate backtrace locally using GDB"
+msgstr ""
+
+#: ../src/plugins/analyze_LocalGDB.xml.in.h:2
+msgid "Local GNU Debugger"
+msgstr ""
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:1
+msgid "Address of the retrace server"
+msgstr ""
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:2
+msgid "Retrace server URL"
+msgstr ""
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:3
+msgid "Send core dump to remote retrace server for analysis"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:1
+msgid "Address of Bugzilla server"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:2
+msgid "Bugzilla"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:3
+msgid "Bugzilla URL"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:4
+msgid "Bugzilla account password"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:5
+msgid "Bugzilla account user name"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:6
+#: ../src/plugins/report_RHTSupport.xml.in.h:2
+msgid "Check SSL key validity"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:7
+#: ../src/plugins/report_RHTSupport.xml.in.h:3
+#, fuzzy
+msgid "Password"
+msgstr "कूटशब्द दिखाएँ"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:8
+msgid "Report to Bugzilla bug tracker"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:9
+msgid "User name"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:10
+#: ../src/plugins/report_RHTSupport.xml.in.h:10
+msgid "Verify SSL"
+msgstr ""
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:1
+msgid "Kerneloops URL"
+msgstr ""
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:2
+msgid "Kerneloops.org"
+msgstr ""
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:3
+msgid "Oops server url"
+msgstr ""
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:4
+msgid "Send kernel problems to oops tracker"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:1
+msgid "Mailx"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:2
+msgid "Message subject"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:3
+msgid "Recipient"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:4
+msgid "Recipient's email"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:5
+msgid "Send Binary Data"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:6
+msgid "Send binary files like coredump"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:7
+#, fuzzy
+msgid "Send via email"
+msgstr "कोई ईमेल भेज रहा है..."
+
+#: ../src/plugins/report_Mailx.xml.in.h:8
+msgid "Sender"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:9
+#, fuzzy
+msgid "Sender's email"
+msgstr "कोई ईमेल भेज रहा है..."
+
+#: ../src/plugins/report_Mailx.xml.in.h:10
+msgid "Subject"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:1
+msgid "Address of the Red Hat support portal"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:4
+msgid "RH Portal URL"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:5
+msgid "Red Hat Customer Support"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:6
+msgid "Red Hat customer password"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:7
+msgid "Red Hat customer user name"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:8
+msgid "Report to Red Hat support"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:9
+msgid "Username"
+msgstr ""

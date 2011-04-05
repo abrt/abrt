@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <event>
-    <name>Mailx</name>
-    <description>Send via email</description>
+    <_name>Mailx</_name>
+    <_description>Send via email</_description>
     <options>
         <option type="text" name="Mailx_Subject">
-            <label>Subject</label>
+            <_label>Subject</_label>
             <allow-empty>no</allow-empty>
-            <description>Message subject</description>
+            <_description>Message subject</_description>
             <default-value>[abrt] detected a crash</default-value>
         </option>
         <option type="text" name="Mailx_EmailFrom">
-            <label>Sender</label>
+            <_label>Sender</_label>
             <allow-empty>no</allow-empty>
-            <description>Sender's email</description>
+            <_description>Sender's email</_description>
         </option>
         <option type="text" name="Mailx_EmailTo">
-            <label>Recipient</label>
+            <_label>Recipient</_label>
             <allow-empty>no</allow-empty>
-            <description>Recipient's email</description>
+            <_description>Recipient's email</_description>
         </option>
         <option type="bool" name="Mailx_SendBinaryData">
-            <label>Send Binary Data</label>
-            <description>Send binary files like coredump</description>
+            <_label>Send Binary Data</_label>
+            <_description>Send binary files like coredump</_description>
             <default-value>no</default-value>
         </option>
     </options>

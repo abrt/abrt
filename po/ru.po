@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-03-29 15:09+0200\n"
+"POT-Creation-Date: 2011-04-05 14:23+0200\n"
 "PO-Revision-Date: 2011-03-27 13:18+0000\n"
 "Last-Translator: b00blik <madb00blik@gmail.com>\n"
 "Language-Team: Russian <trans-ru@lists.fedoraproject.org>\n"
@@ -22,21 +22,21 @@ msgstr ""
 msgid "ABRT notification applet"
 msgstr "Апплет уведомлений ABRT"
 
-#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt-gtk.c:351
-#: ../src/gui-gtk/abrt.desktop.in.h:1
+#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
+#: ../src/gui-gtk/abrt-gtk.c:351
 msgid "Automatic Bug Reporting Tool"
 msgstr "Автоматизированный регистратор ошибок"
 
-#: ../src/applet/applet.c:76
+#: ../src/applet/applet.c:83
 #, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "Обнаружен сбой в пакете %s"
 
-#: ../src/applet/applet.c:78
+#: ../src/applet/applet.c:85
 msgid "A crash has been detected"
 msgstr "Обнаружен сбой в пакете"
 
-#: ../src/applet/applet.c:275
+#: ../src/applet/applet.c:279
 msgid "ABRT service is not running"
 msgstr "Служба регистрации не работает"
 
@@ -98,7 +98,7 @@ msgstr ""
 msgid "\tHostname   : %s\n"
 msgstr "\tИмя узла   : %s\n"
 
-#: ../src/cli/cli.c:142
+#: ../src/cli/cli.c:143
 #, c-format
 msgid ""
 "Dump directory:     %s\n"
@@ -121,27 +121,27 @@ msgstr ""
 "Система:            %s, ядро %s\n"
 "Причина:            %s\n"
 
-#: ../src/cli/cli.c:170
+#: ../src/cli/cli.c:171
 #, c-format
 msgid "Coredump file:      %s\n"
 msgstr "Файл coredump:      %s\n"
 
-#: ../src/cli/cli.c:174
+#: ../src/cli/cli.c:175
 #, c-format
 msgid "Rating:             %s\n"
 msgstr "Рейтинг:            %s\n"
 
-#: ../src/cli/cli.c:179
+#: ../src/cli/cli.c:180
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr "Функция сбоя:       %s\n"
 
-#: ../src/cli/cli.c:183
+#: ../src/cli/cli.c:184
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr "Имя узла:           %s\n"
 
-#: ../src/cli/cli.c:187
+#: ../src/cli/cli.c:188
 #, c-format
 msgid ""
 "\n"
@@ -152,7 +152,7 @@ msgstr ""
 "Комментарий:\n"
 "%s\n"
 
-#: ../src/cli/cli.c:193
+#: ../src/cli/cli.c:194
 #, c-format
 msgid ""
 "\n"
@@ -163,7 +163,7 @@ msgstr ""
 "Протокол сбоя:\n"
 "%s\n"
 
-#: ../src/cli/cli.c:250
+#: ../src/cli/cli.c:251
 #, c-format
 msgid ""
 "Usage: %s -l[f] [-D BASE_DIR]...]\n"
@@ -196,7 +196,7 @@ msgstr ""
 "\t\t\t\t(по умолчанию: -D $HOME/.abrt/spool -D %s)\n"
 "\n"
 
-#: ../src/cli/cli.c:298
+#: ../src/cli/cli.c:299
 msgid "You must specify exactly one operation"
 msgstr "Нужно указать ровно одно действие"
 
@@ -282,33 +282,52 @@ msgstr "д"
 msgid "N"
 msgstr "н"
 
-#: ../src/cli/report.cpp:511
+#: ../src/cli/report.cpp:514
 msgid "Your input is not valid, because of:"
 msgstr "Ваш ввод недействителен из-за:"
 
-#: ../src/cli/report.cpp:514
+#: ../src/cli/report.cpp:517
 #, c-format
 msgid "Bad value for '%s': %s"
 msgstr "Неверное значение для %s': %s"
 
-#: ../src/cli/report.cpp:670 ../src/gui-wizard-gtk/wizard.c:1043
+#: ../src/cli/report.cpp:615
+#, fuzzy, c-format
+msgid "Select how you would like to analyze the problem:\n"
+msgstr "Выберите, как вы бы хотели анализировать проблему:"
+
+#: ../src/cli/report.cpp:631
+#, c-format
+msgid "Choose option [0 - %u]: "
+msgstr ""
+
+#: ../src/cli/report.cpp:645
+#, c-format
+msgid "You have chosen number out of range"
+msgstr ""
+
+#: ../src/cli/report.cpp:653
+msgid "Invalid input, program exiting..."
+msgstr ""
+
+#: ../src/cli/report.cpp:769 ../src/gui-wizard-gtk/wizard.c:1047
 msgid "Reporting..."
 msgstr "Отправка…"
 
-#: ../src/cli/report.cpp:684
+#: ../src/cli/report.cpp:783
 #, c-format
 msgid "Report using %s?"
 msgstr "Сообщить при помощи %s?"
 
-#: ../src/cli/report.cpp:687
+#: ../src/cli/report.cpp:786
 msgid "Skipping..."
 msgstr "Пропуск…"
 
-#: ../src/cli/report.cpp:704
+#: ../src/cli/report.cpp:803
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Отправка отчёта отключена, так как протокол сбоя непригоден."
 
-#: ../src/cli/report.cpp:708
+#: ../src/cli/report.cpp:807
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -317,12 +336,12 @@ msgstr ""
 "Попробуйте установить debuginfo вручную, выполнив «debuginfo-install %s», и "
 "повторите попытку\n"
 
-#: ../src/cli/report.cpp:724
+#: ../src/cli/report.cpp:823
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "Зарегистрировано случаев сбоя: %d (ошибок: %d)\n"
 
-#: ../src/daemon/abrt-action-save-package-data.c:252
+#: ../src/daemon/abrt-action-save-package-data.c:255
 msgid ""
 " [-v] -d DIR\n"
 "\n"
@@ -332,13 +351,13 @@ msgstr ""
 "\n"
 "Запрос к базе пакетов и сохранить имя пакета, компонент и описание"
 
-#: ../src/daemon/abrt-action-save-package-data.c:263
+#: ../src/daemon/abrt-action-save-package-data.c:266
 #: ../src/daemon/abrt-handle-crashdump.c:61
-#: ../src/plugins/abrt-action-analyze-c.c:178
 #: ../src/plugins/abrt-action-analyze-backtrace.c:72
+#: ../src/plugins/abrt-action-analyze-c.c:178
 #: ../src/plugins/abrt-action-analyze-oops.c:144
 #: ../src/plugins/abrt-action-analyze-python.c:49
-#: ../src/plugins/abrt-action-bugzilla.cpp:932
+#: ../src/plugins/abrt-action-bugzilla.cpp:931
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:145
 #: ../src/plugins/abrt-action-mailx.c:147
@@ -370,8 +389,8 @@ msgid "List possible events [which start with PFX]"
 msgstr "Перечислить возможные события [начинающиеся с PFX]"
 
 #: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
-#: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:170
-#: ../src/gui-wizard-gtk/main.c:93
+#: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:175
+#: ../src/gui-wizard-gtk/main.c:94
 msgid "Add program names to log"
 msgstr "Добавить имена программ в лог"
 
@@ -423,6 +442,10 @@ msgstr "Событие"
 msgid "Configure E_vent"
 msgstr "Конфигурирование С_обытия"
 
+#: ../src/gui-gtk/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "Просмотреть сбои приложения и создать отчет"
+
 #: ../src/gui-gtk/abrt-gtk.c:255
 msgid "Reported"
 msgstr "Сообщено"
@@ -455,11 +478,7 @@ msgstr "_Конфигурация события"
 msgid "Online _Help"
 msgstr "Онлайн _Справка"
 
-#: ../src/gui-gtk/abrt.desktop.in.h:2
-msgid "View and report application crashes"
-msgstr "Просмотреть сбои приложения и создать отчет"
-
-#: ../src/gui-gtk/main.c:158
+#: ../src/gui-gtk/main.c:163
 msgid ""
 " [-vp] [DIR]...\n"
 "\n"
@@ -471,7 +490,7 @@ msgstr ""
 "Показывает список ABRT dump - каталогов в определенной папке(ах)\n"
 "(папки по умолчанию:"
 
-#: ../src/gui-wizard-gtk/main.c:80
+#: ../src/gui-wizard-gtk/main.c:81
 msgid ""
 " [-vp] [-g GUI_FILE] DIR\n"
 "\n"
@@ -481,7 +500,7 @@ msgstr ""
 "\n"
 "GUI средство для анализа и отчета о проблеме сохранено в определённой папке"
 
-#: ../src/gui-wizard-gtk/main.c:92
+#: ../src/gui-wizard-gtk/main.c:93
 msgid "Alternate GUI file"
 msgstr "Алтернативный GUI файл"
 
@@ -511,50 +530,50 @@ msgid "%llu bytes, %u files"
 msgstr "%llu байт, %u файлов"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:848
+#: ../src/gui-wizard-gtk/wizard.c:851
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Не определена обработка для события '%s'"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:943
+#: ../src/gui-wizard-gtk/wizard.c:946
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "Неполный протокол сбоя. Укажите действия, которые привели к ошибке."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:949
+#: ../src/gui-wizard-gtk/wizard.c:952
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Отправка отчёта отключена, так как протокол сбоя непригоден."
 
-#: ../src/gui-wizard-gtk/wizard.c:958
+#: ../src/gui-wizard-gtk/wizard.c:961
 msgid "You should check the backtrace for sensitive data."
 msgstr "Убедитесь, что протокол сбоя не содержит личных данных."
 
-#: ../src/gui-wizard-gtk/wizard.c:959
+#: ../src/gui-wizard-gtk/wizard.c:962
 msgid "You must agree with sending the backtrace."
 msgstr "Нужно дать согласие на отправку отслеженных данных."
 
-#: ../src/gui-wizard-gtk/wizard.c:1015
+#: ../src/gui-wizard-gtk/wizard.c:1018
 msgid "Analyzing..."
 msgstr "Анализирование..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1016
+#: ../src/gui-wizard-gtk/wizard.c:1019
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "Анализирование закончено с кодом выхода %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1044
+#: ../src/gui-wizard-gtk/wizard.c:1048
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "Отчёт закончен с кодом выхода %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1162
+#: ../src/gui-wizard-gtk/wizard.c:1166
 msgid "Name"
 msgstr "Имя"
 
-#: ../src/gui-wizard-gtk/wizard.c:1171
+#: ../src/gui-wizard-gtk/wizard.c:1175
 msgid "Value"
 msgstr "Значение"
 
@@ -657,26 +676,26 @@ msgstr ""
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Отправлено: %llu из %llu КБ"
 
-#: ../src/lib/event_config.c:313
+#: ../src/lib/event_config.c:291
 msgid "Missing mandatory value"
 msgstr "Отсутствует обязательное значение"
 
-#: ../src/lib/event_config.c:321
+#: ../src/lib/event_config.c:299
 #, c-format
 msgid "Invalid utf8 character '%c'"
 msgstr "Неверный utf8 символ '%c'"
 
-#: ../src/lib/event_config.c:332
+#: ../src/lib/event_config.c:312
 #, c-format
 msgid "Invalid number '%s'"
 msgstr "Неверный номер '%s'"
 
-#: ../src/lib/event_config.c:343
+#: ../src/lib/event_config.c:324
 #, c-format
 msgid "Invalid boolean value '%s'"
 msgstr "Неверное булево значение '%s'"
 
-#: ../src/lib/event_config.c:347
+#: ../src/lib/event_config.c:328
 msgid "Unsupported option type"
 msgstr "Неподдерживаемый тип опции"
 
@@ -684,16 +703,6 @@ msgstr "Неподдерживаемый тип опции"
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Формат: %s\n"
-
-#: ../src/plugins/abrt-action-analyze-c.c:167
-msgid ""
-" [-v] -d DIR\n"
-"\n"
-"Calculates and saves UUID of coredump in dump directory DIR"
-msgstr ""
-" [-v] -d DIR\n"
-"\n"
-"Считает и сохраняет UUID дампа ядра в dump-каталоге DIR"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:61
 msgid ""
@@ -716,6 +725,16 @@ msgstr ""
 msgid "Backtrace parsing failed for %s"
 msgstr "Разбор протокола сбоя %s завершился неудачей"
 
+#: ../src/plugins/abrt-action-analyze-c.c:167
+msgid ""
+" [-v] -d DIR\n"
+"\n"
+"Calculates and saves UUID of coredump in dump directory DIR"
+msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"Считает и сохраняет UUID дампа ядра в dump-каталоге DIR"
+
 #: ../src/plugins/abrt-action-analyze-oops.c:133
 msgid ""
 " [-vs] -d DIR\n"
@@ -736,81 +755,81 @@ msgstr ""
 "\n"
 "Рассчитывает и сохраняет UUID и DUPHASH дампов памяти аварий python"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:517
+#: ../src/plugins/abrt-action-bugzilla.cpp:518
 #, c-format
 msgid "New bug id: %i"
 msgstr "Новый код запроса: %i"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:647
-#, c-format
-msgid "Empty login or password, please check %s"
+#, fuzzy
+msgid "Empty login or password, please check your configuration"
 msgstr "Пустое имя входа или пароль, проверьте %s"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:662
+#: ../src/plugins/abrt-action-bugzilla.cpp:661
 #, c-format
 msgid "Essential file '%s' is missing, can't continue.."
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:666
+#: ../src/plugins/abrt-action-bugzilla.cpp:665
 #, c-format
 msgid "Essential file '%s' is empty, can't continue.."
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:675
+#: ../src/plugins/abrt-action-bugzilla.cpp:674
 #, c-format
 msgid "Logging into Bugzilla at %s"
 msgstr "Вход в Bugzilla на %s"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:678
+#: ../src/plugins/abrt-action-bugzilla.cpp:677
 msgid "Checking for duplicates"
 msgstr "Проверка на дубликаты"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:700
-#: ../src/plugins/abrt-action-bugzilla.cpp:736
+#: ../src/plugins/abrt-action-bugzilla.cpp:699
+#: ../src/plugins/abrt-action-bugzilla.cpp:735
 msgid "Missing mandatory member 'bugs'"
 msgstr "Отсутствует обязательное свойство «bugs»"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:719
-#: ../src/plugins/abrt-action-bugzilla.cpp:752
-#: ../src/plugins/abrt-action-bugzilla.cpp:828
+#: ../src/plugins/abrt-action-bugzilla.cpp:718
+#: ../src/plugins/abrt-action-bugzilla.cpp:751
+#: ../src/plugins/abrt-action-bugzilla.cpp:827
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "Сбой get_bug_info(). Не удалось собрать всю необходимую информацию."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:767
+#: ../src/plugins/abrt-action-bugzilla.cpp:766
 msgid "Creating a new bug"
 msgstr "Создание нового отчета об ошибке"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:772
+#: ../src/plugins/abrt-action-bugzilla.cpp:771
 msgid "Bugzilla entry creation failed"
 msgstr "Не удалось создать запись в Bugzilla"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:784
-#: ../src/plugins/abrt-action-bugzilla.cpp:884
+#: ../src/plugins/abrt-action-bugzilla.cpp:783
+#: ../src/plugins/abrt-action-bugzilla.cpp:883
 msgid "Logging out"
 msgstr "Выход"
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:802
+#: ../src/plugins/abrt-action-bugzilla.cpp:801
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Запрос уже существует: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:813
+#: ../src/plugins/abrt-action-bugzilla.cpp:812
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Первичный отчет о %d в Bugzilla не найден"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:843
+#: ../src/plugins/abrt-action-bugzilla.cpp:842
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Добавить %s в список CC"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:869
+#: ../src/plugins/abrt-action-bugzilla.cpp:868
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Добавление комментария к запросу (%d)"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:920
+#: ../src/plugins/abrt-action-bugzilla.cpp:919
 msgid ""
 " [-v] -c CONFFILE -d DIR\n"
 "\n"
@@ -820,7 +839,7 @@ msgstr ""
 "\n"
 "Отправляет отчет о проблеме в Bugzilla"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:933
+#: ../src/plugins/abrt-action-bugzilla.cpp:932
 #: ../src/plugins/abrt-action-rhtsupport.c:277
 msgid "Configuration file (may be given many times)"
 msgstr "Файл конфигурации (можно указывать многократно)"
@@ -1146,6 +1165,156 @@ msgstr "Не выходить, следить за файлом на предм�
 msgid "Make the dump directory world readable"
 msgstr "Сделать общий dump каталога читаемым"
 
-#: ../src/plugins/abrt-retrace-client.c:704
+#: ../src/plugins/abrt-retrace-client.c:707
 msgid "log to syslog"
 msgstr "записать в syslog"
+
+#: ../src/plugins/analyze_LocalGDB.xml.in.h:1
+msgid "Download debuginfo packages and generate backtrace locally using GDB"
+msgstr ""
+
+#: ../src/plugins/analyze_LocalGDB.xml.in.h:2
+msgid "Local GNU Debugger"
+msgstr ""
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:1
+msgid "Address of the retrace server"
+msgstr ""
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:2
+msgid "Retrace server URL"
+msgstr ""
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:3
+msgid "Send core dump to remote retrace server for analysis"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:1
+msgid "Address of Bugzilla server"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:2
+msgid "Bugzilla"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:3
+msgid "Bugzilla URL"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:4
+msgid "Bugzilla account password"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:5
+msgid "Bugzilla account user name"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:6
+#: ../src/plugins/report_RHTSupport.xml.in.h:2
+msgid "Check SSL key validity"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:7
+#: ../src/plugins/report_RHTSupport.xml.in.h:3
+#, fuzzy
+msgid "Password"
+msgstr "Показать пароль"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:8
+msgid "Report to Bugzilla bug tracker"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:9
+msgid "User name"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:10
+#: ../src/plugins/report_RHTSupport.xml.in.h:10
+msgid "Verify SSL"
+msgstr ""
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:1
+msgid "Kerneloops URL"
+msgstr ""
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:2
+msgid "Kerneloops.org"
+msgstr ""
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:3
+msgid "Oops server url"
+msgstr ""
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:4
+msgid "Send kernel problems to oops tracker"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:1
+msgid "Mailx"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:2
+msgid "Message subject"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:3
+msgid "Recipient"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:4
+msgid "Recipient's email"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:5
+msgid "Send Binary Data"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:6
+msgid "Send binary files like coredump"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:7
+#, fuzzy
+msgid "Send via email"
+msgstr "Отправляется почтовое сообщение…"
+
+#: ../src/plugins/report_Mailx.xml.in.h:8
+msgid "Sender"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:9
+#, fuzzy
+msgid "Sender's email"
+msgstr "Отправляется почтовое сообщение…"
+
+#: ../src/plugins/report_Mailx.xml.in.h:10
+msgid "Subject"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:1
+msgid "Address of the Red Hat support portal"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:4
+msgid "RH Portal URL"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:5
+msgid "Red Hat Customer Support"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:6
+msgid "Red Hat customer password"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:7
+msgid "Red Hat customer user name"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:8
+msgid "Report to Red Hat support"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:9
+msgid "Username"
+msgstr ""

@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <event>
-    <name>Bugzilla</name>
-    <description>Report to Bugzilla bug tracker</description>
+    <_name>Bugzilla</_name>
+    <_description>Report to Bugzilla bug tracker</_description>
     <options>
         <option type="text" name="Bugzilla_BugzillaURL">
-            <label>Bugzilla URL</label>
+            <_label>Bugzilla URL</_label>
             <allow-empty>no</allow-empty>
-            <description>Address of Bugzilla server</description>
+            <_description>Address of Bugzilla server</_description>
             <default-value>https://bugzilla.redhat.com</default-value>
         </option>
         <option type="text" name="Bugzilla_Login">
-            <label>User name</label>
+            <_label>User name</_label>
             <allow-empty>no</allow-empty>
-            <description>Bugzilla account user name</description>
+            <_description>Bugzilla account user name</_description>
         </option>
         <option type="password" name="Bugzilla_Password">
-            <label>Password</label>
+            <_label>Password</_label>
             <allow-empty>no</allow-empty>
-            <description>Bugzilla account password</description>
+            <_description>Bugzilla account password</_description>
         </option>
         <option type="bool" name="Bugzilla_SSLVerify">
-            <label>Verify SSL</label>
-            <description>Check SSL key validity</description>
+            <_label>Verify SSL</_label>
+            <_description>Check SSL key validity</_description>
             <default-value>yes</default-value>
         </option>
     </options>

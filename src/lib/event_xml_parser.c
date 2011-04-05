@@ -34,6 +34,9 @@ struct my_parse_data
     event_option_t *cur_option;
 };
 
+static char *elem_lang;
+static char *locale;
+
 static const char *const option_types[] =
 {
     "text",
@@ -42,6 +45,39 @@ static const char *const option_types[] =
     "number",
     NULL
 };
+
+static char * get_element_lang(const gchar **att_names, const gchar **att_values)
+{
+    char * short_locale_end = strchr(locale, '_');
+    VERB2 log("locale: %s", locale);
+    int i;
+    for (i = 0; att_names[i] != NULL; ++i)
+    {
+        VERB2 log("attr: %s:%s", att_names[i], att_values[i]);
+        if (strcmp(att_names[i], "xml:lang") == 0)
+        {
+            if (strcmp(att_values[i], locale) == 0)
+            {
+                VERB2 log("found translation for: %s", locale);
+                return xstrdup(att_values[i]);
+            }
+
+            /* try to match shorter locale
+             * e.g: "cs" with cs_CZ
+            */
+            if (strncmp(att_values[i], locale, short_locale_end-locale) == 0)
+            {
+                VERB2 log("found translation for shortlocale: %s", locale);
+                return xstrndup(att_values[i], short_locale_end-locale);
+            }
+        }
+    }
+    /* if the element has no attribute then it's a default non-localized value */
+    if (i == 0)
+        return xstrdup("C");
+    /* if the element is in different language then the current locale */
+    return NULL;
+}
 
 static int cmp_event_option_name_with_string(gconstpointer a, gconstpointer b)
 {
@@ -132,6 +168,15 @@ static void start_element(GMarkupParseContext *context,
             }
         }
     }
+    else if (strcmp(element_name, LABEL_ELEMENT) == 0)
+    {
+        elem_lang = get_element_lang(attribute_names, attribute_values);
+    }
+    else if (strcmp(element_name, DESCRIPTION_ELEMENT) == 0)
+    {
+        elem_lang = get_element_lang(attribute_names, attribute_values);
+    }
+
 }
 
 // Called for close tags </foo>
@@ -141,6 +186,12 @@ static void end_element(GMarkupParseContext *context,
                           GError             **error)
 {
     struct my_parse_data *parse_data = user_data;
+
+    if (elem_lang != NULL)
+    {
+        free(elem_lang);
+        elem_lang = NULL;
+    }
 
     if (strcmp(element_name, OPTION_ELEMENT) == 0)
     {
@@ -171,8 +222,16 @@ static void text(GMarkupParseContext *context,
         if (strcmp(inner_element, LABEL_ELEMENT) == 0)
         {
             VERB2 log("new label:'%s'", text_copy);
-            free(opt->label);
-            opt->label = text_copy;
+            /* set the value only if we found a value for the current locale (elem_lang != "C")
+             * OR
+             * the label is still NULL and we found the default "C" value
+            */
+            if (elem_lang != NULL && ((strcmp(elem_lang, "C") != 0)
+            || (opt->label == NULL && (strcmp(elem_lang, "C") == 0))))
+            {
+                free(opt->label);
+                opt->label = text_copy;
+            }
             return;
         }
         /*
@@ -227,8 +286,12 @@ static void text(GMarkupParseContext *context,
         if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
         {
             VERB2 log("event description:'%s'", text_copy);
-            free(ui->description);
-            ui->description = text_copy;
+            if (elem_lang != NULL && ((strcmp(elem_lang, "C") != 0)
+            || (ui->description == NULL && (strcmp(elem_lang, "C") == 0))))
+            {
+                free(ui->description);
+                ui->description = text_copy;
+            }
             return;
         }
     }
@@ -267,7 +330,7 @@ static void error(GMarkupParseContext *context,
 void load_event_description_from_file(event_config_t *event_config, const char* filename)
 {
     struct my_parse_data parse_data = { event_config, NULL };
-
+    locale = setlocale(LC_ALL, "");
     GMarkupParser parser;
     memset(&parser, 0, sizeof(parser)); /* just in case */
     parser.start_element = &start_element;
