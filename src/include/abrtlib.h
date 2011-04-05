@@ -94,6 +94,8 @@ extern "C" {
 int prefixcmp(const char *str, const char *prefix);
 #define suffixcmp abrt_suffixcmp
 int suffixcmp(const char *str, const char *suffix);
+#define strtrim abrt_strtrim
+char *strtrim(char *str);
 #define concat_path_file abrt_concat_path_file
 char *concat_path_file(const char *path, const char *filename);
 #define append_to_malloced_string abrt_append_to_malloced_string

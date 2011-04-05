@@ -64,11 +64,14 @@ static GList *parse_list(const char* list)
     struct strbuf *item = strbuf_new();
     GList *l = NULL;
 
+    char *trim_item = NULL;
+
     for (unsigned ii = 0; list[ii]; ii++)
     {
         if (list[ii] == ',')
         {
-            l = g_list_append(l, xstrdup(item->buf));
+            trim_item = strtrim(item->buf);
+            l = g_list_append(l, xstrdup(trim_item));
             strbuf_clear(item);
         }
         else
@@ -76,7 +79,10 @@ static GList *parse_list(const char* list)
     }
 
     if (item->len > 0)
-        l = g_list_append(l, xstrdup(item->buf));
+    {
+        trim_item = strtrim(item->buf);
+        l = g_list_append(l, xstrdup(trim_item));
+    }
 
     strbuf_free(item);
     return l;
