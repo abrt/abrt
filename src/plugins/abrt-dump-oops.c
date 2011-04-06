@@ -26,6 +26,7 @@
 #define PROGNAME "abrt-dump-oops"
 
 static bool world_readable_dump = false;
+static const char *debug_dumps_dir = ".";
 
 static void queue_oops(GList **vec, const char *data, const char *version)
 {
@@ -508,7 +509,7 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
     /* and readable only for the owner otherwise */
     if (!world_readable_dump)
     {
-        mode = 0644;
+        mode = 0640;
         my_euid = geteuid();
     }
 
@@ -516,14 +517,19 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
     unsigned errors = 0;
     while (idx != 0 && --countdown != 0)
     {
-        char path[sizeof(DEBUG_DUMPS_DIR"/oops-YYYY-MM-DD-hh:mm:ss-%lu-%lu") + 2 * sizeof(long)*3];
-        sprintf(path, DEBUG_DUMPS_DIR"/oops-%s-%lu-%lu", iso_date, (long)my_pid, (long)idx);
-
         char *first_line = (char*)g_list_nth_data(oops_list, --idx);
         char *second_line = (char*)strchr(first_line, '\n'); /* never NULL */
         *second_line++ = '\0';
 
-        struct dump_dir *dd = dd_create(path, /*uid:*/ my_euid, mode);
+        struct dump_dir *dd;
+        {
+            char base[sizeof("oops-YYYY-MM-DD-hh:mm:ss-%lu-%lu") + 2 * sizeof(long)*3];
+            sprintf(base, "oops-%s-%lu-%lu", iso_date, (long)my_pid, (long)idx);
+            char *path = concat_path_file(debug_dumps_dir, base);
+            dd = dd_create(path, /*uid:*/ my_euid, mode);
+            free(path);
+        }
+
         if (dd)
         {
             dd_create_basic_files(dd, /*uid:*/ my_euid);
@@ -560,7 +566,7 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        PROGNAME" [-vsrdow] FILE\n"
+        PROGNAME" [-vsrowx] [-d DIR] FILE\n"
         "\n"
         "Extract oops from syslog/dmesg file"
     );
@@ -568,23 +574,23 @@ int main(int argc, char **argv)
         OPT_v = 1 << 0,
         OPT_s = 1 << 1,
         OPT_r = 1 << 2,
-        OPT_d = 1 << 3,
-        OPT_o = 1 << 4,
-        OPT_w = 1 << 5,
+        OPT_o = 1 << 3,
+        OPT_w = 1 << 4,
+        OPT_d = 1 << 5,
         OPT_x = 1 << 6,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_BOOL('s', NULL, NULL, _("Log to syslog")),
-        OPT_BOOL('r', NULL, NULL, _("Parse kernel's message buffer before parsing FILE")),
-        OPT_BOOL('d', NULL, NULL, _("Create ABRT dump for every oops found")),
-        OPT_BOOL('o', NULL, NULL, _("Print found oopses on standard output")),
-        OPT_BOOL('w', NULL, NULL, _("Do not exit, watch the file for new oopses")),
-        /* oopses doesn't contain any sensitive info, and even
+        OPT_BOOL(  's', NULL, NULL, _("Log to syslog")),
+        OPT_BOOL(  'r', NULL, NULL, _("Parse kernel's message buffer before parsing FILE")),
+        OPT_BOOL(  'o', NULL, NULL, _("Print found oopses on standard output")),
+        OPT_BOOL(  'w', NULL, NULL, _("Do not exit, watch the file for new oopses")),
+        /* oopses don't contain any sensitive info, and even
          * the old koops app was showing the oopses to all users
          */
-        OPT_BOOL('x', NULL, NULL, _("Make the dump directory world readable")),
+        OPT_STRING('d', NULL, &debug_dumps_dir, "DIR", _("Create ABRT dump in DIR for every oops found")),
+        OPT_BOOL(  'x', NULL, NULL, _("Make the dump directory world readable")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
