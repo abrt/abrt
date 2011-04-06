@@ -305,19 +305,6 @@ static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
     return 0;
 }
 
-static int handle_GetPluginsInfo(DBusMessage* call, DBusMessage* reply)
-{
-    DBusMessageIter out_iter;
-    dbus_message_iter_init_append(reply, &out_iter);
-
-    map_map_string_t map_of_plugin_info;
-    GetPluginsInfo(map_of_plugin_info);
-    store_val(&out_iter, map_of_plugin_info);
-
-    send_flush_and_unref(reply);
-    return 0;
-}
-
 static int handle_GetPluginSettings(DBusMessage* call, DBusMessage* reply)
 {
     int r;
@@ -402,8 +389,6 @@ static DBusHandlerResult message_received(DBusConnection* conn, DBusMessage* msg
         r = handle_DeleteDebugDump(msg, reply);
     else if (strcmp(member, "CreateReport") == 0)
         r = handle_CreateReport(msg, reply);
-    else if (strcmp(member, "GetPluginsInfo") == 0)
-        r = handle_GetPluginsInfo(msg, reply);
     else if (strcmp(member, "GetPluginSettings") == 0)
         r = handle_GetPluginSettings(msg, reply);
     else if (strcmp(member, "GetSettings") == 0)
