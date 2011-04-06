@@ -78,6 +78,4 @@ int  CreateReportThread(const char* dump_dir_name, long caller_uid, int force, c
 void CreateReport(const char* dump_dir_name, long caller_uid, int force, crash_data_t **crash_data);
 int  DeleteDebugDump(const char *dump_dir_name, long caller_uid);
 
-map_string_h *GetPluginSettings(const char *plugin_name);
-
 #endif /*MIDDLEWARE_H_*/

@@ -778,13 +778,3 @@ int DeleteDebugDump(const char *dump_dir_name, long caller_uid)
 
     return 0; /* success */
 }
-
-map_string_h *GetPluginSettings(const char *plugin_name)
-{
-    char *conf_file = xasprintf(PLUGINS_CONF_DIR"/%s.conf", plugin_name);
-    map_string_h *settings = new_map_string();
-    if (load_conf_file(conf_file, settings, /*skip w/o value:*/ false))
-        VERB3 log("Loaded %s.conf", plugin_name);
-    free(conf_file);
-    return settings;
-}
