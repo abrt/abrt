@@ -49,7 +49,8 @@ eventsconfdir = $(EVENTS_CONF_DIR)
 dist_eventsconf_DATA = \
     ccpp_events.conf \
     mailx_events.conf \
-    koops_events.conf
+    koops_events.conf \
+    rhtsupport_events.conf
 
 man_MANS = \
     abrt-Bugzilla.7 \

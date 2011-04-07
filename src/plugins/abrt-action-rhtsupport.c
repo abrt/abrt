@@ -91,11 +91,16 @@ static void report_to_rhtsupport(
         dsc = xasprintf("abrt version: "VERSION"\n%s", bz_dsc);
         free(bz_dsc);
     }
-
     file = new_reportfile();
-
-    /* SELinux guys are not happy with /tmp, using /var/run/abrt */
-    tempfile = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%s-%lu.tar.gz", iso_date_string(NULL), (long)getpid());
+    const char *dt_string = iso_date_string(NULL);
+    char tmpdir_name[sizeof("/tmp/rhtsupport-YYYY-MM-DD-hh:mm:ss-XXXXXX")];
+    sprintf(tmpdir_name, "/tmp/rhtsupport-%s-XXXXXX", dt_string);
+    /* mkdtemp does mkdir(xxx, 0700), should be safe (is it?) */
+    if (mkdtemp(tmpdir_name) == NULL)
+    {
+        error_msg_and_die(_("Can't create a temporary directory in /tmp"));
+    }
+    tempfile = xasprintf("%s/tmp-%s-%lu.tar.gz",tmpdir_name, iso_date_string(NULL), (long)getpid());
 
     int pipe_from_parent_to_child[2];
     xpipe(pipe_from_parent_to_child);
@@ -236,6 +241,7 @@ static void report_to_rhtsupport(
     unlink(tempfile);
     free(tempfile);
     reportfile_free(file);
+    rmdir(tmpdir_name);
 
     free(summary);
     free(dsc);
