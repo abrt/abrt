@@ -506,7 +506,7 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Kerneloops.conf
 %{_sysconfdir}/%{name}/events/report_Kerneloops.xml
-%{_sysconfdir}/%{name}/events.d/koops_events.conf
+%config(noreplace) %{_sysconfdir}/%{name}/events.d/koops_events.conf
 %{_mandir}/man7/abrt-KerneloopsReporter.7.gz
 %{_bindir}/abrt-dump-oops
 %{_bindir}/abrt-action-analyze-oops
@@ -521,7 +521,7 @@ fi
 %files plugin-mailx
 %defattr(-,root,root,-)
 %{_sysconfdir}/%{name}/events/report_Mailx.xml
-%{_sysconfdir}/%{name}/events.d/mailx_events.conf
+%config(noreplace) %{_sysconfdir}/%{name}/events.d/mailx_events.conf
 %{_mandir}/man7/abrt-Mailx.7.gz
 %{_bindir}/abrt-action-mailx
 
@@ -537,6 +537,7 @@ fi
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
 %{_sysconfdir}/%{name}/events/report_RHTSupport.xml
+%config(noreplace) %{_sysconfdir}/%{name}/events.d/rhtsupport_events.conf
 # {_mandir}/man7/abrt-RHTSupport.7.gz
 %{_bindir}/abrt-action-rhtsupport
 

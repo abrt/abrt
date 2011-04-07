@@ -305,46 +305,6 @@ static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
     return 0;
 }
 
-static int handle_GetPluginsInfo(DBusMessage* call, DBusMessage* reply)
-{
-    DBusMessageIter out_iter;
-    dbus_message_iter_init_append(reply, &out_iter);
-
-    map_map_string_t map_of_plugin_info;
-    GetPluginsInfo(map_of_plugin_info);
-    store_val(&out_iter, map_of_plugin_info);
-
-    send_flush_and_unref(reply);
-    return 0;
-}
-
-static int handle_GetPluginSettings(DBusMessage* call, DBusMessage* reply)
-{
-    int r;
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(call, &in_iter);
-    const char* PluginName;
-    r = load_val(&in_iter, PluginName);
-    if (r != ABRT_DBUS_LAST_FIELD)
-    {
-        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-        return -1;
-    }
-
-    //long unix_uid = get_remote_uid(call);
-    //VERB1 log("got %s('%s') call from uid %ld", "GetPluginSettings", PluginName, unix_uid);
-    map_string_h *plugin_settings = GetPluginSettings(PluginName);
-
-    DBusMessageIter out_iter;
-    dbus_message_iter_init_append(reply, &out_iter);
-    store_map_string(&out_iter, plugin_settings);
-
-    free_map_string(plugin_settings);
-
-    send_flush_and_unref(reply);
-    return 0;
-}
-
 static int handle_GetSettings(DBusMessage* call, DBusMessage* reply)
 {
     map_abrt_settings_t result = GetSettings();
@@ -402,10 +362,6 @@ static DBusHandlerResult message_received(DBusConnection* conn, DBusMessage* msg
         r = handle_DeleteDebugDump(msg, reply);
     else if (strcmp(member, "CreateReport") == 0)
         r = handle_CreateReport(msg, reply);
-    else if (strcmp(member, "GetPluginsInfo") == 0)
-        r = handle_GetPluginsInfo(msg, reply);
-    else if (strcmp(member, "GetPluginSettings") == 0)
-        r = handle_GetPluginSettings(msg, reply);
     else if (strcmp(member, "GetSettings") == 0)
         r = handle_GetSettings(msg, reply);
 // looks unused to me.
