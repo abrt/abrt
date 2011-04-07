@@ -611,7 +611,7 @@ static bool DebuginfoCheckPolkit(uid_t uid)
 
 void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 {
-    string package, executable, UID;
+    string component, executable, UID;
 
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
@@ -636,7 +636,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
             return; /* backtrace already exists */
     }
 
-    dd.LoadText(FILENAME_PACKAGE, package);
+    dd.LoadText(FILENAME_COMPONENT, component);
     dd.LoadText(FILENAME_EXECUTABLE, executable);
     dd.LoadText(CD_UID, UID);
     dd.Close(); /* do not keep dir locked longer than needed */
@@ -669,12 +669,13 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     {
         VERB1 log(_("Backtrace parsing failed for %s"), pDebugDumpDir);
         VERB1 log("%d:%d: %s", location.line, location.column, location.message);
-        /* If the parser failed, compute the UUID from the executable
-         * and package only.  This is not supposed to happen often.
+        /* If the parser failed, compute the UUID from the executable and
+         * component.  This is not supposed to happen often.
          */
         struct strbuf *emptybt = strbuf_new();
         strbuf_prepend_str(emptybt, executable.c_str());
-        strbuf_prepend_str(emptybt, package.c_str());
+        strbuf_prepend_str(emptybt, component.c_str());
+        VERB3 log("Generating duphash: %s", emptybt->buf);
         string hash_str = create_hash(emptybt->buf);
         dd.SaveText(FILENAME_GLOBAL_UUID, hash_str.c_str());
 
@@ -693,9 +694,9 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     /* Compute duplication hash. */
     char *str_hash_core = btp_backtrace_get_duplication_hash(backtrace);
     struct strbuf *str_hash = strbuf_new();
-    strbuf_append_str(str_hash, package.c_str());
-    strbuf_append_str(str_hash, executable.c_str());
+    strbuf_append_str(str_hash, component.c_str());
     strbuf_append_str(str_hash, str_hash_core);
+    VERB3 log("Generating duphash: %s", str_hash->buf);
     string hash_str = create_hash(str_hash->buf);
     dd.SaveText(FILENAME_GLOBAL_UUID, hash_str.c_str());
     strbuf_free(str_hash);
