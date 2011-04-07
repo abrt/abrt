@@ -84,8 +84,7 @@ int main(int argc, char **argv)
     if (!dd)
         return 1;
 
-    char *package = dd_load_text(dd, FILENAME_PACKAGE);
-    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+    char *component = dd_load_text(dd, FILENAME_COMPONENT);
 
     /* Read backtrace */
     char *backtrace_str = dd_load_text_ext(dd, FILENAME_BACKTRACE,
@@ -107,15 +106,21 @@ int main(int argc, char **argv)
     if (!backtrace)
     {
         /*
-         * The parser failed. Compute the UUID from the executable
-         * and package only.  This is not supposed to happen often.
+         * The parser failed. Compute the duphash from the executable
+         * instead of a backtrace.
+         * and component only.  This is not supposed to happen often.
          */
         log(_("Backtrace parsing failed for %s"), dump_dir_name);
         log("%d:%d: %s", location.line, location.column, location.message);
         struct strbuf *emptybt = strbuf_new();
-        strbuf_prepend_str(emptybt, executable);
-        strbuf_prepend_str(emptybt, package);
 
+        char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+        strbuf_prepend_str(emptybt, executable);
+        free(executable);
+
+        strbuf_prepend_str(emptybt, component);
+
+        VERB3 log("Generating duphash: %s", emptybt->buf);
         char hash_str[SHA1_RESULT_LEN*2 + 1];
         create_hash(hash_str, emptybt->buf);
 
@@ -129,8 +134,7 @@ int main(int argc, char **argv)
         dd_save_text(dd, FILENAME_RATING, "0");
 
         strbuf_free(emptybt);
-        free(package);
-        free(executable);
+        free(component);
         dd_close(dd);
 
         /* Report success even if the parser failed, as the backtrace
@@ -143,10 +147,10 @@ int main(int argc, char **argv)
     /* Compute duplication hash. */
     char *str_hash_core = btp_backtrace_get_duplication_hash(backtrace);
     struct strbuf *str_hash = strbuf_new();
-    strbuf_append_str(str_hash, package);
-    strbuf_append_str(str_hash, executable);
+    strbuf_append_str(str_hash, component);
     strbuf_append_str(str_hash, str_hash_core);
 
+    VERB3 log("Generating duphash: %s", str_hash->buf);
     char hash_str[SHA1_RESULT_LEN*2 + 1];
     create_hash(hash_str, str_hash->buf);
 
@@ -182,9 +186,6 @@ int main(int argc, char **argv)
     }
     btp_backtrace_free(backtrace);
     dd_close(dd);
-
-    free(executable);
-    free(package);
-
+    free(component);
     return 0;
 }
