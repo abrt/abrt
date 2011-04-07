@@ -140,7 +140,8 @@ static mw_result_t CreateCrashReport(const char *dump_dir_name,
         if (!uid_matches)
         {
             dd_close(dd);
-            error_msg("Dump directory '%s' can't be accessed by user with uid %ld", dump_dir_name, caller_uid);
+            error_msg("Dump directory '%s' can't be accessed by user with uid %ld",
+                      dump_dir_name, caller_uid);
             r = MW_PERM_ERROR;
             goto ret;
         }
@@ -776,71 +777,4 @@ int DeleteDebugDump(const char *dump_dir_name, long caller_uid)
     dd_delete(dd);
 
     return 0; /* success */
-}
-
-void GetPluginsInfo(map_map_string_t &map_of_plugin_info)
-{
-    DIR *dir = opendir(PLUGINS_CONF_DIR);
-    if (!dir)
-        return;
-
-    struct dirent *dent;
-    while ((dent = readdir(dir)) != NULL)
-    {
-        char *ext = strrchr(dent->d_name, '.');
-        if (!ext || strcmp(ext + 1, "conf") != 0)
-            continue;
-        if (!is_regular_file(dent, PLUGINS_CONF_DIR))
-            continue;
-        VERB3 log("Found %s", dent->d_name);
-        *ext = '\0';
-
-        char *glade_file = xasprintf(PLUGINS_LIB_DIR"/%s.glade", dent->d_name);
-        if (access(glade_file, F_OK) == 0)
-        {
-            *ext = '.';
-            char *conf_file = concat_path_file(PLUGINS_CONF_DIR, dent->d_name);
-            *ext = '\0';
-            FILE *fp = fopen(conf_file, "r");
-            free(conf_file);
-
-            char *descr = NULL;
-            if (fp)
-            {
-                descr = xmalloc_fgetline(fp);
-                fclose(fp);
-                if (descr && strncmp("# Description:", descr, strlen("# Description:")) == 0)
-                    overlapping_strcpy(descr, skip_whitespace(descr + strlen("# Description:")));
-                else
-                {
-                    free(descr);
-                    descr = NULL;
-                }
-            }
-            map_string_t plugin_info;
-            plugin_info["Name"] = dent->d_name;
-            plugin_info["Enabled"] = "yes";
-            plugin_info["Type"] = "Reporter";       //was: plugin_type_str[module->GetType()]; field to be removed
-            plugin_info["Version"] = VERSION;       //was: module->GetVersion(); field to be removed?
-            plugin_info["Description"] = descr ? descr : ""; //was: module->GetDescription();
-            plugin_info["Email"] = "";              //was: module->GetEmail(); field to be removed
-            plugin_info["WWW"] = "";                //was: module->GetWWW(); field to be removed
-            plugin_info["GTKBuilder"] = glade_file; //was: module->GetGTKBuilder();
-            free(descr);
-            map_of_plugin_info[dent->d_name] = plugin_info;
-        }
-        free(glade_file);
-
-    }
-    closedir(dir);
-}
-
-map_string_h *GetPluginSettings(const char *plugin_name)
-{
-    char *conf_file = xasprintf(PLUGINS_CONF_DIR"/%s.conf", plugin_name);
-    map_string_h *settings = new_map_string();
-    if (load_conf_file(conf_file, settings, /*skip w/o value:*/ false))
-        VERB3 log("Loaded %s.conf", plugin_name);
-    free(conf_file);
-    return settings;
 }

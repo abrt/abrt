@@ -65,9 +65,6 @@ using namespace std;
  *      Returns report_status_t (map_vector_string_t) - the status of each call.
  *      2nd parameter is the contents of user's abrt.conf.
  * - DeleteDebugDump(crash_id): delete it from DB and delete corresponding /var/spool/abrt/DIR
- * - GetPluginsInfo(): returns map_map_string_t
- *      map["plugin"] = { "Name": "plugin", "Enabled": "yes" ... }
- * - GetPluginSettings(PluginName): returns map_plugin_settings_t (map_string_t)
  * - RegisterPlugin(PluginName): returns void
  * - UnRegisterPlugin(PluginName): returns void
  * - GetSettings(): returns map_abrt_settings_t (map_map_string_t)
