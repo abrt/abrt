@@ -308,7 +308,7 @@ static void passthrough(GMarkupParseContext *context,
                 gpointer user_data,
                 GError **error)
 {
-    VERB2 log("passthrough");
+    VERB3 log("passthrough");
 }
 
 // Called on error, including one set by other

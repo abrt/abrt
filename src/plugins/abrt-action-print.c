@@ -45,6 +45,7 @@ int main(int argc, char **argv)
         OPT_d = 1 << 1,
         OPT_o = 1 << 2,
         OPT_a = 1 << 3,
+        OPT_r = 1 << 4,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -52,9 +53,10 @@ int main(int argc, char **argv)
         OPT_STRING('d', NULL, &dump_dir_name, "DIR"   , _("Dump directory")),
         OPT_STRING('o', NULL, &output_file  , "FILE"  , _("Output file")),
         OPT_STRING('a', NULL, &append       , "yes/no", _("Append to, or overwrite FILE")),
+        OPT_BOOL(  'r', NULL, NULL          ,           _("Create reported_to in DIR")),
         OPT_END()
     };
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
 
@@ -84,6 +86,17 @@ int main(int argc, char **argv)
 
     if (output_file)
     {
+        if (opts & OPT_r)
+        {
+            dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+            if (dd)
+            {
+                char *msg = xasprintf("file: %s", output_file);
+                add_reported_to(dd, msg);
+                free(msg);
+                dd_close(dd);
+            }
+        }
         const char *format = (open_mode[0] == 'a' ? _("The report was appended to %s") : _("The report was stored to %s"));
         log(format, output_file);
     }
