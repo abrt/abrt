@@ -308,6 +308,11 @@ abrt_post(abrt_post_state_t *state,
     if (!httpheader_list)
         error_msg_and_die("out of memory");
 
+    // Add User-Agent: ABRT/N.M
+    httpheader_list = curl_slist_append(httpheader_list, "User-Agent: ABRT/"VERSION);
+    if (!httpheader_list)
+        error_msg_and_die("out of memory");
+
 // Disabled: was observed to also handle "305 Use proxy" redirect,
 // apparently with POST->GET remapping - which server didn't like at all.
 // Attempted to suppress remapping on 305 using CURLOPT_POSTREDIR of -1,
