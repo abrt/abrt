@@ -861,11 +861,6 @@ static void start_event_run(const char *event_name,
     if (!locked)
         return; /* user refused to steal, or write error, etc... */
 
-    /* Load /etc/abrt/events/foo.{conf,xml} stuff */
-    load_event_config_data();
-    load_event_config_data_from_keyring();
-    //TODO: Load ~/.abrt/events/foo.conf?
-
     GList *env_list = export_event_config(event_name);
     if (spawn_next_command(state, g_dump_dir_name, event_name) < 0)
     {
