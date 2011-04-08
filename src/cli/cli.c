@@ -23,17 +23,6 @@
 #include "abrt_dbus.h"
 #include "report.h"
 
-/** Creates a localized string from crash time. */
-static char *localize_crash_time(const char *timestr)
-{
-    long time = xatou(timestr);
-    char timeloc[256];
-    int success = strftime(timeloc, sizeof(timeloc), "%c", localtime(&time));
-    if (!success)
-        error_msg_and_die("Error while converting time '%s' to string", timestr);
-    return xstrdup(timeloc);
-}
-
 static crash_data_t *FillCrashInfo(const char *dump_dir_name)
 {
     int sv_logmode = logmode;
@@ -83,30 +72,24 @@ static void GetCrashInfos(vector_of_crash_data_t *retval, const char *dir_name)
 /** Prints basic information about a crash to stdout. */
 static void print_crash(crash_data_t *crash_data)
 {
-    /* Create a localized string from crash time. */
-    const char *timestr = get_crash_item_content_or_die(crash_data, FILENAME_TIME);
-    char *timeloc = localize_crash_time(timestr);
-
-    printf(_("\tCrash dump : %s\n"
-             "\tUID        : %s\n"
-             "\tPackage    : %s\n"
-             "\tExecutable : %s\n"
-             "\tCrash Time : %s\n"
-             "\tCrash Count: %s\n"),
-           get_crash_item_content_or_NULL(crash_data, CD_DUMPDIR),
-           get_crash_item_content_or_NULL(crash_data, FILENAME_UID),
-           get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE),
-           get_crash_item_content_or_NULL(crash_data, FILENAME_EXECUTABLE),
-           timeloc,
-           get_crash_item_content_or_NULL(crash_data, FILENAME_COUNT)
-    );
-
-    free(timeloc);
-
-    /* Print the hostname if it's available. */
-    const char *hostname = get_crash_item_content_or_NULL(crash_data, FILENAME_HOSTNAME);
-    if (hostname)
-        printf(_("\tHostname   : %s\n"), hostname);
+    struct crash_item *item = g_hash_table_lookup(crash_data, CD_DUMPDIR);
+    if (item)
+        printf("\tDirectory   : %s\n", item->content);
+    GList *list = g_hash_table_get_keys(crash_data);
+    GList *l = list = g_list_sort(list, (GCompareFunc)strcmp);
+    while (l)
+    {
+        const char *key = l->data;
+        item = g_hash_table_lookup(crash_data, key);
+        if (item && (item->flags & CD_FLAG_LIST) && !strchr(item->content, '\n'))
+        {
+            char *formatted = format_crash_item(item);
+            printf("\t%-12s: %s\n", key, formatted ? formatted : item->content);
+            free(formatted);
+        }
+        l = l->next;
+    }
+    g_list_free(list);
 }
 
 /**
@@ -135,64 +118,42 @@ static void print_crash_list(vector_of_crash_data_t *crash_list, bool include_re
 /**
  * Prints full information about a crash
  */
-static void print_crash_info(crash_data_t *crash_data, bool show_backtrace)
+static void print_crash_info(crash_data_t *crash_data, bool show_multiline)
 {
-    const char *timestr = get_crash_item_content_or_die(crash_data, FILENAME_TIME);
-    char *timeloc = localize_crash_time(timestr);
+    struct crash_item *item = g_hash_table_lookup(crash_data, CD_DUMPDIR);
+    if (item)
+        printf("%-16s: %s\n", "Directory", item->content);
 
-    printf(_("Dump directory:     %s\n"
-             "Last crash:         %s\n"
-             "Analyzer:           %s\n"
-             "Component:          %s\n"
-             "Package:            %s\n"
-             "Command:            %s\n"
-             "Executable:         %s\n"
-             "System:             %s, kernel %s\n"
-             "Reason:             %s\n"),
-           get_crash_item_content_or_die(crash_data, CD_DUMPDIR),
-           timeloc,
-           get_crash_item_content_or_die(crash_data, FILENAME_ANALYZER),
-           get_crash_item_content_or_die(crash_data, FILENAME_COMPONENT),
-           get_crash_item_content_or_die(crash_data, FILENAME_PACKAGE),
-           get_crash_item_content_or_die(crash_data, FILENAME_CMDLINE),
-           get_crash_item_content_or_die(crash_data, FILENAME_EXECUTABLE),
-           get_crash_item_content_or_die(crash_data, FILENAME_OS_RELEASE),
-           get_crash_item_content_or_die(crash_data, FILENAME_KERNEL),
-           get_crash_item_content_or_die(crash_data, FILENAME_REASON)
-    );
-
-    free(timeloc);
-
-    /* Print optional fields only if they are available */
-
-    /* Coredump is not present in kerneloopses and Python exceptions. */
-    const char *coredump = get_crash_item_content_or_NULL(crash_data, FILENAME_COREDUMP);
-    if (coredump)
-        printf(_("Coredump file:      %s\n"), coredump);
-
-    const char *rating = get_crash_item_content_or_NULL(crash_data, FILENAME_RATING);
-    if (rating)
-        printf(_("Rating:             %s\n"), rating);
-
-    /* Crash function is not present in kerneloopses, and before the full report is created.*/
-    const char *crash_function = get_crash_item_content_or_NULL(crash_data, FILENAME_CRASH_FUNCTION);
-    if (crash_function)
-        printf(_("Crash function:     %s\n"), crash_function);
-
-    const char *hostname = get_crash_item_content_or_NULL(crash_data, FILENAME_HOSTNAME);
-    if (hostname)
-        printf(_("Hostname:           %s\n"), hostname);
-
-    const char *comment = get_crash_item_content_or_NULL(crash_data, FILENAME_COMMENT);
-    if (comment)
-        printf(_("\nComment:\n%s\n"), comment);
-
-    if (show_backtrace)
+    GList *list = g_hash_table_get_keys(crash_data);
+    GList *l = list = g_list_sort(list, (GCompareFunc)strcmp);
+    bool multi_line = 0;
+    while (l)
     {
-        const char *backtrace = get_crash_item_content_or_NULL(crash_data, FILENAME_BACKTRACE);
-        if (backtrace)
-            printf(_("\nBacktrace:\n%s\n"), backtrace);
+        const char *key = l->data;
+        if (strcmp(key, CD_DUMPDIR) != 0)
+        {
+            item = g_hash_table_lookup(crash_data, key);
+            if (item)
+            {
+                char *formatted = format_crash_item(item);
+                char *output = formatted ? formatted : item->content;
+                char *last_eol = strrchr(output, '\n');
+                if (show_multiline || !last_eol)
+                {
+                    /* prev value was multi-line, or this value is multi-line? */
+                    if (multi_line || last_eol)
+                        printf("\n");
+                    printf("%-16s:%c%s", key, (last_eol ? '\n' : ' '), output);
+                    if (!last_eol || last_eol[1] != '\0')
+                        printf("\n"); /* go to next line only if necessary */
+                    multi_line = (last_eol != NULL);
+                }
+                free(formatted);
+            }
+        }
+        l = l->next;
     }
+    g_list_free(list);
 }
 
 /* Program options */
@@ -224,7 +185,6 @@ static const struct option longopts[] =
     { "report"   , no_argument, NULL, 'r' },
     { "delete"   , no_argument, NULL, 'd' },
     { "info"     , no_argument, NULL, 'i' },
-    { "backtrace", no_argument, NULL, 'b' },
     { 0, 0, 0, 0 } /* prevents crashes for unknown options*/
 };
 
@@ -253,15 +213,17 @@ static void print_usage_and_die(char *argv0)
 	"   or: %s -i[b] CRASH_DIR\n"
 	"   or: %s -d CRASH_DIR\n"
         "\n"
-        "	-l, --list		List not yet reported crashes\n"
-        "	  -f, --full		List all crashes\n"
-        "	-D BASE_DIR		Directory to list crashes from\n"
+        "	-l, --list		List not yet reported problems\n"
+        "	  -f, --full		List all problems\n"
+        "	-D BASE_DIR		Directory to list problems from\n"
         "				(default: -D $HOME/.abrt/spool -D %s)\n"
         "\n"
         "	-r, --report		Send a report about CRASH_DIR\n"
         "	  -y, --always		...without editing and asking\n"
         "	-i, --info		Print detailed information about CRASH_DIR\n"
-        "	  -b, --backtrace	...including backtrace\n"
+        "	  -f, --full		...including multi-line entries\n"
+        "				Note: -if will run analyzers\n"
+	"				(if this CRASH_DIR have defined analyzers)\n"
         "	-d, --delete		Remove CRASH_DIR\n"
         "\n"
         "	-V, --version		Display version and exit\n"
@@ -280,7 +242,6 @@ int main(int argc, char** argv)
     int op = -1;
     bool full = false;
     bool always = false;
-    bool backtrace = false;
 
     setlocale(LC_ALL, "");
 #if ENABLE_NLS
@@ -309,7 +270,6 @@ int main(int argc, char** argv)
         case 'i': SET_OP(OPT_INFO);     break;
         case 'f': full = true;          break;
         case 'y': always = true;        break;
-        case 'b': backtrace = true;     break;
         case 'v': g_verbose++;          break;
         case 'D':
             D_list = g_list_append(D_list, optarg);
@@ -353,10 +313,7 @@ int main(int argc, char** argv)
     /* Check if we have an operation.
      * Limit --full and --always to certain operations.
      */
-    if ((full && op != OPT_GET_LIST) ||
-        (always && op != OPT_REPORT) ||
-        (backtrace && op != OPT_INFO) ||
-        op == -1)
+    if ((always && op != OPT_REPORT) || op == -1)
     {
         print_usage_and_die(argv[0]);
     }
@@ -420,7 +377,7 @@ int main(int argc, char** argv)
 
             char *analyze_events_as_lines = list_possible_events(dd, NULL, "analyze");
 
-            if (backtrace && analyze_events_as_lines && *analyze_events_as_lines)
+            if (full && analyze_events_as_lines && *analyze_events_as_lines)
             {
                 dd_close(dd);
 
@@ -449,7 +406,7 @@ int main(int argc, char** argv)
             add_to_crash_data_ext(crash_data, CD_DUMPDIR, dump_dir_name,
                                   CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
 
-            print_crash_info(crash_data, backtrace);
+            print_crash_info(crash_data, full);
             free_crash_data(crash_data);
 
             break;

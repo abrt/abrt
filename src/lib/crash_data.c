@@ -28,6 +28,26 @@ static void free_crash_item(void *ptr)
     }
 }
 
+char *format_crash_item(struct crash_item *item)
+{
+    if (!item)
+        return xstrdup("(nullitem)");
+
+    if (item->flags & CD_FLAG_UNIXTIME)
+    {
+        errno = 0;
+        char *end;
+        time_t time = strtol(item->content, &end, 10);
+        if (!errno && !*end && end != item->content)
+        {
+            char timeloc[256];
+            int success = strftime(timeloc, sizeof(timeloc), "%c", localtime(&time));
+            if (success)
+                return xstrdup(timeloc);
+        }
+    }
+    return NULL;
+}
 
 /* crash_data["name"] = { "content", CD_FLAG_foo_bits } */
 
@@ -43,11 +63,7 @@ void add_to_crash_data_ext(crash_data_t *crash_data,
                 unsigned flags)
 {
     if (!(flags & CD_FLAG_BIN))
-    {
         flags |= CD_FLAG_TXT;
-        if (!strchr(content, '\n'))
-            flags |= CD_FLAG_ONELINE;
-    }
     if (!(flags & CD_FLAG_ISEDITABLE))
         flags |= CD_FLAG_ISNOTEDITABLE;
 
@@ -244,9 +260,19 @@ void load_crash_data_from_dump_dir(crash_data_t *crash_data, struct dump_dir *dd
         else
             flags |= CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE;
 
-        int oneline = strchr(content, '\n') == NULL;
-        if (oneline)
-            flags |= CD_FLAG_ONELINE;
+        static const char *const list_files[] = {
+            FILENAME_UID       ,
+            FILENAME_PACKAGE   ,
+            FILENAME_EXECUTABLE,
+            FILENAME_TIME      ,
+            FILENAME_COUNT     ,
+            NULL
+        };
+        if (is_in_list(short_name, list_files))
+            flags |= CD_FLAG_LIST;
+
+        if (strcmp(short_name, FILENAME_TIME) == 0)
+            flags |= CD_FLAG_UNIXTIME;
 
         add_to_crash_data_ext(crash_data,
                 short_name,

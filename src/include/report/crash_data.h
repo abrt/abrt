@@ -32,7 +32,9 @@ enum {
     CD_FLAG_TXT           = (1 << 1),
     CD_FLAG_ISEDITABLE    = (1 << 2),
     CD_FLAG_ISNOTEDITABLE = (1 << 3),
-    CD_FLAG_ONELINE       = (1 << 4),
+    /* Show this element in "short" info (abrt-cli -l) */
+    CD_FLAG_LIST          = (1 << 4),
+    CD_FLAG_UNIXTIME      = (1 << 5),
 };
 
 struct crash_item {
@@ -40,6 +42,8 @@ struct crash_item {
     unsigned flags;
 };
 typedef struct crash_item crash_item;
+
+char *format_crash_item(struct crash_item *item);
 
 /* In-memory crash data structure and accessors */
 
