@@ -115,6 +115,15 @@ static void report_to_kerneloops(
      * RemoteIP: 34192fd15e34bf60fac6a5f01bba04ddbd3f0558
      * - no URL or bug ID apparently...
      */
+    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (dd)
+    {
+        char *msg = xasprintf("kerneloops: URL=%s", submitURL);
+        add_reported_to(dd, msg);
+        free(msg);
+        dd_close(dd);
+    }
+
     log("Kernel oops report was uploaded");
 }
 

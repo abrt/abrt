@@ -226,7 +226,16 @@ static void report_to_rhtsupport(
             /* Use sanitized string as error message */
             error_msg_and_die("%s", result);
         }
+
         /* No error */
+        dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        if (dd)
+        {
+            char *msg = xasprintf("RHTSupport: %s", result);
+            add_reported_to(dd, msg);
+            free(msg);
+            dd_close(dd);
+        }
         log("%s", result);
         free(result);
     }

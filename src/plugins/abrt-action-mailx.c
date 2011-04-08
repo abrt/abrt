@@ -118,6 +118,14 @@ static void create_and_send_email(
 
     free_crash_data(crash_data);
 
+    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (dd)
+    {
+        char *msg = xasprintf("email: %s", email_to);
+        add_reported_to(dd, msg);
+        free(msg);
+        dd_close(dd);
+    }
     log("Email was sent to: %s", email_to);
 }
 
