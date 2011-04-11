@@ -3,17 +3,13 @@ SUBDIRS = plugins
 bin_PROGRAMS = abrt-retrace-worker
 abrt_retrace_worker_SOURCES = worker.c
 
+dist_bin_SCRIPTS = abrt-retrace-cleanup abrt-retrace-reposync coredump2packages
+
 retrace_PYTHON = retrace.py
 retracedir = $(datadir)/abrt-retrace
 
-worker_PYTHON = coredump2packages.py worker.py
+worker_PYTHON = worker.py
 workerdir = $(datadir)/abrt-retrace
-
-cleanup_PYTHON = abrt-retrace-cleanup.py
-cleanupdir = $(datadir)/abrt-retrace
-
-reposync_PYTHON = abrt-retrace-reposync.py
-reposyncdir = $(datadir)/abrt-retrace
 
 interface_PYTHON = backtrace.wsgi create.wsgi log.wsgi settings.wsgi status.wsgi
 # interfacedir should probably be $$(pkgdatadir)/retrace

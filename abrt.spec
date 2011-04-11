@@ -572,6 +572,9 @@ fi
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/cache/abrt-retrace
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/log/abrt-retrace
 %caps(cap_setuid=ep) %{_bindir}/abrt-retrace-worker
+%{_bindir}/abrt-retrace-cleanup
+%{_bindir}/abrt-retrace-reposync
+%{_bindir}/coredump2packages
 %{_datadir}/abrt-retrace/*.py*
 %{_datadir}/abrt-retrace/plugins/*.py*
 %{_datadir}/abrt-retrace/*.wsgi
