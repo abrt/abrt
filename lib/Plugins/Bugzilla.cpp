@@ -762,6 +762,9 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     const std::string& duphash   = get_crash_data_item_content(pCrashData, CD_DUPHASH);
     const char *release          = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_RELEASE);
 
+    if (duphash == "")
+        throw CABRTException(EXCEP_PLUGIN, _("Essential file '%s' is missing, can't continue.."), CD_DUPHASH);
+
     ctx bz_server(BugzillaXMLRPC.c_str(), SSLVerify);
 
     update_client(_("Logging into bugzilla..."));
