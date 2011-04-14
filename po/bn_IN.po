@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-02-06 00:29+0100\n"
+"POT-Creation-Date: 2011-04-14 18:25+0200\n"
 "PO-Revision-Date: 2011-01-19 18:57+0530\n"
 "Last-Translator: \n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -40,57 +40,62 @@ msgstr ""
 "লগ-ইন ও পাসওয়ার্ড লেখা হয়নি।\n"
 "অনুগ্রহ করে পরীক্ষা করুন "
 
-#: ../lib/Plugins/Bugzilla.cpp:767
+#: ../lib/Plugins/Bugzilla.cpp:766
+#, c-format
+msgid "Essential file '%s' is missing, can't continue.."
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:770
 msgid "Logging into bugzilla..."
 msgstr "bugzilla-তে লগ-ইন করা হচ্ছে..."
 
-#: ../lib/Plugins/Bugzilla.cpp:770
+#: ../lib/Plugins/Bugzilla.cpp:773
 msgid "Checking for duplicates..."
 msgstr "প্রতিলিপি পরীক্ষা করা হচ্ছে..."
 
-#: ../lib/Plugins/Bugzilla.cpp:792 ../lib/Plugins/Bugzilla.cpp:827
+#: ../lib/Plugins/Bugzilla.cpp:795 ../lib/Plugins/Bugzilla.cpp:830
 msgid "Missing mandatory member 'bugs'"
 msgstr "আবশ্যক তথ্য 'bugs' অনুপস্থিত"
 
-#: ../lib/Plugins/Bugzilla.cpp:810 ../lib/Plugins/Bugzilla.cpp:843
-#: ../lib/Plugins/Bugzilla.cpp:919
+#: ../lib/Plugins/Bugzilla.cpp:813 ../lib/Plugins/Bugzilla.cpp:846
+#: ../lib/Plugins/Bugzilla.cpp:922
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() বিফল। সকল আবশ্যক তথ্য সংগ্রহ করা যায়নি"
 
-#: ../lib/Plugins/Bugzilla.cpp:859
+#: ../lib/Plugins/Bugzilla.cpp:862
 msgid "Creating a new bug..."
 msgstr "নতুন বাগ তৈরি করা হচ্ছে..."
 
-#: ../lib/Plugins/Bugzilla.cpp:864
+#: ../lib/Plugins/Bugzilla.cpp:867
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla-র এনট্রি নির্মাণ করতে ব্যর্থ"
 
-#: ../lib/Plugins/Bugzilla.cpp:874 ../lib/Plugins/Bugzilla.cpp:969
+#: ../lib/Plugins/Bugzilla.cpp:877 ../lib/Plugins/Bugzilla.cpp:972
 msgid "Logging out..."
 msgstr "লগ-আউট করা হচ্ছে..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:893
+#: ../lib/Plugins/Bugzilla.cpp:896
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "বাগ পূর্বেই দায়ের করা হয়েছে: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:904
+#: ../lib/Plugins/Bugzilla.cpp:907
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla দ্বারা বাগ %d-র ঊর্ধ্বতন বাগ সনাক্ত করা সম্ভব হয়নি"
 
-#: ../lib/Plugins/Bugzilla.cpp:933 ../lib/Plugins/Bugzilla.cpp:934
+#: ../lib/Plugins/Bugzilla.cpp:936 ../lib/Plugins/Bugzilla.cpp:937
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "%s-কে প্রতিলিপি প্রাপকদের (CC) তালিকায় সংযোজন করুন"
 
-#: ../lib/Plugins/Bugzilla.cpp:958
+#: ../lib/Plugins/Bugzilla.cpp:961
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "বাগ(%d)-র মধ্যে নতুন বিবৃতি সংযোজন করুন"
 
-#: ../lib/Plugins/Bugzilla.cpp:1057
+#: ../lib/Plugins/Bugzilla.cpp:1060
 msgid "Reports bugs to bugzilla"
 msgstr "bugzilla-তে বাগ রিপোর্ট দায়ের করা হয়"
 
@@ -111,7 +116,7 @@ msgstr "debuginfo ইনস্টলেশন উপেক্ষা করা �
 msgid "Backtrace parsing failed for %s"
 msgstr "%s-র ক্ষেত্রে ব্যাক-ট্রেস পার্স করতে বিফল"
 
-#: ../lib/Plugins/CCpp.cpp:973
+#: ../lib/Plugins/CCpp.cpp:974
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "C/C++ প্রোগ্রামের মধ্যে বিপর্যয় বিশ্লেষণ করা হয়"
 
@@ -354,7 +359,7 @@ msgstr "লগ-ইন:"
 msgid "RHTSupport URL:"
 msgstr "RHTSupport URL:"
 
-#: ../lib/Utils/abrt_curl.cpp:180
+#: ../lib/Utils/abrt_curl.cpp:183
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "আপলোড করা হয়েছে: %llu কিলোবাইট, সর্বমোট %llu কিলোবাইট"

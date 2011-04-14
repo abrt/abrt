@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-02-07 07:45+0000\n"
+"POT-Creation-Date: 2011-04-14 18:25+0200\n"
 "PO-Revision-Date: 2011-02-07 13:01+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
@@ -42,58 +42,63 @@ msgstr ""
 "Leeg inlog of wachtwoord.\n"
 "Controleren a.u.b. "
 
-#: ../lib/Plugins/Bugzilla.cpp:767
+#: ../lib/Plugins/Bugzilla.cpp:766
+#, c-format
+msgid "Essential file '%s' is missing, can't continue.."
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:770
 msgid "Logging into bugzilla..."
 msgstr "Inloggen bij bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:770
+#: ../lib/Plugins/Bugzilla.cpp:773
 msgid "Checking for duplicates..."
 msgstr "Controleren voor dubbele..."
 
-#: ../lib/Plugins/Bugzilla.cpp:792 ../lib/Plugins/Bugzilla.cpp:827
+#: ../lib/Plugins/Bugzilla.cpp:795 ../lib/Plugins/Bugzilla.cpp:830
 msgid "Missing mandatory member 'bugs'"
 msgstr "Verplicht onderdeel 'bugs' ontbreekt"
 
-#: ../lib/Plugins/Bugzilla.cpp:810 ../lib/Plugins/Bugzilla.cpp:843
-#: ../lib/Plugins/Bugzilla.cpp:919
+#: ../lib/Plugins/Bugzilla.cpp:813 ../lib/Plugins/Bugzilla.cpp:846
+#: ../lib/Plugins/Bugzilla.cpp:922
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() faalde. Kon alle noodzakelijke informatie niet verzamelen"
 
-#: ../lib/Plugins/Bugzilla.cpp:859
+#: ../lib/Plugins/Bugzilla.cpp:862
 msgid "Creating a new bug..."
 msgstr "Nieuwe bug aanmaken..."
 
-#: ../lib/Plugins/Bugzilla.cpp:864
+#: ../lib/Plugins/Bugzilla.cpp:867
 msgid "Bugzilla entry creation failed"
 msgstr "Het aanmaken van een Bugzilla ingang mislukte"
 
-#: ../lib/Plugins/Bugzilla.cpp:874 ../lib/Plugins/Bugzilla.cpp:969
+#: ../lib/Plugins/Bugzilla.cpp:877 ../lib/Plugins/Bugzilla.cpp:972
 msgid "Logging out..."
 msgstr "Uitloggen..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:893
+#: ../lib/Plugins/Bugzilla.cpp:896
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Bug is al aangemeld: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:904
+#: ../lib/Plugins/Bugzilla.cpp:907
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla kon de ouder van bug %d  niet vinden"
 
-#: ../lib/Plugins/Bugzilla.cpp:933 ../lib/Plugins/Bugzilla.cpp:934
+#: ../lib/Plugins/Bugzilla.cpp:936 ../lib/Plugins/Bugzilla.cpp:937
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "Voeg %s toe aan CC lijst"
 
-#: ../lib/Plugins/Bugzilla.cpp:958
+#: ../lib/Plugins/Bugzilla.cpp:961
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Voeg nieuw commentaar toe aan bug(%d)"
 
-#: ../lib/Plugins/Bugzilla.cpp:1057
+#: ../lib/Plugins/Bugzilla.cpp:1060
 msgid "Reports bugs to bugzilla"
 msgstr "Bugs rapporteren aan bugzilla"
 
@@ -114,7 +119,7 @@ msgstr "Sla de debuginfo installatie over"
 msgid "Backtrace parsing failed for %s"
 msgstr "Backtrace ontleden mislukte voor %s"
 
-#: ../lib/Plugins/CCpp.cpp:973
+#: ../lib/Plugins/CCpp.cpp:974
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Analyseert crashes in C/C++ programma's"
 
@@ -357,7 +362,7 @@ msgstr "Inlog:"
 msgid "RHTSupport URL:"
 msgstr "RHTSupport URL:"
 
-#: ../lib/Utils/abrt_curl.cpp:180
+#: ../lib/Utils/abrt_curl.cpp:183
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Uploaden: %llu van %llu kbytes"

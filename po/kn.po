@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.kn\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-02-06 00:29+0100\n"
+"POT-Creation-Date: 2011-04-14 18:25+0200\n"
 "PO-Revision-Date: 2011-01-27 18:08+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: kn_IN <kde-i18n-doc@kde.org>\n"
@@ -40,57 +40,62 @@ msgstr ""
 "ಬಳಕೆದಾರ ಹೆಸರು ಅಥವ ಗುಪ್ತಪದವು ಖಾಲಿ ಇದೆ.\n"
 "ದಯವಿಟ್ಟು ಇದನ್ನು ಪರಿಶೀಲಿಸಿ "
 
-#: ../lib/Plugins/Bugzilla.cpp:767
+#: ../lib/Plugins/Bugzilla.cpp:766
+#, c-format
+msgid "Essential file '%s' is missing, can't continue.."
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:770
 msgid "Logging into bugzilla..."
 msgstr "ಬಗ್‌ಝಿಲ್ಲಾಗೆ ಪ್ರವೇಶಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:770
+#: ../lib/Plugins/Bugzilla.cpp:773
 msgid "Checking for duplicates..."
 msgstr "ದ್ವಿಪ್ರತಿಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:792 ../lib/Plugins/Bugzilla.cpp:827
+#: ../lib/Plugins/Bugzilla.cpp:795 ../lib/Plugins/Bugzilla.cpp:830
 msgid "Missing mandatory member 'bugs'"
 msgstr "'ದೋಷಗಳು' ಎಂಬ ಅಗತ್ಯ ನಮೂದು ಕಾಣಿಸುತ್ತಿಲ್ಲ"
 
-#: ../lib/Plugins/Bugzilla.cpp:810 ../lib/Plugins/Bugzilla.cpp:843
-#: ../lib/Plugins/Bugzilla.cpp:919
+#: ../lib/Plugins/Bugzilla.cpp:813 ../lib/Plugins/Bugzilla.cpp:846
+#: ../lib/Plugins/Bugzilla.cpp:922
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() ವಿಫಲಗೊಂಡಿದೆ. ಎಲ್ಲಾ ಅಗತ್ಯ ಮಾಹಿತಿಯನ್ನು ಸಂಗ್ರಹಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../lib/Plugins/Bugzilla.cpp:859
+#: ../lib/Plugins/Bugzilla.cpp:862
 msgid "Creating a new bug..."
 msgstr "ಹೊಸ ದೋಷವನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:864
+#: ../lib/Plugins/Bugzilla.cpp:867
 msgid "Bugzilla entry creation failed"
 msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ನಮೂದನ್ನು ರಚಿಸುವಿಕೆಯು ವಿಫಲಗೊಂಡಿದೆ"
 
-#: ../lib/Plugins/Bugzilla.cpp:874 ../lib/Plugins/Bugzilla.cpp:969
+#: ../lib/Plugins/Bugzilla.cpp:877 ../lib/Plugins/Bugzilla.cpp:972
 msgid "Logging out..."
 msgstr "ನಿರ್ಗಮಿಸಲಾಗುತ್ತಿದೆ..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:893
+#: ../lib/Plugins/Bugzilla.cpp:896
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "ದೋಷವನ್ನು ಈಗಾಗಲೆ ವರದಿ ಮಾಡಲಾಗಿದೆ: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:904
+#: ../lib/Plugins/Bugzilla.cpp:907
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "ದೋಷ %d ಮೂಲವನ್ನು ಪತ್ತೆ ಮಾಡಲು ಬಗ್‌ಝಿಲ್ಲಾದಿಂದ ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../lib/Plugins/Bugzilla.cpp:933 ../lib/Plugins/Bugzilla.cpp:934
+#: ../lib/Plugins/Bugzilla.cpp:936 ../lib/Plugins/Bugzilla.cpp:937
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "%s ರವರನ್ನು CC ಪಟ್ಟಿಗೆ ಸೇರಿಸು"
 
-#: ../lib/Plugins/Bugzilla.cpp:958
+#: ../lib/Plugins/Bugzilla.cpp:961
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "ದೋಷಕ್ಕೆ(%d) ಒಂದು ಹೊಸ ಟಿಪ್ಪಣಿಯನ್ನು ಸೇರಿಸಿ"
 
-#: ../lib/Plugins/Bugzilla.cpp:1057
+#: ../lib/Plugins/Bugzilla.cpp:1060
 msgid "Reports bugs to bugzilla"
 msgstr "ದೋಷಗಳನ್ನು ಬಗ್‌ಝಿಲ್ಲಾಗೆ ವರದಿ ಮಾಡುತ್ತದೆ"
 
@@ -111,7 +116,7 @@ msgstr "debuginfo ಅನುಸ್ಥಾಪನೆಯನ್ನು ಉಪೇಕ್�
 msgid "Backtrace parsing failed for %s"
 msgstr "%s ಗಾಗಿ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ವಿಫಲಗೊಂಡಿದೆ"
 
-#: ../lib/Plugins/CCpp.cpp:973
+#: ../lib/Plugins/CCpp.cpp:974
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "C/C++ ಪ್ರೊಗ್ರಾಮ್‌ಗಳಲ್ಲಿನ ಕುಸಿತಗಳನ್ನು ವಿಶ್ಲೇಷಿಸುತ್ತದೆ"
 
@@ -354,7 +359,7 @@ msgstr "ಲಾಗಿನ್:"
 msgid "RHTSupport URL:"
 msgstr "RHTSupport URL:"
 
-#: ../lib/Utils/abrt_curl.cpp:180
+#: ../lib/Utils/abrt_curl.cpp:183
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "%llu ಅನ್ನು (%llu kbytes ನಲ್ಲಿ) ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ"

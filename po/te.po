@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.te\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-02-06 00:29+0100\n"
+"POT-Creation-Date: 2011-04-14 18:25+0200\n"
 "PO-Revision-Date: 2011-01-27 16:01+0530\n"
 "Last-Translator: Krishnababu Krothapalli <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
@@ -58,57 +58,62 @@ msgstr ""
 "ఖాళీ లాగిన్ లేదా సంకేతపదము.\n"
 "దయచేసి సరిచూసుకొనుము "
 
-#: ../lib/Plugins/Bugzilla.cpp:767
+#: ../lib/Plugins/Bugzilla.cpp:766
+#, c-format
+msgid "Essential file '%s' is missing, can't continue.."
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:770
 msgid "Logging into bugzilla..."
 msgstr "బగ్‌జిల్లా లోనికి లాగిన్ అవుతోంది..."
 
-#: ../lib/Plugins/Bugzilla.cpp:770
+#: ../lib/Plugins/Bugzilla.cpp:773
 msgid "Checking for duplicates..."
 msgstr "నకిలీల కొరకు పరిశీలించుచున్నది..."
 
-#: ../lib/Plugins/Bugzilla.cpp:792 ../lib/Plugins/Bugzilla.cpp:827
+#: ../lib/Plugins/Bugzilla.cpp:795 ../lib/Plugins/Bugzilla.cpp:830
 msgid "Missing mandatory member 'bugs'"
 msgstr "తప్పనిసరైన సభ్యుని 'bugs' తప్పిపోయినవి"
 
-#: ../lib/Plugins/Bugzilla.cpp:810 ../lib/Plugins/Bugzilla.cpp:843
-#: ../lib/Plugins/Bugzilla.cpp:919
+#: ../lib/Plugins/Bugzilla.cpp:813 ../lib/Plugins/Bugzilla.cpp:846
+#: ../lib/Plugins/Bugzilla.cpp:922
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() విఫలమైంది. తప్పనిసరైన సమాచారము మొత్తంను సేకరించలేక పోయింది"
 
-#: ../lib/Plugins/Bugzilla.cpp:859
+#: ../lib/Plugins/Bugzilla.cpp:862
 msgid "Creating a new bug..."
 msgstr "కొత్త బగ్‌ను సృష్టించుచున్నది..."
 
-#: ../lib/Plugins/Bugzilla.cpp:864
+#: ../lib/Plugins/Bugzilla.cpp:867
 msgid "Bugzilla entry creation failed"
 msgstr "బగ్‌జిల్లా పద్దు సృష్టించుట విఫలమైంది"
 
-#: ../lib/Plugins/Bugzilla.cpp:874 ../lib/Plugins/Bugzilla.cpp:969
+#: ../lib/Plugins/Bugzilla.cpp:877 ../lib/Plugins/Bugzilla.cpp:972
 msgid "Logging out..."
 msgstr "లాగ్అవుట్ అవుచున్నది..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:893
+#: ../lib/Plugins/Bugzilla.cpp:896
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "బగ్ యిప్పటికే నివేదించబడింది: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:904
+#: ../lib/Plugins/Bugzilla.cpp:907
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "బగ్‌జిల్లా బగ్ %d యొక్క మాత్రుక(పేరెంట్)ను కనుగొనలేక పోయింది"
 
-#: ../lib/Plugins/Bugzilla.cpp:933 ../lib/Plugins/Bugzilla.cpp:934
+#: ../lib/Plugins/Bugzilla.cpp:936 ../lib/Plugins/Bugzilla.cpp:937
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "%sను CC జాబితాకు జతచేసినది"
 
-#: ../lib/Plugins/Bugzilla.cpp:958
+#: ../lib/Plugins/Bugzilla.cpp:961
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "కొత్త వ్యాఖ్యను బగ్(%d)నకు జతచేయుము"
 
-#: ../lib/Plugins/Bugzilla.cpp:1057
+#: ../lib/Plugins/Bugzilla.cpp:1060
 msgid "Reports bugs to bugzilla"
 msgstr "బగ్‌లను బగ్‌జిల్లాకు నివేదించును"
 
@@ -129,7 +134,7 @@ msgstr "డీబగ్‌సమాచార సంస్థాపనను ద�
 msgid "Backtrace parsing failed for %s"
 msgstr "%s కొరకు బాక్‌ట్రేస్ పార్శింగ్ విఫలమైంది"
 
-#: ../lib/Plugins/CCpp.cpp:973
+#: ../lib/Plugins/CCpp.cpp:974
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "C/C++ ప్రోగ్రాములనందలి క్రాష్‌లను విశ్లేషించుము"
 
@@ -371,7 +376,7 @@ msgstr "లాగిన్:"
 msgid "RHTSupport URL:"
 msgstr "RHTమద్దతు URL:"
 
-#: ../lib/Utils/abrt_curl.cpp:180
+#: ../lib/Utils/abrt_curl.cpp:183
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "అప్‌లోడైంది: %llu మొత్తం %llu కిబైట్లలో"
