@@ -381,14 +381,17 @@ static void report_tb_was_toggled(GtkButton *button_unused, gpointer user_data_u
     {
         for (; li; li = li->next)
         {
-            if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
+            if (GTK_IS_TOGGLE_BUTTON(li->data))
             {
-                const char *event_name = gtk_widget_get_tooltip_text(GTK_WIDGET(li->data));
-                strbuf_append_strf(reporters_string,
-                                "%s%s",
-                                (reporters_string->len != 0 ? ", " : ""),
-                                event_name
-                );
+                if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
+                {
+                    const char *event_name = gtk_widget_get_tooltip_text(GTK_WIDGET(li->data));
+                    strbuf_append_strf(reporters_string,
+                                    "%s%s",
+                                    (reporters_string->len != 0 ? ", " : ""),
+                                    event_name
+                    );
+                }
             }
         }
     }
@@ -431,19 +434,20 @@ static GtkWidget *add_event_buttons(GtkBox *box, char *event_name, GCallback fun
                 event_screen_name = cfg->screen_name;
             event_description = cfg->description;
         }
-        char *event_label = xasprintf("%s%s%s",
-                        event_screen_name,
-                        (event_description ? " - " : ""),
-                        event_description ? event_description : ""
-        );
 
+        //char *event_label = xasprintf("%s%s%s",
+        //                event_screen_name,
+        //                (event_description ? " - " : ""),
+        //                event_description ? event_description : ""
+        //);
         //VERB2 log("adding button '%s' to box %p", event_name, box);
         GtkWidget *button = radio
-                ? gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(first_button), event_label)
-                : gtk_check_button_new_with_label(event_label);
+                ? gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(first_button), event_screen_name)
+                : gtk_check_button_new_with_label(event_screen_name);
+        //free(event_label);
+
         if (!first_button)
             first_button = button;
-        free(event_label);
         /* Important: tooltip isn't used merely as decoration. We retrieve event name in the toggle handlers! */
         gtk_widget_set_tooltip_text(button, event_name);
 
@@ -458,6 +462,14 @@ static GtkWidget *add_event_buttons(GtkBox *box, char *event_name, GCallback fun
         event_name = event_name_end + 1;
 
         gtk_box_pack_start(box, button, /*expand*/ false, /*fill*/ false, /*padding*/ 0);
+        if (event_description)
+        {
+            GtkWidget *label = gtk_label_new(event_description);
+            gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_LEFT);
+            gtk_misc_set_alignment(GTK_MISC(label), /*xalign:*/ 0.0, /*yalign:*/ 0.0);
+            make_label_autowrap_on_resize(GTK_LABEL(label));
+            gtk_box_pack_start(box, label, /*expand*/ false, /*fill*/ false, /*padding*/ 0);
+        }
 
         if (func)
             g_signal_connect(G_OBJECT(button), "toggled", func, NULL);
@@ -554,8 +566,11 @@ void update_gui_state_from_crash_data(void)
     GList *li;
     for (li = old_reporters; li; li = li->next)
     {
-        if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
-            li->data = xstrdup(gtk_button_get_label(GTK_BUTTON(li->data)));
+        if (GTK_IS_TOGGLE_BUTTON(li->data))
+        {
+            if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
+                li->data = xstrdup(gtk_button_get_label(GTK_BUTTON(li->data)));
+        }
         else
             li->data = NULL;
     }
@@ -567,15 +582,18 @@ void update_gui_state_from_crash_data(void)
     GList *li_new;
     for (li_new = new_reporters; li_new; li_new = li_new->next)
     {
-        const char *new_name = gtk_button_get_label(GTK_BUTTON(li_new->data));
-        GList *li_old;
-
-        for (li_old = old_reporters; li_old; li_old = li_old->next)
+        if (GTK_IS_TOGGLE_BUTTON(li_new->data))
         {
-            if (strcmp(new_name, li_old->data) == 0)
+            const char *new_name = gtk_button_get_label(GTK_BUTTON(li_new->data));
+            GList *li_old;
+
+            for (li_old = old_reporters; li_old; li_old = li_old->next)
             {
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(li_new->data), true);
-                break;
+                if (strcmp(new_name, li_old->data) == 0)
+                {
+                    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(li_new->data), true);
+                    break;
+                }
             }
         }
     }
@@ -1023,9 +1041,12 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
             GList *li;
             for (li = reporters; li; li = li->next)
             {
-                if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
-                    /* Button's tooltip contains event_name */
-                    li->data = (gpointer)gtk_widget_get_tooltip_text(GTK_WIDGET(li->data));
+                if (GTK_IS_TOGGLE_BUTTON(li->data))
+                {
+                    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
+                        /* Button's tooltip contains event_name */
+                        li->data = (gpointer)gtk_widget_get_tooltip_text(GTK_WIDGET(li->data));
+                }
                 else
                     li->data = NULL;
             }
