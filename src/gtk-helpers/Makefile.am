@@ -3,10 +3,9 @@ lib_LTLIBRARIES = \
     libreportgtk.la
 
 libreportgtk_la_SOURCES = \
-    libreport-gtk.h \
-    event_config_dialog.c \
-    abrt-keyring.c \
-    autowrapped_label.c
+ libreport-gtk.h \
+ event_config_dialog.c \
+ abrt-keyring.c
 
 libreportgtk_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \

@@ -17,7 +17,5 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 void show_events_list_dialog(GtkWindow *parent);
-void make_label_autowrap_on_resize(GtkLabel *label);
-
 void abrt_keyring_save_settings(const char *event_name);
 void load_event_config_data_from_keyring();
