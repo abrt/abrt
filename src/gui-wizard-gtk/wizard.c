@@ -381,14 +381,17 @@ static void report_tb_was_toggled(GtkButton *button_unused, gpointer user_data_u
     {
         for (; li; li = li->next)
         {
-            if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
+            if (GTK_IS_TOGGLE_BUTTON(li->data))
             {
-                const char *event_name = gtk_widget_get_tooltip_text(GTK_WIDGET(li->data));
-                strbuf_append_strf(reporters_string,
-                                "%s%s",
-                                (reporters_string->len != 0 ? ", " : ""),
-                                event_name
-                );
+                if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
+                {
+                    const char *event_name = gtk_widget_get_tooltip_text(GTK_WIDGET(li->data));
+                    strbuf_append_strf(reporters_string,
+                                    "%s%s",
+                                    (reporters_string->len != 0 ? ", " : ""),
+                                    event_name
+                    );
+                }
             }
         }
     }
@@ -554,8 +557,11 @@ void update_gui_state_from_crash_data(void)
     GList *li;
     for (li = old_reporters; li; li = li->next)
     {
-        if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
-            li->data = xstrdup(gtk_button_get_label(GTK_BUTTON(li->data)));
+        if (GTK_IS_TOGGLE_BUTTON(li->data))
+        {
+            if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
+                li->data = xstrdup(gtk_button_get_label(GTK_BUTTON(li->data)));
+        }
         else
             li->data = NULL;
     }
@@ -567,15 +573,18 @@ void update_gui_state_from_crash_data(void)
     GList *li_new;
     for (li_new = new_reporters; li_new; li_new = li_new->next)
     {
-        const char *new_name = gtk_button_get_label(GTK_BUTTON(li_new->data));
-        GList *li_old;
-
-        for (li_old = old_reporters; li_old; li_old = li_old->next)
+        if (GTK_IS_TOGGLE_BUTTON(li_new->data))
         {
-            if (strcmp(new_name, li_old->data) == 0)
+            const char *new_name = gtk_button_get_label(GTK_BUTTON(li_new->data));
+            GList *li_old;
+
+            for (li_old = old_reporters; li_old; li_old = li_old->next)
             {
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(li_new->data), true);
-                break;
+                if (strcmp(new_name, li_old->data) == 0)
+                {
+                    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(li_new->data), true);
+                    break;
+                }
             }
         }
     }
@@ -1023,9 +1032,12 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
             GList *li;
             for (li = reporters; li; li = li->next)
             {
-                if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
-                    /* Button's tooltip contains event_name */
-                    li->data = (gpointer)gtk_widget_get_tooltip_text(GTK_WIDGET(li->data));
+                if (GTK_IS_TOGGLE_BUTTON(li->data))
+                {
+                    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
+                        /* Button's tooltip contains event_name */
+                        li->data = (gpointer)gtk_widget_get_tooltip_text(GTK_WIDGET(li->data));
+                }
                 else
                     li->data = NULL;
             }
