@@ -53,6 +53,7 @@ void free_event_config(event_config_t *p)
     //free(p->title);
     //free(p->action);
     free(p->description);
+    free(p->long_descr);
     for (opt = p->options; opt; opt = opt->next)
         free_event_option(opt->data);
     g_list_free(p->options);

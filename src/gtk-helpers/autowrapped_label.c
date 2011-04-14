@@ -62,6 +62,8 @@ void make_label_autowrap_on_resize(GtkLabel *label)
     // So far, only tested to work on labels which were set up as:
     //gtk_label_set_justify(label, GTK_JUSTIFY_LEFT);
     //gtk_misc_set_alignment(GTK_MISC(label), /*xalign:*/ 0.0, /*yalign:*/ 0.0);
+    // yalign != 0 definitely breaks things!
+    // also, <property name="ypad">NONZERO</property> would be bad
 
     /* Makes no sense on non-wrapped labels, so we can as well
      * set wrapping to "on" unconditionally, istead of making it a requirement

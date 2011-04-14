@@ -22,6 +22,7 @@
 #define EVENT_ELEMENT           "event"
 #define LABEL_ELEMENT           "label"
 #define DESCRIPTION_ELEMENT     "description"
+#define LONG_DESCR_ELEMENT      "long_description"
 #define ALLOW_EMPTY_ELEMENT     "allow-empty"
 #define OPTION_ELEMENT          "option"
 //#define ACTION_ELEMENT        "action"
@@ -172,13 +173,11 @@ static void start_element(GMarkupParseContext *context,
             }
         }
     }
-    else if (strcmp(element_name, LABEL_ELEMENT) == 0)
-    {
-        free(parse_data->attribute_lang);
-        parse_data->attribute_lang = get_element_lang(parse_data, attribute_names, attribute_values);
-    }
-    else if (strcmp(element_name, DESCRIPTION_ELEMENT) == 0)
-    {
+    else
+    if (strcmp(element_name, LABEL_ELEMENT) == 0
+     || strcmp(element_name, DESCRIPTION_ELEMENT) == 0
+     || strcmp(element_name, LONG_DESCR_ELEMENT) == 0
+    ) {
         free(parse_data->attribute_lang);
         parse_data->attribute_lang = get_element_lang(parse_data, attribute_names, attribute_values);
     }
@@ -301,6 +300,24 @@ static void text(GMarkupParseContext *context,
                 ) {
                     free(ui->description);
                     ui->description = text_copy;
+                }
+            }
+            return;
+        }
+        if (strcmp(inner_element, LONG_DESCR_ELEMENT) == 0)
+        {
+            VERB2 log("event long description:'%s'", text_copy);
+
+            if (parse_data->attribute_lang != NULL) /* if it isn't for other locale */
+            {
+                /* set the value only if we found a value for the current locale
+                 * OR the description is still not set and we found the default value
+                 */
+                if (parse_data->attribute_lang[0] != '\0'
+                 || !ui->long_descr /* && parse_data->attribute_lang is "" - always true */
+                ) {
+                    free(ui->long_descr);
+                    ui->long_descr = text_copy;
                 }
             }
             return;

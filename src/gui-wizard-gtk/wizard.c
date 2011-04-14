@@ -25,16 +25,30 @@
 #define DEFAULT_WIDTH   800
 #define DEFAULT_HEIGHT  500
 
+
+typedef struct event_gui_data_t
+{
+    char *event_name;
+    GtkToggleButton *toggle_button;
+} event_gui_data_t;
+
+
 static GtkAssistant *g_assistant;
 
 static char *g_analyze_event_selected;
 
 static GtkBox *g_box_analyzers;
+/* List of event_gui_data's */
+static GList *g_list_analyzers;
 static GtkLabel *g_lbl_analyze_log;
 static GtkTextView *g_tv_analyze_log;
+
 static GtkBox *g_box_reporters;
+/* List of event_gui_data's */
+static GList *g_list_reporters;
 static GtkLabel *g_lbl_report_log;
 static GtkTextView *g_tv_report_log;
+
 static GtkContainer *g_container_details1;
 static GtkContainer *g_container_details2;
 
@@ -150,7 +164,7 @@ static page_obj_t pages[] =
 
 /* Utility functions */
 
-static void remove_child_widget(GtkWidget *widget, gpointer container)
+static void remove_child_widget(GtkWidget *widget, gpointer unused)
 {
     /* Destroy will safely remove it and free the memory
      * if there are no refs left
@@ -292,6 +306,23 @@ static void append_to_textview(GtkTextView *tv, const char *str, int len)
 }
 
 
+/* event_gui_data_t */
+
+static event_gui_data_t *new_event_gui_data_t(void)
+{
+    return xzalloc(sizeof(event_gui_data_t));
+}
+
+static void free_event_gui_data_t(event_gui_data_t *evdata, void *unused)
+{
+    if (evdata)
+    {
+        free(evdata->event_name);
+        free(evdata);
+    }
+}
+
+
 /* tv_details handling */
 
 static void tv_details_row_activated(
@@ -362,40 +393,39 @@ static void tv_details_cursor_changed(
 
 /* update_gui_state_from_crash_data */
 
+static gint find_by_button(gconstpointer a, gconstpointer button)
+{
+    const event_gui_data_t *evdata = a;
+    return (evdata->toggle_button != button);
+}
+
 static void analyze_rb_was_toggled(GtkButton *button, gpointer user_data)
 {
-    const char *event_name = gtk_widget_get_tooltip_text(GTK_WIDGET(button));
-    if (event_name)
+    GList *found = g_list_find_custom(g_list_analyzers, button, find_by_button);
+    if (found)
     {
+        event_gui_data_t *evdata = found->data;
         free(g_analyze_event_selected);
-        g_analyze_event_selected = xstrdup(event_name);
+        g_analyze_event_selected = xstrdup(evdata->event_name);
     }
 }
 
 static void report_tb_was_toggled(GtkButton *button_unused, gpointer user_data_unused)
 {
     struct strbuf *reporters_string = strbuf_new();
-    GList *reporters = gtk_container_get_children(GTK_CONTAINER(g_box_reporters));
-    GList *li = reporters;
-    if (reporters)
+    GList *li = g_list_reporters;
+    for (; li; li = li->next)
     {
-        for (; li; li = li->next)
+        event_gui_data_t *event_gui_data = li->data;
+        if (gtk_toggle_button_get_active(event_gui_data->toggle_button) == TRUE)
         {
-            if (GTK_IS_TOGGLE_BUTTON(li->data))
-            {
-                if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
-                {
-                    const char *event_name = gtk_widget_get_tooltip_text(GTK_WIDGET(li->data));
-                    strbuf_append_strf(reporters_string,
-                                    "%s%s",
-                                    (reporters_string->len != 0 ? ", " : ""),
-                                    event_name
-                    );
-                }
-            }
+            strbuf_append_strf(reporters_string,
+                            "%s%s",
+                            (reporters_string->len != 0 ? ", " : ""),
+                            event_gui_data->event_name
+            );
         }
     }
-    g_list_free(reporters);
 
     gtk_assistant_set_page_complete(g_assistant,
                 pages[PAGENO_REPORTER_SELECTOR].page_widget,
@@ -403,16 +433,33 @@ static void report_tb_was_toggled(GtkButton *button_unused, gpointer user_data_u
     );
 
     /* Update "list of reporters" label */
-    gtk_label_set_text(g_lbl_reporters, strbuf_free_nobuf(reporters_string));
+    char *str = strbuf_free_nobuf(reporters_string);
+    gtk_label_set_text(g_lbl_reporters, str);
+    free(str);
 }
 
-static GtkWidget *add_event_buttons(GtkBox *box, char *event_name, GCallback func, bool radio, const char *prev_selected)
+/* event_name contains "EVENT1\nEVENT2\nEVENT3\n".
+ * Add new {radio/check}buttons to GtkBox for each EVENTn (type depends on bool radio).
+ * Remember them in GList **p_event_list (list of event_gui_data_t's).
+ * Set "toggled" callback on each button to given GCallback if it's not NULL.
+ * If prev_selected == EVENTn, set this button as active. In this case return NULL.
+ * Else return 1st button created (or NULL if none created).
+ */
+static event_gui_data_t *add_event_buttons(GtkBox *box,
+                GList **p_event_list,
+                char *event_name,
+                GCallback func,
+                bool radio,
+                const char *prev_selected)
 {
     //VERB2 log("removing all buttons from box %p", box);
-    gtk_container_foreach(GTK_CONTAINER(box), &remove_child_widget, box);
+    gtk_container_foreach(GTK_CONTAINER(box), &remove_child_widget, NULL);
+    g_list_foreach(*p_event_list, (GFunc)free_event_gui_data_t, NULL);
+    g_list_free(*p_event_list);
+    *p_event_list = NULL;
 
     bool have_activated_btn = false;
-    GtkWidget *first_button = NULL;
+    event_gui_data_t *first_button = NULL;
     while (event_name[0])
     {
         char *event_name_end = strchr(event_name, '\n');
@@ -434,21 +481,32 @@ static GtkWidget *add_event_buttons(GtkBox *box, char *event_name, GCallback fun
                 event_screen_name = cfg->screen_name;
             event_description = cfg->description;
         }
+
+        //VERB2 log("adding button '%s' to box %p", event_name, box);
         char *event_label = xasprintf("%s%s%s",
                         event_screen_name,
                         (event_description ? " - " : ""),
                         event_description ? event_description : ""
         );
-
-        //VERB2 log("adding button '%s' to box %p", event_name, box);
         GtkWidget *button = radio
-                ? gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(first_button), event_label)
+                ? gtk_radio_button_new_with_label_from_widget(
+                        (first_button ? GTK_RADIO_BUTTON(first_button->toggle_button) : NULL),
+                        event_label
+                  )
                 : gtk_check_button_new_with_label(event_label);
-        if (!first_button)
-            first_button = button;
         free(event_label);
-        /* Important: tooltip isn't used merely as decoration. We retrieve event name in the toggle handlers! */
-        gtk_widget_set_tooltip_text(button, event_name);
+        if (func)
+            g_signal_connect(G_OBJECT(button), "toggled", func, NULL);
+        if (cfg->long_descr)
+            gtk_widget_set_tooltip_text(button, cfg->long_descr);
+
+        event_gui_data_t *event_gui_data = new_event_gui_data_t();
+        event_gui_data->event_name = xstrdup(event_name);
+        event_gui_data->toggle_button = GTK_TOGGLE_BUTTON(button);
+	*p_event_list = g_list_append(*p_event_list, event_gui_data);
+
+        if (!first_button)
+            first_button = event_gui_data;
 
         if (prev_selected && strcmp(prev_selected, event_name) == 0)
         {
@@ -462,8 +520,6 @@ static GtkWidget *add_event_buttons(GtkBox *box, char *event_name, GCallback fun
 
         gtk_box_pack_start(box, button, /*expand*/ false, /*fill*/ false, /*padding*/ 0);
 
-        if (func)
-            g_signal_connect(G_OBJECT(button), "toggled", func, NULL);
     }
     return (have_activated_btn ? NULL : first_button);
 }
@@ -527,6 +583,7 @@ void update_gui_state_from_crash_data(void)
 
     const char *reason = get_crash_item_content_or_NULL(g_cd, FILENAME_REASON);
     gtk_label_set_text(g_lbl_cd_reason, reason ? reason : _("(no description)"));
+///vda    make_label_autowrap_on_resize(g_lbl_cd_reason);
 
     gtk_list_store_clear(g_ls_details);
     struct cd_stats stats = { 0 };
@@ -539,56 +596,50 @@ void update_gui_state_from_crash_data(void)
     load_text_to_text_view(g_tv_comment, FILENAME_COMMENT);
 
     /* Update analyze radio buttons */
-    GtkWidget *first_rb = add_event_buttons(g_box_analyzers, g_analyze_events, G_CALLBACK(analyze_rb_was_toggled), /*radio:*/ true, /*prev:*/ g_analyze_event_selected);
+    event_gui_data_t *first_rb = add_event_buttons(g_box_analyzers, &g_list_analyzers,
+                g_analyze_events, G_CALLBACK(analyze_rb_was_toggled),
+                /*radio:*/ true, /*prev:*/ g_analyze_event_selected
+    );
     /* Update the value of currently selected analyzer */
     if (first_rb)
     {
-        const char *event_name = gtk_widget_get_tooltip_text(first_rb);
-        if (event_name)
-        {
-            free(g_analyze_event_selected);
-            g_analyze_event_selected = xstrdup(event_name);
-        }
+        free(g_analyze_event_selected);
+        g_analyze_event_selected = xstrdup(first_rb->event_name);
     }
 
     /* Update reporter checkboxes */
     /* Remember names of selected reporters */
-    GList *old_reporters = gtk_container_get_children(GTK_CONTAINER(g_box_reporters));
-    GList *li;
-    for (li = old_reporters; li; li = li->next)
+    GList *old_reporters = NULL;
+    GList *li = g_list_reporters;
+    for (; li; li = li->next)
     {
-        if (GTK_IS_TOGGLE_BUTTON(li->data))
+        event_gui_data_t *event_gui_data = li->data;
+        if (gtk_toggle_button_get_active(event_gui_data->toggle_button) == TRUE)
         {
-            if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
-                li->data = xstrdup(gtk_button_get_label(GTK_BUTTON(li->data)));
+            /* order isn't important. prepend is faster */
+            old_reporters = g_list_prepend(old_reporters, xstrdup(event_gui_data->event_name));
         }
-        else
-            li->data = NULL;
     }
-    old_reporters = g_list_remove_all(old_reporters, NULL);
     /* Delete old checkboxes and create new ones */
-    add_event_buttons(g_box_reporters, g_report_events, /*callback:*/ G_CALLBACK(report_tb_was_toggled), /*radio:*/ false, /*prev:*/ NULL);
+    add_event_buttons(g_box_reporters, &g_list_reporters,
+                g_report_events, /*callback:*/ G_CALLBACK(report_tb_was_toggled),
+                /*radio:*/ false, /*prev:*/ NULL
+    );
     /* Re-select new reporters which were selected before we deleted them */
-    GList *new_reporters = gtk_container_get_children(GTK_CONTAINER(g_box_reporters));
-    GList *li_new;
-    for (li_new = new_reporters; li_new; li_new = li_new->next)
+    GList *li_new = g_list_reporters;
+    for (; li_new; li_new = li_new->next)
     {
-        if (GTK_IS_TOGGLE_BUTTON(li_new->data))
+        event_gui_data_t *new_gui_data = li_new->data;
+        GList *li_old = old_reporters;
+        for (; li_old; li_old = li_old->next)
         {
-            const char *new_name = gtk_button_get_label(GTK_BUTTON(li_new->data));
-            GList *li_old;
-
-            for (li_old = old_reporters; li_old; li_old = li_old->next)
+            if (strcmp(new_gui_data->event_name, li_old->data) == 0)
             {
-                if (strcmp(new_name, li_old->data) == 0)
-                {
-                    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(li_new->data), true);
-                    break;
-                }
+                gtk_toggle_button_set_active(new_gui_data->toggle_button, true);
+                break;
             }
         }
     }
-    g_list_free(new_reporters);
     list_free_with_free(old_reporters);
 
     /* Update readiness state of reporter selector page and "list of reporters" label  */
@@ -1026,35 +1077,28 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
 
     if (page_no == PAGENO_REPORT)
     {
-        GList *reporters = gtk_container_get_children(GTK_CONTAINER(g_box_reporters));
+        GList *reporters = NULL;
+        GList *li = g_list_reporters;
+        for (; li; li = li->next)
+        {
+            event_gui_data_t *event_gui_data = li->data;
+            if (gtk_toggle_button_get_active(event_gui_data->toggle_button) == TRUE)
+            {
+                reporters = g_list_append(reporters, event_gui_data->event_name);
+            }
+        }
         if (reporters)
         {
-            GList *li;
-            for (li = reporters; li; li = li->next)
-            {
-                if (GTK_IS_TOGGLE_BUTTON(li->data))
-                {
-                    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(li->data)) == TRUE)
-                        /* Button's tooltip contains event_name */
-                        li->data = (gpointer)gtk_widget_get_tooltip_text(GTK_WIDGET(li->data));
-                }
-                else
-                    li->data = NULL;
-            }
-            reporters = g_list_remove_all(reporters, NULL);
-            if (reporters)
-            {
-                char *first_event_name = reporters->data;
-                reporters = g_list_remove(reporters, reporters->data);
-                start_event_run(first_event_name,
-                        reporters,
-                        pages[PAGENO_REPORT_PROGRESS].page_widget,
-                        g_tv_report_log,
-                        g_lbl_report_log,
-                        _("Reporting..."),
-                        _("Reporting finished with exit code %d")
-                );
-            }
+            char *first_event_name = reporters->data;
+            reporters = g_list_remove(reporters, reporters->data);
+            start_event_run(first_event_name,
+                    reporters,
+                    pages[PAGENO_REPORT_PROGRESS].page_widget,
+                    g_tv_report_log,
+                    g_lbl_report_log,
+                    _("Reporting..."),
+                    _("Reporting finished with exit code %d")
+            );
         }
     }
 }
@@ -1264,6 +1308,7 @@ static void add_pages(void)
     g_lbl_reporters        = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_reporters"));
     g_lbl_size             = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_size"));
 
+    make_label_autowrap_on_resize(g_lbl_cd_reason);
     gtk_widget_modify_font(GTK_WIDGET(g_tv_analyze_log), monospace_font);
     gtk_widget_modify_font(GTK_WIDGET(g_tv_report_log), monospace_font);
     gtk_widget_modify_font(GTK_WIDGET(g_tv_backtrace), monospace_font);
