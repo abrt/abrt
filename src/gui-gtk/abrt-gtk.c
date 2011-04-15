@@ -109,7 +109,7 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
             if (pid == 0)
             {
                 /* Undo signal(SIGCHLD, SIG_IGN), or child inherits it and gets terribly confused */
-                signal(SIGCHLD, SIG_DFL);
+                /*signal(SIGCHLD, SIG_DFL); - not needed, we dont set it to SIG_IGN in main anymore */
 
                 const char *dirname= g_value_get_string(&d_dir);
                 VERB1 log("Executing: %s %s", "bug-reporting-wizard", dirname);

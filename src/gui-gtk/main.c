@@ -31,6 +31,56 @@ static int inotify_fd = -1;
 static GIOChannel *channel_inotify;
 static int channel_inotify_event_id = -1;
 static char **s_dirs;
+static int s_signal_pipe[2];
+
+
+static void rescan_and_refresh(void)
+{
+    GtkTreePath *old_path = get_cursor();
+    //log("old_path1:'%s'", gtk_tree_path_to_string(old_path)); //leak
+
+    rescan_dirs_and_add_to_dirlist();
+
+    /* Try to restore cursor position */
+    //log("old_path2:'%s'", gtk_tree_path_to_string(old_path)); //leak
+    sanitize_cursor(old_path);
+    if (old_path)
+        gtk_tree_path_free(old_path);
+}
+
+
+static void handle_signal(int signo)
+{
+    int save_errno = errno;
+
+    // Enable for debugging only, malloc/printf are unsafe in signal handlers
+    //VERB3 log("Got signal %d", signo);
+
+    uint8_t sig_caught = signo;
+    if (write(s_signal_pipe[1], &sig_caught, 1))
+        /* we ignore result, if() shuts up stupid compiler */;
+
+    errno = save_errno;
+}
+
+static gboolean handle_signal_pipe(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
+{
+    /* It can only be SIGCHLD. Therefore we do not check the result,
+     * and eat more than one byte at once: why refresh twice?
+     */
+    gchar buf[16];
+    gsize bytes_read;
+    g_io_channel_read(gio, buf, sizeof(buf), &bytes_read);
+
+    /* Destroy zombies */
+    while (waitpid(-1, NULL, WNOHANG) > 0)
+        continue;
+
+    rescan_and_refresh();
+
+    return TRUE; /* "please don't remove this event" */
+}
+
 
 static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused);
 
@@ -71,22 +121,13 @@ static void close_notify(void)
 /* Inotify handler */
 static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
 {
-    GtkTreePath *old_path = get_cursor();
-    //log("old_path1:'%s'", gtk_tree_path_to_string(old_path)); //leak
-
     /* We don't bother reading inotify fd. We simply close and reopen it.
      * This happens rarely enough to not bother making it efficient.
      */
     close_notify();
     init_notify();
 
-    rescan_dirs_and_add_to_dirlist();
-
-    /* Try to restore cursor position */
-    //log("old_path2:'%s'", gtk_tree_path_to_string(old_path)); //leak
-    sanitize_cursor(old_path);
-    if (old_path)
-        gtk_tree_path_free(old_path);
+    rescan_and_refresh();
 
     return TRUE; /* "please don't remove this event" */
 }
@@ -209,8 +250,17 @@ int main(int argc, char **argv)
 
     sanitize_cursor(NULL);
 
-    /* Prevent zombies when we spawn wizard */
-    signal(SIGCHLD, SIG_IGN);
+    /* Set up signal pipe */
+    xpipe(s_signal_pipe);
+    close_on_exec_on(s_signal_pipe[0]);
+    close_on_exec_on(s_signal_pipe[1]);
+    ndelay_off(s_signal_pipe[0]);
+    ndelay_off(s_signal_pipe[1]);
+    signal(SIGCHLD, handle_signal);
+    g_io_add_watch(g_io_channel_unix_new(s_signal_pipe[0]),
+                G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP | G_IO_NVAL,
+                handle_signal_pipe,
+                NULL);
 
     /* Enter main loop */
     gtk_main();

@@ -829,6 +829,9 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
         }
     }
 
+    /* Inform abrt-gui that it is a good idea to rescan the directory */
+    kill(getppid(), SIGCHLD);
+
     /* Stop if exit code is not 0, or no more commands */
     if (retval != 0
      || spawn_next_command_in_evd(evd) < 0
