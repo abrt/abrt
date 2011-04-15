@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-04-05 14:23+0200\n"
-"PO-Revision-Date: 2011-03-27 10:38+0000\n"
-"Last-Translator: zerng07 <pswo10680@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2011-04-15 17:04+0200\n"
+"PO-Revision-Date: 2011-04-15 15:09+0000\n"
+"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Chinese (Taiwan) <None>\n"
-"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -24,7 +24,7 @@ msgstr "ABRT 通知面板程式"
 #: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
 #: ../src/gui-gtk/abrt-gtk.c:351
 msgid "Automatic Bug Reporting Tool"
-msgstr "自動錯誤回報工具"
+msgstr "自動臭蟲回報工具"
 
 #: ../src/applet/applet.c:83
 #, c-format
@@ -65,104 +65,17 @@ msgstr "回報"
 
 #: ../src/applet/applet_gtk.c:401
 msgid "Show"
-msgstr ""
+msgstr "顯示"
 
 #: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
 msgid "A Problem has Occurred"
-msgstr ""
+msgstr "遭遇到問題"
 
 #: ../src/applet/applet_gtk.c:429
 msgid "Open ABRT"
 msgstr "開啟 ABRT"
 
-#: ../src/cli/cli.c:90
-#, c-format
-msgid ""
-"\tCrash dump : %s\n"
-"\tUID        : %s\n"
-"\tPackage    : %s\n"
-"\tExecutable : %s\n"
-"\tCrash Time : %s\n"
-"\tCrash Count: %s\n"
-msgstr ""
-"\t當機傾印 ：%s\n"
-"\tUID        ：%s\n"
-"\t套件       ：%s\n"
-"\t可執行檔 ：%s\n"
-"\t當機時間 ：%s\n"
-"\t當機計數：%s\n"
-
-#: ../src/cli/cli.c:109
-#, c-format
-msgid "\tHostname   : %s\n"
-msgstr "\t主機名稱   ：%s\n"
-
-#: ../src/cli/cli.c:143
-#, c-format
-msgid ""
-"Dump directory:     %s\n"
-"Last crash:         %s\n"
-"Analyzer:           %s\n"
-"Component:          %s\n"
-"Package:            %s\n"
-"Command:            %s\n"
-"Executable:         %s\n"
-"System:             %s, kernel %s\n"
-"Reason:             %s\n"
-msgstr ""
-"傾印目錄：    %s\n"
-"上次當機：         %s\n"
-"Analyzer：          %s\n"
-"元件：         %s\n"
-"套件：           %s\n"
-"指令：           %s\n"
-"可執行檔：        %s\n"
-"系統：            %s, kernel %s\n"
-"原因：            %s\n"
-
-#: ../src/cli/cli.c:171
-#, c-format
-msgid "Coredump file:      %s\n"
-msgstr "Coredump 檔：     %s\n"
-
-#: ../src/cli/cli.c:175
-#, c-format
-msgid "Rating:             %s\n"
-msgstr "評等：             %s\n"
-
-#: ../src/cli/cli.c:180
-#, c-format
-msgid "Crash function:     %s\n"
-msgstr "當機函式：    %s\n"
-
-#: ../src/cli/cli.c:184
-#, c-format
-msgid "Hostname:           %s\n"
-msgstr "主機名稱：          %s\n"
-
-#: ../src/cli/cli.c:188
-#, c-format
-msgid ""
-"\n"
-"Comment:\n"
-"%s\n"
-msgstr ""
-"\n"
-"評註：\n"
-"%s\n"
-
-#: ../src/cli/cli.c:194
-#, c-format
-msgid ""
-"\n"
-"Backtrace:\n"
-"%s\n"
-msgstr ""
-"\n"
-"追蹤：\n"
-"%s\n"
-
-#: ../src/cli/cli.c:251
+#: ../src/cli/cli.c:211
 #, c-format
 msgid ""
 "Usage: %s -l[f] [-D BASE_DIR]...]\n"
@@ -170,53 +83,37 @@ msgid ""
 "   or: %s -i[b] CRASH_DIR\n"
 "   or: %s -d CRASH_DIR\n"
 "\n"
-"\t-l, --list\t\tList not yet reported crashes\n"
-"\t  -f, --full\t\tList all crashes\n"
-"\t-D BASE_DIR\t\tDirectory to list crashes from\n"
+"\t-l, --list\t\tList not yet reported problems\n"
+"\t  -f, --full\t\tList all problems\n"
+"\t-D BASE_DIR\t\tDirectory to list problems from\n"
 "\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
 "\n"
 "\t-r, --report\t\tSend a report about CRASH_DIR\n"
 "\t  -y, --always\t\t...without editing and asking\n"
 "\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
-"\t  -b, --backtrace\t...including backtrace\n"
+"\t  -f, --full\t\t...including multi-line entries\n"
+"\t\t\t\tNote: -if will run analyzers\n"
+"\t\t\t\t(if this CRASH_DIR have defined analyzers)\n"
 "\t-d, --delete\t\tRemove CRASH_DIR\n"
 "\n"
 "\t-V, --version\t\tDisplay version and exit\n"
 "\t-v, --verbose\t\tBe verbose\n"
 msgstr ""
-"用法：%s -l[f] [-D BASE_DIR]...]\n"
-"   或：%s -r[y] CRASH_DIR\n"
-"   或：%s -i[b] CRASH_DIR\n"
-"   或：%s -d CRASH_DIR\n"
-"\n"
-"\t-l, --list\t\tL尚未回報當機\n"
-"\t  -f, --full\t\t列出所有當機\n"
-"\t-D BASE_DIR\t\t要列出當機的目錄\n"
-"\t\t\t\t(預設：-D $HOME/.abrt/spool -D %s)\n"
-"\n"
-"\t-r, --report\t\t傳送有關 CRASH_DIR 的回報\n"
-"\t  -y, --always\t\t...不編輯也不詢問\n"
-"\t-i, --info\t\t列印有關 CRASH_DIR 的詳細資訊\n"
-"\t  -b, --backtrace\t...包含追蹤資訊\n"
-"\t-d, --delete\t\t移除 CRASH_DIR\n"
-"\n"
-"\t-V, --version\t\t顯示版本並離開\n"
-"\t-v, --verbose\t\t冗長描述\n"
 
-#: ../src/cli/cli.c:299
+#: ../src/cli/cli.c:260
 msgid "You must specify exactly one operation"
 msgstr "您必須指定「一項」作業"
 
-#: ../src/cli/report.cpp:154
+#: ../src/cli/report.c:131
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# 此欄位為唯讀\n"
 
-#: ../src/cli/report.cpp:174
+#: ../src/cli/report.c:151
 msgid "# Describe the circumstances of this crash below"
 msgstr "# 在下方描述這項錯誤的狀態"
 
-#: ../src/cli/report.cpp:176
+#: ../src/cli/report.c:153
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -224,47 +121,47 @@ msgstr ""
 "# 追蹤\n"
 "# 檢查它不包含任何敏感資料 (密碼等等)"
 
-#: ../src/cli/report.cpp:178
+#: ../src/cli/report.c:155
 msgid "# Architecture"
 msgstr "# 架構"
 
-#: ../src/cli/report.cpp:179
+#: ../src/cli/report.c:156
 msgid "# Command line"
 msgstr "# 指令列"
 
-#: ../src/cli/report.cpp:180
+#: ../src/cli/report.c:157
 msgid "# Component"
 msgstr "# 元件"
 
-#: ../src/cli/report.cpp:181
+#: ../src/cli/report.c:158
 msgid "# Core dump"
 msgstr "# 核心傾印"
 
-#: ../src/cli/report.cpp:182
+#: ../src/cli/report.c:159
 msgid "# Executable"
 msgstr "# 可執行檔"
 
-#: ../src/cli/report.cpp:183
+#: ../src/cli/report.c:160
 msgid "# Kernel version"
 msgstr "# Kernel 版本"
 
-#: ../src/cli/report.cpp:184
+#: ../src/cli/report.c:161
 msgid "# Package"
 msgstr "# 套件"
 
-#: ../src/cli/report.cpp:185
+#: ../src/cli/report.c:162
 msgid "# Reason of crash"
 msgstr "# 當機原因"
 
-#: ../src/cli/report.cpp:186
+#: ../src/cli/report.c:163
 msgid "# Release string of the operating system"
 msgstr "# 作業系統的釋出字串"
 
-#: ../src/cli/report.cpp:299
+#: ../src/cli/report.c:276
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr "無法執行 vi：$TERM、$VISUAL 以及 $EDITOR 尚未設置"
 
-#: ../src/cli/report.cpp:383
+#: ../src/cli/report.c:360
 msgid ""
 "\n"
 "The report has been updated"
@@ -272,7 +169,7 @@ msgstr ""
 "\n"
 "報告已更新"
 
-#: ../src/cli/report.cpp:385
+#: ../src/cli/report.c:362
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -281,67 +178,67 @@ msgstr ""
 "報告中未偵測到變更"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:417
+#: ../src/cli/report.c:394
 msgid "y"
 msgstr "是 (y)"
 
-#: ../src/cli/report.cpp:418
+#: ../src/cli/report.c:395
 msgid "N"
 msgstr "否 (N)"
 
-#: ../src/cli/report.cpp:514
+#: ../src/cli/report.c:492
 msgid "Your input is not valid, because of:"
 msgstr "您的輸入並非有效，因為："
 
-#: ../src/cli/report.cpp:517
+#: ../src/cli/report.c:495
 #, c-format
 msgid "Bad value for '%s': %s"
 msgstr "「%s」的值不良：%s"
 
-#: ../src/cli/report.cpp:615
-#, fuzzy, c-format
+#: ../src/cli/report.c:592
+#, c-format
 msgid "Select how you would like to analyze the problem:\n"
-msgstr "選取您想要分析該問題的方式："
+msgstr "請選取您想要如何分析問題：\n"
 
-#: ../src/cli/report.cpp:631
+#: ../src/cli/report.c:608
 #, c-format
 msgid "Choose option [0 - %u]: "
-msgstr ""
+msgstr "請選擇選項 [0 - %u]："
 
-#: ../src/cli/report.cpp:645
+#: ../src/cli/report.c:622
 #, c-format
 msgid "You have chosen number out of range"
-msgstr ""
+msgstr "您選擇的數目超出範圍"
 
-#: ../src/cli/report.cpp:653
+#: ../src/cli/report.c:630
 msgid "Invalid input, program exiting..."
-msgstr ""
+msgstr "無效的輸入，程式正在離開..."
 
-#: ../src/cli/report.cpp:769 ../src/gui-wizard-gtk/wizard.c:1047
+#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1102
 msgid "Reporting..."
 msgstr "正在回報..."
 
-#: ../src/cli/report.cpp:783
+#: ../src/cli/report.c:762
 #, c-format
 msgid "Report using %s?"
 msgstr "使用 %s 回報？"
 
-#: ../src/cli/report.cpp:786
+#: ../src/cli/report.c:769
 msgid "Skipping..."
 msgstr "跳過..."
 
-#: ../src/cli/report.cpp:803
+#: ../src/cli/report.c:779
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "已停用回報，因為追蹤功能無法使用"
 
-#: ../src/cli/report.cpp:807
+#: ../src/cli/report.c:783
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr "請試著以指令手動安裝 debuginfo：「debuginfo-install %s」，接著重試\n"
 
-#: ../src/cli/report.cpp:823
+#: ../src/cli/report.c:805
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "當機已透過 %d 回報事件 (%d 錯誤) 回報\n"
@@ -364,10 +261,10 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-python.c:49
 #: ../src/plugins/abrt-action-bugzilla.cpp:931
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
-#: ../src/plugins/abrt-action-kerneloops.c:145
-#: ../src/plugins/abrt-action-mailx.c:147
-#: ../src/plugins/abrt-action-print.c:52
-#: ../src/plugins/abrt-action-rhtsupport.c:276
+#: ../src/plugins/abrt-action-kerneloops.c:154
+#: ../src/plugins/abrt-action-mailx.c:155
+#: ../src/plugins/abrt-action-print.c:53
+#: ../src/plugins/abrt-action-rhtsupport.c:291
 #: ../src/plugins/abrt-action-upload.c:258
 msgid "Dump directory"
 msgstr "傾印目錄"
@@ -381,7 +278,7 @@ msgstr ""
 "   或："
 
 #: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:297
-#: ../src/plugins/abrt-dump-oops.c:579
+#: ../src/plugins/abrt-dump-oops.c:585
 msgid "Log to syslog"
 msgstr "紀錄至 syslog"
 
@@ -394,12 +291,12 @@ msgid "List possible events [which start with PFX]"
 msgstr "列出可能的事件 [以 PFX 開頭]"
 
 #: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
-#: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:175
+#: ../src/daemon/Daemon.cpp:547 ../src/gui-gtk/main.c:216
 #: ../src/gui-wizard-gtk/main.c:94
 msgid "Add program names to log"
 msgstr "加入程式名稱至紀錄檔"
 
-#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:535
+#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:532
 msgid " [options]"
 msgstr " [選項]"
 
@@ -411,22 +308,21 @@ msgstr "使用 UID 作為客戶端 uid"
 msgid "Comment is too long"
 msgstr "評註過長"
 
-#: ../src/daemon/Daemon.cpp:371
+#: ../src/daemon/Daemon.cpp:368
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
-msgstr ""
-"報告配額大小超出。請檢查您在 abrt.conf 中，系統的 MaxCrashReportsSize 數值。"
+msgstr "報告配額大小超出。請檢查您在 abrt.conf 中，系統的 MaxCrashReportsSize 數值。"
 
-#: ../src/daemon/Daemon.cpp:547
+#: ../src/daemon/Daemon.cpp:544
 msgid "Do not daemonize"
 msgstr "不要在幕後運行"
 
-#: ../src/daemon/Daemon.cpp:548
+#: ../src/daemon/Daemon.cpp:545
 msgid "Log to syslog even with -d"
 msgstr "即使加上 -d 參數也紀錄至 slslog"
 
-#: ../src/daemon/Daemon.cpp:549
+#: ../src/daemon/Daemon.cpp:546
 msgid "Exit after SEC seconds of inactivity"
 msgstr "在停止運作 SEC 秒後離開"
 
@@ -434,15 +330,15 @@ msgstr "在停止運作 SEC 秒後離開"
 msgid "Show password"
 msgstr "顯示密碼"
 
-#: ../src/gtk-helpers/event_config_dialog.c:311
+#: ../src/gtk-helpers/event_config_dialog.c:343
 msgid "Event Configuration"
 msgstr "事件組態"
 
-#: ../src/gtk-helpers/event_config_dialog.c:336
+#: ../src/gtk-helpers/event_config_dialog.c:368
 msgid "Event"
 msgstr "事件"
 
-#: ../src/gtk-helpers/event_config_dialog.c:369
+#: ../src/gtk-helpers/event_config_dialog.c:401
 msgid "Configure E_vent"
 msgstr "設定事件(_V)"
 
@@ -482,7 +378,7 @@ msgstr "事件組態(_E)"
 msgid "Online _Help"
 msgstr "線上幫助(_H)"
 
-#: ../src/gui-gtk/main.c:163
+#: ../src/gui-gtk/main.c:204
 msgid ""
 " [-vp] [DIR]...\n"
 "\n"
@@ -508,78 +404,76 @@ msgstr ""
 msgid "Alternate GUI file"
 msgstr "替代的 GUI 檔案"
 
-#: ../src/gui-wizard-gtk/wizard.c:187
+#: ../src/gui-wizard-gtk/wizard.c:201
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
-msgstr ""
-"需要可以寫入的目錄，但是「%s」無法寫入。您想要將它移動至「%s」並對移動的副本"
-"進行操作嗎？"
+msgstr "需要可以寫入的目錄，但是「%s」無法寫入。您想要將它移動至「%s」並對移動的副本進行操作嗎？"
 
-#: ../src/gui-wizard-gtk/wizard.c:499
+#: ../src/gui-wizard-gtk/wizard.c:558
 msgid "(click here to view/edit)"
 msgstr "(請點擊這裡檢視或編輯)"
 
-#: ../src/gui-wizard-gtk/wizard.c:511
+#: ../src/gui-wizard-gtk/wizard.c:570
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(二進位檔，%llu 位元組)"
 
-#: ../src/gui-wizard-gtk/wizard.c:526
+#: ../src/gui-wizard-gtk/wizard.c:585
 msgid "(no description)"
 msgstr "(無敘述)"
 
-#: ../src/gui-wizard-gtk/wizard.c:531
+#: ../src/gui-wizard-gtk/wizard.c:591
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu 位元組，%u 個檔案"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:851
+#: ../src/gui-wizard-gtk/wizard.c:914
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "未定義「%s」事件的處理"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:946
+#: ../src/gui-wizard-gtk/wizard.c:1004
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "追蹤資訊不完整，請確認您提供了能夠重現問題的步驟。"
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:952
+#: ../src/gui-wizard-gtk/wizard.c:1010
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "已停用回報，因為無法使用追蹤功能。"
 
-#: ../src/gui-wizard-gtk/wizard.c:961
+#: ../src/gui-wizard-gtk/wizard.c:1019
 msgid "You should check the backtrace for sensitive data."
 msgstr "您必須檢查追蹤資訊以找尋敏感資料。"
 
-#: ../src/gui-wizard-gtk/wizard.c:962
+#: ../src/gui-wizard-gtk/wizard.c:1020
 msgid "You must agree with sending the backtrace."
 msgstr "您必須同意傳送追蹤資訊。"
 
-#: ../src/gui-wizard-gtk/wizard.c:1018
+#: ../src/gui-wizard-gtk/wizard.c:1076
 msgid "Analyzing..."
 msgstr "正在分析..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1019
+#: ../src/gui-wizard-gtk/wizard.c:1077
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "分析完成附帶離開碼 %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1048
+#: ../src/gui-wizard-gtk/wizard.c:1103
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "回報完成附帶離開碼 %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1166
+#: ../src/gui-wizard-gtk/wizard.c:1220
 msgid "Name"
 msgstr "名稱"
 
-#: ../src/gui-wizard-gtk/wizard.c:1175
+#: ../src/gui-wizard-gtk/wizard.c:1229
 msgid "Value"
 msgstr "值"
 
@@ -587,8 +481,7 @@ msgstr "值"
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
-msgstr ""
-"<b>您的評註並非以私密方式處理。</b> 它們可能被納入能夠公開查看的問題回報中。"
+msgstr "<b>您的評註並非以私密方式處理。</b> 它們可能被納入能夠公開查看的問題回報中。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Analyzing did not start yet"
@@ -603,9 +496,7 @@ msgid ""
 "Backtrace provides developers with details of the crash, helping them track "
 "down the source of the problem. Please review it and remove any sensitive "
 "data you would rather not share:"
-msgstr ""
-"追蹤資訊提供開發者當機的細節，並幫助他們追蹤問題的來源。請校閱資料並移除任何"
-"您不想要與他人分享的敏感資料："
+msgstr "追蹤資訊提供開發者當機的細節，並幫助他們追蹤問題的來源。請校閱資料並移除任何您不想要與他人分享的敏感資料："
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
@@ -672,26 +563,26 @@ msgstr "使用此按鈕讓您在安裝額外的除錯套件後產生更多追蹤
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "已上傳：%llu / %llu kbytes"
 
-#: ../src/lib/event_config.c:291
+#: ../src/lib/event_config.c:294
 msgid "Missing mandatory value"
 msgstr "遺失必要的值"
 
-#: ../src/lib/event_config.c:299
+#: ../src/lib/event_config.c:302
 #, c-format
 msgid "Invalid utf8 character '%c'"
 msgstr "無效的 utf8 字元「%c」"
 
-#: ../src/lib/event_config.c:312
+#: ../src/lib/event_config.c:315
 #, c-format
 msgid "Invalid number '%s'"
 msgstr "無效的號碼「%s」"
 
-#: ../src/lib/event_config.c:324
+#: ../src/lib/event_config.c:327
 #, c-format
 msgid "Invalid boolean value '%s'"
 msgstr "無效的布林值「%s」"
 
-#: ../src/lib/event_config.c:328
+#: ../src/lib/event_config.c:333
 msgid "Unsupported option type"
 msgstr "未支援的選項類型"
 
@@ -704,17 +595,16 @@ msgstr "用法：%s\n"
 msgid ""
 " [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
-"identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
 msgstr ""
 " [選項] -d DIR\n"
 "\n"
 "分析 C/C++ 追蹤資料、產生複本雜湊、追蹤評等、並辨識傾印目錄 DIR 內的當機函式"
 
-#.
-#. * The parser failed. Compute the UUID from the executable
-#. * and package only.  This is not supposed to happen often.
-#.
+#. * The parser failed. Compute the duphash from the executable
+#. * instead of a backtrace.
+#. * and component only.  This is not supposed to happen often.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:113
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -753,22 +643,21 @@ msgstr ""
 #: ../src/plugins/abrt-action-bugzilla.cpp:518
 #, c-format
 msgid "New bug id: %i"
-msgstr "新的錯誤 id：%i"
+msgstr "新的臭蟲 id：%i"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:647
-#, fuzzy
 msgid "Empty login or password, please check your configuration"
-msgstr "空白登入名稱或密碼，請檢查 %s"
+msgstr "空白的登入名稱或密碼，請檢查您的組態"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:661
 #, c-format
 msgid "Essential file '%s' is missing, can't continue.."
-msgstr ""
+msgstr "遺失必要檔案「%s」，無法繼續。"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:665
 #, c-format
 msgid "Essential file '%s' is empty, can't continue.."
-msgstr ""
+msgstr "必要檔案「%s」為空白，無法繼續。"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:674
 #, c-format
@@ -807,12 +696,12 @@ msgstr "正在登出"
 #: ../src/plugins/abrt-action-bugzilla.cpp:801
 #, c-format
 msgid "Bug is already reported: %i"
-msgstr "錯誤已回報：%i"
+msgstr "臭蟲已回報：%i"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:812
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla 找不到錯誤 %d 的 親代"
+msgstr "Bugzilla 找不到臭蟲 %d 的 親代"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:842
 #, c-format
@@ -822,7 +711,7 @@ msgstr "將 %s 加入 CC 副本清單中"
 #: ../src/plugins/abrt-action-bugzilla.cpp:868
 #, c-format
 msgid "Adding new comment to bug %d"
-msgstr "在錯誤 (%d) 中新增評註"
+msgstr "在臭蟲回報 (%d) 中新增評註"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:919
 msgid ""
@@ -835,7 +724,7 @@ msgstr ""
 "回報問題至 Bugzilla"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:932
-#: ../src/plugins/abrt-action-rhtsupport.c:277
+#: ../src/plugins/abrt-action-rhtsupport.c:292
 msgid "Configuration file (may be given many times)"
 msgstr "組態檔案 (可以給定多次)"
 
@@ -859,7 +748,7 @@ msgstr "若 gdb 執行超過 N 秒就終止它"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -943,40 +832,35 @@ msgstr "所有下載的套件已被解開，正在移除 %s"
 msgid "Can't remove %s, probably contains an error log"
 msgstr "無法移除 %s，可能包含錯誤紀錄"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:316
-#, python-format
-msgid "Analyzing coredump '%s'"
-msgstr "正在分析核心傾印「%s」"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:394
+#: ../src/plugins/abrt-action-install-debuginfo.py:336
 #, python-format
 msgid "Can't remove '%s': %s"
 msgstr "無法移除「%s」：%s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:402
+#: ../src/plugins/abrt-action-install-debuginfo.py:344
 msgid "Exiting on user command"
 msgstr "正在離開使用者指令"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:428
+#: ../src/plugins/abrt-action-install-debuginfo.py:371
 #, python-format
 msgid "Usage: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 msgstr "用法：%s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:457
+#: ../src/plugins/abrt-action-install-debuginfo.py:400
 msgid "You have to specify the path to coredump."
 msgstr "您必須指定 coredump 的路徑。"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:474
+#: ../src/plugins/abrt-action-install-debuginfo.py:420
 #, python-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
 msgstr "Coredump 參照 %u 份 debuginfo 檔，其中的 %u 份尚未安裝"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:479
+#: ../src/plugins/abrt-action-install-debuginfo.py:425
 #, python-format
 msgid "Missing debuginfo file: %s"
 msgstr "遺失 debuginfo 檔：%s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:482
+#: ../src/plugins/abrt-action-install-debuginfo.py:428
 #, python-format
 msgid "All %u debuginfo files are available"
 msgstr "全部有 %u 份 debuginfo 檔可用"
@@ -986,7 +870,7 @@ msgstr "全部有 %u 份 debuginfo 檔可用"
 msgid "Submitting oops report to %s"
 msgstr "正在提交 oops 回報至 %s"
 
-#: ../src/plugins/abrt-action-kerneloops.c:133
+#: ../src/plugins/abrt-action-kerneloops.c:142
 msgid ""
 " [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
@@ -996,7 +880,7 @@ msgstr ""
 "\n"
 "回報 kernel oops 至 kerneloops.org (或類似) 網站"
 
-#: ../src/plugins/abrt-action-kerneloops.c:146
+#: ../src/plugins/abrt-action-kerneloops.c:155
 msgid "Configuration file"
 msgstr "組態檔"
 
@@ -1004,7 +888,7 @@ msgstr "組態檔"
 msgid "Sending an email..."
 msgstr "正在傳送電子郵件中..."
 
-#: ../src/plugins/abrt-action-mailx.c:135
+#: ../src/plugins/abrt-action-mailx.c:143
 msgid ""
 " [-v] -d DIR [-c CONFFILE]\n"
 "\n"
@@ -1014,7 +898,7 @@ msgstr ""
 "\n"
 "透過電子郵件傳送傾印目錄 DIR 的壓縮 tarball"
 
-#: ../src/plugins/abrt-action-mailx.c:148
+#: ../src/plugins/abrt-action-mailx.c:156
 #: ../src/plugins/abrt-action-upload.c:259
 msgid "Config file"
 msgstr "組態檔"
@@ -1029,27 +913,33 @@ msgstr ""
 "\n"
 "列印問題資訊至標準輸出或 FILE 上"
 
-#: ../src/plugins/abrt-action-print.c:53
+#: ../src/plugins/abrt-action-print.c:54
 msgid "Output file"
 msgstr "輸出檔"
 
-#: ../src/plugins/abrt-action-print.c:54
+#: ../src/plugins/abrt-action-print.c:55
 msgid "Append to, or overwrite FILE"
 msgstr "附加至，或是覆寫 FILE"
 
-#: ../src/plugins/abrt-action-print.c:87
+#: ../src/plugins/abrt-action-print.c:56
+msgid "Create reported_to in DIR"
+msgstr ""
+
+#: ../src/plugins/abrt-action-print.c:100
 #, c-format
 msgid "The report was appended to %s"
 msgstr "錯誤已附加至 %s"
 
-#: ../src/plugins/abrt-action-print.c:87
+#: ../src/plugins/abrt-action-print.c:100
 #, c-format
 msgid "The report was stored to %s"
 msgstr "錯誤已儲存至 %s"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
 #: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
@@ -1059,11 +949,15 @@ msgstr "正在壓縮資料"
 msgid "Empty RHTS login or password"
 msgstr "空白的 RHTS 登入名稱或密碼"
 
-#: ../src/plugins/abrt-action-rhtsupport.c:189
+#: ../src/plugins/abrt-action-rhtsupport.c:101
+msgid "Can't create a temporary directory in /tmp"
+msgstr ""
+
+#: ../src/plugins/abrt-action-rhtsupport.c:194
 msgid "Creating a new case..."
 msgstr "正在建立新的案例…"
 
-#: ../src/plugins/abrt-action-rhtsupport.c:264
+#: ../src/plugins/abrt-action-rhtsupport.c:279
 msgid ""
 " [-v] -c CONFFILE -d DIR\n"
 "\n"
@@ -1125,36 +1019,33 @@ msgstr ""
 msgid "Base URL to upload to"
 msgstr "要上傳至的基礎網址"
 
-#: ../src/plugins/abrt-dump-oops.c:563
+#: ../src/plugins/abrt-dump-oops.c:569
 msgid ""
-" [-vsrdow] FILE\n"
+" [-vsrowx] [-d DIR] FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
-" [-vsrdow] FILE\n"
-"\n"
-"從 syslog/dmesg 檔案抽出 oops "
 
-#: ../src/plugins/abrt-dump-oops.c:580
+#: ../src/plugins/abrt-dump-oops.c:586
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "在解析 FILE 前先解析 kernel 的訊息緩衝"
 
-#: ../src/plugins/abrt-dump-oops.c:581
-msgid "Create ABRT dump for every oops found"
-msgstr "為每次找到的 oops 建立 ABRT 傾印"
-
-#: ../src/plugins/abrt-dump-oops.c:582
+#: ../src/plugins/abrt-dump-oops.c:587
 msgid "Print found oopses on standard output"
 msgstr "列印找到的 oops 於標準輸出上"
 
-#: ../src/plugins/abrt-dump-oops.c:583
+#: ../src/plugins/abrt-dump-oops.c:588
 msgid "Do not exit, watch the file for new oopses"
 msgstr "不要離開，監視檔案以取得新的 oops"
 
-#. oopses doesn't contain any sensitive info, and even
+#. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
-#: ../src/plugins/abrt-dump-oops.c:587
+#. 
+#: ../src/plugins/abrt-dump-oops.c:592
+msgid "Create ABRT dump in DIR for every oops found"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-oops.c:593
 msgid "Make the dump directory world readable"
 msgstr "讓傾印目錄全世界都可以讀取"
 
@@ -1164,150 +1055,163 @@ msgstr "紀錄至 syslog"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr ""
+msgstr "下載 debuginfo 套件並透過本地端的 GDB 產生追蹤資訊"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Local GNU Debugger"
+msgstr "本地端 GNU 除錯器"
+
+#: ../src/plugins/analyze_LocalGDB.xml.in.h:3
+msgid ""
+"Needs to downloads debuginfo packages, which might take significant time, "
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Address of the retrace server"
-msgstr ""
+msgstr "回追伺服器的位址"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid "Retrace server URL"
-msgstr ""
+msgstr "回追伺服器網址"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Send core dump to remote retrace server for analysis"
+msgstr "傳送核心傾印至遠端回追伺服器來分析"
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:4
+msgid ""
+"Uploads coredump to a server, which generates backtrace and returns it. "
+"Pros: no need for debuginfo downloads. Retrace server's database of "
+"debuginfos is more complete. Retrace server may generate better backtraces. "
+"Cons: coredump you upload contains all the data from the crashed program, "
+"including your private data, if any."
 msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Address of Bugzilla server"
-msgstr ""
+msgstr "Bugzilla 伺服器的位址"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:2
 msgid "Bugzilla"
-msgstr ""
+msgstr "Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:3
 msgid "Bugzilla URL"
-msgstr ""
+msgstr "Bugzilla 網址"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:4
 msgid "Bugzilla account password"
-msgstr ""
+msgstr "Bugzilla 帳號密碼"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:5
 msgid "Bugzilla account user name"
-msgstr ""
+msgstr "Bugzilla 帳號使用者名稱"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:2
 msgid "Check SSL key validity"
-msgstr ""
+msgstr "檢查 SSL 金鑰是否有效"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
-#, fuzzy
 msgid "Password"
-msgstr "顯示密碼"
+msgstr "密碼"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
 msgid "Report to Bugzilla bug tracker"
-msgstr ""
+msgstr "回報至 Bugzilla 臭蟲追蹤器"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:9
 msgid "User name"
-msgstr ""
+msgstr "使用者名稱"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Verify SSL"
-msgstr ""
+msgstr "驗證 SSL"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops URL"
-msgstr ""
+msgstr "Kerneloops 網址"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:2
 msgid "Kerneloops.org"
-msgstr ""
+msgstr "Kerneloops.org"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:3
 msgid "Oops server url"
-msgstr ""
+msgstr "Oops 伺服器網址"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:4
 msgid "Send kernel problems to oops tracker"
-msgstr ""
+msgstr "傳送 kernel 問題至 opps 追蹤器"
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
-msgstr ""
+msgstr "Mailx"
 
 #: ../src/plugins/report_Mailx.xml.in.h:2
 msgid "Message subject"
-msgstr ""
+msgstr "訊息主旨"
 
 #: ../src/plugins/report_Mailx.xml.in.h:3
 msgid "Recipient"
-msgstr ""
+msgstr "收件人"
 
 #: ../src/plugins/report_Mailx.xml.in.h:4
 msgid "Recipient's email"
-msgstr ""
+msgstr "收件人的電子郵件"
 
 #: ../src/plugins/report_Mailx.xml.in.h:5
 msgid "Send Binary Data"
-msgstr ""
+msgstr "傳送二進位資料"
 
 #: ../src/plugins/report_Mailx.xml.in.h:6
 msgid "Send binary files like coredump"
-msgstr ""
+msgstr "傳送二進位檔案，例如 coredump"
 
 #: ../src/plugins/report_Mailx.xml.in.h:7
-#, fuzzy
 msgid "Send via email"
-msgstr "正在傳送電子郵件中..."
+msgstr "透過郵件傳送"
 
 #: ../src/plugins/report_Mailx.xml.in.h:8
 msgid "Sender"
-msgstr ""
+msgstr "寄件人"
 
 #: ../src/plugins/report_Mailx.xml.in.h:9
-#, fuzzy
 msgid "Sender's email"
-msgstr "正在傳送電子郵件中..."
+msgstr "寄件人的電子郵件"
 
 #: ../src/plugins/report_Mailx.xml.in.h:10
 msgid "Subject"
-msgstr ""
+msgstr "主旨"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:1
 msgid "Address of the Red Hat support portal"
-msgstr ""
+msgstr "Red Hat 支援的入口網站位址"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:4
 msgid "RH Portal URL"
-msgstr ""
+msgstr "RH 入口網站網址"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:5
 msgid "Red Hat Customer Support"
-msgstr ""
+msgstr "Red Hat 客戶支援"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:6
 msgid "Red Hat customer password"
-msgstr ""
+msgstr "Red Hat 客戶密碼"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:7
 msgid "Red Hat customer user name"
-msgstr ""
+msgstr "Red Hat 客戶使用者名稱"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:8
 msgid "Report to Red Hat support"
-msgstr ""
+msgstr "回報至 Red Hat 支援"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "Username"
-msgstr ""
+msgstr "使用者名稱"

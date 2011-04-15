@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-04-05 14:23+0200\n"
-"PO-Revision-Date: 2011-03-26 22:40+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2011-04-15 17:04+0200\n"
+"PO-Revision-Date: 2011-04-15 15:09+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Czech <None>\n"
-"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -54,7 +54,7 @@ msgstr ""
 "Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Radek Vokál <rvokal@redhat.com>\n"
 "Nikola Pajkovsky <npajkovs@redhat.com>\n"
-"Petr Pisar <ppisar@redhat.com>"
+"Petr Písař <ppisar@redhat.com>"
 
 #: ../src/applet/applet_gtk.c:285
 msgid "Hide"
@@ -66,104 +66,17 @@ msgstr "Nahlásit"
 
 #: ../src/applet/applet_gtk.c:401
 msgid "Show"
-msgstr ""
+msgstr "Zobrazit"
 
 #: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
 msgid "A Problem has Occurred"
-msgstr ""
+msgstr "Vyskytl se problém"
 
 #: ../src/applet/applet_gtk.c:429
 msgid "Open ABRT"
 msgstr "Spustit ABRT"
 
-#: ../src/cli/cli.c:90
-#, c-format
-msgid ""
-"\tCrash dump : %s\n"
-"\tUID        : %s\n"
-"\tPackage    : %s\n"
-"\tExecutable : %s\n"
-"\tCrash Time : %s\n"
-"\tCrash Count: %s\n"
-msgstr ""
-"\tVýpis pádu  : %s\n"
-"\tUID         : %s\n"
-"\tBalík       : %s\n"
-"\tProgram     : %s\n"
-"\tDoba pádu   : %s\n"
-"\tPočet pádů  : %s\n"
-
-#: ../src/cli/cli.c:109
-#, c-format
-msgid "\tHostname   : %s\n"
-msgstr "\tNázev stroje: %s\n"
-
-#: ../src/cli/cli.c:143
-#, c-format
-msgid ""
-"Dump directory:     %s\n"
-"Last crash:         %s\n"
-"Analyzer:           %s\n"
-"Component:          %s\n"
-"Package:            %s\n"
-"Command:            %s\n"
-"Executable:         %s\n"
-"System:             %s, kernel %s\n"
-"Reason:             %s\n"
-msgstr ""
-"Adresář s výpisy    %s\n"
-"Poslední pád:       %s\n"
-"Analyzátor:         %s\n"
-"Komponenta:         %s\n"
-"Balík:              %s\n"
-"Příkaz:             %s\n"
-"Program:            %s\n"
-"Systém:             %s, jádro %s\n"
-"Příčina:            %s\n"
-
-#: ../src/cli/cli.c:171
-#, c-format
-msgid "Coredump file:      %s\n"
-msgstr "Obraz paměti:       %s\n"
-
-#: ../src/cli/cli.c:175
-#, c-format
-msgid "Rating:             %s\n"
-msgstr "Hodnocení:          %s\n"
-
-#: ../src/cli/cli.c:180
-#, c-format
-msgid "Crash function:     %s\n"
-msgstr "Místo pádu:         %s\n"
-
-#: ../src/cli/cli.c:184
-#, c-format
-msgid "Hostname:           %s\n"
-msgstr "Název stroje:       %s\n"
-
-#: ../src/cli/cli.c:188
-#, c-format
-msgid ""
-"\n"
-"Comment:\n"
-"%s\n"
-msgstr ""
-"\n"
-"Komentář:\n"
-"%s\n"
-
-#: ../src/cli/cli.c:194
-#, c-format
-msgid ""
-"\n"
-"Backtrace:\n"
-"%s\n"
-msgstr ""
-"\n"
-"Výpis volání:\n"
-"%s\n"
-
-#: ../src/cli/cli.c:251
+#: ../src/cli/cli.c:211
 #, c-format
 msgid ""
 "Usage: %s -l[f] [-D BASE_DIR]...]\n"
@@ -171,53 +84,37 @@ msgid ""
 "   or: %s -i[b] CRASH_DIR\n"
 "   or: %s -d CRASH_DIR\n"
 "\n"
-"\t-l, --list\t\tList not yet reported crashes\n"
-"\t  -f, --full\t\tList all crashes\n"
-"\t-D BASE_DIR\t\tDirectory to list crashes from\n"
+"\t-l, --list\t\tList not yet reported problems\n"
+"\t  -f, --full\t\tList all problems\n"
+"\t-D BASE_DIR\t\tDirectory to list problems from\n"
 "\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
 "\n"
 "\t-r, --report\t\tSend a report about CRASH_DIR\n"
 "\t  -y, --always\t\t...without editing and asking\n"
 "\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
-"\t  -b, --backtrace\t...including backtrace\n"
+"\t  -f, --full\t\t...including multi-line entries\n"
+"\t\t\t\tNote: -if will run analyzers\n"
+"\t\t\t\t(if this CRASH_DIR have defined analyzers)\n"
 "\t-d, --delete\t\tRemove CRASH_DIR\n"
 "\n"
 "\t-V, --version\t\tDisplay version and exit\n"
 "\t-v, --verbose\t\tBe verbose\n"
 msgstr ""
-"Použití: %s -l[f] [-D ZÁKLADNÍ_ADRESÁŘ]…]\n"
-"   nebo: %s -r[y] ADRESÁŘ_S_PÁDEM\n"
-"   nebo: %s -i[b] ADRESÁŘ_S_PÁDEM\n"
-"   nebo: %s -d ADRESÁŘ_S_PÁDEM\n"
-"\n"
-"\t-l, --list\t\tVypíše nenahlášené pády\n"
-"\t  -f, --full\t\tVypíše všechny pády\n"
-"\t-D ZÁKLADNÍ_ADRESÁŘ\t\tAdresář se seznamem pádů\n"
-"\t\t\t\t(výchozí: -D $HOME/.abrt/spool -D %s)\n"
-"\n"
-"\t-r, --report\t\tOdešle hlášení o ADRESÁŘI_S_PÁDEM\n"
-"\t  -y, --always\t\t…bez úprav a ptaní\n"
-"\t-i, --info\t\tVypíše podrobnosti o ADRESÁŘI_S_PÁDEM\n"
-"\t  -b, --backtrace\t…včetně zásobníku volání\n"
-"\t-d, --delete\t\tOdstraní ADRESÁŘ_S_PÁDEM\n"
-"\n"
-"\t-V, --version\t\tZobrazí verzi a skončí\n"
-"\t-v, --verbose\t\tUpovídaný výstup\n"
 
-#: ../src/cli/cli.c:299
+#: ../src/cli/cli.c:260
 msgid "You must specify exactly one operation"
 msgstr "Musíte zadat právě jednu operaci"
 
-#: ../src/cli/report.cpp:154
+#: ../src/cli/report.c:131
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# Tento údaj je jen pro čtení\n"
 
-#: ../src/cli/report.cpp:174
+#: ../src/cli/report.c:151
 msgid "# Describe the circumstances of this crash below"
 msgstr "# Okolnosti pádu popište níže"
 
-#: ../src/cli/report.cpp:176
+#: ../src/cli/report.c:153
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -225,48 +122,48 @@ msgstr ""
 "# Výpis volání\n"
 "# Ujistěte se, že neobsahuje žádné citlivé údaje (hesla atd.)"
 
-#: ../src/cli/report.cpp:178
+#: ../src/cli/report.c:155
 msgid "# Architecture"
 msgstr "# Architektura"
 
-#: ../src/cli/report.cpp:179
+#: ../src/cli/report.c:156
 msgid "# Command line"
 msgstr "# Příkaz"
 
-#: ../src/cli/report.cpp:180
+#: ../src/cli/report.c:157
 msgid "# Component"
 msgstr "# Komponenta"
 
-#: ../src/cli/report.cpp:181
+#: ../src/cli/report.c:158
 msgid "# Core dump"
 msgstr "# Obraz paměti"
 
-#: ../src/cli/report.cpp:182
+#: ../src/cli/report.c:159
 msgid "# Executable"
 msgstr "# Program"
 
-#: ../src/cli/report.cpp:183
+#: ../src/cli/report.c:160
 msgid "# Kernel version"
 msgstr "# Verze jádra"
 
-#: ../src/cli/report.cpp:184
+#: ../src/cli/report.c:161
 msgid "# Package"
 msgstr "# Balíček"
 
-#: ../src/cli/report.cpp:185
+#: ../src/cli/report.c:162
 msgid "# Reason of crash"
 msgstr "# Příčina pádu"
 
-#: ../src/cli/report.cpp:186
+#: ../src/cli/report.c:163
 msgid "# Release string of the operating system"
 msgstr "# Název vydání operačního systému"
 
-#: ../src/cli/report.cpp:299
+#: ../src/cli/report.c:276
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
 "Nebylo možné spustit vi: Ani $TERM, ani $VISUAL, ani $EDITOR není nastavena"
 
-#: ../src/cli/report.cpp:383
+#: ../src/cli/report.c:360
 msgid ""
 "\n"
 "The report has been updated"
@@ -274,7 +171,7 @@ msgstr ""
 "\n"
 "Hlášení bylo aktualizováno"
 
-#: ../src/cli/report.cpp:385
+#: ../src/cli/report.c:362
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -283,69 +180,69 @@ msgstr ""
 "V hlášení nebyly nalezeny žádné změny"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:417
+#: ../src/cli/report.c:394
 msgid "y"
 msgstr "a"
 
-#: ../src/cli/report.cpp:418
+#: ../src/cli/report.c:395
 msgid "N"
 msgstr "N"
 
-#: ../src/cli/report.cpp:514
+#: ../src/cli/report.c:492
 msgid "Your input is not valid, because of:"
-msgstr ""
+msgstr "Váš vstup není platný, protože:"
 
-#: ../src/cli/report.cpp:517
+#: ../src/cli/report.c:495
 #, c-format
 msgid "Bad value for '%s': %s"
-msgstr ""
+msgstr "Chybná hodnota „%s“: %s"
 
-#: ../src/cli/report.cpp:615
+#: ../src/cli/report.c:592
 #, c-format
 msgid "Select how you would like to analyze the problem:\n"
 msgstr ""
 
-#: ../src/cli/report.cpp:631
+#: ../src/cli/report.c:608
 #, c-format
 msgid "Choose option [0 - %u]: "
 msgstr ""
 
-#: ../src/cli/report.cpp:645
+#: ../src/cli/report.c:622
 #, c-format
 msgid "You have chosen number out of range"
 msgstr ""
 
-#: ../src/cli/report.cpp:653
+#: ../src/cli/report.c:630
 msgid "Invalid input, program exiting..."
 msgstr ""
 
-#: ../src/cli/report.cpp:769 ../src/gui-wizard-gtk/wizard.c:1047
+#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1102
 msgid "Reporting..."
 msgstr "Nahlašuje se…"
 
-#: ../src/cli/report.cpp:783
+#: ../src/cli/report.c:762
 #, c-format
 msgid "Report using %s?"
 msgstr "Nahlásit prostřednictvím %s?"
 
-#: ../src/cli/report.cpp:786
+#: ../src/cli/report.c:769
 msgid "Skipping..."
 msgstr "Vynecháno…"
 
-#: ../src/cli/report.cpp:803
+#: ../src/cli/report.c:779
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Nahlašování zakázáno, protože výpis volání není použitelný"
 
-#: ../src/cli/report.cpp:807
+#: ../src/cli/report.c:783
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
-"Zkuste nainstalovat balíčky s ladicími údaji ručně pomocí „debuginfo-install "
-"%s“ a zkuste to znovu\n"
+"Zkuste nainstalovat balíčky s ladicími údaji ručně pomocí „debuginfo-install"
+" %s“ a zkuste to znovu\n"
 
-#: ../src/cli/report.cpp:823
+#: ../src/cli/report.c:805
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "Pád nahlášen prostřednictvím %d oznamovacích událostí (%d chyb)\n"
@@ -356,6 +253,9 @@ msgid ""
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
+" [-v] -d ADRESÁŘ\n"
+"\n"
+"Dotáže se databáze balíčků a uloží název balíčku, komponentu a popis."
 
 #: ../src/daemon/abrt-action-save-package-data.c:266
 #: ../src/daemon/abrt-handle-crashdump.c:61
@@ -365,13 +265,13 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-python.c:49
 #: ../src/plugins/abrt-action-bugzilla.cpp:931
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
-#: ../src/plugins/abrt-action-kerneloops.c:145
-#: ../src/plugins/abrt-action-mailx.c:147
-#: ../src/plugins/abrt-action-print.c:52
-#: ../src/plugins/abrt-action-rhtsupport.c:276
+#: ../src/plugins/abrt-action-kerneloops.c:154
+#: ../src/plugins/abrt-action-mailx.c:155
+#: ../src/plugins/abrt-action-print.c:53
+#: ../src/plugins/abrt-action-rhtsupport.c:291
 #: ../src/plugins/abrt-action-upload.c:258
 msgid "Dump directory"
-msgstr ""
+msgstr "Vypíše obsah adresáře"
 
 #: ../src/daemon/abrt-handle-crashdump.c:43
 msgid ""
@@ -382,7 +282,7 @@ msgstr ""
 " nebo: "
 
 #: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:297
-#: ../src/plugins/abrt-dump-oops.c:579
+#: ../src/plugins/abrt-dump-oops.c:585
 msgid "Log to syslog"
 msgstr "Protokolovat do syslogu"
 
@@ -395,12 +295,12 @@ msgid "List possible events [which start with PFX]"
 msgstr "Vypsat možné události [které začínají na PFX]"
 
 #: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
-#: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:175
+#: ../src/daemon/Daemon.cpp:547 ../src/gui-gtk/main.c:216
 #: ../src/gui-wizard-gtk/main.c:94
 msgid "Add program names to log"
-msgstr ""
+msgstr "Přidá názvy programů do protokolu"
 
-#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:535
+#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:532
 msgid " [options]"
 msgstr " [PŘEPÍNAČE]"
 
@@ -412,7 +312,7 @@ msgstr "Použije UID jako UID uživatele"
 msgid "Comment is too long"
 msgstr "Komentář je příliš dlouhý"
 
-#: ../src/daemon/Daemon.cpp:371
+#: ../src/daemon/Daemon.cpp:368
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -420,15 +320,15 @@ msgstr ""
 "Velikost zprávy překročena. Prosím, zkontrolujte systémovou hodnotu "
 "MaxCrashReportsSize v abrt.conf."
 
-#: ../src/daemon/Daemon.cpp:547
+#: ../src/daemon/Daemon.cpp:544
 msgid "Do not daemonize"
 msgstr "Nedémonizuje se"
 
-#: ../src/daemon/Daemon.cpp:548
+#: ../src/daemon/Daemon.cpp:545
 msgid "Log to syslog even with -d"
 msgstr "Protokoluje do syslogu i s -d"
 
-#: ../src/daemon/Daemon.cpp:549
+#: ../src/daemon/Daemon.cpp:546
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Skončí po N sekundách nečinnosti"
 
@@ -436,17 +336,17 @@ msgstr "Skončí po N sekundách nečinnosti"
 msgid "Show password"
 msgstr "Zobrazit heslo"
 
-#: ../src/gtk-helpers/event_config_dialog.c:311
+#: ../src/gtk-helpers/event_config_dialog.c:343
 msgid "Event Configuration"
-msgstr ""
+msgstr "Nastavení událostí"
 
-#: ../src/gtk-helpers/event_config_dialog.c:336
+#: ../src/gtk-helpers/event_config_dialog.c:368
 msgid "Event"
-msgstr ""
+msgstr "Událost"
 
-#: ../src/gtk-helpers/event_config_dialog.c:369
+#: ../src/gtk-helpers/event_config_dialog.c:401
 msgid "Configure E_vent"
-msgstr ""
+msgstr "Nasta_vit událost"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -458,11 +358,11 @@ msgstr "Nahlášeno"
 
 #: ../src/gui-gtk/abrt-gtk.c:267
 msgid "Problem"
-msgstr ""
+msgstr "Problém"
 
 #: ../src/gui-gtk/abrt-gtk.c:290
 msgid "Last occurrence"
-msgstr ""
+msgstr "Poslední výskyt"
 
 #: ../src/gui-gtk/abrt-gtk.c:305
 msgid "_File"
@@ -478,19 +378,23 @@ msgstr "_Pomoc"
 
 #: ../src/gui-gtk/abrt-gtk.c:323
 msgid "_Event configuration"
-msgstr ""
+msgstr "Nastav_ení událostí"
 
 #: ../src/gui-gtk/abrt-gtk.c:399
 msgid "Online _Help"
-msgstr ""
+msgstr "Online nápo_věda"
 
-#: ../src/gui-gtk/main.c:163
+#: ../src/gui-gtk/main.c:204
 msgid ""
 " [-vp] [DIR]...\n"
 "\n"
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 "(default DIRs: "
 msgstr ""
+" [-vp] [ADRESÁŘ…]\n"
+"\n"
+"Zobrazí seznam adresářů s výpisy ABRTu v zadaných ADRESÁŘÍCH.\n"
+"(Výchozí ADRESÁŘE: "
 
 #: ../src/gui-wizard-gtk/main.c:81
 msgid ""
@@ -498,44 +402,49 @@ msgid ""
 "\n"
 "GUI tool to analyze and report problem saved in specified DIR"
 msgstr ""
+" [-vp] [-g SOUBOR_S_GUI] ADRESÁŘ\n"
+"\n"
+"Grafický nástroj pro analýzu a hlášení problémů uložených v zadaném ADRESÁŘI."
 
 #: ../src/gui-wizard-gtk/main.c:93
 msgid "Alternate GUI file"
-msgstr ""
+msgstr "Náhradní soubor s GUI"
 
-#: ../src/gui-wizard-gtk/wizard.c:187
+#: ../src/gui-wizard-gtk/wizard.c:201
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
 msgstr ""
+"Je třeba zapisovatelný adresář, ale do „%s“ nelze zapsat. Přesunout jej do "
+"„%s“ a pracovat nad přesunutou kopií?"
 
-#: ../src/gui-wizard-gtk/wizard.c:499
+#: ../src/gui-wizard-gtk/wizard.c:558
 msgid "(click here to view/edit)"
-msgstr ""
+msgstr "(kliknout zde pro zobrazení/úpravy)"
 
-#: ../src/gui-wizard-gtk/wizard.c:511
+#: ../src/gui-wizard-gtk/wizard.c:570
 #, c-format
 msgid "(binary file, %llu bytes)"
-msgstr ""
+msgstr "(binární soubor, %'llu bajtů)"
 
-#: ../src/gui-wizard-gtk/wizard.c:526
+#: ../src/gui-wizard-gtk/wizard.c:585
 msgid "(no description)"
-msgstr ""
+msgstr "(žádný popis)"
 
-#: ../src/gui-wizard-gtk/wizard.c:531
+#: ../src/gui-wizard-gtk/wizard.c:591
 #, c-format
 msgid "%llu bytes, %u files"
-msgstr ""
+msgstr "%'llu bajtů, %'u souborů"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:851
+#: ../src/gui-wizard-gtk/wizard.c:914
 #, c-format
 msgid "No processing for event '%s' is defined"
-msgstr ""
+msgstr "Pro událost „%s“ není určen způsob zpracování"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:946
+#: ../src/gui-wizard-gtk/wizard.c:1004
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -544,55 +453,55 @@ msgstr ""
 "postup, jak problém vyvolat."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:952
+#: ../src/gui-wizard-gtk/wizard.c:1010
 msgid "Reporting disabled because the backtrace is unusable."
-msgstr ""
-"Odeslání hlášení není povoleno, protože výpis volání je nepoužitelný."
-"Odeslání hlášení není povoleno, protože výpis volání je nepoužitelný."
+msgstr "Odeslání hlášení není povoleno, protože výpis volání je nepoužitelný."
 
-#: ../src/gui-wizard-gtk/wizard.c:961
+#: ../src/gui-wizard-gtk/wizard.c:1019
 msgid "You should check the backtrace for sensitive data."
 msgstr "Ve výpisu volání byste měli zkontrolovat citlivá data."
 
-#: ../src/gui-wizard-gtk/wizard.c:962
+#: ../src/gui-wizard-gtk/wizard.c:1020
 msgid "You must agree with sending the backtrace."
 msgstr "S odesláním výpisu volání musíte souhlasit."
 
-#: ../src/gui-wizard-gtk/wizard.c:1018
+#: ../src/gui-wizard-gtk/wizard.c:1076
 msgid "Analyzing..."
-msgstr ""
+msgstr "Analyzuje se…"
 
-#: ../src/gui-wizard-gtk/wizard.c:1019
+#: ../src/gui-wizard-gtk/wizard.c:1077
 #, c-format
 msgid "Analyzing finished with exit code %d"
-msgstr ""
+msgstr "Analýza skončila s návratovým kódem %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1048
+#: ../src/gui-wizard-gtk/wizard.c:1103
 #, c-format
 msgid "Reporting finished with exit code %d"
-msgstr ""
+msgstr "Nahlašování skončilo s návratovým kódem %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1166
+#: ../src/gui-wizard-gtk/wizard.c:1220
 msgid "Name"
 msgstr "Název"
 
-#: ../src/gui-wizard-gtk/wizard.c:1175
+#: ../src/gui-wizard-gtk/wizard.c:1229
 msgid "Value"
-msgstr ""
+msgstr "Hodnota"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:1
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr ""
+"<b>Vaše komentáře nejsou soukromé.</b> Mohou být vloženy do veřejně "
+"přístupných hlášení o chybách."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Analyzing did not start yet"
-msgstr ""
+msgstr "Analýza ještě nezačala"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Any additional comments useful for diagnosing the problem?"
-msgstr ""
+msgstr "Nějaké další poznámky užitečné pro určení problému?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid ""
@@ -600,24 +509,29 @@ msgid ""
 "down the source of the problem. Please review it and remove any sensitive "
 "data you would rather not share:"
 msgstr ""
+"Výpis volání poskytuje vývojářům podrobnosti o pádu a napomáhá k nalezení "
+"příčiny problému. Prosím, prohlédněte jej a odstraňte jakékoliv citlivé "
+"údaje, které byste raději udrželi v soukromí:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
 "Can create more informative backtrace if you installed additional debug "
 "packages"
 msgstr ""
+"Bylo by možné vytvořit podrobnější výpis volání, kdybyste nainstalovali "
+"další ladicí balíčky"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "Click 'Apply' to start reporting"
-msgstr ""
+msgstr "Proces hlášení započnete kliknutím na „Aplikovat“."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "Click 'Forward' to proceed with analyzing and reporting this problem."
-msgstr ""
+msgstr "Analýzu a hlášení tohoto problému započnete kliknutím na „Vpřed“."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Configure _Events"
-msgstr ""
+msgstr "Nastavit _události"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "Details"
@@ -625,69 +539,71 @@ msgstr "Podrobnosti"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid "How did this problem happen (step-by-step)? How can it be reproduced?"
-msgstr ""
+msgstr "Jak k tomuto problému došlo (krok za krokem)? Jak jej lze vyvolat?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "I _agree with submitting the backtrace"
-msgstr ""
+msgstr "Souhl_asím s odesláním výpisu volání"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "Regenerate backtrace"
-msgstr ""
+msgstr "Znovu vytvořit výpis volání"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:13
 msgid "Reporter(s):"
-msgstr ""
+msgstr "Ohlašovatel(é):"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:14
 msgid "Reporting did not start yet"
-msgstr ""
+msgstr "Ohlašování ještě nezapočalo"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:15
 msgid "Select how you would like to analyze the problem:"
-msgstr ""
+msgstr "Vyberte, jak byste chtěli problém analyzovat:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:16
 msgid "Select how you would like to report the problem:"
-msgstr ""
+msgstr "Vyberte, jak byste chtěli problém nahlásit:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:17
 msgid "Size:"
-msgstr ""
+msgstr "Velikost:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:18
 msgid ""
 "Use this button to generate more informative backtrace after you installed "
 "additional debug packages"
 msgstr ""
+"Po instalaci dodatečných ladicích balíku lze tímto tlačítkem vytvořit "
+"podrobnější výpis volání."
 
 #: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Nahráno: %'llu z %'llu kilobajtů"
 
-#: ../src/lib/event_config.c:291
+#: ../src/lib/event_config.c:294
 msgid "Missing mandatory value"
-msgstr ""
+msgstr "Chybí povinná hodnota"
 
-#: ../src/lib/event_config.c:299
+#: ../src/lib/event_config.c:302
 #, c-format
 msgid "Invalid utf8 character '%c'"
-msgstr ""
+msgstr "Neplatný UTF-8 znak „%c“"
 
-#: ../src/lib/event_config.c:312
+#: ../src/lib/event_config.c:315
 #, c-format
 msgid "Invalid number '%s'"
-msgstr ""
+msgstr "Neplatné číslo „%s“"
 
-#: ../src/lib/event_config.c:324
+#: ../src/lib/event_config.c:327
 #, c-format
 msgid "Invalid boolean value '%s'"
-msgstr ""
+msgstr "Neplatná pravdivostní hodnota „%s“"
 
-#: ../src/lib/event_config.c:328
+#: ../src/lib/event_config.c:333
 msgid "Unsupported option type"
-msgstr ""
+msgstr "Nepodporovaný druh přepínače"
 
 #: ../src/lib/parse_options.c:29
 #, c-format
@@ -698,14 +614,16 @@ msgstr "Použití: %s\n"
 msgid ""
 " [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
-"identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
 msgstr ""
+" [PŘEPÍNAČE] -d ADRESÁŘ\n"
+"\n"
+"Analyzuje výpis volání C/C++, vytvoří duplikační otisk, ohodnotí výpis volání a určí havarovanou funkci z ADRESÁŘE s výpisy."
 
-#.
-#. * The parser failed. Compute the UUID from the executable
-#. * and package only.  This is not supposed to happen often.
-#.
+#. * The parser failed. Compute the duphash from the executable
+#. * instead of a backtrace.
+#. * and component only.  This is not supposed to happen often.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:113
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -717,6 +635,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
+" [-v] -d ADRESÁŘ\n"
+"\n"
+"Vypočte a uloží UUID obrazu paměti do ADRESÁŘE s výpisy."
 
 #: ../src/plugins/abrt-action-analyze-oops.c:133
 msgid ""
@@ -724,6 +645,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
+" [-vs] -d ADRESÁŘ\n"
+"\n"
+"Vypočte a uloží UUID a DUPHASH ADRESÁŘE s výpisem oops."
 
 #: ../src/plugins/abrt-action-analyze-python.c:38
 msgid ""
@@ -741,28 +665,27 @@ msgid "New bug id: %i"
 msgstr "Číslo nové chyby: %i"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:647
-#, fuzzy
 msgid "Empty login or password, please check your configuration"
-msgstr "Prázdné přihlašovací jméno nebo heslo, prosím, zkontrolujte %s"
+msgstr ""
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:661
 #, c-format
 msgid "Essential file '%s' is missing, can't continue.."
-msgstr ""
+msgstr "Chybí nezbytný soubor „%s“, nelze pokračovat…"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:665
 #, c-format
 msgid "Essential file '%s' is empty, can't continue.."
-msgstr ""
+msgstr "Nezbytný soubor „%s“ je prázdný, nelze pokračovat…"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:674
 #, c-format
 msgid "Logging into Bugzilla at %s"
-msgstr ""
+msgstr "Probíhá přihlášeno do Bugzilly na %s"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:677
 msgid "Checking for duplicates"
-msgstr ""
+msgstr "Kontrolují se duplikáty"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:699
 #: ../src/plugins/abrt-action-bugzilla.cpp:735
@@ -777,7 +700,7 @@ msgstr "get_bug_info() selhalo. Nebylo možné získat všechny povinné údaje"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:766
 msgid "Creating a new bug"
-msgstr ""
+msgstr "Vytváří se nové chybové hlášení"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:771
 msgid "Bugzilla entry creation failed"
@@ -786,7 +709,7 @@ msgstr "Záznam v bugzille se nepodařilo vytvořit"
 #: ../src/plugins/abrt-action-bugzilla.cpp:783
 #: ../src/plugins/abrt-action-bugzilla.cpp:883
 msgid "Logging out"
-msgstr ""
+msgstr "Probíhá odhlášení"
 
 #. decision based on state
 #: ../src/plugins/abrt-action-bugzilla.cpp:801
@@ -815,9 +738,12 @@ msgid ""
 "\n"
 "Reports problem to Bugzilla"
 msgstr ""
+" [-v] -c KONFIGURAČNÍ_SOUBOR -d ADRESÁŘ\n"
+"\n"
+"Nahlásí problém do Bugzilly."
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:932
-#: ../src/plugins/abrt-action-rhtsupport.c:277
+#: ../src/plugins/abrt-action-rhtsupport.c:292
 msgid "Configuration file (may be given many times)"
 msgstr "Konfigurační soubor (lze zadat vícekrát)"
 
@@ -827,6 +753,9 @@ msgid ""
 "\n"
 "Generates and saves backtrace for coredump in dump directory DIR"
 msgstr ""
+" [PŘEPÍNAČE] -d ADRESÁŘ\n"
+"\n"
+"Vytvoří a uloží výpis volání z obrazu paměti do ADRESÁŘE s výpisy."
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:257
 msgid "Additional debuginfo directories"
@@ -838,7 +767,7 @@ msgstr "Zabije gdb, pokud běží déle než N sekund"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -881,7 +810,7 @@ msgstr "Stahuje se (%i z %i) %s: %3u%%"
 #. we have "paused":
 #: ../src/plugins/abrt-action-install-debuginfo.py:206
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "Potřebné balíky se hledají v repozitářích"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:240
 #, python-format
@@ -891,7 +820,7 @@ msgstr "Pro %u ladicích souborů nelze dohledat balíčky"
 #: ../src/plugins/abrt-action-install-debuginfo.py:242
 #, python-format
 msgid "Packages to download: %u"
-msgstr ""
+msgstr "Balíčků ke stažení: %u"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:243
 #, python-format
@@ -922,41 +851,38 @@ msgstr "Všechny stažené balíčky byly rozbaleny, odstraňuje se %s"
 msgid "Can't remove %s, probably contains an error log"
 msgstr "%s nelze odstranit, zřejmě obsahuje chybový protokol"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:316
-#, python-format
-msgid "Analyzing coredump '%s'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:394
+#: ../src/plugins/abrt-action-install-debuginfo.py:336
 #, python-format
 msgid "Can't remove '%s': %s"
 msgstr "„%s“ nelze odstranit: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:402
+#: ../src/plugins/abrt-action-install-debuginfo.py:344
 msgid "Exiting on user command"
 msgstr "Činnost ukončena na příkaz uživatele"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:428
+#: ../src/plugins/abrt-action-install-debuginfo.py:371
 #, python-format
 msgid "Usage: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 msgstr ""
+"Použití %s --core=SOUBOR_S_OBRAZEM_PAMĚTI --tmpdir=POMOCNÝ_ADRESÁŘ "
+"--cache=ADRESÁŘ_S_POMOCNOU_PAMĚTÍ"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:457
+#: ../src/plugins/abrt-action-install-debuginfo.py:400
 msgid "You have to specify the path to coredump."
 msgstr "Musíte zadat cestu k souboru s obrazem paměti."
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:474
+#: ../src/plugins/abrt-action-install-debuginfo.py:420
 #, python-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
 msgstr ""
 "Obraz paměti odkazuje na %u ladicích souborů, %u z nich není nainstalováno"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:479
+#: ../src/plugins/abrt-action-install-debuginfo.py:425
 #, python-format
 msgid "Missing debuginfo file: %s"
 msgstr "Chybí ladicí soubor: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:482
+#: ../src/plugins/abrt-action-install-debuginfo.py:428
 #, python-format
 msgid "All %u debuginfo files are available"
 msgstr "Všech %u souborů s ladicími informacemi je k dostupných"
@@ -966,29 +892,35 @@ msgstr "Všech %u souborů s ladicími informacemi je k dostupných"
 msgid "Submitting oops report to %s"
 msgstr "Hlášení s oops se odesílá na %s"
 
-#: ../src/plugins/abrt-action-kerneloops.c:133
+#: ../src/plugins/abrt-action-kerneloops.c:142
 msgid ""
 " [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
 "Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
+" [-v] [-c KONFIGURAČNÍ_SOUBOR]… -d ADRESÁŘ\n"
+"\n"
+"Ohlásí oops jádra na stránku kerneloops.org (nebo obdobnou)."
 
-#: ../src/plugins/abrt-action-kerneloops.c:146
+#: ../src/plugins/abrt-action-kerneloops.c:155
 msgid "Configuration file"
-msgstr ""
+msgstr "Konfigurační soubor"
 
 #: ../src/plugins/abrt-action-mailx.c:109
 msgid "Sending an email..."
 msgstr "Odesílá se e-mail…"
 
-#: ../src/plugins/abrt-action-mailx.c:135
+#: ../src/plugins/abrt-action-mailx.c:143
 msgid ""
 " [-v] -d DIR [-c CONFFILE]\n"
 "\n"
 "Sends compressed tarball of dump directory DIR via email"
 msgstr ""
+" [-v] -d ADRESÁŘ [-c KONFIGURAČNÍ_SOUBOR]\n"
+"\n"
+"ADRESÁŘ s výpisem odešle e-mailem jakožto zkomprimovaný archiv taru."
 
-#: ../src/plugins/abrt-action-mailx.c:148
+#: ../src/plugins/abrt-action-mailx.c:156
 #: ../src/plugins/abrt-action-upload.c:259
 msgid "Config file"
 msgstr "Konfigurační soubor"
@@ -999,28 +931,37 @@ msgid ""
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
+" [-v] -d ADRESÁŘ [-o SOUBOR] [-a yes/no]\n"
+"\n"
+"Údaje o problému zapíše na standardní výstup nebo do SOUBORU."
 
-#: ../src/plugins/abrt-action-print.c:53
+#: ../src/plugins/abrt-action-print.c:54
 msgid "Output file"
 msgstr "Výstupní soubor"
 
-#: ../src/plugins/abrt-action-print.c:54
+#: ../src/plugins/abrt-action-print.c:55
 msgid "Append to, or overwrite FILE"
+msgstr "Připíše na konec SOUBORU, nebo SOUBOR přepíše"
+
+#: ../src/plugins/abrt-action-print.c:56
+msgid "Create reported_to in DIR"
 msgstr ""
 
-#: ../src/plugins/abrt-action-print.c:87
+#: ../src/plugins/abrt-action-print.c:100
 #, c-format
 msgid "The report was appended to %s"
 msgstr "Hlášení bylo připojeno k %s"
 
-#: ../src/plugins/abrt-action-print.c:87
+#: ../src/plugins/abrt-action-print.c:100
 #, c-format
 msgid "The report was stored to %s"
 msgstr "Hlášení bylo uloženo do %s"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
 #: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
@@ -1028,18 +969,25 @@ msgstr "Komprimují se data"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:73
 msgid "Empty RHTS login or password"
+msgstr "Prázdné přihlašovací jméno nebo heslo pro RHTS"
+
+#: ../src/plugins/abrt-action-rhtsupport.c:101
+msgid "Can't create a temporary directory in /tmp"
 msgstr ""
 
-#: ../src/plugins/abrt-action-rhtsupport.c:189
+#: ../src/plugins/abrt-action-rhtsupport.c:194
 msgid "Creating a new case..."
 msgstr "Vytváří se nový případ…"
 
-#: ../src/plugins/abrt-action-rhtsupport.c:264
+#: ../src/plugins/abrt-action-rhtsupport.c:279
 msgid ""
 " [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports a problem to RHTSupport"
 msgstr ""
+" [-v] -c KONFIGURAČNÍ_SOUBOR -d ADRESÁŘ\n"
+"\n"
+"Ohlásí problém na podporu RHTSupport."
 
 #: ../src/plugins/abrt-action-trim-files.c:154
 msgid ""
@@ -1047,18 +995,22 @@ msgid ""
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
+" [-v] [-d VELIKOST:ADRESÁŘ]… [-f VELIKOST:ADRESÁŘ]… [-p ADRESÁŘ]\n"
+"\n"
+"V ADRESÁŘI maže adresáře s výpisy (-d) nebo soubory (-f), dokud nejsou\n"
+"menší než VELIKOST."
 
 #: ../src/plugins/abrt-action-trim-files.c:167
 msgid "Delete dump dirs"
-msgstr ""
+msgstr "Mazat adresáře s výpisy"
 
 #: ../src/plugins/abrt-action-trim-files.c:168
 msgid "Delete files"
-msgstr ""
+msgstr "Mazat soubory"
 
 #: ../src/plugins/abrt-action-trim-files.c:169
 msgid "Preserve this dump dir"
-msgstr ""
+msgstr "Zachovat tento adresář s výpisem"
 
 #: ../src/plugins/abrt-action-upload.c:63
 #, c-format
@@ -1082,47 +1034,47 @@ msgid ""
 "\n"
 "Uploads compressed tarball of dump directory DIR"
 msgstr ""
+" [-v] -d ADRESÁŘ [-c KONFIGURAČNÍ_SOUBOR] [-u URL]\n"
+"\n"
+"ADRESÁŘ s výpisem zabalí do komprimovaného archivu tar a nahraje jej."
 
 #: ../src/plugins/abrt-action-upload.c:260
 msgid "Base URL to upload to"
 msgstr "Základ URL, kam nahrávat"
 
-#: ../src/plugins/abrt-dump-oops.c:563
+#: ../src/plugins/abrt-dump-oops.c:569
 msgid ""
-" [-vsrdow] FILE\n"
+" [-vsrowx] [-d DIR] FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
-" [-vsrdow] SOUBOR\n"
-"\n"
-"Vybere stížnosti jádra (oops) ze souboru syslogu/dmesg."
 
-#: ../src/plugins/abrt-dump-oops.c:580
+#: ../src/plugins/abrt-dump-oops.c:586
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "Rozebere buffer jaderných zpráv před rozebrání SOUBORU"
 
-#: ../src/plugins/abrt-dump-oops.c:581
-msgid "Create ABRT dump for every oops found"
-msgstr "Z každého nalezené stížnosti vytvoří výpis ABRT"
-
-#: ../src/plugins/abrt-dump-oops.c:582
+#: ../src/plugins/abrt-dump-oops.c:587
 msgid "Print found oopses on standard output"
 msgstr "Nalezené stížnosti vypíše na standardní výstup"
 
-#: ../src/plugins/abrt-dump-oops.c:583
+#: ../src/plugins/abrt-dump-oops.c:588
 msgid "Do not exit, watch the file for new oopses"
 msgstr "Neskončí, bude sledovat soubor kvůli novým stížnostem"
 
-#. oopses doesn't contain any sensitive info, and even
+#. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
-#: ../src/plugins/abrt-dump-oops.c:587
-msgid "Make the dump directory world readable"
+#. 
+#: ../src/plugins/abrt-dump-oops.c:592
+msgid "Create ABRT dump in DIR for every oops found"
 msgstr ""
+
+#: ../src/plugins/abrt-dump-oops.c:593
+msgid "Make the dump directory world readable"
+msgstr "Učiní adresář s výpisem všem čitelný"
 
 #: ../src/plugins/abrt-retrace-client.c:707
 msgid "log to syslog"
-msgstr ""
+msgstr "protokolovat do syslogu"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
@@ -1130,6 +1082,13 @@ msgstr ""
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Local GNU Debugger"
+msgstr ""
+
+#: ../src/plugins/analyze_LocalGDB.xml.in.h:3
+msgid ""
+"Needs to downloads debuginfo packages, which might take significant time, "
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
@@ -1142,6 +1101,15 @@ msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Send core dump to remote retrace server for analysis"
+msgstr ""
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:4
+msgid ""
+"Uploads coredump to a server, which generates backtrace and returns it. "
+"Pros: no need for debuginfo downloads. Retrace server's database of "
+"debuginfos is more complete. Retrace server may generate better backtraces. "
+"Cons: coredump you upload contains all the data from the crashed program, "
+"including your private data, if any."
 msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
@@ -1172,20 +1140,20 @@ msgstr ""
 #: ../src/plugins/report_Bugzilla.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
 msgid "Password"
-msgstr "Heslo"
+msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
 msgid "Report to Bugzilla bug tracker"
-msgstr "Odeslat hlášení do Bugzilly"
+msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:9
 msgid "User name"
-msgstr "Uživatelské jméno"
+msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Verify SSL"
-msgstr "Kontrolovat SSL"
+msgstr ""
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops URL"
@@ -1228,18 +1196,16 @@ msgid "Send binary files like coredump"
 msgstr ""
 
 #: ../src/plugins/report_Mailx.xml.in.h:7
-#, fuzzy
 msgid "Send via email"
-msgstr "Odesílá se e-mail…"
+msgstr ""
 
 #: ../src/plugins/report_Mailx.xml.in.h:8
 msgid "Sender"
 msgstr ""
 
 #: ../src/plugins/report_Mailx.xml.in.h:9
-#, fuzzy
 msgid "Sender's email"
-msgstr "Odesílá se e-mail…"
+msgstr ""
 
 #: ../src/plugins/report_Mailx.xml.in.h:10
 msgid "Subject"

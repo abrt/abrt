@@ -2,21 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-04-05 14:23+0200\n"
-"PO-Revision-Date: 2011-03-27 13:18+0000\n"
-"Last-Translator: b00blik <madb00blik@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2011-04-15 17:04+0200\n"
+"PO-Revision-Date: 2011-04-15 15:09+0000\n"
+"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Russian <trans-ru@lists.fedoraproject.org>\n"
-"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -76,94 +75,7 @@ msgstr ""
 msgid "Open ABRT"
 msgstr "Открыть ABRT"
 
-#: ../src/cli/cli.c:90
-#, c-format
-msgid ""
-"\tCrash dump : %s\n"
-"\tUID        : %s\n"
-"\tPackage    : %s\n"
-"\tExecutable : %s\n"
-"\tCrash Time : %s\n"
-"\tCrash Count: %s\n"
-msgstr ""
-"\tДамп сбоя  : %s\n"
-"\tUID        : %s\n"
-"\tПакет      : %s\n"
-"\tПрограмма  : %s\n"
-"\tВремя сбоя : %s\n"
-"\tВсего сбоев: %s\n"
-
-#: ../src/cli/cli.c:109
-#, c-format
-msgid "\tHostname   : %s\n"
-msgstr "\tИмя узла   : %s\n"
-
-#: ../src/cli/cli.c:143
-#, c-format
-msgid ""
-"Dump directory:     %s\n"
-"Last crash:         %s\n"
-"Analyzer:           %s\n"
-"Component:          %s\n"
-"Package:            %s\n"
-"Command:            %s\n"
-"Executable:         %s\n"
-"System:             %s, kernel %s\n"
-"Reason:             %s\n"
-msgstr ""
-"Дамп в папке:       %s\n"
-"Последний сбой:     %s\n"
-"Анализатор:         %s\n"
-"Компонент:          %s\n"
-"Пакет:              %s\n"
-"Команда:            %s\n"
-"Программа:          %s\n"
-"Система:            %s, ядро %s\n"
-"Причина:            %s\n"
-
-#: ../src/cli/cli.c:171
-#, c-format
-msgid "Coredump file:      %s\n"
-msgstr "Файл coredump:      %s\n"
-
-#: ../src/cli/cli.c:175
-#, c-format
-msgid "Rating:             %s\n"
-msgstr "Рейтинг:            %s\n"
-
-#: ../src/cli/cli.c:180
-#, c-format
-msgid "Crash function:     %s\n"
-msgstr "Функция сбоя:       %s\n"
-
-#: ../src/cli/cli.c:184
-#, c-format
-msgid "Hostname:           %s\n"
-msgstr "Имя узла:           %s\n"
-
-#: ../src/cli/cli.c:188
-#, c-format
-msgid ""
-"\n"
-"Comment:\n"
-"%s\n"
-msgstr ""
-"\n"
-"Комментарий:\n"
-"%s\n"
-
-#: ../src/cli/cli.c:194
-#, c-format
-msgid ""
-"\n"
-"Backtrace:\n"
-"%s\n"
-msgstr ""
-"\n"
-"Протокол сбоя:\n"
-"%s\n"
-
-#: ../src/cli/cli.c:251
+#: ../src/cli/cli.c:211
 #, c-format
 msgid ""
 "Usage: %s -l[f] [-D BASE_DIR]...]\n"
@@ -171,45 +83,37 @@ msgid ""
 "   or: %s -i[b] CRASH_DIR\n"
 "   or: %s -d CRASH_DIR\n"
 "\n"
-"\t-l, --list\t\tList not yet reported crashes\n"
-"\t  -f, --full\t\tList all crashes\n"
-"\t-D BASE_DIR\t\tDirectory to list crashes from\n"
+"\t-l, --list\t\tList not yet reported problems\n"
+"\t  -f, --full\t\tList all problems\n"
+"\t-D BASE_DIR\t\tDirectory to list problems from\n"
 "\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
 "\n"
 "\t-r, --report\t\tSend a report about CRASH_DIR\n"
 "\t  -y, --always\t\t...without editing and asking\n"
 "\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
-"\t  -b, --backtrace\t...including backtrace\n"
+"\t  -f, --full\t\t...including multi-line entries\n"
+"\t\t\t\tNote: -if will run analyzers\n"
+"\t\t\t\t(if this CRASH_DIR have defined analyzers)\n"
 "\t-d, --delete\t\tRemove CRASH_DIR\n"
 "\n"
 "\t-V, --version\t\tDisplay version and exit\n"
 "\t-v, --verbose\t\tBe verbose\n"
 msgstr ""
-"Использование: %s -l[f] [-D BASE_DIR]...]\n"
-"   или: %s -r[y] CRASH_DIR\n"
-"   или: %s -i[b] CRASH_DIR\n"
-"   или: %s -d CRASH_DIR\n"
-"\n"
-"\t-l, --list\t\tДать список аварий, о которых еще сообщалось\n"
-"\t  -f, --full\t\tПеречислить все аварии\n"
-"\t-D BASE_DIR\t\tКаталог, из которого нужно брать список аварий\n"
-"\t\t\t\t(по умолчанию: -D $HOME/.abrt/spool -D %s)\n"
-"\n"
 
-#: ../src/cli/cli.c:299
+#: ../src/cli/cli.c:260
 msgid "You must specify exactly one operation"
 msgstr "Нужно указать ровно одно действие"
 
-#: ../src/cli/report.cpp:154
+#: ../src/cli/report.c:131
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# Это поле доступно только для чтения.\n"
 
-#: ../src/cli/report.cpp:174
+#: ../src/cli/report.c:151
 msgid "# Describe the circumstances of this crash below"
 msgstr "# Опишите обстоятельства сбоя ниже."
 
-#: ../src/cli/report.cpp:176
+#: ../src/cli/report.c:153
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -217,47 +121,47 @@ msgstr ""
 "# Отслеженные данные\n"
 "# Проверьте и удалите личные данные (пароли и т.п.)"
 
-#: ../src/cli/report.cpp:178
+#: ../src/cli/report.c:155
 msgid "# Architecture"
 msgstr "# Архитектура"
 
-#: ../src/cli/report.cpp:179
+#: ../src/cli/report.c:156
 msgid "# Command line"
 msgstr "# Команда"
 
-#: ../src/cli/report.cpp:180
+#: ../src/cli/report.c:157
 msgid "# Component"
 msgstr "# Компонент"
 
-#: ../src/cli/report.cpp:181
+#: ../src/cli/report.c:158
 msgid "# Core dump"
 msgstr "# Дамп памяти"
 
-#: ../src/cli/report.cpp:182
+#: ../src/cli/report.c:159
 msgid "# Executable"
 msgstr "# Программа"
 
-#: ../src/cli/report.cpp:183
+#: ../src/cli/report.c:160
 msgid "# Kernel version"
 msgstr "# Версия ядра"
 
-#: ../src/cli/report.cpp:184
+#: ../src/cli/report.c:161
 msgid "# Package"
 msgstr "# Пакет"
 
-#: ../src/cli/report.cpp:185
+#: ../src/cli/report.c:162
 msgid "# Reason of crash"
 msgstr "# Причина сбоя"
 
-#: ../src/cli/report.cpp:186
+#: ../src/cli/report.c:163
 msgid "# Release string of the operating system"
 msgstr "# Выпуск операционной системы"
 
-#: ../src/cli/report.cpp:299
+#: ../src/cli/report.c:276
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr "Не удалось запустить vi: $TERM, $VISUAL и $EDITOR не заданы"
 
-#: ../src/cli/report.cpp:383
+#: ../src/cli/report.c:360
 msgid ""
 "\n"
 "The report has been updated"
@@ -265,7 +169,7 @@ msgstr ""
 "\n"
 "Отчёт обновлён."
 
-#: ../src/cli/report.cpp:385
+#: ../src/cli/report.c:362
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -274,60 +178,60 @@ msgstr ""
 "Изменений в отчёте не найдено."
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:417
+#: ../src/cli/report.c:394
 msgid "y"
 msgstr "д"
 
-#: ../src/cli/report.cpp:418
+#: ../src/cli/report.c:395
 msgid "N"
 msgstr "н"
 
-#: ../src/cli/report.cpp:514
+#: ../src/cli/report.c:492
 msgid "Your input is not valid, because of:"
 msgstr "Ваш ввод недействителен из-за:"
 
-#: ../src/cli/report.cpp:517
+#: ../src/cli/report.c:495
 #, c-format
 msgid "Bad value for '%s': %s"
 msgstr "Неверное значение для %s': %s"
 
-#: ../src/cli/report.cpp:615
-#, fuzzy, c-format
+#: ../src/cli/report.c:592
+#, c-format
 msgid "Select how you would like to analyze the problem:\n"
-msgstr "Выберите, как вы бы хотели анализировать проблему:"
+msgstr ""
 
-#: ../src/cli/report.cpp:631
+#: ../src/cli/report.c:608
 #, c-format
 msgid "Choose option [0 - %u]: "
 msgstr ""
 
-#: ../src/cli/report.cpp:645
+#: ../src/cli/report.c:622
 #, c-format
 msgid "You have chosen number out of range"
 msgstr ""
 
-#: ../src/cli/report.cpp:653
+#: ../src/cli/report.c:630
 msgid "Invalid input, program exiting..."
 msgstr ""
 
-#: ../src/cli/report.cpp:769 ../src/gui-wizard-gtk/wizard.c:1047
+#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1102
 msgid "Reporting..."
 msgstr "Отправка…"
 
-#: ../src/cli/report.cpp:783
+#: ../src/cli/report.c:762
 #, c-format
 msgid "Report using %s?"
 msgstr "Сообщить при помощи %s?"
 
-#: ../src/cli/report.cpp:786
+#: ../src/cli/report.c:769
 msgid "Skipping..."
 msgstr "Пропуск…"
 
-#: ../src/cli/report.cpp:803
+#: ../src/cli/report.c:779
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Отправка отчёта отключена, так как протокол сбоя непригоден."
 
-#: ../src/cli/report.cpp:807
+#: ../src/cli/report.c:783
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -336,7 +240,7 @@ msgstr ""
 "Попробуйте установить debuginfo вручную, выполнив «debuginfo-install %s», и "
 "повторите попытку\n"
 
-#: ../src/cli/report.cpp:823
+#: ../src/cli/report.c:805
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr "Зарегистрировано случаев сбоя: %d (ошибок: %d)\n"
@@ -359,10 +263,10 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-python.c:49
 #: ../src/plugins/abrt-action-bugzilla.cpp:931
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
-#: ../src/plugins/abrt-action-kerneloops.c:145
-#: ../src/plugins/abrt-action-mailx.c:147
-#: ../src/plugins/abrt-action-print.c:52
-#: ../src/plugins/abrt-action-rhtsupport.c:276
+#: ../src/plugins/abrt-action-kerneloops.c:154
+#: ../src/plugins/abrt-action-mailx.c:155
+#: ../src/plugins/abrt-action-print.c:53
+#: ../src/plugins/abrt-action-rhtsupport.c:291
 #: ../src/plugins/abrt-action-upload.c:258
 msgid "Dump directory"
 msgstr "Dump директория"
@@ -376,7 +280,7 @@ msgstr ""
 "   или: "
 
 #: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:297
-#: ../src/plugins/abrt-dump-oops.c:579
+#: ../src/plugins/abrt-dump-oops.c:585
 msgid "Log to syslog"
 msgstr "Запись в журнал"
 
@@ -389,12 +293,12 @@ msgid "List possible events [which start with PFX]"
 msgstr "Перечислить возможные события [начинающиеся с PFX]"
 
 #: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
-#: ../src/daemon/Daemon.cpp:550 ../src/gui-gtk/main.c:175
+#: ../src/daemon/Daemon.cpp:547 ../src/gui-gtk/main.c:216
 #: ../src/gui-wizard-gtk/main.c:94
 msgid "Add program names to log"
 msgstr "Добавить имена программ в лог"
 
-#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:535
+#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:532
 msgid " [options]"
 msgstr " [параметры]"
 
@@ -406,7 +310,7 @@ msgstr "Использовать UID как uid клиента"
 msgid "Comment is too long"
 msgstr "Слишком длинный комментарий"
 
-#: ../src/daemon/Daemon.cpp:371
+#: ../src/daemon/Daemon.cpp:368
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -414,15 +318,15 @@ msgstr ""
 "Размер отчета превысил допустимый. Проверьте значение MaxCrashReportsSize в "
 "файле abrt.conf"
 
-#: ../src/daemon/Daemon.cpp:547
+#: ../src/daemon/Daemon.cpp:544
 msgid "Do not daemonize"
 msgstr "Не выполнять службой"
 
-#: ../src/daemon/Daemon.cpp:548
+#: ../src/daemon/Daemon.cpp:545
 msgid "Log to syslog even with -d"
 msgstr "Запись в журнал даже с -d"
 
-#: ../src/daemon/Daemon.cpp:549
+#: ../src/daemon/Daemon.cpp:546
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Выйти после SEC секунд простоя"
 
@@ -430,15 +334,15 @@ msgstr "Выйти после SEC секунд простоя"
 msgid "Show password"
 msgstr "Показать пароль"
 
-#: ../src/gtk-helpers/event_config_dialog.c:311
+#: ../src/gtk-helpers/event_config_dialog.c:343
 msgid "Event Configuration"
 msgstr "Конфигурация События"
 
-#: ../src/gtk-helpers/event_config_dialog.c:336
+#: ../src/gtk-helpers/event_config_dialog.c:368
 msgid "Event"
 msgstr "Событие"
 
-#: ../src/gtk-helpers/event_config_dialog.c:369
+#: ../src/gtk-helpers/event_config_dialog.c:401
 msgid "Configure E_vent"
 msgstr "Конфигурирование С_обытия"
 
@@ -478,7 +382,7 @@ msgstr "_Конфигурация события"
 msgid "Online _Help"
 msgstr "Онлайн _Справка"
 
-#: ../src/gui-gtk/main.c:163
+#: ../src/gui-gtk/main.c:204
 msgid ""
 " [-vp] [DIR]...\n"
 "\n"
@@ -504,76 +408,76 @@ msgstr ""
 msgid "Alternate GUI file"
 msgstr "Алтернативный GUI файл"
 
-#: ../src/gui-wizard-gtk/wizard.c:187
+#: ../src/gui-wizard-gtk/wizard.c:201
 #, c-format
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
 msgstr "Необходим каталог для записи, но '%s' не для записи. П '%s'"
 
-#: ../src/gui-wizard-gtk/wizard.c:499
+#: ../src/gui-wizard-gtk/wizard.c:558
 msgid "(click here to view/edit)"
 msgstr "(кликните здесь для просмотра/редактирования)"
 
-#: ../src/gui-wizard-gtk/wizard.c:511
+#: ../src/gui-wizard-gtk/wizard.c:570
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(бинарный файл, %llu байт)"
 
-#: ../src/gui-wizard-gtk/wizard.c:526
+#: ../src/gui-wizard-gtk/wizard.c:585
 msgid "(no description)"
 msgstr "(нет описания)"
 
-#: ../src/gui-wizard-gtk/wizard.c:531
+#: ../src/gui-wizard-gtk/wizard.c:591
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu байт, %u файлов"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:851
+#: ../src/gui-wizard-gtk/wizard.c:914
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Не определена обработка для события '%s'"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:946
+#: ../src/gui-wizard-gtk/wizard.c:1004
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "Неполный протокол сбоя. Укажите действия, которые привели к ошибке."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:952
+#: ../src/gui-wizard-gtk/wizard.c:1010
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Отправка отчёта отключена, так как протокол сбоя непригоден."
 
-#: ../src/gui-wizard-gtk/wizard.c:961
+#: ../src/gui-wizard-gtk/wizard.c:1019
 msgid "You should check the backtrace for sensitive data."
 msgstr "Убедитесь, что протокол сбоя не содержит личных данных."
 
-#: ../src/gui-wizard-gtk/wizard.c:962
+#: ../src/gui-wizard-gtk/wizard.c:1020
 msgid "You must agree with sending the backtrace."
 msgstr "Нужно дать согласие на отправку отслеженных данных."
 
-#: ../src/gui-wizard-gtk/wizard.c:1018
+#: ../src/gui-wizard-gtk/wizard.c:1076
 msgid "Analyzing..."
 msgstr "Анализирование..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1019
+#: ../src/gui-wizard-gtk/wizard.c:1077
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "Анализирование закончено с кодом выхода %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1048
+#: ../src/gui-wizard-gtk/wizard.c:1103
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "Отчёт закончен с кодом выхода %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1166
+#: ../src/gui-wizard-gtk/wizard.c:1220
 msgid "Name"
 msgstr "Имя"
 
-#: ../src/gui-wizard-gtk/wizard.c:1175
+#: ../src/gui-wizard-gtk/wizard.c:1229
 msgid "Value"
 msgstr "Значение"
 
@@ -582,8 +486,8 @@ msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr ""
-"<b>Ваши комментарии не закрыты.</b> Они могут быть включены публичные отчеты "
-"о проблемах."
+"<b>Ваши комментарии не закрыты.</b> Они могут быть включены публичные отчеты"
+" о проблемах."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Analyzing did not start yet"
@@ -676,26 +580,26 @@ msgstr ""
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Отправлено: %llu из %llu КБ"
 
-#: ../src/lib/event_config.c:291
+#: ../src/lib/event_config.c:294
 msgid "Missing mandatory value"
 msgstr "Отсутствует обязательное значение"
 
-#: ../src/lib/event_config.c:299
+#: ../src/lib/event_config.c:302
 #, c-format
 msgid "Invalid utf8 character '%c'"
 msgstr "Неверный utf8 символ '%c'"
 
-#: ../src/lib/event_config.c:312
+#: ../src/lib/event_config.c:315
 #, c-format
 msgid "Invalid number '%s'"
 msgstr "Неверный номер '%s'"
 
-#: ../src/lib/event_config.c:324
+#: ../src/lib/event_config.c:327
 #, c-format
 msgid "Invalid boolean value '%s'"
 msgstr "Неверное булево значение '%s'"
 
-#: ../src/lib/event_config.c:328
+#: ../src/lib/event_config.c:333
 msgid "Unsupported option type"
 msgstr "Неподдерживаемый тип опции"
 
@@ -708,18 +612,16 @@ msgstr "Формат: %s\n"
 msgid ""
 " [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
-"identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
 msgstr ""
 " [options] -d DIR\n"
 "\n"
-"Анализирует C/C++ отчет об ошибке, генерирует хэш дубликации,  рейтинг "
-"отчета об ошибке, и идентифицирует функцию ошибки в dump-каталоге DIR"
+"Анализирует C/C++ отчет об ошибке, генерирует хэш дубликации,  рейтинг отчета об ошибке, и идентифицирует функцию ошибки в dump-каталоге DIR"
 
-#.
-#. * The parser failed. Compute the UUID from the executable
-#. * and package only.  This is not supposed to happen often.
-#.
+#. * The parser failed. Compute the duphash from the executable
+#. * instead of a backtrace.
+#. * and component only.  This is not supposed to happen often.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:113
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -761,9 +663,8 @@ msgid "New bug id: %i"
 msgstr "Новый код запроса: %i"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:647
-#, fuzzy
 msgid "Empty login or password, please check your configuration"
-msgstr "Пустое имя входа или пароль, проверьте %s"
+msgstr ""
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:661
 #, c-format
@@ -840,7 +741,7 @@ msgstr ""
 "Отправляет отчет о проблеме в Bugzilla"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:932
-#: ../src/plugins/abrt-action-rhtsupport.c:277
+#: ../src/plugins/abrt-action-rhtsupport.c:292
 msgid "Configuration file (may be given many times)"
 msgstr "Файл конфигурации (можно указывать многократно)"
 
@@ -864,7 +765,7 @@ msgstr "Принудительно завершить gdb, если он раб�
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -948,41 +849,36 @@ msgstr "Все загруженные пакеты распакованы, уд�
 msgid "Can't remove %s, probably contains an error log"
 msgstr "Не удается удалить %s, возможно, в нем содержится журнал ошибок"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:316
-#, python-format
-msgid "Analyzing coredump '%s'"
-msgstr "Анализирование дампа ядра '%s'"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:394
+#: ../src/plugins/abrt-action-install-debuginfo.py:336
 #, python-format
 msgid "Can't remove '%s': %s"
 msgstr "Не удается удалить «%s»: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:402
+#: ../src/plugins/abrt-action-install-debuginfo.py:344
 msgid "Exiting on user command"
 msgstr "Выход по команде пользователя"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:428
+#: ../src/plugins/abrt-action-install-debuginfo.py:371
 #, python-format
 msgid "Usage: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 msgstr "Использование: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:457
+#: ../src/plugins/abrt-action-install-debuginfo.py:400
 msgid "You have to specify the path to coredump."
 msgstr "Вы должны задать путь к дампу ядра."
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:474
+#: ../src/plugins/abrt-action-install-debuginfo.py:420
 #, python-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
 msgstr ""
 "В дампе памяти есть ссылки на %u файлов debuginfo, %u из них не установлены"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:479
+#: ../src/plugins/abrt-action-install-debuginfo.py:425
 #, python-format
 msgid "Missing debuginfo file: %s"
 msgstr "Отсутствует файл debuginfo: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:482
+#: ../src/plugins/abrt-action-install-debuginfo.py:428
 #, python-format
 msgid "All %u debuginfo files are available"
 msgstr "Имеются все %u файлов debuginfo"
@@ -992,7 +888,7 @@ msgstr "Имеются все %u файлов debuginfo"
 msgid "Submitting oops report to %s"
 msgstr "Сбой Linux отправляется в %s"
 
-#: ../src/plugins/abrt-action-kerneloops.c:133
+#: ../src/plugins/abrt-action-kerneloops.c:142
 msgid ""
 " [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
@@ -1002,7 +898,7 @@ msgstr ""
 "\n"
 "Отправляет ошибки ядра на kerneloops.org (или аналогичный) сайт"
 
-#: ../src/plugins/abrt-action-kerneloops.c:146
+#: ../src/plugins/abrt-action-kerneloops.c:155
 msgid "Configuration file"
 msgstr "Конфигурационный файл"
 
@@ -1010,7 +906,7 @@ msgstr "Конфигурационный файл"
 msgid "Sending an email..."
 msgstr "Отправляется почтовое сообщение…"
 
-#: ../src/plugins/abrt-action-mailx.c:135
+#: ../src/plugins/abrt-action-mailx.c:143
 msgid ""
 " [-v] -d DIR [-c CONFFILE]\n"
 "\n"
@@ -1020,7 +916,7 @@ msgstr ""
 "\n"
 "Отправляет сжатый архив dump-каталога DIR через электронную почту"
 
-#: ../src/plugins/abrt-action-mailx.c:148
+#: ../src/plugins/abrt-action-mailx.c:156
 #: ../src/plugins/abrt-action-upload.c:259
 msgid "Config file"
 msgstr "Файл настроек"
@@ -1035,27 +931,33 @@ msgstr ""
 "\n"
 "Печатает информацию о проблеме в стандартный вывод или FILE"
 
-#: ../src/plugins/abrt-action-print.c:53
+#: ../src/plugins/abrt-action-print.c:54
 msgid "Output file"
 msgstr "Выходной файл"
 
-#: ../src/plugins/abrt-action-print.c:54
+#: ../src/plugins/abrt-action-print.c:55
 msgid "Append to, or overwrite FILE"
 msgstr "Добавить, или переписать файл"
 
-#: ../src/plugins/abrt-action-print.c:87
+#: ../src/plugins/abrt-action-print.c:56
+msgid "Create reported_to in DIR"
+msgstr ""
+
+#: ../src/plugins/abrt-action-print.c:100
 #, c-format
 msgid "The report was appended to %s"
 msgstr "Отчёт был добавлен к %s"
 
-#: ../src/plugins/abrt-action-print.c:87
+#: ../src/plugins/abrt-action-print.c:100
 #, c-format
 msgid "The report was stored to %s"
 msgstr "Отчёт сохранён в %s"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
 #: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
@@ -1065,11 +967,15 @@ msgstr "Выполняется сжатие данных"
 msgid "Empty RHTS login or password"
 msgstr "Пустой RHTS логин или пароль"
 
-#: ../src/plugins/abrt-action-rhtsupport.c:189
+#: ../src/plugins/abrt-action-rhtsupport.c:101
+msgid "Can't create a temporary directory in /tmp"
+msgstr ""
+
+#: ../src/plugins/abrt-action-rhtsupport.c:194
 msgid "Creating a new case..."
 msgstr "Создаётся новая запись…"
 
-#: ../src/plugins/abrt-action-rhtsupport.c:264
+#: ../src/plugins/abrt-action-rhtsupport.c:279
 msgid ""
 " [-v] -c CONFFILE -d DIR\n"
 "\n"
@@ -1087,8 +993,7 @@ msgid ""
 msgstr ""
 " [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
 "\n"
-"Удаляет dump каталоги (-d) или файлы (-f) в DIRs до тех пор, пока они не "
-"станут меньше SIZE"
+"Удаляет dump каталоги (-d) или файлы (-f) в DIRs до тех пор, пока они не станут меньше SIZE"
 
 #: ../src/plugins/abrt-action-trim-files.c:167
 msgid "Delete dump dirs"
@@ -1132,36 +1037,33 @@ msgstr ""
 msgid "Base URL to upload to"
 msgstr "Основной адрес отправки"
 
-#: ../src/plugins/abrt-dump-oops.c:563
+#: ../src/plugins/abrt-dump-oops.c:569
 msgid ""
-" [-vsrdow] FILE\n"
+" [-vsrowx] [-d DIR] FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
-" [-vsrdow] FILE\n"
-"\n"
-"Извлечь ошибки из файла syslog/dmesg"
 
-#: ../src/plugins/abrt-dump-oops.c:580
+#: ../src/plugins/abrt-dump-oops.c:586
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "Провести анализ буфера сообщений ядра перед разбором  FILE"
 
-#: ../src/plugins/abrt-dump-oops.c:581
-msgid "Create ABRT dump for every oops found"
-msgstr "Создавать дамп ABRT для каждой найденной ошибки"
-
-#: ../src/plugins/abrt-dump-oops.c:582
+#: ../src/plugins/abrt-dump-oops.c:587
 msgid "Print found oopses on standard output"
 msgstr "Распечатывать найденные ошибки на стандартном выводе"
 
-#: ../src/plugins/abrt-dump-oops.c:583
+#: ../src/plugins/abrt-dump-oops.c:588
 msgid "Do not exit, watch the file for new oopses"
 msgstr "Не выходить, следить за файлом на предмет новых ошибок"
 
-#. oopses doesn't contain any sensitive info, and even
+#. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
-#: ../src/plugins/abrt-dump-oops.c:587
+#. 
+#: ../src/plugins/abrt-dump-oops.c:592
+msgid "Create ABRT dump in DIR for every oops found"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-oops.c:593
 msgid "Make the dump directory world readable"
 msgstr "Сделать общий dump каталога читаемым"
 
@@ -1177,6 +1079,13 @@ msgstr ""
 msgid "Local GNU Debugger"
 msgstr ""
 
+#: ../src/plugins/analyze_LocalGDB.xml.in.h:3
+msgid ""
+"Needs to downloads debuginfo packages, which might take significant time, "
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
+msgstr ""
+
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Address of the retrace server"
 msgstr ""
@@ -1187,6 +1096,15 @@ msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Send core dump to remote retrace server for analysis"
+msgstr ""
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:4
+msgid ""
+"Uploads coredump to a server, which generates backtrace and returns it. "
+"Pros: no need for debuginfo downloads. Retrace server's database of "
+"debuginfos is more complete. Retrace server may generate better backtraces. "
+"Cons: coredump you upload contains all the data from the crashed program, "
+"including your private data, if any."
 msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
@@ -1216,9 +1134,8 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
-#, fuzzy
 msgid "Password"
-msgstr "Показать пароль"
+msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
 msgid "Report to Bugzilla bug tracker"
@@ -1274,18 +1191,16 @@ msgid "Send binary files like coredump"
 msgstr ""
 
 #: ../src/plugins/report_Mailx.xml.in.h:7
-#, fuzzy
 msgid "Send via email"
-msgstr "Отправляется почтовое сообщение…"
+msgstr ""
 
 #: ../src/plugins/report_Mailx.xml.in.h:8
 msgid "Sender"
 msgstr ""
 
 #: ../src/plugins/report_Mailx.xml.in.h:9
-#, fuzzy
 msgid "Sender's email"
-msgstr "Отправляется почтовое сообщение…"
+msgstr ""
 
 #: ../src/plugins/report_Mailx.xml.in.h:10
 msgid "Subject"
