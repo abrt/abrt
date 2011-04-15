@@ -443,17 +443,17 @@ static void ask_for_missing_settings(const char *event_name)
             event_option_t *opt = get_event_option_from_list(opt_name,
                                                              event_config->options);
 
-            free(opt->value);
-            opt->value = NULL;
+            free(opt->eo_value);
+            opt->eo_value = NULL;
 
             char result[512];
 
-            char *question = xasprintf("%s: ", (opt->label) ? opt->label: opt->name);
-            switch (opt->type) {
+            char *question = xasprintf("%s: ", (opt->eo_label) ? opt->eo_label : opt->eo_name);
+            switch (opt->eo_type) {
             case OPTION_TYPE_TEXT:
             case OPTION_TYPE_NUMBER:
                 read_from_stdin(question, result, 512);
-                opt->value = xstrdup(result);
+                opt->eo_value = xstrdup(result);
                 break;
             case OPTION_TYPE_PASSWORD:
             {
@@ -462,7 +462,7 @@ static void ask_for_missing_settings(const char *event_name)
                 if (changed)
                     set_echo(true);
 
-                opt->value = xstrdup(result);
+                opt->eo_value = xstrdup(result);
                 /* Newline was not added by pressing Enter because ECHO was
                    disabled, so add it now. */
                 puts("");
@@ -470,11 +470,12 @@ static void ask_for_missing_settings(const char *event_name)
             }
             case OPTION_TYPE_BOOL:
                 if (ask_yesno(question))
-                    opt->value = xstrdup("yes");
+                    opt->eo_value = xstrdup("yes");
                 else
-                    opt->value = xstrdup("no");
+                    opt->eo_value = xstrdup("no");
 
                 break;
+            case OPTION_TYPE_HINT_HTML: /* TODO? */
             case OPTION_TYPE_INVALID:
                 break;
             };

@@ -35,11 +35,12 @@ void free_event_option(event_option_t *p)
 {
     if (!p)
         return;
-    free(p->name);
-    free(p->value);
-    free(p->label);
-    //free(p->description);
-    //free(p->allowed_value);
+    free(p->eo_name);
+    free(p->eo_value);
+    free(p->eo_label);
+    free(p->eo_note_html);
+    //free(p->eo_description);
+    //free(p->eo_allowed_value);
     free(p);
 }
 
@@ -63,7 +64,8 @@ void free_event_config(event_config_t *p)
 
 static int cmp_event_option_name_with_string(gconstpointer a, gconstpointer b)
 {
-    return strcmp(((event_option_t *)a)->name, (char *)b);
+    const event_option_t *evopt = a;
+    return !evopt->eo_name || strcmp(evopt->eo_name, (char *)b) != 0;
 }
 
 event_option_t *get_event_option_from_list(const char *name, GList *options)
@@ -113,20 +115,20 @@ static void load_config_files(const char *dir_path)
         {
             event_option_t *opt;
             GList *elem = g_list_find_custom(event_config->options, name,
-                                             &cmp_event_option_name_with_string);
+                                            cmp_event_option_name_with_string);
             if (elem)
             {
                 opt = elem->data;
                 // log("conf: replacing '%s' value:'%s'->'%s'", name, opt->value, value);
-                free(opt->value);
+                free(opt->eo_value);
             }
             else
             {
                 // log("conf: new value %s='%s'", name, value);
                 opt = new_event_option();
-                opt->name = xstrdup(name);
+                opt->eo_name = xstrdup(name);
             }
-            opt->value = xstrdup(value);
+            opt->eo_value = xstrdup(value);
             if (!elem)
                 event_config->options = g_list_append(event_config->options, opt);
         }
@@ -261,9 +263,9 @@ GList *export_event_config(const char *event_name)
         for (lopt = config->options; lopt; lopt = lopt->next)
         {
             event_option_t *opt = lopt->data;
-            if (!opt->value)
+            if (!opt->eo_value)
                 continue;
-            char *var_val = xasprintf("%s=%s", opt->name, opt->value);
+            char *var_val = xasprintf("%s=%s", opt->eo_name, opt->eo_value);
             VERB3 log("Exporting '%s'", var_val);
             env_list = g_list_prepend(env_list, var_val);
             putenv(var_val);
@@ -288,18 +290,18 @@ void unexport_event_config(GList *env_list)
 /* return NULL if successful otherwise appropriate error message */
 static char *validate_event_option(event_option_t *opt)
 {
-    if (!opt->allow_empty && (!opt->value || !opt->value[0]))
+    if (!opt->eo_allow_empty && (!opt->eo_value || !opt->eo_value[0]))
         return xstrdup(_("Missing mandatory value"));
 
     /* if value is NULL and allow-empty yes than it doesn't make sence to check it */
-    if (!opt->value)
+    if (!opt->eo_value)
         return NULL;
 
     const gchar *s = NULL;
-    if (!g_utf8_validate(opt->value, -1, &s))
+    if (!g_utf8_validate(opt->eo_value, -1, &s))
             return xasprintf(_("Invalid utf8 character '%c'"), *s);
 
-    switch (opt->type) {
+    switch (opt->eo_type) {
     case OPTION_TYPE_TEXT:
     case OPTION_TYPE_PASSWORD:
         break;
@@ -307,24 +309,26 @@ static char *validate_event_option(event_option_t *opt)
     {
         char *endptr;
         errno = 0;
-        long r = strtol(opt->value, &endptr, 10);
+        long r = strtol(opt->eo_value, &endptr, 10);
         (void) r;
-        if (errno != 0 || endptr == opt->value || *endptr != '\0')
-            return xasprintf(_("Invalid number '%s'"), opt->value);
+        if (errno != 0 || endptr == opt->eo_value || *endptr != '\0')
+            return xasprintf(_("Invalid number '%s'"), opt->eo_value);
 
         break;
     }
     case OPTION_TYPE_BOOL:
-        if (strcmp(opt->value, "yes") != 0
-            && strcmp(opt->value, "no") != 0
-            && strcmp(opt->value, "on") != 0
-            && strcmp(opt->value, "off") != 0
-            && strcmp(opt->value, "1") != 0
-            && strcmp(opt->value, "0") != 0)
+        if (strcmp(opt->eo_value, "yes") != 0
+            && strcmp(opt->eo_value, "no") != 0
+            && strcmp(opt->eo_value, "on") != 0
+            && strcmp(opt->eo_value, "off") != 0
+            && strcmp(opt->eo_value, "1") != 0
+            && strcmp(opt->eo_value, "0") != 0)
         {
-            return xasprintf(_("Invalid boolean value '%s'"), opt->value);
+            return xasprintf(_("Invalid boolean value '%s'"), opt->eo_value);
         }
         break;
+    case OPTION_TYPE_HINT_HTML:
+        return NULL;
     default:
         return xstrdup(_("Unsupported option type"));
     };
@@ -338,7 +342,6 @@ GHashTable *validate_event(const char *event_name)
     if (!config)
         return NULL;
 
-
     GHashTable *errors = g_hash_table_new_full(g_str_hash, g_str_equal, free, free);
     GList *li;
 
@@ -347,7 +350,7 @@ GHashTable *validate_event(const char *event_name)
         event_option_t *opt = (event_option_t *)li->data;
         char *err = validate_event_option(opt);
         if (err)
-            g_hash_table_insert(errors, xstrdup(opt->name), err);
+            g_hash_table_insert(errors, xstrdup(opt->eo_name), err);
     }
 
     if (g_hash_table_size(errors))

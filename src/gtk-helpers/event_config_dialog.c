@@ -82,11 +82,11 @@ static void add_option_to_table(gpointer data, gpointer user_data)
     unsigned last_row;
 
     char *option_label;
-    if (option->label != NULL)
-        option_label = xstrdup(option->label);
+    if (option->eo_label != NULL)
+        option_label = xstrdup(option->eo_label);
     else
     {
-        option_label = xstrdup(option->name);
+        option_label = xstrdup(option->eo_name ? option->eo_name : "");
         /* Replace '_' with ' ' */
         char *p = option_label - 1;
         while (*++p)
@@ -94,7 +94,7 @@ static void add_option_to_table(gpointer data, gpointer user_data)
                 *p = ' ';
     }
 
-    switch (option->type)
+    switch (option->eo_type)
     {
         case OPTION_TYPE_TEXT:
         case OPTION_TYPE_NUMBER:
@@ -107,15 +107,15 @@ static void add_option_to_table(gpointer data, gpointer user_data)
                              /*x,yoptions:*/ GTK_FILL, GTK_FILL,
                              /*x,ypadding:*/ 0, 0);
             option_input = gtk_entry_new();
-            if (option->value != NULL)
-                gtk_entry_set_text(GTK_ENTRY(option_input), option->value);
+            if (option->eo_value != NULL)
+                gtk_entry_set_text(GTK_ENTRY(option_input), option->eo_value);
             gtk_table_attach(option_table, option_input,
                              /*left,right_attach:*/ 1, 2,
                              /*top,bottom_attach:*/ last_row, last_row+1,
                              /*x,yoptions:*/ GTK_FILL | GTK_EXPAND, GTK_FILL,
                              /*x,ypadding:*/ 0, 0);
             add_option_widget(option_input, option);
-            if (option->type == OPTION_TYPE_PASSWORD)
+            if (option->eo_type == OPTION_TYPE_PASSWORD)
             {
                 gtk_entry_set_visibility(GTK_ENTRY(option_input), 0);
                 last_row = grow_table_by_1(option_table);
@@ -129,6 +129,20 @@ static void add_option_to_table(gpointer data, gpointer user_data)
             }
             break;
 
+        case OPTION_TYPE_HINT_HTML:
+            label = gtk_label_new(option_label);
+            gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
+            gtk_misc_set_alignment(GTK_MISC(label), /*x,yalign:*/ 0.0, 0.0);
+            make_label_autowrap_on_resize(GTK_LABEL(label));
+
+            last_row = grow_table_by_1(option_table);
+            gtk_table_attach(option_table, label,
+                             /*left,right_attach:*/ 0, 2,
+                             /*top,bottom_attach:*/ last_row, last_row+1,
+                             /*x,yoptions:*/ GTK_FILL, GTK_FILL,
+                             /*x,ypadding:*/ 0, 0);
+            break;
+
         case OPTION_TYPE_BOOL:
             last_row = grow_table_by_1(option_table);
             option_input = gtk_check_button_new_with_label(option_label);
@@ -137,15 +151,32 @@ static void add_option_to_table(gpointer data, gpointer user_data)
                              /*top,bottom_attach:*/ last_row, last_row+1,
                              /*x,yoptions:*/ GTK_FILL, GTK_FILL,
                              /*x,ypadding:*/ 0, 0);
-            if (option->value != NULL)
+            if (option->eo_value != NULL)
                 gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(option_input),
-                                    string_to_bool(option->value));
+                                    string_to_bool(option->eo_value));
             add_option_widget(option_input, option);
             break;
 
         default:
             //option_input = gtk_label_new_justify_left("WTF?");
             log("unsupported option type");
+            free(option_label);
+            return;
+    }
+
+    if (option->eo_note_html)
+    {
+        label = gtk_label_new(option->eo_note_html);
+        gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
+        gtk_misc_set_alignment(GTK_MISC(label), /*x,yalign:*/ 0.0, 0.0);
+        make_label_autowrap_on_resize(GTK_LABEL(label));
+
+        last_row = grow_table_by_1(option_table);
+        gtk_table_attach(option_table, label,
+                             /*left,right_attach:*/ 1, 2,
+                             /*top,bottom_attach:*/ last_row, last_row+1,
+                             /*x,yoptions:*/ GTK_FILL, GTK_FILL,
+                             /*x,ypadding:*/ 0, 0);
     }
 
     free(option_label);
@@ -225,7 +256,7 @@ static void save_value_from_widget(gpointer data, gpointer user_data)
     option_widget_t *ow = (option_widget_t *)data;
 
     const char *val = NULL;
-    switch (ow->option->type)
+    switch (ow->option->eo_type)
     {
         case OPTION_TYPE_TEXT:
         case OPTION_TYPE_NUMBER:
@@ -240,9 +271,9 @@ static void save_value_from_widget(gpointer data, gpointer user_data)
     }
     if (val)
     {
-        free(ow->option->value);
-        ow->option->value = xstrdup(val);
-        VERB1 log("saved: %s:%s", ow->option->name, ow->option->value);
+        free(ow->option->eo_value);
+        ow->option->eo_value = xstrdup(val);
+        VERB1 log("saved: %s:%s", ow->option->eo_name, ow->option->eo_value);
     }
 }
 
@@ -277,9 +308,10 @@ static void show_event_config_dialog(const char *event_name)
                 gtk_window_get_icon_name(g_event_list_window));
     }
 
-    int length = g_list_length(event->options);
-    GtkWidget *option_table = gtk_table_new(length, 2, 0);
+    GtkWidget *option_table = gtk_table_new(/*rows*/ 0, /*cols*/ 2, /*homogeneous*/ FALSE);
+    gtk_table_set_row_spacings(GTK_TABLE(option_table), 2);
     g_list_foreach(event->options, &add_option_to_table, option_table);
+
     GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
     gtk_box_pack_start(GTK_BOX(content), option_table, false, false, 20);
     gtk_widget_show_all(option_table);

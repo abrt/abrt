@@ -56,7 +56,7 @@ void abrt_keyring_save_settings(const char *event_name)
     for (l = g_list_first(ec->options); l != NULL; l = g_list_next(l))
     {
         event_option_t *op = (event_option_t *)l->data;
-        gnome_keyring_attribute_list_append_string(attrs, op->name, op->value);
+        gnome_keyring_attribute_list_append_string(attrs, op->eo_name, op->eo_value);
     }
 
     GnomeKeyringResult result;
@@ -110,9 +110,9 @@ static void abrt_keyring_load_settings(const char *event_name, event_config_t *e
             event_option_t *option = get_event_option_from_list(name, ec->options);
             if (option)
             {
-                free(option->value);
-                option->value = xstrdup(g_array_index(attrs, GnomeKeyringAttribute, index).value.string);
-                VERB2 log("added or replaced in event config:'%s=%s'", name, option->value);
+                free(option->eo_value);
+                option->eo_value = xstrdup(g_array_index(attrs, GnomeKeyringAttribute, index).value.string);
+                VERB2 log("added or replaced in event config:'%s=%s'", name, option->eo_value);
             }
         }
     }

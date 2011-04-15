@@ -32,6 +32,7 @@ typedef enum
     OPTION_TYPE_BOOL,
     OPTION_TYPE_PASSWORD,
     OPTION_TYPE_NUMBER,
+    OPTION_TYPE_HINT_HTML,
     OPTION_TYPE_INVALID,
 } option_type_t;
 
@@ -48,11 +49,12 @@ typedef enum
  */
 typedef struct
 {
-    char *name; //name of the value which should be used for env variable
-    char *value;
-    char *label;
-    option_type_t type;
-    int allow_empty;
+    char *eo_name; //name of the value which should be used for env variable
+    char *eo_value;
+    char *eo_label;
+    char *eo_note_html;
+    option_type_t eo_type;
+    int eo_allow_empty;
     //char *description; //can be used as tooltip in gtk app
     //char *allowed_value;
     //int required;

@@ -22,8 +22,9 @@
 #define EVENT_ELEMENT           "event"
 #define LABEL_ELEMENT           "label"
 #define DESCRIPTION_ELEMENT     "description"
-#define LONG_DESCR_ELEMENT      "long_description"
+#define LONG_DESCR_ELEMENT      "long-description"
 #define ALLOW_EMPTY_ELEMENT     "allow-empty"
+#define NOTE_HTML_ELEMENT       "note-html"
 #define OPTION_ELEMENT          "option"
 //#define ACTION_ELEMENT        "action"
 #define NAME_ELEMENT            "name"
@@ -39,11 +40,12 @@ struct my_parse_data
 
 static const char *const option_types[] =
 {
-    "text",
-    "bool",
-    "password",
-    "number",
-    NULL
+    [OPTION_TYPE_TEXT     ] = "text",
+    [OPTION_TYPE_BOOL     ] = "bool",
+    [OPTION_TYPE_PASSWORD ] = "password",
+    [OPTION_TYPE_NUMBER   ] = "number",
+    [OPTION_TYPE_HINT_HTML] = "hint-html",
+    [OPTION_TYPE_INVALID  ] = NULL
 };
 
 // Return xml:lang value for <foo xml:lang="value"> if value matches current locale,
@@ -86,7 +88,9 @@ static char *get_element_lang(struct my_parse_data *parse_data, const gchar **at
 
 static int cmp_event_option_name_with_string(gconstpointer a, gconstpointer b)
 {
-    return strcmp(((event_option_t *)a)->name, (char *)b);
+    const event_option_t *evopt = a;
+    /* "When it is not a match?" */
+    return !evopt->eo_name || strcmp(evopt->eo_name, (char *)b) != 0;
 }
 
 static void consume_cur_option(struct my_parse_data *parse_data)
@@ -94,39 +98,38 @@ static void consume_cur_option(struct my_parse_data *parse_data)
     event_option_t *opt = parse_data->cur_option;
     if (!opt)
         return;
-
     parse_data->cur_option = NULL;
 
-    if (!opt->name)
-    {
-//TODO: "option w/o name" error msg?
-        free_event_option(opt);
-        return;
-    }
-
     event_config_t *event_config = parse_data->event_config;
-    GList *elem = g_list_find_custom(event_config->options, opt->name,
-                                     &cmp_event_option_name_with_string);
+
+    /* Example of "nameless" option: <option type="hint-html">
+     * The remaining code does not like "nameless" options
+     * (strcmp would segfault, etc), so provide invented name:
+     */
+    if (!opt->eo_name)
+        opt->eo_name = xasprintf("%u", (unsigned)g_list_length(event_config->options));
+
+    GList *elem = g_list_find_custom(event_config->options, opt->eo_name, cmp_event_option_name_with_string);
     if (elem)
     {
         /* we already have option with such name */
         event_option_t *old_opt = elem->data;
-        if (old_opt->value)
+        if (old_opt->eo_value)
         {
             /* ...and it already has a value, which
              * overrides xml-defined default one:
              */
-            free(opt->value);
-            opt->value = old_opt->value;
-            old_opt->value = NULL;
+            free(opt->eo_value);
+            opt->eo_value = old_opt->eo_value;
+            old_opt->eo_value = NULL;
         }
-        //log("xml: replacing '%s' value:'%s'->'%s'", opt->name, old_opt->value, opt->value);
+        //log("xml: replacing '%s' value:'%s'->'%s'", opt->eo_name, old_opt->eo_value, opt->eo_value);
         free_event_option(old_opt);
         elem->data = opt;
     }
     else
     {
-        //log("xml: new value %s='%s'", opt->name, opt->value);
+        //log("xml: new value %s='%s'", opt->eo_name, opt->eo_value);
         event_config->options = g_list_append(event_config->options, opt);
     }
 }
@@ -159,8 +162,8 @@ static void start_element(GMarkupParseContext *context,
             VERB2 log("attr: %s:%s", attribute_names[i], attribute_values[i]);
             if (strcmp(attribute_names[i], "name") == 0)
             {
-                free(opt->name);
-                opt->name = xstrdup(attribute_values[i]);
+                free(opt->eo_name);
+                opt->eo_name = xstrdup(attribute_values[i]);
             }
             else if (strcmp(attribute_names[i], "type") == 0)
             {
@@ -168,7 +171,7 @@ static void start_element(GMarkupParseContext *context,
                 for (type = OPTION_TYPE_TEXT; type < OPTION_TYPE_INVALID; ++type)
                 {
                     if (strcmp(option_types[type], attribute_values[i]) == 0)
-                        opt->type = type;
+                        opt->eo_type = type;
                 }
             }
         }
@@ -229,10 +232,10 @@ static void text(GMarkupParseContext *context,
                  * OR the label is still not set and we found the default value
                  */
                 if (parse_data->attribute_lang[0] != '\0'
-                 || !opt->label /* && parse_data->attribute_lang is "" - always true */
+                 || !opt->eo_label /* && parse_data->attribute_lang is "" - always true */
                 ) {
-                    free(opt->label);
-                    opt->label = text_copy;
+                    free(opt->eo_label);
+                    opt->eo_label = text_copy;
                 }
             }
             return;
@@ -246,23 +249,31 @@ static void text(GMarkupParseContext *context,
         if (strcmp(inner_element, DEFAULT_VALUE_ELEMENT) == 0)
         {
             VERB2 log("default value:'%s'", text_copy);
-            free(opt->value);
-            opt->value = text_copy;
+            free(opt->eo_value);
+            opt->eo_value = text_copy;
+            return;
+        }
+
+        if (strcmp(inner_element, NOTE_HTML_ELEMENT) == 0)
+        {
+            VERB2 log("html note:'%s'", text_copy);
+            free(opt->eo_note_html);
+            opt->eo_note_html = text_copy;
             return;
         }
 
         if (strcmp(inner_element, ALLOW_EMPTY_ELEMENT) == 0)
         {
             VERB2 log("allow-empty:'%s'", text_copy);
-            opt->allow_empty = string_to_bool(text_copy);
+            opt->eo_allow_empty = string_to_bool(text_copy);
             return;
         }
         /*
         if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
         {
             VERB2 log("tooltip:'%s'", text_copy);
-            free(opt->description);
-            opt->description = text_copy;
+            free(opt->eo_description);
+            opt->eo_description = text_copy;
             return;
         }
         */
@@ -274,8 +285,8 @@ static void text(GMarkupParseContext *context,
         if (strcmp(inner_element, ACTION_ELEMENT) == 0)
         {
             VERB2 log("action description:'%s'", text_copy);
-            free(ui->action);
-            ui->action = text_copy;
+            free(ui->eo_action);
+            ui->eo_action = text_copy;
             return;
         }
         */
