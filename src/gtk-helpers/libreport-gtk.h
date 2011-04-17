@@ -21,3 +21,5 @@ void make_label_autowrap_on_resize(GtkLabel *label);
 
 void abrt_keyring_save_settings(const char *event_name);
 void load_event_config_data_from_keyring();
+void g_validate_event(const char* event_name);
+extern GtkWindow *g_parent_window;

@@ -424,6 +424,7 @@ static void report_tb_was_toggled(GtkButton *button_unused, gpointer user_data_u
                             (reporters_string->len != 0 ? ", " : ""),
                             event_gui_data->event_name
             );
+            g_validate_event(event_gui_data->event_name);
         }
     }
 
@@ -1345,6 +1346,7 @@ void create_assistant()
     gtk_assistant_set_forward_page_func(g_assistant, next_page_no, NULL, NULL);
 
     GtkWindow *wnd_assistant = GTK_WINDOW(g_assistant);
+    g_parent_window = wnd_assistant;
     gtk_window_set_default_size(wnd_assistant, DEFAULT_WIDTH, DEFAULT_HEIGHT);
     /* set_default sets icon for every windows used in this app, so we don't
        have to set the icon for those windows manually

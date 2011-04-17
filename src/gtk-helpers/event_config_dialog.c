@@ -22,6 +22,7 @@
 
 static GtkWindow *g_event_list_window;
 static GList *option_widget_list;
+GtkWindow *g_parent_window;
 
 enum
 {
@@ -415,4 +416,36 @@ void show_events_list_dialog(GtkWindow *parent)
     gtk_container_add(GTK_CONTAINER(event_list_window), main_vbox);
 
     gtk_widget_show_all(event_list_window);
+}
+
+void show_event_opt_error_dialog(const char *event_name)
+{
+    event_config_t *ec = get_event_config(event_name);
+    char *message = xasprintf(_("Wrong settings detected for %s, "
+                              "reporting will probably fail if you continue "
+                              "with the current configuration."),
+                               ec->screen_name);
+    char *markup_message = xasprintf(_("Wrong settings detected for <b>%s</b>, "
+                              "reporting will probably fail if you continue "
+                              "with the current configuration."),
+                               ec->screen_name);
+    GtkWidget *wrong_settings = gtk_message_dialog_new(g_parent_window,
+        GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+        GTK_MESSAGE_WARNING,
+        GTK_BUTTONS_CLOSE,
+        message);
+    gtk_window_set_transient_for(GTK_WINDOW(wrong_settings), g_parent_window);
+    free(message);
+    gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(wrong_settings),
+                                    markup_message);
+    free(markup_message);
+    gtk_dialog_run(GTK_DIALOG(wrong_settings));
+    gtk_widget_destroy(wrong_settings);
+}
+
+void g_validate_event(const char* event_name)
+{
+    GHashTable *errors = validate_event(event_name);
+    if (errors != NULL)
+        show_event_opt_error_dialog(event_name);
 }
