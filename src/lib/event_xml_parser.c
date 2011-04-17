@@ -180,6 +180,7 @@ static void start_element(GMarkupParseContext *context,
     if (strcmp(element_name, LABEL_ELEMENT) == 0
      || strcmp(element_name, DESCRIPTION_ELEMENT) == 0
      || strcmp(element_name, LONG_DESCR_ELEMENT) == 0
+     || strcmp(element_name, NAME_ELEMENT) == 0
     ) {
         free(parse_data->attribute_lang);
         parse_data->attribute_lang = get_element_lang(parse_data, attribute_names, attribute_values);
@@ -225,7 +226,6 @@ static void text(GMarkupParseContext *context,
     {
         if (strcmp(inner_element, LABEL_ELEMENT) == 0)
         {
-            VERB2 log("new label:'%s'", text_copy);
             if (parse_data->attribute_lang != NULL) /* if it isn't for other locale */
             {
                 /* set the value only if we found a value for the current locale
@@ -234,6 +234,7 @@ static void text(GMarkupParseContext *context,
                 if (parse_data->attribute_lang[0] != '\0'
                  || !opt->eo_label /* && parse_data->attribute_lang is "" - always true */
                 ) {
+                    VERB2 log("new label:'%s'", text_copy);
                     free(opt->eo_label);
                     opt->eo_label = text_copy;
                 }
@@ -292,9 +293,19 @@ static void text(GMarkupParseContext *context,
         */
         if (strcmp(inner_element, NAME_ELEMENT) == 0)
         {
-            VERB2 log("event name:'%s'", text_copy);
-            free(ui->screen_name);
-            ui->screen_name = text_copy;
+            if (parse_data->attribute_lang != NULL) /* if it isn't for other locale */
+            {
+                /* set the value only if we found a value for the current locale
+                 * OR the label is still not set and we found the default value
+                 */
+                if (parse_data->attribute_lang[0] != '\0'
+                 || !ui->screen_name /* && parse_data->attribute_lang is "" - always true */
+                ) {
+                    VERB2 log("event name:'%s'", text_copy);
+                    free(ui->screen_name);
+                    ui->screen_name = text_copy;
+                }
+            }
             return;
         }
         if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
