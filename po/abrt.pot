@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-04-15 17:04+0200\n"
+"POT-Creation-Date: 2011-04-17 17:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -205,7 +205,7 @@ msgstr ""
 msgid "Invalid input, program exiting..."
 msgstr ""
 
-#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1102
+#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1103
 msgid "Reporting..."
 msgstr ""
 
@@ -312,20 +312,34 @@ msgstr ""
 msgid "Exit after SEC seconds of inactivity"
 msgstr ""
 
-#: ../src/gtk-helpers/event_config_dialog.c:122
+#: ../src/gtk-helpers/event_config_dialog.c:123
 msgid "Show password"
 msgstr ""
 
-#: ../src/gtk-helpers/event_config_dialog.c:343
+#: ../src/gtk-helpers/event_config_dialog.c:344
 msgid "Event Configuration"
 msgstr ""
 
-#: ../src/gtk-helpers/event_config_dialog.c:368
+#: ../src/gtk-helpers/event_config_dialog.c:369
 msgid "Event"
 msgstr ""
 
-#: ../src/gtk-helpers/event_config_dialog.c:401
+#: ../src/gtk-helpers/event_config_dialog.c:402
 msgid "Configure E_vent"
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:424
+#, c-format
+msgid ""
+"Wrong settings detected for %s, reporting will probably fail if you continue "
+"with the current configuration."
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:428
+#, c-format
+msgid ""
+"Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
+"continue with the current configuration."
 msgstr ""
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
@@ -390,69 +404,69 @@ msgid ""
 "operate on the moved copy?"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:558
+#: ../src/gui-wizard-gtk/wizard.c:559
 msgid "(click here to view/edit)"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:570
+#: ../src/gui-wizard-gtk/wizard.c:571
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:585
+#: ../src/gui-wizard-gtk/wizard.c:586
 msgid "(no description)"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:591
+#: ../src/gui-wizard-gtk/wizard.c:592
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr ""
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:914
+#: ../src/gui-wizard-gtk/wizard.c:915
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr ""
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:1004
+#: ../src/gui-wizard-gtk/wizard.c:1005
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1010
+#: ../src/gui-wizard-gtk/wizard.c:1011
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1019
+#: ../src/gui-wizard-gtk/wizard.c:1020
 msgid "You should check the backtrace for sensitive data."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1020
+#: ../src/gui-wizard-gtk/wizard.c:1021
 msgid "You must agree with sending the backtrace."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1076
+#: ../src/gui-wizard-gtk/wizard.c:1077
 msgid "Analyzing..."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1077
+#: ../src/gui-wizard-gtk/wizard.c:1078
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1103
+#: ../src/gui-wizard-gtk/wizard.c:1104
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1220
+#: ../src/gui-wizard-gtk/wizard.c:1221
 msgid "Name"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1229
+#: ../src/gui-wizard-gtk/wizard.c:1230
 msgid "Value"
 msgstr ""
 
@@ -1073,6 +1087,12 @@ msgstr ""
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Verify SSL"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:11
+msgid ""
+"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1

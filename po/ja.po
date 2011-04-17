@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2011-04-15 17:04+0200\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2011-04-17 17:04+0200\n"
 "PO-Revision-Date: 2011-04-15 15:09+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Japanese <None>\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -46,7 +46,8 @@ msgstr "警告"
 #: ../src/applet/applet_gtk.c:259
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
-msgstr "ABRT によって検出された問題をユーザーに通知するための通知エリアアプレット"
+msgstr ""
+"ABRT によって検出された問題をユーザーに通知するための通知エリアアプレット"
 
 #: ../src/applet/applet_gtk.c:275 ../src/gui-gtk/abrt-gtk.c:236
 msgid "translator-credits"
@@ -211,7 +212,7 @@ msgstr ""
 msgid "Invalid input, program exiting..."
 msgstr ""
 
-#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1102
+#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1103
 msgid "Reporting..."
 msgstr "報告中..."
 
@@ -233,7 +234,9 @@ msgstr "バックトレースが利用できないため、レポート機能が
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
-msgstr "debuginfo を \"debuginfo-install %s\" コマンドにて手動でのインストールをもう一度試してください。\n"
+msgstr ""
+"debuginfo を \"debuginfo-install %s\" コマンドにて手動でのインストールをもう"
+"一度試してください。\n"
 
 #: ../src/cli/report.c:805
 #, c-format
@@ -306,7 +309,9 @@ msgstr "コメントが長すぎます"
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
-msgstr "報告のサイズが割り当てを超過しました。 abrt.conf の中で MaxCrashReportsSize の値をチェックして下さい。"
+msgstr ""
+"報告のサイズが割り当てを超過しました。 abrt.conf の中で MaxCrashReportsSize "
+"の値をチェックして下さい。"
 
 #: ../src/daemon/Daemon.cpp:544
 msgid "Do not daemonize"
@@ -320,20 +325,34 @@ msgstr "-d を使用しても syslog へログ"
 msgid "Exit after SEC seconds of inactivity"
 msgstr "停止から SEC 秒後に終了"
 
-#: ../src/gtk-helpers/event_config_dialog.c:122
+#: ../src/gtk-helpers/event_config_dialog.c:123
 msgid "Show password"
 msgstr "パスワードを表示"
 
-#: ../src/gtk-helpers/event_config_dialog.c:343
+#: ../src/gtk-helpers/event_config_dialog.c:344
 msgid "Event Configuration"
 msgstr ""
 
-#: ../src/gtk-helpers/event_config_dialog.c:368
+#: ../src/gtk-helpers/event_config_dialog.c:369
 msgid "Event"
 msgstr ""
 
-#: ../src/gtk-helpers/event_config_dialog.c:401
+#: ../src/gtk-helpers/event_config_dialog.c:402
 msgid "Configure E_vent"
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:424
+#, c-format
+msgid ""
+"Wrong settings detected for %s, reporting will probably fail if you continue "
+"with the current configuration."
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:428
+#, c-format
+msgid ""
+"Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
+"continue with the current configuration."
 msgstr ""
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
@@ -398,69 +417,70 @@ msgid ""
 "operate on the moved copy?"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:558
+#: ../src/gui-wizard-gtk/wizard.c:559
 msgid "(click here to view/edit)"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:570
+#: ../src/gui-wizard-gtk/wizard.c:571
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:585
+#: ../src/gui-wizard-gtk/wizard.c:586
 msgid "(no description)"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:591
+#: ../src/gui-wizard-gtk/wizard.c:592
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr ""
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:914
+#: ../src/gui-wizard-gtk/wizard.c:915
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr ""
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:1004
+#: ../src/gui-wizard-gtk/wizard.c:1005
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
-msgstr "バックトレースが不完全です。再現手順が書かれているかどうか確認してください。"
+msgstr ""
+"バックトレースが不完全です。再現手順が書かれているかどうか確認してください。"
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1010
+#: ../src/gui-wizard-gtk/wizard.c:1011
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "バックトレースが利用できないため、レポート機能が無効になっています。"
 
-#: ../src/gui-wizard-gtk/wizard.c:1019
+#: ../src/gui-wizard-gtk/wizard.c:1020
 msgid "You should check the backtrace for sensitive data."
 msgstr "機密データがないかバックトレースを確認する必要があります。"
 
-#: ../src/gui-wizard-gtk/wizard.c:1020
+#: ../src/gui-wizard-gtk/wizard.c:1021
 msgid "You must agree with sending the backtrace."
 msgstr "バックトレースの送信に同意する必要があります。"
 
-#: ../src/gui-wizard-gtk/wizard.c:1076
+#: ../src/gui-wizard-gtk/wizard.c:1077
 msgid "Analyzing..."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1077
+#: ../src/gui-wizard-gtk/wizard.c:1078
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1103
+#: ../src/gui-wizard-gtk/wizard.c:1104
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1220
+#: ../src/gui-wizard-gtk/wizard.c:1221
 msgid "Name"
 msgstr "名前"
 
-#: ../src/gui-wizard-gtk/wizard.c:1229
+#: ../src/gui-wizard-gtk/wizard.c:1230
 msgid "Value"
 msgstr ""
 
@@ -582,13 +602,15 @@ msgstr "使用法: %s\n"
 msgid ""
 " [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
+"identifies crash function in dump directory DIR"
 msgstr ""
 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:113
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -655,7 +677,8 @@ msgstr "必須のメンバー 'bugs' の欠如"
 #: ../src/plugins/abrt-action-bugzilla.cpp:751
 #: ../src/plugins/abrt-action-bugzilla.cpp:827
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr "get_bug_info() の実行に失敗しました。すべての必須情報を収集できませんでした"
+msgstr ""
+"get_bug_info() の実行に失敗しました。すべての必須情報を収集できませんでした"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:766
 msgid "Creating a new bug"
@@ -720,7 +743,7 @@ msgstr "gdb が N 秒以上も稼働した場合は、キルします"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
+#.
 #: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -898,11 +921,9 @@ msgstr "バグレポートを %s に追加しました"
 msgid "The report was stored to %s"
 msgstr "バグレポートを %s に保存しました"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
 #: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
@@ -994,7 +1015,7 @@ msgstr "終了せずに新規 oops のファイルを観察します"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
+#.
 #: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr ""
@@ -1018,8 +1039,8 @@ msgstr ""
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
@@ -1084,6 +1105,12 @@ msgstr ""
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Verify SSL"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:11
+msgid ""
+"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1

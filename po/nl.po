@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2011-04-15 17:04+0200\n"
-"PO-Revision-Date: 2011-04-15 15:09+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2011-04-17 17:04+0200\n"
+"PO-Revision-Date: 2011-04-16 12:07+0000\n"
+"Last-Translator: warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Dutch <>\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -98,6 +98,26 @@ msgid ""
 "\t-V, --version\t\tDisplay version and exit\n"
 "\t-v, --verbose\t\tBe verbose\n"
 msgstr ""
+"Gebruik: %s -l[f] [-D BASE_DIR]...]\n"
+"   of: %s -r[y] CRASH_DIR\n"
+"   of: %s -i[b] CRASH_DIR\n"
+"   of: %s -d CRASH_DIR\n"
+"\n"
+"»-l, --list»»Toon nog niet gerapporteerde problemen\n"
+"»  -f, --full»»Toon alle problemen\n"
+"»-D BASE_DIR»»Map waaruit problemen getoond worden\n"
+"»»»»(standaard: -D $HOME/.abrt/spool -D %s)\n"
+"\n"
+"»-r, --report»»Stuur een rapport over CRASH_DIR\n"
+"»  -y, --always»»...zonder bewerking en vragen\n"
+"»-i, --info»»Print gedetailleerde informatie over CRASH_DIR\n"
+"»  -f, --full»»...inclusief multi-regel ingangen\n"
+"»»»»Opmerking: -if zal analyzers draaien\n"
+"»»»»(als deze CRASH_DIR analyzers gedefinieerd heeft)\n"
+"»-d, --delete»»Verwijder CRASH_DIR\n"
+"\n"
+"»-V, --version»»Toon versie en sluit af\n"
+"»-v, --verbose»»Breedsprakig\n"
 
 #: ../src/cli/cli.c:260
 msgid "You must specify exactly one operation"
@@ -213,7 +233,7 @@ msgstr "Je hebt een getal buiten het bereik gekozen"
 msgid "Invalid input, program exiting..."
 msgstr "Ongeldige input, het programma gaat afsluiten..."
 
-#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1102
+#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1103
 msgid "Reporting..."
 msgstr "Rapporteren..."
 
@@ -329,21 +349,35 @@ msgstr "Loggen naar syslog zelfs met -d"
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Afsluiten na SEC seconden van inactiviteit"
 
-#: ../src/gtk-helpers/event_config_dialog.c:122
+#: ../src/gtk-helpers/event_config_dialog.c:123
 msgid "Show password"
 msgstr "Wachtwoord tonen"
 
-#: ../src/gtk-helpers/event_config_dialog.c:343
+#: ../src/gtk-helpers/event_config_dialog.c:344
 msgid "Event Configuration"
 msgstr "Gebeurtenis configuratie"
 
-#: ../src/gtk-helpers/event_config_dialog.c:368
+#: ../src/gtk-helpers/event_config_dialog.c:369
 msgid "Event"
 msgstr "Gebeurtenis"
 
-#: ../src/gtk-helpers/event_config_dialog.c:401
+#: ../src/gtk-helpers/event_config_dialog.c:402
 msgid "Configure E_vent"
 msgstr "Configureer _gebeurtenis"
+
+#: ../src/gtk-helpers/event_config_dialog.c:424
+#, c-format
+msgid ""
+"Wrong settings detected for %s, reporting will probably fail if you continue "
+"with the current configuration."
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:428
+#, c-format
+msgid ""
+"Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
+"continue with the current configuration."
+msgstr ""
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -401,7 +435,8 @@ msgid ""
 msgstr ""
 " [-vp] [-g GUI_FILE] MAP\n"
 "\n"
-"GUI gereedschap voor het analyseren en rapporteren van probleem opgeslagen in gespecificeerde MAP"
+"GUI gereedschap voor het analyseren en rapporteren van probleem opgeslagen "
+"in gespecificeerde MAP"
 
 #: ../src/gui-wizard-gtk/main.c:93
 msgid "Alternate GUI file"
@@ -413,35 +448,35 @@ msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
 msgstr ""
-"Beschrijfbare map is nodig, maar '%s' is niet beschrijfbaar. Het verplaatsen"
-" naar '%s' en de verplaatste kopie bewerken?"
+"Beschrijfbare map is nodig, maar '%s' is niet beschrijfbaar. Het verplaatsen "
+"naar '%s' en de verplaatste kopie bewerken?"
 
-#: ../src/gui-wizard-gtk/wizard.c:558
+#: ../src/gui-wizard-gtk/wizard.c:559
 msgid "(click here to view/edit)"
 msgstr "(Klik hier voor bekijken/bewerken)"
 
-#: ../src/gui-wizard-gtk/wizard.c:570
+#: ../src/gui-wizard-gtk/wizard.c:571
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(binair bestand, %llu bytes)"
 
-#: ../src/gui-wizard-gtk/wizard.c:585
+#: ../src/gui-wizard-gtk/wizard.c:586
 msgid "(no description)"
 msgstr "(geen beschrijving)"
 
-#: ../src/gui-wizard-gtk/wizard.c:591
+#: ../src/gui-wizard-gtk/wizard.c:592
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu bytes, %u bestanden"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:914
+#: ../src/gui-wizard-gtk/wizard.c:915
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Er is geen verwerking gedefinieerd voor de gebeurtenis '%s'"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:1004
+#: ../src/gui-wizard-gtk/wizard.c:1005
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -450,37 +485,37 @@ msgstr ""
 "juiste stappen op te volgen."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1010
+#: ../src/gui-wizard-gtk/wizard.c:1011
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Rapportage is uitgezet omdat de backtrace onbruikbaar is."
 
-#: ../src/gui-wizard-gtk/wizard.c:1019
+#: ../src/gui-wizard-gtk/wizard.c:1020
 msgid "You should check the backtrace for sensitive data."
 msgstr "Je moet de backtrace controleren op gevoelige data."
 
-#: ../src/gui-wizard-gtk/wizard.c:1020
+#: ../src/gui-wizard-gtk/wizard.c:1021
 msgid "You must agree with sending the backtrace."
 msgstr "Je moet instemmen met het versturen van de backtrace."
 
-#: ../src/gui-wizard-gtk/wizard.c:1076
+#: ../src/gui-wizard-gtk/wizard.c:1077
 msgid "Analyzing..."
 msgstr "Analyseren..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1077
+#: ../src/gui-wizard-gtk/wizard.c:1078
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "Analyseren afgewerkt met exit code %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1103
+#: ../src/gui-wizard-gtk/wizard.c:1104
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "Rapportage afgewerkt met exit code %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1220
+#: ../src/gui-wizard-gtk/wizard.c:1221
 msgid "Name"
 msgstr "Naam"
 
-#: ../src/gui-wizard-gtk/wizard.c:1229
+#: ../src/gui-wizard-gtk/wizard.c:1230
 msgid "Value"
 msgstr "Waarde"
 
@@ -499,8 +534,8 @@ msgstr "Analyseren is nog niet gestart"
 #: ../src/gui-wizard-gtk/wizard.glade.h:3
 msgid "Any additional comments useful for diagnosing the problem?"
 msgstr ""
-"Eventuele aanvullende opmerkingen die nuttig voor het diagnosticeren van het"
-" probleem?"
+"Eventuele aanvullende opmerkingen die nuttig voor het diagnosticeren van het "
+"probleem?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:4
 msgid ""
@@ -541,8 +576,7 @@ msgstr "Details"
 #: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid "How did this problem happen (step-by-step)? How can it be reproduced?"
 msgstr ""
-"Hoe trad dit probleem op (stap-voor-stap)? Hoe kan het gereproduceerd "
-"worden?"
+"Hoe trad dit probleem op (stap-voor-stap)? Hoe kan het gereproduceerd worden?"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:11
 msgid "I _agree with submitting the backtrace"
@@ -617,16 +651,19 @@ msgstr "Gebruik: %s\n"
 msgid ""
 " [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
+"identifies crash function in dump directory DIR"
 msgstr ""
 " [opties] -d MAP\n"
 "\n"
-"Analyseer C/C++ backtrace, genereer duplicaat hash, backtrace rating, en identificeer crash functie in dump ma MAP"
+"Analyseer C/C++ backtrace, genereer duplicaat hash, backtrace rating, en "
+"identificeer crash functie in dump ma MAP"
 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:113
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -771,7 +808,7 @@ msgstr "Sluit gdb af als het meer dan N secondes draait"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
+#.
 #: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -948,7 +985,7 @@ msgstr "Toevoegen aan, of overschrijven van BESTAND"
 
 #: ../src/plugins/abrt-action-print.c:56
 msgid "Create reported_to in DIR"
-msgstr ""
+msgstr "Maak reported_to aan in MAP"
 
 #: ../src/plugins/abrt-action-print.c:100
 #, c-format
@@ -960,11 +997,9 @@ msgstr "Het rapport werd toegevoegd aan %s"
 msgid "The report was stored to %s"
 msgstr "Het rapport werd opgeslagen in %s"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
 #: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
@@ -976,7 +1011,7 @@ msgstr "Leeg RHTS inlog of wachtwoord"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:101
 msgid "Can't create a temporary directory in /tmp"
-msgstr ""
+msgstr "Kan geen tijdelijke directory aanmaken in /tmp"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:194
 msgid "Creating a new case..."
@@ -999,7 +1034,8 @@ msgid ""
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
 " [-v] [-d GROOTTE:MAP] ... [-f GROOTTE:MAP] ... [-p MAP]\n"
-"Wis dump mappen (-d) of bestanden (-f) in MAPPEN totdat ze kleiner zijn dan GROOTTE"
+"Wis dump mappen (-d) of bestanden (-f) in MAPPEN totdat ze kleiner zijn dan "
+"GROOTTE"
 
 #: ../src/plugins/abrt-action-trim-files.c:167
 msgid "Delete dump dirs"
@@ -1049,6 +1085,9 @@ msgid ""
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
+" [-vsrowx] [-d MAP] BESTAND\n"
+"\n"
+"Extraheer oops uit syslog/dmesg bestand"
 
 #: ../src/plugins/abrt-dump-oops.c:586
 msgid "Parse kernel's message buffer before parsing FILE"
@@ -1064,10 +1103,10 @@ msgstr "Sluit niet af, bekijk het bestand voor nieuwe oopses"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
+#.
 #: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
-msgstr ""
+msgstr "Maak ABRT dump aan in MAP voor elke gevonden oops"
 
 #: ../src/plugins/abrt-dump-oops.c:593
 msgid "Make the dump directory world readable"
@@ -1090,9 +1129,12 @@ msgstr "Lokale GNU debugger"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
 msgstr ""
+"Debuginfo pakketten moeten gedownload worden, wat veel tijd en schijfruimte "
+"zou kunnen kosten. In tegenstelling tot RetraceServer echter, wordt geen "
+"coredump naar machines op afstand gestuurd."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Address of the retrace server"
@@ -1114,6 +1156,11 @@ msgid ""
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
 msgstr ""
+"Upload een coredump naar een server, die een backtrace genereert en deze "
+"terugstuurt. Voordelen: debuginfo downloaden is niet nodig. De database van "
+"debuginfos  van de retrace server is completer. De retrace server kan betere "
+"backtraces genereren. Nadelen: een coredump jouw upload bevat alle data van "
+"het gecrashte programma, mogelijk inclusief jouw persoonlijke data."
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Address of Bugzilla server"
@@ -1157,6 +1204,12 @@ msgstr "Gebruikersnaam"
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Verify SSL"
 msgstr "Verifieer SSL"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:11
+msgid ""
+"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+msgstr ""
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops URL"

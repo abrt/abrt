@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2011-04-15 17:04+0200\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2011-04-17 17:04+0200\n"
 "PO-Revision-Date: 2011-04-15 15:09+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Bengali (India) <None>\n"
+"Language: bn_IN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: bn_IN\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -47,8 +47,8 @@ msgstr "সতর্কবার্তা"
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
-"ABRT দ্বারা সনাক্ত করা সমস্যা সম্বন্ধে ব্যবহারকারীদেরকে সূচিত করার "
-"উদ্দেশ্যে, বিজ্ঞপ্তিস্থলে ব্যবহারযোগ্য অ্যাপ্লেট"
+"ABRT দ্বারা সনাক্ত করা সমস্যা সম্বন্ধে ব্যবহারকারীদেরকে সূচিত করার উদ্দেশ্যে, "
+"বিজ্ঞপ্তিস্থলে ব্যবহারযোগ্য অ্যাপ্লেট"
 
 #: ../src/applet/applet_gtk.c:275 ../src/gui-gtk/abrt-gtk.c:236
 msgid "translator-credits"
@@ -158,8 +158,7 @@ msgstr "# অপারেটিং সিস্টেমের রিলিজ �
 
 #: ../src/cli/report.c:276
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr ""
-"vi সঞ্চালন করতে ব্যর্থ: $TERM, $VISUAL ও $EDITOR-র মান নির্ধারণ করা হয়নি"
+msgstr "vi সঞ্চালন করতে ব্যর্থ: $TERM, $VISUAL ও $EDITOR-র মান নির্ধারণ করা হয়নি"
 
 #: ../src/cli/report.c:360
 msgid ""
@@ -214,7 +213,7 @@ msgstr ""
 msgid "Invalid input, program exiting..."
 msgstr ""
 
-#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1102
+#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1103
 msgid "Reporting..."
 msgstr "রিপোর্ট দায়ের..."
 
@@ -230,8 +229,7 @@ msgstr "উপেক্ষা করা হচ্ছে..."
 #: ../src/cli/report.c:779
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr ""
-"ব্যাক-ট্রেস ব্যবহারযোগ্য না হওয়ার ফলে রিপোর্ট দায়ের করার ব্যবস্থা নিষ্ক্রিয় "
-"করা হয়েছে"
+"ব্যাক-ট্রেস ব্যবহারযোগ্য না হওয়ার ফলে রিপোর্ট দায়ের করার ব্যবস্থা নিষ্ক্রিয় করা হয়েছে"
 
 #: ../src/cli/report.c:783
 #, c-format
@@ -239,15 +237,14 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
-"চিহ্নিত কমান্ড সহযোগে অনুগ্রহ করে স্বয়ং debuginfo ইনস্টল করার প্রয়াস করে "
-"পুনরায় প্রচেষ্টা করুন: \"debuginfo-install %s\"\n"
+"চিহ্নিত কমান্ড সহযোগে অনুগ্রহ করে স্বয়ং debuginfo ইনস্টল করার প্রয়াস করে পুনরায় "
+"প্রচেষ্টা করুন: \"debuginfo-install %s\"\n"
 
 #: ../src/cli/report.c:805
 #, c-format
 msgid "Crash reported via %d report events (%d errors)\n"
 msgstr ""
-"%d রিপোর্ট ব্যবস্থার মাধ্যমে বিপর্যয়ের রিপোর্ট দায়ের করা হয়েছে (%d-টি "
-"ত্রুটি)\n"
+"%d রিপোর্ট ব্যবস্থার মাধ্যমে বিপর্যয়ের রিপোর্ট দায়ের করা হয়েছে (%d-টি ত্রুটি)\n"
 
 #: ../src/daemon/abrt-action-save-package-data.c:255
 msgid ""
@@ -331,20 +328,34 @@ msgstr "-d সহযোগেও syslog-এ লগ করা হবে"
 msgid "Exit after SEC seconds of inactivity"
 msgstr "SEC সেকেন্ড নিষ্ক্রিয় থাকলে প্রস্থান করা হবে"
 
-#: ../src/gtk-helpers/event_config_dialog.c:122
+#: ../src/gtk-helpers/event_config_dialog.c:123
 msgid "Show password"
 msgstr "পাসওয়ার্ড পরীক্ষণ"
 
-#: ../src/gtk-helpers/event_config_dialog.c:343
+#: ../src/gtk-helpers/event_config_dialog.c:344
 msgid "Event Configuration"
 msgstr ""
 
-#: ../src/gtk-helpers/event_config_dialog.c:368
+#: ../src/gtk-helpers/event_config_dialog.c:369
 msgid "Event"
 msgstr ""
 
-#: ../src/gtk-helpers/event_config_dialog.c:401
+#: ../src/gtk-helpers/event_config_dialog.c:402
 msgid "Configure E_vent"
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:424
+#, c-format
+msgid ""
+"Wrong settings detected for %s, reporting will probably fail if you continue "
+"with the current configuration."
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:428
+#, c-format
+msgid ""
+"Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
+"continue with the current configuration."
 msgstr ""
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
@@ -409,74 +420,72 @@ msgid ""
 "operate on the moved copy?"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:558
+#: ../src/gui-wizard-gtk/wizard.c:559
 msgid "(click here to view/edit)"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:570
+#: ../src/gui-wizard-gtk/wizard.c:571
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:585
+#: ../src/gui-wizard-gtk/wizard.c:586
 msgid "(no description)"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:591
+#: ../src/gui-wizard-gtk/wizard.c:592
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr ""
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:914
+#: ../src/gui-wizard-gtk/wizard.c:915
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr ""
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:1004
+#: ../src/gui-wizard-gtk/wizard.c:1005
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
-"ব্যাক-ট্রেসের তথ্য সম্পূর্ণ নয়, অনুগ্রহ করে পুনরাবৃত্তির জন্য প্রয়োজনীয় "
-"ধাপগুলি সঠিকরূপে চিহ্নিত করুন।"
+"ব্যাক-ট্রেসের তথ্য সম্পূর্ণ নয়, অনুগ্রহ করে পুনরাবৃত্তির জন্য প্রয়োজনীয় ধাপগুলি সঠিকরূপে "
+"চিহ্নিত করুন।"
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1010
+#: ../src/gui-wizard-gtk/wizard.c:1011
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr ""
-"ব্যাক-ট্রেস ব্যবহারযোগ্য না হওয়ার ফলে রিপোর্ট দায়ের করার ব্যবস্থা নিষ্ক্রিয় "
-"করা হয়েছে।"
-
-#: ../src/gui-wizard-gtk/wizard.c:1019
-msgid "You should check the backtrace for sensitive data."
-msgstr ""
-"সংবেদনশীল তথ্যের উপস্থিতি সনাক্ত করার জন্য ব্যাক-ট্রেস পরীক্ষা করা আবশ্যক।"
+"ব্যাক-ট্রেস ব্যবহারযোগ্য না হওয়ার ফলে রিপোর্ট দায়ের করার ব্যবস্থা নিষ্ক্রিয় করা হয়েছে।"
 
 #: ../src/gui-wizard-gtk/wizard.c:1020
+msgid "You should check the backtrace for sensitive data."
+msgstr "সংবেদনশীল তথ্যের উপস্থিতি সনাক্ত করার জন্য ব্যাক-ট্রেস পরীক্ষা করা আবশ্যক।"
+
+#: ../src/gui-wizard-gtk/wizard.c:1021
 msgid "You must agree with sending the backtrace."
 msgstr "ব্যাক-ট্রেস পাঠানোর সময় সম্মতি জ্ঞাপন করা আবশ্যক।"
 
-#: ../src/gui-wizard-gtk/wizard.c:1076
+#: ../src/gui-wizard-gtk/wizard.c:1077
 msgid "Analyzing..."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1077
+#: ../src/gui-wizard-gtk/wizard.c:1078
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1103
+#: ../src/gui-wizard-gtk/wizard.c:1104
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1220
+#: ../src/gui-wizard-gtk/wizard.c:1221
 msgid "Name"
 msgstr "নাম"
 
-#: ../src/gui-wizard-gtk/wizard.c:1229
+#: ../src/gui-wizard-gtk/wizard.c:1230
 msgid "Value"
 msgstr ""
 
@@ -598,13 +607,15 @@ msgstr "ব্যবহারপ্রণালী: %s\n"
 msgid ""
 " [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
+"identifies crash function in dump directory DIR"
 msgstr ""
 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:113
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -733,7 +744,7 @@ msgstr ""
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
+#.
 #: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -911,11 +922,9 @@ msgstr "%s-র সাথে রিপোর্ট সংযোজন করা �
 msgid "The report was stored to %s"
 msgstr "%s-এ রিপোর্ট সংরক্ষণ করা হয়েছে"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
 #: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
@@ -1007,7 +1016,7 @@ msgstr ""
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
+#.
 #: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr ""
@@ -1031,8 +1040,8 @@ msgstr ""
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
@@ -1097,6 +1106,12 @@ msgstr ""
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Verify SSL"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:11
+msgid ""
+"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1

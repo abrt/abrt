@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2011-04-15 17:04+0200\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2011-04-17 17:04+0200\n"
 "PO-Revision-Date: 2011-04-15 15:09+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Chinese (China) <None>\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -211,7 +211,7 @@ msgstr ""
 msgid "Invalid input, program exiting..."
 msgstr ""
 
-#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1102
+#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1103
 msgid "Reporting..."
 msgstr "报告中……"
 
@@ -309,7 +309,8 @@ msgstr "评论过长"
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
-msgstr "报告大小已超出配额。请检查在 abrt.conf 文件中系统的 MaxCrashReportsSize 值。"
+msgstr ""
+"报告大小已超出配额。请检查在 abrt.conf 文件中系统的 MaxCrashReportsSize 值。"
 
 #: ../src/daemon/Daemon.cpp:544
 msgid "Do not daemonize"
@@ -323,21 +324,35 @@ msgstr "记录到系统日志即使用到-d"
 msgid "Exit after SEC seconds of inactivity"
 msgstr "在SEC秒闲置后退出"
 
-#: ../src/gtk-helpers/event_config_dialog.c:122
+#: ../src/gtk-helpers/event_config_dialog.c:123
 msgid "Show password"
 msgstr "显示密码"
 
-#: ../src/gtk-helpers/event_config_dialog.c:343
+#: ../src/gtk-helpers/event_config_dialog.c:344
 msgid "Event Configuration"
 msgstr "事件配置"
 
-#: ../src/gtk-helpers/event_config_dialog.c:368
+#: ../src/gtk-helpers/event_config_dialog.c:369
 msgid "Event"
 msgstr "事件"
 
-#: ../src/gtk-helpers/event_config_dialog.c:401
+#: ../src/gtk-helpers/event_config_dialog.c:402
 msgid "Configure E_vent"
 msgstr "配置事件 (_V)"
+
+#: ../src/gtk-helpers/event_config_dialog.c:424
+#, c-format
+msgid ""
+"Wrong settings detected for %s, reporting will probably fail if you continue "
+"with the current configuration."
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:428
+#, c-format
+msgid ""
+"Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
+"continue with the current configuration."
+msgstr ""
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -408,69 +423,69 @@ msgid ""
 "operate on the moved copy?"
 msgstr "需要可写目录，但 `%s' 不可写。移动它到 `%s' 并在移动后的副本上操作？"
 
-#: ../src/gui-wizard-gtk/wizard.c:558
+#: ../src/gui-wizard-gtk/wizard.c:559
 msgid "(click here to view/edit)"
 msgstr "（点击这里查看/编辑）"
 
-#: ../src/gui-wizard-gtk/wizard.c:570
+#: ../src/gui-wizard-gtk/wizard.c:571
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "（二进制文件，%llu字节）"
 
-#: ../src/gui-wizard-gtk/wizard.c:585
+#: ../src/gui-wizard-gtk/wizard.c:586
 msgid "(no description)"
 msgstr "（没有说明）"
 
-#: ../src/gui-wizard-gtk/wizard.c:591
+#: ../src/gui-wizard-gtk/wizard.c:592
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu字节，%u个文件"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:914
+#: ../src/gui-wizard-gtk/wizard.c:915
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "没有定义针对事件 `%s' 的处理"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:1004
+#: ../src/gui-wizard-gtk/wizard.c:1005
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr "回溯是不完整的，请确定您提供了重复该错误的完整步骤。"
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1010
+#: ../src/gui-wizard-gtk/wizard.c:1011
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "不能报告因为回溯不可用。"
 
-#: ../src/gui-wizard-gtk/wizard.c:1019
+#: ../src/gui-wizard-gtk/wizard.c:1020
 msgid "You should check the backtrace for sensitive data."
 msgstr "您应该检查回溯中是否有敏感数据。"
 
-#: ../src/gui-wizard-gtk/wizard.c:1020
+#: ../src/gui-wizard-gtk/wizard.c:1021
 msgid "You must agree with sending the backtrace."
 msgstr "您必须同意发送此回溯。"
 
-#: ../src/gui-wizard-gtk/wizard.c:1076
+#: ../src/gui-wizard-gtk/wizard.c:1077
 msgid "Analyzing..."
 msgstr "分析..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1077
+#: ../src/gui-wizard-gtk/wizard.c:1078
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "分析完成，退出码为%d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1103
+#: ../src/gui-wizard-gtk/wizard.c:1104
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "报告结束，退出码 %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1220
+#: ../src/gui-wizard-gtk/wizard.c:1221
 msgid "Name"
 msgstr "名称"
 
-#: ../src/gui-wizard-gtk/wizard.c:1229
+#: ../src/gui-wizard-gtk/wizard.c:1230
 msgid "Value"
 msgstr "值"
 
@@ -493,7 +508,9 @@ msgid ""
 "Backtrace provides developers with details of the crash, helping them track "
 "down the source of the problem. Please review it and remove any sensitive "
 "data you would rather not share:"
-msgstr "回溯为开发者提供崩溃详情，帮助他们追查问题来源。请检查它并移除任何您不愿公开的敏感信息："
+msgstr ""
+"回溯为开发者提供崩溃详情，帮助他们追查问题来源。请检查它并移除任何您不愿公开"
+"的敏感信息："
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
@@ -592,16 +609,18 @@ msgstr "用法: %s\n"
 msgid ""
 " [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
+"identifies crash function in dump directory DIR"
 msgstr ""
 " [options] -d DIR\n"
 "\n"
 "在转储 DIR 目录中分析 C/C++ 回溯，生成副本哈希值，回溯评分，和识别崩溃函数"
 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:113
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -745,7 +764,7 @@ msgstr "如果GDB运行超过N秒就杀死它"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
+#.
 #: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -932,11 +951,9 @@ msgstr "已在 %s 中附加该报告"
 msgid "The report was stored to %s"
 msgstr "已在 %s 中保存该报告"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
 #: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
@@ -1037,7 +1054,7 @@ msgstr "不退出，为新的opps监视此文件"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
+#.
 #: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr ""
@@ -1061,8 +1078,8 @@ msgstr ""
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
@@ -1127,6 +1144,12 @@ msgstr ""
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Verify SSL"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:11
+msgid ""
+"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1

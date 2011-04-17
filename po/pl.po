@@ -2,20 +2,21 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2011-04-15 17:04+0200\n"
-"PO-Revision-Date: 2011-04-15 15:09+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2011-04-17 17:04+0200\n"
+"PO-Revision-Date: 2011-04-15 16:40+0000\n"
+"Last-Translator: raven <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <None>\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pl\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -100,6 +101,26 @@ msgid ""
 "\t-V, --version\t\tDisplay version and exit\n"
 "\t-v, --verbose\t\tBe verbose\n"
 msgstr ""
+"Użycie: %s -l[f] [-D KATALOG_PODSTAWOWY]...]\n"
+"   lub: %s -r[y] KATALOG_AWARII\n"
+"   lub: %s -i[b] KATALOG_AWARII\n"
+"   lub: %s -d KATALOG_AWARII\n"
+"\n"
+"\t-l, --list\t\tWyświetla listę jeszcze nie zgłoszonych problemów\n"
+"\t  -f, --full\t\tWyświetla listę wszystkich problemów\n"
+"\t-D BASE_DIR\t\tKatalog, z którego wyświetlić listę problemów\n"
+"\t\t\t\t(domyślnie: -D $HOME/.abrt/spool -D %s)\n"
+"\n"
+"\t-r, --report\t\tWysyła zgłoszenie o KATALOGU_AWARII\n"
+"\t  -y, --always\t\t...bez modyfikowania i pytań\n"
+"\t-i, --info\t\tWyświetla szczegółowe informacje o KATALOGU_AWARII\n"
+"\t  -f, --full\t\t...dołącza wpisy wielowierszowe\n"
+"\t\t\t\tUwaga: -if spowoduje uruchomienie analizy\n"
+"\t\t\t\t(jeśli KATALOG_AWARII podał analizy)\n"
+"\t-d, --delete\t\tUsuwa KATALOG_AWARII\n"
+"\n"
+"\t-V, --version\t\tWyświetla wersję i kończy działanie\n"
+"\t-v, --verbose\t\tWięcej komunikatów\n"
 
 #: ../src/cli/cli.c:260
 msgid "You must specify exactly one operation"
@@ -217,7 +238,7 @@ msgstr "Wybrano numer spoza zakresu"
 msgid "Invalid input, program exiting..."
 msgstr "Podano nieprawidłowe dane, kończenie działania programu..."
 
-#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1102
+#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1103
 msgid "Reporting..."
 msgstr "Zgłaszanie..."
 
@@ -334,21 +355,35 @@ msgstr ""
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Kończy działanie po SEKUNDACH nieaktywności"
 
-#: ../src/gtk-helpers/event_config_dialog.c:122
+#: ../src/gtk-helpers/event_config_dialog.c:123
 msgid "Show password"
 msgstr "Wyświetlanie hasła"
 
-#: ../src/gtk-helpers/event_config_dialog.c:343
+#: ../src/gtk-helpers/event_config_dialog.c:344
 msgid "Event Configuration"
 msgstr "Konfiguracja zdarzeń"
 
-#: ../src/gtk-helpers/event_config_dialog.c:368
+#: ../src/gtk-helpers/event_config_dialog.c:369
 msgid "Event"
 msgstr "Zdarzenie"
 
-#: ../src/gtk-helpers/event_config_dialog.c:401
+#: ../src/gtk-helpers/event_config_dialog.c:402
 msgid "Configure E_vent"
 msgstr "Skonfiguruj z_darzenie"
+
+#: ../src/gtk-helpers/event_config_dialog.c:424
+#, c-format
+msgid ""
+"Wrong settings detected for %s, reporting will probably fail if you continue "
+"with the current configuration."
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:428
+#, c-format
+msgid ""
+"Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
+"continue with the current configuration."
+msgstr ""
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -406,7 +441,8 @@ msgid ""
 msgstr ""
 " [-vp] [-g PLIK_GUI] KATALOG\n"
 "\n"
-"Narzędzie graficzne do analizowania i zgłaszania problemów zapisanych w podanym KATALOGU"
+"Narzędzie graficzne do analizowania i zgłaszania problemów zapisanych w "
+"podanym KATALOGU"
 
 #: ../src/gui-wizard-gtk/main.c:93
 msgid "Alternate GUI file"
@@ -421,32 +457,32 @@ msgstr ""
 "Wymagany jest zapisywalny katalog, ale \"%s\" nie jest zapisywalny. "
 "Przenieść go do \"%s\" i działać na przeniesionej kopii?"
 
-#: ../src/gui-wizard-gtk/wizard.c:558
+#: ../src/gui-wizard-gtk/wizard.c:559
 msgid "(click here to view/edit)"
 msgstr "(naciśnięcie tutaj wyświetla/modyfikuje)"
 
-#: ../src/gui-wizard-gtk/wizard.c:570
+#: ../src/gui-wizard-gtk/wizard.c:571
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(plik binarny, %llu bajtów)"
 
-#: ../src/gui-wizard-gtk/wizard.c:585
+#: ../src/gui-wizard-gtk/wizard.c:586
 msgid "(no description)"
 msgstr "(brak opisu)"
 
-#: ../src/gui-wizard-gtk/wizard.c:591
+#: ../src/gui-wizard-gtk/wizard.c:592
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu bajtów, %u plików"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:914
+#: ../src/gui-wizard-gtk/wizard.c:915
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Nie podano przetwarzania dla zdarzenia \"%s\""
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:1004
+#: ../src/gui-wizard-gtk/wizard.c:1005
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -455,37 +491,37 @@ msgstr ""
 "ponownego wywołania awarii."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1010
+#: ../src/gui-wizard-gtk/wizard.c:1011
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Zgłaszanie jest wyłączone, ponieważ nie można użyć wyjątku."
 
-#: ../src/gui-wizard-gtk/wizard.c:1019
+#: ../src/gui-wizard-gtk/wizard.c:1020
 msgid "You should check the backtrace for sensitive data."
 msgstr "Należy sprawdzić, czy wyjątek zawiera prywatne dane."
 
-#: ../src/gui-wizard-gtk/wizard.c:1020
+#: ../src/gui-wizard-gtk/wizard.c:1021
 msgid "You must agree with sending the backtrace."
 msgstr "Należy wyrazić zgodę na wysłanie wyjątku."
 
-#: ../src/gui-wizard-gtk/wizard.c:1076
+#: ../src/gui-wizard-gtk/wizard.c:1077
 msgid "Analyzing..."
 msgstr "Analizowanie..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1077
+#: ../src/gui-wizard-gtk/wizard.c:1078
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "Analizowanie zostało ukończone z kodem błędu %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1103
+#: ../src/gui-wizard-gtk/wizard.c:1104
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "Zgłaszanie zostało ukończone z kodem błędu %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1220
+#: ../src/gui-wizard-gtk/wizard.c:1221
 msgid "Name"
 msgstr "Nazwa"
 
-#: ../src/gui-wizard-gtk/wizard.c:1229
+#: ../src/gui-wizard-gtk/wizard.c:1230
 msgid "Value"
 msgstr "Wartość"
 
@@ -618,16 +654,19 @@ msgstr "Użycie: %s\n"
 msgid ""
 " [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
+"identifies crash function in dump directory DIR"
 msgstr ""
 " [opcje] -d KATALOG\n"
 "\n"
-"Analizuje wyjątki w języku C/C++, tworzy sumę duplikatu, ocenę wyjątku oraz identyfikuje funkcję awarii w KATALOGU zrzutów"
+"Analizuje wyjątki w języku C/C++, tworzy sumę duplikatu, ocenę wyjątku oraz "
+"identyfikuje funkcję awarii w KATALOGU zrzutów"
 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:113
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -773,7 +812,7 @@ msgstr "Kończy działanie GDB, jeśli jest uruchomione dłużej niż N sekund"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
+#.
 #: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -870,8 +909,8 @@ msgstr "Wyłączanie na polecenie użytkownika"
 #, python-format
 msgid "Usage: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 msgstr ""
-"Użycie: %s --core=PLIK_CORE --tmpdir=KATALOG_TYMCZASOWY "
-"--cache=KATALOG_PAMIĘCI_PODRĘCZNEJ"
+"Użycie: %s --core=PLIK_CORE --tmpdir=KATALOG_TYMCZASOWY --"
+"cache=KATALOG_PAMIĘCI_PODRĘCZNEJ"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:400
 msgid "You have to specify the path to coredump."
@@ -952,7 +991,7 @@ msgstr "Dołącza do PLIKU lub zastępuje go"
 
 #: ../src/plugins/abrt-action-print.c:56
 msgid "Create reported_to in DIR"
-msgstr ""
+msgstr "Tworzy reported_to w KATALOGU"
 
 #: ../src/plugins/abrt-action-print.c:100
 #, c-format
@@ -964,11 +1003,9 @@ msgstr "Zgłoszenie zostało dodane do %s"
 msgid "The report was stored to %s"
 msgstr "Zgłoszenie zostało przechowane w %s"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
 #: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
@@ -980,7 +1017,7 @@ msgstr "Pusty login lub hasło RHTS"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:101
 msgid "Can't create a temporary directory in /tmp"
-msgstr ""
+msgstr "Nie można utworzyć katalogu tymczasowego w /tmp"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:194
 msgid "Creating a new case..."
@@ -1003,7 +1040,8 @@ msgid ""
 msgstr ""
 " [-v] [-d ROZMIAR:KATALOG]... [-f ROZMIAR:KATALOG]... [-p KATALOG]\n"
 "\n"
-"Usuwa katalogi zrzutów (-d) lub pliki (-f) w KATALOGACH, dopóki nie staną się mniejsze niż ROZMIAR"
+"Usuwa katalogi zrzutów (-d) lub pliki (-f) w KATALOGACH, dopóki nie staną "
+"się mniejsze niż ROZMIAR"
 
 #: ../src/plugins/abrt-action-trim-files.c:167
 msgid "Delete dump dirs"
@@ -1053,6 +1091,9 @@ msgid ""
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
+" [-vsrowx] [-d KATALOG] PLIK\n"
+"\n"
+"Wydobywa awarię z pliku syslog/dmesg"
 
 #: ../src/plugins/abrt-dump-oops.c:586
 msgid "Parse kernel's message buffer before parsing FILE"
@@ -1068,10 +1109,10 @@ msgstr "Bez kończenia działania, obserwuje pliki pod kątem nowych awarii"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
+#.
 #: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
-msgstr ""
+msgstr "Tworzy zrzut ABRT w KATALOGU dla każdej odnalezionej awarii"
 
 #: ../src/plugins/abrt-dump-oops.c:593
 msgid "Make the dump directory world readable"
@@ -1092,9 +1133,12 @@ msgstr "Lokalny debuger GDB"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
 msgstr ""
+"Należy pobrać pakiety debuginfo, co może zająć dużo czasu i miejsca na "
+"dysku. Jednakże, w przeciwieństwie do RetraceServer, nie wysyła zrzutów core "
+"do zdalnych komputerów."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Address of the retrace server"
@@ -1116,6 +1160,11 @@ msgid ""
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
 msgstr ""
+"Wysyła zrzuty core do serwera, którzy tworzy wyjątek i go zwraca. Zalety: "
+"nie trzeba pobierać pakietów debuginfo. Baza danych pakietów debuginfo "
+"serwera ponownego śledzenia jest bardziej kompletna. Może on tworzyć lepsze "
+"wyjątki. Wady: wysyłane zrzuty core zawierają wszystkie dane programu, który "
+"uległ awarii, w tym potencjalnie prywatne dane."
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Address of Bugzilla server"
@@ -1159,6 +1208,12 @@ msgstr "Nazwa użytkownika"
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Verify SSL"
 msgstr "Sprawdzanie SSL"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:11
+msgid ""
+"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+msgstr ""
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops URL"

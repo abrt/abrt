@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2011-04-15 17:04+0200\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2011-04-17 17:04+0200\n"
 "PO-Revision-Date: 2011-04-15 15:09+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
+"Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: da\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -217,7 +217,7 @@ msgstr "Du har valgt et nummer som er uden for det tilladte"
 msgid "Invalid input, program exiting..."
 msgstr "Ugyldig input, program afslutter..."
 
-#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1102
+#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1103
 msgid "Reporting..."
 msgstr "Rapporterer..."
 
@@ -333,21 +333,35 @@ msgstr "Skriv til syslog, selv med -d"
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Afslut efter SEC sekunders inaktivitet"
 
-#: ../src/gtk-helpers/event_config_dialog.c:122
+#: ../src/gtk-helpers/event_config_dialog.c:123
 msgid "Show password"
 msgstr "Vis adgangskode"
 
-#: ../src/gtk-helpers/event_config_dialog.c:343
+#: ../src/gtk-helpers/event_config_dialog.c:344
 msgid "Event Configuration"
 msgstr "Konfiguration af begivenhed"
 
-#: ../src/gtk-helpers/event_config_dialog.c:368
+#: ../src/gtk-helpers/event_config_dialog.c:369
 msgid "Event"
 msgstr "Begivenhed"
 
-#: ../src/gtk-helpers/event_config_dialog.c:401
+#: ../src/gtk-helpers/event_config_dialog.c:402
 msgid "Configure E_vent"
 msgstr "Konfigurér b_egivenhed"
+
+#: ../src/gtk-helpers/event_config_dialog.c:424
+#, c-format
+msgid ""
+"Wrong settings detected for %s, reporting will probably fail if you continue "
+"with the current configuration."
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:428
+#, c-format
+msgid ""
+"Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
+"continue with the current configuration."
+msgstr ""
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -405,7 +419,8 @@ msgid ""
 msgstr ""
 " [-vp] [-g GUI_FIL] MAPPE\n"
 "\n"
-"Grafisk værktøj til at analysere og rapportere problemer gemt i en angivet mappe"
+"Grafisk værktøj til at analysere og rapportere problemer gemt i en angivet "
+"mappe"
 
 #: ../src/gui-wizard-gtk/main.c:93
 msgid "Alternate GUI file"
@@ -420,32 +435,32 @@ msgstr ""
 "Har brug for en skrivbar mappe, men \"%s\" er ikke skrivbar. Flyt det til "
 "\"%s\" og arbejd med den flyttede kopi?"
 
-#: ../src/gui-wizard-gtk/wizard.c:558
+#: ../src/gui-wizard-gtk/wizard.c:559
 msgid "(click here to view/edit)"
 msgstr "(klik her for at se/redigere)"
 
-#: ../src/gui-wizard-gtk/wizard.c:570
+#: ../src/gui-wizard-gtk/wizard.c:571
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr "(binærfil, %llu byte)"
 
-#: ../src/gui-wizard-gtk/wizard.c:585
+#: ../src/gui-wizard-gtk/wizard.c:586
 msgid "(no description)"
 msgstr "(ingen beskrivelse)"
 
-#: ../src/gui-wizard-gtk/wizard.c:591
+#: ../src/gui-wizard-gtk/wizard.c:592
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu byte, %u filer"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:914
+#: ../src/gui-wizard-gtk/wizard.c:915
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "Ingen behandling for begivenheden \"%s\" er defineret"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:1004
+#: ../src/gui-wizard-gtk/wizard.c:1005
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -454,37 +469,37 @@ msgstr ""
 "reproducere fejlen."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1010
+#: ../src/gui-wizard-gtk/wizard.c:1011
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Rapportering er deaktiveret fordi backtracen er ubrugelig."
 
-#: ../src/gui-wizard-gtk/wizard.c:1019
+#: ../src/gui-wizard-gtk/wizard.c:1020
 msgid "You should check the backtrace for sensitive data."
 msgstr "Du bør kontrollere backtracen for følsomme data."
 
-#: ../src/gui-wizard-gtk/wizard.c:1020
+#: ../src/gui-wizard-gtk/wizard.c:1021
 msgid "You must agree with sending the backtrace."
 msgstr "Du skal godkende at backtracen bliver sendt."
 
-#: ../src/gui-wizard-gtk/wizard.c:1076
+#: ../src/gui-wizard-gtk/wizard.c:1077
 msgid "Analyzing..."
 msgstr "Analyserer..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1077
+#: ../src/gui-wizard-gtk/wizard.c:1078
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "Analysering afsluttede med exit-kode %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1103
+#: ../src/gui-wizard-gtk/wizard.c:1104
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "Rapportering afsluttede med exit-kode %d"
 
-#: ../src/gui-wizard-gtk/wizard.c:1220
+#: ../src/gui-wizard-gtk/wizard.c:1221
 msgid "Name"
 msgstr "Navn"
 
-#: ../src/gui-wizard-gtk/wizard.c:1229
+#: ../src/gui-wizard-gtk/wizard.c:1230
 msgid "Value"
 msgstr "Værdi"
 
@@ -511,8 +526,8 @@ msgid ""
 "down the source of the problem. Please review it and remove any sensitive "
 "data you would rather not share:"
 msgstr ""
-"Backtracen giver udviklerne detaljer om nedbruddet, hjælper dem med at finde"
-" kilden til problemet. Gennemlæs det og fjern alle følsomme data, som du "
+"Backtracen giver udviklerne detaljer om nedbruddet, hjælper dem med at finde "
+"kilden til problemet. Gennemlæs det og fjern alle følsomme data, som du "
 "helst ikke vil dele:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
@@ -619,16 +634,19 @@ msgstr "Brug %s\n"
 msgid ""
 " [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
+"identifies crash function in dump directory DIR"
 msgstr ""
 " [tilvalg] -d MAPPE\n"
 "\n"
-"Analyserer C/C++-backtrace, genererer duplikationshash, backtrace-bedømmelse og identificerer nedbrudsfunktion i dump-mappen"
+"Analyserer C/C++-backtrace, genererer duplikationshash, backtrace-bedømmelse "
+"og identificerer nedbrudsfunktion i dump-mappen"
 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:113
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -773,7 +791,7 @@ msgstr "Afslut gdb hvis den kører i mere end N sekunder"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
+#.
 #: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -961,11 +979,9 @@ msgstr "Rapporten blev lagt til %s"
 msgid "The report was stored to %s"
 msgstr "Rapporten blev gemt til %s"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
 #: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
@@ -1001,7 +1017,8 @@ msgid ""
 msgstr ""
 " [-v] [-d STØRRELSE:MAPPE]... [-f STØRRELSE:MAPPE]... [-p MAPPE]\n"
 "\n"
-"Sletter dump-mapper (-d) eller filer (-f) i MAPPER indtil de er mindre end STØRRELSE"
+"Sletter dump-mapper (-d) eller filer (-f) i MAPPER indtil de er mindre end "
+"STØRRELSE"
 
 #: ../src/plugins/abrt-action-trim-files.c:167
 msgid "Delete dump dirs"
@@ -1066,7 +1083,7 @@ msgstr "Afslut ikke, kontrollér filen for nye oops'er"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
+#.
 #: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr ""
@@ -1090,8 +1107,8 @@ msgstr "Lokal GNU-fejlsøger"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
@@ -1157,6 +1174,12 @@ msgstr "Brugernavn"
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Verify SSL"
 msgstr "Verificér SSL"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:11
+msgid ""
+"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+msgstr ""
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops URL"

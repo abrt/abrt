@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2011-04-15 17:04+0200\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2011-04-17 17:04+0200\n"
 "PO-Revision-Date: 2011-04-15 15:09+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Malayalam <discuss@lists.smc.org.in>\n"
+"Language: ml\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ml\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -46,9 +46,7 @@ msgstr "മുന്നറിയിപ്പു്"
 #: ../src/applet/applet_gtk.c:259
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
-msgstr ""
-"ABRT കണ്ടുപിടിക്കുന്ന പ്രശ്നങ്ങളെപ്പറ്റി ഉപയോക്താവിനെ അറിയിക്കുന്നതിനായുള്ള "
-"ആപ്ലെറ്റ്"
+msgstr "ABRT കണ്ടുപിടിക്കുന്ന പ്രശ്നങ്ങളെപ്പറ്റി ഉപയോക്താവിനെ അറിയിക്കുന്നതിനായുള്ള ആപ്ലെറ്റ്"
 
 #: ../src/applet/applet_gtk.c:275 ../src/gui-gtk/abrt-gtk.c:236
 msgid "translator-credits"
@@ -158,9 +156,7 @@ msgstr "# ഓപ്പറേറ്റിങ് സിസ്റ്റത്തി
 
 #: ../src/cli/report.c:276
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr ""
-"vi പ്രവര്‍ത്തിപ്പിയ്ക്കുവാന്‍ സാധ്യമല്ല: $TERM, $VISUAL, $EDITOR എന്നിവ "
-"സജ്ജമല്ല"
+msgstr "vi പ്രവര്‍ത്തിപ്പിയ്ക്കുവാന്‍ സാധ്യമല്ല: $TERM, $VISUAL, $EDITOR എന്നിവ സജ്ജമല്ല"
 
 #: ../src/cli/report.c:360
 msgid ""
@@ -215,7 +211,7 @@ msgstr ""
 msgid "Invalid input, program exiting..."
 msgstr ""
 
-#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1102
+#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1103
 msgid "Reporting..."
 msgstr "റിപോര്‍ട്ട് ചെയ്യുന്നു..."
 
@@ -309,8 +305,8 @@ msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
 msgstr ""
-"വ്യാപ്തി കോട്ടയേക്കാള്‍ കൂടിയിരിയ്ക്കുന്നു. ദയവായി abrt.conf-ലുള്ള "
-"സിസ്റ്റത്തിന്റെ MaxCrashReportsSize മൂല്ല്യം പരിശോധിക്കുക."
+"വ്യാപ്തി കോട്ടയേക്കാള്‍ കൂടിയിരിയ്ക്കുന്നു. ദയവായി abrt.conf-ലുള്ള സിസ്റ്റത്തിന്റെ "
+"MaxCrashReportsSize മൂല്ല്യം പരിശോധിക്കുക."
 
 #: ../src/daemon/Daemon.cpp:544
 msgid "Do not daemonize"
@@ -324,20 +320,34 @@ msgstr ""
 msgid "Exit after SEC seconds of inactivity"
 msgstr ""
 
-#: ../src/gtk-helpers/event_config_dialog.c:122
+#: ../src/gtk-helpers/event_config_dialog.c:123
 msgid "Show password"
 msgstr "രഹസ്യവാക്ക് കാണിയ്ക്കുക"
 
-#: ../src/gtk-helpers/event_config_dialog.c:343
+#: ../src/gtk-helpers/event_config_dialog.c:344
 msgid "Event Configuration"
 msgstr ""
 
-#: ../src/gtk-helpers/event_config_dialog.c:368
+#: ../src/gtk-helpers/event_config_dialog.c:369
 msgid "Event"
 msgstr ""
 
-#: ../src/gtk-helpers/event_config_dialog.c:401
+#: ../src/gtk-helpers/event_config_dialog.c:402
 msgid "Configure E_vent"
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:424
+#, c-format
+msgid ""
+"Wrong settings detected for %s, reporting will probably fail if you continue "
+"with the current configuration."
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:428
+#, c-format
+msgid ""
+"Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
+"continue with the current configuration."
 msgstr ""
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
@@ -402,73 +412,69 @@ msgid ""
 "operate on the moved copy?"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:558
+#: ../src/gui-wizard-gtk/wizard.c:559
 msgid "(click here to view/edit)"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:570
+#: ../src/gui-wizard-gtk/wizard.c:571
 #, c-format
 msgid "(binary file, %llu bytes)"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:585
+#: ../src/gui-wizard-gtk/wizard.c:586
 msgid "(no description)"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:591
+#: ../src/gui-wizard-gtk/wizard.c:592
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr ""
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:914
+#: ../src/gui-wizard-gtk/wizard.c:915
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr ""
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:1004
+#: ../src/gui-wizard-gtk/wizard.c:1005
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
-msgstr ""
-"ബാക്ക്ട്രെയിസ് പൂര്‍ണ്ണമല്ല, തയ്യാറാക്കുന്നതിനുള്ള ഉത്തമ രീതികള്‍ ദയവായി "
-"നല്‍കുക."
+msgstr "ബാക്ക്ട്രെയിസ് പൂര്‍ണ്ണമല്ല, തയ്യാറാക്കുന്നതിനുള്ള ഉത്തമ രീതികള്‍ ദയവായി നല്‍കുക."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1010
+#: ../src/gui-wizard-gtk/wizard.c:1011
 msgid "Reporting disabled because the backtrace is unusable."
-msgstr ""
-"ബാക്ക്ട്രെയിസ് ഉപയോഗപ്രദമല്ല, അതിനാല്‍ റിപോര്‍ട്ട് ചെയ്യുന്നതു് "
-"നിര്‍ജീവമാക്കിയിരിക്കുന്നു."
+msgstr "ബാക്ക്ട്രെയിസ് ഉപയോഗപ്രദമല്ല, അതിനാല്‍ റിപോര്‍ട്ട് ചെയ്യുന്നതു് നിര്‍ജീവമാക്കിയിരിക്കുന്നു."
 
-#: ../src/gui-wizard-gtk/wizard.c:1019
+#: ../src/gui-wizard-gtk/wizard.c:1020
 msgid "You should check the backtrace for sensitive data."
 msgstr "സെന്‍സിറ്റീവ് ഡേറ്റയ്ക്കായി ബാക്ക്ട്രെയിസ് പരിശോധിക്കണം."
 
-#: ../src/gui-wizard-gtk/wizard.c:1020
+#: ../src/gui-wizard-gtk/wizard.c:1021
 msgid "You must agree with sending the backtrace."
 msgstr "ബാക്ക്ട്രെയിസ് അയയ്ക്കുവാന്‍ സമ്മതിയ്ക്കുക."
 
-#: ../src/gui-wizard-gtk/wizard.c:1076
+#: ../src/gui-wizard-gtk/wizard.c:1077
 msgid "Analyzing..."
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1077
+#: ../src/gui-wizard-gtk/wizard.c:1078
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1103
+#: ../src/gui-wizard-gtk/wizard.c:1104
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr ""
 
-#: ../src/gui-wizard-gtk/wizard.c:1220
+#: ../src/gui-wizard-gtk/wizard.c:1221
 msgid "Name"
 msgstr "പേരു്"
 
-#: ../src/gui-wizard-gtk/wizard.c:1229
+#: ../src/gui-wizard-gtk/wizard.c:1230
 msgid "Value"
 msgstr ""
 
@@ -590,13 +596,15 @@ msgstr ""
 msgid ""
 " [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
+"identifies crash function in dump directory DIR"
 msgstr ""
 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:113
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -661,8 +669,8 @@ msgstr "നിര്‍ബന്ധമായും ആവശ്യമുള്�
 #: ../src/plugins/abrt-action-bugzilla.cpp:827
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
-"get_bug_info() പരാജയപ്പെട്ടു. നിര്‍ബന്ധമായും ആവശ്യമുള്ള എല്ലാ വിവരങ്ങളും "
-"ശേഖരിക്കുവാന്‍ സാധ്യമായില്ല"
+"get_bug_info() പരാജയപ്പെട്ടു. നിര്‍ബന്ധമായും ആവശ്യമുള്ള എല്ലാ വിവരങ്ങളും ശേഖരിക്കുവാന്‍ "
+"സാധ്യമായില്ല"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:766
 msgid "Creating a new bug"
@@ -727,7 +735,7 @@ msgstr ""
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
+#.
 #: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -905,11 +913,9 @@ msgstr "%s-ലേക്ക് റിപോര്‍ട്ട് ചേര്‍�
 msgid "The report was stored to %s"
 msgstr "റിപോര്‍ട്ട് %s-ലേക്ക് സൂക്ഷിച്ചിരിയ്ക്കുന്നു"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
 #: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
@@ -1001,7 +1007,7 @@ msgstr ""
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
+#.
 #: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr ""
@@ -1025,8 +1031,8 @@ msgstr ""
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
@@ -1091,6 +1097,12 @@ msgstr ""
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Verify SSL"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:11
+msgid ""
+"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
