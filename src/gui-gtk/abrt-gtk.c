@@ -349,7 +349,7 @@ GtkWidget *create_main_window(void)
     g_main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(g_main_window), 700, 700);
     gtk_window_set_title(GTK_WINDOW(g_main_window), _("Automatic Bug Reporting Tool"));
-    gtk_window_set_icon_name(GTK_WINDOW(g_main_window), "abrt");
+    gtk_window_set_default_icon_name("abrt");
 
     GtkWidget *main_vbox = gtk_vbox_new(false, 0);
 

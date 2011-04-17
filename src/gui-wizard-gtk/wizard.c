@@ -1346,7 +1346,10 @@ void create_assistant()
 
     GtkWindow *wnd_assistant = GTK_WINDOW(g_assistant);
     gtk_window_set_default_size(wnd_assistant, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    gtk_window_set_icon_name(wnd_assistant, "abrt");
+    /* set_default sets icon for every windows used in this app, so we don't
+       have to set the icon for those windows manually
+    */
+    gtk_window_set_default_icon_name("abrt");
 
     GObject *obj_assistant = G_OBJECT(g_assistant);
     g_signal_connect(obj_assistant, "cancel", G_CALLBACK(gtk_main_quit), NULL);
