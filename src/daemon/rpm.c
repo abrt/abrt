@@ -107,7 +107,7 @@ int rpm_chk_fingerprint(const char* pkg)
     if (!header)
         goto error;
 
-    pgpsig = headerFormat(header, "%{SIGGPG:pgpsig}", &errmsg);
+    pgpsig = headerFormat(header, "%|SIGGPG?{%{SIGGPG:pgpsig}}:{%{SIGPGP:pgpsig}}|", &errmsg);
     if (!pgpsig && errmsg)
     {
         VERB1 log("cannot get siggpg:pgpsig. reason: %s", errmsg);
@@ -119,7 +119,7 @@ int rpm_chk_fingerprint(const char* pkg)
         if (pgpsig_tmp)
         {
             pgpsig_tmp += sizeof(" Key ID ") - 1;
-            ret = (g_list_find(list_fingerprints, pgpsig_tmp) != NULL);
+            ret = g_list_find_custom(list_fingerprints, pgpsig_tmp, (GCompareFunc)g_strcmp0) != NULL;
         }
     }
 

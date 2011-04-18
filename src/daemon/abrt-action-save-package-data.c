@@ -198,7 +198,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
 
         if (g_settings_bOpenGPGCheck && !remote)
         {
-            if (rpm_chk_fingerprint(package_short_name))
+            if (!rpm_chk_fingerprint(package_short_name))
             {
                 log("Package '%s' isn't signed with proper key", package_short_name);
                 goto ret; /* return 1 (failure) */
