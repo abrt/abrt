@@ -514,27 +514,38 @@ int main(int argc, char** argv)
         dd_create_basic_files(dd, uid);
 
         char source_filename[sizeof("/proc/%lu/smaps") + sizeof(long)*3];
-        int base_name = sprintf(source_filename, "/proc/%lu/smaps", (long)pid);
-        base_name -= strlen("smaps");
+        int source_base_ofs = sprintf(source_filename, "/proc/%lu/smaps", (long)pid);
+        source_base_ofs -= strlen("smaps");
         char *dest_filename = concat_path_file(dd->dd_dirname, FILENAME_SMAPS);
-        copy_file(source_filename, dest_filename, 0640);
-        chown(dest_filename, dd->dd_uid, dd->dd_gid);
-        strcpy(source_filename + base_name, "maps");
-        strcpy(strrchr(dest_filename, '/') + 1, FILENAME_MAPS);
-        copy_file(source_filename, dest_filename, 0640);
-        chown(dest_filename, dd->dd_uid, dd->dd_gid);
-        free(dest_filename);
+        char *dest_base = strrchr(dest_filename, '/') + 1;
 
-        char *cmdline = get_cmdline(pid); /* never NULL */
-        char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)",
-                                 executable, signal_str, signame ? signame : signal_str);
+        // Disabled for now: /proc/PID/smaps tends to be BIG,
+        // and not much more informative than /proc/PID/maps:
+        //copy_file(source_filename, dest_filename, 0640);
+        //chown(dest_filename, dd->dd_uid, dd->dd_gid);
+
+        strcpy(source_filename + source_base_ofs, "maps");
+        strcpy(dest_base, FILENAME_MAPS);
+        copy_file(source_filename, dest_filename, 0640);
+        chown(dest_filename, dd->dd_uid, dd->dd_gid);
+
+        free(dest_filename);
 
         dd_save_text(dd, FILENAME_ANALYZER, "CCpp");
         dd_save_text(dd, FILENAME_EXECUTABLE, executable);
-        dd_save_text(dd, FILENAME_CMDLINE, cmdline);
+
+        char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)",
+                                 executable, signal_str, signame ? signame : signal_str);
         dd_save_text(dd, FILENAME_REASON, reason);
-        free(cmdline);
         free(reason);
+
+        char *cmdline = get_cmdline(pid);
+        dd_save_text(dd, FILENAME_CMDLINE, cmdline ? : "");
+        free(cmdline);
+
+        char *environ = get_environ(pid);
+        dd_save_text(dd, FILENAME_ENVIRON, environ ? : "");
+        free(environ);
 
         if (src_fd_binary > 0)
         {

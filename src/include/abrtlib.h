@@ -224,6 +224,8 @@ char* hex2bin(char *dst, const char *str, int count);
  */
 #define get_cmdline abrt_get_cmdline
 char* get_cmdline(pid_t pid);
+#define get_environ abrt_get_environ
+char* get_environ(pid_t pid);
 
 /* Returns 1 if abrtd daemon is running, 0 otherwise. */
 #define daemon_is_ok abrt_daemon_is_ok

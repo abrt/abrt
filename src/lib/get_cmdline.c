@@ -21,7 +21,6 @@ static char *append_escaped(char *start, const char *s)
 {
     char hex_char_buf[] = "\\x00";
 
-    *start++ = ' ';
     char *dst = start;
     const unsigned char *p = (unsigned char *)s;
 
@@ -72,34 +71,66 @@ static char *append_escaped(char *start, const char *s)
     }
 }
 
-// taken from kernel
-#define COMMAND_LINE_SIZE 2048
-char* get_cmdline(pid_t pid)
+static char* get_escaped(const char *path, char separator)
 {
-    char path[sizeof("/proc/%lu/cmdline") + sizeof(long)*3];
-    char cmdline[COMMAND_LINE_SIZE];
-    char escaped_cmdline[COMMAND_LINE_SIZE*4 + 4];
+    unsigned total_esc_len = 0;
+    char *escaped = NULL;
 
-    escaped_cmdline[1] = '\0';
-    sprintf(path, "/proc/%lu/cmdline", (long)pid);
     int fd = open(path, O_RDONLY);
     if (fd >= 0)
     {
-        int len = read(fd, cmdline, sizeof(cmdline) - 1);
-        close(fd);
-
-        if (len > 0)
+        while (1)
         {
-            cmdline[len] = '\0';
-            char *src = cmdline;
-            char *dst = escaped_cmdline;
-            while ((src - cmdline) < len)
+            /* read and escape one block */
+            char buffer[4 * 1024 + 1];
+            int len = read(fd, buffer, sizeof(buffer) - 1);
+            if (len <= 0)
+                break;
+            buffer[len] = '\0';
+            escaped = xrealloc(escaped, total_esc_len + (len+1) * 4);
+            char *src = buffer;
+            char *dst = escaped + total_esc_len;
+            while (1)
             {
-                dst = append_escaped(dst, src);
+                /* escape till next '\0' char */
+                char *d = append_escaped(dst, src);
+                total_esc_len += (d - dst);
+                dst = d;
                 src += strlen(src) + 1;
+                if ((src - buffer) >= len)
+                    break;
+                *dst++ = separator;
             }
+            *dst = '\0';
         }
+        close(fd);
     }
 
-    return xstrdup(escaped_cmdline + 1); /* +1 skips extraneous leading space */
+    return escaped;
+}
+
+char* get_cmdline(pid_t pid)
+{
+    char path[sizeof("/proc/%lu/cmdline") + sizeof(long)*3];
+    sprintf(path, "/proc/%lu/cmdline", (long)pid);
+    return get_escaped(path, ' ');
+}
+
+char* get_environ(pid_t pid)
+{
+    char path[sizeof("/proc/%lu/environ") + sizeof(long)*3];
+    sprintf(path, "/proc/%lu/environ", (long)pid);
+    char *e = get_escaped(path, '\n');
+    /* Append last '\n' if needed */
+    if (e && e[0])
+    {
+        unsigned len = strlen(e);
+        if (e[len-1] != '\n')
+        {
+            e = xrealloc(e, len + 2);
+            e[len] = '\n';
+            e[len+1] = '\0';
+        }
+    }
+    return e;
 }

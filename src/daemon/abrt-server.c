@@ -126,8 +126,8 @@ static void create_debug_dump()
     dd_save_text(dd, FILENAME_REASON, reason);
 
     /* Obtain and save the command line. */
-    char *cmdline = get_cmdline(pid); // never NULL
-    dd_save_text(dd, FILENAME_CMDLINE, cmdline);
+    char *cmdline = get_cmdline(pid);
+    dd_save_text(dd, FILENAME_CMDLINE, cmdline ? : "");
     free(cmdline);
 
     /* Store id of the user whose application crashed. */
