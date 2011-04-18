@@ -152,7 +152,7 @@ if __name__ == "__main__":
         mockcfg = open("%s/mock.cfg" % savedir, "w")
         mockcfg.write("config_opts['root'] = '%s'\n" % taskid)
         mockcfg.write("config_opts['target_arch'] = '%s'\n" % arch)
-        mockcfg.write("config_opts['chroot_setup_cmd'] = 'install %s shadow-utils gdb rpm'\n" % packages)
+        mockcfg.write("config_opts['chroot_setup_cmd'] = '--skip-broken install %s shadow-utils gdb rpm'\n" % packages)
         mockcfg.write("config_opts['plugin_conf']['ccache_enable'] = False\n")
         mockcfg.write("config_opts['plugin_conf']['yum_cache_enable'] = False\n")
         mockcfg.write("config_opts['plugin_conf']['root_cache_enable'] = False\n")
