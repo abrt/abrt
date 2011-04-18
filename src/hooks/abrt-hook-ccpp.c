@@ -308,7 +308,9 @@ int main(int argc, char** argv)
     {
         /* percent specifier:                %s    %c              %p  %u  %g  %t   %h       %e */
         /* argv:                 [0] [1]     [2]   [3]             [4] [5] [6] [7]  [8]      [9]         [10] */
-        error_msg_and_die("Usage: %s DUMPDIR SIGNO CORE_SIZE_LIMIT PID UID GID TIME HOSTNAME BINARY_NAME [OLD_PATTERN]", argv[0]);
+      // [OLD_PATTERN] is deprecated, so removing it from help:
+      //error_msg_and_die("Usage: %s DUMPDIR SIGNO CORE_SIZE_LIMIT PID UID GID TIME HOSTNAME BINARY_NAME [OLD_PATTERN]", argv[0]);
+        error_msg_and_die("Usage: %s DUMPDIR SIGNO CORE_SIZE_LIMIT PID UID GID TIME HOSTNAME BINARY_NAME", argv[0]);
     }
 
     /* Not needed on 2.6.30.
@@ -345,7 +347,20 @@ int main(int argc, char** argv)
     {
         perror_msg_and_die("pid '%s' or limit '%s' is bogus", argv[4], argv[3]);
     }
-    if (argv[10]) /* OLD_PATTERN */
+
+    FILE *saved_core_pattern = fopen(VAR_RUN"/abrt/saved_core_pattern", "r");
+    if (saved_core_pattern)
+    {
+        char *s = xmalloc_fgetline(saved_core_pattern);
+        fclose(saved_core_pattern);
+        /* If we have a saved pattern and it's not a "|PROG ARGS" thing... */
+        if (s && s[0] != '|')
+        {
+            core_basename = s;
+            argv[10] = NULL; /* don't use old way to pass OLD_PATTERN */
+        }
+    }
+    if (argv[10]) /* OLD_PATTERN (deprecated) */
     {
         char *buf = (char*) xzalloc(strlen(argv[10]) / 2 + 2);
         char *end = hex2bin(buf, argv[10], strlen(argv[10]));

@@ -62,17 +62,9 @@ start() {
 	if test x"$cur_first" != x"|$HOOK_BIN"; then   # no
 		# It is not installed
 		printf "%s\n" "$cur" >"$SAVED_PATTERN_FILE"
-		OLD_PATTERN=""
-		# Does old pattern start with '|'?
-		if test x"${cur#|}" = x"$cur"; then   # no
-			# Encode it as hex string, NUL terminated
-			OLD_PATTERN=`printf "%s" "$cur" | od -tx1 | sed 's/000[^ ]*//' | xargs | sed 's/ //g'`
-			$verbose && printf "OLD_PATTERN:'%s'\n" "$OLD_PATTERN"
-			OLD_PATTERN=" ${OLD_PATTERN}00"
-		fi
 		# Install new handler
-		$verbose && printf "Installing to %s:'%s'\n" "$PATTERN_FILE" "${PATTERN}${OLD_PATTERN}"
-		$dry_run || echo "${PATTERN}${OLD_PATTERN}" >"$PATTERN_FILE"
+		$verbose && printf "Installing to %s:'%s'\n" "$PATTERN_FILE" "$PATTERN"
+		$dry_run || echo "$PATTERN" >"$PATTERN_FILE"
 		$dry_run || touch -- "$LOCK"
 
 		# Check core_pipe_limit and change it if it's 0,
