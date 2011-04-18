@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 import os
-import shutil
 import sys
 import time
 from retrace import *
@@ -13,31 +12,49 @@ if __name__ == "__main__":
 
     try:
         log = open(logfile, "a")
-        log.write(time.strftime("[%Y-%m-%d %H:%M:%S] Running cleanup\n"))
-
-        files = os.listdir(CONFIG["WorkDir"])
     except IOError, ex:
         print "Error opening log file: %s" % ex
         sys.exit(1)
+
+    log.write(time.strftime("[%Y-%m-%d %H:%M:%S] Running cleanup\n"))
+
+    # kill tasks running > 1 hour
+    ps_output = run_ps()
+    running_tasks = get_running_tasks(ps_output)
+    for pid, taskid, runtime in running_tasks:
+        # ToDo: 5 = mm:ss, >5 = hh:mm:ss
+        if len(runtime) > 5:
+            log.write("Killing task %d running for %s\n" % (taskid, runtime))
+            kill_process_and_childs(pid, ps_output)
+
+    # kill orphaned tasks
+    running_tasks = get_running_tasks()
+    running_ids = []
+    for pid, taskid, runtime in running_tasks:
+        running_ids.append(taskid)
+
+    for task in get_active_tasks():
+        if not task in running_ids:
+            log.write("Cleaning up orphaned task %d\n" % task)
+            cleanup_task(task)
+
+    # clean up old tasks
+    try:
+        files = os.listdir(CONFIG["SaveDir"])
     except OSError, ex:
-        log.write("Unable to list work directory: %s" % ex)
-        sys.exit(2)
+        files = []
+        log.write("Error listing task directory: %s\n" % ex)
 
     for filename in files:
-        filepath = "%s/%s" % (CONFIG["WorkDir"], filename)
-        if os.path.isdir(filepath):
-            try:
-                if (now - os.path.getctime(filepath)) / 3600 >= CONFIG["DeleteTaskAfter"]:
-                    log.write("Deleting directory '%s'\n" % filepath)
-                    shutil.rmtree(filepath)
-            except OSError, ex:
-                log.write("Error deleting directory: %s\n" % (filepath, ex))
-            except IOError, ex:
-                print "Unable to write to log file: %s" % ex
-                sys.exit(3)
+        try:
+            taskid = int(filename)
+        except:
+            continue
 
-    try:
-        log.close()
-    except IOError, ex:
-        print "Error closing log file: %s" % ex
-        sys.exit(4)
+        dirpath = "%s/%s" % (CONFIG["SaveDir"], filename)
+        if os.path.isdir(dirpath) and \
+           (now - os.path.getatime(dirpath)) / 3600 >= CONFIG["DeleteTaskAfter"]:
+            log.write("Deleting old task %s\n" % filename)
+            call(["rm", "-rf", dirpath])
+
+    log.close()
