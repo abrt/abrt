@@ -35,4 +35,12 @@ def application(environ, start_response):
         else:
             status = "FINISHED_FAILURE"
 
-    return response(start_response, "200 OK", status, [("X-Task-Status", status)])
+    statusmsg = status
+    try:
+        statusfile = open("%s/status" % taskdir, "r")
+        statusmsg = statusfile.read()
+        statusfile.close()
+    except:
+        pass
+
+    return response(start_response, "200 OK", statusmsg, [("X-Task-Status", status)])

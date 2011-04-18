@@ -60,6 +60,21 @@ CONFIG = {
   "DBFile": "stats.db",
 }
 
+STATUS_ANALYZE, STATUS_INIT, STATUS_BACKTRACE, STATUS_CLEANUP, \
+STATUS_STATS, STATUS_FINISHING, STATUS_SUCCESS, STATUS_FAIL = xrange(8)
+
+STATUS = [
+  "Analyzing crash data",
+  "Initializing virtual root",
+  "Generating backtrace",
+  "Cleaning up virtual root",
+  "Saving crash statistics",
+  "Finishing task",
+  "Retrace job finished successfully",
+  "Retrace job failed",
+]
+
+
 def lock(lockfile):
     try:
         if not os.path.isfile(lockfile):

@@ -5,6 +5,28 @@ import time
 from retrace import *
 
 LOG = None
+taskid = None
+
+def set_status(statusid):
+    "Sets status for the task"
+    if not LOG or not taskid:
+        return
+
+    filepath = "%s/%s/status" % (CONFIG["SaveDir"], taskid)
+    try:
+        statusfile = open(filepath, "w")
+        statusfile.write(STATUS[statusid])
+        statusfile.close()
+    except:
+        pass
+
+    LOG.write("%s " %  STATUS[statusid])
+
+def fail(exitcode):
+    "Kills script with given exitcode"
+    LOG.close()
+    set_status(STATUS_FAIL)
+    sys.exit(exitcode)
 
 def retrace_run(errorcode, cmd):
     "Runs cmd using subprocess.Popen and kills script with errorcode on failure"
@@ -19,8 +41,7 @@ def retrace_run(errorcode, cmd):
 
     if not process or process.returncode != 0:
         LOG.write("Error %d:\n=== OUTPUT ===\n%s\n" % (errorcode, output))
-        LOG.close()
-        sys.exit(errorcode)
+        fail(errorcode)
 
     return output
 
@@ -33,7 +54,7 @@ if __name__ == "__main__":
 
     taskid = sys.argv[1]
     try:
-        int(taskid)
+        taskid_int = int(sys.argv[1])
     except:
         sys.stderr.write("Task ID may only contain digits.\n")
         sys.exit(12)
@@ -44,7 +65,7 @@ if __name__ == "__main__":
         workdir = "%s/%s" % (CONFIG["WorkDir"], taskid)
 
     if not os.path.isdir(savedir):
-        sys.stderr.write("Task '%s' does not exist.\n" % workdir)
+        sys.stderr.write("Task '%s' does not exist.\n" % taskid)
         sys.exit(13)
 
     try:
@@ -53,20 +74,20 @@ if __name__ == "__main__":
         sys.stderr.write("Unable to start logging for task '%s': %s.\n" % (taskid, ex))
         sys.exit(14)
 
+    set_status(STATUS_ANALYZE)
+
     # check the crash directory for required files
     for required_file in REQUIRED_FILES:
         if not os.path.isfile("%s/crash/%s" % (savedir, required_file)):
             LOG.write("Crash directory does not contain required file '%s'.\n" % required_file)
-            LOG.close()
-            sys.exit(15)
+            fail(15)
 
     # read architecture from coredump
     arch = guess_arch("%s/crash/coredump" % savedir)
 
     if not arch:
         LOG.write("Unable to read architecture from 'coredump' file.\n")
-        LOG.close()
-        sys.exit(16)
+        fail(16)
 
     # read package file
     try:
@@ -75,8 +96,7 @@ if __name__ == "__main__":
         package_file.close()
     except Exception as ex:
         LOG.write("Unable to read crash package from 'package' file: %s.\n" % ex)
-        LOG.close()
-        sys.exit(17)
+        fail(17)
 
     # read release, distribution and version from release file
     release_path = "%s/crash/os_release" % savedir
@@ -107,8 +127,7 @@ if __name__ == "__main__":
             LOG.write("%s-%s\n" % (distribution, version))
         else:
             LOG.write("Failure\n")
-            LOG.close()
-            sys.exit(18)
+            fail(18)
 
     # read package file
     try:
@@ -117,8 +136,7 @@ if __name__ == "__main__":
         package_file.close()
     except Exception as ex:
         LOG.write("Unable to read crash package from 'package' file: %s.\n" % ex)
-        LOG.close()
-        sys.exit(19)
+        fail(19)
 
     packages = crash_package
 
@@ -144,8 +162,7 @@ if __name__ == "__main__":
         pipe.close()
     except Exception as ex:
         LOG.write("Unable to obtain packages from 'coredump' file: %s.\n" % ex)
-        LOG.close()
-        sys.exit(20)
+        fail(20)
 
     # create mock config file
     try:
@@ -180,8 +197,9 @@ if __name__ == "__main__":
         mockcfg.close()
     except Exception as ex:
         LOG.write("Unable to create mock config file: %s.\n" % ex)
-        LOG.close()
-        sys.exit(21)
+        fail(21)
+
+    LOG.write("OK\n")
 
     # get count of tasks running before starting
     prerunning = len(get_active_tasks()) - 1
@@ -189,21 +207,22 @@ if __name__ == "__main__":
     # run retrace
     mockr = "../../%s/mock" % savedir
 
-    LOG.write("Initializing virtual root... ")
+    set_status(STATUS_INIT)
 
     retrace_run(25, ["mock", "init", "-r", mockr])
     retrace_run(26, ["mock", "-r", mockr, "--copyin", "%s/crash" % savedir, "/var/spool/abrt/crash"])
     retrace_run(27, ["mock", "-r", mockr, "shell", "--", "chgrp", "-R", "mockbuild", "/var/spool/abrt/crash"])
 
+    LOG.write("OK\n")
+
     # generate backtrace
-    LOG.write("Generating backtrace... ")
+    set_status(STATUS_BACKTRACE)
 
     backtrace = run_gdb(savedir)
 
     if not backtrace:
         LOG.write("Error\n")
-        LOG.close()
-        sys.exit(29)
+        fail(29)
 
     try:
         bt_file = open("%s/backtrace" % savedir, "w")
@@ -211,15 +230,14 @@ if __name__ == "__main__":
         bt_file.close()
     except Exception as ex:
         LOG.write("Error: %s.\n" % ex)
-        LOG.close()
-        sys.exit(30)
+        fail(30)
 
     LOG.write("OK\n")
 
     chroot_size = dir_size("%s/chroot/root" % workdir)
 
     # clean up temporary data
-    LOG.write("Cleaning up... ")
+    set_status(STATUS_CLEANUP)
 
     retrace_run(31, ["mock", "-r", mockr, "--scrub=all"])
     retrace_run(32, ["rm", "-rf", "%s/mock.cfg" % savedir, "%s/crash" % savedir])
@@ -234,7 +252,7 @@ if __name__ == "__main__":
     LOG.write("OK\n")
 
     # save crash statistics
-    LOG.write("Saving crash statistics... ")
+    set_status(STATUS_STATS)
 
     duration = int(time.time() - starttime)
 
@@ -249,7 +267,7 @@ if __name__ == "__main__":
         release = package_match.group(4)
 
     crashstats = {
-      "taskid": int(taskid),
+      "taskid": taskid_int,
       "package": package,
       "version": version,
       "release": release,
@@ -267,16 +285,17 @@ if __name__ == "__main__":
         LOG.write("OK\n")
 
     # publish bactkrace and log
-    LOG.write("Finishing task... ")
+    set_status(STATUS_FINISHING)
 
     try:
         os.rename("%s/backtrace" % savedir, "%s/retrace_backtrace" % savedir)
     except Exception as ex:
         LOG.write("Error: %s\n" % ex)
-        LOG.close()
-        sys.exit(35)
+        fail(35)
 
     LOG.write("OK\n")
     LOG.write("Retrace took %d seconds.\n" % duration)
 
+    set_status(STATUS_SUCCESS)
+    LOG.write("\n")
     LOG.close()
