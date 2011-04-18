@@ -21,10 +21,6 @@
 
 #define PROGNAME "abrt-action-analyze-python"
 
-// Hash is MD5_RESULT_LEN bytes long, but we use only first 4
-// (I don't know why old Python code was using only 4, I mimic that)
-#define HASH_STRING_HEX_DIGITS 4
-
 int main(int argc, char **argv)
 {
     char *env_verbose = getenv("ABRT_VERBOSE");
@@ -63,41 +59,20 @@ int main(int argc, char **argv)
     char *bt = dd_load_text(dd, FILENAME_BACKTRACE);
 
     /* Hash 1st line of backtrace and save it as UUID and DUPHASH */
+    /* "example.py:1:<module>:ZeroDivisionError: integer division or modulo by zero" */
 
+    unsigned char hash_bytes[SHA1_RESULT_LEN];
+    sha1_ctx_t sha1ctx;
+    sha1_begin(&sha1ctx);
     const char *bt_end = strchrnul(bt, '\n');
-    unsigned char hash_bytes[MD5_RESULT_LEN];
-    md5_ctx_t md5ctx;
-    md5_begin(&md5ctx);
-    // Better:
-    // "example.py:1:<module>:ZeroDivisionError: integer division or modulo by zero"
-    //md5_hash(bt_str, bt_end - bt_str, &md5ctx);
-    //free(bt);
-    // For now using compat version:
-    {
-        char *copy = xstrndup(bt, bt_end - bt);
-        free(bt);
-        char *s = copy;
-        char *d = copy;
-        unsigned colon_cnt = 0;
-        while (*s && colon_cnt < 3)
-        {
-            if (*s != ':')
-                *d++ = *s;
-            else
-                colon_cnt++;
-            s++;
-        }
-        // copy = "example.py1<module>"
-        md5_hash(copy, d - copy, &md5ctx);
-        free(copy);
-    }
-    // end of compat version
-    md5_end(hash_bytes, &md5ctx);
+    sha1_hash(&sha1ctx, bt, bt_end - bt);
+    sha1_end(&sha1ctx, hash_bytes);
+    free(bt);
 
-    char hash_str[HASH_STRING_HEX_DIGITS*2 + 1];
-    unsigned len = HASH_STRING_HEX_DIGITS;
-    char *d = hash_str;
+    char hash_str[SHA1_RESULT_LEN*2 + 1];
+    unsigned len = SHA1_RESULT_LEN;
     unsigned char *s = hash_bytes;
+    char *d = hash_str;
     while (len)
     {
         *d++ = "0123456789abcdef"[*s >> 4];

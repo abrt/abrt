@@ -15,7 +15,6 @@ libreport_la_SOURCES = \
     encbase64.c \
     binhex.c \
     stdio_helpers.c \
-    hash_md5.c hash_md5.h \
     hash_sha1.c hash_sha1.h \
     read_write.c read_write.h \
     logging.c logging.h \

@@ -28,17 +28,15 @@ static const char *dump_dir_name = ".";
 
 static void create_hash(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *pInput)
 {
-    unsigned len;
-    unsigned char hash2[SHA1_RESULT_LEN];
+    unsigned char hash_bytes[SHA1_RESULT_LEN];
     sha1_ctx_t sha1ctx;
-
     sha1_begin(&sha1ctx);
-    sha1_hash(pInput, strlen(pInput), &sha1ctx);
-    sha1_end(hash2, &sha1ctx);
-    len = SHA1_RESULT_LEN;
+    sha1_hash(&sha1ctx, pInput, strlen(pInput));
+    sha1_end(&sha1ctx, hash_bytes);
 
+    unsigned len = SHA1_RESULT_LEN;
+    unsigned char *s = hash_bytes;
     char *d = hash_str;
-    unsigned char *s = hash2;
     while (len)
     {
         *d++ = "0123456789abcdef"[*s >> 4];
@@ -47,7 +45,7 @@ static void create_hash(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *pInput
         len--;
     }
     *d = '\0';
-    //log("hash2:%s str:'%s'", hash_str, pInput);
+    //log("hash:%s str:'%s'", hash_str, pInput);
 }
 
 int main(int argc, char **argv)

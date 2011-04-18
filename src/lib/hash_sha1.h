@@ -25,18 +25,18 @@ extern "C" {
 #define SHA1_RESULT_LEN (5 * 4)
 
 typedef struct sha1_ctx_t {
-	uint32_t hash[8];    /* 5, +3 elements for sha256 */
-	uint64_t total64;
-	uint8_t wbuffer[64]; /* NB: always correctly aligned for uint64_t */
-	void (*process_block)(struct sha1_ctx_t*);
+	uint8_t wbuffer[64]; /* always correctly aligned for uint64_t */
+	/* for sha256: void (*process_block)(struct md5_ctx_t*); */
+	uint64_t total64;    /* must be directly before hash[] */
+	uint32_t hash[8];    /* 4 elements for md5, 5 for sha1, 8 for sha256 */
 } sha1_ctx_t;
 
 #define sha1_begin abrt_sha1_begin
 void sha1_begin(sha1_ctx_t *ctx);
 #define sha1_hash abrt_sha1_hash
-void sha1_hash(const void *buffer, size_t len, sha1_ctx_t *ctx);
+void sha1_hash(sha1_ctx_t *ctx, const void *buffer, size_t len);
 #define sha1_end abrt_sha1_end
-void sha1_end(void *resbuf, sha1_ctx_t *ctx);
+void sha1_end(sha1_ctx_t *ctx, void *resbuf);
 
 #ifdef __cplusplus
 }

@@ -21,11 +21,12 @@
 
 #define PROGNAME "abrt-action-analyze-oops"
 
-static unsigned hash_oops_str(const char *oops_ptr)
+static void hash_oops_str(char hash_str[SHA1_RESULT_LEN*2 + 1], char *oops_buf, const char *oops_ptr)
 {
     unsigned char old_c;
     unsigned char c = 0;
-    unsigned hash = 0;
+
+    char *dst = oops_buf;
 
     /* Special-case: if the first line is of form:
      * WARNING: at net/wireless/core.c:614 wdev_cleanup_work+0xe9/0x120 [cfg80211]() (Not tainted)
@@ -41,10 +42,9 @@ static unsigned hash_oops_str(const char *oops_ptr)
             oops_ptr += sizeof("WARNING: at ")-1;
             while (oops_ptr < p)
             {
-                c = *oops_ptr++;
-                hash = ((hash << 5) ^ (hash >> 27)) ^ c;
+                *dst++ = *oops_ptr++;
             }
-            return hash;
+            goto gen_hash;
         }
     }
 
@@ -111,13 +111,28 @@ static unsigned hash_oops_str(const char *oops_ptr)
         // [<c049b460>] ? sys_ioctl+0x40/0x5c
         // [<c0403c76>] ? syscall_call+0x7/0xb
 
-        /* An algorithm proposed by Donald E. Knuth in The Art Of Computer
-         * Programming Volume 3, under the topic of sorting and search
-         * chapter 6.4.
-         */
-        hash = ((hash << 5) ^ (hash >> 27)) ^ c;
+        *dst++ = c;
     }
-    return hash;
+
+ gen_hash: ;
+
+    unsigned char hash_bytes[SHA1_RESULT_LEN];
+    sha1_ctx_t sha1ctx;
+    sha1_begin(&sha1ctx);
+    sha1_hash(&sha1ctx, oops_buf, dst - oops_buf);
+    sha1_end(&sha1ctx, hash_bytes);
+
+    unsigned len = SHA1_RESULT_LEN;
+    unsigned char *s = hash_bytes;
+    char *d = hash_str;
+    while (len)
+    {
+        *d++ = "0123456789abcdef"[*s >> 4];
+        *d++ = "0123456789abcdef"[*s & 0xf];
+        s++;
+        len--;
+    }
+    *d = '\0';
 }
 
 int main(int argc, char **argv)
@@ -157,12 +172,10 @@ int main(int argc, char **argv)
         return 1;
 
     char *oops = dd_load_text(dd, FILENAME_BACKTRACE);
-    unsigned hash = hash_oops_str(oops);
-    /* free(oops); */
+    char hash_str[SHA1_RESULT_LEN*2 + 1];
+    hash_oops_str(hash_str, oops, oops);
+    free(oops);
 
-    hash &= 0x7FFFFFFF;
-    char hash_str[sizeof(int)*3 + 2];
-    sprintf(hash_str, "%u", hash);
     dd_save_text(dd, FILENAME_UUID, hash_str);
     dd_save_text(dd, FILENAME_DUPHASH, hash_str);
 
