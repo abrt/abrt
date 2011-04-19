@@ -16,27 +16,16 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include <pthread.h>
-#include <map>
 #include "abrtlib.h"
 #include "CommLayerServerDBus.h"
 #include "comm_layer_inner.h"
 
-typedef std::map<uint64_t, std::string> map_uint_str_t;
-static map_uint_str_t s_mapClientID;
-static pthread_mutex_t s_map_mutex;
-static bool s_map_mutex_inited;
+static char *client_name = NULL;
 
 /* called via [p]error_msg() */
 static void warn_client(const char *msg)
 {
-    uint64_t key = uint64_t(pthread_self());
-
-    pthread_mutex_lock(&s_map_mutex);
-    map_uint_str_t::const_iterator ki = s_mapClientID.find(key);
-    const char* peer = (ki != s_mapClientID.end() ? ki->second.c_str() : NULL);
-    pthread_mutex_unlock(&s_map_mutex);
-
+    const char* peer = client_name;
     if (peer)
     {
         send_dbus_sig_Warning(msg, peer);
@@ -45,36 +34,18 @@ static void warn_client(const char *msg)
 
 void init_daemon_logging(void)
 {
-    if (!s_map_mutex_inited)
-    {
-        s_map_mutex_inited = true;
-        pthread_mutex_init(&s_map_mutex, NULL);
-        g_custom_logger = &warn_client;
-    }
+    g_custom_logger = &warn_client;
 }
 
 void set_client_name(const char *name)
 {
-    uint64_t key = uint64_t(pthread_self());
-
-    pthread_mutex_lock(&s_map_mutex);
-    if (!name) {
-        s_mapClientID.erase(key);
-    } else {
-        s_mapClientID[key] = name;
-    }
-    pthread_mutex_unlock(&s_map_mutex);
+    free(client_name);
+    client_name = xstrdup(name);
 }
 
 void update_client(const char *fmt, ...)
 {
-    uint64_t key = uint64_t(pthread_self());
-
-    pthread_mutex_lock(&s_map_mutex);
-    map_uint_str_t::const_iterator ki = s_mapClientID.find(key);
-    const char* peer = (ki != s_mapClientID.end() ? ki->second.c_str() : NULL);
-    pthread_mutex_unlock(&s_map_mutex);
-
+    const char* peer = client_name;
     if (!peer)
         return;
 

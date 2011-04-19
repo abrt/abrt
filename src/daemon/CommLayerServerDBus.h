@@ -30,7 +30,6 @@ void send_dbus_sig_Crash(const char *package_name,
                         const char *dir,
                         const char *uid_str
 );
-void send_dbus_sig_JobDone(const char* peer);
 void send_dbus_sig_QuotaExceeded(const char* str);
 
 void send_dbus_sig_Update(const char* pMessage, const char* peer);

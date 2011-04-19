@@ -24,9 +24,6 @@
 #include "Settings.h"
 #include "CommLayerServerDBus.h"
 
-// 16kB message limit
-#define LIMIT_MESSAGE 16384
-
 /*
  * DBus signal emitters
  */
@@ -93,13 +90,6 @@ void send_dbus_sig_QuotaExceeded(const char* str)
     send_flush_and_unref(msg);
 }
 
-void send_dbus_sig_JobDone(const char* peer)
-{
-    DBusMessage* msg = new_signal_msg("JobDone", peer);
-    VERB2 log("Sending signal JobDone() to peer %s", peer);
-    send_flush_and_unref(msg);
-}
-
 void send_dbus_sig_Update(const char* pMessage, const char* peer)
 {
     DBusMessage* msg = new_signal_msg("Update", peer);
@@ -140,147 +130,6 @@ static long get_remote_uid(DBusMessage* call, const char** ppSender = NULL)
     return uid;
 }
 
-static int handle_GetCrashInfos(DBusMessage* call, DBusMessage* reply)
-{
-    long unix_uid = get_remote_uid(call);
-    vector_of_crash_data_t *argout1 = GetCrashInfos(unix_uid);
-
-    DBusMessageIter out_iter;
-    dbus_message_iter_init_append(reply, &out_iter);
-    store_vector_of_crash_data(&out_iter, argout1);
-    free_vector_of_crash_data(argout1);
-
-    send_flush_and_unref(reply);
-    return 0;
-}
-
-static int handle_StartJob(DBusMessage* call, DBusMessage* reply)
-{
-    int r;
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(call, &in_iter);
-    const char* crash_id;
-    r = load_val(&in_iter, crash_id);
-    if (r != ABRT_DBUS_MORE_FIELDS)
-    {
-        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-        return -1;
-    }
-    int32_t force;
-    r = load_val(&in_iter, force);
-    if (r != ABRT_DBUS_LAST_FIELD)
-    {
-        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-        return -1;
-    }
-
-    const char* sender;
-    long unix_uid = get_remote_uid(call, &sender);
-    if (CreateReportThread(crash_id, unix_uid, force, sender) != 0)
-        return -1; /* can't create thread (err msg is already logged) */
-
-    send_flush_and_unref(reply);
-    return 0;
-}
-
-static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
-{
-    int r;
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(call, &in_iter);
-    const char* crash_id;
-    r = load_val(&in_iter, crash_id);
-    if (r != ABRT_DBUS_LAST_FIELD)
-    {
-        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-        return -1;
-    }
-
-    long unix_uid = get_remote_uid(call);
-    crash_data_t *report = NULL;
-    CreateReport(crash_id, unix_uid, /*force:*/ 0, &report);
-
-    DBusMessageIter out_iter;
-    dbus_message_iter_init_append(reply, &out_iter);
-    store_crash_data(&out_iter, report);
-
-    send_flush_and_unref(reply);
-    return 0;
-}
-
-static int handle_Report(DBusMessage* call, DBusMessage* reply)
-{
-    int r;
-    long unix_uid;
-    report_status_t argout1;
-    map_map_string_t user_conf_data;
-    vector_string_t events;
-    const char* comment = NULL;
-    const char* errmsg = NULL;
-    DBusMessageIter in_iter;
-
-    dbus_message_iter_init(call, &in_iter);
-
-    crash_data_t *crash_data = NULL;
-    r = load_crash_data(&in_iter, &crash_data);
-    if (r != ABRT_DBUS_MORE_FIELDS)
-    {
-        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-        r = -1;
-        goto ret;
-    }
-//TODO? get_crash_item_content_or_die_or_empty?
-    comment = get_crash_item_content_or_NULL(crash_data, FILENAME_COMMENT) ? : "";
-    if (strlen(comment) > LIMIT_MESSAGE)
-    {
-        errmsg = _("Comment is too long");
-    }
-    if (errmsg)
-    {
-        dbus_message_unref(reply);
-        reply = dbus_message_new_error(call, DBUS_ERROR_FAILED, errmsg);
-        if (!reply)
-            die_out_of_memory();
-        send_flush_and_unref(reply);
-        r = 0;
-        goto ret;
-    }
-
-    /* Second parameter: list of events to run */
-    r = load_val(&in_iter, events);
-    if (r == ABRT_DBUS_ERROR)
-    {
-        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-        r = -1;
-        goto ret;
-    }
-
-    /* Third parameter (optional): configuration data for plugins */
-    if (r == ABRT_DBUS_MORE_FIELDS)
-    {
-        r = load_val(&in_iter, user_conf_data);
-        if (r != ABRT_DBUS_LAST_FIELD)
-        {
-            error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-            r = -1;
-            goto ret;
-        }
-    }
-
-    unix_uid = get_remote_uid(call);
-    argout1 = Report(crash_data, events, user_conf_data, unix_uid);
-
-    DBusMessageIter out_iter;
-    dbus_message_iter_init_append(reply, &out_iter);
-    store_val(&out_iter, argout1);
-
-    send_flush_and_unref(reply);
-    r = 0;
- ret:
-    free_crash_data(crash_data);
-    return r;
-}
-
 static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
 {
     int r;
@@ -305,39 +154,6 @@ static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
     return 0;
 }
 
-static int handle_GetSettings(DBusMessage* call, DBusMessage* reply)
-{
-    map_abrt_settings_t result = GetSettings();
-
-    DBusMessageIter out_iter;
-    dbus_message_iter_init_append(reply, &out_iter);
-    store_val(&out_iter, result);
-
-    send_flush_and_unref(reply);
-    return 0;
-}
-
-//static int handle_SetSettings(DBusMessage* call, DBusMessage* reply)
-//{
-//    int r;
-//    DBusMessageIter in_iter;
-//    dbus_message_iter_init(call, &in_iter);
-//    map_abrt_settings_t param1;
-//    r = load_val(&in_iter, param1);
-//    if (r != ABRT_DBUS_LAST_FIELD)
-//    {
-//        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-//        return -1;
-//    }
-//
-//    const char * sender = dbus_message_get_sender(call);
-//    SetSettings(param1, sender);
-//
-//    send_flush_and_unref(reply);
-//    return 0;
-//}
-
-
 /*
  * Glib integration machinery
  */
@@ -352,22 +168,8 @@ static DBusHandlerResult message_received(DBusConnection* conn, DBusMessage* msg
 
     DBusMessage* reply = dbus_message_new_method_return(msg);
     int r = -1;
-    if (strcmp(member, "GetCrashInfos") == 0)
-        r = handle_GetCrashInfos(msg, reply);
-    else if (strcmp(member, "StartJob") == 0)
-        r = handle_StartJob(msg, reply);
-    else if (strcmp(member, "Report") == 0)
-        r = handle_Report(msg, reply);
-    else if (strcmp(member, "DeleteDebugDump") == 0)
+    if (strcmp(member, "DeleteDebugDump") == 0)
         r = handle_DeleteDebugDump(msg, reply);
-    else if (strcmp(member, "CreateReport") == 0)
-        r = handle_CreateReport(msg, reply);
-    else if (strcmp(member, "GetSettings") == 0)
-        r = handle_GetSettings(msg, reply);
-// looks unused to me.
-// Ok to grep for SetSettings and delete after 2011-04-01.
-//  else if (strcmp(member, "SetSettings") == 0)
-//      r = handle_SetSettings(msg, reply);
 
 // NB: C++ binding also handles "Introspect" method, which returns a string.
 // It was sending "dummy" introspection answer whick looks like this:

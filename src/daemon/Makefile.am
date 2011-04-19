@@ -31,7 +31,6 @@ abrtd_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings
 abrtd_LDADD = \
-    $(DL_LIBS) \
     $(DBUS_LIBS) \
     ../lib/libreport.la \
     ../lib/libabrt_dbus.la

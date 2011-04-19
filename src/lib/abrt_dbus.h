@@ -101,9 +101,6 @@ void store_uint32(DBusMessageIter* iter, uint32_t val);
 void store_int64(DBusMessageIter* iter, int64_t val);
 void store_uint64(DBusMessageIter* iter, uint64_t val);
 void store_string(DBusMessageIter* iter, const char* val);
-void store_crash_data(DBusMessageIter* iter, crash_data_t *val);
-void store_vector_of_crash_data(DBusMessageIter* iter, vector_of_crash_data_t *val);
-void store_map_string(DBusMessageIter* iter, map_string_h *val);
 
 /*
  * Helpers for parsing DBus messages
@@ -125,8 +122,6 @@ int load_uint32(DBusMessageIter* iter, uint32_t *val);
 int load_int64(DBusMessageIter* iter, int64_t *val);
 int load_uint64(DBusMessageIter* iter, uint64_t *val);
 int load_charp(DBusMessageIter* iter, const char **val);
-int load_crash_data(DBusMessageIter* iter, crash_data_t **val);
-int load_vector_of_crash_data(DBusMessageIter* iter, vector_of_crash_data_t **val);
 
 #ifdef __cplusplus
 }

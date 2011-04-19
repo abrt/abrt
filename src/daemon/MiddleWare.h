@@ -38,31 +38,6 @@ typedef enum {
     MW_PLUGIN_ERROR,     /**< plugin wasn't found or error within plugin*/
 } mw_result_t;
 
-typedef enum {
-    RS_CODE,
-    RS_MESSAGE
-} report_status_items_t;
-
-
-/**
- * Reports a crash report to particular receiver. It
- * takes an user uid, tries to find user config file and load it. If it
- * fails, then default config is used. If pUID is emply string, default
- * config is used.
- * ...).
- * @param crash_data
- *  A crash report.
- * @param events
- *  List of events to run.
- * @param caller_uid
- *  An user uid.
- * @return
- *  A report status: which events finished successfully, with messages.
- */
-report_status_t Report(crash_data_t *crash_data,
-                       const vector_string_t& events,
-                       const map_map_string_t& settings,
-                       long caller_uid);
 /**
  * Detects whether it's a duplicate crash dump.
  * Fills crash info.
@@ -73,9 +48,6 @@ report_status_t Report(crash_data_t *crash_data,
  */
 mw_result_t LoadDebugDump(const char *dump_dir_name, crash_data_t **crash_data);
 
-vector_of_crash_data_t *GetCrashInfos(long caller_uid);
-int  CreateReportThread(const char* dump_dir_name, long caller_uid, int force, const char* pSender);
-void CreateReport(const char* dump_dir_name, long caller_uid, int force, crash_data_t **crash_data);
 int  DeleteDebugDump(const char *dump_dir_name, long caller_uid);
 
 #endif /*MIDDLEWARE_H_*/

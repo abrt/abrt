@@ -21,7 +21,6 @@
 #endif
 #include <sys/un.h>
 #include <syslog.h>
-#include <pthread.h>
 #include <string>
 #include <sys/inotify.h>
 #include <sys/ioctl.h> /* ioctl(FIONREAD) */
@@ -52,28 +51,13 @@ using namespace std;
  * - signal: we got SIGTERM or SIGINT
  *
  * DBus methods we have:
- * - GetCrashInfos(): returns a vector_of_crash_data
- *      of crashes for given uid
- *      v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
- * - StartJob(crash_id,force): starts creating a report for /var/spool/abrt/DIR with this UID:UUID.
- *      Returns job id (uint64).
- *      After thread returns, when report creation thread has finished,
- *      JobDone() dbus signal is emitted.
- * - CreateReport(crash_id): returns crash data (hash table of struct crash_item)
- * - Report(crash_data[, map_map_string_t]):
- *      "Please report this crash": calls Report() of all registered reporter plugins.
- *      Returns report_status_t (map_vector_string_t) - the status of each call.
- *      2nd parameter is the contents of user's abrt.conf.
  * - DeleteDebugDump(crash_id): delete it from DB and delete corresponding /var/spool/abrt/DIR
  * - RegisterPlugin(PluginName): returns void
  * - UnRegisterPlugin(PluginName): returns void
- * - GetSettings(): returns map_abrt_settings_t (map_map_string_t)
  * - SetSettings(map_abrt_settings_t): returns void
  *
  * DBus signals we emit:
  * - Crash(progname, crash_id, dir, uid) - a new crash occurred (new /var/spool/abrt/DIR is found)
- * - JobDone(client_dbus_ID) - see StartJob above.
- *      Sent as unicast to the client which did StartJob.
  * - Warning(msg)
  * - Update(msg)
  *      Both are sent as unicast to last client set by set_client_name(name).
