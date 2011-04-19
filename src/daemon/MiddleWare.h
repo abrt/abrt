@@ -24,6 +24,10 @@
 
 #include "abrt_types.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * An enum contains all return codes.
  */
@@ -48,6 +52,10 @@ typedef enum {
  */
 mw_result_t LoadDebugDump(const char *dump_dir_name, crash_data_t **crash_data);
 
-int  DeleteDebugDump(const char *dump_dir_name, long caller_uid);
+int DeleteDebugDump(const char *dump_dir_name, long caller_uid);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /*MIDDLEWARE_H_*/

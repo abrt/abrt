@@ -29,7 +29,7 @@
  */
 
 /* helpers */
-static DBusMessage* new_signal_msg(const char* member, const char* peer = NULL)
+static DBusMessage* new_signal_msg(const char* member, const char* peer)
 {
     /* path, interface, member name */
     DBusMessage* msg = dbus_message_new_signal(ABRTD_DBUS_PATH, ABRTD_DBUS_IFACE, member);
@@ -59,7 +59,7 @@ void send_dbus_sig_Crash(const char *package_name,
                                   const char *dir,
                                   const char *uid_str
 ) {
-    DBusMessage* msg = new_signal_msg("Crash");
+    DBusMessage* msg = new_signal_msg("Crash", NULL);
     if (uid_str)
     {
         dbus_message_append_args(msg,
@@ -82,7 +82,7 @@ void send_dbus_sig_Crash(const char *package_name,
 
 void send_dbus_sig_QuotaExceeded(const char* str)
 {
-    DBusMessage* msg = new_signal_msg("QuotaExceeded");
+    DBusMessage* msg = new_signal_msg("QuotaExceeded", NULL);
     dbus_message_append_args(msg,
             DBUS_TYPE_STRING, &str,
             DBUS_TYPE_INVALID);
@@ -113,7 +113,7 @@ void send_dbus_sig_Warning(const char* pMessage, const char* peer)
  * DBus call handlers
  */
 
-static long get_remote_uid(DBusMessage* call, const char** ppSender = NULL)
+static long get_remote_uid(DBusMessage* call, const char** ppSender)
 {
     DBusError err;
     dbus_error_init(&err);
@@ -136,19 +136,19 @@ static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
     DBusMessageIter in_iter;
     dbus_message_iter_init(call, &in_iter);
     const char* crash_id;
-    r = load_val(&in_iter, crash_id);
+    r = load_charp(&in_iter, &crash_id);
     if (r != ABRT_DBUS_LAST_FIELD)
     {
         error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
         return -1;
     }
 
-    long unix_uid = get_remote_uid(call);
+    long unix_uid = get_remote_uid(call, NULL);
     int32_t result = DeleteDebugDump(crash_id, unix_uid);
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
-    store_val(&out_iter, result);
+    store_int32(&out_iter, result);
 
     send_flush_and_unref(reply);
     return 0;

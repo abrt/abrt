@@ -22,9 +22,6 @@
 #include "abrt_types.h"
 
 #ifdef __cplusplus
-
-typedef map_map_string_t map_abrt_settings_t;
-
 extern "C" {
 #endif
 

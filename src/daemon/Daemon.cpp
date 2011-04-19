@@ -52,9 +52,6 @@ using namespace std;
  *
  * DBus methods we have:
  * - DeleteDebugDump(crash_id): delete it from DB and delete corresponding /var/spool/abrt/DIR
- * - RegisterPlugin(PluginName): returns void
- * - UnRegisterPlugin(PluginName): returns void
- * - SetSettings(map_abrt_settings_t): returns void
  *
  * DBus signals we emit:
  * - Crash(progname, crash_id, dir, uid) - a new crash occurred (new /var/spool/abrt/DIR is found)

@@ -24,8 +24,6 @@
 #include "CommLayerServerDBus.h"
 #include "MiddleWare.h"
 
-using namespace std;
-
 /**
  * Get one crash info. If getting is successful,
  * then crash info is filled.
