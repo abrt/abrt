@@ -19,5 +19,8 @@ def parse_maps(maps_path):
 
 
 if __name__ == "__main__":
-    dsos = parse_maps("maps")
-    list_dsos_rpm(dsos)
+    try:
+        dsos = parse_maps("maps")
+        list_dsos_rpm(dsos)
+    except Exception, ex:
+        print "Couldn't get the dsos list: %s", ex
