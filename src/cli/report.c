@@ -611,7 +611,7 @@ char *select_event_option(GList *list_options)
 
     unsigned count = g_list_length(list_options) - 1;
     if (!count)
-        return NULL;
+        return xstrdup((char*)list_options->data);
 
     int pos = -1;
     fprintf(stdout, _("Select how you would like to analyze the problem:\n"));
