@@ -360,6 +360,26 @@ static char *http_get_header_value(const char *message,
     return xstrndup(header, len);
 }
 
+/**
+ * Parse body from HTTP message.
+ * Caller must free the returned value.
+ */
+static char *http_get_body(const char *message)
+{
+    char *body = strstr(message, "\r\n\r\n") + strlen("\r\n\r\n");
+    if (!body)
+        return NULL;
+
+    while (*body == ' ')
+        ++body;
+
+    int len = strlen(body);
+    while (body[len - 1] == ' ')
+        --len;
+
+    return xstrndup(body, len);
+}
+
 static int http_get_response_code(const char *message)
 {
     if (0 != strncmp(message, "HTTP/", strlen("HTTP/")))
@@ -652,7 +672,8 @@ static int run_create(bool delete_temp_archive)
 
 static void status(const char *task_id,
                    const char *task_password,
-                   char **task_status)
+                   char **task_status,
+                   char **status_message)
 {
     PRFileDesc *tcp_sock, *ssl_sock;
     ssl_connect(&tcp_sock, &ssl_sock);
@@ -685,6 +706,12 @@ static void status(const char *task_id,
     *task_status = http_get_header_value(http_response, "X-Task-Status");
     if (!*task_status)
         error_msg_and_die("Invalid response from server: missing X-Task-Status");
+    *status_message = http_get_body(http_response);
+    if (!*status_message)
+    {
+        free(*task_status);
+        error_msg_and_die("Invalid response from server: missing body");
+    }
     free(http_response);
     ssl_disconnect(ssl_sock);
 }
@@ -692,9 +719,11 @@ static void status(const char *task_id,
 static void run_status(const char *task_id, const char *task_password)
 {
     char *task_status;
-    status(task_id, task_password, &task_status);
-    printf("Task Status: %s\n", task_status);
+    char *status_message;
+    status(task_id, task_password, &task_status, &status_message);
+    printf("Task Status: %s\n%s\n", task_status, status_message);
     free(task_status);
+    free(status_message);
 }
 
 static void backtrace(const char *task_id, const char *task_password,
@@ -807,12 +836,14 @@ static int run_batch(bool delete_temp_archive)
     if (0 != retcode)
         return retcode;
     char *task_status = xstrdup("");
+    char *status_message = xstrdup("");
     while (0 != strncmp(task_status, "FINISHED", strlen("finished")))
     {
         free(task_status);
+        free(status_message);
         sleep(10);
-        status(task_id, task_password, &task_status);
-        puts(task_status);
+        status(task_id, task_password, &task_status, &status_message);
+        puts(status_message);
     }
     if (0 == strcmp(task_status, "FINISHED_SUCCESS"))
     {
@@ -836,6 +867,7 @@ static int run_batch(bool delete_temp_archive)
         retcode = 1;
     }
     free(task_status);
+    free(status_message);
     free(task_id);
     free(task_password);
     return retcode;
