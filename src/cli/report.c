@@ -609,12 +609,12 @@ char *select_event_option(GList *list_options)
     if (!list_options)
         return NULL;
 
-    unsigned count = g_list_length(list_options) - 1;
-    if (!count)
+    unsigned count = g_list_length(list_options);
+    if (count == 1)
         return xstrdup((char*)list_options->data);
 
-    int pos = -1;
-    fprintf(stdout, _("Select how you would like to analyze the problem:\n"));
+    int pos = 0;
+    fprintf(stdout, _("How you would like to analyze the problem?\n"));
     for (GList *li = list_options; li; li = li->next)
     {
         char *opt = (char*)li->data;
@@ -630,14 +630,9 @@ char *select_event_option(GList *list_options)
     unsigned ii;
     for (ii = 0; ii < 3; ++ii)
     {
-        fprintf(stdout, _("Choose option [0 - %u]: "), count);
-        fflush(NULL);
-
         char answer[16];
-        if (!fgets(answer, sizeof(answer), stdin))
-            continue;
 
-        answer[strlen(answer) - 1] = '\0';
+        read_from_stdin(_("Select analyzer: "), answer, sizeof(answer));
         if (!*answer)
             continue;
 
@@ -645,6 +640,7 @@ char *select_event_option(GList *list_options)
         if (picked > count)
         {
             fprintf(stdout, _("You have chosen number out of range"));
+            fprintf(stdout, "\n");
             continue;
         }
 
@@ -654,7 +650,7 @@ char *select_event_option(GList *list_options)
     if (ii == 3)
         error_msg_and_die(_("Invalid input, program exiting..."));
 
-    GList *choosen = g_list_nth(list_options, picked);
+    GList *choosen = g_list_nth(list_options, picked - 1);
     return xstrdup((char*)choosen->data);
 }
 
