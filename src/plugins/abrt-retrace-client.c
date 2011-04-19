@@ -26,9 +26,24 @@
 #include <sslerr.h>
 #include <secerr.h>
 
+struct retrace_settings
+{
+    int running_tasks;
+    int max_running_tasks;
+    long long max_packed_size;
+    long long max_unpacked_size;
+    char **supported_formats;
+    char **supported_releases;
+};
+
 static const char *dump_dir_name = NULL;
 static const char *coredump = NULL;
 static const char *url = "retrace01.fedoraproject.org";
+static const char *required_files[] = { FILENAME_COREDUMP,
+                                        FILENAME_EXECUTABLE,
+                                        FILENAME_PACKAGE,
+                                        FILENAME_OS_RELEASE,
+                                        NULL };
 static bool ssl_allow_insecure = false;
 static bool http_show_headers = false;
 
@@ -99,12 +114,11 @@ static int create_archive(bool unlink_temp)
     tar_args[0] = "tar";
     tar_args[1] = "cO";
     tar_args[2] = xasprintf("--directory=%s", dump_dir_name);
-    int argindex = 3;
-    tar_args[argindex++] = FILENAME_COREDUMP;
-    args_add_if_exists(tar_args, dd, FILENAME_EXECUTABLE, &argindex);
-    args_add_if_exists(tar_args, dd, FILENAME_PACKAGE, &argindex);
-    args_add_if_exists(tar_args, dd, FILENAME_OS_RELEASE, &argindex);
-    tar_args[argindex] = NULL;
+    int index = 3;
+    while (required_files[index - 3])
+        args_add_if_exists(tar_args, dd, required_files[index - 3], &index);
+
+    tar_args[index] = NULL;
     dd_close(dd);
 
     pid_t tar_child = fork();
@@ -399,16 +413,162 @@ static char *tcp_read_response(PRFileDesc *tcp_sock)
     return strbuf_free_nobuf(strbuf);
 }
 
+static void get_settings(struct retrace_settings *settings)
+{
+    /* defaults */
+    settings->running_tasks = 0;
+    settings->max_running_tasks = 0;
+    settings->max_packed_size = 0;
+    settings->max_unpacked_size = 0;
+    settings->supported_formats = NULL;
+    settings->supported_releases = NULL;
+
+    PRFileDesc *tcp_sock, *ssl_sock;
+    ssl_connect(&tcp_sock, &ssl_sock);
+    struct strbuf *http_request = strbuf_new();
+    strbuf_append_strf(http_request,
+                       "GET /settings HTTP/1.1\r\n"
+                       "Host: %s\r\n"
+                       "Content-Length: 0\r\n"
+                       "Connection: close\r\n"
+                       "\r\n", url);
+    PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
+                              /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
+    if (written == -1)
+    {
+        PR_Close(ssl_sock);
+        error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
+                          http_request->len, PR_GetError());
+    }
+    strbuf_free(http_request);
+
+    char *http_response = tcp_read_response(tcp_sock);
+    if (http_show_headers)
+        http_print_headers(stderr, http_response);
+    int response_code = http_get_response_code(http_response);
+    if (response_code != 200)
+    {
+        error_msg_and_die("Unexpected HTTP response from server: %d\n%s",
+                          response_code, http_response);
+    }
+
+    char *headers_end = strstr(http_response, "\r\n\r\n");
+    char *c, *row, *value;
+    if (!headers_end)
+        error_msg_and_die("Invalid response from server: missing HTTP message body.");
+    row = headers_end + strlen("\r\n\r\n");
+
+    do
+    {
+        /* split rows */
+        c = strchr(row, '\n');
+        if (c)
+            *c = '\0';
+
+        /* split key and values */
+        value = strchr(row, ' ');
+        if (!value)
+        {
+            row = c + 1;
+            continue;
+        }
+
+        *value = '\0';
+        ++value;
+
+        if (0 == strcasecmp("running_tasks", row))
+            settings->running_tasks = atoi(value);
+        else if (0 == strcasecmp("max_running_tasks", row))
+            settings->max_running_tasks = atoi(value);
+        else if (0 == strcasecmp("max_packed_size", row))
+            settings->max_packed_size = atoi(value) * 1024 * 1024;
+        else if (0 == strcasecmp("max_unpacked_size", row))
+            settings->max_unpacked_size = atoi(value) * 1024 * 1024;
+        else if (0 == strcasecmp("supported_formats", row))
+        {
+            /* ToDo */
+        }
+        else if (0 == strcasecmp("supported_releases", row))
+        {
+            /* ToDo */
+        }
+
+        /* the beginning of the next row */
+        row = c + 1;
+    } while (c);
+
+    free(http_response);
+    ssl_disconnect(ssl_sock);
+}
+
 static int create(bool delete_temp_archive,
                   char **task_id,
                   char **task_password)
 {
+    struct retrace_settings settings;
+    get_settings(&settings);
+
+    if (settings.running_tasks >= settings.max_running_tasks)
+    {
+        error_msg_and_die("Retrace server is fully occupied at the moment. "
+                          "Try again later please.");
+    }
+
+    long long unpacked_size = 0;
+    struct stat file_stat;
+
+    /* get raw size */
+    if (coredump)
+    {
+        if (stat(coredump, &file_stat) == -1)
+            error_msg_and_die("Unable to stat file %s", coredump);
+
+        unpacked_size = (long long)file_stat.st_size;
+    }
+    else if (dump_dir_name != NULL)
+    {
+        char *path;
+        int i = 0;
+        while (required_files[i])
+        {
+            path = concat_path_file(dump_dir_name, required_files[i]);
+            if (stat(path, &file_stat) == -1)
+            {
+                error_msg("Unable to stat file %s", path);
+                free(path);
+                xfunc_die();
+            }
+
+            unpacked_size += (long long)file_stat.st_size;
+            free(path);
+
+            ++i;
+        }
+    }
+
+    if (unpacked_size > settings.max_unpacked_size)
+    {
+        error_msg_and_die("The size of your crash is %lld bytes, "
+                          "but the retrace server only accepts "
+                          "crashes smaller or equal to %lld bytes.",
+                          unpacked_size, settings.max_unpacked_size);
+    }
+
     int tempfd = create_archive(delete_temp_archive);
     if (-1 == tempfd)
         return 1;
+
     /* Get the file size. */
-    struct stat tempfd_buf;
-    fstat(tempfd, &tempfd_buf);
+    fstat(tempfd, &file_stat);
+    if ((long long)file_stat.st_size > settings.max_packed_size)
+    {
+        error_msg_and_die("The size of your archive is %lld bytes, "
+                          "but the retrace server only accepts "
+                          "archives smaller or equal %lld bytes.",
+                          (long long)file_stat.st_size,
+                          settings.max_packed_size);
+    }
+
     PRFileDesc *tcp_sock, *ssl_sock;
     ssl_connect(&tcp_sock, &ssl_sock);
     /* Upload the archive. */
@@ -419,7 +579,7 @@ static int create(bool delete_temp_archive,
                        "Content-Type: application/x-xz-compressed-tar\r\n"
                        "Content-Length: %lld\r\n"
                        "Connection: close\r\n"
-                       "\r\n", url, (long long)tempfd_buf.st_size);
+                       "\r\n", url, (long long)file_stat.st_size);
     PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
