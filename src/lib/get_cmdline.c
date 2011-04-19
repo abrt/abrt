@@ -17,10 +17,16 @@
 */
 #include "abrtlib.h"
 
+/* If s is a string with only printable ASCII chars
+ * and has no spaces, ", ', and \, copy it verbatim.
+ * Else, encapsulate it in single quotes, and
+ * encode ', " and \ with \c escapes.
+ * Control chars are encoded as \r, \n, \t, or \xNN.
+ * In all cases, terminating NUL is added
+ * and the pointer to it is returned.
+ */
 static char *append_escaped(char *start, const char *s)
 {
-    char hex_char_buf[] = "\\x00";
-
     char *dst = start;
     const unsigned char *p = (unsigned char *)s;
 
@@ -50,6 +56,8 @@ static char *append_escaped(char *start, const char *s)
             *dst = '\0';
             return dst;
         }
+
+        char hex_char_buf[5];
         const char *a;
         switch (*p)
         {
@@ -61,8 +69,12 @@ static char *append_escaped(char *start, const char *s)
         case '\\': a = "\\\\"; break;
         case ' ': a = " "; break;
         default:
+            /* Build \xNN string */
+            hex_char_buf[0] = '\\';
+            hex_char_buf[1] = 'x';
             hex_char_buf[2] = "0123456789abcdef"[*p >> 4];
             hex_char_buf[3] = "0123456789abcdef"[*p & 0xf];
+            hex_char_buf[4] = '\0';
             a = hex_char_buf;
         }
         strcpy(dst, a);
@@ -73,13 +85,14 @@ static char *append_escaped(char *start, const char *s)
 
 static char* get_escaped(const char *path, char separator)
 {
-    unsigned total_esc_len = 0;
     char *escaped = NULL;
 
     int fd = open(path, O_RDONLY);
     if (fd >= 0)
     {
-        while (1)
+        char *dst = NULL;
+        unsigned total_esc_len = 0;
+        while (total_esc_len < 1024 * 1024) /* paranoia check */
         {
             /* read and escape one block */
             char buffer[4 * 1024 + 1];
@@ -87,12 +100,17 @@ static char* get_escaped(const char *path, char separator)
             if (len <= 0)
                 break;
             buffer[len] = '\0';
-            escaped = xrealloc(escaped, total_esc_len + (len+1) * 4);
+
+            /* string CC can expand into '\xNN\xNN' and thus needs len*4 + 3 bytes,
+             * including terminating NUL.
+             * We add +1 for possible \n added at the very end.
+             */
+            escaped = xrealloc(escaped, total_esc_len + len*4 + 4);
             char *src = buffer;
-            char *dst = escaped + total_esc_len;
+            dst = escaped + total_esc_len;
             while (1)
             {
-                /* escape till next '\0' char */
+                /* escape till next NUL char */
                 char *d = append_escaped(dst, src);
                 total_esc_len += (d - dst);
                 dst = d;
@@ -101,8 +119,16 @@ static char* get_escaped(const char *path, char separator)
                     break;
                 *dst++ = separator;
             }
+
+        }
+
+        if (dst)
+        {
+            if (separator == '\n')
+                *dst++ = separator;
             *dst = '\0';
         }
+
         close(fd);
     }
 
@@ -120,17 +146,5 @@ char* get_environ(pid_t pid)
 {
     char path[sizeof("/proc/%lu/environ") + sizeof(long)*3];
     sprintf(path, "/proc/%lu/environ", (long)pid);
-    char *e = get_escaped(path, '\n');
-    /* Append last '\n' if needed */
-    if (e && e[0])
-    {
-        unsigned len = strlen(e);
-        if (e[len-1] != '\n')
-        {
-            e = xrealloc(e, len + 2);
-            e[len] = '\n';
-            e[len+1] = '\0';
-        }
-    }
-    return e;
+    return get_escaped(path, '\n');
 }
