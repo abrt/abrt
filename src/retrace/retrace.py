@@ -5,7 +5,6 @@ import re
 import ConfigParser
 import random
 import sqlite3
-from plugins import *
 from webob import Request
 from subprocess import *
 

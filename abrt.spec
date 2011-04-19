@@ -557,7 +557,7 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Python.conf
 %{_bindir}/abrt-action-analyze-python
-%{python_site}/*.py*
+%{python_site}/abrt*.py*
 %{python_site}/abrt.pth
 
 %files cli
@@ -581,6 +581,7 @@ fi
 %{_bindir}/abrt-retrace-cleanup
 %{_bindir}/abrt-retrace-reposync
 %{_bindir}/coredump2packages
+%{python_site}/retrace.py*
 %{_datadir}/abrt-retrace/*.py*
 %{_datadir}/abrt-retrace/plugins/*.py*
 %{_datadir}/abrt-retrace/*.wsgi

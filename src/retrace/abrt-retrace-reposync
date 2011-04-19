@@ -6,6 +6,9 @@ import pwd
 import sys
 from retrace import *
 
+sys.path = ["/usr/share/abrt-retrace"] + sys.path
+from plugins import *
+
 TARGET_USER = "abrt"
 
 if __name__ == "__main__":

@@ -5,8 +5,7 @@ abrt_retrace_worker_SOURCES = worker.c
 
 dist_bin_SCRIPTS = abrt-retrace-cleanup abrt-retrace-reposync coredump2packages
 
-retrace_PYTHON = retrace.py
-retracedir = $(datadir)/abrt-retrace
+python_PYTHON = retrace.py
 
 worker_PYTHON = worker.py
 workerdir = $(datadir)/abrt-retrace

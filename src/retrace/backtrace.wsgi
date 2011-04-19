@@ -1,8 +1,5 @@
 #!/usr/bin/python
 
-import sys
-sys.path = ["/usr/share/abrt-retrace"] + sys.path
-
 from retrace import *
 
 def application(environ, start_response):

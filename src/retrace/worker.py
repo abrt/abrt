@@ -4,6 +4,9 @@ import sys
 import time
 from retrace import *
 
+sys.path = ["/usr/share/abrt-retrace/"] + sys.path
+from plugins import *
+
 LOG = None
 taskid = None
 
