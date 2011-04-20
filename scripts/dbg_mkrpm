@@ -31,8 +31,7 @@ mkdir "$BUILDDIR" 2>/dev/null
 (tar -czf - -C "$T" "abrt-$ABRTVER") >"$BUILDDIR"/"abrt-$ABRTVER".tar.gz
 rm -rf "$T"
 cp "$SRCDIR"/abrt.spec "$BUILDDIR"
-cp "$SRCDIR"/abrt.init "$BUILDDIR"
-cp "$SRCDIR"/abrt-ccpp.init "$BUILDDIR"
+cp "$SRCDIR"/abrt*.init "$BUILDDIR"
 #cp "$SRCDIR"/dbg_* "$BUILDDIR" 2>/dev/null # developers' toys
 
 {

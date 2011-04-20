@@ -29,6 +29,7 @@ URL: https://fedorahosted.org/abrt/
 Source: https://fedorahosted.org/released/%{name}/%{name}-%{version}.tar.gz
 Source1: abrt.init
 Source2: abrt-ccpp.init
+Source3: abrt-oops.init
 BuildRequires: dbus-devel
 BuildRequires: gtk2-devel
 BuildRequires: curl-devel
@@ -281,6 +282,7 @@ find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
 install -m 755 %SOURCE1 ${RPM_BUILD_ROOT}/%{_initrddir}/abrtd
 install -m 755 %SOURCE2 ${RPM_BUILD_ROOT}/%{_initrddir}/abrt-ccpp
+install -m 755 %SOURCE3 ${RPM_BUILD_ROOT}/%{_initrddir}/abrt-oops
 mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-di
 mkdir -p $RPM_BUILD_ROOT/var/run/abrt
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt
@@ -330,7 +332,13 @@ fi
 # so 2.x fails when it tries to extract debuginfo there..
 chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 if [ $1 -eq 1 ]; then
-/sbin/chkconfig --add abrt-ccpp
+    /sbin/chkconfig --add abrt-ccpp
+fi
+#systemd: TODO
+
+%post addon-kerneloops
+if [ $1 -eq 1 ]; then
+    /sbin/chkconfig --add abrt-oops
 fi
 #systemd: TODO
 
@@ -340,27 +348,46 @@ fi
 
 %preun
 if [ "$1" -eq "0" ] ; then
-  service abrtd stop >/dev/null 2>&1
-  /sbin/chkconfig --del abrtd
+    service abrtd stop >/dev/null 2>&1
+    /sbin/chkconfig --del abrtd
 fi
 #systemd
 %if %{?with_systemd}
 if [ "$1" -eq "0" ] ; then
-  /bin/systemctl stop abrtd.service >/dev/null 2>&1 || :
-  /bin/systemctl disable abrtd.service >/dev/null 2>&1 || :
+    /bin/systemctl stop abrtd.service >/dev/null 2>&1 || :
+    /bin/systemctl disable abrtd.service >/dev/null 2>&1 || :
 fi
 %endif
 
 %preun addon-ccpp
 if [ "$1" -eq "0" ] ; then
-  service abrt-ccpp stop >/dev/null 2>&1
-  /sbin/chkconfig --del abrt-ccpp
+    service abrt-ccpp stop >/dev/null 2>&1
+    /sbin/chkconfig --del abrt-ccpp
 fi
-#systemd: TODO
+#systemd (not tested):
+%if %{?with_systemd}
+if [ "$1" -eq "0" ] ; then
+    /bin/systemctl stop abrt-ccpp.service >/dev/null 2>&1 || :
+    /bin/systemctl disable abrt-ccpp.service >/dev/null 2>&1 || :
+fi
+%endif
+
+%preun addon-kerneloops
+if [ "$1" -eq "0" ] ; then
+    service abrt-oops stop >/dev/null 2>&1
+    /sbin/chkconfig --del abrt-oops
+fi
+#systemd (not tested):
+%if %{?with_systemd}
+if [ "$1" -eq "0" ] ; then
+    /bin/systemctl stop abrt-oops.service >/dev/null 2>&1 || :
+    /bin/systemctl disable abrt-oops.service >/dev/null 2>&1 || :
+fi
+%endif
 
 %preun retrace-server
 if [ "$1" = 0 ]; then
-  /sbin/install-info --delete %{_infodir}/abrt-retrace-server %{_infodir}/dir 2> /dev/null || :
+    /sbin/install-info --delete %{_infodir}/abrt-retrace-server %{_infodir}/dir 2> /dev/null || :
 fi
 
 %postun
@@ -404,7 +431,23 @@ fi
 if [ "$1" -eq "0" ]; then
     service abrt-ccpp condrestart >/dev/null 2>&1 || :
 fi
-#systemd: TODO
+#systemd
+%if %{?with_systemd}
+if [ "$1" -eq "0" ]; then
+    /bin/systemctl try-restart abrt-ccpp.service >/dev/null 2>&1 || :
+fi
+%endif
+
+%posttrans addon-kerneloops
+if [ "$1" -eq "0" ]; then
+    service abrt-oops condrestart >/dev/null 2>&1 || :
+fi
+#systemd
+%if %{?with_systemd}
+if [ "$1" -eq "0" ]; then
+    /bin/systemctl try-restart abrt-oops.service >/dev/null 2>&1 || :
+fi
+%endif
 
 
 %files -f %{name}.lang
@@ -513,6 +556,7 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Kerneloops.conf
 %{_sysconfdir}/%{name}/events/report_Kerneloops.xml
 %config(noreplace) %{_sysconfdir}/%{name}/events.d/koops_events.conf
+%{_initrddir}/abrt-oops
 %{_mandir}/man7/abrt-KerneloopsReporter.7.gz
 %{_bindir}/abrt-dump-oops
 %{_bindir}/abrt-action-analyze-oops
