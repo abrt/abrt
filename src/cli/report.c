@@ -717,7 +717,6 @@ int report(const char *dump_dir_name, int flags)
     }
 
     /* Get possible reporters associated with this particular crash */
-    /* TODO: npajkovs: remove this annoying c++ vector_string_t */
     GList *report_events = NULL;
     if (report_events_as_lines && *report_events_as_lines)
         report_events = str_to_glist(report_events_as_lines, '\n');

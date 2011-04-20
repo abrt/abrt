@@ -18,8 +18,9 @@
 */
 #include "abrtlib.h"
 
-/* Returns NULL if open failed.
+/* Returns false if open failed.
  * Returns empty hash if conf file is empty.
+ * TODO: better error detection?
  */
 bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWithoutValue)
 {

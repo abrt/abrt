@@ -21,7 +21,6 @@
 #endif
 #include <sys/un.h>
 #include <syslog.h>
-#include <string>
 #include <sys/inotify.h>
 #include <sys/ioctl.h> /* ioctl(FIONREAD) */
 #include "abrtlib.h"
@@ -32,9 +31,6 @@
 #include "parse_options.h"
 
 #define PROGNAME "abrtd"
-
-using namespace std;
-
 
 #define VAR_RUN_PIDFILE     VAR_RUN"/abrtd.pid"
 
@@ -64,7 +60,6 @@ static volatile sig_atomic_t s_sig_caught;
 static int s_signal_pipe[2];
 static int s_signal_pipe_write = -1;
 static int s_upload_watch = -1;
-static pid_t log_scanner_pid = -1;
 static unsigned s_timeout;
 static bool s_exiting;
 
@@ -241,12 +236,6 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
             pid_t pid;
             while ((pid = waitpid(-1, NULL, WNOHANG)) > 0)
             {
-                if (pid == log_scanner_pid)
-                {
-                    log("log scanner exited");
-                    log_scanner_pid = -1;
-                    continue;
-                }
                 if (socket_client_count)
                     socket_client_count--;
                 if (!socket_channel_cb_id)
@@ -597,81 +586,69 @@ int main(int argc, char** argv)
     bool pidfile_created = false;
 
     /* Initialization */
-    try
+    init_daemon_logging();
+
+    VERB1 log("Loading settings");
+    if (load_settings() != 0)
+        goto init_error;
+
+    sanitize_dump_dir_rights();
+
+    VERB1 log("Creating glib main loop");
+    pMainloop = g_main_loop_new(NULL, FALSE);
+
+    VERB1 log("Initializing inotify");
+    errno = 0;
+    int inotify_fd = inotify_init();
+    if (inotify_fd == -1)
+        perror_msg_and_die("inotify_init failed");
+    close_on_exec_on(inotify_fd);
+
+    /* Watching DEBUG_DUMPS_DIR for new files... */
+    if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE | IN_MOVED_TO) < 0)
     {
-        init_daemon_logging();
-
-        VERB1 log("Loading settings");
-        if (load_settings() != 0)
-            throw 1;
-
-        sanitize_dump_dir_rights();
-
-        VERB1 log("Creating glib main loop");
-        pMainloop = g_main_loop_new(NULL, FALSE);
-
-        VERB1 log("Initializing inotify");
-        errno = 0;
-        int inotify_fd = inotify_init();
-        if (inotify_fd == -1)
-            perror_msg_and_die("inotify_init failed");
-        close_on_exec_on(inotify_fd);
-
-        /* Watching DEBUG_DUMPS_DIR for new files... */
-        if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE | IN_MOVED_TO) < 0)
-        {
-            perror_msg("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
-            throw 1;
-        }
-        if (g_settings_sWatchCrashdumpArchiveDir)
-        {
-            s_upload_watch = inotify_add_watch(inotify_fd, g_settings_sWatchCrashdumpArchiveDir, IN_CLOSE_WRITE|IN_MOVED_TO);
-            if (s_upload_watch < 0)
-            {
-                perror_msg("inotify_add_watch failed on '%s'", g_settings_sWatchCrashdumpArchiveDir);
-                throw 1;
-            }
-        }
-        VERB1 log("Adding inotify watch to glib main loop");
-        channel_inotify = g_io_channel_unix_new(inotify_fd);
-        channel_inotify_event_id = g_io_add_watch(channel_inotify,
-                                                  G_IO_IN,
-                                                  handle_inotify_cb,
-                                                  NULL);
-
-        /* Add an event source which waits for INT/TERM signal */
-        VERB1 log("Adding signal pipe watch to glib main loop");
-        channel_signal = g_io_channel_unix_new(s_signal_pipe[0]);
-        channel_signal_event_id = g_io_add_watch(channel_signal,
-                                                 G_IO_IN,
-                                                 handle_signal_cb,
-                                                 NULL);
-
-        /* Mark the territory */
-        VERB1 log("Creating pid file");
-        if (create_pidfile() != 0)
-            throw 1;
-        pidfile_created = true;
-
-        /* Open socket to receive new crashes. */
-        dumpsocket_init();
-
-        /* Note: this already may process a few dbus messages,
-         * therefore it should be the last thing to initialize.
-         */
-        VERB1 log("Initializing dbus");
-        if (init_dbus() != 0)
-            throw 1;
+        perror_msg("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
+        goto init_error;
     }
-    catch (...)
+    if (g_settings_sWatchCrashdumpArchiveDir)
     {
-        /* Initialization error */
-        error_msg("Error while initializing daemon");
-        /* Inform parent that initialization failed */
-        if (!(opts & OPT_d))
-            kill(parent_pid, SIGINT);
-        goto cleanup;
+        s_upload_watch = inotify_add_watch(inotify_fd, g_settings_sWatchCrashdumpArchiveDir, IN_CLOSE_WRITE|IN_MOVED_TO);
+        if (s_upload_watch < 0)
+        {
+            perror_msg("inotify_add_watch failed on '%s'", g_settings_sWatchCrashdumpArchiveDir);
+            goto init_error;
+        }
     }
+    VERB1 log("Adding inotify watch to glib main loop");
+    channel_inotify = g_io_channel_unix_new(inotify_fd);
+    channel_inotify_event_id = g_io_add_watch(channel_inotify,
+                                              G_IO_IN,
+                                              handle_inotify_cb,
+                                              NULL);
+
+    /* Add an event source which waits for INT/TERM signal */
+    VERB1 log("Adding signal pipe watch to glib main loop");
+    channel_signal = g_io_channel_unix_new(s_signal_pipe[0]);
+    channel_signal_event_id = g_io_add_watch(channel_signal,
+                                             G_IO_IN,
+                                             handle_signal_cb,
+                                             NULL);
+
+    /* Mark the territory */
+    VERB1 log("Creating pid file");
+    if (create_pidfile() != 0)
+        goto init_error;
+    pidfile_created = true;
+
+    /* Open socket to receive new crashes. */
+    dumpsocket_init();
+
+    /* Note: this already may process a few dbus messages,
+     * therefore it should be the last thing to initialize.
+     */
+    VERB1 log("Initializing dbus");
+    if (init_dbus() != 0)
+        goto init_error;
 
     /* Inform parent that we initialized ok */
     if (!(opts & OPT_d))
@@ -684,22 +661,6 @@ int main(int argc, char** argv)
 
     /* Only now we want signal pipe to work */
     s_signal_pipe_write = s_signal_pipe[1];
-
-    if (g_settings_sLogScanners)
-    {
-        const char *scanner_argv[] = {
-            "/bin/sh", "-c",
-            g_settings_sLogScanners,
-            NULL
-        };
-        log_scanner_pid = fork_execv_on_steroids(EXECFLG_INPUT_NUL,
-                (char**)scanner_argv,
-                /*pipefds:*/ NULL,
-                /*env_vec:*/ NULL,
-                /*dir:*/ NULL,
-                /*uid:*/ 0);
-        VERB1 log("Started log scanner, pid:%d", (int)log_scanner_pid);
-    }
 
     /* Enter the event loop */
     log("Init complete, entering main loop");
@@ -729,12 +690,6 @@ int main(int argc, char** argv)
 
     free_settings();
 
-    if (log_scanner_pid > 0)
-    {
-        VERB2 log("Sending SIGTERM to %d", log_scanner_pid);
-        kill(log_scanner_pid, SIGTERM);
-    }
-
     /* Exiting */
     if (s_sig_caught && s_sig_caught != SIGALRM && s_sig_caught != SIGCHLD)
     {
@@ -743,4 +698,12 @@ int main(int argc, char** argv)
         raise(s_sig_caught);
     }
     error_msg_and_die("Exiting");
+
+ init_error:
+    /* Initialization error */
+    error_msg("Error while initializing daemon");
+    /* Inform parent that initialization failed */
+    if (!(opts & OPT_d))
+        kill(parent_pid, SIGINT);
+    goto cleanup;
 }

@@ -33,8 +33,6 @@ extern bool          g_settings_bOpenGPGCheck;
 extern bool          g_settings_bProcessUnpackaged;
 extern char *        g_settings_sWatchCrashdumpArchiveDir;
 
-extern char *        g_settings_sLogScanners;
-
 int load_settings();
 void free_settings();
 
