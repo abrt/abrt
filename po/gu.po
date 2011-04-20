@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-04-17 17:04+0200\n"
-"PO-Revision-Date: 2011-04-15 15:09+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2011-04-20 10:29+0200\n"
+"PO-Revision-Date: 2011-04-20 08:37+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Gujarati <trans-gu@lists.fedoraproject.org>\n"
-"Language: gu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: gu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -46,7 +46,9 @@ msgstr "ચેતવણી"
 #: ../src/applet/applet_gtk.c:259
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
-msgstr "સૂચના વિસ્તાર એપલેટ કે જે ABRT દ્દારા શોધેલ મુદ્દાઓ વિશે વપરાશકર્તાને સૂચિત કરે છે"
+msgstr ""
+"સૂચના વિસ્તાર એપલેટ કે જે ABRT દ્દારા શોધેલ મુદ્દાઓ વિશે વપરાશકર્તાને સૂચિત "
+"કરે છે"
 
 #: ../src/applet/applet_gtk.c:275 ../src/gui-gtk/abrt-gtk.c:236
 msgid "translator-credits"
@@ -226,7 +228,8 @@ msgstr "છોડી રહ્યા છે..."
 
 #: ../src/cli/report.c:779
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "અહેવાલ કરવાનું નિષ્ક્રિય થયેલ છે કારણ કે બેકટ્રેસ ઉપયોગ કરી શકાય તેવુ નથી"
+msgstr ""
+"અહેવાલ કરવાનું નિષ્ક્રિય થયેલ છે કારણ કે બેકટ્રેસ ઉપયોગ કરી શકાય તેવુ નથી"
 
 #: ../src/cli/report.c:783
 #, c-format
@@ -234,8 +237,8 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
-"મહેરબાની કરીને આદેશની મદદથી જાતેજ ડિબગ જાણકારીને સ્થાપિત કરવાનો પ્રયત્ન કરો: "
-"\"debuginfo-install %s\" અને ફરીથી પ્રયત્ન કરો\n"
+"મહેરબાની કરીને આદેશની મદદથી જાતેજ ડિબગ જાણકારીને સ્થાપિત કરવાનો પ્રયત્ન કરો:"
+" \"debuginfo-install %s\" અને ફરીથી પ્રયત્ન કરો\n"
 
 #: ../src/cli/report.c:805
 #, c-format
@@ -253,10 +256,10 @@ msgstr ""
 
 #: ../src/daemon/abrt-action-save-package-data.c:266
 #: ../src/daemon/abrt-handle-crashdump.c:61
-#: ../src/plugins/abrt-action-analyze-backtrace.c:72
-#: ../src/plugins/abrt-action-analyze-c.c:178
-#: ../src/plugins/abrt-action-analyze-oops.c:144
-#: ../src/plugins/abrt-action-analyze-python.c:49
+#: ../src/plugins/abrt-action-analyze-backtrace.c:70
+#: ../src/plugins/abrt-action-analyze-c.c:177
+#: ../src/plugins/abrt-action-analyze-oops.c:159
+#: ../src/plugins/abrt-action-analyze-python.c:45
 #: ../src/plugins/abrt-action-bugzilla.cpp:931
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:154
@@ -289,12 +292,12 @@ msgid "List possible events [which start with PFX]"
 msgstr "શક્ય ઘટનાઓની યાદી કરો [કે જે PFX સાથે શરૂ થાય છે]"
 
 #: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
-#: ../src/daemon/Daemon.cpp:547 ../src/gui-gtk/main.c:216
+#: ../src/daemon/Daemon.cpp:528 ../src/gui-gtk/main.c:216
 #: ../src/gui-wizard-gtk/main.c:94
 msgid "Add program names to log"
 msgstr "લૉગ રાખવા માટે કાર્યક્રમ નામો ઉમેરો"
 
-#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:532
+#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:513
 msgid " [options]"
 msgstr " [વિકલ્પો]"
 
@@ -302,27 +305,23 @@ msgstr " [વિકલ્પો]"
 msgid "Use UID as client uid"
 msgstr "ક્લાયન્ટ uid તરીકે UID ને વાપરો"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:236
-msgid "Comment is too long"
-msgstr "ટિપ્પણી ઘણી લાંબી છે"
-
-#: ../src/daemon/Daemon.cpp:368
+#: ../src/daemon/Daemon.cpp:349
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
 msgstr ""
-"માપ વધારેલ ક્વોટાનાં અહેવાલનું માપ. મહેરબાની કરીને સિસ્ટમની MaxCrashReportsSize ને "
-"abrt.conf માં ચકાસો."
+"માપ વધારેલ ક્વોટાનાં અહેવાલનું માપ. મહેરબાની કરીને સિસ્ટમની "
+"MaxCrashReportsSize ને abrt.conf માં ચકાસો."
 
-#: ../src/daemon/Daemon.cpp:544
+#: ../src/daemon/Daemon.cpp:525
 msgid "Do not daemonize"
 msgstr "ડિમોનાઇઝ કરો નહિં"
 
-#: ../src/daemon/Daemon.cpp:545
+#: ../src/daemon/Daemon.cpp:526
 msgid "Log to syslog even with -d"
 msgstr "-d સાથે પણ syslog નો લૉગ લો"
 
-#: ../src/daemon/Daemon.cpp:546
+#: ../src/daemon/Daemon.cpp:527
 msgid "Exit after SEC seconds of inactivity"
 msgstr "બિનપ્રવૃત્તિની SEC સેકંડો પછી બહાર નીકળો"
 
@@ -345,8 +344,8 @@ msgstr "ઘટના રૂપરેખાંકિત કરો (_v)"
 #: ../src/gtk-helpers/event_config_dialog.c:424
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:428
@@ -417,8 +416,8 @@ msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
 msgstr ""
-"લખી શકાય તેવી ડિરેક્ટરીની જરૂર છે, પરંતુ '%s' એ લખી શકાય તેવી નથી. '%s' માં તેને ખસેડો "
-"અને ખસેડાયેલ નકલ પર ચલાવો?"
+"લખી શકાય તેવી ડિરેક્ટરીની જરૂર છે, પરંતુ '%s' એ લખી શકાય તેવી નથી. '%s' માં "
+"તેને ખસેડો અને ખસેડાયેલ નકલ પર ચલાવો?"
 
 #: ../src/gui-wizard-gtk/wizard.c:559
 msgid "(click here to view/edit)"
@@ -450,13 +449,14 @@ msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
-"બેકટ્રેસ એ અપૂરતુ છે, મહેરબાની કરીને ખાતરી કરો કે પુન:ઉત્પન્ન કરવા માટે સારાં પગલાઓ પૂરા "
-"પાડો છો."
+"બેકટ્રેસ એ અપૂરતુ છે, મહેરબાની કરીને ખાતરી કરો કે પુન:ઉત્પન્ન કરવા માટે "
+"સારાં પગલાઓ પૂરા પાડો છો."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
 #: ../src/gui-wizard-gtk/wizard.c:1011
 msgid "Reporting disabled because the backtrace is unusable."
-msgstr "અહેવાલ કરવાનું નિષ્ક્રિય થયેલ છે કારણ કે બેકટ્રેસ ઉપયોગ કરી શકાય તેવુ નથી."
+msgstr ""
+"અહેવાલ કરવાનું નિષ્ક્રિય થયેલ છે કારણ કે બેકટ્રેસ ઉપયોગ કરી શકાય તેવુ નથી."
 
 #: ../src/gui-wizard-gtk/wizard.c:1020
 msgid "You should check the backtrace for sensitive data."
@@ -493,8 +493,8 @@ msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr ""
-"<b>તમારી ટિપ્પણીઓ ખાનગી નથી.</b> તેઓ સાર્વજનિક રીતે દૃશ્યમાન સમસ્યા અહેવાલોમાં સમાવેલ "
-"હોઇ શકે છે."
+"<b>તમારી ટિપ્પણીઓ ખાનગી નથી.</b> તેઓ સાર્વજનિક રીતે દૃશ્યમાન સમસ્યા "
+"અહેવાલોમાં સમાવેલ હોઇ શકે છે."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Analyzing did not start yet"
@@ -510,16 +510,17 @@ msgid ""
 "down the source of the problem. Please review it and remove any sensitive "
 "data you would rather not share:"
 msgstr ""
-"બેકટ્રેસ ભંગાણની વિગતો સાથે ડેવલપરોને પૂરા પાડે છે, સમસ્યાનાં સ્ત્રોતને શોધવા માટે તેઓને મદદ "
-"કરી રહ્યા છે. મહેરબાની કરીને તેનું રિવ્યૂ કરો અને કોઇપણ સંવેદનશીલ માહિતીને દૂર કરો જે તમે "
-"વહેંચવા ન માંગો:"
+"બેકટ્રેસ ભંગાણની વિગતો સાથે ડેવલપરોને પૂરા પાડે છે, સમસ્યાનાં સ્ત્રોતને "
+"શોધવા માટે તેઓને મદદ કરી રહ્યા છે. મહેરબાની કરીને તેનું રિવ્યૂ કરો અને કોઇપણ"
+" સંવેદનશીલ માહિતીને દૂર કરો જે તમે વહેંચવા ન માંગો:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
 "Can create more informative backtrace if you installed additional debug "
 "packages"
 msgstr ""
-"વધારે માહિતીપૂર્ણ બેકટ્રેસને બનાવી શકો છો જો તમે વધારાનાં ડિબગ પેકેજોને સ્થાપિત કરેલ હોય"
+"વધારે માહિતીપૂર્ણ બેકટ્રેસને બનાવી શકો છો જો તમે વધારાનાં ડિબગ પેકેજોને "
+"સ્થાપિત કરેલ હોય"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "Click 'Apply' to start reporting"
@@ -528,8 +529,8 @@ msgstr "અહેવાલ કરવાનું શરૂ કરવા મા�
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
 msgid "Click 'Forward' to proceed with analyzing and reporting this problem."
 msgstr ""
-"આ સમસ્યાને અહેવાલ કરવા અને વિશ્ર્લેષણ કરવા સાથે આગળ ધપાવા માટે 'આગળ ધપાવો' પર ક્લિક "
-"કરો."
+"આ સમસ્યાને અહેવાલ કરવા અને વિશ્ર્લેષણ કરવા સાથે આગળ ધપાવા માટે 'આગળ ધપાવો' "
+"પર ક્લિક કરો."
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Configure _Events"
@@ -576,8 +577,8 @@ msgid ""
 "Use this button to generate more informative backtrace after you installed "
 "additional debug packages"
 msgstr ""
-"તમે વધારાનાં ડિબગ પેકેજોને સ્થાપિત કરો પછી વધારે માહિતીપૂર્ણ બેકટ્રેસને ઉત્પન્ન કરવા માટે આ "
-"બટનને વાપરો"
+"તમે વધારાનાં ડિબગ પેકેજોને સ્થાપિત કરો પછી વધારે માહિતીપૂર્ણ બેકટ્રેસને "
+"ઉત્પન્ન કરવા માટે આ બટનને વાપરો"
 
 #: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
 #, c-format
@@ -612,39 +613,37 @@ msgstr "બિનઆધારભૂત વિકલ્પ પ્રકાર"
 msgid "Usage: %s\n"
 msgstr "વપરાશ: %s\n"
 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:61
+#: ../src/plugins/abrt-action-analyze-backtrace.c:59
 msgid ""
 " [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
-"identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
 msgstr ""
 
-#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#.
-#: ../src/plugins/abrt-action-analyze-backtrace.c:113
+#. 
+#: ../src/plugins/abrt-action-analyze-backtrace.c:111
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "%s બેકટ્રેસ પાર્સિંગ નિષ્ફળ"
 
-#: ../src/plugins/abrt-action-analyze-c.c:167
+#: ../src/plugins/abrt-action-analyze-c.c:166
 msgid ""
 " [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-oops.c:133
+#: ../src/plugins/abrt-action-analyze-oops.c:148
 msgid ""
 " [-vs] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-python.c:38
+#: ../src/plugins/abrt-action-analyze-python.c:34
 msgid ""
 " [-v] -d DIR\n"
 "\n"
@@ -756,7 +755,7 @@ msgstr "gdb ને મારો જો તે N સેકંડો કરતા 
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -861,7 +860,8 @@ msgstr "તમારે coredump માં પાથને સ્પષ્ટ �
 #: ../src/plugins/abrt-action-install-debuginfo.py:420
 #, python-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
-msgstr "Coredump એ %u debuginfo ફાઇલોનો સંદર્ભ કરે છે, તેઓમાંનો %u સ્થાપિત થયેલ નથી"
+msgstr ""
+"Coredump એ %u debuginfo ફાઇલોનો સંદર્ભ કરે છે, તેઓમાંનો %u સ્થાપિત થયેલ નથી"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:425
 #, python-format
@@ -934,9 +934,11 @@ msgstr "અહેવાલ %s સાથે જોડાયેલ હતુ"
 msgid "The report was stored to %s"
 msgstr "અહેવાલ એ %s માં સંગ્રહ થયેલ હતો"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
 #: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
@@ -1028,7 +1030,7 @@ msgstr "અસ્તિત્વ ધરાવતુ નથી, નવાં oops
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
+#. 
 #: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr ""
@@ -1037,7 +1039,7 @@ msgstr ""
 msgid "Make the dump directory world readable"
 msgstr ""
 
-#: ../src/plugins/abrt-retrace-client.c:707
+#: ../src/plugins/abrt-retrace-client.c:899
 msgid "log to syslog"
 msgstr "syslog નો લૉગ લો"
 
@@ -1052,8 +1054,8 @@ msgstr ""
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
@@ -1122,8 +1124,8 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid ""
-"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
-"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+"You can create bugzilla.redhat.com account &lt;a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1

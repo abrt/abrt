@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-04-17 17:04+0200\n"
-"PO-Revision-Date: 2011-04-15 15:09+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2011-04-20 10:29+0200\n"
+"PO-Revision-Date: 2011-04-20 08:37+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Chinese (China) <None>\n"
-"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -96,6 +96,26 @@ msgid ""
 "\t-V, --version\t\tDisplay version and exit\n"
 "\t-v, --verbose\t\tBe verbose\n"
 msgstr ""
+"用法: %s -l[f] [-D BASE_DIR]...]\n"
+"   或: %s -r[y] CRASH_DIR\n"
+"   或: %s -i[b] CRASH_DIR\n"
+"   或: %s -d CRASH_DIR\n"
+"\n"
+"\t-l, --list\t\t列出尚未报告的问题\n"
+"\t  -f, --full\t\t列出所有问题\n"
+"\t-D BASE_DIR\t\t从哪个目录列出问题\n"
+"\t\t\t\t(默认: -D $HOME/.abrt/spool -D %s)\n"
+"\n"
+"\t-r, --report\t\t发送关于CRASH_DIR的报告\n"
+"\t  -y, --always\t\t...不要编辑或者提问\n"
+"\t-i, --info\t\t打印关于CRASH_DIR的详细信息\n"
+"\t  -f, --full\t\t...包括多行项目\n"
+"\t\t\t\t注意: -if 将运行分析器\n"
+"\t\t\t\t(如果这个CRASH_DIR已经定义了分析器)\n"
+"\t-d, --delete\t\t删除CRASH_DIR\n"
+"\n"
+"\t-V, --version\t\t显示版本并退出\n"
+"\t-v, --verbose\t\t显示详细信息\n"
 
 #: ../src/cli/cli.c:260
 msgid "You must specify exactly one operation"
@@ -195,21 +215,21 @@ msgstr "'%s' 值错误: %s"
 #: ../src/cli/report.c:592
 #, c-format
 msgid "Select how you would like to analyze the problem:\n"
-msgstr ""
+msgstr "选择您希望如何分析问题:\n"
 
 #: ../src/cli/report.c:608
 #, c-format
 msgid "Choose option [0 - %u]: "
-msgstr ""
+msgstr "选择选项 [0 - %u]: "
 
 #: ../src/cli/report.c:622
 #, c-format
 msgid "You have chosen number out of range"
-msgstr ""
+msgstr "您选择的数字超出了范围"
 
 #: ../src/cli/report.c:630
 msgid "Invalid input, program exiting..."
-msgstr ""
+msgstr "无效输入，程序正在退出..."
 
 #: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1103
 msgid "Reporting..."
@@ -252,10 +272,10 @@ msgstr ""
 
 #: ../src/daemon/abrt-action-save-package-data.c:266
 #: ../src/daemon/abrt-handle-crashdump.c:61
-#: ../src/plugins/abrt-action-analyze-backtrace.c:72
-#: ../src/plugins/abrt-action-analyze-c.c:178
-#: ../src/plugins/abrt-action-analyze-oops.c:144
-#: ../src/plugins/abrt-action-analyze-python.c:49
+#: ../src/plugins/abrt-action-analyze-backtrace.c:70
+#: ../src/plugins/abrt-action-analyze-c.c:177
+#: ../src/plugins/abrt-action-analyze-oops.c:159
+#: ../src/plugins/abrt-action-analyze-python.c:45
 #: ../src/plugins/abrt-action-bugzilla.cpp:931
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:154
@@ -288,12 +308,12 @@ msgid "List possible events [which start with PFX]"
 msgstr "列出可能的事件 [用PFX开始的那个]"
 
 #: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
-#: ../src/daemon/Daemon.cpp:547 ../src/gui-gtk/main.c:216
+#: ../src/daemon/Daemon.cpp:528 ../src/gui-gtk/main.c:216
 #: ../src/gui-wizard-gtk/main.c:94
 msgid "Add program names to log"
 msgstr "添加程序名到日志"
 
-#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:532
+#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:513
 msgid " [options]"
 msgstr " [选项]"
 
@@ -301,26 +321,21 @@ msgstr " [选项]"
 msgid "Use UID as client uid"
 msgstr "使用UID作为客户端uid"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:236
-msgid "Comment is too long"
-msgstr "评论过长"
-
-#: ../src/daemon/Daemon.cpp:368
+#: ../src/daemon/Daemon.cpp:349
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
-msgstr ""
-"报告大小已超出配额。请检查在 abrt.conf 文件中系统的 MaxCrashReportsSize 值。"
+msgstr "报告大小已超出配额。请检查在 abrt.conf 文件中系统的 MaxCrashReportsSize 值。"
 
-#: ../src/daemon/Daemon.cpp:544
+#: ../src/daemon/Daemon.cpp:525
 msgid "Do not daemonize"
 msgstr "不要守护进程"
 
-#: ../src/daemon/Daemon.cpp:545
+#: ../src/daemon/Daemon.cpp:526
 msgid "Log to syslog even with -d"
 msgstr "记录到系统日志即使用到-d"
 
-#: ../src/daemon/Daemon.cpp:546
+#: ../src/daemon/Daemon.cpp:527
 msgid "Exit after SEC seconds of inactivity"
 msgstr "在SEC秒闲置后退出"
 
@@ -343,16 +358,16 @@ msgstr "配置事件 (_V)"
 #: ../src/gtk-helpers/event_config_dialog.c:424
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
-msgstr ""
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
+msgstr "检测到 %s 的错误设置，如果您继续使用当前配置，报告可能失败。"
 
 #: ../src/gtk-helpers/event_config_dialog.c:428
 #, c-format
 msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
 "continue with the current configuration."
-msgstr ""
+msgstr "检测到 <b>%s</b> 的错误设置，如果您继续使用当前配置，报告可能失败。"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -508,9 +523,7 @@ msgid ""
 "Backtrace provides developers with details of the crash, helping them track "
 "down the source of the problem. Please review it and remove any sensitive "
 "data you would rather not share:"
-msgstr ""
-"回溯为开发者提供崩溃详情，帮助他们追查问题来源。请检查它并移除任何您不愿公开"
-"的敏感信息："
+msgstr "回溯为开发者提供崩溃详情，帮助他们追查问题来源。请检查它并移除任何您不愿公开的敏感信息："
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
@@ -605,28 +618,26 @@ msgstr "不支持的操作类型"
 msgid "Usage: %s\n"
 msgstr "用法: %s\n"
 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:61
+#: ../src/plugins/abrt-action-analyze-backtrace.c:59
 msgid ""
 " [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
-"identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
 msgstr ""
 " [options] -d DIR\n"
 "\n"
 "在转储 DIR 目录中分析 C/C++ 回溯，生成副本哈希值，回溯评分，和识别崩溃函数"
 
-#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#.
-#: ../src/plugins/abrt-action-analyze-backtrace.c:113
+#. 
+#: ../src/plugins/abrt-action-analyze-backtrace.c:111
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "%s的回溯解析失败"
 
-#: ../src/plugins/abrt-action-analyze-c.c:167
+#: ../src/plugins/abrt-action-analyze-c.c:166
 msgid ""
 " [-v] -d DIR\n"
 "\n"
@@ -636,7 +647,7 @@ msgstr ""
 "\n"
 "在转储目录 DIR 中计算并保存核心转储 UUID"
 
-#: ../src/plugins/abrt-action-analyze-oops.c:133
+#: ../src/plugins/abrt-action-analyze-oops.c:148
 msgid ""
 " [-vs] -d DIR\n"
 "\n"
@@ -646,7 +657,7 @@ msgstr ""
 "\n"
 "在转储目录 DIR 中计算并保存 UUID 和意外 DUPHASH"
 
-#: ../src/plugins/abrt-action-analyze-python.c:38
+#: ../src/plugins/abrt-action-analyze-python.c:34
 msgid ""
 " [-v] -d DIR\n"
 "\n"
@@ -663,7 +674,7 @@ msgstr "新的 bug id：%i"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:647
 msgid "Empty login or password, please check your configuration"
-msgstr ""
+msgstr "空的登陆名或者密码，请检查您的配置"
 
 #: ../src/plugins/abrt-action-bugzilla.cpp:661
 #, c-format
@@ -764,7 +775,7 @@ msgstr "如果GDB运行超过N秒就杀死它"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -939,7 +950,7 @@ msgstr "添加到，或者覆盖 FILE 文件"
 
 #: ../src/plugins/abrt-action-print.c:56
 msgid "Create reported_to in DIR"
-msgstr ""
+msgstr "在DIR生成reported_to"
 
 #: ../src/plugins/abrt-action-print.c:100
 #, c-format
@@ -951,9 +962,11 @@ msgstr "已在 %s 中附加该报告"
 msgid "The report was stored to %s"
 msgstr "已在 %s 中保存该报告"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
 #: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
@@ -965,7 +978,7 @@ msgstr "空 RHTS 登陆或密码"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:101
 msgid "Can't create a temporary directory in /tmp"
-msgstr ""
+msgstr "无法在/tmp生成临时目录"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:194
 msgid "Creating a new case..."
@@ -1039,6 +1052,9 @@ msgid ""
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
+" [-vsrowx] [-d DIR] FILE\n"
+"\n"
+"从 syslog/dmesg 文件提取 oops"
 
 #: ../src/plugins/abrt-dump-oops.c:586
 msgid "Parse kernel's message buffer before parsing FILE"
@@ -1054,45 +1070,47 @@ msgstr "不退出，为新的opps监视此文件"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
+#. 
 #: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
-msgstr ""
+msgstr "在 DIR 为每一个发现的 oops 生成 ABRT 转储"
 
 #: ../src/plugins/abrt-dump-oops.c:593
 msgid "Make the dump directory world readable"
 msgstr "让转储目录全局可读"
 
-#: ../src/plugins/abrt-retrace-client.c:707
+#: ../src/plugins/abrt-retrace-client.c:899
 msgid "log to syslog"
 msgstr "记录到系统日志"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr ""
+msgstr "下载 debuginfo 包并用 GDB 在本地生成回溯"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Local GNU Debugger"
-msgstr ""
+msgstr "本地 GNU 调试程序"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
+"需要下载 debuginfo "
+"软件包，这可能需要花较长时间，并且占用很多磁盘空间。然而，和RetraceServer不同，它不会把核心转储发送到远程机器。"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Address of the retrace server"
-msgstr ""
+msgstr "追溯服务器地址"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid "Retrace server URL"
-msgstr ""
+msgstr "追溯服务器 URL"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Send core dump to remote retrace server for analysis"
-msgstr ""
+msgstr "发送核心转储至远程追溯服务器进行分析"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid ""
@@ -1102,136 +1120,140 @@ msgid ""
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
 msgstr ""
+"上传核心转储至服务器，由服务器生成回溯并返回。优点：无需下载debuginfo。追溯服务器的debuginfo数据库更加完整。追溯服务器可以生成更好的回溯。缺点：您上传的核心转储包含崩溃程序的所有数据，包括您的私人数据，如果存在任何私人数据的话。"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Address of Bugzilla server"
-msgstr ""
+msgstr "Bugzilla 服务器地址"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:2
 msgid "Bugzilla"
-msgstr ""
+msgstr "Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:3
 msgid "Bugzilla URL"
-msgstr ""
+msgstr "Bugzilla 的 URL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:4
 msgid "Bugzilla account password"
-msgstr ""
+msgstr "Bugzilla 账户密码"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:5
 msgid "Bugzilla account user name"
-msgstr ""
+msgstr "Bugzilla 账户用户名"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:2
 msgid "Check SSL key validity"
-msgstr ""
+msgstr "检查 SSL 密钥有效性"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
 msgid "Password"
-msgstr ""
+msgstr "密码"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
 msgid "Report to Bugzilla bug tracker"
-msgstr ""
+msgstr "报告至 Bugzilla 程序错误跟踪器"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:9
 msgid "User name"
-msgstr ""
+msgstr "用户名"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Verify SSL"
-msgstr ""
+msgstr "验证 SSL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid ""
-"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
-"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+"You can create bugzilla.redhat.com account &lt;a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
+"您可以到 &lt;a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;这里&lt;/a&gt; 创建 "
+"bugzilla.redhat.com 账户 "
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops URL"
-msgstr ""
+msgstr "Kerneloops URL"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:2
 msgid "Kerneloops.org"
-msgstr ""
+msgstr "Kerneloops.org"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:3
 msgid "Oops server url"
-msgstr ""
+msgstr "Oops 服务器 url"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:4
 msgid "Send kernel problems to oops tracker"
-msgstr ""
+msgstr "发送内核问题至 oops 跟踪器"
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
-msgstr ""
+msgstr "Mailx"
 
 #: ../src/plugins/report_Mailx.xml.in.h:2
 msgid "Message subject"
-msgstr ""
+msgstr "信件主题"
 
 #: ../src/plugins/report_Mailx.xml.in.h:3
 msgid "Recipient"
-msgstr ""
+msgstr "接收者"
 
 #: ../src/plugins/report_Mailx.xml.in.h:4
 msgid "Recipient's email"
-msgstr ""
+msgstr "接收者电子邮件"
 
 #: ../src/plugins/report_Mailx.xml.in.h:5
 msgid "Send Binary Data"
-msgstr ""
+msgstr "发送二进制数据"
 
 #: ../src/plugins/report_Mailx.xml.in.h:6
 msgid "Send binary files like coredump"
-msgstr ""
+msgstr "发送像coredump这样的二进制文件"
 
 #: ../src/plugins/report_Mailx.xml.in.h:7
 msgid "Send via email"
-msgstr ""
+msgstr "通过电子邮件发送"
 
 #: ../src/plugins/report_Mailx.xml.in.h:8
 msgid "Sender"
-msgstr ""
+msgstr "发送者"
 
 #: ../src/plugins/report_Mailx.xml.in.h:9
 msgid "Sender's email"
-msgstr ""
+msgstr "发送者电子邮件"
 
 #: ../src/plugins/report_Mailx.xml.in.h:10
 msgid "Subject"
-msgstr ""
+msgstr "主题"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:1
 msgid "Address of the Red Hat support portal"
-msgstr ""
+msgstr "红帽支持入口地址"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:4
 msgid "RH Portal URL"
-msgstr ""
+msgstr "RH 入口 URL"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:5
 msgid "Red Hat Customer Support"
-msgstr ""
+msgstr "红帽客户支持"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:6
 msgid "Red Hat customer password"
-msgstr ""
+msgstr "红帽客户密码"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:7
 msgid "Red Hat customer user name"
-msgstr ""
+msgstr "红帽客户用户名"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:8
 msgid "Report to Red Hat support"
-msgstr ""
+msgstr "报告至红帽支持"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "Username"
-msgstr ""
+msgstr "用户名"

@@ -2,21 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-04-17 17:04+0200\n"
-"PO-Revision-Date: 2011-04-15 16:40+0000\n"
-"Last-Translator: raven <piotrdrag@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2011-04-20 10:29+0200\n"
+"PO-Revision-Date: 2011-04-20 08:37+0000\n"
+"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Polish <None>\n"
-"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2)\n"
+"Language: pl\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -281,10 +280,10 @@ msgstr ""
 
 #: ../src/daemon/abrt-action-save-package-data.c:266
 #: ../src/daemon/abrt-handle-crashdump.c:61
-#: ../src/plugins/abrt-action-analyze-backtrace.c:72
-#: ../src/plugins/abrt-action-analyze-c.c:178
-#: ../src/plugins/abrt-action-analyze-oops.c:144
-#: ../src/plugins/abrt-action-analyze-python.c:49
+#: ../src/plugins/abrt-action-analyze-backtrace.c:70
+#: ../src/plugins/abrt-action-analyze-c.c:177
+#: ../src/plugins/abrt-action-analyze-oops.c:159
+#: ../src/plugins/abrt-action-analyze-python.c:45
 #: ../src/plugins/abrt-action-bugzilla.cpp:931
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:154
@@ -317,12 +316,12 @@ msgid "List possible events [which start with PFX]"
 msgstr "Wyświetla możliwe zdarzenia (zaczynające się od PFX)"
 
 #: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
-#: ../src/daemon/Daemon.cpp:547 ../src/gui-gtk/main.c:216
+#: ../src/daemon/Daemon.cpp:528 ../src/gui-gtk/main.c:216
 #: ../src/gui-wizard-gtk/main.c:94
 msgid "Add program names to log"
 msgstr "Dodaje nazwy programów do dziennika"
 
-#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:532
+#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:513
 msgid " [options]"
 msgstr " [opcje]"
 
@@ -330,11 +329,7 @@ msgstr " [opcje]"
 msgid "Use UID as client uid"
 msgstr "Używa UID jako UID klienta"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:236
-msgid "Comment is too long"
-msgstr "Komentarz jest za długi"
-
-#: ../src/daemon/Daemon.cpp:368
+#: ../src/daemon/Daemon.cpp:349
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -342,16 +337,16 @@ msgstr ""
 "Wielkość zgłoszenia przekroczyła dozwolone ograniczenie. Proszę sprawdzić "
 "wartość zmiennej MaxCrashReportsSize w pliku abrt.conf."
 
-#: ../src/daemon/Daemon.cpp:544
+#: ../src/daemon/Daemon.cpp:525
 msgid "Do not daemonize"
 msgstr "Bez tworzenia demona"
 
-#: ../src/daemon/Daemon.cpp:545
+#: ../src/daemon/Daemon.cpp:526
 msgid "Log to syslog even with -d"
 msgstr ""
 "Przekazuje komunikaty do dziennika systemowego, nawet jeśli podano opcję -d"
 
-#: ../src/daemon/Daemon.cpp:546
+#: ../src/daemon/Daemon.cpp:527
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Kończy działanie po SEKUNDACH nieaktywności"
 
@@ -374,9 +369,11 @@ msgstr "Skonfiguruj z_darzenie"
 #: ../src/gtk-helpers/event_config_dialog.c:424
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr ""
+"Wykryto błędne ustawienia dla %s, zgłaszanie prawdopodobnie się nie "
+"powiedzie, jeśli obecna konfiguracja będzie dalej używana."
 
 #: ../src/gtk-helpers/event_config_dialog.c:428
 #, c-format
@@ -384,6 +381,8 @@ msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
 "continue with the current configuration."
 msgstr ""
+"Wykryto błędne ustawienia dla <b>%s</b>, zgłaszanie prawdopodobnie się nie "
+"powiedzie, jeśli obecna konfiguracja będzie dalej używana."
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -441,8 +440,7 @@ msgid ""
 msgstr ""
 " [-vp] [-g PLIK_GUI] KATALOG\n"
 "\n"
-"Narzędzie graficzne do analizowania i zgłaszania problemów zapisanych w "
-"podanym KATALOGU"
+"Narzędzie graficzne do analizowania i zgłaszania problemów zapisanych w podanym KATALOGU"
 
 #: ../src/gui-wizard-gtk/main.c:93
 msgid "Alternate GUI file"
@@ -650,29 +648,26 @@ msgstr "Nieobsługiwany typ opcji"
 msgid "Usage: %s\n"
 msgstr "Użycie: %s\n"
 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:61
+#: ../src/plugins/abrt-action-analyze-backtrace.c:59
 msgid ""
 " [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
-"identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
 msgstr ""
 " [opcje] -d KATALOG\n"
 "\n"
-"Analizuje wyjątki w języku C/C++, tworzy sumę duplikatu, ocenę wyjątku oraz "
-"identyfikuje funkcję awarii w KATALOGU zrzutów"
+"Analizuje wyjątki w języku C/C++, tworzy sumę duplikatu, ocenę wyjątku oraz identyfikuje funkcję awarii w KATALOGU zrzutów"
 
-#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#.
-#: ../src/plugins/abrt-action-analyze-backtrace.c:113
+#. 
+#: ../src/plugins/abrt-action-analyze-backtrace.c:111
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "Przetworzenie wyjątku nie powiodło się dla %s"
 
-#: ../src/plugins/abrt-action-analyze-c.c:167
+#: ../src/plugins/abrt-action-analyze-c.c:166
 msgid ""
 " [-v] -d DIR\n"
 "\n"
@@ -682,7 +677,7 @@ msgstr ""
 "\n"
 "Oblicza i zapisuje UUID zrzutu core w KATALOGU zrzutów"
 
-#: ../src/plugins/abrt-action-analyze-oops.c:133
+#: ../src/plugins/abrt-action-analyze-oops.c:148
 msgid ""
 " [-vs] -d DIR\n"
 "\n"
@@ -692,7 +687,7 @@ msgstr ""
 "\n"
 "Oblicza i zapisuje UUID oraz SUMĘ_DUPLIKATU dla KATALOGU zrzutów awarii"
 
-#: ../src/plugins/abrt-action-analyze-python.c:38
+#: ../src/plugins/abrt-action-analyze-python.c:34
 msgid ""
 " [-v] -d DIR\n"
 "\n"
@@ -812,7 +807,7 @@ msgstr "Kończy działanie GDB, jeśli jest uruchomione dłużej niż N sekund"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -909,8 +904,8 @@ msgstr "Wyłączanie na polecenie użytkownika"
 #, python-format
 msgid "Usage: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
 msgstr ""
-"Użycie: %s --core=PLIK_CORE --tmpdir=KATALOG_TYMCZASOWY --"
-"cache=KATALOG_PAMIĘCI_PODRĘCZNEJ"
+"Użycie: %s --core=PLIK_CORE --tmpdir=KATALOG_TYMCZASOWY "
+"--cache=KATALOG_PAMIĘCI_PODRĘCZNEJ"
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:400
 msgid "You have to specify the path to coredump."
@@ -1003,9 +998,11 @@ msgstr "Zgłoszenie zostało dodane do %s"
 msgid "The report was stored to %s"
 msgstr "Zgłoszenie zostało przechowane w %s"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
 #: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
@@ -1040,8 +1037,7 @@ msgid ""
 msgstr ""
 " [-v] [-d ROZMIAR:KATALOG]... [-f ROZMIAR:KATALOG]... [-p KATALOG]\n"
 "\n"
-"Usuwa katalogi zrzutów (-d) lub pliki (-f) w KATALOGACH, dopóki nie staną "
-"się mniejsze niż ROZMIAR"
+"Usuwa katalogi zrzutów (-d) lub pliki (-f) w KATALOGACH, dopóki nie staną się mniejsze niż ROZMIAR"
 
 #: ../src/plugins/abrt-action-trim-files.c:167
 msgid "Delete dump dirs"
@@ -1109,7 +1105,7 @@ msgstr "Bez kończenia działania, obserwuje pliki pod kątem nowych awarii"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
+#. 
 #: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr "Tworzy zrzut ABRT w KATALOGU dla każdej odnalezionej awarii"
@@ -1118,7 +1114,7 @@ msgstr "Tworzy zrzut ABRT w KATALOGU dla każdej odnalezionej awarii"
 msgid "Make the dump directory world readable"
 msgstr "Ustawia katalog zrzutów czytelnym dla wszystkich"
 
-#: ../src/plugins/abrt-retrace-client.c:707
+#: ../src/plugins/abrt-retrace-client.c:899
 msgid "log to syslog"
 msgstr "zapisuje w dzienniku systemowym"
 
@@ -1133,12 +1129,12 @@ msgstr "Lokalny debuger GDB"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
 "Należy pobrać pakiety debuginfo, co może zająć dużo czasu i miejsca na "
-"dysku. Jednakże, w przeciwieństwie do RetraceServer, nie wysyła zrzutów core "
-"do zdalnych komputerów."
+"dysku. Jednakże, w przeciwieństwie do RetraceServer, nie wysyła zrzutów core"
+" do zdalnych komputerów."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Address of the retrace server"
@@ -1163,8 +1159,8 @@ msgstr ""
 "Wysyła zrzuty core do serwera, którzy tworzy wyjątek i go zwraca. Zalety: "
 "nie trzeba pobierać pakietów debuginfo. Baza danych pakietów debuginfo "
 "serwera ponownego śledzenia jest bardziej kompletna. Może on tworzyć lepsze "
-"wyjątki. Wady: wysyłane zrzuty core zawierają wszystkie dane programu, który "
-"uległ awarii, w tym potencjalnie prywatne dane."
+"wyjątki. Wady: wysyłane zrzuty core zawierają wszystkie dane programu, który"
+" uległ awarii, w tym potencjalnie prywatne dane."
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Address of Bugzilla server"
@@ -1211,9 +1207,11 @@ msgstr "Sprawdzanie SSL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid ""
-"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
-"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+"You can create bugzilla.redhat.com account &lt;a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
+"Można utworzyć konto w witrynie bugzilla.redhat.com <a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\">pod tym adresem</a>"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops URL"

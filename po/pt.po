@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-04-17 17:04+0200\n"
-"PO-Revision-Date: 2011-04-15 15:09+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2011-04-20 10:29+0200\n"
+"PO-Revision-Date: 2011-04-20 08:37+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Portuguese <trans-pt@lists.fedoraproject.org>\n"
-"Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pt\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -47,8 +47,8 @@ msgstr "Aviso"
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
-"Applet da área de notificação que informa os utilizadores sobre os problemas "
-"detectados pela ABRT"
+"Applet da área de notificação que informa os utilizadores sobre os problemas"
+" detectados pela ABRT"
 
 #: ../src/applet/applet_gtk.c:275 ../src/gui-gtk/abrt-gtk.c:236
 msgid "translator-credits"
@@ -158,7 +158,8 @@ msgstr "# String de lançamento do sistema operativo"
 
 #: ../src/cli/report.c:276
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr "Incapaz de executar o vi: $TERM, $VISUAL e $EDITOR não estão definidas"
+msgstr ""
+"Incapaz de executar o vi: $TERM, $VISUAL e $EDITOR não estão definidas"
 
 #: ../src/cli/report.c:360
 msgid ""
@@ -253,10 +254,10 @@ msgstr ""
 
 #: ../src/daemon/abrt-action-save-package-data.c:266
 #: ../src/daemon/abrt-handle-crashdump.c:61
-#: ../src/plugins/abrt-action-analyze-backtrace.c:72
-#: ../src/plugins/abrt-action-analyze-c.c:178
-#: ../src/plugins/abrt-action-analyze-oops.c:144
-#: ../src/plugins/abrt-action-analyze-python.c:49
+#: ../src/plugins/abrt-action-analyze-backtrace.c:70
+#: ../src/plugins/abrt-action-analyze-c.c:177
+#: ../src/plugins/abrt-action-analyze-oops.c:159
+#: ../src/plugins/abrt-action-analyze-python.c:45
 #: ../src/plugins/abrt-action-bugzilla.cpp:931
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:154
@@ -289,12 +290,12 @@ msgid "List possible events [which start with PFX]"
 msgstr "Listar eventos possíveis [que começam com PFX]"
 
 #: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
-#: ../src/daemon/Daemon.cpp:547 ../src/gui-gtk/main.c:216
+#: ../src/daemon/Daemon.cpp:528 ../src/gui-gtk/main.c:216
 #: ../src/gui-wizard-gtk/main.c:94
 msgid "Add program names to log"
 msgstr "Adicionar nomes de programa aos registos"
 
-#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:532
+#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:513
 msgid " [options]"
 msgstr " [options]"
 
@@ -302,11 +303,7 @@ msgstr " [options]"
 msgid "Use UID as client uid"
 msgstr "Utilizar UID como uid do cliente"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:236
-msgid "Comment is too long"
-msgstr "O comentário é muito longo"
-
-#: ../src/daemon/Daemon.cpp:368
+#: ../src/daemon/Daemon.cpp:349
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -314,15 +311,15 @@ msgstr ""
 "O tamanho do relatório excedeu a cota. Por favor, verifique o valor de "
 "MaxCrashReportsSize em abrt.conf."
 
-#: ../src/daemon/Daemon.cpp:544
+#: ../src/daemon/Daemon.cpp:525
 msgid "Do not daemonize"
 msgstr "Não enviar para segundo plano"
 
-#: ../src/daemon/Daemon.cpp:545
+#: ../src/daemon/Daemon.cpp:526
 msgid "Log to syslog even with -d"
 msgstr "Registar para o syslog mesmo com o -d"
 
-#: ../src/daemon/Daemon.cpp:546
+#: ../src/daemon/Daemon.cpp:527
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Sair após SEC segundos de inactividade"
 
@@ -345,8 +342,8 @@ msgstr "Configurar E_vento"
 #: ../src/gtk-helpers/event_config_dialog.c:424
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:428
@@ -417,8 +414,8 @@ msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
 msgstr ""
-"Directório gravável necessário, mas '%s' não é gravável. Movê-lo para '%s' e "
-"operar na cópia?"
+"Directório gravável necessário, mas '%s' não é gravável. Movê-lo para '%s' e"
+" operar na cópia?"
 
 #: ../src/gui-wizard-gtk/wizard.c:559
 msgid "(click here to view/edit)"
@@ -450,8 +447,8 @@ msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
-"A traçagem está incompleta. Por favor, tenha a certeza que fornece os passos "
-"para reproduzir."
+"A traçagem está incompleta. Por favor, tenha a certeza que fornece os passos"
+" para reproduzir."
 
 #. FIXME: see CreporterAssistant: 394 for ideas
 #: ../src/gui-wizard-gtk/wizard.c:1011
@@ -613,39 +610,37 @@ msgstr "tipo de opção não suportada"
 msgid "Usage: %s\n"
 msgstr "Utilização: %s\n"
 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:61
+#: ../src/plugins/abrt-action-analyze-backtrace.c:59
 msgid ""
 " [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
-"identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
 msgstr ""
 
-#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#.
-#: ../src/plugins/abrt-action-analyze-backtrace.c:113
+#. 
+#: ../src/plugins/abrt-action-analyze-backtrace.c:111
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "Processamento da traçagem falhou para %s"
 
-#: ../src/plugins/abrt-action-analyze-c.c:167
+#: ../src/plugins/abrt-action-analyze-c.c:166
 msgid ""
 " [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-oops.c:133
+#: ../src/plugins/abrt-action-analyze-oops.c:148
 msgid ""
 " [-vs] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-python.c:38
+#: ../src/plugins/abrt-action-analyze-python.c:34
 msgid ""
 " [-v] -d DIR\n"
 "\n"
@@ -759,7 +754,7 @@ msgstr "Matar o gdb se este executar por mais de N segundos"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -939,9 +934,11 @@ msgstr "O relatório foi anexado a %s"
 msgid "The report was stored to %s"
 msgstr "O relatório foi armazenado em %s"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
 #: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
@@ -1033,7 +1030,7 @@ msgstr "Não sair, monitorar o ficheiro por novos oopses"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
+#. 
 #: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr ""
@@ -1042,7 +1039,7 @@ msgstr ""
 msgid "Make the dump directory world readable"
 msgstr ""
 
-#: ../src/plugins/abrt-retrace-client.c:707
+#: ../src/plugins/abrt-retrace-client.c:899
 msgid "log to syslog"
 msgstr "Registar no syslog"
 
@@ -1057,8 +1054,8 @@ msgstr ""
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
@@ -1127,8 +1124,8 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid ""
-"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
-"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+"You can create bugzilla.redhat.com account &lt;a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1

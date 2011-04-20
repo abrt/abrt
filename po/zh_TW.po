@@ -2,19 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-04-17 17:04+0200\n"
-"PO-Revision-Date: 2011-04-15 15:09+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2011-04-20 10:29+0200\n"
+"PO-Revision-Date: 2011-04-20 08:37+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Chinese (Taiwan) <None>\n"
-"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -99,6 +99,26 @@ msgid ""
 "\t-V, --version\t\tDisplay version and exit\n"
 "\t-v, --verbose\t\tBe verbose\n"
 msgstr ""
+"用法：%s -l[f] [-D BASE_DIR]...]\n"
+"   或：%s -r[y] CRASH_DIR\n"
+"   或：%s -i[b] CRASH_DIR\n"
+"   或：%s -d CRASH_DIR\n"
+"\n"
+"\t-l, --list\t\t列出尚未回報的問題\n"
+"\t  -f, --full\t\t列出所有問題\n"
+"\t-D BASE_DIR\t\t要從哪個目錄列出問題\n"
+"\t\t\t\t(預設：-D $HOME/.abrt/spool -D %s)\n"
+"\n"
+"\t-r, --report\t\t傳送有關 CRASH_DIR 的回報\n"
+"\t  -y, --always\t\t...不編輯也不詢問\n"
+"\t-i, --info\t\t印出有關 CRASH_DIR 的詳細資訊\n"
+"\t  -f, --full\t\t...包含多列的條目\n"
+"\t\t\t\t注意：-if 會執行分析程式\n"
+"\t\t\t\t(如果這個 CRASH_DIR 已經有定義分析程式的話)\n"
+"\t-d, --delete\t\t移除 CRASH_DIR\n"
+"\n"
+"\t-V, --version\t\t顯示版本並離開\n"
+"\t-v, --verbose\t\t以詳細模式執行\n"
 
 #: ../src/cli/cli.c:260
 msgid "You must specify exactly one operation"
@@ -255,10 +275,10 @@ msgstr ""
 
 #: ../src/daemon/abrt-action-save-package-data.c:266
 #: ../src/daemon/abrt-handle-crashdump.c:61
-#: ../src/plugins/abrt-action-analyze-backtrace.c:72
-#: ../src/plugins/abrt-action-analyze-c.c:178
-#: ../src/plugins/abrt-action-analyze-oops.c:144
-#: ../src/plugins/abrt-action-analyze-python.c:49
+#: ../src/plugins/abrt-action-analyze-backtrace.c:70
+#: ../src/plugins/abrt-action-analyze-c.c:177
+#: ../src/plugins/abrt-action-analyze-oops.c:159
+#: ../src/plugins/abrt-action-analyze-python.c:45
 #: ../src/plugins/abrt-action-bugzilla.cpp:931
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:154
@@ -291,12 +311,12 @@ msgid "List possible events [which start with PFX]"
 msgstr "列出可能的事件 [以 PFX 開頭]"
 
 #: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
-#: ../src/daemon/Daemon.cpp:547 ../src/gui-gtk/main.c:216
+#: ../src/daemon/Daemon.cpp:528 ../src/gui-gtk/main.c:216
 #: ../src/gui-wizard-gtk/main.c:94
 msgid "Add program names to log"
 msgstr "加入程式名稱至紀錄檔"
 
-#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:532
+#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:513
 msgid " [options]"
 msgstr " [選項]"
 
@@ -304,26 +324,21 @@ msgstr " [選項]"
 msgid "Use UID as client uid"
 msgstr "使用 UID 作為客戶端 uid"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:236
-msgid "Comment is too long"
-msgstr "評註過長"
-
-#: ../src/daemon/Daemon.cpp:368
+#: ../src/daemon/Daemon.cpp:349
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
-msgstr ""
-"報告配額大小超出。請檢查您在 abrt.conf 中，系統的 MaxCrashReportsSize 數值。"
+msgstr "報告配額大小超出。請檢查您在 abrt.conf 中，系統的 MaxCrashReportsSize 數值。"
 
-#: ../src/daemon/Daemon.cpp:544
+#: ../src/daemon/Daemon.cpp:525
 msgid "Do not daemonize"
 msgstr "不要在幕後運行"
 
-#: ../src/daemon/Daemon.cpp:545
+#: ../src/daemon/Daemon.cpp:526
 msgid "Log to syslog even with -d"
 msgstr "即使加上 -d 參數也紀錄至 slslog"
 
-#: ../src/daemon/Daemon.cpp:546
+#: ../src/daemon/Daemon.cpp:527
 msgid "Exit after SEC seconds of inactivity"
 msgstr "在停止運作 SEC 秒後離開"
 
@@ -346,16 +361,16 @@ msgstr "設定事件(_V)"
 #: ../src/gtk-helpers/event_config_dialog.c:424
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
-msgstr ""
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
+msgstr "偵測到 %s 有錯誤的設定值，若您以目前的組態繼續的話，回報動作可能會失敗。"
 
 #: ../src/gtk-helpers/event_config_dialog.c:428
 #, c-format
 msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
 "continue with the current configuration."
-msgstr ""
+msgstr "偵測到 <b>%s</b> 有錯誤的設定值，若您以目前的組態繼續的話，回報動作可能會失敗。"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -424,9 +439,7 @@ msgstr "替代的 GUI 檔案"
 msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
-msgstr ""
-"需要可以寫入的目錄，但是「%s」無法寫入。您想要將它移動至「%s」並對移動的副本"
-"進行操作嗎？"
+msgstr "需要可以寫入的目錄，但是「%s」無法寫入。您想要將它移動至「%s」並對移動的副本進行操作嗎？"
 
 #: ../src/gui-wizard-gtk/wizard.c:559
 msgid "(click here to view/edit)"
@@ -498,8 +511,7 @@ msgstr "值"
 msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
-msgstr ""
-"<b>您的評註並非以私密方式處理。</b> 它們可能被納入能夠公開查看的問題回報中。"
+msgstr "<b>您的評註並非以私密方式處理。</b> 它們可能被納入能夠公開查看的問題回報中。"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Analyzing did not start yet"
@@ -514,9 +526,7 @@ msgid ""
 "Backtrace provides developers with details of the crash, helping them track "
 "down the source of the problem. Please review it and remove any sensitive "
 "data you would rather not share:"
-msgstr ""
-"追蹤資訊提供開發者當機的細節，並幫助他們追蹤問題的來源。請校閱資料並移除任何"
-"您不想要與他人分享的敏感資料："
+msgstr "追蹤資訊提供開發者當機的細節，並幫助他們追蹤問題的來源。請校閱資料並移除任何您不想要與他人分享的敏感資料："
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
@@ -611,28 +621,26 @@ msgstr "未支援的選項類型"
 msgid "Usage: %s\n"
 msgstr "用法：%s\n"
 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:61
+#: ../src/plugins/abrt-action-analyze-backtrace.c:59
 msgid ""
 " [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
-"identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
 msgstr ""
 " [選項] -d DIR\n"
 "\n"
 "分析 C/C++ 追蹤資料、產生複本雜湊、追蹤評等、並辨識傾印目錄 DIR 內的當機函式"
 
-#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#.
-#: ../src/plugins/abrt-action-analyze-backtrace.c:113
+#. 
+#: ../src/plugins/abrt-action-analyze-backtrace.c:111
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "%s 的追蹤解析失敗"
 
-#: ../src/plugins/abrt-action-analyze-c.c:167
+#: ../src/plugins/abrt-action-analyze-c.c:166
 msgid ""
 " [-v] -d DIR\n"
 "\n"
@@ -642,7 +650,7 @@ msgstr ""
 "\n"
 "計算並儲存傾印目錄 DIR 內 coredump 的 UUID"
 
-#: ../src/plugins/abrt-action-analyze-oops.c:133
+#: ../src/plugins/abrt-action-analyze-oops.c:148
 msgid ""
 " [-vs] -d DIR\n"
 "\n"
@@ -652,7 +660,7 @@ msgstr ""
 "\n"
 "為 oops 傾印目錄 DIR 計算並儲存 UUID 與 DUPHASH"
 
-#: ../src/plugins/abrt-action-analyze-python.c:38
+#: ../src/plugins/abrt-action-analyze-python.c:34
 msgid ""
 " [-v] -d DIR\n"
 "\n"
@@ -770,7 +778,7 @@ msgstr "若 gdb 執行超過 N 秒就終止它"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:296
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -945,7 +953,7 @@ msgstr "附加至，或是覆寫 FILE"
 
 #: ../src/plugins/abrt-action-print.c:56
 msgid "Create reported_to in DIR"
-msgstr ""
+msgstr "在 DIR 內建立 reported_to"
 
 #: ../src/plugins/abrt-action-print.c:100
 #, c-format
@@ -957,9 +965,11 @@ msgstr "錯誤已附加至 %s"
 msgid "The report was stored to %s"
 msgstr "錯誤已儲存至 %s"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
 #: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
@@ -971,7 +981,7 @@ msgstr "空白的 RHTS 登入名稱或密碼"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:101
 msgid "Can't create a temporary directory in /tmp"
-msgstr ""
+msgstr "無法在 /tmp 內建立暫時目錄"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:194
 msgid "Creating a new case..."
@@ -1045,6 +1055,9 @@ msgid ""
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
+" [-vsrowx] [-d DIR] FILE\n"
+"\n"
+"從 syslog/dmesg 檔案抽出 oops"
 
 #: ../src/plugins/abrt-dump-oops.c:586
 msgid "Parse kernel's message buffer before parsing FILE"
@@ -1060,16 +1073,16 @@ msgstr "不要離開，監視檔案以取得新的 oops"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
+#. 
 #: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
-msgstr ""
+msgstr "在 DIR 內為每個找到的 oops 建立 ABRT 傾印"
 
 #: ../src/plugins/abrt-dump-oops.c:593
 msgid "Make the dump directory world readable"
 msgstr "讓傾印目錄全世界都可以讀取"
 
-#: ../src/plugins/abrt-retrace-client.c:707
+#: ../src/plugins/abrt-retrace-client.c:899
 msgid "log to syslog"
 msgstr "紀錄至 syslog"
 
@@ -1084,9 +1097,11 @@ msgstr "本地端 GNU 除錯器"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
+"需要下載 debuginfo 套件，並且可能會花上一段時間以及消耗一些磁碟空間。然而，這不像 "
+"RetraceServer，所以不會傳送核心傾印資料至遠端機器。"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Address of the retrace server"
@@ -1108,6 +1123,8 @@ msgid ""
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
 msgstr ""
+"上傳核心傾印資料至伺服器，該伺服器會產生追蹤資料並回傳。優點：不需要下載 debuginfo 套件、回追伺服器資料庫中的 debuginfo "
+"比較完整、回追伺服器可能會產生比較良好的追蹤資料。缺點：您需要上傳核心傾印檔案，該檔案包含當掉程式的所有資料，包括您的私人資料 (如果有的話)。"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Address of Bugzilla server"
@@ -1154,9 +1171,12 @@ msgstr "驗證 SSL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid ""
-"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
-"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+"You can create bugzilla.redhat.com account &lt;a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
+"您可以 &lt;a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;從這裡&lt;/a&gt; 建立 "
+"bugzilla.redhat.com 帳號"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops URL"
