@@ -314,13 +314,13 @@ exit 0
 
 %post
 if [ $1 -eq 1 ]; then
-/sbin/chkconfig --add abrtd
+    /sbin/chkconfig --add abrtd
 fi
 #systemd
 %if %{?with_systemd}
 #if [ $1 -eq 1 ]; then
 # Enable (but don't start) the units by default
-  /bin/systemctl enable abrtd.service >/dev/null 2>&1 || :
+    /bin/systemctl enable abrtd.service >/dev/null 2>&1 || :
 #fi
 %endif
 
@@ -368,7 +368,7 @@ fi
 %if %{?with_systemd}
 if [ $1 -ge 1 ] ; then
 # On upgrade, reload init system configuration if we changed unit files
-  /bin/systemctl daemon-reload >/dev/null 2>&1 || :
+    /bin/systemctl daemon-reload >/dev/null 2>&1 || :
 fi
 %endif
 
@@ -376,7 +376,7 @@ fi
 # update icon cache
 touch --no-create %{_datadir}/icons/hicolor || :
 if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-  %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+    %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
 fi
 
 %post libs -p /sbin/ldconfig
@@ -386,7 +386,7 @@ fi
 %postun gui
 touch --no-create %{_datadir}/icons/hicolor || :
 if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-  %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+    %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
 fi
 
 %posttrans

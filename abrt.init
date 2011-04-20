@@ -1,5 +1,5 @@
 #!/bin/bash
-# Starts the abrt daemon
+# Start the ABRT daemon
 #
 # chkconfig: 35 82 16
 # description: Saves segfault data, kernel oopses, fatal exceptions
@@ -19,7 +19,6 @@
 . /etc/rc.d/init.d/functions
 ABRT_BIN="/usr/sbin/abrtd"
 LOCK="/var/lock/subsys/abrtd"
-OLD_LOCK="/var/lock/subsys/abrt"
 RETVAL=0
 
 #
@@ -40,7 +39,7 @@ start() {
 	check
 
 	# Check if it is already running
-	if [ ! -f "$LOCK" ] && [ ! -f "$OLD_LOCK" ]; then
+	if [ ! -f "$LOCK" ]; then
 		echo -n $"Starting abrt daemon: "
 		daemon "$ABRT_BIN"
 		RETVAL=$?
@@ -57,7 +56,6 @@ stop() {
 	killproc "$ABRT_BIN"
 	RETVAL=$?
 	[ $RETVAL -eq 0 ] && rm -f "$LOCK"
-	[ $RETVAL -eq 0 ] && rm -f "$OLD_LOCK"
 	echo
 	return $RETVAL
 }
@@ -90,10 +88,6 @@ restart)
 	;;
 condrestart)
 	if [ -f "$LOCK" ]; then
-		restart
-	fi
-	# update from older version
-	if [ -f "$OLD_LOCK" ]; then
 		restart
 	fi
 	;;
