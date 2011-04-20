@@ -295,12 +295,12 @@ msgid "List possible events [which start with PFX]"
 msgstr "ಸಾಧ್ಯವಿರುವ ಘಟನೆಗಳನ್ನು ಪಟ್ಟಿ ಮಾಡಿ [PFX ನೊಂದಿಗೆ ಆರಂಭಗೊಳ್ಳುವುದು]"
 
 #: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
-#: ../src/daemon/Daemon.cpp:528 ../src/gui-gtk/main.c:216
+#: ../src/daemon/abrtd.c:528 ../src/gui-gtk/main.c:216
 #: ../src/gui-wizard-gtk/main.c:94
 msgid "Add program names to log"
 msgstr "ಪ್ರೊಗ್ರಾಮ್‌ನ ಹೆಸರುಗಳನ್ನು ದಾಖಲೆಗೆ ಸೇರಿಸು"
 
-#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:513
+#: ../src/daemon/abrt-server.c:285 ../src/daemon/abrtd.c:513
 msgid " [options]"
 msgstr "[ಆಯ್ಕೆಗಳು]"
 
@@ -308,7 +308,7 @@ msgstr "[ಆಯ್ಕೆಗಳು]"
 msgid "Use UID as client uid"
 msgstr "UID ಅನ್ನು ಕ್ಲೈಂಟ್ uid ಆಗಿ ಬಳಸಿ"
 
-#: ../src/daemon/Daemon.cpp:349
+#: ../src/daemon/abrtd.c:349
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -316,15 +316,15 @@ msgstr ""
 "ವರದಿಯ ಗಾತ್ರವು ಕೋಟವನ್ನು ಮೀರಿದೆ. abrt.conf ನಲ್ಲಿ ವ್ಯವಸ್ಥೆಯ MaxCrashReportsSize"
 " ಅನ್ನು ಪರಿಶೀಲಿಸಿ."
 
-#: ../src/daemon/Daemon.cpp:525
+#: ../src/daemon/abrtd.c:525
 msgid "Do not daemonize"
 msgstr "ಡೆಮನ್‌ ಆಗಿ ಮಾಡಬೇಡ"
 
-#: ../src/daemon/Daemon.cpp:526
+#: ../src/daemon/abrtd.c:526
 msgid "Log to syslog even with -d"
 msgstr "-d ಯೊಂದಿಗೂ ಸಹ syslog ಗೆ ದಾಖಲಿಸಿ"
 
-#: ../src/daemon/Daemon.cpp:527
+#: ../src/daemon/abrtd.c:527
 msgid "Exit after SEC seconds of inactivity"
 msgstr "SEC ಸೆಕೆಂಡುಗಳ ನಿಷ್ಕ್ರಿಯತೆಯ ನಂತರ ನಿರ್ಗಮಿಸು"
 

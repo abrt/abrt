@@ -291,12 +291,12 @@ msgid "List possible events [which start with PFX]"
 msgstr "সম্ভাব্য ঘটনাসমূহ দেখুৱাওক [যি PFX -ৰ সৈতে আৰম্ভ হয়]"
 
 #: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
-#: ../src/daemon/Daemon.cpp:528 ../src/gui-gtk/main.c:216
+#: ../src/daemon/abrtd.c:528 ../src/gui-gtk/main.c:216
 #: ../src/gui-wizard-gtk/main.c:94
 msgid "Add program names to log"
 msgstr "লগ লে প্ৰগ্ৰামৰ নামসমূহ যোগ কৰক"
 
-#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:513
+#: ../src/daemon/abrt-server.c:285 ../src/daemon/abrtd.c:513
 msgid " [options]"
 msgstr " [বিকল্পসমূহ]"
 
@@ -304,7 +304,7 @@ msgstr " [বিকল্পসমূহ]"
 msgid "Use UID as client uid"
 msgstr "UID -ক ক্লাএন্ট uid হিচাপে ব্যৱহাৰ কৰক"
 
-#: ../src/daemon/Daemon.cpp:349
+#: ../src/daemon/abrtd.c:349
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -312,15 +312,15 @@ msgstr ""
 "আবেদনপত্ৰৰ আকাৰ কোটা পাৰ হৈ গৈছে। অনুগ্ৰহ কৰি abrt.conf -ত চিস্টেমৰ "
 "MaxCrashReportsSize মান চাওক।"
 
-#: ../src/daemon/Daemon.cpp:525
+#: ../src/daemon/abrtd.c:525
 msgid "Do not daemonize"
 msgstr "daemonize নকৰিব"
 
-#: ../src/daemon/Daemon.cpp:526
+#: ../src/daemon/abrtd.c:526
 msgid "Log to syslog even with -d"
 msgstr "-d -ৰ সৈতে syslog লে লগ কৰক"
 
-#: ../src/daemon/Daemon.cpp:527
+#: ../src/daemon/abrtd.c:527
 msgid "Exit after SEC seconds of inactivity"
 msgstr "SEC ছেকেন্ড অসক্ৰিয়তাৰ পিছতে প্ৰস্থান কৰক"
 

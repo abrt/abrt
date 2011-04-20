@@ -289,12 +289,12 @@ msgid "List possible events [which start with PFX]"
 msgstr "సంభవమైన ఘటనలను జాబిచాచేయి [PFX తో ప్రారంభమగునది]"
 
 #: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
-#: ../src/daemon/Daemon.cpp:528 ../src/gui-gtk/main.c:216
+#: ../src/daemon/abrtd.c:528 ../src/gui-gtk/main.c:216
 #: ../src/gui-wizard-gtk/main.c:94
 msgid "Add program names to log"
 msgstr ""
 
-#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:513
+#: ../src/daemon/abrt-server.c:285 ../src/daemon/abrtd.c:513
 msgid " [options]"
 msgstr " [ఐచ్చికములు]"
 
@@ -302,7 +302,7 @@ msgstr " [ఐచ్చికములు]"
 msgid "Use UID as client uid"
 msgstr "UIDను క్లైంట్ uid వలె వుపయోగించు"
 
-#: ../src/daemon/Daemon.cpp:349
+#: ../src/daemon/abrtd.c:349
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -310,15 +310,15 @@ msgstr ""
 "నివేదిక పరిమాణము కోటాను మించినది. abrt.conf నందు సిస్టమ్ యొక్క "
 "MaxCrashReportsSize విలువను పరిశీలించండి."
 
-#: ../src/daemon/Daemon.cpp:525
+#: ../src/daemon/abrtd.c:525
 msgid "Do not daemonize"
 msgstr "డెమొనైజ్ చేయవద్దు"
 
-#: ../src/daemon/Daemon.cpp:526
+#: ../src/daemon/abrtd.c:526
 msgid "Log to syslog even with -d"
 msgstr "సిస్‌లాగ్‌కు -d తో లాగ్ అవ్వుము"
 
-#: ../src/daemon/Daemon.cpp:527
+#: ../src/daemon/abrtd.c:527
 msgid "Exit after SEC seconds of inactivity"
 msgstr "SEC క్షణాల క్రియాహీనత తర్వాత నిష్క్రమించుము"
 

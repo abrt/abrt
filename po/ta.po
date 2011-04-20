@@ -294,12 +294,12 @@ msgid "List possible events [which start with PFX]"
 msgstr "வாய்ப்பு நிகழ்வுகளை பட்டியலிடு [PFX உடன் துவங்குவது]"
 
 #: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
-#: ../src/daemon/Daemon.cpp:528 ../src/gui-gtk/main.c:216
+#: ../src/daemon/abrtd.c:528 ../src/gui-gtk/main.c:216
 #: ../src/gui-wizard-gtk/main.c:94
 msgid "Add program names to log"
 msgstr ""
 
-#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:513
+#: ../src/daemon/abrt-server.c:285 ../src/daemon/abrtd.c:513
 msgid " [options]"
 msgstr " [விருப்பங்கள் ]"
 
@@ -307,7 +307,7 @@ msgstr " [விருப்பங்கள் ]"
 msgid "Use UID as client uid"
 msgstr ""
 
-#: ../src/daemon/Daemon.cpp:349
+#: ../src/daemon/abrtd.c:349
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -315,15 +315,15 @@ msgstr ""
 "அறிக்கை அளவு ஒதுக்கீட்டை தாண்டியது. உங்கள் MaxCrashReportsSize மதிப்பை "
 "abrt.conf.இல் சரிபார்க்கவும்."
 
-#: ../src/daemon/Daemon.cpp:525
+#: ../src/daemon/abrtd.c:525
 msgid "Do not daemonize"
 msgstr "அனுப்ப வேண்டாம்அனுப்ப வேண்ட"
 
-#: ../src/daemon/Daemon.cpp:526
+#: ../src/daemon/abrtd.c:526
 msgid "Log to syslog even with -d"
 msgstr "-d-உடன் syslog பதிவு செய்தாலும்"
 
-#: ../src/daemon/Daemon.cpp:527
+#: ../src/daemon/abrtd.c:527
 msgid "Exit after SEC seconds of inactivity"
 msgstr "SEC விநாடிகள் செயலிழப்பில் இருந்தால் வெளியேறு"
 

@@ -312,12 +312,12 @@ msgid "List possible events [which start with PFX]"
 msgstr "Laat mogelijke gebeurtenissen zien [die beginnen met PFX]"
 
 #: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
-#: ../src/daemon/Daemon.cpp:528 ../src/gui-gtk/main.c:216
+#: ../src/daemon/abrtd.c:528 ../src/gui-gtk/main.c:216
 #: ../src/gui-wizard-gtk/main.c:94
 msgid "Add program names to log"
 msgstr "Voeg programmanamen toe aan de log"
 
-#: ../src/daemon/abrt-server.c:285 ../src/daemon/Daemon.cpp:513
+#: ../src/daemon/abrt-server.c:285 ../src/daemon/abrtd.c:513
 msgid " [options]"
 msgstr " [opties]"
 
@@ -325,7 +325,7 @@ msgstr " [opties]"
 msgid "Use UID as client uid"
 msgstr "Gebruik UID als cliënt uid"
 
-#: ../src/daemon/Daemon.cpp:349
+#: ../src/daemon/abrtd.c:349
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -333,15 +333,15 @@ msgstr ""
 "De grootte van het rapport overschreed de quota. Controleer de "
 "MaxCrashReportsSize waarde van het systeem in abrt.conf."
 
-#: ../src/daemon/Daemon.cpp:525
+#: ../src/daemon/abrtd.c:525
 msgid "Do not daemonize"
 msgstr "Niet instellen als daemon"
 
-#: ../src/daemon/Daemon.cpp:526
+#: ../src/daemon/abrtd.c:526
 msgid "Log to syslog even with -d"
 msgstr "Loggen naar syslog zelfs met -d"
 
-#: ../src/daemon/Daemon.cpp:527
+#: ../src/daemon/abrtd.c:527
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Afsluiten na SEC seconden van inactiviteit"
 
