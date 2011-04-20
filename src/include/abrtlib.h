@@ -83,6 +83,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "hooklib.h"
 #include "run_event.h"
 #include "event_config.h"
+#include "abrt_conf.h"
 
 
 #ifdef __cplusplus

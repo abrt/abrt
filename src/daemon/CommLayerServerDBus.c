@@ -21,7 +21,6 @@
 #include "abrt_dbus.h"
 #include "comm_layer_inner.h"
 #include "MiddleWare.h"
-#include "abrt_conf.h"
 #include "CommLayerServerDBus.h"
 
 /*

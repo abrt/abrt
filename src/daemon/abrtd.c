@@ -23,9 +23,9 @@
 #include <syslog.h>
 #include <sys/inotify.h>
 #include <sys/ioctl.h> /* ioctl(FIONREAD) */
+
 #include "abrtlib.h"
 #include "comm_layer_inner.h"
-#include "abrt_conf.h"
 #include "CommLayerServerDBus.h"
 #include "MiddleWare.h"
 #include "parse_options.h"

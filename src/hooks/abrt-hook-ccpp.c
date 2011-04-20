@@ -390,11 +390,27 @@ int main(int argc, char** argv)
 
     char *user_pwd = get_cwd(pid); /* may be NULL on error */
 
-    /* Parse abrt.conf and plugins/CCpp.conf */
-    unsigned setting_MaxCrashReportsSize = 0;
-    bool setting_MakeCompatCore = false;
-    bool setting_SaveBinaryImage = false;
-    parse_conf(PLUGINS_CONF_DIR"/CCpp.conf", &setting_MaxCrashReportsSize, &setting_MakeCompatCore, &setting_SaveBinaryImage);
+    /* Parse abrt.conf */
+    load_abrt_conf();
+    free_abrt_conf_data(); /* can do this because we need only g_settings_nMaxCrashReportsSize */
+    /* x1.25: go a bit up, so that usual in-daemon trimming
+     * kicks in first, and we don't "fight" with it:
+     */
+    g_settings_nMaxCrashReportsSize += g_settings_nMaxCrashReportsSize / 4;
+    /* ... and plugins/CCpp.conf */
+    bool setting_MakeCompatCore;
+    bool setting_SaveBinaryImage;
+    {
+        map_string_h *settings = new_map_string();
+        load_conf_file(PLUGINS_CONF_DIR"/CCpp.conf", settings, /*skip key w/o values:*/ false);
+        char *value;
+        value = g_hash_table_lookup(settings, "MakeCompatCore");
+        setting_MakeCompatCore = value && string_to_bool(value);
+        value = g_hash_table_lookup(settings, "SaveBinaryImage");
+        setting_SaveBinaryImage = value && string_to_bool(value);
+        free_map_string(settings);
+    }
+
     if (!setting_SaveBinaryImage && src_fd_binary >= 0)
     {
         close(src_fd_binary);
@@ -441,9 +457,10 @@ int main(int argc, char** argv)
         goto create_user_core;
     }
 
-    if (setting_MaxCrashReportsSize > 0)
+    if (g_settings_nMaxCrashReportsSize > 0)
     {
-        check_free_space(setting_MaxCrashReportsSize);
+        g_settings_nMaxCrashReportsSize += g_settings_nMaxCrashReportsSize / 4;
+        check_free_space(g_settings_nMaxCrashReportsSize);
     }
 
     char path[PATH_MAX];
@@ -628,9 +645,9 @@ int main(int argc, char** argv)
         free(newpath);
 
         /* rhbz#539551: "abrt going crazy when crashing process is respawned" */
-        if (setting_MaxCrashReportsSize > 0)
+        if (g_settings_nMaxCrashReportsSize > 0)
         {
-            trim_debug_dumps(DEBUG_DUMPS_DIR, setting_MaxCrashReportsSize * (double)(1024*1024), path);
+            trim_debug_dumps(DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize * (double)(1024*1024), path);
         }
 
         return 0;

@@ -147,12 +147,16 @@ static void create_debug_dump()
     log("Saved %s crash dump of pid %u to %s", analyzer, pid, path);
 
     /* Trim old crash dumps if necessary */
-    unsigned maxCrashReportsSize = 0;
-    parse_conf(NULL, &maxCrashReportsSize, NULL, NULL);
-    if (maxCrashReportsSize > 0)
+    load_abrt_conf();
+    free_abrt_conf_data(); /* can do this because we need only g_settings_nMaxCrashReportsSize */
+    /* x1.25: go a bit up, so that usual in-daemon trimming
+     * kicks in first, and we don't "fight" with it:
+     */
+    g_settings_nMaxCrashReportsSize += g_settings_nMaxCrashReportsSize / 4;
+    if (g_settings_nMaxCrashReportsSize > 0)
     {
-        check_free_space(maxCrashReportsSize);
-        trim_debug_dumps(DEBUG_DUMPS_DIR, maxCrashReportsSize * (double)(1024*1024), path);
+        check_free_space(g_settings_nMaxCrashReportsSize);
+        trim_debug_dumps(DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize * (double)(1024*1024), path);
     }
 
     free(path);

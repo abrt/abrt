@@ -42,6 +42,7 @@ libreport_la_SOURCES = \
     hooklib.c hooklib.h \
     parse_release.c \
     parse_options.c parse_options.h \
+    abrt_conf.c abrt_conf.h \
     steal_directory.c \
     event_xml_parser.c \
     event_config.c

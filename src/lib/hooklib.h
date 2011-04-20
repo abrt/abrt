@@ -15,16 +15,12 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#ifndef HOOKLIB_H
+#define HOOKLIB_H 1
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#define parse_conf abrt_parse_conf
-void parse_conf(const char *additional_conf,
-        unsigned *setting_MaxCrashReportsSize,
-        bool *setting_MakeCompatCore,
-        bool *setting_SaveBinaryImage);
 
 #define check_free_space abrt_check_free_space
 void check_free_space(unsigned setting_MaxCrashReportsSize);
@@ -34,4 +30,6 @@ void trim_debug_dumps(const char *dirname, double cap_size, const char *exclude_
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif

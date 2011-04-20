@@ -18,7 +18,6 @@
 */
 #include <fnmatch.h>
 #include "abrtlib.h"
-#include "abrt_conf.h"
 #include "rpm.h"
 #include "parse_options.h"
 

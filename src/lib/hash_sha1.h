@@ -17,6 +17,8 @@
  *
  * ---------------------------------------------------------------------------
  */
+#ifndef HASH_SHA1_H
+#define HASH_SHA1_H 1
 
 #ifdef __cplusplus
 extern "C" {
@@ -40,4 +42,6 @@ void sha1_end(sha1_ctx_t *ctx, void *resbuf);
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif

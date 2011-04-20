@@ -25,7 +25,6 @@ bin_PROGRAMS = \
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 
 dist_pluginsconf_DATA = \
-    CCpp.conf \
     Python.conf \
     Kerneloops.conf \
     Bugzilla.conf \

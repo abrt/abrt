@@ -17,7 +17,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "abrt_conf.h"
 
 bool          g_settings_bOpenGPGCheck = false;
 GList *       g_settings_setOpenGPGPublicKeys = NULL;

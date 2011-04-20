@@ -1,3 +1,8 @@
+pluginsconfdir = $(PLUGINS_CONF_DIR)
+
+dist_pluginsconf_DATA = \
+    CCpp.conf
+
 libexec_PROGRAMS = abrt-hook-ccpp
 
 # abrt-hook-ccpp

@@ -19,7 +19,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "abrt_conf.h"
 #include "comm_layer_inner.h"
 #include "CommLayerServerDBus.h"
 #include "MiddleWare.h"
