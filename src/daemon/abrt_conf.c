@@ -28,7 +28,7 @@ unsigned int  g_settings_nMaxCrashReportsSize = 1000;
 bool          g_settings_bProcessUnpackaged = false;
 
 
-void free_settings()
+void free_abrt_conf_data()
 {
     list_free_with_free(g_settings_setOpenGPGPublicKeys);
     g_settings_setOpenGPGPublicKeys = NULL;
@@ -108,7 +108,7 @@ static void ParseCommon(map_string_h *settings, const char *conf_filename)
     value = g_hash_table_lookup(settings, "MaxCrashReportsSize");
     if (value)
     {
-//fixme: dont die
+//FIXME: dont die
         g_settings_nMaxCrashReportsSize = xatoi_positive(value);
         g_hash_table_remove(settings, "MaxCrashReportsSize");
     }
@@ -150,9 +150,9 @@ static void LoadGPGKeys()
     }
 }
 
-int load_settings()
+int load_abrt_conf()
 {
-    free_settings();
+    free_abrt_conf_data();
 
     map_string_h *settings = new_map_string();
     if (!load_conf_file(CONF_DIR"/abrt.conf", settings, /*skip key w/o values:*/ false))

@@ -275,8 +275,8 @@ int main(int argc, char **argv)
         msg_prefix = PROGNAME;
 
     VERB1 log("Loading settings");
-    if (load_settings() != 0)
-        return 1; /* syntax error (logged already by load_settings) */
+    if (load_abrt_conf() != 0)
+        return 1; /* syntax error (logged already by load_abrt_conf) */
 
     VERB1 log("Initializing rpm library");
     rpm_init();

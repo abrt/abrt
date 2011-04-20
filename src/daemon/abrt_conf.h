@@ -33,8 +33,8 @@ extern bool          g_settings_bOpenGPGCheck;
 extern bool          g_settings_bProcessUnpackaged;
 extern char *        g_settings_sWatchCrashdumpArchiveDir;
 
-int load_settings();
-void free_settings();
+int load_abrt_conf();
+void free_abrt_conf_data();
 
 #ifdef __cplusplus
 }

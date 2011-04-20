@@ -209,12 +209,12 @@ static void handle_signal(int signo)
     // Enable for debugging only, malloc/printf are unsafe in signal handlers
     //VERB3 log("Got signal %d", signo);
 
-    uint8_t l_sig_caught;
-    s_sig_caught = l_sig_caught = signo;
+    uint8_t sig_caught;
+    s_sig_caught = sig_caught = signo;
     /* Using local copy of s_sig_caught so that concurrent signal
      * won't change it under us */
     if (s_signal_pipe_write >= 0)
-        write(s_signal_pipe_write, &l_sig_caught, 1);
+        write(s_signal_pipe_write, &sig_caught, 1);
 
     errno = save_errno;
 }
@@ -222,7 +222,7 @@ static void handle_signal(int signo)
 /* Signal pipe handler */
 static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
 {
-    char signo;
+    uint8_t signo;
     gsize len = 0;
     g_io_channel_read(gio, &signo, 1, &len);
     if (len == 1)
@@ -245,9 +245,8 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
                 }
             }
         }
-        return TRUE;
     }
-    return FALSE;
+    return TRUE; /* "please don't remove this event" */
 }
 
 /* Inotify handler */
@@ -274,7 +273,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
     {
         perror_msg("Error reading inotify fd");
         free(buf);
-        return FALSE;
+        return FALSE; /* "remove this event" (huh??) */
     }
 
     /* Reconstruct each event and send message to the dbus */
@@ -388,7 +387,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
     } /* while */
 
     free(buf);
-    return TRUE;
+    return TRUE; /* "please don't remove this event" */
 }
 
 /* Run main loop with idle timeout.
@@ -396,6 +395,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
  */
 static void run_main_loop(GMainLoop* loop)
 {
+    time_t cur_time = time(NULL);
     GMainContext *context = g_main_loop_get_context(loop);
     int fds_size = 0;
     GPollFD *fds = NULL;
@@ -425,6 +425,14 @@ static void run_main_loop(GMainLoop* loop)
         g_poll(fds, nfds, timeout);
         if (s_timeout != 0)
             alarm(0);
+
+        time_t new_time = time(NULL);
+        if (cur_time != new_time)
+        {
+            cur_time = new_time;
+            load_abrt_conf();
+//TODO: react to changes in g_settings_sWatchCrashdumpArchiveDir
+        }
 
         some_ready = g_main_context_check(context, max_priority, fds, nfds);
         if (some_ready)
@@ -538,6 +546,8 @@ int main(int argc, char** argv)
     xpipe(s_signal_pipe);
     close_on_exec_on(s_signal_pipe[0]);
     close_on_exec_on(s_signal_pipe[1]);
+    ndelay_on(s_signal_pipe[0]); /* I/O should not block - */
+    ndelay_on(s_signal_pipe[1]); /* especially writes! they happen in signal handler! */
     signal(SIGTERM, handle_signal);
     signal(SIGINT,  handle_signal);
     signal(SIGCHLD, handle_signal);
@@ -589,7 +599,7 @@ int main(int argc, char** argv)
     init_daemon_logging();
 
     VERB1 log("Loading settings");
-    if (load_settings() != 0)
+    if (load_abrt_conf() != 0)
         goto init_error;
 
     sanitize_dump_dir_rights();
@@ -688,7 +698,7 @@ int main(int argc, char** argv)
     if (pMainloop)
         g_main_loop_unref(pMainloop);
 
-    free_settings();
+    free_abrt_conf_data();
 
     /* Exiting */
     if (s_sig_caught && s_sig_caught != SIGALRM && s_sig_caught != SIGCHLD)
