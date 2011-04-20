@@ -12,9 +12,9 @@ sbin_PROGRAMS = \
 abrtd_SOURCES = \
     MiddleWare.h MiddleWare.c \
     CommLayerServerDBus.h CommLayerServerDBus.c \
-    Settings.h Settings.cpp \
+    abrt_conf.h abrt_conf.c \
     comm_layer_inner.h comm_layer_inner.c \
-    Daemon.cpp
+    abrtd.c
 abrtd_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
@@ -75,7 +75,7 @@ abrt_handle_crashdump_LDADD = \
 
 abrt_action_save_package_data_SOURCES = \
     rpm.h rpm.c \
-    Settings.h Settings.cpp \
+    abrt_conf.h abrt_conf.c \
     abrt-action-save-package-data.c
 abrt_action_save_package_data_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
