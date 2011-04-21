@@ -163,9 +163,19 @@ class DebugInfoDownload(YumBase):
         mute_stdout()
         #self.conf.cache = os.geteuid() != 0
         # Setup yum (Ts, RPM db, Repo & Sack)
-        self.doConfigSetup()
+        try:
+            # Saw this exception here:
+            # cannot open Packages index using db3 - Permission denied (13)
+            # yum.Errors.YumBaseError: Error: rpmdb open failed
+            self.doConfigSetup()
+        except Exception, e:
+            unmute_stdout()
+            print _("Error initializing yum (YumBase.doConfigSetup): '%s'") % str(e)
+            #return 1 - can't do this in constructor
+            exit(1)
         unmute_stdout()
 
+    # return value will be used as exitcode. So 0 = ok, !0 - error
     def download(self, files):
         """ @files - """
         installed_size = 0
@@ -183,7 +193,7 @@ class DebugInfoDownload(YumBase):
         # make yumdownloader work as non root user
         if not self.setCacheDir():
             self.logger.error("Error: can't make cachedir, exiting")
-            sys.exit(50)
+            exit(50)
 
         # disable all not needed
         for repo in self.repos.listEnabled():
@@ -204,8 +214,21 @@ class DebugInfoDownload(YumBase):
         # which takes time (sometimes minutes), let user know why
         # we have "paused":
         print _("Looking for needed packages in repositories")
-        self.repos.populateSack(mdtype='metadata', cacheonly=1)
-        self.repos.populateSack(mdtype='filelists', cacheonly=1)
+        try:
+            self.repos.populateSack(mdtype='metadata', cacheonly=1)
+        except Exception, e:
+            print _("Error retrieving metadata: '%s'") % str(e)
+            return 1
+        try:
+            # Saw this exception here:
+            # raise Errors.NoMoreMirrorsRepoError, errstr
+            # NoMoreMirrorsRepoError: failure:
+            # repodata/7e6632b82c91a2e88a66ad848e231f14c48259cbf3a1c3e992a77b1fc0e9d2f6-filelists.sqlite.bz2
+            # from fedora-debuginfo: [Errno 256] No more mirrors to try.
+            self.repos.populateSack(mdtype='filelists', cacheonly=1)
+        except Exception, e:
+            print _("Error retrieving filelists: '%s'") % str(e)
+            return 1
 
         #if verbose == 0:
         #    # re-enable the output to stdout
@@ -288,7 +311,7 @@ class DebugInfoDownload(YumBase):
             try:
                 os.rmdir(self.tmpdir)
             except OSError:
-                print _("Can't remove %s, probably contains an error log" % self.tmpdir)
+                print _("Can't remove %s, probably contains an error log") % self.tmpdir
 
 verbose = 0
 def log1(message):
@@ -377,7 +400,7 @@ if __name__ == "__main__":
                                                           "keeprpms"])
     except getopt.GetoptError, err:
         print str(err) # prints something like "option -a not recognized"
-        sys.exit(RETURN_FAILURE)
+        exit(RETURN_FAILURE)
 
     for opt, arg in opts:
         if opt == "-v":
@@ -394,7 +417,7 @@ if __name__ == "__main__":
             keeprpms = True
         elif opt in ("-h", "--help"):
             print help_text
-            sys.exit()
+            exit()
 
     if not core:
         print _("You have to specify the path to coredump.")
