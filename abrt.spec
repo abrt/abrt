@@ -541,7 +541,7 @@ fi
 %{_bindir}/abrt-action-analyze-c
 %{_bindir}/abrt-action-trim-files
 %attr(4755, abrt, abrt) %{_bindir}/abrt-action-install-debuginfo
-%{_bindir}/abrt-action-analyzecore.py*
+%{_bindir}/abrt-action-analyze-core.py*
 %{_bindir}/abrt-action-install-debuginfo.py*
 %{_bindir}/abrt-action-generate-backtrace
 %{_bindir}/abrt-action-analyze-backtrace

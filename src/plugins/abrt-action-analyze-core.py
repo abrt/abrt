@@ -30,21 +30,6 @@ def init_gettext():
     gettext.bindtextdomain(GETTEXT_PROGNAME, '/usr/share/locale')
     gettext.textdomain(GETTEXT_PROGNAME)
 
-
-old_stdout = -1
-def mute_stdout():
-    if verbose < 2:
-        global old_stdout
-        old_stdout = sys.stdout
-        sys.stdout = open("/dev/null", "w")
-
-def unmute_stdout():
-    if verbose < 2:
-        if old_stdout != -1:
-            sys.stdout = old_stdout
-        else:
-            print "ERR: unmute called without mute?"
-
 verbose = 0
 def log1(message):
     """ prints log message if verbosity > 0 """
@@ -72,24 +57,25 @@ def extract_info_from_core(coredump_name):
     eu_unstrip_OUT = Popen(["eu-unstrip","--core=%s" % coredump_name, "-n"], stdout=PIPE, bufsize=-1).communicate()[0]
     # parse eu_unstrip_OUT and return the list of build_ids
 
-    # eu_unstrip_OUT = ("0x7f42362ca000+0x204000 c4d35d993598a6242f7525d024b5ec3becf5b447@0x7f42362ca1a0 /usr/lib64/libcanberra-gtk.so.0 - libcanberra-gtk.so.0\n"
-                     # "0x3afa400000+0x210000 607308f916c13c3ad9ee503008d31fa671ba73ce@0x3afa4001a0 /usr/lib64/libcanberra.so.0 - libcanberra.so.0\n"
-                     # "0x3afa400000+0x210000 607308f916c13c3ad9ee503008d31fa671ba73ce@0x3afa4001a0 /usr/lib64/libcanberra.so.0 - libcanberra.so.0\n"
-                     # "0x3bc7000000+0x208000 3be016bb723e85779a23e111a8ab1a520b209422@0x3bc70001a0 /usr/lib64/libvorbisfile.so.3 - libvorbisfile.so.3\n"
-                     # "0x7f423609e000+0x22c000 87f9c7d9844f364c73aa2566d6cfc9c5fa36d35d@0x7f423609e1a0 /usr/lib64/libvorbis.so.0 - libvorbis.so.0\n"
-                     # "0x7f4235e99000+0x205000 b5bc98c125a11b571cf4f2746268a6d3cfa95b68@0x7f4235e991a0 /usr/lib64/libogg.so.0 - libogg.so.0\n"
-                     # "0x7f4235c8b000+0x20e000 f1ff6c8ee30dba27e90ef0c5b013df2833da2889@0x7f4235c8b1a0 /usr/lib64/libtdb.so.1 - libtdb.so.1\n"
-                     # "0x3bc3000000+0x209000 8ef56f789fd914e8d0678eb0cdfda1bfebb00b40@0x3bc30001a0 /usr/lib64/libltdl.so.7 - libltdl.so.7\n"
-                     # "0x7f4231b64000+0x22b000 3ca5b83798349f78b362b1ea51c8a4bc8114b8b1@0x7f4231b641a0 /usr/lib64/gio/modules/libgvfsdbus.so - libgvfsdbus.so\n"
-                     # "0x7f423192a000+0x218000 ad024a01ad132737a8cfc7c95beb7c77733a652d@0x7f423192a1a0 /usr/lib64/libgvfscommon.so.0 - libgvfscommon.so.0\n"
-                     # "0x7f423192a000+0x218000 ad024a01ad132737a8cfc7c95beb7c77733a652d@0x7f423192a1a0 /usr/lib64/libgvfscommon.so.0 - libgvfscommon.so.0\n"
-                     # "0x3bb8e00000+0x20e000 d240ac5755184a95c783bb98a2d05530e0cf958a@0x3bb8e001a0 /lib64/libudev.so.0 - libudev.so.0")
-    #
+    # eu_unstrip_OUT = (
+    # "0x7f42362ca000+0x204000 c4d35d993598a6242f7525d024b5ec3becf5b447@0x7f42362ca1a0 /usr/lib64/libcanberra-gtk.so.0 - libcanberra-gtk.so.0\n"
+    # "0x3afa400000+0x210000 607308f916c13c3ad9ee503008d31fa671ba73ce@0x3afa4001a0 /usr/lib64/libcanberra.so.0 - libcanberra.so.0\n"
+    # "0x3afa400000+0x210000 607308f916c13c3ad9ee503008d31fa671ba73ce@0x3afa4001a0 /usr/lib64/libcanberra.so.0 - libcanberra.so.0\n"
+    # "0x3bc7000000+0x208000 3be016bb723e85779a23e111a8ab1a520b209422@0x3bc70001a0 /usr/lib64/libvorbisfile.so.3 - libvorbisfile.so.3\n"
+    # "0x7f423609e000+0x22c000 87f9c7d9844f364c73aa2566d6cfc9c5fa36d35d@0x7f423609e1a0 /usr/lib64/libvorbis.so.0 - libvorbis.so.0\n"
+    # "0x7f4235e99000+0x205000 b5bc98c125a11b571cf4f2746268a6d3cfa95b68@0x7f4235e991a0 /usr/lib64/libogg.so.0 - libogg.so.0\n"
+    # "0x7f4235c8b000+0x20e000 f1ff6c8ee30dba27e90ef0c5b013df2833da2889@0x7f4235c8b1a0 /usr/lib64/libtdb.so.1 - libtdb.so.1\n"
+    # "0x3bc3000000+0x209000 8ef56f789fd914e8d0678eb0cdfda1bfebb00b40@0x3bc30001a0 /usr/lib64/libltdl.so.7 - libltdl.so.7\n"
+    # "0x7f4231b64000+0x22b000 3ca5b83798349f78b362b1ea51c8a4bc8114b8b1@0x7f4231b641a0 /usr/lib64/gio/modules/libgvfsdbus.so - libgvfsdbus.so\n"
+    # "0x7f423192a000+0x218000 ad024a01ad132737a8cfc7c95beb7c77733a652d@0x7f423192a1a0 /usr/lib64/libgvfscommon.so.0 - libgvfscommon.so.0\n"
+    # "0x7f423192a000+0x218000 ad024a01ad132737a8cfc7c95beb7c77733a652d@0x7f423192a1a0 /usr/lib64/libgvfscommon.so.0 - libgvfscommon.so.0\n"
+    # "0x3bb8e00000+0x20e000 d240ac5755184a95c783bb98a2d05530e0cf958a@0x3bb8e001a0 /lib64/libudev.so.0 - libudev.so.0\n"
+    # )
     #print eu_unstrip_OUT
     # we failed to get build ids from the core -> die
     if not eu_unstrip_OUT:
         print "Can't get build ids from %s" % coredump_name
-        return RETURN_FAILURE
+        exit(RETURN_FAILURE)
 
     lines = eu_unstrip_OUT.split('\n')
     # using set ensures the unique values
@@ -152,12 +138,12 @@ if __name__ == "__main__":
         except:
             pass
 
-    help_text = _("Usage: %s --core=COREFILE ") % sys.argv[0]
+    help_text = _("Usage: %s [-v] [-o OUTFILE] [-c COREFILE]") % sys.argv[0]
     try:
         opts, args = getopt.getopt(sys.argv[1:], "vhc:o:", ["help", "core="])
     except getopt.GetoptError, err:
         print str(err) # prints something like "option -a not recognized"
-        sys.exit(RETURN_FAILURE)
+        exit(RETURN_FAILURE)
 
     for opt, arg in opts:
         if opt == "-v":
@@ -168,17 +154,16 @@ if __name__ == "__main__":
             core = arg
         elif opt in ("-h", "--help"):
             print help_text
-            sys.exit()
+            exit()
 
     if not core:
-        print _("You have to specify the path to coredump.")
+        print _("You have to specify the path to coredump")
         print help_text
         exit(RETURN_FAILURE)
 
     b_ids = extract_info_from_core(core)
-    if b_ids == RETURN_FAILURE:
-        exit(RETURN_FAILURE)
     f_build_ids = open(output_file, "w")
+# TODO: check for open/write/close errors?
     for bid in b_ids:
         f_build_ids.write("%s\n" % bid)
     f_build_ids.close()
