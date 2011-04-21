@@ -1005,8 +1005,7 @@ static void check_backtrace_and_allow_send(void) //TODO: rename, this checks rat
                 add_warning(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."));
                 warn = true;
                 break;
-            case '2':
-            case '1':
+            default:
                 //FIXME: see CreporterAssistant: 394 for ideas
                 add_warning(_("Reporting disabled because the backtrace is unusable."));
                 send = false;
