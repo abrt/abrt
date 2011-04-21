@@ -59,10 +59,14 @@ void free_run_event_state(struct run_event_state *state)
  * does not expose it.
  */
 
+/* Stop-gap measure against infinite recursion */
+#define MAX_recursion_depth 32
+
 static GList *load_event_config(GList *list,
                 const char *dump_dir_name,
                 const char *event,
-                const char *conf_file_name
+                const char *conf_file_name,
+                unsigned recursion_depth
 ) {
     FILE *conffile = fopen(conf_file_name, "r");
     if (!conffile)
@@ -95,8 +99,10 @@ static GList *load_event_config(GList *list,
 
         //VERB3 log("%s: line '%s'", __func__, p);
 
-        if (strncmp(p, "include", strlen("include")) == 0 && isblank(p[strlen("include")]))
-        {
+        if (recursion_depth < MAX_recursion_depth
+         && strncmp(p, "include", strlen("include")) == 0
+         && isblank(p[strlen("include")])
+        ) {
             /* include GLOB_PATTERN */
             p = skip_whitespace(p + strlen("include"));
 
@@ -124,7 +130,7 @@ static GList *load_event_config(GList *list,
             if (name) while (*name)
             {
                 //VERB3 log("%s: recursing into '%s'", __func__, *name);
-                list = load_event_config(list, dump_dir_name, event, *name);
+                list = load_event_config(list, dump_dir_name, event, *name, recursion_depth + 1);
                 //VERB3 log("%s: returned from '%s'", __func__, *name);
                 name++;
             }
@@ -212,7 +218,7 @@ int prepare_commands(struct run_event_state *state,
 
     state->children_count = 0;
 
-    GList *commands = load_event_config(NULL, dump_dir_name, event, CONF_DIR"/abrt_event.conf");
+    GList *commands = load_event_config(NULL, dump_dir_name, event, CONF_DIR"/abrt_event.conf", /*recursion_depth:*/ 0);
     state->commands = commands;
     return commands != NULL;
 }
