@@ -479,9 +479,10 @@ fi
 %dir %{_sysconfdir}/%{name}/events
 #%dir %{_libdir}/%{name}
 %{_mandir}/man8/abrtd.8.gz
-%{_mandir}/man5/%{name}.conf.5.gz
+%{_mandir}/man5/abrt.conf.5.gz
+%{_mandir}/man5/abrt_event.conf.5.gz
 # {_mandir}/man5/pyhook.conf.5.gz
-%{_mandir}/man7/%{name}-plugins.7.gz
+%{_mandir}/man7/abrt-plugins.7.gz
 %{_datadir}/dbus-1/system-services/com.redhat.abrt.service
 
 %files -n libreport
