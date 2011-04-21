@@ -105,13 +105,16 @@ dist_daemonconf_DATA = \
 comredhatabrtservicedir = ${datadir}/dbus-1/system-services
 dist_comredhatabrtservice_DATA = com.redhat.abrt.service
 
-man_MANS = abrtd.8 abrt.conf.5
+man_MANS = \
+    abrtd.8 \
+    abrt.conf.5 \
+    abrt_event.conf.5
 
 EXTRA_DIST = $(man_MANS) abrt-handle-upload
 
 if HAVE_SYSTEMD
 dist_systemdsystemunit_DATA = \
-        abrtd.service
+    abrtd.service
 endif
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@

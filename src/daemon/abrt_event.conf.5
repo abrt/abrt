@@ -1,0 +1,62 @@
+.TH "abrt.conf" "5" "28 May 2009" ""
+.SH NAME
+abrt_event.conf \- configuration file for ABRT
+.SH DESCRIPTION
+.P
+This configuration file specifies which programs should be run
+when the specified event occurs in dump directory lifetime.
+.P
+It consists of directives and rules.
+.P
+Directives start with a reserved word. Currently, there is
+only one directive, "include".
+.TP
+.B include \fIFILE\fP
+This directive causes files which match FILE to be read
+and parsed as if they are inserted textually where this directive
+occurs.
+FILE can use shell pattern metacharacters (*,?,etc) to specify
+multiple files. Relative paths are interpreted relative to current
+file.
+.P
+Rule starts with a line with non-space leading character.
+All subsequent lines which start with space or tab form one rule.
+Note that separating newline is retained.
+.P
+Rules may be commented out with #. One # is sufficient to comment out
+even a multi-line rule (no need to comment out every line).
+.P
+Rules specify which programs to run on the dump directory.
+Each rule may have conditions to be checked before the program is run.
+.P
+Conditions have form VAR=VAL, where VAR is either word "EVENT"
+or a name of dump directory element to be checked (for example,
+"executable", "package", hostname" etc).
+.P
+If all conditions match, the remaining part of the rule
+(the "program" part) is run in the shell.
+All shell language constructs are valid.
+All stdout and stderr output is captured and passed to ABRT
+and possibly to ABRT's frontends and shown to the user.
+.P
+If the program terminates with nonzero exit code,
+the event processing is considered unsuccessful and is stopped.
+Last captured output line, if any, is considered to be
+the error message indicating the reason of the failure,
+and may be used by abrt as such.
+.P
+If the program terminates successfully, next rule is read
+and processed. This process is repeated until the end of this file.
+.SH EXAMPLES
+.P
+EVENT=post-create analyzer=Python   abrt-action-analyze-python
+.P
+EVENT=post-create
+        getent passwd "`cat uid`" | cut -d: -f1 >username
+.SH "SEE ALSO"
+.IR abrtd (8),
+.IR abrt-plugins (7)
+.SH AUTHOR
+Written by Zdeněk Přikryl <zprikryl@redhat.com> and
+Jiří Moskovčák <jmoskovc@redhat.com>. Manual page written by Daniel
+Novotný <dnovotny@redhat.com>.

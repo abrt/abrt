@@ -9,10 +9,8 @@ it collects the crash data and takes action according to
 its configuration. This manual page describes \fIabrt\fP's configuration
 file.
 .P
-The configuration file consists of sections, each section contains
-several items in the format "Option = Value". A description of each
-section follows:
-.SS [Common]
+The configuration file consists of items in the format "Option = Value".
+A description of each item follows:
 .TP
 .B OpenGPGCheck =  \fIyes\fP | \fIno\fP
 When set to "yes",
@@ -20,7 +18,7 @@ When set to "yes",
 will report crashes only in GPG signed packages. When set to "no",
 it will report crashes also in unsigned packages. The default is "no".
 .TP
-.B OpenGPGPublicKeys =  \fIfilename\fP , \fIfilename\fP ...
+.B OpenGPGPublicKeys =  \fIfilename\fP, \fIfilename\fP ...
 These are the trusted GPG keys with which packages have to be
 signed for
 .I abrt
@@ -49,22 +47,6 @@ will catch all crashes in the system. When set to "no",
 it will catch crashes only in Fedora packages.
 The default is "no".
 
-.SS [ AnalyzerActionsAndReporters ]
-This section contains associations between analyzers and action
-or reporter plugins.
-.TP
-.B CCpp = \fIplugin\fP
-.I abrt
-will use this plugin when a C/C++ program crashes.
-You can specify a plugin for specific program, for example
-.br
-CCpp:bind = Mailx("[abrt] Bind crashed")
-.br
-The Mailx plugin will run when bind crashes, instead of the plugin specified for
-all the C/C++ programs.
-.TP
-.B Kerneloops = \fIplugin\fP
-This plugin will be used in the case of kernel crashes.
 .SH "SEE ALSO"
 .IR abrtd (8),
 .IR abrt-plugins (7)
