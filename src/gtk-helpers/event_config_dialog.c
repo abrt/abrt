@@ -408,11 +408,12 @@ void show_events_list_dialog(GtkWindow *parent)
     g_signal_connect(close_btn, "clicked", G_CALLBACK(on_close_event_list_cb), g_event_list_window);
 
     GtkWidget *btnbox = gtk_hbutton_box_new();
-    gtk_box_pack_end(GTK_BOX(btnbox), configure_event_btn, false, false, 0);
     gtk_box_pack_end(GTK_BOX(btnbox), close_btn, false, false, 0);
+    gtk_box_pack_end(GTK_BOX(btnbox), configure_event_btn, false, false, 0);
 
     gtk_box_pack_start(GTK_BOX(main_vbox), events_scroll, true, true, 10);
     gtk_box_pack_start(GTK_BOX(main_vbox), btnbox, false, false, 0);
+
     gtk_container_add(GTK_CONTAINER(event_list_window), main_vbox);
 
     gtk_widget_show_all(event_list_window);
