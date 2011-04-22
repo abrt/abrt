@@ -391,9 +391,10 @@ if __name__ == "__main__":
         except:
             pass
 
+    progname = os.path.basename(sys.argv[0])
     help_text = _("Usage: %s --core=COREFILE "
                             "--tmpdir=TMPDIR "
-                            "--cache=CACHEDIR") % sys.argv[0]
+                            "--cache=CACHEDIR") % progname
     try:
         opts, args = getopt.getopt(sys.argv[1:], "vyhc:", ["help", "core=",
                                                           "cache=", "tmpdir=",
@@ -403,11 +404,14 @@ if __name__ == "__main__":
         exit(RETURN_FAILURE)
 
     for opt, arg in opts:
-        if opt == "-v":
+        if opt in ("-h", "--help"):
+            print help_text
+            exit(0)
+        elif opt == "-v":
             verbose += 1
         elif opt == "-y":
             noninteractive = True
-        elif opt in ("-i"):
+        elif opt == "-i":
             core = arg
         elif opt in ("--cache"):
             cachedir = arg
@@ -415,9 +419,6 @@ if __name__ == "__main__":
             tmpdir = arg
         elif opt in ("--keeprpms"):
             keeprpms = True
-        elif opt in ("-h", "--help"):
-            print help_text
-            exit()
 
     if not core:
         print _("You have to specify the path to coredump.")

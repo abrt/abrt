@@ -1,24 +1,47 @@
-#! /usr/bin/python -u
+#!/usr/bin/python -u
 # -*- coding: utf-8 -*-
+# WARNING: python -u means unbuffered I/O. Without it the messages are
+# passed to the parent asynchronously which looks bad in clients.
 
-# WARNING: python -u means unbuffered I/O without it the messages are
-# passed to the parent asynchronously which looks bad in clients..
 from subprocess import Popen, PIPE
 import sys
 import os
 import getopt
-
-# everything was ok
-RETURN_OK = 0
-# serious problem, should be logged somewhere
-RETURN_FAILURE = 2
-
 
 GETTEXT_PROGNAME = "abrt"
 import locale
 import gettext
 
 _ = lambda x: gettext.lgettext(x)
+
+
+verbose = 0
+
+def log(s):
+    sys.stderr.write("%s\n" % s)
+
+def log1(message):
+    if verbose > 0:
+        log(message)
+
+def log2(message):
+    if verbose > 1:
+        log(message)
+
+def error_msg(s):
+    sys.stderr.write("%s\n" % s)
+
+def error_msg_and_die(s):
+    sys.stderr.write("%s\n" % s)
+    exit(1)
+
+def xopen(name, mode):
+    try:
+        r = open(name, mode)
+    except IOError, e:
+        error_msg_and_die("Can't open '%s': %s" % (name, e));
+    return r
+
 
 def init_gettext():
     try:
@@ -29,17 +52,6 @@ def init_gettext():
     gettext.bind_textdomain_codeset(GETTEXT_PROGNAME, locale.nl_langinfo(locale.CODESET))
     gettext.bindtextdomain(GETTEXT_PROGNAME, '/usr/share/locale')
     gettext.textdomain(GETTEXT_PROGNAME)
-
-verbose = 0
-def log1(message):
-    """ prints log message if verbosity > 0 """
-    if verbose > 0:
-        print "LOG1:", message
-
-def log2(message):
-    """ prints log message if verbosity > 1 """
-    if verbose > 1:
-        print "LOG2:", message
 
 #eu_unstrip_OUT=`eu-unstrip "--core=$core" -n 2>eu_unstrip.ERR`
 def extract_info_from_core(coredump_name):
@@ -53,7 +65,7 @@ def extract_info_from_core(coredump_name):
     #SEP = 3
     EXECUTABLE = 4
 
-    print _("Analyzing coredump '%s'") % coredump_name
+    log(_("Analyzing coredump '%s'") % coredump_name)
     eu_unstrip_OUT = Popen(["eu-unstrip","--core=%s" % coredump_name, "-n"], stdout=PIPE, bufsize=-1).communicate()[0]
     # parse eu_unstrip_OUT and return the list of build_ids
 
@@ -74,8 +86,7 @@ def extract_info_from_core(coredump_name):
     #print eu_unstrip_OUT
     # we failed to get build ids from the core -> die
     if not eu_unstrip_OUT:
-        print "Can't get build ids from %s" % coredump_name
-        exit(RETURN_FAILURE)
+        error_msg_and_die("Can't get build ids from %s" % coredump_name)
 
     lines = eu_unstrip_OUT.split('\n')
     # using set ensures the unique values
@@ -108,26 +119,7 @@ def build_ids_to_path(build_ids):
     """
     return ["/usr/lib/debug/.build-id/%s/%s.debug" % (b_id[:2], b_id[2:]) for b_id in build_ids]
 
-def sigterm_handler(signum, frame):
-    exit(RETURN_OK)
-
-def sigint_handler(signum, frame):
-    print "\n", _("Exiting on user command")
-    exit(RETURN_OK)
-
-import signal
-
 if __name__ == "__main__":
-    # abrt-server can send SIGTERM to abort the download
-    signal.signal(signal.SIGTERM, sigterm_handler)
-    # ctrl-c
-    signal.signal(signal.SIGINT, sigint_handler)
-    core = None
-    cachedir = None
-    tmpdir = None
-    keeprpms = False
-    output_file = "build_ids"
-
     # localization
     init_gettext()
 
@@ -138,32 +130,46 @@ if __name__ == "__main__":
         except:
             pass
 
-    help_text = _("Usage: %s [-v] [-o OUTFILE] [-c COREFILE]") % sys.argv[0]
+    progname = os.path.basename(sys.argv[0])
+    help_text = _("Usage: %s [-v] [-o OUTFILE] -c COREFILE") % progname
     try:
         opts, args = getopt.getopt(sys.argv[1:], "vhc:o:", ["help", "core="])
     except getopt.GetoptError, err:
-        print str(err) # prints something like "option -a not recognized"
-        exit(RETURN_FAILURE)
+        error_msg(err) # prints something like "option -a not recognized"
+        error_msg_and_die(help_text)
+
+    core = None
+    opt_o = None
 
     for opt, arg in opts:
-        if opt == "-v":
+        if opt in ("-h", "--help"):
+            print help_text
+            exit(0)
+        elif opt == "-v":
             verbose += 1
         elif opt == "-o":
-            output_file = arg
-        elif opt in ("--core", "-c"):
+            opt_o = arg
+        elif opt in ("-c", "--core"):
             core = arg
-        elif opt in ("-h", "--help"):
-            print help_text
-            exit()
 
     if not core:
-        print _("You have to specify the path to coredump")
-        print help_text
-        exit(RETURN_FAILURE)
+        error_msg(_("COREFILE is not specified"))
+        error_msg_and_die(help_text)
 
     b_ids = extract_info_from_core(core)
-    f_build_ids = open(output_file, "w")
-# TODO: check for open/write/close errors?
-    for bid in b_ids:
-        f_build_ids.write("%s\n" % bid)
-    f_build_ids.close()
+
+    try:
+        # Note that we open -o FILE only when we reach the point
+        # when we are definitely going to write something to it
+        outfile = sys.stdout
+        outname = opt_o
+        for bid in b_ids:
+            if outname:
+                outfile = xopen(outname, "w")
+                outname = None
+            outfile.write("%s\n" % bid)
+        outfile.close()
+    except IOError, e:
+        if not opt_o:
+            opt_o = "<stdout>"
+        error_msg_and_die("Error writing to '%s': %s" % (opt_o, e))
