@@ -77,7 +77,7 @@ if __name__ == "__main__":
                 mi = ts.dbMatch('basenames', path)
                 if len(mi):
                     for h in mi:
-                        if (outname)
+                        if outname:
                             outfile = xopen(outname, "w")
                             outname = None
                         outfile.write("%s %s (%s)\n" % (path, h[rpm.RPMTAG_NEVRA], h[rpm.RPMTAG_VENDOR]))
