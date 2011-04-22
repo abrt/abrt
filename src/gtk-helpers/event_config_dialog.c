@@ -298,10 +298,10 @@ static void show_event_config_dialog(const char *event_name)
                         /*title:*/ event->screen_name ? event->screen_name : event_name,
                         g_event_list_window,
                         GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                        GTK_STOCK_OK,
-                        GTK_RESPONSE_APPLY,
                         GTK_STOCK_CANCEL,
                         GTK_RESPONSE_CANCEL,
+                        GTK_STOCK_OK,
+                        GTK_RESPONSE_APPLY,
                         NULL);
     if (g_event_list_window != NULL)
     {
