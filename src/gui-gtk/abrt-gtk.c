@@ -44,7 +44,7 @@ enum
 
 void add_directory_to_dirlist(const char *dirname)
 {
-    struct dump_dir *dd = dd_opendir(dirname, DD_OPEN_READONLY);
+    struct dump_dir *dd = dd_opendir(dirname, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
     if (!dd)
         return;
 
