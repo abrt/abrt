@@ -108,7 +108,7 @@ def createAlertSignature(component, hashmarkername, hashvalue, summary, alertSig
         ####    return version
         return _hardcoded_default_version
 
-    cd = crash_data()
+    cd = problem_data()
     cd.add("component", component)
     cd.add("hashmarkername", hashmarkername)
     cd.add("localhash", hashvalue)
@@ -126,5 +126,5 @@ def report(cd, io_unused):
     ### Silmpler alternative:
     state = run_event_state()
     #state.logging_callback = logfunc
-    r = state.run_event_on_crash_data(cd, "report")
+    r = state.run_event_on_problem_data(cd, "report")
     return r

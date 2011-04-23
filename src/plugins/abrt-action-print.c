@@ -76,13 +76,13 @@ int main(int argc, char **argv)
     if (!dd)
         return 1; /* error message is already logged */
 
-    crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
+    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
     dd_close(dd);
 
-    char *dsc = make_description_logger(crash_data);
+    char *dsc = make_description_logger(problem_data);
     fputs(dsc, stdout);
     free(dsc);
-    free_crash_data(crash_data);
+    free_problem_data(problem_data);
 
     if (output_file)
     {

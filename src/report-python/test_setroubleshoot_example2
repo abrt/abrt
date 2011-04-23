@@ -22,6 +22,6 @@ def logging_callback(line):
     return
 state = report.run_event_state()
 state.logging_callback = logging_callback
-rc = state.run_event_on_crash_data(signature, "report")
+rc = state.run_event_on_problem_data(signature, "report")
 
 print "rc:", rc

@@ -32,12 +32,12 @@ char *g_dump_dir_name = NULL;
 char *g_analyze_events = NULL;
 char *g_reanalyze_events = NULL;
 char *g_report_events = NULL;
-crash_data_t *g_cd;
+problem_data_t *g_cd;
 
 
-void reload_crash_data_from_dump_dir(void)
+void reload_problem_data_from_dump_dir(void)
 {
-    free_crash_data(g_cd);
+    free_problem_data(g_cd);
     free(g_analyze_events);
     free(g_reanalyze_events);
     free(g_report_events);
@@ -46,8 +46,8 @@ void reload_crash_data_from_dump_dir(void)
     if (!dd)
         xfunc_die(); /* dd_opendir already logged error msg */
 
-    g_cd = create_crash_data_from_dump_dir(dd);
-    add_to_crash_data_ext(g_cd, CD_DUMPDIR, g_dump_dir_name, CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
+    g_cd = create_problem_data_from_dump_dir(dd);
+    add_to_problem_data_ext(g_cd, CD_DUMPDIR, g_dump_dir_name, CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
 
     g_analyze_events = list_possible_events(dd, NULL, "analyze");
     g_reanalyze_events = list_possible_events(dd, NULL, "reanalyze");
@@ -119,9 +119,9 @@ int main(int argc, char **argv)
 
     g_custom_logger = &show_error_as_msgbox;
 
-    reload_crash_data_from_dump_dir();
+    reload_problem_data_from_dump_dir();
 
-    update_gui_state_from_crash_data();
+    update_gui_state_from_problem_data();
 
     /* Enter main loop */
     gtk_main();

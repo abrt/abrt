@@ -16,10 +16,10 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#ifndef ABRT_CRASH_DUMP_H_
-#define ABRT_CRASH_DUMP_H_
+#ifndef ABRT_PROBLEM_DATA_H_
+#define ABRT_PROBLEM_DATA_H_
 
-#include "crash_data.h"
+#include "problem_data.h"
 #include "abrt_types.h"
 
 // Text bigger than this usually is attached, not added inline
@@ -54,7 +54,7 @@
 #define FILENAME_COMMENT      "comment"
 #define FILENAME_RATING       "rating"
 #define FILENAME_HOSTNAME     "hostname"
-// Optional. Set to "1" by abrt-handle-upload for every unpacked crashdump
+// Optional. Set to "1" by abrt-handle-upload for every unpacked dump
 #define FILENAME_REMOTE       "remote"
 #define FILENAME_TAINTED      "kernel_tainted"
 // TODO: TicketUploader also has open-coded "TICKET", "CUSTOMER" files
@@ -71,7 +71,7 @@
 #define FILENAME_EVENT_LOG    "event_log"
 // Not stored as files, added "on the fly":
 #define CD_DUMPDIR         "DumpDir"
-// "Which events are possible (make sense) on this crash dump?"
+// "Which events are possible (make sense) on this dump dir?"
 // (a string with "\n" terminated event names)
 #define CD_EVENTS          "Events"
 
@@ -90,8 +90,8 @@ extern "C" {
 #define add_reported_to abrt_add_reported_to
 void add_reported_to(struct dump_dir *dd, const char *line);
 
-#define log_crash_data abrt_log_crash_data
-void log_crash_data(crash_data_t *crash_data, const char *pfx);
+#define log_problem_data abrt_log_problem_data
+void log_problem_data(problem_data_t *problem_data, const char *pfx);
 
 #ifdef __cplusplus
 }

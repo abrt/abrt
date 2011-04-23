@@ -23,7 +23,7 @@
 #include "abrt_dbus.h"
 #include "report.h"
 
-static crash_data_t *FillCrashInfo(const char *dump_dir_name)
+static problem_data_t *FillCrashInfo(const char *dump_dir_name)
 {
     int sv_logmode = logmode;
     logmode = 0; /* suppress EPERM/EACCES errors in opendir */
@@ -33,14 +33,14 @@ static crash_data_t *FillCrashInfo(const char *dump_dir_name)
     if (!dd)
         return NULL;
 
-    crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
+    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
     dd_close(dd);
-    add_to_crash_data_ext(crash_data, CD_DUMPDIR, dump_dir_name, CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
+    add_to_problem_data_ext(problem_data, CD_DUMPDIR, dump_dir_name, CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
 
-    return crash_data;
+    return problem_data;
 }
 
-static void GetCrashInfos(vector_of_crash_data_t *retval, const char *dir_name)
+static void GetCrashInfos(vector_of_problem_data_t *retval, const char *dir_name)
 {
     VERB1 log("Loading dumps from '%s'", dir_name);
 
@@ -59,9 +59,9 @@ static void GetCrashInfos(vector_of_crash_data_t *retval, const char *dir_name)
             if (stat(dump_dir_name, &statbuf) == 0
              && S_ISDIR(statbuf.st_mode)
             ) {
-                crash_data_t *crash_data = FillCrashInfo(dump_dir_name);
-                if (crash_data)
-                    g_ptr_array_add(retval, crash_data);
+                problem_data_t *problem_data = FillCrashInfo(dump_dir_name);
+                if (problem_data)
+                    g_ptr_array_add(retval, problem_data);
             }
             free(dump_dir_name);
         }
@@ -70,20 +70,20 @@ static void GetCrashInfos(vector_of_crash_data_t *retval, const char *dir_name)
 }
 
 /** Prints basic information about a crash to stdout. */
-static void print_crash(crash_data_t *crash_data)
+static void print_crash(problem_data_t *problem_data)
 {
-    struct crash_item *item = g_hash_table_lookup(crash_data, CD_DUMPDIR);
+    struct problem_item *item = g_hash_table_lookup(problem_data, CD_DUMPDIR);
     if (item)
         printf("\tDirectory   : %s\n", item->content);
-    GList *list = g_hash_table_get_keys(crash_data);
+    GList *list = g_hash_table_get_keys(problem_data);
     GList *l = list = g_list_sort(list, (GCompareFunc)strcmp);
     while (l)
     {
         const char *key = l->data;
-        item = g_hash_table_lookup(crash_data, key);
+        item = g_hash_table_lookup(problem_data, key);
         if (item && (item->flags & CD_FLAG_LIST) && !strchr(item->content, '\n'))
         {
-            char *formatted = format_crash_item(item);
+            char *formatted = format_problem_item(item);
             printf("\t%-12s: %s\n", key, formatted ? formatted : item->content);
             free(formatted);
         }
@@ -97,15 +97,15 @@ static void print_crash(crash_data_t *crash_data)
  * @param include_reported
  *   Do not skip entries marked as already reported.
  */
-static void print_crash_list(vector_of_crash_data_t *crash_list, bool include_reported)
+static void print_crash_list(vector_of_problem_data_t *crash_list, bool include_reported)
 {
     unsigned i;
     for (i = 0; i < crash_list->len; ++i)
     {
-        crash_data_t *crash = get_crash_data(crash_list, i);
+        problem_data_t *crash = get_problem_data(crash_list, i);
         if (!include_reported)
         {
-            const char *msg = get_crash_item_content_or_NULL(crash, FILENAME_REPORTED_TO);
+            const char *msg = get_problem_item_content_or_NULL(crash, FILENAME_REPORTED_TO);
             if (msg)
                 continue;
         }
@@ -118,13 +118,13 @@ static void print_crash_list(vector_of_crash_data_t *crash_list, bool include_re
 /**
  * Prints full information about a crash
  */
-static void print_crash_info(crash_data_t *crash_data, bool show_multiline)
+static void print_crash_info(problem_data_t *problem_data, bool show_multiline)
 {
-    struct crash_item *item = g_hash_table_lookup(crash_data, CD_DUMPDIR);
+    struct problem_item *item = g_hash_table_lookup(problem_data, CD_DUMPDIR);
     if (item)
         printf("%-16s: %s\n", "Directory", item->content);
 
-    GList *list = g_hash_table_get_keys(crash_data);
+    GList *list = g_hash_table_get_keys(problem_data);
     GList *l = list = g_list_sort(list, (GCompareFunc)strcmp);
     bool multi_line = 0;
     while (l)
@@ -132,10 +132,10 @@ static void print_crash_info(crash_data_t *crash_data, bool show_multiline)
         const char *key = l->data;
         if (strcmp(key, CD_DUMPDIR) != 0)
         {
-            item = g_hash_table_lookup(crash_data, key);
+            item = g_hash_table_lookup(problem_data, key);
             if (item)
             {
-                char *formatted = format_crash_item(item);
+                char *formatted = format_problem_item(item);
                 char *output = formatted ? formatted : item->content;
                 char *last_eol = strrchr(output, '\n');
                 if (show_multiline || !last_eol)
@@ -327,7 +327,7 @@ int main(int argc, char** argv)
     {
         case OPT_GET_LIST:
         {
-            vector_of_crash_data_t *ci = new_vector_of_crash_data();
+            vector_of_problem_data_t *ci = new_vector_of_problem_data();
             while (D_list)
             {
                 char *dir = (char *)D_list->data;
@@ -335,7 +335,7 @@ int main(int argc, char** argv)
                 D_list = g_list_remove(D_list, dir);
             }
             print_crash_list(ci, full);
-            free_vector_of_crash_data(ci);
+            free_vector_of_problem_data(ci);
             break;
         }
         case OPT_REPORT:
@@ -370,7 +370,7 @@ int main(int argc, char** argv)
         }
         case OPT_INFO:
         {
-            /* Load crash_data from dump dir */
+            /* Load problem_data from dump dir */
             struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
             if (!dd)
                 return -1;
@@ -393,21 +393,21 @@ int main(int argc, char** argv)
                 if (analyzer_result != 0)
                     return 1;
 
-                /* Reload crash_data from (possibly updated by analyze) dump dir */
+                /* Reload problem_data from (possibly updated by analyze) dump dir */
                 dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
                 if (!dd)
                     return -1;
             } else
                 free(analyze_events_as_lines);
 
-            crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
+            problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
             dd_close(dd);
 
-            add_to_crash_data_ext(crash_data, CD_DUMPDIR, dump_dir_name,
+            add_to_problem_data_ext(problem_data, CD_DUMPDIR, dump_dir_name,
                                   CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
 
-            print_crash_info(crash_data, full);
-            free_crash_data(crash_data);
+            print_crash_info(problem_data, full);
+            free_problem_data(problem_data);
 
             break;
         }

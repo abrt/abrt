@@ -18,17 +18,17 @@
 */
 #include "abrtlib.h"
 
-static void free_crash_item(void *ptr)
+static void free_problem_item(void *ptr)
 {
     if (ptr)
     {
-        struct crash_item *item = (struct crash_item *)ptr;
+        struct problem_item *item = (struct problem_item *)ptr;
         free(item->content);
         free(item);
     }
 }
 
-char *format_crash_item(struct crash_item *item)
+char *format_problem_item(struct problem_item *item)
 {
     if (!item)
         return xstrdup("(nullitem)");
@@ -49,15 +49,15 @@ char *format_crash_item(struct crash_item *item)
     return NULL;
 }
 
-/* crash_data["name"] = { "content", CD_FLAG_foo_bits } */
+/* problem_data["name"] = { "content", CD_FLAG_foo_bits } */
 
-crash_data_t *new_crash_data(void)
+problem_data_t *new_problem_data(void)
 {
     return g_hash_table_new_full(g_str_hash, g_str_equal,
-                 free, free_crash_item);
+                 free, free_problem_item);
 }
 
-void add_to_crash_data_ext(crash_data_t *crash_data,
+void add_to_problem_data_ext(problem_data_t *problem_data,
                 const char *name,
                 const char *content,
                 unsigned flags)
@@ -67,41 +67,41 @@ void add_to_crash_data_ext(crash_data_t *crash_data,
     if (!(flags & CD_FLAG_ISEDITABLE))
         flags |= CD_FLAG_ISNOTEDITABLE;
 
-    struct crash_item *item = (struct crash_item *)xzalloc(sizeof(*item));
+    struct problem_item *item = (struct problem_item *)xzalloc(sizeof(*item));
     item->content = xstrdup(content);
     item->flags = flags;
-    g_hash_table_replace(crash_data, xstrdup(name), item);
+    g_hash_table_replace(problem_data, xstrdup(name), item);
 }
 
-void add_to_crash_data(crash_data_t *crash_data,
+void add_to_problem_data(problem_data_t *problem_data,
                 const char *name,
                 const char *content)
 {
-    add_to_crash_data_ext(crash_data, name, content, CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
+    add_to_problem_data_ext(problem_data, name, content, CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
 }
 
-const char *get_crash_item_content_or_die(crash_data_t *crash_data, const char *key)
+const char *get_problem_item_content_or_die(problem_data_t *problem_data, const char *key)
 {
-    struct crash_item *item = get_crash_data_item_or_NULL(crash_data, key);
+    struct problem_item *item = get_problem_data_item_or_NULL(problem_data, key);
     if (!item)
-        error_msg_and_die("Error accessing crash data: no ['%s']", key);
+        error_msg_and_die("Error accessing problem data: no ['%s']", key);
     return item->content;
 }
 
-const char *get_crash_item_content_or_NULL(crash_data_t *crash_data, const char *key)
+const char *get_problem_item_content_or_NULL(problem_data_t *problem_data, const char *key)
 {
-    struct crash_item *item = get_crash_data_item_or_NULL(crash_data, key);
+    struct problem_item *item = get_problem_data_item_or_NULL(problem_data, key);
     if (!item)
         return NULL;
     return item->content;
 }
 
 
-/* crash_data_vector[i] = { "name" = { "content", CD_FLAG_foo_bits } } */
+/* problem_data_vector[i] = { "name" = { "content", CD_FLAG_foo_bits } } */
 
-vector_of_crash_data_t *new_vector_of_crash_data(void)
+vector_of_problem_data_t *new_vector_of_problem_data(void)
 {
-    return g_ptr_array_new_with_free_func((void (*)(void*)) &free_crash_data);
+    return g_ptr_array_new_with_free_func((void (*)(void*)) &free_problem_data);
 }
 
 
@@ -209,7 +209,7 @@ static char* is_text_file(const char *name, ssize_t *sz)
     return NULL; /* it's binary */
 }
 
-void load_crash_data_from_dump_dir(crash_data_t *crash_data, struct dump_dir *dd)
+void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_dir *dd)
 {
     char *short_name;
     char *full_name;
@@ -226,7 +226,7 @@ void load_crash_data_from_dump_dir(crash_data_t *crash_data, struct dump_dir *dd
             text = is_text_file(full_name, &sz);
             if (!text)
             {
-                add_to_crash_data_ext(crash_data,
+                add_to_problem_data_ext(problem_data,
                         short_name,
                         full_name,
                         CD_FLAG_BIN + CD_FLAG_ISNOTEDITABLE
@@ -274,7 +274,7 @@ void load_crash_data_from_dump_dir(crash_data_t *crash_data, struct dump_dir *dd
         if (strcmp(short_name, FILENAME_TIME) == 0)
             flags |= CD_FLAG_UNIXTIME;
 
-        add_to_crash_data_ext(crash_data,
+        add_to_problem_data_ext(problem_data,
                 short_name,
                 content,
                 flags
@@ -285,19 +285,19 @@ void load_crash_data_from_dump_dir(crash_data_t *crash_data, struct dump_dir *dd
     }
 }
 
-crash_data_t *create_crash_data_from_dump_dir(struct dump_dir *dd)
+problem_data_t *create_problem_data_from_dump_dir(struct dump_dir *dd)
 {
-    crash_data_t *crash_data = new_crash_data();
-    load_crash_data_from_dump_dir(crash_data, dd);
-    return crash_data;
+    problem_data_t *problem_data = new_problem_data();
+    load_problem_data_from_dump_dir(problem_data, dd);
+    return problem_data;
 }
 
-void log_crash_data(crash_data_t *crash_data, const char *pfx)
+void log_problem_data(problem_data_t *problem_data, const char *pfx)
 {
     GHashTableIter iter;
     char *name;
-    struct crash_item *value;
-    g_hash_table_iter_init(&iter, crash_data);
+    struct problem_item *value;
+    g_hash_table_iter_init(&iter, problem_data);
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
         log("%s[%s]:'%s' 0x%x",

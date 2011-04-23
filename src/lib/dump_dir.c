@@ -315,7 +315,7 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
              * directory when run without arguments, because its option -d DIR
              * defaults to "."!
              */
-            error_msg("'%s' is not a crash dump directory", dir);
+            error_msg("'%s' is not a dump directory", dir);
         }
         else if (errno == ENOENT || errno == ENOTDIR)
         {

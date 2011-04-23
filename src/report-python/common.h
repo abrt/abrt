@@ -19,14 +19,14 @@
 #include <Python.h>
 
 #include "dump_dir.h"
-#include "crash_data.h"
+#include "problem_data.h"
 #include "run_event.h"
 
 /* exception object */
 extern PyObject *ReportError;
 
 /* type objects */
-extern PyTypeObject p_crash_data_type;
+extern PyTypeObject p_problem_data_type;
 extern PyTypeObject p_dump_dir_type;
 extern PyTypeObject p_run_event_state_type;
 
@@ -43,5 +43,5 @@ typedef struct {
 
 typedef struct {
     PyObject_HEAD
-    crash_data_t *cd;
-} p_crash_data;
+    problem_data_t *cd;
+} p_problem_data;

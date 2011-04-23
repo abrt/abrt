@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "crash_data.h"
+#include "problem_data.h"
 #include "dump_dir.h"
 #include "run_event.h"
 
@@ -34,13 +34,13 @@ static char *do_log(char *log_line, void *param)
 
 int main(int argc, char** argv)
 {
-    crash_data_t *crash_data = new_crash_data();
+    problem_data_t *problem_data = new_problem_data();
 
-    add_to_crash_data(crash_data, "analyzer", "wow");
+    add_to_problem_data(problem_data, "analyzer", "wow");
     const char *event = "report";
 
-    struct dump_dir *dd = create_dump_dir_from_crash_data(crash_data, "/tmp");
-    free_crash_data(crash_data);
+    struct dump_dir *dd = create_dump_dir_from_problem_data(problem_data, "/tmp");
+    free_problem_data(problem_data);
     if (!dd)
         return 1;
     char *dir_name = strdup(dd->dd_dirname);

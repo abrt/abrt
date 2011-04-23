@@ -23,14 +23,7 @@
 #include "CommLayerServerDBus.h"
 #include "MiddleWare.h"
 
-/**
- * Get one crash info. If getting is successful,
- * then crash info is filled.
- * @param dump_dir_name A dump dir containing all necessary data.
- * @param pCrashData A crash info.
- * @return It return results of operation. See mw_result_t.
- */
-static crash_data_t *FillCrashInfo(const char *dump_dir_name);
+static problem_data_t *FillCrashInfo(const char *dump_dir_name);
 
 
 struct logging_state {
@@ -126,7 +119,7 @@ static char *do_log(char *log_line, void *param)
     return log_line;
 }
 
-mw_result_t LoadDebugDump(const char *dump_dir_name, crash_data_t **crash_data)
+mw_result_t LoadDebugDump(const char *dump_dir_name, problem_data_t **problem_data)
 {
     mw_result_t res;
 
@@ -182,7 +175,7 @@ mw_result_t LoadDebugDump(const char *dump_dir_name, crash_data_t **crash_data)
         dump_dir_name = state.crash_dump_dup_name;
     }
 
-    /* Loads crash_data (from the *first debugdump dir* if this one is a dup)
+    /* Loads problem_data (from the *first debugdump dir* if this one is a dup)
      * Returns:
      * MW_OCCURRED: "crash count is != 1" (iow: it is > 1 - dup)
      * MW_OK: "crash count is 1" (iow: this is a new crash, not a dup)
@@ -208,8 +201,8 @@ mw_result_t LoadDebugDump(const char *dump_dir_name, crash_data_t **crash_data)
         dd_save_text(dd, FILENAME_COUNT, new_count_str);
         dd_close(dd);
 
-        *crash_data = FillCrashInfo(dump_dir_name);
-        if (*crash_data != NULL)
+        *problem_data = FillCrashInfo(dump_dir_name);
+        if (*problem_data != NULL)
         {
             res = MW_OK;
             if (count > 1)
@@ -229,24 +222,24 @@ mw_result_t LoadDebugDump(const char *dump_dir_name, crash_data_t **crash_data)
     return res;
 }
 
-static crash_data_t *FillCrashInfo(const char *dump_dir_name)
+static problem_data_t *FillCrashInfo(const char *dump_dir_name)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return NULL;
 
-    crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
+    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
     char *events = list_possible_events(dd, NULL, "");
     dd_close(dd);
 
-    add_to_crash_data_ext(crash_data, CD_EVENTS, events,
+    add_to_problem_data_ext(problem_data, CD_EVENTS, events,
                           CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
     free(events);
 
-    add_to_crash_data_ext(crash_data, CD_DUMPDIR, dump_dir_name,
+    add_to_problem_data_ext(problem_data, CD_DUMPDIR, dump_dir_name,
                           CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
 
-    return crash_data;
+    return problem_data;
 }
 
 /* Remove dump dir */

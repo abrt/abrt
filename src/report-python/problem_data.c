@@ -23,38 +23,38 @@
 #include "common.h"
 
 static void
-p_crash_data_dealloc(PyObject *pself)
+p_problem_data_dealloc(PyObject *pself)
 {
-    p_crash_data *self = (p_crash_data*)pself;
-    free_crash_data(self->cd);
+    p_problem_data *self = (p_problem_data*)pself;
+    free_problem_data(self->cd);
     self->cd = NULL;
     self->ob_type->tp_free(pself);
 }
 
 static PyObject *
-p_crash_data_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+p_problem_data_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
-    p_crash_data *self = (p_crash_data *)type->tp_alloc(type, 0);
+    p_problem_data *self = (p_problem_data *)type->tp_alloc(type, 0);
     if (self)
-        self->cd = new_crash_data();
+        self->cd = new_problem_data();
     return (PyObject *)self;
 }
 
 //static int
-//p_crash_data_init(PyObject *pself, PyObject *args, PyObject *kwds)
+//p_problem_data_init(PyObject *pself, PyObject *args, PyObject *kwds)
 //{
 //    return 0;
 //}
 
 /*
-void add_to_crash_data_ext(crash_data_t *crash_data,
+void add_to_problem_data_ext(problem_data_t *problem_data,
                 const char *name,
                 const char *content,
                 unsigned flags);
 */
-static PyObject *p_crash_data_add(PyObject *pself, PyObject *args)
+static PyObject *p_problem_data_add(PyObject *pself, PyObject *args)
 {
-    p_crash_data *self = (p_crash_data*)pself;
+    p_problem_data *self = (p_problem_data*)pself;
 
     const char *name;
     const char *content;
@@ -66,22 +66,22 @@ static PyObject *p_crash_data_add(PyObject *pself, PyObject *args)
          */
         return NULL;
     }
-    add_to_crash_data_ext(self->cd, name, content, flags);
+    add_to_problem_data_ext(self->cd, name, content, flags);
 
     /* every function returns PyObject, to return void we need to do this */
     Py_RETURN_NONE;
 }
 
-/* struct crash_item *get_crash_data_item_or_NULL(crash_data_t *crash_data, const char *key); */
-static PyObject *p_get_crash_data_item(PyObject *pself, PyObject *args)
+/* struct problem_item *get_problem_data_item_or_NULL(problem_data_t *problem_data, const char *key); */
+static PyObject *p_get_problem_data_item(PyObject *pself, PyObject *args)
 {
-    p_crash_data *self = (p_crash_data*)pself;
+    p_problem_data *self = (p_problem_data*)pself;
     const char *key;
     if (!PyArg_ParseTuple(args, "s", &key))
     {
         return NULL;
     }
-    struct crash_item *ci = get_crash_data_item_or_NULL(self->cd, key);
+    struct problem_item *ci = get_problem_data_item_or_NULL(self->cd, key);
     if (ci == NULL)
     {
         Py_RETURN_NONE;
@@ -89,10 +89,10 @@ static PyObject *p_get_crash_data_item(PyObject *pself, PyObject *args)
     return Py_BuildValue("sI", ci->content, ci->flags);
 }
 
-/* struct dump_dir *create_dump_dir_from_crash_data(crash_data_t *crash_data, const char *base_dir_name); */
-static PyObject *p_create_dump_dir_from_crash_data(PyObject *pself, PyObject *args)
+/* struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name); */
+static PyObject *p_create_dump_dir_from_problem_data(PyObject *pself, PyObject *args)
 {
-    p_crash_data *self = (p_crash_data*)pself;
+    p_problem_data *self = (p_problem_data*)pself;
     const char *base_dir_name = NULL;
     if (!PyArg_ParseTuple(args, "|s", &base_dir_name))
     {
@@ -101,7 +101,7 @@ static PyObject *p_create_dump_dir_from_crash_data(PyObject *pself, PyObject *ar
     p_dump_dir *new_dd = PyObject_New(p_dump_dir, &p_dump_dir_type);
     if (!new_dd)
         return NULL;
-    struct dump_dir *dd = create_dump_dir_from_crash_data(self->cd, base_dir_name);
+    struct dump_dir *dd = create_dump_dir_from_problem_data(self->cd, base_dir_name);
     if (!dd)
     {
         PyObject_Del((PyObject*)new_dd);
@@ -112,26 +112,26 @@ static PyObject *p_create_dump_dir_from_crash_data(PyObject *pself, PyObject *ar
     return (PyObject*)new_dd;
 }
 
-//static PyMemberDef p_crash_data_members[] = {
+//static PyMemberDef p_problem_data_members[] = {
 //    { NULL }
 //};
 
-static PyMethodDef p_crash_data_methods[] = {
+static PyMethodDef p_problem_data_methods[] = {
     /* method_name, func, flags, doc_string */
-    { "add"            , p_crash_data_add                 , METH_VARARGS },
-    { "get"            , p_get_crash_data_item            , METH_VARARGS },
-    { "create_dump_dir", p_create_dump_dir_from_crash_data, METH_VARARGS },
+    { "add"            , p_problem_data_add                 , METH_VARARGS },
+    { "get"            , p_get_problem_data_item            , METH_VARARGS },
+    { "create_dump_dir", p_create_dump_dir_from_problem_data, METH_VARARGS },
     { NULL }
 };
 
-PyTypeObject p_crash_data_type = {
+PyTypeObject p_problem_data_type = {
     PyObject_HEAD_INIT(NULL)
-    .tp_name      = "report.crash_data",
-    .tp_basicsize = sizeof(p_crash_data),
+    .tp_name      = "report.problem_data",
+    .tp_basicsize = sizeof(p_problem_data),
     .tp_flags     = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
-    .tp_new       = p_crash_data_new,
-    .tp_dealloc   = p_crash_data_dealloc,
-    //.tp_init      = p_crash_data_init,
-    //.tp_members   = p_crash_data_members,
-    .tp_methods   = p_crash_data_methods,
+    .tp_new       = p_problem_data_new,
+    .tp_dealloc   = p_problem_data_dealloc,
+    //.tp_init      = p_problem_data_init,
+    //.tp_members   = p_problem_data_members,
+    .tp_methods   = p_problem_data_methods,
 };

@@ -77,7 +77,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "strbuf.h"
 #include "hash_sha1.h"
 
-#include "abrt_crash_data.h"
+#include "abrt_problem_data.h"
 #include "abrt_types.h"
 #include "dump_dir.h"
 #include "hooklib.h"
@@ -239,13 +239,13 @@ int daemon_is_ok();
 char *iso_date_string(time_t *pt);
 
 #define make_description_bz abrt_make_description_bz
-char* make_description_bz(crash_data_t *crash_data);
+char* make_description_bz(problem_data_t *problem_data);
 #define make_description_comment abrt_make_description_comment
-char* make_description_comment(crash_data_t *crash_data);
+char* make_description_comment(problem_data_t *problem_data);
 #define make_description_logger abrt_make_description_logger
-char* make_description_logger(crash_data_t *crash_data);
+char* make_description_logger(problem_data_t *problem_data);
 #define make_description_mailx abrt_make_description_mailx
-char* make_description_mailx(crash_data_t *crash_data);
+char* make_description_mailx(problem_data_t *problem_data);
 
 #define parse_release_for_bz abrt_parse_release_for_bz
 void parse_release_for_bz(const char *pRelease, char **product, char **version);

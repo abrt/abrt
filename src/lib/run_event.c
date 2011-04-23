@@ -339,11 +339,11 @@ int run_event_on_dir_name(struct run_event_state *state,
     return retval;
 }
 
-int run_event_on_crash_data(struct run_event_state *state, crash_data_t *data, const char *event)
+int run_event_on_problem_data(struct run_event_state *state, problem_data_t *data, const char *event)
 {
     state->children_count = 0;
 
-    struct dump_dir *dd = create_dump_dir_from_crash_data(data, NULL);
+    struct dump_dir *dd = create_dump_dir_from_problem_data(data, NULL);
     if (!dd)
         return -1;
     char *dir_name = xstrdup(dd->dd_dirname);
@@ -356,7 +356,7 @@ int run_event_on_crash_data(struct run_event_state *state, crash_data_t *data, c
     free(dir_name);
     if (dd)
     {
-        load_crash_data_from_dump_dir(data, dd);
+        load_problem_data_from_dump_dir(data, dd);
         dd_delete(dd);
     }
     return r;

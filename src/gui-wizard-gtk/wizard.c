@@ -247,7 +247,7 @@ void show_error_as_msgbox(const char *msg)
 
 static void load_text_to_text_view(GtkTextView *tv, const char *name)
 {
-    const char *str = g_cd ? get_crash_item_content_or_NULL(g_cd, name) : NULL;
+    const char *str = g_cd ? get_problem_item_content_or_NULL(g_cd, name) : NULL;
     gtk_text_buffer_set_text(gtk_text_view_get_buffer(tv), (str ? str : ""), -1);
 }
 
@@ -263,7 +263,7 @@ static gchar *get_malloced_string_from_text_view(GtkTextView *tv)
 
 static void save_text_if_changed(const char *name, const char *new_value)
 {
-    const char *old_value = g_cd ? get_crash_item_content_or_NULL(g_cd, name) : "";
+    const char *old_value = g_cd ? get_problem_item_content_or_NULL(g_cd, name) : "";
     if (!old_value)
         old_value = "";
     if (strcmp(new_value, old_value) != 0)
@@ -276,8 +276,8 @@ static void save_text_if_changed(const char *name, const char *new_value)
         }
 //FIXME: else: what to do with still-unsaved data in the widget??
         dd_close(dd);
-        reload_crash_data_from_dump_dir();
-        update_gui_state_from_crash_data();
+        reload_problem_data_from_dump_dir();
+        update_gui_state_from_problem_data();
     }
 }
 
@@ -339,7 +339,7 @@ static void tv_details_row_activated(
 
     gchar *column_name;
     gtk_tree_model_get(model, &iter, DETAIL_COLUMN_NAME, &column_name, -1);
-    struct crash_item *item = get_crash_data_item_or_NULL(g_cd, column_name);
+    struct problem_item *item = get_problem_data_item_or_NULL(g_cd, column_name);
     if (!item || !(item->flags & CD_FLAG_TXT))
         return;
     if (!strchr(item->content, '\n')) /* one line? */
@@ -375,7 +375,7 @@ static void tv_details_cursor_changed(
 
     gchar *column_name;
     gtk_tree_model_get(model, &iter, DETAIL_COLUMN_NAME, &column_name, -1);
-    struct crash_item *item = get_crash_data_item_or_NULL(g_cd, column_name);
+    struct problem_item *item = get_problem_data_item_or_NULL(g_cd, column_name);
 
     gboolean editable = (item && (item->flags & CD_FLAG_TXT) && !strchr(item->content, '\n'));
 
@@ -391,7 +391,7 @@ static void tv_details_cursor_changed(
 }
 
 
-/* update_gui_state_from_crash_data */
+/* update_gui_state_from_problem_data */
 
 static gint find_by_button(gconstpointer a, gconstpointer button)
 {
@@ -532,7 +532,7 @@ struct cd_stats {
 
 static void append_item_to_ls_details(gpointer name, gpointer value, gpointer data)
 {
-    crash_item *item = (crash_item*)value;
+    problem_item *item = (problem_item*)value;
     struct cd_stats *stats = data;
     GtkTreeIter iter;
 
@@ -578,11 +578,11 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
     }
 }
 
-void update_gui_state_from_crash_data(void)
+void update_gui_state_from_problem_data(void)
 {
     gtk_window_set_title(GTK_WINDOW(g_assistant), g_dump_dir_name);
 
-    const char *reason = get_crash_item_content_or_NULL(g_cd, FILENAME_REASON);
+    const char *reason = get_problem_item_content_or_NULL(g_cd, FILENAME_REASON);
     gtk_label_set_text(g_lbl_cd_reason, reason ? reason : _("(no description)"));
 ///vda    make_label_autowrap_on_resize(g_lbl_cd_reason);
 
@@ -860,8 +860,8 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                 strbuf_free(evd->event_log);
                 free(evd);
 
-                reload_crash_data_from_dump_dir();
-                update_gui_state_from_crash_data();
+                reload_problem_data_from_dump_dir();
+                update_gui_state_from_problem_data();
 
                 return FALSE; /* "please remove this event" */
             }
@@ -993,10 +993,10 @@ static void check_backtrace_and_allow_send(void) //TODO: rename, this checks rat
      * but so far only oopses doesn't have rating, so for now we
      * skip the "kernel" manually
      */
-    const char *component = get_crash_item_content_or_NULL(g_cd, FILENAME_COMPONENT);
+    const char *component = get_problem_item_content_or_NULL(g_cd, FILENAME_COMPONENT);
     if (strcmp(component, "kernel") != 0)
     {
-        const char *rating = get_crash_item_content_or_NULL(g_cd, FILENAME_RATING);
+        const char *rating = get_problem_item_content_or_NULL(g_cd, FILENAME_RATING);
         if (rating) switch (*rating)
         {
             case '4': //bt is ok - no warning here
@@ -1047,7 +1047,7 @@ static void on_btn_refresh_clicked(GtkButton *button)
         g_analyze_events = append_to_malloced_string(g_analyze_events, g_reanalyze_events);
         g_reanalyze_events[0] = '\0';
         /* Refresh GUI so that we see new analyze+reanalyze buttons */
-        update_gui_state_from_crash_data();
+        update_gui_state_from_problem_data();
 
         /* Change page to analyzer selector - let user play with them */
         gtk_assistant_set_current_page(g_assistant, PAGENO_ANALYZE_SELECTOR);
@@ -1144,13 +1144,13 @@ static gint next_page_no(gint current_page_no, gpointer data)
     {
 #if 0
     case PAGENO_COMMENT:
-        if (get_crash_item_content_or_NULL(g_cd, FILENAME_COMMENT))
+        if (get_problem_item_content_or_NULL(g_cd, FILENAME_COMMENT))
             break;
         goto again; /* no comment, skip next page */
 #endif
 
     case PAGENO_BACKTRACE_APPROVAL:
-        if (get_crash_item_content_or_NULL(g_cd, FILENAME_BACKTRACE))
+        if (get_problem_item_content_or_NULL(g_cd, FILENAME_BACKTRACE))
             break;
         goto again; /* no backtrace, skip next page */
 

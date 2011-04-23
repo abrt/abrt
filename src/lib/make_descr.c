@@ -68,7 +68,7 @@ static const char *const blacklisted_items[] = {
     NULL
 };
 
-char* make_description_mailx(crash_data_t *crash_data)
+char* make_description_mailx(problem_data_t *problem_data)
 {
     struct strbuf *buf_dsc = strbuf_new();
     struct strbuf *buf_additional_files = strbuf_new();
@@ -77,8 +77,8 @@ char* make_description_mailx(crash_data_t *crash_data)
 
     GHashTableIter iter;
     char *name;
-    struct crash_item *value;
-    g_hash_table_iter_init(&iter, crash_data);
+    struct problem_item *value;
+    g_hash_table_iter_init(&iter, problem_data);
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
         if (value->flags & CD_FLAG_TXT)
@@ -112,7 +112,7 @@ char* make_description_mailx(crash_data_t *crash_data)
     return strbuf_free_nobuf(buf_dsc);
 }
 
-char* make_description_bz(crash_data_t *crash_data)
+char* make_description_bz(problem_data_t *problem_data)
 {
     struct strbuf *buf_dsc = strbuf_new();
     struct strbuf *buf_big_dsc = strbuf_new();
@@ -120,8 +120,8 @@ char* make_description_bz(crash_data_t *crash_data)
 
     GHashTableIter iter;
     char *name;
-    struct crash_item *value;
-    g_hash_table_iter_init(&iter, crash_data);
+    struct problem_item *value;
+    g_hash_table_iter_init(&iter, problem_data);
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
         struct stat statbuf;
@@ -200,15 +200,15 @@ char* make_description_bz(crash_data_t *crash_data)
     return strbuf_free_nobuf(buf_dsc);
 }
 
-char* make_description_logger(crash_data_t *crash_data)
+char* make_description_logger(problem_data_t *problem_data)
 {
     struct strbuf *buf_dsc = strbuf_new();
     struct strbuf *buf_long_dsc = strbuf_new();
 
     GHashTableIter iter;
     char *name;
-    struct crash_item *value;
-    g_hash_table_iter_init(&iter, crash_data);
+    struct problem_item *value;
+    g_hash_table_iter_init(&iter, problem_data);
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
         const char *content = value->content;
@@ -251,12 +251,12 @@ char* make_description_logger(crash_data_t *crash_data)
     return strbuf_free_nobuf(buf_dsc);
 }
 
-char* make_description_comment(crash_data_t *crash_data)
+char* make_description_comment(problem_data_t *problem_data)
 {
     char *comment = NULL;
-    struct crash_item *value;
+    struct problem_item *value;
 
-    value = get_crash_data_item_or_NULL(crash_data, FILENAME_COMMENT);
+    value = get_problem_data_item_or_NULL(problem_data, FILENAME_COMMENT);
     if (value)
     {
         if (value->content[0])

@@ -36,9 +36,9 @@ static PyMethodDef module_methods[] = {
 PyMODINIT_FUNC
 init_pyreport(void)
 {
-    if (PyType_Ready(&p_crash_data_type) < 0)
+    if (PyType_Ready(&p_problem_data_type) < 0)
     {
-        printf("PyType_Ready(&p_crash_data_type) < 0\n");
+        printf("PyType_Ready(&p_problem_data_type) < 0\n");
         return;
     }
     if (PyType_Ready(&p_dump_dir_type) < 0)
@@ -66,8 +66,8 @@ init_pyreport(void)
     PyModule_AddObject(m, "error", ReportError);
 
     /* init type objects */
-    Py_INCREF(&p_crash_data_type);
-    PyModule_AddObject(m, "crash_data", (PyObject *)&p_crash_data_type);
+    Py_INCREF(&p_problem_data_type);
+    PyModule_AddObject(m, "problem_data", (PyObject *)&p_problem_data_type);
     PyModule_AddObject(m, "CD_FLAG_BIN"          , Py_BuildValue("i", CD_FLAG_BIN          ));
     PyModule_AddObject(m, "CD_FLAG_TXT"          , Py_BuildValue("i", CD_FLAG_TXT          ));
     PyModule_AddObject(m, "CD_FLAG_ISEDITABLE"   , Py_BuildValue("i", CD_FLAG_ISEDITABLE   ));

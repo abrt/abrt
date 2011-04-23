@@ -65,7 +65,7 @@ static void create_and_send_email(
     if (!dd)
         exit(1); /* error msg is already logged by dd_opendir */
 
-    crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
+    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
     dd_close(dd);
 
     char* env;
@@ -82,14 +82,14 @@ static void create_and_send_email(
     unsigned arg_size = 0;
     args = append_str_to_vector(args, &arg_size, "/bin/mailx");
 
-    char *dsc = make_description_mailx(crash_data);
+    char *dsc = make_description_mailx(problem_data);
 
     if (send_binary_data)
     {
         GHashTableIter iter;
         char *name;
-        struct crash_item *value;
-        g_hash_table_iter_init(&iter, crash_data);
+        struct problem_item *value;
+        g_hash_table_iter_init(&iter, problem_data);
         while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
         {
             if (value->flags & CD_FLAG_BIN)
@@ -116,7 +116,7 @@ static void create_and_send_email(
     args -= arg_size;
     free(args);
 
-    free_crash_data(crash_data);
+    free_problem_data(problem_data);
 
     dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)

@@ -3,7 +3,7 @@
 import sys
 from report import *
 
-def run_event_on_crash_data(cd, event, log_function = None):
+def run_event_on_problem_data(cd, event, log_function = None):
     dd = cd.create_dump_dir("/tmp")
     dir_name = dd.name
     print "Created dump_dir:", dir_name
@@ -20,8 +20,8 @@ def run_event_on_crash_data(cd, event, log_function = None):
 def log_function(line):
     print "LOG:", line
 
-cd = crash_data()
+cd = problem_data()
 cd.add("foo", "bar")
 cd.add("analyzer", "baz", CD_FLAG_ISNOTEDITABLE)
-r = run_event_on_crash_data(cd, "post-create", log_function)
+r = run_event_on_problem_data(cd, "post-create", log_function)
 print "Result:", r

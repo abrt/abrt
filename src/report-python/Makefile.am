@@ -8,7 +8,7 @@ pyreportexec_LTLIBRARIES = _pyreport.la
 
 _pyreport_la_SOURCES = \
     reportmodule.c \
-    crash_data.c \
+    problem_data.c \
     dump_dir.c \
     run_event.c \
     common.h

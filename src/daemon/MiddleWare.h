@@ -47,10 +47,10 @@ typedef enum {
  * Fills crash info.
  * Note that if it's a dup, loads _first crash_ info, not this one's.
  * @param dump_dir_name A debugdump directory.
- * @param pCrashData A crash info.
+ * @param problem_data A problem data.
  * @return It return results of operation. See mw_result_t.
  */
-mw_result_t LoadDebugDump(const char *dump_dir_name, crash_data_t **crash_data);
+mw_result_t LoadDebugDump(const char *dump_dir_name, problem_data_t **problem_data);
 
 int DeleteDebugDump(const char *dump_dir_name, long caller_uid);
 

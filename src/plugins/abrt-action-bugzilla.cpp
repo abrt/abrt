@@ -18,7 +18,7 @@
 */
 #include "abrtlib.h"
 #include "abrt_xmlrpc.h"
-#include "abrt_crash_data.h"
+#include "abrt_problem_data.h"
 #include "parse_options.h"
 
 #define PROGNAME "abrt-action-bugzilla"
@@ -96,8 +96,8 @@ struct ctx: public abrt_xmlrpc_conn {
     xmlrpc_int32 get_bug_dup_id(xmlrpc_value* result_xml);
     void         get_bug_cc(xmlrpc_value* result_xml, struct bug_info* bz);
     int          add_plus_one_cc(xmlrpc_int32 bug_id, const char* login);
-    xmlrpc_int32 new_bug(crash_data_t *crash_data, int depend_on_bugno);
-    int          add_attachments(const char* bug_id_str, crash_data_t *crash_data);
+    xmlrpc_int32 new_bug(problem_data_t *problem_data, int depend_on_bugno);
+    int          add_attachments(const char* bug_id_str, problem_data_t *problem_data);
     int          get_bug_info(struct bug_info* bz, xmlrpc_int32 bug_id);
     int          add_comment(xmlrpc_int32 bug_id, const char* comment, bool is_private);
 
@@ -426,19 +426,19 @@ static const char *tainted_string(unsigned tainted)
     return taint_warnings[idx];
 }
 
-xmlrpc_int32 ctx::new_bug(crash_data_t *crash_data, int depend_on_bugno)
+xmlrpc_int32 ctx::new_bug(problem_data_t *problem_data, int depend_on_bugno)
 {
-    const char *package         = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
-    const char *component       = get_crash_item_content_or_NULL(crash_data, FILENAME_COMPONENT);
-    const char *release         = get_crash_item_content_or_NULL(crash_data, FILENAME_OS_RELEASE);
+    const char *package         = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
+    const char *component       = get_problem_item_content_or_NULL(problem_data, FILENAME_COMPONENT);
+    const char *release         = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
     if (!release) /* Old dump dir format compat. Remove in abrt-2.1 */
-        release = get_crash_item_content_or_NULL(crash_data, "release");
-    const char *arch            = get_crash_item_content_or_NULL(crash_data, FILENAME_ARCHITECTURE);
-    const char *duphash         = get_crash_item_content_or_NULL(crash_data, FILENAME_DUPHASH);
-    const char *reason          = get_crash_item_content_or_NULL(crash_data, FILENAME_REASON);
-    const char *function        = get_crash_item_content_or_NULL(crash_data, FILENAME_CRASH_FUNCTION);
-    const char *analyzer        = get_crash_item_content_or_NULL(crash_data, FILENAME_ANALYZER);
-    const char *tainted_str     = get_crash_item_content_or_NULL(crash_data, FILENAME_TAINTED);
+        release = get_problem_item_content_or_NULL(problem_data, "release");
+    const char *arch            = get_problem_item_content_or_NULL(problem_data, FILENAME_ARCHITECTURE);
+    const char *duphash         = get_problem_item_content_or_NULL(problem_data, FILENAME_DUPHASH);
+    const char *reason          = get_problem_item_content_or_NULL(problem_data, FILENAME_REASON);
+    const char *function        = get_problem_item_content_or_NULL(problem_data, FILENAME_CRASH_FUNCTION);
+    const char *analyzer        = get_problem_item_content_or_NULL(problem_data, FILENAME_ANALYZER);
+    const char *tainted_str     = get_problem_item_content_or_NULL(problem_data, FILENAME_TAINTED);
 
     struct strbuf *buf_summary = strbuf_new();
     strbuf_append_strf(buf_summary, "[abrt] %s", package);
@@ -460,7 +460,7 @@ xmlrpc_int32 ctx::new_bug(crash_data_t *crash_data, int depend_on_bugno)
 
     char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);
 
-    char *bz_dsc = make_description_bz(crash_data);
+    char *bz_dsc = make_description_bz(problem_data);
     char *full_dsc = xasprintf("abrt version: "VERSION"\n%s", bz_dsc);
     free(bz_dsc);
 
@@ -520,12 +520,12 @@ xmlrpc_int32 ctx::new_bug(crash_data_t *crash_data, int depend_on_bugno)
     return bug_id;
 }
 
-int ctx::add_attachments(const char* bug_id_str, crash_data_t *crash_data)
+int ctx::add_attachments(const char* bug_id_str, problem_data_t *problem_data)
 {
     GHashTableIter iter;
     char *name;
-    struct crash_item *value;
-    g_hash_table_iter_init(&iter, crash_data);
+    struct problem_item *value;
+    g_hash_table_iter_init(&iter, problem_data);
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
         const char *content = value->content;
@@ -629,7 +629,7 @@ static void report_to_bugzilla(
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         xfunc_die(); /* dd_opendir already emitted error msg */
-    crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
+    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
     dd_close(dd);
 
     const char *env;
@@ -655,8 +655,8 @@ static void report_to_bugzilla(
     env = getenv("Bugzilla_SSLVerify");
     ssl_verify = string_to_bool(env ? env : get_map_string_item_or_empty(settings, "SSLVerify"));
 
-    const char *component = get_crash_item_content_or_NULL(crash_data, FILENAME_COMPONENT);
-    const char *duphash   = get_crash_item_content_or_NULL(crash_data, FILENAME_DUPHASH);
+    const char *component = get_problem_item_content_or_NULL(problem_data, FILENAME_COMPONENT);
+    const char *duphash   = get_problem_item_content_or_NULL(problem_data, FILENAME_DUPHASH);
     if (!duphash)
         error_msg_and_die(_("Essential file '%s' is missing, can't continue.."),
                           FILENAME_DUPHASH);
@@ -665,9 +665,9 @@ static void report_to_bugzilla(
         error_msg_and_die(_("Essential file '%s' is empty, can't continue.."),
                           FILENAME_DUPHASH);
 
-    const char *release   = get_crash_item_content_or_NULL(crash_data, FILENAME_OS_RELEASE);
+    const char *release   = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
     if (!release) /* Old dump dir format compat. Remove in abrt-2.1 */
-        release = get_crash_item_content_or_NULL(crash_data, "release");
+        release = get_problem_item_content_or_NULL(problem_data, "release");
 
     ctx bz_server(bugzilla_xmlrpc, ssl_verify);
 
@@ -764,7 +764,7 @@ static void report_to_bugzilla(
     else if (all_bugs_size == 0) // Create new bug
     {
         log(_("Creating a new bug"));
-        bug_id = bz_server.new_bug(crash_data, depend_on_bugno);
+        bug_id = bz_server.new_bug(problem_data, depend_on_bugno);
         if (bug_id < 0)
         {
             throw_if_xml_fault_occurred(&bz_server.env);
@@ -774,7 +774,7 @@ static void report_to_bugzilla(
         log("Adding attachments to bug %ld", (long)bug_id);
         char bug_id_str[sizeof(long)*3 + 2];
         sprintf(bug_id_str, "%ld", (long) bug_id);
-        int ret = bz_server.add_attachments(bug_id_str, crash_data);
+        int ret = bz_server.add_attachments(bug_id_str, problem_data);
         if (ret == -1)
         {
             throw_if_xml_fault_occurred(&bz_server.env);
@@ -849,15 +849,15 @@ static void report_to_bugzilla(
             throw_if_xml_fault_occurred(&bz_server.env);
         }
 
-        char *dsc = make_description_comment(crash_data);
+        char *dsc = make_description_comment(problem_data);
         if (dsc)
         {
-            const char* package    = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
-            const char* release    = get_crash_item_content_or_NULL(crash_data, FILENAME_OS_RELEASE);
+            const char* package    = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
+            const char* release    = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
             if (!release) /* Old dump dir format compat. Remove in abrt-2.1 */
-                release = get_crash_item_content_or_NULL(crash_data, "release");
-            const char* arch       = get_crash_item_content_or_NULL(crash_data, FILENAME_ARCHITECTURE);
-            const char* is_private = get_crash_item_content_or_NULL(crash_data, "is_private");
+                release = get_problem_item_content_or_NULL(problem_data, "release");
+            const char* arch       = get_problem_item_content_or_NULL(problem_data, FILENAME_ARCHITECTURE);
+            const char* is_private = get_problem_item_content_or_NULL(problem_data, "is_private");
 
             char *full_dsc = xasprintf("Package: %s\n"
                                 "Architecture: %s\n"
@@ -900,7 +900,7 @@ static void report_to_bugzilla(
         dd_close(dd);
     }
 
-    free_crash_data(crash_data);
+    free_problem_data(problem_data);
     bug_info_destroy(&bz);
 }
 

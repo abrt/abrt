@@ -16,8 +16,8 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#ifndef CRASH_DATA_H_
-#define CRASH_DATA_H_
+#ifndef PROBLEM_DATA_H_
+#define PROBLEM_DATA_H_
 
 #include <glib.h>
 
@@ -37,55 +37,55 @@ enum {
     CD_FLAG_UNIXTIME      = (1 << 5),
 };
 
-struct crash_item {
+struct problem_item {
     char    *content;
     unsigned flags;
 };
-typedef struct crash_item crash_item;
+typedef struct problem_item problem_item;
 
-char *format_crash_item(struct crash_item *item);
+char *format_problem_item(struct problem_item *item);
 
-/* In-memory crash data structure and accessors */
+/* In-memory problem data structure and accessors */
 
-typedef GHashTable crash_data_t;
+typedef GHashTable problem_data_t;
 
-crash_data_t *new_crash_data(void);
+problem_data_t *new_problem_data(void);
 
-static inline void free_crash_data(crash_data_t *crash_data)
+static inline void free_problem_data(problem_data_t *problem_data)
 {
-    if (crash_data)
-        g_hash_table_destroy(crash_data);
+    if (problem_data)
+        g_hash_table_destroy(problem_data);
 }
 
-void add_to_crash_data_ext(crash_data_t *crash_data,
+void add_to_problem_data_ext(problem_data_t *problem_data,
                 const char *name,
                 const char *content,
                 unsigned flags);
 /* Uses CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE flags */
-void add_to_crash_data(crash_data_t *crash_data,
+void add_to_problem_data(problem_data_t *problem_data,
                 const char *name,
                 const char *content);
 
-static inline struct crash_item *get_crash_data_item_or_NULL(crash_data_t *crash_data, const char *key)
+static inline struct problem_item *get_problem_data_item_or_NULL(problem_data_t *problem_data, const char *key)
 {
-    return (struct crash_item *)g_hash_table_lookup(crash_data, key);
+    return (struct problem_item *)g_hash_table_lookup(problem_data, key);
 }
-const char *get_crash_item_content_or_NULL(crash_data_t *crash_data, const char *key);
+const char *get_problem_item_content_or_NULL(problem_data_t *problem_data, const char *key);
 /* Aborts if key is not found: */
-const char *get_crash_item_content_or_die(crash_data_t *crash_data, const char *key);
+const char *get_problem_item_content_or_die(problem_data_t *problem_data, const char *key);
 
 
 /* Vector of these structures */
 
-typedef GPtrArray vector_of_crash_data_t;
+typedef GPtrArray vector_of_problem_data_t;
 
-static inline crash_data_t *get_crash_data(vector_of_crash_data_t *vector, unsigned i)
+static inline problem_data_t *get_problem_data(vector_of_problem_data_t *vector, unsigned i)
 {
-    return (crash_data_t *)g_ptr_array_index(vector, i);
+    return (problem_data_t *)g_ptr_array_index(vector, i);
 }
 
-vector_of_crash_data_t *new_vector_of_crash_data(void);
-static inline void free_vector_of_crash_data(vector_of_crash_data_t *vector)
+vector_of_problem_data_t *new_vector_of_problem_data(void);
+static inline void free_vector_of_problem_data(vector_of_problem_data_t *vector)
 {
     if (vector)
         g_ptr_array_free(vector, TRUE);
@@ -94,10 +94,10 @@ static inline void free_vector_of_crash_data(vector_of_crash_data_t *vector)
 
 /* Conversions between in-memory and on-disk formats */
 
-void load_crash_data_from_dump_dir(crash_data_t *crash_data, struct dump_dir *dd);
-crash_data_t *create_crash_data_from_dump_dir(struct dump_dir *dd);
+void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_dir *dd);
+problem_data_t *create_problem_data_from_dump_dir(struct dump_dir *dd);
 
-struct dump_dir *create_dump_dir_from_crash_data(crash_data_t *crash_data, const char *base_dir_name);
+struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name);
 
 #ifdef __cplusplus
 }

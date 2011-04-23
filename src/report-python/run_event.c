@@ -21,7 +21,7 @@
 
 #include <errno.h>
 #include "common.h"
-#include "crash_data.h"
+#include "problem_data.h"
 #include "run_event.h"
 
 typedef struct {
@@ -110,17 +110,17 @@ static PyObject *p_run_event_on_dir_name(PyObject *pself, PyObject *args)
     return obj;
 }
 
-/* int run_event_on_crash_data(struct run_event_state *state, crash_data_t *data, const char *event); */
-static PyObject *p_run_event_on_crash_data(PyObject *pself, PyObject *args)
+/* int run_event_on_problem_data(struct run_event_state *state, problem_data_t *data, const char *event); */
+static PyObject *p_run_event_on_problem_data(PyObject *pself, PyObject *args)
 {
     p_run_event_state *self = (p_run_event_state*)pself;
-    p_crash_data *cd;
+    p_problem_data *cd;
     const char *event;
-    if (!PyArg_ParseTuple(args, "O!s", &p_crash_data_type, &cd, &event))
+    if (!PyArg_ParseTuple(args, "O!s", &p_problem_data_type, &cd, &event))
     {
         return NULL;
     }
-    int r = run_event_on_crash_data(self->state, cd->cd, event);
+    int r = run_event_on_problem_data(self->state, cd->cd, event);
     PyObject *obj = Py_BuildValue("i", r);
     return obj;
 }
@@ -194,7 +194,7 @@ static int set_logging_callback(PyObject *pself, PyObject *callback, void *unuse
 static PyMethodDef p_run_event_state_methods[] = {
     /* method_name, func, flags, doc_string */
     { "run_event_on_dir_name"  , p_run_event_on_dir_name  , METH_VARARGS },
-    { "run_event_on_crash_data", p_run_event_on_crash_data, METH_VARARGS },
+    { "run_event_on_problem_data", p_run_event_on_problem_data, METH_VARARGS },
     { NULL }
 };
 

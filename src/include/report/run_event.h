@@ -19,7 +19,7 @@
 #ifndef RUN_EVENT_H_
 #define RUN_EVENT_H_
 
-#include "crash_data.h"
+#include "problem_data.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -65,7 +65,7 @@ void free_commands(struct run_event_state *state);
  * of post_run_callback. If all actions are successful, returns 0.
  */
 int run_event_on_dir_name(struct run_event_state *state, const char *dump_dir_name, const char *event);
-int run_event_on_crash_data(struct run_event_state *state, crash_data_t *data, const char *event);
+int run_event_on_problem_data(struct run_event_state *state, problem_data_t *data, const char *event);
 
 /* Querying for possible events */
 

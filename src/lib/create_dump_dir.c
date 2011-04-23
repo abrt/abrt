@@ -29,7 +29,7 @@ static struct dump_dir *try_dd_create(const char *base_dir_name, const char *dir
     return dd;
 }
 
-struct dump_dir *create_dump_dir_from_crash_data(crash_data_t *crash_data, const char *base_dir_name)
+struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name)
 {
     char dir_name[sizeof("abrt-tmp-YYYY-MM-DD-HH:MM:SS-%lu") + sizeof(long)*3];
     sprintf(dir_name, "abrt-tmp-%s-%lu", iso_date_string(NULL), (long)getpid());
@@ -63,13 +63,13 @@ struct dump_dir *create_dump_dir_from_crash_data(crash_data_t *crash_data, const
 
     GHashTableIter iter;
     char *name;
-    struct crash_item *value;
-    g_hash_table_iter_init(&iter, crash_data);
+    struct problem_item *value;
+    g_hash_table_iter_init(&iter, problem_data);
     while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
     {
         if (name[0] == '.' || strchr(name, '/'))
         {
-            error_msg("Crash data field name contains disallowed chars: '%s'", name);
+            error_msg("Problem data field name contains disallowed chars: '%s'", name);
             goto next;
         }
 

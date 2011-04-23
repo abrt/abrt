@@ -34,7 +34,7 @@ static void report_to_rhtsupport(
     if (!dd)
         exit(1); /* error msg is already logged by dd_opendir */
 
-    crash_data_t *crash_data = create_crash_data_from_dump_dir(dd);
+    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
     dd_close(dd);
 
     /* Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing */
@@ -66,7 +66,7 @@ static void report_to_rhtsupport(
 
     if (!login[0] || !password[0])
     {
-        free_crash_data(crash_data);
+        free_problem_data(problem_data);
         free(url);
         free(login);
         free(password);
@@ -74,9 +74,9 @@ static void report_to_rhtsupport(
         return;
     }
 
-    package  = get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
-    reason   = get_crash_item_content_or_NULL(crash_data, FILENAME_REASON);
-    function = get_crash_item_content_or_NULL(crash_data, FILENAME_CRASH_FUNCTION);
+    package  = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
+    reason   = get_problem_item_content_or_NULL(problem_data, FILENAME_REASON);
+    function = get_problem_item_content_or_NULL(problem_data, FILENAME_CRASH_FUNCTION);
 
     {
         struct strbuf *buf_summary = strbuf_new();
@@ -87,7 +87,7 @@ static void report_to_rhtsupport(
             strbuf_append_strf(buf_summary, ": %s", reason);
         summary = strbuf_free_nobuf(buf_summary);
 
-        char *bz_dsc = make_description_bz(crash_data);
+        char *bz_dsc = make_description_bz(problem_data);
         dsc = xasprintf("abrt version: "VERSION"\n%s", bz_dsc);
         free(bz_dsc);
     }
@@ -126,8 +126,8 @@ static void report_to_rhtsupport(
     {
         GHashTableIter iter;
         char *name;
-        struct crash_item *value;
-        g_hash_table_iter_init(&iter, crash_data);
+        struct problem_item *value;
+        g_hash_table_iter_init(&iter, problem_data);
         while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
         {
             if (strcmp(name, FILENAME_COUNT) == 0) continue;
@@ -258,7 +258,7 @@ static void report_to_rhtsupport(
     free(url);
     free(login);
     free(password);
-    free_crash_data(crash_data);
+    free_problem_data(problem_data);
 
     if (errmsg)
         error_msg_and_die("%s", errmsg);

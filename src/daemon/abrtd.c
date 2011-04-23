@@ -345,10 +345,10 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         }
 
         char *fullname = NULL;
-        crash_data_t *crash_data = NULL;
+        problem_data_t *problem_data = NULL;
         fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
-        mw_result_t res = LoadDebugDump(fullname, &crash_data);
-        const char *first = crash_data ? get_crash_item_content_or_NULL(crash_data, CD_DUMPDIR) : NULL;
+        mw_result_t res = LoadDebugDump(fullname, &problem_data);
+        const char *first = problem_data ? get_problem_item_content_or_NULL(problem_data, CD_DUMPDIR) : NULL;
         switch (res)
         {
             case MW_OK:
@@ -365,11 +365,11 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                     delete_dump_dir(fullname);
                 }
 
-                const char *uid_str = get_crash_item_content_or_NULL(crash_data, FILENAME_UID);
+                const char *uid_str = get_problem_item_content_or_NULL(problem_data, FILENAME_UID);
                 /* When dup occurs we need to return first occurence,
                  * not the one which is deleted
                  */
-                send_dbus_sig_Crash(get_crash_item_content_or_NULL(crash_data, FILENAME_PACKAGE),
+                send_dbus_sig_Crash(get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE),
                                     (first) ? first : fullname,
                                     uid_str
                 );
@@ -383,7 +383,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 break;
         }
         free(fullname);
-        free_crash_data(crash_data);
+        free_problem_data(problem_data);
     } /* while */
 
     free(buf);
@@ -650,7 +650,7 @@ int main(int argc, char** argv)
         goto init_error;
     pidfile_created = true;
 
-    /* Open socket to receive new crashes. */
+    /* Open socket to receive new problem data (from python etc). */
     dumpsocket_init();
 
     /* Note: this already may process a few dbus messages,

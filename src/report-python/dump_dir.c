@@ -1,5 +1,5 @@
 /*
-    On-disk storage of crash dumps
+    On-disk storage of problem data
 
     Copyright (C) 2010  Abrt team
     Copyright (C) 2010  RedHat inc.
