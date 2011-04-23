@@ -74,3 +74,34 @@ void make_label_autowrap_on_resize(GtkLabel *label)
     // So far, only tested to work on labels which were set up as:
     //gtk_box_pack_start(box, label, /*expand*/ false, /*fill*/ false, /*padding*/ 0);
 }
+
+static void fixer(GtkWidget *widget, gpointer data_unused)
+{
+    if (GTK_IS_CONTAINER(widget))
+    {
+        gtk_container_foreach((GtkContainer*)widget, fixer, NULL);
+        return;
+    }
+    if (GTK_IS_LABEL(widget))
+    {
+        GtkLabel *label = (GtkLabel*)widget;
+        //const char *txt = gtk_label_get_label(label);
+        GtkMisc *misc = (GtkMisc*)widget;
+        gfloat yalign; //= 1;
+        gint ypad; //= 1;
+        if (gtk_label_get_line_wrap(label)
+         && (gtk_misc_get_alignment(misc, NULL, &yalign), yalign == 0)
+         && (gtk_misc_get_padding(misc, NULL, &ypad), ypad == 0)
+        ) {
+            //log("label '%s' set to wrap", txt);
+            make_label_autowrap_on_resize(label);
+            return;
+        }
+        //log("label '%s' not set to wrap %g %d", txt, yalign, ypad);
+    }
+}
+
+void fix_all_wrapped_labels(GtkWidget *widget)
+{
+    fixer(widget, NULL);
+}

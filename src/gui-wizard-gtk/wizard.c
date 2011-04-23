@@ -584,7 +584,6 @@ void update_gui_state_from_problem_data(void)
 
     const char *reason = get_problem_item_content_or_NULL(g_cd, FILENAME_REASON);
     gtk_label_set_text(g_lbl_cd_reason, reason ? reason : _("(no description)"));
-///vda    make_label_autowrap_on_resize(g_lbl_cd_reason);
 
     gtk_list_store_clear(g_ls_details);
     struct cd_stats stats = { 0 };
@@ -1311,10 +1310,11 @@ static void add_pages(void)
     g_lbl_reporters        = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_reporters"));
     g_lbl_size             = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_size"));
 
-    make_label_autowrap_on_resize(g_lbl_cd_reason);
     gtk_widget_modify_font(GTK_WIDGET(g_tv_analyze_log), monospace_font);
     gtk_widget_modify_font(GTK_WIDGET(g_tv_report_log), monospace_font);
     gtk_widget_modify_font(GTK_WIDGET(g_tv_backtrace), monospace_font);
+    //make_label_autowrap_on_resize(g_lbl_cd_reason);
+    fix_all_wrapped_labels(GTK_WIDGET(g_assistant));
 
     ///* hide the warnings by default */
     //gtk_widget_hide(g_widget_warnings_area);

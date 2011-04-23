@@ -18,6 +18,7 @@
 */
 void show_events_list_dialog(GtkWindow *parent);
 void make_label_autowrap_on_resize(GtkLabel *label);
+void fix_all_wrapped_labels(GtkWidget *widget);
 
 void abrt_keyring_save_settings(const char *event_name);
 void load_event_config_data_from_keyring();
