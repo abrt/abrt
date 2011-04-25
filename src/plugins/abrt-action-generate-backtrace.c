@@ -290,6 +290,8 @@ int main(int argc, char **argv)
     if (!dd)
         return 1;
     dd_save_text(dd, FILENAME_BACKTRACE, backtrace);
+    dd_close(dd);
+
     /* Don't be completely silent. gdb run takes a few seconds,
      * it is useful to let user know it (maybe) worked.
      */
