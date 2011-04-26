@@ -393,7 +393,7 @@ if __name__ == "__main__":
 
     progname = os.path.basename(sys.argv[0])
     help_text = _("Usage: %s [-i <build_ids_file>] [--tmpdir=TMPDIR] "
-                                    "[--cache=CACHEDIR]") % progname
+                            "[--cache=CACHEDIR] [--keeprpms]") % progname
     try:
         opts, args = getopt.getopt(sys.argv[1:], "vyhi:", ["help", "cache=",
                                                            "tmpdir=","keeprpms"])
