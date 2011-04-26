@@ -539,7 +539,7 @@ fi
 %{_initrddir}/abrt-ccpp
 %{_libexecdir}/abrt-hook-ccpp
 %{_bindir}/abrt-action-analyze-c
-%{_bindir}/abrt-action-trim-files
+%attr(4755, abrt, abrt) %{_bindir}/abrt-action-trim-files
 %attr(4755, abrt, abrt) %{_bindir}/abrt-action-install-debuginfo
 %{_bindir}/abrt-action-analyze-core.py*
 %{_bindir}/abrt-action-install-debuginfo.py*
