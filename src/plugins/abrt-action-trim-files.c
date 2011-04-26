@@ -19,7 +19,7 @@
 #include "abrtlib.h"
 #include "parse_options.h"
 
-#define PROGNAME "abrt-action-trim"
+#define PROGNAME "abrt-action-trim-files"
 
 static double get_dir_size(const char *dirname,
                            char **worst_file,
