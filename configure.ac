@@ -1,4 +1,4 @@
-AC_INIT([abrt], [2.0.1], [crash-catcher@fedorahosted.org])
+AC_INIT([abrt], [2.0.2], [crash-catcher@fedorahosted.org])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign silent-rules])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
