@@ -16,6 +16,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include <sys/types.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
@@ -57,6 +58,17 @@ int main(int argc, char **argv)
         if (strncmp(arg, "--tmpdir", 8) == 0)
             error_msg_and_die("bad option", arg);
     }
+
+    /* Switch real user/group to effective ones.
+     * Otherwise yum library gets confused - gets EPERM (why??).
+     */
+    gid_t g = getegid();
+    /* do setregid only if we have to, to not upset selinux needlessly */
+    if (g != getgid())
+        setregid(g, g);
+    uid_t u = geteuid();
+    if (u != getuid())
+        setreuid(u, u);
 
     /* We use full path, and execv instead of execvp in order to
      * disallow user to execute his own abrt-action-install-debuginfo.py
