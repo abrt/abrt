@@ -56,6 +56,8 @@ int main(int argc, char **argv)
             error_msg_and_die("bad option", arg);
         if (strncmp(arg, "--tmpdir", 8) == 0)
             error_msg_and_die("bad option", arg);
+        if (strncmp(arg, "-i", 2) == 0)
+            error_msg_and_die("bad option", arg);
     }
 
     /* We use full path, and execv instead of execvp in order to

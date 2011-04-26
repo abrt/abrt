@@ -374,7 +374,7 @@ if __name__ == "__main__":
     signal.signal(signal.SIGTERM, sigterm_handler)
     # ctrl-c
     signal.signal(signal.SIGINT, sigint_handler)
-    core = "build_ids"
+    fbuild_ids = "build_ids"
     cachedir = None
     tmpdir = None
     keeprpms = False
@@ -392,13 +392,11 @@ if __name__ == "__main__":
             pass
 
     progname = os.path.basename(sys.argv[0])
-    help_text = _("Usage: %s --core=COREFILE "
-                            "--tmpdir=TMPDIR "
-                            "--cache=CACHEDIR") % progname
+    help_text = _("Usage: %s [-i <build_ids_file>] [--tmpdir=TMPDIR] "
+                                    "[--cache=CACHEDIR]") % progname
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "vyhc:", ["help", "core=",
-                                                          "cache=", "tmpdir=",
-                                                          "keeprpms"])
+        opts, args = getopt.getopt(sys.argv[1:], "vyhi:", ["help", "cache=",
+                                                           "tmpdir=","keeprpms"])
     except getopt.GetoptError, err:
         print str(err) # prints something like "option -a not recognized"
         exit(RETURN_FAILURE)
@@ -412,7 +410,7 @@ if __name__ == "__main__":
         elif opt == "-y":
             noninteractive = True
         elif opt == "-i":
-            core = arg
+            fbuild_ids = arg
         elif opt in ("--cache"):
             cachedir = arg
         elif opt in ("--tmpdir"):
@@ -420,10 +418,6 @@ if __name__ == "__main__":
         elif opt in ("--keeprpms"):
             keeprpms = True
 
-    if not core:
-        print _("You have to specify the path to coredump.")
-        print help_text
-        exit(RETURN_FAILURE)
     if not cachedir:
         cachedir = "/var/cache/abrt-di"
     if not tmpdir:
@@ -431,7 +425,11 @@ if __name__ == "__main__":
         # for now, we use /tmp...
         tmpdir = "/tmp/abrt-tmp-debuginfo-%s.%u" % (time.strftime("%Y-%m-%d-%H:%M:%S"), os.getpid())
 
-    fin = open(core)
+    try:
+        fin = open(fbuild_ids, "r")
+    except IOError, ex:
+        print _("Can't open %s: %s" % (fbuild_ids, ex))
+        exit(RETURN_FAILURE)
     for line in fin.readlines():
         b_ids.append(line.strip('\n'))
 
