@@ -22,6 +22,7 @@ def error_msg(s):
 
 def error_msg_and_die(s):
     sys.stderr.write("%s\n" % s)
+    os.exit(1)
 
 def xopen(name, mode):
     try:

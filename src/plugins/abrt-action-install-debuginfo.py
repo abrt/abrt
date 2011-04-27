@@ -28,12 +28,16 @@ def init_gettext():
     try:
         locale.setlocale(locale.LC_ALL, "")
     except locale.Error:
-        import os
         os.environ['LC_ALL'] = 'C'
         locale.setlocale(locale.LC_ALL, "")
     gettext.bind_textdomain_codeset(GETTEXT_PROGNAME, locale.nl_langinfo(locale.CODESET))
     gettext.bindtextdomain(GETTEXT_PROGNAME, '/usr/share/locale')
     gettext.textdomain(GETTEXT_PROGNAME)
+
+
+def error_msg_and_die(s):
+    sys.stderr.write("%s\n" % s)
+    os.exit(1)
 
 
 old_stdout = -1
@@ -441,7 +445,10 @@ if __name__ == "__main__":
         log2(missing)
         print _("Coredump references %u debuginfo files, %u of them are not installed") % (len(b_ids), len(missing))
         downloader = DebugInfoDownload(cache=cachedir, tmp=tmpdir)
-        result = downloader.download(missing)
+        try:
+            result = downloader.download(missing)
+        except Exception, ex:
+            error_msg_and_die("Can't download debuginfos: %s", ex)
         missing = filter_installed_debuginfos(b_ids, cachedir)
         for bid in missing:
             print _("Missing debuginfo file: %s") % bid
