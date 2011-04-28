@@ -81,6 +81,8 @@ int main(int argc, char **argv)
 
     char *dsc = make_description_logger(problem_data);
     fputs(dsc, stdout);
+    if (open_mode[0] == 'a')
+        fputs("\nEND:\n\n", stdout);
     free(dsc);
     free_problem_data(problem_data);
 

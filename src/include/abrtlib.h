@@ -196,6 +196,9 @@ char *run_in_shell_and_save_output(int flags,
 
 /* Random utility functions */
 
+#define is_in_string_list abrt_is_in_string_list
+bool is_in_string_list(const char *name, char **v);
+
 /* Frees every element'd data using free(),
  * then frees list itself using g_list_free(list):
  */
@@ -238,6 +241,13 @@ int daemon_is_ok();
 #define iso_date_string abrt_iso_date_string
 char *iso_date_string(time_t *pt);
 
+enum {
+    MAKEDESC_SHOW_FILES     = (1 << 0),
+    MAKEDESC_SHOW_MULTILINE = (1 << 1),
+    MAKEDESC_SHOW_ONLY_LIST = (1 << 2),
+};
+#define make_description abrt_make_description
+char *make_description(problem_data_t *problem_data, char **names_to_skip, unsigned max_text_size, unsigned desc_flags);
 #define make_description_bz abrt_make_description_bz
 char* make_description_bz(problem_data_t *problem_data);
 #define make_description_comment abrt_make_description_comment

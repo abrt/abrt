@@ -18,55 +18,171 @@
 */
 #include "abrtlib.h"
 
-// caller is responsible for freeing **dsc
-static void add_content(bool *was_multiline, char **dsc, const char *header, const char *content)
+
+char *make_description(problem_data_t *problem_data, char **names_to_skip, unsigned max_text_size, unsigned desc_flags)
 {
-    struct strbuf *buf_description = strbuf_new();
-    if (*was_multiline)
-        strbuf_append_char(buf_description, '\n');
+    struct strbuf *buf_dsc = strbuf_new();
 
-    while (content[0] == '\n')
-        content++;
+    GList *list = g_hash_table_get_keys(problem_data);
+    list = g_list_sort(list, (GCompareFunc)strcmp);
+    GList *l;
 
-    if (strchr(content, '\n') == NULL)
+    /* Print one-liners. Format:
+     * NAME1: <maybe more spaces>VALUE1
+     * NAME2: <maybe more spaces>VALUE2
+     */
+    bool empty = true;
+    l = list;
+    while (l)
     {
-        if (skip_whitespace(content)[0] == '\0')
-        {
-            /* empty, dont report at all */
-            *dsc = strbuf_free_nobuf(buf_description);
-            return;
+        const char *key = l->data;
+        l = l->next;
+
+        /* Skip items we are not interested in */
+//TODO: optimize by doing this once, not 3 times:
+        if (names_to_skip && is_in_string_list(key, names_to_skip))
+            continue;
+
+        struct problem_item *item = g_hash_table_lookup(problem_data, key);
+        if (!item)
+            continue;
+
+        if ((desc_flags & MAKEDESC_SHOW_ONLY_LIST) && !(item->flags & CD_FLAG_LIST))
+            continue;
+
+        if ((item->flags & CD_FLAG_TXT)
+         && strlen(item->content) <= max_text_size
+        ) {
+            char *formatted = format_problem_item(item);
+            char *output = formatted ? formatted : item->content;
+            char *eol = strchr(output, '\n');
+            if (!eol)
+            {
+                int pad = 16 - (strlen(key) + 2);
+                if (pad < 0) pad = 0;
+                strbuf_append_strf(buf_dsc, "%s: %*s%s\n", key, pad, "", output);
+                empty = false;
+            }
+            free(formatted);
         }
-        /* one string value, like OS release */
-        strbuf_append_strf(buf_description, "%s: %s\n", header, content);
-        *was_multiline = 0;
     }
-    else
+
+    bool append_empty_line = !empty;
+    if (desc_flags & MAKEDESC_SHOW_FILES)
     {
-        /* multi-string value, like backtrace */
-        if (!*was_multiline && (buf_description->len != 0)) /* if wasn't yet separated */
-            strbuf_append_char(buf_description, '\n');
+        /* Print file info. Format:
+         * <empty line if needed>
+         * NAME1: <maybe more spaces>Binary file, NNN bytes
+         * NAME2: <maybe more spaces>Text file, NNN bytes
+         *
+         * In many cases, it is useful to know how big binary files are
+         * (for example, helps with diagnosing bug upload problems)
+         */
+        l = list;
+        while (l)
+        {
+            const char *key = l->data;
+            l = l->next;
 
-        strbuf_append_strf(buf_description, "%s\n-----\n%s", header, content);
-        if (content[strlen(content) - 1] != '\n')
-            strbuf_append_char(buf_description, '\n');
+            /* Skip items we are not interested in */
+            if (names_to_skip && is_in_string_list(key, names_to_skip))
+                continue;
 
-        *was_multiline = 1;
+            struct problem_item *item = g_hash_table_lookup(problem_data, key);
+            if (!item)
+                continue;
+
+            if ((desc_flags & MAKEDESC_SHOW_ONLY_LIST) && !(item->flags & CD_FLAG_LIST))
+                continue;
+
+            if ((item->flags & CD_FLAG_BIN)
+             || ((item->flags & CD_FLAG_TXT) && strlen(item->content) > max_text_size)
+            ) {
+                if (append_empty_line)
+                    strbuf_append_char(buf_dsc, '\n');
+                append_empty_line = false;
+
+                struct stat statbuf;
+                int stat_err = 0;
+                if (item->flags & CD_FLAG_BIN)
+                    stat_err = stat(item->content, &statbuf);
+                else
+                    statbuf.st_size = strlen(item->content);
+
+                /* We don't print item->content for CD_FLAG_BIN, as it is
+                 * always "/path/to/dump/dir/KEY" - not informative.
+                 */
+                int pad = 16 - (strlen(key) + 2);
+                if (pad < 0) pad = 0;
+                strbuf_append_strf(buf_dsc,
+                        (!stat_err ? "%s: %*s%s file, %llu bytes\n" : "%s: %*s%s file\n"),
+                        key,
+                        pad, "",
+                        ((item->flags & CD_FLAG_BIN) ? "Binary" : "Text"),
+                        (long long)statbuf.st_size
+                );
+                empty = false;
+            }
+        }
     }
 
-    *dsc = strbuf_free_nobuf(buf_description);
-}
+    if (desc_flags & MAKEDESC_SHOW_MULTILINE)
+    {
+        /* Print multi-liners. Format:
+         * <empty line if needed>
+         * NAME:
+         * :LINE1
+         * :LINE2
+         * :LINE3
+         */
+        l = list;
+        while (l)
+        {
+            const char *key = l->data;
+            l = l->next;
 
-/* Items we don't want to include */
-static const char *const blacklisted_items[] = {
-    FILENAME_ANALYZER ,
-    FILENAME_COREDUMP ,
-    FILENAME_HOSTNAME ,
-    FILENAME_DUPHASH  ,
-    FILENAME_UUID     ,
-    CD_DUMPDIR        ,
-    FILENAME_COUNT    ,
-    NULL
-};
+            /* Skip items we are not interested in */
+            if (names_to_skip && is_in_string_list(key, names_to_skip))
+                continue;
+
+            struct problem_item *item = g_hash_table_lookup(problem_data, key);
+            if (!item)
+                continue;
+
+            if ((desc_flags & MAKEDESC_SHOW_ONLY_LIST) && !(item->flags & CD_FLAG_LIST))
+                continue;
+
+            if ((item->flags & CD_FLAG_TXT)
+             && strlen(item->content) <= max_text_size
+            ) {
+                char *formatted = format_problem_item(item);
+                char *output = formatted ? formatted : item->content;
+                char *eol = strchr(output, '\n');
+                if (eol)
+                {
+                    if (!empty)
+                        strbuf_append_char(buf_dsc, '\n');
+                    strbuf_append_str(buf_dsc, key);
+                    strbuf_append_str(buf_dsc, ":\n");
+                    for (;;)
+                    {
+                        eol = strchrnul(output, '\n');
+                        strbuf_append_strf(buf_dsc, ":%.*s\n", (int)(eol - output), output);
+                        if (*eol == '\0' || eol[1] == '\0')
+                            break;
+                        output = eol + 1;
+                    }
+                    empty = false;
+                }
+                free(formatted);
+            }
+        }
+    }
+
+    g_list_free(list);
+
+    return strbuf_free_nobuf(buf_dsc);
+}
 
 char* make_description_mailx(problem_data_t *problem_data)
 {
@@ -112,143 +228,36 @@ char* make_description_mailx(problem_data_t *problem_data)
     return strbuf_free_nobuf(buf_dsc);
 }
 
+/* Items we don't want to include to bz / logger */
+static const char *const blacklisted_items[] = {
+    CD_DUMPDIR        ,
+    FILENAME_ANALYZER ,
+    FILENAME_COREDUMP ,
+    FILENAME_HOSTNAME ,
+    FILENAME_DUPHASH  ,
+    FILENAME_UUID     ,
+    FILENAME_COUNT    ,
+    NULL
+};
+
 char* make_description_bz(problem_data_t *problem_data)
 {
-    struct strbuf *buf_dsc = strbuf_new();
-    struct strbuf *buf_big_dsc = strbuf_new();
-    struct strbuf *buf_long_dsc = strbuf_new();
-
-    GHashTableIter iter;
-    char *name;
-    struct problem_item *value;
-    g_hash_table_iter_init(&iter, problem_data);
-    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
-    {
-        struct stat statbuf;
-        int stat_err = 0;
-        unsigned flags = value->flags;
-        const char *content = value->content;
-        if (flags & CD_FLAG_TXT)
-        {
-            /* Skip items we are not interested in */
-            const char *const *bl = blacklisted_items;
-            while (*bl)
-            {
-                if (strcmp(name, *bl) == 0)
-                    break;
-                bl++;
-            }
-            if (*bl)
-                continue; /* blacklisted */
-
-            if (strlen(content) <= CD_TEXT_ATT_SIZE)
-            {
-                /* Add small (less than few kb) text items inline */
-                bool was_multiline = 0;
-                char *tmp = NULL;
-                add_content(&was_multiline, &tmp, name, content);
-
-                if (was_multiline)
-                {
-                    /* Not one-liner */
-                    if (buf_long_dsc->len != 0)
-                        strbuf_append_char(buf_long_dsc, '\n');
-                    strbuf_append_str(buf_long_dsc, tmp);
-                }
-                else
-                    strbuf_append_str(buf_dsc, tmp);
-
-                free(tmp);
-            }
-            else
-            {
-                statbuf.st_size = strlen(content);
-                goto add_big_file_info;
-            }
-        }
-        if (flags & CD_FLAG_BIN)
-        {
-            /* In many cases, it is useful to know how big binary files are
-             * (for example, helps with diagnosing bug upload problems)
-             */
-            stat_err = stat(content, &statbuf);
- add_big_file_info:
-            strbuf_append_strf(buf_big_dsc,
-                    (stat_err ? "%s file: %s\n" : "%s file: %s, %llu bytes\n"),
-                    ((flags & CD_FLAG_BIN) ? "Binary" : "Text"),
-                    name,
-                    (long long)statbuf.st_size
-            );
-        }
-    }
-
-    /* One-liners go first, then big files, then multi-line items */
-    if (buf_dsc->len != 0 && (buf_big_dsc->len != 0 || buf_long_dsc->len != 0))
-        strbuf_append_char(buf_dsc, '\n'); /* add empty line */
-
-    if (buf_big_dsc->len != 0 && buf_long_dsc->len != 0)
-        strbuf_append_char(buf_big_dsc, '\n'); /* add empty line */
-
-    char *big_dsc = strbuf_free_nobuf(buf_big_dsc);
-    strbuf_append_str(buf_dsc, big_dsc);
-    free(big_dsc);
-
-    char *long_dsc = strbuf_free_nobuf(buf_long_dsc);
-    strbuf_append_str(buf_dsc, long_dsc);
-    free(long_dsc);
-
-    return strbuf_free_nobuf(buf_dsc);
+    return make_description(
+                problem_data,
+                (char**)blacklisted_items,
+                /*max_text_size:*/ CD_TEXT_ATT_SIZE,
+                MAKEDESC_SHOW_FILES | MAKEDESC_SHOW_MULTILINE
+    );
 }
 
 char* make_description_logger(problem_data_t *problem_data)
 {
-    struct strbuf *buf_dsc = strbuf_new();
-    struct strbuf *buf_long_dsc = strbuf_new();
-
-    GHashTableIter iter;
-    char *name;
-    struct problem_item *value;
-    g_hash_table_iter_init(&iter, problem_data);
-    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
-    {
-        const char *content = value->content;
-        if (value->flags & (CD_FLAG_TXT|CD_FLAG_BIN))
-        {
-            /* Skip items we are not interested in */
-            const char *const *bl = blacklisted_items;
-            while (*bl)
-            {
-                if (name == *bl)
-                    break;
-                bl++;
-            }
-            if (*bl)
-                continue; /* blacklisted */
-
-            bool was_multiline = 0;
-            char *tmp = NULL;
-            add_content(&was_multiline, &tmp, name, content);
-
-            if (was_multiline)
-            {
-                if (buf_long_dsc->len != 0)
-                    strbuf_append_char(buf_long_dsc, '\n');
-
-                strbuf_append_str(buf_long_dsc, tmp);
-            }
-            else
-                strbuf_append_str(buf_dsc, tmp);
-        }
-    }
-
-    if (buf_dsc->len != 0 && buf_long_dsc->len != 0)
-        strbuf_append_char(buf_dsc, '\n');
-
-    char *long_dsc = strbuf_free_nobuf(buf_long_dsc);
-    strbuf_append_str(buf_dsc, long_dsc);
-    free(long_dsc);
-
-    return strbuf_free_nobuf(buf_dsc);
+    return make_description(
+                problem_data,
+                (char**)blacklisted_items,
+                /*max_text_size:*/ CD_TEXT_ATT_SIZE,
+                MAKEDESC_SHOW_FILES | MAKEDESC_SHOW_MULTILINE
+    );
 }
 
 char* make_description_comment(problem_data_t *problem_data)

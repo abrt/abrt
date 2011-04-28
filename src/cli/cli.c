@@ -35,7 +35,7 @@ static problem_data_t *FillCrashInfo(const char *dump_dir_name)
 
     problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
     dd_close(dd);
-    add_to_problem_data_ext(problem_data, CD_DUMPDIR, dump_dir_name, CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
+    add_to_problem_data_ext(problem_data, CD_DUMPDIR, dump_dir_name, CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE + CD_FLAG_LIST);
 
     return problem_data;
 }
@@ -72,24 +72,14 @@ static void GetCrashInfos(vector_of_problem_data_t *retval, const char *dir_name
 /** Prints basic information about a crash to stdout. */
 static void print_crash(problem_data_t *problem_data)
 {
-    struct problem_item *item = g_hash_table_lookup(problem_data, CD_DUMPDIR);
-    if (item)
-        printf("\tDirectory   : %s\n", item->content);
-    GList *list = g_hash_table_get_keys(problem_data);
-    GList *l = list = g_list_sort(list, (GCompareFunc)strcmp);
-    while (l)
-    {
-        const char *key = l->data;
-        item = g_hash_table_lookup(problem_data, key);
-        if (item && (item->flags & CD_FLAG_LIST) && !strchr(item->content, '\n'))
-        {
-            char *formatted = format_problem_item(item);
-            printf("\t%-12s: %s\n", key, formatted ? formatted : item->content);
-            free(formatted);
-        }
-        l = l->next;
-    }
-    g_list_free(list);
+    char* desc = make_description(
+                problem_data,
+                /*names_to_skip:*/ NULL,
+                /*max_text_size:*/ CD_TEXT_ATT_SIZE,
+                MAKEDESC_SHOW_ONLY_LIST
+    );
+    fputs(desc, stdout);
+    free(desc);
 }
 
 /**
@@ -120,40 +110,14 @@ static void print_crash_list(vector_of_problem_data_t *crash_list, bool include_
  */
 static void print_crash_info(problem_data_t *problem_data, bool show_multiline)
 {
-    struct problem_item *item = g_hash_table_lookup(problem_data, CD_DUMPDIR);
-    if (item)
-        printf("%-16s: %s\n", "Directory", item->content);
-
-    GList *list = g_hash_table_get_keys(problem_data);
-    GList *l = list = g_list_sort(list, (GCompareFunc)strcmp);
-    bool multi_line = 0;
-    while (l)
-    {
-        const char *key = l->data;
-        if (strcmp(key, CD_DUMPDIR) != 0)
-        {
-            item = g_hash_table_lookup(problem_data, key);
-            if (item)
-            {
-                char *formatted = format_problem_item(item);
-                char *output = formatted ? formatted : item->content;
-                char *last_eol = strrchr(output, '\n');
-                if (show_multiline || !last_eol)
-                {
-                    /* prev value was multi-line, or this value is multi-line? */
-                    if (multi_line || last_eol)
-                        printf("\n");
-                    printf("%-16s:%c%s", key, (last_eol ? '\n' : ' '), output);
-                    if (!last_eol || last_eol[1] != '\0')
-                        printf("\n"); /* go to next line only if necessary */
-                    multi_line = (last_eol != NULL);
-                }
-                free(formatted);
-            }
-        }
-        l = l->next;
-    }
-    g_list_free(list);
+    char* desc = make_description(
+                problem_data,
+                /*names_to_skip:*/ NULL,
+                /*max_text_size:*/ CD_TEXT_ATT_SIZE,
+                MAKEDESC_SHOW_FILES | (show_multiline ? MAKEDESC_SHOW_MULTILINE : 0)
+    );
+    fputs(desc, stdout);
+    free(desc);
 }
 
 /* Program options */

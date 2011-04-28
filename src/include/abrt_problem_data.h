@@ -23,7 +23,8 @@
 #include "abrt_types.h"
 
 // Text bigger than this usually is attached, not added inline
-#define CD_TEXT_ATT_SIZE (2*1024)
+// was 2k, now bumbed up to 20k:
+#define CD_TEXT_ATT_SIZE (20*1024)
 
 // Filenames in dump directory:
 // filled by a hook:
@@ -69,11 +70,13 @@
  */
 #define FILENAME_REPORTED_TO  "reported_to"
 #define FILENAME_EVENT_LOG    "event_log"
+
 // Not stored as files, added "on the fly":
-#define CD_DUMPDIR         "DumpDir"
-// "Which events are possible (make sense) on this dump dir?"
-// (a string with "\n" terminated event names)
-#define CD_EVENTS          "Events"
+#define CD_DUMPDIR            "Directory"
+//UNUSED:
+//// "Which events are possible (make sense) on this dump dir?"
+//// (a string with "\n" terminated event names)
+//#define CD_EVENTS             "Events"
 
 /* FILENAME_EVENT_LOG is trimmed to below LOW_WATERMARK
  * when it reaches HIGH_WATERMARK size

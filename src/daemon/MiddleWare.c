@@ -229,12 +229,13 @@ static problem_data_t *FillCrashInfo(const char *dump_dir_name)
         return NULL;
 
     problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
-    char *events = list_possible_events(dd, NULL, "");
+//Not needed anymore?
+//    char *events = list_possible_events(dd, NULL, "");
     dd_close(dd);
-
-    add_to_problem_data_ext(problem_data, CD_EVENTS, events,
-                          CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
-    free(events);
+//
+//    add_to_problem_data_ext(problem_data, CD_EVENTS, events,
+//                          CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
+//    free(events);
 
     add_to_problem_data_ext(problem_data, CD_DUMPDIR, dump_dir_name,
                           CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);

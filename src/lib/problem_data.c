@@ -107,17 +107,6 @@ vector_of_problem_data_t *new_vector_of_problem_data(void)
 
 /* Miscellaneous helpers */
 
-static bool is_in_list(const char *name, const char *const *v)
-{
-    while (*v)
-    {
-        if (strcmp(*v, name) == 0)
-            return true;
-        v++;
-    }
-    return false;
-}
-
 static const char *const editable_files[] = {
     FILENAME_COMMENT  ,
     FILENAME_BACKTRACE,
@@ -125,7 +114,7 @@ static const char *const editable_files[] = {
 };
 static bool is_editable_file(const char *file_name)
 {
-    return is_in_list(file_name, editable_files);
+    return is_in_string_list(file_name, (char**)editable_files);
 }
 
 static const char *const always_text_files[] = {
@@ -176,7 +165,7 @@ static char* is_text_file(const char *name, ssize_t *sz)
     if (base)
     {
         base++;
-        if (is_in_list(base, always_text_files))
+        if (is_in_string_list(base, (char**)always_text_files))
             return buf;
     }
 
@@ -268,7 +257,7 @@ void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_d
             FILENAME_COUNT     ,
             NULL
         };
-        if (is_in_list(short_name, list_files))
+        if (is_in_string_list(short_name, (char**)list_files))
             flags |= CD_FLAG_LIST;
 
         if (strcmp(short_name, FILENAME_TIME) == 0)
