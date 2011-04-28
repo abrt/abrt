@@ -4,7 +4,8 @@ SUBDIRS = src po icons tests doc
 DISTCHECK_CONFIGURE_FLAGS = \
         --with-systemdsystemunitdir=$$dc_install_base/$(systemdsystemunitdir)
 
-EXTRA_DIST = doc/coding-style abrt.spec abrt.pc.in doc/abrt-plugin/ doc/howto-write-reporter
+EXTRA_DIST = doc/coding-style abrt.spec.in abrt.pc.in doc/abrt-plugin/ doc/howto-write-reporter \
+	gen-version
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = abrt.pc
@@ -16,18 +17,15 @@ RPM_DIRS = --define "_sourcedir `pwd`" \
 	   --define "_srcrpmdir `pwd`"
 
 rpm: dist
+	./gen-version
 	rpmbuild $(RPM_DIRS) -ba abrt.spec
 
 srpm: dist
+	./gen-version
 	rpmbuild $(RPM_DIRS) -bs abrt.spec
 
-test-rpm: dist
-	rpmbuild --define "_buildid `date +%G%m%d%H%M%S`" \
-		$(RPM_DIRS) -ba abrt.spec
-
-test-srpm: dist
-	rpmbuild --define "_buildid `date +%G%m%d%H%M%S`" \
-		$(RPM_DIRS) -bs abrt.spec
-
+# value for overriding from command line
+# e.g: make scratch-build DIST=f15
+DIST=rawhide
 scratch-build: srpm
-	koji build --scratch dist-f12 $(PACKAGE)-$(VERSION)-1.fc12.src.rpm
+	koji build --scratch dist-$(DIST) `make srpm | grep Wrote | cut -d' ' -f2`

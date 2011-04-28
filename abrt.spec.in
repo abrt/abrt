@@ -7,22 +7,10 @@
     %define with_systemd 0
 %endif
 
-# please modify the "_buildid" define in a way that identifies
-# that the built package isn't the stock distribution package,
-# for example, by setting abbreviation sha1 hash "238f49f"
-#
-# % define _buildid git238f49f
-
-%if "0%{?_buildid}" != "0"
-%define pkg_release 0.%{?_buildid}%{?dist}
-%else
-%define pkg_release 1%{?dist}
-%endif
-
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 2.0.2
-Release: %{?pkg_release}
+Version: @@ABRT_VERSION@@
+Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/abrt/
