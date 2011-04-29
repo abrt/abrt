@@ -18,10 +18,12 @@ RPM_DIRS = --define "_sourcedir `pwd`" \
 
 rpm: dist
 	./gen-version
+	autoconf --force
 	rpmbuild $(RPM_DIRS) -ba abrt.spec
 
 srpm: dist
 	./gen-version
+	autoconf --force
 	rpmbuild $(RPM_DIRS) -bs abrt.spec
 
 # value for overriding from command line
