@@ -79,6 +79,7 @@ Development libraries and headers for libreport.
 Summary: Python bindings for report-libs.
 # Is group correct here? -
 Group: System Environment/Libraries
+Requires: libreport = %{version}-%{release}
 
 %description -n libreport-python
 Python bindings for report-libs.
@@ -86,6 +87,7 @@ Python bindings for report-libs.
 %package -n libreport-gtk
 Summary: GTK frontend for libreport
 Group: User Interface/Desktops
+Requires: libreport = %{version}-%{release}
 
 %description -n libreport-gtk
 Applications for reporting bugs using libreport backend.
