@@ -530,7 +530,7 @@ int ctx::add_attachments(const char* bug_id_str, problem_data_t *problem_data)
     {
         const char *content = value->content;
 
-        // We were special-casing FILENAME_BACKTRACE here, but karel says
+        // We were special-casing FILENAME_BACKTRACE here, but Karel says
         // he can retrieve it in inlined form from comments too.
         if ((value->flags & CD_FLAG_TXT)
          && (strlen(content) > CD_TEXT_ATT_SIZE /*|| (strcmp(name, FILENAME_BACKTRACE) == 0)*/)
