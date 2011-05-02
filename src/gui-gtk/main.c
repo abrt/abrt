@@ -94,6 +94,7 @@ static void init_notify(void)
     else
     {
         close_on_exec_on(inotify_fd);
+        ndelay_on(inotify_fd);
         VERB1 log("Adding inotify watch to glib main loop");
         channel_inotify = g_io_channel_unix_new(inotify_fd);
         channel_inotify_event_id = g_io_add_watch(channel_inotify,
@@ -103,6 +104,7 @@ static void init_notify(void)
     }
 }
 
+#if 0 // UNUSED
 static void close_notify(void)
 {
     if (inotify_fd >= 0)
@@ -117,15 +119,25 @@ static void close_notify(void)
         //VERB1 log("Done");
     }
 }
+#endif
 
 /* Inotify handler */
 static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
 {
-    /* We don't bother reading inotify fd. We simply close and reopen it.
-     * This happens rarely enough to not bother making it efficient.
+    /* Since dump dir creation usually involves directory rename as a last step,
+     * we end up rescanning twice. A small wait after first inotify event
+     * usually allows to avoid this.
      */
-    close_notify();
-    init_notify();
+    usleep(10*1000);
+
+    /* We read inotify events, but don't analyze them */
+    gchar buf[sizeof(struct inotify_event) + PATH_MAX + 64];
+    gsize bytes_read;
+    while (g_io_channel_read(gio, buf, sizeof(buf), &bytes_read) == G_IO_ERROR_NONE
+        && bytes_read > 0
+    ) {
+        continue;
+    }
 
     rescan_and_refresh();
 
@@ -219,6 +231,9 @@ int main(int argc, char **argv)
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
+    char *pfx = getenv("ABRT_PROG_PREFIX");
+    if (pfx && string_to_bool(pfx))
+        msg_prefix = PROGNAME;
     if (opts & OPT_p)
     {
         msg_prefix = PROGNAME;
@@ -254,8 +269,8 @@ int main(int argc, char **argv)
     xpipe(s_signal_pipe);
     close_on_exec_on(s_signal_pipe[0]);
     close_on_exec_on(s_signal_pipe[1]);
-    ndelay_off(s_signal_pipe[0]);
-    ndelay_off(s_signal_pipe[1]);
+    ndelay_on(s_signal_pipe[0]);
+    ndelay_on(s_signal_pipe[1]);
     signal(SIGCHLD, handle_signal);
     g_io_add_watch(g_io_channel_unix_new(s_signal_pipe[0]),
                 G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP | G_IO_NVAL,

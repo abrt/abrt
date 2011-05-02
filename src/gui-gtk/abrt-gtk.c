@@ -44,7 +44,14 @@ enum
 
 void add_directory_to_dirlist(const char *dirname)
 {
+    /* Silently ignore *any* errors, not only EACCES.
+     * We saw "lock file is locked by process PID" error
+     * when we raced with wizard.
+     */
+    int sv_logmode = logmode;
+    logmode = 0;
     struct dump_dir *dd = dd_opendir(dirname, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
+    logmode = sv_logmode;
     if (!dd)
         return;
 
