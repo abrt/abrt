@@ -1,0 +1,91 @@
+abrt-action-mailx(1)
+====================
+
+NAME
+----
+abrt-action-mailx - Sends contents of a dump directory via email.
+
+SYNOPSIS
+--------
+'abrt-action-mailx' [-v] -d DIR [-c CONFFILE]
+
+DESCRIPTION
+-----------
+The tool reads a problem dump directory, composes an email message
+from the directory contents, and uses mailx to send the message to
+specified recipient.
+
+Properties of email messages can be specified in a configuration file,
+and via environment variables.
+
+Configuration file
+~~~~~~~~~~~~~~~~~~
+Configuration file contains entries in a format "Option = Value".
+
+The options are:
+
+'Subject'::
+       The subject of the email message.
+
+'EmailFrom'::
+       The sender of the email message.
+
+'EmailTo'::
+       The recipient of the email message.
+
+'SendBinaryData'::
+       Use yes/true/on/1 to attach all binary files from the dump
+       directory to the email. This can cause the emails to be very
+       large.
+
+Integration with ABRT events
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'abrt-action-mailx' can be used as a reporter, to allow users report
+problems via email when they decide to do it. This usage is
+pre-configured in /etc/abrt/events.d/mailx_events.conf:
+
+------------
+EVENT=report_Mailx      abrt-action-mailx
+------------
+
+It can also be used to notify administrator automatically when a
+problem happens. When this is desired, modify the event configuration
+file to run the tool on the 'post-create' event:
+
+------------
+EVENT=post-create	abrt-action-mailx
+------------
+
+OPTIONS
+-------
+-d DIR::
+   Path to dump directory.
+
+-c CONFFILE::
+   Path to configration file. When used in ABRT event system, the file
+   contains site-wide configuration. Users can change the values via
+   environment variables.
+
+ENVIRONMENT VARIABLES
+---------------------
+Environment variables take precedence over values provided in
+the configuration file.
+
+'Mailx_Subject'::
+       Subject of the email message.
+
+'Mailx_EmailFrom'::
+       Sender of the email message.
+
+'Mailx_EmailTo'::
+       Recipient of the email message. If nor the environment variable
+       nor the corresponding option is defined, the message is send to
+       "root@localhost".
+
+'Mailx_SendBinaryData'::
+       Use yes/true/on/1 to attach all binary files from the dump
+       directory to the email.
+
+AUTHORS
+-------
+* ABRT team

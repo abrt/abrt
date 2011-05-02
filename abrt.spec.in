@@ -34,6 +34,8 @@ BuildRequires: intltool
 BuildRequires: libtool
 BuildRequires: nss-devel
 BuildRequires: texinfo
+BuildRequires: asciidoc
+BuildRequires: xmlto
 
 # for rhel6
 %if 0%{?rhel} >= 6
@@ -564,6 +566,7 @@ fi
 %{_sysconfdir}/%{name}/events/report_Mailx.xml
 %config(noreplace) %{_sysconfdir}/%{name}/events.d/mailx_events.conf
 %{_mandir}/man7/abrt-Mailx.7.gz
+%{_mandir}/man*/abrt-action-mailx.*
 %{_bindir}/abrt-action-mailx
 
 %files plugin-bugzilla
