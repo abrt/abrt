@@ -366,9 +366,11 @@ static char *http_get_header_value(const char *message,
  */
 static char *http_get_body(const char *message)
 {
-    char *body = strstr(message, "\r\n\r\n") + strlen("\r\n\r\n");
+    char *body = strstr(message, "\r\n\r\n");
     if (!body)
         return NULL;
+
+    body += strlen("\r\n\r\n");
 
     while (*body == ' ')
         ++body;
@@ -642,11 +644,17 @@ static int create(bool delete_temp_archive,
     close(tempfd);
     /* Read the HTTP header of the response from server. */
     char *http_response = tcp_read_response(tcp_sock);
+    char *http_body = http_get_body(http_response);
+    if (!http_body)
+        error_msg_and_die("Invalid response from server: missing HTTP message body.");
     if (http_show_headers)
         http_print_headers(stderr, http_response);
     int response_code = http_get_response_code(http_response);
-    if (response_code != 201)
-        error_msg_and_die("Unexpected HTTP response from server: %d\n%s", response_code, http_response);
+    if (response_code == 500 || response_code == 507)
+        error_msg_and_die("There is a problem on the server side: %s", http_body);
+    else if (response_code != 201)
+        error_msg_and_die("Unexpected HTTP response from server: %d\n%s", response_code, http_body);
+    free(http_body);
     *task_id = http_get_header_value(http_response, "X-Task-Id");
     if (!*task_id)
         error_msg_and_die("Invalid response from server: missing X-Task-Id");
@@ -670,6 +678,7 @@ static int run_create(bool delete_temp_archive)
     return 0;
 }
 
+/* Caller must free task_status and status_message */
 static void status(const char *task_id,
                    const char *task_password,
                    char **task_status,
@@ -695,23 +704,21 @@ static void status(const char *task_id,
     }
     strbuf_free(http_request);
     char *http_response = tcp_read_response(tcp_sock);
+    char *http_body = http_get_body(http_response);
+    if (!*http_body)
+        error_msg_and_die("Invalid response from server: missing body");
     if (http_show_headers)
         http_print_headers(stderr, http_response);
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
         error_msg_and_die("Unexpected HTTP response from server: %d\n%s",
-                          response_code, http_response);
+                          response_code, http_body);
     }
     *task_status = http_get_header_value(http_response, "X-Task-Status");
     if (!*task_status)
         error_msg_and_die("Invalid response from server: missing X-Task-Status");
-    *status_message = http_get_body(http_response);
-    if (!*status_message)
-    {
-        free(*task_status);
-        error_msg_and_die("Invalid response from server: missing body");
-    }
+    *status_message = http_body;
     free(http_response);
     ssl_disconnect(ssl_sock);
 }
@@ -726,6 +733,7 @@ static void run_status(const char *task_id, const char *task_password)
     free(status_message);
 }
 
+/* Caller must free backtrace */
 static void backtrace(const char *task_id, const char *task_password,
                       char **backtrace)
 {
@@ -749,30 +757,18 @@ static void backtrace(const char *task_id, const char *task_password,
     }
     strbuf_free(http_request);
     char *http_response = tcp_read_response(tcp_sock);
+    char *http_body = http_get_body(http_response);
+    if (!http_body)
+        error_msg_and_die("Invalid response from server: missing HTTP message body.");
     if (http_show_headers)
         http_print_headers(stderr, http_response);
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
         error_msg_and_die("Unexpected HTTP response from server: %d\n%s",
-                          response_code, http_response);
+                          response_code, http_body);
     }
-    char *headers_end = strstr(http_response, "\r\n\r\n");
-    if (!headers_end)
-        error_msg_and_die("Invalid response from server: missing HTTP message body.");
-    int length = strlen(http_response) + (headers_end - http_response) + strlen("\r\n\r\n");
-    /* Slightly more space than needed might be allocated, because
-     * '\r' characters are not copied to the backtrace. */
-    *backtrace = xmalloc(length);
-    char *b = *backtrace;
-    char *c;
-    for (c = headers_end + strlen("\r\n\r\n"); *c; ++c)
-    {
-        if (*c == '\r')
-            continue;
-        *b = *c;
-        ++b;
-    }
+    *backtrace = http_body;
     free(http_response);
     ssl_disconnect(ssl_sock);
 }
@@ -807,24 +803,19 @@ static void run_log(const char *task_id, const char *task_password)
     }
     strbuf_free(http_request);
     char *http_response = tcp_read_response(tcp_sock);
+    char *http_body = http_get_body(http_response);
+    if (!http_body)
+        error_msg_and_die("Invalid response from server: missing HTTP message body.");
     if (http_show_headers)
         http_print_headers(stderr, http_response);
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
         error_msg_and_die("Unexpected HTTP response from server: %d\n%s",
-                          response_code, http_response);
+                          response_code, http_body);
     }
-    char *headers_end = strstr(http_response, "\r\n\r\n");
-    char *c;
-    if (!headers_end)
-        error_msg_and_die("Invalid response from server: missing HTTP message body.");
-    for (c = headers_end + 4; *c; ++c)
-    {
-        if (*c == '\r')
-            continue;
-        putc(*c, stdout);
-    }
+    puts(http_body);
+    free(http_body);
     free(http_response);
     ssl_disconnect(ssl_sock);
 }
