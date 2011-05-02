@@ -1,8 +1,10 @@
 #! /usr/bin/python -u
 # -*- coding: utf-8 -*-
-
 # WARNING: python -u means unbuffered I/O without it the messages are
-# passed to the parent asynchronously which looks bad in clients..
+# passed to the parent asynchronously which looks bad in clients.
+
+PROGNAME = "abrt-action-install-debuginfo.py"
+
 from subprocess import Popen, PIPE
 import sys
 import os
@@ -35,8 +37,25 @@ def init_gettext():
     gettext.textdomain(GETTEXT_PROGNAME)
 
 
-def error_msg_and_die(s):
-    sys.stderr.write("%s\n" % s)
+verbose = 0
+def log(fmt, *args):
+    sys.stderr.write("%s\n" % (fmt % args))
+
+def log1(fmt, *args):
+    """ prints log message if verbosity >= 1 """
+    if verbose >= 1:
+        sys.stderr.write("%s\n" % (fmt % args))
+
+def log2(fmt, *args):
+    """ prints log message if verbosity >= 2 """
+    if verbose >= 2:
+        sys.stderr.write("%s\n" % (fmt % args))
+
+def error_msg(fmt, *args):
+    sys.stderr.write("%s\n" % (fmt % args))
+
+def error_msg_and_die(fmt, *args):
+    sys.stderr.write("%s\n" % (fmt % args))
     os.exit(1)
 
 
@@ -76,7 +95,7 @@ def ask_yes_no(prompt, retries=4):
 def unpack_rpm(package_nevra, files, tmp_dir, destdir, keeprpm):
     package_name = package_nevra + ".rpm"
     package_full_path = tmp_dir + "/" + package_name
-    log1("Extracting %s to %s" % (package_full_path, destdir))
+    log1("Extracting %s to %s", package_full_path, destdir)
     log2(files)
     print _("Extracting cpio from %s") % (package_full_path)
     unpacked_cpio_path = tmp_dir + "/unpacked.cpio"
@@ -92,7 +111,7 @@ def unpack_rpm(package_nevra, files, tmp_dir, destdir, keeprpm):
     if retcode == 0:
         log1("cpio written OK")
         if not keeprpm:
-            log1("keeprpms = False, removing %s" % package_full_path)
+            log1("keeprpms = False, removing %s", package_full_path)
             #print _("Removing temporary rpm file")
             os.unlink(package_full_path)
     else:
@@ -106,7 +125,7 @@ def unpack_rpm(package_nevra, files, tmp_dir, destdir, keeprpm):
     unpacked_cpio = open(unpacked_cpio_path, 'rb')
 
     print _("Caching files from %s made from %s") % ("unpacked.cpio", package_name)
-    cpio = Popen(["cpio","-i", "-d", "--quiet"],
+    cpio = Popen(["cpio", "-idu", "--quiet"],
                   stdin=unpacked_cpio, cwd=destdir, bufsize=-1)
     retcode = cpio.wait()
 
@@ -208,7 +227,7 @@ class DebugInfoDownload(YumBase):
             #print repo
             repo.enable()
             rid = self.repos.enableRepo(repo.id)
-            log1("enabled repo %s" % rid)
+            log1("enabled repo %s", rid)
             setattr(repo, "skip_if_unavailable", True)
 
         self.repos.doSetup()
@@ -241,7 +260,7 @@ class DebugInfoDownload(YumBase):
         not_found = []
         package_files_dict = {}
         for debuginfo_path in files:
-            log2("yum whatprovides %s" % debuginfo_path)
+            log2("yum whatprovides %s", debuginfo_path)
             pkg = self.pkgSack.searchFiles(debuginfo_path)
             # sometimes one file is provided by more rpms, we can use either of
             # them, so let's use the first match
@@ -254,9 +273,9 @@ class DebugInfoDownload(YumBase):
                     installed_size += float(pkg[0].installedsize)
                     total_pkgs += 1
 
-                log2("found pkg for %s: %s" % (debuginfo_path, pkg[0]))
+                log2("found pkg for %s: %s", debuginfo_path, pkg[0])
             else:
-                log2("not found pkg for %s" % debuginfo_path)
+                log2("not found pkg for %s", debuginfo_path)
                 not_found.append(debuginfo_path)
 
         # connect our progress update callback
@@ -317,17 +336,6 @@ class DebugInfoDownload(YumBase):
             except OSError:
                 print _("Can't remove %s, probably contains an error log") % self.tmpdir
 
-verbose = 0
-def log1(message):
-    """ prints log message if verbosity > 0 """
-    if verbose > 0:
-        print "LOG1:", message
-
-def log2(message):
-    """ prints log message if verbosity > 1 """
-    if verbose > 1:
-        print "LOG2:", message
-
 def build_ids_to_path(build_ids):
     """
     build_id1=${build_id:0:2}
@@ -344,14 +352,14 @@ def filter_installed_debuginfos(build_ids, cache_dir):
     files = build_ids_to_path(build_ids)
     for debuginfo_path in files:
         cache_debuginfo_path = cache_dir + debuginfo_path
-        log2("checking path: %s" % debuginfo_path)
+        log2("checking path: %s", debuginfo_path)
         if os.path.exists(debuginfo_path):
-            log2("found: %s" % debuginfo_path)
+            log2("found: %s", debuginfo_path)
             continue
         if os.path.exists(cache_debuginfo_path):
-            log2("found: %s" % cache_debuginfo_path)
+            log2("found: %s", cache_debuginfo_path)
             continue
-        log2("not found: %s" % (cache_debuginfo_path))
+        log2("not found: %s", cache_debuginfo_path)
         missing_di.append(debuginfo_path)
     return missing_di
 
@@ -380,6 +388,7 @@ if __name__ == "__main__":
     signal.signal(signal.SIGINT, sigint_handler)
     fbuild_ids = "build_ids"
     cachedir = None
+    size_mb = 4096
     tmpdir = None
     keeprpms = False
     noninteractive = False
@@ -395,12 +404,29 @@ if __name__ == "__main__":
         except:
             pass
 
-    progname = os.path.basename(sys.argv[0])
-    help_text = _("Usage: %s [-i <build_ids_file>] [--tmpdir=TMPDIR] "
-                            "[--cache=CACHEDIR] [--keeprpms]") % progname
+    PROGNAME = os.path.basename(sys.argv[0])
+    # ____________________________________________________________________________________ 7
+    # ______01234567890123456789012345678901234567890123456789012345678901234567890123456789
+    help_text = _(
+            "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+            "       [--tmpdir=TMPDIR] [--cache=CACHEDIR] [--size_mb=SIZE]\n"
+            "\n"
+            "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
+            "to CACHEDIR, using TMPDIR as temporary staging area.\n"
+            "Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
+            "\n"
+            "    -v          Be verbose\n"
+            "    -y          Noninteractive, assume 'Yes' to all questions\n"
+            "    --ids       Default: build_ids\n"
+            "    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+            "    --cache     Default: /var/cache/abrt-di\n"
+            "    --size_mb   Default: 4096\n"
+            # --keeprpms is not documented yet because it's a NOP so far
+    ) % PROGNAME
+
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "vyhi:", ["help", "cache=",
-                                                           "tmpdir=","keeprpms"])
+        opts, args = getopt.getopt(sys.argv[1:], "vyh",
+                ["help", "ids=", "cache=", "size_mb=", "tmpdir=", "keeprpms"])
     except getopt.GetoptError, err:
         print str(err) # prints something like "option -a not recognized"
         exit(RETURN_FAILURE)
@@ -413,13 +439,18 @@ if __name__ == "__main__":
             verbose += 1
         elif opt == "-y":
             noninteractive = True
-        elif opt == "-i":
+        elif opt == "--ids":
             fbuild_ids = arg
-        elif opt in ("--cache"):
+        elif opt == "--cache":
             cachedir = arg
-        elif opt in ("--tmpdir"):
+        elif opt == "--size_mb":
+            try:
+                size_mb = int(arg)
+            except:
+                pass
+        elif opt == "--tmpdir":
             tmpdir = arg
-        elif opt in ("--keeprpms"):
+        elif opt == "--keeprpms":
             keeprpms = True
 
     if not cachedir:
@@ -440,15 +471,37 @@ if __name__ == "__main__":
     if not b_ids:
         exit(RETURN_FAILURE)
 
+    # Delete oldest/biggest files from cachedir.
+    # (Note that we need to do it before we check for missing debuginfos)
+    #
+    # We can do it as a separate step in abrt_event.conf, but this
+    # would require setuid'ing abrt-action-trim-files to abrt:abrt.
+    # Since we (abrt-action-install-debuginfo) are already running setuid,
+    # it makes sense to NOT setuid abrt-action-trim-files too,
+    # but instead run it as our child:
+    sys.stdout.flush()
+    try:
+        pid = os.fork()
+        if pid == 0:
+            log1("abrt-action-trim-files -f %um:%s", size_mb, cachedir);
+            os.execlp("abrt-action-trim-files", "abrt-action-trim-files", "-f", "%um:%s" % (size_mb, cachedir));
+        if pid > 0:
+            os.waitpid(pid, 0);
+    except Exception, e:
+        error_msg("Can't execute abrt-action-trim-files: %s", e);
+
     missing = filter_installed_debuginfos(b_ids, cachedir)
     if missing:
         log2(missing)
         print _("Coredump references %u debuginfo files, %u of them are not installed") % (len(b_ids), len(missing))
+
+        # TODO: should we pass keep_rpms=keeprpms to DebugInfoDownload here??
         downloader = DebugInfoDownload(cache=cachedir, tmp=tmpdir)
         try:
             result = downloader.download(missing)
         except Exception, ex:
             error_msg_and_die("Can't download debuginfos: %s", ex)
+
         missing = filter_installed_debuginfos(b_ids, cachedir)
         for bid in missing:
             print _("Missing debuginfo file: %s") % bid
