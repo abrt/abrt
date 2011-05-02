@@ -28,7 +28,8 @@ def xopen(name, mode):
 def parse_maps(maps_path):
     try:
         f = xopen(maps_path, "r")
-        return [x.strip()[x.find('/'):] for x in f.readlines() if x.find('/') > -1]
+        # set() -> uniqifies the list of filenames
+        return set([x.strip()[x.find('/'):] for x in f.readlines() if x.find('/') > -1])
     except IOError, e:
         error_msg_and_die("Can't read '%s': %s" % (maps_path, e))
 
@@ -74,7 +75,7 @@ if __name__ == "__main__":
                         if outname:
                             outfile = xopen(outname, "w")
                             outname = None
-                            outfile.write("%s %s (%s) %s\n" %
+                        outfile.write("%s %s (%s) %s\n" %
                                     (path,
                                      h[rpm.RPMTAG_NEVRA],
                                      h[rpm.RPMTAG_VENDOR],
