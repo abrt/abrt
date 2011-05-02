@@ -379,6 +379,11 @@ GtkWidget *create_main_window(void)
                                                        G_TYPE_STRING, /* dump dir path */
                                                        G_TYPE_STRING);/* row background */
 
+     //FIXME: configurable!!
+    gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(s_dumps_list_store),
+                                        COLUMN_LATEST_CRASH,
+                                        GTK_SORT_DESCENDING);
+
     gtk_tree_view_set_model(GTK_TREE_VIEW(s_treeview), GTK_TREE_MODEL(s_dumps_list_store));
 
     /* buttons are homogenous so set size only for one button and it will
