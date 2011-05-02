@@ -5,7 +5,7 @@ DISTCHECK_CONFIGURE_FLAGS = \
         --with-systemdsystemunitdir=$$dc_install_base/$(systemdsystemunitdir)
 
 EXTRA_DIST = doc/coding-style abrt.spec.in abrt.pc.in doc/abrt-plugin/ doc/howto-write-reporter \
-	gen-version
+	gen-version asciidoc.conf
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = abrt.pc

@@ -41,6 +41,24 @@ if test -z "$PYTHON"; then
     exit 1
 fi
 
+AC_PATH_PROG([ASCIIDOC], [asciidoc], [no])
+[if test "$ASCIIDOC" = "no"]
+[then]
+    [echo "The asciidoc program was not found in the search path. Please ensure"]
+    [echo "that it is installed and its directory is included in the search path."]
+    [echo "Then run configure again before attempting to build ABRT."]
+    [exit 1]
+[fi]
+
+AC_PATH_PROG([XMLTO], [xmlto], [no])
+[if test "$XMLTO" = "no"]
+[then]
+    [echo "The xmlto program was not found in the search path. Please ensure"]
+    [echo "that it is installed and its directory is included in the search path."]
+    [echo "Then run configure again before attempting to build ABRT."]
+    [exit 1]
+[fi]
+
 PKG_CHECK_MODULES([GTK], [gtk+-2.0])
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.21])
 PKG_CHECK_MODULES([DBUS], [dbus-1])
