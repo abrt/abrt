@@ -27,8 +27,9 @@ def set_status(statusid):
 
 def fail(exitcode):
     "Kills script with given exitcode"
-    LOG.close()
     set_status(STATUS_FAIL)
+    LOG.close()
+    cleanup_task(int(taskid), False)
     sys.exit(exitcode)
 
 def retrace_run(errorcode, cmd):
