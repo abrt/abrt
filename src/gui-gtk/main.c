@@ -219,6 +219,9 @@ int main(int argc, char **argv)
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
+    char *pfx = getenv("ABRT_PROG_PREFIX");
+    if (pfx && string_to_bool(pfx))
+        msg_prefix = PROGNAME;
     if (opts & OPT_p)
     {
         msg_prefix = PROGNAME;
