@@ -34,6 +34,26 @@ btp_normalize_thread(struct btp_thread *thread)
     btp_normalize_linux_thread(thread);
     btp_normalize_xorg_thread(thread);
 
+    /* If the first frame has address 0x0000 and its name is '??', it
+     * is a dereferenced null, and we remove it. This frame is not
+     * really invalid, and it affects backtrace quality rating. See
+     * Red Hat Bugzilla bug #639038.
+     * @code
+     * #0  0x0000000000000000 in ?? ()
+     * No symbol table info available.
+     * #1  0x0000000000422648 in main (argc=1, argv=0x7fffa57cf0d8) at totem.c:242
+     *       error = 0x0
+     *       totem = 0xdee070 [TotemObject]
+     * @endcode
+     */
+    if (thread->frames &&
+        thread->frames->address == 0x0000 &&
+        thread->frames->function_name &&
+        0 == strcmp(thread->frames->function_name, "??"))
+    {
+        btp_thread_remove_frame(thread, thread->frames);
+    }
+
     /* If the last frame has address 0x0000 and its name is '??',
      * remove it. This frame is not really invalid, and it affects
      * backtrace quality rating. See Red Hat Bugzilla bug #592523.
