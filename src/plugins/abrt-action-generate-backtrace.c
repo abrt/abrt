@@ -242,7 +242,7 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         PROGNAME" [options] -d DIR\n"
         "\n"
-        "Generates and saves backtrace for coredump in dump directory DIR"
+        "Analyzes coredump in dump directory DIR, generates and saves backtrace"
     );
     enum {
         OPT_v = 1 << 0,
@@ -255,7 +255,7 @@ int main(int argc, char **argv)
         OPT__VERBOSE(&g_verbose),
         OPT_STRING( 'd', NULL, &dump_dir_name   , "DIR"           , _("Dump directory")),
         OPT_STRING( 'i', NULL, &i_opt           , "DIR1[:DIR2]...", _("Additional debuginfo directories")),
-        OPT_INTEGER('t', NULL, &exec_timeout_sec,                   _("Kill gdb if it runs for more than N seconds")),
+        OPT_INTEGER('t', NULL, &exec_timeout_sec,                   _("Kill gdb if it runs for more than NUM seconds")),
         OPT_END()
     };
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
