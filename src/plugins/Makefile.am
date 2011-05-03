@@ -61,6 +61,7 @@ man_MANS = \
     abrt-plugins.7
 
 MAN_TXT = \
+    abrt-action-analyze-backtrace.txt \
     abrt-action-mailx.txt
 
 # Manual pages are generated from .txt via Docbook

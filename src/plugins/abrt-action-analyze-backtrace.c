@@ -21,7 +21,7 @@
 #include "../btparser/location.h"
 #include "parse_options.h"
 
-#define PROGNAME "abrt-action-generate-backtrace"
+#define PROGNAME "abrt-action-analyze-backtrace"
 
 static const char *dump_dir_name = ".";
 
