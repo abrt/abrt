@@ -56,7 +56,7 @@ def error_msg(fmt, *args):
 
 def error_msg_and_die(fmt, *args):
     sys.stderr.write("%s\n" % (fmt % args))
-    os.exit(1)
+    sys.exit(1)
 
 
 old_stdout = -1
@@ -79,10 +79,10 @@ def ask_yes_no(prompt, retries=4):
             response = raw_input(prompt)
         except EOFError:
             log1("got eof, probably executed from helper, assuming - yes")
-            response = 'y'
-        if response in ('y', 'Y'):
             return True
-        if response in ('n', 'N', ''):
+        if response in (_("y")): # for translators -> y/Y as yes
+            return True
+        if response in ("", _("n")): # for translators -> N/n as no
             return False
         retries = retries - 1
         if retries < 0:
