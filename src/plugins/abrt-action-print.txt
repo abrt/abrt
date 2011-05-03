@@ -1,0 +1,63 @@
+abrt-action-print(1)
+====================
+
+NAME
+----
+abrt-action-print - Prints problem information to standard output or FILE.
+
+SYNOPSIS
+--------
+'abrt-action-print' [-v] [-d DIR] [-o FILE] [-a yes/no] [-r]
+
+DESCRIPTION
+-----------
+The tool reads dump directory DIR and prints its text representation
+to stdout or to a specified FILE.
+
+Integration with ABRT events
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'abrt-action-print' can be used as a reporter, to allow users
+to report problems by writinf them to a file. Example:
+
+------------
+EVENT=report  abrt-action-print -o "${Log_File:-/tmp/abrt.log}"
+------------
+
+OPTIONS
+-------
+-d DIR::
+   Path to dump directory.
+
+-v::
+   Be more verbose. Can be given multiple times.
+
+-o FILE::
+   Output file
+
+-a yes/no::
+   If -o FILE is specified, controls whether FILE is appended to, or overwritten.
+
+-r::
+   Add a recor to 'reported_to' in DIR which specifies that this problem
+   was reported. Some tools use this to differentiate between problems
+   which were and weren't yet reported.
+
+Output format
+~~~~~~~~~~~~~
+The output is designed to be machine-parseable. The elements which have only
+one line are printed in the form
+
+   NAME:<whitespace>VALUE
+
+Elements which have more than one line are printed in the form
+
+   NAME:
+   :LINE1
+   :LINE2
+   :LINE3
+
+Output may contain empty lines for better readability.
+
+AUTHORS
+-------
+* ABRT team
