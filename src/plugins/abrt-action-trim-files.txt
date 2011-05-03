@@ -1,0 +1,30 @@
+abrt-action-trim-files(1)
+=========================
+
+NAME
+----
+abrt-action-trim-files - Deletes old dump directories or files
+in specified directories until they are smaller than specified size.
+
+SYNOPSIS
+--------
+'abrt-action-trim-files' [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]
+
+OPTIONS
+-------
+-v::
+   Be more verbose. Can be given multiple times.
+
+-d SIZE:DIR::
+   Delete dump directories in DIR
+   SIZE can be suffixed by k,m,g,t to specify kilo,mega,giga,terabytes.
+
+-f SIZE:DIR::
+   Delete files in DIR
+
+-p DIR::
+   Preserve this dump directory (never consider it for deletion)
+
+AUTHORS
+-------
+* ABRT team
