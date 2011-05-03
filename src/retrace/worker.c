@@ -16,6 +16,7 @@ int main(int argc, char **argv)
   int i;
   struct passwd *apache_user;
   const char *apache_username = "apache";
+  pid_t pid;
 
   if (argc != 2)
   {
