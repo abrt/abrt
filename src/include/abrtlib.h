@@ -76,6 +76,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "read_write.h"
 #include "strbuf.h"
 #include "hash_sha1.h"
+#include "parse_options.h"
 
 #include "abrt_problem_data.h"
 #include "abrt_types.h"
