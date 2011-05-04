@@ -137,12 +137,14 @@ int main(int argc, char** argv)
 #endif
 
     GList *D_list = NULL;
-    char *event_name = NULL;
+    const char *event_name = NULL;
+    const char *pfx = "";
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
         "\b [-vsp] -l[f] [-D BASE_DIR]...\n"
         "or: \b [-vsp] -i[f] DUMP_DIR\n"
+        "or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
         "or: \b [-vsp] -e EVENT DUMP_DIR\n"
         "or: \b [-vsp] -a[y] DUMP_DIR\n"
         "or: \b [-vsp] -r[y] DUMP_DIR\n"
@@ -152,18 +154,19 @@ int main(int argc, char** argv)
         OPT_list         = 1 << 0,
         OPT_D            = 1 << 1,
         OPT_info         = 1 << 2,
-        OPT_run_event    = 1 << 3,
-        OPT_analyze      = 1 << 4,
-        OPT_report       = 1 << 5,
-        OPT_delete       = 1 << 6,
-        OPT_version      = 1 << 7,
-        OPTMASK_op       = OPT_list|OPT_info|OPT_run_event|OPT_analyze|OPT_report|OPT_delete|OPT_version,
+        OPT_list_events  = 1 << 3,
+        OPT_run_event    = 1 << 4,
+        OPT_analyze      = 1 << 5,
+        OPT_report       = 1 << 6,
+        OPT_delete       = 1 << 7,
+        OPT_version      = 1 << 8,
+        OPTMASK_op       = OPT_list|OPT_info|OPT_list_events|OPT_run_event|OPT_analyze|OPT_report|OPT_delete|OPT_version,
         OPTMASK_need_arg = OPT_info|OPT_run_event|OPT_analyze|OPT_report|OPT_delete,
-        OPT_f            = 1 << 8,
-        OPT_y            = 1 << 9,
-        OPT_v            = 1 << 10,
-        OPT_s            = 1 << 11,
-        OPT_p            = 1 << 12,
+        OPT_f            = 1 << 9,
+        OPT_y            = 1 << 10,
+        OPT_v            = 1 << 11,
+        OPT_s            = 1 << 12,
+        OPT_p            = 1 << 13,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -171,6 +174,7 @@ int main(int argc, char** argv)
         OPT_BOOL(     'l', "list"   , NULL,                    _("List not yet reported problems, or all with -f")),
         OPT_LIST(     'D', NULL     , &D_list, "BASE_DIR",     _("Directory to list problems from (default: -D $HOME/.abrt/spool -D "DEBUG_DUMPS_DIR")")),
         OPT_BOOL(     'i', "info"   , NULL,                    _("Print information about DUMP_DIR (detailed with -f)")),
+        OPT_OPTSTRING('L', NULL     , &pfx, "PREFIX",          _("List possible events [which start with PREFIX]")),
         OPT_STRING(   'e', NULL     , &event_name, "EVENT",    _("Run EVENT on DUMP_DIR")),
         OPT_BOOL(     'a', "analyze", NULL,                    _("Run analyze event(s) on DUMP_DIR")),
         OPT_BOOL(     'r', "report" , NULL,                    _("Send a report about DUMP_DIR")),
@@ -193,9 +197,10 @@ int main(int argc, char** argv)
     if (argc > 1
         /* dont_need_arg == have_arg? bad in both cases:
          * TRUE == TRUE (dont need arg but have) or
-         * FALSE == FALSE (need arg but havent):
+         * FALSE == FALSE (need arg but havent).
+         * OPT_list_events is an exception, it can be used in both cases.
          */
-     || !(opts & OPTMASK_need_arg) == argc
+     || ((op != OPT_list_events) && (!(opts & OPTMASK_need_arg) == argc))
     ) {
         show_usage_and_die(program_usage_string, program_options);
     }
@@ -213,7 +218,7 @@ int main(int argc, char** argv)
         logmode = LOGMODE_SYSLOG;
     }
 
-    char *dump_dir_name = argv[0]; /* can't be NULL */
+    char *dump_dir_name = argv[0];
     bool full = (opts & OPT_f);
     bool always = (opts & OPT_y);
 
@@ -243,6 +248,18 @@ int main(int argc, char** argv)
             }
             print_crash_list(ci, full);
             free_vector_of_problem_data(ci);
+            break;
+        }
+        case OPT_list_events: /* -L[PREFIX] */
+        {
+            /* Note that dump_dir_name may be NULL here, it means "show all
+             * possible events regardless of dir"
+             */
+            char *events = list_possible_events(NULL, dump_dir_name, pfx);
+            if (!events)
+                return 1; /* error msg is already logged */
+            fputs(events, stdout);
+            free(events);
             break;
         }
         case OPT_run_event: /* -e EVENT: run event */

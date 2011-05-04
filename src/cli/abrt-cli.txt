@@ -11,6 +11,8 @@ SYNOPSIS
 
 'abrt-cli' [-vsp] -i[f] DUMP_DIR
 
+'abrt-cli' [-vsp] -L[PREFIX] [DUMP_DIR]
+
 'abrt-cli' [-vsp] -e EVENT DUMP_DIR
 
 'abrt-cli' [-vsp] -a[y] DUMP_DIR
@@ -34,6 +36,9 @@ OPTIONS
 
 -i, --info::
     Print information about DUMP_DIR (detailed with -f)
+
+-L[PREFIX]::
+    List possible events [which start with PREFIX]
 
 -e EVENT::
     Run EVENT on DUMP_DIR
