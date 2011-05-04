@@ -41,8 +41,24 @@ abrt_handle_crashdump_CPPFLAGS = \
 abrt_handle_crashdump_LDADD = \
     ../lib/libreport.la
 
-man_MANS = abrt-cli.1
-EXTRA_DIST = $(man_MANS)
+MAN_TXT = \
+    abrt-cli.txt
+
+# Manual pages are generated from .txt via Docbook
+man1_MANS = ${MAN_TXT:%.txt=%.1}
+
+%.1 %.5 %.7: %.xml
+	xmlto man $<
+
+%.xml: %.txt ../../asciidoc.conf
+	asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -aabrt_version=$(PACKAGE_VERSION) -o $@ $<
+
+CLEANFILES = $(man1_MANS)
+
+PYTHON_FILES = \
+    abrt-action-install-debuginfo.py \
+    abrt-action-list-dsos.py \
+    abrt-action-analyze-core.py
 
 completiondir = $(sysconfdir)/bash_completion.d
 dist_completion_DATA = abrt-cli.bash
