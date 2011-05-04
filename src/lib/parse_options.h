@@ -23,6 +23,13 @@
 extern "C" {
 #endif
 
+const char *abrt_init(char **argv);
+#define export_abrt_envvars abrt_export_abrt_envvars
+void export_abrt_envvars(int pfx);
+#define g_progname abrt_g_progname
+extern const char *g_progname;
+
+
 enum parse_opt_type {
     OPTION_BOOL,
     OPTION_GROUP,

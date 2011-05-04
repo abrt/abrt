@@ -23,8 +23,6 @@
 #include "abrtlib.h"
 #include "parse_options.h"
 
-#define PROGNAME "abrt-dump-oops"
-
 static bool world_readable_dump = false;
 static const char *debug_dumps_dir = ".";
 
@@ -560,13 +558,11 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
 
 int main(int argc, char **argv)
 {
-    char *env_verbose = getenv("ABRT_VERBOSE");
-    if (env_verbose)
-        g_verbose = atoi(env_verbose);
+    abrt_init(argv);
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        PROGNAME" [-vsrowx] [-d DIR] FILE\n"
+        "\b [-vsrowx] [-d DIR] FILE\n"
         "\n"
         "Extract oops from syslog/dmesg file"
     );
@@ -595,11 +591,11 @@ int main(int argc, char **argv)
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
-    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-    msg_prefix = PROGNAME;
-    if ((opts & OPT_s)
-     || getenv("ABRT_SYSLOG")
-    ) {
+    export_abrt_envvars(0);
+
+    msg_prefix = g_progname;
+    if ((opts & OPT_s) || getenv("ABRT_SYSLOG"))
+    {
         openlog(msg_prefix, 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;
     }

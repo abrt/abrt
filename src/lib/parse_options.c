@@ -24,12 +24,55 @@
 #define USAGE_OPTS_WIDTH 24
 #define USAGE_GAP         2
 
+const char *g_progname;
+
+const char *abrt_init(char **argv)
+{
+    char *env_verbose = getenv("ABRT_VERBOSE");
+    if (env_verbose)
+        g_verbose = atoi(env_verbose);
+
+    g_progname = strrchr(argv[0], '/');
+    if (g_progname)
+        g_progname++;
+    else
+        g_progname = argv[0];
+
+    char *pfx = getenv("ABRT_PROG_PREFIX");
+    if (pfx && string_to_bool(pfx))
+        msg_prefix = g_progname;
+
+    return g_progname;
+}
+
+void export_abrt_envvars(int pfx)
+{
+    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
+    if (pfx)
+    {
+        putenv((char*)"ABRT_PROG_PREFIX=1");
+        msg_prefix = g_progname;
+    }
+}
+
 void show_usage_and_die(const char *usage, const struct options *opt)
 {
-    fprintf(stderr, _("Usage: %s\n"), usage);
-
-    if (opt->type != OPTION_GROUP)
-        fputc('\n', stderr);
+    fputs(_("Usage: "), stderr);
+    while (*usage)
+    {
+        int len = strchrnul(usage, '\b') - usage;
+        if (len > 0)
+        {
+            fprintf(stderr, "%.*s", len, usage);
+            usage += len;
+        }
+        if (*usage == '\b')
+        {
+            fputs(g_progname, stderr);
+            usage++;
+        }
+    }
+    fputs("\n\n", stderr);
 
     for (; opt->type != OPTION_END; opt++)
     {

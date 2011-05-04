@@ -21,8 +21,6 @@
 #include "abrtlib.h"
 #include "parse_options.h"
 
-#define PROGNAME "abrt-action-kerneloops"
-
 /* helpers */
 static size_t writefunction(void *ptr, size_t size, size_t nmemb, void *stream)
 {
@@ -129,9 +127,7 @@ static void report_to_kerneloops(
 
 int main(int argc, char **argv)
 {
-    char *env_verbose = getenv("ABRT_VERBOSE");
-    if (env_verbose)
-        g_verbose = atoi(env_verbose);
+    abrt_init(argv);
 
     map_string_h *settings = new_map_string();
     const char *dump_dir_name = ".";
@@ -139,7 +135,7 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        PROGNAME" [-v] [-c CONFFILE]... -d DIR\n"
+        "\b [-v] [-c CONFFILE]... -d DIR\n"
         "\n"
         "Reports kernel oops to kerneloops.org (or similar) site"
     );
@@ -157,11 +153,7 @@ int main(int argc, char **argv)
     };
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
 
-    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-
-    char *pfx = getenv("ABRT_PROG_PREFIX");
-    if (pfx && string_to_bool(pfx))
-        msg_prefix = PROGNAME;
+    export_abrt_envvars(0);
 
     while (conf_file)
     {

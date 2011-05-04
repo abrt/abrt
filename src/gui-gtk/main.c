@@ -25,8 +25,6 @@
 # include <locale.h>
 #endif
 
-#define PROGNAME "abrt-gui"
-
 static int inotify_fd = -1;
 static GIOChannel *channel_inotify;
 static int channel_inotify_event_id = -1;
@@ -193,6 +191,8 @@ void scan_dirs_and_add_to_dirlist(void)
 
 int main(int argc, char **argv)
 {
+    abrt_init(argv);
+
     /* I18n */
     setlocale(LC_ALL, "");
 #if ENABLE_NLS
@@ -204,16 +204,11 @@ int main(int argc, char **argv)
      * desktops which uses the name to find the corresponding .desktop file
      * trac#180
      */
-    g_set_prgname("abrt");
     gtk_init(&argc, &argv);
-
-    char *env_verbose = getenv("ABRT_VERBOSE");
-    if (env_verbose)
-        g_verbose = atoi(env_verbose);
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        PROGNAME" [-vp] [DIR]...\n"
+        "\b [-vp] [DIR]...\n"
         "\n"
         "Shows list of ABRT dump directories in specified DIR(s)\n"
         "(default DIRs: "DEBUG_DUMPS_DIR" $HOME/.abrt/spool)"
@@ -230,15 +225,7 @@ int main(int argc, char **argv)
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
-    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-    char *pfx = getenv("ABRT_PROG_PREFIX");
-    if (pfx && string_to_bool(pfx))
-        msg_prefix = PROGNAME;
-    if (opts & OPT_p)
-    {
-        msg_prefix = PROGNAME;
-        putenv((char*)"ABRT_PROG_PREFIX=1");
-    }
+    export_abrt_envvars(opts & OPT_p);
 
     GtkWidget *main_window = create_main_window();
 

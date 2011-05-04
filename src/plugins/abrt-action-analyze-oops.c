@@ -19,8 +19,6 @@
 #include "abrtlib.h"
 #include "parse_options.h"
 
-#define PROGNAME "abrt-action-analyze-oops"
-
 static void hash_oops_str(char hash_str[SHA1_RESULT_LEN*2 + 1], char *oops_buf, const char *oops_ptr)
 {
     unsigned char old_c;
@@ -137,15 +135,13 @@ static void hash_oops_str(char hash_str[SHA1_RESULT_LEN*2 + 1], char *oops_buf, 
 
 int main(int argc, char **argv)
 {
-    char *env_verbose = getenv("ABRT_VERBOSE");
-    if (env_verbose)
-        g_verbose = atoi(env_verbose);
+    abrt_init(argv);
 
     const char *dump_dir_name = ".";
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        PROGNAME" [-vs] -d DIR\n"
+        "\b [-vs] -d DIR\n"
         "\n"
         "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
         );
@@ -161,11 +157,7 @@ int main(int argc, char **argv)
     };
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
 
-    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-
-    char *pfx = getenv("ABRT_PROG_PREFIX");
-    if (pfx && string_to_bool(pfx))
-        msg_prefix = PROGNAME;
+    export_abrt_envvars(0);
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
