@@ -2,7 +2,6 @@ bin_SCRIPTS = \
     abrt-handle-upload
 
 bin_PROGRAMS = \
-    abrt-handle-crashdump \
     abrt-action-save-package-data
 
 sbin_PROGRAMS = \
@@ -50,26 +49,6 @@ abrt_server_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_server_LDADD = \
-    ../lib/libreport.la
-
-abrt_handle_crashdump_SOURCES = \
-    abrt-handle-crashdump.c
-abrt_handle_crashdump_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
-    -DLIBEXEC_DIR=\"$(LIBEXEC_DIR)\" \
-    $(GLIB_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
-abrt_handle_crashdump_LDADD = \
     ../lib/libreport.la
 
 abrt_action_save_package_data_SOURCES = \
