@@ -1,3 +1,5 @@
+-include ../../config.mak
+
 pluginslibdir = $(PLUGINS_LIB_DIR)
 
 bin_SCRIPTS = \
@@ -71,10 +73,10 @@ MAN_TXT = \
 man1_MANS = ${MAN_TXT:%.txt=%.1}
 
 %.1 %.5 %.7: %.xml
-	xmlto man $<
+	$(XMLTO_SILENT) xmlto man $< > /dev/null 2>&1
 
 %.xml: %.txt ../../asciidoc.conf
-	asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -aabrt_version=$(PACKAGE_VERSION) -o $@ $<
+	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -aabrt_version=$(PACKAGE_VERSION) -o $@ $<
 
 
 CLEANFILES = $(man1_MANS)

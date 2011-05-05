@@ -422,6 +422,31 @@ static bool set_echo(bool enable)
     return true;
 }
 
+/* Returns true if the string contains the specified number. */
+static bool is_number_in_string(unsigned number, const char *str)
+{
+    const char *c;
+    char numstr[sizeof(int) * 3 + 2];
+    int len;
+
+    len = snprintf(numstr, sizeof(numstr), "%u", number);
+    for (c = str; *c; c++)
+    {
+        c = strstr(c, numstr);
+        if (!c)
+            /* no such number exists in the string */
+            return false;
+        if ((c == str || !isalnum(c[-1])) && !isalnum(c[len]))
+            /* found */
+            return true;
+
+        /* found, but it's part of another number. Continue
+         * from the next position. */
+    }
+
+    return false;
+}
+
 /**
  *  Asks user for missing information
  */
@@ -584,12 +609,12 @@ char *select_event_option(GList *list_options)
     if (!list_options)
         return NULL;
 
-    unsigned count = g_list_length(list_options) - 1;
-    if (!count)
-        return NULL;
+    unsigned count = g_list_length(list_options);
+    if (count == 1)
+        return xstrdup((char*)list_options->data);
 
-    int pos = -1;
-    fprintf(stdout, _("Select how you would like to analyze the problem:\n"));
+    int pos = 0;
+    fprintf(stdout, _("How you would like to analyze the problem?\n"));
     for (GList *li = list_options; li; li = li->next)
     {
         char *opt = (char*)li->data;
@@ -605,14 +630,9 @@ char *select_event_option(GList *list_options)
     unsigned ii;
     for (ii = 0; ii < 3; ++ii)
     {
-        fprintf(stdout, _("Choose option [0 - %u]: "), count);
-        fflush(NULL);
-
         char answer[16];
-        if (!fgets(answer, sizeof(answer), stdin))
-            continue;
 
-        answer[strlen(answer) - 1] = '\0';
+        read_from_stdin(_("Select analyzer: "), answer, sizeof(answer));
         if (!*answer)
             continue;
 
@@ -620,6 +640,7 @@ char *select_event_option(GList *list_options)
         if (picked > count)
         {
             fprintf(stdout, _("You have chosen number out of range"));
+            fprintf(stdout, "\n");
             continue;
         }
 
@@ -629,7 +650,7 @@ char *select_event_option(GList *list_options)
     if (ii == 3)
         error_msg_and_die(_("Invalid input, program exiting..."));
 
-    GList *choosen = g_list_nth(list_options, picked);
+    GList *choosen = g_list_nth(list_options, picked - 1);
     return xstrdup((char*)choosen->data);
 }
 
@@ -744,30 +765,33 @@ int report(const char *dump_dir_name, int flags)
     else
     {
         const char *rating_str = get_problem_item_content_or_NULL(problem_data, FILENAME_RATING);
-        unsigned rating = rating_str ? xatou(rating_str) : 4;
+        unsigned i, rating = rating_str ? xatou(rating_str) : 4;
+        GList *li;
+        char wanted_reporters[255];
 
-        /* For every reporter, ask if user really wants to report using it. */
-        for (GList *li = report_events; li; li = li->next)
+        puts(_("How would you like to report the problem?"));
+        /* Print list of reporters and ask the user which should be used. */
+        for (li = report_events, i = 1; li; li = li->next, i++)
         {
             char *reporter_name = (char *) li->data;
             event_config_t *config = get_event_config(reporter_name);
-            char question[255];
-            char *show_reporter_name;
-            if (config)
-                show_reporter_name = (config->screen_name) ? config->screen_name : reporter_name;
-            else
-                show_reporter_name = reporter_name;
 
-            snprintf(question, sizeof(question), _("Report using %s?"), show_reporter_name);
+            printf(" %d) %s\n", i, (config && config->screen_name) ? config->screen_name : reporter_name);
+        }
+
+        read_from_stdin(_("Select reporter(s): "), wanted_reporters, sizeof(wanted_reporters));
+
+        for (li = report_events, i = 1; li; li = li->next, i++)
+        {
+            char *reporter_name = (char *) li->data;
+            event_config_t *config = get_event_config(reporter_name);
 
             if (!config)
                 VERB1 log("No configuration file found for '%s' reporter", reporter_name);
-
-            if (!ask_yesno(question))
-            {
-                puts(_("Skipping..."));
+                
+            /* Was this reporter requested? */
+            if (!is_number_in_string(i, wanted_reporters))
                 continue;
-            }
 
             /* TODO: npajkovs; not implemented yet */
             //const char *rating_required = get_map_string_item_or_NULL(single_plugin_settings, "RatingRequired");
