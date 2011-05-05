@@ -120,92 +120,15 @@ static void print_crash_info(problem_data_t *problem_data, bool show_multiline)
     free(desc);
 }
 
-/* Program options */
-enum
+static char *do_log(char *log_line, void *param)
 {
-    OPT_GET_LIST,
-    OPT_REPORT,
-    OPT_DELETE,
-    OPT_INFO
-};
-
-/**
- * Long options.
- * Do not use the has_arg field. Arguments are handled after parsing all options.
- * The reason is that we want to use all the following combinations:
- *   --report ID
- *   --report ID --always
- *   --report --always ID
- */
-static const struct option longopts[] =
-{
-    /* name, has_arg, flag, val */
-    { "help"     , no_argument, NULL, '?' },
-    { "verbose"  , no_argument, NULL, 'v' },
-    { "version"  , no_argument, NULL, 'V' },
-    { "list"     , no_argument, NULL, 'l' },
-    { "full"     , no_argument, NULL, 'f' },
-    { "always"   , no_argument, NULL, 'y' },
-    { "report"   , no_argument, NULL, 'r' },
-    { "delete"   , no_argument, NULL, 'd' },
-    { "info"     , no_argument, NULL, 'i' },
-    { 0, 0, 0, 0 } /* prevents crashes for unknown options*/
-};
-
-/* Gets the program name from the first command line argument. */
-static const char *progname(const char *argv0)
-{
-    const char* name = strrchr(argv0, '/');
-    if (name)
-        return ++name;
-    return argv0;
-}
-
-/**
- * Prints abrt-cli version and some help text.
- * Then exits the program with return value 1.
- */
-static void print_usage_and_die(char *argv0)
-{
-    const char *name = progname(argv0);
-    printf("%s "VERSION"\n\n", name);
-
-    /* Message has embedded tabs. */
-    printf(_(
-        "Usage: %s -l[f] [-D BASE_DIR]...]\n"
-	"   or: %s -r[y] CRASH_DIR\n"
-	"   or: %s -i[b] CRASH_DIR\n"
-	"   or: %s -d CRASH_DIR\n"
-        "\n"
-        "	-l, --list		List not yet reported problems\n"
-        "	  -f, --full		List all problems\n"
-        "	-D BASE_DIR		Directory to list problems from\n"
-        "				(default: -D $HOME/.abrt/spool -D %s)\n"
-        "\n"
-        "	-r, --report		Send a report about CRASH_DIR\n"
-        "	  -y, --always		...without editing and asking\n"
-        "	-i, --info		Print detailed information about CRASH_DIR\n"
-        "	  -f, --full		...including multi-line entries\n"
-        "				Note: -if will run analyzers\n"
-	"				(if this CRASH_DIR have defined analyzers)\n"
-        "	-d, --delete		Remove CRASH_DIR\n"
-        "\n"
-        "	-V, --version		Display version and exit\n"
-        "	-v, --verbose		Be verbose\n"
-        ),
-        name, name, name, name,
-        DEBUG_DUMPS_DIR
-    );
-    exit(1);
+    log("%s", log_line);
+    return log_line;
 }
 
 int main(int argc, char** argv)
 {
-    GList *D_list = NULL;
-    char *dump_dir_name = NULL;
-    int op = -1;
-    bool full = false;
-    bool always = false;
+    abrt_init(argv);
 
     setlocale(LC_ALL, "");
 #if ENABLE_NLS
@@ -213,41 +136,91 @@ int main(int argc, char** argv)
     textdomain(PACKAGE);
 #endif
 
-    while (1)
-    {
-        /* Do not use colons, arguments are handled after parsing all options. */
-        int c = getopt_long(argc, argv, "?Vvrdlfyib", longopts, NULL);
+    GList *D_list = NULL;
+    const char *event_name = NULL;
+    const char *pfx = "";
 
-#define SET_OP(newop)                                                        \
-        do {                                                                 \
-          if (op != -1 && op != newop)                                       \
-            error_msg_and_die(_("You must specify exactly one operation"));  \
-          op = newop;                                                        \
-        } while (0)
-
-        switch (c)
-        {
-        case -1: goto end_of_arg_parsing;
-        case 'r': SET_OP(OPT_REPORT);   break;
-        case 'd': SET_OP(OPT_DELETE);   break;
-        case 'l': SET_OP(OPT_GET_LIST); break;
-        case 'i': SET_OP(OPT_INFO);     break;
-        case 'f': full = true;          break;
-        case 'y': always = true;        break;
-        case 'v': g_verbose++;          break;
-        case 'D':
-            D_list = g_list_append(D_list, optarg);
-            break;
-        case 'V':
-            printf("%s "VERSION"\n", progname(argv[0]));
-            return 0;
-        case '?':
-        default: /* some error */
-            print_usage_and_die(argv[0]); /* exits app */
-        }
-#undef SET_OP
+    /* Can't keep these strings/structs static: _() doesn't support that */
+    const char *program_usage_string = _(
+        "\b [-vsp] -l[f] [-D BASE_DIR]...\n"
+        "or: \b [-vsp] -i[f] DUMP_DIR\n"
+        "or: \b [-vsp] -L[PREFIX] [DUMP_DIR]\n"
+        "or: \b [-vsp] -e EVENT DUMP_DIR\n"
+        "or: \b [-vsp] -a[y] DUMP_DIR\n"
+        "or: \b [-vsp] -r[y] DUMP_DIR\n"
+        "or: \b [-vsp] -d DUMP_DIR"
+    );
+    enum {
+        OPT_list         = 1 << 0,
+        OPT_D            = 1 << 1,
+        OPT_info         = 1 << 2,
+        OPT_list_events  = 1 << 3,
+        OPT_run_event    = 1 << 4,
+        OPT_analyze      = 1 << 5,
+        OPT_report       = 1 << 6,
+        OPT_delete       = 1 << 7,
+        OPT_version      = 1 << 8,
+        OPTMASK_op       = OPT_list|OPT_info|OPT_list_events|OPT_run_event|OPT_analyze|OPT_report|OPT_delete|OPT_version,
+        OPTMASK_need_arg = OPT_info|OPT_run_event|OPT_analyze|OPT_report|OPT_delete,
+        OPT_f            = 1 << 9,
+        OPT_y            = 1 << 10,
+        OPT_v            = 1 << 11,
+        OPT_s            = 1 << 12,
+        OPT_p            = 1 << 13,
+    };
+    /* Keep enum above and order of options below in sync! */
+    struct options program_options[] = {
+        /*      short_name long_name  value    parameter_name  help */
+        OPT_BOOL(     'l', "list"   , NULL,                    _("List not yet reported problems, or all with -f")),
+        OPT_LIST(     'D', NULL     , &D_list, "BASE_DIR",     _("Directory to list problems from (default: -D $HOME/.abrt/spool -D "DEBUG_DUMPS_DIR")")),
+        OPT_BOOL(     'i', "info"   , NULL,                    _("Print information about DUMP_DIR (detailed with -f)")),
+        OPT_OPTSTRING('L', NULL     , &pfx, "PREFIX",          _("List possible events [which start with PREFIX]")),
+        OPT_STRING(   'e', NULL     , &event_name, "EVENT",    _("Run EVENT on DUMP_DIR")),
+        OPT_BOOL(     'a', "analyze", NULL,                    _("Run analyze event(s) on DUMP_DIR")),
+        OPT_BOOL(     'r', "report" , NULL,                    _("Send a report about DUMP_DIR")),
+        OPT_BOOL(     'd', "delete" , NULL,                    _("Remove DUMP_DIR")),
+        OPT_BOOL(     'V', "version", NULL,                    _("Display version and exit")),
+        OPT_BOOL(     'f', "full"   , NULL,                    _("Full listing")),
+        OPT_BOOL(     'y', "always" , NULL,                    _("Noninteractive: don't ask questions, assume 'yes'")),
+        OPT__VERBOSE(&g_verbose),
+        OPT_BOOL(     's', NULL     , NULL,                    _("Log to syslog")),
+        OPT_BOOL(     'p', NULL     , NULL,                    _("Add program names to log")),
+        OPT_END()
+    };
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    unsigned op = (opts & OPTMASK_op);
+    if (!op || ((op-1) & op))
+        /* "You must specify exactly one operation" */
+        show_usage_and_die(program_usage_string, program_options);
+    argv += optind;
+    argc -= optind;
+    if (argc > 1
+        /* dont_need_arg == have_arg? bad in both cases:
+         * TRUE == TRUE (dont need arg but have) or
+         * FALSE == FALSE (need arg but havent).
+         * OPT_list_events is an exception, it can be used in both cases.
+         */
+     || ((op != OPT_list_events) && (!(opts & OPTMASK_need_arg) == argc))
+    ) {
+        show_usage_and_die(program_usage_string, program_options);
     }
- end_of_arg_parsing: ;
+
+    if (op == OPT_version)
+    {
+        printf("%s "VERSION"\n", g_progname);
+        return 0;
+    }
+
+    export_abrt_envvars(opts & OPT_p);
+    if (opts & OPT_s)
+    {
+        openlog(msg_prefix, 0, LOG_DAEMON);
+        logmode = LOGMODE_SYSLOG;
+    }
+
+    char *dump_dir_name = argv[0];
+    bool full = (opts & OPT_f);
+    bool always = (opts & OPT_y);
 
     if (!D_list)
     {
@@ -257,31 +230,6 @@ int main(int argc, char** argv)
         D_list = g_list_append(D_list, (void*)DEBUG_DUMPS_DIR);
     }
 
-    /* Handle option arguments. */
-    argc -= optind;
-    switch (argc)
-    {
-    case 0:
-        if (op == OPT_REPORT || op == OPT_DELETE || op == OPT_INFO)
-            print_usage_and_die(argv[0]);
-        break;
-    case 1:
-        if (op != OPT_REPORT && op != OPT_DELETE && op != OPT_INFO)
-            print_usage_and_die(argv[0]);
-        dump_dir_name = argv[optind];
-        break;
-    default:
-        print_usage_and_die(argv[0]);
-    }
-
-    /* Check if we have an operation.
-     * Limit --full and --always to certain operations.
-     */
-    if ((always && op != OPT_REPORT) || op == -1)
-    {
-        print_usage_and_die(argv[0]);
-    }
-
     /* Get settings */
     load_event_config_data();
 
@@ -289,7 +237,7 @@ int main(int argc, char** argv)
     int exitcode = 0;
     switch (op)
     {
-        case OPT_GET_LIST:
+        case OPT_list:
         {
             vector_of_problem_data_t *ci = new_vector_of_problem_data();
             while (D_list)
@@ -302,7 +250,49 @@ int main(int argc, char** argv)
             free_vector_of_problem_data(ci);
             break;
         }
-        case OPT_REPORT:
+        case OPT_list_events: /* -L[PREFIX] */
+        {
+            /* Note that dump_dir_name may be NULL here, it means "show all
+             * possible events regardless of dir"
+             */
+            char *events = list_possible_events(NULL, dump_dir_name, pfx);
+            if (!events)
+                return 1; /* error msg is already logged */
+            fputs(events, stdout);
+            free(events);
+            break;
+        }
+        case OPT_run_event: /* -e EVENT: run event */
+        {
+            struct run_event_state *run_state = new_run_event_state();
+            run_state->logging_callback = do_log;
+            int r = run_event_on_dir_name(run_state, dump_dir_name, event_name);
+            if (r == 0 && run_state->children_count == 0)
+                error_msg_and_die("No actions are found for event '%s'", event_name);
+            free_run_event_state(run_state);
+            break;
+        }
+        case OPT_analyze:
+        {
+            /* Load problem_data from dump dir */
+            struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
+            if (!dd)
+                return 1;
+            char *analyze_events_as_lines = list_possible_events(dd, NULL, "analyze");
+            dd_close(dd);
+
+            if (analyze_events_as_lines && *analyze_events_as_lines)
+            {
+                GList *list_analyze_events = str_to_glist(analyze_events_as_lines, '\n');
+                char *event = select_event_option(list_analyze_events);
+                list_free_with_free(list_analyze_events);
+                exitcode = run_analyze_event(dump_dir_name, event);
+                free(event);
+            }
+            free(analyze_events_as_lines);
+            break;
+        }
+        case OPT_report:
         {
             struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
             if (!dd)
@@ -327,42 +317,17 @@ int main(int argc, char** argv)
                 error_msg_and_die("Crash '%s' not found", dump_dir_name);
             break;
         }
-        case OPT_DELETE:
+        case OPT_delete:
         {
             exitcode = delete_dump_dir_possibly_using_abrtd(dump_dir_name);
             break;
         }
-        case OPT_INFO:
+        case OPT_info:
         {
             /* Load problem_data from dump dir */
             struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
             if (!dd)
                 return -1;
-
-            char *analyze_events_as_lines = list_possible_events(dd, NULL, "analyze");
-
-            if (full && analyze_events_as_lines && *analyze_events_as_lines)
-            {
-                dd_close(dd);
-
-                GList *list_analyze_events = str_to_glist(analyze_events_as_lines, '\n');
-                free(analyze_events_as_lines);
-
-                char *event = select_event_option(list_analyze_events);
-                list_free_with_free(list_analyze_events);
-
-                int analyzer_result = run_analyze_event(dump_dir_name, event);
-                free(event);
-
-                if (analyzer_result != 0)
-                    return 1;
-
-                /* Reload problem_data from (possibly updated by analyze) dump dir */
-                dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
-                if (!dd)
-                    return -1;
-            } else
-                free(analyze_events_as_lines);
 
             problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
             dd_close(dd);

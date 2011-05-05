@@ -875,6 +875,8 @@ static int run_batch(bool delete_temp_archive)
 
 int main(int argc, char **argv)
 {
+    abrt_init(argv);
+
     const char *task_id = NULL;
     const char *task_password = NULL;
 
@@ -922,9 +924,6 @@ int main(int argc, char **argv)
     const char usage[] = "abrt-retrace-client <operation> [options]\n"
         "Operations: create/status/backtrace/log/batch";
 
-    char *env_verbose = getenv("ABRT_VERBOSE");
-    if (env_verbose)
-        g_verbose = atoi(env_verbose);
     char *env_url = getenv("RETRACE_SERVER_URL");
     if (env_url)
         url = env_url;

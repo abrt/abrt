@@ -23,6 +23,13 @@
 extern "C" {
 #endif
 
+const char *abrt_init(char **argv);
+#define export_abrt_envvars abrt_export_abrt_envvars
+void export_abrt_envvars(int pfx);
+#define g_progname abrt_g_progname
+extern const char *g_progname;
+
+
 enum parse_opt_type {
     OPTION_BOOL,
     OPTION_GROUP,
@@ -50,12 +57,12 @@ struct options {
  * h - help
  */
 #define OPT_END()                    { OPTION_END }
-#define OPT_BOOL(s, l, v, h)         { OPTION_BOOL, (s), (l), (v), NULL, (h) }
 #define OPT_GROUP(h)                 { OPTION_GROUP, 0, NULL, NULL, NULL, (h) }
-#define OPT_INTEGER(s, l, v, h)      { OPTION_INTEGER, (s), (l), (v), "NUM", (h) }
-#define OPT_STRING(s, l, v, a, h)    { OPTION_STRING, (s), (l), (v), (a), (h) }
-#define OPT_OPTSTRING(s, l, v, a, h) { OPTION_OPTSTRING, (s), (l), (v), (a), (h) }
-#define OPT_LIST(s, l, v, a, h)      { OPTION_LIST, (s), (l), (v), (a), (h) }
+#define OPT_BOOL(     s, l, v,    h) { OPTION_BOOL     , (s), (l), (v), NULL , (h) }
+#define OPT_INTEGER(  s, l, v,    h) { OPTION_INTEGER  , (s), (l), (v), "NUM", (h) }
+#define OPT_STRING(   s, l, v, a, h) { OPTION_STRING   , (s), (l), (v), (a)  , (h) }
+#define OPT_OPTSTRING(s, l, v, a, h) { OPTION_OPTSTRING, (s), (l), (v), (a)  , (h) }
+#define OPT_LIST(     s, l, v, a, h) { OPTION_LIST     , (s), (l), (v), (a)  , (h) }
 
 #define OPT__VERBOSE(v)     OPT_BOOL('v', "verbose", (v), _("Be verbose"))
 

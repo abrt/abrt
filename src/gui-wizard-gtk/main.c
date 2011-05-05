@@ -25,8 +25,6 @@
 # include <locale.h>
 #endif
 
-#define PROGNAME "bug-reporting-wizard"
-
 char *g_glade_file = NULL;
 char *g_dump_dir_name = NULL;
 char *g_analyze_events = NULL;
@@ -62,6 +60,8 @@ void reload_problem_data_from_dump_dir(void)
 
 int main(int argc, char **argv)
 {
+    abrt_init(argv);
+
     /* I18n */
     setlocale(LC_ALL, "");
 #if ENABLE_NLS
@@ -69,16 +69,11 @@ int main(int argc, char **argv)
     textdomain(PACKAGE);
 #endif
 
-    g_set_prgname("abrt");
     gtk_init(&argc, &argv);
-
-    char *env_verbose = getenv("ABRT_VERBOSE");
-    if (env_verbose)
-        g_verbose = atoi(env_verbose);
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        PROGNAME" [-vp] [-g GUI_FILE] DIR\n"
+        "\b [-vp] [-g GUI_FILE] DIR\n"
         "\n"
         "GUI tool to analyze and report problem saved in specified DIR"
     );
@@ -94,19 +89,12 @@ int main(int argc, char **argv)
         OPT_BOOL(  'p', NULL, NULL                  , _("Add program names to log")),
         OPT_END()
     };
-
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
-
-    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-    if (opts & OPT_p)
-    {
-        msg_prefix = PROGNAME;
-        putenv((char*)"ABRT_PROG_PREFIX=1");
-    }
-
     argv += optind;
     if (!argv[0] || argv[1]) /* zero or >1 arguments */
         show_usage_and_die(program_usage_string, program_options);
+
+    export_abrt_envvars(opts & OPT_p);
 
     g_dump_dir_name = xstrdup(argv[0]);
 

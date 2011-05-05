@@ -1,0 +1,75 @@
+abrt-cli(1)
+===========
+
+NAME
+----
+abrt-cli - Work with ABRT dump directories from command line.
+
+SYNOPSIS
+--------
+'abrt-cli' [-vsp] -l[f] [-D BASE_DIR]...
+
+'abrt-cli' [-vsp] -i[f] DUMP_DIR
+
+'abrt-cli' [-vsp] -L[PREFIX] [DUMP_DIR]
+
+'abrt-cli' [-vsp] -e EVENT DUMP_DIR
+
+'abrt-cli' [-vsp] -a[y] DUMP_DIR
+
+'abrt-cli' [-vsp] -r[y] DUMP_DIR
+
+'abrt-cli' [-vsp] -d DUMP_DIR
+
+DESCRIPTION
+-----------
+'abrt-cli' is a command line tool that manages application crashes and other problems
+catched by abrtd daemon. It enables access to, manipulation of problem data, and reporting.
+
+OPTIONS
+-------
+-l::
+    List not yet reported problems, or all problems with -f
+
+-D BASE_DIR::
+    Directory to list problems from (default: -D $HOME/.abrt/spool -D /var/spool/abrt)
+
+-i, --info::
+    Print information about DUMP_DIR (detailed with -f)
+
+-L[PREFIX]::
+    List possible events [which start with PREFIX]
+
+-e EVENT::
+    Run EVENT on DUMP_DIR
+
+-a, --analyze::
+    Run analyze event(s) on DUMP_DIR
+
+-r, --report::
+    Send a report about DUMP_DIR
+
+-d, --delete::
+    Remove DUMP_DIR
+
+-f, --full::
+    Full listing
+
+-y, --always::
+    Noninteractive: don't ask questions, assume positive answer to all of them
+
+-v, --verbose::
+    Be verbose
+
+-s::
+    Log to syslog
+
+-p::
+    Add program names to log
+
+-V, --version::
+    Display version and exit
+
+AUTHORS
+-------
+* ABRT team

@@ -19,8 +19,6 @@
 #include "abrtlib.h"
 #include "parse_options.h"
 
-#define PROGNAME "abrt-action-trim-files"
-
 static double get_dir_size(const char *dirname,
                            char **worst_file,
                            double *worst_file_size)
@@ -141,9 +139,7 @@ static void delete_files(gpointer data, gpointer user_data_unused)
 
 int main(int argc, char **argv)
 {
-    char *env_verbose = getenv("ABRT_VERBOSE");
-    if (env_verbose)
-        g_verbose = atoi(env_verbose);
+    abrt_init(argv);
 
     GList *dir_list = NULL;
     GList *file_list = NULL;
@@ -151,7 +147,7 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        PROGNAME" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+        "\b [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
         "\n"
         "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
     );
@@ -169,17 +165,12 @@ int main(int argc, char **argv)
         OPT_STRING('p', NULL, &preserve , "DIR"     , _("Preserve this dump dir")),
         OPT_END()
     };
-
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
     argv += optind;
     if (argv[0] || !(dir_list || file_list))
         show_usage_and_die(program_usage_string, program_options);
 
-    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-
-    char *pfx = getenv("ABRT_PROG_PREFIX");
-    if (pfx && string_to_bool(pfx))
-        msg_prefix = PROGNAME;
+    export_abrt_envvars(0);
 
     g_list_foreach(dir_list, delete_dirs, preserve);
     g_list_foreach(file_list, delete_files, NULL);
