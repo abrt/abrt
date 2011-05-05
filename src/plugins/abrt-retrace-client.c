@@ -25,6 +25,7 @@
 #include <sslproto.h>
 #include <sslerr.h>
 #include <secerr.h>
+#include <secmod.h>
 
 struct retrace_settings
 {
@@ -208,6 +209,28 @@ static const char *ssl_get_configdir()
     return NULL;
 }
 
+static PK11GenericObject *nss_load_cacert(const char *filename)
+{
+    PK11SlotInfo *slot = PK11_FindSlotByName("PEM Token #0");
+    if (!slot)
+        error_msg_and_die("Failed to get slot 'PEM Token #0': %d.", PORT_GetError());
+
+    CK_ATTRIBUTE template[4];
+    CK_OBJECT_CLASS class = CKO_CERTIFICATE;
+
+#define PK11_SETATTRS(x,id,v,l) (x)->type = (id);       \
+  (x)->pValue=(v); (x)->ulValueLen = (l)
+
+    PK11_SETATTRS(&template[0], CKA_CLASS, &class, sizeof(class));
+    CK_BBOOL cktrue = CK_TRUE;
+    PK11_SETATTRS(&template[1], CKA_TOKEN, &cktrue, sizeof(CK_BBOOL));
+    PK11_SETATTRS(&template[2], CKA_LABEL, (unsigned char*)filename, strlen(filename)+1);
+    PK11_SETATTRS(&template[3], CKA_TRUST, &cktrue, sizeof(CK_BBOOL));
+    PK11GenericObject *cert = PK11_CreateGenericObject(slot, template, 4, PR_FALSE);
+    PK11_FreeSlot(slot);
+    return cert;
+}
+
 static char *ssl_get_password(PK11SlotInfo *slot, PRBool retry, void *arg)
 {
     return NULL;
@@ -216,13 +239,6 @@ static char *ssl_get_password(PK11SlotInfo *slot, PRBool retry, void *arg)
 static void ssl_connect(PRFileDesc **tcp_sock,
                         PRFileDesc **ssl_sock)
 {
-    const char *configdir = ssl_get_configdir();
-    if (configdir)
-        NSS_Initialize(configdir, "", "", "", NSS_INIT_READONLY);
-    else
-        NSS_NoDB_Init(NULL);
-    PK11_SetPasswordFunc(ssl_get_password);
-    NSS_SetDomesticPolicy();
     *tcp_sock = PR_NewTCPSocket();
     if (!*tcp_sock)
         error_msg_and_die("Failed to create a TCP socket");
@@ -253,6 +269,7 @@ static void ssl_connect(PRFileDesc **tcp_sock,
         error_msg_and_die("Failed to enable client handshake to SSL socket.");
     if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_TLS, PR_TRUE))
         error_msg_and_die("Failed to enable client handshake to SSL socket.");
+
     sec_status = SSL_SetURL(*ssl_sock, url);
     if (SECSuccess != sec_status)
     {
@@ -322,14 +339,6 @@ static void ssl_disconnect(PRFileDesc *ssl_sock)
     PRStatus pr_status = PR_Close(ssl_sock);
     if (PR_SUCCESS != pr_status)
         error_msg("Failed to close SSL socket.");
-
-    SSL_ClearSessionCache();
-
-    SECStatus sec_status = NSS_Shutdown();
-    if (SECSuccess != sec_status)
-        error_msg("Failed to shutdown NSS.");
-
-    PR_Cleanup();
 }
 
 /**
@@ -933,17 +942,40 @@ int main(int argc, char **argv)
         show_usage_and_die(usage, options);
     ssl_allow_insecure = opts & OPT_insecure;
     http_show_headers = opts & OPT_headers;
+
+    /* Initialize NSS */
+    SECStatus sec_status;
+    const char *configdir = ssl_get_configdir();
+    if (configdir)
+        sec_status = NSS_Initialize(configdir, "", "", "", NSS_INIT_READONLY);
+    else
+        sec_status = NSS_NoDB_Init(NULL);
+    if (SECSuccess != sec_status)
+        error_msg_and_die("Failed to initialize NSS.");
+
+    char *user_module = xstrdup("library=libnsspem.so name=PEM");
+    SECMODModule* mod = SECMOD_LoadUserModule(user_module, NULL, PR_FALSE);
+    free(user_module);
+    if (!mod || !mod->loaded)
+        error_msg_and_die("Failed to initialize security module.");
+
+    PK11GenericObject *cert = nss_load_cacert("/etc/pki/tls/certs/ca-bundle.crt");
+    PK11_SetPasswordFunc(ssl_get_password);
+    NSS_SetDomesticPolicy();
+
+    /* Run the desired operation. */
+    int result = 0;
     if (0 == strcasecmp(operation, "create"))
     {
         if (!dump_dir_name && !coredump)
             error_msg_and_die("Either dump directory or coredump is needed.");
-        return run_create(0 == (opts & OPT_no_unlink));
+        result = run_create(0 == (opts & OPT_no_unlink));
     }
     else if (0 == strcasecmp(operation, "batch"))
     {
         if (!dump_dir_name && !coredump)
             error_msg_and_die("Either dump directory or coredump is needed.");
-        return run_batch(0 == (opts & OPT_no_unlink));
+        result = run_batch(0 == (opts & OPT_no_unlink));
     }
     else if (0 == strcasecmp(operation, "status"))
     {
@@ -971,5 +1003,17 @@ int main(int argc, char **argv)
     }
     else
         error_msg_and_die("Unknown operation: %s", operation);
-    return 0;
+
+    /* Shutdown NSS. */
+    SSL_ClearSessionCache();
+    PK11_DestroyGenericObject(cert);
+    SECMOD_UnloadUserModule(mod);
+    SECMOD_DestroyModule(mod);
+    sec_status = NSS_Shutdown();
+    if (SECSuccess != sec_status)
+        error_msg("Failed to shutdown NSS.");
+
+    PR_Cleanup();
+
+    return result;
 }
