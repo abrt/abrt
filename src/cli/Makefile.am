@@ -1,3 +1,5 @@
+-include ../../config.mak
+
 bin_PROGRAMS = \
     abrt-handle-crashdump \
     abrt-cli
@@ -51,7 +53,7 @@ man1_MANS = ${MAN_TXT:%.txt=%.1}
 	xmlto man $<
 
 %.xml: %.txt ../../asciidoc.conf
-	asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -aabrt_version=$(PACKAGE_VERSION) -o $@ $<
+	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -aabrt_version=$(PACKAGE_VERSION) -o $@ $<
 
 CLEANFILES = $(man1_MANS)
 
