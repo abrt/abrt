@@ -2,27 +2,27 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-05-03 16:21+0200\n"
-"PO-Revision-Date: 2011-05-02 18:28+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2011-05-02 20:23+0200\n"
+"PO-Revision-Date: 2011-05-03 15:21+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Czech <None>\n"
-"Language: cs\n"
+"Language-Team: Czech (http://www.transifex.net/projects/p/fedora/team/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
 msgstr "Upozorňovací applet démonu ABRT"
 
-#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt-gtk.c:358
-#: ../src/gui-gtk/abrt.desktop.in.h:1
+#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
+#: ../src/gui-gtk/abrt-gtk.c:358
 msgid "Automatic Bug Reporting Tool"
 msgstr "Nástroj automatického hlášení chyb"
 
@@ -180,7 +180,7 @@ msgstr ""
 "V hlášení nebyly nalezeny žádné změny"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.c:394 ../src/plugins/abrt-action-install-debuginfo.py:83
+#: ../src/cli/report.c:394
 msgid "y"
 msgstr "a"
 
@@ -239,8 +239,8 @@ msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
-"Zkuste nainstalovat balíčky s ladicími údaji ručně pomocí „debuginfo-install "
-"%s“ a zkuste to znovu\n"
+"Zkuste nainstalovat balíčky s ladicími údaji ručně pomocí „debuginfo-install"
+" %s“ a zkuste to znovu\n"
 
 #: ../src/cli/report.c:804
 #, c-format
@@ -347,8 +347,8 @@ msgstr "Nasta_vit událost"
 #: ../src/gtk-helpers/event_config_dialog.c:425
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
 msgstr ""
 
 #: ../src/gtk-helpers/event_config_dialog.c:429
@@ -357,6 +357,10 @@ msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
 "continue with the current configuration."
 msgstr ""
+
+#: ../src/gui-gtk/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "Prohlédni si a nahlas chyby v aplikacích"
 
 #: ../src/gui-gtk/abrt-gtk.c:262
 msgid "Reported"
@@ -389,10 +393,6 @@ msgstr "Nastav_ení událostí"
 #: ../src/gui-gtk/abrt-gtk.c:411
 msgid "Online _Help"
 msgstr "Online nápo_věda"
-
-#: ../src/gui-gtk/abrt.desktop.in.h:2
-msgid "View and report application crashes"
-msgstr "Prohlédni si a nahlas chyby v aplikacích"
 
 #: ../src/gui-gtk/main.c:216
 msgid ""
@@ -628,19 +628,16 @@ msgstr "Použití: %s\n"
 msgid ""
 " [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
-"identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
 msgstr ""
 " [PŘEPÍNAČE] -d ADRESÁŘ\n"
 "\n"
-"Analyzuje výpis volání C/C++, vytvoří duplikační otisk, ohodnotí výpis "
-"volání a určí havarovanou funkci z ADRESÁŘE s výpisy."
+"Analyzuje výpis volání C/C++, vytvoří duplikační otisk, ohodnotí výpis volání a určí havarovanou funkci z ADRESÁŘE s výpisy."
 
-#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:111
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -784,15 +781,11 @@ msgstr "Zabije gdb, pokud běží déle než N sekund"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:298
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
 msgstr "Výpis volání byl vytvořen a uložen, %u bajtů"
-
-#: ../src/plugins/abrt-action-install-debuginfo.py:85
-msgid "n"
-msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo.py:100
 #, python-format
@@ -1002,9 +995,11 @@ msgstr "Hlášení bylo připojeno k %s"
 msgid "The report was stored to %s"
 msgstr "Hlášení bylo uloženo do %s"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
 #: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
@@ -1106,7 +1101,7 @@ msgstr "Neskončí, bude sledovat soubor kvůli novým stížnostem"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
+#. 
 #: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr ""
@@ -1130,8 +1125,8 @@ msgstr ""
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
@@ -1200,8 +1195,8 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid ""
-"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
-"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+"You can create bugzilla.redhat.com account &lt;a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
