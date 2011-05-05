@@ -64,3 +64,6 @@ completiondir = $(sysconfdir)/bash_completion.d
 dist_completion_DATA = abrt-cli.bash
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
+
+EXTRA_DIST = $(MAN_TXT)
+
