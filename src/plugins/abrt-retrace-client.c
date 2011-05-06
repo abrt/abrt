@@ -39,7 +39,7 @@ struct retrace_settings
 
 static const char *dump_dir_name = NULL;
 static const char *coredump = NULL;
-static const char *url = "retrace01.fedoraproject.org";
+static const char *url = "retrace.fedoraproject.org";
 static const char *required_files[] = { FILENAME_COREDUMP,
                                         FILENAME_EXECUTABLE,
                                         FILENAME_PACKAGE,
@@ -844,6 +844,7 @@ static int run_batch(bool delete_temp_archive)
         sleep(10);
         status(task_id, task_password, &task_status, &status_message);
         puts(status_message);
+        fflush(stdout);
     }
     if (0 == strcmp(task_status, "FINISHED_SUCCESS"))
     {
