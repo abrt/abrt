@@ -69,6 +69,12 @@ int main(int argc, char **argv)
     textdomain(PACKAGE);
 #endif
 
+    /* without this the name is set to argv[0] which confuses
+     * desktops which uses the name to find the corresponding .desktop file
+     * trac#180
+     */
+    g_set_prgname("abrt");
+
     gtk_init(&argc, &argv);
 
     /* Can't keep these strings/structs static: _() doesn't support that */
