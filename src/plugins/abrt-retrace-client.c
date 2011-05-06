@@ -39,7 +39,7 @@ struct retrace_settings
 
 static const char *dump_dir_name = NULL;
 static const char *coredump = NULL;
-static const char *url = "retrace01.fedoraproject.org";
+static const char *url = "retrace.fedoraproject.org";
 static const char *required_files[] = { FILENAME_COREDUMP,
                                         FILENAME_EXECUTABLE,
                                         FILENAME_PACKAGE,
