@@ -844,6 +844,7 @@ static int run_batch(bool delete_temp_archive)
         sleep(10);
         status(task_id, task_password, &task_status, &status_message);
         puts(status_message);
+        fflush(stdout);
     }
     if (0 == strcmp(task_status, "FINISHED_SUCCESS"))
     {
