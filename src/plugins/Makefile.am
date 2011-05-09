@@ -239,7 +239,7 @@ abrt_action_analyze_backtrace_LDADD = \
     ../btparser/libbtparser.la
 
 abrt_action_bugzilla_SOURCES = \
-    abrt-action-bugzilla.cpp
+    abrt-action-bugzilla.cpp rhbz.c rhbz.h
 abrt_action_bugzilla_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
@@ -253,7 +253,7 @@ abrt_action_bugzilla_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -Wall -Wwrite-strings
 abrt_action_bugzilla_LDADD = \
     $(GLIB_LIBS) \
     ../lib/libabrt_web.la \
