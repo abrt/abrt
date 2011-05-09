@@ -56,6 +56,7 @@ static GtkContainer *g_container_details2;
 static GtkLabel *g_lbl_cd_reason;
 static GtkTextView *g_tv_backtrace;
 static GtkTextView *g_tv_comment;
+static GtkEventBox *g_eb_comment;
 static GtkTreeView *g_tv_details;
 static GtkWidget *g_widget_warnings_area;
 static GtkBox *g_box_warning_labels;
@@ -1105,6 +1106,20 @@ static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_da
     check_backtrace_and_allow_send();
 }
 
+static void on_comment_changed(GtkTextBuffer *buffer, gpointer user_data)
+{
+    bool good = gtk_text_buffer_get_char_count(buffer) >= 10;
+
+    /* Allow next page only when the comment has at least 10 chars */
+    gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_COMMENT].page_widget, good);
+
+    /* And show the eventbox with label */
+    if (good)
+        gtk_widget_hide(GTK_WIDGET(g_eb_comment));
+    else
+        gtk_widget_show(GTK_WIDGET(g_eb_comment));
+}
+
 
 /* Refresh button handling */
 
@@ -1204,6 +1219,9 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
                 w
         );
     }
+
+    if (pages[PAGENO_COMMENT].page_widget == page)
+        on_comment_changed(gtk_text_view_get_buffer(g_tv_comment), NULL);
 }
 
 static gint select_next_page_no(gint current_page_no, gpointer data)
@@ -1405,6 +1423,7 @@ static void add_pages()
     g_tv_report_log        = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_report_log"));
     g_tv_backtrace         = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_backtrace"));
     g_tv_comment           = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_comment"));
+    g_eb_comment           = GTK_EVENT_BOX(    gtk_builder_get_object(builder, "eb_comment"));
     g_tv_details           = GTK_TREE_VIEW(    gtk_builder_get_object(builder, "tv_details"));
     g_box_warning_labels   = GTK_BOX(          gtk_builder_get_object(builder, "box_warning_labels"));
     g_tb_approve_bt        = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "cb_approve_bt"));
@@ -1439,6 +1458,11 @@ static void add_pages()
     config_btn = GTK_WIDGET(gtk_builder_get_object(builder, "button_cfg2"));
     if (config_btn)
         g_signal_connect(G_OBJECT(config_btn), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
+
+    /* Set color of the comment evenbox */
+    GdkColor color;
+    gdk_color_parse("#CC3333", &color);
+    gtk_widget_modify_bg(GTK_WIDGET(g_eb_comment), GTK_STATE_NORMAL, &color);
 }
 
 void create_assistant(void)
@@ -1475,6 +1499,7 @@ void create_assistant(void)
 
     g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
     g_signal_connect(g_btn_refresh, "clicked", G_CALLBACK(on_btn_refresh_clicked), NULL);
+    g_signal_connect(gtk_text_view_get_buffer(g_tv_comment), "changed", G_CALLBACK(on_comment_changed), NULL);
     g_signal_connect(g_tv_details, "row-activated", G_CALLBACK(tv_details_row_activated), NULL);
     /* [Enter] on a row: g_signal_connect(g_tv_details, "select-cursor-row", G_CALLBACK(tv_details_select_cursor_row), NULL); */
     g_signal_connect(g_tv_details, "cursor-changed", G_CALLBACK(tv_details_cursor_changed), NULL);
