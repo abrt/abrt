@@ -27,4 +27,5 @@ extern char *g_analyze_events;
 extern char *g_reanalyze_events;
 extern char *g_report_events;
 extern problem_data_t *g_cd;
+extern int g_report_only;
 void reload_problem_data_from_dump_dir(void);

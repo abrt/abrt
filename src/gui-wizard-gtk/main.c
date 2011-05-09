@@ -30,6 +30,7 @@ char *g_dump_dir_name = NULL;
 char *g_analyze_events = NULL;
 char *g_reanalyze_events = NULL;
 char *g_report_events = NULL;
+int g_report_only = false;
 problem_data_t *g_cd;
 
 
@@ -60,6 +61,7 @@ void reload_problem_data_from_dump_dir(void)
 
 int main(int argc, char **argv)
 {
+    const char *prgname = "abrt";
     abrt_init(argv);
 
     /* I18n */
@@ -69,17 +71,11 @@ int main(int argc, char **argv)
     textdomain(PACKAGE);
 #endif
 
-    /* without this the name is set to argv[0] which confuses
-     * desktops which uses the name to find the corresponding .desktop file
-     * trac#180
-     */
-    g_set_prgname("abrt");
-
     gtk_init(&argc, &argv);
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "\b [-vp] [-g GUI_FILE] DIR\n"
+        "\b [-vp] [-g GUI_FILE] [-o|--report-only] [-n|--prgname] DIR\n"
         "\n"
         "GUI tool to analyze and report problem saved in specified DIR"
     );
@@ -87,18 +83,32 @@ int main(int argc, char **argv)
         OPT_v = 1 << 0,
         OPT_g = 1 << 1,
         OPT_p = 1 << 2,
+        OPT_o = 1 << 3, // report only
+        OPT_n = 1 << 4, // prgname
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_STRING('g', NULL, &g_glade_file, "FILE" , _("Alternate GUI file")),
         OPT_BOOL(  'p', NULL, NULL                  , _("Add program names to log")),
+        /* for use from 3rd party apps to show just a reporter selector */
+        OPT_BOOL(  'o', "report-only", &g_report_only         , _("Use wizard to report pre-filled problem data")),
+        /* override the default prgname, so it's the same as the application
+           which is calling us
+        */
+        OPT_STRING(  'n', "prgname", &prgname, "NAME" , _("Override the default prgname")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
     argv += optind;
     if (!argv[0] || argv[1]) /* zero or >1 arguments */
         show_usage_and_die(program_usage_string, program_options);
+
+    /* without this the name is set to argv[0] which confuses
+     * desktops which uses the name to find the corresponding .desktop file
+     * trac#180
+     */
+    g_set_prgname(prgname);
 
     export_abrt_envvars(opts & OPT_p);
 

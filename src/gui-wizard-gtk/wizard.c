@@ -110,10 +110,10 @@ static const gchar PAGE_SUMMARY[]            = "page_0";
 static const gchar PAGE_COMMENT[]            = "page_1";
 static const gchar PAGE_ANALYZE_SELECTOR[]   = "page_2";
 static const gchar PAGE_ANALYZE_PROGRESS[]   = "page_3";
-static const gchar PAGE_REPORTER_SELECTOR[]  = "page_4";
+static const gchar PAGE_REPORTER_SELECTOR[]  = "page_4_report";
 static const gchar PAGE_BACKTRACE_APPROVAL[] = "page_5";
-static const gchar PAGE_REPORT[]             = "page_6";
-static const gchar PAGE_REPORT_PROGRESS[]    = "page_7";
+static const gchar PAGE_REPORT[]             = "page_6_report";
+static const gchar PAGE_REPORT_PROGRESS[]    = "page_7_report";
 
 static const gchar *const page_names[] =
 {
@@ -161,6 +161,8 @@ static page_obj_t pages[] =
     { NULL }
 };
 
+/* hardcoded 10 pages limit */
+page_obj_t *added_pages[10];
 
 /* Utility functions */
 
@@ -1071,7 +1073,7 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
     int page_no = gtk_assistant_get_current_page(assistant);
     VERB2 log("page_no:%d", page_no);
 
-    if (page_no == PAGENO_ANALYZE_SELECTOR
+    if (added_pages[page_no]->name == PAGE_ANALYZE_SELECTOR
      && g_analyze_event_selected != NULL
     ) {
         start_event_run(g_analyze_event_selected,
@@ -1084,7 +1086,7 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
         );
     }
 
-    if (page_no == PAGENO_REPORT)
+    if (added_pages[page_no]->name == PAGE_REPORT)
     {
         GList *reporters = NULL;
         GList *li = g_list_reporters;
@@ -1146,6 +1148,10 @@ static gint next_page_no(gint current_page_no, gpointer data)
 {
  again:
     current_page_no++;
+    /* we don't need any magic here if we're in only-report mode */
+    if (g_report_only)
+        return current_page_no;
+
     switch (current_page_no)
     {
 #if 0
@@ -1253,7 +1259,7 @@ static void create_details_treeview()
 /* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
 #include "wizard_glade.c"
 
-static void add_pages(void)
+static void add_pages()
 {
     GError *error = NULL;
     if (!g_glade_file)
@@ -1275,13 +1281,24 @@ static void add_pages(void)
     }
 
     int i;
+    int page_no = 0;
     for (i = 0; page_names[i] != NULL; i++)
     {
+        char *delim = strrchr(page_names[i], '_');
+        if(delim != NULL)
+        {
+            if (g_report_only && (strncmp(delim+1, "report", strlen("report"))) != 0)
+            {
+                pages[i].page_widget = NULL;
+                continue;
+            }
+        }
         GtkWidget *page = GTK_WIDGET(gtk_builder_get_object(builder, page_names[i]));
         if (page == NULL)
             continue;
 
         pages[i].page_widget = page;
+        added_pages[page_no++] = &pages[i];
 
         gtk_assistant_append_page(g_assistant, page);
         /* If we set all pages to complete the wizard thinks there is nothing
@@ -1327,8 +1344,9 @@ static void add_pages(void)
     //gtk_widget_hide(g_widget_warnings_area);
 
     //gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_REPORTER_SELECTOR].page_widget, false);
-    gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
-                gtk_toggle_button_get_active(g_tb_approve_bt));
+    if (pages[PAGENO_BACKTRACE_APPROVAL].page_widget != NULL)
+        gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
+                    gtk_toggle_button_get_active(g_tb_approve_bt));
 
     /* configure btn on select analyzers page */
     GtkWidget *config_btn = GTK_WIDGET(gtk_builder_get_object(builder, "button_cfg1"));
@@ -1341,7 +1359,7 @@ static void add_pages(void)
         g_signal_connect(G_OBJECT(config_btn), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
 }
 
-void create_assistant()
+void create_assistant(void)
 {
     monospace_font = pango_font_description_from_string("monospace");
 
@@ -1385,8 +1403,9 @@ void create_assistant()
     gtk_text_buffer_create_tag(backtrace_buf, "search_result_bg", "background", "red", NULL);
     g_signal_connect(g_search_entry_bt, "changed", G_CALLBACK(search_timeout), NULL);
 
-    gtk_assistant_set_page_complete(g_assistant,
-                pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
-                gtk_toggle_button_get_active(g_tb_approve_bt)
+    if (pages[PAGENO_BACKTRACE_APPROVAL].page_widget != NULL)
+        gtk_assistant_set_page_complete(g_assistant,
+                    pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
+                    gtk_toggle_button_get_active(g_tb_approve_bt)
     );
 }
