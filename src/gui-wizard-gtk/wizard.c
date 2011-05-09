@@ -849,9 +849,14 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                 /* Unfreeze assistant
                  * we can't allow user to continue if analyze action fails
                  * i.e: if gdb fails to generate backtrace
-                */
+//TODO: generic solution instead of special-casing on event name!
+                 */
                 if (retval == 0 || (strncmp(evd->event_name, "analyze", strlen("analyze")) != 0))
+                {
                     gtk_assistant_set_page_complete(g_assistant, evd->page_widget, true);
+                }
+                /* Enable (un-gray out) navigation buttons */
+                gtk_widget_set_sensitive(GTK_WIDGET(g_assistant), true);
 
                 /*g_source_remove(evd->event_source_id);*/
                 close(evd->fd);
@@ -960,6 +965,8 @@ static void start_event_run(const char *event_name,
 
     /* Freeze assistant so it can't move away from the page until event run is done */
     gtk_assistant_set_page_complete(g_assistant, page, false);
+    /* Disable (gray out) navigation buttons */
+    gtk_widget_set_sensitive(GTK_WIDGET(g_assistant), false);
 }
 
 
