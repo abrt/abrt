@@ -288,7 +288,7 @@ if __name__ == "__main__":
     else:
         LOG.write("OK\n")
 
-    # publish bactkrace and log
+    # publish backtrace and log
     set_status(STATUS_FINISHING)
 
     try:
