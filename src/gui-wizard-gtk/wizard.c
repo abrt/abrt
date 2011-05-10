@@ -447,15 +447,13 @@ static void report_tb_was_toggled(GtkButton *button_unused, gpointer user_data_u
  * Add new {radio/check}buttons to GtkBox for each EVENTn (type depends on bool radio).
  * Remember them in GList **p_event_list (list of event_gui_data_t's).
  * Set "toggled" callback on each button to given GCallback if it's not NULL.
- * If prev_selected_event_name == EVENTn, set this button as active. In this case return NULL.
- * Else return 1st button created (or NULL if none created).
+ * Return active button (or NULL if none created).
  */
 static event_gui_data_t *add_event_buttons(GtkBox *box,
                 GList **p_event_list,
                 char *event_name,
                 GCallback func,
-                bool radio,
-                const char *prev_selected_event_name)
+                bool radio)
 {
     //VERB2 log("removing all buttons from box %p", box);
     gtk_container_foreach(GTK_CONTAINER(box), &remove_child_widget, NULL);
@@ -547,10 +545,8 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
         if (!first_button)
             first_button = event_gui_data;
 
-        if ((radio && !prev_selected_event_name && !active_button && !green_choice)
-         || (prev_selected_event_name && strcmp(prev_selected_event_name, event_name) == 0)
-        ) {
-            prev_selected_event_name = NULL;
+        if (radio && !green_choice && !active_button)
+        {
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), true);
             active_button = event_gui_data;
         }
@@ -666,7 +662,7 @@ void update_gui_state_from_problem_data(void)
     /* Update analyze radio buttons */
     event_gui_data_t *active_button = add_event_buttons(g_box_analyzers, &g_list_analyzers,
                 g_analyze_events, G_CALLBACK(analyze_rb_was_toggled),
-                /*radio:*/ true, /*prev:*/ g_analyze_event_selected
+                /*radio:*/ true
     );
     /* Update the value of currently selected analyzer */
     if (active_button)
@@ -692,7 +688,7 @@ void update_gui_state_from_problem_data(void)
     /* Delete old checkboxes and create new ones */
     add_event_buttons(g_box_reporters, &g_list_reporters,
                 g_report_events, /*callback:*/ G_CALLBACK(report_tb_was_toggled),
-                /*radio:*/ false, /*prev:*/ NULL
+                /*radio:*/ false
     );
     /* Re-select new reporters which were selected before we deleted them */
     GList *li_new = g_list_reporters;
@@ -1130,7 +1126,7 @@ static void on_btn_refresh_clicked(GtkButton *button)
 static void next_page(GtkAssistant *assistant, gpointer user_data)
 {
     /* page_no is actually the previous page, because this
-     * function is called before assistant goes to the next_page
+     * function is called before assistant goes to the next page
      */
     int page_no = gtk_assistant_get_current_page(assistant);
     VERB2 log("page_no:%d", page_no);
@@ -1210,7 +1206,7 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
     }
 }
 
-static gint next_page_no(gint current_page_no, gpointer data)
+static gint select_next_page_no(gint current_page_no, gpointer data)
 {
     /* we don't need any magic here if we're in only-report mode */
     if (g_report_only)
@@ -1224,14 +1220,14 @@ static gint next_page_no(gint current_page_no, gpointer data)
 #if 0
     case PAGENO_COMMENT:
         if (get_problem_item_content_or_NULL(g_cd, FILENAME_COMMENT))
-            break;
-        goto again; /* no comment, skip next page */
+            goto again; /* no comment, skip this page */
+        break;
 #endif
 
     case PAGENO_BACKTRACE_APPROVAL:
-        if (get_problem_item_content_or_NULL(g_cd, FILENAME_BACKTRACE))
-            break;
-        goto again; /* no backtrace, skip next page */
+        if (!get_problem_item_content_or_NULL(g_cd, FILENAME_BACKTRACE))
+            goto again; /* no backtrace, skip this page */
+        break;
 
     case PAGENO_ANALYZE_SELECTOR:
         if (!g_analyze_events[0] || g_black_event_count == 0)
@@ -1243,12 +1239,25 @@ static gint next_page_no(gint current_page_no, gpointer data)
         break;
 
     case PAGENO_ANALYZE_PROGRESS:
-        VERB2 log("g_analyze_event_selected:'%s'", g_analyze_event_selected);
+        VERB2 log("%s: ANALYZE_PROGRESS: g_analyze_event_selected:'%s'",
+                        __func__, g_analyze_event_selected);
 	if (!g_analyze_event_selected || !g_analyze_event_selected[0])
+            goto again; /* skip this page */
+        break;
+
+    case PAGENO_REPORTER_SELECTOR:
+        VERB2 log("%s: REPORTER_SELECTOR: g_black_event_count:%d",
+                        __func__, g_black_event_count);
+        if (g_black_event_count != 0)
+        {
+            /* Still have analyzers which didn't run? Go back */
+            current_page_no = PAGENO_ANALYZE_SELECTOR-1;
             goto again;
+        }
+        break;
     }
 
-    VERB2 log("next page_no:%d", current_page_no);
+    VERB2 log("%s: selected page #%d", __func__, current_page_no);
     return current_page_no;
 }
 
@@ -1440,7 +1449,7 @@ void create_assistant(void)
 
     g_assistant = GTK_ASSISTANT(gtk_assistant_new());
 
-    gtk_assistant_set_forward_page_func(g_assistant, next_page_no, NULL, NULL);
+    gtk_assistant_set_forward_page_func(g_assistant, select_next_page_no, NULL, NULL);
 
     GtkWindow *wnd_assistant = GTK_WINDOW(g_assistant);
     g_parent_window = wnd_assistant;

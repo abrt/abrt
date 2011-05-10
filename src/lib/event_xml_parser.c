@@ -329,7 +329,7 @@ static void text(GMarkupParseContext *context,
         }
         if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
         {
-            VERB2 log("event description:'%s'", text_copy);
+            VERB3 log("event description:'%s'", text_copy);
 
             if (parse_data->attribute_lang != NULL) /* if it isn't for other locale */
             {
@@ -347,7 +347,7 @@ static void text(GMarkupParseContext *context,
         }
         if (strcmp(inner_element, LONG_DESCR_ELEMENT) == 0)
         {
-            VERB2 log("event long description:'%s'", text_copy);
+            VERB3 log("event long description:'%s'", text_copy);
 
             if (parse_data->attribute_lang != NULL) /* if it isn't for other locale */
             {
