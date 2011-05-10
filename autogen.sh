@@ -23,3 +23,6 @@ autoconf --force || exit 1
 
 echo "Running automake..."
 automake --add-missing --force --copy || exit 1
+
+echo "Running gen-version"
+./gen-version

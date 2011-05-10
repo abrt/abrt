@@ -1,5 +1,5 @@
 AC_INIT([abrt],
-	m4_esyscmd([./gen-version]),
+	m4_esyscmd([cat ./abrt-version]),
 	[crash-catcher@fedorahosted.org])
 
 AC_CONFIG_MACRO_DIR([m4])
