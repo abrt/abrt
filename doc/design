@@ -71,8 +71,8 @@ can trigger their initial ("post-create") processing themselves]
 
 Crashes conceptually go through "events" in their lives.
 Apart from "post-create" event decribed above, they may have
-"analyze" event, "reanalyze" event, "report[_FOO]" events,
-ans arbitrarily-named other events.
+"analyze" event, "report[_FOO]" events,
+and arbitrarily-named other events.
 abrt-handle-crashdump tool can be used to "run" an event on a directory,
 or to query list of possible events for a directory.
 /etc/abrt/abrt_event.conf file describes what should be done on each event.

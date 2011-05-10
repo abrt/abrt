@@ -36,6 +36,7 @@ typedef struct event_gui_data_t
 static GtkAssistant *g_assistant;
 
 static char *g_analyze_event_selected;
+static unsigned g_black_event_count = 0;
 
 static GtkBox *g_box_analyzers;
 /* List of event_gui_data's */
@@ -403,11 +404,12 @@ static gint find_by_button(gconstpointer a, gconstpointer button)
 
 static void analyze_rb_was_toggled(GtkButton *button, gpointer user_data)
 {
+    free(g_analyze_event_selected);
+    g_analyze_event_selected = NULL;
     GList *found = g_list_find_custom(g_list_analyzers, button, find_by_button);
     if (found)
     {
         event_gui_data_t *evdata = found->data;
-        free(g_analyze_event_selected);
         g_analyze_event_selected = xstrdup(evdata->event_name);
     }
 }
@@ -461,6 +463,9 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
     g_list_free(*p_event_list);
     *p_event_list = NULL;
 
+    if (radio)
+        g_black_event_count = 0;
+
     bool have_activated_btn = false;
     event_gui_data_t *first_button = NULL;
     while (event_name[0])
@@ -475,7 +480,10 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
             event_screen_name++;
         else
             event_screen_name = event_name;
+///vda
         const char *event_description = NULL;
+        char *tmp_description = NULL;
+        bool green_choice = false;
         event_config_t *cfg = get_event_config(event_name);
         if (cfg)
         {
@@ -483,7 +491,17 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
             if (cfg->screen_name)
                 event_screen_name = cfg->screen_name;
             event_description = cfg->description;
+            if (cfg->creates_elements)
+            {
+                if (get_problem_data_item_or_NULL(g_cd, cfg->creates_elements))
+                {
+                    green_choice = true;
+                    event_description = tmp_description = xasprintf("(not needed, %s already exists)", cfg->creates_elements);
+                }
+            }
         }
+        if (radio && !green_choice)
+            g_black_event_count++;
 
         //VERB2 log("adding button '%s' to box %p", event_name, box);
         char *event_label = xasprintf("%s%s%s",
@@ -491,6 +509,8 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
                         (event_description ? " - " : ""),
                         event_description ? event_description : ""
         );
+        free(tmp_description);
+
         GtkWidget *button = radio
                 ? gtk_radio_button_new_with_label_from_widget(
                         (first_button ? GTK_RADIO_BUTTON(first_button->toggle_button) : NULL),
@@ -498,6 +518,20 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
                   )
                 : gtk_check_button_new_with_label(event_label);
         free(event_label);
+
+        if (green_choice)
+        {
+            //static const GdkColor red = { .red = 0xffff };
+            //gtk_widget_modify_text(button, GTK_STATE_NORMAL, &red);
+            GtkWidget *child = gtk_bin_get_child(GTK_BIN(button));
+            if (child)
+            {
+                static const GdkColor green = { .green = 0x7fff };
+                gtk_widget_modify_fg(child, GTK_STATE_NORMAL, &green);
+                gtk_widget_modify_fg(child, GTK_STATE_ACTIVE, &green);
+                gtk_widget_modify_fg(child, GTK_STATE_PRELIGHT, &green);
+            }
+        }
         if (func)
             g_signal_connect(G_OBJECT(button), "toggled", func, NULL);
         if (cfg->long_descr)
@@ -511,19 +545,48 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
         if (!first_button)
             first_button = event_gui_data;
 
-        if (prev_selected && strcmp(prev_selected, event_name) == 0)
-        {
+        if ((radio && !prev_selected && !have_activated_btn && !green_choice)
+         || (prev_selected && strcmp(prev_selected, event_name) == 0)
+        ) {
+            prev_selected = NULL;
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), true);
             have_activated_btn = true;
-            prev_selected = NULL;
         }
 
         *event_name_end = '\n';
         event_name = event_name_end + 1;
 
         gtk_box_pack_start(box, button, /*expand*/ false, /*fill*/ false, /*padding*/ 0);
-
     }
+
+    if (radio)
+    {
+        GtkWidget *button = radio
+            ? gtk_radio_button_new_with_label_from_widget(
+                    (first_button ? GTK_RADIO_BUTTON(first_button->toggle_button) : NULL),
+                    "Don't do anything"
+              )
+            : gtk_check_button_new_with_label("Don't do anything");
+        if (func)
+            g_signal_connect(G_OBJECT(button), "toggled", func, NULL);
+
+        event_gui_data_t *event_gui_data = new_event_gui_data_t();
+        event_gui_data->event_name = xstrdup("");
+        event_gui_data->toggle_button = GTK_TOGGLE_BUTTON(button);
+        *p_event_list = g_list_append(*p_event_list, event_gui_data);
+
+        if (!first_button)
+            first_button = event_gui_data;
+
+        if (g_black_event_count == 0 && !have_activated_btn)
+        {
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), true);
+            have_activated_btn = true;
+        }
+
+        gtk_box_pack_start(box, button, /*expand*/ false, /*fill*/ false, /*padding*/ 0);
+    }
+
     return (have_activated_btn ? NULL : first_button);
 }
 
@@ -652,7 +715,7 @@ void update_gui_state_from_problem_data(void)
      */
     gtk_widget_show_all(GTK_WIDGET(g_assistant));
 
-    if (g_reanalyze_events[0])
+    if (g_analyze_events[0])
         gtk_widget_show(GTK_WIDGET(g_btn_refresh));
     else
         gtk_widget_hide(GTK_WIDGET(g_btn_refresh));
@@ -1047,19 +1110,14 @@ static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_da
 
 static void on_btn_refresh_clicked(GtkButton *button)
 {
-    if (g_reanalyze_events[0])
-    {
-        /* Save backtrace text if changed */
-        save_text_from_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
+    /* Save backtrace text if changed */
+    save_text_from_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
 
-        g_analyze_events = append_to_malloced_string(g_analyze_events, g_reanalyze_events);
-        g_reanalyze_events[0] = '\0';
-        /* Refresh GUI so that we see new analyze+reanalyze buttons */
-        update_gui_state_from_problem_data();
+    /* Refresh GUI so that we see new analyze buttons */
+    update_gui_state_from_problem_data();
 
-        /* Change page to analyzer selector - let user play with them */
-        gtk_assistant_set_current_page(g_assistant, PAGENO_ANALYZE_SELECTOR);
-    }
+    /* Change page to analyzer selector - let user play with them */
+    gtk_assistant_set_current_page(g_assistant, PAGENO_ANALYZE_SELECTOR);
 }
 
 
@@ -1075,6 +1133,7 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
 
     if (added_pages[page_no]->name == PAGE_ANALYZE_SELECTOR
      && g_analyze_event_selected != NULL
+     && g_analyze_event_selected[0]
     ) {
         start_event_run(g_analyze_event_selected,
                 NULL,
@@ -1146,11 +1205,12 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
 
 static gint next_page_no(gint current_page_no, gpointer data)
 {
- again:
-    current_page_no++;
     /* we don't need any magic here if we're in only-report mode */
     if (g_report_only)
-        return current_page_no;
+        return current_page_no + 1;
+
+ again:
+    current_page_no++;
 
     switch (current_page_no)
     {
@@ -1167,12 +1227,17 @@ static gint next_page_no(gint current_page_no, gpointer data)
         goto again; /* no backtrace, skip next page */
 
     case PAGENO_ANALYZE_SELECTOR:
-        if (!g_analyze_events[0])
+        if (!g_analyze_events[0] || g_black_event_count == 0)
         {
-            //TODO: if (!g_reporter_events[0]) /* no reporters available */ then what?
-            return PAGENO_REPORTER_SELECTOR; /* skip analyze pages */
+            /* skip analyze selector page and analyze log page */
+            current_page_no = PAGENO_REPORTER_SELECTOR-1;
+            goto again;
         }
         break;
+
+    case PAGENO_ANALYZE_PROGRESS:
+	if (!g_analyze_event_selected || !g_analyze_event_selected[0])
+            goto again;
     }
 
     VERB2 log("next page_no:%d", current_page_no);

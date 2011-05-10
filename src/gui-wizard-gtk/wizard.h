@@ -24,7 +24,6 @@ void show_error_as_msgbox(const char *msg);
 extern char *g_glade_file;
 extern char *g_dump_dir_name;
 extern char *g_analyze_events;
-extern char *g_reanalyze_events;
 extern char *g_report_events;
 extern problem_data_t *g_cd;
 extern int g_report_only;

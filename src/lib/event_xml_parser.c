@@ -25,6 +25,7 @@
 #define LONG_DESCR_ELEMENT      "long-description"
 #define ALLOW_EMPTY_ELEMENT     "allow-empty"
 #define NOTE_HTML_ELEMENT       "note-html"
+#define CREATES_ELEMENT         "creates-elements"
 #define OPTION_ELEMENT          "option"
 //#define ACTION_ELEMENT        "action"
 #define NAME_ELEMENT            "name"
@@ -297,11 +298,18 @@ static void text(GMarkupParseContext *context,
         if (strcmp(inner_element, ACTION_ELEMENT) == 0)
         {
             VERB2 log("action description:'%s'", text_copy);
-            free(ui->eo_action);
-            ui->eo_action = text_copy;
+            free(ui->action);
+            ui->action = text_copy;
             return;
         }
         */
+        if (strcmp(inner_element, CREATES_ELEMENT) == 0)
+        {
+            VERB2 log("creates_elements:'%s'", text_copy);
+            free(ui->creates_elements);
+            ui->creates_elements = text_copy;
+            return;
+        }
         if (strcmp(inner_element, NAME_ELEMENT) == 0)
         {
             if (parse_data->attribute_lang != NULL) /* if it isn't for other locale */

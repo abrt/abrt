@@ -28,7 +28,6 @@
 char *g_glade_file = NULL;
 char *g_dump_dir_name = NULL;
 char *g_analyze_events = NULL;
-char *g_reanalyze_events = NULL;
 char *g_report_events = NULL;
 int g_report_only = false;
 problem_data_t *g_cd;
@@ -38,7 +37,6 @@ void reload_problem_data_from_dump_dir(void)
 {
     free_problem_data(g_cd);
     free(g_analyze_events);
-    free(g_reanalyze_events);
     free(g_report_events);
 
     struct dump_dir *dd = dd_opendir(g_dump_dir_name, DD_OPEN_READONLY);
@@ -49,7 +47,6 @@ void reload_problem_data_from_dump_dir(void)
     add_to_problem_data_ext(g_cd, CD_DUMPDIR, g_dump_dir_name, CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
 
     g_analyze_events = list_possible_events(dd, NULL, "analyze");
-    g_reanalyze_events = list_possible_events(dd, NULL, "reanalyze");
     g_report_events = list_possible_events(dd, NULL, "report");
     dd_close(dd);
 

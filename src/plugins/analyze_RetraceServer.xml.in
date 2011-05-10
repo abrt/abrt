@@ -6,6 +6,7 @@
     Pros: no need for debuginfo downloads. Retrace server's database of debuginfos is more complete. Retrace server may generate better backtraces.
     Cons: coredump you upload contains all the data from the crashed program, including your private data, if any.
     </_long-description>
+    <creates-elements>backtrace</creates-elements>
     <options>
         <option type="text" name="RETRACE_SERVER_URL">
            <_label>Retrace server URL</_label>

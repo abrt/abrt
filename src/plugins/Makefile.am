@@ -102,10 +102,6 @@ EXTRA_DIST = \
 $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'
 
-install-data-hook: $(DESTDIR)/$(DEBUG_INFO_DIR)
-	$(LN_S) -f analyze_RetraceServer.xml $(DESTDIR)$(eventsdir)/reanalyze_RetraceServer.xml
-	$(LN_S) -f analyze_LocalGDB.xml $(DESTDIR)$(eventsdir)/reanalyze_LocalGDB.xml
-
 abrt_dump_oops_SOURCES = \
     abrt-dump-oops.c
 abrt_dump_oops_CPPFLAGS = \
