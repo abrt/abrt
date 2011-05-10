@@ -56,7 +56,6 @@ dist_eventsconf_DATA = \
 
 man_MANS = \
     abrt-KerneloopsReporter.7 \
-    abrt-Logger.7 \
     abrt-Upload.7 \
     abrt-plugins.7
 
