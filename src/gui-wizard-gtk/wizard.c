@@ -497,7 +497,7 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
                 if (get_problem_data_item_or_NULL(g_cd, cfg->creates_elements))
                 {
                     green_choice = true;
-                    event_description = tmp_description = xasprintf("(not needed, %s already exists)", cfg->creates_elements);
+                    event_description = tmp_description = xasprintf(_("(not needed, '%s' already exists)"), cfg->creates_elements);
                 }
             }
         }

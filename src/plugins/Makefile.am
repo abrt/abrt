@@ -40,7 +40,7 @@ dist_events_DATA = \
     report_Logger.conf \
     analyze_LocalGDB.xml \
     analyze_RetraceServer.xml \
-    analyze_var_log_messages.xml \
+    analyze_xsession_errors.xml \
     report_Mailx.xml \
     report_RHTSupport.xml \
     report_Kerneloops.xml
@@ -91,7 +91,7 @@ EXTRA_DIST = \
     $(MAN_TXT) \
     $(PYTHON_FILES) \
     $(man1_MANS) \
-    analyze_var_log_messages.xml.in \
+    analyze_xsession_errors.xml.in \
     analyze_LocalGDB.xml.in \
     analyze_RetraceServer.xml.in \
     report_Bugzilla.xml.in \
