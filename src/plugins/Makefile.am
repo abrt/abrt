@@ -72,7 +72,7 @@ MAN_TXT = \
 man1_MANS = ${MAN_TXT:%.txt=%.1}
 
 %.1 %.5 %.7: %.xml
-	$(XMLTO_SILENT) xmlto man $< > /dev/null
+	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
 
 %.xml: %.txt ../../asciidoc.conf
 	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -aabrt_version=$(PACKAGE_VERSION) -o $@ $<
