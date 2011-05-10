@@ -1,4 +1,7 @@
 #! /bin/sh
+echo "Running gen-version"
+./gen-version
+
 mkdir -p m4
 echo "Creating m4/aclocal.m4 ..."
 test -r m4/aclocal.m4 || touch m4/aclocal.m4
@@ -24,5 +27,3 @@ autoconf --force || exit 1
 echo "Running automake..."
 automake --add-missing --force --copy || exit 1
 
-echo "Running gen-version"
-./gen-version
