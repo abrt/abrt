@@ -55,7 +55,6 @@ dist_eventsconf_DATA = \
     rhtsupport_events.conf
 
 man_MANS = \
-    abrt-Bugzilla.7 \
     abrt-KerneloopsReporter.7 \
     abrt-Logger.7 \
     abrt-Mailx.7 \
@@ -91,6 +90,7 @@ EXTRA_DIST = \
     $(man_MANS) \
     $(MAN_TXT) \
     $(PYTHON_FILES) \
+    $(man1_MANS) \
     report_Bugzilla.xml.in \
     report_Bugzilla.conf \
     report_Logger.conf \
