@@ -65,13 +65,14 @@ MAN_TXT = \
     abrt-action-generate-backtrace.txt \
     abrt-action-analyze-backtrace.txt \
     abrt-action-mailx.txt \
-    abrt-action-bugzilla.txt
+    abrt-action-bugzilla.txt \
+    abrt-action-list-dsos.txt
 
 # Manual pages are generated from .txt via Docbook
 man1_MANS = ${MAN_TXT:%.txt=%.1}
 
 %.1 %.5 %.7: %.xml
-	$(XMLTO_SILENT) xmlto man $< > /dev/null 2>&1
+	$(XMLTO_SILENT) xmlto man $< > /dev/null
 
 %.xml: %.txt ../../asciidoc.conf
 	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -aabrt_version=$(PACKAGE_VERSION) -o $@ $<
