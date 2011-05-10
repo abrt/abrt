@@ -56,16 +56,16 @@ static const char *const option_types[] =
 static char *get_element_lang(struct my_parse_data *parse_data, const gchar **att_names, const gchar **att_values)
 {
     char *short_locale_end = strchr(parse_data->cur_locale, '_');
-    VERB2 log("locale: %s", parse_data->cur_locale);
+    VERB3 log("locale: %s", parse_data->cur_locale);
     int i;
     for (i = 0; att_names[i] != NULL; ++i)
     {
-        VERB2 log("attr: %s:%s", att_names[i], att_values[i]);
+        VERB3 log("attr: %s:%s", att_names[i], att_values[i]);
         if (strcmp(att_names[i], "xml:lang") == 0)
         {
             if (strcmp(att_values[i], parse_data->cur_locale) == 0)
             {
-                VERB2 log("found translation for: %s", parse_data->cur_locale);
+                VERB3 log("found translation for: %s", parse_data->cur_locale);
                 return xstrdup(att_values[i]);
             }
 
@@ -75,7 +75,7 @@ static char *get_element_lang(struct my_parse_data *parse_data, const gchar **at
             if (short_locale_end
              && strncmp(att_values[i], parse_data->cur_locale, short_locale_end - parse_data->cur_locale) == 0
             ) {
-                VERB2 log("found translation for shortlocale: %s", parse_data->cur_locale);
+                VERB3 log("found translation for shortlocale: %s", parse_data->cur_locale);
                 return xstrndup(att_values[i], short_locale_end - parse_data->cur_locale);
             }
         }

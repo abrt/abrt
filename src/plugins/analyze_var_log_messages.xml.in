@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<event>
+    <name>Collect /var/log/messages</name>
+    <_description>Save relevant lines in /var/log/messages</_description>
+    <_long-description>
+    Scans through /var/log/messages file and saves those lines which contain executable's name.
+    The result is saved as 'var_log_messages' element.
+    </_long-description>
+    <creates-elements>var_log_messages</creates-elements>
+</event>
