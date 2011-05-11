@@ -103,7 +103,7 @@ static int create_archive(bool unlink_temp)
         xmove_fd(tar_xz_pipe[0], STDIN_FILENO);
         xdup2(tempfd, STDOUT_FILENO);
         execvp(xz_args[0], (char * const*)xz_args);
-	perror_msg("Can't execute '%s'", xz_args[0]);
+        perror_msg("Can't execute '%s'", xz_args[0]);
     }
 
     close(tar_xz_pipe[0]);
@@ -130,7 +130,7 @@ static int create_archive(bool unlink_temp)
         xmove_fd(xopen("/dev/null", O_RDWR), STDIN_FILENO);
         xmove_fd(tar_xz_pipe[1], STDOUT_FILENO);
         execvp(tar_args[0], (char * const*)tar_args);
-	perror_msg("Can't execute '%s'", tar_args[0]);
+        perror_msg("Can't execute '%s'", tar_args[0]);
     }
 
     close(tar_xz_pipe[1]);
