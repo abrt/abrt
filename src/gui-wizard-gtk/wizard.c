@@ -541,7 +541,7 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
         event_gui_data_t *event_gui_data = new_event_gui_data_t();
         event_gui_data->event_name = xstrdup(event_name);
         event_gui_data->toggle_button = GTK_TOGGLE_BUTTON(button);
-	*p_event_list = g_list_append(*p_event_list, event_gui_data);
+        *p_event_list = g_list_append(*p_event_list, event_gui_data);
 
         if (!first_button)
             first_button = event_gui_data;
@@ -1230,6 +1230,8 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
     if (g_report_only)
         return current_page_no + 1;
 
+    gint prev_page_no = current_page_no;
+
  again:
     current_page_no++;
 
@@ -1259,16 +1261,20 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
     case PAGENO_ANALYZE_PROGRESS:
         VERB2 log("%s: ANALYZE_PROGRESS: g_analyze_event_selected:'%s'",
                         __func__, g_analyze_event_selected);
-	if (!g_analyze_event_selected || !g_analyze_event_selected[0])
+        if (!g_analyze_event_selected || !g_analyze_event_selected[0])
             goto again; /* skip this page */
         break;
 
     case PAGENO_REPORTER_SELECTOR:
         VERB2 log("%s: REPORTER_SELECTOR: g_black_event_count:%d",
                         __func__, g_black_event_count);
-        if (g_black_event_count != 0)
-        {
-            /* Still have analyzers which didn't run? Go back */
+        /* if we _did_ run an event (didn't skip it)
+         * and still have analyzers which didn't run
+         */
+        if (prev_page_no == PAGENO_ANALYZE_PROGRESS
+         && g_black_event_count != 0
+        ) {
+            /* Go back to analyzer selectors */
             current_page_no = PAGENO_ANALYZE_SELECTOR-1;
             goto again;
         }
