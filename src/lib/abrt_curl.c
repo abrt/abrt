@@ -246,7 +246,7 @@ abrt_post(abrt_post_state_t *state,
         if (basename) basename++;
         else basename = data;
 #if 0
-	// Simple way, without custom reader function
+        // Simple way, without custom reader function
         CURLFORMcode curlform_err = curl_formadd(&post, &last,
                         CURLFORM_PTRNAME, "file", // element name
                         CURLFORM_FILE, data, // filename to read from

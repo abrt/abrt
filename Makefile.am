@@ -5,7 +5,7 @@ DISTCHECK_CONFIGURE_FLAGS = \
         --with-systemdsystemunitdir=$$dc_install_base/$(systemdsystemunitdir)
 
 EXTRA_DIST = doc/coding-style abrt.spec.in abrt.pc.in doc/abrt-plugin/ doc/howto-write-reporter \
-	gen-version asciidoc.conf
+	abrt-version asciidoc.conf
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = abrt.pc
@@ -17,14 +17,14 @@ RPM_DIRS = --define "_sourcedir `pwd`" \
 	   --define "_srcrpmdir `pwd`"
 
 rpm:
-	autoconf --force
 	./gen-version
+	autoconf --force
 	$(MAKE) dist
 	rpmbuild $(RPM_DIRS) -ba abrt.spec
 
 srpm:
-	autoconf --force
 	./gen-version
+	autoconf --force
 	$(MAKE) dist
 	rpmbuild $(RPM_DIRS) -bs abrt.spec
 

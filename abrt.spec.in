@@ -25,7 +25,7 @@ BuildRequires: rpm-devel >= 4.6
 BuildRequires: desktop-file-utils
 BuildRequires: libnotify-devel
 BuildRequires: xmlrpc-c-devel
-BuildRequires: file-devel
+#why? BuildRequires: file-devel
 BuildRequires: python-devel
 BuildRequires: gettext
 BuildRequires: libxml2-devel
@@ -393,19 +393,16 @@ fi
 
 %post gui
 # update icon cache
-touch --no-create %{_datadir}/icons/hicolor || :
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-    %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-fi
+touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
 %post libs -p /sbin/ldconfig
 
 %postun libs -p /sbin/ldconfig
 
 %postun gui
-touch --no-create %{_datadir}/icons/hicolor || :
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-    %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+if [ $1 -eq 0 ] ; then
+    touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 fi
 
 %posttrans
@@ -441,6 +438,8 @@ if [ "$1" -eq "0" ]; then
 fi
 %endif
 
+%posttrans gui
+gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
@@ -540,12 +539,12 @@ fi
 %{_bindir}/abrt-action-list-dsos.py*
 %{_sysconfdir}/%{name}/events.d/ccpp_events.conf
 %{_sysconfdir}/%{name}/events/analyze_LocalGDB.xml
-%{_sysconfdir}/%{name}/events/reanalyze_LocalGDB.xml
 %{_sysconfdir}/%{name}/events/analyze_RetraceServer.xml
-%{_sysconfdir}/%{name}/events/reanalyze_RetraceServer.xml
+%{_sysconfdir}/%{name}/events/analyze_xsession_errors.xml
 %{_mandir}/man*/abrt-action-trim-files.*
 %{_mandir}/man*/abrt-action-generate-backtrace.*
 %{_mandir}/man*/abrt-action-analyze-backtrace.*
+%{_mandir}/man*/abrt-action-list-dsos.*
 
 %files addon-kerneloops
 %defattr(-,root,root,-)
@@ -561,7 +560,6 @@ fi
 %files plugin-logger
 %defattr(-,root,root,-)
 %{_sysconfdir}/%{name}/events/report_Logger.conf
-%{_mandir}/man7/abrt-Logger.7.gz
 %{_bindir}/abrt-action-print
 %{_mandir}/man*/abrt-action-print.*
 
@@ -569,7 +567,6 @@ fi
 %defattr(-,root,root,-)
 %{_sysconfdir}/%{name}/events/report_Mailx.xml
 %config(noreplace) %{_sysconfdir}/%{name}/events.d/mailx_events.conf
-%{_mandir}/man7/abrt-Mailx.7.gz
 %{_mandir}/man*/abrt-action-mailx.*
 %{_bindir}/abrt-action-mailx
 
@@ -579,7 +576,7 @@ fi
 %{_sysconfdir}/%{name}/events/report_Bugzilla.xml
 %config(noreplace) %{_sysconfdir}/%{name}/events/report_Bugzilla.conf
 # FIXME: remove with the old gui
-%{_mandir}/man7/abrt-Bugzilla.7.gz
+%{_mandir}/man1/abrt-action-bugzilla.1.gz
 %{_bindir}/abrt-action-bugzilla
 
 %files plugin-rhtsupport

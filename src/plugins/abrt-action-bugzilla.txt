@@ -1,0 +1,96 @@
+abrt-action-buzilla(1)
+====================
+
+NAME
+----
+abrt-action-bugzilla - Sends problem information to bugzilla.
+
+SYNOPSIS
+--------
+'abrt-action-bugzilla' [-v] [-c CONFFILE] -d DIR
+
+DESCRIPTION
+-----------
+The tool reads a problem dump direcotry. Firstly, the tool is trying to find
+duplication of bug. If duplication is 'not' found, then a new bug is created.
+Otherwise if duplication 'is' found and bug is closed as duplication of the
+other bug, than, so called, 'hoping' begin. It means, that tool is going to try
+track the origin bug.
+
+Example of bug stages are:
+------------
+CLOSED DUPLICATE -> CLOSED DUPLICATE -> NEW
+------------
+Third one is the origin of the same problem. The tool adds a new comment to bug,
+logouts from bugzilla and return link to bug.
+
+Properties of bugzilla can be specified in a configuration file,
+and via environment variables.
+
+Configuration file
+~~~~~~~~~~~~~~~~~~
+Configuration file contains entries in a format "Option = Value".
+
+The options are:
+
+'Login'::
+	Login to Bugzilla account.
+
+'Password'::
+	Password to Bugzilla account.
+
+'BugzillaURL'::
+	Bugzilla http address. (default: https://bugzilla.redht.com)
+
+'SSLVerify'::
+	Use yes/true/on/1 to verify Bugzilla ssl certificate. (default: yes)
+
+Integration with ABRT events
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'abrt-action-bugzilla' can be used as a reporter, to allow users report
+problems to bugzilla when they decide to do it. This usage is
+pre-configured in /etc/abrt/events.d/ccpp_events.conf and
+/etc/abrt/abrt_events.conf.
+
+For python problems (/etc/abrt/abrt_events.conf)
+------------
+EVENT=report_Bugzilla analyzer=Python
+      abrt-action-bugzilla -c /etc/abrt/plugins/Bugzilla.conf
+------------
+
+For C/C++ problems (/etc/abrt/events.d/ccpp_events.conf)
+------------
+EVENT=report_Bugzilla analyzer=CCpp
+      abrt-action-bugzilla -c /etc/abrt/plugins/Bugzilla.conf
+------------
+
+OPTIONS
+-------
+-d DIR::
+   Path to dump directory.
+
+-c CONFFILE::
+   Path to configration file. When used in ABRT event system, the file
+   contains site-wide configuration. Users can change the values via
+   environment variables.
+
+ENVIRONMENT VARIABLES
+---------------------
+Environment variables take precedence over values provided in
+the configuration file.
+
+'Bugzilla_Login'::
+	Login to Bugzilla account.
+
+'Bugzilla_Password'::
+	Password to Bugzilla account.
+
+'Bugzilla_BugzillaURL'::
+	Bugzilla http address. (default: https://bugzilla.redht.com)
+
+'Bugzilla_SSLVerify'::
+	Use yes/true/on/1 to verify Bugzilla ssl certificate. (default: yes)
+
+AUTHORS
+-------
+* ABRT team

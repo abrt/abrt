@@ -118,7 +118,7 @@ char *xmalloc_fgetline(FILE *file);
 
 /* On error, copyfd_XX prints error messages and returns -1 */
 enum {
-	COPYFD_SPARSE = 1 << 0,
+        COPYFD_SPARSE = 1 << 0,
 };
 #define copyfd_eof abrt_copyfd_eof
 off_t copyfd_eof(int src_fd, int dst_fd, int flags);

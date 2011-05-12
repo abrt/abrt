@@ -30,7 +30,7 @@ static PyMethodDef module_methods[] = {
     { NULL }
 };
 
-#ifndef PyMODINIT_FUNC	/* declarations for DLL import/export */
+#ifndef PyMODINIT_FUNC /* declarations for DLL import/export */
 #define PyMODINIT_FUNC void
 #endif
 PyMODINIT_FUNC

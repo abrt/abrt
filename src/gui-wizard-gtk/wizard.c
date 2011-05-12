@@ -36,6 +36,7 @@ typedef struct event_gui_data_t
 static GtkAssistant *g_assistant;
 
 static char *g_analyze_event_selected;
+static unsigned g_black_event_count = 0;
 
 static GtkBox *g_box_analyzers;
 /* List of event_gui_data's */
@@ -55,6 +56,7 @@ static GtkContainer *g_container_details2;
 static GtkLabel *g_lbl_cd_reason;
 static GtkTextView *g_tv_backtrace;
 static GtkTextView *g_tv_comment;
+static GtkEventBox *g_eb_comment;
 static GtkTreeView *g_tv_details;
 static GtkWidget *g_widget_warnings_area;
 static GtkBox *g_box_warning_labels;
@@ -110,10 +112,10 @@ static const gchar PAGE_SUMMARY[]            = "page_0";
 static const gchar PAGE_COMMENT[]            = "page_1";
 static const gchar PAGE_ANALYZE_SELECTOR[]   = "page_2";
 static const gchar PAGE_ANALYZE_PROGRESS[]   = "page_3";
-static const gchar PAGE_REPORTER_SELECTOR[]  = "page_4";
+static const gchar PAGE_REPORTER_SELECTOR[]  = "page_4_report";
 static const gchar PAGE_BACKTRACE_APPROVAL[] = "page_5";
-static const gchar PAGE_REPORT[]             = "page_6";
-static const gchar PAGE_REPORT_PROGRESS[]    = "page_7";
+static const gchar PAGE_REPORT[]             = "page_6_report";
+static const gchar PAGE_REPORT_PROGRESS[]    = "page_7_report";
 
 static const gchar *const page_names[] =
 {
@@ -161,6 +163,8 @@ static page_obj_t pages[] =
     { NULL }
 };
 
+/* hardcoded 10 pages limit */
+page_obj_t *added_pages[10];
 
 /* Utility functions */
 
@@ -401,11 +405,12 @@ static gint find_by_button(gconstpointer a, gconstpointer button)
 
 static void analyze_rb_was_toggled(GtkButton *button, gpointer user_data)
 {
+    free(g_analyze_event_selected);
+    g_analyze_event_selected = NULL;
     GList *found = g_list_find_custom(g_list_analyzers, button, find_by_button);
     if (found)
     {
         event_gui_data_t *evdata = found->data;
-        free(g_analyze_event_selected);
         g_analyze_event_selected = xstrdup(evdata->event_name);
     }
 }
@@ -443,15 +448,13 @@ static void report_tb_was_toggled(GtkButton *button_unused, gpointer user_data_u
  * Add new {radio/check}buttons to GtkBox for each EVENTn (type depends on bool radio).
  * Remember them in GList **p_event_list (list of event_gui_data_t's).
  * Set "toggled" callback on each button to given GCallback if it's not NULL.
- * If prev_selected == EVENTn, set this button as active. In this case return NULL.
- * Else return 1st button created (or NULL if none created).
+ * Return active button (or NULL if none created).
  */
 static event_gui_data_t *add_event_buttons(GtkBox *box,
                 GList **p_event_list,
                 char *event_name,
                 GCallback func,
-                bool radio,
-                const char *prev_selected)
+                bool radio)
 {
     //VERB2 log("removing all buttons from box %p", box);
     gtk_container_foreach(GTK_CONTAINER(box), &remove_child_widget, NULL);
@@ -459,12 +462,17 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
     g_list_free(*p_event_list);
     *p_event_list = NULL;
 
-    bool have_activated_btn = false;
+    if (radio)
+        g_black_event_count = 0;
+
     event_gui_data_t *first_button = NULL;
+    event_gui_data_t *active_button = NULL;
     while (event_name[0])
     {
         char *event_name_end = strchr(event_name, '\n');
         *event_name_end = '\0';
+
+        event_config_t *cfg = get_event_config(event_name);
 
         /* Form a pretty text representation of event */
         /* By default, use event name, just strip "foo_" prefix if it exists: */
@@ -473,15 +481,27 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
             event_screen_name++;
         else
             event_screen_name = event_name;
+
         const char *event_description = NULL;
-        event_config_t *cfg = get_event_config(event_name);
+        char *tmp_description = NULL;
+        bool green_choice = false;
         if (cfg)
         {
             /* .xml has (presumably) prettier description, use it: */
             if (cfg->screen_name)
                 event_screen_name = cfg->screen_name;
             event_description = cfg->description;
+            if (cfg->creates_elements)
+            {
+                if (get_problem_data_item_or_NULL(g_cd, cfg->creates_elements))
+                {
+                    green_choice = true;
+                    event_description = tmp_description = xasprintf(_("(not needed, '%s' already exists)"), cfg->creates_elements);
+                }
+            }
         }
+        if (radio && !green_choice)
+            g_black_event_count++;
 
         //VERB2 log("adding button '%s' to box %p", event_name, box);
         char *event_label = xasprintf("%s%s%s",
@@ -489,6 +509,8 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
                         (event_description ? " - " : ""),
                         event_description ? event_description : ""
         );
+        free(tmp_description);
+
         GtkWidget *button = radio
                 ? gtk_radio_button_new_with_label_from_widget(
                         (first_button ? GTK_RADIO_BUTTON(first_button->toggle_button) : NULL),
@@ -496,33 +518,76 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
                   )
                 : gtk_check_button_new_with_label(event_label);
         free(event_label);
+
+        if (green_choice)
+        {
+            //static const GdkColor red = { .red = 0xffff };
+            //gtk_widget_modify_text(button, GTK_STATE_NORMAL, &red);
+            GtkWidget *child = gtk_bin_get_child(GTK_BIN(button));
+            if (child)
+            {
+                static const GdkColor green = { .green = 0x7fff };
+                gtk_widget_modify_fg(child, GTK_STATE_NORMAL, &green);
+                gtk_widget_modify_fg(child, GTK_STATE_ACTIVE, &green);
+                gtk_widget_modify_fg(child, GTK_STATE_PRELIGHT, &green);
+            }
+        }
+
         if (func)
             g_signal_connect(G_OBJECT(button), "toggled", func, NULL);
-        if (cfg->long_descr)
+        if (cfg && cfg->long_descr)
             gtk_widget_set_tooltip_text(button, cfg->long_descr);
 
         event_gui_data_t *event_gui_data = new_event_gui_data_t();
         event_gui_data->event_name = xstrdup(event_name);
         event_gui_data->toggle_button = GTK_TOGGLE_BUTTON(button);
-	*p_event_list = g_list_append(*p_event_list, event_gui_data);
+        *p_event_list = g_list_append(*p_event_list, event_gui_data);
 
         if (!first_button)
             first_button = event_gui_data;
 
-        if (prev_selected && strcmp(prev_selected, event_name) == 0)
+        if (radio && !green_choice && !active_button)
         {
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), true);
-            have_activated_btn = true;
-            prev_selected = NULL;
+            active_button = event_gui_data;
         }
 
         *event_name_end = '\n';
         event_name = event_name_end + 1;
 
         gtk_box_pack_start(box, button, /*expand*/ false, /*fill*/ false, /*padding*/ 0);
-
     }
-    return (have_activated_btn ? NULL : first_button);
+
+    if (radio)
+    {
+        const char *msg_proceed_to_reporting = _("Go to reporting step");
+        GtkWidget *button = radio
+            ? gtk_radio_button_new_with_label_from_widget(
+                    (first_button ? GTK_RADIO_BUTTON(first_button->toggle_button) : NULL),
+                    msg_proceed_to_reporting
+              )
+            : gtk_check_button_new_with_label(msg_proceed_to_reporting);
+        if (func)
+            g_signal_connect(G_OBJECT(button), "toggled", func, NULL);
+
+        event_gui_data_t *event_gui_data = new_event_gui_data_t();
+        event_gui_data->event_name = xstrdup("");
+        event_gui_data->toggle_button = GTK_TOGGLE_BUTTON(button);
+        *p_event_list = g_list_append(*p_event_list, event_gui_data);
+
+        //if (!first_button)
+        //    first_button = event_gui_data;
+
+        if (!active_button)
+        {
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), true);
+            active_button = event_gui_data;
+        }
+
+        gtk_box_pack_start(box, button, /*expand*/ false, /*fill*/ false, /*padding*/ 0);
+    }
+
+    return active_button;
 }
 
 struct cd_stats {
@@ -596,15 +661,16 @@ void update_gui_state_from_problem_data(void)
     load_text_to_text_view(g_tv_comment, FILENAME_COMMENT);
 
     /* Update analyze radio buttons */
-    event_gui_data_t *first_rb = add_event_buttons(g_box_analyzers, &g_list_analyzers,
+    event_gui_data_t *active_button = add_event_buttons(g_box_analyzers, &g_list_analyzers,
                 g_analyze_events, G_CALLBACK(analyze_rb_was_toggled),
-                /*radio:*/ true, /*prev:*/ g_analyze_event_selected
+                /*radio:*/ true
     );
     /* Update the value of currently selected analyzer */
-    if (first_rb)
+    if (active_button)
     {
         free(g_analyze_event_selected);
-        g_analyze_event_selected = xstrdup(first_rb->event_name);
+        g_analyze_event_selected = xstrdup(active_button->event_name);
+        VERB2 log("g_analyze_event_selected='%s'", g_analyze_event_selected);
     }
 
     /* Update reporter checkboxes */
@@ -623,7 +689,7 @@ void update_gui_state_from_problem_data(void)
     /* Delete old checkboxes and create new ones */
     add_event_buttons(g_box_reporters, &g_list_reporters,
                 g_report_events, /*callback:*/ G_CALLBACK(report_tb_was_toggled),
-                /*radio:*/ false, /*prev:*/ NULL
+                /*radio:*/ false
     );
     /* Re-select new reporters which were selected before we deleted them */
     GList *li_new = g_list_reporters;
@@ -650,7 +716,7 @@ void update_gui_state_from_problem_data(void)
      */
     gtk_widget_show_all(GTK_WIDGET(g_assistant));
 
-    if (g_reanalyze_events[0])
+    if (g_analyze_events[0])
         gtk_widget_show(GTK_WIDGET(g_btn_refresh));
     else
         gtk_widget_hide(GTK_WIDGET(g_btn_refresh));
@@ -849,9 +915,14 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                 /* Unfreeze assistant
                  * we can't allow user to continue if analyze action fails
                  * i.e: if gdb fails to generate backtrace
-                */
+//TODO: generic solution instead of special-casing on event name!
+                 */
                 if (retval == 0 || (strncmp(evd->event_name, "analyze", strlen("analyze")) != 0))
+                {
                     gtk_assistant_set_page_complete(g_assistant, evd->page_widget, true);
+                }
+                /* Enable (un-gray out) navigation buttons */
+                gtk_widget_set_sensitive(GTK_WIDGET(g_assistant), true);
 
                 /*g_source_remove(evd->event_source_id);*/
                 close(evd->fd);
@@ -960,6 +1031,8 @@ static void start_event_run(const char *event_name,
 
     /* Freeze assistant so it can't move away from the page until event run is done */
     gtk_assistant_set_page_complete(g_assistant, page, false);
+    /* Disable (gray out) navigation buttons */
+    gtk_widget_set_sensitive(GTK_WIDGET(g_assistant), false);
 }
 
 
@@ -1033,24 +1106,33 @@ static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_da
     check_backtrace_and_allow_send();
 }
 
+static void on_comment_changed(GtkTextBuffer *buffer, gpointer user_data)
+{
+    bool good = gtk_text_buffer_get_char_count(buffer) >= 10;
+
+    /* Allow next page only when the comment has at least 10 chars */
+    gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_COMMENT].page_widget, good);
+
+    /* And show the eventbox with label */
+    if (good)
+        gtk_widget_hide(GTK_WIDGET(g_eb_comment));
+    else
+        gtk_widget_show(GTK_WIDGET(g_eb_comment));
+}
+
 
 /* Refresh button handling */
 
 static void on_btn_refresh_clicked(GtkButton *button)
 {
-    if (g_reanalyze_events[0])
-    {
-        /* Save backtrace text if changed */
-        save_text_from_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
+    /* Save backtrace text if changed */
+    save_text_from_text_view(g_tv_backtrace, FILENAME_BACKTRACE);
 
-        g_analyze_events = append_to_malloced_string(g_analyze_events, g_reanalyze_events);
-        g_reanalyze_events[0] = '\0';
-        /* Refresh GUI so that we see new analyze+reanalyze buttons */
-        update_gui_state_from_problem_data();
+    /* Refresh GUI so that we see new analyze buttons */
+    update_gui_state_from_problem_data();
 
-        /* Change page to analyzer selector - let user play with them */
-        gtk_assistant_set_current_page(g_assistant, PAGENO_ANALYZE_SELECTOR);
-    }
+    /* Change page to analyzer selector - let user play with them */
+    gtk_assistant_set_current_page(g_assistant, PAGENO_ANALYZE_SELECTOR);
 }
 
 
@@ -1059,25 +1141,29 @@ static void on_btn_refresh_clicked(GtkButton *button)
 static void next_page(GtkAssistant *assistant, gpointer user_data)
 {
     /* page_no is actually the previous page, because this
-     * function is called before assistant goes to the next_page
+     * function is called before assistant goes to the next page
      */
     int page_no = gtk_assistant_get_current_page(assistant);
     VERB2 log("page_no:%d", page_no);
 
-    if (page_no == PAGENO_ANALYZE_SELECTOR
-     && g_analyze_event_selected != NULL
-    ) {
-        start_event_run(g_analyze_event_selected,
-                NULL,
-                pages[PAGENO_ANALYZE_PROGRESS].page_widget,
-                g_tv_analyze_log,
-                g_lbl_analyze_log,
-                _("Analyzing..."),
-                _("Analyzing finished with exit code %d")
-        );
+    if (added_pages[page_no]->name == PAGE_ANALYZE_SELECTOR)
+    {
+        VERB2 log("g_analyze_event_selected:'%s'", g_analyze_event_selected);
+        if (g_analyze_event_selected
+         && g_analyze_event_selected[0]
+        ) {
+            start_event_run(g_analyze_event_selected,
+                    NULL,
+                    pages[PAGENO_ANALYZE_PROGRESS].page_widget,
+                    g_tv_analyze_log,
+                    g_lbl_analyze_log,
+                    _("Analyzing..."),
+                    _("Analyzing finished with exit code %d")
+            );
+        }
     }
 
-    if (page_no == PAGENO_REPORT)
+    if (added_pages[page_no]->name == PAGE_REPORT)
     {
         GList *reporters = NULL;
         GList *li = g_list_reporters;
@@ -1133,36 +1219,69 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
                 w
         );
     }
+
+    if (pages[PAGENO_COMMENT].page_widget == page)
+        on_comment_changed(gtk_text_view_get_buffer(g_tv_comment), NULL);
 }
 
-static gint next_page_no(gint current_page_no, gpointer data)
+static gint select_next_page_no(gint current_page_no, gpointer data)
 {
+    /* we don't need any magic here if we're in only-report mode */
+    if (g_report_only)
+        return current_page_no + 1;
+
+    gint prev_page_no = current_page_no;
+
  again:
     current_page_no++;
+
     switch (current_page_no)
     {
 #if 0
     case PAGENO_COMMENT:
         if (get_problem_item_content_or_NULL(g_cd, FILENAME_COMMENT))
-            break;
-        goto again; /* no comment, skip next page */
+            goto again; /* no comment, skip this page */
+        break;
 #endif
 
     case PAGENO_BACKTRACE_APPROVAL:
-        if (get_problem_item_content_or_NULL(g_cd, FILENAME_BACKTRACE))
-            break;
-        goto again; /* no backtrace, skip next page */
+        if (!get_problem_item_content_or_NULL(g_cd, FILENAME_BACKTRACE))
+            goto again; /* no backtrace, skip this page */
+        break;
 
     case PAGENO_ANALYZE_SELECTOR:
-        if (!g_analyze_events[0])
+        if (!g_analyze_events[0] || g_black_event_count == 0)
         {
-            //TODO: if (!g_reporter_events[0]) /* no reporters available */ then what?
-            return PAGENO_REPORTER_SELECTOR; /* skip analyze pages */
+            /* skip analyze selector page and analyze log page */
+            current_page_no = PAGENO_REPORTER_SELECTOR-1;
+            goto again;
+        }
+        break;
+
+    case PAGENO_ANALYZE_PROGRESS:
+        VERB2 log("%s: ANALYZE_PROGRESS: g_analyze_event_selected:'%s'",
+                        __func__, g_analyze_event_selected);
+        if (!g_analyze_event_selected || !g_analyze_event_selected[0])
+            goto again; /* skip this page */
+        break;
+
+    case PAGENO_REPORTER_SELECTOR:
+        VERB2 log("%s: REPORTER_SELECTOR: g_black_event_count:%d",
+                        __func__, g_black_event_count);
+        /* if we _did_ run an event (didn't skip it)
+         * and still have analyzers which didn't run
+         */
+        if (prev_page_no == PAGENO_ANALYZE_PROGRESS
+         && g_black_event_count != 0
+        ) {
+            /* Go back to analyzer selectors */
+            current_page_no = PAGENO_ANALYZE_SELECTOR-1;
+            goto again;
         }
         break;
     }
 
-    VERB2 log("next page_no:%d", current_page_no);
+    VERB2 log("%s: selected page #%d", __func__, current_page_no);
     return current_page_no;
 }
 
@@ -1246,7 +1365,7 @@ static void create_details_treeview()
 /* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
 #include "wizard_glade.c"
 
-static void add_pages(void)
+static void add_pages()
 {
     GError *error = NULL;
     if (!g_glade_file)
@@ -1268,13 +1387,24 @@ static void add_pages(void)
     }
 
     int i;
+    int page_no = 0;
     for (i = 0; page_names[i] != NULL; i++)
     {
+        char *delim = strrchr(page_names[i], '_');
+        if(delim != NULL)
+        {
+            if (g_report_only && (strncmp(delim+1, "report", strlen("report"))) != 0)
+            {
+                pages[i].page_widget = NULL;
+                continue;
+            }
+        }
         GtkWidget *page = GTK_WIDGET(gtk_builder_get_object(builder, page_names[i]));
         if (page == NULL)
             continue;
 
         pages[i].page_widget = page;
+        added_pages[page_no++] = &pages[i];
 
         gtk_assistant_append_page(g_assistant, page);
         /* If we set all pages to complete the wizard thinks there is nothing
@@ -1299,6 +1429,7 @@ static void add_pages(void)
     g_tv_report_log        = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_report_log"));
     g_tv_backtrace         = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_backtrace"));
     g_tv_comment           = GTK_TEXT_VIEW(    gtk_builder_get_object(builder, "tv_comment"));
+    g_eb_comment           = GTK_EVENT_BOX(    gtk_builder_get_object(builder, "eb_comment"));
     g_tv_details           = GTK_TREE_VIEW(    gtk_builder_get_object(builder, "tv_details"));
     g_box_warning_labels   = GTK_BOX(          gtk_builder_get_object(builder, "box_warning_labels"));
     g_tb_approve_bt        = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "cb_approve_bt"));
@@ -1320,8 +1451,9 @@ static void add_pages(void)
     //gtk_widget_hide(g_widget_warnings_area);
 
     //gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_REPORTER_SELECTOR].page_widget, false);
-    gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
-                gtk_toggle_button_get_active(g_tb_approve_bt));
+    if (pages[PAGENO_BACKTRACE_APPROVAL].page_widget != NULL)
+        gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
+                    gtk_toggle_button_get_active(g_tb_approve_bt));
 
     /* configure btn on select analyzers page */
     GtkWidget *config_btn = GTK_WIDGET(gtk_builder_get_object(builder, "button_cfg1"));
@@ -1332,9 +1464,14 @@ static void add_pages(void)
     config_btn = GTK_WIDGET(gtk_builder_get_object(builder, "button_cfg2"));
     if (config_btn)
         g_signal_connect(G_OBJECT(config_btn), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
+
+    /* Set color of the comment evenbox */
+    GdkColor color;
+    gdk_color_parse("#CC3333", &color);
+    gtk_widget_modify_bg(GTK_WIDGET(g_eb_comment), GTK_STATE_NORMAL, &color);
 }
 
-void create_assistant()
+void create_assistant(void)
 {
     monospace_font = pango_font_description_from_string("monospace");
 
@@ -1342,7 +1479,7 @@ void create_assistant()
 
     g_assistant = GTK_ASSISTANT(gtk_assistant_new());
 
-    gtk_assistant_set_forward_page_func(g_assistant, next_page_no, NULL, NULL);
+    gtk_assistant_set_forward_page_func(g_assistant, select_next_page_no, NULL, NULL);
 
     GtkWindow *wnd_assistant = GTK_WINDOW(g_assistant);
     g_parent_window = wnd_assistant;
@@ -1368,6 +1505,7 @@ void create_assistant()
 
     g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
     g_signal_connect(g_btn_refresh, "clicked", G_CALLBACK(on_btn_refresh_clicked), NULL);
+    g_signal_connect(gtk_text_view_get_buffer(g_tv_comment), "changed", G_CALLBACK(on_comment_changed), NULL);
     g_signal_connect(g_tv_details, "row-activated", G_CALLBACK(tv_details_row_activated), NULL);
     /* [Enter] on a row: g_signal_connect(g_tv_details, "select-cursor-row", G_CALLBACK(tv_details_select_cursor_row), NULL); */
     g_signal_connect(g_tv_details, "cursor-changed", G_CALLBACK(tv_details_cursor_changed), NULL);
@@ -1378,8 +1516,9 @@ void create_assistant()
     gtk_text_buffer_create_tag(backtrace_buf, "search_result_bg", "background", "red", NULL);
     g_signal_connect(g_search_entry_bt, "changed", G_CALLBACK(search_timeout), NULL);
 
-    gtk_assistant_set_page_complete(g_assistant,
-                pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
-                gtk_toggle_button_get_active(g_tb_approve_bt)
+    if (pages[PAGENO_BACKTRACE_APPROVAL].page_widget != NULL)
+        gtk_assistant_set_page_complete(g_assistant,
+                    pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
+                    gtk_toggle_button_get_active(g_tb_approve_bt)
     );
 }

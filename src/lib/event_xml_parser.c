@@ -25,6 +25,7 @@
 #define LONG_DESCR_ELEMENT      "long-description"
 #define ALLOW_EMPTY_ELEMENT     "allow-empty"
 #define NOTE_HTML_ELEMENT       "note-html"
+#define CREATES_ELEMENT         "creates-elements"
 #define OPTION_ELEMENT          "option"
 //#define ACTION_ELEMENT        "action"
 #define NAME_ELEMENT            "name"
@@ -55,16 +56,16 @@ static const char *const option_types[] =
 static char *get_element_lang(struct my_parse_data *parse_data, const gchar **att_names, const gchar **att_values)
 {
     char *short_locale_end = strchr(parse_data->cur_locale, '_');
-    VERB2 log("locale: %s", parse_data->cur_locale);
+    VERB3 log("locale: %s", parse_data->cur_locale);
     int i;
     for (i = 0; att_names[i] != NULL; ++i)
     {
-        VERB2 log("attr: %s:%s", att_names[i], att_values[i]);
+        VERB3 log("attr: %s:%s", att_names[i], att_values[i]);
         if (strcmp(att_names[i], "xml:lang") == 0)
         {
             if (strcmp(att_values[i], parse_data->cur_locale) == 0)
             {
-                VERB2 log("found translation for: %s", parse_data->cur_locale);
+                VERB3 log("found translation for: %s", parse_data->cur_locale);
                 return xstrdup(att_values[i]);
             }
 
@@ -74,7 +75,7 @@ static char *get_element_lang(struct my_parse_data *parse_data, const gchar **at
             if (short_locale_end
              && strncmp(att_values[i], parse_data->cur_locale, short_locale_end - parse_data->cur_locale) == 0
             ) {
-                VERB2 log("found translation for shortlocale: %s", parse_data->cur_locale);
+                VERB3 log("found translation for shortlocale: %s", parse_data->cur_locale);
                 return xstrndup(att_values[i], short_locale_end - parse_data->cur_locale);
             }
         }
@@ -297,11 +298,18 @@ static void text(GMarkupParseContext *context,
         if (strcmp(inner_element, ACTION_ELEMENT) == 0)
         {
             VERB2 log("action description:'%s'", text_copy);
-            free(ui->eo_action);
-            ui->eo_action = text_copy;
+            free(ui->action);
+            ui->action = text_copy;
             return;
         }
         */
+        if (strcmp(inner_element, CREATES_ELEMENT) == 0)
+        {
+            VERB2 log("creates_elements:'%s'", text_copy);
+            free(ui->creates_elements);
+            ui->creates_elements = text_copy;
+            return;
+        }
         if (strcmp(inner_element, NAME_ELEMENT) == 0)
         {
             if (parse_data->attribute_lang != NULL) /* if it isn't for other locale */
@@ -321,7 +329,7 @@ static void text(GMarkupParseContext *context,
         }
         if (strcmp(inner_element, DESCRIPTION_ELEMENT) == 0)
         {
-            VERB2 log("event description:'%s'", text_copy);
+            VERB3 log("event description:'%s'", text_copy);
 
             if (parse_data->attribute_lang != NULL) /* if it isn't for other locale */
             {
@@ -339,7 +347,7 @@ static void text(GMarkupParseContext *context,
         }
         if (strcmp(inner_element, LONG_DESCR_ELEMENT) == 0)
         {
-            VERB2 log("event long description:'%s'", text_copy);
+            VERB3 log("event long description:'%s'", text_copy);
 
             if (parse_data->attribute_lang != NULL) /* if it isn't for other locale */
             {

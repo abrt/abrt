@@ -186,7 +186,7 @@ void scan_dirs_and_add_to_dirlist(void)
 {
     char **argv = s_dirs;
     while (*argv)
-	scan_directory_and_add_to_dirlist(*argv++);
+        scan_directory_and_add_to_dirlist(*argv++);
 }
 
 int main(int argc, char **argv)

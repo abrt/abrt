@@ -40,6 +40,7 @@ dist_events_DATA = \
     report_Logger.conf \
     analyze_LocalGDB.xml \
     analyze_RetraceServer.xml \
+    analyze_xsession_errors.xml \
     report_Mailx.xml \
     report_RHTSupport.xml \
     report_Kerneloops.xml
@@ -55,10 +56,7 @@ dist_eventsconf_DATA = \
     rhtsupport_events.conf
 
 man_MANS = \
-    abrt-Bugzilla.7 \
     abrt-KerneloopsReporter.7 \
-    abrt-Logger.7 \
-    abrt-Mailx.7 \
     abrt-Upload.7 \
     abrt-plugins.7
 
@@ -67,13 +65,15 @@ MAN_TXT = \
     abrt-action-trim-files.txt \
     abrt-action-generate-backtrace.txt \
     abrt-action-analyze-backtrace.txt \
-    abrt-action-mailx.txt
+    abrt-action-mailx.txt \
+    abrt-action-bugzilla.txt \
+    abrt-action-list-dsos.txt
 
 # Manual pages are generated from .txt via Docbook
 man1_MANS = ${MAN_TXT:%.txt=%.1}
 
 %.1 %.5 %.7: %.xml
-	$(XMLTO_SILENT) xmlto man $< > /dev/null 2>&1
+	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
 
 %.xml: %.txt ../../asciidoc.conf
 	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -aabrt_version=$(PACKAGE_VERSION) -o $@ $<
@@ -90,21 +90,19 @@ EXTRA_DIST = \
     $(man_MANS) \
     $(MAN_TXT) \
     $(PYTHON_FILES) \
+    $(man1_MANS) \
+    analyze_xsession_errors.xml.in \
+    analyze_LocalGDB.xml.in \
+    analyze_RetraceServer.xml.in \
     report_Bugzilla.xml.in \
     report_Bugzilla.conf \
     report_Logger.conf \
-    analyze_LocalGDB.xml.in \
-    analyze_RetraceServer.xml.in \
     report_Mailx.xml.in \
     report_RHTSupport.xml.in \
     report_Kerneloops.xml.in
 
 $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'
-
-install-data-hook: $(DESTDIR)/$(DEBUG_INFO_DIR)
-	$(LN_S) -f analyze_RetraceServer.xml $(DESTDIR)$(eventsdir)/reanalyze_RetraceServer.xml
-	$(LN_S) -f analyze_LocalGDB.xml $(DESTDIR)$(eventsdir)/reanalyze_LocalGDB.xml
 
 abrt_dump_oops_SOURCES = \
     abrt-dump-oops.c

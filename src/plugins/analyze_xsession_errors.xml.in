@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<event>
+    <name>Collect .xsession-errors</name>
+    <_description>Save relevant lines from ~/.xsession-errors file</_description>
+    <_long-description>
+    Scans through ~/.xsession-errors file and saves those lines which contain executable's name.
+    The result is saved as 'xsession_errors' element.
+    </_long-description>
+    <creates-elements>xsession_errors</creates-elements>
+</event>

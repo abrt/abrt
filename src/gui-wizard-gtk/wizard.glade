@@ -34,9 +34,8 @@
             <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
-            <property name="ypad">0</property>
-            <property name="wrap">True</property>
             <property name="label" translatable="yes">On the following screens, you will be asked to describe how the problem occurred, to choose how to analyze the problem (if needed), to review collected data, and to choose where the problem should be reported. Click 'Forward' to proceed.</property>
+            <property name="wrap">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -51,8 +50,8 @@
             <child>
               <object class="GtkScrolledWindow" id="container_details1">
                 <property name="visible">True</property>
-                <property name="shadow_type">GTK_SHADOW_OUT</property>
                 <property name="can_focus">True</property>
+                <property name="shadow_type">out</property>
                 <child>
                   <object class="GtkTreeView" id="tv_details">
                     <property name="visible">True</property>
@@ -85,14 +84,15 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">10</property>
+        <property name="spacing">3</property>
         <child>
-          <object class="GtkLabel" id="label2">
+          <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
-            <property name="ypad">5</property>
-            <property name="label" translatable="yes">How did this problem happen (step-by-step)? How can it be reproduced?</property>
+            <property name="label" translatable="yes">How did this problem happen (step-by-step)? How can it be reproduced? Any additional comments useful for diagnosing the problem?</property>
+            <property name="wrap">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -101,37 +101,52 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label1">
+          <object class="GtkVBox" id="vbox1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="xalign">0</property>
-            <property name="yalign">0</property>
-            <property name="ypad">5</property>
-            <property name="label" translatable="yes">Any additional comments useful for diagnosing the problem?</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkScrolledWindow" id="scrolledwindow4">
-            <property name="visible">True</property>
-            <property name="shadow_type">GTK_SHADOW_OUT</property>
-            <property name="can_focus">True</property>
             <child>
-              <object class="GtkTextView" id="tv_comment">
+              <object class="GtkScrolledWindow" id="scrolledwindow4">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="wrap_mode">word</property>
+                <property name="hscrollbar_policy">never</property>
+                <property name="shadow_type">GTK_SHADOW_OUT</property>
+                <child>
+                  <object class="GtkTextView" id="tv_comment">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="wrap_mode">word</property>
+                  </object>
+                </child>
               </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEventBox" id="eb_comment">
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkLabel" id="label5">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">You need to fill the how to before you can proceed...</property>
+                    <property name="single_line_mode">True</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
             </child>
           </object>
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
@@ -140,14 +155,14 @@
             <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
-            <property name="ypad">5</property>
             <property name="label" translatable="yes">&lt;b&gt;Your comments are not private.&lt;/b&gt; They may be included into publicly visible problem reports.</property>
             <property name="use_markup">True</property>
+            <property name="wrap">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">3</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
@@ -160,6 +175,7 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">10</property>
+        <property name="spacing">3</property>
         <child>
           <object class="GtkLabel" id="lbl_page5">
             <property name="visible">True</property>
@@ -199,8 +215,8 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
-                <property name="image_position">right</property>
                 <property name="use_underline">True</property>
+                <property name="image_position">right</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -239,12 +255,12 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">10</property>
+        <property name="spacing">3</property>
         <child>
           <object class="GtkLabel" id="lbl_analyze_log">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="xalign">0</property>
-            <property name="ypad">5</property>
             <property name="label" translatable="yes">Analyzing did not start yet</property>
             <property name="use_markup">True</property>
             <property name="wrap">True</property>
@@ -258,8 +274,8 @@
         <child>
           <object class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
-            <property name="shadow_type">GTK_SHADOW_OUT</property>
             <property name="can_focus">True</property>
+            <property name="shadow_type">out</property>
             <child>
               <object class="GtkTextView" id="tv_analyze_log">
                 <property name="visible">True</property>
@@ -281,10 +297,11 @@
   <object class="GtkWindow" id="window4">
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkVBox" id="page_4">
+      <object class="GtkVBox" id="page_4_report">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">10</property>
+        <property name="spacing">3</property>
         <child>
           <object class="GtkLabel" id="lbl_page3">
             <property name="visible">True</property>
@@ -326,8 +343,8 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
-                <property name="image_position">right</property>
                 <property name="use_underline">True</property>
+                <property name="image_position">right</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -367,13 +384,13 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">10</property>
+        <property name="spacing">3</property>
         <child>
           <object class="GtkLabel" id="lbl_page4">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="yalign">0</property>
-            <property name="ypad">0</property>
             <property name="label" translatable="yes">Backtrace provides developers with details of the crash, helping them track down the source of the problem. Please review it and remove any sensitive data you would rather not share:</property>
             <property name="wrap">True</property>
           </object>
@@ -386,8 +403,8 @@
         <child>
           <object class="GtkScrolledWindow" id="scrolledwindow2">
             <property name="visible">True</property>
-            <property name="shadow_type">GTK_SHADOW_OUT</property>
             <property name="can_focus">True</property>
+            <property name="shadow_type">out</property>
             <child>
               <object class="GtkTextView" id="tv_backtrace">
                 <property name="visible">True</property>
@@ -561,10 +578,11 @@
   <object class="GtkWindow" id="window6">
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkVBox" id="page_6">
+      <object class="GtkVBox" id="page_6_report">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">10</property>
+        <property name="spacing">3</property>
         <child>
           <object class="GtkLabel" id="lbl_page6">
             <property name="visible">True</property>
@@ -655,8 +673,8 @@
         <child>
           <object class="GtkScrolledWindow" id="container_details2">
             <property name="visible">True</property>
-            <property name="shadow_type">GTK_SHADOW_OUT</property>
             <property name="can_focus">True</property>
+            <property name="shadow_type">out</property>
             <child>
               <placeholder/>
             </child>
@@ -673,16 +691,16 @@
   <object class="GtkWindow" id="window7">
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkVBox" id="page_7">
+      <object class="GtkVBox" id="page_7_report">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">10</property>
+        <property name="spacing">3</property>
         <child>
           <object class="GtkLabel" id="lbl_report_log">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="xalign">0</property>
-            <property name="ypad">5</property>
             <property name="label" translatable="yes">Reporting did not start yet</property>
             <property name="use_markup">True</property>
             <property name="wrap">True</property>
@@ -696,8 +714,8 @@
         <child>
           <object class="GtkScrolledWindow" id="scrolledwindow6">
             <property name="visible">True</property>
-            <property name="shadow_type">GTK_SHADOW_OUT</property>
             <property name="can_focus">True</property>
+            <property name="shadow_type">out</property>
             <child>
               <object class="GtkTextView" id="tv_report_log">
                 <property name="visible">True</property>
