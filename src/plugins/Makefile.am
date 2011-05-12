@@ -239,7 +239,7 @@ abrt_action_analyze_backtrace_LDADD = \
     ../btparser/libbtparser.la
 
 abrt_action_bugzilla_SOURCES = \
-    abrt-action-bugzilla.cpp rhbz.c rhbz.h
+    abrt-action-bugzilla.c rhbz.c rhbz.h
 abrt_action_bugzilla_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
