@@ -21,7 +21,7 @@ PACKAGE_PARSER = re.compile("^(.+)-([0-9]+(\.[0-9]+)*-[0-9]+)\.([^-]+)$")
 DF_OUTPUT_PARSER = re.compile("^([^ ^\t]*)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+%)[ \t]+(.*)$")
 DU_OUTPUT_PARSER = re.compile("^([0-9]+)")
 URL_PARSER = re.compile("^/([0-9]+)/?")
-WORKER_RUNNING_PARSER = re.compile("^([0-9]+)[ \t]+[0-9]+[ \t]+([^ ^\t]+)[ \t]+.*abrt-retrace-worker ([0-9]+)$")
+WORKER_RUNNING_PARSER = re.compile("^[ \t]*([0-9]+)[ \t]+[0-9]+[ \t]+([^ ^\t]+)[ \t]+.*abrt-retrace-worker ([0-9]+)$")
 
 HANDLE_ARCHIVE = {
   "application/x-xz-compressed-tar": {
@@ -315,7 +315,7 @@ def kill_process_and_childs(process_id, ps_output=None):
 
     return result
 
-def cleanup_task(taskid):
+def cleanup_task(taskid, gc=True):
     null = open("/dev/null", "w")
 
     savedir = "%s/%d" % (CONFIG["SaveDir"], taskid)
@@ -334,12 +334,13 @@ def cleanup_task(taskid):
         except:
             pass
 
-    try:
-        log = open(newlog, "a")
-        log.write("Killed by garbage collector\n")
-        log.close()
-    except:
-        pass
+    if gc:
+        try:
+            log = open(newlog, "a")
+            log.write("Killed by garbage collector\n")
+            log.close()
+        except:
+            pass
 
     null.close()
 

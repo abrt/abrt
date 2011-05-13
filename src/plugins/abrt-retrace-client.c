@@ -25,6 +25,7 @@
 #include <sslproto.h>
 #include <sslerr.h>
 #include <secerr.h>
+#include <secmod.h>
 
 struct retrace_settings
 {
@@ -38,7 +39,7 @@ struct retrace_settings
 
 static const char *dump_dir_name = NULL;
 static const char *coredump = NULL;
-static const char *url = "retrace01.fedoraproject.org";
+static const char *url = "retrace.fedoraproject.org";
 static const char *required_files[] = { FILENAME_COREDUMP,
                                         FILENAME_EXECUTABLE,
                                         FILENAME_PACKAGE,
@@ -102,7 +103,7 @@ static int create_archive(bool unlink_temp)
         xmove_fd(tar_xz_pipe[0], STDIN_FILENO);
         xdup2(tempfd, STDOUT_FILENO);
         execvp(xz_args[0], (char * const*)xz_args);
-	perror_msg("Can't execute '%s'", xz_args[0]);
+        perror_msg("Can't execute '%s'", xz_args[0]);
     }
 
     close(tar_xz_pipe[0]);
@@ -129,7 +130,7 @@ static int create_archive(bool unlink_temp)
         xmove_fd(xopen("/dev/null", O_RDWR), STDIN_FILENO);
         xmove_fd(tar_xz_pipe[1], STDOUT_FILENO);
         execvp(tar_args[0], (char * const*)tar_args);
-	perror_msg("Can't execute '%s'", tar_args[0]);
+        perror_msg("Can't execute '%s'", tar_args[0]);
     }
 
     close(tar_xz_pipe[1]);
@@ -208,6 +209,28 @@ static const char *ssl_get_configdir()
     return NULL;
 }
 
+static PK11GenericObject *nss_load_cacert(const char *filename)
+{
+    PK11SlotInfo *slot = PK11_FindSlotByName("PEM Token #0");
+    if (!slot)
+        error_msg_and_die("Failed to get slot 'PEM Token #0': %d.", PORT_GetError());
+
+    CK_ATTRIBUTE template[4];
+    CK_OBJECT_CLASS class = CKO_CERTIFICATE;
+
+#define PK11_SETATTRS(x,id,v,l) (x)->type = (id);       \
+  (x)->pValue=(v); (x)->ulValueLen = (l)
+
+    PK11_SETATTRS(&template[0], CKA_CLASS, &class, sizeof(class));
+    CK_BBOOL cktrue = CK_TRUE;
+    PK11_SETATTRS(&template[1], CKA_TOKEN, &cktrue, sizeof(CK_BBOOL));
+    PK11_SETATTRS(&template[2], CKA_LABEL, (unsigned char*)filename, strlen(filename)+1);
+    PK11_SETATTRS(&template[3], CKA_TRUST, &cktrue, sizeof(CK_BBOOL));
+    PK11GenericObject *cert = PK11_CreateGenericObject(slot, template, 4, PR_FALSE);
+    PK11_FreeSlot(slot);
+    return cert;
+}
+
 static char *ssl_get_password(PK11SlotInfo *slot, PRBool retry, void *arg)
 {
     return NULL;
@@ -216,13 +239,6 @@ static char *ssl_get_password(PK11SlotInfo *slot, PRBool retry, void *arg)
 static void ssl_connect(PRFileDesc **tcp_sock,
                         PRFileDesc **ssl_sock)
 {
-    const char *configdir = ssl_get_configdir();
-    if (configdir)
-        NSS_Initialize(configdir, "", "", "", NSS_INIT_READONLY);
-    else
-        NSS_NoDB_Init(NULL);
-    PK11_SetPasswordFunc(ssl_get_password);
-    NSS_SetDomesticPolicy();
     *tcp_sock = PR_NewTCPSocket();
     if (!*tcp_sock)
         error_msg_and_die("Failed to create a TCP socket");
@@ -253,6 +269,7 @@ static void ssl_connect(PRFileDesc **tcp_sock,
         error_msg_and_die("Failed to enable client handshake to SSL socket.");
     if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_TLS, PR_TRUE))
         error_msg_and_die("Failed to enable client handshake to SSL socket.");
+
     sec_status = SSL_SetURL(*ssl_sock, url);
     if (SECSuccess != sec_status)
     {
@@ -322,14 +339,6 @@ static void ssl_disconnect(PRFileDesc *ssl_sock)
     PRStatus pr_status = PR_Close(ssl_sock);
     if (PR_SUCCESS != pr_status)
         error_msg("Failed to close SSL socket.");
-
-    SSL_ClearSessionCache();
-
-    SECStatus sec_status = NSS_Shutdown();
-    if (SECSuccess != sec_status)
-        error_msg("Failed to shutdown NSS.");
-
-    PR_Cleanup();
 }
 
 /**
@@ -366,9 +375,11 @@ static char *http_get_header_value(const char *message,
  */
 static char *http_get_body(const char *message)
 {
-    char *body = strstr(message, "\r\n\r\n") + strlen("\r\n\r\n");
+    char *body = strstr(message, "\r\n\r\n");
     if (!body)
         return NULL;
+
+    body += strlen("\r\n\r\n");
 
     while (*body == ' ')
         ++body;
@@ -642,11 +653,17 @@ static int create(bool delete_temp_archive,
     close(tempfd);
     /* Read the HTTP header of the response from server. */
     char *http_response = tcp_read_response(tcp_sock);
+    char *http_body = http_get_body(http_response);
+    if (!http_body)
+        error_msg_and_die("Invalid response from server: missing HTTP message body.");
     if (http_show_headers)
         http_print_headers(stderr, http_response);
     int response_code = http_get_response_code(http_response);
-    if (response_code != 201)
-        error_msg_and_die("Unexpected HTTP response from server: %d\n%s", response_code, http_response);
+    if (response_code == 500 || response_code == 507)
+        error_msg_and_die("There is a problem on the server side: %s", http_body);
+    else if (response_code != 201)
+        error_msg_and_die("Unexpected HTTP response from server: %d\n%s", response_code, http_body);
+    free(http_body);
     *task_id = http_get_header_value(http_response, "X-Task-Id");
     if (!*task_id)
         error_msg_and_die("Invalid response from server: missing X-Task-Id");
@@ -670,6 +687,7 @@ static int run_create(bool delete_temp_archive)
     return 0;
 }
 
+/* Caller must free task_status and status_message */
 static void status(const char *task_id,
                    const char *task_password,
                    char **task_status,
@@ -695,23 +713,21 @@ static void status(const char *task_id,
     }
     strbuf_free(http_request);
     char *http_response = tcp_read_response(tcp_sock);
+    char *http_body = http_get_body(http_response);
+    if (!*http_body)
+        error_msg_and_die("Invalid response from server: missing body");
     if (http_show_headers)
         http_print_headers(stderr, http_response);
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
         error_msg_and_die("Unexpected HTTP response from server: %d\n%s",
-                          response_code, http_response);
+                          response_code, http_body);
     }
     *task_status = http_get_header_value(http_response, "X-Task-Status");
     if (!*task_status)
         error_msg_and_die("Invalid response from server: missing X-Task-Status");
-    *status_message = http_get_body(http_response);
-    if (!*status_message)
-    {
-        free(*task_status);
-        error_msg_and_die("Invalid response from server: missing body");
-    }
+    *status_message = http_body;
     free(http_response);
     ssl_disconnect(ssl_sock);
 }
@@ -726,6 +742,7 @@ static void run_status(const char *task_id, const char *task_password)
     free(status_message);
 }
 
+/* Caller must free backtrace */
 static void backtrace(const char *task_id, const char *task_password,
                       char **backtrace)
 {
@@ -749,30 +766,18 @@ static void backtrace(const char *task_id, const char *task_password,
     }
     strbuf_free(http_request);
     char *http_response = tcp_read_response(tcp_sock);
+    char *http_body = http_get_body(http_response);
+    if (!http_body)
+        error_msg_and_die("Invalid response from server: missing HTTP message body.");
     if (http_show_headers)
         http_print_headers(stderr, http_response);
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
         error_msg_and_die("Unexpected HTTP response from server: %d\n%s",
-                          response_code, http_response);
+                          response_code, http_body);
     }
-    char *headers_end = strstr(http_response, "\r\n\r\n");
-    if (!headers_end)
-        error_msg_and_die("Invalid response from server: missing HTTP message body.");
-    int length = strlen(http_response) + (headers_end - http_response) + strlen("\r\n\r\n");
-    /* Slightly more space than needed might be allocated, because
-     * '\r' characters are not copied to the backtrace. */
-    *backtrace = xmalloc(length);
-    char *b = *backtrace;
-    char *c;
-    for (c = headers_end + strlen("\r\n\r\n"); *c; ++c)
-    {
-        if (*c == '\r')
-            continue;
-        *b = *c;
-        ++b;
-    }
+    *backtrace = http_body;
     free(http_response);
     ssl_disconnect(ssl_sock);
 }
@@ -807,24 +812,19 @@ static void run_log(const char *task_id, const char *task_password)
     }
     strbuf_free(http_request);
     char *http_response = tcp_read_response(tcp_sock);
+    char *http_body = http_get_body(http_response);
+    if (!http_body)
+        error_msg_and_die("Invalid response from server: missing HTTP message body.");
     if (http_show_headers)
         http_print_headers(stderr, http_response);
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
         error_msg_and_die("Unexpected HTTP response from server: %d\n%s",
-                          response_code, http_response);
+                          response_code, http_body);
     }
-    char *headers_end = strstr(http_response, "\r\n\r\n");
-    char *c;
-    if (!headers_end)
-        error_msg_and_die("Invalid response from server: missing HTTP message body.");
-    for (c = headers_end + 4; *c; ++c)
-    {
-        if (*c == '\r')
-            continue;
-        putc(*c, stdout);
-    }
+    puts(http_body);
+    free(http_body);
     free(http_response);
     ssl_disconnect(ssl_sock);
 }
@@ -844,6 +844,7 @@ static int run_batch(bool delete_temp_archive)
         sleep(10);
         status(task_id, task_password, &task_status, &status_message);
         puts(status_message);
+        fflush(stdout);
     }
     if (0 == strcmp(task_status, "FINISHED_SUCCESS"))
     {
@@ -875,6 +876,8 @@ static int run_batch(bool delete_temp_archive)
 
 int main(int argc, char **argv)
 {
+    abrt_init(argv);
+
     const char *task_id = NULL;
     const char *task_password = NULL;
 
@@ -922,9 +925,6 @@ int main(int argc, char **argv)
     const char usage[] = "abrt-retrace-client <operation> [options]\n"
         "Operations: create/status/backtrace/log/batch";
 
-    char *env_verbose = getenv("ABRT_VERBOSE");
-    if (env_verbose)
-        g_verbose = atoi(env_verbose);
     char *env_url = getenv("RETRACE_SERVER_URL");
     if (env_url)
         url = env_url;
@@ -942,17 +942,40 @@ int main(int argc, char **argv)
         show_usage_and_die(usage, options);
     ssl_allow_insecure = opts & OPT_insecure;
     http_show_headers = opts & OPT_headers;
+
+    /* Initialize NSS */
+    SECStatus sec_status;
+    const char *configdir = ssl_get_configdir();
+    if (configdir)
+        sec_status = NSS_Initialize(configdir, "", "", "", NSS_INIT_READONLY);
+    else
+        sec_status = NSS_NoDB_Init(NULL);
+    if (SECSuccess != sec_status)
+        error_msg_and_die("Failed to initialize NSS.");
+
+    char *user_module = xstrdup("library=libnsspem.so name=PEM");
+    SECMODModule* mod = SECMOD_LoadUserModule(user_module, NULL, PR_FALSE);
+    free(user_module);
+    if (!mod || !mod->loaded)
+        error_msg_and_die("Failed to initialize security module.");
+
+    PK11GenericObject *cert = nss_load_cacert("/etc/pki/tls/certs/ca-bundle.crt");
+    PK11_SetPasswordFunc(ssl_get_password);
+    NSS_SetDomesticPolicy();
+
+    /* Run the desired operation. */
+    int result = 0;
     if (0 == strcasecmp(operation, "create"))
     {
         if (!dump_dir_name && !coredump)
             error_msg_and_die("Either dump directory or coredump is needed.");
-        return run_create(0 == (opts & OPT_no_unlink));
+        result = run_create(0 == (opts & OPT_no_unlink));
     }
     else if (0 == strcasecmp(operation, "batch"))
     {
         if (!dump_dir_name && !coredump)
             error_msg_and_die("Either dump directory or coredump is needed.");
-        return run_batch(0 == (opts & OPT_no_unlink));
+        result = run_batch(0 == (opts & OPT_no_unlink));
     }
     else if (0 == strcasecmp(operation, "status"))
     {
@@ -980,5 +1003,17 @@ int main(int argc, char **argv)
     }
     else
         error_msg_and_die("Unknown operation: %s", operation);
-    return 0;
+
+    /* Shutdown NSS. */
+    SSL_ClearSessionCache();
+    PK11_DestroyGenericObject(cert);
+    SECMOD_UnloadUserModule(mod);
+    SECMOD_DestroyModule(mod);
+    sec_status = NSS_Shutdown();
+    if (SECSuccess != sec_status)
+        error_msg("Failed to shutdown NSS.");
+
+    PR_Cleanup();
+
+    return result;
 }

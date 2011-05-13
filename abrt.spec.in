@@ -25,7 +25,7 @@ BuildRequires: rpm-devel >= 4.6
 BuildRequires: desktop-file-utils
 BuildRequires: libnotify-devel
 BuildRequires: xmlrpc-c-devel
-BuildRequires: file-devel
+#why? BuildRequires: file-devel
 BuildRequires: python-devel
 BuildRequires: gettext
 BuildRequires: libxml2-devel
@@ -34,6 +34,8 @@ BuildRequires: intltool
 BuildRequires: libtool
 BuildRequires: nss-devel
 BuildRequires: texinfo
+BuildRequires: asciidoc
+BuildRequires: xmlto
 
 # for rhel6
 %if 0%{?rhel} >= 6
@@ -79,6 +81,7 @@ Development libraries and headers for libreport.
 Summary: Python bindings for report-libs.
 # Is group correct here? -
 Group: System Environment/Libraries
+Requires: libreport = %{version}-%{release}
 
 %description -n libreport-python
 Python bindings for report-libs.
@@ -86,6 +89,7 @@ Python bindings for report-libs.
 %package -n libreport-gtk
 Summary: GTK frontend for libreport
 Group: User Interface/Desktops
+Requires: libreport = %{version}-%{release}
 
 %description -n libreport-gtk
 Applications for reporting bugs using libreport backend.
@@ -389,19 +393,16 @@ fi
 
 %post gui
 # update icon cache
-touch --no-create %{_datadir}/icons/hicolor || :
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-    %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-fi
+touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
 %post libs -p /sbin/ldconfig
 
 %postun libs -p /sbin/ldconfig
 
 %postun gui
-touch --no-create %{_datadir}/icons/hicolor || :
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-    %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+if [ $1 -eq 0 ] ; then
+    touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 fi
 
 %posttrans
@@ -412,6 +413,9 @@ service abrt-ccpp condrestart >/dev/null 2>&1 || :
 
 %posttrans addon-kerneloops
 service abrt-oops condrestart >/dev/null 2>&1 || :
+
+%posttrans gui
+gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
@@ -430,6 +434,7 @@ service abrt-oops condrestart >/dev/null 2>&1 || :
 %config(noreplace) %{_sysconfdir}/%{name}/abrt_event.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
+%{_sysconfdir}/%{name}/events.d/smart_event.conf
 %{_initrddir}/abrtd
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/spool/%{name}
 %dir %attr(0700, abrt, abrt) %{_localstatedir}/spool/%{name}-upload
@@ -502,7 +507,7 @@ service abrt-oops condrestart >/dev/null 2>&1 || :
 %{_initrddir}/abrt-ccpp
 %{_libexecdir}/abrt-hook-ccpp
 %{_bindir}/abrt-action-analyze-c
-%attr(4755, abrt, abrt) %{_bindir}/abrt-action-trim-files
+%{_bindir}/abrt-action-trim-files
 %attr(4755, abrt, abrt) %{_bindir}/abrt-action-install-debuginfo
 %{_bindir}/abrt-action-analyze-core.py*
 %{_bindir}/abrt-action-install-debuginfo.py*
@@ -511,9 +516,12 @@ service abrt-oops condrestart >/dev/null 2>&1 || :
 %{_bindir}/abrt-action-list-dsos.py*
 %{_sysconfdir}/%{name}/events.d/ccpp_events.conf
 %{_sysconfdir}/%{name}/events/analyze_LocalGDB.xml
-%{_sysconfdir}/%{name}/events/reanalyze_LocalGDB.xml
 %{_sysconfdir}/%{name}/events/analyze_RetraceServer.xml
-%{_sysconfdir}/%{name}/events/reanalyze_RetraceServer.xml
+%{_sysconfdir}/%{name}/events/analyze_xsession_errors.xml
+%{_mandir}/man*/abrt-action-trim-files.*
+%{_mandir}/man*/abrt-action-generate-backtrace.*
+%{_mandir}/man*/abrt-action-analyze-backtrace.*
+%{_mandir}/man*/abrt-action-list-dsos.*
 
 %files addon-kerneloops
 %defattr(-,root,root,-)
@@ -529,14 +537,14 @@ service abrt-oops condrestart >/dev/null 2>&1 || :
 %files plugin-logger
 %defattr(-,root,root,-)
 %{_sysconfdir}/%{name}/events/report_Logger.conf
-%{_mandir}/man7/abrt-Logger.7.gz
 %{_bindir}/abrt-action-print
+%{_mandir}/man*/abrt-action-print.*
 
 %files plugin-mailx
 %defattr(-,root,root,-)
 %{_sysconfdir}/%{name}/events/report_Mailx.xml
 %config(noreplace) %{_sysconfdir}/%{name}/events.d/mailx_events.conf
-%{_mandir}/man7/abrt-Mailx.7.gz
+%{_mandir}/man*/abrt-action-mailx.*
 %{_bindir}/abrt-action-mailx
 
 %files plugin-bugzilla
@@ -545,7 +553,7 @@ service abrt-oops condrestart >/dev/null 2>&1 || :
 %{_sysconfdir}/%{name}/events/report_Bugzilla.xml
 %config(noreplace) %{_sysconfdir}/%{name}/events/report_Bugzilla.conf
 # FIXME: remove with the old gui
-%{_mandir}/man7/abrt-Bugzilla.7.gz
+%{_mandir}/man1/abrt-action-bugzilla.1.gz
 %{_bindir}/abrt-action-bugzilla
 
 %files plugin-rhtsupport

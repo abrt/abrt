@@ -33,13 +33,13 @@ def error_msg(s):
 
 def error_msg_and_die(s):
     sys.stderr.write("%s\n" % s)
-    os.exit(1)
+    sys.exit(1)
 
 def xopen(name, mode):
     try:
         r = open(name, mode)
-    except IOError, e:
-        error_msg_and_die("Can't open '%s': %s" % (name, e));
+    except IOError, ex:
+        error_msg_and_die("Can't open '%s': %s" % (name, ex))
     return r
 
 

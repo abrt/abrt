@@ -44,7 +44,14 @@ enum
 
 void add_directory_to_dirlist(const char *dirname)
 {
+    /* Silently ignore *any* errors, not only EACCES.
+     * We saw "lock file is locked by process PID" error
+     * when we raced with wizard.
+     */
+    int sv_logmode = logmode;
+    logmode = 0;
     struct dump_dir *dd = dd_opendir(dirname, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
+    logmode = sv_logmode;
     if (!dd)
         return;
 
@@ -378,6 +385,11 @@ GtkWidget *create_main_window(void)
                                                        G_TYPE_INT,    /* unix time - used for sort */
                                                        G_TYPE_STRING, /* dump dir path */
                                                        G_TYPE_STRING);/* row background */
+
+     //FIXME: configurable!!
+    gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(s_dumps_list_store),
+                                        COLUMN_LATEST_CRASH,
+                                        GTK_SORT_DESCENDING);
 
     gtk_tree_view_set_model(GTK_TREE_VIEW(s_treeview), GTK_TREE_MODEL(s_dumps_list_store));
 

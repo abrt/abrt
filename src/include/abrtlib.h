@@ -76,6 +76,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "read_write.h"
 #include "strbuf.h"
 #include "hash_sha1.h"
+#include "parse_options.h"
 
 #include "abrt_problem_data.h"
 #include "abrt_types.h"
@@ -117,7 +118,7 @@ char *xmalloc_fgetline(FILE *file);
 
 /* On error, copyfd_XX prints error messages and returns -1 */
 enum {
-	COPYFD_SPARSE = 1 << 0,
+        COPYFD_SPARSE = 1 << 0,
 };
 #define copyfd_eof abrt_copyfd_eof
 off_t copyfd_eof(int src_fd, int dst_fd, int flags);

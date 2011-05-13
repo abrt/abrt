@@ -18,8 +18,6 @@
 #include "abrtlib.h"
 #include "parse_options.h"
 
-#define PROGNAME "abrt-server"
-
 /* Maximal length of backtrace. */
 #define MAX_BACKTRACE_SIZE (1024*1024)
 /* Amount of data received from one client for a message before reporting error. */
@@ -280,13 +278,11 @@ static void dummy_handler(int sig_unused) {}
 
 int main(int argc, char **argv)
 {
-    char *env_verbose = getenv("ABRT_VERBOSE");
-    if (env_verbose)
-        g_verbose = atoi(env_verbose);
+    abrt_init(argv);
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        PROGNAME" [options]"
+        "\b [options]"
     );
     enum {
         OPT_v = 1 << 0,
@@ -304,10 +300,9 @@ int main(int argc, char **argv)
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
-    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-    msg_prefix = xasprintf(PROGNAME"[%u]", getpid());
-    if (opts & OPT_p)
-        putenv((char*)"ABRT_PROG_PREFIX=1");
+    export_abrt_envvars(opts & OPT_p);
+
+    msg_prefix = xasprintf("%s[%u]", g_progname, getpid());
     if (opts & OPT_s)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);

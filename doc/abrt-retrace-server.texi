@@ -27,7 +27,7 @@
 @top Retrace server
 
 This manual is for retrace server for ABRT version @value{VERSION},
-@value{UPDATED}.  The retrace server provides a coredump analysis and
+@value{UPDATED}.  The retrace server provides coredump analysis and
 backtrace generation service over a network using HTTP protocol.
 @end ifnottex
 
@@ -35,6 +35,7 @@ backtrace generation service over a network using HTTP protocol.
 * Overview::
 * HTTP interface::
 * Retrace worker::
+* Task cleanup::
 * Package repository::
 * Traffic and load estimation::
 * Security::
@@ -44,34 +45,42 @@ backtrace generation service over a network using HTTP protocol.
 @node Overview
 @chapter Overview
 
-A client sends a coredump (created by Linux kernel) together with
-some additional information to the server, and gets a backtrace
-generation task ID in response. Then the client, after some time, asks
-the server for the task status, and when the task is done (backtrace
-has been generated from the coredump), the client downloads the
-backtrace. If the backtrace generation fails, the client gets an error
-code and downloads a log indicating what happened. Alternatively, the
-client sends a coredump, and keeps receiving the server response
-message. Server then, via the response's body, periodically sends
-status of the task, and delivers the resulting backtrace as soon as
-it's ready.
+Analyzing a program crash from a coredump is a difficult task. The GNU
+Debugger (GDB), that is commonly used to analyze coredumps on free
+operating systems, expects that the system analyzing the coredump is
+identical to the system where the program crashed. Software updates
+often break this assumption even on the system where the crash occured,
+making the coredump analyzable only with significant effort.
 
-The retrace server must be able to support multiple operating
-systems and their releases (Fedora N-1, N, Rawhide, Branched Rawhide,
-RHEL), and multiple architectures within a single installation.
+Retrace server solves this problem for Fedora 14+ and RHEL 6+ operating
+systems, and allows developers to analyze coredumps without having
+access to the machine where the crash occurred.
 
-The retrace server consists of the following parts:
+Retrace server is usually run as a service on a local network, or on
+Internet. A user sends a coredump together with some additional
+information to a retrace server. The server reads the coredump and
+depending on its contents it installs necessary software dependencies to
+create a software environment which is, from the GDB point of view,
+identical to the environment where the crash happened. Then the server
+runs GDB to generate a backtrace from the coredump and provides it back
+to the user.
+
+Core dumps generated on i386 and x86_64 architectures are supported
+within a single x86_64 retrace server instance.
+
+The retrace server consists of the following major parts:
 @enumerate
 @item
-abrt-retrace-server: a HTTP interface script handling the
-communication with clients, task creation and management
+a HTTP interface, consisting of a set of scripts handling communication
+with clients
 @item
-abrt-retrace-worker: a program doing the environment preparation
-and coredump processing
+a retrace worker, doing the coredump processing, environment
+preparation, and running the debugger to generate a backtrace
 @item
-package repository: a repository placed on the server containing
-all the application binaries, libraries, and debuginfo necessary for
-backtrace generation
+a cleanup script, handling stalled retracing tasks and removing old data
+@item
+a package repository, providing the application binaries, libraries, and
+debuginfo necessary for generating backtraces from coredumps
 @end enumerate
 
 @node HTTP interface
@@ -82,94 +91,99 @@ backtrace generation
 * Task status::
 * Requesting a backtrace::
 * Requesting a log::
-* Task cleanup::
 * Limiting traffic::
 @end menu
 
-The HTTP interface application is a script written in Python. The
-script is named @file{abrt-retrace-server}, and it uses the
-@uref{http://www.python.org/dev/peps/pep-0333/, Python Web Server
-Gateway Interface} (WSGI) to interact with the web server.
-Administrators may use
-@uref{http://code.google.com/p/modwsgi/, mod_wsgi} to run
-@command{abrt-retrace-server} on Apache. The mod_wsgi is a part of
-both Fedora 12 and RHEL 6. The Python language is a good choice for
-this application, because it supports HTTP handling well, and it is
-already used in ABRT.
+The client-server communication proceeds as follows:
+@enumerate
+@item
+Client uploads a coredump to a retrace server. Retrace server creates a
+task for processing the coredump, and sends the task ID and task
+password in response to the client.
+@item
+Client asks server for the task status using the task ID and password.
+Server responds with the status information (task finished successfully,
+task failed, task is still running).
+@item
+Client asks server for the backtrace from a successfully finished task
+using the task ID and password. Server sends the backtrace in response.
+@item
+Client asks server for a log from the finished task using the task ID
+and password, and server sends the log in response.
+@end enumerate
 
-Only secure (HTTPS) communication must be allowed for the communication
-with @command{abrt-retrace-server}, because coredumps and backtraces are
+The HTTP interface application is a set of script written in Python,
+using the @uref{http://www.python.org/dev/peps/pep-0333/, Python Web
+Server Gateway Interface} (WSGI) to interact with a web server. The only
+supported and tested configuration is the Apache HTTPD Server with
+@uref{http://code.google.com/p/modwsgi/, mod_wsgi}.
+
+Only secure (HTTPS) communication is allowed for communicating with a
+public instance of retrace server, because coredumps and backtraces are
 private data. Users may decide to publish their backtraces in a bug
 tracker after reviewing them, but the retrace server doesn't do
-that. The HTTPS requirement must be specified in the server's man
-page. The server must support HTTP persistent connections to to avoid
-frequent SSL renegotiations. The server's manual page should include a
-recommendation for administrator to check that the persistent
-connections are enabled.
+that. The server is supposed to use HTTP persistent connections to to
+avoid frequent SSL renegotiations.
 
 @node Creating a new task
 @section Creating a new task
 
 A client might create a new task by sending a HTTP request to the
 @indicateurl{https://server/create} URL, and providing an archive as the
-request content. The archive must contain crash data files. The crash
-data files are a subset of some local
-@file{/var/spool/abrt/ccpp-time-pid} directory contents, so the client
-must only pack and upload them.
+request content. The archive contains crash data files. The crash data
+files are a subset of some local @file{/var/spool/abrt/ccpp-time-pid}
+directory contents, so the client must only pack and upload them.
 
-The server must support uncompressed tar archives, and tar archives
+The server supports uncompressed tar archives, and tar archives
 compressed with gzip and xz. Uncompressed archives are the most
-efficient way for local network delivery, and gzip can be used there
-as well because of its good compression speed.
+efficient way for local network delivery, and gzip can be used there as
+well because of its good compression speed.
 
 The xz compression file format is well suited for public server setup
 (slow network), as it provides good compression ratio, which is
 important for compressing large coredumps, and it provides reasonable
 compress/decompress speed and memory consumption. See @ref{Traffic and
-load estimation} for the measurements. The @uref{http://tukaani.org/xz/, XZ Utils}
-implementation with the compression level 2 should be used to compress
-the data.
+load estimation} for the measurements. The @uref{http://tukaani.org/xz/,
+XZ Utils} implementation with the compression level 2 is used to
+compress the data.
 
 The HTTP request for a new task must use the POST method. It must
 contain a proper @var{Content-Length} and @var{Content-Type} fields. If
-the method is not POST, the server must return the @code{405 Method Not
+the method is not POST, the server returns the @code{405 Method Not
 Allowed} HTTP error code. If the @var{Content-Length} field is missing,
-the server must return the @code{411 Length Required} HTTP error
-code. If an @var{Content-Type} other than @samp{application/x-tar},
+the server returns the @code{411 Length Required} HTTP error code. If an
+@var{Content-Type} other than @samp{application/x-tar},
 @samp{application/x-gzip}, @samp{application/x-xz} is used, the server
-must return the @code{415 unsupported Media Type} HTTP error code. If
-the @var{Content-Length} value is greater than a limit set in the server
+returns the @code{415 unsupported Media Type} HTTP error code. If the
+@var{Content-Length} value is greater than a limit set in the server
 configuration file (50 MB by default), or the real HTTP request size
-gets larger than the limit + 10 KB for headers, then the server must
-return the @code{413 Request Entity Too Large} HTTP error code, and
-provide an explanation, including the limit, in the response body. The
-limit must be changeable from the server configuration file.
+gets larger than the limit + 10 KB for headers, then the server returns
+the @code{413 Request Entity Too Large} HTTP error code, and provides an
+explanation, including the limit, in the response body. The limit is
+changeable from the server configuration file.
 
 If there is less than 20 GB of free disk space in the
-@file{/var/spool/abrt-retrace} directory, the server must return the
-@code{507 Insufficient Storage} HTTP error code. The server must return
-the same HTTP error code if decompressing the received archive would
-cause the free disk space to become less than 20 GB. The 20 GB limit
-must be changeable from the server configuration file.
+@file{/var/spool/abrt-retrace} directory, the server returns the
+@code{507 Insufficient Storage} HTTP error code. The server returns the
+same HTTP error code if decompressing the received archive would cause
+the free disk space to become less than 20 GB. The 20 GB limit is
+changeable from the server configuration file.
 
 If the data from the received archive would take more than 500 MB of
-disk space when uncompressed, the server must return the @code{413
-Request Entity Too Large} HTTP error code, and provide an explanation,
-including the limit, in the response body. The size limit must be
-changeable from the server configuration file. It can be set pretty high
-because coredumps, that take most disk space, are stored on the server
-only temporarily until the backtrace is generated. When the backtrace is
+disk space when uncompressed, the server returns the @code{413 Request
+Entity Too Large} HTTP error code, and provides an explanation,
+including the limit, in the response body. The size limit is changeable
+from the server configuration file. It can be set pretty high because
+coredumps, that take most disk space, are stored on the server only
+temporarily until the backtrace is generated. When the backtrace is
 generated the coredump is deleted by the @command{abrt-retrace-worker},
 so most disk space is released.
 
-The uncompressed data size for xz archives can be obtained by calling
+The uncompressed data size for xz archives is obtained by calling
 @code{`xz --list file.tar.xz`}. The @option{--list} option has been
-implemented only recently, so it might be necessary to implement a
-method to get the uncompressed data size by extracting the archive to
-the stdout, and counting the extracted bytes, and call this method if
-the @option{--list} doesn't work on the server. Likewise, the
-uncompressed data size for gzip archives can be obtained by calling
-@code{`gzip --list file.tar.gz`}.
+implemented only recently, so updating @command{xz} on your server might
+be necessary. Likewise, the uncompressed data size for gzip archives is
+obtained by calling @code{`gzip --list file.tar.gz`}.
 
 If an upload from a client succeeds, the server creates a new directory
 @file{/var/spool/abrt-retrace/@var{id}} and extracts the
@@ -178,30 +192,19 @@ the required files, checks their sizes, and then sends a HTTP
 response. After that it spawns a subprocess with
 @command{abrt-retrace-worker} on that directory.
 
-To support multiple architectures, the retrace server needs a GDB
-package compiled separately for every supported target architecture
-(see the avr-gdb package in Fedora for an example). This is
-technically and economically better solution than using a standalone
-machine for every supported architecture and resending coredumps
-depending on client's architecture. However, GDB's support for using a
-target architecture different from the host architecture seems to be
-fragile. If it doesn't work, the QEMU user mode emulation should be
-tried as an alternative approach.
-
 The following files from the local crash directory are required to be
 present in the archive: @file{coredump}, @file{architecture},
 @file{release}, @file{packages} (this one does not exist yet). If one or
 more files are not present in the archive, or some other file is present
-in the archive, the server must return the @code{403 Forbidden} HTTP
-error code. If the size of any file except the coredump exceeds 100 KB,
-the server must return the @code{413 Request Entity Too Large} HTTP
-error code, and provide an explanation, including the limit, in the
-response body. The 100 KB limit must be changeable from the server
-configuration file.
+in the archive, the server returns the @code{403 Forbidden} HTTP error
+code. If the size of any file except the coredump exceeds 100 KB, the
+server returns the @code{413 Request Entity Too Large} HTTP error code,
+and provides an explanation, including the limit, in the response
+body. The 100 KB limit is changeable from the server configuration file.
 
-If the file check succeeds, the server HTTP response must have the
-@code{201 Created} HTTP code. The response must include the following
-HTTP header fields:
+If the file check succeeds, the server HTTP response has the @code{201
+Created} HTTP code. The response includes the following HTTP header
+fields:
 @itemize
 @item
 @var{X-Task-Id} containing a new server-unique numerical
@@ -209,77 +212,19 @@ task id
 @item
 @var{X-Task-Password} containing a newly generated
 password, required to access the result
-@item
-@var{X-Task-Est-Time} containing a number of seconds the
-server estimates it will take to generate the backtrace
 @end itemize
 
 The @var{X-Task-Password} is a random alphanumeric (@samp{[a-zA-Z0-9]})
-sequence 22 characters long. 22 alphanumeric characters corresponds to
-128 bit password, because @samp{[a-zA-Z0-9]} = 62 characters, and
-@math{2^128} < @math{62^22}. The source of randomness must be,
-directly or indirectly, @file{/dev/urandom}. The @code{rand()} function
-from glibc and similar functions from other libraries cannot be used
-because of their poor characteristics (in several aspects). The password
-must be stored to the @file{/var/spool/abrt-retrace/@var{id}/password} file,
-so passwords sent by a client in subsequent requests can be verified.
+sequence 22 characters long. The password is stored in the
+@file{/var/spool/abrt-retrace/@var{id}/password} file, and passwords
+sent by a client in subsequent requests are verified by comparing with
+this file.
 
 The task id is intentionally not used as a password, because it is
 desirable to keep the id readable and memorable for
 humans. Password-like ids would be a loss when an user authentication
 mechanism is added, and server-generated password will no longer be
 necessary.
-
-The algorithm for the @var{X-Task-Est-Time} time estimation
-should take the previous analyses of coredumps with the same
-corresponding package name into account. The server should store
-simple history in a SQLite database to know how long it takes to
-generate a backtrace for certain package. It could be as simple as
-this:
-@itemize
-@item
-  initialization step one: @code{CREATE TABLE package_time (id INTEGER
-  PRIMARY KEY AUTOINCREMENT, package, release, time)}; we need the
-  @var{id} for the database cleanup - to know the insertion order of
-  rows, so the @code{AUTOINCREMENT} is important here; the @var{package}
-  is the package name without the version and release numbers, the
-  @var{release} column stores the operating system, and the @var{time}
-  is the number of seconds it took to generate the backtrace
-@item
-  initialization step two: @code{CREATE INDEX package_release ON
-  package_time (package, release)}; we compute the time only for single
-  package on single supported OS release per query, so it makes sense to
-  create an index to speed it up
-@item
-  when a task is finished: @code{INSERT INTO package_time (package,
-  release, time) VALUES ('??', '??', '??')}
-@item
-  to get the average time: @code{SELECT AVG(time) FROM package_time
-  WHERE package == '??' AND release == '??'}; the arithmetic mean seems
-  to be sufficient here
-@end itemize
-
-So the server knows that crashes from an OpenOffice.org package
-take 5 minutes to process in average, and it can return the value 300
-(seconds) in the field. The client does not waste time asking about
-that task every 20 seconds, but the first status request comes after
-300 seconds. And even when the package changes (rebases etc.), the
-database provides good estimations after some time anyway
-(@ref{Task cleanup} chapter describes how the
-data are pruned).
-
-The server response HTTP body is generated and sent
-gradually as the task is performed. Client chooses either to receive
-the body, or terminate after getting all headers and ask the server
-for status and backtrace asynchronously.
-
-The server re-sends the output of abrt-retrace-worker (its stdout and
-stderr) to the response the body. In addition, a line with the task
-status is added in the form @code{X-Task-Status: PENDING} to the body
-every 5 seconds. When the worker process ends, either
-@samp{FINISHED_SUCCESS} or @samp{FINISHED_FAILURE} status line is
-sent. If it's @samp{FINISHED_SUCCESS}, the backtrace is attached after
-this line. Then the response body is closed.
 
 @node Task status
 @section Task status
@@ -324,19 +269,19 @@ A client might request a backtrace by sending a HTTP GET request to the
 @indicateurl{https://someserver/@var{id}/backtrace} URL, where @var{id}
 is the numerical task id returned in the @var{X-Task-Id} field by
 @indicateurl{https://someserver/create}. If the @var{id} is not in the
-valid format, or the task @var{id} does not exist, the server must
-return the @code{404 Not Found} HTTP error code.
+valid format, or the task @var{id} does not exist, the server returns
+the @code{404 Not Found} HTTP error code.
 
 The client request must contain the @var{X-Task-Password} field, and its
 content must match the password stored in the
 @file{/var/spool/abrt-retrace/@var{id}/password} file. If the password
-is not valid, the server must return the @code{403 Forbidden} HTTP error
+is not valid, the server returns the @code{403 Forbidden} HTTP error
 code.
 
 If the file @file{/var/spool/abrt-retrace/@var{id}/backtrace} does not
-exist, the server must return the @code{404 Not Found} HTTP error code.
+exist, the server returns the @code{404 Not Found} HTTP error code.
 Otherwise it returns the file contents, and the @var{Content-Type} field
-must contain @samp{text/plain}.
+contains @samp{text/plain}.
 
 @node Requesting a log
 @section Requesting a log
@@ -345,27 +290,115 @@ A client might request a task log by sending a HTTP GET request to the
 @indicateurl{https://someserver/@var{id}/log} URL, where @var{id} is the
 numerical task id returned in the @var{X-Task-Id} field by
 @indicateurl{https://someserver/create}. If the @var{id} is not in the
-valid format, or the task @var{id} does not exist, the server must
-return the @code{404 Not Found} HTTP error code.
+valid format, or the task @var{id} does not exist, the server returns
+the @code{404 Not Found} HTTP error code.
 
 The client request must contain the @var{X-Task-Password} field, and its
 content must match the password stored in the
-@file{/var/spool/abrt-retrace/@var{id}/password} file. If the password is
-not valid, the server must return the @code{403 Forbidden} HTTP error code.
+@file{/var/spool/abrt-retrace/@var{id}/password} file. If the password
+is not valid, the server returns the @code{403 Forbidden} HTTP error
+code.
 
 If the file @file{/var/spool/abrt-retrace/@var{id}/retrace-log} does not
-exist, the server must return the @code{404 Not Found} HTTP error code.
-Otherwise it returns the file contents, and the "Content-Type" must
-contain "text/plain".
+exist, the server returns the @code{404 Not Found} HTTP error code.
+Otherwise it returns the file contents, and the @var{Content-Type}
+contains @samp{text/plain}.
+
+@node Limiting traffic
+@section Limiting traffic
+
+The maximum number of simultaneously running tasks is limited to 20 by
+the server. The limit is changeable from the server configuration
+file. If a new request comes when the server is fully occupied, the
+server returns the @code{503 Service Unavailable} HTTP error code.
+
+The archive extraction, chroot preparation, and gdb analysis is
+mostly limited by the hard drive size and speed.
+
+@node Retrace worker
+@chapter Retrace worker
+
+Retrace worker is a program (usually residing in
+@command{/usr/bin/abrt-retrace-worker}), which:
+@enumerate
+@item
+takes a task id as a parameter, and turns it into a directory containing
+a coredump
+@item
+determines which packages need to be installed from the coredump
+@item
+installs the packages in a newly created chroot environment together
+with @command{gdb}
+@item
+copies the coredump to the chroot environment
+@item
+runs @command{gdb} from inside the environment to generate a backtrace
+from the coredump
+@item
+copies the resulting backtrace from the environment to the directory
+@end enumerate
+
+The tasks reside in @file{/var/spool/abrt-retrace/@var{taskid}}
+directories.
+
+To determine which packages need to be installed,
+@command{abrt-retrace-worker} runs the @command{coredump2packages} tool.
+The tool reads build-ids from the coredump, and tries to find the best
+set of packages (epoch, name, version, release) matching the
+build-ids. Local yum repositories are used as the source of
+packages. GDB requirements are strict, and this is the reason why proper
+backtraces cannot be directly and reliably generated on systems whose
+software is updated:
+@itemize
+@item
+The exact binary which crashed needs to be available to GDB.
+@item
+All libraries which are linked to the binary need to be available in the
+same exact versions from the time of the crash.
+@item
+The binary plugins loaded by the binary or libraries via @code{dlopen}
+need to be present in proper versions.
+@item
+The files containing the debugging symbols for the binary and libraries
+(build-ids are used to find the pairs) need to be available to GDB.
+@end itemize
+
+The chroot environments are created and managed by @command{mock}, and
+they reside in @file{/var/lib/mock/@var{taskid}}. The retrace worker
+generates a mock configuration file and then invokes @command{mock} to
+create the chroot, and to run programs from inside the chroot.
+
+The chroot environment is populated by installing packages using
+@command{yum}. Package installation cannot be avoided, as GDB expects to
+operate on an installed system, and on crashes from that system. GDB
+uses plugins written in Python, that are shipped with packages (for
+example see @command{rpm -ql libstdc++}).
+
+Coredumps might be affected by @command{prelink}, which is used on
+Fedora to speed up dynamic linking by caching its results directly in
+binaries. The system installed by @command{mock} for the purpose of
+retracing doesn't use @command{prelink}, so the binaries differ between
+the system of origin and the mock environment. It has been tested that
+this is not an issue, but in the case some issue
+@uref{http://sourceware.org/ml/gdb/2009-05/msg00175.html, occurs}
+(GDB fails to work with a binary even if it's the right one), a bug
+should be filed on @code{prelink}, as its operation should not affect
+the area GDB operates on.
+
+No special care is taken to avoid the possibility that GDB will not run
+with the set of packages (fixed versions) as provided by coredump. It is
+expected that any combination of packages user might use in a released
+system should satisfy the needs of some version of GDB. Yum selects the
+newest possible version which has its requirements satisfied.
 
 @node Task cleanup
-@section Task cleanup
+@chapter Task cleanup
 
-Tasks that were created more than 5 days ago must be deleted, because
-tasks occupy disk space (not so much space, as the coredumps are deleted
-after the retrace, and only backtraces and configuration remain). A
-shell script @command{abrt-retrace-clean} must check the creation time
-and delete the directories in @file{/var/spool/abrt-retrace/}. It is
+Tasks that were created more than 5 days ago are deleted, because tasks
+occupy disk space (not so much space, as the coredumps are deleted after
+the retrace, and only backtraces and configuration remain). A shell
+script @command{abrt-retrace-clean} must check the creation time and
+delete the directories in @file{/var/spool/abrt-retrace/}. It is
 supposed that the server administrator sets @command{cron} to call the
 script once a day. This assumption must be mentioned in the
 @command{abrt-retrace-clean} manual page.
@@ -398,125 +431,6 @@ database:
   <= ??}
 @end itemize
 @end enumerate
-
-@node Limiting traffic
-@section Limiting traffic
-
-The maximum number of simultaneously running tasks must be limited to 20
-by the server. The limit must be changeable from the server
-configuration file. If a new request comes when the server is fully
-occupied, the server must return the @code{503 Service Unavailable} HTTP
-error code.
-
-The archive extraction, chroot preparation, and gdb analysis is
-mostly limited by the hard drive size and speed.
-
-@node Retrace worker
-@chapter Retrace worker
-
-The worker (@command{abrt-retrace-worker} binary) gets a
-@file{/var/spool/abrt-retrace/@var{id}} directory as an input. The worker
-reads the operating system name and version, the coredump, and the list
-of packages needed for retracing (a package containing the binary which
-crashed, and packages with the libraries that are used by the binary).
-
-The worker prepares a new @file{chroot} subdirectory with the packages,
-their debuginfo, and gdb installed. In other words, a new directory
-@file{/var/spool/abrt-retrace/@var{id}/chroot} is created and
-the packages are unpacked or installed into this directory, so for
-example the gdb ends up as
-@file{/var/.../@var{id}/chroot/usr/bin/gdb}.
-
-After the @file{chroot} subdirectory is prepared, the worker moves the
-coredump there and changes root (using the chroot system function) of a
-child script there. The child script runs the gdb on the coredump, and
-the gdb sees the corresponding crashy binary, all the debuginfo and all
-the proper versions of libraries on right places.
-
-When the gdb run is finished, the worker copies the resulting backtrace
-to the @file{/var/spool/abrt-retrace/@var{id}/backtrace} file and stores a
-log from the whole chroot process to the @file{retrace-log} file in the
-same directory. Then it removes the @file{chroot} directory.
-
-The GDB installed into the chroot must:
-@itemize
-@item
-run on the server (same architecture, or we can use
-@uref{http://wiki.qemu.org/download/qemu-doc.html#QEMU-User-space-emulator, QEMU
-user space emulation})
-@item
-process the coredump (possibly from another architecture): that
-means we need a special GDB for every supported architecture
-@item
-be able to handle coredumps created in an environment with prelink
-enabled
-(@uref{http://sourceware.org/ml/gdb/2009-05/msg00175.html, should
-not} be a problem)
-@item
-use libc, zlib, readline, ncurses, expat and Python packages,
-while the version numbers required by the coredump might be different
-from what is required by the GDB
-@end itemize
-
-The gdb might fail to run with certain combinations of package
-dependencies. Nevertheless, we need to provide the libc/Python/*
-package versions which are required by the coredump. If we would not
-do that, the backtraces generated from such an environment would be of
-lower quality. Consider a coredump which was caused by a crash of
-Python application on a client, and which we analyze on the retrace
-server with completely different version of Python because the
-client's Python version is not compatible with our GDB.
-
-We can solve the issue by installing the GDB package dependencies first,
-move their binaries to some safe place (@file{/lib/gdb} in the chroot),
-and create the @file{/etc/ld.so.preload} file pointing to that place, or
-set @env{LD_LIBRARY_PATH}. Then we can unpack libc binaries and
-other packages and their versions as required by the coredump to the
-common paths, and the GDB would run happily, using the libraries from
-@file{/lib/gdb} and not those from @file{/lib} and @file{/usr/lib}. This
-approach can use standard GDB builds with various target architectures:
-gdb, gdb-i386, gdb-ppc64, gdb-s390 (nonexistent in Fedora/EPEL at the
-time of writing this).
-
-The GDB and its dependencies are stored separately from the packages
-used as data for coredump processing. A single combination of GDB and
-its dependencies can be used across all supported OS to generate
-backtraces.
-
-The retrace worker must be able to prepare a chroot-ready environment
-for certain supported operating system, which is different from the
-retrace server's operating system. It needs to fake the @file{/dev}
-directory and create some basic files in @file{/etc} like @file{passwd}
-and @file{hosts}. We can use the @uref{https://fedorahosted.org/mock/,
-mock} library to do that, as it does almost what we need (but not
-exactly as it has a strong focus on preparing the environment for
-rpmbuild and running it), or we can come up with our own solution, while
-stealing some code from the mock library. The @file{/usr/bin/mock}
-executable is entirely unuseful for the retrace server, but the
-underlying Python library can be used. So if would like to use mock, an
-ABRT-specific interface to the mock library must be written or the
-retrace worker must be written in Python and use the mock Python library
-directly.
-
-We should save some time and disk space by extracting only binaries
-and dynamic libraries from the packages for the coredump analysis, and
-omit all other files. We can save even more time and disk space by
-extracting only the libraries and binaries really referenced by the
-coredump (eu-unstrip tells us). Packages should not be
-@emph{installed} to the chroot, they should be @emph{extracted}
-only, because we use them as a data source, and we never run them.
-
-Another idea to be considered is that we can avoid the package
-extraction if we can teach GDB to read the dynamic libraries, the
-binary, and the debuginfo directly from the RPM packages. We would
-provide a backend to GDB which can do that, and provide tiny front-end
-program which tells the backend which RPMs it should use and then run
-the GDB command loop. The result would be a GDB wrapper/extension we
-need to maintain, but it should end up pretty small. We would use
-Python to write our extension, as we do not want to (inelegantly)
-maintain a patch against GDB core. We need to ask GDB people if the
-Python interface is capable of handling this idea, and how much work
-it would be to implement it.
 
 @node Package repository
 @chapter Package repository
@@ -739,11 +653,10 @@ provider in various important matters. So when the retrace server is
 operated by the operating system provider, that might be acceptable by
 users.
 
-We cannot avoid sending clients' coredumps to the retrace server, if
-we want to generate quality backtraces containing the values of
-variables. Minidumps are not acceptable solution, as they lower the
-quality of the resulting backtraces, while not improving user
-security.
+We cannot avoid sending clients' coredumps to the retrace server, if we
+want to generate quality backtraces containing the values of
+variables. Minidumps lower the quality of the resulting backtraces,
+while not improving user security.
 
 Can the retrace server trust clients? We must know what can a
 malicious client achieve by crafting a nonstandard coredump, which
@@ -760,6 +673,14 @@ generate the backtrace. Is it safe? We must know what can a malicious
 client achieve by crafting a special binary and debuginfo, which will
 be processed by server's GDB.
 
+As for attacker trying to steal users' backtraces from the retrace
+server, the passwords protecting the backtraces in the
+@var{X-Task-Password} header are random alphanumeric
+(@samp{[a-zA-Z0-9]}) sequences 22 characters long. 22 alphanumeric
+characters corresponds to 128 bit password, because @samp{[a-zA-Z0-9]}
+is 62 characters, and @math{2^{128}} < @math{62^{22}}. The source of
+randomness is @file{/dev/urandom}.
+
 @node Packages and debuginfo
 @section Packages and debuginfo
 
@@ -773,34 +694,113 @@ it, as the data will also be signed.
 @node Future work
 @chapter Future work
 
-1. Coredump stripping. Jan Kratochvil: With my test of OpenOffice.org
-presentation kernel core file has 181MB, xz -2 of it has 65MB.
-According to `set target debug 1' GDB reads only 131406 bytes of it
-(incl. the NOTE segment).
+@section Coredump stripping
+Jan Kratochvil: With my test of OpenOffice.org presentation kernel core
+file has 181MB, xz -2 of it has 65MB.  According to `set target debug 1'
+GDB reads only 131406 bytes of it (incl. the NOTE segment).
 
-2. Use gdbserver instead of uploading whole coredump.  GDB's
-gdbserver cannot process coredumps, but Jan Kratochvil's can:
-<pre>  git://git.fedorahosted.org/git/elfutils.git
-  branch: jankratochvil/gdbserver
+@section Supporting other architectures
+Three approaches:
+@itemize
+@item
+Use GDB builds with various target architectures: gdb-i386, gdb-ppc64,
+gdb-s390.
+@item
+Run
+@uref{http://wiki.qemu.org/download/qemu-doc.html#QEMU-User-space-emulator,
+QEMU user space emulation} on the server
+@item
+Run @code{abrt-retrace-worker} on a machine with right
+architecture. Introduce worker machines and tasks, similarly to Koji.
+@end itemize
+
+@section Use gdbserver instead of uploading whole coredump
+GDB's gdbserver cannot process coredumps, but Jan Kratochvil's can:
+@verbatim
+git://git.fedorahosted.org/git/elfutils.git
+branch: jankratochvil/gdbserver
   src/gdbserver.c
    * Currently threading is not supported.
    * Currently only x86_64 is supported (the NOTE registers layout).
-</pre>
+@end verbatim
 
-3. User management for the HTTP interface. We need multiple
-authentication sources (x509 for RHEL).
+@section User management for the HTTP interface
+Multiple authentication sources (x509 for RHEL).
 
-4. Make @file{architecture}, @file{release},
-@file{packages} files, which must be included in the package
-when creating a task, optional. Allow uploading a coredump without
-involving tar: just coredump, coredump.gz, or coredump.xz.
+@section Make all files except coredump optional on the input
+Make @file{architecture}, @file{release}, @file{packages} files, which
+must be included in the package when creating a task, optional. Allow
+uploading a coredump without involving tar: just coredump, coredump.gz,
+or coredump.xz.
 
-5. Handle non-standard packages (provided by user)
+@section Handle non-standard packages (provided by user)
+This would make retrace server very vulnerable to attacks, it never can
+be enabled in a public instance.
 
-6. See @uref{https://fedorahosted.org/cas/, Core analysis system}, its
+@section Support vmcores
+See @uref{https://fedorahosted.org/cas/, Core analysis system}, its
 features etc.
 
-7. Consider using @uref{http://git.fedorahosted.org/git/?p=kobo.git,
-kobo} for task management and worker handling (master/slaves arch).
+@section Do not refuse new tasks on a fully loaded server
+Consider using @uref{http://git.fedorahosted.org/git/?p=kobo.git, kobo}
+for task management and worker handling (master/slaves arch).
+
+@section Support synchronous operation
+Client sends a coredump, and keeps receiving the server response
+message. The server response HTTP body is generated and sent gradually
+as the task is performed. Client can choose to stop receiving the
+response body after getting all headers and ask the server for status
+and backtrace asynchronously.
+
+The server re-sends the output of abrt-retrace-worker (its stdout and
+stderr) to the response the body. In addition, a line with the task
+status is added in the form @code{X-Task-Status: PENDING} to the body
+every 5 seconds. When the worker process ends, either
+@samp{FINISHED_SUCCESS} or @samp{FINISHED_FAILURE} status line is
+sent. If it's @samp{FINISHED_SUCCESS}, the backtrace is attached after
+this line. Then the response body is closed.
+
+@section Provide task estimation time
+The response to the @code{/create} action should contain a header
+@var{X-Task-Est-Time}, that contains a number of seconds the server
+estimates it will take to generate the backtrace
+
+The algorithm for the @var{X-Task-Est-Time} time estimation
+should take the previous analyses of coredumps with the same
+corresponding package name into account. The server should store
+simple history in a SQLite database to know how long it takes to
+generate a backtrace for certain package. It could be as simple as
+this:
+@itemize
+@item
+  initialization step one: @code{CREATE TABLE package_time (id INTEGER
+  PRIMARY KEY AUTOINCREMENT, package, release, time)}; we need the
+  @var{id} for the database cleanup - to know the insertion order of
+  rows, so the @code{AUTOINCREMENT} is important here; the @var{package}
+  is the package name without the version and release numbers, the
+  @var{release} column stores the operating system, and the @var{time}
+  is the number of seconds it took to generate the backtrace
+@item
+  initialization step two: @code{CREATE INDEX package_release ON
+  package_time (package, release)}; we compute the time only for single
+  package on single supported OS release per query, so it makes sense to
+  create an index to speed it up
+@item
+  when a task is finished: @code{INSERT INTO package_time (package,
+  release, time) VALUES ('??', '??', '??')}
+@item
+  to get the average time: @code{SELECT AVG(time) FROM package_time
+  WHERE package == '??' AND release == '??'}; the arithmetic mean seems
+  to be sufficient here
+@end itemize
+
+So the server knows that crashes from an OpenOffice.org package
+take 5 minutes to process in average, and it can return the value 300
+(seconds) in the field. The client does not waste time asking about
+that task every 20 seconds, but the first status request comes after
+300 seconds. And even when the package changes (rebases etc.), the
+database provides good estimations after some time anyway
+(@ref{Task cleanup} chapter describes how the
+data are pruned).
 
 @bye

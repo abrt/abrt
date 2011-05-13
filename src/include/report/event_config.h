@@ -71,6 +71,7 @@ typedef struct
     //char *action; //action description to show in gui like: Upload report to the Red Hat bugzilla"
     char *description; // "Report to..."/"Save to file". Should be one sentence, not long
     char *long_descr;  // Long(er) explanation, if needed
+    char *creates_elements;
     GList *options;
 } event_config_t;
 

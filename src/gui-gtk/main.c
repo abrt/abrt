@@ -25,8 +25,6 @@
 # include <locale.h>
 #endif
 
-#define PROGNAME "abrt-gui"
-
 static int inotify_fd = -1;
 static GIOChannel *channel_inotify;
 static int channel_inotify_event_id = -1;
@@ -94,6 +92,7 @@ static void init_notify(void)
     else
     {
         close_on_exec_on(inotify_fd);
+        ndelay_on(inotify_fd);
         VERB1 log("Adding inotify watch to glib main loop");
         channel_inotify = g_io_channel_unix_new(inotify_fd);
         channel_inotify_event_id = g_io_add_watch(channel_inotify,
@@ -103,6 +102,7 @@ static void init_notify(void)
     }
 }
 
+#if 0 // UNUSED
 static void close_notify(void)
 {
     if (inotify_fd >= 0)
@@ -117,15 +117,25 @@ static void close_notify(void)
         //VERB1 log("Done");
     }
 }
+#endif
 
 /* Inotify handler */
 static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
 {
-    /* We don't bother reading inotify fd. We simply close and reopen it.
-     * This happens rarely enough to not bother making it efficient.
+    /* Since dump dir creation usually involves directory rename as a last step,
+     * we end up rescanning twice. A small wait after first inotify event
+     * usually allows to avoid this.
      */
-    close_notify();
-    init_notify();
+    usleep(10*1000);
+
+    /* We read inotify events, but don't analyze them */
+    gchar buf[sizeof(struct inotify_event) + PATH_MAX + 64];
+    gsize bytes_read;
+    while (g_io_channel_read(gio, buf, sizeof(buf), &bytes_read) == G_IO_ERROR_NONE
+        && bytes_read > 0
+    ) {
+        continue;
+    }
 
     rescan_and_refresh();
 
@@ -176,11 +186,13 @@ void scan_dirs_and_add_to_dirlist(void)
 {
     char **argv = s_dirs;
     while (*argv)
-	scan_directory_and_add_to_dirlist(*argv++);
+        scan_directory_and_add_to_dirlist(*argv++);
 }
 
 int main(int argc, char **argv)
 {
+    abrt_init(argv);
+
     /* I18n */
     setlocale(LC_ALL, "");
 #if ENABLE_NLS
@@ -193,15 +205,12 @@ int main(int argc, char **argv)
      * trac#180
      */
     g_set_prgname("abrt");
-    gtk_init(&argc, &argv);
 
-    char *env_verbose = getenv("ABRT_VERBOSE");
-    if (env_verbose)
-        g_verbose = atoi(env_verbose);
+    gtk_init(&argc, &argv);
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        PROGNAME" [-vp] [DIR]...\n"
+        "\b [-vp] [DIR]...\n"
         "\n"
         "Shows list of ABRT dump directories in specified DIR(s)\n"
         "(default DIRs: "DEBUG_DUMPS_DIR" $HOME/.abrt/spool)"
@@ -218,12 +227,7 @@ int main(int argc, char **argv)
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
-    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-    if (opts & OPT_p)
-    {
-        msg_prefix = PROGNAME;
-        putenv((char*)"ABRT_PROG_PREFIX=1");
-    }
+    export_abrt_envvars(opts & OPT_p);
 
     GtkWidget *main_window = create_main_window();
 
@@ -254,8 +258,8 @@ int main(int argc, char **argv)
     xpipe(s_signal_pipe);
     close_on_exec_on(s_signal_pipe[0]);
     close_on_exec_on(s_signal_pipe[1]);
-    ndelay_off(s_signal_pipe[0]);
-    ndelay_off(s_signal_pipe[1]);
+    ndelay_on(s_signal_pipe[0]);
+    ndelay_on(s_signal_pipe[1]);
     signal(SIGCHLD, handle_signal);
     g_io_add_watch(g_io_channel_unix_new(s_signal_pipe[0]),
                 G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP | G_IO_NVAL,

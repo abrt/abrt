@@ -421,7 +421,7 @@ send_report_to_new_case(const char* baseURL,
                     atch_state->http_resp_code,
                     errmsg ? ": " : "",
                     errmsg ? errmsg : ""
-	    );
+            );
             break;
 
         case 200:

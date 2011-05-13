@@ -1,5 +1,5 @@
 AC_INIT([abrt],
-	m4_esyscmd([./gen-version]),
+	m4_esyscmd([cat ./abrt-version]),
 	[crash-catcher@fedorahosted.org])
 
 AC_CONFIG_MACRO_DIR([m4])
@@ -9,19 +9,16 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 AC_PROG_CC
-AC_PROG_CXX
 AC_PROG_LN_S
 
 AC_SYS_LARGEFILE
-CXXFLAGS="$CXXFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
-          -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing "
 CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
           -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing -std=gnu99 -Wall"
 
 AC_ARG_ENABLE(debug,
               [AC_HELP_STRING([--enable-debug],
                              [Enable debug information])],
-              [CXXFLAGS="$CXXFLAGS -DDEBUG -ggdb -g" CFLAGS="$CFLAGS -DDEBUG -ggdb -g"])
+              [CFLAGS="$CFLAGS -DDEBUG -ggdb -g"])
 
 dnl ****** INTERNATIONALIZATION **********************
 GETTEXT_PACKAGE=abrt
@@ -40,6 +37,24 @@ if test -z "$PYTHON"; then
     echo "*** Essential program python not found" 1>&2
     exit 1
 fi
+
+AC_PATH_PROG([ASCIIDOC], [asciidoc], [no])
+[if test "$ASCIIDOC" = "no"]
+[then]
+    [echo "The asciidoc program was not found in the search path. Please ensure"]
+    [echo "that it is installed and its directory is included in the search path."]
+    [echo "Then run configure again before attempting to build ABRT."]
+    [exit 1]
+[fi]
+
+AC_PATH_PROG([XMLTO], [xmlto], [no])
+[if test "$XMLTO" = "no"]
+[then]
+    [echo "The xmlto program was not found in the search path. Please ensure"]
+    [echo "that it is installed and its directory is included in the search path."]
+    [echo "Then run configure again before attempting to build ABRT."]
+    [exit 1]
+[fi]
 
 PKG_CHECK_MODULES([GTK], [gtk+-2.0])
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.21])

@@ -19,8 +19,6 @@
 #include "abrtlib.h"
 #include "parse_options.h"
 
-#define PROGNAME "abrt-handle-crashdump"
-
 static const char *dump_dir_name = NULL;
 //static const char *conf_filename = CONF_DIR"/abrt_event.conf";
 static const char *event;
@@ -34,14 +32,12 @@ static char *do_log(char *log_line, void *param)
 
 int main(int argc, char **argv)
 {
-    char *env_verbose = getenv("ABRT_VERBOSE");
-    if (env_verbose)
-        g_verbose = atoi(env_verbose);
+    abrt_init(argv);
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        PROGNAME" [-vs]" /*" [-c CONFFILE]"*/ " -d DIR -e EVENT\n"
-        "   or: "PROGNAME" [-vs]" /*" [-c CONFFILE]"*/ " [-d DIR] -l[PFX]\n"
+        "\b [-vs]" /*" [-c CONFFILE]"*/ " -d DIR -e EVENT\n"
+        "   or: \b [-vs]" /*" [-c CONFFILE]"*/ " [-d DIR] -l[PFX]\n"
         "\n"
         "Handles dump directory DIR according to rules in abrt_event.conf"
     );
@@ -69,10 +65,8 @@ int main(int argc, char **argv)
     if (!(opts & (OPT_e|OPT_l)))
         show_usage_and_die(program_usage_string, program_options);
 
-    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-    msg_prefix = PROGNAME;
-    if (opts & OPT_p)
-        putenv((char*)"ABRT_PROG_PREFIX=1");
+    export_abrt_envvars(opts & OPT_p);
+
     if (opts & OPT_s)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);

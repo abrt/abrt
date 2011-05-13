@@ -21,8 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// TODO: honor configure --prefix here:
-#define EXECUTABLE "/usr/bin/abrt-action-install-debuginfo.py"
+#define EXECUTABLE "abrt-action-install-debuginfo.py"
 
 static void error_msg_and_die(const char *msg, const char *arg)
 {
@@ -30,7 +29,7 @@ static void error_msg_and_die(const char *msg, const char *arg)
     if (arg)
     {
         write(2, " '", 2);
-        write(2, msg, strlen(msg));
+        write(2, arg, strlen(arg));
         write(2, "'", 1);
     }
     write(2, "\n", 1);
@@ -47,7 +46,7 @@ int main(int argc, char **argv)
 {
     /*
      * We disallow passing of arguments which point to writable dirs.
-     * This way, the script will always use default arguments.
+     * This way, the script will always use default values for these arguments.
      */
     char **pp = argv;
     char *arg;
@@ -57,7 +56,7 @@ int main(int argc, char **argv)
             error_msg_and_die("bad option", arg);
         if (strncmp(arg, "--tmpdir", 8) == 0)
             error_msg_and_die("bad option", arg);
-        if (strncmp(arg, "-i", 2) == 0)
+        if (strncmp(arg, "--ids", 5) == 0)
             error_msg_and_die("bad option", arg);
     }
 
@@ -70,12 +69,35 @@ int main(int argc, char **argv)
         setregid(g, g);
     uid_t u = geteuid();
     if (u != getuid())
+    {
         setreuid(u, u);
+        /* We are suid'ed! */
+        /* Prevent malicious user from messing up with suid'ed process: */
+        /* Set safe PATH */
+// TODO: honor configure --prefix here by adding it to PATH
+// (otherwise abrt-action-install-debuginfo.py would fail to spawn abrt-action-trim-files):
+        if (u == 0)
+            putenv((char*) "PATH=/usr/sbin:/sbin:/usr/bin:/bin");
+        else
+            putenv((char*) "PATH=/usr/bin:/bin");
+        /* Clear dangerous stuff from env */
+        static const char forbid[] =
+            "LD_LIBRARY_PATH" "\0"
+            "LD_PRELOAD" "\0"
+            "LD_TRACE_LOADED_OBJECTS" "\0"
+            "LD_BIND_NOW" "\0"
+            "LD_AOUT_LIBRARY_PATH" "\0"
+            "LD_AOUT_PRELOAD" "\0"
+            "LD_NOWARN" "\0"
+            "LD_KEEPDIR" "\0"
+        ;
+        const char *p = forbid;
+        do {
+            unsetenv(p);
+            p += strlen(p) + 1;
+        } while (*p);
+    }
 
-    /* We use full path, and execv instead of execvp in order to
-     * disallow user to execute his own abrt-action-install-debuginfo.py
-     * in his dir by setting up corresponding malicious $PATH.
-     */
-    execv(EXECUTABLE, argv);
+    execvp(EXECUTABLE, argv);
     error_msg_and_die("Can't execute", EXECUTABLE);
 }

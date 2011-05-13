@@ -30,8 +30,6 @@
 #include "MiddleWare.h"
 #include "parse_options.h"
 
-#define PROGNAME "abrtd"
-
 #define VAR_RUN_PIDFILE     VAR_RUN"/abrtd.pid"
 
 #define SOCKET_FILE VAR_RUN"/abrt/abrt.socket"
@@ -451,7 +449,7 @@ static void start_syslog_logging()
      * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
     xdup2(STDIN_FILENO, STDOUT_FILENO);
     xdup2(STDIN_FILENO, STDERR_FILENO);
-    openlog(PROGNAME, 0, LOG_DAEMON);
+    openlog(g_progname, 0, LOG_DAEMON);
     logmode = LOGMODE_SYSLOG;
     putenv((char*)"ABRT_SYSLOG=1");
 }
@@ -490,6 +488,8 @@ static void sanitize_dump_dir_rights()
 
 int main(int argc, char** argv)
 {
+    abrt_init(argv);
+
     int parent_pid = getpid();
 
     setlocale(LC_ALL, "");
@@ -502,12 +502,8 @@ int main(int argc, char** argv)
     if (getuid() != 0)
         error_msg_and_die("ABRT daemon must be run as root");
 
-    char *env_verbose = getenv("ABRT_VERBOSE");
-    if (env_verbose)
-        g_verbose = atoi(env_verbose);
-
     const char *program_usage_string = _(
-        PROGNAME" [options]"
+        "\b [options]"
     );
     enum {
         OPT_v = 1 << 0,
@@ -527,6 +523,8 @@ int main(int argc, char** argv)
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
+    export_abrt_envvars(opts & OPT_p);
+
     /* When dbus daemon starts us, it doesn't set PATH
      * (I saw it set only DBUS_STARTER_ADDRESS and DBUS_STARTER_BUS_TYPE).
      * In this case, set something sane:
@@ -536,10 +534,7 @@ int main(int argc, char** argv)
         putenv((char*)"PATH=/usr/sbin:/usr/bin:/sbin:/bin");
 
     unsetenv("ABRT_SYSLOG");
-    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-    msg_prefix = PROGNAME; /* for log(), error_msg() and such */
-    if (opts & OPT_p)
-        putenv((char*)"ABRT_PROG_PREFIX=1");
+    msg_prefix = g_progname; /* for log(), error_msg() and such */
     if (opts & OPT_s)
         start_syslog_logging();
 

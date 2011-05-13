@@ -7,13 +7,6 @@ import os
 import getopt
 import rpm
 
-GETTEXT_PROGNAME = "abrt"
-import locale
-import gettext
-
-_ = lambda x: gettext.lgettext(x)
-
-
 def log(s):
     sys.stderr.write("%s\n" % s)
 
@@ -22,26 +15,27 @@ def error_msg(s):
 
 def error_msg_and_die(s):
     sys.stderr.write("%s\n" % s)
-    os.exit(1)
+    sys.exit(1)
 
 def xopen(name, mode):
     try:
         r = open(name, mode)
     except IOError, e:
-        error_msg_and_die("Can't open '%s': %s" % (name, e));
+        error_msg_and_die("Can't open '%s': %s" % (name, e))
     return r
 
 
 def parse_maps(maps_path):
     try:
         f = xopen(maps_path, "r")
-        return [x.strip()[x.find('/'):] for x in f.readlines() if x.find('/') > -1]
+        # set() -> uniqifies the list of filenames
+        return set([x.strip()[x.find('/'):] for x in f.readlines() if x.find('/') > -1])
     except IOError, e:
-        error_msg_and_die("Can't read '%s': %s" % (name, e));
+        error_msg_and_die("Can't read '%s': %s" % (maps_path, e))
 
 if __name__ == "__main__":
     progname = os.path.basename(sys.argv[0])
-    help_text = _("Usage: %s [-o OUTFILE] -m PROC_PID_MAP_FILE") % progname
+    help_text = ("Usage: %s [-o OUTFILE] -m PROC_PID_MAP_FILE") % progname
     try:
         opts, args = getopt.getopt(sys.argv[1:], "o:m:h", ["help"])
     except getopt.GetoptError, err:
@@ -63,7 +57,7 @@ if __name__ == "__main__":
             memfile = arg
 
     if not memfile:
-        error_msg(_("MAP_FILE is not specified"))
+        error_msg("MAP_FILE is not specified")
         error_msg_and_die(help_text)
 
     try:
@@ -81,10 +75,15 @@ if __name__ == "__main__":
                         if outname:
                             outfile = xopen(outname, "w")
                             outname = None
-                        outfile.write("%s %s (%s)\n" % (path, h[rpm.RPMTAG_NEVRA], h[rpm.RPMTAG_VENDOR]))
+                        outfile.write("%s %s (%s) %s\n" %
+                                    (path,
+                                     h[rpm.RPMTAG_NEVRA],
+                                     h[rpm.RPMTAG_VENDOR],
+                                     h[rpm.RPMTAG_INSTALLTIME])
+                                    )
 
         except Exception, ex:
-            error_msg_and_die("Can't get the DSO list: %s", ex)
+            error_msg_and_die("Can't get the DSO list: %s" % ex)
 
         outfile.close()
     except:

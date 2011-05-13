@@ -2,27 +2,27 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2011-04-20 10:29+0200\n"
-"PO-Revision-Date: 2011-04-20 08:37+0000\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2011-05-03 16:21+0200\n"
+"PO-Revision-Date: 2011-05-02 18:28+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Assamese <None>\n"
+"Language: as\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: as\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
 msgstr "ABRT সংকেতিক এপ্লেট"
 
-#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/abrt-gtk.c:351
+#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt-gtk.c:358
+#: ../src/gui-gtk/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "স্বয়ংক্ৰিয় বাগ প্ৰতিবেদন  ব্যৱস্থা"
 
@@ -46,10 +46,9 @@ msgstr "সতৰ্কবাণী"
 #: ../src/applet/applet_gtk.c:259
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
-msgstr ""
-"সংকেতিক স্থান এপ্লেট যোনে ব্যৱহাৰকাৰীক ABRT -এ ধৰা বিষয়সমূহৰ সংকেত দিয়ে"
+msgstr "সংকেতিক স্থান এপ্লেট যোনে ব্যৱহাৰকাৰীক ABRT -এ ধৰা বিষয়সমূহৰ সংকেত দিয়ে"
 
-#: ../src/applet/applet_gtk.c:275 ../src/gui-gtk/abrt-gtk.c:236
+#: ../src/applet/applet_gtk.c:275 ../src/gui-gtk/abrt-gtk.c:243
 msgid "translator-credits"
 msgstr "অমিতাক্ষ ফুকন (aphukan@fedoraproject.org)"
 
@@ -73,7 +72,7 @@ msgstr "এটা সমস্যা দেখা দিছে"
 msgid "Open ABRT"
 msgstr "ABRT খোলক"
 
-#: ../src/cli/cli.c:211
+#: ../src/cli/cli.c:175
 #, c-format
 msgid ""
 "Usage: %s -l[f] [-D BASE_DIR]...]\n"
@@ -98,7 +97,7 @@ msgid ""
 "\t-v, --verbose\t\tBe verbose\n"
 msgstr ""
 
-#: ../src/cli/cli.c:260
+#: ../src/cli/cli.c:224
 msgid "You must specify exactly one operation"
 msgstr "আপুনি অবিকল এটা কাৰ্য্য ধাৰ্য্য কৰিব লাগিব"
 
@@ -176,7 +175,7 @@ msgstr ""
 "আবেদনপত্ৰটোত কোনো পৰিৱৰ্তন পোৱে যোৱা নাছিল"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.c:394
+#: ../src/cli/report.c:394 ../src/plugins/abrt-action-install-debuginfo.py:83
 msgid "y"
 msgstr "y"
 
@@ -212,24 +211,24 @@ msgstr ""
 msgid "Invalid input, program exiting..."
 msgstr ""
 
-#: ../src/cli/report.c:741 ../src/gui-wizard-gtk/wizard.c:1103
+#: ../src/cli/report.c:740 ../src/gui-wizard-gtk/wizard.c:1101
 msgid "Reporting..."
 msgstr "জনোৱা হৈ আছে..."
 
-#: ../src/cli/report.c:762
+#: ../src/cli/report.c:761
 #, c-format
 msgid "Report using %s?"
 msgstr "%s ব্যৱহাৰ কৰি জনাব নে?"
 
-#: ../src/cli/report.c:769
+#: ../src/cli/report.c:768
 msgid "Skipping..."
 msgstr "বাদ দিয়া হৈ আছে..."
 
-#: ../src/cli/report.c:779
+#: ../src/cli/report.c:778
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "জনোৱা সেৱা অসামৰ্থবান কাৰণ backtrace ব্যৱহাৰৰ অযোগ্য"
 
-#: ../src/cli/report.c:783
+#: ../src/cli/report.c:782
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -238,12 +237,12 @@ msgstr ""
 "অনুগ্ৰহ কৰি debuginfo -ক কমান্ড: \"debuginfo-install %s\" ব্যৱহাৰ কৰি "
 "হস্তচালিতভাৱে ইনস্টল কৰাৰ চেষ্টা কৰক আৰু পুনৰ চেষ্টা কৰক\n"
 
-#: ../src/cli/report.c:805
+#: ../src/cli/report.c:804
 #, c-format
-msgid "Crash reported via %d report events (%d errors)\n"
-msgstr "%d সংবাদ ঘটনাসমূহৰ জৰিওতে বিপৰ্যয় জনোৱা হৈছে (%d ত্ৰুটিসমূহ)\n"
+msgid "Problem reported via %d report events (%d errors)\n"
+msgstr ""
 
-#: ../src/daemon/abrt-action-save-package-data.c:255
+#: ../src/daemon/abrt-action-save-package-data.c:254
 msgid ""
 " [-v] -d DIR\n"
 "\n"
@@ -253,13 +252,13 @@ msgstr ""
 "\n"
 "পেকেইজ ডাটাবেইচৰ বিষয়ে সোধক আৰু পেকেইজ নাম, উপাদান, আৰু বিৱৰণ সঞ্চয় কৰক"
 
-#: ../src/daemon/abrt-action-save-package-data.c:266
+#: ../src/daemon/abrt-action-save-package-data.c:265
 #: ../src/daemon/abrt-handle-crashdump.c:61
 #: ../src/plugins/abrt-action-analyze-backtrace.c:70
 #: ../src/plugins/abrt-action-analyze-c.c:177
 #: ../src/plugins/abrt-action-analyze-oops.c:159
 #: ../src/plugins/abrt-action-analyze-python.c:45
-#: ../src/plugins/abrt-action-bugzilla.cpp:931
+#: ../src/plugins/abrt-action-bugzilla.cpp:933
 #: ../src/plugins/abrt-action-generate-backtrace.c:256
 #: ../src/plugins/abrt-action-kerneloops.c:154
 #: ../src/plugins/abrt-action-mailx.c:155
@@ -277,7 +276,7 @@ msgstr ""
 " [-vs] -d DIR -e ঘটনা\n"
 "   বা: "
 
-#: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:297
+#: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:301
 #: ../src/plugins/abrt-dump-oops.c:585
 msgid "Log to syslog"
 msgstr "syslog লে লগ"
@@ -290,21 +289,21 @@ msgstr "ঘটনা সম্ভালক"
 msgid "List possible events [which start with PFX]"
 msgstr "সম্ভাব্য ঘটনাসমূহ দেখুৱাওক [যি PFX -ৰ সৈতে আৰম্ভ হয়]"
 
-#: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:298
-#: ../src/daemon/abrtd.c:528 ../src/gui-gtk/main.c:216
+#: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:302
+#: ../src/daemon/abrtd.c:525 ../src/gui-gtk/main.c:228
 #: ../src/gui-wizard-gtk/main.c:94
 msgid "Add program names to log"
 msgstr "লগ লে প্ৰগ্ৰামৰ নামসমূহ যোগ কৰক"
 
-#: ../src/daemon/abrt-server.c:285 ../src/daemon/abrtd.c:513
+#: ../src/daemon/abrt-server.c:289 ../src/daemon/abrtd.c:510
 msgid " [options]"
 msgstr " [বিকল্পসমূহ]"
 
-#: ../src/daemon/abrt-server.c:296
+#: ../src/daemon/abrt-server.c:300
 msgid "Use UID as client uid"
 msgstr "UID -ক ক্লাএন্ট uid হিচাপে ব্যৱহাৰ কৰক"
 
-#: ../src/daemon/abrtd.c:349
+#: ../src/daemon/abrtd.c:337
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -312,15 +311,15 @@ msgstr ""
 "আবেদনপত্ৰৰ আকাৰ কোটা পাৰ হৈ গৈছে। অনুগ্ৰহ কৰি abrt.conf -ত চিস্টেমৰ "
 "MaxCrashReportsSize মান চাওক।"
 
-#: ../src/daemon/abrtd.c:525
+#: ../src/daemon/abrtd.c:522
 msgid "Do not daemonize"
 msgstr "daemonize নকৰিব"
 
-#: ../src/daemon/abrtd.c:526
+#: ../src/daemon/abrtd.c:523
 msgid "Log to syslog even with -d"
 msgstr "-d -ৰ সৈতে syslog লে লগ কৰক"
 
-#: ../src/daemon/abrtd.c:527
+#: ../src/daemon/abrtd.c:524
 msgid "Exit after SEC seconds of inactivity"
 msgstr "SEC ছেকেন্ড অসক্ৰিয়তাৰ পিছতে প্ৰস্থান কৰক"
 
@@ -340,57 +339,57 @@ msgstr "ঘটনা"
 msgid "Configure E_vent"
 msgstr "ঘটনা সংৰূপন কৰক (_v)"
 
-#: ../src/gtk-helpers/event_config_dialog.c:424
+#: ../src/gtk-helpers/event_config_dialog.c:425
 #, c-format
 msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue"
-" with the current configuration."
+"Wrong settings detected for %s, reporting will probably fail if you continue "
+"with the current configuration."
 msgstr ""
 
-#: ../src/gtk-helpers/event_config_dialog.c:428
+#: ../src/gtk-helpers/event_config_dialog.c:429
 #, c-format
 msgid ""
 "Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
 "continue with the current configuration."
 msgstr ""
 
+#: ../src/gui-gtk/abrt-gtk.c:262
+msgid "Reported"
+msgstr "প্ৰতিবেদন কৰা হৈছে"
+
+#: ../src/gui-gtk/abrt-gtk.c:274
+msgid "Problem"
+msgstr "সমস্যা"
+
+#: ../src/gui-gtk/abrt-gtk.c:297
+msgid "Last occurrence"
+msgstr "সৰ্বশেষ ঘটনা"
+
+#: ../src/gui-gtk/abrt-gtk.c:312
+msgid "_File"
+msgstr "নথিপত্ৰ (_F)"
+
+#: ../src/gui-gtk/abrt-gtk.c:313
+msgid "_Edit"
+msgstr "সম্পাদনা (_E)"
+
+#: ../src/gui-gtk/abrt-gtk.c:314
+msgid "_Help"
+msgstr "সহায় (_H)"
+
+#: ../src/gui-gtk/abrt-gtk.c:330
+msgid "_Event configuration"
+msgstr "ঘটনা সংৰূপন (_E)"
+
+#: ../src/gui-gtk/abrt-gtk.c:411
+msgid "Online _Help"
+msgstr "অনলাইন সহায় (_H)"
+
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
 msgstr "এপ্লিকেছনৰ বিপৰ্যয় নিৰীক্ষণ কৰক আৰু প্ৰতিবেদন কৰক"
 
-#: ../src/gui-gtk/abrt-gtk.c:255
-msgid "Reported"
-msgstr "প্ৰতিবেদন কৰা হৈছে"
-
-#: ../src/gui-gtk/abrt-gtk.c:267
-msgid "Problem"
-msgstr "সমস্যা"
-
-#: ../src/gui-gtk/abrt-gtk.c:290
-msgid "Last occurrence"
-msgstr "সৰ্বশেষ ঘটনা"
-
-#: ../src/gui-gtk/abrt-gtk.c:305
-msgid "_File"
-msgstr "নথিপত্ৰ (_F)"
-
-#: ../src/gui-gtk/abrt-gtk.c:306
-msgid "_Edit"
-msgstr "সম্পাদনা (_E)"
-
-#: ../src/gui-gtk/abrt-gtk.c:307
-msgid "_Help"
-msgstr "সহায় (_H)"
-
-#: ../src/gui-gtk/abrt-gtk.c:323
-msgid "_Event configuration"
-msgstr "ঘটনা সংৰূপন (_E)"
-
-#: ../src/gui-gtk/abrt-gtk.c:399
-msgid "Online _Help"
-msgstr "অনলাইন সহায় (_H)"
-
-#: ../src/gui-gtk/main.c:204
+#: ../src/gui-gtk/main.c:216
 msgid ""
 " [-vp] [DIR]...\n"
 "\n"
@@ -422,8 +421,8 @@ msgid ""
 "Need writable directory, but '%s' is not writable. Move it to '%s' and "
 "operate on the moved copy?"
 msgstr ""
-"লিখিব পৰা ডাইৰেকটৰি বিচাৰে, কিন্তু '%s' -ক লিখিব নোৱাৰি। ইয়াক '%s' -ত লই গৈ "
-"আৰু লৈ যোৱা কপিত কাৰ্য্য কৰা হব নে?"
+"লিখিব পৰা ডাইৰেকটৰি বিচাৰে, কিন্তু '%s' -ক লিখিব নোৱাৰি। ইয়াক '%s' -ত লই গৈ আৰু "
+"লৈ যোৱা কপিত কাৰ্য্য কৰা হব নে?"
 
 #: ../src/gui-wizard-gtk/wizard.c:559
 msgid "(click here to view/edit)"
@@ -438,58 +437,58 @@ msgstr "(বাইনাৰি নথিপত্ৰ, %llu বাইটসমূ
 msgid "(no description)"
 msgstr "(কোনো বিৱৰণ নাই)"
 
-#: ../src/gui-wizard-gtk/wizard.c:592
+#: ../src/gui-wizard-gtk/wizard.c:591
 #, c-format
 msgid "%llu bytes, %u files"
 msgstr "%llu বাইটসমূহ, %u নথিপত্ৰসমূহ"
 
 #. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:915
+#: ../src/gui-wizard-gtk/wizard.c:914
 #, c-format
 msgid "No processing for event '%s' is defined"
 msgstr "'%s' ঘটনাৰ বাবে কোনো প্ৰক্ৰিয়া দিয়া হোৱা নাই"
 
 #. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:1005
+#: ../src/gui-wizard-gtk/wizard.c:1004
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
-"backtrace টো অসমপূৰ্ণ, অনুগ্ৰহ কৰি নিশ্চিত কৰক পুনৰ উৎপাদন কৰিবলে আপুনি "
-"পৰ্যায়সমূহৰ যোগান দিছে।"
+"backtrace টো অসমপূৰ্ণ, অনুগ্ৰহ কৰি নিশ্চিত কৰক পুনৰ উৎপাদন কৰিবলে আপুনি পৰ্যায়সমূহৰ "
+"যোগান দিছে।"
 
 #. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1011
+#: ../src/gui-wizard-gtk/wizard.c:1009
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "জনোৱা প্ৰক্ৰিয়া অসামৰ্থবান কাৰণ backtrace ব্যৱহাৰযোগ্য নহয়।"
 
-#: ../src/gui-wizard-gtk/wizard.c:1020
+#: ../src/gui-wizard-gtk/wizard.c:1018
 msgid "You should check the backtrace for sensitive data."
 msgstr "আপুনি backtrace -ক সংবেদ্য তথ্য কাৰণে নিৰিক্ষন কৰক।"
 
-#: ../src/gui-wizard-gtk/wizard.c:1021
+#: ../src/gui-wizard-gtk/wizard.c:1019
 msgid "You must agree with sending the backtrace."
 msgstr "আপুনি backtrace -ক পঠুৱা লৈ মানতি হব লাগিব।"
 
-#: ../src/gui-wizard-gtk/wizard.c:1077
+#: ../src/gui-wizard-gtk/wizard.c:1075
 msgid "Analyzing..."
 msgstr "বিশ্লেষন কৰা হৈ আছে..."
 
-#: ../src/gui-wizard-gtk/wizard.c:1078
+#: ../src/gui-wizard-gtk/wizard.c:1076
 #, c-format
 msgid "Analyzing finished with exit code %d"
 msgstr "প্ৰস্থান কোড %d -ৰ সৈতে বিশ্লেষন সমপূৰ্ণ কৰা হল"
 
-#: ../src/gui-wizard-gtk/wizard.c:1104
+#: ../src/gui-wizard-gtk/wizard.c:1102
 #, c-format
 msgid "Reporting finished with exit code %d"
 msgstr "প্ৰস্থান কোড %d -ৰ সৈতে জনোৱা সমপূৰ্ণ কৰা হল"
 
-#: ../src/gui-wizard-gtk/wizard.c:1221
+#: ../src/gui-wizard-gtk/wizard.c:1219
 msgid "Name"
 msgstr "নাম"
 
-#: ../src/gui-wizard-gtk/wizard.c:1230
+#: ../src/gui-wizard-gtk/wizard.c:1228
 msgid "Value"
 msgstr "মান"
 
@@ -498,8 +497,8 @@ msgid ""
 "<b>Your comments are not private.</b> They may be included into publicly "
 "visible problem reports."
 msgstr ""
-"<b>আপোনাৰ উপাদানসমূহ ব্যক্তিগত নহয়।</b> তেওলোকক ৰাজহুৱা ভাৱে দৃশ্যমান সমস্যা"
-" আবেদনপত্ৰত অন্তৰভুক্ত কৰা হব পাৰে।"
+"<b>আপোনাৰ উপাদানসমূহ ব্যক্তিগত নহয়।</b> তেওলোকক ৰাজহুৱা ভাৱে দৃশ্যমান সমস্যা "
+"আবেদনপত্ৰত অন্তৰভুক্ত কৰা হব পাৰে।"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:2
 msgid "Analyzing did not start yet"
@@ -515,42 +514,45 @@ msgid ""
 "down the source of the problem. Please review it and remove any sensitive "
 "data you would rather not share:"
 msgstr ""
-"Backtrace -এ বিকাশকসমূহক ক্ৰেষৰ বিৱৰণ দিয়ে, যোনটো সমস্যাৰ উৎস বিচাৰিবলে "
-"তেওলোকক সহায় কৰে। অনুগ্ৰহ কৰি ইয়াক পুনৰ চাওক আৰু এনে কোনো সংবেদ্য তথ্য যিটো "
-"আপুনি সেয়াৰ কৰিব নিবিচাৰে তাক আতৰাওক:"
+"Backtrace -এ বিকাশকসমূহক ক্ৰেষৰ বিৱৰণ দিয়ে, যোনটো সমস্যাৰ উৎস বিচাৰিবলে তেওলোকক "
+"সহায় কৰে। অনুগ্ৰহ কৰি ইয়াক পুনৰ চাওক আৰু এনে কোনো সংবেদ্য তথ্য যিটো আপুনি সেয়াৰ "
+"কৰিব নিবিচাৰে তাক আতৰাওক:"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:5
 msgid ""
 "Can create more informative backtrace if you installed additional debug "
 "packages"
 msgstr ""
-"বেছি তথ্যপূৰ্ণ backtrace সৃষ্টি কৰিব নোৱাৰি যদি আপুনি অতিৰিক্ত ডিবাগ "
-"পেকেইজসমূহ ইনস্টল কৰিছে"
+"বেছি তথ্যপূৰ্ণ backtrace সৃষ্টি কৰিব নোৱাৰি যদি আপুনি অতিৰিক্ত ডিবাগ পেকেইজসমূহ "
+"ইনস্টল কৰিছে"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:6
 msgid "Click 'Apply' to start reporting"
 msgstr "জনোৱা আৰম্ভ কৰিবলে 'প্ৰয়োগ কৰা' ক্লিক কৰক"
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:7
-msgid "Click 'Forward' to proceed with analyzing and reporting this problem."
-msgstr "এই সমস্যাটো বিশ্লেষন কৰি জনাবলে 'আগলৈ' ক্লিক কৰক।"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Configure _Events"
 msgstr "ঘটনাসমূহ সংৰূপ কৰক (_E)"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:9
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
 msgid "Details"
 msgstr "বিৱৰণ"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:10
+#: ../src/gui-wizard-gtk/wizard.glade.h:9
 msgid "How did this problem happen (step-by-step)? How can it be reproduced?"
-msgstr ""
-"এই সমস্যা কেনেকে ঘটিত হল (স্তৰে-স্তৰে)? ইয়াক কেনেকে পুনৰ উৎপাদন কৰিব পাৰি?"
+msgstr "এই সমস্যা কেনেকে ঘটিত হল (স্তৰে-স্তৰে)? ইয়াক কেনেকে পুনৰ উৎপাদন কৰিব পাৰি?"
 
-#: ../src/gui-wizard-gtk/wizard.glade.h:11
+#: ../src/gui-wizard-gtk/wizard.glade.h:10
 msgid "I _agree with submitting the backtrace"
 msgstr "মই backtraceটো জমা দিবলে ৰাজি"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:11
+msgid ""
+"On the following screens, you will be asked to describe how the problem "
+"occurred, to choose how to analyze the problem (if needed), to review "
+"collected data, and to choose where the problem should be reported. Click "
+"'Forward' to proceed."
+msgstr ""
 
 #: ../src/gui-wizard-gtk/wizard.glade.h:12
 msgid "Regenerate backtrace"
@@ -581,8 +583,8 @@ msgid ""
 "Use this button to generate more informative backtrace after you installed "
 "additional debug packages"
 msgstr ""
-"অতিৰিক্ত ডিবাগ পেকেইজসমূহ ইনস্টল কৰাৰ পিচত এই বুটামটো ব্যৱহাৰ কৰক আৰু "
-"তথ্যপূৰ্ণ backtrace সৃজন কৰিবলে"
+"অতিৰিক্ত ডিবাগ পেকেইজসমূহ ইনস্টল কৰাৰ পিচত এই বুটামটো ব্যৱহাৰ কৰক আৰু তথ্যপূৰ্ণ "
+"backtrace সৃজন কৰিবলে"
 
 #: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
 #, c-format
@@ -621,16 +623,19 @@ msgstr "ব্যৱহাৰ: %s\n"
 msgid ""
 " [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
+"identifies crash function in dump directory DIR"
 msgstr ""
 " [বিকল্পসমূহ] -d DIR\n"
 "\n"
-"C/C++ backtrace বিশ্লেষণ কৰে, প্ৰতিলিপি হেশ সৃজন কৰে, backtrace হাৰাংক, আৰু ডাম্প ডাইৰেকটৰি DIR -ত বিপৰ্যয় ফলন চিনাক্ত কৰে"
+"C/C++ backtrace বিশ্লেষণ কৰে, প্ৰতিলিপি হেশ সৃজন কৰে, backtrace হাৰাংক, আৰু ডাম্প "
+"ডাইৰেকটৰি DIR -ত বিপৰ্যয় ফলন চিনাক্ত কৰে"
 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:111
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -671,75 +676,75 @@ msgstr ""
 msgid "New bug id: %i"
 msgstr "নতুন বাগ id: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:647
+#: ../src/plugins/abrt-action-bugzilla.cpp:649
 msgid "Empty login or password, please check your configuration"
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:661
+#: ../src/plugins/abrt-action-bugzilla.cpp:663
 #, c-format
 msgid "Essential file '%s' is missing, can't continue.."
 msgstr "প্ৰয়োজনীয় '%s' নথিপত্ৰ সন্ধানহীন, আগবাঢ়িব নোৱাৰি"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:665
+#: ../src/plugins/abrt-action-bugzilla.cpp:667
 #, c-format
 msgid "Essential file '%s' is empty, can't continue.."
 msgstr "প্ৰয়োজনীয় '%s' নথিপত্ৰ ৰিক্ত, আগবাঢ়িব নোৱাৰি"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:674
+#: ../src/plugins/abrt-action-bugzilla.cpp:676
 #, c-format
 msgid "Logging into Bugzilla at %s"
 msgstr "%s -ত Bugzilla -ত লগিন কৰা হৈ আছে"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:677
+#: ../src/plugins/abrt-action-bugzilla.cpp:679
 msgid "Checking for duplicates"
 msgstr "প্ৰতিলিপিসমূহ বিচৰা হৈছে"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:699
-#: ../src/plugins/abrt-action-bugzilla.cpp:735
+#: ../src/plugins/abrt-action-bugzilla.cpp:701
+#: ../src/plugins/abrt-action-bugzilla.cpp:737
 msgid "Missing mandatory member 'bugs'"
 msgstr "হেৰুৱা আৱশ্যক সদস্য 'bugs'"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:718
-#: ../src/plugins/abrt-action-bugzilla.cpp:751
-#: ../src/plugins/abrt-action-bugzilla.cpp:827
+#: ../src/plugins/abrt-action-bugzilla.cpp:720
+#: ../src/plugins/abrt-action-bugzilla.cpp:753
+#: ../src/plugins/abrt-action-bugzilla.cpp:829
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() বিফল । সকলো আৱশ্যকীয় তথ্য সংগ্ৰহ কৰিব পৰা ন'গ'ল"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:766
+#: ../src/plugins/abrt-action-bugzilla.cpp:768
 msgid "Creating a new bug"
 msgstr "এটা নতুন বাগ সৃষ্টি কৰা হৈছে"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:771
+#: ../src/plugins/abrt-action-bugzilla.cpp:773
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla নিবেশৰ নিৰ্মাণ বিফল"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:783
-#: ../src/plugins/abrt-action-bugzilla.cpp:883
+#: ../src/plugins/abrt-action-bugzilla.cpp:785
+#: ../src/plugins/abrt-action-bugzilla.cpp:885
 msgid "Logging out"
 msgstr "প্ৰস্থান কৰা হৈছে"
 
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:801
+#: ../src/plugins/abrt-action-bugzilla.cpp:803
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "বাগ আগতে প্ৰতিবেদন কৰা হৈছে: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:812
+#: ../src/plugins/abrt-action-bugzilla.cpp:814
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla -এ %d বাগৰ উপধায়ক বিচাৰি নাপালে"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:842
+#: ../src/plugins/abrt-action-bugzilla.cpp:844
 #, c-format
 msgid "Add %s to CC list"
 msgstr "%s -ক CC তালিকাত যোগ কৰক"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:868
+#: ../src/plugins/abrt-action-bugzilla.cpp:870
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "bug(%d) ত নতুন মন্তব্য যোগ কৰক"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:919
+#: ../src/plugins/abrt-action-bugzilla.cpp:921
 msgid ""
 " [-v] -c CONFFILE -d DIR\n"
 "\n"
@@ -749,7 +754,7 @@ msgstr ""
 "\n"
 "সমস্যাক Bugzilla -ক জনাওক"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:932
+#: ../src/plugins/abrt-action-bugzilla.cpp:934
 #: ../src/plugins/abrt-action-rhtsupport.c:292
 msgid "Configuration file (may be given many times)"
 msgstr "সংৰূপন নথিপত্ৰ (বহু বাৰ দিয়া হব পাৰে)"
@@ -774,120 +779,152 @@ msgstr "gdb -ক Kill কৰক যদি ই N ছেকেন্ডৰ বে�
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
-#: ../src/plugins/abrt-action-generate-backtrace.c:296
+#.
+#: ../src/plugins/abrt-action-generate-backtrace.c:298
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
 msgstr "Backtrace সৃজন আৰু সঞ্চয় কৰা হৈছে, %u বাইটসমূহ"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:77
+#: ../src/plugins/abrt-action-install-debuginfo.py:85
+msgid "n"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:100
 #, python-format
 msgid "Extracting cpio from %s"
 msgstr "%s -ৰ পৰা cpio নিষ্কাষণ কৰা হৈ আছে"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:82
+#: ../src/plugins/abrt-action-install-debuginfo.py:105
 #, python-format
 msgid "Can't write to '%s': %s"
 msgstr "'%s' -লে লিখিব নোৱাৰি: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:96
+#: ../src/plugins/abrt-action-install-debuginfo.py:119
 #, python-format
 msgid "Can't extract package '%s'"
 msgstr "'%s' পেকেইজ নিষ্কাষণ কৰিব নোৱাৰি"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:104
+#: ../src/plugins/abrt-action-install-debuginfo.py:127
 #, python-format
 msgid "Caching files from %s made from %s"
 msgstr "%s -ৰ পৰা বনোৱা %s -ৰ পৰা নথিপত্ৰসমূহ কেশ কৰা হৈ আছে"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:114
+#: ../src/plugins/abrt-action-install-debuginfo.py:137
 #, python-format
 msgid "Can't extract files from '%s'"
 msgstr "'%s' -ৰ পৰা নথিপত্ৰসমূহ নিষ্কাষন কৰিব নোৱাৰি"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:138
-#: ../src/plugins/abrt-action-install-debuginfo.py:148
+#: ../src/plugins/abrt-action-install-debuginfo.py:161
+#: ../src/plugins/abrt-action-install-debuginfo.py:171
 #, python-format
 msgid "Downloading (%i of %i) %s: %3u%%"
 msgstr "(%i -ৰ %i) %s -ক ডাউনলোড কৰা হৈ আছে: %3u%%"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:196
+#, python-format
+msgid "Error initializing yum (YumBase.doConfigSetup): '%s'"
+msgstr ""
 
 #. This is somewhat "magic", it unpacks the metadata making it usable.
 #. Looks like this is the moment when yum talks to remote servers,
 #. which takes time (sometimes minutes), let user know why
 #. we have "paused":
-#: ../src/plugins/abrt-action-install-debuginfo.py:206
+#: ../src/plugins/abrt-action-install-debuginfo.py:239
 msgid "Looking for needed packages in repositories"
 msgstr "ভঁৰালসমূহত প্ৰয়োজনীয় পেকেইজসমূহ বিচাৰি চোৱা হৈছে"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:240
+#: ../src/plugins/abrt-action-install-debuginfo.py:243
+#, python-format
+msgid "Error retrieving metadata: '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:253
+#, python-format
+msgid "Error retrieving filelists: '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:286
 #, python-format
 msgid "Can't find packages for %u debuginfo files"
 msgstr "%u debuginfo নথিপত্ৰসমূহৰ কাৰণে পেকেইজসমূহ পোৱা নগল"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:242
+#: ../src/plugins/abrt-action-install-debuginfo.py:288
 #, python-format
 msgid "Packages to download: %u"
 msgstr "ডাউনলোড কৰিব লগিয়া পেকেইজসমূহ: %u"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:243
+#: ../src/plugins/abrt-action-install-debuginfo.py:289
 #, python-format
 msgid "Downloading %.2fMb, installed size: %.2fMb"
 msgstr "%.2fMb ডাউনলোড কৰা হৈ আছে, ইনস্টল আকাৰ: %.2fMb"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:251
+#: ../src/plugins/abrt-action-install-debuginfo.py:297
 msgid "Is this ok? [y/N] "
 msgstr "এইটো ঠিক আছে নে? [হয়/নহয়]"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:268
+#: ../src/plugins/abrt-action-install-debuginfo.py:314
 #, python-format
 msgid "Downloading package %s failed"
 msgstr "%s পেকেইজৰ ডাউনলোড ব্যৰ্থ"
 
 #. recursively delete the temp dir on failure
-#: ../src/plugins/abrt-action-install-debuginfo.py:279
+#: ../src/plugins/abrt-action-install-debuginfo.py:325
 msgid "Unpacking failed, aborting download..."
 msgstr "আনপেক কৰোতে ব্যৰ্থ, ডাউনলোড বাতিল কৰা হৈছে..."
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:286
+#: ../src/plugins/abrt-action-install-debuginfo.py:332
 #, python-format
 msgid "All downloaded packages have been extracted, removing %s"
 msgstr "সকলো ডাউনলোড কৰা পেকেইজসমূহ নিষ্কাষণ কৰা হৈ আছে, %s আতৰোৱা হৈ আছে"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:291
+#: ../src/plugins/abrt-action-install-debuginfo.py:337
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr "%s আতৰাব নোৱাৰি, সম্ভবত এটা ত্ৰুটি লগ অন্তৰ্ভুক্ত হৈ আছে"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:336
+#: ../src/plugins/abrt-action-install-debuginfo.py:371
 #, python-format
 msgid "Can't remove '%s': %s"
 msgstr "'%s' -ক আতৰাব নোৱাৰি: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:344
+#: ../src/plugins/abrt-action-install-debuginfo.py:379
 msgid "Exiting on user command"
 msgstr "ব্যৱহাৰকাৰী কমান্ডত প্ৰস্থান কৰি আছে"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:371
+#: ../src/plugins/abrt-action-install-debuginfo.py:411
 #, python-format
-msgid "Usage: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
-msgstr "ব্যৱহাৰ: %s --core=COREFILE --tmpdir=TMPDIR --cache=CACHEDIR"
+msgid ""
+"Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR] [--size_mb=SIZE]\n"
+"\n"
+"Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
+"to CACHEDIR, using TMPDIR as temporary staging area.\n"
+"Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
+"\n"
+"    -v          Be verbose\n"
+"    -y          Noninteractive, assume 'Yes' to all questions\n"
+"    --ids       Default: build_ids\n"
+"    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     Default: /var/cache/abrt-di\n"
+"    --size_mb   Default: 4096\n"
+msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:400
-msgid "You have to specify the path to coredump."
-msgstr "আপুনি coredump -লে পথ ধাৰ্য্য কৰিব লাগিব।"
+#: ../src/plugins/abrt-action-install-debuginfo.py:466
+#, python-format
+msgid "Can't open %s: %s"
+msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:420
+#: ../src/plugins/abrt-action-install-debuginfo.py:496
 #, python-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
-msgstr ""
-"Coredump -এ %u debuginfo নথিপত্ৰসমূহ প্ৰসংগ কৰে, তাৰ মাজৰ %u ইনস্টল নহয়"
+msgstr "Coredump -এ %u debuginfo নথিপত্ৰসমূহ প্ৰসংগ কৰে, তাৰ মাজৰ %u ইনস্টল নহয়"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:425
+#: ../src/plugins/abrt-action-install-debuginfo.py:507
 #, python-format
 msgid "Missing debuginfo file: %s"
 msgstr "debuginfo নথিপত্ৰ সন্ধানহীন: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:428
+#: ../src/plugins/abrt-action-install-debuginfo.py:510
 #, python-format
 msgid "All %u debuginfo files are available"
 msgstr "সকলো %u debuginfo নথিপত্ৰসমূহ উপলব্ধ"
@@ -919,11 +956,8 @@ msgstr "ই-মেইল পঠিওৱা হৈছে..."
 msgid ""
 " [-v] -d DIR [-c CONFFILE]\n"
 "\n"
-"Sends compressed tarball of dump directory DIR via email"
+"Sends contents of a dump directory DIR via email"
 msgstr ""
-" [-v] -d DIR [-c CONFFILE]\n"
-"\n"
-"ডাম্প ডাইৰেকটৰি DIR -ৰ সংকোচিত টাৰবল ই-মেইল ৰ মাধ্যমেৰে পঠায়"
 
 #: ../src/plugins/abrt-action-mailx.c:156
 #: ../src/plugins/abrt-action-upload.c:259
@@ -952,21 +986,19 @@ msgstr "যোগ কৰক, অথবা নথিপত্ৰ পুনৰ ল
 msgid "Create reported_to in DIR"
 msgstr ""
 
-#: ../src/plugins/abrt-action-print.c:100
+#: ../src/plugins/abrt-action-print.c:102
 #, c-format
 msgid "The report was appended to %s"
 msgstr "সংবাদ %s লে যোগ কৰা হৈছিল"
 
-#: ../src/plugins/abrt-action-print.c:100
+#: ../src/plugins/abrt-action-print.c:102
 #, c-format
 msgid "The report was stored to %s"
 msgstr "সংবাদটো %s লে সঞ্চয় কৰা হৈছিল"
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
-#. doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../src/plugins/abrt-action-rhtsupport.c:41
 #: ../src/plugins/abrt-action-upload.c:119
 msgid "Compressing data"
@@ -1002,7 +1034,8 @@ msgid ""
 msgstr ""
 " [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
 "\n"
-"DIR সমূহত থকা ডাম্প ডাইৰেকটৰিসমূহ (-d) অথবা নথিপত্ৰসমূহ (-f)  মচি থাকে যেতিয়ালৈকে আকাৰতকে সৰু নহয়"
+"DIR সমূহত থকা ডাম্প ডাইৰেকটৰিসমূহ (-d) অথবা নথিপত্ৰসমূহ (-f)  মচি থাকে যেতিয়ালৈকে "
+"আকাৰতকে সৰু নহয়"
 
 #: ../src/plugins/abrt-action-trim-files.c:167
 msgid "Delete dump dirs"
@@ -1067,7 +1100,7 @@ msgstr "প্ৰস্থান নকৰিব, নতুন oopsসমূহ�
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
+#.
 #: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr ""
@@ -1076,7 +1109,7 @@ msgstr ""
 msgid "Make the dump directory world readable"
 msgstr "ডাম্প ডাইৰেকটৰিটো বিশ্বয় পঢ়িব পৰা কৰক"
 
-#: ../src/plugins/abrt-retrace-client.c:899
+#: ../src/plugins/abrt-retrace-client.c:890
 msgid "log to syslog"
 msgstr "syslog লে লগ কৰক"
 
@@ -1091,8 +1124,8 @@ msgstr ""
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
@@ -1161,8 +1194,8 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid ""
-"You can create bugzilla.redhat.com account &lt;a "
-"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1

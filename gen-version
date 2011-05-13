@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DEF_VER=2.0.1
+DEF_VER=2.0.2
 
 if test -d .git -o -f .git
 then
@@ -14,4 +14,4 @@ fi
 
 sed -e "s/@@ABRT_VERSION@@/$VN/g" < abrt.spec.in > abrt.spec
 
-echo -n $VN
+echo -n $VN > abrt-version

@@ -16,6 +16,7 @@ int main(int argc, char **argv)
   int i;
   struct passwd *apache_user;
   const char *apache_username = "apache";
+  pid_t pid;
 
   if (argc != 2)
   {
@@ -50,7 +51,20 @@ int main(int argc, char **argv)
   /* required by mock to be able to write into result directory */
   setenv("SUDO_GID", "0", 1);
 
-  /* launch worker.py */
+  /* fork and launch worker.py */
+  pid = fork();
+
+  if (pid < 0)
+  {
+    fputs("Unable to fork.", stderr);
+    return 6;
+  }
+
+  /* parent - exit */
+  if (pid > 0)
+      return 0;
+
+  /* child */
   sprintf(command, "/usr/bin/python /usr/share/abrt-retrace/worker.py \"%s\"", argv[1]);
   pipe = popen(command, "r");
   if (pipe == NULL)

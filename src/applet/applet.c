@@ -221,7 +221,7 @@ int main(int argc, char** argv)
 
     /* Parse options */
     int opt;
-    while ((opt = getopt(argc, argv, "dv")) != -1)
+    while ((opt = getopt(argc, argv, "v")) != -1)
     {
         switch (opt)
         {

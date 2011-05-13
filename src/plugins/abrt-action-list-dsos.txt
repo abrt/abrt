@@ -1,0 +1,44 @@
+abrt-action-list-dsos(1)
+======================
+
+NAME
+----
+abrt-action-list-dsos - Prints out DSO from mapped memory regions.
+
+SYNOPSIS
+--------
+'abrt-action-list-dsos' [-o OUTFILE] -m PROC_PID_MAP_FILE
+
+DESCRIPTION
+-----------
+The tool reads a file containing the mapped memory regions.
+Output is printed to 'stdout' or 'file'.
+
+Output format:
+
+------------
+%p %n %v %i
+------------
+where
+
+'%p'::
+	path to library or binary file, which is mapped in memory region
+'%n'::
+	name, version, release, architecture of package, where '%p' belongs
+'%v'::
+	vendor of package
+'%i'::
+	installation time
+
+OPTIONS
+-------
+-o OUTFILE::
+   Output file, if not specified, it is printed to 'stdout'
+
+-m PROC_PID_MAP_FILE::
+   File containing the mapped memory regions
+
+AUTHORS
+-------
+* ABRT team
+

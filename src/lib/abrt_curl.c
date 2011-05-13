@@ -175,6 +175,40 @@ static size_t fread_with_reporting(void *ptr, size_t size, size_t nmemb, void *u
     return fread(ptr, size, nmemb, fp);
 }
 
+static int curl_debug(CURL *handle, curl_infotype it, char *buf, size_t bufsize, void *unused)
+{
+    if (logmode == 0)
+        return 0;
+
+    switch (it) {
+    case CURLINFO_TEXT: /* The data is informational text. */
+        log("curl: %.*s", (int) bufsize, buf);
+        break;
+    case CURLINFO_HEADER_IN: /* The data is header (or header-like) data received from the peer. */
+        log("curl rcvd header: '%.*s'", (int) bufsize, buf);
+        break;
+    case CURLINFO_HEADER_OUT: /* The data is header (or header-like) data sent to the peer. */
+        log("curl sent header: '%.*s'", (int) bufsize, buf);
+        break;
+    case CURLINFO_DATA_IN: /* The data is protocol data received from the peer. */
+        if (g_verbose >= 3)
+            log("curl rcvd data: '%.*s'", (int) bufsize, buf);
+        else
+            log("curl rcvd data %u bytes", (int) bufsize);
+        break;
+    case CURLINFO_DATA_OUT: /* The data is protocol data sent to the peer. */
+        if (g_verbose >= 3)
+            log("curl sent data: '%.*s'", (int) bufsize, buf);
+        else
+            log("curl sent data %u bytes", (int) bufsize);
+        break;
+    default:
+        break;
+    }
+
+    return 0;
+}
+
 int
 abrt_post(abrt_post_state_t *state,
                 const char *url,
@@ -203,13 +237,17 @@ abrt_post(abrt_post_state_t *state,
     // curl will need it until curl_easy_cleanup.
     state->errmsg[0] = '\0';
     xcurl_easy_setopt_ptr(handle, CURLOPT_ERRORBUFFER, state->errmsg);
-    // "Display a lot of verbose information about its operations.
-    // Very useful for libcurl and/or protocol debugging and understanding.
-    // The verbose information will be sent to stderr, or the stream set
-    // with CURLOPT_STDERR"
-    //xcurl_easy_setopt_long(handle, CURLOPT_VERBOSE, 1);
     // Shut off the built-in progress meter completely
     xcurl_easy_setopt_long(handle, CURLOPT_NOPROGRESS, 1);
+
+    if (g_verbose >= 2) {
+        // "Display a lot of verbose information about its operations.
+        // Very useful for libcurl and/or protocol debugging and understanding.
+        // The verbose information will be sent to stderr, or the stream set
+        // with CURLOPT_STDERR"
+        xcurl_easy_setopt_long(handle, CURLOPT_VERBOSE, 1);
+        xcurl_easy_setopt_ptr(handle, CURLOPT_DEBUGFUNCTION, curl_debug);
+    }
 
     // TODO: do we need to check for CURLE_URL_MALFORMAT error *here*,
     // not in curl_easy_perform?
@@ -246,7 +284,7 @@ abrt_post(abrt_post_state_t *state,
         if (basename) basename++;
         else basename = data;
 #if 0
-	// Simple way, without custom reader function
+        // Simple way, without custom reader function
         CURLFORMcode curlform_err = curl_formadd(&post, &last,
                         CURLFORM_PTRNAME, "file", // element name
                         CURLFORM_FILE, data, // filename to read from
