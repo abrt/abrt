@@ -89,7 +89,7 @@ libabrt_dbus_la_LIBADD = \
 
 libabrt_web_la_SOURCES = \
     abrt_curl.h abrt_curl.c \
-    abrt_xmlrpc.h abrt_xmlrpc.cpp
+    abrt_xmlrpc.h abrt_xmlrpc.c
 libabrt_web_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \

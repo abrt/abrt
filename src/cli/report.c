@@ -682,7 +682,7 @@ int report(const char *dump_dir_name, int flags)
     /* Load problem_data from (possibly updated by analyze) dump dir */
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
-	return -1;
+        return -1;
 
     char *analyze_events_as_lines = list_possible_events(dd, NULL, "analyze");
     dd_close(dd);
@@ -705,7 +705,7 @@ int report(const char *dump_dir_name, int flags)
     /* Load problem_data from (possibly updated by analyze) dump dir */
     dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
-	return -1;
+        return -1;
 
     char *report_events_as_lines = list_possible_events(dd, NULL, "report");
     problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);

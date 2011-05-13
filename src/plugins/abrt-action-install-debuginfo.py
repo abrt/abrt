@@ -96,7 +96,7 @@ def unpack_rpm(package_nevra, files, tmp_dir, destdir, keeprpm):
     package_name = package_nevra + ".rpm"
     package_full_path = tmp_dir + "/" + package_name
     log1("Extracting %s to %s", package_full_path, destdir)
-    log2(files)
+    log2("%s", files)
     print _("Extracting cpio from %s") % (package_full_path)
     unpacked_cpio_path = tmp_dir + "/unpacked.cpio"
     try:
@@ -492,7 +492,7 @@ if __name__ == "__main__":
 
     missing = filter_installed_debuginfos(b_ids, cachedir)
     if missing:
-        log2(missing)
+        log2("%s", missing)
         print _("Coredump references %u debuginfo files, %u of them are not installed") % (len(b_ids), len(missing))
 
         # TODO: should we pass keep_rpms=keeprpms to DebugInfoDownload here??

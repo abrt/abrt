@@ -19,37 +19,30 @@
 #ifndef ABRT_XMLRPC_H_
 #define ABRT_XMLRPC_H_ 1
 
-#include <curl/curl.h>
+/* include/stdint.h: typedef int int32_t;
+ * include/xmlrpc-c/base.h: typedef int32_t xmlrpc_int32;
+ */
+
 #include <xmlrpc-c/base.h>
 #include <xmlrpc-c/client.h>
-
-#ifdef __cplusplus
-/*
- * Simple class holding XMLRPC connection data.
- * Used mainly to ensure we always destroy xmlrpc client and server_info
- * on return or throw.
- */
-struct abrt_xmlrpc_conn {
-    xmlrpc_client* m_pClient;
-    xmlrpc_server_info* m_pServer_info;
-
-    abrt_xmlrpc_conn(const char* url, bool ssl_verify) { new_xmlrpc_client(url, ssl_verify); }
-    /* this never throws exceptions - calls C functions only */
-    ~abrt_xmlrpc_conn() { destroy_xmlrpc_client(); }
-
-    void new_xmlrpc_client(const char* url, bool ssl_verify);
-    void destroy_xmlrpc_client();
-};
-#endif
-
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* Utility functions */
-void throw_xml_fault(xmlrpc_env *env);
-void throw_if_xml_fault_occurred(xmlrpc_env *env);
+struct abrt_xmlrpc {
+    xmlrpc_client *ax_client;
+    xmlrpc_server_info *ax_server_info;
+};
+
+struct abrt_xmlrpc *abrt_xmlrpc_new_client(const char *url, int ssl_verify);
+void abrt_xmlrpc_free_client(struct abrt_xmlrpc *ax);
+void abrt_xmlrpc_die(xmlrpc_env *env) __attribute__((noreturn));
+void abrt_xmlrpc_error(xmlrpc_env *env);
+
+/* die or return expected results */
+xmlrpc_value *abrt_xmlrpc_call(struct abrt_xmlrpc *ax,
+                               const char *method, const char *format, ...);
 
 #ifdef __cplusplus
 }
