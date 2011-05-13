@@ -112,17 +112,8 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
             GValue d_dir = { 0 };
             gtk_tree_model_get_value(store, &iter, COLUMN_DUMP_DIR, &d_dir);
 
-            pid_t pid = vfork();
-            if (pid == 0)
-            {
-                /* Undo signal(SIGCHLD, SIG_IGN), or child inherits it and gets terribly confused */
-                /*signal(SIGCHLD, SIG_DFL); - not needed, we dont set it to SIG_IGN in main anymore */
-
-                const char *dirname= g_value_get_string(&d_dir);
-                VERB1 log("Executing: %s %s", "bug-reporting-wizard", dirname);
-                execlp("bug-reporting-wizard", "bug-reporting-wizard", dirname, NULL);
-                perror_msg_and_die("Can't execute %s", "bug-reporting-wizard");
-            }
+            const char *dirname= g_value_get_string(&d_dir);
+            analyze_and_report_dir(dirname);
         }
     }
 }

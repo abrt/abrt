@@ -3,7 +3,8 @@ libreport_include_HEADERS = \
     report/problem_data.h \
     report/dump_dir.h \
     report/run_event.h \
-    report/event_config.h
+    report/event_config.h \
+    report/report.h
 
 libabrt_includedir = $(includedir)/abrt
 libabrt_include_HEADERS = \

@@ -46,7 +46,8 @@ libreport_la_SOURCES = \
     abrt_conf.c abrt_conf.h \
     steal_directory.c \
     event_xml_parser.c \
-    event_config.c
+    event_config.c \
+    report.c
 libreport_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
@@ -57,6 +58,7 @@ libreport_la_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
+    -DBIN_DIR=\"$(bindir)\" \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE
 libreport_la_LDFLAGS = \
