@@ -51,7 +51,7 @@ static void report_to_rhtsupport(
 
     char* env;
     env = getenv("RHTSupport_URL");
-    char *url = xstrdup(env ? env : (get_map_string_item_or_NULL(settings, "URL") ?  : "https://api.access.redhat.com/rs"));
+    char *url = xstrdup(env ? env : (get_map_string_item_or_NULL(settings, "URL") ? : "https://api.access.redhat.com/rs"));
 
     env = getenv("RHTSupport_Login");
     char *login = xstrdup(env ? env : get_map_string_item_or_empty(settings, "Login"));
@@ -64,12 +64,7 @@ static void report_to_rhtsupport(
 
     if (!login[0] || !password[0])
     {
-        free_problem_data(problem_data);
-        free(url);
-        free(login);
-        free(password);
         error_msg_and_die(_("Empty RHTS login or password"));
-        return;
     }
 
     package  = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
@@ -98,7 +93,12 @@ static void report_to_rhtsupport(
     {
         error_msg_and_die(_("Can't create a temporary directory in /tmp"));
     }
-    tempfile = xasprintf("%s/tmp-%s-%lu.tar.gz",tmpdir_name, iso_date_string(NULL), (long)getpid());
+
+    /* Starting from here, we must perform cleanup on errors
+     * (delete temp dir)
+     */
+
+    tempfile = xasprintf("%s/tmp-%s-%lu.tar.gz", tmpdir_name, iso_date_string(NULL), (long)getpid());
 
     int pipe_from_parent_to_child[2];
     xpipe(pipe_from_parent_to_child);
@@ -110,14 +110,14 @@ static void report_to_rhtsupport(
         xmove_fd(xopen3(tempfile, O_WRONLY | O_CREAT | O_EXCL, 0600), 1);
         xmove_fd(pipe_from_parent_to_child[0], 0);
         execlp("gzip", "gzip", NULL);
-        perror_msg_and_die("can't execute '%s'", "gzip");
+        perror_msg_and_die("Can't execute '%s'", "gzip");
     }
     close(pipe_from_parent_to_child[0]);
 
     if (tar_fdopen(&tar, pipe_from_parent_to_child[1], tempfile,
                 /*fileops:(standard)*/ NULL, O_WRONLY | O_CREAT, 0644, TAR_GNU) != 0)
     {
-        errmsg = "can't create temporary file in "LOCALSTATEDIR"/run/abrt";
+        errmsg = "Can't create temporary file in /tmp";
         goto ret;
     }
 
@@ -151,7 +151,7 @@ static void report_to_rhtsupport(
                         /*binary           */ 1);
                 if (tar_append_file(tar, (char*)content, xml_name) != 0)
                 {
-                    errmsg = "can't create temporary file in "LOCALSTATEDIR"/run/abrt";
+                    errmsg = "Can't create temporary file in /tmp";
                     free(xml_name);
                     goto ret;
                 }
@@ -166,28 +166,46 @@ static void report_to_rhtsupport(
         unsigned len = strlen(signature);
         unsigned len512 = (len + 511) & ~511;
         char *block = (char*)memcpy(xzalloc(len512), signature, len);
+
         th_set_type(tar, S_IFREG | 0644);
         th_set_mode(tar, S_IFREG | 0644);
       //th_set_link(tar, char *linkname);
       //th_set_device(tar, dev_t device);
       //th_set_user(tar, uid_t uid);
       //th_set_group(tar, gid_t gid);
-      //th_set_mtime(tar, time_t fmtime);
+        th_set_mtime(tar, time(NULL));
         th_set_path(tar, (char*)"content.xml");
         th_set_size(tar, len);
         th_finish(tar); /* caclulate and store th xsum etc */
-        if (th_write(tar) != 0
+
+        if (th_write(tar) != 0 /* writes header block */
+            /* writes content.xml, padded to 512 bytes */
          || full_write(tar_fd(tar), block, len512) != len512
+         || tar_append_eof(tar) != 0 /* writes EOF blocks */
          || tar_close(tar) != 0
         ) {
             free(block);
-            errmsg = "can't create temporary file in "LOCALSTATEDIR"/run/abrt";
+            errmsg = "Can't create temporary file in /tmp";
             goto ret;
         }
         tar = NULL;
         free(block);
     }
 
+    /* We must be sure gzip finished, and finished successfully */
+    int status;
+    waitpid(child, &status, 0);
+    child = -1;
+    if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
+    {
+        /* Hopefully, by this time child emitted more meaningful
+         * error message. But just in case it didn't:
+         */
+        errmsg = "Can't create temporary file in /tmp";
+        goto ret;
+    }
+
+    /* Send tempfile */
     {
         log(_("Creating a new case..."));
         char* result = send_report_to_new_case(url,
@@ -222,7 +240,8 @@ static void report_to_rhtsupport(
                     break;
             }
             /* Use sanitized string as error message */
-            error_msg_and_die("%s", result);
+            errmsg = result;
+            goto ret;
         }
 
         /* No error */
@@ -239,12 +258,19 @@ static void report_to_rhtsupport(
     }
 
  ret:
-    // Damn, selinux does not allow SIGKILLing our own child! wtf??
-    //kill(child, SIGKILL); /* just in case */
-    waitpid(child, NULL, 0);
+    /* We must close write fd first, or else child will wait forever */
     if (tar)
         tar_close(tar);
     //close(pipe_from_parent_to_child[1]); - tar_close() does it itself
+
+    /* Now wait for child to exit */
+    if (child > 0)
+    {
+        // Damn, selinux does not allow SIGKILLing our own child! wtf??
+        //kill(child, SIGKILL); /* just in case */
+        waitpid(child, NULL, 0);
+    }
+
     unlink(tempfile);
     free(tempfile);
     reportfile_free(file);
@@ -274,7 +300,12 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         "\b [-v] -c CONFFILE -d DIR\n"
         "\n"
-        "Reports a problem to RHTSupport"
+        "Reports a problem to RHTSupport.\n"
+        "\n"
+        "CONFFILE lines should have 'PARAM = VALUE' format.\n"
+        "Recognized string parameters: URL, Login, Password.\n"
+        "Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
+        "Parameters can be overridded via $RHTSupport_PARAM environment variables."
     );
     enum {
         OPT_v = 1 << 0,
