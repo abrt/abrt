@@ -405,38 +405,13 @@ if [ -x %{_bindir}/gtk-update-icon-cache ]; then
 fi
 
 %posttrans
-if [ "$1" -eq "0" ]; then
-    service abrtd condrestart >/dev/null 2>&1 || :
-fi
-#systemd
-%if %{?with_systemd}
-if [ "$1" -eq "0" ]; then
-    /bin/systemctl try-restart abrtd.service >/dev/null 2>&1 || :
-fi
-%endif
+service abrtd condrestart >/dev/null 2>&1 || :
 
 %posttrans addon-ccpp
-if [ "$1" -eq "0" ]; then
-    service abrt-ccpp condrestart >/dev/null 2>&1 || :
-fi
-#systemd
-%if %{?with_systemd}
-if [ "$1" -eq "0" ]; then
-    /bin/systemctl try-restart abrt-ccpp.service >/dev/null 2>&1 || :
-fi
-%endif
+service abrt-ccpp condrestart >/dev/null 2>&1 || :
 
 %posttrans addon-kerneloops
-if [ "$1" -eq "0" ]; then
-    service abrt-oops condrestart >/dev/null 2>&1 || :
-fi
-#systemd
-%if %{?with_systemd}
-if [ "$1" -eq "0" ]; then
-    /bin/systemctl try-restart abrt-oops.service >/dev/null 2>&1 || :
-fi
-%endif
-
+service abrt-oops condrestart >/dev/null 2>&1 || :
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
