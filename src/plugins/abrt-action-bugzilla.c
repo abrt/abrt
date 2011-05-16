@@ -201,7 +201,7 @@ static void report_to_bugzilla(const char *dump_dir_name, map_string_h *settings
         char bug_id_str[sizeof(int)*3 + 2];
         sprintf(bug_id_str, "%i", bug_id);
 
-        rhbz_attachments(client, bug_id_str, problem_data);
+        rhbz_attachments(client, bug_id_str, problem_data, RHBZ_NOMAIL_NOTIFY);
 
         log(_("Logging out"));
         rhbz_logout(client);
@@ -231,7 +231,7 @@ static void report_to_bugzilla(const char *dump_dir_name, map_string_h *settings
             && (!g_list_find_custom(bz->bi_cc_list, login, (GCompareFunc)g_strcmp0)))
         {
             log(_("Add %s to CC list"), login);
-            rhbz_mail_to_cc(client, bz->bi_id, login);
+            rhbz_mail_to_cc(client, bz->bi_id, login, RHBZ_NOMAIL_NOTIFY);
         }
 
         char *dsc = make_description_comment(problem_data);
@@ -245,8 +245,6 @@ static void report_to_bugzilla(const char *dump_dir_name, map_string_h *settings
                 release = get_problem_item_content_or_NULL(problem_data, "release");
             const char *arch = get_problem_item_content_or_NULL(problem_data,
                                                                 FILENAME_ARCHITECTURE);
-            const char *is_private = get_problem_item_content_or_NULL(problem_data,
-                                                                      "is_private");
 
             char *full_dsc = xasprintf("Package: %s\n"
                                        "Architecture: %s\n"
@@ -256,8 +254,12 @@ static void report_to_bugzilla(const char *dump_dir_name, map_string_h *settings
             log(_("Adding new comment to bug %d"), bz->bi_id);
             free(dsc);
 
+            /* unused code, enable it when gui/cli will be ready
             int is_priv = is_private && string_to_bool(is_private);
-            rhbz_add_comment(client, bz->bi_id, full_dsc, is_priv);
+            const char *is_private = get_problem_item_content_or_NULL(problem_data,
+                                                                      "is_private");
+            */
+            rhbz_add_comment(client, bz->bi_id, full_dsc, 0);
             free(full_dsc);
         }
     }

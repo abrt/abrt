@@ -382,17 +382,21 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
 
 /* suppress mail notify by {s:i} (nomail:1) (driven by flag) */
 int rhbz_attachment(struct abrt_xmlrpc *ax, const char *filename,
-                    const char *bug_id, const char *data)
+                    const char *bug_id, const char *data, int flags)
 {
     char *encoded64 = encode_base64(data, strlen(data));
     char *fn = xasprintf("File: %s", filename);
     xmlrpc_value* result;
-    result= abrt_xmlrpc_call(ax, "bugzilla.addAttachment", "(s{s:s,s:s,s:s,s:s})",
+    int nomail_notify = IS_NOMAIL_NOTIFY(flags);
+
+    result= abrt_xmlrpc_call(ax, "bugzilla.addAttachment", "(s{s:s,s:s,s:s,s:s,s:i})",
                              bug_id,
                              "description", fn,
                              "filename", filename,
                              "contenttype", "text/plain",
-                             "data", encoded64);
+                             "data", encoded64,
+                             "nomail", nomail_notify);
+
     free(encoded64);
     free(fn);
     if (!result)
@@ -405,7 +409,7 @@ int rhbz_attachment(struct abrt_xmlrpc *ax, const char *filename,
 
 /* suppress mail notify by {s:i} (nomail:1) (driven by flag) */
 int rhbz_attachments(struct abrt_xmlrpc *ax, const char *bug_id,
-                     problem_data_t *problem_data)
+                     problem_data_t *problem_data, int flags)
 {
     GHashTableIter iter;
     char *name;
@@ -421,7 +425,7 @@ int rhbz_attachments(struct abrt_xmlrpc *ax, const char *bug_id,
          && (strlen(content) > CD_TEXT_ATT_SIZE /*|| (strcmp(name, FILENAME_BACKTRACE) == 0)*/)
         ) {
             /* check if the attachment failed and try it once more  */
-            rhbz_attachment(ax, name, bug_id, content);
+            rhbz_attachment(ax, name, bug_id, content, flags);
         }
     }
 
@@ -462,21 +466,29 @@ struct bug_info *rhbz_find_origin_bug_closed_duplicate(struct abrt_xmlrpc *ax,
 }
 
 /* suppress mail notify by {s:i} (nomail:1) */
-void rhbz_mail_to_cc(struct abrt_xmlrpc *ax, int bug_id, const char *mail)
+void rhbz_mail_to_cc(struct abrt_xmlrpc *ax, int bug_id, const char *mail, int flags)
 {
-    xmlrpc_value *result = abrt_xmlrpc_call(ax, "Bug.update", "({s:i,s:{s:(s)}})",
-                                            "ids", bug_id, "updates", "add_cc", mail);
+    xmlrpc_value *result;
+    int nomail_notify = IS_NOMAIL_NOTIFY(flags);
+    result = abrt_xmlrpc_call(ax, "Bug.update", "({s:i,s:{s:(s),s:i}})",
+                              "ids", bug_id, "updates", "add_cc", mail,
+                              "nomail", nomail_notify);
+
     if (result)
         xmlrpc_DECREF(result);
 }
 
 void rhbz_add_comment(struct abrt_xmlrpc *ax, int bug_id, const char *comment,
-                      int is_private)
+                      int flags)
 {
-    xmlrpc_value *result = abrt_xmlrpc_call(ax, "Bug.add_comment", "({s:i,s:s,s:b})",
-                                            "id", bug_id,
-                                            "comment", comment,
-                                            "private", is_private);
+    int private = IS_PRIVATE(flags);
+    int nomail_notify = IS_NOMAIL_NOTIFY(flags);
+
+    xmlrpc_value *result;
+    result = abrt_xmlrpc_call(ax, "Bug.add_comment", "({s:i,s:s,s:b,s:i})",
+                              "id", bug_id, "comment", comment,
+                              "private", private, "nomail", nomail_notify);
+
     if (result)
         xmlrpc_DECREF(result);
 }

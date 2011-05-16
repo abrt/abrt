@@ -35,11 +35,15 @@ enum {
     RHBZ_MANDATORY_MEMB = (1 << 0),
     RHBZ_READ_STR       = (1 << 1),
     RHBZ_READ_INT       = (1 << 2),
+    RHBZ_NOMAIL_NOTIFY  = (1 << 3),
+    RHBZ_PRIVATE        = (1 << 4),
 };
 
 #define IS_MANDATORY(flags) ((flags) & RHBZ_MANDATORY_MEMB)
 #define IS_READ_STR(flags) ((flags) & RHBZ_READ_STR)
 #define IS_READ_INT(flags) ((flags) & RHBZ_READ_INT)
+#define IS_NOMAIL_NOTIFY(flags) ((flags) & RHBZ_NOMAIL_NOTIFY)
+#define IS_PRIVATE(flags) ((flags) & RHBZ_PRIVATE)
 
 struct bug_info {
     int bi_id;
@@ -58,10 +62,10 @@ void free_bug_info(struct bug_info *bz);
 
 void rhbz_login(struct abrt_xmlrpc *ax, const char *login, const char *passwd);
 
-void rhbz_mail_to_cc(struct abrt_xmlrpc *ax, int bug_id, const char *mail);
+void rhbz_mail_to_cc(struct abrt_xmlrpc *ax, int bug_id, const char *mail, int flags);
 
 void rhbz_add_comment(struct abrt_xmlrpc *ax, int bug_id, const char *comment,
-                      int is_private);
+                      int flags);
 
 void *rhbz_bug_read_item(const char *memb, xmlrpc_value *xml, int flags);
 
@@ -80,10 +84,10 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
                  int depend_on_bug);
 
 int rhbz_attachments(struct abrt_xmlrpc *ax, const char *bug_id,
-                     problem_data_t *problem_data);
+                     problem_data_t *problem_data, int flags);
 
 int rhbz_attachment(struct abrt_xmlrpc *ax, const char *filename,
-                    const char *bug_id, const char *data);
+                    const char *bug_id, const char *data, int flags);
 
 GList *rhbz_bug_cc(xmlrpc_value *result_xml);
 
