@@ -27,14 +27,19 @@ int analyze_and_report_dir(const char* dirname)
     pid_t pid = vfork();
     if (pid == 0)
     {
-        /* Undo signal(SIGCHLD, SIG_IGN), or child inherits it and gets terribly confused */
+        /* Some callers set SIGCHLD to SIG_IGN.
+         * However, reporting spawns chils processes.
+         * Suppressing chil death notification terribly confuses some of them.
+         * Just in case, undo it.
+         * Note that we do it in the child, so the parent is never affected.
+         */
         signal(SIGCHLD, SIG_DFL); // applet still set it to SIG_IGN
         VERB1 log("Executing: %s %s", "bug-reporting-wizard", dirname);
-        execl(BIN_DIR"/bug-reporting-wizard", "bug-reporting-wizard", dirname, NULL);
+        execl(BIN_DIR"/bug-reporting-wizard", "bug-reporting-wizard", "--", dirname, NULL);
         // note the -o in options which means --report-only
         /* Did not find abrt-gui in installation directory. Oh well */
         /* Trying to find it in PATH */
-        execlp("bug-reporting-wizard", "bug-reporting-wizard", dirname, NULL);
+        execlp("bug-reporting-wizard", "bug-reporting-wizard", "--", dirname, NULL);
         perror_msg_and_die("Can't execute %s", "bug-reporting-wizard");
     }
     return 0;
@@ -53,7 +58,6 @@ int analyze_and_report(problem_data_t *pd)
     VERB2 log("Temp problem dir: '%s'\n", dir_name);
     analyze_and_report_dir(dir_name);
     free(dir_name);
-
     return 0;
 }
 
@@ -65,16 +69,21 @@ int report_dir(const char* dirname)
     pid_t pid = vfork();
     if (pid == 0)
     {
-        /* Undo signal(SIGCHLD, SIG_IGN), or child inherits it and gets terribly confused */
+        /* Some callers set SIGCHLD to SIG_IGN.
+         * However, reporting spawns chils processes.
+         * Suppressing chil death notification terribly confuses some of them.
+         * Just in case, undo it.
+         * Note that we do it in the child, so the parent is never affected.
+         */
         signal(SIGCHLD, SIG_DFL); // applet still set it to SIG_IGN
         VERB1 log("Executing: %s %s", "bug-reporting-wizard", dirname);
         execl(BIN_DIR"/bug-reporting-wizard", "bug-reporting-wizard",
-                  "-o", dirname, NULL);
+                  "-o", "--", dirname, NULL);
         // note the -o in options which means --report-only
         /* Did not find abrt-gui in installation directory. Oh well */
         /* Trying to find it in PATH */
         execlp("bug-reporting-wizard", "bug-reporting-wizard",
-                "-o", dirname, NULL);
+                "-o", "--", dirname, NULL);
         perror_msg_and_die("Can't execute %s", "bug-reporting-wizard");
     }
     return 0;
@@ -85,7 +94,7 @@ int report(problem_data_t *pd)
     struct dump_dir *dd = create_dump_dir_from_problem_data(pd, "/tmp"/* /var/tmp ?? */);
     if (!dd)
         return -1;
-    char *dir_name = strdup(dd->dd_dirname);
+    char *dir_name = xstrdup(dd->dd_dirname);
     dd_close(dd);
     VERB2 log("Temp problem dir: '%s'\n", dir_name);
     report_dir(dir_name);
