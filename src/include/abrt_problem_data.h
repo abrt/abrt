@@ -53,12 +53,11 @@
 #define FILENAME_PACKAGE      "package"
 #define FILENAME_COMPONENT    "component"
 #define FILENAME_COMMENT      "comment"
-#define FILENAME_RATING       "rating"
+#define FILENAME_RATING       "backtrace_rating"
 #define FILENAME_HOSTNAME     "hostname"
 // Optional. Set to "1" by abrt-handle-upload for every unpacked dump
 #define FILENAME_REMOTE       "remote"
 #define FILENAME_TAINTED      "kernel_tainted"
-// TODO: TicketUploader also has open-coded "TICKET", "CUSTOMER" files
 
 #define FILENAME_UUID         "uuid"
 #define FILENAME_COUNT        "count"
