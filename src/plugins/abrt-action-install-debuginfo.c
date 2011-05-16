@@ -45,13 +45,18 @@ static void error_msg_and_die(const char *msg, const char *arg)
 int main(int argc, char **argv)
 {
     /*
-     * We disallow passing of arguments which point to writable dirs.
+     * We disallow passing of arguments which point to writable dirs
+     * and other files possibly not accessible to calling user.
      * This way, the script will always use default values for these arguments.
      */
     char **pp = argv;
     char *arg;
     while ((arg = *++pp) != NULL)
     {
+        /* Allow taking ids from stdin */
+        if (strcmp(arg, "--ids=-") == 0)
+            continue;
+
         if (strncmp(arg, "--cache", 7) == 0)
             error_msg_and_die("bad option", arg);
         if (strncmp(arg, "--tmpdir", 8) == 0)

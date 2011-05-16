@@ -5,12 +5,13 @@
 
 PROGNAME = "abrt-action-install-debuginfo.py"
 
-from subprocess import Popen, PIPE
 import sys
 import os
+import errno
 import time
 import getopt
 import shutil
+from subprocess import Popen, PIPE
 from yum import _, YumBase
 from yum.callbacks import DownloadBaseCallback
 
@@ -315,8 +316,8 @@ class DebugInfoDownload(YumBase):
             else:
                 # normalize the name
                 # just str(pkg) doesn't work because it can have epoch
-                pkg_nvra = (pkg.name +"-"+ pkg.version +"-"+
-                            pkg.release +"."+ pkg.arch)
+                pkg_nvra = (pkg.name + "-" + pkg.version + "-" +
+                            pkg.release + "." + pkg.arch)
 
                 unpack_result = unpack_rpm(pkg_nvra, files, self.tmpdir,
                                            self.cachedir, keeprpms)
@@ -334,7 +335,7 @@ class DebugInfoDownload(YumBase):
             try:
                 os.rmdir(self.tmpdir)
             except OSError:
-                print _("Can't remove %s, probably contains an error log") % self.tmpdir
+                error_msg(_("Can't remove %s, probably contains an error log"), self.tmpdir)
 
 def build_ids_to_path(build_ids):
     """
@@ -365,10 +366,12 @@ def filter_installed_debuginfos(build_ids, cache_dir):
 
 tmpdir = None
 def clean_up():
-    try:
-        shutil.rmtree(tmpdir)
-    except OSError, ex:
-        print _("Can't remove '%s': %s") % (tmpdir, ex)
+    if tmpdir:
+        try:
+            shutil.rmtree(tmpdir)
+        except OSError, ex:
+            if ex.errno != errno.ENOENT:
+                error_msg(_("Can't remove '%s': %s"), tmpdir, ex)
 
 def sigterm_handler(signum, frame):
     clean_up()
@@ -377,7 +380,8 @@ def sigterm_handler(signum, frame):
 def sigint_handler(signum, frame):
     clean_up()
     print "\n", _("Exiting on user command")
-    exit(RETURN_OK)
+    # ??! without "sys.", I am getting segv!
+    sys.exit(RETURN_OK)
 
 import signal
 
@@ -460,11 +464,12 @@ if __name__ == "__main__":
         # for now, we use /tmp...
         tmpdir = "/tmp/abrt-tmp-debuginfo-%s.%u" % (time.strftime("%Y-%m-%d-%H:%M:%S"), os.getpid())
 
-    try:
-        fin = open(fbuild_ids, "r")
-    except IOError, ex:
-        print _("Can't open %s: %s" % (fbuild_ids, ex))
-        exit(RETURN_FAILURE)
+    fin = sys.stdin
+    if fbuild_ids != "-":
+        try:
+            fin = open(fbuild_ids, "r")
+        except IOError, ex:
+            error_msg_and_die(_("Can't open %s: %s"), fbuild_ids, ex)
     for line in fin.readlines():
         b_ids.append(line.strip('\n'))
 
