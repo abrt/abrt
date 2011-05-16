@@ -67,7 +67,8 @@ MAN_TXT = \
     abrt-action-analyze-backtrace.txt \
     abrt-action-mailx.txt \
     abrt-action-bugzilla.txt \
-    abrt-action-list-dsos.txt
+    abrt-action-list-dsos.txt \
+    abrt-retrace-client.txt
 
 # Manual pages are generated from .txt via Docbook
 man1_MANS = ${MAN_TXT:%.txt=%.1}
