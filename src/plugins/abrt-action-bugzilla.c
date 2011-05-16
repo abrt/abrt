@@ -24,69 +24,6 @@
 
 #define XML_RPC_SUFFIX      "/xmlrpc.cgi"
 
-/* From RHEL6 kernel/panic.c:
- * { TAINT_PROPRIETARY_MODULE,     'P', 'G' },
- * { TAINT_FORCED_MODULE,          'F', ' ' },
- * { TAINT_UNSAFE_SMP,             'S', ' ' },
- * { TAINT_FORCED_RMMOD,           'R', ' ' },
- * { TAINT_MACHINE_CHECK,          'M', ' ' },
- * { TAINT_BAD_PAGE,               'B', ' ' },
- * { TAINT_USER,                   'U', ' ' },
- * { TAINT_DIE,                    'D', ' ' },
- * { TAINT_OVERRIDDEN_ACPI_TABLE,  'A', ' ' },
- * { TAINT_WARN,                   'W', ' ' },
- * { TAINT_CRAP,                   'C', ' ' },
- * { TAINT_FIRMWARE_WORKAROUND,    'I', ' ' },
- * entries 12 - 27 are unused
- * { TAINT_HARDWARE_UNSUPPORTED,   'H', ' ' },
- * entries 29 - 31 are unused
- */
-
-static const char * const taint_warnings[] = {
-    "Proprietary Module",
-    "Forced Module",
-    "Unsafe SMP",
-    "Forced rmmod",
-    "Machine Check",
-    "Bad Page",
-    "User",
-    "Die",
-    "Overriden ACPI Table",
-    "Warning Issued",
-    "Experimental Module Loaded",
-    "Firmware Workaround",
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    "Hardware Unsupported",
-    NULL,
-    NULL,
-};
-
-/* TODO: npajkovs: fix tainted string */
-static const char *tainted_string(unsigned tainted)
-{
-    unsigned idx = 0;
-    while ((tainted >>= 1) != 0)
-        idx++;
-
-    return taint_warnings[idx];
-}
-
 static void report_to_bugzilla(const char *dump_dir_name, map_string_h *settings)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);

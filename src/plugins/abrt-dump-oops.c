@@ -542,7 +542,21 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
             dd_save_text(dd, FILENAME_REASON, second_line);
 
             if (tainted_str && tainted_str[0] != '0')
+            {
+                unsigned long tainted = xatoi_positive(tainted_str);
+                char *tainted_short = kernel_tainted_short(tainted);
+                GList *tainted_long = kernel_tainted_long(tainted);
+
+                struct strbuf *tnt_long = strbuf_new();
+                for (GList *li = tainted_long; li; li = li->next)
+                    strbuf_append_strf(tnt_long, "%s\n", (char*) li->data);
+
                 dd_save_text(dd, FILENAME_TAINTED, tainted_str);
+                dd_save_text(dd, FILENAME_TAINTED_SHORT, tainted_short);
+                dd_save_text(dd, FILENAME_TAINTED_LONG, tnt_long->buf);
+                strbuf_free(tnt_long);
+                list_free_with_free(tainted_long);
+            }
 
             dd_close(dd);
         }

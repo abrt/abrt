@@ -11,6 +11,7 @@ lib_LTLIBRARIES = \
 # xconnect.cpp
 
 libreport_la_SOURCES = \
+    kernel-tainted.c \
     xfuncs.c \
     is_in_string_list.c \
     encbase64.c \

@@ -283,6 +283,12 @@ bool load_conf_file(const char *pPath, map_string_h *settings, bool skipKeysWith
 #define steal_directory abrt_steal_directory
 struct dump_dir *steal_directory(const char *base_dir, const char *dump_dir_name);
 
+#define kernel_tainted_short abrt_kernel_tainted_short
+char *kernel_tainted_short(unsigned tainted);
+
+#define kernel_tainted_long abrt_kernel_tainted_long
+GList *kernel_tainted_long(unsigned tainted);
+
 #ifdef __cplusplus
 }
 #endif
