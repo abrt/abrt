@@ -3,7 +3,7 @@
 # WARNING: python -u means unbuffered I/O without it the messages are
 # passed to the parent asynchronously which looks bad in clients.
 
-PROGNAME = "abrt-action-install-debuginfo.py"
+PROGNAME = "abrt-action-install-debuginfo"
 
 import sys
 import os
@@ -380,6 +380,7 @@ def sigterm_handler(signum, frame):
 def sigint_handler(signum, frame):
     clean_up()
     print "\n", _("Exiting on user command")
+    sys.stdout.flush()
     # ??! without "sys.", I am getting segv!
     sys.exit(RETURN_OK)
 
@@ -481,7 +482,8 @@ if __name__ == "__main__":
     #
     # We can do it as a separate step in abrt_event.conf, but this
     # would require setuid'ing abrt-action-trim-files to abrt:abrt.
-    # Since we (abrt-action-install-debuginfo) are already running setuid,
+    # Since we (via abrt-action-install-debuginfo-to-abrt-cache)
+    # are already running setuid,
     # it makes sense to NOT setuid abrt-action-trim-files too,
     # but instead run it as our child:
     sys.stdout.flush()

@@ -3,7 +3,7 @@
 pluginslibdir = $(PLUGINS_LIB_DIR)
 
 bin_SCRIPTS = \
-    abrt-action-install-debuginfo.py \
+    abrt-action-install-debuginfo \
     abrt-action-analyze-core.py \
     abrt-action-list-dsos.py
 
@@ -21,7 +21,7 @@ bin_PROGRAMS = \
     abrt-action-upload \
     abrt-action-mailx \
     abrt-action-print \
-    abrt-action-install-debuginfo \
+    abrt-action-install-debuginfo-to-abrt-cache \
     abrt-retrace-client
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
@@ -83,7 +83,7 @@ man1_MANS = ${MAN_TXT:%.txt=%.1}
 CLEANFILES = $(man1_MANS)
 
 PYTHON_FILES = \
-    abrt-action-install-debuginfo.py \
+    abrt-action-install-debuginfo \
     abrt-action-list-dsos.py \
     abrt-action-analyze-core.py
 
@@ -366,14 +366,14 @@ abrt_action_print_CPPFLAGS = \
 abrt_action_print_LDADD = \
     ../lib/libreport.la
 
-abrt_action_install_debuginfo_SOURCES = \
-    abrt-action-install-debuginfo.c
-abrt_action_install_debuginfo_CPPFLAGS = \
+abrt_action_install_debuginfo_to_abrt_cache_SOURCES = \
+    abrt-action-install-debuginfo-to-abrt-cache.c
+abrt_action_install_debuginfo_to_abrt_cache_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings
-abrt_action_install_debuginfo_LDADD =
+abrt_action_install_debuginfo_to_abrt_cache_LDADD =
 
 abrt_retrace_client_SOURCES = \
     abrt-retrace-client.c

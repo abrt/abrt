@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define EXECUTABLE "abrt-action-install-debuginfo.py"
+#define EXECUTABLE "abrt-action-install-debuginfo"
 
 static void error_msg_and_die(const char *msg, const char *arg)
 {
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
         /* Prevent malicious user from messing up with suid'ed process: */
         /* Set safe PATH */
 // TODO: honor configure --prefix here by adding it to PATH
-// (otherwise abrt-action-install-debuginfo.py would fail to spawn abrt-action-trim-files):
+// (otherwise abrt-action-install-debuginfo would fail to spawn abrt-action-trim-files):
         if (u == 0)
             putenv((char*) "PATH=/usr/sbin:/sbin:/usr/bin:/bin");
         else

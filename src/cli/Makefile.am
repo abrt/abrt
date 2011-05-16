@@ -58,7 +58,7 @@ man1_MANS = ${MAN_TXT:%.txt=%.1}
 CLEANFILES = $(man1_MANS)
 
 PYTHON_FILES = \
-    abrt-action-install-debuginfo.py \
+    abrt-action-install-debuginfo \
     abrt-action-list-dsos.py \
     abrt-action-analyze-core.py
 

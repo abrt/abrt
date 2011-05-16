@@ -169,7 +169,7 @@ msgid ""
 msgstr ""
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.c:394 ../src/plugins/abrt-action-install-debuginfo.py:83
+#: ../src/cli/report.c:394 ../src/plugins/abrt-action-install-debuginfo:83
 msgid "y"
 msgstr ""
 
@@ -731,42 +731,42 @@ msgstr ""
 msgid "Backtrace is generated and saved, %u bytes"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:85
+#: ../src/plugins/abrt-action-install-debuginfo:85
 msgid "n"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:100
+#: ../src/plugins/abrt-action-install-debuginfo:100
 #, python-format
 msgid "Extracting cpio from %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:105
+#: ../src/plugins/abrt-action-install-debuginfo:105
 #, python-format
 msgid "Can't write to '%s': %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:119
+#: ../src/plugins/abrt-action-install-debuginfo:119
 #, python-format
 msgid "Can't extract package '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:127
+#: ../src/plugins/abrt-action-install-debuginfo:127
 #, python-format
 msgid "Caching files from %s made from %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:137
+#: ../src/plugins/abrt-action-install-debuginfo:137
 #, python-format
 msgid "Can't extract files from '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:161
-#: ../src/plugins/abrt-action-install-debuginfo.py:171
+#: ../src/plugins/abrt-action-install-debuginfo:161
+#: ../src/plugins/abrt-action-install-debuginfo:171
 #, python-format
 msgid "Downloading (%i of %i) %s: %3u%%"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:196
+#: ../src/plugins/abrt-action-install-debuginfo:196
 #, python-format
 msgid "Error initializing yum (YumBase.doConfigSetup): '%s'"
 msgstr ""
@@ -775,69 +775,69 @@ msgstr ""
 #. Looks like this is the moment when yum talks to remote servers,
 #. which takes time (sometimes minutes), let user know why
 #. we have "paused":
-#: ../src/plugins/abrt-action-install-debuginfo.py:239
+#: ../src/plugins/abrt-action-install-debuginfo:239
 msgid "Looking for needed packages in repositories"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:243
+#: ../src/plugins/abrt-action-install-debuginfo:243
 #, python-format
 msgid "Error retrieving metadata: '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:253
+#: ../src/plugins/abrt-action-install-debuginfo:253
 #, python-format
 msgid "Error retrieving filelists: '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:286
+#: ../src/plugins/abrt-action-install-debuginfo:286
 #, python-format
 msgid "Can't find packages for %u debuginfo files"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:288
+#: ../src/plugins/abrt-action-install-debuginfo:288
 #, python-format
 msgid "Packages to download: %u"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:289
+#: ../src/plugins/abrt-action-install-debuginfo:289
 #, python-format
 msgid "Downloading %.2fMb, installed size: %.2fMb"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:297
+#: ../src/plugins/abrt-action-install-debuginfo:297
 msgid "Is this ok? [y/N] "
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:314
+#: ../src/plugins/abrt-action-install-debuginfo:314
 #, python-format
 msgid "Downloading package %s failed"
 msgstr ""
 
 #. recursively delete the temp dir on failure
-#: ../src/plugins/abrt-action-install-debuginfo.py:325
+#: ../src/plugins/abrt-action-install-debuginfo:325
 msgid "Unpacking failed, aborting download..."
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:332
+#: ../src/plugins/abrt-action-install-debuginfo:332
 #, python-format
 msgid "All downloaded packages have been extracted, removing %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:337
+#: ../src/plugins/abrt-action-install-debuginfo:337
 #, python-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:371
+#: ../src/plugins/abrt-action-install-debuginfo:371
 #, python-format
 msgid "Can't remove '%s': %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:379
+#: ../src/plugins/abrt-action-install-debuginfo:379
 msgid "Exiting on user command"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:411
+#: ../src/plugins/abrt-action-install-debuginfo:411
 #, python-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
@@ -855,22 +855,22 @@ msgid ""
 "    --size_mb   Default: 4096\n"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:466
+#: ../src/plugins/abrt-action-install-debuginfo:466
 #, python-format
 msgid "Can't open %s: %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:496
+#: ../src/plugins/abrt-action-install-debuginfo:496
 #, python-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:507
+#: ../src/plugins/abrt-action-install-debuginfo:507
 #, python-format
 msgid "Missing debuginfo file: %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:510
+#: ../src/plugins/abrt-action-install-debuginfo:510
 #, python-format
 msgid "All %u debuginfo files are available"
 msgstr ""

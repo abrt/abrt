@@ -509,9 +509,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libexecdir}/abrt-hook-ccpp
 %{_bindir}/abrt-action-analyze-c
 %{_bindir}/abrt-action-trim-files
-%attr(4755, abrt, abrt) %{_bindir}/abrt-action-install-debuginfo
+%attr(4755, abrt, abrt) %{_bindir}/abrt-action-install-debuginfo-to-abrt-cache
 %{_bindir}/abrt-action-analyze-core.py*
-%{_bindir}/abrt-action-install-debuginfo.py*
+%{_bindir}/abrt-action-install-debuginfo
 %{_bindir}/abrt-action-generate-backtrace
 %{_bindir}/abrt-action-analyze-backtrace
 %{_bindir}/abrt-action-list-dsos.py*
