@@ -1,6 +1,6 @@
 /*
-    Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
-    Copyright (C) 2009  RedHat inc.
+    Copyright (C) 2011  ABRT Team
+    Copyright (C) 2011  RedHat inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -41,6 +41,34 @@ int analyze_and_report_dir(const char* dirname)
         /* Trying to find it in PATH */
         execlp("bug-reporting-wizard", "bug-reporting-wizard", "--", dirname, NULL);
         perror_msg_and_die("Can't execute %s", "bug-reporting-wizard");
+    }
+    else if(pid > 0)
+    {
+        int status = 0;
+        pid_t p = waitpid(pid, &status, WUNTRACED);
+        if(p == -1)
+        {
+            error_msg("can't waitpid");
+            return EXIT_FAILURE;
+        }
+        if (WIFEXITED(status))
+        {
+            VERB2 log("reporting finished with exitcode: status=%d\n", WEXITSTATUS(status));
+            return WEXITSTATUS(status);
+        }
+        else if (WIFSIGNALED(status))
+        {
+            VERB2 log("reporting killed by signal %d\n", WTERMSIG(status));
+        }
+        else if (WIFSTOPPED(status))
+        {
+            /* should parent continue when the reporting is stopped??*/
+            VERB2 log("reporting stopped by signal %d\n", WSTOPSIG(status));
+        }
+        else if (WIFCONTINUED(status))
+        {
+            VERB2 log("continued\n");
+        }
     }
     return 0;
 }
