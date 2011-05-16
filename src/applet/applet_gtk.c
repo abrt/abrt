@@ -18,6 +18,7 @@
 */
 #include "abrtlib.h"
 #include "applet_gtk.h"
+#include "libreport-gtk.h"
 
 static gboolean persistent_notification;
 
@@ -85,20 +86,7 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
     struct applet *applet = (struct applet *)user_data;
     if (applet->ap_daemon_running)
     {
-        pid_t pid = vfork();
-        if (pid < 0)
-            perror_msg("vfork");
-        if (pid == 0)
-        { /* child */
-            signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
-            execl(BIN_DIR"/bug-reporting-wizard", "bug-reporting-wizard",
-                  applet->ap_last_crash_id, (char*) NULL);
-            /* Did not find abrt-gui in installation directory. Oh well */
-            /* Trying to find it in PATH */
-            execlp("bug-reporting-wizard", "bug-reporting-wizard",
-                   applet->ap_last_crash_id, (char*) NULL);
-            perror_msg_and_die("Can't execute abrt-gui");
-        }
+        analyze_and_report_dir(applet->ap_last_crash_id);
         GError *err = NULL;
         notify_notification_close(notification, &err);
         if (err != NULL)

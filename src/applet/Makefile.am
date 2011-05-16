@@ -7,6 +7,7 @@ abrt_applet_SOURCES = \
 abrt_applet_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
+    -I$(srcdir)/../gtk-helpers \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
@@ -25,6 +26,7 @@ abrt_applet_CPPFLAGS = \
 abrt_applet_LDADD = \
     ../lib/libreport.la \
     ../lib/libabrt_dbus.la \
+    ../gtk-helpers/libreportgtk.la \
     -lglib-2.0 \
     -lgthread-2.0 \
     $(DBUS_LIBS) \
