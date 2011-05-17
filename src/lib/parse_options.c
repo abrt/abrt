@@ -21,7 +21,7 @@
 #include "abrtlib.h"
 #include "parse_options.h"
 
-#define USAGE_OPTS_WIDTH 24
+#define USAGE_OPTS_WIDTH 30
 #define USAGE_GAP         2
 
 const char *g_progname;
