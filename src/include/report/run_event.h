@@ -41,7 +41,7 @@ struct run_event_state {
     void *logging_param;
 
     /* Internal data for async command execution */
-    GList *commands;
+    GList *rule_list;
     pid_t command_pid;
     int command_out_fd;
 };
