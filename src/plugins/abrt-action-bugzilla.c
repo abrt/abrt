@@ -188,7 +188,6 @@ static void report_to_bugzilla(const char *dump_dir_name, map_string_h *settings
             }
             xmlrpc_DECREF(all_bugs);
         }
-
     }
     free(product);
 
@@ -203,19 +202,17 @@ static void report_to_bugzilla(const char *dump_dir_name, map_string_h *settings
 
         rhbz_attachments(client, bug_id_str, problem_data, RHBZ_NOMAIL_NOTIFY);
 
-        log(_("Logging out"));
-        rhbz_logout(client);
-
-        log("Status: NEW %s/show_bug.cgi?id=%u", bugzilla_url, bug_id);
-        abrt_xmlrpc_free_client(client);
-        return;
+        bz = new_bug_info();
+        bz->bi_status = xstrdup("NEW");
+        bz->bi_id = bug_id;
+        goto log_out;
     }
 
     // decision based on state
     log(_("Bug is already reported: %i"), bz->bi_id);
     if ((strcmp(bz->bi_status, "CLOSED") == 0)
-        && (strcmp(bz->bi_resolution, "DUPLICATE") == 0))
-    {
+     && (strcmp(bz->bi_resolution, "DUPLICATE") == 0)
+    ) {
         struct bug_info *origin;
         origin = rhbz_find_origin_bug_closed_duplicate(client, bz);
         if (origin)
@@ -264,6 +261,7 @@ static void report_to_bugzilla(const char *dump_dir_name, map_string_h *settings
         }
     }
 
+ log_out:
     log(_("Logging out"));
     rhbz_logout(client);
 

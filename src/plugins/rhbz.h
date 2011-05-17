@@ -49,10 +49,10 @@ struct bug_info {
     int bi_id;
     int bi_dup_id;
 
-    const char *bi_status;
-    const char *bi_resolution;
-    const char *bi_reporter;
-    const char *bi_product;
+    char *bi_status;
+    char *bi_resolution;
+    char *bi_reporter;
+    char *bi_product;
 
     GList *bi_cc_list;
 };

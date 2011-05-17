@@ -35,10 +35,10 @@ void free_bug_info(struct bug_info *bi)
     if (!bi)
         return;
 
-    free((void*)bi->bi_status);
-    free((void*)bi->bi_resolution);
-    free((void*)bi->bi_reporter);
-    free((void*)bi->bi_product);
+    free(bi->bi_status);
+    free(bi->bi_resolution);
+    free(bi->bi_reporter);
+    free(bi->bi_product);
 
     list_free_with_free(bi->bi_cc_list);
 
@@ -174,18 +174,16 @@ void *rhbz_bug_read_item(const char *memb, xmlrpc_value *xml, int flags)
         return (void*)string;
     }
 
+    if (IS_READ_INT(flags))
     {
-        if (IS_READ_INT(flags))
-        {
-            int *integer = xmalloc(sizeof(int));
-            xmlrpc_read_int(&env, member, integer);
-            xmlrpc_DECREF(member);
-            if (env.fault_occurred)
-                abrt_xmlrpc_die(&env);
+        int *integer = xmalloc(sizeof(int));
+        xmlrpc_read_int(&env, member, integer);
+        xmlrpc_DECREF(member);
+        if (env.fault_occurred)
+            abrt_xmlrpc_die(&env);
 
-            VERB3 log("found %s: '%i'", memb, *integer);
-            return (void*)integer;
-        }
+        VERB3 log("found %s: '%i'", memb, *integer);
+        return (void*)integer;
     }
 die:
     free((void*)string);
