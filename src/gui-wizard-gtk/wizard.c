@@ -1110,6 +1110,10 @@ static void on_comment_changed(GtkTextBuffer *buffer, gpointer user_data)
 {
     bool good = gtk_text_buffer_get_char_count(buffer) >= 10;
 
+    /* The page doesn't exist with report-only option */
+    if (pages[PAGENO_COMMENT].page_widget == NULL)
+        return;
+
     /* Allow next page only when the comment has at least 10 chars */
     gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_COMMENT].page_widget, good);
 
