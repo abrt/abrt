@@ -202,8 +202,16 @@ static GList *load_rule_list(GList *rule_list,
     return rule_list;
 }
 
-/* Note: may return NULL but leave list non-NULL.
- * This happens on error, such as "dump dir can't be opened"
+/* Deletes rules in *pp_rule_list, starting from first (remaining) rule,
+ * until it finds a rule with all conditions satisfied.
+ * In this case, it deletes this rule and returns this rule's cmd.
+ * Else (if it didn't find such rule), it deletes all rules and returns NULL.
+ * In case of error (dump_dir can't be opened), deletes all rules and returns NULL.
+ *
+ * Intended usage:
+ * list = load_rule_list(...);
+ * while ((cmd = pop_next_command(&list, ...)) != NULL)
+ *     run(cmd);
  */
 static char* pop_next_command(GList **pp_rule_list,
         char **pp_event_name,    /* reports EVENT value thru this, if not NULL on entry */
@@ -249,6 +257,8 @@ static char* pop_next_command(GList **pp_rule_list,
                     dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
                     if (!dd)
                     {
+                        free_rule_list(rule_list);
+                        *pp_rule_list = NULL;
                         goto ret; /* error (note: dd_opendir logged error msg) */
                     }
                 }
@@ -285,6 +295,7 @@ static char* pop_next_command(GList **pp_rule_list,
         /*free(cur_rule->command); - WRONG! we might be returning it! */
         if (command)
         {
+            /* We found rule to run, return it */
             free(cur_rule);
             break;
         }
@@ -493,8 +504,6 @@ char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const
             free(event_name);
         }
     }
-
-    free_rule_list(rule_list);
 
     return strbuf_free_nobuf(result);
 }
