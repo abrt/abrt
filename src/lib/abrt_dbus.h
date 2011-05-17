@@ -50,7 +50,7 @@ extern DBusConnection* g_dbus_conn;
  *  conn = dbus_bus_get(DBUS_BUS_SYSTEM/SESSION, &err);
  *  // needed only if you need to use async dbus calls (not shown below):
  *  attach_dbus_conn_to_glib_main_loop(conn, NULL, NULL);
- *  // syncronous method call:
+ *  // synchronous method call:
  *  msg = dbus_message_new_method_call("some.serv", "/path/on/serv", "optional.iface.on.serv", "method_name");
  *  reply = dbus_connection_send_with_reply_and_block(conn, msg, timeout, &err);
  *  // emitting signal:

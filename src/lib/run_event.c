@@ -34,10 +34,10 @@ void free_run_event_state(struct run_event_state *state)
 }
 
 
-/* Asyncronous command execution */
+/* Asynchronous command execution */
 
 /* It is not yet clear whether we need to re-parse event config file
- * and re-check the elements in dump dir after each comamnd.
+ * and re-check the elements in dump dir after each command.
  *
  * Consider this config file:
  *
@@ -322,9 +322,7 @@ int run_event_on_dir_name(struct run_event_state *state,
         if (WIFSIGNALED(status))
             retval = WTERMSIG(status) + 128;
         if (retval != 0)
-        {
             break;
-        }
 
         if (state->post_run_callback)
         {

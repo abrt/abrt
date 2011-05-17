@@ -971,8 +971,8 @@ static void start_event_run(const char *event_name,
                 const char *start_msg,
                 const char *end_msg
 ) {
-    /* Start event asyncronously on the dump dir
-     * (syncronous run would freeze GUI until completion)
+    /* Start event asynchronously on the dump dir
+     * (synchronous run would freeze GUI until completion)
      */
     struct run_event_state *state = new_run_event_state();
 

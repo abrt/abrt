@@ -48,7 +48,7 @@ struct run_event_state {
 struct run_event_state *new_run_event_state(void);
 void free_run_event_state(struct run_event_state *state);
 
-/* Asyncronous command execution */
+/* Asynchronous command execution */
 
 /* Returns 0 if no commands found for this dump_dir_name+event, else >0 */
 int prepare_commands(struct run_event_state *state, const char *dump_dir_name, const char *event);
@@ -59,7 +59,7 @@ int spawn_next_command(struct run_event_state *state, const char *dump_dir_name,
 /* Cleans up internal state created in prepare_commands */
 void free_commands(struct run_event_state *state);
 
-/* Syncronous command execution */
+/* Synchronous command execution */
 
 /* Returns exit code of first failed action, or first nonzero return value
  * of post_run_callback. If all actions are successful, returns 0.

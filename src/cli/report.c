@@ -788,7 +788,7 @@ int report(const char *dump_dir_name, int flags)
 
             if (!config)
                 VERB1 log("No configuration file found for '%s' reporter", reporter_name);
-                
+
             /* Was this reporter requested? */
             if (!is_number_in_string(i, wanted_reporters))
                 continue;
