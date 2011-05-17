@@ -62,31 +62,38 @@ int
 abrt_post(abrt_post_state_t *state,
                 const char *url,
                 const char *content_type,
+                const char **additional_headers,
                 const char *data,
                 off_t data_size);
 static inline int
 abrt_post_string(abrt_post_state_t *state,
                 const char *url,
                 const char *content_type,
+                const char **additional_headers,
                 const char *str)
 {
-    return abrt_post(state, url, content_type, str, ABRT_POST_DATA_STRING);
+    return abrt_post(state, url, content_type, additional_headers,
+                     str, ABRT_POST_DATA_STRING);
 }
 static inline int
 abrt_post_file(abrt_post_state_t *state,
                 const char *url,
                 const char *content_type,
+                const char **additional_headers,
                 const char *filename)
 {
-    return abrt_post(state, url, content_type, filename, ABRT_POST_DATA_FROMFILE);
+    return abrt_post(state, url, content_type, additional_headers,
+                     filename, ABRT_POST_DATA_FROMFILE);
 }
 static inline int
 abrt_post_file_as_form(abrt_post_state_t *state,
                 const char *url,
                 const char *content_type,
+                const char **additional_headers,
                 const char *filename)
 {
-    return abrt_post(state, url, content_type, filename, ABRT_POST_DATA_FROMFILE_AS_FORM_DATA);
+    return abrt_post(state, url, content_type, additional_headers,
+                     filename, ABRT_POST_DATA_FROMFILE_AS_FORM_DATA);
 }
 
 #ifdef __cplusplus

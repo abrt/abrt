@@ -323,7 +323,13 @@ send_report_to_new_case(const char* baseURL,
     );
     case_state->username = username;
     case_state->password = password;
-    abrt_post_string(case_state, case_url, "application/xml", case_data);
+
+    static const char *headers[] = {
+        "Accept: text/plain",
+        NULL
+    };
+
+    abrt_post_string(case_state, case_url, "application/xml", headers, case_data);
 
     char *case_location = find_header_in_abrt_post_state(case_state, "Location:");
     switch (case_state->http_resp_code)
@@ -385,7 +391,9 @@ send_report_to_new_case(const char* baseURL,
         );
         atch_state->username = username;
         atch_state->password = password;
-        abrt_post_file_as_form(atch_state, atch_url, "application/binary", report_file_name);
+
+        abrt_post_file_as_form(atch_state, atch_url, "application/binary", headers,
+                               report_file_name);
 
         char *atch_location = find_header_in_abrt_post_state(atch_state, "Location:");
         switch (atch_state->http_resp_code)

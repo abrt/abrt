@@ -213,6 +213,7 @@ int
 abrt_post(abrt_post_state_t *state,
                 const char *url,
                 const char *content_type,
+                const char **additional_headers,
                 const char *data,
                 off_t data_size)
 {
@@ -337,19 +338,22 @@ abrt_post(abrt_post_state_t *state,
         if (!httpheader_list)
             error_msg_and_die("out of memory");
         free(content_type_header);
-        xcurl_easy_setopt_ptr(handle, CURLOPT_HTTPHEADER, httpheader_list);
     }
 
-    // Override "Accept: text/plain": helps convince server to send plain-text
-    // error messages in the body of HTTP error responses [not verified to work]
-    httpheader_list = curl_slist_append(httpheader_list, "Accept: text/plain");
-    if (!httpheader_list)
-        error_msg_and_die("out of memory");
+    for (; additional_headers && *additional_headers; additional_headers++)
+    {
+        httpheader_list = curl_slist_append(httpheader_list, *additional_headers);
+        if (!httpheader_list)
+            error_msg_and_die("out of memory");
+    }
 
     // Add User-Agent: ABRT/N.M
     httpheader_list = curl_slist_append(httpheader_list, "User-Agent: ABRT/"VERSION);
     if (!httpheader_list)
         error_msg_and_die("out of memory");
+
+    if (httpheader_list)
+        xcurl_easy_setopt_ptr(handle, CURLOPT_HTTPHEADER, httpheader_list);
 
 // Disabled: was observed to also handle "305 Use proxy" redirect,
 // apparently with POST->GET remapping - which server didn't like at all.
