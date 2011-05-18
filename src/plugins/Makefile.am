@@ -56,8 +56,6 @@ dist_eventsconf_DATA = \
     rhtsupport_events.conf
 
 man_MANS = \
-    abrt-KerneloopsReporter.7 \
-    abrt-Upload.7 \
     abrt-plugins.7
 
 MAN_TXT = \
