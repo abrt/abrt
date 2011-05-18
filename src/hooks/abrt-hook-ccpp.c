@@ -626,7 +626,7 @@ int main(int argc, char** argv)
             error_msg_and_die("error writing %s", path);
         }
         log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
-        if (user_core_fd >= 0 && core_size >= ulimit_c)
+        if (user_core_fd >= 0 && (ulimit_c == 0 || core_size > ulimit_c))
         {
             /* user coredump is too big, nuke it */
             xchdir(user_pwd);
@@ -668,7 +668,7 @@ int main(int argc, char** argv)
         unlink(core_basename);
         return 1;
     }
-    if (core_size >= ulimit_c)
+    if (ulimit_c == 0 || core_size > ulimit_c)
     {
         xchdir(user_pwd);
         unlink(core_basename);
