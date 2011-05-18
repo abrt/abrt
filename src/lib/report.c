@@ -184,7 +184,7 @@ int report(problem_data_t *pd)
      * reports
     */
     char hash_str[SHA1_RESULT_LEN*2 + 1];
-    g_hash_table_foreach(pd, &generate_hash, hash_str);
+    g_hash_table_foreach(pd, &generate_hash_for_all, hash_str);
     add_to_problem_data(pd, FILENAME_DUPHASH, hash_str);
 
     /* adds:

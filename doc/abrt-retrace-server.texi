@@ -155,29 +155,29 @@ the server returns the @code{411 Length Required} HTTP error code. If an
 @var{Content-Type} other than @samp{application/x-tar},
 @samp{application/x-gzip}, @samp{application/x-xz} is used, the server
 returns the @code{415 unsupported Media Type} HTTP error code. If the
-@var{Content-Length} value is greater than a limit set in the server
-configuration file (50 MB by default), or the real HTTP request size
-gets larger than the limit + 10 KB for headers, then the server returns
-the @code{413 Request Entity Too Large} HTTP error code, and provides an
-explanation, including the limit, in the response body. The limit is
-changeable from the server configuration file.
+@var{Content-Length} value is greater than a limit set by
+@var{MaxPackedSize} option in the server configuration file (50 MB by
+default), or the real HTTP request size gets larger than the limit + 10
+KB for headers, then the server returns the @code{413 Request Entity Too
+Large} HTTP error code, and provides an explanation, including the
+limit, in the response body. The limit is changeable from the server
+configuration file.
 
-If there is less than 20 GB of free disk space in the
-@file{/var/spool/abrt-retrace} directory, the server returns the
-@code{507 Insufficient Storage} HTTP error code. The server returns the
-same HTTP error code if decompressing the received archive would cause
-the free disk space to become less than 20 GB. The 20 GB limit is
-changeable from the server configuration file.
+If unpacking the archive would result in having the free disk space
+under certain limit in the @file{/var/spool/abrt-retrace} directory, the
+server returns the @code{507 Insufficient Storage} HTTP error code. The
+limit is specified by the @var{MinStorageLeft} option in the server
+configuration file, and it is set to 1024 MB by default.
 
-If the data from the received archive would take more than 500 MB of
+If the data from the received archive would take more than 1024 MB of
 disk space when uncompressed, the server returns the @code{413 Request
 Entity Too Large} HTTP error code, and provides an explanation,
 including the limit, in the response body. The size limit is changeable
-from the server configuration file. It can be set pretty high because
-coredumps, that take most disk space, are stored on the server only
-temporarily until the backtrace is generated. When the backtrace is
-generated the coredump is deleted by the @command{abrt-retrace-worker},
-so most disk space is released.
+by the @var{MaxUnpackedSize} option in the server configuration file. It
+can be set pretty high because coredumps, that take most disk space, are
+stored on the server only temporarily until the backtrace is
+generated. When the backtrace is generated the coredump is deleted by
+the @command{abrt-retrace-worker}, so most disk space is released.
 
 The uncompressed data size for xz archives is obtained by calling
 @code{`xz --list file.tar.xz`}. The @option{--list} option has been
@@ -193,14 +193,10 @@ response. After that it spawns a subprocess with
 @command{abrt-retrace-worker} on that directory.
 
 The following files from the local crash directory are required to be
-present in the archive: @file{coredump}, @file{architecture},
-@file{release}, @file{packages} (this one does not exist yet). If one or
-more files are not present in the archive, or some other file is present
-in the archive, the server returns the @code{403 Forbidden} HTTP error
-code. If the size of any file except the coredump exceeds 100 KB, the
-server returns the @code{413 Request Entity Too Large} HTTP error code,
-and provides an explanation, including the limit, in the response
-body. The 100 KB limit is changeable from the server configuration file.
+present in the archive: @file{coredump}, @file{executable},
+@file{package}. If one or more files are not present in the archive, or
+some other file is present in the archive, the server returns the
+@code{403 Forbidden} HTTP error code.
 
 If the file check succeeds, the server HTTP response has the @code{201
 Created} HTTP code. The response includes the following HTTP header
@@ -233,13 +229,13 @@ A client might request a task status by sending a HTTP GET request to
 the @indicateurl{https://someserver/@var{id}} URL, where @var{id} is the
 numerical task id returned in the @var{X-Task-Id} field by
 @indicateurl{https://someserver/create}. If the @var{id} is not in the
-valid format, or the task @var{id} does not exist, the server must
-return the @code{404 Not Found} HTTP error code.
+valid format, or the task @var{id} does not exist, the server returns
+the @code{404 Not Found} HTTP error code.
 
 The client request must contain the @var{X-Task-Password} field, and its
 content must match the password stored in the
 @file{/var/spool/abrt-retrace/@var{id}/password} file. If the password is
-not valid, the server must return the @code{403 Forbidden} HTTP error code.
+not valid, the server returns the @code{403 Forbidden} HTTP error code.
 
 If the checks pass, the server returns the @code{200 OK} HTTP code, and
 includes a field @var{X-Task-Status} containing one of the following
@@ -280,8 +276,8 @@ code.
 
 If the file @file{/var/spool/abrt-retrace/@var{id}/backtrace} does not
 exist, the server returns the @code{404 Not Found} HTTP error code.
-Otherwise it returns the file contents, and the @var{Content-Type} field
-contains @samp{text/plain}.
+Otherwise it returns the file contents, and the @var{Content-Type}
+header is set to @samp{text/plain}.
 
 @node Requesting a log
 @section Requesting a log
@@ -302,15 +298,16 @@ code.
 If the file @file{/var/spool/abrt-retrace/@var{id}/retrace-log} does not
 exist, the server returns the @code{404 Not Found} HTTP error code.
 Otherwise it returns the file contents, and the @var{Content-Type}
-contains @samp{text/plain}.
+header is set to @samp{text/plain}.
 
 @node Limiting traffic
 @section Limiting traffic
 
-The maximum number of simultaneously running tasks is limited to 20 by
-the server. The limit is changeable from the server configuration
-file. If a new request comes when the server is fully occupied, the
-server returns the @code{503 Service Unavailable} HTTP error code.
+The maximum number of simultaneously running tasks is limited to 5 by
+the server. The limit is changeableby the @var{MaxParallelTasks} option
+in the server configuration file. If a new request comes when the server
+is fully occupied, the server returns the @code{503 Service Unavailable}
+HTTP error code.
 
 The archive extraction, chroot preparation, and gdb analysis is
 mostly limited by the hard drive size and speed.
