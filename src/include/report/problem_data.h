@@ -51,6 +51,8 @@ typedef GHashTable problem_data_t;
 
 problem_data_t *new_problem_data(void);
 
+void add_basics_to_problem_data(problem_data_t *pd);
+
 static inline void free_problem_data(problem_data_t *problem_data)
 {
     if (problem_data)

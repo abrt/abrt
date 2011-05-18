@@ -86,7 +86,7 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
     struct applet *applet = (struct applet *)user_data;
     if (applet->ap_daemon_running)
     {
-        analyze_and_report_dir(applet->ap_last_crash_id);
+        analyze_and_report_dir(applet->ap_last_crash_id, NOWAIT);
         GError *err = NULL;
         notify_notification_close(notification, &err);
         if (err != NULL)

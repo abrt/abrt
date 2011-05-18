@@ -21,16 +21,22 @@
 
 #include "problem_data.h"
 
+enum {
+    NOWAIT = 0,
+    WAIT = (1 << 0), /* wait for report to finish and reload the problem data */
+};
+
+
 /* analyzes AND reports a problem saved on disk
  * - takes user through all the steps in reporting wizard
  */
-int analyze_and_report_dir(const char* dirname);
+int analyze_and_report_dir(const char* dirname, int flags);
 
 /* analyzes AND reports a problem stored in problem_data_t
  * it's first saved to /tmp and then processed as a dump_dir
  * - takes user through all the steps in reporting wizard
  */
-int analyze_and_report(problem_data_t *pd);
+int analyze_and_report(problem_data_t *pd, int flags);
 
 /* reports a problem saved on disk
  * - shows only reporter selector and progress

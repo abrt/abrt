@@ -57,6 +57,38 @@ problem_data_t *new_problem_data(void)
                  free, free_problem_item);
 }
 
+void add_basics_to_problem_data(problem_data_t *pd)
+{
+    const char *analyzer = get_problem_item_content_or_NULL(pd, FILENAME_ANALYZER);
+    if (analyzer == NULL)
+        add_to_problem_data(pd, "analyzer", "libreport");
+
+    pid_t pid = getpid();
+    if (pid > 0)
+    {
+        char buf[PATH_MAX+1];
+        char *exe = xasprintf("/proc/%u/exe", pid);
+        ssize_t read = readlink(exe, buf, PATH_MAX);
+        if (read > 0)
+        {
+            buf[read] = 0;
+            VERB2 log("reporting initiated from: %s\n", buf);
+            add_to_problem_data(pd, FILENAME_EXECUTABLE, buf);
+        }
+        free(exe);
+
+//#ifdef WITH_RPM
+        /* FIXME: component should be taken from rpm using
+         * rpm -qf executable
+        */
+        /* Fedora/RHEL rpm specific piece of code */
+        const char *component = get_problem_item_content_or_NULL(pd, FILENAME_ANALYZER);
+        if(component == NULL) // application didn't specify component
+            add_to_problem_data(pd, FILENAME_COMPONENT, "abrt");
+//#endif
+    }
+}
+
 void add_to_problem_data_ext(problem_data_t *problem_data,
                 const char *name,
                 const char *content,
