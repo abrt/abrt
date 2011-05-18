@@ -1,0 +1,67 @@
+abrt-action-upload(1)
+=====================
+
+NAME
+----
+abrt-action-upload - Uploads compressed tarball of dump directory.
+
+SYNOPSIS
+--------
+'abrt-action-upload' [-c CONFFILE]... [ -d DIR ] [ -u URL ]
+
+DESCRIPTION
+-----------
+The tool is used to create a compressed tarball of the dump directory and
+upload it to a URL. Supported protocols include FTP, FTPS, HTTP, HTTPS, SCP,
+SFTP, TFTP and FILE.
+
+Configuration file
+~~~~~~~~~~~~~~~~~~
+Configuration file contains entries in a format "Option = Value".
+
+The options are:
+
+'URL'::
+        The URL where should be the tarball uploaded.
+
+Integration with ABRT events
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'abrt-action-upload' can be used as a reporter, to allow users to upload
+compressed tarballs of dump directiories to a configured URL. This usage can be
+configured in /etc/abrt/events.d/upload_events.conf:
+
+------------
+EVENT=report_Upload abrt-action-upload
+------------
+
+It can be also used on the 'post-create' event to upload it automatically.
+
+------------
+EVENT=post-create abrt-action-upload
+------------
+
+OPTIONS
+-------
+
+-d DIR::
+   Path to dump directory.
+
+-c CONFFILE::
+   Path to configration file. When used in ABRT event system, the file
+   contains site-wide configuration. Users can change the values via
+   environment variables.
+
+-u URL::
+   The URL where should be the tarball uploaded.
+
+ENVIRONMENT VARIABLES
+---------------------
+Environment variables take precedence over values provided in
+the configuration file.
+
+'Upload_URL'::
+   The URL where should be the tarball uploaded.
+
+AUTHORS
+-------
+* ABRT team

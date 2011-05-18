@@ -69,6 +69,7 @@ MAN_TXT = \
     abrt-action-bugzilla.txt \
     abrt-action-list-dsos.txt \
     abrt-action-kerneloops.txt \
+    abrt-action-upload.txt \
     abrt-retrace-client.txt
 
 # Manual pages are generated from .txt via Docbook

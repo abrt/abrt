@@ -568,6 +568,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Upload.conf
 %{_mandir}/man7/abrt-Upload.7.gz
+%{_mandir}/man*/abrt-action-upload.*
 %{_bindir}/abrt-action-upload
 
 %files addon-python
