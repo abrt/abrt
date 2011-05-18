@@ -392,7 +392,7 @@ the area GDB operates on.
 No special care is taken to avoid the possibility that GDB will not run
 with the set of packages (fixed versions) as provided by coredump. It is
 expected that any combination of packages user might use in a released
-system should satisfy the needs of some version of GDB. Yum selects the
+system satisfies the needs of some version of GDB. Yum selects the
 newest possible version which has its requirements satisfied.
 
 @node Task cleanup
@@ -435,26 +435,15 @@ updates-testing repositories. Retrace server supports older versions of
 packages, as this is one of major pain-points that the retrace server is
 supposed to solve.
 
-A script abrt-reposync must download packages from Fedora
-repositories, but it must not delete older versions of the
-packages. The retrace server administrator is supposed to call this
-script using cron every ~6 hours. This expectation must be documented
-in the abrt-reposync manual page. The script can use use wget, rsync,
-or reposync tool to get the packages. The remote yum source
-repositories must be configured from a configuration file or files
-(@file{/etc/yum.repos.d} might be used).
+The @command{abrt-retrace-reposync} downloads packages from Fedora
+repositories, and it does not delete older versions of the packages. The
+retrace server administrator is supposed to call this script using cron
+approximately every 6 hours. The script uses @command{rsync} to get the
+packages and @command{createrepo} to generate respository metadata.
 
-When the abrt-reposync is used to sync with the Rawhide repository,
-unneeded packages (where a newer version exists) must be removed after
-residing one week with the newer package in the same repository.
-
-All the unneeded content from the newly downloaded packages should be
-removed to save disk space and speed up chroot creation. We need just
-the binaries and dynamic libraries, and that is a tiny part of package
-contents.
-
-The packages should be downloaded to a local repository in
-@file{/var/cache/abrt-repo/@{fedora12,fedora12-debuginfo,...@}}.
+The packages are downloaded to a local repository in
+@file{/var/cache/abrt-retrace/}. The location can be changed via the
+@var{RepoDir} option in the server configuration file.
 
 @node Traffic and load estimation
 @chapter Traffic and load estimation
@@ -471,8 +460,7 @@ or down. New, untested versions of software are added to Fedora, but
 on the other side most software matures and becomes less crashy.  So
 let's assume that the bug count stays approximately the same.
 
-Test crashes (see that we should probably use @code{`xz -2`}
-to compress coredumps):
+Test crashes (see why we use @code{`xz -2`} to compress coredumps):
 @itemize
 @item
 firefox with 7 tabs (random pages opened), coredump size 172 MB
@@ -618,8 +606,8 @@ from within the chroot, unable to access the retrace server's
 environment. We should consider setting a disk quota to every chroot
 directory, and limit the GDB access to resources using cgroups.
 
-SELinux policy should be written for both the retrace server's HTTP
-interface, and for the retrace worker.
+SELinux policy exists for both the retrace server's HTTP interface, and
+for the retrace worker.
 
 @node Clients
 @section Clients
@@ -808,5 +796,11 @@ then all the old rows can be deleted by executing @code{DELETE FROM
 package_time WHERE package == '??' AND release == '??' AND id <= ??}
 @end itemize
 @end enumerate
+
+@section Support Fedora Rawhide
+When the @command{abrt-retrace-reposync} is used to sync with the
+Rawhide repository, unneeded packages (where a newer version exists)
+must be removed after residing one week with the newer package in the
+same repository.
 
 @bye
