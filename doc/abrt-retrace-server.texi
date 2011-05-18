@@ -601,10 +601,12 @@ distribution repositories.
 @end menu
 
 General security from GDB flaws and malicious data is provided by
-chroot. The GDB accesses the debuginfos, packages, and the coredump
-from within the chroot, unable to access the retrace server's
-environment. We should consider setting a disk quota to every chroot
-directory, and limit the GDB access to resources using cgroups.
+chroot. The GDB accesses the debuginfos, packages, and the coredump from
+within the chroot under a non-root user, unable to access the retrace
+server's environment.
+
+@c We should consider setting a disk quota to every chroot directory,
+@c and limit the GDB access to resources using cgroups.
 
 SELinux policy exists for both the retrace server's HTTP interface, and
 for the retrace worker.
@@ -612,34 +614,25 @@ for the retrace worker.
 @node Clients
 @section Clients
 
-The clients, which are using the retrace server and sending coredumps
-to it, must fully trust the retrace server administrator.  The server
-administrator must not try to get sensitive data from client
-coredumps.  That seems to be a major bottleneck of the retrace server
-idea.  However, users of an operating system already trust the OS
-provider in various important matters. So when the retrace server is
-operated by the operating system provider, that might be acceptable by
-users.
+It is expected that the clients, which are using the retrace server and
+sending coredumps to it, trust the retrace server administrator. The
+server administrator must not try to get sensitive data from client
+coredumps. This is a major bottleneck of the retrace server. However,
+users of an operating system already trust the operating system provider
+in various important matters. So when the retrace server is operated by
+the OS provider, that might be acceptable for users.
 
-We cannot avoid sending clients' coredumps to the retrace server, if we
-want to generate quality backtraces containing the values of
+Sending clients' coredumps to the retrace server cannot be avoided if we
+want to generate good backtraces containing the values of
 variables. Minidumps lower the quality of the resulting backtraces,
 while not improving user security.
 
-Can the retrace server trust clients? We must know what can a
-malicious client achieve by crafting a nonstandard coredump, which
-will be processed by server's GDB.  We should ask GDB experts about
-this.
+A malicious client can craft a nonstandard coredump, which will be
+processed by server's GDB. GDB handles malformed coredumps well.
 
-Another question is whether we can allow users providing some packages
-and debuginfo together with a coredump. That might be useful for
-users, who run the operating system only with some minor
-modifications, and they still want to use the retrace server. So they
-send a coredump together with a few nonstandard packages. The retrace
-server uses the nonstandard packages together with the OS packages to
-generate the backtrace. Is it safe? We must know what can a malicious
-client achieve by crafting a special binary and debuginfo, which will
-be processed by server's GDB.
+Users can never be allowed to provide custom packages/debuginfo together
+with a coredump. Packages need to be installed to the environment, and
+installing untrusted programs is insecure.
 
 As for attacker trying to steal users' backtraces from the retrace
 server, the passwords protecting the backtraces in the
@@ -652,12 +645,12 @@ randomness is @file{/dev/urandom}.
 @node Packages and debuginfo
 @section Packages and debuginfo
 
-We can safely download packages and debuginfo from the distribution,
-as the packages are signed by the distribution, and the package origin
-can be verified.
+Packages and debuginfo are safely downloaded from the distribution
+repositories, as the packages are signed by the distribution, and the
+package origin is verified.
 
-When the debuginfo server is done, the retrace server can safely use
-it, as the data will also be signed.
+When the debuginfo filesystem server is done, the retrace server can
+safely use it, as the data will also be signed.
 
 @node Future work
 @chapter Future work
