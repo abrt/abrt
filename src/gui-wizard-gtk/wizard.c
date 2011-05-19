@@ -25,6 +25,9 @@
 #define DEFAULT_WIDTH   800
 #define DEFAULT_HEIGHT  500
 
+#if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 22
+# define gtk_assistant_commit(...) ((void)0)
+#endif
 
 typedef struct event_gui_data_t
 {
