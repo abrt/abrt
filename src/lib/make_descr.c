@@ -237,6 +237,7 @@ static const char *const blacklisted_items[] = {
     FILENAME_DUPHASH  ,
     FILENAME_UUID     ,
     FILENAME_COUNT    ,
+    FILENAME_TAINTED_SHORT,
     NULL
 };
 

@@ -24,69 +24,6 @@
 
 #define XML_RPC_SUFFIX      "/xmlrpc.cgi"
 
-/* From RHEL6 kernel/panic.c:
- * { TAINT_PROPRIETARY_MODULE,     'P', 'G' },
- * { TAINT_FORCED_MODULE,          'F', ' ' },
- * { TAINT_UNSAFE_SMP,             'S', ' ' },
- * { TAINT_FORCED_RMMOD,           'R', ' ' },
- * { TAINT_MACHINE_CHECK,          'M', ' ' },
- * { TAINT_BAD_PAGE,               'B', ' ' },
- * { TAINT_USER,                   'U', ' ' },
- * { TAINT_DIE,                    'D', ' ' },
- * { TAINT_OVERRIDDEN_ACPI_TABLE,  'A', ' ' },
- * { TAINT_WARN,                   'W', ' ' },
- * { TAINT_CRAP,                   'C', ' ' },
- * { TAINT_FIRMWARE_WORKAROUND,    'I', ' ' },
- * entries 12 - 27 are unused
- * { TAINT_HARDWARE_UNSUPPORTED,   'H', ' ' },
- * entries 29 - 31 are unused
- */
-
-static const char * const taint_warnings[] = {
-    "Proprietary Module",
-    "Forced Module",
-    "Unsafe SMP",
-    "Forced rmmod",
-    "Machine Check",
-    "Bad Page",
-    "User",
-    "Die",
-    "Overriden ACPI Table",
-    "Warning Issued",
-    "Experimental Module Loaded",
-    "Firmware Workaround",
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    "Hardware Unsupported",
-    NULL,
-    NULL,
-};
-
-/* TODO: npajkovs: fix tainted string */
-static const char *tainted_string(unsigned tainted)
-{
-    unsigned idx = 0;
-    while ((tainted >>= 1) != 0)
-        idx++;
-
-    return taint_warnings[idx];
-}
-
 static void report_to_bugzilla(const char *dump_dir_name, map_string_h *settings)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
@@ -298,7 +235,26 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         "\b [-v] -c CONFFILE -d DIR\n"
         "\n"
-        "Reports problem to Bugzilla"
+        "Reports problem to Bugzilla.\n"
+        "\n"
+        "The tool reads DIR. Then it logs in to Bugzilla and tries to find a bug\n"
+        "with the same abrt_hash:HEXSTRING in 'Whiteboard'.\n"
+        "\n"
+        "If such bug is not found, then a new bug is created. Elements of DIR\n"
+        "are stored in the bug as part of bug description or as attachments,\n"
+        "depending on their type and size.\n"
+        "\n"
+        "Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,\n"
+        "the tool follows the chain of duplicates until it finds a non-DUPLICATE bug.\n"
+        "The tool adds a new comment to found bug.\n"
+        "\n"
+        "The URL to new or modified bug is printed to stdout and recorded in\n"
+        "'reported_to' element.\n"
+        "\n"
+        "CONFFILE lines should have 'PARAM = VALUE' format.\n"
+        "Recognized string parameters: BugzillaURL, Login, Password.\n"
+        "Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
+        "Parameters can be overridden via $Bugzilla_PARAM environment variables."
     );
     enum {
         OPT_v = 1 << 0,

@@ -129,14 +129,6 @@ const char *get_problem_item_content_or_NULL(problem_data_t *problem_data, const
 }
 
 
-/* problem_data_vector[i] = { "name" = { "content", CD_FLAG_foo_bits } } */
-
-vector_of_problem_data_t *new_vector_of_problem_data(void)
-{
-    return g_ptr_array_new_with_free_func((void (*)(void*)) &free_problem_data);
-}
-
-
 /* Miscellaneous helpers */
 
 static const char *const editable_files[] = {

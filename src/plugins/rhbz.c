@@ -300,8 +300,8 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
                                                                 FILENAME_CRASH_FUNCTION);
     const char *analyzer     = get_problem_item_content_or_NULL(problem_data,
                                                                 FILENAME_ANALYZER);
-    const char *tainted_str  = get_problem_item_content_or_NULL(problem_data,
-                                                                FILENAME_TAINTED);
+    const char *tainted_short = get_problem_item_content_or_NULL(problem_data,
+                                                                FILENAME_TAINTED_SHORT);
 
     struct strbuf *buf_summary = strbuf_new();
     strbuf_append_strf(buf_summary, "[abrt] %s", package);
@@ -312,17 +312,10 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
     if (reason != NULL)
         strbuf_append_strf(buf_summary, ": %s", reason);
 
-    if (tainted_str && analyzer
-        && (strcmp(analyzer, "Kerneloops") == 0)
-    ) {
-        //TODO: fix me; basically it doesn't work as it suppose to work
-        //      I will fix it immediately when this patch land into abrt git 
-        /*
-        unsigned long tainted = xatoi_positive(tainted_str);
-        const char *tainted_warning = tainted_string(tainted);
-        if (tainted_warning)
-            strbuf_append_strf(buf_summary, ": TAINTED %s", tainted_warning);
-        */
+    if (tainted_short && analyzer
+        && (strcmp(analyzer, "Kerneloops") == 0))
+    {
+        strbuf_append_strf(buf_summary, ": TAINTED %s", tainted_short);
     }
 
     char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);

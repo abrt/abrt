@@ -58,6 +58,9 @@
 // Optional. Set to "1" by abrt-handle-upload for every unpacked dump
 #define FILENAME_REMOTE       "remote"
 #define FILENAME_TAINTED      "kernel_tainted"
+#define FILENAME_TAINTED_SHORT "kernel_tainted_short"
+#define FILENAME_TAINTED_LONG  "kernel_tainted_long"
+// TODO: TicketUploader also has open-coded "TICKET", "CUSTOMER" files
 
 #define FILENAME_UUID         "uuid"
 #define FILENAME_COUNT        "count"

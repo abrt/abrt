@@ -25,6 +25,9 @@
 #define DEFAULT_WIDTH   800
 #define DEFAULT_HEIGHT  500
 
+#if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 22
+# define gtk_assistant_commit(...) ((void)0)
+#endif
 
 typedef struct event_gui_data_t
 {
@@ -72,7 +75,6 @@ enum
 {
     DETAIL_COLUMN_NAME,
     DETAIL_COLUMN_VALUE,
-    //COLUMN_PATH,
     DETAIL_NUM_COLUMNS,
 };
 
@@ -102,6 +104,8 @@ enum {
     PAGENO_BACKTRACE_APPROVAL,
     PAGENO_REPORT,
     PAGENO_REPORT_PROGRESS,
+    PAGENO_REPORT_DONE,
+    PAGENO_NOT_SHOWN,
 };
 
 /* Use of arrays (instead of, say, #defines to C strings)
@@ -116,6 +120,8 @@ static const gchar PAGE_REPORTER_SELECTOR[]  = "page_4_report";
 static const gchar PAGE_BACKTRACE_APPROVAL[] = "page_5";
 static const gchar PAGE_REPORT[]             = "page_6_report";
 static const gchar PAGE_REPORT_PROGRESS[]    = "page_7_report";
+static const gchar PAGE_REPORT_DONE[]        = "page_8_report";
+static const gchar PAGE_NOT_SHOWN[]          = "page_9_report";
 
 static const gchar *const page_names[] =
 {
@@ -127,6 +133,8 @@ static const gchar *const page_names[] =
     PAGE_BACKTRACE_APPROVAL,
     PAGE_REPORT,
     PAGE_REPORT_PROGRESS,
+    PAGE_REPORT_DONE,
+    PAGE_NOT_SHOWN,
     NULL
 };
 
@@ -159,7 +167,11 @@ static page_obj_t pages[] =
     { PAGE_BACKTRACE_APPROVAL , "Review the backtrace"  , GTK_ASSISTANT_PAGE_CONTENT  },
     { PAGE_REPORT             , "Confirm data to report", GTK_ASSISTANT_PAGE_CONFIRM  },
     /* Was GTK_ASSISTANT_PAGE_PROGRESS */
-    { PAGE_REPORT_PROGRESS    , "Reporting"             , GTK_ASSISTANT_PAGE_SUMMARY  },
+    { PAGE_REPORT_PROGRESS    , "Reporting"             , GTK_ASSISTANT_PAGE_CONTENT  },
+    { PAGE_REPORT_DONE        , "Reporting done"        , GTK_ASSISTANT_PAGE_CONTENT  },
+    /* We prevent user from reaching this page, as it can't be navigated away,
+     * and we don't want that */
+    { PAGE_NOT_SHOWN          , ""                      , GTK_ASSISTANT_PAGE_SUMMARY  },
     { NULL }
 };
 
@@ -292,7 +304,7 @@ static void save_text_from_text_view(GtkTextView *tv, const char *name)
     free(new_str);
 }
 
-static void append_to_textview(GtkTextView *tv, const char *str, int len)
+static void append_to_textview(GtkTextView *tv, const char *str)
 {
     GtkTextBuffer *tb = gtk_text_view_get_buffer(tv);
 
@@ -301,7 +313,7 @@ static void append_to_textview(GtkTextView *tv, const char *str, int len)
     gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
     gtk_text_buffer_place_cursor(tb, &text_iter);
 
-    gtk_text_buffer_insert_at_cursor(tb, str, len >= 0 ? len : strlen(str));
+    gtk_text_buffer_insert_at_cursor(tb, str, strlen(str));
 
     /* Scroll so that the end of the log is visible */
     gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
@@ -390,7 +402,6 @@ static void tv_details_cursor_changed(
      */
     g_object_set(G_OBJECT(g_tv_details_col2),
                 "editable", editable,
-                // "editable-set", editable,
                 NULL);
 }
 
@@ -575,9 +586,6 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
         event_gui_data->toggle_button = GTK_TOGGLE_BUTTON(button);
         *p_event_list = g_list_append(*p_event_list, event_gui_data);
 
-        //if (!first_button)
-        //    first_button = event_gui_data;
-
         if (!active_button)
         {
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), true);
@@ -604,7 +612,7 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
     gtk_list_store_append(g_ls_details, &iter);
     stats->filecount++;
 
-    //FIXME: use the value representation here
+    //FIXME: use the human-readable format_problem_item(item) instead of item->content.
     /* If text and not multiline... */
     if (item->flags & CD_FLAG_TXT)
     {
@@ -614,7 +622,6 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
             gtk_list_store_set(g_ls_details, &iter,
                               DETAIL_COLUMN_NAME, (char *)name,
                               DETAIL_COLUMN_VALUE, item->content,
-                              //DETAIL_COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
                               -1);
         }
         else
@@ -622,9 +629,7 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
             gtk_list_store_set(g_ls_details, &iter,
                               DETAIL_COLUMN_NAME, (char *)name,
                               DETAIL_COLUMN_VALUE, _("(click here to view/edit)"),
-                              //DETAIL_COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
                               -1);
-            //WARNING: will leak xasprintf results above if uncommented
         }
     }
     else if (item->flags & CD_FLAG_BIN)
@@ -637,7 +642,6 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
         gtk_list_store_set(g_ls_details, &iter,
                               DETAIL_COLUMN_NAME, (char *)name,
                               DETAIL_COLUMN_VALUE, msg,
-                              //DETAIL_COLUMN_PATH, xasprintf("%s%s", g_dump_dir_name, name),
                               -1);
         free(msg);
     }
@@ -842,7 +846,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     while ((r = read(evd->fd, buf, sizeof(buf)-1)) > 0)
     {
         buf[r] = '\0';
-        append_to_textview(evd->tv_log, buf, r);
+        append_to_textview(evd->tv_log, buf);
         save_to_event_log(evd, buf);
     }
 
@@ -872,9 +876,10 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             evd->event_log_state = LOGSTATE_ERRLINE;
         char *msg;
         if (WIFSIGNALED(status))
-            msg = xasprintf("(killed by signal %d)\n", WTERMSIG(status));
+            msg = xasprintf("(killed by signal %u)\n", WTERMSIG(status));
         else
-            msg = xasprintf("(exited with %d)\n", retval);
+            msg = xasprintf("(exited with %u)\n", retval);
+        append_to_textview(evd->tv_log, msg);
         save_to_event_log(evd, msg);
         free(msg);
     }
@@ -900,10 +905,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
      || spawn_next_command_in_evd(evd) < 0
     ) {
         VERB1 log("done running event on '%s': %d", g_dump_dir_name, retval);
-//append_to_textview(evd->tv_log, msg);
-
-        /* Inform abrt-gui that it is a good idea to rescan the directory */
-        kill(getppid(), SIGCHLD);
+        append_to_textview(evd->tv_log, "\n");
 
         for (;;)
         {
@@ -912,15 +914,9 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                 char *msg = xasprintf(evd->end_msg, retval);
                 gtk_label_set_text(evd->status_label, msg);
                 free(msg);
-                /* Unfreeze assistant
-                 * we can't allow user to continue if analyze action fails
-                 * i.e: if gdb fails to generate backtrace
-//TODO: generic solution instead of special-casing on event name!
-                 */
-                if (retval == 0 || (strncmp(evd->event_name, "analyze", strlen("analyze")) != 0))
-                {
-                    gtk_assistant_set_page_complete(g_assistant, evd->page_widget, true);
-                }
+
+                /* Hide "Back" button */
+                gtk_assistant_commit(g_assistant);
                 /* Enable (un-gray out) navigation buttons */
                 gtk_widget_set_sensitive(GTK_WIDGET(g_assistant), true);
 
@@ -933,6 +929,9 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                 reload_problem_data_from_dump_dir();
                 update_gui_state_from_problem_data();
 
+                /* Inform abrt-gui that it is a good idea to rescan the directory */
+                kill(getppid(), SIGCHLD);
+
                 return FALSE; /* "please remove this event" */
             }
 
@@ -943,11 +942,12 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
              && spawn_next_command_in_evd(evd) >= 0
             ) {
                 VERB1 log("running event '%s' on '%s'", evd->event_name, g_dump_dir_name);
+                char *msg = xasprintf("--- Running %s ---\n", event_name);
+                append_to_textview(evd->tv_log, msg);
+                free(msg);
                 break;
             }
             /* No commands needed?! (This is untypical) */
-//TODO: msg?
-//append_to_textview(evd->tv_log, msg);
         }
     }
 
@@ -1002,8 +1002,6 @@ static void start_event_run(const char *event_name,
         goto no_cmds;
     }
 
-    VERB1 log("running event '%s' on '%s'", event_name, g_dump_dir_name);
-
     /* At least one command is needed, and we started first one.
      * Hook its output fd to the main loop.
      */
@@ -1027,10 +1025,13 @@ static void start_event_run(const char *event_name,
     );
 
     gtk_label_set_text(status_label, start_msg);
-//TODO: save_to_event_log(evd, "message that we run event foo")?
 
-    /* Freeze assistant so it can't move away from the page until event run is done */
-    gtk_assistant_set_page_complete(g_assistant, page, false);
+    VERB1 log("running event '%s' on '%s'", event_name, g_dump_dir_name);
+//TODO: save_to_event_log(evd, "message that we run event foo")?
+    char *msg = xasprintf("--- Running %s ---\n", event_name);
+    append_to_textview(evd->tv_log, msg, strlen(msg));
+    free(msg);
+
     /* Disable (gray out) navigation buttons */
     gtk_widget_set_sensitive(GTK_WIDGET(g_assistant), false);
 }
@@ -1051,7 +1052,7 @@ static void add_warning(const char *warning)
     gtk_widget_show(warning_lbl);
 }
 
-static void check_backtrace_and_allow_send(void) //TODO: rename, this checks rating, not backtrace
+static void check_bt_rating_and_allow_send(void)
 {
     bool send = true;
     bool warn = false;
@@ -1062,18 +1063,19 @@ static void check_backtrace_and_allow_send(void) //TODO: rename, this checks rat
 
     /*
      * FIXME: this should be bind to a reporter not to a compoment
-     * but so far only oopses doesn't have rating, so for now we
+     * but so far only oopses don't have rating, so for now we
      * skip the "kernel" manually
      */
     const char *component = get_problem_item_content_or_NULL(g_cd, FILENAME_COMPONENT);
+//FIXME: say "no" to special casing!
     if (strcmp(component, "kernel") != 0)
     {
         const char *rating = get_problem_item_content_or_NULL(g_cd, FILENAME_RATING);
         if (rating) switch (*rating)
         {
-            case '4': //bt is ok - no warning here
+            case '4': /* bt is ok - no warning here */
                 break;
-            case '3': //bt is usable, but not complete, so show a warning
+            case '3': /* bt is usable, but not complete, so show a warning */
                 add_warning(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."));
                 warn = true;
                 break;
@@ -1103,7 +1105,7 @@ static void check_backtrace_and_allow_send(void) //TODO: rename, this checks rat
 
 static void on_bt_approve_toggle(GtkToggleButton *togglebutton, gpointer user_data)
 {
-    check_backtrace_and_allow_send();
+    check_bt_rating_and_allow_send();
 }
 
 static void on_comment_changed(GtkTextBuffer *buffer, gpointer user_data)
@@ -1204,7 +1206,7 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
 {
     if (pages[PAGENO_BACKTRACE_APPROVAL].page_widget == page)
     {
-        check_backtrace_and_allow_send();
+        check_bt_rating_and_allow_send();
     }
 
     /* Save text fields if changed */
@@ -1226,6 +1228,9 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
 
     if (pages[PAGENO_COMMENT].page_widget == page)
         on_comment_changed(gtk_text_view_get_buffer(g_tv_comment), NULL);
+
+    if (pages[PAGENO_REPORT_DONE].page_widget == page)
+        gtk_assistant_commit(g_assistant);
 }
 
 static gint select_next_page_no(gint current_page_no, gpointer data)
@@ -1283,6 +1288,11 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
             goto again;
         }
         break;
+    case PAGENO_NOT_SHOWN:
+        /* No! this would SEGV (infinitely recurse into select_next_page_no) */
+        /*gtk_assistant_commit(g_assistant);*/
+        current_page_no = PAGENO_ANALYZE_SELECTOR-1;
+        goto again;
     }
 
     VERB2 log("%s: selected page #%d", __func__, current_page_no);
@@ -1314,7 +1324,7 @@ static gboolean highlight_search(gpointer user_data)
         gtk_text_buffer_get_iter_at_offset(buffer, &start_find, offset);
     }
 
-    //returning false will make glib to remove this event
+    /* returning false will make glib to remove this event */
     return false;
 }
 
@@ -1395,17 +1405,15 @@ static void add_pages()
     for (i = 0; page_names[i] != NULL; i++)
     {
         char *delim = strrchr(page_names[i], '_');
-        if(delim != NULL)
+        if (delim != NULL)
         {
-            if (g_report_only && (strncmp(delim+1, "report", strlen("report"))) != 0)
+            if (g_report_only && (strncmp(delim + 1, "report", strlen("report"))) != 0)
             {
                 pages[i].page_widget = NULL;
                 continue;
             }
         }
         GtkWidget *page = GTK_WIDGET(gtk_builder_get_object(builder, page_names[i]));
-        if (page == NULL)
-            continue;
 
         pages[i].page_widget = page;
         added_pages[page_no++] = &pages[i];
@@ -1423,6 +1431,7 @@ static void add_pages()
 
         VERB1 log("added page: %s", page_names[i]);
     }
+
     /* Set pointers to objects we might need to work with */
     g_lbl_cd_reason        = GTK_LABEL(        gtk_builder_get_object(builder, "lbl_cd_reason"));
     g_box_analyzers        = GTK_BOX(          gtk_builder_get_object(builder, "vb_analyzers"));
@@ -1448,26 +1457,30 @@ static void add_pages()
     gtk_widget_modify_font(GTK_WIDGET(g_tv_analyze_log), monospace_font);
     gtk_widget_modify_font(GTK_WIDGET(g_tv_report_log), monospace_font);
     gtk_widget_modify_font(GTK_WIDGET(g_tv_backtrace), monospace_font);
-    //make_label_autowrap_on_resize(g_lbl_cd_reason);
     fix_all_wrapped_labels(GTK_WIDGET(g_assistant));
 
-    ///* hide the warnings by default */
-    //gtk_widget_hide(g_widget_warnings_area);
-
-    //gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_REPORTER_SELECTOR].page_widget, false);
     if (pages[PAGENO_BACKTRACE_APPROVAL].page_widget != NULL)
         gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
                     gtk_toggle_button_get_active(g_tb_approve_bt));
 
-    /* configure btn on select analyzers page */
+    /* Configure btn on select analyzers page */
     GtkWidget *config_btn = GTK_WIDGET(gtk_builder_get_object(builder, "button_cfg1"));
     if (config_btn)
         g_signal_connect(G_OBJECT(config_btn), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
 
-    /* configure btn on select reporters page */
+    /* Configure btn on select reporters page */
     config_btn = GTK_WIDGET(gtk_builder_get_object(builder, "button_cfg2"));
     if (config_btn)
         g_signal_connect(G_OBJECT(config_btn), "clicked", G_CALLBACK(on_show_event_list_cb), NULL);
+
+    /* Add "Close" button */
+    GtkWidget *w;
+    w = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
+    g_signal_connect(w, "clicked", G_CALLBACK(gtk_main_quit), NULL);
+    gtk_widget_show(w);
+    gtk_assistant_add_action_widget(g_assistant, w);
+    /* and hide "Cancel" button - "Close" is a better name for what we want */
+    gtk_assistant_commit(g_assistant);
 
     /* Set color of the comment evenbox */
     GdkColor color;
@@ -1505,8 +1518,6 @@ void create_assistant(void)
     g_ls_details = gtk_list_store_new(DETAIL_NUM_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
     gtk_tree_view_set_model(g_tv_details, GTK_TREE_MODEL(g_ls_details));
 
-//    gtk_builder_connect_signals(builder, NULL);
-
     g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
     g_signal_connect(g_btn_refresh, "clicked", G_CALLBACK(on_btn_refresh_clicked), NULL);
     g_signal_connect(gtk_text_view_get_buffer(g_tv_comment), "changed", G_CALLBACK(on_comment_changed), NULL);
@@ -1519,10 +1530,4 @@ void create_assistant(void)
     /* found items background */
     gtk_text_buffer_create_tag(backtrace_buf, "search_result_bg", "background", "red", NULL);
     g_signal_connect(g_search_entry_bt, "changed", G_CALLBACK(search_timeout), NULL);
-
-    if (pages[PAGENO_BACKTRACE_APPROVAL].page_widget != NULL)
-        gtk_assistant_set_page_complete(g_assistant,
-                    pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
-                    gtk_toggle_button_get_active(g_tb_approve_bt)
-    );
 }

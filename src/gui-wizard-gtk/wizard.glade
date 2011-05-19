@@ -51,7 +51,7 @@
               <object class="GtkScrolledWindow" id="container_details1">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="shadow_type">out</property>
+                <property name="shadow_type">GTK_SHADOW_OUT</property>
                 <child>
                   <object class="GtkTreeView" id="tv_details">
                     <property name="visible">True</property>
@@ -275,7 +275,7 @@
           <object class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="shadow_type">out</property>
+            <property name="shadow_type">GTK_SHADOW_OUT</property>
             <child>
               <object class="GtkTextView" id="tv_analyze_log">
                 <property name="visible">True</property>
@@ -404,7 +404,7 @@
           <object class="GtkScrolledWindow" id="scrolledwindow2">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="shadow_type">out</property>
+            <property name="shadow_type">GTK_SHADOW_OUT</property>
             <child>
               <object class="GtkTextView" id="tv_backtrace">
                 <property name="visible">True</property>
@@ -674,7 +674,7 @@
           <object class="GtkScrolledWindow" id="container_details2">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="shadow_type">out</property>
+            <property name="shadow_type">GTK_SHADOW_OUT</property>
             <child>
               <placeholder/>
             </child>
@@ -715,7 +715,7 @@
           <object class="GtkScrolledWindow" id="scrolledwindow6">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="shadow_type">out</property>
+            <property name="shadow_type">GTK_SHADOW_OUT</property>
             <child>
               <object class="GtkTextView" id="tv_report_log">
                 <property name="visible">True</property>
@@ -730,6 +730,70 @@
             <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="window8">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkVBox" id="page_8_report">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="border_width">10</property>
+        <property name="spacing">3</property>
+        <child>
+          <object class="GtkLabel" id="label2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0</property>
+            <property name="label" translatable="yes">Reporting has finished. You can close this window now.</property>
+            <property name="wrap">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label6">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0</property>
+            <property name="label" translatable="yes">If you want to report the problem to a different destination, collect additional information, or provide a better problem description and repeat reporting process, press 'Forward'.</property>
+            <property name="wrap">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="window9">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkVBox" id="page_9_report">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="border_width">10</property>
+        <property name="spacing">3</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>

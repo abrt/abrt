@@ -45,6 +45,7 @@ typedef struct problem_item problem_item;
 
 char *format_problem_item(struct problem_item *item);
 
+
 /* In-memory problem data structure and accessors */
 
 typedef GHashTable problem_data_t;
@@ -75,23 +76,6 @@ static inline struct problem_item *get_problem_data_item_or_NULL(problem_data_t 
 const char *get_problem_item_content_or_NULL(problem_data_t *problem_data, const char *key);
 /* Aborts if key is not found: */
 const char *get_problem_item_content_or_die(problem_data_t *problem_data, const char *key);
-
-
-/* Vector of these structures */
-
-typedef GPtrArray vector_of_problem_data_t;
-
-static inline problem_data_t *get_problem_data(vector_of_problem_data_t *vector, unsigned i)
-{
-    return (problem_data_t *)g_ptr_array_index(vector, i);
-}
-
-vector_of_problem_data_t *new_vector_of_problem_data(void);
-static inline void free_vector_of_problem_data(vector_of_problem_data_t *vector)
-{
-    if (vector)
-        g_ptr_array_free(vector, TRUE);
-}
 
 
 /* Conversions between in-memory and on-disk formats */
