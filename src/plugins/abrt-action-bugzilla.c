@@ -254,7 +254,7 @@ int main(int argc, char **argv)
         "CONFFILE lines should have 'PARAM = VALUE' format.\n"
         "Recognized string parameters: BugzillaURL, Login, Password.\n"
         "Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
-        "Parameters can be overridded via $Bugzilla_PARAM environment variables."
+        "Parameters can be overridden via $Bugzilla_PARAM environment variables."
     );
     enum {
         OPT_v = 1 << 0,
