@@ -106,6 +106,7 @@ enum {
     PAGENO_REPORT_PROGRESS,
     PAGENO_REPORT_DONE,
     PAGENO_NOT_SHOWN,
+    NUM_PAGES
 };
 
 /* Use of arrays (instead of, say, #defines to C strings)
@@ -150,9 +151,10 @@ static page_obj_t pages[] =
 {
     /* Page types:
      * INTRO: only [Fwd] button is shown
-     * CONTENT: normal page
+     * CONTENT: normal page (has all btns: [Cancel] [Last] [Back] [Fwd])
+     *   (note that we suppress [Cancel] and [Prev] using gtk_assistant_commit)
      * CONFIRM: has [Apply] instead of [Fwd] and emits "apply" signal
-     * PROGRESS: skipped on backward navigation
+     * PROGRESS: skipped on [Back] navigation
      * SUMMARY: has only [Close] button
      */
     /* glade element name     , on-screen text          , type */
@@ -166,17 +168,18 @@ static page_obj_t pages[] =
     { PAGE_REPORTER_SELECTOR  , "Select reporter"       , GTK_ASSISTANT_PAGE_CONTENT  },
     { PAGE_BACKTRACE_APPROVAL , "Review the backtrace"  , GTK_ASSISTANT_PAGE_CONTENT  },
     { PAGE_REPORT             , "Confirm data to report", GTK_ASSISTANT_PAGE_CONFIRM  },
-    /* Was GTK_ASSISTANT_PAGE_PROGRESS */
+    /* Was GTK_ASSISTANT_PAGE_PROGRESS, but we want to allow returning to it */
     { PAGE_REPORT_PROGRESS    , "Reporting"             , GTK_ASSISTANT_PAGE_CONTENT  },
-    { PAGE_REPORT_DONE        , "Reporting done"        , GTK_ASSISTANT_PAGE_CONTENT  },
-    /* We prevent user from reaching this page, as it can't be navigated away,
-     * and we don't want that */
+    { PAGE_REPORT_DONE        , "Reporting done"        , GTK_ASSISTANT_PAGE_INTRO    },
+    /* We prevent user from reaching this page, as SUMMARY can't be navigated away
+     * (must be always closed) and we don't want that
+     */
     { PAGE_NOT_SHOWN          , ""                      , GTK_ASSISTANT_PAGE_SUMMARY  },
     { NULL }
 };
 
-/* hardcoded 10 pages limit */
-page_obj_t *added_pages[10];
+static page_obj_t *added_pages[NUM_PAGES];
+
 
 /* Utility functions */
 
