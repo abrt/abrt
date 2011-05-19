@@ -942,7 +942,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
              && spawn_next_command_in_evd(evd) >= 0
             ) {
                 VERB1 log("running event '%s' on '%s'", evd->event_name, g_dump_dir_name);
-                char *msg = xasprintf("--- Running %s ---\n", event_name);
+                char *msg = xasprintf("--- Running %s ---\n", evd->event_name);
                 append_to_textview(evd->tv_log, msg);
                 free(msg);
                 break;
@@ -1029,7 +1029,7 @@ static void start_event_run(const char *event_name,
     VERB1 log("running event '%s' on '%s'", event_name, g_dump_dir_name);
 //TODO: save_to_event_log(evd, "message that we run event foo")?
     char *msg = xasprintf("--- Running %s ---\n", event_name);
-    append_to_textview(evd->tv_log, msg, strlen(msg));
+    append_to_textview(evd->tv_log, msg);
     free(msg);
 
     /* Disable (gray out) navigation buttons */
