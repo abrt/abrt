@@ -651,21 +651,37 @@ static char *load_text_file(const char *path, unsigned flags)
     int ch;
     while ((ch = fgetc(fp)) != EOF)
     {
+//TODO? \r -> \n?
+//TODO? strip trailing spaces/tabs?
         if (ch == '\n')
             oneline = (oneline << 1) | 1;
         if (ch == '\0')
             ch = ' ';
-        if (isspace(ch) || (isascii(ch) && !iscntrl(ch)))
+        if (isspace(ch) || ch >= ' ') /* used !iscntrl, but it failed on unicode */
             strbuf_append_char(buf_content, ch);
     }
     fclose(fp);
 
-    /* If file contains exactly one '\n' and it is at the end, remove it.
-     * This enables users to use simple "echo blah >file" in order to create
-     * short string items in dump dirs.
-     */
-    if (oneline == 1 && buf_content->buf[buf_content->len - 1] == '\n')
-        buf_content->buf[--buf_content->len] = '\0';
+    char last = oneline != 0 ? buf_content->buf[buf_content->len - 1] : 0;
+    if (last == '\n')
+    {
+        /* If file contains exactly one '\n' and it is at the end, remove it.
+         * This enables users to use simple "echo blah >file" in order to create
+         * short string items in dump dirs.
+         */
+        if (oneline == 1)
+            buf_content->buf[--buf_content->len] = '\0';
+    }
+    else /* last != '\n' */
+    {
+        /* Last line is unterminated, fix it */
+        /* Cases: */
+        /* oneline=0: "qwe" - DONT fix this! */
+        /* oneline=1: "qwe\nrty" - two lines in fact */
+        /* oneline>1: "qwe\nrty\uio" */
+        if (oneline >= 1)
+            strbuf_append_char(buf_content, '\n');
+    }
 
     return strbuf_free_nobuf(buf_content);
 }
