@@ -3,7 +3,7 @@ abrt-action-buzilla(1)
 
 NAME
 ----
-abrt-action-bugzilla - Sends problem information to bugzilla.
+abrt-action-bugzilla - Reports problem to Bugzilla.
 
 SYNOPSIS
 --------
@@ -11,27 +11,23 @@ SYNOPSIS
 
 DESCRIPTION
 -----------
-The tool reads a problem dump direcotry. Firstly, the tool is trying to find
-duplication of bug. If duplication is 'not' found, then a new bug is created.
-Otherwise if duplication 'is' found and bug is closed as duplication of the
-other bug, than, so called, 'hoping' begin. It means, that tool is going to try
-track the origin bug.
+The tool reads problem dump directory DIR. Then it logs in to Bugzilla
+and tries to find a bug with the same abrt_hash:HEXSTRING in 'Whiteboard'.
 
-Example of bug stages are:
-------------
-CLOSED DUPLICATE -> CLOSED DUPLICATE -> NEW
-------------
-Third one is the origin of the same problem. The tool adds a new comment to bug,
-logouts from bugzilla and return link to bug.
+If such bug is not found, then a new bug is created. Elements of DIR
+are stored in the bug as part of bug description or as attachments,
+depending on their type and size.
 
-Properties of bugzilla can be specified in a configuration file,
-and via environment variables.
+Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,
+the tool follows the chain of duplicates until it finds a non-DUPLICATE bug.
+The tool adds a new comment to found bug.
+
+The URL to new or modified bug is printed to stdout and recorded in
+'reported_to' element in DIR.
 
 Configuration file
 ~~~~~~~~~~~~~~~~~~
-Configuration file contains entries in a format "Option = Value".
-
-The options are:
+Configuration file lines should have 'PARAM = VALUE' format. The parameters are:
 
 'Login'::
 	Login to Bugzilla account.
@@ -40,28 +36,22 @@ The options are:
 	Password to Bugzilla account.
 
 'BugzillaURL'::
-	Bugzilla http address. (default: https://bugzilla.redht.com)
+	Bugzilla http(s) address. (default: https://bugzilla.redht.com)
 
 'SSLVerify'::
 	Use yes/true/on/1 to verify Bugzilla ssl certificate. (default: yes)
 
+Parameters can be overridded via $Bugzilla_PARAM environment variables.
+
 Integration with ABRT events
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-'abrt-action-bugzilla' can be used as a reporter, to allow users report
-problems to bugzilla when they decide to do it. This usage is
-pre-configured in /etc/abrt/events.d/ccpp_events.conf and
-/etc/abrt/abrt_events.conf.
+'abrt-action-bugzilla' can be used as an ABRT reporter. Example
+fragment for /etc/abrt/abrt_events.conf:
 
-For python problems (/etc/abrt/abrt_events.conf)
 ------------
+# Report Python crashes
 EVENT=report_Bugzilla analyzer=Python
-      abrt-action-bugzilla -c /etc/abrt/plugins/Bugzilla.conf
-------------
-
-For C/C++ problems (/etc/abrt/events.d/ccpp_events.conf)
-------------
-EVENT=report_Bugzilla analyzer=CCpp
-      abrt-action-bugzilla -c /etc/abrt/plugins/Bugzilla.conf
+      abrt-action-bugzilla -d . -c /etc/abrt/plugins/Bugzilla.conf
 ------------
 
 OPTIONS
@@ -70,27 +60,8 @@ OPTIONS
    Path to dump directory.
 
 -c CONFFILE::
-   Path to configration file. When used in ABRT event system, the file
-   contains site-wide configuration. Users can change the values via
-   environment variables.
+   Path to configration file.
 
-ENVIRONMENT VARIABLES
----------------------
-Environment variables take precedence over values provided in
-the configuration file.
-
-'Bugzilla_Login'::
-	Login to Bugzilla account.
-
-'Bugzilla_Password'::
-	Password to Bugzilla account.
-
-'Bugzilla_BugzillaURL'::
-	Bugzilla http address. (default: https://bugzilla.redht.com)
-
-'Bugzilla_SSLVerify'::
-	Use yes/true/on/1 to verify Bugzilla ssl certificate. (default: yes)
-
-AUTHORS
--------
-* ABRT team
+SEE ALSO
+--------
+abrt_event.conf

@@ -235,7 +235,26 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         "\b [-v] -c CONFFILE -d DIR\n"
         "\n"
-        "Reports problem to Bugzilla"
+        "Reports problem to Bugzilla.\n"
+        "\n"
+        "The tool reads DIR. Then it logs in to Bugzilla and tries to find a bug\n"
+        "with the same abrt_hash:HEXSTRING in 'Whiteboard'.\n"
+        "\n"
+        "If such bug is not found, then a new bug is created. Elements of DIR\n"
+        "are stored in the bug as part of bug description or as attachments,\n"
+        "depending on their type and size.\n"
+        "\n"
+        "Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,\n"
+        "the tool follows the chain of duplicates until it finds a non-DUPLICATE bug.\n"
+        "The tool adds a new comment to found bug.\n"
+        "\n"
+        "The URL to new or modified bug is printed to stdout and recorded in\n"
+        "'reported_to' element.\n"
+        "\n"
+        "CONFFILE lines should have 'PARAM = VALUE' format.\n"
+        "Recognized string parameters: BugzillaURL, Login, Password.\n"
+        "Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
+        "Parameters can be overridded via $Bugzilla_PARAM environment variables."
     );
     enum {
         OPT_v = 1 << 0,
