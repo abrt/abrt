@@ -393,6 +393,7 @@ void show_events_list_dialog(GtkWindow *parent)
     g_hash_table_foreach(g_event_config_list,
                         &add_event_to_liststore,
                         events_list_store);
+//TODO: can unref events_list_store? treeview holds one ref.
 
     /* Double click/Enter handler */
     g_signal_connect(events_tv, "row-activated", G_CALLBACK(on_event_row_activated_cb), NULL);

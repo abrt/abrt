@@ -38,7 +38,6 @@ enum
     COLUMN_LATEST_CRASH_STR,
     COLUMN_LATEST_CRASH,
     COLUMN_DUMP_DIR,
-    COLUMN_BG,
     NUM_COLUMNS
 };
 
@@ -70,8 +69,6 @@ void add_directory_to_dirlist(const char *dirname)
     free(msg);
     char *reason = dd_load_text(dd, FILENAME_REASON);
 
-    static bool grey_bg = false;
-
     GtkTreeIter iter;
     gtk_list_store_append(s_dumps_list_store, &iter);
     gtk_list_store_set(s_dumps_list_store, &iter,
@@ -82,9 +79,7 @@ void add_directory_to_dirlist(const char *dirname)
                           COLUMN_LATEST_CRASH_STR, time_buf,
                           COLUMN_LATEST_CRASH, (int)time,
                           COLUMN_DUMP_DIR, dirname,
-                          COLUMN_BG, grey_bg ? "#EEEEEE" : "#FFFFFF",
                           -1);
-    grey_bg = !grey_bg;
     free(reason);
 
     dd_close(dd);
@@ -254,8 +249,6 @@ static void add_columns(GtkTreeView *treeview)
                                                      renderer,
                                                      "stock_id",
                                                      COLUMN_REPORTED,
-                                                     "cell-background",
-                                                     COLUMN_BG,
                                                      NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COLUMN_REPORTED);
@@ -266,8 +259,6 @@ static void add_columns(GtkTreeView *treeview)
                                                      renderer,
                                                      "text",
                                                      COLUMN_REASON,
-                                                     "cell-background",
-                                                     COLUMN_BG,
                                                      NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COLUMN_REASON);
@@ -289,8 +280,6 @@ static void add_columns(GtkTreeView *treeview)
                                                      renderer,
                                                      "text",
                                                      COLUMN_LATEST_CRASH_STR,
-                                                     "cell-background",
-                                                     COLUMN_BG,
                                                      NULL);
     gtk_tree_view_column_set_sort_column_id(column, COLUMN_LATEST_CRASH);
     gtk_tree_view_append_column(treeview, column);
@@ -326,7 +315,6 @@ GtkWidget *create_menu(void)
 
     g_signal_connect(plugins_item, "activate", G_CALLBACK(show_events_list_dialog_cb), NULL);
 
-
     /* help submenu */
     GtkWidget *help_submenu = gtk_menu_new();
     GtkWidget *online_help_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_HELP, NULL);
@@ -343,7 +331,7 @@ GtkWidget *create_menu(void)
 
 GtkWidget *create_main_window(void)
 {
-    /* main window */
+    /* Main window */
     g_main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(g_main_window), 700, 700);
     gtk_window_set_title(GTK_WINDOW(g_main_window), _("Automatic Bug Reporting Tool"));
@@ -351,7 +339,7 @@ GtkWidget *create_main_window(void)
 
     GtkWidget *main_vbox = gtk_vbox_new(false, 0);
 
-    /* scrolled region inside main window */
+    /* Scrolled region inside main window */
     GtkWidget *scroll_win = gtk_scrolled_window_new(NULL, NULL);
     gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scroll_win),
                                           GTK_SHADOW_ETCHED_IN);
@@ -363,8 +351,9 @@ GtkWidget *create_main_window(void)
     gtk_box_pack_start(GTK_BOX(main_vbox), scroll_win, true, true, 0);
     gtk_container_add(GTK_CONTAINER(g_main_window), main_vbox);
 
-    /* tree view inside scrolled region */
+    /* Tree view inside scrolled region */
     s_treeview = gtk_tree_view_new();
+    g_object_set(s_treeview, "rules-hint", 1, NULL); /* use alternating colors */
     add_columns(GTK_TREE_VIEW(s_treeview));
     gtk_container_add(GTK_CONTAINER(scroll_win), s_treeview);
 
@@ -377,7 +366,7 @@ GtkWidget *create_main_window(void)
                                                        G_TYPE_STRING, /* dump dir path */
                                                        G_TYPE_STRING);/* row background */
 
-     //FIXME: configurable!!
+    //FIXME: configurable!!
     gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(s_dumps_list_store),
                                         COLUMN_LATEST_CRASH,
                                         GTK_SORT_DESCENDING);
@@ -395,7 +384,7 @@ GtkWidget *create_main_window(void)
     gtk_box_pack_start(GTK_BOX(hbox_report_delete), btn_delete, true, true, 0);
     gtk_box_pack_start(GTK_BOX(hbox_report_delete), btn_report, true, true, 0);
 
-    GtkWidget *halign =  gtk_alignment_new(1, 0, 0, 0);
+    GtkWidget *halign = gtk_alignment_new(1, 0, 0, 0);
     gtk_container_add(GTK_CONTAINER(halign), hbox_report_delete);
 
     GtkWidget *hbox_help_close = gtk_hbutton_box_new();
@@ -419,6 +408,7 @@ GtkWidget *create_main_window(void)
     g_signal_connect(btn_close, "clicked", gtk_main_quit, NULL);
     /* Show online help */
     g_signal_connect(btn_online_help, "clicked", G_CALLBACK(on_btn_online_help_cb), NULL);
+
     return g_main_window;
 }
 
@@ -458,9 +448,7 @@ void sanitize_cursor(GtkTreePath *preferred_path)
         /* Did it work? */
         gtk_tree_view_get_cursor(GTK_TREE_VIEW(s_treeview), &path, /* GtkTreeViewColumn** */ NULL);
         if (path) /* yes */
-        {
             goto ret;
-        }
     }
 
     /* Try to position cursor on 1st element */

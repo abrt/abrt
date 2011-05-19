@@ -97,12 +97,12 @@ static PangoFontDescription *monospace_font;
  */
 enum {
     PAGENO_SUMMARY,
-    PAGENO_COMMENT,
+    PAGENO_EDIT_COMMENT,
     PAGENO_ANALYZE_SELECTOR,
     PAGENO_ANALYZE_PROGRESS,
     PAGENO_REPORTER_SELECTOR,
-    PAGENO_BACKTRACE_APPROVAL,
-    PAGENO_REPORT,
+    PAGENO_EDIT_BACKTRACE,
+    PAGENO_REVIEW_DATA,
     PAGENO_REPORT_PROGRESS,
     PAGENO_REPORT_DONE,
     PAGENO_NOT_SHOWN,
@@ -114,12 +114,12 @@ enum {
  * instead of strcmp.
  */
 static const gchar PAGE_SUMMARY[]            = "page_0";
-static const gchar PAGE_COMMENT[]            = "page_1";
+static const gchar PAGE_EDIT_COMMENT[]       = "page_1";
 static const gchar PAGE_ANALYZE_SELECTOR[]   = "page_2";
 static const gchar PAGE_ANALYZE_PROGRESS[]   = "page_3";
 static const gchar PAGE_REPORTER_SELECTOR[]  = "page_4_report";
-static const gchar PAGE_BACKTRACE_APPROVAL[] = "page_5";
-static const gchar PAGE_REPORT[]             = "page_6_report";
+static const gchar PAGE_EDIT_BACKTRACE[]     = "page_5";
+static const gchar PAGE_REVIEW_DATA[]        = "page_6_report";
 static const gchar PAGE_REPORT_PROGRESS[]    = "page_7_report";
 static const gchar PAGE_REPORT_DONE[]        = "page_8_report";
 static const gchar PAGE_NOT_SHOWN[]          = "page_9_report";
@@ -127,12 +127,12 @@ static const gchar PAGE_NOT_SHOWN[]          = "page_9_report";
 static const gchar *const page_names[] =
 {
     PAGE_SUMMARY,
-    PAGE_COMMENT,
+    PAGE_EDIT_COMMENT,
     PAGE_ANALYZE_SELECTOR,
     PAGE_ANALYZE_PROGRESS,
     PAGE_REPORTER_SELECTOR,
-    PAGE_BACKTRACE_APPROVAL,
-    PAGE_REPORT,
+    PAGE_EDIT_BACKTRACE,
+    PAGE_REVIEW_DATA,
     PAGE_REPORT_PROGRESS,
     PAGE_REPORT_DONE,
     PAGE_NOT_SHOWN,
@@ -150,27 +150,30 @@ typedef struct
 static page_obj_t pages[] =
 {
     /* Page types:
-     * INTRO: only [Fwd] button is shown
      * CONTENT: normal page (has all btns: [Cancel] [Last] [Back] [Fwd])
-     *   (note that we suppress [Cancel] and [Prev] using gtk_assistant_commit)
+     * INTRO: only [Fwd] button is shown
+     *   (we use these where we want to suppress [Back]-navigation)
      * CONFIRM: has [Apply] instead of [Fwd] and emits "apply" signal
      * PROGRESS: skipped on [Back] navigation
      * SUMMARY: has only [Close] button
+     *
+     * Note that we suppress [Cancel] everywhere once and for all
+     * using gtk_assistant_commit at init time.
      */
     /* glade element name     , on-screen text          , type */
     { PAGE_SUMMARY            , "Problem description"   , GTK_ASSISTANT_PAGE_CONTENT  },
-    { PAGE_COMMENT    , "Provide additional information", GTK_ASSISTANT_PAGE_CONTENT  },
+    { PAGE_EDIT_COMMENT,"Provide additional information", GTK_ASSISTANT_PAGE_CONTENT  },
     { PAGE_ANALYZE_SELECTOR   , "Select analyzer"       , GTK_ASSISTANT_PAGE_CONFIRM  },
-    { PAGE_ANALYZE_PROGRESS   , "Analyzing"             , GTK_ASSISTANT_PAGE_CONTENT  },
+    { PAGE_ANALYZE_PROGRESS   , "Analyzing"             , GTK_ASSISTANT_PAGE_INTRO    },
     /* Some reporters don't need backtrace, we can skip bt page for them.
      * Therefore we want to know reporters _before_ we go to bt page
      */
     { PAGE_REPORTER_SELECTOR  , "Select reporter"       , GTK_ASSISTANT_PAGE_CONTENT  },
-    { PAGE_BACKTRACE_APPROVAL , "Review the backtrace"  , GTK_ASSISTANT_PAGE_CONTENT  },
-    { PAGE_REPORT             , "Confirm data to report", GTK_ASSISTANT_PAGE_CONFIRM  },
+    { PAGE_EDIT_BACKTRACE     , "Review the backtrace"  , GTK_ASSISTANT_PAGE_CONTENT  },
+    { PAGE_REVIEW_DATA        , "Confirm data to report", GTK_ASSISTANT_PAGE_CONFIRM  },
     /* Was GTK_ASSISTANT_PAGE_PROGRESS, but we want to allow returning to it */
-    { PAGE_REPORT_PROGRESS    , "Reporting"             , GTK_ASSISTANT_PAGE_CONTENT  },
-    { PAGE_REPORT_DONE        , "Reporting done"        , GTK_ASSISTANT_PAGE_INTRO    },
+    { PAGE_REPORT_PROGRESS    , "Reporting"             , GTK_ASSISTANT_PAGE_INTRO    },
+    { PAGE_REPORT_DONE        , "Reporting done"        , GTK_ASSISTANT_PAGE_CONTENT  },
     /* We prevent user from reaching this page, as SUMMARY can't be navigated away
      * (must be always closed) and we don't want that
      */
@@ -922,8 +925,6 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                 gtk_label_set_text(evd->status_label, msg);
                 free(msg);
 
-                /* Hide "Back" button */
-                gtk_assistant_commit(g_assistant);
                 /* Enable (un-gray out) navigation buttons */
                 gtk_widget_set_sensitive(GTK_WIDGET(g_assistant), true);
 
@@ -1104,7 +1105,7 @@ static void check_bt_rating_and_allow_send(void)
     }
 
     gtk_assistant_set_page_complete(g_assistant,
-                                    pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
+                                    pages[PAGENO_EDIT_BACKTRACE].page_widget,
                                     send);
     if (warn)
         gtk_widget_show(g_widget_warnings_area);
@@ -1120,11 +1121,11 @@ static void on_comment_changed(GtkTextBuffer *buffer, gpointer user_data)
     bool good = gtk_text_buffer_get_char_count(buffer) >= 10;
 
     /* The page doesn't exist with report-only option */
-    if (pages[PAGENO_COMMENT].page_widget == NULL)
+    if (pages[PAGENO_EDIT_COMMENT].page_widget == NULL)
         return;
 
     /* Allow next page only when the comment has at least 10 chars */
-    gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_COMMENT].page_widget, good);
+    gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_EDIT_COMMENT].page_widget, good);
 
     /* And show the eventbox with label */
     if (good)
@@ -1176,7 +1177,7 @@ static void next_page(GtkAssistant *assistant, gpointer user_data)
         }
     }
 
-    if (added_pages[page_no]->name == PAGE_REPORT)
+    if (added_pages[page_no]->name == PAGE_REVIEW_DATA)
     {
         GList *reporters = NULL;
         GList *li = g_list_reporters;
@@ -1209,9 +1210,40 @@ static void on_show_event_list_cb(GtkWidget *button, gpointer user_data)
     show_events_list_dialog(GTK_WINDOW(g_assistant));
 }
 
+#if 0
+static void log_ready_state()
+{
+    char buf[NUM_PAGES+1];
+    for (int i = 0; i < NUM_PAGES; i++)
+    {
+        char ch = '_';
+        if (pages[i].page_widget)
+            ch = gtk_assistant_get_page_complete(g_assistant, pages[i].page_widget) ? '+' : '-';
+        buf[i] = ch;
+    }
+    buf[NUM_PAGES] = 0;
+    log("Completeness:[%s]", buf);
+}
+#endif
+
 static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
 {
-    if (pages[PAGENO_BACKTRACE_APPROVAL].page_widget == page)
+    //int page_no = gtk_assistant_get_current_page(g_assistant);
+    //log_ready_state();
+
+    /* This suppresses [Last] button: assistant thinks that
+     * we never have this page ready unless we are on it
+     * -> therefore there is at least one non-ready page
+     * -> therefore it won't show [Last]
+     */
+    // Doesn't work: if Completeness:[++++++-+++],
+    // then [Last] btn will still be shown.
+    //gtk_assistant_set_page_complete(g_assistant,
+    //            pages[PAGENO_REVIEW_DATA].page_widget,
+    //            pages[PAGENO_REVIEW_DATA].page_widget == page
+    //);
+
+    if (pages[PAGENO_EDIT_BACKTRACE].page_widget == page)
     {
         check_bt_rating_and_allow_send();
     }
@@ -1221,7 +1253,7 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
     save_text_from_text_view(g_tv_comment, FILENAME_COMMENT);
 
     if (pages[PAGENO_SUMMARY].page_widget == page
-     || pages[PAGENO_REPORT].page_widget == page
+     || pages[PAGENO_REVIEW_DATA].page_widget == page
     ) {
         GtkWidget *w = GTK_WIDGET(g_tv_details);
         GtkContainer *c = GTK_CONTAINER(gtk_widget_get_parent(w));
@@ -1233,11 +1265,9 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
         );
     }
 
-    if (pages[PAGENO_COMMENT].page_widget == page)
+    if (pages[PAGENO_EDIT_COMMENT].page_widget == page)
         on_comment_changed(gtk_text_view_get_buffer(g_tv_comment), NULL);
-
-    if (pages[PAGENO_REPORT_DONE].page_widget == page)
-        gtk_assistant_commit(g_assistant);
+    //log_ready_state();
 }
 
 static gint select_next_page_no(gint current_page_no, gpointer data)
@@ -1254,13 +1284,13 @@ static gint select_next_page_no(gint current_page_no, gpointer data)
     switch (current_page_no)
     {
 #if 0
-    case PAGENO_COMMENT:
+    case PAGENO_EDIT_COMMENT:
         if (get_problem_item_content_or_NULL(g_cd, FILENAME_COMMENT))
             goto again; /* no comment, skip this page */
         break;
 #endif
 
-    case PAGENO_BACKTRACE_APPROVAL:
+    case PAGENO_EDIT_BACKTRACE:
         if (!get_problem_item_content_or_NULL(g_cd, FILENAME_BACKTRACE))
             goto again; /* no backtrace, skip this page */
         break;
@@ -1466,8 +1496,8 @@ static void add_pages()
     gtk_widget_modify_font(GTK_WIDGET(g_tv_backtrace), monospace_font);
     fix_all_wrapped_labels(GTK_WIDGET(g_assistant));
 
-    if (pages[PAGENO_BACKTRACE_APPROVAL].page_widget != NULL)
-        gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_BACKTRACE_APPROVAL].page_widget,
+    if (pages[PAGENO_EDIT_BACKTRACE].page_widget != NULL)
+        gtk_assistant_set_page_complete(g_assistant, pages[PAGENO_EDIT_BACKTRACE].page_widget,
                     gtk_toggle_button_get_active(g_tb_approve_bt));
 
     /* Configure btn on select analyzers page */
