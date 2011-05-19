@@ -207,10 +207,14 @@ struct dump_dir *steal_if_needed(struct dump_dir *dd)
     dd_close(dd);
 
     char *HOME = getenv("HOME");
+    if (!HOME || !HOME[0])
+    {
+        struct passwd *pw = getpwuid(getuid());
+        HOME = pw ? pw->pw_dir : NULL;
+    }
     if (HOME && HOME[0])
         HOME = concat_path_file(HOME, ".abrt/spool");
     else
-//TODO: try to find homedir in password db?
         HOME = xstrdup("/tmp");
 
     GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_assistant),
