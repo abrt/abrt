@@ -301,7 +301,7 @@ static void save_text_from_text_view(GtkTextView *tv, const char *name)
     free(new_str);
 }
 
-static void append_to_textview(GtkTextView *tv, const char *str, int len)
+static void append_to_textview(GtkTextView *tv, const char *str)
 {
     GtkTextBuffer *tb = gtk_text_view_get_buffer(tv);
 
@@ -310,7 +310,7 @@ static void append_to_textview(GtkTextView *tv, const char *str, int len)
     gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
     gtk_text_buffer_place_cursor(tb, &text_iter);
 
-    gtk_text_buffer_insert_at_cursor(tb, str, len >= 0 ? len : strlen(str));
+    gtk_text_buffer_insert_at_cursor(tb, str, strlen(str));
 
     /* Scroll so that the end of the log is visible */
     gtk_text_buffer_get_iter_at_offset(tb, &text_iter, -1);
@@ -843,7 +843,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
     while ((r = read(evd->fd, buf, sizeof(buf)-1)) > 0)
     {
         buf[r] = '\0';
-        append_to_textview(evd->tv_log, buf, r);
+        append_to_textview(evd->tv_log, buf);
         save_to_event_log(evd, buf);
     }
 
@@ -873,9 +873,10 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
             evd->event_log_state = LOGSTATE_ERRLINE;
         char *msg;
         if (WIFSIGNALED(status))
-            msg = xasprintf("(killed by signal %d)\n", WTERMSIG(status));
+            msg = xasprintf("(killed by signal %u)\n", WTERMSIG(status));
         else
-            msg = xasprintf("(exited with %d)\n", retval);
+            msg = xasprintf("(exited with %u)\n", retval);
+        append_to_textview(evd->tv_log, msg);
         save_to_event_log(evd, msg);
         free(msg);
     }
@@ -901,9 +902,7 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
      || spawn_next_command_in_evd(evd) < 0
     ) {
         VERB1 log("done running event on '%s': %d", g_dump_dir_name, retval);
-
-        /* Inform abrt-gui that it is a good idea to rescan the directory */
-        kill(getppid(), SIGCHLD);
+        append_to_textview(evd->tv_log, "\n");
 
         for (;;)
         {
@@ -927,6 +926,9 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
                 reload_problem_data_from_dump_dir();
                 update_gui_state_from_problem_data();
 
+                /* Inform abrt-gui that it is a good idea to rescan the directory */
+                kill(getppid(), SIGCHLD);
+
                 return FALSE; /* "please remove this event" */
             }
 
@@ -937,6 +939,9 @@ static gboolean consume_cmd_output(GIOChannel *source, GIOCondition condition, g
              && spawn_next_command_in_evd(evd) >= 0
             ) {
                 VERB1 log("running event '%s' on '%s'", evd->event_name, g_dump_dir_name);
+                char *msg = xasprintf("--- Running %s ---\n", event_name);
+                append_to_textview(evd->tv_log, msg);
+                free(msg);
                 break;
             }
             /* No commands needed?! (This is untypical) */
@@ -994,8 +999,6 @@ static void start_event_run(const char *event_name,
         goto no_cmds;
     }
 
-    VERB1 log("running event '%s' on '%s'", event_name, g_dump_dir_name);
-
     /* At least one command is needed, and we started first one.
      * Hook its output fd to the main loop.
      */
@@ -1019,7 +1022,12 @@ static void start_event_run(const char *event_name,
     );
 
     gtk_label_set_text(status_label, start_msg);
+
+    VERB1 log("running event '%s' on '%s'", event_name, g_dump_dir_name);
 //TODO: save_to_event_log(evd, "message that we run event foo")?
+    char *msg = xasprintf("--- Running %s ---\n", event_name);
+    append_to_textview(evd->tv_log, msg, strlen(msg));
+    free(msg);
 
     /* Disable (gray out) navigation buttons */
     gtk_widget_set_sensitive(GTK_WIDGET(g_assistant), false);
