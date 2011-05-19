@@ -609,7 +609,7 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
     gtk_list_store_append(g_ls_details, &iter);
     stats->filecount++;
 
-    //FIXME: use the value representation here
+    //FIXME: use the human-readable format_problem_item(item) instead of item->content.
     /* If text and not multiline... */
     if (item->flags & CD_FLAG_TXT)
     {
