@@ -27,6 +27,10 @@
 #include <secerr.h>
 #include <secmod.h>
 
+#if HAVE_LOCALE_H
+#include <locale.h>
+#endif
+
 struct retrace_settings
 {
     int running_tasks;
@@ -35,6 +39,12 @@ struct retrace_settings
     long long max_unpacked_size;
     char **supported_formats;
     char **supported_releases;
+};
+
+struct language
+{
+    char *locale;
+    char *encoding;
 };
 
 static const char *dump_dir_name = NULL;
@@ -48,6 +58,26 @@ static const char *required_files[] = { FILENAME_COREDUMP,
 static bool ssl_allow_insecure = false;
 static bool http_show_headers = false;
 static unsigned delay = 0;
+
+/* Caller must free lang->locale if not NULL */
+static void get_language(struct language *lang)
+{
+    lang->locale = NULL;
+    lang->encoding = NULL;
+
+    char *locale = setlocale(LC_ALL, NULL);
+    if (!locale)
+        return;
+
+    lang->locale = xstrdup(locale);
+    lang->encoding = strchr(lang->locale, '.');
+
+    if (!lang->encoding)
+        return;
+
+    *lang->encoding = '\0';
+    ++lang->encoding;
+}
 
 /* Add an entry name to the args array if the entry name exists in a
  * dump directory. The entry is added to argindex offset to the array,
@@ -78,7 +108,7 @@ static int create_archive(bool unlink_temp)
     char *filename = xstrdup("/tmp/abrt-retrace-client-archive-XXXXXX.tar.xz");
     int tempfd = mkstemps(filename, /*suffixlen:*/7);
     if (tempfd == -1)
-        perror_msg_and_die("Cannot open temporary file");
+        perror_msg_and_die(_("Cannot open temporary file"));
     if (unlink_temp)
         xunlink(filename);
     free(filename);
@@ -104,7 +134,7 @@ static int create_archive(bool unlink_temp)
         xmove_fd(tar_xz_pipe[0], STDIN_FILENO);
         xdup2(tempfd, STDOUT_FILENO);
         execvp(xz_args[0], (char * const*)xz_args);
-        perror_msg("Can't execute '%s'", xz_args[0]);
+        perror_msg(_("Can't execute '%s'"), xz_args[0]);
     }
 
     close(tar_xz_pipe[0]);
@@ -131,7 +161,7 @@ static int create_archive(bool unlink_temp)
         xmove_fd(xopen("/dev/null", O_RDWR), STDIN_FILENO);
         xmove_fd(tar_xz_pipe[1], STDOUT_FILENO);
         execvp(tar_args[0], (char * const*)tar_args);
-        perror_msg("Can't execute '%s'", tar_args[0]);
+        perror_msg(_("Can't execute '%s'"), tar_args[0]);
     }
 
     close(tar_xz_pipe[1]);
@@ -162,23 +192,23 @@ static SECStatus ssl_bad_cert_handler(void *arg, PRFileDesc *sock)
     switch (err)
     {
     case SEC_ERROR_CA_CERT_INVALID:
-        error_msg("Issuer certificate is invalid: '%s'.", issuer);
+        error_msg(_("Issuer certificate is invalid: '%s'."), issuer);
         break;
     case SEC_ERROR_UNTRUSTED_ISSUER:
-        error_msg("Certificate is signed by an untrusted issuer: '%s'.", issuer);
+        error_msg(_("Certificate is signed by an untrusted issuer: '%s'."), issuer);
         break;
     case SSL_ERROR_BAD_CERT_DOMAIN:
-        error_msg("Certificate subject name '%s' does not match target host name '%s'.",
+        error_msg(_("Certificate subject name '%s' does not match target host name '%s'."),
                 subject_cn, target_host);
         break;
     case SEC_ERROR_EXPIRED_CERTIFICATE:
-        error_msg("Remote certificate has expired.");
+        error_msg(_("Remote certificate has expired."));
         break;
     case SEC_ERROR_UNKNOWN_ISSUER:
-        error_msg("Certificate issuer is not recognized: '%s'", issuer);
+        error_msg(_("Certificate issuer is not recognized: '%s'."), issuer);
         break;
     default:
-        error_msg("Bad certifiacte received. Subject '%s', issuer '%s'.",
+        error_msg(_("Bad certifiacte received. Subject '%s', issuer '%s'."),
                 subject, issuer);
         break;
     }
@@ -214,7 +244,7 @@ static PK11GenericObject *nss_load_cacert(const char *filename)
 {
     PK11SlotInfo *slot = PK11_FindSlotByName("PEM Token #0");
     if (!slot)
-        error_msg_and_die("Failed to get slot 'PEM Token #0': %d.", PORT_GetError());
+        error_msg_and_die(_("Failed to get slot 'PEM Token #0': %d."), PORT_GetError());
 
     CK_ATTRIBUTE template[4];
     CK_OBJECT_CLASS class = CKO_CERTIFICATE;
@@ -242,7 +272,7 @@ static void ssl_connect(PRFileDesc **tcp_sock,
 {
     *tcp_sock = PR_NewTCPSocket();
     if (!*tcp_sock)
-        error_msg_and_die("Failed to create a TCP socket");
+        error_msg_and_die(_("Failed to create a TCP socket"));
     PRSocketOptionData sock_option;
     sock_option.option  = PR_SockOpt_Nonblocking;
     sock_option.value.non_blocking = PR_FALSE;
@@ -250,32 +280,32 @@ static void ssl_connect(PRFileDesc **tcp_sock,
     if (PR_SUCCESS != pr_status)
     {
         PR_Close(*tcp_sock);
-        error_msg_and_die("Failed to set socket blocking mode.");
+        error_msg_and_die(_("Failed to set socket blocking mode."));
     }
     *ssl_sock = SSL_ImportFD(NULL, *tcp_sock);
     if (!*ssl_sock)
     {
         PR_Close(*tcp_sock);
-        error_msg_and_die("Failed to wrap TCP socket by SSL");
+        error_msg_and_die(_("Failed to wrap TCP socket by SSL."));
     }
     SECStatus sec_status = SSL_OptionSet(*ssl_sock, SSL_HANDSHAKE_AS_CLIENT, PR_TRUE);
     if (SECSuccess != sec_status)
     {
         PR_Close(*ssl_sock);
-        error_msg_and_die("Failed to enable client handshake to SSL socket.");
+        error_msg_and_die(_("Failed to enable client handshake to SSL socket."));
     }
     if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_SSL2, PR_TRUE))
-        error_msg_and_die("Failed to enable client handshake to SSL socket.");
+        error_msg_and_die(_("Failed to enable client handshake to SSL socket."));
     if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_SSL3, PR_TRUE))
-        error_msg_and_die("Failed to enable client handshake to SSL socket.");
+        error_msg_and_die(_("Failed to enable client handshake to SSL socket."));
     if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_TLS, PR_TRUE))
-        error_msg_and_die("Failed to enable client handshake to SSL socket.");
+        error_msg_and_die(_("Failed to enable client handshake to SSL socket."));
 
     sec_status = SSL_SetURL(*ssl_sock, url);
     if (SECSuccess != sec_status)
     {
         PR_Close(*ssl_sock);
-        error_msg_and_die("Failed to set URL to SSL socket.");
+        error_msg_and_die(_("Failed to set URL to SSL socket."));
     }
     char buffer[PR_NETDB_BUF_SIZE];
     PRHostEnt host_entry;
@@ -286,10 +316,10 @@ static void ssl_connect(PRFileDesc **tcp_sock,
         PRInt32 count = PR_GetErrorText(error);
         PR_Close(*ssl_sock);
         if (count)
-            error_msg_and_die("Failed to get host by name: %s", error);
+            error_msg_and_die(_("Failed to get host by name: %s"), error);
         else
         {
-            error_msg_and_die("Failed to get host by name: pr_status == %d, pr_error == %d, url '%s'",
+            error_msg_and_die(_("Failed to get host by name: pr_status == %d, pr_error == %d, url '%s'."),
                               pr_status, PR_GetError(), url);
         }
     }
@@ -298,39 +328,39 @@ static void ssl_connect(PRFileDesc **tcp_sock,
     if (rv < 0)
     {
         PR_Close(*ssl_sock);
-        error_msg_and_die("Failed to enumerate host ent.");
+        error_msg_and_die(_("Failed to enumerate host ent."));
     }
     pr_status = PR_Connect(*ssl_sock, &addr, PR_INTERVAL_NO_TIMEOUT);
     if (PR_SUCCESS != pr_status)
     {
         PR_Close(*ssl_sock);
-        error_msg_and_die("Failed to connect SSL address.");
+        error_msg_and_die(_("Failed to connect SSL address."));
     }
     if (SECSuccess != SSL_BadCertHook(*ssl_sock,
                                       (SSLBadCertHandler)ssl_bad_cert_handler,
                                       NULL))
     {
         PR_Close(*ssl_sock);
-        error_msg_and_die("Failed to set certificate hook.");
+        error_msg_and_die(_("Failed to set certificate hook."));
     }
     if (SECSuccess != SSL_HandshakeCallback(*ssl_sock,
                                             (SSLHandshakeCallback)ssl_handshake_callback,
                                             NULL))
     {
         PR_Close(*ssl_sock);
-        error_msg_and_die("Failed to set handshake callback.");
+        error_msg_and_die(_("Failed to set handshake callback."));
     }
     sec_status = SSL_ResetHandshake(*ssl_sock, /*asServer:*/PR_FALSE);
     if (SECSuccess != sec_status)
     {
         PR_Close(*ssl_sock);
-        error_msg_and_die("Failed to reset handshake.");
+        error_msg_and_die(_("Failed to reset handshake."));
     }
     sec_status = SSL_ForceHandshake(*ssl_sock);
     if (SECSuccess != sec_status)
     {
         PR_Close(*ssl_sock);
-        error_msg_and_die("Failed to force handshake: NSS error %d",
+        error_msg_and_die(_("Failed to force handshake: NSS error %d."),
                           PR_GetError());
     }
 }
@@ -339,7 +369,7 @@ static void ssl_disconnect(PRFileDesc *ssl_sock)
 {
     PRStatus pr_status = PR_Close(ssl_sock);
     if (PR_SUCCESS != pr_status)
-        error_msg("Failed to close SSL socket.");
+        error_msg(_("Failed to close SSL socket."));
 }
 
 /**
@@ -395,13 +425,13 @@ static char *http_get_body(const char *message)
 static int http_get_response_code(const char *message)
 {
     if (0 != strncmp(message, "HTTP/", strlen("HTTP/")))
-        error_msg_and_die("Invalid response from server: HTTP header not found.");
+        error_msg_and_die(_("Invalid response from server: HTTP header not found."));
     char *space = strstr(message, " ");
     if (!space)
-        error_msg_and_die("Invalid response from server: HTTP header not found.");
+        error_msg_and_die(_("Invalid response from server: HTTP header not found."));
     int response_code;
     if (1 != sscanf(space + 1, "%d", &response_code))
-        error_msg_and_die("Invalid response from server: HTTP header not found.");
+        error_msg_and_die(_("Invalid response from server: HTTP header not found."));
     return response_code;
 }
 
@@ -438,7 +468,7 @@ static char *tcp_read_response(PRFileDesc *tcp_sock)
         }
         if (received == -1)
         {
-            error_msg_and_die("Receiving of data failed: NSS error %d",
+            error_msg_and_die(_("Receiving of data failed: NSS error %d."),
                               PR_GetError());
         }
     } while (received > 0);
@@ -469,7 +499,7 @@ static void get_settings(struct retrace_settings *settings)
     if (written == -1)
     {
         PR_Close(ssl_sock);
-        error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
+        error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d."),
                           http_request->len, PR_GetError());
     }
     strbuf_free(http_request);
@@ -480,14 +510,14 @@ static void get_settings(struct retrace_settings *settings)
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
-        error_msg_and_die("Unexpected HTTP response from server: %d\n%s",
+        error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"),
                           response_code, http_response);
     }
 
     char *headers_end = strstr(http_response, "\r\n\r\n");
     char *c, *row, *value;
     if (!headers_end)
-        error_msg_and_die("Invalid response from server: missing HTTP message body.");
+        error_msg_and_die(_("Invalid response from server: missing HTTP message body."));
     row = headers_end + strlen("\r\n\r\n");
 
     do
@@ -537,9 +567,12 @@ static int create(bool delete_temp_archive,
                   char **task_id,
                   char **task_password)
 {
+    struct language lang;
+    get_language(&lang);
+
     if (delay)
     {
-        puts("Querying server settings");
+        puts(_("Querying server settings"));
         fflush(stdout);
     }
 
@@ -548,8 +581,8 @@ static int create(bool delete_temp_archive,
 
     if (settings.running_tasks >= settings.max_running_tasks)
     {
-        error_msg_and_die("Retrace server is fully occupied at the moment. "
-                          "Try again later please.");
+        error_msg_and_die(_("Retrace server is fully occupied at the moment. "
+                            "Try again later please."));
     }
 
     long long unpacked_size = 0;
@@ -559,7 +592,7 @@ static int create(bool delete_temp_archive,
     if (coredump)
     {
         if (stat(coredump, &file_stat) == -1)
-            error_msg_and_die("Unable to stat file %s", coredump);
+            error_msg_and_die(_("Unable to stat file '%s'."), coredump);
 
         unpacked_size = (long long)file_stat.st_size;
     }
@@ -572,7 +605,7 @@ static int create(bool delete_temp_archive,
             path = concat_path_file(dump_dir_name, required_files[i]);
             if (stat(path, &file_stat) == -1)
             {
-                error_msg("Unable to stat file %s", path);
+                error_msg(_("Unable to stat file '%s'."), path);
                 free(path);
                 xfunc_die();
             }
@@ -586,15 +619,15 @@ static int create(bool delete_temp_archive,
 
     if (unpacked_size > settings.max_unpacked_size)
     {
-        error_msg_and_die("The size of your crash is %lld bytes, "
-                          "but the retrace server only accepts "
-                          "crashes smaller or equal to %lld bytes.",
+        error_msg_and_die(_("The size of your crash is %lld bytes, "
+                            "but the retrace server only accepts "
+                            "crashes smaller or equal to %lld bytes."),
                           unpacked_size, settings.max_unpacked_size);
     }
 
     if (delay)
     {
-        puts("Preparing an archive to upload");
+        puts(_("Preparing an archive to upload"));
         fflush(stdout);
     }
 
@@ -606,9 +639,9 @@ static int create(bool delete_temp_archive,
     fstat(tempfd, &file_stat);
     if ((long long)file_stat.st_size > settings.max_packed_size)
     {
-        error_msg_and_die("The size of your archive is %lld bytes, "
-                          "but the retrace server only accepts "
-                          "archives smaller or equal %lld bytes.",
+        error_msg_and_die(_("The size of your archive is %lld bytes, "
+                            "but the retrace server only accepts "
+                            "archives smaller or equal %lld bytes."),
                           (long long)file_stat.st_size,
                           settings.max_packed_size);
     }
@@ -622,20 +655,35 @@ static int create(bool delete_temp_archive,
                        "Host: %s\r\n"
                        "Content-Type: application/x-xz-compressed-tar\r\n"
                        "Content-Length: %lld\r\n"
-                       "Connection: close\r\n"
-                       "\r\n", url, (long long)file_stat.st_size);
+                       "Connection: close\r\n",
+                       url, (long long)file_stat.st_size);
+
+    if (lang.encoding)
+        strbuf_append_strf(http_request,
+                           "Accept-Charset: %s\r\n",
+                           lang.encoding);
+    if (lang.locale)
+    {
+        strbuf_append_strf(http_request,
+                           "Accept-Language: %s\r\n",
+                           lang.locale);
+        free(lang.locale);
+    }
+
+    strbuf_append_str(http_request, "\r\n");
+
     PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
     {
         PR_Close(ssl_sock);
-        error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
+        error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d."),
                           http_request->len, PR_GetError());
     }
 
     if (delay)
     {
-        printf("Uploading %lld bytes\n", (long long)file_stat.st_size);
+        printf(_("Uploading %lld bytes\n"), (long long)file_stat.st_size);
         fflush(stdout);
     }
 
@@ -659,7 +707,7 @@ static int create(bool delete_temp_archive,
                 if (progress > 100)
                     continue;
 
-                printf("Uploading %d%%\n", progress);
+                printf(_("Uploading %d%%\n"), progress);
                 fflush(stdout);
             }
         }
@@ -671,7 +719,7 @@ static int create(bool delete_temp_archive,
             {
                 if (EINTR == errno || EAGAIN == errno || EWOULDBLOCK == errno)
                     continue;
-                perror_msg_and_die("Failed to read from a pipe");
+                perror_msg_and_die(_("Failed to read from a pipe"));
             }
             break;
         }
@@ -683,7 +731,7 @@ static int create(bool delete_temp_archive,
                if the server send some explanation regarding the
                error. */
             result = 1;
-            error_msg("Failed to send data: NSS error %d (%s): %s",
+            error_msg(_("Failed to send data: NSS error %d (%s): %s"),
                       PR_GetError(),
                       PR_ErrorToName(PR_GetError()),
                       PR_ErrorToString(PR_GetError(), PR_LANGUAGE_I_DEFAULT));
@@ -694,7 +742,7 @@ static int create(bool delete_temp_archive,
 
     if (delay)
     {
-        puts("Upload successful");
+        puts(_("Upload successful"));
         fflush(stdout);
     }
 
@@ -702,27 +750,27 @@ static int create(bool delete_temp_archive,
     char *http_response = tcp_read_response(tcp_sock);
     char *http_body = http_get_body(http_response);
     if (!http_body)
-        error_msg_and_die("Invalid response from server: missing HTTP message body.");
+        error_msg_and_die(_("Invalid response from server: missing HTTP message body."));
     if (http_show_headers)
         http_print_headers(stderr, http_response);
     int response_code = http_get_response_code(http_response);
     if (response_code == 500 || response_code == 507)
-        error_msg_and_die("There is a problem on the server side: %s", http_body);
+        error_msg_and_die(_("There is a problem on the server side: %s."), http_body);
     else if (response_code != 201)
-        error_msg_and_die("Unexpected HTTP response from server: %d\n%s", response_code, http_body);
+        error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"), response_code, http_body);
     free(http_body);
     *task_id = http_get_header_value(http_response, "X-Task-Id");
     if (!*task_id)
-        error_msg_and_die("Invalid response from server: missing X-Task-Id");
+        error_msg_and_die(_("Invalid response from server: missing X-Task-Id."));
     *task_password = http_get_header_value(http_response, "X-Task-Password");
     if (!*task_password)
-        error_msg_and_die("Invalid response from server: missing X-Task-Password");
+        error_msg_and_die(_("Invalid response from server: missing X-Task-Password."));
     free(http_response);
     ssl_disconnect(ssl_sock);
 
     if (delay)
     {
-        puts("Retrace job started");
+        puts(_("Retrace job started"));
         fflush(stdout);
     }
 
@@ -735,7 +783,7 @@ static int run_create(bool delete_temp_archive)
     int result = create(delete_temp_archive, &task_id, &task_password);
     if (0 != result)
         return result;
-    printf("Task Id: %s\nTask Password: %s\n", task_id, task_password);
+    printf(_("Task Id: %s\nTask Password: %s\n"), task_id, task_password);
     free(task_id);
     free(task_password);
     return 0;
@@ -747,6 +795,9 @@ static void status(const char *task_id,
                    char **task_status,
                    char **status_message)
 {
+    struct language lang;
+    get_language(&lang);
+
     PRFileDesc *tcp_sock, *ssl_sock;
     ssl_connect(&tcp_sock, &ssl_sock);
     struct strbuf *http_request = strbuf_new();
@@ -755,32 +806,47 @@ static void status(const char *task_id,
                        "Host: %s\r\n"
                        "X-Task-Password: %s\r\n"
                        "Content-Length: 0\r\n"
-                       "Connection: close\r\n"
-                       "\r\n", task_id, url, task_password);
+                       "Connection: close\r\n",
+                       task_id, url, task_password);
+
+    if (lang.encoding)
+        strbuf_append_strf(http_request,
+                           "Accept-Charset: %s\r\n",
+                           lang.encoding);
+    if (lang.locale)
+    {
+        strbuf_append_strf(http_request,
+                           "Accept-Language: %s\r\n",
+                           lang.locale);
+        free(lang.locale);
+    }
+
+    strbuf_append_str(http_request, "\r\n");
+
     PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
     {
         PR_Close(ssl_sock);
-        error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
+        error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d"),
                           http_request->len, PR_GetError());
     }
     strbuf_free(http_request);
     char *http_response = tcp_read_response(tcp_sock);
     char *http_body = http_get_body(http_response);
     if (!*http_body)
-        error_msg_and_die("Invalid response from server: missing body");
+        error_msg_and_die(_("Invalid response from server: missing HTTP message body."));
     if (http_show_headers)
         http_print_headers(stderr, http_response);
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
-        error_msg_and_die("Unexpected HTTP response from server: %d\n%s",
+        error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"),
                           response_code, http_body);
     }
     *task_status = http_get_header_value(http_response, "X-Task-Status");
     if (!*task_status)
-        error_msg_and_die("Invalid response from server: missing X-Task-Status");
+        error_msg_and_die(_("Invalid response from server: missing X-Task-Status."));
     *status_message = http_body;
     free(http_response);
     ssl_disconnect(ssl_sock);
@@ -791,7 +857,7 @@ static void run_status(const char *task_id, const char *task_password)
     char *task_status;
     char *status_message;
     status(task_id, task_password, &task_status, &status_message);
-    printf("Task Status: %s\n%s\n", task_status, status_message);
+    printf(_("Task Status: %s\n%s\n"), task_status, status_message);
     free(task_status);
     free(status_message);
 }
@@ -800,6 +866,9 @@ static void run_status(const char *task_id, const char *task_password)
 static void backtrace(const char *task_id, const char *task_password,
                       char **backtrace)
 {
+    struct language lang;
+    get_language(&lang);
+
     PRFileDesc *tcp_sock, *ssl_sock;
     ssl_connect(&tcp_sock, &ssl_sock);
     struct strbuf *http_request = strbuf_new();
@@ -808,27 +877,42 @@ static void backtrace(const char *task_id, const char *task_password,
                        "Host: %s\r\n"
                        "X-Task-Password: %s\r\n"
                        "Content-Length: 0\r\n"
-                       "Connection: close\r\n"
-                       "\r\n", task_id, url, task_password);
+                       "Connection: close\r\n",
+                       task_id, url, task_password);
+
+    if (lang.encoding)
+        strbuf_append_strf(http_request,
+                           "Accept-Charset: %s\r\n",
+                           lang.encoding);
+    if (lang.locale)
+    {
+        strbuf_append_strf(http_request,
+                           "Accept-Language: %s\r\n",
+                           lang.locale);
+        free(lang.locale);
+    }
+
+    strbuf_append_str(http_request, "\r\n");
+
     PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
     {
         PR_Close(ssl_sock);
-        error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
+        error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d."),
                           http_request->len, PR_GetError());
     }
     strbuf_free(http_request);
     char *http_response = tcp_read_response(tcp_sock);
     char *http_body = http_get_body(http_response);
     if (!http_body)
-        error_msg_and_die("Invalid response from server: missing HTTP message body.");
+        error_msg_and_die(_("Invalid response from server: missing HTTP message body."));
     if (http_show_headers)
         http_print_headers(stderr, http_response);
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
-        error_msg_and_die("Unexpected HTTP response from server: %d\n%s",
+        error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"),
                           response_code, http_body);
     }
     *backtrace = http_body;
@@ -846,6 +930,9 @@ static void run_backtrace(const char *task_id, const char *task_password)
 
 static void run_log(const char *task_id, const char *task_password)
 {
+    struct language lang;
+    get_language(&lang);
+
     PRFileDesc *tcp_sock, *ssl_sock;
     ssl_connect(&tcp_sock, &ssl_sock);
     struct strbuf *http_request = strbuf_new();
@@ -854,27 +941,42 @@ static void run_log(const char *task_id, const char *task_password)
                        "Host: %s\r\n"
                        "X-Task-Password: %s\r\n"
                        "Content-Length: 0\r\n"
-                       "Connection: close\r\n"
-                       "\r\n", task_id, url, task_password);
+                       "Connection: close\r\n",
+                       task_id, url, task_password);
+
+    if (lang.encoding)
+        strbuf_append_strf(http_request,
+                           "Accept-Charset: %s\r\n",
+                           lang.encoding);
+    if (lang.locale)
+    {
+        strbuf_append_strf(http_request,
+                           "Accept-Language: %s\r\n",
+                           lang.locale);
+        free(lang.locale);
+    }
+
+    strbuf_append_str(http_request, "\r\n");
+
     PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
     {
         PR_Close(ssl_sock);
-        error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
+        error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d."),
                           http_request->len, PR_GetError());
     }
     strbuf_free(http_request);
     char *http_response = tcp_read_response(tcp_sock);
     char *http_body = http_get_body(http_response);
     if (!http_body)
-        error_msg_and_die("Invalid response from server: missing HTTP message body.");
+        error_msg_and_die(_("Invalid response from server: missing HTTP message body."));
     if (http_show_headers)
         http_print_headers(stderr, http_response);
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
-        error_msg_and_die("Unexpected HTTP response from server: %d\n%s",
+        error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"),
                           response_code, http_body);
     }
     puts(http_body);
@@ -931,6 +1033,12 @@ static int run_batch(bool delete_temp_archive)
 
 int main(int argc, char **argv)
 {
+    setlocale(LC_ALL, "");
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
+
     abrt_init(argv);
 
     const char *task_id = NULL;
@@ -957,31 +1065,31 @@ int main(int argc, char **argv)
         OPT__VERBOSE(&g_verbose),
         OPT_BOOL('s', "syslog", NULL, _("log to syslog")),
         OPT_BOOL('k', "insecure", NULL,
-                 "allow insecure connection to retrace server"),
+                 _("allow insecure connection to retrace server")),
         OPT_STRING(0, "url", &url, "URL",
-                   "retrace server URL"),
+                   _("retrace server URL")),
         OPT_BOOL(0, "headers", NULL,
-                 "(debug) show received HTTP headers"),
-        OPT_GROUP("For create and batch operations"),
+                 _("(debug) show received HTTP headers")),
+        OPT_GROUP(_("For create and batch operations")),
         OPT_STRING('d', "dir", &dump_dir_name, "DIR",
-                   "read data from ABRT crash dump directory"),
+                   _("read data from ABRT crash dump directory")),
         OPT_STRING('c', "core", &coredump, "COREDUMP",
-                   "read data from coredump"),
+                   _("read data from coredump")),
         OPT_INTEGER('l', "status-delay", &delay,
-                    "Delay for polling operations"),
+                    _("Delay for polling operations")),
         OPT_BOOL(0, "no-unlink", NULL,
-                 "(debug) do not delete temporary archive created"
-                 " from dump dir in /tmp"),
-        OPT_GROUP("For status, backtrace, and log operations"),
+                 _("(debug) do not delete temporary archive created"
+                   " from dump dir in /tmp")),
+        OPT_GROUP(_("For status, backtrace, and log operations")),
         OPT_STRING('t', "task", &task_id, "ID",
-                   "id of your task on server"),
+                   _("id of your task on server")),
         OPT_STRING('p', "password", &task_password, "PWD",
-                   "password of your task on server"),
+                   _("password of your task on server")),
         OPT_END()
     };
 
-    const char usage[] = "abrt-retrace-client <operation> [options]\n"
-        "Operations: create/status/backtrace/log/batch";
+    const char *usage = _("abrt-retrace-client <operation> [options]\n"
+        "Operations: create/status/backtrace/log/batch");
 
     char *env_url = getenv("RETRACE_SERVER_URL");
     if (env_url)
@@ -1013,13 +1121,13 @@ int main(int argc, char **argv)
     else
         sec_status = NSS_NoDB_Init(NULL);
     if (SECSuccess != sec_status)
-        error_msg_and_die("Failed to initialize NSS.");
+        error_msg_and_die(_("Failed to initialize NSS."));
 
     char *user_module = xstrdup("library=libnsspem.so name=PEM");
     SECMODModule* mod = SECMOD_LoadUserModule(user_module, NULL, PR_FALSE);
     free(user_module);
     if (!mod || !mod->loaded)
-        error_msg_and_die("Failed to initialize security module.");
+        error_msg_and_die(_("Failed to initialize security module."));
 
     PK11GenericObject *cert = nss_load_cacert("/etc/pki/tls/certs/ca-bundle.crt");
     PK11_SetPasswordFunc(ssl_get_password);
@@ -1030,41 +1138,41 @@ int main(int argc, char **argv)
     if (0 == strcasecmp(operation, "create"))
     {
         if (!dump_dir_name && !coredump)
-            error_msg_and_die("Either dump directory or coredump is needed.");
+            error_msg_and_die(_("Either dump directory or coredump is needed."));
         result = run_create(0 == (opts & OPT_no_unlink));
     }
     else if (0 == strcasecmp(operation, "batch"))
     {
         if (!dump_dir_name && !coredump)
-            error_msg_and_die("Either dump directory or coredump is needed.");
+            error_msg_and_die(_("Either dump directory or coredump is needed."));
         result = run_batch(0 == (opts & OPT_no_unlink));
     }
     else if (0 == strcasecmp(operation, "status"))
     {
         if (!task_id)
-            error_msg_and_die("Task id is needed.");
+            error_msg_and_die(_("Task id is needed."));
         if (!task_password)
-            error_msg_and_die("Task password is needed.");
+            error_msg_and_die(_("Task password is needed."));
         run_status(task_id, task_password);
     }
     else if (0 == strcasecmp(operation, "backtrace"))
     {
         if (!task_id)
-            error_msg_and_die("Task id is needed.");
+            error_msg_and_die(_("Task id is needed."));
         if (!task_password)
-            error_msg_and_die("Task password is needed.");
+            error_msg_and_die(_("Task password is needed."));
         run_backtrace(task_id, task_password);
     }
     else if (0 == strcasecmp(operation, "log"))
     {
         if (!task_id)
-            error_msg_and_die("Task id is needed.");
+            error_msg_and_die(_("Task id is needed."));
         if (!task_password)
-            error_msg_and_die("Task password is needed.");
+            error_msg_and_die(_("Task password is needed."));
         run_log(task_id, task_password);
     }
     else
-        error_msg_and_die("Unknown operation: %s", operation);
+        error_msg_and_die(_("Unknown operation: %s."), operation);
 
     /* Shutdown NSS. */
     SSL_ClearSessionCache();
@@ -1073,7 +1181,7 @@ int main(int argc, char **argv)
     SECMOD_DestroyModule(mod);
     sec_status = NSS_Shutdown();
     if (SECSuccess != sec_status)
-        error_msg("Failed to shutdown NSS.");
+        error_msg(_("Failed to shutdown NSS."));
 
     PR_Cleanup();
 
