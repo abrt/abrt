@@ -47,6 +47,7 @@ static const char *required_files[] = { FILENAME_COREDUMP,
                                         NULL };
 static bool ssl_allow_insecure = false;
 static bool http_show_headers = false;
+static unsigned delay = 0;
 
 /* Add an entry name to the args array if the entry name exists in a
  * dump directory. The entry is added to argindex offset to the array,
@@ -536,6 +537,12 @@ static int create(bool delete_temp_archive,
                   char **task_id,
                   char **task_password)
 {
+    if (delay)
+    {
+        puts("Querying server settings");
+        fflush(stdout);
+    }
+
     struct retrace_settings settings;
     get_settings(&settings);
 
@@ -585,6 +592,12 @@ static int create(bool delete_temp_archive,
                           unpacked_size, settings.max_unpacked_size);
     }
 
+    if (delay)
+    {
+        puts("Preparing an archive to upload");
+        fflush(stdout);
+    }
+
     int tempfd = create_archive(delete_temp_archive);
     if (-1 == tempfd)
         return 1;
@@ -619,11 +632,38 @@ static int create(bool delete_temp_archive,
         error_msg_and_die("Failed to send HTTP header of length %d: NSS error %d",
                           http_request->len, PR_GetError());
     }
+
+    if (delay)
+    {
+        printf("Uploading %lld bytes\n", (long long)file_stat.st_size);
+        fflush(stdout);
+    }
+
     strbuf_free(http_request);
     int result = 0;
-    while (1)
+    int i;
+    char buf[32768];
+
+    time_t start, now;
+    time(&start);
+
+    for (i = 0;; ++i)
     {
-        char buf[32768];
+        if (delay)
+        {
+            time(&now);
+            if (now - start >= delay)
+            {
+                time(&start);
+                int progress = 100 * i * sizeof(buf) / file_stat.st_size;
+                if (progress > 100)
+                    continue;
+
+                printf("Uploading %d%%\n", progress);
+                fflush(stdout);
+            }
+        }
+
         int r = read(tempfd, buf, sizeof(buf));
         if (r <= 0)
         {
@@ -651,6 +691,13 @@ static int create(bool delete_temp_archive,
         }
     }
     close(tempfd);
+
+    if (delay)
+    {
+        puts("Upload successful");
+        fflush(stdout);
+    }
+
     /* Read the HTTP header of the response from server. */
     char *http_response = tcp_read_response(tcp_sock);
     char *http_body = http_get_body(http_response);
@@ -672,6 +719,13 @@ static int create(bool delete_temp_archive,
         error_msg_and_die("Invalid response from server: missing X-Task-Password");
     free(http_response);
     ssl_disconnect(ssl_sock);
+
+    if (delay)
+    {
+        puts("Retrace job started");
+        fflush(stdout);
+    }
+
     return result;
 }
 
@@ -837,11 +891,12 @@ static int run_batch(bool delete_temp_archive)
         return retcode;
     char *task_status = xstrdup("");
     char *status_message = xstrdup("");
+    int status_delay = delay ? delay : 10;
     while (0 != strncmp(task_status, "FINISHED", strlen("finished")))
     {
         free(task_status);
         free(status_message);
-        sleep(10);
+        sleep(status_delay);
         status(task_id, task_password, &task_status, &status_message);
         puts(status_message);
         fflush(stdout);
@@ -890,10 +945,11 @@ int main(int argc, char **argv)
         OPT_group_1   = 1 << 5,
         OPT_dir       = 1 << 6,
         OPT_core      = 1 << 7,
-        OPT_no_unlink = 1 << 8,
-        OPT_group_2   = 1 << 9,
-        OPT_task      = 1 << 10,
-        OPT_password  = 1 << 11
+        OPT_delay     = 1 << 8,
+        OPT_no_unlink = 1 << 9,
+        OPT_group_2   = 1 << 10,
+        OPT_task      = 1 << 11,
+        OPT_password  = 1 << 12
     };
 
     /* Keep enum above and order of options below in sync! */
@@ -911,6 +967,8 @@ int main(int argc, char **argv)
                    "read data from ABRT crash dump directory"),
         OPT_STRING('c', "core", &coredump, "COREDUMP",
                    "read data from coredump"),
+        OPT_INTEGER('l', "status-delay", &delay,
+                    "Delay for polling operations"),
         OPT_BOOL(0, "no-unlink", NULL,
                  "(debug) do not delete temporary archive created"
                  " from dump dir in /tmp"),
@@ -928,6 +986,10 @@ int main(int argc, char **argv)
     char *env_url = getenv("RETRACE_SERVER_URL");
     if (env_url)
         url = env_url;
+
+    char *env_delay = getenv("ABRT_STATUS_DELAY");
+    if (env_delay)
+        delay = xatou(env_delay);
 
     unsigned opts = parse_opts(argc, argv, options, usage);
     if (opts & OPT_syslog)

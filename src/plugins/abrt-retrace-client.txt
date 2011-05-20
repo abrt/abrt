@@ -43,9 +43,10 @@ backtrace::
 
 batch::
    Runs all operations in one step: creates a new task, periodically
-   asks for status and downloads the result when finished. If the task
-   was successful, backtrace file is saved, otherwise log is printed
-   to stdout. Either -c or -d is required.
+   asks for status (the period is specified by --status-delay option)
+   and downloads the result when finished. If the task was successful
+   backtrace file is saved, otherwise log is printed to stdout.
+   Either -c or -d is required.
 
 OPTIONS
 -------
@@ -69,6 +70,9 @@ OPTIONS
 
 -c, --core COREDUMP::
    read data from coredump
+
+-l, --status-delay::
+   delay for polling operations (seconds)
 
 --no-unlink::
    (debug) do not delete temporary archive created in /tmp
