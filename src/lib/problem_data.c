@@ -63,6 +63,55 @@ void add_basics_to_problem_data(problem_data_t *pd)
     if (analyzer == NULL)
         add_to_problem_data(pd, "analyzer", "libreport");
 
+    /* If application didn't provide dupe hash, we generate it
+     * from all components, so we at least eliminate the exact same
+     * reports
+     */
+    if (get_problem_item_content_or_NULL(pd, FILENAME_DUPHASH) == NULL)
+    {
+        /* start hash */
+        static sha1_ctx_t sha1ctx;
+        unsigned char hash_bytes[SHA1_RESULT_LEN];
+        char hash_str[SHA1_RESULT_LEN*2 + 1];
+        sha1_begin(&sha1ctx);
+        /*
+         * To avoid spurious hash differences, sort keys so that elements are
+         * always processed in the same order:
+         */
+        GList *list = g_hash_table_get_keys(pd);
+        list = g_list_sort(list, (GCompareFunc)strcmp);
+        GList *l = list;
+        while (l)
+        {
+            const char *key = l->data;
+            l = l->next;
+            struct problem_item *item = g_hash_table_lookup(pd, key);
+            /* do not hash items which are binary (item->flags & CD_FLAG_BIN).
+             * Their ->content is full file name, with path. Path is always
+             * different and will make hash differ even if files are the same.
+             */
+            if (item->flags & CD_FLAG_BIN)
+                continue;
+            sha1_hash(&sha1ctx, item->content, strlen(item->content));
+        }
+        /* end hash */
+        sha1_end(&sha1ctx, hash_bytes);
+
+        unsigned len = SHA1_RESULT_LEN;
+        unsigned char *s = hash_bytes;
+        char *d = hash_str;
+        while (len)
+        {
+            *d++ = "0123456789abcdef"[*s >> 4];
+            *d++ = "0123456789abcdef"[*s & 0xf];
+            s++;
+            len--;
+        }
+        *d = '\0';
+
+        add_to_problem_data(pd, FILENAME_DUPHASH, hash_str);
+    }
+
     pid_t pid = getpid();
     if (pid > 0)
     {
@@ -78,11 +127,13 @@ void add_basics_to_problem_data(problem_data_t *pd)
         free(exe);
 
 //#ifdef WITH_RPM
-        /* FIXME: component should be taken from rpm using
-         * rpm -qf executable
+        /* FIXME: component should be taken from rpm using librpm
+         * which means we need to link against it :(
+         * or run rpm -qf executable ??
         */
         /* Fedora/RHEL rpm specific piece of code */
-        const char *component = get_problem_item_content_or_NULL(pd, FILENAME_ANALYZER);
+        const char *component = get_problem_item_content_or_NULL(pd, FILENAME_COMPONENT);
+        //FIXME: this REALLY needs to go away, or every report will be assigned to abrt
         if(component == NULL) // application didn't specify component
             add_to_problem_data(pd, FILENAME_COMPONENT, "abrt");
 //#endif

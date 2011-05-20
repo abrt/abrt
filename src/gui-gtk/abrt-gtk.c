@@ -195,7 +195,7 @@ static void on_button_send_cb(GtkWidget *button, gpointer data)
 
     problem_data_t *pd = new_problem_data();
 
-    if (strlen(text) > 0)
+    if (text[0])
     {
         add_to_problem_data(pd, "description", text);
     }
