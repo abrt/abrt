@@ -23,24 +23,24 @@
 static gboolean persistent_notification;
 
 #if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR >= 6)
-static gboolean server_has_persistence (void)
+static gboolean server_has_persistence(void)
 {
     gboolean has;
-    GList   *caps;
-    GList   *l;
+    GList *caps;
+    GList *l;
 
-    caps = notify_get_server_caps ();
-    if (caps == NULL) {
-            fprintf (stderr, "Failed to receive server caps.\n");
-            return FALSE;
+    caps = notify_get_server_caps();
+    if (caps == NULL)
+    {
+        error_msg("Failed to receive server caps");
+        return FALSE;
     }
 
-    l = g_list_find_custom (caps, "persistence", (GCompareFunc)strcmp);
-    has = l != NULL;
+    l = g_list_find_custom(caps, "persistence", (GCompareFunc)strcmp);
+    has = (l != NULL);
 
-    g_list_foreach (caps, (GFunc) g_free, NULL);
-    g_list_free (caps);
-    VERB1 log("notify server %s support pesistence\n", has ? "DOES" : "DOESN'T");
+    list_free_with_free(caps);
+    VERB1 log("notify server %s support pesistence", has ? "DOES" : "DOESN'T");
     return has;
 }
 #endif
@@ -86,7 +86,7 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
     struct applet *applet = (struct applet *)user_data;
     if (applet->ap_daemon_running)
     {
-        analyze_and_report_dir(applet->ap_last_crash_id, NOWAIT);
+        analyze_and_report_dir(applet->ap_last_crash_id, LIBREPORT_NOWAIT);
         GError *err = NULL;
         notify_notification_close(notification, &err);
         if (err != NULL)
@@ -361,16 +361,13 @@ void set_icon_tooltip(struct applet *applet, const char *format, ...)
         return;
 
     va_list args;
-    int n;
     char *buf;
 
-    // xvasprintf?
     va_start(args, format);
-    buf = NULL;
-    n = vasprintf(&buf, format, args);
+    buf = xvasprintf(format, args);
     va_end(args);
 
-    gtk_status_icon_set_tooltip_text(applet->ap_status_icon, (n >= 0 && buf) ? buf : "");
+    gtk_status_icon_set_tooltip_text(applet->ap_status_icon, buf);
     free(buf);
 }
 
@@ -392,6 +389,7 @@ void show_crash_notification(struct applet *applet, const char* crash_dir, const
 
     notify_notification_update(notification, _("A Problem has Occurred"), buf, NULL);
     free(buf);
+
     GError *err = NULL;
     notify_notification_show(notification, &err);
     if (err != NULL)
@@ -412,7 +410,7 @@ void show_msg_notification(struct applet *applet, const char *format, ...)
     /* we don't want to show any buttons now,
        maybe later we can add action binded to message
        like >>Clear old dumps<< for quota exceeded
-   */
+     */
     NotifyNotification *notification = new_warn_notification();
     notify_notification_add_action(notification, "OPEN_MAIN_WINDOW", _("Open ABRT"),
                                     NOTIFY_ACTION_CALLBACK(action_open_gui),
@@ -447,4 +445,3 @@ void hide_icon(struct applet *applet)
     gtk_status_icon_set_visible(applet->ap_status_icon, false);
     stop_animate_icon(applet);
 }
-

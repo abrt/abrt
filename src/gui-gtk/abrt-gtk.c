@@ -109,7 +109,7 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
             gtk_tree_model_get_value(store, &iter, COLUMN_DUMP_DIR, &d_dir);
 
             const char *dirname= g_value_get_string(&d_dir);
-            analyze_and_report_dir(dirname, NOWAIT);
+            analyze_and_report_dir(dirname, LIBREPORT_NOWAIT);
         }
     }
 }

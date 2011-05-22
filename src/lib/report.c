@@ -30,7 +30,13 @@ static int run_reporter_ui(char **args, int flags)
     */
 
     pid_t pid = vfork();
-    if (pid == 0)
+    if (pid < 0) /* error */
+    {
+        perror_msg("vfork");
+        return -1;
+    }
+
+    if (pid == 0) /* child */
     {
         /* Some callers set SIGCHLD to SIG_IGN.
          * However, reporting spawns child processes.
@@ -47,31 +53,29 @@ static int run_reporter_ui(char **args, int flags)
          */
         path = "bug-reporting-wizard";
         execvp(path, args);
-        perror_msg_and_die("Can't execute %s", "bug-reporting-wizard");
+        perror_msg_and_die("Can't execute %s", path);
     }
-    else if(pid > 0)
+
+    /* parent */
+    if (flags & LIBREPORT_WAIT)
     {
-        if (flags & WAIT)
+        int status;
+        pid_t p = waitpid(pid, &status, 0);
+        if (p <= 0)
         {
-            int status;
-            pid_t p = waitpid(pid, &status, 0);
-            if(p <= 0)
-            {
-                perror_msg("can't waitpid");
-                return EXIT_FAILURE;
-            }
-            if (WIFEXITED(status))
-            {
-                VERB2 log("reporting finished with exitcode: status=%d\n", WEXITSTATUS(status));
-                return WEXITSTATUS(status);
-            }
-            else // (WIFSIGNALED(status))
-            {
-                VERB2 log("reporting killed by signal %d\n", WTERMSIG(status));
-                return WTERMSIG(status) + 128;
-            }
+            perror_msg("can't waitpid");
+            return -1;
         }
+        if (WIFEXITED(status))
+        {
+            VERB2 log("reporting finished with exitcode %d", WEXITSTATUS(status));
+            return WEXITSTATUS(status);
+        }
+        /* child died from a signal: WIFSIGNALED(status) should be true */
+        VERB2 log("reporting killed by signal %d", WTERMSIG(status));
+        return WTERMSIG(status) + 128;
     }
+
     return 0;
 }
 
@@ -84,8 +88,7 @@ int analyze_and_report_dir(const char* dirname, int flags)
     args[2] = (char *)dirname;
     args[3] = NULL;
 
-    run_reporter_ui(args, flags);
-    return 0;
+    return run_reporter_ui(args, flags);
 }
 
 /* analyzes AND reports a problem saved on disk
@@ -99,14 +102,14 @@ int analyze_and_report(problem_data_t *pd, int flags)
         return -1;
     char *dir_name = xstrdup(dd->dd_dirname);
     dd_close(dd);
-    VERB2 log("Temp problem dir: '%s'\n", dir_name);
+    VERB2 log("Temp problem dir: '%s'", dir_name);
     result = analyze_and_report_dir(dir_name, flags);
 
     /* if we wait for reporter to finish, we can clean the tmp dir
      * and we should reload the problem data, so caller doesn't see the stalled
      * data
     */
-    if (flags & WAIT)
+    if (flags & LIBREPORT_WAIT)
     {
         g_hash_table_remove_all(pd);
         dd = dd_opendir(dir_name, 0);
@@ -138,9 +141,8 @@ int report_dir(const char* dirname)
     args[3] = (char *)dirname;
     args[4] = NULL;
 
-    int flags = WAIT;
-    int status;
-    status = run_reporter_ui(args, flags);
+    int flags = LIBREPORT_WAIT;
+    int status = run_reporter_ui(args, flags);
     return status;
 }
 
@@ -158,7 +160,7 @@ int report(problem_data_t *pd)
     dd_create_basic_files(dd, getuid());
     char *dir_name = xstrdup(dd->dd_dirname);
     dd_close(dd);
-    VERB2 log("Temp problem dir: '%s'\n", dir_name);
+    VERB2 log("Temp problem dir: '%s'", dir_name);
     int result = report_dir(dir_name);
 
     /* here we always wait for reporter to finish, we can clean the tmp dir

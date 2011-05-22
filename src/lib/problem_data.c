@@ -70,10 +70,9 @@ void add_basics_to_problem_data(problem_data_t *pd)
     if (get_problem_item_content_or_NULL(pd, FILENAME_DUPHASH) == NULL)
     {
         /* start hash */
-        static sha1_ctx_t sha1ctx;
-        unsigned char hash_bytes[SHA1_RESULT_LEN];
-        char hash_str[SHA1_RESULT_LEN*2 + 1];
+        sha1_ctx_t sha1ctx;
         sha1_begin(&sha1ctx);
+
         /*
          * To avoid spurious hash differences, sort keys so that elements are
          * always processed in the same order:
@@ -94,20 +93,13 @@ void add_basics_to_problem_data(problem_data_t *pd)
                 continue;
             sha1_hash(&sha1ctx, item->content, strlen(item->content));
         }
-        /* end hash */
-        sha1_end(&sha1ctx, hash_bytes);
+        g_list_free(list);
 
-        unsigned len = SHA1_RESULT_LEN;
-        unsigned char *s = hash_bytes;
-        char *d = hash_str;
-        while (len)
-        {
-            *d++ = "0123456789abcdef"[*s >> 4];
-            *d++ = "0123456789abcdef"[*s & 0xf];
-            s++;
-            len--;
-        }
-        *d = '\0';
+        /* end hash */
+        char hash_bytes[SHA1_RESULT_LEN];
+        sha1_end(&sha1ctx, hash_bytes);
+        char hash_str[SHA1_RESULT_LEN*2 + 1];
+        bin2hex(hash_str, hash_bytes, SHA1_RESULT_LEN)[0] = '\0';
 
         add_to_problem_data(pd, FILENAME_DUPHASH, hash_str);
     }
@@ -121,7 +113,7 @@ void add_basics_to_problem_data(problem_data_t *pd)
         if (read > 0)
         {
             buf[read] = 0;
-            VERB2 log("reporting initiated from: %s\n", buf);
+            VERB2 log("reporting initiated from: %s", buf);
             add_to_problem_data(pd, FILENAME_EXECUTABLE, buf);
         }
         free(exe);
@@ -130,11 +122,11 @@ void add_basics_to_problem_data(problem_data_t *pd)
         /* FIXME: component should be taken from rpm using librpm
          * which means we need to link against it :(
          * or run rpm -qf executable ??
-        */
+         */
         /* Fedora/RHEL rpm specific piece of code */
         const char *component = get_problem_item_content_or_NULL(pd, FILENAME_COMPONENT);
         //FIXME: this REALLY needs to go away, or every report will be assigned to abrt
-        if(component == NULL) // application didn't specify component
+        if (component == NULL) // application didn't specify component
             add_to_problem_data(pd, FILENAME_COMPONENT, "abrt");
 //#endif
     }

@@ -114,23 +114,13 @@ static void hash_oops_str(char hash_str[SHA1_RESULT_LEN*2 + 1], char *oops_buf, 
 
  gen_hash: ;
 
-    unsigned char hash_bytes[SHA1_RESULT_LEN];
+    char hash_bytes[SHA1_RESULT_LEN];
     sha1_ctx_t sha1ctx;
     sha1_begin(&sha1ctx);
     sha1_hash(&sha1ctx, oops_buf, dst - oops_buf);
     sha1_end(&sha1ctx, hash_bytes);
 
-    unsigned len = SHA1_RESULT_LEN;
-    unsigned char *s = hash_bytes;
-    char *d = hash_str;
-    while (len)
-    {
-        *d++ = "0123456789abcdef"[*s >> 4];
-        *d++ = "0123456789abcdef"[*s & 0xf];
-        s++;
-        len--;
-    }
-    *d = '\0';
+    bin2hex(hash_str, hash_bytes, SHA1_RESULT_LEN)[0] = '\0';
 }
 
 int main(int argc, char **argv)

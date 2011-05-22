@@ -56,7 +56,7 @@ static void handle_signal(int signo)
 
     uint8_t sig_caught = signo;
     if (write(s_signal_pipe[1], &sig_caught, 1))
-        /* we ignore result, if() shuts up stupid compiler */;
+        /* we ignore result, if () shuts up stupid compiler */;
 
     errno = save_errno;
 }

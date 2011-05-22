@@ -22,8 +22,8 @@
 #include "problem_data.h"
 
 enum {
-    NOWAIT = 0,
-    WAIT = (1 << 0), /* wait for report to finish and reload the problem data */
+    LIBREPORT_NOWAIT = 0,
+    LIBREPORT_WAIT   = (1 << 0), /* wait for report to finish and reload the problem data */
 };
 
 
