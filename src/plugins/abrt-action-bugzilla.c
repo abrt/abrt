@@ -57,6 +57,8 @@ static void report_to_bugzilla(const char *dump_dir_name, map_string_h *settings
 
     const char *component = get_problem_item_content_or_NULL(problem_data, FILENAME_COMPONENT);
     const char *duphash   = get_problem_item_content_or_NULL(problem_data, FILENAME_DUPHASH);
+//COMPAT, remove after 2.1 release
+    if (!duphash) duphash = get_problem_item_content_or_NULL(problem_data, "global_uuid");
     if (!duphash)
         error_msg_and_die(_("Essential file '%s' is missing, can't continue.."),
                           FILENAME_DUPHASH);

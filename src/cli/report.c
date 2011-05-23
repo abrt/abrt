@@ -765,6 +765,8 @@ int report(const char *dump_dir_name, int flags)
     else
     {
         const char *rating_str = get_problem_item_content_or_NULL(problem_data, FILENAME_RATING);
+//COMPAT, remove after 2.1 release
+        if (!rating_str) rating_str = get_problem_item_content_or_NULL(problem_data, "rating");
         unsigned i, rating = rating_str ? xatou(rating_str) : 4;
         GList *li;
         char wanted_reporters[255];

@@ -1079,6 +1079,8 @@ static void check_bt_rating_and_allow_send(void)
     if (strcmp(component, "kernel") != 0)
     {
         const char *rating = get_problem_item_content_or_NULL(g_cd, FILENAME_RATING);
+//COMPAT, remove after 2.1 release
+        if (!rating) rating= get_problem_item_content_or_NULL(g_cd, "rating");
         if (rating) switch (*rating)
         {
             case '4': /* bt is ok - no warning here */

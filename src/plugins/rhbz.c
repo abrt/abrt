@@ -294,6 +294,9 @@ int rhbz_new_bug(struct abrt_xmlrpc *ax, problem_data_t *problem_data,
                                                                 FILENAME_ARCHITECTURE);
     const char *duphash      = get_problem_item_content_or_NULL(problem_data,
                                                                 FILENAME_DUPHASH);
+//COMPAT, remove after 2.1 release
+    if (!duphash) duphash    = get_problem_item_content_or_NULL(problem_data,
+                                                                "global_uuid");
     const char *reason       = get_problem_item_content_or_NULL(problem_data,
                                                                 FILENAME_REASON);
     const char *function     = get_problem_item_content_or_NULL(problem_data,
