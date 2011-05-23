@@ -17,6 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <glob.h>
+#include <regex.h>
 #include "abrtlib.h"
 
 struct run_event_state *new_run_event_state()
@@ -209,6 +210,38 @@ static GList *load_rule_list(GList *rule_list,
     return rule_list;
 }
 
+static int regcmp_lines(char *val, const char *regex)
+{
+    regex_t rx;
+    int r = regcomp(&rx, regex, REG_NOSUB); //TODO: and REG_EXTENDED?
+    //log("REGEX:'%s':%d", regex, r);
+    if (r)
+    {
+        //char errbuf[256];
+        //size_t needsz = regerror(r, &rx, errbuf, sizeof(errbuf));
+        error_msg("Bad regexp '%s'", regex); // TODO: use errbuf?
+        return r;
+    }
+
+    /* Check every line */
+    while (1)
+    {
+        char *eol = strchr(val, '\n');
+        if (eol)
+            *eol = '\0';
+        r = regexec(&rx, val, 0, NULL, /*eflags:*/ 0);
+        //log("REGCMP:'%s':%d", val, r);
+        if (eol)
+            *eol = '\n';
+        if (r == 0 || !eol)
+            break;
+        val = eol + 1;
+    }
+    /* Here, r == 0 if match was found */
+    regfree(&rx);
+    return r;
+}
+
 /* Deletes rules in *pp_rule_list, starting from first (remaining) rule,
  * until it finds a rule with all conditions satisfied.
  * In this case, it deletes this rule and returns this rule's cmd.
@@ -269,10 +302,12 @@ static char* pop_next_command(GList **pp_rule_list,
                         goto ret; /* error (note: dd_opendir logged error msg) */
                     }
                 }
-                char *var_name = xstrndup(cond_str, eq_sign - cond_str);
+                /* Is it "VAR~=REGEX"? */
+                int regex = (eq_sign > cond_str && eq_sign[-1] == '~');
+                char *var_name = xstrndup(cond_str, eq_sign - cond_str - regex);
                 char *real_val = dd_load_text_ext(dd, var_name, DD_FAIL_QUIETLY_ENOENT);
                 free(var_name);
-                int vals_differ = strcmp(real_val, eq_sign + 1);
+                int vals_differ = regex ? regcmp_lines(real_val, eq_sign + 1) : strcmp(real_val, eq_sign + 1);
                 free(real_val);
 
                 /* Do values match? */
