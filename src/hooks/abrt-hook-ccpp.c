@@ -116,6 +116,8 @@ static off_t copyfd_sparse(int src_fd, int dst_fd1, int dst_fd2, off_t size2)
 		size2 -= rd;
 		if (size2 < 0)
 			dst_fd2 = -1;
+//TODO: truncate to 0 or even delete the second file
+//(currently we delete the file later)
 	}
  out:
 
