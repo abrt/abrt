@@ -66,6 +66,13 @@ void free_run_event_state(struct run_event_state *state)
  * Now we read entire config but do NOT select commands to execute,
  * we check conditions of every next rule *directly before its execution*.
  *
+ * It's possible we'd want to switch to an algorightm which makes in unnecessary
+ * to properly order rules in config files(s). Now these two rules must not
+ * be reordered, or else second one won't work:
+ * EVENT=post-create         echo foo >bar
+ * EVENT=post-create foo=bar do_something
+ * but this might be not so easy to ensure when include files are involved...
+ *
  * Anyway, list of commands machinery is encapsulated in struct run_event_state,
  * and public async API:
  *      prepare_commands(state, dir, event);
