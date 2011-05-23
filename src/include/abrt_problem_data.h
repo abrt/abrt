@@ -60,7 +60,6 @@
 #define FILENAME_TAINTED      "kernel_tainted"
 #define FILENAME_TAINTED_SHORT "kernel_tainted_short"
 #define FILENAME_TAINTED_LONG  "kernel_tainted_long"
-// TODO: TicketUploader also has open-coded "TICKET", "CUSTOMER" files
 
 #define FILENAME_UUID         "uuid"
 #define FILENAME_COUNT        "count"
