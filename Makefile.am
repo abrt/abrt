@@ -4,7 +4,7 @@ SUBDIRS = src po icons tests doc
 DISTCHECK_CONFIGURE_FLAGS = \
         --with-systemdsystemunitdir=$$dc_install_base/$(systemdsystemunitdir)
 
-EXTRA_DIST = doc/coding-style abrt.spec.in abrt.pc.in doc/abrt-plugin/ doc/howto-write-reporter \
+EXTRA_DIST = doc/coding-style abrt.spec.in abrt.pc.in \
 	abrt-version asciidoc.conf
 
 pkgconfigdir = $(libdir)/pkgconfig
