@@ -22,11 +22,21 @@
 
 PyObject *ReportError;
 
+
+static PyObject *p_report(PyObject *pself, PyObject *problem_data)
+{
+    p_problem_data *p_pd = (p_problem_data*)problem_data;
+    report(p_pd->cd);
+    //FIXME return status as integer object
+    Py_RETURN_NONE;
+}
+
 static PyMethodDef module_methods[] = {
     /* method_name, func, flags, doc_string */
     { "dd_opendir"     , p_dd_opendir     , METH_VARARGS },
     { "dd_create"      , p_dd_create      , METH_VARARGS },
     { "delete_dump_dir", p_delete_dump_dir, METH_VARARGS },
+    { "report_problem_data"         , p_report,   METH_O},
     { NULL }
 };
 

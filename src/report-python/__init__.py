@@ -111,15 +111,20 @@ def createAlertSignature(component, hashmarkername, hashvalue, summary, alertSig
     cd = problem_data()
     cd.add("component", component)
     cd.add("hashmarkername", hashmarkername)
-    cd.add("localhash", hashvalue)
-    cd.add("summary", summary)
+    #cd.add("localhash", hashvalue)
+    cd.add("global_uuid", hashvalue)
+    cd.add("reason", summary)
     cd.add("description", alertSignature)
     cd.add("product", getProduct())
     cd.add("version", getVersion())
     return cd
-
+"""
 def report(cd, io_unused):
     state = run_event_state()
     #state.logging_callback = logfunc
     r = state.run_event_on_problem_data(cd, "report")
     return r
+"""
+
+def report(pd, io_unused):
+    result = report_problem_data(pd)

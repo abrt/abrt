@@ -82,6 +82,8 @@ Summary: Python bindings for report-libs.
 # Is group correct here? -
 Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
+Provides: report
+Obsoletes: report > 0.20
 
 %description -n libreport-python
 Python bindings for report-libs.
@@ -90,6 +92,8 @@ Python bindings for report-libs.
 Summary: GTK frontend for libreport
 Group: User Interface/Desktops
 Requires: libreport = %{version}-%{release}
+Provides: report-gtk
+Obsoletes: report-gtk > 0.20
 
 %description -n libreport-gtk
 Applications for reporting bugs using libreport backend.
@@ -398,6 +402,10 @@ touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 %post libs -p /sbin/ldconfig
 
 %postun libs -p /sbin/ldconfig
+
+%post -n libreport -p /sbin/ldconfig
+%postun -n libreport -p /sbin/ldconfig
+
 
 %postun gui
 if [ $1 -eq 0 ] ; then

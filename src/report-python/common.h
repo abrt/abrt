@@ -21,6 +21,7 @@
 #include "dump_dir.h"
 #include "problem_data.h"
 #include "run_event.h"
+#include "report.h"
 
 /* exception object */
 extern PyObject *ReportError;
