@@ -31,11 +31,6 @@ extern PyTypeObject p_problem_data_type;
 extern PyTypeObject p_dump_dir_type;
 extern PyTypeObject p_run_event_state_type;
 
-/* module-level functions */
-PyObject *p_dd_opendir(PyObject *module, PyObject *args);
-PyObject *p_dd_create(PyObject *module, PyObject *args);
-PyObject *p_delete_dump_dir(PyObject *pself, PyObject *args);
-
 /* python objects' struct defs */
 typedef struct {
     PyObject_HEAD
@@ -46,3 +41,13 @@ typedef struct {
     PyObject_HEAD
     problem_data_t *cd;
 } p_problem_data;
+
+/* module-level functions */
+/* for include/report/dump_dir.h */
+PyObject *p_dd_opendir(PyObject *module, PyObject *args);
+PyObject *p_dd_create(PyObject *module, PyObject *args);
+PyObject *p_delete_dump_dir(PyObject *pself, PyObject *args);
+/* for include/report/report.h */
+PyObject *p_report_problem_in_dir(PyObject *pself, PyObject *args);
+PyObject *p_report_problem_in_memory(PyObject *pself, PyObject *args);
+PyObject *p_report_problem(PyObject *pself, PyObject *args);

@@ -22,21 +22,16 @@
 
 PyObject *ReportError;
 
-
-static PyObject *p_report(PyObject *pself, PyObject *problem_data)
-{
-    p_problem_data *p_pd = (p_problem_data*)problem_data;
-    report(p_pd->cd);
-    //FIXME return status as integer object
-    Py_RETURN_NONE;
-}
-
 static PyMethodDef module_methods[] = {
     /* method_name, func, flags, doc_string */
-    { "dd_opendir"     , p_dd_opendir     , METH_VARARGS },
-    { "dd_create"      , p_dd_create      , METH_VARARGS },
-    { "delete_dump_dir", p_delete_dump_dir, METH_VARARGS },
-    { "report_problem_data"         , p_report,   METH_O},
+    /* for include/report/dump_dir.h */
+    { "dd_opendir"                , p_dd_opendir              , METH_VARARGS },
+    { "dd_create"                 , p_dd_create               , METH_VARARGS },
+    { "delete_dump_dir"           , p_delete_dump_dir         , METH_VARARGS },
+    /* for include/report/report.h */
+    { "report_problem_in_dir"     , p_report_problem_in_dir   , METH_VARARGS },
+    { "report_problem_in_memory"  , p_report_problem_in_memory, METH_VARARGS },
+    { "report_problem"            , p_report_problem          , METH_VARARGS },
     { NULL }
 };
 
@@ -75,20 +70,26 @@ init_pyreport(void)
     Py_INCREF(ReportError);
     PyModule_AddObject(m, "error", ReportError);
 
-    /* init type objects */
+    /* init type objects and constants */
+    /* for include/report/problem_data.h */
     Py_INCREF(&p_problem_data_type);
     PyModule_AddObject(m, "problem_data", (PyObject *)&p_problem_data_type);
     PyModule_AddObject(m, "CD_FLAG_BIN"          , Py_BuildValue("i", CD_FLAG_BIN          ));
     PyModule_AddObject(m, "CD_FLAG_TXT"          , Py_BuildValue("i", CD_FLAG_TXT          ));
     PyModule_AddObject(m, "CD_FLAG_ISEDITABLE"   , Py_BuildValue("i", CD_FLAG_ISEDITABLE   ));
     PyModule_AddObject(m, "CD_FLAG_ISNOTEDITABLE", Py_BuildValue("i", CD_FLAG_ISNOTEDITABLE));
-
+    /* for include/report/dump_dir.h */
     Py_INCREF(&p_dump_dir_type);
     PyModule_AddObject(m, "dump_dir", (PyObject *)&p_dump_dir_type);
     PyModule_AddObject(m, "DD_FAIL_QUIETLY_ENOENT"             , Py_BuildValue("i", DD_FAIL_QUIETLY_ENOENT             ));
     PyModule_AddObject(m, "DD_FAIL_QUIETLY_EACCES"             , Py_BuildValue("i", DD_FAIL_QUIETLY_EACCES             ));
     PyModule_AddObject(m, "DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE", Py_BuildValue("i", DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE));
-
+    /* for include/report/run_event.h */
     Py_INCREF(&p_run_event_state_type);
     PyModule_AddObject(m, "run_event_state", (PyObject *)&p_run_event_state_type);
+    /* for include/report/report.h */
+    PyModule_AddObject(m, "LIBREPORT_NOWAIT"     , Py_BuildValue("i", LIBREPORT_NOWAIT     ));
+    PyModule_AddObject(m, "LIBREPORT_WAIT"       , Py_BuildValue("i", LIBREPORT_WAIT       ));
+    PyModule_AddObject(m, "LIBREPORT_ANALYZE"    , Py_BuildValue("i", LIBREPORT_ANALYZE    ));
+    PyModule_AddObject(m, "LIBREPORT_RELOAD_DATA", Py_BuildValue("i", LIBREPORT_RELOAD_DATA));
 }

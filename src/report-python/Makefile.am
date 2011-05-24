@@ -11,6 +11,7 @@ _pyreport_la_SOURCES = \
     problem_data.c \
     dump_dir.c \
     run_event.c \
+    report.c \
     common.h
 _pyreport_la_CPPFLAGS = \
     -I$(srcdir)/../include/report -I$(srcdir)/../include \

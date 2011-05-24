@@ -127,4 +127,4 @@ def report(cd, io_unused):
 """
 
 def report(pd, io_unused):
-    result = report_problem_data(pd)
+    result = report_problem(pd)
