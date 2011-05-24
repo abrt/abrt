@@ -108,8 +108,8 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
             GValue d_dir = { 0 };
             gtk_tree_model_get_value(store, &iter, COLUMN_DUMP_DIR, &d_dir);
 
-            const char *dirname= g_value_get_string(&d_dir);
-            analyze_and_report_dir(dirname, LIBREPORT_NOWAIT);
+            const char *dirname = g_value_get_string(&d_dir);
+            report_problem_in_dir(dirname, LIBREPORT_ANALYZE | LIBREPORT_NOWAIT);
         }
     }
 }
@@ -203,8 +203,11 @@ static void on_button_send_cb(GtkWidget *button, gpointer data)
     /* why it doesn't want to hide before report ends? */
     gtk_widget_destroy(s_report_window);
 
-    int status = report(pd);
-    VERB1 log("Reporting finished with status: %i", status);
+//TODO: LIBREPORT_WAIT is used here only because we don't want to leave temp dir.
+//Change to LIBREPORT_NOWAIT when libreport is taught to
+//properly delete temp dir even with LIBREPORT_NOWAIT.
+    int status = report_problem_in_memory(pd, LIBREPORT_WAIT);
+    VERB1 log("Reporting finished with status %i", status);
     free_problem_data(pd);
 }
 

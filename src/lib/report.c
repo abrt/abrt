@@ -20,7 +20,7 @@
 #include "abrtlib.h"
 #include "report.h"
 
-static int run_reporter_ui(char **args, int flags)
+int report_problem_in_dir(const char *dirname, int flags)
 {
     const char *path;
     /*
@@ -28,6 +28,15 @@ static int run_reporter_ui(char **args, int flags)
       -> run cli reporter
       path = "cli"
     */
+
+    char *args[5], **pp;
+    pp = args;
+    *pp++ = (char *)"bug-reporting-wizard";
+    if (!(flags & LIBREPORT_ANALYZE))
+        *pp++ = (char *)"--report-only";
+    *pp++ = (char *)"--";
+    *pp++ = (char *)dirname;
+    *pp++ = NULL;
 
     pid_t pid = vfork();
     if (pid < 0) /* error */
@@ -79,22 +88,7 @@ static int run_reporter_ui(char **args, int flags)
     return 0;
 }
 
-int analyze_and_report_dir(const char* dirname, int flags)
-{
-    char *args[4];
-
-    args[0] = (char *)"bug-reporting-wizard";
-    args[1] = (char *)"--";
-    args[2] = (char *)dirname;
-    args[3] = NULL;
-
-    return run_reporter_ui(args, flags);
-}
-
-/* analyzes AND reports a problem saved on disk
- * - takes user through all the steps in reporting wizard
- */
-int analyze_and_report(problem_data_t *pd, int flags)
+int report_problem_in_memory(problem_data_t *pd, int flags)
 {
     int result = 0;
     struct dump_dir *dd = create_dump_dir_from_problem_data(pd, "/tmp"/* /var/tmp ?? */);
@@ -103,78 +97,33 @@ int analyze_and_report(problem_data_t *pd, int flags)
     char *dir_name = xstrdup(dd->dd_dirname);
     dd_close(dd);
     VERB2 log("Temp problem dir: '%s'", dir_name);
-    result = analyze_and_report_dir(dir_name, flags);
 
-    /* if we wait for reporter to finish, we can clean the tmp dir
-     * and we should reload the problem data, so caller doesn't see the stalled
-     * data
-    */
+// TODO: if !LIBREPORT_WAIT pass LIBREPORT_DEL_DIR, and teach bug-reporting-wizard
+// an option to delete directory after reporting?
+// It will make !LIBREPORT_WAIT reporting possible
+    result = report_problem_in_dir(dir_name, flags);
+
+    /* If we wait for reporter to finish, we should clean the tmp dir.
+     * We can also reload the problem data if requested.
+     */
     if (flags & LIBREPORT_WAIT)
     {
-        g_hash_table_remove_all(pd);
+        if (flags & LIBREPORT_RELOAD_DATA)
+            g_hash_table_remove_all(pd);
         dd = dd_opendir(dir_name, 0);
         if (dd)
         {
-            load_problem_data_from_dump_dir(pd, dd);
+            if (flags & LIBREPORT_RELOAD_DATA)
+                load_problem_data_from_dump_dir(pd, dd);
             dd_delete(dd);
         }
     }
+
     free(dir_name);
     return result;
 }
 
-/* report() and report_dir() don't take flags, because in all known use-cases
- * it doesn't make sense to not wait for the result
- *
-*/
-
-/* reports a problem saved on disk
- * - shows only reporter selector and progress
-*/
-int report_dir(const char* dirname)
+int report_problem(problem_data_t *pd)
 {
-    char *args[5];
-
-    args[0] = (char *)"bug-reporting-wizard";
-    args[1] = (char *)"--report-only";
-    args[2] = (char *)"--";
-    args[3] = (char *)dirname;
-    args[4] = NULL;
-
-    int flags = LIBREPORT_WAIT;
-    int status = run_reporter_ui(args, flags);
-    return status;
-}
-
-int report(problem_data_t *pd)
-{
-    /* adds:
-     *  analyzer:libreport
-     *  executable:readlink(/proc/<pid>/exe)
-     * tries to guess component
-    */
-    add_basics_to_problem_data(pd);
-    struct dump_dir *dd = create_dump_dir_from_problem_data(pd, "/tmp"/* /var/tmp ?? */);
-    if (!dd)
-        return -1;
-    dd_create_basic_files(dd, getuid());
-    char *dir_name = xstrdup(dd->dd_dirname);
-    dd_close(dd);
-    VERB2 log("Temp problem dir: '%s'", dir_name);
-    int result = report_dir(dir_name);
-
-    /* here we always wait for reporter to finish, we can clean the tmp dir
-     * and we should reload the problem data, so caller doesn't see the stalled
-     * data
-    */
-    g_hash_table_remove_all(pd); //what if something fails? is it ok to return empty pd rather then stalled pd?
-    dd = dd_opendir(dir_name, 0);
-    if (dd)
-    {
-        load_problem_data_from_dump_dir(pd, dd);
-        dd_delete(dd);
-    }
-    free(dir_name);
-
-    return result;
+    return report_problem_in_memory(pd, LIBREPORT_WAIT);
 }

@@ -86,7 +86,8 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
     struct applet *applet = (struct applet *)user_data;
     if (applet->ap_daemon_running)
     {
-        analyze_and_report_dir(applet->ap_last_crash_id, LIBREPORT_NOWAIT);
+        report_problem_in_dir(applet->ap_last_crash_id, LIBREPORT_ANALYZE | LIBREPORT_NOWAIT);
+
         GError *err = NULL;
         notify_notification_close(notification, &err);
         if (err != NULL)
@@ -94,6 +95,7 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
             error_msg("%s", err->message);
             g_error_free(err);
         }
+
         hide_icon(applet);
         stop_animate_icon(applet);
     }
