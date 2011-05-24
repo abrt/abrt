@@ -1,0 +1,20 @@
+BUG: sleeping function called from invalid context at mm/slub.c:795
+in_atomic(): 0, irqs_disabled(): 1, pid: 8811, name: pm-hibernate
+Pid: 8811, comm: pm-hibernate Tainted: P            2.6.38.5-24.fc15.x86_64 #1
+Call Trace:
+ [<ffffffff81047d33>] __might_sleep+0xeb/0xf0
+ [<ffffffff811113ff>] __kmalloc+0x79/0x10d
+ [<ffffffff81023683>] ? alloc_ioapic_entries+0x27/0x87
+ [<ffffffff81023683>] alloc_ioapic_entries+0x27/0x87
+ [<ffffffff81021cc0>] lapic_resume+0x3a/0x24d
+ [<ffffffff81396d86>] ? cpufreq_resume+0x2d/0xac
+ [<ffffffff812e4981>] __sysdev_resume+0x22/0xc2
+ [<ffffffff812e4ad4>] sysdev_resume+0xb3/0xf8
+ [<ffffffff81087670>] hibernation_snapshot+0x182/0x23e
+ [<ffffffff81087c83>] hibernate+0xc0/0x1b1
+ [<ffffffff810866b7>] state_store+0x5c/0xc5
+ [<ffffffff8122a4cb>] kobj_attr_store+0x17/0x19
+ [<ffffffff811793bd>] sysfs_write_file+0x111/0x14d
+ [<ffffffff81121815>] vfs_write+0xac/0xf3
+ [<ffffffff81121a04>] sys_write+0x4a/0x6e
+ [<ffffffff81009bc2>] system_call_fastpath+0x16/0x1b

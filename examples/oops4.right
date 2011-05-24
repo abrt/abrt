@@ -1,0 +1,20 @@
+BUG: sleeping function called from invalid context at mm/slub.c:795
+in_atomic(): 0, irqs_disabled(): 1, pid: 13398, name: pm-suspend
+Pid: 13398, comm: pm-suspend Not tainted 2.6.38.6-27.fc15.x86_64 #1
+Call Trace:
+ [<ffffffff81047d33>] __might_sleep+0xeb/0xf0
+ [<ffffffff81111413>] __kmalloc+0x79/0x10d
+ [<ffffffff81023683>] ? alloc_ioapic_entries+0x27/0x87
+ [<ffffffff81023683>] alloc_ioapic_entries+0x27/0x87
+ [<ffffffff81021cc0>] lapic_resume+0x3a/0x24d
+ [<ffffffff81396db2>] ? cpufreq_resume+0x2d/0xac
+ [<ffffffff812e49b1>] __sysdev_resume+0x22/0xc2
+ [<ffffffff812e4b04>] sysdev_resume+0xb3/0xf8
+ [<ffffffff81086f3b>] suspend_devices_and_enter+0x149/0x1d6
+ [<ffffffff8108709f>] enter_state+0xd7/0x129
+ [<ffffffff81086726>] state_store+0xaf/0xc5
+ [<ffffffff8122a4d7>] kobj_attr_store+0x17/0x19
+ [<ffffffff811793d1>] sysfs_write_file+0x111/0x14d
+ [<ffffffff81121829>] vfs_write+0xac/0xf3
+ [<ffffffff81121a18>] sys_write+0x4a/0x6e
+ [<ffffffff81009bc2>] system_call_fastpath+0x16/0x1b
