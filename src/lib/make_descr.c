@@ -260,28 +260,3 @@ char* make_description_logger(problem_data_t *problem_data)
                 MAKEDESC_SHOW_FILES | MAKEDESC_SHOW_MULTILINE
     );
 }
-
-char* make_description_comment(problem_data_t *problem_data)
-{
-    char *comment = NULL;
-    struct problem_item *value;
-
-    value = get_problem_data_item_or_NULL(problem_data, FILENAME_COMMENT);
-    if (value)
-    {
-        if (value->content[0])
-            comment = xasprintf("\n\nComment\n-----\n%s", value->content);
-    }
-
-    if (!comment)
-        return NULL;
-
-    struct strbuf *buf_dsc = strbuf_new();
-
-    if (comment)
-        strbuf_append_str(buf_dsc, comment);
-
-    free(comment);
-
-    return strbuf_free_nobuf(buf_dsc);
-}

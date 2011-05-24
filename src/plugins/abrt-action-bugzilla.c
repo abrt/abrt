@@ -170,26 +170,24 @@ static void report_to_bugzilla(const char *dump_dir_name, map_string_h *settings
             rhbz_mail_to_cc(client, bz->bi_id, login, RHBZ_NOMAIL_NOTIFY);
         }
 
-        char *dsc = make_description_comment(problem_data);
-        if (dsc)
+        const char *comment = get_problem_item_content_or_NULL(problem_data, FILENAME_COMMENT);
+        if (comment && comment[0])
         {
-            const char *package = get_problem_item_content_or_NULL(problem_data,
-                                                                   FILENAME_PACKAGE);
-            const char *release = get_problem_item_content_or_NULL(problem_data,
-                                                                   FILENAME_OS_RELEASE);
-            if (!release) /* Old dump dir format compat. Remove in abrt-2.1 */
-                release = get_problem_item_content_or_NULL(problem_data, "release");
-            const char *arch = get_problem_item_content_or_NULL(problem_data,
-                                                                FILENAME_ARCHITECTURE);
-
+            const char *package = get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE);
+            const char *release = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
+//COMPAT, remove in abrt-2.1 release
+            if (!release)release= get_problem_item_content_or_NULL(problem_data, "release");
+            const char *arch    = get_problem_item_content_or_NULL(problem_data, FILENAME_ARCHITECTURE);
             char *full_dsc = xasprintf("Package: %s\n"
                                        "Architecture: %s\n"
                                        "OS Release: %s\n"
-                                       "%s", package, arch, release, dsc);
-
+                                       "\n"
+                                       "Comment\n"
+                                       "-----\n"
+                                       "%s\n",
+                                       package, arch, release, comment
+            );
             log(_("Adding new comment to bug %d"), bz->bi_id);
-            free(dsc);
-
             /* unused code, enable it when gui/cli will be ready
             int is_priv = is_private && string_to_bool(is_private);
             const char *is_private = get_problem_item_content_or_NULL(problem_data,

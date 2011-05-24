@@ -251,8 +251,6 @@ enum {
 char *make_description(problem_data_t *problem_data, char **names_to_skip, unsigned max_text_size, unsigned desc_flags);
 #define make_description_bz abrt_make_description_bz
 char* make_description_bz(problem_data_t *problem_data);
-#define make_description_comment abrt_make_description_comment
-char* make_description_comment(problem_data_t *problem_data);
 #define make_description_logger abrt_make_description_logger
 char* make_description_logger(problem_data_t *problem_data);
 #define make_description_mailx abrt_make_description_mailx
