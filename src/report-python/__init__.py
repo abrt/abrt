@@ -112,7 +112,7 @@ def createAlertSignature(component, hashmarkername, hashvalue, summary, alertSig
     cd.add("component", component)
     cd.add("hashmarkername", hashmarkername)
     #cd.add("localhash", hashvalue)
-    cd.add("global_uuid", hashvalue)
+    cd.add("duphash", hashvalue)
     cd.add("reason", summary)
     cd.add("description", alertSignature)
     cd.add("product", getProduct())
