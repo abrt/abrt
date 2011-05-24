@@ -358,37 +358,48 @@ static void free_event_gui_data_t(event_gui_data_t *evdata, void *unused)
 
 /* tv_details handling */
 
-static void tv_details_row_activated(
-                        GtkTreeView       *tree_view,
-                        GtkTreePath       *path,
-                        GtkTreeViewColumn *column,
-                        gpointer           user_data)
+static struct problem_item *get_current_problem_item_or_NULL(GtkTreeView *tree_view, gchar **pp_item_name)
 {
     GtkTreeModel *model;
     GtkTreeIter iter;
     GtkTreeSelection* selection = gtk_tree_view_get_selection(tree_view);
     if (!gtk_tree_selection_get_selected(selection, &model, &iter))
-        return;
+        return NULL;
 
-    gchar *column_name;
-    gtk_tree_model_get(model, &iter, DETAIL_COLUMN_NAME, &column_name, -1);
-    struct problem_item *item = get_problem_data_item_or_NULL(g_cd, column_name);
+    *pp_item_name = NULL;
+    gtk_tree_model_get(model, &iter, DETAIL_COLUMN_NAME, pp_item_name, -1);
+    if (!*pp_item_name) /* paranoia, should never happen */
+        return NULL;
+    struct problem_item *item = get_problem_data_item_or_NULL(g_cd, *pp_item_name);
+
+    return item;
+}
+
+static void tv_details_row_activated(
+                        GtkTreeView       *tree_view,
+                        GtkTreePath       *tree_path_UNUSED,
+                        GtkTreeViewColumn *column,
+                        gpointer           user_data)
+{
+    gchar *item_name;
+    struct problem_item *item = get_current_problem_item_or_NULL(tree_view, &item_name);
     if (!item || !(item->flags & CD_FLAG_TXT))
-        return;
+        goto ret;
     if (!strchr(item->content, '\n')) /* one line? */
-        return;
+        goto ret; /* yes */
 
     gchar *arg[3];
     arg[0] = (char *) "xdg-open";
-    arg[1] = concat_path_file(g_dump_dir_name, column_name);
+    arg[1] = concat_path_file(g_dump_dir_name, item_name);
     arg[2] = NULL;
-    g_free(column_name);
 
     g_spawn_sync(NULL, arg, NULL,
                  G_SPAWN_SEARCH_PATH | G_SPAWN_STDOUT_TO_DEV_NULL,
                  NULL, NULL, NULL, NULL, NULL, NULL);
 
     free(arg[1]);
+ ret:
+    g_free(item_name);
 }
 
 /* static gboolean tv_details_select_cursor_row(
@@ -398,17 +409,11 @@ static void tv_details_row_activated(
 
 static void tv_details_cursor_changed(
                         GtkTreeView *tree_view,
-                        gpointer     user_data)
+                        gpointer     user_data_UNUSED)
 {
-    GtkTreeModel *model;
-    GtkTreeIter iter;
-    GtkTreeSelection* selection = gtk_tree_view_get_selection(tree_view);
-    if (!gtk_tree_selection_get_selected(selection, &model, &iter))
-        return;
-
-    gchar *column_name;
-    gtk_tree_model_get(model, &iter, DETAIL_COLUMN_NAME, &column_name, -1);
-    struct problem_item *item = get_problem_data_item_or_NULL(g_cd, column_name);
+    gchar *item_name;
+    struct problem_item *item = get_current_problem_item_or_NULL(tree_view, &item_name);
+    g_free(item_name);
 
     gboolean editable = (item && (item->flags & CD_FLAG_TXT) && !strchr(item->content, '\n'));
 
@@ -420,6 +425,32 @@ static void tv_details_cursor_changed(
     g_object_set(G_OBJECT(g_tv_details_renderer_value),
                 "editable", editable,
                 NULL);
+}
+
+static void g_tv_details_checkbox_toggled(
+                        GtkCellRendererToggle *cell_renderer_UNUSED,
+                        gchar    *tree_path,
+                        gpointer  user_data_UNUSED)
+{
+    //log("%s: path:'%s'", __func__, tree_path);
+    GtkTreeIter iter;
+    if (!gtk_tree_model_get_iter_from_string(GTK_TREE_MODEL(g_ls_details), &iter, tree_path))
+        return;
+
+    gchar *item_name = NULL;
+    gtk_tree_model_get(GTK_TREE_MODEL(g_ls_details), &iter, DETAIL_COLUMN_NAME, &item_name, -1);
+    if (!item_name) /* paranoia, should never happen */
+        return;
+    struct problem_item *item = get_problem_data_item_or_NULL(g_cd, item_name);
+    g_free(item_name);
+    if (!item) /* paranoia */
+        return;
+
+    item->flags ^= 0x8000000;
+    //log("%s: item->flags=%x", __func__, item->flags);
+    gtk_list_store_set(g_ls_details, &iter,
+                DETAIL_COLUMN_CHECKBOX, !!(item->flags & 0x8000000),
+                -1);
 }
 
 
@@ -630,10 +661,10 @@ static void append_item_to_ls_details(gpointer name, gpointer value, gpointer da
     stats->filecount++;
 
     //FIXME: use the human-readable format_problem_item(item) instead of item->content.
-    /* If text and not multiline... */
     if (item->flags & CD_FLAG_TXT)
     {
         stats->filesize += strlen(item->content);
+        /* If not multiline... */
         if (!strchr(item->content, '\n'))
         {
             gtk_list_store_set(g_ls_details, &iter,
@@ -1521,6 +1552,8 @@ static void create_details_treeview()
                 "active", DETAIL_COLUMN_CHECKBOX,
                 NULL);
     gtk_tree_view_append_column(g_tv_details, column);
+    /* This column has a handler */
+    g_signal_connect(renderer, "toggled", G_CALLBACK(g_tv_details_checkbox_toggled), NULL);
 
     renderer = gtk_cell_renderer_text_new();
     column = gtk_tree_view_column_new_with_attributes(
@@ -1549,6 +1582,12 @@ static void create_details_treeview()
 
     g_ls_details = gtk_list_store_new(DETAIL_NUM_COLUMNS, G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_STRING);
     gtk_tree_view_set_model(g_tv_details, GTK_TREE_MODEL(g_ls_details));
+
+    g_signal_connect(g_tv_details, "row-activated", G_CALLBACK(tv_details_row_activated), NULL);
+    g_signal_connect(g_tv_details, "cursor-changed", G_CALLBACK(tv_details_cursor_changed), NULL);
+    /* [Enter] on a row:
+     * g_signal_connect(g_tv_details, "select-cursor-row", G_CALLBACK(tv_details_select_cursor_row), NULL);
+     */
 }
 
 void create_assistant(void)
@@ -1582,9 +1621,6 @@ void create_assistant(void)
     g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
     g_signal_connect(g_btn_refresh, "clicked", G_CALLBACK(on_btn_refresh_clicked), NULL);
     g_signal_connect(gtk_text_view_get_buffer(g_tv_comment), "changed", G_CALLBACK(on_comment_changed), NULL);
-    g_signal_connect(g_tv_details, "row-activated", G_CALLBACK(tv_details_row_activated), NULL);
-    /* [Enter] on a row: g_signal_connect(g_tv_details, "select-cursor-row", G_CALLBACK(tv_details_select_cursor_row), NULL); */
-    g_signal_connect(g_tv_details, "cursor-changed", G_CALLBACK(tv_details_cursor_changed), NULL);
 
     /* init searching */
     GtkTextBuffer *backtrace_buf = gtk_text_view_get_buffer(g_tv_backtrace);
