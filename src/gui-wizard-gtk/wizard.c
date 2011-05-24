@@ -60,7 +60,6 @@ static GtkLabel *g_lbl_cd_reason;
 static GtkTextView *g_tv_backtrace;
 static GtkTextView *g_tv_comment;
 static GtkEventBox *g_eb_comment;
-static GtkTreeView *g_tv_details;
 static GtkWidget *g_widget_warnings_area;
 static GtkBox *g_box_warning_labels;
 static GtkToggleButton *g_tb_approve_bt;
@@ -69,10 +68,18 @@ static GtkButton *g_btn_refresh;
 static GtkLabel *g_lbl_reporters;
 static GtkLabel *g_lbl_size;
 
-static GtkCellRenderer *g_tv_details_col2;
+static GtkTreeView *g_tv_details;
+static GtkCellRenderer *g_tv_details_renderer_value;
+static GtkTreeViewColumn *g_tv_details_col_checkbox;
+//static GtkCellRenderer *g_tv_details_renderer_checkbox;
 static GtkListStore *g_ls_details;
 enum
 {
+    /* Note: need to update types in
+     * gtk_list_store_new(DETAIL_NUM_COLUMNS, TYPE1, TYPE2...)
+     * if you change these:
+     */
+    DETAIL_COLUMN_CHECKBOX,
     DETAIL_COLUMN_NAME,
     DETAIL_COLUMN_VALUE,
     DETAIL_NUM_COLUMNS,
@@ -410,7 +417,7 @@ static void tv_details_cursor_changed(
      * but changes aren't saved (the old text reappears as soon as user
      * leaves the field). Need to disable editing somehow.
      */
-    g_object_set(G_OBJECT(g_tv_details_col2),
+    g_object_set(G_OBJECT(g_tv_details_renderer_value),
                 "editable", editable,
                 NULL);
 }
@@ -1265,6 +1272,13 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
                         g_container_details1 : g_container_details2,
                 w
         );
+        /* Make checkbox column visible only on the last page */
+        gtk_tree_view_column_set_visible(g_tv_details_col_checkbox,
+                (pages[PAGENO_REVIEW_DATA].page_widget == page)
+        );
+        //gtk_cell_renderer_set_visible(g_tv_details_renderer_checkbox,
+        //        (pages[PAGENO_REVIEW_DATA].page_widget == page)
+        //);
     }
 
     if (pages[PAGENO_EDIT_COMMENT].page_widget == page)
@@ -1382,39 +1396,6 @@ static void search_timeout(GtkEntry *entry)
 
 /* Initialization */
 
-static void create_details_treeview()
-{
-    GtkCellRenderer *renderer;
-    GtkTreeViewColumn *column;
-
-    renderer = gtk_cell_renderer_text_new();
-    column = gtk_tree_view_column_new_with_attributes(_("Name"),
-                                                     renderer,
-                                                     "text",
-                                                     DETAIL_COLUMN_NAME,
-                                                     NULL);
-    gtk_tree_view_column_set_sort_column_id(column, DETAIL_COLUMN_NAME);
-    gtk_tree_view_append_column(g_tv_details, column);
-
-    g_tv_details_col2 = renderer = gtk_cell_renderer_text_new();
-    column = gtk_tree_view_column_new_with_attributes(_("Value"),
-                                                     renderer,
-                                                     "text",
-                                                     DETAIL_COLUMN_VALUE,
-                                                     NULL);
-    gtk_tree_view_append_column(g_tv_details, column);
-
-    /*
-    renderer = gtk_cell_renderer_text_new();
-    column = gtk_tree_view_column_new_with_attributes(_("Path"),
-                                                     renderer,
-                                                     "text",
-                                                     DETAIL_COLUMN_PATH,
-                                                     NULL);
-    gtk_tree_view_append_column(g_tv_details, column);
-    */
-}
-
 /* wizard.glade file as a string WIZARD_GLADE_CONTENTS: */
 #include "wizard_glade.c"
 
@@ -1527,6 +1508,49 @@ static void add_pages()
     gtk_widget_modify_bg(GTK_WIDGET(g_eb_comment), GTK_STATE_NORMAL, &color);
 }
 
+static void create_details_treeview()
+{
+    GtkCellRenderer *renderer;
+    GtkTreeViewColumn *column;
+
+    //g_tv_details_renderer_checkbox =
+    renderer = gtk_cell_renderer_toggle_new();
+    g_tv_details_col_checkbox = column = gtk_tree_view_column_new_with_attributes(
+                _("Include"), renderer,
+                /* which "attr" of renderer to set from which COLUMN? (can be repeated) */
+                "active", DETAIL_COLUMN_CHECKBOX,
+                NULL);
+    gtk_tree_view_append_column(g_tv_details, column);
+
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(
+                _("Name"), renderer,
+                "text", DETAIL_COLUMN_NAME,
+                NULL);
+    gtk_tree_view_append_column(g_tv_details, column);
+
+    g_tv_details_renderer_value = renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(
+                _("Value"), renderer,
+                "text", DETAIL_COLUMN_VALUE,
+                NULL);
+    gtk_tree_view_append_column(g_tv_details, column);
+
+    /*
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(
+                _("Path"), renderer,
+                "text", DETAIL_COLUMN_PATH,
+                NULL);
+    gtk_tree_view_append_column(g_tv_details, column);
+    */
+
+    gtk_tree_view_column_set_sort_column_id(column, DETAIL_COLUMN_NAME);
+
+    g_ls_details = gtk_list_store_new(DETAIL_NUM_COLUMNS, G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_STRING);
+    gtk_tree_view_set_model(g_tv_details, GTK_TREE_MODEL(g_ls_details));
+}
+
 void create_assistant(void)
 {
     monospace_font = pango_font_description_from_string("monospace");
@@ -1541,8 +1565,8 @@ void create_assistant(void)
     g_parent_window = wnd_assistant;
     gtk_window_set_default_size(wnd_assistant, DEFAULT_WIDTH, DEFAULT_HEIGHT);
     /* set_default sets icon for every windows used in this app, so we don't
-       have to set the icon for those windows manually
-    */
+     * have to set the icon for those windows manually
+     */
     gtk_window_set_default_icon_name("abrt");
 
     GObject *obj_assistant = G_OBJECT(g_assistant);
@@ -1554,8 +1578,6 @@ void create_assistant(void)
     add_pages();
 
     create_details_treeview();
-    g_ls_details = gtk_list_store_new(DETAIL_NUM_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
-    gtk_tree_view_set_model(g_tv_details, GTK_TREE_MODEL(g_ls_details));
 
     g_signal_connect(g_tb_approve_bt, "toggled", G_CALLBACK(on_bt_approve_toggle), NULL);
     g_signal_connect(g_btn_refresh, "clicked", G_CALLBACK(on_btn_refresh_clicked), NULL);
