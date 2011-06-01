@@ -35,7 +35,6 @@ problem_data_t *g_cd;
 
 void reload_problem_data_from_dump_dir(void)
 {
-    free_problem_data(g_cd);
     free(g_analyze_events);
     free(g_report_events);
 
@@ -43,12 +42,36 @@ void reload_problem_data_from_dump_dir(void)
     if (!dd)
         xfunc_die(); /* dd_opendir already logged error msg */
 
-    g_cd = create_problem_data_from_dump_dir(dd);
-    add_to_problem_data_ext(g_cd, CD_DUMPDIR, g_dump_dir_name, CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
+    problem_data_t *new_cd = create_problem_data_from_dump_dir(dd);
+    add_to_problem_data_ext(new_cd, CD_DUMPDIR, g_dump_dir_name, (CD_FLAG_TXT | CD_FLAG_ISNOTEDITABLE));
 
     g_analyze_events = list_possible_events(dd, NULL, "analyze");
     g_report_events = list_possible_events(dd, NULL, "report");
     dd_close(dd);
+
+    if (1)
+    {
+        /* Copy "selected for reporting" flags */
+        GHashTableIter iter;
+        char *name;
+        struct problem_item *new_item;
+        g_hash_table_iter_init(&iter, new_cd);
+        while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&new_item))
+        {
+            struct problem_item *old_item = g_cd ? get_problem_data_item_or_NULL(g_cd, name) : NULL;
+            if (old_item)
+            {
+                new_item->selected_by_user = old_item->selected_by_user;
+            }
+            else
+            {
+                new_item->selected_by_user = 0;
+            }
+            //log("%s: was ->selected_by_user=%d", __func__, new_item->selected_by_user);
+        }
+        free_problem_data(g_cd);
+    }
+    g_cd = new_cd;
 
     /* Load /etc/abrt/events/foo.{conf,xml} stuff */
     load_event_config_data();

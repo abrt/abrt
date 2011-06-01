@@ -40,6 +40,11 @@ enum {
 struct problem_item {
     char    *content;
     unsigned flags;
+    /* Used by UI for presenting "item allowed/not allowed" checkboxes: */
+    int      selected_by_user;     /* 0 "don't know", -1 "no", 1 "yes" */
+    int      allowed_by_reporter;  /* 0 "no", 1 "yes" */
+    int      default_by_reporter;  /* 0 "no", 1 "yes" */
+    int      required_by_reporter; /* 0 "no", 1 "yes" */
 };
 typedef struct problem_item problem_item;
 
@@ -80,8 +85,10 @@ const char *get_problem_item_content_or_die(problem_data_t *problem_data, const 
 
 /* Conversions between in-memory and on-disk formats */
 
-void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_dir *dd);
+void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_dir *dd, char **excluding);
 problem_data_t *create_problem_data_from_dump_dir(struct dump_dir *dd);
+/* Helper for typical operation in reporters: */
+problem_data_t *create_problem_data_for_reporting(const char *dump_dir_name);
 
 struct dump_dir *create_dump_dir_from_problem_data(problem_data_t *problem_data, const char *base_dir_name);
 

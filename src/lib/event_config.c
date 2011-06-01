@@ -46,19 +46,22 @@ void free_event_option(event_option_t *p)
 
 void free_event_config(event_config_t *p)
 {
-    GList *opt;
-
     if (!p)
         return;
+
     free(p->screen_name);
-    //free(p->title);
-    //free(p->action);
     free(p->description);
     free(p->long_descr);
-    free(p->creates_elements);
+    free(p->ec_creates_items);
+    free(p->ec_requires_items);
+    free(p->ec_exclude_items_by_default);
+    free(p->ec_include_items_by_default);
+    free(p->ec_exclude_items_always);
+    GList *opt;
     for (opt = p->options; opt; opt = opt->next)
         free_event_option(opt->data);
     g_list_free(p->options);
+
     free(p);
 }
 

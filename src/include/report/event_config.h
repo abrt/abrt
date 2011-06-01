@@ -66,12 +66,17 @@ void free_event_option(event_option_t *p);
 //structure to hold the option data
 typedef struct
 {
-    char *screen_name;  //ui friendly name of the event: "Bugzilla" "RedHat Support Upload"
-    //char *title;  //window title - not used right now, maybe the "name" is enough?
-    //char *action; //action description to show in gui like: Upload report to the Red Hat bugzilla"
+    char *screen_name; //ui friendly name of the event: "Bugzilla" "RedHat Support Upload"
     char *description; // "Report to..."/"Save to file". Should be one sentence, not long
     char *long_descr;  // Long(er) explanation, if needed
-    char *creates_elements;
+
+    char *ec_creates_items;
+    char *ec_requires_items;
+    char *ec_exclude_items_by_default;
+    char *ec_include_items_by_default;
+    char *ec_exclude_items_always;
+    bool  ec_exclude_binary_items;
+
     GList *options;
 } event_config_t;
 

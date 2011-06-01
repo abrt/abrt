@@ -64,12 +64,9 @@ int main(int argc, char **argv)
             perror_msg_and_die("Can't open '%s'", output_file);
     }
 
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return 1; /* error message is already logged */
-
-    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
-    dd_close(dd);
+    problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
+    if (!problem_data)
+        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
     char *dsc = make_description_logger(problem_data);
     fputs(dsc, stdout);
@@ -82,7 +79,7 @@ int main(int argc, char **argv)
     {
         if (opts & OPT_r)
         {
-            dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+            struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
             if (dd)
             {
                 char *msg = xasprintf("file: %s", output_file);

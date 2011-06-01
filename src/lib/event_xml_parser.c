@@ -25,11 +25,18 @@
 #define LONG_DESCR_ELEMENT      "long-description"
 #define ALLOW_EMPTY_ELEMENT     "allow-empty"
 #define NOTE_HTML_ELEMENT       "note-html"
-#define CREATES_ELEMENT         "creates-elements"
+#define CREATES_ELEMENT         "creates-items"
 #define OPTION_ELEMENT          "option"
 //#define ACTION_ELEMENT        "action"
 #define NAME_ELEMENT            "name"
 #define DEFAULT_VALUE_ELEMENT   "default-value"
+
+#define REQUIRES_ELEMENT        "requires-items"
+#define EXCL_BY_DEFAULT_ELEMENT "exclude-items-by-default"
+#define INCL_BY_DEFAULT_ELEMENT "include-items-by-default"
+#define EXCL_ALWAYS_ELEMENT     "exclude-items-always"
+#define EXCL_BINARY_ELEMENT     "exclude-binary-items"
+
 
 struct my_parse_data
 {
@@ -305,9 +312,9 @@ static void text(GMarkupParseContext *context,
         */
         if (strcmp(inner_element, CREATES_ELEMENT) == 0)
         {
-            VERB2 log("creates_elements:'%s'", text_copy);
-            free(ui->creates_elements);
-            ui->creates_elements = text_copy;
+            VERB2 log("ec_creates_items:'%s'", text_copy);
+            free(ui->ec_creates_items);
+            ui->ec_creates_items = text_copy;
             return;
         }
         if (strcmp(inner_element, NAME_ELEMENT) == 0)
@@ -361,6 +368,36 @@ static void text(GMarkupParseContext *context,
                     ui->long_descr = text_copy;
                 }
             }
+            return;
+        }
+        if (strcmp(inner_element, REQUIRES_ELEMENT) == 0)
+        {
+            free(ui->ec_requires_items);
+            ui->ec_requires_items = text_copy;
+            return;
+        }
+        if (strcmp(inner_element, EXCL_BY_DEFAULT_ELEMENT) == 0)
+        {
+            free(ui->ec_exclude_items_by_default);
+            ui->ec_exclude_items_by_default = text_copy;
+            return;
+        }
+        if (strcmp(inner_element, INCL_BY_DEFAULT_ELEMENT) == 0)
+        {
+            free(ui->ec_include_items_by_default);
+            ui->ec_include_items_by_default = text_copy;
+            return;
+        }
+        if (strcmp(inner_element, EXCL_ALWAYS_ELEMENT) == 0)
+        {
+            free(ui->ec_exclude_items_always);
+            ui->ec_exclude_items_always = text_copy;
+            return;
+        }
+        if (strcmp(inner_element, EXCL_BINARY_ELEMENT) == 0)
+        {
+            ui->ec_exclude_binary_items = string_to_bool(text_copy);
+            free(text_copy);
             return;
         }
     }

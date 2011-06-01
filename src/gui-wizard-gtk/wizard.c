@@ -39,6 +39,7 @@ typedef struct event_gui_data_t
 static GtkAssistant *g_assistant;
 
 static char *g_analyze_event_selected;
+static char *g_reporter_events_selected;
 static unsigned g_black_event_count = 0;
 
 static GtkBox *g_box_analyzers;
@@ -367,7 +368,9 @@ static struct problem_item *get_current_problem_item_or_NULL(GtkTreeView *tree_v
         return NULL;
 
     *pp_item_name = NULL;
-    gtk_tree_model_get(model, &iter, DETAIL_COLUMN_NAME, pp_item_name, -1);
+    gtk_tree_model_get(model, &iter,
+                DETAIL_COLUMN_NAME, pp_item_name,
+                -1);
     if (!*pp_item_name) /* paranoia, should never happen */
         return NULL;
     struct problem_item *item = get_problem_data_item_or_NULL(g_cd, *pp_item_name);
@@ -438,7 +441,9 @@ static void g_tv_details_checkbox_toggled(
         return;
 
     gchar *item_name = NULL;
-    gtk_tree_model_get(GTK_TREE_MODEL(g_ls_details), &iter, DETAIL_COLUMN_NAME, &item_name, -1);
+    gtk_tree_model_get(GTK_TREE_MODEL(g_ls_details), &iter,
+                DETAIL_COLUMN_NAME, &item_name,
+                -1);
     if (!item_name) /* paranoia, should never happen */
         return;
     struct problem_item *item = get_problem_data_item_or_NULL(g_cd, item_name);
@@ -446,11 +451,27 @@ static void g_tv_details_checkbox_toggled(
     if (!item) /* paranoia */
         return;
 
-    item->flags ^= 0x8000000;
-    //log("%s: item->flags=%x", __func__, item->flags);
-    gtk_list_store_set(g_ls_details, &iter,
-                DETAIL_COLUMN_CHECKBOX, !!(item->flags & 0x8000000),
+    int cur_value;
+    if (item->selected_by_user == 0)
+        cur_value = item->default_by_reporter;
+    else
+        cur_value = !!(item->selected_by_user + 1); /* map -1,1 to 0,1 */
+    //log("%s: allowed:%d reqd:%d def:%d user:%d cur:%d", __func__,
+    //            item->allowed_by_reporter,
+    //            item->required_by_reporter,
+    //            item->default_by_reporter,
+    //            item->selected_by_user,
+    //            cur_value
+    //);
+    if (item->allowed_by_reporter && !item->required_by_reporter)
+    {
+        cur_value = !cur_value;
+        item->selected_by_user = cur_value * 2 - 1; /* map 0,1 to -1,1 */
+        //log("%s: now ->selected_by_user=%d", __func__, item->selected_by_user);
+        gtk_list_store_set(g_ls_details, &iter,
+                DETAIL_COLUMN_CHECKBOX, cur_value,
                 -1);
+    }
 }
 
 
@@ -498,9 +519,9 @@ static void report_tb_was_toggled(GtkButton *button_unused, gpointer user_data_u
     );
 
     /* Update "list of reporters" label */
-    char *str = strbuf_free_nobuf(reporters_string);
-    gtk_label_set_text(g_lbl_reporters, str);
-    free(str);
+    free(g_reporter_events_selected);
+    g_reporter_events_selected = strbuf_free_nobuf(reporters_string);
+    gtk_label_set_text(g_lbl_reporters, g_reporter_events_selected);
 }
 
 /* event_name contains "EVENT1\nEVENT2\nEVENT3\n".
@@ -550,12 +571,12 @@ static event_gui_data_t *add_event_buttons(GtkBox *box,
             if (cfg->screen_name)
                 event_screen_name = cfg->screen_name;
             event_description = cfg->description;
-            if (cfg->creates_elements)
+            if (cfg->ec_creates_items)
             {
-                if (get_problem_data_item_or_NULL(g_cd, cfg->creates_elements))
+                if (get_problem_data_item_or_NULL(g_cd, cfg->ec_creates_items))
                 {
                     green_choice = true;
-                    event_description = tmp_description = xasprintf(_("(not needed, '%s' already exists)"), cfg->creates_elements);
+                    event_description = tmp_description = xasprintf(_("(not needed, '%s' already exists)"), cfg->ec_creates_items);
                 }
             }
         }
@@ -800,6 +821,42 @@ enum {
     LOGSTATE_MIDLINE,
 };
 
+static void set_excluded_envvar(void)
+{
+    struct strbuf *item_list = strbuf_new();
+    const char *fmt = "%s";
+
+    GtkTreeIter iter;
+    if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(g_ls_details), &iter))
+    {
+        do {
+            gchar *item_name = NULL;
+            gboolean checked = 0;
+            gtk_tree_model_get(GTK_TREE_MODEL(g_ls_details), &iter,
+                    DETAIL_COLUMN_NAME, &item_name,
+                    DETAIL_COLUMN_CHECKBOX, &checked,
+                    -1);
+            if (!item_name) /* paranoia, should never happen */
+                continue;
+            if (!checked)
+            {
+                strbuf_append_strf(item_list, fmt, item_name);
+                fmt = ",%s";
+            }
+            g_free(item_name);
+        } while (gtk_tree_model_iter_next(GTK_TREE_MODEL(g_ls_details), &iter));
+    }
+    char *var = strbuf_free_nobuf(item_list);
+    //log("EXCLUDE_FROM_REPORT='%s'", var);
+    if (var)
+    {
+        xsetenv("EXCLUDE_FROM_REPORT", var);
+        free(var);
+    }
+    else
+        unsetenv("EXCLUDE_FROM_REPORT");
+}
+
 static int spawn_next_command_in_evd(struct analyze_event_data *evd)
 {
     evd->env_list = export_event_config(evd->event_name);
@@ -1041,7 +1098,9 @@ static void start_event_run(const char *event_name,
     if (!locked)
         return; /* user refused to steal, or write error, etc... */
 
+    set_excluded_envvar();
     GList *env_list = export_event_config(event_name);
+
     if (spawn_next_command(state, g_dump_dir_name, event_name) < 0)
     {
         unexport_event_config(env_list);
@@ -1266,6 +1325,23 @@ static void log_ready_state()
 }
 #endif
 
+static bool is_in_comma_separated_list(const char *value, const char *list)
+{
+    if (!list)
+        return false;
+    unsigned len = strlen(value);
+    while (*list)
+    {
+        const char *comma = strchrnul(list, ',');
+        if ((comma - list == len) && strncmp(value, list, len) == 0)
+            return true;
+        if (!*comma)
+            break;
+        list = comma + 1;
+    }
+    return false;
+}
+
 static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer user_data)
 {
     //int page_no = gtk_assistant_get_current_page(g_assistant);
@@ -1310,6 +1386,83 @@ static void on_page_prepare(GtkAssistant *assistant, GtkWidget *page, gpointer u
         //gtk_cell_renderer_set_visible(g_tv_details_renderer_checkbox,
         //        (pages[PAGENO_REVIEW_DATA].page_widget == page)
         //);
+
+        if (pages[PAGENO_REVIEW_DATA].page_widget == page)
+        {
+            /* Based on selected reporter, update item checkboxes */
+            event_config_t *cfg = get_event_config(g_reporter_events_selected ? g_reporter_events_selected : "");
+            //log("%s: event:'%s', cfg:'%p'", __func__, g_reporter_events_selected, cfg);
+            if (cfg)
+            {
+                /* Default settings are... */
+                int allowed_by_reporter = 1;
+                if (cfg->ec_exclude_items_always && strcmp(cfg->ec_exclude_items_always, "*") == 0)
+                    allowed_by_reporter = 0;
+                int default_by_reporter = allowed_by_reporter;
+                if (cfg->ec_exclude_items_by_default && strcmp(cfg->ec_exclude_items_by_default, "*") == 0)
+                    default_by_reporter = 0;
+
+                GHashTableIter iter;
+                char *name;
+                struct problem_item *item;
+                g_hash_table_iter_init(&iter, g_cd);
+                while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&item))
+                {
+                    /* Decide whether item is allowed, required, and what's the default */
+                    item->allowed_by_reporter = allowed_by_reporter;
+                    if (is_in_comma_separated_list(name, cfg->ec_exclude_items_always))
+                        item->allowed_by_reporter = 0;
+                    if ((item->flags & CD_FLAG_BIN) && cfg->ec_exclude_binary_items)
+                        item->allowed_by_reporter = 0;
+
+                    item->default_by_reporter = item->allowed_by_reporter ? default_by_reporter : 0;
+                    if (is_in_comma_separated_list(name, cfg->ec_exclude_items_by_default))
+                        item->default_by_reporter = 0;
+                    if (is_in_comma_separated_list(name, cfg->ec_include_items_by_default))
+                        item->allowed_by_reporter = item->default_by_reporter = 1;
+
+                    item->required_by_reporter = 0;
+                    if (is_in_comma_separated_list(name, cfg->ec_requires_items))
+                        item->default_by_reporter = item->allowed_by_reporter = item->required_by_reporter = 1;
+
+                    int cur_value;
+                    if (item->selected_by_user == 0)
+                        cur_value = item->default_by_reporter;
+                    else
+                        cur_value = !!(item->selected_by_user + 1); /* map -1,1 to 0,1 */
+
+                    //log("%s: '%s' allowed:%d reqd:%d def:%d user:%d", __func__, name,
+                    //    item->allowed_by_reporter,
+                    //    item->required_by_reporter,
+                    //    item->default_by_reporter,
+                    //    item->selected_by_user
+                    //);
+
+                    /* Find corresponding line and update checkbox */
+                    GtkTreeIter iter;
+                    if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(g_ls_details), &iter))
+                    {
+                        do {
+                            gchar *item_name = NULL;
+                            gtk_tree_model_get(GTK_TREE_MODEL(g_ls_details), &iter,
+                                        DETAIL_COLUMN_NAME, &item_name,
+                                        -1);
+                            if (!item_name) /* paranoia, should never happen */
+                                continue;
+                            int differ = strcmp(name, item_name);
+                            g_free(item_name);
+                            if (differ)
+                                continue;
+                            gtk_list_store_set(g_ls_details, &iter,
+                                    DETAIL_COLUMN_CHECKBOX, cur_value,
+                                    -1);
+                            //log("%s: changed gtk_list_store_set to %d", __func__, (item->allowed_by_reporter && item->selected_by_user >= 0));
+                            break;
+                        } while (gtk_tree_model_iter_next(GTK_TREE_MODEL(g_ls_details), &iter));
+                    }
+                }
+            }
+        }
     }
 
     if (pages[PAGENO_EDIT_COMMENT].page_widget == page)

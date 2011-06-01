@@ -500,7 +500,7 @@ int run_event_on_problem_data(struct run_event_state *state, problem_data_t *dat
     free(dir_name);
     if (dd)
     {
-        load_problem_data_from_dump_dir(data, dd);
+        load_problem_data_from_dump_dir(data, dd, NULL);
         dd_delete(dd);
     }
 

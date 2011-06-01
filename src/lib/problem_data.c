@@ -265,7 +265,7 @@ static char* is_text_file(const char *name, ssize_t *sz)
     return NULL; /* it's binary */
 }
 
-void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_dir *dd)
+void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_dir *dd, char **excluding)
 {
     char *short_name;
     char *full_name;
@@ -273,6 +273,12 @@ void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_d
     dd_init_next_file(dd);
     while (dd_get_next_file(dd, &short_name, &full_name))
     {
+        if (excluding && is_in_string_list(short_name, excluding))
+        {
+            //log("Excluded:'%s'", short_name);
+            goto next;
+        }
+
         ssize_t sz = 4*1024;
         char *text = NULL;
         bool editable = is_editable_file(short_name);
@@ -287,20 +293,15 @@ void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_d
                         full_name,
                         CD_FLAG_BIN + CD_FLAG_ISNOTEDITABLE
                 );
-                free(short_name);
-                free(full_name);
-                continue;
+                goto next;
             }
         }
 
         char *content;
         if (sz < 4*1024) /* did is_text_file read entire file? */
         {
+            /* yes */
             content = text;
-            /* Strip '\n' from one-line elements: */
-            char *nl = strchr(content, '\n');
-            if (nl && nl[1] == '\0')
-                *nl = '\0';
         }
         else
         {
@@ -308,6 +309,10 @@ void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_d
             free(text);
             content = dd_load_text(dd, short_name);
         }
+        /* Strip '\n' from one-line elements: */
+        char *nl = strchr(content, '\n');
+        if (nl && nl[1] == '\0')
+            *nl = '\0';
 
         int flags = 0;
 
@@ -335,16 +340,70 @@ void load_problem_data_from_dump_dir(problem_data_t *problem_data, struct dump_d
                 content,
                 flags
         );
+        free(content);
+ next:
         free(short_name);
         free(full_name);
-        free(content);
     }
 }
 
 problem_data_t *create_problem_data_from_dump_dir(struct dump_dir *dd)
 {
     problem_data_t *problem_data = new_problem_data();
-    load_problem_data_from_dump_dir(problem_data, dd);
+    load_problem_data_from_dump_dir(problem_data, dd, NULL);
+    return problem_data;
+}
+
+/*
+ * Returns NULL-terminated char *vector[]. Result itself must be freed,
+ * but do no free list elements. IOW: do free(result), but never free(result[i])!
+ * If comma_separated_list is NULL or "", returns NULL.
+ */
+static char **build_exclude_vector(const char *comma_separated_list)
+{
+    char **exclude_items = NULL;
+    if (comma_separated_list && comma_separated_list[0])
+    {
+        /* even w/o commas, we'll need two elements:
+         * exclude_items[0] = "name"
+         * exclude_items[1] = NULL
+         */
+        unsigned cnt = 2;
+
+        const char *cp = comma_separated_list;
+        while (*cp)
+            if (*cp++ == ',')
+                cnt++;
+
+        /* We place the string directly after the char *vector[cnt]: */
+        exclude_items = xzalloc(cnt * sizeof(exclude_items[0]) + (cp - comma_separated_list) + 1);
+        char *p = strcpy((char*)&exclude_items[cnt], comma_separated_list);
+
+        char **pp = exclude_items;
+        *pp++ = p;
+        while (*p)
+        {
+            if (*p++ == ',')
+            {
+                p[-1] = '\0';
+                *pp++ = p;
+            }
+        }
+    }
+
+    return exclude_items;
+}
+
+problem_data_t *create_problem_data_for_reporting(const char *dump_dir_name)
+{
+    char **exclude_items = build_exclude_vector(getenv("EXCLUDE_FROM_REPORT"));
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        return NULL; /* dd_opendir already emitted error msg */
+    problem_data_t *problem_data = new_problem_data();
+    load_problem_data_from_dump_dir(problem_data, dd, exclude_items);
+    dd_close(dd);
+    free(exclude_items);
     return problem_data;
 }
 

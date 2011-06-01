@@ -84,12 +84,9 @@ static void report_to_kerneloops(
                 const char *dump_dir_name,
                 map_string_h *settings)
 {
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        exit(1); /* error msg is already logged */
-
-    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
-    dd_close(dd);
+    problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
+    if (!problem_data)
+        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
     const char *backtrace = get_problem_item_content_or_NULL(problem_data, FILENAME_BACKTRACE);
     if (!backtrace)
@@ -113,7 +110,7 @@ static void report_to_kerneloops(
      * RemoteIP: 34192fd15e34bf60fac6a5f01bba04ddbd3f0558
      * - no URL or bug ID apparently...
      */
-    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)
     {
         char *msg = xasprintf("kerneloops: URL=%s", submitURL);

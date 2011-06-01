@@ -420,7 +420,7 @@ void show_events_list_dialog(GtkWindow *parent)
     gtk_widget_show_all(event_list_window);
 }
 
-void show_event_opt_error_dialog(const char *event_name)
+static void show_event_opt_error_dialog(const char *event_name)
 {
     event_config_t *ec = get_event_config(event_name);
     char *message = xasprintf(_("Wrong settings detected for %s, "
@@ -445,6 +445,8 @@ void show_event_opt_error_dialog(const char *event_name)
     gtk_widget_destroy(wrong_settings);
 }
 
+//TODO: move this code to its only callsite?
+// (in which case, move show_event_opt_error_dialog and g_parent_window too)
 void g_validate_event(const char* event_name)
 {
     GHashTable *errors = validate_event(event_name);

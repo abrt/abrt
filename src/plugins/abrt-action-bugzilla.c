@@ -22,15 +22,13 @@
 #include "abrt_xmlrpc.h"
 #include "rhbz.h"
 
-#define XML_RPC_SUFFIX      "/xmlrpc.cgi"
+#define XML_RPC_SUFFIX "/xmlrpc.cgi"
 
 static void report_to_bugzilla(const char *dump_dir_name, map_string_h *settings)
 {
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        xfunc_die(); /* dd_opendir already emitted error msg */
-    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
-    dd_close(dd);
+    problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
+    if (!problem_data)
+        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
     const char *env;
     const char *login;
@@ -100,7 +98,7 @@ static void report_to_bugzilla(const char *dump_dir_name, map_string_h *settings
     VERB3 log("Bugzilla has %i reports with same duphash '%s'",
               all_bugs_size, duphash);
 
-    int bug_id = -1, dependent_bug = -1;
+    int bug_id = -1;
     struct bug_info *bz = NULL;
     if (all_bugs_size > 0)
     {
@@ -110,7 +108,6 @@ static void report_to_bugzilla(const char *dump_dir_name, map_string_h *settings
 
         if (strcmp(bz->bi_product, product) != 0)
         {
-            dependent_bug = bug_id;
             /* found something, but its a different product */
             free_bug_info(bz);
 
@@ -209,7 +206,7 @@ static void report_to_bugzilla(const char *dump_dir_name, map_string_h *settings
                 bugzilla_url,
                 bz->bi_id);
 
-    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (dd)
     {
         char *msg = xasprintf("Bugzilla: URL=%s/show_bug.cgi?id=%u", bugzilla_url, bz->bi_id);
@@ -233,7 +230,7 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "\b [-v] -c CONFFILE -d DIR\n"
+        "\b [-v] [-c CONFFILE] -d DIR\n"
         "\n"
         "Reports problem to Bugzilla.\n"
         "\n"

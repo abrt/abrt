@@ -28,12 +28,9 @@ static void report_to_rhtsupport(
                 const char *dump_dir_name,
                 map_string_h *settings)
 {
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        exit(1); /* error msg is already logged by dd_opendir */
-
-    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
-    dd_close(dd);
+    problem_data_t *problem_data = create_problem_data_for_reporting(dump_dir_name);
+    if (!problem_data)
+        xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
     /* Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing */
     log(_("Compressing data"));
@@ -245,7 +242,7 @@ static void report_to_rhtsupport(
         }
 
         /* No error */
-        dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (dd)
         {
             char *msg = xasprintf("RHTSupport: %s", result);
