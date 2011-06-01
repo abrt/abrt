@@ -112,6 +112,15 @@ static PyObject *p_create_dump_dir_from_problem_data(PyObject *pself, PyObject *
     return (PyObject*)new_dd;
 }
 
+static PyObject *p_add_basics_to_problem_data(PyObject *pself, PyObject *always_null)
+{
+    p_problem_data *self = (p_problem_data*)pself;
+    add_basics_to_problem_data(self->cd);
+
+    Py_RETURN_NONE;
+}
+
+
 //static PyMemberDef p_problem_data_members[] = {
 //    { NULL }
 //};
@@ -121,6 +130,7 @@ static PyMethodDef p_problem_data_methods[] = {
     { "add"            , p_problem_data_add                 , METH_VARARGS },
     { "get"            , p_get_problem_data_item            , METH_VARARGS },
     { "create_dump_dir", p_create_dump_dir_from_problem_data, METH_VARARGS },
+    { "add_basics",      p_add_basics_to_problem_data,        METH_NOARGS },
     { NULL }
 };
 

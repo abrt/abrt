@@ -83,6 +83,8 @@ Summary: Python bindings for report-libs.
 Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
 Provides: report
+# FIXME: just a workaround to make it work with python-meh, but we should probably provide -newt UI asap
+Provides: report-newt
 Obsoletes: report > 0.20
 
 %description -n libreport-python
