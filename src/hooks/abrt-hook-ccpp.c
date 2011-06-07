@@ -169,12 +169,14 @@ static char* get_cwd(pid_t pid)
  * %u - uid
  * %g - gid
  * %t - UNIX time of dump
- * %h - hostname
  * %e - executable filename
+ * %h - hostname
  * %% - output one "%"
  */
-/* Must match CORE_PATTERN order in daemon! */
-static const char percent_specifiers[] = "%scpugthe";
+/* Hook must be installed with exactly the same sequence of %c specifiers.
+ * Last one, %h, may be omitted (we can find it out).
+ */
+static const char percent_specifiers[] = "%scpugteh";
 static char *core_basename = (char*) "core";
 
 static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid, char **percent_values)
@@ -306,13 +308,13 @@ int main(int argc, char** argv)
 {
     struct stat sb;
 
-    if (argc < 10) /* no argv[9]? */
+    if (argc < 9) /* no argv[8]? */
     {
-        /* percent specifier:                %s    %c              %p  %u  %g  %t   %h       %e */
-        /* argv:                 [0] [1]     [2]   [3]             [4] [5] [6] [7]  [8]      [9]         [10] */
+        /* percent specifier:                %s    %c              %p  %u  %g  %t   %e          %h */
+        /* argv:                 [0] [1]     [2]   [3]             [4] [5] [6] [7]  [8]         [9]       [10] */
       // [OLD_PATTERN] is deprecated, so removing it from help:
-      //error_msg_and_die("Usage: %s DUMPDIR SIGNO CORE_SIZE_LIMIT PID UID GID TIME HOSTNAME BINARY_NAME [OLD_PATTERN]", argv[0]);
-        error_msg_and_die("Usage: %s DUMPDIR SIGNO CORE_SIZE_LIMIT PID UID GID TIME HOSTNAME BINARY_NAME", argv[0]);
+      //error_msg_and_die("Usage: %s DUMPDIR SIGNO CORE_SIZE_LIMIT PID UID GID TIME BINARY_NAME [HOSTNAME [OLD_PATTERN]]", argv[0]);
+        error_msg_and_die("Usage: %s DUMPDIR SIGNO CORE_SIZE_LIMIT PID UID GID TIME BINARY_NAME [HOSTNAME]", argv[0]);
     }
 
     /* Not needed on 2.6.30.
@@ -362,7 +364,15 @@ int main(int argc, char** argv)
             argv[10] = NULL; /* don't use old way to pass OLD_PATTERN */
         }
     }
-    if (argv[10]) /* OLD_PATTERN (deprecated) */
+
+    struct utsname uts;
+    if (!argv[9]) /* no HOSTNAME? */
+    {
+        uname(&uts);
+        argv[9] = uts.nodename;
+    }
+    else /* argv[9]=HOSTNAME exists.*/
+    if (argv[10]) /* OLD_PATTERN? (deprecated) */
     {
         char *buf = (char*) xzalloc(strlen(argv[10]) / 2 + 2);
         char *end = hex2bin(buf, argv[10], strlen(argv[10]));

@@ -25,9 +25,13 @@ verbose=false
 LOCK="/var/lock/subsys/abrt-ccpp"
 
 PATTERN_FILE="/proc/sys/kernel/core_pattern"
+SAVED_PATTERN_DIR="/var/run/abrt"
 SAVED_PATTERN_FILE="/var/run/abrt/saved_core_pattern"
 HOOK_BIN="/usr/libexec/abrt-hook-ccpp"
-PATTERN="|$HOOK_BIN /var/spool/abrt %s %c %p %u %g %t %h %e"
+# Must match percent_specifiers[] order in abrt-hook-ccpp.c:
+PATTERN="|$HOOK_BIN /var/spool/abrt %s %c %p %u %g %t %e"
+# Same, but with bogus "executable name" parameter
+PATTERN1="|$HOOK_BIN /var/spool/abrt %s %c %p %u %g %t e"
 
 # core_pipe_limit specifies how many dump_helpers can run at the same time
 # 0 - means unlimited, but it's not guaranteed that /proc/<pid> of crashing
@@ -57,10 +61,19 @@ start() {
 	cur=`cat "$PATTERN_FILE"`
 	cur_first=`printf "%s" "$cur" | sed 's/ .*//'`
 
+	# Is there a %e (executable name) in old pattern anywhere?
+	if test x"${cur#.*%e}" = x"${cur}"; then
+		# No. Can use PATTERN with less risk of overflow
+		# on expansion (executable names can be LONG).
+		# Overflow would cause kernel to abort coredump. BAD.
+		PATTERN="$PATTERN1"
+	fi
+
 	$verbose && printf "cur:'%s'\n" "$cur"
 	# Is it already installed?
 	if test x"$cur_first" != x"|$HOOK_BIN"; then   # no
 		# It is not installed
+		mkdir -p -- "$SAVED_PATTERN_DIR"
 		printf "%s\n" "$cur" >"$SAVED_PATTERN_FILE"
 		# Install new handler
 		$verbose && printf "Installing to %s:'%s'\n" "$PATTERN_FILE" "$PATTERN"
