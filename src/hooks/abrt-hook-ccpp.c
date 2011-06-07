@@ -20,6 +20,7 @@
 */
 #include "abrtlib.h"
 #include <syslog.h>
+#include <sys/utsname.h>
 
 static char* malloc_readlink(const char *linkname)
 {
