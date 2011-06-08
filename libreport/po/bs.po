@@ -1,0 +1,1344 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ABRT\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2011-05-02 20:23+0200\n"
+"PO-Revision-Date: 2011-05-05 10:01+0000\n"
+"Last-Translator: aarnes <arnes99@gmail.com>\n"
+"Language-Team: Bosnian (http://www.transifex.net/projects/p/fedora/team/bs/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: bs\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+
+#: ../src/applet/abrt-applet.desktop.in.h:1
+msgid "ABRT notification applet"
+msgstr "ABRT obavještajni aplet"
+
+#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
+#: ../src/gui-gtk/abrt-gtk.c:358
+msgid "Automatic Bug Reporting Tool"
+msgstr "Automatski alat za izvještaj greški"
+
+#: ../src/applet/applet.c:83
+#, c-format
+msgid "A crash in the %s package has been detected"
+msgstr "Greška je otkrivena u %s paketu."
+
+#: ../src/applet/applet.c:85
+msgid "A crash has been detected"
+msgstr "Greška je otkrivena"
+
+#: ../src/applet/applet.c:279
+msgid "ABRT service is not running"
+msgstr "ABRT servis se neizvodi"
+
+#: ../src/applet/applet_gtk.c:202 ../src/applet/applet_gtk.c:204
+msgid "Warning"
+msgstr "Upozorenje"
+
+#: ../src/applet/applet_gtk.c:259
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
+msgstr ""
+"Obavještajni aplet koji obavještava korisnike o problemima otkrivenim od "
+"strane ABRT-a"
+
+#: ../src/applet/applet_gtk.c:275 ../src/gui-gtk/abrt-gtk.c:243
+msgid "translator-credits"
+msgstr "Arnes Arnautović <arnes99@gmail.com>"
+
+#: ../src/applet/applet_gtk.c:285
+msgid "Hide"
+msgstr "Sakrij"
+
+#: ../src/applet/applet_gtk.c:398
+msgid "Report"
+msgstr "Izvještaj"
+
+#: ../src/applet/applet_gtk.c:401
+msgid "Show"
+msgstr "Pokaži"
+
+#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
+msgid "A Problem has Occurred"
+msgstr "Dogodio se je problem"
+
+#: ../src/applet/applet_gtk.c:429
+msgid "Open ABRT"
+msgstr "Otvori ABRT"
+
+#: ../src/cli/cli.c:175
+#, c-format
+msgid ""
+"Usage: %s -l[f] [-D BASE_DIR]...]\n"
+"   or: %s -r[y] CRASH_DIR\n"
+"   or: %s -i[b] CRASH_DIR\n"
+"   or: %s -d CRASH_DIR\n"
+"\n"
+"\t-l, --list\t\tList not yet reported problems\n"
+"\t  -f, --full\t\tList all problems\n"
+"\t-D BASE_DIR\t\tDirectory to list problems from\n"
+"\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
+"\n"
+"\t-r, --report\t\tSend a report about CRASH_DIR\n"
+"\t  -y, --always\t\t...without editing and asking\n"
+"\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
+"\t  -f, --full\t\t...including multi-line entries\n"
+"\t\t\t\tNote: -if will run analyzers\n"
+"\t\t\t\t(if this CRASH_DIR have defined analyzers)\n"
+"\t-d, --delete\t\tRemove CRASH_DIR\n"
+"\n"
+"\t-V, --version\t\tDisplay version and exit\n"
+"\t-v, --verbose\t\tBe verbose\n"
+msgstr ""
+"Korištenje: %s -l[f] [-D BASE_DIR]...]\n"
+"   ili: %s -r[y] CRASH_DIR\n"
+"   ili: %s -i[b] CRASH_DIR\n"
+"   ili: %s -d CRASH_DIR\n"
+"\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>-l, --list<span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span>Izlistaj probleme koji još nisu prijavljeni\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>  -f, --full<span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span>Izlistaj sve probleme\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>-D BASE_DIR<span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span>Direktorij iz kojeg će se izlistati problemi\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span>(standardno: -D $HOME/.abrt/spool -D %s)\n"
+"\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>-r, --report<span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span>Pošalji izvještaj o CRASH_DIR\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>  -y, --always<span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span>...bez uređivanja i pitanja\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>-i, --info<span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span>Ispiši detaljne informacije o CRASH_DIR\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>  -f, --full<span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span>...uključujući više-redne unose\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span>Važno: -if će izvoditi analizatore\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span>(ako ovaj CRASH_DIR ima definisane analizatore)\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>-d, --delete<span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span>Odstrani CRASH_DIR\n"
+"\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>-V, --version<span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span>Prikaži verziju i izađi\n"
+"<span class=\"whitespace other\" title=\"Tab\">»</span>-v, --verbose<span class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab\">»</span>Budi opširan\n"
+
+#: ../src/cli/cli.c:224
+msgid "You must specify exactly one operation"
+msgstr "Morate odrediti samo jednu operaciju"
+
+#: ../src/cli/report.c:131
+#, c-format
+msgid "# This field is read only\n"
+msgstr "# Ovo polje se samo može čitati\n"
+
+#: ../src/cli/report.c:151
+msgid "# Describe the circumstances of this crash below"
+msgstr "# Opišite uslove pod kojima se dogodio pad"
+
+#: ../src/cli/report.c:153
+msgid ""
+"# Backtrace\n"
+"# Check that it does not contain any sensitive data (passwords, etc.)"
+msgstr ""
+"# Funkcijski trag\n"
+"# Pobrinite se da nesadrži bilo kakve osjetljive podatke (šifre, itd.)"
+
+#: ../src/cli/report.c:155
+msgid "# Architecture"
+msgstr "# Arhitektura"
+
+#: ../src/cli/report.c:156
+msgid "# Command line"
+msgstr "Naredbena linija"
+
+#: ../src/cli/report.c:157
+msgid "# Component"
+msgstr "Komponenta"
+
+#: ../src/cli/report.c:158
+msgid "# Core dump"
+msgstr "# Ispis jezgre"
+
+#: ../src/cli/report.c:159
+msgid "# Executable"
+msgstr "Izvršivo"
+
+#: ../src/cli/report.c:160
+msgid "# Kernel version"
+msgstr "# Kernel verzija"
+
+#: ../src/cli/report.c:161
+msgid "# Package"
+msgstr "Paket"
+
+#: ../src/cli/report.c:162
+msgid "# Reason of crash"
+msgstr "# Razlog pada"
+
+#: ../src/cli/report.c:163
+msgid "# Release string of the operating system"
+msgstr "# Znakovni niz izdanja operativnog sistema"
+
+#: ../src/cli/report.c:276
+msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
+msgstr "Nemogu pokrenuti vi: $TERM, $VISUAL i $EDITOR nisu postavljeni"
+
+#: ../src/cli/report.c:360
+msgid ""
+"\n"
+"The report has been updated"
+msgstr ""
+"\n"
+"Izvještaj je ažuriran"
+
+#: ../src/cli/report.c:362
+msgid ""
+"\n"
+"No changes were detected in the report"
+msgstr ""
+"\n"
+"Niakakve promjene nisu otkrivene u izvještaju"
+
+#. The response might take more than 1 char in non-latin scripts.
+#: ../src/cli/report.c:394
+msgid "y"
+msgstr "d"
+
+#: ../src/cli/report.c:395
+msgid "N"
+msgstr "N"
+
+#: ../src/cli/report.c:492
+msgid "Your input is not valid, because of:"
+msgstr "Vaš unos nije ispravan zbog:"
+
+#: ../src/cli/report.c:495
+#, c-format
+msgid "Bad value for '%s': %s"
+msgstr "Loša vrijednost za '%s': %s"
+
+#: ../src/cli/report.c:592
+#, c-format
+msgid "Select how you would like to analyze the problem:\n"
+msgstr "Odaberite kako želite analizirati ovaj problem:\n"
+
+#: ../src/cli/report.c:608
+#, c-format
+msgid "Choose option [0 - %u]: "
+msgstr "Odaberite opciju [0 - %u]: "
+
+#: ../src/cli/report.c:622
+#, c-format
+msgid "You have chosen number out of range"
+msgstr "Odabrali ste broj izvan dometa"
+
+#: ../src/cli/report.c:630
+msgid "Invalid input, program exiting..."
+msgstr "Nevažeći unos. Program prekida sa radom..."
+
+#: ../src/cli/report.c:740 ../src/gui-wizard-gtk/wizard.c:1101
+msgid "Reporting..."
+msgstr "Izvještavam..."
+
+#: ../src/cli/report.c:761
+#, c-format
+msgid "Report using %s?"
+msgstr "Koristiti %s pri izvještavanju?"
+
+#: ../src/cli/report.c:768
+msgid "Skipping..."
+msgstr "Preskačem..."
+
+#: ../src/cli/report.c:778
+msgid "Reporting disabled because the backtrace is unusable"
+msgstr "Izvještavanje isključeno jer je funkcijski trag neiskoristiv"
+
+#: ../src/cli/report.c:782
+#, c-format
+msgid ""
+"Please try to install debuginfo manually using the command: \"debuginfo-"
+"install %s\" and try again\n"
+msgstr ""
+"Molim pokušajte da instalirate debuginfo ručno koristeći naredbu: "
+"\"debuginfo-install %s\" i pokušajte ponovno.\n"
+
+#: ../src/cli/report.c:804
+#, c-format
+msgid "Problem reported via %d report events (%d errors)\n"
+msgstr "Pad obavješten putem %d obavještajnih događaja (%d greški)\n"
+
+#: ../src/daemon/abrt-action-save-package-data.c:254
+msgid ""
+" [-v] -d DIR\n"
+"\n"
+"Query package database and save package name, component, and description"
+msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"Postavi upit bazi podataka od paketa i spremi ime paketa, komponentu i opis"
+
+#: ../src/daemon/abrt-action-save-package-data.c:265
+#: ../src/daemon/abrt-handle-crashdump.c:61
+#: ../src/plugins/abrt-action-analyze-backtrace.c:70
+#: ../src/plugins/abrt-action-analyze-c.c:177
+#: ../src/plugins/abrt-action-analyze-oops.c:159
+#: ../src/plugins/abrt-action-analyze-python.c:45
+#: ../src/plugins/abrt-action-bugzilla.cpp:933
+#: ../src/plugins/abrt-action-generate-backtrace.c:256
+#: ../src/plugins/abrt-action-kerneloops.c:154
+#: ../src/plugins/abrt-action-mailx.c:155
+#: ../src/plugins/abrt-action-print.c:53
+#: ../src/plugins/abrt-action-rhtsupport.c:291
+#: ../src/plugins/abrt-action-upload.c:258
+msgid "Dump directory"
+msgstr "Direktorij ispisa"
+
+#: ../src/daemon/abrt-handle-crashdump.c:43
+msgid ""
+" [-vs] -d DIR -e EVENT\n"
+"   or: "
+msgstr ""
+" [-vs] -d DIREKTORIJ -e DOGAĐAJ\n"
+"   ili: "
+
+#: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:301
+#: ../src/plugins/abrt-dump-oops.c:585
+msgid "Log to syslog"
+msgstr "Zapiši u syslog"
+
+#: ../src/daemon/abrt-handle-crashdump.c:62
+msgid "Handle EVENT"
+msgstr "Obradi DOGAĐAJ"
+
+#: ../src/daemon/abrt-handle-crashdump.c:63
+msgid "List possible events [which start with PFX]"
+msgstr "Izlistaj moguće događaje [koji počinju sa PFX]"
+
+#: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:302
+#: ../src/daemon/abrtd.c:525 ../src/gui-gtk/main.c:228
+#: ../src/gui-wizard-gtk/main.c:94
+msgid "Add program names to log"
+msgstr "Dodaj nazive programa u zapis"
+
+#: ../src/daemon/abrt-server.c:289 ../src/daemon/abrtd.c:510
+msgid " [options]"
+msgstr " [opcije]"
+
+#: ../src/daemon/abrt-server.c:300
+msgid "Use UID as client uid"
+msgstr "Koristi UID kao klijentov uid"
+
+#: ../src/daemon/abrtd.c:337
+msgid ""
+"The size of the report exceeded the quota. Please check system's "
+"MaxCrashReportsSize value in abrt.conf."
+msgstr ""
+"Veličina izvještaja je premašila kvotu. Molim provjerite sistemsku "
+"MaxCrashReportsSize vrijednost u abrt.conf."
+
+#: ../src/daemon/abrtd.c:522
+msgid "Do not daemonize"
+msgstr "Nemoj deamonizirati"
+
+#: ../src/daemon/abrtd.c:523
+msgid "Log to syslog even with -d"
+msgstr "Zapiši u syslog čak i sa -d"
+
+#: ../src/daemon/abrtd.c:524
+msgid "Exit after SEC seconds of inactivity"
+msgstr "Izađi nakon SEC sekundi neaktivnosti"
+
+#: ../src/gtk-helpers/event_config_dialog.c:123
+msgid "Show password"
+msgstr "Pokaži šifru"
+
+#: ../src/gtk-helpers/event_config_dialog.c:344
+msgid "Event Configuration"
+msgstr "Konfiguracija događaja"
+
+#: ../src/gtk-helpers/event_config_dialog.c:369
+msgid "Event"
+msgstr "Događaj"
+
+#: ../src/gtk-helpers/event_config_dialog.c:402
+msgid "Configure E_vent"
+msgstr "Konfiguriraj E_vent"
+
+#: ../src/gtk-helpers/event_config_dialog.c:425
+#, c-format
+msgid ""
+"Wrong settings detected for %s, reporting will probably fail if you continue"
+" with the current configuration."
+msgstr ""
+"Pogrešne postavke otkrivene za %s. Izvještavanje  vjerovatno neće uspjeti "
+"ako nastavite sa trenutnom konfiguracijom."
+
+#: ../src/gtk-helpers/event_config_dialog.c:429
+#, c-format
+msgid ""
+"Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
+"continue with the current configuration."
+msgstr ""
+"Pogrešne postavke otkrivene za <b>%s</b>. Izvještavanje vjerovatno neće "
+"uspjeti ako nastavite sa trenutnom konfiguracijom."
+
+#: ../src/gui-gtk/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "Pogledaj i izvijesti aplikacijske padove"
+
+#: ../src/gui-gtk/abrt-gtk.c:262
+msgid "Reported"
+msgstr "Izvješteno"
+
+#: ../src/gui-gtk/abrt-gtk.c:274
+msgid "Problem"
+msgstr "Problem"
+
+#: ../src/gui-gtk/abrt-gtk.c:297
+msgid "Last occurrence"
+msgstr "Zadnje pojavljivanje"
+
+#: ../src/gui-gtk/abrt-gtk.c:312
+msgid "_File"
+msgstr "_Datoteka"
+
+#: ../src/gui-gtk/abrt-gtk.c:313
+msgid "_Edit"
+msgstr "_Uredi"
+
+#: ../src/gui-gtk/abrt-gtk.c:314
+msgid "_Help"
+msgstr "_Pomoć"
+
+#: ../src/gui-gtk/abrt-gtk.c:330
+msgid "_Event configuration"
+msgstr "Konfiguracija _događaja"
+
+#: ../src/gui-gtk/abrt-gtk.c:411
+msgid "Online _Help"
+msgstr " Internet _Pomoć"
+
+#: ../src/gui-gtk/main.c:216
+msgid ""
+" [-vp] [DIR]...\n"
+"\n"
+"Shows list of ABRT dump directories in specified DIR(s)\n"
+"(default DIRs: "
+msgstr ""
+" [-vp] [DIR]...\n"
+"\n"
+"Prikazuje listu ABRT direktorija za ispis u specificiranim DIR(ovima)\n"
+"(standardni DIRovi: "
+
+#: ../src/gui-wizard-gtk/main.c:81
+msgid ""
+" [-vp] [-g GUI_FILE] DIR\n"
+"\n"
+"GUI tool to analyze and report problem saved in specified DIR"
+msgstr ""
+" [-vp] [-g GUI_FILE] DIR\n"
+"\n"
+"GUI alat za analiziranje i izvještaj problema spremljenog u specificiranom DIR"
+
+#: ../src/gui-wizard-gtk/main.c:93
+msgid "Alternate GUI file"
+msgstr "Alternativna GUI datoteka"
+
+#: ../src/gui-wizard-gtk/wizard.c:201
+#, c-format
+msgid ""
+"Need writable directory, but '%s' is not writable. Move it to '%s' and "
+"operate on the moved copy?"
+msgstr ""
+"Trebam direktorij sa dopuštenjem pisanja međutim '%s' to nije. Prebaciti u "
+"'%s' i raditi na premještenoj kopiji?"
+
+#: ../src/gui-wizard-gtk/wizard.c:559
+msgid "(click here to view/edit)"
+msgstr "(pritisnite ovdje da pogledate/uredite)"
+
+#: ../src/gui-wizard-gtk/wizard.c:571
+#, c-format
+msgid "(binary file, %llu bytes)"
+msgstr "(binarna datoteka, %llu bajta)"
+
+#: ../src/gui-wizard-gtk/wizard.c:586
+msgid "(no description)"
+msgstr "(bez opisa)"
+
+#: ../src/gui-wizard-gtk/wizard.c:591
+#, c-format
+msgid "%llu bytes, %u files"
+msgstr "%llu bajta, %u datoteka"
+
+#. TODO: better msg?
+#: ../src/gui-wizard-gtk/wizard.c:914
+#, c-format
+msgid "No processing for event '%s' is defined"
+msgstr "Procesiranje za događaj '%s' nije definisano"
+
+#. bt is usable, but not complete, so show a warning
+#: ../src/gui-wizard-gtk/wizard.c:1004
+msgid ""
+"The backtrace is incomplete, please make sure you provide the steps to "
+"reproduce."
+msgstr ""
+"Funkcijski trag nije potpun. Molim pobrinite se da unesete korake za "
+"reproduciranje."
+
+#. FIXME: see CreporterAssistant: 394 for ideas
+#: ../src/gui-wizard-gtk/wizard.c:1009
+msgid "Reporting disabled because the backtrace is unusable."
+msgstr "Izvještavanje isključeno jer je funkcijski trag neiskoristiv."
+
+#: ../src/gui-wizard-gtk/wizard.c:1018
+msgid "You should check the backtrace for sensitive data."
+msgstr "Trebali biste provjeriti funkcijski trag zbog osjetljivih podataka."
+
+#: ../src/gui-wizard-gtk/wizard.c:1019
+msgid "You must agree with sending the backtrace."
+msgstr "Morate se složiti sa slanjem funkcijskog traga."
+
+#: ../src/gui-wizard-gtk/wizard.c:1075
+msgid "Analyzing..."
+msgstr "Analiziram..."
+
+#: ../src/gui-wizard-gtk/wizard.c:1076
+#, c-format
+msgid "Analyzing finished with exit code %d"
+msgstr "Analiziranje završeno sa izlaznim kodom %d"
+
+#: ../src/gui-wizard-gtk/wizard.c:1102
+#, c-format
+msgid "Reporting finished with exit code %d"
+msgstr "Izvještavanje završeno sa izlaznim kodom %d"
+
+#: ../src/gui-wizard-gtk/wizard.c:1219
+msgid "Name"
+msgstr "Ime"
+
+#: ../src/gui-wizard-gtk/wizard.c:1228
+msgid "Value"
+msgstr "Vrijednost"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:1
+msgid ""
+"<b>Your comments are not private.</b> They may be included into publicly "
+"visible problem reports."
+msgstr ""
+"<b>Vaši komentari nisu privatni.</b> Moguće je da se uključe u javno "
+"vidljive izvještaje problema."
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:2
+msgid "Analyzing did not start yet"
+msgstr "Analiziranje još nije počelo"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:3
+msgid "Any additional comments useful for diagnosing the problem?"
+msgstr ""
+"Bilo kakav dodatni komentar koji može biti koristan za dijagnosticiranje "
+"problema?"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:4
+msgid ""
+"Backtrace provides developers with details of the crash, helping them track "
+"down the source of the problem. Please review it and remove any sensitive "
+"data you would rather not share:"
+msgstr ""
+"Funkcijski trag daje programerima detalje pada, pomažući im u pronalasku "
+"izvora problema. Molim provjerite ga i odstranite bilo kakve osjetljive "
+"podatke koje neželite dijeliti:"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:5
+msgid ""
+"Can create more informative backtrace if you installed additional debug "
+"packages"
+msgstr ""
+"Detaljniji funkcijski trag bi se mogao stvoriti da imate instalirane dodatne"
+" debug pakete"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:6
+msgid "Click 'Apply' to start reporting"
+msgstr "Pritisnite 'Primjeni' da započnete izvještavanje"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:7
+msgid "Configure _Events"
+msgstr "Konfiguriši _događaje"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
+msgid "Details"
+msgstr "Detalji"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:9
+msgid "How did this problem happen (step-by-step)? How can it be reproduced?"
+msgstr ""
+"Kako se je ovaj problem dogodio (korak po korak)? Kako se može "
+"reproducirati?"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:10
+msgid "I _agree with submitting the backtrace"
+msgstr "Slažem se sa podnošenjem funkcijskog traga"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:11
+msgid ""
+"On the following screens, you will be asked to describe how the problem "
+"occurred, to choose how to analyze the problem (if needed), to review "
+"collected data, and to choose where the problem should be reported. Click "
+"'Forward' to proceed."
+msgstr ""
+"Na sljedećim prikazima od Vas će se tražiti da opišete kako se problem "
+"dogodio, da odaberete kako da se analizira problem (ako je potrebno), da "
+"pregledate sakupljene podatke i da odaberete gdje bi se problem trebao "
+"poslati. Pritisnite 'Naprijed' da nastavite."
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:12
+msgid "Regenerate backtrace"
+msgstr "Ponovno napravi funkcijski trag"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
+msgid "Reporter(s):"
+msgstr "Izvještavač(i):"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:14
+msgid "Reporting did not start yet"
+msgstr "Izvještavanje još nije počelo"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
+msgid "Select how you would like to analyze the problem:"
+msgstr "Odaberite kako bi htjeli da analizirate problem:"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
+msgid "Select how you would like to report the problem:"
+msgstr "Odaberite kako bi htjeli da izvijestite problem:"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
+msgid "Size:"
+msgstr "Veličina:"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
+msgid ""
+"Use this button to generate more informative backtrace after you installed "
+"additional debug packages"
+msgstr ""
+"Koristite ovo dugme da stvorite detaljniji funkcijski trag nakon što ste "
+"instalirali dodatne debug datoteke"
+
+#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
+#, c-format
+msgid "Uploaded: %llu of %llu kbytes"
+msgstr "Prebačeno: %llu od %llu kb"
+
+#: ../src/lib/event_config.c:294
+msgid "Missing mandatory value"
+msgstr "Nedostaje obavezna vrijednost"
+
+#: ../src/lib/event_config.c:302
+#, c-format
+msgid "Invalid utf8 character '%c'"
+msgstr "Nevažeći utf8 znak '%c'"
+
+#: ../src/lib/event_config.c:315
+#, c-format
+msgid "Invalid number '%s'"
+msgstr "Nevažeći broj '%s'"
+
+#: ../src/lib/event_config.c:327
+#, c-format
+msgid "Invalid boolean value '%s'"
+msgstr "Nevažeća boolean vrijednost '%s'"
+
+#: ../src/lib/event_config.c:333
+msgid "Unsupported option type"
+msgstr "Nepodržan tip opcije"
+
+#: ../src/lib/parse_options.c:29
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Korištenje: %s\n"
+
+#: ../src/plugins/abrt-action-analyze-backtrace.c:59
+msgid ""
+" [options] -d DIR\n"
+"\n"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
+msgstr ""
+" [options] -d DIREKTORIJ\n"
+"\n"
+"Analizira C/C++ funkcijski trag, stvara duplikacijski hash, ocjena funkcijskog traga i identificira funkciju pada u direktoriju ispisa DIREKTORIJ"
+
+#. * The parser failed. Compute the duphash from the executable
+#. * instead of a backtrace.
+#. * and component only.  This is not supposed to happen often.
+#. 
+#: ../src/plugins/abrt-action-analyze-backtrace.c:111
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr "Prolazak kroz funkcijski trag nije uspjelo za %s"
+
+#: ../src/plugins/abrt-action-analyze-c.c:166
+msgid ""
+" [-v] -d DIR\n"
+"\n"
+"Calculates and saves UUID of coredump in dump directory DIR"
+msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"Izračunava i sprema UUID od ispisa jezgre u direktorij ispisa DIR"
+
+#: ../src/plugins/abrt-action-analyze-oops.c:148
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID and DUPHASH for oops dump directory DIR"
+msgstr ""
+" [-vs] -d DIREKTORIJ\n"
+"\n"
+"Izračunava i sprema UUID i DUPHASH za oops direktorij ispisa DIREKTORIJ"
+
+#: ../src/plugins/abrt-action-analyze-python.c:34
+msgid ""
+" [-v] -d DIR\n"
+"\n"
+"Calculates and saves UUID and DUPHASH of python crash dumps"
+msgstr ""
+" [-v] -d DIR\n"
+"\n"
+"Izračunava i sprema UUID i DUPHASH od python ispisa pada"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:518
+#, c-format
+msgid "New bug id: %i"
+msgstr "Novi id greške: %i"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:649
+msgid "Empty login or password, please check your configuration"
+msgstr ""
+"Prazno korisničko ime ili šifra. Molim, provjerite svoju konfiguraciju"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:663
+#, c-format
+msgid "Essential file '%s' is missing, can't continue.."
+msgstr "Neophodna datoteka '%s' nedostaje. Nemogu nastaviti."
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:667
+#, c-format
+msgid "Essential file '%s' is empty, can't continue.."
+msgstr "Neophodna datoteka '%s' je prazna. Nemogu nastaviti."
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:676
+#, c-format
+msgid "Logging into Bugzilla at %s"
+msgstr "Prijavljujem se u Bugzilla na %s"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:679
+msgid "Checking for duplicates"
+msgstr "Provjeravanje duplikata"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:701
+#: ../src/plugins/abrt-action-bugzilla.cpp:737
+msgid "Missing mandatory member 'bugs'"
+msgstr "Nedostaje obavezni član 'bugs'"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:720
+#: ../src/plugins/abrt-action-bugzilla.cpp:753
+#: ../src/plugins/abrt-action-bugzilla.cpp:829
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr ""
+"get_bug_info() neuspjelo. Nisam mogao skupiti sve obavezne informacije"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:768
+msgid "Creating a new bug"
+msgstr "Stvaram novu grešku"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:773
+msgid "Bugzilla entry creation failed"
+msgstr "Bugzilla stvaranje unosa neuspjelo"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:785
+#: ../src/plugins/abrt-action-bugzilla.cpp:885
+msgid "Logging out"
+msgstr "Odjavljujem se"
+
+#. decision based on state
+#: ../src/plugins/abrt-action-bugzilla.cpp:803
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "Greška je već izviještena: %i"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:814
+#, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr "Bugzilla nije mogla naći roditelja greške %d"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:844
+#, c-format
+msgid "Add %s to CC list"
+msgstr "Dodaj %s na CC listu"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:870
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "Dodaj novi komentar u grešku %d"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:921
+msgid ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"Reports problem to Bugzilla"
+msgstr ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"Izvještava problem na Bugzilla"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:934
+#: ../src/plugins/abrt-action-rhtsupport.c:292
+msgid "Configuration file (may be given many times)"
+msgstr "Konfiguracijska datoteka (može se dati mnogo puta)"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:243
+msgid ""
+" [options] -d DIR\n"
+"\n"
+"Generates and saves backtrace for coredump in dump directory DIR"
+msgstr ""
+" [options] -d DIR\n"
+"\n"
+"Stvara i sprema funkcijski trag za ispis jezgre u direktorij za ispis DIR"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:257
+msgid "Additional debuginfo directories"
+msgstr "Dodatni debuginfo direktoriji"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:258
+msgid "Kill gdb if it runs for more than N seconds"
+msgstr "Uništi gdb ako bude radio više od N sekundi"
+
+#. Don't be completely silent. gdb run takes a few seconds,
+#. * it is useful to let user know it (maybe) worked.
+#. 
+#: ../src/plugins/abrt-action-generate-backtrace.c:298
+#, c-format
+msgid "Backtrace is generated and saved, %u bytes"
+msgstr "Funkcijski trag je napravljen i spremljen, %u bajta"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:100
+#, python-format
+msgid "Extracting cpio from %s"
+msgstr "Vadim cpio iz %s"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:105
+#, python-format
+msgid "Can't write to '%s': %s"
+msgstr "Nemogu pisati u '%s': %s"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:119
+#, python-format
+msgid "Can't extract package '%s'"
+msgstr "Nemogu izvaditi paket '%s'"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:127
+#, python-format
+msgid "Caching files from %s made from %s"
+msgstr "Keširanje datoteka iz %s dobivenih od %s"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:137
+#, python-format
+msgid "Can't extract files from '%s'"
+msgstr "Nemogu izvaditi datoteke iz '%s'"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:161
+#: ../src/plugins/abrt-action-install-debuginfo.py:171
+#, python-format
+msgid "Downloading (%i of %i) %s: %3u%%"
+msgstr "Preuzimam (%i od %i) %s: %3u%%"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:196
+#, python-format
+msgid "Error initializing yum (YumBase.doConfigSetup): '%s'"
+msgstr "Greški pri yum inicijalizaciji (YumBase.doConfigSetup): '%s'"
+
+#. This is somewhat "magic", it unpacks the metadata making it usable.
+#. Looks like this is the moment when yum talks to remote servers,
+#. which takes time (sometimes minutes), let user know why
+#. we have "paused":
+#: ../src/plugins/abrt-action-install-debuginfo.py:239
+msgid "Looking for needed packages in repositories"
+msgstr "Tražim potrebne pakete u odlagalištima"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:243
+#, python-format
+msgid "Error retrieving metadata: '%s'"
+msgstr "Greška pri pronalaženju metapodataka: '%s'"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:253
+#, python-format
+msgid "Error retrieving filelists: '%s'"
+msgstr "Greška pri pronalaženju listi datoteka: '%s'"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:286
+#, python-format
+msgid "Can't find packages for %u debuginfo files"
+msgstr "Nemogu pronaći pakete za %u debuginfo datoteke"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:288
+#, python-format
+msgid "Packages to download: %u"
+msgstr "Paketa za preuzimanje: %u"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:289
+#, python-format
+msgid "Downloading %.2fMb, installed size: %.2fMb"
+msgstr "Preuzimam %.2fMb, veličina instalacije: %.2fMb"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:297
+msgid "Is this ok? [y/N] "
+msgstr "Dali je ovo u redu? [y/N]"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:314
+#, python-format
+msgid "Downloading package %s failed"
+msgstr "Preuzimanje paketa %s neuspjelo"
+
+#. recursively delete the temp dir on failure
+#: ../src/plugins/abrt-action-install-debuginfo.py:325
+msgid "Unpacking failed, aborting download..."
+msgstr "Raspakiranje neuspjelo, prekidam preuzimanje..."
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:332
+#, python-format
+msgid "All downloaded packages have been extracted, removing %s"
+msgstr "Svi preuzeti paketi su izvađeni, odstranjujem %s"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:337
+#, python-format
+msgid "Can't remove %s, probably contains an error log"
+msgstr "Nemogu odstraniti %s. Vjerovatno sadrži zapis greške"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:371
+#, python-format
+msgid "Can't remove '%s': %s"
+msgstr "Nemogu odstraniti '%s': %s"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:379
+msgid "Exiting on user command"
+msgstr "Izlazim na korisničku naredbu"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:411
+#, python-format
+msgid ""
+"Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR] [--size_mb=SIZE]\n"
+"\n"
+"Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
+"to CACHEDIR, using TMPDIR as temporary staging area.\n"
+"Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
+"\n"
+"    -v          Be verbose\n"
+"    -y          Noninteractive, assume 'Yes' to all questions\n"
+"    --ids       Default: build_ids\n"
+"    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     Default: /var/cache/abrt-di\n"
+"    --size_mb   Default: 4096\n"
+msgstr ""
+"Korištenje: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+"       [--tmpdir=PRIVDIR] [--cache=CACHEDIR] [--size_mb=VELIČINA]\n"
+"\n"
+"Instalira debuginfo-e za sve build-id-ove izlistate u BUILD_IDS_FILE\n"
+"u CACHEDIR koristeći PRIVDIR kao privremeno područje za pripremanje.\n"
+"Stare datoteke u CACHEDIR se brišu dok su manje nego VELIČINA.\n"
+"\n"
+"    -v          Budi detaljan\n"
+"    -y          Neinteraktivno, pretpostavi 'Da' na sva pitanja\n"
+"    --ids       Default: build_ids\n"
+"    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     Default: /var/cache/abrt-di\n"
+"    --size_mb   Default: 4096\n"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:466
+#, python-format
+msgid "Can't open %s: %s"
+msgstr "Nemogu otvoriti %s: %s"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:496
+#, python-format
+msgid "Coredump references %u debuginfo files, %u of them are not installed"
+msgstr ""
+"Memorijski ispis spominje %u debuginfo datoteke. %u od njih nisu instalirane"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:507
+#, python-format
+msgid "Missing debuginfo file: %s"
+msgstr "Nedostaje debuginfo datoteka: %s"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:510
+#, python-format
+msgid "All %u debuginfo files are available"
+msgstr "Sve %u debuginfo datoteke su dostupne"
+
+#: ../src/plugins/abrt-action-kerneloops.c:105
+#, c-format
+msgid "Submitting oops report to %s"
+msgstr "Podnosim izvještaj u %s"
+
+#: ../src/plugins/abrt-action-kerneloops.c:142
+msgid ""
+" [-v] [-c CONFFILE]... -d DIR\n"
+"\n"
+"Reports kernel oops to kerneloops.org (or similar) site"
+msgstr ""
+" [-v] [-c KONFDATOTEKA]... -d DIREKTORIJ\n"
+"\n"
+"Izvještava kernel probleme na kerneloops.org (ili sličnu) stranicu"
+
+#: ../src/plugins/abrt-action-kerneloops.c:155
+msgid "Configuration file"
+msgstr "Konfiguracijska datoteka"
+
+#: ../src/plugins/abrt-action-mailx.c:109
+msgid "Sending an email..."
+msgstr "Šaljem email..."
+
+#: ../src/plugins/abrt-action-mailx.c:143
+msgid ""
+" [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"Sends contents of a dump directory DIR via email"
+msgstr ""
+" [-v] -d DIR [-c KONFFILE]\n"
+"\n"
+"Šalje sadržaje direktorija za ispis DIR putem e-pošte"
+
+#: ../src/plugins/abrt-action-mailx.c:156
+#: ../src/plugins/abrt-action-upload.c:259
+msgid "Config file"
+msgstr "Konfiguracijska datoteka"
+
+#: ../src/plugins/abrt-action-print.c:39
+msgid ""
+" [-v] -d DIR [-o FILE] [-a yes/no]\n"
+"\n"
+"Prints problem information to standard output or FILE"
+msgstr ""
+" [-v] -d DIR [-o FILE] [-a da/ne]\n"
+"\n"
+"Ispisuje informacije problema na standardni izlaz ili FILE"
+
+#: ../src/plugins/abrt-action-print.c:54
+msgid "Output file"
+msgstr "Izlazna datoteka"
+
+#: ../src/plugins/abrt-action-print.c:55
+msgid "Append to, or overwrite FILE"
+msgstr "Dodaj ili spremi preko FILE"
+
+#: ../src/plugins/abrt-action-print.c:56
+msgid "Create reported_to in DIR"
+msgstr "Stvori reported_to u DIR"
+
+#: ../src/plugins/abrt-action-print.c:102
+#, c-format
+msgid "The report was appended to %s"
+msgstr "Izvještaj je dodat u %s"
+
+#: ../src/plugins/abrt-action-print.c:102
+#, c-format
+msgid "The report was stored to %s"
+msgstr "Izvještaj je spremljen u %s"
+
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
+#. error msg is already logged by dd_opendir
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
+#: ../src/plugins/abrt-action-rhtsupport.c:41
+#: ../src/plugins/abrt-action-upload.c:119
+msgid "Compressing data"
+msgstr "Kompresiram podatke"
+
+#: ../src/plugins/abrt-action-rhtsupport.c:73
+msgid "Empty RHTS login or password"
+msgstr "Prazno RHTS korisničko ime ili šifra"
+
+#: ../src/plugins/abrt-action-rhtsupport.c:101
+msgid "Can't create a temporary directory in /tmp"
+msgstr "Nemogu stvoriti privremeni direktorij u /tmp"
+
+#: ../src/plugins/abrt-action-rhtsupport.c:194
+msgid "Creating a new case..."
+msgstr "Stvaram novi slučaj..."
+
+#: ../src/plugins/abrt-action-rhtsupport.c:279
+msgid ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"Reports a problem to RHTSupport"
+msgstr ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"Izvještava problem RHT podrški"
+
+#: ../src/plugins/abrt-action-trim-files.c:154
+msgid ""
+" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"\n"
+"Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
+msgstr ""
+" [-v] [-d VELIČINA:DIREKTORIJ]... [-f VELIČINA:DIREKTORIJ]... [-p DIREKTORIJ]\n"
+"\n"
+"Briše direktorije ispisa (-d) ili datoteke (-f) u DIREKTORIJima dok nisu manji nego VELIČINA"
+
+#: ../src/plugins/abrt-action-trim-files.c:167
+msgid "Delete dump dirs"
+msgstr "Obriši direktorije za ispis"
+
+#: ../src/plugins/abrt-action-trim-files.c:168
+msgid "Delete files"
+msgstr "Obriši datoteke"
+
+#: ../src/plugins/abrt-action-trim-files.c:169
+msgid "Preserve this dump dir"
+msgstr "Sačuvaj ovaj direktorij za ispis"
+
+#: ../src/plugins/abrt-action-upload.c:63
+#, c-format
+msgid "Sending %s to %s"
+msgstr "Šaljem %s na %s"
+
+#. This ends up a "reporting status message" in abrtd
+#: ../src/plugins/abrt-action-upload.c:96
+#, c-format
+msgid "Successfully sent %s to %s"
+msgstr "Uspješno slanje %s na %s"
+
+#: ../src/plugins/abrt-action-upload.c:210
+#, c-format
+msgid "Archive is created: '%s'"
+msgstr "Arhiva je stvorena: '%s'"
+
+#: ../src/plugins/abrt-action-upload.c:245
+msgid ""
+" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"Uploads compressed tarball of dump directory DIR"
+msgstr ""
+" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"Prebacuje kompresiranu tar datoteku od direktorija za ispis DIR"
+
+#: ../src/plugins/abrt-action-upload.c:260
+msgid "Base URL to upload to"
+msgstr "Osnovni URL za prebacivanje"
+
+#: ../src/plugins/abrt-dump-oops.c:569
+msgid ""
+" [-vsrowx] [-d DIR] FILE\n"
+"\n"
+"Extract oops from syslog/dmesg file"
+msgstr ""
+" [-vsrowx] [-d DIR] FILE\n"
+"\n"
+"Izvadi oops iz syslog/dmesg datoteke"
+
+#: ../src/plugins/abrt-dump-oops.c:586
+msgid "Parse kernel's message buffer before parsing FILE"
+msgstr "Prođi kroz spremnik poruka kernela prije nego prođeš kroz DATOTEKU"
+
+#: ../src/plugins/abrt-dump-oops.c:587
+msgid "Print found oopses on standard output"
+msgstr "Ispiši pronađene oopse na standardnom izlazu"
+
+#: ../src/plugins/abrt-dump-oops.c:588
+msgid "Do not exit, watch the file for new oopses"
+msgstr "Nemoj izlaziti. prati datoteke za nove oopse"
+
+#. oopses don't contain any sensitive info, and even
+#. * the old koops app was showing the oopses to all users
+#. 
+#: ../src/plugins/abrt-dump-oops.c:592
+msgid "Create ABRT dump in DIR for every oops found"
+msgstr "Stvori ABRT ispis u DIR za svaki pronađen oops"
+
+#: ../src/plugins/abrt-dump-oops.c:593
+msgid "Make the dump directory world readable"
+msgstr "Direktorij za spis postaje slobodan za pisanje svima"
+
+#: ../src/plugins/abrt-retrace-client.c:890
+msgid "log to syslog"
+msgstr "zapiši u syslog"
+
+#: ../src/plugins/analyze_LocalGDB.xml.in.h:1
+msgid "Download debuginfo packages and generate backtrace locally using GDB"
+msgstr ""
+"Preuzmi debuginfo pakete i stvori funkcijski trag lokalno koristeći GDB"
+
+#: ../src/plugins/analyze_LocalGDB.xml.in.h:2
+msgid "Local GNU Debugger"
+msgstr "Lokalni GNU ispravljač greški"
+
+#: ../src/plugins/analyze_LocalGDB.xml.in.h:3
+msgid ""
+"Needs to downloads debuginfo packages, which might take significant time, "
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
+msgstr ""
+"Treba da preuzme debuginfo pakete koji mogu zahtjevati dosta vremena i "
+"zauzeti prostor na tvrdom disku. Međutim, za razliku od RetraceServer, "
+"nešalje ispis jezgre na udaljene mašine."
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:1
+msgid "Address of the retrace server"
+msgstr "Adresa retrace servera"
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:2
+msgid "Retrace server URL"
+msgstr "URL retrace servera"
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:3
+msgid "Send core dump to remote retrace server for analysis"
+msgstr "Pošalji ispis jezgre na udaljeni retrace server za analizu"
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:4
+msgid ""
+"Uploads coredump to a server, which generates backtrace and returns it. "
+"Pros: no need for debuginfo downloads. Retrace server's database of "
+"debuginfos is more complete. Retrace server may generate better backtraces. "
+"Cons: coredump you upload contains all the data from the crashed program, "
+"including your private data, if any."
+msgstr ""
+"Prebacuje ispis jezgre na server koji stvara funkcijski trag i vraća ga. Za:"
+" nema potrebe za debuginfo preuzimanjima. Retrace serverova baza podataka  "
+"debuginfo-a je potpunija. Retrace server može stvarati bolje funkcijske "
+"tragove. Protiv: ispis jezgre koji prebacite sadrži sve podatke iz srušenog "
+"programa uključujući Vaše privatne podatke (ako postoje)."
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:1
+msgid "Address of Bugzilla server"
+msgstr "Adresa Bugzilla servera"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:2
+msgid "Bugzilla"
+msgstr "Bugzilla"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:3
+msgid "Bugzilla URL"
+msgstr "Bugzilla URL"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:4
+msgid "Bugzilla account password"
+msgstr "Bugzilla šifra računa"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:5
+msgid "Bugzilla account user name"
+msgstr "Bugzilla korisničko ime računa"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:6
+#: ../src/plugins/report_RHTSupport.xml.in.h:2
+msgid "Check SSL key validity"
+msgstr "Provjeri ispravnost SSL ključa"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:7
+#: ../src/plugins/report_RHTSupport.xml.in.h:3
+msgid "Password"
+msgstr "Šifra"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:8
+msgid "Report to Bugzilla bug tracker"
+msgstr "Podnesi izvještaj Bugzilla tragaču greški"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:9
+msgid "User name"
+msgstr "Korisničko ime"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:10
+#: ../src/plugins/report_RHTSupport.xml.in.h:10
+msgid "Verify SSL"
+msgstr "Provjeri SSL"
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:11
+msgid ""
+"You can create bugzilla.redhat.com account &lt;a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+msgstr ""
+"Možete napraviti bugzilla.redhat.com račun <a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\">ovdje</a>"
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:1
+msgid "Kerneloops URL"
+msgstr "Kerneloops URL"
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:2
+msgid "Kerneloops.org"
+msgstr "Kerneloops.org"
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:3
+msgid "Oops server url"
+msgstr "Url oops servera"
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:4
+msgid "Send kernel problems to oops tracker"
+msgstr "Pošalji kernel probleme oops tragaču"
+
+#: ../src/plugins/report_Mailx.xml.in.h:1
+msgid "Mailx"
+msgstr "Mailx"
+
+#: ../src/plugins/report_Mailx.xml.in.h:2
+msgid "Message subject"
+msgstr "Subjekt poruke"
+
+#: ../src/plugins/report_Mailx.xml.in.h:3
+msgid "Recipient"
+msgstr "Primatelj"
+
+#: ../src/plugins/report_Mailx.xml.in.h:4
+msgid "Recipient's email"
+msgstr "E-pošta primatelja"
+
+#: ../src/plugins/report_Mailx.xml.in.h:5
+msgid "Send Binary Data"
+msgstr "Pošalji binarne podatke"
+
+#: ../src/plugins/report_Mailx.xml.in.h:6
+msgid "Send binary files like coredump"
+msgstr "Pošalji binarne datoteke kao ispis jezgre"
+
+#: ../src/plugins/report_Mailx.xml.in.h:7
+msgid "Send via email"
+msgstr "Pošalji putem e-pošte"
+
+#: ../src/plugins/report_Mailx.xml.in.h:8
+msgid "Sender"
+msgstr "Pošiljaoc"
+
+#: ../src/plugins/report_Mailx.xml.in.h:9
+msgid "Sender's email"
+msgstr "E-pošta pošiljaoca"
+
+#: ../src/plugins/report_Mailx.xml.in.h:10
+msgid "Subject"
+msgstr "Subjekt"
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:1
+msgid "Address of the Red Hat support portal"
+msgstr "Adresa Red Hat portala podrške"
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:4
+msgid "RH Portal URL"
+msgstr "URL RH portala"
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:5
+msgid "Red Hat Customer Support"
+msgstr "Red Hat podrška za kupce"
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:6
+msgid "Red Hat customer password"
+msgstr "Red Hat šifra kupca"
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:7
+msgid "Red Hat customer user name"
+msgstr "Red Hat korisničko ime kupca"
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:8
+msgid "Report to Red Hat support"
+msgstr "Izvijesti Red Hat podršku"
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:9
+msgid "Username"
+msgstr "Korisničko ime"

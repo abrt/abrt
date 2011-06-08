@@ -4,7 +4,7 @@ abrt_gui_SOURCES = \
     abrt-gtk.h abrt-gtk.c \
     main.c
 abrt_gui_CFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -I$(srcdir)/../gtk-helpers \
     -DBIN_DIR=\"$(bindir)\" \
@@ -16,6 +16,7 @@ abrt_gui_CFLAGS = \
     -DICON_DIR=\"${datadir}/abrt/icons/hicolor/48x48/status\" \
     $(GTK_CFLAGS) \
     $(DBUS_CFLAGS) \
+    $(LIBREPORT_GTK_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 #    -I/usr/include/glib-2.0
@@ -23,13 +24,11 @@ abrt_gui_CFLAGS = \
 #    $(LIBNOTIFY_CFLAGS)
 #    $(DBUS_GLIB_CFLAGS)
 abrt_gui_LDADD = \
-    ../lib/libreport.la \
-    ../lib/libabrt_dbus.la \
-    ../gtk-helpers/libreportgtk.la \
     -lglib-2.0 \
     -lgthread-2.0 \
     $(GTK_LIBS) \
-    $(DBUS_LIBS)
+    $(DBUS_LIBS) \
+    $(LIBREPORT_GTK_LIBS) -labrt_dbus
 #    $(LIBNOTIFY_LIBS)
 
 #test_report_SOURCES = \

@@ -108,7 +108,7 @@ $(DESTDIR)/$(DEBUG_INFO_DIR):
 abrt_dump_oops_SOURCES = \
     abrt-dump-oops.c
 abrt_dump_oops_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -119,15 +119,17 @@ abrt_dump_oops_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_dump_oops_LDADD = \
-    ../lib/libreport.la
+    $(GLIB_LIBS) \
+    $(LIBREPORT_LIBS)
 
 abrt_action_analyze_c_SOURCES = \
     abrt-action-analyze-c.c
 abrt_action_analyze_c_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -138,15 +140,16 @@ abrt_action_analyze_c_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_analyze_c_LDADD = \
-    ../lib/libreport.la
+    $(LIBREPORT_LIBS)
 
 abrt_action_analyze_python_SOURCES = \
     abrt-action-analyze-python.c
 abrt_action_analyze_python_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -157,15 +160,17 @@ abrt_action_analyze_python_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_analyze_python_LDADD = \
-    ../lib/libreport.la
+    $(LIBREPORT_LIBS)
 
 abrt_action_analyze_oops_SOURCES = \
     abrt-action-analyze-oops.c
 abrt_action_analyze_oops_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../libreport/src/include/ -I$(srcdir)/../include \
+    -I$(srcdir)/../libreport/src/lib \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -176,15 +181,16 @@ abrt_action_analyze_oops_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_analyze_oops_LDADD = \
-    ../lib/libreport.la
+    $(LIBREPORT_LIBS)
 
 abrt_action_trim_files_SOURCES = \
     abrt-action-trim-files.c
 abrt_action_trim_files_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -195,15 +201,17 @@ abrt_action_trim_files_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_trim_files_LDADD = \
-    ../lib/libreport.la
+    $(LIBREPORT_LIBS) \
+    ../lib/libabrt.la
 
 abrt_action_generate_backtrace_SOURCES = \
     abrt-action-generate-backtrace.c
 abrt_action_generate_backtrace_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -214,15 +222,16 @@ abrt_action_generate_backtrace_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_generate_backtrace_LDADD = \
-    ../lib/libreport.la
+    $(LIBREPORT_LIBS)
 
 abrt_action_analyze_backtrace_SOURCES = \
     abrt-action-analyze-backtrace.c
 abrt_action_analyze_backtrace_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -233,16 +242,17 @@ abrt_action_analyze_backtrace_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_analyze_backtrace_LDADD = \
-    ../lib/libreport.la \
+    $(LIBREPORT_LIBS) \
     ../btparser/libbtparser.la
 
 abrt_action_bugzilla_SOURCES = \
     abrt-action-bugzilla.c rhbz.c rhbz.h
 abrt_action_bugzilla_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -253,18 +263,19 @@ abrt_action_bugzilla_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings
 abrt_action_bugzilla_LDADD = \
     $(GLIB_LIBS) \
     ../lib/libabrt_web.la \
-    ../lib/libreport.la
+    $(LIBREPORT_LIBS)
 
 abrt_action_rhtsupport_SOURCES = \
     abrt_rh_support.h abrt_rh_support.c \
     abrt-action-rhtsupport.c
 abrt_action_rhtsupport_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -275,6 +286,7 @@ abrt_action_rhtsupport_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
     $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
@@ -283,12 +295,12 @@ abrt_action_rhtsupport_LDADD = \
     $(GLIB_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
     ../lib/libabrt_web.la \
-    ../lib/libreport.la
+    $(LIBREPORT_LIBS)
 
 abrt_action_upload_SOURCES = \
     abrt-action-upload.c
 abrt_action_upload_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -300,18 +312,19 @@ abrt_action_upload_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(CURL_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_upload_LDFLAGS = -ltar
 abrt_action_upload_LDADD = \
     $(GLIB_LIBS) \
     $(CURL_LIBS) \
-    ../lib/libreport.la
+    $(LIBREPORT_LIBS)
 
 abrt_action_kerneloops_SOURCES = \
     abrt-action-kerneloops.c
 abrt_action_kerneloops_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -322,16 +335,18 @@ abrt_action_kerneloops_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_kerneloops_LDADD = \
     ../lib/libabrt_web.la \
-    ../lib/libreport.la
+    $(LIBREPORT_LIBS)
 
 abrt_action_mailx_SOURCES = \
     abrt-action-mailx.c
 abrt_action_mailx_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../libreport/src/include/ -I$(srcdir)/../include \
+    -I$(srcdir)/../libreport/src/lib \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -342,15 +357,16 @@ abrt_action_mailx_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_mailx_LDADD = \
-    ../lib/libreport.la
+    $(LIBREPORT_LIBS)
 
 abrt_action_print_SOURCES = \
     abrt-action-print.c
 abrt_action_print_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -361,32 +377,34 @@ abrt_action_print_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_print_LDADD = \
-    ../lib/libreport.la
+    $(LIBREPORT_LIBS)
 
 abrt_action_install_debuginfo_to_abrt_cache_SOURCES = \
     abrt-action-install-debuginfo-to-abrt-cache.c
 abrt_action_install_debuginfo_to_abrt_cache_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -D_GNU_SOURCE \
+    $(LIBREPORT_CFLAGS) \
     -Wall -Wwrite-strings
 abrt_action_install_debuginfo_to_abrt_cache_LDADD =
 
 abrt_retrace_client_SOURCES = \
     abrt-retrace-client.c
  abrt_retrace_client_CFLAGS = \
-     -I$(srcdir)/../include/report \
-     -I$(srcdir)/../include \
-     -I$(srcdir)/../lib \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
      $(NSS_CFLAGS) \
      $(GLIB_CFLAGS) \
      -D_GNU_SOURCE \
+     $(LIBREPORT_CFLAGS) \
      -Wall -Wwrite-strings -Werror
  abrt_retrace_client_LDADD = \
-     ../lib/libreport.la \
+     $(LIBREPORT_LIBS) \
      ../btparser/libbtparser.la \
      $(NSS_LIBS)
 

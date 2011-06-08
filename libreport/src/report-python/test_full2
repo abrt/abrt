@@ -1,0 +1,17 @@
+#!/usr/bin/python
+
+import sys
+from report import *
+
+def log_function(line):
+    print "LOG:", line
+
+cd = problem_data()
+cd.add("foo", "bar")
+cd.add("analyzer", "baz", CD_FLAG_ISNOTEDITABLE)
+
+st = run_event_state()
+st.logging_callback = log_function
+r = st.run_event_on_problem_data(cd, "post-create")
+
+print "Result:", r

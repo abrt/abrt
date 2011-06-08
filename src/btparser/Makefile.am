@@ -13,9 +13,9 @@ libbtparser_la_SOURCES = \
 	normalize_xorg.c \
 	thread.h thread.c \
 	utils.h utils.c
-libbtparser_la_CFLAGS = -Wall -Wwrite-strings -Werror -D_GNU_SOURCE -I../lib
+libbtparser_la_CFLAGS = -Wall -Wwrite-strings -Werror -D_GNU_SOURCE -I../lib $(LIBREPORT_CFLAGS)
 libbtparser_la_LDFLAGS = -version-info 1:1:0
-libbtparser_la_LIBADD = ../lib/libreport.la
+libbtparser_la_LIBADD = $(LIBREPORT_LIBS)
 
 libbtparser_includedir = $(includedir)/btparser
 libbtparser_include_HEADERS = \

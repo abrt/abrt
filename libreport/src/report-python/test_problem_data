@@ -1,0 +1,21 @@
+#!/usr/bin/python
+
+from report import *
+
+cd = problem_data()
+cd.add("foo", "bar")
+
+dd = cd.create_dump_dir()
+
+if dd:
+    print "dd is nonzero"
+else:
+    print "dd is zero"
+
+print "closing"
+dd.close()
+
+if dd:
+    print "dd is nonzero"
+else:
+    print "dd is zero"

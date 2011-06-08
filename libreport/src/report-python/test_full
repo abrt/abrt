@@ -1,0 +1,27 @@
+#!/usr/bin/python
+
+import sys
+from report import *
+
+def run_event_on_problem_data(cd, event, log_function = None):
+    dd = cd.create_dump_dir("/tmp")
+    dir_name = dd.name
+    print "Created dump_dir:", dir_name
+    dd.close()
+    run_state = run_event_state()
+    if log_function: # maybe if callable(log_function)?
+        run_state.logging_callback = log_function
+    print "Running event:", event
+    r = run_state.run_event_on_dir_name(dir_name, event)
+    print "Deleting:", dir_name
+    delete_dump_dir(dir_name)
+    return r;
+
+def log_function(line):
+    print "LOG:", line
+
+cd = problem_data()
+cd.add("foo", "bar")
+cd.add("analyzer", "baz", CD_FLAG_ISNOTEDITABLE)
+r = run_event_on_problem_data(cd, "post-create", log_function)
+print "Result:", r

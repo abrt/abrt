@@ -1,0 +1,1245 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ABRT\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2011-05-03 16:21+0200\n"
+"PO-Revision-Date: 2011-05-02 18:28+0000\n"
+"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"Language-Team: Persian <None>\n"
+"Language: fa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+
+#: ../src/applet/abrt-applet.desktop.in.h:1
+msgid "ABRT notification applet"
+msgstr "اپلت آگاه کننده ابزار گزارش اشکال خودکار"
+
+#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt-gtk.c:358
+#: ../src/gui-gtk/abrt.desktop.in.h:1
+msgid "Automatic Bug Reporting Tool"
+msgstr "ابزار گزارش اشکال خودکار"
+
+#: ../src/applet/applet.c:83
+#, c-format
+msgid "A crash in the %s package has been detected"
+msgstr "شکستی در بسته %s یافت شد"
+
+#: ../src/applet/applet.c:85
+msgid "A crash has been detected"
+msgstr "شکستی یافت شد"
+
+#: ../src/applet/applet.c:279
+msgid "ABRT service is not running"
+msgstr "سرویس ای‌بی‌ار‌تی اجرا نمی‌باشد"
+
+#: ../src/applet/applet_gtk.c:202 ../src/applet/applet_gtk.c:204
+msgid "Warning"
+msgstr "اخطار"
+
+#: ../src/applet/applet_gtk.c:259
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
+msgstr ""
+"برنامه ناحیه اخطار که کاربران را درباره جریانات یافت شده توسط ای‌بی‌ار‌تی یافت "
+"شده اند"
+
+#: ../src/applet/applet_gtk.c:275 ../src/gui-gtk/abrt-gtk.c:243
+msgid "translator-credits"
+msgstr "مترجمین"
+
+#: ../src/applet/applet_gtk.c:285
+msgid "Hide"
+msgstr "پنهان"
+
+#: ../src/applet/applet_gtk.c:398
+msgid "Report"
+msgstr "گزارش"
+
+#: ../src/applet/applet_gtk.c:401
+msgid "Show"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
+msgid "A Problem has Occurred"
+msgstr ""
+
+#: ../src/applet/applet_gtk.c:429
+msgid "Open ABRT"
+msgstr "بازکردن ابزار گزارش خودکار اشکال"
+
+#: ../src/cli/cli.c:175
+#, c-format
+msgid ""
+"Usage: %s -l[f] [-D BASE_DIR]...]\n"
+"   or: %s -r[y] CRASH_DIR\n"
+"   or: %s -i[b] CRASH_DIR\n"
+"   or: %s -d CRASH_DIR\n"
+"\n"
+"\t-l, --list\t\tList not yet reported problems\n"
+"\t  -f, --full\t\tList all problems\n"
+"\t-D BASE_DIR\t\tDirectory to list problems from\n"
+"\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
+"\n"
+"\t-r, --report\t\tSend a report about CRASH_DIR\n"
+"\t  -y, --always\t\t...without editing and asking\n"
+"\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
+"\t  -f, --full\t\t...including multi-line entries\n"
+"\t\t\t\tNote: -if will run analyzers\n"
+"\t\t\t\t(if this CRASH_DIR have defined analyzers)\n"
+"\t-d, --delete\t\tRemove CRASH_DIR\n"
+"\n"
+"\t-V, --version\t\tDisplay version and exit\n"
+"\t-v, --verbose\t\tBe verbose\n"
+msgstr ""
+
+#: ../src/cli/cli.c:224
+msgid "You must specify exactly one operation"
+msgstr "شما باید یک عمل دقیق مشخص کنید"
+
+#: ../src/cli/report.c:131
+#, c-format
+msgid "# This field is read only\n"
+msgstr "# این گزینه فقط خواندنی است\n"
+
+#: ../src/cli/report.c:151
+msgid "# Describe the circumstances of this crash below"
+msgstr "# در قسمت زیر موقعیت این شکست را تشریح کنید"
+
+#: ../src/cli/report.c:153
+msgid ""
+"# Backtrace\n"
+"# Check that it does not contain any sensitive data (passwords, etc.)"
+msgstr ""
+"# ردگیری\n"
+"#کنترل کنید که شامل اطلاعات حساس (کلمه عبور) نباشد"
+
+#: ../src/cli/report.c:155
+msgid "# Architecture"
+msgstr "# معماری"
+
+#: ../src/cli/report.c:156
+msgid "# Command line"
+msgstr "# خط فرمان"
+
+#: ../src/cli/report.c:157
+msgid "# Component"
+msgstr "# جز"
+
+#: ../src/cli/report.c:158
+msgid "# Core dump"
+msgstr "# هسته روگرفت"
+
+#: ../src/cli/report.c:159
+msgid "# Executable"
+msgstr "# قابل اجرا"
+
+#: ../src/cli/report.c:160
+msgid "# Kernel version"
+msgstr "# نسخه هسته"
+
+#: ../src/cli/report.c:161
+msgid "# Package"
+msgstr "# بسته"
+
+#: ../src/cli/report.c:162
+msgid "# Reason of crash"
+msgstr "# دلیل شکست"
+
+#: ../src/cli/report.c:163
+msgid "# Release string of the operating system"
+msgstr "# رشته انتشار سیستم عامل"
+
+#: ../src/cli/report.c:276
+msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
+msgstr ""
+"نمی تواند vi: $TERM, $VISUAL و $EDITOR را اجرا کند چون متغییرها تعیین نشده "
+"اند"
+
+#: ../src/cli/report.c:360
+msgid ""
+"\n"
+"The report has been updated"
+msgstr ""
+"\n"
+"گزارش به روز شد"
+
+#: ../src/cli/report.c:362
+msgid ""
+"\n"
+"No changes were detected in the report"
+msgstr ""
+"\n"
+"هیچ تغییر در گزارش یافت نشد"
+
+#. The response might take more than 1 char in non-latin scripts.
+#: ../src/cli/report.c:394 ../src/plugins/abrt-action-install-debuginfo.py:83
+msgid "y"
+msgstr "ب"
+
+#: ../src/cli/report.c:395
+msgid "N"
+msgstr "ن"
+
+#: ../src/cli/report.c:492
+msgid "Your input is not valid, because of:"
+msgstr ""
+
+#: ../src/cli/report.c:495
+#, c-format
+msgid "Bad value for '%s': %s"
+msgstr ""
+
+#: ../src/cli/report.c:592
+#, c-format
+msgid "Select how you would like to analyze the problem:\n"
+msgstr ""
+
+#: ../src/cli/report.c:608
+#, c-format
+msgid "Choose option [0 - %u]: "
+msgstr ""
+
+#: ../src/cli/report.c:622
+#, c-format
+msgid "You have chosen number out of range"
+msgstr ""
+
+#: ../src/cli/report.c:630
+msgid "Invalid input, program exiting..."
+msgstr ""
+
+#: ../src/cli/report.c:740 ../src/gui-wizard-gtk/wizard.c:1101
+msgid "Reporting..."
+msgstr "درحال گزارش..."
+
+#: ../src/cli/report.c:761
+#, c-format
+msgid "Report using %s?"
+msgstr "گزارش با استفاده از %s؟"
+
+#: ../src/cli/report.c:768
+msgid "Skipping..."
+msgstr "لغوکردن..."
+
+#: ../src/cli/report.c:778
+msgid "Reporting disabled because the backtrace is unusable"
+msgstr "گزارش غیرفعال شده است زیرا ردگیری غیرقابل استفاده است"
+
+#: ../src/cli/report.c:782
+#, c-format
+msgid ""
+"Please try to install debuginfo manually using the command: \"debuginfo-"
+"install %s\" and try again\n"
+msgstr ""
+"لطفا به صورت دستی debuginfo را نصب کنید با دستور: \"debuginfo-install %s\" و "
+"دوباره سعی کنید\n"
+
+#: ../src/cli/report.c:804
+#, c-format
+msgid "Problem reported via %d report events (%d errors)\n"
+msgstr ""
+
+#: ../src/daemon/abrt-action-save-package-data.c:254
+msgid ""
+" [-v] -d DIR\n"
+"\n"
+"Query package database and save package name, component, and description"
+msgstr ""
+
+#: ../src/daemon/abrt-action-save-package-data.c:265
+#: ../src/daemon/abrt-handle-crashdump.c:61
+#: ../src/plugins/abrt-action-analyze-backtrace.c:70
+#: ../src/plugins/abrt-action-analyze-c.c:177
+#: ../src/plugins/abrt-action-analyze-oops.c:159
+#: ../src/plugins/abrt-action-analyze-python.c:45
+#: ../src/plugins/abrt-action-bugzilla.cpp:933
+#: ../src/plugins/abrt-action-generate-backtrace.c:256
+#: ../src/plugins/abrt-action-kerneloops.c:154
+#: ../src/plugins/abrt-action-mailx.c:155
+#: ../src/plugins/abrt-action-print.c:53
+#: ../src/plugins/abrt-action-rhtsupport.c:291
+#: ../src/plugins/abrt-action-upload.c:258
+msgid "Dump directory"
+msgstr ""
+
+#: ../src/daemon/abrt-handle-crashdump.c:43
+msgid ""
+" [-vs] -d DIR -e EVENT\n"
+"   or: "
+msgstr ""
+"[-vs] -d شاخه -e رخ‌داد\n"
+"  یا:"
+
+#: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:301
+#: ../src/plugins/abrt-dump-oops.c:585
+msgid "Log to syslog"
+msgstr "در syslog سیاهه شد"
+
+#: ../src/daemon/abrt-handle-crashdump.c:62
+msgid "Handle EVENT"
+msgstr "مدیریت رخ‌داد"
+
+#: ../src/daemon/abrt-handle-crashdump.c:63
+msgid "List possible events [which start with PFX]"
+msgstr "رخ‌دادهای ممکن [که با PFX شروع می‌شوند] را لیست کنید"
+
+#: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:302
+#: ../src/daemon/abrtd.c:525 ../src/gui-gtk/main.c:228
+#: ../src/gui-wizard-gtk/main.c:94
+msgid "Add program names to log"
+msgstr ""
+
+#: ../src/daemon/abrt-server.c:289 ../src/daemon/abrtd.c:510
+msgid " [options]"
+msgstr "[گزینه‌ها]"
+
+#: ../src/daemon/abrt-server.c:300
+msgid "Use UID as client uid"
+msgstr "UID را به‌جای uid مشتری به کار ببرید"
+
+#: ../src/daemon/abrtd.c:337
+msgid ""
+"The size of the report exceeded the quota. Please check system's "
+"MaxCrashReportsSize value in abrt.conf."
+msgstr ""
+"اندازه شماره گزارش ها بیش از حد است. لطفا مقدارMaxCrashReportsSize را در "
+"abrt.conf کنترل کنید."
+
+#: ../src/daemon/abrtd.c:522
+msgid "Do not daemonize"
+msgstr "دیمون سازی نکن"
+
+#: ../src/daemon/abrtd.c:523
+msgid "Log to syslog even with -d"
+msgstr "هم‌چنین در syslog با -d سیاهه شد"
+
+#: ../src/daemon/abrtd.c:524
+msgid "Exit after SEC seconds of inactivity"
+msgstr "پس از SEC ثانیه بی‌کاری خارج شوید"
+
+#: ../src/gtk-helpers/event_config_dialog.c:123
+msgid "Show password"
+msgstr "نمایش کلمه عبور"
+
+#: ../src/gtk-helpers/event_config_dialog.c:344
+msgid "Event Configuration"
+msgstr "پیکربندی رخ‌داد"
+
+#: ../src/gtk-helpers/event_config_dialog.c:369
+msgid "Event"
+msgstr "رخ‌داد"
+
+#: ../src/gtk-helpers/event_config_dialog.c:402
+msgid "Configure E_vent"
+msgstr "پیکربندی ـرخ‌داد"
+
+#: ../src/gtk-helpers/event_config_dialog.c:425
+#, c-format
+msgid ""
+"Wrong settings detected for %s, reporting will probably fail if you continue "
+"with the current configuration."
+msgstr ""
+
+#: ../src/gtk-helpers/event_config_dialog.c:429
+#, c-format
+msgid ""
+"Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
+"continue with the current configuration."
+msgstr ""
+
+#: ../src/gui-gtk/abrt-gtk.c:262
+msgid "Reported"
+msgstr "گزارش شده"
+
+#: ../src/gui-gtk/abrt-gtk.c:274
+msgid "Problem"
+msgstr "مشکل"
+
+#: ../src/gui-gtk/abrt-gtk.c:297
+msgid "Last occurrence"
+msgstr "آخرین رویداد"
+
+#: ../src/gui-gtk/abrt-gtk.c:312
+msgid "_File"
+msgstr "ـپرونده"
+
+#: ../src/gui-gtk/abrt-gtk.c:313
+msgid "_Edit"
+msgstr "اصلاح"
+
+#: ../src/gui-gtk/abrt-gtk.c:314
+msgid "_Help"
+msgstr "کمک"
+
+#: ../src/gui-gtk/abrt-gtk.c:330
+msgid "_Event configuration"
+msgstr ""
+
+#: ../src/gui-gtk/abrt-gtk.c:411
+msgid "Online _Help"
+msgstr ""
+
+#: ../src/gui-gtk/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "دیدن و گزارش شکستهای برنامه"
+
+#: ../src/gui-gtk/main.c:216
+msgid ""
+" [-vp] [DIR]...\n"
+"\n"
+"Shows list of ABRT dump directories in specified DIR(s)\n"
+"(default DIRs: "
+msgstr ""
+
+#: ../src/gui-wizard-gtk/main.c:81
+msgid ""
+" [-vp] [-g GUI_FILE] DIR\n"
+"\n"
+"GUI tool to analyze and report problem saved in specified DIR"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/main.c:93
+msgid "Alternate GUI file"
+msgstr "پرونده GUI جایگزین"
+
+#: ../src/gui-wizard-gtk/wizard.c:201
+#, c-format
+msgid ""
+"Need writable directory, but '%s' is not writable. Move it to '%s' and "
+"operate on the moved copy?"
+msgstr ""
+"نیاز به شاخه قابل نوشتن است، ولی '%s' قابل نوشتن نیست. به '%s' جابه‌جا کنید و "
+"بر روی کپی جابه‌جا شده انجام دهید؟"
+
+#: ../src/gui-wizard-gtk/wizard.c:559
+msgid "(click here to view/edit)"
+msgstr "(برای نما/ویرایش این‌جا را کلیک کنید)"
+
+#: ../src/gui-wizard-gtk/wizard.c:571
+#, c-format
+msgid "(binary file, %llu bytes)"
+msgstr "(پرونده باینری، %llu بایت)"
+
+#: ../src/gui-wizard-gtk/wizard.c:586
+msgid "(no description)"
+msgstr "(بدون توضیح)"
+
+#: ../src/gui-wizard-gtk/wizard.c:591
+#, c-format
+msgid "%llu bytes, %u files"
+msgstr "%llu بایت، %u پرونده"
+
+#. TODO: better msg?
+#: ../src/gui-wizard-gtk/wizard.c:914
+#, c-format
+msgid "No processing for event '%s' is defined"
+msgstr "پردازشی برای رخ‌داد '%s' تعریف نشده"
+
+#. bt is usable, but not complete, so show a warning
+#: ../src/gui-wizard-gtk/wizard.c:1004
+msgid ""
+"The backtrace is incomplete, please make sure you provide the steps to "
+"reproduce."
+msgstr "ردگیری ناقص است، لطفا مطمئن شوید مراحل باتولید را تشریح کرده اید."
+
+#. FIXME: see CreporterAssistant: 394 for ideas
+#: ../src/gui-wizard-gtk/wizard.c:1009
+msgid "Reporting disabled because the backtrace is unusable."
+msgstr "گزارش غیرفعال شده است زیرا ردگیری غیرقابل استفاده است."
+
+#: ../src/gui-wizard-gtk/wizard.c:1018
+msgid "You should check the backtrace for sensitive data."
+msgstr "شما باید ردگیری را برای اطلاعات حساس کنترل کنید."
+
+#: ../src/gui-wizard-gtk/wizard.c:1019
+msgid "You must agree with sending the backtrace."
+msgstr "شما باید با ارسال ردگیری موافق باشید."
+
+#: ../src/gui-wizard-gtk/wizard.c:1075
+msgid "Analyzing..."
+msgstr "درحال تحلیل کردن..."
+
+#: ../src/gui-wizard-gtk/wizard.c:1076
+#, c-format
+msgid "Analyzing finished with exit code %d"
+msgstr "تحلیل با کد خروج %d پایان یافت"
+
+#: ../src/gui-wizard-gtk/wizard.c:1102
+#, c-format
+msgid "Reporting finished with exit code %d"
+msgstr "گزارش‌دهی با کد خروج %d پایان یافت"
+
+#: ../src/gui-wizard-gtk/wizard.c:1219
+msgid "Name"
+msgstr "نام"
+
+#: ../src/gui-wizard-gtk/wizard.c:1228
+msgid "Value"
+msgstr "ارزش"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:1
+msgid ""
+"<b>Your comments are not private.</b> They may be included into publicly "
+"visible problem reports."
+msgstr ""
+"<b> توضیح‌های شما خصوصی نیستند.</b> ممکن است آن‌ها به گزارش خطاهای عمومی قابل "
+"مشاهده افزوده شوند."
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:2
+msgid "Analyzing did not start yet"
+msgstr "تحلیل کردن هنوز آغاز نشده است"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:3
+msgid "Any additional comments useful for diagnosing the problem?"
+msgstr "هر توضیح افزون‌تر مفیدی برای تشخیص مشکل؟"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:4
+msgid ""
+"Backtrace provides developers with details of the crash, helping them track "
+"down the source of the problem. Please review it and remove any sensitive "
+"data you would rather not share:"
+msgstr ""
+"دنباله جزئیات بیش‌تری از شکست را به گسترش‌دهنده‌ها می‌دهد، به آن‌ها کمک می‌کند تا "
+"منبع مشکا را بیابند. خواهشمندیم بازنگری کنید و هر داده حساسی که نمی‌خواهید به "
+"اشتراک بگذارید را پاک کنید:"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:5
+msgid ""
+"Can create more informative backtrace if you installed additional debug "
+"packages"
+msgstr ""
+"اگر شما بسته‌های اشکال‌زدای افزون‌تری نصب کرده بودید می توانستید دنباله آگه‌ساز "
+"بیش‌تری بسازید"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:6
+msgid "Click 'Apply' to start reporting"
+msgstr "٬اعمال٬ را برای آغاز گزارش‌دهی فشار دهید"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:7
+msgid "Configure _Events"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:8
+msgid "Details"
+msgstr "جزییات"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:9
+msgid "How did this problem happen (step-by-step)? How can it be reproduced?"
+msgstr "این مشکل چگونه رخ‌داد (گام-به-گام)؟ ممکن است دوباره ایجاد شود؟"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:10
+msgid "I _agree with submitting the backtrace"
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:11
+msgid ""
+"On the following screens, you will be asked to describe how the problem "
+"occurred, to choose how to analyze the problem (if needed), to review "
+"collected data, and to choose where the problem should be reported. Click "
+"'Forward' to proceed."
+msgstr ""
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:12
+msgid "Regenerate backtrace"
+msgstr "دنباله را دوباره تولید کنید"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:13
+msgid "Reporter(s):"
+msgstr "گزارش‌کننده(ها):"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:14
+msgid "Reporting did not start yet"
+msgstr "گزارش‌دهی هنوز آغاز نشده"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:15
+msgid "Select how you would like to analyze the problem:"
+msgstr "چگونگی تحلیل کردن مشکل را برگزینید:"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:16
+msgid "Select how you would like to report the problem:"
+msgstr "چگونگی گزارش دادن مشکل را برگزینید:"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:17
+msgid "Size:"
+msgstr "اندازه:"
+
+#: ../src/gui-wizard-gtk/wizard.glade.h:18
+msgid ""
+"Use this button to generate more informative backtrace after you installed "
+"additional debug packages"
+msgstr ""
+"این دکمه را برای تولید دنباله آگه‌ساز بیش‌تر پس از این‌که بسته‌های اشکال‌زدایی "
+"افزون‌تری نصب کردید به کار برید"
+
+#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
+#, c-format
+msgid "Uploaded: %llu of %llu kbytes"
+msgstr "بارگذاری : %llu از %llu kbytes"
+
+#: ../src/lib/event_config.c:294
+msgid "Missing mandatory value"
+msgstr ""
+
+#: ../src/lib/event_config.c:302
+#, c-format
+msgid "Invalid utf8 character '%c'"
+msgstr ""
+
+#: ../src/lib/event_config.c:315
+#, c-format
+msgid "Invalid number '%s'"
+msgstr ""
+
+#: ../src/lib/event_config.c:327
+#, c-format
+msgid "Invalid boolean value '%s'"
+msgstr ""
+
+#: ../src/lib/event_config.c:333
+msgid "Unsupported option type"
+msgstr ""
+
+#: ../src/lib/parse_options.c:29
+#, c-format
+msgid "Usage: %s\n"
+msgstr "کاربرد: %s\n"
+
+#: ../src/plugins/abrt-action-analyze-backtrace.c:59
+msgid ""
+" [options] -d DIR\n"
+"\n"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
+"identifies crash function in dump directory DIR"
+msgstr ""
+
+#.
+#. * The parser failed. Compute the duphash from the executable
+#. * instead of a backtrace.
+#. * and component only.  This is not supposed to happen often.
+#.
+#: ../src/plugins/abrt-action-analyze-backtrace.c:111
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr "واکاوی دنباله برای %s شکست خورد"
+
+#: ../src/plugins/abrt-action-analyze-c.c:166
+msgid ""
+" [-v] -d DIR\n"
+"\n"
+"Calculates and saves UUID of coredump in dump directory DIR"
+msgstr ""
+
+#: ../src/plugins/abrt-action-analyze-oops.c:148
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID and DUPHASH for oops dump directory DIR"
+msgstr ""
+
+#: ../src/plugins/abrt-action-analyze-python.c:34
+msgid ""
+" [-v] -d DIR\n"
+"\n"
+"Calculates and saves UUID and DUPHASH of python crash dumps"
+msgstr ""
+"[-v] -d شاخه\n"
+"\n"
+"UUID و DUPHASH رونوشت‌های شکست پایتون محاسبه و ذخیره شد"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:518
+#, c-format
+msgid "New bug id: %i"
+msgstr "شناسه جدید باگ: %i"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:649
+msgid "Empty login or password, please check your configuration"
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:663
+#, c-format
+msgid "Essential file '%s' is missing, can't continue.."
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:667
+#, c-format
+msgid "Essential file '%s' is empty, can't continue.."
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:676
+#, c-format
+msgid "Logging into Bugzilla at %s"
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:679
+msgid "Checking for duplicates"
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:701
+#: ../src/plugins/abrt-action-bugzilla.cpp:737
+msgid "Missing mandatory member 'bugs'"
+msgstr "از دست دادن عضو ضروری باگ ها"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:720
+#: ../src/plugins/abrt-action-bugzilla.cpp:753
+#: ../src/plugins/abrt-action-bugzilla.cpp:829
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr "خطا در get_bug_info(). نمی تواند همه اطلاعات ضروری را جمع آوری کند"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:768
+msgid "Creating a new bug"
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:773
+msgid "Bugzilla entry creation failed"
+msgstr "ساختن باگ جدید با خطا مواجه شد"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:785
+#: ../src/plugins/abrt-action-bugzilla.cpp:885
+msgid "Logging out"
+msgstr ""
+
+#. decision based on state
+#: ../src/plugins/abrt-action-bugzilla.cpp:803
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "خطا قبلا گزارش شده است: %i"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:814
+#, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr "باگزیلا نه توانست باگ اصلی باگ %d را پیدا کند"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:844
+#, c-format
+msgid "Add %s to CC list"
+msgstr "افزودن %s به لیست CC"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:870
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "افزودن اظهارنظر جدید به باگ %d"
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:921
+msgid ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"Reports problem to Bugzilla"
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.cpp:934
+#: ../src/plugins/abrt-action-rhtsupport.c:292
+msgid "Configuration file (may be given many times)"
+msgstr "پرونده پیکربندی (ممکن است زمان زیادی بگیرد)"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:243
+msgid ""
+" [options] -d DIR\n"
+"\n"
+"Generates and saves backtrace for coredump in dump directory DIR"
+msgstr ""
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:257
+msgid "Additional debuginfo directories"
+msgstr "شاخه‌های اطلاعات اشکال‌زدایی افزون‌تر"
+
+#: ../src/plugins/abrt-action-generate-backtrace.c:258
+msgid "Kill gdb if it runs for more than N seconds"
+msgstr "gdb را اگر بیش از N ثانیه اجرا شد بکشید"
+
+#. Don't be completely silent. gdb run takes a few seconds,
+#. * it is useful to let user know it (maybe) worked.
+#.
+#: ../src/plugins/abrt-action-generate-backtrace.c:298
+#, c-format
+msgid "Backtrace is generated and saved, %u bytes"
+msgstr "دنباله تولید و ذخیره شد، %u بایت"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:85
+msgid "n"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:100
+#, python-format
+msgid "Extracting cpio from %s"
+msgstr "در حال استخراج cpio از %s"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:105
+#, python-format
+msgid "Can't write to '%s': %s"
+msgstr "نمی‌تواند در '%s' بنویسد: %s"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:119
+#, python-format
+msgid "Can't extract package '%s'"
+msgstr "نمی‌تواند بسته '%s' را استخراج کند"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:127
+#, python-format
+msgid "Caching files from %s made from %s"
+msgstr "نهان‌سازی پرونده‌ها از %s ساخته شده از %s"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:137
+#, python-format
+msgid "Can't extract files from '%s'"
+msgstr "نمی‌تواند پرونده‌ها را از '%s' استخراج کند"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:161
+#: ../src/plugins/abrt-action-install-debuginfo.py:171
+#, python-format
+msgid "Downloading (%i of %i) %s: %3u%%"
+msgstr "بارگیری (%i از %i) %s: %3u%%"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:196
+#, python-format
+msgid "Error initializing yum (YumBase.doConfigSetup): '%s'"
+msgstr ""
+
+#. This is somewhat "magic", it unpacks the metadata making it usable.
+#. Looks like this is the moment when yum talks to remote servers,
+#. which takes time (sometimes minutes), let user know why
+#. we have "paused":
+#: ../src/plugins/abrt-action-install-debuginfo.py:239
+msgid "Looking for needed packages in repositories"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:243
+#, python-format
+msgid "Error retrieving metadata: '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:253
+#, python-format
+msgid "Error retrieving filelists: '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:286
+#, python-format
+msgid "Can't find packages for %u debuginfo files"
+msgstr "نمی‌تواند بسته‌ها را برای %u پرونده اطلاعات اشکال‌زدایی بیابد"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:288
+#, python-format
+msgid "Packages to download: %u"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:289
+#, python-format
+msgid "Downloading %.2fMb, installed size: %.2fMb"
+msgstr "بارگیری %.2fMb، اندازه نصب: %.2fMb"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:297
+msgid "Is this ok? [y/N] "
+msgstr "درست است؟ [y/n]"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:314
+#, python-format
+msgid "Downloading package %s failed"
+msgstr "بارگیری بسته %s شکست خورد"
+
+#. recursively delete the temp dir on failure
+#: ../src/plugins/abrt-action-install-debuginfo.py:325
+msgid "Unpacking failed, aborting download..."
+msgstr "از بسته درآوردن شکست خورد، رها کردن بارگیری..."
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:332
+#, python-format
+msgid "All downloaded packages have been extracted, removing %s"
+msgstr "همه‌ی بسته‌های بارگیری شده استخراج شدند، در حال پاک کردن %s"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:337
+#, python-format
+msgid "Can't remove %s, probably contains an error log"
+msgstr "نمی‌تواند %s را پاک کند، شاید دارای یک سیاهه خطا باشد"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:371
+#, python-format
+msgid "Can't remove '%s': %s"
+msgstr "نمی‌تواند '%s' را پاک کند: %s"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:379
+msgid "Exiting on user command"
+msgstr "به فرمان کاربر در حال خارج شدن است"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:411
+#, python-format
+msgid ""
+"Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR] [--size_mb=SIZE]\n"
+"\n"
+"Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
+"to CACHEDIR, using TMPDIR as temporary staging area.\n"
+"Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
+"\n"
+"    -v          Be verbose\n"
+"    -y          Noninteractive, assume 'Yes' to all questions\n"
+"    --ids       Default: build_ids\n"
+"    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     Default: /var/cache/abrt-di\n"
+"    --size_mb   Default: 4096\n"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:466
+#, python-format
+msgid "Can't open %s: %s"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:496
+#, python-format
+msgid "Coredump references %u debuginfo files, %u of them are not installed"
+msgstr ""
+"رونوشت هسته به%u پرونده اطلاعات اشکال‌زدایی مراجعه کرده، %u از آن‌ها نصب "
+"نشده‌اند"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:507
+#, python-format
+msgid "Missing debuginfo file: %s"
+msgstr "پرونده اطلاعات اشکال‌زدایی فراموش شده است: %s"
+
+#: ../src/plugins/abrt-action-install-debuginfo.py:510
+#, python-format
+msgid "All %u debuginfo files are available"
+msgstr "همه %u پرونده اطلاعات اشکال‌زدایی موجود است"
+
+#: ../src/plugins/abrt-action-kerneloops.c:105
+#, c-format
+msgid "Submitting oops report to %s"
+msgstr "ارایه گزارش لغزش‌ها به %s"
+
+#: ../src/plugins/abrt-action-kerneloops.c:142
+msgid ""
+" [-v] [-c CONFFILE]... -d DIR\n"
+"\n"
+"Reports kernel oops to kerneloops.org (or similar) site"
+msgstr ""
+
+#: ../src/plugins/abrt-action-kerneloops.c:155
+msgid "Configuration file"
+msgstr ""
+
+#: ../src/plugins/abrt-action-mailx.c:109
+msgid "Sending an email..."
+msgstr "درحال ارسال ایمیل..."
+
+#: ../src/plugins/abrt-action-mailx.c:143
+msgid ""
+" [-v] -d DIR [-c CONFFILE]\n"
+"\n"
+"Sends contents of a dump directory DIR via email"
+msgstr ""
+
+#: ../src/plugins/abrt-action-mailx.c:156
+#: ../src/plugins/abrt-action-upload.c:259
+msgid "Config file"
+msgstr "پرونده پیکربندی"
+
+#: ../src/plugins/abrt-action-print.c:39
+msgid ""
+" [-v] -d DIR [-o FILE] [-a yes/no]\n"
+"\n"
+"Prints problem information to standard output or FILE"
+msgstr ""
+
+#: ../src/plugins/abrt-action-print.c:54
+msgid "Output file"
+msgstr "پرونده خروجی"
+
+#: ../src/plugins/abrt-action-print.c:55
+msgid "Append to, or overwrite FILE"
+msgstr ""
+
+#: ../src/plugins/abrt-action-print.c:56
+msgid "Create reported_to in DIR"
+msgstr ""
+
+#: ../src/plugins/abrt-action-print.c:102
+#, c-format
+msgid "The report was appended to %s"
+msgstr "گزارش به %s افزوده شد"
+
+#: ../src/plugins/abrt-action-print.c:102
+#, c-format
+msgid "The report was stored to %s"
+msgstr "گزارش در %s ذخیره شد"
+
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. error msg is already logged by dd_opendir
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#: ../src/plugins/abrt-action-rhtsupport.c:41
+#: ../src/plugins/abrt-action-upload.c:119
+msgid "Compressing data"
+msgstr " داده های فشرده شده"
+
+#: ../src/plugins/abrt-action-rhtsupport.c:73
+msgid "Empty RHTS login or password"
+msgstr ""
+
+#: ../src/plugins/abrt-action-rhtsupport.c:101
+msgid "Can't create a temporary directory in /tmp"
+msgstr ""
+
+#: ../src/plugins/abrt-action-rhtsupport.c:194
+msgid "Creating a new case..."
+msgstr "درحال ساخت یک مورد جدید..."
+
+#: ../src/plugins/abrt-action-rhtsupport.c:279
+msgid ""
+" [-v] -c CONFFILE -d DIR\n"
+"\n"
+"Reports a problem to RHTSupport"
+msgstr ""
+
+#: ../src/plugins/abrt-action-trim-files.c:154
+msgid ""
+" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"\n"
+"Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
+msgstr ""
+
+#: ../src/plugins/abrt-action-trim-files.c:167
+msgid "Delete dump dirs"
+msgstr ""
+
+#: ../src/plugins/abrt-action-trim-files.c:168
+msgid "Delete files"
+msgstr ""
+
+#: ../src/plugins/abrt-action-trim-files.c:169
+msgid "Preserve this dump dir"
+msgstr ""
+
+#: ../src/plugins/abrt-action-upload.c:63
+#, c-format
+msgid "Sending %s to %s"
+msgstr "در حال فرستادن %s به %s"
+
+#. This ends up a "reporting status message" in abrtd
+#: ../src/plugins/abrt-action-upload.c:96
+#, c-format
+msgid "Successfully sent %s to %s"
+msgstr "%s با موفقیت به %s فرستاده شد"
+
+#: ../src/plugins/abrt-action-upload.c:210
+#, c-format
+msgid "Archive is created: '%s'"
+msgstr "آرشیو ساخته شد: %s"
+
+#: ../src/plugins/abrt-action-upload.c:245
+msgid ""
+" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\n"
+"Uploads compressed tarball of dump directory DIR"
+msgstr ""
+
+#: ../src/plugins/abrt-action-upload.c:260
+msgid "Base URL to upload to"
+msgstr "َURL پایه برای بارگذاری به"
+
+#: ../src/plugins/abrt-dump-oops.c:569
+msgid ""
+" [-vsrowx] [-d DIR] FILE\n"
+"\n"
+"Extract oops from syslog/dmesg file"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-oops.c:586
+msgid "Parse kernel's message buffer before parsing FILE"
+msgstr "میان‌گیر پیام هسته را پیش از واکاوی پرونده واکاوی کن"
+
+#: ../src/plugins/abrt-dump-oops.c:587
+msgid "Print found oopses on standard output"
+msgstr "چاپ لغزش‌هایی روی خروجی استاندارد یافته"
+
+#: ../src/plugins/abrt-dump-oops.c:588
+msgid "Do not exit, watch the file for new oopses"
+msgstr "خارج نشوید، برای مشاهده لغزش‌های جدید پرونده را ببینید"
+
+#. oopses don't contain any sensitive info, and even
+#. * the old koops app was showing the oopses to all users
+#.
+#: ../src/plugins/abrt-dump-oops.c:592
+msgid "Create ABRT dump in DIR for every oops found"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-oops.c:593
+msgid "Make the dump directory world readable"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:890
+msgid "log to syslog"
+msgstr "در syslog سیاهه کن"
+
+#: ../src/plugins/analyze_LocalGDB.xml.in.h:1
+msgid "Download debuginfo packages and generate backtrace locally using GDB"
+msgstr ""
+
+#: ../src/plugins/analyze_LocalGDB.xml.in.h:2
+msgid "Local GNU Debugger"
+msgstr ""
+
+#: ../src/plugins/analyze_LocalGDB.xml.in.h:3
+msgid ""
+"Needs to downloads debuginfo packages, which might take significant time, "
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
+msgstr ""
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:1
+msgid "Address of the retrace server"
+msgstr ""
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:2
+msgid "Retrace server URL"
+msgstr ""
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:3
+msgid "Send core dump to remote retrace server for analysis"
+msgstr ""
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:4
+msgid ""
+"Uploads coredump to a server, which generates backtrace and returns it. "
+"Pros: no need for debuginfo downloads. Retrace server's database of "
+"debuginfos is more complete. Retrace server may generate better backtraces. "
+"Cons: coredump you upload contains all the data from the crashed program, "
+"including your private data, if any."
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:1
+msgid "Address of Bugzilla server"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:2
+msgid "Bugzilla"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:3
+msgid "Bugzilla URL"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:4
+msgid "Bugzilla account password"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:5
+msgid "Bugzilla account user name"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:6
+#: ../src/plugins/report_RHTSupport.xml.in.h:2
+msgid "Check SSL key validity"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:7
+#: ../src/plugins/report_RHTSupport.xml.in.h:3
+msgid "Password"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:8
+msgid "Report to Bugzilla bug tracker"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:9
+msgid "User name"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:10
+#: ../src/plugins/report_RHTSupport.xml.in.h:10
+msgid "Verify SSL"
+msgstr ""
+
+#: ../src/plugins/report_Bugzilla.xml.in.h:11
+msgid ""
+"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
+"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+msgstr ""
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:1
+msgid "Kerneloops URL"
+msgstr ""
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:2
+msgid "Kerneloops.org"
+msgstr ""
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:3
+msgid "Oops server url"
+msgstr ""
+
+#: ../src/plugins/report_Kerneloops.xml.in.h:4
+msgid "Send kernel problems to oops tracker"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:1
+msgid "Mailx"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:2
+msgid "Message subject"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:3
+msgid "Recipient"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:4
+msgid "Recipient's email"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:5
+msgid "Send Binary Data"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:6
+msgid "Send binary files like coredump"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:7
+msgid "Send via email"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:8
+msgid "Sender"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:9
+msgid "Sender's email"
+msgstr ""
+
+#: ../src/plugins/report_Mailx.xml.in.h:10
+msgid "Subject"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:1
+msgid "Address of the Red Hat support portal"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:4
+msgid "RH Portal URL"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:5
+msgid "Red Hat Customer Support"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:6
+msgid "Red Hat customer password"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:7
+msgid "Red Hat customer user name"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:8
+msgid "Report to Red Hat support"
+msgstr ""
+
+#: ../src/plugins/report_RHTSupport.xml.in.h:9
+msgid "Username"
+msgstr ""

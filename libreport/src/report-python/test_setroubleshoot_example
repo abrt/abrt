@@ -1,0 +1,18 @@
+#!/usr/bin/python
+
+import report
+import report.io
+import report.io.GTKIO
+import report.accountmanager
+
+accounts = report.accountmanager.AccountManager()
+
+signature = report.createAlertSignature("selinux-policy",
+                                        "setroubleshoot",
+                                        "self.siginfo.get_hash()",
+                                        "self.summary",
+                                        "content")
+
+rc = report.report(signature, report.io.GTKIO.GTKIO(accounts))
+
+print "rc:", rc

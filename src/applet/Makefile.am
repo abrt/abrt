@@ -5,9 +5,8 @@ abrt_applet_SOURCES = \
     applet.c \
     applet_gtk.h applet_gtk.c
 abrt_applet_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -I$(srcdir)/../gtk-helpers \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
@@ -17,6 +16,7 @@ abrt_applet_CPPFLAGS = \
     -DICON_DIR=\"${datadir}/abrt/icons/hicolor/48x48/status\" \
     $(GTK_CFLAGS) \
     $(DBUS_CFLAGS) \
+    $(LIBREPORT_GTK_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 #    -I/usr/include/glib-2.0
@@ -24,9 +24,7 @@ abrt_applet_CPPFLAGS = \
 #    $(LIBNOTIFY_CFLAGS)
 #    $(DBUS_GLIB_CFLAGS)
 abrt_applet_LDADD = \
-    ../lib/libreport.la \
-    ../lib/libabrt_dbus.la \
-    ../gtk-helpers/libreportgtk.la \
+    $(LIBREPORT_GTK_LIBS) -labrt_dbus \
     -lglib-2.0 \
     -lgthread-2.0 \
     $(DBUS_LIBS) \

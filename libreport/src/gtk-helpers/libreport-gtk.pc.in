@@ -1,0 +1,11 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: libreport-gtk
+Description: libreport bindings for GTK apps
+Version: @VERSION@
+Requires: libreport
+Libs: -L${libdir} -lreport-gtk
+Cflags: -fPIC -I${includedir}/libreport

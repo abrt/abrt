@@ -1,0 +1,44 @@
+Currently (2011-05), include/report/*.h are:
+
+dump_dir.h
+event_config.h
+problem_data.h
+report.h
+run_event.h
+
+and we wrap all of them except event_config.h.
+
+Python wrappers for C types and functions declared in include/report/FOO.h
+should be implemented in corresponding FOO.c file in this directory.
+
+Their (C-level) declarations should go to common.h.
+
+Note that methods don't have to be declared in common.h:
+they can be static functions inside FOO.c, and exposed to the rest
+of the world via PyTypeObject instance. In FOO.c:
+
+static PyObject *p_method_name(PyObject *pself, PyObject *args)
+...
+static PyMethodDef p_FOO_methods[] = {
+{ "method_name", p_method_name, METH_VARARGS, NULL }
+...
+};
+PyTypeObject p_FOO_type = {
+    .tp_methods = p_FOO_methods,
+...
+};
+
+and only p_FOO_type needs to be declared in common.h.
+
+Similarly, (de)allocators, attr getters/setters also can be static functions
+and be hooked into p_FOO_type.
+
+However, non-method functions can't be static.
+
+
+File reportmodule.c contains the initialization function which should
+initialize types (p_FOO_type objects) and hook up finctions from every
+FOO.c so that they are usable from python code.
+
+Python wrappers for C constants (enums, defines) are created directly
+by reportmodule.c.

@@ -1,0 +1,10 @@
+#!/usr/bin/python
+
+from report import *
+
+cd = problem_data()
+cd.add("foo", "bar")
+
+print "foo:", cd.get("foo")
+print "nonexistent:", cd.get("nonexistent")
+print "done"

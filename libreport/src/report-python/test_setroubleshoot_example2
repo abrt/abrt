@@ -1,0 +1,27 @@
+#!/usr/bin/python
+
+import report
+import report.io
+import report.io.GTKIO
+import report.accountmanager
+
+accounts = report.accountmanager.AccountManager()
+
+signature = report.createAlertSignature("selinux-policy",
+                                        "setroubleshoot",
+                                        "self.siginfo.get_hash()",
+                                        "self.summary",
+                                        "content")
+
+# Won't send log anywhere:
+#rc = report.report(signature, report.io.GTKIO.GTKIO(accounts))
+
+# report.report() + logging:
+def logging_callback(line):
+    print "LOG:", line
+    return
+state = report.run_event_state()
+state.logging_callback = logging_callback
+rc = state.run_event_on_problem_data(signature, "report")
+
+print "rc:", rc

@@ -19,7 +19,7 @@ abrtd_SOURCES = \
     comm_layer_inner.h comm_layer_inner.c \
     abrtd.c
 abrtd_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -31,17 +31,18 @@ abrtd_CPPFLAGS = \
     -DLIBEXEC_DIR=\"$(LIBEXEC_DIR)\" \
     $(GLIB_CFLAGS) \
     $(DBUS_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings
 abrtd_LDADD = \
     $(DBUS_LIBS) \
-    ../lib/libreport.la \
-    ../lib/libabrt_dbus.la
+    ../lib/libabrt.la \
+    $(LIBREPORT_LIBS) -labrt_dbus
 
 abrt_server_SOURCES = \
     abrt-server.c
 abrt_server_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -51,16 +52,18 @@ abrt_server_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_server_LDADD = \
-    ../lib/libreport.la
+    ../lib/libabrt.la \
+    $(LIBREPORT_LIBS)
 
 abrt_action_save_package_data_SOURCES = \
     rpm.h rpm.c \
     abrt-action-save-package-data.c
 abrt_action_save_package_data_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -71,11 +74,13 @@ abrt_action_save_package_data_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_save_package_data_LDADD = \
     $(RPM_LIBS) \
-    ../lib/libreport.la
+    $(LIBREPORT_LIBS) \
+    ../lib/libabrt.la
 
 dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/
 dist_dbusabrtconf_DATA = dbus-abrt.conf

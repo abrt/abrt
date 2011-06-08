@@ -67,6 +67,8 @@ PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([XMLRPC], [xmlrpc])
 PKG_CHECK_MODULES([XMLRPC_CLIENT], [xmlrpc_client])
 PKG_CHECK_MODULES([GNOME_KEYRING], [gnome-keyring-1])
+PKG_CHECK_MODULES([LIBREPORT], [libreport])
+PKG_CHECK_MODULES([LIBREPORT_GTK], [libreport-gtk])
 # Just PKG_CHECK_MODULES([PYTHON], [python]) works only with python2.7+
 # Below, if python is not found, we set up for python2.6 w/o checking:
 PKG_CHECK_MODULES([PYTHON], [python],,[
@@ -134,7 +136,6 @@ AC_CONFIG_FILES([
 	doc/Makefile
 	src/include/Makefile
 	src/lib/Makefile
-	src/report-python/Makefile
 	src/plugins/Makefile
 	src/Makefile
 	src/btparser/Makefile
@@ -142,9 +143,7 @@ AC_CONFIG_FILES([
 	src/daemon/Makefile
 	src/hooks/Makefile
 	src/applet/Makefile
-	src/gtk-helpers/Makefile
 	src/gui-gtk/Makefile
-	src/gui-wizard-gtk/Makefile
 	src/cli/Makefile
 	src/retrace/Makefile
 	src/retrace/plugins/Makefile

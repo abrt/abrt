@@ -8,18 +8,18 @@ abrt_cli_SOURCES = \
     run-command.h run-command.c \
     report.h report.c
 abrt_cli_CPPFLAGS = \
-    -I$(srcdir)/../include/report -I$(srcdir)/../include \
+    -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(DBUS_CFLAGS) $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
+    $(LIBREPORT_CFLAGS) \
     -Wall -Wwrite-strings -Werror
 #    $(GTK_CFLAGS)
 abrt_cli_LDADD = \
-    ../lib/libreport.la \
-    ../lib/libabrt_dbus.la \
+    $(LIBREPORT_LIBS) -labrt_dbus \
     $(GLIB_LIBS)
 
 MAN_TXT = \
