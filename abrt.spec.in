@@ -281,7 +281,13 @@ fi
 if [ $1 -eq 1 ]; then
     /sbin/chkconfig --add abrt-oops
 fi
-#systemd: TODO
+#systemd
+%if %{?with_systemd}
+if [ $1 -eq 1 ]; then
+    # Enable (but don't start) the units by default
+    /bin/systemctl enable abrt-oops.service >/dev/null 2>&1 || :
+fi
+%endif
 
 %preun
 if [ "$1" -eq "0" ] ; then
@@ -314,8 +320,8 @@ if [ "$1" -eq "0" ] ; then
     service abrt-oops stop >/dev/null 2>&1
     /sbin/chkconfig --del abrt-oops
 fi
-#systemd (not tested):
-%if 0
+#systemd
+%if %{?with_systemd}
 if [ "$1" -eq "0" ] ; then
     /bin/systemctl --no-reload abrt-oops.service >/dev/null 2>&1 || :
     /bin/systemctl stop abrt-oops.service >/dev/null 2>&1 || :
@@ -324,6 +330,9 @@ fi
 
 %if %{?with_systemd}
 %postun
+/bin/systemctl daemon-reload >/dev/null 2>&1 || :
+
+%postun addon-kerneloops
 /bin/systemctl daemon-reload >/dev/null 2>&1 || :
 
 %endif
@@ -447,6 +456,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Kerneloops.conf
 %{_sysconfdir}/%{name}/events/report_Kerneloops.xml
 %config(noreplace) %{_sysconfdir}/%{name}/events.d/koops_events.conf
+%if %{?with_systemd}
+/lib/systemd/system/abrt-oops.service
+%endif
 %{_initrddir}/abrt-oops
 %{_mandir}/man*/abrt-action-kerneloops.*
 %{_bindir}/abrt-dump-oops
