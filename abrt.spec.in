@@ -261,10 +261,10 @@ if [ $1 -eq 1 ]; then
 fi
 #systemd
 %if %{?with_systemd}
-#if [ $1 -eq 1 ]; then
+if [ $1 -eq 1 ]; then
 # Enable (but don't start) the units by default
     /bin/systemctl enable abrtd.service >/dev/null 2>&1 || :
-#fi
+fi
 %endif
 
 %post addon-ccpp
@@ -291,8 +291,8 @@ fi
 #systemd
 %if %{?with_systemd}
 if [ "$1" -eq "0" ] ; then
+    /bin/systemctl --no-reload disable abrtd.service > /dev/null 2>&1 || :
     /bin/systemctl stop abrtd.service >/dev/null 2>&1 || :
-    /bin/systemctl disable abrtd.service >/dev/null 2>&1 || :
 fi
 %endif
 
@@ -302,10 +302,10 @@ if [ "$1" -eq "0" ] ; then
     /sbin/chkconfig --del abrt-ccpp
 fi
 #systemd (not tested):
-%if %{?with_systemd}
+%if 0
 if [ "$1" -eq "0" ] ; then
+    /bin/systemctl --no-reload disable abrt-ccpp.service >/dev/null 2>&1 || :
     /bin/systemctl stop abrt-ccpp.service >/dev/null 2>&1 || :
-    /bin/systemctl disable abrt-ccpp.service >/dev/null 2>&1 || :
 fi
 %endif
 
@@ -315,20 +315,17 @@ if [ "$1" -eq "0" ] ; then
     /sbin/chkconfig --del abrt-oops
 fi
 #systemd (not tested):
-%if %{?with_systemd}
+%if 0
 if [ "$1" -eq "0" ] ; then
+    /bin/systemctl --no-reload abrt-oops.service >/dev/null 2>&1 || :
     /bin/systemctl stop abrt-oops.service >/dev/null 2>&1 || :
-    /bin/systemctl disable abrt-oops.service >/dev/null 2>&1 || :
 fi
 %endif
 
-%postun
-#systemd
 %if %{?with_systemd}
-if [ $1 -ge 1 ] ; then
-# On upgrade, reload init system configuration if we changed unit files
-    /bin/systemctl daemon-reload >/dev/null 2>&1 || :
-fi
+%postun
+/bin/systemctl daemon-reload >/dev/null 2>&1 || :
+
 %endif
 
 %post gui
