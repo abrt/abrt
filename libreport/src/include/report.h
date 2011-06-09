@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2011  Abrt team.
+    Copyright (C) 2011  ABRT team.
     Copyright (C) 2011  RedHat inc.
 
     This program is free software; you can redistribute it and/or modify

@@ -17,7 +17,6 @@ BuildRequires: rpm-devel >= 4.6
 BuildRequires: desktop-file-utils
 BuildRequires: libnotify-devel
 BuildRequires: xmlrpc-c-devel
-#why? BuildRequires: file-devel
 BuildRequires: python-devel
 BuildRequires: gettext
 BuildRequires: libxml2-devel
@@ -77,8 +76,6 @@ Applications for reporting bugs using libreport backend
 Summary: Development libraries and headers for libreport
 Group: Development/Libraries
 Requires: libreport-gtk = %{version}-%{release}
-Provides: report-gtk > 0.20
-Obsoletes: report-gtk <= 0.20
 
 %description gtk-devel
 Development libraries and headers for libreport-gtk
@@ -101,11 +98,11 @@ make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
 
 # remove all .la and .a files
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
-mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
+mkdir -p $RPM_BUILD_ROOT/%{_initrddir}
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt
 
 # After everything is installed, remove info dir
-rm -f %{buildroot}%{_infodir}/dir
+rm -f $RPM_BUILD_ROOT/%{_infodir}/dir
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -157,6 +154,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libdir}/libreport.so
 %{_libdir}/libabrt_dbus.so
 %{_libdir}/pkgconfig/libreport.pc
+%dir %{_includedir}/libreport
 
 %files python
 %defattr(-,root,root,-)
