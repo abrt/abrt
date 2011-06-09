@@ -442,6 +442,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-action-generate-backtrace
 %{_bindir}/abrt-action-analyze-backtrace
 %{_bindir}/abrt-action-list-dsos.py*
+%{_sbindir}/abrt-install-ccpp-hook
 %{_sysconfdir}/%{name}/events.d/ccpp_events.conf
 %{_sysconfdir}/%{name}/events/analyze_LocalGDB.xml
 %{_sysconfdir}/%{name}/events/analyze_RetraceServer.xml

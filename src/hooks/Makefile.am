@@ -3,6 +3,9 @@ pluginsconfdir = $(PLUGINS_CONF_DIR)
 dist_pluginsconf_DATA = \
     CCpp.conf
 
+sbin_SCRIPTS = \
+    abrt-install-ccpp-hook
+
 libexec_PROGRAMS = abrt-hook-ccpp
 
 # abrt-hook-ccpp
@@ -24,7 +27,7 @@ abrt_hook_ccpp_LDADD = \
     $(LIBREPORT_LIBS)
 
 python_PYTHON = abrt.pth abrt_exception_handler.py
-EXTRA_DIST = abrt_exception_handler.py.in $(man_MANS)
+EXTRA_DIST = abrt_exception_handler.py.in abrt-install-ccpp-hook $(man_MANS)
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc))
 
