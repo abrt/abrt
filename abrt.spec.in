@@ -257,15 +257,13 @@ exit 0
 
 %post
 if [ $1 -eq 1 ]; then
-    /sbin/chkconfig --add abrtd
-fi
-#systemd
 %if %{?with_systemd}
-if [ $1 -eq 1 ]; then
-# Enable (but don't start) the units by default
+    # Enable (but don't start) the units by default
     /bin/systemctl enable abrtd.service >/dev/null 2>&1 || :
-fi
+%else
+    /sbin/chkconfig --add abrtd
 %endif
+fi
 
 %post addon-ccpp
 # this is required for transition from 1.1.x to 2.x
@@ -273,66 +271,56 @@ fi
 # so 2.x fails when it tries to extract debuginfo there..
 chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 if [ $1 -eq 1 ]; then
-    /sbin/chkconfig --add abrt-ccpp
-fi
-#systemd
 %if %{?with_systemd}
-if [ $1 -eq 1 ]; then
     # Enable (but don't start) the units by default
     /bin/systemctl enable abrt-ccpp.service >/dev/null 2>&1 || :
-fi
+%else
+    /sbin/chkconfig --add abrt-ccpp
 %endif
+fi
 
 %post addon-kerneloops
 if [ $1 -eq 1 ]; then
-    /sbin/chkconfig --add abrt-oops
-fi
-#systemd
 %if %{?with_systemd}
-if [ $1 -eq 1 ]; then
     # Enable (but don't start) the units by default
     /bin/systemctl enable abrt-oops.service >/dev/null 2>&1 || :
-fi
+%else
+    /sbin/chkconfig --add abrt-oops
 %endif
+fi
 
 %preun
 if [ "$1" -eq "0" ] ; then
-    service abrtd stop >/dev/null 2>&1
-    /sbin/chkconfig --del abrtd
-fi
-#systemd
 %if %{?with_systemd}
-if [ "$1" -eq "0" ] ; then
     /bin/systemctl --no-reload disable abrtd.service > /dev/null 2>&1 || :
     /bin/systemctl stop abrtd.service >/dev/null 2>&1 || :
-fi
+%else
+    service abrtd stop >/dev/null 2>&1
+    /sbin/chkconfig --del abrtd
 %endif
+fi
 
 %preun addon-ccpp
 if [ "$1" -eq "0" ] ; then
-    service abrt-ccpp stop >/dev/null 2>&1
-    /sbin/chkconfig --del abrt-ccpp
-fi
-#systemd
 %if %{?with_systemd}
-if [ "$1" -eq "0" ] ; then
     /bin/systemctl --no-reload disable abrt-ccpp.service >/dev/null 2>&1 || :
     /bin/systemctl stop abrt-ccpp.service >/dev/null 2>&1 || :
-fi
+%else
+    service abrt-ccpp stop >/dev/null 2>&1
+    /sbin/chkconfig --del abrt-ccpp
 %endif
+fi
 
 %preun addon-kerneloops
 if [ "$1" -eq "0" ] ; then
-    service abrt-oops stop >/dev/null 2>&1
-    /sbin/chkconfig --del abrt-oops
-fi
-#systemd
 %if %{?with_systemd}
-if [ "$1" -eq "0" ] ; then
     /bin/systemctl --no-reload abrt-oops.service >/dev/null 2>&1 || :
     /bin/systemctl stop abrt-oops.service >/dev/null 2>&1 || :
-fi
+%else
+    service abrt-oops stop >/dev/null 2>&1
+    /sbin/chkconfig --del abrt-oops
 %endif
+fi
 
 %if %{?with_systemd}
 %postun
@@ -375,9 +363,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc README COPYING
-#systemd
 %if %{?with_systemd}
 /lib/systemd/system/abrtd.service
+%exclude %{_initrddir}/abrtd
+%else
+%{_initrddir}/abrtd
 %endif
 %{_sbindir}/abrtd
 %{_sbindir}/abrt-server
@@ -389,7 +379,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
 %{_sysconfdir}/%{name}/events.d/smart_event.conf
-%{_initrddir}/abrtd
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/spool/%{name}
 %dir %attr(0700, abrt, abrt) %{_localstatedir}/spool/%{name}-upload
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/run/%{name}
@@ -443,8 +432,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
 %if %{?with_systemd}
 /lib/systemd/system/abrt-ccpp.service
-%endif
+%exclude %{_initrddir}/abrt-ccpp
+%else
 %{_initrddir}/abrt-ccpp
+%endif
 %{_libexecdir}/abrt-hook-ccpp
 %{_bindir}/abrt-action-analyze-c
 %{_bindir}/abrt-action-trim-files
@@ -471,8 +462,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/%{name}/events.d/koops_events.conf
 %if %{?with_systemd}
 /lib/systemd/system/abrt-oops.service
-%endif
+%exclude %{_initrddir}/abrt-oops
+%else
 %{_initrddir}/abrt-oops
+%endif
 %{_mandir}/man*/abrt-action-kerneloops.*
 %{_bindir}/abrt-dump-oops
 %{_bindir}/abrt-action-analyze-oops
