@@ -275,7 +275,13 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 if [ $1 -eq 1 ]; then
     /sbin/chkconfig --add abrt-ccpp
 fi
-#systemd: TODO
+#systemd
+%if %{?with_systemd}
+if [ $1 -eq 1 ]; then
+    # Enable (but don't start) the units by default
+    /bin/systemctl enable abrt-ccpp.service >/dev/null 2>&1 || :
+fi
+%endif
 
 %post addon-kerneloops
 if [ $1 -eq 1 ]; then
@@ -307,8 +313,8 @@ if [ "$1" -eq "0" ] ; then
     service abrt-ccpp stop >/dev/null 2>&1
     /sbin/chkconfig --del abrt-ccpp
 fi
-#systemd (not tested):
-%if 0
+#systemd
+%if %{?with_systemd}
 if [ "$1" -eq "0" ] ; then
     /bin/systemctl --no-reload disable abrt-ccpp.service >/dev/null 2>&1 || :
     /bin/systemctl stop abrt-ccpp.service >/dev/null 2>&1 || :
@@ -333,6 +339,9 @@ fi
 /bin/systemctl daemon-reload >/dev/null 2>&1 || :
 
 %postun addon-kerneloops
+/bin/systemctl daemon-reload >/dev/null 2>&1 || :
+
+%postun addon-ccpp
 /bin/systemctl daemon-reload >/dev/null 2>&1 || :
 
 %endif
@@ -432,6 +441,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
+%if %{?with_systemd}
+/lib/systemd/system/abrt-ccpp.service
+%endif
 %{_initrddir}/abrt-ccpp
 %{_libexecdir}/abrt-hook-ccpp
 %{_bindir}/abrt-action-analyze-c

@@ -38,3 +38,8 @@ abrt_exception_handler.py:
 # RPM fix: we need to regenerate abrt_exception_handler.py, because it has the default ddir
 install-data-local:
 	sed s,\@VAR_RUN\@,\"$(VAR_RUN)\",g abrt_exception_handler.py.in > abrt_exception_handler.py
+
+if HAVE_SYSTEMD
+dist_systemdsystemunit_DATA = \
+    abrt-ccpp.service
+endif
