@@ -33,7 +33,6 @@ BuildRequires: libtar-devel
 BuildRequires: intltool
 BuildRequires: libtool
 BuildRequires: nss-devel
-BuildRequires: texinfo
 BuildRequires: asciidoc
 BuildRequires: xmlto
 BuildRequires: libreport-devel
@@ -206,21 +205,6 @@ Provides: bug-buddy
 %description desktop
 Virtual package to make easy default installation on desktop environments.
 
-%package retrace-server
-Summary: %{name}'s retrace server using HTTP protocol
-Group: System Environment/Daemons
-Requires: abrt-addon-ccpp
-Requires: gdb >= 7.0-3
-Requires: httpd, mod_wsgi, mod_ssl, python-webob
-Requires: mock, xz, elfutils, createrepo, rsync
-%{?el6:Requires: python-argparse}
-Requires(preun): /sbin/install-info
-Requires(post): /sbin/install-info
-
-%description retrace-server
-The retrace server provides a coredump analysis and backtrace
-generation service over a network using HTTP protocol.
-
 %prep
 %setup -q
 
@@ -246,9 +230,6 @@ install -m 755 %SOURCE3 ${RPM_BUILD_ROOT}/%{_initrddir}/abrt-oops
 mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-di
 mkdir -p $RPM_BUILD_ROOT/var/run/abrt
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt
-mkdir -p $RPM_BUILD_ROOT/var/spool/abrt-retrace
-mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-retrace
-mkdir -p $RPM_BUILD_ROOT/var/log/abrt-retrace
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt-upload
 
 desktop-file-install \
@@ -302,10 +283,6 @@ if [ $1 -eq 1 ]; then
 fi
 #systemd: TODO
 
-%post retrace-server
-/sbin/install-info %{_infodir}/abrt-retrace-server %{_infodir}/dir 2> /dev/null || :
-/usr/sbin/usermod -G mock apache 2> /dev/null || :
-
 %preun
 if [ "$1" -eq "0" ] ; then
     service abrtd stop >/dev/null 2>&1
@@ -344,11 +321,6 @@ if [ "$1" -eq "0" ] ; then
     /bin/systemctl disable abrt-oops.service >/dev/null 2>&1 || :
 fi
 %endif
-
-%preun retrace-server
-if [ "$1" = 0 ]; then
-    /sbin/install-info --delete %{_infodir}/abrt-retrace-server %{_infodir}/dir 2> /dev/null || :
-fi
 
 %postun
 #systemd
@@ -534,24 +506,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files desktop
 %defattr(-,root,root,-)
-
-%files retrace-server
-%defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/%{name}/retrace.conf
-%config(noreplace) %{_sysconfdir}/httpd/conf.d/retrace_httpd.conf
-%config(noreplace) %{_sysconfdir}/yum.repos.d/retrace.repo
-%dir %attr(0775, apache, abrt) %{_localstatedir}/spool/abrt-retrace
-%dir %attr(0755, abrt, abrt) %{_localstatedir}/cache/abrt-retrace
-%dir %attr(0755, abrt, abrt) %{_localstatedir}/log/abrt-retrace
-%caps(cap_setuid=ep) %{_bindir}/abrt-retrace-worker
-%{_bindir}/abrt-retrace-cleanup
-%{_bindir}/abrt-retrace-reposync
-%{_bindir}/coredump2packages
-%{python_site}/retrace.py*
-%{_datadir}/abrt-retrace/*.py*
-%{_datadir}/abrt-retrace/plugins/*.py*
-%{_datadir}/abrt-retrace/*.wsgi
-%{_infodir}/abrt-retrace-server*
 
 %changelog
 * Wed Mar 16 2011 Jiri Moskovcak <jmoskovc@redhat.com> 2.0.0-1
