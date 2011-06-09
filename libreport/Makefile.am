@@ -13,12 +13,10 @@ RPM_DIRS = --define "_sourcedir `pwd`" \
 	   --define "_srcrpmdir `pwd`"
 
 rpm:
-	autoconf --force
 	$(MAKE) dist
 	rpmbuild $(RPM_DIRS) -ba libreport.spec
 
 srpm:
-	autoconf --force
 	$(MAKE) dist
 	rpmbuild $(RPM_DIRS) -bs libreport.spec
 
