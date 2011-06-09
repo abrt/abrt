@@ -1,1 +1,1 @@
-SUBDIRS = include lib hooks btparser daemon applet gui-gtk cli plugins
+SUBDIRS = include lib hooks daemon applet gui-gtk cli plugins

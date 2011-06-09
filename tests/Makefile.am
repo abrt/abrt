@@ -1,5 +1,3 @@
-SUBDIRS = btparser
-
 ## ------------ ##
 ## package.m4.  ##
 ## ------------ ##
@@ -51,6 +49,6 @@ clean-local:
 	test ! -f '$(TESTSUITE)' || $(SHELL) '$(TESTSUITE)' --clean
 
 AUTOTEST = $(AUTOM4TE) --language=autotest
-$(TESTSUITE): $(TESTSUITE_AT) $(srcdir)/package.m4 btparser/*.at
+$(TESTSUITE): $(TESTSUITE_AT) $(srcdir)/package.m4
 	$(AUTOTEST) -I '$(srcdir)' -o $@.tmp $@.at
 	mv $@.tmp $@

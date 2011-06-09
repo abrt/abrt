@@ -16,9 +16,9 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "../btparser/backtrace.h"
-#include "../btparser/frame.h"
-#include "../btparser/location.h"
+#include <btparser/backtrace.h>
+#include <btparser/frame.h>
+#include <btparser/location.h>
 #include "parse_options.h"
 
 static const char *dump_dir_name = ".";
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
     /* Compute backtrace hash */
     struct btp_location location;
     btp_location_init(&location);
-    char *backtrace_str_ptr = backtrace_str;
+    const char *backtrace_str_ptr = backtrace_str;
     struct btp_backtrace *backtrace = btp_backtrace_parse(&backtrace_str_ptr, &location);
     free(backtrace_str);
 

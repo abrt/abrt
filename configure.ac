@@ -67,6 +67,7 @@ PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([XMLRPC], [xmlrpc])
 PKG_CHECK_MODULES([XMLRPC_CLIENT], [xmlrpc_client])
 PKG_CHECK_MODULES([GNOME_KEYRING], [gnome-keyring-1])
+PKG_CHECK_MODULES([BTPARSER], [btparser])
 PKG_CHECK_MODULES([LIBREPORT], [libreport])
 PKG_CHECK_MODULES([LIBREPORT_GTK], [libreport-gtk])
 # Just PKG_CHECK_MODULES([PYTHON], [python]) works only with python2.7+
@@ -137,8 +138,6 @@ AC_CONFIG_FILES([
 	src/lib/Makefile
 	src/plugins/Makefile
 	src/Makefile
-	src/btparser/Makefile
-	src/btparser/btparser.pc
 	src/daemon/Makefile
 	src/hooks/Makefile
 	src/applet/Makefile

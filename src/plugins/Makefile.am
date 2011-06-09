@@ -247,7 +247,7 @@ abrt_action_analyze_backtrace_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror
 abrt_action_analyze_backtrace_LDADD = \
     $(LIBREPORT_LIBS) \
-    ../btparser/libbtparser.la
+    $(BTPARSER_LIBS)
 
 abrt_action_bugzilla_SOURCES = \
     abrt-action-bugzilla.c rhbz.c rhbz.h
@@ -405,7 +405,7 @@ abrt_retrace_client_SOURCES = \
      -Wall -Wwrite-strings -Werror
  abrt_retrace_client_LDADD = \
      $(LIBREPORT_LIBS) \
-     ../btparser/libbtparser.la \
+     $(BTPARSER_LIBS) \
      $(NSS_LIBS)
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
