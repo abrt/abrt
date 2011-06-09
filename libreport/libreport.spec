@@ -40,47 +40,48 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
 Libraries providing API for reporting different problems in applications
-to different bug targets like bugzilla, ftp, trac, etc...
+to different bug targets like Bugzilla, ftp, trac, etc...
 
 %package devel
-Summary: Development libraries and headers for libreport.
+Summary: Development libraries and headers for libreport
 Group: Development/Libraries
+Requires: libreport = %{version}-%{release}
 
 %description devel
-Development libraries and headers for libreport.
+Development libraries and headers for libreport
 
 %package python
-Summary: Python bindings for report-libs.
+Summary: Python bindings for report-libs
 # Is group correct here? -
 Group: System Environment/Libraries
 Requires: libreport = %{version}-%{release}
-Provides: report
+Provides: report > 0.20
 # FIXME: just a workaround to make it work with python-meh, but we should probably provide -newt UI asap
-Provides: report-newt
-Obsoletes: report > 0.20
+Provides: report-newt > 0.20
+Obsoletes: report <= 0.20
 
 %description python
 Python bindings for report-libs.
 
 %package gtk
-Summary: GTK frontend for libreport
+Summary: GTK front-end for libreport
 Group: User Interface/Desktops
 Requires: libreport = %{version}-%{release}
-Provides: report-gtk
-Obsoletes: report-gtk > 0.20
+Provides: report-gtk > 0.20
+Obsoletes: report-gtk <= 0.20
 
 %description gtk
-Applications for reporting bugs using libreport backend.
+Applications for reporting bugs using libreport backend
 
 %package gtk-devel
-Summary: Development libraries and headers for libreport.
+Summary: Development libraries and headers for libreport
 Group: Development/Libraries
 Requires: libreport-gtk = %{version}-%{release}
-Provides: report-gtk
-Obsoletes: report-gtk > 0.20
+Provides: report-gtk > 0.20
+Obsoletes: report-gtk <= 0.20
 
 %description gtk-devel
-Development libraries and headers for libreport-gtk.
+Development libraries and headers for libreport-gtk
 
 %prep
 %setup -q
@@ -110,6 +111,7 @@ rm -f %{buildroot}%{_infodir}/dir
 rm -rf $RPM_BUILD_ROOT
 
 %post gtk
+/sbin/ldconfig
 # update icon cache
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
@@ -118,6 +120,7 @@ touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 %postun -p /sbin/ldconfig
 
 %postun gtk
+/sbin/ldconfig
 if [ $1 -eq 0 ] ; then
     touch --no-create %{_datadir}/icons/hicolor &>/dev/null
     gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
@@ -163,14 +166,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %{_bindir}/bug-reporting-wizard
 %{_libdir}/libreport-gtk.so.*
-%{_libdir}/pkgconfig/libreport-gtk.pc
 
 %files gtk-devel
 %defattr(-,root,root,-)
 %{_libdir}/libreport-gtk.so
 %{_includedir}/libreport/libreport-gtk.h
-
+%{_libdir}/pkgconfig/libreport-gtk.pc
 
 %changelog
-* Wed Jun 01 2011 Jiri Moskovcak <jmoskovc@redhat.com> 2.0.2
+* Wed Jun 01 2011 Jiri Moskovcak <jmoskovc@redhat.com> 2.0.2-1
 - initial packaging
