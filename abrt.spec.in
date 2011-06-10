@@ -224,9 +224,11 @@ make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
 # remove all .la and .a files
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
+%if ! %{?with_systemd}
 install -m 755 %SOURCE1 ${RPM_BUILD_ROOT}/%{_initrddir}/abrtd
 install -m 755 %SOURCE2 ${RPM_BUILD_ROOT}/%{_initrddir}/abrt-ccpp
 install -m 755 %SOURCE3 ${RPM_BUILD_ROOT}/%{_initrddir}/abrt-oops
+%endif
 mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-di
 mkdir -p $RPM_BUILD_ROOT/var/run/abrt
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt
@@ -365,7 +367,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %doc README COPYING
 %if %{?with_systemd}
 /lib/systemd/system/abrtd.service
-%exclude %{_initrddir}/abrtd
 %else
 %{_initrddir}/abrtd
 %endif
@@ -432,7 +433,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
 %if %{?with_systemd}
 /lib/systemd/system/abrt-ccpp.service
-%exclude %{_initrddir}/abrt-ccpp
 %else
 %{_initrddir}/abrt-ccpp
 %endif
@@ -462,7 +462,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/%{name}/events.d/koops_events.conf
 %if %{?with_systemd}
 /lib/systemd/system/abrt-oops.service
-%exclude %{_initrddir}/abrt-oops
 %else
 %{_initrddir}/abrt-oops
 %endif
