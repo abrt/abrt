@@ -1170,9 +1170,9 @@ static void check_bt_rating_and_allow_send(void)
      * but so far only oopses don't have rating, so for now we
      * skip the "kernel" manually
      */
-    const char *component = get_problem_item_content_or_NULL(g_cd, FILENAME_COMPONENT);
+    const char *analyzer = get_problem_item_content_or_NULL(g_cd, FILENAME_ANALYZER);
 //FIXME: say "no" to special casing!
-    if (strcmp(component, "kernel") != 0)
+    if (analyzer && strcmp(analyzer, "Kerneloops") != 0)
     {
         const char *rating = get_problem_item_content_or_NULL(g_cd, FILENAME_RATING);
 //COMPAT, remove after 2.1 release

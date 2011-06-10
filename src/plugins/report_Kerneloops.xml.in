@@ -2,6 +2,13 @@
 <event>
     <_name>Kerneloops.org</_name>
     <_description>Send kernel problems to oops tracker</_description>
+
+    <requires-items>backtrace</requires-items>
+    <exclude-items-by-default></exclude-items-by-default>
+    <exclude-items-always>*</exclude-items-always>
+    <exclude-binary-items>yes</exclude-binary-items>
+    <include-items-by-default></include-items-by-default>
+
     <options>
         <option type="text" name="KerneloopsReporter_SubmitURL">
             <_label>Kerneloops URL</_label>

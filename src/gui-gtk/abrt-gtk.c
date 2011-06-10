@@ -213,7 +213,6 @@ static void on_button_send_cb(GtkWidget *button, gpointer data)
 
 static void on_menu_report_cb(GtkMenuItem *menuitem, gpointer unused)
 {
-
     s_report_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(s_report_window), _("Problem description"));
     gtk_window_set_default_size(GTK_WINDOW(s_report_window), 400, 400);
