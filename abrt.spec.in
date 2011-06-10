@@ -376,8 +376,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-action-save-package-data
 %{_bindir}/abrt-retrace-client
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
-%config(noreplace) %{_sysconfdir}/%{name}/abrt_event.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
+%config(noreplace) %{_sysconfdir}/%{name}/events.d/abrt_event.conf
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
 %{_sysconfdir}/%{name}/events.d/smart_event.conf
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/spool/%{name}

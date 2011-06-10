@@ -1,7 +1,8 @@
 eventsconfdir = $(EVENTS_CONF_DIR)
 
 dist_eventsconf_DATA = \
-    smart_event.conf
+    smart_event.conf \
+    abrt_event.conf
 
 bin_SCRIPTS = \
     abrt-handle-upload
@@ -88,7 +89,6 @@ dist_dbusabrtconf_DATA = dbus-abrt.conf
 daemonconfdir = $(CONF_DIR)
 dist_daemonconf_DATA = \
     abrt.conf \
-    abrt_event.conf \
     gpg_keys
 
 comredhatabrtservicedir = ${datadir}/dbus-1/system-services
