@@ -58,6 +58,12 @@ void send_dbus_sig_Crash(const char *package_name,
                                   const char *dir,
                                   const char *uid_str
 ) {
+    /* Happens, for example, if abrt-action-save-package-data
+     * is not configured to run.
+     */
+    if (!package_name)
+        package_name = "";
+
     DBusMessage* msg = new_signal_msg("Crash", NULL);
     if (uid_str)
     {

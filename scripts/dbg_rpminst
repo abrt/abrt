@@ -4,6 +4,6 @@ BUILDDIR="00_builddir"
 
 cd "$BUILDDIR" || exit 1
 
-yum -y -C erase 'abrt*' 'libreport*' 'report*'
+yum -y -C erase 'abrt*'
 yum -y -C --nogpgcheck localinstall *.rpm
 killall -HUP dbus-daemon

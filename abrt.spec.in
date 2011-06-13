@@ -1,10 +1,10 @@
-%{!?python_site: %define python_site %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
+%{!?python_site: %global python_site %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
 # platform-dependent
-%{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
+%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 %if 0%{?fedora} >= 14
-    %define with_systemd 1
+    %bcond_without systemd
 %else
-    %define with_systemd 0
+    %bcond_with systemd
 %endif
 
 Summary: Automatic bug detection and reporting tool
@@ -45,7 +45,7 @@ BuildRequires: gnome-keyring-devel
 BuildRequires: libgnome-keyring-devel
 %endif
 
-%if %{?with_systemd}
+%if %{with systemd}
 Requires: systemd-units
 %endif
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -225,9 +225,11 @@ make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
 # remove all .la and .a files
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
+%if ! %{with systemd}
 install -m 755 %SOURCE1 ${RPM_BUILD_ROOT}/%{_initrddir}/abrtd
 install -m 755 %SOURCE2 ${RPM_BUILD_ROOT}/%{_initrddir}/abrt-ccpp
 install -m 755 %SOURCE3 ${RPM_BUILD_ROOT}/%{_initrddir}/abrt-oops
+%endif
 mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-di
 mkdir -p $RPM_BUILD_ROOT/var/run/abrt
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt
@@ -258,15 +260,13 @@ exit 0
 
 %post
 if [ $1 -eq 1 ]; then
-    /sbin/chkconfig --add abrtd
-fi
-#systemd
-%if %{?with_systemd}
-#if [ $1 -eq 1 ]; then
-# Enable (but don't start) the units by default
+%if %{with systemd}
+    # Enable (but don't start) the units by default
     /bin/systemctl enable abrtd.service >/dev/null 2>&1 || :
-#fi
+%else
+    /sbin/chkconfig --add abrtd
 %endif
+fi
 
 %post addon-ccpp
 # this is required for transition from 1.1.x to 2.x
@@ -274,62 +274,67 @@ fi
 # so 2.x fails when it tries to extract debuginfo there..
 chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 if [ $1 -eq 1 ]; then
+%if %{with systemd}
+    # Enable (but don't start) the units by default
+    /bin/systemctl enable abrt-ccpp.service >/dev/null 2>&1 || :
+%else
     /sbin/chkconfig --add abrt-ccpp
+%endif
 fi
-#systemd: TODO
 
 %post addon-kerneloops
 if [ $1 -eq 1 ]; then
+%if %{with systemd}
+    # Enable (but don't start) the units by default
+    /bin/systemctl enable abrt-oops.service >/dev/null 2>&1 || :
+%else
     /sbin/chkconfig --add abrt-oops
+%endif
 fi
-#systemd: TODO
 
 %preun
 if [ "$1" -eq "0" ] ; then
+%if %{with systemd}
+    /bin/systemctl --no-reload disable abrtd.service > /dev/null 2>&1 || :
+    /bin/systemctl stop abrtd.service >/dev/null 2>&1 || :
+%else
     service abrtd stop >/dev/null 2>&1
     /sbin/chkconfig --del abrtd
-fi
-#systemd
-%if %{?with_systemd}
-if [ "$1" -eq "0" ] ; then
-    /bin/systemctl stop abrtd.service >/dev/null 2>&1 || :
-    /bin/systemctl disable abrtd.service >/dev/null 2>&1 || :
-fi
 %endif
+fi
 
 %preun addon-ccpp
 if [ "$1" -eq "0" ] ; then
+%if %{with systemd}
+    /bin/systemctl --no-reload disable abrt-ccpp.service >/dev/null 2>&1 || :
+    /bin/systemctl stop abrt-ccpp.service >/dev/null 2>&1 || :
+%else
     service abrt-ccpp stop >/dev/null 2>&1
     /sbin/chkconfig --del abrt-ccpp
-fi
-#systemd (not tested):
-%if %{?with_systemd}
-if [ "$1" -eq "0" ] ; then
-    /bin/systemctl stop abrt-ccpp.service >/dev/null 2>&1 || :
-    /bin/systemctl disable abrt-ccpp.service >/dev/null 2>&1 || :
-fi
 %endif
+fi
 
 %preun addon-kerneloops
 if [ "$1" -eq "0" ] ; then
+%if %{with systemd}
+    /bin/systemctl --no-reload abrt-oops.service >/dev/null 2>&1 || :
+    /bin/systemctl stop abrt-oops.service >/dev/null 2>&1 || :
+%else
     service abrt-oops stop >/dev/null 2>&1
     /sbin/chkconfig --del abrt-oops
-fi
-#systemd (not tested):
-%if %{?with_systemd}
-if [ "$1" -eq "0" ] ; then
-    /bin/systemctl stop abrt-oops.service >/dev/null 2>&1 || :
-    /bin/systemctl disable abrt-oops.service >/dev/null 2>&1 || :
-fi
 %endif
-
-%postun
-#systemd
-%if %{?with_systemd}
-if [ $1 -ge 1 ] ; then
-# On upgrade, reload init system configuration if we changed unit files
-    /bin/systemctl daemon-reload >/dev/null 2>&1 || :
 fi
+
+%if %{with systemd}
+%postun
+/bin/systemctl daemon-reload >/dev/null 2>&1 || :
+
+%postun addon-kerneloops
+/bin/systemctl daemon-reload >/dev/null 2>&1 || :
+
+%postun addon-ccpp
+/bin/systemctl daemon-reload >/dev/null 2>&1 || :
+
 %endif
 
 %post gui
@@ -361,9 +366,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc README COPYING
-#systemd
-%if %{?with_systemd}
+%if %{with systemd}
 /lib/systemd/system/abrtd.service
+%else
+%{_initrddir}/abrtd
 %endif
 %{_sbindir}/abrtd
 %{_sbindir}/abrt-server
@@ -371,11 +377,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-action-save-package-data
 %{_bindir}/abrt-retrace-client
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
-%config(noreplace) %{_sysconfdir}/%{name}/abrt_event.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
+%config(noreplace) %{_sysconfdir}/%{name}/events.d/abrt_event.conf
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
 %{_sysconfdir}/%{name}/events.d/smart_event.conf
-%{_initrddir}/abrtd
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/spool/%{name}
 %dir %attr(0700, abrt, abrt) %{_localstatedir}/spool/%{name}-upload
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/run/%{name}
@@ -424,7 +429,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
+%if %{with systemd}
+/lib/systemd/system/abrt-ccpp.service
+%else
 %{_initrddir}/abrt-ccpp
+%endif
 %{_libexecdir}/abrt-hook-ccpp
 %{_bindir}/abrt-action-analyze-c
 %{_bindir}/abrt-action-trim-files
@@ -434,6 +443,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-action-generate-backtrace
 %{_bindir}/abrt-action-analyze-backtrace
 %{_bindir}/abrt-action-list-dsos.py*
+%{_sbindir}/abrt-install-ccpp-hook
 %{_sysconfdir}/%{name}/events.d/ccpp_events.conf
 %{_sysconfdir}/%{name}/events/analyze_LocalGDB.xml
 %{_sysconfdir}/%{name}/events/analyze_RetraceServer.xml
@@ -448,7 +458,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Kerneloops.conf
 %{_sysconfdir}/%{name}/events/report_Kerneloops.xml
 %config(noreplace) %{_sysconfdir}/%{name}/events.d/koops_events.conf
+%if %{with systemd}
+/lib/systemd/system/abrt-oops.service
+%else
 %{_initrddir}/abrt-oops
+%endif
 %{_mandir}/man*/abrt-action-kerneloops.*
 %{_bindir}/abrt-dump-oops
 %{_bindir}/abrt-action-analyze-oops

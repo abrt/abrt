@@ -409,3 +409,8 @@ abrt_retrace_client_SOURCES = \
      $(NSS_LIBS)
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
+
+if HAVE_SYSTEMD
+dist_systemdsystemunit_DATA = \
+    abrt-oops.service
+endif

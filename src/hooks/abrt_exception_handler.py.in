@@ -24,7 +24,6 @@ Module for the ABRT exception handling hook
 
 import sys
 import os
-import syslog
 import socket
 
 def write_dump(pid, tb):
@@ -48,6 +47,7 @@ def write_dump(pid, tb):
         s.sendall("DONE\0")
         s.close()
     except Exception, ex:
+        import syslog
         syslog.syslog("can't communicate with ABRT daemon, is it running? %s", str(ex))
 
 def handleMyException((etype, value, tb)):
@@ -67,10 +67,10 @@ def handleMyException((etype, value, tb)):
         return sys.__excepthook__(etype, value, tb)
 
     try:
-        import os
         import os.path
         import traceback
         import errno
+        import syslog
 
         # EPIPE is not a crash, it happens all the time
         # Testcase: script.py | true, where script.py is:

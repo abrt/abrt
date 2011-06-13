@@ -2,6 +2,13 @@
 <event>
     <_name>Mailx</_name>
     <_description>Send via email</_description>
+
+    <requires-items></requires-items>
+    <exclude-items-by-default>coredump</exclude-items-by-default>
+    <exclude-items-always></exclude-items-always>
+    <exclude-binary-items>no</exclude-binary-items>
+    <include-items-by-default></include-items-by-default>
+
     <options>
         <option type="text" name="Mailx_Subject">
             <_label>Subject</_label>

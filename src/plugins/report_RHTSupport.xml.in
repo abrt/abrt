@@ -2,6 +2,13 @@
 <event>
     <_name>Red Hat Customer Support</_name>
     <_description>Report to Red Hat support</_description>
+
+    <requires-items>package</requires-items>
+    <exclude-items-by-default>event_log,reported_to</exclude-items-by-default>
+    <exclude-items-always></exclude-items-always>
+    <exclude-binary-items>no</exclude-binary-items>
+    <include-items-by-default></include-items-by-default>
+
     <options>
         <option type="text" name="RHTSupport_URL">
             <_label>RH Portal URL</_label>
