@@ -72,10 +72,6 @@ Finalizing dump creation:
    \0
 */
 
-/* Buffer for incomplete incoming messages. */
-static char *messagebuf_data = NULL;
-static unsigned messagebuf_len = 0;
-
 static unsigned total_bytes_read = 0;
 
 static uid_t client_uid = (uid_t)-1L;
@@ -98,7 +94,7 @@ static char *reason;
  * Caller must ensure that all fields in struct client
  * are properly filled.
  */
-static void create_debug_dump()
+static int create_debug_dump()
 {
     /* Create temp directory with the debug dump.
        This directory is renamed to final directory name after
@@ -158,6 +154,52 @@ static void create_debug_dump()
     }
 
     free(path);
+
+    return 201; /* Created */
+}
+
+/* Remove dump dir */
+static int delete_path(const char *dump_dir_name)
+{
+    /* If doesn't start with "DEBUG_DUMPS_DIR/"... */
+    if (strncmp(dump_dir_name, DEBUG_DUMPS_DIR"/", strlen(DEBUG_DUMPS_DIR"/")) != 0
+    /* or contains "/." anywhere (-> might contain ".." component) */
+     || strstr(dump_dir_name + strlen(DEBUG_DUMPS_DIR), "/.")
+    ) {
+        /* Then refuse to operate on it (someone is attacking us??) */
+        error_msg("Bad dump directory name '%s', not deleting", dump_dir_name);
+        return 400; /* Bad Request */
+    }
+
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        return 404; /* Not Found */
+
+    if (client_uid != 0) /* not called by root */
+    {
+        char client_uid_str[sizeof(long) * 3 + 2];
+        sprintf(client_uid_str, "%ld", (long)client_uid);
+
+        char *uid = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+        /* we assume that the dump_dir can be handled by everyone if uid == NULL
+         * e.g: kerneloops
+         */
+        if (uid != NULL)
+        {
+            bool uid_matches = (strcmp(uid, client_uid_str) == 0);
+            free(uid);
+            if (!uid_matches)
+            {
+                dd_close(dd);
+                error_msg("Dump directory '%s' can't be accessed by user with uid %ld", dump_dir_name, (long)client_uid);
+                return 403; /* Forbidden */
+            }
+        }
+    }
+
+    dd_delete(dd);
+
+    return 0; /* success */
 }
 
 /* Checks if a string contains only printable characters. */
@@ -254,24 +296,139 @@ static void process_message(const char *message)
         VERB3 log("Saved PID %u", pid);
         return;
     }
+}
 
-    /* Creates debug dump if all fields were already provided. */
-    if (starts_with(message, "DONE"))
+static int perform_http_xact(void)
+{
+    /* Read header */
+    char *body_start = NULL;
+    char *messagebuf_data = NULL;
+    unsigned messagebuf_len = 0;
+    /* Loop until EOF/error/timeout/end_fo_header */
+    while (1)
     {
-        if (!pid || !backtrace || !executable
-         || !analyzer || !dir_basename || !reason
-        ) {
-            error_msg_and_die("Got DONE, but some data are missing. Aborting");
+        messagebuf_data = xrealloc(messagebuf_data, messagebuf_len + INPUT_BUFFER_SIZE);
+        char *p = messagebuf_data + messagebuf_len;
+        int rd = read(STDIN_FILENO, p, INPUT_BUFFER_SIZE);
+        if (rd < 0)
+        {
+            if (errno == EINTR) /* SIGALRM? */
+                error_msg_and_die("Timed out");
+            perror_msg_and_die("read");
+        }
+        if (rd == 0)
+            break;
+
+        VERB3 log("Received %u bytes of data", rd);
+        messagebuf_len += rd;
+        total_bytes_read += rd;
+        if (total_bytes_read > MAX_MESSAGE_SIZE)
+            error_msg_and_die("Message is too long, aborting");
+
+        /* Check whether we see end of header */
+        /* Note: we support both [\r]\n\r\n and \n\n */
+        char *past_end = messagebuf_data + messagebuf_len;
+        if (p > messagebuf_data+1)
+            p -= 2; /* start search from two last bytes in last read - they might be '\n\r' */
+        while (p < past_end)
+        {
+            p = memchr(p, '\n', past_end - p);
+            if (!p)
+                break;
+            p++;
+            if (p >= past_end)
+                break;
+            if (*p == '\n'
+             || (*p == '\r' && p+1 < past_end && p[1] == '\n')
+            ) {
+                body_start = p + 1 + (*p == '\r');
+                *p = '\0';
+                goto found_end_of_header;
+            }
+        }
+    } /* while (read) */
+ found_end_of_header: ;
+    VERB3 log("Request: %s", messagebuf_data);
+
+    /* Sanitize and analyze header.
+     * Header now is in messagebuf_data, NUL terminated string,
+     * with last empty line deleted (by placement of NUL).
+     * \r\n are not (yet) converted to \n, multi-line headers also
+     * not converted.
+     */
+    /* First line must be "op<space>[http://host]/path<space>HTTP/n.n".
+     * <space> is exactly one space char.
+     */
+    if (strncmp(messagebuf_data, "DELETE ", strlen("DELETE ")) == 0)
+    {
+        messagebuf_data += strlen("DELETE ");
+        char *space = strchr(messagebuf_data, ' ');
+        if (!space || strncmp(space+1, "HTTP/", strlen("HTTP/")) != 0)
+            return 400; /* Bad Request */
+        *space = '\0';
+        //decode_url(messagebuf_data); %20 => ' '
+        alarm(0);
+        return delete_path(messagebuf_data);
+    }
+
+    if (strncmp(messagebuf_data, "PUT ", strlen("PUT ")) != 0)
+    {
+        return 400; /* Bad Request */;
+    }
+
+    /* Read body */
+    if (!body_start)
+    {
+        VERB1 log("EOF detected, exiting");
+        return 400; /* Bad Request */
+    }
+
+    messagebuf_len -= (body_start - messagebuf_data);
+    memmove(messagebuf_data, body_start, messagebuf_len);
+    VERB3 log("Body so far: %u bytes, '%s'", messagebuf_len, messagebuf_data);
+
+    /* Loop until EOF/error/timeout */
+    while (1)
+    {
+        while (1)
+        {
+            unsigned len = strnlen(messagebuf_data, messagebuf_len);
+            if (len >= messagebuf_len)
+                break;
+            /* messagebuf has at least one NUL - process the line */
+            process_message(messagebuf_data);
+            messagebuf_len -= (len + 1);
+            memmove(messagebuf_data, messagebuf_data + len + 1, messagebuf_len);
         }
 
-        /* Write out the crash dump. Don't let alarm to interrupt here */
-        alarm(0);
-        create_debug_dump();
+        messagebuf_data = xrealloc(messagebuf_data, messagebuf_len + INPUT_BUFFER_SIZE);
+        int rd = read(STDIN_FILENO, messagebuf_data + messagebuf_len, INPUT_BUFFER_SIZE);
+        if (rd < 0)
+        {
+            if (errno == EINTR) /* SIGALRM? */
+                error_msg_and_die("Timed out");
+            perror_msg_and_die("read");
+        }
+        if (rd == 0)
+            break;
 
-        /* Reset alarm and the counter which detects oversized dumps */
-        alarm(TIMEOUT);
-        total_bytes_read = 0;
+        VERB3 log("Received %u bytes of data", rd);
+        messagebuf_len += rd;
+        total_bytes_read += rd;
+        if (total_bytes_read > MAX_MESSAGE_SIZE)
+            error_msg_and_die("Message is too long, aborting");
     }
+
+    /* Creates debug dump if all fields were already provided. */
+    if (!pid || !backtrace || !executable
+     || !analyzer || !dir_basename || !reason
+    ) {
+        error_msg_and_die("Some data are missing. Aborting");
+    }
+
+    /* Write out the crash dump. Don't let alarm to interrupt here */
+    alarm(0);
+    return create_debug_dump();
 }
 
 static void dummy_handler(int sig_unused) {}
@@ -333,38 +490,128 @@ int main(int argc, char **argv)
         client_uid = cr.uid;
     }
 
-    /* Loop until EOF/error/timeout */
-    while (1)
-    {
-        messagebuf_data = xrealloc(messagebuf_data, messagebuf_len + INPUT_BUFFER_SIZE);
-        int rd = read(STDIN_FILENO, messagebuf_data + messagebuf_len, INPUT_BUFFER_SIZE);
-        if (rd < 0)
-        {
-            if (errno == EINTR) /* SIGALRM? */
-                error_msg_and_die("Timed out");
-            perror_msg_and_die("read");
-        }
-        if (rd == 0)
-            break;
+    int r = perform_http_xact();
+    if (r == 0)
+        r = 200;
 
-        VERB3 log("Received %u bytes of data", rd);
-        messagebuf_len += rd;
-        total_bytes_read += rd;
-        if (total_bytes_read > MAX_MESSAGE_SIZE)
-            error_msg_and_die("Message is too long, aborting");
+    printf("HTTP/1.1 %u \r\n\r\n", r);
 
-        while (1)
-        {
-            unsigned len = strnlen(messagebuf_data, messagebuf_len);
-            if (len >= messagebuf_len)
-                break;
-            /* messagebuf has at least one NUL - process the line */
-            process_message(messagebuf_data);
-            messagebuf_len -= (len + 1);
-            memmove(messagebuf_data, messagebuf_data + len + 1, messagebuf_len);
+    return (r >= 400); /* Error if 400+ */
+}
+
+
+
+
+
+
+#if 0
+
+// TODO: example of SSLed connection
+
+#include <openssl/ssl.h>
+#include <openssl/err.h>
+    if (flags & OPT_SSL) {
+        /* load key and cert files */
+        SSL_CTX *ctx;
+        SSL *ssl;
+
+        ctx = init_ssl_context();
+        if (SSL_CTX_use_certificate_file(ctx, cert_path, SSL_FILETYPE_PEM) <= 0
+         || SSL_CTX_use_PrivateKey_file(ctx, key_path, SSL_FILETYPE_PEM) <= 0
+        ) {
+            ERR_print_errors_fp(stderr);
+            error_msg_and_die("SSL certificates err\n");
         }
+        if (!SSL_CTX_check_private_key(ctx)) {
+            error_msg_and_die("Private key does not match public key\n");
+        }
+        (void)SSL_CTX_set_mode(ctx, SSL_MODE_AUTO_RETRY);
+
+        //TODO more errors?
+        ssl = SSL_new(ctx);
+        SSL_set_fd(ssl, sockfd_in);
+        //SSL_set_accept_state(ssl);
+        if (SSL_accept(ssl) == 1) {
+            //while whatever serve
+            while (serve(ssl, flags))
+                continue;
+            //TODO errors
+            SSL_shutdown(ssl);
+        }
+        SSL_free(ssl);
+        SSL_CTX_free(ctx);
+    } else {
+        while (serve(&sockfd_in, flags))
+            continue;
     }
 
-    VERB1 log("EOF detected, exiting");
-    return 0;
-}
+
+        err = (flags & OPT_SSL) ? SSL_read(sock, buffer, READ_BUF-1):
+                                  read(*(int*)sock, buffer, READ_BUF-1);
+
+        if ( err < 0 ) {
+            //TODO handle errno ||  SSL_get_error(ssl,err);
+            break;
+        }
+        if ( err == 0 ) break;
+
+        if (!head) {
+            buffer[err] = '\0';
+            clean[i%2] = delete_cr(buffer);
+            cut = g_strstr_len(buffer, -1, "\n\n");
+            if ( cut == NULL ) {
+                g_string_append(headers, buffer);
+            } else {
+                g_string_append_len(headers, buffer, cut-buffer);
+            }
+        }
+
+        /* end of header section? */
+        if ( !head && ( cut != NULL || (clean[(i+1)%2] && buffer[0]=='\n') ) ) {
+            parse_head(&request, headers);
+            head = TRUE;
+            c_len = has_body(&request);
+
+            if ( c_len ) {
+                //if we want to read body some day - this will be the right place to begin
+                //malloc body append rest of the (fixed) buffer at the beginning of a body
+                //if clean buffer[1];
+            } else {
+                break;
+            }
+            break; //because we don't support body yet
+        } else if ( head == TRUE ) {
+            /* body-reading stuff
+             * read body, check content-len
+             * save body to request
+             */
+            break;
+        } else {
+            // count header size
+            len += err;
+            if ( len > READ_BUF-1 ) {
+                //TODO header is too long
+                break;
+            }
+        }
+
+        i++;
+    }
+
+    g_string_free(headers, true); //because we allocated it
+
+    rt = generate_response(&request, &response);
+
+    /* write headers */
+    if ( flags & OPT_SSL ) {
+        //TODO err
+        err = SSL_write(sock, response.response_line, strlen(response.response_line));
+        err = SSL_write(sock, response.head->str , strlen(response.head->str));
+        err = SSL_write(sock, "\r\n", 2);
+    } else {
+        //TODO err
+        err = write(*(int*)sock, response.response_line, strlen(response.response_line));
+        err = write(*(int*)sock, response.head->str , strlen(response.head->str));
+        err = write(*(int*)sock, "\r\n", 2);
+    }
+#endif
