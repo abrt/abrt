@@ -2,9 +2,9 @@
 # platform-dependent
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 %if 0%{?fedora} >= 14
-    %define with_systemd 1
+    %bcond_without systemd
 %else
-    %define with_systemd 0
+    %bcond_with systemd
 %endif
 
 Summary: Automatic bug detection and reporting tool
@@ -44,7 +44,7 @@ BuildRequires: gnome-keyring-devel
 BuildRequires: libgnome-keyring-devel
 %endif
 
-%if %{?with_systemd}
+%if %{with systemd}
 Requires: systemd-units
 %endif
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -224,7 +224,7 @@ make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
 # remove all .la and .a files
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
-%if ! %{?with_systemd}
+%if ! %{with systemd}
 install -m 755 %SOURCE1 ${RPM_BUILD_ROOT}/%{_initrddir}/abrtd
 install -m 755 %SOURCE2 ${RPM_BUILD_ROOT}/%{_initrddir}/abrt-ccpp
 install -m 755 %SOURCE3 ${RPM_BUILD_ROOT}/%{_initrddir}/abrt-oops
@@ -259,7 +259,7 @@ exit 0
 
 %post
 if [ $1 -eq 1 ]; then
-%if %{?with_systemd}
+%if %{with systemd}
     # Enable (but don't start) the units by default
     /bin/systemctl enable abrtd.service >/dev/null 2>&1 || :
 %else
@@ -273,7 +273,7 @@ fi
 # so 2.x fails when it tries to extract debuginfo there..
 chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 if [ $1 -eq 1 ]; then
-%if %{?with_systemd}
+%if %{with systemd}
     # Enable (but don't start) the units by default
     /bin/systemctl enable abrt-ccpp.service >/dev/null 2>&1 || :
 %else
@@ -283,7 +283,7 @@ fi
 
 %post addon-kerneloops
 if [ $1 -eq 1 ]; then
-%if %{?with_systemd}
+%if %{with systemd}
     # Enable (but don't start) the units by default
     /bin/systemctl enable abrt-oops.service >/dev/null 2>&1 || :
 %else
@@ -293,7 +293,7 @@ fi
 
 %preun
 if [ "$1" -eq "0" ] ; then
-%if %{?with_systemd}
+%if %{with systemd}
     /bin/systemctl --no-reload disable abrtd.service > /dev/null 2>&1 || :
     /bin/systemctl stop abrtd.service >/dev/null 2>&1 || :
 %else
@@ -304,7 +304,7 @@ fi
 
 %preun addon-ccpp
 if [ "$1" -eq "0" ] ; then
-%if %{?with_systemd}
+%if %{with systemd}
     /bin/systemctl --no-reload disable abrt-ccpp.service >/dev/null 2>&1 || :
     /bin/systemctl stop abrt-ccpp.service >/dev/null 2>&1 || :
 %else
@@ -315,7 +315,7 @@ fi
 
 %preun addon-kerneloops
 if [ "$1" -eq "0" ] ; then
-%if %{?with_systemd}
+%if %{with systemd}
     /bin/systemctl --no-reload abrt-oops.service >/dev/null 2>&1 || :
     /bin/systemctl stop abrt-oops.service >/dev/null 2>&1 || :
 %else
@@ -324,7 +324,7 @@ if [ "$1" -eq "0" ] ; then
 %endif
 fi
 
-%if %{?with_systemd}
+%if %{with systemd}
 %postun
 /bin/systemctl daemon-reload >/dev/null 2>&1 || :
 
@@ -365,7 +365,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc README COPYING
-%if %{?with_systemd}
+%if %{with systemd}
 /lib/systemd/system/abrtd.service
 %else
 %{_initrddir}/abrtd
@@ -431,7 +431,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
-%if %{?with_systemd}
+%if %{with systemd}
 /lib/systemd/system/abrt-ccpp.service
 %else
 %{_initrddir}/abrt-ccpp
@@ -460,7 +460,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Kerneloops.conf
 %{_sysconfdir}/%{name}/events/report_Kerneloops.xml
 %config(noreplace) %{_sysconfdir}/%{name}/events.d/koops_events.conf
-%if %{?with_systemd}
+%if %{with systemd}
 /lib/systemd/system/abrt-oops.service
 %else
 %{_initrddir}/abrt-oops
