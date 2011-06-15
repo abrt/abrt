@@ -1,7 +1,6 @@
 eventsconfdir = $(EVENTS_CONF_DIR)
 
 dist_eventsconf_DATA = \
-    smart_event.conf \
     abrt_event.conf
 
 bin_SCRIPTS = \
