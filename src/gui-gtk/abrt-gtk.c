@@ -19,7 +19,6 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include "abrtlib.h"
-#include "abrt_dbus.h"
 #include "abrt-gtk.h"
 #include "libreport-gtk.h"
 

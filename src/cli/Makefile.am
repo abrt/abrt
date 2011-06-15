@@ -13,13 +13,13 @@ abrt_cli_CPPFLAGS = \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
-    $(DBUS_CFLAGS) $(GLIB_CFLAGS) \
+    $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
     $(LIBREPORT_CFLAGS) \
     -Wall -Wwrite-strings -Werror
 #    $(GTK_CFLAGS)
 abrt_cli_LDADD = \
-    $(LIBREPORT_LIBS) -labrt_dbus \
+    $(LIBREPORT_LIBS) \
     $(GLIB_LIBS)
 
 MAN_TXT = \

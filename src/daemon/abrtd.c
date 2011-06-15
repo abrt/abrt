@@ -30,12 +30,12 @@
 #include "MiddleWare.h"
 #include "parse_options.h"
 
-#define VAR_RUN_PIDFILE     VAR_RUN"/abrtd.pid"
+#define VAR_RUN_PIDFILE   VAR_RUN"/abrtd.pid"
 
-#define SOCKET_FILE VAR_RUN"/abrt/abrt.socket"
+#define SOCKET_FILE       VAR_RUN"/abrt/abrt.socket"
 #define SOCKET_PERMISSION 0666
 /* Maximum number of simultaneously opened client connections. */
-#define MAX_CLIENT_COUNT 10
+#define MAX_CLIENT_COUNT  10
 
 
 /* Daemon initializes, then sits in glib main loop, waiting for events.

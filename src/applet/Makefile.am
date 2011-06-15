@@ -24,7 +24,8 @@ abrt_applet_CPPFLAGS = \
 #    $(LIBNOTIFY_CFLAGS)
 #    $(DBUS_GLIB_CFLAGS)
 abrt_applet_LDADD = \
-    $(LIBREPORT_GTK_LIBS) -labrt_dbus \
+    $(LIBREPORT_GTK_LIBS) \
+    -labrt_dbus \
     -lglib-2.0 \
     -lgthread-2.0 \
     $(DBUS_LIBS) \

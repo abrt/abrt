@@ -20,7 +20,6 @@
 #endif
 #include <getopt.h>
 #include "abrtlib.h"
-#include "abrt_dbus.h"
 #include "report.h"
 
 

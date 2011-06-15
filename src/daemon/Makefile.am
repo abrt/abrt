@@ -38,7 +38,8 @@ abrtd_CPPFLAGS = \
 abrtd_LDADD = \
     $(DBUS_LIBS) \
     ../lib/libabrt.la \
-    $(LIBREPORT_LIBS) -labrt_dbus
+    $(LIBREPORT_LIBS) \
+    -labrt_dbus
 
 abrt_server_SOURCES = \
     abrt-server.c
