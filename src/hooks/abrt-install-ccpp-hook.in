@@ -8,7 +8,7 @@ verbose=false
 
 DEFAULT_LOCATION=/var/spool/abrt
 
-DUMP_LOCATION=`cat /etc/abrt/abrt.conf | grep '^[ 	]*DumpLocation'`
+DUMP_LOCATION=`cat @sysconfdir@/abrt/abrt.conf | grep '^[ 	]*DumpLocation'`
 DUMP_LOCATION=${DUMP_LOCATION#*DumpLocation*=}
 DUMP_LOCATION=${DUMP_LOCATION// /}
 
