@@ -80,7 +80,9 @@ int vdprintf(int d, const char *format, va_list ap);
 extern "C" {
 #endif
 
-
+/* Returns 1 if abrtd daemon is running, 0 otherwise. */
+#define daemon_is_ok abrt_daemon_is_ok
+int daemon_is_ok();
 
 #ifdef __cplusplus
 }
