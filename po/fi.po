@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-05-03 16:21+0200\n"
+"POT-Creation-Date: 2011-06-16 12:53+0200\n"
 "PO-Revision-Date: 2011-05-02 18:28+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Finnish <None>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "ABRT notification applet"
 msgstr "ABRT-ilmoitussovelma"
 
-#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt-gtk.c:358
+#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt-gtk.c:389
 #: ../src/gui-gtk/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "Automaattinen ohjelmavikojen raportointiohjelma"
@@ -39,236 +39,44 @@ msgstr "Kaatuminen on huomattu"
 msgid "ABRT service is not running"
 msgstr "ABRT-palvelu ei ole käytössä"
 
-#: ../src/applet/applet_gtk.c:202 ../src/applet/applet_gtk.c:204
+#: ../src/applet/applet_gtk.c:192 ../src/applet/applet_gtk.c:194
 msgid "Warning"
 msgstr "Varoitus"
 
-#: ../src/applet/applet_gtk.c:259
+#: ../src/applet/applet_gtk.c:249
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "Ilmoitusalueen kuvake, joka kertoo käyttäjälle ABRT:n huomaamista ongelmista"
 
-#: ../src/applet/applet_gtk.c:275 ../src/gui-gtk/abrt-gtk.c:243
+#: ../src/applet/applet_gtk.c:265 ../src/gui-gtk/abrt-gtk.c:278
 msgid "translator-credits"
 msgstr "Ville-Pekka Vainio, 2009-2011."
 
-#: ../src/applet/applet_gtk.c:285
+#: ../src/applet/applet_gtk.c:275
 msgid "Hide"
 msgstr "Piilota"
 
-#: ../src/applet/applet_gtk.c:398
+#: ../src/applet/applet_gtk.c:385
 msgid "Report"
 msgstr "Raportti"
 
-#: ../src/applet/applet_gtk.c:401
+#: ../src/applet/applet_gtk.c:388
 msgid "Show"
 msgstr "Näytä"
 
-#: ../src/applet/applet_gtk.c:405 ../src/applet/applet_gtk.c:432
+#: ../src/applet/applet_gtk.c:392 ../src/applet/applet_gtk.c:420
 msgid "A Problem has Occurred"
 msgstr "Tapahtui ongelma"
 
-#: ../src/applet/applet_gtk.c:429
+#: ../src/applet/applet_gtk.c:417
 msgid "Open ABRT"
 msgstr "Avaa ABRT"
 
-#: ../src/cli/cli.c:175
-#, c-format
+#: ../src/daemon/abrt-action-save-package-data.c:250
+#, fuzzy
 msgid ""
-"Usage: %s -l[f] [-D BASE_DIR]...]\n"
-"   or: %s -r[y] CRASH_DIR\n"
-"   or: %s -i[b] CRASH_DIR\n"
-"   or: %s -d CRASH_DIR\n"
-"\n"
-"\t-l, --list\t\tList not yet reported problems\n"
-"\t  -f, --full\t\tList all problems\n"
-"\t-D BASE_DIR\t\tDirectory to list problems from\n"
-"\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
-"\n"
-"\t-r, --report\t\tSend a report about CRASH_DIR\n"
-"\t  -y, --always\t\t...without editing and asking\n"
-"\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
-"\t  -f, --full\t\t...including multi-line entries\n"
-"\t\t\t\tNote: -if will run analyzers\n"
-"\t\t\t\t(if this CRASH_DIR have defined analyzers)\n"
-"\t-d, --delete\t\tRemove CRASH_DIR\n"
-"\n"
-"\t-V, --version\t\tDisplay version and exit\n"
-"\t-v, --verbose\t\tBe verbose\n"
-msgstr ""
-"Käyttö: %s -l[f] [-D PERUSHAKEMISTO]...]\n"
-"   tai: %s -r[y] KAATUMISHAKEMISTO\n"
-"   tai: %s -i[b] KAATUMISHAKEMISTO\n"
-"   tai: %s -d KAATUMISHAKEMISTO\n"
-"\n"
-"\t-l, --list\t\tLuettelo raportoimattomista ongelmista\n"
-"\t  -f, --full\t\tLuettelo kaikista ongelmista\n"
-"\t-D PERUSHAKEMISTO\t\tHakemisto, josta ongelmat luetteloidaan\n"
-"\t\t\t\t(oletus: -D $HOME/.abrt/spool -D %s)\n"
-"\n"
-"\t-r, --report\t\tLähetä raportti KAATUMISHAKEMISTOsta\n"
-"\t  -y, --always\t\t...ei muokata eikä kysellä\n"
-"\t-i, --info\t\tTulosta KAATUMISHAKEMISTOn tiedot\n"
-"\t  -f, --full\t\t...myös moniriviset kohdat\n"
-"\t\t\t\tHuomaa: -if suorittaa analysaattorit\n"
-"\t\t\t\t(jos tällä KAATUMISHAKEMISTOlla on määritettyjä analysaattoreita)\n"
-"\t-d, --delete\t\tPoista KAATUMISHAKEMISTO\n"
-"\n"
-"\t-V, --version\t\tNäytä versio ja poistu\n"
-"\t-v, --verbose\t\tEnemmän tulosteita\n"
-
-#: ../src/cli/cli.c:224
-msgid "You must specify exactly one operation"
-msgstr "On määritettävä tasan yksi toiminto."
-
-#: ../src/cli/report.c:131
-#, c-format
-msgid "# This field is read only\n"
-msgstr "# Tämä kenttä on vain luku -tilassa\n"
-
-#: ../src/cli/report.c:151
-msgid "# Describe the circumstances of this crash below"
-msgstr "# Kuvaile alla kaatumistilannetta"
-
-#: ../src/cli/report.c:153
-msgid ""
-"# Backtrace\n"
-"# Check that it does not contain any sensitive data (passwords, etc.)"
-msgstr ""
-"# Pinolistaus\n"
-"# Tarkista, ettei tämä sisällä mitään luottamuksellisia tietoja, kuten "
-"salasanoja."
-
-#: ../src/cli/report.c:155
-msgid "# Architecture"
-msgstr "# Arkkitehtuuri"
-
-#: ../src/cli/report.c:156
-msgid "# Command line"
-msgstr "# Komentorivi"
-
-#: ../src/cli/report.c:157
-msgid "# Component"
-msgstr "# Komponentti"
-
-#: ../src/cli/report.c:158
-msgid "# Core dump"
-msgstr "# Muistivedos"
-
-#: ../src/cli/report.c:159
-msgid "# Executable"
-msgstr "# Suoritettava tiedosto"
-
-#: ../src/cli/report.c:160
-msgid "# Kernel version"
-msgstr "# Ytimen versio"
-
-#: ../src/cli/report.c:161
-msgid "# Package"
-msgstr "# Paketti"
-
-#: ../src/cli/report.c:162
-msgid "# Reason of crash"
-msgstr "# Kaatumisen syy"
-
-#: ../src/cli/report.c:163
-msgid "# Release string of the operating system"
-msgstr "# Käyttöjärjestelmän julkaisutunnus"
-
-#: ../src/cli/report.c:276
-msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr ""
-"Komentoa vi ei voida suorittaa: $TERM-, $VISUAL- tai $EDITOR -muuttujia ei "
-"ole määritetty."
-
-#: ../src/cli/report.c:360
-msgid ""
-"\n"
-"The report has been updated"
-msgstr ""
-"\n"
-"Raportti on päivitetty"
-
-#: ../src/cli/report.c:362
-msgid ""
-"\n"
-"No changes were detected in the report"
-msgstr ""
-"\n"
-"Raportissa ei havaittu muutoksia"
-
-#. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.c:394 ../src/plugins/abrt-action-install-debuginfo.py:83
-msgid "y"
-msgstr "k"
-
-#: ../src/cli/report.c:395
-msgid "N"
-msgstr "E"
-
-#: ../src/cli/report.c:492
-msgid "Your input is not valid, because of:"
-msgstr "Syöte ei kelpaa, syy:"
-
-#: ../src/cli/report.c:495
-#, c-format
-msgid "Bad value for '%s': %s"
-msgstr "Virheellinen arvo kohteelle ”%s”: %s"
-
-#: ../src/cli/report.c:592
-#, c-format
-msgid "Select how you would like to analyze the problem:\n"
-msgstr "Valitse kuinka haluat analysoida ongelman:\n"
-
-#: ../src/cli/report.c:608
-#, c-format
-msgid "Choose option [0 - %u]: "
-msgstr "Valitse vaihtoehto [0 - %u]:"
-
-#: ../src/cli/report.c:622
-#, c-format
-msgid "You have chosen number out of range"
-msgstr "Valittu numero ei ole sallittu"
-
-#: ../src/cli/report.c:630
-msgid "Invalid input, program exiting..."
-msgstr "Virheellinen syöte, ohjelma lopetetaan..."
-
-#: ../src/cli/report.c:740 ../src/gui-wizard-gtk/wizard.c:1101
-msgid "Reporting..."
-msgstr "Raportoidaan..."
-
-#: ../src/cli/report.c:761
-#, c-format
-msgid "Report using %s?"
-msgstr "Raportoidaanko käyttäen raportoijaa %s?: "
-
-#: ../src/cli/report.c:768
-msgid "Skipping..."
-msgstr "Ohitetaan..."
-
-#: ../src/cli/report.c:778
-msgid "Reporting disabled because the backtrace is unusable"
-msgstr "Raportointi on poistettu käytöstä, koska pinolistaus on hyödytön"
-
-#: ../src/cli/report.c:782
-#, c-format
-msgid ""
-"Please try to install debuginfo manually using the command: \"debuginfo-"
-"install %s\" and try again\n"
-msgstr ""
-"Yritä asentaa debuginfo manuaalisesti käyttäen komentoa ”debuginfo-install "
-"%s” ja kokeile sitten uudelleen\n"
-
-#: ../src/cli/report.c:804
-#, c-format
-msgid "Problem reported via %d report events (%d errors)\n"
-msgstr ""
-
-#: ../src/daemon/abrt-action-save-package-data.c:254
-msgid ""
-" [-v] -d DIR\n"
+"\b [-v] -d DIR\n"
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
@@ -276,58 +84,40 @@ msgstr ""
 "\n"
 "Kysele pakettitietokannasta ja tallenna paketin nimi, komponentti ja kuvaus"
 
-#: ../src/daemon/abrt-action-save-package-data.c:265
-#: ../src/daemon/abrt-handle-crashdump.c:61
-#: ../src/plugins/abrt-action-analyze-backtrace.c:70
-#: ../src/plugins/abrt-action-analyze-c.c:177
-#: ../src/plugins/abrt-action-analyze-oops.c:159
-#: ../src/plugins/abrt-action-analyze-python.c:45
-#: ../src/plugins/abrt-action-bugzilla.cpp:933
-#: ../src/plugins/abrt-action-generate-backtrace.c:256
-#: ../src/plugins/abrt-action-kerneloops.c:154
-#: ../src/plugins/abrt-action-mailx.c:155
-#: ../src/plugins/abrt-action-print.c:53
-#: ../src/plugins/abrt-action-rhtsupport.c:291
-#: ../src/plugins/abrt-action-upload.c:258
+#: ../src/daemon/abrt-action-save-package-data.c:261
+#: ../src/plugins/abrt-action-analyze-backtrace.c:56
+#: ../src/plugins/abrt-action-analyze-c.c:162
+#: ../src/plugins/abrt-action-analyze-oops.c:123
+#: ../src/plugins/abrt-action-analyze-python.c:41
+#: ../src/plugins/abrt-action-bugzilla.c:264
+#: ../src/plugins/abrt-action-generate-backtrace.c:252
+#: ../src/plugins/abrt-action-kerneloops.c:147
+#: ../src/plugins/abrt-action-mailx.c:148
+#: ../src/plugins/abrt-action-print.c:49
+#: ../src/plugins/abrt-action-rhtsupport.c:315
+#: ../src/plugins/abrt-action-upload.c:254
 msgid "Dump directory"
 msgstr "Vedoshakemisto"
 
-#: ../src/daemon/abrt-handle-crashdump.c:43
-msgid ""
-" [-vs] -d DIR -e EVENT\n"
-"   or: "
-msgstr ""
-" [-vs] -d HAKEMISTO -e TAPAHTUMA\n"
-"   tai: "
-
-#: ../src/daemon/abrt-handle-crashdump.c:60 ../src/daemon/abrt-server.c:301
-#: ../src/plugins/abrt-dump-oops.c:585
-msgid "Log to syslog"
-msgstr "Kirjoita lokia syslogiin"
-
-#: ../src/daemon/abrt-handle-crashdump.c:62
-msgid "Handle EVENT"
-msgstr "Käsittele TAPAHTUMA"
-
-#: ../src/daemon/abrt-handle-crashdump.c:63
-msgid "List possible events [which start with PFX]"
-msgstr "Luettelo mahdollisista tapahtumista [jotka alkavat PFX]"
-
-#: ../src/daemon/abrt-handle-crashdump.c:64 ../src/daemon/abrt-server.c:302
-#: ../src/daemon/abrtd.c:525 ../src/gui-gtk/main.c:228
-#: ../src/gui-wizard-gtk/main.c:94
-msgid "Add program names to log"
-msgstr "Lisää ohjelmanimet lokiin"
-
-#: ../src/daemon/abrt-server.c:289 ../src/daemon/abrtd.c:510
-msgid " [options]"
+#: ../src/daemon/abrt-server.c:442 ../src/daemon/abrtd.c:506
+#, fuzzy
+msgid "\b [options]"
 msgstr " [valitsimet]"
 
-#: ../src/daemon/abrt-server.c:300
+#: ../src/daemon/abrt-server.c:453
 msgid "Use UID as client uid"
 msgstr "Käytä UID:tä asiakkaan UID:nä"
 
-#: ../src/daemon/abrtd.c:337
+#: ../src/daemon/abrt-server.c:454 ../src/plugins/abrt-dump-oops.c:595
+msgid "Log to syslog"
+msgstr "Kirjoita lokia syslogiin"
+
+#: ../src/daemon/abrt-server.c:455 ../src/daemon/abrtd.c:521
+#: ../src/gui-gtk/main.c:225
+msgid "Add program names to log"
+msgstr "Lisää ohjelmanimet lokiin"
+
+#: ../src/daemon/abrtd.c:335
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -335,81 +125,61 @@ msgstr ""
 "Raportin koko ylitti sille annetun rajan. Tarkista järjestelmän "
 "MaxCrashReportsSize-arvo abrt.conf-tiedostossa."
 
-#: ../src/daemon/abrtd.c:522
+#: ../src/daemon/abrtd.c:518
 msgid "Do not daemonize"
 msgstr "Älä aseta taustaprosessiksi"
 
-#: ../src/daemon/abrtd.c:523
+#: ../src/daemon/abrtd.c:519
 msgid "Log to syslog even with -d"
 msgstr "Kirjoita lokia syslogiin myös valitsimen -d kanssa"
 
-#: ../src/daemon/abrtd.c:524
+#: ../src/daemon/abrtd.c:520
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Lopeta SEK sekunnin toimettomuuden jälkeen"
 
-#: ../src/gtk-helpers/event_config_dialog.c:123
-msgid "Show password"
-msgstr "Näytä salasana"
+#: ../src/gui-gtk/abrt-gtk.c:216
+#, fuzzy
+msgid "Problem description"
+msgstr "(ei kuvausta)"
 
-#: ../src/gtk-helpers/event_config_dialog.c:344
-msgid "Event Configuration"
-msgstr "Tapahtuma-asetukset"
+#: ../src/gui-gtk/abrt-gtk.c:219
+#, fuzzy
+msgid "Send"
+msgstr "Lähettäjä"
 
-#: ../src/gtk-helpers/event_config_dialog.c:369
-msgid "Event"
-msgstr "Tapahtuma"
-
-#: ../src/gtk-helpers/event_config_dialog.c:402
-msgid "Configure E_vent"
-msgstr "Tee tapahtuman asetukset"
-
-#: ../src/gtk-helpers/event_config_dialog.c:425
-#, c-format
-msgid ""
-"Wrong settings detected for %s, reporting will probably fail if you continue "
-"with the current configuration."
-msgstr ""
-"Kohteen %s asetukset ovat väärät, raportointi luultavasti epäonnistuu, jos "
-"jatkat nykyisillä asetuksilla."
-
-#: ../src/gtk-helpers/event_config_dialog.c:429
-#, c-format
-msgid ""
-"Wrong settings detected for <b>%s</b>, reporting will probably fail if you "
-"continue with the current configuration."
-msgstr ""
-"Kohteen <b>%s</b> asetukset ovat väärät, raportointi luultavasti "
-"epäonnistuu, jos jatkat nykyisillä asetuksilla."
-
-#: ../src/gui-gtk/abrt-gtk.c:262
+#: ../src/gui-gtk/abrt-gtk.c:297
 msgid "Reported"
 msgstr "Raportoitu"
 
-#: ../src/gui-gtk/abrt-gtk.c:274
+#: ../src/gui-gtk/abrt-gtk.c:307
 msgid "Problem"
 msgstr "Ongelma"
 
-#: ../src/gui-gtk/abrt-gtk.c:297
+#: ../src/gui-gtk/abrt-gtk.c:328
 msgid "Last occurrence"
 msgstr "Tapahtui edellisen kerran"
 
-#: ../src/gui-gtk/abrt-gtk.c:312
+#: ../src/gui-gtk/abrt-gtk.c:341
 msgid "_File"
 msgstr "_Tiedosto"
 
-#: ../src/gui-gtk/abrt-gtk.c:313
+#: ../src/gui-gtk/abrt-gtk.c:342
 msgid "_Edit"
 msgstr "_Muokkaa"
 
-#: ../src/gui-gtk/abrt-gtk.c:314
+#: ../src/gui-gtk/abrt-gtk.c:343
 msgid "_Help"
 msgstr "_Ohje"
 
-#: ../src/gui-gtk/abrt-gtk.c:330
+#: ../src/gui-gtk/abrt-gtk.c:359
 msgid "_Event configuration"
 msgstr "_Tapahtumien asetukset"
 
-#: ../src/gui-gtk/abrt-gtk.c:411
+#: ../src/gui-gtk/abrt-gtk.c:370
+msgid "Report problem with ABRT"
+msgstr ""
+
+#: ../src/gui-gtk/abrt-gtk.c:443
 msgid "Online _Help"
 msgstr "Ohje _verkossa"
 
@@ -417,9 +187,10 @@ msgstr "Ohje _verkossa"
 msgid "View and report application crashes"
 msgstr "Katsele ja raportoi ohjelmien kaatumisia"
 
-#: ../src/gui-gtk/main.c:216
+#: ../src/gui-gtk/main.c:213
+#, fuzzy
 msgid ""
-" [-vp] [DIR]...\n"
+"\b [-vp] [DIR]...\n"
 "\n"
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 "(default DIRs: "
@@ -429,228 +200,15 @@ msgstr ""
 "Näyttää luettelon ABRT:n vedoshakemistoista annetuissa HAKEMISTOissa\n"
 "(oletus-HAKEMISTOt: "
 
-#: ../src/gui-wizard-gtk/main.c:81
-msgid ""
-" [-vp] [-g GUI_FILE] DIR\n"
-"\n"
-"GUI tool to analyze and report problem saved in specified DIR"
-msgstr ""
-" [-vp] [-g GUI-TIEDOSTO] HAKEMISTO\n"
-"\n"
-"Graafinen työkalu annetussa HAKEMISTOssa olevan ongelman analysointiin ja "
-"raportointiin"
-
-#: ../src/gui-wizard-gtk/main.c:93
-msgid "Alternate GUI file"
-msgstr "Vaihtoehtoinen GUI-tiedosto"
-
-#: ../src/gui-wizard-gtk/wizard.c:201
-#, c-format
-msgid ""
-"Need writable directory, but '%s' is not writable. Move it to '%s' and "
-"operate on the moved copy?"
-msgstr ""
-"Tarvitaan hakemisto, johon voi kirjoittaa, mutta ”%s” ei ole sellainen. "
-"Siirretäänkö kohteeseen ”%s” ja käytetään siirrettyä kopiota?"
-
-#: ../src/gui-wizard-gtk/wizard.c:559
-msgid "(click here to view/edit)"
-msgstr "(napsauta tästä katsellaksesi tai muokataksesi)"
-
-#: ../src/gui-wizard-gtk/wizard.c:571
-#, c-format
-msgid "(binary file, %llu bytes)"
-msgstr "(binääritiedosto, %llu tavua)"
-
-#: ../src/gui-wizard-gtk/wizard.c:586
-msgid "(no description)"
-msgstr "(ei kuvausta)"
-
-#: ../src/gui-wizard-gtk/wizard.c:591
-#, c-format
-msgid "%llu bytes, %u files"
-msgstr "%llu tavua, %u tiedostoa"
-
-#. TODO: better msg?
-#: ../src/gui-wizard-gtk/wizard.c:914
-#, c-format
-msgid "No processing for event '%s' is defined"
-msgstr "Tapahtumalle ”%s” ei ole määritetty toimintoa"
-
-#. bt is usable, but not complete, so show a warning
-#: ../src/gui-wizard-gtk/wizard.c:1004
-msgid ""
-"The backtrace is incomplete, please make sure you provide the steps to "
-"reproduce."
-msgstr ""
-"Virheenjäljitystiedot ovat epätäydelliset, varmista että olet kertonut "
-"tarkat vaiheet virheen toistamiseen."
-
-#. FIXME: see CreporterAssistant: 394 for ideas
-#: ../src/gui-wizard-gtk/wizard.c:1009
-msgid "Reporting disabled because the backtrace is unusable."
-msgstr "Raportointi on poistettu käytöstä, koska pinolistaus on hyödytön."
-
-#: ../src/gui-wizard-gtk/wizard.c:1018
-msgid "You should check the backtrace for sensitive data."
-msgstr "Tarkista pinolistaus luottamuksellisien tietojen varalta."
-
-#: ../src/gui-wizard-gtk/wizard.c:1019
-msgid "You must agree with sending the backtrace."
-msgstr "Pinolistauksen lähettäminen on hyväksyttävä."
-
-#: ../src/gui-wizard-gtk/wizard.c:1075
-msgid "Analyzing..."
-msgstr "Analysoidaan..."
-
-#: ../src/gui-wizard-gtk/wizard.c:1076
-#, c-format
-msgid "Analyzing finished with exit code %d"
-msgstr "Analyysi valmistui loppuarvolla %d"
-
-#: ../src/gui-wizard-gtk/wizard.c:1102
-#, c-format
-msgid "Reporting finished with exit code %d"
-msgstr "Raportointi valmistui loppuarvolla %d"
-
-#: ../src/gui-wizard-gtk/wizard.c:1219
-msgid "Name"
-msgstr "Nimi"
-
-#: ../src/gui-wizard-gtk/wizard.c:1228
-msgid "Value"
-msgstr "Arvo"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:1
-msgid ""
-"<b>Your comments are not private.</b> They may be included into publicly "
-"visible problem reports."
-msgstr ""
-"<b>Kommentit eivät ole yksityisiä.</b> Ne saatetaan lisätä julkisiin "
-"ongelmaraportteihin."
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:2
-msgid "Analyzing did not start yet"
-msgstr "Analysointi ei ole vielä alkanut"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:3
-msgid "Any additional comments useful for diagnosing the problem?"
-msgstr "Muita ongelman löytämisessä auttavia kommentteja"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:4
-msgid ""
-"Backtrace provides developers with details of the crash, helping them track "
-"down the source of the problem. Please review it and remove any sensitive "
-"data you would rather not share:"
-msgstr ""
-"Virheenjäljitystiedot kertovat kehittäjille kaatumisen yksityiskohdat, "
-"jolloin ongelman syy on helpompi löytää. Tarkista tiedot ja poista kaikki "
-"yksityiset tiedot:"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:5
-msgid ""
-"Can create more informative backtrace if you installed additional debug "
-"packages"
-msgstr ""
-"Tarkemmat virheenjäljitystiedot voitaisiin luoda, jos lisää "
-"virheenjäljityspaketteja asennettaisiin"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:6
-msgid "Click 'Apply' to start reporting"
-msgstr "Napsauta ”Käytä” raportoinnin aloittamiseksi"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:7
-msgid "Configure _Events"
-msgstr "Tee tapahtumien _asetukset"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:8
-msgid "Details"
-msgstr "Lisätietoja"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:9
-msgid "How did this problem happen (step-by-step)? How can it be reproduced?"
-msgstr "Kuinka tämä ongelma tapahtui? Kuinka sen voi toistaa?"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:10
-msgid "I _agree with submitting the backtrace"
-msgstr "Pinolistauksen _saa lähettää"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:11
-msgid ""
-"On the following screens, you will be asked to describe how the problem "
-"occurred, to choose how to analyze the problem (if needed), to review "
-"collected data, and to choose where the problem should be reported. Click "
-"'Forward' to proceed."
-msgstr ""
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:12
-msgid "Regenerate backtrace"
-msgstr "Luo pinolistaus uudelleen"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:13
-msgid "Reporter(s):"
-msgstr "Raportoijat:"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:14
-msgid "Reporting did not start yet"
-msgstr "Raportointi ei ole vielä alkanut"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:15
-msgid "Select how you would like to analyze the problem:"
-msgstr "Valitse kuinka haluat analysoida ongelman:"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:16
-msgid "Select how you would like to report the problem:"
-msgstr "Valitse kuinka haluat raportoida ongelman:"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:17
-msgid "Size:"
-msgstr "Koko:"
-
-#: ../src/gui-wizard-gtk/wizard.glade.h:18
-msgid ""
-"Use this button to generate more informative backtrace after you installed "
-"additional debug packages"
-msgstr ""
-"Käytä tätä painiketta tarkempien virheenjäljitystietojen luomiseksi, kun "
-"olet asentanut lisää virheenjäljityspaketteja."
-
-#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:45
+#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:43
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Lähetetty: %llu/%llu kilotavua"
 
-#: ../src/lib/event_config.c:294
-msgid "Missing mandatory value"
-msgstr "Puuttuva pakollinen arvo"
-
-#: ../src/lib/event_config.c:302
-#, c-format
-msgid "Invalid utf8 character '%c'"
-msgstr "Virheellinen utf-8-merkki ”%c”"
-
-#: ../src/lib/event_config.c:315
-#, c-format
-msgid "Invalid number '%s'"
-msgstr "Virheellinen numero ”%s”"
-
-#: ../src/lib/event_config.c:327
-#, c-format
-msgid "Invalid boolean value '%s'"
-msgstr "Virheellinen totuusarvo ”%s”"
-
-#: ../src/lib/event_config.c:333
-msgid "Unsupported option type"
-msgstr "Valitsimen tyyppiä ei tueta"
-
-#: ../src/lib/parse_options.c:29
-#, c-format
-msgid "Usage: %s\n"
-msgstr "Käyttö: %s\n"
-
-#: ../src/plugins/abrt-action-analyze-backtrace.c:59
+#: ../src/plugins/abrt-action-analyze-backtrace.c:45
+#, fuzzy
 msgid ""
-" [options] -d DIR\n"
+"\b [options] -d DIR\n"
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
 "identifies crash function in dump directory DIR"
@@ -666,14 +224,15 @@ msgstr ""
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
 #.
-#: ../src/plugins/abrt-action-analyze-backtrace.c:111
+#: ../src/plugins/abrt-action-analyze-backtrace.c:93
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "Kohteen %s pinolistauksen jäsentäminen epäonnistui"
 
-#: ../src/plugins/abrt-action-analyze-c.c:166
+#: ../src/plugins/abrt-action-analyze-c.c:151
+#, fuzzy
 msgid ""
-" [-v] -d DIR\n"
+"\b [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
@@ -681,9 +240,10 @@ msgstr ""
 "\n"
 "Laskee ja tallentaa muistivedoksen UUID:n vedoshakemistoon HAKEMISTO"
 
-#: ../src/plugins/abrt-action-analyze-oops.c:148
+#: ../src/plugins/abrt-action-analyze-oops.c:112
+#, fuzzy
 msgid ""
-" [-vs] -d DIR\n"
+"\b [-vs] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
@@ -692,9 +252,10 @@ msgstr ""
 "Laskee ja tallentaa muistivedoksen UUID:n ja DUPHASH:in oops-"
 "vedoshakemistoon HAKEMISTO"
 
-#: ../src/plugins/abrt-action-analyze-python.c:34
+#: ../src/plugins/abrt-action-analyze-python.c:30
+#, fuzzy
 msgid ""
-" [-v] -d DIR\n"
+"\b [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
@@ -703,229 +264,224 @@ msgstr ""
 "Laskee ja tallentaa muistivedoksen UUID:n ja DUPHASH:in python-"
 "kaatumisvedoksista"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:518
-#, c-format
-msgid "New bug id: %i"
-msgstr "Uuden ohjelmavirheilmoituksen tunnus: %i"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:649
+#: ../src/plugins/abrt-action-bugzilla.c:45
 msgid "Empty login or password, please check your configuration"
 msgstr "Tyhjä käyttäjätunnus tai salasana, tarkista asetukset"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:663
+#: ../src/plugins/abrt-action-bugzilla.c:61
 #, c-format
 msgid "Essential file '%s' is missing, can't continue.."
 msgstr "Tärkeä tiedosto ”%s” puuttuu, ei voida jatkaa."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:667
+#: ../src/plugins/abrt-action-bugzilla.c:65
 #, c-format
 msgid "Essential file '%s' is empty, can't continue.."
 msgstr "Tärkeä tiedosto ”%s” on tyhjä, ei voida jatkaa."
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:676
+#: ../src/plugins/abrt-action-bugzilla.c:74
 #, c-format
 msgid "Logging into Bugzilla at %s"
 msgstr "Kirjaudutaan Bugzillaan osoitteessa %s"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:679
+#: ../src/plugins/abrt-action-bugzilla.c:77
 msgid "Checking for duplicates"
 msgstr "Etsitään duplikaatteja"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:701
-#: ../src/plugins/abrt-action-bugzilla.cpp:737
+#: ../src/plugins/abrt-action-bugzilla.c:93
 msgid "Missing mandatory member 'bugs'"
 msgstr "Puuttuva pakollinen osa ”bugs”"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:720
-#: ../src/plugins/abrt-action-bugzilla.cpp:753
-#: ../src/plugins/abrt-action-bugzilla.cpp:829
-msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
-"get_bug_info() epäonnistui. Kaikkia pakollisia tietoja ei voitu kerätä."
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:768
+#: ../src/plugins/abrt-action-bugzilla.c:132
 msgid "Creating a new bug"
 msgstr "Luodaan uusi ohjelmavirheilmoitus"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:773
-msgid "Bugzilla entry creation failed"
-msgstr "Bugzilla-ilmoituksen luominen epäonnistui"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:785
-#: ../src/plugins/abrt-action-bugzilla.cpp:885
-msgid "Logging out"
-msgstr "Kirjaudutaan ulos"
-
 #. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.cpp:803
+#: ../src/plugins/abrt-action-bugzilla.c:148
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Ohjelmavirheestä on jo tehty ilmoitus: %i"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:814
-#, c-format
-msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla ei löytänyt ylemmän tason vikailmoitusta ilmoitukselle %d"
-
-#: ../src/plugins/abrt-action-bugzilla.cpp:844
+#: ../src/plugins/abrt-action-bugzilla.c:166
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Lisää %s CC-luetteloon"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:870
+#: ../src/plugins/abrt-action-bugzilla.c:187
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "﻿Lisää uusi kommentti vikailmoitukseen (%d)"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:921
-msgid ""
-" [-v] -c CONFFILE -d DIR\n"
-"\n"
-"Reports problem to Bugzilla"
-msgstr ""
-" [-v] -c ASETUSTIEDOSTO -d HAKEMISTO\n"
-"\n"
-"Raportoi ongelmat Bugzillaan"
+#: ../src/plugins/abrt-action-bugzilla.c:199
+msgid "Logging out"
+msgstr "Kirjaudutaan ulos"
 
-#: ../src/plugins/abrt-action-bugzilla.cpp:934
-#: ../src/plugins/abrt-action-rhtsupport.c:292
+#: ../src/plugins/abrt-action-bugzilla.c:233
+msgid ""
+"\b [-v] [-c CONFFILE] -d DIR\n"
+"\n"
+"Reports problem to Bugzilla.\n"
+"\n"
+"The tool reads DIR. Then it logs in to Bugzilla and tries to find a bug\n"
+"with the same abrt_hash:HEXSTRING in 'Whiteboard'.\n"
+"\n"
+"If such bug is not found, then a new bug is created. Elements of DIR\n"
+"are stored in the bug as part of bug description or as attachments,\n"
+"depending on their type and size.\n"
+"\n"
+"Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,\n"
+"the tool follows the chain of duplicates until it finds a non-DUPLICATE "
+"bug.\n"
+"The tool adds a new comment to found bug.\n"
+"\n"
+"The URL to new or modified bug is printed to stdout and recorded in\n"
+"'reported_to' element.\n"
+"\n"
+"CONFFILE lines should have 'PARAM = VALUE' format.\n"
+"Recognized string parameters: BugzillaURL, Login, Password.\n"
+"Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
+"Parameters can be overridden via $Bugzilla_PARAM environment variables."
+msgstr ""
+
+#: ../src/plugins/abrt-action-bugzilla.c:265
+#: ../src/plugins/abrt-action-rhtsupport.c:316
 msgid "Configuration file (may be given many times)"
 msgstr "Asetustiedosto (voidaan syöttää useita)"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:243
+#: ../src/plugins/abrt-action-generate-backtrace.c:239
+#, fuzzy
 msgid ""
-" [options] -d DIR\n"
+"\b [options] -d DIR\n"
 "\n"
-"Generates and saves backtrace for coredump in dump directory DIR"
+"Analyzes coredump in dump directory DIR, generates and saves backtrace"
 msgstr ""
 " [valitsimet] -d HAKEMISTO\n"
 "\n"
 "Luo ja tallentaa pinolistauksen vedoshakemiston HAKEMISTO muistivedoksesta"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:257
+#: ../src/plugins/abrt-action-generate-backtrace.c:253
 msgid "Additional debuginfo directories"
 msgstr "Lisää debuginfoa sisältävät hakemistot"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:258
-msgid "Kill gdb if it runs for more than N seconds"
+#: ../src/plugins/abrt-action-generate-backtrace.c:254
+#, fuzzy
+msgid "Kill gdb if it runs for more than NUM seconds"
 msgstr "Tapa gdb, jos se sitä on suoritettu enemmän kuin N sekuntia"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
 #.
-#: ../src/plugins/abrt-action-generate-backtrace.c:298
+#: ../src/plugins/abrt-action-generate-backtrace.c:290
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
 msgstr "Pinolistausta luodaan ja tallennetaan, %u tavua"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:85
+#: ../src/plugins/abrt-action-install-debuginfo:84
+msgid "y"
+msgstr "k"
+
+#: ../src/plugins/abrt-action-install-debuginfo:86
 msgid "n"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:100
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:100
+#, c-format
 msgid "Extracting cpio from %s"
 msgstr "Puretaan cpio lähteestä %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:105
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:105
+#, c-format
 msgid "Can't write to '%s': %s"
 msgstr "Kohteeseen ”%s” ei voi kirjoittaa: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:119
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:119
+#, c-format
 msgid "Can't extract package '%s'"
 msgstr "Pakettia ”%s” ei voi purkaa"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:127
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:127
+#, c-format
 msgid "Caching files from %s made from %s"
 msgstr "Viedään kohteen %s paketista %s tehtyjä tiedostoja välimuistiin"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:137
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:137
+#, c-format
 msgid "Can't extract files from '%s'"
 msgstr "Kohteesta ”%s” ei voi purkaa tiedostoja"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:161
-#: ../src/plugins/abrt-action-install-debuginfo.py:171
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:161
+#: ../src/plugins/abrt-action-install-debuginfo:171
+#, c-format
 msgid "Downloading (%i of %i) %s: %3u%%"
 msgstr "Ladataan (%i/%i) %s: %3u%%"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:196
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:196
+#, c-format
 msgid "Error initializing yum (YumBase.doConfigSetup): '%s'"
 msgstr ""
 
-#. This is somewhat "magic", it unpacks the metadata making it usable.
-#. Looks like this is the moment when yum talks to remote servers,
-#. which takes time (sometimes minutes), let user know why
-#. we have "paused":
-#: ../src/plugins/abrt-action-install-debuginfo.py:239
+#: ../src/plugins/abrt-action-install-debuginfo:239
 msgid "Looking for needed packages in repositories"
 msgstr "Etsitään tarvittavia paketteja pakettivarastoista"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:243
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:243
+#, c-format
 msgid "Error retrieving metadata: '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:253
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:253
+#, c-format
 msgid "Error retrieving filelists: '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:286
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:286
+#, c-format
 msgid "Can't find packages for %u debuginfo files"
 msgstr "%u debuginfo-tiedoston paketteja ei löytynyt"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:288
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:288
+#, c-format
 msgid "Packages to download: %u"
 msgstr "Ladattavat paketit: %u"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:289
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:289
+#, c-format
 msgid "Downloading %.2fMb, installed size: %.2fMb"
 msgstr "Ladataan %.2f Mb, asennettu koko: %.2f Mb"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:297
+#: ../src/plugins/abrt-action-install-debuginfo:297
 msgid "Is this ok? [y/N] "
 msgstr "Onko tämä ok? [kyllä=y/EI=e]"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:314
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:323
+#, c-format
 msgid "Downloading package %s failed"
 msgstr "Paketin %s lataaminen epäonnistui"
 
-#. recursively delete the temp dir on failure
-#: ../src/plugins/abrt-action-install-debuginfo.py:325
+#: ../src/plugins/abrt-action-install-debuginfo:329
 msgid "Unpacking failed, aborting download..."
 msgstr "Purkaminen epäonnistui, keskeytetään lataus…"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:332
-#, python-format
-msgid "All downloaded packages have been extracted, removing %s"
-msgstr "Kaikki ladatut paketit on purettu, poistetaan %s"
+#: ../src/plugins/abrt-action-install-debuginfo:339
+#, fuzzy, c-format
+msgid "Removing %s"
+msgstr "Raportoidaanko käyttäen raportoijaa %s?: "
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:337
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:343
+#, c-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr "Hakemistoa %s ei voida poistaa, se luultavasti sisältää virhelokin"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:371
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:379
+#, c-format
 msgid "Can't remove '%s': %s"
 msgstr "Hakemistoa ”%s” ei voi poistaa: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:379
+#: ../src/plugins/abrt-action-install-debuginfo:387
 msgid "Exiting on user command"
 msgstr "Lopetetaan, käyttäjä antoi lopetuskomennon"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:411
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:421
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR] [--size_mb=SIZE]\n"
@@ -942,35 +498,36 @@ msgid ""
 "    --size_mb   Default: 4096\n"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:466
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:478
+#, c-format
 msgid "Can't open %s: %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:496
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:508
+#, c-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
 msgstr ""
 "Muistivedos viittaa %u debuginfo-tiedostoon, %u niistä ei ole asennettu"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:507
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:519
+#, c-format
 msgid "Missing debuginfo file: %s"
 msgstr "Puuttuva debuginfo-tiedosto: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo.py:510
-#, python-format
+#: ../src/plugins/abrt-action-install-debuginfo:522
+#, c-format
 msgid "All %u debuginfo files are available"
 msgstr "Kaikki %u debuginfo-tiedostoa ovat käytettävissä"
 
-#: ../src/plugins/abrt-action-kerneloops.c:105
+#: ../src/plugins/abrt-action-kerneloops.c:100
 #, c-format
 msgid "Submitting oops report to %s"
 msgstr "Lähetetään oops-raportti osoitteeseen %s"
 
-#: ../src/plugins/abrt-action-kerneloops.c:142
+#: ../src/plugins/abrt-action-kerneloops.c:135
+#, fuzzy
 msgid ""
-" [-v] [-c CONFFILE]... -d DIR\n"
+"\b [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
 "Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
@@ -978,29 +535,34 @@ msgstr ""
 "\n"
 "Raportoi oopsit kerneloops.org-sivustolle (tai vastaavalle)"
 
-#: ../src/plugins/abrt-action-kerneloops.c:155
+#: ../src/plugins/abrt-action-kerneloops.c:148
 msgid "Configuration file"
 msgstr "Asetustiedosto"
 
-#: ../src/plugins/abrt-action-mailx.c:109
+#: ../src/plugins/abrt-action-mailx.c:104
 msgid "Sending an email..."
 msgstr "Lähetetään sähköpostia..."
 
-#: ../src/plugins/abrt-action-mailx.c:143
+#: ../src/plugins/abrt-action-mailx.c:136
+#, fuzzy
 msgid ""
-" [-v] -d DIR [-c CONFFILE]\n"
+"\b [-v] -d DIR [-c CONFFILE]\n"
 "\n"
 "Sends contents of a dump directory DIR via email"
 msgstr ""
+" [-v] -d HAKEMISTO [-c ASETUSTIEDOSTO] [-u URL]\n"
+"\n"
+"Lähettää vedoshakemiston HAKEMISTO sisällön pakattuna verkkoon"
 
-#: ../src/plugins/abrt-action-mailx.c:156
-#: ../src/plugins/abrt-action-upload.c:259
+#: ../src/plugins/abrt-action-mailx.c:149
+#: ../src/plugins/abrt-action-upload.c:255
 msgid "Config file"
 msgstr "Asetustiedosto"
 
-#: ../src/plugins/abrt-action-print.c:39
+#: ../src/plugins/abrt-action-print.c:35
+#, fuzzy
 msgid ""
-" [-v] -d DIR [-o FILE] [-a yes/no]\n"
+"\b [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
@@ -1008,61 +570,65 @@ msgstr ""
 "\n"
 "Tulostaa ongelman tiedot vakiotulosteeseen tai TIEDOSTOon"
 
-#: ../src/plugins/abrt-action-print.c:54
+#: ../src/plugins/abrt-action-print.c:50
 msgid "Output file"
 msgstr "Kohdetiedosto"
 
-#: ../src/plugins/abrt-action-print.c:55
+#: ../src/plugins/abrt-action-print.c:51
 msgid "Append to, or overwrite FILE"
 msgstr "Lisää tai korvaa TIEDOSTO"
 
-#: ../src/plugins/abrt-action-print.c:56
+#: ../src/plugins/abrt-action-print.c:52
 msgid "Create reported_to in DIR"
 msgstr "Luo reported_to HAKEMISTOON"
 
-#: ../src/plugins/abrt-action-print.c:102
+#: ../src/plugins/abrt-action-print.c:91
 #, c-format
 msgid "The report was appended to %s"
 msgstr "Raportti lisättiin kohteeseen %s"
 
-#: ../src/plugins/abrt-action-print.c:102
+#: ../src/plugins/abrt-action-print.c:91
 #, c-format
 msgid "The report was stored to %s"
 msgstr "Raportti tallennettiin kohteeseen %s"
 
+#. create_problem_data_for_reporting already emitted error msg
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #. error msg is already logged by dd_opendir
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../src/plugins/abrt-action-rhtsupport.c:41
-#: ../src/plugins/abrt-action-upload.c:119
+#: ../src/plugins/abrt-action-rhtsupport.c:36
+#: ../src/plugins/abrt-action-upload.c:117
 msgid "Compressing data"
 msgstr "Pakataan tietoja"
 
-#: ../src/plugins/abrt-action-rhtsupport.c:73
+#: ../src/plugins/abrt-action-rhtsupport.c:64
 msgid "Empty RHTS login or password"
 msgstr "Tyhjä RHTS-käyttäjätunnus tai -salasana"
 
-#: ../src/plugins/abrt-action-rhtsupport.c:101
+#: ../src/plugins/abrt-action-rhtsupport.c:91
 msgid "Can't create a temporary directory in /tmp"
 msgstr "Ei voi luoda tilapäishakemistoa hakemistoon /tmp"
 
-#: ../src/plugins/abrt-action-rhtsupport.c:194
+#: ../src/plugins/abrt-action-rhtsupport.c:207
 msgid "Creating a new case..."
 msgstr "Luodaan uusi tapaus..."
 
-#: ../src/plugins/abrt-action-rhtsupport.c:279
+#: ../src/plugins/abrt-action-rhtsupport.c:298
 msgid ""
-" [-v] -c CONFFILE -d DIR\n"
+"\b [-v] -c CONFFILE -d DIR\n"
 "\n"
-"Reports a problem to RHTSupport"
+"Reports a problem to RHTSupport.\n"
+"\n"
+"CONFFILE lines should have 'PARAM = VALUE' format.\n"
+"Recognized string parameters: URL, Login, Password.\n"
+"Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
+"Parameters can be overridden via $RHTSupport_PARAM environment variables."
 msgstr ""
-" [-v] -c ASETUSTIEDOSTO -d HAKEMISTO\n"
-"\n"
-"Raportoi ongelman RHTSupportiin"
 
-#: ../src/plugins/abrt-action-trim-files.c:154
+#: ../src/plugins/abrt-action-trim-files.c:150
+#, fuzzy
 msgid ""
-" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"\b [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
@@ -1071,37 +637,38 @@ msgstr ""
 "Poistaa vedoshakemistoja (-d) tai tiedostoja (-f) HAKEMISTOista, kunnes ne "
 "ovat pienempiä kuin KOKO"
 
-#: ../src/plugins/abrt-action-trim-files.c:167
+#: ../src/plugins/abrt-action-trim-files.c:163
 msgid "Delete dump dirs"
 msgstr "Poista vedoshakemistot"
 
-#: ../src/plugins/abrt-action-trim-files.c:168
+#: ../src/plugins/abrt-action-trim-files.c:164
 msgid "Delete files"
 msgstr "Poista tiedostot"
 
-#: ../src/plugins/abrt-action-trim-files.c:169
+#: ../src/plugins/abrt-action-trim-files.c:165
 msgid "Preserve this dump dir"
 msgstr "Säilytä tämä vedoshakemisto"
 
-#: ../src/plugins/abrt-action-upload.c:63
+#: ../src/plugins/abrt-action-upload.c:61
 #, c-format
 msgid "Sending %s to %s"
 msgstr "Lähetetään tiedosto %s osoitteeseen %s"
 
 #. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/abrt-action-upload.c:96
+#: ../src/plugins/abrt-action-upload.c:94
 #, c-format
 msgid "Successfully sent %s to %s"
 msgstr "Tiedoston %s lähetys osoitteeseen %s onnistui"
 
-#: ../src/plugins/abrt-action-upload.c:210
+#: ../src/plugins/abrt-action-upload.c:208
 #, c-format
 msgid "Archive is created: '%s'"
 msgstr "Luodaan hakemistoa: ”%s”"
 
-#: ../src/plugins/abrt-action-upload.c:245
+#: ../src/plugins/abrt-action-upload.c:241
+#, fuzzy
 msgid ""
-" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\b [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
 "Uploads compressed tarball of dump directory DIR"
 msgstr ""
@@ -1109,13 +676,14 @@ msgstr ""
 "\n"
 "Lähettää vedoshakemiston HAKEMISTO sisällön pakattuna verkkoon"
 
-#: ../src/plugins/abrt-action-upload.c:260
+#: ../src/plugins/abrt-action-upload.c:256
 msgid "Base URL to upload to"
 msgstr "Perusosoite, johon lähetetään"
 
-#: ../src/plugins/abrt-dump-oops.c:569
+#: ../src/plugins/abrt-dump-oops.c:579
+#, fuzzy
 msgid ""
-" [-vsrowx] [-d DIR] FILE\n"
+"\b [-vsrowx] [-d DIR] FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
@@ -1123,32 +691,357 @@ msgstr ""
 "\n"
 "Purkaa oopsit syslog-/dmesg-tiedostosta"
 
-#: ../src/plugins/abrt-dump-oops.c:586
+#: ../src/plugins/abrt-dump-oops.c:596
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "Jäsennä ytimen viestipuskuri ennen TIEDOSTOn jäsentämistä"
 
-#: ../src/plugins/abrt-dump-oops.c:587
+#: ../src/plugins/abrt-dump-oops.c:597
 msgid "Print found oopses on standard output"
 msgstr "Tulosta löydetyt oopsit vakiotulosteeseen"
 
-#: ../src/plugins/abrt-dump-oops.c:588
+#: ../src/plugins/abrt-dump-oops.c:598
 msgid "Do not exit, watch the file for new oopses"
 msgstr "Älä poistu, seuraa tiedostoa uusien oopsien varalta"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
 #.
-#: ../src/plugins/abrt-dump-oops.c:592
+#: ../src/plugins/abrt-dump-oops.c:602
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr "Luo ABRT-vedoshakemisto HAKEMISTOon jokaista löydettyä oopsia varten"
 
-#: ../src/plugins/abrt-dump-oops.c:593
+#: ../src/plugins/abrt-dump-oops.c:603
 msgid "Make the dump directory world readable"
 msgstr "Aseta vedoshakemisto kaikkien luettavaksi"
 
-#: ../src/plugins/abrt-retrace-client.c:890
+#: ../src/plugins/abrt-retrace-client.c:111
+msgid "Cannot open temporary file"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:137
+#: ../src/plugins/abrt-retrace-client.c:164
+#, fuzzy, c-format
+msgid "Can't execute '%s'"
+msgstr "Pakettia ”%s” ei voi purkaa"
+
+#: ../src/plugins/abrt-retrace-client.c:195
+#, c-format
+msgid "Issuer certificate is invalid: '%s'."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:198
+#, c-format
+msgid "Certificate is signed by an untrusted issuer: '%s'."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:201
+#, c-format
+msgid "Certificate subject name '%s' does not match target host name '%s'."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:205
+msgid "Remote certificate has expired."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:208
+#, c-format
+msgid "Certificate issuer is not recognized: '%s'."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:211
+#, c-format
+msgid "Bad certifiacte received. Subject '%s', issuer '%s'."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:247
+#, c-format
+msgid "Failed to get slot 'PEM Token #0': %d."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:275
+msgid "Failed to create a TCP socket"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:283
+msgid "Failed to set socket blocking mode."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:289
+msgid "Failed to wrap TCP socket by SSL."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:295
+#: ../src/plugins/abrt-retrace-client.c:298
+#: ../src/plugins/abrt-retrace-client.c:300
+#: ../src/plugins/abrt-retrace-client.c:302
+msgid "Failed to enable client handshake to SSL socket."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:308
+msgid "Failed to set URL to SSL socket."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:319
+#, c-format
+msgid "Failed to get host by name: %s"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:322
+#, c-format
+msgid "Failed to get host by name: pr_status == %d, pr_error == %d, url '%s'."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:331
+msgid "Failed to enumerate host ent."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:337
+msgid "Failed to connect SSL address."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:344
+msgid "Failed to set certificate hook."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:351
+msgid "Failed to set handshake callback."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:357
+msgid "Failed to reset handshake."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:363
+#, c-format
+msgid "Failed to force handshake: NSS error %d."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:372
+msgid "Failed to close SSL socket."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:428
+#: ../src/plugins/abrt-retrace-client.c:431
+#: ../src/plugins/abrt-retrace-client.c:434
+msgid "Invalid response from server: HTTP header not found."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:471
+#, c-format
+msgid "Receiving of data failed: NSS error %d."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:502
+#: ../src/plugins/abrt-retrace-client.c:680
+#: ../src/plugins/abrt-retrace-client.c:902
+#: ../src/plugins/abrt-retrace-client.c:966
+#, c-format
+msgid "Failed to send HTTP header of length %d: NSS error %d."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:513
+#: ../src/plugins/abrt-retrace-client.c:760
+#: ../src/plugins/abrt-retrace-client.c:844
+#: ../src/plugins/abrt-retrace-client.c:915
+#: ../src/plugins/abrt-retrace-client.c:979
+#, c-format
+msgid ""
+"Unexpected HTTP response from server: %d\n"
+"%s"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:520
+#: ../src/plugins/abrt-retrace-client.c:753
+#: ../src/plugins/abrt-retrace-client.c:838
+#: ../src/plugins/abrt-retrace-client.c:909
+#: ../src/plugins/abrt-retrace-client.c:973
+msgid "Invalid response from server: missing HTTP message body."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:575
+msgid "Querying server settings"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:584
+msgid "Retrace server is fully occupied at the moment. Try again later please."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:595
+#: ../src/plugins/abrt-retrace-client.c:608
+#, c-format
+msgid "Unable to stat file '%s'."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:622
+#, c-format
+msgid ""
+"The size of your crash is %lld bytes, but the retrace server only accepts "
+"crashes smaller or equal to %lld bytes."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:630
+msgid "Preparing an archive to upload"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:642
+#, c-format
+msgid ""
+"The size of your archive is %lld bytes, but the retrace server only accepts "
+"archives smaller or equal %lld bytes."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:686
+#, fuzzy, c-format
+msgid "Uploading %lld bytes\n"
+msgstr "Lähetetty: %llu/%llu kilotavua"
+
+#: ../src/plugins/abrt-retrace-client.c:710
+#, c-format
+msgid "Uploading %d%%\n"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:722
+msgid "Failed to read from a pipe"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:734
+#, c-format
+msgid "Failed to send data: NSS error %d (%s): %s"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:745
+msgid "Upload successful"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:758
+#, c-format
+msgid "There is a problem on the server side: %s."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:764
+msgid "Invalid response from server: missing X-Task-Id."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:767
+msgid "Invalid response from server: missing X-Task-Password."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:773
+msgid "Retrace job started"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:786
+#, c-format
+msgid ""
+"Task Id: %s\n"
+"Task Password: %s\n"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:831
+#, c-format
+msgid "Failed to send HTTP header of length %d: NSS error %d"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:849
+msgid "Invalid response from server: missing X-Task-Status."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:860
+#, c-format
+msgid ""
+"Task Status: %s\n"
+"%s\n"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1066
 msgid "log to syslog"
 msgstr "kirjoita lokia syslogiin"
+
+#: ../src/plugins/abrt-retrace-client.c:1068
+msgid "allow insecure connection to retrace server"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1070
+#, fuzzy
+msgid "retrace server URL"
+msgstr "Retrace-palvelimen URL"
+
+#: ../src/plugins/abrt-retrace-client.c:1072
+msgid "(debug) show received HTTP headers"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1073
+msgid "For create and batch operations"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1075
+msgid "read data from ABRT crash dump directory"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1077
+msgid "read data from coredump"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1079
+msgid "Delay for polling operations"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1081
+msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1083
+msgid "For status, backtrace, and log operations"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1085
+msgid "id of your task on server"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1087
+msgid "password of your task on server"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1091
+msgid ""
+"abrt-retrace-client <operation> [options]\n"
+"Operations: create/status/backtrace/log/batch"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1124
+msgid "Failed to initialize NSS."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1130
+msgid "Failed to initialize security module."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1141
+#: ../src/plugins/abrt-retrace-client.c:1147
+#, fuzzy
+msgid "Either dump directory or coredump is needed."
+msgstr "Aseta vedoshakemisto kaikkien luettavaksi"
+
+#: ../src/plugins/abrt-retrace-client.c:1153
+#: ../src/plugins/abrt-retrace-client.c:1161
+#: ../src/plugins/abrt-retrace-client.c:1169
+msgid "Task id is needed."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1155
+#: ../src/plugins/abrt-retrace-client.c:1163
+#: ../src/plugins/abrt-retrace-client.c:1171
+msgid "Task password is needed."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1175
+#, c-format
+msgid "Unknown operation: %s."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1184
+msgid "Failed to shutdown NSS."
+msgstr ""
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
@@ -1194,6 +1087,16 @@ msgstr ""
 "tietokanta on kattavampi. Palvelin saattaa luoda parempia pinolistauksia. "
 "Haitat: lähetettävä muistivedos sisältää kaikki kaatuneen ohjelman tiedot, "
 "myös mahdolliset yksityiset tiedot."
+
+#: ../src/plugins/analyze_xsession_errors.xml.in.h:1
+msgid "Save relevant lines from ~/.xsession-errors file"
+msgstr ""
+
+#: ../src/plugins/analyze_xsession_errors.xml.in.h:2
+msgid ""
+"Scans through ~/.xsession-errors file and saves those lines which contain "
+"executable's name. The result is saved as 'xsession_errors' element."
+msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Address of Bugzilla server"
@@ -1329,3 +1232,390 @@ msgstr "Raportoi Red Hatin tukeen"
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "Username"
 msgstr "Käyttäjätunnus"
+
+#: ../src/plugins/rhbz.c:191
+#, c-format
+msgid "Looks like corrupted xml response, because '%s' member is missing."
+msgstr ""
+
+#: ../src/plugins/rhbz.c:259
+#, c-format
+msgid "Bug %i is CLOSED, but it has no RESOLUTION"
+msgstr ""
+
+#: ../src/plugins/rhbz.c:267
+#, c-format
+msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
+msgstr ""
+
+#: ../src/plugins/rhbz.c:373
+#, c-format
+msgid "New bug id: %i"
+msgstr "Uuden ohjelmavirheilmoituksen tunnus: %i"
+
+#: ../src/plugins/rhbz.c:446
+#, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr "Bugzilla ei löytänyt ylemmän tason vikailmoitusta ilmoitukselle %d"
+
+#~ msgid ""
+#~ "Usage: %s -l[f] [-D BASE_DIR]...]\n"
+#~ "   or: %s -r[y] CRASH_DIR\n"
+#~ "   or: %s -i[b] CRASH_DIR\n"
+#~ "   or: %s -d CRASH_DIR\n"
+#~ "\n"
+#~ "\t-l, --list\t\tList not yet reported problems\n"
+#~ "\t  -f, --full\t\tList all problems\n"
+#~ "\t-D BASE_DIR\t\tDirectory to list problems from\n"
+#~ "\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
+#~ "\n"
+#~ "\t-r, --report\t\tSend a report about CRASH_DIR\n"
+#~ "\t  -y, --always\t\t...without editing and asking\n"
+#~ "\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
+#~ "\t  -f, --full\t\t...including multi-line entries\n"
+#~ "\t\t\t\tNote: -if will run analyzers\n"
+#~ "\t\t\t\t(if this CRASH_DIR have defined analyzers)\n"
+#~ "\t-d, --delete\t\tRemove CRASH_DIR\n"
+#~ "\n"
+#~ "\t-V, --version\t\tDisplay version and exit\n"
+#~ "\t-v, --verbose\t\tBe verbose\n"
+#~ msgstr ""
+#~ "Käyttö: %s -l[f] [-D PERUSHAKEMISTO]...]\n"
+#~ "   tai: %s -r[y] KAATUMISHAKEMISTO\n"
+#~ "   tai: %s -i[b] KAATUMISHAKEMISTO\n"
+#~ "   tai: %s -d KAATUMISHAKEMISTO\n"
+#~ "\n"
+#~ "\t-l, --list\t\tLuettelo raportoimattomista ongelmista\n"
+#~ "\t  -f, --full\t\tLuettelo kaikista ongelmista\n"
+#~ "\t-D PERUSHAKEMISTO\t\tHakemisto, josta ongelmat luetteloidaan\n"
+#~ "\t\t\t\t(oletus: -D $HOME/.abrt/spool -D %s)\n"
+#~ "\n"
+#~ "\t-r, --report\t\tLähetä raportti KAATUMISHAKEMISTOsta\n"
+#~ "\t  -y, --always\t\t...ei muokata eikä kysellä\n"
+#~ "\t-i, --info\t\tTulosta KAATUMISHAKEMISTOn tiedot\n"
+#~ "\t  -f, --full\t\t...myös moniriviset kohdat\n"
+#~ "\t\t\t\tHuomaa: -if suorittaa analysaattorit\n"
+#~ "\t\t\t\t(jos tällä KAATUMISHAKEMISTOlla on määritettyjä "
+#~ "analysaattoreita)\n"
+#~ "\t-d, --delete\t\tPoista KAATUMISHAKEMISTO\n"
+#~ "\n"
+#~ "\t-V, --version\t\tNäytä versio ja poistu\n"
+#~ "\t-v, --verbose\t\tEnemmän tulosteita\n"
+
+#~ msgid "You must specify exactly one operation"
+#~ msgstr "On määritettävä tasan yksi toiminto."
+
+#~ msgid "# This field is read only\n"
+#~ msgstr "# Tämä kenttä on vain luku -tilassa\n"
+
+#~ msgid "# Describe the circumstances of this crash below"
+#~ msgstr "# Kuvaile alla kaatumistilannetta"
+
+#~ msgid ""
+#~ "# Backtrace\n"
+#~ "# Check that it does not contain any sensitive data (passwords, etc.)"
+#~ msgstr ""
+#~ "# Pinolistaus\n"
+#~ "# Tarkista, ettei tämä sisällä mitään luottamuksellisia tietoja, kuten "
+#~ "salasanoja."
+
+#~ msgid "# Architecture"
+#~ msgstr "# Arkkitehtuuri"
+
+#~ msgid "# Command line"
+#~ msgstr "# Komentorivi"
+
+#~ msgid "# Component"
+#~ msgstr "# Komponentti"
+
+#~ msgid "# Core dump"
+#~ msgstr "# Muistivedos"
+
+#~ msgid "# Executable"
+#~ msgstr "# Suoritettava tiedosto"
+
+#~ msgid "# Kernel version"
+#~ msgstr "# Ytimen versio"
+
+#~ msgid "# Package"
+#~ msgstr "# Paketti"
+
+#~ msgid "# Reason of crash"
+#~ msgstr "# Kaatumisen syy"
+
+#~ msgid "# Release string of the operating system"
+#~ msgstr "# Käyttöjärjestelmän julkaisutunnus"
+
+#~ msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
+#~ msgstr ""
+#~ "Komentoa vi ei voida suorittaa: $TERM-, $VISUAL- tai $EDITOR -muuttujia "
+#~ "ei ole määritetty."
+
+#~ msgid ""
+#~ "\n"
+#~ "The report has been updated"
+#~ msgstr ""
+#~ "\n"
+#~ "Raportti on päivitetty"
+
+#~ msgid ""
+#~ "\n"
+#~ "No changes were detected in the report"
+#~ msgstr ""
+#~ "\n"
+#~ "Raportissa ei havaittu muutoksia"
+
+#~ msgid "N"
+#~ msgstr "E"
+
+#~ msgid "Your input is not valid, because of:"
+#~ msgstr "Syöte ei kelpaa, syy:"
+
+#~ msgid "Bad value for '%s': %s"
+#~ msgstr "Virheellinen arvo kohteelle ”%s”: %s"
+
+#~ msgid "Select how you would like to analyze the problem:\n"
+#~ msgstr "Valitse kuinka haluat analysoida ongelman:\n"
+
+#~ msgid "Choose option [0 - %u]: "
+#~ msgstr "Valitse vaihtoehto [0 - %u]:"
+
+#~ msgid "You have chosen number out of range"
+#~ msgstr "Valittu numero ei ole sallittu"
+
+#~ msgid "Invalid input, program exiting..."
+#~ msgstr "Virheellinen syöte, ohjelma lopetetaan..."
+
+#~ msgid "Reporting..."
+#~ msgstr "Raportoidaan..."
+
+#~ msgid "Skipping..."
+#~ msgstr "Ohitetaan..."
+
+#~ msgid "Reporting disabled because the backtrace is unusable"
+#~ msgstr "Raportointi on poistettu käytöstä, koska pinolistaus on hyödytön"
+
+#~ msgid ""
+#~ "Please try to install debuginfo manually using the command: \"debuginfo-"
+#~ "install %s\" and try again\n"
+#~ msgstr ""
+#~ "Yritä asentaa debuginfo manuaalisesti käyttäen komentoa ”debuginfo-"
+#~ "install %s” ja kokeile sitten uudelleen\n"
+
+#~ msgid ""
+#~ " [-vs] -d DIR -e EVENT\n"
+#~ "   or: "
+#~ msgstr ""
+#~ " [-vs] -d HAKEMISTO -e TAPAHTUMA\n"
+#~ "   tai: "
+
+#~ msgid "Handle EVENT"
+#~ msgstr "Käsittele TAPAHTUMA"
+
+#~ msgid "List possible events [which start with PFX]"
+#~ msgstr "Luettelo mahdollisista tapahtumista [jotka alkavat PFX]"
+
+#~ msgid "Show password"
+#~ msgstr "Näytä salasana"
+
+#~ msgid "Event Configuration"
+#~ msgstr "Tapahtuma-asetukset"
+
+#~ msgid "Event"
+#~ msgstr "Tapahtuma"
+
+#~ msgid "Configure E_vent"
+#~ msgstr "Tee tapahtuman asetukset"
+
+#~ msgid ""
+#~ "Wrong settings detected for %s, reporting will probably fail if you "
+#~ "continue with the current configuration."
+#~ msgstr ""
+#~ "Kohteen %s asetukset ovat väärät, raportointi luultavasti epäonnistuu, "
+#~ "jos jatkat nykyisillä asetuksilla."
+
+#~ msgid ""
+#~ "Wrong settings detected for <b>%s</b>, reporting will probably fail if "
+#~ "you continue with the current configuration."
+#~ msgstr ""
+#~ "Kohteen <b>%s</b> asetukset ovat väärät, raportointi luultavasti "
+#~ "epäonnistuu, jos jatkat nykyisillä asetuksilla."
+
+#~ msgid ""
+#~ " [-vp] [-g GUI_FILE] DIR\n"
+#~ "\n"
+#~ "GUI tool to analyze and report problem saved in specified DIR"
+#~ msgstr ""
+#~ " [-vp] [-g GUI-TIEDOSTO] HAKEMISTO\n"
+#~ "\n"
+#~ "Graafinen työkalu annetussa HAKEMISTOssa olevan ongelman analysointiin ja "
+#~ "raportointiin"
+
+#~ msgid "Alternate GUI file"
+#~ msgstr "Vaihtoehtoinen GUI-tiedosto"
+
+#~ msgid ""
+#~ "Need writable directory, but '%s' is not writable. Move it to '%s' and "
+#~ "operate on the moved copy?"
+#~ msgstr ""
+#~ "Tarvitaan hakemisto, johon voi kirjoittaa, mutta ”%s” ei ole sellainen. "
+#~ "Siirretäänkö kohteeseen ”%s” ja käytetään siirrettyä kopiota?"
+
+#~ msgid "(click here to view/edit)"
+#~ msgstr "(napsauta tästä katsellaksesi tai muokataksesi)"
+
+#~ msgid "(binary file, %llu bytes)"
+#~ msgstr "(binääritiedosto, %llu tavua)"
+
+#~ msgid "%llu bytes, %u files"
+#~ msgstr "%llu tavua, %u tiedostoa"
+
+#~ msgid "No processing for event '%s' is defined"
+#~ msgstr "Tapahtumalle ”%s” ei ole määritetty toimintoa"
+
+#~ msgid ""
+#~ "The backtrace is incomplete, please make sure you provide the steps to "
+#~ "reproduce."
+#~ msgstr ""
+#~ "Virheenjäljitystiedot ovat epätäydelliset, varmista että olet kertonut "
+#~ "tarkat vaiheet virheen toistamiseen."
+
+#~ msgid "Reporting disabled because the backtrace is unusable."
+#~ msgstr "Raportointi on poistettu käytöstä, koska pinolistaus on hyödytön."
+
+#~ msgid "You should check the backtrace for sensitive data."
+#~ msgstr "Tarkista pinolistaus luottamuksellisien tietojen varalta."
+
+#~ msgid "You must agree with sending the backtrace."
+#~ msgstr "Pinolistauksen lähettäminen on hyväksyttävä."
+
+#~ msgid "Analyzing..."
+#~ msgstr "Analysoidaan..."
+
+#~ msgid "Analyzing finished with exit code %d"
+#~ msgstr "Analyysi valmistui loppuarvolla %d"
+
+#~ msgid "Reporting finished with exit code %d"
+#~ msgstr "Raportointi valmistui loppuarvolla %d"
+
+#~ msgid "Name"
+#~ msgstr "Nimi"
+
+#~ msgid "Value"
+#~ msgstr "Arvo"
+
+#~ msgid ""
+#~ "<b>Your comments are not private.</b> They may be included into publicly "
+#~ "visible problem reports."
+#~ msgstr ""
+#~ "<b>Kommentit eivät ole yksityisiä.</b> Ne saatetaan lisätä julkisiin "
+#~ "ongelmaraportteihin."
+
+#~ msgid "Analyzing did not start yet"
+#~ msgstr "Analysointi ei ole vielä alkanut"
+
+#~ msgid "Any additional comments useful for diagnosing the problem?"
+#~ msgstr "Muita ongelman löytämisessä auttavia kommentteja"
+
+#~ msgid ""
+#~ "Backtrace provides developers with details of the crash, helping them "
+#~ "track down the source of the problem. Please review it and remove any "
+#~ "sensitive data you would rather not share:"
+#~ msgstr ""
+#~ "Virheenjäljitystiedot kertovat kehittäjille kaatumisen yksityiskohdat, "
+#~ "jolloin ongelman syy on helpompi löytää. Tarkista tiedot ja poista kaikki "
+#~ "yksityiset tiedot:"
+
+#~ msgid ""
+#~ "Can create more informative backtrace if you installed additional debug "
+#~ "packages"
+#~ msgstr ""
+#~ "Tarkemmat virheenjäljitystiedot voitaisiin luoda, jos lisää "
+#~ "virheenjäljityspaketteja asennettaisiin"
+
+#~ msgid "Click 'Apply' to start reporting"
+#~ msgstr "Napsauta ”Käytä” raportoinnin aloittamiseksi"
+
+#~ msgid "Configure _Events"
+#~ msgstr "Tee tapahtumien _asetukset"
+
+#~ msgid "Details"
+#~ msgstr "Lisätietoja"
+
+#~ msgid ""
+#~ "How did this problem happen (step-by-step)? How can it be reproduced?"
+#~ msgstr "Kuinka tämä ongelma tapahtui? Kuinka sen voi toistaa?"
+
+#~ msgid "I _agree with submitting the backtrace"
+#~ msgstr "Pinolistauksen _saa lähettää"
+
+#~ msgid "Regenerate backtrace"
+#~ msgstr "Luo pinolistaus uudelleen"
+
+#~ msgid "Reporter(s):"
+#~ msgstr "Raportoijat:"
+
+#~ msgid "Reporting did not start yet"
+#~ msgstr "Raportointi ei ole vielä alkanut"
+
+#~ msgid "Select how you would like to analyze the problem:"
+#~ msgstr "Valitse kuinka haluat analysoida ongelman:"
+
+#~ msgid "Select how you would like to report the problem:"
+#~ msgstr "Valitse kuinka haluat raportoida ongelman:"
+
+#~ msgid "Size:"
+#~ msgstr "Koko:"
+
+#~ msgid ""
+#~ "Use this button to generate more informative backtrace after you "
+#~ "installed additional debug packages"
+#~ msgstr ""
+#~ "Käytä tätä painiketta tarkempien virheenjäljitystietojen luomiseksi, kun "
+#~ "olet asentanut lisää virheenjäljityspaketteja."
+
+#~ msgid "Missing mandatory value"
+#~ msgstr "Puuttuva pakollinen arvo"
+
+#~ msgid "Invalid utf8 character '%c'"
+#~ msgstr "Virheellinen utf-8-merkki ”%c”"
+
+#~ msgid "Invalid number '%s'"
+#~ msgstr "Virheellinen numero ”%s”"
+
+#~ msgid "Invalid boolean value '%s'"
+#~ msgstr "Virheellinen totuusarvo ”%s”"
+
+#~ msgid "Unsupported option type"
+#~ msgstr "Valitsimen tyyppiä ei tueta"
+
+#~ msgid "Usage: %s\n"
+#~ msgstr "Käyttö: %s\n"
+
+#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
+#~ msgstr ""
+#~ "get_bug_info() epäonnistui. Kaikkia pakollisia tietoja ei voitu kerätä."
+
+#~ msgid "Bugzilla entry creation failed"
+#~ msgstr "Bugzilla-ilmoituksen luominen epäonnistui"
+
+#~ msgid ""
+#~ " [-v] -c CONFFILE -d DIR\n"
+#~ "\n"
+#~ "Reports problem to Bugzilla"
+#~ msgstr ""
+#~ " [-v] -c ASETUSTIEDOSTO -d HAKEMISTO\n"
+#~ "\n"
+#~ "Raportoi ongelmat Bugzillaan"
+
+#~ msgid "All downloaded packages have been extracted, removing %s"
+#~ msgstr "Kaikki ladatut paketit on purettu, poistetaan %s"
+
+#~ msgid ""
+#~ " [-v] -c CONFFILE -d DIR\n"
+#~ "\n"
+#~ "Reports a problem to RHTSupport"
+#~ msgstr ""
+#~ " [-v] -c ASETUSTIEDOSTO -d HAKEMISTO\n"
+#~ "\n"
+#~ "Raportoi ongelman RHTSupportiin"
