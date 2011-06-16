@@ -14,7 +14,6 @@ sbin_PROGRAMS = \
     abrt-server
 
 abrtd_SOURCES = \
-    MiddleWare.h MiddleWare.c \
     CommLayerServerDBus.h CommLayerServerDBus.c \
     comm_layer_inner.h comm_layer_inner.c \
     abrtd.c

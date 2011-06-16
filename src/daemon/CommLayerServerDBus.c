@@ -20,7 +20,6 @@
 #include "abrtlib.h"
 #include "abrt_dbus.h"
 #include "comm_layer_inner.h"
-#include "MiddleWare.h"
 #include "CommLayerServerDBus.h"
 
 /*
@@ -115,51 +114,6 @@ void send_dbus_sig_Warning(const char* pMessage, const char* peer)
 
 
 /*
- * DBus call handlers
- */
-
-static long get_remote_uid(DBusMessage* call, const char** ppSender)
-{
-    DBusError err;
-    dbus_error_init(&err);
-    const char* sender = dbus_message_get_sender(call);
-    if (ppSender)
-        *ppSender = sender;
-    long uid = dbus_bus_get_unix_user(g_dbus_conn, sender, &err);
-    if (dbus_error_is_set(&err))
-    {
-        dbus_error_free(&err);
-        error_msg("Can't determine remote uid, assuming 0");
-        return 0;
-    }
-    return uid;
-}
-
-static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
-{
-    int r;
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(call, &in_iter);
-    const char* crash_id;
-    r = load_charp(&in_iter, &crash_id);
-    if (r != ABRT_DBUS_LAST_FIELD)
-    {
-        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
-        return -1;
-    }
-
-    long unix_uid = get_remote_uid(call, NULL);
-    int32_t result = DeleteDebugDump(crash_id, unix_uid);
-
-    DBusMessageIter out_iter;
-    dbus_message_iter_init_append(reply, &out_iter);
-    store_int32(&out_iter, result);
-
-    send_flush_and_unref(reply);
-    return 0;
-}
-
-/*
  * Glib integration machinery
  */
 
@@ -173,8 +127,8 @@ static DBusHandlerResult message_received(DBusConnection* conn, DBusMessage* msg
 
     DBusMessage* reply = dbus_message_new_method_return(msg);
     int r = -1;
-    if (strcmp(member, "DeleteDebugDump") == 0)
-        r = handle_DeleteDebugDump(msg, reply);
+    /*if (strcmp(member, "DeleteDebugDump") == 0)
+        r = handle_DeleteDebugDump(msg, reply);*/
 
 // NB: C++ binding also handles "Introspect" method, which returns a string.
 // It was sending "dummy" introspection answer whick looks like this:
