@@ -1,7 +1,6 @@
 bin_PROGRAMS = abrt-gui
 
 abrt_gui_SOURCES = \
-    abrt-gtk.h abrt-gtk.c \
     main.c
 abrt_gui_CFLAGS = \
     -I$(srcdir)/../include \
