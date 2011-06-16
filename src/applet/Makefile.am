@@ -2,8 +2,7 @@ bin_PROGRAMS = abrt-applet
 #test-report
 
 abrt_applet_SOURCES = \
-    applet.c \
-    applet_gtk.h applet_gtk.c
+    applet.c
 abrt_applet_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \

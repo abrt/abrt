@@ -44,6 +44,10 @@
 #endif
 #include <glib.h>
 
+#include <report.h>
+/* libreport's internal functions we use: */
+#include <libreport.h>
+
 #ifdef HAVE_CONFIG_H
 # include "config.h"
 #endif
@@ -71,7 +75,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #undef ARRAY_SIZE
 #define ARRAY_SIZE(x) ((unsigned)(sizeof(x) / sizeof((x)[0])))
 
-#include <libreport.h>
+
 #include "hooklib.h"
 #include "abrt_conf.h"
 
