@@ -238,6 +238,9 @@ int main(int argc, char** argv)
     }
     gtk_init(&argc, &argv);
 
+    abrt_init(argv);
+    msg_prefix = g_progname;
+
     /* Prevent zombies when we spawn abrt-gui */
     signal(SIGCHLD, SIG_IGN);
 
