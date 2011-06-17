@@ -172,6 +172,19 @@ Provides: gnome-python2-bugbuddy
 This package contains python hook and python analyzer plugin for handling
 uncaught exception in python programs.
 
+%package cli
+Summary: %{name}'s command line interface
+Group: User Interface/Desktops
+Requires: %{name} = %{version}-%{release}
+Requires: libreport-cli
+Requires: abrt-addon-kerneloops
+Requires: abrt-addon-ccpp, abrt-addon-python
+Requires: abrt-plugin-bugzilla, abrt-plugin-logger
+
+%description cli
+This package contains simple command line client for controlling abrt daemon over
+the sockets.
+
 %package desktop
 Summary: Virtual package to install all necessary packages for usage from desktop environment
 Group: User Interface/Desktops
@@ -222,6 +235,8 @@ mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-di
 mkdir -p $RPM_BUILD_ROOT/var/run/abrt
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt-upload
+# compat before we split abrt-cli and report-cli
+ln -s %{_bindir}/report-cli $RPM_BUILD_ROOT/%{_bindir}/abrt-cli
 
 desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
@@ -494,6 +509,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-action-analyze-python
 %{python_site}/abrt*.py*
 %{python_site}/abrt.pth
+
+%files cli
+%defattr(-,root,root,-)
+%{_bindir}/abrt-cli
 
 %files desktop
 %defattr(-,root,root,-)
