@@ -17,7 +17,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "parse_options.h"
 
 static double get_dir_size(const char *dirname,
                            char **worst_file,

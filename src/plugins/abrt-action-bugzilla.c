@@ -17,8 +17,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "abrt_problem_data.h"
-#include "parse_options.h"
 #include "abrt_xmlrpc.h"
 #include "rhbz.h"
 

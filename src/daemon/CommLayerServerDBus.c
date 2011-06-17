@@ -17,10 +17,16 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <dbus/dbus.h>
+#include <internal_abrt_dbus.h>
 #include "abrtlib.h"
-#include "abrt_dbus.h"
 #include "comm_layer_inner.h"
 #include "CommLayerServerDBus.h"
+
+
+#define ABRTD_DBUS_NAME  "com.redhat.abrt"
+#define ABRTD_DBUS_PATH  "/com/redhat/abrt"
+#define ABRTD_DBUS_IFACE "com.redhat.abrt"
+
 
 /*
  * DBus signal emitters

@@ -16,13 +16,11 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-
 #include <libtar.h>
 #include "abrtlib.h"
 #include "abrt_curl.h"
 #include "abrt_xmlrpc.h"
 #include "abrt_rh_support.h"
-#include "parse_options.h"
 
 static void report_to_rhtsupport(
                 const char *dump_dir_name,

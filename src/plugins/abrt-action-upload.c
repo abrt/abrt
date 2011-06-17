@@ -16,11 +16,9 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-
 #include <libtar.h>
 #include <curl/curl.h>
 #include "abrtlib.h"
-#include "parse_options.h"
 
 //TODO: use this for better logging
 #if 0

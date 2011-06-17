@@ -16,16 +16,14 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include <sys/inotify.h>
 #include <libreport-gtk.h>
-#include "abrtlib.h"
-#include "parse_options.h"
 #if HAVE_LOCALE_H
 # include <locale.h>
 #endif
+#include "abrtlib.h"
 
 static void scan_dirs_and_add_to_dirlist(void);
 

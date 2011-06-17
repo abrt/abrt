@@ -17,7 +17,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "parse_options.h"
 
 static void create_hash(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *pInput)
 {

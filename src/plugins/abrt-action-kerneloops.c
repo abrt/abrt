@@ -16,10 +16,8 @@
        Anton Arapov <anton@redhat.com>
        Arjan van de Ven <arjan@linux.intel.com>
  */
-
 #include <curl/curl.h>
 #include "abrtlib.h"
-#include "parse_options.h"
 
 /* helpers */
 static size_t writefunction(void *ptr, size_t size, size_t nmemb, void *stream)

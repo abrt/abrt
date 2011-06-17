@@ -21,7 +21,6 @@
 #include <sys/inotify.h>
 #include <sys/ioctl.h> /* ioctl(FIONREAD) */
 #include "abrtlib.h"
-#include "parse_options.h"
 
 static bool world_readable_dump = false;
 static const char *debug_dumps_dir = ".";

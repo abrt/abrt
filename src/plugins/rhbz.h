@@ -25,7 +25,6 @@
  */
 
 #include "abrt_xmlrpc.h"
-#include "abrt_problem_data.h"
 
 #ifdef __cplusplus
 extern "C" {

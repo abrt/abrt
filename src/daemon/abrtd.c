@@ -27,7 +27,6 @@
 #include "abrtlib.h"
 #include "comm_layer_inner.h"
 #include "CommLayerServerDBus.h"
-#include "parse_options.h"
 
 #define VAR_RUN_PIDFILE   VAR_RUN"/abrtd.pid"
 

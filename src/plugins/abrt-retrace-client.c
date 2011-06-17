@@ -15,9 +15,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include "abrtlib.h"
-#include "parse_options.h"
-#include "strbuf.h"
+#include <syslog.h>
 #include <nspr.h>
 #include <nss.h>
 #include <pk11pub.h>
@@ -26,10 +24,10 @@
 #include <sslerr.h>
 #include <secerr.h>
 #include <secmod.h>
-
 #if HAVE_LOCALE_H
-#include <locale.h>
+# include <locale.h>
 #endif
+#include "abrtlib.h"
 
 struct retrace_settings
 {

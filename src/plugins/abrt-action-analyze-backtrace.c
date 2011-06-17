@@ -15,11 +15,10 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include "abrtlib.h"
 #include <btparser/backtrace.h>
 #include <btparser/frame.h>
 #include <btparser/location.h>
-#include "parse_options.h"
+#include "abrtlib.h"
 
 static const char *dump_dir_name = ".";
 

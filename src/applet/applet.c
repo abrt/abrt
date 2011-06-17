@@ -25,10 +25,17 @@
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-lowlevel.h>
 
+#include <internal_abrt_dbus.h>
 #include "abrtlib.h"
-#include "abrt_dbus.h"
+
 
 #define ENABLE_ANIMATION 0
+
+
+#define ABRTD_DBUS_NAME  "com.redhat.abrt"
+#define ABRTD_DBUS_PATH  "/com/redhat/abrt"
+#define ABRTD_DBUS_IFACE "com.redhat.abrt"
+
 
 static gboolean persistent_notification;
 static GtkStatusIcon *ap_status_icon;

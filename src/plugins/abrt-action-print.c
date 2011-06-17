@@ -19,7 +19,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "parse_options.h"
 
 static const char *dump_dir_name = ".";
 static const char *output_file = NULL;

@@ -19,7 +19,6 @@
 #include <fnmatch.h>
 #include "abrtlib.h"
 #include "rpm.h"
-#include "parse_options.h"
 
 // TODO: convert g_settings_foo usage to command-line switches
 
