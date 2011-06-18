@@ -206,7 +206,7 @@ static SECStatus ssl_bad_cert_handler(void *arg, PRFileDesc *sock)
         error_msg(_("Certificate issuer is not recognized: '%s'."), issuer);
         break;
     default:
-        error_msg(_("Bad certifiacte received. Subject '%s', issuer '%s'."),
+        error_msg(_("Bad certificate received. Subject '%s', issuer '%s'."),
                 subject, issuer);
         break;
     }
