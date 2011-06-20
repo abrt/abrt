@@ -8,12 +8,17 @@ verbose=false
 
 DEFAULT_LOCATION=/var/spool/abrt
 
-DUMP_LOCATION=`cat @sysconfdir@/abrt/abrt.conf | grep '^[ 	]*DumpLocation'`
-DUMP_LOCATION=${DUMP_LOCATION#*DumpLocation*=}
-DUMP_LOCATION=${DUMP_LOCATION// /}
+wspace='[       ]*'
+DUMP_LOCATION=`grep "^${wspace}DumpLocation${wspace}=" @sysconfdir@/abrt/abrt.conf \
+    |  sed -e  "s/^${wspace}DumpLocation${wspace}=${wspace}//" -e "s/${wspace}\$//"`
 
-if [ "$DUMP_LOCATION" = "" ]; then
+if [ x"$DUMP_LOCATION" = x"" ]; then
     DUMP_LOCATION=$DEFAULT_LOCATION
+else
+    if [ x"${DUMP_LOCATION#* }" != x"$DUMP_LOCATION" ]; then
+        # DUMP_LOCATION has a space.
+	DUMP_LOCATION=$DEFAULT_LOCATION
+    fi
 fi
 
 PATTERN_FILE="/proc/sys/kernel/core_pattern"
