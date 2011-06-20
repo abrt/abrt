@@ -1,20 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
+# Geert Warrink <geert.warrink@onsnet.nu>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-06-16 12:53+0200\n"
-"PO-Revision-Date: 2011-05-03 14:35+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2011-06-16 12:48+0200\n"
+"PO-Revision-Date: 2011-06-20 13:07+0000\n"
+"Last-Translator: warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Dutch (http://www.transifex.net/projects/p/fedora/team/nl/)\n"
-"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -75,15 +76,14 @@ msgid "Open ABRT"
 msgstr "Open ABRT"
 
 #: ../src/daemon/abrt-action-save-package-data.c:250
-#, fuzzy
 msgid ""
-"\b [-v] -d DIR\n"
+"\\b [-v] -d DIR\n"
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
-" [-v] -d MAP\n"
+"\\b [-v] -d DIR\n"
 "\n"
-"Bevraag pakket database en sla pakket naam, onderdelen en beschrijving op"
+"Bevraag pakketdatabase en sla pakketnaam, component en beschrijving op"
 
 #: ../src/daemon/abrt-action-save-package-data.c:261
 #: ../src/plugins/abrt-action-analyze-backtrace.c:56
@@ -101,9 +101,8 @@ msgid "Dump directory"
 msgstr "Dump map"
 
 #: ../src/daemon/abrt-server.c:442 ../src/daemon/abrtd.c:506
-#, fuzzy
-msgid "\b [options]"
-msgstr " [opties]"
+msgid "\\b [options]"
+msgstr "\\b [opties]"
 
 #: ../src/daemon/abrt-server.c:453
 msgid "Use UID as client uid"
@@ -139,14 +138,12 @@ msgid "Exit after SEC seconds of inactivity"
 msgstr "Afsluiten na SEC seconden van inactiviteit"
 
 #: ../src/gui-gtk/abrt-gtk.c:216
-#, fuzzy
 msgid "Problem description"
-msgstr "(geen beschrijving)"
+msgstr "Probleembeschrijving"
 
 #: ../src/gui-gtk/abrt-gtk.c:219
-#, fuzzy
 msgid "Send"
-msgstr "Afzender"
+msgstr "Verstuur"
 
 #: ../src/gui-gtk/abrt-gtk.c:297
 msgid "Reported"
@@ -178,7 +175,7 @@ msgstr "_Gebeurtenis configuratie"
 
 #: ../src/gui-gtk/abrt-gtk.c:370
 msgid "Report problem with ABRT"
-msgstr ""
+msgstr "Rapporteer probleem met ABRT"
 
 #: ../src/gui-gtk/abrt-gtk.c:443
 msgid "Online _Help"
@@ -189,17 +186,16 @@ msgid "View and report application crashes"
 msgstr "Bekijk en rapporteer crashes van toepassingen"
 
 #: ../src/gui-gtk/main.c:213
-#, fuzzy
 msgid ""
-"\b [-vp] [DIR]...\n"
+"\\b [-vp] [DIR]...\n"
 "\n"
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 "(default DIRs: "
 msgstr ""
-"  [-vp] [MAP] ...\n"
+"\\b [-vp] [MAP]...\n"
 "\n"
-"Toon een lijst van ABRT dump mappen in gespecificeerde MAP(PEN)\n"
-"(standaard mappen: "
+"Toon lijst van ABRT dump mappen in gespecificeerde MAP(pen)\n"
+"(Standaard MAP(pen): "
 
 #: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:43
 #, c-format
@@ -207,60 +203,53 @@ msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Upload: %llu van %llu KB"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:45
-#, fuzzy
 msgid ""
-"\b [options] -d DIR\n"
+"\\b [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
-"identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
 msgstr ""
-" [opties] -d MAP\n"
+"\\b [opties] -d MAP\n"
 "\n"
-"Analyseer C/C++ backtrace, genereer duplicaat hash, backtrace rating, en "
-"identificeer crash functie in dump ma MAP"
+"Analyseert C/C++ backtrace, genereert duplicatie hash, backtrace status en identificeert crash functie in dump map MAP"
 
-#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:93
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "Backtrace ontleden mislukte voor %s"
 
 #: ../src/plugins/abrt-action-analyze-c.c:151
-#, fuzzy
 msgid ""
-"\b [-v] -d DIR\n"
+"\\b [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
-" [-v] -d MAP\n"
+"\\b [-v] -d MAP\n"
 "\n"
-"Berekent en slaat UUID van een core dump op in dump map MAP"
+"Berekent en slaat UUID van coredump op in dump map MAP"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:112
-#, fuzzy
 msgid ""
-"\b [-vs] -d DIR\n"
+"\\b [-vs] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
-" [-vs] -d MAP\n"
+"\\b [-vs] -d MAP\n"
 "\n"
-"Berekent en slaat UUID en DUPHASH op voor Oops dump map MAP"
+"Berekent en slaat UUID en DUPHASH op voor oops dump map MAP"
 
 #: ../src/plugins/abrt-action-analyze-python.c:30
-#, fuzzy
 msgid ""
-"\b [-v] -d DIR\n"
+"\\b [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
-" [-v] -d DIR\n"
+"\\b [-v] -d MAP\n"
 "\n"
-"Berekent en slaat UUID en DUPHASH van python crash dumps op"
+"Berekent en slaat UUID en DUPHASH op van python crash dumps"
 
 #: ../src/plugins/abrt-action-bugzilla.c:45
 msgid "Empty login or password, please check your configuration"
@@ -315,7 +304,7 @@ msgstr "Afmelden"
 
 #: ../src/plugins/abrt-action-bugzilla.c:233
 msgid ""
-"\b [-v] [-c CONFFILE] -d DIR\n"
+"\\b [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Reports problem to Bugzilla.\n"
 "\n"
@@ -327,8 +316,7 @@ msgid ""
 "depending on their type and size.\n"
 "\n"
 "Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,\n"
-"the tool follows the chain of duplicates until it finds a non-DUPLICATE "
-"bug.\n"
+"the tool follows the chain of duplicates until it finds a non-DUPLICATE bug.\n"
 "The tool adds a new comment to found bug.\n"
 "\n"
 "The URL to new or modified bug is printed to stdout and recorded in\n"
@@ -339,6 +327,27 @@ msgid ""
 "Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
 "Parameters can be overridden via $Bugzilla_PARAM environment variables."
 msgstr ""
+"\\b [-v] [-c CONFFILE] -d MAP\n"
+"\n"
+"Rapporteer probleem aan Bugzilla.\n"
+"\n"
+"Het programma leest MAP. Logt daarna in op Bugzilla en probeert een bug te vinden met dezelfde abrt_hash:HEXSTRING in 'Whiteboard'.\n"
+"\n"
+"Als zo'n bug niet gevonden wordt, dan wordt een nieuwe bug aangemaakt. Onderdelen van MAP\n"
+"worden in de bug opgeslagen als onderdeel van de bug beschrijving of als aanhangsels,\n"
+"afhankelijk van hun type en grootte.\n"
+"\n"
+"Als zo'n bug wel gevonden wordt, wordt het gemarkeerd als CLOSED DUPLICATE,\n"
+"het programma volgt de keten van duplicaten totdat het een non-DUPLICATE bug vindt.\n"
+"Het programma voegt een nieuw commentaar toe aan de gevonden.\n"
+"\n"
+"De URL naar de nieuwe of veranderde bug wordt naar stdout geschreven en opgeslagen in\n"
+"'reported_to' element.\n"
+"\n"
+"CONFFILE regels moeten het 'PARAM = VALUE' formaat hebben.\n"
+"Herkende string parameters: BugzillaURL, Login, Password.\n"
+"Herkende booleaanse parameter (WAARDE moet 1/0 of yes/no zijn): SSLVerify.\n"
+"Parameters kunnen overschreven worden met $Bugzilla_PARAM omgevingsparameters."
 
 #: ../src/plugins/abrt-action-bugzilla.c:265
 #: ../src/plugins/abrt-action-rhtsupport.c:316
@@ -346,28 +355,26 @@ msgid "Configuration file (may be given many times)"
 msgstr "Configuratiebestand (kan meerdere keren gegeven worden)"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:239
-#, fuzzy
 msgid ""
-"\b [options] -d DIR\n"
+"\\b [options] -d DIR\n"
 "\n"
 "Analyzes coredump in dump directory DIR, generates and saves backtrace"
 msgstr ""
-" [Opties] -d MAP\n"
+"\\b [options] -d MAP\n"
 "\n"
-"Genereer en sla backtrace voor een core dump op in dump map MAP"
+"Analyseert coredump in dump map MAP, genereert en slaat backtrace op"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:253
 msgid "Additional debuginfo directories"
 msgstr "Extra debuginfo mappen"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:254
-#, fuzzy
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr "Sluit gdb af als het meer dan N secondes draait"
+msgstr "Sluit gdb af als het draait voor meer dan NUM seconden"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:290
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -379,7 +386,7 @@ msgstr "j"
 
 #: ../src/plugins/abrt-action-install-debuginfo:86
 msgid "n"
-msgstr ""
+msgstr "n"
 
 #: ../src/plugins/abrt-action-install-debuginfo:100
 #, c-format
@@ -415,7 +422,7 @@ msgstr "Downloaden (%i van %i) %s: %3u%%"
 #: ../src/plugins/abrt-action-install-debuginfo:196
 #, c-format
 msgid "Error initializing yum (YumBase.doConfigSetup): '%s'"
-msgstr ""
+msgstr "Fout bij het initialiseren van yum (YumBase.doConfigSetup): '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo:239
 msgid "Looking for needed packages in repositories"
@@ -424,12 +431,12 @@ msgstr "Opzoeken van benodigde pakketten in de repositories"
 #: ../src/plugins/abrt-action-install-debuginfo:243
 #, c-format
 msgid "Error retrieving metadata: '%s'"
-msgstr ""
+msgstr "Fout bij het ophalen van metadata: '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo:253
 #, c-format
 msgid "Error retrieving filelists: '%s'"
-msgstr ""
+msgstr "Fout bij het ophalen van bestandlijsten: '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo:286
 #, c-format
@@ -460,9 +467,9 @@ msgid "Unpacking failed, aborting download..."
 msgstr "Uitpakken mislukte, download wordt afgebroken..."
 
 #: ../src/plugins/abrt-action-install-debuginfo:339
-#, fuzzy, c-format
+#, c-format
 msgid "Removing %s"
-msgstr "Rapporteren met gebruik van %s? "
+msgstr "Verwijderen van %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo:343
 #, c-format
@@ -495,11 +502,24 @@ msgid ""
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
 msgstr ""
+"Gebruik: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR] [--size_mb=GROOTTE]\n"
+"\n"
+"Installeert debuginfo's voor alle te build-id's in BUILD_IDS_FILE\n"
+"naar CACHEDIR, met behulp van TMPDIR als tijdelijke staging-ruimte.\n"
+"Oude bestanden in CACHEDIR worden verwijderd totdat het kleiner is dan GROOTTE. \n"
+"\n"
+"    -v          verbose Be\n"
+"    -y          niet-interactief, veronderstel 'Ja' op alle vragen\n"
+"    --ids       Standaard: build_ids\n"
+"    --tmpdir    Standaard: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     Standaard: /var/cache/abrt-di\n"
+"    --size_mb   Standaard: 4096\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo:478
 #, c-format
 msgid "Can't open %s: %s"
-msgstr ""
+msgstr "Kan %s niet openen: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo:508
 #, c-format
@@ -524,15 +544,14 @@ msgid "Submitting oops report to %s"
 msgstr "Stuur oops rapport naar %s"
 
 #: ../src/plugins/abrt-action-kerneloops.c:135
-#, fuzzy
 msgid ""
-"\b [-v] [-c CONFFILE]... -d DIR\n"
+"\\b [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
 "Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
-" [-v] [-c CONFFILR] ... -d MAP\n"
+"\\b [-v] [-c CONFFILE]... -d MAP\n"
 "\n"
-"Rapporteer kernel oops aan kerneloops.org (of soortgelijke) site"
+"Rapporteert kernel oops aan kerneloops.org (of vergelijkbare) site"
 
 #: ../src/plugins/abrt-action-kerneloops.c:148
 msgid "Configuration file"
@@ -543,15 +562,14 @@ msgid "Sending an email..."
 msgstr "Versturen van een email..."
 
 #: ../src/plugins/abrt-action-mailx.c:136
-#, fuzzy
 msgid ""
-"\b [-v] -d DIR [-c CONFFILE]\n"
+"\\b [-v] -d DIR [-c CONFFILE]\n"
 "\n"
 "Sends contents of a dump directory DIR via email"
 msgstr ""
-"[-v] -d MAP [-c CONFFILE] [-u URL]\n"
+"\\b [-v] -d MAP [-c CONFFILE]\n"
 "\n"
-"Upload gecomprimeerde tar bestand van dump map MAP"
+"Verstuurt inhoud van een dump map MAP via email"
 
 #: ../src/plugins/abrt-action-mailx.c:149
 #: ../src/plugins/abrt-action-upload.c:255
@@ -559,15 +577,14 @@ msgid "Config file"
 msgstr "Config bestand"
 
 #: ../src/plugins/abrt-action-print.c:35
-#, fuzzy
 msgid ""
-"\b [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
+"\\b [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
-" [-v] -d MAP [-o BESTAND] [-a yes/no]\n"
+"\\b [-v] -d MAP [-o BESTAND] [-a ja/nee] [-r]\n"
 "\n"
-"Druk probleem informatie af naar standaarduitvoer of BESTAND"
+"Print probleem informatie naar standaard output or BESTAND"
 
 #: ../src/plugins/abrt-action-print.c:50
 msgid "Output file"
@@ -592,9 +609,11 @@ msgid "The report was stored to %s"
 msgstr "Het rapport werd opgeslagen in %s"
 
 #. create_problem_data_for_reporting already emitted error msg
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #: ../src/plugins/abrt-action-rhtsupport.c:36
 #: ../src/plugins/abrt-action-upload.c:117
 msgid "Compressing data"
@@ -614,7 +633,7 @@ msgstr "Een nieuwe zaak aanmaken..."
 
 #: ../src/plugins/abrt-action-rhtsupport.c:298
 msgid ""
-"\b [-v] -c CONFFILE -d DIR\n"
+"\\b [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports a problem to RHTSupport.\n"
 "\n"
@@ -623,17 +642,24 @@ msgid ""
 "Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
 "Parameters can be overridden via $RHTSupport_PARAM environment variables."
 msgstr ""
+"\\b [-v] -c CONFFILE -d MAP\n"
+"\n"
+"Rapporteer een probleem aan RHTSupport.\n"
+"\n"
+"CONFFILE regels moeten het 'PARAM = VALUE' formaat hebben.\n"
+"Herkende string parameters: URL, Login, Password.\n"
+"Herkende booleaanse parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
+"Parameters kunnen overschreven worden met $RHTSupport_PARAM omgevingsvariabelen."
 
 #: ../src/plugins/abrt-action-trim-files.c:150
-#, fuzzy
 msgid ""
-"\b [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"\\b [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
-" [-v] [-d GROOTTE:MAP] ... [-f GROOTTE:MAP] ... [-p MAP]\n"
-"Wis dump mappen (-d) of bestanden (-f) in MAPPEN totdat ze kleiner zijn dan "
-"GROOTTE"
+"\\b [-v] [-d SIZE:MAP]... [-f SIZE:MAP]... [-p DIR]\n"
+"\n"
+"Verwijder dump mappen (-d) of bestanden (-f) in MAP(pen) totdat ze kleiner zijn dan SIZE"
 
 #: ../src/plugins/abrt-action-trim-files.c:163
 msgid "Delete dump dirs"
@@ -664,28 +690,26 @@ msgid "Archive is created: '%s'"
 msgstr "Archief is gemaakt: '%s'"
 
 #: ../src/plugins/abrt-action-upload.c:241
-#, fuzzy
 msgid ""
-"\b [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\\b [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
 "Uploads compressed tarball of dump directory DIR"
 msgstr ""
-"[-v] -d MAP [-c CONFFILE] [-u URL]\n"
+"\\b [-v] -d MAP [-c CONFFILE] [-u URL]\n"
 "\n"
-"Upload gecomprimeerde tar bestand van dump map MAP"
+"Uploads gecomprimeerde tarball van dump map MAP"
 
 #: ../src/plugins/abrt-action-upload.c:256
 msgid "Base URL to upload to"
 msgstr "Basis URL om naar te uploaden"
 
 #: ../src/plugins/abrt-dump-oops.c:579
-#, fuzzy
 msgid ""
-"\b [-vsrowx] [-d DIR] FILE\n"
+"\\b [-vsrowx] [-d DIR] FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
-" [-vsrowx] [-d MAP] BESTAND\n"
+"\\b [-vsrowx] [-d MAP] BESTAND\n"
 "\n"
 "Extraheer oops uit syslog/dmesg bestand"
 
@@ -703,7 +727,7 @@ msgstr "Sluit niet af, bekijk het bestand voor nieuwe oopses"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
+#. 
 #: ../src/plugins/abrt-dump-oops.c:602
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr "Maak ABRT dump aan in MAP voor elke gevonden oops"
@@ -714,120 +738,123 @@ msgstr "Maak de dump map leesbaar voor wereld"
 
 #: ../src/plugins/abrt-retrace-client.c:111
 msgid "Cannot open temporary file"
-msgstr ""
+msgstr "Kan tijdelijk bestand niet openen"
 
 #: ../src/plugins/abrt-retrace-client.c:137
 #: ../src/plugins/abrt-retrace-client.c:164
-#, fuzzy, c-format
+#, c-format
 msgid "Can't execute '%s'"
-msgstr "Kan pakket '%s' niet uitpakken"
+msgstr "Kan '%s' niet uitvoeren"
 
 #: ../src/plugins/abrt-retrace-client.c:195
 #, c-format
 msgid "Issuer certificate is invalid: '%s'."
-msgstr ""
+msgstr "Uitgave certificaat is ongeldig: '%s'."
 
 #: ../src/plugins/abrt-retrace-client.c:198
 #, c-format
 msgid "Certificate is signed by an untrusted issuer: '%s'."
-msgstr ""
+msgstr "Certificaat is ondetekend door een niet-vertrouwde uitgever: '%s'."
 
 #: ../src/plugins/abrt-retrace-client.c:201
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
 msgstr ""
+"Certificaat subject naam '%s' komt niet overeen met doel host naam '%s'."
 
 #: ../src/plugins/abrt-retrace-client.c:205
 msgid "Remote certificate has expired."
-msgstr ""
+msgstr "Certificaat op afstand is verlopen."
 
 #: ../src/plugins/abrt-retrace-client.c:208
 #, c-format
 msgid "Certificate issuer is not recognized: '%s'."
-msgstr ""
+msgstr "Certificaat uitgever wordt niet herkend: '%s'."
 
 #: ../src/plugins/abrt-retrace-client.c:211
 #, c-format
 msgid "Bad certifiacte received. Subject '%s', issuer '%s'."
-msgstr ""
+msgstr "Slecht certificaat ontvangen. Onderwerp '%s', uitgever '%s'."
 
 #: ../src/plugins/abrt-retrace-client.c:247
 #, c-format
 msgid "Failed to get slot 'PEM Token #0': %d."
-msgstr ""
+msgstr "Sllot 'PEM Token #0' verkrijgen mislukte: %d."
 
 #: ../src/plugins/abrt-retrace-client.c:275
 msgid "Failed to create a TCP socket"
-msgstr ""
+msgstr "Aanmaken van een TCP socket mislukte"
 
 #: ../src/plugins/abrt-retrace-client.c:283
 msgid "Failed to set socket blocking mode."
-msgstr ""
+msgstr "Socket blokkeer mode instellen mislukte."
 
 #: ../src/plugins/abrt-retrace-client.c:289
 msgid "Failed to wrap TCP socket by SSL."
-msgstr ""
+msgstr "TCP socket wrappen met SSL mislukte."
 
 #: ../src/plugins/abrt-retrace-client.c:295
 #: ../src/plugins/abrt-retrace-client.c:298
 #: ../src/plugins/abrt-retrace-client.c:300
 #: ../src/plugins/abrt-retrace-client.c:302
 msgid "Failed to enable client handshake to SSL socket."
-msgstr ""
+msgstr "Cliënt handshake naar SSL socket aanzetten mislukte."
 
 #: ../src/plugins/abrt-retrace-client.c:308
 msgid "Failed to set URL to SSL socket."
-msgstr ""
+msgstr "URL instellen naar SSL socket mislukte."
 
 #: ../src/plugins/abrt-retrace-client.c:319
 #, c-format
 msgid "Failed to get host by name: %s"
-msgstr ""
+msgstr "Verkrijgen van host volgens naam mislukte: %s"
 
 #: ../src/plugins/abrt-retrace-client.c:322
 #, c-format
 msgid "Failed to get host by name: pr_status == %d, pr_error == %d, url '%s'."
 msgstr ""
+"Verkrijgen van host volgens naam mislukte: pr_status == %d, pr_error == %d, "
+"url '%s'."
 
 #: ../src/plugins/abrt-retrace-client.c:331
 msgid "Failed to enumerate host ent."
-msgstr ""
+msgstr "Opsommen van host entiteit mislukte."
 
 #: ../src/plugins/abrt-retrace-client.c:337
 msgid "Failed to connect SSL address."
-msgstr ""
+msgstr "SSL adres verbinden mislukte."
 
 #: ../src/plugins/abrt-retrace-client.c:344
 msgid "Failed to set certificate hook."
-msgstr ""
+msgstr "Instellen van certificaat haak mislukte."
 
 #: ../src/plugins/abrt-retrace-client.c:351
 msgid "Failed to set handshake callback."
-msgstr ""
+msgstr "Instellen van handshake callback mislukte."
 
 #: ../src/plugins/abrt-retrace-client.c:357
 msgid "Failed to reset handshake."
-msgstr ""
+msgstr "Herstellen van handshake mislukte."
 
 #: ../src/plugins/abrt-retrace-client.c:363
 #, c-format
 msgid "Failed to force handshake: NSS error %d."
-msgstr ""
+msgstr "Forceren van handshake mislukte: NSS fout %d."
 
 #: ../src/plugins/abrt-retrace-client.c:372
 msgid "Failed to close SSL socket."
-msgstr ""
+msgstr "Sluiten van SSL socket mislukte."
 
 #: ../src/plugins/abrt-retrace-client.c:428
 #: ../src/plugins/abrt-retrace-client.c:431
 #: ../src/plugins/abrt-retrace-client.c:434
 msgid "Invalid response from server: HTTP header not found."
-msgstr ""
+msgstr "Ongeldig antwoord van de server: HTTP koptekst niet gevonden."
 
 #: ../src/plugins/abrt-retrace-client.c:471
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
-msgstr ""
+msgstr "Ontvangen van data mislukte: NSS fout %d."
 
 #: ../src/plugins/abrt-retrace-client.c:502
 #: ../src/plugins/abrt-retrace-client.c:680
@@ -835,7 +862,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:966
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr ""
+msgstr "Verzenden van HTTP koptekst met lengte %d mislukte: NSS fout %d."
 
 #: ../src/plugins/abrt-retrace-client.c:513
 #: ../src/plugins/abrt-retrace-client.c:760
@@ -847,6 +874,8 @@ msgid ""
 "Unexpected HTTP response from server: %d\n"
 "%s"
 msgstr ""
+"Onverwacht HTTP antwoord van server: %d\n"
+"%s"
 
 #: ../src/plugins/abrt-retrace-client.c:520
 #: ../src/plugins/abrt-retrace-client.c:753
@@ -854,21 +883,24 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:909
 #: ../src/plugins/abrt-retrace-client.c:973
 msgid "Invalid response from server: missing HTTP message body."
-msgstr ""
+msgstr "Ongeldig antwoord van server: HTTP boodschap body ontbreekt."
 
 #: ../src/plugins/abrt-retrace-client.c:575
 msgid "Querying server settings"
-msgstr ""
+msgstr "Server instellingen bevragen"
 
 #: ../src/plugins/abrt-retrace-client.c:584
-msgid "Retrace server is fully occupied at the moment. Try again later please."
+msgid ""
+"Retrace server is fully occupied at the moment. Try again later please."
 msgstr ""
+"De retrace server is op dit moment volledig belast. Probeer het later nog "
+"een keer."
 
 #: ../src/plugins/abrt-retrace-client.c:595
 #: ../src/plugins/abrt-retrace-client.c:608
 #, c-format
 msgid "Unable to stat file '%s'."
-msgstr ""
+msgstr "Kan status bestand '%s' niet tonen."
 
 #: ../src/plugins/abrt-retrace-client.c:622
 #, c-format
@@ -876,10 +908,12 @@ msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
 msgstr ""
+"De grootte van jouw crash is %lld bytes, maar de retrace server accepteert "
+"alleen crashes kleiner dan of gelijk aan %lld bytes."
 
 #: ../src/plugins/abrt-retrace-client.c:630
 msgid "Preparing an archive to upload"
-msgstr ""
+msgstr "Een archief klaarmaken voor uploaden"
 
 #: ../src/plugins/abrt-retrace-client.c:642
 #, c-format
@@ -887,46 +921,48 @@ msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
 msgstr ""
+"De grootte van jouw archief is %lld bytes, maar de retrace server accepteert"
+" alleen archieven kleiner dan of gelijk aan %lld bytes."
 
 #: ../src/plugins/abrt-retrace-client.c:686
-#, fuzzy, c-format
+#, c-format
 msgid "Uploading %lld bytes\n"
-msgstr "Upload: %llu van %llu KB"
+msgstr "Uploaden van %lld bytes\n"
 
 #: ../src/plugins/abrt-retrace-client.c:710
 #, c-format
 msgid "Uploading %d%%\n"
-msgstr ""
+msgstr "Uploaden van %d%%\n"
 
 #: ../src/plugins/abrt-retrace-client.c:722
 msgid "Failed to read from a pipe"
-msgstr ""
+msgstr "Lezen van een pipe mislukte"
 
 #: ../src/plugins/abrt-retrace-client.c:734
 #, c-format
 msgid "Failed to send data: NSS error %d (%s): %s"
-msgstr ""
+msgstr "Verzenden van data mislukte: NSS fout %d (%s): %s"
 
 #: ../src/plugins/abrt-retrace-client.c:745
 msgid "Upload successful"
-msgstr ""
+msgstr "Upload succesvol"
 
 #: ../src/plugins/abrt-retrace-client.c:758
 #, c-format
 msgid "There is a problem on the server side: %s."
-msgstr ""
+msgstr "Er is een probleem met de server: %s."
 
 #: ../src/plugins/abrt-retrace-client.c:764
 msgid "Invalid response from server: missing X-Task-Id."
-msgstr ""
+msgstr "Ongeldig antwoord van de server: X-Task-Id ontbreekt."
 
 #: ../src/plugins/abrt-retrace-client.c:767
 msgid "Invalid response from server: missing X-Task-Password."
-msgstr ""
+msgstr "Ongeldig antwoord van de server: X-Task-Password ontbreekt."
 
 #: ../src/plugins/abrt-retrace-client.c:773
 msgid "Retrace job started"
-msgstr ""
+msgstr "Retrace taak opgestart"
 
 #: ../src/plugins/abrt-retrace-client.c:786
 #, c-format
@@ -934,15 +970,17 @@ msgid ""
 "Task Id: %s\n"
 "Task Password: %s\n"
 msgstr ""
+"Taak Id: %s\n"
+"Taak Password: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:831
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr ""
+msgstr "Versturen van HTTP koptekst met lengte %d mislukte: NSS fout %d"
 
 #: ../src/plugins/abrt-retrace-client.c:849
 msgid "Invalid response from server: missing X-Task-Status."
-msgstr ""
+msgstr "Ongeldig antwoord van de server: X-Task-Status ontbreekt."
 
 #: ../src/plugins/abrt-retrace-client.c:860
 #, c-format
@@ -950,6 +988,8 @@ msgid ""
 "Task Status: %s\n"
 "%s\n"
 msgstr ""
+"Taak status: %s\n"
+"%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:1066
 msgid "log to syslog"
@@ -957,68 +997,69 @@ msgstr "log naar syslog"
 
 #: ../src/plugins/abrt-retrace-client.c:1068
 msgid "allow insecure connection to retrace server"
-msgstr ""
+msgstr "sta onveilige verbinding toe naar retrace server"
 
 #: ../src/plugins/abrt-retrace-client.c:1070
-#, fuzzy
 msgid "retrace server URL"
-msgstr "URL van de retrace server"
+msgstr "retrace server URL"
 
 #: ../src/plugins/abrt-retrace-client.c:1072
 msgid "(debug) show received HTTP headers"
-msgstr ""
+msgstr "(debug) toon ontvangen HTTP kopteksten"
 
 #: ../src/plugins/abrt-retrace-client.c:1073
 msgid "For create and batch operations"
-msgstr ""
+msgstr "Voor aanmaak en batch bewerkingen"
 
 #: ../src/plugins/abrt-retrace-client.c:1075
 msgid "read data from ABRT crash dump directory"
-msgstr ""
+msgstr "lees data uit de ABRT crash dump map"
 
 #: ../src/plugins/abrt-retrace-client.c:1077
 msgid "read data from coredump"
-msgstr ""
+msgstr "lees data van coredump"
 
 #: ../src/plugins/abrt-retrace-client.c:1079
 msgid "Delay for polling operations"
-msgstr ""
+msgstr "Wacht op poll bewerkingen"
 
 #: ../src/plugins/abrt-retrace-client.c:1081
 msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
 msgstr ""
+"(debug) verwijder tijdelijk archief aangemaakt van dump map in /tmp niet"
 
 #: ../src/plugins/abrt-retrace-client.c:1083
 msgid "For status, backtrace, and log operations"
-msgstr ""
+msgstr "Voor status, backtrack en log bewerkingen"
 
 #: ../src/plugins/abrt-retrace-client.c:1085
 msgid "id of your task on server"
-msgstr ""
+msgstr "id van jouw taak op de server"
 
 #: ../src/plugins/abrt-retrace-client.c:1087
 msgid "password of your task on server"
-msgstr ""
+msgstr "wachtwoord van jouw taak op de server"
 
 #: ../src/plugins/abrt-retrace-client.c:1091
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch"
 msgstr ""
+"abrt-retrace-client <bewerking> [opties]\n"
+"Bewerkingen: create/status/backtrace/log/batch"
 
 #: ../src/plugins/abrt-retrace-client.c:1124
 msgid "Failed to initialize NSS."
-msgstr ""
+msgstr "Initialiseren van NSS mislukte"
 
 #: ../src/plugins/abrt-retrace-client.c:1130
 msgid "Failed to initialize security module."
-msgstr ""
+msgstr "Initialiseren van beveiligingsmode mislukte"
 
 #: ../src/plugins/abrt-retrace-client.c:1141
 #: ../src/plugins/abrt-retrace-client.c:1147
-#, fuzzy
 msgid "Either dump directory or coredump is needed."
-msgstr "Maak de dump map leesbaar voor wereld"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1153
 #: ../src/plugins/abrt-retrace-client.c:1161
@@ -1054,8 +1095,8 @@ msgstr "Lokale GNU debugger"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
 "Debuginfo pakketten moeten gedownload worden, wat veel tijd en schijfruimte "
 "zou kunnen kosten. In tegenstelling tot RetraceServer echter, wordt geen "
@@ -1083,9 +1124,9 @@ msgid ""
 msgstr ""
 "Upload een coredump naar een server, die een backtrace genereert en deze "
 "terugstuurt. Voordelen: debuginfo downloaden is niet nodig. De database van "
-"debuginfos  van de retrace server is completer. De retrace server kan betere "
-"backtraces genereren. Nadelen: een coredump jouw upload bevat alle data van "
-"het gecrashte programma, mogelijk inclusief jouw persoonlijke data."
+"debuginfos  van de retrace server is completer. De retrace server kan betere"
+" backtraces genereren. Nadelen: een coredump jouw upload bevat alle data van"
+" het gecrashte programma, mogelijk inclusief jouw persoonlijke data."
 
 #: ../src/plugins/analyze_xsession_errors.xml.in.h:1
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1142,11 +1183,12 @@ msgstr "Verifieer SSL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid ""
-"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
-"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+"You can create bugzilla.redhat.com account &lt;a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
-"Je kunt bugzilla.redhat.com account &lt;a href=\"https://bugzilla.redhat.com/"
-"createaccount.cgi\"&gt;hier&lt;/a&gt; aanmaken"
+"Je kunt bugzilla.redhat.com account &lt;a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;hier&lt;/a&gt; "
+"aanmaken"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops URL"
@@ -1236,16 +1278,17 @@ msgstr "Gebruikersnaam"
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
 msgstr ""
+"Lijkt op een gecorrumpeerd xml antwoord, omdat '%s' onderdeel ontbreekt."
 
 #: ../src/plugins/rhbz.c:259
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
-msgstr ""
+msgstr "Bug %i is CLOSED,maar heeft geen RESOLUTION"
 
 #: ../src/plugins/rhbz.c:267
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
-msgstr ""
+msgstr "Bug %i is CLOSED als DUPLICATE, maar heeft geen DUP_ID"
 
 #: ../src/plugins/rhbz.c:373
 #, c-format
@@ -1257,364 +1300,4 @@ msgstr "Nieuwe bug id: %i"
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla kon de ouder van bug %d  niet vinden"
 
-#~ msgid ""
-#~ "Usage: %s -l[f] [-D BASE_DIR]...]\n"
-#~ "   or: %s -r[y] CRASH_DIR\n"
-#~ "   or: %s -i[b] CRASH_DIR\n"
-#~ "   or: %s -d CRASH_DIR\n"
-#~ "\n"
-#~ "\t-l, --list\t\tList not yet reported problems\n"
-#~ "\t  -f, --full\t\tList all problems\n"
-#~ "\t-D BASE_DIR\t\tDirectory to list problems from\n"
-#~ "\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
-#~ "\n"
-#~ "\t-r, --report\t\tSend a report about CRASH_DIR\n"
-#~ "\t  -y, --always\t\t...without editing and asking\n"
-#~ "\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
-#~ "\t  -f, --full\t\t...including multi-line entries\n"
-#~ "\t\t\t\tNote: -if will run analyzers\n"
-#~ "\t\t\t\t(if this CRASH_DIR have defined analyzers)\n"
-#~ "\t-d, --delete\t\tRemove CRASH_DIR\n"
-#~ "\n"
-#~ "\t-V, --version\t\tDisplay version and exit\n"
-#~ "\t-v, --verbose\t\tBe verbose\n"
-#~ msgstr ""
-#~ "Gebruik: %s -l[f] [-D BASE_DIR]...]\n"
-#~ "   of: %s -r[y] CRASH_DIR\n"
-#~ "   of: %s -i[b] CRASH_DIR\n"
-#~ "   of: %s -d CRASH_DIR\n"
-#~ "\n"
-#~ "»-l, --list»»Toon nog niet gerapporteerde problemen\n"
-#~ "»  -f, --full»»Toon alle problemen\n"
-#~ "»-D BASE_DIR»»Map waaruit problemen getoond worden\n"
-#~ "»»»»(standaard: -D $HOME/.abrt/spool -D %s)\n"
-#~ "\n"
-#~ "»-r, --report»»Stuur een rapport over CRASH_DIR\n"
-#~ "»  -y, --always»»...zonder bewerking en vragen\n"
-#~ "»-i, --info»»Print gedetailleerde informatie over CRASH_DIR\n"
-#~ "»  -f, --full»»...inclusief multi-regel ingangen\n"
-#~ "»»»»Opmerking: -if zal analyzers draaien\n"
-#~ "»»»»(als deze CRASH_DIR analyzers gedefinieerd heeft)\n"
-#~ "»-d, --delete»»Verwijder CRASH_DIR\n"
-#~ "\n"
-#~ "»-V, --version»»Toon versie en sluit af\n"
-#~ "»-v, --verbose»»Breedsprakig\n"
 
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "Je moet exact een bewerking specificeren."
-
-#~ msgid "# This field is read only\n"
-#~ msgstr "# Dit veld is alleen-lezen.\n"
-
-#~ msgid "# Describe the circumstances of this crash below"
-#~ msgstr "# Beschrijf hieronder de omstandigheden van deze crash."
-
-#~ msgid ""
-#~ "# Backtrace\n"
-#~ "# Check that it does not contain any sensitive data (passwords, etc.)"
-#~ msgstr ""
-#~ "# Backtrace\n"
-#~ "# Controleer of deze geen gevoelige data bevat (wachtwoorden, enz.)"
-
-#~ msgid "# Architecture"
-#~ msgstr "# Architectuur"
-
-#~ msgid "# Command line"
-#~ msgstr "# Commando-regel"
-
-#~ msgid "# Component"
-#~ msgstr "# Onderdeel"
-
-#~ msgid "# Core dump"
-#~ msgstr "# Core dump"
-
-#~ msgid "# Executable"
-#~ msgstr "# Uitvoerbaar programma"
-
-#~ msgid "# Kernel version"
-#~ msgstr "# Kernel versie"
-
-#~ msgid "# Package"
-#~ msgstr "# Pakket"
-
-#~ msgid "# Reason of crash"
-#~ msgstr "# Reden van de crash"
-
-#~ msgid "# Release string of the operating system"
-#~ msgstr "# Vrijgave boodschap van het besturingssysteem"
-
-#~ msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-#~ msgstr "Kan vi niet draaien: $TERM, $VISUAL en $EDITOR zijn niet ingesteld"
-
-#~ msgid ""
-#~ "\n"
-#~ "The report has been updated"
-#~ msgstr ""
-#~ "\n"
-#~ "Het rapport is vernieuwd"
-
-#~ msgid ""
-#~ "\n"
-#~ "No changes were detected in the report"
-#~ msgstr ""
-#~ "\n"
-#~ "Er zijn geen veranderingen in het rapport ontdekt"
-
-#~ msgid "N"
-#~ msgstr "N"
-
-#~ msgid "Your input is not valid, because of:"
-#~ msgstr "Jouw input is niet geldig, omdat:"
-
-#~ msgid "Bad value for '%s': %s"
-#~ msgstr "Slechte waarde voor  '%s': %s"
-
-#~ msgid "Select how you would like to analyze the problem:\n"
-#~ msgstr "Selecteer hoe je het probleem wilt analyseren:\n"
-
-#~ msgid "Choose option [0 - %u]: "
-#~ msgstr "Kies optie [0 - %u]: "
-
-#~ msgid "You have chosen number out of range"
-#~ msgstr "Je hebt een getal buiten het bereik gekozen"
-
-#~ msgid "Invalid input, program exiting..."
-#~ msgstr "Ongeldige input, het programma gaat afsluiten..."
-
-#~ msgid "Reporting..."
-#~ msgstr "Rapporteren..."
-
-#~ msgid "Skipping..."
-#~ msgstr "Overslaan..."
-
-#~ msgid "Reporting disabled because the backtrace is unusable"
-#~ msgstr "Rapporteren is uitgezet omdat de backtrace onbruikbaar is."
-
-#~ msgid ""
-#~ "Please try to install debuginfo manually using the command: \"debuginfo-"
-#~ "install %s\" and try again\n"
-#~ msgstr ""
-#~ "Probeer debuginfo handmatig te installeren met het commando: \"debuginfo-"
-#~ "install %s\" en probeer het opnieuw\n"
-
-#~ msgid ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   or: "
-#~ msgstr ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   of: "
-
-#~ msgid "Handle EVENT"
-#~ msgstr "Handel gebeurtenis af"
-
-#~ msgid "List possible events [which start with PFX]"
-#~ msgstr "Laat mogelijke gebeurtenissen zien [die beginnen met PFX]"
-
-#~ msgid "Show password"
-#~ msgstr "Wachtwoord tonen"
-
-#~ msgid "Event Configuration"
-#~ msgstr "Gebeurtenis configuratie"
-
-#~ msgid "Event"
-#~ msgstr "Gebeurtenis"
-
-#~ msgid "Configure E_vent"
-#~ msgstr "Configureer _gebeurtenis"
-
-#~ msgid ""
-#~ "Wrong settings detected for %s, reporting will probably fail if you "
-#~ "continue with the current configuration."
-#~ msgstr ""
-#~ "Er zijn verkeerde instellingen gedetecteerd voor %s, de rapportage zal "
-#~ "waarschijnlijk mislukken als je doorgaat met de huidige configuratie."
-
-#~ msgid ""
-#~ "Wrong settings detected for <b>%s</b>, reporting will probably fail if "
-#~ "you continue with the current configuration."
-#~ msgstr ""
-#~ "Er zijn verkeerde instellingen gedetecteerd voor <b>%s</b>, de rapportage "
-#~ "zal waarschijnlijk mislukken als je doorgaat met de huidige configuratie."
-
-#~ msgid ""
-#~ " [-vp] [-g GUI_FILE] DIR\n"
-#~ "\n"
-#~ "GUI tool to analyze and report problem saved in specified DIR"
-#~ msgstr ""
-#~ " [-vp] [-g GUI_FILE] MAP\n"
-#~ "\n"
-#~ "GUI gereedschap voor het analyseren en rapporteren van probleem "
-#~ "opgeslagen in gespecificeerde MAP"
-
-#~ msgid "Alternate GUI file"
-#~ msgstr "Alternatief GUI bestand"
-
-#~ msgid ""
-#~ "Need writable directory, but '%s' is not writable. Move it to '%s' and "
-#~ "operate on the moved copy?"
-#~ msgstr ""
-#~ "Beschrijfbare map is nodig, maar '%s' is niet beschrijfbaar. Het "
-#~ "verplaatsen naar '%s' en de verplaatste kopie bewerken?"
-
-#~ msgid "(click here to view/edit)"
-#~ msgstr "(Klik hier voor bekijken/bewerken)"
-
-#~ msgid "(binary file, %llu bytes)"
-#~ msgstr "(binair bestand, %llu bytes)"
-
-#~ msgid "%llu bytes, %u files"
-#~ msgstr "%llu bytes, %u bestanden"
-
-#~ msgid "No processing for event '%s' is defined"
-#~ msgstr "Er is geen verwerking gedefinieerd voor de gebeurtenis '%s'"
-
-#~ msgid ""
-#~ "The backtrace is incomplete, please make sure you provide the steps to "
-#~ "reproduce."
-#~ msgstr ""
-#~ "De backtrace is niet compleet, zorg ervoor om voor het reproduceren de "
-#~ "juiste stappen op te volgen."
-
-#~ msgid "Reporting disabled because the backtrace is unusable."
-#~ msgstr "Rapportage is uitgezet omdat de backtrace onbruikbaar is."
-
-#~ msgid "You should check the backtrace for sensitive data."
-#~ msgstr "Je moet de backtrace controleren op gevoelige data."
-
-#~ msgid "You must agree with sending the backtrace."
-#~ msgstr "Je moet instemmen met het versturen van de backtrace."
-
-#~ msgid "Analyzing..."
-#~ msgstr "Analyseren..."
-
-#~ msgid "Analyzing finished with exit code %d"
-#~ msgstr "Analyseren afgewerkt met exit code %d"
-
-#~ msgid "Reporting finished with exit code %d"
-#~ msgstr "Rapportage afgewerkt met exit code %d"
-
-#~ msgid "Name"
-#~ msgstr "Naam"
-
-#~ msgid "Value"
-#~ msgstr "Waarde"
-
-#~ msgid ""
-#~ "<b>Your comments are not private.</b> They may be included into publicly "
-#~ "visible problem reports."
-#~ msgstr ""
-#~ "<b>Jouw opmerkingen zijn niet privé.</b> Ze kunnen opgenomen worden in "
-#~ "het publiek zichtbare probleem rapporten."
-
-#~ msgid "Analyzing did not start yet"
-#~ msgstr "Analyseren is nog niet gestart"
-
-#~ msgid "Any additional comments useful for diagnosing the problem?"
-#~ msgstr ""
-#~ "Eventuele aanvullende opmerkingen die nuttig voor het diagnosticeren van "
-#~ "het probleem?"
-
-#~ msgid ""
-#~ "Backtrace provides developers with details of the crash, helping them "
-#~ "track down the source of the problem. Please review it and remove any "
-#~ "sensitive data you would rather not share:"
-#~ msgstr ""
-#~ "Backtrace biedt ontwikkelaars de details van de crash, en helpt hen bij "
-#~ "het opsporen van de bron van het probleem. Bekijk deze en verwijder alle "
-#~ "gevoelige data die je liever niet deelt:"
-
-#~ msgid ""
-#~ "Can create more informative backtrace if you installed additional debug "
-#~ "packages"
-#~ msgstr ""
-#~ "Kan meer informatieve backtrace aanmaken als je extra debug pakketten "
-#~ "installeert"
-
-#~ msgid "Click 'Apply' to start reporting"
-#~ msgstr "Klik op 'Toepassen' om met rapportage te beginnen"
-
-#~ msgid "Configure _Events"
-#~ msgstr "Configureer _Gebeurtenissen"
-
-#~ msgid "Details"
-#~ msgstr "Details"
-
-#~ msgid ""
-#~ "How did this problem happen (step-by-step)? How can it be reproduced?"
-#~ msgstr ""
-#~ "Hoe trad dit probleem op (stap-voor-stap)? Hoe kan het gereproduceerd "
-#~ "worden?"
-
-#~ msgid "I _agree with submitting the backtrace"
-#~ msgstr "Ik _ga accoord met het indienen van de backtrace"
-
-#~ msgid "Regenerate backtrace"
-#~ msgstr "Opnieuw genereren van backtrace"
-
-#~ msgid "Reporter(s):"
-#~ msgstr "Aanmelder(s):"
-
-#~ msgid "Reporting did not start yet"
-#~ msgstr "Rapportage nog niet gestart"
-
-#~ msgid "Select how you would like to analyze the problem:"
-#~ msgstr "Selecteer hoe je het probleem wilt analyseren:"
-
-#~ msgid "Select how you would like to report the problem:"
-#~ msgstr "Selecteer hoe je het probleem wilt rapporteren:"
-
-#~ msgid "Size:"
-#~ msgstr "Grootte:"
-
-#~ msgid ""
-#~ "Use this button to generate more informative backtrace after you "
-#~ "installed additional debug packages"
-#~ msgstr ""
-#~ "Gebruik deze knop om een meer informatieve backtrace te genereren na de "
-#~ "installatie van extra debug pakketten"
-
-#~ msgid "Missing mandatory value"
-#~ msgstr "Ontbrekende verplichte waarde"
-
-#~ msgid "Invalid utf8 character '%c'"
-#~ msgstr "Ongeldig utf8 karakter '%c'"
-
-#~ msgid "Invalid number '%s'"
-#~ msgstr "Ongeldig nummer '%s'"
-
-#~ msgid "Invalid boolean value '%s'"
-#~ msgstr "Ongeldige booleaanse waarde '%s'"
-
-#~ msgid "Unsupported option type"
-#~ msgstr "Niet-ondersteund optie type"
-
-#~ msgid "Usage: %s\n"
-#~ msgstr "Gebruik: %s\n"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr ""
-#~ "get_bug_info() faalde. Kon alle noodzakelijke informatie niet verzamelen"
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Het aanmaken van een Bugzilla ingang mislukte"
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports problem to Bugzilla"
-#~ msgstr ""
-#~ " [-v] -c CONFFILE -d MAP\n"
-#~ "\n"
-#~ "Rapporteer probleem naar Bugzilla"
-
-#~ msgid "All downloaded packages have been extracted, removing %s"
-#~ msgstr "Alle gedownloade pakketten zijn geëxtraheerd, %s wordt verwijderd"
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports a problem to RHTSupport"
-#~ msgstr ""
-#~ " [-v] -c CONFFILE -d MAP\n"
-#~ "\n"
-#~ "Rapporteert een probleem aan RHTSupport"

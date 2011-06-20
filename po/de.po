@@ -1,20 +1,23 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
+# Laurin  <lineak@fedoraproject.org>, 2011.
+# Mario Blättermann <mariobl@freenet.de>, 2011.
+# Fabian Affolter <fab@fedoraproject.org>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-06-16 12:53+0200\n"
-"PO-Revision-Date: 2011-05-02 18:28+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2011-06-16 12:48+0200\n"
+"PO-Revision-Date: 2011-06-19 17:21+0000\n"
+"Last-Translator: mariobl <mariobl@freenet.de>\n"
 "Language-Team: German <trans-de@lists.fedoraproject.org>\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -52,7 +55,9 @@ msgstr ""
 
 #: ../src/applet/applet_gtk.c:265 ../src/gui-gtk/abrt-gtk.c:278
 msgid "translator-credits"
-msgstr "translator-credits"
+msgstr ""
+"Mario Blättermann\\n\n"
+"Fabian Affolter"
 
 #: ../src/applet/applet_gtk.c:275
 msgid "Hide"
@@ -64,11 +69,11 @@ msgstr "Bericht"
 
 #: ../src/applet/applet_gtk.c:388
 msgid "Show"
-msgstr ""
+msgstr "Anzeigen"
 
 #: ../src/applet/applet_gtk.c:392 ../src/applet/applet_gtk.c:420
 msgid "A Problem has Occurred"
-msgstr ""
+msgstr "Ein Problem ist aufgetreten"
 
 #: ../src/applet/applet_gtk.c:417
 msgid "Open ABRT"
@@ -76,7 +81,7 @@ msgstr "ABRT öffnen"
 
 #: ../src/daemon/abrt-action-save-package-data.c:250
 msgid ""
-"\b [-v] -d DIR\n"
+"\\b [-v] -d DIR\n"
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
@@ -94,12 +99,11 @@ msgstr ""
 #: ../src/plugins/abrt-action-rhtsupport.c:315
 #: ../src/plugins/abrt-action-upload.c:254
 msgid "Dump directory"
-msgstr ""
+msgstr "Dump-Ordner"
 
 #: ../src/daemon/abrt-server.c:442 ../src/daemon/abrtd.c:506
-#, fuzzy
-msgid "\b [options]"
-msgstr " [options]"
+msgid "\\b [options]"
+msgstr "\\b [Optionen]"
 
 #: ../src/daemon/abrt-server.c:453
 msgid "Use UID as client uid"
@@ -107,12 +111,12 @@ msgstr ""
 
 #: ../src/daemon/abrt-server.c:454 ../src/plugins/abrt-dump-oops.c:595
 msgid "Log to syslog"
-msgstr ""
+msgstr "Im Systemprotokoll speichern"
 
 #: ../src/daemon/abrt-server.c:455 ../src/daemon/abrtd.c:521
 #: ../src/gui-gtk/main.c:225
 msgid "Add program names to log"
-msgstr ""
+msgstr "Programmnamen zum Protokoll hinzufügen"
 
 #: ../src/daemon/abrtd.c:335
 msgid ""
@@ -124,11 +128,11 @@ msgstr ""
 
 #: ../src/daemon/abrtd.c:518
 msgid "Do not daemonize"
-msgstr "Nicht daemonize"
+msgstr "Nicht als Hintergrunddienst"
 
 #: ../src/daemon/abrtd.c:519
 msgid "Log to syslog even with -d"
-msgstr ""
+msgstr "Auch mit -d  im Systemprotokoll speichern"
 
 #: ../src/daemon/abrtd.c:520
 msgid "Exit after SEC seconds of inactivity"
@@ -136,11 +140,11 @@ msgstr ""
 
 #: ../src/gui-gtk/abrt-gtk.c:216
 msgid "Problem description"
-msgstr ""
+msgstr "Problembeschreibung"
 
 #: ../src/gui-gtk/abrt-gtk.c:219
 msgid "Send"
-msgstr ""
+msgstr "Senden"
 
 #: ../src/gui-gtk/abrt-gtk.c:297
 msgid "Reported"
@@ -148,11 +152,11 @@ msgstr "Berichtet"
 
 #: ../src/gui-gtk/abrt-gtk.c:307
 msgid "Problem"
-msgstr ""
+msgstr "Problem"
 
 #: ../src/gui-gtk/abrt-gtk.c:328
 msgid "Last occurrence"
-msgstr ""
+msgstr "Letztes Auftreten"
 
 #: ../src/gui-gtk/abrt-gtk.c:341
 msgid "_File"
@@ -168,15 +172,15 @@ msgstr "_Hilfe"
 
 #: ../src/gui-gtk/abrt-gtk.c:359
 msgid "_Event configuration"
-msgstr ""
+msgstr "_Ereigniskonfiguration"
 
 #: ../src/gui-gtk/abrt-gtk.c:370
 msgid "Report problem with ABRT"
-msgstr ""
+msgstr "Über Problem mit ABRT berichten"
 
 #: ../src/gui-gtk/abrt-gtk.c:443
 msgid "Online _Help"
-msgstr ""
+msgstr "Online-_Hilfe"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -184,7 +188,7 @@ msgstr "Applikationsabstürze ansehen und melden"
 
 #: ../src/gui-gtk/main.c:213
 msgid ""
-"\b [-vp] [DIR]...\n"
+"\\b [-vp] [DIR]...\n"
 "\n"
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 "(default DIRs: "
@@ -197,39 +201,37 @@ msgstr "Hochgeladen: %llu von %llu KBytes"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:45
 msgid ""
-"\b [options] -d DIR\n"
+"\\b [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
-"identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
 msgstr ""
 
-#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:93
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "Verarbeitung des Backtrace für %s ist fehlgeschlagen"
 
 #: ../src/plugins/abrt-action-analyze-c.c:151
 msgid ""
-"\b [-v] -d DIR\n"
+"\\b [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-oops.c:112
 msgid ""
-"\b [-vs] -d DIR\n"
+"\\b [-vs] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-python.c:30
 msgid ""
-"\b [-v] -d DIR\n"
+"\\b [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
@@ -237,33 +239,34 @@ msgstr ""
 #: ../src/plugins/abrt-action-bugzilla.c:45
 msgid "Empty login or password, please check your configuration"
 msgstr ""
+"Anmeldename oder Passwort ist leer. Bitte überprüfen Sie Ihre Konfiguration"
 
 #: ../src/plugins/abrt-action-bugzilla.c:61
 #, c-format
 msgid "Essential file '%s' is missing, can't continue.."
-msgstr ""
+msgstr "Grundlegende Datei »%s« fehlt, Fortsetzen ist nicht möglich …"
 
 #: ../src/plugins/abrt-action-bugzilla.c:65
 #, c-format
 msgid "Essential file '%s' is empty, can't continue.."
-msgstr ""
+msgstr "Grundlegende Datei »%s« ist leer, Fortsetzen ist nicht möglich …"
 
 #: ../src/plugins/abrt-action-bugzilla.c:74
 #, c-format
 msgid "Logging into Bugzilla at %s"
-msgstr ""
+msgstr "Anmeldung bei Bugzilla auf %s"
 
 #: ../src/plugins/abrt-action-bugzilla.c:77
 msgid "Checking for duplicates"
-msgstr ""
+msgstr "Nach Duplikaten wird gesucht"
 
 #: ../src/plugins/abrt-action-bugzilla.c:93
 msgid "Missing mandatory member 'bugs'"
-msgstr "Fehlender benötigter Teil 'bugs'"
+msgstr "Fehlender benötigter Teil »bugs«"
 
 #: ../src/plugins/abrt-action-bugzilla.c:132
 msgid "Creating a new bug"
-msgstr ""
+msgstr "Neuer Fehlerbericht wird erstellt"
 
 #. decision based on state
 #: ../src/plugins/abrt-action-bugzilla.c:148
@@ -279,15 +282,15 @@ msgstr "%s zur CC-Liste hinzufügen"
 #: ../src/plugins/abrt-action-bugzilla.c:187
 #, c-format
 msgid "Adding new comment to bug %d"
-msgstr "Füge neuen Kommentar in Bug(%d) hinzu"
+msgstr "Neuen Kommentar in Bug(%d) hinzufügen"
 
 #: ../src/plugins/abrt-action-bugzilla.c:199
 msgid "Logging out"
-msgstr ""
+msgstr "Abmeldung"
 
 #: ../src/plugins/abrt-action-bugzilla.c:233
 msgid ""
-"\b [-v] [-c CONFFILE] -d DIR\n"
+"\\b [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Reports problem to Bugzilla.\n"
 "\n"
@@ -299,8 +302,7 @@ msgid ""
 "depending on their type and size.\n"
 "\n"
 "Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,\n"
-"the tool follows the chain of duplicates until it finds a non-DUPLICATE "
-"bug.\n"
+"the tool follows the chain of duplicates until it finds a non-DUPLICATE bug.\n"
 "The tool adds a new comment to found bug.\n"
 "\n"
 "The URL to new or modified bug is printed to stdout and recorded in\n"
@@ -315,18 +317,18 @@ msgstr ""
 #: ../src/plugins/abrt-action-bugzilla.c:265
 #: ../src/plugins/abrt-action-rhtsupport.c:316
 msgid "Configuration file (may be given many times)"
-msgstr ""
+msgstr "Konfigurationsdatei (kann mehrmals angegeben werden)"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:239
 msgid ""
-"\b [options] -d DIR\n"
+"\\b [options] -d DIR\n"
 "\n"
 "Analyzes coredump in dump directory DIR, generates and saves backtrace"
 msgstr ""
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:253
 msgid "Additional debuginfo directories"
-msgstr ""
+msgstr "Weitere Debuginfo-Ordner"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:254
 msgid "Kill gdb if it runs for more than NUM seconds"
@@ -334,11 +336,11 @@ msgstr ""
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:290
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr ""
+msgstr "Backtrace wurde erstellt und gespeichert, %u Byte"
 
 #: ../src/plugins/abrt-action-install-debuginfo:84
 msgid "y"
@@ -346,7 +348,7 @@ msgstr "j"
 
 #: ../src/plugins/abrt-action-install-debuginfo:86
 msgid "n"
-msgstr ""
+msgstr "n"
 
 #: ../src/plugins/abrt-action-install-debuginfo:100
 #, c-format
@@ -356,94 +358,95 @@ msgstr ""
 #: ../src/plugins/abrt-action-install-debuginfo:105
 #, c-format
 msgid "Can't write to '%s': %s"
-msgstr ""
+msgstr "In »%s« kann nicht geschrieben werden: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo:119
 #, c-format
 msgid "Can't extract package '%s'"
-msgstr ""
+msgstr "Paket »%s« kann nicht entpackt werden"
 
 #: ../src/plugins/abrt-action-install-debuginfo:127
 #, c-format
 msgid "Caching files from %s made from %s"
-msgstr ""
+msgstr "Dateien von %s aus %s werden zwischengespeichert"
 
 #: ../src/plugins/abrt-action-install-debuginfo:137
 #, c-format
 msgid "Can't extract files from '%s'"
-msgstr ""
+msgstr "Dateien aus »%s« können nicht entpackt werden"
 
 #: ../src/plugins/abrt-action-install-debuginfo:161
 #: ../src/plugins/abrt-action-install-debuginfo:171
 #, c-format
 msgid "Downloading (%i of %i) %s: %3u%%"
-msgstr ""
+msgstr "%s herunterladen (%i von %i): %3u%%"
 
 #: ../src/plugins/abrt-action-install-debuginfo:196
 #, c-format
 msgid "Error initializing yum (YumBase.doConfigSetup): '%s'"
-msgstr ""
+msgstr "Fehler beim Initialisieren von yum (YumBase.doConfigSetup): »%s«"
 
 #: ../src/plugins/abrt-action-install-debuginfo:239
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "Nach erforderlichen Paketen in den Softwarebeständen wird gesucht"
 
 #: ../src/plugins/abrt-action-install-debuginfo:243
 #, c-format
 msgid "Error retrieving metadata: '%s'"
-msgstr ""
+msgstr "Fehler beim Holen der Metadaten: »%s«"
 
 #: ../src/plugins/abrt-action-install-debuginfo:253
 #, c-format
 msgid "Error retrieving filelists: '%s'"
-msgstr ""
+msgstr "Fehler beim Holen der Dateilisten: »%s«"
 
 #: ../src/plugins/abrt-action-install-debuginfo:286
 #, c-format
 msgid "Can't find packages for %u debuginfo files"
-msgstr ""
+msgstr "Pakete für %u Debuginfo-Dateien können nicht gefunden werden"
 
 #: ../src/plugins/abrt-action-install-debuginfo:288
 #, c-format
 msgid "Packages to download: %u"
-msgstr ""
+msgstr "Herunterzuladende Pakete: %u"
 
 #: ../src/plugins/abrt-action-install-debuginfo:289
 #, c-format
 msgid "Downloading %.2fMb, installed size: %.2fMb"
-msgstr ""
+msgstr "%.2fMb werden heruntergeladen, installierte Größe: %.2fMb"
 
 #: ../src/plugins/abrt-action-install-debuginfo:297
 msgid "Is this ok? [y/N] "
-msgstr ""
+msgstr "Ist das in Ordnung? [j/N] "
 
 #: ../src/plugins/abrt-action-install-debuginfo:323
 #, c-format
 msgid "Downloading package %s failed"
-msgstr ""
+msgstr "Herunterladen des Pakets %s ist fehlgeschlagen "
 
 #: ../src/plugins/abrt-action-install-debuginfo:329
 msgid "Unpacking failed, aborting download..."
-msgstr ""
+msgstr "Entpacken ist fehlgeschlagen, Herunterladen wird abgebrochen …"
 
 #: ../src/plugins/abrt-action-install-debuginfo:339
-#, fuzzy, c-format
+#, c-format
 msgid "Removing %s"
-msgstr "Unter Verwendung von %s melden?"
+msgstr "%s wird entfernt"
 
 #: ../src/plugins/abrt-action-install-debuginfo:343
 #, c-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr ""
+"%s kann nicht entfernt werden, enthält möglicherweise ein Fehlerprotokoll"
 
 #: ../src/plugins/abrt-action-install-debuginfo:379
 #, c-format
 msgid "Can't remove '%s': %s"
-msgstr ""
+msgstr "»%s« kann nicht entfernt werden: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo:387
 msgid "Exiting on user command"
-msgstr ""
+msgstr "Abbruch durch Benutzerbefehl"
 
 #: ../src/plugins/abrt-action-install-debuginfo:421
 #, c-format
@@ -466,46 +469,47 @@ msgstr ""
 #: ../src/plugins/abrt-action-install-debuginfo:478
 #, c-format
 msgid "Can't open %s: %s"
-msgstr ""
+msgstr "%s kann nicht geöffnet werden: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo:508
 #, c-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
 msgstr ""
+"Coredump referenziert %u Debuginfo-Dateien, %u davon sind nicht installiert "
 
 #: ../src/plugins/abrt-action-install-debuginfo:519
 #, c-format
 msgid "Missing debuginfo file: %s"
-msgstr ""
+msgstr "Debuginfo-Datei fehlt: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo:522
 #, c-format
 msgid "All %u debuginfo files are available"
-msgstr ""
+msgstr "Alle %u Debuginfo-Dateien sind verfügbar"
 
 #: ../src/plugins/abrt-action-kerneloops.c:100
 #, c-format
 msgid "Submitting oops report to %s"
-msgstr ""
+msgstr "Oops-Bericht wird an %s gesendet"
 
 #: ../src/plugins/abrt-action-kerneloops.c:135
 msgid ""
-"\b [-v] [-c CONFFILE]... -d DIR\n"
+"\\b [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
 "Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
 
 #: ../src/plugins/abrt-action-kerneloops.c:148
 msgid "Configuration file"
-msgstr ""
+msgstr "Konfigurationsdatei"
 
 #: ../src/plugins/abrt-action-mailx.c:104
 msgid "Sending an email..."
-msgstr "Eine E-Mail senden ..."
+msgstr "Eine E-Mail wird gesendet ..."
 
 #: ../src/plugins/abrt-action-mailx.c:136
 msgid ""
-"\b [-v] -d DIR [-c CONFFILE]\n"
+"\\b [-v] -d DIR [-c CONFFILE]\n"
 "\n"
 "Sends contents of a dump directory DIR via email"
 msgstr ""
@@ -517,7 +521,7 @@ msgstr "Konfigurationsdatei"
 
 #: ../src/plugins/abrt-action-print.c:35
 msgid ""
-"\b [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
+"\\b [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
@@ -528,7 +532,7 @@ msgstr "Ausgabedatei"
 
 #: ../src/plugins/abrt-action-print.c:51
 msgid "Append to, or overwrite FILE"
-msgstr ""
+msgstr "Anhängen oder DATEI überschreiben"
 
 #: ../src/plugins/abrt-action-print.c:52
 msgid "Create reported_to in DIR"
@@ -545,29 +549,31 @@ msgid "The report was stored to %s"
 msgstr "Der Bericht wurde in %s gespeichert"
 
 #. create_problem_data_for_reporting already emitted error msg
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #: ../src/plugins/abrt-action-rhtsupport.c:36
 #: ../src/plugins/abrt-action-upload.c:117
 msgid "Compressing data"
-msgstr "Daten komprimieren"
+msgstr "Daten werden komprimiert"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:64
 msgid "Empty RHTS login or password"
-msgstr ""
+msgstr "RHTS-Anmeldung oder -Passwort ist leer "
 
 #: ../src/plugins/abrt-action-rhtsupport.c:91
 msgid "Can't create a temporary directory in /tmp"
-msgstr ""
+msgstr "Temporärer Ordner in /tmp kann nicht erstellt werden"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:207
 msgid "Creating a new case..."
-msgstr "Neuen Fall erstellen ..."
+msgstr "Neuer Fall wird erstellt ..."
 
 #: ../src/plugins/abrt-action-rhtsupport.c:298
 msgid ""
-"\b [-v] -c CONFFILE -d DIR\n"
+"\\b [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports a problem to RHTSupport.\n"
 "\n"
@@ -579,113 +585,117 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:150
 msgid ""
-"\b [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"\\b [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:163
 msgid "Delete dump dirs"
-msgstr ""
+msgstr "Dump-Ordner löschen"
 
 #: ../src/plugins/abrt-action-trim-files.c:164
 msgid "Delete files"
-msgstr ""
+msgstr "Dateien löschen"
 
 #: ../src/plugins/abrt-action-trim-files.c:165
 msgid "Preserve this dump dir"
-msgstr ""
+msgstr "Diesen Dump-Ordner behalten"
 
 #: ../src/plugins/abrt-action-upload.c:61
 #, c-format
 msgid "Sending %s to %s"
-msgstr "Sende %s an %s"
+msgstr "%s wird an %s gesendet"
 
 #. This ends up a "reporting status message" in abrtd
 #: ../src/plugins/abrt-action-upload.c:94
 #, c-format
 msgid "Successfully sent %s to %s"
-msgstr ""
+msgstr "Senden von %s an %s wurde erfolgreich durchgeführt"
 
 #: ../src/plugins/abrt-action-upload.c:208
 #, c-format
 msgid "Archive is created: '%s'"
-msgstr ""
+msgstr "Archiv wurde erstellt: »%s«"
 
 #: ../src/plugins/abrt-action-upload.c:241
 msgid ""
-"\b [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\\b [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
 "Uploads compressed tarball of dump directory DIR"
 msgstr ""
 
 #: ../src/plugins/abrt-action-upload.c:256
 msgid "Base URL to upload to"
-msgstr ""
+msgstr "Basisadresse zum Hochladen"
 
 #: ../src/plugins/abrt-dump-oops.c:579
 msgid ""
-"\b [-vsrowx] [-d DIR] FILE\n"
+"\\b [-vsrowx] [-d DIR] FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-oops.c:596
 msgid "Parse kernel's message buffer before parsing FILE"
-msgstr ""
+msgstr "Meldungszwischenspeicher des Kernels vor DATEI verarbeiten"
 
 #: ../src/plugins/abrt-dump-oops.c:597
 msgid "Print found oopses on standard output"
-msgstr ""
+msgstr "Gefundene Oops auf der Standardausgabe ausgeben"
 
 #: ../src/plugins/abrt-dump-oops.c:598
 msgid "Do not exit, watch the file for new oopses"
-msgstr ""
+msgstr "Nicht beenden, Datei auf neue Oops überwachen"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
+#. 
 #: ../src/plugins/abrt-dump-oops.c:602
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr ""
 
 #: ../src/plugins/abrt-dump-oops.c:603
 msgid "Make the dump directory world readable"
-msgstr ""
+msgstr "Dump-Ordner allgemein lesbar machen"
 
 #: ../src/plugins/abrt-retrace-client.c:111
 msgid "Cannot open temporary file"
-msgstr ""
+msgstr "Temporäre Datei kann nicht geöffnet werden"
 
 #: ../src/plugins/abrt-retrace-client.c:137
 #: ../src/plugins/abrt-retrace-client.c:164
 #, c-format
 msgid "Can't execute '%s'"
-msgstr ""
+msgstr "»%s« kann nicht ausgeführt werden"
 
 #: ../src/plugins/abrt-retrace-client.c:195
 #, c-format
 msgid "Issuer certificate is invalid: '%s'."
-msgstr ""
+msgstr "Ausgabestelle des Zertifikats ist ungültig: »%s«"
 
 #: ../src/plugins/abrt-retrace-client.c:198
 #, c-format
 msgid "Certificate is signed by an untrusted issuer: '%s'."
 msgstr ""
+"Zertifikat wurde von einer nicht vertrauenswürdigen Ausgabestelle signiert: "
+"»%s«"
 
 #: ../src/plugins/abrt-retrace-client.c:201
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
 msgstr ""
+"Betreffname des Zertifikats »%s« stimmt nicht mit dem Namen des Zielrechners"
+" überein: »%s«."
 
 #: ../src/plugins/abrt-retrace-client.c:205
 msgid "Remote certificate has expired."
-msgstr ""
+msgstr "Das entfernte Zertifikat ist abgelaufen."
 
 #: ../src/plugins/abrt-retrace-client.c:208
 #, c-format
 msgid "Certificate issuer is not recognized: '%s'."
-msgstr ""
+msgstr "Ausgabestelle des Zertifikats wurde nicht erkannt: »%s«."
 
 #: ../src/plugins/abrt-retrace-client.c:211
 #, c-format
@@ -699,11 +709,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:275
 msgid "Failed to create a TCP socket"
-msgstr ""
+msgstr "TCP-Socket konnte nicht erstellt werden"
 
 #: ../src/plugins/abrt-retrace-client.c:283
 msgid "Failed to set socket blocking mode."
-msgstr ""
+msgstr "Blockiermodus des Sockets konnte nicht gesetzt werden."
 
 #: ../src/plugins/abrt-retrace-client.c:289
 msgid "Failed to wrap TCP socket by SSL."
@@ -718,7 +728,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:308
 msgid "Failed to set URL to SSL socket."
-msgstr ""
+msgstr "Adresse konnte nicht auf SSL-Socket gesetzt werden."
 
 #: ../src/plugins/abrt-retrace-client.c:319
 #, c-format
@@ -736,7 +746,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:337
 msgid "Failed to connect SSL address."
-msgstr ""
+msgstr "Verbindung zur SSL-Adresse ist fehlgeschlagen."
 
 #: ../src/plugins/abrt-retrace-client.c:344
 msgid "Failed to set certificate hook."
@@ -768,7 +778,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:471
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
-msgstr ""
+msgstr "Empfang der Daten ist gescheitert: NSS-Fehler %d."
 
 #: ../src/plugins/abrt-retrace-client.c:502
 #: ../src/plugins/abrt-retrace-client.c:680
@@ -776,7 +786,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:966
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr ""
+msgstr "HTTP-Header der Länge %d konnte nicht gesendet werden: NSS-Fehler %d."
 
 #: ../src/plugins/abrt-retrace-client.c:513
 #: ../src/plugins/abrt-retrace-client.c:760
@@ -788,6 +798,8 @@ msgid ""
 "Unexpected HTTP response from server: %d\n"
 "%s"
 msgstr ""
+"Unerwartete HTTP-Antwort vom Server: %d\n"
+"%s "
 
 #: ../src/plugins/abrt-retrace-client.c:520
 #: ../src/plugins/abrt-retrace-client.c:753
@@ -795,15 +807,18 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:909
 #: ../src/plugins/abrt-retrace-client.c:973
 msgid "Invalid response from server: missing HTTP message body."
-msgstr ""
+msgstr "Ungültige Antwort vom Server: HTTP-Nachrichtenrumpf fehlt."
 
 #: ../src/plugins/abrt-retrace-client.c:575
 msgid "Querying server settings"
-msgstr ""
+msgstr "Servereinstellungen werden abgefragt"
 
 #: ../src/plugins/abrt-retrace-client.c:584
-msgid "Retrace server is fully occupied at the moment. Try again later please."
+msgid ""
+"Retrace server is fully occupied at the moment. Try again later please."
 msgstr ""
+"Der Retrace-Server ist derzeit vollständig ausgelastet. Bitte versuchen Sie "
+"es später noch einmal."
 
 #: ../src/plugins/abrt-retrace-client.c:595
 #: ../src/plugins/abrt-retrace-client.c:608
@@ -817,10 +832,12 @@ msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
 msgstr ""
+"Die Absturzdateien sind größer als %lld Byte, aber der Retrace-Server "
+"akzeptiert maximal %lld Byte."
 
 #: ../src/plugins/abrt-retrace-client.c:630
 msgid "Preparing an archive to upload"
-msgstr ""
+msgstr "Archiv wird zur Übertragung vorbereitet"
 
 #: ../src/plugins/abrt-retrace-client.c:642
 #, c-format
@@ -828,46 +845,48 @@ msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
 msgstr ""
+"Das Archiv ist größer als %lld Byte, aber der Retrace-Server akzeptiert "
+"maximal %lld Byte."
 
 #: ../src/plugins/abrt-retrace-client.c:686
-#, fuzzy, c-format
+#, c-format
 msgid "Uploading %lld bytes\n"
-msgstr "Hochgeladen: %llu von %llu KBytes"
+msgstr "%lld Byte werden übertragen\n"
 
 #: ../src/plugins/abrt-retrace-client.c:710
 #, c-format
 msgid "Uploading %d%%\n"
-msgstr ""
+msgstr "%d%% wird übertragen\n"
 
 #: ../src/plugins/abrt-retrace-client.c:722
 msgid "Failed to read from a pipe"
-msgstr ""
+msgstr "Aus der Weiterleitung konnte nicht gelesen werden"
 
 #: ../src/plugins/abrt-retrace-client.c:734
 #, c-format
 msgid "Failed to send data: NSS error %d (%s): %s"
-msgstr ""
+msgstr "Daten konnten nicht gesendet werden: NSS-Fehler %d (%s): %s"
 
 #: ../src/plugins/abrt-retrace-client.c:745
 msgid "Upload successful"
-msgstr ""
+msgstr "Übertragung war erfolgreich"
 
 #: ../src/plugins/abrt-retrace-client.c:758
 #, c-format
 msgid "There is a problem on the server side: %s."
-msgstr ""
+msgstr "Es ist ein serverseitiges Problem aufgetreten: %s."
 
 #: ../src/plugins/abrt-retrace-client.c:764
 msgid "Invalid response from server: missing X-Task-Id."
-msgstr ""
+msgstr "Ungültige Antwort vom Server: Fehlende X-Task-Kennung."
 
 #: ../src/plugins/abrt-retrace-client.c:767
 msgid "Invalid response from server: missing X-Task-Password."
-msgstr ""
+msgstr "Ungültige Antwort vom Server: Fehlendes X-Task-Passwort."
 
 #: ../src/plugins/abrt-retrace-client.c:773
 msgid "Retrace job started"
-msgstr ""
+msgstr "Retrace-Vorgang wurde gestartet"
 
 #: ../src/plugins/abrt-retrace-client.c:786
 #, c-format
@@ -875,6 +894,8 @@ msgid ""
 "Task Id: %s\n"
 "Task Password: %s\n"
 msgstr ""
+"Task-Kennung: %s\n"
+"Task-Passwort: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:831
 #, c-format
@@ -883,7 +904,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:849
 msgid "Invalid response from server: missing X-Task-Status."
-msgstr ""
+msgstr "Ungültige Antwort vom Server: Fehlender X-Task-Status."
 
 #: ../src/plugins/abrt-retrace-client.c:860
 #, c-format
@@ -891,18 +912,20 @@ msgid ""
 "Task Status: %s\n"
 "%s\n"
 msgstr ""
+"Task-Status: %s\n"
+"%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:1066
 msgid "log to syslog"
-msgstr ""
+msgstr "Im System protokollieren"
 
 #: ../src/plugins/abrt-retrace-client.c:1068
 msgid "allow insecure connection to retrace server"
-msgstr ""
+msgstr "Unsichere Verbindung zum Retrace-Server zulassen"
 
 #: ../src/plugins/abrt-retrace-client.c:1070
 msgid "retrace server URL"
-msgstr ""
+msgstr "Adresse des Retrace-Servers"
 
 #: ../src/plugins/abrt-retrace-client.c:1072
 msgid "(debug) show received HTTP headers"
@@ -948,11 +971,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1124
 msgid "Failed to initialize NSS."
-msgstr ""
+msgstr "NSS konnte nicht initialisiert werden."
 
 #: ../src/plugins/abrt-retrace-client.c:1130
 msgid "Failed to initialize security module."
-msgstr ""
+msgstr "Sicherheitsmodul konnte nicht initialisiert werden."
 
 #: ../src/plugins/abrt-retrace-client.c:1141
 #: ../src/plugins/abrt-retrace-client.c:1147
@@ -963,49 +986,52 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:1161
 #: ../src/plugins/abrt-retrace-client.c:1169
 msgid "Task id is needed."
-msgstr ""
+msgstr "Task-Kennung ist erforderlich."
 
 #: ../src/plugins/abrt-retrace-client.c:1155
 #: ../src/plugins/abrt-retrace-client.c:1163
 #: ../src/plugins/abrt-retrace-client.c:1171
 msgid "Task password is needed."
-msgstr ""
+msgstr "Task-Passwort ist erforderlich."
 
 #: ../src/plugins/abrt-retrace-client.c:1175
 #, c-format
 msgid "Unknown operation: %s."
-msgstr ""
+msgstr "Unbekannte Operation: %s."
 
 #: ../src/plugins/abrt-retrace-client.c:1184
 msgid "Failed to shutdown NSS."
-msgstr ""
+msgstr "NSS konnte nicht heruntergefahren werden."
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr ""
+msgstr "Debuginfo-Pakete herunterladen und Backtrace lokal mit GDB erstellen"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Local GNU Debugger"
-msgstr ""
+msgstr "Lokaler GNU-Debugger"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
+"Es ist nötig, Debuginfo-Pakete herunterzuladen, was einige Zeit in Anspruch "
+"nehmen kann und zusätzlichen Plattenplatz belegt. Jedoch wird nicht wie bei "
+"RetraceServer ein Coredump an entfernte Rechner gesendet."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Address of the retrace server"
-msgstr ""
+msgstr "Adresse des Retrace-Servers"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid "Retrace server URL"
-msgstr ""
+msgstr "Adresse des Retrace-Servers"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Send core dump to remote retrace server for analysis"
-msgstr ""
+msgstr "Coredump an entfernten Server zur Untersuchung senden"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid ""
@@ -1015,149 +1041,160 @@ msgid ""
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
 msgstr ""
+"Überträgt ein Coredump zu einem Retrace-Server, welcher einen Backtrace "
+"erstellt und zurücksendet. Die Debuginfo-Datenbank des Retrace-Servers ist "
+"in der Regel vollständiger. Dagegen spricht, dass der zu übertragende "
+"Coredump alle Daten des abgestürzten Programms enthält, eventuell auch "
+"private Daten."
 
 #: ../src/plugins/analyze_xsession_errors.xml.in.h:1
 msgid "Save relevant lines from ~/.xsession-errors file"
-msgstr ""
+msgstr "Relevante Zeilen der Datei ~/.xsession-errors speichern"
 
 #: ../src/plugins/analyze_xsession_errors.xml.in.h:2
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
 msgstr ""
+"Liest die Datei ~/.xsession-errors ein und speichert die Zeilen, die Namen "
+"ausführbarer Dateien enthalten. Das Ergebnis wird als "
+"»xsession_errors«-Element gespeichert."
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Address of Bugzilla server"
-msgstr ""
+msgstr "Adresse des Bugzilla-Servers"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:2
 msgid "Bugzilla"
-msgstr ""
+msgstr "Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:3
 msgid "Bugzilla URL"
-msgstr ""
+msgstr "Bugzilla-Adresse"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:4
 msgid "Bugzilla account password"
-msgstr ""
+msgstr "Passwort für Bugzilla-Konto"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:5
 msgid "Bugzilla account user name"
-msgstr ""
+msgstr "Benutzername  für Bugzilla-Konto"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:2
 msgid "Check SSL key validity"
-msgstr ""
+msgstr "Gültigkeit des SSL-Schlüssels prüfen"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
 msgid "Password"
-msgstr ""
+msgstr "Passwort"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
 msgid "Report to Bugzilla bug tracker"
-msgstr ""
+msgstr "An Bugzilla-Fehlererfassung senden"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:9
 msgid "User name"
-msgstr ""
+msgstr "Benutzername"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Verify SSL"
-msgstr ""
+msgstr "SSL prüfen"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid ""
-"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
-"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+"You can create bugzilla.redhat.com account &lt;a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
+"Sie können <a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\">hier</a> ein Konto "
+"für bugzilla.redhat.com erstellen"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops URL"
-msgstr ""
+msgstr "Kerneloops-Adresse"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:2
 msgid "Kerneloops.org"
-msgstr ""
+msgstr "Kerneloops.org"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:3
 msgid "Oops server url"
-msgstr ""
+msgstr "Oops-Serveradresse"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:4
 msgid "Send kernel problems to oops tracker"
-msgstr ""
+msgstr "Kernel-Probleme an Oops-Tracker senden"
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
-msgstr ""
+msgstr "Mailx"
 
 #: ../src/plugins/report_Mailx.xml.in.h:2
 msgid "Message subject"
-msgstr ""
+msgstr "Betreff der Nachricht"
 
 #: ../src/plugins/report_Mailx.xml.in.h:3
 msgid "Recipient"
-msgstr ""
+msgstr "Empfänger"
 
 #: ../src/plugins/report_Mailx.xml.in.h:4
 msgid "Recipient's email"
-msgstr ""
+msgstr "E-Mail-Adresse des Empfängers"
 
 #: ../src/plugins/report_Mailx.xml.in.h:5
 msgid "Send Binary Data"
-msgstr ""
+msgstr "Binärdaten senden"
 
 #: ../src/plugins/report_Mailx.xml.in.h:6
 msgid "Send binary files like coredump"
-msgstr ""
+msgstr "Binärdateien senden (z.B. Coredump)"
 
 #: ../src/plugins/report_Mailx.xml.in.h:7
 msgid "Send via email"
-msgstr ""
+msgstr "Als E-Mail versenden"
 
 #: ../src/plugins/report_Mailx.xml.in.h:8
 msgid "Sender"
-msgstr ""
+msgstr "Absender"
 
 #: ../src/plugins/report_Mailx.xml.in.h:9
 msgid "Sender's email"
-msgstr ""
+msgstr "E-Mail-Adresse des Absenders"
 
 #: ../src/plugins/report_Mailx.xml.in.h:10
 msgid "Subject"
-msgstr ""
+msgstr "Betreff"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:1
 msgid "Address of the Red Hat support portal"
-msgstr ""
+msgstr "Adresse des RedHat-Supportportals"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:4
 msgid "RH Portal URL"
-msgstr ""
+msgstr "RedHat-Portaladresse"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:5
 msgid "Red Hat Customer Support"
-msgstr ""
+msgstr "RedHat-Kundendienst"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:6
 msgid "Red Hat customer password"
-msgstr ""
+msgstr "RedHat-Kundenpasswort"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:7
 msgid "Red Hat customer user name"
-msgstr ""
+msgstr "RedHat-Benutzername"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:8
 msgid "Report to Red Hat support"
-msgstr ""
+msgstr "An RedHat-Support berichten"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "Username"
-msgstr ""
+msgstr "Benutzername"
 
 #: ../src/plugins/rhbz.c:191
 #, c-format
@@ -1167,12 +1204,12 @@ msgstr ""
 #: ../src/plugins/rhbz.c:259
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
-msgstr ""
+msgstr "Bug %i ist GESCHLOSSEN, aber ohne LÖSUNG"
 
 #: ../src/plugins/rhbz.c:267
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
-msgstr ""
+msgstr "Bug %i wurde als DUPLIKAT geschlossen, aber hat keine DUP_ID"
 
 #: ../src/plugins/rhbz.c:373
 #, c-format
@@ -1184,120 +1221,4 @@ msgstr "Neue Fehler-ID: %i"
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla kann die Eltern des Fehlerberichts nicht finden %d"
 
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "Sie müssen exakt eine Operation angeben."
 
-#~ msgid "# This field is read only\n"
-#~ msgstr "# Dieses Feld ist schreibgeschützt\n"
-
-#~ msgid "# Describe the circumstances of this crash below"
-#~ msgstr "# Beschreiben Sie nachfolgend die Umstände dieses Absturzes"
-
-#~ msgid ""
-#~ "# Backtrace\n"
-#~ "# Check that it does not contain any sensitive data (passwords, etc.)"
-#~ msgstr ""
-#~ "# Backtrace\n"
-#~ "# Stellen Sie sicher, dass keine sensiblen Daten (Passwörter, usw.) "
-#~ "enthalten sind"
-
-#~ msgid "# Architecture"
-#~ msgstr "# Architektur"
-
-#~ msgid "# Command line"
-#~ msgstr "# Kommandozeile"
-
-#~ msgid "# Component"
-#~ msgstr "# Komponente"
-
-#~ msgid "# Core dump"
-#~ msgstr "# Core-Dump"
-
-#~ msgid "# Executable"
-#~ msgstr "# Executable (ausführbare Datei)"
-
-#~ msgid "# Kernel version"
-#~ msgstr "# Kernel-Version"
-
-#~ msgid "# Package"
-#~ msgstr "# Paket"
-
-#~ msgid "# Reason of crash"
-#~ msgstr "# Grund des Absturzes"
-
-#~ msgid "# Release string of the operating system"
-#~ msgstr "# String des Betriebssystems freigeben"
-
-#~ msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-#~ msgstr ""
-#~ "vi kann nicht ausgeführt werden, $TERM, $VISUAL und $EDITOR sind nicht "
-#~ "definiert"
-
-#~ msgid ""
-#~ "\n"
-#~ "The report has been updated"
-#~ msgstr ""
-#~ "\n"
-#~ "Der Bericht wurde aktualisiert"
-
-#~ msgid ""
-#~ "\n"
-#~ "No changes were detected in the report"
-#~ msgstr ""
-#~ "\n"
-#~ "Es wurden keine Änderungen am Bericht festgestellt"
-
-#~ msgid "N"
-#~ msgstr "N"
-
-#~ msgid "Reporting..."
-#~ msgstr "Berichten..."
-
-#~ msgid "Skipping..."
-#~ msgstr "Überspringen..."
-
-#~ msgid "Reporting disabled because the backtrace is unusable"
-#~ msgstr "Berichterstellung deaktiviert, da Backtrace unbrauchbar"
-
-#~ msgid ""
-#~ "Please try to install debuginfo manually using the command: \"debuginfo-"
-#~ "install %s\" and try again\n"
-#~ msgstr ""
-#~ "Bitte versuchen Sie, debuginfo manuell mit dem Befehl: \"debuginfo-"
-#~ "install %s\" zu installieren und versuchen Sie es erneut\n"
-
-#~ msgid "Show password"
-#~ msgstr "Passwort anzeigen"
-
-#~ msgid ""
-#~ "The backtrace is incomplete, please make sure you provide the steps to "
-#~ "reproduce."
-#~ msgstr ""
-#~ "Der Backtrace ist unvollständig, bitte stellen Sie sicher, dass Sie alle "
-#~ "Schritte zum Reproduzieren angeben."
-
-#~ msgid "Reporting disabled because the backtrace is unusable."
-#~ msgstr "Berichterstellung deaktiviert, da der Backtrace unbrauchbar ist."
-
-#~ msgid "You should check the backtrace for sensitive data."
-#~ msgstr "Sie sollten den Backtrace auf sensible Daten überprüfen."
-
-#~ msgid "You must agree with sending the backtrace."
-#~ msgstr "Sie müssen dem Senden des Backtrace zustimmen."
-
-#~ msgid "Name"
-#~ msgstr "Name"
-
-#~ msgid "Details"
-#~ msgstr "Details"
-
-#~ msgid "Usage: %s\n"
-#~ msgstr "Verwendung: %s\n"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr ""
-#~ "get_bug_info() fehlgeschlagen. Es konnten nicht alle relevanten "
-#~ "Informationen gesammelt werden."
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Erstellung eines Bugzilla-Eintrags fehlgeschlagen"

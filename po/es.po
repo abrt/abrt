@@ -1,20 +1,25 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+#   <domingobecker@gmail.com>, 2011.
+# Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
+# Dennis Tobar <dennis.tobar@gmail.com>, 2011.
+# beckerde <domingobecker@gmail.com>, 2011.
+# Claudio Rodrigo Pereyra Diaz <elsupergomez@gmail.com>, 2011.
+# Héctor Daniel Cabrera <logan@fedoraproject.org>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-06-16 12:53+0200\n"
-"PO-Revision-Date: 2011-05-03 17:54+0000\n"
-"Last-Translator: elsupergomez <elsupergomez@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2011-06-16 12:48+0200\n"
+"PO-Revision-Date: 2011-06-19 07:19+0000\n"
+"Last-Translator: dennistobar <dennis.tobar@gmail.com>\n"
 "Language-Team: Spanish (Castilian) <trans-es@lists.fedoraproject.org>\n"
-"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -78,16 +83,14 @@ msgid "Open ABRT"
 msgstr "Abrir ABRT"
 
 #: ../src/daemon/abrt-action-save-package-data.c:250
-#, fuzzy
 msgid ""
-"\b [-v] -d DIR\n"
+"\\b [-v] -d DIR\n"
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
-" [-v] -d DIR\n"
+"\\b [-v] -d DIR\n"
 "\n"
-"Consulta a la base de datos de paquete y guarda el nombre de paquete, "
-"componente y la descripción"
+"Consultar la base de datos de paquetes y guarde el nombre de paquete, componente y descripción"
 
 #: ../src/daemon/abrt-action-save-package-data.c:261
 #: ../src/plugins/abrt-action-analyze-backtrace.c:56
@@ -105,9 +108,8 @@ msgid "Dump directory"
 msgstr "Listar directorio"
 
 #: ../src/daemon/abrt-server.c:442 ../src/daemon/abrtd.c:506
-#, fuzzy
-msgid "\b [options]"
-msgstr " [opciones]"
+msgid "\\b [options]"
+msgstr "\\b [opciones]"
 
 #: ../src/daemon/abrt-server.c:453
 msgid "Use UID as client uid"
@@ -143,14 +145,12 @@ msgid "Exit after SEC seconds of inactivity"
 msgstr "Finaliza luego de SEC segundos de inactividad"
 
 #: ../src/gui-gtk/abrt-gtk.c:216
-#, fuzzy
 msgid "Problem description"
-msgstr "(no hay descripción)"
+msgstr "Descripción del problema"
 
 #: ../src/gui-gtk/abrt-gtk.c:219
-#, fuzzy
 msgid "Send"
-msgstr "Remitente"
+msgstr "Enviar"
 
 #: ../src/gui-gtk/abrt-gtk.c:297
 msgid "Reported"
@@ -182,7 +182,7 @@ msgstr "Configuración de _eventos"
 
 #: ../src/gui-gtk/abrt-gtk.c:370
 msgid "Report problem with ABRT"
-msgstr ""
+msgstr "Informar el problema con ABRT"
 
 #: ../src/gui-gtk/abrt-gtk.c:443
 msgid "Online _Help"
@@ -193,17 +193,16 @@ msgid "View and report application crashes"
 msgstr "Ver e informar sobre la caída de la aplicación"
 
 #: ../src/gui-gtk/main.c:213
-#, fuzzy
 msgid ""
-"\b [-vp] [DIR]...\n"
+"\\b [-vp] [DIR]...\n"
 "\n"
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 "(default DIRs: "
 msgstr ""
-" [-vp] [DIR]...\n"
+"\\b [-vp] [DIR]...\n"
 "\n"
-"Muestra los directorios especificados en DIR(s) que ABRT debe listar (DIRs "
-"por defecto): "
+"Muestra la lista de directorios de volcado de ABRT en los DIR(s) especificados\n"
+"(DIRs predeterminados: "
 
 #: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:43
 #, c-format
@@ -211,60 +210,53 @@ msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Subidos: %llu de %llu kbytes"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:45
-#, fuzzy
 msgid ""
-"\b [options] -d DIR\n"
+"\\b [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
-"identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
 msgstr ""
-" [options] -d DIR\n"
+"\\b [opciones] -d DIR\n"
 "\n"
-"Analiza el trazado C/C++, genera un hash de duplicación, taza de trazado e "
-"identifica la función que se colgó en el directorio de volcado DIR"
+"Analiza retrotrazados C/C++, genera un hash de duplicación, tasa de retrotrazado e identifica la función que se colgó en el directorio DIR de volcado"
 
-#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:93
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "Ha fallado el análisis del trazado de %s"
 
 #: ../src/plugins/abrt-action-analyze-c.c:151
-#, fuzzy
 msgid ""
-"\b [-v] -d DIR\n"
+"\\b [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
-" [-v] -d DIR\n"
+"\\b [-v] -d DIR\n"
 "\n"
-"Calcula y guarda el UUID del volcado del núcleo en el DIR de volcados"
+"Calcula y guarda el UUID del coredump el el directorio DIR de volcado"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:112
-#, fuzzy
 msgid ""
-"\b [-vs] -d DIR\n"
+"\\b [-vs] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
-" [-vs] -d DIR\n"
+"\\b [-vs] -d DIR\n"
 "\n"
-"Calcula y guarda el UUID y el DUPHASH para el DIR de volcado de oops"
+"Calcula y guarda el UUID y el DUPHASH para el directorio DIR de volcado de oops"
 
 #: ../src/plugins/abrt-action-analyze-python.c:30
-#, fuzzy
 msgid ""
-"\b [-v] -d DIR\n"
+"\\b [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
-" [-v] -d DIR\n"
+"\\b [-v] -d DIR\n"
 "\n"
-"Calcula y almacena UUID y DUPHASH de los volcados de las caídas python"
+"Calcula y guarda el UUID y el DUPHASH de volcados de cuelgues de python"
 
 #: ../src/plugins/abrt-action-bugzilla.c:45
 msgid "Empty login or password, please check your configuration"
@@ -273,12 +265,12 @@ msgstr "Nombre o contraseña vacío, por favor verifique su configuración"
 #: ../src/plugins/abrt-action-bugzilla.c:61
 #, c-format
 msgid "Essential file '%s' is missing, can't continue.."
-msgstr "Falta el archivo '%s' y es escencial, no se puede continuar.."
+msgstr "Falta el archivo '%s' y es esencial, no se puede continuar.."
 
 #: ../src/plugins/abrt-action-bugzilla.c:65
 #, c-format
 msgid "Essential file '%s' is empty, can't continue.."
-msgstr "El archivo escencial '%s' está vacío, no se puede continuar.."
+msgstr "El archivo esencial '%s' está vacío, no se puede continuar.."
 
 #: ../src/plugins/abrt-action-bugzilla.c:74
 #, c-format
@@ -319,7 +311,7 @@ msgstr "Saliendo"
 
 #: ../src/plugins/abrt-action-bugzilla.c:233
 msgid ""
-"\b [-v] [-c CONFFILE] -d DIR\n"
+"\\b [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Reports problem to Bugzilla.\n"
 "\n"
@@ -331,8 +323,7 @@ msgid ""
 "depending on their type and size.\n"
 "\n"
 "Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,\n"
-"the tool follows the chain of duplicates until it finds a non-DUPLICATE "
-"bug.\n"
+"the tool follows the chain of duplicates until it finds a non-DUPLICATE bug.\n"
 "The tool adds a new comment to found bug.\n"
 "\n"
 "The URL to new or modified bug is printed to stdout and recorded in\n"
@@ -350,28 +341,26 @@ msgid "Configuration file (may be given many times)"
 msgstr "Archivo de configuración (puede ser ofrecido varias veces)"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:239
-#, fuzzy
 msgid ""
-"\b [options] -d DIR\n"
+"\\b [options] -d DIR\n"
 "\n"
 "Analyzes coredump in dump directory DIR, generates and saves backtrace"
 msgstr ""
-" [options] -d DIR\n"
+"\\b [opciones] -d DIR\n"
 "\n"
-"Genera y guarda un trazado para coredump en el directorio DIR de volcados"
+"Analiza el coredump en el directorio DIR de volcado, genera y guarda el retrotrazado."
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:253
 msgid "Additional debuginfo directories"
 msgstr "Directorios adicionales con información de depuración"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:254
-#, fuzzy
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr "Mata a gdb si se ejecuta durante más de N segundos"
+msgstr "Termina gdb si está ejecutándose más de NUM segundos"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:290
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -383,7 +372,7 @@ msgstr "s"
 
 #: ../src/plugins/abrt-action-install-debuginfo:86
 msgid "n"
-msgstr ""
+msgstr "n"
 
 #: ../src/plugins/abrt-action-install-debuginfo:100
 #, c-format
@@ -465,9 +454,9 @@ msgid "Unpacking failed, aborting download..."
 msgstr "Falló el desempaque, abortando la descarga..."
 
 #: ../src/plugins/abrt-action-install-debuginfo:339
-#, fuzzy, c-format
+#, c-format
 msgid "Removing %s"
-msgstr "¿Informar usando %s?"
+msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo:343
 #, c-format
@@ -545,15 +534,14 @@ msgid "Submitting oops report to %s"
 msgstr "Enviando reportes oops a %s"
 
 #: ../src/plugins/abrt-action-kerneloops.c:135
-#, fuzzy
 msgid ""
-"\b [-v] [-c CONFFILE]... -d DIR\n"
+"\\b [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
 "Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
-" [-v] [-c CONFFILE]... -d DIR\n"
+"\\b [-v] [-c ARCHCONF]... -d DIR\n"
 "\n"
-"Informa oops de kernel al sitio kerneloops.org (o similar)"
+"Informa oops del kernel al sitio kerneloops.org (o similar)"
 
 #: ../src/plugins/abrt-action-kerneloops.c:148
 msgid "Configuration file"
@@ -564,15 +552,14 @@ msgid "Sending an email..."
 msgstr "Enviando un correo..."
 
 #: ../src/plugins/abrt-action-mailx.c:136
-#, fuzzy
 msgid ""
-"\b [-v] -d DIR [-c CONFFILE]\n"
+"\\b [-v] -d DIR [-c CONFFILE]\n"
 "\n"
 "Sends contents of a dump directory DIR via email"
 msgstr ""
-" [-v] -d DIR [-c CONFFILE]\n"
+"\\b [-v] -d DIR [-c ARCHCONF]\n"
 "\n"
-"Enviar el contenido del directorio DIR de volcado por correo electrónico"
+"Envía el contenido del directorio DIR de volcado vía email"
 
 #: ../src/plugins/abrt-action-mailx.c:149
 #: ../src/plugins/abrt-action-upload.c:255
@@ -580,16 +567,14 @@ msgid "Config file"
 msgstr "Archivo de configuración"
 
 #: ../src/plugins/abrt-action-print.c:35
-#, fuzzy
 msgid ""
-"\b [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
+"\\b [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
-" [-v] -d DIR [-o FILE] [-a yes/no]\n"
+"\\b [-v] -d DIR [-o ARCH] [-a yes/no] [-r]\n"
 "\n"
-"Muestra la información del problema en la salida estándar o en el archivo "
-"FILE"
+"Imprime la información del problema a la salida estándar o a ARCH"
 
 #: ../src/plugins/abrt-action-print.c:50
 msgid "Output file"
@@ -614,9 +599,11 @@ msgid "The report was stored to %s"
 msgstr "El informe se almacenó en %s"
 
 #. create_problem_data_for_reporting already emitted error msg
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #: ../src/plugins/abrt-action-rhtsupport.c:36
 #: ../src/plugins/abrt-action-upload.c:117
 msgid "Compressing data"
@@ -636,7 +623,7 @@ msgstr "Creando un nuevo caso..."
 
 #: ../src/plugins/abrt-action-rhtsupport.c:298
 msgid ""
-"\b [-v] -c CONFFILE -d DIR\n"
+"\\b [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports a problem to RHTSupport.\n"
 "\n"
@@ -647,16 +634,14 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:150
-#, fuzzy
 msgid ""
-"\b [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"\\b [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
-" [-v] [-d TAM:DIR]... [-f TAM:DIR]... [-p DIR]\n"
+"\\b [-v] [-d TAM:DIR]... [-f TAM:DIR]... [-p DIR]\n"
 "\n"
-"Borra directorios de volcado (-d) o archivos (-f) en DIRs hasta que su "
-"tamaño sea menor que TAM"
+"Elimina los directorios de volcado (-d) o archivos (-f) en los directorios DIR hasta que sean más pequeños que TAM"
 
 #: ../src/plugins/abrt-action-trim-files.c:163
 msgid "Delete dump dirs"
@@ -687,28 +672,26 @@ msgid "Archive is created: '%s'"
 msgstr "El archivo ha sido creado: '%s'"
 
 #: ../src/plugins/abrt-action-upload.c:241
-#, fuzzy
 msgid ""
-"\b [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\\b [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
 "Uploads compressed tarball of dump directory DIR"
 msgstr ""
-" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\\b [-v] -d DIR [-c ARCHCONF] [-u URL]\n"
 "\n"
-"Sube un tarball del directorio DIR de volcado"
+"Sube un tarball comprimido del DIR de volcado"
 
 #: ../src/plugins/abrt-action-upload.c:256
 msgid "Base URL to upload to"
 msgstr "URL base hacia donde enviar"
 
 #: ../src/plugins/abrt-dump-oops.c:579
-#, fuzzy
 msgid ""
-"\b [-vsrowx] [-d DIR] FILE\n"
+"\\b [-vsrowx] [-d DIR] FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
-" [-vsrowx] [-d DIR] ARCHIVO\n"
+"\\b [-vsrowx] [-d DIR] ARCH\n"
 "\n"
 "Extrae oops desde el archivo syslog/dmesg"
 
@@ -726,7 +709,7 @@ msgstr "No finaliza, monitoriza el archivo en busca de nuevos oops"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
+#. 
 #: ../src/plugins/abrt-dump-oops.c:602
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr "Crear volcado ABRT en DIR para todo oops encontrada"
@@ -741,9 +724,9 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:137
 #: ../src/plugins/abrt-retrace-client.c:164
-#, fuzzy, c-format
+#, c-format
 msgid "Can't execute '%s'"
-msgstr "No es posible extraer paquete '%s'"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:195
 #, c-format
@@ -884,7 +867,8 @@ msgid "Querying server settings"
 msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:584
-msgid "Retrace server is fully occupied at the moment. Try again later please."
+msgid ""
+"Retrace server is fully occupied at the moment. Try again later please."
 msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:595
@@ -912,9 +896,9 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:686
-#, fuzzy, c-format
+#, c-format
 msgid "Uploading %lld bytes\n"
-msgstr "Subidos: %llu de %llu kbytes"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:710
 #, c-format
@@ -983,9 +967,8 @@ msgid "allow insecure connection to retrace server"
 msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1070
-#, fuzzy
 msgid "retrace server URL"
-msgstr "Url del servidor de re-trazado"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1072
 msgid "(debug) show received HTTP headers"
@@ -1039,9 +1022,8 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1141
 #: ../src/plugins/abrt-retrace-client.c:1147
-#, fuzzy
 msgid "Either dump directory or coredump is needed."
-msgstr "Hacer que el directorio de volcado sea legible para todos"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1153
 #: ../src/plugins/abrt-retrace-client.c:1161
@@ -1075,8 +1057,8 @@ msgstr "Depurador Local GNU"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
 "Necesita descargar paquetes debuginfo,esto puedo tardar un tiempo "
 "significativo, y ocupar espacio en disco. Sin embargo, a diferencia del "
@@ -1093,7 +1075,7 @@ msgstr "Url del servidor de re-trazado"
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Send core dump to remote retrace server for analysis"
 msgstr ""
-"Enviar nucleo del volcado al servidor de re-trazado remoto para su análisis"
+"Enviar núcleo del volcado al servidor de re-trazado remoto para su análisis"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid ""
@@ -1107,8 +1089,8 @@ msgstr ""
 "devuelve. Ventajas: no es necesario las descargas de debuginfo. El "
 "seguimiento sobre la base de datos del servidor de debuginfos es más "
 "completa. El servidor de seguimiento puede generar mejores trazados. "
-"Contras: el volcado que debe cargar contiene todos los datos del a caída del "
-"programa, incluyendo sus datos privados si los hubiere."
+"Contras: el volcado que debe cargar contiene todos los datos del a caída del"
+" programa, incluyendo sus datos privados si los hubiere."
 
 #: ../src/plugins/analyze_xsession_errors.xml.in.h:1
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1165,11 +1147,11 @@ msgstr "Verificar SSL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid ""
-"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
-"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+"You can create bugzilla.redhat.com account &lt;a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
-"Puede crear una cuenta bugzilla.redhat.com <a href=\"https://bugzilla.redhat."
-"com/createaccount.cgi\">aquí</a>"
+"Puede crear una cuenta bugzilla.redhat.com <a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\">aquí</a>"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops URL"
@@ -1209,7 +1191,7 @@ msgstr "Enviar datos binarios"
 
 #: ../src/plugins/report_Mailx.xml.in.h:6
 msgid "Send binary files like coredump"
-msgstr "Enviar archivos binarios como nucleo de volcado"
+msgstr "Enviar archivos binarios como núcleo de volcado"
 
 #: ../src/plugins/report_Mailx.xml.in.h:7
 msgid "Send via email"
@@ -1258,17 +1240,17 @@ msgstr "Nombre de usuario"
 #: ../src/plugins/rhbz.c:191
 #, c-format
 msgid "Looks like corrupted xml response, because '%s' member is missing."
-msgstr ""
+msgstr "Parece una respuesta xml corrompida, porque falta el miembro '%s'."
 
 #: ../src/plugins/rhbz.c:259
 #, c-format
 msgid "Bug %i is CLOSED, but it has no RESOLUTION"
-msgstr ""
+msgstr "El informe %i fue CERRADO, pero no tiene RESOLUTION"
 
 #: ../src/plugins/rhbz.c:267
 #, c-format
 msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
-msgstr ""
+msgstr "El informe %i está CERRADO como DUPLICADO, pero no tiene DUP_ID"
 
 #: ../src/plugins/rhbz.c:373
 #, c-format
@@ -1280,408 +1262,4 @@ msgstr "Nuevo id del error: %i"
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla no pudo encontrar un error directamente relacionado con %d "
 
-#~ msgid ""
-#~ "Usage: %s -l[f] [-D BASE_DIR]...]\n"
-#~ "   or: %s -r[y] CRASH_DIR\n"
-#~ "   or: %s -i[b] CRASH_DIR\n"
-#~ "   or: %s -d CRASH_DIR\n"
-#~ "\n"
-#~ "\t-l, --list\t\tList not yet reported problems\n"
-#~ "\t  -f, --full\t\tList all problems\n"
-#~ "\t-D BASE_DIR\t\tDirectory to list problems from\n"
-#~ "\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
-#~ "\n"
-#~ "\t-r, --report\t\tSend a report about CRASH_DIR\n"
-#~ "\t  -y, --always\t\t...without editing and asking\n"
-#~ "\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
-#~ "\t  -f, --full\t\t...including multi-line entries\n"
-#~ "\t\t\t\tNote: -if will run analyzers\n"
-#~ "\t\t\t\t(if this CRASH_DIR have defined analyzers)\n"
-#~ "\t-d, --delete\t\tRemove CRASH_DIR\n"
-#~ "\n"
-#~ "\t-V, --version\t\tDisplay version and exit\n"
-#~ "\t-v, --verbose\t\tBe verbose\n"
-#~ msgstr ""
-#~ "Uso: %s -l[f] [-D DIR_BASE]...]\n"
-#~ "   o:  %s -r[y] DIR_CAIDA\n"
-#~ "   o:  %s -i[b] DIR_CAIDA\n"
-#~ "   o:  %s -d DIR_CAIDA\n"
-#~ "\n"
-#~ "<span class=\"whitespace other\" title=\"Tab\">»</span>-l, --list<span "
-#~ "class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace "
-#~ "other\" title=\"Tab\">»</span>List not yet reported problems\n"
-#~ "<span class=\"whitespace other\" title=\"Tab\">»</span>  -f, --full<span "
-#~ "class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace "
-#~ "other\" title=\"Tab\">»</span>List all problems\n"
-#~ "<span class=\"whitespace other\" title=\"Tab\">»</span>-D BASE_DIR<span "
-#~ "class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace "
-#~ "other\" title=\"Tab\">»</span>Directory to list problems from\n"
-#~ "<span class=\"whitespace other\" title=\"Tab\">»</span><span class="
-#~ "\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other"
-#~ "\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab"
-#~ "\">»</span>(default: -D $HOME/.abrt/spool -D %s)\n"
-#~ "\n"
-#~ "<span class=\"whitespace other\" title=\"Tab\">»</span>-r, --report<span "
-#~ "class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace "
-#~ "other\" title=\"Tab\">»</span>Send a report about CRASH_DIR\n"
-#~ "<span class=\"whitespace other\" title=\"Tab\">»</span>  -y, --"
-#~ "always<span class=\"whitespace other\" title=\"Tab\">»</span><span class="
-#~ "\"whitespace other\" title=\"Tab\">»</span>...without editing and asking\n"
-#~ "<span class=\"whitespace other\" title=\"Tab\">»</span>-i, --info<span "
-#~ "class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace "
-#~ "other\" title=\"Tab\">»</span>Print detailed information about CRASH_DIR\n"
-#~ "<span class=\"whitespace other\" title=\"Tab\">»</span>  -f, --full<span "
-#~ "class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace "
-#~ "other\" title=\"Tab\">»</span>...including multi-line entries\n"
-#~ "<span class=\"whitespace other\" title=\"Tab\">»</span><span class="
-#~ "\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other"
-#~ "\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab"
-#~ "\">»</span>Note: -if will run analyzers\n"
-#~ "<span class=\"whitespace other\" title=\"Tab\">»</span><span class="
-#~ "\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace other"
-#~ "\" title=\"Tab\">»</span><span class=\"whitespace other\" title=\"Tab"
-#~ "\">»</span>(if this CRASH_DIR have defined analyzers)\n"
-#~ "<span class=\"whitespace other\" title=\"Tab\">»</span>-d, --delete<span "
-#~ "class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace "
-#~ "other\" title=\"Tab\">»</span>Remove CRASH_DIR\n"
-#~ "\n"
-#~ "<span class=\"whitespace other\" title=\"Tab\">»</span>-V, --version<span "
-#~ "class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace "
-#~ "other\" title=\"Tab\">»</span>Display version and exit\n"
-#~ "<span class=\"whitespace other\" title=\"Tab\">»</span>-v, --verbose<span "
-#~ "class=\"whitespace other\" title=\"Tab\">»</span><span class=\"whitespace "
-#~ "other\" title=\"Tab\">»</span>Be verbose\n"
 
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "Debe especificar exactamente una operación."
-
-#~ msgid "# This field is read only\n"
-#~ msgstr "# Este campo es de sólo lectura.\n"
-
-#~ msgid "# Describe the circumstances of this crash below"
-#~ msgstr "# Describa debajo las circunstancias de esta caída."
-
-#~ msgid ""
-#~ "# Backtrace\n"
-#~ "# Check that it does not contain any sensitive data (passwords, etc.)"
-#~ msgstr ""
-#~ "# Trazado\n"
-#~ "# Verifique que no contiene ninguna información confidencial "
-#~ "(contraseñas, etc.)"
-
-#~ msgid "# Architecture"
-#~ msgstr "# Arquitectura"
-
-#~ msgid "# Command line"
-#~ msgstr "# Linea de comando"
-
-#~ msgid "# Component"
-#~ msgstr "# Componente"
-
-#~ msgid "# Core dump"
-#~ msgstr "# Volcado de núcleo"
-
-#~ msgid "# Executable"
-#~ msgstr "# Ejecutable"
-
-#~ msgid "# Kernel version"
-#~ msgstr "# Versión del Kernel"
-
-#~ msgid "# Package"
-#~ msgstr "# Paquete"
-
-#~ msgid "# Reason of crash"
-#~ msgstr "# Razón de la caída"
-
-#~ msgid "# Release string of the operating system"
-#~ msgstr "# Cadena de lanzamiento del sistema operativo"
-
-#~ msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-#~ msgstr ""
-#~ "No se pudo ejecutar vi: $TERM, $VISUAL y $EDITOR no fueron configurados"
-
-#~ msgid ""
-#~ "\n"
-#~ "The report has been updated"
-#~ msgstr ""
-#~ "\n"
-#~ "El informe ha sido actualizado."
-
-#~ msgid ""
-#~ "\n"
-#~ "No changes were detected in the report"
-#~ msgstr ""
-#~ "\n"
-#~ "No se detectaron cambios en el informe"
-
-#~ msgid "N"
-#~ msgstr "N"
-
-#~ msgid "Your input is not valid, because of:"
-#~ msgstr "Su entrada no es válida porque:"
-
-#~ msgid "Bad value for '%s': %s"
-#~ msgstr "Valor incorrecto para '%s': %s"
-
-#~ msgid "Select how you would like to analyze the problem:\n"
-#~ msgstr "Seleccione como desea analizar el problema:\n"
-
-#~ msgid "Choose option [0 - %u]: "
-#~ msgstr "Elija opción [0 - %u]:"
-
-#~ msgid "You have chosen number out of range"
-#~ msgstr "Usted eligió un número de opción fuera del rango"
-
-#~ msgid "Invalid input, program exiting..."
-#~ msgstr "Entrada inválida, saliendo del programa..."
-
-#~ msgid "Reporting..."
-#~ msgstr "Informando..."
-
-#~ msgid "Skipping..."
-#~ msgstr "Saltando..."
-
-#~ msgid "Reporting disabled because the backtrace is unusable"
-#~ msgstr "Informe inhabilitado debido a que el trazado es inutilizable."
-
-#~ msgid ""
-#~ "Please try to install debuginfo manually using the command: \"debuginfo-"
-#~ "install %s\" and try again\n"
-#~ msgstr ""
-#~ "Por favor pruebe instalar la información de depuración manualmente usando "
-#~ "el comando: \"debuginfo-install %s\" y vuelva a intentar\n"
-
-#~ msgid "Problem reported via %d report events (%d errors)\n"
-#~ msgstr "Problema reportando via %d los reportes de evento(%d errors)\n"
-
-#~ msgid ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   or: "
-#~ msgstr ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   o: "
-
-#~ msgid "Handle EVENT"
-#~ msgstr "Manipular EVENTO"
-
-#~ msgid "List possible events [which start with PFX]"
-#~ msgstr "Muestra los eventos posibles [que empiecen con PFX]"
-
-#~ msgid "Show password"
-#~ msgstr "Mostrar contraseña"
-
-#~ msgid "Event Configuration"
-#~ msgstr "Configuración de eventos"
-
-#~ msgid "Event"
-#~ msgstr "Evento"
-
-#~ msgid "Configure E_vent"
-#~ msgstr "Configurar E_vento"
-
-#~ msgid ""
-#~ "Wrong settings detected for %s, reporting will probably fail if you "
-#~ "continue with the current configuration."
-#~ msgstr ""
-#~ "Configuración errónea detectada para %s, el reporte probablemente fallará "
-#~ "si continua con la configuración actual. "
-
-#~ msgid ""
-#~ "Wrong settings detected for <b>%s</b>, reporting will probably fail if "
-#~ "you continue with the current configuration."
-#~ msgstr ""
-#~ "Configuración errónea detectada para <b>%s<b>, el reporte probablemente "
-#~ "fallará si continua con la configuración actual. "
-
-#~ msgid ""
-#~ " [-vp] [-g GUI_FILE] DIR\n"
-#~ "\n"
-#~ "GUI tool to analyze and report problem saved in specified DIR"
-#~ msgstr ""
-#~ " [-vp] [-g GUI_FILE] DIR\n"
-#~ "\n"
-#~ "Herramienta gráfica para analizar e informar el problema guardado en el "
-#~ "DIR especificado"
-
-#~ msgid "Alternate GUI file"
-#~ msgstr "Archivo alterno de GUI"
-
-#~ msgid ""
-#~ "Need writable directory, but '%s' is not writable. Move it to '%s' and "
-#~ "operate on the moved copy?"
-#~ msgstr ""
-#~ "Necesita un directorio de escritura, pero '%s' no lo es. ¿Desea "
-#~ "desplazarlo a '%s' y operar en la copia desplazada?"
-
-#~ msgid "(click here to view/edit)"
-#~ msgstr "(Haga clic aquí para ver/editar)"
-
-#~ msgid "(binary file, %llu bytes)"
-#~ msgstr "(archivo binario, %llu bytes)"
-
-#~ msgid "%llu bytes, %u files"
-#~ msgstr "%llu bytes, %u archivos"
-
-#~ msgid "No processing for event '%s' is defined"
-#~ msgstr "No se define proceso para evento '%s'"
-
-#~ msgid ""
-#~ "The backtrace is incomplete, please make sure you provide the steps to "
-#~ "reproduce."
-#~ msgstr ""
-#~ "El trazado está incompleto, por favor, asegúrese de proveer bien los "
-#~ "pasos para reproducir el error."
-
-#~ msgid "Reporting disabled because the backtrace is unusable."
-#~ msgstr ""
-#~ "Creación de informes inhabilitada debido a que el trazado es inútil."
-
-#~ msgid "You should check the backtrace for sensitive data."
-#~ msgstr "Debe verificar el trazado de datos confidenciales."
-
-#~ msgid "You must agree with sending the backtrace."
-#~ msgstr "Debe estar de acuerdo con el envío del trazado."
-
-#~ msgid "Analyzing..."
-#~ msgstr "Analizando..."
-
-#~ msgid "Analyzing finished with exit code %d"
-#~ msgstr "El análisis terminó con código de salida %d"
-
-#~ msgid "Reporting finished with exit code %d"
-#~ msgstr "El reporte terminó con código de salida %d"
-
-#~ msgid "Name"
-#~ msgstr "Nombre"
-
-#~ msgid "Value"
-#~ msgstr "Valor"
-
-#~ msgid ""
-#~ "<b>Your comments are not private.</b> They may be included into publicly "
-#~ "visible problem reports."
-#~ msgstr ""
-#~ "<b>Sus comentarios no son confidenciales.</b> Pueden incluirse en "
-#~ "reportes de problemas visibles al público."
-
-#~ msgid "Analyzing did not start yet"
-#~ msgstr "El análisis aún no ha comenzado"
-
-#~ msgid "Any additional comments useful for diagnosing the problem?"
-#~ msgstr "¿Algún comentario adicional para diagnosticar el problema?"
-
-#~ msgid ""
-#~ "Backtrace provides developers with details of the crash, helping them "
-#~ "track down the source of the problem. Please review it and remove any "
-#~ "sensitive data you would rather not share:"
-#~ msgstr ""
-#~ "Backtrace ofrece a los desarrolladores información sobre el fallo, lo que "
-#~ "les ayuda a rastrear la fuente del problema. Por favor, revíselo y "
-#~ "elimine los datos confidenciales que no desea compartir:"
-
-#~ msgid ""
-#~ "Can create more informative backtrace if you installed additional debug "
-#~ "packages"
-#~ msgstr ""
-#~ "Si instala paquetes de depuración adicionales, puede crear más trazado "
-#~ "informativo."
-
-#~ msgid "Click 'Apply' to start reporting"
-#~ msgstr "Haga clic en 'Aplicar' para comenzar a reportar"
-
-#~ msgid "Configure _Events"
-#~ msgstr "Configurar _Eventos"
-
-#~ msgid "Details"
-#~ msgstr "Detalles"
-
-#~ msgid ""
-#~ "How did this problem happen (step-by-step)? How can it be reproduced?"
-#~ msgstr ""
-#~ "¿Cómo sucedió este problema (paso por paso)? ¿Cómo se puede reproducir?"
-
-#~ msgid "I _agree with submitting the backtrace"
-#~ msgstr "Estoy de acuerdo con enviar el trazado"
-
-#~ msgid ""
-#~ "On the following screens, you will be asked to describe how the problem "
-#~ "occurred, to choose how to analyze the problem (if needed), to review "
-#~ "collected data, and to choose where the problem should be reported. Click "
-#~ "'Forward' to proceed."
-#~ msgstr ""
-#~ "En las siguiente pantallas, se le solicitará una descripción de como "
-#~ "ocurrió el problema, elegir como analizar el problema (si es necesario), "
-#~ "revisar los datos colectados, y elegir donde debe ser reportado el "
-#~ "problema. Clic en 'Siguiente' para proceder."
-
-#~ msgid "Regenerate backtrace"
-#~ msgstr "Regenerar trazado"
-
-#~ msgid "Reporter(s):"
-#~ msgstr "Reportero(s):"
-
-#~ msgid "Reporting did not start yet"
-#~ msgstr "El informe aún no inicia"
-
-#~ msgid "Select how you would like to analyze the problem:"
-#~ msgstr "Seleccione cómo desearía analizar el problema:"
-
-#~ msgid "Select how you would like to report the problem:"
-#~ msgstr "Seleccione cómo desearía reportar el problema:"
-
-#~ msgid "Size:"
-#~ msgstr "Tamaño:"
-
-#~ msgid ""
-#~ "Use this button to generate more informative backtrace after you "
-#~ "installed additional debug packages"
-#~ msgstr ""
-#~ "Utilice este botón para generar más trazado informativo después de que "
-#~ "haya instalada los paquetes de depuración adicionales."
-
-#~ msgid "Missing mandatory value"
-#~ msgstr "Falta un campo obligatorio"
-
-#~ msgid "Invalid utf8 character '%c'"
-#~ msgstr "Carácter  utf8 inválido '%c'"
-
-#~ msgid "Invalid number '%s'"
-#~ msgstr "Número '%s' inválido"
-
-#~ msgid "Invalid boolean value '%s'"
-#~ msgstr "Valor booleano inválido '%s'"
-
-#~ msgid "Unsupported option type"
-#~ msgstr "Tipo de opción no soportada"
-
-#~ msgid "Usage: %s\n"
-#~ msgstr "Uso: %s\n"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr ""
-#~ "Falló get_bug_info(). No se ha podido reunir toda la información "
-#~ "obligatoria"
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Falló la creación de entrada en Bugzilla"
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports problem to Bugzilla"
-#~ msgstr ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Informa un problema a Bugzilla"
-
-#~ msgid "All downloaded packages have been extracted, removing %s"
-#~ msgstr "Se han extraído todos los paquetes descargados, eliminando %s"
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports a problem to RHTSupport"
-#~ msgstr ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Informa un problema a RHTSupport"

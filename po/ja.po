@@ -1,20 +1,26 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Makoto Mizukami <makoto@fedoraporject.org>, 2010.
+# Hyu_gabaru Ryu_ichi <hyu_gabaru@yahoo.co.jp>, 2009.
+# Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
+# Casey Jones <nahareport@yahoo.com>, 2011.
+# Kiyoto Hashida <khashida@redhat.com>, 2009, 2010.
+# Hajime Taira <htaira@redhat.com>, 2010, 2011.
+# Noriko Mizumoto <noriko@fedoraproject.org>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-06-16 12:53+0200\n"
-"PO-Revision-Date: 2011-05-02 18:28+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Japanese <None>\n"
-"Language: ja\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2011-06-16 12:48+0200\n"
+"PO-Revision-Date: 2011-06-17 03:16+0000\n"
+"Last-Translator: htaira <htaira@redhat.com>\n"
+"Language-Team: Japanese (http://www.transifex.net/projects/p/fedora/team/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -29,11 +35,11 @@ msgstr "自動バグ報告ツール（ABRT）"
 #: ../src/applet/applet.c:83
 #, c-format
 msgid "A crash in the %s package has been detected"
-msgstr "パッケージ %s のクラッシュが検出されました"
+msgstr "パッケージ %s のクラッシュが検出されました。"
 
 #: ../src/applet/applet.c:85
 msgid "A crash has been detected"
-msgstr "クラッシュが検出されました"
+msgstr "クラッシュが検出されました。"
 
 #: ../src/applet/applet.c:279
 msgid "ABRT service is not running"
@@ -46,12 +52,13 @@ msgstr "警告"
 #: ../src/applet/applet_gtk.c:249
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
-msgstr ""
-"ABRT によって検出された問題をユーザーに通知するための通知エリアアプレット"
+msgstr "ABRT によって検出された問題をユーザーに通知するための通知エリアアプレット"
 
 #: ../src/applet/applet_gtk.c:265 ../src/gui-gtk/abrt-gtk.c:278
 msgid "translator-credits"
-msgstr "翻訳者クレジット"
+msgstr ""
+"Casey Jones <nahareport@yahoo.com>\n"
+"Hajime Taira <htaira@redhat.com>"
 
 #: ../src/applet/applet_gtk.c:275
 msgid "Hide"
@@ -63,11 +70,11 @@ msgstr "報告"
 
 #: ../src/applet/applet_gtk.c:388
 msgid "Show"
-msgstr ""
+msgstr "見る"
 
 #: ../src/applet/applet_gtk.c:392 ../src/applet/applet_gtk.c:420
 msgid "A Problem has Occurred"
-msgstr ""
+msgstr "1つ問題が起きました"
 
 #: ../src/applet/applet_gtk.c:417
 msgid "Open ABRT"
@@ -75,7 +82,7 @@ msgstr "ABRT を開く"
 
 #: ../src/daemon/abrt-action-save-package-data.c:250
 msgid ""
-"\b [-v] -d DIR\n"
+"\\b [-v] -d DIR\n"
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
@@ -93,16 +100,15 @@ msgstr ""
 #: ../src/plugins/abrt-action-rhtsupport.c:315
 #: ../src/plugins/abrt-action-upload.c:254
 msgid "Dump directory"
-msgstr ""
+msgstr "ディレクトリをダンプする"
 
 #: ../src/daemon/abrt-server.c:442 ../src/daemon/abrtd.c:506
-#, fuzzy
-msgid "\b [options]"
-msgstr " [オプション]"
+msgid "\\b [options]"
+msgstr ""
 
 #: ../src/daemon/abrt-server.c:453
 msgid "Use UID as client uid"
-msgstr ""
+msgstr "UIDをクライアントuidとして使用する"
 
 #: ../src/daemon/abrt-server.c:454 ../src/plugins/abrt-dump-oops.c:595
 msgid "Log to syslog"
@@ -111,19 +117,17 @@ msgstr "syslog へのログ"
 #: ../src/daemon/abrt-server.c:455 ../src/daemon/abrtd.c:521
 #: ../src/gui-gtk/main.c:225
 msgid "Add program names to log"
-msgstr ""
+msgstr "ログするためにプログラム名を追加する"
 
 #: ../src/daemon/abrtd.c:335
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
-msgstr ""
-"報告のサイズが割り当てを超過しました。 abrt.conf の中で MaxCrashReportsSize "
-"の値をチェックして下さい。"
+msgstr "報告のサイズが割り当てを超過しました。 abrt.conf の中で MaxCrashReportsSize の値をチェックして下さい。"
 
 #: ../src/daemon/abrtd.c:518
 msgid "Do not daemonize"
-msgstr "デーモン化しません"
+msgstr "デーモン化されていません。"
 
 #: ../src/daemon/abrtd.c:519
 msgid "Log to syslog even with -d"
@@ -143,31 +147,31 @@ msgstr ""
 
 #: ../src/gui-gtk/abrt-gtk.c:297
 msgid "Reported"
-msgstr "報告済み"
+msgstr "レポート済み"
 
 #: ../src/gui-gtk/abrt-gtk.c:307
 msgid "Problem"
-msgstr ""
+msgstr "問題"
 
 #: ../src/gui-gtk/abrt-gtk.c:328
 msgid "Last occurrence"
-msgstr ""
+msgstr "最後の出来事"
 
 #: ../src/gui-gtk/abrt-gtk.c:341
 msgid "_File"
-msgstr "ファイル（_F）"
+msgstr "ファイル(_F)"
 
 #: ../src/gui-gtk/abrt-gtk.c:342
 msgid "_Edit"
-msgstr "編集（_E）"
+msgstr "編集(_E)"
 
 #: ../src/gui-gtk/abrt-gtk.c:343
 msgid "_Help"
-msgstr "ヘルプ（_H）"
+msgstr "ヘルプ(_H)"
 
 #: ../src/gui-gtk/abrt-gtk.c:359
 msgid "_Event configuration"
-msgstr ""
+msgstr "イベント調整(_E)"
 
 #: ../src/gui-gtk/abrt-gtk.c:370
 msgid "Report problem with ABRT"
@@ -175,7 +179,7 @@ msgstr ""
 
 #: ../src/gui-gtk/abrt-gtk.c:443
 msgid "Online _Help"
-msgstr ""
+msgstr "オンラインヘルプ(_H)"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -183,7 +187,7 @@ msgstr "アプリケーションクラッシュの表示とレポート"
 
 #: ../src/gui-gtk/main.c:213
 msgid ""
-"\b [-vp] [DIR]...\n"
+"\\b [-vp] [DIR]...\n"
 "\n"
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 "(default DIRs: "
@@ -196,77 +200,63 @@ msgstr "アップロード済み: %llu キロバイトの内 %llu"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:45
 msgid ""
-"\b [options] -d DIR\n"
+"\\b [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
-"identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
 msgstr ""
 
-#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:93
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "%s 用のバックトレース構文解析は失敗"
 
 #: ../src/plugins/abrt-action-analyze-c.c:151
-#, fuzzy
 msgid ""
-"\b [-v] -d DIR\n"
+"\\b [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
-" [-v] -d DIR\n"
-"\n"
-"python クラッシュダンプの UUID と DUPHASH を算出して保存します"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:112
-#, fuzzy
 msgid ""
-"\b [-vs] -d DIR\n"
+"\\b [-vs] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
-" [-v] -d DIR\n"
-"\n"
-"python クラッシュダンプの UUID と DUPHASH を算出して保存します"
 
 #: ../src/plugins/abrt-action-analyze-python.c:30
-#, fuzzy
 msgid ""
-"\b [-v] -d DIR\n"
+"\\b [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
-" [-v] -d DIR\n"
-"\n"
-"python クラッシュダンプの UUID と DUPHASH を算出して保存します"
 
 #: ../src/plugins/abrt-action-bugzilla.c:45
 msgid "Empty login or password, please check your configuration"
-msgstr ""
+msgstr "ログイン又はパスワードが空です。設定を確認してください"
 
 #: ../src/plugins/abrt-action-bugzilla.c:61
 #, c-format
 msgid "Essential file '%s' is missing, can't continue.."
-msgstr ""
+msgstr "主要ファイル '%s' がありません。継続できません.."
 
 #: ../src/plugins/abrt-action-bugzilla.c:65
 #, c-format
 msgid "Essential file '%s' is empty, can't continue.."
-msgstr ""
+msgstr "主要ファイル '%s' が空です継続できません.."
 
 #: ../src/plugins/abrt-action-bugzilla.c:74
 #, c-format
 msgid "Logging into Bugzilla at %s"
-msgstr ""
+msgstr "Bugzilla に %s でログ中です"
 
 #: ../src/plugins/abrt-action-bugzilla.c:77
 msgid "Checking for duplicates"
-msgstr ""
+msgstr "複製をチェックしています"
 
 #: ../src/plugins/abrt-action-bugzilla.c:93
 msgid "Missing mandatory member 'bugs'"
@@ -274,7 +264,7 @@ msgstr "必須のメンバー 'bugs' の欠如"
 
 #: ../src/plugins/abrt-action-bugzilla.c:132
 msgid "Creating a new bug"
-msgstr ""
+msgstr "新しいバグを作成しています"
 
 #. decision based on state
 #: ../src/plugins/abrt-action-bugzilla.c:148
@@ -294,11 +284,11 @@ msgstr "バグID(%d) に新しいコメントを追加"
 
 #: ../src/plugins/abrt-action-bugzilla.c:199
 msgid "Logging out"
-msgstr ""
+msgstr "ログアウトしています"
 
 #: ../src/plugins/abrt-action-bugzilla.c:233
 msgid ""
-"\b [-v] [-c CONFFILE] -d DIR\n"
+"\\b [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Reports problem to Bugzilla.\n"
 "\n"
@@ -310,8 +300,7 @@ msgid ""
 "depending on their type and size.\n"
 "\n"
 "Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,\n"
-"the tool follows the chain of duplicates until it finds a non-DUPLICATE "
-"bug.\n"
+"the tool follows the chain of duplicates until it finds a non-DUPLICATE bug.\n"
 "The tool adds a new comment to found bug.\n"
 "\n"
 "The URL to new or modified bug is printed to stdout and recorded in\n"
@@ -330,7 +319,7 @@ msgstr "設定ファイル (何回でも授与可能)"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:239
 msgid ""
-"\b [options] -d DIR\n"
+"\\b [options] -d DIR\n"
 "\n"
 "Analyzes coredump in dump directory DIR, generates and saves backtrace"
 msgstr ""
@@ -340,17 +329,16 @@ msgid "Additional debuginfo directories"
 msgstr "追加の debuginfo ディレクトリ"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:254
-#, fuzzy
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr "gdb が N 秒以上も稼働した場合は、キルします"
+msgstr ""
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:290
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr ""
+msgstr "backtrace は生成され、保存されました %u バイト"
 
 #: ../src/plugins/abrt-action-install-debuginfo:84
 msgid "y"
@@ -368,12 +356,12 @@ msgstr "%s から cpio を抽出しています"
 #: ../src/plugins/abrt-action-install-debuginfo:105
 #, c-format
 msgid "Can't write to '%s': %s"
-msgstr ""
+msgstr " '%s' に書き込めません: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo:119
 #, c-format
 msgid "Can't extract package '%s'"
-msgstr ""
+msgstr "パッケージ '%s' を抽出できません"
 
 #: ../src/plugins/abrt-action-install-debuginfo:127
 #, c-format
@@ -383,47 +371,47 @@ msgstr "%s で作成された %s からファイルをキャッシュ中"
 #: ../src/plugins/abrt-action-install-debuginfo:137
 #, c-format
 msgid "Can't extract files from '%s'"
-msgstr ""
+msgstr " '%s' からファイルを抽出できません"
 
 #: ../src/plugins/abrt-action-install-debuginfo:161
 #: ../src/plugins/abrt-action-install-debuginfo:171
 #, c-format
 msgid "Downloading (%i of %i) %s: %3u%%"
-msgstr ""
+msgstr "ダウンロード中 (%i of %i) %s: %3u%%"
 
 #: ../src/plugins/abrt-action-install-debuginfo:196
 #, c-format
 msgid "Error initializing yum (YumBase.doConfigSetup): '%s'"
-msgstr ""
+msgstr " yum 初期化エラー (YumBase.doConfigSetup): '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo:239
 msgid "Looking for needed packages in repositories"
-msgstr ""
+msgstr "レポジトリで必要なパッケージを探しています"
 
 #: ../src/plugins/abrt-action-install-debuginfo:243
 #, c-format
 msgid "Error retrieving metadata: '%s'"
-msgstr ""
+msgstr "metadata 回収エラー: '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo:253
 #, c-format
 msgid "Error retrieving filelists: '%s'"
-msgstr ""
+msgstr "filelists 回収エラー: '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo:286
 #, c-format
 msgid "Can't find packages for %u debuginfo files"
-msgstr ""
+msgstr "%u debuginfo ファイル 用のパッケージを見つけられません"
 
 #: ../src/plugins/abrt-action-install-debuginfo:288
 #, c-format
 msgid "Packages to download: %u"
-msgstr ""
+msgstr "ダウンロードするパッケージ: %u"
 
 #: ../src/plugins/abrt-action-install-debuginfo:289
 #, c-format
 msgid "Downloading %.2fMb, installed size: %.2fMb"
-msgstr ""
+msgstr "ダウンロード中 %.2fMb, インストールサイズ: %.2fMb"
 
 #: ../src/plugins/abrt-action-install-debuginfo:297
 msgid "Is this ok? [y/N] "
@@ -439,9 +427,9 @@ msgid "Unpacking failed, aborting download..."
 msgstr "解凍が失敗しました、ダウンロードを中止します..."
 
 #: ../src/plugins/abrt-action-install-debuginfo:339
-#, fuzzy, c-format
+#, c-format
 msgid "Removing %s"
-msgstr "%s を使用して報告しますか?"
+msgstr "%s を削除中"
 
 #: ../src/plugins/abrt-action-install-debuginfo:343
 #, c-format
@@ -451,11 +439,11 @@ msgstr "%s を削除できません。多分エラーログを含んでいます
 #: ../src/plugins/abrt-action-install-debuginfo:379
 #, c-format
 msgid "Can't remove '%s': %s"
-msgstr ""
+msgstr " '%s' を削除できません: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo:387
 msgid "Exiting on user command"
-msgstr ""
+msgstr "ユーザコマンドを終了しています"
 
 #: ../src/plugins/abrt-action-install-debuginfo:421
 #, c-format
@@ -474,26 +462,39 @@ msgid ""
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
 msgstr ""
+"Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR] [--size_mb=SIZE]\n"
+"\n"
+"BUILD_IDS_FILE から CACHEDIR にリストされている全 build-ids\n"
+"用のdebuginfos をインストールします。TMPDIR を一時的領域として使用します\n"
+"CACHEDIR の古いファイルは SIZE より小さい場合、削除されます\n"
+"\n"
+"    -v          Be verbose\n"
+"    -y          Noninteractive, assume 'Yes' to all questions\n"
+"    --ids       Default: build_ids\n"
+"    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     Default: /var/cache/abrt-di\n"
+"    --size_mb   Default: 4096\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo:478
 #, c-format
 msgid "Can't open %s: %s"
-msgstr ""
+msgstr "%s を開けません: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo:508
 #, c-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
-msgstr ""
+msgstr "コアダンプは %u debuginfo ファイルを参照しています。その内 %u がインストールされていません"
 
 #: ../src/plugins/abrt-action-install-debuginfo:519
 #, c-format
 msgid "Missing debuginfo file: %s"
-msgstr ""
+msgstr "debuginfo ファイルがありません: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo:522
 #, c-format
 msgid "All %u debuginfo files are available"
-msgstr ""
+msgstr "全 %u debuginfo ファイルが入手可能です"
 
 #: ../src/plugins/abrt-action-kerneloops.c:100
 #, c-format
@@ -502,14 +503,14 @@ msgstr "%s への oops レポートを提出中"
 
 #: ../src/plugins/abrt-action-kerneloops.c:135
 msgid ""
-"\b [-v] [-c CONFFILE]... -d DIR\n"
+"\\b [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
 "Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
 
 #: ../src/plugins/abrt-action-kerneloops.c:148
 msgid "Configuration file"
-msgstr ""
+msgstr "設定ファイル"
 
 #: ../src/plugins/abrt-action-mailx.c:104
 msgid "Sending an email..."
@@ -517,7 +518,7 @@ msgstr "電子メールを送信中..."
 
 #: ../src/plugins/abrt-action-mailx.c:136
 msgid ""
-"\b [-v] -d DIR [-c CONFFILE]\n"
+"\\b [-v] -d DIR [-c CONFFILE]\n"
 "\n"
 "Sends contents of a dump directory DIR via email"
 msgstr ""
@@ -529,7 +530,7 @@ msgstr "Config ファイル"
 
 #: ../src/plugins/abrt-action-print.c:35
 msgid ""
-"\b [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
+"\\b [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
@@ -540,11 +541,11 @@ msgstr "出力ファイル"
 
 #: ../src/plugins/abrt-action-print.c:51
 msgid "Append to, or overwrite FILE"
-msgstr ""
+msgstr "FILE に追記、または上書きする"
 
 #: ../src/plugins/abrt-action-print.c:52
 msgid "Create reported_to in DIR"
-msgstr ""
+msgstr "DIR での報告を作成する(_t)"
 
 #: ../src/plugins/abrt-action-print.c:91
 #, c-format
@@ -557,9 +558,11 @@ msgid "The report was stored to %s"
 msgstr "バグレポートを %s に保存しました"
 
 #. create_problem_data_for_reporting already emitted error msg
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are
+#. doing
 #: ../src/plugins/abrt-action-rhtsupport.c:36
 #: ../src/plugins/abrt-action-upload.c:117
 msgid "Compressing data"
@@ -567,11 +570,11 @@ msgstr "データを圧縮"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:64
 msgid "Empty RHTS login or password"
-msgstr ""
+msgstr "RHTS ログイン又はパスワードが空です。"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:91
 msgid "Can't create a temporary directory in /tmp"
-msgstr ""
+msgstr "/tmp に一時ディレクトリを作成できません"
 
 #: ../src/plugins/abrt-action-rhtsupport.c:207
 msgid "Creating a new case..."
@@ -579,7 +582,7 @@ msgstr "新しいケースを作成中..."
 
 #: ../src/plugins/abrt-action-rhtsupport.c:298
 msgid ""
-"\b [-v] -c CONFFILE -d DIR\n"
+"\\b [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports a problem to RHTSupport.\n"
 "\n"
@@ -591,22 +594,22 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:150
 msgid ""
-"\b [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"\\b [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:163
 msgid "Delete dump dirs"
-msgstr ""
+msgstr "ダンプディレクトリを削除する"
 
 #: ../src/plugins/abrt-action-trim-files.c:164
 msgid "Delete files"
-msgstr ""
+msgstr "ファイルを削除する"
 
 #: ../src/plugins/abrt-action-trim-files.c:165
 msgid "Preserve this dump dir"
-msgstr ""
+msgstr "このダンプディレクトリを保護する"
 
 #: ../src/plugins/abrt-action-upload.c:61
 #, c-format
@@ -626,7 +629,7 @@ msgstr "書庫が作成されました: '%s'"
 
 #: ../src/plugins/abrt-action-upload.c:241
 msgid ""
-"\b [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\\b [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
 "Uploads compressed tarball of dump directory DIR"
 msgstr ""
@@ -637,7 +640,7 @@ msgstr "アップロード先のベース URL"
 
 #: ../src/plugins/abrt-dump-oops.c:579
 msgid ""
-"\b [-vsrowx] [-d DIR] FILE\n"
+"\\b [-vsrowx] [-d DIR] FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
@@ -656,24 +659,24 @@ msgstr "終了せずに新規 oops のファイルを観察します"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
+#. 
 #: ../src/plugins/abrt-dump-oops.c:602
 msgid "Create ABRT dump in DIR for every oops found"
-msgstr ""
+msgstr "全ての oops に対し、DIR の ABRT ダンプを作成する"
 
 #: ../src/plugins/abrt-dump-oops.c:603
 msgid "Make the dump directory world readable"
-msgstr ""
+msgstr "ダンプディレクトリを可読にする"
 
 #: ../src/plugins/abrt-retrace-client.c:111
 msgid "Cannot open temporary file"
-msgstr ""
+msgstr "作業用ファイルを開くことができません。"
 
 #: ../src/plugins/abrt-retrace-client.c:137
 #: ../src/plugins/abrt-retrace-client.c:164
 #, c-format
 msgid "Can't execute '%s'"
-msgstr ""
+msgstr "%s を実行できません。"
 
 #: ../src/plugins/abrt-retrace-client.c:195
 #, c-format
@@ -692,7 +695,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:205
 msgid "Remote certificate has expired."
-msgstr ""
+msgstr "リモートの証明書が失効しています。"
 
 #: ../src/plugins/abrt-retrace-client.c:208
 #, c-format
@@ -711,7 +714,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:275
 msgid "Failed to create a TCP socket"
-msgstr ""
+msgstr "TCP ソケットの作成に失敗しました。"
 
 #: ../src/plugins/abrt-retrace-client.c:283
 msgid "Failed to set socket blocking mode."
@@ -748,7 +751,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:337
 msgid "Failed to connect SSL address."
-msgstr ""
+msgstr "SSL アドレスの接続に失敗しました。"
 
 #: ../src/plugins/abrt-retrace-client.c:344
 msgid "Failed to set certificate hook."
@@ -756,11 +759,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:351
 msgid "Failed to set handshake callback."
-msgstr ""
+msgstr "ハンドシェークのコールバック設定に失敗しました。"
 
 #: ../src/plugins/abrt-retrace-client.c:357
 msgid "Failed to reset handshake."
-msgstr ""
+msgstr "ハンドシェークのリセットに失敗しました。"
 
 #: ../src/plugins/abrt-retrace-client.c:363
 #, c-format
@@ -769,7 +772,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:372
 msgid "Failed to close SSL socket."
-msgstr ""
+msgstr "SSL ソケットの切断に失敗しました。"
 
 #: ../src/plugins/abrt-retrace-client.c:428
 #: ../src/plugins/abrt-retrace-client.c:431
@@ -811,10 +814,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:575
 msgid "Querying server settings"
-msgstr ""
+msgstr "サーバー設定を問い合わせ中"
 
 #: ../src/plugins/abrt-retrace-client.c:584
-msgid "Retrace server is fully occupied at the moment. Try again later please."
+msgid ""
+"Retrace server is fully occupied at the moment. Try again later please."
 msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:595
@@ -842,14 +846,14 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:686
-#, fuzzy, c-format
+#, c-format
 msgid "Uploading %lld bytes\n"
-msgstr "アップロード済み: %llu キロバイトの内 %llu"
+msgstr "アップロード中 %lld bytes\n"
 
 #: ../src/plugins/abrt-retrace-client.c:710
 #, c-format
 msgid "Uploading %d%%\n"
-msgstr ""
+msgstr "アップロード中 %d%%\n"
 
 #: ../src/plugins/abrt-retrace-client.c:722
 msgid "Failed to read from a pipe"
@@ -862,7 +866,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:745
 msgid "Upload successful"
-msgstr ""
+msgstr "アップロードに成功しました。"
 
 #: ../src/plugins/abrt-retrace-client.c:758
 #, c-format
@@ -906,7 +910,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1066
 msgid "log to syslog"
-msgstr ""
+msgstr "syslog にログする"
 
 #: ../src/plugins/abrt-retrace-client.c:1068
 msgid "allow insecure connection to retrace server"
@@ -926,15 +930,15 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1075
 msgid "read data from ABRT crash dump directory"
-msgstr ""
+msgstr "ABRT のクラッシュダンプディレクトリーからデータを読み込み"
 
 #: ../src/plugins/abrt-retrace-client.c:1077
 msgid "read data from coredump"
-msgstr ""
+msgstr "コアダンプからデータを読み込み"
 
 #: ../src/plugins/abrt-retrace-client.c:1079
 msgid "Delay for polling operations"
-msgstr ""
+msgstr "ポーリング処理の遅延"
 
 #: ../src/plugins/abrt-retrace-client.c:1081
 msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
@@ -960,7 +964,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1124
 msgid "Failed to initialize NSS."
-msgstr ""
+msgstr "NSS の初期化に失敗しました。"
 
 #: ../src/plugins/abrt-retrace-client.c:1130
 msgid "Failed to initialize security module."
@@ -994,30 +998,32 @@ msgstr ""
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr ""
+msgstr "パッケージをダウンロードし、GDB を使用してローカルの backtrace を生成する"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Local GNU Debugger"
-msgstr ""
+msgstr "ローカル GNU デバッガ"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
+"debuginfo パッケージをダウンロードする必要があります。これは多くの時間がかかり、ディスクスペースも要します。しかし RetraceServer"
+" とは異なり、コアダンプをリモートマシンに送信したりしません。"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Address of the retrace server"
-msgstr ""
+msgstr "Retrace サーバーのアドレス"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid "Retrace server URL"
-msgstr ""
+msgstr "Retrace サーバーのURL"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Send core dump to remote retrace server for analysis"
-msgstr ""
+msgstr "コアダンプを分析の為にリモート Retrace サーバーに送信する"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid ""
@@ -1027,6 +1033,10 @@ msgid ""
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
 msgstr ""
+"コアダンプをサーバーにアップロードするには、backtraceを生成し、それを返します。メリット: debuginfo "
+"をダウンロードする必要がありません。再トレースサーバーのdebaguinfoデータベースは、より完璧です。Retrace "
+"サーバーはより良いbacktraceを生成できます。デメリット: "
+"アップロードするコアダンプには、クラッシュしたプログラムと、あなたのプライベートデータ(もしあった場合)、全てが含まれています。"
 
 #: ../src/plugins/analyze_xsession_errors.xml.in.h:1
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1040,136 +1050,138 @@ msgstr ""
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:1
 msgid "Address of Bugzilla server"
-msgstr ""
+msgstr "Bugzilla サーバーのアドレス"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:2
 msgid "Bugzilla"
-msgstr ""
+msgstr "Bugzilla"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:3
 msgid "Bugzilla URL"
-msgstr ""
+msgstr "Bugzilla URL"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:4
 msgid "Bugzilla account password"
-msgstr ""
+msgstr "Bugzilla アカウント パスワード"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:5
 msgid "Bugzilla account user name"
-msgstr ""
+msgstr "Bugzilla アカウント ユーザ名"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:6
 #: ../src/plugins/report_RHTSupport.xml.in.h:2
 msgid "Check SSL key validity"
-msgstr ""
+msgstr "SSL キーの有効性を確認する"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:7
 #: ../src/plugins/report_RHTSupport.xml.in.h:3
 msgid "Password"
-msgstr ""
+msgstr "パスワード"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:8
 msgid "Report to Bugzilla bug tracker"
-msgstr ""
+msgstr "Bugzilla バグトラッカーに報告する"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:9
 msgid "User name"
-msgstr ""
+msgstr "ユーザ名"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:10
 #: ../src/plugins/report_RHTSupport.xml.in.h:10
 msgid "Verify SSL"
-msgstr ""
+msgstr "SSL を確証する"
 
 #: ../src/plugins/report_Bugzilla.xml.in.h:11
 msgid ""
-"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
-"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
+"You can create bugzilla.redhat.com account &lt;a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 msgstr ""
+"bugzilla.redhat.com アカウントを作成できます。 &lt;a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:1
 msgid "Kerneloops URL"
-msgstr ""
+msgstr "Kerneloops URL"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:2
 msgid "Kerneloops.org"
-msgstr ""
+msgstr "Kerneloops.org"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:3
 msgid "Oops server url"
-msgstr ""
+msgstr "Oops server url"
 
 #: ../src/plugins/report_Kerneloops.xml.in.h:4
 msgid "Send kernel problems to oops tracker"
-msgstr ""
+msgstr "kernel の問題を oops tracker に送信する"
 
 #: ../src/plugins/report_Mailx.xml.in.h:1
 msgid "Mailx"
-msgstr ""
+msgstr "Mailx"
 
 #: ../src/plugins/report_Mailx.xml.in.h:2
 msgid "Message subject"
-msgstr ""
+msgstr "メッセージ題名"
 
 #: ../src/plugins/report_Mailx.xml.in.h:3
 msgid "Recipient"
-msgstr ""
+msgstr "送信先"
 
 #: ../src/plugins/report_Mailx.xml.in.h:4
 msgid "Recipient's email"
-msgstr ""
+msgstr "送信先 email"
 
 #: ../src/plugins/report_Mailx.xml.in.h:5
 msgid "Send Binary Data"
-msgstr ""
+msgstr "バイナリデータを送信"
 
 #: ../src/plugins/report_Mailx.xml.in.h:6
 msgid "Send binary files like coredump"
-msgstr ""
+msgstr "コアダンプ等、バイナリファイルを送信"
 
 #: ../src/plugins/report_Mailx.xml.in.h:7
 msgid "Send via email"
-msgstr ""
+msgstr "email で送信"
 
 #: ../src/plugins/report_Mailx.xml.in.h:8
 msgid "Sender"
-msgstr ""
+msgstr "送信元"
 
 #: ../src/plugins/report_Mailx.xml.in.h:9
 msgid "Sender's email"
-msgstr ""
+msgstr "送信元 email"
 
 #: ../src/plugins/report_Mailx.xml.in.h:10
 msgid "Subject"
-msgstr ""
+msgstr "表題"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:1
 msgid "Address of the Red Hat support portal"
-msgstr ""
+msgstr "Red Hat サポートポータルのアドレス"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:4
 msgid "RH Portal URL"
-msgstr ""
+msgstr "RH ポータル URL"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:5
 msgid "Red Hat Customer Support"
-msgstr ""
+msgstr "Red Hat カスタマーサポート"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:6
 msgid "Red Hat customer password"
-msgstr ""
+msgstr "Red Hat カスタマーパスワード"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:7
 msgid "Red Hat customer user name"
-msgstr ""
+msgstr "Red Hat カスタマーユーザ名"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:8
 msgid "Report to Red Hat support"
-msgstr ""
+msgstr "Red Hat サポートに報告する"
 
 #: ../src/plugins/report_RHTSupport.xml.in.h:9
 msgid "Username"
-msgstr ""
+msgstr "ユーザ名"
 
 #: ../src/plugins/rhbz.c:191
 #, c-format
@@ -1196,136 +1208,4 @@ msgstr "新しいバグID: %i"
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla はバグID(%d) の親エントリーを見つけることが出来ませんでした"
 
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "操作を１つだけ指定する必要があります。"
 
-#~ msgid "# This field is read only\n"
-#~ msgstr "# このフィールドは読み込み専用です\n"
-
-#~ msgid "# Describe the circumstances of this crash below"
-#~ msgstr "# このクラッシュの状況を以下で説明して下さい。"
-
-#~ msgid ""
-#~ "# Backtrace\n"
-#~ "# Check that it does not contain any sensitive data (passwords, etc.)"
-#~ msgstr ""
-#~ "# バックトレース\n"
-#~ "# パスワードなどの機密情報が入っていないことを確認して下さい。"
-
-#~ msgid "# Architecture"
-#~ msgstr "# アーキテクチャー"
-
-#~ msgid "# Command line"
-#~ msgstr "# コマンドライン"
-
-#~ msgid "# Component"
-#~ msgstr "# コンポーネント"
-
-#~ msgid "# Core dump"
-#~ msgstr "# コアダンプ"
-
-#~ msgid "# Executable"
-#~ msgstr "# 実行可能ファイル"
-
-#~ msgid "# Kernel version"
-#~ msgstr "# カーネルバージョン"
-
-#~ msgid "# Package"
-#~ msgstr "# パッケージ"
-
-#~ msgid "# Reason of crash"
-#~ msgstr "# クラッシュの理由"
-
-#~ msgid "# Release string of the operating system"
-#~ msgstr "# オペレーティングシステムのリリース文字列"
-
-#~ msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-#~ msgstr ""
-#~ "vi を実行できません: $TERM, $VISUAL, 及び $EDITOR が定義されていません"
-
-#~ msgid ""
-#~ "\n"
-#~ "The report has been updated"
-#~ msgstr ""
-#~ "\n"
-#~ "バグレポートを更新しました"
-
-#~ msgid ""
-#~ "\n"
-#~ "No changes were detected in the report"
-#~ msgstr ""
-#~ "\n"
-#~ "報告の中に変更は検出されませんでした。"
-
-#~ msgid "N"
-#~ msgstr "N"
-
-#~ msgid "Reporting..."
-#~ msgstr "報告中..."
-
-#~ msgid "Skipping..."
-#~ msgstr "スキップ中..."
-
-#~ msgid "Reporting disabled because the backtrace is unusable"
-#~ msgstr ""
-#~ "バックトレースが利用できないため、レポート機能が無効になっています。"
-
-#~ msgid ""
-#~ "Please try to install debuginfo manually using the command: \"debuginfo-"
-#~ "install %s\" and try again\n"
-#~ msgstr ""
-#~ "debuginfo を \"debuginfo-install %s\" コマンドにて手動でのインストールをも"
-#~ "う一度試してください。\n"
-
-#~ msgid ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   or: "
-#~ msgstr ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   あるいは: "
-
-#~ msgid "Handle EVENT"
-#~ msgstr "EVENT を処理する"
-
-#~ msgid "List possible events [which start with PFX]"
-#~ msgstr "可能なイベントを一覧にする [PFX で開始]"
-
-#~ msgid "Show password"
-#~ msgstr "パスワードを表示"
-
-#~ msgid ""
-#~ "The backtrace is incomplete, please make sure you provide the steps to "
-#~ "reproduce."
-#~ msgstr ""
-#~ "バックトレースが不完全です。再現手順が書かれているかどうか確認してくださ"
-#~ "い。"
-
-#~ msgid "Reporting disabled because the backtrace is unusable."
-#~ msgstr ""
-#~ "バックトレースが利用できないため、レポート機能が無効になっています。"
-
-#~ msgid "You should check the backtrace for sensitive data."
-#~ msgstr "機密データがないかバックトレースを確認する必要があります。"
-
-#~ msgid "You must agree with sending the backtrace."
-#~ msgstr "バックトレースの送信に同意する必要があります。"
-
-#~ msgid "Name"
-#~ msgstr "名前"
-
-#~ msgid "Details"
-#~ msgstr "詳細"
-
-#~ msgid "Usage: %s\n"
-#~ msgstr "使用法: %s\n"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr ""
-#~ "get_bug_info() の実行に失敗しました。すべての必須情報を収集できませんでし"
-#~ "た"
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Bugzilla エントリーの作成に失敗しました"
-
-#~ msgid "All downloaded packages have been extracted, removing %s"
-#~ msgstr "全てのダウンロードパッケージを展開しました。%s を削除します"
