@@ -76,7 +76,7 @@ static char* exec_vp(char **args, uid_t uid, int redirect_stderr, int *status)
 
     struct strbuf *buf_out = strbuf_new();
 
-    ndelay_off(pipeout[0]);
+    ndelay_on(pipeout[0]);
     while (1)
     {
         int timeout = endtime - t;
