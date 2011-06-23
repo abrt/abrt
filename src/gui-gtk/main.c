@@ -19,10 +19,10 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include <sys/inotify.h>
-#include <libreport-gtk.h>
 #if HAVE_LOCALE_H
 # include <locale.h>
 #endif
+#include <internal_libreport_gtk.h>
 #include "abrtlib.h"
 
 static void scan_dirs_and_add_to_dirlist(void);
