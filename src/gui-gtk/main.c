@@ -412,7 +412,7 @@ static GtkWidget *create_menu(void)
 {
     /* main bar */
     GtkWidget *menu = gtk_menu_bar_new();
-    GtkWidget *file_item = gtk_menu_item_new_with_mnemonic(_("_File"));
+    GtkWidget *file_item = gtk_menu_item_new_with_mnemonic(_("_Report"));
     GtkWidget *edit_item = gtk_menu_item_new_with_mnemonic(_("_Edit"));
     GtkWidget *help_item = gtk_menu_item_new_with_mnemonic(_("_Help"));
 
@@ -430,7 +430,7 @@ static GtkWidget *create_menu(void)
 
     /* edit submenu */
     GtkWidget *edit_submenu = gtk_menu_new();
-    GtkWidget *plugins_item = gtk_menu_item_new_with_mnemonic(_("_Event configuration"));
+    GtkWidget *plugins_item = gtk_menu_item_new_with_mnemonic(_("_Preferences"));
     //GtkWidget *preferences_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_PREFERENCES, NULL);
     gtk_menu_shell_append(GTK_MENU_SHELL(edit_submenu), plugins_item);
     //gtk_menu_shell_append(GTK_MENU_SHELL(edit_submenu), preferences_item);
