@@ -76,6 +76,7 @@ static char* exec_vp(char **args, uid_t uid, int redirect_stderr, int *status)
 
     struct strbuf *buf_out = strbuf_new();
 
+    ndelay_off(pipeout[0]);
     while (1)
     {
         int timeout = endtime - t;
@@ -95,9 +96,15 @@ static char* exec_vp(char **args, uid_t uid, int redirect_stderr, int *status)
         char buff[1024];
         int r = read(pipeout[0], buff, sizeof(buff) - 1);
         if (r <= 0)
+        {
+            /* I did see EAGAIN happening here */
+            if (r < 0 && errno == EAGAIN)
+                goto next;
             break;
+        }
         buff[r] = '\0';
         strbuf_append_str(buf_out, buff);
+ next:
         t = time(NULL);
     }
     close(pipeout[0]);
