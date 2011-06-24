@@ -243,11 +243,6 @@ static void on_btn_delete_cb(GtkButton *button, gpointer unused)
     delete_report(GTK_TREE_VIEW(s_treeview));
 }
 
-static void on_btn_online_help_cb(GtkButton *button, gpointer unused)
-{
-    gtk_show_uri(NULL, help_uri, GDK_CURRENT_TIME, NULL);
-}
-
 static void on_menu_help_cb(GtkMenuItem *menuitem, gpointer unused)
 {
     gtk_show_uri(NULL, help_uri, GDK_CURRENT_TIME, NULL);
@@ -513,14 +508,7 @@ static GtkWidget *create_main_window(void)
     GtkWidget *halign = gtk_alignment_new(1, 0, 0, 0);
     gtk_container_add(GTK_CONTAINER(halign), hbox_report_delete);
 
-    GtkWidget *hbox_help_close = gtk_hbutton_box_new();
-    GtkWidget *btn_online_help = gtk_button_new_with_mnemonic(_("Online _Help"));
-    GtkWidget *btn_close = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
-    gtk_box_pack_end(GTK_BOX(hbox_help_close), btn_online_help, false, false, 0);
-    gtk_box_pack_end(GTK_BOX(hbox_help_close), btn_close, false, false, 0);
-
     gtk_box_pack_start(GTK_BOX(main_vbox), halign, false, false, 10);
-    gtk_box_pack_start(GTK_BOX(main_vbox), hbox_help_close, false, false, 10);
 
     /* Double click/Enter handler */
     g_signal_connect(s_treeview, "row-activated", G_CALLBACK(on_row_activated_cb), NULL);
@@ -530,10 +518,6 @@ static GtkWidget *create_main_window(void)
     g_signal_connect(btn_delete, "clicked", G_CALLBACK(on_btn_delete_cb), NULL);
     /* Quit when user closes the main window */
     g_signal_connect(g_main_window, "destroy", gtk_main_quit, NULL);
-    /* Quit when user click on Cancel button */
-    g_signal_connect(btn_close, "clicked", gtk_main_quit, NULL);
-    /* Show online help */
-    g_signal_connect(btn_online_help, "clicked", G_CALLBACK(on_btn_online_help_cb), NULL);
 
     return g_main_window;
 }
