@@ -89,7 +89,7 @@ static void add_directory_to_dirlist(const char *dirname)
                           COLUMN_DIRNAME, dd->dd_dirname,
                           //OPTION: time format
                           COLUMN_LATEST_CRASH_STR, time_buf,
-                          COLUMN_LATEST_CRASH, (int)time,
+                          COLUMN_LATEST_CRASH, time,
                           COLUMN_DUMP_DIR, dirname,
                           -1);
     free(reason);
