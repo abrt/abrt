@@ -138,6 +138,7 @@ AC_CONFIG_FILES([
 	src/hooks/Makefile
 	src/applet/Makefile
 	src/gui-gtk/Makefile
+	src/cli/Makefile
 	po/Makefile.in
 	icons/Makefile
 ])
