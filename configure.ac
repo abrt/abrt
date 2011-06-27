@@ -142,7 +142,6 @@ AC_CONFIG_FILES([
 	src/Makefile
 	src/daemon/Makefile
 	src/hooks/Makefile
-	src/hooks/abrt-install-ccpp-hook
 	src/applet/Makefile
 	src/gui-gtk/Makefile
 	po/Makefile.in

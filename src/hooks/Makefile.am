@@ -27,7 +27,7 @@ abrt_hook_ccpp_LDADD = \
     $(LIBREPORT_LIBS)
 
 python_PYTHON = abrt.pth abrt_exception_handler.py
-EXTRA_DIST = abrt_exception_handler.py.in abrt-install-ccpp-hook.in $(man_MANS)
+EXTRA_DIST = abrt_exception_handler.py.in abrt-install-ccpp-hook $(man_MANS)
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc))
 
