@@ -38,7 +38,7 @@ static GtkWidget *s_report_window;
 
 enum
 {
-    COLUMN_REPORTED,
+    COLUMN_SOURCE,
     COLUMN_REASON,
     COLUMN_DIRNAME,
     COLUMN_LATEST_CRASH_STR,
@@ -72,6 +72,7 @@ static void add_directory_to_dirlist(const char *dirname)
     }
     free(time_str);
 
+    /*
     char *msg = dd_load_text_ext(dd, FILENAME_REPORTED_TO, 0
                 | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
                 | DD_FAIL_QUIETLY_ENOENT
@@ -79,12 +80,33 @@ static void add_directory_to_dirlist(const char *dirname)
     );
     const char *reported = (msg ? GTK_STOCK_YES : GTK_STOCK_NO);
     free(msg);
+    */
+
     char *reason = dd_load_text(dd, FILENAME_REASON);
+
+    /* the source of the problem:
+     * - first we try to load component, as we use it on Fedora
+    */
+    char *source = dd_load_text_ext(dd, FILENAME_COMPONENT, 0
+                | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                | DD_FAIL_QUIETLY_ENOENT
+                | DD_FAIL_QUIETLY_EACCES
+    );
+    /* if we don't have component, we fallback to executable */
+    if (!source)
+    {
+        source = dd_load_text_ext(dd, FILENAME_EXECUTABLE, 0
+                | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                | DD_FAIL_QUIETLY_ENOENT
+                | DD_FAIL_QUIETLY_EACCES
+        );
+    }
+
 
     GtkTreeIter iter;
     gtk_list_store_append(s_dumps_list_store, &iter);
     gtk_list_store_set(s_dumps_list_store, &iter,
-                          COLUMN_REPORTED, reported,
+                          COLUMN_SOURCE, source,
                           COLUMN_REASON, reason,
                           COLUMN_DIRNAME, dd->dd_dirname,
                           //OPTION: time format
@@ -362,14 +384,14 @@ static void add_columns(GtkTreeView *treeview)
     GtkCellRenderer *renderer;
     GtkTreeViewColumn *column;
 
-    renderer = gtk_cell_renderer_pixbuf_new();
-    column = gtk_tree_view_column_new_with_attributes(_("Reported"),
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(_("Source"),
                                                      renderer,
-                                                     "stock_id",
-                                                     COLUMN_REPORTED,
+                                                     "text",
+                                                     COLUMN_SOURCE,
                                                      NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
-    gtk_tree_view_column_set_sort_column_id(column, COLUMN_REPORTED);
+    gtk_tree_view_column_set_sort_column_id(column, COLUMN_SOURCE);
     gtk_tree_view_append_column(treeview, column);
 
     renderer = gtk_cell_renderer_text_new();
@@ -478,7 +500,7 @@ static GtkWidget *create_main_window(void)
     gtk_container_add(GTK_CONTAINER(scroll_win), s_treeview);
 
     /* Create data store for the list and attach it */
-    s_dumps_list_store = gtk_list_store_new(NUM_COLUMNS, G_TYPE_STRING, /* reported */
+    s_dumps_list_store = gtk_list_store_new(NUM_COLUMNS, G_TYPE_STRING, /* source */
                                                        G_TYPE_STRING, /* executable */
                                                        G_TYPE_STRING, /* hostname */
                                                        G_TYPE_STRING, /* time */
