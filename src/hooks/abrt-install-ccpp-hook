@@ -6,29 +6,14 @@
 dry_run=false
 verbose=false
 
-DEFAULT_LOCATION=/var/spool/abrt
-
-wspace='[       ]*'
-DUMP_LOCATION=`grep "^${wspace}DumpLocation${wspace}=" @sysconfdir@/abrt/abrt.conf \
-    |  sed -e  "s/^${wspace}DumpLocation${wspace}=${wspace}//" -e "s/${wspace}\$//"`
-
-if [ x"$DUMP_LOCATION" = x"" ]; then
-    DUMP_LOCATION=$DEFAULT_LOCATION
-else
-    if [ x"${DUMP_LOCATION#* }" != x"$DUMP_LOCATION" ]; then
-        # DUMP_LOCATION has a space.
-	DUMP_LOCATION=$DEFAULT_LOCATION
-    fi
-fi
-
 PATTERN_FILE="/proc/sys/kernel/core_pattern"
 SAVED_PATTERN_DIR="/var/run/abrt"
 SAVED_PATTERN_FILE="/var/run/abrt/saved_core_pattern"
 HOOK_BIN="/usr/libexec/abrt-hook-ccpp"
 # Must match percent_specifiers[] order in abrt-hook-ccpp.c:
-PATTERN="|$HOOK_BIN $DUMP_LOCATION %s %c %p %u %g %t %e"
+PATTERN="|$HOOK_BIN /var/spool/abrt %s %c %p %u %g %t %e"
 # Same, but with bogus "executable name" parameter
-PATTERN1="|$HOOK_BIN $DUMP_LOCATION %s %c %p %u %g %t e"
+PATTERN1="|$HOOK_BIN /var/spool/abrt %s %c %p %u %g %t e"
 
 # core_pipe_limit specifies how many dump_helpers can run at the same time
 # 0 - means unlimited, but it's not guaranteed that /proc/<pid> of crashing
