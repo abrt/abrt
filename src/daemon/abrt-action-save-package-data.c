@@ -20,7 +20,117 @@
 #include "abrtlib.h"
 #include "rpm.h"
 
-// TODO: convert g_settings_foo usage to command-line switches
+static bool   settings_bOpenGPGCheck = false;
+static GList *settings_setOpenGPGPublicKeys = NULL;
+static GList *settings_setBlackListedPkgs = NULL;
+static GList *settings_setBlackListedPaths = NULL;
+static bool   settings_bProcessUnpackaged = false;
+
+static GList *parse_list(const char* list)
+{
+    struct strbuf *item = strbuf_new();
+    GList *l = NULL;
+
+    char *trim_item = NULL;
+
+    for (unsigned ii = 0; list[ii]; ii++)
+    {
+        if (list[ii] == ',')
+        {
+            trim_item = strtrim(item->buf);
+            l = g_list_append(l, xstrdup(trim_item));
+            strbuf_clear(item);
+        }
+        else
+            strbuf_append_char(item, list[ii]);
+    }
+
+    if (item->len > 0)
+    {
+        trim_item = strtrim(item->buf);
+        l = g_list_append(l, xstrdup(trim_item));
+    }
+
+    strbuf_free(item);
+
+    return l;
+}
+
+static void ParseCommon(map_string_h *settings, const char *conf_filename)
+{
+    char *value;
+
+    value = g_hash_table_lookup(settings, "OpenGPGCheck");
+    if (value)
+    {
+        settings_bOpenGPGCheck = string_to_bool(value);
+        g_hash_table_remove(settings, "OpenGPGCheck");
+    }
+
+    value = g_hash_table_lookup(settings, "BlackList");
+    if (value)
+    {
+        settings_setBlackListedPkgs = parse_list(value);
+        g_hash_table_remove(settings, "BlackList");
+    }
+
+    value = g_hash_table_lookup(settings, "BlackListedPaths");
+    if (value)
+    {
+        settings_setBlackListedPaths = parse_list(value);
+        g_hash_table_remove(settings, "BlackListedPaths");
+    }
+
+    value = g_hash_table_lookup(settings, "ProcessUnpackaged");
+    if (value)
+    {
+        settings_bProcessUnpackaged = string_to_bool(value);
+        g_hash_table_remove(settings, "ProcessUnpackaged");
+    }
+
+    GHashTableIter iter;
+    char *name;
+    /*char *value; - already declared */
+    g_hash_table_iter_init(&iter, settings);
+    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
+    {
+        error_msg("Unrecognized variable '%s' in '%s'", name, conf_filename);
+    }
+}
+
+static void load_gpg_keys(void)
+{
+    FILE *fp = fopen(CONF_DIR"/gpg_keys", "r");
+    if (fp)
+    {
+        /* every line is one key
+         * FIXME: make it more robust, it doesn't handle comments
+         */
+        char *line;
+        while ((line = xmalloc_fgetline(fp)) != NULL)
+        {
+            if (line[0] == '/') // probably the beginning of a path, so let's handle it as a key
+                settings_setOpenGPGPublicKeys = g_list_append(settings_setOpenGPGPublicKeys, line);
+            else
+                free(line);
+        }
+        fclose(fp);
+    }
+}
+
+static int load_conf(const char *conf_filename)
+{
+    map_string_h *settings = new_map_string();
+    if (!load_conf_file(conf_filename, settings, /*skip key w/o values:*/ false))
+        error_msg("Can't open '%s'", conf_filename);
+
+    ParseCommon(settings, conf_filename);
+    free_map_string(settings);
+
+    load_gpg_keys();
+
+    return 0;
+}
 
 /**
  * Returns the first full path argument in the command line or NULL.
@@ -61,7 +171,7 @@ static char *get_argv1_if_full_path(const char* cmdline)
 static bool is_path_blacklisted(const char *path)
 {
     GList *li;
-    for (li = g_settings_setBlackListedPaths; li != NULL; li = g_list_next(li))
+    for (li = settings_setBlackListedPaths; li != NULL; li = g_list_next(li))
     {
         if (fnmatch((char*)li->data, path, /*flags:*/ 0) == 0)
         {
@@ -117,7 +227,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
         package_full_name = rpm_get_package_nvr(executable);
         if (!package_full_name)
         {
-            if (g_settings_bProcessUnpackaged || remote)
+            if (settings_bProcessUnpackaged || remote)
             {
                 VERB2 log("Crash in unpackaged executable '%s', proceeding without packaging information", executable);
                 dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
@@ -170,7 +280,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
                         }
                     }
                 }
-                if (!script_pkg && !g_settings_bProcessUnpackaged && !remote)
+                if (!script_pkg && !settings_bProcessUnpackaged && !remote)
                 {
                     log("Interpreter crashed, but no packaged script detected: '%s'", cmdline);
                     goto ret; /* return 1 (failure) */
@@ -183,7 +293,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
 
         GList *li;
 
-        for (li = g_settings_setBlackListedPkgs; li != NULL; li = g_list_next(li))
+        for (li = settings_setBlackListedPkgs; li != NULL; li = g_list_next(li))
         {
             if (strcmp((char*)li->data, package_short_name) == 0)
             {
@@ -192,7 +302,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
             }
         }
 
-        if (g_settings_bOpenGPGCheck && !remote)
+        if (settings_bOpenGPGCheck && !remote)
         {
             if (!rpm_chk_fingerprint(package_short_name))
             {
@@ -243,21 +353,24 @@ int main(int argc, char **argv)
     abrt_init(argv);
 
     const char *dump_dir_name = ".";
+    const char *conf_filename = CONF_DIR"/abrt-action-save-package-data.conf";
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "\b [-v] -d DIR\n"
+        "\b [-v] [-c CONFFILE] -d DIR\n"
         "\n"
         "Query package database and save package name, component, and description"
     );
     enum {
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
+        OPT_c = 1 << 2,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_STRING('d', NULL, &dump_dir_name, "DIR", _("Dump directory")),
+        OPT_STRING('d', NULL, &dump_dir_name, "DIR"     , _("Dump directory")),
+        OPT_STRING('c', NULL, &conf_filename, "CONFFILE", _("Configuration file")),
         OPT_END()
     };
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
@@ -265,14 +378,14 @@ int main(int argc, char **argv)
     export_abrt_envvars(0);
 
     VERB1 log("Loading settings");
-    if (load_abrt_conf() != 0)
-        return 1; /* syntax error (logged already by load_abrt_conf) */
+    if (load_conf(conf_filename) != 0)
+        return 1; /* syntax error (logged already by load_conf) */
 
     VERB1 log("Initializing rpm library");
     rpm_init();
 
     GList *li;
-    for (li = g_settings_setOpenGPGPublicKeys; li != NULL; li = g_list_next(li))
+    for (li = settings_setOpenGPGPublicKeys; li != NULL; li = g_list_next(li))
     {
         VERB1 log("Loading GPG key '%s'", (char*)li->data);
         rpm_load_gpgkey((char*)li->data);
