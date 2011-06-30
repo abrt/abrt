@@ -191,7 +191,7 @@ static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid, char **per
     if (user_pwd == NULL
      || chdir(user_pwd) != 0
     ) {
-        perror_msg("can't cd to %s", user_pwd);
+        perror_msg("Can't cd to %s", user_pwd);
         return -1;
     }
 
@@ -439,7 +439,7 @@ int main(int argc, char** argv)
     if (executable == NULL)
     {
         /* readlink on /proc/$PID/exe failed, don't create abrt dump dir */
-        error_msg("can't read /proc/%lu/exe link", (long)pid);
+        error_msg("Can't read /proc/%lu/exe link", (long)pid);
         goto create_user_core;
     }
 
@@ -606,7 +606,7 @@ int main(int argc, char** argv)
                 unlink(core_basename);
             }
             errno = sv_errno;
-            perror_msg_and_die("can't open '%s'", path);
+            perror_msg_and_die("Can't open '%s'", path);
         }
         fchown(abrt_core_fd, dd->dd_uid, dd->dd_gid);
 

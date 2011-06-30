@@ -275,7 +275,7 @@ abrt_post(abrt_post_state_t *state,
         data_file = fopen(data, "r");
         if (!data_file)
 //FIXME:
-            perror_msg_and_die("can't open '%s'", data);
+            perror_msg_and_die("Can't open '%s'", data);
         xcurl_easy_setopt_ptr(handle, CURLOPT_READDATA, data_file);
         // Want to use custom read function
         xcurl_easy_setopt_ptr(handle, CURLOPT_READFUNCTION, (const void*)fread_with_reporting);
@@ -296,7 +296,7 @@ abrt_post(abrt_post_state_t *state,
         data_file = fopen(data, "r");
         if (!data_file)
 //FIXME:
-            perror_msg_and_die("can't open '%s'", data);
+            perror_msg_and_die("Can't open '%s'", data);
         // Want to use custom read function
         xcurl_easy_setopt_ptr(handle, CURLOPT_READFUNCTION, (const void*)fread_with_reporting);
         // Need to know file size

@@ -124,10 +124,11 @@ static int create_and_upload_archive(
 
     /* Create a child gzip which will compress the data */
     /* SELinux guys are not happy with /tmp, using /var/run/abrt */
-    tempfile = xasprintf(LOCALSTATEDIR"/run/abrt/upload-%s-%lu.tar.gz", iso_date_string(NULL), (long)getpid());
+    /* Reverted back to /tmp for ABRT2 */
+    tempfile = xasprintf("/tmp/abrt-upload-%s-%lu.tar.gz", iso_date_string(NULL), (long)getpid());
     int pipe_from_parent_to_child[2];
     xpipe(pipe_from_parent_to_child);
-    child = fork();
+    child = vfork();
     if (child == 0)
     {
         /* child */
@@ -135,27 +136,34 @@ static int create_and_upload_archive(
         xmove_fd(pipe_from_parent_to_child[0], 0);
         xmove_fd(xopen3(tempfile, O_WRONLY | O_CREAT | O_EXCL, 0600), 1);
         execlp("gzip", "gzip", NULL);
-        perror_msg_and_die("can't execute '%s'", "gzip");
+        perror_msg_and_die("Can't execute '%s'", "gzip");
     }
     close(pipe_from_parent_to_child[0]);
+
+    /* If child died (say, in xopen), then parent might get SIGPIPE.
+     * We want to properly unlock dd, therefore we must not die on SIGPIPE:
+     */
+    signal(SIGPIPE, SIG_IGN);
 
     /* Create tar writer object */
     if (tar_fdopen(&tar, pipe_from_parent_to_child[1], tempfile,
                 /*fileops:(standard)*/ NULL, O_WRONLY | O_CREAT, 0644, TAR_GNU) != 0)
     {
-        errmsg = "Can't create temporary file in "LOCALSTATEDIR"/run/abrt";
+        errmsg = "Can't create temporary file in /tmp";
         goto ret;
     }
 
     /* Write data to the tarball */
     {
+        char *exclude_from_report = getenv("EXCLUDE_FROM_REPORT");
         dd_init_next_file(dd);
         char *short_name, *full_name;
         while (dd_get_next_file(dd, &short_name, &full_name))
         {
-            if (strcmp(short_name, FILENAME_COUNT) == 0) goto next;
-            if (strcmp(short_name, CD_DUMPDIR) == 0) goto next;
-            // dd_get_next_file guarantees this:
+            if (exclude_from_report && is_in_comma_separated_list(short_name, exclude_from_report))
+                goto next;
+
+            // dd_get_next_file guarantees that it's a REG:
             //struct stat stbuf;
             //if (stat(full_name, &stbuf) != 0)
             // || !S_ISREG(stbuf.st_mode)
@@ -164,7 +172,7 @@ static int create_and_upload_archive(
             //}
             if (tar_append_file(tar, full_name, short_name) != 0)
             {
-                errmsg = "Can't create temporary file in "LOCALSTATEDIR"/run/abrt";
+                errmsg = "Can't create temporary file in /tmp";
                 free(short_name);
                 free(full_name);
                 goto ret;
@@ -180,7 +188,7 @@ static int create_and_upload_archive(
     /* Close tar writer... */
     if (tar_append_eof(tar) != 0 || tar_close(tar) != 0)
     {
-        errmsg = "Can't create temporary file in "LOCALSTATEDIR"/run/abrt";
+        errmsg = "Can't create temporary file in /tmp";
         goto ret;
     }
     tar = NULL;
@@ -191,7 +199,7 @@ static int create_and_upload_archive(
     if (status != 0)
     {
         /* We assume the error was out-of-disk-space or out-of-quota */
-        errmsg = "Can't create temporary file in "LOCALSTATEDIR"/run/abrt";
+        errmsg = "Can't create temporary file in /tmp";
         goto ret;
     }
 
@@ -238,7 +246,15 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         "\b [-v] -d DIR [-c CONFFILE] [-u URL]\n"
         "\n"
-        "Uploads compressed tarball of dump directory DIR"
+        "Uploads compressed tarball of dump directory DIR to URL.\n"
+        "If URL is not specified, creates tarball in /tmp and exits.\n"
+        "\n"
+        "Files with names listed in $EXCLUDE_FROM_REPORT are not included\n"
+        "into the tarball.\n"
+        "\n"
+        "CONFFILE lines should have 'PARAM = VALUE' format.\n"
+        "Recognized string parameter: URL.\n"
+        "Parameter can be overridden via $Upload_URL."
     );
     enum {
         OPT_v = 1 << 0,

@@ -67,6 +67,7 @@ MAN_TXT = \
     abrt-action-trim-files.txt \
     abrt-action-generate-backtrace.txt \
     abrt-action-analyze-backtrace.txt \
+    abrt-action-analyze-oops.txt \
     abrt-action-mailx.txt \
     abrt-action-bugzilla.txt \
     abrt-action-list-dsos.txt \
