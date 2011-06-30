@@ -31,7 +31,7 @@ struct reportfile {
 static void __attribute__((__noreturn__))
 die_xml_oom(void)
 {
-    error_msg_and_die("can't create XML attribute (out of memory?)");
+    error_msg_and_die("Can't create XML attribute (out of memory?)");
 }
 
 static xmlBufferPtr

@@ -49,7 +49,7 @@ def write_dump(pid, tb):
         s.close()
     except Exception, ex:
         import syslog
-        syslog.syslog("can't communicate with ABRT daemon, is it running? %s", str(ex))
+        syslog.syslog("Can't communicate with ABRT daemon, is it running? %s", str(ex))
 
 def handleMyException((etype, value, tb)):
     """
