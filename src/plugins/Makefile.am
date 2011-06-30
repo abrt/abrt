@@ -26,8 +26,7 @@ bin_PROGRAMS = \
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 
-dist_pluginsconf_DATA = \
-    Python.conf
+#dist_pluginsconf_DATA = Python.conf
 
 reportpluginsconfdir = $(REPORT_PLUGINS_CONF_DIR)
 

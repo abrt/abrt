@@ -88,6 +88,7 @@ dist_dbusabrtconf_DATA = dbus-abrt.conf
 daemonconfdir = $(CONF_DIR)
 dist_daemonconf_DATA = \
     abrt.conf \
+    abrt-action-save-package-data.conf \
     gpg_keys
 
 comredhatabrtservicedir = ${datadir}/dbus-1/system-services
