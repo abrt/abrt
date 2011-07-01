@@ -20,16 +20,13 @@ Source2: abrt-ccpp.init
 Source3: abrt-oops.init
 BuildRequires: dbus-devel
 BuildRequires: gtk2-devel
-BuildRequires: curl-devel
 BuildRequires: rpm-devel >= 4.6
 BuildRequires: desktop-file-utils
 BuildRequires: libnotify-devel
-BuildRequires: xmlrpc-c-devel
 #why? BuildRequires: file-devel
 BuildRequires: python-devel
 BuildRequires: gettext
 BuildRequires: libxml2-devel
-BuildRequires: libtar-devel
 BuildRequires: intltool
 BuildRequires: libtool
 BuildRequires: nss-devel
@@ -105,60 +102,13 @@ Summary: %{name}'s kerneloops addon
 Group: System Environment/Libraries
 Requires: curl
 Requires: %{name} = %{version}-%{release}
+Requires: libreport-plugin-kerneloops
 Obsoletes: kerneloops > 0.0.1
 Obsoletes: abrt-plugin-kerneloops > 0.0.1
 Obsoletes: abrt-plugin-kerneloopsreporter > 0.0.1
 
 %description addon-kerneloops
-This package contains plugin for collecting kernel crash information
-and reporter plugin which sends this information to specified server,
-usually to kerneloops.org.
-
-%package plugin-logger
-Summary: %{name}'s logger reporter plugin
-Group: System Environment/Libraries
-Requires: %{name} = %{version}-%{release}
-
-%description plugin-logger
-The simple reporter plugin which writes a report to a specified file.
-
-%package plugin-mailx
-Summary: %{name}'s mailx reporter plugin
-Group: System Environment/Libraries
-Requires: %{name} = %{version}-%{release}
-Requires: mailx
-
-%description plugin-mailx
-The simple reporter plugin which sends a report via mailx to a specified
-email address.
-
-%package plugin-bugzilla
-Summary: %{name}'s bugzilla plugin
-Group: System Environment/Libraries
-Requires: %{name} = %{version}-%{release}
-
-%description plugin-bugzilla
-Plugin to report bugs into the bugzilla.
-
-%package plugin-rhtsupport
-Summary: %{name}'s RHTSupport plugin
-Group: System Environment/Libraries
-Requires: %{name} = %{version}-%{release}
-Obsoletes: abrt-plugin-catcut > 0.0.1
-Obsoletes: abrt-plugin-rhfastcheck > 0.0.1
-Obsoletes: abrt-plugin-rhticket > 0.0.1
-
-%description plugin-rhtsupport
-Plugin to report bugs into RH support system.
-
-%package plugin-reportuploader
-Summary: %{name}'s reportuploader plugin
-Group: System Environment/Libraries
-Requires: %{name} = %{version}-%{release}
-Obsoletes: abrt-plugin-ticketuploader > 0.0.1
-
-%description plugin-reportuploader
-Plugin to report bugs into anonymous FTP site associated with ticketing system.
+This package contains plugin for collecting kernel crash information.
 
 %package addon-python
 Summary: %{name}'s addon for catching and analyzing Python exceptions
@@ -179,7 +129,7 @@ Requires: %{name} = %{version}-%{release}
 Requires: libreport-cli
 Requires: abrt-addon-kerneloops
 Requires: abrt-addon-ccpp, abrt-addon-python
-Requires: abrt-plugin-bugzilla, abrt-plugin-logger
+Requires: libreport-plugin-bugzilla, libreport-plugin-logger
 
 %description cli
 This package contains simple command line client for controlling abrt daemon over
@@ -199,7 +149,7 @@ Requires: abrt-addon-ccpp, abrt-addon-python
 # Default config of addon-ccpp requires gdb
 Requires: gdb >= 7.0-3
 Requires: abrt-gui
-Requires: abrt-plugin-logger, abrt-plugin-bugzilla
+Requires: libreport-plugin-logger, libreport-plugin-bugzilla
 #Requires: abrt-plugin-firefox
 Obsoletes: bug-buddy > 0.0.1
 Provides: bug-buddy
@@ -458,52 +408,15 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files addon-kerneloops
 %defattr(-,root,root,-)
-%{_sysconfdir}/libreport/events/report_Kerneloops.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/koops_event.conf
 %if %{with systemd}
 /lib/systemd/system/abrt-oops.service
 %else
 %{_initrddir}/abrt-oops
 %endif
-%{_mandir}/man*/abrt-action-analyze-oops.*
-%{_mandir}/man*/abrt-action-kerneloops.*
 %{_bindir}/abrt-dump-oops
 %{_bindir}/abrt-action-analyze-oops
-%{_bindir}/abrt-action-kerneloops
-
-%files plugin-logger
-%defattr(-,root,root,-)
-%{_sysconfdir}/libreport/events/report_Logger.conf
-%{_bindir}/abrt-action-print
-%{_mandir}/man*/abrt-action-print.*
-
-%files plugin-mailx
-%defattr(-,root,root,-)
-%{_sysconfdir}/libreport/events/report_Mailx.xml
-%config(noreplace) %{_sysconfdir}/libreport/events.d/mailx_event.conf
-%{_mandir}/man*/abrt-action-mailx.*
-%{_bindir}/abrt-action-mailx
-
-%files plugin-bugzilla
-%defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/libreport/plugins/Bugzilla.conf
-%{_sysconfdir}/libreport/events/report_Bugzilla.xml
-%config(noreplace) %{_sysconfdir}/libreport/events/report_Bugzilla.conf
-# FIXME: remove with the old gui
-%{_mandir}/man1/abrt-action-bugzilla.1.gz
-%{_bindir}/abrt-action-bugzilla
-
-%files plugin-rhtsupport
-%defattr(-,root,root,-)
-%{_sysconfdir}/libreport/events/report_RHTSupport.xml
-%config(noreplace) %{_sysconfdir}/libreport/events.d/rhtsupport_event.conf
-# {_mandir}/man7/abrt-RHTSupport.7.gz
-%{_bindir}/abrt-action-rhtsupport
-
-%files plugin-reportuploader
-%defattr(-,root,root,-)
-%{_mandir}/man*/abrt-action-upload.*
-%{_bindir}/abrt-action-upload
+%{_mandir}/man1/abrt-action-analyze-oops.1*
 
 %files addon-python
 %defattr(-,root,root,-)

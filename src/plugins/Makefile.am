@@ -15,12 +15,6 @@ bin_PROGRAMS = \
     abrt-action-trim-files \
     abrt-action-generate-backtrace \
     abrt-action-analyze-backtrace \
-    abrt-action-bugzilla \
-    abrt-action-rhtsupport \
-    abrt-action-kerneloops \
-    abrt-action-upload \
-    abrt-action-mailx \
-    abrt-action-print \
     abrt-action-install-debuginfo-to-abrt-cache \
     abrt-retrace-client
 
@@ -28,24 +22,13 @@ pluginsconfdir = $(PLUGINS_CONF_DIR)
 
 #dist_pluginsconf_DATA = Python.conf
 
-reportpluginsconfdir = $(REPORT_PLUGINS_CONF_DIR)
-
-dist_reportpluginsconf_DATA = \
-    Bugzilla.conf
-
 eventsdir = $(EVENTS_DIR)
 
 dist_events_DATA = \
-    report_Bugzilla.xml \
-    report_Bugzilla.conf \
-    report_Logger.conf \
     analyze_LocalGDB.xml \
     analyze_RetraceServer.xml \
     analyze_xsession_errors.xml \
-    analyze_Smolt.xml \
-    report_Mailx.xml \
-    report_RHTSupport.xml \
-    report_Kerneloops.xml
+    analyze_Smolt.xml
 
 @INTLTOOL_XML_RULE@
 
@@ -53,9 +36,7 @@ eventsconfdir = $(EVENTS_CONF_DIR)
 
 dist_eventsconf_DATA = \
     ccpp_event.conf \
-    mailx_event.conf \
     koops_event.conf \
-    rhtsupport_event.conf \
     smart_event.conf \
     smolt_event.conf
 
@@ -63,16 +44,11 @@ man_MANS = \
     abrt-plugins.7
 
 MAN_TXT = \
-    abrt-action-print.txt \
     abrt-action-trim-files.txt \
     abrt-action-generate-backtrace.txt \
     abrt-action-analyze-backtrace.txt \
     abrt-action-analyze-oops.txt \
-    abrt-action-mailx.txt \
-    abrt-action-bugzilla.txt \
     abrt-action-list-dsos.txt \
-    abrt-action-kerneloops.txt \
-    abrt-action-upload.txt \
     abrt-retrace-client.txt
 
 # Manual pages are generated from .txt via Docbook
@@ -100,13 +76,7 @@ EXTRA_DIST = \
     analyze_Smolt.xml.in \
     analyze_xsession_errors.xml.in \
     analyze_LocalGDB.xml.in \
-    analyze_RetraceServer.xml.in \
-    report_Bugzilla.xml.in \
-    report_Bugzilla.conf \
-    report_Logger.conf \
-    report_Mailx.xml.in \
-    report_RHTSupport.xml.in \
-    report_Kerneloops.xml.in
+    analyze_RetraceServer.xml.in
 
 $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'
@@ -254,140 +224,6 @@ abrt_action_analyze_backtrace_CPPFLAGS = \
 abrt_action_analyze_backtrace_LDADD = \
     $(LIBREPORT_LIBS) \
     $(BTPARSER_LIBS)
-
-abrt_action_bugzilla_SOURCES = \
-    abrt-action-bugzilla.c rhbz.c rhbz.h
-abrt_action_bugzilla_CPPFLAGS = \
-    -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
-    $(GLIB_CFLAGS) \
-    $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings
-abrt_action_bugzilla_LDADD = \
-    $(GLIB_LIBS) \
-    ../lib/libabrt_web.la \
-    $(LIBREPORT_LIBS)
-
-abrt_action_rhtsupport_SOURCES = \
-    abrt_rh_support.h abrt_rh_support.c \
-    abrt-action-rhtsupport.c
-abrt_action_rhtsupport_CPPFLAGS = \
-    -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
-    $(GLIB_CFLAGS) \
-    $(LIBREPORT_CFLAGS) \
-    $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
-abrt_action_rhtsupport_LDFLAGS = -ltar
-abrt_action_rhtsupport_LDADD = \
-    $(GLIB_LIBS) \
-    $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
-    ../lib/libabrt_web.la \
-    $(LIBREPORT_LIBS)
-
-abrt_action_upload_SOURCES = \
-    abrt-action-upload.c
-abrt_action_upload_CPPFLAGS = \
-    -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
-    $(GLIB_CFLAGS) \
-    $(CURL_CFLAGS) \
-    $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
-abrt_action_upload_LDFLAGS = -ltar
-abrt_action_upload_LDADD = \
-    $(GLIB_LIBS) \
-    $(CURL_LIBS) \
-    $(LIBREPORT_LIBS)
-
-abrt_action_kerneloops_SOURCES = \
-    abrt-action-kerneloops.c
-abrt_action_kerneloops_CPPFLAGS = \
-    -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
-    $(GLIB_CFLAGS) \
-    $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
-abrt_action_kerneloops_LDADD = \
-    ../lib/libabrt_web.la \
-    $(LIBREPORT_LIBS)
-
-abrt_action_mailx_SOURCES = \
-    abrt-action-mailx.c
-abrt_action_mailx_CPPFLAGS = \
-    -I$(srcdir)/../libreport/src/include/ -I$(srcdir)/../include \
-    -I$(srcdir)/../libreport/src/lib \
-    -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
-    $(GLIB_CFLAGS) \
-    $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
-abrt_action_mailx_LDADD = \
-    $(LIBREPORT_LIBS)
-
-abrt_action_print_SOURCES = \
-    abrt-action-print.c
-abrt_action_print_CPPFLAGS = \
-    -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(REPORT_PLUGINS_CONF_DIR)\" \
-    $(GLIB_CFLAGS) \
-    $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
-abrt_action_print_LDADD = \
-    $(LIBREPORT_LIBS)
 
 abrt_action_install_debuginfo_to_abrt_cache_SOURCES = \
     abrt-action-install-debuginfo-to-abrt-cache.c
