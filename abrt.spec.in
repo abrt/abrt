@@ -464,6 +464,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %else
 %{_initrddir}/abrt-oops
 %endif
+%{_mandir}/man*/abrt-action-analyze-oops.*
 %{_mandir}/man*/abrt-action-kerneloops.*
 %{_bindir}/abrt-dump-oops
 %{_bindir}/abrt-action-analyze-oops
