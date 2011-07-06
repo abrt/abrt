@@ -53,10 +53,10 @@ dist_events_DATA = \
 eventsconfdir = $(EVENTS_CONF_DIR)
 
 dist_eventsconf_DATA = \
-    ccpp_events.conf \
-    mailx_events.conf \
-    koops_events.conf \
-    rhtsupport_events.conf \
+    ccpp_event.conf \
+    mailx_event.conf \
+    koops_event.conf \
+    rhtsupport_event.conf \
     smart_event.conf
 
 man_MANS = \
