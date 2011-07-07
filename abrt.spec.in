@@ -456,7 +456,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files addon-kerneloops
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/libreport/plugins/Kerneloops.conf
 %{_sysconfdir}/libreport/events/report_Kerneloops.xml
 %config(noreplace) %{_sysconfdir}/libreport/events.d/koops_event.conf
 %if %{with systemd}
@@ -501,7 +500,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files plugin-reportuploader
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/libreport/plugins/Upload.conf
 %{_mandir}/man*/abrt-action-upload.*
 %{_bindir}/abrt-action-upload
 

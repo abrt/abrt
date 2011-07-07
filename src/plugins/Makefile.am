@@ -31,9 +31,7 @@ pluginsconfdir = $(PLUGINS_CONF_DIR)
 reportpluginsconfdir = $(REPORT_PLUGINS_CONF_DIR)
 
 dist_reportpluginsconf_DATA = \
-    Kerneloops.conf \
-    Bugzilla.conf \
-    Upload.conf
+    Bugzilla.conf
 
 eventsdir = $(EVENTS_DIR)
 
