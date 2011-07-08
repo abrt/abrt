@@ -132,7 +132,14 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         "\b [-v] [-c CONFFILE]... -d DIR\n"
         "\n"
-        "Reports kernel oops to kerneloops.org (or similar) site"
+        "Reports kernel oops to kerneloops.org (or similar) site.\n"
+        "\n"
+        "Files with names listed in $EXCLUDE_FROM_REPORT are not included\n"
+        "into the tarball.\n"
+        "\n"
+        "CONFFILE lines should have 'PARAM = VALUE' format.\n"
+        "Recognized string parameter: SubmitURL.\n"
+        "Parameter can be overridden via $KerneloopsReporter_SubmitURL."
     );
     enum {
         OPT_v = 1 << 0,
