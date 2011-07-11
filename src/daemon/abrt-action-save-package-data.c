@@ -359,7 +359,7 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         "\b [-v] [-c CONFFILE] -d DIR\n"
         "\n"
-        "Query package database and save package name, component, and description"
+        "Query package database and save package and component name"
     );
     enum {
         OPT_v = 1 << 0,
