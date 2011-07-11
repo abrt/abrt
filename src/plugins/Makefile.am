@@ -42,6 +42,7 @@ dist_events_DATA = \
     analyze_LocalGDB.xml \
     analyze_RetraceServer.xml \
     analyze_xsession_errors.xml \
+    analyze_Smolt.xml \
     report_Mailx.xml \
     report_RHTSupport.xml \
     report_Kerneloops.xml
@@ -55,7 +56,8 @@ dist_eventsconf_DATA = \
     mailx_event.conf \
     koops_event.conf \
     rhtsupport_event.conf \
-    smart_event.conf
+    smart_event.conf \
+    smolt_event.conf
 
 man_MANS = \
     abrt-plugins.7
@@ -95,6 +97,7 @@ EXTRA_DIST = \
     $(MAN_TXT) \
     $(PYTHON_FILES) \
     $(man1_MANS) \
+    analyze_Smolt.xml.in \
     analyze_xsession_errors.xml.in \
     analyze_LocalGDB.xml.in \
     analyze_RetraceServer.xml.in \
