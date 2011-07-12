@@ -61,11 +61,8 @@ PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.21])
 PKG_CHECK_MODULES([DBUS], [dbus-1])
 PKG_CHECK_MODULES([LIBXML], [libxml-2.0])
 PKG_CHECK_MODULES([RPM], [rpm])
-PKG_CHECK_MODULES([CURL], [libcurl])
 PKG_CHECK_MODULES([LIBNOTIFY], [libnotify])
 PKG_CHECK_MODULES([NSS], [nss])
-PKG_CHECK_MODULES([XMLRPC], [xmlrpc])
-PKG_CHECK_MODULES([XMLRPC_CLIENT], [xmlrpc_client])
 PKG_CHECK_MODULES([GNOME_KEYRING], [gnome-keyring-1])
 PKG_CHECK_MODULES([BTPARSER], [btparser])
 PKG_CHECK_MODULES([LIBREPORT], [libreport])
@@ -83,9 +80,6 @@ AC_ARG_WITH([systemdsystemunitdir],
         [], [with_systemdsystemunitdir=$($PKG_CONFIG --variable=systemdsystemunitdir systemd)])
 AC_SUBST([systemdsystemunitdir], [$with_systemdsystemunitdir])
 AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$with_systemdsystemunitdir"])
-
-AC_CHECK_HEADER([libtar.h], [],
-   [AC_MSG_ERROR([libtar.h is needed to build abrt])])
 
 AC_CHECK_HEADER([sys/inotify.h], [],
    [AC_MSG_ERROR([sys/inotify.h is needed to build abrt])])
