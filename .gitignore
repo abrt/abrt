@@ -8,33 +8,22 @@
 *.la
 
 # ignore binaries
-src/plugins/abrt-action-analyze-c
-src/plugins/abrt-action-analyze-oops
-src/plugins/abrt-action-bugzilla
-src/plugins/abrt-action-rhtsupport
-src/plugins/abrt-action-kerneloops
-src/plugins/abrt-action-analyze-python
-src/plugins/abrt-action-generate-backtrace
-src/plugins/abrt-action-upload
-src/plugins/abrt-action-mailx
-src/plugins/abrt-action-print
-src/plugins/abrt-dump-oops
-src/plugins/abrt-action-install-debuginfo-to-abrt-cache
-src/plugins/abrt-retrace-client
-src/plugins/abrt-action-analyze-backtrace
-src/plugins/abrt-action-trim-files
-
+src/applet/abrt-applet
 src/daemon/abrt-action-save-package-data
 src/daemon/abrt-server
 src/daemon/abrtd
-
 src/gui-gtk/abrt-gui
-
-src/applet/abrt-applet
-
+src/plugins/abrt-action-analyze-backtrace
+src/plugins/abrt-action-analyze-c
+src/plugins/abrt-action-analyze-oops
+src/plugins/abrt-action-analyze-python
+src/plugins/abrt-action-generate-backtrace
+src/plugins/abrt-action-install-debuginfo-to-abrt-cache
+src/plugins/abrt-action-trim-files
+src/plugins/abrt-dump-oops
+src/plugins/abrt-retrace-client
 src/hooks/abrt_exception_handler.py
 src/hooks/abrt-hook-ccpp
-
 src/applet/abrt-applet.desktop
 src/gui-gtk/abrt.desktop
 
