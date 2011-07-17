@@ -406,10 +406,6 @@ int main(int argc, char** argv)
     /* Parse abrt.conf */
     load_abrt_conf();
     free_abrt_conf_data(); /* can do this because we need only g_settings_nMaxCrashReportsSize */
-    /* x1.25: go a bit up, so that usual in-daemon trimming
-     * kicks in first, and we don't "fight" with it:
-     */
-    g_settings_nMaxCrashReportsSize += g_settings_nMaxCrashReportsSize / 4;
     /* ... and plugins/CCpp.conf */
     bool setting_MakeCompatCore;
     bool setting_SaveBinaryImage;
@@ -474,8 +470,12 @@ int main(int argc, char** argv)
 
     if (g_settings_nMaxCrashReportsSize > 0)
     {
-        g_settings_nMaxCrashReportsSize += g_settings_nMaxCrashReportsSize / 4;
-        check_free_space(g_settings_nMaxCrashReportsSize);
+        /* x1.25 and round up to 64m: go a bit up, so that usual in-daemon trimming
+         * kicks in first, and we don't "fight" with it:
+         */
+        unsigned maxsize = g_settings_nMaxCrashReportsSize + g_settings_nMaxCrashReportsSize / 4;
+        maxsize |= 63;
+        check_free_space(maxsize);
     }
 
     char path[PATH_MAX];
@@ -662,7 +662,12 @@ int main(int argc, char** argv)
         /* rhbz#539551: "abrt going crazy when crashing process is respawned" */
         if (g_settings_nMaxCrashReportsSize > 0)
         {
-            trim_debug_dumps(DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize * (double)(1024*1024), path);
+            /* x1.25 and round up to 64m: go a bit up, so that usual in-daemon trimming
+             * kicks in first, and we don't "fight" with it:
+             */
+            unsigned maxsize = g_settings_nMaxCrashReportsSize + g_settings_nMaxCrashReportsSize / 4;
+            maxsize |= 63;
+            trim_debug_dumps(DEBUG_DUMPS_DIR, maxsize * (double)(1024*1024), path);
         }
 
         return 0;
