@@ -334,8 +334,11 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
 
 static char *do_log(char *log_line, void *param)
 {
-    VERB1 log("%s", log_line);
-    //update_client("%s", log_line);
+    /* We pipe output of post-create events to our log (which usually
+     * includes syslog). Otherwise, errors on post-create result in
+     * "Corrupted or bad dump DIR, deleting" without adequate explanation why.
+     */
+    log("%s", log_line);
     return log_line;
 }
 
