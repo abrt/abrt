@@ -28,7 +28,7 @@ eventsdir = $(EVENTS_DIR)
 dist_events_DATA = \
     analyze_LocalGDB.xml \
     analyze_RetraceServer.xml \
-    analyze_xsession_errors.xml \
+    collect_xsession_errors.xml \
     analyze_Smolt.xml
 
 @INTLTOOL_XML_RULE@
@@ -78,7 +78,7 @@ EXTRA_DIST = \
     $(PYTHON_FILES) \
     $(man1_MANS) \
     analyze_Smolt.xml.in \
-    analyze_xsession_errors.xml.in \
+    collect_xsession_errors.xml.in \
     analyze_LocalGDB.xml.in \
     analyze_RetraceServer.xml.in
 
