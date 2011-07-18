@@ -4,8 +4,8 @@ pluginslibdir = $(PLUGINS_LIB_DIR)
 
 bin_SCRIPTS = \
     abrt-action-install-debuginfo \
-    abrt-action-analyze-core.py \
-    abrt-action-list-dsos.py
+    abrt-action-analyze-core \
+    abrt-action-list-dsos
 
 bin_PROGRAMS = \
     abrt-dump-oops \
@@ -65,8 +65,8 @@ CLEANFILES = $(man1_MANS)
 
 PYTHON_FILES = \
     abrt-action-install-debuginfo \
-    abrt-action-list-dsos.py \
-    abrt-action-analyze-core.py
+    abrt-action-list-dsos \
+    abrt-action-analyze-core
 
 EXTRA_DIST = \
     $(man_MANS) \

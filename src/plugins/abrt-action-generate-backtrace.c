@@ -83,7 +83,13 @@ static char* exec_vp(char **args, uid_t uid, int redirect_stderr, int *status)
         if (timeout < 0)
         {
             kill(child, SIGKILL);
-            strbuf_append_strf(buf_out, "\nTimeout exceeded: %u seconds, killing %s\n", exec_timeout_sec, args[0]);
+            strbuf_append_strf(buf_out, "\n"
+                        "Timeout exceeded: %u seconds, killing %s.\n"
+                        "Looks like gdb hung while generating backtrace.\n"
+                        "This may be a bug in gdb. Consider submitting a bug report to gdb developers.\n"
+                        "Please attach coredump from this crash to the bug report if you do.\n",
+                        exec_timeout_sec, args[0]
+            );
             break;
         }
 

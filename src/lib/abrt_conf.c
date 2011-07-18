@@ -43,6 +43,7 @@ static void ParseCommon(map_string_h *settings, const char *conf_filename)
     if (value)
     {
         char *end;
+        errno = 0;
         unsigned long ul = strtoul(value, &end, 10);
         if (errno || end == value || *end != '\0' || ul > INT_MAX)
             error_msg("Error parsing %s setting: '%s'", "MaxCrashReportsSize", value);

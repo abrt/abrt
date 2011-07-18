@@ -33,9 +33,14 @@ int daemon_is_ok()
 
     pid[len] = '\0';
     *strchrnul(pid, '\n') = '\0';
-    /* paranoia: we don't want to check /proc//stat or /proc///stat */
-    if (pid[0] == '\0' || pid[0] == '/')
-        return 0;
+    /* paranoia: only allow non-empty numeric strings */
+    unsigned i = 0;
+    do
+    {
+        if (pid[i] < '0' || pid[i] > '9')
+            return 0;
+        i++;
+    } while (pid[i] != '\0');
 
     char path[sizeof("/proc/%s/stat") + sizeof(pid)];
     sprintf(path, "/proc/%s/stat", pid);

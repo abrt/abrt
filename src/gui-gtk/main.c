@@ -293,10 +293,7 @@ static void on_button_send_cb(GtkWidget *button, gpointer data)
     /* why it doesn't want to hide before report ends? */
     gtk_widget_destroy(s_report_window);
 
-//TODO: LIBREPORT_WAIT is used here only because we don't want to leave temp dir.
-//Change to LIBREPORT_NOWAIT when libreport is taught to
-//properly delete temp dir even with LIBREPORT_NOWAIT.
-    int status = report_problem_in_memory(pd, LIBREPORT_WAIT);
+    int status = report_problem_in_memory(pd, LIBREPORT_NOWAIT);
     VERB1 log("Reporting finished with status %i", status);
     free_problem_data(pd);
 }
