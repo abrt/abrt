@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event>
+    <_name>Collect GConf configuration</_name>
+    <_description>Save configuration from application's GConf directory</_description>
+    <_long-description>Runs gconftool-2 --recursive-list /apps/executable and saves it as 'gconf_subtree' element.</_long-description>
+    <creates-items>gconf_subtree</creates-items>
+</event>

@@ -29,7 +29,8 @@ dist_events_DATA = \
     analyze_LocalGDB.xml \
     analyze_RetraceServer.xml \
     collect_xsession_errors.xml \
-    collect_Smolt.xml
+    collect_Smolt.xml \
+    collect_GConf.xml
 
 @INTLTOOL_XML_RULE@
 
@@ -42,7 +43,8 @@ dist_eventsconf_DATA = \
     vmcore_event.conf \
     python_event.conf \
     smart_event.conf \
-    smolt_event.conf
+    smolt_event.conf \
+    gconf_event.conf
 
 man_MANS = \
     abrt-plugins.7
@@ -79,6 +81,7 @@ EXTRA_DIST = \
     $(man1_MANS) \
     collect_Smolt.xml.in \
     collect_xsession_errors.xml.in \
+    collect_GConf.xml.in \
     analyze_LocalGDB.xml.in \
     analyze_RetraceServer.xml.in
 

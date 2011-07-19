@@ -442,9 +442,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-action-list-dsos
 %{_sbindir}/abrt-install-ccpp-hook
 %{_sysconfdir}/libreport/events.d/ccpp_event.conf
+%{_sysconfdir}/libreport/events.d/gconf_event.conf
 %{_sysconfdir}/libreport/events/analyze_LocalGDB.xml
 %{_sysconfdir}/libreport/events/collect_xsession_errors.xml
 %{_sysconfdir}/libreport/events/collect_Smolt.xml
+%{_sysconfdir}/libreport/events/collect_GConf.xml
 %{_mandir}/man*/abrt-action-trim-files.*
 %{_mandir}/man*/abrt-action-generate-backtrace.*
 %{_mandir}/man*/abrt-action-analyze-backtrace.*
