@@ -24,6 +24,7 @@
 #include <sslerr.h>
 #include <secerr.h>
 #include <secmod.h>
+#include <libreport/client.h>
 #if HAVE_LOCALE_H
 # include <locale.h>
 #endif
@@ -56,6 +57,23 @@ static const char *required_files[] = { FILENAME_COREDUMP,
 static bool ssl_allow_insecure = false;
 static bool http_show_headers = false;
 static unsigned delay = 0;
+
+static void alert_server_error()
+{
+    alert(_("An error occured on the server side. Try again later."));
+}
+
+static void alert_connection_error()
+{
+    alert(_("An error occured while connecting to the server. "
+            "Check your network connection and try again."));
+}
+
+static void alert_crash_too_large()
+{
+    alert(_("Retrace server can not be used, because the crash "
+            "is too large. Try local retracing."));
+}
 
 /* Caller must free lang->locale if not NULL */
 static void get_language(struct language *lang)
@@ -313,6 +331,7 @@ static void ssl_connect(PRFileDesc **tcp_sock,
         char *error = xmalloc(PR_GetErrorTextLength());
         PRInt32 count = PR_GetErrorText(error);
         PR_Close(*ssl_sock);
+        alert_connection_error();
         if (count)
             error_msg_and_die(_("Failed to get host by name: %s"), error);
         else
@@ -332,6 +351,7 @@ static void ssl_connect(PRFileDesc **tcp_sock,
     if (PR_SUCCESS != pr_status)
     {
         PR_Close(*ssl_sock);
+        alert_connection_error();
         error_msg_and_die(_("Failed to connect SSL address."));
     }
     if (SECSuccess != SSL_BadCertHook(*ssl_sock,
@@ -352,12 +372,14 @@ static void ssl_connect(PRFileDesc **tcp_sock,
     if (SECSuccess != sec_status)
     {
         PR_Close(*ssl_sock);
+        alert_server_error();
         error_msg_and_die(_("Failed to reset handshake."));
     }
     sec_status = SSL_ForceHandshake(*ssl_sock);
     if (SECSuccess != sec_status)
     {
         PR_Close(*ssl_sock);
+        alert_server_error();
         error_msg_and_die(_("Failed to force handshake: NSS error %d."),
                           PR_GetError());
     }
@@ -423,13 +445,22 @@ static char *http_get_body(const char *message)
 static int http_get_response_code(const char *message)
 {
     if (0 != strncmp(message, "HTTP/", strlen("HTTP/")))
+    {
+        alert_server_error();
         error_msg_and_die(_("Invalid response from server: HTTP header not found."));
+    }
     char *space = strstr(message, " ");
     if (!space)
+    {
+        alert_server_error();
         error_msg_and_die(_("Invalid response from server: HTTP header not found."));
+    }
     int response_code;
     if (1 != sscanf(space + 1, "%d", &response_code))
+    {
+        alert_server_error();
         error_msg_and_die(_("Invalid response from server: HTTP header not found."));
+    }
     return response_code;
 }
 
@@ -466,6 +497,7 @@ static char *tcp_read_response(PRFileDesc *tcp_sock)
         }
         if (received == -1)
         {
+            alert_connection_error();
             error_msg_and_die(_("Receiving of data failed: NSS error %d."),
                               PR_GetError());
         }
@@ -497,6 +529,7 @@ static void get_settings(struct retrace_settings *settings)
     if (written == -1)
     {
         PR_Close(ssl_sock);
+        alert_connection_error();
         error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d."),
                           http_request->len, PR_GetError());
     }
@@ -508,6 +541,7 @@ static void get_settings(struct retrace_settings *settings)
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
+        alert_server_error();
         error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"),
                           response_code, http_response);
     }
@@ -515,7 +549,10 @@ static void get_settings(struct retrace_settings *settings)
     char *headers_end = strstr(http_response, "\r\n\r\n");
     char *c, *row, *value;
     if (!headers_end)
+    {
+        alert_server_error();
         error_msg_and_die(_("Invalid response from server: missing HTTP message body."));
+    }
     row = headers_end + strlen("\r\n\r\n");
 
     do
@@ -579,8 +616,8 @@ static int create(bool delete_temp_archive,
 
     if (settings.running_tasks >= settings.max_running_tasks)
     {
-        error_msg_and_die(_("Retrace server is fully occupied at the moment. "
-                            "Try again later please."));
+        alert(_("The server is fully occupied. Try again later."));
+        error_msg_and_die(_("The server denied your request."));
     }
 
     long long unpacked_size = 0;
@@ -617,6 +654,7 @@ static int create(bool delete_temp_archive,
 
     if (unpacked_size > settings.max_unpacked_size)
     {
+        alert_crash_too_large();
         error_msg_and_die(_("The size of your crash is %lld bytes, "
                             "but the retrace server only accepts "
                             "crashes smaller or equal to %lld bytes."),
@@ -637,11 +675,26 @@ static int create(bool delete_temp_archive,
     fstat(tempfd, &file_stat);
     if ((long long)file_stat.st_size > settings.max_packed_size)
     {
+        alert_crash_too_large();
         error_msg_and_die(_("The size of your archive is %lld bytes, "
                             "but the retrace server only accepts "
                             "archives smaller or equal %lld bytes."),
                           (long long)file_stat.st_size,
                           settings.max_packed_size);
+    }
+
+    int size_mb = file_stat.st_size / (1024 * 1024);
+
+    if (size_mb > 8) /* 8 MB - should be configurable */
+    {
+        char *question = xasprintf(_("You are going to upload %d megabytes."
+                                     "Continue?"), size_mb);
+
+        int response = ask_yes_no(question);
+        free(question);
+
+        if (!response)
+            error_msg_and_die(_("Cancelled by user"));
     }
 
     PRFileDesc *tcp_sock, *ssl_sock;
@@ -675,13 +728,17 @@ static int create(bool delete_temp_archive,
     if (written == -1)
     {
         PR_Close(ssl_sock);
+        alert_connection_error();
         error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d."),
                           http_request->len, PR_GetError());
     }
 
     if (delay)
     {
-        printf(_("Uploading %lld bytes\n"), (long long)file_stat.st_size);
+        if (size_mb > 1)
+            printf(_("Uploading %d megabytes\n"), size_mb);
+        else
+            printf(_("Uploading %lld bytes\n"), (long long)file_stat.st_size);
         fflush(stdout);
     }
 
@@ -729,6 +786,7 @@ static int create(bool delete_temp_archive,
                if the server send some explanation regarding the
                error. */
             result = 1;
+            alert_connection_error();
             error_msg(_("Failed to send data: NSS error %d (%s): %s"),
                       PR_GetError(),
                       PR_ErrorToName(PR_GetError()),
@@ -748,21 +806,43 @@ static int create(bool delete_temp_archive,
     char *http_response = tcp_read_response(tcp_sock);
     char *http_body = http_get_body(http_response);
     if (!http_body)
+    {
+        alert_server_error();
         error_msg_and_die(_("Invalid response from server: missing HTTP message body."));
+    }
     if (http_show_headers)
         http_print_headers(stderr, http_response);
     int response_code = http_get_response_code(http_response);
     if (response_code == 500 || response_code == 507)
-        error_msg_and_die(_("There is a problem on the server side: %s."), http_body);
+    {
+        alert_server_error();
+        error_msg_and_die(http_body);
+    }
+    else if (response_code == 403)
+    {
+        alert(_("Your problem directory is corrupted and can not "
+                "be processed by the Retrace server."));
+        error_msg_and_die(_("The archive contains malicious files (such as symlinks) "
+                            "and thus can not be processed."));
+    }
     else if (response_code != 201)
+    {
+        alert_server_error();
         error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"), response_code, http_body);
+    }
     free(http_body);
     *task_id = http_get_header_value(http_response, "X-Task-Id");
     if (!*task_id)
+    {
+        alert_server_error();
         error_msg_and_die(_("Invalid response from server: missing X-Task-Id."));
+    }
     *task_password = http_get_header_value(http_response, "X-Task-Password");
     if (!*task_password)
+    {
+        alert_server_error();
         error_msg_and_die(_("Invalid response from server: missing X-Task-Password."));
+    }
     free(http_response);
     ssl_disconnect(ssl_sock);
 
@@ -826,6 +906,7 @@ static void status(const char *task_id,
     if (written == -1)
     {
         PR_Close(ssl_sock);
+        alert_connection_error();
         error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d"),
                           http_request->len, PR_GetError());
     }
@@ -833,18 +914,25 @@ static void status(const char *task_id,
     char *http_response = tcp_read_response(tcp_sock);
     char *http_body = http_get_body(http_response);
     if (!*http_body)
+    {
+        alert_server_error();
         error_msg_and_die(_("Invalid response from server: missing HTTP message body."));
+    }
     if (http_show_headers)
         http_print_headers(stderr, http_response);
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
+        alert_server_error();
         error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"),
                           response_code, http_body);
     }
     *task_status = http_get_header_value(http_response, "X-Task-Status");
     if (!*task_status)
+    {
+        alert_server_error();
         error_msg_and_die(_("Invalid response from server: missing X-Task-Status."));
+    }
     *status_message = http_body;
     free(http_response);
     ssl_disconnect(ssl_sock);
@@ -897,6 +985,7 @@ static void backtrace(const char *task_id, const char *task_password,
     if (written == -1)
     {
         PR_Close(ssl_sock);
+        alert_connection_error();
         error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d."),
                           http_request->len, PR_GetError());
     }
@@ -904,12 +993,16 @@ static void backtrace(const char *task_id, const char *task_password,
     char *http_response = tcp_read_response(tcp_sock);
     char *http_body = http_get_body(http_response);
     if (!http_body)
+    {
+        alert_server_error();
         error_msg_and_die(_("Invalid response from server: missing HTTP message body."));
+    }
     if (http_show_headers)
         http_print_headers(stderr, http_response);
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
+        alert_server_error();
         error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"),
                           response_code, http_body);
     }
@@ -961,6 +1054,7 @@ static void run_log(const char *task_id, const char *task_password)
     if (written == -1)
     {
         PR_Close(ssl_sock);
+        alert_connection_error();
         error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d."),
                           http_request->len, PR_GetError());
     }
@@ -968,12 +1062,16 @@ static void run_log(const char *task_id, const char *task_password)
     char *http_response = tcp_read_response(tcp_sock);
     char *http_body = http_get_body(http_response);
     if (!http_body)
+    {
+        alert_server_error();
         error_msg_and_die(_("Invalid response from server: missing HTTP message body."));
+    }
     if (http_show_headers)
         http_print_headers(stderr, http_response);
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
+        alert_server_error();
         error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"),
                           response_code, http_body);
     }
@@ -1019,6 +1117,8 @@ static int run_batch(bool delete_temp_archive)
     }
     else
     {
+        alert(_("Retrace failed. Try again later and if the problem persists "
+                "report this issue please."));
         run_log(task_id, task_password);
         retcode = 1;
     }
