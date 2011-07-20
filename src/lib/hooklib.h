@@ -23,7 +23,7 @@ extern "C" {
 #endif
 
 #define check_free_space abrt_check_free_space
-void check_free_space(unsigned setting_MaxCrashReportsSize);
+void check_free_space(unsigned setting_MaxCrashReportsSize, const char *dump_location);
 
 #define trim_debug_dumps abrt_trim_debug_dumps
 void trim_debug_dumps(const char *dirname, double cap_size, const char *exclude_path);

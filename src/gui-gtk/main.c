@@ -728,7 +728,6 @@ int main(int argc, char **argv)
         "\b [-vp] [DIR]...\n"
         "\n"
         "Shows list of ABRT dump directories in specified DIR(s)\n"
-        "(default DIRs: "DEBUG_DUMPS_DIR" $HOME/.abrt/spool)"
     );
     enum {
         OPT_v = 1 << 0,
@@ -746,8 +745,9 @@ int main(int argc, char **argv)
 
     GtkWidget *main_window = create_main_window();
 
+    load_abrt_conf();
     const char *default_dirs[] = {
-        "/var/spool/abrt",
+        g_settings_dump_location,
         NULL,
         NULL,
     };
@@ -784,5 +784,6 @@ int main(int argc, char **argv)
     /* Enter main loop */
     gtk_main();
 
+    free_abrt_conf_data();
     return 0;
 }

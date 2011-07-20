@@ -170,13 +170,15 @@ int cmd_list(int argc, const char **argv)
         while (optind < argc)
             D_list = g_list_append(D_list, xstrdup(argv[optind++]));
 
+    load_abrt_conf();
     if (!D_list)
     {
         char *home = getenv("HOME");
         if (home)
             D_list = g_list_append(D_list, concat_path_file(home, ".abrt/spool"));
-        D_list = g_list_append(D_list, xstrdup((void*)DEBUG_DUMPS_DIR));
+        D_list = g_list_append(D_list, xstrdup(g_settings_dump_location));
     }
+    free_abrt_conf_data();
 
     VERB2
     {

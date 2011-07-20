@@ -15,11 +15,11 @@ abrt_cli_SOURCES = $(CLI_C) $(BUILTIN_C) builtin-cmd.h
 abrt_cli_CFLAGS = \
 	-I$(srcdir)/../include \
 	-I$(srcdir)/../lib \
-	-DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
 	$(LIBREPORT_CFLAGS) \
 	-Wwrite-strings -Werror
 
 abrt_cli_LDADD = \
-    $(LIBREPORT_LIBS)
+    $(LIBREPORT_LIBS) \
+    ../lib/libabrt.la
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
