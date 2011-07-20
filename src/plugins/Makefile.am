@@ -30,7 +30,9 @@ dist_events_DATA = \
     analyze_RetraceServer.xml \
     collect_xsession_errors.xml \
     collect_Smolt.xml \
-    collect_GConf.xml
+    collect_GConf.xml \
+    collect_vimrc_user.xml \
+    collect_vimrc_system.xml
 
 @INTLTOOL_XML_RULE@
 
@@ -44,7 +46,8 @@ dist_eventsconf_DATA = \
     python_event.conf \
     smart_event.conf \
     smolt_event.conf \
-    gconf_event.conf
+    gconf_event.conf \
+    vimrc_event.conf
 
 man_MANS = \
     abrt-plugins.7
@@ -82,6 +85,8 @@ EXTRA_DIST = \
     collect_Smolt.xml.in \
     collect_xsession_errors.xml.in \
     collect_GConf.xml.in \
+    collect_vimrc_user.xml.in \
+    collect_vimrc_system.xml.in \
     analyze_LocalGDB.xml.in \
     analyze_RetraceServer.xml.in
 
