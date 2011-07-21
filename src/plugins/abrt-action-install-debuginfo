@@ -11,6 +11,7 @@ import errno
 import time
 import getopt
 import shutil
+import reportclient
 from subprocess import Popen, PIPE
 from yum import _, YumBase
 from yum.callbacks import DownloadBaseCallback
@@ -73,22 +74,6 @@ def unmute_stdout():
             sys.stdout = old_stdout
         else:
             print "ERR: unmute called without mute?"
-
-def ask_yes_no(prompt, retries=4):
-    while True:
-        try:
-            response = raw_input(prompt)
-        except EOFError:
-            log1("got eof, probably executed from helper, assuming - yes")
-            return True
-        if response in (_("y")): # for translators -> y/Y as yes
-            return True
-        if response in ("", _("n")): # for translators -> N/n as no
-            return False
-        retries = retries - 1
-        if retries < 0:
-            break
-    return False
 
 # TODO: unpack just required debuginfo and not entire rpm?
 # ..that can lead to: foo.c No such file and directory
@@ -286,16 +271,13 @@ class DebugInfoDownload(YumBase):
 	    print _("Can't find packages for %u debuginfo files") % len(not_found)
 	if verbose != 0 or total_pkgs != 0:
 	    print _("Packages to download: %u") % total_pkgs
-	    print _("Downloading %.2fMb, installed size: %.2fMb") % (
-	             todownload_size / (1024**2),
-	             installed_size / (1024**2)
-	            )
-
-        # ask only if we have terminal, because for now we don't have a way
-        # how to pass the question to gui and the response back
-        if noninteractive == False and sys.stdout.isatty():
-            if not ask_yes_no(_("Is this ok? [y/N] ")):
-                return RETURN_OK
+	    question = _("Downloading %.2fMb, installed size: %.2fMb. Continue?") % (
+	                 todownload_size / (1024**2),
+	                 installed_size / (1024**2)
+	                )
+	    if not reportclient.ask_yes_no(question):
+	        print _("Download cancelled by user")
+	        return RETURN_OK
 
         for pkg, files in package_files_dict.iteritems():
             dnlcb.downloaded_pkgs = downloaded_pkgs
