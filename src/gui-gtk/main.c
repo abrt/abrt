@@ -32,7 +32,9 @@ static const char help_uri[] = "http://docs.fedoraproject.org/en-US/"
     "Fedora/14/html/Deployment_Guide/ch-abrt.html";
 
 static GtkListStore *s_dumps_list_store;
+static GtkListStore *s_reported_dumps_list_store;
 static GtkWidget *s_treeview;
+static GtkWidget *s_reported_treeview;
 static GtkWidget *g_main_window;
 static GtkWidget *s_report_window;
 
@@ -40,12 +42,37 @@ enum
 {
     COLUMN_SOURCE,
     COLUMN_REASON,
-    COLUMN_DIRNAME,
     COLUMN_LATEST_CRASH_STR,
     COLUMN_LATEST_CRASH,
     COLUMN_DUMP_DIR,
+    COLUMN_REPORTED_TO,
     NUM_COLUMNS
 };
+
+//FIXME: maybe we can use strrchr and make this faster...
+static char *get_last_line(const char* msg)
+{
+    const char *curr_end = NULL;
+    const char *start = msg;
+    const char *end = msg;
+
+    while((curr_end = strchr(end, '\n')) != NULL)
+    {
+        end = curr_end;
+        curr_end = strchr(end+1, '\n');
+        if (curr_end == NULL || strchr(end+2, '\n') == NULL)
+            break;
+
+        start = end+1;
+        end = curr_end;
+    }
+
+    //fix the case where reported_to has only 1 line without \n
+    if (end == msg)
+        end = end + strlen(msg);
+
+    return xstrndup(start, end - start);
+}
 
 static void add_directory_to_dirlist(const char *dirname)
 {
@@ -67,20 +94,10 @@ static void add_directory_to_dirlist(const char *dirname)
     {
         time_t t = strtol(time_str, NULL, 10); /* atoi won't work past 2038! */
         struct tm *ptm = localtime(&t);
-        size_t time_len = strftime(time_buf, sizeof(time_buf)-1, "%Y-%m-%m %H:%M", ptm);
+        size_t time_len = strftime(time_buf, sizeof(time_buf)-1, "%Y-%m-%d %H:%M", ptm);
         time_buf[time_len] = '\0';
     }
     free(time_str);
-
-    /*
-    char *msg = dd_load_text_ext(dd, FILENAME_REPORTED_TO, 0
-                | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
-                | DD_FAIL_QUIETLY_ENOENT
-                | DD_FAIL_QUIETLY_EACCES
-    );
-    const char *reported = (msg ? GTK_STOCK_YES : GTK_STOCK_NO);
-    free(msg);
-    */
 
     char *reason = dd_load_text(dd, FILENAME_REASON);
 
@@ -102,18 +119,38 @@ static void add_directory_to_dirlist(const char *dirname)
         );
     }
 
+    char *msg = dd_load_text_ext(dd, FILENAME_REPORTED_TO, 0
+                | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                | DD_FAIL_QUIETLY_ENOENT
+                | DD_FAIL_QUIETLY_EACCES
+    );
+
+
+    GtkListStore *list_store;
+
+    char *subm_status = NULL;
+    if (msg)
+    {
+        list_store = s_reported_dumps_list_store;
+        subm_status = get_last_line(msg);
+    }
+    else
+        list_store = s_dumps_list_store;
 
     GtkTreeIter iter;
-    gtk_list_store_append(s_dumps_list_store, &iter);
-    gtk_list_store_set(s_dumps_list_store, &iter,
+    gtk_list_store_append(list_store, &iter);
+    gtk_list_store_set(list_store, &iter,
                           COLUMN_SOURCE, source,
                           COLUMN_REASON, reason,
-                          COLUMN_DIRNAME, dd->dd_dirname,
                           //OPTION: time format
                           COLUMN_LATEST_CRASH_STR, time_buf,
                           COLUMN_LATEST_CRASH, time,
                           COLUMN_DUMP_DIR, dirname,
+                          COLUMN_REPORTED_TO, msg ? subm_status : NULL,
                           -1);
+    /* this is safe, subm_status is either null or malloced string from get_last_line */
+    free(subm_status);
+    free(msg);
     free(reason);
 
     dd_close(dd);
@@ -123,6 +160,7 @@ static void add_directory_to_dirlist(const char *dirname)
 static void rescan_dirs_and_add_to_dirlist(void)
 {
     gtk_list_store_clear(s_dumps_list_store);
+    gtk_list_store_clear(s_reported_dumps_list_store);
     scan_dirs_and_add_to_dirlist();
 }
 
@@ -232,7 +270,7 @@ static void delete_report(GtkTreeView *treeview)
             VERB1 log("Deleting '%s'", dump_dir_name);
             if (delete_dump_dir_possibly_using_abrtd(dump_dir_name) == 0)
             {
-                gtk_list_store_remove(s_dumps_list_store, &iter);
+                gtk_list_store_remove(GTK_LIST_STORE(store), &iter);
             }
             else
             {
@@ -262,7 +300,9 @@ static gint on_key_press_event_cb(GtkTreeView *treeview, GdkEventKey *key, gpoin
 
 static void on_btn_delete_cb(GtkButton *button, gpointer unused)
 {
+    /* delete from both treeviews */
     delete_report(GTK_TREE_VIEW(s_treeview));
+    delete_report(GTK_TREE_VIEW(s_reported_treeview));
 }
 
 static void on_menu_help_cb(GtkMenuItem *menuitem, gpointer unused)
@@ -421,6 +461,50 @@ static void add_columns(GtkTreeView *treeview)
     gtk_tree_view_append_column(treeview, column);
 }
 
+static void add_columns_reported(GtkTreeView *treeview)
+{
+    GtkCellRenderer *renderer;
+    GtkTreeViewColumn *column;
+
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(_("Source"),
+                                                     renderer,
+                                                     "text",
+                                                     COLUMN_SOURCE,
+                                                     NULL);
+    gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_sort_column_id(column, COLUMN_SOURCE);
+    gtk_tree_view_append_column(treeview, column);
+
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(_("Problem"),
+                                                     renderer,
+                                                     "text",
+                                                     COLUMN_REASON,
+                                                     NULL);
+    gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_sort_column_id(column, COLUMN_REASON);
+    gtk_tree_view_append_column(treeview, column);
+
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(_("Date Submitted"),
+                                                     renderer,
+                                                     "text",
+                                                     COLUMN_LATEST_CRASH_STR,
+                                                     NULL);
+    gtk_tree_view_column_set_sort_column_id(column, COLUMN_LATEST_CRASH);
+    gtk_tree_view_append_column(treeview, column);
+
+    renderer = gtk_cell_renderer_text_new();
+    column = gtk_tree_view_column_new_with_attributes(_("Submision Result"),
+                                                     renderer,
+                                                     "text",
+                                                     COLUMN_REPORTED_TO,
+                                                     NULL);
+    //gtk_tree_view_column_set_sort_column_id(column, COLUMN_LATEST_CRASH);
+    gtk_tree_view_append_column(treeview, column);
+}
+
 static GtkWidget *create_menu(void)
 {
     /* main bar */
@@ -476,33 +560,46 @@ static GtkWidget *create_main_window(void)
     gtk_window_set_default_icon_name("abrt");
 
     GtkWidget *main_vbox = gtk_vbox_new(false, 0);
+    /* add menu */
+    gtk_box_pack_start(GTK_BOX(main_vbox), create_menu(), false, false, 0);
 
-    /* Scrolled region inside main window */
-    GtkWidget *scroll_win = gtk_scrolled_window_new(NULL, NULL);
-    gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scroll_win),
+    GtkWidget *not_subm_vbox = gtk_vbox_new(false, 0);
+    gtk_container_set_border_width(GTK_CONTAINER(not_subm_vbox), 10);
+    GtkWidget *subm_vbox = gtk_vbox_new(false, 0);
+    gtk_container_set_border_width(GTK_CONTAINER(subm_vbox), 10);
+
+    /* Scrolled region for not reported problems inside main window*/
+    GtkWidget *new_problems_scroll_win = gtk_scrolled_window_new(NULL, NULL);
+    gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(new_problems_scroll_win),
                                           GTK_SHADOW_ETCHED_IN);
-    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll_win),
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(new_problems_scroll_win),
                                           GTK_POLICY_AUTOMATIC,
                                           GTK_POLICY_AUTOMATIC);
 
-    gtk_box_pack_start(GTK_BOX(main_vbox), create_menu(), false, false, 0);
-    gtk_box_pack_start(GTK_BOX(main_vbox), scroll_win, true, true, 0);
-    gtk_container_add(GTK_CONTAINER(g_main_window), main_vbox);
+    GtkWidget *not_subm_lbl = gtk_label_new(_("Not submitted reports"));
+    gtk_misc_set_alignment(GTK_MISC(not_subm_lbl), 0, 0);
+    gtk_label_set_markup(GTK_LABEL(not_subm_lbl), _("<b>Not submitted reports</b>"));
+
+    /* add label for not submitted tree view */
+    gtk_box_pack_start(GTK_BOX(not_subm_vbox), not_subm_lbl, false, false, 0);
+    gtk_box_pack_start(GTK_BOX(not_subm_vbox), new_problems_scroll_win, true, true, 0);
+    gtk_box_pack_start(GTK_BOX(main_vbox), not_subm_vbox, true, true, 0);
 
     /* Tree view inside scrolled region */
     s_treeview = gtk_tree_view_new();
     g_object_set(s_treeview, "rules-hint", 1, NULL); /* use alternating colors */
     add_columns(GTK_TREE_VIEW(s_treeview));
-    gtk_container_add(GTK_CONTAINER(scroll_win), s_treeview);
+    gtk_container_add(GTK_CONTAINER(new_problems_scroll_win), s_treeview);
 
     /* Create data store for the list and attach it */
-    s_dumps_list_store = gtk_list_store_new(NUM_COLUMNS, G_TYPE_STRING, /* source */
-                                                       G_TYPE_STRING, /* executable */
-                                                       G_TYPE_STRING, /* hostname */
-                                                       G_TYPE_STRING, /* time */
-                                                       G_TYPE_INT,    /* unix time - used for sort */
-                                                       G_TYPE_STRING, /* dump dir path */
-                                                       G_TYPE_STRING);/* row background */
+    s_dumps_list_store = gtk_list_store_new(NUM_COLUMNS,
+                                           G_TYPE_STRING, /* source */
+                                           G_TYPE_STRING, /* executable */
+                                           G_TYPE_STRING, /* time */
+                                           G_TYPE_INT,    /* unix time - used for sort */
+                                           G_TYPE_STRING, /* dump dir path */
+                                           G_TYPE_STRING); /* reported_to */
+
 
     //FIXME: configurable!!
     gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(s_dumps_list_store),
@@ -511,6 +608,55 @@ static GtkWidget *create_main_window(void)
 
     gtk_tree_view_set_model(GTK_TREE_VIEW(s_treeview), GTK_TREE_MODEL(s_dumps_list_store));
 
+    /* Double click/Enter handler */
+    g_signal_connect(s_treeview, "row-activated", G_CALLBACK(on_row_activated_cb), NULL);
+    /* Delete handler */
+    g_signal_connect(s_treeview, "key-press-event", G_CALLBACK(on_key_press_event_cb), NULL);
+
+    /* scrolled region for reported problems */
+    GtkWidget *reported_problems_scroll_win = gtk_scrolled_window_new(NULL, NULL);
+    gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(reported_problems_scroll_win),
+                                          GTK_SHADOW_ETCHED_IN);
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(reported_problems_scroll_win),
+                                          GTK_POLICY_AUTOMATIC,
+                                          GTK_POLICY_AUTOMATIC);
+
+    GtkWidget *subm_lbl = gtk_label_new(_("Submitted reports"));
+    /* align to left */
+    gtk_misc_set_alignment(GTK_MISC(subm_lbl), 0, 0);
+    gtk_label_set_markup(GTK_LABEL(subm_lbl), _("<b>Submitted reports</b>"));
+
+
+    /* add label for submitted tree view */
+    gtk_box_pack_start(GTK_BOX(subm_vbox), subm_lbl, false, false, 0);
+    gtk_box_pack_start(GTK_BOX(subm_vbox), reported_problems_scroll_win, true, true, 0);
+    gtk_box_pack_start(GTK_BOX(main_vbox), subm_vbox, true, true, 0);
+
+    /* Tree view inside scrolled region */
+    s_reported_treeview = gtk_tree_view_new();
+    g_object_set(s_reported_treeview, "rules-hint", 1, NULL); /* use alternating colors */
+    add_columns_reported(GTK_TREE_VIEW(s_reported_treeview));
+    gtk_container_add(GTK_CONTAINER(reported_problems_scroll_win), s_reported_treeview);
+
+    /* Create data store for the list and attach it */
+    s_reported_dumps_list_store = gtk_list_store_new(NUM_COLUMNS,
+                                                       G_TYPE_STRING, /* source */
+                                                       G_TYPE_STRING, /* executable */
+                                                       G_TYPE_STRING, /* time */
+                                                       G_TYPE_INT,    /* unix time - used for sort */
+                                                       G_TYPE_STRING, /* dump dir path */
+                                                       G_TYPE_STRING); /* reported_to */
+
+
+    //FIXME: configurable!!
+    gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(s_reported_dumps_list_store),
+                                        COLUMN_LATEST_CRASH,
+                                        GTK_SORT_DESCENDING);
+
+
+    gtk_tree_view_set_model(GTK_TREE_VIEW(s_reported_treeview), GTK_TREE_MODEL(s_reported_dumps_list_store));
+
+
     /* buttons are homogenous so set size only for one button and it will
      * work for the rest buttons in same gtk_hbox_new() */
     GtkWidget *btn_report = gtk_button_new_from_stock(GTK_STOCK_OPEN);
@@ -518,20 +664,23 @@ static GtkWidget *create_main_window(void)
 
     GtkWidget *btn_delete = gtk_button_new_from_stock(GTK_STOCK_DELETE);
 
-    GtkWidget *hbox_report_delete = gtk_hbox_new(true, 4);
+    GtkWidget *hbox_report_delete = gtk_hbox_new(true, 0);
     gtk_box_pack_start(GTK_BOX(hbox_report_delete), btn_delete, true, true, 0);
-    gtk_box_pack_start(GTK_BOX(hbox_report_delete), btn_report, true, true, 0);
+    gtk_box_pack_start(GTK_BOX(hbox_report_delete), btn_report, true, true, 10);
 
     GtkWidget *halign = gtk_alignment_new(1, 0, 0, 0);
     gtk_container_add(GTK_CONTAINER(halign), hbox_report_delete);
 
     gtk_box_pack_start(GTK_BOX(main_vbox), halign, false, false, 10);
 
+    /* put the main_vbox to main window */
+    gtk_container_add(GTK_CONTAINER(g_main_window), main_vbox);
+
     /* Double click/Enter handler */
-    g_signal_connect(s_treeview, "row-activated", G_CALLBACK(on_row_activated_cb), NULL);
+    g_signal_connect(s_reported_treeview, "row-activated", G_CALLBACK(on_row_activated_cb), NULL);
     g_signal_connect(btn_report, "clicked", G_CALLBACK(on_btn_report_cb), NULL);
     /* Delete handler */
-    g_signal_connect(s_treeview, "key-press-event", G_CALLBACK(on_key_press_event_cb), NULL);
+    g_signal_connect(s_reported_treeview, "key-press-event", G_CALLBACK(on_key_press_event_cb), NULL);
     g_signal_connect(btn_delete, "clicked", G_CALLBACK(on_btn_delete_cb), NULL);
     /* Quit when user closes the main window */
     g_signal_connect(g_main_window, "destroy", gtk_main_quit, NULL);
