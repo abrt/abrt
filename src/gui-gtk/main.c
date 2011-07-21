@@ -204,7 +204,7 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
             gtk_tree_model_get_value(store, &iter, COLUMN_DUMP_DIR, &d_dir);
 
             const char *dirname = g_value_get_string(&d_dir);
-            report_problem_in_dir(dirname, LIBREPORT_ANALYZE | LIBREPORT_NOWAIT);
+            report_problem_in_dir(dirname, LIBREPORT_ANALYZE | LIBREPORT_NOWAIT | LIBREPORT_GETPID);
         }
     }
 }
@@ -293,8 +293,7 @@ static void on_button_send_cb(GtkWidget *button, gpointer data)
     /* why it doesn't want to hide before report ends? */
     gtk_widget_destroy(s_report_window);
 
-    int status = report_problem_in_memory(pd, LIBREPORT_NOWAIT);
-    VERB1 log("Reporting finished with status %i", status);
+    report_problem_in_memory(pd, LIBREPORT_NOWAIT | LIBREPORT_GETPID);
     free_problem_data(pd);
 }
 
