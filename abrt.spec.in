@@ -97,6 +97,15 @@ Requires: %{name} = %{version}-%{release}
 This package contains hook for C/C++ crashed programs and %{name}'s C/C++
 analyzer plugin.
 
+%package retrace-client
+Summary: %{name}'s retrace client
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+
+%description retrace-client
+This package contains the client application for Retrace server
+which is able to analyze C/C++ crashes remotely.
+
 %package addon-kerneloops
 Summary: %{name}'s kerneloops addon
 Group: System Environment/Libraries
@@ -328,7 +337,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_sbindir}/abrt-server
 %{_bindir}/abrt-handle-upload
 %{_bindir}/abrt-action-save-package-data
-%{_bindir}/abrt-retrace-client
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-action-save-package-data.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
@@ -350,7 +358,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/abrt_event.conf.5.gz
 # {_mandir}/man5/pyhook.conf.5.gz
 %{_mandir}/man7/abrt-plugins.7.gz
-%{_mandir}/man1/abrt-retrace-client.1.gz
 %{_datadir}/dbus-1/system-services/com.redhat.abrt.service
 
 %files libs
@@ -398,13 +405,18 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_sbindir}/abrt-install-ccpp-hook
 %{_sysconfdir}/libreport/events.d/ccpp_event.conf
 %{_sysconfdir}/libreport/events/analyze_LocalGDB.xml
-%{_sysconfdir}/libreport/events/analyze_RetraceServer.xml
 %{_sysconfdir}/libreport/events/analyze_xsession_errors.xml
 %{_sysconfdir}/libreport/events/analyze_Smolt.xml
 %{_mandir}/man*/abrt-action-trim-files.*
 %{_mandir}/man*/abrt-action-generate-backtrace.*
 %{_mandir}/man*/abrt-action-analyze-backtrace.*
 %{_mandir}/man*/abrt-action-list-dsos.*
+
+%files retrace-client
+%{_bindir}/abrt-retrace-client
+%{_mandir}/man1/abrt-retrace-client.1.gz
+%{_sysconfdir}/libreport/events.d/ccpp_retrace_event.conf
+%{_sysconfdir}/libreport/events/analyze_RetraceServer.xml
 
 %files addon-kerneloops
 %defattr(-,root,root,-)

@@ -36,6 +36,7 @@ eventsconfdir = $(EVENTS_CONF_DIR)
 
 dist_eventsconf_DATA = \
     ccpp_event.conf \
+    ccpp_retrace_event.conf \
     koops_event.conf \
     python_event.conf \
     smart_event.conf \
