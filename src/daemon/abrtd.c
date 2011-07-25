@@ -290,7 +290,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
 
     /* Scan crash dumps looking for a dup */
 //TODO: explain why this is safe wrt concurrent runs
-    DIR *dir = opendir(DEBUG_DUMPS_DIR);
+    DIR *dir = opendir(g_settings_dump_location);
     if (dir != NULL)
     {
         struct dirent *dent;
@@ -301,7 +301,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
 
             int different;
             char *uid, *uuid;
-            char *dump_dir_name2 = concat_path_file(DEBUG_DUMPS_DIR, dent->d_name);
+            char *dump_dir_name2 = concat_path_file(g_settings_dump_location, dent->d_name);
 
             if (strcmp(dump_dir_name, dump_dir_name2) == 0)
                 goto next; /* we are never a dup of ourself */
@@ -521,7 +521,8 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 if (fork() == 0)
                 {
                     xchdir(dir);
-                    execlp("abrt-handle-upload", "abrt-handle-upload", DEBUG_DUMPS_DIR, dir, name, (char*)NULL);
+                    execlp("abrt-handle-upload", "abrt-handle-upload",
+                           g_settings_dump_location, dir, name, (char*)NULL);
                     error_msg_and_die("Can't execute '%s'", "abrt-handle-upload");
                 }
             }
@@ -546,13 +547,14 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         {
             char *worst_dir = NULL;
             while (g_settings_nMaxCrashReportsSize > 0
-             && get_dirsize_find_largest_dir(DEBUG_DUMPS_DIR, &worst_dir, name) / (1024*1024) >= g_settings_nMaxCrashReportsSize
+             && get_dirsize_find_largest_dir(g_settings_dump_location, &worst_dir, name) / (1024*1024) >= g_settings_nMaxCrashReportsSize
              && worst_dir
             ) {
-                log("Size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize, worst_dir);
+                log("Size of '%s' >= %u MB, deleting '%s'",
+                    g_settings_dump_location, g_settings_nMaxCrashReportsSize, worst_dir);
                 send_dbus_sig_QuotaExceeded(_("The size of the report exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."));
                 /* deletes both directory and DB record */
-                char *d = concat_path_file(DEBUG_DUMPS_DIR, worst_dir);
+                char *d = concat_path_file(g_settings_dump_location, worst_dir);
                 free(worst_dir);
                 worst_dir = NULL;
                 delete_dump_dir(d);
@@ -562,7 +564,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 
         char *fullname = NULL;
         problem_data_t *problem_data = NULL;
-        fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
+        fullname = concat_path_file(g_settings_dump_location, name);
         mw_result_t res = LoadDebugDump(fullname, &problem_data);
         const char *first = problem_data ? get_problem_item_content_or_NULL(problem_data, CD_DUMPDIR) : NULL;
         switch (res)
@@ -696,7 +698,7 @@ static void sanitize_dump_dir_rights()
      * us with thousands of bogus or malicious dumps */
     /* 07000 bits are setuid, setgit, and sticky, and they must be unset */
     /* 00777 bits are usual "rwxrwxrwx" access rights */
-    ensure_writable_dir(DEBUG_DUMPS_DIR, 0755, "abrt");
+    ensure_writable_dir(g_settings_dump_location, 0755, "abrt");
     /* debuginfo cache */
     ensure_writable_dir(DEBUG_INFO_DIR, 0775, "abrt");
     /* temp dir */
@@ -826,10 +828,10 @@ int main(int argc, char** argv)
         perror_msg_and_die("inotify_init failed");
     close_on_exec_on(inotify_fd);
 
-    /* Watching DEBUG_DUMPS_DIR for new files... */
-    if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE | IN_MOVED_TO) < 0)
+    /* Watching 'g_settings_dump_location' for new files... */
+    if (inotify_add_watch(inotify_fd, g_settings_dump_location, IN_CREATE | IN_MOVED_TO) < 0)
     {
-        perror_msg("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
+        perror_msg("inotify_add_watch failed on '%s'", g_settings_dump_location);
         goto init_error;
     }
     if (g_settings_sWatchCrashdumpArchiveDir)

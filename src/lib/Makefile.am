@@ -19,7 +19,6 @@ libabrt_la_CPPFLAGS = \
     -I$(srcdir)/../lib \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DVAR_RUN=\"$(VAR_RUN)\" \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
@@ -32,9 +31,3 @@ libabrt_la_LDFLAGS = \
     -version-info 0:1:0
 libabrt_la_LIBADD = \
     $(GLIB_LIBS)
-
-$(DESTDIR)/$(DEBUG_DUMPS_DIR):
-	$(mkdir_p) '$@'
-# no need to chmod it here
-#chmod 1777 '$@'
-install-data-local: $(DESTDIR)/$(DEBUG_DUMPS_DIR)

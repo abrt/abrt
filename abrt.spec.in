@@ -194,8 +194,6 @@ mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-di
 mkdir -p $RPM_BUILD_ROOT/var/run/abrt
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt-upload
-# compat before we split abrt-cli and report-cli
-ln -s %{_bindir}/report-cli $RPM_BUILD_ROOT/%{_bindir}/abrt-cli
 
 desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
@@ -441,6 +439,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files cli
 %defattr(-,root,root,-)
 %{_bindir}/abrt-cli
+# provide asap
+#% {_mandir}/man1/report-cli.1.gz
 
 %files desktop
 %defattr(-,root,root,-)

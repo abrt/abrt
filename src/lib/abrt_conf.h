@@ -27,6 +27,8 @@ extern "C" {
 extern unsigned int  g_settings_nMaxCrashReportsSize;
 #define g_settings_sWatchCrashdumpArchiveDir abrt_g_settings_sWatchCrashdumpArchiveDir
 extern char *        g_settings_sWatchCrashdumpArchiveDir;
+#define g_settings_dump_location abrt_g_settings_dump_location
+extern char *        g_settings_dump_location;
 
 #define load_abrt_conf abrt_load_abrt_conf
 int load_abrt_conf();

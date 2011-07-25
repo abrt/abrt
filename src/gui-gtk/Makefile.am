@@ -9,7 +9,6 @@ abrt_gui_CFLAGS = \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DICON_DIR=\"${datadir}/abrt/icons/hicolor/48x48/status\" \
@@ -25,7 +24,8 @@ abrt_gui_LDADD = \
     -lglib-2.0 \
     -lgthread-2.0 \
     $(GTK_LIBS) \
-    $(LIBREPORT_GTK_LIBS)
+    $(LIBREPORT_GTK_LIBS) \
+    ../lib/libabrt.la
 #    $(LIBNOTIFY_LIBS)
 
 #test_report_SOURCES = \
