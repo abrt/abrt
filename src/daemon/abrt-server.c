@@ -100,7 +100,8 @@ static int create_debug_dump()
        This directory is renamed to final directory name after
        all files have been stored into it.
     */
-    char *path = xasprintf(DEBUG_DUMPS_DIR"/%s-%s-%u.new",
+    char *path = xasprintf("%s/%s-%s-%u.new",
+                           g_settings_dump_location,
                            dir_basename,
                            iso_date_string(NULL),
                            pid);
@@ -150,8 +151,8 @@ static int create_debug_dump()
          */
         unsigned maxsize = g_settings_nMaxCrashReportsSize + g_settings_nMaxCrashReportsSize / 4;
         maxsize |= 63;
-        check_free_space(maxsize);
-        trim_debug_dumps(DEBUG_DUMPS_DIR, maxsize * (double)(1024*1024), path);
+        check_free_space(maxsize, g_settings_dump_location);
+        trim_debug_dumps(g_settings_dump_location, maxsize * (double)(1024*1024), path);
     }
 
     free(path);
@@ -162,15 +163,19 @@ static int create_debug_dump()
 /* Remove dump dir */
 static int delete_path(const char *dump_dir_name)
 {
-    /* If doesn't start with "DEBUG_DUMPS_DIR/"... */
-    if (strncmp(dump_dir_name, DEBUG_DUMPS_DIR"/", strlen(DEBUG_DUMPS_DIR"/")) != 0
+    /* If doesn't start with "g_settings_dump_location/"... */
+    char *dump_location = xasprintf("%s/", g_settings_dump_location);
+    log("%s", dump_location);
+    if (strncmp(dump_dir_name, dump_location, strlen(dump_location)) != 0
     /* or contains "/." anywhere (-> might contain ".." component) */
-     || strstr(dump_dir_name + strlen(DEBUG_DUMPS_DIR), "/.")
+     || strstr(dump_dir_name + strlen(g_settings_dump_location), "/.")
     ) {
         /* Then refuse to operate on it (someone is attacking us??) */
         error_msg("Bad dump directory name '%s', not deleting", dump_dir_name);
+        free(dump_location);
         return 400; /* Bad Request */
     }
+    free(dump_location);
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
@@ -491,9 +496,13 @@ int main(int argc, char **argv)
         client_uid = cr.uid;
     }
 
+    load_abrt_conf();
+
     int r = perform_http_xact();
     if (r == 0)
         r = 200;
+
+    free_abrt_conf_data();
 
     printf("HTTP/1.1 %u \r\n\r\n", r);
 

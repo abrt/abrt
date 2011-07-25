@@ -309,13 +309,11 @@ int main(int argc, char** argv)
 {
     struct stat sb;
 
-    if (argc < 9) /* no argv[8]? */
+    if (argc < 8)
     {
-        /* percent specifier:                %s    %c              %p  %u  %g  %t   %e          %h */
-        /* argv:                 [0] [1]     [2]   [3]             [4] [5] [6] [7]  [8]         [9]       [10] */
-      // [OLD_PATTERN] is deprecated, so removing it from help:
-      //error_msg_and_die("Usage: %s DUMPDIR SIGNO CORE_SIZE_LIMIT PID UID GID TIME BINARY_NAME [HOSTNAME [OLD_PATTERN]]", argv[0]);
-        error_msg_and_die("Usage: %s DUMPDIR SIGNO CORE_SIZE_LIMIT PID UID GID TIME BINARY_NAME [HOSTNAME]", argv[0]);
+        /* percent specifier:         %s    %c             %p  %u  %g  %t   %e          %h */
+        /* argv:                  [0] [1]   [2]            [3] [4] [5] [6]  [7]         [8]*/
+        error_msg_and_die("Usage: %s SIGNO CORE_SIZE_LIMIT PID UID GID TIME BINARY_NAME [HOSTNAME]", argv[0]);
     }
 
     /* Not needed on 2.6.30.
@@ -337,20 +335,23 @@ int main(int argc, char** argv)
     logmode = LOGMODE_SYSLOG;
 
     errno = 0;
-    const char* dddir = argv[1];
-    const char* signal_str = argv[2];
+    /* Parse abrt.conf */
+    load_abrt_conf();
+
+    const char* signal_str = argv[1];
     int signal_no = xatoi_positive(signal_str);
-    off_t ulimit_c = strtoull(argv[3], NULL, 10);
+    off_t ulimit_c = strtoull(argv[2], NULL, 10);
     if (ulimit_c < 0) /* unlimited? */
     {
         /* set to max possible >0 value */
         ulimit_c = ~((off_t)1 << (sizeof(off_t)*8-1));
     }
-    pid_t pid = xatoi_positive(argv[4]);
-    uid_t uid = xatoi_positive(argv[5]);
+    pid_t pid = xatoi_positive(argv[3]);
+    uid_t uid = xatoi_positive(argv[4]);
     if (errno || pid <= 0)
     {
-        perror_msg_and_die("pid '%s' or limit '%s' is bogus", argv[4], argv[3]);
+        free_abrt_conf_data();
+        perror_msg_and_die("pid '%s' or limit '%s' is bogus", argv[3], argv[2]);
     }
 
     FILE *saved_core_pattern = fopen(VAR_RUN"/abrt/saved_core_pattern", "r");
@@ -360,52 +361,27 @@ int main(int argc, char** argv)
         fclose(saved_core_pattern);
         /* If we have a saved pattern and it's not a "|PROG ARGS" thing... */
         if (s && s[0] != '|')
-        {
             core_basename = s;
-            argv[10] = NULL; /* don't use old way to pass OLD_PATTERN */
-        }
     }
 
     struct utsname uts;
-    if (!argv[9]) /* no HOSTNAME? */
+    if (!argv[8]) /* no HOSTNAME? */
     {
         uname(&uts);
-        argv[9] = uts.nodename;
-    }
-    else /* argv[9]=HOSTNAME exists.*/
-    if (argv[10]) /* OLD_PATTERN? (deprecated) */
-    {
-        char *buf = (char*) xzalloc(strlen(argv[10]) / 2 + 2);
-        char *end = hex2bin(buf, argv[10], strlen(argv[10]));
-        if (end && end > buf && end[-1] == '\0')
-        {
-            core_basename = buf;
-            //log("core_basename:'%s'", core_basename);
-        }
-        else
-        {
-            /* Until recently, kernels were truncating expanded core pattern.
-             * In this case, we end up here...
-             */
-            error_msg("bad old pattern '%s', ignoring and using 'core'", argv[10]);
-            /* core_basename = "core"; - already is */
-            free(buf);
-        }
+        argv[8] = uts.nodename;
     }
 
     int src_fd_binary;
     char *executable = get_executable(pid, &src_fd_binary);
     if (executable && strstr(executable, "/abrt-hook-ccpp"))
     {
+        free_abrt_conf_data();
         error_msg_and_die("pid %lu is '%s', not dumping it to avoid recursion",
                         (long)pid, executable);
     }
 
     char *user_pwd = get_cwd(pid); /* may be NULL on error */
 
-    /* Parse abrt.conf */
-    load_abrt_conf();
-    free_abrt_conf_data(); /* can do this because we need only g_settings_nMaxCrashReportsSize */
     /* ... and plugins/CCpp.conf */
     bool setting_MakeCompatCore;
     bool setting_SaveBinaryImage;
@@ -430,7 +406,7 @@ int main(int argc, char** argv)
     int user_core_fd = -1;
     if (setting_MakeCompatCore && ulimit_c != 0)
         /* note: checks "user_pwd == NULL" inside; updates core_basename */
-        user_core_fd = open_user_core(user_pwd, uid, pid, &argv[2]);
+        user_core_fd = open_user_core(user_pwd, uid, pid, &argv[1]);
 
     if (executable == NULL)
     {
@@ -475,7 +451,7 @@ int main(int argc, char** argv)
          */
         unsigned maxsize = g_settings_nMaxCrashReportsSize + g_settings_nMaxCrashReportsSize / 4;
         maxsize |= 63;
-        check_free_space(maxsize);
+        check_free_space(maxsize, g_settings_dump_location);
     }
 
     char path[PATH_MAX];
@@ -483,7 +459,7 @@ int main(int argc, char** argv)
     /* Check /var/spool/abrt/last-ccpp marker, do not dump repeated crashes
      * if they happen too often. Else, write new marker value.
      */
-    snprintf(path, sizeof(path), "%s/last-ccpp", dddir);
+    snprintf(path, sizeof(path), "%s/last-ccpp", g_settings_dump_location);
     int fd = open(path, O_RDWR | O_CREAT, 0600);
     if (fd >= 0)
     {
@@ -502,6 +478,7 @@ int main(int argc, char** argv)
                     error_msg("not dumping repeating crash in '%s'", executable);
                     if (setting_MakeCompatCore)
                         goto create_user_core;
+                    free_abrt_conf_data();
                     return 1;
                 }
             }
@@ -521,7 +498,7 @@ int main(int argc, char** argv)
          * and maybe crash again...
          * Unlike dirs, mere files are ignored by abrtd.
          */
-        snprintf(path, sizeof(path), "%s/%s-coredump", dddir, last_slash);
+        snprintf(path, sizeof(path), "%s/%s-coredump", g_settings_dump_location, last_slash);
         int abrt_core_fd = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
         off_t core_size = copyfd_eof(STDIN_FILENO, abrt_core_fd, COPYFD_SPARSE);
         if (core_size < 0 || fsync(abrt_core_fd) != 0)
@@ -529,16 +506,21 @@ int main(int argc, char** argv)
             unlink(path);
             /* copyfd_eof logs the error including errno string,
              * but it does not log file name */
+            free_abrt_conf_data();
             error_msg_and_die("error saving coredump to %s", path);
         }
         log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
+        free_abrt_conf_data();
         return 0;
     }
 
     unsigned path_len = snprintf(path, sizeof(path), "%s/ccpp-%s-%lu.new",
-            dddir, iso_date_string(NULL), (long)pid);
+            g_settings_dump_location, iso_date_string(NULL), (long)pid);
     if (path_len >= (sizeof(path) - sizeof("/"FILENAME_COREDUMP)))
+    {
+        free_abrt_conf_data();
         return 1;
+    }
 
     struct dump_dir *dd = dd_create(path, uid, 0640);
     if (dd)
@@ -588,6 +570,7 @@ int main(int argc, char** argv)
             if (sz < 0 || fsync(dst_fd_binary) != 0)
             {
                 unlink(path);
+                free_abrt_conf_data();
                 error_msg_and_die("error saving binary image to %s", path);
             }
             close(dst_fd_binary);
@@ -606,6 +589,7 @@ int main(int argc, char** argv)
                 unlink(core_basename);
             }
             errno = sv_errno;
+            free_abrt_conf_data();
             perror_msg_and_die("Can't open '%s'", path);
         }
         fchown(abrt_core_fd, dd->dd_uid, dd->dd_gid);
@@ -636,6 +620,7 @@ int main(int argc, char** argv)
             }
             /* copyfd_sparse logs the error including errno string,
              * but it does not log file name */
+            free_abrt_conf_data();
             error_msg_and_die("error writing %s", path);
         }
         log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
@@ -667,16 +652,20 @@ int main(int argc, char** argv)
              */
             unsigned maxsize = g_settings_nMaxCrashReportsSize + g_settings_nMaxCrashReportsSize / 4;
             maxsize |= 63;
-            trim_debug_dumps(DEBUG_DUMPS_DIR, maxsize * (double)(1024*1024), path);
+            trim_debug_dumps(g_settings_dump_location, maxsize * (double)(1024*1024), path);
         }
 
+        free_abrt_conf_data();
         return 0;
     }
 
     /* We didn't create abrt dump, but may need to create compat coredump */
  create_user_core:
     if (user_core_fd < 0)
+    {
+        free_abrt_conf_data();
         return 0;
+    }
 
     off_t core_size = copyfd_size(STDIN_FILENO, user_core_fd, ulimit_c, COPYFD_SPARSE);
     if (core_size < 0 || fsync(user_core_fd) != 0) {
@@ -684,15 +673,17 @@ int main(int argc, char** argv)
         perror_msg("error writing %s/%s", user_pwd, core_basename);
         xchdir(user_pwd);
         unlink(core_basename);
+        free_abrt_conf_data();
         return 1;
     }
     if (ulimit_c == 0 || core_size > ulimit_c)
     {
         xchdir(user_pwd);
         unlink(core_basename);
+        free_abrt_conf_data();
         return 1;
     }
     log("saved core dump of pid %lu to %s/%s (%llu bytes)", (long)pid, user_pwd, core_basename, (long long)core_size);
-
+    free_abrt_conf_data();
     return 0;
 }

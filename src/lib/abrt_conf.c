@@ -20,12 +20,15 @@
 
 char *        g_settings_sWatchCrashdumpArchiveDir = NULL;
 unsigned int  g_settings_nMaxCrashReportsSize = 1000;
-
+char *        g_settings_dump_location = NULL;
 
 void free_abrt_conf_data()
 {
     free(g_settings_sWatchCrashdumpArchiveDir);
     g_settings_sWatchCrashdumpArchiveDir = NULL;
+
+    free(g_settings_dump_location);
+    g_settings_dump_location = NULL;
 }
 
 static void ParseCommon(map_string_h *settings, const char *conf_filename)
@@ -51,6 +54,15 @@ static void ParseCommon(map_string_h *settings, const char *conf_filename)
             g_settings_nMaxCrashReportsSize = ul;
         g_hash_table_remove(settings, "MaxCrashReportsSize");
     }
+
+    value = g_hash_table_lookup(settings, "DumpLocation");
+    if (value)
+    {
+        g_settings_dump_location = xstrdup(value);
+        g_hash_table_remove(settings, "DumpLocation");
+    }
+    else
+        g_settings_dump_location = xstrdup("/var/spool/abrt");
 
     GHashTableIter iter;
     char *name;

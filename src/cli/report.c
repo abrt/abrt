@@ -1,5 +1,6 @@
 /*
-    Copyright (C) 2009 RedHat inc.
+    Copyright (C) 2011  ABRT Team
+    Copyright (C) 2011  RedHat inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,21 +16,28 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#ifndef HOOKLIB_H
-#define HOOKLIB_H 1
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "abrtlib.h"
+#include "builtin-cmd.h"
 
-#define check_free_space abrt_check_free_space
-void check_free_space(unsigned setting_MaxCrashReportsSize, const char *dump_location);
+int cmd_report(int argc, const char **argv)
+{
+    const char *program_usage_string = _(
+        "\b report [options] [<dump-dir>]..."
+        );
 
-#define trim_debug_dumps abrt_trim_debug_dumps
-void trim_debug_dumps(const char *dirname, double cap_size, const char *exclude_path);
+    struct options program_options[] = {
+        OPT__VERBOSE(&g_verbose),
+        OPT_END()
+    };
 
-#ifdef __cplusplus
+    parse_opts(argc, (char **)argv, program_options, program_usage_string);
+    if (optind < argc)
+        while (optind < argc)
+            report_problem_in_dir(argv[optind++],
+                                  LIBREPORT_ANALYZE | LIBREPORT_NOWAIT);
+
+    show_usage_and_die(program_usage_string, program_options);
+
+    return 0;
 }
-#endif
-
-#endif
