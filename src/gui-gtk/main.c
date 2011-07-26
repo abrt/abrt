@@ -90,9 +90,10 @@ static void add_directory_to_dirlist(const char *dirname)
     char time_buf[sizeof("YYYY-MM-DD hh:mm:ss")];
     time_buf[0] = '\0';
     char *time_str = dd_load_text(dd, FILENAME_TIME);
+    time_t t = 0;
     if (time_str && time_str[0])
     {
-        time_t t = strtol(time_str, NULL, 10); /* atoi won't work past 2038! */
+        t = strtol(time_str, NULL, 10); /* atoi won't work past 2038! */
         struct tm *ptm = localtime(&t);
         size_t time_len = strftime(time_buf, sizeof(time_buf)-1, "%Y-%m-%d %H:%M", ptm);
         time_buf[time_len] = '\0';
@@ -144,7 +145,7 @@ static void add_directory_to_dirlist(const char *dirname)
                           COLUMN_REASON, reason,
                           //OPTION: time format
                           COLUMN_LATEST_CRASH_STR, time_buf,
-                          COLUMN_LATEST_CRASH, time,
+                          COLUMN_LATEST_CRASH, t,
                           COLUMN_DUMP_DIR, dirname,
                           COLUMN_REPORTED_TO, msg ? subm_status : NULL,
                           -1);
