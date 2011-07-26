@@ -160,7 +160,7 @@ static char *get_argv1_if_full_path(const char* cmdline)
      * with '/', it is not a full path to script
      * and we can't use it to determine the package name
      */
-    if (*argv1 != '/')
+    if (argv1 == NULL || *argv1 != '/')
         return NULL;
 
     /* good, it has "/foo/bar" form, return it */
