@@ -33,9 +33,18 @@ int cmd_report(int argc, const char **argv)
 
     parse_opts(argc, (char **)argv, program_options, program_usage_string);
     if (optind < argc)
+    {
         while (optind < argc)
-            report_problem_in_dir(argv[optind++],
-                                  LIBREPORT_ANALYZE | LIBREPORT_NOWAIT);
+        {
+            int status = report_problem_in_dir(argv[optind++],
+                                               LIBREPORT_ANALYZE
+                                               | LIBREPORT_WAIT
+                                               | LIBREPORT_RUN_CLI);
+            if (status)
+                exit(status);
+        }
+        exit(0);
+    }
 
     show_usage_and_die(program_usage_string, program_options);
 
