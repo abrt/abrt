@@ -18,6 +18,8 @@
 */
 
 #include "abrtlib.h"
+
+#include "abrt-cli-core.h"
 #include "builtin-cmd.h"
 
 /* TODO: npajkovs
@@ -29,73 +31,6 @@
  * TODO?: remove base dir from list of crashes? is there a way that same crash can be in
  *       ~/.abrt/spool and /var/spool/abrt? needs more _meditation_.
  */
-
-/* Vector of problems: */
-/* problem_data_vector[i] = { "name" = { "content", CD_FLAG_foo_bits } } */
-typedef GPtrArray vector_of_problem_data_t;
-
-static inline problem_data_t *get_problem_data(vector_of_problem_data_t *vector, unsigned i)
-{
-    return (problem_data_t *)g_ptr_array_index(vector, i);
-}
-
-static void free_vector_of_problem_data(vector_of_problem_data_t *vector)
-{
-    if (vector)
-        g_ptr_array_free(vector, TRUE);
-}
-
-static vector_of_problem_data_t *new_vector_of_problem_data(void)
-{
-    return g_ptr_array_new_with_free_func((void (*)(void*)) &free_problem_data);
-}
-
-static problem_data_t *fill_crash_info(const char *dump_dir_name)
-{
-    int sv_logmode = logmode;
-    logmode = 0; /* suppress EPERM/EACCES errors in opendir */
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ DD_OPEN_READONLY);
-    logmode = sv_logmode;
-
-    if (!dd)
-        return NULL;
-
-    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
-    dd_close(dd);
-    add_to_problem_data_ext(problem_data, CD_DUMPDIR, dump_dir_name,
-                            CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE + CD_FLAG_LIST);
-
-    return problem_data;
-}
-
-static void get_all_crash_infos(vector_of_problem_data_t *retval, const char *dir_name)
-{
-    VERB1 log("Loading dumps from '%s'", dir_name);
-
-    DIR *dir = opendir(dir_name);
-    if (dir != NULL)
-    {
-        struct dirent *dent;
-        while ((dent = readdir(dir)) != NULL)
-        {
-            if (dot_or_dotdot(dent->d_name))
-                continue; /* skip "." and ".." */
-
-            char *dump_dir_name = concat_path_file(dir_name, dent->d_name);
-
-            struct stat statbuf;
-            if (stat(dump_dir_name, &statbuf) == 0
-                && S_ISDIR(statbuf.st_mode))
-            {
-                problem_data_t *problem_data = fill_crash_info(dump_dir_name);
-                if (problem_data)
-                    g_ptr_array_add(retval, problem_data);
-            }
-            free(dump_dir_name);
-        }
-        closedir(dir);
-    }
-}
 
 /** Prints basic information about a crash to stdout. */
 static void print_crash(problem_data_t *problem_data, int detailed)
@@ -141,6 +76,8 @@ static void print_crash_list(vector_of_problem_data_t *crash_list, int include_r
             if (msg)
                 continue;
         }
+
+        printf("@%i\n", i);
         print_crash(crash, detailed);
         if (i != crash_list->len - 1)
             printf("\n");
@@ -187,17 +124,13 @@ int cmd_list(int argc, const char **argv)
             log("\t %s", (char *) li->data);
     }
 
-    vector_of_problem_data_t *ci = new_vector_of_problem_data();
-    while (D_list)
-    {
-        char *dir = (char *)D_list->data;
-        get_all_crash_infos(ci, dir);
-        D_list = g_list_remove(D_list, dir);
-        free(dir);
-    }
+    vector_of_problem_data_t *ci = fetch_crash_infos(D_list);
+
+    g_ptr_array_sort_with_data(ci, &cmp_problem_data, (char *) FILENAME_TIME);
+
     print_crash_list(ci, opt_full, opt_detailed);
     free_vector_of_problem_data(ci);
-    g_list_free(D_list);
+    list_free_with_free(D_list);
 
     return 0;
 }
