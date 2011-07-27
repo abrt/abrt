@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# Generate backtrace from vmcore
+#
+
+VER=`crash --osrelease vmcore`
+# If crash tool is not installed, or doesn't support --osrelease
+# (support was added in crash-5.1.7),
+# prev line failed (exitcode !0). In this case, abort:
+test $? = 0 || exit 1
+# Paranoia: ensure $VER is not empty
+test "$VER" || exit 1
+
+if ! test -f "/usr/lib/debug/lib/modules/$VER/vmlinux"; then
+	echo "Installing kernel debuginfo(s)"
+	yum install --enablerepo=*debuginfo* "/usr/lib/debug/lib/modules/$VER/vmlinux"
+fi
+
+echo "Generation backtrace"
+export TERM=dumb  # defeat gdb ESC sequence emission bug
+echo "log" | crash -s vmcore "/usr/lib/debug/lib/modules/$VER/vmlinux" >backtrace
+# TODO: it's actually a complete kernel log ring buffer.
+# We need to extract the actual oops from it...
+# ...which also solves a "what to put into 'reason' field" problem.
+
+# ??? >reason
+printf 'kernel-%s' "$VER" >package
+printf '%s' "`date '+%s'`" >time
+printf '0' >uid
