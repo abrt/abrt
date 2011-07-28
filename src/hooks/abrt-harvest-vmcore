@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+# This script is meant to be run once at system startup after abrtd is up
+# and running. It moves all vmcore directories in /var/crash
+# (which are presumably created by kdump) to abrtd spool directory.
+#
+# The goal is to let abrtd notice and process them as new problem data dirs.
+#
+
+cd /var/crash || exit 0
+
+# Wait for abrtd to start. Give it at least 1 second to initialize.
+i=10
+while ! pidof abrtd >/dev/null; do
+	if test $((i--)) = 0; then
+		exit 1
+	fi
+	sleep 1
+done
+sleep 1
+
+for d in *; do
+	test -d "$d" || continue
+	test -f "$d/vmcore" || continue
+	# Let abrtd know what type of problem it is:
+	printf "vmcore" >"$d/analyzer"
+	printf "kernel" >"$d/component"
+	printf '%s' "`date '+%s'`" >"$d/time"
+	printf '0' >"$d/uid"
+# TODO: need to generate UUID!
+	# Move to abrt spool dir.
+	# We use .new suffix - mv might use copy+delete to do
+	# the move: we must make sure abrtd doesn't try to process
+	# partially-copied directory.
+	mv -- "$d" "/var/spool/abrt/vmcore-$d.new" || continue
+	chown -R 0:0 "/var/spool/abrt/vmcore-$d.new"
+	chmod -R u+rwX,go-rwxst "/var/spool/abrt/vmcore-$d.new"
+	mv -- "/var/spool/abrt/vmcore-$d.new" "/var/spool/abrt/vmcore-$d"
+done

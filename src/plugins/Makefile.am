@@ -5,6 +5,7 @@ pluginslibdir = $(PLUGINS_LIB_DIR)
 bin_SCRIPTS = \
     abrt-action-install-debuginfo \
     abrt-action-analyze-core \
+    abrt-action-analyze-vmcore \
     abrt-action-list-dsos
 
 bin_PROGRAMS = \
@@ -38,6 +39,7 @@ dist_eventsconf_DATA = \
     ccpp_event.conf \
     ccpp_retrace_event.conf \
     koops_event.conf \
+    vmcore_event.conf \
     python_event.conf \
     smart_event.conf \
     smolt_event.conf

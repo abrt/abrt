@@ -4,7 +4,8 @@ dist_pluginsconf_DATA = \
     CCpp.conf
 
 sbin_SCRIPTS = \
-    abrt-install-ccpp-hook
+    abrt-install-ccpp-hook \
+    abrt-harvest-vmcore
 
 libexec_PROGRAMS = abrt-hook-ccpp
 
@@ -40,5 +41,6 @@ install-data-local:
 
 if HAVE_SYSTEMD
 dist_systemdsystemunit_DATA = \
-    abrt-ccpp.service
+    abrt-ccpp.service \
+    abrt-vmcore.service
 endif

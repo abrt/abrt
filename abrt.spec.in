@@ -116,8 +116,17 @@ Obsoletes: kerneloops > 0.0.1
 Obsoletes: abrt-plugin-kerneloops > 0.0.1
 Obsoletes: abrt-plugin-kerneloopsreporter > 0.0.1
 
+%package addon-vmcore
+Summary: %{name}'s vmcore addon
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+Requires: abrt-addon-kerneloops
+
 %description addon-kerneloops
-This package contains plugin for collecting kernel crash information.
+This package contains plugin for collecting kernel crash information from system log.
+
+%description addon-vmcore
+This package contains plugin for collecting kernel crash information from vmcore files.
 
 %package addon-python
 Summary: %{name}'s addon for catching and analyzing Python exceptions
@@ -154,7 +163,9 @@ Group: User Interface/Desktops
 # any tweaking in abrt.conf (IOW: all plugins mentioned there must be installed)
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-addon-kerneloops
-Requires: abrt-addon-ccpp, abrt-addon-python
+Requires: abrt-addon-vmcore
+Requires: abrt-addon-ccpp
+Requires: abrt-addon-python
 # Default config of addon-ccpp requires gdb
 Requires: gdb >= 7.0-3
 Requires: abrt-gui
@@ -252,6 +263,16 @@ if [ $1 -eq 1 ]; then
 %endif
 fi
 
+%post addon-vmcore
+if [ $1 -eq 1 ]; then
+%if %{with systemd}
+    # Enable (but don't start) the units by default
+    /bin/systemctl enable abrt-vmcore.service >/dev/null 2>&1 || :
+%else
+    /sbin/chkconfig --add abrt-vmcore
+%endif
+fi
+
 %preun
 if [ "$1" -eq "0" ] ; then
 %if %{with systemd}
@@ -285,11 +306,25 @@ if [ "$1" -eq "0" ] ; then
 %endif
 fi
 
+%preun addon-vmcore
+if [ "$1" -eq "0" ] ; then
+%if %{with systemd}
+    /bin/systemctl --no-reload abrt-vmcore.service >/dev/null 2>&1 || :
+    /bin/systemctl stop abrt-vmcore.service >/dev/null 2>&1 || :
+%else
+    service abrt-vmcore stop >/dev/null 2>&1
+    /sbin/chkconfig --del abrt-vmcore
+%endif
+fi
+
 %if %{with systemd}
 %postun
 /bin/systemctl daemon-reload >/dev/null 2>&1 || :
 
 %postun addon-kerneloops
+/bin/systemctl daemon-reload >/dev/null 2>&1 || :
+
+%postun addon-vmcore
 /bin/systemctl daemon-reload >/dev/null 2>&1 || :
 
 %postun addon-ccpp
@@ -319,6 +354,9 @@ service abrt-ccpp condrestart >/dev/null 2>&1 || :
 
 %posttrans addon-kerneloops
 service abrt-oops condrestart >/dev/null 2>&1 || :
+
+%posttrans addon-vmcore
+service abrt-vmcore condrestart >/dev/null 2>&1 || :
 
 %posttrans gui
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
@@ -427,6 +465,17 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-dump-oops
 %{_bindir}/abrt-action-analyze-oops
 %{_mandir}/man1/abrt-action-analyze-oops.1*
+
+%files addon-vmcore
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/libreport/events.d/vmcore_event.conf
+%if %{with systemd}
+/lib/systemd/system/abrt-vmcore.service
+%else
+%{_initrddir}/abrt-vmcore
+%endif
+%{_sbindir}/abrt-harvest-vmcore
+%{_bindir}/abrt-action-analyze-vmcore
 
 %files addon-python
 %defattr(-,root,root,-)

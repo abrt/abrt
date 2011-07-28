@@ -1,0 +1,13 @@
+[Unit]
+Description=Harvest vmcores for ABRT
+# Which of these?? -
+Requires=abrtd.service
+After=abrtd.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/abrt-harvest-vmcore
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
