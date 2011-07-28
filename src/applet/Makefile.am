@@ -22,6 +22,7 @@ abrt_applet_CPPFLAGS = \
 #    $(LIBNOTIFY_CFLAGS)
 #    $(DBUS_GLIB_CFLAGS)
 abrt_applet_LDADD = \
+    ../lib/libabrt.la \
     $(LIBREPORT_GTK_LIBS) \
     -labrt_dbus \
     -lglib-2.0 \
