@@ -40,7 +40,7 @@
 static gboolean persistent_notification;
 static GtkStatusIcon *ap_status_icon;
 static GtkWidget *ap_menu;
-static const char *ap_last_problem_dir;
+static char *ap_last_problem_dir;
 //static bool ap_daemon_running;
 #define ap_daemon_running 1
 
@@ -144,7 +144,7 @@ static void hide_icon(void)
 //this action should open the reporter dialog directly, without showing the main window
 static void action_report(NotifyNotification *notification, gchar *action, gpointer user_data)
 {
-    if (ap_daemon_running)
+    if (ap_daemon_running && ap_last_problem_dir)
     {
         report_problem_in_dir(ap_last_problem_dir, LIBREPORT_ANALYZE | LIBREPORT_NOWAIT);
 
@@ -350,9 +350,8 @@ static void set_icon_tooltip(const char *format, ...)
     free(buf);
 }
 
-static void show_crash_notification(const char* crash_dir, const char *format, ...)
+static void show_crash_notification(const char *format, ...)
 {
-    ap_last_problem_dir = crash_dir;
     va_list args;
     va_start(args, format);
     char *buf = xvasprintf(format, args);
@@ -533,10 +532,9 @@ static void Crash(DBusMessage* signal)
      */
     static time_t last_time = 0;
     static char* last_package_name = NULL;
-    static char* last_dir = NULL;
     time_t cur_time = time(NULL);
     if (last_package_name && strcmp(last_package_name, package_name) == 0
-     && last_dir && strcmp(last_dir, dir) == 0
+     && ap_last_problem_dir && strcmp(ap_last_problem_dir, dir) == 0
      && (unsigned)(cur_time - last_time) < 2 * 60 * 60
     ) {
         log_msg("repeated crash in %s, not showing the notification", package_name);
@@ -545,10 +543,10 @@ static void Crash(DBusMessage* signal)
     last_time = cur_time;
     free(last_package_name);
     last_package_name = xstrdup(package_name);
-    free(last_dir);
-    last_dir = xstrdup(dir);
+    free(ap_last_problem_dir);
+    ap_last_problem_dir = xstrdup(dir);
 
-    show_crash_notification(dir, message, package_name);
+    show_crash_notification(message, package_name);
 }
 
 static void QuotaExceeded(DBusMessage* signal)
@@ -647,6 +645,8 @@ static void die_if_dbus_error(bool error_flag, DBusError* err, const char* msg)
 
 int main(int argc, char** argv)
 {
+    abrt_init(argv);
+
     /* I18n */
     setlocale(LC_ALL, "");
 #if ENABLE_NLS
@@ -659,26 +659,25 @@ int main(int argc, char** argv)
     gdk_threads_init();
     gdk_threads_enter();
 
-    /* Parse options */
-    int opt;
-    while ((opt = getopt(argc, argv, "v")) != -1)
-    {
-        switch (opt)
-        {
-        case 'v':
-            g_verbose++;
-            break;
-        default:
-            error_msg_and_die(
-                "Usage: abrt-applet [-v]\n"
-                "\nOptions:"
-                "\n\t-v\tBe verbose"
-            );
-        }
-    }
     gtk_init(&argc, &argv);
 
-    abrt_init(argv);
+    /* Can't keep these strings/structs static: _() doesn't support that */
+    const char *program_usage_string = _(
+        "\b [-v]\n"
+        "\n"
+        "Applet which notifies user when new problems are detected by ABRT\n"
+    );
+    enum {
+        OPT_v = 1 << 0,
+    };
+    /* Keep enum above and order of options below in sync! */
+    struct options program_options[] = {
+        OPT__VERBOSE(&g_verbose),
+        OPT_END()
+    };
+    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+
+    export_abrt_envvars(0);
     msg_prefix = g_progname;
 
     /* Prevent zombies when we spawn abrt-gui */

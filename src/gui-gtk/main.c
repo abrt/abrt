@@ -866,7 +866,7 @@ int main(int argc, char **argv)
 #endif
 
     /* without this the name is set to argv[0] which confuses
-     * desktops which uses the name to find the corresponding .desktop file
+     * desktops which use the name to find the corresponding .desktop file
      * trac#180
      */
     g_set_prgname("abrt");
