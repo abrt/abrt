@@ -28,7 +28,7 @@ check() {
 start() {
 	check
 
-	$INSTALL_HOOK install
+	"$INSTALL_HOOK" install
 	RETVAL=$?
 	[ $RETVAL -eq 0 ] && touch -- "$LOCK"
 	return $RETVAL
@@ -37,7 +37,7 @@ start() {
 stop() {
 	check
 
-	$INSTALL_HOOK uninstall
+	"$INSTALL_HOOK" uninstall
 	RETVAL=$?
 	[ $RETVAL -eq 0 ] && rm -f -- "$LOCK"
 	return $RETVAL
@@ -70,10 +70,10 @@ restart)
 	restart
 	;;
 condrestart)
-	$INSTALL_HOOK is-installed && restart
+	"$INSTALL_HOOK" is-installed && restart
 	;;
 status)
-	$INSTALL_HOOK is-installed && RETVAL=0 || RETVAL=3
+	"$INSTALL_HOOK" is-installed && RETVAL=0 || RETVAL=3
 	;;
 *)
 	echo $"Usage: $0 {start|stop|status|restart|condrestart|reload|force-reload}"
