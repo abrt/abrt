@@ -106,22 +106,14 @@ int cmd_list(int argc, const char **argv)
     if (optind < argc)
         while (optind < argc)
             D_list = g_list_append(D_list, xstrdup(argv[optind++]));
-
-    load_abrt_conf();
     if (!D_list)
     {
+        load_abrt_conf();
         char *home = getenv("HOME");
         if (home)
             D_list = g_list_append(D_list, concat_path_file(home, ".abrt/spool"));
         D_list = g_list_append(D_list, xstrdup(g_settings_dump_location));
-    }
-    free_abrt_conf_data();
-
-    VERB2
-    {
-        log("Base directory");
-        for (GList *li = D_list; li; li = li->next)
-            log("\t %s", (char *) li->data);
+        free_abrt_conf_data();
     }
 
     vector_of_problem_data_t *ci = fetch_crash_infos(D_list);
