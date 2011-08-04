@@ -111,7 +111,8 @@ abrt_dump_oops_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror
 abrt_dump_oops_LDADD = \
     $(GLIB_LIBS) \
-    $(LIBREPORT_LIBS)
+    $(LIBREPORT_LIBS) \
+    ../lib/libabrt.la
 
 abrt_action_analyze_c_SOURCES = \
     abrt-action-analyze-c.c

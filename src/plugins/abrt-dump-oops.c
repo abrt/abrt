@@ -576,6 +576,7 @@ int main(int argc, char **argv)
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
         "\b [-vsrowx] [-d DIR] FILE\n"
+        "   or: \b [-vsrowx] -D FILE\n"
         "\n"
         "Extract oops from syslog/dmesg file"
     );
@@ -587,6 +588,7 @@ int main(int argc, char **argv)
         OPT_w = 1 << 4,
         OPT_d = 1 << 5,
         OPT_x = 1 << 6,
+        OPT_D = 1 << 7,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
@@ -600,9 +602,13 @@ int main(int argc, char **argv)
          */
         OPT_STRING('d', NULL, &debug_dumps_dir, "DIR", _("Create ABRT dump in DIR for every oops found")),
         OPT_BOOL(  'x', NULL, NULL, _("Make the dump directory world readable")),
+        OPT_BOOL(  'D', NULL, NULL, _("Same as -d DumpLocation, DumpLocation is specified in abrt.conf")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+
+    if ((opts & OPT_d) && (opts & OPT_D))
+        show_usage_and_die(program_usage_string, program_options);
 
     export_abrt_envvars(0);
 
@@ -713,8 +719,14 @@ int main(int argc, char **argv)
                 while (i < oops_cnt)
                     printf("\nVersion: %s", (char*)g_list_nth_data(oops_list, i++));
             }
-            if (opts & OPT_d)
+            if ((opts & OPT_d) || (opts & OPT_D))
             {
+                if (opts & OPT_D)
+                {
+                    load_abrt_conf();
+                    debug_dumps_dir = g_settings_dump_location;
+                }
+
                 log("Creating dump directories");
                 errors += save_oops_to_dump_dir(oops_list, oops_cnt);
                 if (errors > 0)
@@ -729,6 +741,9 @@ int main(int argc, char **argv)
                         "Reported %u kernel oopses to Abrt",
                         oops_cnt
                 );
+
+                if (opts & OPT_D)
+                    free_abrt_conf_data();
             }
         }
         list_free_with_free(oops_list);

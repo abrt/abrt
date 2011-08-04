@@ -3,7 +3,7 @@ Description=ABRT kernel log watcher
 After=syslog.target
 
 [Service]
-ExecStart=/usr/bin/abrt-dump-oops -d /var/spool/abrt -rwx /var/log/messages
+ExecStart=/usr/bin/abrt-dump-oops -rwxD /var/log/messages
 
 [Install]
 WantedBy=multi-user.target
