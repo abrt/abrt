@@ -245,103 +245,6 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
 
 /* Inotify handler */
 
-/* helpers first */
-
-struct logging_state {
-    char *last_line;
-};
-
-static char *do_log_and_save_line(char *log_line, void *param)
-{
-    struct logging_state *l_state = (struct logging_state *)param;
-
-    VERB1 log("%s", log_line);
-    update_client("%s", log_line);
-    free(l_state->last_line);
-    l_state->last_line = log_line;
-    return NULL;
-}
-
-/* We need to share some data between LoadDebugDump and is_crash_a_dup: */
-struct cdump_state {
-    char *uid;                   /* filled by LoadDebugDump */
-    char *uuid;                  /* filled by is_crash_a_dup */
-    char *crash_dump_dup_name;   /* filled by is_crash_a_dup */
-};
-
-static int is_crash_a_dup(const char *dump_dir_name, void *param)
-{
-    struct cdump_state *state = (struct cdump_state *)param;
-
-    if (state->uuid)
-        return 0; /* we already checked it, don't do it again */
-
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return 0; /* wtf? (error, but will be handled elsewhere later) */
-    state->uuid = dd_load_text_ext(dd, FILENAME_UUID,
-                DD_FAIL_QUIETLY_ENOENT + DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
-    );
-    dd_close(dd);
-    if (!state->uuid)
-    {
-        return 0; /* no uuid (yet), "run_event, please continue iterating" */
-    }
-
-    /* Scan crash dumps looking for a dup */
-//TODO: explain why this is safe wrt concurrent runs
-    DIR *dir = opendir(g_settings_dump_location);
-    if (dir != NULL)
-    {
-        struct dirent *dent;
-        while ((dent = readdir(dir)) != NULL)
-        {
-            if (dot_or_dotdot(dent->d_name))
-                continue; /* skip "." and ".." */
-
-            int different;
-            char *uid, *uuid;
-            char *dump_dir_name2 = concat_path_file(g_settings_dump_location, dent->d_name);
-
-            if (strcmp(dump_dir_name, dump_dir_name2) == 0)
-                goto next; /* we are never a dup of ourself */
-
-            dd = dd_opendir(dump_dir_name2, /*flags:*/ DD_FAIL_QUIETLY_ENOENT);
-            if (!dd)
-                goto next;
-            uid = dd_load_text(dd, FILENAME_UID);
-            uuid = dd_load_text(dd, FILENAME_UUID);
-            dd_close(dd);
-            different = strcmp(state->uid, uid) || strcmp(state->uuid, uuid);
-            free(uid);
-            free(uuid);
-            if (different)
-                goto next;
-
-            state->crash_dump_dup_name = dump_dir_name2;
-            /* "run_event, please stop iterating": */
-            return 1;
-
- next:
-            free(dump_dir_name2);
-        }
-        closedir(dir);
-    }
-
-    /* No dup found */
-    return 0; /* "run_event, please continue iterating" */
-}
-
-static char *do_log(char *log_line, void *param)
-{
-    /* We pipe output of post-create events to our log (which usually
-     * includes syslog). Otherwise, errors on post-create result in
-     * "Corrupted or bad dump DIR, deleting" without adequate explanation why.
-     */
-    log("%s", log_line);
-    return log_line;
-}
-
 static problem_data_t *load_crash_info(const char *dump_dir_name)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
@@ -365,58 +268,60 @@ typedef enum {
 
 static mw_result_t LoadDebugDump(const char *dump_dir_name, problem_data_t **problem_data)
 {
-    mw_result_t res;
+    mw_result_t res  = MW_ERROR;
 
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return MW_ERROR;
-    struct cdump_state state;
-    state.uid = dd_load_text(dd, FILENAME_UID);
-    state.uuid = NULL;
-    state.crash_dump_dup_name = NULL;
-    char *analyzer = dd_load_text(dd, FILENAME_ANALYZER);
-    dd_close(dd);
+    char *args[6];
+    args[0] = (char *) "/usr/libexec/abrt-handle-event";
+    args[1] = (char *) "-e";
+    args[2] = (char *) "post-create";
+    args[3] = (char *) "--";
+    args[4] = (char *) dump_dir_name;
+    args[5] = NULL;
 
-    res = MW_ERROR;
+    int pipeout[2];
+    int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_QUIET | EXECFLG_ERR2OUT;
+    VERB1 flags &= ~EXECFLG_QUIET;
 
-    /* Run post-create event handler(s) */
-    struct run_event_state *run_state = new_run_event_state();
-    run_state->post_run_callback = is_crash_a_dup;
-    run_state->post_run_param = &state;
-    run_state->logging_callback = do_log;
-    int r = run_event_on_dir_name(run_state, dump_dir_name, "post-create");
-    free_run_event_state(run_state);
+    pid_t child = fork_execv_on_steroids(flags, args, pipeout,
+                                         /*env_vec:*/ NULL, /*dir:*/ NULL, 0);
 
-//TODO: consider this case:
-// new dump is created, post-create detects that it is a dup,
-// but then load_crash_info(dup_name) *FAILS*.
-// In this case, we later delete damaged dup_name (right?)
-// but new dump never gets its FILENAME_COUNT set!
+    FILE *fp = fdopen(pipeout[0], "r");
+    if (!fp)
+        die_out_of_memory();
 
-    /* Is crash a dup? (In this case, is_crash_a_dup() should have
-     * aborted "post-create" event processing as soon as it saw uuid
-     * and determined that there is another crash with same uuid.
-     * In this case it sets state.crash_dump_dup_name)
-     */
-    if (!state.crash_dump_dup_name)
+    char *buf;
+    char *dup_of_dir = NULL;
+    while ((buf = xmalloc_fgetline(fp)) != NULL)
     {
-        /* No. Was there error on one of processing steps in run_event? */
-        if (r != 0)
-            goto ret; /* yes */
+        log("%s", buf);
 
-        /* Was uuid created after all? (In this case, is_crash_a_dup()
-         * should have fetched it and created state.uuid)
-         */
-        if (!state.uuid)
+        if (strncmp("DUP_OF_DIR: ", buf, strlen("DUP_OF_DIR: ")) == 0)
         {
-            /* no */
-            log("Dump directory '%s' has no UUID element", dump_dir_name);
-            goto ret;
+            overlapping_strcpy(buf, buf + strlen("DUP_OF_DIR: "));
+            free(dup_of_dir);
+            dup_of_dir = buf;
         }
+        else
+            free(buf);
     }
-    else
+    fclose(fp);
+    close(pipeout[0]);
+
+    /* Prevent having zombie child process */
+    int status;
+    waitpid(child, &status, 0);
+    status = WEXITSTATUS(status);
+
+    /* exit 0 means, this is a good, non-dup dir */
+    if (status != 0)
     {
-        dump_dir_name = state.crash_dump_dup_name;
+        if (dup_of_dir)
+            dump_dir_name = dup_of_dir;
+        else
+        {
+            free(dup_of_dir);
+            return MW_ERROR;
+        }
     }
 
     /* Loads problem_data (from the *first debugdump dir* if this one is a dup)
@@ -426,7 +331,7 @@ static mw_result_t LoadDebugDump(const char *dump_dir_name, problem_data_t **pro
      * else: an error code
      */
     {
-        dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (!dd)
         {
             res = MW_ERROR;
@@ -458,11 +363,7 @@ static mw_result_t LoadDebugDump(const char *dump_dir_name, problem_data_t **pro
     }
 
  ret:
-    free(state.uuid);
-    free(state.uid);
-    free(state.crash_dump_dup_name);
-    free(analyzer);
-
+    free(dup_of_dir);
     return res;
 }
 

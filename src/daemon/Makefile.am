@@ -13,6 +13,8 @@ sbin_PROGRAMS = \
     abrtd \
     abrt-server
 
+libexec_PROGRAMS = abrt-handle-event
+
 abrtd_SOURCES = \
     CommLayerServerDBus.h CommLayerServerDBus.c \
     comm_layer_inner.h comm_layer_inner.c \
@@ -54,6 +56,19 @@ abrt_server_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_server_LDADD = \
+    ../lib/libabrt.la \
+    $(LIBREPORT_LIBS)
+
+abrt_handle_event_SOURCES = \
+    abrt-handle-event.c
+abrt_handle_event_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    -D_GNU_SOURCE \
+    -Wall -Wwrite-strings -Werror
+abrt_handle_event_LDADD = \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS)
 
