@@ -81,7 +81,6 @@ EXTRA_DIST = \
     $(man_MANS) \
     $(MAN_TXT) \
     $(PYTHON_FILES) \
-    $(man1_MANS) \
     collect_Smolt.xml.in \
     collect_xsession_errors.xml.in \
     collect_GConf.xml.in \
