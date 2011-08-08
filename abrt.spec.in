@@ -7,6 +7,12 @@
     %bcond_with systemd
 %endif
 
+%if 0%{?rhel} >= 6
+%define vendor redhat
+%else
+%define vendor fedora
+%endif
+
 Summary: Automatic bug detection and reporting tool
 Name: abrt
 Version: @@ABRT_VERSION@@
@@ -210,7 +216,7 @@ mkdir -p $RPM_BUILD_ROOT/var/spool/abrt-upload
 
 desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
-        --vendor fedora \
+        --vendor %{vendor} \
         --delete-original \
         ${RPM_BUILD_ROOT}%{_datadir}/applications/%{name}.desktop
 
