@@ -42,13 +42,6 @@ BuildRequires: xmlto
 BuildRequires: libreport-devel
 BuildRequires: btparser-devel
 
-# for rhel6
-%if 0%{?rhel} >= 6
-BuildRequires: gnome-keyring-devel
-%else
-BuildRequires: libgnome-keyring-devel
-%endif
-
 %if %{with systemd}
 Requires: systemd-units
 %endif
