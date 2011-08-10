@@ -22,12 +22,17 @@ sleep 1
 for d in *; do
 	test -d "$d" || continue
 	test -f "$d/vmcore" || continue
+
 	# Let abrtd know what type of problem it is:
-	printf "vmcore" >"$d/analyzer"
-	printf "kernel" >"$d/component"
+	printf 'vmcore' >"$d/analyzer"
+	printf 'kernel' >"$d/component"
 	printf '%s' "`date '+%s'`" >"$d/time"
 	printf '0' >"$d/uid"
-# TODO: need to generate UUID!
+	# TODO: need to generate *real* UUID,
+	# one which has a real chance of catching dups!
+	# This one generates different hashes even for similar cores:
+	printf '%s' "`sha1sum <"./vmcore" | cut -d" " -f1`" >"$d/uuid"
+
 	# Move to abrt spool dir.
 	# We use .new suffix - mv might use copy+delete to do
 	# the move: we must make sure abrtd doesn't try to process
