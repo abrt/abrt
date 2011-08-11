@@ -31,7 +31,7 @@ for d in *; do
 	# TODO: need to generate *real* UUID,
 	# one which has a real chance of catching dups!
 	# This one generates different hashes even for similar cores:
-	printf '%s' "`sha1sum <"./vmcore" | cut -d" " -f1`" >"$d/uuid"
+	printf '%s' "`sha1sum <"$d/vmcore" | cut -d" " -f1`" >"$d/uuid"
 
 	# Move to abrt spool dir.
 	# We use .new suffix - mv might use copy+delete to do

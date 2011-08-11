@@ -536,7 +536,8 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             //VERB3 log("File '%s' creation detected, ignoring", name);
             continue;
         }
-        if (strcmp(strchrnul(name, '.'), ".new") == 0)
+        const char *ext = strrchr(name, '.');
+        if (ext && strcmp(ext, ".new") == 0)
         {
             //VERB3 log("Directory '%s' creation detected, ignoring", name);
             continue;
