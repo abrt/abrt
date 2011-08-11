@@ -413,7 +413,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-gui
 %dir %{_datadir}/%{name}
 # all glade, gtkbuilder and py files for gui
-%{_datadir}/applications/fedora-%{name}.desktop
+%{_datadir}/applications/%{vendor}-%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/*
 %{_datadir}/icons/hicolor/*/status/*
 %{_datadir}/%{name}/icons/hicolor/*/status/*
