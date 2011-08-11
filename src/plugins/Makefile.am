@@ -28,6 +28,7 @@ eventsdir = $(EVENTS_DIR)
 dist_events_DATA = \
     analyze_LocalGDB.xml \
     analyze_RetraceServer.xml \
+    analyze_VMcore.xml \
     collect_xsession_errors.xml \
     collect_Smolt.xml \
     collect_GConf.xml \
@@ -88,6 +89,7 @@ EXTRA_DIST = \
     collect_vimrc_system.xml.in \
     analyze_LocalGDB.xml.in \
     analyze_RetraceServer.xml.in \
+    analyze_VMcore.xml.in \
     abrt-action-analyze-vmcore
 
 $(DESTDIR)/$(DEBUG_INFO_DIR):

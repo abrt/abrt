@@ -475,6 +475,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files addon-vmcore
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vmcore_event.conf
+%{_sysconfdir}/libreport/events/analyze_VMcore.xml
 %if %{with systemd}
 /lib/systemd/system/abrt-vmcore.service
 %else
