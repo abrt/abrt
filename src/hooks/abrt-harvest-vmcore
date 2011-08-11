@@ -19,6 +19,8 @@ while ! pidof abrtd >/dev/null; do
 done
 sleep 1
 
+umask 077
+
 for d in *; do
 	test -d "$d" || continue
 	test -f "$d/vmcore" || continue
@@ -33,12 +35,21 @@ for d in *; do
 	# This one generates different hashes even for similar cores:
 	printf '%s' "`sha1sum <"$d/vmcore" | cut -d" " -f1`" >"$d/uuid"
 
-	# Move to abrt spool dir.
-	# We use .new suffix - mv might use copy+delete to do
-	# the move: we must make sure abrtd doesn't try to process
-	# partially-copied directory.
-	mv -- "$d" "/var/spool/abrt/vmcore-$d.new" || continue
+	# Move vmcore directory to abrt spool dir.
+	# We use .new suffix - we must make sure abrtd doesn't try
+	# to process partially-copied directory.
+	#
+	# This is the efficient way:
+	#mv -- "$d" "/var/spool/abrt/vmcore-$d.new" || continue
+	# ...and this is what selinux forces me to do
+	# (otherwise files have wrong context and abrtd can't access them):
+	cp -r --no-preserve=all -- "$d" "/var/spool/abrt/vmcore-$d.new" || {
+		rm -rf "/var/spool/abrt/vmcore-$d.new"
+		continue
+	}
+	rm -rf -- "$d"
+
 	chown -R 0:0 "/var/spool/abrt/vmcore-$d.new"
 	chmod -R u+rwX,go-rwxst "/var/spool/abrt/vmcore-$d.new"
-	mv -- "/var/spool/abrt/vmcore-$d.new" "/var/spool/abrt/vmcore-$d"
+	mv "/var/spool/abrt/vmcore-$d.new" "/var/spool/abrt/vmcore-$d"
 done
