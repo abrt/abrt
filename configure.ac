@@ -110,13 +110,6 @@ AC_SUBST(PLUGINS_LIB_DIR)
 AC_SUBST(DEBUG_INFO_DIR)
 AC_SUBST(LIBEXEC_DIR)
 
-# Initialize the test suite.
-AC_CONFIG_TESTDIR(tests)
-AC_CONFIG_FILES([tests/Makefile tests/atlocal])
-AM_MISSING_PROG([AUTOM4TE], [autom4te])
-# Needed by tests/atlocal.in.
-AC_SUBST([O0CFLAGS], [`echo $CFLAGS   | sed 's/-O[[0-9]] *//'`])
-
 AC_CONFIG_HEADERS([config.h])
 
 AC_CONFIG_FILES([
