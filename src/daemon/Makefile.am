@@ -96,7 +96,19 @@ man_MANS = \
     abrt.conf.5 \
     abrt_event.conf.5
 
-EXTRA_DIST = $(man_MANS) abrt-handle-upload
+MAN_TXT = \
+    abrt-handle-upload.txt
+
+# Manual pages are generated from .txt via Docbook
+man1_MANS = abrt-handle-upload.1
+
+%.1 %.5 %.7: %.xml
+	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
+
+%.xml: %.txt ../../asciidoc.conf
+	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -aabrt_version=$(PACKAGE_VERSION) -o $@ $<
+
+EXTRA_DIST = $(man_MANS) $(MAN_TXT) abrt-handle-upload
 
 if HAVE_SYSTEMD
 dist_systemdsystemunit_DATA = \
