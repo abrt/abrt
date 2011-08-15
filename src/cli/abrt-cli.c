@@ -26,7 +26,7 @@
 /* TODO: add --pager(default) and --no-pager */
 
 const char abrt_cli_usage_string[] =
-    "abrt-cli [--version] <command> [<args>]";
+    "abrt-cli [--version] COMMAND [ARGS]";
 
 struct cmd_struct {
     const char *cmd;
@@ -56,11 +56,13 @@ static void list_cmds_help(const struct cmd_struct *commands)
     }
 }
 
-static void handle_internal_options(int *argc, const char ***argv)
+static unsigned handle_internal_options(int argc, const char **argv)
 {
-    while (*argc > 0)
+    unsigned skip = 0;
+
+    while (*argv)
     {
-        const char *cmd = (*argv)[0];
+        const char *cmd = *argv;
         if (cmd[0] != '-')
             break;
 
@@ -68,6 +70,10 @@ static void handle_internal_options(int *argc, const char ***argv)
         {
             puts(PACKAGE_VERSION);
             exit(0);
+        }
+        if (strcmp(cmd, "--help") == 0)
+        {
+            return skip + argc;
         }
 #if 0
         else if (prefixcmp(cmd, "--base-dir=") == 0)
@@ -91,9 +97,12 @@ static void handle_internal_options(int *argc, const char ***argv)
         else
             error_msg_and_die("usage: %s", abrt_cli_usage_string);
 
-        (*argv)++;
-        (*argc)--;
+        argv++;
+        argc--;
+        skip++;
     }
+
+    return skip;
 }
 
 static void handle_internal_command(int argc, const char **argv,
@@ -103,7 +112,7 @@ static void handle_internal_command(int argc, const char **argv,
 
     for (const struct cmd_struct *p = commands; p->cmd; ++p)
     {
-        if (strcmp(p->cmd, cmd))
+        if (strcmp(p->cmd, cmd) != 0)
             continue;
 
         exit(p->fn(argc, argv));
@@ -131,14 +140,16 @@ int main(int argc, const char **argv)
         {NULL, NULL, NULL}
     };
 
-    handle_internal_options(&argc, &argv);
+    unsigned skip = handle_internal_options(argc, argv);
+    argc -= skip;
+    argv += skip;
     if (argc > 0)
         handle_internal_command(argc, argv, commands);
 
     /* user didn't specify command; print out help */
     printf("%s\n\n", abrt_cli_usage_string);
     list_cmds_help(commands);
-    printf("\n%s\n", _("See 'abrt-cli <command> -h' for more information"));
+    printf("\n%s\n", _("See 'abrt-cli COMMAND -h' for more information"));
 
     return 0;
 }
