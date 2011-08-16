@@ -763,7 +763,7 @@ int main(int argc, char** argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "\b [-v] [DIR]...\n"
+        "\1 [-v] [DIR]...\n"
         "\n"
         "Applet which notifies user when new problems are detected by ABRT\n"
     );

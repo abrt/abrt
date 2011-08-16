@@ -87,7 +87,7 @@ static void print_crash_list(vector_of_problem_data_t *crash_list, int include_r
 int cmd_list(int argc, const char **argv)
 {
     const char *program_usage_string = _(
-        "\b list [options] [<dump-dir>]..."
+        "\1 list [options] [<dump-dir>]..."
         );
 
     static int opt_full, opt_detailed;
@@ -130,7 +130,7 @@ int cmd_list(int argc, const char **argv)
 int cmd_info(int argc, const char **argv)
 {
     const char *program_usage_string = _(
-        "\b info [options] [<dump-dir>]..."
+        "\1 info [options] [<dump-dir>]..."
         );
 
     static int opt_detailed;

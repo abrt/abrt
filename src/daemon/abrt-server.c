@@ -445,7 +445,7 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "\b [options]"
+        "\1 [options]"
     );
     enum {
         OPT_v = 1 << 0,

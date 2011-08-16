@@ -146,7 +146,7 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "\b [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+        "\1 [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
         "\n"
         "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
     );

@@ -84,11 +84,11 @@ msgstr "Abrir ABRT"
 
 #: ../src/daemon/abrt-action-save-package-data.c:250
 msgid ""
-"\\b [-v] -d DIR\n"
+"\\1 [-v] -d DIR\n"
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
-"\\b [-v] -d DIR\n"
+"\\1 [-v] -d DIR\n"
 "\n"
 "Consultar la base de datos de paquetes y guarde el nombre de paquete, componente y descripción"
 
@@ -108,8 +108,8 @@ msgid "Dump directory"
 msgstr "Listar directorio"
 
 #: ../src/daemon/abrt-server.c:442 ../src/daemon/abrtd.c:506
-msgid "\\b [options]"
-msgstr "\\b [opciones]"
+msgid "\\1 [options]"
+msgstr "\\1 [opciones]"
 
 #: ../src/daemon/abrt-server.c:453
 msgid "Use UID as client uid"
@@ -194,12 +194,12 @@ msgstr "Ver e informar sobre la caída de la aplicación"
 
 #: ../src/gui-gtk/main.c:213
 msgid ""
-"\\b [-vp] [DIR]...\n"
+"\\1 [-vp] [DIR]...\n"
 "\n"
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 "(default DIRs: "
 msgstr ""
-"\\b [-vp] [DIR]...\n"
+"\\1 [-vp] [DIR]...\n"
 "\n"
 "Muestra la lista de directorios de volcado de ABRT en los DIR(s) especificados\n"
 "(DIRs predeterminados: "
@@ -211,11 +211,11 @@ msgstr "Subidos: %llu de %llu kbytes"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:45
 msgid ""
-"\\b [options] -d DIR\n"
+"\\1 [options] -d DIR\n"
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
 msgstr ""
-"\\b [opciones] -d DIR\n"
+"\\1 [opciones] -d DIR\n"
 "\n"
 "Analiza retrotrazados C/C++, genera un hash de duplicación, tasa de retrotrazado e identifica la función que se colgó en el directorio DIR de volcado"
 
@@ -230,31 +230,31 @@ msgstr "Ha fallado el análisis del trazado de %s"
 
 #: ../src/plugins/abrt-action-analyze-c.c:151
 msgid ""
-"\\b [-v] -d DIR\n"
+"\\1 [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
-"\\b [-v] -d DIR\n"
+"\\1 [-v] -d DIR\n"
 "\n"
 "Calcula y guarda el UUID del coredump el el directorio DIR de volcado"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:112
 msgid ""
-"\\b [-vs] -d DIR\n"
+"\\1 [-vs] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
-"\\b [-vs] -d DIR\n"
+"\\1 [-vs] -d DIR\n"
 "\n"
 "Calcula y guarda el UUID y el DUPHASH para el directorio DIR de volcado de oops"
 
 #: ../src/plugins/abrt-action-analyze-python.c:30
 msgid ""
-"\\b [-v] -d DIR\n"
+"\\1 [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
-"\\b [-v] -d DIR\n"
+"\\1 [-v] -d DIR\n"
 "\n"
 "Calcula y guarda el UUID y el DUPHASH de volcados de cuelgues de python"
 
@@ -311,7 +311,7 @@ msgstr "Saliendo"
 
 #: ../src/plugins/abrt-action-bugzilla.c:233
 msgid ""
-"\\b [-v] [-c CONFFILE] -d DIR\n"
+"\\1 [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Reports problem to Bugzilla.\n"
 "\n"
@@ -342,11 +342,11 @@ msgstr "Archivo de configuración (puede ser ofrecido varias veces)"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:239
 msgid ""
-"\\b [options] -d DIR\n"
+"\\1 [options] -d DIR\n"
 "\n"
 "Analyzes coredump in dump directory DIR, generates and saves backtrace"
 msgstr ""
-"\\b [opciones] -d DIR\n"
+"\\1 [opciones] -d DIR\n"
 "\n"
 "Analiza el coredump en el directorio DIR de volcado, genera y guarda el retrotrazado."
 
@@ -535,11 +535,11 @@ msgstr "Enviando reportes oops a %s"
 
 #: ../src/plugins/abrt-action-kerneloops.c:135
 msgid ""
-"\\b [-v] [-c CONFFILE]... -d DIR\n"
+"\\1 [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
 "Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
-"\\b [-v] [-c ARCHCONF]... -d DIR\n"
+"\\1 [-v] [-c ARCHCONF]... -d DIR\n"
 "\n"
 "Informa oops del kernel al sitio kerneloops.org (o similar)"
 
@@ -553,11 +553,11 @@ msgstr "Enviando un correo..."
 
 #: ../src/plugins/abrt-action-mailx.c:136
 msgid ""
-"\\b [-v] -d DIR [-c CONFFILE]\n"
+"\\1 [-v] -d DIR [-c CONFFILE]\n"
 "\n"
 "Sends contents of a dump directory DIR via email"
 msgstr ""
-"\\b [-v] -d DIR [-c ARCHCONF]\n"
+"\\1 [-v] -d DIR [-c ARCHCONF]\n"
 "\n"
 "Envía el contenido del directorio DIR de volcado vía email"
 
@@ -568,11 +568,11 @@ msgstr "Archivo de configuración"
 
 #: ../src/plugins/abrt-action-print.c:35
 msgid ""
-"\\b [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
+"\\1 [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
-"\\b [-v] -d DIR [-o ARCH] [-a yes/no] [-r]\n"
+"\\1 [-v] -d DIR [-o ARCH] [-a yes/no] [-r]\n"
 "\n"
 "Imprime la información del problema a la salida estándar o a ARCH"
 
@@ -623,7 +623,7 @@ msgstr "Creando un nuevo caso..."
 
 #: ../src/plugins/abrt-action-rhtsupport.c:298
 msgid ""
-"\\b [-v] -c CONFFILE -d DIR\n"
+"\\1 [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports a problem to RHTSupport.\n"
 "\n"
@@ -635,11 +635,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:150
 msgid ""
-"\\b [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"\\1 [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
-"\\b [-v] [-d TAM:DIR]... [-f TAM:DIR]... [-p DIR]\n"
+"\\1 [-v] [-d TAM:DIR]... [-f TAM:DIR]... [-p DIR]\n"
 "\n"
 "Elimina los directorios de volcado (-d) o archivos (-f) en los directorios DIR hasta que sean más pequeños que TAM"
 
@@ -673,11 +673,11 @@ msgstr "El archivo ha sido creado: '%s'"
 
 #: ../src/plugins/abrt-action-upload.c:241
 msgid ""
-"\\b [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\\1 [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
 "Uploads compressed tarball of dump directory DIR"
 msgstr ""
-"\\b [-v] -d DIR [-c ARCHCONF] [-u URL]\n"
+"\\1 [-v] -d DIR [-c ARCHCONF] [-u URL]\n"
 "\n"
 "Sube un tarball comprimido del DIR de volcado"
 
@@ -687,11 +687,11 @@ msgstr "URL base hacia donde enviar"
 
 #: ../src/plugins/abrt-dump-oops.c:579
 msgid ""
-"\\b [-vsrowx] [-d DIR] FILE\n"
+"\\1 [-vsrowx] [-d DIR] FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
-"\\b [-vsrowx] [-d DIR] ARCH\n"
+"\\1 [-vsrowx] [-d DIR] ARCH\n"
 "\n"
 "Extrae oops desde el archivo syslog/dmesg"
 

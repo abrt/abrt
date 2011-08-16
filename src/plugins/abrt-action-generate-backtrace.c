@@ -248,7 +248,7 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "\b [options] -d DIR\n"
+        "\1 [options] -d DIR\n"
         "\n"
         "Analyzes coredump in dump directory DIR, generates and saves backtrace"
     );

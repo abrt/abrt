@@ -74,7 +74,7 @@ msgstr "ABRT തുറക്കുക"
 
 #: ../src/daemon/abrt-action-save-package-data.c:250
 msgid ""
-"\b [-v] -d DIR\n"
+"\1 [-v] -d DIR\n"
 "\n"
 "Query package database and save package name, component, and description"
 msgstr ""
@@ -95,7 +95,7 @@ msgid "Dump directory"
 msgstr ""
 
 #: ../src/daemon/abrt-server.c:442 ../src/daemon/abrtd.c:506
-msgid "\b [options]"
+msgid "\1 [options]"
 msgstr ""
 
 #: ../src/daemon/abrt-server.c:453
@@ -181,7 +181,7 @@ msgstr "പ്രയോഗത്തിന്റെ തകരാറുകള്�
 
 #: ../src/gui-gtk/main.c:213
 msgid ""
-"\b [-vp] [DIR]...\n"
+"\1 [-vp] [DIR]...\n"
 "\n"
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 "(default DIRs: "
@@ -194,7 +194,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:45
 msgid ""
-"\b [options] -d DIR\n"
+"\1 [options] -d DIR\n"
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
 "identifies crash function in dump directory DIR"
@@ -212,21 +212,21 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-c.c:151
 msgid ""
-"\b [-v] -d DIR\n"
+"\1 [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-oops.c:112
 msgid ""
-"\b [-vs] -d DIR\n"
+"\1 [-vs] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-python.c:30
 msgid ""
-"\b [-v] -d DIR\n"
+"\1 [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
@@ -284,7 +284,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-bugzilla.c:233
 msgid ""
-"\b [-v] [-c CONFFILE] -d DIR\n"
+"\1 [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Reports problem to Bugzilla.\n"
 "\n"
@@ -316,7 +316,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:239
 msgid ""
-"\b [options] -d DIR\n"
+"\1 [options] -d DIR\n"
 "\n"
 "Analyzes coredump in dump directory DIR, generates and saves backtrace"
 msgstr ""
@@ -487,7 +487,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-kerneloops.c:135
 msgid ""
-"\b [-v] [-c CONFFILE]... -d DIR\n"
+"\1 [-v] [-c CONFFILE]... -d DIR\n"
 "\n"
 "Reports kernel oops to kerneloops.org (or similar) site"
 msgstr ""
@@ -502,7 +502,7 @@ msgstr "ഒരു ഈമെയില്‍ അയയ്ക്കുന്നു.
 
 #: ../src/plugins/abrt-action-mailx.c:136
 msgid ""
-"\b [-v] -d DIR [-c CONFFILE]\n"
+"\1 [-v] -d DIR [-c CONFFILE]\n"
 "\n"
 "Sends contents of a dump directory DIR via email"
 msgstr ""
@@ -514,7 +514,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-print.c:35
 msgid ""
-"\b [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
+"\1 [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
 "\n"
 "Prints problem information to standard output or FILE"
 msgstr ""
@@ -564,7 +564,7 @@ msgstr "പുതിയ ബഗ് തയ്യാറക്കുന്നു..."
 
 #: ../src/plugins/abrt-action-rhtsupport.c:298
 msgid ""
-"\b [-v] -c CONFFILE -d DIR\n"
+"\1 [-v] -c CONFFILE -d DIR\n"
 "\n"
 "Reports a problem to RHTSupport.\n"
 "\n"
@@ -576,7 +576,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:150
 msgid ""
-"\b [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"\1 [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
@@ -611,7 +611,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-upload.c:241
 msgid ""
-"\b [-v] -d DIR [-c CONFFILE] [-u URL]\n"
+"\1 [-v] -d DIR [-c CONFFILE] [-u URL]\n"
 "\n"
 "Uploads compressed tarball of dump directory DIR"
 msgstr ""
@@ -622,7 +622,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-oops.c:579
 msgid ""
-"\b [-vsrowx] [-d DIR] FILE\n"
+"\1 [-vsrowx] [-d DIR] FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
