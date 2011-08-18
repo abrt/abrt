@@ -94,12 +94,11 @@ dist_comredhatabrtservice_DATA = com.redhat.abrt.service
 MAN_TXT = \
     abrt-handle-upload.txt \
     abrt.conf.txt \
-    abrt_event.conf.txt \
     abrtd.txt
 
 # Manual pages are generated from .txt via Docbook
 man1_MANS = abrt-handle-upload.1
-man5_MANS = abrt.conf.5 abrt_event.conf.5
+man5_MANS = abrt.conf.5
 man8_MANS = abrtd.8
 
 %.1 %.5 %.8: %.xml
