@@ -1,0 +1,38 @@
+abrt-action-save-package-data.conf(5)
+=====================================
+
+NAME
+----
+abrt-action-save-package-data.conf - Configuration file for
+abrt-action-save-package-data
+
+DESCRIPTION
+-----------
+The 'abrt-action-save-package-data' tool queries RPM database and saves package
+and component name to problem data.
+
+The configuration file consists of items in the format "Option = Value".
+A description of each item follows:
+
+OpenGPGCheck = 'yes' | 'no'::
+   When set to 'yes', 'abrt' will report crashes only in GPG signed packages.
+   When set to 'no', it will report crashes also in unsigned packages. The
+   default is 'no'. The files containing trusted GPG keys which are used to
+   verify the signatures are listed in the gpg_keys configuration file.
+BlackList = 'packageName', 'packageName' ...::
+   'abrt' will ignore packages in this list and will not handle their crashes.
+BlackListedPaths = '`/path/to/ignore/*`', '`*/another/ignored/path*`' ...::
+   'abrt' will ignore crashes in executables whose absolute path matches
+   one of specified patterns.
+ProcessUnpackaged = 'yes' | 'no'::
+   When set to 'yes', 'abrt' will catch all crashes in the system.
+   When set to 'no', it will catch crashes only in Fedora packages.
+   The default is 'no'.
+
+SEE ALSO
+--------
+abrt.conf(5)
+
+AUTHORS
+-------
+* ABRT team
