@@ -1,0 +1,46 @@
+abrt.conf(5)
+============
+
+NAME
+----
+abrt.conf - Configuration file for abrt.
+
+DESCRIPTION
+-----------
+'abrt' is a daemon that watches for application crashes. When a crash occurs, it
+collects the problem data and takes action according to its configuration. This
+document describes abrt's configuration file.
+
+The configuration file consists of items in the format "Option = Value".
+A description of each item follows:
+
+OpenGPGCheck = 'yes' | 'no'::
+   When set to 'yes', 'abrt' will report crashes only in GPG signed packages.
+   When set to 'no', it will report crashes also in unsigned packages. The
+   default is 'no'.
+OpenGPGPublicKeys = 'filename', 'filename' ...::
+   These are the trusted GPG keys with which packages have to be
+   signed for 'abrt' to report them if OpenGPGCheck = 'yes'.
+BlackList = 'packageName', 'packageName' ...::
+   'abrt' will ignore packages in this list and will not handle their crashes.
+BlackListedPaths = '`/path/to/ignore/*`', '`*/another/ignored/path*`' ...::
+   'abrt' will ignore crashes in executables whose absolute path matches
+   one of specified patterns.
+MaxCrashReportsSize = 'number'::
+   The maximum disk space (specified in megabytes) that 'abrt'
+   will use for all the crash dumps. Specify a value here to ensure
+   that the crash dumps will not fill all available storage space.
+   The default is 1000.
+ProcessUnpackaged = 'yes' | 'no'::
+   When set to 'yes', 'abrt' will catch all crashes in the system.
+   When set to 'no', it will catch crashes only in Fedora packages.
+   The default is 'no'.
+
+SEE ALSO
+--------
+abrtd(8)
+abrt-plugins(7)
+
+AUTHORS
+-------
+* ABRT team

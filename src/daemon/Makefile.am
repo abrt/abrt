@@ -91,24 +91,26 @@ dist_daemonconf_DATA = \
 comredhatabrtservicedir = ${datadir}/dbus-1/system-services
 dist_comredhatabrtservice_DATA = com.redhat.abrt.service
 
-man_MANS = \
-    abrtd.8 \
-    abrt.conf.5 \
-    abrt_event.conf.5
-
 MAN_TXT = \
-    abrt-handle-upload.txt
+    abrt-handle-upload.txt \
+    abrt.conf.txt \
+    abrt_event.conf.txt \
+    abrtd.txt
 
 # Manual pages are generated from .txt via Docbook
 man1_MANS = abrt-handle-upload.1
+man5_MANS = abrt.conf.5 abrt_event.conf.5
+man8_MANS = abrtd.8
 
-%.1 %.5 %.7: %.xml
+%.1 %.5 %.8: %.xml
 	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
 
 %.xml: %.txt ../../asciidoc.conf
 	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -aabrt_version=$(PACKAGE_VERSION) -o $@ $<
 
-EXTRA_DIST = $(man_MANS) $(MAN_TXT) abrt-handle-upload
+EXTRA_DIST = $(MAN_TXT) abrt-handle-upload
+
+CLEANFILES = $(man1_MANS) $(man5_MANS) $(man8_MANS)
 
 if HAVE_SYSTEMD
 dist_systemdsystemunit_DATA = \
