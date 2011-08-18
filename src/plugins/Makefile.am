@@ -50,9 +50,6 @@ dist_eventsconf_DATA = \
     gconf_event.conf \
     vimrc_event.conf
 
-man_MANS = \
-    abrt-plugins.7
-
 MAN_TXT = \
     abrt-action-trim-files.txt \
     abrt-action-generate-backtrace.txt \
@@ -79,7 +76,6 @@ PYTHON_FILES = \
     abrt-action-analyze-core
 
 EXTRA_DIST = \
-    $(man_MANS) \
     $(MAN_TXT) \
     $(PYTHON_FILES) \
     collect_Smolt.xml.in \
