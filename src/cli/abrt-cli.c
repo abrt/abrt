@@ -65,7 +65,9 @@ static unsigned handle_internal_options(int argc, const char **argv, const char 
 
         if (strcmp(cmd, "--version") == 0)
         {
-            puts(PACKAGE_VERSION);
+            char *version_string = xasprintf("%s version %s", g_progname, PACKAGE_VERSION);
+            puts(version_string);
+            free(version_string);
             exit(0);
         }
         if (strcmp(cmd, "--help") == 0)
