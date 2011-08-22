@@ -25,9 +25,6 @@
 
 /* TODO: add --pager(default) and --no-pager */
 
-const char abrt_cli_usage_string[] =
-    "abrt-cli [--version] COMMAND [ARGS]";
-
 struct cmd_struct {
     const char *cmd;
     int (*fn)(int, const char **);
@@ -56,7 +53,7 @@ static void list_cmds_help(const struct cmd_struct *commands)
     }
 }
 
-static unsigned handle_internal_options(int argc, const char **argv)
+static unsigned handle_internal_options(int argc, const char **argv, const char *usage)
 {
     unsigned skip = 0;
 
@@ -95,7 +92,7 @@ static unsigned handle_internal_options(int argc, const char **argv)
         }
 #endif
         else
-            error_msg_and_die("usage: %s", abrt_cli_usage_string);
+            error_msg_and_die("%s", usage);
 
         argv++;
         argc--;
@@ -132,6 +129,10 @@ int main(int argc, const char **argv)
     argv++;
     argc--;
 
+    const char *abrt_cli_usage_string = _(
+        "Usage: abrt-cli [--version] COMMAND [ARGS]"
+        );
+
     const struct cmd_struct commands[] = {
         {"list", cmd_list, _("List not yet reported problems")},
         {"rm", cmd_rm, _("Remove files from problem directory")},
@@ -140,7 +141,7 @@ int main(int argc, const char **argv)
         {NULL, NULL, NULL}
     };
 
-    unsigned skip = handle_internal_options(argc, argv);
+    unsigned skip = handle_internal_options(argc, argv, abrt_cli_usage_string);
     argc -= skip;
     argv += skip;
     if (argc > 0)
