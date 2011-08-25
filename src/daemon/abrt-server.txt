@@ -3,7 +3,7 @@ abrt-server(1)
 
 NAME
 ----
-abrt-server - unix socket in ABRT.
+abrt-server - Unix socket for ABRT.
 
 SYNOPSIS
 --------
@@ -11,9 +11,10 @@ SYNOPSIS
 
 DESCRIPTION
 -----------
-'abrt-server' is executed by abrt daemon and waits for any connection.
-With respcect the protocol (described below in section _PROTOCOL_) every
-application in system are able to invoke creation a new dump directory.
+'abrt-server' is executed by abrtd daemon to handle socket
+connections.  Every application in system is able to invoke creation
+of a new dump directory by following the communication protocol
+(described below in section _PROTOCOL_).
 
 OPTIONS
 -------
@@ -24,7 +25,7 @@ OPTIONS
    Log to system log.
 
 -p::
-   Add program names to log
+   Add program names to log.
 
 -v::
    Log more detailed debugging information.
@@ -37,31 +38,24 @@ open /var/run/abrt.socket
 Providing dump data (hook writes to the socket):
 
 -------------------------------------------------
--> "PID="
+-> "PID=number\0"
    number 0 - PID_MAX (/proc/sys/kernel/pid_max)
-   \0
--> "EXECUTABLE="
-   string (maximum length ~MAX_PATH)
-   \0
--> "BACKTRACE="
-   string (maximum length 1 MB)
-   \0
--> "ANALYZER="
-   string (maximum length 100 bytes)
-   \0
--> "BASENAME="
-   string (maximum length 100 bytes, no slashes)
-   \0
--> "REASON="
-   string (maximum length 512 bytes)
-   \0
+-> "EXECUTABLE=string\0"
+   string maximum length ~MAX_PATH
+-> "BACKTRACE=string\0"
+   string maximum length 1 MB
+-> "ANALYZER=string\0"
+   string maximum length 100 bytes
+-> "BASENAME=string\0"
+   string maximum length 100 bytes, no slashes
+-> "REASON=string\0"
+   string maximum length 512 bytes
 -------------------------------------------------
 
 Finalizing dump creation:
 
 ---------
--> "DONE"
-   \0
+-> "DONE\0"
 ---------
 
 AUTHORS
