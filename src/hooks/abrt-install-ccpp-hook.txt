@@ -1,0 +1,29 @@
+abrt-install-ccpphook(1)
+========================
+
+NAME
+----
+abrt-install-ccpp-hook - install coredump handler.
+
+SYNOPSIS
+--------
+'abrt-install-ccpp-hook' install | uninstall | is-installed
+
+DESCRIPTION
+-----------
+'abrt-install-ccpp-hook' install coredump handler which saves segfault data.
+
+OPTIONS
+-------
+install::
+   Install coredump handler.
+
+uninstall::
+   Uninstall coredump handler.
+
+status::
+   Returns 0 if hanlder is installed, otherwise 1.
+
+AUTHORS
+-------
+* ABRT team
