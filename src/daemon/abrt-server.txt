@@ -1,0 +1,69 @@
+abrt-server(1)
+=============
+
+NAME
+----
+abrt-server - unix socket in ABRT.
+
+SYNOPSIS
+--------
+'abrt-server' [-uspv[v]...]
+
+DESCRIPTION
+-----------
+'abrt-server' is executed by abrt daemon and waits for any connection.
+With respcect the protocol (described below in section _PROTOCOL_) every
+application in system are able to invoke creation a new dump directory.
+
+OPTIONS
+-------
+-u::
+   Use UID as client uid
+
+-s::
+   Log to system log.
+
+-p::
+   Add program names to log
+
+-v::
+   Log more detailed debugging information.
+
+Protocol
+--------
+Initializing new dump:
+open /var/run/abrt.socket
+
+Providing dump data (hook writes to the socket):
+
+-------------------------------------------------
+-> "PID="
+   number 0 - PID_MAX (/proc/sys/kernel/pid_max)
+   \0
+-> "EXECUTABLE="
+   string (maximum length ~MAX_PATH)
+   \0
+-> "BACKTRACE="
+   string (maximum length 1 MB)
+   \0
+-> "ANALYZER="
+   string (maximum length 100 bytes)
+   \0
+-> "BASENAME="
+   string (maximum length 100 bytes, no slashes)
+   \0
+-> "REASON="
+   string (maximum length 512 bytes)
+   \0
+-------------------------------------------------
+
+Finalizing dump creation:
+
+---------
+-> "DONE"
+   \0
+---------
+
+AUTHORS
+-------
+* ABRT team

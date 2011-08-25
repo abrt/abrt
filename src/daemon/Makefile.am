@@ -1,3 +1,5 @@
+-include ../../config.mak
+
 eventsconfdir = $(EVENTS_CONF_DIR)
 
 dist_eventsconf_DATA = \
@@ -110,10 +112,11 @@ MAN_TXT = \
     abrt-handle-upload.txt \
     abrt-action-save-package-data.conf.txt \
     abrt.conf.txt \
-    abrtd.txt
+    abrtd.txt \
+    abrt-server.txt
 
 # Manual pages are generated from .txt via Docbook
-man1_MANS = abrt-handle-upload.1
+man1_MANS = abrt-handle-upload.1 abrt-server.1
 man5_MANS = abrt.conf.5 abrt-action-save-package-data.conf.5
 man8_MANS = abrtd.8
 
