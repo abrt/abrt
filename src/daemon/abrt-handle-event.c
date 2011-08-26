@@ -49,6 +49,9 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
         {
             if (dot_or_dotdot(dent->d_name))
                 continue; /* skip "." and ".." */
+            const char *ext = strrchr(dent->d_name, '.');
+            if (ext && strcmp(ext, ".new") == 0)
+                continue; /* skip anything named "<dirname>.new" */
 
             int different;
             char *dd_uid, *dd_uuid;
@@ -60,8 +63,8 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
             dd = dd_opendir(dump_dir_name2, /*flags:*/ DD_FAIL_QUIETLY_ENOENT);
             if (!dd)
                 goto next;
-            dd_uid = dd_load_text(dd, FILENAME_UID);
-            dd_uuid = dd_load_text(dd, FILENAME_UUID);
+            dd_uid = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT);
+            dd_uuid = dd_load_text_ext(dd, FILENAME_UUID, DD_FAIL_QUIETLY_ENOENT);
             dd_close(dd);
             different = strcmp(uid, dd_uid) || strcmp(uuid, dd_uuid);
             free(dd_uid);
