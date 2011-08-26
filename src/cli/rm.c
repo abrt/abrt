@@ -37,17 +37,18 @@ int cmd_rm(int argc, const char **argv)
     };
 
     parse_opts(argc, (char **)argv, program_options, program_usage_string);
-    if (optind < argc)
+
+    int errs = 0;
+    while (argv[optind])
     {
         int status;
-        while (optind < argc)
-        {
-            const char *rm_dir = argv[optind++];
-            status = delete_dump_dir_possibly_using_abrtd(rm_dir);
-            if (!status)
-                log("rm '%s'", rm_dir);
-        }
+        const char *rm_dir = argv[optind++];
+        status = delete_dump_dir_possibly_using_abrtd(rm_dir);
+        if (!status)
+            log("rm '%s'", rm_dir);
+        else
+            errs++;
     }
 
-    return 0;
+    return errs;
 }

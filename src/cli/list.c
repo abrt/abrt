@@ -144,26 +144,26 @@ int cmd_info(int argc, const char **argv)
 
     parse_opts(argc, (char **)argv, program_options, program_usage_string);
 
-    if (optind < argc)
+    if (optind == argc)
+        show_usage_and_die(program_usage_string, program_options);
+
+    int errs = 0;
+    while (argv[optind])
     {
-        while (optind < argc)
+        const char *dump_dir = argv[optind++];
+        problem_data_t *problem = fill_crash_info(dump_dir);
+        if (!problem)
         {
-            const char *dump_dir = argv[optind++];
-            problem_data_t *problem = fill_crash_info(dump_dir);
-            if (!problem)
-            {
-                error_msg("no such problem directory '%s'", dump_dir);
-                continue;
-            }
-            print_crash(problem, opt_detailed);
-            free_problem_data(problem);
-            if (optind - argc)
-                printf("\n");
+            error_msg("no such problem directory '%s'", dump_dir);
+            errs++;
+            continue;
         }
-        exit(0);
+
+        print_crash(problem, opt_detailed);
+        free_problem_data(problem);
+        if (optind - argc)
+            printf("\n");
     }
 
-    show_usage_and_die(program_usage_string, program_options);
-
-    return 0;
+    return errs;
 }
