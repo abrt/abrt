@@ -289,7 +289,28 @@ static char *ssl_get_password(PK11SlotInfo *slot, PRBool retry, void *arg)
 static void ssl_connect(PRFileDesc **tcp_sock,
                         PRFileDesc **ssl_sock)
 {
-    *tcp_sock = PR_NewTCPSocket();
+    PRAddrInfo *addrinfo = PR_GetAddrInfoByName(url, PR_AF_UNSPEC, PR_AI_ADDRCONFIG);
+    if (!addrinfo)
+    {
+        alert_connection_error();
+        error_msg_and_die(_("Failed to get host by name: NSS error %d."), PR_GetError());
+    }
+
+    void *enumptr = NULL;
+    PRNetAddr addr;
+    *tcp_sock = NULL;
+
+    while ((enumptr = PR_EnumerateAddrInfo(enumptr, addrinfo, 443, &addr)))
+    {
+        if (addr.raw.family == PR_AF_INET || addr.raw.family == PR_AF_INET6)
+        {
+            *tcp_sock = PR_OpenTCPSocket(addr.raw.family);
+            break;
+        }
+    }
+
+    PR_FreeAddrInfo(addrinfo);
+
     if (!*tcp_sock)
         error_msg_and_die(_("Failed to create a TCP socket"));
     PRSocketOptionData sock_option;
@@ -325,30 +346,6 @@ static void ssl_connect(PRFileDesc **tcp_sock,
     {
         PR_Close(*ssl_sock);
         error_msg_and_die(_("Failed to set URL to SSL socket."));
-    }
-    char buffer[PR_NETDB_BUF_SIZE];
-    PRHostEnt host_entry;
-    pr_status = PR_GetHostByName(url, buffer, sizeof(buffer), &host_entry);
-    if (PR_SUCCESS != pr_status)
-    {
-        char *error = xmalloc(PR_GetErrorTextLength());
-        PRInt32 count = PR_GetErrorText(error);
-        PR_Close(*ssl_sock);
-        alert_connection_error();
-        if (count)
-            error_msg_and_die(_("Failed to get host by name: %s"), error);
-        else
-        {
-            error_msg_and_die(_("Failed to get host by name: pr_status == %d, pr_error == %d, url '%s'."),
-                              pr_status, PR_GetError(), url);
-        }
-    }
-    PRNetAddr addr;
-    PRInt32 rv = PR_EnumerateHostEnt(0, &host_entry, /*port:*/443, &addr);
-    if (rv < 0)
-    {
-        PR_Close(*ssl_sock);
-        error_msg_and_die(_("Failed to enumerate host ent."));
     }
     pr_status = PR_Connect(*ssl_sock, &addr, PR_INTERVAL_NO_TIMEOUT);
     if (PR_SUCCESS != pr_status)
