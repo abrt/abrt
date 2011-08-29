@@ -59,6 +59,7 @@ static const char *required_files[] = { FILENAME_COREDUMP,
                                         NULL };
 static bool ssl_allow_insecure = false;
 static bool http_show_headers = false;
+static unsigned port = 443;
 static unsigned delay = 0;
 
 static void alert_server_error()
@@ -300,7 +301,7 @@ static void ssl_connect(PRFileDesc **tcp_sock,
     PRNetAddr addr;
     *tcp_sock = NULL;
 
-    while ((enumptr = PR_EnumerateAddrInfo(enumptr, addrinfo, 443, &addr)))
+    while ((enumptr = PR_EnumerateAddrInfo(enumptr, addrinfo, port, &addr)))
     {
         if (addr.raw.family == PR_AF_INET || addr.raw.family == PR_AF_INET6)
         {
@@ -1285,15 +1286,16 @@ int main(int argc, char **argv)
         OPT_syslog    = 1 << 1,
         OPT_insecure  = 1 << 2,
         OPT_url       = 1 << 3,
-        OPT_headers   = 1 << 4,
-        OPT_group_1   = 1 << 5,
-        OPT_dir       = 1 << 6,
-        OPT_core      = 1 << 7,
-        OPT_delay     = 1 << 8,
-        OPT_no_unlink = 1 << 9,
-        OPT_group_2   = 1 << 10,
-        OPT_task      = 1 << 11,
-        OPT_password  = 1 << 12
+        OPT_port      = 1 << 4,
+        OPT_headers   = 1 << 5,
+        OPT_group_1   = 1 << 6,
+        OPT_dir       = 1 << 7,
+        OPT_core      = 1 << 8,
+        OPT_delay     = 1 << 9,
+        OPT_no_unlink = 1 << 10,
+        OPT_group_2   = 1 << 11,
+        OPT_task      = 1 << 12,
+        OPT_password  = 1 << 13
     };
 
     /* Keep enum above and order of options below in sync! */
@@ -1304,6 +1306,8 @@ int main(int argc, char **argv)
                  _("allow insecure connection to retrace server")),
         OPT_STRING(0, "url", &url, "URL",
                    _("retrace server URL")),
+        OPT_INTEGER(0, "port", &port,
+                    _("retrace server port")),
         OPT_BOOL(0, "headers", NULL,
                  _("(debug) show received HTTP headers")),
         OPT_GROUP(_("For create and batch operations")),
@@ -1330,6 +1334,10 @@ int main(int argc, char **argv)
     char *env_url = getenv("RETRACE_SERVER_URL");
     if (env_url)
         url = env_url;
+
+    char *env_port = getenv("RETRACE_SERVER_PORT");
+    if (env_port)
+        port = xatou(env_port);
 
     char *env_delay = getenv("ABRT_STATUS_DELAY");
     if (env_delay)
