@@ -30,14 +30,17 @@
 #endif
 #include "abrtlib.h"
 
+#define MAX_FORMATS 16
+#define MAX_RELEASES 32
+
 struct retrace_settings
 {
     int running_tasks;
     int max_running_tasks;
     long long max_packed_size;
     long long max_unpacked_size;
-    char **supported_formats;
-    char **supported_releases;
+    char *supported_formats[MAX_FORMATS];
+    char *supported_releases[MAX_RELEASES];
 };
 
 struct language
@@ -505,15 +508,9 @@ static char *tcp_read_response(PRFileDesc *tcp_sock)
     return strbuf_free_nobuf(strbuf);
 }
 
-static void get_settings(struct retrace_settings *settings)
+struct retrace_settings *get_settings()
 {
-    /* defaults */
-    settings->running_tasks = 0;
-    settings->max_running_tasks = 0;
-    settings->max_packed_size = 0;
-    settings->max_unpacked_size = 0;
-    settings->supported_formats = NULL;
-    settings->supported_releases = NULL;
+    struct retrace_settings *settings = xzalloc(sizeof(struct retrace_settings));
 
     PRFileDesc *tcp_sock, *ssl_sock;
     ssl_connect(&tcp_sock, &ssl_sock);
@@ -583,11 +580,31 @@ static void get_settings(struct retrace_settings *settings)
             settings->max_unpacked_size = atoi(value) * 1024 * 1024;
         else if (0 == strcasecmp("supported_formats", row))
         {
-            /* ToDo */
+            char *space;
+            int i;
+            for (i = 0; i < MAX_FORMATS - 1 && (space = strchr(value, ' ')); ++i)
+            {
+                *space = '\0';
+                settings->supported_formats[i] = xstrdup(value);
+                value = space + 1;
+            }
+
+            /* last element */
+            settings->supported_formats[i] = xstrdup(value);
         }
         else if (0 == strcasecmp("supported_releases", row))
         {
-            /* ToDo */
+            char *space;
+            int i;
+            for (i = 0; i < MAX_RELEASES - 1 && (space = strchr(value, ' ')); ++i)
+            {
+                *space = '\0';
+                settings->supported_releases[i] = xstrdup(value);
+                value = space + 1;
+            }
+
+            /* last element */
+            settings->supported_releases[i] = xstrdup(value);
         }
 
         /* the beginning of the next row */
@@ -596,6 +613,85 @@ static void get_settings(struct retrace_settings *settings)
 
     free(http_response);
     ssl_disconnect(ssl_sock);
+
+    return settings;
+}
+
+static void free_settings(struct retrace_settings *settings)
+{
+    if (!settings)
+        return;
+
+    int i;
+    for (i = 0; i < MAX_FORMATS; ++i)
+        free(settings->supported_formats[i]);
+
+    for (i = 0; i < MAX_RELEASES; ++i)
+        free(settings->supported_releases[i]);
+
+    free(settings);
+}
+
+/* dirty, dirty, dirty */
+/* returns release identifier as dist-ver-arch */
+/* or NULL if unknown */
+static char *get_release(const char *dump_dir_name)
+{
+    char *filename;
+    FILE *f;
+
+    filename = concat_path_file(dump_dir_name, FILENAME_ARCHITECTURE);
+    f = fopen(filename, "r");
+    free(filename);
+    if (!f)
+        perror_msg_and_die("fopen");
+
+    char *arch = xmalloc_fgetline(f);
+    fclose(f);
+
+    if (strcmp("i686", arch) == 0 || strcmp("i586", arch) == 0)
+    {
+        free(arch);
+        arch = xstrdup("i386");
+    }
+
+    filename = concat_path_file(dump_dir_name, FILENAME_OS_RELEASE);
+    f = fopen(filename, "r");
+    free(filename);
+    if (!f)
+        perror_msg_and_die("fopen");
+
+    char *line = xmalloc_fgetline(f);
+    char *version = line;
+    fclose(f);
+    while (*version && !isdigit(*version))
+        ++version;
+
+    if (!*version)
+        return NULL;
+
+    char *result = NULL;
+    if (strcasestr(line, "fedora") != NULL)
+    {
+        int ver;
+        if (sscanf(version, "%d", &ver) != 1)
+            goto cleanup;
+
+        result = xasprintf("fedora-%d-%s", ver, arch);
+    }
+    else if (strcasestr(line, "red hat enterprise linux") != NULL)
+    {
+        int maj, min;
+        if (sscanf(version, "%d.%d", &maj, &min) != 2)
+            goto cleanup;
+
+        result = xasprintf("rhel-%d.%d-%s", maj, min, arch);
+    }
+
+cleanup:
+    free(line);
+    free(arch);
+    return result;
 }
 
 static int create(bool delete_temp_archive,
@@ -611,10 +707,9 @@ static int create(bool delete_temp_archive,
         fflush(stdout);
     }
 
-    struct retrace_settings settings;
-    get_settings(&settings);
+    struct retrace_settings *settings = get_settings();
 
-    if (settings.running_tasks >= settings.max_running_tasks)
+    if (settings->running_tasks >= settings->max_running_tasks)
     {
         alert(_("The server is fully occupied. Try again later."));
         error_msg_and_die(_("The server denied your request."));
@@ -652,13 +747,57 @@ static int create(bool delete_temp_archive,
         }
     }
 
-    if (unpacked_size > settings.max_unpacked_size)
+    if (unpacked_size > settings->max_unpacked_size)
     {
         alert_crash_too_large();
         error_msg_and_die(_("The size of your crash is %lld bytes, "
                             "but the retrace server only accepts "
                             "crashes smaller or equal to %lld bytes."),
-                          unpacked_size, settings.max_unpacked_size);
+                          unpacked_size, settings->max_unpacked_size);
+    }
+
+    if (settings->supported_formats)
+    {
+        int i;
+        bool supported = false;
+        for (i = 0; i < MAX_FORMATS && settings->supported_formats[i]; ++i)
+            if (strcmp("application/x-xz-compressed-tar", settings->supported_formats[i]) == 0)
+            {
+                supported = true;
+                break;
+            }
+
+        if (!supported)
+        {
+            alert_server_error();
+            error_msg_and_die(_("The server does not support "
+                                "xz-compressed tarballs."));
+        }
+    }
+
+    /* we need dump dir to parse release file */
+    if (dump_dir_name && settings->supported_releases)
+    {
+        char *release = get_release(dump_dir_name);
+        if (!release)
+            error_msg_and_die("Unable to parse release.");
+        int i;
+        bool supported = false;
+        for (i = 0; i < MAX_RELEASES && settings->supported_releases[i]; ++i)
+            if (strcmp(release, settings->supported_releases[i]) == 0)
+            {
+                supported = true;
+                break;
+            }
+
+        if (!supported)
+        {
+            alert_server_error();
+            error_msg_and_die(_("The server does not support "
+                                "release %s."), release);
+        }
+
+        free(release);
     }
 
     if (delay)
@@ -673,15 +812,17 @@ static int create(bool delete_temp_archive,
 
     /* Get the file size. */
     fstat(tempfd, &file_stat);
-    if ((long long)file_stat.st_size > settings.max_packed_size)
+    if ((long long)file_stat.st_size > settings->max_packed_size)
     {
         alert_crash_too_large();
         error_msg_and_die(_("The size of your archive is %lld bytes, "
                             "but the retrace server only accepts "
                             "archives smaller or equal %lld bytes."),
                           (long long)file_stat.st_size,
-                          settings.max_packed_size);
+                          settings->max_packed_size);
     }
+
+    free_settings(settings);
 
     int size_mb = file_stat.st_size / (1024 * 1024);
 
