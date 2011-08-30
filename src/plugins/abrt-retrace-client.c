@@ -790,9 +790,12 @@ static int create(bool delete_temp_archive,
 
         if (!supported)
         {
-            alert_server_error();
-            error_msg_and_die(_("The server does not support "
-                                "release %s."), release);
+            char *msg = xasprintf(_("The release '%s' is not supported by the"
+                                    " Retrace server."), release);
+            alert(msg);
+            free(msg);
+            error_msg_and_die(_("The server is not able to"
+                                " handle your request."));
         }
 
         free(release);
