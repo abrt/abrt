@@ -97,7 +97,6 @@ abrt_dump_oops_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
@@ -118,7 +117,6 @@ abrt_action_analyze_c_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
@@ -137,7 +135,6 @@ abrt_action_analyze_python_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
@@ -157,7 +154,6 @@ abrt_action_analyze_oops_CPPFLAGS = \
     -I$(srcdir)/../libreport/src/lib \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
@@ -176,7 +172,6 @@ abrt_action_trim_files_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
@@ -196,7 +191,6 @@ abrt_action_generate_backtrace_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
@@ -215,7 +209,6 @@ abrt_action_analyze_backtrace_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \

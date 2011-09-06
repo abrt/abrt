@@ -7,7 +7,6 @@ abrt_applet_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DBIN_DIR=\"$(bindir)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
