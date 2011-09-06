@@ -24,13 +24,8 @@ abrtd_SOURCES = \
 abrtd_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
-    -DLIBEXEC_DIR=\"$(LIBEXEC_DIR)\" \
     $(GLIB_CFLAGS) \
     $(DBUS_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
@@ -47,11 +42,6 @@ abrt_server_SOURCES = \
 abrt_server_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -79,12 +69,8 @@ abrt_action_save_package_data_SOURCES = \
 abrt_action_save_package_data_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \

@@ -19,11 +19,8 @@ libabrt_la_CPPFLAGS = \
     -I$(srcdir)/../lib \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DVAR_RUN=\"$(VAR_RUN)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
-    -DBIN_DIR=\"$(bindir)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE

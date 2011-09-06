@@ -86,12 +86,9 @@ AC_CHECK_HEADER([sys/inotify.h], [],
 CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
 VAR_RUN='${localstatedir}/run'
 PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
-REPORT_PLUGINS_CONF_DIR='${sysconfdir}/libreport/plugins'
 EVENTS_DIR='${sysconfdir}/libreport/events'
 EVENTS_CONF_DIR='${sysconfdir}/libreport/events.d'
-PLUGINS_LIB_DIR='${libdir}/${PACKAGE_NAME}'
 ENABLE_SOCKET_OR_DBUS='-DENABLE_DBUS=1'
-LIBEXEC_DIR='${libexecdir}'
 
 DEBUG_INFO_DIR='${localstatedir}/cache/${PACKAGE_NAME}-di'
 
@@ -103,12 +100,9 @@ AC_ARG_WITH(debuginfosdir,
 AC_SUBST(CONF_DIR)
 AC_SUBST(VAR_RUN)
 AC_SUBST(PLUGINS_CONF_DIR)
-AC_SUBST(REPORT_PLUGINS_CONF_DIR)
 AC_SUBST(EVENTS_CONF_DIR)
 AC_SUBST(EVENTS_DIR)
-AC_SUBST(PLUGINS_LIB_DIR)
 AC_SUBST(DEBUG_INFO_DIR)
-AC_SUBST(LIBEXEC_DIR)
 
 AC_CONFIG_HEADERS([config.h])
 

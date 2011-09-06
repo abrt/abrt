@@ -1,7 +1,5 @@
 -include ../../config.mak
 
-pluginslibdir = $(PLUGINS_LIB_DIR)
-
 bin_SCRIPTS = \
     abrt-action-install-debuginfo \
     abrt-action-analyze-core \
@@ -18,8 +16,6 @@ bin_PROGRAMS = \
     abrt-action-analyze-backtrace \
     abrt-action-install-debuginfo-to-abrt-cache \
     abrt-retrace-client
-
-pluginsconfdir = $(PLUGINS_CONF_DIR)
 
 #dist_pluginsconf_DATA = Python.conf
 
@@ -88,20 +84,12 @@ EXTRA_DIST = \
     analyze_VMcore.xml.in \
     abrt-action-analyze-vmcore
 
-$(DESTDIR)/$(DEBUG_INFO_DIR):
-	$(mkdir_p) '$@'
-
 abrt_dump_oops_SOURCES = \
     abrt-dump-oops.c
 abrt_dump_oops_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -116,12 +104,7 @@ abrt_action_analyze_c_SOURCES = \
 abrt_action_analyze_c_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -134,12 +117,7 @@ abrt_action_analyze_python_SOURCES = \
 abrt_action_analyze_python_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -153,12 +131,7 @@ abrt_action_analyze_oops_CPPFLAGS = \
     -I$(srcdir)/../libreport/src/include/ -I$(srcdir)/../include \
     -I$(srcdir)/../libreport/src/lib \
     -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -171,12 +144,7 @@ abrt_action_trim_files_SOURCES = \
 abrt_action_trim_files_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -190,12 +158,7 @@ abrt_action_generate_backtrace_SOURCES = \
 abrt_action_generate_backtrace_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -208,12 +171,7 @@ abrt_action_analyze_backtrace_SOURCES = \
 abrt_action_analyze_backtrace_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -DBIN_DIR=\"$(bindir)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
