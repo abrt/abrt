@@ -1,7 +1,5 @@
 -include ../../config.mak
 
-pluginslibdir = $(PLUGINS_LIB_DIR)
-
 bin_SCRIPTS = \
     abrt-action-install-debuginfo \
     abrt-action-analyze-core \
@@ -96,7 +94,6 @@ abrt_dump_oops_CPPFLAGS = \
     -I$(srcdir)/../lib \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -113,7 +110,6 @@ abrt_action_analyze_c_CPPFLAGS = \
     -I$(srcdir)/../lib \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -128,7 +124,6 @@ abrt_action_analyze_python_CPPFLAGS = \
     -I$(srcdir)/../lib \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -144,7 +139,6 @@ abrt_action_analyze_oops_CPPFLAGS = \
     -I$(srcdir)/../lib \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -159,7 +153,6 @@ abrt_action_trim_files_CPPFLAGS = \
     -I$(srcdir)/../lib \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -175,7 +168,6 @@ abrt_action_generate_backtrace_CPPFLAGS = \
     -I$(srcdir)/../lib \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -190,7 +182,6 @@ abrt_action_analyze_backtrace_CPPFLAGS = \
     -I$(srcdir)/../lib \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \

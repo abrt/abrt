@@ -26,7 +26,6 @@ abrtd_CPPFLAGS = \
     -I$(srcdir)/../lib \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DLIBEXEC_DIR=\"$(LIBEXEC_DIR)\" \
     $(GLIB_CFLAGS) \
     $(DBUS_CFLAGS) \
@@ -45,7 +44,6 @@ abrt_server_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -76,7 +74,6 @@ abrt_action_save_package_data_CPPFLAGS = \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
