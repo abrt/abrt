@@ -19,8 +19,6 @@ bin_PROGRAMS = \
     abrt-action-install-debuginfo-to-abrt-cache \
     abrt-retrace-client
 
-pluginsconfdir = $(PLUGINS_CONF_DIR)
-
 #dist_pluginsconf_DATA = Python.conf
 
 eventsdir = $(EVENTS_DIR)
@@ -99,7 +97,6 @@ abrt_dump_oops_CPPFLAGS = \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -117,7 +114,6 @@ abrt_action_analyze_c_CPPFLAGS = \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -133,7 +129,6 @@ abrt_action_analyze_python_CPPFLAGS = \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -150,7 +145,6 @@ abrt_action_analyze_oops_CPPFLAGS = \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -166,7 +160,6 @@ abrt_action_trim_files_CPPFLAGS = \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -183,7 +176,6 @@ abrt_action_generate_backtrace_CPPFLAGS = \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -199,7 +191,6 @@ abrt_action_analyze_backtrace_CPPFLAGS = \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \

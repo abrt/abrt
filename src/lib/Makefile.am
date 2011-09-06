@@ -20,7 +20,6 @@ libabrt_la_CPPFLAGS = \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
     $(GLIB_CFLAGS) \
