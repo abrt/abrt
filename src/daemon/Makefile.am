@@ -42,7 +42,6 @@ abrt_server_SOURCES = \
 abrt_server_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -72,7 +71,6 @@ abrt_action_save_package_data_CPPFLAGS = \
     -I$(srcdir)/../lib \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
