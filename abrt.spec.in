@@ -384,7 +384,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/smolt_event.conf
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/spool/%{name}
 %dir %attr(0700, abrt, abrt) %{_localstatedir}/spool/%{name}-upload
-%dir %attr(0775, abrt, abrt) %{_localstatedir}/run/%{name}
+# abrtd runs as root
+%dir %attr(0755, root, root) %{_localstatedir}/run/%{name}
 %ghost %attr(0666, -, -) %{_localstatedir}/run/%{name}/abrt.socket
 %ghost %attr(0644, -, -) %{_localstatedir}/run/abrtd.pid
 
