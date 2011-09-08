@@ -31,6 +31,8 @@ def write_dump(pid, tb):
     if sys.argv[0]:
         executable = os.path.abspath(sys.argv[0])
 
+    import syslog
+
     # Open ABRT daemon's socket and write data to it.
     try:
         s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -45,11 +47,26 @@ def write_dump(pid, tb):
         # CCMainWindow.py:1:<module>:ZeroDivisionError: integer division or modulo by zero
         s.sendall("REASON=%s\0" % tb.splitlines()[0])
         s.sendall("BACKTRACE=%s\0" % tb)
-        # TODO: read back response and complain if it is not "xxx Created"
+        s.shutdown(socket.SHUT_WR)
+
+        # Read the response and log if there's anything wrong
+        response = ""
+        while True:
+            buf = s.recv(256)
+            if not buf:
+                break;
+            response += buf
+
         s.close()
+        parts = response.split()
+        if (len(parts) < 2
+                or (not parts[0].startswith("HTTP/"))
+                or (not parts[1].isdigit())
+                or (int(parts[1]) >= 400)):
+            syslog.syslog("Error sending data to ABRT daemon: %s" % response)
+
     except Exception, ex:
-        import syslog
-        syslog.syslog("Can't communicate with ABRT daemon, is it running? %s", str(ex))
+        syslog.syslog("Can't communicate with ABRT daemon, is it running? %s" % str(ex))
 
 def handleMyException((etype, value, tb)):
     """
