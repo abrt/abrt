@@ -143,7 +143,6 @@ static int create_debug_dump()
 
     /* Trim old crash dumps if necessary */
     load_abrt_conf();
-    free_abrt_conf_data(); /* can do this because we need only g_settings_nMaxCrashReportsSize */
     if (g_settings_nMaxCrashReportsSize > 0)
     {
         /* x1.25 and round up to 64m: go a bit up, so that usual in-daemon trimming
@@ -154,6 +153,7 @@ static int create_debug_dump()
         check_free_space(maxsize, g_settings_dump_location);
         trim_debug_dumps(g_settings_dump_location, maxsize * (double)(1024*1024), path);
     }
+    free_abrt_conf_data();
 
     free(path);
 
