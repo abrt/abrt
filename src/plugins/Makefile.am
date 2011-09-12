@@ -14,8 +14,9 @@ bin_PROGRAMS = \
     abrt-action-trim-files \
     abrt-action-generate-backtrace \
     abrt-action-analyze-backtrace \
-    abrt-action-install-debuginfo-to-abrt-cache \
     abrt-retrace-client
+
+libexec_PROGRAMS = abrt-action-install-debuginfo-to-abrt-cache
 
 #dist_pluginsconf_DATA = Python.conf
 
