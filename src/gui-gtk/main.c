@@ -497,7 +497,7 @@ static void add_columns_reported(GtkTreeView *treeview)
     gtk_tree_view_append_column(treeview, column);
 
     renderer = gtk_cell_renderer_text_new();
-    column = gtk_tree_view_column_new_with_attributes(_("Submision Result"),
+    column = gtk_tree_view_column_new_with_attributes(_("Submission Result"),
                                                      renderer,
                                                      "text",
                                                      COLUMN_REPORTED_TO,

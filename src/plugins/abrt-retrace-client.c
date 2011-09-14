@@ -64,12 +64,12 @@ static unsigned delay = 0;
 
 static void alert_server_error()
 {
-    alert(_("An error occured on the server side. Try again later."));
+    alert(_("An error occurred on the server side. Try again later."));
 }
 
 static void alert_connection_error()
 {
-    alert(_("An error occured while connecting to the server. "
+    alert(_("An error occurred while connecting to the server. "
             "Check your network connection and try again."));
 }
 
