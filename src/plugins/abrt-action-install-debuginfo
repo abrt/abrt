@@ -207,15 +207,19 @@ class DebugInfoDownload(YumBase):
         for repo in self.repos.listEnabled():
             repo.close()
             self.repos.disableRepo(repo.id)
-        # enable -debuginfo repos
-        for repo in self.repos.findRepos(pattern="*debuginfo*"):
-            #print repo
-            repo.enable()
-            rid = self.repos.enableRepo(repo.id)
-            log1("enabled repo %s", rid)
-            setattr(repo, "skip_if_unavailable", True)
 
-        self.repos.doSetup()
+        # setting-up repos one-by-one, so we can skip the broken ones...
+        # this helps when users are using 3rd party repos like rpmfusion
+        # in rawhide it results in: Can't find valid base url...
+        for r in self.repos.findRepos(pattern="*debuginfo*"):
+            try:
+                rid = self.repos.enableRepo(r.id)
+                self.repos.doSetup(thisrepo=str(r.id))
+                log1("enabled repo %s", rid)
+                setattr(r, "skip_if_unavailable", True)
+            except Exception, ex:
+                print _("Can't setup %s: %s, disabling..") % (r.id, ex)
+                self.repos.disableRepo(r.id)
 
         # This is somewhat "magic", it unpacks the metadata making it usable.
         # Looks like this is the moment when yum talks to remote servers,
@@ -334,22 +338,44 @@ def build_ids_to_path(build_ids):
 
 # beware this finds only missing libraries, but not the executable itself ..
 
-def filter_installed_debuginfos(build_ids, cache_dir):
-    # 1st pass -> search in /usr/lib
-    missing_di = []
+def filter_installed_debuginfos(build_ids, cache_dirs):
     files = build_ids_to_path(build_ids)
+    missing = []
+
+    # 1st pass -> search in /usr/lib
     for debuginfo_path in files:
-        cache_debuginfo_path = cache_dir + debuginfo_path
-        log2("checking path: %s", debuginfo_path)
+        log2("looking: %s", debuginfo_path)
         if os.path.exists(debuginfo_path):
             log2("found: %s", debuginfo_path)
             continue
-        if os.path.exists(cache_debuginfo_path):
-            log2("found: %s", cache_debuginfo_path)
-            continue
-        log2("not found: %s", cache_debuginfo_path)
-        missing_di.append(debuginfo_path)
-    return missing_di
+        log2("not found: %s", debuginfo_path)
+        missing.append(debuginfo_path)
+
+    if missing:
+        files = missing
+        missing = []
+    else: # nothing is missing, we can stop looking
+        return missing
+
+    for cache_dir in cache_dirs:
+        log2("looking in %s" % cache_dir)
+        for debuginfo_path in files:
+            cache_debuginfo_path = cache_dir + debuginfo_path
+            log2("looking: %s", cache_debuginfo_path)
+            if os.path.exists(cache_debuginfo_path):
+                log2("found: %s", cache_debuginfo_path)
+                continue
+            log2("not found: %s", debuginfo_path)
+            missing.append(debuginfo_path)
+        # in next iteration look only for files missing
+        # from previous iterations
+        if missing:
+            files = missing
+            missing = []
+        else: # nothing is missing, we can stop looking
+            return missing
+
+    return files
 
 tmpdir = None
 def clean_up():
@@ -379,7 +405,7 @@ if __name__ == "__main__":
     # ctrl-c
     signal.signal(signal.SIGINT, sigint_handler)
     fbuild_ids = "build_ids"
-    cachedir = None
+    cachedirs = []
     size_mb = 4096
     tmpdir = None
     keeprpms = False
@@ -401,7 +427,7 @@ if __name__ == "__main__":
     # ______01234567890123456789012345678901234567890123456789012345678901234567890123456789
     help_text = _(
             "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-            "       [--tmpdir=TMPDIR] [--cache=CACHEDIR] [--size_mb=SIZE]\n"
+            "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
             "\n"
             "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
             "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -434,7 +460,7 @@ if __name__ == "__main__":
         elif opt == "--ids":
             fbuild_ids = arg
         elif opt == "--cache":
-            cachedir = arg
+            cachedirs = arg.split(':')
         elif opt == "--size_mb":
             try:
                 size_mb = int(arg)
@@ -445,8 +471,8 @@ if __name__ == "__main__":
         elif opt == "--keeprpms":
             keeprpms = True
 
-    if not cachedir:
-        cachedir = "/var/cache/abrt-di"
+    if not cachedirs:
+        cachedirs = ["/var/cache/abrt-di"]
     if not tmpdir:
         # security people prefer temp subdirs in app's private dir, like /var/run/abrt
         # for now, we use /tmp...
@@ -477,28 +503,30 @@ if __name__ == "__main__":
     try:
         pid = os.fork()
         if pid == 0:
-            log1("abrt-action-trim-files -f %um:%s", size_mb, cachedir);
-            os.execlp("abrt-action-trim-files", "abrt-action-trim-files", "-f", "%um:%s" % (size_mb, cachedir));
+            log1("abrt-action-trim-files -f %um:%s", size_mb, cachedirs[0]);
+            os.execlp("abrt-action-trim-files", "abrt-action-trim-files", "-f", "%um:%s" % (size_mb, cachedirs[0]));
         if pid > 0:
             os.waitpid(pid, 0);
     except Exception, e:
         error_msg("Can't execute abrt-action-trim-files: %s", e);
 
-    missing = filter_installed_debuginfos(b_ids, cachedir)
+    missing = filter_installed_debuginfos(b_ids, cachedirs)
     if missing:
         log2("%s", missing)
         print _("Coredump references %u debuginfo files, %u of them are not installed") % (len(b_ids), len(missing))
 
         # TODO: should we pass keep_rpms=keeprpms to DebugInfoDownload here??
-        downloader = DebugInfoDownload(cache=cachedir, tmp=tmpdir)
+        downloader = DebugInfoDownload(cache=cachedirs[0], tmp=tmpdir)
         try:
             result = downloader.download(missing)
         except Exception, ex:
             error_msg_and_die("Can't download debuginfos: %s", ex)
 
-        missing = filter_installed_debuginfos(b_ids, cachedir)
+        missing = filter_installed_debuginfos(b_ids, cachedirs)
         for bid in missing:
             print _("Missing debuginfo file: %s") % bid
+        else:
+            print _("All %u debuginfo files are available") % len(b_ids)
         exit(result)
 
     print _("All %u debuginfo files are available") % len(b_ids)
