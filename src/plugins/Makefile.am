@@ -52,6 +52,7 @@ MAN_TXT = \
     abrt-action-generate-backtrace.txt \
     abrt-action-analyze-backtrace.txt \
     abrt-action-analyze-oops.txt \
+    abrt-action-analyze-python.txt \
     abrt-action-list-dsos.txt \
     abrt-retrace-client.txt
 

@@ -1,29 +1,29 @@
-abrt-action-analyze-oops(1)
-===========================
+abrt-action-analyze-python(1)
+=============================
 
 NAME
 ----
-abrt-action-analyze-oops - Calculate and save UUID and duplicate hash
-for a problem data directory DIR with kernel oops.
+abrt-action-analyze-python - Calculate and save UUID and duplicate hash
+for a problem data directory DIR with Python crash data.
 
 SYNOPSIS
 --------
-'abrt-action-analyze-oops' [-v] [-d DIR]
+'abrt-action-analyze-python' [-v] [-d DIR]
 
 DESCRIPTION
 -----------
 The tool reads the file named 'backtrace' from a problem dump
-directory, parses it as a kernel oops record and generates a
+directory, parses it as a Python exception and generates a
 duplication hash and a universally unique identifier (UUID). Then it
 saves this data as new elements 'duphash' and 'uuid'.
 
 Integration with ABRT events
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-'abrt-action-analyze-oops' can be used to generate the duplication
-hash of a newly discovered kernel oops.
+'abrt-action-analyze-python' can be used to generate the duplication
+hash of a newly discovered Python crash.
 
 ------------
-EVENT=post-create analyzer=Kerneloops   abrt-action-analyze-oops
+EVENT=post-create analyzer=Python   abrt-action-analyze-python
 ------------
 
 OPTIONS
