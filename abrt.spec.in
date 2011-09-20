@@ -223,6 +223,9 @@ rm -f %{buildroot}%{_infodir}/dir
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%check
+make check
+
 %pre
 #uidgid pair 173:173 reserved in setup rhbz#670231
 %define abrt_gid_uid 173
