@@ -48,6 +48,7 @@ dist_eventsconf_DATA = \
     vimrc_event.conf
 
 MAN_TXT = \
+    abrt-action-analyze-c.txt \
     abrt-action-trim-files.txt \
     abrt-action-generate-backtrace.txt \
     abrt-action-analyze-backtrace.txt \
