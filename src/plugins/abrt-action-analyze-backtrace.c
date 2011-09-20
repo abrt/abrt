@@ -43,7 +43,8 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         "\1 [options] -d DIR\n"
         "\n"
-        "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and identifies crash function in dump directory DIR"
+        "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
+        "and identifies crash function in dump directory DIR"
     );
     enum {
         OPT_v = 1 << 0,

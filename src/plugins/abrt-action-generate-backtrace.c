@@ -138,6 +138,9 @@ static char *get_backtrace(struct dump_dir *dd)
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
     dd_close(dd);
 
+    /* Let user know what's going on */
+    log(_("Generating backtrace"));
+
     char *args[21];
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";

@@ -171,6 +171,8 @@ class DebugInfoDownload(YumBase):
         mute_stdout()
         #self.conf.cache = os.geteuid() != 0
         # Setup yum (Ts, RPM db, Repo & Sack)
+        # doConfigSetup() takes some time, let user know what we are doing
+        print _("Initializing yum")
         try:
             # Saw this exception here:
             # cannot open Packages index using db3 - Permission denied (13)
@@ -208,6 +210,8 @@ class DebugInfoDownload(YumBase):
             repo.close()
             self.repos.disableRepo(repo.id)
 
+        # This takes some time, let user know what we are doing
+        print _("Setting up yum repositories")
         # setting-up repos one-by-one, so we can skip the broken ones...
         # this helps when users are using 3rd party repos like rpmfusion
         # in rawhide it results in: Can't find valid base url...
@@ -218,7 +222,7 @@ class DebugInfoDownload(YumBase):
                 log1("enabled repo %s", rid)
                 setattr(r, "skip_if_unavailable", True)
             except Exception, ex:
-                print _("Can't setup %s: %s, disabling..") % (r.id, ex)
+                print _("Can't setup %s: %s, disabling") % (r.id, ex)
                 self.repos.disableRepo(r.id)
 
         # This is somewhat "magic", it unpacks the metadata making it usable.
