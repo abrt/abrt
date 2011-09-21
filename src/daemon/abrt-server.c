@@ -130,6 +130,8 @@ static int create_debug_dump()
     sprintf(uid_str, "%lu", (long)client_uid);
     dd_save_text(dd, FILENAME_UID, uid_str);
 
+    dd_save_text(dd, "abrt_version", VERSION);
+
     dd_close(dd);
 
     /* Move the completely created debug dump to

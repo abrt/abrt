@@ -561,6 +561,8 @@ int main(int argc, char** argv)
         dd_save_text(dd, FILENAME_ENVIRON, environ ? : "");
         free(environ);
 
+        dd_save_text(dd, "abrt_version", VERSION);
+
         if (src_fd_binary > 0)
         {
             strcpy(path + path_len, "/"FILENAME_BINARY);
@@ -623,7 +625,6 @@ int main(int argc, char** argv)
             free_abrt_conf_data();
             error_msg_and_die("error writing %s", path);
         }
-        log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
         if (user_core_fd >= 0 && (ulimit_c == 0 || core_size > ulimit_c))
         {
             /* user coredump is too big, nuke it */
@@ -643,6 +644,8 @@ int main(int argc, char** argv)
         if (rename(path, newpath) == 0)
             strcpy(path, newpath);
         free(newpath);
+
+        log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
 
         /* rhbz#539551: "abrt going crazy when crashing process is respawned" */
         if (g_settings_nMaxCrashReportsSize > 0)
@@ -668,7 +671,8 @@ int main(int argc, char** argv)
     }
 
     off_t core_size = copyfd_size(STDIN_FILENO, user_core_fd, ulimit_c, COPYFD_SPARSE);
-    if (core_size < 0 || fsync(user_core_fd) != 0) {
+    if (core_size < 0 || fsync(user_core_fd) != 0)
+    {
         /* perror first, otherwise unlink may trash errno */
         perror_msg("error writing %s/%s", user_pwd, core_basename);
         xchdir(user_pwd);
