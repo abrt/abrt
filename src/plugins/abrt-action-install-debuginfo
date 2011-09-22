@@ -151,8 +151,8 @@ class MyDownloadCallback(DownloadBaseCallback):
             t = time.time()
             if self.last_time == 0:
                 self.last_time = t
-            # update only every 10 seconds
-            if pct == 100 or self.last_time > t or t - self.last_time >= 10:
+            # update only every 5 seconds
+            if pct == 100 or self.last_time > t or t - self.last_time >= 5:
                 print (_("Downloading (%i of %i) %s: %3u%%")
                         % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
                 )
