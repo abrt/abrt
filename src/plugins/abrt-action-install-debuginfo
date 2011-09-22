@@ -529,9 +529,8 @@ if __name__ == "__main__":
         missing = filter_installed_debuginfos(b_ids, cachedirs)
         for bid in missing:
             print _("Missing debuginfo file: %s") % bid
-        else:
-            print _("All %u debuginfo files are available") % len(b_ids)
-        exit(result)
 
-    print _("All %u debuginfo files are available") % len(b_ids)
+    if not missing:
+        print _("All %u debuginfo files are available") % len(b_ids)
+
     exit(RETURN_OK)
