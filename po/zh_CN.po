@@ -1,16 +1,25 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Translators:
+# alanzheng <machinecat1666@gmail.com>, 2011.
+#   <alick9188@gmail.com>, 2011.
+# Huan Chen <chenhuan126@126.com>, 2011.
+# Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
+#   <lovenemesis@gmail.com>, 2011.
+# lovenemesis <lovenemesis@gmail.com>, 2011.
+# Mike Ma <zhtx10@gmail.com>, 2011.
+# yusuf <yusufma77@yahoo.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-06-16 12:53+0200\n"
-"PO-Revision-Date: 2011-05-02 18:28+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Chinese (China) <None>\n"
+"POT-Creation-Date: 2011-09-23 18:09+0200\n"
+"PO-Revision-Date: 2011-09-21 03:54+0000\n"
+"Last-Translator: alick <alick9188@gmail.com>\n"
+"Language-Team: Chinese (China) (http://www.transifex.net/projects/p/fedora/"
+"team/zh_CN/)\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,201 +28,208 @@ msgstr ""
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
-msgstr "ABRT 通知程序"
+msgstr "ABRT 通告小程序"
 
-#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt-gtk.c:389
-#: ../src/gui-gtk/abrt.desktop.in.h:1
+#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
+#: ../src/gui-gtk/main.c:560
 msgid "Automatic Bug Reporting Tool"
-msgstr "自动 Bug 报告工具"
+msgstr "自动程序错误上报工具"
 
-#: ../src/applet/applet.c:83
-#, c-format
-msgid "A crash in the %s package has been detected"
-msgstr "检测到 %s 软件包中的一个崩溃"
-
-#: ../src/applet/applet.c:85
-msgid "A crash has been detected"
-msgstr "检测到一个崩溃"
-
-#: ../src/applet/applet.c:279
-msgid "ABRT service is not running"
-msgstr "ABRT 服务没有运行"
-
-#: ../src/applet/applet_gtk.c:192 ../src/applet/applet_gtk.c:194
+#: ../src/applet/applet.c:222 ../src/applet/applet.c:224
 msgid "Warning"
 msgstr "警告"
 
-#: ../src/applet/applet_gtk.c:249
+#: ../src/applet/applet.c:272
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
-msgstr "通告区小程序，用来将 ABRT 所检测到的问题通知给用户"
+msgstr "用于将 ABRT 检测到的问题通知给用户的通告区小程序"
 
-#: ../src/applet/applet_gtk.c:265 ../src/gui-gtk/abrt-gtk.c:278
+#: ../src/applet/applet.c:288 ../src/gui-gtk/main.c:406
 msgid "translator-credits"
-msgstr "翻译者致谢"
+msgstr "trans-zh_cn@lists.fedoraproject.org"
 
-#: ../src/applet/applet_gtk.c:275
+#: ../src/applet/applet.c:298
 msgid "Hide"
 msgstr "隐藏"
 
-#: ../src/applet/applet_gtk.c:385
+#: ../src/applet/applet.c:363
 msgid "Report"
 msgstr "报告"
 
-#: ../src/applet/applet_gtk.c:388
+#: ../src/applet/applet.c:366
 msgid "Show"
 msgstr "显示"
 
-#: ../src/applet/applet_gtk.c:392 ../src/applet/applet_gtk.c:420
+#: ../src/applet/applet.c:370 ../src/applet/applet.c:398
 msgid "A Problem has Occurred"
 msgstr "发生问题"
 
-#: ../src/applet/applet_gtk.c:417
+#: ../src/applet/applet.c:395
 msgid "Open ABRT"
 msgstr "打开 ABRT"
 
-#: ../src/daemon/abrt-action-save-package-data.c:250
-#, fuzzy
-msgid ""
-"\1 [-v] -d DIR\n"
-"\n"
-"Query package database and save package name, component, and description"
-msgstr ""
-" [-v] -d DIR\n"
-"\n"
-"查询软件包数据库并保存软件包名、组件和描述"
+#: ../src/applet/applet.c:526
+#, c-format
+msgid "A crash in the %s package has been detected"
+msgstr "检测到 %s 软件包中的崩溃"
 
-#: ../src/daemon/abrt-action-save-package-data.c:261
+#: ../src/applet/applet.c:528
+msgid "A crash has been detected"
+msgstr "检测到崩溃"
+
+#: ../src/applet/applet.c:766
+msgid ""
+" [-v] [DIR]...\n"
+"\n"
+"Applet which notifies user when new problems are detected by ABRT\n"
+msgstr ""
+
+#: ../src/applet/applet.c:838
+msgid "ABRT service is not running"
+msgstr "ABRT 服务没有运行"
+
+#: ../src/daemon/abrt-action-save-package-data.c:360
+msgid ""
+" [-v] [-c CONFFILE] -d DIR\n"
+"\n"
+"Query package database and save package and component name"
+msgstr ""
+
+#: ../src/daemon/abrt-action-save-package-data.c:372
 #: ../src/plugins/abrt-action-analyze-backtrace.c:56
-#: ../src/plugins/abrt-action-analyze-c.c:162
-#: ../src/plugins/abrt-action-analyze-oops.c:123
-#: ../src/plugins/abrt-action-analyze-python.c:41
-#: ../src/plugins/abrt-action-bugzilla.c:264
-#: ../src/plugins/abrt-action-generate-backtrace.c:252
-#: ../src/plugins/abrt-action-kerneloops.c:147
-#: ../src/plugins/abrt-action-mailx.c:148
-#: ../src/plugins/abrt-action-print.c:49
-#: ../src/plugins/abrt-action-rhtsupport.c:315
-#: ../src/plugins/abrt-action-upload.c:254
+#: ../src/plugins/abrt-action-analyze-c.c:161
+#: ../src/plugins/abrt-action-analyze-oops.c:122
+#: ../src/plugins/abrt-action-analyze-python.c:40
+#: ../src/plugins/abrt-action-generate-backtrace.c:267
 msgid "Dump directory"
 msgstr "转储目录"
 
-#: ../src/daemon/abrt-server.c:442 ../src/daemon/abrtd.c:506
-#, fuzzy
-msgid "\1 [options]"
-msgstr " [选项]"
+#: ../src/daemon/abrt-action-save-package-data.c:373
+msgid "Configuration file"
+msgstr "配置文件"
 
-#: ../src/daemon/abrt-server.c:453
+#: ../src/daemon/abrt-server.c:450 ../src/daemon/abrtd.c:627
+msgid " [options]"
+msgstr ""
+
+#: ../src/daemon/abrt-server.c:461
 msgid "Use UID as client uid"
-msgstr "使用UID作为客户端uid"
+msgstr "使用 UID 作为客户端 UID"
 
-#: ../src/daemon/abrt-server.c:454 ../src/plugins/abrt-dump-oops.c:595
+#: ../src/daemon/abrt-server.c:462 ../src/plugins/abrt-dump-oops.c:597
 msgid "Log to syslog"
-msgstr "记录到系统日志"
+msgstr "记录到 syslog"
 
-#: ../src/daemon/abrt-server.c:455 ../src/daemon/abrtd.c:521
-#: ../src/gui-gtk/main.c:225
+#: ../src/daemon/abrt-server.c:463 ../src/daemon/abrtd.c:642
+#: ../src/gui-gtk/main.c:889
 msgid "Add program names to log"
 msgstr "添加程序名到日志"
 
-#: ../src/daemon/abrtd.c:335
+#: ../src/daemon/abrtd.c:457
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
 msgstr ""
 "报告大小已超出配额。请检查在 abrt.conf 文件中系统的 MaxCrashReportsSize 值。"
 
-#: ../src/daemon/abrtd.c:518
+#: ../src/daemon/abrtd.c:639
 msgid "Do not daemonize"
-msgstr "不要守护进程"
+msgstr "不要后台运行"
 
-#: ../src/daemon/abrtd.c:519
+#: ../src/daemon/abrtd.c:640
 msgid "Log to syslog even with -d"
-msgstr "记录到系统日志即使用到-d"
+msgstr "即使用到 -d 选项也记录到 syslog"
 
-#: ../src/daemon/abrtd.c:520
+#: ../src/daemon/abrtd.c:641
 msgid "Exit after SEC seconds of inactivity"
-msgstr "在SEC秒闲置后退出"
+msgstr "在闲置 SEC 秒后退出"
 
-#: ../src/gui-gtk/abrt-gtk.c:216
-#, fuzzy
-msgid "Problem description"
-msgstr "（没有说明）"
-
-#: ../src/gui-gtk/abrt-gtk.c:219
-#, fuzzy
-msgid "Send"
-msgstr "发送者"
-
-#: ../src/gui-gtk/abrt-gtk.c:297
-msgid "Reported"
-msgstr "已报告"
-
-#: ../src/gui-gtk/abrt-gtk.c:307
-msgid "Problem"
-msgstr "问题"
-
-#: ../src/gui-gtk/abrt-gtk.c:328
-msgid "Last Occurrence"
-msgstr "上次发生"
-
-#: ../src/gui-gtk/abrt-gtk.c:341
-msgid "_File"
-msgstr "文件（_F）"
-
-#: ../src/gui-gtk/abrt-gtk.c:342
-msgid "_Edit"
-msgstr "编辑（_E）"
-
-#: ../src/gui-gtk/abrt-gtk.c:343
-msgid "_Help"
-msgstr "帮助（_H）"
-
-#: ../src/gui-gtk/abrt-gtk.c:359
-msgid "_Event configuration"
-msgstr "事件配置 (_E)"
-
-#: ../src/gui-gtk/abrt-gtk.c:370
-msgid "Report problem with ABRT"
+#: ../src/daemon/abrt-handle-event.c:104
+msgid "\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
 msgstr ""
 
-#: ../src/gui-gtk/abrt-gtk.c:443
-msgid "Online _Help"
-msgstr "在线帮助 (_H)"
+#: ../src/daemon/abrt-handle-event.c:111
+msgid "Run EVENT on DUMP_DIR"
+msgstr ""
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr "查看并报告应用程序崩溃"
+msgstr "查看并上报应用程序崩溃"
 
-#: ../src/gui-gtk/main.c:213
-#, fuzzy
+#: ../src/gui-gtk/main.c:344
+msgid "Problem description"
+msgstr "问题描述"
+
+#: ../src/gui-gtk/main.c:347
+msgid "Send"
+msgstr "发送"
+
+#: ../src/gui-gtk/main.c:425 ../src/gui-gtk/main.c:471
+msgid "Source"
+msgstr "来源"
+
+#: ../src/gui-gtk/main.c:435 ../src/gui-gtk/main.c:481
+msgid "Problem"
+msgstr "问题"
+
+#: ../src/gui-gtk/main.c:456
+msgid "Last Occurrence"
+msgstr "上一次发生"
+
+#: ../src/gui-gtk/main.c:491
+msgid "Date Submitted"
+msgstr "提交日期"
+
+#: ../src/gui-gtk/main.c:500
+msgid "Submision Result"
+msgstr "提交结果"
+
+#: ../src/gui-gtk/main.c:513
+msgid "_Report"
+msgstr "报告(_R)"
+
+#: ../src/gui-gtk/main.c:514
+msgid "_Edit"
+msgstr "编辑(_E)"
+
+#: ../src/gui-gtk/main.c:515
+msgid "_Help"
+msgstr "帮助(_H)"
+
+#: ../src/gui-gtk/main.c:541
+msgid "Report problem with ABRT"
+msgstr "用 ABRT 上报问题"
+
+#: ../src/gui-gtk/main.c:580
+msgid "Not submitted reports"
+msgstr "未提交的报告"
+
+#: ../src/gui-gtk/main.c:582
+msgid "<b>Not submitted reports</b>"
+msgstr "<b>未提交的报告</b>"
+
+#: ../src/gui-gtk/main.c:625
+msgid "Submitted reports"
+msgstr "提交的报告"
+
+#: ../src/gui-gtk/main.c:628
+msgid "<b>Submitted reports</b>"
+msgstr "<b>提交的报告</b>"
+
+#: ../src/gui-gtk/main.c:878
 msgid ""
-"\1 [-vp] [DIR]...\n"
+" [-vp] [DIR]...\n"
 "\n"
 "Shows list of ABRT dump directories in specified DIR(s)\n"
-"(default DIRs: "
 msgstr ""
-" [-vp] [DIR]...\n"
-"\n"
-"显示指定目录下的 ADRT 转储目录列表\n"
-"(默认目录: "
 
-#: ../src/lib/abrt_curl.c:170 ../src/plugins/abrt-action-upload.c:43
-#, c-format
-msgid "Uploaded: %llu of %llu kbytes"
-msgstr "上传：%llu之于%llu KB"
-
-#: ../src/plugins/abrt-action-analyze-backtrace.c:45
-#, fuzzy
+#: ../src/plugins/abrt-action-analyze-backtrace.c:44
 msgid ""
-"\1 [options] -d DIR\n"
+" [options] -d DIR\n"
 "\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating, and "
-"identifies crash function in dump directory DIR"
+"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
+"and identifies crash function in dump directory DIR"
 msgstr ""
-" [options] -d DIR\n"
-"\n"
-"在转储 DIR 目录中分析 C/C++ 回溯，生成副本哈希值，回溯评分，和识别崩溃函数"
 
 #.
 #. * The parser failed. Compute the duphash from the executable
@@ -223,262 +239,173 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-backtrace.c:93
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr "%s的回溯解析失败"
+msgstr " %s 回溯解析失败"
 
-#: ../src/plugins/abrt-action-analyze-c.c:151
-#, fuzzy
+#: ../src/plugins/abrt-action-analyze-c.c:150
 msgid ""
-"\1 [-v] -d DIR\n"
+" [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
-" [-v] -d DIR\n"
-"\n"
-"在转储目录 DIR 中计算并保存核心转储 UUID"
 
-#: ../src/plugins/abrt-action-analyze-oops.c:112
-#, fuzzy
+#: ../src/plugins/abrt-action-analyze-oops.c:111
 msgid ""
-"\1 [-vs] -d DIR\n"
+" [-vs] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
-" [-vs] -d DIR\n"
-"\n"
-"在转储目录 DIR 中计算并保存 UUID 和意外 DUPHASH"
 
-#: ../src/plugins/abrt-action-analyze-python.c:30
-#, fuzzy
+#: ../src/plugins/abrt-action-analyze-python.c:29
 msgid ""
-"\1 [-v] -d DIR\n"
+" [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
-" [-v] -d DIR\n"
-"\n"
-"计算并保存Python崩溃转储的UUID和DUPHASH"
 
-#: ../src/plugins/abrt-action-bugzilla.c:45
-msgid "Empty login or password, please check your configuration"
-msgstr "空的登陆名或者密码，请检查您的配置"
-
-#: ../src/plugins/abrt-action-bugzilla.c:61
-#, c-format
-msgid "Essential file '%s' is missing, can't continue.."
-msgstr "重要文件 '%s' 丢失，无法继续..."
-
-#: ../src/plugins/abrt-action-bugzilla.c:65
-#, c-format
-msgid "Essential file '%s' is empty, can't continue.."
-msgstr "重要文件 '%s' 为空，无法继续..."
-
-#: ../src/plugins/abrt-action-bugzilla.c:74
-#, c-format
-msgid "Logging into Bugzilla at %s"
-msgstr "登陆至位于 %s 的 Bugzilla"
-
-#: ../src/plugins/abrt-action-bugzilla.c:77
-msgid "Checking for duplicates"
-msgstr "检查是否重复"
-
-#: ../src/plugins/abrt-action-bugzilla.c:93
-msgid "Missing mandatory member 'bugs'"
-msgstr "缺少必需成员 'bugs'"
-
-#: ../src/plugins/abrt-action-bugzilla.c:132
-msgid "Creating a new bug"
-msgstr "创建一个新 Bug"
-
-#. decision based on state
-#: ../src/plugins/abrt-action-bugzilla.c:148
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr " bug 已报告：%i"
-
-#: ../src/plugins/abrt-action-bugzilla.c:166
-#, c-format
-msgid "Add %s to CC list"
-msgstr "添加 %s 到CC List"
-
-#: ../src/plugins/abrt-action-bugzilla.c:187
-#, c-format
-msgid "Adding new comment to bug %d"
-msgstr "在 bug 中添加新注释（%d）"
-
-#: ../src/plugins/abrt-action-bugzilla.c:199
-msgid "Logging out"
-msgstr "登出"
-
-#: ../src/plugins/abrt-action-bugzilla.c:233
-msgid ""
-"\1 [-v] [-c CONFFILE] -d DIR\n"
-"\n"
-"Reports problem to Bugzilla.\n"
-"\n"
-"The tool reads DIR. Then it logs in to Bugzilla and tries to find a bug\n"
-"with the same abrt_hash:HEXSTRING in 'Whiteboard'.\n"
-"\n"
-"If such bug is not found, then a new bug is created. Elements of DIR\n"
-"are stored in the bug as part of bug description or as attachments,\n"
-"depending on their type and size.\n"
-"\n"
-"Otherwise, if such bug is found and it is marked as CLOSED DUPLICATE,\n"
-"the tool follows the chain of duplicates until it finds a non-DUPLICATE "
-"bug.\n"
-"The tool adds a new comment to found bug.\n"
-"\n"
-"The URL to new or modified bug is printed to stdout and recorded in\n"
-"'reported_to' element.\n"
-"\n"
-"CONFFILE lines should have 'PARAM = VALUE' format.\n"
-"Recognized string parameters: BugzillaURL, Login, Password.\n"
-"Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
-"Parameters can be overridden via $Bugzilla_PARAM environment variables."
+#. Let user know what's going on
+#: ../src/plugins/abrt-action-generate-backtrace.c:142
+msgid "Generating backtrace"
 msgstr ""
 
-#: ../src/plugins/abrt-action-bugzilla.c:265
-#: ../src/plugins/abrt-action-rhtsupport.c:316
-msgid "Configuration file (may be given many times)"
-msgstr "配置文件（或许需要一点时间）"
-
-#: ../src/plugins/abrt-action-generate-backtrace.c:239
-#, fuzzy
+#: ../src/plugins/abrt-action-generate-backtrace.c:254
 msgid ""
-"\1 [options] -d DIR\n"
+" [options] -d DIR\n"
 "\n"
 "Analyzes coredump in dump directory DIR, generates and saves backtrace"
 msgstr ""
-" [options] -d DIR\n"
-"\n"
-"在转储目录 DIR 中生成并保存内核转储回溯"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:253
+#: ../src/plugins/abrt-action-generate-backtrace.c:268
 msgid "Additional debuginfo directories"
-msgstr "附加出错信息目录"
+msgstr "附加 debuginfo 目录"
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:254
-#, fuzzy
+#: ../src/plugins/abrt-action-generate-backtrace.c:269
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr "如果GDB运行超过N秒就杀死它"
+msgstr "如果 gdb 运行超过 NUM 秒就终止它"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
 #.
-#: ../src/plugins/abrt-action-generate-backtrace.c:290
+#: ../src/plugins/abrt-action-generate-backtrace.c:305
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr "回溯已经生成并保存，%u 字节"
+msgstr "回溯数据已生成并保存，%u B"
 
-#: ../src/plugins/abrt-action-install-debuginfo:84
-msgid "y"
-msgstr "y"
-
-#: ../src/plugins/abrt-action-install-debuginfo:86
-msgid "n"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:100
+#: ../src/plugins/abrt-action-install-debuginfo:85
 #, c-format
 msgid "Extracting cpio from %s"
-msgstr "正在从%s提取cpio"
+msgstr "正在从 %s 提取 cpio"
 
-#: ../src/plugins/abrt-action-install-debuginfo:105
+#: ../src/plugins/abrt-action-install-debuginfo:90
 #, c-format
 msgid "Can't write to '%s': %s"
-msgstr "无法写入 '%s': %s"
+msgstr "无法写入“%s”：%s"
 
-#: ../src/plugins/abrt-action-install-debuginfo:119
+#: ../src/plugins/abrt-action-install-debuginfo:104
 #, c-format
 msgid "Can't extract package '%s'"
-msgstr "无法提取软件包 '%s'"
+msgstr "无法提取软件包“%s”"
 
-#: ../src/plugins/abrt-action-install-debuginfo:127
+#: ../src/plugins/abrt-action-install-debuginfo:112
 #, c-format
 msgid "Caching files from %s made from %s"
-msgstr "缓存文件来自%s，创建自%s"
+msgstr "正在从 %s （创建自 %s）缓存文件"
 
-#: ../src/plugins/abrt-action-install-debuginfo:137
+#: ../src/plugins/abrt-action-install-debuginfo:122
 #, c-format
 msgid "Can't extract files from '%s'"
-msgstr "无法从 '%s' 提取文件"
+msgstr "无法从“%s”提取文件"
 
-#: ../src/plugins/abrt-action-install-debuginfo:161
-#: ../src/plugins/abrt-action-install-debuginfo:171
+#: ../src/plugins/abrt-action-install-debuginfo:146
+#: ../src/plugins/abrt-action-install-debuginfo:156
 #, c-format
 msgid "Downloading (%i of %i) %s: %3u%%"
-msgstr "下载 (%i of %i) %s: %3u%%"
+msgstr "正在下载（%i/%i）%s：%3u%%"
 
-#: ../src/plugins/abrt-action-install-debuginfo:196
+#: ../src/plugins/abrt-action-install-debuginfo:175
+msgid "Initializing yum"
+msgstr ""
+
+#: ../src/plugins/abrt-action-install-debuginfo:183
 #, c-format
 msgid "Error initializing yum (YumBase.doConfigSetup): '%s'"
+msgstr "yum 初始化时出错（YumBase.doConfigSetup）：“%s”"
+
+#: ../src/plugins/abrt-action-install-debuginfo:214
+msgid "Setting up yum repositories"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:239
-msgid "Looking for needed packages in repositories"
-msgstr "在仓库中查询需要的软件包"
+#: ../src/plugins/abrt-action-install-debuginfo:225
+#, fuzzy, c-format
+msgid "Can't setup %s: %s, disabling"
+msgstr "无法打开 %s：%s"
 
-#: ../src/plugins/abrt-action-install-debuginfo:243
+#: ../src/plugins/abrt-action-install-debuginfo:232
+msgid "Looking for needed packages in repositories"
+msgstr "正在软件仓库中查找所需软件包"
+
+#: ../src/plugins/abrt-action-install-debuginfo:236
 #, c-format
 msgid "Error retrieving metadata: '%s'"
-msgstr ""
+msgstr "接收元数据时出错：“%s”"
 
-#: ../src/plugins/abrt-action-install-debuginfo:253
+#: ../src/plugins/abrt-action-install-debuginfo:246
 #, c-format
 msgid "Error retrieving filelists: '%s'"
-msgstr ""
+msgstr "接收文件列表时出错：“%s”"
 
-#: ../src/plugins/abrt-action-install-debuginfo:286
+#: ../src/plugins/abrt-action-install-debuginfo:279
 #, c-format
 msgid "Can't find packages for %u debuginfo files"
-msgstr "无法找到 %u debuginfo 文件的软件包"
+msgstr "无法找到提供%u个 debuginfo 文件的软件包"
 
-#: ../src/plugins/abrt-action-install-debuginfo:288
+#: ../src/plugins/abrt-action-install-debuginfo:281
 #, c-format
 msgid "Packages to download: %u"
-msgstr "需要下载的软件包：%u"
+msgstr "要下载的软件包：%u"
 
-#: ../src/plugins/abrt-action-install-debuginfo:289
+#: ../src/plugins/abrt-action-install-debuginfo:282
 #, c-format
-msgid "Downloading %.2fMb, installed size: %.2fMb"
-msgstr "正在下载 %.2fMb, 安装大小: %.2fMb"
+msgid "Downloading %.2fMb, installed size: %.2fMb. Continue?"
+msgstr "需下载 %.2f Mb，安装大小：%.2f Mb。是否继续？"
 
-#: ../src/plugins/abrt-action-install-debuginfo:297
-msgid "Is this ok? [y/N] "
-msgstr "可以吗？ [y/N]"
+#: ../src/plugins/abrt-action-install-debuginfo:287
+msgid "Download cancelled by user"
+msgstr "应用户要求取消下载"
 
-#: ../src/plugins/abrt-action-install-debuginfo:323
+#: ../src/plugins/abrt-action-install-debuginfo:313
 #, c-format
 msgid "Downloading package %s failed"
-msgstr "下载包 %s 失败"
+msgstr "下载 %s 软件包失败"
+
+#: ../src/plugins/abrt-action-install-debuginfo:319
+msgid "Unpacking failed, aborting download..."
+msgstr "解包失败，正在终止下载……"
 
 #: ../src/plugins/abrt-action-install-debuginfo:329
-msgid "Unpacking failed, aborting download..."
-msgstr "解包失败，终止下载……"
-
-#: ../src/plugins/abrt-action-install-debuginfo:339
-#, fuzzy, c-format
+#, c-format
 msgid "Removing %s"
-msgstr "用 %s 报告？"
+msgstr "正在删除 %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo:343
+#: ../src/plugins/abrt-action-install-debuginfo:333
 #, c-format
 msgid "Can't remove %s, probably contains an error log"
-msgstr "无法删除 %s，可能包含一个错误日志"
+msgstr "无法删除 %s，可能包含错误日志"
 
-#: ../src/plugins/abrt-action-install-debuginfo:379
+#: ../src/plugins/abrt-action-install-debuginfo:391
 #, c-format
 msgid "Can't remove '%s': %s"
-msgstr "无法删除 '%s': %s"
+msgstr "无法删除“%s”：%s"
 
-#: ../src/plugins/abrt-action-install-debuginfo:387
+#: ../src/plugins/abrt-action-install-debuginfo:399
 msgid "Exiting on user command"
 msgstr "应用户命令退出"
 
-#: ../src/plugins/abrt-action-install-debuginfo:421
+#: ../src/plugins/abrt-action-install-debuginfo:433
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -492,556 +419,478 @@ msgid ""
 "    --size_mb   Default: 4096\n"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:478
+#: ../src/plugins/abrt-action-install-debuginfo:490
 #, c-format
 msgid "Can't open %s: %s"
-msgstr ""
+msgstr "无法打开 %s：%s"
 
-#: ../src/plugins/abrt-action-install-debuginfo:508
+#: ../src/plugins/abrt-action-install-debuginfo:520
 #, c-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
-msgstr "Coredump 引用 %u 个debuginfo 文件，其中 %u 个尚未安装"
+msgstr "内核转储引用 %u个 debuginfo 文件，其中 %u 个尚未安装"
 
-#: ../src/plugins/abrt-action-install-debuginfo:519
+#: ../src/plugins/abrt-action-install-debuginfo:531
 #, c-format
 msgid "Missing debuginfo file: %s"
-msgstr "缺少 debuginfo 文件: %s"
+msgstr "缺少 debuginfo 文件：%s"
 
-#: ../src/plugins/abrt-action-install-debuginfo:522
+#: ../src/plugins/abrt-action-install-debuginfo:534
 #, c-format
 msgid "All %u debuginfo files are available"
-msgstr "全部 %u 个debuginfo 文件可用"
+msgstr "共有 %u 个 debuginfo 文件可用"
 
-#: ../src/plugins/abrt-action-kerneloops.c:100
-#, c-format
-msgid "Submitting oops report to %s"
-msgstr "正在发送oops报告到%s"
-
-#: ../src/plugins/abrt-action-kerneloops.c:135
-#, fuzzy
+#: ../src/plugins/abrt-action-trim-files.c:149
 msgid ""
-"\1 [-v] [-c CONFFILE]... -d DIR\n"
-"\n"
-"Reports kernel oops to kerneloops.org (or similar) site"
-msgstr ""
-" [-v] [-c CONFFILE]... -d DIR\n"
-"\n"
-"汇报内核异常至 kerneloops.org (或类似 similar) 站点"
-
-#: ../src/plugins/abrt-action-kerneloops.c:148
-msgid "Configuration file"
-msgstr "配置文件"
-
-#: ../src/plugins/abrt-action-mailx.c:104
-msgid "Sending an email..."
-msgstr "正在发送电子邮件……"
-
-#: ../src/plugins/abrt-action-mailx.c:136
-#, fuzzy
-msgid ""
-"\1 [-v] -d DIR [-c CONFFILE]\n"
-"\n"
-"Sends contents of a dump directory DIR via email"
-msgstr ""
-" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
-"\n"
-"上传转储目录 DIR 的压缩包"
-
-#: ../src/plugins/abrt-action-mailx.c:149
-#: ../src/plugins/abrt-action-upload.c:255
-msgid "Config file"
-msgstr "配置文件"
-
-#: ../src/plugins/abrt-action-print.c:35
-#, fuzzy
-msgid ""
-"\1 [-v] -d DIR [-o FILE] [-a yes/no] [-r]\n"
-"\n"
-"Prints problem information to standard output or FILE"
-msgstr ""
-" [-v] -d DIR [-o FILE] [-a yes/no]\n"
-"\n"
-"打印问题信息至标准输出或者 FILE 文件"
-
-#: ../src/plugins/abrt-action-print.c:50
-msgid "Output file"
-msgstr "输出文件"
-
-#: ../src/plugins/abrt-action-print.c:51
-msgid "Append to, or overwrite FILE"
-msgstr "添加到，或者覆盖 FILE 文件"
-
-#: ../src/plugins/abrt-action-print.c:52
-msgid "Create reported_to in DIR"
-msgstr "在DIR生成reported_to"
-
-#: ../src/plugins/abrt-action-print.c:91
-#, c-format
-msgid "The report was appended to %s"
-msgstr "已在 %s 中附加该报告"
-
-#: ../src/plugins/abrt-action-print.c:91
-#, c-format
-msgid "The report was stored to %s"
-msgstr "已在 %s 中保存该报告"
-
-#. create_problem_data_for_reporting already emitted error msg
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#. error msg is already logged by dd_opendir
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../src/plugins/abrt-action-rhtsupport.c:36
-#: ../src/plugins/abrt-action-upload.c:117
-msgid "Compressing data"
-msgstr "压缩数据"
-
-#: ../src/plugins/abrt-action-rhtsupport.c:64
-msgid "Empty RHTS login or password"
-msgstr "空 RHTS 登陆或密码"
-
-#: ../src/plugins/abrt-action-rhtsupport.c:91
-msgid "Can't create a temporary directory in /tmp"
-msgstr "无法在/tmp生成临时目录"
-
-#: ../src/plugins/abrt-action-rhtsupport.c:207
-msgid "Creating a new case..."
-msgstr "正在创建新案例……"
-
-#: ../src/plugins/abrt-action-rhtsupport.c:298
-msgid ""
-"\1 [-v] -c CONFFILE -d DIR\n"
-"\n"
-"Reports a problem to RHTSupport.\n"
-"\n"
-"CONFFILE lines should have 'PARAM = VALUE' format.\n"
-"Recognized string parameters: URL, Login, Password.\n"
-"Recognized boolean parameter (VALUE should be 1/0, yes/no): SSLVerify.\n"
-"Parameters can be overridden via $RHTSupport_PARAM environment variables."
-msgstr ""
-
-#: ../src/plugins/abrt-action-trim-files.c:150
-#, fuzzy
-msgid ""
-"\1 [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
-" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
-"\n"
-"删除转储目录 DIR 中的目录 (-d) 或者文件 (-f) 直到体积小于指定大小 SIZE"
 
-#: ../src/plugins/abrt-action-trim-files.c:163
+#: ../src/plugins/abrt-action-trim-files.c:162
 msgid "Delete dump dirs"
 msgstr "删除转储目录"
 
-#: ../src/plugins/abrt-action-trim-files.c:164
+#: ../src/plugins/abrt-action-trim-files.c:163
 msgid "Delete files"
 msgstr "删除文件"
 
-#: ../src/plugins/abrt-action-trim-files.c:165
+#: ../src/plugins/abrt-action-trim-files.c:164
 msgid "Preserve this dump dir"
 msgstr "保留该转储目录"
 
-#: ../src/plugins/abrt-action-upload.c:61
-#, c-format
-msgid "Sending %s to %s"
-msgstr "正在发送 %s 至 %s"
-
-#. This ends up a "reporting status message" in abrtd
-#: ../src/plugins/abrt-action-upload.c:94
-#, c-format
-msgid "Successfully sent %s to %s"
-msgstr "成功发送 %s 到 %s"
-
-#: ../src/plugins/abrt-action-upload.c:208
-#, c-format
-msgid "Archive is created: '%s'"
-msgstr "归档已创建：“%s”"
-
-#: ../src/plugins/abrt-action-upload.c:241
-#, fuzzy
-msgid ""
-"\1 [-v] -d DIR [-c CONFFILE] [-u URL]\n"
-"\n"
-"Uploads compressed tarball of dump directory DIR"
-msgstr ""
-" [-v] -d DIR [-c CONFFILE] [-u URL]\n"
-"\n"
-"上传转储目录 DIR 的压缩包"
-
-#: ../src/plugins/abrt-action-upload.c:256
-msgid "Base URL to upload to"
-msgstr "上传的基本URL"
-
 #: ../src/plugins/abrt-dump-oops.c:579
-#, fuzzy
 msgid ""
-"\1 [-vsrowx] [-d DIR] FILE\n"
+" [-vsrowx] [-d DIR] FILE\n"
+"   or:  [-vsrowx] -D FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
-" [-vsrowx] [-d DIR] FILE\n"
-"\n"
-"从 syslog/dmesg 文件提取 oops"
-
-#: ../src/plugins/abrt-dump-oops.c:596
-msgid "Parse kernel's message buffer before parsing FILE"
-msgstr "在解析FILE之前解析内核的消息缓冲区"
-
-#: ../src/plugins/abrt-dump-oops.c:597
-msgid "Print found oopses on standard output"
-msgstr "在标准输出上打印找到的oops"
 
 #: ../src/plugins/abrt-dump-oops.c:598
+msgid "Parse kernel's message buffer before parsing FILE"
+msgstr "在解析 FILE 文件之前解析内核的消息缓冲区"
+
+#: ../src/plugins/abrt-dump-oops.c:599
+msgid "Print found oopses on standard output"
+msgstr "在标准输出上打印找到的内核崩溃签名"
+
+#: ../src/plugins/abrt-dump-oops.c:600
 msgid "Do not exit, watch the file for new oopses"
-msgstr "不退出，为新的opps监视此文件"
+msgstr "不要退出，监视此文件以便掌握新内核崩溃签名"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
 #.
-#: ../src/plugins/abrt-dump-oops.c:602
+#: ../src/plugins/abrt-dump-oops.c:604
 msgid "Create ABRT dump in DIR for every oops found"
-msgstr "在 DIR 为每一个发现的 oops 生成 ABRT 转储"
+msgstr "在 DIR 中为每个找到的内核崩溃签名创建 ABRT 转储"
 
-#: ../src/plugins/abrt-dump-oops.c:603
+#: ../src/plugins/abrt-dump-oops.c:605
 msgid "Make the dump directory world readable"
-msgstr "让转储目录全局可读"
+msgstr "让转储目录对匿名用户可读"
 
-#: ../src/plugins/abrt-retrace-client.c:111
-msgid "Cannot open temporary file"
+#: ../src/plugins/abrt-dump-oops.c:606
+msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
 
-#: ../src/plugins/abrt-retrace-client.c:137
-#: ../src/plugins/abrt-retrace-client.c:164
-#, fuzzy, c-format
-msgid "Can't execute '%s'"
-msgstr "无法提取软件包 '%s'"
+#: ../src/plugins/abrt-retrace-client.c:67
+msgid "An error occured on the server side. Try again later."
+msgstr "在服务器端发生错误。请稍后再试。"
 
-#: ../src/plugins/abrt-retrace-client.c:195
+#: ../src/plugins/abrt-retrace-client.c:72
+msgid ""
+"An error occured while connecting to the server. Check your network "
+"connection and try again."
+msgstr "在连接服务器时发生错误。检查您的网络连接并重试。"
+
+#: ../src/plugins/abrt-retrace-client.c:78
+msgid ""
+"Retrace server can not be used, because the crash is too large. Try local "
+"retracing."
+msgstr "无法使用回溯服务器，因为崩溃数据过大。请尝试本地回溯。"
+
+#: ../src/plugins/abrt-retrace-client.c:131
+msgid "Cannot open temporary file"
+msgstr "无法打开临时文件"
+
+#: ../src/plugins/abrt-retrace-client.c:157
+#: ../src/plugins/abrt-retrace-client.c:184
+#, c-format
+msgid "Can't execute '%s'"
+msgstr "无法执行“%s”"
+
+#: ../src/plugins/abrt-retrace-client.c:215
 #, c-format
 msgid "Issuer certificate is invalid: '%s'."
-msgstr ""
+msgstr "发行者证书无效：“%s”。"
 
-#: ../src/plugins/abrt-retrace-client.c:198
+#: ../src/plugins/abrt-retrace-client.c:218
 #, c-format
 msgid "Certificate is signed by an untrusted issuer: '%s'."
-msgstr ""
+msgstr "证书是由不信任的发行者签名：“%s”。"
 
-#: ../src/plugins/abrt-retrace-client.c:201
+#: ../src/plugins/abrt-retrace-client.c:221
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
-msgstr ""
+msgstr "证书主题名称“%s”与目标主机名称“%s”不匹配。"
 
-#: ../src/plugins/abrt-retrace-client.c:205
+#: ../src/plugins/abrt-retrace-client.c:225
 msgid "Remote certificate has expired."
-msgstr ""
+msgstr "远程证书已过期。"
 
-#: ../src/plugins/abrt-retrace-client.c:208
+#: ../src/plugins/abrt-retrace-client.c:228
 #, c-format
 msgid "Certificate issuer is not recognized: '%s'."
-msgstr ""
+msgstr "证书发行者无法识别：“%s”。"
 
-#: ../src/plugins/abrt-retrace-client.c:211
+#: ../src/plugins/abrt-retrace-client.c:231
 #, c-format
-msgid "Bad certifiacte received. Subject '%s', issuer '%s'."
-msgstr ""
+msgid "Bad certificate received. Subject '%s', issuer '%s'."
+msgstr "收到损坏的认证。主题 '%s'，发布者 '%s' 。"
 
-#: ../src/plugins/abrt-retrace-client.c:247
+#: ../src/plugins/abrt-retrace-client.c:267
 #, c-format
 msgid "Failed to get slot 'PEM Token #0': %d."
-msgstr ""
+msgstr "获取“PEM Token #0”插槽失败: %d。"
 
-#: ../src/plugins/abrt-retrace-client.c:275
+#: ../src/plugins/abrt-retrace-client.c:297
+#, c-format
+msgid "Failed to get host by name: NSS error %d."
+msgstr "通过主机名获取主机信息时失败：NSS 错误 %d。"
+
+#: ../src/plugins/abrt-retrace-client.c:316
 msgid "Failed to create a TCP socket"
-msgstr ""
+msgstr "创建 TCP 套接字失败"
 
-#: ../src/plugins/abrt-retrace-client.c:283
+#: ../src/plugins/abrt-retrace-client.c:324
 msgid "Failed to set socket blocking mode."
-msgstr ""
+msgstr "设置套接字阻塞模式失败。"
 
-#: ../src/plugins/abrt-retrace-client.c:289
+#: ../src/plugins/abrt-retrace-client.c:330
 msgid "Failed to wrap TCP socket by SSL."
-msgstr ""
+msgstr "以 SSL 包装 TCP 套接字失败。"
 
-#: ../src/plugins/abrt-retrace-client.c:295
-#: ../src/plugins/abrt-retrace-client.c:298
-#: ../src/plugins/abrt-retrace-client.c:300
-#: ../src/plugins/abrt-retrace-client.c:302
+#: ../src/plugins/abrt-retrace-client.c:336
+#: ../src/plugins/abrt-retrace-client.c:339
+#: ../src/plugins/abrt-retrace-client.c:341
+#: ../src/plugins/abrt-retrace-client.c:343
 msgid "Failed to enable client handshake to SSL socket."
-msgstr ""
+msgstr "启用客户端与 SSL 套接字的握手失败。"
 
-#: ../src/plugins/abrt-retrace-client.c:308
+#: ../src/plugins/abrt-retrace-client.c:349
 msgid "Failed to set URL to SSL socket."
-msgstr ""
+msgstr "设置 SSL 套接字的网址失败。"
 
-#: ../src/plugins/abrt-retrace-client.c:319
-#, c-format
-msgid "Failed to get host by name: %s"
-msgstr ""
-
-#: ../src/plugins/abrt-retrace-client.c:322
-#, c-format
-msgid "Failed to get host by name: pr_status == %d, pr_error == %d, url '%s'."
-msgstr ""
-
-#: ../src/plugins/abrt-retrace-client.c:331
-msgid "Failed to enumerate host ent."
-msgstr ""
-
-#: ../src/plugins/abrt-retrace-client.c:337
+#: ../src/plugins/abrt-retrace-client.c:356
 msgid "Failed to connect SSL address."
-msgstr ""
-
-#: ../src/plugins/abrt-retrace-client.c:344
-msgid "Failed to set certificate hook."
-msgstr ""
-
-#: ../src/plugins/abrt-retrace-client.c:351
-msgid "Failed to set handshake callback."
-msgstr ""
-
-#: ../src/plugins/abrt-retrace-client.c:357
-msgid "Failed to reset handshake."
-msgstr ""
+msgstr "连接 SSL 地址失败。"
 
 #: ../src/plugins/abrt-retrace-client.c:363
+msgid "Failed to set certificate hook."
+msgstr "设置证书钩失败。"
+
+#: ../src/plugins/abrt-retrace-client.c:370
+msgid "Failed to set handshake callback."
+msgstr "设置握手回调失败。"
+
+#: ../src/plugins/abrt-retrace-client.c:377
+msgid "Failed to reset handshake."
+msgstr "重置握手失败。"
+
+#: ../src/plugins/abrt-retrace-client.c:384
 #, c-format
 msgid "Failed to force handshake: NSS error %d."
-msgstr ""
+msgstr "强制握手失败：NSS 错误 %d。"
 
-#: ../src/plugins/abrt-retrace-client.c:372
+#: ../src/plugins/abrt-retrace-client.c:393
 msgid "Failed to close SSL socket."
-msgstr ""
+msgstr "关闭 SSL 套接字失败。"
 
-#: ../src/plugins/abrt-retrace-client.c:428
-#: ../src/plugins/abrt-retrace-client.c:431
-#: ../src/plugins/abrt-retrace-client.c:434
+#: ../src/plugins/abrt-retrace-client.c:451
+#: ../src/plugins/abrt-retrace-client.c:457
+#: ../src/plugins/abrt-retrace-client.c:463
 msgid "Invalid response from server: HTTP header not found."
-msgstr ""
-
-#: ../src/plugins/abrt-retrace-client.c:471
-#, c-format
-msgid "Receiving of data failed: NSS error %d."
-msgstr ""
+msgstr "来自服务器的无效响应：HTTP 头没有找到。"
 
 #: ../src/plugins/abrt-retrace-client.c:502
-#: ../src/plugins/abrt-retrace-client.c:680
-#: ../src/plugins/abrt-retrace-client.c:902
-#: ../src/plugins/abrt-retrace-client.c:966
+#, c-format
+msgid "Receiving of data failed: NSS error %d."
+msgstr "接收数据失败：NSS 错误 %d。"
+
+#: ../src/plugins/abrt-retrace-client.c:528
+#: ../src/plugins/abrt-retrace-client.c:874
+#: ../src/plugins/abrt-retrace-client.c:1131
+#: ../src/plugins/abrt-retrace-client.c:1200
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr ""
+msgstr "发送长度为 %d 的 HTTP 头失败：NSS 错误 %d。"
 
-#: ../src/plugins/abrt-retrace-client.c:513
-#: ../src/plugins/abrt-retrace-client.c:760
-#: ../src/plugins/abrt-retrace-client.c:844
-#: ../src/plugins/abrt-retrace-client.c:915
-#: ../src/plugins/abrt-retrace-client.c:979
+#: ../src/plugins/abrt-retrace-client.c:540
+#: ../src/plugins/abrt-retrace-client.c:973
+#: ../src/plugins/abrt-retrace-client.c:1069
+#: ../src/plugins/abrt-retrace-client.c:1148
+#: ../src/plugins/abrt-retrace-client.c:1217
 #, c-format
 msgid ""
 "Unexpected HTTP response from server: %d\n"
 "%s"
 msgstr ""
+"来自服务器的非预期 HTTP 响应：%d\n"
+"%s"
 
-#: ../src/plugins/abrt-retrace-client.c:520
-#: ../src/plugins/abrt-retrace-client.c:753
-#: ../src/plugins/abrt-retrace-client.c:838
-#: ../src/plugins/abrt-retrace-client.c:909
-#: ../src/plugins/abrt-retrace-client.c:973
+#: ../src/plugins/abrt-retrace-client.c:549
+#: ../src/plugins/abrt-retrace-client.c:953
+#: ../src/plugins/abrt-retrace-client.c:1061
+#: ../src/plugins/abrt-retrace-client.c:1140
+#: ../src/plugins/abrt-retrace-client.c:1209
 msgid "Invalid response from server: missing HTTP message body."
-msgstr ""
+msgstr "来自服务器的无效响应：缺少 HTTP 消息体。"
 
-#: ../src/plugins/abrt-retrace-client.c:575
+#: ../src/plugins/abrt-retrace-client.c:704
 msgid "Querying server settings"
-msgstr ""
+msgstr "正在查询服务器设置"
 
-#: ../src/plugins/abrt-retrace-client.c:584
-msgid "Retrace server is fully occupied at the moment. Try again later please."
-msgstr ""
+#: ../src/plugins/abrt-retrace-client.c:712
+msgid "The server is fully occupied. Try again later."
+msgstr "服务器已经被完全占用。请稍后再试。"
 
-#: ../src/plugins/abrt-retrace-client.c:595
-#: ../src/plugins/abrt-retrace-client.c:608
+#: ../src/plugins/abrt-retrace-client.c:713
+msgid "The server denied your request."
+msgstr "服务器拒绝了您的请求。"
+
+#: ../src/plugins/abrt-retrace-client.c:723
+#: ../src/plugins/abrt-retrace-client.c:736
 #, c-format
 msgid "Unable to stat file '%s'."
-msgstr ""
+msgstr "stat file“%s”执行失败。"
 
-#: ../src/plugins/abrt-retrace-client.c:622
+#: ../src/plugins/abrt-retrace-client.c:751
 #, c-format
 msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
 msgstr ""
+"您的崩溃数据大小是 %lldB，但追溯服务器只接受小于或等于 %lldB 的崩溃数据。"
 
-#: ../src/plugins/abrt-retrace-client.c:630
-msgid "Preparing an archive to upload"
+#: ../src/plugins/abrt-retrace-client.c:771
+msgid "The server does not support xz-compressed tarballs."
+msgstr "服务器不支持 xz 压缩归档包。"
+
+#: ../src/plugins/abrt-retrace-client.c:793
+#, c-format
+msgid "The release '%s' is not supported by the Retrace server."
 msgstr ""
 
-#: ../src/plugins/abrt-retrace-client.c:642
+#: ../src/plugins/abrt-retrace-client.c:797
+msgid "The server is not able to handle your request."
+msgstr "服务器无法处理您的请求。"
+
+#: ../src/plugins/abrt-retrace-client.c:806
+msgid "Preparing an archive to upload"
+msgstr "正在准备上传的档案"
+
+#: ../src/plugins/abrt-retrace-client.c:819
 #, c-format
 msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
+msgstr "您的档案大小是 %lldB，但追溯服务器只接受小于或等于 %lldB 的档案。"
+
+#: ../src/plugins/abrt-retrace-client.c:832
+#, c-format
+msgid "You are going to upload %d megabytes.Continue?"
+msgstr "你将要上传 %d MB。是否继续？"
+
+#: ../src/plugins/abrt-retrace-client.c:839
+msgid "Cancelled by user"
+msgstr "应用户要求取消操作"
+
+#: ../src/plugins/abrt-retrace-client.c:881
+#, c-format
+msgid "Uploading %d megabytes\n"
 msgstr ""
 
-#: ../src/plugins/abrt-retrace-client.c:686
-#, fuzzy, c-format
+#: ../src/plugins/abrt-retrace-client.c:883
+#, c-format
 msgid "Uploading %lld bytes\n"
-msgstr "上传：%llu之于%llu KB"
+msgstr "正在上传 %lldB\n"
 
-#: ../src/plugins/abrt-retrace-client.c:710
+#: ../src/plugins/abrt-retrace-client.c:907
 #, c-format
 msgid "Uploading %d%%\n"
-msgstr ""
+msgstr "正在上传 %d%%\n"
 
-#: ../src/plugins/abrt-retrace-client.c:722
+#: ../src/plugins/abrt-retrace-client.c:919
 msgid "Failed to read from a pipe"
-msgstr ""
+msgstr "从管道读取失败"
 
-#: ../src/plugins/abrt-retrace-client.c:734
+#: ../src/plugins/abrt-retrace-client.c:932
 #, c-format
 msgid "Failed to send data: NSS error %d (%s): %s"
-msgstr ""
+msgstr "发送数据失败：NSS 错误 %d（%s）：%s"
 
-#: ../src/plugins/abrt-retrace-client.c:745
+#: ../src/plugins/abrt-retrace-client.c:943
 msgid "Upload successful"
+msgstr "上传成功"
+
+#: ../src/plugins/abrt-retrace-client.c:965
+msgid ""
+"Your problem directory is corrupted and can not be processed by the Retrace "
+"server."
 msgstr ""
 
-#: ../src/plugins/abrt-retrace-client.c:758
-#, c-format
-msgid "There is a problem on the server side: %s."
+#: ../src/plugins/abrt-retrace-client.c:967
+msgid ""
+"The archive contains malicious files (such as symlinks) and thus can not be "
+"processed."
 msgstr ""
 
-#: ../src/plugins/abrt-retrace-client.c:764
+#: ../src/plugins/abrt-retrace-client.c:980
 msgid "Invalid response from server: missing X-Task-Id."
-msgstr ""
+msgstr "来自服务器的无效响应：缺少 X-Task-Id。"
 
-#: ../src/plugins/abrt-retrace-client.c:767
+#: ../src/plugins/abrt-retrace-client.c:986
 msgid "Invalid response from server: missing X-Task-Password."
-msgstr ""
+msgstr "来自服务器的无效响应：缺少 X-Task-Password。"
 
-#: ../src/plugins/abrt-retrace-client.c:773
+#: ../src/plugins/abrt-retrace-client.c:993
 msgid "Retrace job started"
-msgstr ""
+msgstr "追溯任务开始"
 
-#: ../src/plugins/abrt-retrace-client.c:786
+#: ../src/plugins/abrt-retrace-client.c:1006
 #, c-format
 msgid ""
 "Task Id: %s\n"
 "Task Password: %s\n"
 msgstr ""
+"任务 ID：%s\n"
+"任务密码：%s\n"
 
-#: ../src/plugins/abrt-retrace-client.c:831
+#: ../src/plugins/abrt-retrace-client.c:1052
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr ""
+msgstr "发送长度为 %d 的 HTTP 头失败：NSS 错误 %d"
 
-#: ../src/plugins/abrt-retrace-client.c:849
+#: ../src/plugins/abrt-retrace-client.c:1076
 msgid "Invalid response from server: missing X-Task-Status."
-msgstr ""
+msgstr "来自服务器的无效响应：缺少 X-Task-Status。"
 
-#: ../src/plugins/abrt-retrace-client.c:860
+#: ../src/plugins/abrt-retrace-client.c:1088
 #, c-format
 msgid ""
 "Task Status: %s\n"
 "%s\n"
 msgstr ""
+"任务状态：%s\n"
+"%s\n"
 
-#: ../src/plugins/abrt-retrace-client.c:1066
+#: ../src/plugins/abrt-retrace-client.c:1262
+msgid ""
+"Retrace failed. Try again later and if the problem persists report this "
+"issue please."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1307
 msgid "log to syslog"
-msgstr "记录到系统日志"
+msgstr "记录到 syslog"
 
-#: ../src/plugins/abrt-retrace-client.c:1068
+#: ../src/plugins/abrt-retrace-client.c:1309
 msgid "allow insecure connection to retrace server"
-msgstr ""
+msgstr "允许不安全连接追溯服务器"
 
-#: ../src/plugins/abrt-retrace-client.c:1070
-#, fuzzy
+#: ../src/plugins/abrt-retrace-client.c:1311
 msgid "retrace server URL"
-msgstr "追溯服务器 URL"
+msgstr "追溯服务器网址"
 
-#: ../src/plugins/abrt-retrace-client.c:1072
+#: ../src/plugins/abrt-retrace-client.c:1313
+msgid "retrace server port"
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:1315
 msgid "(debug) show received HTTP headers"
-msgstr ""
+msgstr "（调试）显示收到的 HTTP 头"
 
-#: ../src/plugins/abrt-retrace-client.c:1073
+#: ../src/plugins/abrt-retrace-client.c:1316
 msgid "For create and batch operations"
-msgstr ""
+msgstr "用于创建和批量操作"
 
-#: ../src/plugins/abrt-retrace-client.c:1075
+#: ../src/plugins/abrt-retrace-client.c:1318
 msgid "read data from ABRT crash dump directory"
-msgstr ""
+msgstr "从 ABRT 崩溃转储目录读取数据"
 
-#: ../src/plugins/abrt-retrace-client.c:1077
+#: ../src/plugins/abrt-retrace-client.c:1320
 msgid "read data from coredump"
-msgstr ""
+msgstr "从内存转储读取数据"
 
-#: ../src/plugins/abrt-retrace-client.c:1079
+#: ../src/plugins/abrt-retrace-client.c:1322
 msgid "Delay for polling operations"
-msgstr ""
+msgstr "因轮询操作而推迟"
 
-#: ../src/plugins/abrt-retrace-client.c:1081
+#: ../src/plugins/abrt-retrace-client.c:1324
 msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
-msgstr ""
+msgstr "（调试）不要删除 /tmp 中创建自转储目录的临时档案"
 
-#: ../src/plugins/abrt-retrace-client.c:1083
+#: ../src/plugins/abrt-retrace-client.c:1326
 msgid "For status, backtrace, and log operations"
-msgstr ""
+msgstr "用于状态、回溯和日志操作"
 
-#: ../src/plugins/abrt-retrace-client.c:1085
+#: ../src/plugins/abrt-retrace-client.c:1328
 msgid "id of your task on server"
-msgstr ""
+msgstr "您的任务在服务器上的 ID"
 
-#: ../src/plugins/abrt-retrace-client.c:1087
+#: ../src/plugins/abrt-retrace-client.c:1330
 msgid "password of your task on server"
-msgstr ""
+msgstr "您的任务在服务器上的密码"
 
-#: ../src/plugins/abrt-retrace-client.c:1091
+#: ../src/plugins/abrt-retrace-client.c:1334
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch"
 msgstr ""
+"abrt-retrace-client <操作> [选项]\n"
+"操作：create/status/backtrace/log/batch"
 
-#: ../src/plugins/abrt-retrace-client.c:1124
+#: ../src/plugins/abrt-retrace-client.c:1377
 msgid "Failed to initialize NSS."
-msgstr ""
+msgstr "初始化 NSS 失败。"
 
-#: ../src/plugins/abrt-retrace-client.c:1130
+#: ../src/plugins/abrt-retrace-client.c:1383
 msgid "Failed to initialize security module."
-msgstr ""
+msgstr "初始化安全模块失败。"
 
-#: ../src/plugins/abrt-retrace-client.c:1141
-#: ../src/plugins/abrt-retrace-client.c:1147
-#, fuzzy
+#: ../src/plugins/abrt-retrace-client.c:1394
+#: ../src/plugins/abrt-retrace-client.c:1400
 msgid "Either dump directory or coredump is needed."
-msgstr "让转储目录全局可读"
+msgstr "需要转储目录或内存转储中的一个。"
 
-#: ../src/plugins/abrt-retrace-client.c:1153
-#: ../src/plugins/abrt-retrace-client.c:1161
-#: ../src/plugins/abrt-retrace-client.c:1169
+#: ../src/plugins/abrt-retrace-client.c:1406
+#: ../src/plugins/abrt-retrace-client.c:1414
+#: ../src/plugins/abrt-retrace-client.c:1422
 msgid "Task id is needed."
-msgstr ""
+msgstr "需要任务 ID。"
 
-#: ../src/plugins/abrt-retrace-client.c:1155
-#: ../src/plugins/abrt-retrace-client.c:1163
-#: ../src/plugins/abrt-retrace-client.c:1171
+#: ../src/plugins/abrt-retrace-client.c:1408
+#: ../src/plugins/abrt-retrace-client.c:1416
+#: ../src/plugins/abrt-retrace-client.c:1424
 msgid "Task password is needed."
-msgstr ""
+msgstr "需要任务密码。"
 
-#: ../src/plugins/abrt-retrace-client.c:1175
+#: ../src/plugins/abrt-retrace-client.c:1428
 #, c-format
 msgid "Unknown operation: %s."
-msgstr ""
+msgstr "未知操作：%s。"
 
-#: ../src/plugins/abrt-retrace-client.c:1184
+#: ../src/plugins/abrt-retrace-client.c:1437
 msgid "Failed to shutdown NSS."
-msgstr ""
+msgstr "关闭 NSS 失败。"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr "下载 debuginfo 包并用 GDB 在本地生成回溯"
+msgstr "下载 debuginfo 软件包并用 GDB 在本地生成回溯数据"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Local GNU Debugger"
-msgstr "本地 GNU 调试程序"
+msgstr "本地 GNU 调试器"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
@@ -1049,22 +898,26 @@ msgid ""
 "and take up disk space. However, unlike RetraceServer, doesn't send coredump "
 "to remote machines."
 msgstr ""
-"需要下载 debuginfo 软件包，这可能需要花较长时间，并且占用很多磁盘空间。然而，"
-"和RetraceServer不同，它不会把核心转储发送到远程机器。"
+"需要下载 debuginfo 软件包，这可能要花较长时间并占用很多磁盘空间。然而和追溯服"
+"务器不同的是，它不把内存转储发送至远程机器。"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Address of the retrace server"
 msgstr "追溯服务器地址"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
-msgid "Retrace server URL"
-msgstr "追溯服务器 URL"
+msgid "Insecure"
+msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-msgid "Send core dump to remote retrace server for analysis"
-msgstr "发送核心转储至远程追溯服务器进行分析"
+msgid "Retrace server URL"
+msgstr "追溯服务器网址"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
+msgid "Send core dump to remote retrace server for analysis"
+msgstr "发送内存转储到远程追溯服务器进行分析"
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:5
 msgid ""
 "Uploads coredump to a server, which generates backtrace and returns it. "
 "Pros: no need for debuginfo downloads. Retrace server's database of "
@@ -1072,516 +925,138 @@ msgid ""
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
 msgstr ""
-"上传核心转储至服务器，由服务器生成回溯并返回。优点：无需下载debuginfo。追溯服"
-"务器的debuginfo数据库更加完整。追溯服务器可以生成更好的回溯。缺点：您上传的核"
-"心转储包含崩溃程序的所有数据，包括您的私人数据，如果存在任何私人数据的话。"
+"上传内存转储到服务器，由服务器生成回溯数据并返回。优点：无需下载调试信息；追"
+"溯服务器的 debuginfo 数据库更加完整；追溯服务器可以生成更好的回溯数据。缺点："
+"您上传的内存转储包含崩溃程序的所有数据，如果有私人数据，也包含在其中。"
 
-#: ../src/plugins/analyze_xsession_errors.xml.in.h:1
-msgid "Save relevant lines from ~/.xsession-errors file"
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:6
+msgid "Whether or not to use insecure connection"
 msgstr ""
 
-#: ../src/plugins/analyze_xsession_errors.xml.in.h:2
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:7
+msgid ""
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
+"(warning)&lt;/a&gt;"
+msgstr ""
+
+#: ../src/plugins/collect_xsession_errors.xml.in.h:1
+msgid "Save relevant lines from ~/.xsession-errors file"
+msgstr "从 ~/.xsession-errors 文件保存有关行"
+
+#: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
 msgstr ""
+"扫描 ~/.xsession-errors 文件并保存包含可执行文件名称的行。结果存"
+"为“xsession_errors”元素。"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:1
-msgid "Address of Bugzilla server"
-msgstr "Bugzilla 服务器地址"
+#: ../src/cli/abrt-cli.c:135
+msgid "Usage: abrt-cli [--version] COMMAND [ARGS]"
+msgstr ""
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:2
-msgid "Bugzilla"
-msgstr "Bugzilla"
+#: ../src/cli/abrt-cli.c:139
+msgid "List not yet reported problems"
+msgstr "列出尚未报告的问题"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:3
-msgid "Bugzilla URL"
-msgstr "Bugzilla 的 URL"
+#: ../src/cli/abrt-cli.c:140
+msgid "Remove files from problem directory"
+msgstr ""
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:4
-msgid "Bugzilla account password"
-msgstr "Bugzilla 账户密码"
+#: ../src/cli/abrt-cli.c:141
+msgid "Analyze and report problem data in problem directory"
+msgstr ""
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:5
-msgid "Bugzilla account user name"
-msgstr "Bugzilla 账户用户名"
+#: ../src/cli/abrt-cli.c:142
+msgid "Print information about DUMP_DIR"
+msgstr ""
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:6
-#: ../src/plugins/report_RHTSupport.xml.in.h:2
-msgid "Check SSL key validity"
-msgstr "检查 SSL 密钥有效性"
+#: ../src/cli/abrt-cli.c:155
+msgid "See 'abrt-cli COMMAND -h' for more information"
+msgstr ""
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:7
-#: ../src/plugins/report_RHTSupport.xml.in.h:3
-msgid "Password"
-msgstr "密码"
+#: ../src/cli/list.c:90
+msgid " list [options] [<dump-dir>]..."
+msgstr ""
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:8
-msgid "Report to Bugzilla bug tracker"
-msgstr "报告至 Bugzilla 程序错误跟踪器"
+#: ../src/cli/list.c:97
+msgid "List even reported problems"
+msgstr ""
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:9
-msgid "User name"
-msgstr "用户名"
+#. deprecate -d option with --pretty=full
+#: ../src/cli/list.c:99 ../src/cli/list.c:141
+msgid "Show detailed report"
+msgstr "显示详细报告"
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:10
-#: ../src/plugins/report_RHTSupport.xml.in.h:10
-msgid "Verify SSL"
-msgstr "验证 SSL"
+#: ../src/cli/list.c:133
+msgid " info [options] [<dump-dir>]..."
+msgstr ""
 
-#: ../src/plugins/report_Bugzilla.xml.in.h:11
+#: ../src/plugins/analyze_VMcore.xml.in.h:1
+msgid "Analyze VM core"
+msgstr ""
+
+#: ../src/plugins/analyze_VMcore.xml.in.h:2
+msgid "Install kernel debuginfo packages, generate kernel log and oops message"
+msgstr ""
+
+#: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
-"You can create bugzilla.redhat.com account &lt;a href=\"https://bugzilla."
-"redhat.com/createaccount.cgi\"&gt;here&lt;/a&gt;"
-msgstr ""
-"您可以到 &lt;a href=\"https://bugzilla.redhat.com/createaccount.cgi\"&gt;这里"
-"&lt;/a&gt; 创建 bugzilla.redhat.com 账户 "
-
-#: ../src/plugins/report_Kerneloops.xml.in.h:1
-msgid "Kerneloops URL"
-msgstr "Kerneloops URL"
-
-#: ../src/plugins/report_Kerneloops.xml.in.h:2
-msgid "Kerneloops.org"
-msgstr "Kerneloops.org"
-
-#: ../src/plugins/report_Kerneloops.xml.in.h:3
-msgid "Oops server url"
-msgstr "Oops 服务器 url"
-
-#: ../src/plugins/report_Kerneloops.xml.in.h:4
-msgid "Send kernel problems to oops tracker"
-msgstr "发送内核问题至 oops 跟踪器"
-
-#: ../src/plugins/report_Mailx.xml.in.h:1
-msgid "Mailx"
-msgstr "Mailx"
-
-#: ../src/plugins/report_Mailx.xml.in.h:2
-msgid "Message subject"
-msgstr "信件主题"
-
-#: ../src/plugins/report_Mailx.xml.in.h:3
-msgid "Recipient"
-msgstr "接收者"
-
-#: ../src/plugins/report_Mailx.xml.in.h:4
-msgid "Recipient's email"
-msgstr "接收者电子邮件"
-
-#: ../src/plugins/report_Mailx.xml.in.h:5
-msgid "Send Binary Data"
-msgstr "发送二进制数据"
-
-#: ../src/plugins/report_Mailx.xml.in.h:6
-msgid "Send binary files like coredump"
-msgstr "发送像coredump这样的二进制文件"
-
-#: ../src/plugins/report_Mailx.xml.in.h:7
-msgid "Send via email"
-msgstr "通过电子邮件发送"
-
-#: ../src/plugins/report_Mailx.xml.in.h:8
-msgid "Sender"
-msgstr "发送者"
-
-#: ../src/plugins/report_Mailx.xml.in.h:9
-msgid "Sender's email"
-msgstr "发送者电子邮件"
-
-#: ../src/plugins/report_Mailx.xml.in.h:10
-msgid "Subject"
-msgstr "主题"
-
-#: ../src/plugins/report_RHTSupport.xml.in.h:1
-msgid "Address of the Red Hat support portal"
-msgstr "红帽支持入口地址"
-
-#: ../src/plugins/report_RHTSupport.xml.in.h:4
-msgid "RH Portal URL"
-msgstr "RH 入口 URL"
-
-#: ../src/plugins/report_RHTSupport.xml.in.h:5
-msgid "Red Hat Customer Support"
-msgstr "红帽客户支持"
-
-#: ../src/plugins/report_RHTSupport.xml.in.h:6
-msgid "Red Hat customer password"
-msgstr "红帽客户密码"
-
-#: ../src/plugins/report_RHTSupport.xml.in.h:7
-msgid "Red Hat customer user name"
-msgstr "红帽客户用户名"
-
-#: ../src/plugins/report_RHTSupport.xml.in.h:8
-msgid "Report to Red Hat support"
-msgstr "报告至红帽支持"
-
-#: ../src/plugins/report_RHTSupport.xml.in.h:9
-msgid "Username"
-msgstr "用户名"
-
-#: ../src/plugins/rhbz.c:191
-#, c-format
-msgid "Looks like corrupted xml response, because '%s' member is missing."
+"Needs to install kernel debuginfo packages, which might take significant "
+"time, and take up disk space."
 msgstr ""
 
-#: ../src/plugins/rhbz.c:259
-#, c-format
-msgid "Bug %i is CLOSED, but it has no RESOLUTION"
+#: ../src/plugins/collect_GConf.xml.in.h:1
+msgid "Collect GConf configuration"
+msgstr "收集 GConf 配置"
+
+#: ../src/plugins/collect_GConf.xml.in.h:2
+msgid ""
+"Runs gconftool-2 --recursive-list /apps/executable and saves it as "
+"'gconf_subtree' element."
 msgstr ""
 
-#: ../src/plugins/rhbz.c:267
-#, c-format
-msgid "Bug %i is CLOSED as DUPLICATE, but it has no DUP_ID"
+#: ../src/plugins/collect_GConf.xml.in.h:3
+msgid "Save configuration from application's GConf directory"
 msgstr ""
 
-#: ../src/plugins/rhbz.c:373
-#, c-format
-msgid "New bug id: %i"
-msgstr "新的 bug id：%i"
-
-#: ../src/plugins/rhbz.c:446
-#, c-format
-msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla 不能找到 bug 的父级（%d）"
-
-#~ msgid ""
-#~ "Usage: %s -l[f] [-D BASE_DIR]...]\n"
-#~ "   or: %s -r[y] CRASH_DIR\n"
-#~ "   or: %s -i[b] CRASH_DIR\n"
-#~ "   or: %s -d CRASH_DIR\n"
-#~ "\n"
-#~ "\t-l, --list\t\tList not yet reported problems\n"
-#~ "\t  -f, --full\t\tList all problems\n"
-#~ "\t-D BASE_DIR\t\tDirectory to list problems from\n"
-#~ "\t\t\t\t(default: -D $HOME/.abrt/spool -D %s)\n"
-#~ "\n"
-#~ "\t-r, --report\t\tSend a report about CRASH_DIR\n"
-#~ "\t  -y, --always\t\t...without editing and asking\n"
-#~ "\t-i, --info\t\tPrint detailed information about CRASH_DIR\n"
-#~ "\t  -f, --full\t\t...including multi-line entries\n"
-#~ "\t\t\t\tNote: -if will run analyzers\n"
-#~ "\t\t\t\t(if this CRASH_DIR have defined analyzers)\n"
-#~ "\t-d, --delete\t\tRemove CRASH_DIR\n"
-#~ "\n"
-#~ "\t-V, --version\t\tDisplay version and exit\n"
-#~ "\t-v, --verbose\t\tBe verbose\n"
-#~ msgstr ""
-#~ "用法: %s -l[f] [-D BASE_DIR]...]\n"
-#~ "   或: %s -r[y] CRASH_DIR\n"
-#~ "   或: %s -i[b] CRASH_DIR\n"
-#~ "   或: %s -d CRASH_DIR\n"
-#~ "\n"
-#~ "\t-l, --list\t\t列出尚未报告的问题\n"
-#~ "\t  -f, --full\t\t列出所有问题\n"
-#~ "\t-D BASE_DIR\t\t从哪个目录列出问题\n"
-#~ "\t\t\t\t(默认: -D $HOME/.abrt/spool -D %s)\n"
-#~ "\n"
-#~ "\t-r, --report\t\t发送关于CRASH_DIR的报告\n"
-#~ "\t  -y, --always\t\t...不要编辑或者提问\n"
-#~ "\t-i, --info\t\t打印关于CRASH_DIR的详细信息\n"
-#~ "\t  -f, --full\t\t...包括多行项目\n"
-#~ "\t\t\t\t注意: -if 将运行分析器\n"
-#~ "\t\t\t\t(如果这个CRASH_DIR已经定义了分析器)\n"
-#~ "\t-d, --delete\t\t删除CRASH_DIR\n"
-#~ "\n"
-#~ "\t-V, --version\t\t显示版本并退出\n"
-#~ "\t-v, --verbose\t\t显示详细信息\n"
-
-#~ msgid "You must specify exactly one operation"
-#~ msgstr "您必须指定一个具体的操作"
-
-#~ msgid "# This field is read only\n"
-#~ msgstr "# 该字段为只读\n"
-
-#~ msgid "# Describe the circumstances of this crash below"
-#~ msgstr "# 在下面描述此崩溃的发生环境"
-
-#~ msgid ""
-#~ "# Backtrace\n"
-#~ "# Check that it does not contain any sensitive data (passwords, etc.)"
-#~ msgstr ""
-#~ "# 回溯\n"
-#~ "# 检查它是否包含任何敏感数据（密码等等）"
-
-#~ msgid "# Architecture"
-#~ msgstr "# 架构"
-
-#~ msgid "# Command line"
-#~ msgstr "# 命令行"
-
-#~ msgid "# Component"
-#~ msgstr "# 组件"
-
-#~ msgid "# Core dump"
-#~ msgstr "# 内存转储"
-
-#~ msgid "# Executable"
-#~ msgstr "# 可执行文件"
-
-#~ msgid "# Kernel version"
-#~ msgstr "# 内核版本"
-
-#~ msgid "# Package"
-#~ msgstr "# 软件包"
-
-#~ msgid "# Reason of crash"
-#~ msgstr "# 崩溃原因"
-
-#~ msgid "# Release string of the operating system"
-#~ msgstr "# 操作系统的发行版本"
-
-#~ msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-#~ msgstr "无法运行 vi：还没有设置 $TERM、$VISUAL 和 $EDITOR"
-
-#~ msgid ""
-#~ "\n"
-#~ "The report has been updated"
-#~ msgstr ""
-#~ "\n"
-#~ "该报告已更新"
-
-#~ msgid ""
-#~ "\n"
-#~ "No changes were detected in the report"
-#~ msgstr ""
-#~ "\n"
-#~ "未查出报告有更改"
-
-#~ msgid "N"
-#~ msgstr "N"
-
-#~ msgid "Your input is not valid, because of:"
-#~ msgstr "您的输入不合法，因为："
-
-#~ msgid "Bad value for '%s': %s"
-#~ msgstr "'%s' 值错误: %s"
-
-#~ msgid "Select how you would like to analyze the problem:\n"
-#~ msgstr "选择您希望如何分析问题:\n"
-
-#~ msgid "Choose option [0 - %u]: "
-#~ msgstr "选择选项 [0 - %u]: "
-
-#~ msgid "You have chosen number out of range"
-#~ msgstr "您选择的数字超出了范围"
-
-#~ msgid "Invalid input, program exiting..."
-#~ msgstr "无效输入，程序正在退出..."
-
-#~ msgid "Reporting..."
-#~ msgstr "报告中……"
-
-#~ msgid "Skipping..."
-#~ msgstr "跳过中……"
-
-#~ msgid "Reporting disabled because the backtrace is unusable"
-#~ msgstr "因为回溯不可用而禁用提交"
-
-#~ msgid ""
-#~ "Please try to install debuginfo manually using the command: \"debuginfo-"
-#~ "install %s\" and try again\n"
-#~ msgstr "请尝试用命令\"debuginfo-install %s\"手动安装除错信息并重试\n"
-
-#~ msgid ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   or: "
-#~ msgstr ""
-#~ " [-vs] -d DIR -e EVENT\n"
-#~ "   或： "
-
-#~ msgid "Handle EVENT"
-#~ msgstr "处理事件"
-
-#~ msgid "List possible events [which start with PFX]"
-#~ msgstr "列出可能的事件 [用PFX开始的那个]"
-
-#~ msgid "Show password"
-#~ msgstr "显示密码"
-
-#~ msgid "Event Configuration"
-#~ msgstr "事件配置"
-
-#~ msgid "Event"
-#~ msgstr "事件"
-
-#~ msgid "Configure E_vent"
-#~ msgstr "配置事件 (_V)"
-
-#~ msgid ""
-#~ "Wrong settings detected for %s, reporting will probably fail if you "
-#~ "continue with the current configuration."
-#~ msgstr "检测到 %s 的错误设置，如果您继续使用当前配置，报告可能失败。"
-
-#~ msgid ""
-#~ "Wrong settings detected for <b>%s</b>, reporting will probably fail if "
-#~ "you continue with the current configuration."
-#~ msgstr "检测到 <b>%s</b> 的错误设置，如果您继续使用当前配置，报告可能失败。"
-
-#~ msgid ""
-#~ " [-vp] [-g GUI_FILE] DIR\n"
-#~ "\n"
-#~ "GUI tool to analyze and report problem saved in specified DIR"
-#~ msgstr ""
-#~ " [-vp] [-g GUI_FILE] DIR\n"
-#~ "\n"
-#~ "图形化工具，用于分析并报告存储在指定目录下问题"
-
-#~ msgid "Alternate GUI file"
-#~ msgstr "备用 GUI 文件"
-
-#~ msgid ""
-#~ "Need writable directory, but '%s' is not writable. Move it to '%s' and "
-#~ "operate on the moved copy?"
-#~ msgstr ""
-#~ "需要可写目录，但 `%s' 不可写。移动它到 `%s' 并在移动后的副本上操作？"
-
-#~ msgid "(click here to view/edit)"
-#~ msgstr "（点击这里查看/编辑）"
-
-#~ msgid "(binary file, %llu bytes)"
-#~ msgstr "（二进制文件，%llu字节）"
-
-#~ msgid "%llu bytes, %u files"
-#~ msgstr "%llu字节，%u个文件"
-
-#~ msgid "No processing for event '%s' is defined"
-#~ msgstr "没有定义针对事件 `%s' 的处理"
-
-#~ msgid ""
-#~ "The backtrace is incomplete, please make sure you provide the steps to "
-#~ "reproduce."
-#~ msgstr "回溯是不完整的，请确定您提供了重复该错误的完整步骤。"
-
-#~ msgid "Reporting disabled because the backtrace is unusable."
-#~ msgstr "不能报告因为回溯不可用。"
-
-#~ msgid "You should check the backtrace for sensitive data."
-#~ msgstr "您应该检查回溯中是否有敏感数据。"
-
-#~ msgid "You must agree with sending the backtrace."
-#~ msgstr "您必须同意发送此回溯。"
-
-#~ msgid "Analyzing..."
-#~ msgstr "分析..."
-
-#~ msgid "Analyzing finished with exit code %d"
-#~ msgstr "分析完成，退出码为%d"
-
-#~ msgid "Reporting finished with exit code %d"
-#~ msgstr "报告结束，退出码 %d"
-
-#~ msgid "Name"
-#~ msgstr "名称"
-
-#~ msgid "Value"
-#~ msgstr "值"
-
-#~ msgid ""
-#~ "<b>Your comments are not private.</b> They may be included into publicly "
-#~ "visible problem reports."
-#~ msgstr "<b>您的注释不是保密的。</b>他们会被包含在公开可见的问题报告中。"
-
-#~ msgid "Analyzing did not start yet"
-#~ msgstr "分析还没有开始"
-
-#~ msgid "Any additional comments useful for diagnosing the problem?"
-#~ msgstr "诊断问题的任何有用的其他评论？"
-
-#~ msgid ""
-#~ "Backtrace provides developers with details of the crash, helping them "
-#~ "track down the source of the problem. Please review it and remove any "
-#~ "sensitive data you would rather not share:"
-#~ msgstr ""
-#~ "回溯为开发者提供崩溃详情，帮助他们追查问题来源。请检查它并移除任何您不愿公"
-#~ "开的敏感信息："
-
-#~ msgid ""
-#~ "Can create more informative backtrace if you installed additional debug "
-#~ "packages"
-#~ msgstr "如果您安装了附加调试包就可以创建更多回溯信息"
-
-#~ msgid "Click 'Apply' to start reporting"
-#~ msgstr "点击'应用'开始申报"
-
-#~ msgid "Configure _Events"
-#~ msgstr "配置事件 (_E)"
-
-#~ msgid "Details"
-#~ msgstr "细节"
-
-#~ msgid ""
-#~ "How did this problem happen (step-by-step)? How can it be reproduced?"
-#~ msgstr "此问题如何发生（逐步）？如何重现？"
-
-#~ msgid "I _agree with submitting the backtrace"
-#~ msgstr "我同意提交此回溯 (_A)"
-
-#~ msgid "Regenerate backtrace"
-#~ msgstr "重新生成回溯"
-
-#~ msgid "Reporter(s):"
-#~ msgstr "报告器："
-
-#~ msgid "Reporting did not start yet"
-#~ msgstr "报告还没有开始"
-
-#~ msgid "Select how you would like to analyze the problem:"
-#~ msgstr "选择怎样分析这个问题："
-
-#~ msgid "Select how you would like to report the problem:"
-#~ msgstr "选择如何报告这个问题："
-
-#~ msgid "Size:"
-#~ msgstr "大小："
-
-#~ msgid ""
-#~ "Use this button to generate more informative backtrace after you "
-#~ "installed additional debug packages"
-#~ msgstr "在您安装附加调试包后使用这个按钮来生成更多回溯信息"
-
-#~ msgid "Missing mandatory value"
-#~ msgstr "缺少必需值"
-
-#~ msgid "Invalid utf8 character '%c'"
-#~ msgstr "无效的 utf8 字符 ‘%c'"
-
-#~ msgid "Invalid number '%s'"
-#~ msgstr "无效的数字 '%s'"
-
-#~ msgid "Invalid boolean value '%s'"
-#~ msgstr "无效的布尔值 '%s'"
-
-#~ msgid "Unsupported option type"
-#~ msgstr "不支持的操作类型"
-
-#~ msgid "Usage: %s\n"
-#~ msgstr "用法: %s\n"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr "get_bug_info() 失败。无法收集到所有必需信息"
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Bugzilla 条目生成失败"
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports problem to Bugzilla"
-#~ msgstr ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "汇报问题至 Bugzilla"
-
-#~ msgid "All downloaded packages have been extracted, removing %s"
-#~ msgstr "所有已下载的包已提取，正在移除 %s"
-
-#~ msgid ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "Reports a problem to RHTSupport"
-#~ msgstr ""
-#~ " [-v] -c CONFFILE -d DIR\n"
-#~ "\n"
-#~ "汇报问题至 RHTSupport"
+#: ../src/plugins/collect_Smolt.xml.in.h:1
+msgid "Runs smoltSendProfile -p and seves its output as 'smolt_data' element."
+msgstr ""
+
+#: ../src/plugins/collect_Smolt.xml.in.h:2
+msgid "Save your computer's hardware profile information"
+msgstr "保存您的电脑的硬件信息"
+
+#: ../src/plugins/collect_vimrc_system.xml.in.h:1
+msgid ""
+"Checks if there are vimrc and gvimrc files in /etc and saves them as "
+"system_vimrc and system_gvimrc, respectively."
+msgstr ""
+"检查 /etc 下是否存在 vimrc 和 gvimrc  文件，分别把它们保存到 system_vimrc 和 "
+"system_gvimrc。"
+
+#: ../src/plugins/collect_vimrc_system.xml.in.h:2
+msgid "Collect system-wide vim configuration files"
+msgstr "收集系统级的 vim 配置文件"
+
+#: ../src/plugins/collect_vimrc_system.xml.in.h:3
+msgid "Save /etc/vimrc and /etc/gvimrc"
+msgstr "保存 /etc/vimrc 和 /etc/gvimrc"
+
+#: ../src/plugins/collect_vimrc_user.xml.in.h:1
+msgid ""
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
+msgstr ""
+"检查您的家目录下是否存在 .vimrc 和 .gvimrc  文件，分别把它们保存到 "
+"user_vimrc 和 user_gvimrc。"
+
+#: ../src/plugins/collect_vimrc_user.xml.in.h:2
+msgid "Collect yours vim configuration files"
+msgstr "收集您的 vim 配置文件"
+
+#: ../src/plugins/collect_vimrc_user.xml.in.h:3
+msgid "Save .vimrc and .gvimrc from your home directory"
+msgstr "保存您的家目录中的 .vimrc 和 .gvimrc"
