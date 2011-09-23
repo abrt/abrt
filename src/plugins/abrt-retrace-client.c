@@ -1346,6 +1346,10 @@ int main(int argc, char **argv)
     if (env_delay)
         delay = xatou(env_delay);
 
+    char *env_insecure = getenv("RETRACE_SERVER_INSECURE");
+    if (env_insecure)
+        ssl_allow_insecure = strncmp(env_insecure, "insecure", strlen("insecure")) == 0;
+
     unsigned opts = parse_opts(argc, argv, options, usage);
     if (opts & OPT_syslog)
     {
@@ -1357,7 +1361,9 @@ int main(int argc, char **argv)
         operation = argv[optind];
     else
         show_usage_and_die(usage, options);
-    ssl_allow_insecure = opts & OPT_insecure;
+
+    if (!ssl_allow_insecure)
+        ssl_allow_insecure = opts & OPT_insecure;
     http_show_headers = opts & OPT_headers;
 
     /* Initialize NSS */
