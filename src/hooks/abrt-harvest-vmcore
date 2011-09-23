@@ -7,7 +7,7 @@
 # The goal is to let abrtd notice and process them as new problem data dirs.
 #
 
-cd /var/crash || exit 0
+cd /var/crash 2>/dev/null || exit 0
 
 # Wait for abrtd to start. Give it at least 1 second to initialize.
 i=10
