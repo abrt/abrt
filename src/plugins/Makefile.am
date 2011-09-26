@@ -70,7 +70,7 @@ man1_MANS = ${MAN_TXT:%.txt=%.1}
 CLEANFILES = $(man1_MANS)
 
 PYTHON_FILES = \
-    abrt-action-install-debuginfo \
+    abrt-action-install-debuginfo.in \
     abrt-action-list-dsos \
     abrt-action-analyze-core
 
@@ -162,12 +162,14 @@ abrt_action_generate_backtrace_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_generate_backtrace_LDADD = \
-    $(LIBREPORT_LIBS)
+    $(LIBREPORT_LIBS) \
+    ../lib/libabrt.la
 
 abrt_action_analyze_backtrace_SOURCES = \
     abrt-action-analyze-backtrace.c
@@ -191,7 +193,9 @@ abrt_action_install_debuginfo_to_abrt_cache_CPPFLAGS = \
     -D_GNU_SOURCE \
     $(LIBREPORT_CFLAGS) \
     -Wall -Wwrite-strings
-abrt_action_install_debuginfo_to_abrt_cache_LDADD =
+abrt_action_install_debuginfo_to_abrt_cache_LDADD = \
+     $(LIBREPORT_LIBS) \
+     ../lib/libabrt.la
 
 abrt_retrace_client_SOURCES = \
     abrt-retrace-client.c

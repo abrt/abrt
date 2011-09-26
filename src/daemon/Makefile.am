@@ -25,7 +25,6 @@ abrtd_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DVAR_RUN=\"$(VAR_RUN)\" \
-    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
     $(GLIB_CFLAGS) \
     $(DBUS_CFLAGS) \
     $(LIBREPORT_CFLAGS) \

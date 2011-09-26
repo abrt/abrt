@@ -16,26 +16,10 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include <sys/types.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
+
+#include "abrtlib.h"
 
 #define EXECUTABLE "abrt-action-install-debuginfo"
-
-static void error_msg_and_die(const char *msg, const char *arg)
-{
-    write(2, msg, strlen(msg));
-    if (arg)
-    {
-        write(2, " '", 2);
-        write(2, arg, strlen(arg));
-        write(2, "'", 1);
-    }
-    write(2, "\n", 1);
-    exit(1);
-}
-
 
 /* A binary wrapper is needed around python scripts if we want
  * to run them in sgid/suid mode.
@@ -58,11 +42,11 @@ int main(int argc, char **argv)
             continue;
 
         if (strncmp(arg, "--cache", 7) == 0)
-            error_msg_and_die("bad option", arg);
+            error_msg_and_die("bad option %s", arg);
         if (strncmp(arg, "--tmpdir", 8) == 0)
-            error_msg_and_die("bad option", arg);
+            error_msg_and_die("bad option %s", arg);
         if (strncmp(arg, "--ids", 5) == 0)
-            error_msg_and_die("bad option", arg);
+            error_msg_and_die("bad option %s", arg);
     }
 
     /* Switch real user/group to effective ones.
@@ -104,5 +88,5 @@ int main(int argc, char **argv)
     }
 
     execvp(EXECUTABLE, argv);
-    error_msg_and_die("Can't execute", EXECUTABLE);
+    error_msg_and_die("Can't execute %s", EXECUTABLE);
 }

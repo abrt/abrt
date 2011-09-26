@@ -90,19 +90,11 @@ EVENTS_DIR='${sysconfdir}/libreport/events'
 EVENTS_CONF_DIR='${sysconfdir}/libreport/events.d'
 ENABLE_SOCKET_OR_DBUS='-DENABLE_DBUS=1'
 
-DEBUG_INFO_DIR='${localstatedir}/cache/${PACKAGE_NAME}-di'
-
-AC_ARG_WITH(debuginfosdir,
-            [AS_HELP_STRING([--with-debuginfodir=DIR],
-                           [Directory where debuginfo is stored])],
-            [DEBUG_INFO_DIR="$withval"])
-
 AC_SUBST(CONF_DIR)
 AC_SUBST(VAR_RUN)
 AC_SUBST(PLUGINS_CONF_DIR)
 AC_SUBST(EVENTS_CONF_DIR)
 AC_SUBST(EVENTS_DIR)
-AC_SUBST(DEBUG_INFO_DIR)
 
 AC_CONFIG_HEADERS([config.h])
 
@@ -118,6 +110,7 @@ AC_CONFIG_FILES([
 	src/applet/Makefile
 	src/gui-gtk/Makefile
 	src/cli/Makefile
+	src/plugins/abrt-action-install-debuginfo
 	po/Makefile.in
 	icons/Makefile
 ])

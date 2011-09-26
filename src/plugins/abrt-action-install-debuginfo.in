@@ -476,7 +476,24 @@ if __name__ == "__main__":
             keeprpms = True
 
     if not cachedirs:
-        cachedirs = ["/var/cache/abrt-di"]
+        try:
+            fp = open("@sysconfdir@/@PACKAGE_NAME@/plugins/CCpp.conf", "r")
+            for line in fp:
+                stripped = line.lstrip()
+                if len(stripped) == 0:
+                    continue
+                if stripped[0] == "#":
+                    continue
+                if stripped[:len("DebuginfoLocation")] != "DebuginfoLocation":
+                    continue
+
+                cachedirs =  stripped[len("DebuginfoLocation"):].lstrip(" =\n")
+            fp.close()
+        except IOError as (errno, strerror):
+            print "I/O error({0}): {1}".format(errno, strerror)
+
+        if not cachedirs:
+            cachedirs = ["/var/cache/abrt-di"]
     if not tmpdir:
         # security people prefer temp subdirs in app's private dir, like /var/run/abrt
         # for now, we use /tmp...

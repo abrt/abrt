@@ -22,10 +22,7 @@
 #include "abrtlib.h"
 
 
-#define DEBUGINFO_CACHE_DIR     LOCALSTATEDIR"/cache/abrt-di"
-
 static const char *dump_dir_name = ".";
-static const char *debuginfo_dirs = DEBUGINFO_CACHE_DIR;
 /* 60 seconds was too limiting on slow machines */
 static int exec_timeout_sec = 240;
 
@@ -122,7 +119,7 @@ static char* exec_vp(char **args, uid_t uid, int redirect_stderr, int *status)
     return strbuf_free_nobuf(buf_out);
 }
 
-static char *get_backtrace(struct dump_dir *dd)
+static char *get_backtrace(struct dump_dir *dd, const char *debuginfo_dirs)
 {
     char *uid_str = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     uid_t uid = -1L;
@@ -273,10 +270,21 @@ int main(int argc, char **argv)
 
     export_abrt_envvars(0);
 
+    map_string_h *settings = new_map_string();
+    if (!load_conf_file(PLUGINS_CONF_DIR"/CCpp.conf", settings, /*skip key w/o values:*/ false))
+        error_msg("Can't open '%s'", PLUGINS_CONF_DIR"/CCpp.conf");
+
+    char *value = g_hash_table_lookup(settings, "DebuginfoLocation");
+    char *debuginfo_location;
+    if (value)
+        debuginfo_location = xstrdup(value);
+    else
+        debuginfo_location = xstrdup(LOCALSTATEDIR"/cache/abrt-di");
+
+    free_map_string(settings);
+    char *debuginfo_dirs = NULL;
     if (i_opt)
-    {
-        debuginfo_dirs = xasprintf("%s:%s", DEBUGINFO_CACHE_DIR, i_opt);
-    }
+        debuginfo_dirs = xasprintf("%s:%s", debuginfo_location, i_opt);
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
@@ -284,12 +292,15 @@ int main(int argc, char **argv)
 
     /* Create gdb backtrace */
     /* NB: get_backtrace() closes dd */
-    char *backtrace = get_backtrace(dd);
+    char *backtrace = get_backtrace(dd, (debuginfo_dirs) ? debuginfo_dirs : debuginfo_location);
+    free(debuginfo_location);
     if (!backtrace)
     {
         backtrace = xstrdup("");
         log("get_backtrace() returns NULL, broken core/gdb?");
     }
+    free(debuginfo_dirs);
+    free_abrt_conf_data();
 
     /* Store gdb backtrace */
 
