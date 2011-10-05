@@ -100,7 +100,14 @@ static void add_directory_to_dirlist(const char *dirname)
     }
     free(time_str);
 
-    char *reason = dd_load_text(dd, FILENAME_REASON);
+
+    char *not_reportable_reason = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, 0
+                                                   | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                                                   | DD_FAIL_QUIETLY_ENOENT
+                                                   | DD_FAIL_QUIETLY_EACCES);
+    char *reason = NULL;
+    if (!not_reportable_reason)
+        reason = dd_load_text(dd, FILENAME_REASON);
 
     /* the source of the problem:
      * - first we try to load component, as we use it on Fedora
@@ -142,7 +149,7 @@ static void add_directory_to_dirlist(const char *dirname)
     gtk_list_store_append(list_store, &iter);
     gtk_list_store_set(list_store, &iter,
                           COLUMN_SOURCE, source,
-                          COLUMN_REASON, reason,
+                          COLUMN_REASON, not_reportable_reason? :reason,
                           //OPTION: time format
                           COLUMN_LATEST_CRASH_STR, time_buf,
                           COLUMN_LATEST_CRASH, t,
@@ -150,6 +157,7 @@ static void add_directory_to_dirlist(const char *dirname)
                           COLUMN_REPORTED_TO, msg ? subm_status : NULL,
                           -1);
     /* this is safe, subm_status is either null or malloced string from get_last_line */
+    free(not_reportable_reason);
     free(subm_status);
     free(msg);
     free(reason);
@@ -243,7 +251,9 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
             gtk_tree_model_get_value(store, &iter, COLUMN_DUMP_DIR, &d_dir);
 
             const char *dirname = g_value_get_string(&d_dir);
-            report_problem_in_dir(dirname, LIBREPORT_ANALYZE | LIBREPORT_NOWAIT | LIBREPORT_GETPID);
+
+            report_problem_in_dir(dirname,
+                                  LIBREPORT_ANALYZE | LIBREPORT_NOWAIT | LIBREPORT_GETPID);
         }
     }
 }

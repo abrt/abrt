@@ -480,16 +480,6 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
 
     VERB1 log("Saving %u oopses as dump dirs", idx >= countdown ? countdown-1 : idx);
 
-    char *tainted_str = NULL;
-    FILE *tainted_fp = fopen("/proc/sys/kernel/tainted", "r");
-    if (tainted_fp)
-    {
-        tainted_str = xmalloc_fgetline(tainted_fp);
-        fclose(tainted_fp);
-    }
-    else
-        perror_msg("Can't open '%s'", "/proc/sys/kernel/tainted");
-
     char *cmdline_str = NULL;
     FILE *cmdline_fp = fopen("/proc/cmdline", "r");
     if (cmdline_fp)
@@ -536,35 +526,44 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
             if (cmdline_str)
                 dd_save_text(dd, FILENAME_CMDLINE, cmdline_str);
             dd_save_text(dd, FILENAME_BACKTRACE, second_line);
+
+            char *tainted_short = kernel_tainted_short(second_line);
+            if (tainted_short)
+            {
+                VERB1 log("Kernel is tainted '%s'", tainted_short);
+                dd_save_text(dd, FILENAME_TAINTED_SHORT, tainted_short);
+                char *reason = xasprintf("Your kernel is tainted by flags '%s'. "
+                                         "Kernel maintainers are not interesting about "
+                                         "tainted kernel, because the trace might not be showing "
+                                         "the root problem."
+                                         , tainted_short);
+                dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason);
+                free(reason);
+            }
 // TODO: add "Kernel oops: " prefix, so that all oopses have recognizable FILENAME_REASON?
 // kernel oops 1st line may look quite puzzling otherwise...
             strchrnul(second_line, '\n')[0] = '\0';
             dd_save_text(dd, FILENAME_REASON, second_line);
 
-            if (tainted_str && tainted_str[0] != '0')
-            {
-                unsigned long tainted = xatoi_positive(tainted_str);
-                char *tainted_short = kernel_tainted_short(tainted);
-                GList *tainted_long = kernel_tainted_long(tainted);
+/*
+            GList *tainted_long = kernel_tainted_long(tainted);
 
-                struct strbuf *tnt_long = strbuf_new();
-                for (GList *li = tainted_long; li; li = li->next)
-                    strbuf_append_strf(tnt_long, "%s\n", (char*) li->data);
+            struct strbuf *tnt_long = strbuf_new();
+            for (GList *li = tainted_long; li; li = li->next)
+                strbuf_append_strf(tnt_long, "%s\n", (char*) li->data);
 
-                dd_save_text(dd, FILENAME_TAINTED, tainted_str);
-                dd_save_text(dd, FILENAME_TAINTED_SHORT, tainted_short);
-                dd_save_text(dd, FILENAME_TAINTED_LONG, tnt_long->buf);
-                strbuf_free(tnt_long);
-                list_free_with_free(tainted_long);
-            }
-
+            dd_save_text(dd, FILENAME_TAINTED, tainted_str);
+            dd_save_text(dd, FILENAME_TAINTED_SHORT, tainted_short);
+            dd_save_text(dd, FILENAME_TAINTED_LONG, tnt_long->buf);
+            strbuf_free(tnt_long);
+            list_free_with_free(tainted_long);
+*/
             dd_close(dd);
         }
         else
             errors++;
     }
 
-    free(tainted_str);
     free(cmdline_str);
 
     return errors;
@@ -718,7 +717,15 @@ int main(int argc, char **argv)
             {
                 int i = 0;
                 while (i < oops_cnt)
-                    printf("\nVersion: %s", (char*)g_list_nth_data(oops_list, i++));
+                {
+                    char *kernel_bt = (char*)g_list_nth_data(oops_list, i++);
+                    char *tainted_short = kernel_tainted_short(kernel_bt);
+                    if (tainted_short)
+                        log("Kernel is tainted '%s'", tainted_short);
+
+                    free(tainted_short);
+                    printf("\nVersion: %s", kernel_bt);
+                }
             }
             if ((opts & OPT_d) || (opts & OPT_D))
             {
