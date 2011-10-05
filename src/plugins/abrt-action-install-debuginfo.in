@@ -293,9 +293,17 @@ class DebugInfoDownload(YumBase):
             remote = pkg.returnSimple('relativepath')
             local = os.path.basename(remote)
             if not os.path.exists(self.tmpdir):
-                os.makedirs(self.tmpdir)
+                try:
+                    os.makedirs(self.tmpdir)
+                except OSError, ex:
+                    print "Can't create tmpdir: %s" % ex
+                    return RETURN_FAILURE
             if not os.path.exists(self.cachedir):
-                os.makedirs(self.cachedir)
+                try:
+                    os.makedirs(self.cachedir)
+                except OSError, ex:
+                    print "Can't create cachedir: %s" % ex
+                    return RETURN_FAILURE
             local = os.path.join(self.tmpdir, local)
             pkg.localpath = local # Hack: to set the localpath we want
             err = self.downloadPkgs(pkglist=[pkg])
