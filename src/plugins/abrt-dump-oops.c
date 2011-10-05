@@ -527,8 +527,13 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
                 dd_save_text(dd, FILENAME_CMDLINE, cmdline_str);
             dd_save_text(dd, FILENAME_BACKTRACE, second_line);
 
+            /* check if trace doesn't have line: 'Your BIOS is broken' */
+            char *broken_bios = strstr(second_line, "Your BIOS is broken");
+            if (broken_bios)
+                dd_save_text(dd, FILENAME_NOT_REPORTABLE, "Your BIOS is broken");
+
             char *tainted_short = kernel_tainted_short(second_line);
-            if (tainted_short)
+            if (tainted_short && !broken_bios)
             {
                 VERB1 log("Kernel is tainted '%s'", tainted_short);
                 dd_save_text(dd, FILENAME_TAINTED_SHORT, tainted_short);
