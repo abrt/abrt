@@ -487,7 +487,7 @@ if __name__ == "__main__":
                 if stripped[:len("DebuginfoLocation")] != "DebuginfoLocation":
                     continue
 
-                cachedirs =  stripped[len("DebuginfoLocation"):].lstrip(" =\n")
+                cachedirs =  stripped[len("DebuginfoLocation"):].strip(" =\n").split(":")
             fp.close()
         except IOError as (errno, strerror):
             print "I/O error({0}): {1}".format(errno, strerror)
