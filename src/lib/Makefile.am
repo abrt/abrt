@@ -11,7 +11,8 @@ lib_LTLIBRARIES = \
 libabrt_la_SOURCES = \
     abrt_conf.c abrt_conf.h \
     hooklib.c hooklib.h \
-    daemon_is_ok.c
+    daemon_is_ok.c \
+    kernel.c
 
 libabrt_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \

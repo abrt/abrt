@@ -48,6 +48,9 @@ extern "C" {
 #define daemon_is_ok abrt_daemon_is_ok
 int daemon_is_ok();
 
+#define kernel_tainted_short abrt_kernel_tainted_short
+char *kernel_tainted_short(const char *kernel_bt);
+
 #ifdef __cplusplus
 }
 #endif
