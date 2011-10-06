@@ -69,7 +69,6 @@ abrt_action_save_package_data_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \

@@ -18,7 +18,6 @@ libabrt_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \

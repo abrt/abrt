@@ -92,7 +92,6 @@ abrt_dump_oops_SOURCES = \
 abrt_dump_oops_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -107,7 +106,6 @@ abrt_action_analyze_c_SOURCES = \
 abrt_action_analyze_c_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -120,7 +118,6 @@ abrt_action_analyze_python_SOURCES = \
 abrt_action_analyze_python_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -134,7 +131,6 @@ abrt_action_analyze_oops_CPPFLAGS = \
     -I$(srcdir)/../libreport/src/include/ -I$(srcdir)/../include \
     -I$(srcdir)/../libreport/src/lib \
     -I$(srcdir)/../lib \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -147,7 +143,6 @@ abrt_action_trim_files_SOURCES = \
 abrt_action_trim_files_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
@@ -176,7 +171,6 @@ abrt_action_analyze_backtrace_SOURCES = \
 abrt_action_analyze_backtrace_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
