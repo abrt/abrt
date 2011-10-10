@@ -160,6 +160,8 @@ char *koops_extract_version(const char *linepointer)
         char* end;
 
         start = strstr((char*)linepointer, "2.6.");
+        if (!start)
+            start = strstr((char*)linepointer, "3.");
         if (start)
         {
             end = strchr(start, ')');
