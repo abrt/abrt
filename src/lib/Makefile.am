@@ -9,8 +9,8 @@ lib_LTLIBRARIES = \
 # xconnect.cpp
 
 libabrt_la_SOURCES = \
-    abrt_conf.c abrt_conf.h \
-    hooklib.c hooklib.h \
+    abrt_conf.c \
+    hooklib.c \
     daemon_is_ok.c \
     kernel.c
 
