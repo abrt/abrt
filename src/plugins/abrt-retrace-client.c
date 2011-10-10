@@ -28,7 +28,7 @@
 #if HAVE_LOCALE_H
 # include <locale.h>
 #endif
-#include "abrtlib.h"
+#include "libabrt.h"
 
 #define MAX_FORMATS 16
 #define MAX_RELEASES 32

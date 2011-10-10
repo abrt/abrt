@@ -23,7 +23,7 @@
 # include <locale.h>
 #endif
 #include <internal_libreport_gtk.h>
-#include "abrtlib.h"
+#include "libabrt.h"
 
 static void scan_dirs_and_add_to_dirlist(void);
 

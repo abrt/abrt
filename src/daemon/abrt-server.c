@@ -16,7 +16,7 @@
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <syslog.h>
-#include "abrtlib.h"
+#include "libabrt.h"
 
 /* Maximal length of backtrace. */
 #define MAX_BACKTRACE_SIZE (1024*1024)

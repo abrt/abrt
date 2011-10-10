@@ -20,7 +20,7 @@
 #include <asm/unistd.h> /* __NR_syslog */
 #include <sys/inotify.h>
 #include <sys/ioctl.h> /* ioctl(FIONREAD) */
-#include "abrtlib.h"
+#include "libabrt.h"
 
 static bool world_readable_dump = false;
 static const char *debug_dumps_dir = ".";
