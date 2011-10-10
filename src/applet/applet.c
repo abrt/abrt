@@ -352,7 +352,7 @@ static void set_icon_tooltip(const char *format, ...)
     free(buf);
 }
 
-static void show_crash_notification(const char *format, ...)
+static void show_problem_notification(const char *format, ...)
 {
     va_list args;
     va_start(args, format);
@@ -523,14 +523,14 @@ static void Crash(DBusMessage* signal)
         }
     }
 
-    const char* message = _("A crash in the %s package has been detected");
+    const char* message = _("A problem in the %s package has been detected");
     if (package_name[0] == '\0')
-        message = _("A crash has been detected");
+        message = _("A problem has been detected");
     init_applet();
     set_icon_tooltip(message, package_name);
     show_icon();
 
-    /* If this crash seems to be repeating, do not annoy user with popup dialog.
+    /* If this problem seems to be repeating, do not annoy user with popup dialog.
      * (The icon in the tray is not suppressed)
      */
     static time_t last_time = 0;
@@ -540,7 +540,7 @@ static void Crash(DBusMessage* signal)
      && ap_last_problem_dir && strcmp(ap_last_problem_dir, dir) == 0
      && (unsigned)(cur_time - last_time) < 2 * 60 * 60
     ) {
-        log_msg("repeated crash in %s, not showing the notification", package_name);
+        log_msg("repeated problem in %s, not showing the notification", package_name);
         return;
     }
     last_time = cur_time;
@@ -549,7 +549,7 @@ static void Crash(DBusMessage* signal)
     free(ap_last_problem_dir);
     ap_last_problem_dir = xstrdup(dir);
 
-    show_crash_notification(message, package_name);
+    show_problem_notification(message, package_name);
 }
 
 static void QuotaExceeded(DBusMessage* signal)
