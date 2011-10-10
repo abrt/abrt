@@ -24,7 +24,7 @@
 #include <sys/inotify.h>
 #include <sys/ioctl.h> /* ioctl(FIONREAD) */
 
-#include "abrtlib.h"
+#include "libabrt.h"
 #include "comm_layer_inner.h"
 #include "CommLayerServerDBus.h"
 

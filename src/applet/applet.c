@@ -26,7 +26,7 @@
 #include <dbus/dbus-glib-lowlevel.h>
 
 #include <internal_abrt_dbus.h>
-#include "abrtlib.h"
+#include "libabrt.h"
 
 
 #define ENABLE_ANIMATION 0

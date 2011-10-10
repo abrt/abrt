@@ -3,8 +3,8 @@
  *
  * Licensed under GPLv2, see file COPYING in this tarball for details.
  */
-#ifndef ABRTLIB_H_
-#define ABRTLIB_H_
+#ifndef LIBABRT_H_
+#define LIBABRT_H_
 
 /* libreport's internal functions we use: */
 #include <internal_libreport.h>

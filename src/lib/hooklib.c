@@ -16,7 +16,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <sys/statvfs.h>
-#include "abrtlib.h"
+#include "libabrt.h"
 
 void check_free_space(unsigned setting_MaxCrashReportsSize, const char *dump_location)
 {

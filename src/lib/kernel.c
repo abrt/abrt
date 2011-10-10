@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include "abrtlib.h"
+#include "libabrt.h"
 
 /* reading /proc/sys/kernel/tainted file after an oops is ALWAYS going
  * to show it as tainted.

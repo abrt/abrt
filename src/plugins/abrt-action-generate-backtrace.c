@@ -19,7 +19,7 @@
 #include <btparser/backtrace.h>
 #include <btparser/frame.h>
 #include <btparser/location.h>
-#include "abrtlib.h"
+#include "libabrt.h"
 
 
 static const char *dump_dir_name = ".";
