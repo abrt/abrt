@@ -206,6 +206,13 @@ next_line:
                 oopsstart = i;
             else if (strstr(curline, /*k*/ "ernel BUG at"))
                 oopsstart = i;
+            /* WARN_ON() generated message */
+            else if (strstr(curline, "WARNING: at "))
+                oopsstart = i;
+            else if (strstr(curline, /*u*/ "nable to handle kernel"))
+                oopsstart = i;
+            else if (strstr(curline, /*d*/ "ouble fault:"))
+                oopsstart = i;
             else if (strstr(curline, "do_IRQ: stack overflow:"))
                 oopsstart = i;
             else if (strstr(curline, "RTNL: assertion failed"))
@@ -214,15 +221,9 @@ next_line:
                 oopsstart = i;
             else if (strstr(curline, /*n*/ "ear stack overflow (cur:"))
                 oopsstart = i;
-            else if (strstr(curline, /*d*/ "ouble fault:"))
-                oopsstart = i;
             else if (strstr(curline, /*b*/ "adness at"))
                 oopsstart = i;
             else if (strstr(curline, "NETDEV WATCHDOG"))
-                oopsstart = i;
-            else if (strstr(curline, "WARNING: at ")) /* WARN_ON() generated message */
-                oopsstart = i;
-            else if (strstr(curline, /*u*/ "nable to handle kernel"))
                 oopsstart = i;
             else if (strstr(curline, /*s*/ "ysctl table check failed"))
                 oopsstart = i;
@@ -235,6 +236,11 @@ next_line:
             else if (strstr(curline, "list_del corruption"))
                 oopsstart = i;
             else if (strstr(curline, "list_add corruption"))
+                oopsstart = i;
+            /* "irq NN: nobody cared..." */
+            else if (strstr(curline, ": nobody cared"))
+                oopsstart = i;
+            else if (strstr(curline, "IRQ handler type mismatch"))
                 oopsstart = i;
 
             if (i >= 3 && strstr(curline, "Oops:"))
@@ -332,15 +338,17 @@ next_line:
 
         if (oopsstart >= 0)
         {
-            /* Do we have a suspiciously long oops? Cancel it */
-            if (i-oopsstart > 60)
+            /* Do we have a suspiciously long oops? Cancel it.
+             * Bumped from 60 to 80 (see examples/oops_recursive_locking1.test)
+             */
+            if (i - oopsstart > 80)
             {
                 inbacktrace = 0;
                 oopsstart = -1;
                 VERB3 log("Dropped oops, too long");
                 continue;
             }
-            if (!inbacktrace && i-oopsstart > 40)
+            if (!inbacktrace && i - oopsstart > 40)
             {
                 /*inbacktrace = 0; - already is */
                 oopsstart = -1;
