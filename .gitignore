@@ -64,9 +64,6 @@ libtool
 ltmain.sh
 py-compile
 stamp-h1
-tests/atconfig
-tests/atlocal
-tests/package.m4
 
 # pc files
 src/btparser/btparser.pc
@@ -113,6 +110,12 @@ src/gui-wizard-gtk/wizard_glade.c
 
 # generated man pages
 *.[1,5,8]
+
+# generated files form testsuite
+testsuite*
+tests/atconfig
+tests/atlocal
+tests/package.m4
 
 # if you want to enable them, be aware of that 'git clean -df' won't clean them
 # and you have to do it *manually*

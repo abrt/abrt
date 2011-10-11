@@ -1,0 +1,53 @@
+# -*- Autotest -*-
+
+AT_BANNER([kernel_oops_parser])
+
+AT_TESTFUN([koops_extract_version],
+[[
+#include "libabrt.h"
+
+struct test_struct {
+	const char *filename;
+	const char *expected_results;
+};
+
+int run_test(struct test_struct *test)
+{
+	FILE *fp = fopen(test->filename, "r");
+	if (!fp)
+		perror_msg_and_die("Can't open '%s'", test->filename);
+
+	fprintf(stderr, "%s\t", test->filename);
+	char *line;
+	while ((line = xmalloc_fgetline(fp)) != NULL)
+	{
+		char *version = koops_extract_version(line);
+		if (version && !strcmp(version, test->expected_results))
+		{
+			log("version %s", version);
+			free(version);
+			return 0;
+		}
+
+		free(line);
+	}
+	log("version was not found");
+	fclose(fp);
+	return 1;
+}
+
+int main(void)
+{
+	/* tests run in abrt/tests/testsuite.dir/X, where X is test number */
+	struct test_struct test[] = {
+		{"../../../examples/cut_here.right", "2.6.32-19.el6.x86_64"},
+		{"../../../examples/oops-kernel-3.x.x", "3.0.0-3.fc16.i686.PAE"},
+	};
+
+	int ret = 0;
+	for (int i = 0 ; i < ARRAY_SIZE(test); ++i)
+		ret |= run_test(&test[i]);
+
+	return ret;
+}
+]])
