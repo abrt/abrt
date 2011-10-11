@@ -121,6 +121,14 @@ int main(int argc, const char **argv)
     abrt_init((char **)argv);
 
     setlocale(LC_ALL, "");
+    /* Hack:
+     * Right-to-left scripts don't work properly in many terminals.
+     * Hebrew speaking people say he_IL.utf8 looks so mangled
+     * they prefer en_US.utf8 instead.
+     */
+    const char *msg_locale = setlocale(LC_MESSAGES, NULL);
+    if (msg_locale && strcmp(msg_locale, "he_IL.utf8") == 0)
+        setlocale(LC_MESSAGES, "en_US.utf8");
 #if ENABLE_NLS
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
