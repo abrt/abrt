@@ -55,5 +55,6 @@ install-data-local:
 if HAVE_SYSTEMD
 dist_systemdsystemunit_DATA = \
     abrt-ccpp.service \
+    abrt-oops.service \
     abrt-vmcore.service
 endif
