@@ -4,15 +4,10 @@
 lib_LTLIBRARIES = \
     libabrt.la
 
-# Not used just yet:
-# time.cpp
-# xconnect.cpp
-
 libabrt_la_SOURCES = \
     abrt_conf.c \
     hooklib.c \
-    daemon_is_ok.c \
-    kernel.c
+    daemon_is_ok.c
 
 libabrt_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \

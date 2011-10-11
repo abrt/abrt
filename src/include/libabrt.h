@@ -61,12 +61,6 @@ void free_abrt_conf_data();
 int daemon_is_ok();
 
 
-#define kernel_tainted_short abrt_kernel_tainted_short
-char *kernel_tainted_short(const char *kernel_bt);
-
-#define koops_extract_version abrt_koops_extract_version
-char *koops_extract_version(const char *linepointer);
-
 #ifdef __cplusplus
 }
 #endif
