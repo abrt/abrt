@@ -67,9 +67,6 @@ char *kernel_tainted_short(const char *kernel_bt);
 #define koops_extract_version abrt_koops_extract_version
 char *koops_extract_version(const char *linepointer);
 
-#define koops_extract_oopses abrt_koops_extract_oopses
-void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen);
-
 #ifdef __cplusplus
 }
 #endif
