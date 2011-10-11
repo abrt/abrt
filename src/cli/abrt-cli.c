@@ -65,9 +65,7 @@ static unsigned handle_internal_options(int argc, const char **argv, const char 
 
         if (strcmp(cmd, "--version") == 0)
         {
-            char *version_string = xasprintf("%s version %s", g_progname, PACKAGE_VERSION);
-            puts(version_string);
-            free(version_string);
+            printf("%s version %s\n", g_progname, PACKAGE_VERSION);
             exit(0);
         }
         if (strcmp(cmd, "--help") == 0)
@@ -75,7 +73,7 @@ static unsigned handle_internal_options(int argc, const char **argv, const char 
             return skip + argc;
         }
 #if 0
-        else if (prefixcmp(cmd, "--base-dir=") == 0)
+        if (prefixcmp(cmd, "--base-dir=") == 0)
             D_list = g_list_append(D_list, xstrdup(cmd + strlen("--base-dir=")));
         else if (prefixcmp(cmd, "--list-events") == 0)
         {
@@ -152,7 +150,7 @@ int main(int argc, const char **argv)
     /* user didn't specify command; print out help */
     printf("%s\n\n", abrt_cli_usage_string);
     list_cmds_help(commands);
-    printf("\n%s\n", _("See 'abrt-cli COMMAND -h' for more information"));
+    printf("\n%s\n", _("See 'abrt-cli COMMAND --help' for more information"));
 
     return 0;
 }
