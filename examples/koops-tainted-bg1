@@ -1,0 +1,42 @@
+kernel BUG at mm/filemap.c:125!
+invalid opcode: 0000 [#1] SMP 
+last sysfs file: /sys/devices/system/cpu/cpu1/cache/index1/shared_cpu_map
+Modules linked in: tcp_lp fuse 8021q garp p4_clockmod stp llc ip6t_REJECT
+nf_conntrack_ipv6 nf_defrag_ipv6 ip6table_filter ip6_tables usblp snd_intel8x0
+ppdev snd_ac97_codec ac97_bus snd_seq snd_seq_device snd_pcm microcode
+snd_timer snd parport_pc sis900 parport soundcore mii snd_page_alloc ipv6
+ata_generic pata_acpi sata_sis pata_sis nouveau ttm drm_kms_helper drm
+i2c_algo_bit i2c_core video [last unloaded: mperf]
+Pid: 4008, comm: rm Tainted: G    B       2.6.38.6-27.fc15.i686 #1 ECS
+662/1066T-M2/662/1066T-M2
+EIP: 0060:[<c04ac80f>] EFLAGS: 00010046 CPU: 1
+EIP is at __remove_from_page_cache+0x4d/0xab
+EAX: 00000000 EBX: f52d3d00 ECX: d6959d07 EDX: 00000009
+ESI: efed9228 EDI: efed9238 EBP: d6959e34 ESP: d6959e28
+ DS: 007b ES: 007b FS: 00d8 GS: 00e0 SS: 0068
+Process rm (pid: 4008, ti=d6958000 task=f0f09920 task.ti=d6958000)
+Stack:
+ 0000e2e2 f52d3d00 00000000 d6959e48 c04ac89c f52d3d00 efed9228 000024f8
+ d6959e64 c04b3f0a 00001000 00000000 00000000 f52d3d00 0000000d d6959ed0
+ c04b3fbf 0000000e 00000000 00000000 00000000 efed9228 ffffffff 0000000e
+Call Trace:
+[<c04ac89c>] remove_from_page_cache+0x2f/0x4a
+ [<c04b3f0a>] truncate_inode_page+0x77/0x8c
+ [<c04b3fbf>] truncate_inode_pages_range+0xa0/0x209
+ [<c04b4147>] truncate_inode_pages+0x1f/0x21
+ [<c054b0df>] ext4_evict_inode+0x80/0x20b
+ [<c042e4e2>] ? __might_sleep+0x29/0xe4
+ [<c04f5763>] evict+0x1c/0x7e
+ [<c04f5982>] iput+0x14b/0x16c
+ [<c04ee017>] do_unlinkat+0xc6/0x102
+ [<c047baf5>] ? audit_syscall_entry+0x128/0x14a
+ [<c040b8f6>] ? syscall_trace_enter+0x10f/0x121
+ [<c04eeef2>] sys_unlinkat+0x32/0x35
+ [<c07d66b4>] syscall_call+0x7/0xb
+Code: c7 43 10 00 00 00 00 ff 4e 30 e8 bc 14 01 00 8b 03 a9 00 00 08 00 74 0c
+ba 16 00 00 00 89 d8 e8 a7 14 01 00 8b 43 08 85 c0 78 02 <0f> 0b 8b 03 a8 10 74
+51 8b 46 40 f6 40 10 01 75 48 ba 0a 00 00 
+EIP: [<c04ac80f>] __remove_from_page_cache+0x4d/0xab SS:ESP 0068:d6959e28
+[drm] nouveau 0000:01:00.0: Setting dpms mode 3 on vga encoder (output 0)
+[drm] nouveau 0000:01:00.0: Setting dpms mode 0 on vga encoder (output 0)
+[drm] nouveau 0000:01:00.0: Output VGA-1 is running on CRTC 0 using output A
