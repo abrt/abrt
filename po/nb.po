@@ -1,22 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
 # kmaraas <kmaraas@gnome.org>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-09-23 18:09+0200\n"
-"PO-Revision-Date: 2011-09-14 11:11+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2011-10-12 13:57+0200\n"
+"PO-Revision-Date: 2011-10-12 15:36+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
-"Language: nb\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nb\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -24,7 +24,7 @@ msgid "ABRT notification applet"
 msgstr "ABRT-varslingsprogram for panelet"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:560
+#: ../src/gui-gtk/main.c:570
 msgid "Automatic Bug Reporting Tool"
 msgstr "Automatisk feilrapporteringsverktøy"
 
@@ -37,7 +37,7 @@ msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "Varslingsikon som varsler brukere om feil funnet av ABRT"
 
-#: ../src/applet/applet.c:288 ../src/gui-gtk/main.c:406
+#: ../src/applet/applet.c:288 ../src/gui-gtk/main.c:416
 msgid "translator-credits"
 msgstr "Kjartan Maraas <kmaraas@gnome.org>"
 
@@ -51,11 +51,11 @@ msgstr "Rapporter"
 
 #: ../src/applet/applet.c:366
 msgid "Show"
-msgstr ""
+msgstr "Vis"
 
 #: ../src/applet/applet.c:370 ../src/applet/applet.c:398
 msgid "A Problem has Occurred"
-msgstr ""
+msgstr "Et problem har oppstått"
 
 #: ../src/applet/applet.c:395
 msgid "Open ABRT"
@@ -63,12 +63,12 @@ msgstr "Åpne ABRT"
 
 #: ../src/applet/applet.c:526
 #, c-format
-msgid "A crash in the %s package has been detected"
-msgstr "Et krasj ble oppdaget i pakke %s"
+msgid "A problem in the %s package has been detected"
+msgstr ""
 
 #: ../src/applet/applet.c:528
-msgid "A crash has been detected"
-msgstr "Et krasj ble oppdaget"
+msgid "A problem has been detected"
+msgstr ""
 
 #: ../src/applet/applet.c:766
 msgid ""
@@ -93,15 +93,15 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-c.c:161
 #: ../src/plugins/abrt-action-analyze-oops.c:122
 #: ../src/plugins/abrt-action-analyze-python.c:40
-#: ../src/plugins/abrt-action-generate-backtrace.c:267
+#: ../src/plugins/abrt-action-generate-backtrace.c:264
 msgid "Dump directory"
-msgstr ""
+msgstr "Katalog for dump"
 
 #: ../src/daemon/abrt-action-save-package-data.c:373
 msgid "Configuration file"
-msgstr ""
+msgstr "Konfigurasjonsfil"
 
-#: ../src/daemon/abrt-server.c:450 ../src/daemon/abrtd.c:627
+#: ../src/daemon/abrt-server.c:450 ../src/daemon/abrtd.c:625
 msgid " [options]"
 msgstr ""
 
@@ -109,12 +109,12 @@ msgstr ""
 msgid "Use UID as client uid"
 msgstr ""
 
-#: ../src/daemon/abrt-server.c:462 ../src/plugins/abrt-dump-oops.c:597
+#: ../src/daemon/abrt-server.c:462 ../src/plugins/abrt-dump-oops.c:701
 msgid "Log to syslog"
 msgstr "Logg til syslog"
 
-#: ../src/daemon/abrt-server.c:463 ../src/daemon/abrtd.c:642
-#: ../src/gui-gtk/main.c:889
+#: ../src/daemon/abrt-server.c:463 ../src/daemon/abrtd.c:640
+#: ../src/gui-gtk/main.c:899
 msgid "Add program names to log"
 msgstr ""
 
@@ -124,20 +124,20 @@ msgid ""
 "MaxCrashReportsSize value in abrt.conf."
 msgstr ""
 
-#: ../src/daemon/abrtd.c:639
+#: ../src/daemon/abrtd.c:637
 msgid "Do not daemonize"
-msgstr ""
+msgstr "Ikke kjør som tjeneste"
 
-#: ../src/daemon/abrtd.c:640
+#: ../src/daemon/abrtd.c:638
 msgid "Log to syslog even with -d"
 msgstr ""
 
-#: ../src/daemon/abrtd.c:641
+#: ../src/daemon/abrtd.c:639
 msgid "Exit after SEC seconds of inactivity"
 msgstr ""
 
 #: ../src/daemon/abrt-handle-event.c:104
-msgid "\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
+msgid "\\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
 msgstr ""
 
 #: ../src/daemon/abrt-handle-event.c:111
@@ -148,67 +148,67 @@ msgstr ""
 msgid "View and report application crashes"
 msgstr "Vis og rapporter krasj i programmer"
 
-#: ../src/gui-gtk/main.c:344
+#: ../src/gui-gtk/main.c:354
 msgid "Problem description"
-msgstr ""
+msgstr "Beskrivelse av problemet"
 
-#: ../src/gui-gtk/main.c:347
+#: ../src/gui-gtk/main.c:357
 msgid "Send"
-msgstr ""
-
-#: ../src/gui-gtk/main.c:425 ../src/gui-gtk/main.c:471
-msgid "Source"
-msgstr ""
+msgstr "Send"
 
 #: ../src/gui-gtk/main.c:435 ../src/gui-gtk/main.c:481
+msgid "Source"
+msgstr "Kilde"
+
+#: ../src/gui-gtk/main.c:445 ../src/gui-gtk/main.c:491
 msgid "Problem"
 msgstr "Problem"
 
-#: ../src/gui-gtk/main.c:456
+#: ../src/gui-gtk/main.c:466
 msgid "Last Occurrence"
-msgstr ""
+msgstr "Siste oppføring"
 
-#: ../src/gui-gtk/main.c:491
+#: ../src/gui-gtk/main.c:501
 msgid "Date Submitted"
+msgstr "Dato innsendt"
+
+#: ../src/gui-gtk/main.c:510
+msgid "Submission Result"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:500
-msgid "Submision Result"
-msgstr ""
-
-#: ../src/gui-gtk/main.c:513
+#: ../src/gui-gtk/main.c:523
 msgid "_Report"
-msgstr ""
+msgstr "_Rapporter"
 
-#: ../src/gui-gtk/main.c:514
+#: ../src/gui-gtk/main.c:524
 msgid "_Edit"
 msgstr "R_ediger"
 
-#: ../src/gui-gtk/main.c:515
+#: ../src/gui-gtk/main.c:525
 msgid "_Help"
 msgstr "_Hjelp"
 
-#: ../src/gui-gtk/main.c:541
+#: ../src/gui-gtk/main.c:551
 msgid "Report problem with ABRT"
-msgstr ""
+msgstr "Rapporter problem med ABRT"
 
-#: ../src/gui-gtk/main.c:580
+#: ../src/gui-gtk/main.c:590
 msgid "Not submitted reports"
-msgstr ""
+msgstr "Ikke innsendte rapporter"
 
-#: ../src/gui-gtk/main.c:582
+#: ../src/gui-gtk/main.c:592
 msgid "<b>Not submitted reports</b>"
-msgstr ""
+msgstr "<b>Rapporter som ikke er sendt inn</b>"
 
-#: ../src/gui-gtk/main.c:625
+#: ../src/gui-gtk/main.c:635
 msgid "Submitted reports"
-msgstr ""
+msgstr "Innsendte rapporter"
 
-#: ../src/gui-gtk/main.c:628
+#: ../src/gui-gtk/main.c:638
 msgid "<b>Submitted reports</b>"
-msgstr ""
+msgstr "<b>Rapporter som er sendt inn</b>"
 
-#: ../src/gui-gtk/main.c:878
+#: ../src/gui-gtk/main.c:888
 msgid ""
 " [-vp] [DIR]...\n"
 "\n"
@@ -223,11 +223,10 @@ msgid ""
 "and identifies crash function in dump directory DIR"
 msgstr ""
 
-#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:93
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -255,149 +254,148 @@ msgid ""
 msgstr ""
 
 #. Let user know what's going on
-#: ../src/plugins/abrt-action-generate-backtrace.c:142
+#: ../src/plugins/abrt-action-generate-backtrace.c:139
 msgid "Generating backtrace"
 msgstr ""
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:254
+#: ../src/plugins/abrt-action-generate-backtrace.c:251
 msgid ""
 " [options] -d DIR\n"
 "\n"
 "Analyzes coredump in dump directory DIR, generates and saves backtrace"
 msgstr ""
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:268
+#: ../src/plugins/abrt-action-generate-backtrace.c:265
 msgid "Additional debuginfo directories"
 msgstr ""
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:269
+#: ../src/plugins/abrt-action-generate-backtrace.c:266
 msgid "Kill gdb if it runs for more than NUM seconds"
 msgstr ""
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
-#: ../src/plugins/abrt-action-generate-backtrace.c:305
+#. 
+#: ../src/plugins/abrt-action-generate-backtrace.c:316
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:85
+#: ../src/plugins/abrt-action-install-debuginfo:89
 #, c-format
 msgid "Extracting cpio from %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:90
+#: ../src/plugins/abrt-action-install-debuginfo:94
 #, c-format
 msgid "Can't write to '%s': %s"
 msgstr "Kam ikke skrive til «%s»: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo:104
+#: ../src/plugins/abrt-action-install-debuginfo:108
 #, c-format
 msgid "Can't extract package '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:112
+#: ../src/plugins/abrt-action-install-debuginfo:116
 #, c-format
 msgid "Caching files from %s made from %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:122
+#: ../src/plugins/abrt-action-install-debuginfo:126
 #, c-format
 msgid "Can't extract files from '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:146
-#: ../src/plugins/abrt-action-install-debuginfo:156
+#: ../src/plugins/abrt-action-install-debuginfo:150
+#: ../src/plugins/abrt-action-install-debuginfo:160
 #, c-format
 msgid "Downloading (%i of %i) %s: %3u%%"
-msgstr ""
+msgstr "Laster ned (%i av %i) %s: %3u%%"
 
-#: ../src/plugins/abrt-action-install-debuginfo:175
+#: ../src/plugins/abrt-action-install-debuginfo:179
 msgid "Initializing yum"
-msgstr ""
+msgstr "Initierer yum"
 
-#: ../src/plugins/abrt-action-install-debuginfo:183
+#: ../src/plugins/abrt-action-install-debuginfo:187
 #, c-format
 msgid "Error initializing yum (YumBase.doConfigSetup): '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:214
+#: ../src/plugins/abrt-action-install-debuginfo:218
 msgid "Setting up yum repositories"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:225
+#: ../src/plugins/abrt-action-install-debuginfo:229
 #, c-format
 msgid "Can't setup %s: %s, disabling"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:232
+#: ../src/plugins/abrt-action-install-debuginfo:236
 msgid "Looking for needed packages in repositories"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:236
+#: ../src/plugins/abrt-action-install-debuginfo:240
 #, c-format
 msgid "Error retrieving metadata: '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:246
+#: ../src/plugins/abrt-action-install-debuginfo:250
 #, c-format
 msgid "Error retrieving filelists: '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:279
+#: ../src/plugins/abrt-action-install-debuginfo:283
 #, c-format
 msgid "Can't find packages for %u debuginfo files"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:281
+#: ../src/plugins/abrt-action-install-debuginfo:285
 #, c-format
 msgid "Packages to download: %u"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:282
+#: ../src/plugins/abrt-action-install-debuginfo:286
 #, c-format
 msgid "Downloading %.2fMb, installed size: %.2fMb. Continue?"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:287
+#: ../src/plugins/abrt-action-install-debuginfo:291
 msgid "Download cancelled by user"
-msgstr ""
+msgstr "Nedlasting avbrutt av bruker"
 
-#: ../src/plugins/abrt-action-install-debuginfo:313
+#: ../src/plugins/abrt-action-install-debuginfo:325
 #, c-format
 msgid "Downloading package %s failed"
-msgstr ""
+msgstr "Nedlasting av pakke %s feilet"
 
-#: ../src/plugins/abrt-action-install-debuginfo:319
+#: ../src/plugins/abrt-action-install-debuginfo:331
 msgid "Unpacking failed, aborting download..."
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:329
+#: ../src/plugins/abrt-action-install-debuginfo:341
 #, c-format
 msgid "Removing %s"
-msgstr ""
+msgstr "Fjerner %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo:333
+#: ../src/plugins/abrt-action-install-debuginfo:345
 #, c-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:391
+#: ../src/plugins/abrt-action-install-debuginfo:403
 #, c-format
 msgid "Can't remove '%s': %s"
 msgstr "Kan ikke fjerne «%s»: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo:399
+#: ../src/plugins/abrt-action-install-debuginfo:411
 msgid "Exiting on user command"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:433
+#: ../src/plugins/abrt-action-install-debuginfo:445
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
-"[--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -411,22 +409,22 @@ msgid ""
 "    --size_mb   Default: 4096\n"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:490
+#: ../src/plugins/abrt-action-install-debuginfo:519
 #, c-format
 msgid "Can't open %s: %s"
-msgstr ""
+msgstr "Kan ikke åpne %s: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo:520
+#: ../src/plugins/abrt-action-install-debuginfo:549
 #, c-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:531
+#: ../src/plugins/abrt-action-install-debuginfo:560
 #, c-format
 msgid "Missing debuginfo file: %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:534
+#: ../src/plugins/abrt-action-install-debuginfo:563
 #, c-format
 msgid "All %u debuginfo files are available"
 msgstr ""
@@ -444,13 +442,13 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:163
 msgid "Delete files"
-msgstr ""
+msgstr "Slett filer"
 
 #: ../src/plugins/abrt-action-trim-files.c:164
 msgid "Preserve this dump dir"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:579
+#: ../src/plugins/abrt-dump-oops.c:683
 msgid ""
 " [-vsrowx] [-d DIR] FILE\n"
 "   or:  [-vsrowx] -D FILE\n"
@@ -458,40 +456,40 @@ msgid ""
 "Extract oops from syslog/dmesg file"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:598
+#: ../src/plugins/abrt-dump-oops.c:702
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:599
+#: ../src/plugins/abrt-dump-oops.c:703
 msgid "Print found oopses on standard output"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:600
+#: ../src/plugins/abrt-dump-oops.c:704
 msgid "Do not exit, watch the file for new oopses"
 msgstr ""
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
-#: ../src/plugins/abrt-dump-oops.c:604
+#. 
+#: ../src/plugins/abrt-dump-oops.c:708
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:605
+#: ../src/plugins/abrt-dump-oops.c:709
 msgid "Make the dump directory world readable"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:606
+#: ../src/plugins/abrt-dump-oops.c:710
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:67
-msgid "An error occured on the server side. Try again later."
+msgid "An error occurred on the server side. Try again later."
 msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:72
 msgid ""
-"An error occured while connecting to the server. Check your network "
+"An error occurred while connecting to the server. Check your network "
 "connection and try again."
 msgstr ""
 
@@ -503,13 +501,13 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:131
 msgid "Cannot open temporary file"
-msgstr ""
+msgstr "Kan ikke åpne midlertidig fil"
 
 #: ../src/plugins/abrt-retrace-client.c:157
 #: ../src/plugins/abrt-retrace-client.c:184
 #, c-format
 msgid "Can't execute '%s'"
-msgstr ""
+msgstr "Kan ikke kjøre «%s»"
 
 #: ../src/plugins/abrt-retrace-client.c:215
 #, c-format
@@ -692,22 +690,22 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:839
 msgid "Cancelled by user"
-msgstr ""
+msgstr "Avbrutt av bruker"
 
 #: ../src/plugins/abrt-retrace-client.c:881
 #, c-format
 msgid "Uploading %d megabytes\n"
-msgstr ""
+msgstr "Laster opp %d megabytes\n"
 
 #: ../src/plugins/abrt-retrace-client.c:883
 #, c-format
 msgid "Uploading %lld bytes\n"
-msgstr ""
+msgstr "Laster opp %lld bytes\n"
 
 #: ../src/plugins/abrt-retrace-client.c:907
 #, c-format
 msgid "Uploading %d%%\n"
-msgstr ""
+msgstr "Laster opp %d%%\n"
 
 #: ../src/plugins/abrt-retrace-client.c:919
 msgid "Failed to read from a pipe"
@@ -720,7 +718,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:943
 msgid "Upload successful"
-msgstr ""
+msgstr "Opplasting fullført"
 
 #: ../src/plugins/abrt-retrace-client.c:965
 msgid ""
@@ -861,7 +859,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:1428
 #, c-format
 msgid "Unknown operation: %s."
-msgstr ""
+msgstr "Ukjent operasjon: %s."
 
 #: ../src/plugins/abrt-retrace-client.c:1437
 msgid "Failed to shutdown NSS."
@@ -878,8 +876,8 @@ msgstr ""
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
@@ -913,9 +911,9 @@ msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
-"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
-"(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a "
+"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
+" &gt;(warning)&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
@@ -928,28 +926,28 @@ msgid ""
 "executable's name. The result is saved as 'xsession_errors' element."
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:135
+#: ../src/cli/abrt-cli.c:141
 msgid "Usage: abrt-cli [--version] COMMAND [ARGS]"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:139
+#: ../src/cli/abrt-cli.c:145
 msgid "List not yet reported problems"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:140
+#: ../src/cli/abrt-cli.c:146
 msgid "Remove files from problem directory"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:141
+#: ../src/cli/abrt-cli.c:147
 msgid "Analyze and report problem data in problem directory"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:142
+#: ../src/cli/abrt-cli.c:148
 msgid "Print information about DUMP_DIR"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:155
-msgid "See 'abrt-cli COMMAND -h' for more information"
+#: ../src/cli/abrt-cli.c:161
+msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr ""
 
 #: ../src/cli/list.c:90
@@ -963,7 +961,7 @@ msgstr ""
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:99 ../src/cli/list.c:141
 msgid "Show detailed report"
-msgstr ""
+msgstr "Vis detaljert rapport"
 
 #: ../src/cli/list.c:133
 msgid " info [options] [<dump-dir>]..."
@@ -974,7 +972,8 @@ msgid "Analyze VM core"
 msgstr ""
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
-msgid "Install kernel debuginfo packages, generate kernel log and oops message"
+msgid ""
+"Install kernel debuginfo packages, generate kernel log and oops message"
 msgstr ""
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
@@ -998,7 +997,7 @@ msgid "Save configuration from application's GConf directory"
 msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:1
-msgid "Runs smoltSendProfile -p and seves its output as 'smolt_data' element."
+msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
 msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
@@ -1021,8 +1020,8 @@ msgstr ""
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
-"as user_vimrc and user_gvimrc, respectively."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
+" as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:2
@@ -1032,3 +1031,5 @@ msgstr ""
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid "Save .vimrc and .gvimrc from your home directory"
 msgstr ""
+
+

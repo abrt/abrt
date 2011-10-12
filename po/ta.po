@@ -1,22 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Felix I <ifelix25@gmail.com>, 2011.
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-09-23 18:09+0200\n"
-"PO-Revision-Date: 2011-09-14 11:11+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2011-10-12 13:57+0200\n"
+"PO-Revision-Date: 2011-10-12 15:36+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Tamil <tamil-users@lists.fedoraproject.org>\n"
-"Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ta\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -24,7 +24,7 @@ msgid "ABRT notification applet"
 msgstr "ABRT அறிவிப்பு ஆப்லெட்"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:560
+#: ../src/gui-gtk/main.c:570
 msgid "Automatic Bug Reporting Tool"
 msgstr "தானியக்க பிழை அறிக்கையிடும் கருவி"
 
@@ -36,10 +36,10 @@ msgstr "எச்சரிக்கை"
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
-"ABRT ஆல் கண்டுபிடிக்கப்பட்ட சிக்கல்களைப் பற்றி அப்லெட்டில் உள்ள அறிக்கைப் பகுதியில் பயனர் "
-"குறிப்பிட வேண்டும்"
+"ABRT ஆல் கண்டுபிடிக்கப்பட்ட சிக்கல்களைப் பற்றி அப்லெட்டில் உள்ள அறிக்கைப் "
+"பகுதியில் பயனர் குறிப்பிட வேண்டும்"
 
-#: ../src/applet/applet.c:288 ../src/gui-gtk/main.c:406
+#: ../src/applet/applet.c:288 ../src/gui-gtk/main.c:416
 msgid "translator-credits"
 msgstr "I. Felix <ifelix@redhat.com> 2010"
 
@@ -65,12 +65,12 @@ msgstr "Open ABRT"
 
 #: ../src/applet/applet.c:526
 #, c-format
-msgid "A crash in the %s package has been detected"
-msgstr "தொகுப்பு %s இல் ஒரு சேதம் கண்டறியப்பட்டது"
+msgid "A problem in the %s package has been detected"
+msgstr ""
 
 #: ../src/applet/applet.c:528
-msgid "A crash has been detected"
-msgstr "ஒரு சேதம் கண்டறியப்பட்டது"
+msgid "A problem has been detected"
+msgstr ""
 
 #: ../src/applet/applet.c:766
 msgid ""
@@ -95,7 +95,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-c.c:161
 #: ../src/plugins/abrt-action-analyze-oops.c:122
 #: ../src/plugins/abrt-action-analyze-python.c:40
-#: ../src/plugins/abrt-action-generate-backtrace.c:267
+#: ../src/plugins/abrt-action-generate-backtrace.c:264
 msgid "Dump directory"
 msgstr "டம்ப் அடைவு"
 
@@ -103,7 +103,7 @@ msgstr "டம்ப் அடைவு"
 msgid "Configuration file"
 msgstr ""
 
-#: ../src/daemon/abrt-server.c:450 ../src/daemon/abrtd.c:627
+#: ../src/daemon/abrt-server.c:450 ../src/daemon/abrtd.c:625
 msgid " [options]"
 msgstr ""
 
@@ -111,12 +111,12 @@ msgstr ""
 msgid "Use UID as client uid"
 msgstr ""
 
-#: ../src/daemon/abrt-server.c:462 ../src/plugins/abrt-dump-oops.c:597
+#: ../src/daemon/abrt-server.c:462 ../src/plugins/abrt-dump-oops.c:701
 msgid "Log to syslog"
 msgstr " syslogக்கு பதியவும்"
 
-#: ../src/daemon/abrt-server.c:463 ../src/daemon/abrtd.c:642
-#: ../src/gui-gtk/main.c:889
+#: ../src/daemon/abrt-server.c:463 ../src/daemon/abrtd.c:640
+#: ../src/gui-gtk/main.c:899
 msgid "Add program names to log"
 msgstr ""
 
@@ -125,23 +125,23 @@ msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
 msgstr ""
-"அறிக்கை அளவு ஒதுக்கீட்டை தாண்டியது. உங்கள் MaxCrashReportsSize மதிப்பை abrt.conf.இல் "
-"சரிபார்க்கவும்."
+"அறிக்கை அளவு ஒதுக்கீட்டை தாண்டியது. உங்கள் MaxCrashReportsSize மதிப்பை "
+"abrt.conf.இல் சரிபார்க்கவும்."
 
-#: ../src/daemon/abrtd.c:639
+#: ../src/daemon/abrtd.c:637
 msgid "Do not daemonize"
 msgstr "அனுப்ப வேண்டாம்அனுப்ப வேண்ட"
 
-#: ../src/daemon/abrtd.c:640
+#: ../src/daemon/abrtd.c:638
 msgid "Log to syslog even with -d"
 msgstr "-d-உடன் syslog பதிவு செய்தாலும்"
 
-#: ../src/daemon/abrtd.c:641
+#: ../src/daemon/abrtd.c:639
 msgid "Exit after SEC seconds of inactivity"
 msgstr "SEC விநாடிகள் செயலிழப்பில் இருந்தால் வெளியேறு"
 
 #: ../src/daemon/abrt-handle-event.c:104
-msgid "\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
+msgid "\\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
 msgstr ""
 
 #: ../src/daemon/abrt-handle-event.c:111
@@ -152,67 +152,67 @@ msgstr ""
 msgid "View and report application crashes"
 msgstr "பயன்பாட்டு கிரஷ்களை பார்த்து அறிக்கையிடவும் "
 
-#: ../src/gui-gtk/main.c:344
+#: ../src/gui-gtk/main.c:354
 msgid "Problem description"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:347
+#: ../src/gui-gtk/main.c:357
 msgid "Send"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:425 ../src/gui-gtk/main.c:471
+#: ../src/gui-gtk/main.c:435 ../src/gui-gtk/main.c:481
 msgid "Source"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:435 ../src/gui-gtk/main.c:481
+#: ../src/gui-gtk/main.c:445 ../src/gui-gtk/main.c:491
 msgid "Problem"
 msgstr "சிக்கல்"
 
-#: ../src/gui-gtk/main.c:456
+#: ../src/gui-gtk/main.c:466
 msgid "Last Occurrence"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:491
+#: ../src/gui-gtk/main.c:501
 msgid "Date Submitted"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:500
-msgid "Submision Result"
+#: ../src/gui-gtk/main.c:510
+msgid "Submission Result"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:513
+#: ../src/gui-gtk/main.c:523
 msgid "_Report"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:514
+#: ../src/gui-gtk/main.c:524
 msgid "_Edit"
 msgstr "திருத்தவும் (_E)"
 
-#: ../src/gui-gtk/main.c:515
+#: ../src/gui-gtk/main.c:525
 msgid "_Help"
 msgstr "உதவி (_H)"
 
-#: ../src/gui-gtk/main.c:541
+#: ../src/gui-gtk/main.c:551
 msgid "Report problem with ABRT"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:580
+#: ../src/gui-gtk/main.c:590
 msgid "Not submitted reports"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:582
+#: ../src/gui-gtk/main.c:592
 msgid "<b>Not submitted reports</b>"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:625
+#: ../src/gui-gtk/main.c:635
 msgid "Submitted reports"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:628
+#: ../src/gui-gtk/main.c:638
 msgid "<b>Submitted reports</b>"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:878
+#: ../src/gui-gtk/main.c:888
 msgid ""
 " [-vp] [DIR]...\n"
 "\n"
@@ -227,11 +227,10 @@ msgid ""
 "and identifies crash function in dump directory DIR"
 msgstr ""
 
-#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:93
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -259,149 +258,148 @@ msgid ""
 msgstr ""
 
 #. Let user know what's going on
-#: ../src/plugins/abrt-action-generate-backtrace.c:142
+#: ../src/plugins/abrt-action-generate-backtrace.c:139
 msgid "Generating backtrace"
 msgstr ""
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:254
+#: ../src/plugins/abrt-action-generate-backtrace.c:251
 msgid ""
 " [options] -d DIR\n"
 "\n"
 "Analyzes coredump in dump directory DIR, generates and saves backtrace"
 msgstr ""
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:268
+#: ../src/plugins/abrt-action-generate-backtrace.c:265
 msgid "Additional debuginfo directories"
 msgstr ""
 
-#: ../src/plugins/abrt-action-generate-backtrace.c:269
+#: ../src/plugins/abrt-action-generate-backtrace.c:266
 msgid "Kill gdb if it runs for more than NUM seconds"
 msgstr ""
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
-#: ../src/plugins/abrt-action-generate-backtrace.c:305
+#. 
+#: ../src/plugins/abrt-action-generate-backtrace.c:316
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:85
+#: ../src/plugins/abrt-action-install-debuginfo:89
 #, c-format
 msgid "Extracting cpio from %s"
 msgstr "cpio ஐ %s லிருந்து இழுக்கிறது"
 
-#: ../src/plugins/abrt-action-install-debuginfo:90
+#: ../src/plugins/abrt-action-install-debuginfo:94
 #, c-format
 msgid "Can't write to '%s': %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:104
+#: ../src/plugins/abrt-action-install-debuginfo:108
 #, c-format
 msgid "Can't extract package '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:112
+#: ../src/plugins/abrt-action-install-debuginfo:116
 #, c-format
 msgid "Caching files from %s made from %s"
 msgstr "%s-லிருந்து செய்யப்பட்ட %s கோப்புகளை மாற்றுகிறது"
 
-#: ../src/plugins/abrt-action-install-debuginfo:122
+#: ../src/plugins/abrt-action-install-debuginfo:126
 #, c-format
 msgid "Can't extract files from '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:146
-#: ../src/plugins/abrt-action-install-debuginfo:156
+#: ../src/plugins/abrt-action-install-debuginfo:150
+#: ../src/plugins/abrt-action-install-debuginfo:160
 #, c-format
 msgid "Downloading (%i of %i) %s: %3u%%"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:175
+#: ../src/plugins/abrt-action-install-debuginfo:179
 msgid "Initializing yum"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:183
+#: ../src/plugins/abrt-action-install-debuginfo:187
 #, c-format
 msgid "Error initializing yum (YumBase.doConfigSetup): '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:214
+#: ../src/plugins/abrt-action-install-debuginfo:218
 msgid "Setting up yum repositories"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:225
+#: ../src/plugins/abrt-action-install-debuginfo:229
 #, c-format
 msgid "Can't setup %s: %s, disabling"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:232
+#: ../src/plugins/abrt-action-install-debuginfo:236
 msgid "Looking for needed packages in repositories"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:236
+#: ../src/plugins/abrt-action-install-debuginfo:240
 #, c-format
 msgid "Error retrieving metadata: '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:246
+#: ../src/plugins/abrt-action-install-debuginfo:250
 #, c-format
 msgid "Error retrieving filelists: '%s'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:279
+#: ../src/plugins/abrt-action-install-debuginfo:283
 #, c-format
 msgid "Can't find packages for %u debuginfo files"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:281
+#: ../src/plugins/abrt-action-install-debuginfo:285
 #, c-format
 msgid "Packages to download: %u"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:282
+#: ../src/plugins/abrt-action-install-debuginfo:286
 #, c-format
 msgid "Downloading %.2fMb, installed size: %.2fMb. Continue?"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:287
+#: ../src/plugins/abrt-action-install-debuginfo:291
 msgid "Download cancelled by user"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:313
+#: ../src/plugins/abrt-action-install-debuginfo:325
 #, c-format
 msgid "Downloading package %s failed"
 msgstr "தொகுப்பு %s பதிவிறக்குதல் தோல்வியுற்றது"
 
-#: ../src/plugins/abrt-action-install-debuginfo:319
+#: ../src/plugins/abrt-action-install-debuginfo:331
 msgid "Unpacking failed, aborting download..."
 msgstr "தொகுப்புநீக்கல் தோல்வியுற்றது, பதிவிறக்கத்தை ஒதுக்குகிறது..."
 
-#: ../src/plugins/abrt-action-install-debuginfo:329
+#: ../src/plugins/abrt-action-install-debuginfo:341
 #, c-format
 msgid "Removing %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:333
+#: ../src/plugins/abrt-action-install-debuginfo:345
 #, c-format
 msgid "Can't remove %s, probably contains an error log"
 msgstr "%sஐ நீக்க முடியவில்லை, ஒரு பதிவு பிழையால் இருக்கலாம்"
 
-#: ../src/plugins/abrt-action-install-debuginfo:391
+#: ../src/plugins/abrt-action-install-debuginfo:403
 #, c-format
 msgid "Can't remove '%s': %s"
 msgstr "Can't remove '%s': %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo:399
+#: ../src/plugins/abrt-action-install-debuginfo:411
 msgid "Exiting on user command"
 msgstr "Exiting on user command"
 
-#: ../src/plugins/abrt-action-install-debuginfo:433
+#: ../src/plugins/abrt-action-install-debuginfo:445
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
-"[--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -415,22 +413,22 @@ msgid ""
 "    --size_mb   Default: 4096\n"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:490
+#: ../src/plugins/abrt-action-install-debuginfo:519
 #, c-format
 msgid "Can't open %s: %s"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:520
+#: ../src/plugins/abrt-action-install-debuginfo:549
 #, c-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
 msgstr "Coredump references %u debuginfo files, %u of them are not installed"
 
-#: ../src/plugins/abrt-action-install-debuginfo:531
+#: ../src/plugins/abrt-action-install-debuginfo:560
 #, c-format
 msgid "Missing debuginfo file: %s"
 msgstr "Missing debuginfo file: %s"
 
-#: ../src/plugins/abrt-action-install-debuginfo:534
+#: ../src/plugins/abrt-action-install-debuginfo:563
 #, c-format
 msgid "All %u debuginfo files are available"
 msgstr "All %u debuginfo files are available"
@@ -454,7 +452,7 @@ msgstr "கோப்புகளை அழி"
 msgid "Preserve this dump dir"
 msgstr "Preserve this dump dir"
 
-#: ../src/plugins/abrt-dump-oops.c:579
+#: ../src/plugins/abrt-dump-oops.c:683
 msgid ""
 " [-vsrowx] [-d DIR] FILE\n"
 "   or:  [-vsrowx] -D FILE\n"
@@ -462,40 +460,40 @@ msgid ""
 "Extract oops from syslog/dmesg file"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:598
+#: ../src/plugins/abrt-dump-oops.c:702
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "Parse kernel's message buffer before parsing FILE"
 
-#: ../src/plugins/abrt-dump-oops.c:599
+#: ../src/plugins/abrt-dump-oops.c:703
 msgid "Print found oopses on standard output"
 msgstr "Print found oopses on standard output"
 
-#: ../src/plugins/abrt-dump-oops.c:600
+#: ../src/plugins/abrt-dump-oops.c:704
 msgid "Do not exit, watch the file for new oopses"
 msgstr "Do not exit, watch the file for new oopses"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
-#: ../src/plugins/abrt-dump-oops.c:604
+#. 
+#: ../src/plugins/abrt-dump-oops.c:708
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:605
+#: ../src/plugins/abrt-dump-oops.c:709
 msgid "Make the dump directory world readable"
 msgstr "Make the dump directory world readable"
 
-#: ../src/plugins/abrt-dump-oops.c:606
+#: ../src/plugins/abrt-dump-oops.c:710
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:67
-msgid "An error occured on the server side. Try again later."
+msgid "An error occurred on the server side. Try again later."
 msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:72
 msgid ""
-"An error occured while connecting to the server. Check your network "
+"An error occurred while connecting to the server. Check your network "
 "connection and try again."
 msgstr ""
 
@@ -882,8 +880,8 @@ msgstr ""
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
@@ -917,9 +915,9 @@ msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
-"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
-"(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a "
+"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
+" &gt;(warning)&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
@@ -932,28 +930,28 @@ msgid ""
 "executable's name. The result is saved as 'xsession_errors' element."
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:135
+#: ../src/cli/abrt-cli.c:141
 msgid "Usage: abrt-cli [--version] COMMAND [ARGS]"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:139
+#: ../src/cli/abrt-cli.c:145
 msgid "List not yet reported problems"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:140
+#: ../src/cli/abrt-cli.c:146
 msgid "Remove files from problem directory"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:141
+#: ../src/cli/abrt-cli.c:147
 msgid "Analyze and report problem data in problem directory"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:142
+#: ../src/cli/abrt-cli.c:148
 msgid "Print information about DUMP_DIR"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:155
-msgid "See 'abrt-cli COMMAND -h' for more information"
+#: ../src/cli/abrt-cli.c:161
+msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr ""
 
 #: ../src/cli/list.c:90
@@ -978,7 +976,8 @@ msgid "Analyze VM core"
 msgstr ""
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
-msgid "Install kernel debuginfo packages, generate kernel log and oops message"
+msgid ""
+"Install kernel debuginfo packages, generate kernel log and oops message"
 msgstr ""
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
@@ -1002,7 +1001,7 @@ msgid "Save configuration from application's GConf directory"
 msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:1
-msgid "Runs smoltSendProfile -p and seves its output as 'smolt_data' element."
+msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
 msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
@@ -1025,8 +1024,8 @@ msgstr ""
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
-"as user_vimrc and user_gvimrc, respectively."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
+" as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:2
@@ -1036,3 +1035,5 @@ msgstr ""
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid "Save .vimrc and .gvimrc from your home directory"
 msgstr ""
+
+
