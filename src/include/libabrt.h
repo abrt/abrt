@@ -63,6 +63,8 @@ int daemon_is_ok();
 /* Note: should be public since unit tests need to call it */
 #define koops_extract_version abrt_koops_extract_version
 char *koops_extract_version(const char *line);
+#define kernel_tainted_short abrt_kernel_tainted_short
+char *kernel_tainted_short(const char *kernel_bt);
 
 
 #ifdef __cplusplus
