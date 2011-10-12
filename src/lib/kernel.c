@@ -79,6 +79,16 @@ char *kernel_tainted_short(const char *kernel_bt)
 
     /* 12 == count of flags */
     char *tnt = xstrndup(tainted + strlen("Tainted: "), 12);
+
+    /* flags 'G        W  ' are good, don't prohibit reporting.
+     * flags are always on same position
+     */
+    if (!strcmp(tnt, "G        W  "))
+    {
+        free(tnt);
+        tnt = NULL;
+    }
+
     return tnt;
 }
 
@@ -117,7 +127,7 @@ static const char *const tnts_long[] = {
     "Tech_preview",
 };
 
-static GList *kernel_tainted_long(unsigned tainted)
+GList *kernel_tainted_long(unsigned tainted)
 {
     int i = 0;
     GList *tnt = NULL;

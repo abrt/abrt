@@ -1,22 +1,15 @@
 # -*- Autotest -*-
 
-AT_BANNER([kernel_oops_parser])
+AT_BANNER([kernel oops parser])
 
 AT_TESTFUN([koops_extract_version],
 [[
 #include "libabrt.h"
+#include "koops-test.h"
 
-struct test_struct {
-	const char *filename;
-	const char *expected_results;
-};
-
-int run_test(struct test_struct *test)
+int run_test(const struct test_struct *test)
 {
-	FILE *fp = fopen(test->filename, "r");
-	if (!fp)
-		perror_msg_and_die("Can't open '%s'", test->filename);
-
+	FILE *fp = xfopen_ro(test->filename);
 	fprintf(stderr, "%s\t", test->filename);
 	char *line;
 	while ((line = xmalloc_fgetline(fp)) != NULL)
@@ -42,11 +35,85 @@ int main(void)
 	struct test_struct test[] = {
 		{"../../../examples/cut_here.right", "2.6.32-19.el6.x86_64"},
 		{"../../../examples/oops-kernel-3.x.x", "3.0.0-3.fc16.i686.PAE"},
+		{"../../../examples/koops-tainted-gw", "3.1.0-0.rc9.git0.0.fc16.x86_64"},
 	};
 
 	int ret = 0;
 	for (int i = 0 ; i < ARRAY_SIZE(test); ++i)
 		ret |= run_test(&test[i]);
+
+	return ret;
+}
+]])
+
+AT_TESTFUN([koops_tainted_short],
+[[
+#include "libabrt.h"
+#include "koops-test.h"
+
+enum {
+	TEST_TAINTED,
+	TEST_NOT_TAINTED
+};
+
+int run_test(const struct test_struct *test, int flags)
+{
+	FILE *fp = xfopen_ro(test->filename);
+
+	fseek(fp, 0, SEEK_END);
+	off_t size = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+
+	char *koops_bt = xzalloc(size + 1);
+	int r = fread(koops_bt, sizeof(char), size, fp);
+	fclose(fp);
+	if (r < 0)
+		perror_msg_and_die("Can't read '%s'", test->filename);
+
+	char *tnt = kernel_tainted_short(koops_bt);
+	free(koops_bt);
+	int ret = 0;
+	switch (flags) {
+	case TEST_NOT_TAINTED:
+		if (tnt)
+		{
+			log("%s '%s'", test->filename, tnt);
+			ret = 1;
+		}
+		break;
+	case TEST_TAINTED:
+		if (!tnt)
+		{
+			log("%s", test->filename);
+			ret = 1;
+		}
+	};
+
+	free(tnt);
+	return ret;
+}
+
+int main(void)
+{
+	/* tests run in abrt/tests/testsuite.dir/X, where X is test number */
+	struct test_struct not_tainted[] = {
+		{"../../../examples/koops-tainted-gw", NULL},
+		{"../../../examples/oops1.right", NULL},
+	};
+
+	struct test_struct tainted[] = {
+		{"../../../examples/koops-tainted-bg1", "G    B      "},
+		{"../../../examples/oops-same-as-oops4.right", "P           "},
+	};
+
+	log("test not tainted");
+	int ret = 0;
+	for (int i = 0; i < ARRAY_SIZE(not_tainted); ++i)
+		ret |= run_test(&not_tainted[i], TEST_NOT_TAINTED);
+
+	log("test tainted");
+	for (int i = 0; i < ARRAY_SIZE(tainted); ++i)
+		ret |= run_test(&tainted[i], TEST_TAINTED);
 
 	return ret;
 }
