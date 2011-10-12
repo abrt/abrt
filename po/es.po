@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # beckerde <domingobecker@gmail.com>, 2011.
 # Claudio Rodrigo Pereyra Diaz <elsupergomez@gmail.com>, 2011.
@@ -14,15 +14,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2011-10-12 13:57+0200\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2011-10-12 19:05+0200\n"
 "PO-Revision-Date: 2011-10-12 15:36+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Spanish (Castilian) <trans-es@lists.fedoraproject.org>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -98,7 +98,8 @@ msgid ""
 msgstr ""
 " [-v] [-c CONFFILE] -d DIR\n"
 "\n"
-"Consulta la base de datos del paquete y guarda el nombre y el componente del paquete"
+"Consulta la base de datos del paquete y guarda el nombre y el componente del "
+"paquete"
 
 #: ../src/daemon/abrt-action-save-package-data.c:372
 #: ../src/plugins/abrt-action-analyze-backtrace.c:56
@@ -121,7 +122,7 @@ msgstr " [opciones]"
 msgid "Use UID as client uid"
 msgstr "Utiliza UID como el uid cliente"
 
-#: ../src/daemon/abrt-server.c:462 ../src/plugins/abrt-dump-oops.c:701
+#: ../src/daemon/abrt-server.c:462 ../src/plugins/abrt-dump-oops.c:585
 msgid "Log to syslog"
 msgstr "Registrarse en syslog"
 
@@ -151,7 +152,8 @@ msgid "Exit after SEC seconds of inactivity"
 msgstr "Finaliza luego de SEC segundos de inactividad"
 
 #: ../src/daemon/abrt-handle-event.c:104
-msgid "\\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
+#, fuzzy
+msgid "\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
 msgstr "\\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
 
 #: ../src/daemon/abrt-handle-event.c:111
@@ -230,7 +232,8 @@ msgid ""
 msgstr ""
 " [-vp] [DIR]...\n"
 "\n"
-"Muestra un listado con los directorios de volcado ABRT en el o los directorios indicados\n"
+"Muestra un listado con los directorios de volcado ABRT en el o los "
+"directorios indicados\n"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:44
 msgid ""
@@ -241,12 +244,15 @@ msgid ""
 msgstr ""
 " [opciones] -d DIR\n"
 "\n"
-"Analiza el retrotrazado C/C++, genera un hash de duplicación, taza de retrotrazado e identifica la función que se colgó en el directorio de volcado DIR"
+"Analiza el retrotrazado C/C++, genera un hash de duplicación, taza de "
+"retrotrazado e identifica la función que se colgó en el directorio de "
+"volcado DIR"
 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:93
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -270,7 +276,8 @@ msgid ""
 msgstr ""
 " [-vs] -d DIR\n"
 "\n"
-"Calcula y almacena UUID y DUPHASH para el directorio de volcado de alertas DIR"
+"Calcula y almacena UUID y DUPHASH para el directorio de volcado de alertas "
+"DIR"
 
 #: ../src/plugins/abrt-action-analyze-python.c:29
 msgid ""
@@ -295,7 +302,8 @@ msgid ""
 msgstr ""
 " [options] -d DIR\n"
 "\n"
-"Analiza volcados de núcleo en el directorio de volcados DIR, genera y almacena reportes"
+"Analiza volcados de núcleo en el directorio de volcados DIR, genera y "
+"almacena reportes"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:265
 msgid "Additional debuginfo directories"
@@ -307,7 +315,7 @@ msgstr "Termina gdb si está ejecutándose más de NUM segundos"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
+#.
 #: ../src/plugins/abrt-action-generate-backtrace.c:316
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -429,7 +437,8 @@ msgstr "Saliendo, de acuerdo a petición del usuario"
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -443,14 +452,18 @@ msgid ""
 "    --size_mb   Default: 4096\n"
 msgstr ""
 "Utilización: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "\n"
-"Instala informes de depuración de todos los build-ids listados en BUILD_IDS_FILE\n"
+"Instala informes de depuración de todos los build-ids listados en "
+"BUILD_IDS_FILE\n"
 "en CACHEDIR, utilizando TMPDIR como area de almacenamiento temporal.\n"
-"Los archivos antiguos en CACHEDIR son eliminados hasta que sea más pequeño que SIZE.\n"
+"Los archivos antiguos en CACHEDIR son eliminados hasta que sea más pequeño "
+"que SIZE.\n"
 "\n"
 "    -v          Información detallada\n"
-"    -y          No interactúa, presupone una respuesta afirmativa a todas las preguntas\n"
+"    -y          No interactúa, presupone una respuesta afirmativa a todas "
+"las preguntas\n"
 "    --ids       Predeterminado: build_ids\n"
 "    --tmpdir    Predeterminado: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
 "    --cache     Predeterminado: /var/cache/abrt-di\n"
@@ -487,7 +500,8 @@ msgid ""
 msgstr ""
 " [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
 "\n"
-"Elimina directorios de volcado (-d) o archivos (-f) en directorios que son más pequeños que SIZE"
+"Elimina directorios de volcado (-d) o archivos (-f) en directorios que son "
+"más pequeños que SIZE"
 
 #: ../src/plugins/abrt-action-trim-files.c:162
 msgid "Delete dump dirs"
@@ -501,7 +515,7 @@ msgstr "Borrar archivos"
 msgid "Preserve this dump dir"
 msgstr "Preserve este dir de volcado"
 
-#: ../src/plugins/abrt-dump-oops.c:683
+#: ../src/plugins/abrt-dump-oops.c:567
 msgid ""
 " [-vsrowx] [-d DIR] FILE\n"
 "   or:  [-vsrowx] -D FILE\n"
@@ -513,30 +527,30 @@ msgstr ""
 "\n"
 "Extrae alertas desde el archivo syslog/dmesg"
 
-#: ../src/plugins/abrt-dump-oops.c:702
+#: ../src/plugins/abrt-dump-oops.c:586
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "Analiza el búfer de mensajes del kernel antes de analizar FILE"
 
-#: ../src/plugins/abrt-dump-oops.c:703
+#: ../src/plugins/abrt-dump-oops.c:587
 msgid "Print found oopses on standard output"
 msgstr "Muestra los oops hallados en la salida estándar"
 
-#: ../src/plugins/abrt-dump-oops.c:704
+#: ../src/plugins/abrt-dump-oops.c:588
 msgid "Do not exit, watch the file for new oopses"
 msgstr "No finaliza, monitoriza el archivo en busca de nuevos oops"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
-#: ../src/plugins/abrt-dump-oops.c:708
+#.
+#: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr "Crear volcado ABRT en DIR para todo oops encontrada"
 
-#: ../src/plugins/abrt-dump-oops.c:709
+#: ../src/plugins/abrt-dump-oops.c:593
 msgid "Make the dump directory world readable"
 msgstr "Hacer que el directorio de volcado sea legible para todos"
 
-#: ../src/plugins/abrt-dump-oops.c:710
+#: ../src/plugins/abrt-dump-oops.c:594
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
 "Del mismo modo de que -d DumpLocation, DumpLocation se encuentra "
@@ -723,8 +737,8 @@ msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
 msgstr ""
-"El tamaño de su volcado es de %lld bytes, pero el servidor de retrazado sólo"
-" acepta tamaños de hasta %lld bytes."
+"El tamaño de su volcado es de %lld bytes, pero el servidor de retrazado sólo "
+"acepta tamaños de hasta %lld bytes."
 
 #: ../src/plugins/abrt-retrace-client.c:771
 msgid "The server does not support xz-compressed tarballs."
@@ -892,8 +906,8 @@ msgstr "Retraso de las operaciones de votación"
 #: ../src/plugins/abrt-retrace-client.c:1324
 msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
 msgstr ""
-"(debug) no borrar el archivo temporal creado del directorio del volcado en "
-"/tmp"
+"(debug) no borrar el archivo temporal creado del directorio del volcado en /"
+"tmp"
 
 #: ../src/plugins/abrt-retrace-client.c:1326
 msgid "For status, backtrace, and log operations"
@@ -960,8 +974,8 @@ msgstr "Depurador Local GNU"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
 msgstr ""
 "Necesita descargar paquetes  debuginfo, esto puede tardar un tiempo "
 "significativo, y ocupar espacio en disco. Sin embargo, a diferencia del "
@@ -996,8 +1010,8 @@ msgstr ""
 "devuelve. Ventajas: no es necesario las descargas de debuginfo. El "
 "seguimiento sobre la base de datos del servidor de debuginfos es más "
 "completa. El servidor de seguimiento puede generar mejores trazados. "
-"Contras: el volcado que debe cargar contiene todos los datos del a caída del"
-" programa, incluyendo sus datos privados si los hubiere."
+"Contras: el volcado que debe cargar contiene todos los datos del a caída del "
+"programa, incluyendo sus datos privados si los hubiere."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 msgid "Whether or not to use insecure connection"
@@ -1005,13 +1019,13 @@ msgstr "Si es que puede o no usar una conexión insegura"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
+"(warning)&lt;/a&gt;"
 msgstr ""
-"Escriba \"insecure\" para permitir una conexión insegura <a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" >(advertencia)</a>"
+"Escriba \"insecure\" para permitir una conexión insegura <a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" >"
+"(advertencia)</a>"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1072,11 +1086,10 @@ msgid "Analyze VM core"
 msgstr "Analiza el núcleo VM"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
-msgid ""
-"Install kernel debuginfo packages, generate kernel log and oops message"
+msgid "Install kernel debuginfo packages, generate kernel log and oops message"
 msgstr ""
-"Instala paquetes de información de depuración del kernel, genera registro de"
-" kernel y mensajes de alerta"
+"Instala paquetes de información de depuración del kernel, genera registro de "
+"kernel y mensajes de alerta"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
@@ -1128,11 +1141,11 @@ msgstr "Guarda /etc/vimrc y /etc/gvimrc"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
 msgstr ""
-"Verifica si existen directorios .vimrc y .gvimrc en su directorio personal y"
-" los guarda como user_vimrc y user_gvimrc, respectivamente."
+"Verifica si existen directorios .vimrc y .gvimrc en su directorio personal y "
+"los guarda como user_vimrc y user_gvimrc, respectivamente."
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:2
 msgid "Collect yours vim configuration files"
@@ -1141,5 +1154,3 @@ msgstr "Obtiene sus archivos de configuración vim"
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid "Save .vimrc and .gvimrc from your home directory"
 msgstr "Guarda .vimrc y .gvimrc de su directorio temporal"
-
-

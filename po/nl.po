@@ -1,22 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Geert Warrink <geert.warrink@onsnet.nu>, 2011.
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2011-10-12 13:57+0200\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2011-10-12 19:05+0200\n"
 "PO-Revision-Date: 2011-10-12 15:36+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Dutch (http://www.transifex.net/projects/p/fedora/team/nl/)\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -80,7 +80,8 @@ msgid ""
 msgstr ""
 " [-v] [MAP]...\n"
 "\n"
-"Applet die de gebruiker waarschuwt als nieuwe problemen door ABRT gedetecteerd zijn\n"
+"Applet die de gebruiker waarschuwt als nieuwe problemen door ABRT "
+"gedetecteerd zijn\n"
 
 #: ../src/applet/applet.c:838
 msgid "ABRT service is not running"
@@ -117,7 +118,7 @@ msgstr " [opties]"
 msgid "Use UID as client uid"
 msgstr "Gebruik UID als cliënt uid"
 
-#: ../src/daemon/abrt-server.c:462 ../src/plugins/abrt-dump-oops.c:701
+#: ../src/daemon/abrt-server.c:462 ../src/plugins/abrt-dump-oops.c:585
 msgid "Log to syslog"
 msgstr "Loggen naar syslog"
 
@@ -147,7 +148,8 @@ msgid "Exit after SEC seconds of inactivity"
 msgstr "Afsluiten na SEC seconden van inactiviteit"
 
 #: ../src/daemon/abrt-handle-event.c:104
-msgid "\\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
+#, fuzzy
+msgid "\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
 msgstr "\\b [-v] -e|--event GEBEURTENIS DUMP_DIR [DUMP_DIR]..."
 
 #: ../src/daemon/abrt-handle-event.c:111
@@ -240,10 +242,11 @@ msgstr ""
 "Analyseert C/C++ backtrace, genereert duplicaat hash, backtrace waardering,\n"
 "en identificeert crash functie in dump map MAP"
 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:93
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -304,7 +307,7 @@ msgstr "Sluit gdb af als het draait voor meer dan NUM seconden"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
+#.
 #: ../src/plugins/abrt-action-generate-backtrace.c:316
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -366,7 +369,7 @@ msgstr "Opzoeken van benodigde pakketten in de repositories"
 #: ../src/plugins/abrt-action-install-debuginfo:240
 #, c-format
 msgid "Error retrieving metadata: '%s'"
-msgstr "Fout bij het ophalen van metadata: '%s'\n"
+msgstr "Fout bij het ophalen van metadata: '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo:250
 #, c-format
@@ -424,7 +427,8 @@ msgstr "Verlaten op gebruikerscommando"
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -438,10 +442,13 @@ msgid ""
 "    --size_mb   Default: 4096\n"
 msgstr ""
 "Gebruik: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=GROOTTE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=GROOTTE]\n"
 "\n"
 "Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
-"Installeert debuginfo's voor alle te build-id's in BUILD_IDS_FILE naar CACHEDIR, met behulp van TMPDIR als tijdelijke staging-ruimte. Oude bestanden in CACHEDIR worden verwijderd totdat het kleiner is dan GROOTTE.\n"
+"Installeert debuginfo's voor alle te build-id's in BUILD_IDS_FILE naar "
+"CACHEDIR, met behulp van TMPDIR als tijdelijke staging-ruimte. Oude "
+"bestanden in CACHEDIR worden verwijderd totdat het kleiner is dan GROOTTE.\n"
 "\n"
 "    -v          Breedsprakig\n"
 "    -y          Niet-interactief, veronderstel 'Ja' voor alle vragen\n"
@@ -480,7 +487,8 @@ msgid ""
 msgstr ""
 " [-v] [-d GROOTTE:MAP]... [-f GROOTTE:MAP]... [-p MAP]\n"
 "\n"
-"Verwijder dump mappen (-d) of bestanden (-f) in MAPpen totdat ze kleiner zijn dan GROOTTE"
+"Verwijder dump mappen (-d) of bestanden (-f) in MAPpen totdat ze kleiner "
+"zijn dan GROOTTE"
 
 #: ../src/plugins/abrt-action-trim-files.c:162
 msgid "Delete dump dirs"
@@ -494,7 +502,7 @@ msgstr "Bestanden verwijderen"
 msgid "Preserve this dump dir"
 msgstr "Deze dump map behouden"
 
-#: ../src/plugins/abrt-dump-oops.c:683
+#: ../src/plugins/abrt-dump-oops.c:567
 msgid ""
 " [-vsrowx] [-d DIR] FILE\n"
 "   or:  [-vsrowx] -D FILE\n"
@@ -506,34 +514,33 @@ msgstr ""
 "\n"
 "Extraheer oops uit syslog/dmesg bestand"
 
-#: ../src/plugins/abrt-dump-oops.c:702
+#: ../src/plugins/abrt-dump-oops.c:586
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "ontleed boodschap buffer van kernel voor het ontleden van BESTAND"
 
-#: ../src/plugins/abrt-dump-oops.c:703
+#: ../src/plugins/abrt-dump-oops.c:587
 msgid "Print found oopses on standard output"
 msgstr "Print gevonden oops naar standaard output"
 
-#: ../src/plugins/abrt-dump-oops.c:704
+#: ../src/plugins/abrt-dump-oops.c:588
 msgid "Do not exit, watch the file for new oopses"
 msgstr "Sluit niet af, bekijk het bestand voor nieuwe oopses"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
-#: ../src/plugins/abrt-dump-oops.c:708
+#.
+#: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr "Maak ABRT dump aan in MAP voor elke gevonden oops"
 
-#: ../src/plugins/abrt-dump-oops.c:709
+#: ../src/plugins/abrt-dump-oops.c:593
 msgid "Make the dump directory world readable"
 msgstr "Maak de dump map leesbaar voor wereld"
 
-#: ../src/plugins/abrt-dump-oops.c:710
+#: ../src/plugins/abrt-dump-oops.c:594
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
-"Hetzelfde als -d DumpLocation, DumpLocation wordt gespecificeerd in "
-"abrt.conf"
+"Hetzelfde als -d DumpLocation, DumpLocation wordt gespecificeerd in abrt.conf"
 
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid "An error occurred on the server side. Try again later."
@@ -741,8 +748,8 @@ msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
 msgstr ""
-"De grootte van jouw archief is %lld bytes, maar de retrace server accepteert"
-" alleen archieven kleiner dan of gelijk aan %lld bytes."
+"De grootte van jouw archief is %lld bytes, maar de retrace server accepteert "
+"alleen archieven kleiner dan of gelijk aan %lld bytes."
 
 #: ../src/plugins/abrt-retrace-client.c:832
 #, c-format
@@ -952,8 +959,8 @@ msgstr "Lokale GNU debugger"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
 msgstr ""
 "Debuginfo pakketten moeten gedownload worden, wat veel tijd en schijfruimte "
 "zou kunnen kosten. In tegenstelling tot RetraceServer echter, wordt geen "
@@ -985,9 +992,9 @@ msgid ""
 msgstr ""
 "Upload een coredump naar een server, die een backtrace genereert en deze "
 "terugstuurt. Voordelen: debuginfo downloaden is niet nodig. De database van "
-"debuginfos  van de retrace server is completer. De retrace server kan betere"
-" backtraces genereren. Nadelen: een coredump jouw upload bevat alle data van"
-" het gecrashte programma, mogelijk inclusief jouw persoonlijke data."
+"debuginfos  van de retrace server is completer. De retrace server kan betere "
+"backtraces genereren. Nadelen: een coredump jouw upload bevat alle data van "
+"het gecrashte programma, mogelijk inclusief jouw persoonlijke data."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 msgid "Whether or not to use insecure connection"
@@ -995,13 +1002,13 @@ msgstr "De onveilige verbinding wel of niet gebruiken"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
+"(warning)&lt;/a&gt;"
 msgstr ""
-"Schrijf \"insecure\" voor toestaan van onveilige verbinding &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(waarschuwing)&lt;/a&gt;"
+"Schrijf \"insecure\" voor toestaan van onveilige verbinding &lt;a href="
+"\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
+"&gt;(waarschuwing)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1062,8 +1069,7 @@ msgid "Analyze VM core"
 msgstr "analyseer VM core"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
-msgid ""
-"Install kernel debuginfo packages, generate kernel log and oops message"
+msgid "Install kernel debuginfo packages, generate kernel log and oops message"
 msgstr ""
 "Installeer kernel debuginfo pakketten, genereer kernel log en oops boodschap"
 
@@ -1117,8 +1123,8 @@ msgstr "Sla /etc/vimrc en /etc/gvimrc op"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 "Controleert of er .vimrc en .gvimrc bestanden in jouw persoonlijke map zijn "
 "en slaat ze op als respectievelijk user_vimrc en user_gvimrc."
@@ -1130,5 +1136,3 @@ msgstr "Verzmel jouw vim configuratie bestanden"
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid "Save .vimrc and .gvimrc from your home directory"
 msgstr "Sla .vimrc en .gvimrc uit jouw persoonlijke map op"
-
-

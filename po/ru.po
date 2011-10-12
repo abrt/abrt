@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
 # Misha Shnurapet <shnurapet AT fedoraproject.org>, 2011.
@@ -13,16 +13,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2011-10-12 13:57+0200\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2011-10-12 19:05+0200\n"
 "PO-Revision-Date: 2011-10-12 15:36+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Russian <trans-ru@lists.fedoraproject.org>\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -124,7 +125,7 @@ msgstr " [options]"
 msgid "Use UID as client uid"
 msgstr "Использовать UID как uid клиента"
 
-#: ../src/daemon/abrt-server.c:462 ../src/plugins/abrt-dump-oops.c:701
+#: ../src/daemon/abrt-server.c:462 ../src/plugins/abrt-dump-oops.c:585
 msgid "Log to syslog"
 msgstr "Запись в журнал"
 
@@ -154,7 +155,8 @@ msgid "Exit after SEC seconds of inactivity"
 msgstr "Выйти после SEC секунд простоя"
 
 #: ../src/daemon/abrt-handle-event.c:104
-msgid "\\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
+#, fuzzy
+msgid "\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
 msgstr "\\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
 
 #: ../src/daemon/abrt-handle-event.c:111
@@ -244,13 +246,15 @@ msgid ""
 msgstr ""
 " [options] -d DIR\n"
 "\n"
-"Анализирует протокол сбоя кода C/C++, вычисляет уникальный номер и рейтинг проблемы\n"
+"Анализирует протокол сбоя кода C/C++, вычисляет уникальный номер и рейтинг "
+"проблемы\n"
 "и устанавливает функцию, приведшую к сбою, в каталоге дампа DIR"
 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:93
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -299,7 +303,8 @@ msgid ""
 msgstr ""
 " [options] -d DIR\n"
 "\n"
-"Анализирует дамп системы в каталоге дампов DIR, создает и сохраняет протокол сбоя"
+"Анализирует дамп системы в каталоге дампов DIR, создает и сохраняет протокол "
+"сбоя"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:265
 msgid "Additional debuginfo directories"
@@ -311,7 +316,7 @@ msgstr "Снять gdb, если он работает больше NUM секу
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
+#.
 #: ../src/plugins/abrt-action-generate-backtrace.c:316
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -431,7 +436,8 @@ msgstr "Выход по команде пользователя"
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -445,11 +451,14 @@ msgid ""
 "    --size_mb   Default: 4096\n"
 msgstr ""
 "Применение: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "\n"
-"Устанавливает отладочные пакеты для всех build-ids, перечисленных в BUILD_IDS_FILE,\n"
+"Устанавливает отладочные пакеты для всех build-ids, перечисленных в "
+"BUILD_IDS_FILE,\n"
 "в CACHEDIR, используя TMPDIR в качестве области временного хранения.\n"
-"Старые файлы в CACHEDIR удаляются, пока его размер не станет меньше, чем SIZE.\n"
+"Старые файлы в CACHEDIR удаляются, пока его размер не станет меньше, чем "
+"SIZE.\n"
 "\n"
 "    -v          Подробный вывод\n"
 "    -y          Неинтерактивный режим, ответ «Да» на все вопросы\n"
@@ -487,7 +496,8 @@ msgid ""
 msgstr ""
 " [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
 "\n"
-"Удаление каталогов (-d) дампа или файлов (-f) в каталогах DIR, пока их размер не станет меньше, чем SIZE"
+"Удаление каталогов (-d) дампа или файлов (-f) в каталогах DIR, пока их "
+"размер не станет меньше, чем SIZE"
 
 #: ../src/plugins/abrt-action-trim-files.c:162
 msgid "Delete dump dirs"
@@ -501,7 +511,7 @@ msgstr "Удалить файлы"
 msgid "Preserve this dump dir"
 msgstr "Сохранить этот каталог дампа"
 
-#: ../src/plugins/abrt-dump-oops.c:683
+#: ../src/plugins/abrt-dump-oops.c:567
 msgid ""
 " [-vsrowx] [-d DIR] FILE\n"
 "   or:  [-vsrowx] -D FILE\n"
@@ -513,30 +523,30 @@ msgstr ""
 "\n"
 "Извлечь ошибку из syslog/dmesg"
 
-#: ../src/plugins/abrt-dump-oops.c:702
+#: ../src/plugins/abrt-dump-oops.c:586
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "Провести анализ буфера сообщений ядра перед разбором FILE"
 
-#: ../src/plugins/abrt-dump-oops.c:703
+#: ../src/plugins/abrt-dump-oops.c:587
 msgid "Print found oopses on standard output"
 msgstr "Отправить найденные ошибки на стандартный вывод"
 
-#: ../src/plugins/abrt-dump-oops.c:704
+#: ../src/plugins/abrt-dump-oops.c:588
 msgid "Do not exit, watch the file for new oopses"
 msgstr "Не завершать работу, следить за файлом на предмет новых ошибок"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
-#: ../src/plugins/abrt-dump-oops.c:708
+#.
+#: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr "Создать дамп ABRT в DIR для каждого обнаруженного сбоя"
 
-#: ../src/plugins/abrt-dump-oops.c:709
+#: ../src/plugins/abrt-dump-oops.c:593
 msgid "Make the dump directory world readable"
 msgstr "Сделать временный каталог общечитаемым"
 
-#: ../src/plugins/abrt-dump-oops.c:710
+#: ../src/plugins/abrt-dump-oops.c:594
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "То же, что и -d DumpLocation, DumpLocation задается в abrt.conf"
 
@@ -721,8 +731,8 @@ msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
 msgstr ""
-"Объём информации о сбое составляет %lld байт, отслеживающий сервер принимает"
-" данные объёмом не более %lld байт."
+"Объём информации о сбое составляет %lld байт, отслеживающий сервер принимает "
+"данные объёмом не более %lld байт."
 
 #: ../src/plugins/abrt-retrace-client.c:771
 msgid "The server does not support xz-compressed tarballs."
@@ -791,8 +801,7 @@ msgstr "Передано успешно"
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
-msgstr ""
-"Каталог с данными о сбое поврежден и не может быть обработан сервером."
+msgstr "Каталог с данными о сбое поврежден и не может быть обработан сервером."
 
 #: ../src/plugins/abrt-retrace-client.c:967
 msgid ""
@@ -956,11 +965,11 @@ msgstr "Локальный отладчик (GNU Debugger)"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
 msgstr ""
-"Требует загрузки отладочных пакетов, что может занимать значительное время и"
-" дисковое пространство. Отличается от обрабатывающего сервера тем, что не "
+"Требует загрузки отладочных пакетов, что может занимать значительное время и "
+"дисковое пространство. Отличается от обрабатывающего сервера тем, что не "
 "передаёт дампы на удалённые машины."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
@@ -991,8 +1000,7 @@ msgstr ""
 "Преимущество: не требует загрузки отладочной информации. База отладочных "
 "данных на обрабатывающем сервере более полная, он может создавать более "
 "точные отчёты. Недостаток: передаваемый серверу дамп памяти содержит все "
-"данные отказавшей программы, в том числе личные данные, если таковые "
-"имеются."
+"данные отказавшей программы, в том числе личные данные, если таковые имеются."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 msgid "Whether or not to use insecure connection"
@@ -1000,13 +1008,13 @@ msgstr "Использование безопасного подключения
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
+"(warning)&lt;/a&gt;"
 msgstr ""
-"Впишите «insecure» для небезопасного подключения &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(предупреждение)&lt;/a&gt;"
+"Впишите «insecure» для небезопасного подключения &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
+"(предупреждение)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1018,8 +1026,7 @@ msgid ""
 "executable's name. The result is saved as 'xsession_errors' element."
 msgstr ""
 "Сканирование файла ~/.xsession-errors с сохранением строк, содержащих "
-"названия исполняемых файлов. Результат помещается в ячейку "
-"«xsession_errors»."
+"названия исполняемых файлов. Результат помещается в ячейку «xsession_errors»."
 
 #: ../src/cli/abrt-cli.c:141
 msgid "Usage: abrt-cli [--version] COMMAND [ARGS]"
@@ -1067,8 +1074,7 @@ msgid "Analyze VM core"
 msgstr "Разбор отказа системы"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
-msgid ""
-"Install kernel debuginfo packages, generate kernel log and oops message"
+msgid "Install kernel debuginfo packages, generate kernel log and oops message"
 msgstr ""
 "Установка пакетов для отладки ядра, создание журнала и запись сообщений об "
 "ошибках ядра"
@@ -1123,8 +1129,8 @@ msgstr "Чтение /etc/vimrc и /etc/gvimrc"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 "Проверка домашне папки на наличие файлов .vimrc и .gvimrc и вложение "
 "последних в отчёты как user_vimrc и user_gvimrc."
@@ -1136,5 +1142,3 @@ msgstr "Сбор пользовательских параметров vim"
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid "Save .vimrc and .gvimrc from your home directory"
 msgstr "Чтение .vimrc и .gvimrc из домашнего каталога пользователя"
-
-

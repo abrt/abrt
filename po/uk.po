@@ -1,23 +1,24 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
 # Yuri Chornoivan <yurchor@ukr.net>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2011-10-12 13:57+0200\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2011-10-12 19:05+0200\n"
 "PO-Revision-Date: 2011-10-12 15:36+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
+"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: uk\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -119,7 +120,7 @@ msgstr " [параметри]"
 msgid "Use UID as client uid"
 msgstr "Використати UID як унікальний ідентифікатор клієнта"
 
-#: ../src/daemon/abrt-server.c:462 ../src/plugins/abrt-dump-oops.c:701
+#: ../src/daemon/abrt-server.c:462 ../src/plugins/abrt-dump-oops.c:585
 msgid "Log to syslog"
 msgstr "Записувати до журналу syslog"
 
@@ -149,7 +150,8 @@ msgid "Exit after SEC seconds of inactivity"
 msgstr "Завершувати роботу після SEC секунд бездіяльності"
 
 #: ../src/daemon/abrt-handle-event.c:104
-msgid "\\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
+#, fuzzy
+msgid "\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
 msgstr "\\b [-v] -e|--event ПОДІЯ КАТАЛОГ_ДАМПІВ [КАТАЛОГ_ДАМПІВ]..."
 
 #: ../src/daemon/abrt-handle-event.c:111
@@ -243,10 +245,11 @@ msgstr ""
 "зворотного трасування та визначити функцію, під час виконання якої сталося \n"
 "аварійне завершення, у каталозі дампів КАТАЛОГ"
 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:93
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -270,7 +273,8 @@ msgid ""
 msgstr ""
 " [-vs] -d КАТАЛОГ\n"
 "\n"
-"Обчислює і зберігає UUID та DUPHASH для каталогу аварійних дампів ядра КАТАЛОГ"
+"Обчислює і зберігає UUID та DUPHASH для каталогу аварійних дампів ядра "
+"КАТАЛОГ"
 
 #: ../src/plugins/abrt-action-analyze-python.c:29
 msgid ""
@@ -295,7 +299,8 @@ msgid ""
 msgstr ""
 " [параметри] -d КАТАЛОГ\n"
 "\n"
-"Аналізує дамп ядра у каталозі КАТАЛОГ, створює і зберігає дані зворотного трасування"
+"Аналізує дамп ядра у каталозі КАТАЛОГ, створює і зберігає дані зворотного "
+"трасування"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:265
 msgid "Additional debuginfo directories"
@@ -307,7 +312,7 @@ msgstr "Завершити роботу gdb, якщо вона триває по
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
+#.
 #: ../src/plugins/abrt-action-generate-backtrace.c:316
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -351,8 +356,7 @@ msgstr "Ініціалізація yum"
 #: ../src/plugins/abrt-action-install-debuginfo:187
 #, c-format
 msgid "Error initializing yum (YumBase.doConfigSetup): '%s'"
-msgstr ""
-"Помилка під час спроби ініціалізації yum (YumBase.doConfigSetup): '%s'"
+msgstr "Помилка під час спроби ініціалізації yum (YumBase.doConfigSetup): '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo:218
 msgid "Setting up yum repositories"
@@ -428,7 +432,8 @@ msgstr "Завершення роботи за бажанням користув
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -442,7 +447,8 @@ msgid ""
 "    --size_mb   Default: 4096\n"
 msgstr ""
 "Використання: %s [-vy] [--ids=ФАЙЛ_ІДЕНТИФІКАТОРІВ_ЗБИРАННЯ]\n"
-"       [--tmpdir=ТИМЧКАТАЛОГ] [--cache=КАТАЛОГКЕШУ[:КАТАЛОГДІАГНДАНИХ1:КАТАЛОГДІАГНДАНИХ2...]] [--size_mb=РОЗМІР]\n"
+"       [--tmpdir=ТИМЧКАТАЛОГ] [--cache=КАТАЛОГКЕШУ[:КАТАЛОГДІАГНДАНИХ1:"
+"КАТАЛОГДІАГНДАНИХ2...]] [--size_mb=РОЗМІР]\n"
 "\n"
 "Встановлює пакунки символів для діагностики для всіх ідентифікаторів\n"
 "з файла ФАЙЛ_ІДЕНТИФІКАТОРІВ_ЗБИРАННЯ до каталогу \n"
@@ -488,7 +494,8 @@ msgid ""
 msgstr ""
 " [-v] [-d РОЗМІР:КАТАЛОГ]... [-f РОЗМІР:КАТАЛОГ]... [-p КАТАЛОГ]\n"
 "\n"
-"Вилучити каталоги дампів (-d) або файли (-f) у КАТАЛОГах, якщо їхні розміри більші за РОЗМІР"
+"Вилучити каталоги дампів (-d) або файли (-f) у КАТАЛОГах, якщо їхні розміри "
+"більші за РОЗМІР"
 
 #: ../src/plugins/abrt-action-trim-files.c:162
 msgid "Delete dump dirs"
@@ -502,7 +509,7 @@ msgstr "Вилучити файли"
 msgid "Preserve this dump dir"
 msgstr "Зберегти цей каталог дампів"
 
-#: ../src/plugins/abrt-dump-oops.c:683
+#: ../src/plugins/abrt-dump-oops.c:567
 msgid ""
 " [-vsrowx] [-d DIR] FILE\n"
 "   or:  [-vsrowx] -D FILE\n"
@@ -514,16 +521,15 @@ msgstr ""
 "\n"
 "Видобути повідомлення про аварії (oops) з файла syslog/dmesg"
 
-#: ../src/plugins/abrt-dump-oops.c:702
+#: ../src/plugins/abrt-dump-oops.c:586
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "Обробити буфер повідомлень ядра до обробки ФАЙЛа"
 
-#: ../src/plugins/abrt-dump-oops.c:703
+#: ../src/plugins/abrt-dump-oops.c:587
 msgid "Print found oopses on standard output"
-msgstr ""
-"Вивести знайдені повідомлення про аварії (oops) до стандартного виводу"
+msgstr "Вивести знайдені повідомлення про аварії (oops) до стандартного виводу"
 
-#: ../src/plugins/abrt-dump-oops.c:704
+#: ../src/plugins/abrt-dump-oops.c:588
 msgid "Do not exit, watch the file for new oopses"
 msgstr ""
 "Не завершувати роботу, спостерігати за появою нових повідомлень про аварії "
@@ -531,18 +537,18 @@ msgstr ""
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
-#: ../src/plugins/abrt-dump-oops.c:708
+#.
+#: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr ""
-"Створити дамп ABRT у КАТАЛОЗІ для кожного знайденого повідомлення про аварію"
-" (oops)"
+"Створити дамп ABRT у КАТАЛОЗІ для кожного знайденого повідомлення про аварію "
+"(oops)"
 
-#: ../src/plugins/abrt-dump-oops.c:709
+#: ../src/plugins/abrt-dump-oops.c:593
 msgid "Make the dump directory world readable"
 msgstr "Зробити каталог дампу доступним для всіх користувачів"
 
-#: ../src/plugins/abrt-dump-oops.c:710
+#: ../src/plugins/abrt-dump-oops.c:594
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "Зберегти як -d DumpLocation, DumpLocation вказано у abrt.conf"
 
@@ -633,8 +639,7 @@ msgstr "Не вдалося використати для шифрування �
 #: ../src/plugins/abrt-retrace-client.c:343
 msgid "Failed to enable client handshake to SSL socket."
 msgstr ""
-"Не вдалося увімкнути клієнтську процедуру встановлення зв’язку з сокетом "
-"SSL."
+"Не вдалося увімкнути клієнтську процедуру встановлення зв’язку з сокетом SSL."
 
 #: ../src/plugins/abrt-retrace-client.c:349
 msgid "Failed to set URL to SSL socket."
@@ -714,8 +719,8 @@ msgstr "Визначення параметрів сервера"
 #: ../src/plugins/abrt-retrace-client.c:712
 msgid "The server is fully occupied. Try again later."
 msgstr ""
-"Зараз сервер повторного трасування повністю зайнято виконанням завдань. Будь"
-" ласка, повторіть спробу пізніше."
+"Зараз сервер повторного трасування повністю зайнято виконанням завдань. Будь "
+"ласка, повторіть спробу пізніше."
 
 #: ../src/plugins/abrt-retrace-client.c:713
 msgid "The server denied your request."
@@ -762,9 +767,8 @@ msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
 msgstr ""
-"Розмір даних щодо архіву ваших даних дорівнює %lld байтів, сервер повторного"
-" трасування здатен обробити лише архіви, об’єм яких не перевищує %lld "
-"байтів."
+"Розмір даних щодо архіву ваших даних дорівнює %lld байтів, сервер повторного "
+"трасування здатен обробити лише архіви, об’єм яких не перевищує %lld байтів."
 
 #: ../src/plugins/abrt-retrace-client.c:832
 #, c-format
@@ -808,16 +812,16 @@ msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
 msgstr ""
-"Дані у вашому каталозі даних щодо проблеми пошкоджено, їх неможливо обробити"
-" на сервері повторного трасування."
+"Дані у вашому каталозі даних щодо проблеми пошкоджено, їх неможливо обробити "
+"на сервері повторного трасування."
 
 #: ../src/plugins/abrt-retrace-client.c:967
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
 msgstr ""
-"У архіві містяться помилкові файли (зокрема символічні посилання), отже його"
-" не можна обробити."
+"У архіві містяться помилкові файли (зокрема символічні посилання), отже його "
+"не можна обробити."
 
 #: ../src/plugins/abrt-retrace-client.c:980
 msgid "Invalid response from server: missing X-Task-Id."
@@ -965,8 +969,8 @@ msgstr "Не вдалося завершити роботу NSS."
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgstr ""
-"Отримати пакунки debuginfo і створити дані зворотного трасування локально за"
-" допомогою GDB"
+"Отримати пакунки debuginfo і створити дані зворотного трасування локально за "
+"допомогою GDB"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Local GNU Debugger"
@@ -975,8 +979,8 @@ msgstr "Локальний зневаджувач GNU"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
 msgstr ""
 "Доведеться звантажити пакунки debuginfo. Звантаження може тривати досить "
 "довго, пакунки, які буде встановлено, можуть значно зменшити об’єм вільного "
@@ -1007,9 +1011,9 @@ msgid ""
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
 msgstr ""
-"Вивантажує дамп ядра на сервер. Сервер створить дані зворотного трасування і"
-" поверне їх вам. Переваги: не потрібно встановлювати пакунки debuginfo. База"
-" даних пакунків debuginfo може бути повнішою за вашу. Сервер повторного "
+"Вивантажує дамп ядра на сервер. Сервер створить дані зворотного трасування і "
+"поверне їх вам. Переваги: не потрібно встановлювати пакунки debuginfo. База "
+"даних пакунків debuginfo може бути повнішою за вашу. Сервер повторного "
 "трасування може отримати кращі дані зворотного трасування. Недоліки: дамп "
 "ядра, який буде вивантажено, міститиме всі дані з аварійної програми, "
 "зокрема конфіденційні дані, якщо такі там зберігалися."
@@ -1020,13 +1024,13 @@ msgstr "Визначає, чи можна використовувати нез�
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
+"(warning)&lt;/a&gt;"
 msgstr ""
-"Вкажіть «Незахищене», щоб дозволити незахищене з’єднання &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(попередження)&lt;/a&gt;"
+"Вкажіть «Незахищене», щоб дозволити незахищене з’єднання &lt;a href="
+"\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
+"&gt;(попередження)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1087,8 +1091,7 @@ msgid "Analyze VM core"
 msgstr "Проаналізувати ядро ВМ"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
-msgid ""
-"Install kernel debuginfo packages, generate kernel log and oops message"
+msgid "Install kernel debuginfo packages, generate kernel log and oops message"
 msgstr ""
 "Встановити пакунки діагностичних даних ядра, створити журнал дій ядра і "
 "повідомлень щодо помилок"
@@ -1110,8 +1113,8 @@ msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
 msgstr ""
-"Запускає gconftool-2 --recursive-list /apps/виконуваний_файл і зберігає дані"
-" як елемент «gconf_subtree»."
+"Запускає gconftool-2 --recursive-list /apps/виконуваний_файл і зберігає дані "
+"як елемент «gconf_subtree»."
 
 #: ../src/plugins/collect_GConf.xml.in.h:3
 msgid "Save configuration from application's GConf directory"
@@ -1143,8 +1146,8 @@ msgstr "Зберегти /etc/vimrc і /etc/gvimrc"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 "Шукає .vimrc і .gvimrc у вашому домашньому каталозі і зберігає їх як "
 "user_vimrc і user_gvimrc, відповідно."
@@ -1156,5 +1159,3 @@ msgstr "Зібрати ваші файли налаштувань vim"
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid "Save .vimrc and .gvimrc from your home directory"
 msgstr "Зберегти .vimrc та .gvimrc з вашого домашнього каталогу"
-
-

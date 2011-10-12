@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # alanzheng <machinecat1666@gmail.com>, 2011.
 #   <alick9188@gmail.com>, 2011.
@@ -14,15 +14,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2011-10-12 13:57+0200\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2011-10-12 19:05+0200\n"
 "PO-Revision-Date: 2011-10-12 15:36+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
-"Language-Team: Chinese (China) (http://www.transifex.net/projects/p/fedora/team/zh_CN/)\n"
+"Language-Team: Chinese (China) (http://www.transifex.net/projects/p/fedora/"
+"team/zh_CN/)\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -115,7 +116,7 @@ msgstr ""
 msgid "Use UID as client uid"
 msgstr "使用 UID 作为客户端 UID"
 
-#: ../src/daemon/abrt-server.c:462 ../src/plugins/abrt-dump-oops.c:701
+#: ../src/daemon/abrt-server.c:462 ../src/plugins/abrt-dump-oops.c:585
 msgid "Log to syslog"
 msgstr "记录到 syslog"
 
@@ -128,7 +129,8 @@ msgstr "添加程序名到日志"
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
-msgstr "报告大小已超出配额。请检查在 abrt.conf 文件中系统的 MaxCrashReportsSize 值。"
+msgstr ""
+"报告大小已超出配额。请检查在 abrt.conf 文件中系统的 MaxCrashReportsSize 值。"
 
 #: ../src/daemon/abrtd.c:637
 msgid "Do not daemonize"
@@ -143,7 +145,7 @@ msgid "Exit after SEC seconds of inactivity"
 msgstr "在闲置 SEC 秒后退出"
 
 #: ../src/daemon/abrt-handle-event.c:104
-msgid "\\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
+msgid "\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
 msgstr ""
 
 #: ../src/daemon/abrt-handle-event.c:111
@@ -229,10 +231,11 @@ msgid ""
 "and identifies crash function in dump directory DIR"
 msgstr ""
 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:93
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -281,7 +284,7 @@ msgstr "如果 gdb 运行超过 NUM 秒就终止它"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
+#.
 #: ../src/plugins/abrt-action-generate-backtrace.c:316
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -343,7 +346,7 @@ msgstr "正在软件仓库中查找所需软件包"
 #: ../src/plugins/abrt-action-install-debuginfo:240
 #, c-format
 msgid "Error retrieving metadata: '%s'"
-msgstr "接收元数据时出错：“%s”\n"
+msgstr "接收元数据时出错：“%s”"
 
 #: ../src/plugins/abrt-action-install-debuginfo:250
 #, c-format
@@ -401,7 +404,8 @@ msgstr "应用户命令退出"
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -454,7 +458,7 @@ msgstr "删除文件"
 msgid "Preserve this dump dir"
 msgstr "保留该转储目录"
 
-#: ../src/plugins/abrt-dump-oops.c:683
+#: ../src/plugins/abrt-dump-oops.c:567
 msgid ""
 " [-vsrowx] [-d DIR] FILE\n"
 "   or:  [-vsrowx] -D FILE\n"
@@ -462,30 +466,30 @@ msgid ""
 "Extract oops from syslog/dmesg file"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:702
+#: ../src/plugins/abrt-dump-oops.c:586
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "在解析 FILE 文件之前解析内核的消息缓冲区"
 
-#: ../src/plugins/abrt-dump-oops.c:703
+#: ../src/plugins/abrt-dump-oops.c:587
 msgid "Print found oopses on standard output"
 msgstr "在标准输出上打印找到的内核崩溃签名"
 
-#: ../src/plugins/abrt-dump-oops.c:704
+#: ../src/plugins/abrt-dump-oops.c:588
 msgid "Do not exit, watch the file for new oopses"
 msgstr "不要退出，监视此文件以便掌握新内核崩溃签名"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
-#: ../src/plugins/abrt-dump-oops.c:708
+#.
+#: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr "在 DIR 中为每个找到的内核崩溃签名创建 ABRT 转储"
 
-#: ../src/plugins/abrt-dump-oops.c:709
+#: ../src/plugins/abrt-dump-oops.c:593
 msgid "Make the dump directory world readable"
 msgstr "让转储目录对匿名用户可读"
 
-#: ../src/plugins/abrt-dump-oops.c:710
+#: ../src/plugins/abrt-dump-oops.c:594
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
 
@@ -665,7 +669,8 @@ msgstr "stat file“%s”执行失败。"
 msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
-msgstr "您的崩溃数据大小是 %lldB，但追溯服务器只接受小于或等于 %lldB 的崩溃数据。"
+msgstr ""
+"您的崩溃数据大小是 %lldB，但追溯服务器只接受小于或等于 %lldB 的崩溃数据。"
 
 #: ../src/plugins/abrt-retrace-client.c:771
 msgid "The server does not support xz-compressed tarballs."
@@ -890,9 +895,11 @@ msgstr "本地 GNU 调试器"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
-msgstr "需要下载 debuginfo 软件包，这可能要花较长时间并占用很多磁盘空间。然而和追溯服务器不同的是，它不把内存转储发送至远程机器。"
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
+msgstr ""
+"需要下载 debuginfo 软件包，这可能要花较长时间并占用很多磁盘空间。然而和追溯服"
+"务器不同的是，它不把内存转储发送至远程机器。"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Address of the retrace server"
@@ -918,8 +925,9 @@ msgid ""
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
 msgstr ""
-"上传内存转储到服务器，由服务器生成回溯数据并返回。优点：无需下载调试信息；追溯服务器的 debuginfo "
-"数据库更加完整；追溯服务器可以生成更好的回溯数据。缺点：您上传的内存转储包含崩溃程序的所有数据，如果有私人数据，也包含在其中。"
+"上传内存转储到服务器，由服务器生成回溯数据并返回。优点：无需下载调试信息；追"
+"溯服务器的 debuginfo 数据库更加完整；追溯服务器可以生成更好的回溯数据。缺点："
+"您上传的内存转储包含崩溃程序的所有数据，如果有私人数据，也包含在其中。"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 msgid "Whether or not to use insecure connection"
@@ -927,9 +935,9 @@ msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
+"(warning)&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
@@ -940,7 +948,9 @@ msgstr "从 ~/.xsession-errors 文件保存有关行"
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
-msgstr "扫描 ~/.xsession-errors 文件并保存包含可执行文件名称的行。结果存为“xsession_errors”元素。"
+msgstr ""
+"扫描 ~/.xsession-errors 文件并保存包含可执行文件名称的行。结果存"
+"为“xsession_errors”元素。"
 
 #: ../src/cli/abrt-cli.c:141
 msgid "Usage: abrt-cli [--version] COMMAND [ARGS]"
@@ -988,8 +998,7 @@ msgid "Analyze VM core"
 msgstr ""
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
-msgid ""
-"Install kernel debuginfo packages, generate kernel log and oops message"
+msgid "Install kernel debuginfo packages, generate kernel log and oops message"
 msgstr ""
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
@@ -1025,7 +1034,8 @@ msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
 msgstr ""
-"检查 /etc 下是否存在 vimrc 和 gvimrc  文件，分别把它们保存到 system_vimrc 和 system_gvimrc。"
+"检查 /etc 下是否存在 vimrc 和 gvimrc  文件，分别把它们保存到 system_vimrc 和 "
+"system_gvimrc。"
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:2
 msgid "Collect system-wide vim configuration files"
@@ -1037,9 +1047,11 @@ msgstr "保存 /etc/vimrc 和 /etc/gvimrc"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
-msgstr "检查您的家目录下是否存在 .vimrc 和 .gvimrc  文件，分别把它们保存到 user_vimrc 和 user_gvimrc。"
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
+msgstr ""
+"检查您的家目录下是否存在 .vimrc 和 .gvimrc  文件，分别把它们保存到 "
+"user_vimrc 和 user_gvimrc。"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:2
 msgid "Collect yours vim configuration files"
@@ -1048,5 +1060,3 @@ msgstr "收集您的 vim 配置文件"
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid "Save .vimrc and .gvimrc from your home directory"
 msgstr "保存您的家目录中的 .vimrc 和 .gvimrc"
-
-

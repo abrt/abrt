@@ -1,23 +1,24 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
 # Piotr Drąg <piotrdrag@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2011-10-12 13:57+0200\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2011-10-12 19:05+0200\n"
 "PO-Revision-Date: 2011-10-12 15:36+0000\n"
 "Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
 "Language-Team: Polish (http://www.transifex.net/projects/p/fedora/team/pl/)\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pl\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -82,7 +83,8 @@ msgid ""
 msgstr ""
 " [-v] [KATALOG]...\n"
 "\n"
-"Aplet powiadamiający użytkownika o nowych problemach wykrytych przez program ABRT\n"
+"Aplet powiadamiający użytkownika o nowych problemach wykrytych przez program "
+"ABRT\n"
 
 #: ../src/applet/applet.c:838
 msgid "ABRT service is not running"
@@ -119,7 +121,7 @@ msgstr " [opcje]"
 msgid "Use UID as client uid"
 msgstr "Używa UID jako UID klienta"
 
-#: ../src/daemon/abrt-server.c:462 ../src/plugins/abrt-dump-oops.c:701
+#: ../src/daemon/abrt-server.c:462 ../src/plugins/abrt-dump-oops.c:585
 msgid "Log to syslog"
 msgstr "Przekazuje komunikaty do dziennika systemowego"
 
@@ -150,7 +152,8 @@ msgid "Exit after SEC seconds of inactivity"
 msgstr "Kończy działanie po SEKUNDACH nieaktywności"
 
 #: ../src/daemon/abrt-handle-event.c:104
-msgid "\\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
+#, fuzzy
+msgid "\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
 msgstr "\\b [-v] -e|--event ZDARZENIE KATALOG_ZRZUTU [KATALOG_ZRZUTU]..."
 
 #: ../src/daemon/abrt-handle-event.c:111
@@ -243,10 +246,11 @@ msgstr ""
 "Analizuje wyjątki C/C++, tworzy sumę duplikatu, ocenę wyjątku oraz\n"
 "identyfikuje funkcję awarii w KATALOGU zrzutu"
 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:93
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -307,7 +311,7 @@ msgstr "Kończy działanie GDB, jeśli jest uruchomione dłużej niż NUM sekund
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
+#.
 #: ../src/plugins/abrt-action-generate-backtrace.c:316
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -427,7 +431,8 @@ msgstr "Wyłączanie na polecenie użytkownika"
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -441,7 +446,8 @@ msgid ""
 "    --size_mb   Default: 4096\n"
 msgstr ""
 "Użycie: %s [-vy] [--ids=PLIK_IDENTYFIKATORÓW_BUDOWANIA]\n"
-"       [--tmpdir=KATALOG_TYMCZASOWY] [--cache=KATALOG_PAMIĘCI_PODRĘCZNEJ[:KATALOG_DEBUGINFO1:KATALOG_DEBUGINFO2...]] [--size_mb=ROZMIAR]\n"
+"       [--tmpdir=KATALOG_TYMCZASOWY] [--cache=KATALOG_PAMIĘCI_PODRĘCZNEJ[:"
+"KATALOG_DEBUGINFO1:KATALOG_DEBUGINFO2...]] [--size_mb=ROZMIAR]\n"
 "\n"
 "Instaluje pakiety debuginfo dla wszystkich identyfikatorów budowania z\n"
 "listy w PLIKU_IDENTYFIKATORÓW_BUDOWANIA do KATALOGU_PAMIĘCI_PODRĘCZNEJ,\n"
@@ -486,7 +492,8 @@ msgid ""
 msgstr ""
 " [-v] [-d ROZMIAR:KATALOG]... [-f ROZMIAR:KATALOG]... [-p KATALOG]\n"
 "\n"
-"Usuwa katalogi zrzutu (-d) lub pliki (-f) w KATALOGACH, sopóki nie będą mniejsze niż ROZMIAR"
+"Usuwa katalogi zrzutu (-d) lub pliki (-f) w KATALOGACH, sopóki nie będą "
+"mniejsze niż ROZMIAR"
 
 #: ../src/plugins/abrt-action-trim-files.c:162
 msgid "Delete dump dirs"
@@ -500,7 +507,7 @@ msgstr "Usuwa pliki"
 msgid "Preserve this dump dir"
 msgstr "Zachowuje ten katalog zrzutów"
 
-#: ../src/plugins/abrt-dump-oops.c:683
+#: ../src/plugins/abrt-dump-oops.c:567
 msgid ""
 " [-vsrowx] [-d DIR] FILE\n"
 "   or:  [-vsrowx] -D FILE\n"
@@ -512,30 +519,30 @@ msgstr ""
 "\n"
 "Wydobywa oops z pliku syslog/dmesg"
 
-#: ../src/plugins/abrt-dump-oops.c:702
+#: ../src/plugins/abrt-dump-oops.c:586
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "Przetwarza bufor komunikatów jądra przed przetworzeniem PLIKU"
 
-#: ../src/plugins/abrt-dump-oops.c:703
+#: ../src/plugins/abrt-dump-oops.c:587
 msgid "Print found oopses on standard output"
 msgstr "Wyświetla odnalezione awarie w standardowym wyjściu"
 
-#: ../src/plugins/abrt-dump-oops.c:704
+#: ../src/plugins/abrt-dump-oops.c:588
 msgid "Do not exit, watch the file for new oopses"
 msgstr "Bez kończenia działania, obserwuje pliki pod kątem nowych awarii"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
-#: ../src/plugins/abrt-dump-oops.c:708
+#.
+#: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr "Tworzy zrzut ABRT w KATALOGU dla każdej odnalezionej awarii"
 
-#: ../src/plugins/abrt-dump-oops.c:709
+#: ../src/plugins/abrt-dump-oops.c:593
 msgid "Make the dump directory world readable"
 msgstr "Ustawia katalog zrzutów czytelnym dla wszystkich"
 
-#: ../src/plugins/abrt-dump-oops.c:710
+#: ../src/plugins/abrt-dump-oops.c:594
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
 "To samo, co -d DumpLocation, DumpLocation jest określone w pliku abrt.conf"
@@ -582,8 +589,8 @@ msgstr "Certyfikat jest podpisany przez niezaufanego wystawcę: \"%s\"."
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
 msgstr ""
-"Nazwa tematu certyfikatu \"%s\" nie pasuje do docelowej nazwy komputera "
-"\"%s\"."
+"Nazwa tematu certyfikatu \"%s\" nie pasuje do docelowej nazwy komputera \"%s"
+"\"."
 
 #: ../src/plugins/abrt-retrace-client.c:225
 msgid "Remote certificate has expired."
@@ -801,8 +808,8 @@ msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
 msgstr ""
-"Archiwum zawiera złośliwe pliki (takie jak dowiązania symboliczne), więc nie"
-" może zostać przetworzone."
+"Archiwum zawiera złośliwe pliki (takie jak dowiązania symboliczne), więc nie "
+"może zostać przetworzone."
 
 #: ../src/plugins/abrt-retrace-client.c:980
 msgid "Invalid response from server: missing X-Task-Id."
@@ -891,8 +898,8 @@ msgstr "Opóźnienie do działań odpytywania"
 #: ../src/plugins/abrt-retrace-client.c:1324
 msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
 msgstr ""
-"(debugowanie) nie usuwa tymczasowych archiwów utworzonych z katalogu zrzutów"
-" w /tmp"
+"(debugowanie) nie usuwa tymczasowych archiwów utworzonych z katalogu zrzutów "
+"w /tmp"
 
 #: ../src/plugins/abrt-retrace-client.c:1326
 msgid "For status, backtrace, and log operations"
@@ -959,12 +966,12 @@ msgstr "Lokalny debuger GDB"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
 msgstr ""
 "Należy pobrać pakiety debuginfo, co może zająć dużo czasu i miejsca na "
-"dysku. Jednakże, w przeciwieństwie do RetraceServer, nie wysyła zrzutów core"
-" do zdalnych komputerów."
+"dysku. Jednakże, w przeciwieństwie do RetraceServer, nie wysyła zrzutów core "
+"do zdalnych komputerów."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Address of the retrace server"
@@ -993,8 +1000,8 @@ msgstr ""
 "Wysyła zrzuty core do serwera, którzy tworzy wyjątek i go zwraca. Zalety: "
 "nie trzeba pobierać pakietów debuginfo. Baza danych pakietów debuginfo "
 "serwera ponownego śledzenia jest bardziej kompletna. Może on tworzyć lepsze "
-"wyjątki. Wady: wysyłane zrzuty core zawierają wszystkie dane programu, który"
-" uległ awarii, w tym potencjalnie prywatne dane."
+"wyjątki. Wady: wysyłane zrzuty core zawierają wszystkie dane programu, który "
+"uległ awarii, w tym potencjalnie prywatne dane."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 msgid "Whether or not to use insecure connection"
@@ -1002,13 +1009,13 @@ msgstr "Określa, czy używać niezabezpieczonego połączenia"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
+"(warning)&lt;/a&gt;"
 msgstr ""
 "Wpisanie \"insecure\" umożliwia użycie połączenia niezabezpieczonego &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(ostrzeżenie)&lt;/a&gt;"
+"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection"
+"\" &gt;(ostrzeżenie)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1019,9 +1026,8 @@ msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
 msgstr ""
-"Skanuje plik ~/.xsession-errors i zapisuje te wiersze, które zawierają nazwę"
-" pliku wykonywalnego. Wynik jest zapisywany jako element "
-"\"xsession_errors\"."
+"Skanuje plik ~/.xsession-errors i zapisuje te wiersze, które zawierają nazwę "
+"pliku wykonywalnego. Wynik jest zapisywany jako element \"xsession_errors\"."
 
 #: ../src/cli/abrt-cli.c:141
 msgid "Usage: abrt-cli [--version] COMMAND [ARGS]"
@@ -1069,8 +1075,7 @@ msgid "Analyze VM core"
 msgstr "Analizuje plik core maszyny wirtualnej"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
-msgid ""
-"Install kernel debuginfo packages, generate kernel log and oops message"
+msgid "Install kernel debuginfo packages, generate kernel log and oops message"
 msgstr ""
 "Instaluje pakiety debuginfo jądra, tworzy dziennik jądra i komunikat oops"
 
@@ -1124,8 +1129,8 @@ msgstr "Zapisuje pliki /etc/vimrc i /etc/gvimrc"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 "Sprawdza, czy istnieją pliki .vimrc i .gvimrc w katalogu domowym i zapisuje "
 "je jako user_vimrc i user_gvimrc."
@@ -1137,5 +1142,3 @@ msgstr "Zbiera pliki konfiguracji użytkownika programu vim"
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid "Save .vimrc and .gvimrc from your home directory"
 msgstr "Zapisuje pliki .vimrc i .gvimrc z katalogu domowego użytkownika"
-
-
