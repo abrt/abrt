@@ -112,32 +112,6 @@ static GList *kernel_tainted_long(unsigned tainted)
 }
 #endif
 
-static char *koops_extract_version(const char *linepointer)
-{
-    if (strstr(linepointer, "Pid")
-     || strstr(linepointer, "comm")
-     || strstr(linepointer, "CPU")
-     || strstr(linepointer, "REGS")
-     || strstr(linepointer, "EFLAGS")
-    ) {
-        char* start;
-        char* end;
-
-        start = strstr(linepointer, "2.6.");
-        if (!start)
-            start = strstr(linepointer, "3.");
-        if (start)
-        {
-            end = strchr(start, ')');
-            if (!end)
-                end = strchrnul(start, ' ');
-            return xstrndup(start, end-start);
-        }
-    }
-
-    return NULL;
-}
-
 /*
  * extract_oops tries to find oops signatures in a log
  */

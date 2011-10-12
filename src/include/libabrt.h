@@ -60,6 +60,10 @@ void free_abrt_conf_data();
 #define daemon_is_ok abrt_daemon_is_ok
 int daemon_is_ok();
 
+/* Note: should be public since unit tests need to call it */
+#define koops_extract_version abrt_koops_extract_version
+char *koops_extract_version(const char *line);
+
 
 #ifdef __cplusplus
 }
