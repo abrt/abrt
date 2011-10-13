@@ -118,35 +118,41 @@ def handleMyException((etype, value, tb)):
             raise Exception
 
         elist = traceback.format_exception(etype, value, tb)
-        tblast = traceback.extract_tb(tb, limit=None)
-        if len(tblast):
-            tblast = tblast[len(tblast)-1]
-        extxt = traceback.format_exception_only(etype, value)
-        if tblast and len(tblast) > 3:
-            ll = []
-            ll.extend(tblast[:3])
-            ll[0] = os.path.basename(tblast[0])
-            tblast = ll
 
-        ntext = ""
-        for t in tblast:
-            ntext += str(t) + ":"
+        if tb != None:
+            tblast = traceback.extract_tb(tb, limit=None)
+            if len(tblast):
+                tblast = tblast[len(tblast)-1]
+            extxt = traceback.format_exception_only(etype, value)
+            if tblast and len(tblast) > 3:
+                ll = []
+                ll.extend(tblast[:3])
+                ll[0] = os.path.basename(tblast[0])
+                tblast = ll
 
-        text = ntext
-        text += extxt[0]
-        text += "\n"
-        text += "".join(elist)
+            ntext = ""
+            for t in tblast:
+                ntext += str(t) + ":"
 
-        trace = tb
-        while trace.tb_next:
-            trace = trace.tb_next
-        frame = trace.tb_frame
-        text += ("\nLocal variables in innermost frame:\n")
-        try:
-            for (key, val) in frame.f_locals.items():
-                text += "%s: %s\n" % (key, repr(val))
-        except:
-            pass
+            text = ntext
+            text += extxt[0]
+            text += "\n"
+            text += "".join(elist)
+
+            trace = tb
+            while trace.tb_next:
+                trace = trace.tb_next
+            frame = trace.tb_frame
+            text += ("\nLocal variables in innermost frame:\n")
+            try:
+                for (key, val) in frame.f_locals.items():
+                    text += "%s: %s\n" % (key, repr(val))
+            except:
+                pass
+        else:
+            text = str(value) + "\n"
+            text += "\n"
+            text += "".join(elist)
 
         # add coredump saving
         write_dump(os.getpid(), text)
