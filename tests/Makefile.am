@@ -35,6 +35,7 @@ MAINTAINERCLEANFILES = Makefile.in $(TESTSUITE)
 check_DATA = atconfig atlocal $(TESTSUITE)
 DISTCLEANFILES = atconfig
 EXTRA_DIST += atlocal.in
+EXTRA_DIST += koops-test.h
 
 atconfig: $(top_builddir)/config.status
 	(cd ${top_builddir} && ./config.status ${subdir}/atconfig)

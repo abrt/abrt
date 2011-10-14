@@ -21,10 +21,6 @@ License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/abrt/
 Source: https://fedorahosted.org/released/%{name}/%{name}-%{version}.tar.gz
-Source1: abrt.init
-Source2: abrt-ccpp.init
-Source3: abrt-oops.init
-Source4: abrt-vmcore.init
 BuildRequires: dbus-devel
 BuildRequires: gtk2-devel
 BuildRequires: rpm-devel >= 4.6
@@ -196,12 +192,6 @@ make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
 # remove all .la and .a files
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
-%if ! %{with systemd}
-install -m 755 %SOURCE1 ${RPM_BUILD_ROOT}/%{_initrddir}/abrtd
-install -m 755 %SOURCE2 ${RPM_BUILD_ROOT}/%{_initrddir}/abrt-ccpp
-install -m 755 %SOURCE3 ${RPM_BUILD_ROOT}/%{_initrddir}/abrt-oops
-install -m 755 %SOURCE4 ${RPM_BUILD_ROOT}/%{_initrddir}/abrt-vmcore
-%endif
 mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-di
 mkdir -p $RPM_BUILD_ROOT/var/run/abrt
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt

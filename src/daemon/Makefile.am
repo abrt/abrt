@@ -113,11 +113,6 @@ EXTRA_DIST = $(MAN_TXT) abrt-handle-upload
 
 CLEANFILES = $(man1_MANS) $(man5_MANS) $(man8_MANS)
 
-if HAVE_SYSTEMD
-dist_systemdsystemunit_DATA = \
-    abrtd.service
-endif
-
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 install-data-local:
