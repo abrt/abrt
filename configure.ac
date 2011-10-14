@@ -108,6 +108,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([
 	Makefile
 	abrt.pc
+	doc/Makefile
 	src/include/Makefile
 	src/lib/Makefile
 	src/plugins/Makefile

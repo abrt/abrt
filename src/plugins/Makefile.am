@@ -47,27 +47,6 @@ dist_eventsconf_DATA = \
     gconf_event.conf \
     vimrc_event.conf
 
-MAN_TXT = \
-    abrt-action-analyze-c.txt \
-    abrt-action-trim-files.txt \
-    abrt-action-generate-backtrace.txt \
-    abrt-action-analyze-backtrace.txt \
-    abrt-action-analyze-oops.txt \
-    abrt-action-analyze-python.txt \
-    abrt-action-list-dsos.txt \
-    abrt-retrace-client.txt
-
-# Manual pages are generated from .txt via Docbook
-man1_MANS = ${MAN_TXT:%.txt=%.1}
-
-%.1 %.5 %.7: %.xml
-	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
-
-%.xml: %.txt ../../asciidoc.conf
-	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -aabrt_version=$(PACKAGE_VERSION) -o $@ $<
-
-
-CLEANFILES = $(man1_MANS)
 
 PYTHON_FILES = \
     abrt-action-install-debuginfo.in \
@@ -75,7 +54,6 @@ PYTHON_FILES = \
     abrt-action-analyze-core
 
 EXTRA_DIST = \
-    $(MAN_TXT) \
     $(PYTHON_FILES) \
     collect_Smolt.xml.in \
     collect_xsession_errors.xml.in \

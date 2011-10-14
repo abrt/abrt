@@ -1,5 +1,3 @@
--include ../../config.mak
-
 bin_PROGRAMS = abrt-cli
 
 CLI_C =

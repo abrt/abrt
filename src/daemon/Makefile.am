@@ -1,5 +1,3 @@
--include ../../config.mak
-
 eventsconfdir = $(EVENTS_CONF_DIR)
 
 dist_eventsconf_DATA = \
@@ -89,29 +87,7 @@ dist_daemonconf_DATA = \
 
 comredhatabrtservicedir = ${datadir}/dbus-1/system-services
 dist_comredhatabrtservice_DATA = com.redhat.abrt.service
-
-MAN_TXT = \
-    abrt-handle-upload.txt \
-    abrt-action-save-package-data.txt \
-    abrt-action-save-package-data.conf.txt \
-    abrt.conf.txt \
-    abrtd.txt \
-    abrt-server.txt
-
-# Manual pages are generated from .txt via Docbook
-man1_MANS = abrt-handle-upload.1 abrt-server.1 abrt-action-save-package-data.1
-man5_MANS = abrt.conf.5 abrt-action-save-package-data.conf.5
-man8_MANS = abrtd.8
-
-%.1 %.5 %.8: %.xml
-	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
-
-%.xml: %.txt ../../asciidoc.conf
-	$(ASCIIDOC_SILENT) asciidoc --backend=docbook --doctype=manpage --conf-file ../../asciidoc.conf -aabrt_version=$(PACKAGE_VERSION) -o $@ $<
-
-EXTRA_DIST = $(MAN_TXT) abrt-handle-upload
-
-CLEANFILES = $(man1_MANS) $(man5_MANS) $(man8_MANS)
+EXTRA_DIST = abrt-handle-upload
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
