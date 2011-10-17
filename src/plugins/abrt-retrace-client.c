@@ -145,16 +145,16 @@ static int create_archive(bool unlink_temp)
 
     int tar_xz_pipe[2];
     xpipe(tar_xz_pipe);
-    pid_t xz_child = fork();
+    pid_t xz_child = vfork();
     if (xz_child == -1)
-        perror_msg_and_die("fork");
-    else if (xz_child == 0)
+        perror_msg_and_die("vfork");
+    if (xz_child == 0)
     {
         close(tar_xz_pipe[1]);
         xmove_fd(tar_xz_pipe[0], STDIN_FILENO);
         xdup2(tempfd, STDOUT_FILENO);
         execvp(xz_args[0], (char * const*)xz_args);
-        perror_msg(_("Can't execute '%s'"), xz_args[0]);
+        perror_msg_and_die(_("Can't execute '%s'"), xz_args[0]);
     }
 
     close(tar_xz_pipe[0]);
@@ -173,26 +173,26 @@ static int create_archive(bool unlink_temp)
     tar_args[index] = NULL;
     dd_close(dd);
 
-    pid_t tar_child = fork();
+    pid_t tar_child = vfork();
     if (tar_child == -1)
-        perror_msg_and_die("fork");
-    else if (tar_child == 0)
+        perror_msg_and_die("vfork");
+    if (tar_child == 0)
     {
         xmove_fd(xopen("/dev/null", O_RDWR), STDIN_FILENO);
         xmove_fd(tar_xz_pipe[1], STDOUT_FILENO);
         execvp(tar_args[0], (char * const*)tar_args);
-        perror_msg(_("Can't execute '%s'"), tar_args[0]);
+        perror_msg_and_die(_("Can't execute '%s'"), tar_args[0]);
     }
 
+    free((void*)tar_args[2]);
     close(tar_xz_pipe[1]);
 
-    /* Prevent having zombie child process. */
-    int status;
+    /* Wait for tar and xz to finish */
     VERB1 log_msg("Waiting for tar...");
-    waitpid(tar_child, &status, 0);
-    free((void*)tar_args[2]);
+    safe_waitpid(tar_child, NULL, 0);
     VERB1 log_msg("Waiting for xz...");
-    waitpid(xz_child, &status, 0);
+    safe_waitpid(xz_child, NULL, 0);
+//FIXME: need to check that both exited with 0! Think about out-of-disk-space situation...
     VERB1 log_msg("Done...");
     xlseek(tempfd, 0, SEEK_SET);
     return tempfd;

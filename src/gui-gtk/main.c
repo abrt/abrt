@@ -746,7 +746,7 @@ static gboolean handle_signal_pipe(GIOChannel *gio, GIOCondition condition, gpoi
     g_io_channel_read(gio, buf, sizeof(buf), &bytes_read);
 
     /* Destroy zombies */
-    while (waitpid(-1, NULL, WNOHANG) > 0)
+    while (safe_waitpid(-1, NULL, WNOHANG) > 0)
         continue;
 
     rescan_and_refresh();

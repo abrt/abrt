@@ -96,7 +96,7 @@ static char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
 
     /* Prevent having zombie child process */
     int status;
-    waitpid(child, &status, 0);
+    safe_waitpid(child, &status, 0);
 
     if (status != 0)
     {

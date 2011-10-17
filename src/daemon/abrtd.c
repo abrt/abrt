@@ -227,7 +227,7 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
         else
         {
             pid_t pid;
-            while ((pid = waitpid(-1, NULL, WNOHANG)) > 0)
+            while ((pid = safe_waitpid(-1, NULL, WNOHANG)) > 0)
             {
                 if (socket_client_count)
                     socket_client_count--;
@@ -309,7 +309,7 @@ static mw_result_t LoadDebugDump(const char *dump_dir_name, problem_data_t **pro
 
     /* Prevent having zombie child process */
     int status;
-    waitpid(child, &status, 0);
+    safe_waitpid(child, &status, 0);
     status = WEXITSTATUS(status);
 
     /* exit 0 means, this is a good, non-dup dir */

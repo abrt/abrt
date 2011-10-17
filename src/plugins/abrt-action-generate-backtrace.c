@@ -114,7 +114,7 @@ static char* exec_vp(char **args, uid_t uid, int redirect_stderr, int *status)
 
     /* Prevent having zombie child process, and maybe collect status
      * (note that status == NULL is ok too) */
-    waitpid(child, status, 0);
+    safe_waitpid(child, status, 0);
 
     return strbuf_free_nobuf(buf_out);
 }
