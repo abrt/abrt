@@ -145,7 +145,7 @@ def handleMyException((etype, value, tb)):
 
         elist = traceback.format_exception(etype, value, tb)
 
-        if tb != None:
+        if tb != None and etype != IndentationError:
             tblast = traceback.extract_tb(tb, limit=None)
             if len(tblast):
                 tblast = tblast[len(tblast)-1]
