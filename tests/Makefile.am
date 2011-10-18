@@ -27,6 +27,7 @@ EXTRA_DIST = package.m4
 TESTSUITE_AT = \
   local.at \
   testsuite.at \
+  pyhook.at \
   koops-parser.at
 
 EXTRA_DIST += $(TESTSUITE_AT)

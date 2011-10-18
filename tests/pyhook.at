@@ -1,0 +1,26 @@
+# -*- Autotest -*-
+
+AT_BANNER([python hook])
+
+m4_define([TEST_PYHOOK_REASON],
+[AT_SETUP([$1])
+AT_DATA([$1.py], [[
+import sys
+sys.path.insert(0, "../../../src/hooks")
+import abrt_exception_handler
+sys.argv[0]="/...testsuite.../$1.py"
+def write_dump(tb):
+	print tb.splitlines()[0]
+abrt_exception_handler.write_dump = write_dump
+$2
+]])
+AT_CHECK([python -B $1.py], [ignore], [$3], [ignore])
+AT_CLEANUP])
+
+TEST_PYHOOK_REASON([pyhook_zerodiv], [0/0],
+[[pyhook_zerodiv.py:9:<module>:ZeroDivisionError: integer division or modulo by zero
+]])
+
+TEST_PYHOOK_REASON([pyhook_indent], [eval("   \n  a")],
+[[unexpected indent (<string>, line 2)
+]])
