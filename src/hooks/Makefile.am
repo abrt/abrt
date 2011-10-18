@@ -32,8 +32,11 @@ EXTRA_DIST = abrt_exception_handler.py.in abrt-install-ccpp-hook abrt-harvest-vm
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc)) $(man1_MANS)
 
+# Generate on build
+all: abrt_exception_handler.py
+
 # Must be synchronized with another sed call below.
-abrt_exception_handler.py:
+abrt_exception_handler.py: abrt_exception_handler.py.in
 	sed -e s,\@VAR_RUN\@,\"$(VAR_RUN)\",g \
 	    -e s,\@CONF_DIR\@,\"$(CONF_DIR)\",g \
 	    abrt_exception_handler.py.in >abrt_exception_handler.py
