@@ -25,8 +25,8 @@ if HAVE_SYSTEMD
                                   init-scripts/abrt-vmcore.service
 else
     sysv_initdir = $(sysconfdir)/rc.d/init.d/
-    sysv_init_DATA = init-scripts/abrtd init-scripts/abrt-ccpp init-scripts/abrt-oops \
-                     init-scripts/abrt-vmcore
+    sysv_init_SCRIPTS = init-scripts/abrtd init-scripts/abrt-ccpp init-scripts/abrt-oops \
+                        init-scripts/abrt-vmcore
 endif
 
 RPM_DIRS = --define "_sourcedir `pwd`" \
