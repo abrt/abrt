@@ -207,10 +207,6 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     }
     else
     {
-        char *remote_str = dd_load_text_ext(dd, FILENAME_REMOTE, DD_FAIL_QUIETLY_ENOENT);
-        bool remote = string_to_bool(remote_str);
-        free(remote_str);
-
         cmdline = dd_load_text(dd, FILENAME_CMDLINE);
         executable = dd_load_text(dd, FILENAME_EXECUTABLE);
 
@@ -227,14 +223,9 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
         package_full_name = rpm_get_package_nvr(executable);
         if (!package_full_name)
         {
-            if (settings_bProcessUnpackaged || remote)
+            if (settings_bProcessUnpackaged)
             {
                 VERB2 log("Crash in unpackaged executable '%s', proceeding without packaging information", executable);
-                dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-                if (!dd)
-                    goto ret; /* return 1 (failure) */
-                dd_save_text(dd, FILENAME_PACKAGE, "");
-                dd_save_text(dd, FILENAME_COMPONENT, "");
                 goto ret0; /* no error */
             }
             log("Executable '%s' doesn't belong to any package", executable);
@@ -280,7 +271,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
                         }
                     }
                 }
-                if (!script_pkg && !settings_bProcessUnpackaged && !remote)
+                if (!script_pkg && !settings_bProcessUnpackaged)
                 {
                     log("Interpreter crashed, but no packaged script detected: '%s'", cmdline);
                     goto ret; /* return 1 (failure) */
@@ -302,7 +293,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
             }
         }
 
-        if (settings_bOpenGPGCheck && !remote)
+        if (settings_bOpenGPGCheck)
         {
             if (!rpm_chk_fingerprint(package_short_name))
             {
