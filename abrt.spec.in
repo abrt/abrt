@@ -485,7 +485,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files addon-python
 %defattr(-,root,root,-)
-#%config(noreplace) %{_sysconfdir}/%{name}/plugins/Python.conf
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/python.conf
 %{_sysconfdir}/libreport/events.d/python_event.conf
 %{_bindir}/abrt-action-analyze-python
 %{_mandir}/man1/abrt-action-analyze-python.1*

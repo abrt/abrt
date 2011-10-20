@@ -24,21 +24,22 @@ Module for the ABRT exception handling hook
 
 import sys
 import os
-import socket
 
-def write_dump(pid, tb):
-    executable = "Exception raised from python shell"
-    if sys.argv[0]:
+def write_dump(tb):
+    if sys.argv[0][0] == "/":
         executable = os.path.abspath(sys.argv[0])
+    else:
+        # We don't know the path.
+        # (BTW, we *can't* assume the script is in current directory.)
+        executable = sys.argv[0]
 
-    import syslog
-
-    # Open ABRT daemon's socket and write data to it.
+    # Open ABRT daemon's socket and write data to it
     try:
+        import socket
         s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         s.connect(@VAR_RUN@ + "/abrt/abrt.socket")
         s.sendall("PUT / HTTP/1.1\r\n\r\n")
-        s.sendall("PID=%s\0" % pid)
+        s.sendall("PID=%s\0" % os.getpid())
         s.sendall("EXECUTABLE=%s\0" % executable)
         s.sendall("ANALYZER=Python\0")
         s.sendall("BASENAME=pyhook\0")
@@ -63,10 +64,32 @@ def write_dump(pid, tb):
                 or (not parts[0].startswith("HTTP/"))
                 or (not parts[1].isdigit())
                 or (int(parts[1]) >= 400)):
-            syslog.syslog("Error sending data to ABRT daemon: %s" % response)
+            import syslog
+            syslog.syslog("error sending data to ABRT daemon: %s" % response)
 
     except Exception, ex:
-        syslog.syslog("Can't communicate with ABRT daemon, is it running? %s" % str(ex))
+        import syslog
+        syslog.syslog("can't communicate with ABRT daemon, is it running? %s" % str(ex))
+
+def conf_enabled(var_name):
+    try:
+        file = open(@CONF_DIR@ + "/plugins/python.conf", "r")
+    except:
+        return -1
+    for line in file:
+        w = line.split("=", 1)  # split on '=' to 2 parts max
+        if len(w) < 2:
+            continue
+        var = w[0].strip()  # remove whitespace
+        if var != var_name:
+            continue
+        val = w[1].strip()  # remove whitespace
+        if val == "yes":
+            return 1
+        if val == "no":
+            return 0
+    file.close()
+    return -1
 
 def handleMyException((etype, value, tb)):
     """
@@ -76,21 +99,18 @@ def handleMyException((etype, value, tb)):
     version  - the version of the application
     """
 
-    # restore original exception handler
-    sys.excepthook = sys.__excepthook__  # pylint: disable-msg=E1101
-    # ignore
-    #  - uncaught ctrl-c
-    #  - SystemExit rhbz#636913 -> this exception is not an error
-    if etype in [KeyboardInterrupt, SystemExit]:
-        return sys.__excepthook__(etype, value, tb)
-
     try:
-        import os.path
-        import traceback
-        import errno
-        import syslog
+        # Restore original exception handler
+        sys.excepthook = sys.__excepthook__  # pylint: disable-msg=E1101
 
-        # EPIPE is not a crash, it happens all the time
+        import errno
+
+        # Ignore Ctrl-C
+        # SystemExit rhbz#636913 -> this exception is not an error
+        if etype in [KeyboardInterrupt, SystemExit]:
+            return sys.__excepthook__(etype, value, tb)
+
+        # Ignore EPIPE: it happens all the time
         # Testcase: script.py | true, where script.py is:
         ## #!/usr/bin/python
         ## import os
@@ -102,20 +122,26 @@ def handleMyException((etype, value, tb)):
             if value.errno == errno.EPIPE:
                 return sys.__excepthook__(etype, value, tb)
 
-        # "-c" appears in this case:
-        # $ python -c 'import sys; print "argv0 is:%s" % sys.argv[0]'
-        # argv0 is:-c
-        if not sys.argv[0] or sys.argv[0] == "-c":
-            # Looks like interactive Python - abort dumping
-            syslog.syslog("abrt: detected unhandled Python exception")
+        import syslog
+        syslog.openlog("abrt")
+
+        # Ignore interactive Python and similar
+        # Check for first "-" is meant to catch "-c" which appears in this case:
+        ## $ python -c 'import sys; print "argv0 is:%s" % sys.argv[0]'
+        ## argv0 is:-c
+        # Are there other cases when sys.argv[0][0] is "-"?
+        if not sys.argv[0] or sys.argv[0][0] == "-":
+            syslog.syslog("detected unhandled Python exception")
             raise Exception
-        syslog.syslog("abrt: detected unhandled Python exception in %s" % sys.argv[0])
+
+        # Ignore scripts with relative path unless "RequireAbsolutePath = no".
+        # (In this case we can't reliably determine package)
+        syslog.syslog("detected unhandled Python exception in '%s'" % sys.argv[0])
         if sys.argv[0][0] != "/":
-            # Relative path - can't reliably determine package
-            # this script belongs to - abort dumping
-            # TODO: check abrt.conf and abort only if
-            # ProcessUnpackaged = no?
-            raise Exception
+            if conf_enabled("RequireAbsolutePath") != 0:
+                raise Exception
+
+        import traceback
 
         elist = traceback.format_exception(etype, value, tb)
 
@@ -154,12 +180,12 @@ def handleMyException((etype, value, tb)):
             text += "\n"
             text += "".join(elist)
 
-        # add coredump saving
-        write_dump(os.getpid(), text)
+        # Send data to the daemon
+        write_dump(text)
 
     except:
-        # silently ignore any error in this hook,
-        # to not interfere with the python scripts
+        # Silently ignore any error in this hook,
+        # to not interfere with other scripts
         pass
 
     return sys.__excepthook__(etype, value, tb)

@@ -1,7 +1,8 @@
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 
 dist_pluginsconf_DATA = \
-    CCpp.conf
+    CCpp.conf \
+    python.conf
 
 sbin_SCRIPTS = \
     abrt-install-ccpp-hook \
@@ -32,8 +33,12 @@ CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wild
 
 # Must be synchronized with another sed call below.
 abrt_exception_handler.py:
-	sed s,\@VAR_RUN\@,\"$(VAR_RUN)\",g abrt_exception_handler.py.in > abrt_exception_handler.py
+	sed -e s,\@VAR_RUN\@,\"$(VAR_RUN)\",g \
+	    -e s,\@CONF_DIR\@,\"$(CONF_DIR)\",g \
+	    abrt_exception_handler.py.in >abrt_exception_handler.py
 
 # RPM fix: we need to regenerate abrt_exception_handler.py, because it has the default ddir
 install-data-local:
-	sed s,\@VAR_RUN\@,\"$(VAR_RUN)\",g abrt_exception_handler.py.in > abrt_exception_handler.py
+	sed -e s,\@VAR_RUN\@,\"$(VAR_RUN)\",g \
+	    -e s,\@CONF_DIR\@,\"$(CONF_DIR)\",g \
+	    abrt_exception_handler.py.in >abrt_exception_handler.py
