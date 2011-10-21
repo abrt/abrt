@@ -358,6 +358,63 @@ static void on_btn_report_cb(GtkButton *button, gpointer user_data)
         on_row_activated_cb(GTK_TREE_VIEW(s_active_treeview), NULL, NULL, NULL);
 }
 
+static void on_column_change_cb(GtkTreeSortable *sortable, gpointer user_data)
+{
+    const char *name;
+    char *value;
+    GtkSortType sort_type;
+    int col_id;
+
+    if (sortable == GTK_TREE_SORTABLE(s_dumps_list_store))
+        name = "sort_column";
+    else if (sortable == GTK_TREE_SORTABLE(s_reported_dumps_list_store))
+        name = "sort_reported_column";
+    else
+        assert(0);
+
+    gtk_tree_sortable_get_sort_column_id(sortable, &col_id, &sort_type);
+    if (sort_type == GTK_SORT_ASCENDING)
+        col_id = -col_id - 1; /* store ascending sort as negative id */
+    value = xasprintf("%d", col_id);
+    set_user_setting(name, value);
+    free(value);
+}
+
+static void load_sort_setting(GtkTreeSortable *sortable)
+{
+    const char *name, *value;
+    GtkSortType sort_type;
+    int col_id;
+
+    if (sortable == GTK_TREE_SORTABLE(s_dumps_list_store))
+        name = "sort_column";
+    else if (sortable == GTK_TREE_SORTABLE(s_reported_dumps_list_store))
+        name = "sort_reported_column";
+    else
+        return;
+
+    /* defaults */
+    col_id = COLUMN_LATEST_CRASH;
+    sort_type = GTK_SORT_DESCENDING;
+
+    value = get_user_setting(name);
+    if (value)
+    {
+        col_id = xatoi(value);
+        if (col_id < 0)
+        {
+            /* negative id means ascending order */
+            col_id = -col_id - 1;
+            sort_type = GTK_SORT_ASCENDING;
+        }
+    }
+
+    if (col_id >= NUM_COLUMNS)
+        col_id = COLUMN_LATEST_CRASH;
+
+    gtk_tree_sortable_set_sort_column_id(sortable, col_id, sort_type);
+}
+
 static void delete_report(GtkTreeView *treeview)
 {
     GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
@@ -709,10 +766,9 @@ static GtkWidget *create_main_window(void)
                                            G_TYPE_STRING); /* reported_to */
 
 
-    //FIXME: configurable!!
-    gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(s_dumps_list_store),
-                                        COLUMN_LATEST_CRASH,
-                                        GTK_SORT_DESCENDING);
+    load_sort_setting(GTK_TREE_SORTABLE(s_dumps_list_store));
+
+    g_signal_connect(GTK_TREE_SORTABLE(s_dumps_list_store), "sort-column-changed", G_CALLBACK(on_column_change_cb), NULL);
 
     gtk_tree_view_set_model(GTK_TREE_VIEW(s_treeview), GTK_TREE_MODEL(s_dumps_list_store));
 
@@ -756,10 +812,10 @@ static GtkWidget *create_main_window(void)
                                                        G_TYPE_STRING, /* dump dir path */
                                                        G_TYPE_STRING); /* reported_to */
 
-    //FIXME: configurable!!
-    gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(s_reported_dumps_list_store),
-                                        COLUMN_LATEST_CRASH,
-                                        GTK_SORT_DESCENDING);
+
+    load_sort_setting(GTK_TREE_SORTABLE(s_reported_dumps_list_store));
+
+    g_signal_connect(GTK_TREE_SORTABLE(s_reported_dumps_list_store), "sort-column-changed", G_CALLBACK(on_column_change_cb), NULL);
 
     gtk_tree_view_set_model(GTK_TREE_VIEW(s_reported_treeview), GTK_TREE_MODEL(s_reported_dumps_list_store));
 
@@ -1002,6 +1058,8 @@ int main(int argc, char **argv)
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
+    load_user_settings("abrt-gui");
+
     export_abrt_envvars(opts & OPT_p);
 
     GtkWidget *main_window = create_main_window();
@@ -1045,6 +1103,7 @@ int main(int argc, char **argv)
     /* Enter main loop */
     gtk_main();
 
+    save_user_settings();
     free_abrt_conf_data();
     return 0;
 }
