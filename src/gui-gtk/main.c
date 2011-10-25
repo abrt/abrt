@@ -33,8 +33,13 @@ static const char help_uri[] = "http://docs.fedoraproject.org/en-US/"
 
 static GtkListStore *s_dumps_list_store;
 static GtkListStore *s_reported_dumps_list_store;
+
 static GtkWidget *s_treeview;
 static GtkWidget *s_reported_treeview;
+static GtkWidget *s_active_treeview;
+static GtkTreePath *s_path_treeview;
+static GtkTreePath *s_path_reported_treeview;
+
 static GtkWidget *g_main_window;
 static GtkWidget *s_report_window;
 
@@ -238,6 +243,95 @@ static void sanitize_cursor(GtkTreePath *preferred_path)
 
 /* create_main_window and helpers */
 
+static void deactivate_selection(GtkTreeView *tv)
+{
+    GtkTreeSelection *selection = gtk_tree_view_get_selection(tv);
+    if (selection)
+    {
+        /* Remember the selection */
+        GList *list = gtk_tree_selection_get_selected_rows(selection, /*GtkTreeModel **model:*/ NULL);
+        /* Note: returned list is a copy! We take ownership (IOW: must free it) */
+        GtkTreePath **pp_path = NULL;
+        if ((void*)tv == (void*)s_treeview)
+            pp_path = &s_path_treeview;
+        if ((void*)tv == (void*)s_reported_treeview)
+            pp_path = &s_path_reported_treeview;
+        if (pp_path && list)
+        {
+            if (*pp_path)
+                gtk_tree_path_free(*pp_path);
+            *pp_path = list->data;
+            list = g_list_delete_link(list, list);
+        }
+        g_list_foreach(list, (GFunc) gtk_tree_path_free, NULL);
+        g_list_free(list);
+        /* Deactivate */
+        gtk_tree_selection_unselect_all(selection);
+    }
+}
+
+/* Contrary to what I expected, this callback is NOT called
+ * when I select a row with a mouse.
+ * Maybe this callback can be removed.
+ */
+static gboolean on_select_cursor_row_cb(
+                GtkTreeView *treeview,
+                gboolean     arg1,
+                gpointer     user_data)
+{
+    //log("SELECT_ROW:%p/%p", treeview, user_data);
+    deactivate_selection(GTK_TREE_VIEW(user_data));
+    return false; /* propagate the event further */
+}
+
+/* Called when I select a row with a mouse (among other cases).
+ * Make sure other tv loses its selection.
+ */
+static gboolean on_cursor_changed_cb(
+                GtkTreeView *treeview,
+                gpointer     user_data)
+{
+    //log("cursor-changed:%p/%p", treeview, user_data);
+    deactivate_selection(GTK_TREE_VIEW(user_data));
+    return false; /* propagate the event further */
+}
+
+/* Called when I <tab> to the treeview
+ * Make sure other tv loses its selection.
+ * Also, restore selectiong in current tv if it was desecleted
+ * (for example, if we <tab>ed to the other seletion a few sec ago...).
+ */
+static gboolean on_focus_cb(
+                GtkWidget *widget,
+                GtkDirectionType direction,
+                gpointer user_data)
+{
+    //log("FOCUS:%p/%p", widget, user_data);
+    s_active_treeview = widget;
+
+    /* Deactivate the other one */
+    deactivate_selection(GTK_TREE_VIEW(user_data));
+
+    /* Re-activate row in this one if it was deactivated */
+    GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(widget));
+    if (selection && gtk_tree_selection_count_selected_rows(selection) < 1)
+    {
+        GtkTreePath **pp_path = NULL;
+        if (widget == s_treeview)
+            pp_path = &s_path_treeview;
+        if (widget == s_reported_treeview)
+            pp_path = &s_path_reported_treeview;
+        if (pp_path && *pp_path)
+        {
+            gtk_tree_selection_select_path(selection, *pp_path);
+            gtk_tree_path_free(*pp_path);
+            *pp_path = NULL;
+        }
+    }
+
+    return false; /* propagate the event further */
+}
+
 static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
 {
     GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
@@ -260,7 +354,8 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
 
 static void on_btn_report_cb(GtkButton *button, gpointer user_data)
 {
-    on_row_activated_cb(GTK_TREE_VIEW(s_treeview), NULL, NULL, NULL);
+    if (s_active_treeview)
+        on_row_activated_cb(GTK_TREE_VIEW(s_active_treeview), NULL, NULL, NULL);
 }
 
 static void delete_report(GtkTreeView *treeview)
@@ -311,9 +406,8 @@ static gint on_key_press_event_cb(GtkTreeView *treeview, GdkEventKey *key, gpoin
 
 static void on_btn_delete_cb(GtkButton *button, gpointer unused)
 {
-    /* delete from both treeviews */
-    delete_report(GTK_TREE_VIEW(s_treeview));
-    delete_report(GTK_TREE_VIEW(s_reported_treeview));
+    if (s_active_treeview)
+        delete_report(GTK_TREE_VIEW(s_active_treeview));
 }
 
 static void on_menu_help_cb(GtkMenuItem *menuitem, gpointer unused)
@@ -596,8 +690,11 @@ static GtkWidget *create_main_window(void)
     gtk_box_pack_start(GTK_BOX(not_subm_vbox), new_problems_scroll_win, true, true, 0);
     gtk_box_pack_start(GTK_BOX(main_vbox), not_subm_vbox, true, true, 0);
 
-    /* Tree view inside scrolled region */
+    /* Two tree views */
     s_treeview = gtk_tree_view_new();
+    s_reported_treeview = gtk_tree_view_new();
+
+    /* Tree view inside scrolled region */
     g_object_set(s_treeview, "rules-hint", 1, NULL); /* use alternating colors */
     add_columns(GTK_TREE_VIEW(s_treeview));
     gtk_container_add(GTK_CONTAINER(new_problems_scroll_win), s_treeview);
@@ -621,6 +718,9 @@ static GtkWidget *create_main_window(void)
 
     /* Double click/Enter handler */
     g_signal_connect(s_treeview, "row-activated", G_CALLBACK(on_row_activated_cb), NULL);
+    g_signal_connect(s_treeview, "focus", G_CALLBACK(on_focus_cb), s_reported_treeview);
+    g_signal_connect(s_treeview, "select-cursor-row", G_CALLBACK(on_select_cursor_row_cb), s_reported_treeview);
+    g_signal_connect(s_treeview, "cursor-changed", G_CALLBACK(on_cursor_changed_cb), s_reported_treeview);
     /* Delete handler */
     g_signal_connect(s_treeview, "key-press-event", G_CALLBACK(on_key_press_event_cb), NULL);
 
@@ -637,14 +737,12 @@ static GtkWidget *create_main_window(void)
     gtk_misc_set_alignment(GTK_MISC(subm_lbl), 0, 0);
     gtk_label_set_markup(GTK_LABEL(subm_lbl), _("<b>Submitted reports</b>"));
 
-
     /* add label for submitted tree view */
     gtk_box_pack_start(GTK_BOX(subm_vbox), subm_lbl, false, false, 0);
     gtk_box_pack_start(GTK_BOX(subm_vbox), reported_problems_scroll_win, true, true, 0);
     gtk_box_pack_start(GTK_BOX(main_vbox), subm_vbox, true, true, 0);
 
     /* Tree view inside scrolled region */
-    s_reported_treeview = gtk_tree_view_new();
     g_object_set(s_reported_treeview, "rules-hint", 1, NULL); /* use alternating colors */
     add_columns_reported(GTK_TREE_VIEW(s_reported_treeview));
     gtk_container_add(GTK_CONTAINER(reported_problems_scroll_win), s_reported_treeview);
@@ -658,15 +756,12 @@ static GtkWidget *create_main_window(void)
                                                        G_TYPE_STRING, /* dump dir path */
                                                        G_TYPE_STRING); /* reported_to */
 
-
     //FIXME: configurable!!
     gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(s_reported_dumps_list_store),
                                         COLUMN_LATEST_CRASH,
                                         GTK_SORT_DESCENDING);
 
-
     gtk_tree_view_set_model(GTK_TREE_VIEW(s_reported_treeview), GTK_TREE_MODEL(s_reported_dumps_list_store));
-
 
     /* buttons are homogenous so set size only for one button and it will
      * work for the rest buttons in same gtk_hbox_new() */
@@ -689,10 +784,16 @@ static GtkWidget *create_main_window(void)
 
     /* Double click/Enter handler */
     g_signal_connect(s_reported_treeview, "row-activated", G_CALLBACK(on_row_activated_cb), NULL);
-    g_signal_connect(btn_report, "clicked", G_CALLBACK(on_btn_report_cb), NULL);
+    g_signal_connect(s_reported_treeview, "focus", G_CALLBACK(on_focus_cb), s_treeview);
+    g_signal_connect(s_reported_treeview, "select-cursor-row", G_CALLBACK(on_select_cursor_row_cb), s_treeview);
+    g_signal_connect(s_reported_treeview, "cursor-changed", G_CALLBACK(on_cursor_changed_cb), s_treeview);
     /* Delete handler */
     g_signal_connect(s_reported_treeview, "key-press-event", G_CALLBACK(on_key_press_event_cb), NULL);
+
+    /* Open and delete button handlers */
+    g_signal_connect(btn_report, "clicked", G_CALLBACK(on_btn_report_cb), NULL);
     g_signal_connect(btn_delete, "clicked", G_CALLBACK(on_btn_delete_cb), NULL);
+
     /* Quit when user closes the main window */
     g_signal_connect(g_main_window, "destroy", gtk_main_quit, NULL);
 
