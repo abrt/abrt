@@ -42,6 +42,7 @@ static GtkStatusIcon *ap_status_icon;
 static GtkWidget *ap_menu;
 static char *ap_last_problem_dir;
 static char **s_dirs;
+static char *s_home;
 //static bool ap_daemon_running;
 #define ap_daemon_running 1
 
@@ -63,6 +64,134 @@ static unsigned ap_anim_countdown;
 static bool ap_icons_loaded;
 static GdkPixbuf *ap_icon_stages_buff[ICON_STAGE_LAST];
 #endif
+
+static GList *add_dirs_to_dirlist(GList *dirlist, const char *dirname)
+{
+    DIR *dir = opendir(dirname);
+    if (!dir)
+        return dirlist;
+
+    struct dirent *dent;
+    while ((dent = readdir(dir)) != NULL)
+    {
+        if (dot_or_dotdot(dent->d_name))
+            continue;
+        char *full_name = concat_path_file(dirname, dent->d_name);
+        struct stat statbuf;
+        if (lstat(full_name, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
+            dirlist = g_list_prepend(dirlist, full_name);
+        else
+            free(full_name);
+    }
+    closedir(dir);
+
+    return dirlist;
+}
+
+/* Return 1 if a new directory appeared, compared to list saved
+ * in ~/.abrt/applet_dirlist. In any case, ~/.abrt/applet_dirlist
+ * is updated with updated list.
+ */
+static int new_dir_exists(void)
+{
+    if (!s_home)
+        return 0;
+
+    int new_dir_exists = 0;
+
+    GList *dirlist = NULL;
+    char **pp = s_dirs;
+    while (*pp)
+    {
+        dirlist = add_dirs_to_dirlist(dirlist, *pp);
+        pp++;
+    }
+
+    char *dirlist_name = concat_path_file(s_home, ".abrt");
+    mkdir(dirlist_name, 0777);
+    free(dirlist_name);
+    dirlist_name = concat_path_file(s_home, ".abrt/applet_dirlist");
+    FILE *fp = fopen(dirlist_name, "r+");
+    if (!fp)
+        fp = fopen(dirlist_name, "w+");
+    free(dirlist_name);
+    if (fp)
+    {
+        GList *old_dirlist = NULL;
+        char *line;
+        while ((line = xmalloc_fgetline(fp)) != NULL)
+            old_dirlist = g_list_prepend(old_dirlist, line);
+
+        /* We will sort and compare current dir list with last known one.
+         * Possible combinations:
+         * DIR1 DIR1 - Both lists have the same element, advance both ptrs.
+         * DIR2      - Current dir list has new element. IOW: new dir exists!
+         *             Advance only current dirlist ptr.
+         *      DIR3 - Only old list has element. Advance only old ptr.
+         * DIR4 ==== - Old list ended, cuurent one didn't. New dir exists!
+         * ====
+         */
+        GList *l1 = dirlist = g_list_sort(dirlist, (GCompareFunc)strcmp);
+        GList *l2 = old_dirlist = g_list_sort(old_dirlist, (GCompareFunc)strcmp);
+        int different = 0;
+        while (l1 && l2)
+        {
+            int diff = strcmp(l1->data, l2->data);
+            different |= diff;
+            if (diff < 0)
+            {
+                new_dir_exists = 1;
+                l1 = g_list_next(l1);
+                continue;
+            }
+            l2 = g_list_next(l2);
+            if (diff == 0)
+                l1 = g_list_next(l1);
+        }
+        if (l1)
+            new_dir_exists = 1;
+        if (different || l1 || l2)
+        {
+            rewind(fp);
+            if (ftruncate(fileno(fp), 0)) /* shut up gcc */;
+            l1 = dirlist;
+            while (l1)
+            {
+                fprintf(fp, "%s\n", (char*) l1->data);
+                l1 = g_list_next(l1);
+            }
+        }
+        fclose(fp);
+        list_free_with_free(old_dirlist);
+    }
+    list_free_with_free(dirlist);
+
+    return new_dir_exists;
+}
+
+static void fork_exec_gui(void)
+{
+    pid_t pid = vfork();
+    if (pid < 0)
+        perror_msg("vfork");
+    if (pid == 0)
+    {
+        /* child */
+        signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
+//TODO: pass s_dirs[] as DIR param(s) to abrt-gui
+        execl(BIN_DIR"/abrt-gui", "abrt-gui", (char*) NULL);
+        /* Did not find abrt-gui in installation directory. Oh well */
+        /* Trying to find it in PATH */
+        execlp("abrt-gui", "abrt-gui", (char*) NULL);
+        perror_msg_and_die("Can't execute '%s'", "abrt-gui");
+    }
+    /* Scan dirs and save new ~/.abrt/applet_dirlist.
+     * (Oterwise, after a crash, next time applet is started,
+     * it will show alert icon even if we did click on it
+     * "in previous life"). We ignore function return value.
+     */
+    new_dir_exists();
+}
 
 #if ENABLE_ANIMATION
 
@@ -158,7 +287,13 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
         }
 
         hide_icon();
-        stop_animate_icon();
+
+        /* Scan dirs and save new ~/.abrt/applet_dirlist.
+         * (Oterwise, after a crash, next time applet is started,
+         * it will show alert icon even if we did click on it
+         * "in previous life"). We ignore finction return value.
+         */
+        new_dir_exists();
     }
 }
 
@@ -167,19 +302,7 @@ static void action_open_gui(NotifyNotification *notification, gchar *action, gpo
 {
     if (ap_daemon_running)
     {
-        pid_t pid = vfork();
-        if (pid < 0)
-            perror_msg("vfork");
-        if (pid == 0)
-        { /* child */
-            signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
-//TODO: pass s_dirs[] as DIR param(s) to abrt-gui
-            execl(BIN_DIR"/abrt-gui", "abrt-gui", (char*) NULL);
-            /* Did not find abrt-gui in installation directory. Oh well */
-            /* Trying to find it in PATH */
-            execlp("abrt-gui", "abrt-gui", (char*) NULL);
-            perror_msg_and_die("Can't execute abrt-gui");
-        }
+        fork_exec_gui();
         GError *err = NULL;
         notify_notification_close(notification, &err);
         if (err != NULL)
@@ -188,7 +311,6 @@ static void action_open_gui(NotifyNotification *notification, gchar *action, gpo
             g_error_free(err);
         }
         hide_icon();
-        stop_animate_icon();
     }
 }
 
@@ -318,21 +440,8 @@ static void on_applet_activate_cb(GtkStatusIcon *status_icon, gpointer user_data
 {
     if (ap_daemon_running)
     {
-        pid_t pid = vfork();
-        if (pid < 0)
-            perror_msg("vfork");
-        if (pid == 0)
-        {
-            /* child */
-            signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
-            execl(BIN_DIR"/abrt-gui", "abrt-gui", (char*) NULL);
-            /* Did not find abrt-gui in installation directory. Oh well */
-            /* Trying to find it in PATH */
-            execlp("abrt-gui", "abrt-gui", (char*) NULL);
-            perror_msg_and_die("Can't execute abrt-gui");
-        }
+        fork_exec_gui();
         hide_icon();
-        stop_animate_icon();
     }
 }
 
@@ -646,103 +755,6 @@ static void die_if_dbus_error(bool error_flag, DBusError* err, const char* msg)
     error_msg_and_die("%s", msg);
 }
 
-static GList *add_dirs_to_dirlist(GList *dirlist, const char *dirname)
-{
-    DIR *dir = opendir(dirname);
-    if (!dir)
-        return dirlist;
-
-    struct dirent *dent;
-    while ((dent = readdir(dir)) != NULL)
-    {
-        if (dot_or_dotdot(dent->d_name))
-            continue;
-        char *full_name = concat_path_file(dirname, dent->d_name);
-        struct stat statbuf;
-        if (lstat(full_name, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
-            dirlist = g_list_prepend(dirlist, full_name);
-        else
-            free(full_name);
-    }
-    closedir(dir);
-
-    return dirlist;
-}
-
-static int new_dir_exists(const char *home)
-{
-    int new_dir_exists = 0;
-
-    GList *dirlist = NULL;
-    char **pp = s_dirs;
-    while (*pp)
-    {
-        dirlist = add_dirs_to_dirlist(dirlist, *pp);
-        pp++;
-    }
-
-    char *dirlist_name = concat_path_file(home, ".abrt");
-    mkdir(dirlist_name, 0777);
-    free(dirlist_name);
-    dirlist_name = concat_path_file(home, ".abrt/applet_dirlist");
-    FILE *fp = fopen(dirlist_name, "r+");
-    if (!fp)
-        fp = fopen(dirlist_name, "w+");
-    free(dirlist_name);
-    if (fp)
-    {
-        GList *old_dirlist = NULL;
-        char *line;
-        while ((line = xmalloc_fgetline(fp)) != NULL)
-            old_dirlist = g_list_prepend(old_dirlist, line);
-
-        /* We will sort and compare current dir list with last known one.
-         * Possible combinations:
-         * DIR1 DIR1 - Both lists have the same element, advance both ptrs.
-         * DIR2      - Current dir list has new element. IOW: new dir exists!
-         *             Advance only current dirlist ptr.
-         *      DIR3 - Only old list has element. Advance only old ptr.
-         * DIR4 ==== - Old list ended, cuurent one didn't. New dir exists!
-         * ====
-         */
-        GList *l1 = dirlist = g_list_sort(dirlist, (GCompareFunc)strcmp);
-        GList *l2 = old_dirlist = g_list_sort(old_dirlist, (GCompareFunc)strcmp);
-        int different = 0;
-        while (l1 && l2)
-        {
-            int diff = strcmp(l1->data, l2->data);
-            different |= diff;
-            if (diff < 0)
-            {
-                new_dir_exists = 1;
-                l1 = g_list_next(l1);
-                continue;
-            }
-            l2 = g_list_next(l2);
-            if (diff == 0)
-                l1 = g_list_next(l1);
-        }
-        if (l1)
-            new_dir_exists = 1;
-        if (different || l1 || l2)
-        {
-            rewind(fp);
-            if (ftruncate(fileno(fp), 0)) /* shut up gcc */;
-            l1 = dirlist;
-            while (l1)
-            {
-                fprintf(fp, "%s\n", (char*) l1->data);
-                l1 = g_list_next(l1);
-            }
-        }
-        fclose(fp);
-        list_free_with_free(old_dirlist);
-    }
-    list_free_with_free(dirlist);
-
-    return new_dir_exists;
-}
-
 int main(int argc, char** argv)
 {
     abrt_init(argv);
@@ -780,7 +792,7 @@ int main(int argc, char** argv)
     export_abrt_envvars(0);
     msg_prefix = g_progname;
 
-    char *home = getenv("HOME");
+    s_home = getenv("HOME");
 
     load_abrt_conf();
     const char *default_dirs[] = {
@@ -791,8 +803,8 @@ int main(int argc, char** argv)
     argv += optind;
     if (!argv[0])
     {
-        if (home)
-            default_dirs[1] = concat_path_file(home, ".abrt/spool");
+        if (s_home)
+            default_dirs[1] = concat_path_file(s_home, ".abrt/spool");
         argv = (char**)default_dirs;
     }
     s_dirs = argv;
@@ -848,7 +860,7 @@ int main(int argc, char** argv)
         continue;
 
     /* If some new dirs appeared since our last run, let user know it */
-    if (home && new_dir_exists(home))
+    if (new_dir_exists())
     {
         init_applet();
         show_icon();
