@@ -563,12 +563,11 @@ int main(int argc, char** argv)
             int dst_fd_binary = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0640);
             fchown(dst_fd_binary, dd->dd_uid, dd->dd_gid);
             off_t sz = copyfd_eof(src_fd_binary, dst_fd_binary, COPYFD_SPARSE);
-            if (sz < 0 || fsync(dst_fd_binary) != 0)
+            if (fsync(dst_fd_binary) != 0 || close(dst_fd_binary) != 0 || sz < 0)
             {
                 unlink(path);
                 error_msg_and_die("Error saving binary image to '%s'", path);
             }
-            close(dst_fd_binary);
             close(src_fd_binary);
         }
 
@@ -603,7 +602,7 @@ int main(int argc, char** argv)
 //of the crashed binary still can access it, as he has
 //r-x access to the dump dir.
         off_t core_size = copyfd_sparse(STDIN_FILENO, abrt_core_fd, user_core_fd, ulimit_c);
-        if (core_size < 0 || fsync(abrt_core_fd) != 0)
+        if (fsync(abrt_core_fd) != 0 || close(abrt_core_fd) != 0 || core_size < 0)
         {
             unlink(path);
             dd_delete(dd);
@@ -616,9 +615,14 @@ int main(int argc, char** argv)
              * but it does not log file name */
             error_msg_and_die("Error writing '%s'", path);
         }
-        if (user_core_fd >= 0 && (ulimit_c == 0 || core_size > ulimit_c))
-        {
-            /* user coredump is too big, nuke it */
+        if (user_core_fd >= 0
+            /* error writing user coredump? */
+         && (fsync(user_core_fd) != 0 || close(user_core_fd) != 0
+            /* user coredump is too big? */
+            || (ulimit_c == 0 /* paranoia */ || core_size > ulimit_c)
+            )
+        ) {
+            /* nuke it (silently) */
             xchdir(user_pwd);
             unlink(core_basename);
         }
@@ -654,26 +658,25 @@ int main(int argc, char** argv)
 
     /* We didn't create abrt dump, but may need to create compat coredump */
  create_user_core:
-    if (user_core_fd < 0)
+    if (user_core_fd >= 0)
     {
-        return 0;
+        off_t core_size = copyfd_size(STDIN_FILENO, user_core_fd, ulimit_c, COPYFD_SPARSE);
+        if (fsync(user_core_fd) != 0 || close(user_core_fd) != 0 || core_size < 0)
+        {
+            /* perror first, otherwise unlink may trash errno */
+            perror_msg("Error writing '%s/%s'", user_pwd, core_basename);
+            xchdir(user_pwd);
+            unlink(core_basename);
+            return 1;
+        }
+        if (ulimit_c == 0 || core_size > ulimit_c)
+        {
+            xchdir(user_pwd);
+            unlink(core_basename);
+            return 1;
+        }
+        log("Saved core dump of pid %lu to %s/%s (%llu bytes)", (long)pid, user_pwd, core_basename, (long long)core_size);
     }
 
-    off_t core_size = copyfd_size(STDIN_FILENO, user_core_fd, ulimit_c, COPYFD_SPARSE);
-    if (core_size < 0 || fsync(user_core_fd) != 0)
-    {
-        /* perror first, otherwise unlink may trash errno */
-        perror_msg("Error writing '%s/%s'", user_pwd, core_basename);
-        xchdir(user_pwd);
-        unlink(core_basename);
-        return 1;
-    }
-    if (ulimit_c == 0 || core_size > ulimit_c)
-    {
-        xchdir(user_pwd);
-        unlink(core_basename);
-        return 1;
-    }
-    log("Saved core dump of pid %lu to %s/%s (%llu bytes)", (long)pid, user_pwd, core_basename, (long long)core_size);
     return 0;
 }
