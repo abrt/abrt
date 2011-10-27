@@ -22,6 +22,12 @@
 #include <sys/utsname.h>
 #include "libabrt.h"
 
+/* I want to use -Werror, but gcc-4.4 throws a curveball:
+ * "warning: ignoring return value of 'ftruncate', declared with attribute warn_unused_result"
+ * and (void) cast is not enough to shut it up! Oh God...
+ */
+#define IGNORE_RESULT(func_call) do { if (func_call) /* nothing */; } while (0)
+
 static char* malloc_readlink(const char *linkname)
 {
     char buf[PATH_MAX + 1];
@@ -209,7 +215,7 @@ static int open_user_core(uid_t uid, pid_t pid, char **percent_values)
         int fd = open("/proc/sys/kernel/core_uses_pid", O_RDONLY);
         if (fd >= 0)
         {
-            read(fd, buf, sizeof(buf));
+            IGNORE_RESULT(read(fd, buf, sizeof(buf)));
             close(fd);
         }
         if (strcmp(buf, "1\n") == 0)
@@ -318,7 +324,7 @@ static int create_or_die(const char *filename)
     int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0640);
     if (fd >= 0)
     {
-        fchown(fd, dd->dd_uid, dd->dd_gid);
+        IGNORE_RESULT(fchown(fd, dd->dd_uid, dd->dd_gid));
         return fd;
     }
 
@@ -512,7 +518,7 @@ int main(int argc, char** argv)
         }
         sz = write(fd, executable, strlen(executable));
         if (sz >= 0)
-            ftruncate(fd, sz);
+            IGNORE_RESULT(ftruncate(fd, sz));
         close(fd);
     }
 
@@ -564,7 +570,7 @@ int main(int argc, char** argv)
         strcpy(source_filename + source_base_ofs, "maps");
         strcpy(dest_base, FILENAME_MAPS);
         copy_file(source_filename, dest_filename, 0640);
-        chown(dest_filename, dd->dd_uid, dd->dd_gid);
+        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
 
         free(dest_filename);
 
@@ -615,10 +621,6 @@ int main(int argc, char** argv)
          * 21631 Segmentation fault (core dumped) ./test
          * ls: cannot access core*: No such file or directory <=== BAD
          */
-//TODO: fchown abrt_core_fd to uid:abrt?
-//Currently it is owned by 0:0 but is readable by anyone, so the owner
-//of the crashed binary still can access it, as he has
-//r-x access to the dump dir.
         off_t core_size = copyfd_sparse(STDIN_FILENO, abrt_core_fd, user_core_fd, ulimit_c);
         if (fsync(abrt_core_fd) != 0 || close(abrt_core_fd) != 0 || core_size < 0)
         {

@@ -21,6 +21,7 @@ abrt_hook_ccpp_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -Wall -Wwrite-strings \
+    -Werror \
     -D_GNU_SOURCE
 abrt_hook_ccpp_LDADD = \
     ../lib/libabrt.la \
