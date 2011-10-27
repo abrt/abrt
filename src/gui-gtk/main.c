@@ -1042,7 +1042,7 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "\1 [-vp] [DIR]...\n"
+        "& [-vp] [DIR]...\n"
         "\n"
         "Shows list of ABRT dump directories in specified DIR(s)\n"
     );

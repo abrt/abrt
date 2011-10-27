@@ -564,8 +564,8 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "\1 [-vsrowx] [-d DIR] FILE\n"
-        "   or: \1 [-vsrowx] -D FILE\n"
+        "& [-vsrowx] [-d DIR] FILE\n"
+        "or: & [-vsrowx] -D FILE\n"
         "\n"
         "Extract oops from syslog/dmesg file"
     );

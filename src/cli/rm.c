@@ -28,7 +28,7 @@
 int cmd_rm(int argc, const char **argv)
 {
     const char *program_usage_string = _(
-        "\1 rm [options] [<dump-dir>]..."
+        "& rm [options] [<dump-dir>]..."
         );
 
     struct options program_options[] = {

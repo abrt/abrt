@@ -147,7 +147,7 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "\1 [-v] -d DIR\n"
+        "& [-v] -d DIR\n"
         "\n"
         "Calculates and saves UUID of coredump in dump directory DIR"
     );

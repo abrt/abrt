@@ -622,7 +622,7 @@ int main(int argc, char** argv)
         error_msg_and_die("ABRT daemon must be run as root");
 
     const char *program_usage_string = _(
-        "\1 [options]"
+        "& [options]"
     );
     enum {
         OPT_v = 1 << 0,

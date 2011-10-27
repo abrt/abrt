@@ -25,7 +25,7 @@
 int cmd_report(int argc, const char **argv)
 {
     const char *program_usage_string = _(
-        "\1 report [options] [<dump-dir>]..."
+        "& report [options] [<dump-dir>]..."
         );
 
     struct options program_options[] = {
