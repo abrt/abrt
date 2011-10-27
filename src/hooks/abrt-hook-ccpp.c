@@ -129,6 +129,30 @@ static off_t copyfd_sparse(int src_fd, int dst_fd1, int dst_fd2, off_t size2)
 	return total;
 }
 
+
+/* Global data */
+
+static char *user_pwd;
+static struct dump_dir *dd;
+static int user_core_fd = -1;
+/*
+ * %s - signal number
+ * %c - ulimit -c value
+ * %p - pid
+ * %u - uid
+ * %g - gid
+ * %t - UNIX time of dump
+ * %e - executable filename
+ * %h - hostname
+ * %% - output one "%"
+ */
+/* Hook must be installed with exactly the same sequence of %c specifiers.
+ * Last one, %h, may be omitted (we can find it out).
+ */
+static const char percent_specifiers[] = "%scpugteh";
+static char *core_basename = (char*) "core";
+
+
 static char* get_executable(pid_t pid, int *fd_p)
 {
     char buf[sizeof("/proc/%lu/exe") + sizeof(long)*3];
@@ -163,24 +187,7 @@ static char* get_cwd(pid_t pid)
     return malloc_readlink(buf);
 }
 
-/*
- * %s - signal number
- * %c - ulimit -c value
- * %p - pid
- * %u - uid
- * %g - gid
- * %t - UNIX time of dump
- * %e - executable filename
- * %h - hostname
- * %% - output one "%"
- */
-/* Hook must be installed with exactly the same sequence of %c specifiers.
- * Last one, %h, may be omitted (we can find it out).
- */
-static const char percent_specifiers[] = "%scpugteh";
-static char *core_basename = (char*) "core";
-
-static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid, char **percent_values)
+static int open_user_core(uid_t uid, pid_t pid, char **percent_values)
 {
     struct passwd* pw = getpwuid(uid);
     gid_t gid = pw ? pw->pw_gid : uid;
@@ -305,6 +312,28 @@ static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid, char **per
     return user_core_fd;
 }
 
+/* Like xopen, but on error, unlocks and deletes dd and user core */
+static int create_or_die(const char *filename)
+{
+    int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0640);
+    if (fd >= 0)
+    {
+        fchown(fd, dd->dd_uid, dd->dd_gid);
+        return fd;
+    }
+
+    int sv_errno = errno;
+    if (dd)
+        dd_delete(dd);
+    if (user_core_fd >= 0)
+    {
+        xchdir(user_pwd);
+        unlink(core_basename);
+    }
+    errno = sv_errno;
+    perror_msg_and_die("Can't open '%s'", filename);
+}
+
 int main(int argc, char** argv)
 {
     struct stat sb;
@@ -402,10 +431,9 @@ int main(int argc, char** argv)
     }
 
     /* Open a fd to compat coredump, if requested and is possible */
-    int user_core_fd = -1;
     if (setting_MakeCompatCore && ulimit_c != 0)
         /* note: checks "user_pwd == NULL" inside; updates core_basename */
-        user_core_fd = open_user_core(user_pwd, uid, pid, &argv[1]);
+        user_core_fd = open_user_core(uid, pid, &argv[1]);
 
     if (executable == NULL)
     {
@@ -517,7 +545,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    struct dump_dir *dd = dd_create(path, uid, 0640);
+    dd = dd_create(path, uid, 0640);
     if (dd)
     {
         dd_create_basic_files(dd, uid);
@@ -564,32 +592,18 @@ int main(int argc, char** argv)
         if (src_fd_binary > 0)
         {
             strcpy(path + path_len, "/"FILENAME_BINARY);
-            int dst_fd_binary = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0640);
-            fchown(dst_fd_binary, dd->dd_uid, dd->dd_gid);
-            off_t sz = copyfd_eof(src_fd_binary, dst_fd_binary, COPYFD_SPARSE);
-            if (fsync(dst_fd_binary) != 0 || close(dst_fd_binary) != 0 || sz < 0)
+            int dst_fd = create_or_die(path);
+            off_t sz = copyfd_eof(src_fd_binary, dst_fd, COPYFD_SPARSE);
+            if (fsync(dst_fd) != 0 || close(dst_fd) != 0 || sz < 0)
             {
-                unlink(path);
+                dd_delete(dd);
                 error_msg_and_die("Error saving binary image to '%s'", path);
             }
             close(src_fd_binary);
         }
 
         strcpy(path + path_len, "/"FILENAME_COREDUMP);
-        int abrt_core_fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0640);
-        if (abrt_core_fd < 0)
-        {
-            int sv_errno = errno;
-            dd_delete(dd);
-            if (user_core_fd >= 0)
-            {
-                xchdir(user_pwd);
-                unlink(core_basename);
-            }
-            errno = sv_errno;
-            perror_msg_and_die("Can't open '%s'", path);
-        }
-        fchown(abrt_core_fd, dd->dd_uid, dd->dd_gid);
+        int abrt_core_fd = create_or_die(path);
 
         /* We write both coredumps at once.
          * We can't write user coredump first, since it might be truncated
