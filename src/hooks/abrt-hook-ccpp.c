@@ -346,6 +346,7 @@ int main(int argc, char** argv)
         /* set to max possible >0 value */
         ulimit_c = ~((off_t)1 << (sizeof(off_t)*8-1));
     }
+    const char *pid_str = argv[3];
     pid_t pid = xatoi_positive(argv[3]);
     uid_t uid = xatoi_positive(argv[4]);
     if (errno || pid <= 0)
@@ -541,6 +542,9 @@ int main(int argc, char** argv)
 
         dd_save_text(dd, FILENAME_ANALYZER, "CCpp");
         dd_save_text(dd, FILENAME_EXECUTABLE, executable);
+        dd_save_text(dd, FILENAME_PID, pid_str);
+        if (user_pwd)
+            dd_save_text(dd, FILENAME_PWD, user_pwd);
 
         char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)",
                                  executable, signal_str, signame ? signame : signal_str);
