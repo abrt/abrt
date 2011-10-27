@@ -76,7 +76,7 @@ static off_t copyfd_sparse(int src_fd, int dst_fd1, int dst_fd2, off_t size2)
 				        )
 				    )
 				) {
-					perror_msg("write error");
+					perror_msg("Write error");
 					total = -1;
 					goto out;
 				}
@@ -85,7 +85,7 @@ static off_t copyfd_sparse(int src_fd, int dst_fd1, int dst_fd2, off_t size2)
 			goto out;
 		}
 		if (rd < 0) {
-			perror_msg("read error");
+			perror_msg("Read error");
 			total = -1;
 			goto out;
 		}
@@ -99,7 +99,7 @@ static off_t copyfd_sparse(int src_fd, int dst_fd1, int dst_fd2, off_t size2)
 				ssize_t wr1 = full_write(dst_fd1, buffer, rd);
 				ssize_t wr2 = (dst_fd2 >= 0 ? full_write(dst_fd2, buffer, rd) : rd);
 				if (wr1 < rd || wr2 < rd) {
-					perror_msg("write error");
+					perror_msg("Write error");
 					total = -1;
 					goto out;
 				}
@@ -143,13 +143,13 @@ static char* get_executable(pid_t pid, int *fd_p)
     if (deleted > executable && strcmp(deleted, " (deleted)") == 0)
     {
         *deleted = '\0';
-        log("file %s seems to be deleted", executable);
+        log("File '%s' seems to be deleted", executable);
     }
     /* find and cut off prelink suffixes from the path */
     char *prelink = executable + strlen(executable) - strlen(".#prelink#.XXXXXX");
     if (prelink > executable && strncmp(prelink, ".#prelink#.", strlen(".#prelink#.")) == 0)
     {
-        log("file %s seems to be a prelink temporary file", executable);
+        log("File '%s' seems to be a prelink temporary file", executable);
         *prelink = '\0';
     }
     return executable;
@@ -191,7 +191,7 @@ static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid, char **per
     if (user_pwd == NULL
      || chdir(user_pwd) != 0
     ) {
-        perror_msg("Can't cd to %s", user_pwd);
+        perror_msg("Can't cd to '%s'", user_pwd);
         return -1;
     }
 
@@ -297,7 +297,7 @@ static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid, char **per
     }
     if (ftruncate(user_core_fd, 0) != 0) {
         /* perror first, otherwise unlink may trash errno */
-        perror_msg("truncate %s/%s", user_pwd, core_basename);
+        perror_msg("Truncate %s/%s", user_pwd, core_basename);
         unlink(core_basename);
         return -1;
     }
@@ -350,7 +350,7 @@ int main(int argc, char** argv)
     uid_t uid = xatoi_positive(argv[4]);
     if (errno || pid <= 0)
     {
-        perror_msg_and_die("pid '%s' or limit '%s' is bogus", argv[3], argv[2]);
+        perror_msg_and_die("PID '%s' or limit '%s' is bogus", argv[3], argv[2]);
     }
 
     FILE *saved_core_pattern = fopen(VAR_RUN"/abrt/saved_core_pattern", "r");
@@ -374,7 +374,7 @@ int main(int argc, char** argv)
     char *executable = get_executable(pid, &src_fd_binary);
     if (executable && strstr(executable, "/abrt-hook-ccpp"))
     {
-        error_msg_and_die("pid %lu is '%s', not dumping it to avoid recursion",
+        error_msg_and_die("PID %lu is '%s', not dumping it to avoid recursion",
                         (long)pid, executable);
     }
 
@@ -435,7 +435,7 @@ int main(int argc, char** argv)
     if (!daemon_is_ok())
     {
         /* not an error, exit with exit code 0 */
-        log("abrt daemon is not running. If it crashed, "
+        log("abrtd is not running. If it crashed, "
             "/proc/sys/kernel/core_pattern contains a stale value, "
             "consider resetting it to 'core'"
         );
@@ -473,7 +473,7 @@ int main(int argc, char** argv)
                 path[sz] = '\0';
                 if (strcmp(executable, path) == 0)
                 {
-                    error_msg("not dumping repeating crash in '%s'", executable);
+                    error_msg("Not dumping repeating crash in '%s'", executable);
                     if (setting_MakeCompatCore)
                         goto create_user_core;
                     return 1;
@@ -503,9 +503,9 @@ int main(int argc, char** argv)
             unlink(path);
             /* copyfd_eof logs the error including errno string,
              * but it does not log file name */
-            error_msg_and_die("error saving coredump to %s", path);
+            error_msg_and_die("Error saving coredump to %s", path);
         }
-        log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
+        log("Saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
         return 0;
     }
 
@@ -566,7 +566,7 @@ int main(int argc, char** argv)
             if (sz < 0 || fsync(dst_fd_binary) != 0)
             {
                 unlink(path);
-                error_msg_and_die("error saving binary image to %s", path);
+                error_msg_and_die("Error saving binary image to '%s'", path);
             }
             close(dst_fd_binary);
             close(src_fd_binary);
@@ -614,7 +614,7 @@ int main(int argc, char** argv)
             }
             /* copyfd_sparse logs the error including errno string,
              * but it does not log file name */
-            error_msg_and_die("error writing %s", path);
+            error_msg_and_die("Error writing '%s'", path);
         }
         if (user_core_fd >= 0 && (ulimit_c == 0 || core_size > ulimit_c))
         {
@@ -636,7 +636,7 @@ int main(int argc, char** argv)
             strcpy(path, newpath);
         free(newpath);
 
-        log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
+        log("Saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
 
         /* rhbz#539551: "abrt going crazy when crashing process is respawned" */
         if (g_settings_nMaxCrashReportsSize > 0)
@@ -663,7 +663,7 @@ int main(int argc, char** argv)
     if (core_size < 0 || fsync(user_core_fd) != 0)
     {
         /* perror first, otherwise unlink may trash errno */
-        perror_msg("error writing %s/%s", user_pwd, core_basename);
+        perror_msg("Error writing '%s/%s'", user_pwd, core_basename);
         xchdir(user_pwd);
         unlink(core_basename);
         return 1;
@@ -674,6 +674,6 @@ int main(int argc, char** argv)
         unlink(core_basename);
         return 1;
     }
-    log("saved core dump of pid %lu to %s/%s (%llu bytes)", (long)pid, user_pwd, core_basename, (long long)core_size);
+    log("Saved core dump of pid %lu to %s/%s (%llu bytes)", (long)pid, user_pwd, core_basename, (long long)core_size);
     return 0;
 }
