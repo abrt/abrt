@@ -350,7 +350,6 @@ int main(int argc, char** argv)
     uid_t uid = xatoi_positive(argv[4]);
     if (errno || pid <= 0)
     {
-        free_abrt_conf_data();
         perror_msg_and_die("pid '%s' or limit '%s' is bogus", argv[3], argv[2]);
     }
 
@@ -375,7 +374,6 @@ int main(int argc, char** argv)
     char *executable = get_executable(pid, &src_fd_binary);
     if (executable && strstr(executable, "/abrt-hook-ccpp"))
     {
-        free_abrt_conf_data();
         error_msg_and_die("pid %lu is '%s', not dumping it to avoid recursion",
                         (long)pid, executable);
     }
@@ -478,7 +476,6 @@ int main(int argc, char** argv)
                     error_msg("not dumping repeating crash in '%s'", executable);
                     if (setting_MakeCompatCore)
                         goto create_user_core;
-                    free_abrt_conf_data();
                     return 1;
                 }
             }
@@ -506,11 +503,9 @@ int main(int argc, char** argv)
             unlink(path);
             /* copyfd_eof logs the error including errno string,
              * but it does not log file name */
-            free_abrt_conf_data();
             error_msg_and_die("error saving coredump to %s", path);
         }
         log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
-        free_abrt_conf_data();
         return 0;
     }
 
@@ -518,7 +513,6 @@ int main(int argc, char** argv)
             g_settings_dump_location, iso_date_string(NULL), (long)pid);
     if (path_len >= (sizeof(path) - sizeof("/"FILENAME_COREDUMP)))
     {
-        free_abrt_conf_data();
         return 1;
     }
 
@@ -572,7 +566,6 @@ int main(int argc, char** argv)
             if (sz < 0 || fsync(dst_fd_binary) != 0)
             {
                 unlink(path);
-                free_abrt_conf_data();
                 error_msg_and_die("error saving binary image to %s", path);
             }
             close(dst_fd_binary);
@@ -591,7 +584,6 @@ int main(int argc, char** argv)
                 unlink(core_basename);
             }
             errno = sv_errno;
-            free_abrt_conf_data();
             perror_msg_and_die("Can't open '%s'", path);
         }
         fchown(abrt_core_fd, dd->dd_uid, dd->dd_gid);
@@ -622,7 +614,6 @@ int main(int argc, char** argv)
             }
             /* copyfd_sparse logs the error including errno string,
              * but it does not log file name */
-            free_abrt_conf_data();
             error_msg_and_die("error writing %s", path);
         }
         if (user_core_fd >= 0 && (ulimit_c == 0 || core_size > ulimit_c))
@@ -658,7 +649,6 @@ int main(int argc, char** argv)
             trim_debug_dumps(g_settings_dump_location, maxsize * (double)(1024*1024), path);
         }
 
-        free_abrt_conf_data();
         return 0;
     }
 
@@ -666,7 +656,6 @@ int main(int argc, char** argv)
  create_user_core:
     if (user_core_fd < 0)
     {
-        free_abrt_conf_data();
         return 0;
     }
 
@@ -677,17 +666,14 @@ int main(int argc, char** argv)
         perror_msg("error writing %s/%s", user_pwd, core_basename);
         xchdir(user_pwd);
         unlink(core_basename);
-        free_abrt_conf_data();
         return 1;
     }
     if (ulimit_c == 0 || core_size > ulimit_c)
     {
         xchdir(user_pwd);
         unlink(core_basename);
-        free_abrt_conf_data();
         return 1;
     }
     log("saved core dump of pid %lu to %s/%s (%llu bytes)", (long)pid, user_pwd, core_basename, (long long)core_size);
-    free_abrt_conf_data();
     return 0;
 }
