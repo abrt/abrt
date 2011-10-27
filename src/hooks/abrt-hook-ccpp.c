@@ -538,7 +538,7 @@ int main(int argc, char** argv)
             unlink(path);
             /* copyfd_eof logs the error including errno string,
              * but it does not log file name */
-            error_msg_and_die("Error saving coredump to %s", path);
+            error_msg_and_die("Error saving '%s'", path);
         }
         log("Saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
         return 0;
@@ -603,7 +603,7 @@ int main(int argc, char** argv)
             if (fsync(dst_fd) != 0 || close(dst_fd) != 0 || sz < 0)
             {
                 dd_delete(dd);
-                error_msg_and_die("Error saving binary image to '%s'", path);
+                error_msg_and_die("Error saving '%s'", path);
             }
             close(src_fd_binary);
         }
@@ -646,6 +646,31 @@ int main(int argc, char** argv)
             xchdir(user_pwd);
             unlink(core_basename);
         }
+
+/* Provisional code, pending discussion with JVM people */
+#if 0
+        /* Save JVM crash log if it exists. (JVM's coredump per se
+         * is nearly useless for JVM developers)
+         */
+        if (user_pwd)
+        {
+            char *java_log = xasprintf("%s/hs_err_pid%lu.log", user_pwd, (long)pid);
+            int src_fd = open(java_log, O_RDONLY);
+            free(java_log);
+            if (src_fd >= 0)
+            {
+                strcpy(path + path_len, "/hs_err.log");
+                int dst_fd = create_or_die(path);
+                off_t sz = copyfd_eof(src_fd, dst_fd, COPYFD_SPARSE);
+                if (close(dst_fd) != 0 || sz < 0)
+                {
+                    dd_delete(dd);
+                    error_msg_and_die("Error saving '%s'", path);
+                }
+                close(src_fd);
+            }
+        }
+#endif
 
         /* We close dumpdir before we start catering for crash storm case.
          * Otherwise, delete_dump_dir's from other concurrent
