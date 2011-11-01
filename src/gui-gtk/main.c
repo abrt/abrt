@@ -293,12 +293,19 @@ static gboolean on_cursor_changed_cb(
 {
     //log("cursor-changed:%p/%p", treeview, user_data);
     deactivate_selection(GTK_TREE_VIEW(user_data));
+
+    /* Without this, only <tab>ing to treeview sets s_active_treeview.
+     * Thus, selecting a row with mouse and clicking [Open] with mouse
+     * wouldn't work!
+     */
+    s_active_treeview = GTK_WIDGET(treeview);
+
     return false; /* propagate the event further */
 }
 
 /* Called when I <tab> to the treeview
  * Make sure other tv loses its selection.
- * Also, restore selectiong in current tv if it was desecleted
+ * Also, restore selection in current tv if it was desecleted
  * (for example, if we <tab>ed to the other seletion a few sec ago...).
  */
 static gboolean on_focus_cb(
