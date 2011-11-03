@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-10-12 19:05+0200\n"
-"PO-Revision-Date: 2011-10-12 15:36+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"POT-Creation-Date: 2011-11-03 14:38+0100\n"
+"PO-Revision-Date: 2011-10-13 18:48+0000\n"
+"Last-Translator: logan <logan@fedoraproject.org>\n"
 "Language-Team: Spanish (Castilian) <trans-es@lists.fedoraproject.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -30,78 +30,78 @@ msgid "ABRT notification applet"
 msgstr "Applet de notificación de ABRT"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:570
+#: ../src/gui-gtk/main.c:728
 msgid "Automatic Bug Reporting Tool"
 msgstr "Herramienta de Informe Automático de Errores "
 
-#: ../src/applet/applet.c:222 ../src/applet/applet.c:224
+#: ../src/applet/applet.c:344 ../src/applet/applet.c:346
 msgid "Warning"
 msgstr "Advertencia"
 
-#: ../src/applet/applet.c:272
+#: ../src/applet/applet.c:394
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "Que sea una conexión segura o no"
 
-#: ../src/applet/applet.c:288 ../src/gui-gtk/main.c:416
+#: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:574
 msgid "translator-credits"
 msgstr "Domingo Becker <domingobecker@gmail.com>, 2010, 2011"
 
-#: ../src/applet/applet.c:298
+#: ../src/applet/applet.c:420
 msgid "Hide"
 msgstr "Ocultar"
 
-#: ../src/applet/applet.c:363
+#: ../src/applet/applet.c:472
 msgid "Report"
 msgstr "Informar"
 
-#: ../src/applet/applet.c:366
+#: ../src/applet/applet.c:475
 msgid "Show"
 msgstr "Mostrar"
 
-#: ../src/applet/applet.c:370 ../src/applet/applet.c:398
+#: ../src/applet/applet.c:479 ../src/applet/applet.c:507
 msgid "A Problem has Occurred"
 msgstr "Ocurrió un problema"
 
-#: ../src/applet/applet.c:395
+#: ../src/applet/applet.c:504
 msgid "Open ABRT"
 msgstr "Abrir ABRT"
 
-#: ../src/applet/applet.c:526
+#: ../src/applet/applet.c:635
 #, c-format
 msgid "A problem in the %s package has been detected"
-msgstr ""
+msgstr "Ha sido detectado un problema en el paquete %s"
 
-#: ../src/applet/applet.c:528
+#: ../src/applet/applet.c:637
 msgid "A problem has been detected"
-msgstr ""
+msgstr "Ha sido detectado un problema"
 
-#: ../src/applet/applet.c:766
+#: ../src/applet/applet.c:778
 msgid ""
-" [-v] [DIR]...\n"
+"& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr ""
-" [-v] [DIR]...\n"
+"& [-v] [DIR]...\n"
 "\n"
 "Miniaplicación que informa al usuario cada vez que ABRT detecta un problema\n"
 
-#: ../src/applet/applet.c:838
+#: ../src/applet/applet.c:850
 msgid "ABRT service is not running"
 msgstr "El servicio ABRT no se está ejecutando"
 
-#: ../src/daemon/abrt-action-save-package-data.c:360
+#: ../src/daemon/abrt-action-save-package-data.c:351
 msgid ""
-" [-v] [-c CONFFILE] -d DIR\n"
+"& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
 msgstr ""
-" [-v] [-c CONFFILE] -d DIR\n"
+"& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Consulta la base de datos del paquete y guarda el nombre y el componente del "
 "paquete"
 
-#: ../src/daemon/abrt-action-save-package-data.c:372
+#: ../src/daemon/abrt-action-save-package-data.c:363
 #: ../src/plugins/abrt-action-analyze-backtrace.c:56
 #: ../src/plugins/abrt-action-analyze-c.c:161
 #: ../src/plugins/abrt-action-analyze-oops.c:122
@@ -110,13 +110,13 @@ msgstr ""
 msgid "Dump directory"
 msgstr "Listar directorio"
 
-#: ../src/daemon/abrt-action-save-package-data.c:373
+#: ../src/daemon/abrt-action-save-package-data.c:364
 msgid "Configuration file"
 msgstr "Archivo de configuración"
 
 #: ../src/daemon/abrt-server.c:450 ../src/daemon/abrtd.c:625
-msgid " [options]"
-msgstr " [opciones]"
+msgid "& [options]"
+msgstr "& [opciones]"
 
 #: ../src/daemon/abrt-server.c:461
 msgid "Use UID as client uid"
@@ -127,7 +127,7 @@ msgid "Log to syslog"
 msgstr "Registrarse en syslog"
 
 #: ../src/daemon/abrt-server.c:463 ../src/daemon/abrtd.c:640
-#: ../src/gui-gtk/main.c:899
+#: ../src/gui-gtk/main.c:1063
 msgid "Add program names to log"
 msgstr "Agrega el nombre del programa al log"
 
@@ -152,8 +152,7 @@ msgid "Exit after SEC seconds of inactivity"
 msgstr "Finaliza luego de SEC segundos de inactividad"
 
 #: ../src/daemon/abrt-handle-event.c:104
-#, fuzzy
-msgid "\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
+msgid "& [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
 msgstr "\\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
 
 #: ../src/daemon/abrt-handle-event.c:111
@@ -164,85 +163,85 @@ msgstr "Ejecute EVENT sobre DUMP_DIR"
 msgid "View and report application crashes"
 msgstr "Ver e informar sobre la caída de la aplicación"
 
-#: ../src/gui-gtk/main.c:354
+#: ../src/gui-gtk/main.c:512
 msgid "Problem description"
 msgstr "Descripción del problema"
 
-#: ../src/gui-gtk/main.c:357
+#: ../src/gui-gtk/main.c:515
 msgid "Send"
 msgstr "Enviar"
 
-#: ../src/gui-gtk/main.c:435 ../src/gui-gtk/main.c:481
+#: ../src/gui-gtk/main.c:593 ../src/gui-gtk/main.c:639
 msgid "Source"
 msgstr "Fuente"
 
-#: ../src/gui-gtk/main.c:445 ../src/gui-gtk/main.c:491
+#: ../src/gui-gtk/main.c:603 ../src/gui-gtk/main.c:649
 msgid "Problem"
 msgstr "Problema"
 
-#: ../src/gui-gtk/main.c:466
+#: ../src/gui-gtk/main.c:624
 msgid "Last Occurrence"
 msgstr "Ultimo caso"
 
-#: ../src/gui-gtk/main.c:501
+#: ../src/gui-gtk/main.c:659
 msgid "Date Submitted"
 msgstr "Fecha del reporte"
 
-#: ../src/gui-gtk/main.c:510
+#: ../src/gui-gtk/main.c:668
 msgid "Submission Result"
-msgstr ""
+msgstr "Resultado del reporte"
 
-#: ../src/gui-gtk/main.c:523
+#: ../src/gui-gtk/main.c:681
 msgid "_Report"
 msgstr "_Reporte"
 
-#: ../src/gui-gtk/main.c:524
+#: ../src/gui-gtk/main.c:682
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../src/gui-gtk/main.c:525
+#: ../src/gui-gtk/main.c:683
 msgid "_Help"
 msgstr "Ay_uda"
 
-#: ../src/gui-gtk/main.c:551
+#: ../src/gui-gtk/main.c:709
 msgid "Report problem with ABRT"
 msgstr "Informar el problema con ABRT"
 
-#: ../src/gui-gtk/main.c:590
+#: ../src/gui-gtk/main.c:748
 msgid "Not submitted reports"
 msgstr "Reportes no enviados"
 
-#: ../src/gui-gtk/main.c:592
+#: ../src/gui-gtk/main.c:750
 msgid "<b>Not submitted reports</b>"
 msgstr "<b>Reportes no enviados</b>"
 
-#: ../src/gui-gtk/main.c:635
+#: ../src/gui-gtk/main.c:798
 msgid "Submitted reports"
 msgstr "Reportes enviados"
 
-#: ../src/gui-gtk/main.c:638
+#: ../src/gui-gtk/main.c:801
 msgid "<b>Submitted reports</b>"
 msgstr "<b>Reportes enviados</b>"
 
-#: ../src/gui-gtk/main.c:888
+#: ../src/gui-gtk/main.c:1052
 msgid ""
-" [-vp] [DIR]...\n"
+"& [-vp] [DIR]...\n"
 "\n"
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 msgstr ""
-" [-vp] [DIR]...\n"
+"& [-vp] [DIR]...\n"
 "\n"
 "Muestra un listado con los directorios de volcado ABRT en el o los "
 "directorios indicados\n"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:44
 msgid ""
-" [options] -d DIR\n"
+"& [options] -d DIR\n"
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in dump directory DIR"
 msgstr ""
-" [opciones] -d DIR\n"
+"& [opciones] -d DIR\n"
 "\n"
 "Analiza el retrotrazado C/C++, genera un hash de duplicación, taza de "
 "retrotrazado e identifica la función que se colgó en el directorio de "
@@ -260,32 +259,32 @@ msgstr "Ha fallado el análisis del trazado de %s"
 
 #: ../src/plugins/abrt-action-analyze-c.c:150
 msgid ""
-" [-v] -d DIR\n"
+"& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
-" [-v] -d DIR\n"
+"& [-v] -d DIR\n"
 "\n"
 "Calcula y almacena UUID del núcleo de volcado en el directorio de volcado DIR"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:111
 msgid ""
-" [-vs] -d DIR\n"
+"& [-vs] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
-" [-vs] -d DIR\n"
+"& [-vs] -d DIR\n"
 "\n"
 "Calcula y almacena UUID y DUPHASH para el directorio de volcado de alertas "
 "DIR"
 
 #: ../src/plugins/abrt-action-analyze-python.c:29
 msgid ""
-" [-v] -d DIR\n"
+"& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
-" [-v] -d DIR\n"
+"& [-v] -d DIR\n"
 "\n"
 "Calcula y almacena UUID y DUPHASH de volcados de caídas python"
 
@@ -296,11 +295,11 @@ msgstr "Generando retrotrazado"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:251
 msgid ""
-" [options] -d DIR\n"
+"& [options] -d DIR\n"
 "\n"
 "Analyzes coredump in dump directory DIR, generates and saves backtrace"
 msgstr ""
-" [options] -d DIR\n"
+"& [options] -d DIR\n"
 "\n"
 "Analiza volcados de núcleo en el directorio de volcados DIR, genera y "
 "almacena reportes"
@@ -494,11 +493,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:149
 msgid ""
-" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
-" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
 "\n"
 "Elimina directorios de volcado (-d) o archivos (-f) en directorios que son "
 "más pequeños que SIZE"
@@ -517,13 +516,13 @@ msgstr "Preserve este dir de volcado"
 
 #: ../src/plugins/abrt-dump-oops.c:567
 msgid ""
-" [-vsrowx] [-d DIR] FILE\n"
-"   or:  [-vsrowx] -D FILE\n"
+"& [-vsrowx] [-d DIR] FILE\n"
+"or: & [-vsrowx] -D FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
-" [-vsrowx] [-d DIR] FILE\n"
-"   or:  [-vsrowx] -D FILE\n"
+"& [-vsrowx] [-d DIR] FILE\n"
+"   or: & [-vsrowx] -D FILE\n"
 "\n"
 "Extrae alertas desde el archivo syslog/dmesg"
 
@@ -559,12 +558,16 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid "An error occurred on the server side. Try again later."
 msgstr ""
+"Ha ocurrido un error en el lado del servidor. Por favor inténtelo de nuevo "
+"más tarde."
 
 #: ../src/plugins/abrt-retrace-client.c:72
 msgid ""
 "An error occurred while connecting to the server. Check your network "
 "connection and try again."
 msgstr ""
+"Ha ocurrido un error mientras se conectaba con el servidor. Verifique su "
+"conexión de red e inténtelo nuevamente."
 
 #: ../src/plugins/abrt-retrace-client.c:78
 msgid ""
@@ -1062,11 +1065,11 @@ msgstr "Muestra información acerca de DUMP_DIR"
 
 #: ../src/cli/abrt-cli.c:161
 msgid "See 'abrt-cli COMMAND --help' for more information"
-msgstr ""
+msgstr "Consulte 'abrt-cli COMMAND --help' para obtener mayor información"
 
 #: ../src/cli/list.c:90
-msgid " list [options] [<dump-dir>]..."
-msgstr " list [opciones] [<dump-dir>]..."
+msgid "& list [options] [<dump-dir>]..."
+msgstr "& list [opciones] [<dump-dir>]..."
 
 #: ../src/cli/list.c:97
 msgid "List even reported problems"
@@ -1078,8 +1081,8 @@ msgid "Show detailed report"
 msgstr "Muestra un reporte detallado"
 
 #: ../src/cli/list.c:133
-msgid " info [options] [<dump-dir>]..."
-msgstr " info [opciones] [<dump-dir>]..."
+msgid "& info [options] [<dump-dir>]..."
+msgstr "& info [opciones] [<dump-dir>]..."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -1118,6 +1121,8 @@ msgstr "Guarda la configuración desde el directorio de la aplicación GConf"
 #: ../src/plugins/collect_Smolt.xml.in.h:1
 msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
 msgstr ""
+"Ejecuta smoltSendProfile -p y almacena el resultado como un elemento "
+"'smolt_data'."
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
 msgid "Save your computer's hardware profile information"

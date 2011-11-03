@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-10-12 19:05+0200\n"
-"PO-Revision-Date: 2011-10-12 15:36+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"POT-Creation-Date: 2011-11-03 14:38+0100\n"
+"PO-Revision-Date: 2011-10-12 15:43+0000\n"
+"Last-Translator: yurchor <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
@@ -25,81 +25,81 @@ msgid "ABRT notification applet"
 msgstr "Аплет сповіщення ABRT"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:570
+#: ../src/gui-gtk/main.c:728
 msgid "Automatic Bug Reporting Tool"
 msgstr "ABRT — автоматичне звітування про помилки"
 
-#: ../src/applet/applet.c:222 ../src/applet/applet.c:224
+#: ../src/applet/applet.c:344 ../src/applet/applet.c:346
 msgid "Warning"
 msgstr "Попередження"
 
-#: ../src/applet/applet.c:272
+#: ../src/applet/applet.c:394
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "Аплет у області сповіщень для попередження користувача про виявлені ABRT "
 "проблеми"
 
-#: ../src/applet/applet.c:288 ../src/gui-gtk/main.c:416
+#: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:574
 msgid "translator-credits"
 msgstr ""
 "Максим Дзюманенко <dziumanenko@gmail.com>\n"
 "Юрій Чорноіван <yurchor@ukr.net>"
 
-#: ../src/applet/applet.c:298
+#: ../src/applet/applet.c:420
 msgid "Hide"
 msgstr "Сховати"
 
-#: ../src/applet/applet.c:363
+#: ../src/applet/applet.c:472
 msgid "Report"
 msgstr "Повідомити"
 
-#: ../src/applet/applet.c:366
+#: ../src/applet/applet.c:475
 msgid "Show"
 msgstr "Показати"
 
-#: ../src/applet/applet.c:370 ../src/applet/applet.c:398
+#: ../src/applet/applet.c:479 ../src/applet/applet.c:507
 msgid "A Problem has Occurred"
 msgstr "Виникла проблема"
 
-#: ../src/applet/applet.c:395
+#: ../src/applet/applet.c:504
 msgid "Open ABRT"
 msgstr "Відкрити ABRT"
 
-#: ../src/applet/applet.c:526
+#: ../src/applet/applet.c:635
 #, c-format
 msgid "A problem in the %s package has been detected"
-msgstr ""
+msgstr "Було виявлено проблему, пов’язану з пакунком %s"
 
-#: ../src/applet/applet.c:528
+#: ../src/applet/applet.c:637
 msgid "A problem has been detected"
-msgstr ""
+msgstr "Було виявлено проблему"
 
-#: ../src/applet/applet.c:766
+#: ../src/applet/applet.c:778
 msgid ""
-" [-v] [DIR]...\n"
+"& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr ""
-" [-v] [КАТАЛОГ]...\n"
+"& [-v] [КАТАЛОГ]...\n"
 "\n"
 "Аплет для сповіщення користувача про виявлені ABRT проблеми\n"
 
-#: ../src/applet/applet.c:838
+#: ../src/applet/applet.c:850
 msgid "ABRT service is not running"
 msgstr "Службу ABRT не запущено"
 
-#: ../src/daemon/abrt-action-save-package-data.c:360
+#: ../src/daemon/abrt-action-save-package-data.c:351
 msgid ""
-" [-v] [-c CONFFILE] -d DIR\n"
+"& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
 msgstr ""
-" [-v] [-c ФАЙЛ_НАЛАШТУВАНЬ] -d КАТАЛОГ\n"
+"& [-v] [-c ФАЙЛ_НАЛАШТУВАНЬ] -d КАТАЛОГ\n"
 "\n"
 "Отримати дані з бази даних пакунків і зберегти назву пакунка і компонента"
 
-#: ../src/daemon/abrt-action-save-package-data.c:372
+#: ../src/daemon/abrt-action-save-package-data.c:363
 #: ../src/plugins/abrt-action-analyze-backtrace.c:56
 #: ../src/plugins/abrt-action-analyze-c.c:161
 #: ../src/plugins/abrt-action-analyze-oops.c:122
@@ -108,13 +108,13 @@ msgstr ""
 msgid "Dump directory"
 msgstr "Каталог дампу"
 
-#: ../src/daemon/abrt-action-save-package-data.c:373
+#: ../src/daemon/abrt-action-save-package-data.c:364
 msgid "Configuration file"
 msgstr "Файл налаштувань"
 
 #: ../src/daemon/abrt-server.c:450 ../src/daemon/abrtd.c:625
-msgid " [options]"
-msgstr " [параметри]"
+msgid "& [options]"
+msgstr "& [параметри]"
 
 #: ../src/daemon/abrt-server.c:461
 msgid "Use UID as client uid"
@@ -125,7 +125,7 @@ msgid "Log to syslog"
 msgstr "Записувати до журналу syslog"
 
 #: ../src/daemon/abrt-server.c:463 ../src/daemon/abrtd.c:640
-#: ../src/gui-gtk/main.c:899
+#: ../src/gui-gtk/main.c:1063
 msgid "Add program names to log"
 msgstr "Додати назви програм до журналу"
 
@@ -150,8 +150,7 @@ msgid "Exit after SEC seconds of inactivity"
 msgstr "Завершувати роботу після SEC секунд бездіяльності"
 
 #: ../src/daemon/abrt-handle-event.c:104
-#, fuzzy
-msgid "\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
+msgid "& [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
 msgstr "\\b [-v] -e|--event ПОДІЯ КАТАЛОГ_ДАМПІВ [КАТАЛОГ_ДАМПІВ]..."
 
 #: ../src/daemon/abrt-handle-event.c:111
@@ -162,84 +161,84 @@ msgstr "Виконати ДІЮ над даними каталогу КАТАЛ�
 msgid "View and report application crashes"
 msgstr "Переглянути збої програми та створити звіт"
 
-#: ../src/gui-gtk/main.c:354
+#: ../src/gui-gtk/main.c:512
 msgid "Problem description"
 msgstr "Опис проблеми"
 
-#: ../src/gui-gtk/main.c:357
+#: ../src/gui-gtk/main.c:515
 msgid "Send"
 msgstr "Надіслати"
 
-#: ../src/gui-gtk/main.c:435 ../src/gui-gtk/main.c:481
+#: ../src/gui-gtk/main.c:593 ../src/gui-gtk/main.c:639
 msgid "Source"
 msgstr "Джерело"
 
-#: ../src/gui-gtk/main.c:445 ../src/gui-gtk/main.c:491
+#: ../src/gui-gtk/main.c:603 ../src/gui-gtk/main.c:649
 msgid "Problem"
 msgstr "Проблема"
 
-#: ../src/gui-gtk/main.c:466
+#: ../src/gui-gtk/main.c:624
 msgid "Last Occurrence"
 msgstr "Останній випадок"
 
-#: ../src/gui-gtk/main.c:501
+#: ../src/gui-gtk/main.c:659
 msgid "Date Submitted"
 msgstr "Дата надсилання"
 
-#: ../src/gui-gtk/main.c:510
+#: ../src/gui-gtk/main.c:668
 msgid "Submission Result"
-msgstr ""
+msgstr "Результат надсилання"
 
-#: ../src/gui-gtk/main.c:523
+#: ../src/gui-gtk/main.c:681
 msgid "_Report"
 msgstr "_Звіт"
 
-#: ../src/gui-gtk/main.c:524
+#: ../src/gui-gtk/main.c:682
 msgid "_Edit"
 msgstr "З_міни"
 
-#: ../src/gui-gtk/main.c:525
+#: ../src/gui-gtk/main.c:683
 msgid "_Help"
 msgstr "_Довідка"
 
-#: ../src/gui-gtk/main.c:551
+#: ../src/gui-gtk/main.c:709
 msgid "Report problem with ABRT"
 msgstr "Повідомити про проблему за допомогою ABRT"
 
-#: ../src/gui-gtk/main.c:590
+#: ../src/gui-gtk/main.c:748
 msgid "Not submitted reports"
 msgstr "Ненадіслані звіти"
 
-#: ../src/gui-gtk/main.c:592
+#: ../src/gui-gtk/main.c:750
 msgid "<b>Not submitted reports</b>"
 msgstr "<b>Ненадіслані звіти</b>"
 
-#: ../src/gui-gtk/main.c:635
+#: ../src/gui-gtk/main.c:798
 msgid "Submitted reports"
 msgstr "Надіслані звіти"
 
-#: ../src/gui-gtk/main.c:638
+#: ../src/gui-gtk/main.c:801
 msgid "<b>Submitted reports</b>"
 msgstr "<b>Надіслані звіти</b>"
 
-#: ../src/gui-gtk/main.c:888
+#: ../src/gui-gtk/main.c:1052
 msgid ""
-" [-vp] [DIR]...\n"
+"& [-vp] [DIR]...\n"
 "\n"
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 msgstr ""
-" [-vp] [КАТАЛОГ]...\n"
+"& [-vp] [КАТАЛОГ]...\n"
 "\n"
 "Показати список каталогів дампів ABRT у вказаних КАТАЛОГах\n"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:44
 msgid ""
-" [options] -d DIR\n"
+"& [options] -d DIR\n"
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in dump directory DIR"
 msgstr ""
-" [параметри] -d КАТАЛОГ\n"
+"& [параметри] -d КАТАЛОГ\n"
 "\n"
 "Проаналізувати зворотне трасування C/C++, створити хеш дублювання, оцінки \n"
 "зворотного трасування та визначити функцію, під час виконання якої сталося \n"
@@ -257,32 +256,32 @@ msgstr "Не вдалося обробити дані зворотного тр�
 
 #: ../src/plugins/abrt-action-analyze-c.c:150
 msgid ""
-" [-v] -d DIR\n"
+"& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
-" [-v] -d КАТАЛОГ\n"
+"& [-v] -d КАТАЛОГ\n"
 "\n"
 "Обчислює і зберігає UUID дампу ядра у каталозі дампу КАТАЛОГ"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:111
 msgid ""
-" [-vs] -d DIR\n"
+"& [-vs] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
-" [-vs] -d КАТАЛОГ\n"
+"& [-vs] -d КАТАЛОГ\n"
 "\n"
 "Обчислює і зберігає UUID та DUPHASH для каталогу аварійних дампів ядра "
 "КАТАЛОГ"
 
 #: ../src/plugins/abrt-action-analyze-python.c:29
 msgid ""
-" [-v] -d DIR\n"
+"& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
-" [-v] -d КАТАЛОГ\n"
+"& [-v] -d КАТАЛОГ\n"
 "\n"
 "Обчислює і зберігає UUID та DUPHASH аварійних дампів Python"
 
@@ -293,11 +292,11 @@ msgstr "Створюється трасування"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:251
 msgid ""
-" [options] -d DIR\n"
+"& [options] -d DIR\n"
 "\n"
 "Analyzes coredump in dump directory DIR, generates and saves backtrace"
 msgstr ""
-" [параметри] -d КАТАЛОГ\n"
+"& [параметри] -d КАТАЛОГ\n"
 "\n"
 "Аналізує дамп ядра у каталозі КАТАЛОГ, створює і зберігає дані зворотного "
 "трасування"
@@ -488,11 +487,11 @@ msgstr "Доступні всі файли діагностичних даних
 
 #: ../src/plugins/abrt-action-trim-files.c:149
 msgid ""
-" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
-" [-v] [-d РОЗМІР:КАТАЛОГ]... [-f РОЗМІР:КАТАЛОГ]... [-p КАТАЛОГ]\n"
+"& [-v] [-d РОЗМІР:КАТАЛОГ]... [-f РОЗМІР:КАТАЛОГ]... [-p КАТАЛОГ]\n"
 "\n"
 "Вилучити каталоги дампів (-d) або файли (-f) у КАТАЛОГах, якщо їхні розміри "
 "більші за РОЗМІР"
@@ -511,13 +510,13 @@ msgstr "Зберегти цей каталог дампів"
 
 #: ../src/plugins/abrt-dump-oops.c:567
 msgid ""
-" [-vsrowx] [-d DIR] FILE\n"
-"   or:  [-vsrowx] -D FILE\n"
+"& [-vsrowx] [-d DIR] FILE\n"
+"or: & [-vsrowx] -D FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
-" [-vsrowx] [-d КАТАЛОГ] ФАЙЛ\n"
-"   або  [-vsrowx] -D ФАЙЛ\n"
+"& [-vsrowx] [-d КАТАЛОГ] ФАЙЛ\n"
+"   або & [-vsrowx] -D ФАЙЛ\n"
 "\n"
 "Видобути повідомлення про аварії (oops) з файла syslog/dmesg"
 
@@ -554,13 +553,15 @@ msgstr "Зберегти як -d DumpLocation, DumpLocation вказано у ab
 
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid "An error occurred on the server side. Try again later."
-msgstr ""
+msgstr "На боці сервера сталася помилка. Повторіть спробу пізніше."
 
 #: ../src/plugins/abrt-retrace-client.c:72
 msgid ""
 "An error occurred while connecting to the server. Check your network "
 "connection and try again."
 msgstr ""
+"Під час спроби встановлення з’єднання з сервером сталася помилка. Перевірте "
+"стан з’єднання з мережею і повторіть спробу."
 
 #: ../src/plugins/abrt-retrace-client.c:78
 msgid ""
@@ -1067,11 +1068,11 @@ msgstr "Показати дані щодо каталогу КАТАЛОГ_ДА�
 
 #: ../src/cli/abrt-cli.c:161
 msgid "See 'abrt-cli COMMAND --help' for more information"
-msgstr ""
+msgstr "Щоб дізнатися більше, скористайтеся командою «abrt-cli КОМАНДА --help»"
 
 #: ../src/cli/list.c:90
-msgid " list [options] [<dump-dir>]..."
-msgstr " list [параметри] [<каталог дампів>]..."
+msgid "& list [options] [<dump-dir>]..."
+msgstr "& list [параметри] [<каталог дампів>]..."
 
 #: ../src/cli/list.c:97
 msgid "List even reported problems"
@@ -1083,8 +1084,8 @@ msgid "Show detailed report"
 msgstr "Показати докладний звіт"
 
 #: ../src/cli/list.c:133
-msgid " info [options] [<dump-dir>]..."
-msgstr " info [параметри] [<каталог дампів>]..."
+msgid "& info [options] [<dump-dir>]..."
+msgstr "& info [параметри] [<каталог дампів>]..."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -1123,6 +1124,8 @@ msgstr "Зберегти налаштування з каталогу GConf пр
 #: ../src/plugins/collect_Smolt.xml.in.h:1
 msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
 msgstr ""
+"Запускає «smoltSendProfile -p» і зберігає виведені дані у елементі "
+"«smolt_data»."
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
 msgid "Save your computer's hardware profile information"

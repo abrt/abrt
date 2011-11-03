@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2011-10-12 19:05+0200\n"
-"PO-Revision-Date: 2011-10-12 15:36+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"POT-Creation-Date: 2011-11-03 14:38+0100\n"
+"PO-Revision-Date: 2011-10-22 23:41+0000\n"
+"Last-Translator: ruigo <rui.gouveia@gmail.com>\n"
 "Language-Team: Portuguese <trans-pt@lists.fedoraproject.org>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
@@ -25,73 +25,73 @@ msgid "ABRT notification applet"
 msgstr "Applet de notificação do ABRT"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:570
+#: ../src/gui-gtk/main.c:728
 msgid "Automatic Bug Reporting Tool"
 msgstr "Ferramenta automática para reportar erros"
 
-#: ../src/applet/applet.c:222 ../src/applet/applet.c:224
+#: ../src/applet/applet.c:344 ../src/applet/applet.c:346
 msgid "Warning"
 msgstr "Aviso"
 
-#: ../src/applet/applet.c:272
+#: ../src/applet/applet.c:394
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "Applet da área de notificação que informa os utilizadores sobre os problemas "
 "detectados pela ABRT"
 
-#: ../src/applet/applet.c:288 ../src/gui-gtk/main.c:416
+#: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:574
 msgid "translator-credits"
 msgstr "Rui Gouveia <rui.gouveia@gmail.com>"
 
-#: ../src/applet/applet.c:298
+#: ../src/applet/applet.c:420
 msgid "Hide"
 msgstr "Esconder"
 
-#: ../src/applet/applet.c:363
+#: ../src/applet/applet.c:472
 msgid "Report"
 msgstr "Relatório"
 
-#: ../src/applet/applet.c:366
+#: ../src/applet/applet.c:475
 msgid "Show"
 msgstr "Mostrar"
 
-#: ../src/applet/applet.c:370 ../src/applet/applet.c:398
+#: ../src/applet/applet.c:479 ../src/applet/applet.c:507
 msgid "A Problem has Occurred"
 msgstr "Ocorreu um problema"
 
-#: ../src/applet/applet.c:395
+#: ../src/applet/applet.c:504
 msgid "Open ABRT"
 msgstr "Abrir ABRT"
 
-#: ../src/applet/applet.c:526
+#: ../src/applet/applet.c:635
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr ""
 
-#: ../src/applet/applet.c:528
+#: ../src/applet/applet.c:637
 msgid "A problem has been detected"
 msgstr ""
 
-#: ../src/applet/applet.c:766
+#: ../src/applet/applet.c:778
 msgid ""
-" [-v] [DIR]...\n"
+"& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr ""
 
-#: ../src/applet/applet.c:838
+#: ../src/applet/applet.c:850
 msgid "ABRT service is not running"
 msgstr "O serviço ABRT não está a correr"
 
-#: ../src/daemon/abrt-action-save-package-data.c:360
+#: ../src/daemon/abrt-action-save-package-data.c:351
 msgid ""
-" [-v] [-c CONFFILE] -d DIR\n"
+"& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
 msgstr ""
 
-#: ../src/daemon/abrt-action-save-package-data.c:372
+#: ../src/daemon/abrt-action-save-package-data.c:363
 #: ../src/plugins/abrt-action-analyze-backtrace.c:56
 #: ../src/plugins/abrt-action-analyze-c.c:161
 #: ../src/plugins/abrt-action-analyze-oops.c:122
@@ -100,13 +100,13 @@ msgstr ""
 msgid "Dump directory"
 msgstr "Directório de despejo"
 
-#: ../src/daemon/abrt-action-save-package-data.c:373
+#: ../src/daemon/abrt-action-save-package-data.c:364
 msgid "Configuration file"
 msgstr "Ficheiro de configuração"
 
 #: ../src/daemon/abrt-server.c:450 ../src/daemon/abrtd.c:625
-msgid " [options]"
-msgstr ""
+msgid "& [options]"
+msgstr "& [opções]"
 
 #: ../src/daemon/abrt-server.c:461
 msgid "Use UID as client uid"
@@ -117,7 +117,7 @@ msgid "Log to syslog"
 msgstr "Registar no syslog"
 
 #: ../src/daemon/abrt-server.c:463 ../src/daemon/abrtd.c:640
-#: ../src/gui-gtk/main.c:899
+#: ../src/gui-gtk/main.c:1063
 msgid "Add program names to log"
 msgstr "Adicionar nomes de programa aos registos"
 
@@ -142,87 +142,87 @@ msgid "Exit after SEC seconds of inactivity"
 msgstr "Sair após SEC segundos de inactividade"
 
 #: ../src/daemon/abrt-handle-event.c:104
-msgid "\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
-msgstr ""
+msgid "& [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
+msgstr "\\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
 
 #: ../src/daemon/abrt-handle-event.c:111
 msgid "Run EVENT on DUMP_DIR"
-msgstr ""
+msgstr "Executar EVENT em DUMP_DIR"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
 msgstr "Ver e reportar as falhas de aplicações"
 
-#: ../src/gui-gtk/main.c:354
+#: ../src/gui-gtk/main.c:512
 msgid "Problem description"
 msgstr "Descrição do problema"
 
-#: ../src/gui-gtk/main.c:357
+#: ../src/gui-gtk/main.c:515
 msgid "Send"
 msgstr "Enviar"
 
-#: ../src/gui-gtk/main.c:435 ../src/gui-gtk/main.c:481
+#: ../src/gui-gtk/main.c:593 ../src/gui-gtk/main.c:639
 msgid "Source"
-msgstr ""
+msgstr "Origem"
 
-#: ../src/gui-gtk/main.c:445 ../src/gui-gtk/main.c:491
+#: ../src/gui-gtk/main.c:603 ../src/gui-gtk/main.c:649
 msgid "Problem"
 msgstr "Problema"
 
-#: ../src/gui-gtk/main.c:466
+#: ../src/gui-gtk/main.c:624
 msgid "Last Occurrence"
-msgstr ""
+msgstr "Última ocorrência"
 
-#: ../src/gui-gtk/main.c:501
+#: ../src/gui-gtk/main.c:659
 msgid "Date Submitted"
-msgstr ""
+msgstr "Data de submissão"
 
-#: ../src/gui-gtk/main.c:510
+#: ../src/gui-gtk/main.c:668
 msgid "Submission Result"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:523
+#: ../src/gui-gtk/main.c:681
 msgid "_Report"
-msgstr ""
+msgstr "_Reportar"
 
-#: ../src/gui-gtk/main.c:524
+#: ../src/gui-gtk/main.c:682
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../src/gui-gtk/main.c:525
+#: ../src/gui-gtk/main.c:683
 msgid "_Help"
 msgstr "_Ajuda"
 
-#: ../src/gui-gtk/main.c:551
+#: ../src/gui-gtk/main.c:709
 msgid "Report problem with ABRT"
 msgstr "Reportar problema com ABRT"
 
-#: ../src/gui-gtk/main.c:590
+#: ../src/gui-gtk/main.c:748
 msgid "Not submitted reports"
-msgstr ""
+msgstr "Relatórios não submetidos"
 
-#: ../src/gui-gtk/main.c:592
+#: ../src/gui-gtk/main.c:750
 msgid "<b>Not submitted reports</b>"
-msgstr ""
+msgstr "<b>Relatórios não submetidos</b>"
 
-#: ../src/gui-gtk/main.c:635
+#: ../src/gui-gtk/main.c:798
 msgid "Submitted reports"
-msgstr ""
+msgstr "Relatórios submetidos"
 
-#: ../src/gui-gtk/main.c:638
+#: ../src/gui-gtk/main.c:801
 msgid "<b>Submitted reports</b>"
-msgstr ""
+msgstr "<b>Relatórios submetidos</b>"
 
-#: ../src/gui-gtk/main.c:888
+#: ../src/gui-gtk/main.c:1052
 msgid ""
-" [-vp] [DIR]...\n"
+"& [-vp] [DIR]...\n"
 "\n"
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:44
 msgid ""
-" [options] -d DIR\n"
+"& [options] -d DIR\n"
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in dump directory DIR"
@@ -240,21 +240,21 @@ msgstr "Processamento da traçagem falhou para %s"
 
 #: ../src/plugins/abrt-action-analyze-c.c:150
 msgid ""
-" [-v] -d DIR\n"
+"& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
 msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-oops.c:111
 msgid ""
-" [-vs] -d DIR\n"
+"& [-vs] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
 msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-python.c:29
 msgid ""
-" [-v] -d DIR\n"
+"& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
@@ -266,7 +266,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:251
 msgid ""
-" [options] -d DIR\n"
+"& [options] -d DIR\n"
 "\n"
 "Analyzes coredump in dump directory DIR, generates and saves backtrace"
 msgstr ""
@@ -363,11 +363,11 @@ msgstr "Pacotes para descarregar: %u"
 #: ../src/plugins/abrt-action-install-debuginfo:286
 #, c-format
 msgid "Downloading %.2fMb, installed size: %.2fMb. Continue?"
-msgstr ""
+msgstr "A transferir %.2fMb, tamanho instalado: %.2fMb. Continuar?"
 
 #: ../src/plugins/abrt-action-install-debuginfo:291
 msgid "Download cancelled by user"
-msgstr ""
+msgstr "Transferência cancelada pelo utilizador"
 
 #: ../src/plugins/abrt-action-install-debuginfo:325
 #, c-format
@@ -440,7 +440,7 @@ msgstr "Todos os %u ficheiros de debuginfo estão disponíveis"
 
 #: ../src/plugins/abrt-action-trim-files.c:149
 msgid ""
-" [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
+"& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
 msgstr ""
@@ -459,8 +459,8 @@ msgstr "Preserva esta directoria dump"
 
 #: ../src/plugins/abrt-dump-oops.c:567
 msgid ""
-" [-vsrowx] [-d DIR] FILE\n"
-"   or:  [-vsrowx] -D FILE\n"
+"& [-vsrowx] [-d DIR] FILE\n"
+"or: & [-vsrowx] -D FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
 msgstr ""
@@ -490,7 +490,7 @@ msgstr "Tornar o directório de despejo acessível a todos"
 
 #: ../src/plugins/abrt-dump-oops.c:594
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
-msgstr ""
+msgstr "Igual a -d DumpLocation, DumpLocation está especificado em abrt.conf"
 
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid "An error occurred on the server side. Try again later."
@@ -507,6 +507,8 @@ msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
 msgstr ""
+"O servidor de traçagem não pode ser utilizado porque o ficheiro de erro é "
+"muito grande. Tente a traçagem local."
 
 #: ../src/plugins/abrt-retrace-client.c:131
 msgid "Cannot open temporary file"
@@ -547,7 +549,7 @@ msgstr "O emissor do certificado não é reconhecido: '%s'."
 #: ../src/plugins/abrt-retrace-client.c:231
 #, c-format
 msgid "Bad certificate received. Subject '%s', issuer '%s'."
-msgstr ""
+msgstr "Recebido um mau certificado. Assunto '%s', emissor '%s'."
 
 #: ../src/plugins/abrt-retrace-client.c:267
 #, c-format
@@ -557,7 +559,7 @@ msgstr "Falha ao obter slot 'PEM Token #0': %d."
 #: ../src/plugins/abrt-retrace-client.c:297
 #, c-format
 msgid "Failed to get host by name: NSS error %d."
-msgstr ""
+msgstr "Falha ao obter máquina através do nome: Erro NSS %d."
 
 #: ../src/plugins/abrt-retrace-client.c:316
 msgid "Failed to create a TCP socket"
@@ -653,11 +655,11 @@ msgstr "A questionar definições do servidor"
 
 #: ../src/plugins/abrt-retrace-client.c:712
 msgid "The server is fully occupied. Try again later."
-msgstr ""
+msgstr "O servidor está totalmente ocupado. Tente novamente mais tarde."
 
 #: ../src/plugins/abrt-retrace-client.c:713
 msgid "The server denied your request."
-msgstr ""
+msgstr "O servidor negou o seu pedido."
 
 #: ../src/plugins/abrt-retrace-client.c:723
 #: ../src/plugins/abrt-retrace-client.c:736
@@ -676,16 +678,16 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:771
 msgid "The server does not support xz-compressed tarballs."
-msgstr ""
+msgstr "O servidor não suporta ficheiro comprimidos no formato xz-"
 
 #: ../src/plugins/abrt-retrace-client.c:793
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
-msgstr ""
+msgstr "A versão '%s' não é suportada pelo servidor de traçagem."
 
 #: ../src/plugins/abrt-retrace-client.c:797
 msgid "The server is not able to handle your request."
-msgstr ""
+msgstr "O servidor não é capaz de lidar com o seu pedido."
 
 #: ../src/plugins/abrt-retrace-client.c:806
 msgid "Preparing an archive to upload"
@@ -703,16 +705,16 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:832
 #, c-format
 msgid "You are going to upload %d megabytes.Continue?"
-msgstr ""
+msgstr "Vai submeter %d megabytes. Continuar?"
 
 #: ../src/plugins/abrt-retrace-client.c:839
 msgid "Cancelled by user"
-msgstr ""
+msgstr "Cancelado pelo utilizador."
 
 #: ../src/plugins/abrt-retrace-client.c:881
 #, c-format
 msgid "Uploading %d megabytes\n"
-msgstr ""
+msgstr "A submeter %d megabytes\n"
 
 #: ../src/plugins/abrt-retrace-client.c:883
 #, c-format
@@ -742,12 +744,16 @@ msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
 msgstr ""
+"O directório está corrompido e não pode ser processado pelo servidor de "
+"traçagem."
 
 #: ../src/plugins/abrt-retrace-client.c:967
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
 msgstr ""
+"O arquivo contém ficheiros nefastos (tais como apontadores simbólicos) e "
+"portanto não pode ser processado."
 
 #: ../src/plugins/abrt-retrace-client.c:980
 msgid "Invalid response from server: missing X-Task-Id."
@@ -793,6 +799,8 @@ msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
 msgstr ""
+"A traçagem falhou. Tente novamente mais tarde e se o problema persistir "
+"reporte este problema."
 
 #: ../src/plugins/abrt-retrace-client.c:1307
 msgid "log to syslog"
@@ -808,7 +816,7 @@ msgstr "URL do servidor retrace"
 
 #: ../src/plugins/abrt-retrace-client.c:1313
 msgid "retrace server port"
-msgstr ""
+msgstr "porto do servidor de traçagem"
 
 #: ../src/plugins/abrt-retrace-client.c:1315
 msgid "(debug) show received HTTP headers"
@@ -966,48 +974,48 @@ msgstr ""
 
 #: ../src/cli/abrt-cli.c:141
 msgid "Usage: abrt-cli [--version] COMMAND [ARGS]"
-msgstr ""
+msgstr "Utilização: abrt-cli [--version] COMMAND [ARGS]"
 
 #: ../src/cli/abrt-cli.c:145
 msgid "List not yet reported problems"
-msgstr ""
+msgstr "Mostrar problemas ainda não reportados"
 
 #: ../src/cli/abrt-cli.c:146
 msgid "Remove files from problem directory"
-msgstr ""
+msgstr "Remover ficheiros do directório de problemas"
 
 #: ../src/cli/abrt-cli.c:147
 msgid "Analyze and report problem data in problem directory"
-msgstr ""
+msgstr "Analisar e reportar problemas nos dados do directório de problemas"
 
 #: ../src/cli/abrt-cli.c:148
 msgid "Print information about DUMP_DIR"
-msgstr ""
+msgstr "Apresentar informação sobre o "
 
 #: ../src/cli/abrt-cli.c:161
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr ""
 
 #: ../src/cli/list.c:90
-msgid " list [options] [<dump-dir>]..."
-msgstr ""
+msgid "& list [options] [<dump-dir>]..."
+msgstr "& list [opções] [<dump-dir>]..."
 
 #: ../src/cli/list.c:97
 msgid "List even reported problems"
-msgstr ""
+msgstr "Mostrar até problemas reportados"
 
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:99 ../src/cli/list.c:141
 msgid "Show detailed report"
-msgstr ""
+msgstr "Mostrar relatório detalhado"
 
 #: ../src/cli/list.c:133
-msgid " info [options] [<dump-dir>]..."
-msgstr ""
+msgid "& info [options] [<dump-dir>]..."
+msgstr "& info [opções] [<dump-dir>]..."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
-msgstr ""
+msgstr "Analisar núcleo VM"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
 msgid "Install kernel debuginfo packages, generate kernel log and oops message"
@@ -1021,7 +1029,7 @@ msgstr ""
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
-msgstr ""
+msgstr "Recolher configuração GConf"
 
 #: ../src/plugins/collect_GConf.xml.in.h:2
 msgid ""
