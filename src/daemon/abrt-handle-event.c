@@ -101,7 +101,7 @@ int main(int argc, char **argv)
     abrt_init(argv);
 
     const char *program_usage_string = _(
-        "\b [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
+        "& [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
         );
 
     char *event_name = NULL;
