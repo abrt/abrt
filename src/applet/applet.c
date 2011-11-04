@@ -581,8 +581,8 @@ static void init_applet(void)
             ap_status_icon = gtk_status_icon_new_from_icon_name("abrt");
         }
         hide_icon();
-        g_signal_connect(G_OBJECT(ap_status_icon), "activate", GTK_SIGNAL_FUNC(on_applet_activate_cb), NULL);
-        g_signal_connect(G_OBJECT(ap_status_icon), "popup_menu", GTK_SIGNAL_FUNC(on_menu_popup_cb), NULL);
+        g_signal_connect(G_OBJECT(ap_status_icon), "activate", G_CALLBACK(on_applet_activate_cb), NULL);
+        g_signal_connect(G_OBJECT(ap_status_icon), "popup_menu", G_CALLBACK(on_menu_popup_cb), NULL);
         ap_menu = create_menu();
     }
 

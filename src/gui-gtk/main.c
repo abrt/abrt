@@ -25,6 +25,11 @@
 #include <internal_libreport_gtk.h>
 #include "libabrt.h"
 
+#if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 22
+# define GDK_KEY_Delete GDK_Delete
+# define GDK_KEY_KP_Delete GDK_KP_Delete
+#endif
+
 static void scan_dirs_and_add_to_dirlist(void);
 
 
@@ -460,7 +465,7 @@ static gint on_key_press_event_cb(GtkTreeView *treeview, GdkEventKey *key, gpoin
 {
     int k = key->keyval;
 
-    if (k == GDK_Delete || k == GDK_KP_Delete)
+    if (k == GDK_KEY_Delete || k == GDK_KEY_KP_Delete)
     {
         delete_report(treeview);
         return TRUE;
