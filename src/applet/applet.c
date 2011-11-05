@@ -766,10 +766,20 @@ int main(int argc, char** argv)
     textdomain(PACKAGE);
 #endif
 
+  /* Glib 2.31:
+    * Major changes to threading and synchronisation
+     - threading is now always enabled in GLib
+     - support for custom thread implementations (including our own internal
+     - support for errorcheck mutexes) has been removed
+  */
+#if (GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 31)
+    //can't use log(), because g_verbose is not set yet
+    g_print("abrt-applet: glib < 2.31 - init threading\n");
     /* Need to be thread safe */
     g_thread_init(NULL);
     gdk_threads_init();
     gdk_threads_enter();
+#endif
 
     gtk_init(&argc, &argv);
 
@@ -869,8 +879,10 @@ int main(int argc, char** argv)
 
     /* Enter main loop */
     gtk_main();
-
+#if (GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 31)
     gdk_threads_leave();
+#endif
+
     if (notify_is_initted())
         notify_uninit();
 

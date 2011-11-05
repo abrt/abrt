@@ -912,7 +912,7 @@ static gboolean handle_signal_pipe(GIOChannel *gio, GIOCondition condition, gpoi
      */
     gchar buf[16];
     gsize bytes_read;
-    g_io_channel_read(gio, buf, sizeof(buf), &bytes_read);
+    g_io_channel_read_chars(gio, buf, sizeof(buf), &bytes_read, NULL);
 
     /* Destroy zombies */
     while (safe_waitpid(-1, NULL, WNOHANG) > 0)
@@ -975,7 +975,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
     /* We read inotify events, but don't analyze them */
     gchar buf[sizeof(struct inotify_event) + PATH_MAX + 64];
     gsize bytes_read;
-    while (g_io_channel_read(gio, buf, sizeof(buf), &bytes_read) == G_IO_ERROR_NONE
+    while (g_io_channel_read_chars(gio, buf, sizeof(buf), &bytes_read, NULL) == G_IO_STATUS_NORMAL
         && bytes_read > 0
     ) {
         continue;
