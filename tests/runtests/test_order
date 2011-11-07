@@ -1,0 +1,38 @@
+# Order of the tests
+# ------------------
+# - basic build/install tests
+abrt-nightly-build
+run-abrtd
+
+abrt-make-check
+btparser-make-check
+libreport-make-check
+
+# - addons
+ccpp-plugin
+ccpp-plugin-config
+python-addon
+
+# - tools tests
+cli-sanity
+check-hook-install
+dumpoops
+
+# - reporting tests
+mailx-reporting
+localized-reporting
+verify-that-report-edits
+
+blacklisted-package
+blacklisted-path
+abrt-should-return-rating-0-on-fail
+
+bz591504-sparse-core-files-performance-hit
+bz618602-core_pattern-handler-truncates-parameters
+bz636913-abrt-should-ignore-SystemExit-exception
+bz652338-removed-proc-PID
+
+systemd-init
+
+# - more or less destructive tests
+bz623142-abrt-should-not-report-bugs-against-systems-with-TAINT_HARDWARE_UNSUPPORTED-set

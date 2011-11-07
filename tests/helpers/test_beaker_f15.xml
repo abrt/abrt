@@ -1,0 +1,68 @@
+<job retention_tag="scratch">
+  <whiteboard>
+    abrt testsuite nightly run on f15
+  </whiteboard>
+  <recipeSet priority="High">
+    <recipe kernel_options="" kernel_options_post="" ks_meta="" role="RECIPE_MEMBERS" whiteboard="">
+      <autopick random="false"/>
+      <watchdog panic="ignore"/>
+      <packages>
+        <package name="beakerlib" />
+        <package name="curl" />
+        <package name="git" />
+        <package name="strace" />
+        <package name="time" />
+        <package name="dejagnu" />
+        <package name="readline-devel" />
+        <package name="newt-devel" />
+        <package name="kernel-devel" />
+        <package name="mock" />
+        <package name="make" />
+        <package name="rpm-build" />
+        <package name="createrepo" />
+        <package name="yum-utils" />
+        <package name="@base" />
+        <package name="@development-tools" />
+      </packages>
+      <ks_appends>
+        <ks_append>
+<![CDATA[
+%post --interpreter=/bin/bash
+
+git clone git://github.com/sorki/abrt-tests.git /usr/local/share/abrt-tests/
+
+cat >> /etc/crontab <<_END_
+0 3 * * * root /usr/local/share/abrt-tests/tests/runtests/abrt-nightly-test.sh | tee -a /tmp/abrt-nightly-test.log
+_END_
+
+%end
+]]>
+        </ks_append>
+      </ks_appends>
+      <repos/>
+      <distroRequires>
+        <and>
+          <distro_variant op="=" value="Fedora"/>
+          <distro_family op="=" value="Fedora15"/>
+          <distro_virt op="=" value=""/>
+          <distro_name op="=" value="Fedora-15"/>
+          <distro_arch op="=" value="x86_64"/>
+        </and>
+      </distroRequires>
+      <hostRequires>
+        <and>
+          <arch op="=" value="x86_64"/>
+          <memory op="&gt;=" value="2048"/>
+        </and>
+        <system_type value="Machine"/>
+      </hostRequires>
+      <partitions/>
+      <task name="/distribution/install" role="STANDALONE">
+        <params/>
+      </task>
+      <task name="/distribution/reservesys" role="STANDALONE">
+        <params/>
+      </task>
+    </recipe>
+  </recipeSet>
+</job>
