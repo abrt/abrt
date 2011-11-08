@@ -55,13 +55,17 @@ rlJournalStart
         # stupid workaround
         yum reinstall -y "*docbook*"
 
+        # temporary, F16 bump required
+        yum install json-c-devel
+
         ./autogen.sh
         rpm --eval '%configure' | sh # ./configure
-        make srpm
+        rlRun "make srpm"
         rlRun "rpmbuild --rebuild libreport-*.src.rpm" 0 "Build libreport RPMs"
         make
         make install
-        createrepo /root/rpmbuild/RPMS/*/
+        mkdir /root/rpmbuild/RPMS/x86_64/
+        rlRun "createrepo /root/rpmbuild/RPMS/*/"
         popd # libreport/
 
         rlRun "git clone git://git.fedorahosted.org/abrt.git" 0 "Clone abrt.git"
