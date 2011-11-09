@@ -61,11 +61,10 @@ if [ $CTESTFAIL -eq 1 ]; then
     RESULT="FAIL"
 fi
 
-tar cfJ $ABRT_TESTOUT_ROOT.tar.xz $ABRT_TESTOUT_ROOT
+tar czf $ABRT_TESTOUT_ROOT.tar.gz $ABRT_TESTOUT_ROOT
 echo -n "Sending report to <$MAILTO>: "
-if cat $ABRT_TESTOUT_ROOT/abrt-test-output.summary | mail -v -s "[$date] [$RESULT] ABRT testsuite report" -r $MAILFROM -a $ABRT_TESTOUT_ROOT.tar.xz $MAILTO; then
+if cat $ABRT_TESTOUT_ROOT/abrt-test-output.summary | mail -v -s "[$date] [$RESULT] ABRT testsuite report" -r $MAILFROM -a $ABRT_TESTOUT_ROOT.tar.gz $MAILTO; then
     echo "OK"
-    #rm -r $ABRT_TESTOUT_ROOT $ABRT_TESTOUT_ROOT.tar.xz
 else
     echo "FAILED"
 fi
