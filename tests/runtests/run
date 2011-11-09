@@ -1,0 +1,27 @@
+#!/bin/bash
+
+pushd $( cd "$(dirname $0)" && pwd ) > /dev/null
+
+. 'aux/config.sh'
+if [ -f 'aux/config.sh.local' ]; then
+    . 'aux/config.sh.local'
+fi
+
+. 'aux/fun.sh'
+
+export -f syslog
+export -f echo_success
+export -f echo_failure
+
+# prepare output directory
+rm -rf $OUTPUT_ROOT
+mkdir -p $OUTPUT_ROOT
+touch $OUTPUT_ROOT/results
+
+run_stage 'PRE'
+run_stage 'TEST'
+run_stage 'FORMAT'
+run_stage 'REPORT'
+run_stage 'POST'
+
+popd > /dev/null

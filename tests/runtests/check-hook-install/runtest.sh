@@ -53,5 +53,4 @@ rlJournalStart
         rlRun "echo '$HOOK_BCK' > $HOOK_PATH" 0 "Restore old hook"
     rlPhaseEnd
     rlJournalPrintText
-    rlJournalPrintText >> $ABRT_TESTOUT_ROOT/abrt-test-output.summary
 rlJournalEnd

@@ -71,5 +71,4 @@ rlJournalStart
         rm -rf $TmpDir
     rlPhaseEnd
     rlJournalPrintText
-    rlJournalPrintText >> $ABRT_TESTOUT_ROOT/abrt-test-output.summary
 rlJournalEnd

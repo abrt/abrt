@@ -57,5 +57,4 @@ rlJournalStart
         rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
     rlPhaseEnd
     rlJournalPrintText
-    rlJournalPrintText >> $ABRT_TESTOUT_ROOT/abrt-test-output.summary
 rlJournalEnd

@@ -42,5 +42,4 @@ rlJournalStart
         rlAssertEquals "# of bugs before SystemExit=1 is the same after" $CRASHES_BEFORE $CRASHES_AFTER
     rlPhaseEnd
     rlJournalPrintText
-    rlJournalPrintText >> $ABRT_TESTOUT_ROOT/abrt-test-output.summary
 rlJournalEnd

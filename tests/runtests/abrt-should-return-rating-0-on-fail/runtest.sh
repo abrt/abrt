@@ -64,6 +64,5 @@ rlJournalStart
         rlRun "abrt-cli rm $crash_PATH" 0 "Delete the crash"
     rlPhaseEnd
     rlJournalPrintText
-    rlJournalPrintText >> $ABRT_TESTOUT_ROOT/abrt-test-output.summary
 rlJournalEnd
 
