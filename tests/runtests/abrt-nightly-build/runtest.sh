@@ -56,7 +56,7 @@ rlJournalStart
         yum reinstall -y "*docbook*"
 
         # temporary, F16 bump required
-        yum install json-c-devel
+        yum install -y json-c-devel
 
         ./autogen.sh
         rpm --eval '%configure' | sh # ./configure
