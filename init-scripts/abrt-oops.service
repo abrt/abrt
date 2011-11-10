@@ -1,6 +1,7 @@
 [Unit]
 Description=ABRT kernel log watcher
-After=syslog.target
+After=abrtd.service
+Requires=abrtd.service
 
 [Service]
 ExecStart=/usr/bin/abrt-dump-oops -rwxD /var/log/messages
