@@ -472,14 +472,14 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         switch (res)
         {
             case MW_OK:
-                log("New dump directory %s, processing", fullname);
+                log("New problem directory %s, processing", fullname);
                 /* Fall through */
 
             case MW_OCCURRED: /* dup */
             {
                 if (res != MW_OK)
                 {
-                    log("Deleting dump directory %s (dup of %s), sending dbus signal",
+                    log("Deleting problem directory %s (dup of %s), sending dbus signal",
                             strrchr(fullname, '/') + 1,
                             strrchr(first, '/') + 1);
                     delete_dump_dir(fullname);

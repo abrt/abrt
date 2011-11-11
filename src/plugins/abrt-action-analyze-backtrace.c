@@ -44,7 +44,7 @@ int main(int argc, char **argv)
         "& [options] -d DIR\n"
         "\n"
         "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
-        "and identifies crash function in dump directory DIR"
+        "and identifies crash function in problem directory DIR"
     );
     enum {
         OPT_v = 1 << 0,

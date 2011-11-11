@@ -100,7 +100,7 @@ static void get_language(struct language *lang)
 }
 
 /* Add an entry name to the args array if the entry name exists in a
- * dump directory. The entry is added to argindex offset to the array,
+ * problem directory. The entry is added to argindex offset to the array,
  * and the argindex is then increased.
  */
 static void args_add_if_exists(const char *args[],
@@ -1315,7 +1315,7 @@ int main(int argc, char **argv)
                  _("(debug) show received HTTP headers")),
         OPT_GROUP(_("For create and batch operations")),
         OPT_STRING('d', "dir", &dump_dir_name, "DIR",
-                   _("read data from ABRT crash dump directory")),
+                   _("read data from ABRT problem directory")),
         OPT_STRING('c', "core", &coredump, "COREDUMP",
                    _("read data from coredump")),
         OPT_INTEGER('l', "status-delay", &delay,
@@ -1391,13 +1391,13 @@ int main(int argc, char **argv)
     if (0 == strcasecmp(operation, "create"))
     {
         if (!dump_dir_name && !coredump)
-            error_msg_and_die(_("Either dump directory or coredump is needed."));
+            error_msg_and_die(_("Either problem directory or coredump is needed."));
         result = run_create(0 == (opts & OPT_no_unlink));
     }
     else if (0 == strcasecmp(operation, "batch"))
     {
         if (!dump_dir_name && !coredump)
-            error_msg_and_die(_("Either dump directory or coredump is needed."));
+            error_msg_and_die(_("Either problem directory or coredump is needed."));
         result = run_batch(0 == (opts & OPT_no_unlink));
     }
     else if (0 == strcasecmp(operation, "status"))

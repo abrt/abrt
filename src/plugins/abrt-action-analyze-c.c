@@ -149,7 +149,7 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         "& [-v] -d DIR\n"
         "\n"
-        "Calculates and saves UUID of coredump in dump directory DIR"
+        "Calculates and saves UUID of coredump in problem directory DIR"
     );
     enum {
         OPT_v = 1 << 0,

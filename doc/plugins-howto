@@ -44,7 +44,7 @@ virtual void CreateReport(const char *pDebugDumpDir, int force)
   ([Reoprt] button in GUI, etc). Analyzer can perform additional,
   more CPU/disk intensive, or interactive processing at this point.
   For example, CCpp plugin's CreateReport() processes coredump file,
-  produces a textual backtrace, and saves it to crash dump directory.
+  produces a textual backtrace, and saves it to problem directory.
 
 virtual std::string GetGlobalUUID(const char *pDebugDumpPath);
 - This method computes a "duplicate hash" which is used search for

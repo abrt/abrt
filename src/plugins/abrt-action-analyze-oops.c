@@ -110,7 +110,7 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         "& [-vs] -d DIR\n"
         "\n"
-        "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
+        "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
         );
     enum {
         OPT_v = 1 << 0,

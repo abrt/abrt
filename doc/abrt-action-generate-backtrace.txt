@@ -11,10 +11,10 @@ SYNOPSIS
 
 DESCRIPTION
 -----------
-This tool runs gdb(1) on a file named 'coredump' in dump directory DIR.
+This tool runs gdb(1) on a file named 'coredump' in problem directory DIR.
 gdb(1) generates backtrace and other diagnostic information about the state
 of the application at the moment when coredump was generated.
-Then the tool saves it as new element 'backtrace' in this dump directory.
+Then the tool saves it as new element 'backtrace' in this problem directory.
 
 Integration with ABRT events
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -31,7 +31,7 @@ EVENT=analyze analyzer=CCpp
 OPTIONS
 -------
 -d DIR::
-   Path to dump directory.
+   Path to problem directory.
 
 -v::
    Be more verbose. Can be given multiple times.

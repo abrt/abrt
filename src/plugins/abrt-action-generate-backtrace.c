@@ -250,7 +250,7 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         "& [options] -d DIR\n"
         "\n"
-        "Analyzes coredump in dump directory DIR, generates and saves backtrace"
+        "Analyzes coredump in problem directory DIR, generates and saves backtrace"
     );
     enum {
         OPT_v = 1 << 0,

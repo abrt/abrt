@@ -5,7 +5,7 @@ NAME
 ----
 abrt-action-analyze-backtrace - Analyzes C/C++ backtrace, generates
 duplication hash, backtrace rating, and identifies crash function
-in dump directory DIR.
+in problem directory DIR.
 
 
 SYNOPSIS
@@ -14,10 +14,10 @@ SYNOPSIS
 
 DESCRIPTION
 -----------
-The tool reads a file named 'backtrace' from problem dump directory,
+The tool reads a file named 'backtrace' from problem directory,
 generates duplication hash, backtrace rating, and identifies
 crash function. Then it saves this data as new elements 'global_uuid',
-'rating', 'crash_function' in this dump directory.
+'rating', 'crash_function' in this problem directory.
 
 Integration with ABRT events
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -39,7 +39,7 @@ EVENT=analyze analyzer=CCpp
 OPTIONS
 -------
 -d DIR::
-   Path to dump directory.
+   Path to problem directory.
 
 -v::
    Be more verbose. Can be given multiple times.

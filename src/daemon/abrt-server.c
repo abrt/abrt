@@ -36,7 +36,7 @@ script throws unexpected exception, ABRT handler catches it, running
 as a part of that broken Python application. The application is running
 with certain SELinux privileges, for example it can not execute other
 programs, or to create files in /var/cache or anything else required
-to properly fill a dump directory. Adding these privileges to every
+to properly fill a problem directory. Adding these privileges to every
 application would weaken the security.
 The most suitable solution is for the Python application
 to open a socket where ABRT daemon is listening, write all relevant
@@ -173,7 +173,7 @@ static int delete_path(const char *dump_dir_name)
      || strstr(dump_dir_name + strlen(g_settings_dump_location), "/.")
     ) {
         /* Then refuse to operate on it (someone is attacking us??) */
-        error_msg("Bad dump directory name '%s', not deleting", dump_dir_name);
+        error_msg("Bad problem directory name '%s', not deleting", dump_dir_name);
         free(dump_location);
         return 400; /* Bad Request */
     }
