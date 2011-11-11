@@ -526,7 +526,7 @@ if __name__ == "__main__":
     # Delete oldest/biggest files from cachedir.
     # (Note that we need to do it before we check for missing debuginfos)
     #
-    # We can do it as a separate step in abrt_event.conf, but this
+    # We can do it as a separate step in report_event.conf, but this
     # would require setuid'ing abrt-action-trim-files to abrt:abrt.
     # Since we (via abrt-action-install-debuginfo-to-abrt-cache)
     # are already running setuid,

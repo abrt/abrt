@@ -16,12 +16,12 @@ gdb(1) generates backtrace and other diagnostic information about the state
 of the application at the moment when coredump was generated.
 Then the tool saves it as new element 'backtrace' in this problem directory.
 
-Integration with ABRT events
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Integration with libreport events
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 'abrt-action-generate-backtrace' can be used as an analyzer for
 application crashes which dump core.
 
-Example usage in abrt_event.conf:
+Example usage in report_event.conf:
 
 ------------
 EVENT=analyze analyzer=CCpp
