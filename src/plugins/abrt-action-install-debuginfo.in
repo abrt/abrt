@@ -86,12 +86,12 @@ def unpack_rpm(package_file_name, files, tmp_dir, destdir, keeprpm):
     package_full_path = tmp_dir + "/" + package_file_name
     log1("Extracting %s to %s", package_full_path, destdir)
     log2("%s", files)
-    print _("Extracting cpio from %s") % (package_full_path)
+    print _("Extracting cpio from {0}").format(package_full_path)
     unpacked_cpio_path = tmp_dir + "/unpacked.cpio"
     try:
         unpacked_cpio = open(unpacked_cpio_path, 'wb')
     except IOError, ex:
-        print _("Can't write to '%s': %s") % (unpacked_cpio_path, ex)
+        print _("Can't write to '{0}': {1}").format(unpacked_cpio_path, ex)
         return RETURN_FAILURE
     rpm2cpio = Popen(["rpm2cpio", package_full_path],
                        stdout = unpacked_cpio, bufsize = -1)
@@ -105,7 +105,7 @@ def unpack_rpm(package_file_name, files, tmp_dir, destdir, keeprpm):
             os.unlink(package_full_path)
     else:
         unpacked_cpio.close()
-        print _("Can't extract package '%s'") % package_full_path
+        print _("Can't extract package '{0}'").format(package_full_path)
         return RETURN_FAILURE
 
     # close the file
@@ -113,7 +113,7 @@ def unpack_rpm(package_file_name, files, tmp_dir, destdir, keeprpm):
     # and open it for reading
     unpacked_cpio = open(unpacked_cpio_path, 'rb')
 
-    print _("Caching files from %s made from %s") % ("unpacked.cpio", package_file_name)
+    print _("Caching files from {0} made from {1}").format("unpacked.cpio", package_file_name)
     cpio = Popen(["cpio", "-idu", "--quiet"],
                   stdin=unpacked_cpio, cwd=destdir, bufsize=-1)
     retcode = cpio.wait()
@@ -123,7 +123,7 @@ def unpack_rpm(package_file_name, files, tmp_dir, destdir, keeprpm):
         #print _("Removing temporary cpio file")
         os.unlink(unpacked_cpio_path)
     else:
-        print _("Can't extract files from '%s'") % unpacked_cpio_path
+        print _("Can't extract files from '{0}'").format(unpacked_cpio_path)
         return RETURN_FAILURE
 
 class MyDownloadCallback(DownloadBaseCallback):
@@ -147,8 +147,12 @@ class MyDownloadCallback(DownloadBaseCallback):
                     % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
             )
             if pct == 100:
-                print (_("Downloading (%i of %i) %s: %3u%%")
-                        % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
+                #print (_("Downloading (%i of %i) %s: %3u%%")
+                #        % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
+                #)
+                print (_("Downloading ({0} of {1}) {2}: {3:3}").format(
+                        self.downloaded_pkgs + 1, self.total_pkgs, name, pct
+                        )
                 )
         # but we want machine friendly output when spawned from abrt-server
         else:
@@ -157,8 +161,9 @@ class MyDownloadCallback(DownloadBaseCallback):
                 self.last_time = t
             # update only every 5 seconds
             if pct == 100 or self.last_time > t or t - self.last_time >= 5:
-                print (_("Downloading (%i of %i) %s: %3u%%")
-                        % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
+                print (_("Downloading ({0} of {1}) {2}: {3:3}").format(
+                        self.downloaded_pkgs + 1, self.total_pkgs, name, pct
+                        )
                 )
                 self.last_time = t
                 if pct == 100:
@@ -184,7 +189,7 @@ class DebugInfoDownload(YumBase):
             self.doConfigSetup()
         except Exception, e:
             unmute_stdout()
-            print _("Error initializing yum (YumBase.doConfigSetup): '%s'") % str(e)
+            print _("Error initializing yum (YumBase.doConfigSetup): '{0!s}'").format(e)
             #return 1 - can't do this in constructor
             exit(1)
         unmute_stdout()
@@ -226,7 +231,7 @@ class DebugInfoDownload(YumBase):
                 log1("enabled repo %s", rid)
                 setattr(r, "skip_if_unavailable", True)
             except Exception, ex:
-                print _("Can't setup %s: %s, disabling") % (r.id, ex)
+                print _("Can't setup {0}: {1}, disabling").format(r.id, ex)
                 self.repos.disableRepo(r.id)
 
         # This is somewhat "magic", it unpacks the metadata making it usable.
@@ -237,7 +242,7 @@ class DebugInfoDownload(YumBase):
         try:
             self.repos.populateSack(mdtype='metadata', cacheonly=1)
         except Exception, e:
-            print _("Error retrieving metadata: '%s'") % str(e)
+            print _("Error retrieving metadata: '{0!s}'").format(e)
             return 1
         try:
             # Saw this exception here:
@@ -247,7 +252,7 @@ class DebugInfoDownload(YumBase):
             # from fedora-debuginfo: [Errno 256] No more mirrors to try.
             self.repos.populateSack(mdtype='filelists', cacheonly=1)
         except Exception, e:
-            print _("Error retrieving filelists: '%s'") % str(e)
+            print _("Error retrieving filelists: '{0!s}'").format(e)
             return 1
 
         #if verbose == 0:
@@ -280,10 +285,10 @@ class DebugInfoDownload(YumBase):
         self.repos.setProgressBar(dnlcb)
 
 	if verbose != 0 or len(not_found) != 0:
-	    print _("Can't find packages for %u debuginfo files") % len(not_found)
+	    print _("Can't find packages for {0} debuginfo files").format(len(not_found))
 	if verbose != 0 or total_pkgs != 0:
-	    print _("Packages to download: %u") % total_pkgs
-	    question = _("Downloading %.2fMb, installed size: %.2fMb. Continue?") % (
+	    print _("Packages to download: {0}").format(total_pkgs)
+	    question = _("Downloading {0:.2}Mb, installed size: {1:.2}Mb. Continue?").format(
 	                 todownload_size / (1024**2),
 	                 installed_size / (1024**2)
 	                )
@@ -322,7 +327,7 @@ class DebugInfoDownload(YumBase):
                     os.unlink(self.tmpdir + "/" + package_file_name)
                 except:
                     pass
-                print (_("Downloading package %s failed") % pkg)
+                print (_("Downloading package {0} failed").format(pkg))
             else:
                 unpack_result = unpack_rpm(package_file_name, files, self.tmpdir,
                                            self.cachedir, keeprpms)
@@ -338,11 +343,11 @@ class DebugInfoDownload(YumBase):
             # Was: "All downloaded packages have been extracted, removing..."
             # but it was appearing even if no packages were in fact extracted
             # (say, when there was one package, and it has download error).
-            print (_("Removing %s") % self.tmpdir)
+            print (_("Removing {0}").format(self.tmpdir))
             try:
                 os.rmdir(self.tmpdir)
             except OSError:
-                error_msg(_("Can't remove %s, probably contains an error log"), self.tmpdir)
+                error_msg(_("Can't remove %s, probably contains an error log").format(self.tmpdir))
 
 def build_ids_to_path(build_ids):
     """
@@ -400,7 +405,7 @@ def clean_up():
             shutil.rmtree(tmpdir)
         except OSError, ex:
             if ex.errno != errno.ENOENT:
-                error_msg(_("Can't remove '%s': %s"), tmpdir, ex)
+                error_msg(_("Can't remove '{0}': {1}").format(tmpdir, ex))
 
 def sigterm_handler(signum, frame):
     clean_up()
@@ -516,7 +521,7 @@ if __name__ == "__main__":
         try:
             fin = open(fbuild_ids, "r")
         except IOError, ex:
-            error_msg_and_die(_("Can't open %s: %s"), fbuild_ids, ex)
+            error_msg_and_die(_("Can't open {0}: {1}").format(fbuild_ids, ex))
     for line in fin.readlines():
         b_ids.append(line.strip('\n'))
 
@@ -546,7 +551,7 @@ if __name__ == "__main__":
     missing = filter_installed_debuginfos(b_ids, cachedirs)
     if missing:
         log2("%s", missing)
-        print _("Coredump references %u debuginfo files, %u of them are not installed") % (len(b_ids), len(missing))
+        print _("Coredump references {0} debuginfo files, {1} of them are not installed").format(len(b_ids), len(missing))
 
         # TODO: should we pass keep_rpms=keeprpms to DebugInfoDownload here??
         downloader = DebugInfoDownload(cache=cachedirs[0], tmp=tmpdir)
@@ -557,9 +562,9 @@ if __name__ == "__main__":
 
         missing = filter_installed_debuginfos(b_ids, cachedirs)
         for bid in missing:
-            print _("Missing debuginfo file: %s") % bid
+            print _("Missing debuginfo file: {0}").format(bid)
 
     if not missing:
-        print _("All %u debuginfo files are available") % len(b_ids)
+        print _("All {0} debuginfo files are available").format(len(b_ids))
 
     exit(RETURN_OK)
