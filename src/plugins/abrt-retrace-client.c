@@ -630,7 +630,6 @@ static void free_settings(struct retrace_settings *settings)
     free(settings);
 }
 
-/* dirty, dirty, dirty */
 /* returns release identifier as dist-ver-arch */
 /* or NULL if unknown */
 static char *get_release(const char *dump_dir_name)
@@ -660,38 +659,18 @@ static char *get_release(const char *dump_dir_name)
         perror_msg_and_die("fopen");
 
     char *line = xmalloc_fgetline(f);
-    char *version = line;
     fclose(f);
-    while (*version && !isdigit(*version))
-        ++version;
 
-    if (!*version)
-        return NULL;
+    char *release = NULL, *version = NULL, *result = NULL;
+    parse_release_for_rhts(line, &release, &version);
 
-    char *result = NULL;
-    if (strcasestr(line, "fedora") != NULL)
-    {
-        if (strcasestr(line, "rawhide") != NULL)
-            result = xasprintf("fedora-rawhide-%s", arch);
-        else
-        {
-            int ver;
-            if (sscanf(version, "%d", &ver) != 1)
-                goto cleanup;
+    if (strcmp("Fedora", release) == 0)
+        result = xasprintf("fedora-%s-%s", version, arch);
+    else if (strcmp("Red Hat Enterprise Linux", release) == 0)
+        result = xasprintf("rhel-%s-%s", version, arch);
 
-            result = xasprintf("fedora-%d-%s", ver, arch);
-        }
-    }
-    else if (strcasestr(line, "red hat enterprise linux") != NULL)
-    {
-        int maj, min;
-        if (sscanf(version, "%d.%d", &maj, &min) != 2)
-            goto cleanup;
-
-        result = xasprintf("rhel-%d.%d-%s", maj, min, arch);
-    }
-
-cleanup:
+    free(release);
+    free(version);
     free(line);
     free(arch);
     return result;
