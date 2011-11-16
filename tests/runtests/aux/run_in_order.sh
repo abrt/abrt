@@ -33,9 +33,10 @@ for test_dir in $testlist; do
     start_line=$(grep -n -i 'Test protocol' $logfile | awk -F: '{print $1}')
     end_line=$(grep -n -i 'TEST END MARK' $logfile | awk -F: '{print $1}')
 
-    if [ $start_line -gt 0 ]; then
+    if [ $start_line -gt 1 ]; then
         start_line=$[ $start_line - 1 ]
     fi
+    protocol_start=$start_line
     end_line=$[ $end_line - 1 ]
 
     sed -n "${start_line},${end_line}p;${end_line}q" $logfile \
@@ -66,7 +67,9 @@ for test_dir in $testlist; do
 
     # console reporting
     if [ "$test_result" == "FAIL" ]; then
-        touch "$outdir/failed"
+        touch "$outdir/fail.log"
+        sed -n "1,${protocol_start}p;${protocol_start}q" $logfile \
+            | grep -n FAIL > "$outdir/fail.log"
         echo_failure
     else
         echo_success
