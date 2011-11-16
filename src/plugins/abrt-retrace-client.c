@@ -671,11 +671,16 @@ static char *get_release(const char *dump_dir_name)
     char *result = NULL;
     if (strcasestr(line, "fedora") != NULL)
     {
-        int ver;
-        if (sscanf(version, "%d", &ver) != 1)
-            goto cleanup;
+        if (strcasestr(line, "rawhide") != NULL)
+            result = xasprintf("fedora-rawhide-%s", arch);
+        else
+        {
+            int ver;
+            if (sscanf(version, "%d", &ver) != 1)
+                goto cleanup;
 
-        result = xasprintf("fedora-%d-%s", ver, arch);
+            result = xasprintf("fedora-%d-%s", ver, arch);
+        }
     }
     else if (strcasestr(line, "red hat enterprise linux") != NULL)
     {
