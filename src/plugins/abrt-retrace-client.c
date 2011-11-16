@@ -33,6 +33,13 @@
 #define MAX_FORMATS 16
 #define MAX_RELEASES 32
 
+enum
+{
+    TASK_RETRACE,
+    TASK_DEBUG,
+    TASK_VMCORE,
+};
+
 struct retrace_settings
 {
     int running_tasks;
@@ -52,15 +59,18 @@ struct language
 static const char *dump_dir_name = NULL;
 static const char *coredump = NULL;
 static const char *url = "retrace.fedoraproject.org";
-static const char *required_files[] = { FILENAME_COREDUMP,
-                                        FILENAME_EXECUTABLE,
-                                        FILENAME_PACKAGE,
-                                        FILENAME_OS_RELEASE,
-                                        NULL };
+static const char *required_retrace[] = { FILENAME_COREDUMP,
+                                          FILENAME_EXECUTABLE,
+                                          FILENAME_PACKAGE,
+                                          FILENAME_OS_RELEASE,
+                                          NULL };
+static const char *required_vmcore[] = { FILENAME_VMCORE,
+                                         NULL };
 static bool ssl_allow_insecure = false;
 static bool http_show_headers = false;
 static unsigned port = 443;
 static unsigned delay = 0;
+static int task_type = TASK_RETRACE;
 
 static void alert_server_error()
 {
@@ -166,6 +176,8 @@ static int create_archive(bool unlink_temp)
     tar_args[0] = "tar";
     tar_args[1] = "cO";
     tar_args[2] = xasprintf("--directory=%s", dump_dir_name);
+
+    const char **required_files = task_type == TASK_VMCORE ? required_vmcore : required_retrace;
     int index = 3;
     while (required_files[index - 3])
         args_add_if_exists(tar_args, dd, required_files[index - 3], &index);
@@ -710,8 +722,18 @@ static int create(bool delete_temp_archive,
     }
     else if (dump_dir_name != NULL)
     {
+        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags*/ 0);
+        if (!dd)
+            error_msg_and_die(_("Unable to open dump directory '%s'."), dump_dir_name);
+
+        if (dd_exist(dd, FILENAME_VMCORE))
+            task_type = TASK_VMCORE;
+
+        dd_close(dd);
+
         char *path;
         int i = 0;
+        const char **required_files = task_type == TASK_VMCORE ? required_vmcore : required_retrace;
         while (required_files[i])
         {
             path = concat_path_file(dump_dir_name, required_files[i]);
@@ -758,7 +780,8 @@ static int create(bool delete_temp_archive,
     }
 
     /* we need dump dir to parse release file */
-    if (dump_dir_name && settings->supported_releases)
+    /* not needed for TASK_VMCORE - the information is kept in the vmcore itself */
+    if (task_type != TASK_VMCORE && dump_dir_name && settings->supported_releases)
     {
         char *release = get_release(dump_dir_name);
         if (!release)
@@ -832,8 +855,9 @@ static int create(bool delete_temp_archive,
                        "Host: %s\r\n"
                        "Content-Type: application/x-xz-compressed-tar\r\n"
                        "Content-Length: %lld\r\n"
-                       "Connection: close\r\n",
-                       url, (long long)file_stat.st_size);
+                       "Connection: close\r\n"
+                       "X-Task-Type: %d\r\n",
+                       url, (long long)file_stat.st_size, task_type);
 
     if (lang.encoding)
         strbuf_append_strf(http_request,
@@ -1231,7 +1255,9 @@ static int run_batch(bool delete_temp_archive)
         backtrace(task_id, task_password, &backtrace_text);
         if (dump_dir_name)
         {
-            char *backtrace_path = xasprintf("%s/backtrace", dump_dir_name);
+            /* the result of TASK_VMCORE is not backtrace, but kernel log */
+            char *backtrace_path = xasprintf("%s/%s", dump_dir_name,
+                                             task_type == TASK_VMCORE ? FILENAME_KERNEL_LOG : FILENAME_BACKTRACE);
             int backtrace_fd = xopen3(backtrace_path, O_WRONLY | O_CREAT | O_TRUNC, 0640);
             xwrite(backtrace_fd, backtrace_text, strlen(backtrace_text));
             close(backtrace_fd);
