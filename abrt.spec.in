@@ -215,6 +215,8 @@ rm -f %{buildroot}%{_infodir}/dir
 rm -rf $RPM_BUILD_ROOT
 
 %check
+# this is needed due to missing RPATH
+export LD_LIBRARY_PATH=`pwd`/src/lib/.libs:$LD_LIBRARY_PATH
 make check
 
 %pre
