@@ -27,6 +27,14 @@
 #include "libabrt.h"
 #include "CommLayerServerDBus.h"
 
+
+/* I want to use -Werror, but gcc-4.4 throws a curveball:
+ * "warning: ignoring return value of 'ftruncate', declared with attribute warn_unused_result"
+ * and (void) cast is not enough to shut it up! Oh God...
+ */
+#define IGNORE_RESULT(func_call) do { if (func_call) /* nothing */; } while (0)
+
+
 #define VAR_RUN_PIDFILE   VAR_RUN"/abrtd.pid"
 
 #define SOCKET_FILE       VAR_RUN"/abrt/abrt.socket"
@@ -180,8 +188,8 @@ static int create_pidfile()
         /* write our pid to it */
         char buf[sizeof(long)*3 + 2];
         int len = sprintf(buf, "%lu\n", (long)getpid());
-        write(fd, buf, len);
-        ftruncate(fd, len);
+        IGNORE_RESULT(write(fd, buf, len));
+        IGNORE_RESULT(ftruncate(fd, len));
         /* we leak opened+locked fd intentionally */
         return 0;
     }
@@ -202,7 +210,7 @@ static void handle_signal(int signo)
     /* Using local copy of s_sig_caught so that concurrent signal
      * won't change it under us */
     if (s_signal_pipe_write >= 0)
-        write(s_signal_pipe_write, &sig_caught, 1);
+        IGNORE_RESULT(write(s_signal_pipe_write, &sig_caught, 1));
 
     errno = save_errno;
 }
@@ -212,7 +220,7 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
 {
     uint8_t signo;
     gsize len = 0;
-    g_io_channel_read(gio, &signo, 1, &len);
+    g_io_channel_read(gio, (void*) &signo, 1, &len);
     if (len == 1)
     {
         /* we did receive a signal */
@@ -240,7 +248,7 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
 
 /* Inotify handler */
 
-static problem_data_t *load_crash_info(const char *dump_dir_name)
+static problem_data_t *load_problem_data(const char *dump_dir_name)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
@@ -256,15 +264,13 @@ static problem_data_t *load_crash_info(const char *dump_dir_name)
 }
 
 typedef enum {
-    MW_OK,       /**< No error.*/
-    MW_OCCURRED, /**< No error, but thus dump is a dup.*/
-    MW_ERROR,    /**< Common error.*/
+    MW_OK,       /* No error */
+    MW_OCCURRED, /* No error, but thus dir is a dup */
+    MW_ERROR,    /* Other error (such as "post-create" event exited with nonzero */
 } mw_result_t;
 
-static mw_result_t LoadDebugDump(const char *dump_dir_name, problem_data_t **problem_data)
+static mw_result_t run_post_create_and_load_data(const char *dump_dir_name, problem_data_t **problem_data)
 {
-    mw_result_t res  = MW_ERROR;
-
     char *args[6];
     args[0] = (char *) "/usr/libexec/abrt-handle-event";
     args[1] = (char *) "-e";
@@ -299,8 +305,7 @@ static mw_result_t LoadDebugDump(const char *dump_dir_name, problem_data_t **pro
         else
             free(buf);
     }
-    fclose(fp);
-    close(pipeout[0]);
+    fclose(fp); /* closes pipeout[0] too */
 
     /* Prevent having zombie child process */
     int status;
@@ -310,28 +315,22 @@ static mw_result_t LoadDebugDump(const char *dump_dir_name, problem_data_t **pro
     /* exit 0 means, this is a good, non-dup dir */
     if (status != 0)
     {
-        if (dup_of_dir)
-            dump_dir_name = dup_of_dir;
-        else
-        {
-            free(dup_of_dir);
+        if (!dup_of_dir)
             return MW_ERROR;
-        }
+        dump_dir_name = dup_of_dir;
     }
 
-    /* Loads problem_data (from the *first debugdump dir* if this one is a dup)
+    /* Loads problem_data (from the *first dir* if this one is a dup)
      * Returns:
-     * MW_OCCURRED: "crash count is != 1" (iow: it is > 1 - dup)
-     * MW_OK: "crash count is 1" (iow: this is a new crash, not a dup)
-     * else: an error code
+     * MW_OCCURRED: "count is != 1" (iow: it is > 1 - dup)
+     * MW_OK: "count is 1" (iow: this is a new problem, not a dup)
+     * else: MW_ERROR
      */
+    mw_result_t res = MW_ERROR;
     {
         struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (!dd)
-        {
-            res = MW_ERROR;
             goto ret;
-        }
 
         /* Reset mode/uig/gid to correct values for all files created by event run */
         dd_sanitize_mode_and_owner(dd);
@@ -345,13 +344,13 @@ static mw_result_t LoadDebugDump(const char *dump_dir_name, problem_data_t **pro
         dd_save_text(dd, FILENAME_COUNT, new_count_str);
         dd_close(dd);
 
-        *problem_data = load_crash_info(dump_dir_name);
+        *problem_data = load_problem_data(dump_dir_name);
         if (*problem_data != NULL)
         {
             res = MW_OK;
             if (count > 1)
             {
-                log("Dump directory is a duplicate of %s", dump_dir_name);
+                log("Problem directory is a duplicate of %s", dump_dir_name);
                 res = MW_OCCURRED;
             }
         }
@@ -459,11 +458,9 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             }
         }
 
-        char *fullname = NULL;
+        char *fullname = concat_path_file(g_settings_dump_location, name);
         problem_data_t *problem_data = NULL;
-        fullname = concat_path_file(g_settings_dump_location, name);
-        mw_result_t res = LoadDebugDump(fullname, &problem_data);
-        const char *first = problem_data ? get_problem_item_content_or_NULL(problem_data, CD_DUMPDIR) : NULL;
+        mw_result_t res = run_post_create_and_load_data(fullname, &problem_data);
         switch (res)
         {
             case MW_OK:
@@ -472,8 +469,12 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 
             case MW_OCCURRED: /* dup */
             {
+                const char *first = NULL;
                 if (res != MW_OK)
                 {
+                    /* Fetch the name of older directory of which we are a dup */
+                    first = get_problem_item_content_or_NULL(problem_data, CD_DUMPDIR);
+
                     log("Deleting problem directory %s (dup of %s), sending dbus signal",
                             strrchr(fullname, '/') + 1,
                             strrchr(first, '/') + 1);
@@ -485,13 +486,13 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                  * not the one which is deleted
                  */
                 send_dbus_sig_Crash(get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE),
-                                    (first) ? first : fullname,
+                                    (first ? first : fullname),
                                     uid_str
                 );
                 break;
             }
-            default:
-                log("Corrupted or bad dump %s (res:%d), deleting", fullname, (int)res);
+            default: /* always MW_ERROR */
+                log("Corrupted or bad directory %s, deleting", fullname);
                 delete_dump_dir(fullname);
                 break;
         }
