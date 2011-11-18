@@ -19,7 +19,6 @@
 #include <dbus/dbus.h>
 #include <internal_abrt_dbus.h>
 #include "libabrt.h"
-#include "comm_layer_inner.h"
 #include "CommLayerServerDBus.h"
 
 
@@ -100,25 +99,6 @@ void send_dbus_sig_QuotaExceeded(const char* str)
     send_flush_and_unref(msg);
 }
 
-void send_dbus_sig_Update(const char* pMessage, const char* peer)
-{
-    DBusMessage* msg = new_signal_msg("Update", peer);
-    dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &pMessage,
-            DBUS_TYPE_INVALID);
-    send_flush_and_unref(msg);
-}
-
-void send_dbus_sig_Warning(const char* pMessage, const char* peer)
-{
-    DBusMessage* msg = new_signal_msg("Warning", peer);
-    dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &pMessage,
-            DBUS_TYPE_INVALID);
-    send_flush_and_unref(msg);
-}
-
-
 /*
  * Glib integration machinery
  */
@@ -128,8 +108,6 @@ static DBusHandlerResult message_received(DBusConnection* conn, DBusMessage* msg
 {
     const char* member = dbus_message_get_member(msg);
     VERB1 log("%s(method:'%s')", __func__, member);
-
-    set_client_name(dbus_message_get_sender(msg));
 
     DBusMessage* reply = dbus_message_new_method_return(msg);
     int r = -1;
@@ -158,8 +136,6 @@ static DBusHandlerResult message_received(DBusConnection* conn, DBusMessage* msg
             send_flush_and_unref(reply);
         }
     }
-
-    set_client_name(NULL);
 
     return DBUS_HANDLER_RESULT_HANDLED;
 }

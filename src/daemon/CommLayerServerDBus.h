@@ -32,9 +32,6 @@ void send_dbus_sig_Crash(const char *package_name,
 );
 void send_dbus_sig_QuotaExceeded(const char* str);
 
-void send_dbus_sig_Update(const char* pMessage, const char* peer);
-void send_dbus_sig_Warning(const char* pMessage, const char* peer);
-
 #ifdef __cplusplus
 }
 #endif

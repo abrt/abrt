@@ -25,7 +25,6 @@
 #include <sys/ioctl.h> /* ioctl(FIONREAD) */
 
 #include "libabrt.h"
-#include "comm_layer_inner.h"
 #include "CommLayerServerDBus.h"
 
 #define VAR_RUN_PIDFILE   VAR_RUN"/abrtd.pid"
@@ -44,10 +43,6 @@
  *
  * DBus signals we emit:
  * - Crash(progname, crash_id, dir, uid) - a new crash occurred (new /var/spool/abrt/DIR is found)
- * - Warning(msg)
- * - Update(msg)
- *      Both are sent as unicast to last client set by set_client_name(name).
- *      If set_client_name(NULL) was done, they are not sent.
  */
 static volatile sig_atomic_t s_sig_caught;
 static int s_signal_pipe[2];
@@ -710,8 +705,6 @@ int main(int argc, char** argv)
     bool pidfile_created = false;
 
     /* Initialization */
-    init_daemon_logging();
-
     VERB1 log("Loading settings");
     if (load_abrt_conf() != 0)
         goto init_error;

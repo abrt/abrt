@@ -17,7 +17,6 @@ libexec_PROGRAMS = abrt-handle-event
 
 abrtd_SOURCES = \
     CommLayerServerDBus.h CommLayerServerDBus.c \
-    comm_layer_inner.h comm_layer_inner.c \
     abrtd.c
 abrtd_CPPFLAGS = \
     -I$(srcdir)/../include \
