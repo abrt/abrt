@@ -52,6 +52,10 @@ rlJournalStart
         goldratio=5  # $stoptime * $goldratio:
                      # |  run with abrt on should not take more that five times
                      # |  compared to run with abrt turned off
+        absmin=45    # sometimes we have so powerfull machine it finishes the
+                     # |  test in less then a second (and average is then also
+                     # |  less then a second. Let's constitute a minimal time
+                     # |  with which we are always OK.
 
         rlRun "killall abrtd" 0 "Killing abrtd"
 
@@ -62,14 +66,16 @@ rlJournalStart
         done
         for cnt in $(seq $times); do
             stoptime=$(echo "$(cat bigcore-stop.time.$cnt) + $stoptime" | bc -l)
+            rlLog "Execution #${cnt} took $(cat bigcore-stop.time.$cnt) seconds"
         done
-        stoptime=$(echo "$stoptime / $times" | bc)
+        stoptime=$(echo "scale=3; $stoptime / $times" | bc -l)
         rlLog "Computed time with abrt stopped: $stoptime"
 
-        rlRun "/usr/sbin/abrtd -s" 0 "Starting abrtd"
+        starttimeout=$(echo "$goldratio * $stoptime" | bc -l)
+        starttimeout=$(echo "$starttimeout" | awk '{ if ($1 < '$absmin') { print '$absmin' } else { print '$starttimeout' } }')
+        rlLog "Adjusted timeout: $starttimeout"
 
-        starttimeout=$(echo "$goldratio * $stoptime" | bc)
-        rlLog "Computed timeout: $starttimeout"
+        rlRun "/usr/sbin/abrtd -s" 0 "Starting abrtd"
 
         rlRun "runtest gdb.base/bigcore.exp &> /dev/null" 0 "Pre-test run"
         for run in $(seq $times); do
