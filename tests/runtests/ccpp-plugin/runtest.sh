@@ -55,7 +55,6 @@ rlJournalStart
         rlAssertGreater "Crash recorded" $(abrt-cli list | wc -l) 0
         crash_PATH="$(abrt-cli list -f | grep Directory | awk '{ print $2 }' | tail -n1)"
         if [ ! -d "$crash_PATH" ]; then
-            rlFileRestore # CFG_FILE
             rlDie "No crash dir generated, this shouldn't happen"
         fi
         ls $crash_PATH > crash_dir_ls
