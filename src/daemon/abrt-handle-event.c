@@ -88,7 +88,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
 
 static char *do_log(char *log_line, void *param)
 {
-    /* We pipe output of post-create events to our log (which usually
+    /* We pipe output of events to our log (which usually
      * includes syslog). Otherwise, errors on post-create result in
      * "Corrupted or bad dump DIR, deleting" without adequate explanation why.
      */
@@ -101,27 +101,29 @@ int main(int argc, char **argv)
     abrt_init(argv);
 
     const char *program_usage_string = _(
-        "& [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
+        "& [-v] -e|--event EVENT DIR..."
         );
 
     char *event_name = NULL;
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_GROUP(""),
-        OPT_STRING('e', "event" , &event_name, "EVENT",  _("Run EVENT on DUMP_DIR")),
+        OPT_STRING('e', "event" , &event_name, "EVENT",  _("Run EVENT on DIR")),
         OPT_END()
     };
 
     parse_opts(argc, argv, program_options, program_usage_string);
-    if (!argv[optind] || !event_name)
+    argv += optind;
+    if (!*argv || !event_name)
         show_usage_and_die(program_usage_string, program_options);
 
     load_abrt_conf();
 
+    bool post_create = (strcmp(event_name, "post-create") == 0);
     const char *dump_dir_name = NULL;
-    while (argv[optind])
+    while (*argv)
     {
-        dump_dir_name = argv[optind++];
+        dump_dir_name = *argv++;
 
         struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (!dd)
@@ -131,7 +133,7 @@ int main(int argc, char **argv)
         dd_close(dd);
 
         struct run_event_state *run_state = new_run_event_state();
-        if (strcmp(event_name, "post-create") == 0)
+        if (post_create)
             run_state->post_run_callback = is_crash_a_dup;
         run_state->logging_callback = do_log;
         int r = run_event_on_dir_name(run_state, dump_dir_name, event_name);
@@ -159,21 +161,18 @@ int main(int argc, char **argv)
             /* Was uuid created after all? (In this case, is_crash_a_dup()
              * should have fetched it and created uuid)
              */
-            if (!uuid)
+            if (post_create && !uuid)
             {
                 /* no */
-                printf("Dump directory '%s' has no UUID element\n", dump_dir_name);
-                return 1;
+                error_msg_and_die("Problem directory '%s' has no UUID element", dump_dir_name);
             }
         }
         else
         {
-            printf("DUP_OF_DIR: %s\n", crash_dump_dup_name);
-            free(crash_dump_dup_name);
-            return 1;
+            error_msg_and_die("DUP_OF_DIR: %s", crash_dump_dup_name);
         }
     }
 
-    /* exit 0 means, that there is no duplicate of dump-dir*/
+    /* exit 0 means, that there is no duplicate of dump-dir */
     return 0;
 }
