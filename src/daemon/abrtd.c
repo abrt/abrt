@@ -25,7 +25,6 @@
 #include <sys/ioctl.h> /* ioctl(FIONREAD) */
 
 #include "libabrt.h"
-#include "CommLayerServerDBus.h"
 
 
 /* I want to use -Werror, but gcc-4.4 throws a curveball:
@@ -46,11 +45,7 @@
 /* Daemon initializes, then sits in glib main loop, waiting for events.
  * Events can be:
  * - inotify: something new appeared under /var/spool/abrt
- * - DBus: dbus message arrived
  * - signal: we got SIGTERM or SIGINT
- *
- * DBus signals we emit:
- * - Crash(progname, crash_id, dir, uid) - a new crash occurred (new /var/spool/abrt/DIR is found)
  */
 static volatile sig_atomic_t s_sig_caught;
 static int s_signal_pipe[2];
@@ -65,6 +60,29 @@ static int socket_client_count = 0;
 
 
 /* Helpers */
+
+static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *event_name, FILE **fpp)
+{
+    char *args[6];
+    args[0] = (char *) "/usr/libexec/abrt-handle-event";
+    args[1] = (char *) "-e";
+    args[2] = (char *) event_name;
+    args[3] = (char *) "--";
+    args[4] = (char *) dump_dir_name;
+    args[5] = NULL;
+
+    int pipeout[2];
+    int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_QUIET | EXECFLG_ERR2OUT;
+    VERB1 flags &= ~EXECFLG_QUIET;
+
+    pid_t child = fork_execv_on_steroids(flags, args, pipeout,
+                                         /*env_vec:*/ NULL, /*dir:*/ NULL, 0);
+
+    *fpp = fdopen(pipeout[0], "r");
+    if (!*fpp)
+        die_out_of_memory();
+    return child;
+}
 
 static guint add_watch_or_die(GIOChannel *channel, unsigned condition, GIOFunc func)
 {
@@ -271,29 +289,14 @@ typedef enum {
 
 static mw_result_t run_post_create_and_load_data(const char *dump_dir_name, problem_data_t **problem_data)
 {
-    char *args[6];
-    args[0] = (char *) "/usr/libexec/abrt-handle-event";
-    args[1] = (char *) "-e";
-    args[2] = (char *) "post-create";
-    args[3] = (char *) "--";
-    args[4] = (char *) dump_dir_name;
-    args[5] = NULL;
-
-    int pipeout[2];
-    int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_QUIET | EXECFLG_ERR2OUT;
-    VERB1 flags &= ~EXECFLG_QUIET;
-
-    pid_t child = fork_execv_on_steroids(flags, args, pipeout,
-                                         /*env_vec:*/ NULL, /*dir:*/ NULL, 0);
-
-    FILE *fp = fdopen(pipeout[0], "r");
-    if (!fp)
-        die_out_of_memory();
+    FILE *fp;
+    pid_t child = spawn_event_handler_child(dump_dir_name, "post-create", &fp);
 
     char *buf;
     char *dup_of_dir = NULL;
     while ((buf = xmalloc_fgetline(fp)) != NULL)
     {
+        /* Hmm, DUP_OF_DIR: ends up in syslog. move log() into 'else'? */
         log("%s", buf);
 
         if (strncmp("DUP_OF_DIR: ", buf, strlen("DUP_OF_DIR: ")) == 0)
@@ -305,7 +308,7 @@ static mw_result_t run_post_create_and_load_data(const char *dump_dir_name, prob
         else
             free(buf);
     }
-    fclose(fp); /* closes pipeout[0] too */
+    fclose(fp);
 
     /* Prevent having zombie child process */
     int status;
@@ -387,7 +390,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         return FALSE; /* "remove this event" (huh??) */
     }
 
-    /* Reconstruct each event and send message to the dbus */
+    /* Reconstruct each event */
     gsize i = 0;
     while (i < len)
     {
@@ -448,7 +451,6 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             ) {
                 log("Size of '%s' >= %u MB, deleting '%s'",
                     g_settings_dump_location, g_settings_nMaxCrashReportsSize, worst_dir);
-                send_dbus_sig_QuotaExceeded(_("The size of the report exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."));
                 /* deletes both directory and DB record */
                 char *d = concat_path_file(g_settings_dump_location, worst_dir);
                 free(worst_dir);
@@ -475,20 +477,29 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                     /* Fetch the name of older directory of which we are a dup */
                     first = get_problem_item_content_or_NULL(problem_data, CD_DUMPDIR);
 
-                    log("Deleting problem directory %s (dup of %s), sending dbus signal",
+                    log("Deleting problem directory %s (dup of %s)",
                             strrchr(fullname, '/') + 1,
                             strrchr(first, '/') + 1);
                     delete_dump_dir(fullname);
                 }
 
-                const char *uid_str = get_problem_item_content_or_NULL(problem_data, FILENAME_UID);
-                /* When dup occurs we need to return first occurence,
-                 * not the one which is deleted
-                 */
-                send_dbus_sig_Crash(get_problem_item_content_or_NULL(problem_data, FILENAME_PACKAGE),
-                                    (first ? first : fullname),
-                                    uid_str
+                /* Run "notify[_dup]" event */
+                FILE *fp;
+                pid_t child = spawn_event_handler_child(
+                                (first ? first : fullname),
+                                (first ? "notify_dup" : "notify"),
+                                &fp
                 );
+                char *buf;
+                while ((buf = xmalloc_fgetline(fp)) != NULL)
+                {
+                    log("%s", buf);
+                    free(buf);
+                }
+                fclose(fp);
+                /* Prevent having zombie child process */
+                safe_waitpid(child, NULL, 0);
+
                 break;
             }
             default: /* always MW_ERROR */
@@ -640,6 +651,7 @@ int main(int argc, char** argv)
 
     export_abrt_envvars(opts & OPT_p);
 
+#if 0 /* We no longer use dbus */
     /* When dbus daemon starts us, it doesn't set PATH
      * (I saw it set only DBUS_STARTER_ADDRESS and DBUS_STARTER_BUS_TYPE).
      * In this case, set something sane:
@@ -647,6 +659,7 @@ int main(int argc, char** argv)
     const char *env_path = getenv("PATH");
     if (!env_path || !env_path[0])
         putenv((char*)"PATH=/usr/sbin:/usr/bin:/sbin:/bin");
+#endif
 
     unsetenv("ABRT_SYSLOG");
     msg_prefix = g_progname; /* for log(), error_msg() and such */
@@ -761,13 +774,6 @@ int main(int argc, char** argv)
     /* Open socket to receive new problem data (from python etc). */
     dumpsocket_init();
 
-    /* Note: this already may process a few dbus messages,
-     * therefore it should be the last thing to initialize.
-     */
-    VERB1 log("Initializing dbus");
-    if (init_dbus() != 0)
-        goto init_error;
-
     /* Inform parent that we initialized ok */
     if (!(opts & OPT_d))
     {
@@ -800,8 +806,6 @@ int main(int argc, char** argv)
         g_source_remove(channel_inotify_event_id);
     if (channel_inotify)
         g_io_channel_unref(channel_inotify);
-
-    deinit_dbus();
 
     if (pMainloop)
         g_main_loop_unref(pMainloop);
