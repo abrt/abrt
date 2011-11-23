@@ -488,34 +488,6 @@ static void show_problem_notification(const char *format, ...)
     }
 }
 
-static void show_msg_notification(const char *format, ...)
-{
-    va_list args;
-
-    va_start(args, format);
-    char *buf = xvasprintf(format, args);
-    va_end(args);
-
-    /* we don't want to show any buttons now,
-       maybe later we can add action binded to message
-       like >>Clear old dumps<< for quota exceeded
-     */
-    NotifyNotification *notification = new_warn_notification();
-    notify_notification_add_action(notification, "OPEN_MAIN_WINDOW", _("Open ABRT"),
-                                    NOTIFY_ACTION_CALLBACK(action_open_gui),
-                                    NULL, NULL);
-    notify_notification_update(notification, _("A Problem has Occurred"), buf, NULL);
-    free(buf);
-
-    GError *err = NULL;
-    notify_notification_show(notification, &err);
-    if (err != NULL)
-    {
-        error_msg("%s", err->message);
-        g_error_free(err);
-    }
-}
-
 static void show_icon(void)
 {
     if (ap_status_icon == NULL)
@@ -661,26 +633,6 @@ static void Crash(DBusMessage* signal)
     show_problem_notification(message, package_name);
 }
 
-static void QuotaExceeded(DBusMessage* signal)
-{
-    int r;
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(signal, &in_iter);
-    const char* str = NULL;
-    r = load_charp(&in_iter, &str);
-    if (r != ABRT_DBUS_LAST_FIELD)
-    {
-        error_msg("dbus signal %s: parameter type mismatch", __func__);
-        return;
-    }
-
-    //if (m_pSessionDBus->has_name("com.redhat.abrt.gui"))
-    //    return;
-    init_applet();
-    show_icon();
-    show_msg_notification("%s", str);
-}
-
 static void NameOwnerChanged(DBusMessage* signal)
 {
     int r;
@@ -735,8 +687,6 @@ static DBusHandlerResult handle_message(DBusConnection* conn, DBusMessage* msg, 
         NameOwnerChanged(msg);
     else if (strcmp(member, "Crash") == 0)
         Crash(msg);
-    else if (strcmp(member, "QuotaExceeded") == 0)
-        QuotaExceeded(msg);
 
     return DBUS_HANDLER_RESULT_HANDLED;
 }
