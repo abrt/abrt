@@ -625,9 +625,6 @@ int main(int argc, char** argv)
     textdomain(PACKAGE);
 #endif
 
-    if (getuid() != 0)
-        error_msg_and_die("ABRT daemon must be run as root");
-
     const char *program_usage_string = _(
         "& [options]"
     );
@@ -663,6 +660,10 @@ int main(int argc, char** argv)
 
     unsetenv("ABRT_SYSLOG");
     msg_prefix = g_progname; /* for log(), error_msg() and such */
+
+    if (getuid() != 0)
+        error_msg_and_die("Must be run as root");
+
     if (opts & OPT_s)
         start_syslog_logging();
 

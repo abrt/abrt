@@ -363,6 +363,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_initrddir}/abrtd
 %endif
 %{_sbindir}/abrtd
+%{_sbindir}/abrt-dbus
 %{_sbindir}/abrt-server
 %{_libexecdir}/abrt-handle-event
 %{_bindir}/abrt-handle-upload
@@ -371,6 +372,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-action-save-package-data.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
 %config(noreplace) %{_sysconfdir}/libreport/events.d/abrt_event.conf
+%config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/smart_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/smolt_event.conf
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/spool/%{name}
@@ -390,6 +392,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/abrt.conf.5.gz
 %{_mandir}/man5/abrt-action-save-package-data.conf.5.gz
 # {_mandir}/man5/pyhook.conf.5.gz
+%{_datadir}/dbus-1/system-services/com.redhat.abrt.service
 
 %files libs
 %defattr(-,root,root,-)
