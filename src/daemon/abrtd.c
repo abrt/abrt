@@ -632,6 +632,7 @@ int main(int argc, char** argv)
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
         OPT_s = 1 << 2,
+// TODO: get rid of -t NUM, it is no longer useful since dbus is moved to a separate tool
         OPT_t = 1 << 3,
         OPT_p = 1 << 4,
     };
@@ -640,7 +641,7 @@ int main(int argc, char** argv)
         OPT__VERBOSE(&g_verbose),
         OPT_BOOL(   'd', NULL, NULL      , _("Do not daemonize")),
         OPT_BOOL(   's', NULL, NULL      , _("Log to syslog even with -d")),
-        OPT_INTEGER('t', NULL, &s_timeout, _("Exit after SEC seconds of inactivity")),
+        OPT_INTEGER('t', NULL, &s_timeout, _("Exit after NUM seconds of inactivity")),
         OPT_BOOL(   'p', NULL, NULL      , _("Add program names to log")),
         OPT_END()
     };

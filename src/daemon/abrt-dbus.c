@@ -388,7 +388,7 @@ int main(int argc, char** argv)
         OPT__VERBOSE(&g_verbose),
         OPT_BOOL(   'd', NULL, NULL      , _("Do not daemonize")),
         OPT_BOOL(   's', NULL, NULL      , _("Log to syslog even with -d")),
-        OPT_INTEGER('t', NULL, &s_timeout, _("Exit after SEC seconds of inactivity")),
+        OPT_INTEGER('t', NULL, &s_timeout, _("Exit after NUM seconds of inactivity")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);

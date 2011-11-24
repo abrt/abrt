@@ -19,7 +19,7 @@ MAN5_TXT += abrt.conf.txt
 MAN5_TXT += abrt-action-save-package-data.conf.txt
 
 MAN8_TXT =
-MAN8_TXT += abrtd.txt
+MAN8_TXT += abrtd.txt abrt-dbus.txt
 
 # Manual pages are generated from .txt via Docbook
 man1_MANS = ${MAN1_TXT:%.txt=%.1}
