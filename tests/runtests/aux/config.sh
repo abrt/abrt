@@ -28,7 +28,7 @@ export MAILFROM='abrt-testsuite-bot@redhat.com'
 
 # - scp script config -
 export SCPTO='exampleuser@example.org:/var/abrt/results/'
-export SCPOPTS="-o 'StrictHostKeyChecking=no'"
+export SCPOPTS="-o StrictHostKeyChecking=no"
 
 # - post script config -
 # shutdown machine after testing
