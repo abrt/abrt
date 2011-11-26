@@ -18,7 +18,7 @@ function run_stage() {
     if [ ${1} = "TEST" ]; then
         echo_success
         echo " $msg"
-        $script | tee "$dir/stage.log"
+        . $script | tee "$dir/stage.log"
         if [ $? != 0 ]; then
             touch "$dir/failed"
         fi
