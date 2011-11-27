@@ -24,7 +24,7 @@ function run_stage() {
         fi
         sed -r -i "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" "$dir/stage.log"
     else
-        $script &> "$dir/stage.log"
+        . $script &> "$dir/stage.log"
         if [ $? != 0 ]; then
             echo_failure
             touch "$dir/failed"
