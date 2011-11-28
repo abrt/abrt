@@ -30,7 +30,13 @@
 PACKAGE="abrt"
 TEST="abrt-nightly-build"
 
-MOCKCFG="/etc/mock/fedora-15-x86_64.cfg"
+
+VERS="fedora-15-x86_64"
+if grep -q 16 '/etc/fedora-release'; then
+    VERS="fedora-16-x86_64"
+fi
+
+MOCKCFG="/etc/mock/${VERS}.cfg"
 
 rlJournalStart
     rlPhaseStartSetup
@@ -41,7 +47,7 @@ rlJournalStart
             rlFileBackup $MOCKCFG
             BACKED=1
         fi
-        cp "mock_fedora-15-x86_64.cfg" $MOCKCFG
+        cp "mock_${VERS}.cfg" $MOCKCFG
 
         TmpDir=$(mktemp -d)
         pushd $TmpDir
@@ -85,8 +91,8 @@ rlJournalStart
         rlRun "rpm --eval '%configure' | sh" 0 "ABRT configure" # ./configure
         rlRun "make srpm" 0 "ABRT make srpm"
         cp abrt-*.src.rpm ~mock_user/abrt.src.rpm
-        rlRun "su - mock_user -c 'mock -v -r fedora-15-x86_64 ~mock_user/abrt.src.rpm'" 0 "Build ABRT in Mock"
-        rlRun "yum install -y /var/lib/mock/fedora-15-x86_64/result/abrt* /root/rpmbuild/RPMS/*/libreport*.rpm" 0 "Yum install ABRT & libreport"
+        rlRun "su - mock_user -c 'mock -v -r ${VERS} ~mock_user/abrt.src.rpm'" 0 "Build ABRT in Mock"
+        rlRun "yum install -y /var/lib/mock/${VERS}/result/abrt* /root/rpmbuild/RPMS/*/libreport*.rpm" 0 "Yum install ABRT & libreport"
         pushd ../libreport/
         rlRun "make install" 0 "Libreport make install"
         popd
