@@ -48,15 +48,15 @@ rlJournalStart
 
         rlRun "git clone git://git.fedorahosted.org/libreport.git" 0 "Clone libreport.git"
         pushd libreport/
+
+        yum -y install $( grep BuildRequires libreport.spec.in | cut -d: -f2 )
+
         short_rev=$(git rev-parse --short HEAD)
         rlLog "Git short rev: $short_rev"
         yum-builddep -y --nogpgcheck libreport
 
         # stupid workaround
         yum reinstall -y "*docbook*"
-
-        # temporary, F16 bump required
-        yum install -y json-c-devel
 
         ./autogen.sh
         rpm --eval '%configure' | sh # ./configure
@@ -73,6 +73,9 @@ rlJournalStart
         rpmquery btparser-devel > /dev/null || yum install -y btparser-devel --enablerepo="updates-testing"
         /usr/sbin/useradd mock_user --groups mock --create-home
         pushd abrt/
+
+        yum -y install $( grep BuildRequires abrt.spec.in | cut -d: -f2 )
+
         short_rev=$(git rev-parse --short HEAD)
         rlLog "Git short rev: $short_rev"
     rlPhaseEnd
