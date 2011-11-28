@@ -38,7 +38,7 @@ rlJournalStart
         TmpDir=$(mktemp -d)
         pushd $TmpDir
 
-        rlRun "git clone git://git.fedorahosted.org/btparser.git" 0 "Clone btparser.git"
+        rlRun "git clone --depth 1 git://git.fedorahosted.org/btparser.git" 0 "Clone btparser.git"
         pushd btparser/
         short_rev=$(git rev-parse --short HEAD)
         rlLog "Git short rev: $short_rev"

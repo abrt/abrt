@@ -46,7 +46,7 @@ rlJournalStart
         TmpDir=$(mktemp -d)
         pushd $TmpDir
 
-        rlRun "git clone git://git.fedorahosted.org/libreport.git" 0 "Clone libreport.git"
+        rlRun "git clone --depth 1 git://git.fedorahosted.org/libreport.git" 0 "Clone libreport.git"
         pushd libreport/
 
         yum -y install $( grep BuildRequires libreport.spec.in | cut -d: -f2 )
@@ -68,7 +68,7 @@ rlJournalStart
         rlRun "createrepo /root/rpmbuild/RPMS/*/"
         popd # libreport/
 
-        rlRun "git clone git://git.fedorahosted.org/abrt.git" 0 "Clone abrt.git"
+        rlRun "git clone --depth 1 git://git.fedorahosted.org/abrt.git" 0 "Clone abrt.git"
         yum-builddep -y --nogpgcheck abrt
         rpmquery btparser-devel > /dev/null || yum install -y btparser-devel --enablerepo="updates-testing"
         /usr/sbin/useradd mock_user --groups mock --create-home
