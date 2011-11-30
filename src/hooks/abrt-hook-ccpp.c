@@ -195,11 +195,6 @@ static char* get_cwd(pid_t pid)
 
 static int open_user_core(uid_t uid, pid_t pid, char **percent_values)
 {
-    struct passwd* pw = getpwuid(uid);
-    gid_t gid = pw ? pw->pw_gid : uid;
-    xsetegid(gid);
-    xseteuid(uid);
-
     errno = 0;
     if (user_pwd == NULL
      || chdir(user_pwd) != 0
@@ -207,6 +202,11 @@ static int open_user_core(uid_t uid, pid_t pid, char **percent_values)
         perror_msg("Can't cd to '%s'", user_pwd);
         return -1;
     }
+
+    struct passwd* pw = getpwuid(uid);
+    gid_t gid = pw ? pw->pw_gid : uid;
+    xsetegid(gid);
+    xseteuid(uid);
 
     if (strcmp(core_basename, "core") == 0)
     {
@@ -344,6 +344,17 @@ int main(int argc, char** argv)
 {
     struct stat sb;
 
+    /* Kernel starts us with all fd's closed.
+     * But it's dangerous:
+     * fprintf(stderr) can dump messages into random fds, etc.
+     * Ensure that if any of fd 0,1,2 is closed, we open it to /dev/null.
+     */
+    int fd = xopen("/dev/null", O_RDWR);
+    while (fd < 2)
+	fd = xdup(fd);
+    if (fd > 2)
+	close(fd);
+
     if (argc < 8)
     {
         /* percent specifier:         %s    %c             %p  %u  %g  %t   %e          %h */
@@ -369,10 +380,26 @@ int main(int argc, char** argv)
     openlog("abrt", LOG_PID, LOG_DAEMON);
     logmode = LOGMODE_SYSLOG;
 
-    errno = 0;
     /* Parse abrt.conf */
     load_abrt_conf();
+    /* ... and plugins/CCpp.conf */
+    bool setting_MakeCompatCore;
+    bool setting_SaveBinaryImage;
+    {
+        map_string_h *settings = new_map_string();
+        load_conf_file(PLUGINS_CONF_DIR"/CCpp.conf", settings, /*skip key w/o values:*/ false);
+        char *value;
+        value = g_hash_table_lookup(settings, "MakeCompatCore");
+        setting_MakeCompatCore = value && string_to_bool(value);
+        value = g_hash_table_lookup(settings, "SaveBinaryImage");
+        setting_SaveBinaryImage = value && string_to_bool(value);
+        value = g_hash_table_lookup(settings, "VerboseLog");
+        if (value)
+            g_verbose = xatoi_positive(value);
+        free_map_string(settings);
+    }
 
+    errno = 0;
     const char* signal_str = argv[1];
     int signal_no = xatoi_positive(signal_str);
     off_t ulimit_c = strtoull(argv[2], NULL, 10);
@@ -397,6 +424,8 @@ int main(int argc, char** argv)
         /* If we have a saved pattern and it's not a "|PROG ARGS" thing... */
         if (s && s[0] != '|')
             core_basename = s;
+        else
+            free(s);
     }
 
     struct utsname uts;
@@ -414,21 +443,8 @@ int main(int argc, char** argv)
                         (long)pid, executable);
     }
 
-    char *user_pwd = get_cwd(pid); /* may be NULL on error */
-
-    /* ... and plugins/CCpp.conf */
-    bool setting_MakeCompatCore;
-    bool setting_SaveBinaryImage;
-    {
-        map_string_h *settings = new_map_string();
-        load_conf_file(PLUGINS_CONF_DIR"/CCpp.conf", settings, /*skip key w/o values:*/ false);
-        char *value;
-        value = g_hash_table_lookup(settings, "MakeCompatCore");
-        setting_MakeCompatCore = value && string_to_bool(value);
-        value = g_hash_table_lookup(settings, "SaveBinaryImage");
-        setting_SaveBinaryImage = value && string_to_bool(value);
-        free_map_string(settings);
-    }
+    user_pwd = get_cwd(pid); /* may be NULL on error */
+    VERB1 log("user_pwd:'%s'", user_pwd);
 
     if (!setting_SaveBinaryImage && src_fd_binary >= 0)
     {
@@ -493,7 +509,7 @@ int main(int argc, char** argv)
      * if they happen too often. Else, write new marker value.
      */
     snprintf(path, sizeof(path), "%s/last-ccpp", g_settings_dump_location);
-    int fd = open(path, O_RDWR | O_CREAT, 0600);
+    fd = open(path, O_RDWR | O_CREAT, 0600);
     if (fd >= 0)
     {
         int sz;
