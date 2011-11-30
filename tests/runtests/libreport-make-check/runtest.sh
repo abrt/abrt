@@ -38,7 +38,7 @@ rlJournalStart
         TmpDir=$(mktemp -d)
         pushd $TmpDir
 
-        rlRun "git clone --depth 1 git://git.fedorahosted.org/libreport.git" 1 "Clone libreport.git"
+        rlRun "git clone git://git.fedorahosted.org/libreport.git" 0 "Clone libreport.git"
         pushd libreport/
         short_rev=$(git rev-parse --short HEAD)
         rlLog "Git short rev: $short_rev"
