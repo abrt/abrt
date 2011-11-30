@@ -53,9 +53,7 @@ rlJournalStart
             rlDie "No crash dir generated, this shouldn't happen"
         fi
 
-        rlRun "dbus-send --system --type=method_call
-            --print-reply --dest=com.redhat.abrt
-            /com/redhat/abrt com.redhat.abrt.GetListOfProblems &> dbus_reply.log"
+        rlRun "dbus-send --system --type=method_call --print-reply --dest=com.redhat.abrt /com/redhat/abrt com.redhat.abrt.GetListOfProblems &> dbus_reply.log"
 
         rlAssertGrep "array" dbus_reply.log
         rlAssertGrep "string" dbus_reply.log
@@ -74,9 +72,7 @@ rlJournalStart
             rlDie "No crash dir generated for second crash, this shouldn't happen"
         fi
 
-        rlRun "dbus-send --system --type=method_call
-            --print-reply --dest=com.redhat.abrt
-            /com/redhat/abrt com.redhat.abrt.GetListOfProblems &> dbus_second_reply.log"
+        rlRun "dbus-send --system --type=method_call --print-reply --dest=com.redhat.abrt /com/redhat/abrt com.redhat.abrt.GetListOfProblems &> dbus_second_reply.log"
 
         rlAssertGrep "array" dbus_second_reply.log
         rlAssertGrep "$crash_PATH" dbus_second_reply.log
