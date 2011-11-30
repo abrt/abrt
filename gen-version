@@ -1,13 +1,18 @@
 #!/bin/bash
 
 DEF_VER=2.0.5
+LF='
+'
 
-if test -d .git -o -f .git
+if test -d .git -o -f .git &&
+    VN=$(git describe --tags --match "[0-9]*" --abbrev=4 HEAD 2>/dev/null) &&
+    case "$VN" in
+	*$LF*) (exit 1) ;;
+	[0-9]*)
+	    git update-index -q --refresh
+	    test -z "$(git diff-index --name-only HEAD --)" || VN="$VN-dirty"
+    esac
 then
-    VN=$(git describe --tags --match "[0-9]*" --abbrev=4 HEAD 2>/dev/null)
-    git status
-    git update-index -q --refresh
-    test -z "$(git diff-index --name-only HEAD --)" || VN="$VN-dirty"
     VN=$(echo "$VN" | sed -e 's/-/./g');
 else
     VN="$DEF_VER"
