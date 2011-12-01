@@ -33,14 +33,17 @@ for test_dir in $testlist; do
     start_line=$(grep -n -i 'Test protocol' $logfile | awk -F: '{print $1}')
     end_line=$(grep -n -i 'TEST END MARK' $logfile | awk -F: '{print $1}')
 
-    if [ $start_line -gt 1 ]; then
-        start_line=$[ $start_line - 1 ]
-    fi
-    protocol_start=$start_line
-    end_line=$[ $end_line - 1 ]
+    # in case of FATAL error, there is no test protocol
+    if [ "_$start_line" != "_" ]; then
+        if [ $start_line -gt 1 ]; then
+            start_line=$[ $start_line - 1 ]
+        fi
+        protocol_start=$start_line
+        end_line=$[ $end_line - 1 ]
 
-    sed -n "${start_line},${end_line}p;${end_line}q" $logfile \
-        > "$outdir/protocol.log"
+        sed -n "${start_line},${end_line}p;${end_line}q" $logfile \
+            > "$outdir/protocol.log"
+    fi
 
     # collect /var/log/messages
     start=$( grep -n "MARK: $short_testname.*" '/var/log/messages'  | tail -n 1 | awk -F: '{print $1}' )
