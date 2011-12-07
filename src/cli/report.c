@@ -25,7 +25,7 @@
 int cmd_report(int argc, const char **argv)
 {
     const char *program_usage_string = _(
-        "& report [options] [<dump-dir>]..."
+        "& report [options] DIR..."
         );
 
     struct options program_options[] = {
@@ -34,6 +34,10 @@ int cmd_report(int argc, const char **argv)
     };
 
     parse_opts(argc, (char **)argv, program_options, program_usage_string);
+    argv += optind;
+
+    if (!argv[0])
+        show_usage_and_die(program_usage_string, program_options);
 
     load_abrt_conf();
     char *home = getenv("HOME");
@@ -43,12 +47,9 @@ int cmd_report(int argc, const char **argv)
     D_list = g_list_append(D_list, xstrdup(g_settings_dump_location));
     free_abrt_conf_data();
 
-    if (!argv[optind])
-        show_usage_and_die(program_usage_string, program_options);
-
-    while (1)
+    while (*argv)
     {
-        const char *dir_name = argv[optind++];
+        const char *dir_name = *argv++;
 
         vector_of_problem_data_t *ci = NULL;
         if (*dir_name == '@')
@@ -73,9 +74,6 @@ int cmd_report(int argc, const char **argv)
         free_vector_of_problem_data(ci);
         if (status)
             exit(status);
-
-        if (!argv[optind])
-            break;
     }
 
     return 0;

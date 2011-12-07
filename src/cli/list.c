@@ -87,7 +87,7 @@ static void print_crash_list(vector_of_problem_data_t *crash_list, int include_r
 int cmd_list(int argc, const char **argv)
 {
     const char *program_usage_string = _(
-        "& list [options] [<dump-dir>]..."
+        "& list [options] [DIR]..."
         );
 
     static int opt_full, opt_detailed;
@@ -101,11 +101,11 @@ int cmd_list(int argc, const char **argv)
     };
 
     parse_opts(argc, (char **)argv, program_options, program_usage_string);
+    argv += optind;
 
     GList *D_list = NULL;
-    if (optind < argc)
-        while (optind < argc)
-            D_list = g_list_append(D_list, xstrdup(argv[optind++]));
+    while (*argv)
+        D_list = g_list_append(D_list, xstrdup(*argv++));
     if (!D_list)
     {
         load_abrt_conf();
@@ -130,7 +130,7 @@ int cmd_list(int argc, const char **argv)
 int cmd_info(int argc, const char **argv)
 {
     const char *program_usage_string = _(
-        "& info [options] [<dump-dir>]..."
+        "& info [options] DIR..."
         );
 
     static int opt_detailed;
@@ -143,14 +143,15 @@ int cmd_info(int argc, const char **argv)
     };
 
     parse_opts(argc, (char **)argv, program_options, program_usage_string);
+    argv += optind;
 
-    if (optind == argc)
+    if (!argv[0])
         show_usage_and_die(program_usage_string, program_options);
 
     int errs = 0;
-    while (argv[optind])
+    while (*argv)
     {
-        const char *dump_dir = argv[optind++];
+        const char *dump_dir = *argv++;
         problem_data_t *problem = fill_crash_info(dump_dir);
         if (!problem)
         {
@@ -161,7 +162,7 @@ int cmd_info(int argc, const char **argv)
 
         print_crash(problem, opt_detailed);
         free_problem_data(problem);
-        if (optind - argc)
+        if (*argv)
             printf("\n");
     }
 

@@ -138,14 +138,14 @@ int main(int argc, const char **argv)
     argc--;
 
     const char *abrt_cli_usage_string = _(
-        "Usage: abrt-cli [--version] COMMAND [ARGS]"
+        "Usage: abrt-cli [--version] COMMAND [DIR]..."
         );
 
     const struct cmd_struct commands[] = {
-        {"list", cmd_list, _("List not yet reported problems")},
-        {"rm", cmd_rm, _("Remove files from problem directory")},
-        {"report", cmd_report, _("Analyze and report problem data in problem directory")},
-        {"info", cmd_info, _("Print information about DUMP_DIR")},
+        {"list", cmd_list, _("List not yet reported problems [in DIRs]")},
+        {"rm", cmd_rm, _("Remove problem directory DIR")},
+        {"report", cmd_report, _("Analyze and report problem data in DIR")},
+        {"info", cmd_info, _("Print information about DIR")},
         {NULL, NULL, NULL}
     };
 

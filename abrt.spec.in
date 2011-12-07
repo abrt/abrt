@@ -497,8 +497,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files cli
 %defattr(-,root,root,-)
 %{_bindir}/abrt-cli
-# provide asap
-#% {_mandir}/man1/report-cli.1.gz
+%{_mandir}/man1/abrt-cli.1.gz
 
 %files desktop
 %defattr(-,root,root,-)

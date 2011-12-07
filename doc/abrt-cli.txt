@@ -1,0 +1,31 @@
+abrt-cli(1)
+===========
+
+NAME
+----
+abrt-cli - List, remove, print, analyze, report problems
+
+SYNOPSIS
+--------
+'abrt-cli' list   [-vdf] [DIR]...
+
+'abrt-cli' rm     [-v]   DIR...
+
+'abrt-cli' report [-v]   DIR...
+
+'abrt-cli' info   [-vd]  DIR...
+
+OPTIONS
+-------
+-v,--verbose::
+   Be more verbose. Can be given multiple times.
+
+-d,--detailed::
+   Show detailed report
+
+-f,--full::
+   List even reported problems
+
+AUTHORS
+-------
+* ABRT team

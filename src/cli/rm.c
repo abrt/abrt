@@ -28,7 +28,7 @@
 int cmd_rm(int argc, const char **argv)
 {
     const char *program_usage_string = _(
-        "& rm [options] [<dump-dir>]..."
+        "& rm [options] DIR..."
         );
 
     struct options program_options[] = {
@@ -37,12 +37,16 @@ int cmd_rm(int argc, const char **argv)
     };
 
     parse_opts(argc, (char **)argv, program_options, program_usage_string);
+    argv += optind;
+
+    if (!argv[0])
+        show_usage_and_die(program_usage_string, program_options);
 
     int errs = 0;
-    while (argv[optind])
+    while (*argv)
     {
         int status;
-        const char *rm_dir = argv[optind++];
+        const char *rm_dir = *argv++;
         status = delete_dump_dir_possibly_using_abrtd(rm_dir);
         if (!status)
             log("rm '%s'", rm_dir);

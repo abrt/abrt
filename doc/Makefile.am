@@ -11,6 +11,7 @@ MAN1_TXT += abrt-action-list-dsos.txt
 MAN1_TXT += abrt-retrace-client.txt
 MAN1_TXT += abrt-handle-upload.txt
 MAN1_TXT += abrt-server.txt
+MAN1_TXT += abrt-cli.txt
 MAN1_TXT += abrt-action-save-package-data.txt
 MAN1_TXT += abrt-install-ccpp-hook.txt
 
