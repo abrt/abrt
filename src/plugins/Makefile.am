@@ -89,7 +89,8 @@ abrt_action_analyze_c_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_analyze_c_LDADD = \
-    $(LIBREPORT_LIBS)
+    $(LIBREPORT_LIBS) \
+    ../lib/libabrt.la
 
 abrt_action_analyze_python_SOURCES = \
     abrt-action-analyze-python.c

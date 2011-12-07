@@ -80,3 +80,173 @@ void trim_debug_dumps(const char *dirname, double cap_size, const char *exclude_
         free(d);
     }
 }
+
+/**
+ *
+ * @param[out] status See `man 2 wait` for status information.
+ * @return Malloc'ed string
+ */
+char* exec_vp(char **args, uid_t uid, int redirect_stderr, int exec_timeout_sec, int *status)
+{
+    /* Nuke everything which may make setlocale() switch to non-POSIX locale:
+     * we need to avoid having gdb output in some obscure language.
+     */
+    static const char *const env_vec[] = {
+        "LANG",
+        "LC_ALL",
+        "LC_COLLATE",
+        "LC_CTYPE",
+        "LC_MESSAGES",
+        "LC_MONETARY",
+        "LC_NUMERIC",
+        "LC_TIME",
+        /* Workaround for
+         * http://sourceware.org/bugzilla/show_bug.cgi?id=9622
+         * (gdb emitting ESC sequences even with -batch)
+         */
+        "TERM",
+        NULL
+    };
+
+    int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_SETSID | EXECFLG_QUIET;
+    if (uid != (uid_t)-1L)
+        flags |= EXECFLG_SETGUID;
+    if (redirect_stderr)
+        flags |= EXECFLG_ERR2OUT;
+    VERB1 flags &= ~EXECFLG_QUIET;
+
+    int pipeout[2];
+    pid_t child = fork_execv_on_steroids(flags, args, pipeout, (char**)env_vec, /*dir:*/ NULL, uid);
+
+    /* We use this function to run gdb and unstrip. Bugs in gdb or corrupted
+     * coredumps were observed to cause gdb to enter infinite loop.
+     * Therefore we have a (largish) timeout, after which we kill the child.
+     */
+    int t = time(NULL); /* int is enough, no need to use time_t */
+    int endtime = t + exec_timeout_sec;
+
+    struct strbuf *buf_out = strbuf_new();
+
+    ndelay_on(pipeout[0]);
+    while (1)
+    {
+        int timeout = endtime - t;
+        if (timeout < 0)
+        {
+            kill(child, SIGKILL);
+            strbuf_append_strf(buf_out, "\n"
+                        "Timeout exceeded: %u seconds, killing %s.\n"
+                        "Looks like gdb hung while generating backtrace.\n"
+                        "This may be a bug in gdb. Consider submitting a bug report to gdb developers.\n"
+                        "Please attach coredump from this crash to the bug report if you do.\n",
+                        exec_timeout_sec, args[0]
+            );
+            break;
+        }
+
+        /* We don't check poll result - checking read result is enough */
+        struct pollfd pfd;
+        pfd.fd = pipeout[0];
+        pfd.events = POLLIN;
+        poll(&pfd, 1, timeout * 1000);
+
+        char buff[1024];
+        int r = read(pipeout[0], buff, sizeof(buff) - 1);
+        if (r <= 0)
+        {
+            /* I did see EAGAIN happening here */
+            if (r < 0 && errno == EAGAIN)
+                goto next;
+            break;
+        }
+        buff[r] = '\0';
+        strbuf_append_str(buf_out, buff);
+ next:
+        t = time(NULL);
+    }
+    close(pipeout[0]);
+
+    /* Prevent having zombie child process, and maybe collect status
+     * (note that status == NULL is ok too) */
+    safe_waitpid(child, status, 0);
+
+    return strbuf_free_nobuf(buf_out);
+}
+
+char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
+{
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        return NULL;
+
+    char *uid_str = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+    dd_close(dd);
+    uid_t uid = -1L;
+    if (uid_str)
+    {
+        uid = xatoi_positive(uid_str);
+        free(uid_str);
+        if (uid == geteuid())
+        {
+            uid = -1L; /* no need to setuid/gid if we are already under right uid */
+        }
+    }
+
+    int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_SETSID | EXECFLG_QUIET;
+    if (uid != (uid_t)-1L)
+        flags |= EXECFLG_SETGUID;
+    VERB1 flags &= ~EXECFLG_QUIET;
+    int pipeout[2];
+    char* args[4];
+    args[0] = (char*)"eu-unstrip";
+    args[1] = xasprintf("--core=%s/"FILENAME_COREDUMP, dump_dir_name);
+    args[2] = (char*)"-n";
+    args[3] = NULL;
+    pid_t child = fork_execv_on_steroids(flags, args, pipeout, /*env_vec:*/ NULL, /*dir:*/ NULL, uid);
+    free(args[1]);
+
+    /* Bugs in unstrip or corrupted coredumps can cause it to enter infinite loop.
+     * Therefore we have a (largish) timeout, after which we kill the child.
+     */
+    int t = time(NULL); /* int is enough, no need to use time_t */
+    int endtime = t + timeout_sec;
+    struct strbuf *buf_out = strbuf_new();
+    while (1)
+    {
+        int timeout = endtime - t;
+        if (timeout < 0)
+        {
+            kill(child, SIGKILL);
+            strbuf_append_strf(buf_out, "\nTimeout exceeded: %u seconds, killing %s\n", timeout_sec, args[0]);
+            break;
+        }
+
+        /* We don't check poll result - checking read result is enough */
+        struct pollfd pfd;
+        pfd.fd = pipeout[0];
+        pfd.events = POLLIN;
+        poll(&pfd, 1, timeout * 1000);
+
+        char buff[1024];
+        int r = read(pipeout[0], buff, sizeof(buff) - 1);
+        if (r <= 0)
+            break;
+        buff[r] = '\0';
+        strbuf_append_str(buf_out, buff);
+        t = time(NULL);
+    }
+    close(pipeout[0]);
+
+    /* Prevent having zombie child process */
+    int status;
+    safe_waitpid(child, &status, 0);
+
+    if (status != 0)
+    {
+        /* unstrip didnt exit with exit code 0 */
+        strbuf_free(buf_out);
+        return NULL;
+    }
+
+    return strbuf_free_nobuf(buf_out);
+}
