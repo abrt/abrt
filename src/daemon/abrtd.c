@@ -313,14 +313,24 @@ static mw_result_t run_post_create_and_load_data(const char *dump_dir_name, prob
     /* Prevent having zombie child process */
     int status;
     safe_waitpid(child, &status, 0);
-    /* status = WEXITSTATUS(status); - wrong, we need to check WIFEXITED too */
 
     /* exit 0 means "this is a good, non-dup dir" */
     /* exit with 1 + "DUP_OF_DIR: dir" string => dup */
     if (status != 0)
     {
-        if (!dup_of_dir)
+        if (WIFSIGNALED(status))
+        {
+            log("'post-create' on '%s' killed by signal %d",
+                            dump_dir_name, WTERMSIG(status));
             return MW_ERROR;
+        }
+        /* else: it is WIFEXITED(status) */
+        if (!dup_of_dir)
+        {
+            log("'post-create' on '%s' exited with %d",
+                            dump_dir_name, WEXITSTATUS(status));
+            return MW_ERROR;
+        }
         dump_dir_name = dup_of_dir;
     }
 
