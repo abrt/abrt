@@ -238,7 +238,7 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
 {
     uint8_t signo;
     gsize len = 0;
-    g_io_channel_read(gio, (void*) &signo, 1, &len);
+    g_io_channel_read_chars(gio, (void*) &signo, 1, &len, NULL);
     if (len == 1)
     {
         /* we did receive a signal */
@@ -382,10 +382,19 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
     char *buf = (char*)xmalloc(inotify_bytes);
     errno = 0;
     gsize len;
-    GIOError err = g_io_channel_read(gio, buf, inotify_bytes, &len);
-    if (err != G_IO_ERROR_NONE)
+    GError *gerror = NULL;
+    g_io_channel_set_encoding(gio, NULL, &gerror);
+    /* need to set the encoding otherwise we get:
+     * Invalid byte sequence in conversion input
+     * according to manual "NULL" is safe for binary data
+    */
+    if (gerror)
+        perror_msg("Can't set encoding on gio channel: '%s'", gerror->message);
+
+    GIOStatus err = g_io_channel_read_chars(gio, buf, inotify_bytes, &len, &gerror);
+    if (err != G_IO_STATUS_NORMAL)
     {
-        perror_msg("Error reading inotify fd");
+        perror_msg("Error reading inotify fd: %s", gerror ? gerror->message : "unknown");
         free(buf);
         return FALSE; /* "remove this event" (huh??) */
     }
