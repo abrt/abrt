@@ -32,7 +32,7 @@ static int exec_timeout_sec = 240;
  * @param[out] status See `man 2 wait` for status information.
  * @return Malloc'ed string
  */
-static char* exec_vp(char **args, uid_t uid, int redirect_stderr, int *status)
+char* exec_vp(char **args, uid_t uid, int redirect_stderr, int exec_timeout_sec, int *status)
 {
     /* Nuke everything which may make setlocale() switch to non-POSIX locale:
      * we need to avoid having gdb output in some obscure language.
@@ -211,7 +211,7 @@ static char *get_backtrace(struct dump_dir *dd, const char *debuginfo_dirs)
     while (1)
     {
         args[9] = xasprintf("%s backtrace %u%s", thread_apply_all, bt_depth, full);
-        bt = exec_vp(args, uid, /*redirect_stderr:*/ 1, NULL);
+        bt = exec_vp(args, uid, /*redirect_stderr:*/ 1, exec_timeout_sec, NULL);
         free(args[9]);
         if ((bt && strnlen(bt, 256*1024) < 256*1024) || bt_depth <= 32)
         {
