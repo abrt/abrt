@@ -313,9 +313,10 @@ static mw_result_t run_post_create_and_load_data(const char *dump_dir_name, prob
     /* Prevent having zombie child process */
     int status;
     safe_waitpid(child, &status, 0);
-    status = WEXITSTATUS(status);
+    /* status = WEXITSTATUS(status); - wrong, we need to check WIFEXITED too */
 
-    /* exit 0 means, this is a good, non-dup dir */
+    /* exit 0 means "this is a good, non-dup dir" */
+    /* exit with 1 + "DUP_OF_DIR: dir" string => dup */
     if (status != 0)
     {
         if (!dup_of_dir)
@@ -330,34 +331,34 @@ static mw_result_t run_post_create_and_load_data(const char *dump_dir_name, prob
      * else: MW_ERROR
      */
     mw_result_t res = MW_ERROR;
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        /* dd_opendir already emitted error msg */
+        goto ret;
+
+    /* Reset mode/uig/gid to correct values for all files created by event run */
+    dd_sanitize_mode_and_owner(dd);
+
+    /* Update count */
+    char *count_str = dd_load_text_ext(dd, FILENAME_COUNT, DD_FAIL_QUIETLY_ENOENT);
+    unsigned long count = strtoul(count_str, NULL, 10);
+    count++;
+    char new_count_str[sizeof(long)*3 + 2];
+    sprintf(new_count_str, "%lu", count);
+    dd_save_text(dd, FILENAME_COUNT, new_count_str);
+    dd_close(dd);
+
+    *problem_data = load_problem_data(dump_dir_name);
+    if (*problem_data != NULL)
     {
-        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-        if (!dd)
-            goto ret;
-
-        /* Reset mode/uig/gid to correct values for all files created by event run */
-        dd_sanitize_mode_and_owner(dd);
-
-        /* Update count */
-        char *count_str = dd_load_text_ext(dd, FILENAME_COUNT, DD_FAIL_QUIETLY_ENOENT);
-        unsigned long count = strtoul(count_str, NULL, 10);
-        count++;
-        char new_count_str[sizeof(long)*3 + 2];
-        sprintf(new_count_str, "%lu", count);
-        dd_save_text(dd, FILENAME_COUNT, new_count_str);
-        dd_close(dd);
-
-        *problem_data = load_problem_data(dump_dir_name);
-        if (*problem_data != NULL)
+        res = MW_OK;
+        if (count > 1)
         {
-            res = MW_OK;
-            if (count > 1)
-            {
-                log("Problem directory is a duplicate of %s", dump_dir_name);
-                res = MW_OCCURRED;
-            }
+            log("Problem directory is a duplicate of %s", dump_dir_name);
+            res = MW_OCCURRED;
         }
     }
+    /* else: load_problem_data already emitted error msg */
 
  ret:
     free(dup_of_dir);
