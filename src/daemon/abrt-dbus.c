@@ -284,7 +284,7 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
 {
     uint8_t signo;
     gsize len = 0;
-    g_io_channel_read(gio, (void*) &signo, 1, &len);
+    g_io_channel_read_chars(gio, (void*) &signo, 1, &len, NULL);
     if (len == 1)
     {
         /* we did receive a signal */
