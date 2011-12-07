@@ -78,6 +78,12 @@ PKG_CHECK_MODULES([PYTHON], [python],,[
     PYTHON_CFLAGS='-I/usr/include/python2.6'
 ])
 
+AC_ARG_ENABLE([dupcheck-fingerprint],
+        AS_HELP_STRING([--enable-dupcheck-fingerprint], [enable function fingerprinting for duplicate checking (x86_64 only)]),
+        [], [enable_dupcheck_fingerprint=no])
+AC_CANONICAL_HOST
+AM_CONDITIONAL(ENABLE_DISASSEMBLY, [test "$host_cpu" = "x86_64" -a "$enable_dupcheck_fingerprint" != "no"])
+
 PKG_PROG_PKG_CONFIG
 AC_ARG_WITH([systemdsystemunitdir],
         AS_HELP_STRING([--with-systemdsystemunitdir=DIR], [Directory for systemd service files]),

@@ -13,6 +13,7 @@ bin_PROGRAMS = \
     abrt-action-analyze-oops \
     abrt-action-trim-files \
     abrt-action-generate-backtrace \
+    abrt-action-generate-core-backtrace \
     abrt-action-analyze-backtrace \
     abrt-retrace-client
 
@@ -144,6 +145,30 @@ abrt_action_generate_backtrace_CPPFLAGS = \
 abrt_action_generate_backtrace_LDADD = \
     $(LIBREPORT_LIBS) \
     ../lib/libabrt.la
+
+abrt_action_generate_core_backtrace_SOURCES = \
+    abrt-action-generate-core-backtrace.c
+abrt_action_generate_core_backtrace_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    -D_GNU_SOURCE \
+    -Wall -Wwrite-strings -Werror
+abrt_action_generate_core_backtrace_LDADD = \
+    $(LIBREPORT_LIBS) \
+    ../lib/libabrt.la
+
+if ENABLE_DISASSEMBLY
+abrt_action_generate_core_backtrace_CPPFLAGS += -DENABLE_DISASSEMBLY
+abrt_action_generate_core_backtrace_LDADD += \
+    -lelf \
+    -ldw \
+    -ldl \
+    -lbfd \
+    -lopcodes
+endif
 
 abrt_action_analyze_backtrace_SOURCES = \
     abrt-action-analyze-backtrace.c

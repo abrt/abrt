@@ -37,6 +37,9 @@ BuildRequires: asciidoc
 BuildRequires: xmlto
 BuildRequires: libreport-devel > 2.0.6
 BuildRequires: btparser-devel
+BuildRequires: elfutils-devel
+BuildRequires: elfutils-libelf-devel
+BuildRequires: binutils-devel
 
 %if %{with systemd}
 Requires: systemd-units
@@ -86,7 +89,7 @@ GTK+ wizard for convenient bug reporting.
 %package addon-ccpp
 Summary: %{name}'s C/C++ addon
 Group: System Environment/Libraries
-Requires: elfutils, cpio
+Requires: elfutils, elfutils-libelf, elfutils-libs, cpio
 Requires: %{name} = %{version}-%{release}
 
 %description addon-ccpp
@@ -444,6 +447,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-action-analyze-core
 %{_bindir}/abrt-action-install-debuginfo
 %{_bindir}/abrt-action-generate-backtrace
+%{_bindir}/abrt-action-generate-core-backtrace
 %{_bindir}/abrt-action-analyze-backtrace
 %{_bindir}/abrt-action-list-dsos
 %{_sbindir}/abrt-install-ccpp-hook
