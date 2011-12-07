@@ -288,9 +288,9 @@ class DebugInfoDownload(YumBase):
 	    print _("Can't find packages for {0} debuginfo files").format(len(not_found))
 	if verbose != 0 or total_pkgs != 0:
 	    print _("Packages to download: {0}").format(total_pkgs)
-	    question = _("Downloading {0:.2}Mb, installed size: {1:.2}Mb. Continue?").format(
-	                 todownload_size / (1024**2),
-	                 installed_size / (1024**2)
+	    question = _("Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?").format(
+	                 todownload_size / (1024*1024),
+	                 installed_size / (1024*1024)
 	                )
 	    if noninteractive == False and not reportclient.ask_yes_no(question):
 	        print _("Download cancelled by user")
