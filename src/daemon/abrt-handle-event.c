@@ -217,6 +217,12 @@ static void dup_uuid_init(const struct dump_dir *dd)
     if (uuid)
         return; /* we already checked it, don't do it again */
 
+    /* don't do uuid-based check on crashes that have backtrace available
+     * XXX: this relies on the fact that backtrace is created in the same event as UUID
+     */
+    if (dd_exist(dd, FILENAME_CORE_BACKTRACE))
+        return;
+
     uuid = dd_load_text_ext(dd, FILENAME_UUID,
                             DD_FAIL_QUIETLY_ENOENT + DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
     );
@@ -448,15 +454,6 @@ int main(int argc, char **argv)
             /* No. Was there error on one of processing steps in run_event? */
             if (r != 0)
                 return r; /* yes */
-
-            /* Was uuid created after all? (In this case, is_crash_a_dup()
-             * should have fetched it and created uuid)
-             */
-            if (post_create && !uuid)
-            {
-                /* no */
-                error_msg_and_die("Problem directory '%s' has no UUID element", dump_dir_name);
-            }
         }
         else
         {
