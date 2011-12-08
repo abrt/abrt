@@ -137,18 +137,26 @@ Provides: gnome-python2-bugbuddy
 This package contains python hook and python analyzer plugin for handling
 uncaught exception in python programs.
 
-%package cli
+%package tui
 Summary: %{name}'s command line interface
 Group: User Interface/Desktops
+
+%description tui
+This package contains simple command line client for processing abrt reports in
+command line environment
+
+%package cli
+Summary: Virtual package to install all necessary packages for usage from command line environment
+Group: Applications/System
 Requires: %{name} = %{version}-%{release}
+Requires: abrt-tui
 Requires: libreport-cli
 Requires: abrt-addon-kerneloops
 Requires: abrt-addon-ccpp, abrt-addon-python
 Requires: libreport-plugin-bugzilla, libreport-plugin-logger
 
 %description cli
-This package contains simple command line client for controlling abrt daemon over
-the sockets.
+Virtual package to make easy default installation on non-graphical environments.
 
 %package desktop
 Summary: Virtual package to install all necessary packages for usage from desktop environment
@@ -495,6 +503,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{python_site}/abrt.pth
 
 %files cli
+%defattr(-,root,root,-)
+
+%files tui
 %defattr(-,root,root,-)
 %{_bindir}/abrt-cli
 %{_mandir}/man1/abrt-cli.1.gz
