@@ -349,18 +349,18 @@ class DebugInfoDownload(YumBase):
             except OSError:
                 error_msg(_("Can't remove %s, probably contains an error log").format(self.tmpdir))
 
-def build_ids_to_path(build_ids):
+def build_ids_to_path(pfx, build_ids):
     """
     build_id1=${build_id:0:2}
     build_id2=${build_id:2}
     file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
     """
-    return ["/usr/lib/debug/.build-id/%s/%s.debug" % (b_id[:2], b_id[2:]) for b_id in build_ids]
+    return ["%s/usr/lib/debug/.build-id/%s/%s.debug" % (pfx, b_id[:2], b_id[2:]) for b_id in build_ids]
 
 # beware this finds only missing libraries, but not the executable itself ..
 
 def filter_installed_debuginfos(build_ids, cache_dirs):
-    files = build_ids_to_path(build_ids)
+    files = build_ids_to_path("", build_ids)
     missing = []
 
     # 1st pass -> search in /usr/lib
@@ -541,8 +541,10 @@ if __name__ == "__main__":
     try:
         pid = os.fork()
         if pid == 0:
-            log1("abrt-action-trim-files -f %um:%s", size_mb, cachedirs[0]);
-            os.execlp("abrt-action-trim-files", "abrt-action-trim-files", "-f", "%um:%s" % (size_mb, cachedirs[0]));
+            argv = ["abrt-action-trim-files", "-f", "%um:%s" % (size_mb, cachedirs[0]), "--"]
+            argv.extend(build_ids_to_path(cachedirs[0], b_ids))
+            log2("abrt-action-trim-files %s", argv);
+            os.execvp("abrt-action-trim-files", argv);
         if pid > 0:
             os.waitpid(pid, 0);
     except Exception, e:

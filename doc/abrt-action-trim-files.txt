@@ -8,7 +8,7 @@ in specified directories until they are smaller than specified size.
 
 SYNOPSIS
 --------
-'abrt-action-trim-files' [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]
+'abrt-action-trim-files' [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...
 
 OPTIONS
 -------
@@ -24,6 +24,9 @@ OPTIONS
 
 -p DIR::
    Preserve DIR (never consider it for deletion)
+
+FILE::
+   Preserve FILE (never consider it for deletion)
 
 AUTHORS
 -------
