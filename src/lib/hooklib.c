@@ -33,16 +33,16 @@ void check_free_space(unsigned setting_MaxCrashReportsSize, const char *dump_loc
     unsigned long fs_free_mb_x4 = ((unsigned long long)vfs.f_bfree / (1024/4)) * vfs.f_bsize / 1024;
     if (fs_free_mb_x4 < setting_MaxCrashReportsSize)
     {
-        error_msg_and_die("aborting dump: only %luMiB is available on %s",
+        error_msg_and_die("Aborting dump: only %luMiB is available on %s",
                           fs_free_mb_x4 / 4, dump_location);
     }
 }
 
 /* rhbz#539551: "abrt going crazy when crashing process is respawned".
- * Check total size of dump dir, if it overflows,
- * delete oldest/biggest dumps.
+ * Check total size of problem dirs, if it overflows,
+ * delete oldest/biggest dirs.
  */
-void trim_debug_dumps(const char *dirname, double cap_size, const char *exclude_path)
+void trim_problem_dirs(const char *dirname, double cap_size, const char *exclude_path)
 {
     const char *excluded_basename = NULL;
     if (exclude_path)
@@ -63,16 +63,16 @@ void trim_debug_dumps(const char *dirname, double cap_size, const char *exclude_
     int count = 20;
     while (--count >= 0)
     {
-        /* We exclude our own dump from candidates for deletion (3rd param): */
+        /* We exclude our own dir from candidates for deletion (3rd param): */
         char *worst_basename = NULL;
         double cur_size = get_dirsize_find_largest_dir(dirname, &worst_basename, excluded_basename);
         if (cur_size <= cap_size || !worst_basename)
         {
-            VERB2 log("cur_size:%f cap_size:%f, no (more) trimming", cur_size, cap_size);
+            VERB2 log("cur_size:%.0f cap_size:%.0f, no (more) trimming", cur_size, cap_size);
             free(worst_basename);
             break;
         }
-        log("%s is %.0f bytes (more than %.0f MB), deleting '%s'",
+        log("%s is %.0f bytes (more than %.0fMiB), deleting '%s'",
                 dirname, cur_size, cap_size / (1024*1024), worst_basename);
         char *d = concat_path_file(dirname, worst_basename);
         free(worst_basename);

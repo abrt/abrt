@@ -150,7 +150,7 @@ class MyDownloadCallback(DownloadBaseCallback):
                 #print (_("Downloading (%i of %i) %s: %3u%%")
                 #        % (self.downloaded_pkgs + 1, self.total_pkgs, name, pct)
                 #)
-                print (_("Downloading ({0} of {1}) {2}: {3:3}").format(
+                print (_("Downloading ({0} of {1}) {2}: {3:3}%").format(
                         self.downloaded_pkgs + 1, self.total_pkgs, name, pct
                         )
                 )
@@ -161,7 +161,7 @@ class MyDownloadCallback(DownloadBaseCallback):
                 self.last_time = t
             # update only every 5 seconds
             if pct == 100 or self.last_time > t or t - self.last_time >= 5:
-                print (_("Downloading ({0} of {1}) {2}: {3:3}").format(
+                print (_("Downloading ({0} of {1}) {2}: {3:3}%").format(
                         self.downloaded_pkgs + 1, self.total_pkgs, name, pct
                         )
                 )

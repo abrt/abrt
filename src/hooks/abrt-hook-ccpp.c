@@ -711,7 +711,7 @@ int main(int argc, char** argv)
              */
             unsigned maxsize = g_settings_nMaxCrashReportsSize + g_settings_nMaxCrashReportsSize / 4;
             maxsize |= 63;
-            trim_debug_dumps(g_settings_dump_location, maxsize * (double)(1024*1024), path);
+            trim_problem_dirs(g_settings_dump_location, maxsize * (double)(1024*1024), path);
         }
 
         return 0;

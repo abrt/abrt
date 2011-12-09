@@ -108,7 +108,7 @@ static void delete_dirs(gpointer data, gpointer exclude_path)
     double cap_size;
     const char *dir = parse_size_pfx(&cap_size, data);
 
-    trim_debug_dumps(dir, cap_size, exclude_path);
+    trim_problem_dirs(dir, cap_size, exclude_path);
 }
 
 static void delete_files(gpointer data, gpointer user_data_unused)
@@ -124,7 +124,7 @@ static void delete_files(gpointer data, gpointer user_data_unused)
         double cur_size = get_dir_size(dir, &worst_file, &worst_file_size);
         if (cur_size <= cap_size)
         {
-            VERB2 log("cur_size:%f cap_size:%f, no (more) trimming", cur_size, cap_size);
+            VERB2 log("cur_size:%.0f cap_size:%.0f, no (more) trimming", cur_size, cap_size);
             free(worst_file);
             break;
         }
@@ -148,7 +148,7 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
         "\n"
-        "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
+        "Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
     );
     enum {
         OPT_v = 1 << 0,

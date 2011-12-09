@@ -153,7 +153,7 @@ static int create_debug_dump()
         unsigned maxsize = g_settings_nMaxCrashReportsSize + g_settings_nMaxCrashReportsSize / 4;
         maxsize |= 63;
         check_free_space(maxsize, g_settings_dump_location);
-        trim_debug_dumps(g_settings_dump_location, maxsize * (double)(1024*1024), path);
+        trim_problem_dirs(g_settings_dump_location, maxsize * (double)(1024*1024), path);
     }
     free_abrt_conf_data();
 
