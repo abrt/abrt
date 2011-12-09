@@ -169,6 +169,7 @@ static void dumpsocket_init()
 
     socket_channel = g_io_channel_unix_new(socketfd);
     g_io_channel_set_close_on_unref(socket_channel, TRUE);
+
     socket_channel_cb_id = add_watch_or_die(socket_channel, G_IO_IN | G_IO_PRI, server_socket_cb);
 }
 
@@ -394,14 +395,6 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
     errno = 0;
     gsize len;
     GError *gerror = NULL;
-    g_io_channel_set_encoding(gio, NULL, &gerror);
-    /* need to set the encoding otherwise we get:
-     * Invalid byte sequence in conversion input
-     * according to manual "NULL" is safe for binary data
-    */
-    if (gerror)
-        perror_msg("Can't set encoding on gio channel: '%s'", gerror->message);
-
     GIOStatus err = g_io_channel_read_chars(gio, buf, inotify_bytes, &len, &gerror);
     if (err != G_IO_STATUS_NORMAL)
     {
@@ -774,6 +767,16 @@ int main(int argc, char** argv)
     }
     VERB1 log("Adding inotify watch to glib main loop");
     channel_inotify = g_io_channel_unix_new(inotify_fd);
+
+    GError *gerror = NULL;
+    g_io_channel_set_encoding(channel_inotify, NULL, &gerror);
+    /* need to set the encoding otherwise we get:
+     * Invalid byte sequence in conversion input
+     * according to manual "NULL" is safe for binary data
+    */
+    if (gerror)
+        perror_msg("Can't set encoding on gio channel: '%s'", gerror->message);
+
     channel_inotify_event_id = g_io_add_watch(channel_inotify,
                                               G_IO_IN,
                                               handle_inotify_cb,
