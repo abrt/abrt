@@ -244,9 +244,6 @@ next_line:
             else if (strstr(curline, "IRQ handler type mismatch"))
                 oopsstart = i;
 
-            if (i >= 3 && strstr(curline, "Oops:"))
-                oopsstart = i-3;
-
             if (oopsstart >= 0)
             {
                 /* debug information */
