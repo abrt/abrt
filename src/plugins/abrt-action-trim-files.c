@@ -69,7 +69,7 @@ static GList *insert_name_and_sizes(GList *list, const char *name, double wsa, o
 
 static double get_dir_size(const char *dirname,
                 GList **pp_worst_file_list,
-                char **preserve_list
+                GList *preserve_files_list
 ) {
     DIR *dp = opendir(dirname);
     if (!dp)
@@ -91,10 +91,10 @@ static double get_dir_size(const char *dirname,
 
         if (S_ISDIR(stats.st_mode))
         {
-            double sz = get_dir_size(fullname, pp_worst_file_list, preserve_list);
+            double sz = get_dir_size(fullname, pp_worst_file_list, preserve_files_list);
             size += sz;
         }
-        else if (S_ISREG(stats.st_mode))
+        else if (S_ISREG(stats.st_mode) || S_ISLNK(stats.st_mode))
         {
             double sz = stats.st_size;
             /* Account for filename and inode storage (approximately).
@@ -105,16 +105,13 @@ static double get_dir_size(const char *dirname,
 
             if (pp_worst_file_list)
             {
-                if (preserve_list)
+                GList *cur = preserve_files_list;
+                while (cur)
                 {
-                    char **pp = preserve_list;
-                    while (*pp)
-                    {
-                        //log("'%s' ? '%s'", fullname, *pp);
-                        if (strcmp(fullname, *pp) == 0)
-                            goto next;
-                        pp++;
-                    }
+                    //log("'%s' ? '%s'", fullname, *pp);
+                    if (strcmp(fullname, (char*)cur->data) == 0)
+                        goto next;
+                    cur = cur->next;
                 }
 
                 /* Calculate "weighted" size and age
@@ -172,13 +169,13 @@ static void delete_files(gpointer data, gpointer void_preserve_list)
 {
     double cap_size;
     const char *dir = parse_size_pfx(&cap_size, data);
-    char **preserve_list = void_preserve_list;
+    GList *preserve_files_list = void_preserve_list;
 
-    unsigned count = 20;
+    unsigned count = 100;
     while (--count != 0)
     {
         GList *worst_file_list = NULL;
-        double cur_size = get_dir_size(dir, &worst_file_list, preserve_list);
+        double cur_size = get_dir_size(dir, &worst_file_list, preserve_files_list);
 
         if (cur_size <= cap_size || !worst_file_list)
         {
@@ -244,8 +241,33 @@ int main(int argc, char **argv)
     /* We don't have children, so this is not needed: */
     //export_abrt_envvars(/*set_pfx:*/ 0);
 
+    /* Preserve not only files specified on command line, but,
+     * if they are symlinks, preserve also the real files they point to:
+     */
+    GList *preserve_files_list = NULL;
+    while (*argv)
+    {
+        char *name = *argv++;
+        /* Since we don't bother freeing preserve_files_list on exit,
+         * we take a shortcut and insert name instead of xstrdup(name)
+         * in the next line:
+         */
+        preserve_files_list = g_list_prepend(preserve_files_list, name);
+
+        char *rp = realpath(name, NULL);
+        if (rp)
+        {
+            if (strcmp(rp, name) != 0)
+                preserve_files_list = g_list_prepend(preserve_files_list, rp);
+            else
+                free(rp);
+        }
+    }
+    /* Not really necessary, but helps to reduce confusion when debugging */
+    preserve_files_list = g_list_reverse(preserve_files_list);
+
     g_list_foreach(dir_list, delete_dirs, preserve);
-    g_list_foreach(file_list, delete_files, argv);
+    g_list_foreach(file_list, delete_files, preserve_files_list);
 
     return 0;
 }
