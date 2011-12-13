@@ -1,0 +1,44 @@
+ RCU dyntick-idle grace-period acceleration is enabled.
+ RCU lockdep checking is enabled.
+NR_IRQS:2304
+Oops: efitime: can't read time!
+Console: colour dummy device 80x25
+console [tty0] enabled
+Lock dependency validator: Copyright (c) 2006 Red Hat, Inc., Ingo Molnar
+... MAX_LOCKDEP_SUBCLASSES:  8
+... MAX_LOCK_DEPTH:          48
+... MAX_LOCKDEP_KEYS:        8191
+... CLASSHASH_SIZE:          4096
+... MAX_LOCKDEP_ENTRIES:     16384
+... MAX_LOCKDEP_CHAINS:      32768
+... CHAINHASH_SIZE:          16384
+ memory used by lock dependency info: 3823 kB
+ per task-struct memory footprint: 1920 bytes
+Fast TSC calibration using PIT
+Detected 1833.207 MHz processor.
+Calibrating delay loop (skipped), value calculated using timer frequency..
+666.41 BogoMIPS (lpj=1833207)
+pid_max: default: 32768 minimum: 301
+------------[ cut here ]------------
+WARNING: at arch/x86/mm/ioremap.c:104 __ioremap_caller+0xa7/0x290()
+Hardware name: Macmini2,1
+Modules linked in:
+Pid: 0, comm: swapper Not tainted 3.0.0-1.fc16.i686 #1
+Call Trace:
+ [<c083331f>] ? printk+0x2d/0x2f
+ [<c043f040>] warn_slowpath_common+0x7c/0x91
+ [<c0421d67>] ? __ioremap_caller+0xa7/0x290
+ [<c0421d67>] ? __ioremap_caller+0xa7/0x290
+ [<c043f077>] warn_slowpath_null+0x22/0x24
+ [<c0421d67>] __ioremap_caller+0xa7/0x290
+ [<c0469064>] ? trace_hardirqs_off+0xb/0xd
+ [<c045db31>] ? local_clock+0x32/0x49
+ [<c0469534>] ? lock_release_holdtime.part.8+0x5d/0x63
+ [<c04686bc>] ? arch_local_irq_restore+0x9/0xb
+ [<c0421f82>] ioremap_cache+0x16/0x18
+ [<c0b67953>] ? efi_enter_virtual_mode+0x147/0x36f
+ [<c0b67953>] efi_enter_virtual_mode+0x147/0x36f
+ [<c0b55727>] start_kernel+0x2fd/0x376
+ [<c0b551b3>] ? loglevel+0x18/0x18
+ [<c0b550a9>] i386_start_kernel+0xa9/0xaf
+---[ end trace a7919e7f17c0a725 ]---

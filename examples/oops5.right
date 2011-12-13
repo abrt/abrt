@@ -1,0 +1,24 @@
+abrt-dump-oops: Found oopses: 1
+
+Version: 3.0.0-1.fc16.i686
+WARNING: at arch/x86/mm/ioremap.c:104 __ioremap_caller+0xa7/0x290()
+Hardware name: Macmini2,1
+Modules linked in:
+Pid: 0, comm: swapper Not tainted 3.0.0-1.fc16.i686 #1
+Call Trace:
+ [<c083331f>] ? printk+0x2d/0x2f
+ [<c043f040>] warn_slowpath_common+0x7c/0x91
+ [<c0421d67>] ? __ioremap_caller+0xa7/0x290
+ [<c0421d67>] ? __ioremap_caller+0xa7/0x290
+ [<c043f077>] warn_slowpath_null+0x22/0x24
+ [<c0421d67>] __ioremap_caller+0xa7/0x290
+ [<c0469064>] ? trace_hardirqs_off+0xb/0xd
+ [<c045db31>] ? local_clock+0x32/0x49
+ [<c0469534>] ? lock_release_holdtime.part.8+0x5d/0x63
+ [<c04686bc>] ? arch_local_irq_restore+0x9/0xb
+ [<c0421f82>] ioremap_cache+0x16/0x18
+ [<c0b67953>] ? efi_enter_virtual_mode+0x147/0x36f
+ [<c0b67953>] efi_enter_virtual_mode+0x147/0x36f
+ [<c0b55727>] start_kernel+0x2fd/0x376
+ [<c0b551b3>] ? loglevel+0x18/0x18
+ [<c0b550a9>] i386_start_kernel+0xa9/0xaf
