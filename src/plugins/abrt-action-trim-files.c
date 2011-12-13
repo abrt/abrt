@@ -18,15 +18,57 @@
 */
 #include "libabrt.h"
 
-/* TODO: remember N worst files and their sizes, not just one:
- * if DIR is deep, scanning it takes *a few seconds*.
+/* We remember N worst files and their sizes, not just one:
+ * if DIR is deep, scanning it takes *a few seconds* even if it's in cache.
  * If we rescan it after each single file deletion, it can be VERY slow.
  * (I observed ~20 min long case).
  */
+#define MAX_VICTIM_LIST_SIZE 128
+
+struct name_and_size {
+    off_t size;
+    double weighted_size_and_age;
+    char name[1];
+};
+
+/* Updates a list of files sorted by increasing weighted_size_and_age.
+ */
+static GList *insert_name_and_sizes(GList *list, const char *name, double wsa, off_t sz)
+{
+    struct name_and_size *ns;
+    unsigned list_len = 0;
+    GList *cur = list;
+
+    while (cur)
+    {
+        ns = cur->data;
+        if (ns->weighted_size_and_age >= wsa)
+            break;
+        list_len++;
+        cur = cur->next;
+    }
+    list_len += g_list_length(cur);
+
+    if (cur != list || list_len < MAX_VICTIM_LIST_SIZE)
+    {
+        ns = xmalloc(sizeof(*ns) + strlen(name));
+        ns->weighted_size_and_age = wsa;
+        ns->size = sz;
+        strcpy(ns->name, name);
+        list = g_list_insert_before(list, cur, ns);
+        list_len++;
+        if (list_len > MAX_VICTIM_LIST_SIZE)
+        {
+            free(list->data);
+            list = g_list_delete_link(list, list);
+        }
+    }
+
+    return list;
+}
 
 static double get_dir_size(const char *dirname,
-                char **worst_file,
-                double *worst_file_size,
+                GList **pp_worst_file_list,
                 char **preserve_list
 ) {
     DIR *dp = opendir(dirname);
@@ -34,7 +76,7 @@ static double get_dir_size(const char *dirname,
         return 0;
 
     /* "now" is used only if caller wants to know worst_file */
-    time_t now = worst_file ? time(NULL) : 0;
+    time_t now = pp_worst_file_list ? time(NULL) : 0;
     struct dirent *dent;
     double size = 0;
     while ((dent = readdir(dp)) != NULL)
@@ -49,19 +91,19 @@ static double get_dir_size(const char *dirname,
 
         if (S_ISDIR(stats.st_mode))
         {
-            double sz = get_dir_size(fullname, worst_file, worst_file_size, preserve_list);
+            double sz = get_dir_size(fullname, pp_worst_file_list, preserve_list);
             size += sz;
         }
         else if (S_ISREG(stats.st_mode))
         {
             double sz = stats.st_size;
             /* Account for filename and inode storage (approximately).
-             * This also makes even zero-length files to have nonzero cost
+             * This also makes even zero-length files to have nonzero cost.
              */
             sz += strlen(dent->d_name) + sizeof(stats);
             size += sz;
 
-            if (worst_file)
+            if (pp_worst_file_list)
             {
                 if (preserve_list)
                 {
@@ -82,13 +124,7 @@ static double get_dir_size(const char *dirname,
                 if (age > 1)
                     sz *= age;
 
-                if (sz > *worst_file_size)
-                {
-                    *worst_file_size = sz;
-                    free(*worst_file);
-                    *worst_file = fullname;
-                    fullname = NULL;
-                }
+                *pp_worst_file_list = insert_name_and_sizes(*pp_worst_file_list, fullname, sz, stats.st_size);
             }
         }
  next:
@@ -138,23 +174,34 @@ static void delete_files(gpointer data, gpointer void_preserve_list)
     const char *dir = parse_size_pfx(&cap_size, data);
     char **preserve_list = void_preserve_list;
 
-    unsigned count = 1000;
+    unsigned count = 20;
     while (--count != 0)
     {
-        char *worst_file = NULL;
-        double worst_file_size = 0;
-        double cur_size = get_dir_size(dir, &worst_file, &worst_file_size, preserve_list);
-        if (cur_size <= cap_size || !worst_file)
+        GList *worst_file_list = NULL;
+        double cur_size = get_dir_size(dir, &worst_file_list, preserve_list);
+
+        if (cur_size <= cap_size || !worst_file_list)
         {
+            list_free_with_free(worst_file_list);
             VERB2 log("cur_size:%.0f cap_size:%.0f, no (more) trimming", cur_size, cap_size);
-            free(worst_file);
             break;
         }
-        log("%s is %.0f bytes (more than %.0f MB), deleting '%s'",
-                dir, cur_size, cap_size / (1024*1024), worst_file);
-        if (unlink(worst_file) != 0)
-            perror_msg("Can't unlink '%s'", worst_file);
-        free(worst_file);
+
+        /* Invert the list, so that largest/oldest file is first */
+        worst_file_list = g_list_reverse(worst_file_list);
+        /* And delete (some of) them */
+        while (worst_file_list && cur_size > cap_size)
+        {
+            struct name_and_size *ns = worst_file_list->data;
+            log("%s is %.0f bytes (more than %.0f MB), deleting '%s' (%llu bytes)",
+                    dir, cur_size, cap_size / (1024*1024), ns->name, (long long)ns->size);
+            if (unlink(ns->name) != 0)
+                perror_msg("Can't unlink '%s'", ns->name);
+            else
+                cur_size -= ns->size;
+            free(ns);
+            worst_file_list = g_list_delete_link(worst_file_list, worst_file_list);
+        }
     }
 }
 
