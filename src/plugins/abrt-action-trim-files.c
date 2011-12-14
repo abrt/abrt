@@ -190,7 +190,7 @@ static void delete_files(gpointer data, gpointer void_preserve_list)
         while (worst_file_list && cur_size > cap_size)
         {
             struct name_and_size *ns = worst_file_list->data;
-            log("%s is %.0f bytes (more than %.0f MB), deleting '%s' (%llu bytes)",
+            VERB1 log("%s is %.0f bytes (more than %.0f MB), deleting '%s' (%llu bytes)",
                     dir, cur_size, cap_size / (1024*1024), ns->name, (long long)ns->size);
             if (unlink(ns->name) != 0)
                 perror_msg("Can't unlink '%s'", ns->name);
@@ -214,7 +214,8 @@ int main(int argc, char **argv)
     const char *program_usage_string = _(
         "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
         "\n"
-        "Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
+        "Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
+        "FILEs are preserved (never deleted)."
     );
     enum {
         OPT_v = 1 << 0,
