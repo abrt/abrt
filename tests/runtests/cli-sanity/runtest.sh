@@ -84,7 +84,7 @@ rlJournalStart
     rlPhaseStartTest "info DIR"
         DIR=$(abrt-cli list -f | grep 'Directory' | head -n1 | awk '{ print $2 }')
         rlRun "abrt-cli info $DIR"
-        rlRun "abrt-cli info -d $DIR"
+        rlRun "abrt-cli info -d $DIR > info.out"
     rlPhaseEnd
 
     rlPhaseStartTest "info FAKEDIR"
