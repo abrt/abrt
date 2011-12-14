@@ -36,6 +36,10 @@ if grep -q 16 '/etc/fedora-release'; then
     VERS="fedora-16-x86_64"
 fi
 
+if grep -q 'Rawhide' '/etc/fedora-release'; then
+    VERS="fedora-rawhide-x86_64"
+fi
+
 MOCKCFG="/etc/mock/${VERS}.cfg"
 
 rlJournalStart
@@ -47,7 +51,7 @@ rlJournalStart
             rlFileBackup $MOCKCFG
             BACKED=1
         fi
-        cp "mock_${VERS}.cfg" $MOCKCFG
+        cp "mock_configs/mock_${VERS}.cfg" $MOCKCFG
 
         TmpDir=$(mktemp -d)
         pushd $TmpDir
