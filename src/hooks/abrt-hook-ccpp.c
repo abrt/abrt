@@ -188,8 +188,14 @@ static char* get_executable(pid_t pid, int *fd_p)
 static char* get_cwd(pid_t pid)
 {
     char buf[sizeof("/proc/%lu/cwd") + sizeof(long)*3];
-
     sprintf(buf, "/proc/%lu/cwd", (long)pid);
+    return malloc_readlink(buf);
+}
+
+static char* get_rootdir(pid_t pid)
+{
+    char buf[sizeof("/proc/%lu/root") + sizeof(long)*3];
+    sprintf(buf, "/proc/%lu/root", (long)pid);
     return malloc_readlink(buf);
 }
 
@@ -595,6 +601,13 @@ int main(int argc, char** argv)
         dd_save_text(dd, FILENAME_PID, pid_str);
         if (user_pwd)
             dd_save_text(dd, FILENAME_PWD, user_pwd);
+        char *rootdir = get_rootdir(pid);
+        if (rootdir)
+        {
+            if (strcmp(rootdir, "/") != 0)
+                dd_save_text(dd, FILENAME_ROOTDIR, rootdir);
+            free(rootdir);
+        }
 
         char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)",
                                  executable, signal_str, signame ? signame : signal_str);
