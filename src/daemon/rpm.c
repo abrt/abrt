@@ -38,11 +38,11 @@ char* get_package_name_from_NVR_or_NULL(const char* packageNVR)
         char *pos = strrchr(package_name, '-');
         if (pos != NULL)
         {
-            *pos = 0;
+            *pos = '\0';
             pos = strrchr(package_name, '-');
             if (pos != NULL)
             {
-                *pos = 0;
+                *pos = '\0';
             }
         }
     }
@@ -51,16 +51,12 @@ char* get_package_name_from_NVR_or_NULL(const char* packageNVR)
 
 void rpm_init()
 {
-    int status = rpmReadConfigFiles((const char*)NULL, (const char*)NULL);
-    if (status != 0)
-        error_msg("error reading rc files");
+    if (rpmReadConfigFiles(NULL, NULL) != 0)
+        error_msg("Can't read RPM rc files");
 
+    list_free_with_free(list_fingerprints); /* paranoia */
+    /* Huh? Why do we start the list with an element with NULL string? */
     list_fingerprints = g_list_alloc();
-}
-
-static void list_free(gpointer data, gpointer user_data)
-{
-    free(data);
 }
 
 void rpm_destroy()
@@ -69,8 +65,8 @@ void rpm_destroy()
     rpmFreeCrypto();
     rpmFreeMacros(NULL);
 
-    g_list_foreach(list_fingerprints, list_free, NULL);
-    g_list_free(list_fingerprints);
+    list_free_with_free(list_fingerprints);
+    list_fingerprints = NULL;
 }
 
 void rpm_load_gpgkey(const char* filename)

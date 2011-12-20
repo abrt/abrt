@@ -102,7 +102,8 @@ int main(int argc, char **argv)
         return 1;
 
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
-    char *package = dd_load_text(dd, FILENAME_PACKAGE);
+    /* FILENAME_PACKAGE may be missing if ProcessUnpackaged = yes... */
+    char *package = dd_load_text_ext(dd, FILENAME_PACKAGE, DD_FAIL_QUIETLY_ENOENT);
     /* Package variable has "firefox-3.5.6-1.fc11[.1]" format */
     /* Remove distro suffix and maybe least significant version number */
     char *p = package;
