@@ -64,15 +64,15 @@ int rpm_chk_fingerprint(const char* pkg);
  * @param filename A file name.
  * @return A package name (malloc'ed string)
  */
-char* rpm_get_package_nvr(const char* filename);
+char* rpm_get_package_nvr(const char *filename, const char *rootdir_or_NULL);
 /**
  * Finds a main package for given file. This package contains particular
  * file. If the file doesn't belong to any package, empty string is
  * returned.
  * @param filename A file name.
- * @return a malloc'ed package name. Need to be freed.
+ * @return Component name (malloc'ed string)
  */
-char* rpm_get_component(const char* filename);
+char* rpm_get_component(const char *filename, const char *rootdir_or_NULL);
 
 char* get_package_name_from_NVR_or_NULL(const char* packageNVR);
 

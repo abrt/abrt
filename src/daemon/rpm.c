@@ -166,18 +166,42 @@ error:
 }
 */
 
-char* rpm_get_component(const char* filename)
+char* rpm_get_component(const char *filename, const char *rootdir_or_NULL)
 {
     char *ret = NULL;
     char *srpm = NULL;
+    rpmts ts;
+    rpmdbMatchIterator iter;
+    Header header;
+
+    ts = rpmtsCreate();
+    /* This loop executes once (normally) or twice (if we detect chroot) */
+    while (1)
+    {
+        iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, filename, 0);
+        header = rpmdbNextIterator(iter);
+        //log("%s: header('%s'):%p", __func__, filename, header);
+        if (header)
+            break;
+
+        if (!rootdir_or_NULL)
+            goto error;
+        unsigned len = strlen(rootdir_or_NULL);
+        if (strncmp(filename, rootdir_or_NULL, len) != 0 || filename[len] != '/')
+            goto error;
+
+        /* It is a chroot */
+        //log("%s: skipping '%s' pfx", __func__, rootdir_or_NULL);
+        rpmdbFreeIterator(iter);
+        rpmtsFree(ts);
+        ts = rpmtsCreate();
+        if (rpmtsSetRootDir(ts, rootdir_or_NULL) != 0)
+            goto error1;
+        filename += len;
+        rootdir_or_NULL = NULL;
+    }
+
     const char *errmsg = NULL;
-
-    rpmts ts = rpmtsCreate();
-    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, filename, 0);
-    Header header = rpmdbNextIterator(iter);
-    if (!header)
-        goto error;
-
     srpm = headerFormat(header, "%{SOURCERPM}", &errmsg);
     if (!srpm && errmsg)
     {
@@ -188,31 +212,56 @@ char* rpm_get_component(const char* filename)
     ret = get_package_name_from_NVR_or_NULL(srpm);
     free(srpm);
 
-error:
+ error:
     rpmdbFreeIterator(iter);
+ error1:
     rpmtsFree(ts);
     return ret;
 }
 
 // caller is responsible to free returned value
-char* rpm_get_package_nvr(const char* filename)
+char* rpm_get_package_nvr(const char *filename, const char *rootdir_or_NULL)
 {
-    char* nvr = NULL;
+    char *nvr = NULL;
+    rpmts ts;
+    rpmdbMatchIterator iter;
+    Header header;
+
+    ts = rpmtsCreate();
+    /* This loop executes once (normally) or twice (if we detect chroot) */
+    while (1)
+    {
+        iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, filename, 0);
+        header = rpmdbNextIterator(iter);
+        //log("%s: header('%s'):%p", __func__, filename, header);
+        if (header)
+            break;
+
+        if (!rootdir_or_NULL)
+            goto error;
+        unsigned len = strlen(rootdir_or_NULL);
+        if (strncmp(filename, rootdir_or_NULL, len) != 0 || filename[len] != '/')
+            goto error;
+
+        /* It is a chroot */
+        //log("%s: skipping '%s' pfx", __func__, rootdir_or_NULL);
+        rpmdbFreeIterator(iter);
+        rpmtsFree(ts);
+        ts = rpmtsCreate();
+        if (rpmtsSetRootDir(ts, rootdir_or_NULL) != 0)
+            goto error1;
+        filename += len;
+        rootdir_or_NULL = NULL;
+    }
+
     const char *errmsg = NULL;
-
-    rpmts ts = rpmtsCreate();
-    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, filename, 0);
-    Header header = rpmdbNextIterator(iter);
-
-    if (!header)
-        goto error;
-
     nvr = headerFormat(header, "%{NAME}-%{VERSION}-%{RELEASE}", &errmsg);
     if (!nvr && errmsg)
         error_msg("cannot get nvr. reason: %s", errmsg);
 
-error:
+ error:
     rpmdbFreeIterator(iter);
+ error1:
     rpmtsFree(ts);
     return nvr;
 }
