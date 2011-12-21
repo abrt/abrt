@@ -4,7 +4,7 @@
 #
 #   runtest.sh of abrt-nightly-build
 #   Description: Clone latest abrt & libreport, build, install
-#   Author: Michal Nowak <mnowak@redhat.com>
+#   Author: Michal Nowak <mnowak@redhat.com>, Richard Marko <rmarko@redhat.com>
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -41,6 +41,8 @@ if grep -q 'Rawhide' '/etc/fedora-release'; then
 fi
 
 MOCKCFG="/etc/mock/${VERS}.cfg"
+MOCKRES="/var/lib/mock/${VERS}/result"
+TARGETS="btparser libreport abrt"
 
 rlJournalStart
     rlPhaseStartSetup
@@ -52,65 +54,55 @@ rlJournalStart
             BACKED=1
         fi
         cp "mock_configs/mock_${VERS}.cfg" $MOCKCFG
+        cp local.repo /etc/yum.repos.d/
 
         TmpDir=$(mktemp -d)
         pushd $TmpDir
 
-        rlRun "git clone git://git.fedorahosted.org/libreport.git" 0 "Clone libreport.git"
-        pushd libreport/
-
-        yum -y install $( grep BuildRequires libreport.spec.in | cut -d: -f2 )
-
-        short_rev=$(git rev-parse --short HEAD)
-        rlLog "Git short rev: $short_rev"
-        yum-builddep -y --nogpgcheck libreport
-
-        # stupid workaround
-        yum reinstall -y "*docbook*"
-
-        ./autogen.sh
-        rpm --eval '%configure' | sh # ./configure
-        rlRun "make srpm"
-        rlRun "rpmbuild --rebuild libreport-*.src.rpm" 0 "Build libreport RPMs"
-        make
-        make install
-        mkdir /root/rpmbuild/RPMS/x86_64/
-        rlRun "createrepo /root/rpmbuild/RPMS/*/"
-        popd # libreport/
-
-        rlRun "git clone git://git.fedorahosted.org/abrt.git" 0 "Clone abrt.git"
-        yum-builddep -y --nogpgcheck abrt
-        rpmquery btparser-devel > /dev/null || yum install -y btparser-devel --enablerepo="updates-testing"
         /usr/sbin/useradd mock_user --groups mock --create-home
-        pushd abrt/
 
-        yum -y install $( grep BuildRequires abrt.spec.in | cut -d: -f2 )
-
-        short_rev=$(git rev-parse --short HEAD)
-        rlLog "Git short rev: $short_rev"
+        mkdir -p /root/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+        mkdir -p /root/rpmbuild/RPMS/x86_64/
+        createrepo /root/rpmbuild/RPMS/*/
+        #yum reinstall -y "*docbook*"
     rlPhaseEnd
 
-    rlPhaseStartTest "Build ABRT"
-        rlRun "./autogen.sh" 0 "ABRT autogen"
-        rlRun "rpm --eval '%configure' | sh" 0 "ABRT configure" # ./configure
-        rlRun "make srpm" 0 "ABRT make srpm"
-        cp abrt-*.src.rpm ~mock_user/abrt.src.rpm
-        rlRun "su - mock_user -c 'mock -v -r ${VERS} ~mock_user/abrt.src.rpm'" 0 "Build ABRT in Mock"
-        rlRun "yum install -y /var/lib/mock/${VERS}/result/abrt* /root/rpmbuild/RPMS/*/libreport*.rpm" 0 "Yum install ABRT & libreport"
-        pushd ../libreport/
-        rlRun "make install" 0 "Libreport make install"
-        popd
-        rlRun "make" 0 "ABRT make"
-        rlRun "make install" 0 "ABRT make install"
+    for package in $TARGETS; do
+        rlPhaseStartTest "Build $package"
+            rlRun "git clone git://git.fedorahosted.org/$package.git" 0 "Clone $package.git"
+
+            pushd $package
+            rlLog "Git short rev: $(git rev-parse --short HEAD)"
+
+            yum -y install $( grep -oP '^BuildRequires: [^\s]+' $package.spec.in | cut -d: -f2 )
+
+            rlRun "./autogen.sh" 0 "autogen"
+
+            if [ -f "$package-version" ]; then
+                rlLog "$package-version: $( cat $package-version )"
+            fi
+
+            rlRun "rpm --eval '%configure' | sh" 0 "configure"
+            rlRun "make srpm"
+            mv -f $package-*.src.rpm ~mock_user/$package.src.rpm
+            rlRun "su - mock_user -c 'mock -v -r ${VERS} ~mock_user/$package.src.rpm'" 0 "Build $package in Mock"
+            mv -f $MOCKRES/*.src.rpm /root/rpmbuild/SRPMS/
+            mv -f $MOCKRES/*.rpm /root/rpmbuild/RPMS/x86_64/
+            rlRun "createrepo /root/rpmbuild/RPMS/*/"
+            popd
+        rlPhaseEnd
+    done
+
+    rlPhaseStartTest "Install"
+        rlRun "yum -y install /root/rpmbuild/RPMS/*/*.rpm" 0 "Yum install ABRT & libreport"
         sed -i 's/OpenGPGCheck.*=.*yes/OpenGPGCheck = no/' /etc/abrt/abrt.conf
-        popd # abrt/
     rlPhaseEnd
 
     rlPhaseStartCleanup
         popd # TmpDir
-
         rm -rf $TmpDir
         userdel -r mock_user
+        rm /etc/yum.repos.d/local.repo
         if [ $BACKED -eq 1 ]; then
             rm $MOCKCFG
             rlFileRestore
