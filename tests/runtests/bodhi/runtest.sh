@@ -35,6 +35,7 @@ function fake_serve {
     echo "Serving $f on port 12345"
     { echo -ne "HTTP/1.1 200 OK\r\nContent-Length: $(wc -c < $f)\r\nContent-Type: application/json\r\n\r\n";
     cat $f; } | nc -l 12345 > request &
+    sleep 1
 }
 
 rlJournalStart
