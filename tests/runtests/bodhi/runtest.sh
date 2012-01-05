@@ -56,8 +56,8 @@ rlJournalStart
         rlAssertGrep 'package=python' request
         rlAssertGrep 'Accept: application/json' request
 
-        rlAssertGrep 'python-2.7-8.fc14.1' output
-        rlAssertGrep 'mdadm-3.2.2-13.fc16' output
+        rlAssertGrep 'python-2000.7-8.fc14.1' output
+        rlAssertGrep 'mdadm-3000.2.2-13.fc16' output
 
         # not pretty printed query
         fake_serve ugly_python_query
@@ -65,8 +65,8 @@ rlJournalStart
         rlAssertGrep 'package=python' request
         rlAssertGrep 'Accept: application/json' request
 
-        rlAssertGrep 'python-2.7-8.fc14.1' output
-        rlAssertGrep 'mdadm-3.2.2-13.fc16' output
+        rlAssertGrep 'python-2000.7-8.fc14.1' output
+        rlAssertGrep 'mdadm-3000.2.2-13.fc16' output
     rlPhaseEnd
 
     rlPhaseStartTest "empty query"
