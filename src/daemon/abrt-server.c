@@ -162,13 +162,19 @@ static int create_debug_dump()
     return 201; /* Created */
 }
 
+/* Checks if a string has certain prefix. */
+static bool starts_with(const char *str, const char *start)
+{
+    return strncmp(str, start, strlen(start)) == 0;
+}
+
 /* Remove dump dir */
 static int delete_path(const char *dump_dir_name)
 {
     /* If doesn't start with "g_settings_dump_location/"... */
     char *dump_location = xasprintf("%s/", g_settings_dump_location);
     log("%s", dump_location);
-    if (strncmp(dump_dir_name, dump_location, strlen(dump_location)) != 0
+    if (!starts_with(dump_dir_name, dump_location)
     /* or contains "/." anywhere (-> might contain ".." component) */
      || strstr(dump_dir_name + strlen(g_settings_dump_location), "/.")
     ) {
@@ -219,12 +225,6 @@ static bool printable_str(const char *str)
         str++;
     } while (*str);
     return true;
-}
-
-/* Checks if a string has certain prefix. */
-static bool starts_with(const char *str, const char *start)
-{
-    return strncmp(str, start, strlen(start)) == 0;
 }
 
 /* @returns
