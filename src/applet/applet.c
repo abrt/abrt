@@ -724,7 +724,6 @@ int main(int argc, char** argv)
   */
 #if (GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 31)
     //can't use log(), because g_verbose is not set yet
-    g_print("abrt-applet: glib < 2.31 - init threading\n");
     /* Need to be thread safe */
     g_thread_init(NULL);
     gdk_threads_init();
