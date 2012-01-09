@@ -64,7 +64,6 @@ rlJournalStart
         mkdir -p /root/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
         mkdir -p /root/rpmbuild/RPMS/x86_64/
         createrepo /root/rpmbuild/RPMS/*/
-        #yum reinstall -y "*docbook*"
     rlPhaseEnd
 
     for package in $TARGETS; do
