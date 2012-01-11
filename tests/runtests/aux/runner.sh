@@ -56,7 +56,7 @@ if [ $1 ]; then
 
     # cleanup
     if [ -x /usr/sbin/abrt-install-ccpp-hook ]; then
-        abrt-install-ccpp-hook uninstall
+        /usr/sbin/abrt-install-ccpp-hook uninstall
     fi
     pidof abrtd && killall abrtd
     pidof abrt-dump-oops && killall abrt-dump-oops
