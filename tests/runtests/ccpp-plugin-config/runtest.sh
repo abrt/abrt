@@ -51,17 +51,14 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "Disable ccpp"
-        rlFileBackup $EVENT_FILE
-
-        rlRun "rm -f $EVENT_FILE" 0 "Remove $EVENT_FILE"
+        rlRun "/usr/sbin/abrt-install-ccpp-hook uninstall" 0 "Uninstall hook"
         rlLog "Generate crash"
         sleep 3m &
         sleep 2
         kill -SIGSEGV %1
         sleep 5
         rlAssert0 "No crash recorded" $(abrt-cli list | wc -l)
-
-        rlFileRestore # EVENT_FILE
+        rlRun "/usr/sbin/abrt-install-ccpp-hook install" 0 "Restore hook"
     rlPhaseEnd
     rlPhaseStartTest "MakeCompatCore"
         rm -rf core.*
