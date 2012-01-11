@@ -30,7 +30,7 @@
 PACKAGE="abrt"
 TEST="abrt-nightly-build"
 
-if [ -f /etc/fedora-relase ]; then
+if [ -f /etc/fedora-release ]; then
     VERS="fedora-15-x86_64"
     if grep -q 16 '/etc/fedora-release'; then
         VERS="fedora-16-x86_64"
