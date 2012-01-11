@@ -17,7 +17,11 @@ if [ $1 ]; then
             if [ -x /bin/systemctl ]; then
                 /bin/systemctl restart dbus.service
             else
-                /usr/sbin/service dbus restart
+		if [ -x /usr/sbin/service ]; then
+			/usr/sbin/service dbus restart
+		else
+			/sbin/service dbus restart
+		fi
             fi
             /usr/sbin/abrtd -s
             echo "abrtd PID: $(pidof abrtd)"
