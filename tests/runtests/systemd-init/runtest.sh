@@ -36,39 +36,39 @@ SCTL="/bin/systemctl"
 
 rlJournalStart
     rlPhaseStartSetup "Prepare"
-        if [ -x $STCL ]; then
-            rlLog "systemd found"
-        else
-            rlDie "systemd not present on this system"
-        fi
         killall abrtd
         rm -rf /var/run/abrt
     rlPhaseEnd
 
-    rlPhaseStartTest "Start"
-        rlRun "$SCTL start $SERVICE" 0
-        rlRun "$SCTL status $SERVICE" 0
-        rlRun "$SCTL start $SERVICE" 0
-        rlRun "$SCTL status $SERVICE" 0
-        rlRun "$SCTL restart $SERVICE" 0
-        rlRun "$SCTL status $SERVICE" 0
-    rlPhaseEnd
+    if [ -x $SCTL ]; then
+        rlLog "systemd found"
+        rlPhaseStartTest "Start"
+            rlRun "$SCTL start $SERVICE" 0
+            rlRun "$SCTL status $SERVICE" 0
+            rlRun "$SCTL start $SERVICE" 0
+            rlRun "$SCTL status $SERVICE" 0
+            rlRun "$SCTL restart $SERVICE" 0
+            rlRun "$SCTL status $SERVICE" 0
+        rlPhaseEnd
 
-    rlPhaseStartTest "Stop"
-        rlRun "$SCTL stop $SERVICE" 0
-        sleep 3
-        rlRun "$SCTL status $SERVICE" 3
-        rlRun "$SCTL stop $SERVICE" 0
-        rlRun "$SCTL status $SERVICE" 3
-    rlPhaseEnd
+        rlPhaseStartTest "Stop"
+            rlRun "$SCTL stop $SERVICE" 0
+            sleep 3
+            rlRun "$SCTL status $SERVICE" 3
+            rlRun "$SCTL stop $SERVICE" 0
+            rlRun "$SCTL status $SERVICE" 3
+        rlPhaseEnd
 
-    rlPhaseStartTest "PID File"
-        rlRun "$SCTL start $SERVICE"
-        sleep 3
-        rlAssertExists "/var/run/abrtd.pid"
-        rlRun "kill -n 9 $(cat /var/run/abrtd.pid)" 0
-        sleep 3
-        rlRun "$SCTL status $SERVICE" 3
-    rlPhaseEnd
+        rlPhaseStartTest "PID File"
+            rlRun "$SCTL start $SERVICE"
+            sleep 3
+            rlAssertExists "/var/run/abrtd.pid"
+            rlRun "kill -n 9 $(cat /var/run/abrtd.pid)" 0
+            sleep 3
+            rlRun "$SCTL status $SERVICE" 3
+        rlPhaseEnd
+    else
+        rlLog "systemd not present"
+    fi
     rlJournalPrintText
 rlJournalEnd
