@@ -236,6 +236,7 @@ getent passwd abrt >/dev/null || useradd --system -g abrt -u %{abrt_gid_uid} -d 
 exit 0
 
 %post
+# $1 == 1 if install; 2 if upgrade
 if [ $1 -eq 1 ]; then
 %if %{with systemd}
     # Enable (but don't start) the units by default
@@ -251,31 +252,49 @@ fi
 # so 2.x fails when it tries to extract debuginfo there..
 chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 if [ $1 -eq 1 ]; then
+    # We are installing this package, we aren't upgrading it.
+    # Probably the system had old abrt, one without abrt-ccpp package.
+    # If this old abrtd was enabled, then the new package
+    # should have abrt-ccpp enabled too.
 %if %{with systemd}
-    # Enable (but don't start) the units by default
-    /bin/systemctl enable abrt-ccpp.service >/dev/null 2>&1 || :
+    if [ "`/bin/systemctl is-enabled abrtd.service`" = "enabled" ]; then
+        # Enable (but don't start) the units by default
+        /bin/systemctl enable abrt-ccpp.service >/dev/null 2>&1 || :
+    fi
 %else
-    /sbin/chkconfig --add abrt-ccpp
+    if [ "`/sbin/chkconfig abrtd`" = "enabled" ]; then
+        /sbin/chkconfig --add abrt-ccpp
+    fi
 %endif
 fi
 
 %post addon-kerneloops
 if [ $1 -eq 1 ]; then
+    # (see explanation in addon-ccpp section)
 %if %{with systemd}
-    # Enable (but don't start) the units by default
-    /bin/systemctl enable abrt-oops.service >/dev/null 2>&1 || :
+    if [ "`/bin/systemctl is-enabled abrtd.service`" = "enabled" ]; then
+        # Enable (but don't start) the units by default
+        /bin/systemctl enable abrt-oops.service >/dev/null 2>&1 || :
+    fi
 %else
-    /sbin/chkconfig --add abrt-oops
+    if [ "`/sbin/chkconfig abrtd`" = "enabled" ]; then
+        /sbin/chkconfig --add abrt-oops
+    fi
 %endif
 fi
 
 %post addon-vmcore
 if [ $1 -eq 1 ]; then
+    # (see explanation in addon-ccpp section)
 %if %{with systemd}
-    # Enable (but don't start) the units by default
-    /bin/systemctl enable abrt-vmcore.service >/dev/null 2>&1 || :
+    if [ "`/bin/systemctl is-enabled abrtd.service`" = "enabled" ]; then
+        # Enable (but don't start) the units by default
+        /bin/systemctl enable abrt-vmcore.service >/dev/null 2>&1 || :
+    fi
 %else
-    /sbin/chkconfig --add abrt-vmcore
+    if [ "`/sbin/chkconfig abrtd`" = "enabled" ]; then
+        /sbin/chkconfig --add abrt-vmcore
+    fi
 %endif
 fi
 
