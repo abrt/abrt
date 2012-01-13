@@ -324,6 +324,42 @@ static int open_user_core(uid_t uid, pid_t pid, char **percent_values)
     return user_core_fd;
 }
 
+static bool dump_fd_info(const char *dest_filename, char *source_filename, int source_base_ofs)
+{
+    FILE *fp = fopen(dest_filename, "w");
+    if (!fp)
+        return false;
+
+    unsigned fd = 0;
+    while (fd <= 99999) /* paranoia check */
+    {
+        sprintf(source_filename + source_base_ofs, "fd/%u", fd);
+        char *name = malloc_readlink(source_filename);
+        if (!name)
+            break;
+        fprintf(fp, "%u:%s\n", fd, name);
+        free(name);
+
+        sprintf(source_filename + source_base_ofs, "fdinfo/%u", fd);
+        fd++;
+        FILE *in = fopen(source_filename, "r");
+        if (!in)
+            continue;
+        char buf[128];
+        while (fgets(buf, sizeof(buf)-1, in))
+        {
+            /* in case the line is not terminated, terminate it */
+            char *eol = strchrnul(buf, '\n');
+            eol[0] = '\n';
+            eol[1] = '\0';
+            fputs(buf, fp);
+        }
+        fclose(in);
+    }
+    fclose(fp);
+    return true;
+}
+
 /* Like xopen, but on error, unlocks and deletes dd and user core */
 static int create_or_die(const char *filename)
 {
@@ -578,7 +614,7 @@ int main(int argc, char** argv)
     {
         dd_create_basic_files(dd, uid);
 
-        char source_filename[sizeof("/proc/%lu/smaps") + sizeof(long)*3];
+        char source_filename[sizeof("/proc/%lu/somewhat_long_name") + sizeof(long)*3];
         int source_base_ofs = sprintf(source_filename, "/proc/%lu/smaps", (long)pid);
         source_base_ofs -= strlen("smaps");
         char *dest_filename = concat_path_file(dd->dd_dirname, FILENAME_SMAPS);
@@ -593,6 +629,15 @@ int main(int argc, char** argv)
         strcpy(dest_base, FILENAME_MAPS);
         copy_file(source_filename, dest_filename, 0640);
         IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+
+        strcpy(source_filename + source_base_ofs, "limits");
+        strcpy(dest_base, FILENAME_LIMITS);
+        copy_file(source_filename, dest_filename, 0640);
+        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+
+        strcpy(dest_base, FILENAME_OPEN_FDS);
+        if (dump_fd_info(dest_filename, source_filename, source_base_ofs))
+            IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
 
         free(dest_filename);
 
