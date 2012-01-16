@@ -44,14 +44,14 @@ static void print_crash(problem_data_t *problem_data, int detailed)
         int show_multiline = (detailed ? MAKEDESC_SHOW_MULTILINE : 0);
         desc = make_description(problem_data,
                                 /*names_to_skip:*/ NULL,
-                                /*max_text_size:*/ CD_TEXT_ATT_SIZE,
+                                /*max_text_size:*/ CD_TEXT_ATT_SIZE_BZ,
                                 MAKEDESC_SHOW_FILES | show_multiline);
     }
     else
     {
         desc = make_description(problem_data,
                             /*names_to_skip:*/ NULL,
-                            /*max_text_size:*/ CD_TEXT_ATT_SIZE,
+                            /*max_text_size:*/ CD_TEXT_ATT_SIZE_BZ,
                             MAKEDESC_SHOW_ONLY_LIST);
     }
     fprintf(stdout, "%s", desc);
