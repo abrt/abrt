@@ -204,6 +204,13 @@ static void delete_files(gpointer data, gpointer void_preserve_list)
 
 int main(int argc, char **argv)
 {
+    /* I18n */
+    setlocale(LC_ALL, "");
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
+
     abrt_init(argv);
 
     GList *dir_list = NULL;

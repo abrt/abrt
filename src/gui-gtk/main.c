@@ -1035,14 +1035,14 @@ static void scan_dirs_and_add_to_dirlist(void)
 
 int main(int argc, char **argv)
 {
-    abrt_init(argv);
-
     /* I18n */
     setlocale(LC_ALL, "");
 #if ENABLE_NLS
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
 #endif
+
+    abrt_init(argv);
 
     /* without this the name is set to argv[0] which confuses
      * desktops which use the name to find the corresponding .desktop file

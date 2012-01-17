@@ -37,6 +37,13 @@ static void create_hash(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *pInput
 
 int main(int argc, char **argv)
 {
+    /* I18n */
+    setlocale(LC_ALL, "");
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
+
     abrt_init(argv);
 
     /* Can't keep these strings/structs static: _() doesn't support that */

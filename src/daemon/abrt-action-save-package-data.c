@@ -345,6 +345,13 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
 
 int main(int argc, char **argv)
 {
+    /* I18n */
+    setlocale(LC_ALL, "");
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
+
     abrt_init(argv);
 
     const char *dump_dir_name = ".";

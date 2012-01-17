@@ -147,6 +147,13 @@ static char *get_backtrace(struct dump_dir *dd, const char *debuginfo_dirs)
 
 int main(int argc, char **argv)
 {
+    /* I18n */
+    setlocale(LC_ALL, "");
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
+
     abrt_init(argv);
 
     char *i_opt = NULL;

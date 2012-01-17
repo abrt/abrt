@@ -627,16 +627,16 @@ static void sanitize_dump_dir_rights()
 
 int main(int argc, char** argv)
 {
-    abrt_init(argv);
-
-    int parent_pid = getpid();
-
+    /* I18n */
     setlocale(LC_ALL, "");
-
 #if ENABLE_NLS
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
 #endif
+
+    abrt_init(argv);
+
+    int parent_pid = getpid();
 
     const char *program_usage_string = _(
         "& [options]"

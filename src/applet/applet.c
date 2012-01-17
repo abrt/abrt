@@ -707,14 +707,14 @@ static void die_if_dbus_error(bool error_flag, DBusError* err, const char* msg)
 
 int main(int argc, char** argv)
 {
-    abrt_init(argv);
-
     /* I18n */
     setlocale(LC_ALL, "");
 #if ENABLE_NLS
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
 #endif
+
+    abrt_init(argv);
 
   /* Glib 2.31:
     * Major changes to threading and synchronisation

@@ -443,6 +443,13 @@ static void dummy_handler(int sig_unused) {}
 
 int main(int argc, char **argv)
 {
+    /* I18n */
+    setlocale(LC_ALL, "");
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
+
     abrt_init(argv);
 
     /* Can't keep these strings/structs static: _() doesn't support that */

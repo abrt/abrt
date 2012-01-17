@@ -118,8 +118,6 @@ static void handle_internal_command(int argc, const char **argv,
 
 int main(int argc, const char **argv)
 {
-    abrt_init((char **)argv);
-
     setlocale(LC_ALL, "");
     /* Hack:
      * Right-to-left scripts don't work properly in many terminals.
@@ -133,6 +131,8 @@ int main(int argc, const char **argv)
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
 #endif
+
+    abrt_init((char **)argv);
 
     argv++;
     argc--;
