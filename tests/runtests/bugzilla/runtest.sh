@@ -2,8 +2,8 @@
 # vim: dict=/usr/share/beakerlib/dictionary.vim cpt=.,w,b,u,t,i,k
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-#   runtest.sh of reporter-bugzilla
-#   Description: Tests reporter-bugzilla
+#   runtest.sh of bugzilla-dupe-search
+#   Description: Tests reporter-bugzilla duplicate search
 #   Author: Jiri Moskovcak <jmoskovc@redhat.com>
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -55,8 +55,8 @@ rlJournalStart
 
     rlPhaseStartCleanup
         rlRun "popd"
-        #rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
         rlRun "rm -r $AVCPROBLEMDIR/reported_to" 0 "Removing reported_to"
+        rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd
