@@ -25,6 +25,7 @@
 
 /* TODO: add --pager(default) and --no-pager */
 
+#define CMD(NAME, help) { #NAME, cmd_##NAME , (help) }
 struct cmd_struct {
     const char *cmd;
     int (*fn)(int, const char **);
@@ -142,10 +143,10 @@ int main(int argc, const char **argv)
         );
 
     const struct cmd_struct commands[] = {
-        {"list", cmd_list, _("List not yet reported problems [in DIRs]")},
-        {"rm", cmd_rm, _("Remove problem directory DIR")},
-        {"report", cmd_report, _("Analyze and report problem data in DIR")},
-        {"info", cmd_info, _("Print information about DIR")},
+        CMD(list, _("List not yet reported problems [in DIRs]")),
+        CMD(rm, _("Remove problem directory DIR")),
+        CMD(report, _("Analyze and report problem data in DIR")),
+        CMD(info, _("Print information about DIR")),
         {NULL, NULL, NULL}
     };
 
