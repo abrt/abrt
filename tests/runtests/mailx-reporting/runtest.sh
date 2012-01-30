@@ -54,8 +54,11 @@ rlJournalStart
         sleep 1m
         mailx -H -u root | tail -n1 > mail.out
         rlAssertGrep "abrt@" mail.out
+a
         rlAssertGrep "\[abrt\] crash" mail.out
+	sleep 1m
         rlLog "$(cat mail.out)"
+	rlLog "$(cat /var/log/maillog)"
     rlPhaseEnd
 
     rlPhaseStartCleanup
