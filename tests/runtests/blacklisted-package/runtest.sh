@@ -60,7 +60,9 @@ rlJournalStart
     rlPhaseStartCleanup
         rlFileRestore
         crash_PATH=$(abrt-cli list -f | grep Directory | tail -n1 | awk '{ print $2 }')
-        rlRun "abrt-cli rm $crash_PATH" 0 "Delete $crash_PATH"
+        if [ ! -z "$crash_PATH"]; then
+            rlRun "abrt-cli rm $crash_PATH" 0 "Delete $crash_PATH"
+        fi
         popd #TmpDir
         rm -rf $TmpDir
     rlPhaseEnd
