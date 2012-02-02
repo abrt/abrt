@@ -180,7 +180,7 @@ Requires: gdb >= 7.0-3
 Requires: abrt-gui
 Requires: libreport-plugin-logger, libreport-plugin-bugzilla
 #Requires: abrt-plugin-firefox
-%if 0%{?rhel} >= 6
+%if 0%{?fedora}
 Requires: libreport-plugin-bodhi
 %endif
 Obsoletes: bug-buddy > 0.0.1
