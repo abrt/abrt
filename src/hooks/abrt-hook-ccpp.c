@@ -617,7 +617,7 @@ int main(int argc, char** argv)
         char source_filename[sizeof("/proc/%lu/somewhat_long_name") + sizeof(long)*3];
         int source_base_ofs = sprintf(source_filename, "/proc/%lu/smaps", (long)pid);
         source_base_ofs -= strlen("smaps");
-        char *dest_filename = concat_path_file(dd->dd_dirname, FILENAME_SMAPS);
+        char *dest_filename = concat_path_file(dd->dd_dirname, "also_somewhat_longish_name");
         char *dest_base = strrchr(dest_filename, '/') + 1;
 
         // Disabled for now: /proc/PID/smaps tends to be BIG,
