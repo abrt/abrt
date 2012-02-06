@@ -22,6 +22,10 @@
 #include <sys/utsname.h>
 #include "libabrt.h"
 
+#define  DUMP_SUID_UNSAFE 1
+#define  DUMP_SUID_SAFE 2
+
+
 /* I want to use -Werror, but gcc-4.4 throws a curveball:
  * "warning: ignoring return value of 'ftruncate', declared with attribute warn_unused_result"
  * and (void) cast is not enough to shut it up! Oh God...
@@ -199,7 +203,63 @@ static char* get_rootdir(pid_t pid)
     return malloc_readlink(buf);
 }
 
-static int open_user_core(uid_t uid, pid_t pid, char **percent_values)
+static int get_fsuid(pid_t pid)
+{
+    char filename[sizeof("/proc/%lu/status") + sizeof(long)*3];
+    sprintf(filename, "/proc/%lu/status", (long)pid);
+    int real, euid, saved, fs_uid = 0; //if we fail to parse the uid, then make it root only readable to be safe
+    FILE *file = fopen(filename, "r");
+
+    if (!file)
+        /* rather bail out than create core with wrong permission */
+        perror_msg_and_die("Can't open %s", filename);
+
+    char line[128];
+    while (fgets(line, sizeof(line), file) != NULL)
+    {
+        if (strncmp(line, "Uid", 3) == 0)
+        {
+            int n = sscanf(line, "Uid:\t%d\t%d\t%d\t%d\n",&real, &euid, &saved, &fs_uid);
+            if (n != 4)
+            {
+                perror_msg_and_die("Can't parse %s", filename);
+            }
+            break;
+        }
+    }
+    fclose(file);
+
+    return fs_uid;
+}
+
+static int dump_suid_policy()
+{
+    /*
+     - values are:
+       0 - don't dump suided programs - in this case the hook is not called by kernel
+       1 - create coredump readable by fs_uid
+       2 - create coredump readable by root only
+    */
+    int c;
+    int suid_dump_policy = 0;
+    const char *filename = "/proc/sys/fs/suid_dumpable";
+    FILE *f  = fopen(filename, "r");
+    if (!f)
+    {
+        log("Can't open %s", filename);
+        return suid_dump_policy;
+    }
+
+    c = fgetc(f);
+    fclose(f);
+    if (c != EOF)
+        suid_dump_policy = c - '0';
+
+    //log("suid dump policy is: %i", suid_dump_policy);
+    return suid_dump_policy;
+}
+
+static int open_user_core(uid_t uid, uid_t fsuid, pid_t pid, char **percent_values)
 {
     errno = 0;
     if (user_pwd == NULL
@@ -211,8 +271,9 @@ static int open_user_core(uid_t uid, pid_t pid, char **percent_values)
 
     struct passwd* pw = getpwuid(uid);
     gid_t gid = pw ? pw->pw_gid : uid;
+    //log("setting uid: %i gid: %i", uid, gid);
     xsetegid(gid);
-    xseteuid(uid);
+    xseteuid(fsuid);
 
     if (strcmp(core_basename, "core") == 0)
     {
@@ -311,7 +372,7 @@ static int open_user_core(uid_t uid, pid_t pid, char **percent_values)
      || sb.st_nlink != 1
     /* kernel internal dumper checks this too: if (inode->i_uid != current->fsuid) <fail>, need to mimic? */
     ) {
-        perror_msg("%s/%s is not a regular file with link count 1", user_pwd, core_basename);
+        perror_msg("%s/%s fd(%i) is not a regular file with link count 1", user_pwd, core_basename, user_core_fd);
         return -1;
     }
     if (ftruncate(user_core_fd, 0) != 0) {
@@ -494,10 +555,23 @@ int main(int argc, char** argv)
         src_fd_binary = -1;
     }
 
+    uid_t fsuid = uid;
+    uid_t tmp_fsuid = get_fsuid(pid);
+    int suid_policy = dump_suid_policy();
+    if (tmp_fsuid != uid)
+    {
+        /* use root for suided apps unless it's explicitly set to UNSAFE */
+        fsuid = 0;
+        if (suid_policy == DUMP_SUID_UNSAFE)
+        {
+            fsuid = tmp_fsuid;
+        }
+    }
+
     /* Open a fd to compat coredump, if requested and is possible */
     if (setting_MakeCompatCore && ulimit_c != 0)
         /* note: checks "user_pwd == NULL" inside; updates core_basename */
-        user_core_fd = open_user_core(uid, pid, &argv[1]);
+        user_core_fd = open_user_core(uid, fsuid, pid, &argv[1]);
 
     if (executable == NULL)
     {
@@ -589,7 +663,7 @@ int main(int argc, char** argv)
          * Unlike dirs, mere files are ignored by abrtd.
          */
         snprintf(path, sizeof(path), "%s/%s-coredump", g_settings_dump_location, last_slash);
-        int abrt_core_fd = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        int abrt_core_fd = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0600);
         off_t core_size = copyfd_eof(STDIN_FILENO, abrt_core_fd, COPYFD_SPARSE);
         if (core_size < 0 || fsync(abrt_core_fd) != 0)
         {
@@ -609,10 +683,14 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    dd = dd_create(path, uid, 0640);
+
+    /* use fsuid instead of uid, so we don't expose any sensitive
+     * information of suided app in /var/spool/abrt
+     */
+    dd = dd_create(path, fsuid, 0640);
     if (dd)
     {
-        dd_create_basic_files(dd, uid);
+        dd_create_basic_files(dd, fsuid);
 
         char source_filename[sizeof("/proc/%lu/somewhat_long_name") + sizeof(long)*3];
         int source_base_ofs = sprintf(source_filename, "/proc/%lu/smaps", (long)pid);
