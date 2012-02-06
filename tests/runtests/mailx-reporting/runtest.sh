@@ -58,7 +58,8 @@ rlJournalStart
 	sleep 1m
         rlLog "$(cat mail.out)"
 	rlLog "$(cat /var/log/maillog)"
-	rlRun "ausearch -ts recent -m avc"
+	rlLog "$(ausearch -ts recent -m avc)"
+	rlLog "$(cat /var/log/procmaillog)"
     rlPhaseEnd
 
     rlPhaseStartCleanup
