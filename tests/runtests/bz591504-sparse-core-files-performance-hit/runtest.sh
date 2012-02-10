@@ -36,7 +36,11 @@ rlJournalStart
         TmpDir=$(mktemp -d)
         pushd $TmpDir
         rlRun "yumdownloader --source gdb" 0 "Download gdb sources"
-        rlRun "yum-builddep -y gdb-*.src.rpm" 0 "Fetch gdb dependencies"
+
+        # deps. explicitly listed in kickstart due to yum-builddep in RHEL
+        # not able to parse deps from spec file inside the package causing
+        # architecure mismatch. safe for fedora
+        #rlRun "yum-builddep -y gdb-*.src.rpm" 0 "Fetch gdb dependencies"
         rlRun "rpm -ivh gdb-*.src.rpm" 0 "Install gdb sources"
         specfile="$(rpm --eval '%_specdir')/gdb.spec"
         rlRun "rpmbuild -bp $specfile" 0 "Unpack and patch"
