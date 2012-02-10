@@ -2,7 +2,7 @@
 # vim: dict=/usr/share/beakerlib/dictionary.vim cpt=.,w,b,u,t,i,k
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-#   runtest.sh of abrt-ccpp-plugin
+#   runtest.sh of bz783450-setuid-core-owned-by-root
 #   Description: Tests ccpp-plugin on suided app
 #   Author: Jiri Moskovcak <jmoskovc@redhat.com>
 #
@@ -28,7 +28,7 @@
 
 . /usr/share/beakerlib/beakerlib.sh
 
-TEST="setuided core"
+TEST="bz783450-setuid-core-owned-by-root"
 PACKAGE="abrt"
 SUIDEDEXE="suidedexecutable"
 
