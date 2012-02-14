@@ -48,10 +48,15 @@ static void hash_oops_str(char hash_str[SHA1_RESULT_LEN*2 + 1], char *oops_buf, 
 
             end_mem_block = skip_whitespace(end_mem_block);
 
-            /* +1 for '?' and +1 for space after '?' == +2*/
+            /* skip symbols prefixed with ? */
             if (end_mem_block && *end_mem_block == '?')
-                end_mem_block += 2;
+            {
+                call_trace += end_line - call_trace + 1;
+                end_line = strchr(call_trace, '\n');
 
+                free(line);
+                continue;
+            }
             /* strip out offset +off/len */
             char *begin_off_len = strchr(end_mem_block, '+');
             if (!begin_off_len)
