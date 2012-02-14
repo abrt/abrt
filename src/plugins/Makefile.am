@@ -15,7 +15,8 @@ bin_PROGRAMS = \
     abrt-action-generate-backtrace \
     abrt-action-generate-core-backtrace \
     abrt-action-analyze-backtrace \
-    abrt-retrace-client
+    abrt-retrace-client \
+    abrt-dedup-client
 
 libexec_PROGRAMS = abrt-action-install-debuginfo-to-abrt-cache
 
@@ -208,6 +209,22 @@ abrt_retrace_client_SOURCES = \
      $(LIBREPORT_CFLAGS) \
      -Wall -Wwrite-strings -Werror
  abrt_retrace_client_LDADD = \
+     $(LIBREPORT_LIBS) \
+     $(BTPARSER_LIBS) \
+     $(NSS_LIBS)
+
+abrt_dedup_client_SOURCES = \
+    abrt-dedup-client.c \
+    https-utils.c
+ abrt_dedup_client_CFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+     $(NSS_CFLAGS) \
+     $(GLIB_CFLAGS) \
+     -D_GNU_SOURCE \
+     $(LIBREPORT_CFLAGS) \
+     -Wall -Wwrite-strings -Werror
+ abrt_dedup_client_LDADD = \
      $(LIBREPORT_LIBS) \
      $(BTPARSER_LIBS) \
      $(NSS_LIBS)

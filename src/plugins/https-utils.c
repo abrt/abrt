@@ -361,6 +361,44 @@ char *tcp_read_response(PRFileDesc *tcp_sock)
     return strbuf_free_nobuf(strbuf);
 }
 
+/**
+ * Joins HTTP response body if the Transfer-Encoding is chunked.
+ * @param body raw HTTP response body (response without headers)
+ *             the function operates on the input, but returns it
+ *             to the initial state when done
+ * @returns Joined HTTP response body. Caller must free the value.
+*/
+char *http_join_chunked(char *body, int bodylen)
+{
+    struct strbuf *result = strbuf_new();
+    unsigned len;
+    int blen = bodylen > 0 ? bodylen : strlen(body);
+    char prevchar;
+    char *cursor = body;
+    while (cursor - body < blen)
+    {
+        if (sscanf(cursor, "%x", &len) != 1)
+            break;
+
+        /* jump to next line */
+        cursor = strchr(cursor, '\n');
+        if (!cursor)
+            error_msg_and_die(_("Malformed chunked response."));
+        ++cursor;
+
+        /* split chunk and append to result */
+        prevchar = cursor[len];
+        cursor[len] = '\0';
+        strbuf_append_str(result, cursor);
+        cursor[len] = prevchar;
+
+        /* len + strlen("\r\n") */
+        cursor += len + 2;
+    }
+
+    return strbuf_free_nobuf(result);
+}
+
 void nss_init(SECMODModule **mod, PK11GenericObject **cert)
 {
     SECStatus sec_status;
