@@ -50,10 +50,10 @@ rlJournalStart
         rlLog "Generate crash"
         rlRun "gcc loop.c -o $SUIDEDEXE"
         su abrt-suid-test -c "./$SUIDEDEXE &" &
-        sleep 2
+        sleep 10
         killpid=`pidof $SUIDEDEXE`
         rlRun "kill -SIGSEGV $killpid"
-        sleep 2
+        sleep 10
         rlRun '[ "abrt-suid-test" == $(ls -l | grep "core.$killpid" | cut -d" " -f3) ]' 0 "Checking if core is owned by abrt-suid-test"
     rlPhaseEnd
 
@@ -63,10 +63,10 @@ rlJournalStart
         rlRun "gcc loop.c -o $SUIDEDEXE"
         rlRun "chmod u+s $SUIDEDEXE"
         su abrt-suid-test -c "./$SUIDEDEXE &" &
-        sleep 2
+        sleep 10
         killpid=`pidof $SUIDEDEXE`
         rlRun "kill -SIGSEGV $killpid"
-        sleep 2
+        sleep 10
         rlRun '[ "root" == $(ls -l | grep "core.$killpid" | cut -d" " -f3) ]' 0 "Checking if core is owned by root"
     rlPhaseEnd
 
