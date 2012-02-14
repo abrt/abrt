@@ -64,7 +64,8 @@ EXTRA_DIST = \
     analyze_LocalGDB.xml.in \
     analyze_RetraceServer.xml.in \
     analyze_VMcore.xml.in \
-    abrt-action-analyze-vmcore
+    abrt-action-analyze-vmcore \
+    https-utils.h
 
 abrt_dump_oops_SOURCES = \
     abrt-dump-oops.c
@@ -196,7 +197,8 @@ abrt_action_install_debuginfo_to_abrt_cache_LDADD = \
      ../lib/libabrt.la
 
 abrt_retrace_client_SOURCES = \
-    abrt-retrace-client.c
+    abrt-retrace-client.c \
+    https-utils.c
  abrt_retrace_client_CFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
