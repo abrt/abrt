@@ -57,6 +57,8 @@ rlJournalStart
 
     rlPhaseStartTest "better backtrace"
         # bug details response has backtrace rating 3
+        echo '4' > problem_dir/backtrace_rating
+        rlLog "Local backtrace rating $( cat problem_dir/backtrace_rating )"
         ./pyserve 0* 1duplicates_response \
             2bug_details dummy dummy dummy dummy &> server_better &
         sleep 1
@@ -71,7 +73,8 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "worse backtrace"
-        echo '1' > problem_dir/backtrace_worse
+        echo '1' > problem_dir/backtrace_rating
+        rlLog "Local backtrace rating $( cat problem_dir/backtrace_rating )"
 
         ./pyserve 0* 1duplicates_response \
             2bug_details dummy dummy dummy dummy &> server_worse &
@@ -85,7 +88,8 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "equal backtrace"
-        echo '2' > problem_dir/backtrace_worse
+        echo '3' > problem_dir/backtrace_rating
+        rlLog "Local backtrace rating $( cat problem_dir/backtrace_rating )"
 
         ./pyserve 0* 1duplicates_response \
             2bug_details dummy dummy dummy dummy &> server_equal &
