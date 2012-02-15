@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Casey Jones <nahareport@yahoo.com>, 2011.
 # Hajime Taira <htaira@redhat.com>, 2010, 2011.
@@ -10,19 +10,20 @@
 # Kiyoto Hashida <khashida@redhat.com>, 2009, 2010.
 # Makoto Mizukami <makoto@fedoraporject.org>, 2010.
 # Noriko Mizumoto <noriko@fedoraproject.org>, 2010.
-#   <www.carrotsoft@gmail.com>, 2011.
+# Tomoyuki KATO <tomo@dream.daynight.jp>, 2012.
+#   <www.carrotsoft@gmail.com>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
 "POT-Creation-Date: 2011-11-03 14:38+0100\n"
-"PO-Revision-Date: 2011-10-12 17:19+0000\n"
-"Last-Translator: jmoskovc <jmoskovc@redhat.com>\n"
+"PO-Revision-Date: 2012-02-15 01:07+0000\n"
+"Last-Translator: Tomoyuki KATO <tomo@dream.daynight.jp>\n"
 "Language-Team: Japanese <trans-ja@lists.fedoraproject.org>\n"
-"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
@@ -41,14 +42,11 @@ msgstr "警告"
 #: ../src/applet/applet.c:394
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
-msgstr ""
-"ABRT によって検出された問題をユーザーに通知するための通知エリアアプレット"
+msgstr "ABRT によって検出された問題をユーザーに通知するための通知エリアアプレット"
 
 #: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:574
 msgid "translator-credits"
-msgstr ""
-"Casey Jones <nahareport@yahoo.com>\n"
-"Hajime Taira <htaira@redhat.com>"
+msgstr "Casey Jones <nahareport@yahoo.com>\nHajime Taira <htaira@redhat.com>"
 
 #: ../src/applet/applet.c:420
 msgid "Hide"
@@ -73,18 +71,18 @@ msgstr "ABRT を開く"
 #: ../src/applet/applet.c:635
 #, c-format
 msgid "A problem in the %s package has been detected"
-msgstr ""
+msgstr "パッケージ %s に問題が検出されました"
 
 #: ../src/applet/applet.c:637
 msgid "A problem has been detected"
-msgstr ""
+msgstr "問題が検出されました"
 
 #: ../src/applet/applet.c:778
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
-msgstr ""
+msgstr "& [-v] [ディレクトリ]...\n\n新しい問題がABRTによって検出された時にユーザーに通知するアプレット\n"
 
 #: ../src/applet/applet.c:850
 msgid "ABRT service is not running"
@@ -95,7 +93,7 @@ msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
-msgstr ""
+msgstr "& [-v] [-c CONFFILE] -d DIR\n\nパッケージデータベースに問い合わせ、パッケージとコンポーネント名を保存します"
 
 #: ../src/daemon/abrt-action-save-package-data.c:363
 #: ../src/plugins/abrt-action-analyze-backtrace.c:56
@@ -112,7 +110,7 @@ msgstr "設定ファイル"
 
 #: ../src/daemon/abrt-server.c:450 ../src/daemon/abrtd.c:625
 msgid "& [options]"
-msgstr ""
+msgstr "& [options]"
 
 #: ../src/daemon/abrt-server.c:461
 msgid "Use UID as client uid"
@@ -131,9 +129,7 @@ msgstr "ログするためにプログラム名を追加する"
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
-msgstr ""
-"報告のサイズが割り当てを超過しました。 abrt.conf の中で MaxCrashReportsSize "
-"の値をチェックして下さい。"
+msgstr "報告のサイズが割り当てを超過しました。 abrt.conf の中で MaxCrashReportsSize の値をチェックして下さい。"
 
 #: ../src/daemon/abrtd.c:637
 msgid "Do not daemonize"
@@ -149,11 +145,11 @@ msgstr "停止から SEC 秒後に終了"
 
 #: ../src/daemon/abrt-handle-event.c:104
 msgid "& [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
-msgstr ""
+msgstr "& [-v] -e|--event EVENT DUMP_DIR [DUMP_DIR]..."
 
 #: ../src/daemon/abrt-handle-event.c:111
 msgid "Run EVENT on DUMP_DIR"
-msgstr ""
+msgstr "DUMP_DIR において EVENT を実行する"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -169,7 +165,7 @@ msgstr "送信"
 
 #: ../src/gui-gtk/main.c:593 ../src/gui-gtk/main.c:639
 msgid "Source"
-msgstr ""
+msgstr "ソース"
 
 #: ../src/gui-gtk/main.c:603 ../src/gui-gtk/main.c:649
 msgid "Problem"
@@ -177,19 +173,19 @@ msgstr "問題"
 
 #: ../src/gui-gtk/main.c:624
 msgid "Last Occurrence"
-msgstr ""
+msgstr "最後の出来事"
 
 #: ../src/gui-gtk/main.c:659
 msgid "Date Submitted"
-msgstr ""
+msgstr "提出日"
 
 #: ../src/gui-gtk/main.c:668
 msgid "Submission Result"
-msgstr ""
+msgstr "提案結果"
 
 #: ../src/gui-gtk/main.c:681
 msgid "_Report"
-msgstr ""
+msgstr "報告 (_R)"
 
 #: ../src/gui-gtk/main.c:682
 msgid "_Edit"
@@ -205,26 +201,26 @@ msgstr "ABRTを使用してバグを報告する"
 
 #: ../src/gui-gtk/main.c:748
 msgid "Not submitted reports"
-msgstr ""
+msgstr "報告を提出していません"
 
 #: ../src/gui-gtk/main.c:750
 msgid "<b>Not submitted reports</b>"
-msgstr ""
+msgstr "<b>提出されていないリポート</b>"
 
 #: ../src/gui-gtk/main.c:798
 msgid "Submitted reports"
-msgstr ""
+msgstr "報告を提出しました"
 
 #: ../src/gui-gtk/main.c:801
 msgid "<b>Submitted reports</b>"
-msgstr ""
+msgstr "<b>送信されたレポート</b>"
 
 #: ../src/gui-gtk/main.c:1052
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
 "Shows list of ABRT dump directories in specified DIR(s)\n"
-msgstr ""
+msgstr "& [-vp] [DIR]...\n\n指定された DIR にある ABRT ダンプディレクトリの一覧を表示します\n"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:44
 msgid ""
@@ -232,13 +228,12 @@ msgid ""
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in dump directory DIR"
-msgstr ""
+msgstr "& [options] -d DIR\n\nダンプディレクトリ DIR において C/C++ バックトレースを分析し、複製ハッシュを生成し、\nレーティングをバックトレースし、クラッシュ機能を識別します。"
 
-#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:93
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -249,33 +244,33 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in dump directory DIR"
-msgstr ""
+msgstr "& [-v] -d DIR\n\nコアダンプのUUIDをダンプディレクトリ DIR に計算/保存"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:111
 msgid ""
 "& [-vs] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops dump directory DIR"
-msgstr ""
+msgstr "& [-vs] -d DIR\n\noops ダンプディレクトリ DIR の UUID と DUPHASH を計算および保存します"
 
 #: ../src/plugins/abrt-action-analyze-python.c:29
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
-msgstr ""
+msgstr "& [-v] -d DIR\n\npython クラッシュダンプの UUID と DUPHASH を計算および保存します"
 
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-backtrace.c:139
 msgid "Generating backtrace"
-msgstr ""
+msgstr "バックトレースの生成中"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:251
 msgid ""
 "& [options] -d DIR\n"
 "\n"
 "Analyzes coredump in dump directory DIR, generates and saves backtrace"
-msgstr ""
+msgstr "& [options] -d DIR\n\nダンプディレクトリ DIR にあるコアダンプを分析し、バックトレースを生成および保存します"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:265
 msgid "Additional debuginfo directories"
@@ -283,11 +278,11 @@ msgstr "追加の debuginfo ディレクトリ"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:266
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr ""
+msgstr "gdbが NUM 秒以上稼働する場合は停止します"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:316
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -326,7 +321,7 @@ msgstr "ダウンロード中 (%i of %i) %s: %3u%%"
 
 #: ../src/plugins/abrt-action-install-debuginfo:179
 msgid "Initializing yum"
-msgstr ""
+msgstr "yumを初期化"
 
 #: ../src/plugins/abrt-action-install-debuginfo:187
 #, c-format
@@ -335,12 +330,12 @@ msgstr " yum 初期化エラー (YumBase.doConfigSetup): '%s'"
 
 #: ../src/plugins/abrt-action-install-debuginfo:218
 msgid "Setting up yum repositories"
-msgstr ""
+msgstr "yumリポジトリのセットアップ"
 
 #: ../src/plugins/abrt-action-install-debuginfo:229
 #, c-format
 msgid "Can't setup %s: %s, disabling"
-msgstr ""
+msgstr "%sをセットアップできません: %s, 無効"
 
 #: ../src/plugins/abrt-action-install-debuginfo:236
 msgid "Looking for needed packages in repositories"
@@ -369,11 +364,11 @@ msgstr "ダウンロードするパッケージ: %u"
 #: ../src/plugins/abrt-action-install-debuginfo:286
 #, c-format
 msgid "Downloading %.2fMb, installed size: %.2fMb. Continue?"
-msgstr ""
+msgstr "ダウンロード中 %.2fMb、インストール済み %.2fMb。続行しますか?"
 
 #: ../src/plugins/abrt-action-install-debuginfo:291
 msgid "Download cancelled by user"
-msgstr ""
+msgstr "ダウンロードはユーザによりキャンセルされました。"
 
 #: ../src/plugins/abrt-action-install-debuginfo:325
 #, c-format
@@ -407,8 +402,7 @@ msgstr "ユーザコマンドを終了しています"
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
-"[--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -430,9 +424,7 @@ msgstr "%s を開けません: %s"
 #: ../src/plugins/abrt-action-install-debuginfo:549
 #, c-format
 msgid "Coredump references %u debuginfo files, %u of them are not installed"
-msgstr ""
-"コアダンプは %u debuginfo ファイルを参照しています。その内 %u がインストール"
-"されていません"
+msgstr "コアダンプは %u debuginfo ファイルを参照しています。その内 %u がインストールされていません"
 
 #: ../src/plugins/abrt-action-install-debuginfo:560
 #, c-format
@@ -449,7 +441,7 @@ msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n"
 "\n"
 "Deletes dump dirs (-d) or files (-f) in DIRs until they are smaller than SIZE"
-msgstr ""
+msgstr "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR]\n\nSIZE よりも小さくなるまで DIR にあるダンプディレクトリ (-d) またはファイル (-f) を削除します"
 
 #: ../src/plugins/abrt-action-trim-files.c:162
 msgid "Delete dump dirs"
@@ -469,7 +461,7 @@ msgid ""
 "or: & [-vsrowx] -D FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
-msgstr ""
+msgstr "& [-vsrowx] [-d DIR] FILE\nor: & [-vsrowx] -D FILE\n\nsyslog/dmesg から oops を抽出します"
 
 #: ../src/plugins/abrt-dump-oops.c:586
 msgid "Parse kernel's message buffer before parsing FILE"
@@ -485,7 +477,7 @@ msgstr "終了せずに新規 oops のファイルを観察します"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
+#. 
 #: ../src/plugins/abrt-dump-oops.c:592
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr "全ての oops に対し、DIR の ABRT ダンプを作成する"
@@ -496,23 +488,23 @@ msgstr "ダンプディレクトリを可読にする"
 
 #: ../src/plugins/abrt-dump-oops.c:594
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
-msgstr ""
+msgstr "-d  DumpLocationと同一で、DumpLocationはabrt.confで明示されています"
 
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid "An error occurred on the server side. Try again later."
-msgstr ""
+msgstr "サーバー側に問題が発生しています。後ほど再試行してください。"
 
 #: ../src/plugins/abrt-retrace-client.c:72
 msgid ""
 "An error occurred while connecting to the server. Check your network "
 "connection and try again."
-msgstr ""
+msgstr "サーバーに接続中にエラーが発生しました。ネットワーク接続を確認してから再び試してください。"
 
 #: ../src/plugins/abrt-retrace-client.c:78
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
-msgstr ""
+msgstr "リトレースサーバーは使用できません, クラッシュのサイズが大きすぎます。ローカルリトレースを試行してください。"
 
 #: ../src/plugins/abrt-retrace-client.c:131
 msgid "Cannot open temporary file"
@@ -527,17 +519,17 @@ msgstr "%s を実行できません。"
 #: ../src/plugins/abrt-retrace-client.c:215
 #, c-format
 msgid "Issuer certificate is invalid: '%s'."
-msgstr ""
+msgstr "発行者の証明書は無効です: '%s'"
 
 #: ../src/plugins/abrt-retrace-client.c:218
 #, c-format
 msgid "Certificate is signed by an untrusted issuer: '%s'."
-msgstr ""
+msgstr "証明書は信頼されていない発行者によって署名されています: '%s'"
 
 #: ../src/plugins/abrt-retrace-client.c:221
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
-msgstr ""
+msgstr "証明書の題目 '%s' はホスト名 '%s' と一致していません。"
 
 #: ../src/plugins/abrt-retrace-client.c:225
 msgid "Remote certificate has expired."
@@ -546,22 +538,22 @@ msgstr "リモートの証明書が失効しています。"
 #: ../src/plugins/abrt-retrace-client.c:228
 #, c-format
 msgid "Certificate issuer is not recognized: '%s'."
-msgstr ""
+msgstr "証明書の発行者は認識されていません: '%s'。"
 
 #: ../src/plugins/abrt-retrace-client.c:231
 #, c-format
 msgid "Bad certificate received. Subject '%s', issuer '%s'."
-msgstr ""
+msgstr "無効な証明書を受信しました。題目 '%s'、発行者 '%s'。"
 
 #: ../src/plugins/abrt-retrace-client.c:267
 #, c-format
 msgid "Failed to get slot 'PEM Token #0': %d."
-msgstr ""
+msgstr "スロット 'PEM Token#0' の取得に失敗しました: %d。"
 
 #: ../src/plugins/abrt-retrace-client.c:297
 #, c-format
 msgid "Failed to get host by name: NSS error %d."
-msgstr ""
+msgstr "ホストの名前解決に失敗しました: NSSエラー %d。"
 
 #: ../src/plugins/abrt-retrace-client.c:316
 msgid "Failed to create a TCP socket"
@@ -580,7 +572,7 @@ msgstr "TCPソケットをSSLで暗号化できません。"
 #: ../src/plugins/abrt-retrace-client.c:341
 #: ../src/plugins/abrt-retrace-client.c:343
 msgid "Failed to enable client handshake to SSL socket."
-msgstr ""
+msgstr "SSLソケットへのクライアントのハンドシェイクの有効化に失敗しました。"
 
 #: ../src/plugins/abrt-retrace-client.c:349
 msgid "Failed to set URL to SSL socket."
@@ -592,7 +584,7 @@ msgstr "SSL アドレスの接続に失敗しました。"
 
 #: ../src/plugins/abrt-retrace-client.c:363
 msgid "Failed to set certificate hook."
-msgstr ""
+msgstr "証明書フックの設定に失敗しました。"
 
 #: ../src/plugins/abrt-retrace-client.c:370
 msgid "Failed to set handshake callback."
@@ -605,7 +597,7 @@ msgstr "ハンドシェークのリセットに失敗しました。"
 #: ../src/plugins/abrt-retrace-client.c:384
 #, c-format
 msgid "Failed to force handshake: NSS error %d."
-msgstr ""
+msgstr "強制ハンドシェイクに失敗: NSSエラー %d。"
 
 #: ../src/plugins/abrt-retrace-client.c:393
 msgid "Failed to close SSL socket."
@@ -615,12 +607,12 @@ msgstr "SSL ソケットの切断に失敗しました。"
 #: ../src/plugins/abrt-retrace-client.c:457
 #: ../src/plugins/abrt-retrace-client.c:463
 msgid "Invalid response from server: HTTP header not found."
-msgstr ""
+msgstr "サーバーからの無効な応答:HTTPヘッダが見つかりませんでした"
 
 #: ../src/plugins/abrt-retrace-client.c:502
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
-msgstr ""
+msgstr "データの受信に失敗: NSSエラー %d。"
 
 #: ../src/plugins/abrt-retrace-client.c:528
 #: ../src/plugins/abrt-retrace-client.c:874
@@ -628,7 +620,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:1200
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr ""
+msgstr "サイズ %d のHTTPヘッダーの送信に失敗しました: NSSエラー %d。"
 
 #: ../src/plugins/abrt-retrace-client.c:540
 #: ../src/plugins/abrt-retrace-client.c:973
@@ -639,7 +631,7 @@ msgstr ""
 msgid ""
 "Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr ""
+msgstr "予期しないサーバーからのHTTPレスポンス応答: %d\n%s"
 
 #: ../src/plugins/abrt-retrace-client.c:549
 #: ../src/plugins/abrt-retrace-client.c:953
@@ -647,7 +639,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:1140
 #: ../src/plugins/abrt-retrace-client.c:1209
 msgid "Invalid response from server: missing HTTP message body."
-msgstr ""
+msgstr "サーバーから無効な応答: HTTPメッセージbodyがありません。"
 
 #: ../src/plugins/abrt-retrace-client.c:704
 msgid "Querying server settings"
@@ -655,62 +647,62 @@ msgstr "サーバー設定を問い合わせ中"
 
 #: ../src/plugins/abrt-retrace-client.c:712
 msgid "The server is fully occupied. Try again later."
-msgstr ""
+msgstr "サーバーは現在過負荷です。後ほど再試行してください。"
 
 #: ../src/plugins/abrt-retrace-client.c:713
 msgid "The server denied your request."
-msgstr ""
+msgstr "サーバーはリクエストを拒否しました。"
 
 #: ../src/plugins/abrt-retrace-client.c:723
 #: ../src/plugins/abrt-retrace-client.c:736
 #, c-format
 msgid "Unable to stat file '%s'."
-msgstr ""
+msgstr "ファイル '%s' をstatできません。"
 
 #: ../src/plugins/abrt-retrace-client.c:751
 #, c-format
 msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
-msgstr ""
+msgstr "あなたのクラッシュのサイズは %lld バイトですが、リトレースサーバーは %lld バイト以下のクラッシュしか受け入れません。"
 
 #: ../src/plugins/abrt-retrace-client.c:771
 msgid "The server does not support xz-compressed tarballs."
-msgstr ""
+msgstr "サーバーはxz-compressed tarボールをサポートしていません。"
 
 #: ../src/plugins/abrt-retrace-client.c:793
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
-msgstr ""
+msgstr "リリース '%s' はリトレースサーバにサポートされていません。"
 
 #: ../src/plugins/abrt-retrace-client.c:797
 msgid "The server is not able to handle your request."
-msgstr ""
+msgstr "サーバーはあなたのリクエストを処理できません。"
 
 #: ../src/plugins/abrt-retrace-client.c:806
 msgid "Preparing an archive to upload"
-msgstr ""
+msgstr "アップロード用のアーカイブの準備中"
 
 #: ../src/plugins/abrt-retrace-client.c:819
 #, c-format
 msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
-msgstr ""
+msgstr "あなたのアーカイブのサイズは %lld バイトですが、リトレースサーバーは %lld バイト以下のアーカイブしか受け入れません。"
 
 #: ../src/plugins/abrt-retrace-client.c:832
 #, c-format
 msgid "You are going to upload %d megabytes.Continue?"
-msgstr ""
+msgstr "%d MBを送信します。続行しますか?"
 
 #: ../src/plugins/abrt-retrace-client.c:839
 msgid "Cancelled by user"
-msgstr ""
+msgstr "ユーザーによりキャンセルされました。"
 
 #: ../src/plugins/abrt-retrace-client.c:881
 #, c-format
 msgid "Uploading %d megabytes\n"
-msgstr ""
+msgstr "%d メガバイトのアップロード中\n"
 
 #: ../src/plugins/abrt-retrace-client.c:883
 #, c-format
@@ -729,7 +721,7 @@ msgstr "パイプから読み込めませんでした。"
 #: ../src/plugins/abrt-retrace-client.c:932
 #, c-format
 msgid "Failed to send data: NSS error %d (%s): %s"
-msgstr ""
+msgstr "データの送信に失敗: NSSエラー %d(%s): %s"
 
 #: ../src/plugins/abrt-retrace-client.c:943
 msgid "Upload successful"
@@ -739,7 +731,7 @@ msgstr "アップロードに成功しました。"
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
-msgstr ""
+msgstr "問題のディレクトリは破損しており、リトレースサーバーにより処理できません。"
 
 #: ../src/plugins/abrt-retrace-client.c:967
 msgid ""
@@ -757,34 +749,30 @@ msgstr "サーバーから無効なレスポンス応答: X-Task-Password があ
 
 #: ../src/plugins/abrt-retrace-client.c:993
 msgid "Retrace job started"
-msgstr ""
+msgstr "リトレースジョブが開始されました"
 
 #: ../src/plugins/abrt-retrace-client.c:1006
 #, c-format
 msgid ""
 "Task Id: %s\n"
 "Task Password: %s\n"
-msgstr ""
-"タスクID: %s\n"
-"タスク パスワード: %s\n"
+msgstr "タスクID: %s\nタスク パスワード: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:1052
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr ""
+msgstr "サイズ %d のHTTPヘッダの送信に失敗: NSSエラー %d"
 
 #: ../src/plugins/abrt-retrace-client.c:1076
 msgid "Invalid response from server: missing X-Task-Status."
-msgstr ""
+msgstr "サーバーからの無効なレスポンス応答: X-Task-Statusが欠落しています。"
 
 #: ../src/plugins/abrt-retrace-client.c:1088
 #, c-format
 msgid ""
 "Task Status: %s\n"
 "%s\n"
-msgstr ""
-"タスクの状態: %s\n"
-"%s\n"
+msgstr "タスクの状態: %s\n%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:1262
 msgid ""
@@ -798,23 +786,23 @@ msgstr "syslog にログする"
 
 #: ../src/plugins/abrt-retrace-client.c:1309
 msgid "allow insecure connection to retrace server"
-msgstr ""
+msgstr "安全でないコネクションを利用してリトレースサーバーへ接続することを許可"
 
 #: ../src/plugins/abrt-retrace-client.c:1311
 msgid "retrace server URL"
-msgstr ""
+msgstr "リトレース サーバーURL"
 
 #: ../src/plugins/abrt-retrace-client.c:1313
 msgid "retrace server port"
-msgstr ""
+msgstr "リトレースサーバーポート"
 
 #: ../src/plugins/abrt-retrace-client.c:1315
 msgid "(debug) show received HTTP headers"
-msgstr ""
+msgstr "(デバッグ)受信したHTTPヘッダを表示"
 
 #: ../src/plugins/abrt-retrace-client.c:1316
 msgid "For create and batch operations"
-msgstr ""
+msgstr "作成、バッチ操作のために"
 
 #: ../src/plugins/abrt-retrace-client.c:1318
 msgid "read data from ABRT crash dump directory"
@@ -830,25 +818,25 @@ msgstr "ポーリング処理の遅延"
 
 #: ../src/plugins/abrt-retrace-client.c:1324
 msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
-msgstr ""
+msgstr "(デバッグ) /tmp内のダンプディレクトリから作成された一時アーカイブを削除しないでください"
 
 #: ../src/plugins/abrt-retrace-client.c:1326
 msgid "For status, backtrace, and log operations"
-msgstr ""
+msgstr "ステータス、バックトレース、およびログ操作のための"
 
 #: ../src/plugins/abrt-retrace-client.c:1328
 msgid "id of your task on server"
-msgstr ""
+msgstr "サーバー上のあなたのタスクのID"
 
 #: ../src/plugins/abrt-retrace-client.c:1330
 msgid "password of your task on server"
-msgstr ""
+msgstr "サーバー上のあなたのタスクのパスワード"
 
 #: ../src/plugins/abrt-retrace-client.c:1334
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch"
-msgstr ""
+msgstr "ABRTリトレースクライアント <operation> [オプション]\n処理: 作成/ステータス/バックトレース/ログ/バッチ"
 
 #: ../src/plugins/abrt-retrace-client.c:1377
 msgid "Failed to initialize NSS."
@@ -856,12 +844,12 @@ msgstr "NSS の初期化に失敗しました。"
 
 #: ../src/plugins/abrt-retrace-client.c:1383
 msgid "Failed to initialize security module."
-msgstr ""
+msgstr "セキュリティーモジュールの初期化に失敗しました。"
 
 #: ../src/plugins/abrt-retrace-client.c:1394
 #: ../src/plugins/abrt-retrace-client.c:1400
 msgid "Either dump directory or coredump is needed."
-msgstr ""
+msgstr "ダンプディレクトリまたはコアダンプが必要です。"
 
 #: ../src/plugins/abrt-retrace-client.c:1406
 #: ../src/plugins/abrt-retrace-client.c:1414
@@ -886,8 +874,7 @@ msgstr "NSSのシャットダウンに失敗しました。"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr ""
-"パッケージをダウンロードし、GDB を使用してローカルの backtrace を生成する"
+msgstr "パッケージをダウンロードし、GDB を使用してローカルの backtrace を生成する"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Local GNU Debugger"
@@ -896,12 +883,9 @@ msgstr "ローカル GNU デバッガ"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
-msgstr ""
-"debuginfo パッケージをダウンロードする必要があります。これは多くの時間がかか"
-"り、ディスクスペースも要します。しかし RetraceServer とは異なり、コアダンプを"
-"リモートマシンに送信したりしません。"
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
+msgstr "debuginfo パッケージをダウンロードする必要があります。これは多くの時間がかかり、ディスクスペースも要します。しかし RetraceServer とは異なり、コアダンプをリモートマシンに送信したりしません。"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Address of the retrace server"
@@ -909,7 +893,7 @@ msgstr "Retrace サーバーのアドレス"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid "Insecure"
-msgstr ""
+msgstr "安全でない"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Retrace server URL"
@@ -926,28 +910,22 @@ msgid ""
 "debuginfos is more complete. Retrace server may generate better backtraces. "
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
-msgstr ""
-"コアダンプをサーバーにアップロードするには、backtraceを生成し、それを返しま"
-"す。メリット: debuginfo をダウンロードする必要がありません。再トレースサー"
-"バーのdebaguinfoデータベースは、より完璧です。Retrace サーバーはより良い"
-"backtraceを生成できます。デメリット: アップロードするコアダンプには、クラッ"
-"シュしたプログラムと、あなたのプライベートデータ(もしあった場合)、全てが含ま"
-"れています。"
+msgstr "コアダンプをサーバーにアップロードするには、backtraceを生成し、それを返します。メリット: debuginfo をダウンロードする必要がありません。再トレースサーバーのdebaguinfoデータベースは、より完璧です。Retrace サーバーはより良いbacktraceを生成できます。デメリット: アップロードするコアダンプには、クラッシュしたプログラムと、あなたのプライベートデータ(もしあった場合)、全てが含まれています。"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 msgid "Whether or not to use insecure connection"
-msgstr ""
+msgstr "安全でないコネクションを使用するか"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
-"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
-"(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a "
+"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
+" &gt;(warning)&lt;/a&gt;"
 msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Save relevant lines from ~/.xsession-errors file"
-msgstr ""
+msgstr "~/.xsession-errors ファイルから関連する行を保存"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid ""
@@ -957,31 +935,31 @@ msgstr ""
 
 #: ../src/cli/abrt-cli.c:141
 msgid "Usage: abrt-cli [--version] COMMAND [ARGS]"
-msgstr ""
+msgstr "使用法: abrt-cli [--version] COMMAND [ARGS]"
 
 #: ../src/cli/abrt-cli.c:145
 msgid "List not yet reported problems"
-msgstr ""
+msgstr "未報告の問題のリスト"
 
 #: ../src/cli/abrt-cli.c:146
 msgid "Remove files from problem directory"
-msgstr ""
+msgstr "問題のディレクトリからファイルを削除"
 
 #: ../src/cli/abrt-cli.c:147
 msgid "Analyze and report problem data in problem directory"
-msgstr ""
+msgstr "問題のディレクトリのデータを分析/報告する"
 
 #: ../src/cli/abrt-cli.c:148
 msgid "Print information about DUMP_DIR"
-msgstr ""
+msgstr "DUMP_DIRについての情報を表示"
 
 #: ../src/cli/abrt-cli.c:161
 msgid "See 'abrt-cli COMMAND --help' for more information"
-msgstr ""
+msgstr "詳細は 'abrt-cli COMMAND --help' を参照してください"
 
 #: ../src/cli/list.c:90
 msgid "& list [options] [<dump-dir>]..."
-msgstr ""
+msgstr "& list [options] [<dump-dir>]..."
 
 #: ../src/cli/list.c:97
 msgid "List even reported problems"
@@ -990,19 +968,20 @@ msgstr ""
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:99 ../src/cli/list.c:141
 msgid "Show detailed report"
-msgstr ""
+msgstr "詳細レポートを表示"
 
 #: ../src/cli/list.c:133
 msgid "& info [options] [<dump-dir>]..."
-msgstr ""
+msgstr "& info [options] [<dump-dir>]..."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
-msgstr ""
+msgstr "VMコアの分析"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
-msgid "Install kernel debuginfo packages, generate kernel log and oops message"
-msgstr ""
+msgid ""
+"Install kernel debuginfo packages, generate kernel log and oops message"
+msgstr "カーネルデバッグ情報パッケージをインストールし、カーネルログとoopsメッセージを生成する "
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
@@ -1012,7 +991,7 @@ msgstr ""
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
-msgstr ""
+msgstr "GConf 設定を収集"
 
 #: ../src/plugins/collect_GConf.xml.in.h:2
 msgid ""
@@ -1022,15 +1001,15 @@ msgstr ""
 
 #: ../src/plugins/collect_GConf.xml.in.h:3
 msgid "Save configuration from application's GConf directory"
-msgstr ""
+msgstr "アプリケーションの GConf ディレクトリから設定を保存します"
 
 #: ../src/plugins/collect_Smolt.xml.in.h:1
 msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
-msgstr ""
+msgstr "smoltSendProfile -p を実行し、出力を 'smolt_data' 要素として保存します。"
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
 msgid "Save your computer's hardware profile information"
-msgstr ""
+msgstr "あなたのコンピューターのハードウェアプロファイル情報を保存します"
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid ""
@@ -1040,22 +1019,22 @@ msgstr ""
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:2
 msgid "Collect system-wide vim configuration files"
-msgstr ""
+msgstr "システム全体のvim構成ファイルを収集"
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:3
 msgid "Save /etc/vimrc and /etc/gvimrc"
-msgstr ""
+msgstr "/etc/vimrc および /etc/gvimrc を保存します"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
-"as user_vimrc and user_gvimrc, respectively."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
+" as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:2
 msgid "Collect yours vim configuration files"
-msgstr ""
+msgstr "vim設定ファイルを収集"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid "Save .vimrc and .gvimrc from your home directory"
-msgstr ""
+msgstr "ホームディレクトリから .vimrc と .gvimrc を保存"
