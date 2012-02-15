@@ -52,7 +52,8 @@ dist_eventsconf_DATA = \
 PYTHON_FILES = \
     abrt-action-install-debuginfo.in \
     abrt-action-list-dsos \
-    abrt-action-analyze-core
+    abrt-action-analyze-core \
+    abrt-action-analyze-vmcore.in
 
 EXTRA_DIST = \
     $(PYTHON_FILES) \

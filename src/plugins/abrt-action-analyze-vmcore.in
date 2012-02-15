@@ -1,0 +1,112 @@
+#! /usr/bin/python -u
+# -*- coding: utf-8 -*-
+# Generate backtrace from vmcore
+#
+
+from subprocess import Popen, PIPE
+import os
+import sys
+from reportclient import _, verbose, log, log1, log2, set_verbosity, error_msg_and_die
+from reportclient.debuginfo import DebugInfoDownload
+import time
+
+PROGNAME = "abrt-action-analyze-vmcore"
+
+# everything was ok
+RETURN_OK = 0
+# serious problem, should be logged somewhere
+RETURN_FAILURE = 2
+
+import getopt
+
+ver=""
+if __name__ == "__main__":
+    cachedirs = []
+    vmlinux_di_cachedir = ""
+    vmlinux_di_path = ""
+    tmpdir = ""
+    vmcore = os.path.join(os.getcwd(), "vmcore")
+    global verbose
+    help_text = _("Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]").format(PROGNAME)
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "hv", ["help", "tmpdir=", "cache=", "core="])
+    except getopt.GetoptError, err:
+        error_msg(err) # prints something like "option -a not recognized"
+        error_msg_and_die(help_text)
+
+    for opt, arg in opts:
+        if opt in ("-h", "--help"):
+            print help_text
+            exit(0)
+        if opt == "--cache":
+            cachedirs = arg.split(':')
+        elif opt == "-v":
+            verbose += 1
+        elif opt == "--core":
+            vmcore = arg
+        elif opt == "--tmpdir":
+            tmpdir = arg
+
+    set_verbosity(verbose)
+    if not os.path.exists(vmcore):
+        print _("File {0} doesn't exist").format(vmcore)
+        sys.exit(RETURN_FAILURE)
+
+    if not cachedirs:
+        try:
+            fp = open("@sysconfdir@/@PACKAGE_NAME@/plugins/CCpp.conf", "r")
+            for line in fp:
+                stripped = line.lstrip()
+                if len(stripped) == 0:
+                    continue
+                if stripped[0] == "#":
+                    continue
+                if stripped[:len("DebuginfoLocation")] != "DebuginfoLocation":
+                    continue
+
+                cachedirs =  stripped[len("DebuginfoLocation"):].strip(" =\n").split(":")
+            fp.close()
+        except IOError as (errno, strerror):
+            print "I/O error({0}): {1}".format(errno, strerror)
+
+    if not cachedirs:
+        cachedirs = ["/var/cache/abrt-di"]
+
+    if not tmpdir:
+        # security people prefer temp subdirs in app's private dir, like /var/run/abrt
+        # for now, we use /tmp...
+        tmpdir = "/tmp/abrt-tmp-debuginfo-%s.%u" % (time.strftime("%Y-%m-%d-%H:%M:%S"), os.getpid())
+
+    crash = Popen(["crash", "--osrelease", vmcore], stdout=PIPE, bufsize = -1)
+    ver, err = crash.communicate()
+    ver = ver.strip() #remove '\n'
+    if not ver or crash.returncode != 0:
+        error_msg_and_die(_("{0} is not a valid vmcore").format(vmcore))
+
+    for cachedir in cachedirs:
+        path = "{0}/usr/lib/debug/lib/modules/{1}/vmlinux".format(cachedir, ver)
+        if os.path.exists(path):
+            vmlinux_di_cachedir = cachedir
+            print _("Required vmlinux debuginfo is installed in {0}".format(vmlinux_di_cachedir))
+            vmlinux_di_path = path
+            break
+
+    if not vmlinux_di_path: #didn't find the vmlinux in any cachedir
+        vmlinux_di_cachedir = cachedirs[0] # let's hope it has always at least 1 item
+        print _("Installing kernel debuginfo(s)")
+        # replace with abrt-action-install-debuginfo
+        vmlinux_di_path = "/usr/lib/debug/lib/modules/%s/vmlinux" % ver
+        downloader = DebugInfoDownload(cache=vmlinux_di_cachedir, tmp=tmpdir, keep_rpms=True)
+        res = downloader.download([vmlinux_di_path], exact_files=True)
+        if res != RETURN_OK:
+            error_msg_and_die(_("Can't download required debuginfo"))
+        vmlinux_di_path = "{0}/usr/lib/debug/lib/modules/{1}/vmlinux".format(cachedir, ver)
+
+    print _("Generating backtrace")
+    log_file = open("kernel_log","w")
+    crash = Popen(["crash", "-s", "vmcore", vmlinux_di_path], stdin=PIPE, stderr=PIPE, stdout=log_file, bufsize = -1)
+    out, err = crash.communicate(input="log")
+    log_file.close()
+    backtrace_file = open("backtrace", "w")
+    dump_oops = Popen(["abrt-dump-oops", "-o", "kernel_log"], stdout=backtrace_file, bufsize=-1)
+    backtrace_file.close()

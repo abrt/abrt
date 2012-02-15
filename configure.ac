@@ -130,6 +130,7 @@ AC_CONFIG_FILES([
 	src/gui-gtk/Makefile
 	src/cli/Makefile
 	src/plugins/abrt-action-install-debuginfo
+	src/plugins/abrt-action-analyze-vmcore
 	po/Makefile.in
 	icons/Makefile
 ])
