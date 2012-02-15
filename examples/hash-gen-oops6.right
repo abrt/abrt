@@ -1,0 +1,28 @@
+WARNING: at drivers/misc/lis3lv02d/lis3lv02d.c:213 lis3lv02d_get_pwron_wait+0x8f/0xa0 [lis3lv02d]()
+Hardware name: HP Pavilion dv6 Notebook PC
+device returned spurious data
+Modules linked in: hp_wmi(+) sparse_keymap rfkill hp_accel(+) v4l2_compat_ioctl32 lis3lv02d joydev input_polldev uinput microcode pata_acpi ata_generic pata_atiixp wmi usb_storage video radeon ttm drm_kms_helper drm i2c_algo_bit i2c_core
+Pid: 737, comm: modprobe Not tainted 3.2.2-1.fc16.x86_64 #1
+Call Trace:
+ [<ffffffff8106dd1f>] warn_slowpath_common+0x7f/0xc0
+ [<ffffffff8106de16>] warn_slowpath_fmt+0x46/0x50
+ [<ffffffffa01746ef>] lis3lv02d_get_pwron_wait+0x8f/0xa0 [lis3lv02d]
+ [<ffffffffa0174be7>] lis3lv02d_poweron+0x57/0xc0 [lis3lv02d]
+ [<ffffffffa01755af>] lis3lv02d_init_device+0x16f/0xbc0 [lis3lv02d]
+ [<ffffffffa018333d>] lis3lv02d_add+0xdd/0x1d0 [hp_accel]
+ [<ffffffff81313482>] acpi_device_probe+0x4e/0x11c
+ [<ffffffff813932cc>] driver_probe_device+0x9c/0x300
+ [<ffffffff813935db>] __driver_attach+0xab/0xb0
+ [<ffffffff81393530>] ? driver_probe_device+0x300/0x300
+ [<ffffffff81393530>] ? driver_probe_device+0x300/0x300
+ [<ffffffff8139214c>] bus_for_each_dev+0x5c/0x90
+ [<ffffffff81392ede>] driver_attach+0x1e/0x20
+ [<ffffffff81392ae0>] bus_add_driver+0x1b0/0x2a0
+ [<ffffffffa018b000>] ? 0xffffffffa018afff
+ [<ffffffff81393b36>] driver_register+0x76/0x140
+ [<ffffffffa018b000>] ? 0xffffffffa018afff
+ [<ffffffff81313ceb>] acpi_bus_register_driver+0x43/0x45
+ [<ffffffffa018b01e>] lis3lv02d_init_module+0x1e/0x1000 [hp_accel]
+ [<ffffffff81002042>] do_one_initcall+0x42/0x180
+ [<ffffffff810ac940>] sys_init_module+0xc0/0x230
+ [<ffffffff815e97c2>] system_call_fastpath+0x16/0x1b
