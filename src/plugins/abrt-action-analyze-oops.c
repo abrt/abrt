@@ -37,7 +37,7 @@ static void hash_oops_str(char hash_str[SHA1_RESULT_LEN*2 + 1], char *oops_buf, 
         call_trace += sizeof("Call Trace\n");
         char *end_line = strchr(call_trace, '\n');
         int i = 0;
-        while (end_line)
+        while (end_line && !*end_line)
         {
             char *line = xstrndup(call_trace, end_line - call_trace);
 
@@ -48,29 +48,31 @@ static void hash_oops_str(char hash_str[SHA1_RESULT_LEN*2 + 1], char *oops_buf, 
 
             end_mem_block = skip_whitespace(end_mem_block);
 
+            char *begin_off_len, *function;
+
             /* skip symbols prefixed with ? */
             if (end_mem_block && *end_mem_block == '?')
-            {
-                call_trace += end_line - call_trace + 1;
-                end_line = strchr(call_trace, '\n');
+                goto skip_line;
 
-                free(line);
-                continue;
-            }
             /* strip out offset +off/len */
-            char *begin_off_len = strchr(end_mem_block, '+');
+            begin_off_len = strchr(end_mem_block, '+');
             if (!begin_off_len)
-                error_msg_and_die("no +offset/len at the end of bt");
+                error_msg_and_die("'%s'\nno +offset/len at the end of bt", end_mem_block);
 
-            char *function = xstrndup(end_mem_block, begin_off_len - end_mem_block);
+            function = xstrndup(end_mem_block, begin_off_len - end_mem_block);
             strbuf_append_strf(kernel_bt, "%s\n", function);
             free(line);
+            free(function);
             if (i == 5)
                 break;
 
             ++i;
+        skip_line:
+            free(line);
             call_trace += end_line - call_trace + 1;
             end_line = strchr(call_trace, '\n');
+            if (end_line)
+                ++end_line; /* skip \n */
         }
         goto gen_hash;
     }
