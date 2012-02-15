@@ -70,6 +70,7 @@ char *koops_extract_version(const char *linepointer)
  *   T  - Tech_preview
  */
 
+#if 0 /* unused */
 static char *turn_off_flag(char *flags, char flag)
 {
     size_t len = strlen(flags);
@@ -81,6 +82,7 @@ static char *turn_off_flag(char *flags, char flag)
 
     return flags;
 }
+#endif
 
 char *kernel_tainted_short(const char *kernel_bt)
 {
