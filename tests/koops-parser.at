@@ -97,13 +97,13 @@ int main(void)
 {
 	/* tests run in abrt/tests/testsuite.dir/X, where X is test number */
 	struct test_struct not_tainted[] = {
-		{"../../../examples/koops-tainted-gw", NULL},
 		{"../../../examples/oops1.right", NULL},
 	};
 
 	struct test_struct tainted[] = {
 		{"../../../examples/koops-tainted-bg1", "G    B      "},
 		{"../../../examples/oops-same-as-oops4.right", "P           "},
+		{"../../../examples/koops-tainted-gw", NULL},
 	};
 
 	log("test not tainted");

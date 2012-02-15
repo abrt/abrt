@@ -2,7 +2,7 @@
 # vim: dict=/usr/share/beakerlib/dictionary.vim cpt=.,w,b,u,t,i,k
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-#   runtest.sh of abrt-ccpp-plugin
+#   runtest.sh of bz783450-setuid-core-owned-by-root
 #   Description: Tests ccpp-plugin on suided app
 #   Author: Jiri Moskovcak <jmoskovc@redhat.com>
 #
@@ -28,7 +28,7 @@
 
 . /usr/share/beakerlib/beakerlib.sh
 
-TEST="setuided core"
+TEST="bz783450-setuid-core-owned-by-root"
 PACKAGE="abrt"
 SUIDEDEXE="suidedexecutable"
 
@@ -50,10 +50,10 @@ rlJournalStart
         rlLog "Generate crash"
         rlRun "gcc loop.c -o $SUIDEDEXE"
         su abrt-suid-test -c "./$SUIDEDEXE &" &
-        sleep 2
+        sleep 10
         killpid=`pidof $SUIDEDEXE`
         rlRun "kill -SIGSEGV $killpid"
-        sleep 2
+        sleep 10
         rlRun '[ "abrt-suid-test" == $(ls -l | grep "core.$killpid" | cut -d" " -f3) ]' 0 "Checking if core is owned by abrt-suid-test"
     rlPhaseEnd
 
@@ -63,10 +63,10 @@ rlJournalStart
         rlRun "gcc loop.c -o $SUIDEDEXE"
         rlRun "chmod u+s $SUIDEDEXE"
         su abrt-suid-test -c "./$SUIDEDEXE &" &
-        sleep 2
+        sleep 10
         killpid=`pidof $SUIDEDEXE`
         rlRun "kill -SIGSEGV $killpid"
-        sleep 2
+        sleep 10
         rlRun '[ "root" == $(ls -l | grep "core.$killpid" | cut -d" " -f3) ]' 0 "Checking if core is owned by root"
     rlPhaseEnd
 

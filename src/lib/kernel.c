@@ -70,6 +70,7 @@ char *koops_extract_version(const char *linepointer)
  *   T  - Tech_preview
  */
 
+#if 0 /* unused */
 static char *turn_off_flag(char *flags, char flag)
 {
     size_t len = strlen(flags);
@@ -81,6 +82,7 @@ static char *turn_off_flag(char *flags, char flag)
 
     return flags;
 }
+#endif
 
 char *kernel_tainted_short(const char *kernel_bt)
 {
@@ -91,17 +93,6 @@ char *kernel_tainted_short(const char *kernel_bt)
 
     /* 12 == count of flags */
     char *tnt = xstrndup(tainted + strlen("Tainted: "), 12);
-
-    /* flags 'G W' are good, don't prohibit reporting. */
-    tnt = turn_off_flag(tnt, 'G');
-    tnt = turn_off_flag(tnt, 'W');
-
-    char *t = skip_whitespace(tnt);
-    if (t && !*t)
-    {
-        free(tnt);
-        tnt = NULL;
-    }
 
     return tnt;
 }

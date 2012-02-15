@@ -518,11 +518,12 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
             {
                 VERB1 log("Kernel is tainted '%s'", tainted_short);
                 dd_save_text(dd, FILENAME_TAINTED_SHORT, tainted_short);
-                char *reason = xasprintf(_("Your kernel is tainted by flags '%s'. "
-                                         "Kernel maintainers are not interesting about "
-                                         "tainted kernel, because the trace might not be showing "
-                                         "the root problem.")
-                                         , tainted_short);
+                const char *fmt = _("A kernel problem occurred, but your kernel has been"
+                             "tainted (flags:%s). Kernel maintainers are unable to"
+                             "diagnose tainted reports.");
+
+                char *reason = xasprintf(fmt, tainted_short);
+
                 dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason);
                 free(reason);
             }

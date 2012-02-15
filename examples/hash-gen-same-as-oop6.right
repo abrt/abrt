@@ -1,0 +1,29 @@
+WARNING: at drivers/misc/lis3lv02d/lis3lv02d.c:213 lis3lv02d_get_pwron_wait+0x8f/0xa0 [lis3lv02d]()
+Hardware name: HP Pavilion dv7 Notebook PC
+device returned spurious data
+Modules linked in: mac80211 brcmutil cfg80211 crc8 cordic hp_wmi(+) sparse_keymap rfkill uvcvideo videodev hid_logitech_dj media v4l2_compat_ioctl32 joydev snd_hda_codec_idt microcode snd_hda_codec_hdmi snd_hda_intel snd_hda_codec snd_hwdep snd_seq snd_seq_device i2c_piix4 k10temp r8169 bcma mii snd_pcm snd_timer snd soundcore snd_page_alloc hp_accel(+) lis3lv02d input_polldev virtio_net kvm_amd kvm uinput sunrpc pata_acpi ata_generic usb_storage pata_atiixp sdhci_pci sdhci mmc_core wmi video radeon ttm drm_kms_helper drm i2c_algo_bit i2c_core
+Pid: 547, comm: modprobe Not tainted 3.2.3-2.fc16.x86_64 #1
+Call Trace:
+ [<ffffffff8106dd4f>] warn_slowpath_common+0x7f/0xc0
+ [<ffffffff8106de46>] warn_slowpath_fmt+0x46/0x50
+ [<ffffffff81329a58>] ? acpi_evaluate_object+0x1e2/0x1f4
+ [<ffffffffa024c6ef>] lis3lv02d_get_pwron_wait+0x8f/0xa0 [lis3lv02d]
+ [<ffffffffa024cbe7>] lis3lv02d_poweron+0x57/0xc0 [lis3lv02d]
+ [<ffffffffa024d5af>] lis3lv02d_init_device+0x16f/0xbc0 [lis3lv02d]
+ [<ffffffffa025533d>] lis3lv02d_add+0xdd/0x1d0 [hp_accel]
+ [<ffffffff81313492>] acpi_device_probe+0x4e/0x11c
+ [<ffffffff813932cc>] driver_probe_device+0x9c/0x300
+ [<ffffffff813935db>] __driver_attach+0xab/0xb0
+ [<ffffffff81393530>] ? driver_probe_device+0x300/0x300
+ [<ffffffff81393530>] ? driver_probe_device+0x300/0x300
+ [<ffffffff8139214c>] bus_for_each_dev+0x5c/0x90
+ [<ffffffff81392ede>] driver_attach+0x1e/0x20
+ [<ffffffff81392ae0>] bus_add_driver+0x1b0/0x2a0
+ [<ffffffffa025d000>] ? 0xffffffffa025cfff
+ [<ffffffff81393b36>] driver_register+0x76/0x140
+ [<ffffffffa025d000>] ? 0xffffffffa025cfff
+ [<ffffffff81313cfb>] acpi_bus_register_driver+0x43/0x45
+ [<ffffffffa025d01e>] lis3lv02d_init_module+0x1e/0x1000 [hp_accel]
+ [<ffffffff81002042>] do_one_initcall+0x42/0x180
+ [<ffffffff810ac970>] sys_init_module+0xc0/0x230
+ [<ffffffff815e9782>] system_call_fastpath+0x16/0x1b

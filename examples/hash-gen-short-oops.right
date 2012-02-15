@@ -1,0 +1,27 @@
+general protection fault: 0000 [#1] SMP 
+CPU 1 
+Modules linked in: rfcomm btusb ppdev parport_pc lp parport bnep bluetooth ebtable_nat ebtables ipt_MASQUERADE iptable_nat nf_nat xt_CHECKSUM iptable_mangle tun lockd bridge stp llc nls_utf8 cifs fscache ip6t_REJECT nf_conntrack_ipv4 nf_conntrack_ipv6 nf_defrag_ipv6 nf_defrag_ipv4 ip6table_filter xt_state ip6_tables f71882fg nf_conntrack coretemp arc4 snd_hda_codec_hdmi rt2800pci rt2800lib crc_ccitt rt2x00pci rt2x00lib snd_hda_codec_realtek snd_hda_intel snd_hda_codec snd_hwdep snd_seq mac80211 snd_seq_device cfg80211 snd_pcm virtio_net snd_timer snd rfkill sunrpc soundcore microcode kvm_intel kvm uinput joydev i2c_i801 snd_page_alloc iTCO_wdt iTCO_vendor_support r8169 mii eeprom_93cx6 serio_raw binfmt_misc usb_storage firewire_ohci firewire_core crc_itu_t nouveau ttm drm_kms_helper drm i2c_algo_bit i2c_core mxm_wmi wmi video [last unloaded: scsi_wait_scan]
+Pid: 2784, comm: start_xwii.py Not tainted 3.1.6-1.fc16.x86_64 #1 Hewlett-Packard p6530uk/2A9C
+RIP: 0010:[<ffffffff81173f56>]  [<ffffffff81173f56>] fget_light+0x96/0xe0
+RSP: 0018:ffff8800c262ff28  EFLAGS: 00010282
+RAX: ffff88009c46eb40 RBX: 00000000025ff0a0 RCX: 6c62617265766f63
+RDX: ffff00b900b90201 RSI: ffff8800c262ff54 RDI: ffff88010391d018
+RBP: ffff8800c262ff28 R08: 0a2e65746f6d6969 R09: ffff88010391d000
+R10: 6c62617265766f63 R11: 0000000000000246 R12: 00007f6a07fa3000
+R13: 0000000000001000 R14: 0000000000002000 R15: 00007f6a07e6b7a0
+FS:  00007f6a07f7a700(0000) GS:ffff88012bc40000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+CR2: 00007fddb3afd000 CR3: 00000000bf84b000 CR4: 00000000000006e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
+Process start_xwii.py (pid: 2784, threadinfo ffff8800c262e000, task ffff880084af0000)
+Stack:
+ ffff8800c262ff78 ffffffff81172bb8 0000000000002000 00007f6a07e6b7a0
+ ffff8800c262ff78 00000000025ff0a0 0000000000000018 00000000025ff0a0
+ 0000000000000018 0000000002612174 0000000000001f40 ffffffff815dccc2
+Call Trace:
+ [<ffffffff81172bb8>] sys_read+0x28/0x90
+ [<ffffffff815dccc2>] system_call_fastpath+0x16/0x1b
+Code: 75 4a c7 06 01 00 00 00 48 89 d0 5d c3 0f 1f 84 00 00 00 00 00 3b 38 73 ef 4c 8b 48 08 89 ff 49 8d 3c f9 48 8b 17 48 85 d2 74 dd <f6> 42 3d 40 b8 00 00 00 00 5d 48 0f 45 d0 48 89 d0 c3 0f 1f 84 
+RIP  [<ffffffff81173f56>] fget_light+0x96/0xe0
+ RSP <ffff8800c262ff28>

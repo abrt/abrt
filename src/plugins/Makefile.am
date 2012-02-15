@@ -15,7 +15,8 @@ bin_PROGRAMS = \
     abrt-action-generate-backtrace \
     abrt-action-generate-core-backtrace \
     abrt-action-analyze-backtrace \
-    abrt-retrace-client
+    abrt-retrace-client \
+    abrt-dedup-client
 
 libexec_PROGRAMS = abrt-action-install-debuginfo-to-abrt-cache
 
@@ -65,7 +66,8 @@ EXTRA_DIST = \
     analyze_LocalGDB.xml.in \
     analyze_RetraceServer.xml.in \
     analyze_VMcore.xml.in \
-    abrt-action-analyze-vmcore
+    abrt-action-analyze-vmcore \
+    https-utils.h
 
 abrt_dump_oops_SOURCES = \
     abrt-dump-oops.c
@@ -197,7 +199,8 @@ abrt_action_install_debuginfo_to_abrt_cache_LDADD = \
      ../lib/libabrt.la
 
 abrt_retrace_client_SOURCES = \
-    abrt-retrace-client.c
+    abrt-retrace-client.c \
+    https-utils.c
  abrt_retrace_client_CFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
@@ -207,6 +210,22 @@ abrt_retrace_client_SOURCES = \
      $(LIBREPORT_CFLAGS) \
      -Wall -Wwrite-strings -Werror
  abrt_retrace_client_LDADD = \
+     $(LIBREPORT_LIBS) \
+     $(BTPARSER_LIBS) \
+     $(NSS_LIBS)
+
+abrt_dedup_client_SOURCES = \
+    abrt-dedup-client.c \
+    https-utils.c
+ abrt_dedup_client_CFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+     $(NSS_CFLAGS) \
+     $(GLIB_CFLAGS) \
+     -D_GNU_SOURCE \
+     $(LIBREPORT_CFLAGS) \
+     -Wall -Wwrite-strings -Werror
+ abrt_dedup_client_LDADD = \
      $(LIBREPORT_LIBS) \
      $(BTPARSER_LIBS) \
      $(NSS_LIBS)
