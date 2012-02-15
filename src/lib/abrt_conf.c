@@ -80,7 +80,7 @@ int load_abrt_conf()
 
     map_string_h *settings = new_map_string();
     if (!load_conf_file(CONF_DIR"/abrt.conf", settings, /*skip key w/o values:*/ false))
-        error_msg("Can't open '%s'", CONF_DIR"/abrt.conf");
+        perror_msg("Can't open '%s'", CONF_DIR"/abrt.conf");
 
     ParseCommon(settings, CONF_DIR"/abrt.conf");
     free_map_string(settings);
