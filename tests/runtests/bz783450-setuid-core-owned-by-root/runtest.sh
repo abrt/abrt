@@ -52,8 +52,10 @@ rlJournalStart
         su abrt-suid-test -c "./$SUIDEDEXE &" &
         sleep 10
         killpid=`pidof $SUIDEDEXE`
+        c=0;while [ ! -n "$killpid" ]; do sleep 10; killpid=`pidof $SUIDEDEXE`; let c=$c+1; if [ $c -gt 5 ]; then break; fi; done;
         rlRun "kill -SIGSEGV $killpid"
         sleep 10
+        c=0;while [ ! -f "core.$killpid" ]; do sleep 10; let c=$c+1; if [ $c -gt 5 ]; then break; fi; done;
         rlRun '[ "abrt-suid-test" == $(ls -l | grep "core.$killpid" | cut -d" " -f3) ]' 0 "Checking if core is owned by abrt-suid-test"
     rlPhaseEnd
 
@@ -65,8 +67,10 @@ rlJournalStart
         su abrt-suid-test -c "./$SUIDEDEXE &" &
         sleep 10
         killpid=`pidof $SUIDEDEXE`
+        c=0;while [ ! -n "$killpid" ]; do sleep 10; killpid=`pidof $SUIDEDEXE`; let c=$c+1; if [ $c -gt 5 ]; then break; fi; done;
         rlRun "kill -SIGSEGV $killpid"
         sleep 10
+        c=0;while [ ! -f "core.$killpid" ]; do sleep 10; let c=$c+1; if [ $c -gt 5 ]; then break; fi; done;
         rlRun '[ "root" == $(ls -l | grep "core.$killpid" | cut -d" " -f3) ]' 0 "Checking if core is owned by root"
     rlPhaseEnd
 
