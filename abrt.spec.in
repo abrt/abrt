@@ -264,7 +264,7 @@ if [ $1 -eq 1 ]; then
         /bin/systemctl enable abrt-ccpp.service >/dev/null 2>&1 || :
     fi
 %else
-    if [ "`/sbin/chkconfig abrtd`" = "enabled" ]; then
+    if /sbin/chkconfig abrtd >/dev/null 2>&1; then
         /sbin/chkconfig --add abrt-ccpp
     fi
 %endif
@@ -279,7 +279,7 @@ if [ $1 -eq 1 ]; then
         /bin/systemctl enable abrt-oops.service >/dev/null 2>&1 || :
     fi
 %else
-    if [ "`/sbin/chkconfig abrtd`" = "enabled" ]; then
+    if /sbin/chkconfig abrtd >/dev/null 2>&1; then
         /sbin/chkconfig --add abrt-oops
     fi
 %endif
@@ -294,7 +294,7 @@ if [ $1 -eq 1 ]; then
         /bin/systemctl enable abrt-vmcore.service >/dev/null 2>&1 || :
     fi
 %else
-    if [ "`/sbin/chkconfig abrtd`" = "enabled" ]; then
+    if /sbin/chkconfig abrtd >/dev/null 2>&1; then
         /sbin/chkconfig --add abrt-vmcore
     fi
 %endif
