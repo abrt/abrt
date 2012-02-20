@@ -57,6 +57,7 @@ rlJournalStart
         rlRun "kill -SIGSEGV $killpid"
         sleep 10
         c=0;while [ ! -f "core.$killpid" ]; do sleep 10; let c=$c+1; if [ $c -gt 5 ]; then break; fi; done;
+        rlLog "core: `ls -l`"
         rlRun '[ "xabrt-suid-test" == "x$(ls -l | grep "core.$killpid" | cut -d" " -f3)" ]' 0 "Checking if core is owned by abrt-suid-test"
     rlPhaseEnd
 
@@ -73,6 +74,7 @@ rlJournalStart
         rlRun "kill -SIGSEGV $killpid"
         sleep 10
         c=0;while [ ! -f "core.$killpid" ]; do sleep 10; let c=$c+1; if [ $c -gt 5 ]; then break; fi; done;
+        rlLog "core: `ls -l`"
         rlRun '[ "xroot" == "x$(ls -l | grep "core.$killpid" | cut -d" " -f3)" ]' 0 "Checking if core is owned by root"
     rlPhaseEnd
 
