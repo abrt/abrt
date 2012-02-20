@@ -61,6 +61,10 @@ if [ $1 ]; then
     pidof abrtd && killall abrtd
     pidof abrt-dump-oops && killall abrt-dump-oops
 
+    if [ -f /var/run/abrt/saved_core_pattern ]; then
+        rm -f /var/run/abrt/saved_core_pattern
+    fi
+
     exit 0
 else
     echo "Provide test name"
