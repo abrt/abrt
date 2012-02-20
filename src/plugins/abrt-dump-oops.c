@@ -148,12 +148,14 @@ static void extract_oopses(GList **oops_list, char *buffer, size_t buflen)
             linelevel = c[1];
             c += 3;
         }
-        /* remove jiffies time stamp counter if present */
+        /* remove jiffies time stamp counter if present
+         * jiffies are unsigned long, so it can be 2^64 long, which is
+         * 20 decimal digits*/
         if (*c == '[')
         {
             char *c2 = strchr(c, '.');
             char *c3 = strchr(c, ']');
-            if (c2 && c3 && (c2 < c3) && (c3-c) < 14 && (c2-c) < 8)
+            if (c2 && c3 && (c2 < c3) && (c3-c) < 21 && (c2-c) < 8)
             {
                 c = c3 + 1;
                 if (*c == ' ')

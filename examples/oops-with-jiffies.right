@@ -1,0 +1,23 @@
+[178856.137422] WARNING: at /builddir/build/BUILD/kernel-3.2.fc16/compat-wireless-3.3-rc1-2/include/net/mac80211.h:3618 rate_control_send_low+0x23e/0x250 [mac80211]()
+[178856.137437] Hardware name: 4177CTO
+[178856.137438] Modules linked in: usb_storage tcp_lp ppdev parport_pc lp parport fuse ipt_MASQUERADE iptable_nat nf_nat xt_CHECKSUM be2iscsi iscsi_boot_sysfs bnx2i iptable_mangle cnic uio cxgb4i cxgb4 cxgb3i bridge stp llc libcxgbi cxgb3 mdio ib_iser rdma_cm ib_cm iw_cm ib_sa ib_mad ib_core ib_addr iscsi_tcp libiscsi_tcp libiscsi scsi_transport_iscsi ip6t_REJECT nf_conntrack_ipv4 nf_conntrack_ipv6 nf_defrag_ipv6 nf_defrag_ipv4 xt_state ip6table_filter nf_conntrack ip6_tables sha256_generic dm_crypt snd_hda_codec_hdmi snd_hda_codec_conexant snd_hda_intel snd_hda_codec snd_hwdep arc4 vhost_net macvtap macvlan tun snd_seq snd_seq_device virtio_net snd_pcm kvm_intel snd_timer kvm thinkpad_acpi iwlwifi snd mac80211 e1000e tpm_tis tpm tpm_bios nfsd lockd snd_page_alloc soundcore cfg80211 rfkill nfs_acl auth_rpcgss i2c_i801 sunrpc uinput joydev iTCO_wdt iTCO_vendor_support microcode firewire_ohci firewire_core crc_itu_t sdhci_pci sdhci mmc_core wmi i915 drm_kms_helper drm i2c_algo_bit i2
+c_core video [last unloaded: scsi_wait_scan]
+[178856.137482] Pid: 22695, comm: ksoftirqd/2 Not tainted 3.2.5-3.fc16.x86_64 #1
+[178856.137484] Call Trace:
+[178856.137490]  [<ffffffff8106dd4f>] warn_slowpath_common+0x7f/0xc0
+[178856.137493]  [<ffffffff8106ddaa>] warn_slowpath_null+0x1a/0x20
+[178856.137500]  [<ffffffffa02a344e>] rate_control_send_low+0x23e/0x250 [mac80211]
+[178856.137506]  [<ffffffffa0336d15>] rs_get_rate+0x65/0x1d0 [iwlwifi]
+[178856.137513]  [<ffffffffa02a37c6>] rate_control_get_rate+0x96/0x170 [mac80211]
+[178856.137522]  [<ffffffffa02af59f>] invoke_tx_handlers+0x6ff/0x13e0 [mac80211]
+[178856.137528]  [<ffffffffa028edac>] ? sta_info_get+0x6c/0x80 [mac80211]
+[178856.137536]  [<ffffffffa02b03d0>] ieee80211_tx+0x60/0xc0 [mac80211]
+[178856.137543]  [<ffffffffa02b1352>] ieee80211_tx_pending+0x162/0x270 [mac80211]
+[178856.137546]  [<ffffffff81074d18>] tasklet_action+0x78/0x140
+[178856.137548]  [<ffffffff81075378>] __do_softirq+0xb8/0x230
+[178856.137550]  [<ffffffff810755aa>] run_ksoftirqd+0xba/0x170
+[178856.137552]  [<ffffffff810754f0>] ? __do_softirq+0x230/0x230
+[178856.137556]  [<ffffffff8108fb9c>] kthread+0x8c/0xa0
+[178856.137559]  [<ffffffff815eb8f4>] kernel_thread_helper+0x4/0x10
+[178856.137561]  [<ffffffff8108fb10>] ? kthread_worker_fn+0x190/0x190
+[178856.137563]  [<ffffffff815eb8f0>] ? gs_change+0x13/0x13
