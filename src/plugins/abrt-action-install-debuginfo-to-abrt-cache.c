@@ -41,6 +41,9 @@ int main(int argc, char **argv)
         if (strcmp(arg, "--ids=-") == 0)
             continue;
 
+        if (strncmp(arg, "--exact", 7) == 0)
+            continue;
+
         if (strncmp(arg, "--cache", 7) == 0)
             error_msg_and_die("bad option %s", arg);
         if (strncmp(arg, "--tmpdir", 8) == 0)
