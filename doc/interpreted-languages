@@ -12,7 +12,7 @@ misbehaviors (such as uncaught exceptions, invalid bytecode, missing
 library) inside the interpreter and reports the misbehaviors to
 ABRT. Hook is usually responsible for assembling the backtrace.
 
-Another issue are the crashes of the interpreter, which are catched by
+Another issue are the crashes of the interpreter, which are caught by
 the CCpp plugin.  When the support for specific interpreter is missing
 all these crashes are reported to the interpreter component when
 submitting the crash using Bugzilla plugin, regardless of application
@@ -29,7 +29,7 @@ Communication between ABRT and hooks
 
 Hook might be a binary plugin plugged to the interpreter, or it might
 be interpreted by the interpreter in the same way as the applications
-When some event which should be catched by ABRT occurs and is detected
+When some event which should be caught by ABRT occurs and is detected
 by the hook, the hook reports it to ABRT using ABRT daemon's socket
 file.  ABRT then creates a new directory describing the crash in
 /var/spool/abrt.
