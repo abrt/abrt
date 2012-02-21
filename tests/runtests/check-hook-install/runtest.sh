@@ -51,6 +51,7 @@ rlJournalStart
 
     rlPhaseStartCleanup
         rlRun "echo '$HOOK_BCK' > $HOOK_PATH" 0 "Restore old hook"
+        rlRun "rm -f /var/run/abrt/saved_core_pattern" 0 "Remove saved_core_pattern"
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd
