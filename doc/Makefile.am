@@ -4,6 +4,7 @@ MAN1_TXT =
 MAN1_TXT += abrt-action-analyze-c.txt
 MAN1_TXT += abrt-action-trim-files.txt
 MAN1_TXT += abrt-action-generate-backtrace.txt
+MAN1_TXT += abrt-action-generate-core-backtrace.txt
 MAN1_TXT += abrt-action-analyze-backtrace.txt
 MAN1_TXT += abrt-action-analyze-oops.txt
 MAN1_TXT += abrt-action-analyze-python.txt
