@@ -4,7 +4,7 @@
 #
 #   runtest.sh of verify-that-report-edits
 #   Description: Make sure manual edits to reports actually make it into submitted data.
-#   Author: Michal Nowak <mnowak@redhat.com>
+#   Author: Michal Nowak <mnowak@redhat.com>, Richard Marko <rmarko@redhat.com>
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -34,6 +34,7 @@ rlJournalStart
     rlPhaseStartSetup
         TmpDir=$(mktemp -d)
         cp "./fakeditor.sh" $TmpDir
+        cp "./expect" $TmpDir
         pushd $TmpDir
         rlLog "Generate crash"
         sleep 3m &
@@ -49,7 +50,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
-        echo -e "1\nN\n1\n3\n/tmp/abrt.log\n" | EDITOR="./fakeditor.sh" abrt-cli report $crash_PATH 2>&1 | tee out
+        rlRun "./expect $crash_PATH 2>&1 | tee out" 0 "Running abrt-cli via expect"
         rlAssertGrep "The report has been updated" out
 
         smart_quote="$(grep 'smart_quote=' fakeditor.sh | awk -F '"' '{ print $2 }')"
