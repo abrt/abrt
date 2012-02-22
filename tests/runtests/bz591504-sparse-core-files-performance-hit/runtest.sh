@@ -29,6 +29,7 @@
 
 TEST="bz591504-sparse-core-files-performance-hit"
 PACKAGE="abrt"
+GDB_BUILDDEPS="expat-devel ncurses-devel rpm-devel bison python-devel gettext flex zlib-devel texinfo-text texinfo"
 
 rlJournalStart
     rlPhaseStartSetup
@@ -41,6 +42,9 @@ rlJournalStart
         # not able to parse deps from spec file inside the package causing
         # architecure mismatch. safe for fedora
         #rlRun "yum-builddep -y gdb-*.src.rpm" 0 "Fetch gdb dependencies"
+        # in case packages weren't installed before
+        rlRun "yum -y install $GDB_BUILDDEPS" 0 "Install build dependencies"
+
         rlRun "rpm -ivh gdb-*.src.rpm" 0 "Install gdb sources"
         specfile="$(rpm --eval '%_specdir')/gdb.spec"
         rlRun "rpmbuild -bp $specfile" 0 "Unpack and patch"
