@@ -52,8 +52,10 @@ static void hash_oops_str(char hash_str[SHA1_RESULT_LEN*2 + 1], char *oops_buf, 
 
             /* skip symbols prefixed with ? */
             if (end_mem_block && *end_mem_block == '?')
+            {
+                free(line);
                 goto skip_line;
-
+            }
             /* strip out offset +off/len */
             begin_off_len = strchr(end_mem_block, '+');
             if (!begin_off_len)
@@ -68,7 +70,6 @@ static void hash_oops_str(char hash_str[SHA1_RESULT_LEN*2 + 1], char *oops_buf, 
 
             ++i;
         skip_line:
-            free(line);
             call_trace += end_line - call_trace + 1;
             end_line = strchr(call_trace, '\n');
             if (end_line)
