@@ -16,6 +16,9 @@ for test_dir in $testlist; do
     $RUNNER_SCRIPT $test &> $logfile
     syslog "End: $short_testname"
 
+    # test start date/time
+    test_start_dt=$( date +"%m/%d/%Y %H:%M:%S" )
+
     sleep 10
 
     # save post crashes
@@ -55,6 +58,13 @@ for test_dir in $testlist; do
 
     # collect dmesg
     dmesg -c > "$outdir/dmesg"
+
+    # collect avc's
+    ausearch -ts $test_start_dt -m avc &> "$outdir/avc"
+    # don't preserve avc file if there are no matches
+    if grep -q "no matches" "$outdir/avc"; then
+        rm "$outdir/avc"
+    fi
 
     # append protocol to results
     echo '' >> $OUTPUT_ROOT/results
