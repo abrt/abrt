@@ -68,7 +68,9 @@ for test_dir in $testlist; do
 
     # append protocol to results
     echo '' >> $OUTPUT_ROOT/results
-    cat "$outdir/protocol.log" >> $OUTPUT_ROOT/results
+    if [ -f "$outdir/protocol.log" ]; then
+        cat "$outdir/protocol.log" >> $OUTPUT_ROOT/results
+    fi
 
     # check test result
     test_result="FAIL"
