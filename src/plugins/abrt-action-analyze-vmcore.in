@@ -26,11 +26,11 @@ if __name__ == "__main__":
     vmlinux_di_cachedir = ""
     vmlinux_di_path = ""
     tmpdir = ""
-    vmcore = os.path.join(os.getcwd(), "vmcore")
+    vmcore = ""
     global verbose
     help_text = _("Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]").format(PROGNAME)
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hv", ["help", "tmpdir=", "cache=", "core="])
+        opts, args = getopt.getopt(sys.argv[1:], "hvd", ["help", "tmpdir=", "cache=", "core="])
     except getopt.GetoptError, err:
         error_msg(err) # prints something like "option -a not recognized"
         error_msg_and_die(help_text)
@@ -49,7 +49,14 @@ if __name__ == "__main__":
             vmcore = arg
         elif opt == "--tmpdir":
             tmpdir = arg
+        elif opt in ("-d"):
+            try:
+                os.chdir(arg)
+            except OSError, ex:
+                print str(ex)
+                sys.exit(RETURN_FAILURE)
 
+    vmcore = os.path.join(os.getcwd(), "vmcore")
     set_verbosity(verbose)
     if not os.path.exists(vmcore):
         print _("File {0} doesn't exist").format(vmcore)
