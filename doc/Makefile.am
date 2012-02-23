@@ -15,6 +15,7 @@ MAN1_TXT += abrt-server.txt
 MAN1_TXT += abrt-cli.txt
 MAN1_TXT += abrt-action-save-package-data.txt
 MAN1_TXT += abrt-install-ccpp-hook.txt
+MAN1_TXT += abrt-action-analyze-vmcore.txt
 
 MAN5_TXT =
 MAN5_TXT += abrt.conf.txt
