@@ -108,3 +108,43 @@ int main(void)
 	return ret;
 }
 ]])
+
+AT_TESTFUN([koops_hash_improve],
+[[
+#include "libabrt.h"
+#include "koops-test.h"
+
+int run_test(const struct test_struct *test)
+{
+	char *oops1 = fread_full(test->filename);
+	char *oops2 = fread_full(test->expected_results);
+
+	char hash_oops1[SHA1_RESULT_LEN*2 + 1];
+	koops_hash_str(hash_oops1, oops1, oops1);
+
+	char hash_oops2[SHA1_RESULT_LEN*2 + 1];
+	koops_hash_str(hash_oops2, oops2, oops2);
+
+	if (!strcmp(hash_oops1, hash_oops2))
+		return 0;
+
+	log("'%s' != '%s'", hash_oops1, hash_oops2);
+
+	return 1;
+}
+
+int main(void)
+{
+	struct test_struct all_same_hashes[] = {
+		{ EXAMPLE_PFX"/oops4.right", EXAMPLE_PFX"/oops-same-as-oops4.right" },
+		{ EXAMPLE_PFX"/hash-gen-oops6.right", EXAMPLE_PFX"/hash-gen-same-as-oops6.right" },
+	};
+
+	int ret = 0;
+	for (int i = 0; i < ARRAY_SIZE(all_same_hashes); ++i)
+		ret |= run_test(&all_same_hashes[i]);
+
+	return ret;
+}
+
+]])

@@ -69,7 +69,8 @@ int daemon_is_ok();
 char *koops_extract_version(const char *line);
 #define kernel_tainted_short abrt_kernel_tainted_short
 char *kernel_tainted_short(const char *kernel_bt);
-
+#define koops_hash_str abrt_koops_hash_str
+void koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], char *oops_buf, const char *oops_ptr);
 
 #ifdef __cplusplus
 }

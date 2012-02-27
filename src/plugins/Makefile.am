@@ -119,7 +119,8 @@ abrt_action_analyze_oops_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_analyze_oops_LDADD = \
-    $(LIBREPORT_LIBS)
+    $(LIBREPORT_LIBS) \
+    ../lib/libabrt.la
 
 abrt_action_trim_files_SOURCES = \
     abrt-action-trim-files.c
