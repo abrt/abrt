@@ -18,6 +18,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#define EXAMPLE_PFX "../../../examples"
+
 struct test_struct {
         const char *filename;
         const char *expected_results;
@@ -30,4 +32,20 @@ static inline FILE *xfopen_ro(const char *filename)
                 perror_msg_and_die("Can't open '%s'", filename);
 
         return fp;
+}
+
+static inline char *fread_full(const char *filenamep)
+{
+        FILE *fp = xfopen_ro(filenamep);
+
+        fseek(fp, 0, SEEK_END);
+        off_t size = ftell(fp);
+        fseek(fp, 0, SEEK_SET);
+        char *koops_bt = xzalloc(size + 1);
+        int r = fread(koops_bt, sizeof(char), size, fp);
+        fclose(fp);
+        if (r < 0)
+		perror_msg_and_die("Can't read '%s'", filenamep);
+
+        return koops_bt;
 }
