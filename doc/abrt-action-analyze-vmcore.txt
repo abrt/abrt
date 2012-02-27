@@ -38,8 +38,14 @@ OPTIONS
 -v::
    Be more verbose. Can be given multiple times.
 
--d DIR1[:DIR2]::
-   Additional debuginfo directories
+--cache=DIR1[:DIR2]::
+   Additional debuginfo directories (Default: /var/cache/abrt-di)
+
+--core=VMCORE::
+   Path to vmcore to analyze (Default: ./vmcore)
+
+--tmpdir=TMPDIR::
+   Where to store temporary files (Default: /tmp/abrt-tmp-debuginfo-<time>-<pid>)
 
 AUTHORS
 -------
