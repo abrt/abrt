@@ -30,7 +30,7 @@ if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hvd", ["help", "tmpdir=", "cache=", "core="])
     except getopt.GetoptError, err:
-        error_msg(err) # prints something like "option -a not recognized"
+        error_msg(str(err)) # prints something like "option -a not recognized"
         error_msg_and_die(help_text)
     usercache = False
 
