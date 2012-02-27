@@ -6,7 +6,7 @@
 from subprocess import Popen, PIPE
 import os
 import sys
-from reportclient import _, verbose, log, log1, log2, set_verbosity, error_msg_and_die
+from reportclient import _, verbose, set_verbosity, error_msg_and_die, error_msg
 import time
 from reportclient.debuginfo import DebugInfoDownload
 import getopt
@@ -18,9 +18,7 @@ RETURN_OK = 0
 # serious problem, should be logged somewhere
 RETURN_FAILURE = 2
 
-import getopt
-
-ver=""
+ver = ""
 if __name__ == "__main__":
     cachedirs = []
     vmlinux_di_cachedir = ""
@@ -111,13 +109,13 @@ if __name__ == "__main__":
             res = downloader.download([vmlinux_di_path], download_exact_files=True)
             if res != RETURN_OK:
                 error_msg_and_die(_("Can't download required debuginfo"))
-            vmlinux_di_path = "{0}/usr/lib/debug/lib/modules/{1}/vmlinux".format(cachedir, ver)
+            vmlinux_di_path = "{0}/usr/lib/debug/lib/modules/{1}/vmlinux".format(vmlinux_di_cachedir, ver)
         else: # we need to use the suid wrapper, if we use the default cache
             downloader = Popen(["/usr/libexec/abrt-action-install-debuginfo-to-abrt-cache", "--size_mb=4096", "--exact={0}".format(vmlinux_di_path)], bufsize = -1)
             res = downloader.wait()
             if res != 0:
                 error_msg_and_die(_("Can't download required debuginfo"))
-            vmlinux_di_path = "{0}/usr/lib/debug/lib/modules/{1}/vmlinux".format(cachedir, ver)
+            vmlinux_di_path = "{0}/usr/lib/debug/lib/modules/{1}/vmlinux".format(vmlinux_di_cachedir, ver)
 
     print _("Generating backtrace")
     log_file = open("kernel_log","w")
