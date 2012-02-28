@@ -11,6 +11,10 @@ TESTSUITE_FILES += examples/oops-kernel-3.x.x
 TESTSUITE_FILES += examples/oops1.right
 TESTSUITE_FILES += examples/koops-tainted-bg1
 TESTSUITE_FILES += examples/oops-same-as-oops4.right
+TESTSUITE_FILES += examples/oops4.right
+TESTSUITE_FILES += examples/oops-same-as-oops4.right
+TESTSUITE_FILES += examples/hash-gen-oops6.right
+TESTSUITE_FILES += examples/hash-gen-same-as-oops6.right
 
 EXTRA_DIST = doc/coding-style abrt.spec.in abrt.pc.in \
 	abrt-version asciidoc.conf init-scripts/* $(TESTSUITE_FILES)
