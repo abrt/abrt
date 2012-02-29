@@ -12,15 +12,16 @@ if [ $1 ]; then
     fi
 
     # abrtd
+    dbus_service_name=messagebus
     if ! pidof abrtd 2>&1 > /dev/null; then
         if [ -x /usr/sbin/abrtd ]; then
             if [ -x /bin/systemctl ]; then
-                /bin/systemctl restart dbus.service
+                /bin/systemctl restart $dbus_service_name.service
             else
                 if [ -x /usr/sbin/service ]; then
-                    /usr/sbin/service dbus restart
+                    /usr/sbin/service $dbus_service_name restart
                 else
-                    /sbin/service dbus restart
+                    /sbin/service $dbus_service_name restart
                 fi
             fi
             /usr/sbin/abrtd -s
