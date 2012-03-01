@@ -51,12 +51,14 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
-        rlRun "./expect $crash_PATH 2>&1 | tee out" 0 "Running abrt-cli via expect"
+        rlRun "./expect $crash_PATH &> out" 0 "Running abrt-cli via expect"
+        rlLog "$( cat out)"
         rlAssertGrep "The report has been updated" out
 
         smart_quote="$(grep 'smart_quote=' fakeditor.sh | awk -F '"' '{ print $2 }')"
         rlAssertGrep "edited successfully" out
         rlAssertGrep "/tmp/abrt.log" out
+        rlAssertNotGrep "!! Timeout !!" out
         rlLog "smart_quote=$smart_quote"
         rlAssertGrep "$smart_quote" "/tmp/abrt.log"
     rlPhaseEnd

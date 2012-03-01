@@ -17,12 +17,12 @@ while {1} {
     eof {break}
     timeout { itstime }
     # analyzers
-    -re "(\[0-9\]).*GNU Debugger" {
+    -re "\n (\[0-9\]).*?GNU Debugger" {
       puts "Got GNU Debbuger"
       set debugger_opt $expect_out(1,string)
       puts ">> $debugger_opt"
     }
-    -re "(\[0-9\]).*Retrace Server" {
+    -re "\n (\[0-9\]).*?Retrace Server" {
       puts "Got Retrace Server"
       set retrace_opt $expect_out(1,string)
       puts ">> $retrace_opt"
@@ -35,7 +35,7 @@ while {1} {
       send "N\r"
     }
     # collectors
-    -re "(\[0-9\]).*Smolt" {
+    -re "\n (\[0-9\]).*?Smolt" {
       puts "Got Smolt"
       set smolt_opt $expect_out(1,string)
       puts ">> $smolt_opt"
@@ -44,22 +44,22 @@ while {1} {
       send "$smolt_opt\r"
     }
     # reporters
-    -re "(\[0-9\]).*Bugzilla" {
+    -re "\n (\[0-9\]).*?Bugzilla" {
       puts "Got Bugzilla"
       set bugzilla_opt $expect_out(1,string)
       puts ">> $bugzilla_opt"
     }
-    -re "(\[0-9\]).*Mailx" {
+    -re "\n (\[0-9\]).*?Mailx" {
       puts "Got Mailx"
       set mailx_opt $expect_out(1,string)
       puts ">> $mailx_opt"
     }
-    -re "(\[0-9\]).*Logger" {
+    -re "\n (\[0-9\]).*?Logger" {
       puts "Got Logger"
       set logger_opt $expect_out(1,string)
       puts ">> $logger_opt"
     }
-    -re "(\[0-9\]).*Customer" {
+    -re "\n (\[0-9\]).*?Customer" {
       puts "Got RHCS"
       set rhcs_opt $expect_out(1,string)
       puts ">> $rhcs_opt"
