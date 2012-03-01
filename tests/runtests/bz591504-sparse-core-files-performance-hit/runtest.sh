@@ -50,7 +50,7 @@ rlJournalStart
         rlRun "rpmbuild -bp $specfile" 0 "Unpack and patch"
         gdbtestdir="$(rpm --eval '%_builddir')/gdb-*/gdb/testsuite"
         pushd $gdbtestdir
-        rpm --eval '%configure' | sh # ./configure
+        rlRun "./configure" 0 "Run configure"
         rlRun "make site.exp" 0 "Make gdb tests"
     rlPhaseEnd
 
