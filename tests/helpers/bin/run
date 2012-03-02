@@ -28,6 +28,7 @@ cat ~/common/cron_hunk >> custom-ks.cfg
 # ssh key
 cat ~/common/ssh_pre_hunk >> custom-ks.cfg
 embed_file "/root/.ssh/id_rsa" ~/.ssh/id_rsa
+cat ~/common/ssh_post_hunk >> custom-ks.cfg
 
 # procmail cfg
 cat ~/common/procmail_hunk >> custom-ks.cfg
