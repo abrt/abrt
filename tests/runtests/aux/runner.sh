@@ -66,6 +66,8 @@ if [ $1 ]; then
         rm -f /var/run/abrt/saved_core_pattern
     fi
 
+    rm -f /var/spool/abrt/last-ccpp
+
     exit 0
 else
     echo "Provide test name"
