@@ -5,6 +5,3 @@ cp /var/log/messages $OUTPUT_ROOT/pre/messages
 dmesg -c > $OUTPUT_ROOT/pre/dmesg_pre
 
 yum install -y beakerlib dejagnu time createrepo mock expect
-
-# turn off noaudit
-semodule -DB
