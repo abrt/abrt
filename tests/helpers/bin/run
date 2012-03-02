@@ -1,0 +1,91 @@
+#!/bin/bash
+
+source ~/common/globaldefs.sh
+source ~/common/fun.sh
+source ~/targets/${1}/defs.sh
+
+pwd
+pushd "$DATA_DIR"
+# remove unprocessed reports
+rm -f data/*.tar.gz
+if [ ! -d data ]; then
+    mkdir data
+fi
+
+reinit_vm
+echo 'Getting kickstart'
+get_ks
+
+cp orig-ks.cfg custom-ks.cfg
+rm -f orig-ks.cfg
+
+echo 'Patching kickstart'
+
+cat ~/common/start_post_hunk >> custom-ks.cfg
+cat ~/common/git_hunk >> custom-ks.cfg
+cat ~/common/cron_hunk >> custom-ks.cfg
+
+# ssh key
+cat ~/common/ssh_pre_hunk >> custom-ks.cfg
+embed_file "/root/.ssh/id_rsa" ./id_rsa
+
+# procmail cfg
+cat ~/common/procmail_hunk >> custom-ks.cfg
+
+# custom cfg
+embed_file "/root/abrt/tests/runtests/aux/config.sh.local" ./config.sh.local
+
+# fedorahosted alias
+embed_file "/etc/hosts" ~/common/hosts_hunk
+embed_file "/etc/motd" ~/common/motd_hunk
+
+add_rhel_repos
+
+# %post
+cat ~/common/end_post_hunk >> custom-ks.cfg
+
+echo 'Running virt-install'
+exit 0
+virt-install --name $VM_NAME --ram "1300" \
+  --connect qemu:///system \
+  --location "$LOC" \
+  --disk path=$DISK,cache=none \
+  --initrd-inject=./custom-ks.cfg --extra-args "ks=file:/custom-ks.cfg" \
+  --noautoconsole \
+  --os-type=linux \
+  --os-variant=$OS_VARIANT \
+  --graphics type=vnc \
+  --quiet
+
+echo 'virt-install done'
+echo -n "Zzzz (until VM is being installed): "
+while virsh --connect qemu:///system list | grep -q $VM_NAME; do
+    echo -n '.'
+    sleep 1m
+done
+echo 'x'
+
+sleep 30
+
+virsh --connect qemu:///system start $VM_NAME
+cat /var/lib/libvirt/dnsmasq/default.leases
+
+echo -n "Zzzz (until VM is executing the tests): "
+while virsh --connect qemu:///system list | grep -q $VM_NAME; do
+    echo -n '.'
+    sleep 1m
+done
+echo 'x'
+
+sleep 30
+
+handle_results "$DATA_DIR/data/" "/var/nightly_results/$( basename $DATA_DIR/)"
+echo $result_path
+test -d $result_path || exit 1
+echo 'Mirroring website'
+~/web_mirror/cron_wrapper
+echo 'Send email'
+res_mail $result_path
+
+popd # $DATA_DIR
+echo 'All done'

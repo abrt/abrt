@@ -1,0 +1,14 @@
+HOUR=$(date +%k)
+MIN=$(( $(date +%M) + 10 ))
+
+if [ $MIN -gt 59 ]; then
+  HOUR=$(( $HOUR + 1 ))
+  MIN=$(( $MIN % 60 + 1 ))
+fi
+
+cat >> /etc/crontab <<_END_
+LOGNAME=root
+$MIN $HOUR * * * root screen -d -m /root/abrt/tests/runtests/run | tee -a /tmp/abrt-nightly-test.log
+_END_
+
+

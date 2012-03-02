@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# clean run data details older than 3 days
+# while preserving directory modification times
+
+mtimes_data=/tmp/clean_mtimes_data
+
+cd /var/nightly_results/
+for osver in *; do 
+pushd $osver
+    rm -f $mtimes_data
+    all_dirs=$( find . -type d )
+    for dir in $all_dirs; do
+        mtime=$( stat -c %y $dir )
+        echo "$dir $mtime" >> $mtimes_data
+    done
+
+    old_dirs=$( find . -maxdepth 1 -type d -mtime +3 )
+    for old in $old_dirs; do
+        old_fails=$( find $old -type f -name fail.log )
+        old_results=$( find $old -type f -name results )
+        find $old -type f | xargs rm
+
+        for old_result in $old_results; do
+            touch $old_result
+        done
+        for old_fail in $old_fails; do
+            touch $old_fail
+        done
+    done
+
+    while read line; do
+        file=$( echo $line | cut -d' ' -f1 )
+        mtime="$( echo $line | cut -d' ' -f2- )"
+        touch --date="$mtime" $file
+    done < $mtimes_data
+popd
+done
+
+cd -

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+TARGET=${1}
+
+LOGDEST="/var/log/abrt_builds/$TARGET.log"
+( ~/bin/run $TARGET 2>&1 ) | ~/bin/predate.sh >> $LOGDEST
+exit $?
