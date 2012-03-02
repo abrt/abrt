@@ -45,7 +45,6 @@ add_rhel_repos
 cat ~/common/end_post_hunk >> custom-ks.cfg
 
 echo 'Running virt-install'
-exit 0
 virt-install --name $VM_NAME --ram "1300" \
   --connect qemu:///system \
   --location "$LOC" \
