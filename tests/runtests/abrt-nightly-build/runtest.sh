@@ -35,12 +35,19 @@ if [ -f /etc/fedora-release ]; then
     if grep -q 16 '/etc/fedora-release'; then
         VERS="fedora-16-x86_64"
     fi
-
+    if grep -q 17 '/etc/fedora-release'; then
+        VERS="fedora-17-x86_64"
+    fi
     if grep -q 'Rawhide' '/etc/fedora-release'; then
         VERS="fedora-rawhide-x86_64"
     fi
 else
-    VERS="epel-6-x86_64"
+    if grep -q 6 '/etc/redhat-release'; then
+        VERS="epel-6-x86_64"
+    fi
+    if grep -q 7 '/etc/redhat-release'; then
+        VERS="epel-7-x86_64"
+    fi
 fi
 
 MOCKCFG="/etc/mock/${VERS}.cfg"
