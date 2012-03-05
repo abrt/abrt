@@ -60,7 +60,7 @@ for test_dir in $testlist; do
     dmesg -c > "$outdir/dmesg"
 
     # collect avc's
-    ausearch -ts $test_start_dt -m avc &> "$outdir/avc"
+    env LC_ALL=en_US.UTF-8 ausearch -ts $test_start_dt -m avc &> "$outdir/avc"
     # don't preserve avc file if there are no matches
     if grep -q "no matches" "$outdir/avc"; then
         rm "$outdir/avc"
