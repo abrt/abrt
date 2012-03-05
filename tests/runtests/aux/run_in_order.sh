@@ -12,12 +12,12 @@ for test_dir in $testlist; do
 
     mkdir -p $outdir
 
+    # test start date/time
+    test_start_dt=$( date +"%m/%d/%Y %H:%M:%S" )
+
     syslog $short_testname
     $RUNNER_SCRIPT $test &> $logfile
     syslog "End: $short_testname"
-
-    # test start date/time
-    test_start_dt=$( date +"%m/%d/%Y %H:%M:%S" )
 
     sleep 10
 
