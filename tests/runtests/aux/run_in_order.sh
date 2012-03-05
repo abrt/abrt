@@ -19,7 +19,7 @@ for test_dir in $testlist; do
     $RUNNER_SCRIPT $test &> $logfile
     syslog "End: $short_testname"
 
-    sleep 10
+    sleep 1
 
     # save post crashes
     if [ -d /var/spool/abrt ]; then
