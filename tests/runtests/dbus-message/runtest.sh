@@ -59,6 +59,7 @@ rlJournalStart
         package="$(abrt-cli list -f | grep -i Package | awk '{ print $2 }' | tail -n1)"
         user="$( id -u )"
 
+        sleep 10
         kill %1 || kill -9 %1 # kill dbus-monitor
 
         rlAssertGrep "member=Crash" dbus.log
