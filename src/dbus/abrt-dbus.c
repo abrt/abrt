@@ -1,5 +1,8 @@
 #include <gio/gio.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <pwd.h>
+#include <grp.h>
 #include "libabrt.h"
 #include "abrt-polkit.h"
 
@@ -21,7 +24,7 @@ static const gchar introspection_xml[] =
   "      <arg type='as' name='response' direction='out'/>"
   "    </method>"
   "    <method name='GetAllProblems'>"
-  "      <arg type='s' name='response' direction='out'/>"
+  "      <arg type='as' name='response' direction='out'/>"
   "    </method>"
   "    <method name='GetInfo'>"
   "      <arg type='s' name='problem_dir' direction='in'/>"
@@ -41,14 +44,72 @@ static void reset_timeout()
     //FIXME: reset timer on every call
     if (g_timeout > 0)
     {
-        g_print("Removing timeout\n");
+        VERB2 log("Removing timeout\n");
         g_source_remove(g_timeout);
     }
-    g_print("setting a new timeout\n");
+    VERB2 log("Setting a new timeout\n");
     g_timeout = g_timeout_add_seconds(TIME_TO_DIE, on_timeout_cb, NULL);
 }
 
-static GList* scan_directory(const char *path)
+uid_t get_caller_uid(GDBusConnection *connection, const char *caller, GError *error)
+{
+    guint caller_uid;
+
+    GDBusProxy * proxy = g_dbus_proxy_new_sync(connection,
+                                     G_DBUS_PROXY_FLAGS_NONE,
+                                     NULL,
+                                     "org.freedesktop.DBus",
+                                     "/org/freedesktop/DBus",
+                                     "org.freedesktop.DBus",
+                                     NULL,
+                                     &error);
+
+    GVariant *result = g_dbus_proxy_call_sync(proxy,
+                                     "GetConnectionUnixUser",
+                                     g_variant_new ("(s)", caller),
+                                     G_DBUS_CALL_FLAGS_NONE,
+                                     -1,
+                                     NULL,
+                                     &error);
+
+    if (result == NULL) {
+        /* this value shouldn't be used, beacuse error is set,
+         * but return 99 -> nobody just to be sure
+         */
+        return 99;
+    }
+
+    g_variant_get(result, "(u)", &caller_uid);
+    g_variant_unref(result);
+
+    VERB2 log("Caller uid: %i\n", caller_uid);
+    return caller_uid;
+}
+
+bool uid_in_group(uid_t uid, gid_t gid)
+{
+    char **tmp;
+    struct passwd *pwd = getpwuid(uid);
+    if (pwd && (pwd->pw_gid == gid))
+        return TRUE;
+
+    struct group *grp = getgrgid(gid);
+    if (pwd && grp && grp->gr_mem)
+    {
+        for (tmp = grp->gr_mem; *tmp != NULL; tmp++)
+        {
+            if (g_strcmp0(*tmp, pwd->pw_name) == 0)
+            {
+                VERB3 log("user %s belongs to group: %s\n",  pwd->pw_name, grp->gr_name);
+                return TRUE;
+            }
+        }
+    }
+    VERB2 log("WARN: user %s DOESN'T belong to group: %s\n",  pwd->pw_name, grp->gr_name);
+    return FALSE;
+}
+
+static GList* scan_directory(const char *path, uid_t caller_uid)
 {
     GList *list = NULL;
 
@@ -78,12 +139,15 @@ static GList* scan_directory(const char *path)
             logmode = 0;
             struct dump_dir *dd = dd_opendir(full_name, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
             logmode = sv_logmode;
-            if (dd)
+            /* or we could just setuid?
+             - but it would require locking, because we want to setuid back before we server another request..
+            */
+            if (dd && (uid_in_group(caller_uid, statbuf.st_gid) || caller_uid == 0))
             {
                 list = g_list_prepend(list, full_name);
                 full_name = NULL;
-                dd_close(dd);
             }
+            dd_close(dd); //doesn't fail even if dd == NULL
         }
         free(full_name);
     }
@@ -95,9 +159,28 @@ static GList* scan_directory(const char *path)
     return g_list_reverse(list);
 }
 
+GVariant *get_problem_dirs_for_uid(uid_t uid)
+{
+    GList *dirs = scan_directory(g_settings_dump_location,  uid);
+
+    GVariantBuilder *builder;
+    builder = g_variant_builder_new(G_VARIANT_TYPE ("as"));
+    while (dirs)
+    {
+        g_variant_builder_add(builder, "s", (char*)dirs->data);
+        free(dirs->data);
+        dirs = g_list_delete_link(dirs, dirs);
+    }
+
+    GVariant *response = g_variant_new("(as)", builder);
+    g_variant_builder_unref(builder);
+
+    return response;
+}
+
 static void
 handle_method_call(GDBusConnection       *connection,
-                    const gchar           *sender,
+                    const gchar           *caller,
                     const gchar           *object_path,
                     const gchar           *interface_name,
                     const gchar           *method_name,
@@ -106,60 +189,83 @@ handle_method_call(GDBusConnection       *connection,
                     gpointer               user_data)
 {
     reset_timeout();
-    g_print("%s\n", sender);
-    //g_print("%i\n", g_credentials_get_unix_user(g_dbus_connection_get_peer_credentials(connection), NULL));
     if (g_strcmp0(method_name, "GetProblems") == 0)
     {
-        g_print("GetProblems\n");
+        GError *error = NULL;
+        GVariant *response;
+        uid_t caller_uid;
 
-        //g_settings_dump_location comes from libabrt.h
-        g_print("%p\n", g_settings_dump_location);
+
+        caller_uid = get_caller_uid(connection, caller, error);
+
+        if (error)
+            g_warning("Could not get unix user: %s", error->message);
+            //die!
+        else if (caller_uid == 99)
+            //die
+            g_warning("Could not get unix user, using 99 - nobody");
+
+        //read config here!
         if (!g_settings_dump_location)
             g_settings_dump_location = (char*)"/var/spool/abrt";
-        GList *dirs = scan_directory(g_settings_dump_location);
 
-        GVariantBuilder *builder;
-        builder = g_variant_builder_new(G_VARIANT_TYPE ("as"));
-        //for i in dirs
-        while (dirs)
-        {
-            g_variant_builder_add(builder, "s", (char*)dirs->data);
-            free(dirs->data);
-            dirs = g_list_delete_link(dirs, dirs);
-        }
-
-        GVariant *response = g_variant_new("(as)", builder);
-        g_variant_builder_unref(builder);
+        response = get_problem_dirs_for_uid(caller_uid);
 
         g_dbus_method_invocation_return_value(invocation, response);
-        g_variant_unref(response);
+        //I was told that g_dbus_method frees the response
+        //g_variant_unref(response);
     }
-    if (g_strcmp0(method_name, "GetAllProblems") == 0)
-    {
-        gchar *response;
-        if (polkit_check_authorization_dname(sender, "org.freedesktop.problems.getall") != PolkitYes)
-            response = g_strdup_printf("Not authorized");
-        else
-            response = g_strdup_printf("Authorized");
 
-        GVariant *gv_response = g_variant_new("(s)", response);
-        g_dbus_method_invocation_return_value(invocation, gv_response);
-        g_variant_unref(gv_response);
-    }
-    if (g_strcmp0(method_name, "GetInfo") == 0)
+    else if (g_strcmp0(method_name, "GetAllProblems") == 0)
     {
-        g_print("GetInfo\n");
+        GVariant *response;
+        GError *error = NULL;
+        uid_t caller_uid;
+
+
+        caller_uid = get_caller_uid(connection, caller, error);
+
+        if (error)
+        {
+            g_warning("Could not get unix user: %s", error->message);
+            //die!
+            g_error_free(error);
+        }
+        else if (caller_uid == 99)
+            //die
+            g_warning("Could not get unix user, using 99 - nobody");
+
+        /*
+        - so, we have UID,
+        - if it's 0, then we don't have to check anything and just return all directories
+        - if uid != 0 then we want to ask for authorization
+        */
+
+        if (caller_uid != 0)
+        {
+            if (polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") == PolkitYes)
+                caller_uid = 0;
+        }
+
+        response = get_problem_dirs_for_uid(caller_uid);
+
+        g_dbus_method_invocation_return_value(invocation, response);
+    }
+
+    else if (g_strcmp0(method_name, "GetInfo") == 0)
+    {
+        VERB1 log("GetInfo\n");
 
         const gchar *problem_dir;
         g_variant_get(parameters, "(&s)", &problem_dir);
         gchar *response = g_strdup_printf("You've requested dir: '%s'. ", problem_dir);
 
-        g_dbus_method_invocation_return_value(invocation,
-                                        g_variant_new("(s)", response));
+        g_dbus_method_invocation_return_value(invocation, g_variant_new("(s)", response));
     }
-    if (g_strcmp0(method_name, "Quit") == 0)
+
+    else if (g_strcmp0(method_name, "Quit") == 0)
     {
-        g_print("Quit\n");
+        VERB1 log("Quit\n");
 
         g_dbus_method_invocation_return_value(invocation, NULL);
 
