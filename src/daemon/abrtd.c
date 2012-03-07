@@ -353,10 +353,16 @@ static mw_result_t run_post_create_and_load_data(const char *dump_dir_name, prob
     /* Update count */
     char *count_str = dd_load_text_ext(dd, FILENAME_COUNT, DD_FAIL_QUIETLY_ENOENT);
     unsigned long count = strtoul(count_str, NULL, 10);
-    count++;
-    char new_count_str[sizeof(long)*3 + 2];
-    sprintf(new_count_str, "%lu", count);
-    dd_save_text(dd, FILENAME_COUNT, new_count_str);
+
+    /* Don't increase crash count if we are working with newly uploaded
+     * directory (remote crash) which already has it's crash count set.
+     */
+    if((status != 0 && dup_of_dir) || count == 0) {
+        count++;
+        char new_count_str[sizeof(long)*3 + 2];
+        sprintf(new_count_str, "%lu", count);
+        dd_save_text(dd, FILENAME_COUNT, new_count_str);
+    }
     dd_close(dd);
 
     *problem_data = load_problem_data(dump_dir_name);
