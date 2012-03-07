@@ -8,13 +8,13 @@ from dbus.exceptions import *
 import ABRTExceptions
 from abrt_utils import _, log, log1, log2
 
-ABRTD_DBUS_NAME = 'com.redhat.abrt'
-ABRTD_DBUS_PATH = '/com/redhat/abrt'
-ABRTD_DBUS_IFACE = 'com.redhat.abrt'
+ABRTD_DBUS_NAME = 'org.freedesktop.problems'
+ABRTD_DBUS_PATH = '/org/freedesktop/problems'
+ABRTD_DBUS_IFACE = 'org.freedesktop.problems'
 
-APP_NAME = 'com.redhat.abrt.gui'
-APP_PATH = '/com/redhat/abrt/gui'
-APP_IFACE = 'com.redhat.abrt.gui'
+APP_NAME = 'org.freedesktop.problems.gui'
+APP_PATH = '/org/freedesktop/problems/gui'
+APP_IFACE = 'org.freedesktop.problems.gui'
 
 class DBusManager(gobject.GObject):
     """ Class to provide communication with daemon over dbus """

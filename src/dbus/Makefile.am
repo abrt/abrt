@@ -24,10 +24,10 @@ abrt_dbus_LDADD = \
     -labrt_dbus
 
 polkitconfdir = ${datadir}/polkit-1/actions
-dist_polkitconf_DATA = org.freedesktop.problems.policy
+dist_polkitconf_DATA = abrt_polkit.policy
 
 dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/
 dist_dbusabrtconf_DATA = dbus-abrt.conf
 
-comredhatabrtservicedir = ${datadir}/dbus-1/system-services
-dist_comredhatabrtservice_DATA = com.redhat.abrt.service
+orgfreedesktopproblemsservicedir = ${datadir}/dbus-1/system-services
+dist_orgfreedesktopproblemsservice_DATA = org.freedesktop.problems.service
