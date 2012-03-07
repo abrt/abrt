@@ -189,6 +189,18 @@ Provides: bug-buddy
 %description desktop
 Virtual package to make easy default installation on desktop environments.
 
+%package dbus
+Summary: ABRT DBus service
+Group: Application/System
+Requires: %{name} = %{version}-%{release}
+Requires: libreport
+BuildRequires: polkit-devel
+
+%description dbus
+ABRT DBus service which provides org.freedesktop.problems API on dbus and
+uses PolicyKit to authorize to access the problem data.
+
+
 %prep
 %setup -q
 
@@ -397,7 +409,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_initrddir}/abrtd
 %endif
 %{_sbindir}/abrtd
-%{_sbindir}/abrt-dbus
 %{_sbindir}/abrt-server
 %{_libexecdir}/abrt-handle-event
 %{_bindir}/abrt-handle-upload
@@ -406,7 +417,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-action-save-package-data.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
 %config(noreplace) %{_sysconfdir}/libreport/events.d/abrt_event.conf
-%config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/smart_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/smolt_event.conf
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/spool/%{name}
@@ -427,7 +437,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/abrt.conf.5.gz
 %{_mandir}/man5/abrt-action-save-package-data.conf.5.gz
 # {_mandir}/man5/pyhook.conf.5.gz
-%{_datadir}/dbus-1/system-services/com.redhat.abrt.service
 
 %files libs
 %defattr(-,root,root,-)
@@ -541,6 +550,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files desktop
 %defattr(-,root,root,-)
+
+%files dbus
+%defattr(-,root,root,-)
+%{_sbindir}/abrt-dbus
+%config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
+%{_datadir}/dbus-1/system-services/com.redhat.abrt.service
+%{_datadir}/polkit-1/actions/org.freedesktop.problems.policy
 
 %changelog
 * Wed Mar 16 2011 Jiri Moskovcak <jmoskovc@redhat.com> 2.0.0-1

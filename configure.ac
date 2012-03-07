@@ -71,12 +71,14 @@ PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([BTPARSER], [btparser])
 PKG_CHECK_MODULES([LIBREPORT], [libreport])
 PKG_CHECK_MODULES([LIBREPORT_GTK], [libreport-gtk])
+PKG_CHECK_MODULES([POLKIT], [polkit-gobject-1])
 # Just PKG_CHECK_MODULES([PYTHON], [python]) works only with python2.7+
 # Below, if python is not found, we set up for python2.6 w/o checking:
 PKG_CHECK_MODULES([PYTHON], [python],,[
     PYTHON_LIBS='-L/usr/lib64 -lpython2.6'
     PYTHON_CFLAGS='-I/usr/include/python2.6'
 ])
+PKG_CHECK_MODULES([GIO], [gio-2.0])
 
 AC_ARG_ENABLE([dupcheck-fingerprint],
         AS_HELP_STRING([--enable-dupcheck-fingerprint], [enable function fingerprinting for duplicate checking (x86_64 only)]),
@@ -129,6 +131,7 @@ AC_CONFIG_FILES([
 	src/applet/Makefile
 	src/gui-gtk/Makefile
 	src/cli/Makefile
+	src/dbus/Makefile
 	src/plugins/abrt-action-install-debuginfo
 	src/plugins/abrt-action-analyze-vmcore
 	po/Makefile.in
