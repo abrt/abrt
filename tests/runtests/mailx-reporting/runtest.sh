@@ -51,17 +51,12 @@ rlJournalStart
 
     rlPhaseStartTest
         rlRun "reporter-mailx -v -d $crash_PATH -c mailx.conf" 0 "Report via mailx"
-        sleep 1m
+        sleep 10
         rlRun "mailx -H -u root | tail -n1 > mail.out"
-        ls -l /var/spool/mail/root
         rlAssertGrep "abrt@" mail.out
         rlAssertGrep "abrt@" /var/spool/mail/root
         rlAssertGrep "\[abrt\] crash" mail.out
-	sleep 1m
         rlLog "$(cat mail.out)"
-	rlLog "$(cat /var/log/maillog)"
-	rlLog "$(ausearch -ts recent -m avc)"
-	rlLog "$(cat /var/log/procmaillog)"
     rlPhaseEnd
 
     rlPhaseStartCleanup
