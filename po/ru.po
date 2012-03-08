@@ -1,28 +1,23 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
-# Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
-# Misha Shnurapet <shnurapet AT fedoraproject.org>, 2011.
-# Misha Shnurapet <shnurapet@fedoraproject.org>, 2011.
-# Stanislav Darchinov <darchinov@gmail.com>, 2011.
-# Stanislav Hanzhin <hanzhin.stas@gmail.com>, 2011.
-# Yuri Khabarov <madb00blik@gmail.com>, 2011.
-# Игорь Горбунов <igor.gorbounov@gmail.com>, 2011.
+# Yulia <ypoyarko@redhat.com>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2012-02-15 17:16+0100\n"
-"PO-Revision-Date: 2012-02-15 16:17+0000\n"
-"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2012-03-08 09:35+0100\n"
+"PO-Revision-Date: 2012-03-01 03:19+0000\n"
+"Last-Translator: Yulia <yulia.poyarkova@redhat.com>\n"
 "Language-Team: Russian <trans-ru@lists.fedoraproject.org>\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -44,7 +39,10 @@ msgstr "Значок в области уведомления сообщает �
 
 #: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:579
 msgid "translator-credits"
-msgstr "Yulia <ypoyarko AT redhat.com>\nMisha Shnurapet <shnurapet AT fedoraproject.org>\nYuri Khabarov <madb00blik AT gmail.com>"
+msgstr ""
+"Yulia <ypoyarko AT redhat.com>\n"
+"Misha Shnurapet <shnurapet AT fedoraproject.org>\n"
+"Yuri Khabarov <madb00blik AT gmail.com>"
 
 #: ../src/applet/applet.c:420
 msgid "Hide"
@@ -76,7 +74,11 @@ msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
-msgstr "& [-v] [DIR]...\n\nМодуль оповещения о новых неполадках, обнаруженных ABRT\n\n"
+msgstr ""
+"& [-v] [DIR]...\n"
+"\n"
+"Модуль оповещения о неполадках, обнаруженных ABRT\n"
+"\n"
 
 #: ../src/applet/applet.c:809
 msgid "ABRT service is not running"
@@ -87,12 +89,15 @@ msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
-msgstr "& [-v] [-c CONFFILE] -d DIR\n\nЗапросить в базе данных и сохранить названия пакета и компонента"
+msgstr ""
+"& [-v] [-c CONFFILE] -d DIR\n"
+"\n"
+"Запросить в базе данных и сохранить названия пакета и компонента"
 
 #: ../src/daemon/abrt-action-save-package-data.c:374
 #: ../src/plugins/abrt-action-analyze-backtrace.c:63
 #: ../src/plugins/abrt-action-analyze-c.c:90
-#: ../src/plugins/abrt-action-analyze-oops.c:136
+#: ../src/plugins/abrt-action-analyze-oops.c:48
 #: ../src/plugins/abrt-action-analyze-python.c:47
 #: ../src/plugins/abrt-action-generate-backtrace.c:176
 msgid "Dump directory"
@@ -100,18 +105,18 @@ msgstr "Каталог дампа"
 
 #: ../src/daemon/abrt-action-save-package-data.c:375
 msgid "Configuration file"
-msgstr "Файл настроек"
+msgstr "Файл конфигурации"
 
 #: ../src/daemon/abrt-server.c:457 ../src/daemon/abrt-dbus.c:378
 #: ../src/daemon/abrtd.c:642
 msgid "& [options]"
-msgstr "& [options]"
+msgstr "& [параметры]"
 
 #: ../src/daemon/abrt-server.c:468
 msgid "Use UID as client uid"
 msgstr "Использовать UID как uid клиента"
 
-#: ../src/daemon/abrt-server.c:469 ../src/plugins/abrt-dump-oops.c:590
+#: ../src/daemon/abrt-server.c:469 ../src/plugins/abrt-dump-oops.c:244
 msgid "Log to syslog"
 msgstr "Запись в журнал"
 
@@ -130,23 +135,23 @@ msgstr "Запись в журнал даже с -d"
 
 #: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:657
 msgid "Exit after NUM seconds of inactivity"
-msgstr ""
+msgstr "Выйти после NUM секунд бездействия"
 
 #: ../src/daemon/abrt-handle-event.c:408
 msgid "& [-v] -e|--event EVENT DIR..."
-msgstr ""
+msgstr "& [-v] -e|--event EVENT DIR..."
 
 #: ../src/daemon/abrt-handle-event.c:415
 msgid "Run EVENT on DIR"
-msgstr ""
+msgstr "Запуск EVENT в DIR"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr "Просмотреть сбои и передать отчеты"
+msgstr "Просмотреть сбои и создать отчет"
 
 #: ../src/gui-gtk/main.c:517
 msgid "Problem description"
-msgstr "Описание неполадки"
+msgstr "Описание проблемы"
 
 #: ../src/gui-gtk/main.c:520
 msgid "Send"
@@ -158,11 +163,11 @@ msgstr "Источник"
 
 #: ../src/gui-gtk/main.c:608 ../src/gui-gtk/main.c:654
 msgid "Problem"
-msgstr "Неполадка"
+msgstr "Проблема"
 
 #: ../src/gui-gtk/main.c:629
 msgid "Last Occurrence"
-msgstr "Последнее происшествие"
+msgstr "Последнее появление"
 
 #: ../src/gui-gtk/main.c:664
 msgid "Date Submitted"
@@ -170,7 +175,7 @@ msgstr "Дата отправки"
 
 #: ../src/gui-gtk/main.c:673
 msgid "Submission Result"
-msgstr "Результат отправки"
+msgstr "Результат передачи"
 
 #: ../src/gui-gtk/main.c:686
 msgid "_Report"
@@ -190,26 +195,29 @@ msgstr "Сообщить об ошибке в ABRT"
 
 #: ../src/gui-gtk/main.c:753
 msgid "Not submitted reports"
-msgstr "Непереданные отчеты"
+msgstr "Неотправленные отчеты"
 
 #: ../src/gui-gtk/main.c:755
 msgid "<b>Not submitted reports</b>"
-msgstr "<b>Непереданные отчеты</b>"
+msgstr "<b>Неотправленные отчеты</b>"
 
 #: ../src/gui-gtk/main.c:803
 msgid "Submitted reports"
-msgstr "Переданные отчеты"
+msgstr "Отправленные отчеты"
 
 #: ../src/gui-gtk/main.c:806
 msgid "<b>Submitted reports</b>"
-msgstr "<b>Переданные отчеты</b>"
+msgstr "<b>Отправленные отчеты</b>"
 
 #: ../src/gui-gtk/main.c:1057
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
 "Shows list of ABRT dump directories in specified DIR(s)\n"
-msgstr "& [-vp] [DIR]...\n\nВыводит список каталогов дампов ABRT в заданном каталоге DIR\n"
+msgstr ""
+"& [-vp] [DIR]...\n"
+"\n"
+"Показывает список каталогов дампов ABRT в каталоге DIR\n"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:51
 msgid ""
@@ -218,15 +226,21 @@ msgid ""
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
 msgstr ""
+"& [параметры] -d DIR\n"
+"\n"
+"Анализ протокола сбоев C/C++, создание хеша дублирования,\n"
+"рейтинга трассировки и определение сбойной функции в каталоге статистики "
+"сбоя DIR"
 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:100
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr "Разбор протокола сбоя %s завершился неудачей"
+msgstr "Ошибка разбора протокола сбоя %s"
 
 #: ../src/plugins/abrt-action-analyze-c.c:79
 msgid ""
@@ -234,51 +248,61 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Расчет и сохранение UUID дампа памяти в каталоге DIR"
 
-#: ../src/plugins/abrt-action-analyze-oops.c:125
+#: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
 "& [-vs] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
 msgstr ""
+"& [-vs] -d DIR\n"
+"\n"
+"Расчет и сохранение UUID и DUPHASH для каталога с данными о сбое DIR"
 
 #: ../src/plugins/abrt-action-analyze-python.c:36
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
-msgstr "& [-v] -d DIR\n\nРассчитывает и сохраняет UUID и DUPHASH аварийных дампов python"
-
-#: ../src/plugins/abrt-action-analyze-vmcore.in:30
-msgid ""
-"Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Расчет и сохранение UUID и DUPHASH аварийных дампов python"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:52
+#: ../src/plugins/abrt-action-analyze-vmcore.in:29
+msgid "Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
+msgstr ""
+"Формат: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
+
+#: ../src/plugins/abrt-action-analyze-vmcore.in:60
 msgid "File {0} doesn't exist"
-msgstr ""
+msgstr "Файл {0} не существует"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:84
+#: ../src/plugins/abrt-action-analyze-vmcore.in:92
 msgid "{0} is not a valid vmcore"
-msgstr ""
+msgstr "Недопустимый  vmcore: {0} "
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:90
+#: ../src/plugins/abrt-action-analyze-vmcore.in:98
 msgid "Required vmlinux debuginfo is installed in {0}"
-msgstr ""
+msgstr "Требуется, чтобы в {0} был установлен vmlinux debuginfo "
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:96
+#: ../src/plugins/abrt-action-analyze-vmcore.in:104
 msgid "Installing kernel debuginfo(s)"
-msgstr ""
+msgstr "Установка модулей ядра debuginfo"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:102
+#: ../src/plugins/abrt-action-analyze-vmcore.in:111
+#: ../src/plugins/abrt-action-analyze-vmcore.in:117
 msgid "Can't download required debuginfo"
-msgstr ""
+msgstr "Невозможно загрузить необходимый debuginfo"
 
 #. Let user know what's going on
-#: ../src/plugins/abrt-action-analyze-vmcore.in:105
+#: ../src/plugins/abrt-action-analyze-vmcore.in:120
 #: ../src/plugins/abrt-action-generate-backtrace.c:44
 msgid "Generating backtrace"
-msgstr "Получение протокола сбоя"
+msgstr "Формируется протокол сбоя"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:163
 msgid ""
@@ -286,6 +310,9 @@ msgid ""
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
 msgstr ""
+"& [параметры] -d DIR\n"
+"\n"
+"Анализ дампа памяти в каталоге DIR и формирование протокола сбоя"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:177
 msgid "Additional debuginfo directories"
@@ -293,15 +320,15 @@ msgstr "Дополнительные каталоги debuginfo"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:178
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr "Снять gdb, если он работает больше NUM секунд"
+msgstr "Завершить gdb, если он работает больше NUM сек."
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
+#.
 #: ../src/plugins/abrt-action-generate-backtrace.c:228
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr "Протокол сбоя составлен и сохранён, %u байт"
+msgstr "Протокол сбоя составлен и сохранён (%u байт)"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:891
 msgid ""
@@ -309,110 +336,26 @@ msgid ""
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Создание протокола сбоя coredump-level из дампа и соответствующего двоичного "
+"файла"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:902
 msgid "Problem directory"
-msgstr ""
+msgstr "Каталог с данными сбоя"
 
-#: ../src/plugins/abrt-action-install-debuginfo:89
-msgid "Extracting cpio from {0}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:94
-msgid "Can't write to '{0}': {1}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:108
-msgid "Can't extract package '{0}'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:116
-msgid "Caching files from {0} made from {1}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:126
-msgid "Can't extract files from '{0}'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:153
-#: ../src/plugins/abrt-action-install-debuginfo:164
-msgid "Downloading ({0} of {1}) {2}: {3:3}%"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:184
-msgid "Initializing yum"
-msgstr "Инициализация yum"
-
-#: ../src/plugins/abrt-action-install-debuginfo:192
-msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:223
-msgid "Setting up yum repositories"
-msgstr "Настройка репозиториев yum"
-
-#: ../src/plugins/abrt-action-install-debuginfo:234
-msgid "Can't setup {0}: {1}, disabling"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:241
-msgid "Looking for needed packages in repositories"
-msgstr "Поиск необходимых пакетов в репозиториях"
-
-#: ../src/plugins/abrt-action-install-debuginfo:245
-msgid "Error retrieving metadata: '{0!s}'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:255
-msgid "Error retrieving filelists: '{0!s}'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:288
-msgid "Can't find packages for {0} debuginfo files"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:290
-msgid "Packages to download: {0}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:291
-msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:296
-msgid "Download cancelled by user"
-msgstr "Загрузка отменена пользователем"
-
-#: ../src/plugins/abrt-action-install-debuginfo:330
-msgid "Downloading package {0} failed"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:336
-msgid "Unpacking failed, aborting download..."
-msgstr "Распаковка не удалась, завершение загрузки..."
-
-#: ../src/plugins/abrt-action-install-debuginfo:346
-msgid "Removing {0}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:350
-#, c-format
-msgid "Can't remove %s, probably contains an error log"
-msgstr "Не удается удалить %s, возможно, в нём содержится журнал ошибок"
-
-#: ../src/plugins/abrt-action-install-debuginfo:408
-msgid "Can't remove '{0}': {1}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:416
+#: ../src/plugins/abrt-action-install-debuginfo:50
 msgid "Exiting on user command"
 msgstr "Выход по команде пользователя"
 
-#: ../src/plugins/abrt-action-install-debuginfo:450
-#, c-format
+#: ../src/plugins/abrt-action-install-debuginfo:86
+#, fuzzy, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -424,64 +367,90 @@ msgid ""
 "    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
-msgstr "Применение: %s [-vy] [--ids=BUILD_IDS_FILE]\n       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n\nУстанавливает отладочные пакеты для всех build-ids, перечисленных в BUILD_IDS_FILE,\nв CACHEDIR, используя TMPDIR в качестве области временного хранения.\nСтарые файлы в CACHEDIR удаляются, пока его размер не станет меньше, чем SIZE.\n\n    -v          Подробный вывод\n    -y          Неинтерактивный режим, ответ «Да» на все вопросы\n    --ids       По умолчанию: build_ids\n    --tmpdir    По умолчанию: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n    --cache     По умолчанию: /var/cache/abrt-di\n    --size_mb   По умолчанию: 4096\n"
-
-#: ../src/plugins/abrt-action-install-debuginfo:524
-msgid "Can't open {0}: {1}"
+"    -e,--exact  Download only specified files\n"
 msgstr ""
+"Формат: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"\n"
+"Устанавливает отладочные пакеты для всех build-id, перечисленных в "
+"BUILD_IDS_FILE,\n"
+"в каталог CACHEDIR, используя TMPDIR для временного хранения.\n"
+"Старые файлы в CACHEDIR будут удаляться до тех пор, пока его размер не "
+"станет меньше SIZE.\n"
+"\n"
+"    -v          Подробный вывод\n"
+"    -y          Неинтерактивный режим, ответ «Да» на все вопросы\n"
+"    --ids       По умолчанию: build_ids\n"
+"    --tmpdir    По умолчанию: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     По умолчанию: /var/cache/abrt-di\n"
+"    --size_mb   По умолчанию: 4096\n"
 
-#: ../src/plugins/abrt-action-install-debuginfo:556
+#: ../src/plugins/abrt-action-install-debuginfo:168
+msgid "Can't open {0}: {1}"
+msgstr "Не удалось открыть {0}: {1}"
+
+#: ../src/plugins/abrt-action-install-debuginfo:201
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr ""
+"Дамп содержит ссылки на файлы debuginfo (всего {0}), {1} из них не установлен"
+"(о)"
 
-#: ../src/plugins/abrt-action-install-debuginfo:567
+#: ../src/plugins/abrt-action-install-debuginfo:212
 msgid "Missing debuginfo file: {0}"
-msgstr ""
+msgstr "Отсутствует файл debuginfo: {0}"
 
-#: ../src/plugins/abrt-action-install-debuginfo:570
-msgid "All {0} debuginfo files are available"
-msgstr ""
+#: ../src/plugins/abrt-action-install-debuginfo:215
+#, fuzzy
+msgid "All debuginfo files are available"
+msgstr "Есть все файлы debuginfo {0}"
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
+"SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
+"& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
+"\n"
+"Удаление каталогов с данными сбоя (-d) и файлов (-f) в DIR до тех пор,\n"
+"пока они не станут меньше SIZE.\n"
+"Файлы из списка FILE удаляться не будут."
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
-msgstr ""
+msgstr "Удалить каталоги целиком"
 
 #: ../src/plugins/abrt-action-trim-files.c:237
 msgid "Delete files inside this directory"
-msgstr ""
+msgstr "Удалить файлы из каталога"
 
 #: ../src/plugins/abrt-action-trim-files.c:238
 msgid "Preserve this directory"
-msgstr ""
+msgstr "Оставить этот каталог"
 
 #: ../src/plugins/abrt-dedup-client.c:96
 #: ../src/plugins/abrt-retrace-client.c:964
 msgid "log to syslog"
-msgstr "запись в системный журнал"
+msgstr "записать в syslog"
 
 #: ../src/plugins/abrt-dedup-client.c:98
 msgid "allow insecure connection to dedup server"
-msgstr ""
+msgstr "разрешить незащищенное соединение с сервером дедупликации"
 
 #: ../src/plugins/abrt-dedup-client.c:100
 msgid "dedup server URL"
-msgstr ""
+msgstr "URL сервера дедупликации"
 
 #: ../src/plugins/abrt-dedup-client.c:102
 msgid "dedup server port"
-msgstr ""
+msgstr "порт сервера дедупликации"
 
 #: ../src/plugins/abrt-dedup-client.c:104
 msgid "ABRT dump directory"
-msgstr ""
+msgstr "каталог дампа ABRT"
 
 #: ../src/plugins/abrt-dedup-client.c:106
 #: ../src/plugins/abrt-retrace-client.c:972
@@ -490,69 +459,78 @@ msgstr "(отладка) показывать полученные заголо�
 
 #: ../src/plugins/abrt-dedup-client.c:110
 msgid "abrt-dedup-client component backtrace_file [options]"
-msgstr ""
+msgstr "abrt-dedup-client component backtrace_file [параметры]"
 
 #: ../src/plugins/abrt-dedup-client.c:153
 msgid "'"
-msgstr ""
+msgstr "'"
 
 #: ../src/plugins/abrt-dedup-client.c:157
 #, c-format
 msgid "Forbidden component name: '%s'."
-msgstr ""
+msgstr "Запрещенное имя: \"%s\"."
 
 #: ../src/plugins/abrt-dedup-client.c:203
 #, c-format
 msgid "Failed to send HTTP request of length %d: NSS error %d."
-msgstr ""
+msgstr "Не удалось отправить запрос HTTP длиной %d. Ошибка NSS: %d."
 
-#: ../src/plugins/abrt-dump-oops.c:521
+#: ../src/plugins/abrt-dump-oops.c:175
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has beentainted (flags:%s). "
 "Kernel maintainers are unable todiagnose tainted reports."
 msgstr ""
+"Обнаружена проблема с ядром, но ваше ядро было повреждено (флаги:%s). "
+"Сопровождение ядра не может диагностировать испорченные отчеты."
 
-#: ../src/plugins/abrt-dump-oops.c:572
+#: ../src/plugins/abrt-dump-oops.c:226
 msgid ""
 "& [-vsrowx] [-d DIR] FILE\n"
 "or: & [-vsrowx] -D FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
-msgstr "& [-vsrowx] [-d DIR] FILE\n   или: & [-vsrowx] -D FILE\n\nИзвлечь ошибку из syslog/dmesg"
+msgstr ""
+"& [-vsrowx] [-d DIR] FILE\n"
+"или: & [-vsrowx] -D FILE\n"
+"\n"
+"Извлечь отклонения oops из syslog/dmesg"
 
-#: ../src/plugins/abrt-dump-oops.c:591
+#: ../src/plugins/abrt-dump-oops.c:245
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "Провести анализ буфера сообщений ядра перед разбором FILE"
 
-#: ../src/plugins/abrt-dump-oops.c:592
+#: ../src/plugins/abrt-dump-oops.c:246
 msgid "Print found oopses on standard output"
-msgstr "Отправить найденные ошибки на стандартный вывод"
+msgstr "Вывести найденные ошибки в stdout"
 
-#: ../src/plugins/abrt-dump-oops.c:593
+#: ../src/plugins/abrt-dump-oops.c:247
 msgid "Do not exit, watch the file for new oopses"
 msgstr "Не завершать работу, следить за файлом на предмет новых ошибок"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
-#: ../src/plugins/abrt-dump-oops.c:597
+#.
+#: ../src/plugins/abrt-dump-oops.c:251
 msgid "Create ABRT dump in DIR for every oops found"
-msgstr "Создать дамп ABRT в DIR для каждого обнаруженного сбоя"
+msgstr "Создать дамп ABRT в DIR для каждого сбоя"
 
-#: ../src/plugins/abrt-dump-oops.c:598
+#: ../src/plugins/abrt-dump-oops.c:252
 msgid "Make the problem directory world readable"
-msgstr ""
+msgstr "Открыть доступ чтения к каталогу сбоев"
 
-#: ../src/plugins/abrt-dump-oops.c:599
+#: ../src/plugins/abrt-dump-oops.c:253
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
-msgstr "То же, что и -d DumpLocation, DumpLocation задается в abrt.conf"
+msgstr ""
+"То же, что и \"-d DumpLocation\", \"DumpLocation\" задается в abrt.conf"
 
 #: ../src/plugins/abrt-retrace-client.c:63
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
-msgstr "Не удалось задействовать сервер обработки, потому как сбой слишком обширен. Попробуйте обработать локально."
+msgstr ""
+"Не удалось задействовать сервер трассировки, так как сбой слишком обширен. "
+"Попробуйте обработать локально."
 
 #: ../src/plugins/abrt-retrace-client.c:96
 msgid "Cannot open temporary file"
@@ -570,7 +548,7 @@ msgstr "Не удалось выполнить «%s»"
 #: ../src/plugins/abrt-retrace-client.c:855
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr "Не удалось послать заголовок HTTP длиной %d: ошибка NSS %d."
+msgstr "Не удалось отправить заголовок HTTP длиной %d. Ошибка NSS: %d."
 
 #: ../src/plugins/abrt-retrace-client.c:199
 #: ../src/plugins/abrt-retrace-client.c:628
@@ -581,7 +559,9 @@ msgstr "Не удалось послать заголовок HTTP длиной 
 msgid ""
 "Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr "Неожиданный HTTP-ответ от сервера: %d\n%s"
+msgstr ""
+"Непредвиденный HTTP-ответ сервера: %d\n"
+"%s"
 
 #: ../src/plugins/abrt-retrace-client.c:208
 #: ../src/plugins/abrt-retrace-client.c:608
@@ -589,7 +569,7 @@ msgstr "Неожиданный HTTP-ответ от сервера: %d\n%s"
 #: ../src/plugins/abrt-retrace-client.c:795
 #: ../src/plugins/abrt-retrace-client.c:864
 msgid "Invalid response from server: missing HTTP message body."
-msgstr "Неправильный ответ от сервера: отсутствует тело HTTP-сообщения."
+msgstr "Неверный ответ сервера: отсутствует тело HTTP-сообщения."
 
 #: ../src/plugins/abrt-retrace-client.c:347
 msgid "Querying server settings"
@@ -597,58 +577,62 @@ msgstr "Запрос настроек сервера"
 
 #: ../src/plugins/abrt-retrace-client.c:355
 msgid "The server is fully occupied. Try again later."
-msgstr "Сервер полностью занят. Повторите попытку позже."
+msgstr "Сервер занят. Повторите попытку позже."
 
 #: ../src/plugins/abrt-retrace-client.c:356
 msgid "The server denied your request."
-msgstr "Сервером отказано в запросе."
+msgstr "Отказ сервера."
 
 #: ../src/plugins/abrt-retrace-client.c:366
 #: ../src/plugins/abrt-retrace-client.c:389
 #, c-format
 msgid "Unable to stat file '%s'."
-msgstr "Не удается получить информацию о состоянии файла «%s»."
+msgstr "Не удалось получить информацию о состоянии файла «%s»."
 
 #: ../src/plugins/abrt-retrace-client.c:374
 #, c-format
 msgid "Unable to open dump directory '%s'."
-msgstr ""
+msgstr "Не удалось открыть каталог дампа \"%s\"."
 
 #: ../src/plugins/abrt-retrace-client.c:404
 #, c-format
 msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
-msgstr "Объём информации о сбое составляет %lld байт, отслеживающий сервер принимает данные объёмом не более %lld байт."
+msgstr ""
+"Размер архива составляет %lld байт, но отслеживающий сервер принимает не "
+"больше %lld байт."
 
 #: ../src/plugins/abrt-retrace-client.c:424
 msgid "The server does not support xz-compressed tarballs."
-msgstr "Сервер не поддерживает архивы, сжатые программой xz."
+msgstr "Сервер не поддерживает архивы, созданные в xz."
 
 #: ../src/plugins/abrt-retrace-client.c:447
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
-msgstr "Версия «%s» не поддерживается обрабатывающим сервером."
+msgstr "Версия «%s» не поддерживается отслеживающим сервером."
 
 #: ../src/plugins/abrt-retrace-client.c:451
 msgid "The server is not able to handle your request."
-msgstr "Сервер не может обработать запрос."
+msgstr "Сервер не смог обработать запрос."
 
 #: ../src/plugins/abrt-retrace-client.c:460
 msgid "Preparing an archive to upload"
-msgstr "Подготовка архива к загрузке"
+msgstr "Подготовка архива к передаче"
 
 #: ../src/plugins/abrt-retrace-client.c:473
 #, c-format
 msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
-msgstr "Размер архива %lld байт, обрабатывающий сервер принимает архивы размером не более %lld байт."
+msgstr ""
+"Размер архива - %lld байт, но отслеживающий сервер принимает архивы размером "
+"не более %lld байт."
 
 #: ../src/plugins/abrt-retrace-client.c:486
 #, c-format
 msgid "You are going to upload %d megabytes.Continue?"
-msgstr "Будет передано %d мегабайт. Продолжить?"
+msgstr "Будет отправлено %d МБ. Продолжить?"
 
 #: ../src/plugins/abrt-retrace-client.c:493
 msgid "Cancelled by user"
@@ -657,26 +641,26 @@ msgstr "Отменено пользователем"
 #: ../src/plugins/abrt-retrace-client.c:536
 #, c-format
 msgid "Uploading %d megabytes\n"
-msgstr "Передача %d мегабайт\n"
+msgstr "Отправляется %d МБ\n"
 
 #: ../src/plugins/abrt-retrace-client.c:538
 #, c-format
 msgid "Uploading %lld bytes\n"
-msgstr "Передача %lld байт\n"
+msgstr "Отправляется %lld Б\n"
 
 #: ../src/plugins/abrt-retrace-client.c:562
 #, c-format
 msgid "Uploading %d%%\n"
-msgstr "Передача %d%%\n"
+msgstr "Отправляется %d%%\n"
 
 #: ../src/plugins/abrt-retrace-client.c:574
 msgid "Failed to read from a pipe"
-msgstr "Не удалось прочесть из потока"
+msgstr "Ошибка чтения из потока"
 
 #: ../src/plugins/abrt-retrace-client.c:587
 #, c-format
 msgid "Failed to send data: NSS error %d (%s): %s"
-msgstr "Не удалось отправить данные: ошибка NSS %d (%s): %s"
+msgstr "Не удалось отправить данные. Ошибка NSS: %d (%s): %s"
 
 #: ../src/plugins/abrt-retrace-client.c:598
 msgid "Upload successful"
@@ -686,66 +670,74 @@ msgstr "Передано успешно"
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
-msgstr "Каталог с данными о сбое поврежден и не может быть обработан сервером."
+msgstr "Каталог поврежден и не может быть обработан сервером."
 
 #: ../src/plugins/abrt-retrace-client.c:622
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
-msgstr "Архив содержит нежелательные файлы (такие как символические ссылки), и поэтому не может быть обработан."
+msgstr ""
+"Архив содержит недопустимые файлы (такие как символьные ссылки) и не может "
+"быть обработан."
 
 #: ../src/plugins/abrt-retrace-client.c:635
 msgid "Invalid response from server: missing X-Task-Id."
-msgstr "Неправильный ответ сервера: отсутствует X-Task-Id."
+msgstr "Неверный ответ сервера: отсутствует X-Task-Id."
 
 #: ../src/plugins/abrt-retrace-client.c:641
 msgid "Invalid response from server: missing X-Task-Password."
-msgstr "Неправильный ответ сервера: отсутствует X-Task-Password."
+msgstr "Неверный ответ сервера: отсутствует X-Task-Password."
 
 #: ../src/plugins/abrt-retrace-client.c:648
 msgid "Retrace job started"
-msgstr "Начата обработка"
+msgstr "Задание отслеживания запущено"
 
 #: ../src/plugins/abrt-retrace-client.c:661
 #, c-format
 msgid ""
 "Task Id: %s\n"
 "Task Password: %s\n"
-msgstr "Id задачи: %s\nПароль задачи: %s\n"
+msgstr ""
+"ID задания: %s\n"
+"Пароль: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:707
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr "Не удалось отправить заголовок HTTP длиной %d: ошибка NSS %d"
+msgstr "Не удалось отправить заголовок HTTP длиной %d. Ошибка NSS: %d."
 
 #: ../src/plugins/abrt-retrace-client.c:731
 msgid "Invalid response from server: missing X-Task-Status."
-msgstr "Неправильный ответ сервера: отсутствует X-Task-Status."
+msgstr "Неверный ответ сервера: отсутствует X-Task-Status."
 
 #: ../src/plugins/abrt-retrace-client.c:743
 #, c-format
 msgid ""
 "Task Status: %s\n"
 "%s\n"
-msgstr "Статус задачи: %s\n%s\n"
+msgstr ""
+"Статус задания: %s\n"
+"%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:919
 msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
-msgstr "Обработка не удалась. Повторите попытку позже, в случае неудачи сообщите разработчикам."
+msgstr ""
+"Обработка не удалась. Повторите попытку позже, а в случае неудачи сообщите "
+"разработчикам."
 
 #: ../src/plugins/abrt-retrace-client.c:966
 msgid "allow insecure connection to retrace server"
-msgstr "разрешить незащищенное соединение с обрабатывающим сервером"
+msgstr "разрешить незащищенное соединение с сервером"
 
 #: ../src/plugins/abrt-retrace-client.c:968
 msgid "retrace server URL"
-msgstr "адрес обрабатывающего сервера"
+msgstr "URL отслеживающего сервера"
 
 #: ../src/plugins/abrt-retrace-client.c:970
 msgid "retrace server port"
-msgstr "порт обрабатывающего сервера"
+msgstr "порт отслеживающего сервера"
 
 #: ../src/plugins/abrt-retrace-client.c:973
 msgid "For create and batch operations"
@@ -753,7 +745,7 @@ msgstr "Для операций создания и пакетных опера�
 
 #: ../src/plugins/abrt-retrace-client.c:975
 msgid "read data from ABRT problem directory"
-msgstr ""
+msgstr "читать данные из каталога ABRT"
 
 #: ../src/plugins/abrt-retrace-client.c:977
 msgid "read data from coredump"
@@ -761,11 +753,11 @@ msgstr "чтение данных из дампа памяти"
 
 #: ../src/plugins/abrt-retrace-client.c:979
 msgid "Delay for polling operations"
-msgstr "Задержка для операций опроса"
+msgstr "Ожидать операции опроса"
 
 #: ../src/plugins/abrt-retrace-client.c:981
 msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
-msgstr "(отладка) не удалять временный архив из каталога дампа в /tmp"
+msgstr "(отладка) не удалять временный архив из /tmp"
 
 #: ../src/plugins/abrt-retrace-client.c:983
 msgid "For status, backtrace, and log operations"
@@ -773,70 +765,76 @@ msgstr "Для операций получения статуса, отслеж�
 
 #: ../src/plugins/abrt-retrace-client.c:985
 msgid "id of your task on server"
-msgstr "id задачи на сервере"
+msgstr "ID задания на сервере"
 
 #: ../src/plugins/abrt-retrace-client.c:987
 msgid "password of your task on server"
-msgstr "пароль задачи на сервере"
+msgstr "Пароль задания на сервере"
 
 #: ../src/plugins/abrt-retrace-client.c:991
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch"
-msgstr "abrt-retrace-client <действие> [options]\nДействия: create/status/backtrace/log/batch"
+msgstr ""
+"abrt-retrace-client <функция> [параметры]\n"
+"Функции: create/status/backtrace/log/batch"
 
 #: ../src/plugins/abrt-retrace-client.c:1036
 #: ../src/plugins/abrt-retrace-client.c:1042
 msgid "Either problem directory or coredump is needed."
-msgstr ""
+msgstr "Необходим каталог с данными сбоя или дамп памяти."
 
 #: ../src/plugins/abrt-retrace-client.c:1048
 #: ../src/plugins/abrt-retrace-client.c:1056
 #: ../src/plugins/abrt-retrace-client.c:1064
 msgid "Task id is needed."
-msgstr "Требуется id задачи."
+msgstr "Требуется идентификатор задания."
 
 #: ../src/plugins/abrt-retrace-client.c:1050
 #: ../src/plugins/abrt-retrace-client.c:1058
 #: ../src/plugins/abrt-retrace-client.c:1066
 msgid "Task password is needed."
-msgstr "Требуется пароль задачи."
+msgstr "Требуется пароль задания."
 
 #: ../src/plugins/abrt-retrace-client.c:1070
 #, c-format
 msgid "Unknown operation: %s."
-msgstr "Неизвестное действие: %s."
+msgstr "Неизвестная функция:  %s."
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr "Загрузка отладочных пакетов и создание протоколов о сбоях локально при помощи GDB"
+msgstr ""
+"Загрузка отладочных пакетов и создание протоколов локально при помощи GDB"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Local GNU Debugger"
-msgstr "Локальный отладчик (GNU Debugger)"
+msgstr "Локальный отладчик GNU"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
-msgstr "Требует загрузки отладочных пакетов, что может занимать значительное время и дисковое пространство. Отличается от обрабатывающего сервера тем, что не передаёт дампы на удалённые машины."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
+msgstr ""
+"Требует загрузки пакетов debuginfo, что может занять некоторое время и "
+"требует наличия свободного места на диске. Отличается от обработки на "
+"сервере тем, что не передаёт дамп удалённым компьютерам."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Address of the retrace server"
-msgstr "Адрес обрабатывающего сервера"
+msgstr "Адрес отслеживающего сервера"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid "Insecure"
-msgstr "Безопасность"
+msgstr "Незащищенное"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Retrace server URL"
-msgstr "Адрес сервера"
+msgstr "URL отслеживающего сервера"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Send core dump to remote retrace server for analysis"
-msgstr "Отправка дампов памяти для анализа на удаленный сервер"
+msgstr "Отправка дампа памяти удалённому серверу для анализа"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:5
 msgid ""
@@ -845,18 +843,26 @@ msgid ""
 "debuginfos is more complete. Retrace server may generate better backtraces. "
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
-msgstr "Загружает дампа памяти на сервер, который создаёт протокол о сбое. Преимущество: не требует загрузки отладочной информации. База отладочных данных на обрабатывающем сервере более полная, он может создавать более точные отчёты. Недостаток: передаваемый серверу дамп памяти содержит все данные отказавшей программы, в том числе личные данные, если таковые имеются."
+msgstr ""
+"Отправляет дамп памяти на сервер для генерации протокола сбоя. Достоинства: "
+"не требуется загружать debuginfo. База данных на остлеживающем сервер более "
+"подробная, поэтому сервер может создавать более точные отчёты. Недостатки: "
+"отправляемый дамп содержит все данные сбойной программы, в том числе и "
+"личные."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 msgid "Whether or not to use insecure connection"
-msgstr "Использование безопасного подключения или наоборот"
+msgstr "Использование незащищенного подключения"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
-msgstr "Впишите «insecure» для небезопасного подключения &lt;a href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;(предупреждение)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
+"(warning)&lt;/a&gt;"
+msgstr ""
+"Введите «insecure», чтобы разрешить незащищенное подключение &lt;a href="
+"\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
+"&gt;(предупреждение)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -866,32 +872,36 @@ msgstr "Извлечение значимых строк из файла ~/.xses
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
-msgstr "Сканирование файла ~/.xsession-errors с сохранением строк, содержащих названия исполняемых файлов. Результат помещается в ячейку «xsession_errors»."
+msgstr ""
+"Проверяет ~/.xsession-errors и сохраняет строки, содержащие имя исполняемого "
+"модуля. Результат сохраняется в «xsession_errors»."
 
 #: ../src/plugins/https-utils.c:46
 msgid "An error occurred on the server side. Try again later."
-msgstr "Ошибка на стороне сервера. Повторите попытку позже."
+msgstr "Ошибка сервера. Повторите попытку позже."
 
 #: ../src/plugins/https-utils.c:51
 msgid ""
 "An error occurred while connecting to the server. Check your network "
 "connection and try again."
-msgstr "Произошла ошибка при подключении к серверу. Проверьте подключение к сети и повторите попытку."
+msgstr ""
+"Ошибка при подключении к серверу. Проверьте подключение к сети и повторите "
+"попытку."
 
 #: ../src/plugins/https-utils.c:69
 #, c-format
 msgid "Issuer certificate is invalid: '%s'."
-msgstr "Неверный сертификат издателя: «%s»."
+msgstr "Неверный сертификат: «%s»"
 
 #: ../src/plugins/https-utils.c:72
 #, c-format
 msgid "Certificate is signed by an untrusted issuer: '%s'."
-msgstr "Сертификат подписан ненадёжным издателем: «%s»."
+msgstr "Сертификат подписан ненадежным издателем: «%s»."
 
 #: ../src/plugins/https-utils.c:75
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
-msgstr "Имя субъекта сертификата «%s» не соответствует имени целевого компьютера «%s»."
+msgstr "Тема сертификата «%s» не соответствует имени целевого компьютера «%s»."
 
 #: ../src/plugins/https-utils.c:79
 msgid "Remote certificate has expired."
@@ -900,12 +910,12 @@ msgstr "Срок действия удалённого сертификата и
 #: ../src/plugins/https-utils.c:82
 #, c-format
 msgid "Certificate issuer is not recognized: '%s'."
-msgstr "Издатель сертификата не опознан: «%s»."
+msgstr "Неизвестный издатель сертификата: «%s»."
 
 #: ../src/plugins/https-utils.c:85
 #, c-format
 msgid "Bad certificate received. Subject '%s', issuer '%s'."
-msgstr "Получен недействительный сертификат. Субъект '%s', издатель '%s'."
+msgstr "Получен неверный сертификат. Тема «%s», автор «%s»."
 
 #: ../src/plugins/https-utils.c:121
 #, c-format
@@ -915,7 +925,7 @@ msgstr "Не удалось получить «PEM Token #0»: %d."
 #: ../src/plugins/https-utils.c:154
 #, c-format
 msgid "Failed to get host by name: NSS error %d."
-msgstr "Не удалось получить имя узла по имени: ошибка NSS %d."
+msgstr "Не удалось получить имя узла по имени. Ошибка NSS: %d."
 
 #: ../src/plugins/https-utils.c:174
 msgid "Failed to create a TCP socket"
@@ -927,7 +937,7 @@ msgstr "Не удалось задать блокирующий режим дл�
 
 #: ../src/plugins/https-utils.c:188
 msgid "Failed to wrap TCP socket by SSL."
-msgstr "Не удаётся защитить сокет TCP при помощи SSL."
+msgstr "Не удалось защитить сокет TCP при помощи SSL."
 
 #: ../src/plugins/https-utils.c:194 ../src/plugins/https-utils.c:198
 #: ../src/plugins/https-utils.c:200 ../src/plugins/https-utils.c:202
@@ -944,7 +954,7 @@ msgstr "Не удалось подключить адрес SSL."
 
 #: ../src/plugins/https-utils.c:222
 msgid "Failed to set certificate hook."
-msgstr "Не удалось установить захват сертификата."
+msgstr "Не удалось настроить обработчик сертификата."
 
 #: ../src/plugins/https-utils.c:229
 msgid "Failed to set handshake callback."
@@ -957,7 +967,7 @@ msgstr "Не удалось перезапустить согласование 
 #: ../src/plugins/https-utils.c:243
 #, c-format
 msgid "Failed to force handshake: NSS error %d."
-msgstr "Не удалось принудительно согласовать связь: ошибка NSS %d."
+msgstr "Не удалось принудительно согласовать связь. Ошибка NSS: %d."
 
 #: ../src/plugins/https-utils.c:252
 msgid "Failed to close SSL socket."
@@ -966,20 +976,20 @@ msgstr "Не удалось закрыть сокет SSL."
 #: ../src/plugins/https-utils.c:306 ../src/plugins/https-utils.c:312
 #: ../src/plugins/https-utils.c:318
 msgid "Invalid response from server: HTTP header not found."
-msgstr "Неправильный ответ сервера: не найден заголовок HTTP."
+msgstr "Неверный ответ сервера: не найден заголовок HTTP."
 
 #: ../src/plugins/https-utils.c:357
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
-msgstr "Получение данных не удалось: ошибка NSS %d."
+msgstr "Не удалось получить данные. Ошибка NSS: %d."
 
 #: ../src/plugins/https-utils.c:386
 msgid "Malformed chunked response."
-msgstr ""
+msgstr "Искаженный фрагментированный ответ."
 
 #: ../src/plugins/https-utils.c:411
 msgid "Failed to initialize NSS."
-msgstr "Не удалось инициализировать NSS."
+msgstr "Ошибка инициализации NSS."
 
 #: ../src/plugins/https-utils.c:417
 msgid "Failed to initialize security module."
@@ -991,91 +1001,97 @@ msgstr "Не удалось выключить NSS."
 
 #: ../src/cli/abrt-cli.c:142
 msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
-msgstr ""
+msgstr "Формат: abrt-cli [--version] COMMAND [DIR]..."
 
 #: ../src/cli/abrt-cli.c:146
 msgid "List not yet reported problems [in DIRs]"
-msgstr ""
+msgstr "Показать ошибки, о которых еще не сообщалось, [в DIR]"
 
 #: ../src/cli/abrt-cli.c:147
 msgid "Remove problem directory DIR"
-msgstr ""
+msgstr "Удалить каталог DIR"
 
 #: ../src/cli/abrt-cli.c:148
 msgid "Analyze and report problem data in DIR"
-msgstr ""
+msgstr "Анализировать и дать отчет по данным сбоя в DIR"
 
 #: ../src/cli/abrt-cli.c:149
 msgid "Print information about DIR"
-msgstr ""
+msgstr "Вывод информации о DIR"
 
 #: ../src/cli/abrt-cli.c:162
 msgid "See 'abrt-cli COMMAND --help' for more information"
-msgstr "Для получения дополнительной информации выполните «abrt-cli COMMAND --help»"
+msgstr ""
+"Для получения дополнительной информации выполните «abrt-cli COMMAND --help»"
 
 #: ../src/cli/list.c:90
 msgid "& list [options] [DIR]..."
-msgstr ""
+msgstr "& list [параметры] [DIR]..."
 
 #: ../src/cli/list.c:97
 msgid "List even reported problems"
-msgstr "Вывести список отчётов, включая переданные"
+msgstr "Показать все ошибки, включая те, о которых уже сообщалось"
 
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:99 ../src/cli/list.c:141
 msgid "Show detailed report"
-msgstr "Вывести подробный отчёт"
+msgstr "Показать подробный отчёт"
 
 #: ../src/cli/list.c:133
 msgid "& info [options] DIR..."
-msgstr ""
+msgstr "& info [параметры] DIR..."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
-msgstr "Разбор отказа системы"
+msgstr "Диагностика отказа системы"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
-msgid ""
-"Install kernel debuginfo packages, generate kernel log and oops message"
-msgstr "Установка пакетов для отладки ядра, создание журнала и запись сообщений об ошибках ядра"
+msgid "Install kernel debuginfo packages, generate kernel log and oops message"
+msgstr "Установка пакетов для отладки ядра и создание журнала ошибок ядра"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
 "Needs to install kernel debuginfo packages, which might take significant "
 "time, and take up disk space."
-msgstr "Требует загрузки отладочных пакетов к ядру, что может занимать значительное время и дисковое пространство."
+msgstr ""
+"Требует установки пакетов debuginfo, что может занять значительное время и "
+"требует наличия дополнительного пространства."
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
-msgstr "Сбор параметров GConf"
+msgstr "Сбор статистики GConf"
 
 #: ../src/plugins/collect_GConf.xml.in.h:2
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
-msgstr "Запуск gconftool-2 --recursive-list /apps/executable с сохранением данных в ячейку «gconf_subtree»."
+msgstr ""
+"Запуск «gconftool-2 --recursive-list /apps/executable» с сохранением данных "
+"в «gconf_subtree»."
 
 #: ../src/plugins/collect_GConf.xml.in.h:3
 msgid "Save configuration from application's GConf directory"
-msgstr "Чтение параметров приложений из каталога GConf"
+msgstr "Чтение параметров из каталога GConf"
 
 #: ../src/plugins/collect_Smolt.xml.in.h:1
 msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
-msgstr "Запуск smoltSendProfile -p с сохранением данных в ячейку «smolt_data»."
+msgstr "Запуск «smoltSendProfile -p» с сохранением данных в «smolt_data»."
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
 msgid "Save your computer's hardware profile information"
-msgstr "Создание профиля оборудования"
+msgstr "Сохранить профиль оборудования компьютера"
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
-msgstr "Проверка папки /etc на наличие файлов vimrc и gvimrc и вложение последних в отчёты как system_vimrc и system_gvimrc."
+msgstr ""
+"Поиск файлов vimrc и gvimrc в /etc и их сохранение как system_vimrc и "
+"system_gvimrc."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:2
 msgid "Collect system-wide vim configuration files"
-msgstr "Сбор общесистемных параметров vim"
+msgstr "Сбор системных файлов конфигурации vim"
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:3
 msgid "Save /etc/vimrc and /etc/gvimrc"
@@ -1083,14 +1099,16 @@ msgstr "Чтение /etc/vimrc и /etc/gvimrc"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
-msgstr "Проверка домашне папки на наличие файлов .vimrc и .gvimrc и вложение последних в отчёты как user_vimrc и user_gvimrc."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
+msgstr ""
+"Поиск  .vimrc и .gvimrc  в домашнем каталоге и их сохранение как user_vimrc "
+"и user_gvimrc."
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:2
 msgid "Collect yours vim configuration files"
-msgstr "Сбор пользовательских параметров vim"
+msgstr "Сбор пользовательских файлов конфигурации vim"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid "Save .vimrc and .gvimrc from your home directory"
-msgstr "Чтение .vimrc и .gvimrc из домашнего каталога пользователя"
+msgstr "Получение .vimrc и .gvimrc из домашнего каталога пользователя"
