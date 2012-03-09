@@ -30,6 +30,9 @@ static const gchar introspection_xml[] =
   "      <arg type='s' name='problem_dir' direction='in'/>"
   "      <arg type='s' name='response' direction='out'/>"
   "    </method>"
+  "    <method name='ChownProblemDir'>"
+  "      <arg type='s' name='problem_dir' direction='in'/>"
+  "    </method>"
   "    <method name='Quit' />"
   "  </interface>"
   "</node>";
@@ -88,6 +91,7 @@ uid_t get_caller_uid(GDBusConnection *connection, const char *caller, GError *er
 
 bool uid_in_group(uid_t uid, gid_t gid)
 {
+    g_print("uid_in_group\n");
     char **tmp;
     struct passwd *pwd = getpwuid(uid);
     if (pwd && (pwd->pw_gid == gid))
@@ -105,6 +109,7 @@ bool uid_in_group(uid_t uid, gid_t gid)
             }
         }
     }
+    g_print("uid_in_gourp out\n");
     VERB2 log("WARN: user %s DOESN'T belong to group: %s\n",  pwd->pw_name, grp->gr_name);
     return FALSE;
 }
@@ -250,6 +255,98 @@ handle_method_call(GDBusConnection       *connection,
         response = get_problem_dirs_for_uid(caller_uid);
 
         g_dbus_method_invocation_return_value(invocation, response);
+    }
+
+    else if (g_strcmp0(method_name, "ChownProblemDir") == 0)
+    {
+        VERB2 log("ChownProblemDir");
+
+        GError *error = NULL;
+        uid_t caller_uid;
+        const gchar *problem_dir;
+        struct passwd *pwd;
+        int chown_res;
+        gchar *error_msg;
+
+        g_variant_get(parameters, "(&s)", &problem_dir);
+
+        //FIXME: check if it's problem_dir and refuse to operate on it if it's not
+        struct dump_dir *dd = dd_opendir(problem_dir, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
+        if (!dd)
+        {
+            error_msg = g_strdup_printf(_("%s is not a valid problem dir"), problem_dir);
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                      "org.freedesktop.problems.InvalidProblemDir",
+                                                  error_msg);
+            free(error_msg);
+            return;
+        }
+        dd_close(dd);
+
+        caller_uid = get_caller_uid(connection, caller, error);
+
+        g_print("out\n");
+
+        if (error)
+        {
+            g_dbus_method_invocation_return_gerror(invocation, error);
+            g_error_free(error);
+        }
+
+        if (caller_uid == 99)
+        {
+            error_msg = g_strdup_printf("Could not get unix user for caller %s", caller);
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                      "org.freedesktop.problems.InvalidProblemDir",
+                                                  error_msg);
+            free(error_msg);
+            return;
+        }
+
+        struct stat statbuf;
+        errno = 0;
+        if (stat(problem_dir, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
+        {
+            if (caller_uid == 0 || uid_in_group(caller_uid, statbuf.st_gid)) //caller seems to be in group with access to this dir, so no action needed
+            {
+                //return ok
+                VERB1 log("caller has access to the requested directory %s\n", problem_dir);
+                g_dbus_method_invocation_return_value(invocation, NULL);
+                return;
+                //free something?
+            }
+
+        }
+        else
+        {
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                                      "org.freedesktop.problems.StatFailure",
+                                                      strerror(errno));
+            return;
+        }
+
+        if (polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
+        {
+            VERB1 log("not authorized");
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                              "org.freedesktop.problems.AuthFailure",
+                                              "Not Authorized");
+            return;
+        }
+
+        pwd = getpwuid(caller_uid);
+        if (pwd)
+        {
+            errno = 0;
+            chown_res = chown(problem_dir, statbuf.st_uid, pwd->pw_gid);
+            if (chown_res != 0)
+                g_dbus_method_invocation_return_dbus_error(invocation,
+                                                  "org.freedesktop.problems.ChownError",
+                                                  strerror(errno));
+
+            g_dbus_method_invocation_return_value(invocation, NULL);
+            return;
+        }
     }
 
     else if (g_strcmp0(method_name, "GetInfo") == 0)
