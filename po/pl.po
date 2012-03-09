@@ -1,23 +1,25 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
 # Piotr Drąg <piotrdrag@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2012-02-15 17:16+0100\n"
-"PO-Revision-Date: 2012-02-15 16:17+0000\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2012-03-08 09:35+0100\n"
+"PO-Revision-Date: 2012-02-21 14:18+0000\n"
 "Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
-"Language-Team: Polish (http://www.transifex.net/projects/p/fedora/language/pl/)\n"
+"Language-Team: Polish (http://www.transifex.net/projects/p/fedora/language/"
+"pl/)\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pl\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -35,11 +37,15 @@ msgstr "Ostrzeżenie"
 #: ../src/applet/applet.c:394
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
-msgstr "Aplet obszaru powiadamiania informujący użytkownika o problemach wykrytych przez program ABRT"
+msgstr ""
+"Aplet obszaru powiadamiania informujący użytkownika o problemach wykrytych "
+"przez program ABRT"
 
 #: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:579
 msgid "translator-credits"
-msgstr "Piotr Drąg <piotrdrag@gmail.com>, 2009\nTomasz Chrzczonowicz <chrzczonowicz@gmail.com>, 2009"
+msgstr ""
+"Piotr Drąg <piotrdrag@gmail.com>, 2009\n"
+"Tomasz Chrzczonowicz <chrzczonowicz@gmail.com>, 2009"
 
 #: ../src/applet/applet.c:420
 msgid "Hide"
@@ -60,18 +66,18 @@ msgstr "Wystąpił problem"
 #: ../src/applet/applet.c:607
 #, c-format
 msgid "A problem in the %s package has been detected"
-msgstr "Wykryto problem w pakiecie %s"
+msgstr ""
 
 #: ../src/applet/applet.c:609
 msgid "A problem has been detected"
-msgstr "Wykryto problem"
+msgstr ""
 
 #: ../src/applet/applet.c:737
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
-msgstr "& [-v] [KATALOG]...\n\nAplet powiadamiający użytkownika o nowych problemach wykrytych przez program ABRT\n"
+msgstr ""
 
 #: ../src/applet/applet.c:809
 msgid "ABRT service is not running"
@@ -82,12 +88,12 @@ msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
-msgstr "& [-v] [-c PLIK_KONFIGURACJI] -d KATALOG\n\nOdpytuje bazę danych pakietów i zapisuje nazwę pakietu i składnika"
+msgstr ""
 
 #: ../src/daemon/abrt-action-save-package-data.c:374
 #: ../src/plugins/abrt-action-analyze-backtrace.c:63
 #: ../src/plugins/abrt-action-analyze-c.c:90
-#: ../src/plugins/abrt-action-analyze-oops.c:136
+#: ../src/plugins/abrt-action-analyze-oops.c:48
 #: ../src/plugins/abrt-action-analyze-python.c:47
 #: ../src/plugins/abrt-action-generate-backtrace.c:176
 msgid "Dump directory"
@@ -100,13 +106,13 @@ msgstr "Plik konfiguracji"
 #: ../src/daemon/abrt-server.c:457 ../src/daemon/abrt-dbus.c:378
 #: ../src/daemon/abrtd.c:642
 msgid "& [options]"
-msgstr "& [opcje]"
+msgstr ""
 
 #: ../src/daemon/abrt-server.c:468
 msgid "Use UID as client uid"
 msgstr "Używa UID jako UID klienta"
 
-#: ../src/daemon/abrt-server.c:469 ../src/plugins/abrt-dump-oops.c:590
+#: ../src/daemon/abrt-server.c:469 ../src/plugins/abrt-dump-oops.c:244
 msgid "Log to syslog"
 msgstr "Przekazuje komunikaty do dziennika systemowego"
 
@@ -121,7 +127,8 @@ msgstr "Bez tworzenia demona"
 
 #: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:656
 msgid "Log to syslog even with -d"
-msgstr "Przekazuje komunikaty do dziennika systemowego, nawet jeśli podano opcję -d"
+msgstr ""
+"Przekazuje komunikaty do dziennika systemowego, nawet jeśli podano opcję -d"
 
 #: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:657
 msgid "Exit after NUM seconds of inactivity"
@@ -161,11 +168,11 @@ msgstr "Ostatnie wystąpienie"
 
 #: ../src/gui-gtk/main.c:664
 msgid "Date Submitted"
-msgstr "Data wysłania"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:673
 msgid "Submission Result"
-msgstr "Wynik wysyłania"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:686
 msgid "_Report"
@@ -185,26 +192,26 @@ msgstr "Zgłoś problem za pomocą programu ABRT"
 
 #: ../src/gui-gtk/main.c:753
 msgid "Not submitted reports"
-msgstr "Niewysłane zgłoszenia"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:755
 msgid "<b>Not submitted reports</b>"
-msgstr "<b>Niewysłane zgłoszenia</b>"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:803
 msgid "Submitted reports"
-msgstr "Wysłane zgłoszenia"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:806
 msgid "<b>Submitted reports</b>"
-msgstr "<b>Wysłane zgłoszenia</b>"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:1057
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
 "Shows list of ABRT dump directories in specified DIR(s)\n"
-msgstr "& [-vp] [KATALOG]...\n\nWyświetla listę katalogów zrzutów programu ABRT w podanych KATALOGACH\n"
+msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:51
 msgid ""
@@ -214,10 +221,11 @@ msgid ""
 "and identifies crash function in problem directory DIR"
 msgstr ""
 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:100
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -230,7 +238,7 @@ msgid ""
 "Calculates and saves UUID of coredump in problem directory DIR"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-oops.c:125
+#: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
 "& [-vs] -d DIR\n"
 "\n"
@@ -242,38 +250,38 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
-msgstr "& [-v] -d KATALOG\n\nOblicza i zapisuje UUID i SUMĘ_DUPLIKATU dla zrzutów awarii języka Python"
-
-#: ../src/plugins/abrt-action-analyze-vmcore.in:30
-msgid ""
-"Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:52
+#: ../src/plugins/abrt-action-analyze-vmcore.in:29
+msgid "Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
+msgstr ""
+
+#: ../src/plugins/abrt-action-analyze-vmcore.in:60
 msgid "File {0} doesn't exist"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:84
+#: ../src/plugins/abrt-action-analyze-vmcore.in:92
 msgid "{0} is not a valid vmcore"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:90
+#: ../src/plugins/abrt-action-analyze-vmcore.in:98
 msgid "Required vmlinux debuginfo is installed in {0}"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:96
+#: ../src/plugins/abrt-action-analyze-vmcore.in:104
 msgid "Installing kernel debuginfo(s)"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:102
+#: ../src/plugins/abrt-action-analyze-vmcore.in:111
+#: ../src/plugins/abrt-action-analyze-vmcore.in:117
 msgid "Can't download required debuginfo"
 msgstr ""
 
 #. Let user know what's going on
-#: ../src/plugins/abrt-action-analyze-vmcore.in:105
+#: ../src/plugins/abrt-action-analyze-vmcore.in:120
 #: ../src/plugins/abrt-action-generate-backtrace.c:44
 msgid "Generating backtrace"
-msgstr "Tworzenie wyjątku"
+msgstr ""
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:163
 msgid ""
@@ -292,7 +300,7 @@ msgstr "Kończy działanie GDB, jeśli jest uruchomione dłużej niż NUM sekund
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
+#.
 #: ../src/plugins/abrt-action-generate-backtrace.c:228
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -309,105 +317,17 @@ msgstr ""
 msgid "Problem directory"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:89
-msgid "Extracting cpio from {0}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:94
-msgid "Can't write to '{0}': {1}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:108
-msgid "Can't extract package '{0}'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:116
-msgid "Caching files from {0} made from {1}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:126
-msgid "Can't extract files from '{0}'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:153
-#: ../src/plugins/abrt-action-install-debuginfo:164
-msgid "Downloading ({0} of {1}) {2}: {3:3}%"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:184
-msgid "Initializing yum"
-msgstr "Inicjowanie programu yum"
-
-#: ../src/plugins/abrt-action-install-debuginfo:192
-msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:223
-msgid "Setting up yum repositories"
-msgstr "Ustawianie repozytoriów programu yum"
-
-#: ../src/plugins/abrt-action-install-debuginfo:234
-msgid "Can't setup {0}: {1}, disabling"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:241
-msgid "Looking for needed packages in repositories"
-msgstr "Wyszukiwanie wymaganych pakietów w repozytoriach"
-
-#: ../src/plugins/abrt-action-install-debuginfo:245
-msgid "Error retrieving metadata: '{0!s}'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:255
-msgid "Error retrieving filelists: '{0!s}'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:288
-msgid "Can't find packages for {0} debuginfo files"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:290
-msgid "Packages to download: {0}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:291
-msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:296
-msgid "Download cancelled by user"
-msgstr "Pobieranie zostało anulowane przez użytkownika"
-
-#: ../src/plugins/abrt-action-install-debuginfo:330
-msgid "Downloading package {0} failed"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:336
-msgid "Unpacking failed, aborting download..."
-msgstr "Rozpakowanie nie powiodło się, przerywanie pobierania..."
-
-#: ../src/plugins/abrt-action-install-debuginfo:346
-msgid "Removing {0}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:350
-#, c-format
-msgid "Can't remove %s, probably contains an error log"
-msgstr "Nie można usunąć %s, prawdopodobnie zawiera dziennik błędów"
-
-#: ../src/plugins/abrt-action-install-debuginfo:408
-msgid "Can't remove '{0}': {1}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:416
+#: ../src/plugins/abrt-action-install-debuginfo:50
 msgid "Exiting on user command"
 msgstr "Wyłączanie na polecenie użytkownika"
 
-#: ../src/plugins/abrt-action-install-debuginfo:450
+#: ../src/plugins/abrt-action-install-debuginfo:86
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -419,29 +339,31 @@ msgid ""
 "    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
-msgstr "Użycie: %s [-vy] [--ids=PLIK_IDENTYFIKATORÓW_BUDOWANIA]\n       [--tmpdir=KATALOG_TYMCZASOWY] [--cache=KATALOG_PAMIĘCI_PODRĘCZNEJ[:KATALOG_DEBUGINFO1:KATALOG_DEBUGINFO2...]] [--size_mb=ROZMIAR]\n\nInstaluje pakiety debuginfo dla wszystkich identyfikatorów budowania z\nlisty w PLIKU_IDENTYFIKATORÓW_BUDOWANIA do KATALOGU_PAMIĘCI_PODRĘCZNEJ,\nużywając KATALOGU_TYMCZASOWEGO jako tymczasowego obszaru.\nPoprzednie pliki w KATALOGU_PAMIĘCI_PODRĘCZNEJ są usuwane, dopóki nie są\nmniejsze niż ROZMIAR.\n\n    -v          Więcej komunikatów\n    -y          Nieinteraktywnie, przyjmuje \"tak\" na wszystkie pytania\n    --ids       Domyślnie: build_ids\n    --tmpdir    Domyślnie: /tmp/abrt-tmp-debuginfo-LOSOWY_PRZYROSTEK\n    --cache     Domyślnie: /var/cache/abrt-di\n    --size_mb   Domyślnie: 4096\n"
+"    -e,--exact  Download only specified files\n"
+msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:524
+#: ../src/plugins/abrt-action-install-debuginfo:168
 msgid "Can't open {0}: {1}"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:556
+#: ../src/plugins/abrt-action-install-debuginfo:201
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:567
+#: ../src/plugins/abrt-action-install-debuginfo:212
 msgid "Missing debuginfo file: {0}"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:570
-msgid "All {0} debuginfo files are available"
+#: ../src/plugins/abrt-action-install-debuginfo:215
+msgid "All debuginfo files are available"
 msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
+"SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
 
@@ -501,53 +423,55 @@ msgstr ""
 msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:521
+#: ../src/plugins/abrt-dump-oops.c:175
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has beentainted (flags:%s). "
 "Kernel maintainers are unable todiagnose tainted reports."
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:572
+#: ../src/plugins/abrt-dump-oops.c:226
 msgid ""
 "& [-vsrowx] [-d DIR] FILE\n"
 "or: & [-vsrowx] -D FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
-msgstr "& [-vsrowx] [-d KATALOG] PLIK\n   lub: & [-vsrowx] -D PLIK\n\nWydobywa oops z pliku syslog/dmesg"
+msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:591
+#: ../src/plugins/abrt-dump-oops.c:245
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "Przetwarza bufor komunikatów jądra przed przetworzeniem PLIKU"
 
-#: ../src/plugins/abrt-dump-oops.c:592
+#: ../src/plugins/abrt-dump-oops.c:246
 msgid "Print found oopses on standard output"
 msgstr "Wyświetla odnalezione awarie w standardowym wyjściu"
 
-#: ../src/plugins/abrt-dump-oops.c:593
+#: ../src/plugins/abrt-dump-oops.c:247
 msgid "Do not exit, watch the file for new oopses"
 msgstr "Bez kończenia działania, obserwuje pliki pod kątem nowych awarii"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
-#: ../src/plugins/abrt-dump-oops.c:597
+#.
+#: ../src/plugins/abrt-dump-oops.c:251
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr "Tworzy zrzut ABRT w KATALOGU dla każdej odnalezionej awarii"
 
-#: ../src/plugins/abrt-dump-oops.c:598
+#: ../src/plugins/abrt-dump-oops.c:252
 msgid "Make the problem directory world readable"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:599
+#: ../src/plugins/abrt-dump-oops.c:253
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
-msgstr "To samo, co -d DumpLocation, DumpLocation jest określone w pliku abrt.conf"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:63
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
-msgstr "Nie można użyć serwera ponownego śledzenia, ponieważ awaria jest za duża. Proszę spróbować lokalnego ponownego śledzenia."
+msgstr ""
+"Nie można użyć serwera ponownego śledzenia, ponieważ awaria jest za duża. "
+"Proszę spróbować lokalnego ponownego śledzenia."
 
 #: ../src/plugins/abrt-retrace-client.c:96
 msgid "Cannot open temporary file"
@@ -576,7 +500,9 @@ msgstr "Wysłanie nagłówka HTTP o długości %d nie powiodło się: błąd NSS
 msgid ""
 "Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr "Nieoczekiwana odpowiedź HTTP od serwera: %d\n%s"
+msgstr ""
+"Nieoczekiwana odpowiedź HTTP od serwera: %d\n"
+"%s"
 
 #: ../src/plugins/abrt-retrace-client.c:208
 #: ../src/plugins/abrt-retrace-client.c:608
@@ -614,20 +540,22 @@ msgstr ""
 msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
-msgstr "Rozmiar awarii wynosi %lld bajtów, a serwer ponownego śledzenia przyjmuje tylko awarie mniejsze niż lub równe %lld bajtom."
+msgstr ""
+"Rozmiar awarii wynosi %lld bajtów, a serwer ponownego śledzenia przyjmuje "
+"tylko awarie mniejsze niż lub równe %lld bajtom."
 
 #: ../src/plugins/abrt-retrace-client.c:424
 msgid "The server does not support xz-compressed tarballs."
-msgstr "Serwer nie obsługuje pakietów tar skompresowanych za pomocą xz."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:447
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
-msgstr "Wydanie \"%s\" nie jest obsługiwane przez serwer ponownego śledzenia."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:451
 msgid "The server is not able to handle your request."
-msgstr "Serwer nie może obsłużyć żądania."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:460
 msgid "Preparing an archive to upload"
@@ -638,7 +566,9 @@ msgstr "Przygotowywanie do wysłania archiwum"
 msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
-msgstr "Rozmiar archiwum wynosi %lld bajtów, a serwer ponownego śledzenia przyjmuje tylko archiwa mniejsze niż lub równe %lld bajtom."
+msgstr ""
+"Rozmiar archiwum wynosi %lld bajtów, a serwer ponownego śledzenia przyjmuje "
+"tylko archiwa mniejsze niż lub równe %lld bajtom."
 
 #: ../src/plugins/abrt-retrace-client.c:486
 #, c-format
@@ -681,13 +611,17 @@ msgstr "Wysłano pomyślnie"
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
-msgstr "Katalog problemów jest uszkodzony i nie może zostać przetworzony przez serwer ponownego śledzenia."
+msgstr ""
+"Katalog problemów jest uszkodzony i nie może zostać przetworzony przez "
+"serwer ponownego śledzenia."
 
 #: ../src/plugins/abrt-retrace-client.c:622
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
-msgstr "Archiwum zawiera złośliwe pliki (takie jak dowiązania symboliczne), więc nie może zostać przetworzone."
+msgstr ""
+"Archiwum zawiera złośliwe pliki (takie jak dowiązania symboliczne), więc nie "
+"może zostać przetworzone."
 
 #: ../src/plugins/abrt-retrace-client.c:635
 msgid "Invalid response from server: missing X-Task-Id."
@@ -706,7 +640,9 @@ msgstr "Uruchomiono zadanie ponownego śledzenia"
 msgid ""
 "Task Id: %s\n"
 "Task Password: %s\n"
-msgstr "Identyfikator zadania: %s\nHasło zadania: %s\n"
+msgstr ""
+"Identyfikator zadania: %s\n"
+"Hasło zadania: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:707
 #, c-format
@@ -722,17 +658,22 @@ msgstr "Nieprawidłowa odpowiedź od serwera: brak X-Task-Status."
 msgid ""
 "Task Status: %s\n"
 "%s\n"
-msgstr "Stan zadania: %s\n%s\n"
+msgstr ""
+"Stan zadania: %s\n"
+"%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:919
 msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
-msgstr "Ponowne śledzenie nie powiodło się. Proszę spróbować ponownie później, a jeśli problem się utrzymuje, to proszę go zgłosić."
+msgstr ""
+"Ponowne śledzenie nie powiodło się. Proszę spróbować ponownie później, a "
+"jeśli problem się utrzymuje, to proszę go zgłosić."
 
 #: ../src/plugins/abrt-retrace-client.c:966
 msgid "allow insecure connection to retrace server"
-msgstr "zezwolenie na niezabezpieczone połączenie do serwera ponownego śledzenia"
+msgstr ""
+"zezwolenie na niezabezpieczone połączenie do serwera ponownego śledzenia"
 
 #: ../src/plugins/abrt-retrace-client.c:968
 msgid "retrace server URL"
@@ -740,7 +681,7 @@ msgstr "adres URL serwera ponownego śledzenia"
 
 #: ../src/plugins/abrt-retrace-client.c:970
 msgid "retrace server port"
-msgstr "port serwera ponownego śledzenia"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:973
 msgid "For create and batch operations"
@@ -760,7 +701,9 @@ msgstr "Opóźnienie do działań odpytywania"
 
 #: ../src/plugins/abrt-retrace-client.c:981
 msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
-msgstr "(debugowanie) nie usuwa tymczasowych archiwów utworzonych z katalogu zrzutów w /tmp"
+msgstr ""
+"(debugowanie) nie usuwa tymczasowych archiwów utworzonych z katalogu zrzutów "
+"w /tmp"
 
 #: ../src/plugins/abrt-retrace-client.c:983
 msgid "For status, backtrace, and log operations"
@@ -778,7 +721,9 @@ msgstr "hasło zadania na serwerze"
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch"
-msgstr "abrt-retrace-client <działanie> [opcje]\nDziałania: create/status/backtrace/log/batch"
+msgstr ""
+"abrt-retrace-client <działanie> [opcje]\n"
+"Działania: create/status/backtrace/log/batch"
 
 #: ../src/plugins/abrt-retrace-client.c:1036
 #: ../src/plugins/abrt-retrace-client.c:1042
@@ -813,9 +758,12 @@ msgstr "Lokalny debuger GDB"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
-msgstr "Należy pobrać pakiety debuginfo, co może zająć dużo czasu i miejsca na dysku. Jednakże, w przeciwieństwie do RetraceServer, nie wysyła zrzutów core do zdalnych komputerów."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
+msgstr ""
+"Należy pobrać pakiety debuginfo, co może zająć dużo czasu i miejsca na "
+"dysku. Jednakże, w przeciwieństwie do RetraceServer, nie wysyła zrzutów core "
+"do zdalnych komputerów."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Address of the retrace server"
@@ -823,7 +771,7 @@ msgstr "Adres serwera ponownego śledzenia"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid "Insecure"
-msgstr "Niezabezpieczone"
+msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Retrace server URL"
@@ -840,18 +788,23 @@ msgid ""
 "debuginfos is more complete. Retrace server may generate better backtraces. "
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
-msgstr "Wysyła zrzuty core do serwera, którzy tworzy wyjątek i go zwraca. Zalety: nie trzeba pobierać pakietów debuginfo. Baza danych pakietów debuginfo serwera ponownego śledzenia jest bardziej kompletna. Może on tworzyć lepsze wyjątki. Wady: wysyłane zrzuty core zawierają wszystkie dane programu, który uległ awarii, w tym potencjalnie prywatne dane."
+msgstr ""
+"Wysyła zrzuty core do serwera, którzy tworzy wyjątek i go zwraca. Zalety: "
+"nie trzeba pobierać pakietów debuginfo. Baza danych pakietów debuginfo "
+"serwera ponownego śledzenia jest bardziej kompletna. Może on tworzyć lepsze "
+"wyjątki. Wady: wysyłane zrzuty core zawierają wszystkie dane programu, który "
+"uległ awarii, w tym potencjalnie prywatne dane."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 msgid "Whether or not to use insecure connection"
-msgstr "Określa, czy używać niezabezpieczonego połączenia"
+msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
-msgstr "Wpisanie \"insecure\" umożliwia użycie połączenia niezabezpieczonego &lt;a href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;(ostrzeżenie)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
+"(warning)&lt;/a&gt;"
+msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -861,17 +814,19 @@ msgstr "Zapisuje ważne wiersze z pliku ~/.xsession-errors"
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
-msgstr "Skanuje plik ~/.xsession-errors i zapisuje te wiersze, które zawierają nazwę pliku wykonywalnego. Wynik jest zapisywany jako element \"xsession_errors\"."
+msgstr ""
+"Skanuje plik ~/.xsession-errors i zapisuje te wiersze, które zawierają nazwę "
+"pliku wykonywalnego. Wynik jest zapisywany jako element \"xsession_errors\"."
 
 #: ../src/plugins/https-utils.c:46
 msgid "An error occurred on the server side. Try again later."
-msgstr "Wystąpił błąd po stronie serwera. Proszę spróbować ponownie później."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:51
 msgid ""
 "An error occurred while connecting to the server. Check your network "
 "connection and try again."
-msgstr "Wystąpił błąd podczas łączenia z serwerem. Proszę sprawdzić połączenie sieciowe i spróbować ponownie."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:69
 #, c-format
@@ -886,7 +841,9 @@ msgstr "Certyfikat jest podpisany przez niezaufanego wystawcę: \"%s\"."
 #: ../src/plugins/https-utils.c:75
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
-msgstr "Nazwa tematu certyfikatu \"%s\" nie pasuje do docelowej nazwy komputera \"%s\"."
+msgstr ""
+"Nazwa tematu certyfikatu \"%s\" nie pasuje do docelowej nazwy komputera \"%s"
+"\"."
 
 #: ../src/plugins/https-utils.c:79
 msgid "Remote certificate has expired."
@@ -910,7 +867,7 @@ msgstr "Uzyskanie gniazda \"PEM Token #0\" nie powiodło się: %d."
 #: ../src/plugins/https-utils.c:154
 #, c-format
 msgid "Failed to get host by name: NSS error %d."
-msgstr "Pobrani komputera według nazwy nie powiodło się: błąd biblioteki NSS %d."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:174
 msgid "Failed to create a TCP socket"
@@ -1006,7 +963,7 @@ msgstr ""
 
 #: ../src/cli/abrt-cli.c:162
 msgid "See 'abrt-cli COMMAND --help' for more information"
-msgstr "Wydanie polecenia \"abrt-cli POLECENIE --help\" wyświetli więcej informacji"
+msgstr ""
 
 #: ../src/cli/list.c:90
 msgid "& list [options] [DIR]..."
@@ -1027,36 +984,35 @@ msgstr ""
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
-msgstr "Analizuje plik core maszyny wirtualnej"
+msgstr ""
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
-msgid ""
-"Install kernel debuginfo packages, generate kernel log and oops message"
-msgstr "Instaluje pakiety debuginfo jądra, tworzy dziennik jądra i komunikat oops"
+msgid "Install kernel debuginfo packages, generate kernel log and oops message"
+msgstr ""
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
 "Needs to install kernel debuginfo packages, which might take significant "
 "time, and take up disk space."
-msgstr "Należy zainstalować pakiety debuginfo jądra, co może zająć dużo czasu i miejsca na dysku."
+msgstr ""
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
-msgstr "Zbiera konfigurację GConf"
+msgstr ""
 
 #: ../src/plugins/collect_GConf.xml.in.h:2
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
-msgstr "Wykonuje polecenie gconftool-2 --recursive-list /apps/plik-wykonywalny i zapisuje wynik jako element \"gconf_subtree\"."
+msgstr ""
 
 #: ../src/plugins/collect_GConf.xml.in.h:3
 msgid "Save configuration from application's GConf directory"
-msgstr "Zapisuje konfigurację z katalogu GConf aplikacji"
+msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:1
 msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
-msgstr "Wykonuje polecenie smoltSendProfile -p i zapisuje wynik jako element \"smolt_data\"."
+msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
 msgid "Save your computer's hardware profile information"
@@ -1066,26 +1022,26 @@ msgstr "Zapisuje informacje o profilu sprzętu komputera"
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
-msgstr "Sprawdza, czy istnieją pliki vimrc i gvimrc w katalogu /etc i zapisuje je jako system_vimrc i system_gvimrc."
+msgstr ""
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:2
 msgid "Collect system-wide vim configuration files"
-msgstr "Zbiera systemowe pliki konfiguracji programu vim"
+msgstr ""
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:3
 msgid "Save /etc/vimrc and /etc/gvimrc"
-msgstr "Zapisuje pliki /etc/vimrc i /etc/gvimrc"
+msgstr ""
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
-msgstr "Sprawdza, czy istnieją pliki .vimrc i .gvimrc w katalogu domowym i zapisuje je jako user_vimrc i user_gvimrc."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
+msgstr ""
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:2
 msgid "Collect yours vim configuration files"
-msgstr "Zbiera pliki konfiguracji użytkownika programu vim"
+msgstr ""
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid "Save .vimrc and .gvimrc from your home directory"
-msgstr "Zapisuje pliki .vimrc i .gvimrc z katalogu domowego użytkownika"
+msgstr ""

@@ -1,126 +1,125 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
-# Valentin Laskov <laskov@festa.bg>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2012-02-15 17:16+0100\n"
-"PO-Revision-Date: 2012-02-15 16:17+0000\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2012-03-08 09:35+0100\n"
+"PO-Revision-Date: 2012-02-21 14:18+0000\n"
 "Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: Bulgarian <trans-bg@lists.fedoraproject.org>\n"
+"Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: bg\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
-msgstr "Известяващ аплет на ABRT"
+msgstr ""
 
 #: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
 #: ../src/gui-gtk/main.c:733
 msgid "Automatic Bug Reporting Tool"
-msgstr "Автоматичен инструмент за рапортуване на бъгове (ABRT)"
+msgstr ""
 
 #: ../src/applet/applet.c:344 ../src/applet/applet.c:346
 msgid "Warning"
-msgstr "Внимание"
+msgstr ""
 
 #: ../src/applet/applet.c:394
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
-msgstr "Област на известяващия аплет, информиращ за проблемите, забелязани от ABRT"
+msgstr ""
 
 #: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:579
 msgid "translator-credits"
-msgstr "Валентин Ласков, 2011"
+msgstr ""
 
 #: ../src/applet/applet.c:420
 msgid "Hide"
-msgstr "Скрий"
+msgstr ""
 
 #: ../src/applet/applet.c:472
 msgid "Report"
-msgstr "Съобщи"
+msgstr ""
 
 #: ../src/applet/applet.c:475
 msgid "Show"
-msgstr "Покажи"
+msgstr ""
 
 #: ../src/applet/applet.c:479
 msgid "A Problem has Occurred"
-msgstr "Възникна проблем"
+msgstr ""
 
 #: ../src/applet/applet.c:607
 #, c-format
 msgid "A problem in the %s package has been detected"
-msgstr "Бе открит проблем в пакета %s"
+msgstr ""
 
 #: ../src/applet/applet.c:609
 msgid "A problem has been detected"
-msgstr "Бе открит проблем"
+msgstr ""
 
 #: ../src/applet/applet.c:737
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
-msgstr "& [-v] [DIR]...\n\nАплет, известяващ потребителя, когато нов проблем бъде открит от ABRT\n"
+msgstr ""
 
 #: ../src/applet/applet.c:809
 msgid "ABRT service is not running"
-msgstr "Услугата ABRT не работи"
+msgstr ""
 
 #: ../src/daemon/abrt-action-save-package-data.c:362
 msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
-msgstr "& [-v] [-c CONFFILE] -d DIR\n\nЗапитване към базата данни и съхраняване на пакета и името на компонента"
+msgstr ""
 
 #: ../src/daemon/abrt-action-save-package-data.c:374
 #: ../src/plugins/abrt-action-analyze-backtrace.c:63
 #: ../src/plugins/abrt-action-analyze-c.c:90
-#: ../src/plugins/abrt-action-analyze-oops.c:136
+#: ../src/plugins/abrt-action-analyze-oops.c:48
 #: ../src/plugins/abrt-action-analyze-python.c:47
 #: ../src/plugins/abrt-action-generate-backtrace.c:176
 msgid "Dump directory"
-msgstr "Директория за запис"
+msgstr ""
 
 #: ../src/daemon/abrt-action-save-package-data.c:375
 msgid "Configuration file"
-msgstr "Конфигурационен файл"
+msgstr ""
 
 #: ../src/daemon/abrt-server.c:457 ../src/daemon/abrt-dbus.c:378
 #: ../src/daemon/abrtd.c:642
 msgid "& [options]"
-msgstr "& [опции]"
+msgstr ""
 
 #: ../src/daemon/abrt-server.c:468
 msgid "Use UID as client uid"
-msgstr "Използвай UID като uid на клиента"
+msgstr ""
 
-#: ../src/daemon/abrt-server.c:469 ../src/plugins/abrt-dump-oops.c:590
+#: ../src/daemon/abrt-server.c:469 ../src/plugins/abrt-dump-oops.c:244
 msgid "Log to syslog"
-msgstr "Запис в системния журнал"
+msgstr ""
 
 #: ../src/daemon/abrt-server.c:470 ../src/daemon/abrtd.c:658
 #: ../src/gui-gtk/main.c:1068
 msgid "Add program names to log"
-msgstr "Добавяй имената на програмите в записа"
+msgstr ""
 
 #: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:655
 msgid "Do not daemonize"
-msgstr "Да не преминава в режим демон"
+msgstr ""
 
 #: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:656
 msgid "Log to syslog even with -d"
-msgstr "Записвай в системния журнал дори и при -d"
+msgstr ""
 
 #: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:657
 msgid "Exit after NUM seconds of inactivity"
@@ -136,74 +135,74 @@ msgstr ""
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr "Преглед и съобщаване за сривове в приложения"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:517
 msgid "Problem description"
-msgstr "Описание на проблема"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:520
 msgid "Send"
-msgstr "Изпрати"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:598 ../src/gui-gtk/main.c:644
 msgid "Source"
-msgstr "Източник"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:608 ../src/gui-gtk/main.c:654
 msgid "Problem"
-msgstr "Проблем"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:629
 msgid "Last Occurrence"
-msgstr "Последна случка"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:664
 msgid "Date Submitted"
-msgstr "Дата на изпращане"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:673
 msgid "Submission Result"
-msgstr "Резултат от подзадачата"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:686
 msgid "_Report"
-msgstr "_Рапорт"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:687
 msgid "_Edit"
-msgstr "Р_едактиране"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:688
 msgid "_Help"
-msgstr "_Помощ"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:714
 msgid "Report problem with ABRT"
-msgstr "Съобщаване на проблем с ABRT"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:753
 msgid "Not submitted reports"
-msgstr "Неизпратени съобщения"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:755
 msgid "<b>Not submitted reports</b>"
-msgstr "<b>Неизпратени съобщения</b>"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:803
 msgid "Submitted reports"
-msgstr "Изпратени съобщения"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:806
 msgid "<b>Submitted reports</b>"
-msgstr "<b>Изпратени съобщения</b>"
+msgstr ""
 
 #: ../src/gui-gtk/main.c:1057
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
 "Shows list of ABRT dump directories in specified DIR(s)\n"
-msgstr "& [-vp] [DIR]...\n\nПоказва списък на ABRT дъмп директории в определена DIR(s)\n"
+msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:51
 msgid ""
@@ -213,14 +212,15 @@ msgid ""
 "and identifies crash function in problem directory DIR"
 msgstr ""
 
+#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
+#.
 #: ../src/plugins/abrt-action-analyze-backtrace.c:100
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr "Разбора на обратното проследяване за %s се провали"
+msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-c.c:79
 msgid ""
@@ -229,7 +229,7 @@ msgid ""
 "Calculates and saves UUID of coredump in problem directory DIR"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-oops.c:125
+#: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
 "& [-vs] -d DIR\n"
 "\n"
@@ -241,38 +241,38 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
-msgstr "& [-v] -d DIR\n\nПресмята и записва UUID и DUPHASH на python дъмповете"
-
-#: ../src/plugins/abrt-action-analyze-vmcore.in:30
-msgid ""
-"Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:52
+#: ../src/plugins/abrt-action-analyze-vmcore.in:29
+msgid "Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
+msgstr ""
+
+#: ../src/plugins/abrt-action-analyze-vmcore.in:60
 msgid "File {0} doesn't exist"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:84
+#: ../src/plugins/abrt-action-analyze-vmcore.in:92
 msgid "{0} is not a valid vmcore"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:90
+#: ../src/plugins/abrt-action-analyze-vmcore.in:98
 msgid "Required vmlinux debuginfo is installed in {0}"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:96
+#: ../src/plugins/abrt-action-analyze-vmcore.in:104
 msgid "Installing kernel debuginfo(s)"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:102
+#: ../src/plugins/abrt-action-analyze-vmcore.in:111
+#: ../src/plugins/abrt-action-analyze-vmcore.in:117
 msgid "Can't download required debuginfo"
 msgstr ""
 
 #. Let user know what's going on
-#: ../src/plugins/abrt-action-analyze-vmcore.in:105
+#: ../src/plugins/abrt-action-analyze-vmcore.in:120
 #: ../src/plugins/abrt-action-generate-backtrace.c:44
 msgid "Generating backtrace"
-msgstr "Генериране на обратно проследяващ анализ"
+msgstr ""
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:163
 msgid ""
@@ -283,19 +283,19 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:177
 msgid "Additional debuginfo directories"
-msgstr "Допълнителни директории с инфо за грешки"
+msgstr ""
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:178
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr "Убий gdb ако работи повече от NUM секунди"
+msgstr ""
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
+#.
 #: ../src/plugins/abrt-action-generate-backtrace.c:228
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr "Обратно проследяване %u bytes е генерирано и записано"
+msgstr ""
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:891
 msgid ""
@@ -308,105 +308,17 @@ msgstr ""
 msgid "Problem directory"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:89
-msgid "Extracting cpio from {0}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:94
-msgid "Can't write to '{0}': {1}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:108
-msgid "Can't extract package '{0}'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:116
-msgid "Caching files from {0} made from {1}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:126
-msgid "Can't extract files from '{0}'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:153
-#: ../src/plugins/abrt-action-install-debuginfo:164
-msgid "Downloading ({0} of {1}) {2}: {3:3}%"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:184
-msgid "Initializing yum"
-msgstr "Инициализиране на yum"
-
-#: ../src/plugins/abrt-action-install-debuginfo:192
-msgid "Error initializing yum (YumBase.doConfigSetup): '{0!s}'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:223
-msgid "Setting up yum repositories"
-msgstr "Задаване на yum хранилища"
-
-#: ../src/plugins/abrt-action-install-debuginfo:234
-msgid "Can't setup {0}: {1}, disabling"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:241
-msgid "Looking for needed packages in repositories"
-msgstr "Търсене на необходими пакети в хранилищата"
-
-#: ../src/plugins/abrt-action-install-debuginfo:245
-msgid "Error retrieving metadata: '{0!s}'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:255
-msgid "Error retrieving filelists: '{0!s}'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:288
-msgid "Can't find packages for {0} debuginfo files"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:290
-msgid "Packages to download: {0}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:291
-msgid "Downloading {0:.2f}Mb, installed size: {1:.2f}Mb. Continue?"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:296
-msgid "Download cancelled by user"
-msgstr "Свалянето е прекратено от потребителя"
-
-#: ../src/plugins/abrt-action-install-debuginfo:330
-msgid "Downloading package {0} failed"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:336
-msgid "Unpacking failed, aborting download..."
-msgstr "Разопаковането се провали, прекратявам свалянето..."
-
-#: ../src/plugins/abrt-action-install-debuginfo:346
-msgid "Removing {0}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:350
-#, c-format
-msgid "Can't remove %s, probably contains an error log"
-msgstr "Не мога да премахна %s, вероятно съдържа запис за грешка"
-
-#: ../src/plugins/abrt-action-install-debuginfo:408
-msgid "Can't remove '{0}': {1}"
-msgstr ""
-
-#: ../src/plugins/abrt-action-install-debuginfo:416
+#: ../src/plugins/abrt-action-install-debuginfo:50
 msgid "Exiting on user command"
-msgstr "Изход по команда от потребителя"
+msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:450
+#: ../src/plugins/abrt-action-install-debuginfo:86
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -418,29 +330,31 @@ msgid ""
 "    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
-msgstr "Употреба: %s [-vy] [--ids=BUILD_IDS_FILE]\n       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n\nИнсталира дебъг инфо за всички build-ids изброени в BUILD_IDS_FILE\nдо CACHEDIR, използвайки TMPDIR като зона за междинните фази.\nСтарите файлове в CACHEDIR се изтриват докато стане по-малка от SIZE.\n\n    -v          По-подробно\n    -y          Неинтерактивно, отговор 'Да' на всички въпроси\n    --ids       По подразбиране: build_ids\n    --tmpdir    По подразбиране: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n    --cache     По подразбиране: /var/cache/abrt-di\n    --size_mb   По подразбиране: 4096\n"
+"    -e,--exact  Download only specified files\n"
+msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:524
+#: ../src/plugins/abrt-action-install-debuginfo:168
 msgid "Can't open {0}: {1}"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:556
+#: ../src/plugins/abrt-action-install-debuginfo:201
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:567
+#: ../src/plugins/abrt-action-install-debuginfo:212
 msgid "Missing debuginfo file: {0}"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo:570
-msgid "All {0} debuginfo files are available"
+#: ../src/plugins/abrt-action-install-debuginfo:215
+msgid "All debuginfo files are available"
 msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
+"SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
 
@@ -459,7 +373,7 @@ msgstr ""
 #: ../src/plugins/abrt-dedup-client.c:96
 #: ../src/plugins/abrt-retrace-client.c:964
 msgid "log to syslog"
-msgstr "запис в системния журнал"
+msgstr ""
 
 #: ../src/plugins/abrt-dedup-client.c:98
 msgid "allow insecure connection to dedup server"
@@ -480,7 +394,7 @@ msgstr ""
 #: ../src/plugins/abrt-dedup-client.c:106
 #: ../src/plugins/abrt-retrace-client.c:972
 msgid "(debug) show received HTTP headers"
-msgstr "(дебъг) покажи получените HTTP заглавки"
+msgstr ""
 
 #: ../src/plugins/abrt-dedup-client.c:110
 msgid "abrt-dedup-client component backtrace_file [options]"
@@ -500,63 +414,63 @@ msgstr ""
 msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:521
+#: ../src/plugins/abrt-dump-oops.c:175
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has beentainted (flags:%s). "
 "Kernel maintainers are unable todiagnose tainted reports."
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:572
+#: ../src/plugins/abrt-dump-oops.c:226
 msgid ""
 "& [-vsrowx] [-d DIR] FILE\n"
 "or: & [-vsrowx] -D FILE\n"
 "\n"
 "Extract oops from syslog/dmesg file"
-msgstr "& [-vsrowx] [-d DIR] FILE\n   или: & [-vsrowx] -D FILE\n\nИзвлечи oops от syslog/dmesg файла"
+msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:591
+#: ../src/plugins/abrt-dump-oops.c:245
 msgid "Parse kernel's message buffer before parsing FILE"
-msgstr "Разбор на буфера със съобщения на ядрото преди разбор на FILE"
+msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:592
+#: ../src/plugins/abrt-dump-oops.c:246
 msgid "Print found oopses on standard output"
-msgstr "Отпечатвай намерените oops на стандартния изход"
+msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:593
+#: ../src/plugins/abrt-dump-oops.c:247
 msgid "Do not exit, watch the file for new oopses"
-msgstr "Не излизай, следи файла за нови oops"
+msgstr ""
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
-#: ../src/plugins/abrt-dump-oops.c:597
+#.
+#: ../src/plugins/abrt-dump-oops.c:251
 msgid "Create ABRT dump in DIR for every oops found"
-msgstr "Създава ABRT файл със съдържанието на паметта в DIR за всеки получен oops"
+msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:598
+#: ../src/plugins/abrt-dump-oops.c:252
 msgid "Make the problem directory world readable"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:599
+#: ../src/plugins/abrt-dump-oops.c:253
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
-msgstr "Също като -d DumpLocation, DumpLocation е зададено в abrt.conf"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:63
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
-msgstr "Не може да бъде използван анализиращ сървър, понеже обемът на информацията е твърде голям. Опитайте локално анализиране."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:96
 msgid "Cannot open temporary file"
-msgstr "Не мога да отворя временен файл"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:122
 #: ../src/plugins/abrt-retrace-client.c:151
 #, c-format
 msgid "Can't execute '%s'"
-msgstr "Не мога да изпълня '%s'"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:187
 #: ../src/plugins/abrt-retrace-client.c:529
@@ -564,7 +478,7 @@ msgstr "Не мога да изпълня '%s'"
 #: ../src/plugins/abrt-retrace-client.c:855
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr "Провал при изпращането на HTTP заглавката с дължина %d: NSS грешка %d."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:199
 #: ../src/plugins/abrt-retrace-client.c:628
@@ -575,7 +489,7 @@ msgstr "Провал при изпращането на HTTP заглавкат�
 msgid ""
 "Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr "Неочакван HTTP отговор от сървъра: %d\n%s"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:208
 #: ../src/plugins/abrt-retrace-client.c:608
@@ -583,25 +497,25 @@ msgstr "Неочакван HTTP отговор от сървъра: %d\n%s"
 #: ../src/plugins/abrt-retrace-client.c:795
 #: ../src/plugins/abrt-retrace-client.c:864
 msgid "Invalid response from server: missing HTTP message body."
-msgstr "Невалиден отговор от сървъра: липсва HTTP тялото на съобщението."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:347
 msgid "Querying server settings"
-msgstr "Питам сървъра за настройките му"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:355
 msgid "The server is fully occupied. Try again later."
-msgstr "Сървърът е твърде зает. По-късно опитайте отново."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:356
 msgid "The server denied your request."
-msgstr "Сървърът отказа Вашата заявка."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:366
 #: ../src/plugins/abrt-retrace-client.c:389
 #, c-format
 msgid "Unable to stat file '%s'."
-msgstr "Не мога да получа информация за файла '%s'."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:374
 #, c-format
@@ -613,137 +527,137 @@ msgstr ""
 msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
-msgstr "Обемът на информацията за грешката е %lld байта, но сървърът за анализ приема доклади не по-големи от %lld байта."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:424
 msgid "The server does not support xz-compressed tarballs."
-msgstr "Сървърът не поддържа xz-компресирани архиви."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:447
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
-msgstr "Анализиращият сървър не поддържа изданието '%s'."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:451
 msgid "The server is not able to handle your request."
-msgstr "Сървърът не е способен да обработи Вашата заявка."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:460
 msgid "Preparing an archive to upload"
-msgstr "Подготовка на архива за качване"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:473
 #, c-format
 msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
-msgstr "Размерът на Вашия архив е %lld байта, но сървърът за retrace приема архиви не по-големи от %lld байта."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:486
 #, c-format
 msgid "You are going to upload %d megabytes.Continue?"
-msgstr "Каните се да качите %d мегабайта. Да продължа ли?"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:493
 msgid "Cancelled by user"
-msgstr "Прекратено от потребителя"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:536
 #, c-format
 msgid "Uploading %d megabytes\n"
-msgstr "Качване на %d megabytes\n"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:538
 #, c-format
 msgid "Uploading %lld bytes\n"
-msgstr "Качване на %lld байта\n"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:562
 #, c-format
 msgid "Uploading %d%%\n"
-msgstr "Качване на %d%%\n"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:574
 msgid "Failed to read from a pipe"
-msgstr "Провал при четене от канала"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:587
 #, c-format
 msgid "Failed to send data: NSS error %d (%s): %s"
-msgstr "Провал при изпращането на данни: NSS грешка %d (%s): %s"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:598
 msgid "Upload successful"
-msgstr "Качването е успешно"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:620
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
-msgstr "Директорията с Вашите данни е повредена и не може да бъде обработена от анализиращия сървър."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:622
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
-msgstr "Архивът съдържа безполезни файлове (като напр. символни връзки) и поради това не може да бъде обработен."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:635
 msgid "Invalid response from server: missing X-Task-Id."
-msgstr "Невалиден отговор от сървъра: липсващ X-Task-Id."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:641
 msgid "Invalid response from server: missing X-Task-Password."
-msgstr "Невалиден отговор от сървъра: липсващ X-Task-Password."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:648
 msgid "Retrace job started"
-msgstr "Обратното проследяване е стартирано"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:661
 #, c-format
 msgid ""
 "Task Id: %s\n"
 "Task Password: %s\n"
-msgstr "Id на задачата: %s\nПарола на задачата: %s\n"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:707
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr "Провал при изпращането на HTTP заглавка с дължина %d: NSS грешка %d"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:731
 msgid "Invalid response from server: missing X-Task-Status."
-msgstr "Невалиден отговор от сървъра: липсващ X-Task-Status."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:743
 #, c-format
 msgid ""
 "Task Status: %s\n"
 "%s\n"
-msgstr "Състояние на задачата: %s\n%s\n"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:919
 msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
-msgstr "Обратно проследяващият анализ се провали. По-късно опитайте отново и ако проблемът остава, моля, докладвайте го."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:966
 msgid "allow insecure connection to retrace server"
-msgstr "позволи незащитена връзка с анализиращия сървър"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:968
 msgid "retrace server URL"
-msgstr "URL на сървър за обратно проследяване"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:970
 msgid "retrace server port"
-msgstr "порт на анализиращия сървър"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:973
 msgid "For create and batch operations"
-msgstr "За създаване и пакетни операции"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:975
 msgid "read data from ABRT problem directory"
@@ -751,33 +665,33 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:977
 msgid "read data from coredump"
-msgstr "четене на данни от дъмпа на паметта"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:979
 msgid "Delay for polling operations"
-msgstr "Закъснение за polling операциите"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:981
 msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
-msgstr "(дебъг) не изтривай временния архив, създаден от dump dir в /tmp"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:983
 msgid "For status, backtrace, and log operations"
-msgstr "За състояние, обратно проследяване и журнални операции"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:985
 msgid "id of your task on server"
-msgstr "id на задачата Ви на сървъра"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:987
 msgid "password of your task on server"
-msgstr "парола на задачата Ви на сървъра"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:991
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch"
-msgstr "abrt-retrace-client <operation> [options]\nОперации: create/status/backtrace/log/batch"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1036
 #: ../src/plugins/abrt-retrace-client.c:1042
@@ -788,49 +702,49 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:1056
 #: ../src/plugins/abrt-retrace-client.c:1064
 msgid "Task id is needed."
-msgstr "Нужно е id на задачата."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1050
 #: ../src/plugins/abrt-retrace-client.c:1058
 #: ../src/plugins/abrt-retrace-client.c:1066
 msgid "Task password is needed."
-msgstr "Нужна е парола на задачата."
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1070
 #, c-format
 msgid "Unknown operation: %s."
-msgstr "Непозната операция: %s."
+msgstr ""
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr "Сваляне на debuginfo пакети и генериране на обратно проследяващ анализ локално с използването на GDB"
+msgstr ""
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Local GNU Debugger"
-msgstr "Локален GNU Debugger"
+msgstr ""
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
-" to remote machines."
-msgstr "Нуждае се от сваляне на debuginfo пакети, което може да отнеме значително време и ще заеме дисково пространство. Но пък за разлика от ползването на анализиращ сървър (RetraceServer), не изпраща копия на паметта към отдалечени машини."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
+"to remote machines."
+msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Address of the retrace server"
-msgstr "Адрес на сървър за обратно проследяване"
+msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid "Insecure"
-msgstr "Незащитена"
+msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 msgid "Retrace server URL"
-msgstr "URL на сървър за обратно проследяване"
+msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Send core dump to remote retrace server for analysis"
-msgstr "Изпращане съдържанието на паметта на отдалечен анализиращ сървър"
+msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:5
 msgid ""
@@ -839,133 +753,133 @@ msgid ""
 "debuginfos is more complete. Retrace server may generate better backtraces. "
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
-msgstr "Качва копие от паметта на сървър, който генерира обратно проследяващ анализ и го изпраща обратно. За: няма нужда от сваляне на debuginfo пакети. Базата данни на Retrace сървърите е по-пълна. Retrace сървърът може да генерира по-качествен анализ. Против: копието на паметта, което качвате, съдържа всички данни на провалилата се програма, включително, ако има, Ваши поверителни данни."
+msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 msgid "Whether or not to use insecure connection"
-msgstr "Да ползвам ли или не незащитена връзка"
+msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a "
-"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
-" &gt;(warning)&lt;/a&gt;"
-msgstr "Напишете \"insecure\" за да разрешите незащитена връзка &lt;a href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;(warning)&lt;/a&gt;"
+"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
+"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
+"(warning)&lt;/a&gt;"
+msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Save relevant lines from ~/.xsession-errors file"
-msgstr "Запазва съответните линии от файла ~/.xsession-errors"
+msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
-msgstr "Сканира целия файл ~/.xsession-errors и записва линиите, съдържащи имена на програми. Резултатът се записва като 'xsession_errors' елемент."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:46
 msgid "An error occurred on the server side. Try again later."
-msgstr "Получи се проблем от страна на сървъра. Опитайте отново по-късно."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:51
 msgid ""
 "An error occurred while connecting to the server. Check your network "
 "connection and try again."
-msgstr "Възникна грешка при свързването със сървъра. Проверете Вашата връзка с мрежата и опитайте отново."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:69
 #, c-format
 msgid "Issuer certificate is invalid: '%s'."
-msgstr "Издателят на сертификата е невалиден: '%s'."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:72
 #, c-format
 msgid "Certificate is signed by an untrusted issuer: '%s'."
-msgstr "Сертификатът е подписан от недоверен издател: '%s'."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:75
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
-msgstr "Името на обект '%s' на сертификата не съвпада с името на целевия хост '%s'."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:79
 msgid "Remote certificate has expired."
-msgstr "Отдалеченият сертификат е изтекъл."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:82
 #, c-format
 msgid "Certificate issuer is not recognized: '%s'."
-msgstr "Издателят на сертификата е непознат: '%s'."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:85
 #, c-format
 msgid "Bad certificate received. Subject '%s', issuer '%s'."
-msgstr "Получен е грешен сертификат. Обект '%s', издател '%s'."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:121
 #, c-format
 msgid "Failed to get slot 'PEM Token #0': %d."
-msgstr "Провал при взимането на 'PEM Token #0': %d."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:154
 #, c-format
 msgid "Failed to get host by name: NSS error %d."
-msgstr "Провал при получаване името на хоста: NSS грешка %d."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:174
 msgid "Failed to create a TCP socket"
-msgstr "Провал при създаване на TCP сокет"
+msgstr ""
 
 #: ../src/plugins/https-utils.c:182
 msgid "Failed to set socket blocking mode."
-msgstr "Провал при задаването на блокиращ режим на сокета."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:188
 msgid "Failed to wrap TCP socket by SSL."
-msgstr "Провал при поставянето на TCP сокета в SSL обвивка."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:194 ../src/plugins/https-utils.c:198
 #: ../src/plugins/https-utils.c:200 ../src/plugins/https-utils.c:202
 msgid "Failed to enable client handshake to SSL socket."
-msgstr "Провал при свързването на клиента към SSL сокета."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:208
 msgid "Failed to set URL to SSL socket."
-msgstr "Провал при изпращането на URL към SSL сокета."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:215
 msgid "Failed to connect SSL address."
-msgstr "Провал при свързването към SSL адреса."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:222
 msgid "Failed to set certificate hook."
-msgstr "Провал при задаване обхвата на сертификата."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:229
 msgid "Failed to set handshake callback."
-msgstr "Провал при задаване съгласуването на обратната връзка."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:236
 msgid "Failed to reset handshake."
-msgstr "Провал при рестартиране на съгласуването."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:243
 #, c-format
 msgid "Failed to force handshake: NSS error %d."
-msgstr "Провал при принудителното съгласуване: NSS грешка %d."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:252
 msgid "Failed to close SSL socket."
-msgstr "Провал при затварянето на SSL сокета."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:306 ../src/plugins/https-utils.c:312
 #: ../src/plugins/https-utils.c:318
 msgid "Invalid response from server: HTTP header not found."
-msgstr "Невалиден отговор от сървъра: HTTP заглавката не е намерена."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:357
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
-msgstr "Провал при приемането на данни: NSS грешка %d."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:386
 msgid "Malformed chunked response."
@@ -973,15 +887,15 @@ msgstr ""
 
 #: ../src/plugins/https-utils.c:411
 msgid "Failed to initialize NSS."
-msgstr "Провал при инициализирането на NSS."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:417
 msgid "Failed to initialize security module."
-msgstr "Провал при инициализирането на модула за сигурност."
+msgstr ""
 
 #: ../src/plugins/https-utils.c:432
 msgid "Failed to shutdown NSS."
-msgstr "Провал при изключване на NSS."
+msgstr ""
 
 #: ../src/cli/abrt-cli.c:142
 msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
@@ -1005,7 +919,7 @@ msgstr ""
 
 #: ../src/cli/abrt-cli.c:162
 msgid "See 'abrt-cli COMMAND --help' for more information"
-msgstr "Вижте 'abrt-cli COMMAND --help' за повече информация"
+msgstr ""
 
 #: ../src/cli/list.c:90
 msgid "& list [options] [DIR]..."
@@ -1013,12 +927,12 @@ msgstr ""
 
 #: ../src/cli/list.c:97
 msgid "List even reported problems"
-msgstr "Списък на докладваните, когато и да е, проблеми "
+msgstr ""
 
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:99 ../src/cli/list.c:141
 msgid "Show detailed report"
-msgstr "Покажи детайлен рапорт"
+msgstr ""
 
 #: ../src/cli/list.c:133
 msgid "& info [options] DIR..."
@@ -1026,65 +940,64 @@ msgstr ""
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
-msgstr "Анализира VM средата"
+msgstr ""
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
-msgid ""
-"Install kernel debuginfo packages, generate kernel log and oops message"
-msgstr "Инсталира debuginfo пакети за ядрото, генерира журнал за ядрото и oops съобщение"
+msgid "Install kernel debuginfo packages, generate kernel log and oops message"
+msgstr ""
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
 "Needs to install kernel debuginfo packages, which might take significant "
 "time, and take up disk space."
-msgstr "Нуждае се от инсталиране на debuginfo пакети, което може да отнеме значително време и ще заеме дисково пространство."
+msgstr ""
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
-msgstr "Събира GConf конфигурацията"
+msgstr ""
 
 #: ../src/plugins/collect_GConf.xml.in.h:2
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
-msgstr "Стартира gconftool-2 --recursive-list /apps/executable и го записва като 'gconf_subtree' елемент."
+msgstr ""
 
 #: ../src/plugins/collect_GConf.xml.in.h:3
 msgid "Save configuration from application's GConf directory"
-msgstr "Запазва конфигурацията от GConf директорията на приложенията"
+msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:1
 msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
-msgstr "Стартира smoltSendProfile -p и записва получените от това данни като 'smolt_data' елемент."
+msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
 msgid "Save your computer's hardware profile information"
-msgstr "Запазва информация за хардуера на компютъра Ви"
+msgstr ""
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
-msgstr "Проверява за наличието на файловете vimrc и gvimrc в /etc и ги записва като system_vimrc и system_gvimrc, респективно."
+msgstr ""
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:2
 msgid "Collect system-wide vim configuration files"
-msgstr "Събира системните vim конфигурационни файлове"
+msgstr ""
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:3
 msgid "Save /etc/vimrc and /etc/gvimrc"
-msgstr "Запазва /etc/vimrc и /etc/gvimrc"
+msgstr ""
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
-" as user_vimrc and user_gvimrc, respectively."
-msgstr "Проверява за наличието на .vimrc и .gvimrc във Вашата домашна директория и ги записва като user_vimrc и user_gvimrc, респективно."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
+msgstr ""
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:2
 msgid "Collect yours vim configuration files"
-msgstr "Събира vim конфигурационните Ви файлове"
+msgstr ""
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid "Save .vimrc and .gvimrc from your home directory"
-msgstr "Запазва .vimrc и .gvimrc от домашната Ви директория"
+msgstr ""

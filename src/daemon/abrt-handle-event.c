@@ -424,10 +424,15 @@ int main(int argc, char **argv)
     load_abrt_conf();
 
     bool post_create = (strcmp(event_name, "post-create") == 0);
-    const char *dump_dir_name = NULL;
+    char *dump_dir_name = NULL;
     while (*argv)
     {
-        dump_dir_name = *argv++;
+        dump_dir_name = xstrdup(*argv++);
+        int i = strlen(dump_dir_name);
+        while (--i >= 0)
+            if (dump_dir_name[i] != '/')
+                break;
+        dump_dir_name[++i] = '\0';
 
         struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (!dd)
