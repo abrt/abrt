@@ -357,7 +357,8 @@ static mw_result_t run_post_create_and_load_data(const char *dump_dir_name, prob
     /* Don't increase crash count if we are working with newly uploaded
      * directory (remote crash) which already has it's crash count set.
      */
-    if((status != 0 && dup_of_dir) || count == 0) {
+    if((status != 0 && dup_of_dir) || count == 0)
+    {
         count++;
         char new_count_str[sizeof(long)*3 + 2];
         sprintf(new_count_str, "%lu", count);
