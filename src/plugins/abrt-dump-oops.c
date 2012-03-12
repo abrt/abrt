@@ -172,8 +172,8 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
             {
                 VERB1 log("Kernel is tainted '%s'", tainted_short);
                 dd_save_text(dd, FILENAME_TAINTED_SHORT, tainted_short);
-                const char *fmt = _("A kernel problem occurred, but your kernel has been"
-                             "tainted (flags:%s). Kernel maintainers are unable to"
+                const char *fmt = _("A kernel problem occurred, but your kernel has been "
+                             "tainted (flags:%s). Kernel maintainers are unable to "
                              "diagnose tainted reports.");
 
                 char *reason = xasprintf(fmt, tainted_short);
