@@ -1,12 +1,14 @@
 #! /usr/bin/python
 import CCDBusBackend
+import sys
 
 dm = CCDBusBackend.DBusManager()
-#for a in dm.daemon().GetProblems():
-#    print a
+for a in dm.daemon().GetProblems("/var/spool/abrt"):
+    print a
 #print dm.daemon().GetInfo("ahoj")
-#for a in dm.daemon().GetAllProblems():
-#    print a
+print ">>> AUTHORIZED <<<"
+for a in dm.daemon().GetAllProblems("/var/spool/abrt"):
+    print a
 #print dm.daemon().Quit()
 #print ">>>> asking again, now it shouldn't ask for password"
 #for a in dm.daemon().GetAllProblems():
