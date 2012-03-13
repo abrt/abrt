@@ -19,6 +19,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include <sys/inotify.h>
+#include <gio/gio.h> //dbus
 #if HAVE_LOCALE_H
 # include <locale.h>
 #endif
@@ -31,6 +32,7 @@
 #endif
 
 static void scan_dirs_and_add_to_dirlist(void);
+static void rescan_and_refresh(void);
 
 
 static const char help_uri[] = "http://docs.fedoraproject.org/en-US/"
@@ -59,6 +61,8 @@ enum
     NUM_COLUMNS
 };
 
+gint g_authorize; /* wheter to try to authorize when getting list of problems */
+
 //FIXME: maybe we can use strrchr and make this faster...
 static char *get_last_line(const char* msg)
 {
@@ -84,8 +88,10 @@ static char *get_last_line(const char* msg)
     return xstrndup(start, end - start);
 }
 
-static void add_directory_to_dirlist(const char *dirname)
+static void add_directory_to_dirlist(gpointer dir, gpointer data)
 {
+    const char *dirname = (const char *)dir;
+    g_print("dirname %s\n", dirname);
     /* Silently ignore *any* errors, not only EACCES.
      * We saw "lock file is locked by process PID" error
      * when we raced with wizard.
@@ -174,6 +180,49 @@ static void add_directory_to_dirlist(const char *dirname)
 
     dd_close(dd);
     VERB1 log("added: %s", dirname);
+}
+
+GList *get_problems_over_dbus(const char *dump_location, GError *error)
+{
+    GDBusProxy * proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+                                             G_DBUS_PROXY_FLAGS_NONE,
+                                             NULL,
+                                             "org.freedesktop.problems",
+                                             "/org/freedesktop/problems",
+                                             "org.freedesktop.problems",
+                                             NULL,
+                                             &error);
+
+/*
+    GDBusProxy * proxy = g_dbus_proxy_new_sync(connection,
+                                     G_DBUS_PROXY_FLAGS_NONE,
+                                     NULL,
+                                     "org.freedesktop.problems",
+                                     "/org/freedesktop/problems",
+                                     "org.freedesktop.problems",
+                                     NULL,
+                                     &error);
+*/
+
+    GVariant *result = g_dbus_proxy_call_sync(proxy,
+                                    g_authorize ? "GetAllProblems" : "GetProblems",
+                                     g_variant_new("(s)", dump_location),
+                                     G_DBUS_CALL_FLAGS_NONE,
+                                     -1,
+                                     NULL,
+                                     &error);
+    GList *list = NULL;
+    GVariantIter *iter;
+    gchar *str;
+    g_variant_get(result, "(as)", &iter);
+    while (g_variant_iter_loop(iter, "s", &str))
+    {
+        g_print("adding: %s\n", str);
+        list = g_list_prepend(list, xstrdup(str));
+    }
+    g_variant_iter_free(iter);
+
+    return list;
 }
 
 static void rescan_dirs_and_add_to_dirlist(void)
@@ -390,6 +439,13 @@ static void on_column_change_cb(GtkTreeSortable *sortable, gpointer user_data)
     value = xasprintf("%d", col_id);
     set_user_setting(name, value);
     free(value);
+}
+
+static void on_show_all_cb(GtkToggleButton *togglebutton, gpointer data)
+{
+    g_print("show all\n");
+    g_authorize = gtk_toggle_button_get_active(togglebutton);
+    rescan_and_refresh();
 }
 
 static void load_sort_setting(GtkTreeSortable *sortable)
@@ -754,10 +810,14 @@ static GtkWidget *create_main_window(void)
     gtk_misc_set_alignment(GTK_MISC(not_subm_lbl), 0, 0);
     gtk_label_set_markup(GTK_LABEL(not_subm_lbl), _("<b>Not submitted reports</b>"));
 
+    GtkWidget *show_all_btn = gtk_check_button_new_with_label(_("Show all problems"));
+    g_signal_connect(show_all_btn, "toggled", G_CALLBACK(on_show_all_cb), NULL);
+
     /* add label for not submitted tree view */
     gtk_box_pack_start(GTK_BOX(not_subm_vbox), not_subm_lbl, false, false, 0);
     gtk_box_pack_start(GTK_BOX(not_subm_vbox), new_problems_scroll_win, true, true, 0);
     gtk_box_pack_start(GTK_BOX(main_vbox), not_subm_vbox, true, true, 0);
+    gtk_box_pack_start(GTK_BOX(main_vbox), show_all_btn, false, false, 0);
 
     /* Two tree views */
     s_treeview = gtk_tree_view_new();
@@ -988,7 +1048,16 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 
 static void scan_directory_and_add_to_dirlist(const char *path)
 {
-    DIR *dp = opendir(path);
+
+    g_print("asking for path: %s \n", path);
+    GList *problem_dirs = get_problems_over_dbus(path, NULL);
+    if (problem_dirs)
+       g_list_foreach(problem_dirs, (GFunc)add_directory_to_dirlist, NULL);
+    else
+       g_print("wtf?\n");
+
+#if 0
+   DIR *dp = opendir(path);
     if (!dp)
     {
         /* We don't want to yell if, say, $HOME/.abrt/spool doesn't exist */
@@ -997,6 +1066,7 @@ static void scan_directory_and_add_to_dirlist(const char *path)
     }
 
     struct dirent *dent;
+
     while ((dent = readdir(dp)) != NULL)
     {
         if (dot_or_dotdot(dent->d_name))
@@ -1009,6 +1079,7 @@ static void scan_directory_and_add_to_dirlist(const char *path)
         free(full_name);
     }
     closedir(dp);
+#endif
 
     if (inotify_fd >= 0 && inotify_add_watch(inotify_fd, path, 0
     //      | IN_ATTRIB         // Metadata changed
