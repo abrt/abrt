@@ -21,9 +21,11 @@ static const gchar introspection_xml[] =
   "<node>"
   "  <interface name='org.freedesktop.problems'>"
   "    <method name='GetProblems'>"
+  "      <arg type='s' name='directory' direction='in'/>"
   "      <arg type='as' name='response' direction='out'/>"
   "    </method>"
   "    <method name='GetAllProblems'>"
+  "      <arg type='s' name='directory' direction='in'/>"
   "      <arg type='as' name='response' direction='out'/>"
   "    </method>"
   "    <method name='GetInfo'>"
@@ -164,9 +166,9 @@ static GList* scan_directory(const char *path, uid_t caller_uid)
     return g_list_reverse(list);
 }
 
-GVariant *get_problem_dirs_for_uid(uid_t uid)
+GVariant *get_problem_dirs_for_uid(uid_t uid, const char *dump_location)
 {
-    GList *dirs = scan_directory(g_settings_dump_location,  uid);
+    GList *dirs = scan_directory(dump_location, uid);
 
     GVariantBuilder *builder;
     builder = g_variant_builder_new(G_VARIANT_TYPE ("as"));
@@ -211,10 +213,14 @@ handle_method_call(GDBusConnection       *connection,
             g_warning("Could not get unix user, using 99 - nobody");
 
         //read config here!
-        if (!g_settings_dump_location)
-            g_settings_dump_location = (char*)"/var/spool/abrt";
 
-        response = get_problem_dirs_for_uid(caller_uid);
+        const gchar *dump_location;
+        g_variant_get(parameters, "(&s)", &dump_location);
+
+        //if (!g_settings_dump_location)
+        //    g_settings_dump_location = (char*)"/var/spool/abrt";
+
+        response = get_problem_dirs_for_uid(caller_uid, dump_location);
 
         g_dbus_method_invocation_return_value(invocation, response);
         //I was told that g_dbus_method frees the response
@@ -227,6 +233,9 @@ handle_method_call(GDBusConnection       *connection,
         GError *error = NULL;
         uid_t caller_uid;
 
+
+        const gchar *dump_location;
+        g_variant_get(parameters, "(&s)", &dump_location);
 
         caller_uid = get_caller_uid(connection, caller, error);
 
@@ -252,7 +261,7 @@ handle_method_call(GDBusConnection       *connection,
                 caller_uid = 0;
         }
 
-        response = get_problem_dirs_for_uid(caller_uid);
+        response = get_problem_dirs_for_uid(caller_uid, dump_location);
 
         g_dbus_method_invocation_return_value(invocation, response);
     }

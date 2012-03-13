@@ -10,6 +10,7 @@ abrt_gui_CFLAGS = \
     $(GTK_CFLAGS) \
     $(LIBREPORT_GTK_CFLAGS) \
     -D_GNU_SOURCE \
+    $(GIO_CFLAGS) \
     -Wall -Wwrite-strings -Werror
 #    -I/usr/include/glib-2.0
 #    -I/usr/lib/glib-2.0/include
@@ -18,9 +19,10 @@ abrt_gui_CFLAGS = \
 abrt_gui_LDADD = \
     -lglib-2.0 \
     -lgthread-2.0 \
-    $(GTK_LIBS) \
+    $(GIO_LIBS) \
     $(LIBREPORT_GTK_LIBS) \
-    ../lib/libabrt.la
+    ../lib/libabrt.la \
+    $(GTK_LIBS)
 #    $(LIBNOTIFY_LIBS)
 
 #test_report_SOURCES = \
