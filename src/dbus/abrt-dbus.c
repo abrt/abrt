@@ -30,7 +30,7 @@ static const gchar introspection_xml[] =
   "    </method>"
   "    <method name='GetInfo'>"
   "      <arg type='s' name='problem_dir' direction='in'/>"
-  "      <arg type='s' name='response' direction='out'/>"
+  "      <arg type='a{ss}' name='response' direction='out'/>"
   "    </method>"
   "    <method name='ChownProblemDir'>"
   "      <arg type='s' name='problem_dir' direction='in'/>"
@@ -93,11 +93,12 @@ uid_t get_caller_uid(GDBusConnection *connection, const char *caller, GError *er
 
 bool uid_in_group(uid_t uid, gid_t gid)
 {
-    g_print("uid_in_group\n");
     char **tmp;
     struct passwd *pwd = getpwuid(uid);
     if (pwd && (pwd->pw_gid == gid))
+    {
         return TRUE;
+    }
 
     struct group *grp = getgrgid(gid);
     if (pwd && grp && grp->gr_mem)
@@ -111,7 +112,6 @@ bool uid_in_group(uid_t uid, gid_t gid)
             }
         }
     }
-    g_print("uid_in_gourp out\n");
     VERB2 log("WARN: user %s DOESN'T belong to group: %s\n",  pwd->pw_name, grp->gr_name);
     return FALSE;
 }
@@ -149,7 +149,7 @@ static GList* scan_directory(const char *path, uid_t caller_uid)
             /* or we could just setuid?
              - but it would require locking, because we want to setuid back before we server another request..
             */
-            if (dd && (uid_in_group(caller_uid, statbuf.st_gid) || caller_uid == 0))
+            if (dd && (caller_uid == 0 || statbuf.st_mode & S_IROTH || uid_in_group(caller_uid, statbuf.st_gid)))
             {
                 list = g_list_prepend(list, full_name);
                 full_name = NULL;
@@ -364,9 +364,28 @@ handle_method_call(GDBusConnection       *connection,
 
         const gchar *problem_dir;
         g_variant_get(parameters, "(&s)", &problem_dir);
-        gchar *response = g_strdup_printf("You've requested dir: '%s'. ", problem_dir);
 
-        g_dbus_method_invocation_return_value(invocation, g_variant_new("(s)", response));
+        GVariantBuilder *builder;
+
+        struct dump_dir *dd = dd_opendir(problem_dir, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
+        if (!dd)
+        {
+            char *error_msg = g_strdup_printf(_("%s is not a valid problem directory"), problem_dir);
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                                  "org.freedesktop.problems.GetInfo",
+                                                  error_msg);
+            free(error_msg);
+        }
+
+        builder = g_variant_builder_new(G_VARIANT_TYPE_ARRAY);
+        g_variant_builder_add (builder, "{ss}", g_strdup(FILENAME_TIME), dd_load_text(dd, FILENAME_TIME));
+
+        dd_close(dd);
+
+        GVariant *response = g_variant_new("(a{ss})", builder);
+        g_variant_builder_unref(builder);
+
+        g_dbus_method_invocation_return_value(invocation, response);
     }
 
     else if (g_strcmp0(method_name, "Quit") == 0)
