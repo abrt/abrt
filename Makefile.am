@@ -14,6 +14,7 @@ TESTSUITE_FILES += examples/oops-same-as-oops4.right
 TESTSUITE_FILES += examples/oops4.right
 TESTSUITE_FILES += examples/oops-same-as-oops4.right
 TESTSUITE_FILES += examples/hash-gen-oops6.right
+TESTSUITE_FILES += examples/hash-gen-short-oops.right
 TESTSUITE_FILES += examples/hash-gen-same-as-oops6.right
 TESTSUITE_FILES += examples/oops-with-jiffies.test
 TESTSUITE_FILES += examples/oops-with-jiffies.right
