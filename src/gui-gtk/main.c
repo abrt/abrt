@@ -25,6 +25,7 @@
 #endif
 #include <internal_libreport_gtk.h>
 #include "libabrt.h"
+#include "abrt-dbus.h"
 
 #if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 22
 # define GDK_KEY_Delete GDK_Delete
@@ -187,9 +188,9 @@ GList *get_problems_over_dbus(const char *dump_location, GError *error)
     GDBusProxy * proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
                                              G_DBUS_PROXY_FLAGS_NONE,
                                              NULL,
-                                             "org.freedesktop.problems",
-                                             "/org/freedesktop/problems",
-                                             "org.freedesktop.problems",
+                                             ABRT_DBUS_NAME,
+                                             ABRT_DBUS_OBJECT,
+                                             ABRT_DBUS_IFACE,
                                              NULL,
                                              &error);
 
