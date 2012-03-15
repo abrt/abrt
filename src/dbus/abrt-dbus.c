@@ -172,7 +172,7 @@ GVariant *get_problem_dirs_for_uid(uid_t uid, const char *dump_location)
     GList *dirs = scan_directory(dump_location, uid);
 
     GVariantBuilder *builder;
-    builder = g_variant_builder_new(G_VARIANT_TYPE ("as"));
+    builder = g_variant_builder_new(G_VARIANT_TYPE("as"));
     while (dirs)
     {
         g_variant_builder_add(builder, "s", (char*)dirs->data);
@@ -269,7 +269,7 @@ handle_method_call(GDBusConnection       *connection,
 
     else if (g_strcmp0(method_name, "ChownProblemDir") == 0)
     {
-        VERB2 log("ChownProblemDir");
+        g_print("ChownProblemDir");
 
         GError *error = NULL;
         uid_t caller_uid;
@@ -291,7 +291,6 @@ handle_method_call(GDBusConnection       *connection,
             free(error_msg);
             return;
         }
-        dd_close(dd);
 
         caller_uid = get_caller_uid(connection, caller, error);
 
@@ -301,6 +300,8 @@ handle_method_call(GDBusConnection       *connection,
         {
             g_dbus_method_invocation_return_gerror(invocation, error);
             g_error_free(error);
+            dd_close(dd);
+            return;
         }
 
         if (caller_uid == 99)
@@ -310,6 +311,7 @@ handle_method_call(GDBusConnection       *connection,
                                       "org.freedesktop.problems.InvalidProblemDir",
                                                   error_msg);
             free(error_msg);
+            dd_close(dd);
             return;
         }
 
@@ -320,8 +322,9 @@ handle_method_call(GDBusConnection       *connection,
             if (caller_uid == 0 || uid_in_group(caller_uid, statbuf.st_gid)) //caller seems to be in group with access to this dir, so no action needed
             {
                 //return ok
-                VERB1 log("caller has access to the requested directory %s\n", problem_dir);
+                g_print("caller has access to the requested directory %s\n", problem_dir);
                 g_dbus_method_invocation_return_value(invocation, NULL);
+                dd_close(dd);
                 return;
                 //free something?
             }
@@ -332,6 +335,7 @@ handle_method_call(GDBusConnection       *connection,
             g_dbus_method_invocation_return_dbus_error(invocation,
                                                       "org.freedesktop.problems.StatFailure",
                                                       strerror(errno));
+            dd_close(dd);
             return;
         }
 
@@ -341,6 +345,7 @@ handle_method_call(GDBusConnection       *connection,
             g_dbus_method_invocation_return_dbus_error(invocation,
                                               "org.freedesktop.problems.AuthFailure",
                                               "Not Authorized");
+            dd_close(dd);
             return;
         }
 
@@ -349,24 +354,60 @@ handle_method_call(GDBusConnection       *connection,
         {
             errno = 0;
             chown_res = chown(problem_dir, statbuf.st_uid, pwd->pw_gid);
+            dd_init_next_file(dd);
+            char *short_name, *full_name;
+            while (chown_res == 0 && dd_get_next_file(dd, &short_name, &full_name))
+            {
+                g_print("chowning %s\n", full_name);
+                chown_res = chown(full_name, statbuf.st_uid, pwd->pw_gid);
+            }
+
             if (chown_res != 0)
                 g_dbus_method_invocation_return_dbus_error(invocation,
                                                   "org.freedesktop.problems.ChownError",
                                                   strerror(errno));
 
             g_dbus_method_invocation_return_value(invocation, NULL);
+            dd_close(dd);
             return;
         }
+        g_print("shouldn't get here\n");
+        dd_close(dd);
     }
 
     else if (g_strcmp0(method_name, "GetInfo") == 0)
     {
         VERB1 log("GetInfo\n");
+        GError *error = NULL;
 
         const gchar *problem_dir;
         g_variant_get(parameters, "(&s)", &problem_dir);
 
         GVariantBuilder *builder;
+
+        struct stat statbuf;
+        errno = 0;
+        if (stat(problem_dir, &statbuf) != 0)
+        {
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                                  "org.freedesktop.problems.GetInfoError",
+                                                  strerror(errno));
+            return;
+        }
+
+
+        uid_t caller_uid = get_caller_uid(connection, caller, error);
+        if (!uid_in_group(caller_uid, statbuf.st_gid))
+        {
+            if (polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
+            {
+                VERB1 log("not authorized");
+                g_dbus_method_invocation_return_dbus_error(invocation,
+                                                  "org.freedesktop.problems.AuthFailure",
+                                                  "Not Authorized");
+                return;
+            }
+        }
 
         struct dump_dir *dd = dd_opendir(problem_dir, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
         if (!dd)
@@ -380,6 +421,42 @@ handle_method_call(GDBusConnection       *connection,
 
         builder = g_variant_builder_new(G_VARIANT_TYPE_ARRAY);
         g_variant_builder_add (builder, "{ss}", g_strdup(FILENAME_TIME), dd_load_text(dd, FILENAME_TIME));
+        g_variant_builder_add (builder, "{ss}", g_strdup(FILENAME_REASON), dd_load_text(dd, FILENAME_REASON));
+        char *not_reportable_reason = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, 0
+                                                       | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                                                       | DD_FAIL_QUIETLY_ENOENT
+                                                       | DD_FAIL_QUIETLY_EACCES);
+        if (not_reportable_reason)
+            g_variant_builder_add (builder, "{ss}", g_strdup(FILENAME_NOT_REPORTABLE), dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, 0
+                                                                                               | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                                                                                               | DD_FAIL_QUIETLY_ENOENT
+                                                                                               | DD_FAIL_QUIETLY_EACCES));
+        /* the source of the problem:
+        * - first we try to load component, as we use it on Fedora
+        */
+        char *source = dd_load_text_ext(dd, FILENAME_COMPONENT, 0
+                    | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                    | DD_FAIL_QUIETLY_ENOENT
+                    | DD_FAIL_QUIETLY_EACCES
+        );
+        /* if we don't have component, we fallback to executable */
+        if (!source)
+        {
+            source = dd_load_text_ext(dd, FILENAME_EXECUTABLE, 0
+                    | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                    | DD_FAIL_QUIETLY_ENOENT
+                    | DD_FAIL_QUIETLY_EACCES
+            );
+        }
+
+        g_variant_builder_add (builder, "{ss}", g_strdup("source"), source);
+        char *msg = dd_load_text_ext(dd, FILENAME_REPORTED_TO, 0
+                    | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                    | DD_FAIL_QUIETLY_ENOENT
+                    | DD_FAIL_QUIETLY_EACCES
+        );
+        if (msg)
+            g_variant_builder_add (builder, "{ss}", g_strdup(FILENAME_REPORTED_TO), msg);
 
         dd_close(dd);
 
@@ -447,7 +524,9 @@ on_name_lost (GDBusConnection *connection,
               const gchar     *name,
               gpointer         user_data)
 {
-  exit (1);
+    g_print(_("The name '%s' has been lost, please check if other "
+              "service owning the name is not running.\n"), name);
+    exit(1);
 }
 
 int
@@ -476,7 +555,7 @@ main (int argc, char *argv[])
   loop = g_main_loop_new(NULL, FALSE);
   g_main_loop_run(loop);
 
-  g_print("Finishing server\n");
+  VERB1 log("Cleaning up\n");
 
   g_bus_unown_name(owner_id);
 
