@@ -5,6 +5,7 @@
 #include <grp.h>
 #include "libabrt.h"
 #include "abrt-polkit.h"
+#include "abrt-dbus.h"
 
 /* how long should we wait from the last request */
 #define TIME_TO_DIE 5
@@ -19,7 +20,7 @@ static GDBusNodeInfo *introspection_data = NULL;
 /* Introspection data for the service we are exporting */
 static const gchar introspection_xml[] =
   "<node>"
-  "  <interface name='org.freedesktop.problems'>"
+  "  <interface name='"ABRT_DBUS_IFACE"'>"
   "    <method name='GetProblems'>"
   "      <arg type='s' name='directory' direction='in'/>"
   "      <arg type='as' name='response' direction='out'/>"
@@ -423,7 +424,7 @@ on_bus_acquired(GDBusConnection *connection,
   guint registration_id;
 
   registration_id = g_dbus_connection_register_object(connection,
-                                                       "/org/freedesktop/problems",
+                                                       ABRT_DBUS_OBJECT,
                                                        introspection_data->interfaces[0],
                                                        &interface_vtable,
                                                        NULL,  /* user_data */
@@ -464,7 +465,7 @@ main (int argc, char *argv[])
   g_assert(introspection_data != NULL);
 
   owner_id = g_bus_own_name(G_BUS_TYPE_SYSTEM,
-                             "org.freedesktop.problems",
+                             ABRT_DBUS_NAME,
                              G_BUS_NAME_OWNER_FLAGS_NONE,
                              on_bus_acquired,
                              on_name_acquired,
