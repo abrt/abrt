@@ -1,0 +1,6 @@
+Test is using BlackList configuration option to test package blacklisting.
+
+It relies on existing configuration which includes strace by default.
+
+Then it tries to crash sleep running in strace to see whether the crash
+is ignored.
