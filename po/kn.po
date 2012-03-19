@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-03-08 09:35+0100\n"
+"POT-Creation-Date: 2012-03-19 09:14+0100\n"
 "PO-Revision-Date: 2012-03-02 11:22+0000\n"
 "Last-Translator: shanky <prasad.mvs@gmail.com>\n"
 "Language-Team: Kannada (http://www.transifex.net/projects/p/fedora/language/"
@@ -24,7 +24,7 @@ msgid "ABRT notification applet"
 msgstr "ABRT ಸೂಚನಾ ಆಪ್ಲೆಟ್"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:733
+#: ../src/gui-gtk/main.c:834
 msgid "Automatic Bug Reporting Tool"
 msgstr "ಸ್ವಯಂಚಾಲಿತ ದೋಷ ವರದಿ ಮಾಡುವ ಉಪಕರಣ"
 
@@ -37,7 +37,7 @@ msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT ಇಂದ ಪತ್ತೆ ಮಾಡಲಾದ ತೊಂದರೆಗಳನ್ನು ಬಳಕೆದಾರರಿಗೆ ಸೂಚಿಸುವ ಸೂಚನಾ ಸ್ಥಳದ ಆಪ್ಲೆಟ್"
 
-#: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:579
+#: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:680
 msgid "translator-credits"
 msgstr "ಶಂಕರ್ ಪ್ರಸಾದ್ <svenkate@redhat.com>"
 
@@ -103,8 +103,7 @@ msgstr "ಬಿಸುಡು ಕೋಶ"
 msgid "Configuration file"
 msgstr "ಸಂರಚನಾ ಕಡತ"
 
-#: ../src/daemon/abrt-server.c:457 ../src/daemon/abrt-dbus.c:378
-#: ../src/daemon/abrtd.c:642
+#: ../src/daemon/abrt-server.c:457 ../src/daemon/abrtd.c:649
 msgid "& [options]"
 msgstr "& [ಆಯ್ಕೆಗಳು]"
 
@@ -116,20 +115,37 @@ msgstr "UID ಅನ್ನು ಕ್ಲೈಂಟ್ uid ಆಗಿ ಬಳಸಿ"
 msgid "Log to syslog"
 msgstr "syslog ಗೆ ದಾಖಲಿಸು"
 
-#: ../src/daemon/abrt-server.c:470 ../src/daemon/abrtd.c:658
-#: ../src/gui-gtk/main.c:1068
+#: ../src/daemon/abrt-server.c:470 ../src/daemon/abrtd.c:665
+#: ../src/gui-gtk/main.c:1157
 msgid "Add program names to log"
 msgstr "ಪ್ರೊಗ್ರಾಮ್‌ನ ಹೆಸರುಗಳನ್ನು ದಾಖಲೆಗೆ ಸೇರಿಸು"
 
-#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:655
+#: ../src/dbus/abrt-dbus.c:287
+#, fuzzy, c-format
+msgid "%s is not a valid problem dir"
+msgstr "0} ಸಮಂಜಸವಾದ ವರದಿ/ಕುಸಿತ ಅಲ್ಲ"
+
+#: ../src/dbus/abrt-dbus.c:415
+#, fuzzy, c-format
+msgid "%s is not a valid problem directory"
+msgstr "0} ಸಮಂಜಸವಾದ ವರದಿ/ಕುಸಿತ ಅಲ್ಲ"
+
+#: ../src/dbus/abrt-dbus.c:527
+#, c-format
+msgid ""
+"The name '%s' has been lost, please check if other service owning the name "
+"is not running.\n"
+msgstr ""
+
+#: ../src/daemon/abrtd.c:662
 msgid "Do not daemonize"
 msgstr "ಡೆಮನ್‌ ಆಗಿ ಮಾಡಬೇಡ"
 
-#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:656
+#: ../src/daemon/abrtd.c:663
 msgid "Log to syslog even with -d"
 msgstr "-d ಯೊಂದಿಗೂ ಸಹ syslog ಗೆ ದಾಖಲಿಸಿ"
 
-#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:657
+#: ../src/daemon/abrtd.c:664
 msgid "Exit after NUM seconds of inactivity"
 msgstr "NUM ಸೆಕೆಂಡುಗಳ ನಿಷ್ಕ್ರಿಯತೆಯ ನಂತರ ನಿರ್ಗಮಿಸು"
 
@@ -145,67 +161,81 @@ msgstr "DIR ನಲ್ಲಿ EVENT ಅನ್ನು ಚಲಾಯಿಸಿ"
 msgid "View and report application crashes"
 msgstr "ಅನ್ವಯದ ಕುಸಿತವನ್ನು ನೋಡಿ ಹಾಗು ವರದಿ ಮಾಡಿ"
 
-#: ../src/gui-gtk/main.c:517
+#. TODO show a warning dialog here or on the higher level?
+#: ../src/gui-gtk/main.c:431
+#, fuzzy, c-format
+msgid "Can't chown '%s': %s"
+msgstr "'%s' ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸಲಾಗಿಲ್ಲ"
+
+#: ../src/gui-gtk/main.c:618
 msgid "Problem description"
 msgstr "ತೊಂದರೆಯ ವಿವರಣೆ"
 
-#: ../src/gui-gtk/main.c:520
+#: ../src/gui-gtk/main.c:621
 msgid "Send"
 msgstr "ಕಳುಹಿಸು"
 
-#: ../src/gui-gtk/main.c:598 ../src/gui-gtk/main.c:644
+#: ../src/gui-gtk/main.c:699 ../src/gui-gtk/main.c:745
 msgid "Source"
 msgstr "ಆಕರ"
 
-#: ../src/gui-gtk/main.c:608 ../src/gui-gtk/main.c:654
+#: ../src/gui-gtk/main.c:709 ../src/gui-gtk/main.c:755
 msgid "Problem"
 msgstr "ತೊಂದರೆ"
 
-#: ../src/gui-gtk/main.c:629
+#: ../src/gui-gtk/main.c:730
 msgid "Last Occurrence"
 msgstr "ಕೊನೆಯ ಬಾರಿ ಸಂಭವಿಸಿದ್ದು"
 
-#: ../src/gui-gtk/main.c:664
+#: ../src/gui-gtk/main.c:765
 msgid "Date Submitted"
 msgstr "ಸಲ್ಲಿಸಿದ ದಿನಾಂಕ"
 
-#: ../src/gui-gtk/main.c:673
+#: ../src/gui-gtk/main.c:774
 msgid "Submission Result"
 msgstr "ಸಲ್ಲಿಕೆಯ ಫಲಿತಾಂಶ"
 
-#: ../src/gui-gtk/main.c:686
+#: ../src/gui-gtk/main.c:787
 msgid "_Report"
 msgstr "ವರದಿ (_R)"
 
-#: ../src/gui-gtk/main.c:687
+#: ../src/gui-gtk/main.c:788
 msgid "_Edit"
 msgstr "ಸಂಪಾದನೆ (_E)"
 
-#: ../src/gui-gtk/main.c:688
+#: ../src/gui-gtk/main.c:789
 msgid "_Help"
 msgstr "ಸಹಾಯ (_H)"
 
-#: ../src/gui-gtk/main.c:714
+#: ../src/gui-gtk/main.c:815
 msgid "Report problem with ABRT"
 msgstr "ABRTಯೊಂದಿಗೆ ತೊಂದರೆಯನ್ನು ವರದಿ ಮಾಡಿ"
 
-#: ../src/gui-gtk/main.c:753
+#: ../src/gui-gtk/main.c:854
 msgid "Not submitted reports"
 msgstr "ಸಲ್ಲಿಸದೆ ಇರುವ ವರದಿಗಳು"
 
-#: ../src/gui-gtk/main.c:755
+#: ../src/gui-gtk/main.c:856
 msgid "<b>Not submitted reports</b>"
 msgstr "<b>ಸಲ್ಲಿಸದೆ ಇರುವ ವರದಿಗಳು</b>"
 
-#: ../src/gui-gtk/main.c:803
+#: ../src/gui-gtk/main.c:858
+msgid "Show all problems"
+msgstr ""
+
+#: ../src/gui-gtk/main.c:908
 msgid "Submitted reports"
 msgstr "ಸಲ್ಲಿಸಿದ ವರದಿಗಳು"
 
-#: ../src/gui-gtk/main.c:806
+#: ../src/gui-gtk/main.c:911
 msgid "<b>Submitted reports</b>"
 msgstr "<b>ಸಲ್ಲಿಸಿದ ವರದಿಗಳು</b>"
 
-#: ../src/gui-gtk/main.c:1057
+#: ../src/gui-gtk/main.c:1100
+msgid "Can't get problem list from abrt-dbus"
+msgstr ""
+
+#: ../src/gui-gtk/main.c:1146
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
@@ -467,10 +497,10 @@ msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr "%d ಉದ್ದದ HTTP ಮನವಿಯನ್ನು ಕಳುಹಿಸಲು ವಿಫಲಗೊಂಡಿದೆ: NSS ದೋಷ %d."
 
 #: ../src/plugins/abrt-dump-oops.c:175
-#, c-format
+#, fuzzy, c-format
 msgid ""
-"A kernel problem occurred, but your kernel has beentainted (flags:%s). "
-"Kernel maintainers are unable todiagnose tainted reports."
+"A kernel problem occurred, but your kernel has been tainted (flags:%s). "
+"Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
 "ಒಂದು ಕರ್ನಲ್ ತೊಂದರೆ ಎದುರಾಗಿದೆ, ಆದರೆ ಕರ್ನಲ್‌ಗೆ ಸೋಂಕು ಹಿಡಿದಿದೆ (flags:%s). ಕರ್ನಲ್ "
 "ಮೇಲ್ವಿಚಾರಕರಿಂದ ಸೋಂಕು ವರದಿಗಳನ್ನು ತಪಾಸಣೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."

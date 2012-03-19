@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-03-08 09:35+0100\n"
+"POT-Creation-Date: 2012-03-19 09:14+0100\n"
 "PO-Revision-Date: 2012-02-29 02:02+0000\n"
 "Last-Translator: fvalen <fvalen@redhat.com>\n"
 "Language-Team: Italian <trans-it@lists.fedoraproject.org>\n"
@@ -23,7 +23,7 @@ msgid "ABRT notification applet"
 msgstr "Aplet di notifica ABRT"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:733
+#: ../src/gui-gtk/main.c:834
 msgid "Automatic Bug Reporting Tool"
 msgstr "Automatic Bug Reporting Tool"
 
@@ -38,7 +38,7 @@ msgstr ""
 "Applet area di notifica che informa gli utenti sulla presenza di "
 "problematiche rilevate da ABRT"
 
-#: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:579
+#: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:680
 msgid "translator-credits"
 msgstr "crediti-traduttore"
 
@@ -106,8 +106,7 @@ msgstr "Esegui il dump della directory"
 msgid "Configuration file"
 msgstr "File di configurazione"
 
-#: ../src/daemon/abrt-server.c:457 ../src/daemon/abrt-dbus.c:378
-#: ../src/daemon/abrtd.c:642
+#: ../src/daemon/abrt-server.c:457 ../src/daemon/abrtd.c:649
 msgid "& [options]"
 msgstr "& [opzioni]"
 
@@ -119,20 +118,37 @@ msgstr "Usa l'UID come uid client"
 msgid "Log to syslog"
 msgstr "Log su syslog"
 
-#: ../src/daemon/abrt-server.c:470 ../src/daemon/abrtd.c:658
-#: ../src/gui-gtk/main.c:1068
+#: ../src/daemon/abrt-server.c:470 ../src/daemon/abrtd.c:665
+#: ../src/gui-gtk/main.c:1157
 msgid "Add program names to log"
 msgstr "Aggiungi i nomi dei programmi sul log"
 
-#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:655
+#: ../src/dbus/abrt-dbus.c:287
+#, fuzzy, c-format
+msgid "%s is not a valid problem dir"
+msgstr "{0} non è un vmcore valido"
+
+#: ../src/dbus/abrt-dbus.c:415
+#, fuzzy, c-format
+msgid "%s is not a valid problem directory"
+msgstr "{0} non è un vmcore valido"
+
+#: ../src/dbus/abrt-dbus.c:527
+#, c-format
+msgid ""
+"The name '%s' has been lost, please check if other service owning the name "
+"is not running.\n"
+msgstr ""
+
+#: ../src/daemon/abrtd.c:662
 msgid "Do not daemonize"
 msgstr "Non rendere demone"
 
-#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:656
+#: ../src/daemon/abrtd.c:663
 msgid "Log to syslog even with -d"
 msgstr "Log su syslog anche con -d"
 
-#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:657
+#: ../src/daemon/abrtd.c:664
 msgid "Exit after NUM seconds of inactivity"
 msgstr "Esci dopo NUM secondi di inattività"
 
@@ -148,67 +164,81 @@ msgstr "Esegui EVENT su DIR"
 msgid "View and report application crashes"
 msgstr "Visualizza e notifica i crash dell'applicazione"
 
-#: ../src/gui-gtk/main.c:517
+#. TODO show a warning dialog here or on the higher level?
+#: ../src/gui-gtk/main.c:431
+#, fuzzy, c-format
+msgid "Can't chown '%s': %s"
+msgstr "Impossibile eseguire '%s'"
+
+#: ../src/gui-gtk/main.c:618
 msgid "Problem description"
 msgstr "Descrizione del problema"
 
-#: ../src/gui-gtk/main.c:520
+#: ../src/gui-gtk/main.c:621
 msgid "Send"
 msgstr "Invia"
 
-#: ../src/gui-gtk/main.c:598 ../src/gui-gtk/main.c:644
+#: ../src/gui-gtk/main.c:699 ../src/gui-gtk/main.c:745
 msgid "Source"
 msgstr "Origine"
 
-#: ../src/gui-gtk/main.c:608 ../src/gui-gtk/main.c:654
+#: ../src/gui-gtk/main.c:709 ../src/gui-gtk/main.c:755
 msgid "Problem"
 msgstr "Problema"
 
-#: ../src/gui-gtk/main.c:629
+#: ../src/gui-gtk/main.c:730
 msgid "Last Occurrence"
 msgstr "Ultimo evento"
 
-#: ../src/gui-gtk/main.c:664
+#: ../src/gui-gtk/main.c:765
 msgid "Date Submitted"
 msgstr "Data inviata"
 
-#: ../src/gui-gtk/main.c:673
+#: ../src/gui-gtk/main.c:774
 msgid "Submission Result"
 msgstr "Risultato invio"
 
-#: ../src/gui-gtk/main.c:686
+#: ../src/gui-gtk/main.c:787
 msgid "_Report"
 msgstr "_Riporta"
 
-#: ../src/gui-gtk/main.c:687
+#: ../src/gui-gtk/main.c:788
 msgid "_Edit"
 msgstr "_Modifica"
 
-#: ../src/gui-gtk/main.c:688
+#: ../src/gui-gtk/main.c:789
 msgid "_Help"
 msgstr "_Aiuto"
 
-#: ../src/gui-gtk/main.c:714
+#: ../src/gui-gtk/main.c:815
 msgid "Report problem with ABRT"
 msgstr "Riporta problema con ABRT"
 
-#: ../src/gui-gtk/main.c:753
+#: ../src/gui-gtk/main.c:854
 msgid "Not submitted reports"
 msgstr "Nessuna notifica inviata"
 
-#: ../src/gui-gtk/main.c:755
+#: ../src/gui-gtk/main.c:856
 msgid "<b>Not submitted reports</b>"
 msgstr "<b>Nessuna notifica inviata</b>"
 
-#: ../src/gui-gtk/main.c:803
+#: ../src/gui-gtk/main.c:858
+msgid "Show all problems"
+msgstr ""
+
+#: ../src/gui-gtk/main.c:908
 msgid "Submitted reports"
 msgstr "Notifiche inviate"
 
-#: ../src/gui-gtk/main.c:806
+#: ../src/gui-gtk/main.c:911
 msgid "<b>Submitted reports</b>"
 msgstr "<b>Notifiche inviate</b>"
 
-#: ../src/gui-gtk/main.c:1057
+#: ../src/gui-gtk/main.c:1100
+msgid "Can't get problem list from abrt-dbus"
+msgstr ""
+
+#: ../src/gui-gtk/main.c:1146
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
@@ -475,10 +505,10 @@ msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr "Invio richiesta HTTP di lunghezza %d fallito: NSS error %d."
 
 #: ../src/plugins/abrt-dump-oops.c:175
-#, c-format
+#, fuzzy, c-format
 msgid ""
-"A kernel problem occurred, but your kernel has beentainted (flags:%s). "
-"Kernel maintainers are unable todiagnose tainted reports."
+"A kernel problem occurred, but your kernel has been tainted (flags:%s). "
+"Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
 "Si è verificato un problema al kernel, il kernel è stato inquinato flags:"
 "%s). I manutentori del kernel non sono in grado di diagnosticare le "

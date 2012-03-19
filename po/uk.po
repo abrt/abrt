@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-03-08 09:35+0100\n"
+"POT-Creation-Date: 2012-03-19 09:14+0100\n"
 "PO-Revision-Date: 2012-02-21 14:18+0000\n"
 "Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -25,7 +25,7 @@ msgid "ABRT notification applet"
 msgstr "Аплет сповіщення ABRT"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:733
+#: ../src/gui-gtk/main.c:834
 msgid "Automatic Bug Reporting Tool"
 msgstr "ABRT — автоматичне звітування про помилки"
 
@@ -40,7 +40,7 @@ msgstr ""
 "Аплет у області сповіщень для попередження користувача про виявлені ABRT "
 "проблеми"
 
-#: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:579
+#: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:680
 msgid "translator-credits"
 msgstr ""
 "Максим Дзюманенко <dziumanenko@gmail.com>\n"
@@ -102,8 +102,7 @@ msgstr "Каталог дампу"
 msgid "Configuration file"
 msgstr "Файл налаштувань"
 
-#: ../src/daemon/abrt-server.c:457 ../src/daemon/abrt-dbus.c:378
-#: ../src/daemon/abrtd.c:642
+#: ../src/daemon/abrt-server.c:457 ../src/daemon/abrtd.c:649
 msgid "& [options]"
 msgstr ""
 
@@ -115,20 +114,37 @@ msgstr "Використати UID як унікальний ідентифік�
 msgid "Log to syslog"
 msgstr "Записувати до журналу syslog"
 
-#: ../src/daemon/abrt-server.c:470 ../src/daemon/abrtd.c:658
-#: ../src/gui-gtk/main.c:1068
+#: ../src/daemon/abrt-server.c:470 ../src/daemon/abrtd.c:665
+#: ../src/gui-gtk/main.c:1157
 msgid "Add program names to log"
 msgstr "Додати назви програм до журналу"
 
-#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:655
+#: ../src/dbus/abrt-dbus.c:287
+#, c-format
+msgid "%s is not a valid problem dir"
+msgstr ""
+
+#: ../src/dbus/abrt-dbus.c:415
+#, c-format
+msgid "%s is not a valid problem directory"
+msgstr ""
+
+#: ../src/dbus/abrt-dbus.c:527
+#, c-format
+msgid ""
+"The name '%s' has been lost, please check if other service owning the name "
+"is not running.\n"
+msgstr ""
+
+#: ../src/daemon/abrtd.c:662
 msgid "Do not daemonize"
 msgstr "Не запускати фонової служби"
 
-#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:656
+#: ../src/daemon/abrtd.c:663
 msgid "Log to syslog even with -d"
 msgstr "Записувати до журналу syslog навіть з параметром -d"
 
-#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:657
+#: ../src/daemon/abrtd.c:664
 msgid "Exit after NUM seconds of inactivity"
 msgstr ""
 
@@ -144,67 +160,81 @@ msgstr ""
 msgid "View and report application crashes"
 msgstr "Переглянути збої програми та створити звіт"
 
-#: ../src/gui-gtk/main.c:517
+#. TODO show a warning dialog here or on the higher level?
+#: ../src/gui-gtk/main.c:431
+#, fuzzy, c-format
+msgid "Can't chown '%s': %s"
+msgstr "Не вдалося виконати «%s»"
+
+#: ../src/gui-gtk/main.c:618
 msgid "Problem description"
 msgstr "Опис проблеми"
 
-#: ../src/gui-gtk/main.c:520
+#: ../src/gui-gtk/main.c:621
 msgid "Send"
 msgstr "Надіслати"
 
-#: ../src/gui-gtk/main.c:598 ../src/gui-gtk/main.c:644
+#: ../src/gui-gtk/main.c:699 ../src/gui-gtk/main.c:745
 msgid "Source"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:608 ../src/gui-gtk/main.c:654
+#: ../src/gui-gtk/main.c:709 ../src/gui-gtk/main.c:755
 msgid "Problem"
 msgstr "Проблема"
 
-#: ../src/gui-gtk/main.c:629
+#: ../src/gui-gtk/main.c:730
 msgid "Last Occurrence"
 msgstr "Останній випадок"
 
-#: ../src/gui-gtk/main.c:664
+#: ../src/gui-gtk/main.c:765
 msgid "Date Submitted"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:673
+#: ../src/gui-gtk/main.c:774
 msgid "Submission Result"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:686
+#: ../src/gui-gtk/main.c:787
 msgid "_Report"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:687
+#: ../src/gui-gtk/main.c:788
 msgid "_Edit"
 msgstr "З_міни"
 
-#: ../src/gui-gtk/main.c:688
+#: ../src/gui-gtk/main.c:789
 msgid "_Help"
 msgstr "_Довідка"
 
-#: ../src/gui-gtk/main.c:714
+#: ../src/gui-gtk/main.c:815
 msgid "Report problem with ABRT"
 msgstr "Повідомити про проблему за допомогою ABRT"
 
-#: ../src/gui-gtk/main.c:753
+#: ../src/gui-gtk/main.c:854
 msgid "Not submitted reports"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:755
+#: ../src/gui-gtk/main.c:856
 msgid "<b>Not submitted reports</b>"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:803
+#: ../src/gui-gtk/main.c:858
+msgid "Show all problems"
+msgstr ""
+
+#: ../src/gui-gtk/main.c:908
 msgid "Submitted reports"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:806
+#: ../src/gui-gtk/main.c:911
 msgid "<b>Submitted reports</b>"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:1057
+#: ../src/gui-gtk/main.c:1100
+msgid "Can't get problem list from abrt-dbus"
+msgstr ""
+
+#: ../src/gui-gtk/main.c:1146
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
@@ -424,8 +454,8 @@ msgstr ""
 #: ../src/plugins/abrt-dump-oops.c:175
 #, c-format
 msgid ""
-"A kernel problem occurred, but your kernel has beentainted (flags:%s). "
-"Kernel maintainers are unable todiagnose tainted reports."
+"A kernel problem occurred, but your kernel has been tainted (flags:%s). "
+"Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
 
 #: ../src/plugins/abrt-dump-oops.c:226

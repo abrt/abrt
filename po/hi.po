@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-03-08 09:35+0100\n"
+"POT-Creation-Date: 2012-03-19 09:14+0100\n"
 "PO-Revision-Date: 2012-03-02 10:55+0000\n"
 "Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
 "Language-Team: Hindi <indlinux-hindi@lists.sourceforge.net>\n"
@@ -25,7 +25,7 @@ msgid "ABRT notification applet"
 msgstr "ABRT अधिसूचना एप्लेट"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:733
+#: ../src/gui-gtk/main.c:834
 msgid "Automatic Bug Reporting Tool"
 msgstr "स्वचालित बग रिपोर्टिंग औजार"
 
@@ -39,7 +39,7 @@ msgid ""
 msgstr ""
 "अधिसूचना क्षेत्र एप्लेट जो ABRT के द्वारा पता किए मुद्दों के बारे में उपयोक्ता को सूचित करता है"
 
-#: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:579
+#: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:680
 msgid "translator-credits"
 msgstr "राजेश रंजन (rranjan@redhat.com, rajeshkajha@yahoo.com)"
 
@@ -105,8 +105,7 @@ msgstr "डंप निर्देशिका"
 msgid "Configuration file"
 msgstr "विन्यास फाइल"
 
-#: ../src/daemon/abrt-server.c:457 ../src/daemon/abrt-dbus.c:378
-#: ../src/daemon/abrtd.c:642
+#: ../src/daemon/abrt-server.c:457 ../src/daemon/abrtd.c:649
 msgid "& [options]"
 msgstr "& [विकल्प]"
 
@@ -118,20 +117,37 @@ msgstr "UID को बतौर क्लाइंट uid उपयोग कर
 msgid "Log to syslog"
 msgstr "सिसलॉग में लॉग करेंसिस्टल"
 
-#: ../src/daemon/abrt-server.c:470 ../src/daemon/abrtd.c:658
-#: ../src/gui-gtk/main.c:1068
+#: ../src/daemon/abrt-server.c:470 ../src/daemon/abrtd.c:665
+#: ../src/gui-gtk/main.c:1157
 msgid "Add program names to log"
 msgstr "लाग करने के लिए अधिक प्रोग्राम नाम"
 
-#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:655
+#: ../src/dbus/abrt-dbus.c:287
+#, fuzzy, c-format
+msgid "%s is not a valid problem dir"
+msgstr "{0} एक वैध vmcore नहीं है"
+
+#: ../src/dbus/abrt-dbus.c:415
+#, fuzzy, c-format
+msgid "%s is not a valid problem directory"
+msgstr "{0} एक वैध vmcore नहीं है"
+
+#: ../src/dbus/abrt-dbus.c:527
+#, c-format
+msgid ""
+"The name '%s' has been lost, please check if other service owning the name "
+"is not running.\n"
+msgstr ""
+
+#: ../src/daemon/abrtd.c:662
 msgid "Do not daemonize"
 msgstr "डेमॉनाइज मत करें"
 
-#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:656
+#: ../src/daemon/abrtd.c:663
 msgid "Log to syslog even with -d"
 msgstr "-d के साथ सिसलॉग घटना में लॉग-d के साथ सिस्"
 
-#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:657
+#: ../src/daemon/abrtd.c:664
 msgid "Exit after NUM seconds of inactivity"
 msgstr "NUM सेकेंड की निष्क्रियता के बाद बाहर निकलें"
 
@@ -147,67 +163,81 @@ msgstr "EVENT को DIR पर चलाएँ"
 msgid "View and report application crashes"
 msgstr "अनुप्रयोग क्रैश को देखें और रिपोर्ट करें"
 
-#: ../src/gui-gtk/main.c:517
+#. TODO show a warning dialog here or on the higher level?
+#: ../src/gui-gtk/main.c:431
+#, fuzzy, c-format
+msgid "Can't chown '%s': %s"
+msgstr "'%s' को निष्पादित नहीं कर सकता है"
+
+#: ../src/gui-gtk/main.c:618
 msgid "Problem description"
 msgstr "समस्या विवरण"
 
-#: ../src/gui-gtk/main.c:520
+#: ../src/gui-gtk/main.c:621
 msgid "Send"
 msgstr "भेजें"
 
-#: ../src/gui-gtk/main.c:598 ../src/gui-gtk/main.c:644
+#: ../src/gui-gtk/main.c:699 ../src/gui-gtk/main.c:745
 msgid "Source"
 msgstr "स्रोत "
 
-#: ../src/gui-gtk/main.c:608 ../src/gui-gtk/main.c:654
+#: ../src/gui-gtk/main.c:709 ../src/gui-gtk/main.c:755
 msgid "Problem"
 msgstr "समस्या"
 
-#: ../src/gui-gtk/main.c:629
+#: ../src/gui-gtk/main.c:730
 msgid "Last Occurrence"
 msgstr "अंतिम आवृत्ति"
 
-#: ../src/gui-gtk/main.c:664
+#: ../src/gui-gtk/main.c:765
 msgid "Date Submitted"
 msgstr "तिथि दर्ज की गयी "
 
-#: ../src/gui-gtk/main.c:673
+#: ../src/gui-gtk/main.c:774
 msgid "Submission Result"
 msgstr "सुपुर्दगी परिणाम"
 
-#: ../src/gui-gtk/main.c:686
+#: ../src/gui-gtk/main.c:787
 msgid "_Report"
 msgstr "रिपोर्ट करें (_R)"
 
-#: ../src/gui-gtk/main.c:687
+#: ../src/gui-gtk/main.c:788
 msgid "_Edit"
 msgstr "संपादन करें (_E)"
 
-#: ../src/gui-gtk/main.c:688
+#: ../src/gui-gtk/main.c:789
 msgid "_Help"
 msgstr "मदद (_H)"
 
-#: ../src/gui-gtk/main.c:714
+#: ../src/gui-gtk/main.c:815
 msgid "Report problem with ABRT"
 msgstr "ABRT के साथ समस्या रिपोर्ट करें"
 
-#: ../src/gui-gtk/main.c:753
+#: ../src/gui-gtk/main.c:854
 msgid "Not submitted reports"
 msgstr "नहीं प्रस्तुत किया गया रिपोर्ट"
 
-#: ../src/gui-gtk/main.c:755
+#: ../src/gui-gtk/main.c:856
 msgid "<b>Not submitted reports</b>"
 msgstr "<b>नहीं प्रस्तुत किया गया रिपोर्ट</b>"
 
-#: ../src/gui-gtk/main.c:803
+#: ../src/gui-gtk/main.c:858
+msgid "Show all problems"
+msgstr ""
+
+#: ../src/gui-gtk/main.c:908
 msgid "Submitted reports"
 msgstr "प्रस्तुत किया गया रिपोर्ट"
 
-#: ../src/gui-gtk/main.c:806
+#: ../src/gui-gtk/main.c:911
 msgid "<b>Submitted reports</b>"
 msgstr "<b>प्रस्तुत किया गया रिपोर्ट</b>"
 
-#: ../src/gui-gtk/main.c:1057
+#: ../src/gui-gtk/main.c:1100
+msgid "Can't get problem list from abrt-dbus"
+msgstr ""
+
+#: ../src/gui-gtk/main.c:1146
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
@@ -468,10 +498,10 @@ msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr "%d लंबाई के HTTP आग्रह भेजने में विफल: NSS त्रुटि %d."
 
 #: ../src/plugins/abrt-dump-oops.c:175
-#, c-format
+#, fuzzy, c-format
 msgid ""
-"A kernel problem occurred, but your kernel has beentainted (flags:%s). "
-"Kernel maintainers are unable todiagnose tainted reports."
+"A kernel problem occurred, but your kernel has been tainted (flags:%s). "
+"Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
 "कर्नेल समस्या आयी, लेकिन आपका कर्नेल टेंट किया गया है (फ्लैग:%s). कर्नेल देखभाल कर्ता टेंट "
 "किया रिपोर्ट के निदान में असमर्थ है."
