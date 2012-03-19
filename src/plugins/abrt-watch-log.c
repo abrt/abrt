@@ -20,7 +20,32 @@
 #include <sys/inotify.h>
 #include "libabrt.h"
 
-static void run_scanner_prog(int fd, struct stat *statbuf, char **prog)
+#define MAX_SCAN_BLOCK  (4*1024*1024)
+#define READ_AHEAD          (10*1024)
+
+static unsigned page_size;
+
+static bool memstr(void *buf, unsigned size, const char *str)
+{
+    int len = strlen(str);
+    while ((int)size >= len)
+    {
+        //log("LOOKING FOR:'%s'", str);
+        char *first = memchr(buf, (unsigned char)str[0], size - len + 1);
+        if (!first)
+            break;
+        //log("FOUND:'%.66s'", first);
+        first++;
+        if (len <= 1 || strncmp(first, str + 1, len - 1) == 0)
+            return true;
+        size -= (first - (char*)buf);
+        //log("SKIP TO:'%.66s' %d chars", first, (int)(first - (char*)buf));
+        buf = first;
+    }
+    return false;
+}
+
+static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, char **prog)
 {
     /* fstat(fd, &statbuf) was just done by caller */
 
@@ -39,6 +64,30 @@ static void run_scanner_prog(int fd, struct stat *statbuf, char **prog)
         (long long)(statbuf->st_size - cur_pos),
         (long long)(cur_pos),
         (long long)(statbuf->st_size));
+
+    if (match_list && (statbuf->st_size - cur_pos) < MAX_SCAN_BLOCK)
+    {
+        off_t offset = cur_pos & ~(off_t)page_size;
+        size_t length = statbuf->st_size - offset;
+        void *map = mmap(NULL, length, PROT_READ, MAP_SHARED, fd, offset);
+        if (mmap != MAP_FAILED)
+        {
+            size_t skip = (cur_pos & page_size);
+            for (GList *l = match_list; l; l = l->next)
+            {
+                if (memstr((char*)map + skip, length - skip, (char*)match_list->data))
+                {
+                    //log("FOUND:'%s'", (char*)match_list->data);
+                    goto found;
+                }
+            }
+            /* None of the strings are found */
+            munmap(map, length);
+            return;
+ found: ;
+            munmap(map, length);
+        }
+    }
 
     pid_t pid = vfork();
     if (pid < 0)
@@ -66,9 +115,13 @@ int main(int argc, char **argv)
 
     abrt_init(argv);
 
+    page_size = sysconf(_SC_PAGE_SIZE);
+
+    GList *match_list = NULL;
+
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "& [-vsw] FILE PROG [ARGS]\n"
+        "& [-vs] [-F STR]... FILE PROG [ARGS]\n"
         "\n"
         "Watch log file FILE, run PROG when it grows or is replaced"
     );
@@ -79,7 +132,8 @@ int main(int argc, char **argv)
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_BOOL(  's', NULL, NULL, _("Log to syslog")),
+        OPT_BOOL('s', NULL, NULL              , _("Log to syslog")),
+        OPT_LIST('F', NULL, &match_list, "STR", _("Don't run PROG if STRs aren't found")),
         OPT_END()
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -115,7 +169,7 @@ int main(int argc, char **argv)
         {
             memset(&statbuf, 0, sizeof(statbuf));
             fstat(file_fd, &statbuf);
-            run_scanner_prog(file_fd, &statbuf, argv);
+            run_scanner_prog(file_fd, &statbuf, match_list, argv);
 
             /* Was file deleted or replaced? */
             ino_t fd_ino = statbuf.st_ino;
@@ -152,14 +206,12 @@ int main(int argc, char **argv)
                      * IOW: ignore old log messages because they are unlikely
                      * to have sufficiently recent data to be useful.
                      */
-#define MAX_SCAN_BLOCK  (4*1024*1024)
-#define READ_AHEAD          (10*1024)
                     if (statbuf.st_size > (MAX_SCAN_BLOCK - READ_AHEAD))
                         lseek(file_fd, statbuf.st_size - (MAX_SCAN_BLOCK - READ_AHEAD), SEEK_SET);
                     /* Note that statbuf is filled by fstat by now,
                      * run_scanner_prog needs that
                      */
-                    run_scanner_prog(file_fd, &statbuf, argv);
+                    run_scanner_prog(file_fd, &statbuf, match_list, argv);
                 }
             }
         }
