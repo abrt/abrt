@@ -1,0 +1,10 @@
+[Unit]
+Description=ABRT Xorg log watcher
+After=abrtd.service
+Requires=abrtd.service
+
+[Service]
+ExecStart=/usr/bin/abrt-watch-log /var/log/Xorg.0.log -- /usr/bin/abrt-dump-xorg -xD
+
+[Install]
+WantedBy=multi-user.target

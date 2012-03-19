@@ -208,7 +208,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     }
     else
     {
-        cmdline = dd_load_text(dd, FILENAME_CMDLINE);
+        cmdline = dd_load_text_ext(dd, FILENAME_CMDLINE, DD_FAIL_QUIETLY_ENOENT);
         executable = dd_load_text(dd, FILENAME_EXECUTABLE);
         rootdir = dd_load_text_ext(dd, FILENAME_ROOTDIR,
                 DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
@@ -371,7 +371,7 @@ int main(int argc, char **argv)
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_STRING('d', NULL, &dump_dir_name, "DIR"     , _("Dump directory")),
+        OPT_STRING('d', NULL, &dump_dir_name, "DIR"     , _("Problem directory")),
         OPT_STRING('c', NULL, &conf_filename, "CONFFILE", _("Configuration file")),
         OPT_END()
     };

@@ -206,9 +206,6 @@ int main(int argc, char **argv)
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
-    if ((opts & OPT_d) && (opts & OPT_D))
-        show_usage_and_die(program_usage_string, program_options);
-
     export_abrt_envvars(0);
 
     msg_prefix = g_progname;
@@ -216,6 +213,16 @@ int main(int argc, char **argv)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;
+    }
+
+    if (opts & OPT_D)
+    {
+        if (opts & OPT_d)
+            show_usage_and_die(program_usage_string, program_options);
+        load_abrt_conf();
+        debug_dumps_dir = g_settings_dump_location;
+        g_settings_dump_location = NULL;
+        free_abrt_conf_data();
     }
 
     argv += optind;
@@ -267,9 +274,6 @@ int main(int argc, char **argv)
                     "Reported %u kernel oopses to Abrt",
                     oops_cnt
             );
-
-            //if (opts & OPT_D)
-            //    free_abrt_conf_data();
         }
     }
     //list_free_with_free(oops_list);

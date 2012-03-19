@@ -1,15 +1,15 @@
 #!/bin/bash
-# Start ABRT kernel log watcher
+# Start ABRT Xorg log watcher
 #
 # chkconfig: 35 82 16
-# description: Watches system log for oops messages, creates ABRT dump directories for each oops
+# description: Watches Xorg log for segfault messages, creates ABRT dump directories for each
 ### BEGIN INIT INFO
-# Provides: abrt-oops
+# Provides: abrt-xorg
 # Required-Start: $abrtd
 # Default-Stop: 0 1 2 6
 # Default-Start: 3 5
-# Short-Description: Watches system log for oops messages, creates ABRT dump directories for each oops
-# Description: Watches system log for oops messages, creates ABRT dump directories for each oops
+# Short-Description: Watches Xorg log for segfault messages, creates ABRT dump directories for each
+# Description: Watches Xorg log for segfault messages, creates ABRT dump directories for each
 ### END INIT INFO
 
 # Source function library.
@@ -19,12 +19,8 @@
 dry_run=false
 verbose=false
 
-# We don't have pid files, therefore have to use
-# a flag file in /var/lock/subsys to enable GUI service tools
-# to figure out our status
-# Update: now we have pidfiles: "killall abrt-watch-log" is not selective enough :(
-LOCK="/var/lock/subsys/abrt-oops"
-PIDF="/var/run/abrt-oops.pid"
+LOCK="/var/lock/subsys/abrt-xorg"
+PIDF="/var/run/abrt-xorg.pid"
 
 RETVAL=0
 
@@ -37,18 +33,17 @@ start() {
 	check
 	kill "`cat -- "$PIDF" 2>/dev/null`" 2>/dev/null
 	rm -f -- "$PIDF" 2>/dev/null
-	# Scan dmesg
-	dmesg | abrt-dump-oops -xD
-	# Watch and scan /var/log/messages
-	setsid abrt-watch-log /var/log/messages -- abrt-dump-oops -xD </dev/null >/dev/null 2>&1 &
+	# Watch and scan /var/log/Xorg.0.log
+	setsid abrt-watch-log /var/log/Xorg.0.log -- abrt-dump-xorg -xD </dev/null >/dev/null 2>&1 &
+	echo $! >"$PIDF"
 	$dry_run || touch -- "$LOCK"
 	return $RETVAL
 }
 
 stop() {
 	check
-	kill "`cat -- "$PIDF" 2>/dev/null`" 2>/dev/null
-	rm -f -- "$PIDF" 2>/dev/null
+	kill "`cat -- "$PIDF" 2>/dev/null`"
+	rm -f -- "$PIDF"
 	$dry_run || rm -f -- "$LOCK"
 	return $RETVAL
 }

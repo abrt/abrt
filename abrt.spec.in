@@ -117,14 +117,23 @@ Obsoletes: kerneloops > 0.0.1
 Obsoletes: abrt-plugin-kerneloops > 0.0.1
 Obsoletes: abrt-plugin-kerneloopsreporter > 0.0.1
 
+%description addon-kerneloops
+This package contains plugin for collecting kernel crash information from system log.
+
+%package addon-xorg
+Summary: %{name}'s Xorg addon
+Group: System Environment/Libraries
+Requires: curl
+Requires: %{name} = %{version}-%{release}
+
+%description addon-xorg
+This package contains plugin for collecting Xorg crash information from Xorg log.
+
 %package addon-vmcore
 Summary: %{name}'s vmcore addon
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-addon-kerneloops
-
-%description addon-kerneloops
-This package contains plugin for collecting kernel crash information from system log.
 
 %description addon-vmcore
 This package contains plugin for collecting kernel crash information from vmcore files.
@@ -285,6 +294,21 @@ if [ $1 -eq 1 ]; then
 %endif
 fi
 
+%post addon-xorg
+if [ $1 -eq 1 ]; then
+    # (see explanation in addon-ccpp section)
+%if %{with systemd}
+    if [ "`/bin/systemctl is-enabled abrtd.service`" = "enabled" ]; then
+        # Enable (but don't start) the units by default
+        /bin/systemctl enable abrt-xorg.service >/dev/null 2>&1 || :
+    fi
+%else
+    if /sbin/chkconfig abrtd >/dev/null 2>&1; then
+        /sbin/chkconfig --add abrt-xorg
+    fi
+%endif
+fi
+
 %post addon-vmcore
 if [ $1 -eq 1 ]; then
     # (see explanation in addon-ccpp section)
@@ -333,6 +357,17 @@ if [ "$1" -eq "0" ] ; then
 %endif
 fi
 
+%preun addon-xorg
+if [ "$1" -eq "0" ] ; then
+%if %{with systemd}
+    /bin/systemctl --no-reload abrt-xorg.service >/dev/null 2>&1 || :
+    /bin/systemctl stop abrt-xorg.service >/dev/null 2>&1 || :
+%else
+    service abrt-xorg stop >/dev/null 2>&1
+    /sbin/chkconfig --del abrt-xorg
+%endif
+fi
+
 %preun addon-vmcore
 if [ "$1" -eq "0" ] ; then
 %if %{with systemd}
@@ -349,6 +384,9 @@ fi
 /bin/systemctl daemon-reload >/dev/null 2>&1 || :
 
 %postun addon-kerneloops
+/bin/systemctl daemon-reload >/dev/null 2>&1 || :
+
+%postun addon-xorg
 /bin/systemctl daemon-reload >/dev/null 2>&1 || :
 
 %postun addon-vmcore
@@ -382,6 +420,9 @@ service abrt-ccpp condrestart >/dev/null 2>&1 || :
 %posttrans addon-kerneloops
 service abrt-oops condrestart >/dev/null 2>&1 || :
 
+%posttrans addon-xorg
+service abrt-xorg condrestart >/dev/null 2>&1 || :
+
 %posttrans addon-vmcore
 service abrt-vmcore condrestart >/dev/null 2>&1 || :
 
@@ -402,6 +443,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libexecdir}/abrt-handle-event
 %{_bindir}/abrt-handle-upload
 %{_bindir}/abrt-action-save-package-data
+%{_bindir}/abrt-watch-log
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-action-save-package-data.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
@@ -505,10 +547,19 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %else
 %{_initrddir}/abrt-oops
 %endif
-%{_bindir}/abrt-watch-log
 %{_bindir}/abrt-dump-oops
 %{_bindir}/abrt-action-analyze-oops
 %{_mandir}/man1/abrt-action-analyze-oops.1*
+
+%files addon-xorg
+%defattr(-,root,root,-)
+%if %{with systemd}
+/lib/systemd/system/abrt-xorg.service
+%else
+%{_initrddir}/abrt-xorg
+%endif
+%{_bindir}/abrt-dump-xorg
+###%{_mandir}/man1/abrt-dump-xorg.1*
 
 %files addon-vmcore
 %defattr(-,root,root,-)

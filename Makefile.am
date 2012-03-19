@@ -31,10 +31,13 @@ if HAVE_SYSTEMD
     dist_systemdsystemunit_DATA = init-scripts/abrtd.service \
                                   init-scripts/abrt-ccpp.service \
                                   init-scripts/abrt-oops.service \
+                                  init-scripts/abrt-xorg.service \
                                   init-scripts/abrt-vmcore.service
 else
     sysv_initdir = $(sysconfdir)/rc.d/init.d/
-    sysv_init_SCRIPTS = init-scripts/abrtd init-scripts/abrt-ccpp init-scripts/abrt-oops \
+    sysv_init_SCRIPTS = init-scripts/abrtd \
+                        init-scripts/abrt-ccpp \
+                        init-scripts/abrt-xorg \
                         init-scripts/abrt-vmcore
 endif
 

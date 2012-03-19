@@ -9,6 +9,7 @@ bin_SCRIPTS = \
 bin_PROGRAMS = \
     abrt-watch-log \
     abrt-dump-oops \
+    abrt-dump-xorg \
     abrt-action-analyze-c \
     abrt-action-analyze-python \
     abrt-action-analyze-oops \
@@ -94,6 +95,20 @@ abrt_dump_oops_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_dump_oops_LDADD = \
+    $(GLIB_LIBS) \
+    $(LIBREPORT_LIBS) \
+    ../lib/libabrt.la
+
+abrt_dump_xorg_SOURCES = \
+    abrt-dump-xorg.c
+abrt_dump_xorg_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    -D_GNU_SOURCE \
+    -Wall -Wwrite-strings -Werror
+abrt_dump_xorg_LDADD = \
     $(GLIB_LIBS) \
     $(LIBREPORT_LIBS) \
     ../lib/libabrt.la
