@@ -37,6 +37,7 @@ else
     sysv_initdir = $(sysconfdir)/rc.d/init.d/
     sysv_init_SCRIPTS = init-scripts/abrtd \
                         init-scripts/abrt-ccpp \
+                        init-scripts/abrt-oops \
                         init-scripts/abrt-xorg \
                         init-scripts/abrt-vmcore
 endif
