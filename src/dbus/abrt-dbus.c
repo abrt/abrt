@@ -7,11 +7,9 @@
 #include "abrt-polkit.h"
 #include "abrt-dbus.h"
 
-/* how long should we wait from the last request */
-#define TIME_TO_DIE 5
-
 GMainLoop *loop;
 guint g_timeout;
+static unsigned s_timeout;
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -50,11 +48,11 @@ static void reset_timeout()
     //FIXME: reset timer on every call
     if (g_timeout > 0)
     {
-        VERB2 log("Removing timeout\n");
+        VERB2 log("Removing timeout");
         g_source_remove(g_timeout);
     }
-    VERB2 log("Setting a new timeout\n");
-    g_timeout = g_timeout_add_seconds(TIME_TO_DIE, on_timeout_cb, NULL);
+    VERB2 log("Setting a new timeout");
+    g_timeout = g_timeout_add_seconds(s_timeout, on_timeout_cb, NULL);
 }
 
 uid_t get_caller_uid(GDBusConnection *connection, const char *caller, GError *error)
@@ -88,7 +86,7 @@ uid_t get_caller_uid(GDBusConnection *connection, const char *caller, GError *er
     g_variant_get(result, "(u)", &caller_uid);
     g_variant_unref(result);
 
-    VERB2 log("Caller uid: %i\n", caller_uid);
+    VERB2 log("Caller uid: %i", caller_uid);
     return caller_uid;
 }
 
@@ -108,12 +106,12 @@ bool uid_in_group(uid_t uid, gid_t gid)
         {
             if (g_strcmp0(*tmp, pwd->pw_name) == 0)
             {
-                VERB3 log("user %s belongs to group: %s\n",  pwd->pw_name, grp->gr_name);
+                VERB3 log("user %s belongs to group: %s",  pwd->pw_name, grp->gr_name);
                 return TRUE;
             }
         }
     }
-    VERB2 log("WARN: user %s DOESN'T belong to group: %s\n",  pwd->pw_name, grp->gr_name);
+    VERB2 log("WARN: user %s DOESN'T belong to group: %s",  pwd->pw_name, grp->gr_name);
     return FALSE;
 }
 
@@ -242,13 +240,19 @@ handle_method_call(GDBusConnection       *connection,
 
         if (error)
         {
-            g_warning("Could not get unix user: %s", error->message);
-            //die!
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                      "org.freedesktop.problems.InvalidUser",
+                                      error->message);
             g_error_free(error);
+            return;
         }
         else if (caller_uid == 99)
-            //die
-            g_warning("Could not get unix user, using 99 - nobody");
+        {
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                      "org.freedesktop.problems.InvalidUser",
+                                      "Unknown error");
+            return;
+        }
 
         /*
         - so, we have UID,
@@ -269,7 +273,7 @@ handle_method_call(GDBusConnection       *connection,
 
     else if (g_strcmp0(method_name, "ChownProblemDir") == 0)
     {
-        g_print("ChownProblemDir");
+        VERB1 log("ChownProblemDir");
 
         GError *error = NULL;
         uid_t caller_uid;
@@ -293,8 +297,6 @@ handle_method_call(GDBusConnection       *connection,
         }
 
         caller_uid = get_caller_uid(connection, caller, error);
-
-        g_print("out\n");
 
         if (error)
         {
@@ -322,7 +324,7 @@ handle_method_call(GDBusConnection       *connection,
             if (caller_uid == 0 || uid_in_group(caller_uid, statbuf.st_gid)) //caller seems to be in group with access to this dir, so no action needed
             {
                 //return ok
-                g_print("caller has access to the requested directory %s\n", problem_dir);
+                VERB1 log("caller has access to the requested directory %s", problem_dir);
                 g_dbus_method_invocation_return_value(invocation, NULL);
                 dd_close(dd);
                 return;
@@ -358,7 +360,7 @@ handle_method_call(GDBusConnection       *connection,
             char *short_name, *full_name;
             while (chown_res == 0 && dd_get_next_file(dd, &short_name, &full_name))
             {
-                g_print("chowning %s\n", full_name);
+                VERB3 log("chowning %s", full_name);
                 chown_res = chown(full_name, statbuf.st_uid, pwd->pw_gid);
             }
 
@@ -371,13 +373,13 @@ handle_method_call(GDBusConnection       *connection,
             dd_close(dd);
             return;
         }
-        g_print("shouldn't get here\n");
+        VERB3 log("shouldn't get here");
         dd_close(dd);
     }
 
     else if (g_strcmp0(method_name, "GetInfo") == 0)
     {
-        VERB1 log("GetInfo\n");
+        VERB1 log("GetInfo");
         GError *error = NULL;
 
         const gchar *problem_dir;
@@ -468,7 +470,7 @@ handle_method_call(GDBusConnection       *connection,
 
     else if (g_strcmp0(method_name, "Quit") == 0)
     {
-        VERB1 log("Quit\n");
+        VERB1 log("Quit");
 
         g_dbus_method_invocation_return_value(invocation, NULL);
 
@@ -480,8 +482,7 @@ handle_method_call(GDBusConnection       *connection,
 static gboolean
 on_timeout_cb(gpointer user_data)
 {
-    g_print("timeout, would die, but we're still in debug mode\n");
-    //g_main_loop_quit(loop);
+    g_main_loop_quit(loop);
     return TRUE;
 }
 
@@ -532,18 +533,60 @@ on_name_lost (GDBusConnection *connection,
 int
 main (int argc, char *argv[])
 {
-  guint owner_id;
+    /* I18n */
+    setlocale(LC_ALL, "");
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
+    guint owner_id;
 
-  g_type_init();
+    abrt_init(argv);
 
-  /* We are lazy here - we don't want to manually provide
-   * the introspection data structures - so we just build
-   * them from XML.
-   */
-  introspection_data = g_dbus_node_info_new_for_xml(introspection_xml, NULL);
-  g_assert(introspection_data != NULL);
+    const char *program_usage_string = _(
+        "& [options]"
+    );
+    enum {
+        OPT_v = 1 << 0,
+        OPT_t = 1 << 1,
+    };
+    /* Keep enum above and order of options below in sync! */
+    struct options program_options[] = {
+        OPT__VERBOSE(&g_verbose),
+        OPT_INTEGER('t', NULL, &s_timeout, _("Exit after NUM seconds of inactivity")),
+        OPT_END()
+    };
+    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
-  owner_id = g_bus_own_name(G_BUS_TYPE_SYSTEM,
+    export_abrt_envvars(0);
+
+    /* When dbus daemon starts us, it doesn't set PATH
+     * (I saw it set only DBUS_STARTER_ADDRESS and DBUS_STARTER_BUS_TYPE).
+     * In this case, set something sane:
+     */
+    const char *env_path = getenv("PATH");
+    if (!env_path || !env_path[0])
+        putenv((char*)"PATH=/usr/sbin:/usr/bin:/sbin:/bin");
+
+    msg_prefix = "abrt-dbus"; /* for log(), error_msg() and such */
+
+    if (!(opts & OPT_t))
+        s_timeout = 120; //if the timeout is not set we default to 120sec
+
+    if (getuid() != 0)
+        error_msg_and_die(_("This program must be run as root."));
+
+    g_type_init();
+
+
+    /* We are lazy here - we don't want to manually provide
+    * the introspection data structures - so we just build
+    * them from XML.
+    */
+    introspection_data = g_dbus_node_info_new_for_xml(introspection_xml, NULL);
+    g_assert(introspection_data != NULL);
+
+    owner_id = g_bus_own_name(G_BUS_TYPE_SYSTEM,
                              ABRT_DBUS_NAME,
                              G_BUS_NAME_OWNER_FLAGS_NONE,
                              on_bus_acquired,
@@ -552,15 +595,15 @@ main (int argc, char *argv[])
                              NULL,
                              NULL);
 
-  loop = g_main_loop_new(NULL, FALSE);
-  g_main_loop_run(loop);
+    loop = g_main_loop_new(NULL, FALSE);
+    g_main_loop_run(loop);
 
-  VERB1 log("Cleaning up\n");
+    VERB1 log("Cleaning up");
 
-  g_bus_unown_name(owner_id);
+    g_bus_unown_name(owner_id);
 
-  g_dbus_node_info_unref(introspection_data);
+    g_dbus_node_info_unref(introspection_data);
 
-  return 0;
+    return 0;
 }
 

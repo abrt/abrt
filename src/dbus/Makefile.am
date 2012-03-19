@@ -23,6 +23,8 @@ abrt_dbus_LDADD = \
     $(POLKIT_LIBS) \
     -labrt_dbus
 
+DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
+
 polkitconfdir = ${datadir}/polkit-1/actions
 dist_polkitconf_DATA = abrt_polkit.policy
 
