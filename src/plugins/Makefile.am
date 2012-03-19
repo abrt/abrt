@@ -7,6 +7,7 @@ bin_SCRIPTS = \
     abrt-action-list-dsos
 
 bin_PROGRAMS = \
+    abrt-watch-log \
     abrt-dump-oops \
     abrt-action-analyze-c \
     abrt-action-analyze-python \
@@ -68,6 +69,20 @@ EXTRA_DIST = \
     analyze_VMcore.xml.in \
     abrt-action-analyze-vmcore \
     https-utils.h
+
+abrt_watch_log_SOURCES = \
+    abrt-watch-log.c
+abrt_watch_log_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    -D_GNU_SOURCE \
+    -Wall -Wwrite-strings -Werror
+abrt_watch_log_LDADD = \
+    $(GLIB_LIBS) \
+    $(LIBREPORT_LIBS) \
+    ../lib/libabrt.la
 
 abrt_dump_oops_SOURCES = \
     abrt-dump-oops.c

@@ -33,14 +33,19 @@ check() {
 
 start() {
 	check
-	killall abrt-dump-oops 2>/dev/null
-	setsid abrt-dump-oops -rwxD /var/log/messages </dev/null >/dev/null 2>&1 &
+#FIXME: need to kill only abrt-watch-log which watches /var/log/messages!
+	killall abrt-watch-log 2>/dev/null
+	# Scan dmesg
+	dmesg | abrt-dump-oops -xD
+	# Watch and scan /var/log/messages
+	setsid abrt-watch-log /var/log/messages -- abrt-dump-oops -xD </dev/null >/dev/null 2>&1 &
 	$dry_run || touch -- "$LOCK"
 	return $RETVAL
 }
 
 stop() {
 	check
+#FIXME: need to kill only abrt-watch-log which watches /var/log/messages!
 	killall abrt-dump-oops
 	$dry_run || rm -f -- "$LOCK"
 	return $RETVAL

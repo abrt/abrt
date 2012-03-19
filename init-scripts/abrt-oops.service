@@ -4,7 +4,7 @@ After=abrtd.service
 Requires=abrtd.service
 
 [Service]
-ExecStart=/usr/bin/abrt-dump-oops -rwxD /var/log/messages
+ExecStart=/usr/bin/abrt-watch-log /var/log/messages -- /usr/bin/abrt-dump-oops -xD
 
 [Install]
 WantedBy=multi-user.target
