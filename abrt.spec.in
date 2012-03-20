@@ -553,6 +553,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files addon-xorg
 %defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/libreport/events.d/xorg_event.conf
 %if %{with systemd}
 /lib/systemd/system/abrt-xorg.service
 %else
