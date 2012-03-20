@@ -67,12 +67,12 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
 
     if (match_list && (statbuf->st_size - cur_pos) < MAX_SCAN_BLOCK)
     {
-        off_t offset = cur_pos & ~(off_t)page_size;
+        off_t offset = cur_pos & ~(off_t)(page_size - 1);
         size_t length = statbuf->st_size - offset;
         void *map = mmap(NULL, length, PROT_READ, MAP_SHARED, fd, offset);
         if (mmap != MAP_FAILED)
         {
-            size_t skip = (cur_pos & page_size);
+            size_t skip = (cur_pos & (page_size - 1));
             for (GList *l = match_list; l; l = l->next)
             {
                 if (memstr((char*)map + skip, length - skip, (char*)match_list->data))
@@ -83,6 +83,7 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
             }
             /* None of the strings are found */
             munmap(map, length);
+            lseek(fd, length - skip, SEEK_CUR);
             return;
  found: ;
             munmap(map, length);
