@@ -28,10 +28,6 @@
 #include <internal_abrt_dbus.h>
 #include "libabrt.h"
 
-
-#define ENABLE_ANIMATION 0
-
-
 #define ABRTD_DBUS_NAME  "com.redhat.abrt"
 #define ABRTD_DBUS_PATH  "/com/redhat/abrt"
 #define ABRTD_DBUS_IFACE "com.redhat.abrt"
@@ -43,27 +39,6 @@ static GtkWidget *ap_menu;
 static char *ap_last_problem_dir;
 static char **s_dirs;
 static char *s_home;
-//static bool ap_daemon_running;
-#define ap_daemon_running 1
-
-#if ENABLE_ANIMATION
-enum ICON_STAGES
-{
-    ICON_DEFAULT,
-    ICON_STAGE1,
-    ICON_STAGE2,
-    ICON_STAGE3,
-    ICON_STAGE4,
-    ICON_STAGE5,
-    /* this must be always the last */
-    ICON_STAGE_LAST
-};
-static int ap_animation_stage;
-static guint ap_animator;
-static unsigned ap_anim_countdown;
-static bool ap_icons_loaded;
-static GdkPixbuf *ap_icon_stages_buff[ICON_STAGE_LAST];
-#endif
 
 static GList *add_dirs_to_dirlist(GList *dirlist, const char *dirname)
 {
@@ -193,88 +168,18 @@ static void fork_exec_gui(void)
     new_dir_exists();
 }
 
-#if ENABLE_ANIMATION
-
-static bool load_icons(void)
-{
-    int stage;
-    for (stage = ICON_DEFAULT; stage < ICON_STAGE_LAST; stage++)
-    {
-        char name[sizeof(ICON_DIR"/abrt%02d.png")];
-        GError *error = NULL;
-        if (snprintf(name, sizeof(ICON_DIR"/abrt%02d.png"), ICON_DIR"/abrt%02d.png", stage) > 0)
-        {
-            ap_icon_stages_buff[stage] = gdk_pixbuf_new_from_file(name, &error);
-            if (error != NULL)
-            {
-                error_msg("Can't load pixbuf from %s, animation is disabled", name);
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
-static gboolean update_icon(void *user_data)
-{
-    if (ap_status_icon && ap_animation_stage < ICON_STAGE_LAST)
-    {
-        gtk_status_icon_set_from_pixbuf(ap_status_icon,
-                                        ap_icon_stages_buff[ap_animation_stage++]);
-    }
-    if (ap_animation_stage == ICON_STAGE_LAST)
-    {
-        ap_animation_stage = 0;
-    }
-    if (--ap_anim_countdown == 0)
-    {
-        stop_animate_icon();
-    }
-    return true;
-}
-
-static void animate_icon(void)
-{
-    if (ap_animator == 0)
-    {
-        ap_animator = g_timeout_add(100, update_icon, NULL);
-        ap_anim_countdown = 10 * 3; /* 3 sec */
-    }
-}
-
-static void stop_animate_icon(void)
-{
-    /* ap_animator should be 0 if icons are not loaded, so this should be safe */
-    if (ap_animator != 0)
-    {
-        g_source_remove(ap_animator);
-        gtk_status_icon_set_from_pixbuf(ap_status_icon,
-                                        ap_icon_stages_buff[ICON_DEFAULT]
-        );
-        ap_animator = 0;
-    }
-}
-
-#else
-
-# define animate_icon() ((void)0)
-# define stop_animate_icon() ((void)0)
-
-#endif
-
 static void hide_icon(void)
 {
     if (ap_status_icon == NULL)
         return;
 
     gtk_status_icon_set_visible(ap_status_icon, false);
-    stop_animate_icon();
 }
 
 //this action should open the reporter dialog directly, without showing the main window
 static void action_report(NotifyNotification *notification, gchar *action, gpointer user_data)
 {
-    if (ap_daemon_running && ap_last_problem_dir)
+    if (ap_last_problem_dir)
     {
         report_problem_in_dir(ap_last_problem_dir, LIBREPORT_ANALYZE | LIBREPORT_NOWAIT);
 
@@ -300,18 +205,15 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
 //this action should open the main window
 static void action_open_gui(NotifyNotification *notification, gchar *action, gpointer user_data)
 {
-    if (ap_daemon_running)
+    fork_exec_gui();
+    GError *err = NULL;
+    notify_notification_close(notification, &err);
+    if (err != NULL)
     {
-        fork_exec_gui();
-        GError *err = NULL;
-        notify_notification_close(notification, &err);
-        if (err != NULL)
-        {
-            error_msg("%s", err->message);
-            g_error_free(err);
-        }
-        hide_icon();
+        error_msg("%s", err->message);
+        g_error_free(err);
     }
+    hide_icon();
 }
 
 static void on_menu_popup_cb(GtkStatusIcon *status_icon,
@@ -319,8 +221,6 @@ static void on_menu_popup_cb(GtkStatusIcon *status_icon,
                         guint          activate_time,
                         gpointer       user_data)
 {
-    stop_animate_icon();
-
     if (ap_menu != NULL)
     {
         gtk_menu_popup(GTK_MENU(ap_menu),
@@ -438,11 +338,8 @@ static GtkWidget *create_menu(void)
 
 static void on_applet_activate_cb(GtkStatusIcon *status_icon, gpointer user_data)
 {
-    if (ap_daemon_running)
-    {
-        fork_exec_gui();
-        hide_icon();
-    }
+    fork_exec_gui();
+    hide_icon();
 }
 
 static void set_icon_tooltip(const char *format, ...)
@@ -494,11 +391,6 @@ static void show_icon(void)
         return;
 
     gtk_status_icon_set_visible(ap_status_icon, true);
-#if ENABLE_ANIMATION
-    /* only animate if all icons are loaded, use the "gtk-warning" instead */
-    if (ap_icons_loaded)
-        animate_icon();
-#endif
 }
 
 #if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR >= 6)
@@ -531,27 +423,11 @@ static void init_applet(void)
         return;
     inited = 1;
 
-    // ap_daemon_running = true;
     persistent_notification = server_has_persistence();
 
     if (!persistent_notification)
     {
-#if ENABLE_ANIMATION
-        /* set-up icon buffers */
-        if (ICON_DEFAULT != 0)
-            ap_animation_stage = ICON_DEFAULT;
-        ap_icons_loaded = load_icons();
-        /* - animation - */
-        if (ap_icons_loaded == true)
-        {
-            //FIXME: animation is disabled for now
-            ap_status_icon = gtk_status_icon_new_from_pixbuf(ap_icon_stages_buff[ICON_DEFAULT]);
-        }
-        else
-#endif
-        {
-            ap_status_icon = gtk_status_icon_new_from_icon_name("abrt");
-        }
+        ap_status_icon = gtk_status_icon_new_from_icon_name("abrt");
         hide_icon();
         g_signal_connect(G_OBJECT(ap_status_icon), "activate", G_CALLBACK(on_applet_activate_cb), NULL);
         g_signal_connect(G_OBJECT(ap_status_icon), "popup_menu", G_CALLBACK(on_menu_popup_cb), NULL);
@@ -633,43 +509,6 @@ static void Crash(DBusMessage* signal)
     show_problem_notification(message, package_name);
 }
 
-static void NameOwnerChanged(DBusMessage* signal)
-{
-    int r;
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(signal, &in_iter);
-    const char* name = NULL;
-    r = load_charp(&in_iter, &name);
-    if (r != ABRT_DBUS_MORE_FIELDS)
-    {
-        error_msg("dbus signal %s: parameter type mismatch", __func__);
-        return;
-    }
-
-    /* We are only interested in (dis)appearances of our daemon */
-    if (strcmp(name, "com.redhat.abrt") != 0)
-        return;
-
-    const char* old_owner = NULL;
-    r = load_charp(&in_iter, &old_owner);
-    if (r != ABRT_DBUS_MORE_FIELDS)
-    {
-        error_msg("dbus signal %s: parameter type mismatch", __func__);
-        return;
-    }
-    const char* new_owner = NULL;
-    r = load_charp(&in_iter, &new_owner);
-    if (r != ABRT_DBUS_LAST_FIELD)
-    {
-        error_msg("dbus signal %s: parameter type mismatch", __func__);
-        return;
-    }
-
-// hide icon if it's visible - as NM and don't show it, if it's not
-    if (!new_owner[0])
-        hide_icon();
-}
-
 static DBusHandlerResult handle_message(DBusConnection* conn, DBusMessage* msg, void* user_data)
 {
     const char* member = dbus_message_get_member(msg);
@@ -683,9 +522,7 @@ static DBusHandlerResult handle_message(DBusConnection* conn, DBusMessage* msg, 
         return DBUS_HANDLER_RESULT_HANDLED;
     }
 
-    if (strcmp(member, "NameOwnerChanged") == 0)
-        NameOwnerChanged(msg);
-    else if (strcmp(member, "Crash") == 0)
+    if (strcmp(member, "Crash") == 0)
         Crash(msg);
 
     return DBUS_HANDLER_RESULT_HANDLED;
@@ -780,13 +617,6 @@ int main(int argc, char** argv)
     attach_dbus_conn_to_glib_main_loop(system_conn, NULL, NULL);
     if (!dbus_connection_add_filter(system_conn, handle_message, NULL, NULL))
         error_msg_and_die("Can't add dbus filter");
-    /* which messages do we want to be fed to handle_message()? */
-    //signal sender=org.freedesktop.DBus -> path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameOwnerChanged
-    //   string "com.redhat.abrt"
-    //   string ""
-    //   string ":1.70"
-    dbus_bus_add_match(system_conn, "type='signal',member='NameOwnerChanged'", &err);
-    die_if_dbus_error(false, &err, "Can't add dbus match");
     //signal sender=:1.73 -> path=/com/redhat/abrt; interface=com.redhat.abrt; member=Crash
     //   string "coreutils-7.2-3.fc11"
     //   string "0"
@@ -802,13 +632,6 @@ int main(int argc, char** argv)
         /* flags */ DBUS_NAME_FLAG_DO_NOT_QUEUE, &err);
     die_if_dbus_error(r != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER, &err,
         "Problem connecting to dbus, or applet is already running");
-
-    /* show the warning in terminal, as nm-applet does */
-    if (!dbus_bus_name_has_owner(system_conn, ABRTD_DBUS_NAME, &err))
-    {
-        const char* msg = _("ABRT service is not running");
-        puts(msg);
-    }
 
     /* dbus_bus_request_name can already read some data. Thus while dbus fd hasn't
      * any data anymore, dbus library can buffer a message or two.
