@@ -32,6 +32,7 @@ enum {
     OPT_d = 1 << 3,
     OPT_D = 1 << 4,
     OPT_x = 1 << 5,
+    OPT_m = 1 << 6,
 };
 
 static unsigned g_opts;
@@ -214,7 +215,7 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "& [-vsox] [-d DIR]/[-D] [FILE]\n"
+        "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
         "\n"
         "Extract Xorg crash from FILE (or standard input)"
     );
@@ -226,6 +227,7 @@ int main(int argc, char **argv)
         OPT_STRING('d', NULL, &debug_dumps_dir, "DIR", _("Create ABRT dump in DIR for every crash found")),
         OPT_BOOL(  'D', NULL, NULL, _("Same as -d DumpLocation, DumpLocation is specified in abrt.conf")),
         OPT_BOOL(  'x', NULL, NULL, _("Make the problem directory world readable")),
+        OPT_BOOL(  'm', NULL, NULL, _("Print search string(s) to stdout and exit")),
         OPT_END()
     };
     unsigned opts = g_opts = parse_opts(argc, argv, program_options, program_usage_string);
@@ -237,6 +239,12 @@ int main(int argc, char **argv)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;
+    }
+
+    if (opts & OPT_m)
+    {
+        puts("Backtrace");
+        return 0;
     }
 
     if (opts & OPT_D)

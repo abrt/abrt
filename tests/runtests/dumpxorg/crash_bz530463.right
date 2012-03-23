@@ -1,0 +1,18 @@
+0: /usr/bin/Xorg (xorg_backtrace+0x2f) [0x462d8f]
+1: /usr/bin/Xorg (0x400000+0x67b56) [0x467b56]
+2: /lib64/libpthread.so.0 (0x30a5800000+0xf4f0) [0x30a580f4f0]
+3: /usr/lib64/xorg/modules/extensions/librecord.so (0x7ff6c225e000+0x26c3) [0x7ff6c22606c3]
+4: /usr/bin/Xorg (_CallCallbacks+0x3c) [0x43820c]
+5: /usr/bin/Xorg (WriteToClient+0x1f5) [0x466315]
+6: /usr/lib64/xorg/modules/extensions/libdri2.so (ProcDRI2WaitMSCReply+0x4f) [0x7ff6c1e4feef]
+7: /usr/lib64/xorg/modules/extensions/libdri2.so (DRI2WaitMSCComplete+0x52) [0x7ff6c1e4e6d2]
+8: /usr/lib64/xorg/modules/drivers/intel_drv.so (0x7ff6c1bfb000+0x25ae4) [0x7ff6c1c20ae4]
+9: /usr/lib64/libdrm.so.2 (drmHandleEvent+0xa3) [0x376b407513]
+10: /usr/bin/Xorg (WakeupHandler+0x6b) [0x4379db]
+11: /usr/bin/Xorg (WaitForSomething+0x1a9) [0x460289]
+12: /usr/bin/Xorg (0x400000+0x3379a) [0x43379a]
+13: /usr/bin/Xorg (0x400000+0x22dc5) [0x422dc5]
+14: /lib64/libc.so.6 (__libc_start_main+0xed) [0x30a542169d]
+15: /usr/bin/Xorg (0x400000+0x230b1) [0x4230b1]
+Segmentation fault at address 0x7ff6bf09e010
+

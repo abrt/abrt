@@ -73,6 +73,8 @@ char *kernel_tainted_short(const char *kernel_bt);
 void koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], char *oops_buf, const char *oops_ptr);
 #define koops_extract_oopses abrt_koops_extract_oopses
 void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen);
+#define koops_print_suspicious_strings abrt_koops_print_suspicious_strings
+void koops_print_suspicious_strings(void);
 
 #ifdef __cplusplus
 }

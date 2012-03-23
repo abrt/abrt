@@ -4,7 +4,7 @@ After=abrtd.service
 Requires=abrtd.service
 
 [Service]
-ExecStart=/usr/bin/abrt-watch-log -F Backtrace /var/log/Xorg.0.log -- /usr/bin/abrt-dump-xorg -xD
+ExecStart=/bin/sh -c 'exec /usr/bin/abrt-watch-log -F "`/usr/bin/abrt-dump-xorg -m`" /var/log/Xorg.0.log -- /usr/bin/abrt-dump-xorg -xD'
 
 [Install]
 WantedBy=multi-user.target

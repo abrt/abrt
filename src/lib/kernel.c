@@ -73,6 +73,27 @@ static void record_oops(GList **oops_list, struct line_info* lines_info, int oop
     VERB3 if (rv == 0) log("Dropped oops: too short");
 }
 
+void koops_print_suspicious_strings(void)
+{
+    fputs(
+    "BUG" "\n"
+    "corruption" "\n"
+    "stack overflow" "\n"
+    "protection fault" "\n"
+    "WARNING: at" "\n"
+    /*u*/ "nable to handle" "\n"
+    /*d*/ "ouble fault:" "\n"
+    "RTNL: assertion failed" "\n"
+    /*e*/ "eek! page_mapcount(page) went negative!" "\n"
+    /*b*/ "adness at" "\n"
+    "NETDEV WATCHDOG" "\n"
+    /*s*/ "ysctl table check failed" "\n"
+    "INFO: possible recursive locking detected" "\n"
+    ": nobody cared" "\n"
+    "IRQ handler type mismatch" "\n"
+    , stdout);
+}
+
 void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
 {
     char *c;

@@ -34,7 +34,7 @@ start() {
 	kill "`cat -- "$PIDF" 2>/dev/null`" 2>/dev/null
 	rm -f -- "$PIDF" 2>/dev/null
 	# Watch and scan /var/log/Xorg.0.log
-	setsid abrt-watch-log -F "Backtrace" /var/log/Xorg.0.log -- abrt-dump-xorg -xD </dev/null >/dev/null 2>&1 &
+	setsid abrt-watch-log -F "`abrt-dump-xorg -m`" /var/log/Xorg.0.log -- abrt-dump-xorg -xD </dev/null >/dev/null 2>&1 &
 	echo $! >"$PIDF"
 	$dry_run || touch -- "$LOCK"
 	return $RETVAL

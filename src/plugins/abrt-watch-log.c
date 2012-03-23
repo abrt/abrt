@@ -152,6 +152,22 @@ int main(int argc, char **argv)
     if (!argv[0] || !argv[1])
         show_usage_and_die(program_usage_string, program_options);
 
+    /* We want to support -F "`echo foo; echo bar`" -
+     * need to split strings by newline, and be careful about
+     * possible last empty string: "foo\nbar\n" = "foo", "bar",
+     * NOT "foo", "bar", ""!
+     */
+    for (GList *l = match_list; l; l = l->next)
+    {
+        char *eol = strchr((char*)l->data, '\n');
+        if (!eol)
+            continue;
+        *eol++ = '\0';
+        if (!*eol)
+            continue;
+        l = g_list_append(l, eol); /* in fact, always returns unchamged l */
+    }
+
     const char *filename = *argv++;
 
     int inotify_fd = inotify_init();
