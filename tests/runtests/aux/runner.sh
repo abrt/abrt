@@ -34,7 +34,7 @@ if [ $1 ]; then
     # abrt-dump-oops
     if ! pidof abrt-dump-oops 2>&1 > /dev/null; then
         if [ -x /usr/bin/abrt-dump-oops ]; then
-            /usr/bin/abrt-dump-oops -d /var/spool/abrt -rwx /var/log/messages &
+            /usr/bin/abrt-dump-oops -d /var/spool/abrt -x /var/log/messages &
             echo "abrt-dump-oops PID: $(pidof abrt-dump-oops)"
         else
             echo "abrt-dump-oops: not present, skipping"
