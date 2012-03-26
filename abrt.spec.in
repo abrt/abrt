@@ -7,6 +7,15 @@
     %bcond_with systemd
 %endif
 
+# systemd wasn't set by the code above - so we're on old Fedora or we're not on Fedora at all
+%if %{without systemd}
+    %if 0%{?rhel} >= 7
+        %bcond_without systemd
+    %else
+        %bcond_with systemd
+    %endif
+%endif
+
 %if 0%{?rhel} >= 6
 %define vendor redhat
 %else
