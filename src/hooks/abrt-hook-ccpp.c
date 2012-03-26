@@ -713,6 +713,11 @@ int main(int argc, char** argv)
         copy_file(source_filename, dest_filename, 0640);
         IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
 
+        strcpy(source_filename + source_base_ofs, "cgroup");
+        strcpy(dest_base, FILENAME_CGROUP);
+        copy_file(source_filename, dest_filename, 0640);
+        IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
+
         strcpy(dest_base, FILENAME_OPEN_FDS);
         if (dump_fd_info(dest_filename, source_filename, source_base_ofs))
             IGNORE_RESULT(chown(dest_filename, dd->dd_uid, dd->dd_gid));
