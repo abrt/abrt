@@ -11,8 +11,7 @@ bin_PROGRAMS = \
 
 sbin_PROGRAMS = \
     abrtd \
-    abrt-server \
-    abrt-dbus
+    abrt-server
 
 libexec_PROGRAMS = abrt-handle-event
 
@@ -43,24 +42,6 @@ abrt_server_CPPFLAGS = \
 abrt_server_LDADD = \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS)
-
-abrt_dbus_SOURCES = \
-    abrt-dbus.c
-abrt_dbus_CPPFLAGS = \
-    -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    $(GLIB_CFLAGS) \
-    $(DBUS_CFLAGS) \
-    $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings \
-    -Werror
-abrt_dbus_LDADD = \
-    $(DBUS_LIBS) \
-    ../lib/libabrt.la \
-    $(LIBREPORT_LIBS) \
-    -labrt_dbus
 
 abrt_handle_event_SOURCES = \
     abrt-handle-event.c
@@ -93,17 +74,12 @@ abrt_action_save_package_data_LDADD = \
     $(LIBREPORT_LIBS) \
     ../lib/libabrt.la
 
-dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/
-dist_dbusabrtconf_DATA = dbus-abrt.conf
-
 daemonconfdir = $(CONF_DIR)
 dist_daemonconf_DATA = \
     abrt.conf \
     abrt-action-save-package-data.conf \
     gpg_keys
 
-comredhatabrtservicedir = ${datadir}/dbus-1/system-services
-dist_comredhatabrtservice_DATA = com.redhat.abrt.service
 EXTRA_DIST = abrt-handle-upload
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
