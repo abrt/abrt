@@ -146,9 +146,22 @@ static void process_xorg_bt(void)
     {
         char *p = skip_pfx(line);
 
+        /* xorg-server-1.12.0/os/osinit.c:
+         * if (sip->si_code == SI_USER) {
+         *     ErrorF("Recieved signal %d sent by process %ld, uid %ld\n",
+         *             ^^^^^^^^ yes, typo here! Can't grep for this word! :(
+         *            signo, (long) sip->si_pid, (long) sip->si_uid);
+         * } else {
+         *     switch (signo) {
+         *         case SIGSEGV:
+         *         case SIGBUS:
+         *         case SIGILL:
+         *         case SIGFPE:
+         *             ErrorF("%s at address %p\n", strsignal(signo), sip->si_addr);
+         */
         if (*p < '0' || *p > '9')
         {
-            if (strncasecmp(p, "Segmentation fault", strlen("Segmentation fault")) == 0)
+            if (strstr(p, " at address ") || strstr(p, " sent by process "))
             {
                 overlapping_strcpy(line, p);
                 reason = line;
