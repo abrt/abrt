@@ -19,11 +19,13 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include <sys/inotify.h>
+#include <gio/gio.h> //dbus
 #if HAVE_LOCALE_H
 # include <locale.h>
 #endif
 #include <internal_libreport_gtk.h>
 #include "libabrt.h"
+#include "abrt-dbus.h"
 
 #if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 22
 # define GDK_KEY_Delete GDK_Delete
@@ -31,6 +33,7 @@
 #endif
 
 static void scan_dirs_and_add_to_dirlist(void);
+static void rescan_and_refresh(void);
 
 
 static const char help_uri[] = "http://docs.fedoraproject.org/en-US/"
@@ -59,6 +62,8 @@ enum
     NUM_COLUMNS
 };
 
+static gint g_authorize; /* wheter to try to authorize when getting list of problems */
+
 //FIXME: maybe we can use strrchr and make this faster...
 static char *get_last_line(const char* msg)
 {
@@ -84,7 +89,40 @@ static char *get_last_line(const char* msg)
     return xstrndup(start, end - start);
 }
 
-static void add_directory_to_dirlist(const char *dirname)
+static problem_data_t* get_problem_data_dbus(const char *problem_dir_path, GError *error)
+{
+    problem_data_t *pd;
+    char *key, *val;
+
+    GDBusProxy *proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+                                                     G_DBUS_PROXY_FLAGS_NONE,
+                                                     NULL,
+                                                     ABRT_DBUS_NAME,
+                                                     ABRT_DBUS_OBJECT,
+                                                     ABRT_DBUS_IFACE,
+                                                     NULL,
+                                                     &error);
+
+    GVariant *result = g_dbus_proxy_call_sync(proxy,
+                                            "GetInfo",
+                                            g_variant_new("(s)", problem_dir_path),
+                                            G_DBUS_CALL_FLAGS_NONE,
+                                            -1,
+                                            NULL,
+                                            &error);
+
+    pd = new_problem_data();
+
+    GVariantIter *iter;
+    g_variant_get(result, "(a{ss})", &iter);
+    while (g_variant_iter_loop(iter, "{ss}", &key, &val))
+    {
+        add_to_problem_data(pd, key, val);
+    }
+    return pd;
+}
+
+static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data)
 {
     /* Silently ignore *any* errors, not only EACCES.
      * We saw "lock file is locked by process PID" error
@@ -92,14 +130,12 @@ static void add_directory_to_dirlist(const char *dirname)
      */
     int sv_logmode = logmode;
     logmode = 0;
-    struct dump_dir *dd = dd_opendir(dirname, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
     logmode = sv_logmode;
-    if (!dd)
-        return;
 
+    problem_data_t *pd = get_problem_data_dbus(problem_dir_path, NULL);
     char time_buf[sizeof("YYYY-MM-DD hh:mm:ss")];
     time_buf[0] = '\0';
-    char *time_str = dd_load_text(dd, FILENAME_TIME);
+    const char *time_str = get_problem_item_content_or_NULL(pd, FILENAME_TIME);
     time_t t = 0;
     if (time_str && time_str[0])
     {
@@ -108,40 +144,16 @@ static void add_directory_to_dirlist(const char *dirname)
         size_t time_len = strftime(time_buf, sizeof(time_buf)-1, "%Y-%m-%d %H:%M", ptm);
         time_buf[time_len] = '\0';
     }
-    free(time_str);
 
-
-    char *not_reportable_reason = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, 0
-                                                   | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
-                                                   | DD_FAIL_QUIETLY_ENOENT
-                                                   | DD_FAIL_QUIETLY_EACCES);
-    char *reason = NULL;
-    if (!not_reportable_reason)
-        reason = dd_load_text(dd, FILENAME_REASON);
+    const char *not_reportable_reason = get_problem_item_content_or_NULL(pd, FILENAME_NOT_REPORTABLE);
+    const char *reason = get_problem_item_content_or_NULL(pd, FILENAME_REASON);
 
     /* the source of the problem:
      * - first we try to load component, as we use it on Fedora
     */
-    char *source = dd_load_text_ext(dd, FILENAME_COMPONENT, 0
-                | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
-                | DD_FAIL_QUIETLY_ENOENT
-                | DD_FAIL_QUIETLY_EACCES
-    );
-    /* if we don't have component, we fallback to executable */
-    if (!source)
-    {
-        source = dd_load_text_ext(dd, FILENAME_EXECUTABLE, 0
-                | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
-                | DD_FAIL_QUIETLY_ENOENT
-                | DD_FAIL_QUIETLY_EACCES
-        );
-    }
+    const char *source = get_problem_item_content_or_NULL(pd, "source");
 
-    char *msg = dd_load_text_ext(dd, FILENAME_REPORTED_TO, 0
-                | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
-                | DD_FAIL_QUIETLY_ENOENT
-                | DD_FAIL_QUIETLY_EACCES
-    );
+    const char *msg = get_problem_item_content_or_NULL(pd, FILENAME_REPORTED_TO);
 
 
     GtkListStore *list_store;
@@ -163,17 +175,45 @@ static void add_directory_to_dirlist(const char *dirname)
                           //OPTION: time format
                           COLUMN_LATEST_CRASH_STR, time_buf,
                           COLUMN_LATEST_CRASH, t,
-                          COLUMN_DUMP_DIR, dirname,
+                          COLUMN_DUMP_DIR, problem_dir_path,
                           COLUMN_REPORTED_TO, msg ? subm_status : NULL,
                           -1);
-    /* this is safe, subm_status is either null or malloced string from get_last_line */
-    free(not_reportable_reason);
-    free(subm_status);
-    free(msg);
-    free(reason);
 
-    dd_close(dd);
-    VERB1 log("added: %s", dirname);
+    free_problem_data(pd);
+
+    VERB1 log("added: %s", problem_dir_path);
+}
+
+GList *get_problems_over_dbus(const char *dump_location, GError *error)
+{
+    GDBusProxy * proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+                                             G_DBUS_PROXY_FLAGS_NONE,
+                                             NULL,
+                                             ABRT_DBUS_NAME,
+                                             ABRT_DBUS_OBJECT,
+                                             ABRT_DBUS_IFACE,
+                                             NULL,
+                                             &error);
+
+    GVariant *result = g_dbus_proxy_call_sync(proxy,
+                                    g_authorize ? "GetAllProblems" : "GetProblems",
+                                     g_variant_new("(s)", dump_location),
+                                     G_DBUS_CALL_FLAGS_NONE,
+                                     -1,
+                                     NULL,
+                                     &error);
+    GList *list = NULL;
+    GVariantIter *iter;
+    gchar *str;
+    g_variant_get(result, "(as)", &iter);
+    while (g_variant_iter_loop(iter, "s", &str))
+    {
+        VERB1 log("adding: %s\n", str);
+        list = g_list_prepend(list, xstrdup(str));
+    }
+    g_variant_iter_free(iter);
+
+    return list;
 }
 
 static void rescan_dirs_and_add_to_dirlist(void)
@@ -344,6 +384,36 @@ static gboolean on_focus_cb(
     return false; /* propagate the event further */
 }
 
+static int chown_dir_over_dbus(const char *problem_dir_path)
+{
+    GError *error;
+    GDBusProxy * proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+                                         G_DBUS_PROXY_FLAGS_NONE,
+                                         NULL,
+                                         ABRT_DBUS_NAME,
+                                         ABRT_DBUS_OBJECT,
+                                         ABRT_DBUS_IFACE,
+                                         NULL,
+                                         &error);
+
+    g_dbus_proxy_call_sync(proxy,
+                        "ChownProblemDir",
+                        g_variant_new("(s)", problem_dir_path),
+                        G_DBUS_CALL_FLAGS_NONE,
+                        -1,
+                        NULL,
+                        &error);
+
+    if (error)
+    {
+        //TODO show a warning dialog here or on the higher level?
+        error_msg(_("Can't chown '%s': %s"),problem_dir_path, error->message);
+        return 1;
+        g_error_free(error);
+    }
+    return 0;
+}
+
 static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
 {
     GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
@@ -358,8 +428,13 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
 
             const char *dirname = g_value_get_string(&d_dir);
 
-            report_problem_in_dir(dirname,
+            if (chown_dir_over_dbus(dirname) == 0)
+            {
+                report_problem_in_dir(dirname,
                                   LIBREPORT_ANALYZE | LIBREPORT_NOWAIT | LIBREPORT_GETPID);
+            }
+            //else
+            // TODO: show a warning dialog
         }
     }
 }
@@ -390,6 +465,12 @@ static void on_column_change_cb(GtkTreeSortable *sortable, gpointer user_data)
     value = xasprintf("%d", col_id);
     set_user_setting(name, value);
     free(value);
+}
+
+static void on_show_all_cb(GtkToggleButton *togglebutton, gpointer data)
+{
+    g_authorize = gtk_toggle_button_get_active(togglebutton);
+    rescan_and_refresh();
 }
 
 static void load_sort_setting(GtkTreeSortable *sortable)
@@ -754,10 +835,14 @@ static GtkWidget *create_main_window(void)
     gtk_misc_set_alignment(GTK_MISC(not_subm_lbl), 0, 0);
     gtk_label_set_markup(GTK_LABEL(not_subm_lbl), _("<b>Not submitted reports</b>"));
 
+    GtkWidget *show_all_btn = gtk_check_button_new_with_label(_("Show all problems"));
+    g_signal_connect(show_all_btn, "toggled", G_CALLBACK(on_show_all_cb), NULL);
+
     /* add label for not submitted tree view */
     gtk_box_pack_start(GTK_BOX(not_subm_vbox), not_subm_lbl, false, false, 0);
     gtk_box_pack_start(GTK_BOX(not_subm_vbox), new_problems_scroll_win, true, true, 0);
     gtk_box_pack_start(GTK_BOX(main_vbox), not_subm_vbox, true, true, 0);
+    gtk_box_pack_start(GTK_BOX(main_vbox), show_all_btn, false, false, 0);
 
     /* Two tree views */
     s_treeview = gtk_tree_view_new();
@@ -988,27 +1073,11 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 
 static void scan_directory_and_add_to_dirlist(const char *path)
 {
-    DIR *dp = opendir(path);
-    if (!dp)
-    {
-        /* We don't want to yell if, say, $HOME/.abrt/spool doesn't exist */
-        //perror_msg("Can't open directory '%s'", path);
-        return;
-    }
-
-    struct dirent *dent;
-    while ((dent = readdir(dp)) != NULL)
-    {
-        if (dot_or_dotdot(dent->d_name))
-            continue; /* skip "." and ".." */
-
-        char *full_name = concat_path_file(path, dent->d_name);
-        struct stat statbuf;
-        if (stat(full_name, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
-            add_directory_to_dirlist(full_name);
-        free(full_name);
-    }
-    closedir(dp);
+    GList *problem_dirs = get_problems_over_dbus(path, NULL);
+    if (problem_dirs)
+       g_list_foreach(problem_dirs, (GFunc)add_directory_to_dirlist, NULL);
+    else
+       error_msg_and_die(_("Can't get problem list from abrt-dbus"));
 
     if (inotify_fd >= 0 && inotify_add_watch(inotify_fd, path, 0
     //      | IN_ATTRIB         // Metadata changed
