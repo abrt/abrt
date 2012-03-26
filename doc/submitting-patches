@@ -24,13 +24,13 @@ edit
 save your commits to local branch
 [master u+2] $ git branch <new-feature>
 
-[master u=] $ git reset --hared HEAD~X # where X is commits you are ahead of master
+[master u=] $ git reset --hard HEAD~X # where X is commits you are ahead of master
 
 do review before submitting patches
 [master u=] $ git show master..<new-feature>
 
 send patches
-[master u=] $ git send-email --to master..<new-feature>
+[master u=] $ git send-email --to=<email/mailing-list> master..<new-feature>
 
 push patches
 [master u=]  $ git pull
