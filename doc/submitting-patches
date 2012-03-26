@@ -1,0 +1,263 @@
+Submitting patches
+------------------
+
+short story:
+
+working in master branch
+
+edit
+edit
+edit
+
+[master u=]  $ git diff --check
+[master u=]  $ git add <files>
+[master u+1] $ git commit -s
+
+edit
+edit
+edit
+
+[master u+1] $ git diff --check
+[master u+1] $ git add <files>
+[master u+2] $ git commit -s
+
+save your commits to local branch
+[master u+2] $ git branch <new-feature>
+
+[master u=] $ git reset --hared HEAD~X # where X is commits you are ahead of master
+
+do review before submitting patches
+[master u=] $ git show master..<new-feature>
+
+send patches
+[master u=] $ git send-email --to master..<new-feature>
+
+push patches
+[master u=]  $ git pull
+[master u=]  $ git merge --no-ff <new-feature> # w/o --no-ff git will
+                                               # create [master u+2] w/o
+					       # merge commit
+[master u+3] $ git push origin HEAD
+
+
+
+long story:
+
+(1) Make separate commits for logically separate changes.
+
+Unless your patch is really trivial, you should not be sending
+out a patch that was generated between your working tree and
+your commit head.  Instead, always make a commit with complete
+commit message and generate a series of patches from your
+repository.  It is a good discipline.
+
+Give an explanation for the change(s) that is detailed enough so
+that people can judge if it is good thing to do, without reading
+the actual patch text to determine how well the code does what
+the explanation promises to do.
+
+If your description starts to get too long, that's a sign that you
+probably need to split up your commit to finer grained pieces.
+That being said, patches which plainly describe the things that
+help reviewers check the patch, and future maintainers understand
+the code, are the most beautiful patches.  Descriptions that summarise
+the point in the subject well, and describe the motivation for the
+change, the approach taken by the change, and if relevant how this
+differs substantially from the prior version, are all good things
+to have.
+
+Oh, another thing.  I am picky about whitespaces.  Make sure your
+changes do not trigger errors with the sample pre-commit hook shipped
+in templates/hooks--pre-commit.  To help ensure this does not happen,
+run git diff --check on your changes before you commit.
+
+
+(1a) Try to be nice to C compilers
+
+NULL pointers shall be written as NULL, not as 0.
+
+
+
+(2) Generate your patch using git tools out of your commits.
+
+git based diff tools generate unidiff which is the preferred format.
+
+You do not have to be afraid to use -M option to "git diff" or
+"git format-patch", if your patch involves file renames.  The
+receiving end can handle them just fine.
+
+Please make sure your patch does not include any extra files
+which do not belong in a patch submission.  Make sure to review
+your patch after generating it, to ensure accuracy.  Before
+sending out, please make sure it cleanly applies to the "master"
+branch head.
+
+
+
+(3) Sending your patches.
+
+People on the abrt/libreport mailing list need to be able to read and
+comment on the changes you are submitting.  It is important for
+a developer to be able to "quote" your changes, using standard
+e-mail tools, so that they may comment on specific portions of
+your code.  For this reason, all patches should be submitted
+"inline".  WARNING: Be wary of your MUAs word-wrap
+corrupting your patch.  Do not cut-n-paste your patch; you can
+lose tabs that way if you are not careful.
+
+It is a common convention to prefix your subject line with
+[PATCH].  This lets people easily distinguish patches from other
+e-mail discussions.  Use of additional markers after PATCH and
+the closing bracket to mark the nature of the patch is also
+encouraged.  E.g. [PATCH/RFC] is often used when the patch is
+not ready to be applied but it is for discussion, [PATCH v2],
+[PATCH v3] etc. are often seen when you are sending an update to
+what you have previously sent.
+
+"git format-patch" command follows the best current practice to
+format the body of an e-mail message.  At the beginning of the
+patch should come your commit message, ending with the
+Signed-off-by: lines, and a line that consists of three dashes,
+followed by the diffstat information and the patch itself. If
+you are forwarding a patch from somebody else, optionally, at
+the beginning of the e-mail message just before the commit
+message starts, you can put a "From: " line to name that person.
+
+You often want to add additional explanation about the patch,
+other than the commit message itself.  Place such "cover letter"
+material between the three dash lines and the diffstat.
+
+Do not attach the patch as a MIME attachment, compressed or not.
+Do not let your e-mail client send quoted-printable.  Do not let
+your e-mail client send format=flowed which would destroy
+whitespaces in your patches. Many
+popular e-mail applications will not always transmit a MIME
+attachment as plain text, making it impossible to comment on
+your code.  A MIME attachment also takes a bit more time to
+process.  This does not decrease the likelihood of your
+MIME-attached change being accepted, but it makes it more likely
+that it will be postponed.
+
+Exception:  If your mailer is mangling patches then someone may ask
+you to re-send them using MIME, that is OK.
+
+Do not PGP sign your patch, at least for now.  Most likely, your
+maintainer or other people on the list would not have your PGP
+key and would not bother obtaining it anyway.  Your patch is not
+judged by who you are; a good patch from an unknown origin has a
+far better chance of being accepted than a patch from a known,
+respected origin that is done poorly or does incorrect things.
+
+If you really really really really want to do a PGP signed
+patch, format it as "multipart/signed", not a text/plain message
+that starts with '-----BEGIN PGP SIGNED MESSAGE-----'.  That is
+not a text/plain, it's something else.
+
+
+
+(4) Sign your work
+
+To improve tracking of who did what, we've borrowed the
+"sign-off" procedure from the Linux kernel project on patches
+that are being emailed around.  Although core abrt/libreport
+is a lot smaller project it is a good discipline to follow it.
+
+The sign-off is a simple line at the end of the explanation for
+the patch, which certifies that you wrote it or otherwise have
+the right to pass it on as a open-source patch.  The rules are
+pretty simple: if you can certify the below:
+
+        Developer's Certificate of Origin 1.1
+
+        By making a contribution to this project, I certify that:
+
+        (a) The contribution was created in whole or in part by me and I
+            have the right to submit it under the open source license
+            indicated in the file; or
+
+        (b) The contribution is based upon previous work that, to the best
+            of my knowledge, is covered under an appropriate open source
+            license and I have the right under that license to submit that
+            work with modifications, whether created in whole or in part
+            by me, under the same open source license (unless I am
+            permitted to submit under a different license), as indicated
+            in the file; or
+
+        (c) The contribution was provided directly to me by some other
+            person who certified (a), (b) or (c) and I have not modified
+            it.
+
+        (d) I understand and agree that this project and the contribution
+            are public and that a record of the contribution (including all
+            personal information I submit with it, including my sign-off) is
+            maintained indefinitely and may be redistributed consistent with
+            this project or the open source license(s) involved.
+
+then you just add a line saying
+
+        Signed-off-by: Random J Developer <random@developer.example.org>
+
+This line can be automatically added by git if you run the git-commit
+command with the -s option.
+
+Notice that you can place your own Signed-off-by: line when
+forwarding somebody else's patch with the above rules for
+D-C-O.  Indeed you are encouraged to do so.  Do not forget to
+place an in-body "From: " line at the beginning to properly attribute
+the change to its true author (see (2) above).
+
+Also notice that a real name is used in the Signed-off-by: line. Please
+don't hide your real name.
+
+If you like, you can put extra tags at the end:
+
+1. "Reported-by:" is used to credit someone who found the bug that
+   the patch attempts to fix.
+2. "Acked-by:" says that the person who is more familiar with the area
+   the patch attempts to modify liked the patch.
+3. "Reviewed-by:", unlike the other tags, can only be offered by the
+   reviewer and means that she is completely satisfied that the patch
+   is ready for application.  It is usually offered only after a
+   detailed review.
+4. "Tested-by:" is used to indicate that the person applied the patch
+   and found it to have the desired effect.
+
+You can also create your own tag or use one that's in common usage
+such as "Thanks-to:", "Based-on-patch-by:", or "Mentored-by:".
+
+------------------------------------------------
+An ideal patch flow
+
+Here is an ideal patch flow for this project the current maintainer
+suggests to the contributors:
+
+ (0) You come up with an itch.  You code it up.
+
+ (1) Send it to the list and cc people who may need to know about
+     the change.
+
+     The people who may need to know are the ones whose code you
+     are butchering.  These people happen to be the ones who are
+     most likely to be knowledgeable enough to help you, but
+     they have no obligation to help you (i.e. you ask for help,
+     don't demand).  "git log -p -- $area_you_are_modifying" would
+     help you find out who they are.
+
+ (2) You get comments and suggestions for improvements.  You may
+     even get them in a "on top of your change" patch form.
+
+ (3) Polish, refine, and re-send to the list and the people who
+     spend their time to improve your patch.  Go back to step (2).
+
+ (4) The list forms consensus that the last round of your patch is
+     good.  Send it to the list and cc the maintainer.
+
+------------------------------------------------
+Know the status of your patch after submission
+
+* You can use Git itself to find out when your patch is merged in
+  master. 'git pull --rebase' will automatically skip already-applied
+  patches, and will let you know. This works only if you rebase on top
+  of the branch in which your patch has been merged
+
+
