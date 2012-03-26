@@ -45,7 +45,7 @@ rlJournalStart
 
     rlPhaseStartTest not-OOPS
         for noops in not_oops*.test; do
-            rlRun "abrt-dump-oops $noops 2>&1 | grep 'abrt-dump-oops: Found oopses: 0'" 0 "[$noops] Not found OOPS"
+            rlRun "abrt-dump-oops $noops 2>&1 | grep 'abrt-dump-oops: Found oopses:'" 1 "[$noops] Not found OOPS"
         done
     rlPhaseEnd
 
