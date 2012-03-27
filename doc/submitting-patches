@@ -3,8 +3,14 @@ Submitting patches
 
 short story:
 
-working in master branch
+git aliases
+~~~~~~~~~~~
+$ git config --global sendemail.aliasesfile ~/.git_aliases
+$ git config --global sendemail.aliasfiletype mutt
+$ echo "alias abrt-ml crash-catcher@lists.fedorahosted.org" >> ~/.git_aliases
 
+working in master branch
+~~~~~~~~~~~~~~~~~~~~~~~~
 edit
 edit
 edit
@@ -30,7 +36,7 @@ do review before submitting patches
 [master u=] $ git show master..<new-feature>
 
 send patches
-[master u=] $ git send-email --to=<email/mailing-list> master..<new-feature>
+[master u=] $ git send-email --to=abrt-ml master..<new-feature>
 
 push patches
 [master u=]  $ git pull
