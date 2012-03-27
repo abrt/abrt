@@ -9,6 +9,31 @@ $ git config --global sendemail.aliasesfile ~/.git_aliases
 $ git config --global sendemail.aliasfiletype mutt
 $ echo "alias abrt-ml crash-catcher@lists.fedorahosted.org" >> ~/.git_aliases
 
+what to do when push rejects
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+whenever you see after $ git push origin HEAD rejection with message that
+you are going non-fast forward. don't panic. it's super easy to fix it
+without any *stupid* merge commit from server after $ git pull
+
+version 1
+$ git pull --rebase
+
+version 2
+$ git format-patch -X     # where X is commits you are ahead of master
+$ git reset --hard HEAD~X # where X is commits you are ahead of master
+$ git am -3s 000*
+
+version 3
+$ git branch <new-feature>
+$ git reset --hard HEAD~X # where X is commits you are ahead of master
+$ git pull
+$ git merge <new-feature>
+
+
+there are zillion other way how to do this. golden rule is, clean
+everything from master, pull and than merge/apply your chenges.
+
+
 working in master branch
 ~~~~~~~~~~~~~~~~~~~~~~~~
 edit
