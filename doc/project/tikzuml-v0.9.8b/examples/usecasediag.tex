@@ -1,0 +1,86 @@
+\documentclass[a4paper,11pt, svgnames]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{listings}
+\usepackage{../tikz-uml}
+
+\textwidth 18.5cm
+\textheight 25.5cm
+\hoffset=-2.9cm
+\voffset=-2.9cm
+
+\sloppy
+\hyphenpenalty 10000000
+
+\date{}
+\title{}
+\author{}
+
+\lstdefinelanguage{tikzuml}{language=[LaTeX]TeX, classoffset=0, morekeywords={umlbasiccomponent, umlprovidedinterface, umlrequiredinterface, umldelegateconnector, umlassemblyconnector, umlVHVassemblyconnector, umlHVHassemblyconnector, umlnote, umlusecase, umlactor, umlinherit, umlassoc, umlVHextend, umlinclude, umlstateinitial, umlbasicstate, umltrans, umlstatefinal, umlVHtrans, umlHVtrans, umldatabase, umlmulti, umlobject, umlfpart, umlcreatecall, umlclass, umlvirt, umlunicompo, umlimport, umlaggreg}, keywordstyle=\color{DarkBlue}, classoffset=1, morekeywords={umlcomponent, umlsystem, umlstate, umlseqdiag, umlcall, umlcallself, umlfragment, umlpackage}, keywordstyle=\color{DarkRed}, classoffset=0,  sensitive=true, morecomment=[l]{\%}}
+
+\begin{document}
+
+\maketitle
+
+If you want to copy and paste the following source code, please take care of white spaces and special characters such as the minus symbol !
+
+\medskip
+\lstset{breaklines=true, frame=trBL, language=tikzuml}
+\begin{lstlisting}
+\begin{umlsystem}[x=4, fill=red!10]{The system}
+\umlusecase{use case1}
+\umlusecase[y=-2]{use case2}
+\umlusecase[y=-4]{use case3}
+\umlusecase[x=4, y=-2, width=1.5cm]{use case4 on 2 lines}
+\umlusecase[x=6, fill=green!20]{use case5}
+\umlusecase[x=6, y=-4]{use case6}
+\end{umlsystem}
+
+\umlactor{user}
+\umlactor[y=-3]{subuser}
+\umlactor[x=14, y=-1.5]{admin}
+
+\umlinherit{subuser}{user}
+\umlassoc{user}{usecase-1}
+\umlassoc{subuser}{usecase-2}
+\umlassoc{subuser}{usecase-3}
+\umlassoc{admin}{usecase-5}
+\umlassoc{admin}{usecase-6}
+\umlinherit{usecase-2}{usecase-1}
+\umlVHextend{usecase-5}{usecase-4}
+\umlinclude[name=incl]{usecase-3}{usecase-4}
+
+\umlnote[x=7, y=-7]{incl-1}{note on include dependency}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{umlsystem}[x=4, fill=red!10]{The system}
+\umlusecase{use case1}
+\umlusecase[y=-2]{use case2}
+\umlusecase[y=-4]{use case3}
+\umlusecase[x=4, y=-2, width=1.5cm]{use case4 on 2 lines}
+\umlusecase[x=6, fill=green!20]{use case5}
+\umlusecase[x=6, y=-4]{use case6}
+\end{umlsystem}
+
+\umlactor{user}
+\umlactor[y=-3]{subuser}
+\umlactor[x=14, y=-1.5]{admin}
+
+\umlinherit{subuser}{user}
+\umlassoc{user}{usecase-1}
+\umlassoc{subuser}{usecase-2}
+\umlassoc{subuser}{usecase-3}
+\umlassoc{admin}{usecase-5}
+\umlassoc{admin}{usecase-6}
+\umlinherit{usecase-2}{usecase-1}
+\umlVHextend{usecase-5}{usecase-4}
+\umlinclude[name=incl]{usecase-3}{usecase-4}
+
+\umlnote[x=7, y=-7]{incl-1}{note on include dependency}
+\end{tikzpicture}
+\end{center}
+\end{document}

@@ -1,0 +1,90 @@
+\documentclass[a4paper,11pt, svgnames]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{listings}
+\usepackage{../tikz-uml}
+
+\textwidth 18.5cm
+\textheight 25.5cm
+\hoffset=-2.9cm
+\voffset=-2.9cm
+
+\sloppy
+\hyphenpenalty 10000000
+
+\date{}
+\title{}
+\author{}
+
+\lstdefinelanguage{tikzuml}{language=[LaTeX]TeX, classoffset=0, morekeywords={umlbasiccomponent, umlprovidedinterface, umlrequiredinterface, umldelegateconnector, umlassemblyconnector, umlVHVassemblyconnector, umlHVHassemblyconnector, umlnote, umlusecase, umlactor, umlinherit, umlassoc, umlVHextend, umlinclude, umlstateinitial, umlbasicstate, umltrans, umlstatefinal, umlVHtrans, umlHVtrans, umldatabase, umlmulti, umlobject, umlfpart, umlcreatecall, umlclass, umlvirt, umlunicompo, umlimport, umlaggreg}, keywordstyle=\color{DarkBlue}, classoffset=1, morekeywords={umlcomponent, umlsystem, umlstate, umlseqdiag, umlcall, umlcallself, umlfragment, umlpackage}, keywordstyle=\color{DarkRed}, classoffset=0,  sensitive=true, morecomment=[l]{\%}}
+
+\begin{document}
+
+\maketitle
+
+If you want to copy and paste the following source code, please take care of white spaces and special characters such as the minus symbol !
+
+\medskip
+\lstset{breaklines=true, frame=trBL, language=tikzuml}
+\begin{lstlisting}
+\begin{umlcomponent}{A}
+\umlbasiccomponent{B}
+\umlbasiccomponent[y=-2]{C}
+
+\umlprovidedinterface[interface=C-interface]{C}
+\umlrequiredinterface[interface=B-interface, with port, distance=3cm, padding=2.5cm]{B}
+\end{umlcomponent}
+\umlbasiccomponent[x=-10,y=1]{D}
+\umlbasiccomponent[x=3,y=-7.5]{E}
+\umlbasiccomponent[x=-2, y=-9]{F}
+\umlbasiccomponent[x=-7,y=-8]{G}
+\umlbasiccomponent[x=-7,y=-11]{H}
+
+\umlassemblyconnector[interface=DA, with port, name=toto]{D}{A}
+\umldelegateconnector{A-west-port}{B-west-interface}
+\umlVHVassemblyconnector[interface=AE, with port]{A}{E}
+\umlHVHassemblyconnector[interface=EF, with port, first arm]{E}{F}
+\umlHVHassemblyconnector[interface=GHF, with port, arm2=-2cm, last arm]{G}{F}
+\umlHVHassemblyconnector[with port, arm2=-2cm, last arm]{H}{F}
+
+\umlnote[x=-4, y=4, width=3.4cm]{B-west-interface}{I am the node named B-west-interface}
+\umlnote[x=2, y=4, width=3.4cm]{C-east-interface}{I am the node named C-east-interface}
+\umlnote[x=-8.5, y=-2, width=3.4cm]{toto-interface}{I am the node named toto-interface}
+\umlnote[x=-5.5, y=-4.5, width=3.4cm]{A-south-port}{I am the node named A-south-port}
+\umlnote[x=-1, y=-6, width=3.4cm]{A-E-interface}{I am the node named A-E-interface}
+\umlnote[x=2, y=-11, width=3.4cm]{F-east-port}{I am the node named F-east-port}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{umlcomponent}{A}
+\umlbasiccomponent{B}
+\umlbasiccomponent[y=-2]{C}
+
+\umlprovidedinterface[interface=C-interface]{C}
+\umlrequiredinterface[interface=B-interface, with port, distance=3cm, padding=2.5cm]{B}
+\end{umlcomponent}
+\umlbasiccomponent[x=-10,y=1]{D}
+\umlbasiccomponent[x=3,y=-7.5]{E}
+\umlbasiccomponent[x=-2, y=-9]{F}
+\umlbasiccomponent[x=-7,y=-8]{G}
+\umlbasiccomponent[x=-7,y=-11]{H}
+
+\umlassemblyconnector[interface=DA, with port, name=toto]{D}{A}
+\umldelegateconnector{A-west-port}{B-west-interface}
+\umlVHVassemblyconnector[interface=AE, with port]{A}{E}
+\umlHVHassemblyconnector[interface=EF, with port, first arm]{E}{F}
+\umlHVHassemblyconnector[interface=GHF, with port, arm2=-2cm, last arm]{G}{F}
+\umlHVHassemblyconnector[with port, arm2=-2cm, last arm]{H}{F}
+
+\umlnote[x=-4, y=4, width=3.4cm]{B-west-interface}{I am the node named B-west-interface}
+\umlnote[x=2, y=4, width=3.4cm]{C-east-interface}{I am the node named C-east-interface}
+\umlnote[x=-8.5, y=-2, width=3.4cm]{toto-interface}{I am the node named toto-interface}
+\umlnote[x=-5.5, y=-4.5, width=3.4cm]{A-south-port}{I am the node named A-south-port}
+\umlnote[x=-1, y=-6, width=3.4cm]{A-E-interface}{I am the node named A-E-interface}
+\umlnote[x=2, y=-11, width=3.4cm]{F-east-port}{I am the node named F-east-port}
+\end{tikzpicture}
+\end{center}
+\end{document}

@@ -1,0 +1,1818 @@
+\documentclass[a4paper,11pt]{report}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc} % police encodee en UTF-8 %
+\usepackage[francais]{babel} % police fr %
+\frenchbsetup{AutoSpacePunctuation=false}
+\usepackage{graphicx} % pour inclusion d'images %
+\usepackage{pgf} % pour dessiner %
+\usepackage{tikz} % pour dessiner %
+\usepackage{xcolor} % definition des couleurs %	
+\usepackage[plainpages=false,pdfpagelabels,bookmarksnumbered,breaklinks=true]{hyperref} % pour les references %
+\usepackage{amsmath} % pour les formules de maths %
+\usepackage{latexsym} % pour les symboles maths %
+\usepackage{amssymb} % pour les symboles maths %
+\usepackage{aeguill} % pour les guillemets et accents francais %
+\usepackage{listings} % pour les listings de code %
+\usepackage{helvet} % police helvetica %
+\usepackage{../tikz-uml} % pour les diagrammes de classe
+
+\newif\iffinal % definit un switch entre brouillon et version final
+\finaltrue % a utiliser pour compiler le document en version finale
+
+\iffinal
+  \newcommand{\inputTikZ}[1]{%
+    \input{fig/#1.tikz}%
+  }%
+  \hypersetup{%
+    pdftitle={TikZ-UML},%
+    pdfauthor={N. Kielbasiewicz},%
+    pdfpagemode=UseOutlines,%
+    linkbordercolor=0 0 0,%
+    linkcolor=black,%
+    citecolor=black,%
+    colorlinks=true%
+  }%
+\else
+  %\usepackage{showlabels}%
+  \newcommand{\inputTikZ}[1]{%
+    \includegraphics{fig/#1.pdf}%
+  }%
+  \hypersetup{%
+    pdftitle={TikZ-UML},%
+    pdfauthor={N. Kielbasiewicz},%
+    pdfpagemode=UseOutlines,%
+    linkbordercolor=0 0 0,%
+    linkcolor=red,%
+    citecolor=blue,%
+    colorlinks=true%
+  }%
+\fi
+
+% modification des dimensions de la page et de son centrage %
+%\pagestyle{empty} % page brute %
+\textwidth 17.5cm
+\textheight 24.5cm
+\hoffset=-2.4cm % position du point en haut {\`a} gauche %
+\voffset=-1.9cm % position du point en haut {\`a} gauche %
+%\itemsep -0.15cm % pour les listes %
+%\parindent=1cm % pour les paragraphes %
+
+% pour la justification a gauche et a droite et l'occupation maximale de l'espace dispo %
+\sloppy
+\hyphenpenalty 10000000
+
+%\pagestyle{fancy} % on va mettre en tete et pied de page %
+% \cfoot{\thepage}
+
+%\fancypagestyle{plain}{%
+%  \fancyhf{}
+%  \fancyfoot{}
+%  \renewcommand\headrulewidth{0pt}
+%  \renewcommand\footrulewidth{0pt}
+%}
+
+%\fancyhead[RE,LO]{\leftmark}
+%\fancyhead[RO,LE]{\thepage}
+%\fancyfoot{}
+
+\def\figureautorefname{figure}%
+\def\tableautorefname{tableau}%
+\def\partautorefname{partie}%
+\def\chapterautorefname{chapitre}%
+\def\appendixautorefname{annexe}%
+\def\sectionautorefname{section}%
+\def\subsectionautorefname{sous-section}%
+\def\subsubsectionautorefname{paragraphe}%
+
+\newcommand{\clearemptydoublepage}{\newpage{\pagestyle{empty}\cleardoublepage}}
+\newcommand{\remarque}[1]{\begin{tikzpicture} \draw (0,0) node[regular polygon, regular polygon sides=3, draw, thick] {} node {\bf !};\end{tikzpicture} #1}
+
+% redefinitions necessaires si inclusion du package marvosym
+%\renewcommand{\Rightarrow}{\reflectbox{$\Leftarrow$}}
+%\renewcommand{\Longrightarrow}{\reflectbox{$\Longleftarrow$}}
+
+\newcommand{\tuml}{{\sc TikZ-uml}}
+\newcommand{\TikZ}{{\sc TikZ}}
+
+\lstset{language=[LaTeX]tex, basicstyle=\small, breaklines=true}
+
+%\date{} % date %
+\title{Le package \tuml} % titre %
+\author{Nicolas {\sc Kielbasiewicz}} % auteur %
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\chapter*{Préambule}
+\addcontentsline{toc}{chapter}{Préambule}
+
+Devant les immenses possibilités offertes par la librairies {\sc PGF/TikZ}, et devant l'absence apparente de package dédié aux diagrammes UML, j'ai été amené à développer le package \tuml, proposant un ensemble de commandes et d'environnements spécifiques à ce type de diagrammes. Il s'inscrit dans la logique du package pst-uml développé pour des raisons similaires en {\sc PSTricks}. Dans son état actuel, la librairie permet de définir des diagrammes de classes complets de manière assez simple, ainsi que des diagrammes de cas d'utilisation, des diagrammes de séquence, et des diagrammes d'états-transitions. Un certain nombre d'améliorations sont encore à apporter, mais cela se rapproche de l'état final.
+
+Voici un exemple de diagramme de classes que l'on peut réaliser :
+
+\begin{center}
+\inputTikZ{classdiagex}
+\end{center}
+
+Nous allons maintenant vous présenter les différentes fonctionnalités offertes par \tuml, mais avant parler des packages dont \tuml dépend et de son installation.
+
+\section*{Dépendances}
+\addcontentsline{toc}{section}{Dépendances}
+
+\subsection*{Packages requis}
+\addcontentsline{toc}{subsection}{Packages requis}
+
+\begin{description}
+\item[tikz :] Inutile de présenter ce package de dessin extrêmement complet et puissant. Tous les diagrammes générés par \tuml sont bien évidemment générés en réalité par \TikZ. Il fournit également un certain nombre de packages et de librairies utilisées par \tuml, comme les librairies backgrounds, arrows, shapes, fit, shadows, decorations.markings et le package {\bf pgfkeys} qui est un gestionnaire d'options de macros.
+\item[ifthen :] Ce package permet la gestion de tests conditionnels de type if \ldots then \ldots else \ldots
+\item[xstring :] Ce package permet de faire des substitutions dans des chaines de caractères. Il est utilisé dans la gestion entre le nom des item de programmation (classes, états, packages, \ldots) et le nom des n\oe{}uds qui les représentent.
+\item[calc :] Ce package permet d'effectuer des calculs assez simplement.
+\item[pgfopts :] Ce package est une extension du package {\bf pgfkeys} pour la gestion des options de package.
+\end{description}
+
+\subsection*{Autres dépendances}
+\addcontentsline{toc}{subsection}{Autres dépendances}
+
+Pour des raisons encore inconnues, le bon fonctionnement du package \tuml demande d'avoir inclus auparavant le package {\bf babel} avec la langue de votre choix.
+
+\subsection*{Installation}
+\addcontentsline{toc}{section}{Installation}
+
+A venir
+
+\chapter{Diagrammes de classes}\label{c.class}
+
+\section{Package, classe, attributs et opérations}\label{s.packageclass}
+
+\subsection{Définir un package}\label{ss.package}
+
+Un package est défini par l'environnement {\tt umlpackage} :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/package.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{package}
+\end{center}
+\end{minipage}
+
+\medskip
+
+Les options {\tt x} et {\tt y} permettent de définir la position du package dans la figure. Elles valent toutes deux 0 par défaut. 
+
+\begin{itemize}
+\item Quand un package contient des classes ou des sous-packages, sa taille s'ajuste automatiquement à son contenu.
+\item On peut définir autant de packages que l'on veut dans une figure.
+\item Il existe un raccourci pour définir un package qui sera vide (on ne définira pas de classes à l'intérieur) : la commande {\tt umlemptypackage} qui prend les mêmes arguments que l'environnement {\tt umlpackage}
+\end{itemize}
+
+\subsection{Définir une classe}\label{ss.class}
+
+Pour définir une classe, on utilise l'environnement {\tt umlclass}, de la même manière que l'environnement {\tt umlpackage} :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/class.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{class}
+\end{center}
+\end{minipage}
+
+Les options {\tt x} et {\tt y} définissent la position de la classe. 2 possibilités : si la classe est définie dans un package, il s'agit de la position relative de la classe dans le package; dans le cas contraire, il s'agit de la position dans la figure. Elles valent toutes deux 0 par défaut. Comme pour le package, il existe un raccourci pour définir une classe vide (dont on ne définira pas les attributs et les opérations) : la commande {\tt umlemptyclass}, qui prend les mêmes arguments que l'environnement {\tt umlclass}.
+
+\subsubsection{Définir la largeur d'une classe}
+
+Par défaut, la largeur d'une classe est de 10ex. On peut la modifier avec l'option {\tt width} :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/classwidth.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{classwidth}
+\end{center}
+\end{minipage}
+
+\subsubsection{Spécifier le type d'une classe}
+
+La classe peut être de différents types : class, interface, abstract, typedef, enum. On utilise l'option {\tt type} :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/classtype.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{classtype}
+\end{center}
+\end{minipage}
+
+\medskip
+
+Le type apparaît entre guillemets au dessus du nom de la classe, sauf dans le cas d'une classe où rien ne s'affiche (comportement par défaut), et dans le cas d'une classe abstraite, où le nom de la classe s'écrit en italique :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/classabstract.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{classabstract}
+\end{center}
+\end{minipage}
+
+A noter qu'il existe des alias pour chaque valeur du type : {\tt umlabstract}, {\tt umltypedef}, {\tt umlenum}, {\tt umlinterface}.
+
+\subsubsection{Spécifier des paramètres templates}
+
+La classe peut être un template. On spécifie la liste des paramètres avec l'option {\tt template} :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/classtemplate.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{classtemplate}
+\end{center}
+\end{minipage}
+
+\subsubsection{Nom du n\oe{}ud représentant une classe}
+
+Pour donner le nom d'une classe, il arrive que l'on utilise des caractères spéciaux, comme le \_{} ou les : quand on spécifie le namespace. Le mécanisme interne de \tuml{} nomme le n\oe{}ud définissant une classe avec le même nom. Or, l'utilisation du $\backslash$ et des : est interdite pour nommer un n\oe{}ud en \TikZ. Il est tout à fait possible que d'autres caractères viennent poser problème. Il faut donc procéder à une substitution de caractère, opération appelée dès que l'on définit ou utilise le nom d'une classe. Nous avons vu dans les exemples précédents que cela fonctionne pour le \_{}.
+
+\subsection{Définir des attributs et des opérations}\label{ss.attrop}
+
+On définit les attributs avec le second argument de la commande {\tt umlclass}. On écrit la liste des arguments en les séparants par {\tt \\}. Les opérations sont définies avec le troisième argument de la commande {\tt umlclass}. Pour définir un attribut ou une mêthode statique, on peut utiliser la commande {\tt umlstatic}. De même, la commande {\tt umlvirt} permet de spécifier des fonctions virtuelles :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/attr-and-op.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{attr-and-op}
+\end{center}
+\end{minipage}
+
+\section{Relations entre classes}\label{s.rel}
+
+\subsection{Commande générale}\label{ss.relgen}
+
+Chaque classe et chaque package sont représentés par un n\oe{}ud ayant le même nom. Pour définir une relation entre 2 classes, on va donc spécifier le nom de la classe de départ, le nom de la classe d'arrivée et un certain nombre d'options propres à la relation.
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/relation.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{relation}
+\end{center}
+\end{minipage}
+
+D'un point de vue sémantique, il existe 11 relations différentes, toutes présentes dans \tuml{} :
+
+\begin{description}
+\item[La dépendance :] utiliser la commande {\tt umldep}
+\item[L'association :] utiliser la commande {\tt umlassoc}
+\item[L'association unidirectionnelle :] utiliser la commande {\tt umluniassoc}
+\item[L'agrégation :] utiliser la commande {\tt umlaggreg}
+\item[L'agrégation unidirectionnelle :] utiliser la commande {\tt umluniaggreg}
+\item[La composition :] utiliser la commande {\tt umlcompo}
+\item[La composition unidirectionnelle :] utiliser la commande {\tt umlunicompo}
+\item[L'import :] utiliser la commande {\tt umlimport}
+\item[L'héritage :] utiliser la commande {\tt umlinherit}
+\item[L'implémentation :] utiliser la commande {\tt umlimpl}
+\item[La réalisation :] utiliser la commande {\tt umlreal}
+\end{description}
+
+Ces 11 commandes sont basées sur le même schéma (la commande {\tt umlrelation}) et prennent en théorie exactement le même jeu d'options. En pratique, certaines options concernent certains types de relations.
+
+\subsection{Définir la géométrie de la relation}\label{ss.relgeom}
+
+Comme vous avez pu le voir dans les exemples précédents, on peut spécifier la forme géométrique de la relation à l'aide de l'option \hypertarget{geometry}{{\tt geometry}}. Cette option demande un argument parmi la liste -~- (ligne droite), -| (horizontal puis vertical), |- (vertical puis horizontal), -|- (chicane horizontale) ou |-| (chicane verticale), ces arguments étant largement inspirés de la philosophie \TikZ.
+
+Il apparaît à l'utilisation que cette option est très souvent utilisée. C'est la raison pour laquelle un alias de la commande {\tt umlrelation} a été défini pour chacune des valeurs possibles de l'option {\tt geometry} :
+
+\begin{description}
+\item[umlHVrelation :] alias de umlrelation avec geometry=-|
+\item[umlVHrelation :] alias de umlrelation avec geometry=|-
+\item[umlHVHrelation :] alias de umlrelation avec geometry=-|-
+\item[umlVHVrelation :] alias de umlrelation avec geometry=|-|
+\end{description}
+
+\remarque{Pour chacun de ces 4 alias, l'option {\tt geometry} est interdite.}
+
+\remarque{Il n'y a pas d'alias dans le cas de la valeur -~- pour la seule raison qu'il s'agit de la valeur par défaut.}
+
+
+\subsection{Ajuster la géométrie de la relation}\label{ss.relfitgeom}
+
+Lorsque la géométrie de la relation contient 2 segments, on peut spécifier les coordonnées du point intermédiaire, ou n\oe{}ud de contrôle. Plutôt que la commande {\tt umlrelation}, on utilisera {\tt umlCNrelation}, elle aussi déclinée en 11 alias :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/relationCN.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{relationCN}
+\end{center}
+\end{minipage}
+
+\medskip
+
+Lorsque la géométrie de la relation contient 3 segments, la position relative du segment central entre les classes est défini comme passant par le milieu entre les classes reliées. On peut ajuster ce paramètre à l'aide de l'option \hypertarget{weight}{{\tt weight}} :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/relationweight.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{relationweight}
+\end{center}
+\end{minipage}
+
+Dans certains cas, cette option est peu pratique, car elle demande de calculer la valeur à passer à l'option. On peut alors procéder autrement en utilisant les options \hypertarget{arm1}{{\tt arm1}} et \hypertarget{arm2}{{\tt arm2}} qui fixent la taille respectivement du premier et dernier segment. Regardons ici les deux exemples utilisant respectivement l'option {\tt weight} et l'option {\tt arm1} :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/relationweight2.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{relationweight2}
+\end{center}
+\end{minipage}
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/relationarm.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{relationarm}
+\end{center}
+\end{minipage}
+
+\medskip
+
+Les options {\tt arm1} et {\tt arm2} prennent aussi des valeurs négatives. Que se passe t'il alors ?
+Si l'on passe une valeur positive, alors le bras sera orienté dans le sens normal (soit à droite, soit vers le haut). Si l'on passe une valeur négative, alors l'arc sera orienté dans l'autre sens, ce qui permet de dessiner d'autres types de relations à 3 segments, comme le montre l'exemple ci-dessous :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/relationarm2.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{relationarm2}
+\end{center}
+\end{minipage}
+
+
+\subsection{Définir des informations sur les attributs d'une relation}\label{ss.relattr}
+
+Une relation visualise la dépendance entre deux classes et se traduit généralement sous la forme d'un attribut. On peut spécifier son nom avec l'option {\tt arg1} ou {\tt arg2}, et sa multiplicité avec {\tt mult1} ou {\tt mult2} :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/relationarg.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{relationarg}
+\end{center}
+\end{minipage}
+
+\medskip
+
+Pour les relations unidirectionnelles, on ne va être amené à utiliser que les options {\tt arg2} et {\tt mult2}. Comme il paraît dans ce cas peu naturel que ces options finissent par 2, on peut utiliser les options {\tt arg} et {\tt mult} qui jouent le même rôle.
+
+Par ailleurs, lorsqu'on définit à la fois le nom et la multiplicité d'un attribut, on peut le faire sous une forme plus contractée à l'aide des options {\tt attr1}, {\tt attr2} et {\tt attr} :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/relationattr.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{relationattr}
+\end{center}
+\end{minipage}
+
+\medskip
+
+L'avantage de cette forme contractée est de pouvoir s'affranchir de la sémantique entre le nom et la multiplicité et de pouvoir alors inverser les deux :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/relationattr2.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{relationattr2}
+\end{center}
+\end{minipage}
+
+\medskip
+
+\subsection{Positionner les informations sur les attributs d'une relation}\label{ss.relposattr}
+
+On peut positionner les informations définies dans la section précédente à l'aide des options {\tt pos1}, {\tt pos2} et {\tt pos}.
+La commande {\tt umlrelation} détermine elle-même si le nom et la multiplicité doivent être respectivement à gauche et à droite, ou au-dessus et au-dessous, de la flèche, selon sa géométrie et leur position. Pour les initiés à \TikZ, elle se base sur les options {\tt auto} et {\tt swap}.
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/relationpos.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{relationpos}
+\end{center}
+\end{minipage}
+
+\medskip
+
+Il est à noter que l'intervalle de valeurs de la position d'un nom d'argument dépend du nombre de segments constituants la flèche de relation. Si la flèche est droite, alors la position doit être comprise entre 0 (classe de départ) et 1 (classe d'arrivée). Si la flèche comporte un seul angle droit, alors la position varie entre 0 et 2 (point d'arrivée), la valeur 1 correspondant à l'angle. Dans les deux autres possibilités, la position varie entre 0 et 3 (point d'arrivée), les valeurs 1 et 2 correspondant respectivement au premier et au deuxième angle.
+
+\subsection{Ajuster l'alignement des informations sur les attributs d'une relation}\label{ss.relalign}
+
+Par défaut, nom et multiplicité de l'argument, quand ils sont affichés l'un au dessus de l'autre, sont centrés. Les options {\tt align1}, {\tt align2} et {\tt align} permettent de les justifier à gauche ou à droite.
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/relationalign.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{relationalign}
+\end{center}
+\end{minipage}
+
+\subsection{Définir et positionner le stéréotype d'une relation}\label{ss.relstereo}
+
+Le stéréotype d'une relation est un mot clé contenu entre $<<$ et $>>$. On peut le définir à l'aide de l'option {\tt stereo} et le positionner à l'aide de l'option \hypertarget{posstereo}{{\tt pos stereo}}.
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/relationstereo.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{relationstereo}
+\end{center}
+\end{minipage}
+
+\subsection{Modifier les points d'ancrage d'une relation}\label{ss.relanchor}
+
+Le paragraphe qui vient concerne les relations dont la géométrie est à base de flèches segmentées. Par défaut, elles partent du centre du n\oe{}ud de la classe d'origine et vont au centre du n\oe{}ud de la classe cible. Il est possible d'ajuster ce comportement avec la paire d'options \hypertarget{anchor1}{{\tt anchor1}}, \hypertarget{anchor2}{{\tt anchor2}}.
+
+\medskip
+
+\begin{minipage}{0.6\textwidth}
+\lstinputlisting{fig/relationanchor.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{relationanchor}
+\end{center}
+\end{minipage}
+
+\medskip
+
+Les arguments que l'on donne sont des angles dont la valeur est en degré et peut être négative. Le mécanisme interne de la librairie \TikZ{} effectue un modulo pour ramener ce nombre dans l'intervalle adéquat. La valeur 0 indique l'est, 90, indique le nord, 180 indique l'ouest, et 270 (ou -90) indique le sud du n\oe{}ud. La figure ci-dessous illustre cette option et sa signification angulaire, sur 2 exemples de n\oe{}ud de type rectangle, comme c'est le cas pour les classes. \`{A} noter que les points d'ancrage frontières (pour prendre la terminologie \TikZ) dépendent bien des dimensions du n\oe{}ud.
+
+\begin{center}
+\inputTikZ{tikzanchor}
+\end{center}
+
+Il arrive finalement très souvent que l'on définisse les deux options {\tt anchor1} et {\tt anchor2} simultanément. On peut donc utiliser une forme contractée : l'option \hypertarget{anchors}{{\tt anchors}} qui s'utilise de la manière suivante, en reprenant l'exemple précédent :
+
+\medskip
+
+\begin{minipage}{0.6\textwidth}
+\lstinputlisting{fig/relationanchors.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{relationanchors}
+\end{center}
+\end{minipage}
+
+\subsection{Définir une relation récursive}\label{ss.relrec}
+
+Il est possible de définir une relation récursive, c'est-à-dire une relation d'une classe à elle-même. Dans ce cas, l'option {\tt geometry} doit être ignorée, mais 3 options deviennent très utiles : {\tt angle1} détermine l'angle de départ, {\tt angle2} détermine l'angle d'arrivée, et {\tt loopsize} donne une idée de la taille de la boucle.
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/relationrec.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{relationrec}
+\end{center}
+\end{minipage}
+
+\medskip
+
+\`{A} l'utilisation, il s'avère que l'on utilise très souvent les 3 options en même temps. C'est la raison pour laquelle il existe une forme contractée, l'option {\tt recursive} qui s'utilise de la manière suivante :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/relationrec2.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{relationrec2}
+\end{center}
+\end{minipage}
+
+\subsection{Nom des points de construction d'une relation}\label{ss.relptname}
+
+Pour voir l'importance de la possibilité de donner un nom à une relation et son utilité, il nous faut d'abord ici répondre à la question technique suivante : comment les flèches sont-elles concrètement définies ?
+
+Pour construire une flèche, on a besoin de définir des n\oe{}uds de contrôle, auquel il faut donner un nom. Le seul moyen d'identifier de manière unique une relation est de lui donner un identifiant à travers un compteur que l'on va incrémenter. Supposons que notre relation a pour identifiant $i$. Le nom de la relation que l'on appellera dans ce qui suit {\it relname} est alors initialisé à : relation-$i$
+
+Le premier n\oe{}ud défini est le milieu de la relation, il s'appelle {\it relname-middle}. Je ne parlerai pas ici du placement adéquat de l'argument et de sa multiplicité dans un souci de simplification. Il y a donc 3 possibilités :
+
+\begin{enumerate}
+\item Si la flèche est une ligne continue (droite ou récursive), il est renommé en {\it relname-1}.
+
+\begin{center}
+\inputTikZ{relationptname}
+\end{center}
+
+\item Si la flèche a un seul angle droit, alors l'unique n\oe{}ud correspondant à l'angle droit est nommé {\it relname-2}, ce qui suffit à tracer la flèche. On définit par ailleurs les milieux des 2 arêtes constituant la flèche, nommés respectivement {\it relname-1} et {\it relname-3}.
+
+\begin{center}
+\inputTikZ{relationHVptname}
+\end{center}
+
+\item Si la flèche à deux angles droits, ceux-ci sont définis de manière unique à l'aide de {\it relname-middle}, ce qui suffit à tracer la flèche. On nomme les n\oe{}uds aux angles droits respectivement {\it relname-2} et {\it relname-4}. On définit alors les milieux des 3 arêtes constituant la flèche, nommés respectivement {\it relname-1}, {\it relname-3}, et {\it relname-5}.
+
+\begin{center}
+\inputTikZ{relationHVHptname}
+\end{center}
+\end{enumerate}
+
+Il faut toutefois reconnaître que la définition par défaut de {\it relname} est non seulement peu pratique puisqu'on n'a pas vraiment accès à la numérotation, mais aussi fortement sujette à l'ordre dans lequel on définit les relations, donc peu portable en cas de modification de diagrammes. Pour simplifier cela, on va pouvoir définir {\it relname} à l'aide de l'option {\tt name}. Et la raison pour laquelle cette option existe va être expliquée dans les 2 sections suivantes.
+
+\subsection{Tracer un point à une intersection de relations}\label{ss.relpt}
+
+Il arrive que dans un diagramme des relations se croisent et se chevauchent. Prenons 2 flèches qui se croisent. Est-ce que les 2 points de départ peuvent aller aux deux points d'arrivée ? Si oui, alors on va vouloir tracer un point à l'intersection des deux flèches, qui vraisemblablement va être un des n\oe{}uds de contrôle définis sur la relation. On utilisera pour cela la commande {\tt umlpoint}.
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/point.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{point}
+\end{center}
+\end{minipage}
+
+\section{Note de commentaires / contraintes}\label{s.note}
+
+Une note est un commentaire de texte attaché à une classe ou une relation. La commande {\tt umlnote} demande pour cela le nom du n\oe{}ud auquel il faut se rattacher et le texte du commentaire en argument :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/noteclass.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{noteclass}
+\end{center}
+\end{minipage}
+
+\medskip
+
+Là encore, on va pouvoir donner le nom d'un des points de contrôle d'une relation si l'on veut y attacher une note. Il faut donc pour cela pouvoir définir soi-même un nom simple à ces points :
+
+\medskip
+
+\begin{minipage}{0.6\textwidth}
+\lstinputlisting{fig/noterelation.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{noterelation}
+\end{center}
+\end{minipage}
+
+\medskip
+
+\medskip
+
+Les notes sont utilisées pour 2 choses : les commentaires et la données de contraintes (généralement au format OCL).
+
+\medskip
+
+La commande {\tt umlnote} dispose des options suivantes :
+
+\begin{description}
+\item[x, y] Ces 2 options définissent les coordonnées de la note
+\item[width] Cette option définit la largeur de la note. Pour les habitués de \TikZ, elle encapsule l'option {\bf text width}
+\item[weight, arm, anchor1, anchor2, anchors] Ces options ont exactement le même rôle que pour la commande {\tt umlrelation}, {\bf arm} étant équivalent à {\bf arm1}, c'est-à-dire attachée à la note source et pas à la cible. 
+\end{description}
+
+\medskip
+
+\begin{minipage}{0.6\textwidth}
+\lstinputlisting{fig/noteVHV.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{noteVHV}
+\end{center}
+\end{minipage}
+
+\medskip
+
+\medskip
+
+Puisque l'option {\tt geometry} est présente, de la même manière que pour {\tt umlrelation}, ont été définis les alias {\tt umlHVnote}, {\tt umlVHnote}, {\tt umlHVHnote} et {\tt umlVHVnote}.
+
+\remarque{Pour chacun de ces 4 alias, l'option {\tt geometry} est interdite.}
+
+\remarque{Il n'y a pas d'alias dans le cas de la valeur -~- pour la seule raison qu'il s'agit de la valeur par défaut.}
+
+\section{Personnalisation}\label{s.classset}
+
+Grâce à la commande {\tt tikzumlset}, il est possible de modifier l'apparence par défaut des packages, des classes et des notes. Les options que l'on peut personnaliser sont :
+
+\begin{description}
+\item[text : ] permet de spécifier la couleur du texte (=black par défaut),
+\item[draw :] permet de spécifier la couleur des traits (=black par défaut),
+\item[fill class :] permet de spécifier la couleur de fond des classes (=yellow!20 par défaut),
+\item[fill template :] permet de spécifier la couleur de fond des boites templates (=yellow!2 par défaut),
+\item[fill package :] permet de spécifier la couleur de fond des packages (=blue!20 par défaut),
+\item[fill note :] permet de spécifier la couleur de fond des notes (=green!20 par défaut),
+\item[font :] permet de définir le style de fonte du texte contenu dans tous les éléments d'un diagramme (=$\backslash$small par défaut).
+\end{description}
+
+Par ailleurs, les commandes de relation disposent toutes d'une option {\tt style} prenant en argument un nom de style au sens de \TikZ.
+
+Regardons l'exemple de la définition de la commande {\tt umlinherit} :
+
+\begin{lstlisting}
+\tikzstyle{tikzuml inherit style}=[color=\tikzumldrawcolor, -open triangle 45]
+\newcommand{\umlinherit}[3][]{\umlrelation[style={tikzuml inherit style}, #1]{#2}{#3}}
+\end{lstlisting}
+
+Vous pouvez donc très facilement définir une commande sur le même modèle en définissant un style particulier.
+
+\section{Exemples}
+
+\subsection{Exemple de l'introduction, pas à pas}
+
+On va construire petit à petit l'exemple illustrant la première page de ce document afin de mettre en valeur les différentes commandes utilisées.
+
+\subsubsection{Définition des packages p, sp1 et sp2}
+
+On laisse le package p aux coordonnées (0,0) (comportement par défaut), et on place le sous-package sp1 aux coordonnées (0,0) et le sous-package sp2 aux coordonnées (10,-6).
+
+{\color{red!70!black}
+\lstinputlisting[firstline=1, lastline=2]{fig/classdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=10, lastline=11]{fig/classdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=15, lastline=15]{fig/classdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=19, lastline=19]{fig/classdiagex.tikz}
+}
+
+\begin{center}
+\inputTikZ{classdiagstep1}
+\end{center}
+
+\subsubsection{Définition des classes A, B, C, D et de leurs attributs et opérations}
+
+La classe A est en (0,0) dans le sous-package sp1 et a un paramètre template : T. La classe B est positionnée 3 unités en dessous de A, toujours dans le sous-package sp1, et  possède un attribut statique et une opération virtuelle. La classe C est une interface en (0,0) dans le sous-package sp2. La classe D est placée en (2,-11) dans le package p.
+
+La classe A a deux attributs. La classe B a un attribut et deux opérations dont une virtuelle. La classe C a deux attributs. La classe D a un attribut.
+
+\lstinputlisting[firstline=1, lastline=2]{fig/classdiagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=3, lastline=9]{fig/classdiagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=10, lastline=11]{fig/classdiagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=12, lastline=14]{fig/classdiagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=15, lastline=15]{fig/classdiagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=16, lastline=18]{fig/classdiagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=19, lastline=19]{fig/classdiagex.tikz}
+
+\begin{center}
+\inputTikZ{classdiagstep2}
+\end{center}
+
+
+\subsubsection{Définition des relations}
+
+On définit une association entre les classes C et B, une composition unidirectionnelle entre les classes D et C, une relation d'import nommée "import" entre les sous-packages sp2 et sp1 (avec modification des ancres), une relation d'agrégation récursive sur la classe D et une relation d'héritage entre les classes D et B. Sur ces relations, on va spécifier des noms d'arguments et leurs multiplicités. Regardez la valeur donnée à la position de ces éléments suivant la géométrie de la flèche.
+
+\medskip
+
+\hspace{-0.7cm}\lstinline{...}
+{\color{red!70!black}
+\lstinputlisting[firstline=20, lastline=24]{fig/classdiagex.tikz}
+}
+
+\begin{center}
+\inputTikZ{classdiagstep3}
+\end{center}
+
+\subsubsection{Définition des notes}
+
+On rajoute enfin une note attachée à la classe B et une note attachée à la relation d'import affectée du nom import.
+
+\medskip
+
+\hspace{-0.7cm}\lstinline{...}
+{\color{red!70!black}
+\lstinputlisting[firstline=25]{fig/classdiagex.tikz}
+}
+
+\begin{center}
+\inputTikZ{classdiagstep4}
+\end{center}
+
+\subsubsection{Modification du style}
+
+On illustre l'utilisation de la commande {\tt tikzumlset} en changeant les couleurs associées à la classe et le type de font. On peut par ailleurs modifier les couleurs d'une classe donnée avec les options {\tt draw}, {\tt text} et {\tt fill}
+
+\medskip
+
+\begin{lstlisting}
+\tikzumlset{fill class=red!20, fill template=violet!10, font=\bfseries\footnotesize}
+\begin{tikzpicture}
+...
+\umlclass[x=2,y=-11, fill=orange!50, draw=white, text=red]{D}{
+  n : uint
+  }{}
+...
+\end{tikzpicture}
+\end{lstlisting}
+
+\begin{center}
+\inputTikZ{tikzumlset}
+\end{center}
+
+\subsection{Définir une spécialisation de classe}
+
+Une spécialisation de classe est de l'héritage d'un patron de classe dans lequel l'un des paramètres à son type fixé. Pour définir cette relation, c'est la commande {\tt umlreal} qui va servir ici, ainsi que l'option {\tt stereo} :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/specialisation.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{specialisation}
+\end{center}
+\end{minipage}
+
+\section{Règles de priorité des options et bugs identifiés}\label{s.classbug}
+
+\begin{enumerate}
+\item L'option {\tt geometry} prime toujours sur les autres arguments. Cela signifie en particulier que si elle n'a pas sa valeur par défaut (--~--), alors les options {\tt angle1}, {\tt angle2} et {\tt loopsize}, paramétrant les relations récursives, seront ignorées.
+\item Dans le cas d'un patron de classe, il existe des cas où une relation la concernant sera mal définie, comme le montre le dessin ci-dessous, où le losange de la relation d'agrégation est caché par le paramètre template :
+
+\begin{minipage}{0.6\textwidth}
+\lstinputlisting{fig/bugtemplate.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{bugtemplate}
+\end{center}
+\end{minipage}
+
+\medskip
+
+On peut toutefois corriger partiellement ce problème en reliant la flèche directement entre la partie template de la classe A et la classe B en rajoutant le suffixe -template et en ajustant l'ancre de départ (la valeur -30 est assez satisfaisante) : 
+
+\medskip
+
+\begin{minipage}{0.6\textwidth}
+\lstinputlisting{fig/bugtemplate2.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{bugtemplate2}
+\end{center}
+\end{minipage}
+
+\medskip
+
+\item Si l'on définit une classe dont le nom comporte le caractère : -- typiquement lorsqu'on précise le namespace -- il peut y avoir un conflit avec l'option french (ou frenchb ou francais) du package babel. En effet, par défaut, ces options ajoutent systématiquement un espace devant le caractère : si le rédacteur du document l'a oublié, ce qui rentre en conflit avec la définition de l'opérateur d'accès ::. Si l'on reprend l'exemple de définition d'une classe, on obtiendrait :
+
+\medskip
+
+\begin{minipage}{0.6\textwidth}
+\lstinputlisting{fig/class.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\begin{tikzpicture}
+\umlclass[x=0,y=0]{namespace : :class\_name}{}{}
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+
+\medskip
+
+La solution consiste en une macro proposée par ces options du package babel, qu'il faut utiliser dans le préambule du document :
+
+\medskip
+
+\begin{lstlisting}
+\frenchbsetup{AutoSpacePunctuation=false}
+\end{lstlisting}
+
+\medskip
+
+\item Le comportement de placement automatique des informations d'un attribut sur une relation peut surprendre quand on veut le court-circuiter. Reprenons l'exemple de l'introduction. Si l'on regarde la relation d'association et les attributs {\it toto} et {\it tata}. Si {\it toto} est au-dessus, {\it tata} est lui en dessous. Demandons maintenant de justifier à droite l'attribut {\it tata} (Au passage, on met sa position à 0.1). On constate alors que les positions de {\it tata} et de sa multiplicité s'inversent.
+
+\begin{center}
+\inputTikZ{bugalign}
+\end{center}
+
+\end{enumerate}
+
+\chapter{Diagrammes de cas d'utilisation}\label{c.usecase}
+
+Voici un exemple de diagramme de cas d'utilisation que l'on peut réaliser :
+
+\begin{center}
+\inputTikZ{usecaseex}
+\end{center}
+
+Nous allons voir successivement comment définir les 4 éléments constitutifs d'un tel diagramme : le système, les acteurs, les cas d'utilisation et les relations.
+
+\section{Définir un système}\label{s.system}
+
+Un système est défini à l'aide de l'environnement {\tt umlsystem} :
+
+\medskip
+
+\begin{minipage}{0.6\textwidth}
+\lstinputlisting{fig/system.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{system}
+\end{center}
+\end{minipage}
+
+\medskip
+
+Les options {\tt x} et {\tt y} permettent de positionner le système dans la figure. Elles valent toutes deux 0 par défaut. A l'intérieur de cet environnement, on définira les cas d'utilisation, tandis qu'à l'extérieur, on définira les acteurs.
+
+\section{Définir un acteur}\label{s.actor}
+
+Un acteur est défini par la commande {\tt umlactor} :
+
+\medskip
+
+\begin{minipage}{0.6\textwidth}
+\lstinputlisting{fig/actor.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{actor}
+\end{center}
+\end{minipage}
+
+\medskip
+
+Les options {\tt x} et {\tt y} permettent de positionner l'acteur dans la figure. Elles valent toutes deux 0 par défaut. On peut également redimensionner le symbole de l'acteur avec l'option {\tt scale}. Cela adapte également la position du texte en dessous :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/actorscale.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{actorscale}
+\end{center}
+\end{minipage}
+
+\medskip
+
+Le symbole de l'acteur est défini en unités relatives de la taille de fonte (unité en ex). Ce n'est par contre pas le cas de la distance séparant le symbole du texte en dessous. On peut alors corriger cela en fixant cette distance avec l'option {\tt below} (0.5cm par défaut).
+
+\medskip
+ 
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/actorfont.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{actorfont}
+\end{center}
+\end{minipage}
+
+\section{Définir un cas d'utilisation}\label{s.usecase}
+
+Un cas d'utilisation est défini avec la commande {\tt umlusecase} :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/usecase.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{usecase}
+\end{center}
+\end{minipage}
+
+\medskip
+
+Les options {\tt x} et {\tt y} permettent de positionner le cas d'utilisation dans la figure ou dans le système le contenant. Elles valent toutes deux 0 par défaut. Le texte passé en argument obligatoire est l'intitulé du cas d'utilisation. Le n\oe{}ud le représentant possède un nom par défaut, basé sur un compteur global, de la forme usecase-17. Pour des raisons pratiques, on peut renommer un cas d'utilisation à l'aide de l'option {\tt name}.
+
+Par ailleurs, on peut fixer la taille du n\oe{}ud avec l'option {\tt width}.
+
+\medskip
+
+Maintenant que nous avons vu tous les éléments constitutifs d'un diagramme de cas d'utilisation, nous allons pouvoir aborder les relations entre ces éléments.
+
+\section{Définir une relation}\label{s.userel}
+
+Les relations dans un diagramme de cas d'utilisation sont de 4 natures :
+
+\begin{itemize}
+\item Des relations d'héritage, entre acteurs, ou entre cas d'utilisation. On utilisera pour cela la commande {\tt umlinherit} et ses dérivées, abordées en \autoref{ss.relgen}.
+\item Des relations d'association, entre un acteur et un cas d'utilisation. On utilisera pour cela la commande {\tt umlassoc} et ses dérivées, abordées en \autoref{ss.relgen}.
+\item Des relations d'inclusion ou d'extension. Graphiquement, ce sont des flèches de dépendance, au sens des diagrammes de classes, avec le stéréotype {\tt extend} ou {\tt include}. Des alias de la commande {\tt umlrelation}, nommés {\tt umlinclude}, {\tt umlHVinclude}, \ldots, {\tt umlextend}, {\tt umlHVextend}, \ldots, sont disponibles pour définir de telles flèches.
+\end{itemize}
+
+Les options \hyperlink{anchor1}{{\tt anchor1}}, \hyperlink{anchor2}{{\tt anchor2}}, \hyperlink{anchors}{{\tt anchors}}, \hyperlink{arm1}{{\tt arm1}}, \hyperlink{arm2}{{\tt arm2}}, \hyperlink{weight}{{\tt weight}}, \hyperlink{geometry}{{\tt geometry}} (uniquement pour {\tt umlinclude} et {\tt umlextend}), et \hyperlink{posstereo}{{\tt pos stereo}} sont toujours utilisables.
+
+\medskip
+
+\begin{minipage}{0.51\textwidth}
+\lstinputlisting{fig/include-and-extend.tikz}
+\end{minipage}
+\begin{minipage}{0.49\textwidth}
+\begin{center}
+\inputTikZ{include-and-extend}
+\end{center}
+\end{minipage}
+
+\medskip
+
+\section{Personnalisation}\label{s.fitusecase}
+
+Grace à la commande {\tt tikzumlset}, on peut modifier globalement les couleurs par défaut des cas d'utilisation, systèmes, acteurs et relations :
+
+\begin{description}
+\item[text :] permet de spécifier la couleur du texte (=black par défaut),
+\item[draw :] permet de spécifier la couleur des traits (=black par défaut),
+\item[fill usecase :] permet de spécifier la couleur de fond des cas d'utilisation (=blue!20 par défaut),
+\item[fill system :] permet de spécifier la couleur de fond des systèmes (=white par défaut),
+\item[font :] permet de spécifier le style de fonte du texte (=$\backslash$small par défaut).
+\end{description}
+
+On peut également utiliser les options {\tt text}, {\tt draw} et {\tt fill} sur un élément particulier pour lui modifier ses couleurs, comme illustré dans l'exemple d'introduction.
+
+\section{Exemples}
+
+\subsection{Exemple de l'introduction, pas à pas}
+
+\subsubsection{Définition des acteurs}
+
+{\color{red!70!black}
+\lstinputlisting[firstline=11, lastline=13]{fig/usecaseex.tikz}
+}
+
+\begin{center}
+\inputTikZ{usecasediagstep1}
+\end{center}
+
+\subsubsection{Définition des cas d'utilisation}
+
+En plus de définir les cas d'utilisation, on illustre l'utilisation locale de l'option {\tt fill}.
+
+{\color{red!70!black}
+\lstinputlisting[firstline=3, lastline=8]{fig/usecaseex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=11, lastline=13]{fig/usecaseex.tikz}
+
+\begin{center}
+\inputTikZ{usecasediagstep2}
+\end{center}
+
+\subsubsection{Définition du système}
+
+Le système étant défini comme une boîte dont servant de nouveau repère de coordonnées, on va devoir modifier les coordonnées des cas d'utilisation relativement à celles du système.
+
+{\color{red!70!black}
+\lstinputlisting[firstline=2, lastline=2]{fig/usecaseex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=3, lastline=8]{fig/usecaseex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=9, lastline=9]{fig/usecaseex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=10, lastline=13]{fig/usecaseex.tikz}
+
+\begin{center}
+\inputTikZ{usecasediagstep3}
+\end{center}
+
+\subsubsection{Définition des relations et de la note}
+
+On remarquera l'utilisation de l'option {\tt name} pour s'assurer simplement de la bonne définition de la note, et son intérêt également pour les cas d'utilisation, afin de ne pas avoir à se rappeler de l'ordre dans lequel ils sont définis, comme c'est le cas dans cet exemple simple :
+
+\lstinputlisting[firstline=2, lastline=13]{fig/usecaseex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=14, lastline=25]{fig/usecaseex.tikz}
+}
+
+\begin{center}
+\inputTikZ{usecasediagstep4}
+\end{center}
+
+%\section{Règles de priorité des options et bugs identifiés}\label{s.usecasebug}
+
+\chapter{Diagrammes d'états-transitions}\label{c.statetrans}
+
+Voici un exemple de diagramme d'états-transitions que l'on peut réaliser :
+
+\begin{center}
+\inputTikZ{statediagex}
+\end{center}
+
+Nous allons voir successivement comment définir les éléments constitutifs d'un tel diagramme : les 10 types d'états et les transitions.
+
+\newpage
+
+\section{Définir un état}\label{s.state}
+
+Un état \og standard\fg{} se définit à l'aide de l'environnement {\tt umlstate} :
+
+\medskip
+
+\begin{minipage}{0.51\textwidth}
+\lstinputlisting{fig/state.tikz}
+\end{minipage}
+\begin{minipage}{0.49\textwidth}
+\begin{center}
+\inputTikZ{state}
+\end{center}
+\end{minipage}
+
+\medskip
+
+Les options {\tt x} et {\tt y} permettent de positionner l'état dans la figure, ou dans un autre état. Elles valent toutes deux 0 par défaut. L'argument est le label de l'état. Le n\oe{}ud représentatnt l'état a par défaut un nom basé sur un compteur. Pour des raisons pratiques, lors de la définition de transitions par exemple, on peut le renommer à l'aide de l'option {\tt name}.
+
+\medskip
+
+On peut également définir la largeur minimale d'un état avec l'option {\tt width} (10ex par défaut).
+
+\medskip
+
+On peut définir un état dans un autre état. Dans ce cas, les coordonnées des sous-états sont relatives à l'état parent :
+
+\medskip
+
+\begin{minipage}{0.51\textwidth}
+\lstinputlisting{fig/stateinner.tikz}
+\end{minipage}
+\begin{minipage}{0.49\textwidth}
+\begin{center}
+\inputTikZ{stateinner}
+\end{center}
+\end{minipage}
+
+\medskip
+
+Si l'on veut définir un état sans le décomposer, on peut utiliser la commande {\tt umlbasicstate} qui est un raccourci vers l'environnement {\tt umlstate}.
+
+\medskip
+
+Regardons maintenant les états spécifiques :
+
+\medskip
+
+\begin{minipage}{0.51\textwidth}
+\lstinputlisting{fig/statespecial.tikz}
+\end{minipage}
+\begin{minipage}{0.49\textwidth}
+\begin{center}
+\inputTikZ{statespecial}
+\end{center}
+\end{minipage}
+
+\medskip
+
+De gauche à droite et de haut en bas :
+
+\medskip
+
+\begin{itemize}
+\item Un état initial se définit à l'aide de la commande {\tt umlstateinitial}.
+\item Un état final se définit à l'aide de la commande {\tt umlstatefinal}.
+\item Un état de jonction se définit à l'aide de la commande {\tt umlstatejoin}.
+\item Un état de décision se définit à l'aide de la commande {\tt umlstatedecision}.
+\item Un état d'entrée se définit à l'aide de la commande {\tt umlstateenter}.
+\item Un état de sortie se définit à l'aide de la commande {\tt umlstateexit}.
+\item Un état de fin se définit à l'aide de la commande {\tt umlstateend}.
+\item Un état d'historique se définit à l'aide de la commande {\tt umlstatehistory}.
+\item Un état d'historique profond se définit à l'aide de la commande {\tt umlstatedeephistory}.
+\end{itemize}
+
+\medskip
+
+Ces commandes prennent toutes pour options {\tt name}, pour renommer le n\oe{}ud, et {\tt width} pour fixer sa taille, et on peut les utiliser à l'intérieur d'un environnement {\tt umlstate} :
+
+\medskip
+
+\begin{minipage}{0.51\textwidth}
+\lstinputlisting{fig/statename.tikz}
+\end{minipage}
+\begin{minipage}{0.49\textwidth}
+\begin{center}
+\inputTikZ{statename}
+\end{center}
+\end{minipage}
+
+\medskip
+
+\section{Définir une transition}\label{s.trans}
+
+Les transitions sont les noms des relations dans un diagramme d'états-transitions. On les définit à l'aide de la commande {\tt umltrans} qui dérive de {\tt umlrelation}. On va distinguer le cas des transitions unidirectionnelles et celui des transitions récursives.
+
+\subsection{Définir une transition unidirectionnelle}\label{s.unitrans}
+
+De par l'existence de l'option {\tt geometry}, on va définir de même les alias {\tt umlHVtrans}, {\tt umlVHtrans}, {\tt umlVHVtrans} et {\tt umlHVHtrans}. Graphiquement, ce sont l'utilisation de ces alias qui sont les plus intéressants, dans la mesure où tous les coins d'une flèche de transition sont arrondis.
+
+\medskip
+
+\begin{minipage}{0.51\textwidth}
+\lstinputlisting{fig/transition.tikz}
+\end{minipage}
+\begin{minipage}{0.49\textwidth}
+\begin{center}
+\inputTikZ{transition}
+\end{center}
+\end{minipage}
+
+\medskip
+
+Toutes les options de {\tt umlrelation} peuvent être utilisées avec {\tt umltrans} et ses dérivées.
+
+\subsection{Définir une transition récursive}\label{s.rectrans}
+
+Les transitions récursives sont graphiquement les plus délicates à mettre en \oe{}uvre, car elles ont l'aspect de rectangles aux coins arrondis, contrairement aux flèches récursives des diagrammes de classes. Elles se comportent donc, sur le principe, comme les flèches dont l'option {\tt geometry} est -|- ou |-|, c'est-à-dire des flèches composées de plusieurs segments.
+
+\medskip
+
+\begin{minipage}{0.51\textwidth}
+\lstinputlisting{fig/transitionrec.tikz}
+\end{minipage}
+\begin{minipage}{0.49\textwidth}
+\begin{center}
+\inputTikZ{transitionrec}
+\end{center}
+\end{minipage}
+
+\medskip
+
+L'option {\tt recursive direction} est fondamentale. En effet, la donnée des angles de départ et d'arrivée ne suffit pas à savoir la direction de départ et d'arrivée de la flèche récursive. On est donc obligé de le préciser. 2 cas se présentent :
+
+\medskip
+
+\begin{itemize}
+\item Soit la flèche est constituée de 3 segments. Dans ce cas, les n\oe{}uds utilisables sont répartis comme suit :
+
+\begin{center}
+\inputTikZ{transitionrec-rtr-ptname}
+\end{center}
+
+\item Soit la flèche est constituée de 4 segments. Dans ce cas, les n\oe{}uds utilisables sont répartis comme suit :
+
+\medskip
+
+\begin{center}
+\inputTikZ{transitionrec-rtb-ptname}
+\end{center}
+
+\vspace{-4cm}
+
+\end{itemize}
+
+\subsection{Définir une transition entre sous-états}\label{ss.substatetrans}
+
+Lorsqu'on définit des transitions entre sous-états, la transition doit être intégralement représentée à l'intérieur de l'état parent. C'est la raison pour laquelle on définira la transition à l'intérieur de l'environnement {\tt umlstate}. Comparez les 2 séquences de codes suivantes :
+
+\medskip
+
+\begin{minipage}{0.51\textwidth}
+\lstinputlisting{fig/transitioninnerbug.tikz}
+\end{minipage}
+\begin{minipage}{0.49\textwidth}
+\begin{center}
+\inputTikZ{transitioninnerbug}
+\end{center}
+\end{minipage}
+
+\begin{minipage}{0.51\textwidth}
+\lstinputlisting{fig/transitioninner.tikz}
+\end{minipage}
+\begin{minipage}{0.49\textwidth}
+\begin{center}
+\inputTikZ{transitioninner}
+\end{center}
+\end{minipage}
+
+\section{Personnalisation}\label{s.fitstatetrans}
+
+Grace à la commande {\tt tikzumlset}, on peut modifier globalement les couleurs par défaut des états et transitions :
+
+\begin{description}
+\item[text :] permet de spécifier la couleur du texte (=black par défaut),
+\item[draw :] permet de spécifier la couleur des traits et des états initiaux, finaux et de jonction (=black par défaut),
+\item[fill state :] permet de spécifier la couleur de fond des cas d'utilisation (=yellow!20 par défaut),
+\item[font :] permet de spécifier le style de fonte du texte (=$\backslash$small par défaut).
+\end{description}
+
+On peut également utiliser les options {\tt text}, {\tt draw} et {\tt fill} sur un élément particulier pour lui modifier ses couleurs, comme illustré dans l'exemple d'introduction.
+
+\section{Exemples}
+
+\subsection{Exemple de l'introduction, pas à pas}
+
+\subsubsection{Définition des états standards}
+
+\medskip
+
+\begin{center}
+\inputTikZ{statediagstep1}
+\end{center}
+
+\newpage
+
+{\color{red!70!black}
+\lstinputlisting[firstline=2, lastline=3]{fig/statediagex.tikz}\vspace{-0.37cm}
+\lstinputlisting[firstline=5, lastline=5]{fig/statediagex.tikz}\vspace{-0.37cm}
+\lstinputlisting[firstline=11, lastline=11]{fig/statediagex.tikz}\vspace{-0.37cm}
+\lstinputlisting[firstline=16, lastline=16]{fig/statediagex.tikz}\vspace{-0.37cm}
+\lstinputlisting[firstline=21, lastline=21]{fig/statediagex.tikz}\vspace{-0.37cm}
+\lstinputlisting[firstline=25, lastline=25]{fig/statediagex.tikz}
+}
+
+\vspace{-0.5cm}
+
+\subsubsection{Définition des états spécifiques}
+
+\medskip
+
+\begin{center}
+\inputTikZ{statediagstep2}
+\end{center}
+
+\medskip
+
+\lstinputlisting[firstline=2, lastline=3]{fig/statediagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=4, lastline=4]{fig/statediagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=5, lastline=5]{fig/statediagex.tikz}\vspace{-0.37cm}
+\lstinputlisting[firstline=11, lastline=11]{fig/statediagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=14, lastline=14]{fig/statediagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=16, lastline=16]{fig/statediagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=17, lastline=17]{fig/statediagex.tikz}\vspace{-0.37cm}
+\lstinputlisting[firstline=19, lastline=19]{fig/statediagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=21, lastline=21]{fig/statediagex.tikz}\vspace{-0.37cm}
+\lstinputlisting[firstline=25, lastline=25]{fig/statediagex.tikz}
+
+\subsubsection{Définition des transitions}
+
+\lstinputlisting[firstline=2, lastline=5]{fig/statediagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=6, lastline=10]{fig/statediagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=11, lastline=11]{fig/statediagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=12, lastline=13]{fig/statediagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=14, lastline=14]{fig/statediagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=15, lastline=15]{fig/statediagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=16, lastline=17]{fig/statediagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=18, lastline=18]{fig/statediagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=19, lastline=19]{fig/statediagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=20, lastline=20]{fig/statediagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=21, lastline=21]{fig/statediagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=22, lastline=24]{fig/statediagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=25, lastline=25]{fig/statediagex.tikz}
+
+\begin{center}
+\inputTikZ{statediagstep3}
+\end{center}
+
+%\section{Règles de priorité des options et bugs identifiés}\label{s.statetransbug}
+%
+\chapter{Diagrammes de séquence}\label{c.seq}
+
+Voici un exemple de diagramme de séquence que l'on peut réaliser :
+
+\begin{center}
+\inputTikZ{seqdiagex}
+\end{center}
+
+Regardons maintenant les différents éléments constitutifs d'un tel diagramme.
+
+\section{Définir un diagramme de séquence}\label{s.seqdiag}
+
+C'est là la principale différence avec les diagrammes précédents. Pour définir un diagramme de séquence, il faut travailler dans l'environnement {\tt umlseqdiag}, dont le but est d'initialiser un ensemble de variables globales, et surtout de tracer les lignes de vies de chaque objet intervenant dans le diagramme. Ce qu'il faut comprendre avant toute chose, c'est que les commandes et environnements permettant de définir un diagramme de séquence placent les éléments de manière automatique et les espacent également automatiquement. Nous y reviendrons en temps voulu.
+
+\section{Définir un objet}\label{s.objs}
+
+\subsection{Les types d'objets}\label{ss.obj}
+
+On peut définir un objet avec la commande {\tt umlobject} :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/object.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{object}
+\end{center}
+\end{minipage}
+
+\medskip
+
+Par défaut, il représente une instance de classe. Le nom de la classe est spécifié avec l'option {\tt class} (vide par défaut). 
+
+\medskip
+
+L'option {\tt stereo} permet de spécifier le type d'objet. Elle accepte les valeurs suivantes : object (valeur par défaut), actor, entity, boundary, control, database, multi. Les 6 derniers sont représentés ci-dessous, de gauche ) droite et de haut en bas.
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/objectstereo.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{objectstereo}
+\end{center}
+\end{minipage}
+
+\subsection{Positionnement automatique d'un objet}\label{ss.objpos}
+
+Les options {\tt x} et {\tt y} permettent de positionner un objet. En pratique, elles sont peu utilisées. En effet, le comportement automatique est le suivant :
+
+\begin{itemize}
+\item L'option {\tt y} vaut 0 par défaut, ce qui signifie qu'un objet se trouve par défaut en haut d'un diagramme de séquence.
+\item L'option {\tt x} vaut un multiple de 4 par défaut. Ce multiple correspond à l'indice attribué à l'objet : si c'est le deuxième objet défini dans le diagramme, cet indice vaut 2, \ldots
+\end{itemize}
+
+A moins que la taille de l'objet soit trop grande, le décalage de 4 convient. Dans le cas contraire, on spécifie la coordonnée.
+
+\subsection{Dimensionner un objet}\label{ss.objdim}
+
+L'option {\tt scale} de {\tt umlobject} permet de dimensionner un objet. De même, les symboles sont adaptés à la taille de la fonte :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/objectscale.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{objectscale}
+\end{center}
+\end{minipage}
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/objectfont.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{objectfont}
+\end{center}
+\end{minipage}
+
+\section{Définir un appel de fonction}\label{s.calls}
+
+Les appels de fonction représentent le c\oe{}ur d'un diagramme de séquence. Il faut donc en conséquence un moteur suffisamment intelligent pour permettre à la fois un comportement par défaut satisfaisant et une grande souplesse dans le paramétrage. 
+
+Pour parler un peu technique -- j'ouvre une parenthèse -- , il y avait 2 approches possibles :
+
+\begin{enumerate}
+\item soit se baser sur la structure de matrice de n\oe{}uds de \TikZ. Cela présente l'avantage de travailler sur une grille de n\oe{}uds précalculée et donc de positionner facilement (et rapidement à la compilation) à l'aide d'un unique compteur les éléments d'un diagramme de séquence. 
+\item soit se baser sur un positionnement automatique des n\oe{}uds par un jeu de coordonnées, dans le cas présent la coordonnée temporelle, qui permet une totale souplesse et facilite la reflexion de l'utilisateur.
+\end{enumerate}
+
+C'est la seconde approche qui a été choisie, car davantage conforme à l'état d'esprit dans lequel les autres diagrammes ont été implémentés dans cette librairie. En effet, si l'absence de grille demande un moteur de calcul plus élaboré, et donc un temps de compilation un peu plus long, cette approche permet de définir facilement un certain nombre d'éléments de manière simple, comme un appel de constructeur, dessiné selon la norme et nom \og bidouillé\fg{} pour que ça soit compréhensible, comme c'est le cas de la plupart des logiciels de conception UML que j'ai pu utiliser auparavant. Je referme donc la parenthèse.
+
+\subsection{Appels simples / récursifs}\label{ss.call}
+
+Un appel de fonction simple se fait à l'aide de l'environnement {\tt umlcall}. Bien entendu, on peut utiliser des environnements {\tt umlcall} imbriqués :
+
+\medskip
+
+\begin{minipage}{0.4\textwidth}
+\lstinputlisting{fig/call.tikz}
+\end{minipage}
+\begin{minipage}{0.6\textwidth}
+\begin{center}
+\inputTikZ{call}
+\end{center}
+\end{minipage}
+
+\medskip
+
+On précise en arguments obligatoires le nom de l'objet source et celui de l'objet destination.
+Si ces noms sont les mêmes, alors l'appel est récursif. Pour ne pas définir les deux arguments, dans ce cas identiques, on peut utiliser l'environnement {\tt umlcallself} :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/callself.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{callself}
+\end{center}
+\end{minipage}
+
+\subsection{Positionnement d'un appel}\label{ss.calldt}
+
+L'option {\tt dt} permet de positionner un appel sur une ligne de vie, relativement au dernier élément présent sur cette ligne. Elle est vide par défaut. Elle se mesure en unité ex. En pratique, le comportement par défaut est de calculer un décalage suffisant pour que rien ne se chevauche entre 2 appels consécutifs :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/calldt.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{calldt}
+\end{center}
+\end{minipage}
+
+\medskip
+
+On peut également ajuster l'espacement pour des appels imbriqués avec l'option {\tt padding}. Cela concerne l'espacement en bas uniquement :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/callpadding.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{callpadding}
+\end{center}
+\end{minipage}
+
+\subsection{Appels synchrones/ asynchrones}\label{ss.callsync}
+
+L'option {\tt type} permet de spécifier s'il s'agit d'un appel synchrone (valeur par défaut) ou asynchrone :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/callsync.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{callsync}
+\end{center}
+\end{minipage}
+
+\subsection{Opération, arguments et valeur de retour}\label{ss.callop}
+
+On spécifie le nom de la fonction appelée et ses arguments d'entrée avec l'option {\tt op} :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/callop.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{callop}
+\end{center}
+\end{minipage}
+
+\medskip
+
+\remarque{Notez l'importance ici des accolades pour que la virgule séparant les 2 arguments i et k. Sans les accolades, elle serait interprétée comme un séparateur d'options et provoquerait une erreur.}
+
+\medskip
+
+On spécifie la valeur de retour avec l'option {\tt return} avec les mêmes précautions :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/callreturn.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{callreturn}
+\end{center}
+\end{minipage}
+
+\medskip
+
+\subsection{Définir un appel de constructeur}\label{ss.create}
+
+Les appels de constructeurs sont des appels de fonctions particuliers dans la mesure où ils créent un nouvel objet. Il ne s'agit pas de messages échangés entre 2 lignes de vies, mais entre une ligne de vie et un objet.
+
+Pour définir un appel de constructeur, on utilise la commande {\tt umlcreatecall} :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/createcall.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{createcall}
+\end{center}
+\end{minipage}
+
+\medskip
+
+On peut remarquer que tout se passe normalement ensuite à la définition d'autres appels utilisant l'objet créé.
+
+\medskip
+
+En tant que constructeur d'objet, la commande {\tt umlcreatecall} dispose des options {\tt class}, {\tt stereo} et {\tt x}.
+
+En tant qu'appel de fonction, elle dispose de l'option {\tt dt}.
+
+\subsection{Nommer un appel}\label{ss.callname}
+
+L'option {\tt name} permet de donner un nom à un appel de fonction. Elle n'a que peu d'intérêt pour l'instant à moins de développements futurs, dans la mesure où elle avait été pensée pour la définition des fragments combinés, mais il n'y en a plus besoin.
+
+\section{Définir un fragment combiné}\label{s.fragments}
+
+Les fragments combinés constituent la deuxième grande famille d'éléments constitutifs d'un diagramme de séquence. On peut les définir à l'aide de l'environnement {\tt umlfragment} :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/fragment.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{fragment}
+\end{center}
+\end{minipage}
+
+\subsection{Informations d'un fragment}\label{ss.fraginfos}
+
+L'option {\tt type} permet de spécifier le mot-clé apparaissant dans l'étiquette en haut à gauche : opt, alt, loop, par, assert, \ldots La valeur par défaut est opt.
+
+L'option {\tt label} permet de spécifier les éléments complémentaires tels que la condition d'un fragment opt : 
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/fragmentlabel.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{fragmentlabel}
+\end{center}
+\end{minipage}
+
+\medskip
+
+L'option {\tt inner xsep} permet de décaler l'étiquette et le label vers la gauche. Sa valeur par défaut est 1 et son unité de longueur est ex.
+
+\subsection{Renommer un fragment}\label{ss.fragname}
+
+On peut nommer un fragment à l'aide de l'option {\tt name}. Elle peut être très utile par exemple quand on veut attacher une note à un fragment :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/fragmentname.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{fragmentname}
+\end{center}
+\end{minipage}
+
+\subsection{Définir les régions d'un fragment}\label{ss.fragpart}
+
+Prenons le cas d'un fragment de type alt. Il s'agit de la représentation d'un bloc d'instructions de type switch - case. Pour pouvoir représenter ceci, on doit définir des régions dans le fragment. On utilise pour cela la commande {\tt umlfpart} qui prend en option le label associé :
+
+\medskip
+
+\begin{minipage}{0.5\textwidth}
+\lstinputlisting{fig/fragmentpart.tikz}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{center}
+\inputTikZ{fragmentpart}
+\end{center}
+\end{minipage}
+
+\section{Personnalisation}\label{s.fitseq}
+
+Grace à la commande {\tt tikzumlset}, on peut modifier globalement les couleurs par défaut des appels, des fragments et des objets :
+
+\begin{description}
+\item[text :] permet de spécifier la couleur du texte (=black par défaut),
+\item[draw :] permet de spécifier la couleur des traits et des flèches (=black par défaut),
+\item[fill object :] permet de spécifier la couleur de fond des objets (=yellow!20 par défaut),
+\item[fill call :] permet de spécifier la couleur de fond des appels (=white par défaut),
+\item[fill fragment :] permet de spécifier la couleur de fond des cas d'utilisation (=white par défaut),
+\item[font :] permet de spécifier le style de fonte du texte (=$\backslash$small par défaut).
+\end{description}
+
+On peut également utiliser les options {\tt text}, {\tt draw} et {\tt fill} sur un élément particulier pour lui modifier ses couleurs, comme illustré dans l'exemple d'introduction. 
+
+Il existe un cas particulier : {\tt umlcreatecall}. Les options {\tt text}, {\tt draw} et {\tt fill} permettent de modifier l'aspect du message de création, tandis que les options {\tt text obj}, {\tt draw obj} et {\tt fill obj} permettent de modifier l'aspect de l'objet créé.
+
+\medskip
+
+\begin{minipage}{0.6\textwidth}
+\lstinputlisting{fig/createcallset.tikz}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\inputTikZ{createcallset}
+\end{center}
+\end{minipage}
+
+\section{Exemples}
+
+\subsection{Exemple de l'introduction, pas à pas}
+
+\subsubsection{Définition des objets}
+
+{\color{red!70!black}
+\lstinputlisting[firstline=2,lastline=6]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=36,lastline=36]{fig/seqdiagex.tikz}
+}
+
+\begin{center}
+\inputTikZ{seqdiagstep1}
+\end{center}
+
+\subsubsection{Définition de l'appel opa et ses composants}
+
+\lstinputlisting[firstline=2,lastline=6]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=7, lastline=7]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=9, lastline=9]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=11, lastline=12]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=14, lastline=15]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=17, lastline=17]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=20, lastline=20]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=22, lastline=23]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=25, lastline=25]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=27, lastline=27]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=36,lastline=36]{fig/seqdiagex.tikz}
+
+\begin{center}
+\inputTikZ{seqdiagstep2}
+\end{center}
+
+\subsubsection{Définition des appels consécutifs à la construction de E}
+
+\lstinputlisting[firstline=2,lastline=7]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=9, lastline=9]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=11, lastline=12]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=14, lastline=15]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=17, lastline=17]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=20, lastline=20]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=22, lastline=23]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=25, lastline=25]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=27, lastline=27]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=28, lastline=28]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+\lstinputlisting[firstline=30, lastline=34]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=36,lastline=36]{fig/seqdiagex.tikz}
+
+\begin{center}
+\inputTikZ{seqdiagstep3}
+\end{center}
+
+\subsubsection{Définition des fragments}
+
+\lstinputlisting[firstline=2,lastline=7]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=8, lastline=8]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=9, lastline=9]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=10, lastline=10]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=11, lastline=12]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=13, lastline=13]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=14, lastline=15]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=16, lastline=16]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=17, lastline=17]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=18, lastline=19]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=20, lastline=20]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=21, lastline=21]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=22, lastline=23]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=24, lastline=24]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=25, lastline=25]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=26, lastline=26]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=27, lastline=28]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=29, lastline=29]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=30, lastline=34]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+{\color{red!70!black}
+\lstinputlisting[firstline=35, lastline=35]{fig/seqdiagex.tikz}\vspace{-0.4cm}
+}
+\lstinputlisting[firstline=36,lastline=36]{fig/seqdiagex.tikz}
+
+\begin{center}
+\inputTikZ{seqdiagstep4}
+\end{center}
+
+\section{Bugs identifiés et perspectives}\label{s.seqbug}
+
+\begin{enumerate}
+\item Lorsqu'on définit un fragment sur un ensemble d'appels immédiatement après un appel de constructeur, le décalage automatique ne fonctionne pas. Il faut nécessairement donner à l'option {\tt dt} du premier appel du fragment une valeur supérieure ou égale à 7.
+\item Le placement automatique des objets avec un multiple de 4 ne convient pas. Il faudrait définir un décalage de 4 avec le dernier objet défini.
+\item Il n'est pas possible pour l'instant de donner des arguments à un appel de constructeur.
+\item On en peut pas forcer le tracé d'une zone d'activité d'un objet qui ne \og travaille\fg{} pas.
+
+\begin{center}
+\inputTikZ{bugcall}
+\end{center}
+
+\end{enumerate}
+\end{document}

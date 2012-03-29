@@ -1,0 +1,893 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes,mindmap,shadows,positioning}
+\usepackage{hyperref}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{fancybox}
+\usepackage{tikz-uml}
+
+% The document is based on
+% a% template from project management book "A Guide to the Project Management Body of
+% Knowledge" (PMBOK Guide).
+
+
+\title{ABRT Project Document}
+\author{Karel Klíč}
+
+\begin{document}
+\maketitle
+
+This is a top-level project document for ABRT.
+
+TODO: What is ABRT doing.
+
+TODO: Purpose of ABRT.
+% --- help users, developers, security to do their job\ldots
+
+\cleardoublepage
+\tableofcontents
+
+\cleardoublepage
+\section{Project Charter}
+
+\subsection{Statement of Work}
+
+business need, product scope, strategic plan
+
+\subsection{Business case}
+
+\subsubsection{Related Work}
+
+There are several existing implementations of problem management
+systems.
+
+TODO: \cite{MS}.
+
+Jon McCann of GNOME team envisioned a problem reporting
+architecture\cite{JonProposal} that splits the responsibilities of a
+problem management system into several components:
+\begin{enumerate}
+\item \emph{System Logger} collects data for anomalous behavior of
+  system such as crash dumps and SELinux access denial logs.  It is
+  proposed to include this functionality into \texttt{systemd}, a
+  system and service manager for Linux.  In internal communication,
+  Jon also proposed to stop using core dumps in favor of minidumps.
+\item \emph{Problem Detector} watches the output of System Logger for
+  new events, and runs Report Generator on every new event.  Its name
+  should be \texttt{problemd}, and this tool is not implemented yet.
+\item \emph{Report Generator} gathers supplementary details about a
+  problem, and stores problem data to a non-volatile memory.  It
+  should be handled by either \texttt{systemd} or \texttt{problemd}.
+\item \emph{User Problem Notifier} notifies user about a problem.  Jon
+  proposes to include this functionality into
+  \texttt{gnome-settings-daemon}.
+\item \emph{Reporting Mechanism} delivers problem report to a
+  Collection Server, scp, ftp, email\ldots
+\item \emph{Problem Reporting and Review} shows problem reports of a
+  system, and allows report submission.  Jon designed
+  \emph{Oops!}\cite{JonOops}, a graphical user interface for such a
+  component.
+\item \emph{Problem Report Collection Server} accepts anonymous
+  submissions, supports filling reports to Bugzilla, scrubs sensitive
+  data from reports, detects duplicates, performs coredump analysis
+  and retracing (generating backtrace from coredump).  In internal
+  communication, GNOME team proposes using
+  \href{https://wiki.mozilla.org/Socorro}{Socorro}, a crash statistics
+  server project of Mozilla, in this role.
+\end{enumerate}
+
+\textbf{Advantages and good aspects of the proposal}
+\begin{enumerate}
+\item The idea of pushing generic code to packages that are being used
+  across distributions.  Coredump catching can definitely be done by
+  \texttt{systemd}. \emph{Problem Detector} and \emph{Report
+    Generator} can also be made portable and shareable across
+  distributions, and it could live in \url{http://freedesktop.org} as
+  \texttt{problemd}.
+\item The design of \emph{Oops!}.
+\end{enumerate}
+
+\textbf{Criticism of the proposal}
+
+\begin{figure}[hp]
+\centering
+\includegraphics[width=0.8\textwidth]{abrt-bugs-per-component-cdf.pdf}
+\caption{Cumulative distribution of ABRT bugs and reports per
+  component}
+\label{fig:cumulative}
+\end{figure}
+
+\begin{figure}[hp]
+\centering
+\includegraphics[width=0.8\textwidth]{abrt-bugs-per-component.pdf}
+\caption{Distribution of ABRT bugs and reports per component}
+\label{fig:distribution}
+\end{figure}
+
+The most important point that should be re-evaluated is the proposed
+direction of \emph{statistics-based} problem management and
+bugfixing. This includes the usage of minidumps in all situations, and
+the deployment of Socorro.
+
+Data from the current problem management system shows that
+statistics-based bugfixing misfits the operating system level use case
+(management of full stack of applications).  Statistics-based
+bugfixing is based on the assumption of large amounts of users hitting
+and reporting the same crash.  This assumption is valid for desktop
+applications, which are quickly changing, contain large amount of bugs
+(GUI code is difficult to handle well), and have large amount of users
+(desktop shell, internet browser, e-mail client).  Nevertheless, this
+assumption is \emph{invalid} for most of operating system packages,
+including server-side software. Many packages are used by relatively
+low number of people, customized and deployed just on a few servers.
+Crashes in this situation are less frequent, but dangerous.
+
+\begin{enumerate}
+\item Implementing \emph{User Problem Notifier} into
+  \texttt{gnome-settings-daemon} brings the requirement to implement
+  the same functionality for other desktops as well (KDE, XFCE).
+\item \emph{Oops!} design is incomplete. It is not clear how the
+  reporting target can be configured (problem report collection server
+  URL, e-mail, FTP, SCP destinations).  The window with report details
+  is not presented.
+\end{enumerate}
+
+\section{Stakeholders}
+
+Here is a list of people impacted by the project, and relevant
+information regarding their interests, involvement.
+
+\tikzstyle{abstract}=[rectangle, draw=black, rounded corners, fill=blue!30, drop shadow, text centered, anchor=north, text=white, text width=6cm, rectangle split, rectangle split parts=2]
+
+\begin{center}
+\begin{tikzpicture}[node distance=1cm]
+\node(users)[abstract]
+{\textbf{Users}\cite{JonProposal}
+  \nodepart{second} \vspace{-2mm}
+  \begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
+  \item Inform user about the problem and apologize
+  \item Help with recovery of previous state: (automatically
+    recover, explain what to do, offer logout/login or restart)
+  \item Allow user to participate in the improvement of the system
+  \end{itemize}
+};
+
+\node(upstream)[abstract, below right=0 and 1cm of users.north east]
+{\textbf{Upstream Developers}
+  \nodepart{second} \vspace{-5mm}
+  \begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
+  \item Investigating security-sensitive bugs
+  \end{itemize}
+};
+
+\node(tools)[abstract, below=of users]
+{\textbf{Tools Team}
+  \nodepart{second} \vspace{-5mm}
+  \begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
+  \item Providing knowledge about ELF, DWARF, GCC, GDB, elfutils
+  \item Implementing extensions to the tools to allow new ABRT
+    features
+  \end{itemize}
+};
+
+\node(security)[abstract, below=of tools]
+{\textbf{Security Team}
+  \nodepart{second} \vspace{-5mm}
+  \begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
+  \item Investigating security-sensitive bugs
+  \end{itemize}
+};
+
+\node(maintainers)[abstract, below=of upstream]
+{\textbf{Package Maintainers}
+  \nodepart{second} \vspace{-5mm}
+  \begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
+  \item Fixing most frequently occured bugs
+  \item Fixing bugs where the bug is well described
+  \end{itemize}
+};
+
+\node(support)[abstract, below=of maintainers]
+{\textbf{Support Team}
+  \nodepart{second} \vspace{-5mm}
+  \begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
+  \item Integrating parts of ABRT Server into their support workflow
+  \item Server interface for customers
+  \end{itemize}
+};
+
+\node(desktop)[abstract, below=of support]
+{\textbf{Desktop Team}
+  \nodepart{second}
+};
+
+\end{tikzpicture}
+\end{center}
+
+Stakeholder register
+~~~~~~~~~~~~~~~~~~~~
+
+Stakeholder management strategy
+
+\section{Requirements}
+
+Requirements documentation
+Requirements management plan
+Requirements traceability matrix
+
+\section{Scope}
+
+\section{Work breakdown structure}
+
+Deliverable oriented decomposition of server project into smaller
+components.
+
+\subsection{ABRT Server Overview}
+
+\begin{center}
+\begin{tikzpicture}[mindmap,
+  every node/.style={concept},
+  root concept/.append style={concept color=black, fill=white, line width=1ex, text=black, font=\Large},
+  text=white,
+  storage/.style={concept color=orange, faded/.style={concept color=orange!50}},
+  services/.style={concept color=red, faded/.style={concept color=red!50}},
+  interface/.style={concept color=blue, faded/.style={concept color=blue!50}},
+  analysis/.style={concept color=green!50!black, faded/.style={concept color=green!25!black}},
+  grow cyclic,
+  level 1/.append style={level distance=4cm, sibling angle=90},
+  level 2/.append style={level distance=2.5cm, sibling angle=50},
+  level 3/.append style={level distance=3cm, sibling angle=40}]
+
+  \node[root concept] {ABRT Server}
+    child[storage] {node {Storage}
+      child[faded] {node {Storage Synchronization}}
+      child {node {Problem Storage}}
+      child[faded] {node {Data Storage}}
+      child[faded] {node {Sanity Checker}}
+    }
+    child[services] {node {Services}
+      child[faded, sibling angle=43, level distance=2.6cm] {node {Retracing}}
+      child[sibling angle=43, level distance=2.6cm] {node {Crash Data Analysis}}
+      child[sibling angle=43, level distance=2.6cm] {node {Anonymi\-zation}}
+      child[faded, sibling angle=43, level distance=2.6cm] {node {LLVM}}
+      child[faded, sibling angle=43, level distance=2.6cm] {node {Dedupli\-cation}}
+      child[faded, sibling angle=43, level distance=2.6cm] {node {Clustering}}
+      child[sibling angle=43, level distance=2.6cm] {node {Reporting}}
+    }
+    child[analysis] {node {Analysis}
+      child {node {SELinux Analysis}}
+      child {node {Security Analysis}}
+      child {node {Crash Type Specific Analysis}
+        child {node {\ldots}}
+        child {node {Stack Overflow Analysis}}
+        child {node {Unhand\-led C++ Exception Analysis}}
+        child {node {Use After Free Analysis}}
+        child {node {Assump\-tions Broken by Package Update}}
+      }
+    }
+    child[interface] {node {Interface}[clockwise from=100]
+      child {node {Machine Interface}}
+      child {node {Human Interface}}
+      child[faded] {node {Central Hub}}
+      child {node {Tasks and Workers}}
+    };
+\end{tikzpicture}
+\end{center}
+
+\begin{description}
+\item[Storage] Server's storage is a combination of a database and a
+  file server.
+  \begin{description}
+  \item[Storage Synchronization] Fetches data from external systems,
+    such as RPMs and builds from Koji, bugs, comments, attachments
+    from Red Hat Bugzilla, components, maintainers, releases from
+    Fedora Package Database.
+  \item[Problem Storage] We store all issues reported by users
+    here. Problems can be program crashes, uncaught Python exceptions,
+    Kernel oopses, VM cores, and SELinux denials.
+  \item[Data Storage] We download and store RPMs of all versions of
+    all packages in operating system.  This is necessary for correct
+    retracing of both coredumps and minidumps.  We require both
+    binaries and debugging information.  Static analysis requires data
+    files from RPMs for greater accuracy.
+  \item[Sanity Checker] We measure quality of data (builds, RPMs,
+    bugs) downloaded from Fedora Project.  We found quality
+    measurement and defect detection to be necessary to keep any
+    service operational.  For example, many packages in Fedora and
+    RHEL lacked proper debugging information, and this issue blocked
+    retracing of many coredumps.  We started to track the quality of
+    debugging information and watch for regressions.
+  \end{description}
+\item[Services] Separate services working on the top of Problem Storage
+  and Data Storage. They are triggered by creating a new issue,
+  changing the state of the issue, or at a certain time interval.
+  \begin{description}
+  \item[Retracing] Generates full backtrace from a coredump stored in
+    Problem Storage. Generates function names from a minidump
+    (coredump-level backtrace) stored in Problem Storage.
+  \item[Crash Data Analysis] Depends on Retracing.
+  \item[Anonymization] Depends on Crash Data Analysis.
+  \item[LLVM] Depends on Anonymization.
+  \item[Deduplication] Deduplication happens on several levels:
+    minidumps (coredump-level backtraces) are compared when receiving
+    a new issue.  Backtraces and/or function names (we call the list
+    of function names from the crash thread \textit{optimized
+      backtrace} in Faf) are compared when Retracing step is done.
+    Analyzed issues are compared when the Crash Type Specific Analysis
+    is done.
+  \item[Clustering] Clustering finds clusters of issues that are close
+    (similar) to each other. Clusters are created fro multiple
+    distances. They are used to determine possible components and even
+    program functions that are the root cause of the bug.
+  \item[Reporting]
+  \end{description}
+\item[Analysis] Based on static analysis techniques applied to LLVM
+  bitcode, the Analysis framework investigates reported issues and
+  provide insight at the source code level.
+  \begin{description}
+  \item[Crash Type Specific Analysis]
+  \item[Security Analysis]
+  \item[SELinux Analysis]
+  \end{description}
+\item[Interface] World-facing communication is implemented in the
+  web-based Human Interface, and JSON-based Machine Interface.
+  Internal interactions between server parts are organized as tasks
+  performed by workers. Task queue is managed by central hub, which
+  also provides the public communication interfaces.
+  \begin{description}
+  \item[Human Interface]
+  \item[Machine Interface]
+  \item[Central Hub]
+  \item[Tasks and Workers]
+  \end{description}
+\end{description}
+
+\subsection{ABRT Server Services Overview}
+\begin{center}
+\begin{tikzpicture}[mindmap,
+  every node/.style={concept, concept color=red},
+  faded/.style={concept color=red!50},
+  concept color=red,
+  root concept/.append style={fill=white, line width=1ex, text=black, font=\Large},
+  text=white,
+  grow cyclic,
+  level 1/.append style={level distance=5.5cm, sibling angle=50},
+  level 2/.append style={level distance=2.5cm, sibling angle=50},
+  level 3/.append style={level distance=3cm, sibling angle=40}]
+  \node[root concept] {Services}
+    child[faded] {node[faded] {Retracing}
+      child[faded] {node[faded] {Core Dump Retracing}}
+      child[faded] {node[faded] {RHEL-5 Core Dump Retracing}}
+      child[faded] {node[faded] {VMCore Retracing}}
+      child[faded] {node[faded] {Remote Debugging}}
+      child[concept color=red] {node {Minidump Retracing}}
+      child[faded] {node[faded] {Environment Preparation}}
+    }
+    child[level distance=7cm] {node {Crash Data Analysis}
+      child {node {Stack Data Values and Map}}
+      child {node {Heap Data Values and Map}}
+      child {node {Global Data Values and Map}}
+      child {node {Determine Crash Type}}
+    }
+    child {node {Anonymi\-zation}[clockwise from=45]
+      child {node {Stack Cleanup}}
+      child {node {Global Data Cleanup}}
+      child {node {Heap Cleanup}}
+      child {node {Metadata Cleanup}}
+    }
+    child {node {LLVM}
+      child[faded] {node[faded] {Bitcode Builder}}
+      child {node {Linking and Optimization}}
+      child[faded] {node[faded] {Abstract Interpretation}}
+      child {node {Symbolic Execution}}
+      child[faded] {node[faded] {Program Slicing}}
+    }
+    child[faded] {node[faded] {Dedupli\-cation}
+      child {node[faded] {Coredump-Level Backtraces}}
+      child {node[faded] {Backtrace Metrics and Distance}}
+      child {node[faded] {Backtrace Normalization}}
+    }
+    child[faded,level distance=4cm] {node[faded] {Clustering}
+      child[faded] {node[faded] {Cluster Analysis Algorithm}}
+      child[faded] {node[faded] {Cluster Action Generation}}
+      child[faded] {node[faded] {Target Component Analysis}}
+    }
+    child[level distance=6.2cm] {node {Reporting}[clockwise from=80]
+      child {node {Custom Reporters}}
+      child {node {Update of Reported Problems}}
+      child[faded] {node[faded] {Fetch Bug Changes}}
+      child {node {Reporting Target Preferences}}
+    };
+\end{tikzpicture}
+\end{center}
+
+\subsection{ABRT Server Storage Overview}
+\begin{center}
+\begin{tikzpicture}[mindmap,
+  every node/.style={concept, concept color=orange},
+  faded/.style={concept color=orange!50},
+  concept color=orange,
+  root concept/.append style={fill=white, line width=1ex, text=black, font=\Large},
+  text=white,
+  grow cyclic,
+  level 1/.append style={level distance=5.5cm, sibling angle=90},
+  level 2/.append style={level distance=2.5cm, sibling angle=50},
+  level 3/.append style={level distance=2cm, sibling angle=40}]
+  \node[root concept] {Storage}
+    child[faded] {node[faded] {Storage Synchronization}
+      child {node[faded] {Koji Downloader}}
+      child {node[faded] {Bugzilla Downloader}}
+      child {node[faded] {Fedora Package Database Downloader}}
+      child {node[faded] {Bugzilla Uploader}}
+    }
+    child {node {Problem Storage}
+      child[sibling angle=90] {node {Problem Core}
+        child {node {Mini Dump Storage and Indexing}}
+        child {node {Core Dump Storage and Indexing}}
+        child {node {Backtrace Storage and Indexing}}
+        child[faded] {node[faded] {Metadata Storage}}
+      }
+      child[sibling angle=90] {node {Analysis Support}
+        child {node {Crash Data Analysis Results}}
+        child {node {Security Analysis Results}}
+        child {node {Crash-Type Analysis Results}}
+      }
+      child[faded, sibling angle=90] {node[faded] {Cross-Problem Data}
+        child[faded] {node[faded] {Dedupli\-cation Data}}
+        child[faded] {node[faded] {Clus\-te\-ring Data}}
+      }
+    }
+    child[faded] {node[faded] {Data Storage}
+      child {node[faded] {Bugzilla Bugs, Comments, Attachments}}
+      child {node[faded] {Optimized Backtraces}}
+      child {node[faded] {Builds, RPMs}}
+      child {node[faded] {LLVM Bitcode}}
+      child {node[faded] {Fedora Package Database}}
+    }
+    child[faded] {node[faded] {Sanity Checker}
+      child[faded] {node[faded] {Debuginfo Checker}}
+      child[faded] {node[faded] {Debuginfo BuildRoot Metadata}}
+      child[faded] {node[faded] {Debuginfo Problem Reporter}}
+      child {node {Rebuild Checker}}
+      child[faded] {node[faded] {ABRT Integration Testing}}
+    };
+\end{tikzpicture}
+\end{center}
+
+\begin{center}
+\begin{tikzpicture}
+\umlclass[x=0,y=0]{problem}{
+id : PRIMARY KEY AUTOINCREMENT \\
+type : ENUM (USERSPACE, KERNEL, PYTHON, SELINUX) \\
+first occurence : TIMESTAMP \\
+last occurence : TIMESTAMP
+}{}
+
+\umlclass[x=4,y=-4]{problem fingerprint}{
+id : PRIMARY KEY AUTOINCREMENT \\
+problem id : FOREIGN KEY
+}{}
+
+\umlclass[x=-4,y=-4]{problem fingerprint record}{
+fingerprint id : FOREIGN KEY \\
+order : INT \\
+symbol id : FOREIGN KEY
+}{}
+
+\umlclass[x=-4,y=-8]{problem fingerprint symbol}{
+id : PRIMARY KEY \\
+name : STRING \\
+normalized source : STRING NOT NULL \\
+full source : STRING NOT NULL
+}{}
+
+\umlclass[x=4,y=-8]{problem fingerprint symbol hash}{
+symbol id : FOREIGN KEY \\
+hash : STRING NOT NULL \\
+build id : STRING NOT NULL \\
+offset : INT NOT NULL \\
+source file : STRING \\
+line number : INT
+}{}
+
+\umlclass[x=-4,y=5]{problem history daily}{
+day : DATE \\
+operating system id : FOREIGN KEY \\
+problem id : FOREIGN KEY \\
+count : INT
+}{}
+
+\umlclass[x=-4,y=8]{problem history weekly}{
+week : DATE \\
+operating system id : FOREIGN KEY \\
+problem id : FOREIGN KEY \\
+count : INT
+}{}
+
+\umlclass[x=-4,y=11]{problem history monthly}{
+month : DATE \\
+operating system id : FOREIGN KEY \\
+problem id : FOREIGN KEY \\
+count : INT
+}{}
+
+\umlclass[x=2,y=4]{problem binary}{
+id : PRIMARY KEY \\
+path : STRING \\
+count : INT
+}{}
+
+\umlclass[x=3,y=8]{problem backtrace}{
+id : PRIMARY KEY \\
+problem id : FOREIGN KEY \\
+operating system id : FOREIGN KEY \\
+text : STRING
+}{}
+
+\umlclass[x=3,y=11]{problem coredump}{
+id : PRIMARY KEY \\
+problem id : FOREIGN KEY \\
+operating system id : FOREIGN KEY
+}{}
+
+\umlclass[x=7,y=4]{problem package}{
+problem id : FOREIGN KEY \\
+package id : FOREIGN KEY \\
+count : INT
+}{}
+
+\umluniaggreg[geometry=|-|,mult1=1,pos1=0.2,mult2=+,pos2=2.8]{problem}{problem binary}
+\umluniaggreg[geometry=|-|,pos1=0.2,mult2=+,pos2=2.8]{problem}{problem package}
+\umluniaggreg[geometry=|-|,pos1=0.2,mult2=+,pos2=2.8]{problem}{problem backtrace}
+
+
+\end{tikzpicture}
+\end{center}
+
+\subsection{ABRT Server Interface Overview}
+\begin{center}
+\begin{tikzpicture}[mindmap,
+  every node/.style={concept, concept color=blue},
+  faded/.style={concept color=blue!50},
+  concept color=blue,
+  root concept/.append style={fill=white, line width=1ex, text=black, font=\Large},
+  text=white,
+  grow cyclic,
+  level 1/.append style={level distance=5.5cm, sibling angle=90},
+  level 2/.append style={level distance=2.5cm, sibling angle=50},
+  level 3/.append style={level distance=2cm, sibling angle=40}]
+  \node[root concept] {Interface}
+    child {node {Machine Interface}
+      child[faded] {node[faded] {Retracing Service Interface}}
+      child {node {Deduplication Service Interface}}
+      child {node {Crash Data Analysis Interface}}
+      child {node {Problem Reporting Interface}}
+      child {node {Problem Query Interface}}
+    }
+    child {node {Human Interface}
+      child {node {Summary View}}
+      child {node {Problems View}}
+      child {node {Reports View}}
+      child {node {Tasks View}}
+      child {node {Status View}}
+    }
+    child[faded] {node[faded] {Central Hub}
+      child {node[faded] {Task Queue}}
+      child {node[faded] {Client Interface}}
+      child[concept color=blue] {node {Task Dependencies}}
+    }
+    child {node {Tasks and Workers}
+      child[faded, sibling angle=39, level distance=3cm] {node[faded] {LLVM Build Task}}
+      child[sibling angle=39, level distance=3cm] {node {Retracing Tasks}}
+      child[sibling angle=39, level distance=3cm] {node {Anonymization Tasks}}
+      child[sibling angle=39, level distance=3cm] {node {Crash Data Analysis Tasks}}
+      child[sibling angle=39, level distance=3cm] {node {Koji Download Tasks}}
+      child[sibling angle=39, level distance=3cm] {node {Bugzilla Download Tasks}}
+      child[sibling angle=39, level distance=3cm] {node {Clustering Tasks}}
+      child[sibling angle=39, level distance=3cm] {node {Reporting Tasks}}
+      child[sibling angle=39, level distance=3cm] {node {Statistics Tasks}}
+    };
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Summary Page}
+\begin{center}
+\shadowbox{\includegraphics[width=\textwidth, trim=0 3cm 0 0, clip=true]{server-ui-summary.png}}
+\end{center}
+
+\begin{description}
+\item[Operating System] The available options include Fedora releases,
+  pre-release branched Fedora, Fedora Rawhide, All. The list of
+  releases should be obtained from Fedora Package Database (this is
+  handled by Storage Synchronization.
+\item[Components] The available options include All Components, the
+  list of all components for the selected Operating System, and
+  selected \texttt{comps.xml} groups (such as GNOME Desktop, KDE
+  Desktop, Xfce, Web Server, Electronic Lab, Engineering and
+  Scientific, Font design and packaging, System Tools, Sound and
+  Video, Office/Productivity)
+\item[Graph] Displays the number of problems (individual events) in
+  time. The underlying data are updated once a day.
+\item[Days] The graph shows problems in the last 14 days.
+\item[Weeks] The graph shows problems in the last 12 weeks (3 months).
+\item[Months] The graph shows problems in the last 12 months.
+\item[New and noteworthy] Shows automatically discovered interesting
+  trends that can be detected from data.  It tells visitor which
+  combinations of Operating System and Component might be worth
+  looking.
+\end{description}
+
+\subsubsection{Problems Overview Page}
+\begin{center}
+\shadowbox{\includegraphics[width=\textwidth, trim=0 16cm 0 0, clip=true]{server-ui-problems-overview.png}}
+\end{center}
+
+\subsubsection{Problems Item Summary Page}
+\begin{center}
+\shadowbox{\includegraphics[width=\textwidth, trim=0 5cm 0 0, clip=true]{server-ui-problems-item-summary.png}}
+\end{center}
+
+\subsubsection{Reports Overview Page}
+\begin{center}
+\shadowbox{\includegraphics[width=\textwidth, trim=0 10cm 0 0, clip=true]{server-ui-reports-overview.png}}
+\end{center}
+
+\subsubsection{Reports List Page}
+\begin{center}
+\shadowbox{\includegraphics[width=\textwidth, trim=0 16cm 0 0, clip=true]{server-ui-reports-list.png}}
+\end{center}
+
+\subsubsection{Server Tasks Page}
+\begin{center}
+\shadowbox{\includegraphics[width=\textwidth, trim=0 16cm 0 0, clip=true]{server-ui-tasks.png}}
+\end{center}
+
+\subsubsection{Server Status Page}
+\begin{center}
+\shadowbox{\includegraphics[width=\textwidth, trim=0 17cm 0 0, clip=true]{server-ui-status.png}}
+\end{center}
+
+\subsection{ABRT Client Overview}
+
+\begin{center}
+\begin{tikzpicture}[mindmap,
+  every node/.style={concept},
+  root concept/.append style={concept color=black, fill=white, line width=1ex, text=black, font=\Large},
+  text=white,
+  detector/.style={concept color=OrangeRed, faded/.style={concept color=OrangeRed!50}},
+  generator/.style={concept color=brown, faded/.style={concept color=brown!50}},
+  reporting/.style={concept color=Plum, faded/.style={concept color=Plum!50}},
+  interface/.style={concept color=OliveGreen, faded/.style={concept color=OliveGreen!50}},
+  grow cyclic,
+  level 1/.append style={level distance=4.5cm, sibling angle=90},
+  level 2/.append style={level distance=2.5cm, sibling angle=50},
+  level 3/.append style={level distance=3cm, sibling angle=40}]
+
+  \node[root concept] {ABRT Client}
+    child[detector] {node {Problem Detector}
+      child[faded] {node[faded] {Core Dump Hook}}
+      child[faded] {node[faded] {Process Information Collector}}
+      child[faded] {node[faded] {Python Hook}}
+      child[faded] {node[faded] {VMCore Hook}}
+      child[faded] {node[faded] {Kerneloops Hook}}
+      child {node {Java Hook}}
+    }
+    child[generator, level distance=5cm] {node {Report Generator}
+      child[faded] {node[faded] {Dedup\-li\-ca\-tion}}
+      child {node {Collect RPM Data}}
+      child[faded] {node[faded] {Collect GConf Data}}
+      child[faded] {node[faded] {Collect Smolt Data}}
+      child[faded] {node[faded] {Collect X Session Errors}}
+      child[faded] {node[faded] {Collect SMART Data}}
+    }
+    child[reporting] {node {Reporting Mechanism}
+      child {node {ABRT Server}}
+      child[faded] {node[faded] {Red Hat Technical Support}}
+      child[faded] {node[faded] {E-Mail Notification}}
+      child[faded] {node[faded] {FTP, SCP, NFS\ldots}}
+      child[faded] {node[faded] {Anaconda, SETroubleshoot Integration}}
+    }
+    child[interface] {node {Interface}
+      child {node {Graphical User Interface}}
+      child[faded] {node[faded] {Command-line User Interface}}
+      child[faded] {node[faded] {D-Bus Interface}}
+      child[faded] {node[faded] {Socket Interface}}
+    };
+\end{tikzpicture}
+\end{center}
+
+\subsection{ABRT Client Interface Overview}
+
+\begin{center}
+\begin{tikzpicture}[mindmap,
+  every node/.style={concept, concept color=OliveGreen},
+  faded/.style={concept color=OliveGreen!50},
+  concept color=OliveGreen,
+  root concept/.append style={fill=white, line width=1ex, text=black, font=\Large},
+  text=white,
+  grow cyclic,
+  level 1/.append style={level distance=4.5cm, sibling angle=90},
+  level 2/.append style={level distance=2.5cm, sibling angle=50},
+  level 3/.append style={level distance=3cm, sibling angle=40}]
+
+  \node[root concept] {Interface}
+    child {node {Graphical User Interface}
+      child {node {Apologize Dialog}}
+      child {node {Detailed Report Dialog}}
+      child {node {Applet}}
+      child {node {Problem Browser}}
+    }
+    child[faded] {node[faded] {Command-line User Interface}
+      child {node[faded] {List of Problems}}
+      child {node[faded] {Information about an issue}}
+      child {node[faded] {Reporting a Problem}}
+      child {node[faded] {Deleting a Problem}}
+    }
+    child {node {D-Bus Interface}
+      child {node {Events}}
+      child[faded] {node[faded] {List of Problems}}
+      child[faded] {node[faded] {Information about an issue}}
+      child {node {Deleting a Problem}}
+    }
+    child[faded] {node[faded] {Socket Interface}
+      child[faded] {node[faded] {Creating a new issue}}
+    };
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Apology Dialog}
+\begin{center}
+\includegraphics[width=\textwidth]{client-ui-apology-dialog-manual.png}
+\end{center}
+
+\begin{center}
+\includegraphics[width=\textwidth]{client-ui-apology-dialog-automatic.png}
+\end{center}
+
+\subsubsection{Detailed Report Dialog}
+\begin{center}
+\includegraphics[width=\textwidth]{client-ui-detailed-report-dialog.png}
+\end{center}
+
+\subsubsection{Applet}
+
+\subsubsection{Problem Browser}
+\begin{center}
+\includegraphics[width=\textwidth]{client-ui-issue-browser.png}
+\end{center}
+
+
+\subsection{Implementation Phases}
+
+\subsubsection{Already Implemented Components}
+
+\subsubsection{Phase 1}
+
+\subsubsection{Phase 2}
+
+\section{Project Time Management}
+
+
+\subsection{Activity List}
+
+\begin{enumerate}
+\item Implement the problem storage tables in SQLAlchemy. [server]
+\item Implement server machine interface for communication with client. [server]
+\item Implement saving the received microdump to the database. [server]
+\item Set-up and document regular, automatic database backup. [server]
+\item Finish the design of minireport and fullreport backup. [server]
+\item Implement minireport and fullreport backup. [server]
+\item Implement deduplication logic on arrival of a new report. [server]
+\item Implement deduplication logic for clustering and merging of
+  existing reports. [server]
+\item Implement coredump-level backtraces. [server]
+\item Implement retracing of coredump-level backtraces. [server]
+\item Implement the basic layout of human interface. [server]
+\item Implement graph on the summary page. [server]
+\item Implement initial problems overview page. [server]
+\item Implement initial problem summary page. [server]
+\item Implement both variants of apology dialog. [client]
+\item Implement detailed report dialog. [client]
+\item Implement ABRT client uploader. [client]
+\item Prepare proposal for Anaconda changes. [client]
+\end{enumerate}
+
+- Define Activities
+-- Activity List
+-- Activity attributes
+-- Milestone list
+
+- Sequence Activities
+-- Project Schedule Network Diagram
+
+- Estimate Activity Resources
+-- Activity Resource Requirements
+-- Resource Breakdown Structure
+
+- Estimate Activity Durations
+-- Activity Duration Estimates
+
+- Develop Schedule
+-- Project Schedule
+-- Schedule baseline
+-- Schedule data
+
+%\section{Project Cost Management}
+
+%- Estimate Costs
+%-- Activity Cost Estimates
+%-- Basis of estimates
+
+%- Determine Budget
+%-- Cost performance baseline
+%-- Project funding requirements
+
+\section{Project Quality Management}
+
+- Plan Quality
+-- Quality management plan
+-- Quality metrices
+-- Quality checklists
+-- Process improvement plan
+
+%\section{Project Human Resource Management}
+
+%- Develop Human Resource Plan
+
+%\section{Project Communications Management}
+
+%- Plan Communications
+
+\section{Project Risk Management}
+
+%Plan Risk Management
+%-- Risk Register
+
+%Identify Risks
+
+%Perform Qualitative Risk Analysis
+
+%Perform Quantitative Risk Analysis
+
+%Plan Risk Responses
+
+%\section{Project Procurement Management}
+
+%Plan Procurements
+
+%\section{Enterprise Environmental Factors}
+
+%\section{Organizational Process Assets}
+
+\section{Project Management Plan}
+
+
+\cleardoublepage
+\begin{thebibliography}{9}
+
+\bibitem{JonOops}
+  Jon McCann,
+  \emph{Oops!}.
+  \url{https://live.gnome.org/Design/Apps/Oops}.
+
+\bibitem{JonOverview}
+  Jon McCann,
+  \emph{Problem Recovery and Reporting}.
+  \url{https://live.gnome.org/GnomeOS/Design/Whiteboards/ProblemReporting}.
+
+\bibitem{JonProposal}
+  Jon McCann,
+  \emph{Problem Reporting Architecture Proposal}.
+  \url{https://live.gnome.org/GnomeOS/Design/Whiteboards/ProblemReporting/Proposal}.
+
+\bibitem{MS}
+  \emph{Debugging in the (Very) Large: Ten Years of Implementation and Experience}.
+  \url{http://msdn.microsoft.com/en-us/windows/hardware/gg487440}.
+
+\end{thebibliography}
+
+\end{document}

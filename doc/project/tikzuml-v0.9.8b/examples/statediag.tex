@@ -1,0 +1,87 @@
+\documentclass[a4paper,11pt, svgnames]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{listings}
+\usepackage{../tikz-uml}
+
+\textwidth 18.5cm
+\textheight 25.5cm
+\hoffset=-2.9cm
+\voffset=-2.9cm
+
+\sloppy
+\hyphenpenalty 10000000
+
+\date{}
+\title{}
+\author{}
+
+\lstdefinelanguage{tikzuml}{language=[LaTeX]TeX, classoffset=0, morekeywords={umlbasiccomponent, umlprovidedinterface, umlrequiredinterface, umldelegateconnector, umlassemblyconnector, umlVHVassemblyconnector, umlHVHassemblyconnector, umlnote, umlusecase, umlactor, umlinherit, umlassoc, umlVHextend, umlinclude, umlstateinitial, umlbasicstate, umltrans, umlstatefinal, umlVHtrans, umlHVtrans, umldatabase, umlmulti, umlobject, umlfpart, umlcreatecall, umlclass, umlvirt, umlunicompo, umlimport, umlaggreg}, keywordstyle=\color{DarkBlue}, classoffset=1, morekeywords={umlcomponent, umlsystem, umlstate, umlseqdiag, umlcall, umlcallself, umlfragment, umlpackage}, keywordstyle=\color{DarkRed}, classoffset=0,  sensitive=true, morecomment=[l]{\%}}
+
+\begin{document}
+
+\maketitle
+
+If you want to copy and paste the following source code, please take care of white spaces and special characters such as the minus symbol !
+
+\medskip
+\lstset{breaklines=true, frame=trBL, language=tikzuml}
+\begin{lstlisting}
+\begin{umlstate}[name=Amain]{Etat global de l'objet A}
+\begin{umlstate}[name=Bgraph, fill=red!20]{graphe B}
+\umlstateinitial[name=Binit]
+\umlbasicstate[y=-4, name=test1, fill=white]{test1}
+\umltrans{Binit}{test1}
+\umltrans[recursive=20|60|2.5cm, recursive direction=right to top, arg={op1}, pos=1.5]{test1}{test1}
+\umltrans[recursive=160|120|2.5cm, recursive direction=left to top, arg={op2}, pos=1.5]{test1}{test1}
+\umltrans[recursive=-160|-120|2.5cm, recursive direction=left to bottom, arg={op3}, pos=1.5]{test1}{test1}
+\umltrans[recursive=-20|-60|2.5cm, recursive direction=right to bottom, arg={op4}, pos=1.5]{test1}{test1}
+\umlbasicstate[y=-8, name=test2, fill=white]{test2}
+\umltrans[recursive=-160|-120|2.5cm, recursive direction=left to bottom, arg={op5}, pos=1.5]{test2}{test2}
+\umltrans{test1}{test2}
+\umlstatefinal[x=3, y=-7.75, name=Bfinal]
+\umltrans{test2}{Bfinal}
+\end{umlstate}
+\umlstateinitial[x=6, y=1, name=Ainit]
+\umlVHtrans[anchor2=40]{Ainit}{Bgraph}
+\umlstatefinal[x=6, y=-3.5, name=Afinal]
+\umlHVtrans[anchor1=30]{Bgraph}{Afinal}
+\umlbasicstate[x=6, y=-6, name=visu, fill=green!20]{Visualisation}
+\umlHVtrans{Bfinal}{visu}
+\umltrans{visu}{Afinal}
+\umltrans[recursive=-20|-60|2.5cm, recursive direction=right to bottom, arg=a, pos=1.5]{visu}{visu}
+\end{umlstate}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{umlstate}[name=Amain]{Etat global de l'objet A}
+\begin{umlstate}[name=Bgraph, fill=red!20]{graphe B}
+\umlstateinitial[name=Binit]
+\umlbasicstate[y=-4, name=test1, fill=white]{test1}
+\umltrans{Binit}{test1}
+\umltrans[recursive=20|60|2.5cm, recursive direction=right to top, arg={op1}, pos=1.5]{test1}{test1}
+\umltrans[recursive=160|120|2.5cm, recursive direction=left to top, arg={op2}, pos=1.5]{test1}{test1}
+\umltrans[recursive=-160|-120|2.5cm, recursive direction=left to bottom, arg={op3}, pos=1.5]{test1}{test1}
+\umltrans[recursive=-20|-60|2.5cm, recursive direction=right to bottom, arg={op4}, pos=1.5]{test1}{test1}
+\umlbasicstate[y=-8, name=test2, fill=white]{test2}
+\umltrans[recursive=-160|-120|2.5cm, recursive direction=left to bottom, arg={op5}, pos=1.5]{test2}{test2}
+\umltrans{test1}{test2}
+\umlstatefinal[x=3, y=-7.75, name=Bfinal]
+\umltrans{test2}{Bfinal}
+\end{umlstate}
+\umlstateinitial[x=6, y=1, name=Ainit]
+\umlVHtrans[anchor2=40]{Ainit}{Bgraph}
+\umlstatefinal[x=6, y=-3.5, name=Afinal]
+\umlHVtrans[anchor1=30]{Bgraph}{Afinal}
+\umlbasicstate[x=6, y=-6, name=visu, fill=green!20]{Visualisation}
+\umlHVtrans{Bfinal}{visu}
+\umltrans{visu}{Afinal}
+\umltrans[recursive=-20|-60|2.5cm, recursive direction=right to bottom, arg=a, pos=1.5]{visu}{visu}
+\end{umlstate}
+\end{tikzpicture}
+\end{center}
+\end{document}
+

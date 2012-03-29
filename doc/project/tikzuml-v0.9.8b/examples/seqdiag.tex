@@ -1,0 +1,109 @@
+\documentclass[a4paper,11pt, svgnames]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{listings}
+\usepackage{../tikz-uml}
+
+\textwidth 18.5cm
+\textheight 25.5cm
+\hoffset=-2.9cm
+\voffset=-2.9cm
+
+\sloppy
+\hyphenpenalty 10000000
+
+\date{}
+\title{}
+\author{}
+
+\lstdefinelanguage{tikzuml}{language=[LaTeX]TeX, classoffset=0, morekeywords={umlbasiccomponent, umlprovidedinterface, umlrequiredinterface, umldelegateconnector, umlassemblyconnector, umlVHVassemblyconnector, umlHVHassemblyconnector, umlnote, umlusecase, umlactor, umlinherit, umlassoc, umlVHextend, umlinclude, umlstateinitial, umlbasicstate, umltrans, umlstatefinal, umlVHtrans, umlHVtrans, umldatabase, umlmulti, umlobject, umlfpart, umlcreatecall, umlclass, umlvirt, umlunicompo, umlimport, umlaggreg}, keywordstyle=\color{DarkBlue}, classoffset=1, morekeywords={umlcomponent, umlsystem, umlstate, umlseqdiag, umlcall, umlcallself, umlfragment, umlpackage}, keywordstyle=\color{DarkRed}, classoffset=0,  sensitive=true, morecomment=[l]{\%}}
+
+\begin{document}
+
+\maketitle
+
+If you want to copy and paste the following source code, please take care of white spaces and special characters such as the minus symbol !
+
+\medskip
+\lstset{breaklines=true, frame=trBL, language=tikzuml}
+\begin{lstlisting}
+\begin{umlseqdiag}
+\umlactor[class=A]{a}
+\umldatabase[class=B, fill=blue!20]{b}
+\umlmulti[class=C]{c}
+\umlobject[class=D]{d}
+\begin{umlcall}[op=opa(), type=synchron, return=0]{a}{b}
+\begin{umlfragment}
+\begin{umlcall}[op=opb(), type=synchron, return=1]{b}{c}
+\begin{umlfragment}[type=alt, label=condition, inner xsep=8, fill=green!10]
+\begin{umlcall}[op=opc(), type=asynchron, fill=red!10]{c}{d}
+\end{umlcall}
+\umlfpart[default]
+\begin{umlcall}[op=opd(), type=synchron, return=3]{c}{d}
+\end{umlcall}
+\end{umlfragment}
+\end{umlcall}
+\end{umlfragment}
+\begin{umlfragment}
+\begin{umlcallself}[op=ope(), type=synchron, return=4]{b}
+\begin{umlfragment}[type=assert]
+\begin{umlcall}[op=opf(), type=synchron, return=5]{b}{c}
+\end{umlcall}
+\end{umlfragment}
+\end{umlcallself}
+\end{umlfragment}
+\end{umlcall}
+\umlcreatecall[class=E, x=8]{a}{e}
+\begin{umlfragment}
+\begin{umlcall}[op=opg(), name=test, type=synchron, return=6, dt=7, fill=red!10]{a}{e}
+\umlcreatecall[class=F, stereo=boundary, x=12]{e}{f}
+\end{umlcall}
+\begin{umlcall}[op=oph(), type=synchron, return=7]{a}{e}
+\end{umlcall}
+\end{umlfragment}
+\end{umlseqdiag}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{umlseqdiag}
+\umlactor[class=A]{a}
+\umldatabase[class=B, fill=blue!20]{b}
+\umlmulti[class=C]{c}
+\umlobject[class=D]{d}
+\begin{umlcall}[op=opa(), type=synchron, return=0]{a}{b}
+\begin{umlfragment}
+\begin{umlcall}[op=opb(), type=synchron, return=1]{b}{c}
+\begin{umlfragment}[type=alt, label=condition, inner xsep=8, fill=green!10]
+\begin{umlcall}[op=opc(), type=asynchron, fill=red!10]{c}{d}
+\end{umlcall}
+\umlfpart[default]
+\begin{umlcall}[op=opd(), type=synchron, return=3]{c}{d}
+\end{umlcall}
+\end{umlfragment}
+\end{umlcall}
+\end{umlfragment}
+\begin{umlfragment}
+\begin{umlcallself}[op=ope(), type=synchron, return=4]{b}
+\begin{umlfragment}[type=assert]
+\begin{umlcall}[op=opf(), type=synchron, return=5]{b}{c}
+\end{umlcall}
+\end{umlfragment}
+\end{umlcallself}
+\end{umlfragment}
+\end{umlcall}
+\umlcreatecall[class=E, x=8]{a}{e}
+\begin{umlfragment}
+\begin{umlcall}[op=opg(), name=test, type=synchron, return=6, dt=7, fill=red!10]{a}{e}
+\umlcreatecall[class=F, stereo=boundary, x=12]{e}{f}
+\end{umlcall}
+\begin{umlcall}[op=oph(), type=synchron, return=7]{a}{e}
+\end{umlcall}
+\end{umlfragment}
+\end{umlseqdiag}
+\end{tikzpicture}
+\end{center}
+\end{document}
+

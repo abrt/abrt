@@ -1,0 +1,92 @@
+\documentclass[a4paper,11pt, svgnames]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{listings}
+\usepackage{../tikz-uml}
+
+\textwidth 18.5cm
+\textheight 25.5cm
+\hoffset=-2.9cm
+\voffset=-2.9cm
+
+\sloppy
+\hyphenpenalty 10000000
+
+\date{}
+\title{}
+\author{}
+
+\lstdefinelanguage{tikzuml}{language=[LaTeX]TeX, classoffset=0, morekeywords={umlbasiccomponent, umlprovidedinterface, umlrequiredinterface, umldelegateconnector, umlassemblyconnector, umlVHVassemblyconnector, umlHVHassemblyconnector, umlnote, umlusecase, umlactor, umlinherit, umlassoc, umlVHextend, umlinclude, umlstateinitial, umlbasicstate, umltrans, umlstatefinal, umlVHtrans, umlHVtrans, umldatabase, umlmulti, umlobject, umlfpart, umlcreatecall, umlclass, umlvirt, umlunicompo, umlimport, umlaggreg}, keywordstyle=\color{DarkBlue}, classoffset=1, morekeywords={umlcomponent, umlsystem, umlstate, umlseqdiag, umlcall, umlcallself, umlfragment, umlpackage}, keywordstyle=\color{DarkRed}, classoffset=0,  sensitive=true, morecomment=[l]{\%}}
+
+\begin{document}
+
+\maketitle
+
+If you want to copy and paste the following source code, please take care of white spaces and special characters such as the minus symbol !
+
+\medskip
+\lstset{breaklines=true, frame=trBL, language=tikzuml}
+\begin{lstlisting}
+\begin{umlpackage}{p}
+\begin{umlpackage}{sp1}
+\umlclass[template=T]{A}{
+  n : uint \\ t : float
+}{}
+\umlclass[y=-3]{B}{
+  d : double
+}{
+  \umlvirt{setB(b : B) : void} \\ getB() : B}
+\end{umlpackage}
+\begin{umlpackage}[x=10,y=-6]{sp2}
+\umlinterface{C}{
+  n : uint \\ s : string
+}{}
+\end{umlpackage}
+\umlclass[x=2,y=-10]{D}{
+  n : uint
+  }{}
+\end{umlpackage}
+
+\umlassoc[geometry=-|-, arg1=tata, mult1=*, pos1=0.3, arg2=toto, mult2=1, pos2=2.9, align2=left]{C}{B}
+\umlunicompo[geometry=-|, arg=titi, mult=*, pos=1.7, stereo=vector]{D}{C}
+\umlimport[geometry=|-, anchors=90 and 50, name=import]{sp2}{sp1}
+\umlaggreg[arg=tutu, mult=1, pos=0.8, angle1=30, angle2=60, loopsize=2cm]{D}{D}
+\umlinherit[geometry=-|]{D}{B}
+\umlnote[x=2.5,y=-6, width=3cm]{B}{Je suis une note qui concerne la classe B}
+\umlnote[x=7.5,y=-2]{import-2}{Je suis une note qui concerne la relation d'import}
+\end{lstlisting}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{umlpackage}{p}
+\begin{umlpackage}{sp1}
+\umlclass[template=T]{A}{
+  n : uint \\ t : float
+}{}
+\umlclass[y=-3]{B}{
+  d : double
+}{
+  \umlvirt{setB(b : B) : void} \\ getB() : B}
+\end{umlpackage}
+\begin{umlpackage}[x=10,y=-6]{sp2}
+\umlinterface{C}{
+  n : uint \\ s : string
+}{}
+\end{umlpackage}
+\umlclass[x=2,y=-10]{D}{
+  n : uint
+  }{}
+\end{umlpackage}
+
+\umlassoc[geometry=-|-, arg1=tata, mult1=*, pos1=0.3, arg2=toto, mult2=1, pos2=2.9, align2=left]{C}{B}
+\umlunicompo[geometry=-|, arg=titi, mult=*, pos=1.7, stereo=vector]{D}{C}
+\umlimport[geometry=|-, anchors=90 and 50, name=import]{sp2}{sp1}
+\umlaggreg[arg=tutu, mult=1, pos=0.8, angle1=30, angle2=60, loopsize=2cm]{D}{D}
+\umlinherit[geometry=-|]{D}{B}
+\umlnote[x=2.5,y=-6, width=3cm]{B}{Je suis une note qui concerne la classe B}
+\umlnote[x=7.5,y=-2]{import-2}{Je suis une note qui concerne la relation d'import}
+\end{tikzpicture}
+\end{center}
+\end{document}
