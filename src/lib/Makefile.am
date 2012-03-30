@@ -8,7 +8,8 @@ libabrt_la_SOURCES = \
     abrt_conf.c \
     hooklib.c \
     daemon_is_ok.c \
-    kernel.c
+    kernel.c \
+    abrt_glib.c
 
 libabrt_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \
