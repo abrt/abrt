@@ -398,7 +398,7 @@ static gboolean on_focus_cb(
 
 static int chown_dir_over_dbus(const char *problem_dir_path)
 {
-    GError *error;
+    GError *error = NULL;
     GDBusProxy * proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
                                          G_DBUS_PROXY_FLAGS_NONE,
                                          NULL,
