@@ -144,7 +144,7 @@ static int dir_accessible_by_uid(const char* dir_path, uid_t uid)
     struct stat statbuf;
     if (stat(dir_path, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
     {
-        if (uid == 0 || uid_in_group(uid, statbuf.st_gid))
+        if (uid == 0 || (statbuf.st_mode & S_IROTH) || uid_in_group(uid, statbuf.st_gid))
         {
             VERB1 log("caller has access to the requested directory %s", dir_path);
             return 1;
@@ -293,27 +293,14 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
-        struct stat statbuf;
-        errno = 0;
-        if (stat(problem_dir, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
+        if(dir_accessible_by_uid(problem_dir, caller_uid)) //caller seems to be in group with access to this dir, so no action needed
         {
-            if (caller_uid == 0 || uid_in_group(caller_uid, statbuf.st_gid)) //caller seems to be in group with access to this dir, so no action needed
-            {
-                VERB1 log("caller has access to the requested directory %s", problem_dir);
-                g_dbus_method_invocation_return_value(invocation, NULL);
-                dd_close(dd);
-                return;
-            }
-
-        }
-        else
-        {
-            g_dbus_method_invocation_return_dbus_error(invocation,
-                                                      "org.freedesktop.problems.StatFailure",
-                                                      strerror(errno));
+            VERB1 log("caller has access to the requested directory %s", problem_dir);
+            g_dbus_method_invocation_return_value(invocation, NULL);
             dd_close(dd);
             return;
         }
+
 
         if (polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
         {
@@ -329,6 +316,15 @@ static void handle_method_call(GDBusConnection *connection,
         if (pwd)
         {
             errno = 0;
+            struct stat statbuf;
+            if (!(stat(problem_dir, &statbuf) == 0 && S_ISDIR(statbuf.st_mode)))
+            {
+                g_dbus_method_invocation_return_dbus_error(invocation,
+                                      "org.freedesktop.problems.StatFailure",
+                                      strerror(errno));
+                return;
+            }
+
             chown_res = chown(problem_dir, statbuf.st_uid, pwd->pw_gid);
             dd_init_next_file(dd);
             char *short_name, *full_name;
@@ -361,17 +357,7 @@ static void handle_method_call(GDBusConnection *connection,
 
         GVariantBuilder *builder;
 
-        struct stat statbuf;
-        errno = 0;
-        if (stat(problem_dir, &statbuf) != 0)
-        {
-            g_dbus_method_invocation_return_dbus_error(invocation,
-                                                  "org.freedesktop.problems.GetInfoError",
-                                                  strerror(errno));
-            return;
-        }
-
-        if (!uid_in_group(caller_uid, statbuf.st_gid))
+        if (!dir_accessible_by_uid(problem_dir, caller_uid))
         {
             if (polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
             {
