@@ -99,7 +99,7 @@ def extract_info_from_core(coredump_name):
 
     for line in lines:
         b_ids_line = line.split()
-        if len(b_ids_line) > 2:
+        if len(b_ids_line) >= EXECUTABLE:
             # [exe] -> the executable itself
             # linux-vdso.so.1 -> Virtual Dynamic Shared Object
             # linux-gate.so.1 -> the same as vdso
