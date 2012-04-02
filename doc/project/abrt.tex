@@ -45,30 +45,103 @@ business need, product scope, strategic plan
 
 \subsection{Business case}
 
+\subsubsection{Enterprise Client-Side Use Case 1}
+
 \begin{tikzpicture}
-\umlusecase[x=0,y=0]{case1}
-\umlusecase[x=0,y=1]{case2}
-\umlactor{User}
-\umlactor{Company Administrator}
-\umlactor{Customer Service}
-\umlactor{Package Maintainer}
-\umlactor{Security Engineer}
+\umlactor[x=-4,y=0]{End User}
+\umlactor[x=6,y=0]{Support Portal}
+\begin{umlsystem}[x=1,fill=red!10]{ABRT Client}
+\umlusecase[x=0,y=2.4]{Send a $\mu$Report}
+\umlusecase[x=0,y=0.8]{Read an Advice}
+\umlusecase[x=0,y=-0.8]{Send a Full Report}
+\umlusecase[x=0,y=-2.4]{Open a New Case}
+\end{umlsystem}
+\umlassoc{End User}{usecase-1}
+\umlassoc{End User}{usecase-2}
+\umlassoc{End User}{usecase-3}
+\umlassoc{End User}{usecase-4}
+\umlassoc{Support Portal}{usecase-1}
+\umlassoc{Support Portal}{usecase-2}
+\umlassoc{Support Portal}{usecase-3}
+\umlassoc{Support Portal}{usecase-4}
+\end{tikzpicture}
+
+\subsubsection{Enterprise Client-Side Use Case 2}
+
+\begin{tikzpicture}
+\umlactor[x=-6,y=0]{End User}
+\umlactor[x=10,y=0]{Administrator}
+\umlactor[x=10,y=-3]{Support Portal}
+\begin{umlsystem}[x=1,fill=red!10]{ABRT Server}
+\umlusecase[x=-2,y=2,name=send microreport]{Send $\mu$Report}
+\umlusecase[x=-2,y=-2,name=send full report]{Send Full Report}
+\umlusecase[x=2,y=5,width=3cm,name=view problem trends]{View Problem Trends}
+\umlusecase[x=2,y=3,name=view problem list]{View Problem List}
+\umlusecase[x=2,y=1,width=3cm,name=view individual problems]{View Individual Problems}
+\umlusecase[x=2,y=-1,width=3cm,name=submit problem to support portal]{Submit Problem to Support Portal}
+\umlusecase[x=2,y=-3,width=3cm,name=read advice from support portal]{Read Advice from Support Portal}
+\umlusecase[x=2,y=-5,width=3cm,name=open new case in support portal]{Open New Case in Support Portal}
+\end{umlsystem}
+\umlassoc{End User}{send microreport}
+\umlassoc{End User}{send full report}
+\umlassoc{Administrator}{view problem trends}
+\umlassoc{Administrator}{view problem list}
+\umlassoc{Administrator}{view individual problems}
+\umlassoc{Administrator}{submit problem to support portal}
+\umlassoc{Administrator}{read advice from support portal}
+\umlassoc{Administrator}{open new case in support portal}
+\umlassoc{Support Portal}{submit problem to support portal}
+\umlassoc{Support Portal}{read advice from support portal}
+\umlassoc{Support Portal}{open new case in support portal}
+\end{tikzpicture}
+
+\subsubsection{Enterprise  Support Use Case}
+
+\begin{tikzpicture}
+\umlactor[x=-4,y=0]{Support Portal}
+\umlactor[x=10,y=-2]{Package Maintainer}
+\umlactor[x=10,y=2]{QA Engineer}
+\begin{umlsystem}[fill=red!10]{ABRT Server}
+\umlusecase[x=0,y=4,name=save reports]{Save Reports}
+\umlusecase[x=0,y=2,width=2.6cm,name=find report duplicates]{Find Report Duplicates}
+\umlusecase[x=0,y=0,name=retrace coredump]{Retrace Coredump}
+\umlusecase[x=0,y=-2,name=debug coredump]{Debug Coredump}
+\umlusecase[x=0,y=-4,name=analyze backtrace]{Analyze Backtrace}
+\end{umlsystem}
+\umlassoc{Support Portal}{save reports}
+\umlassoc{Support Portal}{find report duplicates}
+\umlassoc{Support Portal}{retrace coredump}
+\umlassoc{Support Portal}{debug coredump}
+\umlassoc{Support Portal}{analyze backtrace}
 \end{tikzpicture}
 
 \subsubsection{Fedora}
 \begin{tikzpicture}
-\umlactor{User}
-\umlusecase{Report a problem}
-\umlactor{Package Maintainer}
-\umlactor{Upstream Developer}
-\umlactor{Security Engineer}
-\end{tikzpicture}
-
-\begin{tikzpicture}
-\umlactor{User}
-\umlactor{Package Maintainer}
-\umlactor{Upstream Developer}
-\umlactor{Security Engineer}
+\umlactor[x=-5,y=3]{End User}
+\umlactor[x=-5,y=0]{Distribution Bug Tracking System}
+\umlactor[x=-5,y=-3]{Upstream Bug Tracking System}
+\umlactor[x=8,y=-3]{Package Maintainer}
+\umlactor[x=8,y=0]{Upstream Developer}
+\umlactor[x=8,y=3]{Schedule Planner}
+\begin{umlsystem}[fill=red!10]{ABRT Server}
+\umlusecase[x=0,y=4,name=send microreport]{Send a $\mu$Report}
+\umlusecase[x=0,y=2,name=send full report]{Send a Full Report}
+\umlusecase[x=0,y=0,name=receive bug report]{Receive a Bug Report}
+\umlusecase[x=2,y=3,width=3cm,name=view problem trends]{View Problem Trends}
+\umlusecase[x=2,y=1,name=view problem list]{View Problem List}
+\umlusecase[x=2,y=-1,width=3cm,name=view individual problems]{View Individual Problems}
+\end{umlsystem}
+\umlassoc{End User}{send microreport}
+\umlassoc{End User}{send full report}
+\umlassoc{Distribution Bug Tracking System}{receive bug report}
+\umlassoc{Upstream Bug Tracking System}{receive bug report}
+\umlassoc{Package Maintainer}{view problem trends}
+\umlassoc{Package Maintainer}{view problem list}
+\umlassoc{Package Maintainer}{view individual problems}
+\umlassoc{Schedule Planner}{view problem trends}
+\umlassoc{Upstream Developer}{view problem trends}
+\umlassoc{Upstream Developer}{view problem list}
+\umlassoc{Upstream Developer}{view individual problems}
 \end{tikzpicture}
 
 \subsubsection{Related Work}
