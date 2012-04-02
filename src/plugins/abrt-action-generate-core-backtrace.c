@@ -19,6 +19,8 @@
 #include "libabrt.h"
 #include <btparser/core-backtrace.h>
 
+/* NOTE: ENABLE_DISASSEMBLY should be only enabled on x86_64 as the code won't
+ * work anywhere else. The configure script should take care of this. */
 #ifdef ENABLE_DISASSEMBLY
 #include <libelf.h>
 #include <gelf.h>
@@ -162,6 +164,199 @@ static void log_elf_error(const char *function, const char *filename)
     log("%s failed for %s: %s", function, filename, elf_errmsg(-1));
 }
 
+/*
+ * @param e         elf handle
+ * @param name      name of section to be found
+ * @param filename  filename for logging messages
+ * @param dest      save the resulting elf data pointer here (can be NULL)
+ * @param shdr_dest save the section header here (can be NULL)
+ * @returns zero on error, index of the section on success
+ */
+static unsigned xelf_section_by_name(Elf *e, const char *name, const char *filename, Elf_Data **dest, GElf_Shdr *shdr_dest)
+{
+    Elf_Scn *scn = NULL;
+    GElf_Shdr shdr;
+    unsigned section_index = 0;
+    size_t shstrndx;
+
+    /* Find the string table index */
+    if (elf_getshdrstrndx(e, &shstrndx) != 0)
+    {
+        VERB1 log_elf_error("elf_getshdrstrndx", filename);
+        return 0;
+    }
+
+    while ((scn = elf_nextscn(e, scn)) != NULL)
+    {
+        section_index++; /* starting index is 1 */
+
+        if (gelf_getshdr(scn, &shdr) != &shdr)
+        {
+            VERB1 log_elf_error("gelf_getshdr", filename);
+            continue;
+        }
+
+        const char *scnname = elf_strptr(e, shstrndx, shdr.sh_name);
+        if (scnname == NULL)
+        {
+            VERB1 log_elf_error("elf_strptr", filename);
+            continue;
+        }
+
+        if (strcmp(scnname, name) == 0)
+        {
+            /* Found, save data */
+            if (dest)
+            {
+                *dest = elf_getdata(scn, NULL);
+                if (*dest == NULL)
+                {
+                    VERB1 log_elf_error("elf_getdata", filename);
+                    break;
+                }
+            }
+
+            /* save shdr */
+            if (shdr_dest)
+            {
+                *shdr_dest = shdr;
+            }
+
+            return section_index;
+        }
+    }
+
+    VERB1 log("Section %s not found in %s\n", name, filename);
+    return 0;
+}
+
+static GHashTable* parse_plt(Elf *e, const char *filename)
+{
+    GElf_Shdr shdr;
+
+    Elf_Data *plt_data;
+    uintptr_t plt_base;
+    size_t plt_section_index = xelf_section_by_name(e, ".plt", filename, &plt_data, &shdr);
+    if (plt_section_index == 0)
+    {
+        VERB1 log("No .plt section found for %s", filename);
+        return NULL;
+    }
+    plt_base = shdr.sh_addr;
+
+    /* Find the relocation section for .plt (typically .rela.plt), together
+     * with its symbol and string table
+     */
+    Elf_Data *rela_plt_data = NULL;
+    Elf_Data *plt_symbols = NULL;
+    size_t stringtable = 0;
+    Elf_Scn *scn = NULL;
+    while ((scn = elf_nextscn(e, scn)) != NULL)
+    {
+        if (gelf_getshdr(scn, &shdr) != &shdr)
+        {
+            VERB1 log_elf_error("gelf_getshdr", filename);
+            continue;
+        }
+
+        if (shdr.sh_type == SHT_RELA && shdr.sh_info == plt_section_index)
+        {
+            rela_plt_data = elf_getdata(scn, NULL);
+            if (rela_plt_data == NULL)
+            {
+                VERB1 log_elf_error("elf_getdata", filename);
+                break;
+            }
+
+            /* Get symbol section for .rela.plt */
+            Elf_Scn *symscn = elf_getscn(e, shdr.sh_link);
+            if (symscn == NULL)
+            {
+                VERB1 log_elf_error("elf_getscn", filename);
+                break;
+            }
+
+            plt_symbols = elf_getdata(symscn, NULL);
+            if (plt_symbols == NULL)
+            {
+                VERB1 log_elf_error("elf_getdata", filename);
+                break;
+            }
+
+            /* Get string table for the symbol table. */
+            if (gelf_getshdr(symscn, &shdr) != &shdr)
+            {
+                VERB1 log_elf_error("gelf_getshdr", filename);
+                break;
+            }
+
+            stringtable = shdr.sh_link;
+            break;
+        }
+    }
+
+    if (stringtable == 0)
+    {
+        VERB1 log("Unable to read symbol table for .plt for file %s", filename);
+        return NULL;
+    }
+
+    /* Init hash table
+     * kyes are pointers to integers which we allocate with malloc
+     * values are owned by libelf, so we don't need to free them */
+    GHashTable *hash = g_hash_table_new_full(g_int64_hash, g_int64_equal, free, NULL);
+
+    /* PLT looks like this (see also AMD64 ABI, page 78):
+     *
+     * Disassembly of section .plt:
+     *
+     * 0000003463e01010 <attr_removef@plt-0x10>:
+     *   3463e01010:   ff 35 2a 2c 20 00       pushq  0x202c2a(%rip)         <-- here is plt_base
+     *   3463e01016:   ff 25 2c 2c 20 00       jmpq   *0x202c2c(%rip)            each "slot" is 16B wide
+     *   3463e0101c:   0f 1f 40 00             nopl   0x0(%rax)                  0-th slot is skipped
+     *
+     * 0000003463e01020 <attr_removef@plt>:
+     *   3463e01020:   ff 25 2a 2c 20 00       jmpq   *0x202c2a(%rip)
+     *   3463e01026:   68 00 00 00 00          pushq  $0x0                   <-- this is the number we want
+     *   3463e0102b:   e9 e0 ff ff ff          jmpq   3463e01010 <_init+0x18>
+     *
+     * 0000003463e01030 <fgetxattr@plt>:
+     *   3463e01030:   ff 25 22 2c 20 00       jmpq   *0x202c22(%rip)
+     *   3463e01036:   68 01 00 00 00          pushq  $0x1
+     *   3463e0103b:   e9 d0 ff ff ff          jmpq   3463e01010 <_init+0x18>
+     */
+
+    unsigned plt_offset;
+    uint32_t *plt_index;
+    GElf_Rela rela;
+    GElf_Sym symb;
+    for (plt_offset = 16; plt_offset < plt_data->d_size; plt_offset += 16)
+    {
+        plt_index = (uint32_t*)(plt_data->d_buf + plt_offset + 7);
+
+        if(gelf_getrela(rela_plt_data, *plt_index, &rela) != &rela)
+        {
+            VERB1 log_elf_error("gelf_getrela", filename);
+            continue;
+        }
+
+        if(gelf_getsym(plt_symbols, GELF_R_SYM(rela.r_info), &symb) != &symb)
+        {
+            VERB1 log_elf_error("gelf_getsym", filename);
+            continue;
+        }
+
+        char *symbol = elf_strptr(e, stringtable, symb.st_name);
+        uintptr_t *addr = xmalloc(sizeof(*addr)); /* ow ... */
+        *addr = (uintptr_t)(plt_base + plt_offset);
+
+        VERB3 log("[%02x] %jx: %s", *plt_index, (uintptr_t)(*addr), symbol);
+        g_hash_table_insert(hash, addr, symbol);
+    }
+
+    return hash;
+}
+
 /* TODO: sensible types */
 /* Load ELF 'filename', parse the .eh_frame contents, and for each entry in the
  * second argument check whether its address is contained in the range of some
@@ -178,12 +373,10 @@ static void elf_iterate_fdes(const char *filename, GList *entries)
     int fd;
     Elf *e;
     const unsigned char *e_ident;
-    const char *scnname;
-    Elf_Scn *scn;
     Elf_Data *scn_data;
     GElf_Shdr shdr;
     GElf_Phdr phdr;
-    size_t shstrndx, phnum;
+    size_t phnum;
 
     /* Initialize libelf, open the file and get its Elf handle. */
     if (elf_version(EV_CURRENT) == EV_NONE)
@@ -209,44 +402,9 @@ static void elf_iterate_fdes(const char *filename, GList *entries)
     }
 
     /* Look up the .eh_frame section */
-    if (elf_getshdrstrndx(e, &shstrndx) != 0)
-    {
-        VERB1 log_elf_error("elf_getshdrstrndx", filename);
-        goto ret_elf;
-    }
-
-    scn = NULL;
-    while ((scn = elf_nextscn(e, scn)) != NULL)
-    {
-        if (gelf_getshdr(scn, &shdr) != &shdr)
-        {
-            VERB1 log_elf_error("gelf_getshdr", filename);
-            continue;
-        }
-
-        scnname = elf_strptr(e, shstrndx, shdr.sh_name);
-        if (scnname == NULL)
-        {
-            VERB1 log_elf_error("elf_strptr", filename);
-            continue;
-        }
-
-        if (strcmp(scnname, ".eh_frame") == 0)
-        {
-            break; /* Found. */
-        }
-    }
-
-    if (scn == NULL)
+    if (!xelf_section_by_name(e, ".eh_frame", filename, &scn_data, &shdr))
     {
         VERB1 log("Section .eh_frame not found in %s", filename);
-        goto ret_elf;
-    }
-
-    scn_data = elf_getdata(scn, NULL);
-    if (scn_data == NULL)
-    {
-        VERB1 log_elf_error("elf_getdata", filename);
         goto ret_elf;
     }
 
