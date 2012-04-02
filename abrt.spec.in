@@ -44,7 +44,7 @@ BuildRequires: libtool
 BuildRequires: nss-devel
 BuildRequires: asciidoc
 BuildRequires: xmlto
-BuildRequires: libreport-devel > 2.0.6
+BuildRequires: libreport-devel >= 2.0.10
 BuildRequires: btparser-devel
 BuildRequires: elfutils-devel
 BuildRequires: elfutils-libelf-devel
@@ -86,6 +86,7 @@ Development libraries and headers for %{name}.
 Summary: %{name}'s gui
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
+Requires: %{name}-dbus = %{version}-%{release}
 BuildRequires: libreport-gtk-devel
 # we used to have abrt-applet, now abrt-gui includes it:
 Provides: abrt-applet = %{version}-%{release}

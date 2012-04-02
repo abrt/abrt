@@ -89,6 +89,27 @@ static char *get_last_line(const char* msg)
     return xstrndup(start, end - start);
 }
 
+static void show_warning_dialog(const char* message, GtkWidget *parent)
+{
+    if (!parent)
+        parent = g_main_window;
+
+    GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(parent),
+                                        GTK_DIALOG_DESTROY_WITH_PARENT,
+                                        GTK_MESSAGE_WARNING,
+                                        GTK_BUTTONS_OK,
+                                        message
+                                        );
+    g_signal_connect_swapped(dialog,
+                             "response",
+                             G_CALLBACK(gtk_widget_destroy),
+                             dialog);
+
+
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(GTK_WIDGET(dialog));
+}
+
 static problem_data_t* get_problem_data_dbus(const char *problem_dir_path, GError *error)
 {
     problem_data_t *pd;
@@ -119,6 +140,7 @@ static problem_data_t* get_problem_data_dbus(const char *problem_dir_path, GErro
     {
         add_to_problem_data(pd, key, val);
     }
+    g_variant_unref(result);
     return pd;
 }
 
@@ -184,7 +206,7 @@ static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data
     VERB1 log("added: %s", problem_dir_path);
 }
 
-GList *get_problems_over_dbus(const char *dump_location, GError *error)
+GList *get_problems_over_dbus(const char *dump_location, GError **error)
 {
     GDBusProxy * proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
                                              G_DBUS_PROXY_FLAGS_NONE,
@@ -193,7 +215,7 @@ GList *get_problems_over_dbus(const char *dump_location, GError *error)
                                              ABRT_DBUS_OBJECT,
                                              ABRT_DBUS_IFACE,
                                              NULL,
-                                             &error);
+                                             error);
 
     GVariant *result = g_dbus_proxy_call_sync(proxy,
                                     g_authorize ? "GetAllProblems" : "GetProblems",
@@ -201,18 +223,8 @@ GList *get_problems_over_dbus(const char *dump_location, GError *error)
                                      G_DBUS_CALL_FLAGS_NONE,
                                      -1,
                                      NULL,
-                                     &error);
-    GList *list = NULL;
-    GVariantIter *iter;
-    gchar *str;
-    g_variant_get(result, "(as)", &iter);
-    while (g_variant_iter_loop(iter, "s", &str))
-    {
-        VERB1 log("adding: %s\n", str);
-        list = g_list_prepend(list, xstrdup(str));
-    }
-    g_variant_iter_free(iter);
-
+                                     error);
+    GList *list = string_list_from_variant(result);
     return list;
 }
 
@@ -386,7 +398,7 @@ static gboolean on_focus_cb(
 
 static int chown_dir_over_dbus(const char *problem_dir_path)
 {
-    GError *error;
+    GError *error = NULL;
     GDBusProxy * proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
                                          G_DBUS_PROXY_FLAGS_NONE,
                                          NULL,
@@ -408,8 +420,41 @@ static int chown_dir_over_dbus(const char *problem_dir_path)
     {
         //TODO show a warning dialog here or on the higher level?
         error_msg(_("Can't chown '%s': %s"),problem_dir_path, error->message);
-        return 1;
         g_error_free(error);
+        return 1;
+    }
+    return 0;
+}
+
+static int delete_problem_dirs_over_dbus(GList *problem_dir_paths)
+{
+    GError *error = NULL;
+
+    GVariant *parameters = variant_from_string_list(problem_dir_paths);
+
+    GDBusProxy * proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+                                         G_DBUS_PROXY_FLAGS_NONE,
+                                         NULL,
+                                         ABRT_DBUS_NAME,
+                                         ABRT_DBUS_OBJECT,
+                                         ABRT_DBUS_IFACE,
+                                         NULL,
+                                         &error);
+
+    g_dbus_proxy_call_sync(proxy,
+                    "DeleteProblem",
+                    parameters,
+                    G_DBUS_CALL_FLAGS_NONE,
+                    -1,
+                    NULL,
+                    &error);
+
+    if (error)
+    {
+        //TODO show a warning dialog here or on the higher level?
+        error_msg(_("Deleting problem directory failed: %s"), error->message);
+        g_error_free(error);
+        return 1;
     }
     return 0;
 }
@@ -524,11 +569,12 @@ static void delete_report(GtkTreeView *treeview)
             const char *dump_dir_name = g_value_get_string(&d_dir);
 
             VERB1 log("Deleting '%s'", dump_dir_name);
-            if (delete_dump_dir_possibly_using_abrtd(dump_dir_name) == 0)
-            {
-                gtk_list_store_remove(GTK_LIST_STORE(store), &iter);
-            }
-            else
+
+            //TODO: I plan to implement deleting multiple items at once rhbz#541928
+            GList *problem_dir_paths = NULL;
+            problem_dir_paths = g_list_append(problem_dir_paths, xstrdup(dump_dir_name));
+
+            if (delete_problem_dirs_over_dbus(problem_dir_paths) != 0)
             {
                 /* Strange. Deletion did not succeed. Someone else deleted it?
                  * Rescan the whole list */
@@ -1073,11 +1119,25 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 
 static void scan_directory_and_add_to_dirlist(const char *path)
 {
-    GList *problem_dirs = get_problems_over_dbus(path, NULL);
+    GError *error = NULL;
+    GList *problem_dirs = get_problems_over_dbus(path, &error);
+
+    if (error)
+    {
+        char *message = xasprintf(_("Can't get problem list from abrt-dbus: %s"), error->message);
+        show_warning_dialog(message, NULL);
+        g_error_free(error);
+        free(message);
+        gtk_main_quit();
+    }
+
     if (problem_dirs)
        g_list_foreach(problem_dirs, (GFunc)add_directory_to_dirlist, NULL);
     else
-       error_msg_and_die(_("Can't get problem list from abrt-dbus"));
+       /* we can't die here, NULL == empty list which means there might be no
+        * problems in the given directory
+        */
+       VERB1 log("directory %s doesn't contain any problem directories", path);
 
     if (inotify_fd >= 0 && inotify_add_watch(inotify_fd, path, 0
     //      | IN_ATTRIB         // Metadata changed

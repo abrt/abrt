@@ -14,7 +14,7 @@ Copyright (c) 2012 ABRT Team <crash-catcher@fedorahosted.com>
   <vendor>The ABRT Team</vendor>
   <vendor_url>https://fedorahosted.org/abrt/</vendor_url>
 
-  <!-- install-debuginfos: default yes, administrator can change this -->
+  <!-- by default only root can see other users problems -->
   <action id="org.freedesktop.problems.getall">
     <description>Get problems from all users</description>
     <message>Reading others problems requires authentication</message>
