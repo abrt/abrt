@@ -16,10 +16,15 @@
 
 
 \title{ABRT Project Document}
-\author{Karel Klíč}
+\author{Karel Klíč, Michal Toman, Miroslav Lichvár}
 
 \begin{document}
 \maketitle
+
+ABRT is a set of technologies that collects and evaluates software
+crashes coming from Linux operating system deployments.
+
+
 
 This is a top-level project document for ABRT.
 
@@ -39,6 +44,105 @@ TODO: Purpose of ABRT.
 business need, product scope, strategic plan
 
 \subsection{Business case}
+
+\subsubsection{Enterprise Client-Side Use Case 1}
+
+\begin{tikzpicture}
+\umlactor[x=-4,y=0]{End User}
+\umlactor[x=6,y=0]{Support Portal}
+\begin{umlsystem}[x=1,fill=red!10]{ABRT Client}
+\umlusecase[x=0,y=2.4]{Send a $\mu$Report}
+\umlusecase[x=0,y=0.8]{Read an Advice}
+\umlusecase[x=0,y=-0.8]{Send a Full Report}
+\umlusecase[x=0,y=-2.4]{Open a New Case}
+\end{umlsystem}
+\umlassoc{End User}{usecase-1}
+\umlassoc{End User}{usecase-2}
+\umlassoc{End User}{usecase-3}
+\umlassoc{End User}{usecase-4}
+\umlassoc{Support Portal}{usecase-1}
+\umlassoc{Support Portal}{usecase-2}
+\umlassoc{Support Portal}{usecase-3}
+\umlassoc{Support Portal}{usecase-4}
+\end{tikzpicture}
+
+\subsubsection{Enterprise Client-Side Use Case 2}
+
+\begin{tikzpicture}
+\umlactor[x=-6,y=0]{End User}
+\umlactor[x=10,y=0]{Administrator}
+\umlactor[x=10,y=-3]{Support Portal}
+\begin{umlsystem}[x=1,fill=red!10]{ABRT Server}
+\umlusecase[x=-2,y=2,name=send microreport]{Send $\mu$Report}
+\umlusecase[x=-2,y=-2,name=send full report]{Send Full Report}
+\umlusecase[x=2,y=5,width=3cm,name=view problem trends]{View Problem Trends}
+\umlusecase[x=2,y=3,name=view problem list]{View Problem List}
+\umlusecase[x=2,y=1,width=3cm,name=view individual problems]{View Individual Problems}
+\umlusecase[x=2,y=-1,width=3cm,name=submit problem to support portal]{Submit Problem to Support Portal}
+\umlusecase[x=2,y=-3,width=3cm,name=read advice from support portal]{Read Advice from Support Portal}
+\umlusecase[x=2,y=-5,width=3cm,name=open new case in support portal]{Open New Case in Support Portal}
+\end{umlsystem}
+\umlassoc{End User}{send microreport}
+\umlassoc{End User}{send full report}
+\umlassoc{Administrator}{view problem trends}
+\umlassoc{Administrator}{view problem list}
+\umlassoc{Administrator}{view individual problems}
+\umlassoc{Administrator}{submit problem to support portal}
+\umlassoc{Administrator}{read advice from support portal}
+\umlassoc{Administrator}{open new case in support portal}
+\umlassoc{Support Portal}{submit problem to support portal}
+\umlassoc{Support Portal}{read advice from support portal}
+\umlassoc{Support Portal}{open new case in support portal}
+\end{tikzpicture}
+
+\subsubsection{Enterprise  Support Use Case}
+
+\begin{tikzpicture}
+\umlactor[x=-4,y=0]{Support Portal}
+\umlactor[x=10,y=-2]{Package Maintainer}
+\umlactor[x=10,y=2]{QA Engineer}
+\begin{umlsystem}[fill=red!10]{ABRT Server}
+\umlusecase[x=0,y=4,name=save reports]{Save Reports}
+\umlusecase[x=0,y=2,width=2.6cm,name=find report duplicates]{Find Report Duplicates}
+\umlusecase[x=0,y=0,name=retrace coredump]{Retrace Coredump}
+\umlusecase[x=0,y=-2,name=debug coredump]{Debug Coredump}
+\umlusecase[x=0,y=-4,name=analyze backtrace]{Analyze Backtrace}
+\end{umlsystem}
+\umlassoc{Support Portal}{save reports}
+\umlassoc{Support Portal}{find report duplicates}
+\umlassoc{Support Portal}{retrace coredump}
+\umlassoc{Support Portal}{debug coredump}
+\umlassoc{Support Portal}{analyze backtrace}
+\end{tikzpicture}
+
+\subsubsection{Fedora}
+\begin{tikzpicture}
+\umlactor[x=-5,y=3]{End User}
+\umlactor[x=-5,y=0]{Distribution Bug Tracking System}
+\umlactor[x=-5,y=-3]{Upstream Bug Tracking System}
+\umlactor[x=8,y=-3]{Package Maintainer}
+\umlactor[x=8,y=0]{Upstream Developer}
+\umlactor[x=8,y=3]{Schedule Planner}
+\begin{umlsystem}[fill=red!10]{ABRT Server}
+\umlusecase[x=0,y=4,name=send microreport]{Send a $\mu$Report}
+\umlusecase[x=0,y=2,name=send full report]{Send a Full Report}
+\umlusecase[x=0,y=0,name=receive bug report]{Receive a Bug Report}
+\umlusecase[x=2,y=3,width=3cm,name=view problem trends]{View Problem Trends}
+\umlusecase[x=2,y=1,name=view problem list]{View Problem List}
+\umlusecase[x=2,y=-1,width=3cm,name=view individual problems]{View Individual Problems}
+\end{umlsystem}
+\umlassoc{End User}{send microreport}
+\umlassoc{End User}{send full report}
+\umlassoc{Distribution Bug Tracking System}{receive bug report}
+\umlassoc{Upstream Bug Tracking System}{receive bug report}
+\umlassoc{Package Maintainer}{view problem trends}
+\umlassoc{Package Maintainer}{view problem list}
+\umlassoc{Package Maintainer}{view individual problems}
+\umlassoc{Schedule Planner}{view problem trends}
+\umlassoc{Upstream Developer}{view problem trends}
+\umlassoc{Upstream Developer}{view problem list}
+\umlassoc{Upstream Developer}{view individual problems}
+\end{tikzpicture}
 
 \subsubsection{Related Work}
 
@@ -93,7 +197,7 @@ problem management system into several components:
 
 \textbf{Criticism of the proposal}
 
-\begin{figure}[hp]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=0.8\textwidth]{abrt-bugs-per-component-cdf.pdf}
 \caption{Cumulative distribution of ABRT bugs and reports per
@@ -101,7 +205,7 @@ problem management system into several components:
 \label{fig:cumulative}
 \end{figure}
 
-\begin{figure}[hp]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=0.8\textwidth]{abrt-bugs-per-component.pdf}
 \caption{Distribution of ABRT bugs and reports per component}
@@ -136,6 +240,7 @@ Crashes in this situation are less frequent, but dangerous.
   is not presented.
 \end{enumerate}
 
+\vfill
 \section{Stakeholders}
 
 Here is a list of people impacted by the project, and relevant
@@ -156,14 +261,6 @@ information regarding their interests, involvement.
   \end{itemize}
 };
 
-\node(upstream)[abstract, below right=0 and 1cm of users.north east]
-{\textbf{Upstream Developers}
-  \nodepart{second} \vspace{-5mm}
-  \begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
-  \item Investigating security-sensitive bugs
-  \end{itemize}
-};
-
 \node(tools)[abstract, below=of users]
 {\textbf{Tools Team}
   \nodepart{second} \vspace{-5mm}
@@ -174,8 +271,8 @@ information regarding their interests, involvement.
   \end{itemize}
 };
 
-\node(security)[abstract, below=of tools]
-{\textbf{Security Team}
+\node(upstream)[abstract, below right=0 and 1cm of users.north east]
+{\textbf{Upstream Developers}
   \nodepart{second} \vspace{-5mm}
   \begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
   \item Investigating security-sensitive bugs
@@ -200,8 +297,26 @@ information regarding their interests, involvement.
   \end{itemize}
 };
 
-\node(desktop)[abstract, below=of support]
+\end{tikzpicture}
+\end{center}
+
+\begin{center}
+\begin{tikzpicture}[node distance=1cm]
+\node(security)[abstract]
+{\textbf{Security Team}
+  \nodepart{second}
+  \begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
+  \item Investigating security-sensitive bugs
+  \end{itemize}
+};
+
+\node(desktop)[abstract, right=of security]
 {\textbf{Desktop Team}
+  \nodepart{second}
+};
+
+\node(qa)[abstract, below=of desktop]
+{\textbf{QA Team}
   \nodepart{second}
 };
 
@@ -458,92 +573,251 @@ components.
 \end{tikzpicture}
 \end{center}
 
+\subsubsection{Problem Storage}
 \begin{center}
 \begin{tikzpicture}
 \umlclass[x=0,y=0]{problem}{
 id : PRIMARY KEY AUTOINCREMENT \\
+first occurence : TIMESTAMP \\
+last occurence : TIMESTAMP \\
+}{}
+
+\umlclass[x=-3,y=-4]{problem report}{
+problem id : FOREIGN KEY \\
+report id : FOREGIN KEY
+}{}
+
+\umlclass[x=3,y=-4]{problem component}{
+problem id : FOREIGN KEY \\
+component id : FOREGIN KEY \\
+order : INT
+}{}
+
+\umluniaggreg[geometry=--,pos1=0.2,mult1=1,mult2=+,pos2=0.8]{problem}{problem report}
+\umluniaggreg[geometry=--,pos1=0.2,mult1=1,mult2=+,pos2=0.8]{problem}{problem component}
+
+\end{tikzpicture}
+\end{center}
+
+\vfill
+\subsubsection{Problem Storage -- Reports}
+
+Part of reports is populated from $\mu$reports.
+
+\begin{center}
+\scalebox{0.9}{%
+\begin{tikzpicture}
+\umlclass[x=-1,y=0]{report}{
+id : PRIMARY KEY AUTOINCREMENT \\
 type : ENUM (USERSPACE, KERNEL, PYTHON, SELINUX) \\
 first occurence : TIMESTAMP \\
-last occurence : TIMESTAMP
+last occurence : TIMESTAMP \\
+crashing component id : FOREIGN KEY
 }{}
 
-\umlclass[x=4,y=-4]{problem fingerprint}{
-id : PRIMARY KEY AUTOINCREMENT \\
-problem id : FOREIGN KEY
-}{}
-
-\umlclass[x=-4,y=-4]{problem fingerprint record}{
-fingerprint id : FOREIGN KEY \\
-order : INT \\
-symbol id : FOREIGN KEY
-}{}
-
-\umlclass[x=-4,y=-8]{problem fingerprint symbol}{
-id : PRIMARY KEY \\
-name : STRING \\
-normalized source : STRING NOT NULL \\
-full source : STRING NOT NULL
-}{}
-
-\umlclass[x=4,y=-8]{problem fingerprint symbol hash}{
-symbol id : FOREIGN KEY \\
-hash : STRING NOT NULL \\
-build id : STRING NOT NULL \\
-offset : INT NOT NULL \\
-source file : STRING \\
-line number : INT
-}{}
-
-\umlclass[x=-4,y=5]{problem history daily}{
-day : DATE \\
-operating system id : FOREIGN KEY \\
-problem id : FOREIGN KEY \\
+% Above report left
+\umlclass[x=-6,y=3]{report os release}{
+report id : FOREIGN KEY \\
+operating system release id : FOREIGN KEY \\
 count : INT
 }{}
 
-\umlclass[x=-4,y=8]{problem history weekly}{
-week : DATE \\
-operating system id : FOREIGN KEY \\
-problem id : FOREIGN KEY \\
+\umlclass[x=-5,y=6]{report selinux state}{
+report id : FOREIGN KEY \\
+selinux state : ENUM \\
 count : INT
 }{}
 
-\umlclass[x=-4,y=11]{problem history monthly}{
-month : DATE \\
-operating system id : FOREIGN KEY \\
-problem id : FOREIGN KEY \\
+\umlclass[x=-5,y=9]{report selinux context}{
+report id : FOREIGN KEY \\
+context : STRING NOT NULL \\
 count : INT
 }{}
 
-\umlclass[x=2,y=4]{problem binary}{
+\umlclass[x=-5,y=12]{report duplicate hash}{
+report id : FOREIGN KEY \\
+hash : STRING \\
+type : ENUM (NAMES, HASHES)
+}{}
+
+\umluniaggreg[geometry=|-,pos1=0.2,mult1=1,mult2=+,pos2=1.9]{report}{report os release}
+\umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report selinux state}
+\umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report selinux context}
+\umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report duplicate hash}
+
+% Above report right
+\umlclass[x=4,y=3]{report binary}{
 id : PRIMARY KEY \\
 path : STRING \\
 count : INT
 }{}
 
-\umlclass[x=3,y=8]{problem backtrace}{
+\umlclass[x=4,y=9]{report proc status}{
 id : PRIMARY KEY \\
-problem id : FOREIGN KEY \\
-operating system id : FOREIGN KEY \\
-text : STRING
+report id : FOREIGN KEY \\
+traced : BOOL \\
+utrace : INT \\
+fd size : INT \\
+vm peak : INT \\
+vm size : INT \\
+vm data : INT \\
+vm stack : INT \\
+vm exe : INT \\
+vm lib : INT \\
+vm swap : INT \\
+threads : INT \\
+signal queue : INT \\
+signal pending \\
+signal block \\
+signal ignore \\
+...
+%capabilities inherited \\
+%capabilities prm \\
+%capabilities effective \\
+%capabilities bnd \\
+%cpus allowed \\
+%mems allowed \\
+%max cpu time \\
+%max file size \\
+%max data size \\
+%max stack size \\
+%max core file size \\
+%max resident set \\
+%max processes \\
+%max open files \\
+%max locked memory \\
+%max address space \\
+%max file locks \\
+%max pending sygnals \\
+%max msgqueue size \\
+%max nice priority \\
+%max realtime prioriry \\
+%max realtime timeout
 }{}
 
-\umlclass[x=3,y=11]{problem coredump}{
-id : PRIMARY KEY \\
-problem id : FOREIGN KEY \\
-operating system id : FOREIGN KEY
+\umluniaggreg[geometry=|-,mult2=+,pos2=1.9]{report}{report binary}
+\umluniaggreg[geometry=|-,mult2=+,pos2=1.9]{report}{report proc status}
+
+% Below report left
+\umlclass[x=-5,y=-4]{report package}{
+report id : FOREIGN KEY \\
+package id : FOREIGN KEY \\
+updated from package id : FOREIGN KEY \\
+count : INT
 }{}
 
-\umlclass[x=7,y=4]{problem package}{
-problem id : FOREIGN KEY \\
+\umlclass[x=-5,y=-7]{report related package}{
+report id : FOREIGN KEY \\
 package id : FOREIGN KEY \\
 count : INT
 }{}
 
-\umluniaggreg[geometry=|-|,mult1=1,pos1=0.2,mult2=+,pos2=2.8]{problem}{problem binary}
-\umluniaggreg[geometry=|-|,pos1=0.2,mult2=+,pos2=2.8]{problem}{problem package}
-\umluniaggreg[geometry=|-|,pos1=0.2,mult2=+,pos2=2.8]{problem}{problem backtrace}
+\umluniaggreg[geometry=|-,pos1=0.2,mult1=1,mult2=+,pos2=1.9]{report}{report package}
+\umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report related package}
 
+% Below report right
+\umlclass[x=4,y=-3]{report backtrace}{
+id : PRIMARY KEY AUTOINCREMENT \\
+report id : FOREIGN KEY
+}{}
+
+\umlclass[x=4,y=-6]{report backtrace frame}{
+backtrace id : FOREIGN KEY \\
+order : INT \\
+symbol id : FOREIGN KEY
+}{}
+
+\umluniaggreg[geometry=|-,mult2=+,pos2=1.9]{report}{report backtrace}
+\umluniaggreg[geometry=--,mult1=1,mult2=+]{report backtrace}{report backtrace frame}
+
+\end{tikzpicture}}
+\end{center}
+
+Part of reports is populated from full reports.
+
+\begin{center}
+\begin{tikzpicture}
+\umlclass[x=-1,y=0]{report}{}{}
+
+% Above report right
+\umlclass[x=4,y=3]{report full backtrace}{
+id : PRIMARY KEY \\
+report id : FOREIGN KEY \\
+os release id : FOREIGN KEY \\
+text : STRING
+}{}
+
+% Above report left
+\umlclass[x=-5,y=3]{report coredump}{
+id : PRIMARY KEY \\
+report id : FOREIGN KEY \\
+os release id : FOREIGN KEY
+}{}
+
+\umluniaggreg[geometry=|-,mult2=+,pos2=1.9]{report}{report full backtrace}
+\umluniaggreg[geometry=|-,mult2=+,pos2=1.9]{report}{report coredump}
+
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Problem Storage -- Report History}
+\begin{center}
+\begin{tikzpicture}
+\umlclass[x=-4,y=0]{report}{}{}
+
+\umlclass[x=5,y=-3]{report history daily}{
+day : DATE \\
+operating system release id : FOREIGN KEY \\
+report id : FOREIGN KEY \\
+count : INT
+}{}
+
+\umlclass[x=5,y=0]{report history weekly}{
+week : DATE \\
+operating system release id : FOREIGN KEY \\
+report id : FOREIGN KEY \\
+count : INT
+}{}
+
+\umlclass[x=5,y=3]{report history monthly}{
+month : DATE \\
+operating system release id : FOREIGN KEY \\
+report id : FOREIGN KEY \\
+count : INT
+}{}
+
+\umluniaggreg[geometry=-|-,pos1=0.2,mult1=1,mult2=*,pos2=1.8]{report}{report history daily}
+\umluniaggreg[geometry=--,pos1=0.2,mult2=*,pos2=0.9]{report}{report history weekly}
+\umluniaggreg[geometry=-|-,pos1=0.2,mult2=*,pos2=1.8]{report}{report history monthly}
+
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Problem Storage -- Symbols}
+\begin{center}
+\begin{tikzpicture}
+\umlclass[x=0,y=0]{symbol}{
+id : PRIMARY KEY \\
+name : STRING \\
+normalized path : STRING NOT NULL
+}{}
+
+\umlclass[x=-5,y=-4]{symbol hash}{
+symbol id : FOREIGN KEY \\
+hash : STRING NOT NULL
+}{}
+
+\umlclass[x=5,y=-4]{symbol source}{
+symbol id : FOREIGN KEY \\
+build id : STRING NOT NULL \\
+path : STRING NOT NULL \\
+offset : INT NOT NULL \\
+source file : STRING \\
+line number : INT
+}{}
+
+\umluniaggreg[geometry=--,pos1=0.2,mult1=1,mult2=+,pos2=0.8]{symbol}{symbol hash}
+\umluniaggreg[geometry=--,pos1=0.2,mult1=1,mult2=+,pos2=0.8]{symbol}{symbol source}
 
 \end{tikzpicture}
 \end{center}
@@ -651,6 +925,90 @@ count : INT
 \shadowbox{\includegraphics[width=\textwidth, trim=0 17cm 0 0, clip=true]{server-ui-status.png}}
 \end{center}
 
+\vfill
+\subsubsection{Problem Reporting Interface}
+
+Server accepts microreports.  Microreport is a JSON-formatted data
+structure described below:
+
+\begin{center}
+\begin{tabular}{l|p{5cm}|c|p{5cm}}
+\hline
+Name & Format & Mandatory & Notes \\ \hline
+\texttt{type} & \texttt{python}, \texttt{userspace}, or \texttt{kerneloops} & yes & \\
+\texttt{reason} & Unicode string, max. 128 characters. & yes & Format depends on the \texttt{type}. \\
+\texttt{crashtime} & Unsigned integer. & yes & POSIX time: number of seconds elapsed since midnight UTC of January 1, 1970. \\
+\texttt{uptime} & Unsigned integer. & yes & Number of seconds from program start to the problem. \\
+\texttt{executable} & Full path, max. 512 characters. & yes & \\
+\texttt{package} & Dictionary; see the corresponding table below. & yes & \\
+\texttt{related\_packages} & List of dictionaries; see the \texttt{package} description below. & yes & \\
+\texttt{os} & & yes & \\
+\texttt{architecture} & \texttt{x86\_64} or \texttt{i386} & yes & \\
+\texttt{reporter} & Dictionary; see the corresponding table below. & yes & Program that created the report. \\
+\texttt{core\_backtrace} & & yes & \\
+\texttt{os\_state} & Dictionary; see the corresponding table below. & yes & \\
+\texttt{user\_type} & \texttt{root}, \texttt{nologin}, \texttt{local}, or \texttt{remote} & no & \\
+\texttt{selinux} & Dictionary; see the corresponding table below. & no & SELinux presence and state. \\
+\texttt{proc\_status} & ASCII string, max. 2 kB. & & The contents of \texttt{/proc/pid/status}. \\
+\hline
+\end{tabular}
+\end{center}
+
+The \texttt{os\_state} structure:
+
+\begin{center}
+\begin{tabular}{l|p{5cm}|c|p{5cm}}
+\hline
+Name & Format & Mandatory & Notes \\ \hline
+\texttt{suspend} & \texttt{yes} or \texttt{no} & no & Problem happened during suspend, hibernate, or resume. \\
+\texttt{boot} & \texttt{yes} or \texttt{no} & no & Problem happened during boot process. \\
+\texttt{login} & \texttt{yes} or \texttt{no} & no & Problem happened during login process. \\
+\texttt{logout} & \texttt{yes} or \texttt{no} & no & Problem happened during logout process. \\
+\texttt{shutdown} & \texttt{yes} or \texttt{no} & no & Problem happened during the shutdown process. \\
+\hline
+\end{tabular}
+\end{center}
+
+The \texttt{reporter} structure:
+
+\begin{center}
+\begin{tabular}{l|p{5cm}|c|p{5cm}}
+\hline
+Name & Format & Mandatory & Notes \\ \hline
+\texttt{name} & ASCII string, max. 128 characters. & yes & \\
+\texttt{version} & ASCII string, max. 128 characters. & yes & \\
+\hline
+\end{tabular}
+\end{center}
+
+The \texttt{package} structure:
+
+\begin{center}
+\begin{tabular}{l|p{5cm}|c|p{5cm}}
+\hline
+Name & Format & Mandatory & Notes \\ \hline
+\texttt{name} & ASCII string, max. 128 characters. & yes & \\
+\texttt{version} & ASCII string, max. 128 characters. & yes & \\
+\texttt{release} & ASCII string, max. 128 characters. & yes & \\
+\texttt{architecture} & ASCII string, max. 128 characters. & yes & \\
+\texttt{epoch} & ASCII string, max. 128 characters. & yes & \\
+\hline
+\end{tabular}
+\end{center}
+
+The \texttt{selinux} structure:
+\begin{center}
+\begin{tabular}{l|p{5cm}|p{3cm}|p{5cm}}
+\hline
+Name & Format & Mandatory & Notes \\ \hline
+\texttt{state} & \texttt{enforcing}, \texttt{permissive}, or \texttt{disabled} & yes & \\
+\texttt{process} & ASCII string, max. 128 characters & yes, if the \texttt{state} is either \texttt{enforcing} or \texttt{permissive} & \texttt{ps -e --context} \\
+\texttt{policy\_package} & Dictionary; see the \texttt{package} description. & no & \\
+\hline
+\end{tabular}
+\end{center}
+
+
 \subsection{ABRT Client Overview}
 
 \begin{center}
@@ -739,7 +1097,11 @@ count : INT
 \end{tikzpicture}
 \end{center}
 
+\cleardoublepage
 \subsubsection{Apology Dialog}
+The dialogs come from \cite{JonOops}. Please see \cite{JonOops} for
+more detailed design.
+
 \begin{center}
 \includegraphics[width=\textwidth]{client-ui-apology-dialog-manual.png}
 \end{center}
@@ -755,7 +1117,11 @@ count : INT
 
 \subsubsection{Applet}
 
+\cleardoublepage
 \subsubsection{Problem Browser}
+The Problem Browser dialog comes from \cite{JonOops}. Please see
+\cite{JonOops} for more detailed design.
+
 \begin{center}
 \includegraphics[width=\textwidth]{client-ui-issue-browser.png}
 \end{center}
