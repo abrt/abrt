@@ -54,8 +54,11 @@ if __name__ == "__main__":
                 print str(ex)
                 sys.exit(RETURN_FAILURE)
 
-    vmcore = os.path.join(os.getcwd(), "vmcore")
+    if not vmcore:
+        vmcore = os.path.join(os.getcwd(), "vmcore")
+
     set_verbosity(verbose)
+
     if not os.path.exists(vmcore):
         print _("File {0} doesn't exist").format(vmcore)
         sys.exit(RETURN_FAILURE)
