@@ -607,7 +607,7 @@ Part of reports is populated from $\mu$reports.
 \begin{center}
 \scalebox{0.9}{%
 \begin{tikzpicture}
-\umlclass[x=-1,y=0]{report}{
+\umlclass[x=-2,y=0]{report}{
 id : PRIMARY KEY AUTOINCREMENT \\
 type : ENUM (USERSPACE, KERNEL, PYTHON, SELINUX) \\
 first occurence : TIMESTAMP \\
@@ -616,39 +616,39 @@ crashing component id : FOREIGN KEY
 }{}
 
 % Above report left
-\umlclass[x=-6,y=3]{report os release}{
-report id : FOREIGN KEY \\
-operating system release id : FOREIGN KEY \\
+\umlclass[x=-6,y=3]{report executable}{
+id : PRIMARY KEY \\
+path : STRING \\
 count : INT
 }{}
 
-\umlclass[x=-5,y=6]{report selinux state}{
+\umlclass[x=-6,y=6]{report selinux state}{
 report id : FOREIGN KEY \\
 selinux state : ENUM \\
 count : INT
 }{}
 
-\umlclass[x=-5,y=9]{report selinux context}{
+\umlclass[x=-6,y=9]{report selinux context}{
 report id : FOREIGN KEY \\
 context : STRING NOT NULL \\
 count : INT
 }{}
 
-\umlclass[x=-5,y=12]{report duplicate hash}{
+\umlclass[x=-6,y=12]{report architecture}{
 report id : FOREIGN KEY \\
-hash : STRING \\
-type : ENUM (NAMES, HASHES)
+architecture id : FOREIGN KEY \\
+count : INT
 }{}
 
-\umluniaggreg[geometry=|-,pos1=0.2,mult1=1,mult2=+,pos2=1.9]{report}{report os release}
+\umluniaggreg[geometry=|-,pos1=0.2,mult1=1,mult2=+,pos2=1.9]{report}{report executable}
 \umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report selinux state}
 \umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report selinux context}
-\umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report duplicate hash}
+\umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report architecture}
 
 % Above report right
-\umlclass[x=4,y=3]{report binary}{
-id : PRIMARY KEY \\
-path : STRING \\
+\umlclass[x=4,y=3]{report os release}{
+report id : FOREIGN KEY \\
+operating system release id : FOREIGN KEY \\
 count : INT
 }{}
 
@@ -695,20 +695,21 @@ signal ignore \\
 %max realtime timeout
 }{}
 
-\umluniaggreg[geometry=|-,mult2=+,pos2=1.9]{report}{report binary}
+\umluniaggreg[geometry=|-,mult2=+,pos2=1.9]{report}{report os release}
 \umluniaggreg[geometry=|-,mult2=+,pos2=1.9]{report}{report proc status}
 
 % Below report left
-\umlclass[x=-5,y=-4]{report package}{
+\umlclass[x=-6,y=-4]{report package}{
 report id : FOREIGN KEY \\
-package id : FOREIGN KEY \\
-updated from package id : FOREIGN KEY \\
+installed package id : FOREIGN KEY \\
+running package id : FOREIGN KEY \\
 count : INT
 }{}
 
-\umlclass[x=-5,y=-7]{report related package}{
+\umlclass[x=-6,y=-7]{report related package}{
 report id : FOREIGN KEY \\
-package id : FOREIGN KEY \\
+installed package id : FOREIGN KEY \\
+running package id : FOREIGN KEY \\
 count : INT
 }{}
 
@@ -716,6 +717,12 @@ count : INT
 \umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report related package}
 
 % Below report right
+\umlclass[x=7,y=0]{report duplicate hash}{
+backtrace id : FOREIGN KEY \\
+hash : STRING \\
+type : ENUM (NAMES, HASHES)
+}{}
+
 \umlclass[x=4,y=-3]{report backtrace}{
 id : PRIMARY KEY AUTOINCREMENT \\
 report id : FOREIGN KEY
@@ -729,6 +736,7 @@ symbol id : FOREIGN KEY
 
 \umluniaggreg[geometry=|-,mult2=+,pos2=1.9]{report}{report backtrace}
 \umluniaggreg[geometry=--,mult1=1,mult2=+]{report backtrace}{report backtrace frame}
+\umluniaggreg[geometry=--,mult1=1,mult2=+]{report backtrace}{report duplicate hash}
 
 \end{tikzpicture}}
 \end{center}
@@ -937,19 +945,31 @@ structure described below:
 Name & Format & Mandatory & Notes \\ \hline
 \texttt{type} & \texttt{python}, \texttt{userspace}, or \texttt{kerneloops} & yes & \\
 \texttt{reason} & Unicode string, max. 128 characters. & yes & Format depends on the \texttt{type}. \\
-\texttt{crashtime} & Unsigned integer. & yes & POSIX time: number of seconds elapsed since midnight UTC of January 1, 1970. \\
 \texttt{uptime} & Unsigned integer. & yes & Number of seconds from program start to the problem. \\
 \texttt{executable} & Full path, max. 512 characters. & yes & \\
-\texttt{package} & Dictionary; see the corresponding table below. & yes & \\
-\texttt{related\_packages} & List of dictionaries; see the \texttt{package} description below. & yes & \\
-\texttt{os} & & yes & \\
+\texttt{installed\_package} & Dictionary; see the \texttt{package} table below. & yes & \\
+\texttt{running\_package} & Dictionary; see the \texttt{package} table below. & no & \\
+\texttt{related\_packages} & List of dictionaries; see the \texttt{related\_package} description below. & yes & \\
+\texttt{os} & Dictionary; see the \texttt{os} table below. & yes & \\
 \texttt{architecture} & \texttt{x86\_64} or \texttt{i386} & yes & \\
-\texttt{reporter} & Dictionary; see the corresponding table below. & yes & Program that created the report. \\
+\texttt{reporter} & Dictionary; see the \texttt{reporter} table below. & yes & Program that created the report. \\
 \texttt{core\_backtrace} & & yes & \\
 \texttt{os\_state} & Dictionary; see the corresponding table below. & yes & \\
 \texttt{user\_type} & \texttt{root}, \texttt{nologin}, \texttt{local}, or \texttt{remote} & no & \\
 \texttt{selinux} & Dictionary; see the corresponding table below. & no & SELinux presence and state. \\
 \texttt{proc\_status} & ASCII string, max. 2 kB. & & The contents of \texttt{/proc/pid/status}. \\
+\hline
+\end{tabular}
+\end{center}
+
+The \texttt{os} structure:
+
+\begin{center}
+\begin{tabular}{l|p{5cm}|c|p{5cm}}
+\hline
+Name & Format & Mandatory & Notes \\ \hline
+\texttt{name} & ASCII string. & yes &  \\
+\texttt{version} & ASCII string & yes & Numeric. No codenames. \\
 \hline
 \end{tabular}
 \end{center}
@@ -981,6 +1001,18 @@ Name & Format & Mandatory & Notes \\ \hline
 \end{tabular}
 \end{center}
 
+The \texttt{related\_package} structure:
+\begin{center}
+\begin{tabular}{l|p{5cm}|c|p{5cm}}
+\hline
+Name & Format & Mandatory & Notes \\ \hline
+\texttt{installed\_package} & Dictionary; see the \texttt{package} table below. & yes & \\
+\texttt{running\_package} & Dictionary; see the \texttt{package} table below. & no & \\
+\hline
+\end{tabular}
+\end{center}
+
+
 The \texttt{package} structure:
 
 \begin{center}
@@ -1002,7 +1034,7 @@ The \texttt{selinux} structure:
 \hline
 Name & Format & Mandatory & Notes \\ \hline
 \texttt{state} & \texttt{enforcing}, \texttt{permissive}, or \texttt{disabled} & yes & \\
-\texttt{process} & ASCII string, max. 128 characters & yes, if the \texttt{state} is either \texttt{enforcing} or \texttt{permissive} & \texttt{ps -e --context} \\
+\texttt{context} & ASCII string, max. 128 characters & yes, if the \texttt{state} is either \texttt{enforcing} or \texttt{permissive} & \texttt{ps -e --context} \\
 \texttt{policy\_package} & Dictionary; see the \texttt{package} description. & no & \\
 \hline
 \end{tabular}
