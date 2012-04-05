@@ -372,23 +372,24 @@ static void handle_method_call(GDBusConnection *connection,
         struct dump_dir *dd = dd_opendir(problem_dir, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
         if (!dd)
         {
-            char *error_msg = g_strdup_printf(_("%s is not a valid problem directory"), problem_dir);
+            char *msg = g_strdup_printf(_("%s is not a valid problem directory"), problem_dir);
+            VERB1 error_msg("%s", msg);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                                   "org.freedesktop.problems.GetInfo",
-                                                  error_msg);
-            free(error_msg);
+                                                  msg);
+            free(msg);
             return;
         }
 
         builder = g_variant_builder_new(G_VARIANT_TYPE_ARRAY);
-        g_variant_builder_add (builder, "{ss}", xstrdup(FILENAME_TIME), dd_load_text(dd, FILENAME_TIME));
-        g_variant_builder_add (builder, "{ss}", xstrdup(FILENAME_REASON), dd_load_text(dd, FILENAME_REASON));
+        g_variant_builder_add(builder, "{ss}", xstrdup(FILENAME_TIME), dd_load_text(dd, FILENAME_TIME));
+        g_variant_builder_add(builder, "{ss}", xstrdup(FILENAME_REASON), dd_load_text(dd, FILENAME_REASON));
         char *not_reportable_reason = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, 0
                                                        | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
                                                        | DD_FAIL_QUIETLY_ENOENT
                                                        | DD_FAIL_QUIETLY_EACCES);
         if (not_reportable_reason)
-            g_variant_builder_add (builder, "{ss}", xstrdup(FILENAME_NOT_REPORTABLE), not_reportable_reason);
+            g_variant_builder_add(builder, "{ss}", xstrdup(FILENAME_NOT_REPORTABLE), not_reportable_reason);
         /* the source of the problem:
         * - first we try to load component, as we use it on Fedora
         */
@@ -406,14 +407,14 @@ static void handle_method_call(GDBusConnection *connection,
             );
         }
 
-        g_variant_builder_add (builder, "{ss}", xstrdup("source"), source);
+        g_variant_builder_add(builder, "{ss}", xstrdup("source"), source);
         char *msg = dd_load_text_ext(dd, FILENAME_REPORTED_TO, 0
                     | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
                     | DD_FAIL_QUIETLY_ENOENT
                     | DD_FAIL_QUIETLY_EACCES
         );
         if (msg)
-            g_variant_builder_add (builder, "{ss}", xstrdup(FILENAME_REPORTED_TO), msg);
+            g_variant_builder_add(builder, "{ss}", xstrdup(FILENAME_REPORTED_TO), msg);
 
         dd_close(dd);
 
@@ -424,6 +425,7 @@ static void handle_method_call(GDBusConnection *connection,
         free(source);
         free(not_reportable_reason);
 
+        VERB2 log("GetInfo: returning value for '%s'", problem_dir);
         g_dbus_method_invocation_return_value(invocation, response);
         return;
     }
