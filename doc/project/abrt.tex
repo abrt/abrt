@@ -24,8 +24,6 @@
 ABRT is a set of technologies that collects and evaluates software
 crashes coming from Linux operating system deployments.
 
-
-
 This is a top-level project document for ABRT.
 
 TODO: What is ABRT doing.
@@ -622,9 +620,9 @@ path : STRING \\
 count : INT
 }{}
 
-\umlclass[x=-6,y=6]{report selinux state}{
+\umlclass[x=-6,y=6]{report selinux mode}{
 report id : FOREIGN KEY \\
-selinux state : ENUM \\
+selinux mode : ENUM \\
 count : INT
 }{}
 
@@ -641,7 +639,7 @@ count : INT
 }{}
 
 \umluniaggreg[geometry=|-,pos1=0.2,mult1=1,mult2=+,pos2=1.9]{report}{report executable}
-\umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report selinux state}
+\umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report selinux mode}
 \umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report selinux context}
 \umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report architecture}
 
@@ -956,7 +954,7 @@ Name & Format & Mandatory & Notes \\ \hline
 \texttt{core\_backtrace} & & yes & \\
 \texttt{os\_state} & Dictionary; see the corresponding table below. & yes & \\
 \texttt{user\_type} & \texttt{root}, \texttt{nologin}, \texttt{local}, or \texttt{remote} & no & \\
-\texttt{selinux} & Dictionary; see the corresponding table below. & no & SELinux presence and state. \\
+\texttt{selinux} & Dictionary; see the corresponding table below. & no & SELinux presence and mode. \\
 \texttt{proc\_status} & ASCII string, max. 2 kB. & & The contents of \texttt{/proc/pid/status}. \\
 \hline
 \end{tabular}
@@ -1033,8 +1031,8 @@ The \texttt{selinux} structure:
 \begin{tabular}{l|p{5cm}|p{3cm}|p{5cm}}
 \hline
 Name & Format & Mandatory & Notes \\ \hline
-\texttt{state} & \texttt{enforcing}, \texttt{permissive}, or \texttt{disabled} & yes & \\
-\texttt{context} & ASCII string, max. 128 characters & yes, if the \texttt{state} is either \texttt{enforcing} or \texttt{permissive} & \texttt{ps -e --context} \\
+\texttt{mode} & \texttt{enforcing}, \texttt{permissive}, or \texttt{disabled} & yes & \\
+\texttt{context} & ASCII string, max. 128 characters & yes, if the \texttt{mode} is either \texttt{enforcing} or \texttt{permissive} & \texttt{ps -e --context} \\
 \texttt{policy\_package} & Dictionary; see the \texttt{package} description. & no & \\
 \hline
 \end{tabular}
