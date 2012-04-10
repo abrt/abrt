@@ -25,7 +25,7 @@ if __name__ == "__main__":
     vmlinux_di_path = ""
     tmpdir = ""
     vmcore = ""
-    global verbose
+
     help_text = _("Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]").format(PROGNAME)
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hvd", ["help", "tmpdir=", "cache=", "core="])
@@ -114,7 +114,10 @@ if __name__ == "__main__":
                 error_msg_and_die(_("Can't download required debuginfo"))
             vmlinux_di_path = "{0}/usr/lib/debug/lib/modules/{1}/vmlinux".format(vmlinux_di_cachedir, ver)
         else: # we need to use the suid wrapper, if we use the default cache
-            downloader = Popen(["/usr/libexec/abrt-action-install-debuginfo-to-abrt-cache", "--size_mb=4096", "--exact={0}".format(vmlinux_di_path)], bufsize = -1)
+            downloader_args = ["/usr/libexec/abrt-action-install-debuginfo-to-abrt-cache", "--size_mb=4096", "--exact={0}".format(vmlinux_di_path)]
+            if verbose > 0:
+                downloader_args.append("-{0}".format("v"*verbose))
+            downloader = Popen(downloader_args, bufsize = -1)
             res = downloader.wait()
             if res != 0:
                 error_msg_and_die(_("Can't download required debuginfo"))

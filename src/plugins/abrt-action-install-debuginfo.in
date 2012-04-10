@@ -134,6 +134,8 @@ if __name__ == "__main__":
             missing=arg.split(':')
             exact_fls = True
 
+    set_verbosity(verbose)
+
     if not cachedirs:
         try:
             fp = open("@sysconfdir@/@PACKAGE_NAME@/plugins/CCpp.conf", "r")
