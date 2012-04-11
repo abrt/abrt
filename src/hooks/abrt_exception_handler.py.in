@@ -37,26 +37,32 @@ def write_dump(tb):
     try:
         import socket
         s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        s.connect(@VAR_RUN@ + "/abrt/abrt.socket")
-        s.sendall("PUT / HTTP/1.1\r\n\r\n")
-        s.sendall("PID=%s\0" % os.getpid())
-        s.sendall("EXECUTABLE=%s\0" % executable)
-        s.sendall("ANALYZER=Python\0")
-        s.sendall("BASENAME=pyhook\0")
-        # This handler puts a short(er) crash descr in 1st line of the backtrace.
-        # Example:
-        # CCMainWindow.py:1:<module>:ZeroDivisionError: integer division or modulo by zero
-        s.sendall("REASON=%s\0" % tb.splitlines()[0])
-        s.sendall("BACKTRACE=%s\0" % tb)
-        s.shutdown(socket.SHUT_WR)
+        s.settimeout(5)
+        try:
+            s.connect(@VAR_RUN@ + "/abrt/abrt.socket")
+            s.sendall("PUT / HTTP/1.1\r\n\r\n")
+            s.sendall("PID=%s\0" % os.getpid())
+            s.sendall("EXECUTABLE=%s\0" % executable)
+            s.sendall("ANALYZER=Python\0")
+            s.sendall("BASENAME=pyhook\0")
+            # This handler puts a short(er) crash descr in 1st line of the backtrace.
+            # Example:
+            # CCMainWindow.py:1:<module>:ZeroDivisionError: integer division or modulo by zero
+            s.sendall("REASON=%s\0" % tb.splitlines()[0])
+            s.sendall("BACKTRACE=%s\0" % tb)
+            s.shutdown(socket.SHUT_WR)
 
-        # Read the response and log if there's anything wrong
-        response = ""
-        while True:
-            buf = s.recv(256)
-            if not buf:
-                break;
-            response += buf
+
+            # Read the response and log if there's anything wrong
+            response = ""
+            while True:
+                buf = s.recv(256)
+                if not buf:
+                    break
+                response += buf
+        except socket.timeout, ex:
+            import syslog
+            syslog.syslog("communication with ABRT daemon failed: %s" % str(ex))
 
         s.close()
         parts = response.split()
