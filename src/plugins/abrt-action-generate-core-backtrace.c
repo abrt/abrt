@@ -117,6 +117,293 @@ static char *get_gdb_output(const char *dump_dir_name)
 }
 
 #ifdef ENABLE_DISASSEMBLY
+
+/* Global iteration limit for algorithms walking call graphs. */
+static const unsigned call_graph_iteration_limit = 512;
+
+/* When using hash tables, we need to have addresses of the disassembled
+ * program as keys. We could either embed the addresses directly into the
+ * pointer (glib supports that), but that wouldn't allow us to disassemble
+ * 64-bit programs on 32-bit hosts. So we're using this function to allocate
+ * space for the pointer and store it there.
+ *
+ * Note that currently, the code won't work for any other situation than x86-64
+ * host disassembling x86-64 file anyway. This issue should be resolved when
+ * migrating the code to btparser -- either make it fully portable or take the
+ * restriction into account and don't do any of this pointer nonsense.
+ */
+static uintptr_t* addr_alloc(uintptr_t addr)
+{
+    uintptr_t *a = xmalloc(sizeof(*a));
+    *a = addr;
+    return a;
+}
+
+/* Copies the mnemonic of `insn` to the (preallocated) buffer `buf` */
+static void insn_mnemonic(const char *insn, char *buf)
+{
+    while (*insn && !isspace(*insn))
+    {
+        *buf++ = *insn++;
+    }
+    *buf = '\0';
+}
+
+static bool insn_is_one_of(const char *insn, const char **mnem_list)
+{
+    char mnembuf[256];
+    insn_mnemonic(insn, mnembuf);
+
+    const char **p;
+    for (p = mnem_list; *p != NULL; p++)
+    {
+        if (strcmp(*p, mnembuf) == 0)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+static bool insn_has_single_addr_operand(const char *insn, uintptr_t *dest)
+{
+    int ret, chars_read;
+    const char *p = insn;
+    uintptr_t addr;
+
+    /* mnemonic */
+    p = skip_non_whitespace(p);
+
+    /* space */
+    p = skip_whitespace(p);
+
+    /* address */
+    ret = sscanf(p, "%jx %n", &addr, &chars_read);
+    if (ret < 1)
+    {
+        return false;
+    }
+
+    /* check that there is nothing else after the address */
+    p += chars_read;
+    if(*p != '\0')
+    {
+        return false;
+    }
+
+    if (dest)
+    {
+        *dest = addr;
+    }
+    return true;
+}
+
+static void fingerprint_add_bool(struct strbuf *buffer, const char *name, bool value)
+{
+    strbuf_append_strf(buffer, "%s:%d", name, value ? 1 : 0);
+}
+
+static void fingerprint_add_list(struct strbuf *buffer, const char *name, GList *strings)
+{
+    bool first = true;
+    GList *it;
+
+    strbuf_append_strf(buffer, "%s:", name);
+
+    for (it = strings; it != NULL; it = g_list_next(it))
+    {
+        strbuf_append_strf(buffer, "%s%s", (first ? "" : ","), (char*)it->data);
+        first = false;
+    }
+
+    if (first)
+    {
+        strbuf_append_strf(buffer, "-");
+    }
+}
+
+static void instruction_present(struct strbuf *buffer, GList *insns, const char **mnem_list, const char *fp_name)
+{
+    bool found = false;
+
+    GList *it;
+    for (it = insns; it != NULL; it = g_list_next(it))
+    {
+        if (insn_is_one_of(it->data, mnem_list))
+        {
+            found = true;
+            break;
+        }
+    }
+
+    fingerprint_add_bool(buffer, fp_name, found);
+}
+
+static void fp_jump_equality(struct strbuf *buffer, GList *insns,
+        uintptr_t b, uintptr_t e, GHashTable *c, GHashTable *p)
+{
+    static const char *mnems[] = {"je", "jne", "jz", "jnz", NULL};
+    instruction_present(buffer, insns, mnems, "j_eql");
+}
+
+static void fp_jump_signed(struct strbuf *buffer, GList *insns,
+        uintptr_t b, uintptr_t e, GHashTable *c, GHashTable *p)
+{
+    static const char *mnems[] = {"jg", "jl", "jnle", "jnge", "jng", "jnl", "jle", "jge", NULL};
+    instruction_present(buffer, insns, mnems, "j_sgn");
+}
+
+static void fp_jump_unsigned(struct strbuf *buffer, GList *insns,
+        uintptr_t b, uintptr_t e, GHashTable *c, GHashTable *p)
+{
+    static const char *mnems[] = {"ja", "jb", "jnae", "jnbe", "jna", "jnb", "jbe", "jae", NULL};
+    instruction_present(buffer, insns, mnems, "j_usn");
+}
+
+static void fp_and_or(struct strbuf *buffer, GList *insns,
+        uintptr_t b, uintptr_t e, GHashTable *c, GHashTable *p)
+{
+    static const char *mnems[] = {"and", "or", NULL};
+    instruction_present(buffer, insns, mnems, "and_or");
+}
+
+static void fp_shift(struct strbuf *buffer, GList *insns,
+        uintptr_t b, uintptr_t e, GHashTable *c, GHashTable *p)
+{
+    static const char *mnems[] = {"shl", "shr", NULL};
+    instruction_present(buffer, insns, mnems, "shift");
+}
+
+static void fp_has_cycle(struct strbuf *buffer, GList *insns,
+        uintptr_t begin, uintptr_t end, GHashTable *call_graph, GHashTable *plt)
+{
+    GList *it;
+    static const char *jmp_mnems[] = {"jmp", "jmpb", "jmpw", "jmpl", "jmpq", NULL};
+    bool found = false;
+
+    for (it = insns; it != NULL; it = g_list_next(it))
+    {
+        char *insn = it->data;
+        uintptr_t target;
+
+        if (!insn_is_one_of(insn, jmp_mnems))
+        {
+            continue;
+        }
+
+        if (!insn_has_single_addr_operand(insn, &target))
+        {
+            continue;
+        }
+
+        if (begin <= target && target < end)
+        {
+            found = true;
+            break;
+        }
+    }
+
+    fingerprint_add_bool(buffer, "has_cycle", found);
+}
+
+static void fp_libcalls(struct strbuf *buffer, GList *insns,
+        uintptr_t begin, uintptr_t end, GHashTable *call_graph, GHashTable *plt)
+{
+    GList *it, *sym = NULL;
+
+    /* Look up begin in call graph */
+    GList *callees = g_hash_table_lookup(call_graph, &begin);
+
+    /* Resolve addresses to names if they are in PLT */
+    for (it = callees; it != NULL; it = g_list_next(it))
+    {
+        char *s = g_hash_table_lookup(plt, it->data);
+        if (s && !g_list_find_custom(sym, s, (GCompareFunc)strcmp))
+        {
+            sym = g_list_insert_sorted(sym, s, (GCompareFunc)strcmp);
+        }
+    }
+
+    /* Format the result */
+    fingerprint_add_list(buffer, "libcalls", sym);
+}
+
+static void fp_calltree_leaves(struct strbuf *buffer, GList *insns,
+        uintptr_t begin, uintptr_t end, GHashTable *call_graph, GHashTable *plt)
+{
+    unsigned iterations_allowed = call_graph_iteration_limit;
+    GHashTable *visited = g_hash_table_new_full(g_int64_hash, g_int64_equal, free, NULL);
+    GList *queue = g_list_append(NULL, addr_alloc(begin));
+    GList *it, *sym = NULL;
+
+    while (queue != NULL && iterations_allowed)
+    {
+        /* Pop one element */
+        it = g_list_first(queue);
+        queue = g_list_remove_link(queue, it);
+        uintptr_t *key = (uintptr_t*)(it->data);
+        /* uintptr_t addr = *key; */
+        g_list_free(it);
+        iterations_allowed--;
+
+        /* Check if it is not already visited */
+        if (g_hash_table_lookup_extended(visited, key, NULL, NULL))
+        {
+            free(key);
+            continue;
+        }
+        g_hash_table_insert(visited, key, key);
+
+        /* Lookup callees */
+        GList *callees = g_hash_table_lookup(call_graph, key);
+
+        /* If callee is PLT, add the corresponding symbols, otherwise
+         * extend the worklist */
+        for (it = callees; it != NULL; it = g_list_next(it))
+        {
+            char *s = g_hash_table_lookup(plt, it->data);
+            if (s && !g_list_find_custom(sym, s, (GCompareFunc)strcmp))
+            {
+                sym = g_list_insert_sorted(sym, s, (GCompareFunc)strcmp);
+            }
+            else if (s == NULL)
+            {
+                queue = g_list_append(queue, addr_alloc(*(uintptr_t*)(it->data)));
+            }
+        }
+    }
+    g_hash_table_destroy(visited);
+    list_free_with_free(queue);
+
+    fingerprint_add_list(buffer, "calltree_leaves", sym);
+}
+
+/* Type of function that implements one fingerprint component.
+ *
+ * @param buf        string buffer the fingerprint will be appended to
+ *                   format should be "fingerprint_name:fingerprint_value"
+ * @param insns      list of machine instructions
+ * @param begin      start address of the disassembled function
+ * @param end        address after the last instruction
+ * @param call_graph call graph in the form of hashtable (address -> list(address))
+ * @param plt_names  mapping from PLT addresses to symbols of library functions
+ */
+typedef void (*fp_function_type)(struct strbuf* buf, GList* insns,
+    uintptr_t begin, uintptr_t end, GHashTable* call_graph, GHashTable* plt_names);
+
+static fp_function_type fp_components[] = {
+    fp_jump_equality,
+    fp_jump_signed,
+    fp_jump_unsigned,
+    fp_and_or,
+    fp_shift,
+    fp_has_cycle,
+    fp_libcalls,
+    fp_calltree_leaves,
+    NULL
+};
+
 /* Read len bytes and interpret them as a number. Pointer p does not have to be
  * aligned.
  * XXX Assumption: we'll always run on architecture the ELF is run on,
@@ -302,7 +589,7 @@ static GHashTable* parse_plt(Elf *e, const char *filename)
     }
 
     /* Init hash table
-     * kyes are pointers to integers which we allocate with malloc
+     * keys are pointers to integers which we allocate with malloc
      * values are owned by libelf, so we don't need to free them */
     GHashTable *hash = g_hash_table_new_full(g_int64_hash, g_int64_equal, free, NULL);
 
@@ -347,8 +634,7 @@ static GHashTable* parse_plt(Elf *e, const char *filename)
         }
 
         char *symbol = elf_strptr(e, stringtable, symb.st_name);
-        uintptr_t *addr = xmalloc(sizeof(*addr)); /* ow ... */
-        *addr = (uintptr_t)(plt_base + plt_offset);
+        uintptr_t *addr = addr_alloc((uintptr_t)(plt_base + plt_offset));
 
         VERB3 log("[%02x] %jx: %s", *plt_index, (uintptr_t)(*addr), symbol);
         g_hash_table_insert(hash, addr, symbol);
@@ -368,44 +654,27 @@ static GHashTable* parse_plt(Elf *e, const char *filename)
  *
  * I wonder if this is really better than parsing eu-readelf text output.
  */
-static void elf_iterate_fdes(const char *filename, GList *entries)
+static GHashTable *elf_iterate_fdes(const char *filename, GList *entries, Elf *e)
 {
-    int fd;
-    Elf *e;
     const unsigned char *e_ident;
     Elf_Data *scn_data;
     GElf_Shdr shdr;
     GElf_Phdr phdr;
     size_t phnum;
-
-    /* Initialize libelf, open the file and get its Elf handle. */
-    if (elf_version(EV_CURRENT) == EV_NONE)
-    {
-        VERB1 log_elf_error("elf_version", filename);
-        return;
-    }
-
-    fd = xopen(filename, O_RDONLY);
-
-    e = elf_begin(fd, ELF_C_READ, NULL);
-    if (e == NULL)
-    {
-        VERB1 log_elf_error("elf_begin", filename);
-        goto ret_close;
-    }
+    GHashTable *retval = NULL; /* NULL = error */
 
     e_ident = (unsigned char *)elf_getident(e, NULL);
     if (e_ident == NULL)
     {
         VERB1 log_elf_error("elf_getident", filename);
-        goto ret_elf;
+        return NULL;
     }
 
     /* Look up the .eh_frame section */
     if (!xelf_section_by_name(e, ".eh_frame", filename, &scn_data, &shdr))
     {
         VERB1 log("Section .eh_frame not found in %s", filename);
-        goto ret_elf;
+        return NULL;
     }
 
     /* Get the address at which the executable segment is loaded. If the
@@ -416,7 +685,7 @@ static void elf_iterate_fdes(const char *filename, GList *entries)
     if (elf_getphdrnum(e, &phnum) != 0)
     {
         VERB1 log_elf_error("elf_getphdrnum", filename);
-        goto ret_elf;
+        return NULL;
     }
 
     uintptr_t exec_base;
@@ -426,7 +695,7 @@ static void elf_iterate_fdes(const char *filename, GList *entries)
         if (gelf_getphdr(e, i, &phdr) != &phdr)
         {
             VERB1 log_elf_error("gelf_getphdr", filename);
-            goto ret_elf;
+            return NULL;
         }
 
         if (phdr.p_type == PT_LOAD && phdr.p_flags & PF_X)
@@ -437,7 +706,7 @@ static void elf_iterate_fdes(const char *filename, GList *entries)
     }
 
     VERB1 log("Can't determine executable base for '%s'", filename);
-    goto ret_elf;
+    return NULL;
 
 base_found:
     VERB2 log("Executable base: %jx", (uintmax_t)exec_base);
@@ -463,6 +732,11 @@ base_found:
     } *cie;
     GList *cie_list = NULL;
 
+    /* Init hash table
+     * keys are pointers to integers which we allocate with malloc
+     * values stored directly */
+    GHashTable *hash = g_hash_table_new_full(g_int64_hash, g_int64_equal, free, NULL);
+
     while(1)
     {
         cfi_offset = cfi_offset_next;
@@ -477,13 +751,13 @@ base_found:
         if (ret < 0)
         {
             /* Error. If cfi_offset_next was updated, we may skip the
-             * errorneous cfi. */
+             * erroneous cfi. */
             if (cfi_offset_next > cfi_offset)
             {
                 continue;
             }
             VERB1 log("dwarf_next_cfi failed for %s: %s", filename, dwarf_errmsg(-1));
-            goto ret_list;
+            goto ret_free;
         }
 
         if (dwarf_cfi_cie_p(&cfi))
@@ -619,6 +893,11 @@ base_found:
                 initial_location -= exec_base;
             }
 
+            /* Insert the pair into hash */
+            uintptr_t *key = addr_alloc(initial_location + exec_base);
+            g_hash_table_insert(hash, key, (gpointer)address_range);
+            VERB3 log("FDE start: 0x%jx length: %u", (uintmax_t)*key, (unsigned)address_range);
+
             /* Iterate through the backtrace entries and check each address
              * member whether it belongs into the range given by current FDE.
              */
@@ -637,17 +916,13 @@ base_found:
         }
     }
 
-ret_list:
-    list_free_with_free(cie_list);
-ret_elf:
-    elf_end(e);
-ret_close:
-    close(fd);
-}
+    retval = hash; /* success */
 
-static char* fingerprint_insns(GList *insns)
-{
-    return xasprintf("number_of_instructions:%d", g_list_length(insns));
+ret_free:
+    list_free_with_free(cie_list);
+    if (retval == NULL)
+        g_hash_table_destroy(hash);
+    return retval;
 }
 
 /* Capture disassembler output into a strbuf.
@@ -672,19 +947,22 @@ static void log_bfd_error(const char *function, const char *filename)
     log("%s failed for %s: %s", function, filename, bfd_errmsg(bfd_get_error()));
 }
 
-/* Open filename, initialize binutils/libopcodes disassembler, disassemble each
- * function in 'entries' given by the ranges computed earlier and compute
- * fingerprint based on the disassembly.
- */
-static void disassemble_file(const char *filename, GList *entries)
+struct disasm_data
 {
-    bfd *bfdFile;
-    asection *section;
+    bfd *bfd_file; /* NULL indicates error */
     disassembler_ftype disassemble;
     struct disassemble_info info;
-    uintptr_t count, pc;
-    GList *it, *insns;
-    struct backtrace_entry *entry;
+};
+
+/* Initialize disassembler (libopcodes/libbfd) for given file.
+ *
+ * If the the function returns data with data.bfd_file = NULL,
+ * then the function failed.
+ */
+static struct disasm_data disasm_init(const char *filename)
+{
+    asection *section;
+    struct disasm_data data;
 
     static bool initialized = false;
     if (!initialized)
@@ -693,80 +971,310 @@ static void disassemble_file(const char *filename, GList *entries)
         initialized = true;
     }
 
-    bfdFile = bfd_openr(filename, NULL);
-    if (bfdFile == NULL)
+    data.bfd_file = bfd_openr(filename, NULL);
+    if (data.bfd_file == NULL)
     {
         VERB1 log_bfd_error("bfd_openr", filename);
-        return;
+        return data;
     }
 
-    if (!bfd_check_format(bfdFile, bfd_object))
+    if (!bfd_check_format(data.bfd_file, bfd_object))
     {
         VERB1 log_bfd_error("bfd_check_format", filename);
-        goto ret_close;
+        goto ret_fail;
     }
 
-    section = bfd_get_section_by_name(bfdFile, ".text");
+    section = bfd_get_section_by_name(data.bfd_file, ".text");
     if (section == NULL)
     {
         VERB1 log_bfd_error("bfd_get_section_by_name", filename);
-        goto ret_close;
+        goto ret_fail;
     }
 
-    disassemble = disassembler(bfdFile);
-    if (disassemble == NULL)
+    data.disassemble = disassembler(data.bfd_file);
+    if (data.disassemble == NULL)
     {
         VERB1 log("Unable to find disassembler");
-        goto ret_close;
+        goto ret_fail;
     }
 
-    init_disassemble_info(&info, NULL, buffer_printf);
-    info.arch = bfd_get_arch(bfdFile);
-    info.mach = bfd_get_mach(bfdFile);
-    info.buffer_vma = section->vma;
-    info.buffer_length = section->size;
-    info.section = section;
+    init_disassemble_info(&data.info, NULL, buffer_printf);
+    data.info.arch = bfd_get_arch(data.bfd_file);
+    data.info.mach = bfd_get_mach(data.bfd_file);
+    data.info.buffer_vma = section->vma;
+    data.info.buffer_length = section->size;
+    data.info.section = section;
     /*TODO: memory error func*/
-    bfd_malloc_and_get_section(bfdFile, section, &info.buffer);
-    disassemble_init_for_target(&info);
+    bfd_malloc_and_get_section(data.bfd_file, section, &data.info.buffer);
+    disassemble_init_for_target(&data.info);
 
-    /* Iterate over backtrace entries, disassembly and fingerprint each one. */
+    return data;
+
+ret_fail:
+    bfd_close(data.bfd_file);
+    data.bfd_file = NULL;
+    return data;
+}
+
+static void disasm_close(struct disasm_data data)
+{
+    if (data.bfd_file)
+    {
+        bfd_close(data.bfd_file);
+    }
+}
+
+/* Disassemble the function starting at function_begin and ending before
+ * function_end, returning a list of (char*) instructions.
+ */
+static GList* disasm_function(struct disasm_data data, uintptr_t function_begin,
+    uintptr_t function_end)
+{
+    uintptr_t count, pc;
+    GList *insns = NULL;
+
+    /* Check whether the address range is sane. */
+    if (!(data.info.section->vma <= function_begin
+         && function_end <= data.info.section->vma + data.info.section->size
+         && function_begin < function_end))
+    {
+        VERB2 log("Function range 0x%jx-0x%jx probably wrong", (uintmax_t)function_begin,
+                (uintmax_t)function_end);
+        return NULL;
+    }
+
+    /* Iterate over each instruction and add its string representation to a list. */
+    pc = count = function_begin;
+    while (count > 0 && pc < function_end)
+    {
+        data.info.stream = strbuf_new();
+        /* log("0x%jx: ", (uintmax_t)pc); */
+        count = data.disassemble(pc, &data.info);
+        pc += count;
+        insns = g_list_append(insns, strbuf_free_nobuf(data.info.stream));
+        /* log("%s\n", (char*)g_list_last(insns)->data); */
+    }
+
+    return insns;
+}
+
+/* Given list of instructions, returns lists of addresses that are (directly)
+ * called by them.
+ */
+static GList* callees(GList *insns)
+{
+    GList *it, *res = NULL;
+    static const char *call_mnems[] = {"call", "callb", "callw", "calll", "callq", NULL};
+
+    for (it = insns; it != NULL; it = g_list_next(it))
+    {
+        char *insn = it->data;
+        uintmax_t addr;
+
+        if (!insn_is_one_of(insn, call_mnems))
+        {
+            continue;
+        }
+
+        if (!insn_has_single_addr_operand(insn, &addr))
+        {
+            continue;
+        }
+
+        uintptr_t *a = addr_alloc((uintptr_t)addr);
+        res = g_list_append(res, a);
+    }
+
+    return res;
+}
+
+/* Compute intra-module call graph (that is, only calls within the binary).
+ */
+static GHashTable* compute_call_graph(struct disasm_data data, GHashTable *fdes, GList *entries)
+{
+    unsigned iterations_allowed = call_graph_iteration_limit;
+    GList *it, *insns;
+    struct backtrace_entry *entry;
+    GList *queue = NULL;
+    /* Keys are pointers to addresses, values are GLists of pointers to addresses. */
+    GHashTable *succ = g_hash_table_new_full(g_int64_hash, g_int64_equal, free, (GDestroyNotify)list_free_with_free);
+
+    /* Seed the queue with functions from entries */
+    for (it = entries; it != NULL; it = g_list_next(it))
+    {
+        entry = it->data;
+        uintptr_t *k = addr_alloc(entry->function_initial_loc);
+        queue = g_list_append(queue, k);
+    }
+
+    /* Note: allocated addresses that belong to the queue must either be
+     * 'reassigned' to succ or freed. */
+    while (queue != NULL && iterations_allowed)
+    {
+        /* Pop one item from the queue */
+        it = g_list_first(queue);
+        queue = g_list_remove_link(queue, it);
+        uintptr_t *key = (uintptr_t*)(it->data);
+        uintptr_t function_begin = *key;
+        g_list_free(it);
+        iterations_allowed--;
+
+        /* Check if it is not already processed */
+        if (g_hash_table_lookup_extended(succ, key, NULL, NULL))
+        {
+            free(key);
+            continue;
+        }
+
+        /* Look up function length in fdes
+         * note: length is stored casted to pointer */
+        uintptr_t p = (uintptr_t)g_hash_table_lookup(fdes, key);
+        if (p == 0)
+        {
+            VERB3 log("Range not present for 0x%jx, skipping disassembly", (uintmax_t)function_begin);
+            /* Insert empty list of callees so that we avoid looping infinitely */
+            g_hash_table_insert(succ, key, NULL);
+            continue;
+        }
+        uintptr_t function_end = function_begin + p;
+
+        /* Disassemble function */
+        insns = disasm_function(data, function_begin, function_end);
+        if (insns == NULL)
+        {
+            VERB2 log("Disassembly of 0x%jx-0x%jx failed", (uintmax_t)function_begin, (uintmax_t)function_end);
+            /* Insert empty list of callees so that we avoid looping infinitely */
+            g_hash_table_insert(succ, key, NULL);
+            continue;
+        }
+
+        /* Scan for callees */
+        GList *fn_callees = callees(insns);
+        list_free_with_free(insns);
+
+        VERB3 log("Callees of 0x%jx:", (uintmax_t)function_begin);
+
+        /* Insert callees to the workqueue */
+        for (it = fn_callees; it != NULL; it = g_list_next(it))
+        {
+            uintptr_t c = *(uintptr_t*)it->data;
+            queue = g_list_append(queue, addr_alloc(c));
+
+            VERB3 log("\t0x%jx", (uintmax_t)c);
+        }
+
+        /* Insert it to the hash so we don't have to recompute it */
+        g_hash_table_insert(succ, key, fn_callees);
+    }
+
+    return succ;
+}
+
+static void generate_fingerprints(struct disasm_data ddata, GHashTable *plt_names, GHashTable *call_graph, GList *entries)
+{
+    GList *it;
+    GList *insns;
+    struct backtrace_entry *entry;
+    fp_function_type *fp;
+
     for (it = entries; it != NULL; it = g_list_next(it))
     {
         entry = it->data;
         uintptr_t function_begin = entry->function_initial_loc;
         uintptr_t function_end = function_begin + entry->function_length;
 
-        /* Check whether the address range is sane. */
-        if (!(section->vma <= function_begin
-             && function_end <= section->vma + section->size
-             && function_begin < function_end))
+        insns = disasm_function(ddata, function_begin, function_end);
+        if (insns == NULL)
         {
-            VERB2 log("Function range 0x%jx-0x%jx probably wrong", (uintmax_t)function_begin,
-                    (uintmax_t)function_end);
+            VERB1 log("Cannot disassemble function at 0x%jx, not computing fingerprint", (uintmax_t)function_begin);
             continue;
         }
 
-        /* Iterate over each instruction and add its string representation to a list. */
-        insns = NULL;
-        pc = count = function_begin;
-        while (count > 0 && pc < function_end)
+        struct strbuf *strbuf = strbuf_new();
+        strbuf_append_strf(strbuf, "v1"); /* Fingerprint version */
+
+        for (fp = fp_components; *fp != NULL; fp++)
         {
-            info.stream = strbuf_new();
-            count = disassemble(pc, &info);
-            pc += count;
-            insns = g_list_append(insns, strbuf_free_nobuf(info.stream));
+            strbuf_append_strf(strbuf, ";");
+            (*fp)(strbuf, insns, function_begin, function_end, call_graph, plt_names);
         }
 
-        /* Compute the actual fingerprint from the list. */
-        /* TODO: Check for failures. */
-        entry->fingerprint = fingerprint_insns(insns);
-
         list_free_with_free(insns);
+        entry->fingerprint = strbuf_free_nobuf(strbuf);
+    }
+}
+
+static void process_executable(const char *filename, GList *entries)
+{
+    int fd;
+    Elf *e = NULL;
+    GHashTable *fdes = NULL;
+    GHashTable *plt_names = NULL;
+    GHashTable *call_graph = NULL;
+    struct disasm_data ddata = { 0 };
+
+    /* Initialize libelf, open the file and get its Elf handle. */
+    if (elf_version(EV_CURRENT) == EV_NONE)
+    {
+        VERB1 log_elf_error("elf_version", filename);
+        return;
     }
 
-ret_close:
-    bfd_close(bfdFile);
+    fd = xopen(filename, O_RDONLY);
+
+    e = elf_begin(fd, ELF_C_READ, NULL);
+    if (e == NULL)
+    {
+        VERB1 log_elf_error("elf_begin", filename);
+        goto ret_fail;
+    }
+
+    /* Read FDEs into hash, fill startPC and endPC for entries */
+    fdes = elf_iterate_fdes(filename, entries, e);
+    if (fdes == NULL)
+    {
+        VERB1 log("Failed to read .eh_frame function ranges from %s", filename);
+        goto ret_fail;
+    }
+
+    /* Read PLT into hash */
+    plt_names = parse_plt(e, filename);
+    if (plt_names == NULL)
+    {
+        VERB1 log("Failed to parse .plt from %s", filename);
+        goto ret_fail;
+    }
+
+    /* Initialize disassembler */
+    ddata = disasm_init(filename);
+    if (ddata.bfd_file == NULL)
+    {
+        VERB1 log("Failed to initialize disassembler for file %s", filename);
+        goto ret_fail;
+    }
+
+    /* Compute call graph for functions in entries list */
+    call_graph = compute_call_graph(ddata, fdes, entries);
+    if (call_graph == NULL)
+    {
+        VERB1 log("Failed to compute call graph for file %s", filename);
+        goto ret_fail;
+    }
+
+    /* Fill in fingerprints for entries (requires disasm, plt, callgraph) */
+    generate_fingerprints(ddata, plt_names, call_graph, entries);
+
+ret_fail:
+    if (call_graph)
+        g_hash_table_destroy(call_graph);
+    disasm_close(ddata);
+    if (plt_names)
+        g_hash_table_destroy(plt_names);
+    if (fdes)
+        g_hash_table_destroy(fdes);
+    if (e)
+        elf_end(e);
+    close(fd);
 }
 
 static gint filename_cmp(const struct backtrace_entry *entry, const char *filename)
@@ -774,7 +1282,7 @@ static gint filename_cmp(const struct backtrace_entry *entry, const char *filena
     return (entry->filename ? strcmp(filename, entry->filename) : 1);
 }
 
-static void disassemble_and_fingerprint(GList *backtrace)
+static void fingerprint_executables(GList *backtrace)
 {
     GList *to_be_done = g_list_copy(backtrace);
     GList *worklist, *it;
@@ -818,11 +1326,8 @@ static void disassemble_and_fingerprint(GList *backtrace)
         }
 
         /* Process the worklist */
-        VERB2 log("Extracting function ranges from %s", filename);
-        elf_iterate_fdes(filename, worklist);
-
-        VERB2 log("Disassembling functions from %s", filename);
-        disassemble_file(filename, worklist);
+        VERB2 log("Analyzing executable %s", filename);
+        process_executable(filename, worklist);
     }
 }
 #endif /* ENABLE_DISASSEMBLY */
@@ -894,7 +1399,7 @@ int main(int argc, char **argv)
 #ifdef ENABLE_DISASSEMBLY
     /* Extract address ranges from all the executables in the backtrace*/
     VERB1 log("Computing function fingerprints");
-    disassemble_and_fingerprint(backtrace);
+    fingerprint_executables(backtrace);
 #endif /* ENABLE_DISASSEMBLY */
 
     char *formated_backtrace = btp_core_backtrace_fmt(backtrace);

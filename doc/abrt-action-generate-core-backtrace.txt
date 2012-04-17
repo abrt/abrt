@@ -77,8 +77,12 @@ Where:
   executable.
 
 *FINGERPRINT*::
-  Fingerprint of the function the instruction pointer points to. Not yet
-  implemented.
+  Fingerprint of the function the instruction pointer points to (x86-64 only).
+  The fingerprint is generated from various aspects of the machine code of the
+  function in question. Its purpose is to supplant the BUILD_ID and OFFSET
+  pair in case they are not present and to allow for comparison of
+  coredump-level backtraces produced by two slightly different versions of a
+  program.
 
 Dash in place of any of the parts indicates that the part is unknown.
 
