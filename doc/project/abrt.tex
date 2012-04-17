@@ -1,3 +1,4 @@
+% TEXINPUT=tikzuml-v*:$TEXINPUT pdflatex abrt.tex
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
@@ -615,7 +616,7 @@ crashing component id : FOREIGN KEY
 
 % Above report left
 \umlclass[x=-6,y=3]{report executable}{
-id : PRIMARY KEY \\
+report id : PRIMARY KEY \\
 path : STRING \\
 count : INT
 }{}
@@ -729,7 +730,7 @@ report id : FOREIGN KEY
 \umlclass[x=4,y=-6]{report backtrace frame}{
 backtrace id : FOREIGN KEY \\
 order : INT \\
-symbol id : FOREIGN KEY
+symbol source id : FOREIGN KEY
 }{}
 
 \umluniaggreg[geometry=|-,mult2=+,pos2=1.9]{report}{report backtrace}
@@ -804,25 +805,20 @@ count : INT
 \begin{tikzpicture}
 \umlclass[x=0,y=0]{symbol}{
 id : PRIMARY KEY \\
-name : STRING \\
+name : STRING NOT NULL \\
 normalized path : STRING NOT NULL
 }{}
 
-\umlclass[x=-5,y=-4]{symbol hash}{
-symbol id : FOREIGN KEY \\
-hash : STRING NOT NULL
-}{}
-
-\umlclass[x=5,y=-4]{symbol source}{
+\umlclass[x=0,y=-4]{symbol source}{
 symbol id : FOREIGN KEY \\
 build id : STRING NOT NULL \\
 path : STRING NOT NULL \\
 offset : INT NOT NULL \\
 source file : STRING \\
+hash : STRING \\
 line number : INT
 }{}
 
-\umluniaggreg[geometry=--,pos1=0.2,mult1=1,mult2=+,pos2=0.8]{symbol}{symbol hash}
 \umluniaggreg[geometry=--,pos1=0.2,mult1=1,mult2=+,pos2=0.8]{symbol}{symbol source}
 
 \end{tikzpicture}
@@ -1156,17 +1152,75 @@ The Problem Browser dialog comes from \cite{JonOops}. Please see
 \includegraphics[width=\textwidth]{client-ui-issue-browser.png}
 \end{center}
 
-
-\subsection{Implementation Phases}
-
-\subsubsection{Already Implemented Components}
-
-\subsubsection{Phase 1}
-
-\subsubsection{Phase 2}
-
 \section{Project Time Management}
 
+\subsection{Fedora 17 Phase}
+Finish date: 2012-05-22.
+
+\subsubsection{Sprint 1}
+Finish date: 2012-04-20 Friday \\
+Duration: 3 weeks
+
+\begin{itemize}
+\item Server
+  \begin{itemize}
+  \item Problem storage
+    \begin{itemize}
+    \item Database schema [mtoman,mlichvar]
+    \item Storage of incoming problems [mlichvar]
+    \end{itemize}
+  \item Data storage
+    \item Initial database schema [mtoman]
+  \item Deduplication
+    \begin{itemize}
+    \item Deduplication of incoming problems according to hashes
+    \item Deduplication of retraced problems according to symbols
+    \end{itemize}
+  \item Retracing
+    \begin{itemize}
+    \item Retracing of microreports
+    \end{itemize}
+  \item Machine interface
+    \begin{itemize}
+    \item Receive report
+    \end{itemize}
+  \item Migration to SQLAlchemy [mlichvar]
+  \item RHEL6 compatibility [mtoman]
+  \end{itemize}
+\item Client
+  \begin{itemize}
+  \item Coredump-level backtraces [mmilata]
+  \item Microreport sender [npajkovs]
+  \item User interface [dvlasenk]
+  \end{itemize}
+\end{itemize}
+
+\subsubsection{Sprint 2}
+Start date: 2012-04-23 Monday \\
+Finish date: 2012-05-11 Friday \\
+Duration: 3 weeks
+
+\begin{itemize}
+\item Server
+  \begin{itemize}
+  \item Human interface
+  \item Machine interface
+  \item Tasks and workers
+  \item Clustering
+    \begin{itemize}
+      \item Adapt existing source code to match the server
+      \item Properly create problems from reports
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\subsubsection{Sprint 3}
+Start date: 2012-05-14 Monday \\
+Finish date: 2012-05-22 Tuesday \\
+Duration: 7 days
+
+\subsection{Fedora 18 Phase}
+Finish date: 2012-11-01
 
 \subsection{Activity List}
 
