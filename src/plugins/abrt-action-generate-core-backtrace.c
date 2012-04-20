@@ -17,6 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "libabrt.h"
+#include <btparser/core-backtrace.h>
 
 #ifdef ENABLE_DISASSEMBLY
 #include <libelf.h>
@@ -27,211 +28,6 @@
 #include <bfd.h>
 #include <dis-asm.h>
 #endif /* ENABLE_DISASSEMBLY */
-
-struct backtrace_entry {
-    uintptr_t address;
-    char *build_id;
-    uintptr_t build_id_offset;
-    char *symbol;
-    char *modname;
-    char *filename;
-    char *fingerprint;
-    uintptr_t function_initial_loc;
-    uintptr_t function_length;
-};
-
-#define OR_UNKNOWN(s) ((s) ? (s) : "-")
-
-static char *backtrace_format(GList *backtrace)
-{
-    struct strbuf *strbuf = strbuf_new();
-    struct backtrace_entry *entry;
-
-    while (backtrace != NULL)
-    {
-        entry = backtrace->data;
-
-        /* BUILD_ID OFFSET SYMBOL MODNAME FINGERPRINT */
-        strbuf_append_strf(strbuf, "%s 0x%x %s %s %s\n",
-                    OR_UNKNOWN(entry->build_id),
-                    entry->build_id_offset,
-                    OR_UNKNOWN(entry->symbol),
-                    OR_UNKNOWN(entry->modname),
-                    OR_UNKNOWN(entry->fingerprint));
-
-        backtrace = g_list_next(backtrace);
-    }
-
-    return strbuf_free_nobuf(strbuf);
-}
-
-static void backtrace_add_build_id(GList *backtrace, uintmax_t start, uintmax_t length,
-            const char *build_id, unsigned build_id_len, const char *modname, unsigned modname_len,
-            const char *filename, unsigned filename_len)
-{
-    struct backtrace_entry *entry;
-
-    while (backtrace != NULL)
-    {
-        entry = backtrace->data;
-        if (start <= entry->address && entry->address <= start+length)
-        {
-            /* NOTE: we could get by with just one copy of the string, but that
-             * would mean more bookkeeping for us ... */
-            entry->build_id = xstrndup(build_id, build_id_len);
-            entry->build_id_offset = entry->address - start;
-            entry->modname = xstrndup(modname, modname_len);
-            entry->filename = xstrndup(filename, filename_len);
-        }
-
-        backtrace = g_list_next(backtrace);
-    }
-}
-
-static void assign_build_ids(GList *backtrace, const char *dump_dir_name)
-{
-    /* Run eu-unstrip -n to obtain the ids. This should be rewritten to read
-     * them directly from the core. */
-    char *unstrip_output = run_unstrip_n(dump_dir_name, /*timeout_sec:*/ 30);
-    if (unstrip_output == NULL)
-        error_msg_and_die("Running eu-unstrip failed");
-
-    /* Get the executable name -- unstrip doesn't know it. */
-    struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
-    if (!dd)
-        xfunc_die(); /* dd_opendir already printed error msg */
-    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
-    dd_close(dd);
-
-    const char *cur = unstrip_output;
-
-    uintmax_t start;
-    uintmax_t length;
-    const char *build_id;
-    unsigned build_id_len;
-    const char *modname;
-    unsigned modname_len;
-    const char *filename;
-    unsigned filename_len;
-
-    int ret;
-    int chars_read;
-
-    while (*cur)
-    {
-        /* beginning of the line */
-
-        /* START+SIZE */
-        ret = sscanf(cur, "0x%jx+0x%jx %n", &start, &length, &chars_read);
-        if (ret < 2)
-        {
-            goto eat_line;
-        }
-        cur += chars_read;
-
-        /* BUILDID */
-        build_id = cur;
-        while (isxdigit(*cur))
-        {
-            cur++;
-        }
-        build_id_len = cur-build_id;
-
-        /* there may be @ADDR after the ID */
-        cur = skip_non_whitespace(cur);
-        cur = skip_whitespace(cur);
-
-        /* FILE */
-        filename = cur;
-        cur = skip_non_whitespace(cur);
-        filename_len = cur-filename;
-        cur = skip_whitespace(cur);
-
-        /* DEBUGFILE */
-        cur = skip_non_whitespace(cur);
-        cur = skip_whitespace(cur);
-
-        /* MODULENAME */
-        modname = cur;
-        cur = skip_non_whitespace(cur);
-        modname_len = cur-modname;
-
-        /* Use real executable file name instead of "-". */
-        if (modname_len == 5 && strncmp(modname, "[exe]", 5) == 0)
-        {
-            filename = executable;
-            filename_len = strlen(executable);
-        }
-
-        backtrace_add_build_id(backtrace, start, length,
-                    build_id, build_id_len, modname, modname_len,
-                    filename, filename_len);
-
-eat_line:
-        while (*cur && *cur++ != '\n')
-            continue;
-    }
-
-    free(executable);
-    free(unstrip_output);
-}
-
-static GList *extract_addresses(const char *str)
-{
-    const char *cur = str;
-
-    unsigned frame_number;
-    unsigned next_frame = 0;
-    uintmax_t address;
-
-    int ret;
-    int chars_read;
-
-    struct backtrace_entry *entry;
-    GList *backtrace = NULL;
-
-    while (*cur)
-    {
-        /* check whether current line describes frame and if we haven't seen it
-         * already (gdb prints the first one on start) */
-        ret = sscanf(cur, "#%u 0x%jx in %n", &frame_number, &address, &chars_read);
-        if (ret < 2 || frame_number != next_frame)
-        {
-            goto eat_line;
-        }
-        next_frame++;
-        cur += chars_read;
-
-        /* is symbol available? */
-        const char *sym;
-        if (*cur && *cur != '?')
-        {
-            sym = cur;
-            cur = skip_non_whitespace(cur);
-
-            /* Ignore anything below __libc_start_main. */
-            if (strncmp("__libc_start_main", sym, 17) == 0)
-            {
-                break;
-            }
-        }
-        else
-        {
-            sym = NULL;
-        }
-
-        entry = xzalloc(sizeof(*entry));
-        entry->address = (uintptr_t)address;
-        entry->symbol = (sym ? xstrndup(sym, cur-sym) : NULL);
-        backtrace = g_list_append(backtrace, entry);
-
-eat_line:
-        while (*cur && *cur++ != '\n')
-            continue;
-    }
-
-    return backtrace;
-}
 
 /* mostly copypasted from abrt-action-generate-backtrace */
 static char *get_gdb_output(const char *dump_dir_name)
@@ -913,13 +709,29 @@ int main(int argc, char **argv)
         return 1;
 
     /* parse addresses and eventual symbols from the output*/
-    GList *backtrace = extract_addresses(gdb_out);
+    GList *backtrace = btp_backtrace_extract_addresses(gdb_out);
     VERB1 log("Extracted %d frames from the backtrace", g_list_length(backtrace));
     free(gdb_out);
 
-    /* eu-unstrip - build ids and library paths*/
-    VERB1 log("Running eu-unstrip -n to obtain build ids");
-    assign_build_ids(backtrace, dump_dir_name);
+    VERB1 log("Running eu-unstrip -n to obatin build ids");
+    /* Run eu-unstrip -n to obtain the ids. This should be rewritten to read
+     * them directly from the core. */
+    char *unstrip_output = run_unstrip_n(dump_dir_name, /*timeout_sec:*/ 30);
+    if (unstrip_output == NULL)
+        error_msg_and_die("Running eu-unstrip failed");
+
+    /* Get the executable name -- unstrip doesn't know it. */
+    struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
+    if (!dd)
+        xfunc_die(); /* dd_opendir already printed error msg */
+    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+    dd_close(dd);
+
+    btp_core_assign_build_ids(backtrace, unstrip_output, executable);
+
+    free(executable);
+    free(unstrip_output);
+
 
 #ifdef ENABLE_DISASSEMBLY
     /* Extract address ranges from all the executables in the backtrace*/
@@ -927,9 +739,9 @@ int main(int argc, char **argv)
     disassemble_and_fingerprint(backtrace);
 #endif /* ENABLE_DISASSEMBLY */
 
-    char *formated_backtrace = backtrace_format(backtrace);
+    char *formated_backtrace = btp_core_backtrace_fmt(backtrace);
 
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return 1;
     dd_save_text(dd, FILENAME_CORE_BACKTRACE, formated_backtrace);

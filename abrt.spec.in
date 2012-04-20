@@ -49,6 +49,7 @@ BuildRequires: btparser-devel
 BuildRequires: elfutils-devel
 BuildRequires: elfutils-libelf-devel
 BuildRequires: binutils-devel
+BuildRequires: btparser-devel
 
 %if %{with systemd}
 Requires: systemd-units
@@ -99,7 +100,7 @@ GTK+ wizard for convenient bug reporting.
 %package addon-ccpp
 Summary: %{name}'s C/C++ addon
 Group: System Environment/Libraries
-Requires: elfutils, elfutils-libelf, elfutils-libs, cpio
+Requires: elfutils, elfutils-libelf, elfutils-libs, cpio, btparser
 Requires: gdb >= 7.0-3
 Requires: %{name} = %{version}-%{release}
 

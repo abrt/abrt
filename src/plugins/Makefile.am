@@ -189,10 +189,12 @@ abrt_action_generate_core_backtrace_CPPFLAGS = \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_generate_core_backtrace_LDADD = \
     $(LIBREPORT_LIBS) \
+    $(BTPARSER_LIBS) \
     ../lib/libabrt.la
 
 if ENABLE_DISASSEMBLY
