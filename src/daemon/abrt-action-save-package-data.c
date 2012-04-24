@@ -187,6 +187,17 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     if (!dd)
         return 1;
 
+    char *analyzer = dd_load_text(dd, FILENAME_ANALYZER);
+    if (!strcmp(analyzer, "Kerneloops"))
+    {
+        dd_save_text(dd, FILENAME_PACKAGE, "kernel");
+        dd_save_text(dd, FILENAME_COMPONENT, "kernel");
+        dd_close(dd);
+        free(analyzer);
+        return 0;
+    }
+    free(analyzer);
+
     char *cmdline = NULL;
     char *executable = NULL;
     char *rootdir = NULL;
@@ -198,125 +209,114 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     /* note: "goto ret" statements below free all the above variables,
      * but they don't dd_close(dd) */
 
-    char *analyzer = dd_load_text(dd, FILENAME_ANALYZER);
-    bool kernel = (strcmp(analyzer, "Kerneloops") == 0);
-    free(analyzer);
-    if (kernel)
+    cmdline = dd_load_text_ext(dd, FILENAME_CMDLINE, DD_FAIL_QUIETLY_ENOENT);
+    executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+    rootdir = dd_load_text_ext(dd, FILENAME_ROOTDIR,
+                               DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+
+    /* Close dd while we query package database. It can take some time,
+     * don't want to keep dd locked longer than necessary */
+    dd_close(dd);
+
+    if (is_path_blacklisted(executable))
     {
-        package_full_name = xstrdup("kernel");
-        component = xstrdup("kernel");
+        log("Blacklisted executable '%s'", executable);
+        goto ret; /* return 1 (failure) */
     }
-    else
+
+    package_full_name = rpm_get_package_nvr(executable, rootdir);
+    if (!package_full_name)
     {
-        cmdline = dd_load_text_ext(dd, FILENAME_CMDLINE, DD_FAIL_QUIETLY_ENOENT);
-        executable = dd_load_text(dd, FILENAME_EXECUTABLE);
-        rootdir = dd_load_text_ext(dd, FILENAME_ROOTDIR,
-                DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-
-        /* Close dd while we query package database. It can take some time,
-         * don't want to keep dd locked longer than necessary */
-        dd_close(dd);
-
-        if (is_path_blacklisted(executable))
+        if (settings_bProcessUnpackaged)
         {
-            log("Blacklisted executable '%s'", executable);
-            goto ret; /* return 1 (failure) */
+            VERB2 log("Crash in unpackaged executable '%s', proceeding without packaging information", executable);
+            goto ret0; /* no error */
         }
+        log("Executable '%s' doesn't belong to any package", executable);
+        goto ret; /* return 1 (failure) */
+    }
 
-        package_full_name = rpm_get_package_nvr(executable, rootdir);
-        if (!package_full_name)
-        {
-            if (settings_bProcessUnpackaged)
-            {
-                VERB2 log("Crash in unpackaged executable '%s', proceeding without packaging information", executable);
-                goto ret0; /* no error */
-            }
-            log("Executable '%s' doesn't belong to any package", executable);
-            goto ret; /* return 1 (failure) */
-        }
+    /* Check well-known interpreter names */
+    {
+        const char *basename = strrchr(executable, '/');
+        if (basename) basename++; else basename = executable;
 
-        /* Check well-known interpreter names */
-        {
-            const char *basename = strrchr(executable, '/');
-            if (basename) basename++; else basename = executable;
-
-            /* Add more interpreters as needed */
-            if (strcmp(basename, "python") == 0
-             || strcmp(basename, "perl") == 0
+        /* Add more interpreters as needed */
+        if (strcmp(basename, "python") == 0
+            || strcmp(basename, "perl") == 0
             ) {
 // TODO: we don't verify that python executable is not modified
 // or that python package is properly signed
 // (see CheckFingerprint/CheckHash below)
-                /* Try to find package for the script by looking at argv[1].
-                 * This will work only if the cmdline contains the whole path.
-                 * Example: python /usr/bin/system-control-network
-                 */
-                char *script_pkg = NULL;
-                char *script_name = get_argv1_if_full_path(cmdline);
-                if (script_name)
+            /* Try to find package for the script by looking at argv[1].
+             * This will work only if the cmdline contains the whole path.
+             * Example: python /usr/bin/system-control-network
+             */
+            char *script_pkg = NULL;
+            char *script_name = get_argv1_if_full_path(cmdline);
+            if (script_name)
+            {
+                script_pkg = rpm_get_package_nvr(script_name, NULL);
+                if (script_pkg)
                 {
-                    script_pkg = rpm_get_package_nvr(script_name, NULL);
-                    if (script_pkg)
+                    /* There is a well-formed script name in argv[1],
+                     * and it does belong to some package.
+                     * Replace interpreter's package_full_name and executable
+                     * with data pertaining to the script.
+                     */
+                    free(package_full_name);
+                    package_full_name = script_pkg;
+                    executable = script_name;
+                    /* executable has changed, check it again */
+                    if (is_path_blacklisted(executable))
                     {
-                        /* There is a well-formed script name in argv[1],
-                         * and it does belong to some package.
-                         * Replace interpreter's package_full_name and executable
-                         * with data pertaining to the script.
-                         */
-                        free(package_full_name);
-                        package_full_name = script_pkg;
-                        executable = script_name;
-                        /* executable has changed, check it again */
-                        if (is_path_blacklisted(executable))
-                        {
-                            log("Blacklisted executable '%s'", executable);
-                            goto ret; /* return 1 (failure) */
-                        }
+                        log("Blacklisted executable '%s'", executable);
+                        goto ret; /* return 1 (failure) */
                     }
                 }
-                if (!script_pkg && !settings_bProcessUnpackaged)
-                {
-                    log("Interpreter crashed, but no packaged script detected: '%s'", cmdline);
-                    goto ret; /* return 1 (failure) */
-                }
             }
-        }
-
-        package_short_name = get_package_name_from_NVR_or_NULL(package_full_name);
-        VERB2 log("Package:'%s' short:'%s'", package_full_name, package_short_name);
-
-        GList *li;
-
-        for (li = settings_setBlackListedPkgs; li != NULL; li = g_list_next(li))
-        {
-            if (strcmp((char*)li->data, package_short_name) == 0)
+            if (!script_pkg && !settings_bProcessUnpackaged)
             {
-                log("Blacklisted package '%s'", package_short_name);
+                log("Interpreter crashed, but no packaged script detected: '%s'", cmdline);
                 goto ret; /* return 1 (failure) */
             }
         }
-
-        if (settings_bOpenGPGCheck)
-        {
-            if (!rpm_chk_fingerprint(package_short_name))
-            {
-                log("Package '%s' isn't signed with proper key", package_short_name);
-                goto ret; /* return 1 (failure) */
-            }
-            /* We used to also check the integrity of the executable here:
-             *  if (!CheckHash(package_short_name.c_str(), executable)) BOOM();
-             * Checking the MD5 sum requires to run prelink to "un-prelink" the
-             * binaries - this is considered potential security risk so we don't
-             * do it now, until we find some non-intrusive way.
-             */
-        }
-
-        component = rpm_get_component(executable, rootdir);
-
-        dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-        if (!dd)
-            goto ret; /* return 1 (failure) */
     }
+
+    package_short_name = get_package_name_from_NVR_or_NULL(package_full_name);
+    VERB2 log("Package:'%s' short:'%s'", package_full_name, package_short_name);
+
+    GList *li;
+
+    for (li = settings_setBlackListedPkgs; li != NULL; li = g_list_next(li))
+    {
+        if (strcmp((char*)li->data, package_short_name) == 0)
+        {
+            log("Blacklisted package '%s'", package_short_name);
+            goto ret; /* return 1 (failure) */
+        }
+    }
+
+    if (settings_bOpenGPGCheck)
+    {
+        if (!rpm_chk_fingerprint(package_short_name))
+        {
+            log("Package '%s' isn't signed with proper key", package_short_name);
+            goto ret; /* return 1 (failure) */
+        }
+        /* We used to also check the integrity of the executable here:
+         *  if (!CheckHash(package_short_name.c_str(), executable)) BOOM();
+         * Checking the MD5 sum requires to run prelink to "un-prelink" the
+         * binaries - this is considered potential security risk so we don't
+         * do it now, until we find some non-intrusive way.
+         */
+    }
+
+    component = rpm_get_component(executable, rootdir);
+
+    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        goto ret; /* return 1 (failure) */
 
     if (package_full_name)
     {
