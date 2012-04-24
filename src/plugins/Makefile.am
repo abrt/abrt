@@ -197,16 +197,6 @@ abrt_action_generate_core_backtrace_LDADD = \
     $(BTPARSER_LIBS) \
     ../lib/libabrt.la
 
-if ENABLE_DISASSEMBLY
-abrt_action_generate_core_backtrace_CPPFLAGS += -DENABLE_DISASSEMBLY
-abrt_action_generate_core_backtrace_LDADD += \
-    -lelf \
-    -ldw \
-    -ldl \
-    -lbfd \
-    -lopcodes
-endif
-
 abrt_action_analyze_backtrace_SOURCES = \
     abrt-action-analyze-backtrace.c
 abrt_action_analyze_backtrace_CPPFLAGS = \
