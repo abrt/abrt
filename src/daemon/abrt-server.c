@@ -48,28 +48,27 @@ Initializing new dump:
 open /var/run/abrt.socket
 
 Providing dump data (hook writes to the socket):
+MANDATORY ITEMS:
 -> "PID="
    number 0 - PID_MAX (/proc/sys/kernel/pid_max)
    \0
 -> "EXECUTABLE="
-   string (maximum length ~MAX_PATH)
+   string
    \0
 -> "BACKTRACE="
-   string (maximum length 1 MB)
+   string
    \0
 -> "ANALYZER="
-   string (maximum length 100 bytes)
+   string
    \0
 -> "BASENAME="
-   string (maximum length 100 bytes, no slashes)
+   string (no slashes)
    \0
 -> "REASON="
-   string (maximum length 512 bytes)
+   string
    \0
 
-Finalizing dump creation:
--> "DONE"
-   \0
+You can send more messages using the same KEY=value format.
 */
 
 static unsigned total_bytes_read = 0;
