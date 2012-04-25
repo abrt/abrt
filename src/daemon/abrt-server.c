@@ -76,13 +76,12 @@ static unsigned total_bytes_read = 0;
 
 static uid_t client_uid = (uid_t)-1L;
 
-static int   pid;
 
 /* Create a new debug dump from client session.
  * Caller must ensure that all fields in struct client
  * are properly filled.
  */
-static int create_debug_dump(GHashTable *problem_info)
+static int create_debug_dump(GHashTable *problem_info, unsigned pid)
 {
     /* Create temp directory with the debug dump.
        This directory is renamed to final directory name after
@@ -315,6 +314,31 @@ static void die_if_data_is_missing(GHashTable *problem_info)
         error_msg_and_die("Some data is missing. Aborting.");
 }
 
+/*
+ * Takes hash table, looks for key FILENAME_PID and tries to convert its value
+ * to int.
+ */
+unsigned convert_pid(GHashTable *problem_info)
+{
+    long ret;
+    gchar *pid_str = (gchar *) g_hash_table_lookup(problem_info, FILENAME_PID);
+    char *err_pos;
+    int old_errno;
+
+    if (!pid_str)
+        error_msg_and_die("PID data is missing. Aborting!");
+
+    old_errno = errno;
+    errno = 0;
+    ret = strtol(pid_str, &err_pos, 10);
+    if (errno || pid_str == err_pos || *err_pos != '\0'
+        || ret > UINT_MAX || ret < 1)
+        error_msg_and_die("Malformed or out-of-range PID number: '%s'", pid_str);
+    errno = old_errno;
+
+    return (unsigned) ret;
+}
+
 static int perform_http_xact(void)
 {
     /* use free instead of g_free so that we can use xstr* functions from
@@ -444,8 +468,9 @@ static int perform_http_xact(void)
     /* Write out the crash dump. Don't let alarm to interrupt here */
     alarm(0);
 
+    unsigned pid = convert_pid(problem_info);
     die_if_data_is_missing(problem_info);
-    int ret = create_debug_dump(problem_info);
+    int ret = create_debug_dump(problem_info, pid);
 
     g_hash_table_destroy(problem_info);
     return ret;
