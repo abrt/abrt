@@ -291,6 +291,30 @@ static void process_message(GHashTable *problem_info, char *message)
     }
 }
 
+static void die_if_data_is_missing(GHashTable *problem_info)
+{
+    gboolean have_item, missing_data = FALSE;
+    gchar **pstring;
+    static const gchar *const needed[] = {FILENAME_ANALYZER,
+                                          FILENAME_BACKTRACE,
+                                          FILENAME_EXECUTABLE,
+                                          FILENAME_REASON,
+                                          "basename", NULL};
+
+    for (pstring = (gchar**) needed; *pstring; pstring++)
+    {
+        have_item = g_hash_table_lookup(problem_info, *pstring) != NULL;
+        if (!have_item)
+        {
+            error_msg("%s is missing.", *pstring);
+            missing_data = TRUE;
+        }
+    }
+
+    if (missing_data)
+        error_msg_and_die("Some data is missing. Aborting.");
+}
+
 static int perform_http_xact(void)
 {
     /* use free instead of g_free so that we can use xstr* functions from
@@ -419,6 +443,8 @@ static int perform_http_xact(void)
 
     /* Write out the crash dump. Don't let alarm to interrupt here */
     alarm(0);
+
+    die_if_data_is_missing(problem_info);
     int ret = create_debug_dump(problem_info);
 
     g_hash_table_destroy(problem_info);
