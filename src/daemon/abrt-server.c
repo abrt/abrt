@@ -217,14 +217,46 @@ static int delete_path(const char *dump_dir_name)
 }
 
 /* Checks if a string contains only printable characters. */
-static bool printable_str(const char *str)
+static gboolean printable_str(const char *str)
 {
     do {
         if ((unsigned char)(*str) < ' ' || *str == 0x7f)
-            return false;
+            return FALSE;
         str++;
     } while (*str);
-    return true;
+    return TRUE;
+}
+
+static gboolean is_correct_filename (const char *value)
+{
+    return printable_str(value) && !strchr(value, '/') && !strchr(value, '.');
+}
+
+static gboolean key_value_ok(gchar *key, gchar *value)
+{
+    char *i;
+
+    /* check key, it has to be valid filename and will end up in the
+     * bugzilla */
+    for (i = key; *i != 0; i++)
+    {
+        if (!isalpha(*i) && (*i != '-') && (*i != '_') && (*i != ' '))
+            return FALSE;
+    }
+
+    /* check value of 'basename', it has to be valid non-hidden directory
+     * name */
+    if (strcmp(key, "basename") == 0)
+    {
+        if (!is_correct_filename(value))
+        {
+            error_msg("Value of 'basename' (%s) is not a valid directory name.",
+                      value);
+            return FALSE;
+        }
+    }
+
+    return TRUE;
 }
 
 /* Handles a message received from client over socket. */
@@ -240,10 +272,21 @@ static void process_message(GHashTable *problem_info, char *message)
 
         position++;
         value = xstrndup(position, strlen(position));
-        g_hash_table_insert(problem_info, key, value);
+        if (key_value_ok(key, value))
+            if (strcmp(key, FILENAME_UID) == 0)
+            {
+                error_msg("Ignoring value of %s, will be determined later.",
+                          FILENAME_UID);
+            }
+            else
+                g_hash_table_insert(problem_info, key, value);
+        else
+            /* should use error_msg_and_die() here? */
+            error_msg("Invalid key or value format: %s", message);
     }
     else
     {
+        /* should use error_msg_and_die() here? */
         error_msg("Invalid message format: '%s'", message);
     }
 }
