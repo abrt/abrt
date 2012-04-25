@@ -77,29 +77,21 @@ static unsigned total_bytes_read = 0;
 static uid_t client_uid = (uid_t)-1L;
 
 static int   pid;
-static char *executable;
-static char *backtrace;
-/* "python", "ruby" etc. */
-static char *analyzer;
-/* Directory base name: "pyhook", "ruby" etc. */
-static char *dir_basename;
-/* Crash reason.
- * Python example:
- * "CCMainWindow.py:1:<module>:ZeroDivisionError: integer division or modulo by zero"
- */
-static char *reason;
-
 
 /* Create a new debug dump from client session.
  * Caller must ensure that all fields in struct client
  * are properly filled.
  */
-static int create_debug_dump()
+static int create_debug_dump(GHashTable *problem_info)
 {
     /* Create temp directory with the debug dump.
        This directory is renamed to final directory name after
        all files have been stored into it.
     */
+    gchar *dir_basename = g_hash_table_lookup(problem_info, "basename");
+    GHashTableIter iter;
+    gpointer gpkey, gpvalue;
+
     char *path = xasprintf("%s/%s-%s-%u.new",
                            g_settings_dump_location,
                            dir_basename,
@@ -115,15 +107,17 @@ static int create_debug_dump()
     }
     dd_create_basic_files(dd, client_uid);
 
-    dd_save_text(dd, FILENAME_ANALYZER, analyzer);
-    dd_save_text(dd, FILENAME_EXECUTABLE, executable);
-    dd_save_text(dd, FILENAME_BACKTRACE, backtrace);
-    dd_save_text(dd, FILENAME_REASON, reason);
-
-    /* Obtain and save the command line. */
-    char *cmdline = get_cmdline(pid);
-    dd_save_text(dd, FILENAME_CMDLINE, cmdline ? : "");
-    free(cmdline);
+    gpkey = g_hash_table_lookup(problem_info, FILENAME_CMDLINE);
+    if (!gpkey)
+    {
+        /* Obtain and save the command line. */
+        char *cmdline = get_cmdline(pid);
+        if (cmdline)
+        {
+            dd_save_text(dd, FILENAME_CMDLINE, cmdline);
+            free(cmdline);
+        }
+    }
 
     /* Store id of the user whose application crashed. */
     char uid_str[sizeof(long) * 3 + 2];
@@ -131,6 +125,12 @@ static int create_debug_dump()
     dd_save_text(dd, FILENAME_UID, uid_str);
 
     dd_save_text(dd, "abrt_version", VERSION);
+
+    g_hash_table_iter_init(&iter, problem_info);
+    while (g_hash_table_iter_next(&iter, &gpkey, &gpvalue))
+    {
+        dd_save_text(dd, (gchar *) gpkey, (gchar *) gpvalue);
+    }
 
     dd_close(dd);
 
@@ -141,7 +141,7 @@ static int create_debug_dump()
         strcpy(path, newpath);
     free(newpath);
 
-    log("Saved %s crash dump of pid %u to %s", analyzer, pid, path);
+    log("Saved crash dump of pid %u to %s", pid, path);
 
     /* Trim old crash dumps if necessary */
     load_abrt_conf();
@@ -227,87 +227,34 @@ static bool printable_str(const char *str)
     return true;
 }
 
-/* @returns
- *  Caller is responsible to call free() on the returned
- *  pointer.
- *  If NULL is returned, string extraction failed.
- */
-static char *try_to_get_string(const char *message,
-                               const char *tag,
-                               size_t max_len,
-                               bool printable,
-                               bool allow_slashes)
-{
-    if (!starts_with(message, tag))
-        return NULL;
-
-    const char *contents = message + strlen(tag);
-    if ((printable && !printable_str(contents))
-     || (!allow_slashes && strchr(contents, '/'))
-    ) {
-        error_msg("Received %s contains invalid characters, skipping", tag);
-        return NULL;
-    }
-
-    if (strlen(contents) > max_len)
-    {
-        error_msg("Received %s too long, trimming to %lu", tag, (long)max_len);
-    }
-
-    return xstrndup(contents, max_len);
-}
-
 /* Handles a message received from client over socket. */
-static void process_message(const char *message)
+static void process_message(GHashTable *problem_info, char *message)
 {
-/* @param tag
- *  The message identifier. Message starting with it
- *  is handled by this macro.
- * @param field
- *  Member in struct client, which should be filled by
- *  the field contents.
- * @param max_len
- *  Maximum length of the field in bytes.
- *  Exceeding bytes are trimmed.
- * @param printable
- *  Whether to limit the field contents to ASCII only.
- * @param allow_slashes
- *  Whether to allow slashes to be a part of input.
- */
-#define HANDLE_INCOMING_STRING(tag, field, max_len, printable, allow_slashes) \
-{ \
-    char *s = try_to_get_string(message, tag, max_len, printable, allow_slashes); \
-    if (s) \
-    { \
-        free(field); \
-        field = s; \
-        VERB3 log("Saved %s%s", tag, s); \
-        return; \
-    } \
-}
+    gchar *position;
+    gchar *key, *value;
 
-    HANDLE_INCOMING_STRING("EXECUTABLE=", executable, PATH_MAX, true, true);
-    HANDLE_INCOMING_STRING("BACKTRACE=", backtrace, MAX_BACKTRACE_SIZE, false, true);
-    HANDLE_INCOMING_STRING("BASENAME=", dir_basename, 100, true, false);
-    HANDLE_INCOMING_STRING("ANALYZER=", analyzer, 100, true, true);
-    HANDLE_INCOMING_STRING("REASON=", reason, 512, false, true);
-
-#undef HANDLE_INCOMING_STRING
-
-    /* PID is not handled as a string, we convert it to pid_t. */
-    if (starts_with(message, "PID="))
+    position = strchr(message, '=');
+    if (position)
     {
-        pid = xatou(message + strlen("PID="));
-        if (pid < 1)
-            /* pid == 0 is error, the lowest PID is 1. */
-            error_msg_and_die("Malformed or out-of-range number: '%s'", message + strlen("PID="));
-        VERB3 log("Saved PID %u", pid);
-        return;
+        key = g_ascii_strdown(message, position - message);
+
+        position++;
+        value = xstrndup(position, strlen(position));
+        g_hash_table_insert(problem_info, key, value);
+    }
+    else
+    {
+        error_msg("Invalid message format: '%s'", message);
     }
 }
 
 static int perform_http_xact(void)
 {
+    /* use free instead of g_free so that we can use xstr* functions from
+     * libreport/lib/xfuncs.c
+     */
+    GHashTable *problem_info = g_hash_table_new_full(g_str_hash, g_str_equal,
+                                     free, free);
     /* Read header */
     char *body_start = NULL;
     char *messagebuf_data = NULL;
@@ -404,7 +351,7 @@ static int perform_http_xact(void)
             if (len >= messagebuf_len)
                 break;
             /* messagebuf has at least one NUL - process the line */
-            process_message(messagebuf_data);
+            process_message(problem_info, messagebuf_data);
             messagebuf_len -= (len + 1);
             memmove(messagebuf_data, messagebuf_data + len + 1, messagebuf_len);
         }
@@ -427,16 +374,12 @@ static int perform_http_xact(void)
             error_msg_and_die("Message is too long, aborting");
     }
 
-    /* Creates debug dump if all fields were already provided. */
-    if (!pid || !backtrace || !executable
-     || !analyzer || !dir_basename || !reason
-    ) {
-        error_msg_and_die("Some data are missing. Aborting");
-    }
-
     /* Write out the crash dump. Don't let alarm to interrupt here */
     alarm(0);
-    return create_debug_dump();
+    int ret = create_debug_dump(problem_info);
+
+    g_hash_table_destroy(problem_info);
+    return ret;
 }
 
 static void dummy_handler(int sig_unused) {}
