@@ -181,8 +181,7 @@ static bool is_path_blacklisted(const char *path)
     return false;
 }
 
-static int get_script_name(const char *cmdline, char **executable,
-                           char **package_full_name)
+static struct pkg_envra *get_script_name(const char *cmdline, char **executable)
 {
 // TODO: we don't verify that python executable is not modified
 // or that python package is properly signed
@@ -191,7 +190,7 @@ static int get_script_name(const char *cmdline, char **executable,
          * This will work only if the cmdline contains the whole path.
          * Example: python /usr/bin/system-control-network
          */
-    char *script_pkg = NULL;
+    struct pkg_envra *script_pkg = NULL;
     char *script_name = get_argv1_if_full_path(cmdline);
     if (script_name)
     {
@@ -203,24 +202,22 @@ static int get_script_name(const char *cmdline, char **executable,
              * Replace interpreter's package_full_name and executable
              * with data pertaining to the script.
              */
-            free(*package_full_name);
-            *package_full_name = script_pkg;
             *executable = script_name;
             /* executable has changed, check it again */
             if (is_path_blacklisted(*executable))
             {
                 log("Blacklisted executable '%s'", *executable);
-                return 1;
+                return NULL;
             }
         }
     }
     if (!script_pkg && !settings_bProcessUnpackaged)
     {
         log("Interpreter crashed, but no packaged script detected: '%s'", cmdline);
-        return 1;
+        return NULL;
     }
 
-    return 0;
+    return script_pkg;
 }
 
 static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
@@ -243,9 +240,8 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     char *cmdline = NULL;
     char *executable = NULL;
     char *rootdir = NULL;
-    char *script_name = NULL; /* only if "interpreter /path/to/script" */
     char *package_short_name = NULL;
-    char *package_full_name = NULL;
+    struct pkg_envra *pkg_name = NULL;
     char *component = NULL;
     int error = 1;
     /* note: "goto ret" statements below free all the above variables,
@@ -266,8 +262,8 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
         goto ret; /* return 1 (failure) */
     }
 
-    package_full_name = rpm_get_package_nvr(executable, rootdir);
-    if (!package_full_name)
+    pkg_name = rpm_get_package_nvr(executable, rootdir);
+    if (!pkg_name)
     {
         if (settings_bProcessUnpackaged)
         {
@@ -289,13 +285,16 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     if (!strcmp(basename, "python")
         || !strcmp(basename, "perl"))
     {
-        int r = get_script_name(cmdline, &executable, &package_full_name);
-        if (r)
+        struct pkg_envra *script_pkg = get_script_name(cmdline, &executable);
+        if (!script_pkg)
             goto ret;
+
+        free_pkg_envra(pkg_name);
+        pkg_name = script_pkg;
     }
 
-    package_short_name = get_package_name_from_NVR_or_NULL(package_full_name);
-    VERB2 log("Package:'%s' short:'%s'", package_full_name, package_short_name);
+    package_short_name = xasprintf("%s", pkg_name->p_name);
+    VERB2 log("Package:'%s' short:'%s'", pkg_name->p_nvr, package_short_name);
 
     GList *li;
 
@@ -329,14 +328,18 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     if (!dd)
         goto ret; /* return 1 (failure) */
 
-    if (package_full_name)
+    if (pkg_name)
     {
-        dd_save_text(dd, FILENAME_PACKAGE, package_full_name);
+        dd_save_text(dd, FILENAME_PACKAGE, pkg_name->p_nvr);
+        dd_save_text(dd, FILENAME_PKG_EPOCH, pkg_name->p_epoch);
+        dd_save_text(dd, FILENAME_PKG_NAME, pkg_name->p_name);
+        dd_save_text(dd, FILENAME_PKG_VERSION, pkg_name->p_version);
+        dd_save_text(dd, FILENAME_PKG_RELEASE, pkg_name->p_release);
+        dd_save_text(dd, FILENAME_PKG_ARCH, pkg_name->p_arch);
     }
+
     if (component)
-    {
         dd_save_text(dd, FILENAME_COMPONENT, component);
-    }
 
     dd_close(dd);
 
@@ -346,9 +349,8 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     free(cmdline);
     free(executable);
     free(rootdir);
-    free(script_name);
     free(package_short_name);
-    free(package_full_name);
+    free_pkg_envra(pkg_name);
     free(component);
 
     return error;
