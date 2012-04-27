@@ -369,7 +369,7 @@ static void show_problem_notification(const char *format, ...)
     notify_notification_add_action(notification, "REPORT", _("Report"),
                                     NOTIFY_ACTION_CALLBACK(action_report),
                                     NULL, NULL);
-    notify_notification_add_action(notification, "default", _("Show"),
+    notify_notification_add_action(notification, "SHOW", _("Show"),
                                     NOTIFY_ACTION_CALLBACK(action_open_gui),
                                     NULL, NULL);
 
