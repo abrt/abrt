@@ -567,6 +567,7 @@ int main(int argc, char** argv)
     gdk_threads_enter();
 #endif
 
+    g_set_prgname("abrt");
     gtk_init(&argc, &argv);
 
     /* Can't keep these strings/structs static: _() doesn't support that */
