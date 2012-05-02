@@ -507,7 +507,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 FILE *fp;
                 pid_t child = spawn_event_handler_child(
                                 (first ? first : fullname),
-                                (first ? "notify_dup" : "notify"),
+                                (first ? "notify-dup" : "notify"),
                                 &fp
                 );
                 char *buf;

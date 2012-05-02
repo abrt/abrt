@@ -6,6 +6,7 @@ abrt_gui_CFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -I$(srcdir)/../gtk-helpers \
+    -DBIN_DIR=\"$(bindir)\" \
     -DICON_DIR=\"${datadir}/abrt/icons/hicolor/48x48/status\" \
     $(GTK_CFLAGS) \
     $(LIBREPORT_GTK_CFLAGS) \

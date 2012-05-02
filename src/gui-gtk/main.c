@@ -459,7 +459,7 @@ static int delete_problem_dirs_over_dbus(GList *problem_dir_paths)
     return 0;
 }
 
-static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
+static const char *current_dirname(GtkTreeView *treeview)
 {
     GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
     if (selection)
@@ -470,16 +470,57 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
         {
             GValue d_dir = { 0 };
             gtk_tree_model_get_value(store, &iter, COLUMN_DUMP_DIR, &d_dir);
-
             const char *dirname = g_value_get_string(&d_dir);
+            return dirname;
+        }
+    }
+    return NULL;
+}
 
-            if (chown_dir_over_dbus(dirname) == 0)
-            {
-                report_problem_in_dir(dirname,
-                                  LIBREPORT_ANALYZE | LIBREPORT_NOWAIT | LIBREPORT_GETPID);
-            }
-            //else
+static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
+{
+    const char *dirname = current_dirname(treeview);
+    if (dirname)
+    {
+        if (chown_dir_over_dbus(dirname) == 0)
+        {
+            report_problem_in_dir(dirname,
+                              LIBREPORT_ANALYZE | LIBREPORT_NOWAIT | LIBREPORT_GETPID);
+        }
+        //else
+        // TODO: show a warning dialog
+    }
+}
+
+static void open_problem_data_cb(GtkMenuItem *menuitem, gpointer user_data)
+{
+    const char *dirname = current_dirname(GTK_TREE_VIEW(s_active_treeview));
+    if (dirname)
+    {
+        if (chown_dir_over_dbus(dirname) != 0)
+        {
             // TODO: show a warning dialog
+            error_msg("Can't chown '%s'", dirname);
+            return;
+        }
+
+        pid_t pid = fork();
+        if (pid < 0) /* error */
+            perror_msg_and_die("fork");
+        if (pid == 0) /* child */
+        {
+            struct run_event_state *run_state = new_run_event_state();
+            int r = run_event_on_dir_name(run_state, dirname, "open-gui");
+            int no_such_event = (r == 0 && run_state->children_count == 0);
+            free_run_event_state(run_state);
+            if (!no_such_event)
+            {
+                exit(r);
+            }
+            /* Default: launch graphical tool */
+            execl(BIN_DIR"/report-gtk", "report-gtk", "--", (char *)dirname, NULL);
+            execlp("report-gtk", "report-gtk", "--", (char *)dirname, NULL);
+            perror_msg_and_die("Can't execute %s", "report-gtk");
         }
     }
 }
@@ -828,11 +869,14 @@ static GtkWidget *create_menu(void)
 
     /* edit submenu */
     GtkWidget *edit_submenu = gtk_menu_new();
+    GtkWidget *open_problem_item = gtk_menu_item_new_with_label(_("Open problem data"));
     GtkWidget *preferences_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_PREFERENCES, NULL);
+    gtk_menu_shell_append(GTK_MENU_SHELL(edit_submenu), open_problem_item);
     gtk_menu_shell_append(GTK_MENU_SHELL(edit_submenu), preferences_item);
     //gtk_menu_shell_append(GTK_MENU_SHELL(edit_submenu), preferences_item);
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(edit_item), edit_submenu);
 
+    g_signal_connect(open_problem_item, "activate", G_CALLBACK(open_problem_data_cb), NULL);
     g_signal_connect(preferences_item, "activate", G_CALLBACK(show_events_list_dialog_cb), NULL);
 
     /* help submenu */
@@ -964,7 +1008,7 @@ static GtkWidget *create_main_window(void)
 
     /* buttons are homogenous so set size only for one button and it will
      * work for the rest buttons in same gtk_hbox_new() */
-    GtkWidget *btn_report = gtk_button_new_from_stock(GTK_STOCK_OPEN);
+    GtkWidget *btn_report = gtk_button_new_with_label(_("Report"));
     gtk_widget_set_size_request(btn_report, 200, 30);
 
     GtkWidget *btn_delete = gtk_button_new_from_stock(GTK_STOCK_DELETE);
