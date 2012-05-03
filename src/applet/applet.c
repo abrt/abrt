@@ -85,7 +85,7 @@ static GList *add_dirs_to_dirlist(GList *dirlist, const char *dirname)
     }
     closedir(dir);
 
-    return dirlist;
+    return g_list_reverse(dirlist);
 }
 
 /* Return 1 if a new directory appeared, compared to list saved
@@ -122,6 +122,7 @@ static int new_dir_exists(void)
         while ((line = xmalloc_fgetline(fp)) != NULL)
             old_dirlist = g_list_prepend(old_dirlist, line);
 
+        old_dirlist = g_list_reverse(old_dirlist);
         /* We will sort and compare current dir list with last known one.
          * Possible combinations:
          * DIR1 DIR1 - Both lists have the same element, advance both ptrs.
