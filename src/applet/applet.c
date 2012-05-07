@@ -203,10 +203,8 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
     }
 }
 
-//this action should open the main window
-static void action_open_gui(NotifyNotification *notification, gchar *action, gpointer user_data)
+static void action_ignore(NotifyNotification *notification, gchar *action, gpointer user_data)
 {
-    fork_exec_gui();
     GError *err = NULL;
     notify_notification_close(notification, &err);
     if (err != NULL)
@@ -367,11 +365,12 @@ static void show_problem_notification(const char *format, ...)
     va_end(args);
 
     NotifyNotification *notification = new_warn_notification();
+    notify_notification_add_action(notification, "IGNORE", _("Ignore"),
+                                    NOTIFY_ACTION_CALLBACK(action_ignore),
+                                    NULL, NULL);
+
     notify_notification_add_action(notification, "REPORT", _("Report"),
                                     NOTIFY_ACTION_CALLBACK(action_report),
-                                    NULL, NULL);
-    notify_notification_add_action(notification, "SHOW", _("Show"),
-                                    NOTIFY_ACTION_CALLBACK(action_open_gui),
                                     NULL, NULL);
 
     notify_notification_update(notification, _("A Problem has Occurred"), buf, NULL);
