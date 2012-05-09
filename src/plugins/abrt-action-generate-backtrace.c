@@ -24,8 +24,12 @@ static const char *dump_dir_name = ".";
 static int exec_timeout_sec = 240;
 
 
-static char *get_backtrace(struct dump_dir *dd, const char *debuginfo_dirs)
+static char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char *debuginfo_dirs)
 {
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        return NULL;
+
     char *uid_str = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     uid_t uid = -1L;
     if (uid_str)
@@ -116,7 +120,7 @@ static char *get_backtrace(struct dump_dir *dd, const char *debuginfo_dirs)
     while (1)
     {
         args[9] = xasprintf("%s backtrace %u%s", thread_apply_all, bt_depth, full);
-        bt = exec_vp(args, uid, /*redirect_stderr:*/ 1, exec_timeout_sec, NULL);
+        bt = exec_vp(args, uid, /*redirect_stderr:*/ 1, timeout_sec, NULL);
         free(args[9]);
         if ((bt && strnlen(bt, 256*1024) < 256*1024) || bt_depth <= 32)
         {
@@ -198,13 +202,9 @@ int main(int argc, char **argv)
     if (i_opt)
         debuginfo_dirs = xasprintf("%s:%s", debuginfo_location, i_opt);
 
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return 1;
-
     /* Create gdb backtrace */
-    /* NB: get_backtrace() closes dd */
-    char *backtrace = get_backtrace(dd, (debuginfo_dirs) ? debuginfo_dirs : debuginfo_location);
+    char *backtrace = get_backtrace(dump_dir_name, exec_timeout_sec,
+            (debuginfo_dirs) ? debuginfo_dirs : debuginfo_location);
     free(debuginfo_location);
     if (!backtrace)
     {
@@ -216,7 +216,7 @@ int main(int argc, char **argv)
 
     /* Store gdb backtrace */
 
-    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return 1;
     dd_save_text(dd, FILENAME_BACKTRACE, backtrace);
