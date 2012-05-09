@@ -45,6 +45,8 @@ void trim_problem_dirs(const char *dirname, double cap_size, const char *exclude
 char* exec_vp(char **args, uid_t uid, int redirect_stderr, int exec_timeout_sec, int *status);
 #define run_unstrip_n abrt_run_unstrip_n
 char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec);
+#define get_backtrace abrt_get_backtrace
+char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char *debuginfo_dirs);
 
 
 #define g_settings_nMaxCrashReportsSize abrt_g_settings_nMaxCrashReportsSize
