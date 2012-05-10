@@ -1,7 +1,7 @@
 [Unit]
 Description=Harvest vmcores for ABRT
 After=abrtd.service
-Requires=abrtd.service
+Requisite=abrtd.service
 
 [Service]
 Type=oneshot

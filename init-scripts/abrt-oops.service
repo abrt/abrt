@@ -1,7 +1,7 @@
 [Unit]
 Description=ABRT kernel log watcher
 After=abrtd.service
-Requires=abrtd.service
+Requisite=abrtd.service
 
 [Service]
 # TODO: do we really need absolute paths here?
