@@ -1,4 +1,4 @@
-% TEXINPUT=tikzuml-v*:$TEXINPUT pdflatex abrt.tex
+% TEXINPUTS=.:tikzuml-v*: pdflatex abrt.tex
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
@@ -98,8 +98,8 @@ business need, product scope, strategic plan
 
 \begin{tikzpicture}
 \umlactor[x=-4,y=0]{Support Portal}
-\umlactor[x=10,y=-2]{Package Maintainer}
-\umlactor[x=10,y=2]{QA Engineer}
+%\umlactor[x=10,y=-2]{Package Maintainer}
+%\umlactor[x=10,y=2]{QA Engineer}
 \begin{umlsystem}[fill=red!10]{ABRT Server}
 \umlusecase[x=0,y=4,name=save reports]{Save Reports}
 \umlusecase[x=0,y=2,width=2.6cm,name=find report duplicates]{Find Report Duplicates}
@@ -303,20 +303,28 @@ information regarding their interests, involvement.
 \begin{tikzpicture}[node distance=1cm]
 \node(security)[abstract]
 {\textbf{Security Team}
-  \nodepart{second}
+  \nodepart{second} \vspace{-2mm}
   \begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
+  \item Notified about security-sensitive bugs
   \item Investigating security-sensitive bugs
   \end{itemize}
 };
 
 \node(desktop)[abstract, right=of security]
 {\textbf{Desktop Team}
-  \nodepart{second}
+  \nodepart{second} \vspace{-5mm}
+  \begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
+  \item ...
+  \end{itemize}
 };
 
 \node(qa)[abstract, below=of desktop]
 {\textbf{QA Team}
-  \nodepart{second}
+  \nodepart{second} \vspace{-5mm}
+  \begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
+  \item Watch component problem statistics. Discover regressions and
+    allocate QA attention and effort accordingly.
+  \end{itemize}
 };
 
 \end{tikzpicture}
@@ -329,9 +337,48 @@ Stakeholder management strategy
 
 \section{Requirements}
 
-Requirements documentation
-Requirements management plan
-Requirements traceability matrix
+Large-scale data collection
+-------------------------
+
+Collect anonymous small reports
+
+Show quality of operating system
+- overall quality of a release over time
+- quality of a single package
+
+Highlight important reports
+- some reports require fixing soon
+
+
+In-depth bug fixing
+-------------------
+
+Collect core-dump for frequently occured reports
+
+Retrace coredumps on demand
+
+Allow interactive support for debugging of coredumps
+
+
+Developer support
+------------------
+
+Analyze source code around a crash and find the problem
+
+Provide source code browser
+
+
+Communication
+-------------
+
+Report only problems with enough information
+
+Report to operating system bug tracker
+
+Report to upstream bug tracker
+
+Watch bug resolution in remote tracker
+
 
 \section{Scope}
 
@@ -345,6 +392,7 @@ components.
 \begin{center}
 \begin{tikzpicture}[mindmap,
   every node/.style={concept},
+  every annotation/.style={fill=red!20, line width=0, text=black},
   root concept/.append style={concept color=black, fill=white, line width=1ex, text=black, font=\Large},
   text=white,
   storage/.style={concept color=orange, faded/.style={concept color=orange!50}},
@@ -355,6 +403,15 @@ components.
   level 1/.append style={level distance=4cm, sibling angle=90},
   level 2/.append style={level distance=2.5cm, sibling angle=50},
   level 3/.append style={level distance=3cm, sibling angle=40}]
+
+  \node[concept color=black, scale=0.4, inner sep=0pt, outer sep=0pt] (planned) at (-6,9) {\Huge Full color};
+  \node[annotation,right] at (planned.east) {Full color nodes show
+    features that are being being planned for the future.};
+
+  \node[concept color=black!50, scale=0.4, inner sep=0, outer sep=0pt] (implemented) at (-6,7.3) {\Huge Faded};
+  \node[annotation,right] at (implemented.east) {Faded nodes indicate
+    that the feature is already implemented, although the
+    implementation might not be completely finished.};
 
   \node[root concept] {ABRT Server}
     child[storage] {node {Storage}
@@ -464,6 +521,7 @@ components.
 \begin{center}
 \begin{tikzpicture}[mindmap,
   every node/.style={concept, concept color=red},
+  every annotation/.style={fill=red!20, line width=0, text=black},
   faded/.style={concept color=red!50},
   concept color=red,
   root concept/.append style={fill=white, line width=1ex, text=black, font=\Large},
@@ -472,6 +530,16 @@ components.
   level 1/.append style={level distance=5.5cm, sibling angle=50},
   level 2/.append style={level distance=2.5cm, sibling angle=50},
   level 3/.append style={level distance=3cm, sibling angle=40}]
+
+  \node[scale=0.4, inner sep=0pt, outer sep=0pt] (planned) at (-3.3,9) {\Huge Full color};
+  \node[annotation,right] at (planned.east) {Full color nodes show
+    features that are being being planned for the future.};
+
+  \node[faded, scale=0.4, inner sep=0, outer sep=0pt] (implemented) at (2.5,9) {\Huge Faded};
+  \node[annotation,right] at (implemented.east) {Faded nodes indicate
+    that the feature is already implemented, although the
+    implementation might not be completely finished.};
+
   \node[root concept] {Services}
     child[faded] {node[faded] {Retracing}
       child[faded] {node[faded] {Core Dump Retracing}}
@@ -523,6 +591,7 @@ components.
 \begin{center}
 \begin{tikzpicture}[mindmap,
   every node/.style={concept, concept color=orange},
+  every annotation/.style={fill=red!20, line width=0, text=black},
   faded/.style={concept color=orange!50},
   concept color=orange,
   root concept/.append style={fill=white, line width=1ex, text=black, font=\Large},
@@ -531,6 +600,16 @@ components.
   level 1/.append style={level distance=5.5cm, sibling angle=90},
   level 2/.append style={level distance=2.5cm, sibling angle=50},
   level 3/.append style={level distance=2cm, sibling angle=40}]
+
+  \node[scale=0.4, inner sep=0pt, outer sep=0pt] (planned) at (-3.3,9) {\Huge Full color};
+  \node[annotation,right] at (planned.east) {Full color nodes show
+    features that are being being planned for the future.};
+
+  \node[faded, scale=0.4, inner sep=0, outer sep=0pt] (implemented) at (2.5,9) {\Huge Faded};
+  \node[annotation,right] at (implemented.east) {Faded nodes indicate
+    that the feature is already implemented, although the
+    implementation might not be completely finished.};
+
   \node[root concept] {Storage}
     child[faded] {node[faded] {Storage Synchronization}
       child {node[faded] {Koji Downloader}}
@@ -558,7 +637,7 @@ components.
     child[faded] {node[faded] {Data Storage}
       child {node[faded] {Bugzilla Bugs, Comments, Attachments}}
       child {node[faded] {Optimized Backtraces}}
-      child {node[faded] {Builds, RPMs}}
+      child {node[faded] {Builds, Packages}}
       child {node[faded] {LLVM Bitcode}}
       child {node[faded] {Fedora Package Database}}
     }
@@ -572,31 +651,47 @@ components.
 \end{tikzpicture}
 \end{center}
 
+\begin{description}
+\item[Storage Synchronization]
+  \begin{description}
+  \item[Bugzilla Downloader] Downloads server-related bug reports from
+    Red Hat Bugzilla.
+  \end{description}
+\item[Data Storage] Database and file storage for data required for
+  the analysis, evaluation, adn processing of reports and problems.
+  \begin{description}
+  \item[LLVM bitcode] We store LLVM bitcode of every binary and
+    dynamic library compiled from C/C++ source code.
+  \end{description}
+\end{description}
+
 \subsubsection{Problem Storage}
 \begin{center}
 \begin{tikzpicture}
-\umlclass[x=0,y=0]{problem}{
-id : PRIMARY KEY AUTOINCREMENT \\
-first occurence : TIMESTAMP \\
-last occurence : TIMESTAMP \\
+\umlclass[x=-4,y=0]{problem}{
+id : PRIMARY KEY \\
+first occurence : TIMESTAMP NOT NULL \\
+last occurence : TIMESTAMP NOT NULL \\
 }{}
 
-\umlclass[x=-3,y=-4]{problem report}{
-problem id : FOREIGN KEY \\
-report id : FOREGIN KEY
+\umlclass[x=4,y=-2]{problem report}{
+problem id : FOREIGN KEY NOT NULL \\
+report id : FOREGIN KEY NOT NULL
 }{}
 
-\umlclass[x=3,y=-4]{problem component}{
-problem id : FOREIGN KEY \\
-component id : FOREGIN KEY \\
-order : INT
+\umlclass[x=4,y=2]{problem component}{
+problem id : FOREIGN KEY NOT NULL \\
+component id : FOREGIN KEY NOT NULL \\
+order : INT NOT NULL
 }{}
 
-\umluniaggreg[geometry=--,pos1=0.2,mult1=1,mult2=+,pos2=0.8]{problem}{problem report}
-\umluniaggreg[geometry=--,pos1=0.2,mult1=1,mult2=+,pos2=0.8]{problem}{problem component}
+\umluniaggreg[geometry=|-,pos1=0.2,mult1=1,mult2=+,pos2=1.8]{problem}{problem report}
+\umluniaggreg[geometry=|-,pos1=0.2,mult1=1,mult2=+,pos2=1.8]{problem}{problem component}
 
 \end{tikzpicture}
 \end{center}
+
+Problems are dynamically created from reports.
 
 \vfill
 \subsubsection{Problem Storage -- Reports}
@@ -606,159 +701,188 @@ Part of reports is populated from $\mu$reports.
 \begin{center}
 \scalebox{0.9}{%
 \begin{tikzpicture}
-\umlclass[x=-2,y=0]{report}{
+\umlclass[x=-4,y=0]{report}{
 id : PRIMARY KEY AUTOINCREMENT \\
 type : ENUM (USERSPACE, KERNEL, PYTHON, SELINUX) \\
 first occurence : TIMESTAMP \\
 last occurence : TIMESTAMP \\
-crashing component id : FOREIGN KEY
+count : INT \\
+component id : FOREIGN KEY \\
+problem id : FOREIGN KEY
 }{}
 
-% Above report left
-\umlclass[x=-6,y=3]{report executable}{
-report id : PRIMARY KEY \\
-path : STRING \\
-count : INT
+\umlclass[x=-4,y=8]{report uptime}{
+report id : FOREIGN KEY NOT NULL \\
+uptime exp : INT NOT NULL \\
+count : INT NOT NULL
 }{}
 
-\umlclass[x=-6,y=6]{report selinux mode}{
-report id : FOREIGN KEY \\
-selinux mode : ENUM \\
-count : INT
+\umlclass[x=5,y=6]{report executable}{
+report id : FOREIGN KEY NOT NULL \\
+path : STRING[512] NOT NULL \\
+count : INT NOT NULL
 }{}
 
-\umlclass[x=-6,y=9]{report selinux context}{
-report id : FOREIGN KEY \\
-context : STRING NOT NULL \\
-count : INT
+\umlclass[x=5,y=3.4]{report arch}{
+report id : FOREIGN KEY NOT NULL \\
+arch id : FOREIGN KEY NOT NULL \\
+count : INT NOT NULL
 }{}
 
-\umlclass[x=-6,y=12]{report architecture}{
-report id : FOREIGN KEY \\
-architecture id : FOREIGN KEY \\
-count : INT
+\umlclass[x=6,y=0]{report os release}{
+report id : FOREIGN KEY NOT NULL \\
+opsys release id : FOREIGN KEY NOT NULL \\
+count : INT NOT NULL
 }{}
+
+\umlclass[x=6,y=-6.5]{report proc status}{
+\begin{tabular}{l l}
+id : PRIMARY KEY & capabilities bnd \\
+report id : FOREIGN KEY & cpus allowed \\
+traced : BOOL & mems allowed \\
+utrace : INT & max cpu time \\
+fd size : INT & max file size \\
+vm peak : INT & max data size \\
+vm size : INT & max stack size \\
+vm data : INT & max core file size \\
+vm stack : INT & max resident set \\
+vm exe : INT & max processes \\
+
+vm lib : INT & max open files \\
+vm swap : INT & max locked memory \\
+threads : INT & max address space \\
+signal queue : INT & max file locks \\
+signal pending & max pending signals \\
+signal block & max msgqueue size \\
+signal ignore & max nice priority \\
+capabilities inherited & max realtime priority\\
+capabilities prm & max realtime timeout \\
+capabilities effective & \\
+\end{tabular}
+}{}
+
+\umlclass[x=-4,y=-9]{report reason}{
+report id : FOREIGN KEY NOT NULL \\
+reason : STRING[512] NOT NULL \\
+count : INT NOT NULL
+}
 
 \umluniaggreg[geometry=|-,pos1=0.2,mult1=1,mult2=+,pos2=1.9]{report}{report executable}
-\umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report selinux mode}
-\umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report selinux context}
-\umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report architecture}
-
-% Above report right
-\umlclass[x=4,y=3]{report os release}{
-report id : FOREIGN KEY \\
-operating system release id : FOREIGN KEY \\
-count : INT
-}{}
-
-\umlclass[x=4,y=9]{report proc status}{
-id : PRIMARY KEY \\
-report id : FOREIGN KEY \\
-traced : BOOL \\
-utrace : INT \\
-fd size : INT \\
-vm peak : INT \\
-vm size : INT \\
-vm data : INT \\
-vm stack : INT \\
-vm exe : INT \\
-vm lib : INT \\
-vm swap : INT \\
-threads : INT \\
-signal queue : INT \\
-signal pending \\
-signal block \\
-signal ignore \\
-...
-%capabilities inherited \\
-%capabilities prm \\
-%capabilities effective \\
-%capabilities bnd \\
-%cpus allowed \\
-%mems allowed \\
-%max cpu time \\
-%max file size \\
-%max data size \\
-%max stack size \\
-%max core file size \\
-%max resident set \\
-%max processes \\
-%max open files \\
-%max locked memory \\
-%max address space \\
-%max file locks \\
-%max pending sygnals \\
-%max msgqueue size \\
-%max nice priority \\
-%max realtime prioriry \\
-%max realtime timeout
-}{}
-
-\umluniaggreg[geometry=|-,mult2=+,pos2=1.9]{report}{report os release}
-\umluniaggreg[geometry=|-,mult2=+,pos2=1.9]{report}{report proc status}
+\umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report arch}
+\umluniaggreg[geometry=--,                 mult2=+,pos2=0.9]{report}{report uptime}
+\umluniaggreg[geometry=--,mult1=1,pos1=0.15,mult2=+,pos2=0.85]{report}{report os release}
+\umluniaggreg[geometry=|-,mult1=1,mult2=+,pos2=1.9]{report}{report proc status}
+\umluniaggreg[geometry=--,                 mult2=+,pos2=0.9]{report}{report reason}
 
 % Below report left
-\umlclass[x=-6,y=-4]{report package}{
-report id : FOREIGN KEY \\
-installed package id : FOREIGN KEY \\
-running package id : FOREIGN KEY \\
-count : INT
+\end{tikzpicture}}
+\end{center}
+
+\subsubsection{Problem Storage -- Report backtraces}
+\begin{center}
+\begin{tikzpicture}
+\umlclass[x=-4,y=0]{report}{}{}
+
+\umlclass[x=4,y=3]{report bt hash}{
+backtrace id : FOREIGN KEY NOT NULL \\
+type : ENUM (NAMES, HASHES) NOT NULL \\
+hash : STRING[64] NOT NULL \\
 }{}
 
-\umlclass[x=-6,y=-7]{report related package}{
-report id : FOREIGN KEY \\
-installed package id : FOREIGN KEY \\
-running package id : FOREIGN KEY \\
-count : INT
-}{}
-
-\umluniaggreg[geometry=|-,pos1=0.2,mult1=1,mult2=+,pos2=1.9]{report}{report package}
-\umluniaggreg[geometry=|-,                 mult2=+,pos2=1.9]{report}{report related package}
-
-% Below report right
-\umlclass[x=7,y=0]{report duplicate hash}{
-backtrace id : FOREIGN KEY \\
-hash : STRING \\
-type : ENUM (NAMES, HASHES)
-}{}
-
-\umlclass[x=4,y=-3]{report backtrace}{
+\umlclass[x=4,y=0]{report backtrace}{
 id : PRIMARY KEY AUTOINCREMENT \\
 report id : FOREIGN KEY
 }{}
 
-\umlclass[x=4,y=-6]{report backtrace frame}{
+\umlclass[x=4,y=-3]{report bt frame}{
 backtrace id : FOREIGN KEY \\
 order : INT \\
 symbol source id : FOREIGN KEY
 }{}
 
-\umluniaggreg[geometry=|-,mult2=+,pos2=1.9]{report}{report backtrace}
-\umluniaggreg[geometry=--,mult1=1,mult2=+]{report backtrace}{report backtrace frame}
-\umluniaggreg[geometry=--,mult1=1,mult2=+]{report backtrace}{report duplicate hash}
-
-\end{tikzpicture}}
+\umluniaggreg[geometry=--,mult2=+,pos2=1.9]{report}{report backtrace}
+\umluniaggreg[geometry=--,mult1=1,mult2=+]{report backtrace}{report bt frame}
+\umluniaggreg[geometry=--,mult1=1,mult2=+]{report backtrace}{report bt hash}
+\end{tikzpicture}
 \end{center}
 
+
+\subsubsection{Problem Storage -- Report packages}
+\begin{center}
+\begin{tikzpicture}
+\umlclass[x=-4,y=0]{report}{}{}
+
+\umlclass[x=4,y=2.6]{report package}{
+id : PRIMARY KEY \\
+report id : FOREIGN KEY NOT NULL \\
+type : ENUM(CRASHED, RELATED) NOT NULL \\
+installed package id : FOREIGN KEY NOT NULL \\
+running package id : FOREIGN KEY \\
+count : INT NOT NULL
+}{}
+
+\umlclass[x=4,y=-2.6]{report unknown package}{
+id : PRIMARY KEY \\
+report id : FOREIGN KEY NOT NULL \\
+type : ENUM(CRASHED, RELATED) NOT NULL \\
+name : STRING[64] NOT NULL \\
+installed epoch : INT NOT NULL \\
+installed version : STRING[64] NOT NULL \\
+installed release : STRING[64] NOT NULL \\
+installed arch id : FOREIGN KEY NOT NULL \\
+running epoch : INT \\
+running version : STRING[64] \\
+running release : STRING[64] \\
+running arch id : FOREIGN KEY \\
+count : INT NOT NULL
+}{}
+
+\umluniaggreg[geometry=|-,pos1=0.2,mult1=1,mult2=+,pos2=1.9]{report}{report package}
+\umluniaggreg[geometry=|-,pos1=0.2,mult1=1,mult2=+,pos2=1.9]{report}{report unknown package}
+\end{tikzpicture}
+\end{center}
+
+
+\subsubsection{Problem Storage -- Report security aspects}
+\begin{center}
+\begin{tikzpicture}
+\umlclass[x=-4,y=0]{report}{}{}
+
+\umlclass[x=4,y=-1.5]{report selinux mode}{
+report id : FOREIGN KEY NOT NULL \\
+selinux mode : ENUM(DISABLED, PERMISSIVE, ENFORCING) NOT NULL \\
+count : INT NOT NULL
+}{}
+
+\umlclass[x=1.2,y=1.5]{report selinux context}{
+report id : FOREIGN KEY NOT NULL \\
+context : STRING[256] NOT NULL \\
+count : INT NOT NULL
+}{}
+
+\umluniaggreg[geometry=|-,pos1=0.2,mult1=1,mult2=+,pos2=1.9]{report}{report selinux mode}
+\umluniaggreg[geometry=|-,pos1=0.2,mult1=1,mult2=+,pos2=1.9]{report}{report selinux context}
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Problem Storage -- Report in-depth information}
 Part of reports is populated from full reports.
 
 \begin{center}
 \begin{tikzpicture}
-\umlclass[x=-1,y=0]{report}{}{}
+\umlclass[x=-4,y=0]{report}{}{}
 
-% Above report right
-\umlclass[x=4,y=3]{report full backtrace}{
+\umlclass[x=2,y=-2]{report full backtrace}{
 id : PRIMARY KEY \\
-report id : FOREIGN KEY \\
-os release id : FOREIGN KEY \\
-text : STRING
+report id : FOREIGN KEY NOT NULL \\
+os release id : FOREIGN KEY NOT NULL \\
+text : STRING NOT NULL
 }{}
 
-% Above report left
-\umlclass[x=-5,y=3]{report coredump}{
+\umlclass[x=2,y=2]{report coredump}{
 id : PRIMARY KEY \\
-report id : FOREIGN KEY \\
-os release id : FOREIGN KEY
+report id : FOREIGN KEY NOT NULL \\
+os release id : FOREIGN KEY NOT NULL
 }{}
 
 \umluniaggreg[geometry=|-,mult2=+,pos2=1.9]{report}{report full backtrace}
@@ -767,30 +891,31 @@ os release id : FOREIGN KEY
 \end{tikzpicture}
 \end{center}
 
-\subsubsection{Problem Storage -- Report History}
+
+\subsubsection{Problem Storage -- Report history}
 \begin{center}
 \begin{tikzpicture}
 \umlclass[x=-4,y=0]{report}{}{}
 
 \umlclass[x=5,y=-3]{report history daily}{
-day : DATE \\
-operating system release id : FOREIGN KEY \\
-report id : FOREIGN KEY \\
-count : INT
+day : DATE NOT NULL \\
+opsys release id : FOREIGN KEY NOT NULL \\
+report id : FOREIGN KEY NOT NULL \\
+count : INT NOT NULL
 }{}
 
 \umlclass[x=5,y=0]{report history weekly}{
-week : DATE \\
-operating system release id : FOREIGN KEY \\
-report id : FOREIGN KEY \\
-count : INT
+week : DATE NOT NULL\\
+opsys release id : FOREIGN KEY NOT NULL \\
+report id : FOREIGN KEY NOT NULL \\
+count : INT NOT NULL
 }{}
 
 \umlclass[x=5,y=3]{report history monthly}{
-month : DATE \\
-operating system release id : FOREIGN KEY \\
-report id : FOREIGN KEY \\
-count : INT
+report id : FOREIGN KEY NOT NULL \\
+opsys release id : FOREIGN KEY NOT NULL \\
+month : DATE NOT NULL \\
+count : INT NOT NULL
 }{}
 
 \umluniaggreg[geometry=-|-,pos1=0.2,mult1=1,mult2=*,pos2=1.8]{report}{report history daily}
@@ -803,13 +928,13 @@ count : INT
 \subsubsection{Problem Storage -- Symbols}
 \begin{center}
 \begin{tikzpicture}
-\umlclass[x=0,y=0]{symbol}{
+\umlclass[x=-4,y=0]{symbol}{
 id : PRIMARY KEY \\
 name : STRING NOT NULL \\
 normalized path : STRING NOT NULL
 }{}
 
-\umlclass[x=0,y=-4]{symbol source}{
+\umlclass[x=4,y=0]{symbol source}{
 symbol id : FOREIGN KEY \\
 build id : STRING NOT NULL \\
 path : STRING NOT NULL \\
@@ -820,6 +945,203 @@ line number : INT
 }{}
 
 \umluniaggreg[geometry=--,pos1=0.2,mult1=1,mult2=+,pos2=0.8]{symbol}{symbol source}
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Problem Storage -- Clusters}
+\begin{center}
+\begin{tikzpicture}
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Data Storage -- Builds}
+\begin{center}
+\begin{tikzpicture}
+\umlclass[x=-4,y=0]{opsys}{
+id : PRIMARY KEY \\
+name : STRING[32] NOT NULL
+}
+
+\umlclass[x=6,y=0]{opsys release}{
+id : PRIMARY KEY \\
+opsys id : FOREIGN KEY NOT NULL \\
+version : STRING[32] \\
+releasedate = DATETIME
+}
+
+\umlclass[x=-4,y=-5]{opsys component}{
+id : PRIMARY KEY \\
+name : STRING[64] NOT NULL \\
+opsys id : FOREIGN KEY NOT NULL
+}
+
+\umlclass[x=6,y=-5]{build}{
+id : PRIMARY KEY \\
+secondary id : INT \\
+component id : FOREIGN KEY NOT NULL \\
+epoch : INT NOT NULL \\
+version : STRING[64] NOT NULL \\
+release : STRING[64] NOT NULL
+}
+
+\umlclass[x=-4,y=-10]{tag}{
+id : PRIMARY KEY \\
+opsys id : FOREIGN KEY \\
+name : STRING[32] NOT NULL \\
+perm : INT \\
+locked : BOOL NOT NULL
+}
+
+\umlclass[x=6,y=-10]{tag inheritance}{
+tag id : FOREIGN KEY NOT NULL \\
+parent id : FOREIGN KEY NOT NULL \\
+intransitive : BOOL NOT NULL \\
+priority : INT NOT NULL \\
+noconfig : INT NOT NULL
+}
+
+\umluniaggreg[geometry=--,pos1=0.2,mult1=1,mult2=*,pos2=0.8]{opsys}{opsys release}
+\umlassoc[geometry=|-|,pos1=0.2,mult1=*,mult2=*,pos2=2.8]{opsys release}{opsys component}
+\umluniaggreg[geometry=--,pos1=0.2,mult1=1,mult2=*,pos2=0.8]{opsys component}{build}
+\umlassoc[geometry=|-|,pos1=0.2,mult1=*,mult2=*,pos2=2.8]{build}{tag}
+\umluniassoc[geometry=--,pos1=0.2,mult1=1,mult2=*,pos2=0.8]{tag}{tag inheritance}
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Data Storage -- Packages}
+\begin{center}
+\begin{tikzpicture}
+\umlclass[x=0,y=4]{arch}{
+id : PRIMARY KEY \\
+name : STRING[8] NOT NULL
+}
+
+\umlclass[x=0,y=0]{package}{
+id : PRIMARY KEY \\
+secondary id : INT
+build id : FOREIGN KEY NOT NULL \\
+arch id : FOREIGN KEY NOT NULL \\
+name : STRING[64] NOT NULL
+}
+
+\umlclass[x=0,y=-5]{package dependency}{
+id : PRIMARY KEY \\
+package id : FOREIGN KEY NOT NULL \\
+type : ENUM(REQUIRES PROVIDES CONFLICTS OBSOLETES) NOT NULL \\
+symbol : STRING[512] NOT NULL \\
+flags : INT NOT NULL \\
+epoch : INT \\
+version : STRING[64] \\
+release : STRING[64]
+}
+
+\umluniassoc[geometry=--,pos1=0.2,mult1=1,mult2=*,pos2=0.8]{package}{arch}
+\umluniaggreg[geometry=--,pos1=0.2,mult1=1,mult2=*,pos2=0.8]{package}{package dependency}
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Data Storage -- Red Hat Bugzilla}
+\begin{center}
+\begin{tikzpicture}
+\umlclass[x=0,y=0]{rhbz bug}{
+id : PRIMARY KEY \\
+summary : STRING[256] NOT NULL \\
+status : ENUM(CLOSED, ASSIGNED, NEW, MODIFIED, VERIFIED, \\
+\hspace{5mm}ON QA, ON DEV, RELEASE PENDING, POST) NOT NULL \\
+resolution : ENUM(NOTABUG, WONTFIX, WORKSFORME, \\
+\hspace{5mm}DEFERRED, CURRENTRELEASE, RAWHIDE, ERRATA, \\
+\hspace{5mm}DUPLICATE, UPSTREAM, NEXTRELEASE, CANTFIX, \\
+\hspace{5mm}INSUFFICIENT DATA)
+resolution dup id : FOREIGN KEY \\
+created : DATE NOT NULL \\
+last change : DATE NOT NULL \\
+opsys release id : FOREIGN KEY NOT NULL \\
+opsys component : FOREIGN KEY NOT NULL \\
+whiteboard : STRING[512] \\
+creator id : FOREIGN KEY NOT NULL
+}
+
+\umlclass[x=4.5,y=-9]{rhbz attachment}{
+id : PRIMARY KEY \\
+bug id : FOREIGN KEY NOT NULL \\
+creator id : FOREIGN KEY NOT NULL \\
+mime type : STRING[128] NOT NULL \\
+description : STRING[256] \\
+created : DATE NOT NULL \\
+last changed : DATE NOT NULL \\
+is private : BOOL NOT NULL \\
+is patch : BOOL NOT NULL \\
+is obsolete : BOOL NOT NULL \\
+is url : BOOL NOT NULL \\
+file name : STRING[512]
+}
+
+\umlclass[x=-4.5,y=-9.0]{rhbz comment}{
+id : PRIMARY KEY \\
+secondary id : INT NOT NULL \\
+bug id : FOREIGN KEY NOT NULL \\
+creator id : FOREIGN KEY NOT NULL \\
+number : INT NOT NULL \\
+is private : BOOL NOT NULL \\
+body : STRING[2048] \\
+created : DATE NOT NULL \\
+type : ENUM(NORMAL, DUPE OF, HAS DUPE, \\
+\hspace{5mm}MOVED TO, POPULAR VOTES, \\
+\hspace{5mm}ATTACHMENT CREATED, ATTACHMENT UPDATED) \\
+duplicate id : FOREIGN KEY \\
+attachment id : FOREIGN KEY
+}
+
+\umluniaggreg[geometry=|-|,pos1=0.2,mult1=1,mult2=*,pos2=2.8]{rhbz bug}{rhbz attachment}
+\umluniaggreg[geometry=|-|,pos1=0.2,mult1=1,mult2=+,pos2=2.8]{rhbz bug}{rhbz comment}
+
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Data Storage -- Red Hat Bugzilla Users}
+\begin{center}
+\begin{tikzpicture}
+\umlclass[x=-4,y=0]{RhbzUser}{
+id : PRIMARY KEY \\
+email : STRING[256] NOT NULL \\
+can login : BOOL NOT NULL \\
+name : STRING[256] NOT NULL \\
+real name : STRING[256]
+}
+
+\umlclass[x=4,y=-2]{RhbzBug}{
+}
+
+\umlclass[x=4,y=0]{RhbzAttachment}{
+}
+
+\umlclass[x=4,y=2]{RhbzComment}{
+}
+
+\umluniassoc[geometry=-|-,pos1=0.2,mult1=*,mult2=1,pos2=2.8]{RhbzBug}{RhbzUser}
+\umluniassoc[geometry=-|-,pos1=0.2,mult1=*,mult2=1,pos2=2.8]{RhbzComment}{RhbzUser}
+\umluniassoc[geometry=--,pos1=0.2,mult1=*]{RhbzAttachment}{RhbzUser}
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Data Storage -- LLVM Bitcode}
+\begin{center}
+\begin{tikzpicture}
+
+LlvmBuild
+LlvmBitcode
+LlvmResults
+
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Sanity Checker -- Debuginfo checker}
+\begin{center}
+\begin{tikzpicture}
+
+LlvmBuild
+LlvmBitcode
+LlvmResults
 
 \end{tikzpicture}
 \end{center}
@@ -828,6 +1150,7 @@ line number : INT
 \begin{center}
 \begin{tikzpicture}[mindmap,
   every node/.style={concept, concept color=blue},
+  every annotation/.style={fill=red!20, line width=0, text=black},
   faded/.style={concept color=blue!50},
   concept color=blue,
   root concept/.append style={fill=white, line width=1ex, text=black, font=\Large},
@@ -836,6 +1159,16 @@ line number : INT
   level 1/.append style={level distance=5.5cm, sibling angle=90},
   level 2/.append style={level distance=2.5cm, sibling angle=50},
   level 3/.append style={level distance=2cm, sibling angle=40}]
+
+  \node[scale=0.4, inner sep=0pt, outer sep=0pt] (planned) at (-3.3,9) {\Huge Full color};
+  \node[annotation,right] at (planned.east) {Full color nodes show
+    features that are being being planned for the future.};
+
+  \node[faded, scale=0.4, inner sep=0, outer sep=0pt] (implemented) at (2.5,9) {\Huge Faded};
+  \node[annotation,right] at (implemented.east) {Faded nodes indicate
+    that the feature is already implemented, although the
+    implementation might not be completely finished.};
+
   \node[root concept] {Interface}
     child {node {Machine Interface}
       child[faded] {node[faded] {Retracing Service Interface}}
@@ -1040,6 +1373,7 @@ Name & Format & Mandatory & Notes \\ \hline
 \begin{center}
 \begin{tikzpicture}[mindmap,
   every node/.style={concept},
+  every annotation/.style={fill=red!20, line width=0, text=black},
   root concept/.append style={concept color=black, fill=white, line width=1ex, text=black, font=\Large},
   text=white,
   detector/.style={concept color=OrangeRed, faded/.style={concept color=OrangeRed!50}},
@@ -1050,6 +1384,15 @@ Name & Format & Mandatory & Notes \\ \hline
   level 1/.append style={level distance=4.5cm, sibling angle=90},
   level 2/.append style={level distance=2.5cm, sibling angle=50},
   level 3/.append style={level distance=3cm, sibling angle=40}]
+
+  \node[color=black, text=white, scale=0.4, inner sep=0pt, outer sep=0pt] (planned) at (-3.3,8) {\Huge Full color};
+  \node[annotation,right] at (planned.east) {Full color nodes show
+    features that are being being planned for the future.};
+
+  \node[color=black!50, text=white, scale=0.4, inner sep=0, outer sep=0pt] (implemented) at (2.5,8) {\Huge Faded};
+  \node[annotation,right] at (implemented.east) {Faded nodes indicate
+    that the feature is already implemented, although the
+    implementation might not be completely finished.};
 
   \node[root concept] {ABRT Client}
     child[detector] {node {Problem Detector}
@@ -1089,6 +1432,7 @@ Name & Format & Mandatory & Notes \\ \hline
 \begin{center}
 \begin{tikzpicture}[mindmap,
   every node/.style={concept, concept color=OliveGreen},
+  every annotation/.style={fill=red!20, line width=0, text=black},
   faded/.style={concept color=OliveGreen!50},
   concept color=OliveGreen,
   root concept/.append style={fill=white, line width=1ex, text=black, font=\Large},
@@ -1097,6 +1441,15 @@ Name & Format & Mandatory & Notes \\ \hline
   level 1/.append style={level distance=4.5cm, sibling angle=90},
   level 2/.append style={level distance=2.5cm, sibling angle=50},
   level 3/.append style={level distance=3cm, sibling angle=40}]
+
+  \node[scale=0.4, inner sep=0pt, outer sep=0pt] (planned) at (-3.3,8) {\Huge Full color};
+  \node[annotation,right] at (planned.east) {Full color nodes show
+    features that are being being planned for the future.};
+
+  \node[faded, scale=0.4, inner sep=0, outer sep=0pt] (implemented) at (2.5,8) {\Huge Faded};
+  \node[annotation,right] at (implemented.east) {Faded nodes indicate
+    that the feature is already implemented, although the
+    implementation might not be completely finished.};
 
   \node[root concept] {Interface}
     child {node {Graphical User Interface}
