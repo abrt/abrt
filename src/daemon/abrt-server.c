@@ -103,7 +103,9 @@ static int create_debug_dump(GHashTable *problem_info, unsigned pid)
     {
         error_msg_and_die("Error creating crash dump %s", path);
     }
+
     dd_create_basic_files(dd, client_uid);
+    dd_save_text(dd, "abrt_version", VERSION);
 
     gpkey = g_hash_table_lookup(problem_info, FILENAME_CMDLINE);
     if (!gpkey)
@@ -122,7 +124,8 @@ static int create_debug_dump(GHashTable *problem_info, unsigned pid)
     sprintf(uid_str, "%lu", (long)client_uid);
     dd_save_text(dd, FILENAME_UID, uid_str);
 
-    dd_save_text(dd, "abrt_version", VERSION);
+    /* This item is useless, don't save it */
+    g_hash_table_remove(problem_info, "basename");
 
     g_hash_table_iter_init(&iter, problem_info);
     while (g_hash_table_iter_next(&iter, &gpkey, &gpvalue))
@@ -177,8 +180,8 @@ static int delete_path(const char *dump_dir_name)
      || strstr(dump_dir_name + strlen(g_settings_dump_location), "/.")
     ) {
         /* Then refuse to operate on it (someone is attacking us??) */
-        error_msg("Bad problem directory name '%s', not deleting", dump_dir_name);
         free(dump_location);
+        error_msg("Bad problem directory name '%s', not deleting", dump_dir_name);
         return 400; /* Bad Request */
     }
     free(dump_location);
@@ -225,7 +228,7 @@ static gboolean printable_str(const char *str)
     return TRUE;
 }
 
-static gboolean is_correct_filename (const char *value)
+static gboolean is_correct_filename(const char *value)
 {
     return printable_str(value) && !strchr(value, '/') && !strchr(value, '.');
 }
@@ -248,7 +251,7 @@ static gboolean key_value_ok(gchar *key, gchar *value)
     {
         if (!is_correct_filename(value))
         {
-            error_msg("Value of 'basename' (%s) is not a valid directory name.",
+            error_msg("Value of 'basename' (%s) is not a valid directory name",
                       value);
             return FALSE;
         }
@@ -260,27 +263,34 @@ static gboolean key_value_ok(gchar *key, gchar *value)
 /* Handles a message received from client over socket. */
 static void process_message(GHashTable *problem_info, char *message)
 {
-    gchar *position;
     gchar *key, *value;
 
-    position = strchr(message, '=');
-    if (position)
+    value = strchr(message, '=');
+    if (value)
     {
-        key = g_ascii_strdown(message, position - message);
+        key = g_ascii_strdown(message, value - message); /* result is malloced */
+//TODO: is it ok? it uses g_malloc, not malloc!
 
-        position++;
-        value = xstrndup(position, strlen(position));
+        value++;
         if (key_value_ok(key, value))
+        {
             if (strcmp(key, FILENAME_UID) == 0)
             {
-                error_msg("Ignoring value of %s, will be determined later.",
+                error_msg("Ignoring value of %s, will be determined later",
                           FILENAME_UID);
             }
             else
-                g_hash_table_insert(problem_info, key, value);
+            {
+                g_hash_table_insert(problem_info, key, xstrdup(value));
+                key = NULL; /* prevent freeing later */
+            }
+        }
         else
+        {
             /* should use error_msg_and_die() here? */
             error_msg("Invalid key or value format: %s", message);
+        }
+        free(key);
     }
     else
     {
@@ -291,7 +301,7 @@ static void process_message(GHashTable *problem_info, char *message)
 
 static void die_if_data_is_missing(GHashTable *problem_info)
 {
-    gboolean have_item, missing_data = FALSE;
+    gboolean missing_data = FALSE;
     gchar **pstring;
     static const gchar *const needed[] = {FILENAME_ANALYZER,
                                           FILENAME_BACKTRACE,
@@ -301,16 +311,15 @@ static void die_if_data_is_missing(GHashTable *problem_info)
 
     for (pstring = (gchar**) needed; *pstring; pstring++)
     {
-        have_item = g_hash_table_lookup(problem_info, *pstring) != NULL;
-        if (!have_item)
+        if (!g_hash_table_lookup(problem_info, *pstring))
         {
-            error_msg("%s is missing.", *pstring);
+            error_msg("Element '%s' is missing", *pstring);
             missing_data = TRUE;
         }
     }
 
     if (missing_data)
-        error_msg_and_die("Some data is missing. Aborting.");
+        error_msg_and_die("Some data is missing, aborting");
 }
 
 /*
@@ -322,18 +331,15 @@ unsigned convert_pid(GHashTable *problem_info)
     long ret;
     gchar *pid_str = (gchar *) g_hash_table_lookup(problem_info, FILENAME_PID);
     char *err_pos;
-    int old_errno;
 
     if (!pid_str)
-        error_msg_and_die("PID data is missing. Aborting!");
+        error_msg_and_die("PID data is missing, aborting");
 
-    old_errno = errno;
     errno = 0;
     ret = strtol(pid_str, &err_pos, 10);
     if (errno || pid_str == err_pos || *err_pos != '\0'
         || ret > UINT_MAX || ret < 1)
         error_msg_and_die("Malformed or out-of-range PID number: '%s'", pid_str);
-    errno = old_errno;
 
     return (unsigned) ret;
 }
@@ -349,7 +355,7 @@ static int perform_http_xact(void)
     char *body_start = NULL;
     char *messagebuf_data = NULL;
     unsigned messagebuf_len = 0;
-    /* Loop until EOF/error/timeout/end_fo_header */
+    /* Loop until EOF/error/timeout/end_of_header */
     while (1)
     {
         messagebuf_data = xrealloc(messagebuf_data, messagebuf_len + INPUT_BUFFER_SIZE);
