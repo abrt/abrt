@@ -304,6 +304,9 @@ static void sanitize_cursor(GtkTreePath *preferred_path)
 
 static void deactivate_selection(GtkTreeView *tv)
 {
+    if (!GTK_IS_TREE_VIEW(tv))
+        return;
+
     GtkTreeSelection *selection = gtk_tree_view_get_selection(tv);
     if (selection)
     {
@@ -339,7 +342,9 @@ static gboolean on_select_cursor_row_cb(
                 gpointer     user_data)
 {
     //log("SELECT_ROW:%p/%p", treeview, user_data);
-    deactivate_selection(GTK_TREE_VIEW(user_data));
+    if (GTK_IS_TREE_VIEW(user_data))
+        deactivate_selection(GTK_TREE_VIEW(user_data));
+
     return false; /* propagate the event further */
 }
 
@@ -351,7 +356,8 @@ static gboolean on_cursor_changed_cb(
                 gpointer     user_data)
 {
     //log("cursor-changed:%p/%p", treeview, user_data);
-    deactivate_selection(GTK_TREE_VIEW(user_data));
+    if (GTK_IS_TREE_VIEW(user_data))
+        deactivate_selection(GTK_TREE_VIEW(user_data));
 
     /* Without this, only <tab>ing to treeview sets s_active_treeview.
      * Thus, selecting a row with mouse and clicking [Open] with mouse
@@ -686,7 +692,7 @@ static void on_menu_report_cb(GtkMenuItem *menuitem, gpointer unused)
     s_report_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(s_report_window), _("Problem description"));
     gtk_window_set_default_size(GTK_WINDOW(s_report_window), 400, 400);
-    GtkWidget *vbox = gtk_vbox_new(false, 0);
+    GtkWidget *vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     GtkWidget *button_send = gtk_button_new_with_label(_("Send"));
     GtkWidget *tev = gtk_text_view_new();
     g_signal_connect(button_send, "clicked", G_CALLBACK(on_button_send_cb), tev);
@@ -906,13 +912,13 @@ static GtkWidget *create_main_window(void)
     gtk_window_set_title(GTK_WINDOW(g_main_window), _("Automatic Bug Reporting Tool"));
     gtk_window_set_default_icon_name("abrt");
 
-    GtkWidget *main_vbox = gtk_vbox_new(false, 0);
+    GtkWidget *main_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     /* add menu */
     gtk_box_pack_start(GTK_BOX(main_vbox), create_menu(), false, false, 0);
 
-    GtkWidget *not_subm_vbox = gtk_vbox_new(false, 0);
+    GtkWidget *not_subm_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_set_border_width(GTK_CONTAINER(not_subm_vbox), 10);
-    GtkWidget *subm_vbox = gtk_vbox_new(false, 0);
+    GtkWidget *subm_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_set_border_width(GTK_CONTAINER(subm_vbox), 10);
 
     /* Scrolled region for not reported problems inside main window*/
@@ -1015,7 +1021,7 @@ static GtkWidget *create_main_window(void)
 
     GtkWidget *btn_delete = gtk_button_new_from_stock(GTK_STOCK_DELETE);
 
-    GtkWidget *hbox_report_delete = gtk_hbox_new(true, 0);
+    GtkWidget *hbox_report_delete = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_box_pack_start(GTK_BOX(hbox_report_delete), btn_delete, true, true, 0);
     gtk_box_pack_start(GTK_BOX(hbox_report_delete), btn_report, true, true, 10);
 
