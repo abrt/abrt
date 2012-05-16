@@ -1197,7 +1197,9 @@ static void scan_directory_and_add_to_dirlist(const char *path)
             | IN_MOVED_TO       // File moved into watched directory
     ) < 0)
     {
-        perror_msg("inotify_add_watch failed on '%s'", path);
+        /* Missing .abrt/spool is ok, else complain */
+        if (errno != ENOENT)
+            perror_msg("inotify_add_watch failed on '%s'", path);
     }
 }
 
