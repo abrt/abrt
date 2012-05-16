@@ -1245,6 +1245,8 @@ int main(int argc, char **argv)
     };
     unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
 
+    migrate_to_xdg_dirs();
+
     load_user_settings("abrt-gui");
 
     export_abrt_envvars(opts & OPT_p);

@@ -550,12 +550,12 @@ int main(int argc, char** argv)
 
     abrt_init(argv);
 
-  /* Glib 2.31:
-    * Major changes to threading and synchronisation
-     - threading is now always enabled in GLib
-     - support for custom thread implementations (including our own internal
-     - support for errorcheck mutexes) has been removed
-  */
+    /* Glib 2.31:
+     * Major changes to threading and synchronisation
+     * - threading is now always enabled in GLib
+     * - support for custom thread implementations (including our own internal
+     * - support for errorcheck mutexes) has been removed
+     */
 #if (GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 31)
     //can't use log(), because g_verbose is not set yet
     /* Need to be thread safe */
@@ -582,6 +582,8 @@ int main(int argc, char** argv)
         OPT_END()
     };
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
+
+    migrate_to_xdg_dirs();
 
     export_abrt_envvars(0);
     msg_prefix = g_progname;

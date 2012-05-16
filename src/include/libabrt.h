@@ -62,6 +62,8 @@ int load_abrt_conf();
 void free_abrt_conf_data();
 
 
+void migrate_to_xdg_dirs(void);
+
 /* Returns 1 if abrtd daemon is running, 0 otherwise. */
 #define daemon_is_ok abrt_daemon_is_ok
 int daemon_is_ok();

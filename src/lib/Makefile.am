@@ -9,7 +9,8 @@ libabrt_la_SOURCES = \
     hooklib.c \
     daemon_is_ok.c \
     kernel.c \
-    abrt_glib.c
+    abrt_glib.c \
+    migrate_dirs.c
 
 libabrt_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \

@@ -150,6 +150,8 @@ int main(int argc, const char **argv)
         {NULL, NULL, NULL}
     };
 
+    migrate_to_xdg_dirs();
+
     unsigned skip = handle_internal_options(argc, argv, abrt_cli_usage_string);
     argc -= skip;
     argv += skip;
