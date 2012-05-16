@@ -224,7 +224,9 @@ GList *get_problems_over_dbus(const char *dump_location, GError **error)
                                      -1,
                                      NULL,
                                      error);
-    GList *list = string_list_from_variant(result);
+    GList *list = NULL;
+    if (result)
+        list = string_list_from_variant(result);
     return list;
 }
 
