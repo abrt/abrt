@@ -38,7 +38,6 @@ static GtkStatusIcon *ap_status_icon;
 static GtkWidget *ap_menu;
 static char *ap_last_problem_dir;
 static char **s_dirs;
-static char *s_home;
 
 static GList *add_dirs_to_dirlist(GList *dirlist, const char *dirname)
 {
@@ -64,14 +63,11 @@ static GList *add_dirs_to_dirlist(GList *dirlist, const char *dirname)
 }
 
 /* Return 1 if a new directory appeared, compared to list saved
- * in ~/.abrt/applet_dirlist. In any case, ~/.abrt/applet_dirlist
+ * in $XDG_CACHE_HOME/abrt/applet_dirlist. In any case, applet_dirlist
  * is updated with updated list.
  */
 static int new_dir_exists(void)
 {
-    if (!s_home)
-        return 0;
-
     int new_dir_exists = 0;
 
     GList *dirlist = NULL;
@@ -82,10 +78,11 @@ static int new_dir_exists(void)
         pp++;
     }
 
-    char *dirlist_name = concat_path_file(s_home, ".abrt");
-    mkdir(dirlist_name, 0777);
+    const char *cachedir = g_get_user_cache_dir();
+    char *dirlist_name = concat_path_file(cachedir, "abrt");
+    g_mkdir_with_parents(dirlist_name, 0777);
     free(dirlist_name);
-    dirlist_name = concat_path_file(s_home, ".abrt/applet_dirlist");
+    dirlist_name = concat_path_file(cachedir, "abrt/applet_dirlist");
     FILE *fp = fopen(dirlist_name, "r+");
     if (!fp)
         fp = fopen(dirlist_name, "w+");
@@ -161,7 +158,7 @@ static void fork_exec_gui(void)
         execlp("abrt-gui", "abrt-gui", (char*) NULL);
         perror_msg_and_die("Can't execute '%s'", "abrt-gui");
     }
-    /* Scan dirs and save new ~/.abrt/applet_dirlist.
+    /* Scan dirs and save new $XDG_CACHE_HOME/abrt/applet_dirlist.
      * (Oterwise, after a crash, next time applet is started,
      * it will show alert icon even if we did click on it
      * "in previous life"). We ignore function return value.
@@ -194,7 +191,7 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
 
         hide_icon();
 
-        /* Scan dirs and save new ~/.abrt/applet_dirlist.
+        /* Scan dirs and save new $XDG_CACHE_HOME/abrt/applet_dirlist.
          * (Oterwise, after a crash, next time applet is started,
          * it will show alert icon even if we did click on it
          * "in previous life"). We ignore finction return value.
@@ -589,8 +586,6 @@ int main(int argc, char** argv)
     export_abrt_envvars(0);
     msg_prefix = g_progname;
 
-    s_home = getenv("HOME");
-
     load_abrt_conf();
     const char *default_dirs[] = {
         g_settings_dump_location,
@@ -600,8 +595,7 @@ int main(int argc, char** argv)
     argv += optind;
     if (!argv[0])
     {
-        if (s_home)
-            default_dirs[1] = concat_path_file(s_home, ".abrt/spool");
+        default_dirs[1] = concat_path_file(g_get_user_cache_dir(), "abrt/spool");
         argv = (char**)default_dirs;
     }
     s_dirs = argv;

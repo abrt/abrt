@@ -109,9 +109,7 @@ int cmd_list(int argc, const char **argv)
     if (!D_list)
     {
         load_abrt_conf();
-        char *home = getenv("HOME");
-        if (home)
-            D_list = g_list_append(D_list, concat_path_file(home, ".abrt/spool"));
+        D_list = g_list_append(D_list, concat_path_file(g_get_user_cache_dir(), "abrt/spool"));
         D_list = g_list_append(D_list, xstrdup(g_settings_dump_location));
         free_abrt_conf_data();
     }

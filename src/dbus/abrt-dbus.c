@@ -161,7 +161,7 @@ static GList* scan_directory(const char *path, uid_t caller_uid)
     DIR *dp = opendir(path);
     if (!dp)
     {
-        /* We don't want to yell if, say, $HOME/.abrt/spool doesn't exist */
+        /* We don't want to yell if, say, $XDG_CACHE_DIR/abrt/spool doesn't exist */
         //perror_msg("Can't open directory '%s'", path);
         return list;
     }

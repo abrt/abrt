@@ -40,10 +40,8 @@ int cmd_report(int argc, const char **argv)
         show_usage_and_die(program_usage_string, program_options);
 
     load_abrt_conf();
-    char *home = getenv("HOME");
     GList *D_list = NULL;
-    if (home)
-        D_list = g_list_append(D_list, concat_path_file(home, ".abrt/spool"));
+    D_list = g_list_append(D_list, concat_path_file(g_get_user_cache_dir(), "abrt/spool"));
     D_list = g_list_append(D_list, xstrdup(g_settings_dump_location));
     free_abrt_conf_data();
 

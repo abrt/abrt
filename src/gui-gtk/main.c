@@ -1260,9 +1260,7 @@ int main(int argc, char **argv)
     argv += optind;
     if (!argv[0])
     {
-        char *home = getenv("HOME");
-        if (home)
-            default_dirs[1] = concat_path_file(home, ".abrt/spool");
+        default_dirs[1] = concat_path_file(g_get_user_cache_dir(), "abrt/spool");
         argv = (char**)default_dirs;
     }
     s_dirs = argv;
