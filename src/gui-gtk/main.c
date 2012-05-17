@@ -859,7 +859,7 @@ static GtkWidget *create_menu(void)
 {
     /* main bar */
     GtkWidget *menu = gtk_menu_bar_new();
-    GtkWidget *file_item = gtk_menu_item_new_with_mnemonic(_("_Report"));
+    GtkWidget *file_item = gtk_menu_item_new_with_mnemonic(_("_Problem"));
     GtkWidget *edit_item = gtk_menu_item_new_with_mnemonic(_("_Edit"));
     GtkWidget *help_item = gtk_menu_item_new_with_mnemonic(_("_Help"));
 
@@ -870,21 +870,27 @@ static GtkWidget *create_menu(void)
     /* file submenu */
     GtkWidget *file_submenu = gtk_menu_new();
     GtkWidget *quit_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT, NULL);
+    GtkWidget *report_item = gtk_image_menu_item_new_with_label(_("Report"));
+    g_signal_connect(report_item, "activate", G_CALLBACK(on_btn_report_cb), NULL);
+    GtkWidget *open_problem_item = gtk_menu_item_new_with_label(_("Open problem data"));
+    g_signal_connect(open_problem_item, "activate", G_CALLBACK(open_problem_data_cb), NULL);
+
+    gtk_menu_shell_append(GTK_MENU_SHELL(file_submenu), report_item);
+    gtk_menu_shell_append(GTK_MENU_SHELL(file_submenu), open_problem_item);
     gtk_menu_shell_append(GTK_MENU_SHELL(file_submenu), quit_item);
+
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(file_item), file_submenu);
 
     g_signal_connect(quit_item, "activate", &gtk_main_quit, NULL);
 
     /* edit submenu */
     GtkWidget *edit_submenu = gtk_menu_new();
-    GtkWidget *open_problem_item = gtk_menu_item_new_with_label(_("Open problem data"));
+
     GtkWidget *preferences_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_PREFERENCES, NULL);
-    gtk_menu_shell_append(GTK_MENU_SHELL(edit_submenu), open_problem_item);
     gtk_menu_shell_append(GTK_MENU_SHELL(edit_submenu), preferences_item);
     //gtk_menu_shell_append(GTK_MENU_SHELL(edit_submenu), preferences_item);
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(edit_item), edit_submenu);
 
-    g_signal_connect(open_problem_item, "activate", G_CALLBACK(open_problem_data_cb), NULL);
     g_signal_connect(preferences_item, "activate", G_CALLBACK(show_events_list_dialog_cb), NULL);
 
     /* help submenu */
