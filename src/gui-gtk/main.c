@@ -1022,6 +1022,7 @@ static GtkWidget *create_main_window(void)
     GtkWidget *btn_delete = gtk_button_new_from_stock(GTK_STOCK_DELETE);
 
     GtkWidget *hbox_report_delete = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_box_set_homogeneous(GTK_BOX(hbox_report_delete), true);
     gtk_box_pack_start(GTK_BOX(hbox_report_delete), btn_delete, true, true, 0);
     gtk_box_pack_start(GTK_BOX(hbox_report_delete), btn_report, true, true, 10);
 
