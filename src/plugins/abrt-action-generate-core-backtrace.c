@@ -19,6 +19,8 @@
 #include "libabrt.h"
 #include <btparser/utils.h>
 #include <btparser/core-backtrace.h>
+#include <btparser/core-backtrace-python.h>
+#include <btparser/core-backtrace-oops.h>
 
 int main(int argc, char **argv)
 {
@@ -58,47 +60,66 @@ int main(int argc, char **argv)
     if (g_verbose > 1)
         btp_debug_parser = true;
 
-    VERB1 log("Querying gdb for backtrace");
-    char *gdb_out = get_backtrace(dump_dir_name, exec_timeout_sec, "");
-    if (gdb_out == NULL)
-        return 1;
-
     /* parse addresses and eventual symbols from the output*/
-    GList *backtrace = btp_backtrace_extract_addresses(gdb_out);
-    VERB1 log("Extracted %d frames from the backtrace", g_list_length(backtrace));
-    free(gdb_out);
-
-    VERB1 log("Running eu-unstrip -n to obatin build ids");
-    /* Run eu-unstrip -n to obtain the ids. This should be rewritten to read
-     * them directly from the core. */
-    char *unstrip_output = run_unstrip_n(dump_dir_name, /*timeout_sec:*/ 30);
-    if (unstrip_output == NULL)
-        error_msg_and_die("Running eu-unstrip failed");
-
+    GList *backtrace;
     /* Get the executable name -- unstrip doesn't know it. */
     struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
     if (!dd)
         xfunc_die(); /* dd_opendir already printed error msg */
+    char *analyzer = dd_load_text(dd, FILENAME_ANALYZER);
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+    char *txt_backtrace = dd_load_text_ext(dd, FILENAME_BACKTRACE,
+                                           DD_FAIL_QUIETLY_ENOENT);
+    char *kernel = dd_load_text_ext(dd, FILENAME_KERNEL,
+                                    DD_FAIL_QUIETLY_ENOENT |
+                                    DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     dd_close(dd);
 
-    btp_core_assign_build_ids(backtrace, unstrip_output, executable);
+    if (strcmp(analyzer, "CCpp") == 0)
+    {
+        VERB1 log("Querying gdb for backtrace");
+        char *gdb_out = get_backtrace(dump_dir_name, exec_timeout_sec, "");
+        if (gdb_out == NULL)
+            xfunc_die();
 
+        backtrace = btp_backtrace_extract_addresses(gdb_out);
+        VERB1 log("Extracted %d frames from the backtrace", g_list_length(backtrace));
+        free(gdb_out);
+
+        VERB1 log("Running eu-unstrip -n to obatin build ids");
+        /* Run eu-unstrip -n to obtain the ids. This should be rewritten to read
+         * them directly from the core. */
+        char *unstrip_output = run_unstrip_n(dump_dir_name, /*timeout_sec:*/ 30);
+        if (unstrip_output == NULL)
+            error_msg_and_die("Running eu-unstrip failed");
+        btp_core_assign_build_ids(backtrace, unstrip_output, executable);
+        free(unstrip_output);
+
+        /* Extract address ranges from all the executables in the backtrace*/
+        VERB1 log("Computing function fingerprints");
+        btp_core_backtrace_fingerprint(backtrace);
+    }
+    else if (strcmp(analyzer, "Python") == 0)
+        backtrace = btp_parse_python_backtrace(txt_backtrace);
+    else if (strcmp(analyzer, "Kerneloops") == 0 || strcmp(analyzer, "vmcore") == 0)
+        backtrace = btp_parse_kerneloops(txt_backtrace, kernel);
+    else
+        error_msg_and_die(_("Core-backtraces are not supported for '%s'"), analyzer);
+
+    free(txt_backtrace);
+    free(kernel);
     free(executable);
-    free(unstrip_output);
-
-    /* Extract address ranges from all the executables in the backtrace*/
-    VERB1 log("Computing function fingerprints");
-    btp_core_backtrace_fingerprint(backtrace);
+    free(analyzer);
 
     char *formated_backtrace = btp_core_backtrace_fmt(backtrace);
 
     dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
-        return 1;
+        xfunc_die();
     dd_save_text(dd, FILENAME_CORE_BACKTRACE, formated_backtrace);
     dd_close(dd);
 
     free(formated_backtrace);
+    btp_core_backtrace_free(backtrace);
     return 0;
 }
