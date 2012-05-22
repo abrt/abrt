@@ -804,14 +804,11 @@ int main(int argc, char** argv)
             unlink(core_basename);
         }
 
-/* Provisional code, pending discussion with JVM people */
-#if 0
         /* Save JVM crash log if it exists. (JVM's coredump per se
          * is nearly useless for JVM developers)
          */
-        if (user_pwd)
         {
-            char *java_log = xasprintf("%s/hs_err_pid%lu.log", user_pwd, (long)pid);
+            char *java_log = xasprintf("/tmp/jvm-%lu/hs_error.log", (long)pid);
             int src_fd = open(java_log, O_RDONLY);
             free(java_log);
             if (src_fd >= 0)
@@ -827,7 +824,6 @@ int main(int argc, char** argv)
                 close(src_fd);
             }
         }
-#endif
 
         /* We close dumpdir before we start catering for crash storm case.
          * Otherwise, delete_dump_dir's from other concurrent
