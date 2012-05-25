@@ -23,7 +23,7 @@
 #if HAVE_LOCALE_H
 # include <locale.h>
 #endif
-#include <internal_libreport_gtk.h>
+#include <libreport/internal_libreport_gtk.h>
 #include "libabrt.h"
 #include "abrt-dbus.h"
 

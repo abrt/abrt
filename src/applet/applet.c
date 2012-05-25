@@ -25,7 +25,7 @@
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-lowlevel.h>
 
-#include <internal_abrt_dbus.h>
+#include <libreport/internal_abrt_dbus.h>
 #include "libabrt.h"
 
 #define ABRTD_DBUS_NAME  "com.redhat.abrt"

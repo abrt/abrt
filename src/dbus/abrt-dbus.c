@@ -6,7 +6,7 @@
 #include "libabrt.h"
 #include "abrt-polkit.h"
 #include "abrt-dbus.h"
-#include "dump_dir.h"
+#include <libreport/dump_dir.h>
 
 GMainLoop *loop;
 guint g_timeout;

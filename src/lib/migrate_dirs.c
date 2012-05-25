@@ -18,7 +18,6 @@
 #if HAVE_LOCALE_H
 # include <locale.h>
 #endif
-#include <internal_libreport.h>
 #include "libabrt.h"
 
 static void try_to_move(const char *old, const char *new)
