@@ -11,26 +11,33 @@
 \usepackage{fancybox}
 \usepackage{tikz-uml}
 
-% The document is based on
-% a% template from project management book "A Guide to the Project Management Body of
-% Knowledge" (PMBOK Guide).
-
+% The document is based on a template from project management book "A
+% Guide to the Project Management Body of Knowledge" (PMBOK Guide).
 
 \title{ABRT Project Document}
-\author{Karel Klíč, Michal Toman, Miroslav Lichvár}
+\author{Karel Klíč}
 
 \begin{document}
 \maketitle
 
-ABRT is a set of technologies that collects and evaluates software
-crashes coming from Linux operating system deployments.
+ABRT improves quality of operating systems by automatic detection of
+software failures, their analysis on a centralised server, and
+reporing failures to the right group of developers.  It is designed to
+help users to report problems, help developers to fix the bugs found
+in the reports, help security engineers to determine the security
+impact of a failure, and help quality assurance and release
+engineering people to assess the overall quality of an operating
+system release.
 
-This is a top-level project document for ABRT.
+This is a top-level project document for ABRT.  It describes the
+top-level design, communication protocols and interfaces.  It also
+describes the current status of the features, and project roadmap.
 
-TODO: What is ABRT doing.
-
-TODO: Purpose of ABRT.
-% --- help users, developers, security to do their job\ldots
+\paragraph{Contributors.}  Miroslav Lichvár contributed figures
+\ref{fig:cumulative} and \ref{fig:distribution}.  Miroslav Lichvár and
+Michal Toman co-designed the database schema for the Problem Storage.
+Jiří Moskovčák co-designed the use cases.  Jon McCann designed the
+graphical user interface of the client.
 
 \cleardoublepage
 \tableofcontents
@@ -143,101 +150,6 @@ business need, product scope, strategic plan
 \umlassoc{Upstream Developer}{view individual problems}
 \end{tikzpicture}
 
-\subsubsection{Related Work}
-
-There are several existing implementations of problem management
-systems.
-
-TODO: \cite{MS}.
-
-Jon McCann of GNOME team envisioned a problem reporting
-architecture\cite{JonProposal} that splits the responsibilities of a
-problem management system into several components:
-\begin{enumerate}
-\item \emph{System Logger} collects data for anomalous behavior of
-  system such as crash dumps and SELinux access denial logs.  It is
-  proposed to include this functionality into \texttt{systemd}, a
-  system and service manager for Linux.  In internal communication,
-  Jon also proposed to stop using core dumps in favor of minidumps.
-\item \emph{Problem Detector} watches the output of System Logger for
-  new events, and runs Report Generator on every new event.  Its name
-  should be \texttt{problemd}, and this tool is not implemented yet.
-\item \emph{Report Generator} gathers supplementary details about a
-  problem, and stores problem data to a non-volatile memory.  It
-  should be handled by either \texttt{systemd} or \texttt{problemd}.
-\item \emph{User Problem Notifier} notifies user about a problem.  Jon
-  proposes to include this functionality into
-  \texttt{gnome-settings-daemon}.
-\item \emph{Reporting Mechanism} delivers problem report to a
-  Collection Server, scp, ftp, email\ldots
-\item \emph{Problem Reporting and Review} shows problem reports of a
-  system, and allows report submission.  Jon designed
-  \emph{Oops!}\cite{JonOops}, a graphical user interface for such a
-  component.
-\item \emph{Problem Report Collection Server} accepts anonymous
-  submissions, supports filling reports to Bugzilla, scrubs sensitive
-  data from reports, detects duplicates, performs coredump analysis
-  and retracing (generating backtrace from coredump).  In internal
-  communication, GNOME team proposes using
-  \href{https://wiki.mozilla.org/Socorro}{Socorro}, a crash statistics
-  server project of Mozilla, in this role.
-\end{enumerate}
-
-\textbf{Advantages and good aspects of the proposal}
-\begin{enumerate}
-\item The idea of pushing generic code to packages that are being used
-  across distributions.  Coredump catching can definitely be done by
-  \texttt{systemd}. \emph{Problem Detector} and \emph{Report
-    Generator} can also be made portable and shareable across
-  distributions, and it could live in \url{http://freedesktop.org} as
-  \texttt{problemd}.
-\item The design of \emph{Oops!}.
-\end{enumerate}
-
-\textbf{Criticism of the proposal}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.8\textwidth]{abrt-bugs-per-component-cdf.pdf}
-\caption{Cumulative distribution of ABRT bugs and reports per
-  component}
-\label{fig:cumulative}
-\end{figure}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.8\textwidth]{abrt-bugs-per-component.pdf}
-\caption{Distribution of ABRT bugs and reports per component}
-\label{fig:distribution}
-\end{figure}
-
-The most important point that should be re-evaluated is the proposed
-direction of \emph{statistics-based} problem management and
-bugfixing. This includes the usage of minidumps in all situations, and
-the deployment of Socorro.
-
-Data from the current problem management system shows that
-statistics-based bugfixing misfits the operating system level use case
-(management of full stack of applications).  Statistics-based
-bugfixing is based on the assumption of large amounts of users hitting
-and reporting the same crash.  This assumption is valid for desktop
-applications, which are quickly changing, contain large amount of bugs
-(GUI code is difficult to handle well), and have large amount of users
-(desktop shell, internet browser, e-mail client).  Nevertheless, this
-assumption is \emph{invalid} for most of operating system packages,
-including server-side software. Many packages are used by relatively
-low number of people, customized and deployed just on a few servers.
-Crashes in this situation are less frequent, but dangerous.
-
-\begin{enumerate}
-\item Implementing \emph{User Problem Notifier} into
-  \texttt{gnome-settings-daemon} brings the requirement to implement
-  the same functionality for other desktops as well (KDE, XFCE).
-\item \emph{Oops!} design is incomplete. It is not clear how the
-  reporting target can be configured (problem report collection server
-  URL, e-mail, FTP, SCP destinations).  The window with report details
-  is not presented.
-\end{enumerate}
 
 \vfill
 \section{Stakeholders}
@@ -1177,11 +1089,11 @@ LlvmResults
       child {node {Problem Reporting Interface}}
       child {node {Problem Query Interface}}
     }
-    child {node {Human Interface}
-      child {node {Summary View}}
-      child {node {Problems View}}
-      child {node {Reports View}}
-      child {node {Tasks View}}
+    child[faded] {node[faded] {Human Interface}
+      child[faded] {node[faded] {Summary View}}
+      child[faded] {node[faded] {Problems View}}
+      child[faded] {node[faded] {Reports View}}
+      child[faded] {node[faded] {Tasks View}}
       child {node {Status View}}
     }
     child[faded] {node[faded] {Central Hub}
@@ -1367,7 +1279,6 @@ Name & Format & Mandatory & Notes \\ \hline
 \end{tabular}
 \end{center}
 
-
 \subsection{ABRT Client Overview}
 
 \begin{center}
@@ -1505,14 +1416,49 @@ The Problem Browser dialog comes from \cite{JonOops}. Please see
 \includegraphics[width=\textwidth]{client-ui-issue-browser.png}
 \end{center}
 
+\subsection{ABRT Client Reporting Mechanism Overview}
+
+\subsubsection{Reporting to ABRT Server}
+
+\subsection{ABRT Client Report Generator Overview}
+
+\subsubsection{Coredump-level backtraces}
+
+
+
+
+\cleardoublepage
 \section{Project Time Management}
 
 \subsection{Fedora 17 Phase}
-Finish date: 2012-05-22.
+Finish date: approx 2012-06-01. \\
+Consists of 3 sprints, 3 weeks each. \\
 
+The goals for the ABRT Server to be reached at the end of the
+phase:
+
+\begin{description}
+\item[Usable human user interface] Server has initial but usable
+  graphical user interface.  It shows problems, reports, and report
+  history in a graph.
+\item[$\mu$Report processing] Server accepts $\mu$reports, stores them
+  to the database, retraces the contained symbols.  Accepted reports
+  are visible in the user interface.
+\item[Clustering of reports into problems] Report clusters (problems)
+  on server are generated using core-backtrace distance.
+\end{description}
+
+The goals for the ABRT Client to be reached at the end of the phase:
+\begin{description}
+\item[$\mu$Report sending] Client sends $\mu$reports from the crash
+  dialog.
+\end{description}
+
+\cleardoublepage
 \subsubsection{Sprint 1}
-Finish date: 2012-04-20 Friday \\
-Duration: 3 weeks
+Finish date: 2012-03-20 Tuesday \\
+Duration: 3 weeks \\
+Status: FINISHED
 
 \begin{itemize}
 \item Server
@@ -1548,10 +1494,11 @@ Duration: 3 weeks
   \end{itemize}
 \end{itemize}
 
+\cleardoublepage
 \subsubsection{Sprint 2}
-Start date: 2012-04-23 Monday \\
-Finish date: 2012-05-11 Friday \\
-Duration: 3 weeks
+Start date: 2012-04-02 Monday \\
+Finish date: 2012-04-27 Friday \\
+Duration: approx. 3 weeks
 
 \begin{itemize}
 \item Server
@@ -1567,75 +1514,186 @@ Duration: 3 weeks
   \end{itemize}
 \end{itemize}
 
+\cleardoublepage
 \subsubsection{Sprint 3}
-Start date: 2012-05-14 Monday \\
-Finish date: 2012-05-22 Tuesday \\
-Duration: 7 days
+Start date: 2012-05-07 Monday \\
+Finish date: approx. 2012-06-01 Friday \\
+Duration: approx. 4 weeks
 
+\begin{itemize}
+\item Accepting reports on the server
+\item Python and Koops $\mu$reports
+\item Rewrite cache to storage
+\item Generating problems
+\item Deploy server internally
+\end{itemize}
+
+\cleardoublepage
 \subsection{Fedora 18 Phase}
-Finish date: 2012-11-01
+Finish date: approx. 2012-11-01
 
-\subsection{Activity List}
 
-\begin{enumerate}
-\item Implement the problem storage tables in SQLAlchemy. [server]
-\item Implement server machine interface for communication with client. [server]
-\item Implement saving the received microdump to the database. [server]
-\item Set-up and document regular, automatic database backup. [server]
-\item Finish the design of minireport and fullreport backup. [server]
-\item Implement minireport and fullreport backup. [server]
-\item Implement deduplication logic on arrival of a new report. [server]
-\item Implement deduplication logic for clustering and merging of
-  existing reports. [server]
-\item Implement coredump-level backtraces. [server]
-\item Implement retracing of coredump-level backtraces. [server]
-\item Implement the basic layout of human interface. [server]
-\item Implement graph on the summary page. [server]
-\item Implement initial problems overview page. [server]
-\item Implement initial problem summary page. [server]
-\item Implement both variants of apology dialog. [client]
-\item Implement detailed report dialog. [client]
-\item Implement ABRT client uploader. [client]
-\item Prepare proposal for Anaconda changes. [client]
-\end{enumerate}
+The goals for the ABRT Server to be reached at the end of the
+phase:
+\begin{description}
+\item[Retrace server merged] Retrace server functionality is merged
+  into the server, using server's packages, server's \textit{chroot}
+  implementation and server's \textit{libsolv} integration.  The
+  original retrace server is still maintained to support current
+  deployments.
+\item[Debuginfo check] Server checks the consistency of packages
+  containing the debugging symbols for program binaries.  It supports
+  opening bugs for packages with broken debugging symbols.
+\item[LLVM support] Server handles LLVM rebuilds of packages to allow
+  static analysis of source code and source code browser.
+\item[Full reports] Server requests and stores full report (coredump)
+  for problems that require fixing due to high priority.
+\item[Better human interface] Problems and reports can be studied by
+  users in a good detail.  Server shows its status (which packages are
+  supported, internal task failures such as failed package download or
+  LLVM rebuild).
+\item[Machine interface] Problems and reports can be fetched via
+  JSON. Problems, reports, and Red Hat Bugzilla bugs can be searched
+  by providing a backtrace.  Server can be used to obtain the crash
+  function from a textual backtrace.
+\end{description}
 
-- Define Activities
--- Activity List
--- Activity attributes
--- Milestone list
+The goals for the ABRT Client to be reached at the end of the phase:
+\begin{description}
+\item[Better human interface]
+\end{description}
 
-- Sequence Activities
--- Project Schedule Network Diagram
+\cleardoublepage
+\subsubsection{Sprint 4}
+Start date: approx.
+Duration: approx. 3 weeks
 
-- Estimate Activity Resources
--- Activity Resource Requirements
--- Resource Breakdown Structure
+\begin{itemize}
+\item Determine crash function from core backtrace
+\item Problem names and report names
+\item Finish retracing
+\item JSON interface for search with a backtrace
+\item LLVM rebuild
+\item Builds and packages page in Status
+\item Overview page in Status
+\item RHBZ Bugs in Status
+\end{itemize}
 
-- Estimate Activity Durations
--- Activity Duration Estimates
+\cleardoublepage
+\subsubsection{Sprint 5}
+Duration: approx. 3 weeks
 
-- Develop Schedule
--- Project Schedule
--- Schedule baseline
--- Schedule data
+\begin{itemize}
+\item Extend LLVM rebuild with DXR for source code browsing.
+\item Interface for source code browsing (clickable function names in
+  coredump-level backtraces.
+\item Request and store coredumps and vmcores.
+\item Implement coredump and vmcore retracing.
+\item JSON API for coredump and vmcore retracing.
+\end{itemize}
 
+\cleardoublepage
+\subsubsection{Sprint 6}
+Duration: approx. 3 weeks
+
+\begin{itemize}
+\item LLVM linking into single module
+\item Component groups
+\item Debuginfo checker
+\end{itemize}
+
+\cleardoublepage
+\subsubsection{Sprint 7}
+Duration: approx. 3 weeks
+
+\begin{itemize}
+\item Problem type analysis start
+\item Security analysis start
+\item Merge All/Running/Finished Tasks in Status into single page.
+\end{itemize}
+
+\cleardoublepage
+\subsubsection{Sprint 8}
+Duration: approx. 3 weeks
+
+\begin{itemize}
+\item Bugfixing
+\item Fedora deployment
+\end{itemize}
+
+\cleardoublepage
+\subsection{Fedora 19 Phase}
+
+The goals for the ABRT Server to be reached at the end of the
+phase:
+\begin{description}
+\item[Automatic reporting to Red Hat Bugzilla]
+\item[Security analysis of reports]
+\item[Static analysis of SELinux AVCs]
+\end{description}
+
+\cleardoublepage
+\subsubsection{Sprint 9}
+\begin{itemize}
+\item SELinux AVCs
+\item Reporting to Red Hat Bugzilla
+\end{itemize}
+
+\cleardoublepage
+\subsubsection{Sprint 10 and later}
+\begin{itemize}
+\item Reporting to upstreams
+\item SELinux analysis
+\item Symbolic execution
+\item Crash analysis
+\end{itemize}
+
+
+%\subsection{Activity List}
+%\begin{enumerate}
+%\item Set-up and document regular, automatic database backup. [server]
+%\item Finish the design of minireport and fullreport backup. [server]
+%\item Implement minireport and fullreport backup. [server]
+%\item Implement deduplication logic on arrival of a new report. [server]
+%\item Implement deduplication logic for clustering and merging of
+%  existing reports. [server]
+%\item Implement coredump-level backtraces. [server]
+%\item Implement retracing of coredump-level backtraces. [server]
+%\item Implement both variants of apology dialog. [client]
+%\item Implement detailed report dialog. [client]
+%\end{enumerate}
+%- Define Activities
+%-- Activity List
+%-- Activity attributes
+%-- Milestone list
+%
+%- Sequence Activities
+%-- Project Schedule Network Diagram
+%
+%- Estimate Activity Resources
+%-- Activity Resource Requirements
+%-- Resource Breakdown Structure
+%- Estimate Activity Durations
+%-- Activity Duration Estimates
+%- Develop Schedule
+%-- Project Schedule
+%-- Schedule baseline
+%-- Schedule data
 %\section{Project Cost Management}
-
 %- Estimate Costs
 %-- Activity Cost Estimates
 %-- Basis of estimates
-
 %- Determine Budget
 %-- Cost performance baseline
 %-- Project funding requirements
 
-\section{Project Quality Management}
-
-- Plan Quality
--- Quality management plan
--- Quality metrices
--- Quality checklists
--- Process improvement plan
+%\cleardoublepage
+%\section{Project Quality Management}
+%- Plan Quality
+%-- Quality management plan
+%-- Quality metrices
+%-- Quality checklists
+%-- Process improvement plan
 
 %\section{Project Human Resource Management}
 
@@ -1645,7 +1703,8 @@ Finish date: 2012-11-01
 
 %- Plan Communications
 
-\section{Project Risk Management}
+%\cleardoublepage
+%\section{Project Risk Management}
 
 %Plan Risk Management
 %-- Risk Register
@@ -1658,15 +1717,108 @@ Finish date: 2012-11-01
 
 %Plan Risk Responses
 
-%\section{Project Procurement Management}
+%\cleardoublepage
+%\section{Project Management Plan}
 
-%Plan Procurements
 
-%\section{Enterprise Environmental Factors}
+\cleardoublepage
+\section{Related Work}
+There are several existing implementations of software failure
+management systems.
 
-%\section{Organizational Process Assets}
+\subsection{GNOME Problem Reporting}
+Jon McCann of GNOME team envisioned a problem reporting
+architecture\cite{JonProposal} that splits the responsibilities of a
+problem management system into several components:
+\begin{enumerate}
+\item \emph{System Logger} collects data for anomalous behavior of
+  system such as crash dumps and SELinux access denial logs.  It is
+  proposed to include this functionality into \texttt{systemd}, a
+  system and service manager for Linux.  In internal communication,
+  Jon also proposed to stop using core dumps in favor of minidumps.
+\item \emph{Problem Detector} watches the output of System Logger for
+  new events, and runs Report Generator on every new event.  Its name
+  should be \texttt{problemd}, and this tool is not implemented yet.
+\item \emph{Report Generator} gathers supplementary details about a
+  problem, and stores problem data to a non-volatile memory.  It
+  should be handled by either \texttt{systemd} or \texttt{problemd}.
+\item \emph{User Problem Notifier} notifies user about a problem.  Jon
+  proposes to include this functionality into
+  \texttt{gnome-settings-daemon}.
+\item \emph{Reporting Mechanism} delivers problem report to a
+  Collection Server, scp, ftp, email\ldots
+\item \emph{Problem Reporting and Review} shows problem reports of a
+  system, and allows report submission.  Jon designed
+  \emph{Oops!}\cite{JonOops}, a graphical user interface for such a
+  component.
+\item \emph{Problem Report Collection Server} accepts anonymous
+  submissions, supports filling reports to Bugzilla, scrubs sensitive
+  data from reports, detects duplicates, performs coredump analysis
+  and retracing (generating backtrace from coredump).  In internal
+  communication, GNOME team proposes using
+  \href{https://wiki.mozilla.org/Socorro}{Socorro}, a crash statistics
+  server project of Mozilla, in this role.
+\end{enumerate}
 
-\section{Project Management Plan}
+\paragraph{Advantages and good aspects of the proposal.}
+\begin{enumerate}
+\item The idea of pushing generic code to packages that are being used
+  across distributions.  Coredump catching can definitely be done by
+  \texttt{systemd}. \emph{Problem Detector} and \emph{Report
+    Generator} can also be made portable and shareable across
+  distributions, and it could live in \url{http://freedesktop.org} as
+  \texttt{problemd}.
+\item The design of \emph{Oops!}.
+\end{enumerate}
+
+\paragraph{Criticism of the proposal.}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{abrt-bugs-per-component-cdf.pdf}
+\caption{Cumulative distribution of ABRT bugs and reports per
+  component}
+\label{fig:cumulative}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{abrt-bugs-per-component.pdf}
+\caption{Distribution of ABRT bugs and reports per component}
+\label{fig:distribution}
+\end{figure}
+
+The most important point that should be re-evaluated is the proposed
+direction of \emph{statistics-based} problem management and
+bugfixing. This includes the usage of minidumps in all situations, and
+the deployment of Socorro.
+
+Data from the current problem management system shows that
+statistics-based bugfixing misfits the operating system level use case
+(management of full stack of applications).  Statistics-based
+bugfixing is based on the assumption of large amounts of users hitting
+and reporting the same crash.  This assumption is valid for desktop
+applications, which are quickly changing, contain large amount of bugs
+(GUI code is difficult to handle well), and have large amount of users
+(desktop shell, internet browser, e-mail client).  Nevertheless, this
+assumption is \emph{invalid} for most of operating system packages,
+including server-side software. Many packages are used by relatively
+low number of people, customized and deployed just on a few servers.
+Crashes in this situation are less frequent, but dangerous.
+
+\begin{enumerate}
+\item Implementing \emph{User Problem Notifier} into
+  \texttt{gnome-settings-daemon} brings the requirement to implement
+  the same functionality for other desktops as well (KDE, XFCE).
+\item \emph{Oops!} design is incomplete. It is not clear how the
+  reporting target can be configured (problem report collection server
+  URL, e-mail, FTP, SCP destinations).  The window with report details
+  is not presented.
+\end{enumerate}
+
+\subsection{Windows Error Reporting}
+TODO: \cite{MS}.
+
+\subsection{Ubuntu Apport}
 
 
 \cleardoublepage
