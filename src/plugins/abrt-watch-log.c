@@ -60,7 +60,7 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
         return; /* we are at EOF, nothing to do */
     }
 
-    VERB3 log("File grew by %llu bytes, from %llu to %llu",
+    VERB2 log("File grew by %llu bytes, from %llu to %llu",
         (long long)(statbuf->st_size - cur_pos),
         (long long)(cur_pos),
         (long long)(statbuf->st_size));
@@ -75,13 +75,17 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
             size_t skip = (cur_pos & (page_size - 1));
             for (GList *l = match_list; l; l = l->next)
             {
-                if (memstr((char*)map + skip, length - skip, (char*)match_list->data))
+                VERB3 log("Searching for '%s' in '%.*s'", (char*)l->data,
+                    (int)(length - skip) > 20 ? 20 : (int)(length - skip),
+                    (char*)map + skip);
+                if (memstr((char*)map + skip, length - skip, (char*)l->data))
                 {
-                    //log("FOUND:'%s'", (char*)match_list->data);
+                    VERB3 log("FOUND:'%s'", (char*)l->data);
                     goto found;
                 }
             }
             /* None of the strings are found */
+            VERB3 log("NOT FOUND");
             munmap(map, length);
             lseek(fd, length - skip, SEEK_CUR);
             return;
@@ -96,6 +100,7 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
     if (pid == 0)
     {
         xmove_fd(fd, STDIN_FILENO);
+        VERB3 log("Execing '%s'", prog[0]);
         execvp(prog[0], prog);
         perror_msg_and_die("Can't execute '%s'", prog[0]);
     }
