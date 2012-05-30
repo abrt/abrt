@@ -392,7 +392,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %doc README COPYING
 %if %{with systemd}
-/lib/systemd/system/abrtd.service
+%{_unitdir}/abrtd.service
 %else
 %{_initrddir}/abrtd
 %endif
@@ -458,7 +458,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
 %if %{with systemd}
-/lib/systemd/system/abrt-ccpp.service
+%{_unitdir}/abrt-ccpp.service
 %else
 %{_initrddir}/abrt-ccpp
 %endif
@@ -501,7 +501,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/koops_event.conf
 %if %{with systemd}
-/lib/systemd/system/abrt-oops.service
+%{_unitdir}/abrt-oops.service
 %else
 %{_initrddir}/abrt-oops
 %endif
@@ -514,7 +514,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vmcore_event.conf
 %{_sysconfdir}/libreport/events/analyze_VMcore.xml
 %if %{with systemd}
-/lib/systemd/system/abrt-vmcore.service
+%{_unitdir}/abrt-vmcore.service
 %else
 %{_initrddir}/abrt-vmcore
 %endif
