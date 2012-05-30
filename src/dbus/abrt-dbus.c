@@ -182,7 +182,7 @@ static bool problem_condition_evaluate_and(struct dump_dir *dd,
                                            const struct problem_condition *const *condition)
 {
     /* We stop on the first FALSE condition */
-    while (*condition != NULL)
+    while (condition && *condition != NULL)
     {
         const struct problem_condition *c = *condition;
         char *field_data = dd_load_text(dd, c->field_name);
