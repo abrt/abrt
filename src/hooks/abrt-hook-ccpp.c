@@ -690,7 +690,9 @@ int main(int argc, char** argv)
     dd = dd_create(path, fsuid, 0640);
     if (dd)
     {
-        dd_create_basic_files(dd, fsuid);
+        char *rootdir = get_rootdir(pid);
+
+        dd_create_basic_files(dd, fsuid, (rootdir && strcmp(rootdir, "/") != 0) ? rootdir : NULL);
 
         char source_filename[sizeof("/proc/%lu/somewhat_long_name") + sizeof(long)*3];
         int source_base_ofs = sprintf(source_filename, "/proc/%lu/smaps", (long)pid);
@@ -729,12 +731,10 @@ int main(int argc, char** argv)
         dd_save_text(dd, FILENAME_PID, pid_str);
         if (user_pwd)
             dd_save_text(dd, FILENAME_PWD, user_pwd);
-        char *rootdir = get_rootdir(pid);
         if (rootdir)
         {
             if (strcmp(rootdir, "/") != 0)
                 dd_save_text(dd, FILENAME_ROOTDIR, rootdir);
-            free(rootdir);
         }
 
         char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)",
@@ -851,6 +851,7 @@ int main(int argc, char** argv)
             trim_problem_dirs(g_settings_dump_location, maxsize * (double)(1024*1024), path);
         }
 
+        free(rootdir);
         return 0;
     }
 

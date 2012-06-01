@@ -18,7 +18,7 @@
 */
 
 #include "libabrt.h"
-#include "run_event.h"
+#include <libreport/run_event.h>
 
 #include <btparser/frame.h>
 #include <btparser/thread.h>

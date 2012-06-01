@@ -189,7 +189,7 @@ abrt_action_generate_core_backtrace_CPPFLAGS = \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    $(LIBREPORT_CFLAGS) \
+    $(BTPARSER_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_generate_core_backtrace_LDADD = \
@@ -204,6 +204,7 @@ abrt_action_analyze_backtrace_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
+    $(BTPARSER_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_action_analyze_backtrace_LDADD = \

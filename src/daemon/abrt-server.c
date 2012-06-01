@@ -104,7 +104,7 @@ static int create_debug_dump(GHashTable *problem_info, unsigned pid)
         error_msg_and_die("Error creating crash dump %s", path);
     }
 
-    dd_create_basic_files(dd, client_uid);
+    dd_create_basic_files(dd, client_uid, NULL);
     dd_save_text(dd, "abrt_version", VERSION);
 
     gpkey = g_hash_table_lookup(problem_info, FILENAME_CMDLINE);

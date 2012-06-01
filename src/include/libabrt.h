@@ -7,7 +7,7 @@
 #define LIBABRT_H_
 
 /* libreport's internal functions we use: */
-#include <internal_libreport.h>
+#include <libreport/internal_libreport.h>
 
 #ifdef HAVE_CONFIG_H
 # include "config.h"

@@ -6,7 +6,7 @@
 #include "libabrt.h"
 #include "abrt-polkit.h"
 #include "abrt-dbus.h"
-#include "dump_dir.h"
+#include <libreport/dump_dir.h>
 
 GMainLoop *loop;
 guint g_timeout;
@@ -37,6 +37,14 @@ static const gchar introspection_xml[] =
   "    </method>"
   "    <method name='DeleteProblem'>"
   "      <arg type='as' name='problem_dir' direction='in'/>"
+  "    </method>"
+  "    <method name='FindProblemByElementInTimeRange'>"
+  "      <arg type='s' name='element' direction='in'/>"
+  "      <arg type='s' name='value' direction='in'/>"
+  "      <arg type='x' name='timestamp_from' direction='in'/>"
+  "      <arg type='x' name='timestamp_to' direction='in'/>"
+  "      <arg type='b' name='all_users' direction='in'/>"
+  "      <arg type='as' name='response' direction='out'/>"
   "    </method>"
   "    <method name='Quit' />"
   "  </interface>"
@@ -154,7 +162,50 @@ static int dir_accessible_by_uid(const char* dir_path, uid_t uid)
     return 0;
 }
 
-static GList* scan_directory(const char *path, uid_t caller_uid)
+/*
+ * Structure for simple conditions based on problem fields
+ */
+struct problem_condition
+{
+    /* a name of filed required by evaluate function */
+    const char *field_name;
+    /* extra data passed to evaluate function */
+    const void *args;
+    /* evaluate function returning TRUE if condition was passed */
+    bool (*evaluate)(const char *, const void *);
+};
+
+/*
+ * Evaluates a NULL-terminated list of problem conditions as a logical conjunction
+ */
+static bool problem_condition_evaluate_and(struct dump_dir *dd,
+                                           const struct problem_condition *const *condition)
+{
+    /* We stop on the first FALSE condition */
+    while (condition && *condition != NULL)
+    {
+        const struct problem_condition *c = *condition;
+        char *field_data = dd_load_text(dd, c->field_name);
+        bool value = c->evaluate(field_data, c->args);
+        free(field_data);
+        if (!value)
+            return false;
+        ++condition;
+    }
+
+    return true;
+}
+
+/*
+ * Goes through all problems and selects only problems accessible by caller_uid and
+ * problems for which an and_filter gets TRUE
+ *
+ * @param condition a NULL-terminated list of problem conditions evaluated
+ * as conjunction, can be NULL (means always TRUE)
+ */
+static GList* scan_directory(const char *path,
+                             uid_t caller_uid,
+                             const struct problem_condition *const *condition)
 {
     GList *list = NULL;
 
@@ -189,8 +240,11 @@ static GList* scan_directory(const char *path, uid_t caller_uid)
             */
             if (dd && (caller_uid == 0 || statbuf.st_mode & S_IROTH || uid_in_group(caller_uid, statbuf.st_gid)))
             {
-                list = g_list_prepend(list, full_name);
-                full_name = NULL;
+                if (problem_condition_evaluate_and(dd, condition))
+                {
+                    list = g_list_prepend(list, full_name);
+                    full_name = NULL;
+                }
             }
             dd_close(dd); //doesn't fail even if dd == NULL
         }
@@ -204,9 +258,82 @@ static GList* scan_directory(const char *path, uid_t caller_uid)
     return g_list_reverse(list);
 }
 
+/* Self explaining time interval structure */
+struct time_interval
+{
+    unsigned long from;
+    unsigned long to;
+};
+
+/*
+ * A problem condition evaluate function for checking of the TIME field against
+ * an allowed interval
+ *
+ * @param field_data a content from the PID field
+ * @param args a pointer to an instance of struct time_interval
+ * @return TRUE if a field value is in a specified interval; otherwise FALSE
+ */
+static bool time_interval_problem_condition(const char *field_data, const void *args)
+{
+    const struct time_interval *const interval = (const struct time_interval *)args;
+    const time_t timestamp = atol(field_data);
+
+    return interval->from <= timestamp && timestamp <= interval->to;
+}
+
+/*
+ * A problem condition evaluate function passed if strings are equal
+ *
+ * @param field_data a content of a field
+ * @param args a checked string
+ * @return TRUE if both strings are equal; otherwise FALSE
+ */
+static bool equal_string_problem_condition(const char *field_data, const void *args)
+{
+    return !strcmp(field_data, (const char *)args);
+}
+
 static GVariant *get_problem_dirs_for_uid(uid_t uid, const char *dump_location)
 {
-    GList *dirs = scan_directory(dump_location, uid);
+    GList *dirs = scan_directory(dump_location, uid, NULL);
+
+    return variant_from_string_list(dirs);
+}
+
+/*
+ * Finds problems with the specified element and which were created in the interval
+ */
+static GVariant *get_problem_dirs_for_element_in_time(uid_t uid,
+                                                      const char *element,
+                                                      const char *value,
+                                                      unsigned long timestamp_from,
+                                                      unsigned long timestamp_to,
+                                                      const char *dump_location)
+{
+    const struct problem_condition elementc = {
+        .field_name = element,
+        .args = value,
+        .evaluate = equal_string_problem_condition,
+    };
+
+    const struct time_interval interval = {
+        .from = timestamp_from,
+        .to = timestamp_to
+    };
+
+    const struct problem_condition timec = {
+        .field_name = FILENAME_TIME,
+        .args = &interval,
+        .evaluate = time_interval_problem_condition
+    };
+
+    const struct problem_condition *const condition[] = {
+        &elementc,
+        &timec,
+        NULL
+    };
+
+    GList *dirs = scan_directory(dump_location, uid, condition);
 
     return variant_from_string_list(dirs);
 }
@@ -454,6 +581,26 @@ static void handle_method_call(GDBusConnection *connection,
         return;
     }
 
+    else if (g_strcmp0(method_name, "FindProblemByElementInTimeRange") == 0)
+    {
+        const char *element;
+        const char *value;
+        long timestamp_from;
+        long timestamp_to;
+        bool all;
+
+        g_variant_get(parameters, "(ssxxb)", &element, &value, &timestamp_from, &timestamp_to, &all);
+
+        if (all && polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") == PolkitYes)
+            caller_uid = 0;
+
+        response = get_problem_dirs_for_element_in_time(caller_uid, element, value, timestamp_from,
+                                                        timestamp_to, g_settings_dump_location);
+
+        g_dbus_method_invocation_return_value(invocation, response);
+        return;
+    }
+
     else if (g_strcmp0(method_name, "Quit") == 0)
     {
         VERB1 log("Quit");
@@ -576,6 +723,8 @@ int main (int argc, char *argv[])
                              NULL,
                              NULL);
 
+    load_abrt_conf();
+
     loop = g_main_loop_new(NULL, FALSE);
     g_main_loop_run(loop);
 
@@ -584,6 +733,8 @@ int main (int argc, char *argv[])
     g_bus_unown_name(owner_id);
 
     g_dbus_node_info_unref(introspection_data);
+
+    free_abrt_conf_data();
 
     return 0;
 }
