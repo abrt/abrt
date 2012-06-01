@@ -338,6 +338,30 @@ static GVariant *get_problem_dirs_for_element_in_time(uid_t uid,
     return variant_from_string_list(dirs);
 }
 
+static bool allowed_problem_dir(const char *dir_name)
+{
+    unsigned len = strlen(g_settings_dump_location);
+
+    /* If doesn't start with "g_settings_dump_location[/]"... */
+    if (strncmp(dir_name, g_settings_dump_location, len) != 0
+     || (dir_name[len] != '/' && dir_name[len] != '\0')
+    /* or contains "/." anywhere (-> might contain ".." component) */
+     || strstr(dir_name + len, "/.")
+    ) {
+        return false;
+    }
+    return true;
+}
+
+static void return_InvalidProblemDir_error(GDBusMethodInvocation *invocation, const char *dir_name)
+{
+    char *msg = xasprintf(_("'%s' is not a valid problem directory"), dir_name);
+    g_dbus_method_invocation_return_dbus_error(invocation,
+                                      "org.freedesktop.problems.InvalidProblemDir",
+                                      msg);
+    free(msg);
+}
+
 static void handle_method_call(GDBusConnection *connection,
                         const gchar *caller,
                         const gchar *object_path,
@@ -366,8 +390,11 @@ static void handle_method_call(GDBusConnection *connection,
         const gchar *dump_location;
         g_variant_get(parameters, "(&s)", &dump_location);
 
-        //if (!g_settings_dump_location)
-        //    g_settings_dump_location = (char*)"/var/spool/abrt";
+        if (!allowed_problem_dir(dump_location))
+        {
+            return_InvalidProblemDir_error(invocation, dump_location);
+            return;
+        }
 
         response = get_problem_dirs_for_uid(caller_uid, dump_location);
 
@@ -381,6 +408,12 @@ static void handle_method_call(GDBusConnection *connection,
     {
         const gchar *dump_location;
         g_variant_get(parameters, "(&s)", &dump_location);
+
+        if (!allowed_problem_dir(dump_location))
+        {
+            return_InvalidProblemDir_error(invocation, dump_location);
+            return;
+        }
 
         /*
         - so, we have UID,
@@ -407,16 +440,17 @@ static void handle_method_call(GDBusConnection *connection,
 
         g_variant_get(parameters, "(&s)", &problem_dir);
 
+        if (!allowed_problem_dir(problem_dir))
+        {
+            return_InvalidProblemDir_error(invocation, problem_dir);
+            return;
+        }
+
         //FIXME: check if it's problem_dir and refuse to operate on it if it's not
         struct dump_dir *dd = dd_opendir(problem_dir, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
         if (!dd)
         {
-            gchar *error_msg;
-            error_msg = g_strdup_printf(_("%s is not a valid problem dir"), problem_dir);
-            g_dbus_method_invocation_return_dbus_error(invocation,
-                                      "org.freedesktop.problems.InvalidProblemDir",
-                                      error_msg);
-            free(error_msg);
+            return_InvalidProblemDir_error(invocation, problem_dir);
             return;
         }
 
@@ -482,7 +516,11 @@ static void handle_method_call(GDBusConnection *connection,
         const gchar *problem_dir;
         g_variant_get(parameters, "(&s)", &problem_dir);
 
-        GVariantBuilder *builder;
+        if (!allowed_problem_dir(problem_dir))
+        {
+            return_InvalidProblemDir_error(invocation, problem_dir);
+            return;
+        }
 
         if (!dir_accessible_by_uid(problem_dir, caller_uid))
         {
@@ -499,15 +537,11 @@ static void handle_method_call(GDBusConnection *connection,
         struct dump_dir *dd = dd_opendir(problem_dir, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
         if (!dd)
         {
-            char *msg = g_strdup_printf(_("%s is not a valid problem directory"), problem_dir);
-            VERB1 error_msg("%s", msg);
-            g_dbus_method_invocation_return_dbus_error(invocation,
-                                                  "org.freedesktop.problems.GetInfo",
-                                                  msg);
-            free(msg);
+            return_InvalidProblemDir_error(invocation, problem_dir);
             return;
         }
 
+        GVariantBuilder *builder;
         builder = g_variant_builder_new(G_VARIANT_TYPE_ARRAY);
         g_variant_builder_add(builder, "{ss}", xstrdup(FILENAME_TIME), dd_load_text(dd, FILENAME_TIME));
         g_variant_builder_add(builder, "{ss}", xstrdup(FILENAME_REASON), dd_load_text(dd, FILENAME_REASON));
@@ -564,6 +598,16 @@ static void handle_method_call(GDBusConnection *connection,
         for (GList *l = problem_dirs; l; l = l->next)
         {
             const char *dir_name = (const char*)l->data;
+            if (!allowed_problem_dir(dir_name))
+            {
+                return_InvalidProblemDir_error(invocation, dir_name);
+                goto ret;
+            }
+        }
+
+        for (GList *l = problem_dirs; l; l = l->next)
+        {
+            const char *dir_name = (const char*)l->data;
             if (!dir_accessible_by_uid(dir_name, caller_uid))
             {
                 if (polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
@@ -574,8 +618,9 @@ static void handle_method_call(GDBusConnection *connection,
             delete_dump_dir(dir_name);
         }
 
-        list_free_with_free(problem_dirs);
         g_dbus_method_invocation_return_value(invocation, NULL);
+ ret:
+        list_free_with_free(problem_dirs);
         return;
     }
 
