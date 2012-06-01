@@ -861,10 +861,6 @@ line number : INT
 \end{center}
 
 \subsubsection{Problem Storage -- Clusters}
-\begin{center}
-\begin{tikzpicture}
-\end{tikzpicture}
-\end{center}
 
 \subsubsection{Data Storage -- Builds}
 \begin{center}
@@ -1039,22 +1035,135 @@ real name : STRING[256]
 \subsubsection{Data Storage -- LLVM Bitcode}
 \begin{center}
 \begin{tikzpicture}
+\umlclass[x=-4,y=0]{LlvmBuild}{
+id : PRIMARY KEY \\
+build id : FOREIGN KEY NOT NULL \\
+started : DATE NOT NULL \\
+duration : INT NOT NULL \\
+success : BOOL NOT NULL \\
+arch id : FOREIGN KEY NOT NULL \\
+llvm build id : FOREIGN KEY NOT NULL \\
+build log
+}
 
-LlvmBuild
-LlvmBitcode
-LlvmResults
-
+\umlclass[x=4,y=0]{LlvmBitcode}{
+llvm build id : FOREIGN KEY NOT NULL \\
+path : STRING[512] NOT NULL \\
+}
 \end{tikzpicture}
 \end{center}
 
 \subsubsection{Sanity Checker -- Debuginfo checker}
 \begin{center}
 \begin{tikzpicture}
+\umlclass[x=4,y=-10]{DebuginfoMissingSymlink}{
+build id : FOREIGN KEY NOT NULL \\
+debuginfo symlink : STRING[512] NOT NULL \\
+binary symlink : STRING[512] NOT NULL \\
+debuginfo package id : FOREIGN KEY NOT NULL
+}
 
-LlvmBuild
-LlvmBitcode
-LlvmResults
+\umlclass[x=4,y=-6]{DebuginfoSymlinkPointingToAnotherPath}{
+build id : FOREIGN KEY NOT NULL \\
+package id : FOREIGN KEY NOT NULL \\
+debuginfo symlink path : STRING[512] NOT NULL \\
+symlink target path : STRING[512] NOT NULL \\
+symlink package id : FOREIGN KEY
+}
 
+\umlclass[x=4,y=-2]{DebuginfoMissingForBinary}{
+
+build id : FOREIGN KEY NOT NULL \\
+path : STRING[512] NOT NULL \\
+package id : FOREIGN KEY NOT NULL \\
+stripped : BOOLEAN \\
+mode : INT
+}
+
+\umlclass[x=4,y=2]{DebuginfoUnused}{
+build id : FOREIGN KEY NOT NULL \\
+debuginfo path : STRING[512] NOT NULL \\
+binary path : STRING[512] NOT NULL \\
+size : INT NOT NULL
+}
+
+\umlclass[x=4,y=6]{DebuginfoMissingSourceFile}{
+build id : FOREIGN KEY NOT NULL \\
+debuginfo path : STRING[512] NOT NULL \\
+source path : STRING[512] NOT NULL
+}
+
+\umlclass[x=4,y=10]{DebuginfoMissingSection}{
+build id : FOREIGN KEY NOT NULL \\
+path : STRING[512] NOT NULL \\
+package id : FOREIGN KEY NOT NULL
+}
+\end{tikzpicture}
+\end{center}
+
+\begin{center}
+\begin{tikzpicture}
+\umlclass[x=4,y=-10]{DebuginfoInvalidVersion}{
+build id : FOREIGN KEY NOT NULL \\
+line table version : STRING[16] NOT NULL \\
+line table offset : INT NOT NULL \\
+compilation unit offset : INT NOT NULL \\
+debuginfo path : STRING[512] NOT NULL \\
+package id : FOREIGN KEY NOT NULL
+}
+
+\umlclass[x=4,y=-6]{DebuginfoRelativeSourceNameWithoutCompDir}{
+build id : FOREIGN KEY NOT NULL \\
+debuginfo path : STRING[512] NOT NULL \\
+package id : FOREIGN KEY NOT NULL \\
+compilation unit offset : INT NOT NULL \\
+source path : STRING[512] NOT NULL
+}
+
+\umlclass[x=4,y=-2]{DebuginfoMissingCompDir}{
+build id : FOREIGN KEY NOT NULL \\
+debuginfo path : STRING[512] NOT NULL \\
+compilation unit offset : INT NOT NULL \\
+table offset : INT NOT NULL \\
+source path : STRING[512] NOT NULL
+}
+
+\umlclass[x=4,y=2]{DebuginfoRelativeDirectory}{
+build id : FOREIGN KEY NOT NULL \\
+debuginfo path : STRING[512] NOT NULL \\
+table offset : INT NOT NULL \\
+directory offset : INT NOT NULL \\
+directory name : STRING[512] NOT NULL \\
+source path : STRING[512] NOT NULL \\
+compilation unit offset : INT NOT NULL
+}
+
+\umlclass[x=4,y=6]{DebuginfoInvalidDirectoryOffset}{
+build id : FOREIGN KEY NOT NULL \\
+debuginfo path : STRING[512] NOT NULL \\
+table offset : INT NOT NULL \\
+directory offset : INT NOT NULL \\
+source path : STRING[512] NOT NULL
+}
+\end{tikzpicture}
+\end{center}
+
+\begin{center}
+\begin{tikzpicture}
+\umlclass[x=4,y=10]{DebuginfoSource}{
+build id : FOREIGN KEY NOT NULL \\
+status : ENUM(INSTALL\_RPM\_DEPENDENCIES\_FAILED, \\
+  PREPARE\_BUILD\_ENVIRONMENT\_FAILED, \\
+  BUILD\_SRPM\_FAILED, \\
+  DEBUGSOURCES\_NOT\_FOUND, \\
+  CLEAN\_FAILED, \\
+  SUCCESS)
+}
+
+\umlclass[x=4,y=14]{DebuginfoSourceFile}{
+build id : FOREIGN KEY NOT NULL \\
+source path : STRING[512] NOT NULL
+}
 \end{tikzpicture}
 \end{center}
 
@@ -1116,6 +1225,18 @@ LlvmResults
 \end{center}
 
 \subsubsection{Summary Page}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+HTTP Verb & Path & Format & Used for \\
+\hline
+\texttt{GET} & \texttt{/summary} & HTML & Display the report summary graph. \\
+\hline
+\end{tabular}
+\end{center}
+
+
 \begin{center}
 \shadowbox{\includegraphics[width=\textwidth, trim=0 3cm 0 0, clip=true]{server-ui-summary.png}}
 \end{center}
@@ -1143,6 +1264,17 @@ LlvmResults
 \end{description}
 
 \subsubsection{Problems Overview Page}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+HTTP Verb & Path & Format & Used for \\
+\hline
+\texttt{GET} & \texttt{/problems} & HTML & Display the report summary graph. \\
+\hline
+\end{tabular}
+\end{center}
+
 \begin{center}
 \shadowbox{\includegraphics[width=\textwidth, trim=0 16cm 0 0, clip=true]{server-ui-problems-overview.png}}
 \end{center}
@@ -1172,14 +1304,14 @@ LlvmResults
 \shadowbox{\includegraphics[width=\textwidth, trim=0 17cm 0 0, clip=true]{server-ui-status.png}}
 \end{center}
 
-\vfill
+\cleardoublepage
 \subsubsection{Problem Reporting Interface}
 
 Server accepts microreports.  Microreport is a JSON-formatted data
 structure described below:
 
-\begin{center}
-\begin{tabular}{l|p{5cm}|c|p{5cm}}
+\begin{flushleft}
+\begin{tabular}{|l|p{5cm}|c|p{5cm}|}
 \hline
 Name & Format & Mandatory & Notes \\ \hline
 \texttt{type} & \texttt{python}, \texttt{userspace}, or \texttt{kerneloops} & yes & \\
@@ -1199,24 +1331,24 @@ Name & Format & Mandatory & Notes \\ \hline
 \texttt{proc\_status} & ASCII string, max. 2 kB. & & The contents of \texttt{/proc/pid/status}. \\
 \hline
 \end{tabular}
-\end{center}
+\end{flushleft}
 
 The \texttt{os} structure:
 
-\begin{center}
-\begin{tabular}{l|p{5cm}|c|p{5cm}}
+\begin{flushleft}
+\begin{tabular}{|l|p{5cm}|c|p{5cm}|}
 \hline
 Name & Format & Mandatory & Notes \\ \hline
 \texttt{name} & ASCII string. & yes &  \\
 \texttt{version} & ASCII string & yes & Numeric. No codenames. \\
 \hline
 \end{tabular}
-\end{center}
+\end{flushleft}
 
 The \texttt{os\_state} structure:
 
-\begin{center}
-\begin{tabular}{l|p{5cm}|c|p{5cm}}
+\begin{flushleft}
+\begin{tabular}{|l|p{5cm}|c|p{5cm}|}
 \hline
 Name & Format & Mandatory & Notes \\ \hline
 \texttt{suspend} & \texttt{yes} or \texttt{no} & no & Problem happened during suspend, hibernate, or resume. \\
@@ -1226,36 +1358,36 @@ Name & Format & Mandatory & Notes \\ \hline
 \texttt{shutdown} & \texttt{yes} or \texttt{no} & no & Problem happened during the shutdown process. \\
 \hline
 \end{tabular}
-\end{center}
+\end{flushleft}
 
 The \texttt{reporter} structure:
 
-\begin{center}
-\begin{tabular}{l|p{5cm}|c|p{5cm}}
+\begin{flushleft}
+\begin{tabular}{|l|p{5cm}|c|p{5cm}|}
 \hline
 Name & Format & Mandatory & Notes \\ \hline
 \texttt{name} & ASCII string, max. 128 characters. & yes & \\
 \texttt{version} & ASCII string, max. 128 characters. & yes & \\
 \hline
 \end{tabular}
-\end{center}
+\end{flushleft}
 
 The \texttt{related\_package} structure:
-\begin{center}
-\begin{tabular}{l|p{5cm}|c|p{5cm}}
+
+\begin{flushleft}
+\begin{tabular}{|l|p{5cm}|c|p{5cm}|}
 \hline
 Name & Format & Mandatory & Notes \\ \hline
 \texttt{installed\_package} & Dictionary; see the \texttt{package} table below. & yes & \\
 \texttt{running\_package} & Dictionary; see the \texttt{package} table below. & no & \\
 \hline
 \end{tabular}
-\end{center}
-
+\end{flushleft}
 
 The \texttt{package} structure:
 
-\begin{center}
-\begin{tabular}{l|p{5cm}|c|p{5cm}}
+\begin{flushleft}
+\begin{tabular}{|l|p{5cm}|c|p{5cm}|}
 \hline
 Name & Format & Mandatory & Notes \\ \hline
 \texttt{name} & ASCII string, max. 128 characters. & yes & \\
@@ -1265,11 +1397,12 @@ Name & Format & Mandatory & Notes \\ \hline
 \texttt{epoch} & ASCII string, max. 128 characters. & yes & \\
 \hline
 \end{tabular}
-\end{center}
+\end{flushleft}
 
 The \texttt{selinux} structure:
-\begin{center}
-\begin{tabular}{l|p{5cm}|p{3cm}|p{5cm}}
+
+\begin{flushleft}
+\begin{tabular}{|l|p{5cm}|p{3cm}|p{5cm}|}
 \hline
 Name & Format & Mandatory & Notes \\ \hline
 \texttt{mode} & \texttt{enforcing}, \texttt{permissive}, or \texttt{disabled} & yes & \\
@@ -1277,7 +1410,60 @@ Name & Format & Mandatory & Notes \\ \hline
 \texttt{policy\_package} & Dictionary; see the \texttt{package} description. & no & \\
 \hline
 \end{tabular}
-\end{center}
+\end{flushleft}
+
+\cleardoublepage
+\subsubsection{Backtrace Search Interface}
+
+Request:
+
+\begin{flushleft}
+\begin{tabular}{|l|p{5cm}|p{3cm}|p{5cm}|}
+\hline
+Name       & Format          & Mandatory & Notes \\
+\hline
+backtrace  & Unicode string. & yes       & \\
+os release & ASCII string.   & yes       & \\
+component  & ASCII string.   & yes       & \\
+\hline
+\end{tabular}
+\end{flushleft}
+
+Response:
+
+\begin{flushleft}
+\begin{tabular}{|l|p{5cm}|p{3cm}|p{5cm}|}
+\hline
+Name & Format & Mandatory & Notes \\
+\hline
+response & List of dictionaries; see the \texttt{bug} dictionary description. & Either \texttt{response} or \texttt{error} must be present. & \\
+error & String. & Either \texttt{response} or \texttt{error} must be present. & \\
+\hline
+\end{tabular}
+\end{flushleft}
+
+\cleardoublepage
+\subsubsection{Backtrace Analysis Interface}
+
+backtrace
+
+backtrace
+thread
+crash thread marked
+frame
+crash frame marked
+
+
+\cleardoublepage
+\subsubsection{Retrace Interface}
+
+executable
+os release
+interactive
+coredump
+
+task id
+password
 
 \subsection{ABRT Client Overview}
 
@@ -1610,6 +1796,7 @@ Duration: approx. 3 weeks
 \item Problem type analysis start
 \item Security analysis start
 \item Merge All/Running/Finished Tasks in Status into single page.
+\item Debuginfo checker integration with brewtap
 \end{itemize}
 
 \cleardoublepage
