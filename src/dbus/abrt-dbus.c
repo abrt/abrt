@@ -147,7 +147,7 @@ static bool uid_in_group(uid_t uid, gid_t gid)
  0 - user doesn't have access
  1 - user has access
 */
-static int dir_accessible_by_uid(const char* dir_path, uid_t uid)
+static int dir_accessible_by_uid(const char *dir_path, uid_t uid)
 {
     struct stat statbuf;
     if (stat(dir_path, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
@@ -435,7 +435,6 @@ static void handle_method_call(GDBusConnection *connection,
     if (g_strcmp0(method_name, "ChownProblemDir") == 0)
     {
         const gchar *problem_dir;
-        struct passwd *pwd;
         int chown_res;
 
         g_variant_get(parameters, "(&s)", &problem_dir);
@@ -446,19 +445,10 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
-        //FIXME: check if it's problem_dir and refuse to operate on it if it's not
-        struct dump_dir *dd = dd_opendir(problem_dir, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
-        if (!dd)
-        {
-            return_InvalidProblemDir_error(invocation, problem_dir);
-            return;
-        }
-
         if (dir_accessible_by_uid(problem_dir, caller_uid)) //caller seems to be in group with access to this dir, so no action needed
         {
             VERB1 log("caller has access to the requested directory %s", problem_dir);
             g_dbus_method_invocation_return_value(invocation, NULL);
-            dd_close(dd);
             return;
         }
 
@@ -468,11 +458,17 @@ static void handle_method_call(GDBusConnection *connection,
             g_dbus_method_invocation_return_dbus_error(invocation,
                                               "org.freedesktop.problems.AuthFailure",
                                               _("Not Authorized"));
-            dd_close(dd);
             return;
         }
 
-        pwd = getpwuid(caller_uid);
+        struct dump_dir *dd = dd_opendir(problem_dir, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
+        if (!dd)
+        {
+            return_InvalidProblemDir_error(invocation, problem_dir);
+            return;
+        }
+
+        struct passwd *pwd = getpwuid(caller_uid);
         if (!pwd)
         {
             error_msg("UID %ld is not found in user database", (long)caller_uid);
@@ -487,6 +483,7 @@ static void handle_method_call(GDBusConnection *connection,
             g_dbus_method_invocation_return_dbus_error(invocation,
                                   "org.freedesktop.problems.StatFailure",
                                   strerror(errno));
+            dd_close(dd);
             return;
         }
 
