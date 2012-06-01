@@ -163,28 +163,21 @@ static int create_debug_dump(GHashTable *problem_info, unsigned pid)
     return 201; /* Created */
 }
 
-/* Checks if a string has certain prefix. */
-static bool starts_with(const char *str, const char *start)
-{
-    return strncmp(str, start, strlen(start)) == 0;
-}
-
 /* Remove dump dir */
 static int delete_path(const char *dump_dir_name)
 {
+    unsigned len = strlen(g_settings_dump_location);
+
     /* If doesn't start with "g_settings_dump_location/"... */
-    char *dump_location = xasprintf("%s/", g_settings_dump_location);
-    log("%s", dump_location);
-    if (!starts_with(dump_dir_name, dump_location)
+    if (strncmp(dump_dir_name, g_settings_dump_location, len) != 0
+     || dump_dir_name[len] != '/'
     /* or contains "/." anywhere (-> might contain ".." component) */
-     || strstr(dump_dir_name + strlen(g_settings_dump_location), "/.")
+     || strstr(dump_dir_name + len, "/.")
     ) {
         /* Then refuse to operate on it (someone is attacking us??) */
-        free(dump_location);
         error_msg("Bad problem directory name '%s', not deleting", dump_dir_name);
         return 400; /* Bad Request */
     }
-    free(dump_location);
 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)

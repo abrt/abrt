@@ -8,9 +8,10 @@
 #include "abrt-dbus.h"
 #include <libreport/dump_dir.h>
 
-GMainLoop *loop;
-guint g_timeout;
-static unsigned s_timeout;
+static GMainLoop *loop;
+static guint g_timeout_source;
+/* default, settable with -t: */
+static unsigned g_timeout_value = 120;
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -55,15 +56,15 @@ static const gchar introspection_xml[] =
 /* forward */
 static gboolean on_timeout_cb(gpointer user_data);
 
-static void reset_timeout()
+static void reset_timeout(void)
 {
-    if (g_timeout > 0)
+    if (g_timeout_source > 0)
     {
         VERB2 log("Removing timeout");
-        g_source_remove(g_timeout);
+        g_source_remove(g_timeout_source);
     }
     VERB2 log("Setting a new timeout");
-    g_timeout = g_timeout_add_seconds(s_timeout, on_timeout_cb, NULL);
+    g_timeout_source = g_timeout_add_seconds(g_timeout_value, on_timeout_cb, NULL);
 }
 
 static uid_t get_caller_uid(GDBusConnection *connection, GDBusMethodInvocation *invocation, const char *caller)
@@ -387,16 +388,17 @@ static void handle_method_call(GDBusConnection *connection,
     {
         //TODO: change the API to not accept the dumpdir from user, but read it from config file?
 
-        const gchar *dump_location;
-        g_variant_get(parameters, "(&s)", &dump_location);
+        const gchar *problem_base_dir;
+        g_variant_get(parameters, "(&s)", &problem_base_dir);
+        VERB1 log("problem_base_dir:'%s'", problem_base_dir);
 
-        if (!allowed_problem_dir(dump_location))
+        if (!allowed_problem_dir(problem_base_dir))
         {
-            return_InvalidProblemDir_error(invocation, dump_location);
+            return_InvalidProblemDir_error(invocation, problem_base_dir);
             return;
         }
 
-        response = get_problem_dirs_for_uid(caller_uid, dump_location);
+        response = get_problem_dirs_for_uid(caller_uid, problem_base_dir);
 
         g_dbus_method_invocation_return_value(invocation, response);
         //I was told that g_dbus_method frees the response
@@ -406,12 +408,13 @@ static void handle_method_call(GDBusConnection *connection,
 
     if (g_strcmp0(method_name, "GetAllProblems") == 0)
     {
-        const gchar *dump_location;
-        g_variant_get(parameters, "(&s)", &dump_location);
+        const gchar *problem_base_dir;
+        g_variant_get(parameters, "(&s)", &problem_base_dir);
+        VERB1 log("problem_base_dir:'%s'", problem_base_dir);
 
-        if (!allowed_problem_dir(dump_location))
+        if (!allowed_problem_dir(problem_base_dir))
         {
-            return_InvalidProblemDir_error(invocation, dump_location);
+            return_InvalidProblemDir_error(invocation, problem_base_dir);
             return;
         }
 
@@ -426,7 +429,7 @@ static void handle_method_call(GDBusConnection *connection,
                 caller_uid = 0;
         }
 
-        response = get_problem_dirs_for_uid(caller_uid, dump_location);
+        response = get_problem_dirs_for_uid(caller_uid, problem_base_dir);
 
         g_dbus_method_invocation_return_value(invocation, response);
         return;
@@ -435,9 +438,8 @@ static void handle_method_call(GDBusConnection *connection,
     if (g_strcmp0(method_name, "ChownProblemDir") == 0)
     {
         const gchar *problem_dir;
-        int chown_res;
-
         g_variant_get(parameters, "(&s)", &problem_dir);
+        VERB1 log("problem_dir:'%s'", problem_dir);
 
         if (!allowed_problem_dir(problem_dir))
         {
@@ -487,7 +489,7 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
-        chown_res = chown(problem_dir, statbuf.st_uid, pwd->pw_gid);
+        int chown_res = chown(problem_dir, statbuf.st_uid, pwd->pw_gid);
         dd_init_next_file(dd);
         char *full_name;
         while (chown_res == 0 && dd_get_next_file(dd, /*short_name*/ NULL, &full_name))
@@ -595,6 +597,7 @@ static void handle_method_call(GDBusConnection *connection,
         for (GList *l = problem_dirs; l; l = l->next)
         {
             const char *dir_name = (const char*)l->data;
+            VERB1 log("dir_name:'%s'", dir_name);
             if (!allowed_problem_dir(dir_name))
             {
                 return_InvalidProblemDir_error(invocation, dir_name);
@@ -688,8 +691,8 @@ static void on_name_acquired (GDBusConnection *connection,
 }
 */
 
-static void on_name_lost (GDBusConnection *connection,
-                  const gchar *name,
+static void on_name_lost(GDBusConnection *connection,
+                      const gchar *name,
                       gpointer user_data)
 {
     g_print(_("The name '%s' has been lost, please check if other "
@@ -697,7 +700,7 @@ static void on_name_lost (GDBusConnection *connection,
     exit(1);
 }
 
-int main (int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     /* I18n */
     setlocale(LC_ALL, "");
@@ -719,10 +722,10 @@ int main (int argc, char *argv[])
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_INTEGER('t', NULL, &s_timeout, _("Exit after NUM seconds of inactivity")),
+        OPT_INTEGER('t', NULL, &g_timeout_value, _("Exit after NUM seconds of inactivity")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
 
     export_abrt_envvars(0);
 
@@ -735,9 +738,6 @@ int main (int argc, char *argv[])
         putenv((char*)"PATH=/usr/sbin:/usr/bin:/sbin:/bin");
 
     msg_prefix = "abrt-dbus"; /* for log(), error_msg() and such */
-
-    if (!(opts & OPT_t))
-        s_timeout = 120; //if the timeout is not set we default to 120sec
 
     if (getuid() != 0)
         error_msg_and_die(_("This program must be run as root."));
