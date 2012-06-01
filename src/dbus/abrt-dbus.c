@@ -348,10 +348,13 @@ static void handle_method_call(GDBusConnection *connection,
                         gpointer    user_data)
 {
     reset_timeout();
+
     uid_t caller_uid;
     GVariant *response;
 
     caller_uid = get_caller_uid(connection, invocation, caller);
+
+    VERB1 log("caller_uid:%ld method:'%s'", (long)caller_uid, method_name);
 
     if (caller_uid == (uid_t) -1)
         return;
@@ -371,11 +374,11 @@ static void handle_method_call(GDBusConnection *connection,
         g_dbus_method_invocation_return_value(invocation, response);
         //I was told that g_dbus_method frees the response
         //g_variant_unref(response);
+        return;
     }
 
-    else if (g_strcmp0(method_name, "GetAllProblems") == 0)
+    if (g_strcmp0(method_name, "GetAllProblems") == 0)
     {
-
         const gchar *dump_location;
         g_variant_get(parameters, "(&s)", &dump_location);
 
@@ -384,7 +387,6 @@ static void handle_method_call(GDBusConnection *connection,
         - if it's 0, then we don't have to check anything and just return all directories
         - if uid != 0 then we want to ask for authorization
         */
-
         if (caller_uid != 0)
         {
             if (polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") == PolkitYes)
@@ -397,14 +399,11 @@ static void handle_method_call(GDBusConnection *connection,
         return;
     }
 
-    else if (g_strcmp0(method_name, "ChownProblemDir") == 0)
+    if (g_strcmp0(method_name, "ChownProblemDir") == 0)
     {
-        VERB1 log("ChownProblemDir");
-
         const gchar *problem_dir;
         struct passwd *pwd;
         int chown_res;
-        gchar *error_msg;
 
         g_variant_get(parameters, "(&s)", &problem_dir);
 
@@ -412,6 +411,7 @@ static void handle_method_call(GDBusConnection *connection,
         struct dump_dir *dd = dd_opendir(problem_dir, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
         if (!dd)
         {
+            gchar *error_msg;
             error_msg = g_strdup_printf(_("%s is not a valid problem dir"), problem_dir);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                       "org.freedesktop.problems.InvalidProblemDir",
@@ -420,14 +420,13 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
-        if(dir_accessible_by_uid(problem_dir, caller_uid)) //caller seems to be in group with access to this dir, so no action needed
+        if (dir_accessible_by_uid(problem_dir, caller_uid)) //caller seems to be in group with access to this dir, so no action needed
         {
             VERB1 log("caller has access to the requested directory %s", problem_dir);
             g_dbus_method_invocation_return_value(invocation, NULL);
             dd_close(dd);
             return;
         }
-
 
         if (polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
         {
@@ -440,45 +439,46 @@ static void handle_method_call(GDBusConnection *connection,
         }
 
         pwd = getpwuid(caller_uid);
-        if (pwd)
+        if (!pwd)
         {
-            errno = 0;
-            struct stat statbuf;
-            if (!(stat(problem_dir, &statbuf) == 0 && S_ISDIR(statbuf.st_mode)))
-            {
-                g_dbus_method_invocation_return_dbus_error(invocation,
-                                      "org.freedesktop.problems.StatFailure",
-                                      strerror(errno));
-                return;
-            }
-
-            chown_res = chown(problem_dir, statbuf.st_uid, pwd->pw_gid);
-            dd_init_next_file(dd);
-            char *short_name, *full_name;
-            while (chown_res == 0 && dd_get_next_file(dd, &short_name, &full_name))
-            {
-                VERB3 log("chowning %s", full_name);
-                chown_res = chown(full_name, statbuf.st_uid, pwd->pw_gid);
-            }
-
-            if (chown_res != 0)
-                g_dbus_method_invocation_return_dbus_error(invocation,
-                                                  "org.freedesktop.problems.ChownError",
-                                                  strerror(errno));
-            else
-                g_dbus_method_invocation_return_value(invocation, NULL);
-
+            error_msg("UID %ld is not found in user database", (long)caller_uid);
             dd_close(dd);
             return;
         }
-        VERB3 log("shouldn't get here");
+
+        errno = 0;
+        struct stat statbuf;
+        if (!(stat(problem_dir, &statbuf) == 0 && S_ISDIR(statbuf.st_mode)))
+        {
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                  "org.freedesktop.problems.StatFailure",
+                                  strerror(errno));
+            return;
+        }
+
+        chown_res = chown(problem_dir, statbuf.st_uid, pwd->pw_gid);
+        dd_init_next_file(dd);
+        char *full_name;
+        while (chown_res == 0 && dd_get_next_file(dd, /*short_name*/ NULL, &full_name))
+        {
+            VERB3 log("chowning %s", full_name);
+            chown_res = chown(full_name, statbuf.st_uid, pwd->pw_gid);
+            free(full_name);
+        }
+
+        if (chown_res != 0)
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                              "org.freedesktop.problems.ChownError",
+                                              strerror(errno));
+        else
+            g_dbus_method_invocation_return_value(invocation, NULL);
+
         dd_close(dd);
+        return;
     }
 
-    else if (g_strcmp0(method_name, "GetInfo") == 0)
+    if (g_strcmp0(method_name, "GetInfo") == 0)
     {
-        VERB1 log("GetInfo");
-
         const gchar *problem_dir;
         g_variant_get(parameters, "(&s)", &problem_dir);
 
@@ -557,31 +557,29 @@ static void handle_method_call(GDBusConnection *connection,
         return;
     }
 
-    else if (g_strcmp0(method_name, "DeleteProblem") == 0)
+    if (g_strcmp0(method_name, "DeleteProblem") == 0)
     {
-        VERB1 log("DeleteProblem");
-
         GList *problem_dirs = string_list_from_variant(parameters);
 
-        while (problem_dirs)
+        for (GList *l = problem_dirs; l; l = l->next)
         {
-            if (!dir_accessible_by_uid((const char*)problem_dirs->data, caller_uid))
+            const char *dir_name = (const char*)l->data;
+            if (!dir_accessible_by_uid(dir_name, caller_uid))
             {
                 if (polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
                 { // if user didn't provide correct credentials, just move to the next dir
-                    problem_dirs = problem_dirs->next;
                     continue;
                 }
             }
-            delete_dump_dir((const char*)problem_dirs->data);
-            problem_dirs = g_list_next(problem_dirs);
+            delete_dump_dir(dir_name);
         }
 
+        list_free_with_free(problem_dirs);
         g_dbus_method_invocation_return_value(invocation, NULL);
         return;
     }
 
-    else if (g_strcmp0(method_name, "FindProblemByElementInTimeRange") == 0)
+    if (g_strcmp0(method_name, "FindProblemByElementInTimeRange") == 0)
     {
         const char *element;
         const char *value;
@@ -601,13 +599,11 @@ static void handle_method_call(GDBusConnection *connection,
         return;
     }
 
-    else if (g_strcmp0(method_name, "Quit") == 0)
+    if (g_strcmp0(method_name, "Quit") == 0)
     {
-        VERB1 log("Quit");
-
         g_dbus_method_invocation_return_value(invocation, NULL);
-
         g_main_loop_quit(loop);
+        return;
     }
 }
 
@@ -738,4 +734,3 @@ int main (int argc, char *argv[])
 
     return 0;
 }
-

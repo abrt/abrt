@@ -206,9 +206,9 @@ static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data
     VERB1 log("added: %s", problem_dir_path);
 }
 
-GList *get_problems_over_dbus(const char *dump_location, GError **error)
+static GList *get_problems_over_dbus(const char *dump_location, GError **error)
 {
-    GDBusProxy * proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+    GDBusProxy *proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
                                              G_DBUS_PROXY_FLAGS_NONE,
                                              NULL,
                                              ABRT_DBUS_NAME,
@@ -1191,12 +1191,15 @@ static void scan_directory_and_add_to_dirlist(const char *path)
     }
 
     if (problem_dirs)
-       g_list_foreach(problem_dirs, (GFunc)add_directory_to_dirlist, NULL);
+    {
+        g_list_foreach(problem_dirs, (GFunc)add_directory_to_dirlist, NULL);
+        list_free_with_free(problem_dirs);
+    }
     else
-       /* we can't die here, NULL == empty list which means there might be no
-        * problems in the given directory
-        */
-       VERB1 log("directory %s doesn't contain any problem directories", path);
+        /* we can't die here, NULL == empty list which means there might be no
+         * problems in the given directory
+         */
+        VERB1 log("directory %s doesn't contain any problem directories", path);
 
     if (inotify_fd >= 0 && inotify_add_watch(inotify_fd, path, 0
     //      | IN_ATTRIB         // Metadata changed
