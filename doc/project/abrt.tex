@@ -1050,20 +1050,22 @@ build log
 llvm build id : FOREIGN KEY NOT NULL \\
 path : STRING[512] NOT NULL \\
 }
+% the following empty line is mandatory to avoid TeX stack overflow
+
 \end{tikzpicture}
 \end{center}
 
 \subsubsection{Sanity Checker -- Debuginfo checker}
 \begin{center}
 \begin{tikzpicture}
-\umlclass[x=4,y=-10]{DebuginfoMissingSymlink}{
+\umlclass[x=4,y=-10.5]{DebuginfoMissingSymlink}{
 build id : FOREIGN KEY NOT NULL \\
 debuginfo symlink : STRING[512] NOT NULL \\
 binary symlink : STRING[512] NOT NULL \\
 debuginfo package id : FOREIGN KEY NOT NULL
 }
 
-\umlclass[x=4,y=-6]{DebuginfoSymlinkPointingToAnotherPath}{
+\umlclass[x=4,y=-7.1]{DebuginfoSymlinkPointingToAnotherPath}{
 build id : FOREIGN KEY NOT NULL \\
 package id : FOREIGN KEY NOT NULL \\
 debuginfo symlink path : STRING[512] NOT NULL \\
@@ -1071,8 +1073,7 @@ symlink target path : STRING[512] NOT NULL \\
 symlink package id : FOREIGN KEY
 }
 
-\umlclass[x=4,y=-2]{DebuginfoMissingForBinary}{
-
+\umlclass[x=4,y=-3.5]{DebuginfoMissingForBinary}{
 build id : FOREIGN KEY NOT NULL \\
 path : STRING[512] NOT NULL \\
 package id : FOREIGN KEY NOT NULL \\
@@ -1080,24 +1081,36 @@ stripped : BOOLEAN \\
 mode : INT
 }
 
-\umlclass[x=4,y=2]{DebuginfoUnused}{
+\umlclass[x=4,y=0]{DebuginfoUnused}{
 build id : FOREIGN KEY NOT NULL \\
 debuginfo path : STRING[512] NOT NULL \\
 binary path : STRING[512] NOT NULL \\
 size : INT NOT NULL
 }
 
-\umlclass[x=4,y=6]{DebuginfoMissingSourceFile}{
+\umlclass[x=4,y=3]{DebuginfoMissingSourceFile}{
 build id : FOREIGN KEY NOT NULL \\
 debuginfo path : STRING[512] NOT NULL \\
 source path : STRING[512] NOT NULL
 }
 
-\umlclass[x=4,y=10]{DebuginfoMissingSection}{
+\umlclass[x=4,y=6]{DebuginfoMissingSection}{
 build id : FOREIGN KEY NOT NULL \\
 path : STRING[512] NOT NULL \\
 package id : FOREIGN KEY NOT NULL
 }
+
+\umlclass[x=-6,y=-2]{build}{
+}
+
+\umluniassoc[geometry=-|-,pos1=0.1,mult1=1,mult2=*,pos2=2.8]{build}{DebuginfoMissingSymlink}
+\umluniassoc[geometry=-|-,                 mult2=*,pos2=2.8]{build}{DebuginfoSymlinkPointingToAnotherPath}
+\umluniassoc[geometry=-|-,                 mult2=*,pos2=2.8]{build}{DebuginfoMissingForBinary}
+\umluniassoc[geometry=-|-,                 mult2=*,pos2=2.8]{build}{DebuginfoUnused}
+\umluniassoc[geometry=-|-,                 mult2=*,pos2=2.8]{build}{DebuginfoMissingSourceFile}
+\umluniassoc[geometry=-|-,                 mult2=*,pos2=2.8]{build}{DebuginfoMissingSection}
+% the following empty line is mandatory to avoid TeX stack overflow
+
 \end{tikzpicture}
 \end{center}
 
@@ -1112,7 +1125,7 @@ debuginfo path : STRING[512] NOT NULL \\
 package id : FOREIGN KEY NOT NULL
 }
 
-\umlclass[x=4,y=-6]{DebuginfoRelativeSourceNameWithoutCompDir}{
+\umlclass[x=4,y=-6]{DebuginfoRelativeSourceNameNoCompDir}{
 build id : FOREIGN KEY NOT NULL \\
 debuginfo path : STRING[512] NOT NULL \\
 package id : FOREIGN KEY NOT NULL \\
@@ -1145,25 +1158,45 @@ table offset : INT NOT NULL \\
 directory offset : INT NOT NULL \\
 source path : STRING[512] NOT NULL
 }
+
+\umlclass[x=-6,y=-2]{build}{
+}
+
+\umluniassoc[geometry=-|-,pos1=0.1,mult1=1,mult2=*,pos2=2.8]{build}{DebuginfoInvalidVersion}
+\umluniassoc[geometry=-|-,                 mult2=*,pos2=2.8]{build}{DebuginfoRelativeSourceNameNoCompDir}
+\umluniassoc[geometry=-|-,                 mult2=*,pos2=2.8]{build}{DebuginfoMissingCompDir}
+\umluniassoc[geometry=-|-,                 mult2=*,pos2=2.8]{build}{DebuginfoRelativeDirectory}
+\umluniassoc[geometry=-|-,                 mult2=*,pos2=2.8]{build}{DebuginfoInvalidDirectoryOffset}
+% the following empty line is mandatory to avoid TeX stack overflow
+
 \end{tikzpicture}
 \end{center}
 
 \begin{center}
 \begin{tikzpicture}
-\umlclass[x=4,y=10]{DebuginfoSource}{
+\umlclass[x=4,y=-2]{DebuginfoSourceRebuild}{
 build id : FOREIGN KEY NOT NULL \\
-status : ENUM(INSTALL\_RPM\_DEPENDENCIES\_FAILED, \\
-  PREPARE\_BUILD\_ENVIRONMENT\_FAILED, \\
-  BUILD\_SRPM\_FAILED, \\
-  DEBUGSOURCES\_NOT\_FOUND, \\
-  CLEAN\_FAILED, \\
-  SUCCESS)
+status : ENUM( \\
+\hspace{5mm}INSTALL RPM DEPENDENCIES FAILED, \\
+\hspace{5mm}PREPARE BUILD ENVIRONMENT FAILED, \\
+\hspace{5mm}BUILD SRPM FAILED, \\
+\hspace{5mm}DEBUGSOURCES NOT FOUND, \\
+\hspace{5mm}CLEAN FAILED, \\
+\hspace{5mm}SUCCESS)
 }
 
-\umlclass[x=4,y=14]{DebuginfoSourceFile}{
+\umlclass[x=4,y=2]{DebuginfoSourceFile}{
 build id : FOREIGN KEY NOT NULL \\
 source path : STRING[512] NOT NULL
 }
+
+\umlclass[x=-6,y=0]{build}{
+}
+
+\umluniassoc[geometry=-|-,pos1=0.1,mult1=1,mult2=*,pos2=2.8]{build}{DebuginfoSourceRebuild}
+\umluniassoc[geometry=-|-,                 mult2=*,pos2=2.8]{build}{DebuginfoSourceFile}
+% the following empty line is mandatory to avoid TeX stack overflow
+
 \end{tikzpicture}
 \end{center}
 
