@@ -45,6 +45,9 @@ static const char *required_retrace[] = { FILENAME_COREDUMP,
                                           FILENAME_PACKAGE,
                                           FILENAME_OS_RELEASE,
                                           NULL };
+static const char *optional_retrace[] = { FILENAME_ROOTDIR,
+                                          FILENAME_OS_RELEASE_IN_ROOTDIR,
+                                          NULL };
 static const char *required_vmcore[] = { FILENAME_VMCORE,
                                          NULL };
 static unsigned delay = 0;
@@ -136,6 +139,13 @@ static int create_archive(bool unlink_temp)
     int index = 3;
     while (required_files[index - 3])
         args_add_if_exists(tar_args, dd, required_files[index - 3], &index);
+
+    if (task_type == TASK_RETRACE || task_type == TASK_DEBUG)
+    {
+        int i;
+        for (i = 0; optional_retrace[i]; ++i)
+            args_add_if_exists(tar_args, dd, optional_retrace[i], &index);
+    }
 
     tar_args[index] = NULL;
     dd_close(dd);
@@ -395,6 +405,19 @@ static int create(bool delete_temp_archive,
             free(path);
 
             ++i;
+        }
+
+        if (task_type == TASK_RETRACE || task_type == TASK_DEBUG)
+        {
+            for (i = 0; optional_retrace[i]; ++i)
+            {
+                path = concat_path_file(dump_dir_name, optional_retrace[i]);
+                if (stat(path, &file_stat) == -1)
+                    continue;
+
+                unpacked_size += (long long)file_stat.st_size;
+                free(path);
+            }
         }
     }
 
