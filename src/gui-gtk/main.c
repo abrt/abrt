@@ -1187,7 +1187,6 @@ static void scan_directory_and_add_to_dirlist(const char *path)
         show_warning_dialog(message, NULL);
         g_error_free(error);
         free(message);
-        gtk_main_quit();
     }
 
     if (problem_dirs)
