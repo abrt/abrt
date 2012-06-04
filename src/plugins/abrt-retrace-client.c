@@ -506,7 +506,7 @@ static int create(bool delete_temp_archive,
 
     if (size_mb > 8) /* 8 MB - should be configurable */
     {
-        char *question = xasprintf(_("You are going to upload %d megabytes."
+        char *question = xasprintf(_("You are going to upload %d megabytes. "
                                      "Continue?"), size_mb);
 
         int response = ask_yes_no(question);
