@@ -341,6 +341,8 @@ static GVariant *get_problem_dirs_for_element_in_time(uid_t uid,
 
 static bool allowed_problem_dir(const char *dir_name)
 {
+//HACK HACK HACK! Disabled for now until we fix clients (abrt-gui) to not pass /home/user/.cache/abrt/spool
+#if 0
     unsigned len = strlen(g_settings_dump_location);
 
     /* If doesn't start with "g_settings_dump_location[/]"... */
@@ -351,6 +353,7 @@ static bool allowed_problem_dir(const char *dir_name)
     ) {
         return false;
     }
+#endif
     return true;
 }
 
