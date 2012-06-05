@@ -32,12 +32,17 @@
 # define GDK_KEY_KP_Delete GDK_KP_Delete
 #endif
 
-static void scan_dirs_and_add_to_dirlist(void);
 static void rescan_and_refresh(void);
 
 
 static const char help_uri[] = "http://docs.fedoraproject.org/en-US/"
     "Fedora/14/html/Deployment_Guide/ch-abrt.html";
+
+static int inotify_fd = -1;
+static GIOChannel *channel_inotify;
+static int channel_inotify_event_id = -1;
+static char **s_dirs;
+static int s_signal_pipe[2];
 
 static GtkListStore *s_dumps_list_store;
 static GtkListStore *s_reported_dumps_list_store;
@@ -146,15 +151,8 @@ static problem_data_t* get_problem_data_dbus(const char *problem_dir_path, GErro
 
 static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data)
 {
-    /* Silently ignore *any* errors, not only EACCES.
-     * We saw "lock file is locked by process PID" error
-     * when we raced with wizard.
-     */
-    int sv_logmode = logmode;
-    logmode = 0;
-    logmode = sv_logmode;
-
     problem_data_t *pd = get_problem_data_dbus(problem_dir_path, NULL);
+
     char time_buf[sizeof("YYYY-MM-DD hh:mm:ss")];
     time_buf[0] = '\0';
     const char *time_str = get_problem_item_content_or_NULL(pd, FILENAME_TIME);
@@ -174,26 +172,21 @@ static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data
      * - first we try to load component, as we use it on Fedora
     */
     const char *source = get_problem_item_content_or_NULL(pd, "source");
-
     const char *msg = get_problem_item_content_or_NULL(pd, FILENAME_REPORTED_TO);
 
-
-    GtkListStore *list_store;
-
+    GtkListStore *list_store = s_dumps_list_store;
     char *subm_status = NULL;
     if (msg)
     {
         list_store = s_reported_dumps_list_store;
         subm_status = get_last_line(msg);
     }
-    else
-        list_store = s_dumps_list_store;
 
     GtkTreeIter iter;
     gtk_list_store_append(list_store, &iter);
     gtk_list_store_set(list_store, &iter,
                           COLUMN_SOURCE, source,
-                          COLUMN_REASON, not_reportable_reason? :reason,
+                          COLUMN_REASON, not_reportable_reason ? : reason,
                           //OPTION: time format
                           COLUMN_LATEST_CRASH_STR, time_buf,
                           COLUMN_LATEST_CRASH, t,
@@ -228,6 +221,55 @@ static GList *get_problems_over_dbus(const char *dump_location, GError **error)
     if (result)
         list = string_list_from_variant(result);
     return list;
+}
+
+static void scan_directory_and_add_to_dirlist(const char *path)
+{
+    GError *error = NULL;
+    GList *problem_dirs = get_problems_over_dbus(path, &error);
+
+    if (error)
+    {
+        char *message = xasprintf(_("Can't get problem list from abrt-dbus: %s"), error->message);
+        show_warning_dialog(message, NULL);
+        g_error_free(error);
+        free(message);
+    }
+
+    if (problem_dirs)
+    {
+        g_list_foreach(problem_dirs, (GFunc)add_directory_to_dirlist, NULL);
+        list_free_with_free(problem_dirs);
+    }
+    else
+        /* we can't die here, NULL == empty list which means there might be no
+         * problems in the given directory
+         */
+        VERB1 log("directory %s doesn't contain any problem directories", path);
+
+    if (inotify_fd >= 0 && inotify_add_watch(inotify_fd, path, 0
+    //      | IN_ATTRIB         // Metadata changed
+    //      | IN_CLOSE_WRITE    // File opened for writing was closed
+            | IN_CREATE         // File/directory created in watched directory
+            | IN_DELETE         // File/directory deleted from watched directory
+            | IN_DELETE_SELF    // Watched file/directory was itself deleted
+            | IN_MODIFY         // File was modified
+            | IN_MOVE_SELF      // Watched file/directory was itself moved
+            | IN_MOVED_FROM     // File moved out of watched directory
+            | IN_MOVED_TO       // File moved into watched directory
+    ) < 0)
+    {
+        /* Missing .abrt/spool is ok, else complain */
+        if (errno != ENOENT)
+            perror_msg("inotify_add_watch failed on '%s'", path);
+    }
+}
+
+static void scan_dirs_and_add_to_dirlist(void)
+{
+    char **argv = s_dirs;
+    while (*argv)
+        scan_directory_and_add_to_dirlist(*argv++);
 }
 
 static void rescan_dirs_and_add_to_dirlist(void)
@@ -1059,13 +1101,6 @@ static GtkWidget *create_main_window(void)
 }
 
 
-static int inotify_fd = -1;
-static GIOChannel *channel_inotify;
-static int channel_inotify_event_id = -1;
-static char **s_dirs;
-static int s_signal_pipe[2];
-
-
 static void rescan_and_refresh(void)
 {
     GtkTreePath *old_path = get_cursor();
@@ -1174,55 +1209,6 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
     rescan_and_refresh();
 
     return TRUE; /* "please don't remove this event" */
-}
-
-static void scan_directory_and_add_to_dirlist(const char *path)
-{
-    GError *error = NULL;
-    GList *problem_dirs = get_problems_over_dbus(path, &error);
-
-    if (error)
-    {
-        char *message = xasprintf(_("Can't get problem list from abrt-dbus: %s"), error->message);
-        show_warning_dialog(message, NULL);
-        g_error_free(error);
-        free(message);
-    }
-
-    if (problem_dirs)
-    {
-        g_list_foreach(problem_dirs, (GFunc)add_directory_to_dirlist, NULL);
-        list_free_with_free(problem_dirs);
-    }
-    else
-        /* we can't die here, NULL == empty list which means there might be no
-         * problems in the given directory
-         */
-        VERB1 log("directory %s doesn't contain any problem directories", path);
-
-    if (inotify_fd >= 0 && inotify_add_watch(inotify_fd, path, 0
-    //      | IN_ATTRIB         // Metadata changed
-    //      | IN_CLOSE_WRITE    // File opened for writing was closed
-            | IN_CREATE         // File/directory created in watched directory
-            | IN_DELETE         // File/directory deleted from watched directory
-            | IN_DELETE_SELF    // Watched file/directory was itself deleted
-            | IN_MODIFY         // File was modified
-            | IN_MOVE_SELF      // Watched file/directory was itself moved
-            | IN_MOVED_FROM     // File moved out of watched directory
-            | IN_MOVED_TO       // File moved into watched directory
-    ) < 0)
-    {
-        /* Missing .abrt/spool is ok, else complain */
-        if (errno != ENOENT)
-            perror_msg("inotify_add_watch failed on '%s'", path);
-    }
-}
-
-static void scan_dirs_and_add_to_dirlist(void)
-{
-    char **argv = s_dirs;
-    while (*argv)
-        scan_directory_and_add_to_dirlist(*argv++);
 }
 
 int main(int argc, char **argv)
