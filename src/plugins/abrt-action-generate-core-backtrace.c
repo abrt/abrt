@@ -95,6 +95,18 @@ int main(int argc, char **argv)
         btp_core_assign_build_ids(backtrace, unstrip_output, executable);
         free(unstrip_output);
 
+        /* Remove empty lines from the backtrace. */
+        GList *loop = backtrace;
+        while (loop != NULL)
+        {
+            struct backtrace_entry *entry = loop->data;
+            if (!entry->build_id && !entry->filename && !entry->modname)
+                loop = g_list_remove(loop, entry);
+            else
+                loop = g_list_next(loop);
+        }
+
+
         /* Extract address ranges from all the executables in the backtrace*/
         VERB1 log("Computing function fingerprints");
         btp_core_backtrace_fingerprint(backtrace);
