@@ -115,11 +115,8 @@ static void show_warning_dialog(const char* message, GtkWidget *parent)
     gtk_widget_destroy(GTK_WIDGET(dialog));
 }
 
-static problem_data_t* get_problem_data_dbus(const char *problem_dir_path, GError *error)
+static problem_data_t *get_problem_data_dbus(const char *problem_dir_path, GError *error)
 {
-    problem_data_t *pd;
-    char *key, *val;
-
     GDBusProxy *proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
                                                      G_DBUS_PROXY_FLAGS_NONE,
                                                      NULL,
@@ -128,17 +125,29 @@ static problem_data_t* get_problem_data_dbus(const char *problem_dir_path, GErro
                                                      ABRT_DBUS_IFACE,
                                                      NULL,
                                                      &error);
+//FIXME: error check?
+
+    GVariantBuilder *builder = g_variant_builder_new(G_VARIANT_TYPE("as"));
+    g_variant_builder_add(builder, "s", FILENAME_TIME          );
+    g_variant_builder_add(builder, "s", FILENAME_REASON        );
+    g_variant_builder_add(builder, "s", FILENAME_NOT_REPORTABLE);
+    g_variant_builder_add(builder, "s", FILENAME_COMPONENT     );
+    g_variant_builder_add(builder, "s", FILENAME_EXECUTABLE    );
+    g_variant_builder_add(builder, "s", FILENAME_REPORTED_TO   );
+    GVariant *params = g_variant_new("(sas)", problem_dir_path, builder);
+    g_variant_builder_unref(builder);
 
     GVariant *result = g_dbus_proxy_call_sync(proxy,
                                             "GetInfo",
-                                            g_variant_new("(s)", problem_dir_path),
+                                            params,
                                             G_DBUS_CALL_FLAGS_NONE,
                                             -1,
                                             NULL,
                                             &error);
+//FIXME: error check?
 
-    pd = new_problem_data();
-
+    problem_data_t *pd = new_problem_data();
+    char *key, *val;
     GVariantIter *iter;
     g_variant_get(result, "(a{ss})", &iter);
     while (g_variant_iter_loop(iter, "{ss}", &key, &val))
@@ -191,7 +200,9 @@ static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data
     /* the source of the problem:
      * - first we try to load component, as we use it on Fedora
     */
-    const char *source = get_problem_item_content_or_NULL(pd, "source");
+    const char *source = get_problem_item_content_or_NULL(pd, FILENAME_COMPONENT);
+    if (!source) /* if we don't have component, we fallback to executable */
+        source = get_problem_item_content_or_NULL(pd, FILENAME_EXECUTABLE);
     const char *msg = get_problem_item_content_or_NULL(pd, FILENAME_REPORTED_TO);
 
     GtkListStore *list_store = s_dumps_list_store;
@@ -229,17 +240,25 @@ static GList *get_problems_over_dbus(const char *dump_location, GError **error)
                                              ABRT_DBUS_IFACE,
                                              NULL,
                                              error);
+    if (*error)
+        return NULL;
 
     GVariant *result = g_dbus_proxy_call_sync(proxy,
                                     g_authorize ? "GetAllProblems" : "GetProblems",
-                                     g_variant_new("(s)", dump_location),
-                                     G_DBUS_CALL_FLAGS_NONE,
-                                     -1,
-                                     NULL,
-                                     error);
+                                    g_variant_new("(s)", dump_location),
+                                    G_DBUS_CALL_FLAGS_NONE,
+                                    -1,
+                                    NULL,
+                                    error);
     GList *list = NULL;
     if (result)
-        list = string_list_from_variant(result);
+    {
+        /* Fetch "as" from "(as)" */
+        GVariant *array = g_variant_get_child_value(result, 0);
+        list = string_list_from_variant(array);
+        g_variant_unref(array);
+    }
+
     return list;
 }
 

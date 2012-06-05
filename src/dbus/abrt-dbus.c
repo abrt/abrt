@@ -31,6 +31,7 @@ static const gchar introspection_xml[] =
   "    </method>"
   "    <method name='GetInfo'>"
   "      <arg type='s' name='problem_dir' direction='in'/>"
+  "      <arg type='as' name='element_names' direction='in'/>"
   "      <arg type='a{ss}' name='response' direction='out'/>"
   "    </method>"
   "    <method name='ChownProblemDir'>"
@@ -515,8 +516,12 @@ static void handle_method_call(GDBusConnection *connection,
 
     if (g_strcmp0(method_name, "GetInfo") == 0)
     {
+        /* Parameter tuple is (sas) */
+
+	/* Get 1st param - problem dir name */
         const gchar *problem_dir;
-        g_variant_get(parameters, "(&s)", &problem_dir);
+        g_variant_get_child(parameters, 0, "&s", &problem_dir);
+        VERB1 log("problem_dir:'%s'", problem_dir);
 
         if (!allowed_problem_dir(problem_dir))
         {
@@ -543,50 +548,31 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
-        GVariantBuilder *builder;
-        builder = g_variant_builder_new(G_VARIANT_TYPE_ARRAY);
-        g_variant_builder_add(builder, "{ss}", xstrdup(FILENAME_TIME), dd_load_text(dd, FILENAME_TIME));
-        g_variant_builder_add(builder, "{ss}", xstrdup(FILENAME_REASON), dd_load_text(dd, FILENAME_REASON));
-        char *not_reportable_reason = dd_load_text_ext(dd, FILENAME_NOT_REPORTABLE, 0
-                                                       | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
-                                                       | DD_FAIL_QUIETLY_ENOENT
-                                                       | DD_FAIL_QUIETLY_EACCES);
-        if (not_reportable_reason)
-            g_variant_builder_add(builder, "{ss}", xstrdup(FILENAME_NOT_REPORTABLE), not_reportable_reason);
-        /* the source of the problem:
-        * - first we try to load component, as we use it on Fedora
-        */
-        char *source = dd_load_text_ext(dd, FILENAME_COMPONENT, 0
-                    | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
-                    | DD_FAIL_QUIETLY_ENOENT
-                    | DD_FAIL_QUIETLY_EACCES
-        );
-        /* if we don't have component, we fallback to executable */
-        if (!source)
+	/* Get 2nd param - vector of element names */
+        GVariant *array = g_variant_get_child_value(parameters, 1);
+        GList *elements = string_list_from_variant(array);
+        g_variant_unref(array);
+
+        GVariantBuilder *builder = g_variant_builder_new(G_VARIANT_TYPE_ARRAY);
+        for (GList *l = elements; l; l = l->next)
         {
-            source = dd_load_text_ext(dd, FILENAME_EXECUTABLE, 0
-                    | DD_FAIL_QUIETLY_ENOENT
-                    | DD_FAIL_QUIETLY_EACCES
-            );
+            const char *element_name = (const char*)l->data;
+            char *value = dd_load_text_ext(dd, element_name, 0
+                                                | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                                                | DD_FAIL_QUIETLY_ENOENT
+                                                | DD_FAIL_QUIETLY_EACCES);
+            VERB1 log("element '%s' %s", element_name, value ? "fetched" : "not found");
+            if (value)
+            {
+                /* g_variant_builder_add makes a copy. No need to xstrdup here */
+                g_variant_builder_add(builder, "{ss}", element_name, value);
+                free(value);
+            }
         }
-
-        g_variant_builder_add(builder, "{ss}", xstrdup("source"), source);
-        char *msg = dd_load_text_ext(dd, FILENAME_REPORTED_TO, 0
-                    | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
-                    | DD_FAIL_QUIETLY_ENOENT
-                    | DD_FAIL_QUIETLY_EACCES
-        );
-        if (msg)
-            g_variant_builder_add(builder, "{ss}", xstrdup(FILENAME_REPORTED_TO), msg);
-
+        list_free_with_free(elements);
         dd_close(dd);
-
         GVariant *response = g_variant_new("(a{ss})", builder);
         g_variant_builder_unref(builder);
-
-        free(msg);
-        free(source);
-        free(not_reportable_reason);
 
         VERB2 log("GetInfo: returning value for '%s'", problem_dir);
         g_dbus_method_invocation_return_value(invocation, response);
@@ -595,7 +581,13 @@ static void handle_method_call(GDBusConnection *connection,
 
     if (g_strcmp0(method_name, "DeleteProblem") == 0)
     {
-        GList *problem_dirs = string_list_from_variant(parameters);
+        /* Dbus parameters are always tuples.
+         * In this case, it's (as) - a tuple of one element (array of strings).
+         * Need to fetch the array:
+         */
+        GVariant *array = g_variant_get_child_value(parameters, 0);
+        GList *problem_dirs = string_list_from_variant(array);
+        g_variant_unref(array);
 
         for (GList *l = problem_dirs; l; l = l->next)
         {
