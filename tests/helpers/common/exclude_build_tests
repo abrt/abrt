@@ -1,0 +1,3 @@
+EXCLUDE_TESTS="abrt-nightly-build|abrt-make-check|btparser-make-check|libreport-make-check"
+TEST_ORDER="/root/abrt/tests/runtests/aux/test_order"
+egrep -v "$EXCLUDE_TESTS" "$TEST_ORDER" > /tmp/test_order && mv /tmp/test_order "$TEST_ORDER"

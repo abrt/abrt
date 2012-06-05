@@ -42,6 +42,9 @@ embed_file "/etc/motd" ~/common/motd_hunk
 
 add_rhel_repos
 
+# exclude build tests
+cat ~/common/exclude_build_tests >> custom-ks.cfg
+
 # %post
 cat ~/common/end_post_hunk >> custom-ks.cfg
 
