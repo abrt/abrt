@@ -151,7 +151,27 @@ static problem_data_t* get_problem_data_dbus(const char *problem_dir_path, GErro
 
 static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data)
 {
-    problem_data_t *pd = get_problem_data_dbus(problem_dir_path, NULL);
+    bool use_dbus = (bool)data;
+    problem_data_t *pd;
+    if (!use_dbus)
+    {
+        /* Silently ignore *any* errors, not only EACCES.
+         * We saw "lock file is locked by process PID" error
+         * when we raced with wizard.
+         */
+        int sv_logmode = logmode;
+        logmode = 0;
+        struct dump_dir *dd = dd_opendir(problem_dir_path, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES);
+        logmode = sv_logmode;
+        if (!dd)
+            return;
+        pd = create_problem_data_from_dump_dir(dd);
+        dd_close(dd);
+    }
+    else
+    {
+        pd = get_problem_data_dbus(problem_dir_path, NULL);
+    }
 
     char time_buf[sizeof("YYYY-MM-DD hh:mm:ss")];
     time_buf[0] = '\0';
@@ -223,7 +243,7 @@ static GList *get_problems_over_dbus(const char *dump_location, GError **error)
     return list;
 }
 
-static void scan_directory_and_add_to_dirlist(const char *path)
+static void query_dbus_and_add_to_dirlist(const char *path)
 {
     GError *error = NULL;
     GList *problem_dirs = get_problems_over_dbus(path, &error);
@@ -238,14 +258,44 @@ static void scan_directory_and_add_to_dirlist(const char *path)
 
     if (problem_dirs)
     {
-        g_list_foreach(problem_dirs, (GFunc)add_directory_to_dirlist, NULL);
+        g_list_foreach(problem_dirs, (GFunc)add_directory_to_dirlist, /*use_dbus:*/ (void*)true);
         list_free_with_free(problem_dirs);
     }
     else
+    {
         /* we can't die here, NULL == empty list which means there might be no
          * problems in the given directory
          */
         VERB1 log("directory %s doesn't contain any problem directories", path);
+    }
+
+    //TODO: we can watch path for updates via inotify, but the path param is going to be removed from dbus API anyway.
+    //Notifications on changes should be implemented to go over dbus too.
+}
+
+static void scan_directory_and_add_to_dirlist(const char *path)
+{
+    DIR *dp = opendir(path);
+    if (!dp)
+    {
+        /* We don't want to yell if, say, $HOME/.abrt/spool doesn't exist */
+        //perror_msg("Can't open directory '%s'", path);
+        return;
+    }
+
+    struct dirent *dent;
+    while ((dent = readdir(dp)) != NULL)
+    {
+        if (dot_or_dotdot(dent->d_name))
+            continue; /* skip "." and ".." */
+
+        char *full_name = concat_path_file(path, dent->d_name);
+        struct stat statbuf;
+        if (stat(full_name, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
+            add_directory_to_dirlist(full_name, /*use_dbus:*/ (void*)false);
+        free(full_name);
+    }
+    closedir(dp);
 
     if (inotify_fd >= 0 && inotify_add_watch(inotify_fd, path, 0
     //      | IN_ATTRIB         // Metadata changed
@@ -267,6 +317,9 @@ static void scan_directory_and_add_to_dirlist(const char *path)
 
 static void scan_dirs_and_add_to_dirlist(void)
 {
+    //TODO: make optional
+    query_dbus_and_add_to_dirlist(g_settings_dump_location); //TODO: remove path name from dbus API here
+
     char **argv = s_dirs;
     while (*argv)
         scan_directory_and_add_to_dirlist(*argv++);
@@ -1258,14 +1311,13 @@ int main(int argc, char **argv)
 
     load_abrt_conf();
     const char *default_dirs[] = {
-        g_settings_dump_location,
         NULL,
         NULL,
     };
     argv += optind;
     if (!argv[0])
     {
-        default_dirs[1] = concat_path_file(g_get_user_cache_dir(), "abrt/spool");
+        default_dirs[0] = concat_path_file(g_get_user_cache_dir(), "abrt/spool");
         argv = (char**)default_dirs;
     }
     s_dirs = argv;
