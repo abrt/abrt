@@ -1,0 +1,13 @@
+[fedora-abrt]
+name=Nightly builds of ABRT related projects - abrt, libreport, btparser, faf
+baseurl=http://repos.fedorapeople.org/repos/abrt/abrt/fedora-$releasever/$basearch/
+enabled=1
+skip_if_unavailable=1
+gpgcheck=0
+
+[fedora-abrt-source]
+name=Nightly builds of ABRT related projects - abrt, libreport, btparser, faf - Source
+baseurl=http://repos.fedorapeople.org/repos/abrt/abrt/fedora-$releasever/SRPMS
+enabled=0
+skip_if_unavailable=1
+gpgcheck=0

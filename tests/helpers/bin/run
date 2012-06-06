@@ -41,6 +41,7 @@ embed_file "/etc/hosts" ~/common/hosts_hunk
 embed_file "/etc/motd" ~/common/motd_hunk
 
 add_rhel_repos
+add_abrt_repos
 
 # exclude build tests
 cat ~/common/exclude_build_tests >> custom-ks.cfg

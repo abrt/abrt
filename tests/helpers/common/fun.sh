@@ -55,6 +55,17 @@ function add_rhel_repos() {
         rm -rf git_dir
     fi
 }
+function add_abrt_repos() {
+    # add abrt nightly repo
+    path=$( dirname $origks )/repos
+    if [ -n "${REPOS_REQUIRED+x}" ]; then
+        # use epel repo
+        embed_file "/etc/yum.repos.d/epel-abrt.repo" $path/epel-abrt.repo
+    else
+        # use fedora repo
+        embed_file "/etc/yum.repos.d/fedora-abrt.repo" $path/fedora-abrt.repo
+    fi
+}
 
 function embed_file() {
     local target_path="${1}"
