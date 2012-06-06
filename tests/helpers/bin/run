@@ -47,7 +47,7 @@ add_abrt_repos
 cat ~/common/exclude_build_tests >> custom-ks.cfg
 
 # disable gpg check
-cat ~/common/no_gpg_check
+cat ~/common/no_gpg_check >> custom-ks.cfg
 
 # %post
 cat ~/common/end_post_hunk >> custom-ks.cfg
