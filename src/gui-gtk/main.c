@@ -231,7 +231,7 @@ static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data
     VERB1 log("added: %s", problem_dir_path);
 }
 
-static GList *get_problems_over_dbus(const char *dump_location, GError **error)
+static GList *get_problems_over_dbus(GError **error)
 {
     GDBusProxy *proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
                                              G_DBUS_PROXY_FLAGS_NONE,
@@ -246,7 +246,7 @@ static GList *get_problems_over_dbus(const char *dump_location, GError **error)
 
     GVariant *result = g_dbus_proxy_call_sync(proxy,
                                     g_authorize ? "GetAllProblems" : "GetProblems",
-                                    g_variant_new("(s)", dump_location),
+                                    g_variant_new("()"),
                                     G_DBUS_CALL_FLAGS_NONE,
                                     -1,
                                     NULL,
@@ -263,10 +263,10 @@ static GList *get_problems_over_dbus(const char *dump_location, GError **error)
     return list;
 }
 
-static void query_dbus_and_add_to_dirlist(const char *path)
+static void query_dbus_and_add_to_dirlist(void)
 {
     GError *error = NULL;
-    GList *problem_dirs = get_problems_over_dbus(path, &error);
+    GList *problem_dirs = get_problems_over_dbus(&error);
 
     if (error)
     {
@@ -289,8 +289,9 @@ static void query_dbus_and_add_to_dirlist(const char *path)
         VERB1 log("directory %s doesn't contain any problem directories", path);
     }
 
-    //TODO: we can watch path for updates via inotify, but the path param is going to be removed from dbus API anyway.
+    //TODO: we can watch path for updates via inotify, but the path param is removed from dbus API now.
     //Notifications on changes should be implemented to go over dbus too.
+    // watch(g_settings_dump_location);
 }
 
 static void scan_directory_and_add_to_dirlist(const char *path)
@@ -317,6 +318,7 @@ static void scan_directory_and_add_to_dirlist(const char *path)
     }
     closedir(dp);
 
+//TODO: we probably need to remove old watches too...
     if (inotify_fd >= 0 && inotify_add_watch(inotify_fd, path, 0
     //      | IN_ATTRIB         // Metadata changed
     //      | IN_CLOSE_WRITE    // File opened for writing was closed
@@ -338,7 +340,7 @@ static void scan_directory_and_add_to_dirlist(const char *path)
 static void scan_dirs_and_add_to_dirlist(void)
 {
     //TODO: make optional
-    query_dbus_and_add_to_dirlist(g_settings_dump_location); //TODO: remove path name from dbus API here
+    query_dbus_and_add_to_dirlist();
 
     char **argv = s_dirs;
     while (*argv)

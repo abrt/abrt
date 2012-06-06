@@ -22,11 +22,9 @@ static const gchar introspection_xml[] =
   "<node>"
   "  <interface name='"ABRT_DBUS_IFACE"'>"
   "    <method name='GetProblems'>"
-  "      <arg type='s' name='directory' direction='in'/>"
   "      <arg type='as' name='response' direction='out'/>"
   "    </method>"
   "    <method name='GetAllProblems'>"
-  "      <arg type='s' name='directory' direction='in'/>"
   "      <arg type='as' name='response' direction='out'/>"
   "    </method>"
   "    <method name='GetInfo'>"
@@ -390,19 +388,7 @@ static void handle_method_call(GDBusConnection *connection,
 
     if (g_strcmp0(method_name, "GetProblems") == 0)
     {
-        //TODO: change the API to not accept the dumpdir from user, but read it from config file?
-
-        const gchar *problem_base_dir;
-        g_variant_get(parameters, "(&s)", &problem_base_dir);
-        VERB1 log("problem_base_dir:'%s'", problem_base_dir);
-
-        if (!allowed_problem_dir(problem_base_dir))
-        {
-            return_InvalidProblemDir_error(invocation, problem_base_dir);
-            return;
-        }
-
-        response = get_problem_dirs_for_uid(caller_uid, problem_base_dir);
+        response = get_problem_dirs_for_uid(caller_uid, g_settings_dump_location);
 
         g_dbus_method_invocation_return_value(invocation, response);
         //I was told that g_dbus_method frees the response
@@ -412,16 +398,6 @@ static void handle_method_call(GDBusConnection *connection,
 
     if (g_strcmp0(method_name, "GetAllProblems") == 0)
     {
-        const gchar *problem_base_dir;
-        g_variant_get(parameters, "(&s)", &problem_base_dir);
-        VERB1 log("problem_base_dir:'%s'", problem_base_dir);
-
-        if (!allowed_problem_dir(problem_base_dir))
-        {
-            return_InvalidProblemDir_error(invocation, problem_base_dir);
-            return;
-        }
-
         /*
         - so, we have UID,
         - if it's 0, then we don't have to check anything and just return all directories
@@ -433,7 +409,7 @@ static void handle_method_call(GDBusConnection *connection,
                 caller_uid = 0;
         }
 
-        response = get_problem_dirs_for_uid(caller_uid, problem_base_dir);
+        response = get_problem_dirs_for_uid(caller_uid, g_settings_dump_location);
 
         g_dbus_method_invocation_return_value(invocation, response);
         return;
