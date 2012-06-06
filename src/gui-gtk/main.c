@@ -752,7 +752,7 @@ static void delete_problem(GtkTreeView *treeview)
             VERB1 log("Deleting '%s'", dump_dir_name);
 
             //TODO: I plan to implement deleting multiple items at once rhbz#541928
-            GList *problem_dir_paths;
+            GList *problem_dir_paths = NULL;
             problem_dir_paths = g_list_append(problem_dir_paths, xstrdup(dump_dir_name));
 
 //TODO: need to only delete over dbus those dirs which were fetched over dbus!
