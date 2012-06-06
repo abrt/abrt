@@ -38,6 +38,14 @@ static void rescan_and_refresh(void);
 static const char help_uri[] = "http://docs.fedoraproject.org/en-US/"
     "Fedora/14/html/Deployment_Guide/ch-abrt.html";
 
+enum {
+    OPT_v = 1 << 0,
+    OPT_p = 1 << 1,
+    OPT_D = 1 << 2,
+};
+
+static unsigned g_opts;
+
 static int inotify_fd = -1;
 static GIOChannel *channel_inotify;
 static int channel_inotify_event_id = -1;
@@ -94,10 +102,9 @@ static char *get_last_line(const char* msg)
     return xstrndup(last_eol, end - last_eol);
 }
 
-static void show_warning_dialog(const char* message, GtkWidget *parent)
+static void show_warning_dialog(const char* message)
 {
-    if (!parent)
-        parent = g_main_window;
+    GtkWidget *parent = g_main_window;
 
     GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(parent),
                                         GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -113,6 +120,27 @@ static void show_warning_dialog(const char* message, GtkWidget *parent)
 
     gtk_dialog_run(GTK_DIALOG(dialog));
     gtk_widget_destroy(GTK_WIDGET(dialog));
+}
+
+static void watch_this_dir(const char *dir_name)
+{
+//TODO: we probably need to remove old watches too...
+    if (inotify_fd >= 0 && inotify_add_watch(inotify_fd, dir_name, 0
+    //      | IN_ATTRIB         // Metadata changed
+    //      | IN_CLOSE_WRITE    // File opened for writing was closed
+            | IN_CREATE         // File/directory created in watched directory
+            | IN_DELETE         // File/directory deleted from watched directory
+            | IN_DELETE_SELF    // Watched file/directory was itself deleted
+            | IN_MODIFY         // File was modified
+            | IN_MOVE_SELF      // Watched file/directory was itself moved
+            | IN_MOVED_FROM     // File moved out of watched directory
+            | IN_MOVED_TO       // File moved into watched directory
+    ) < 0)
+    {
+        /* Missing .abrt/spool is ok, else complain */
+        if (errno != ENOENT)
+            perror_msg("inotify_add_watch failed on '%s'", dir_name);
+    }
 }
 
 static problem_data_t *get_problem_data_dbus(const char *problem_dir_path, GError *error)
@@ -271,7 +299,7 @@ static void query_dbus_and_add_to_dirlist(void)
     if (error)
     {
         char *message = xasprintf(_("Can't get problem list from abrt-dbus: %s"), error->message);
-        show_warning_dialog(message, NULL);
+        show_warning_dialog(message);
         g_error_free(error);
         free(message);
     }
@@ -281,17 +309,11 @@ static void query_dbus_and_add_to_dirlist(void)
         g_list_foreach(problem_dirs, (GFunc)add_directory_to_dirlist, /*use_dbus:*/ (void*)true);
         list_free_with_free(problem_dirs);
     }
-    else
-    {
-        /* we can't die here, NULL == empty list which means there might be no
-         * problems in the given directory
-         */
-        VERB1 log("directory %s doesn't contain any problem directories", path);
-    }
 
-    //TODO: we can watch path for updates via inotify, but the path param is removed from dbus API now.
-    //Notifications on changes should be implemented to go over dbus too.
-    // watch(g_settings_dump_location);
+//HACK ALERT! We "magically know" that dbus-reported problem dirs live in
+//g_settings_dump_location.
+//Notifications on changes should be implemented to go over dbus too.
+    watch_this_dir(g_settings_dump_location);
 }
 
 static void scan_directory_and_add_to_dirlist(const char *path)
@@ -318,29 +340,13 @@ static void scan_directory_and_add_to_dirlist(const char *path)
     }
     closedir(dp);
 
-//TODO: we probably need to remove old watches too...
-    if (inotify_fd >= 0 && inotify_add_watch(inotify_fd, path, 0
-    //      | IN_ATTRIB         // Metadata changed
-    //      | IN_CLOSE_WRITE    // File opened for writing was closed
-            | IN_CREATE         // File/directory created in watched directory
-            | IN_DELETE         // File/directory deleted from watched directory
-            | IN_DELETE_SELF    // Watched file/directory was itself deleted
-            | IN_MODIFY         // File was modified
-            | IN_MOVE_SELF      // Watched file/directory was itself moved
-            | IN_MOVED_FROM     // File moved out of watched directory
-            | IN_MOVED_TO       // File moved into watched directory
-    ) < 0)
-    {
-        /* Missing .abrt/spool is ok, else complain */
-        if (errno != ENOENT)
-            perror_msg("inotify_add_watch failed on '%s'", path);
-    }
+    watch_this_dir(path);
 }
 
 static void scan_dirs_and_add_to_dirlist(void)
 {
-    //TODO: make optional
-    query_dbus_and_add_to_dirlist();
+    if (!(g_opts & OPT_D))
+        query_dbus_and_add_to_dirlist();
 
     char **argv = s_dirs;
     while (*argv)
@@ -1306,27 +1312,26 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "& [-vp] [DIR]...\n"
+        "& [-vpD] [DIR]...\n"
         "\n"
-        "Shows list of ABRT dump directories in specified DIR(s)\n"
+        "Shows list of problem directories in specified DIR(s)\n"
+        "and ones saved in system-wide problem directory spool."
+        /* don't end last line with "\n"! */
     );
-    enum {
-        OPT_v = 1 << 0,
-        OPT_p = 1 << 1,
-    };
-    /* Keep enum above and order of options below in sync! */
+    /* Keep OPT_x enums and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_BOOL(   'p', NULL, NULL      , _("Add program names to log")),
+        OPT_BOOL(   'D', NULL, NULL      , _("Do not query problems over dbus (use only DIRs)")),
         OPT_END()
     };
-    unsigned opts = parse_opts(argc, argv, program_options, program_usage_string);
+    g_opts = parse_opts(argc, argv, program_options, program_usage_string);
 
     migrate_to_xdg_dirs();
 
     load_user_settings("abrt-gui");
 
-    export_abrt_envvars(opts & OPT_p);
+    export_abrt_envvars(g_opts & OPT_p);
 
     GtkWidget *main_window = create_main_window();
 
