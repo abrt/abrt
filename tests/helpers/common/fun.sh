@@ -57,6 +57,8 @@ function add_rhel_repos() {
 }
 function add_abrt_repos() {
     # add abrt nightly repo
+    git clone $REPO git_dir
+    origks=$( find . -name "${KS_NAME_PREFIX}.kickstart.cfg" )
     path=$( dirname $origks )/repos
     if [ -n "${REPOS_REQUIRED+x}" ]; then
         # use epel repo
@@ -65,6 +67,7 @@ function add_abrt_repos() {
         # use fedora repo
         embed_file "/etc/yum.repos.d/fedora-abrt.repo" $path/fedora-abrt.repo
     fi
+    rm -rf git_dir
 }
 
 function embed_file() {
