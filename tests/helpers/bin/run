@@ -45,6 +45,9 @@ add_rhel_repos
 # exclude build tests
 cat ~/common/exclude_build_tests >> custom-ks.cfg
 
+# disable gpg check
+cat ~/common/no_gpg_check
+
 # %post
 cat ~/common/end_post_hunk >> custom-ks.cfg
 
