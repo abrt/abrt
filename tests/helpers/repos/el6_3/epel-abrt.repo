@@ -1,0 +1,13 @@
+[epel-abrt]
+name=Nightly builds of ABRT related projects - abrt, libreport, btparser, faf
+baseurl=http://repos.fedorapeople.org/repos/abrt/abrt/epel-6/x86_64/
+enabled=1
+skip_if_unavailable=1
+gpgcheck=0
+
+[epel-abrt-source]
+name=Nightly builds of ABRT related projects - abrt, libreport, btparser, faf - Source
+baseurl=http://repos.fedorapeople.org/repos/abrt/abrt/epel-6/SRPMS
+enabled=0
+skip_if_unavailable=1
+gpgcheck=0

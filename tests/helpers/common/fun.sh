@@ -60,11 +60,8 @@ function add_abrt_repos() {
     git clone $REPO git_dir
     origks=$( find . -name "${KS_NAME_PREFIX}.kickstart.cfg" )
     path=$( dirname $origks )/repos
-    if [ -n "${REPOS_REQUIRED+x}" ]; then
-        # use epel repo
-        embed_file "/etc/yum.repos.d/epel-abrt.repo" $path/epel-abrt.repo
-    else
-        # use fedora repo
+    if [ ! -n "${REPOS_REQUIRED+x}" ]; then
+        # add fedora repo
         embed_file "/etc/yum.repos.d/fedora-abrt.repo" $path/fedora-abrt.repo
     fi
     rm -rf git_dir
