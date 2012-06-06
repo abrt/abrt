@@ -64,7 +64,7 @@ virt-install --name $VM_NAME --ram "1300" \
   --graphics type=vnc \
   --quiet
 
-set -x
+set +x
 echo 'virt-install done'
 echo -n "Zzzz (until VM is being installed): "
 while virsh --connect qemu:///system list | grep -q $VM_NAME; do
@@ -86,7 +86,7 @@ done
 echo 'x'
 
 sleep 30
-set +x
+set -x
 
 handle_results "$DATA_DIR/data/" "/var/nightly_results/$( basename $DATA_DIR/)"
 echo $result_path
