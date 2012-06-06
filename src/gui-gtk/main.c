@@ -67,31 +67,31 @@ enum
     NUM_COLUMNS
 };
 
-static gint g_authorize; /* wheter to try to authorize when getting list of problems */
+/* Whether to try to authorize when getting list of problems */
+static gint g_authorize;
 
-//FIXME: maybe we can use strrchr and make this faster...
+/* Returns malloced copy */
 static char *get_last_line(const char* msg)
 {
-    const char *curr_end = NULL;
-    const char *start = msg;
-    const char *end = msg;
+    const char *last_eol = strrchr(msg, '\n');
 
-    while((curr_end = strchr(end, '\n')) != NULL)
+    if (!last_eol) /* entire msg is one line? */
+        return xstrdup(msg);
+
+    if (last_eol[1] != '\0') /* last line is not \n terminated? */
+        return xstrdup(last_eol + 1);
+
+    /* It's "... \n line \n" and we point to last "\n" */
+    const char *end = last_eol;
+    /* Walk back */
+    while (last_eol > msg)
     {
-        end = curr_end;
-        curr_end = strchr(end+1, '\n');
-        if (curr_end == NULL || strchr(end+2, '\n') == NULL)
-            break;
-
-        start = end+1;
-        end = curr_end;
+        if (last_eol[-1] == '\n') /* We found prev "\n" */
+            return xstrndup(last_eol, end - last_eol);
+        last_eol--;
     }
-
-    //fix the case where reported_to has only 1 line without \n
-    if (end == msg)
-        end = end + strlen(msg);
-
-    return xstrndup(start, end - start);
+    /* There is no prev "\n" */
+    return xstrndup(last_eol, end - last_eol);
 }
 
 static void show_warning_dialog(const char* message, GtkWidget *parent)
@@ -225,6 +225,7 @@ static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data
                           COLUMN_REPORTED_TO, msg ? subm_status : NULL,
                           -1);
 
+    free(subm_status);
     free_problem_data(pd);
 
     VERB1 log("added: %s", problem_dir_path);
@@ -1126,7 +1127,6 @@ static GtkWidget *create_main_window(void)
                                                        G_TYPE_INT,    /* unix time - used for sort */
                                                        G_TYPE_STRING, /* dump dir path */
                                                        G_TYPE_STRING); /* reported_to */
-
 
     load_sort_setting(GTK_TREE_SORTABLE(s_reported_dumps_list_store));
 
