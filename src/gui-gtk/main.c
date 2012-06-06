@@ -32,6 +32,15 @@
 # define GDK_KEY_KP_Delete GDK_KP_Delete
 #endif
 
+/* We used to work with problem dirs directly.
+ * Access via dbus was added in order to be able to see
+ * (after authorization) problem dirs which are readable
+ * only by root. These "root only" problems can also be deleted,
+ * or chown'ed and then events can be run on them.
+ * (IMO this feature added too much PITA for a rather limited gain.
+ * Oh well...)
+ */
+
 static void rescan_and_refresh(void);
 
 
@@ -79,7 +88,7 @@ enum
 static gint g_authorize;
 
 /* Returns malloced copy */
-static char *get_last_line(const char* msg)
+static char *get_last_line(const char *msg)
 {
     const char *last_eol = strrchr(msg, '\n');
 
@@ -102,7 +111,7 @@ static char *get_last_line(const char* msg)
     return xstrndup(last_eol, end - last_eol);
 }
 
-static void show_warning_dialog(const char* message)
+static void show_warning_dialog(const char *message)
 {
     GtkWidget *parent = g_main_window;
 
@@ -530,7 +539,7 @@ static gboolean on_focus_cb(
 static int chown_dir_over_dbus(const char *problem_dir_path)
 {
     GError *error = NULL;
-    GDBusProxy * proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+    GDBusProxy *proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
                                          G_DBUS_PROXY_FLAGS_NONE,
                                          NULL,
                                          ABRT_DBUS_NAME,
@@ -563,7 +572,7 @@ static int delete_problem_dirs_over_dbus(GList *problem_dir_paths)
 
     GVariant *parameters = variant_from_string_list(problem_dir_paths);
 
-    GDBusProxy * proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+    GDBusProxy *proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
                                          G_DBUS_PROXY_FLAGS_NONE,
                                          NULL,
                                          ABRT_DBUS_NAME,
@@ -725,7 +734,7 @@ static void load_sort_setting(GtkTreeSortable *sortable)
     gtk_tree_sortable_set_sort_column_id(sortable, col_id, sort_type);
 }
 
-static void delete_report(GtkTreeView *treeview)
+static void delete_problem(GtkTreeView *treeview)
 {
     GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
     if (selection)
@@ -743,9 +752,11 @@ static void delete_report(GtkTreeView *treeview)
             VERB1 log("Deleting '%s'", dump_dir_name);
 
             //TODO: I plan to implement deleting multiple items at once rhbz#541928
-            GList *problem_dir_paths = NULL;
+            GList *problem_dir_paths;
             problem_dir_paths = g_list_append(problem_dir_paths, xstrdup(dump_dir_name));
 
+//TODO: need to only delete over dbus those dirs which were fetched over dbus!
+//Ones read directly must be deleted directly too.
             if (delete_problem_dirs_over_dbus(problem_dir_paths) != 0)
             {
                 /* Strange. Deletion did not succeed. Someone else deleted it?
@@ -766,7 +777,7 @@ static gint on_key_press_event_cb(GtkTreeView *treeview, GdkEventKey *key, gpoin
 
     if (k == GDK_KEY_Delete || k == GDK_KEY_KP_Delete)
     {
-        delete_report(treeview);
+        delete_problem(treeview);
         return TRUE;
     }
     return FALSE;
@@ -775,7 +786,7 @@ static gint on_key_press_event_cb(GtkTreeView *treeview, GdkEventKey *key, gpoin
 static void on_btn_delete_cb(GtkButton *button, gpointer unused)
 {
     if (s_active_treeview)
-        delete_report(GTK_TREE_VIEW(s_active_treeview));
+        delete_problem(GTK_TREE_VIEW(s_active_treeview));
 }
 
 static void on_menu_help_cb(GtkMenuItem *menuitem, gpointer unused)
