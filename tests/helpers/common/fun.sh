@@ -73,7 +73,7 @@ function embed_file() {
     echo "Embedding $local_path with target: $target_path"
 
     cat >> custom-ks.cfg << _EE_
-cat > $target_path << _END_
+cat > $target_path << "_END_"
 _EE_
     cat $local_path >> custom-ks.cfg
     cat >> custom-ks.cfg << _EE_
