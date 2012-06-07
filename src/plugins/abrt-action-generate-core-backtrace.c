@@ -17,10 +17,36 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "libabrt.h"
+#include <btparser/hash_sha1.h>
 #include <btparser/utils.h>
 #include <btparser/core-backtrace.h>
 #include <btparser/core-backtrace-python.h>
 #include <btparser/core-backtrace-oops.h>
+
+static bool raw_fingerprints = false;
+
+static void hash_fingerprints(GList *backtrace)
+{
+    GList *elem = backtrace;
+    struct backtrace_entry *entry;
+    char bin_hash[BTP_SHA1_RESULT_BIN_LEN], hash[BTP_SHA1_RESULT_LEN];
+    btp_sha1_ctx_t ctx;
+    while (elem)
+    {
+        entry = (struct backtrace_entry *)elem->data;
+        if (entry->fingerprint)
+        {
+            btp_sha1_begin(&ctx);
+            btp_sha1_hash(&ctx, entry->fingerprint, strlen(entry->fingerprint));
+            btp_sha1_end(&ctx, bin_hash);
+            btp_bin2hex(hash, bin_hash, sizeof(bin_hash))[0] = '\0';
+
+            free(entry->fingerprint);
+            entry->fingerprint = btp_strndup(hash, sizeof(hash));
+        }
+        elem = g_list_next(elem);
+    }
+}
 
 int main(int argc, char **argv)
 {
@@ -46,11 +72,13 @@ int main(int argc, char **argv)
     enum {
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
+        OPT_r = 1 << 2,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_STRING('d', NULL, &dump_dir_name, "DIR", _("Problem directory")),
+        OPT_BOOL('r', "raw", &raw_fingerprints, _("Do not hash fingerprints")),
         OPT_END()
     };
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);
@@ -110,6 +138,8 @@ int main(int argc, char **argv)
         /* Extract address ranges from all the executables in the backtrace*/
         VERB1 log("Computing function fingerprints");
         btp_core_backtrace_fingerprint(backtrace);
+        if (!raw_fingerprints)
+            hash_fingerprints(backtrace);
     }
     else if (strcmp(analyzer, "Python") == 0)
         backtrace = btp_parse_python_backtrace(txt_backtrace);
