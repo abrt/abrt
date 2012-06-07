@@ -53,6 +53,7 @@ static const char *required_vmcore[] = { FILENAME_VMCORE,
 static unsigned delay = 0;
 static int task_type = TASK_RETRACE;
 static bool http_show_headers;
+static bool no_pkgcheck;
 
 static struct https_cfg cfg =
 {
@@ -301,37 +302,17 @@ static void free_settings(struct retrace_settings *settings)
 
 /* returns release identifier as dist-ver-arch */
 /* or NULL if unknown */
-static char *get_release(const char *dump_dir_name)
+static char *get_release_id(const char *rawrelease, const char *architecture)
 {
-    char *filename;
-    FILE *f;
-
-    filename = concat_path_file(dump_dir_name, FILENAME_ARCHITECTURE);
-    f = fopen(filename, "r");
-    free(filename);
-    if (!f)
-        perror_msg_and_die("fopen");
-
-    char *arch = xmalloc_fgetline(f);
-    fclose(f);
+    char *arch = xstrdup(architecture);
 
     if (strcmp("i686", arch) == 0 || strcmp("i586", arch) == 0)
     {
         free(arch);
         arch = xstrdup("i386");
     }
-
-    filename = concat_path_file(dump_dir_name, FILENAME_OS_RELEASE);
-    f = fopen(filename, "r");
-    free(filename);
-    if (!f)
-        perror_msg_and_die("fopen");
-
-    char *line = xmalloc_fgetline(f);
-    fclose(f);
-
     char *release = NULL, *version = NULL, *result = NULL;
-    parse_release_for_rhts(line, &release, &version);
+    parse_release_for_rhts(rawrelease, &release, &version);
 
     if (strcmp("Fedora", release) == 0)
         result = xasprintf("fedora-%s-%s", version, arch);
@@ -340,9 +321,80 @@ static char *get_release(const char *dump_dir_name)
 
     free(release);
     free(version);
-    free(line);
     free(arch);
     return result;
+}
+
+static int check_package(const char *nvr, const char *arch, const char *release, char **msg)
+{
+    char *releaseid = get_release_id(release, arch);
+
+    struct language lang;
+    get_language(&lang);
+    PRFileDesc *tcp_sock, *ssl_sock;
+    ssl_connect(&cfg, &tcp_sock, &ssl_sock);
+    struct strbuf *http_request = strbuf_new();
+    strbuf_append_strf(http_request,
+                       "GET /checkpackage HTTP/1.1\r\n"
+                       "Host: %s\r\n"
+                       "Content-Length: 0\r\n"
+                       "Connection: close\r\n"
+                       "X-Package-NVR: %s\r\n"
+                       "X-Package-Arch: %s\r\n"
+                       "X-OS-Release: %s\r\n",
+                       cfg.url, nvr, arch, releaseid);
+
+    if (lang.encoding)
+        strbuf_append_strf(http_request,
+                           "Accept-Charset: %s\r\n",
+                           lang.encoding);
+    if (lang.locale)
+    {
+        strbuf_append_strf(http_request,
+                           "Accept-Language: %s\r\n",
+                           lang.locale);
+        free(lang.locale);
+    }
+
+    strbuf_append_str(http_request, "\r\n");
+    PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
+                              /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
+    if (written == -1)
+    {
+        PR_Close(ssl_sock);
+        alert_connection_error();
+        error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d"),
+                          http_request->len, PR_GetError());
+    }
+    strbuf_free(http_request);
+    char *http_response = tcp_read_response(tcp_sock);
+    ssl_disconnect(ssl_sock);
+    if (http_show_headers)
+        http_print_headers(stderr, http_response);
+    int response_code = http_get_response_code(http_response);
+    /* we are expecting either 302 or 404 */
+    if (response_code != 302 && response_code != 404)
+    {
+        char *http_body = http_get_body(http_response);
+        alert_server_error();
+        error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"),
+                            response_code, http_body);
+    }
+
+    if (msg)
+    {
+        if (response_code == 404)
+            *msg = xasprintf(_("Retrace server is unable to process package "
+                               "'%s.%s'.\nIs it a part of official %s repositories?"),
+                               nvr, arch, release);
+        else
+            *msg = NULL;
+    }
+
+    free(http_response);
+    free(releaseid);
+
+    return response_code == 302;
 }
 
 static int create(bool delete_temp_archive,
@@ -449,32 +501,65 @@ static int create(bool delete_temp_archive,
         }
     }
 
-    /* we need dump dir to parse release file */
-    /* not needed for TASK_VMCORE - the information is kept in the vmcore itself */
-    if (task_type != TASK_VMCORE && dump_dir_name && settings->supported_releases)
+
+    if (task_type != TASK_VMCORE && dump_dir_name)
     {
-        char *release = get_release(dump_dir_name);
-        if (!release)
-            error_msg_and_die("Unable to parse release.");
-        int i;
-        bool supported = false;
-        for (i = 0; i < MAX_RELEASES && settings->supported_releases[i]; ++i)
-            if (strcmp(release, settings->supported_releases[i]) == 0)
+        struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
+        if (!dd)
+            xfunc_die();
+
+        char *package = dd_load_text(dd, FILENAME_PACKAGE);
+        char *arch = dd_load_text(dd, FILENAME_ARCHITECTURE);
+        char *release = dd_load_text(dd, FILENAME_OS_RELEASE);
+
+        dd_close(dd);
+
+        /* not needed for TASK_VMCORE - the information is kept in the vmcore itself */
+        if (settings->supported_releases)
+        {
+            char *releaseid = get_release_id(release, arch);
+            if (!releaseid)
+                error_msg_and_die("Unable to parse release.");
+
+            int i;
+            bool supported = false;
+            for (i = 0; i < MAX_RELEASES && settings->supported_releases[i]; ++i)
+                if (strcmp(releaseid, settings->supported_releases[i]) == 0)
+                {
+                    supported = true;
+                    break;
+                }
+
+            if (!supported)
             {
-                supported = true;
-                break;
+                char *msg = xasprintf(_("The release '%s' is not supported by the"
+                                        " Retrace server."), releaseid);
+                alert(msg);
+                free(msg);
+                error_msg_and_die(_("The server is not able to"
+                                    " handle your request."));
             }
 
-        if (!supported)
-        {
-            char *msg = xasprintf(_("The release '%s' is not supported by the"
-                                    " Retrace server."), release);
-            alert(msg);
-            free(msg);
-            error_msg_and_die(_("The server is not able to"
-                                " handle your request."));
+            free(releaseid);
         }
 
+        /* not relevant for vmcores - it may take a long time to get package from vmcore */
+        if (!no_pkgcheck)
+        {
+            char *msg;
+            int known = check_package(package, arch, release, &msg);
+            if (msg)
+            {
+                alert(msg);
+                free(msg);
+            }
+
+            if (!known)
+                error_msg_and_die(_("Unknown package sent to Retrace server."));
+        }
+
+        free(package);
+        free(arch);
         free(release);
     }
 
@@ -968,17 +1053,18 @@ int main(int argc, char **argv)
         OPT_verbose   = 1 << 0,
         OPT_syslog    = 1 << 1,
         OPT_insecure  = 1 << 2,
-        OPT_url       = 1 << 3,
-        OPT_port      = 1 << 4,
-        OPT_headers   = 1 << 5,
-        OPT_group_1   = 1 << 6,
-        OPT_dir       = 1 << 7,
-        OPT_core      = 1 << 8,
-        OPT_delay     = 1 << 9,
-        OPT_no_unlink = 1 << 10,
-        OPT_group_2   = 1 << 11,
-        OPT_task      = 1 << 12,
-        OPT_password  = 1 << 13
+        OPT_no_pkgchk = 1 << 3,
+        OPT_url       = 1 << 4,
+        OPT_port      = 1 << 5,
+        OPT_headers   = 1 << 6,
+        OPT_group_1   = 1 << 7,
+        OPT_dir       = 1 << 8,
+        OPT_core      = 1 << 9,
+        OPT_delay     = 1 << 10,
+        OPT_no_unlink = 1 << 11,
+        OPT_group_2   = 1 << 12,
+        OPT_task      = 1 << 13,
+        OPT_password  = 1 << 14
     };
 
     /* Keep enum above and order of options below in sync! */
@@ -987,6 +1073,9 @@ int main(int argc, char **argv)
         OPT_BOOL('s', "syslog", NULL, _("log to syslog")),
         OPT_BOOL('k', "insecure", NULL,
                  _("allow insecure connection to retrace server")),
+        OPT_BOOL(0, "no-pkgcheck", NULL,
+                 _("do not check whether retrace server is able to "
+                   "process given package before uploading the archive")),
         OPT_STRING(0, "url", &(cfg.url), "URL",
                    _("retrace server URL")),
         OPT_INTEGER(0, "port", &(cfg.port),
@@ -1045,6 +1134,7 @@ int main(int argc, char **argv)
     if (!cfg.ssl_allow_insecure)
         cfg.ssl_allow_insecure = opts & OPT_insecure;
     http_show_headers = opts & OPT_headers;
+    no_pkgcheck = opts & OPT_no_pkgchk;
 
     /* Initialize NSS */
     SECMODModule *mod;
