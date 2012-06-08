@@ -154,16 +154,11 @@ static void watch_this_dir(const char *dir_name)
 
 static int chown_dir_over_dbus(const char *problem_dir_path)
 {
-    GError *error = NULL;
-    GDBusProxy *proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
-                                         G_DBUS_PROXY_FLAGS_NONE,
-                                         NULL,
-                                         ABRT_DBUS_NAME,
-                                         ABRT_DBUS_OBJECT,
-                                         ABRT_DBUS_IFACE,
-                                         NULL,
-                                         &error);
+    GDBusProxy *proxy = get_dbus_proxy();
+    if (!proxy)
+        return 1;
 
+    GError *error = NULL;
     g_dbus_proxy_call_sync(proxy,
                         "ChownProblemDir",
                         g_variant_new("(s)", problem_dir_path),
@@ -171,11 +166,11 @@ static int chown_dir_over_dbus(const char *problem_dir_path)
                         -1,
                         NULL,
                         &error);
-
+    g_object_unref(proxy);
     if (error)
     {
         //TODO show a warning dialog here or on the higher level?
-        error_msg(_("Can't chown '%s': %s"),problem_dir_path, error->message);
+        error_msg(_("Can't chown '%s': %s"), problem_dir_path, error->message);
         g_error_free(error);
         return 1;
     }
@@ -184,19 +179,13 @@ static int chown_dir_over_dbus(const char *problem_dir_path)
 
 static int delete_problem_dirs_over_dbus(GList *problem_dir_paths)
 {
-    GError *error = NULL;
+    GDBusProxy *proxy = get_dbus_proxy();
+    if (!proxy)
+        return 1;
 
     GVariant *parameters = variant_from_string_list(problem_dir_paths);
 
-    GDBusProxy *proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
-                                         G_DBUS_PROXY_FLAGS_NONE,
-                                         NULL,
-                                         ABRT_DBUS_NAME,
-                                         ABRT_DBUS_OBJECT,
-                                         ABRT_DBUS_IFACE,
-                                         NULL,
-                                         &error);
-
+    GError *error = NULL;
     g_dbus_proxy_call_sync(proxy,
                     "DeleteProblem",
                     parameters,
@@ -204,7 +193,7 @@ static int delete_problem_dirs_over_dbus(GList *problem_dir_paths)
                     -1,
                     NULL,
                     &error);
-
+    g_object_unref(proxy);
     if (error)
     {
         //TODO show a warning dialog here or on the higher level?
@@ -215,17 +204,11 @@ static int delete_problem_dirs_over_dbus(GList *problem_dir_paths)
     return 0;
 }
 
-static problem_data_t *get_problem_data_dbus(const char *problem_dir_path, GError *error)
+static problem_data_t *get_problem_data_dbus(const char *problem_dir_path)
 {
-    GDBusProxy *proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
-                                                     G_DBUS_PROXY_FLAGS_NONE,
-                                                     NULL,
-                                                     ABRT_DBUS_NAME,
-                                                     ABRT_DBUS_OBJECT,
-                                                     ABRT_DBUS_IFACE,
-                                                     NULL,
-                                                     &error);
-//FIXME: error check?
+    GDBusProxy *proxy = get_dbus_proxy();
+    if (!proxy)
+        return NULL;
 
     GVariantBuilder *builder = g_variant_builder_new(G_VARIANT_TYPE("as"));
     g_variant_builder_add(builder, "s", FILENAME_TIME          );
@@ -237,6 +220,7 @@ static problem_data_t *get_problem_data_dbus(const char *problem_dir_path, GErro
     GVariant *params = g_variant_new("(sas)", problem_dir_path, builder);
     g_variant_builder_unref(builder);
 
+    GError *error = NULL;
     GVariant *result = g_dbus_proxy_call_sync(proxy,
                                             "GetInfo",
                                             params,
@@ -244,6 +228,8 @@ static problem_data_t *get_problem_data_dbus(const char *problem_dir_path, GErro
                                             -1,
                                             NULL,
                                             &error);
+    g_object_unref(proxy);
+
 //FIXME: error check?
 
     problem_data_t *pd = new_problem_data();
@@ -279,7 +265,7 @@ static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data
     }
     else
     {
-        pd = get_problem_data_dbus(problem_dir_path, NULL);
+        pd = get_problem_data_dbus(problem_dir_path);
     }
 
     char time_buf[sizeof("YYYY-MM-DD hh:mm:ss")];
@@ -322,7 +308,7 @@ static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data
                           COLUMN_LATEST_CRASH_STR, time_buf,
                           COLUMN_LATEST_CRASH, t,
                           COLUMN_DUMP_DIR, problem_dir_path,
-                          COLUMN_REPORTED_TO, msg ? subm_status : NULL,
+                          COLUMN_REPORTED_TO, subm_status,
                           -1);
 
     free(subm_status);
@@ -331,26 +317,29 @@ static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data
     VERB1 log("added: %s", problem_dir_path);
 }
 
-static GList *get_problems_over_dbus(GError **error)
+static GList *get_problems_over_dbus(void)
 {
-    GDBusProxy *proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
-                                             G_DBUS_PROXY_FLAGS_NONE,
-                                             NULL,
-                                             ABRT_DBUS_NAME,
-                                             ABRT_DBUS_OBJECT,
-                                             ABRT_DBUS_IFACE,
-                                             NULL,
-                                             error);
-    if (*error)
+    GDBusProxy *proxy = get_dbus_proxy();
+    if (!proxy)
         return NULL;
 
+    GError *error = NULL;
     GVariant *result = g_dbus_proxy_call_sync(proxy,
                                     g_authorize ? "GetAllProblems" : "GetProblems",
                                     g_variant_new("()"),
                                     G_DBUS_CALL_FLAGS_NONE,
                                     -1,
                                     NULL,
-                                    error);
+                                    &error);
+    g_object_unref(proxy);
+    if (error)
+    {
+        char *message = xasprintf(_("Can't get problem list from abrt-dbus: %s"), error->message);
+        show_warning_dialog(message);
+        free(message);
+        g_error_free(error);
+    }
+
     GList *list = NULL;
     if (result)
     {
@@ -358,6 +347,7 @@ static GList *get_problems_over_dbus(GError **error)
         GVariant *array = g_variant_get_child_value(result, 0);
         list = string_list_from_variant(array);
         g_variant_unref(array);
+        g_variant_unref(result);
     }
 
     return list;
@@ -365,16 +355,7 @@ static GList *get_problems_over_dbus(GError **error)
 
 static void query_dbus_and_add_to_dirlist(void)
 {
-    GError *error = NULL;
-    GList *problem_dirs = get_problems_over_dbus(&error);
-
-    if (error)
-    {
-        char *message = xasprintf(_("Can't get problem list from abrt-dbus: %s"), error->message);
-        show_warning_dialog(message);
-        g_error_free(error);
-        free(message);
-    }
+    GList *problem_dirs = get_problems_over_dbus();
 
     if (problem_dirs)
     {
