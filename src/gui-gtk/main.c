@@ -80,9 +80,19 @@ enum
     COLUMN_LATEST_CRASH_STR,
     COLUMN_LATEST_CRASH,
     COLUMN_DUMP_DIR,
+    COLUMN_DIR_OVER_DBUS,
     COLUMN_REPORTED_TO,
     NUM_COLUMNS
 };
+/* Must match the above enum! Used in gtk_list_store_new() call */
+# define COLUMN_TYPES \
+    G_TYPE_STRING, \
+    G_TYPE_STRING, \
+    G_TYPE_STRING, \
+    G_TYPE_INT,    \
+    G_TYPE_STRING, \
+    G_TYPE_INT,    \
+    G_TYPE_STRING  \
 
 /* Whether to try to authorize when getting list of problems */
 static gint g_authorize;
@@ -193,6 +203,7 @@ static int delete_problem_dirs_over_dbus(GList *problem_dir_paths)
                     -1,
                     NULL,
                     &error);
+//g_variant_unref(parameters); -- need this??? no?? why?
     g_object_unref(proxy);
     if (error)
     {
@@ -308,6 +319,7 @@ static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data
                           COLUMN_LATEST_CRASH_STR, time_buf,
                           COLUMN_LATEST_CRASH, t,
                           COLUMN_DUMP_DIR, problem_dir_path,
+                          COLUMN_DIR_OVER_DBUS, (int)use_dbus,
                           COLUMN_REPORTED_TO, subm_status,
                           -1);
 
@@ -603,7 +615,7 @@ static GDBusProxy *get_dbus_proxy(void)
     return proxy;
 }
 
-static const char *current_dirname(GtkTreeView *treeview)
+static const char *current_dirname(int *is_dbus, GtkTreePath **path_p, GtkTreeView *treeview)
 {
     GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
     if (selection)
@@ -612,9 +624,18 @@ static const char *current_dirname(GtkTreeView *treeview)
         GtkTreeModel *store = gtk_tree_view_get_model(treeview);
         if (gtk_tree_selection_get_selected(selection, &store, &iter) == TRUE)
         {
+            if (path_p)
+                *path_p = gtk_tree_model_get_path(store, &iter);
+
             GValue d_dir = { 0 };
             gtk_tree_model_get_value(store, &iter, COLUMN_DUMP_DIR, &d_dir);
             const char *dirname = g_value_get_string(&d_dir);
+            if (is_dbus)
+            {
+                GValue d_int = { 0 };
+                gtk_tree_model_get_value(store, &iter, COLUMN_DIR_OVER_DBUS, &d_int);
+                *is_dbus = g_value_get_int(&d_int);
+            }
             return dirname;
         }
     }
@@ -623,10 +644,11 @@ static const char *current_dirname(GtkTreeView *treeview)
 
 static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
 {
-    const char *dirname = current_dirname(treeview);
+    int is_dbus;
+    const char *dirname = current_dirname(&is_dbus, NULL, treeview);
     if (dirname)
     {
-        if (chown_dir_over_dbus(dirname) == 0)
+        if (!is_dbus || chown_dir_over_dbus(dirname) == 0)
         {
             report_problem_in_dir(dirname,
                               LIBREPORT_ANALYZE | LIBREPORT_NOWAIT | LIBREPORT_GETPID);
@@ -638,10 +660,11 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
 
 static void open_problem_data_cb(GtkMenuItem *menuitem, gpointer user_data)
 {
-    const char *dirname = current_dirname(GTK_TREE_VIEW(s_active_treeview));
+    int is_dbus;
+    const char *dirname = current_dirname(&is_dbus, NULL, GTK_TREE_VIEW(s_active_treeview));
     if (dirname)
     {
-        if (chown_dir_over_dbus(dirname) != 0)
+        if (is_dbus && chown_dir_over_dbus(dirname) != 0)
         {
             // TODO: show a warning dialog
             error_msg("Can't chown '%s'", dirname);
@@ -740,35 +763,33 @@ static void load_sort_setting(GtkTreeSortable *sortable)
 
 static void delete_problem(GtkTreeView *treeview)
 {
-    GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
-    if (selection)
+    GtkTreePath *old_path = NULL;
+    int is_dbus;
+    const char *dirname = current_dirname(&is_dbus, &old_path, GTK_TREE_VIEW(s_active_treeview));
+    if (dirname)
     {
-        GtkTreeIter iter;
-        GtkTreeModel *store = gtk_tree_view_get_model(treeview);
-        if (gtk_tree_selection_get_selected(selection, &store, &iter) == TRUE)
+        VERB1 log("Deleting '%s'", dirname);
+
+        //TODO: I plan to implement deleting multiple items at once rhbz#541928
+        GList *problem_dir_paths = NULL;
+        problem_dir_paths = g_list_append(problem_dir_paths, xstrdup(dirname));
+
+        int result;
+        if (is_dbus)
+            result = delete_problem_dirs_over_dbus(problem_dir_paths);
+        else
+            result = delete_dump_dir_possibly_using_abrtd(dirname);
+        if (result != 0)
         {
-            GtkTreePath *old_path = gtk_tree_model_get_path(store, &iter);
+            /* Strange. Deletion did not succeed. Someone else deleted it?
+             * Rescan the whole list */
+            rescan_dirs_and_add_to_dirlist();
+        }
+        list_free_with_free(problem_dir_paths);
 
-            GValue d_dir = { 0 };
-            gtk_tree_model_get_value(store, &iter, COLUMN_DUMP_DIR, &d_dir);
-            const char *dump_dir_name = g_value_get_string(&d_dir);
-
-            VERB1 log("Deleting '%s'", dump_dir_name);
-
-            //TODO: I plan to implement deleting multiple items at once rhbz#541928
-            GList *problem_dir_paths = NULL;
-            problem_dir_paths = g_list_append(problem_dir_paths, xstrdup(dump_dir_name));
-
-//TODO: need to only delete over dbus those dirs which were fetched over dbus!
-//Ones read directly must be deleted directly too.
-            if (delete_problem_dirs_over_dbus(problem_dir_paths) != 0)
-            {
-                /* Strange. Deletion did not succeed. Someone else deleted it?
-                 * Rescan the whole list */
-                rescan_dirs_and_add_to_dirlist();
-            }
-
-            /* Try to retain the same cursor position */
+        /* Try to retain the same cursor position */
+        if (old_path)
+        {
             sanitize_cursor(old_path);
             gtk_tree_path_free(old_path);
         }
@@ -1096,14 +1117,7 @@ static GtkWidget *create_main_window(void)
     gtk_container_add(GTK_CONTAINER(new_problems_scroll_win), s_treeview);
 
     /* Create data store for the list and attach it */
-    s_dumps_list_store = gtk_list_store_new(NUM_COLUMNS,
-                                           G_TYPE_STRING, /* source */
-                                           G_TYPE_STRING, /* executable */
-                                           G_TYPE_STRING, /* time */
-                                           G_TYPE_INT,    /* unix time - used for sort */
-                                           G_TYPE_STRING, /* dump dir path */
-                                           G_TYPE_STRING); /* reported_to */
-
+    s_dumps_list_store = gtk_list_store_new(NUM_COLUMNS, COLUMN_TYPES);
 
     load_sort_setting(GTK_TREE_SORTABLE(s_dumps_list_store));
 
