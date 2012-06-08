@@ -152,6 +152,69 @@ static void watch_this_dir(const char *dir_name)
     }
 }
 
+static int chown_dir_over_dbus(const char *problem_dir_path)
+{
+    GError *error = NULL;
+    GDBusProxy *proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+                                         G_DBUS_PROXY_FLAGS_NONE,
+                                         NULL,
+                                         ABRT_DBUS_NAME,
+                                         ABRT_DBUS_OBJECT,
+                                         ABRT_DBUS_IFACE,
+                                         NULL,
+                                         &error);
+
+    g_dbus_proxy_call_sync(proxy,
+                        "ChownProblemDir",
+                        g_variant_new("(s)", problem_dir_path),
+                        G_DBUS_CALL_FLAGS_NONE,
+                        -1,
+                        NULL,
+                        &error);
+
+    if (error)
+    {
+        //TODO show a warning dialog here or on the higher level?
+        error_msg(_("Can't chown '%s': %s"),problem_dir_path, error->message);
+        g_error_free(error);
+        return 1;
+    }
+    return 0;
+}
+
+static int delete_problem_dirs_over_dbus(GList *problem_dir_paths)
+{
+    GError *error = NULL;
+
+    GVariant *parameters = variant_from_string_list(problem_dir_paths);
+
+    GDBusProxy *proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+                                         G_DBUS_PROXY_FLAGS_NONE,
+                                         NULL,
+                                         ABRT_DBUS_NAME,
+                                         ABRT_DBUS_OBJECT,
+                                         ABRT_DBUS_IFACE,
+                                         NULL,
+                                         &error);
+
+    g_dbus_proxy_call_sync(proxy,
+                    "DeleteProblem",
+                    parameters,
+                    G_DBUS_CALL_FLAGS_NONE,
+                    -1,
+                    NULL,
+                    &error);
+
+    if (error)
+    {
+        //TODO show a warning dialog here or on the higher level?
+        error_msg(_("Deleting problem directory failed: %s"), error->message);
+        g_error_free(error);
+        return 1;
+    }
+    return 0;
+}
+
 static problem_data_t *get_problem_data_dbus(const char *problem_dir_path, GError *error)
 {
     GDBusProxy *proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
@@ -557,69 +620,6 @@ static GDBusProxy *get_dbus_proxy(void)
         /* proxy is NULL in this case */
     }
     return proxy;
-}
-
-static int chown_dir_over_dbus(const char *problem_dir_path)
-{
-    GError *error = NULL;
-    GDBusProxy *proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
-                                         G_DBUS_PROXY_FLAGS_NONE,
-                                         NULL,
-                                         ABRT_DBUS_NAME,
-                                         ABRT_DBUS_OBJECT,
-                                         ABRT_DBUS_IFACE,
-                                         NULL,
-                                         &error);
-
-    g_dbus_proxy_call_sync(proxy,
-                        "ChownProblemDir",
-                        g_variant_new("(s)", problem_dir_path),
-                        G_DBUS_CALL_FLAGS_NONE,
-                        -1,
-                        NULL,
-                        &error);
-
-    if (error)
-    {
-        //TODO show a warning dialog here or on the higher level?
-        error_msg(_("Can't chown '%s': %s"),problem_dir_path, error->message);
-        g_error_free(error);
-        return 1;
-    }
-    return 0;
-}
-
-static int delete_problem_dirs_over_dbus(GList *problem_dir_paths)
-{
-    GError *error = NULL;
-
-    GVariant *parameters = variant_from_string_list(problem_dir_paths);
-
-    GDBusProxy *proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
-                                         G_DBUS_PROXY_FLAGS_NONE,
-                                         NULL,
-                                         ABRT_DBUS_NAME,
-                                         ABRT_DBUS_OBJECT,
-                                         ABRT_DBUS_IFACE,
-                                         NULL,
-                                         &error);
-
-    g_dbus_proxy_call_sync(proxy,
-                    "DeleteProblem",
-                    parameters,
-                    G_DBUS_CALL_FLAGS_NONE,
-                    -1,
-                    NULL,
-                    &error);
-
-    if (error)
-    {
-        //TODO show a warning dialog here or on the higher level?
-        error_msg(_("Deleting problem directory failed: %s"), error->message);
-        g_error_free(error);
-        return 1;
-    }
-    return 0;
 }
 
 static const char *current_dirname(GtkTreeView *treeview)
