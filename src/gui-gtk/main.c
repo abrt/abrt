@@ -536,6 +536,29 @@ static gboolean on_focus_cb(
     return false; /* propagate the event further */
 }
 
+static GDBusProxy *get_dbus_proxy(void)
+{
+    GError *error = NULL;
+    GDBusProxy *proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+                                         G_DBUS_PROXY_FLAGS_NONE,
+                                         NULL,
+                                         ABRT_DBUS_NAME,
+                                         ABRT_DBUS_OBJECT,
+                                         ABRT_DBUS_IFACE,
+                                         NULL,
+                                         &error);
+    if (error)
+    {
+        char *message = xasprintf(_("Can't connect to system DBus: %s"), error->message);
+        show_warning_dialog(message);
+        error_msg("%s", message);
+        free(message);
+        g_error_free(error);
+        /* proxy is NULL in this case */
+    }
+    return proxy;
+}
+
 static int chown_dir_over_dbus(const char *problem_dir_path)
 {
     GError *error = NULL;
