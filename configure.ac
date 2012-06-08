@@ -56,6 +56,20 @@ AC_PATH_PROG([XMLTO], [xmlto], [no])
     [exit 1]
 [fi]
 
+AC_PATH_PROG([PYTHON], [python-config], [no])
+[if test "$XMLTO" = "no"]
+[then]
+    [echo "The python-config program was not found in the search path. Please ensure"]
+    [echo "that it is installed and its directory is included in the search path."]
+    [echo "Then run configure again before attempting to build libreport."]
+    [exit 1]
+[fi]
+
+PYTHON_CFLAGS=`python-config --cflags 2> /dev/null`
+PYTHON_LIBS=`python-config --libs 2> /dev/null`
+AC_SUBST(PYTHON_CFLAGS)
+AC_SUBST(PYTHON_LIBS)
+
 PKG_CHECK_MODULES([GTK], [gtk+-3.0])
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.21])
 PKG_CHECK_MODULES([DBUS], [dbus-1])
@@ -67,12 +81,6 @@ PKG_CHECK_MODULES([BTPARSER], [btparser])
 PKG_CHECK_MODULES([LIBREPORT], [libreport])
 PKG_CHECK_MODULES([LIBREPORT_GTK], [libreport-gtk])
 PKG_CHECK_MODULES([POLKIT], [polkit-gobject-1])
-# Just PKG_CHECK_MODULES([PYTHON], [python]) works only with python2.7+
-# Below, if python is not found, we set up for python2.6 w/o checking:
-PKG_CHECK_MODULES([PYTHON], [python],,[
-    PYTHON_LIBS='-L/usr/lib64 -lpython2.6'
-    PYTHON_CFLAGS='-I/usr/include/python2.6'
-])
 PKG_CHECK_MODULES([GIO], [gio-2.0])
 
 PKG_PROG_PKG_CONFIG
