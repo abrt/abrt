@@ -1157,13 +1157,7 @@ static GtkWidget *create_main_window(void)
     gtk_container_add(GTK_CONTAINER(reported_problems_scroll_win), s_reported_treeview);
 
     /* Create data store for the list and attach it */
-    s_reported_dumps_list_store = gtk_list_store_new(NUM_COLUMNS,
-                                                       G_TYPE_STRING, /* source */
-                                                       G_TYPE_STRING, /* executable */
-                                                       G_TYPE_STRING, /* time */
-                                                       G_TYPE_INT,    /* unix time - used for sort */
-                                                       G_TYPE_STRING, /* dump dir path */
-                                                       G_TYPE_STRING); /* reported_to */
+    s_reported_dumps_list_store = gtk_list_store_new(NUM_COLUMNS, COLUMN_TYPES);
 
     load_sort_setting(GTK_TREE_SORTABLE(s_reported_dumps_list_store));
 
