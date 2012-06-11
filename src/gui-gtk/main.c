@@ -776,16 +776,23 @@ static void delete_problem(GtkTreeView *treeview)
 
         int result;
         if (is_dbus)
+        {
+            /* delete_problem_dirs_over_dbus frees problem_dir_paths */
+            /* in function variant_from_string_list */
             result = delete_problem_dirs_over_dbus(problem_dir_paths);
+        }
         else
+        {
             result = delete_dump_dir_possibly_using_abrtd(dirname);
+            list_free_with_free(problem_dir_paths);
+        }
+
         if (result != 0)
         {
             /* Strange. Deletion did not succeed. Someone else deleted it?
              * Rescan the whole list */
             rescan_dirs_and_add_to_dirlist();
         }
-        list_free_with_free(problem_dir_paths);
 
         /* Try to retain the same cursor position */
         if (old_path)
