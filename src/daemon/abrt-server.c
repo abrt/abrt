@@ -88,6 +88,9 @@ static int create_debug_dump(GHashTable *problem_info, unsigned pid)
      */
 
     gchar *dir_basename = g_hash_table_lookup(problem_info, "basename");
+    if (!dir_basename)
+        dir_basename = g_hash_table_lookup(problem_info, FILENAME_ANALYZER);
+
     char *path = xasprintf("%s/%s-%s-%u.new",
                            g_settings_dump_location,
                            dir_basename,
@@ -242,7 +245,9 @@ static gboolean key_value_ok(gchar *key, gchar *value)
 
     /* check value of 'basename', it has to be valid non-hidden directory
      * name */
-    if (strcmp(key, "basename") == 0)
+    if (strcmp(key, "basename") == 0
+     || strcmp(key, FILENAME_ANALYZER) == 0
+    )
     {
         if (!is_correct_filename(value))
         {
@@ -302,7 +307,7 @@ static void die_if_data_is_missing(GHashTable *problem_info)
                                           FILENAME_BACKTRACE,
                                           FILENAME_EXECUTABLE,
                                           FILENAME_REASON,
-                                          "basename", NULL};
+                                          NULL};
 
     for (pstring = (gchar**) needed; *pstring; pstring++)
     {
