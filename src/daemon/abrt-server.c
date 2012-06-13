@@ -76,38 +76,40 @@ static unsigned total_bytes_read = 0;
 static uid_t client_uid = (uid_t)-1L;
 
 
-/* Create a new debug dump from client session.
+/* Create a new problem directory from client session.
  * Caller must ensure that all fields in struct client
  * are properly filled.
  */
 static int create_debug_dump(GHashTable *problem_info, unsigned pid)
 {
-    /* Create temp directory with the debug dump.
-       This directory is renamed to final directory name after
-       all files have been stored into it.
-    */
-    gchar *dir_basename = g_hash_table_lookup(problem_info, "basename");
-    GHashTableIter iter;
-    gpointer gpkey, gpvalue;
+    /* Create temp directory with the problem data.
+     * This directory is renamed to final directory name after
+     * all files have been stored into it.
+     */
 
+    gchar *dir_basename = g_hash_table_lookup(problem_info, "basename");
     char *path = xasprintf("%s/%s-%s-%u.new",
                            g_settings_dump_location,
                            dir_basename,
                            iso_date_string(NULL),
                            pid);
-    /* No need to check the path length, as all variables used are limited, and dd_create()
-       fails if the path is too long. */
 
+    /* This item is useless, don't save it */
+    g_hash_table_remove(problem_info, "basename");
+
+    /* No need to check the path length, as all variables used are limited,
+     * and dd_create() fails if the path is too long.
+     */
     struct dump_dir *dd = dd_create(path, client_uid, 0640);
     if (!dd)
     {
-        error_msg_and_die("Error creating crash dump %s", path);
+        error_msg_and_die("Error creating problem directory '%s'", path);
     }
 
     dd_create_basic_files(dd, client_uid, NULL);
     dd_save_text(dd, "abrt_version", VERSION);
 
-    gpkey = g_hash_table_lookup(problem_info, FILENAME_CMDLINE);
+    gpointer gpkey = g_hash_table_lookup(problem_info, FILENAME_CMDLINE);
     if (!gpkey)
     {
         /* Obtain and save the command line. */
@@ -124,9 +126,8 @@ static int create_debug_dump(GHashTable *problem_info, unsigned pid)
     sprintf(uid_str, "%lu", (long)client_uid);
     dd_save_text(dd, FILENAME_UID, uid_str);
 
-    /* This item is useless, don't save it */
-    g_hash_table_remove(problem_info, "basename");
-
+    GHashTableIter iter;
+    gpointer gpvalue;
     g_hash_table_iter_init(&iter, problem_info);
     while (g_hash_table_iter_next(&iter, &gpkey, &gpvalue))
     {
@@ -135,16 +136,17 @@ static int create_debug_dump(GHashTable *problem_info, unsigned pid)
 
     dd_close(dd);
 
-    /* Move the completely created debug dump to
-       final directory. */
+    /* Move the completely created problem directory
+     * to final directory.
+     */
     char *newpath = xstrndup(path, strlen(path) - strlen(".new"));
     if (rename(path, newpath) == 0)
         strcpy(path, newpath);
     free(newpath);
 
-    log("Saved crash dump of pid %u to %s", pid, path);
+    log("Saved problem directory of pid %u to '%s'", pid, path);
 
-    /* Trim old crash dumps if necessary */
+    /* Trim old problem directories if necessary */
     load_abrt_conf();
     if (g_settings_nMaxCrashReportsSize > 0)
     {
@@ -244,8 +246,8 @@ static gboolean key_value_ok(gchar *key, gchar *value)
     {
         if (!is_correct_filename(value))
         {
-            error_msg("Value of 'basename' (%s) is not a valid directory name",
-                      value);
+            error_msg("Value of '%s' ('%s') is not a valid directory name",
+                      key, value);
             return FALSE;
         }
     }
