@@ -38,7 +38,7 @@ GList *string_list_from_variant(GVariant *variant)
     return g_list_reverse(list);
 }
 
-GVariant *variant_from_string_list(GList *strings)
+GVariant *variant_from_string_list(const GList *strings)
 {
     GVariantBuilder *builder;
     builder = g_variant_builder_new(G_VARIANT_TYPE("as"));
@@ -46,8 +46,7 @@ GVariant *variant_from_string_list(GList *strings)
     while (strings)
     {
         g_variant_builder_add(builder, "s", (char*)strings->data);
-        free(strings->data);
-        strings = g_list_delete_link(strings, strings);
+        strings = strings->next;
     }
 
     GVariant *variant = g_variant_new("(as)", builder);

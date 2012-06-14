@@ -296,8 +296,9 @@ static bool equal_string_problem_condition(const char *field_data, const void *a
 static GVariant *get_problem_dirs_for_uid(uid_t uid, const char *dump_location)
 {
     GList *dirs = scan_directory(dump_location, uid, NULL);
-
-    return variant_from_string_list(dirs);
+    GVariant *result = variant_from_string_list(dirs);
+    list_free_with_free(dirs);
+    return result;
 }
 
 /*
@@ -334,8 +335,9 @@ static GVariant *get_problem_dirs_for_element_in_time(uid_t uid,
     };
 
     GList *dirs = scan_directory(dump_location, uid, condition);
-
-    return variant_from_string_list(dirs);
+    GVariant *result = variant_from_string_list(dirs);
+    list_free_with_free(dirs);
+    return result;
 }
 
 static bool allowed_problem_dir(const char *dir_name)

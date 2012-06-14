@@ -7,6 +7,6 @@
 
 GList *string_list_from_variant(GVariant *variant);
 
-GVariant *variant_from_string_list(GList *strings);
+GVariant *variant_from_string_list(const GList *strings);
 
 #endif /* ABRTDBUS_H_ */

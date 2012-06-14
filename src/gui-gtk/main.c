@@ -210,7 +210,7 @@ static int chown_dir_over_dbus(const char *problem_dir_path)
     return 0;
 }
 
-static int delete_problem_dirs_over_dbus(GList *problem_dir_paths)
+static int delete_problem_dirs_over_dbus(const GList *problem_dir_paths)
 {
     GDBusProxy *proxy = get_dbus_proxy();
     if (!proxy)
@@ -777,15 +777,13 @@ static void delete_problem(GtkTreeView *treeview)
         int result;
         if (is_dbus)
         {
-            /* delete_problem_dirs_over_dbus frees problem_dir_paths */
-            /* in function variant_from_string_list */
             result = delete_problem_dirs_over_dbus(problem_dir_paths);
         }
         else
         {
             result = delete_dump_dir_possibly_using_abrtd(dirname);
-            list_free_with_free(problem_dir_paths);
         }
+        list_free_with_free(problem_dir_paths);
 
         if (result != 0)
         {
