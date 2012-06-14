@@ -15,22 +15,22 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 
         print self.rfile.read(int(self.headers.getheader('content-length')))
 
+        response = self.dummy_response
         if not self.filelist:
-            print 'No more files to serve'
-            print >> self.wfile, ''
+            print 'No more files to serve - sending dummy response'
         else:
-            try:
-                # redirect stdout to client
-                stdout = sys.stdout
-                sys.stdout = self.wfile
-                self.reply()
-            finally:
-                sys.stdout = stdout # restore
+            response = self.filelist.pop()
+        self.reply(response)
 
 
-    def reply(self):
-        print self.filelist.pop()
-
+    def reply(self, response):
+        try:
+            # redirect stdout to client
+            stdout = sys.stdout
+            sys.stdout = self.wfile
+            print response
+        finally:
+            sys.stdout = stdout # restore
 
 PORT = 12345
 print "Serving at port", PORT
@@ -44,5 +44,6 @@ for file in sys.argv[1:]:
 
 filelist.reverse()
 Handler.filelist = filelist
+Handler.dummy_response = open("dummy", "r").read()
 httpd = BaseHTTPServer.HTTPServer(("", PORT), Handler)
 httpd.serve_forever()
