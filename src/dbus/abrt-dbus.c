@@ -734,6 +734,7 @@ int main(int argc, char *argv[])
                              NULL,
                              NULL);
 
+    /* initialize the g_settings_dump_location */
     load_abrt_conf();
 
     loop = g_main_loop_new(NULL, FALSE);
