@@ -19,7 +19,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include <sys/inotify.h>
-#include <gio/gio.h> //dbus
+#include <gio/gio.h> /* dbus */
 #if HAVE_LOCALE_H
 # include <locale.h>
 #endif
@@ -263,8 +263,13 @@ static problem_data_t *get_problem_data_dbus(const char *problem_dir_path)
                                             NULL,
                                             &error);
     g_object_unref(proxy);
-
-//FIXME: error check?
+    if (error)
+    {
+        //TODO show a warning dialog here or on the higher level?
+        error_msg(_("Can't get problem data from abrt-dbus: %s"), error->message);
+        g_error_free(error);
+        return NULL;
+    }
 
     problem_data_t *pd = new_problem_data();
     char *key, *val;
@@ -294,12 +299,15 @@ static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data
         logmode = sv_logmode;
         if (!dd)
             return;
+//FIXME: this is inefficient. We can instead read only selected elements, not all:
         pd = create_problem_data_from_dump_dir(dd);
         dd_close(dd);
     }
     else
     {
         pd = get_problem_data_dbus(problem_dir_path);
+        if (!pd)
+            return;
     }
 
     char time_buf[sizeof("YYYY-MM-DD hh:mm:ss")];
@@ -398,9 +406,10 @@ static void query_dbus_and_add_to_dirlist(void)
         list_free_with_free(problem_dirs);
     }
 
-//HACK ALERT! We "magically know" that dbus-reported problem dirs live in
-//g_settings_dump_location.
-//Notifications on changes should be implemented to go over dbus too.
+    /* HACK ALERT! We "magically know" that dbus-reported problem dirs
+     * live in g_settings_dump_location.
+     * Notifications on changes should be implemented to go over dbus too.
+     */
     watch_this_dir(g_settings_dump_location);
 }
 
