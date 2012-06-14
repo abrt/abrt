@@ -123,22 +123,14 @@ static char *get_last_line(const char *msg)
 
 static void show_warning_dialog(const char *message)
 {
-    GtkWidget *parent = g_main_window;
-
-    GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(parent),
+    GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(g_main_window),
                                         GTK_DIALOG_DESTROY_WITH_PARENT,
                                         GTK_MESSAGE_WARNING,
-                                        GTK_BUTTONS_OK,
-                                        message
+                                        GTK_BUTTONS_OK, /* wizard uses GTK_BUTTONS_CLOSE instead */
+                                        "%s", message
                                         );
-    g_signal_connect_swapped(dialog,
-                             "response",
-                             G_CALLBACK(gtk_widget_destroy),
-                             dialog);
-
-
     gtk_dialog_run(GTK_DIALOG(dialog));
-    gtk_widget_destroy(GTK_WIDGET(dialog));
+    gtk_widget_destroy(dialog);
 }
 
 static void watch_this_dir(const char *dir_name)
@@ -175,10 +167,7 @@ static GDBusProxy *get_dbus_proxy(void)
                                          &error);
     if (error)
     {
-        char *message = xasprintf(_("Can't connect to system DBus: %s"), error->message);
-        show_warning_dialog(message);
-        error_msg("%s", message);
-        free(message);
+        error_msg(_("Can't connect to system DBus: %s"), error->message);
         g_error_free(error);
         /* proxy is NULL in this case */
     }
@@ -202,7 +191,6 @@ static int chown_dir_over_dbus(const char *problem_dir_path)
     g_object_unref(proxy);
     if (error)
     {
-        //TODO show a warning dialog here or on the higher level?
         error_msg(_("Can't chown '%s': %s"), problem_dir_path, error->message);
         g_error_free(error);
         return 1;
@@ -230,7 +218,6 @@ static int delete_problem_dirs_over_dbus(const GList *problem_dir_paths)
     g_object_unref(proxy);
     if (error)
     {
-        //TODO show a warning dialog here or on the higher level?
         error_msg(_("Deleting problem directory failed: %s"), error->message);
         g_error_free(error);
         return 1;
@@ -265,7 +252,6 @@ static problem_data_t *get_problem_data_dbus(const char *problem_dir_path)
     g_object_unref(proxy);
     if (error)
     {
-        //TODO show a warning dialog here or on the higher level?
         error_msg(_("Can't get problem data from abrt-dbus: %s"), error->message);
         g_error_free(error);
         return NULL;
@@ -377,9 +363,7 @@ static GList *get_problems_over_dbus(void)
     g_object_unref(proxy);
     if (error)
     {
-        char *message = xasprintf(_("Can't get problem list from abrt-dbus: %s"), error->message);
-        show_warning_dialog(message);
-        free(message);
+        error_msg(_("Can't get problem list from abrt-dbus: %s"), error->message);
         g_error_free(error);
     }
 
@@ -675,7 +659,6 @@ static void open_problem_data_cb(GtkMenuItem *menuitem, gpointer user_data)
     {
         if (is_dbus && chown_dir_over_dbus(dirname) != 0)
         {
-            // TODO: show a warning dialog
             error_msg("Can't chown '%s'", dirname);
             return;
         }
@@ -1404,6 +1387,8 @@ int main(int argc, char **argv)
                 G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP | G_IO_NVAL,
                 handle_signal_pipe,
                 NULL);
+
+    g_custom_logger = &show_warning_dialog;
 
     /* Enter main loop */
     gtk_main();
