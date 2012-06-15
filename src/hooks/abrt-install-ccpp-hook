@@ -35,7 +35,7 @@ start() {
 	cur_first=`printf "%s" "$cur" | sed 's/ .*//'`
 
 	# Is there a %e (executable name) in old pattern anywhere?
-	if test x"${cur#.*%e}" = x"${cur}"; then
+	if test x"${cur#*%e}" = x"${cur}"; then
 		# No. Can use PATTERN with less risk of overflow
 		# on expansion (executable names can be LONG).
 		# Overflow would cause kernel to abort coredump. BAD.
