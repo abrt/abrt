@@ -63,7 +63,7 @@ rlJournalStart
 
             crash_PATH=$(abrt-cli list -f | grep Directory | tail -n1 | awk '{ print $2 }')
             if [ ! -d "$crash_PATH" ]; then
-                rlDie "No crash dir generated, this shouldn't happen"
+                rlLog "No crash dir generated, this shouldn't happen"
             fi
             rlLog "PATH = $crash_PATH"
             rlRun "abrt-cli info $crash_PATH"
@@ -90,7 +90,7 @@ rlJournalStart
 
         crash_PATH=$(abrt-cli list -f | grep Directory | tail -n1 | awk '{ print $2 }')
         if [ ! -d "$crash_PATH" ]; then
-            rlDie "No crash dir generated, this shouldn't happen"
+            rlLog "No crash dir generated, this shouldn't happen"
         fi
         rlLog "PATH = $crash_PATH"
         rlRun "abrt-cli info $crash_PATH"
