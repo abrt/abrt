@@ -60,7 +60,7 @@ def write_dump(tb):
                 if not buf:
                     break
                 response += buf
-        except socket.timeout, ex:
+        except socket.timeout as ex:
             import syslog
             syslog.syslog("communication with ABRT daemon failed: %s" % str(ex))
 
@@ -73,7 +73,7 @@ def write_dump(tb):
             import syslog
             syslog.syslog("error sending data to ABRT daemon: %s" % response)
 
-    except Exception, ex:
+    except Exception as ex:
         import syslog
         syslog.syslog("can't communicate with ABRT daemon, is it running? %s" % str(ex))
 
