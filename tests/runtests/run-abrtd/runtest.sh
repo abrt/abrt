@@ -36,7 +36,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
-        killall abrtd
+        service abrtd stop
         rlRun "abrtd -s" 0 "Start abrtd"
         rlLogInfo "Zzz for 1 minute..."
         sleep 1m

@@ -36,7 +36,7 @@ SCTL="/bin/systemctl"
 
 rlJournalStart
     rlPhaseStartSetup "Prepare"
-        killall abrtd
+        service abrtd stop
         rm -rf /var/run/abrt
     rlPhaseEnd
 

@@ -65,7 +65,7 @@ rlJournalStart
                      # |  less then a second. Let's constitute a minimal time
                      # |  with which we are always OK.
 
-        rlRun "killall abrtd" 0 "Killing abrtd"
+        rlRun "service abrtd stop" 0 "Killing abrtd"
 
         rlLog "Calculate run times with abrt turned off"
         rlRun "runtest gdb.base/bigcore.exp &> /dev/null" 0 "Pre-test run"
