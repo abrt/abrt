@@ -60,6 +60,9 @@ rlJournalStart
         ls $crash_PATH > crash_dir_ls
 
         rlAssertExists "$crash_PATH/uuid"
+
+        rlAssertExists "$crash_PATH/core_backtrace"
+        rlAssertGrep "/bin/sleep" "$crash_PATH/core_backtrace"
     rlPhaseEnd
 
     rlPhaseStartCleanup
