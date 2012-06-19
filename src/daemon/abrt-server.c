@@ -80,7 +80,7 @@ static uid_t client_uid = (uid_t)-1L;
  * Caller must ensure that all fields in struct client
  * are properly filled.
  */
-static int create_debug_dump(GHashTable *problem_info, unsigned pid)
+static int create_problem_dir(GHashTable *problem_info, unsigned pid)
 {
     /* Create temp directory with the problem data.
      * This directory is renamed to final directory name after
@@ -470,15 +470,25 @@ static int perform_http_xact(void)
             error_msg_and_die("Message is too long, aborting");
     }
 
-    /* Write out the crash dump. Don't let alarm to interrupt here */
+    /* Save problem dir. Don't let alarm to interrupt here */
     alarm(0);
 
+    int ret = 0;
     unsigned pid = convert_pid(problem_info);
     die_if_data_is_missing(problem_info);
-    int ret = create_debug_dump(problem_info, pid);
 
+    char *executable = g_hash_table_lookup(problem_info, FILENAME_EXECUTABLE);
+    char *last_file = concat_path_file(g_settings_dump_location, "last-via-server");
+    int repeating_crash = check_recent_crash_file(last_file, executable);
+    free(last_file);
+    if (repeating_crash) /* Only pretend that we saved it */
+        goto out; /* ret is 0: "success" */
+
+    ret = create_problem_dir(problem_info, pid);
+
+ out:
     g_hash_table_destroy(problem_info);
-    return ret;
+    return ret; /* Used as HTTP response code */
 }
 
 static void dummy_handler(int sig_unused) {}

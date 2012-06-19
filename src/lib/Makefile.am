@@ -10,7 +10,8 @@ libabrt_la_SOURCES = \
     daemon_is_ok.c \
     kernel.c \
     abrt_glib.c \
-    migrate_dirs.c
+    migrate_dirs.c \
+    check_recent_crash_file.c
 
 libabrt_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \
