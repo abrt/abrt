@@ -146,6 +146,17 @@ Requires: crash
 %description addon-vmcore
 This package contains plugin for collecting kernel crash information from vmcore files.
 
+%package plugin-bodhi
+Summary: %{name}'s bodhi plugin
+BuildRequires: json-c-devel
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+Obsoletes: libreport-plugin-bodhi > 0.0.1
+Provides: libreport-plugin-bodhi
+
+%description plugin-bodhi
+Search for a new updates in bodhi server
+
 %package addon-python
 Summary: %{name}'s addon for catching and analyzing Python exceptions
 Group: System Environment/Libraries
@@ -196,12 +207,10 @@ Requires: abrt-addon-python
 # Default config of addon-ccpp requires gdb
 Requires: gdb >= 7.0-3
 Requires: abrt-gui
+Requires: abrt-plugin-bodhi
 Requires: libreport-plugin-logger, libreport-plugin-bugzilla
 Requires: libreport-plugin-ureport
 #Requires: abrt-plugin-firefox
-%if 0%{?fedora}
-Requires: libreport-plugin-bodhi
-%endif
 Obsoletes: bug-buddy > 0.0.1
 Provides: bug-buddy
 
@@ -605,6 +614,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files desktop
 %defattr(-,root,root,-)
+
+%files plugin-bodhi
+%defattr(-,root,root,-)
+%{_bindir}/abrt-bodhi
+%{_mandir}/man1/abrt-bodhi.1.gz
 
 %files dbus
 %defattr(-,root,root,-)

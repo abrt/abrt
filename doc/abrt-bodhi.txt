@@ -1,0 +1,30 @@
+abrt-bodhi(1)
+===========
+
+NAME
+----
+abrt-bodhi - The ABRT bodhi client.
+
+SYNOPSIS
+--------
+'abrt-bodhi' [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]...
+
+DESCRIPTION
+-----------
+'abrt-bodhi' is the command-line tool for listing a new updates. Bodhi can be
+queried by release, bug id or package name.
+
+OPTIONS
+-------
+-v, --verbose::
+    Be verbose
+
+-r[RELEASE], --release[RELEASE]::
+    Specify a release (f16|rawhide)
+
+-b, --bugs ID1,ID2,..
+    Specify any number of Bugzilla IDs (--bugs=1234,5678)
+
+AUTHORS
+-------
+* ABRT team
