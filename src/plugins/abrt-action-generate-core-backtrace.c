@@ -128,12 +128,11 @@ int main(int argc, char **argv)
         while (loop != NULL)
         {
             struct backtrace_entry *entry = loop->data;
+            GList *const tmp_next = g_list_next(loop);
             if (!entry->build_id && !entry->filename && !entry->modname)
-                loop = g_list_remove(loop, entry);
-            else
-                loop = g_list_next(loop);
+                backtrace = g_list_delete_link(backtrace, loop);
+            loop = tmp_next;
         }
-
 
         /* Extract address ranges from all the executables in the backtrace*/
         VERB1 log("Computing function fingerprints");
