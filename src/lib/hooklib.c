@@ -86,7 +86,7 @@ void trim_problem_dirs(const char *dirname, double cap_size, const char *exclude
  * @param[out] status See `man 2 wait` for status information.
  * @return Malloc'ed string
  */
-char* exec_vp(char **args, uid_t uid, int redirect_stderr, int exec_timeout_sec, int *status)
+static char* exec_vp(char **args, int redirect_stderr, int exec_timeout_sec, int *status)
 {
     /* Nuke everything which may make setlocale() switch to non-POSIX locale:
      * we need to avoid having gdb output in some obscure language.
@@ -109,14 +109,12 @@ char* exec_vp(char **args, uid_t uid, int redirect_stderr, int exec_timeout_sec,
     };
 
     int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_SETSID | EXECFLG_QUIET;
-    if (uid != (uid_t)-1L)
-        flags |= EXECFLG_SETGUID;
     if (redirect_stderr)
         flags |= EXECFLG_ERR2OUT;
     VERB1 flags &= ~EXECFLG_QUIET;
 
     int pipeout[2];
-    pid_t child = fork_execv_on_steroids(flags, args, pipeout, (char**)env_vec, /*dir:*/ NULL, uid);
+    pid_t child = fork_execv_on_steroids(flags, args, pipeout, (char**)env_vec, /*dir:*/ NULL, /*uid(unused):*/ 0);
 
     /* We use this function to run gdb and unstrip. Bugs in gdb or corrupted
      * coredumps were observed to cause gdb to enter infinite loop.
@@ -175,26 +173,7 @@ char* exec_vp(char **args, uid_t uid, int redirect_stderr, int exec_timeout_sec,
 
 char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
 {
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return NULL;
-
-    char *uid_str = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-    dd_close(dd);
-    uid_t uid = -1L;
-    if (uid_str)
-    {
-        uid = xatoi_positive(uid_str);
-        free(uid_str);
-        if (uid == geteuid())
-        {
-            uid = -1L; /* no need to setuid/gid if we are already under right uid */
-        }
-    }
-
     int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_SETSID | EXECFLG_QUIET;
-    if (uid != (uid_t)-1L)
-        flags |= EXECFLG_SETGUID;
     VERB1 flags &= ~EXECFLG_QUIET;
     int pipeout[2];
     char* args[4];
@@ -202,7 +181,7 @@ char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
     args[1] = xasprintf("--core=%s/"FILENAME_COREDUMP, dump_dir_name);
     args[2] = (char*)"-n";
     args[3] = NULL;
-    pid_t child = fork_execv_on_steroids(flags, args, pipeout, /*env_vec:*/ NULL, /*dir:*/ NULL, uid);
+    pid_t child = fork_execv_on_steroids(flags, args, pipeout, /*env_vec:*/ NULL, /*dir:*/ NULL, /*uid(unused):*/ 0);
     free(args[1]);
 
     /* Bugs in unstrip or corrupted coredumps can cause it to enter infinite loop.
@@ -256,18 +235,6 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return NULL;
-
-    char *uid_str = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-    uid_t uid = -1L;
-    if (uid_str)
-    {
-        uid = xatoi_positive(uid_str);
-        free(uid_str);
-        if (uid == geteuid())
-        {
-            uid = -1L; /* no need to setuid/gid if we are already under right uid */
-        }
-    }
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
     dd_close(dd);
 
@@ -347,7 +314,7 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
     while (1)
     {
         args[9] = xasprintf("%s backtrace %u%s", thread_apply_all, bt_depth, full);
-        bt = exec_vp(args, uid, /*redirect_stderr:*/ 1, timeout_sec, NULL);
+        bt = exec_vp(args, /*redirect_stderr:*/ 1, timeout_sec, NULL);
         free(args[9]);
         if ((bt && strnlen(bt, 256*1024) < 256*1024) || bt_depth <= 32)
         {
