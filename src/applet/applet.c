@@ -177,8 +177,19 @@ static void hide_icon(void)
 //this action should open the reporter dialog directly, without showing the main window
 static void action_report(NotifyNotification *notification, gchar *action, gpointer user_data)
 {
+    bool foreign_problem = *(bool *)user_data;
     if (ap_last_problem_dir)
     {
+        if (foreign_problem)
+        {
+            int res = chown_dir_over_dbus(ap_last_problem_dir);
+            if (res != 0)
+            {
+                error_msg(_("Can't take ownership of '%s'"), ap_last_problem_dir);
+                return;
+            }
+        }
+
         report_problem_in_dir(ap_last_problem_dir, LIBREPORT_ANALYZE | LIBREPORT_NOWAIT);
 
         GError *err = NULL;
@@ -231,7 +242,7 @@ static void on_notify_close(NotifyNotification *notification, gpointer user_data
     g_object_unref(notification);
 }
 
-static NotifyNotification *new_warn_notification(void)
+static NotifyNotification *new_warn_notification()
 {
     NotifyNotification *notification;
 
@@ -354,7 +365,7 @@ static void set_icon_tooltip(const char *format, ...)
     free(buf);
 }
 
-static void show_problem_notification(const char *format, ...)
+static void show_problem_notification(bool foreign_problem, const char *format, ...)
 {
     va_list args;
     va_start(args, format);
@@ -368,7 +379,7 @@ static void show_problem_notification(const char *format, ...)
 
     notify_notification_add_action(notification, "REPORT", _("Report"),
                                     NOTIFY_ACTION_CALLBACK(action_report),
-                                    NULL, NULL);
+                                    &foreign_problem, NULL);
 
     notify_notification_update(notification, _("A Problem has Occurred"), buf, NULL);
     free(buf);
@@ -466,6 +477,7 @@ static void Crash(DBusMessage* signal)
         return;
     }
 
+    bool foreign_problem = false;
     if (uid_str != NULL)
     {
         char *end;
@@ -473,7 +485,8 @@ static void Crash(DBusMessage* signal)
         unsigned long uid_num = strtoul(uid_str, &end, 10);
         if (errno || *end != '\0' || uid_num != getuid())
         {
-            return;
+            foreign_problem = true;
+            VERB1 log("foreign problem %i", foreign_problem);
         }
     }
 
@@ -503,7 +516,7 @@ static void Crash(DBusMessage* signal)
     free(ap_last_problem_dir);
     ap_last_problem_dir = xstrdup(dir);
 
-    show_problem_notification(message, package_name);
+    show_problem_notification(foreign_problem, message, package_name);
 }
 
 static DBusHandlerResult handle_message(DBusConnection* conn, DBusMessage* msg, void* user_data)
