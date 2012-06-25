@@ -11,7 +11,8 @@ libabrt_la_SOURCES = \
     kernel.c \
     abrt_glib.c \
     migrate_dirs.c \
-    check_recent_crash_file.c
+    check_recent_crash_file.c \
+    problem_api.c
 
 libabrt_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \
@@ -22,9 +23,11 @@ libabrt_la_CPPFLAGS = \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
+    $(GIO_CFLAGS) \
     -D_GNU_SOURCE
 libabrt_la_LDFLAGS = \
     -version-info 0:1:0
 libabrt_la_LIBADD = \
     $(GLIB_LIBS) \
+    $(GIO_LIBS) \
     $(LIBREPORT_LIBS)

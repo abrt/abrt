@@ -6,6 +6,8 @@
 #ifndef LIBABRT_H_
 #define LIBABRT_H_
 
+#include <gio/gio.h> /* dbus */
+#include "abrt-dbus.h"
 /* libreport's internal functions we use: */
 #include <libreport/internal_libreport.h>
 
@@ -79,6 +81,13 @@ void koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], char *oops_buf, const 
 void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen);
 #define koops_print_suspicious_strings abrt_koops_print_suspicious_strings
 void koops_print_suspicious_strings(void);
+
+/* dbus client api */
+int chown_dir_over_dbus(const char *problem_dir_path);
+int delete_problem_dirs_over_dbus(const GList *problem_dir_paths);
+problem_data_t *get_problem_data_dbus(const char *problem_dir_path);
+GList *get_problems_over_dbus(bool authorize);
+
 
 #ifdef __cplusplus
 }
