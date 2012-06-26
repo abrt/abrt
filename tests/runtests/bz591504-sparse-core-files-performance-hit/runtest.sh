@@ -83,7 +83,7 @@ rlJournalStart
         starttimeout=$(echo "$starttimeout" | awk '{ if ($1 < '$absmin') { print '$absmin' } else { print '$starttimeout' } }')
         rlLog "Adjusted timeout: $starttimeout"
 
-        rlRun "/usr/sbin/abrtd -s" 0 "Starting abrtd"
+        rlRun "service abrtd start" 0 "Starting abrtd"
 
         rlRun "runtest gdb.base/bigcore.exp &> /dev/null" 0 "Pre-test run"
         for run in $(seq $times); do

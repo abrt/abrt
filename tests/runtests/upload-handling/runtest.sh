@@ -38,7 +38,7 @@ rlJournalStart
         pushd $TmpDir
         echo "WatchCrashdumpArchiveDir = /var/spool/abrt-upload/" > /etc/abrt/abrt.conf
         rlRun "service abrtd stop" 0 "Killing abrtd"
-        rlRun "/usr/sbin/abrtd -s" 0 "Starting abrtd"
+        rlRun "service abrtd start" 0 "Starting abrtd"
         rlRun "service abrt-ccpp restart" 0 "Start abrt-ccpp"
     rlPhaseEnd
 
@@ -59,7 +59,7 @@ rlJournalStart
         rm -f "/var/spool/abrt-upload/upload.tar.gz"
         rlFileRestore
         rlRun "service abrtd stop" 0 "Killing abrtd"
-        rlRun "/usr/sbin/abrtd -s" 0 "Starting abrtd"
+        rlRun "service abrtd start" 0 "Starting abrtd"
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd
