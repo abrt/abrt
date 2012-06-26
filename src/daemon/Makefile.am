@@ -7,13 +7,12 @@ bin_SCRIPTS = \
     abrt-handle-upload
 
 bin_PROGRAMS = \
-    abrt-action-save-package-data
+    abrt-action-save-package-data \
+    abrt-handle-event
 
 sbin_PROGRAMS = \
     abrtd \
     abrt-server
-
-libexec_PROGRAMS = abrt-handle-event
 
 abrtd_SOURCES = \
     abrtd.c

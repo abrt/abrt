@@ -276,7 +276,6 @@ int main(int argc, char **argv)
     char *event_name = NULL;
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_GROUP(""),
         OPT_STRING('e', "event" , &event_name, "EVENT",  _("Run EVENT on DIR")),
         OPT_END()
     };

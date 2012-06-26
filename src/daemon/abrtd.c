@@ -64,7 +64,7 @@ static int socket_client_count = 0;
 static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *event_name, FILE **fpp)
 {
     char *args[6];
-    args[0] = (char *) "/usr/libexec/abrt-handle-event";
+    args[0] = (char *) "abrt-handle-event";
     args[1] = (char *) "-e";
     args[2] = (char *) event_name;
     args[3] = (char *) "--";

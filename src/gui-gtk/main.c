@@ -493,11 +493,19 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
     {
         if (!is_dbus || chown_dir_over_dbus(dirname) == 0)
         {
-            report_problem_in_dir(dirname,
-                              LIBREPORT_ANALYZE | LIBREPORT_NOWAIT | LIBREPORT_GETPID);
+            pid_t pid = fork();
+            if (pid < 0) /* error */
+                perror_msg_and_die("fork");
+            if (pid == 0) /* child */
+            {
+                execl(BIN_DIR"/abrt-handle-event", "abrt-handle-event", "-e", "report-gui", "--", (char *)dirname, NULL);
+                execlp("abrt-handle-event", "abrt-handle-event", "-e", "report-gui", "--", (char *)dirname, NULL);
+                /* Child can't use GUI error reporting, we need to clear g_custom_logger */
+                g_custom_logger = NULL;
+                perror_msg_and_die("Can't execute '%s'", "abrt-handle-event");
+            }
         }
-        //else
-        // TODO: show a warning dialog
+        /* else: chown_dir_over_dbus already complained */
     }
 }
 
@@ -518,18 +526,11 @@ static void open_problem_data_cb(GtkMenuItem *menuitem, gpointer user_data)
             perror_msg_and_die("fork");
         if (pid == 0) /* child */
         {
-            struct run_event_state *run_state = new_run_event_state();
-            int r = run_event_on_dir_name(run_state, dirname, "open-gui");
-            int no_such_event = (r == 0 && run_state->children_count == 0);
-            free_run_event_state(run_state);
-            if (!no_such_event)
-            {
-                exit(r);
-            }
-            /* Default: launch graphical tool */
-            execl(BIN_DIR"/report-gtk", "report-gtk", "--", (char *)dirname, NULL);
-            execlp("report-gtk", "report-gtk", "--", (char *)dirname, NULL);
-            perror_msg_and_die("Can't execute %s", "report-gtk");
+            execl(BIN_DIR"/abrt-handle-event", "abrt-handle-event", "-e", "open-gui", "--", (char *)dirname, NULL);
+            execlp("abrt-handle-event", "abrt-handle-event", "-e", "open-gui", "--", (char *)dirname, NULL);
+            /* Child can't use GUI error reporting, we need to clear g_custom_logger */
+            g_custom_logger = NULL;
+            perror_msg_and_die("Can't execute '%s'", "abrt-handle-event");
         }
     }
 }
