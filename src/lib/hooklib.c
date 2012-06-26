@@ -342,3 +342,51 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
     free(args[7]);
     return bt;
 }
+
+static const char *get_filename(const char *path)
+{
+    const char *filename = NULL;
+
+    filename = strrchr(path, '/');
+    if (filename)
+    /* +1 => strip the '/' */
+        return filename+1;
+
+    return path;
+}
+
+problem_data_t *problem_data_new()
+{
+    return new_problem_data();
+}
+
+int problem_data_add_item(problem_data_t *pd, char * key, char * value)
+{
+    add_to_problem_data_ext(pd, key, value, CD_FLAG_TXT);
+    return 0;
+}
+
+int problem_data_add_file(problem_data_t *pd, const char* path)
+{
+    add_to_problem_data_ext(pd, get_filename(path), path, CD_FLAG_FILE);
+    return 0;
+}
+
+/** Saves the problem data
+ * creates the problem_dir in the configured problems directory
+ * destroyes
+*/
+int problem_data_save(problem_data_t *pd, char **problem_id)
+{
+    load_abrt_conf();
+    LibreportError res = save_dump_dir_from_problem_data(pd, problem_id, g_settings_dump_location);
+    VERB2 log("problem id: '%s'", *problem_id);
+
+    return res;
+}
+
+void problem_data_destroy(problem_data_t *pd)
+{
+    free_problem_data(pd);
+    pd = NULL;
+}

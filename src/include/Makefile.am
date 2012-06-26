@@ -3,4 +3,5 @@ libabrt_includedir = \
 
 libabrt_include_HEADERS = \
     libabrt.h \
-    abrt-dbus.h
+    abrt-dbus.h \
+    hooklib.h

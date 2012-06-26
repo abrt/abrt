@@ -10,6 +10,7 @@
 #include "abrt-dbus.h"
 /* libreport's internal functions we use: */
 #include <libreport/internal_libreport.h>
+#include "hooklib.h"
 
 #ifdef HAVE_CONFIG_H
 # include "config.h"
