@@ -57,7 +57,7 @@ virt-install --name $VM_NAME --ram "1300" \
   --connect qemu:///system \
   --location "$LOC" \
   --disk path=$DISK,cache=none \
-  --initrd-inject=./custom-ks.cfg --extra-args "ks=file:/custom-ks.cfg" \
+  --initrd-inject=./custom-ks.cfg --extra-args "ks=file:/custom-ks.cfg ${INIT_EXTRA_ARGS}" \
   --noautoconsole \
   --os-type=linux \
   --os-variant=$OS_VARIANT \
