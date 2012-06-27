@@ -498,11 +498,10 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
                 perror_msg_and_die("fork");
             if (pid == 0) /* child */
             {
-                execl(BIN_DIR"/abrt-handle-event", "abrt-handle-event", "-e", "report-gui", "--", (char *)dirname, NULL);
-                execlp("abrt-handle-event", "abrt-handle-event", "-e", "report-gui", "--", (char *)dirname, NULL);
+                execl(LIBEXEC_DIR"/abrt-handle-event", "abrt-handle-event", "-e", "report-gui", "--", (char *)dirname, NULL);
                 /* Child can't use GUI error reporting, we need to clear g_custom_logger */
                 g_custom_logger = NULL;
-                perror_msg_and_die("Can't execute '%s'", "abrt-handle-event");
+                perror_msg_and_die("Can't execute '%s'", LIBEXEC_DIR"/abrt-handle-event");
             }
         }
         /* else: chown_dir_over_dbus already complained */
@@ -526,11 +525,10 @@ static void open_problem_data_cb(GtkMenuItem *menuitem, gpointer user_data)
             perror_msg_and_die("fork");
         if (pid == 0) /* child */
         {
-            execl(BIN_DIR"/abrt-handle-event", "abrt-handle-event", "-e", "open-gui", "--", (char *)dirname, NULL);
-            execlp("abrt-handle-event", "abrt-handle-event", "-e", "open-gui", "--", (char *)dirname, NULL);
+            execl(LIBEXEC_DIR"/abrt-handle-event", "abrt-handle-event", "-e", "open-gui", "--", (char *)dirname, NULL);
             /* Child can't use GUI error reporting, we need to clear g_custom_logger */
             g_custom_logger = NULL;
-            perror_msg_and_die("Can't execute '%s'", "abrt-handle-event");
+            perror_msg_and_die("Can't execute '%s'", LIBEXEC_DIR"/abrt-handle-event");
         }
     }
 }

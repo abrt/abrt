@@ -7,12 +7,13 @@ bin_SCRIPTS = \
     abrt-handle-upload
 
 bin_PROGRAMS = \
-    abrt-action-save-package-data \
-    abrt-handle-event
+    abrt-action-save-package-data
 
 sbin_PROGRAMS = \
     abrtd \
     abrt-server
+
+libexec_PROGRAMS = abrt-handle-event
 
 abrtd_SOURCES = \
     abrtd.c
@@ -20,6 +21,7 @@ abrtd_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DLIBEXEC_DIR=\"$(libexecdir)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
