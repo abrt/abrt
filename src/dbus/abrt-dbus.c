@@ -21,6 +21,10 @@ static GDBusNodeInfo *introspection_data = NULL;
 static const gchar introspection_xml[] =
   "<node>"
   "  <interface name='"ABRT_DBUS_IFACE"'>"
+  "    <method name='NewProblem'>"
+  "      <arg type='a{ss}' name='problem_data' direction='in'/>"
+  "      <arg type='s' name='problem_id' direction='out'/>"
+  "    </method>"
   "    <method name='GetProblems'>"
   "      <arg type='as' name='response' direction='out'/>"
   "    </method>"
@@ -358,12 +362,47 @@ static bool allowed_problem_dir(const char *dir_name)
     return true;
 }
 
+static bool handle_new_problem(GVariant *problem_info, char **problem_id, char **error)
+{
+    bool result = true;
+
+    problem_data_t *pd = problem_data_new();
+
+    GVariantIter *iter;
+    g_variant_get(problem_info, "a{ss}", &iter);
+    gchar *key, *value;
+    while (g_variant_iter_loop(iter, "{ss}", &key, &value))
+    {
+        if (problem_data_add_item(pd, key, value) != 0)
+        {
+            if (error)
+                *error = xasprintf("Cannot save item '%s'", key);
+
+            result = false;
+            goto handle_new_problem_cleanup;
+        }
+    }
+
+    if (problem_data_save(pd, problem_id) != 0)
+    {
+        if (error)
+            *error = xasprintf("Cannot create a new problem");
+
+        result = false;
+    }
+
+handle_new_problem_cleanup:
+    problem_data_destroy(pd);
+    return result;
+}
+
 static void return_InvalidProblemDir_error(GDBusMethodInvocation *invocation, const char *dir_name)
 {
     char *msg = xasprintf(_("'%s' is not a valid problem directory"), dir_name);
     g_dbus_method_invocation_return_dbus_error(invocation,
                                       "org.freedesktop.problems.InvalidProblemDir",
                                       msg);
+
     free(msg);
 }
 
@@ -387,6 +426,26 @@ static void handle_method_call(GDBusConnection *connection,
 
     if (caller_uid == (uid_t) -1)
         return;
+
+    if (g_strcmp0(method_name, "NewProblem") == 0)
+    {
+        char *problem_id = NULL;
+        char *error = NULL;
+        if (!handle_new_problem(g_variant_get_child_value(parameters, 0), &problem_id, &error))
+        {
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                                      "org.freedesktop.problems.Failure",
+                                                      error);
+            free(error);
+            return;
+        }
+        // else
+        response = g_variant_new("(s)", problem_id);
+        g_dbus_method_invocation_return_value(invocation, response);
+        free(problem_id);
+
+        return;
+    }
 
     if (g_strcmp0(method_name, "GetProblems") == 0)
     {
