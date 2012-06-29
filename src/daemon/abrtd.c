@@ -54,8 +54,8 @@ static int s_upload_watch = -1;
 static unsigned s_timeout;
 static bool s_exiting;
 
-static GIOChannel *socket_channel = NULL;
-static guint socket_channel_cb_id = 0;
+static GIOChannel *channel_socket = NULL;
+static guint channel_id_socket = 0;
 static int socket_client_count = 0;
 
 
@@ -93,6 +93,20 @@ static guint add_watch_or_die(GIOChannel *channel, unsigned condition, GIOFunc f
     return r;
 }
 
+static GIOChannel *my_io_channel_unix_new(int fd)
+{
+    GIOChannel *ch = g_io_channel_unix_new(fd);
+    /* Need to set the encoding otherwise we get:
+     * "Invalid byte sequence in conversion input".
+     * According to manual "NULL" is safe for binary data.
+     */
+    GError *error = NULL;
+    g_io_channel_set_encoding(ch, NULL, &error);
+    if (error)
+        perror_msg_and_die("Can't set encoding on gio channel: %s", error->message);
+    return ch;
+}
+
 
 /* Socket handling */
 
@@ -106,8 +120,8 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
         /* To avoid infinite loop caused by the descriptor in "ready" state,
          * the callback must be disabled.
          * It is added back in client_free(). */
-        g_source_remove(socket_channel_cb_id);
-        socket_channel_cb_id = 0;
+        g_source_remove(channel_id_socket);
+        channel_id_socket = 0;
         return TRUE;
     }
 
@@ -167,23 +181,23 @@ static void dumpsocket_init()
     if (chmod(SOCKET_FILE, SOCKET_PERMISSION) != 0)
         perror_msg_and_die("chmod '%s'", SOCKET_FILE);
 
-    socket_channel = g_io_channel_unix_new(socketfd);
-    g_io_channel_set_close_on_unref(socket_channel, TRUE);
+    channel_socket = my_io_channel_unix_new(socketfd);
+    g_io_channel_set_close_on_unref(channel_socket, TRUE);
 
-    socket_channel_cb_id = add_watch_or_die(socket_channel, G_IO_IN | G_IO_PRI, server_socket_cb);
+    channel_id_socket = add_watch_or_die(channel_socket, G_IO_IN | G_IO_PRI, server_socket_cb);
 }
 
 /* Releases all resources used by dumpsocket. */
 static void dumpsocket_shutdown()
 {
     /* Set everything to pre-initialization state. */
-    if (socket_channel)
+    if (channel_socket)
     {
         /* Undo add_watch_or_die */
-        g_source_remove(socket_channel_cb_id);
+        g_source_remove(channel_id_socket);
         /* Undo g_io_channel_unix_new */
-        g_io_channel_unref(socket_channel);
-        socket_channel = NULL;
+        g_io_channel_unref(channel_socket);
+        channel_socket = NULL;
     }
 }
 
@@ -234,6 +248,7 @@ static void handle_signal(int signo)
     errno = save_errno;
 }
 
+
 /* Signal pipe handler */
 static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
 {
@@ -253,10 +268,10 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
             {
                 if (socket_client_count)
                     socket_client_count--;
-                if (!socket_channel_cb_id)
+                if (!channel_id_socket)
                 {
                     log("Accepting connections on '%s'", SOCKET_FILE);
-                    socket_channel_cb_id = add_watch_or_die(socket_channel, G_IO_IN | G_IO_PRI, server_socket_cb);
+                    channel_id_socket = add_watch_or_die(channel_socket, G_IO_IN | G_IO_PRI, server_socket_cb);
                 }
             }
         }
@@ -735,9 +750,9 @@ int main(int argc, char** argv)
 
     GMainLoop* pMainloop = NULL;
     GIOChannel* channel_inotify = NULL;
-    guint channel_inotify_event_id = 0;
+    guint channel_id_inotify_event = 0;
     GIOChannel* channel_signal = NULL;
-    guint channel_signal_event_id = 0;
+    guint channel_id_signal_event = 0;
     bool pidfile_created = false;
 
     /* Initialization */
@@ -773,29 +788,17 @@ int main(int argc, char** argv)
         }
     }
     VERB1 log("Adding inotify watch to glib main loop");
-    channel_inotify = g_io_channel_unix_new(inotify_fd);
-
-    GError *gerror = NULL;
-    g_io_channel_set_encoding(channel_inotify, NULL, &gerror);
-    /* need to set the encoding otherwise we get:
-     * Invalid byte sequence in conversion input
-     * according to manual "NULL" is safe for binary data
-    */
-    if (gerror)
-        perror_msg("Can't set encoding on gio channel: '%s'", gerror->message);
-
-    channel_inotify_event_id = g_io_add_watch(channel_inotify,
+    channel_inotify = my_io_channel_unix_new(inotify_fd);
+    channel_id_inotify_event = add_watch_or_die(channel_inotify,
                                               G_IO_IN,
-                                              handle_inotify_cb,
-                                              NULL);
+                                              handle_inotify_cb);
 
     /* Add an event source which waits for INT/TERM signal */
     VERB1 log("Adding signal pipe watch to glib main loop");
-    channel_signal = g_io_channel_unix_new(s_signal_pipe[0]);
-    channel_signal_event_id = g_io_add_watch(channel_signal,
+    channel_signal = my_io_channel_unix_new(s_signal_pipe[0]);
+    channel_id_signal_event = add_watch_or_die(channel_signal,
                                              G_IO_IN,
-                                             handle_signal_cb,
-                                             NULL);
+                                             handle_signal_cb);
 
     /* Mark the territory */
     VERB1 log("Creating pid file");
@@ -830,12 +833,12 @@ int main(int argc, char** argv)
     if (pidfile_created)
         unlink(VAR_RUN_PIDFILE);
 
-    if (channel_signal_event_id > 0)
-        g_source_remove(channel_signal_event_id);
+    if (channel_id_signal_event > 0)
+        g_source_remove(channel_id_signal_event);
     if (channel_signal)
         g_io_channel_unref(channel_signal);
-    if (channel_inotify_event_id > 0)
-        g_source_remove(channel_inotify_event_id);
+    if (channel_id_inotify_event > 0)
+        g_source_remove(channel_id_inotify_event);
     if (channel_inotify)
         g_io_channel_unref(channel_inotify);
 
