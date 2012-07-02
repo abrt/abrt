@@ -84,7 +84,7 @@ for test_dir in $testlist; do
     if [ "$test_result" == "FAIL" ]; then
         touch "$outdir/fail.log"
         sed -n "1,${protocol_start}p;${protocol_start}q" $logfile \
-            | grep -n FAIL > "$outdir/fail.log"
+            | grep -n ' FAIL ' > "$outdir/fail.log"
         echo_failure
     else
         echo_success
