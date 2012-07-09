@@ -61,7 +61,7 @@ static int socket_client_count = 0;
 
 /* Helpers */
 
-static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *event_name, FILE **fpp)
+static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *event_name, int *fdp)
 {
     char *args[6];
     args[0] = (char *) LIBEXEC_DIR"/abrt-handle-event";
@@ -75,12 +75,12 @@ static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *ev
     int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_QUIET | EXECFLG_ERR2OUT;
     VERB1 flags &= ~EXECFLG_QUIET;
 
+    pipeout[0] = -1;
     pid_t child = fork_execv_on_steroids(flags, args, pipeout,
-                                         /*env_vec:*/ NULL, /*dir:*/ NULL, 0);
-
-    *fpp = fdopen(pipeout[0], "r");
-    if (!*fpp)
-        die_out_of_memory();
+                                         /*env_vec:*/ NULL, /*dir:*/ NULL,
+                                         /*uid(unused):*/ 0);
+    if (fdp)
+        *fdp = pipeout[0];
     return child;
 }
 
@@ -280,55 +280,85 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
 }
 
 
-/* Inotify handler */
-
-static problem_data_t *load_problem_data(const char *dump_dir_name)
+/* Event-processing child output handler (such as "post-create" event) */
+struct event_processing_state
 {
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return NULL;
-
-    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
-    dd_close(dd);
-
-    add_to_problem_data_ext(problem_data, CD_DUMPDIR, dump_dir_name,
-                          CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
-
-    return problem_data;
+    pid_t child_pid;
+    int child_stdout_fd;
+    struct strbuf *cmd_output;
+    char *dirname;
+    char *dup_of_dir;
+};
+static struct event_processing_state *new_event_processing_state(void)
+{
+    struct event_processing_state *p = xzalloc(sizeof(*p));
+    p->child_pid = -1;
+    p->child_stdout_fd = -1;
+    p->cmd_output = strbuf_new();
+    return p;
+}
+static void free_event_processing_state(struct event_processing_state *p)
+{
+    if (!p)
+        return;
+    if (p->child_stdout_fd >= 0)
+        close(p->child_stdout_fd);
+    strbuf_free(p->cmd_output);
+    free(p->dirname);
+    free(p->dup_of_dir);
+    free(p);
 }
 
-typedef enum {
-    MW_OK,       /* No error */
-    MW_OCCURRED, /* No error, but thus dir is a dup */
-    MW_ERROR,    /* Other error (such as "post-create" event exited with nonzero */
-} mw_result_t;
-
-static mw_result_t run_post_create_and_load_data(const char *dump_dir_name, problem_data_t **problem_data)
+static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr)
 {
-    FILE *fp;
-    pid_t child = spawn_event_handler_child(dump_dir_name, "post-create", &fp);
+    struct event_processing_state *state = ptr;
 
-    char *buf;
-    char *dup_of_dir = NULL;
-    while ((buf = xmalloc_fgetline(fp)) != NULL)
+    /* Read streamed data and split lines */
+    for (;;)
     {
-        /* Hmm, DUP_OF_DIR: ends up in syslog. move log() into 'else'? */
-        log("%s", buf);
+        char buf[250]; /* usually we get one line, no need to have big buf */
+        errno = 0;
+        gsize r = 0;
+        g_io_channel_read_chars(gio, buf, sizeof(buf) - 1, &r, NULL);
+        if (r <= 0)
+            break;
+        buf[r] = '\0';
 
-        if (strncmp("DUP_OF_DIR: ", buf, strlen("DUP_OF_DIR: ")) == 0)
+        /* split lines in the current buffer */
+        char *raw = buf;
+        char *newline;
+        while ((newline = strchr(raw, '\n')) != NULL)
         {
-            overlapping_strcpy(buf, buf + strlen("DUP_OF_DIR: "));
-            free(dup_of_dir);
-            dup_of_dir = buf;
-        }
-        else
-            free(buf);
-    }
-    fclose(fp);
+            *newline = '\0';
+            strbuf_append_str(state->cmd_output, raw);
+            char *msg = state->cmd_output->buf;
 
-    /* Prevent having zombie child process */
+            /* Hmm, DUP_OF_DIR: ends up in syslog. move log() into 'else'? */
+            log("%s", msg);
+            if (strncmp("DUP_OF_DIR: ", msg, strlen("DUP_OF_DIR: ")) == 0)
+            {
+                free(state->dup_of_dir);
+                state->dup_of_dir = xstrdup(msg + strlen("DUP_OF_DIR: "));
+            }
+
+            strbuf_clear(state->cmd_output);
+            /* jump to next line */
+            raw = newline + 1;
+        }
+
+        /* beginning of next line. the line continues by next read */
+        strbuf_append_str(state->cmd_output, raw);
+    }
+
+    if (errno == EAGAIN)
+        /* We got all buffered data, but fd is still open. Done for now */
+        return TRUE; /* "please don't remove this event (yet)" */
+
+    /* EOF/error */
+
+    /* Wait for child to actually exit, collect status */
     int status;
-    safe_waitpid(child, &status, 0);
+    safe_waitpid(state->child_pid, &status, 0);
 
     /* exit 0 means "this is a good, non-dup dir" */
     /* exit with 1 + "DUP_OF_DIR: dir" string => dup */
@@ -337,30 +367,24 @@ static mw_result_t run_post_create_and_load_data(const char *dump_dir_name, prob
         if (WIFSIGNALED(status))
         {
             log("'post-create' on '%s' killed by signal %d",
-                            dump_dir_name, WTERMSIG(status));
-            return MW_ERROR;
+                            state->dirname, WTERMSIG(status));
         }
         /* else: it is WIFEXITED(status) */
-        if (!dup_of_dir)
+        else if (!state->dup_of_dir)
         {
             log("'post-create' on '%s' exited with %d",
-                            dump_dir_name, WEXITSTATUS(status));
-            return MW_ERROR;
+                            state->dirname, WEXITSTATUS(status));
         }
-        dump_dir_name = dup_of_dir;
+        goto delete_bad_dir;
     }
 
-    /* Loads problem_data (from the *first dir* if this one is a dup)
-     * Returns:
-     * MW_OCCURRED: "count is != 1" (iow: it is > 1 - dup)
-     * MW_OK: "count is 1" (iow: this is a new problem, not a dup)
-     * else: MW_ERROR
-     */
-    mw_result_t res = MW_ERROR;
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    char *work_dir = state->dup_of_dir ? state->dup_of_dir : state->dirname;
+
+    /* Load problem_data (from the *first dir* if this one is a dup) */
+    struct dump_dir *dd = dd_opendir(work_dir, /*flags:*/ 0);
     if (!dd)
         /* dd_opendir already emitted error msg */
-        goto ret;
+        goto delete_bad_dir;
 
     /* Reset mode/uig/gid to correct values for all files created by event run */
     dd_sanitize_mode_and_owner(dd);
@@ -370,9 +394,9 @@ static mw_result_t run_post_create_and_load_data(const char *dump_dir_name, prob
     unsigned long count = strtoul(count_str, NULL, 10);
 
     /* Don't increase crash count if we are working with newly uploaded
-     * directory (remote crash) which already has it's crash count set.
+     * directory (remote crash) which already has its crash count set.
      */
-    if((status != 0 && dup_of_dir) || count == 0)
+    if ((status != 0 && state->dup_of_dir) || count == 0)
     {
         count++;
         char new_count_str[sizeof(long)*3 + 2];
@@ -381,22 +405,52 @@ static mw_result_t run_post_create_and_load_data(const char *dump_dir_name, prob
     }
     dd_close(dd);
 
-    *problem_data = load_problem_data(dump_dir_name);
-    if (*problem_data != NULL)
+    if (!state->dup_of_dir)
+        log("New problem directory %s, processing", work_dir);
+    else
     {
-        res = MW_OK;
-        if (count > 1)
-        {
-            log("Problem directory is a duplicate of %s", dump_dir_name);
-            res = MW_OCCURRED;
-        }
+        log("Deleting problem directory %s (dup of %s)",
+                strrchr(state->dirname, '/') + 1,
+                strrchr(state->dup_of_dir, '/') + 1);
+        delete_dump_dir(state->dirname);
     }
-    /* else: load_problem_data already emitted error msg */
+
+    /* Run "notify[-dup]" event */
+//TODO: also handle it as long-running one
+    int fd;
+    pid_t child = spawn_event_handler_child(
+                    work_dir,
+                    (state->dup_of_dir ? "notify-dup" : "notify"),
+                    &fd
+    );
+    FILE *fp = fdopen(fd, "r");
+    if (!fp)
+        die_out_of_memory();
+    for (;;)
+    {
+        char *buf = xmalloc_fgetline(fp);
+        if (!buf) break;
+        log("%s", buf);
+        free(buf);
+    }
+    fclose(fp);
+    /* Prevent having zombie child process */
+    safe_waitpid(child, NULL, 0);
+
+    goto ret;
+
+ delete_bad_dir:
+    log("Corrupted or bad directory '%s', deleting", state->dirname);
+    delete_dump_dir(state->dirname);
 
  ret:
-    free(dup_of_dir);
-    return res;
+    free_event_processing_state(state);
+
+    return FALSE; /* "glib, please remove this events source!" */
 }
+
+
+/* Inotify handler */
 
 static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
 {
@@ -495,55 +549,17 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             }
         }
 
-        char *fullname = concat_path_file(g_settings_dump_location, name);
-        problem_data_t *problem_data = NULL;
-        mw_result_t res = run_post_create_and_load_data(fullname, &problem_data);
-        switch (res)
-        {
-            case MW_OK:
-                log("New problem directory %s, processing", fullname);
-                /* Fall through */
+        struct event_processing_state *state = new_event_processing_state();
+        state->dirname = concat_path_file(g_settings_dump_location, name);
 
-            case MW_OCCURRED: /* dup */
-            {
-                const char *first = NULL;
-                if (res != MW_OK)
-                {
-                    /* Fetch the name of older directory of which we are a dup */
-                    first = get_problem_item_content_or_NULL(problem_data, CD_DUMPDIR);
+        state->child_pid = spawn_event_handler_child(state->dirname, "post-create", &state->child_stdout_fd);
 
-                    log("Deleting problem directory %s (dup of %s)",
-                            strrchr(fullname, '/') + 1,
-                            strrchr(first, '/') + 1);
-                    delete_dump_dir(fullname);
-                }
-
-                /* Run "notify[_dup]" event */
-                FILE *fp;
-                pid_t child = spawn_event_handler_child(
-                                (first ? first : fullname),
-                                (first ? "notify-dup" : "notify"),
-                                &fp
-                );
-                char *buf;
-                while ((buf = xmalloc_fgetline(fp)) != NULL)
-                {
-                    log("%s", buf);
-                    free(buf);
-                }
-                fclose(fp);
-                /* Prevent having zombie child process */
-                safe_waitpid(child, NULL, 0);
-
-                break;
-            }
-            default: /* always MW_ERROR */
-                log("Corrupted or bad directory %s, deleting", fullname);
-                delete_dump_dir(fullname);
-                break;
-        }
-        free(fullname);
-        free_problem_data(problem_data);
+        GIOChannel *channel_event_output = my_io_channel_unix_new(state->child_stdout_fd);
+        g_io_channel_set_close_on_unref(channel_event_output, TRUE);
+        /*uint channel_id_event_output =*/ g_io_add_watch(channel_event_output,
+                                              G_IO_IN,
+                                              handle_event_output_cb,
+                                              state);
     } /* while */
 
     free(buf);
