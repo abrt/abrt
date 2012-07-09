@@ -59,6 +59,21 @@ static GIOChannel *channel_socket = NULL;
 static guint channel_id_socket = 0;
 static int child_count = 0;
 
+/* We spawn three kinds of children:
+ * - handlers for accepted socket connections (abrt-server)
+ * - handlers for detected uploads (abrt-upload)
+ * - handlers for "post-create" + "notify[-dup]" events
+ * First two kinds of children don't need spcial handling:
+ * we only need to collect their exit status to avoid creating zombies.
+ * Unfortunately, the third kind is not this simple: wee need to collect
+ * their exit status _after_ we ate their output.
+ * Since we can either (1) detect EOF first and do waitpid after it,
+ * OR (2) we can get SIGCHLD and do waitpit first, we need to maintain a list
+ * of known children of third kind, or else in the case (2) we won't be able
+ * to save exit status. s_pid_list exists solely for this purpose.
+ */
+static GList *s_pid_list;
+
 enum {
     EVTYPE_POST_CREATE,
     EVTYPE_NOTIFY,
@@ -67,6 +82,7 @@ struct event_processing_state
 {
     int   event_type;
     pid_t child_pid;
+    int   child_exitstatus;
     int   child_stdout_fd;
     struct strbuf *cmd_output;
     char *dirname;
@@ -173,6 +189,29 @@ static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *ev
     return child;
 }
 
+static int wait_for_child(struct event_processing_state *state)
+{
+    int status = 0;
+
+    if (state->child_pid < 0)
+        status = state->child_exitstatus;
+    else
+    {
+        if (safe_waitpid(state->child_pid, &status, 0) > 0)
+        {
+            state->child_pid = -1;
+            state->child_exitstatus = status;
+            decrement_child_count();
+        }
+        else /* should not happen */
+            perror_msg("waitpid(%d)", (int)state->child_pid);
+    }
+
+    s_pid_list = g_list_remove(s_pid_list, state);
+
+    return status;
+}
+
 
 /* Callback called by glib main loop when a client connects to ABRT's socket. */
 static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpointer ptr_unused)
@@ -215,6 +254,12 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
 
 
 /* Signal pipe handler */
+static gint compare_pids(gconstpointer a, gconstpointer b)
+{
+    const struct event_processing_state *state = a;
+    pid_t pid = (pid_t) b;
+    return state->child_pid != pid;
+}
 static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
 {
     uint8_t signo;
@@ -229,9 +274,17 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
         else
         {
             pid_t pid;
-            while ((pid = safe_waitpid(-1, NULL, WNOHANG)) > 0)
+            int status;
+            while ((pid = safe_waitpid(-1, &status, WNOHANG)) > 0)
             {
                 decrement_child_count();
+                GList *l = g_list_find_custom(s_pid_list, (gconstpointer) pid, compare_pids);
+                if (l)
+                {
+                    struct event_processing_state *state = l->data;
+                    state->child_pid = -1;
+                    state->child_exitstatus = status;
+                }
             }
         }
     }
@@ -294,9 +347,7 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
     /* EOF/error */
 
     /* Wait for child to actually exit, collect status */
-    int status = 0;
-    if (safe_waitpid(state->child_pid, &status, 0) > 0)
-        decrement_child_count();
+    int status = wait_for_child(state);
 
     /* If it was a "notify[-dup]" event, then we're done */
     if (state->event_type == EVTYPE_NOTIFY)
@@ -366,6 +417,7 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
                 (state->dup_of_dir ? "notify-dup" : "notify"),
                 &fd
     );
+    s_pid_list = g_list_prepend(s_pid_list, state);
     ndelay_on(fd);
     //log("Started notify, fd %d -> %d", fd, state->child_stdout_fd);
     xmove_fd(fd, state->child_stdout_fd);
@@ -497,6 +549,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         state->dirname = concat_path_file(g_settings_dump_location, name);
 
         state->child_pid = spawn_event_handler_child(state->dirname, "post-create", &state->child_stdout_fd);
+        s_pid_list = g_list_prepend(s_pid_list, state);
         ndelay_on(state->child_stdout_fd);
 
         GIOChannel *channel_event_output = my_io_channel_unix_new(state->child_stdout_fd);
