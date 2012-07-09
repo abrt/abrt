@@ -44,8 +44,9 @@
 
 /* Daemon initializes, then sits in glib main loop, waiting for events.
  * Events can be:
- * - inotify: something new appeared under /var/spool/abrt
- * - signal: we got SIGTERM or SIGINT
+ * - inotify: something new appeared under /var/spool/abrt or /var/spool/abrt-upload
+ * - signal: we got SIGTERM, SIGINT, SIGALRM or SIGCHLD
+ * - new socket connection
  */
 static volatile sig_atomic_t s_sig_caught;
 static int s_signal_pipe[2];
@@ -58,7 +59,40 @@ static GIOChannel *channel_socket = NULL;
 static guint channel_id_socket = 0;
 static int child_count = 0;
 
-static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpointer ptr_unused);
+enum {
+    EVTYPE_POST_CREATE,
+    EVTYPE_NOTIFY,
+};
+struct event_processing_state
+{
+    int   event_type;
+    pid_t child_pid;
+    int   child_stdout_fd;
+    struct strbuf *cmd_output;
+    char *dirname;
+    char *dup_of_dir;
+};
+static struct event_processing_state *new_event_processing_state(void)
+{
+    struct event_processing_state *p = xzalloc(sizeof(*p));
+    p->child_pid = -1;
+    p->child_stdout_fd = -1;
+    p->cmd_output = strbuf_new();
+    return p;
+}
+static void free_event_processing_state(struct event_processing_state *p)
+{
+    if (!p)
+        return;
+    /*
+    if (p->child_stdout_fd >= 0)
+        close(p->child_stdout_fd);
+    */
+    strbuf_free(p->cmd_output);
+    free(p->dirname);
+    free(p->dup_of_dir);
+    free(p);
+}
 
 
 /* Helpers */
@@ -97,11 +131,13 @@ static void increment_child_count()
         error_msg("Too many clients, refusing connections to '%s'", SOCKET_FILE);
         /* To avoid infinite loop caused by the descriptor in "ready" state,
          * the callback must be disabled.
-         * It is added back in client_free(). */
+         */
         g_source_remove(channel_id_socket);
         channel_id_socket = 0;
     }
 }
+
+static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpointer ptr_unused);
 
 static void decrement_child_count()
 {
@@ -137,8 +173,6 @@ static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *ev
     return child;
 }
 
-
-/* Socket handling */
 
 /* Callback called by glib main loop when a client connects to ABRT's socket. */
 static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpointer ptr_unused)
@@ -179,92 +213,6 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
     return TRUE;
 }
 
-/* Initializes the dump socket, usually in /var/run directory
- * (the path depends on compile-time configuration).
- */
-static void dumpsocket_init()
-{
-    unlink(SOCKET_FILE); /* not caring about the result */
-
-    int socketfd = xsocket(AF_UNIX, SOCK_STREAM, 0);
-    close_on_exec_on(socketfd);
-
-    struct sockaddr_un local;
-    memset(&local, 0, sizeof(local));
-    local.sun_family = AF_UNIX;
-    strcpy(local.sun_path, SOCKET_FILE);
-    xbind(socketfd, (struct sockaddr*)&local, sizeof(local));
-    xlisten(socketfd, MAX_CLIENT_COUNT);
-
-    if (chmod(SOCKET_FILE, SOCKET_PERMISSION) != 0)
-        perror_msg_and_die("chmod '%s'", SOCKET_FILE);
-
-    channel_socket = my_io_channel_unix_new(socketfd);
-
-    channel_id_socket = add_watch_or_die(channel_socket, G_IO_IN | G_IO_PRI | G_IO_HUP, server_socket_cb);
-}
-
-/* Releases all resources used by dumpsocket. */
-static void dumpsocket_shutdown()
-{
-    /* Set everything to pre-initialization state. */
-    if (channel_socket)
-    {
-        /* Undo add_watch_or_die */
-        g_source_remove(channel_id_socket);
-        /* Undo g_io_channel_unix_new */
-        g_io_channel_unref(channel_socket);
-        channel_socket = NULL;
-    }
-}
-
-static int create_pidfile()
-{
-    /* Note:
-     * No O_EXCL: we would happily overwrite stale pidfile from previous boot.
-     * No O_TRUNC: we must first try to lock the file, and if lock fails,
-     * there is another live abrtd. O_TRUNCing the file in this case
-     * would be wrong - it'll erase the pid to empty string!
-     */
-    int fd = open(VAR_RUN_PIDFILE, O_WRONLY|O_CREAT, 0644);
-    if (fd >= 0)
-    {
-        if (lockf(fd, F_TLOCK, 0) < 0)
-        {
-            perror_msg("Can't lock file '%s'", VAR_RUN_PIDFILE);
-            return -1;
-        }
-        close_on_exec_on(fd);
-        /* write our pid to it */
-        char buf[sizeof(long)*3 + 2];
-        int len = sprintf(buf, "%lu\n", (long)getpid());
-        IGNORE_RESULT(write(fd, buf, len));
-        IGNORE_RESULT(ftruncate(fd, len));
-        /* we leak opened+locked fd intentionally */
-        return 0;
-    }
-
-    perror_msg("Can't open '%s'", VAR_RUN_PIDFILE);
-    return -1;
-}
-
-static void handle_signal(int signo)
-{
-    int save_errno = errno;
-
-    // Enable for debugging only, malloc/printf are unsafe in signal handlers
-    //VERB3 log("Got signal %d", signo);
-
-    uint8_t sig_caught;
-    s_sig_caught = sig_caught = signo;
-    /* Using local copy of s_sig_caught so that concurrent signal
-     * won't change it under us */
-    if (s_signal_pipe_write >= 0)
-        IGNORE_RESULT(write(s_signal_pipe_write, &sig_caught, 1));
-
-    errno = save_errno;
-}
-
 
 /* Signal pipe handler */
 static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
@@ -292,41 +240,6 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
 
 
 /* Event-processing child output handler (such as "post-create" event) */
-enum {
-    EVTYPE_POST_CREATE,
-    EVTYPE_NOTIFY,
-};
-struct event_processing_state
-{
-    int   event_type;
-    pid_t child_pid;
-    int   child_stdout_fd;
-    struct strbuf *cmd_output;
-    char *dirname;
-    char *dup_of_dir;
-};
-static struct event_processing_state *new_event_processing_state(void)
-{
-    struct event_processing_state *p = xzalloc(sizeof(*p));
-    p->child_pid = -1;
-    p->child_stdout_fd = -1;
-    p->cmd_output = strbuf_new();
-    return p;
-}
-static void free_event_processing_state(struct event_processing_state *p)
-{
-    if (!p)
-        return;
-    /*
-    if (p->child_stdout_fd >= 0)
-        close(p->child_stdout_fd);
-    */
-    strbuf_free(p->cmd_output);
-    free(p->dirname);
-    free(p->dup_of_dir);
-    free(p);
-}
-
 static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr)
 {
     struct event_processing_state *state = ptr;
@@ -650,6 +563,93 @@ static void run_main_loop(GMainLoop* loop)
     free(fds);
     g_main_context_unref(context);
 }
+
+/* Initializes the dump socket, usually in /var/run directory
+ * (the path depends on compile-time configuration).
+ */
+static void dumpsocket_init()
+{
+    unlink(SOCKET_FILE); /* not caring about the result */
+
+    int socketfd = xsocket(AF_UNIX, SOCK_STREAM, 0);
+    close_on_exec_on(socketfd);
+
+    struct sockaddr_un local;
+    memset(&local, 0, sizeof(local));
+    local.sun_family = AF_UNIX;
+    strcpy(local.sun_path, SOCKET_FILE);
+    xbind(socketfd, (struct sockaddr*)&local, sizeof(local));
+    xlisten(socketfd, MAX_CLIENT_COUNT);
+
+    if (chmod(SOCKET_FILE, SOCKET_PERMISSION) != 0)
+        perror_msg_and_die("chmod '%s'", SOCKET_FILE);
+
+    channel_socket = my_io_channel_unix_new(socketfd);
+
+    channel_id_socket = add_watch_or_die(channel_socket, G_IO_IN | G_IO_PRI | G_IO_HUP, server_socket_cb);
+}
+
+/* Releases all resources used by dumpsocket. */
+static void dumpsocket_shutdown()
+{
+    /* Set everything to pre-initialization state. */
+    if (channel_socket)
+    {
+        /* Undo add_watch_or_die */
+        g_source_remove(channel_id_socket);
+        /* Undo g_io_channel_unix_new */
+        g_io_channel_unref(channel_socket);
+        channel_socket = NULL;
+    }
+}
+
+static int create_pidfile()
+{
+    /* Note:
+     * No O_EXCL: we would happily overwrite stale pidfile from previous boot.
+     * No O_TRUNC: we must first try to lock the file, and if lock fails,
+     * there is another live abrtd. O_TRUNCing the file in this case
+     * would be wrong - it'll erase the pid to empty string!
+     */
+    int fd = open(VAR_RUN_PIDFILE, O_WRONLY|O_CREAT, 0644);
+    if (fd >= 0)
+    {
+        if (lockf(fd, F_TLOCK, 0) < 0)
+        {
+            perror_msg("Can't lock file '%s'", VAR_RUN_PIDFILE);
+            return -1;
+        }
+        close_on_exec_on(fd);
+        /* write our pid to it */
+        char buf[sizeof(long)*3 + 2];
+        int len = sprintf(buf, "%lu\n", (long)getpid());
+        IGNORE_RESULT(write(fd, buf, len));
+        IGNORE_RESULT(ftruncate(fd, len));
+        /* we leak opened+locked fd intentionally */
+        return 0;
+    }
+
+    perror_msg("Can't open '%s'", VAR_RUN_PIDFILE);
+    return -1;
+}
+
+static void handle_signal(int signo)
+{
+    int save_errno = errno;
+
+    // Enable for debugging only, malloc/printf are unsafe in signal handlers
+    //VERB3 log("Got signal %d", signo);
+
+    uint8_t sig_caught;
+    s_sig_caught = sig_caught = signo;
+    /* Using local copy of s_sig_caught so that concurrent signal
+     * won't change it under us */
+    if (s_signal_pipe_write >= 0)
+        IGNORE_RESULT(write(s_signal_pipe_write, &sig_caught, 1));
+
+    errno = save_errno;
+}
+
 
 static void start_syslog_logging()
 {
