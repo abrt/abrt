@@ -56,10 +56,63 @@ static bool s_exiting;
 
 static GIOChannel *channel_socket = NULL;
 static guint channel_id_socket = 0;
-static int socket_client_count = 0;
+static int child_count = 0;
+
+static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpointer ptr_unused);
 
 
 /* Helpers */
+
+static guint add_watch_or_die(GIOChannel *channel, unsigned condition, GIOFunc func)
+{
+    errno = 0;
+    guint r = g_io_add_watch(channel, (GIOCondition)condition, func, NULL);
+    if (!r)
+        perror_msg_and_die("g_io_add_watch failed");
+    return r;
+}
+
+static GIOChannel *my_io_channel_unix_new(int fd)
+{
+    GIOChannel *ch = g_io_channel_unix_new(fd);
+
+    /* Need to set the encoding otherwise we get:
+     * "Invalid byte sequence in conversion input".
+     * According to manual "NULL" is safe for binary data.
+     */
+    GError *error = NULL;
+    g_io_channel_set_encoding(ch, NULL, &error);
+    if (error)
+        perror_msg_and_die("Can't set encoding on gio channel: %s", error->message);
+
+    g_io_channel_set_close_on_unref(ch, TRUE);
+
+    return ch;
+}
+
+static void increment_child_count()
+{
+    if (++child_count >= MAX_CLIENT_COUNT)
+    {
+        error_msg("Too many clients, refusing connections to '%s'", SOCKET_FILE);
+        /* To avoid infinite loop caused by the descriptor in "ready" state,
+         * the callback must be disabled.
+         * It is added back in client_free(). */
+        g_source_remove(channel_id_socket);
+        channel_id_socket = 0;
+    }
+}
+
+static void decrement_child_count()
+{
+    if (child_count)
+        child_count--;
+    if (child_count < MAX_CLIENT_COUNT && !channel_id_socket)
+    {
+        log("Accepting connections on '%s'", SOCKET_FILE);
+        channel_id_socket = add_watch_or_die(channel_socket, G_IO_IN | G_IO_PRI | G_IO_HUP, server_socket_cb);
+    }
+}
 
 static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *event_name, int *fdp)
 {
@@ -75,36 +128,13 @@ static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *ev
     int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_QUIET | EXECFLG_ERR2OUT;
     VERB1 flags &= ~EXECFLG_QUIET;
 
-    pipeout[0] = -1;
     pid_t child = fork_execv_on_steroids(flags, args, pipeout,
                                          /*env_vec:*/ NULL, /*dir:*/ NULL,
                                          /*uid(unused):*/ 0);
     if (fdp)
         *fdp = pipeout[0];
+    increment_child_count();
     return child;
-}
-
-static guint add_watch_or_die(GIOChannel *channel, unsigned condition, GIOFunc func)
-{
-    errno = 0;
-    guint r = g_io_add_watch(channel, (GIOCondition)condition, func, NULL);
-    if (!r)
-        perror_msg_and_die("g_io_add_watch failed");
-    return r;
-}
-
-static GIOChannel *my_io_channel_unix_new(int fd)
-{
-    GIOChannel *ch = g_io_channel_unix_new(fd);
-    /* Need to set the encoding otherwise we get:
-     * "Invalid byte sequence in conversion input".
-     * According to manual "NULL" is safe for binary data.
-     */
-    GError *error = NULL;
-    g_io_channel_set_encoding(ch, NULL, &error);
-    if (error)
-        perror_msg_and_die("Can't set encoding on gio channel: %s", error->message);
-    return ch;
 }
 
 
@@ -113,18 +143,6 @@ static GIOChannel *my_io_channel_unix_new(int fd)
 /* Callback called by glib main loop when a client connects to ABRT's socket. */
 static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpointer ptr_unused)
 {
-    /* Check the limit for number of simultaneously attached clients. */
-    if (socket_client_count >= MAX_CLIENT_COUNT)
-    {
-        error_msg("Too many clients, refusing connections to '%s'", SOCKET_FILE);
-        /* To avoid infinite loop caused by the descriptor in "ready" state,
-         * the callback must be disabled.
-         * It is added back in client_free(). */
-        g_source_remove(channel_id_socket);
-        channel_id_socket = 0;
-        return TRUE;
-    }
-
     int socket = accept(g_io_channel_unix_get_fd(source), NULL, NULL);
     if (socket == -1)
     {
@@ -156,7 +174,7 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
         perror_msg_and_die("Can't execute '%s'", argv[0]);
     }
     /* parent */
-    socket_client_count++;
+    increment_child_count();
     close(socket);
     return TRUE;
 }
@@ -182,9 +200,8 @@ static void dumpsocket_init()
         perror_msg_and_die("chmod '%s'", SOCKET_FILE);
 
     channel_socket = my_io_channel_unix_new(socketfd);
-    g_io_channel_set_close_on_unref(channel_socket, TRUE);
 
-    channel_id_socket = add_watch_or_die(channel_socket, G_IO_IN | G_IO_PRI, server_socket_cb);
+    channel_id_socket = add_watch_or_die(channel_socket, G_IO_IN | G_IO_PRI | G_IO_HUP, server_socket_cb);
 }
 
 /* Releases all resources used by dumpsocket. */
@@ -266,13 +283,7 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
             pid_t pid;
             while ((pid = safe_waitpid(-1, NULL, WNOHANG)) > 0)
             {
-                if (socket_client_count)
-                    socket_client_count--;
-                if (!channel_id_socket)
-                {
-                    log("Accepting connections on '%s'", SOCKET_FILE);
-                    channel_id_socket = add_watch_or_die(channel_socket, G_IO_IN | G_IO_PRI, server_socket_cb);
-                }
+                decrement_child_count();
             }
         }
     }
@@ -281,10 +292,15 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
 
 
 /* Event-processing child output handler (such as "post-create" event) */
+enum {
+    EVTYPE_POST_CREATE,
+    EVTYPE_NOTIFY,
+};
 struct event_processing_state
 {
+    int   event_type;
     pid_t child_pid;
-    int child_stdout_fd;
+    int   child_stdout_fd;
     struct strbuf *cmd_output;
     char *dirname;
     char *dup_of_dir;
@@ -301,8 +317,10 @@ static void free_event_processing_state(struct event_processing_state *p)
 {
     if (!p)
         return;
+    /*
     if (p->child_stdout_fd >= 0)
         close(p->child_stdout_fd);
+    */
     strbuf_free(p->cmd_output);
     free(p->dirname);
     free(p->dup_of_dir);
@@ -312,6 +330,8 @@ static void free_event_processing_state(struct event_processing_state *p)
 static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr)
 {
     struct event_processing_state *state = ptr;
+
+    //log("Reading from event fd %d", state->child_stdout_fd);
 
     /* Read streamed data and split lines */
     for (;;)
@@ -335,8 +355,9 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
 
             /* Hmm, DUP_OF_DIR: ends up in syslog. move log() into 'else'? */
             log("%s", msg);
-            if (strncmp("DUP_OF_DIR: ", msg, strlen("DUP_OF_DIR: ")) == 0)
-            {
+            if (state->event_type == EVTYPE_POST_CREATE
+             && strncmp("DUP_OF_DIR: ", msg, strlen("DUP_OF_DIR: ")) == 0
+            ) {
                 free(state->dup_of_dir);
                 state->dup_of_dir = xstrdup(msg + strlen("DUP_OF_DIR: "));
             }
@@ -351,14 +372,24 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
     }
 
     if (errno == EAGAIN)
+    {
         /* We got all buffered data, but fd is still open. Done for now */
-        return TRUE; /* "please don't remove this event (yet)" */
+        //log("EAGAIN on fd %d", state->child_stdout_fd);
+        return TRUE; /* "glib, please don't remove this event (yet)" */
+    }
 
     /* EOF/error */
 
     /* Wait for child to actually exit, collect status */
-    int status;
-    safe_waitpid(state->child_pid, &status, 0);
+    int status = 0;
+    if (safe_waitpid(state->child_pid, &status, 0) > 0)
+        decrement_child_count();
+
+    /* If it was a "notify[-dup]" event, then we're done */
+    if (state->event_type == EVTYPE_NOTIFY)
+        goto ret;
+
+    /* Else: it was "post-create" event */
 
     /* exit 0 means "this is a good, non-dup dir" */
     /* exit with 1 + "DUP_OF_DIR: dir" string => dup */
@@ -416,37 +447,31 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
     }
 
     /* Run "notify[-dup]" event */
-//TODO: also handle it as long-running one
     int fd;
-    pid_t child = spawn_event_handler_child(
-                    work_dir,
-                    (state->dup_of_dir ? "notify-dup" : "notify"),
-                    &fd
+    state->child_pid = spawn_event_handler_child(
+                work_dir,
+                (state->dup_of_dir ? "notify-dup" : "notify"),
+                &fd
     );
-    FILE *fp = fdopen(fd, "r");
-    if (!fp)
-        die_out_of_memory();
-    for (;;)
-    {
-        char *buf = xmalloc_fgetline(fp);
-        if (!buf) break;
-        log("%s", buf);
-        free(buf);
-    }
-    fclose(fp);
-    /* Prevent having zombie child process */
-    safe_waitpid(child, NULL, 0);
+    ndelay_on(fd);
+    //log("Started notify, fd %d -> %d", fd, state->child_stdout_fd);
+    xmove_fd(fd, state->child_stdout_fd);
+    state->event_type = EVTYPE_NOTIFY;
+    return TRUE; /* "glib, please don't remove this event (yet)" */
 
-    goto ret;
 
  delete_bad_dir:
     log("Corrupted or bad directory '%s', deleting", state->dirname);
     delete_dump_dir(state->dirname);
 
  ret:
+    //log("Closing event fd %d", state->child_stdout_fd);
     free_event_processing_state(state);
 
+    /* We stop using this channel */
+    g_io_channel_unref(gio);
     return FALSE; /* "glib, please remove this events source!" */
+    /* Removing will also drop the last ref to this gio, closing/freeing it */
 }
 
 
@@ -505,13 +530,18 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 
                 const char *dir = g_settings_sWatchCrashdumpArchiveDir;
                 log("Detected creation of file '%s' in upload directory '%s'", name, dir);
-                if (fork() == 0)
+                pid_t pid = fork();
+                if (pid < 0)
+                    perror_msg("fork");
+                if (pid == 0)
                 {
                     xchdir(dir);
                     execlp("abrt-handle-upload", "abrt-handle-upload",
                            g_settings_dump_location, dir, name, (char*)NULL);
                     error_msg_and_die("Can't execute '%s'", "abrt-handle-upload");
                 }
+                if (pid > 0)
+                    increment_child_count();
             }
             continue;
         }
@@ -550,14 +580,15 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         }
 
         struct event_processing_state *state = new_event_processing_state();
+        state->event_type = EVTYPE_POST_CREATE;
         state->dirname = concat_path_file(g_settings_dump_location, name);
 
         state->child_pid = spawn_event_handler_child(state->dirname, "post-create", &state->child_stdout_fd);
+        ndelay_on(state->child_stdout_fd);
 
         GIOChannel *channel_event_output = my_io_channel_unix_new(state->child_stdout_fd);
-        g_io_channel_set_close_on_unref(channel_event_output, TRUE);
         /*uint channel_id_event_output =*/ g_io_add_watch(channel_event_output,
-                                              G_IO_IN,
+                                              G_IO_IN | G_IO_PRI | G_IO_HUP,
                                               handle_event_output_cb,
                                               state);
     } /* while */
@@ -806,15 +837,15 @@ int main(int argc, char** argv)
     VERB1 log("Adding inotify watch to glib main loop");
     channel_inotify = my_io_channel_unix_new(inotify_fd);
     channel_id_inotify_event = add_watch_or_die(channel_inotify,
-                                              G_IO_IN,
-                                              handle_inotify_cb);
+                        G_IO_IN | G_IO_PRI | G_IO_HUP,
+                        handle_inotify_cb);
 
     /* Add an event source which waits for INT/TERM signal */
     VERB1 log("Adding signal pipe watch to glib main loop");
     channel_signal = my_io_channel_unix_new(s_signal_pipe[0]);
     channel_id_signal_event = add_watch_or_die(channel_signal,
-                                             G_IO_IN,
-                                             handle_signal_cb);
+                        G_IO_IN | G_IO_PRI | G_IO_HUP,
+                        handle_signal_cb);
 
     /* Mark the territory */
     VERB1 log("Creating pid file");
