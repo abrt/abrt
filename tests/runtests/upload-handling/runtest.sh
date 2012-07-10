@@ -37,6 +37,7 @@ rlJournalStart
         cp -R problem_dir $TmpDir
         pushd $TmpDir
         echo "WatchCrashdumpArchiveDir = /var/spool/abrt-upload/" > /etc/abrt/abrt.conf
+        rlRun "setsebool -P abrt_anon_write 1"
         rlRun "service abrtd stop" 0 "Killing abrtd"
         rlRun "service abrtd start" 0 "Starting abrtd"
         rlRun "service abrt-ccpp restart" 0 "Start abrt-ccpp"
