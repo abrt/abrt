@@ -66,8 +66,7 @@ int cmd_report(int argc, const char **argv)
         }
 
         int status = report_problem_in_dir(dir_name,
-                                           LIBREPORT_ANALYZE
-                                           | LIBREPORT_WAIT
+                                             LIBREPORT_WAIT
                                            | LIBREPORT_RUN_CLI);
         free_vector_of_problem_data(ci);
         if (status)
