@@ -257,7 +257,7 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
 static gint compare_pids(gconstpointer a, gconstpointer b)
 {
     const struct event_processing_state *state = a;
-    pid_t pid = (pid_t) b;
+    pid_t pid = (pid_t) (uintptr_t) b;
     return state->child_pid != pid;
 }
 static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
@@ -278,7 +278,7 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
             while ((pid = safe_waitpid(-1, &status, WNOHANG)) > 0)
             {
                 decrement_child_count();
-                GList *l = g_list_find_custom(s_pid_list, (gconstpointer) pid, compare_pids);
+                GList *l = g_list_find_custom(s_pid_list, (gconstpointer) (uintptr_t) pid, compare_pids);
                 if (l)
                 {
                     struct event_processing_state *state = l->data;
