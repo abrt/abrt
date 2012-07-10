@@ -442,7 +442,7 @@ static void init_applet(void)
         ap_menu = create_menu();
     }
 
-    notify_init("ABRT");
+    notify_init(_("Problem detected"));
 }
 
 static void Crash(DBusMessage* signal)
