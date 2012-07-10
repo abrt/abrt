@@ -190,7 +190,7 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
             }
         }
 
-        report_problem_in_dir(ap_last_problem_dir, LIBREPORT_ANALYZE | LIBREPORT_NOWAIT);
+        report_problem_in_dir(ap_last_problem_dir, LIBREPORT_NOWAIT);
 
         GError *err = NULL;
         notify_notification_close(notification, &err);
