@@ -151,6 +151,7 @@ Summary: %{name}'s bodhi plugin
 BuildRequires: json-c-devel
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
+BuildRequires: libreport-web-devel >= 2.0.10
 Obsoletes: libreport-plugin-bodhi > 0.0.1
 Provides: libreport-plugin-bodhi
 
