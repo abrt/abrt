@@ -1,1 +1,16 @@
-git clone git://abrt.brq.redhat.com/abrt.git /root/abrt
+pushd $PWD && {
+    cd /root && {
+        git clone git://abrt.brq.redhat.com/abrt.git ./abrt && {
+            cd ./abrt && {
+                case $(cut -d: -f4,5 /etc/system-release-cpe) in
+                    enterprise_linux:6*)
+                        git checkout rhel6
+                        ;;
+                    *)
+                        ;;
+                esac
+            }
+        }
+    }
+    popd
+}
