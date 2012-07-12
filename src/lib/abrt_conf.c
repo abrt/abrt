@@ -21,6 +21,7 @@
 char *        g_settings_sWatchCrashdumpArchiveDir = NULL;
 unsigned int  g_settings_nMaxCrashReportsSize = 1000;
 char *        g_settings_dump_location = NULL;
+bool          g_settings_delete_uploaded = 0;
 
 void free_abrt_conf_data()
 {
@@ -63,6 +64,13 @@ static void ParseCommon(map_string_h *settings, const char *conf_filename)
     }
     else
         g_settings_dump_location = xstrdup("/var/spool/abrt");
+
+    value = g_hash_table_lookup(settings, "DeleteUploaded");
+    if (value)
+    {
+        g_settings_delete_uploaded = string_to_bool(value);
+        g_hash_table_remove(settings, "DeleteUploaded");
+    }
 
     GHashTableIter iter;
     char *name;

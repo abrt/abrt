@@ -501,8 +501,14 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 if (pid == 0)
                 {
                     xchdir(dir);
-                    execlp("abrt-handle-upload", "abrt-handle-upload",
-                           g_settings_dump_location, dir, name, (char*)NULL);
+
+                    if (g_settings_delete_uploaded)
+                        execlp("abrt-handle-upload", "abrt-handle-upload", "-d",
+                               g_settings_dump_location, dir, name, (char*)NULL);
+                    else
+                        execlp("abrt-handle-upload", "abrt-handle-upload",
+                               g_settings_dump_location, dir, name, (char*)NULL);
+
                     error_msg_and_die("Can't execute '%s'", "abrt-handle-upload");
                 }
                 if (pid > 0)

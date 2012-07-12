@@ -56,6 +56,9 @@ extern unsigned int  g_settings_nMaxCrashReportsSize;
 extern char *        g_settings_sWatchCrashdumpArchiveDir;
 #define g_settings_dump_location abrt_g_settings_dump_location
 extern char *        g_settings_dump_location;
+#define g_settings_delete_uploaded abrt_g_settings_delete_uploaded
+extern bool          g_settings_delete_uploaded;
+
 
 #define load_abrt_conf abrt_load_abrt_conf
 int load_abrt_conf();
