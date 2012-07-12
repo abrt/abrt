@@ -66,8 +66,11 @@ rlJournalStart
                 rlLog "No crash dir generated, this shouldn't happen"
             fi
             rlLog "PATH = $crash_PATH"
-            rlRun "abrt-cli info $crash_PATH"
-            rlRun "abrt-cli rm $crash_PATH"
+
+            if [ -n $crash_PATH ]; then
+                rlRun "abrt-cli info $crash_PATH"
+                rlRun "abrt-cli rm $crash_PATH"
+            fi
 
             rlLog "Generate second crash (blacklisted path)"
             yes > /dev/null &
@@ -93,8 +96,12 @@ rlJournalStart
             rlLog "No crash dir generated, this shouldn't happen"
         fi
         rlLog "PATH = $crash_PATH"
-        rlRun "abrt-cli info $crash_PATH"
-        rlRun "abrt-cli rm $crash_PATH"
+
+        if [ -n $crash_PATH ]; then
+            rlRun "abrt-cli info $crash_PATH"
+            rlRun "abrt-cli rm $crash_PATH"
+        fi
+
     rlPhaseEnd
 
     rlPhaseStartCleanup
