@@ -111,9 +111,9 @@ static int scan_syslog_file(GList **oops_list, int fd, struct stat *statbuf, int
 static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
 {
     unsigned countdown = 16; /* do not report hundreds of oopses */
-    unsigned idx = oops_cnt;
+    unsigned idx = 0; //oops_cnt;
 
-    VERB1 log("Saving %u oopses as dump dirs", idx >= countdown ? countdown-1 : idx);
+    VERB1 log("Saving %u oopses as dump dirs", oops_cnt >= countdown ? countdown-1 : oops_cnt);
 
     char *cmdline_str = NULL;
     FILE *cmdline_fp = fopen("/proc/cmdline", "r");
@@ -137,9 +137,9 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
 
     pid_t my_pid = getpid();
     unsigned errors = 0;
-    while (idx != 0 && --countdown != 0)
+    while (idx <= oops_cnt && --countdown != 0)
     {
-        char *first_line = (char*)g_list_nth_data(oops_list, --idx);
+        char *first_line = (char*)g_list_nth_data(oops_list, idx++);
         char *second_line = (char*)strchr(first_line, '\n'); /* never NULL */
         *second_line++ = '\0';
 
