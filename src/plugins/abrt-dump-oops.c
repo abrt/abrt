@@ -137,7 +137,7 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
 
     pid_t my_pid = getpid();
     unsigned errors = 0;
-    while (idx <= oops_cnt && --countdown != 0)
+    while (idx < oops_cnt && --countdown != 0)
     {
         char *first_line = (char*)g_list_nth_data(oops_list, idx++);
         char *second_line = (char*)strchr(first_line, '\n'); /* never NULL */
