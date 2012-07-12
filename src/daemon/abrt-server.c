@@ -113,7 +113,8 @@ static int create_debug_dump()
     {
         error_msg_and_die("Error creating crash dump %s", path);
     }
-    dd_create_basic_files(dd, client_uid);
+    dd_create_basic_files(dd, client_uid, NULL);
+    dd_save_text(dd, "abrt_version", VERSION);
 
     dd_save_text(dd, FILENAME_ANALYZER, analyzer);
     dd_save_text(dd, FILENAME_EXECUTABLE, executable);

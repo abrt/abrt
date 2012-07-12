@@ -154,7 +154,7 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
 
         if (dd)
         {
-            dd_create_basic_files(dd, /*uid:*/ my_euid);
+            dd_create_basic_files(dd, /*uid:*/ my_euid, NULL);
             dd_save_text(dd, "abrt_version", VERSION);
             dd_save_text(dd, FILENAME_ANALYZER, "Kerneloops");
             dd_save_text(dd, FILENAME_KERNEL, first_line);
