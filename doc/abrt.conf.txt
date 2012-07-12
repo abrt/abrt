@@ -30,6 +30,12 @@ WatchCrashdumpArchiveDir = 'directory'::
    via ftp, scp, etc. The directory must exist and be writable for 'abrt'.
    There is no default.
 
+DeleteUploaded = 'yes/no'::
+   The daemon will delete an uploaded crashdump archive after an atempt to
+   unpack it. An archive will be delete whether unpacking finishes successfully
+   or not.
+   The default value is 'no'.
+
 SEE ALSO
 --------
 abrtd(8)

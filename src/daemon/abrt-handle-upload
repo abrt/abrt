@@ -3,7 +3,12 @@
 # The task of this script is to unpack the file and move
 # problem data found in it to abrtd spool directory.
 #
-# Usage: abrt-handle-upload ABRT_SPOOL_DIR UPLOAD_DIR FILENAME
+# Usage: abrt-handle-upload [-d] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME
+#
+#   -d             - deletes an uploaded archive
+#   ABRT_SPOOL_DIR - a directory where valid uploaded archives are unpacked to
+#   UPLOAD_DIR     - a directory where uploaded archives are stored in
+#   FILENAME       - an uploaded archive file name
 
 #echo "Started: $0 $*"
 
@@ -18,13 +23,15 @@ print_clean_and_die()
 die_exitcode=1
 delete_on_exit=""
 
+delete_archive=false
+if test x"$1" == x"-d"; then delete_archive=true; shift; fi
+
 abrt_dir="$1"
 upload_dir="$2"
 archive="$3"
 
 test -d "$abrt_dir" || print_clean_and_die "Not a directory: '$abrt_dir'"
 test -d "$upload_dir" || print_clean_and_die "Not a directory: '$upload_dir'"
-test x"${archive%.working}" != x"$archive" && print_clean_and_die "Skipping: '$archive'"
 test x"${archive#/}" != x"$archive" && print_clean_and_die "Skipping: '$archive' (starts with slash)"
 test x"${archive#.}" != x"$archive" && print_clean_and_die "Skipping: '$archive' (starts with dot)"
 test x"${archive#*..}" != x"$archive" && print_clean_and_die "Skipping: '$archive' (contains ..)"
@@ -41,17 +48,23 @@ test x"${archive%.tar.xz}" != x"$archive" && unpacker="unxz"
 
 test "$unpacker" || print_clean_and_die "Unknown file type: '$archive'"
 
-tempdir="remote.`date +%Y-%m-%d-%H:%M:%S.%N`.$$"
+workingdir=`mktemp -d "abrt_handle_upload.XXXXXXXXXX" --tmpdir=/tmp` || print_clean_and_die "Can't create working directory"
+delete_on_exit="$workingdir"
 
-mv -- "$archive" "$archive.working" || print_clean_and_die "Can't lock '$archive'"
+tempdir="$workingdir/remote.`date +%Y-%m-%d-%H:%M:%S.%N`.$$"
+working_archive="$workingdir/$archive"
 
-delete_on_exit="$archive.working"
-$unpacker -t -- "$archive.working" || print_clean_and_die "Verification error on '$archive'"
+if $delete_archive; then
+    mv -- "$archive" "$working_archive" || print_clean_and_die "Can't move '$archive' to '$working_archive'"
+else
+    cp -- "$archive" "$working_archive" || print_clean_and_die "Can't copy '$archive' to '$working_archive'"
+fi
+
+$unpacker -t -- "$working_archive" || print_clean_and_die "Verification error on '$archive'"
 
 echo "Unpacking '$archive'"
 mkdir "$tempdir" || print_clean_and_die "Can't create '$tempdir' directory"
-delete_on_exit="$archive.working $tempdir"
-$unpacker <"$archive.working" | tar xf - -C "$tempdir" || print_clean_and_die "Can't unpack '$archive'"
+$unpacker <"$working_archive" | tar xf - -C "$tempdir" || print_clean_and_die "Can't unpack '$archive'"
 
 # The archive can contain either plain dump files
 # or one or more complete problem data directories.
