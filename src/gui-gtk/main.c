@@ -182,7 +182,7 @@ static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data
 
     char time_buf[sizeof("YYYY-MM-DD hh:mm:ss")];
     time_buf[0] = '\0';
-    const char *time_str = get_problem_item_content_or_NULL(pd, FILENAME_TIME);
+    const char *time_str = problem_data_get_content_or_NULL(pd, FILENAME_TIME);
     time_t t = 0;
     if (time_str && time_str[0])
     {
@@ -192,16 +192,16 @@ static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data
         time_buf[time_len] = '\0';
     }
 
-    const char *not_reportable_reason = get_problem_item_content_or_NULL(pd, FILENAME_NOT_REPORTABLE);
-    const char *reason = get_problem_item_content_or_NULL(pd, FILENAME_REASON);
+    const char *not_reportable_reason = problem_data_get_content_or_NULL(pd, FILENAME_NOT_REPORTABLE);
+    const char *reason = problem_data_get_content_or_NULL(pd, FILENAME_REASON);
 
     /* the source of the problem:
      * - first we try to load component, as we use it on Fedora
     */
-    const char *source = get_problem_item_content_or_NULL(pd, FILENAME_COMPONENT);
+    const char *source = problem_data_get_content_or_NULL(pd, FILENAME_COMPONENT);
     if (!source) /* if we don't have component, we fallback to executable */
-        source = get_problem_item_content_or_NULL(pd, FILENAME_EXECUTABLE);
-    const char *msg = get_problem_item_content_or_NULL(pd, FILENAME_REPORTED_TO);
+        source = problem_data_get_content_or_NULL(pd, FILENAME_EXECUTABLE);
+    const char *msg = problem_data_get_content_or_NULL(pd, FILENAME_REPORTED_TO);
 
     GtkListStore *list_store = s_dumps_list_store;
     char *subm_status = NULL;
@@ -225,7 +225,7 @@ static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data
                           -1);
 
     free(subm_status);
-    free_problem_data(pd);
+    problem_data_free(pd);
 
     VERB1 log("added: %s", problem_dir_path);
 }
@@ -678,18 +678,18 @@ static void on_button_send_cb(GtkWidget *button, gpointer data)
                                            &it_end,
                                            false);
 
-    problem_data_t *pd = new_problem_data();
+    problem_data_t *pd = problem_data_new();
 
     if (text[0])
     {
-        add_to_problem_data(pd, "description", text);
+        problem_data_add_text_noteditable(pd, "description", text);
     }
 
     /* why it doesn't want to hide before report ends? */
     gtk_widget_destroy(s_report_window);
 
     report_problem_in_memory(pd, LIBREPORT_NOWAIT | LIBREPORT_GETPID);
-    free_problem_data(pd);
+    problem_data_free(pd);
 }
 
 static void on_menu_report_cb(GtkMenuItem *menuitem, gpointer unused)

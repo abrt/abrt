@@ -355,20 +355,15 @@ static const char *get_filename(const char *path)
     return path;
 }
 
-problem_data_t *problem_data_new()
-{
-    return new_problem_data();
-}
-
 int problem_data_add_item(problem_data_t *pd, char * key, char * value)
 {
-    add_to_problem_data_ext(pd, key, value, CD_FLAG_TXT);
+    problem_data_add(pd, key, value, CD_FLAG_TXT);
     return 0;
 }
 
 int problem_data_add_file(problem_data_t *pd, const char* path)
 {
-    add_to_problem_data_ext(pd, get_filename(path), path, CD_FLAG_FILE);
+    problem_data_add(pd, get_filename(path), path, CD_FLAG_FILE);
     return 0;
 }
 
@@ -387,6 +382,6 @@ int problem_data_save(problem_data_t *pd, char **problem_id)
 
 void problem_data_destroy(problem_data_t *pd)
 {
-    free_problem_data(pd);
+    problem_data_free(pd);
     pd = NULL;
 }

@@ -36,7 +36,7 @@ void free_vector_of_problem_data(vector_of_problem_data_t *vector)
 
 vector_of_problem_data_t *new_vector_of_problem_data(void)
 {
-    return g_ptr_array_new_with_free_func((void (*)(void*)) &free_problem_data);
+    return g_ptr_array_new_with_free_func((void (*)(void*)) &problem_data_free);
 }
 
 problem_data_t *fill_crash_info(const char *dump_dir_name)
@@ -51,7 +51,7 @@ problem_data_t *fill_crash_info(const char *dump_dir_name)
 
     problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
     dd_close(dd);
-    add_to_problem_data_ext(problem_data, CD_DUMPDIR, dump_dir_name,
+    problem_data_add(problem_data, CD_DUMPDIR, dump_dir_name,
                             CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE + CD_FLAG_LIST);
 
     return problem_data;

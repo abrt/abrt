@@ -410,9 +410,9 @@ int main(int argc, char **argv)
             if (!problem_data)
                 xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
-            release = get_problem_item_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
+            release = problem_data_get_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
             //COMPAT, remove in abrt-2.1
-            if (!release) release = get_problem_item_content_or_die(problem_data, "release");
+            if (!release) release = problem_data_get_content_or_die(problem_data, "release");
             char *product = NULL, *version = NULL;
             parse_release_for_bz(release, &product, &version);
             query = strbuf_append_strf(query, "release=f%s&", version);

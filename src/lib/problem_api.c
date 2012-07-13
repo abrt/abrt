@@ -128,13 +128,13 @@ problem_data_t *get_problem_data_dbus(const char *problem_dir_path)
         return NULL;
     }
 
-    problem_data_t *pd = new_problem_data();
+    problem_data_t *pd = problem_data_new();
     char *key, *val;
     GVariantIter *iter;
     g_variant_get(result, "(a{ss})", &iter);
     while (g_variant_iter_loop(iter, "{ss}", &key, &val))
     {
-        add_to_problem_data(pd, key, val);
+        problem_data_add_text_noteditable(pd, key, val);
     }
     g_variant_unref(result);
     return pd;

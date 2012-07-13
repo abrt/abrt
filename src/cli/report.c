@@ -62,7 +62,7 @@ int cmd_report(int argc, const char **argv)
             g_ptr_array_sort_with_data(ci, &cmp_problem_data, (char *) FILENAME_TIME);
             problem_data_t *pd = get_problem_data(ci, at);
 
-            dir_name = get_problem_item_content_or_NULL(pd, CD_DUMPDIR);
+            dir_name = problem_data_get_content_or_NULL(pd, CD_DUMPDIR);
         }
 
         int status = report_problem_in_dir(dir_name,

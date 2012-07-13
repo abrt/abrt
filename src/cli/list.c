@@ -72,7 +72,7 @@ static void print_crash_list(vector_of_problem_data_t *crash_list, int include_r
         problem_data_t *crash = get_problem_data(crash_list, i);
         if (!include_reported)
         {
-            const char *msg = get_problem_item_content_or_NULL(crash, FILENAME_REPORTED_TO);
+            const char *msg = problem_data_get_content_or_NULL(crash, FILENAME_REPORTED_TO);
             if (msg)
                 continue;
         }
@@ -159,7 +159,7 @@ int cmd_info(int argc, const char **argv)
         }
 
         print_crash(problem, opt_detailed);
-        free_problem_data(problem);
+        problem_data_free(problem);
         if (*argv)
             printf("\n");
     }
