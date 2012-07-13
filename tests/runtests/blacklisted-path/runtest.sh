@@ -67,7 +67,7 @@ rlJournalStart
             fi
             rlLog "PATH = $crash_PATH"
 
-            if [ -n $crash_PATH ]; then
+            if [ -n "$crash_PATH" ]; then
                 rlRun "abrt-cli info $crash_PATH"
                 rlRun "abrt-cli rm $crash_PATH"
             fi
@@ -97,7 +97,7 @@ rlJournalStart
         fi
         rlLog "PATH = $crash_PATH"
 
-        if [ -n $crash_PATH ]; then
+        if [ -n "$crash_PATH" ]; then
             rlRun "abrt-cli info $crash_PATH"
             rlRun "abrt-cli rm $crash_PATH"
         fi
