@@ -343,24 +343,6 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
     return bt;
 }
 
-static const char *get_filename(const char *path)
-{
-    const char *filename = NULL;
-
-    filename = strrchr(path, '/');
-    if (filename)
-    /* +1 => strip the '/' */
-        return filename+1;
-
-    return path;
-}
-
-int problem_data_add_file(problem_data_t *pd, const char* path)
-{
-    problem_data_add(pd, get_filename(path), path, CD_FLAG_FILE);
-    return 0;
-}
-
 /** Saves the problem data
  * creates the problem_dir in the configured problems directory
  * destroyes
