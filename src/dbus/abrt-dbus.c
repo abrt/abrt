@@ -373,14 +373,7 @@ static bool handle_new_problem(GVariant *problem_info, char **problem_id, char *
     gchar *key, *value;
     while (g_variant_iter_loop(iter, "{ss}", &key, &value))
     {
-        if (problem_data_add_item(pd, key, value) != 0)
-        {
-            if (error)
-                *error = xasprintf("Cannot save item '%s'", key);
-
-            result = false;
-            goto handle_new_problem_cleanup;
-        }
+        problem_data_add_text_editable(pd, key, value);
     }
 
     if (problem_data_save(pd, problem_id) != 0)
@@ -391,8 +384,7 @@ static bool handle_new_problem(GVariant *problem_info, char **problem_id, char *
         result = false;
     }
 
-handle_new_problem_cleanup:
-    problem_data_destroy(pd);
+    problem_data_free(pd);
     return result;
 }
 

@@ -355,12 +355,6 @@ static const char *get_filename(const char *path)
     return path;
 }
 
-int problem_data_add_item(problem_data_t *pd, char * key, char * value)
-{
-    problem_data_add(pd, key, value, CD_FLAG_TXT);
-    return 0;
-}
-
 int problem_data_add_file(problem_data_t *pd, const char* path)
 {
     problem_data_add(pd, get_filename(path), path, CD_FLAG_FILE);
@@ -378,10 +372,4 @@ int problem_data_save(problem_data_t *pd, char **problem_id)
     VERB2 log("problem id: '%s'", *problem_id);
 
     return res;
-}
-
-void problem_data_destroy(problem_data_t *pd)
-{
-    problem_data_free(pd);
-    pd = NULL;
 }
