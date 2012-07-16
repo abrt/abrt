@@ -1,5 +1,10 @@
 #!/bin/bash -x
 
+source ~/common/globaldefs.sh
+source ~/common/fun.sh
+source ~/targets/${1}/defs.sh
+
+shift
 PREPARE=
 while [ -n "$*" ]; do
     flag=$1
@@ -16,11 +21,6 @@ while [ -n "$*" ]; do
     esac
     shift
 done
-exit 0
-
-source ~/common/globaldefs.sh
-source ~/common/fun.sh
-source ~/targets/${1}/defs.sh
 
 pwd
 pushd "$DATA_DIR"
@@ -97,6 +97,8 @@ sleep 30
 
 virsh --connect qemu:///system start $VM_NAME
 cat /var/lib/libvirt/dnsmasq/default.leases
+
+test -z $PREPARE || exit 0
 
 echo -n "Zzzz (until VM is executing the tests): "
 while virsh --connect qemu:///system list | grep -q $VM_NAME; do
