@@ -59,14 +59,20 @@ if [ $1 ]; then
     if [ -x /usr/sbin/abrt-install-ccpp-hook ]; then
         /usr/sbin/abrt-install-ccpp-hook uninstall
     fi
-    pidof abrtd && killall abrtd
-    pidof abrt-dump-oops && killall abrt-dump-oops
 
     if [ -f /var/run/abrt/saved_core_pattern ]; then
         rm -f /var/run/abrt/saved_core_pattern
     fi
 
     rm -f /var/spool/abrt/last-ccpp
+    yum remove "libreport*" -y;
+    yum remove "abrt\*" -y;
+
+    rm -rf /etc/abrt/
+    rm -rf /etc/libreport/
+
+
+    yum install abrt-cli -y
 
     exit 0
 else
