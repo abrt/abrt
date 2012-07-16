@@ -1,5 +1,23 @@
 #!/bin/bash -x
 
+PREPARE=
+while [ -n "$*" ]; do
+    flag=$1
+    value=$2
+
+    case "$flag" in
+        "--prepare")
+            PREPARE=true
+            shift
+        ;;
+        *)
+            echo -e "unknown option $flag\n"
+        ;;
+    esac
+    shift
+done
+exit 0
+
 source ~/common/globaldefs.sh
 source ~/common/fun.sh
 source ~/targets/${1}/defs.sh
@@ -23,7 +41,9 @@ echo 'Patching kickstart'
 
 cat ~/common/start_post_hunk >> custom-ks.cfg
 cat ~/common/git_hunk >> custom-ks.cfg
-cat ~/common/cron_hunk >> custom-ks.cfg
+
+# don't run tests automatically if --prepare is set
+test -z $PREPARE && cat ~/common/cron_hunk >> custom-ks.cfg
 
 # ssh key
 cat ~/common/ssh_pre_hunk >> custom-ks.cfg
