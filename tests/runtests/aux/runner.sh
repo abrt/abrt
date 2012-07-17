@@ -71,7 +71,7 @@ if [ $1 ]; then
     fi
 
     rm -f /var/spool/abrt/last-ccpp
-    yum remove "libreport* libreport*" -y;
+    yum remove abrt\* libreport\* -y;
 
     rm -rf /etc/abrt/
     rm -rf /etc/libreport/
@@ -80,7 +80,7 @@ if [ $1 ]; then
     PACKAGES="abrt-desktop \
     abrt-cli \
     libreport-plugin-reportuploader \
-    libreport-plugin-malix";
+    libreport-plugin-mailx";
 
     yum install $PACKAGES -y;
 
