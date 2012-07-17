@@ -55,6 +55,12 @@ if [ $1 ]; then
     echo ":: TEST END MARK ::"
     popd
 
+
+    # stop services
+    service abrt-oops stop
+    service abrt-xorg stop
+    service abrtd stop
+
     # cleanup
     if [ -x /usr/sbin/abrt-install-ccpp-hook ]; then
         /usr/sbin/abrt-install-ccpp-hook uninstall
@@ -65,16 +71,19 @@ if [ $1 ]; then
     fi
 
     rm -f /var/spool/abrt/last-ccpp
-    yum remove "libreport*" -y;
-    yum remove "abrt\*" -y;
+    yum remove "libreport* libreport*" -y;
 
     rm -rf /etc/abrt/
     rm -rf /etc/libreport/
     rm -rf /var/spool/abrt/*
 
+    PACKAGES="abrt-desktop \
+    abrt-cli \
+    libreport-plugin-reportuploader \
+    libreport-plugin-malix";
 
-    yum install abrt-desktop -y
-    yum install abrt-cli -y;
+    yum install $PACKAGES -y;
+
     service abrtd restart
     service abrt-ccpp restart
     service abrt-oops restart
