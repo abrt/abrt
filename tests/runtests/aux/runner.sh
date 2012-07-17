@@ -74,6 +74,7 @@ if [ $1 ]; then
 
 
     yum install abrt-desktop -y
+    yum install abrt-cli -y;
     service abrtd restart
     service abrt-ccpp restart
     service abrt-oops restart
