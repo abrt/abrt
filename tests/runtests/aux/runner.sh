@@ -70,9 +70,10 @@ if [ $1 ]; then
 
     rm -rf /etc/abrt/
     rm -rf /etc/libreport/
+    rm -rf /var/spool/abrt/*
 
 
-    yum install abrt-cli -y
+    yum install abrt-desktop -y
     service abrtd restart
     service abrt-ccpp restart
     service abrt-koops restart
