@@ -73,6 +73,9 @@ if [ $1 ]; then
 
 
     yum install abrt-cli -y
+    service abrtd restart
+    service abrt-ccpp restart
+    service abrt-koops restart
 
     exit 0
 else
