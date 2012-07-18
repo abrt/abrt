@@ -298,7 +298,7 @@ int main(int argc, char **argv)
                 break;
         dump_dir_name[++i] = '\0';
 
-        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ DD_OPEN_READONLY);
         if (!dd)
             return 1;
 
