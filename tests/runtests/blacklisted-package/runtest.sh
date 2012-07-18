@@ -48,6 +48,9 @@ rlJournalStart
             rlDie "No blacklisted packages; won't proceed."
         fi
         rlAssertGrep "strace" $TmpDir/blacklisted.abrt
+
+        # the copied config files has wrong selinux context => fixing..
+        rlRun "restorecon -R /etc/abrt"
     rlPhaseEnd
 
     rlPhaseStartTest
