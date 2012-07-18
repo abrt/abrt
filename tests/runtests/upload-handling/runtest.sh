@@ -50,7 +50,8 @@ rlJournalStart
 
         rem_upload_dir=$( echo /var/spool/abrt/remote* )
         rlAssertExists "$rem_upload_dir/coredump"
-        rlAssertNotExists "/var/spool/abrt-upload/upload.tar.gz"
+        # because of commit c43d2e7b890e48fd30e248f2d578f4bde81cc140 and rhbz#839285
+        rlAssertExists "/var/spool/abrt-upload/upload.tar.gz"
     rlPhaseEnd
 
     rlPhaseStartCleanup
