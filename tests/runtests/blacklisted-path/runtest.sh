@@ -55,6 +55,9 @@ rlJournalStart
             BLACKLISTEDPATHS="$(grep BlackListedPaths /etc/abrt/abrt-action-save-package-data.conf |  sed 's/BlackListedPaths\s*=\s*//' )"
             rlLogInfo "Blacklisted paths: $BLACKLISTEDPATHS"
 
+            # the copied config files has wrong selinux context => fixing..
+            rlRun "restorecon -R /etc/abrt"
+
             rlLog "Generate crash (not blacklisted path)"
             sleep 3m &
             sleep 2
