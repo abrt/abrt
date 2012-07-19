@@ -1,8 +1,5 @@
 #!/bin/bash
 
-echo "Disabling selinux"
-setenforce 0
-
 if [ $1 ]; then
     # core pattern
     if ! cat /proc/sys/kernel/core_pattern | grep -q abrt; then
