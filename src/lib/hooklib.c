@@ -347,11 +347,11 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
  * creates the problem_dir in the configured problems directory
  * destroyes
 */
-int problem_data_save(problem_data_t *pd, char **problem_id)
+char* problem_data_save(problem_data_t *pd)
 {
     load_abrt_conf();
-    LibreportError res = save_dump_dir_from_problem_data(pd, problem_id, g_settings_dump_location);
-    VERB2 log("problem id: '%s'", *problem_id);
+    char *problem_id = save_dump_dir_from_problem_data(pd, g_settings_dump_location);
+    VERB2 log("problem id: '%s'", problem_id);
 
-    return res;
+    return problem_id;
 }

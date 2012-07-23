@@ -16,4 +16,4 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-int problem_data_save(problem_data_t *pd, char **problem_id);
+char *problem_data_save(problem_data_t *pd);

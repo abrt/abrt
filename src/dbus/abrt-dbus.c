@@ -362,10 +362,8 @@ static bool allowed_problem_dir(const char *dir_name)
     return true;
 }
 
-static bool handle_new_problem(GVariant *problem_info, char **problem_id, char **error)
+static char *handle_new_problem(GVariant *problem_info, char **error)
 {
-    bool result = true;
-
     problem_data_t *pd = problem_data_new();
 
     GVariantIter *iter;
@@ -376,16 +374,15 @@ static bool handle_new_problem(GVariant *problem_info, char **problem_id, char *
         problem_data_add_text_editable(pd, key, value);
     }
 
-    if (problem_data_save(pd, problem_id) != 0)
+    char *problem_id = problem_data_save(pd);
+    if (!problem_id)
     {
         if (error)
             *error = xasprintf("Cannot create a new problem");
-
-        result = false;
     }
 
     problem_data_free(pd);
-    return result;
+    return problem_id;
 }
 
 static void return_InvalidProblemDir_error(GDBusMethodInvocation *invocation, const char *dir_name)
@@ -421,9 +418,9 @@ static void handle_method_call(GDBusConnection *connection,
 
     if (g_strcmp0(method_name, "NewProblem") == 0)
     {
-        char *problem_id = NULL;
         char *error = NULL;
-        if (!handle_new_problem(g_variant_get_child_value(parameters, 0), &problem_id, &error))
+        char *problem_id = handle_new_problem(g_variant_get_child_value(parameters, 0), &error);
+        if (!problem_id)
         {
             g_dbus_method_invocation_return_dbus_error(invocation,
                                                       "org.freedesktop.problems.Failure",
