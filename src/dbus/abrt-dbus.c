@@ -428,8 +428,8 @@ static void handle_method_call(GDBusConnection *connection,
             free(error);
             return;
         }
-        // else
-        response = g_variant_new("(s)", problem_id);
+        /* else */
+        response = g_variant_new("(s)", strrchr(problem_id, '/') + 1);
         g_dbus_method_invocation_return_value(invocation, response);
         free(problem_id);
 

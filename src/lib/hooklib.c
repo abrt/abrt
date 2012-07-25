@@ -345,13 +345,20 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
 
 /** Saves the problem data
  * creates the problem_dir in the configured problems directory
- * destroyes
-*/
+ */
 char* problem_data_save(problem_data_t *pd)
 {
     load_abrt_conf();
-    char *problem_id = save_dump_dir_from_problem_data(pd, g_settings_dump_location);
-    VERB2 log("problem id: '%s'", problem_id);
 
+    struct dump_dir *dd = create_dump_dir_from_problem_data(pd, g_settings_dump_location);
+
+    char *problem_id = NULL;
+    if (dd)
+    {
+        problem_id = xstrdup(dd->dd_dirname);
+        dd_close(dd);
+    }
+
+    VERB2 log("problem id: '%s'", problem_id);
     return problem_id;
 }
