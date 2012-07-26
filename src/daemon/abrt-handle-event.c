@@ -59,6 +59,12 @@ static int core_backtrace_is_duplicate(struct btp_thread *bt1, const char *bt2_t
         VERB1 log("Failed to parse backtrace, considering it not duplicate");
         return 0;
     }
+    else if (btp_thread_get_frame_count(bt2) <= 0)
+    {
+        VERB1 log("Core backtrace has zero frames, considering it not duplicate");
+        result = 0;
+        goto end;
+    }
 
     int distance = btp_thread_levenshtein_distance_custom(bt1, bt2, true,
                                                           btp_core_backtrace_frame_cmp);
@@ -72,6 +78,7 @@ static int core_backtrace_is_duplicate(struct btp_thread *bt1, const char *bt2_t
         result = (distance <= BACKTRACE_DUP_THRESHOLD);
     }
 
+end:
     btp_free_core_backtrace(bt2);
 
     return result;
@@ -81,12 +88,6 @@ static void dup_uuid_init(const struct dump_dir *dd)
 {
     if (uuid)
         return; /* we already checked it, don't do it again */
-
-    /* don't do uuid-based check on crashes that have backtrace available
-     * XXX: this relies on the fact that backtrace is created in the same event as UUID
-     */
-    if (dd_exist(dd, FILENAME_CORE_BACKTRACE))
-        return;
 
     uuid = dd_load_text_ext(dd, FILENAME_UUID,
                             DD_FAIL_QUIETLY_ENOENT + DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
@@ -99,6 +100,14 @@ static int dup_uuid_compare(const struct dump_dir *dd)
     int different;
 
     if (!uuid)
+        return 0;
+
+    /* don't do uuid-based check on crashes that have backtrace available (and
+     * nonempty)
+     * XXX: this relies on the fact that backtrace is created in the same event
+     * as UUID
+     */
+    if (corebt && btp_thread_get_frame_count(corebt) > 0)
         return 0;
 
     dd_uuid = dd_load_text_ext(dd, FILENAME_UUID, DD_FAIL_QUIETLY_ENOENT);
@@ -132,6 +141,14 @@ static void dup_corebt_init(const struct dump_dir *dd)
         return; /* no backtrace */
 
     corebt = btp_load_core_backtrace(corebt_text);
+
+    if (corebt && btp_thread_get_frame_count(corebt) <= 0)
+    {
+        VERB1 log("Core backtrace of the crash has zero frames");
+        btp_free_core_backtrace(corebt);
+        corebt = NULL;
+    }
+
     free(corebt_text);
 }
 
