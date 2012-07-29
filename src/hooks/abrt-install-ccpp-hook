@@ -73,10 +73,10 @@ status() {
 	cur_first=`printf "%s" "$cur" | sed 's/ .*//'`
 	# Is it already installed?
 	if test x"$cur_first" = x"|$HOOK_BIN"; then   # yes
-		$verbose && printf "Installed\n"
+		printf "abrt-ccpp hook is installed\n"
 		return 0
 	else
-		$verbose && printf "Not installed\n"
+		printf "abrt-ccpp hook is not installed\n"
 		return 1
 	fi
 }
