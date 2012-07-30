@@ -92,8 +92,6 @@ Group: System Environment/Libraries
 Requires: elfutils, elfutils-libelf, elfutils-libs, cpio
 Requires: gdb >= 7.0-3
 Requires: %{name} = %{version}-%{release}
-# We use reporter-bugzilla tool in default config file, so:
-Requires: libreport-plugin-bugzilla
 
 %description addon-ccpp
 This package contains hook for C/C++ crashed programs and %{name}'s C/C++
@@ -103,8 +101,6 @@ analyzer plugin.
 Summary: %{name}'s retrace client
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
-# We use reporter-bugzilla tool in default config file, so:
-Requires: libreport-plugin-bugzilla
 Requires: xz
 
 %description retrace-client
@@ -116,10 +112,7 @@ Summary: %{name}'s kerneloops addon
 Group: System Environment/Libraries
 Requires: curl
 Requires: %{name} = %{version}-%{release}
-# We use reporter-kerneloops tool in default config file, so:
 Requires: libreport-plugin-kerneloops
-# We use reporter-bugzilla tool in default config file, so:
-Requires: libreport-plugin-bugzilla
 Obsoletes: kerneloops > 0.0.1
 Obsoletes: abrt-plugin-kerneloops > 0.0.1
 Obsoletes: abrt-plugin-kerneloopsreporter > 0.0.1
@@ -129,8 +122,6 @@ Summary: %{name}'s vmcore addon
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-addon-kerneloops
-# We use reporter-kerneloops tool in default config file, so:
-Requires: libreport-plugin-kerneloops
 Requires: crash
 
 %description addon-kerneloops
