@@ -153,6 +153,12 @@ static void watch_this_dir(const char *dir_name)
     }
 }
 
+/* Returns non 0 if str is NULL or if str consists from white spaces */
+inline static int is_null_or_empty_string(const char *str)
+{
+    return !str || skip_whitespace(str)[0] == '\0';
+}
+
 static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data)
 {
     bool use_dbus = (bool)data;
@@ -192,15 +198,25 @@ static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data
         time_buf[time_len] = '\0';
     }
 
-    const char *not_reportable_reason = problem_data_get_content_or_NULL(pd, FILENAME_NOT_REPORTABLE);
-    const char *reason = problem_data_get_content_or_NULL(pd, FILENAME_REASON);
+    const char *reason = problem_data_get_content_or_NULL(pd, FILENAME_NOT_REPORTABLE);
+    if (is_null_or_empty_string(reason)) /* if problem is NOT not reportable we use reason */
+    {
+        reason = problem_data_get_content_or_NULL(pd, FILENAME_REASON);
+        if (is_null_or_empty_string(reason)) /* if we don't have reason we use 'N/A' */
+            reason = "N/A";
+    }
 
     /* the source of the problem:
      * - first we try to load component, as we use it on Fedora
     */
     const char *source = problem_data_get_content_or_NULL(pd, FILENAME_COMPONENT);
-    if (!source) /* if we don't have component, we fallback to executable */
+    if (is_null_or_empty_string(source)) /* if we don't have component, we fallback to executable */
+    {
         source = problem_data_get_content_or_NULL(pd, FILENAME_EXECUTABLE);
+        if (is_null_or_empty_string(source)) /* even if we don't have executable, we use 'N/A' */
+            source = "N/A";
+    }
+
     const char *msg = problem_data_get_content_or_NULL(pd, FILENAME_REPORTED_TO);
 
     GtkListStore *list_store = s_dumps_list_store;
@@ -209,13 +225,19 @@ static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data
     {
         list_store = s_reported_dumps_list_store;
         subm_status = get_last_line(msg);
+        if (is_null_or_empty_string(subm_status))
+        {   /* the problem is reported but the submission status is not available */
+            /* we have to use 'N/A' string instead of empty string */
+            free(subm_status);
+            subm_status = xstrdup("N/A");
+        }
     }
 
     GtkTreeIter iter;
     gtk_list_store_append(list_store, &iter);
     gtk_list_store_set(list_store, &iter,
                           COLUMN_SOURCE, source,
-                          COLUMN_REASON, not_reportable_reason ? : reason,
+                          COLUMN_REASON, reason,
                           //OPTION: time format
                           COLUMN_LATEST_CRASH_STR, time_buf,
                           COLUMN_LATEST_CRASH, t,
