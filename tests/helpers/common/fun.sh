@@ -1,5 +1,29 @@
 #!/bin/bash
 
+function wait_for_vm() {
+    echo "Waiting for the machine to boot"
+
+    set +x
+
+    try=0;
+    while true; do
+      ping -w 1 $IP &> /dev/null;
+      res=$?;
+      if [ $res == 0 ]; then
+        break;
+      fi;
+
+      if [ $try == 100 ]; then # max tries
+         echo "Seems like machine '$VM_NAME' doesn't want to talk with us on '$IP'"
+         exit 1;
+      fi
+      let try=try+1;
+      sleep 1; # wait between the attempts, otherwise it floods the log
+    done;
+
+    set -x
+}
+
 function reinit_vm() {
     if [ -z "${VM_NAME+x}" ]; then
         echo '$VM_NAME variable missing'
@@ -9,13 +33,34 @@ function reinit_vm() {
     if virsh --connect qemu:///system list | grep -q $VM_NAME;  then
         echo 'Destroying virtual machine'
         virsh --connect qemu:///system destroy $VM_NAME
-        sleep 3
     fi
 
-    if virsh --connect qemu:///system list --all | grep -q $VM_NAME;  then
-        echo 'Undef virtual machine'
-        virsh --connect qemu:///system undefine $VM_NAME
-        sleep 1
+#    if virsh --connect qemu:///system list --all | grep -q $VM_NAME;  then
+#        echo 'Undef virtual machine'
+#        virsh --connect qemu:///system undefine $VM_NAME
+
+    echo "Restoring vm ${VM_NAME}"
+    # beware sudo!!
+    sudo dd if=/pub/VM/${VM_NAME}.img of=/dev/mapper/vg-${CURR_TARGET}_vm bs=4M
+    if [ $? -ne 0 ]; then
+        echo "Restoring VM failed";
+        exit 1;
+    else
+        echo "VM restored";
+    fi
+
+#    fi
+}
+
+function update_vm_image() {
+    echo "Saving new image for ${VM_NAME}"
+    # beware sudo!!
+    sudo dd of=/pub/VM/${VM_NAME}.img.latest if=/dev/mapper/vg-${CURR_TARGET}_vm bs=4M
+    if [ $? -ne 0 ]; then
+        echo "Saving new image failed";
+        exit 1;
+    else
+        echo "Image saved successfully";
     fi
 }
 
@@ -138,4 +183,115 @@ function res_mail() {
         echo "Mail: FAILED"
     fi
     popd
+}
+
+function recreate_vm() {
+    if [ -z "${VM_NAME+x}" ]; then
+        echo '$VM_NAME variable missing'
+        return
+    fi
+
+    if virsh --connect qemu:///system list | grep -q $VM_NAME;  then
+        echo 'Destroying virtual machine'
+        virsh --connect qemu:///system destroy $VM_NAME
+        sleep 3
+    fi
+
+    if virsh --connect qemu:///system list --all | grep -q $VM_NAME;  then
+        echo 'Undef virtual machine'
+        virsh --connect qemu:///system undefine $VM_NAME
+        sleep 1
+    fi
+
+    #reinit_vm
+    echo 'Getting kickstart'
+    get_ks
+
+    cp orig-ks.cfg custom-ks.cfg
+    rm -f orig-ks.cfg
+
+    echo 'Patching kickstart'
+
+    cat ~/common/start_post_hunk >> custom-ks.cfg
+    cat ~/common/git_hunk >> custom-ks.cfg
+
+    # ssh key
+    cat ~/common/ssh_pre_hunk >> custom-ks.cfg
+    embed_file "/root/.ssh/id_rsa" ~/.ssh/id_rsa
+    # ssh login key
+    embed_file "/root/.ssh/authorized_keys" ~/.ssh/id_rsa.pub
+    cat ~/common/ssh_post_hunk >> custom-ks.cfg
+
+    # procmail cfg
+    cat ~/common/procmail_hunk >> custom-ks.cfg
+
+    # custom cfg
+    embed_file "/root/abrt/tests/runtests/aux/config.sh.local" ./config.sh.local
+
+    # fedorahosted alias
+    embed_file "/etc/hosts" ~/common/hosts_hunk
+    embed_file "/etc/motd" ~/common/motd_hunk
+
+    add_rhel_repos
+    add_abrt_repos
+
+    # exclude build tests
+    cat ~/common/exclude_build_tests >> custom-ks.cfg
+
+    # disable gpg check
+    cat ~/common/no_gpg_check >> custom-ks.cfg
+
+    # %post
+    cat ~/common/end_post_hunk >> custom-ks.cfg
+
+    echo 'Running virt-install'
+    virt-install --name $VM_NAME --ram "1300" \
+      --connect qemu:///system \
+      --location "$LOC" \
+      --disk path=$DISK,cache=none \
+      --initrd-inject=./custom-ks.cfg --extra-args "ks=file:/custom-ks.cfg ${INIT_EXTRA_ARGS}" \
+      --noautoconsole \
+      --os-type=linux \
+      --os-variant=$OS_VARIANT \
+      --graphics type=vnc \
+      --quiet \
+      --network bridge:br0,mac=$MAC
+
+    set +x
+    echo 'virt-install done'
+    echo -n "Zzzz (until VM is being installed): "
+    while virsh --connect qemu:///system list | grep -q $VM_NAME; do
+        echo -n '.'
+        sleep 1m
+    done
+    echo 'x'
+
+    virsh --connect qemu:///system start $VM_NAME
+    wait_for_vm
+
+    echo "Giving the sshd a while to start"
+    sleep 5
+
+    echo "Powering of the machine"
+
+    set +x
+
+    try=0;
+    while true; do
+      ssh -o StrictHostKeyChecking=no root@$IP "halt -p"
+      res=$?;
+      if [ $res == 0 ]; then
+        break;
+      fi;
+
+      if [ $try == 100 ]; then # max tries
+         echo "Seems like machine '$VM_NAME' doesn't want to talk with us on '$IP'"
+         exit 1;
+      fi
+      let try=try+1;
+      sleep 1; # wait between the attempts, otherwise it floods the log
+    done;
+
+    set -x
+
 }

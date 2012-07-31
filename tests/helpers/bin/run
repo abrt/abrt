@@ -1,8 +1,9 @@
 #!/bin/bash -x
 
 source ~/common/globaldefs.sh
-source ~/common/fun.sh
 source ~/targets/${1}/defs.sh
+source ~/common/fun.sh
+CURR_TARGET=$1
 
 shift
 PREPARE=
@@ -30,84 +31,65 @@ if [ ! -d data ]; then
     mkdir data
 fi
 
+# if PREPARE is set, we only reinstall the VMs and die
+if [ $PREPARE ]; then
+    recreate_vm
+    update_vm_image
+    exit 0
+fi
+
 reinit_vm
-echo 'Getting kickstart'
-get_ks
-
-cp orig-ks.cfg custom-ks.cfg
-rm -f orig-ks.cfg
-
-echo 'Patching kickstart'
-
-cat ~/common/start_post_hunk >> custom-ks.cfg
-cat ~/common/git_hunk >> custom-ks.cfg
-
-# don't run tests automatically if --prepare is set
-test -z $PREPARE && cat ~/common/cron_hunk >> custom-ks.cfg
-
-# ssh key
-cat ~/common/ssh_pre_hunk >> custom-ks.cfg
-embed_file "/root/.ssh/id_rsa" ~/.ssh/id_rsa
-cat ~/common/ssh_post_hunk >> custom-ks.cfg
-
-# procmail cfg
-cat ~/common/procmail_hunk >> custom-ks.cfg
-
-# custom cfg
-embed_file "/root/abrt/tests/runtests/aux/config.sh.local" ./config.sh.local
-
-# fedorahosted alias
-embed_file "/etc/hosts" ~/common/hosts_hunk
-embed_file "/etc/motd" ~/common/motd_hunk
-
-add_rhel_repos
-add_abrt_repos
-
-# exclude build tests
-cat ~/common/exclude_build_tests >> custom-ks.cfg
-
-# disable gpg check
-cat ~/common/no_gpg_check >> custom-ks.cfg
-
-# %post
-cat ~/common/end_post_hunk >> custom-ks.cfg
-
-echo 'Running virt-install'
-virt-install --name $VM_NAME --ram "1300" \
-  --connect qemu:///system \
-  --location "$LOC" \
-  --disk path=$DISK,cache=none \
-  --initrd-inject=./custom-ks.cfg --extra-args "ks=file:/custom-ks.cfg ${INIT_EXTRA_ARGS}" \
-  --noautoconsole \
-  --os-type=linux \
-  --os-variant=$OS_VARIANT \
-  --graphics type=vnc \
-  --quiet
-
-set +x
-echo 'virt-install done'
-echo -n "Zzzz (until VM is being installed): "
-while virsh --connect qemu:///system list | grep -q $VM_NAME; do
-    echo -n '.'
-    sleep 1m
-done
-echo 'x'
-
-sleep 30
 
 virsh --connect qemu:///system start $VM_NAME
-cat /var/lib/libvirt/dnsmasq/default.leases
+if [ $? != 0 ]; then
+   # how about we create it here instead of dying??
+   echo "VM with name $VM_NAME does not exist!"
+   exit 1;
+fi
 
-test -z $PREPARE || exit 0
+wait_for_vm
+
+echo "Giving the sshd a while to start"
+sleep 5
+
+set +x
+
+while true; do
+  scp -o StrictHostKeyChecking=no ~/targets/$CURR_TARGET/runtests.sh root@$IP:~
+  res=$?;
+  if [ $res == 0 ]; then
+    break;
+  fi;
+
+  if [ $try == 100 ]; then # max tries
+     echo "Can't upload runtests.sh to VM";
+     exit 1;
+  fi
+  let try=try+1;
+  sleep 1; # wait between the attempts, otherwise it floods the log
+done
+
+while true; do
+  ssh -o StrictHostKeyChecking=no root@$IP "sh ./runtests.sh"
+  res=$?;
+  if [ $res == 0 ]; then
+    break;
+  fi;
+
+  if [ $try == 100 ]; then # max tries
+     echo "Seems like machine '$VM_NAME' doesn't want to talk with us on '$IP'"
+     exit 1;
+  fi
+  let try=try+1;
+  sleep 1; # wait between the attempts, otherwise it floods the log
+done
 
 echo -n "Zzzz (until VM is executing the tests): "
 while virsh --connect qemu:///system list | grep -q $VM_NAME; do
     echo -n '.'
     sleep 1m
 done
-echo 'x'
-
-sleep 30
+echo -n 'x'
 set -x
 
 handle_results "$DATA_DIR/data/" "/var/nightly_results/$( basename $DATA_DIR/)"
