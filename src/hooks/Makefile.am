@@ -26,7 +26,9 @@ abrt_hook_ccpp_LDADD = \
     $(LIBREPORT_LIBS)
 
 python_PYTHON = abrt.pth abrt_exception_handler.py
-EXTRA_DIST = abrt_exception_handler.py.in abrt-install-ccpp-hook abrt-harvest-vmcore
+EXTRA_DIST = abrt_exception_handler.py.in \
+	abrt-install-ccpp-hook.in \
+	abrt-harvest-vmcore
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc)) $(man1_MANS)
 
@@ -44,3 +46,8 @@ install-data-local:
 	sed -e s,\@VAR_RUN\@,\"$(VAR_RUN)\",g \
 	    -e s,\@CONF_DIR\@,\"$(CONF_DIR)\",g \
 	    abrt_exception_handler.py.in >abrt_exception_handler.py
+
+abrt-install-ccpp-hook: abrt-install-ccpp-hook.in
+	sed -e s,\@VAR_RUN\@,$(VAR_RUN),g \
+	    -e s,\@libexecdir\@,$(libexecdir),g \
+		$< >$@
