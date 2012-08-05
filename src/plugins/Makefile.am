@@ -80,8 +80,7 @@ abrt_watch_log_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 abrt_watch_log_LDADD = \
     $(GLIB_LIBS) \
     $(LIBREPORT_LIBS) \
@@ -94,8 +93,7 @@ abrt_dump_oops_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 abrt_dump_oops_LDADD = \
     $(GLIB_LIBS) \
     $(LIBREPORT_LIBS) \
@@ -108,8 +106,7 @@ abrt_dump_xorg_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 abrt_dump_xorg_LDADD = \
     $(GLIB_LIBS) \
     $(LIBREPORT_LIBS) \
@@ -122,8 +119,7 @@ abrt_action_analyze_c_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 abrt_action_analyze_c_LDADD = \
     $(LIBREPORT_LIBS) \
     ../lib/libabrt.la
@@ -135,8 +131,7 @@ abrt_action_analyze_python_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 abrt_action_analyze_python_LDADD = \
     $(LIBREPORT_LIBS)
 
@@ -148,8 +143,7 @@ abrt_action_analyze_oops_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 abrt_action_analyze_oops_LDADD = \
     $(LIBREPORT_LIBS) \
     ../lib/libabrt.la
@@ -161,8 +155,7 @@ abrt_action_trim_files_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 abrt_action_trim_files_LDADD = \
     $(LIBREPORT_LIBS) \
     ../lib/libabrt.la
@@ -176,8 +169,7 @@ abrt_action_generate_backtrace_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 abrt_action_generate_backtrace_LDADD = \
     $(LIBREPORT_LIBS) \
     ../lib/libabrt.la
@@ -191,8 +183,7 @@ abrt_action_generate_core_backtrace_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     $(BTPARSER_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 abrt_action_generate_core_backtrace_LDADD = \
     $(LIBREPORT_LIBS) \
     $(BTPARSER_LIBS) \
@@ -206,8 +197,7 @@ abrt_action_analyze_backtrace_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     $(BTPARSER_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 abrt_action_analyze_backtrace_LDADD = \
     $(LIBREPORT_LIBS) \
     $(BTPARSER_LIBS)
@@ -233,8 +223,7 @@ abrt_retrace_client_SOURCES = \
      $(NSS_CFLAGS) \
      $(GLIB_CFLAGS) \
      -D_GNU_SOURCE \
-     $(LIBREPORT_CFLAGS) \
-     -Wall -Wwrite-strings -Werror
+     $(LIBREPORT_CFLAGS)
  abrt_retrace_client_LDADD = \
      $(LIBREPORT_LIBS) \
      $(BTPARSER_LIBS) \
@@ -249,8 +238,7 @@ abrt_dedup_client_SOURCES = \
      $(NSS_CFLAGS) \
      $(GLIB_CFLAGS) \
      -D_GNU_SOURCE \
-     $(LIBREPORT_CFLAGS) \
-     -Wall -Wwrite-strings -Werror
+     $(LIBREPORT_CFLAGS)
  abrt_dedup_client_LDADD = \
      $(LIBREPORT_LIBS) \
      $(BTPARSER_LIBS) \
@@ -266,8 +254,7 @@ abrt_bodhi_SOURCES = \
     $(LIBREPORT_WEB_CFLAGS) \
     $(JSON_C_CFLAGS) \
     $(RPM_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
  abrt_bodhi_LDADD = \
     $(JSON_C_LIBS) \
     $(RPM_LIBS) \

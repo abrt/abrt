@@ -3,8 +3,13 @@ AC_INIT([abrt],
 	[crash-catcher@fedorahosted.org])
 
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign silent-rules])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+# Support silent build rules. Disable by either passing --disable-silent-rules
+# to ./configure or passing V=1 to make
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
+# The 'yes' argument is undocumented but it is common knowledge that it works.
+AM_SILENT_RULES([yes])
+
 
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
@@ -13,12 +18,12 @@ AC_PROG_LN_S
 
 AC_SYS_LARGEFILE
 CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
-          -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing -std=gnu99 -Wall"
+          -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing -std=gnu99 -Wall -Wwrite-strings"
 
 AC_ARG_ENABLE(debug,
               [AC_HELP_STRING([--enable-debug],
                              [Enable debug information])],
-              [CFLAGS="$CFLAGS -DDEBUG -ggdb -g"])
+              [CFLAGS="$CFLAGS -DDEBUG -ggdb -g -O0"])
 
 dnl ****** INTERNATIONALIZATION **********************
 GETTEXT_PACKAGE=abrt
@@ -114,7 +119,7 @@ AC_CONFIG_TESTDIR(tests)
 AC_CONFIG_FILES([tests/Makefile tests/atlocal])
 AM_MISSING_PROG([AUTOM4TE], [autom4te])
 # Needed by tests/atlocal.in.
-AC_SUBST([O0CFLAGS], [`echo $CFLAGS   | sed 's/-O[[0-9]] *//'`])
+AC_SUBST([O0CFLAGS], [`echo $CFLAGS   | sed 's/-O[[0-9]] *//' | sed 's/-Werror//'`])
 
 AC_CONFIG_HEADERS([config.h])
 

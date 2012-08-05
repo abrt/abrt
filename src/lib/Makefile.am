@@ -15,7 +15,6 @@ libabrt_la_SOURCES = \
     problem_api.c
 
 libabrt_la_CPPFLAGS = \
-    -Wall -Wwrite-strings -Werror \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DVAR_RUN=\"$(VAR_RUN)\" \

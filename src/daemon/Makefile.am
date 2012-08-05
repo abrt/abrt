@@ -24,9 +24,7 @@ abrtd_CPPFLAGS = \
     -DLIBEXEC_DIR=\"$(libexecdir)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings \
-    -Werror
+    -D_GNU_SOURCE
 abrtd_LDADD = \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS)
@@ -38,8 +36,7 @@ abrt_server_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 abrt_server_LDADD = \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS)
@@ -52,8 +49,7 @@ abrt_handle_event_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     $(BTPARSER_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 abrt_handle_event_LDADD = \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS) \
@@ -68,8 +64,7 @@ abrt_action_save_package_data_CPPFLAGS = \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings -Werror
+    -D_GNU_SOURCE
 abrt_action_save_package_data_LDADD = \
     $(RPM_LIBS) \
     $(LIBREPORT_LIBS) \

@@ -13,9 +13,7 @@ abrt_dbus_CPPFLAGS = \
     $(DBUS_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     $(POLKIT_CFLAGS) \
-    -D_GNU_SOURCE \
-    -Wall -Wwrite-strings \
-    -Werror
+    -D_GNU_SOURCE
 abrt_dbus_LDADD = \
     $(GIO_LIBS) \
     ../lib/libabrt.la \

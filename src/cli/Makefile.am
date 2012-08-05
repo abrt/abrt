@@ -14,8 +14,7 @@ abrt_cli_SOURCES = $(CLI_C) $(BUILTIN_C) builtin-cmd.h abrt-cli-core.h
 abrt_cli_CFLAGS = \
 	-I$(srcdir)/../include \
 	-I$(srcdir)/../lib \
-	$(LIBREPORT_CFLAGS) \
-	-Wwrite-strings -Werror
+	$(LIBREPORT_CFLAGS)
 
 abrt_cli_LDADD = \
     $(LIBREPORT_LIBS) \

@@ -236,8 +236,7 @@ uses PolicyKit to authorize to access the problem data.
 
 %build
 autoconf
-%configure
-CFLAGS="-fno-strict-aliasing"
+CFLAGS="%{optflags} -Werror" %configure --disable-silent-rules
 make %{?_smp_mflags}
 
 %install
