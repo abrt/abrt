@@ -158,7 +158,7 @@ Requires: abrt-tui
 Requires: libreport-cli
 Requires: abrt-addon-kerneloops
 Requires: abrt-addon-ccpp, abrt-addon-python
-Requires: libreport-plugin-bugzilla, libreport-plugin-logger
+Requires: libreport-plugin-logger, libreport-plugin-rhtsupport, libreport-plugin-mailx
 
 %description cli
 Virtual package to make easy default installation on non-graphical environments.
@@ -179,7 +179,7 @@ Requires: abrt-addon-python
 # Default config of addon-ccpp requires gdb
 Requires: gdb >= 7.0-3
 Requires: abrt-gui
-Requires: libreport-plugin-logger, libreport-plugin-bugzilla
+Requires: libreport-plugin-logger, libreport-plugin-rhtsupport, libreport-plugin-mailx
 #Requires: abrt-plugin-firefox
 %if 0%{?fedora}
 Requires: libreport-plugin-bodhi
