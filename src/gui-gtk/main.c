@@ -46,7 +46,6 @@ static GtkTreePath *s_path_treeview;
 static GtkTreePath *s_path_reported_treeview;
 
 static GtkWidget *g_main_window;
-static GtkWidget *s_report_window;
 
 enum
 {
@@ -484,51 +483,6 @@ static void on_menu_help_cb(GtkMenuItem *menuitem, gpointer unused)
     gtk_show_uri(NULL, help_uri, GDK_CURRENT_TIME, NULL);
 }
 
-static void on_button_send_cb(GtkWidget *button, gpointer data)
-{
-    GtkTextView *tev = GTK_TEXT_VIEW(data);
-    GtkTextBuffer *buf = gtk_text_view_get_buffer(tev);
-    GtkTextIter it_start;
-    GtkTextIter it_end;
-    gtk_text_buffer_get_start_iter(buf, &it_start);
-    gtk_text_buffer_get_end_iter(buf, &it_end);
-    gchar *text = gtk_text_buffer_get_text(buf,
-                                           &it_start,
-                                           &it_end,
-                                           false);
-
-    problem_data_t *pd = new_problem_data();
-
-    if (text[0])
-    {
-        add_to_problem_data(pd, "description", text);
-    }
-
-    /* why it doesn't want to hide before report ends? */
-    gtk_widget_destroy(s_report_window);
-
-    report_problem_in_memory(pd, LIBREPORT_NOWAIT | LIBREPORT_GETPID);
-    free_problem_data(pd);
-}
-
-static void on_menu_report_cb(GtkMenuItem *menuitem, gpointer unused)
-{
-    s_report_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(s_report_window), _("Problem description"));
-    gtk_window_set_default_size(GTK_WINDOW(s_report_window), 400, 400);
-    GtkWidget *vbox = gtk_vbox_new(false, 0);
-    GtkWidget *button_send = gtk_button_new_with_label(_("Send"));
-    GtkWidget *tev = gtk_text_view_new();
-    g_signal_connect(button_send, "clicked", G_CALLBACK(on_button_send_cb), tev);
-
-    gtk_box_pack_start(GTK_BOX(vbox), tev, true, true, 0);
-    gtk_box_pack_start(GTK_BOX(vbox), button_send, false, false, 5);
-
-    gtk_container_add(GTK_CONTAINER(s_report_window), vbox);
-
-    gtk_widget_show_all(s_report_window);
-}
-
 static void on_menu_about_cb(GtkMenuItem *menuitem, gpointer unused)
 {
     static const char copyright_str[] = "Copyright © 2009, 2010, 2011 Red Hat, Inc";
@@ -711,15 +665,12 @@ static GtkWidget *create_menu(void)
     /* help submenu */
     GtkWidget *help_submenu = gtk_menu_new();
     GtkWidget *online_help_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_HELP, NULL);
-    GtkWidget *report_problem_item = gtk_menu_item_new_with_label(_("Report problem with ABRT"));
     GtkWidget *about_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_ABOUT, NULL);
     gtk_menu_shell_append(GTK_MENU_SHELL(help_submenu), online_help_item);
-    gtk_menu_shell_append(GTK_MENU_SHELL(help_submenu), report_problem_item);
     gtk_menu_shell_append(GTK_MENU_SHELL(help_submenu), about_item);
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(help_item), help_submenu);
 
     g_signal_connect(online_help_item, "activate", G_CALLBACK(on_menu_help_cb), NULL);
-    g_signal_connect(report_problem_item, "activate", G_CALLBACK(on_menu_report_cb), NULL);
     g_signal_connect(about_item, "activate", G_CALLBACK(on_menu_about_cb), NULL);
 
     return menu;
