@@ -9,7 +9,6 @@ MAN1_TXT += abrt-action-analyze-backtrace.txt
 MAN1_TXT += abrt-action-analyze-oops.txt
 MAN1_TXT += abrt-action-analyze-python.txt
 MAN1_TXT += abrt-action-list-dsos.txt
-MAN1_TXT += abrt-retrace-client.txt
 MAN1_TXT += abrt-handle-upload.txt
 MAN1_TXT += abrt-server.txt
 MAN1_TXT += abrt-cli.txt

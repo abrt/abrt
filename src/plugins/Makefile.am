@@ -15,7 +15,6 @@ bin_PROGRAMS = \
     abrt-action-generate-backtrace \
     abrt-action-generate-core-backtrace \
     abrt-action-analyze-backtrace \
-    abrt-retrace-client \
     abrt-dedup-client
 
 libexec_PROGRAMS = abrt-action-install-debuginfo-to-abrt-cache
@@ -26,7 +25,6 @@ eventsdir = $(EVENTS_DIR)
 
 dist_events_DATA = \
     analyze_LocalGDB.xml \
-    analyze_RetraceServer.xml \
     analyze_VMcore.xml \
     collect_xsession_errors.xml \
     collect_Smolt.xml \
@@ -40,7 +38,6 @@ eventsconfdir = $(EVENTS_CONF_DIR)
 
 dist_eventsconf_DATA = \
     ccpp_event.conf \
-    ccpp_retrace_event.conf \
     koops_event.conf \
     vmcore_event.conf \
     python_event.conf \
@@ -64,7 +61,6 @@ EXTRA_DIST = \
     collect_vimrc_user.xml.in \
     collect_vimrc_system.xml.in \
     analyze_LocalGDB.xml.in \
-    analyze_RetraceServer.xml.in \
     analyze_VMcore.xml.in \
     abrt-action-analyze-vmcore \
     https-utils.h
@@ -198,22 +194,6 @@ abrt_action_install_debuginfo_to_abrt_cache_CPPFLAGS = \
 abrt_action_install_debuginfo_to_abrt_cache_LDADD = \
      $(LIBREPORT_LIBS) \
      ../lib/libabrt.la
-
-abrt_retrace_client_SOURCES = \
-    abrt-retrace-client.c \
-    https-utils.c
- abrt_retrace_client_CFLAGS = \
-    -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-     $(NSS_CFLAGS) \
-     $(GLIB_CFLAGS) \
-     -D_GNU_SOURCE \
-     $(LIBREPORT_CFLAGS) \
-     -Wall -Wwrite-strings -Werror
- abrt_retrace_client_LDADD = \
-     $(LIBREPORT_LIBS) \
-     $(BTPARSER_LIBS) \
-     $(NSS_LIBS)
 
 abrt_dedup_client_SOURCES = \
     abrt-dedup-client.c \
