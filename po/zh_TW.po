@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-03-08 09:35+0100\n"
+"POT-Creation-Date: 2012-08-06 13:40+0200\n"
 "PO-Revision-Date: 2012-03-01 04:30+0000\n"
 "Last-Translator: Chester Cheng <ccheng@redhat.com>\n"
 "Language-Team: Chinese (Taiwan) <trans-zh_TW@lists.fedoraproject.org>\n"
@@ -19,54 +19,54 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
-#: ../src/applet/abrt-applet.desktop.in.h:1
-msgid "ABRT notification applet"
-msgstr "ABRT 通知面板程式"
-
-#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
+#: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
 #: ../src/gui-gtk/main.c:733
 msgid "Automatic Bug Reporting Tool"
 msgstr "自動錯誤回報工具"
 
-#: ../src/applet/applet.c:344 ../src/applet/applet.c:346
+#: ../src/applet/abrt-applet.desktop.in.h:2
+msgid "ABRT notification applet"
+msgstr "ABRT 通知面板程式"
+
+#: ../src/applet/applet.c:345 ../src/applet/applet.c:347
 msgid "Warning"
 msgstr "警告"
 
-#: ../src/applet/applet.c:394
+#: ../src/applet/applet.c:395
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "可通知使用者有關於 ABRT 所發現之問題的通知區域面板程式"
 
-#: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:579
+#: ../src/applet/applet.c:411 ../src/gui-gtk/main.c:579
 msgid "translator-credits"
 msgstr "Terry Chuang <tchuang@redhat.com>, 2011."
 
-#: ../src/applet/applet.c:420
+#: ../src/applet/applet.c:421
 msgid "Hide"
 msgstr "隱藏"
 
-#: ../src/applet/applet.c:472
+#: ../src/applet/applet.c:473
 msgid "Report"
 msgstr "回報"
 
-#: ../src/applet/applet.c:475
+#: ../src/applet/applet.c:476
 msgid "Show"
 msgstr "顯示"
 
-#: ../src/applet/applet.c:479
+#: ../src/applet/applet.c:480
 msgid "A Problem has Occurred"
 msgstr "遭遇到問題"
 
-#: ../src/applet/applet.c:607
+#: ../src/applet/applet.c:608
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "在 %s 套件中偵測到錯誤"
 
-#: ../src/applet/applet.c:609
+#: ../src/applet/applet.c:610
 msgid "A problem has been detected"
 msgstr "偵測到錯誤"
 
-#: ../src/applet/applet.c:737
+#: ../src/applet/applet.c:738
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -76,7 +76,7 @@ msgstr ""
 "\n"
 "ABRT 偵測到新問題時，通知使用者的 applet\n"
 
-#: ../src/applet/applet.c:809
+#: ../src/applet/applet.c:810
 msgid "ABRT service is not running"
 msgstr "ABRT 服務非運作中"
 
@@ -103,33 +103,33 @@ msgstr "傾印目錄"
 msgid "Configuration file"
 msgstr "配置檔案"
 
-#: ../src/daemon/abrt-server.c:457 ../src/daemon/abrt-dbus.c:378
-#: ../src/daemon/abrtd.c:642
+#: ../src/daemon/abrt-server.c:458 ../src/daemon/abrt-dbus.c:378
+#: ../src/daemon/abrtd.c:655
 msgid "& [options]"
 msgstr "& [options]"
 
-#: ../src/daemon/abrt-server.c:468
+#: ../src/daemon/abrt-server.c:469
 msgid "Use UID as client uid"
 msgstr "使用 UID 作為客戶端 uid"
 
-#: ../src/daemon/abrt-server.c:469 ../src/plugins/abrt-dump-oops.c:244
+#: ../src/daemon/abrt-server.c:470 ../src/plugins/abrt-dump-oops.c:244
 msgid "Log to syslog"
 msgstr "紀錄至 syslog"
 
-#: ../src/daemon/abrt-server.c:470 ../src/daemon/abrtd.c:658
+#: ../src/daemon/abrt-server.c:471 ../src/daemon/abrtd.c:671
 #: ../src/gui-gtk/main.c:1068
 msgid "Add program names to log"
 msgstr "加入程式名稱至紀錄檔"
 
-#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:655
+#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:668
 msgid "Do not daemonize"
 msgstr "不要在幕後運行"
 
-#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:656
+#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:669
 msgid "Log to syslog even with -d"
 msgstr "即使加上 -d 參數也紀錄至 syslog"
 
-#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:657
+#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:670
 msgid "Exit after NUM seconds of inactivity"
 msgstr "NUM 秒內沒有動作，就退出"
 
@@ -271,29 +271,29 @@ msgstr ""
 msgid "Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
 msgstr "用法：{0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:60
+#: ../src/plugins/abrt-action-analyze-vmcore.in:63
 msgid "File {0} doesn't exist"
 msgstr "檔案 {0} 不存在"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:92
+#: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "{0} is not a valid vmcore"
 msgstr "{0} 不是合於規定的 vmcore"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:98
+#: ../src/plugins/abrt-action-analyze-vmcore.in:101
 msgid "Required vmlinux debuginfo is installed in {0}"
 msgstr "所需的 vmlinux debuginfo 安裝於 {0}"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:104
+#: ../src/plugins/abrt-action-analyze-vmcore.in:107
 msgid "Installing kernel debuginfo(s)"
 msgstr "安裝 kernel debuginfo"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:111
-#: ../src/plugins/abrt-action-analyze-vmcore.in:117
+#: ../src/plugins/abrt-action-analyze-vmcore.in:114
+#: ../src/plugins/abrt-action-analyze-vmcore.in:120
 msgid "Can't download required debuginfo"
 msgstr "無法下載所需的 debuginfo"
 
 #. Let user know what's going on
-#: ../src/plugins/abrt-action-analyze-vmcore.in:120
+#: ../src/plugins/abrt-action-analyze-vmcore.in:123
 #: ../src/plugins/abrt-action-generate-backtrace.c:44
 msgid "Generating backtrace"
 msgstr "產生 backtrace"
@@ -464,10 +464,10 @@ msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr "無法發送長度為 %d 的 HTTP 需求：NSS 錯誤 %d。"
 
 #: ../src/plugins/abrt-dump-oops.c:175
-#, c-format
+#, fuzzy, c-format
 msgid ""
-"A kernel problem occurred, but your kernel has beentainted (flags:%s). "
-"Kernel maintainers are unable todiagnose tainted reports."
+"A kernel problem occurred, but your kernel has been tainted (flags:%s). "
+"Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
 "發生 kernel 的問題，您的 kernel 已經受損 (flags:%s)。kernel 維護人員無法診斷"
 "受損問題。"
@@ -783,12 +783,12 @@ msgid "Unknown operation: %s."
 msgstr "不明作業：%s。"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
-msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr "下載 debuginfo 套件並透過本機端的 GDB 產生 backtrace 資訊"
-
-#: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Local GNU Debugger"
 msgstr "本機 GNU 除錯程式"
+
+#: ../src/plugins/analyze_LocalGDB.xml.in.h:2
+msgid "Download debuginfo packages and generate backtrace locally using GDB"
+msgstr "下載 debuginfo 套件並透過本機端的 GDB 產生 backtrace 資訊"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
@@ -800,22 +800,10 @@ msgstr ""
 "像 RetraceServer，所以不會傳送核心傾印資料至遠端機器。"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
-msgid "Address of the retrace server"
-msgstr "Retrace 伺服器的位址"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:2
-msgid "Insecure"
-msgstr "不安全"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-msgid "Retrace server URL"
-msgstr "Retrace 伺服器網址"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Send core dump to remote retrace server for analysis"
 msgstr "傳送核心傾印至遠端 retrace 伺服器以進行分析"
 
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:5
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
 "Uploads coredump to a server, which generates backtrace and returns it. "
 "Pros: no need for debuginfo downloads. Retrace server's database of "
@@ -827,6 +815,18 @@ msgstr ""
 "載 debuginfo 套件、retrace 伺服器資料庫中的 debuginfo 比較完整、retrace 伺服"
 "器可能會產生較良好的 backtrace 資料。缺點：您需要上傳核心傾印檔案，該檔案包含"
 "當掉程式的所有資料，包括您的私人資料 (若存在的話)。"
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:3
+msgid "Retrace server URL"
+msgstr "Retrace 伺服器網址"
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:4
+msgid "Address of the retrace server"
+msgstr "Retrace 伺服器的位址"
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:5
+msgid "Insecure"
+msgstr "不安全"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 msgid "Whether or not to use insecure connection"
@@ -842,10 +842,14 @@ msgstr ""
 "org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;(warning)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
+msgid "Collect .xsession-errors"
+msgstr ""
+
+#: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
 msgstr "儲存來自於 ~/.xsession-errors 檔案的相關行列"
 
-#: ../src/plugins/collect_xsession_errors.xml.in.h:2
+#: ../src/plugins/collect_xsession_errors.xml.in.h:3
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
@@ -1034,6 +1038,10 @@ msgid "Collect GConf configuration"
 msgstr "蒐集 GConf 配置"
 
 #: ../src/plugins/collect_GConf.xml.in.h:2
+msgid "Save configuration from application's GConf directory"
+msgstr "從應用程式的 GConf 目錄儲存配置"
+
+#: ../src/plugins/collect_GConf.xml.in.h:3
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
@@ -1041,19 +1049,27 @@ msgstr ""
 "執行「gconftool-2 --recursive-list /apps/executable」並儲存成"
 "「gconf_subtree」元素。"
 
-#: ../src/plugins/collect_GConf.xml.in.h:3
-msgid "Save configuration from application's GConf directory"
-msgstr "從應用程式的 GConf 目錄儲存配置"
-
 #: ../src/plugins/collect_Smolt.xml.in.h:1
-msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
-msgstr "執行「smoltSendProfile -p」並將結果存成「smolt_data」元素。"
+msgid "Collect Smolt profile"
+msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
 msgid "Save your computer's hardware profile information"
 msgstr "儲存您電腦的硬體設定檔資訊"
 
+#: ../src/plugins/collect_Smolt.xml.in.h:3
+msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
+msgstr "執行「smoltSendProfile -p」並將結果存成「smolt_data」元素。"
+
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
+msgid "Collect system-wide vim configuration files"
+msgstr "蒐集系統全域的 vim 配置檔案。"
+
+#: ../src/plugins/collect_vimrc_system.xml.in.h:2
+msgid "Save /etc/vimrc and /etc/gvimrc"
+msgstr "儲存 /etc/vimrc and /etc/gvimrc"
+
+#: ../src/plugins/collect_vimrc_system.xml.in.h:3
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
@@ -1061,26 +1077,18 @@ msgstr ""
 "檢查「/etc」目錄中是否有 vimrc 與 gvimrc 檔案，並將其分別儲存為 system_vimrc "
 "與 system_gvimrc。"
 
-#: ../src/plugins/collect_vimrc_system.xml.in.h:2
-msgid "Collect system-wide vim configuration files"
-msgstr "蒐集系統全域的 vim 配置檔案。"
-
-#: ../src/plugins/collect_vimrc_system.xml.in.h:3
-msgid "Save /etc/vimrc and /etc/gvimrc"
-msgstr "儲存 /etc/vimrc and /etc/gvimrc"
-
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
+msgid "Collect yours vim configuration files"
+msgstr "蒐集您的 vim 配置檔案"
+
+#: ../src/plugins/collect_vimrc_user.xml.in.h:2
+msgid "Save .vimrc and .gvimrc from your home directory"
+msgstr "從家目錄中儲存 .vimrc 與 .gvimrc"
+
+#: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
 "Checks if there are .vimrc and .gvimrc in your home directory and saves them "
 "as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 "檢查家目錄中是否有 .vimrc 與 .gvimrc，並將其分別儲存為 user_vimrc 與 "
 "user_gvimrc。"
-
-#: ../src/plugins/collect_vimrc_user.xml.in.h:2
-msgid "Collect yours vim configuration files"
-msgstr "蒐集您的 vim 配置檔案"
-
-#: ../src/plugins/collect_vimrc_user.xml.in.h:3
-msgid "Save .vimrc and .gvimrc from your home directory"
-msgstr "從家目錄中儲存 .vimrc 與 .gvimrc"

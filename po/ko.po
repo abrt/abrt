@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-03-08 09:35+0100\n"
+"POT-Creation-Date: 2012-08-06 13:40+0200\n"
 "PO-Revision-Date: 2012-03-02 01:30+0000\n"
 "Last-Translator: eukim <eukim@redhat.com>\n"
 "Language-Team: Korean (http://www.transifex.net/projects/p/fedora/language/"
@@ -19,56 +19,56 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
-#: ../src/applet/abrt-applet.desktop.in.h:1
-msgid "ABRT notification applet"
-msgstr "ABRT 알림 애플릿"
-
-#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
+#: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
 #: ../src/gui-gtk/main.c:733
 msgid "Automatic Bug Reporting Tool"
 msgstr "자동 버그 보고 도구 (ABRT) "
 
-#: ../src/applet/applet.c:344 ../src/applet/applet.c:346
+#: ../src/applet/abrt-applet.desktop.in.h:2
+msgid "ABRT notification applet"
+msgstr "ABRT 알림 애플릿"
+
+#: ../src/applet/applet.c:345 ../src/applet/applet.c:347
 msgid "Warning"
 msgstr "경고"
 
-#: ../src/applet/applet.c:394
+#: ../src/applet/applet.c:395
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT가 감지한 문제를 사용자에게 통지하기 위한 통지 영역 애플릿"
 
-#: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:579
+#: ../src/applet/applet.c:411 ../src/gui-gtk/main.c:579
 msgid "translator-credits"
 msgstr ""
 "김은주<eukim@redhat.com>\n"
 "오현석<hoh@redhat.com>"
 
-#: ../src/applet/applet.c:420
+#: ../src/applet/applet.c:421
 msgid "Hide"
 msgstr "숨기기"
 
-#: ../src/applet/applet.c:472
+#: ../src/applet/applet.c:473
 msgid "Report"
 msgstr "보고  "
 
-#: ../src/applet/applet.c:475
+#: ../src/applet/applet.c:476
 msgid "Show"
 msgstr "보기 "
 
-#: ../src/applet/applet.c:479
+#: ../src/applet/applet.c:480
 msgid "A Problem has Occurred"
 msgstr "한 가지 문제가 발생했습니다 "
 
-#: ../src/applet/applet.c:607
+#: ../src/applet/applet.c:608
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "%s 패키지에서 문제가 감지되었습니다  "
 
-#: ../src/applet/applet.c:609
+#: ../src/applet/applet.c:610
 msgid "A problem has been detected"
 msgstr "문제가 감지되었습니다  "
 
-#: ../src/applet/applet.c:737
+#: ../src/applet/applet.c:738
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -78,7 +78,7 @@ msgstr ""
 "\n"
 "ABRT가 새로운 문제를 감지할 경우 사용자에게 통지하는 애플릿\n"
 
-#: ../src/applet/applet.c:809
+#: ../src/applet/applet.c:810
 msgid "ABRT service is not running"
 msgstr "ABRT 서비스가 실행되고 있지 않음 "
 
@@ -105,33 +105,33 @@ msgstr "덤프 디렉토리 "
 msgid "Configuration file"
 msgstr "설정 파일 "
 
-#: ../src/daemon/abrt-server.c:457 ../src/daemon/abrt-dbus.c:378
-#: ../src/daemon/abrtd.c:642
+#: ../src/daemon/abrt-server.c:458 ../src/daemon/abrt-dbus.c:378
+#: ../src/daemon/abrtd.c:655
 msgid "& [options]"
 msgstr "& [options]"
 
-#: ../src/daemon/abrt-server.c:468
+#: ../src/daemon/abrt-server.c:469
 msgid "Use UID as client uid"
 msgstr "UID를 클라이언트 uid로 사용 "
 
-#: ../src/daemon/abrt-server.c:469 ../src/plugins/abrt-dump-oops.c:244
+#: ../src/daemon/abrt-server.c:470 ../src/plugins/abrt-dump-oops.c:244
 msgid "Log to syslog"
 msgstr "syslog에 로그   "
 
-#: ../src/daemon/abrt-server.c:470 ../src/daemon/abrtd.c:658
+#: ../src/daemon/abrt-server.c:471 ../src/daemon/abrtd.c:671
 #: ../src/gui-gtk/main.c:1068
 msgid "Add program names to log"
 msgstr "로그에 프로그램 이름 추가 "
 
-#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:655
+#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:668
 msgid "Do not daemonize"
 msgstr "데몬화하지 않습니다 "
 
-#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:656
+#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:669
 msgid "Log to syslog even with -d"
 msgstr "-d를 사용하여 syslog에 로그 "
 
-#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:657
+#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:670
 msgid "Exit after NUM seconds of inactivity"
 msgstr "NUM 초 동안 동작하지 않을 경우 종료합니다 "
 
@@ -271,29 +271,29 @@ msgid "Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
 msgstr ""
 "사용법: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR] "
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:60
+#: ../src/plugins/abrt-action-analyze-vmcore.in:63
 msgid "File {0} doesn't exist"
 msgstr "파일 {0}이 존재하지 않음 "
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:92
+#: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "{0} is not a valid vmcore"
 msgstr "{0}은(는) 유효한 vmcore가 아닙니다 "
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:98
+#: ../src/plugins/abrt-action-analyze-vmcore.in:101
 msgid "Required vmlinux debuginfo is installed in {0}"
 msgstr "필요한 vmlinux debuginfo가 {0}에 설치되어 있습니다  "
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:104
+#: ../src/plugins/abrt-action-analyze-vmcore.in:107
 msgid "Installing kernel debuginfo(s)"
 msgstr "커널 debuginfo 설치하기 "
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:111
-#: ../src/plugins/abrt-action-analyze-vmcore.in:117
+#: ../src/plugins/abrt-action-analyze-vmcore.in:114
+#: ../src/plugins/abrt-action-analyze-vmcore.in:120
 msgid "Can't download required debuginfo"
 msgstr "필요한 debuginfo를 다운로드할 수 없습니다 "
 
 #. Let user know what's going on
-#: ../src/plugins/abrt-action-analyze-vmcore.in:120
+#: ../src/plugins/abrt-action-analyze-vmcore.in:123
 #: ../src/plugins/abrt-action-generate-backtrace.c:44
 msgid "Generating backtrace"
 msgstr "백트레이스 생성  "
@@ -466,10 +466,10 @@ msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr "%d 길이의 HTTP 요청 전송 실패: NSS 오류 %d."
 
 #: ../src/plugins/abrt-dump-oops.c:175
-#, c-format
+#, fuzzy, c-format
 msgid ""
-"A kernel problem occurred, but your kernel has beentainted (flags:%s). "
-"Kernel maintainers are unable todiagnose tainted reports."
+"A kernel problem occurred, but your kernel has been tainted (flags:%s). "
+"Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
 "커널에 문제가 발생했지만 커널 자체가 손상되어 있습니다 (플래그: %s). 커널 관"
 "리자는 손상된 보고를 진단할 수 없습니다. "
@@ -792,12 +792,12 @@ msgid "Unknown operation: %s."
 msgstr "알 수 없는 작업: %s."
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
-msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr "debuginfo 패키지를 다운로드하고 GDB를 사용하여 로컬 백트레이스 생성  "
-
-#: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Local GNU Debugger"
 msgstr "로컬 GNU 디버거 "
+
+#: ../src/plugins/analyze_LocalGDB.xml.in.h:2
+msgid "Download debuginfo packages and generate backtrace locally using GDB"
+msgstr "debuginfo 패키지를 다운로드하고 GDB를 사용하여 로컬 백트레이스 생성  "
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
@@ -810,22 +810,10 @@ msgstr ""
 "전송하지 않습니다.   "
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
-msgid "Address of the retrace server"
-msgstr "Retrace 서버 주소 "
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:2
-msgid "Insecure"
-msgstr "비보안 "
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-msgid "Retrace server URL"
-msgstr "Retrace 서버 URL "
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Send core dump to remote retrace server for analysis"
 msgstr "분석을 위해 코어 덤프를 원격 Retrace 서버로 전송 "
 
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:5
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
 "Uploads coredump to a server, which generates backtrace and returns it. "
 "Pros: no need for debuginfo downloads. Retrace server's database of "
@@ -838,6 +826,18 @@ msgstr ""
 "는 보다 완벽합니다. Retrace 서버는 보다 나은 백트레이스를 생성합니다. 단점: "
 "업로드한 코어 덤프에는 (존재할 경우) 개인 데이터를 포함하여 충돌된 프로그램에"
 "서의 모든 데이터가 포함되어 있습니다.      "
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:3
+msgid "Retrace server URL"
+msgstr "Retrace 서버 URL "
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:4
+msgid "Address of the retrace server"
+msgstr "Retrace 서버 주소 "
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:5
+msgid "Insecure"
+msgstr "비보안 "
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 msgid "Whether or not to use insecure connection"
@@ -854,10 +854,14 @@ msgstr ""
 "(warning)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
+msgid "Collect .xsession-errors"
+msgstr ""
+
+#: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
 msgstr "~/.xsession-errors 파일에서 해당 행을 저장합니다 "
 
-#: ../src/plugins/collect_xsession_errors.xml.in.h:2
+#: ../src/plugins/collect_xsession_errors.xml.in.h:3
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
@@ -1051,6 +1055,10 @@ msgid "Collect GConf configuration"
 msgstr "GConf 설정 수집 "
 
 #: ../src/plugins/collect_GConf.xml.in.h:2
+msgid "Save configuration from application's GConf directory"
+msgstr "애플리케이션의 GConf 디렉토리에서 설정 저장 "
+
+#: ../src/plugins/collect_GConf.xml.in.h:3
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
@@ -1058,19 +1066,27 @@ msgstr ""
 "gconftool-2 --recursive-list /apps/executable을 실행하고 이를 "
 "'gconf_subtree'로 저장합니다. "
 
-#: ../src/plugins/collect_GConf.xml.in.h:3
-msgid "Save configuration from application's GConf directory"
-msgstr "애플리케이션의 GConf 디렉토리에서 설정 저장 "
-
 #: ../src/plugins/collect_Smolt.xml.in.h:1
-msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
-msgstr "smoltSendProfile -p를 실행하여 출력 결과를 'smolt_data'로 저장합니다. "
+msgid "Collect Smolt profile"
+msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
 msgid "Save your computer's hardware profile information"
 msgstr "컴퓨터의 하드웨어 프로파일 정보를 저장합니다 "
 
+#: ../src/plugins/collect_Smolt.xml.in.h:3
+msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
+msgstr "smoltSendProfile -p를 실행하여 출력 결과를 'smolt_data'로 저장합니다. "
+
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
+msgid "Collect system-wide vim configuration files"
+msgstr "시스템 전역 vim 설정 파일 수집 "
+
+#: ../src/plugins/collect_vimrc_system.xml.in.h:2
+msgid "Save /etc/vimrc and /etc/gvimrc"
+msgstr "/etc/vimrc 및 /etc/gvimrc 저장 "
+
+#: ../src/plugins/collect_vimrc_system.xml.in.h:3
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
@@ -1078,26 +1094,18 @@ msgstr ""
 "/etc에 vimrc 및 gvimrc 파일이 있는지 확인하고 이를 각각 system_vimrc 및 "
 "system_gvimrc로 저장합니다. "
 
-#: ../src/plugins/collect_vimrc_system.xml.in.h:2
-msgid "Collect system-wide vim configuration files"
-msgstr "시스템 전역 vim 설정 파일 수집 "
-
-#: ../src/plugins/collect_vimrc_system.xml.in.h:3
-msgid "Save /etc/vimrc and /etc/gvimrc"
-msgstr "/etc/vimrc 및 /etc/gvimrc 저장 "
-
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
+msgid "Collect yours vim configuration files"
+msgstr "vim 설정 파일을 수집합니다 "
+
+#: ../src/plugins/collect_vimrc_user.xml.in.h:2
+msgid "Save .vimrc and .gvimrc from your home directory"
+msgstr "홈 디렉토리에서 .vimrc 및 .gvimrc를 저장합니다 "
+
+#: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
 "Checks if there are .vimrc and .gvimrc in your home directory and saves them "
 "as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 "홈 디렉토리에 .vimrc 및 .gvimrc가 있는지 확인하고 이를 각각 user_vimrc 및 "
 "user_gvimrc로 저장합니다. "
-
-#: ../src/plugins/collect_vimrc_user.xml.in.h:2
-msgid "Collect yours vim configuration files"
-msgstr "vim 설정 파일을 수집합니다 "
-
-#: ../src/plugins/collect_vimrc_user.xml.in.h:3
-msgid "Save .vimrc and .gvimrc from your home directory"
-msgstr "홈 디렉토리에서 .vimrc 및 .gvimrc를 저장합니다 "

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-03-08 09:35+0100\n"
+"POT-Creation-Date: 2012-08-06 13:40+0200\n"
 "PO-Revision-Date: 2012-02-21 14:18+0000\n"
 "Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: Portuguese <trans-pt@lists.fedoraproject.org>\n"
@@ -18,63 +18,63 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: ../src/applet/abrt-applet.desktop.in.h:1
-msgid "ABRT notification applet"
-msgstr "Applet de notificação do ABRT"
-
-#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
+#: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
 #: ../src/gui-gtk/main.c:733
 msgid "Automatic Bug Reporting Tool"
 msgstr "Ferramenta automática para reportar erros"
 
-#: ../src/applet/applet.c:344 ../src/applet/applet.c:346
+#: ../src/applet/abrt-applet.desktop.in.h:2
+msgid "ABRT notification applet"
+msgstr "Applet de notificação do ABRT"
+
+#: ../src/applet/applet.c:345 ../src/applet/applet.c:347
 msgid "Warning"
 msgstr "Aviso"
 
-#: ../src/applet/applet.c:394
+#: ../src/applet/applet.c:395
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "Applet da área de notificação que informa os utilizadores sobre os problemas "
 "detectados pela ABRT"
 
-#: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:579
+#: ../src/applet/applet.c:411 ../src/gui-gtk/main.c:579
 msgid "translator-credits"
 msgstr "Rui Gouveia <rui.gouveia@gmail.com>"
 
-#: ../src/applet/applet.c:420
+#: ../src/applet/applet.c:421
 msgid "Hide"
 msgstr "Esconder"
 
-#: ../src/applet/applet.c:472
+#: ../src/applet/applet.c:473
 msgid "Report"
 msgstr "Relatório"
 
-#: ../src/applet/applet.c:475
+#: ../src/applet/applet.c:476
 msgid "Show"
 msgstr "Mostrar"
 
-#: ../src/applet/applet.c:479
+#: ../src/applet/applet.c:480
 msgid "A Problem has Occurred"
 msgstr "Ocorreu um problema"
 
-#: ../src/applet/applet.c:607
+#: ../src/applet/applet.c:608
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr ""
 
-#: ../src/applet/applet.c:609
+#: ../src/applet/applet.c:610
 msgid "A problem has been detected"
 msgstr ""
 
-#: ../src/applet/applet.c:737
+#: ../src/applet/applet.c:738
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr ""
 
-#: ../src/applet/applet.c:809
+#: ../src/applet/applet.c:810
 msgid "ABRT service is not running"
 msgstr "O serviço ABRT não está a correr"
 
@@ -98,33 +98,33 @@ msgstr "Directório de despejo"
 msgid "Configuration file"
 msgstr "Ficheiro de configuração"
 
-#: ../src/daemon/abrt-server.c:457 ../src/daemon/abrt-dbus.c:378
-#: ../src/daemon/abrtd.c:642
+#: ../src/daemon/abrt-server.c:458 ../src/daemon/abrt-dbus.c:378
+#: ../src/daemon/abrtd.c:655
 msgid "& [options]"
 msgstr ""
 
-#: ../src/daemon/abrt-server.c:468
+#: ../src/daemon/abrt-server.c:469
 msgid "Use UID as client uid"
 msgstr "Utilizar UID como uid do cliente"
 
-#: ../src/daemon/abrt-server.c:469 ../src/plugins/abrt-dump-oops.c:244
+#: ../src/daemon/abrt-server.c:470 ../src/plugins/abrt-dump-oops.c:244
 msgid "Log to syslog"
 msgstr "Registar no syslog"
 
-#: ../src/daemon/abrt-server.c:470 ../src/daemon/abrtd.c:658
+#: ../src/daemon/abrt-server.c:471 ../src/daemon/abrtd.c:671
 #: ../src/gui-gtk/main.c:1068
 msgid "Add program names to log"
 msgstr "Adicionar nomes de programa aos registos"
 
-#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:655
+#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:668
 msgid "Do not daemonize"
 msgstr "Não enviar para segundo plano"
 
-#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:656
+#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:669
 msgid "Log to syslog even with -d"
 msgstr "Registar para o syslog mesmo com o -d"
 
-#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:657
+#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:670
 msgid "Exit after NUM seconds of inactivity"
 msgstr ""
 
@@ -250,29 +250,29 @@ msgstr ""
 msgid "Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:60
+#: ../src/plugins/abrt-action-analyze-vmcore.in:63
 msgid "File {0} doesn't exist"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:92
+#: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "{0} is not a valid vmcore"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:98
+#: ../src/plugins/abrt-action-analyze-vmcore.in:101
 msgid "Required vmlinux debuginfo is installed in {0}"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:104
+#: ../src/plugins/abrt-action-analyze-vmcore.in:107
 msgid "Installing kernel debuginfo(s)"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:111
-#: ../src/plugins/abrt-action-analyze-vmcore.in:117
+#: ../src/plugins/abrt-action-analyze-vmcore.in:114
+#: ../src/plugins/abrt-action-analyze-vmcore.in:120
 msgid "Can't download required debuginfo"
 msgstr ""
 
 #. Let user know what's going on
-#: ../src/plugins/abrt-action-analyze-vmcore.in:120
+#: ../src/plugins/abrt-action-analyze-vmcore.in:123
 #: ../src/plugins/abrt-action-generate-backtrace.c:44
 msgid "Generating backtrace"
 msgstr ""
@@ -420,8 +420,8 @@ msgstr ""
 #: ../src/plugins/abrt-dump-oops.c:175
 #, c-format
 msgid ""
-"A kernel problem occurred, but your kernel has beentainted (flags:%s). "
-"Kernel maintainers are unable todiagnose tainted reports."
+"A kernel problem occurred, but your kernel has been tainted (flags:%s). "
+"Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
 
 #: ../src/plugins/abrt-dump-oops.c:226
@@ -719,12 +719,12 @@ msgid "Unknown operation: %s."
 msgstr ""
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
-msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr ""
-
-#: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Local GNU Debugger"
 msgstr "Depurador GNU local"
+
+#: ../src/plugins/analyze_LocalGDB.xml.in.h:2
+msgid "Download debuginfo packages and generate backtrace locally using GDB"
+msgstr ""
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
@@ -734,11 +734,16 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
-msgid "Address of the retrace server"
+msgid "Send core dump to remote retrace server for analysis"
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
-msgid "Insecure"
+msgid ""
+"Uploads coredump to a server, which generates backtrace and returns it. "
+"Pros: no need for debuginfo downloads. Retrace server's database of "
+"debuginfos is more complete. Retrace server may generate better backtraces. "
+"Cons: coredump you upload contains all the data from the crashed program, "
+"including your private data, if any."
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
@@ -746,16 +751,11 @@ msgid "Retrace server URL"
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
-msgid "Send core dump to remote retrace server for analysis"
+msgid "Address of the retrace server"
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:5
-msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. "
-"Pros: no need for debuginfo downloads. Retrace server's database of "
-"debuginfos is more complete. Retrace server may generate better backtraces. "
-"Cons: coredump you upload contains all the data from the crashed program, "
-"including your private data, if any."
+msgid "Insecure"
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
@@ -770,10 +770,14 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
-msgid "Save relevant lines from ~/.xsession-errors file"
+msgid "Collect .xsession-errors"
 msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
+msgid "Save relevant lines from ~/.xsession-errors file"
+msgstr ""
+
+#: ../src/plugins/collect_xsession_errors.xml.in.h:3
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
@@ -960,47 +964,51 @@ msgid "Collect GConf configuration"
 msgstr ""
 
 #: ../src/plugins/collect_GConf.xml.in.h:2
+msgid "Save configuration from application's GConf directory"
+msgstr ""
+
+#: ../src/plugins/collect_GConf.xml.in.h:3
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
 msgstr ""
 
-#: ../src/plugins/collect_GConf.xml.in.h:3
-msgid "Save configuration from application's GConf directory"
-msgstr ""
-
 #: ../src/plugins/collect_Smolt.xml.in.h:1
-msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
+msgid "Collect Smolt profile"
 msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
 msgid "Save your computer's hardware profile information"
 msgstr ""
 
+#: ../src/plugins/collect_Smolt.xml.in.h:3
+msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
+msgstr ""
+
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
+msgid "Collect system-wide vim configuration files"
+msgstr ""
+
+#: ../src/plugins/collect_vimrc_system.xml.in.h:2
+msgid "Save /etc/vimrc and /etc/gvimrc"
+msgstr ""
+
+#: ../src/plugins/collect_vimrc_system.xml.in.h:3
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
 msgstr ""
 
-#: ../src/plugins/collect_vimrc_system.xml.in.h:2
-msgid "Collect system-wide vim configuration files"
-msgstr ""
-
-#: ../src/plugins/collect_vimrc_system.xml.in.h:3
-msgid "Save /etc/vimrc and /etc/gvimrc"
-msgstr ""
-
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
-msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
-"as user_vimrc and user_gvimrc, respectively."
-msgstr ""
-
-#: ../src/plugins/collect_vimrc_user.xml.in.h:2
 msgid "Collect yours vim configuration files"
 msgstr ""
 
-#: ../src/plugins/collect_vimrc_user.xml.in.h:3
+#: ../src/plugins/collect_vimrc_user.xml.in.h:2
 msgid "Save .vimrc and .gvimrc from your home directory"
+msgstr ""
+
+#: ../src/plugins/collect_vimrc_user.xml.in.h:3
+msgid ""
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
+"as user_vimrc and user_gvimrc, respectively."
 msgstr ""

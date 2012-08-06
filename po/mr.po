@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-03-08 09:35+0100\n"
+"POT-Creation-Date: 2012-08-06 13:40+0200\n"
 "PO-Revision-Date: 2012-02-29 12:09+0000\n"
 "Last-Translator: sandeeps <sshedmak@redhat.com>\n"
 "Language-Team: Marathi (http://www.transifex.net/projects/p/fedora/language/"
@@ -19,54 +19,54 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: ../src/applet/abrt-applet.desktop.in.h:1
-msgid "ABRT notification applet"
-msgstr "ABRT सूचना ॲप्लेट"
-
-#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui-gtk/abrt.desktop.in.h:1
+#: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
 #: ../src/gui-gtk/main.c:733
 msgid "Automatic Bug Reporting Tool"
 msgstr "ऑटोमॅटीक बग रिपोर्टिंग टूल"
 
-#: ../src/applet/applet.c:344 ../src/applet/applet.c:346
+#: ../src/applet/abrt-applet.desktop.in.h:2
+msgid "ABRT notification applet"
+msgstr "ABRT सूचना ॲप्लेट"
+
+#: ../src/applet/applet.c:345 ../src/applet/applet.c:347
 msgid "Warning"
 msgstr "सावधानता"
 
-#: ../src/applet/applet.c:394
+#: ../src/applet/applet.c:395
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "सूचना क्षेत्र ॲप्लेट जे वापरकर्त्याला ABRT द्वारे आढळलेल्या अडचणींविषयी अवगत करते"
 
-#: ../src/applet/applet.c:410 ../src/gui-gtk/main.c:579
+#: ../src/applet/applet.c:411 ../src/gui-gtk/main.c:579
 msgid "translator-credits"
 msgstr "संदिप शेडमाके <sshedmak@redhat.com>, 2010, 2011."
 
-#: ../src/applet/applet.c:420
+#: ../src/applet/applet.c:421
 msgid "Hide"
 msgstr "लपवा"
 
-#: ../src/applet/applet.c:472
+#: ../src/applet/applet.c:473
 msgid "Report"
 msgstr "रिपोर्ट"
 
-#: ../src/applet/applet.c:475
+#: ../src/applet/applet.c:476
 msgid "Show"
 msgstr "दाखवा"
 
-#: ../src/applet/applet.c:479
+#: ../src/applet/applet.c:480
 msgid "A Problem has Occurred"
 msgstr "अडचण निर्माण झाली"
 
-#: ../src/applet/applet.c:607
+#: ../src/applet/applet.c:608
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "%s संकुलमध्ये अडचण आढळली"
 
-#: ../src/applet/applet.c:609
+#: ../src/applet/applet.c:610
 msgid "A problem has been detected"
 msgstr "अडचण आढळली"
 
-#: ../src/applet/applet.c:737
+#: ../src/applet/applet.c:738
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -76,7 +76,7 @@ msgstr ""
 "\n"
 "ABRT तर्फे नवीन अडचणी आढळल्यास वापरकर्त्याला सूचीत करणारे ॲप्लेट\n"
 
-#: ../src/applet/applet.c:809
+#: ../src/applet/applet.c:810
 msgid "ABRT service is not running"
 msgstr "ABRT सेवा कार्यरत नाही"
 
@@ -103,33 +103,33 @@ msgstr "डम्प डिरेक्ट्री"
 msgid "Configuration file"
 msgstr "संरचना फाइल"
 
-#: ../src/daemon/abrt-server.c:457 ../src/daemon/abrt-dbus.c:378
-#: ../src/daemon/abrtd.c:642
+#: ../src/daemon/abrt-server.c:458 ../src/daemon/abrt-dbus.c:378
+#: ../src/daemon/abrtd.c:655
 msgid "& [options]"
 msgstr "& [options]"
 
-#: ../src/daemon/abrt-server.c:468
+#: ../src/daemon/abrt-server.c:469
 msgid "Use UID as client uid"
 msgstr "UID यांस क्लाएंट uid म्हणून वापर करा"
 
-#: ../src/daemon/abrt-server.c:469 ../src/plugins/abrt-dump-oops.c:244
+#: ../src/daemon/abrt-server.c:470 ../src/plugins/abrt-dump-oops.c:244
 msgid "Log to syslog"
 msgstr "syslog करीता लॉग"
 
-#: ../src/daemon/abrt-server.c:470 ../src/daemon/abrtd.c:658
+#: ../src/daemon/abrt-server.c:471 ../src/daemon/abrtd.c:671
 #: ../src/gui-gtk/main.c:1068
 msgid "Add program names to log"
 msgstr "लॉगमध्ये कार्यक्रम नावे समाविष्ट करा"
 
-#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:655
+#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:668
 msgid "Do not daemonize"
 msgstr "डिमन स्वरूपी बनवू नका"
 
-#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:656
+#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:669
 msgid "Log to syslog even with -d"
 msgstr "syslog मध्ये -d पर्यायसह लॉग करा"
 
-#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:657
+#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:670
 msgid "Exit after NUM seconds of inactivity"
 msgstr "निष्क्रिय झाल्यावर NUM सेकंदानंतर बाहेर पडा"
 
@@ -271,29 +271,29 @@ msgstr ""
 msgid "Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
 msgstr "वापर: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:60
+#: ../src/plugins/abrt-action-analyze-vmcore.in:63
 msgid "File {0} doesn't exist"
 msgstr "फाइल {0} अस्तित्वात नाही"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:92
+#: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "{0} is not a valid vmcore"
 msgstr "{0} वैध vmcore नाही"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:98
+#: ../src/plugins/abrt-action-analyze-vmcore.in:101
 msgid "Required vmlinux debuginfo is installed in {0}"
 msgstr "आवश्यक vmlinux debuginfo {0} मध्ये प्रतिष्ठापीत आहे"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:104
+#: ../src/plugins/abrt-action-analyze-vmcore.in:107
 msgid "Installing kernel debuginfo(s)"
 msgstr "कर्नल डिबगइंफोज् प्रतिष्ठापीत करत आहे"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:111
-#: ../src/plugins/abrt-action-analyze-vmcore.in:117
+#: ../src/plugins/abrt-action-analyze-vmcore.in:114
+#: ../src/plugins/abrt-action-analyze-vmcore.in:120
 msgid "Can't download required debuginfo"
 msgstr "आवश्यक debuginfo डाउनलोड करणे अशक्य"
 
 #. Let user know what's going on
-#: ../src/plugins/abrt-action-analyze-vmcore.in:120
+#: ../src/plugins/abrt-action-analyze-vmcore.in:123
 #: ../src/plugins/abrt-action-generate-backtrace.c:44
 msgid "Generating backtrace"
 msgstr "बॅकट्रेस निर्माण करत आहे"
@@ -465,10 +465,10 @@ msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr "%d लांबीची HTTP विनंती पाठवण्यास अपयशी: NSS त्रुटी %d."
 
 #: ../src/plugins/abrt-dump-oops.c:175
-#, c-format
+#, fuzzy, c-format
 msgid ""
-"A kernel problem occurred, but your kernel has beentainted (flags:%s). "
-"Kernel maintainers are unable todiagnose tainted reports."
+"A kernel problem occurred, but your kernel has been tainted (flags:%s). "
+"Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
 "कर्नल अडचण आढळली, परंतु कर्नल टेंट केले आहे (flags:%s). कर्नल मैंटनर्स् टैंटेड रिपोर्टस्चे "
 "विश्लेषण करण्यास अशक्य आहे."
@@ -787,12 +787,12 @@ msgid "Unknown operation: %s."
 msgstr "अपरिचीत कार्य: %s."
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
-msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr "debuginfo संकुले डाउलनोड करा व GDB चा वापर करून बॅकट्रेस निर्माण करा"
-
-#: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Local GNU Debugger"
 msgstr "स्थानीय GNU डिबगर"
+
+#: ../src/plugins/analyze_LocalGDB.xml.in.h:2
+msgid "Download debuginfo packages and generate backtrace locally using GDB"
+msgstr "debuginfo संकुले डाउलनोड करा व GDB चा वापर करून बॅकट्रेस निर्माण करा"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
@@ -804,22 +804,10 @@ msgstr ""
 "तरी, RetraceServer खेरीज, कोरडम्पला रिमोट मशीन्स् करीता पाठवत नाही."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
-msgid "Address of the retrace server"
-msgstr "रिट्रेस सर्व्हरचा पत्ता"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:2
-msgid "Insecure"
-msgstr "असुरक्षित"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-msgid "Retrace server URL"
-msgstr "रिट्रेस सर्व्हर URL"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 msgid "Send core dump to remote retrace server for analysis"
 msgstr "विश्लेषणकरीता कोर डम्पला रिट्रेस सर्व्हरकरीता पाठवा"
 
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:5
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
 "Uploads coredump to a server, which generates backtrace and returns it. "
 "Pros: no need for debuginfo downloads. Retrace server's database of "
@@ -831,6 +819,18 @@ msgstr ""
 "डाऊनलोड्स्ची आवश्यकता नाही. रिट्रेस सर्व्हरचे डिबगइंफोचे डाटाबेस बऱ्यापैकी पूर्ण आहे. रिट्रेस "
 "सर्व्हर उत्तम बॅकट्रेसेस् निर्माण करू शकतो. तोटे: अपलोड करण्याजोगी कोरडम्पमध्ये क्रॅश्ड् "
 "प्रोग्रामपासूनचे सर्व डाटा समाविष्टीत आहे, व्यक्तिगत डाटा समाविष्टीत, आढळल्यास."
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:3
+msgid "Retrace server URL"
+msgstr "रिट्रेस सर्व्हर URL"
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:4
+msgid "Address of the retrace server"
+msgstr "रिट्रेस सर्व्हरचा पत्ता"
+
+#: ../src/plugins/analyze_RetraceServer.xml.in.h:5
+msgid "Insecure"
+msgstr "असुरक्षित"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 msgid "Whether or not to use insecure connection"
@@ -847,10 +847,14 @@ msgstr ""
 "\"insecure\" लिहा"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
+msgid "Collect .xsession-errors"
+msgstr ""
+
+#: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
 msgstr "~/.xsession-errors फाइलपासून संबंधित ओळी साठवा"
 
-#: ../src/plugins/collect_xsession_errors.xml.in.h:2
+#: ../src/plugins/collect_xsession_errors.xml.in.h:3
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
@@ -1041,6 +1045,10 @@ msgid "Collect GConf configuration"
 msgstr "GConf संरचना गोळा करा"
 
 #: ../src/plugins/collect_GConf.xml.in.h:2
+msgid "Save configuration from application's GConf directory"
+msgstr "ॲप्लिकेशनच्या GConf डिरेक्ट्रीपासून संरचना साठवतो"
+
+#: ../src/plugins/collect_GConf.xml.in.h:3
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
@@ -1048,20 +1056,28 @@ msgstr ""
 "gconftool-2 --recursive-list /apps/executable चालवतो व त्यास 'gconf_subtree' "
 "घटक म्हणून साठवतो."
 
-#: ../src/plugins/collect_GConf.xml.in.h:3
-msgid "Save configuration from application's GConf directory"
-msgstr "ॲप्लिकेशनच्या GConf डिरेक्ट्रीपासून संरचना साठवतो"
-
 #: ../src/plugins/collect_Smolt.xml.in.h:1
-msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
+msgid "Collect Smolt profile"
 msgstr ""
-"smoltSendProfile -p चालवतो व त्यास 'smolt_data' घटक म्हणून आऊटपुट स्वरूपात साठवतो."
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
 msgid "Save your computer's hardware profile information"
 msgstr "संगणकाची हार्डवेअर प्रोफाइल माहिती साठवा"
 
+#: ../src/plugins/collect_Smolt.xml.in.h:3
+msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
+msgstr ""
+"smoltSendProfile -p चालवतो व त्यास 'smolt_data' घटक म्हणून आऊटपुट स्वरूपात साठवतो."
+
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
+msgid "Collect system-wide vim configuration files"
+msgstr "प्रणालीभर vim संरचना फाइल्स् गोळा करा"
+
+#: ../src/plugins/collect_vimrc_system.xml.in.h:2
+msgid "Save /etc/vimrc and /etc/gvimrc"
+msgstr "/etc/vimrc व /etc/gvimrc साठवा"
+
+#: ../src/plugins/collect_vimrc_system.xml.in.h:3
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
@@ -1069,26 +1085,18 @@ msgstr ""
 "/etc मध्ये vimrc व gvimrc आहे किंवा नाही याची तपासणी करतो व त्यास परस्पररित्या "
 "system_vimrc व system_gvimrc म्हणून साठवतो."
 
-#: ../src/plugins/collect_vimrc_system.xml.in.h:2
-msgid "Collect system-wide vim configuration files"
-msgstr "प्रणालीभर vim संरचना फाइल्स् गोळा करा"
-
-#: ../src/plugins/collect_vimrc_system.xml.in.h:3
-msgid "Save /etc/vimrc and /etc/gvimrc"
-msgstr "/etc/vimrc व /etc/gvimrc साठवा"
-
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
+msgid "Collect yours vim configuration files"
+msgstr "प्रणालीवरील तुमचे vim संरचना फाइल्स् गोळा करा"
+
+#: ../src/plugins/collect_vimrc_user.xml.in.h:2
+msgid "Save .vimrc and .gvimrc from your home directory"
+msgstr "होम डिरेक्ट्रीपासून .vimrc व .gvimrc साठवा"
+
+#: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
 "Checks if there are .vimrc and .gvimrc in your home directory and saves them "
 "as user_vimrc and user_gvimrc, respectively."
 msgstr ""
 "होम डिरेक्ट्रीत .vimrc व .gvimrc आहे किंवा नाही याची तपासणी करतो व त्यास "
 "परस्पररित्या user_vimrc व user_gvimrc म्हणून साठवतो."
-
-#: ../src/plugins/collect_vimrc_user.xml.in.h:2
-msgid "Collect yours vim configuration files"
-msgstr "प्रणालीवरील तुमचे vim संरचना फाइल्स् गोळा करा"
-
-#: ../src/plugins/collect_vimrc_user.xml.in.h:3
-msgid "Save .vimrc and .gvimrc from your home directory"
-msgstr "होम डिरेक्ट्रीपासून .vimrc व .gvimrc साठवा"
