@@ -159,6 +159,7 @@ Requires: libreport-cli
 Requires: abrt-addon-kerneloops
 Requires: abrt-addon-ccpp, abrt-addon-python
 Requires: libreport-plugin-logger, libreport-plugin-rhtsupport, libreport-plugin-mailx
+Requires: sos
 
 %description cli
 Virtual package to make easy default installation on non-graphical environments.
@@ -180,6 +181,7 @@ Requires: abrt-addon-python
 Requires: gdb >= 7.0-3
 Requires: abrt-gui
 Requires: libreport-plugin-logger, libreport-plugin-rhtsupport, libreport-plugin-mailx
+Requires: sos
 #Requires: abrt-plugin-firefox
 %if 0%{?fedora}
 Requires: libreport-plugin-bodhi
