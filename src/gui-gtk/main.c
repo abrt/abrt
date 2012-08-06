@@ -33,8 +33,8 @@
 static void scan_dirs_and_add_to_dirlist(void);
 
 
-static const char help_uri[] = "http://docs.fedoraproject.org/en-US/"
-    "Fedora/14/html/Deployment_Guide/ch-abrt.html";
+static const char help_uri[] = "http://docs.redhat.com/docs/en-US/"
+    "Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/";
 
 static GtkListStore *s_dumps_list_store;
 static GtkListStore *s_reported_dumps_list_store;
