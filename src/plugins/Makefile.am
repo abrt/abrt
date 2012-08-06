@@ -27,7 +27,6 @@ dist_events_DATA = \
     analyze_LocalGDB.xml \
     analyze_VMcore.xml \
     collect_xsession_errors.xml \
-    collect_Smolt.xml \
     collect_GConf.xml \
     collect_vimrc_user.xml \
     collect_vimrc_system.xml
@@ -42,7 +41,6 @@ dist_eventsconf_DATA = \
     vmcore_event.conf \
     python_event.conf \
     smart_event.conf \
-    smolt_event.conf \
     gconf_event.conf \
     vimrc_event.conf
 
@@ -55,7 +53,6 @@ PYTHON_FILES = \
 
 EXTRA_DIST = \
     $(PYTHON_FILES) \
-    collect_Smolt.xml.in \
     collect_xsession_errors.xml.in \
     collect_GConf.xml.in \
     collect_vimrc_user.xml.in \
