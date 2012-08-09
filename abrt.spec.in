@@ -187,7 +187,7 @@ Virtual package to make easy default installation on desktop environments.
 
 %build
 autoconf
-%configure
+%configure --with-systemdsystemunitdir=""
 CFLAGS="-fno-strict-aliasing"
 make %{?_smp_mflags}
 
