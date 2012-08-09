@@ -579,7 +579,7 @@ static void handle_method_call(GDBusConnection *connection,
         GList *elements = string_list_from_variant(array);
         g_variant_unref(array);
 
-        GVariantBuilder *builder = g_variant_builder_new(G_VARIANT_TYPE_ARRAY);
+        GVariantBuilder *builder = NULL;
         for (GList *l = elements; l; l = l->next)
         {
             const char *element_name = (const char*)l->data;
@@ -590,6 +590,9 @@ static void handle_method_call(GDBusConnection *connection,
             VERB1 log("element '%s' %s", element_name, value ? "fetched" : "not found");
             if (value)
             {
+                if (!builder)
+                    builder = g_variant_builder_new(G_VARIANT_TYPE_ARRAY);
+
                 /* g_variant_builder_add makes a copy. No need to xstrdup here */
                 g_variant_builder_add(builder, "{ss}", element_name, value);
                 free(value);
@@ -597,8 +600,12 @@ static void handle_method_call(GDBusConnection *connection,
         }
         list_free_with_free(elements);
         dd_close(dd);
+        /* It is OK to call g_variant_new("(a{ss})", NULL) because */
+        /* G_VARIANT_TYPE_TUPLE allows NULL value */
         GVariant *response = g_variant_new("(a{ss})", builder);
-        g_variant_builder_unref(builder);
+
+        if (builder)
+            g_variant_builder_unref(builder);
 
         VERB2 log("GetInfo: returning value for '%s'", problem_dir);
         g_dbus_method_invocation_return_value(invocation, response);
