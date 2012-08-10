@@ -19,7 +19,7 @@
 
 int daemon_is_ok()
 {
-    int fd = open(VAR_RUN"/abrtd.pid", O_RDONLY);
+    int fd = open(VAR_RUN"/abrt/abrtd.pid", O_RDONLY);
     if (fd < 0)
     {
         return 0;

@@ -34,7 +34,7 @@
 #define IGNORE_RESULT(func_call) do { if (func_call) /* nothing */; } while (0)
 
 
-#define VAR_RUN_PIDFILE   VAR_RUN"/abrtd.pid"
+#define VAR_RUN_PIDFILE   VAR_RUN"/abrt/abrtd.pid"
 
 #define SOCKET_FILE       VAR_RUN"/abrt/abrt.socket"
 #define SOCKET_PERMISSION 0666
