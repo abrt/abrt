@@ -6,6 +6,7 @@ bin_SCRIPTS = \
     abrt-action-analyze-vmcore \
     abrt-action-list-dsos \
     abrt-action-perform-ccpp-analysis
+    abrt-action-save-kernel-data
 
 bin_PROGRAMS = \
     abrt-watch-log \
