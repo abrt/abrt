@@ -497,6 +497,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files addon-vmcore
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vmcore_event.conf
+%config(noreplace) %{_sysconfdir}/%{name}/abrt-harvest-vmcore.conf
 %{_sysconfdir}/libreport/events/analyze_VMcore.xml
 %if %{with systemd}
 %{_unitdir}/abrt-vmcore.service
@@ -510,6 +511,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files addon-python
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python.conf
+# TODO? Do we need %config(noreplace) in the below line too?
 %{_sysconfdir}/libreport/events.d/python_event.conf
 %{_bindir}/abrt-action-analyze-python
 %{_mandir}/man1/abrt-action-analyze-python.1*
