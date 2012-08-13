@@ -121,8 +121,10 @@ static int new_dir_exists(void)
             if (diff == 0)
                 l1 = g_list_next(l1);
         }
-        if (l1)
+        if (l1) {
             new_dir_exists = 1;
+            error_msg("New dir detected: %s", (char *)l1->data);
+        }
         if (different || l1 || l2)
         {
             rewind(fp);
@@ -493,9 +495,13 @@ static void Crash(DBusMessage* signal)
     const char* message = _("A problem in the %s package has been detected");
     if (package_name[0] == '\0')
         message = _("A problem has been detected");
-    init_applet();
-    set_icon_tooltip(message, package_name);
-    show_icon();
+
+    if (server_has_persistence())
+    {
+        init_applet();
+        set_icon_tooltip(message, package_name);
+        show_icon();
+    }
 
     /* If this problem seems to be repeating, do not annoy user with popup dialog.
      * (The icon in the tray is not suppressed)
@@ -507,7 +513,8 @@ static void Crash(DBusMessage* signal)
      && ap_last_problem_dir && strcmp(ap_last_problem_dir, dir) == 0
      && (unsigned)(cur_time - last_time) < 2 * 60 * 60
     ) {
-        log_msg("repeated problem in %s, not showing the notification", package_name);
+        /* log_msg doesn't show in .xsession_errors */
+        error_msg("repeated problem in %s, not showing the notification", package_name);
         return;
     }
     last_time = cur_time;
