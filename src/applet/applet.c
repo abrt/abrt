@@ -502,11 +502,23 @@ static void show_icon(void)
 #endif
 }
 
+static void call_notify_init(void)
+{
+    static bool inited = 0;
+    if (inited)
+        return;
+    inited = 1;
+
+    notify_init("ABRT");
+}
+
 #if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR >= 6)
 static gboolean server_has_persistence(void)
 {
     GList *caps;
     GList *l;
+
+    call_notify_init();
 
     caps = notify_get_server_caps();
     if (caps == NULL)
@@ -522,7 +534,7 @@ static gboolean server_has_persistence(void)
     return (l != NULL);
 }
 #else
-# define server_has_persistence() false
+# define server_has_persistence() call_notify_init()
 #endif
 
 static void init_applet(void)
@@ -558,8 +570,6 @@ static void init_applet(void)
         g_signal_connect(G_OBJECT(ap_status_icon), "popup_menu", G_CALLBACK(on_menu_popup_cb), NULL);
         ap_menu = create_menu();
     }
-
-    notify_init("ABRT");
 }
 
 static void Crash(DBusMessage* signal)
