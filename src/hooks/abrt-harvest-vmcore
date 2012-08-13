@@ -21,12 +21,20 @@ sleep 1
 
 umask 077
 
+CopyVMcore=`sed -n '/^CopyVMcore[ \t]*=/ s/.*=[ \t]*//p' /etc/abrt/abrt-harvest-vmcore.conf 2>/dev/null`
+
+move_core=false
+if test x"$CopyVMcore" = x"no" || test x"$CopyVMcore" = x"0"; then
+	move_core=true
+fi
+
 for d in *; do
 	test -d "$d" || continue
 	test -f "$d/vmcore" || continue
 
 	# Let abrtd know what type of problem it is:
 	printf 'vmcore' >"$d/analyzer"
+	printf 'vmcore' >"$d/type"
 	printf 'kernel' >"$d/component"
 	printf '%s' "`date '+%s'`" >"$d/time"
 	printf '0' >"$d/uid"
@@ -47,7 +55,7 @@ for d in *; do
 		rm -rf "/var/spool/abrt/vmcore-$d.new"
 		continue
 	}
-	rm -rf -- "$d"
+	$move_core && rm -rf -- "$d"
 
 	chown -R 0:0 "/var/spool/abrt/vmcore-$d.new"
 	chmod -R u+rwX,go-rwxst "/var/spool/abrt/vmcore-$d.new"
