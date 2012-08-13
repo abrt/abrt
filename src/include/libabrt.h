@@ -80,6 +80,8 @@ int daemon_is_ok();
 char *koops_extract_version(const char *line);
 #define kernel_tainted_short abrt_kernel_tainted_short
 char *kernel_tainted_short(const char *kernel_bt);
+#define kernel_tainted_long abrt_kernel_tainted_long
+char *kernel_tainted_long(const char *tainted_short);
 #define koops_hash_str abrt_koops_hash_str
 void koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], char *oops_buf, const char *oops_ptr);
 #define koops_extract_oopses abrt_koops_extract_oopses

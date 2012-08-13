@@ -555,56 +555,51 @@ char *kernel_tainted_short(const char *kernel_bt)
     return tnt;
 }
 
-#if 0 /* unused */
 static const char *const tnts_long[] = {
-    "Proprietary module has been loaded.",
-    "Module has been forcibly loaded.",
-    "SMP with CPUs not designed for SMP.",
-    "User forced a module unload.",
-    "System experienced a machine check exception.",
-    "System has hit bad_page.",
-    "Userspace-defined naughtiness.",
-    "Kernel has oopsed before.",
-    "ACPI table overridden.",
-    "Taint on warning.",
-    "Modules from drivers/staging are loaded.",
-    "Working around severe firmware bug.",
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    "Hardware is unsupported.",
-    "Tech_preview",
+    /* A */ "ACPI table overridden.",
+    /* B */ "System has hit bad_page.",
+    /* C */ "Modules from drivers/staging are loaded.",
+    /* D */ "Kernel has oopsed before",
+    /* E */ NULL,
+    /* F */ "Module has been forcibly loaded.",
+    /* G */ "Proprietary module has not been loaded.",
+    /* H */ NULL,
+    /* I */ "Working around severe firmware bug.",
+    /* J */ NULL,
+    /* K */ NULL,
+    /* L */ NULL,
+    /* M */ "System experienced a machine check exception.",
+    /* N */ NULL,
+    /* O */ "Out-of-tree module has been loaded.",
+    /* P */ "Proprietary module has been loaded.",
+    /* Q */ NULL,
+    /* R */ "User forced a module unload.",
+    /* S */ "SMP with CPUs not designed for SMP.",
+    /* T */ NULL,
+    /* U */ "Userspace-defined naughtiness.",
+    /* V */ NULL,
+    /* W */ "Taint on warning.",
+    /* X */ NULL,
+    /* Y */ NULL,
+    /* Z */ NULL,
 };
 
-GList *kernel_tainted_long(unsigned tainted)
+char *kernel_tainted_long(const char *tainted_short)
 {
-    int i = 0;
-    GList *tnt = NULL;
-
-    while (tainted)
+    struct strbuf *tnt_long = strbuf_new();
+    while (tainted_short[0] != '\0')
     {
-        if ((0x1 & tainted) && tnts_long[i])
-            tnt = g_list_append(tnt, xstrdup(tnts_long[i]));
+        const int tnt_index = tainted_short[0] - 'A';
+        if (tnt_index >= 0 && tnt_index <= 'Z' - 'A')
+        {
+            const char *const txt = tnts_long[tnt_index];
+            if (txt)
+                strbuf_append_strf(tnt_long, "%s\n", txt);
+        }
 
-        ++i;
-        tainted >>= 1;
+        ++tainted_short;
     }
 
-    return tnt;
+    return strbuf_free_nobuf(tnt_long);
 }
-#endif
 

@@ -128,6 +128,11 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
             {
                 VERB1 log("Kernel is tainted '%s'", tainted_short);
                 dd_save_text(dd, FILENAME_TAINTED_SHORT, tainted_short);
+
+                char *tnt_long = kernel_tainted_long(tainted_short);
+                dd_save_text(dd, FILENAME_TAINTED_LONG, tnt_long);
+                free(tnt_long);
+
                 const char *fmt = _("A kernel problem occurred, but your kernel has been "
                              "tainted (flags:%s). Kernel maintainers are unable to "
                              "diagnose tainted reports.");
@@ -141,20 +146,6 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
 // kernel oops 1st line may look quite puzzling otherwise...
             strchrnul(second_line, '\n')[0] = '\0';
             dd_save_text(dd, FILENAME_REASON, second_line);
-
-/*
-            GList *tainted_long = kernel_tainted_long(tainted);
-
-            struct strbuf *tnt_long = strbuf_new();
-            for (GList *li = tainted_long; li; li = li->next)
-                strbuf_append_strf(tnt_long, "%s\n", (char*) li->data);
-
-            dd_save_text(dd, FILENAME_TAINTED, tainted_str);
-            dd_save_text(dd, FILENAME_TAINTED_SHORT, tainted_short);
-            dd_save_text(dd, FILENAME_TAINTED_LONG, tnt_long->buf);
-            strbuf_free(tnt_long);
-            list_free_with_free(tainted_long);
-*/
             dd_close(dd);
         }
         else
