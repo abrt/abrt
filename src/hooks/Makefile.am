@@ -1,3 +1,8 @@
+confdir = $(CONF_DIR)
+
+dist_conf_DATA = \
+    abrt-harvest-vmcore.conf
+
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 
 dist_pluginsconf_DATA = \
