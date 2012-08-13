@@ -95,7 +95,10 @@ rlJournalStart
 
     rlPhaseStartCleanup
         # clean the awfully big coredumps, it causes the test machine to run out of space :(
-        rm -rf `find . -name "coredump"`
+        for coredump in `find /var/spool/abrt -name "coredump"`;
+        do
+          rm $coredump;
+        done;
         popd # $gdbtestdir
         popd # $TmpDir
         rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
