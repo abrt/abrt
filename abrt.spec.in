@@ -478,7 +478,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 # abrtd runs as root
 %dir %attr(0755, root, root) %{_localstatedir}/run/%{name}
 %ghost %attr(0666, -, -) %{_localstatedir}/run/%{name}/abrt.socket
-%ghost %attr(0644, -, -) %{_localstatedir}/run/abrtd.pid
+%ghost %attr(0644, -, -) %{_localstatedir}/run/%{name}/abrtd.pid
 
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
