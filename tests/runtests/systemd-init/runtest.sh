@@ -62,8 +62,8 @@ rlJournalStart
         rlPhaseStartTest "PID File"
             rlRun "$SCTL start $SERVICE"
             sleep 3
-            rlAssertExists "/var/run/abrtd.pid"
-            rlRun "kill -n 9 $(cat /var/run/abrtd.pid)" 0
+            rlAssertExists "/var/run/abrt/abrtd.pid"
+            rlRun "kill -n 9 $(cat /var/run/abrt/abrtd.pid)" 0
             sleep 3
             rlRun "$SCTL status $SERVICE" 3
         rlPhaseEnd
