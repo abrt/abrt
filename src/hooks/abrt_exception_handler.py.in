@@ -24,14 +24,33 @@ Module for the ABRT exception handling hook
 
 import sys
 import os
+import inspect
 
-def write_dump(tb):
+try:
+    import rpm
+    HAVE_RPM = True
+except ImportError as imperr:
+    HAVE_RPM = False
+    import syslog
+    syslog.syslog("RPM module not available, cannot query RPM db for package "\
+                  "names")
+
+class RPMinfoError(Exception):
+    """Exception class for RPMdb-querying related errors"""
+    pass
+
+def write_dump(tb_text, tb):
     if sys.argv[0][0] == "/":
         executable = os.path.abspath(sys.argv[0])
     else:
         # We don't know the path.
         # (BTW, we *can't* assume the script is in current directory.)
         executable = sys.argv[0]
+
+    if HAVE_RPM:
+        dso_list = get_dso_list(tb)
+    else:
+        dso_list = None
 
     # Open ABRT daemon's socket and write data to it
     try:
@@ -48,8 +67,12 @@ def write_dump(tb):
             # This handler puts a short(er) crash descr in 1st line of the backtrace.
             # Example:
             # CCMainWindow.py:1:<module>:ZeroDivisionError: integer division or modulo by zero
-            s.sendall("REASON=%s\0" % tb.splitlines()[0])
-            s.sendall("BACKTRACE=%s\0" % tb)
+            s.sendall("REASON=%s\0" % tb_text.splitlines()[0])
+            s.sendall("BACKTRACE=%s\0" % tb_text)
+
+            if dso_list:
+                s.sendall("dso_list=%s\0" % "\n".join(dso_list))
+
             s.shutdown(socket.SHUT_WR)
 
 
@@ -76,6 +99,59 @@ def write_dump(tb):
     except Exception as ex:
         import syslog
         syslog.syslog("can't communicate with ABRT daemon, is it running? %s" % str(ex))
+
+def get_package_for_file(fpath):
+    """
+    Returns package name for a given file.
+
+    @param fpath: filename
+    @type fpath: str
+    @return: package name for the file
+    @rtype: str
+    @throws RPMinfoError: if package for the file cannot be found
+
+    """
+
+    ts = rpm.TransactionSet()
+    mi = ts.dbMatch("basenames", fpath)
+    try:
+        header = mi.next()
+    except StopIteration:
+        raise RPMinfoError("Cannot get package and component for file "+
+                            fpath)
+    package = "{0}-{1}-{2}.{3}".format(header["name"], header["version"],
+                                    header["release"], header["arch"])
+
+    return package
+
+def get_dso_list(tb):
+    """
+    Get the list of names of the packages whose files appear in the traceback.
+
+    @param tb: traceback
+    @type tb: traceback
+    @return: list of package names
+    @rtype: list
+
+    """
+
+    if inspect.istraceback(tb):
+        tb = inspect.getinnerframes(tb)
+
+    packages = set()
+    for (frame, fpath, lineno, func, ctx, idx) in tb:
+        try:
+            packages.add(get_package_for_file(fpath))
+        except RPMinfoError as rpmerr:
+            continue
+
+    # remove the package name of the executable itself
+    try:
+        packages.discard(get_package_for_file(sys.argv[0]))
+    except RPMinfoError as rpmerr:
+        pass
+
+    return list(packages)
 
 def conf_enabled(var_name):
     try:
@@ -187,7 +263,7 @@ def handleMyException((etype, value, tb)):
             text += "".join(elist)
 
         # Send data to the daemon
-        write_dump(text)
+        write_dump(text, tb)
 
     except:
         # Silently ignore any error in this hook,
