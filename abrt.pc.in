@@ -7,5 +7,5 @@ Name: abrt
 Description: Library for writing ABRT plugins
 Version: @VERSION@
 Libs: -L${libdir} -labrt
-Requires: glib-2.0
+Requires: glib-2.0 libreport
 Cflags: -fPIC -I${includedir}/abrt
