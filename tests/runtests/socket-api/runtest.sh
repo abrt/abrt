@@ -28,7 +28,7 @@
 
 . /usr/share/beakerlib/beakerlib.sh
 
-TEST="socket API"
+TEST="socket-api"
 PACKAGE="abrt"
 
 TEST_APP="create_problem_socket"
