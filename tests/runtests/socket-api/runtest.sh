@@ -36,7 +36,7 @@ TEST_APP_SRC=$TEST_APP".c"
 
 rlJournalStart
 rlPhaseStartSetup
-        rlRun "yum install abrt-devel libreport-devel" 0 "installed required devel packages"
+        rlRun "yum install -y abrt-devel libreport-devel" 0 "installed required devel packages"
         rlAssert0 "No prior crashes recorded" $(abrt-cli list | wc -l)
         if [ ! "_$(abrt-cli list | wc -l)" == "_0" ]; then
             rlDie "Won't proceed"
