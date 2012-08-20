@@ -20,6 +20,7 @@
 #include "libabrt.h"
 
 #define EXECUTABLE "abrt-action-install-debuginfo"
+#define IGNORE_RESULT(func_call) do { if (func_call) /* nothing */; } while (0)
 
 /* A binary wrapper is needed around python scripts if we want
  * to run them in sgid/suid mode.
@@ -58,11 +59,11 @@ int main(int argc, char **argv)
     gid_t g = getegid();
     /* do setregid only if we have to, to not upset selinux needlessly */
     if (g != getgid())
-        setregid(g, g);
+        IGNORE_RESULT(setregid(g, g));
     uid_t u = geteuid();
     if (u != getuid())
     {
-        setreuid(u, u);
+        IGNORE_RESULT(setreuid(u, u));
         /* We are suid'ed! */
         /* Prevent malicious user from messing up with suid'ed process: */
         /* Set safe PATH */
