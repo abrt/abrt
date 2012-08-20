@@ -33,73 +33,32 @@ GDB_BUILDDEPS="expat-devel ncurses-devel rpm-devel bison python-devel gettext fl
 
 rlJournalStart
     rlPhaseStartSetup
-        rlRun "yum-builddep -y gdb" 0 "Build dependencies for gdb"
         TmpDir=$(mktemp -d)
+        rlRun "cc bigcore.c -o $TmpDir/bigcore" 0 "Compiling bigcore.c"
         pushd $TmpDir
-        rlRun "yumdownloader --source gdb" 0 "Download gdb sources"
-
-        # deps. explicitly listed in kickstart due to yum-builddep in RHEL
-        # not able to parse deps from spec file inside the package causing
-        # architecure mismatch. safe for fedora
-        #rlRun "yum-builddep -y gdb-*.src.rpm" 0 "Fetch gdb dependencies"
-        # in case packages weren't installed before
-        rlRun "yum -y install $GDB_BUILDDEPS" 0 "Install build dependencies"
-
-        rlRun "rpm -ivh gdb-*.src.rpm" 0 "Install gdb sources"
-        specfile="$(rpm --eval '%_specdir')/gdb.spec"
-        rlRun "rpmbuild -bp $specfile" 0 "Unpack and patch"
-        gdbtestdir="$(rpm --eval '%_builddir')/gdb-*/gdb/testsuite"
-        pushd $gdbtestdir
-        rlRun "./configure" 0 "Run configure"
-        rlRun "make site.exp" 0 "Make gdb tests"
+        rlRun "ulimit -c unlimited"
     rlPhaseEnd
 
     rlPhaseStartTest
-        times=3      # number of repetitions
-        stoptime=0   # runtime when abrt is stopped
-        goldratio=5  # $stoptime * $goldratio:
-                     # |  run with abrt on should not take more that five times
-                     # |  compared to run with abrt turned off
-        absmin=45    # sometimes we have so powerfull machine it finishes the
-                     # |  test in less then a second (and average is then also
-                     # |  less then a second. Let's constitute a minimal time
-                     # |  with which we are always OK.
+        # Making sure abrt is intercepting coredumps
+        # (otherwise test will "pass" but we'd not test abrt, just the kernel)
+        rlAssertGrep "abrt-hook-ccpp" /proc/sys/kernel/core_pattern
 
-        rlRun "service abrtd stop" 0 "Killing abrtd"
+        rlLog "Generating core"
+        rlRun "rm core* 2>/dev/null; sh -c './bigcore; exit 0' &>/dev/null"
+        rlAssertExists core*
+        apparent_coresize=$(du -B1 --apparent-size core* | sed 's/[ \t].*//')
+        actual_coresize=$(du -B1 core* | sed 's/[ \t].*//')
+        rlLog "Core sizes: apparent:$apparent_coresize actual:$actual_coresize"
 
-        rlLog "Calculate run times with abrt turned off"
-        rlRun "runtest gdb.base/bigcore.exp &> /dev/null" 0 "Pre-test run"
-        for run in $(seq $times); do
-            rlRun "/usr/bin/time -f '%e' -o bigcore-stop.time.$run runtest gdb.base/bigcore.exp"
-        done
-        for cnt in $(seq $times); do
-            stoptime=$(echo "$(cat bigcore-stop.time.$cnt) + $stoptime" | bc -l)
-            rlLog "Execution #${cnt} took $(cat bigcore-stop.time.$cnt) seconds"
-        done
-        stoptime=$(echo "scale=3; $stoptime / $times" | bc -l)
-        rlLog "Computed time with abrt stopped: $stoptime"
+        # In my experience here apparent size is almost 500 times bigger
+        rlAssertGreater "Corefile is very sparse" $((apparent_coresize/50)) $actual_coresize
 
-        starttimeout=$(echo "$goldratio * $stoptime" | bc -l)
-        starttimeout=$(echo "$starttimeout" | awk '{ if ($1 < '$absmin') { print '$absmin' } else { print '$starttimeout' } }')
-        rlLog "Adjusted timeout: $starttimeout"
-
-        rlRun "service abrtd start" 0 "Starting abrtd"
-
-        rlRun "runtest gdb.base/bigcore.exp &> /dev/null" 0 "Pre-test run"
-        for run in $(seq $times); do
-            rlWatchdog "runtest gdb.base/bigcore.exp" $starttimeout
-            ec=$?
-            rlAssert0 "Test performed fine" $ec
-        done
     rlPhaseEnd
 
     rlPhaseStartCleanup
         # clean the awfully big coredumps, it causes the test machine to run out of space :(
-        for coredump in `find /var/spool/abrt -name "coredump"`;
-        do
-          rm $coredump;
-        done;
-        popd # $gdbtestdir
+        rm /var/spool/abrt/*/coredump 2>/dev/null
         popd # $TmpDir
         rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
     rlPhaseEnd
