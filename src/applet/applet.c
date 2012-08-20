@@ -39,6 +39,62 @@ static GtkWidget *ap_menu;
 static char *ap_last_problem_dir;
 static char **s_dirs;
 
+
+typedef struct problem_info {
+    char *problem_dir;
+    bool foreign;
+} problem_info_t;
+
+static problem_info_t *problem_info_new()
+{
+    problem_info_t *pi = xmalloc(sizeof(problem_info_t));
+    return pi;
+}
+
+static void problem_info_free(problem_info_t *pi)
+{
+    if (pi == NULL)
+        return;
+
+    free(pi->problem_dir);
+    free(pi);
+}
+
+static void call_notify_init(void)
+{
+    static bool inited = 0;
+    if (inited)
+        return;
+    inited = 1;
+
+    notify_init(_("Problem detected"));
+}
+
+#if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR >= 6)
+static gboolean server_has_persistence(void)
+{
+    GList *caps;
+    GList *l;
+
+    call_notify_init();
+
+    caps = notify_get_server_caps();
+    if (caps == NULL)
+    {
+        error_msg("Failed to receive server caps");
+        return FALSE;
+    }
+
+    l = g_list_find_custom(caps, "persistence", (GCompareFunc)strcmp);
+
+    list_free_with_free(caps);
+    VERB1 log("notify server %s support pesistence", l ? "DOES" : "DOESN'T");
+    return (l != NULL);
+}
+#else
+# define server_has_persistence() call_notify_init()
+#endif
+
 static GList *add_dirs_to_dirlist(GList *dirlist, const char *dirname)
 {
     DIR *dir = opendir(dirname);
@@ -66,11 +122,10 @@ static GList *add_dirs_to_dirlist(GList *dirlist, const char *dirname)
  * in $XDG_CACHE_HOME/abrt/applet_dirlist. In any case, applet_dirlist
  * is updated with updated list.
  */
-static int new_dir_exists(void)
+static GList *new_dir_exists(void)
 {
-    int new_dir_exists = 0;
-
     GList *dirlist = NULL;
+    GList *new_dirs = NULL;
     char **pp = s_dirs;
     while (*pp)
     {
@@ -113,7 +168,8 @@ static int new_dir_exists(void)
             different |= diff;
             if (diff < 0)
             {
-                new_dir_exists = 1;
+                new_dirs = g_list_prepend(new_dirs, xstrdup(l1->data));
+                VERB1 log("New dir detected: %s", (char *)l1->data);
                 l1 = g_list_next(l1);
                 continue;
             }
@@ -121,10 +177,15 @@ static int new_dir_exists(void)
             if (diff == 0)
                 l1 = g_list_next(l1);
         }
-        if (l1) {
-            new_dir_exists = 1;
-            error_msg("New dir detected: %s", (char *)l1->data);
+
+        different |= (l1 != NULL);
+        while(l1)
+        {
+            new_dirs = g_list_prepend(new_dirs, xstrdup(l1->data));
+            VERB1 log("New dir detected: %s", (char *)l1->data);
+            l1 = g_list_next(l1);
         }
+
         if (different || l1 || l2)
         {
             rewind(fp);
@@ -141,7 +202,7 @@ static int new_dir_exists(void)
     }
     list_free_with_free(dirlist);
 
-    return new_dir_exists;
+    return new_dirs;
 }
 
 static void fork_exec_gui(void)
@@ -165,7 +226,7 @@ static void fork_exec_gui(void)
      * it will show alert icon even if we did click on it
      * "in previous life"). We ignore function return value.
      */
-    new_dir_exists();
+    list_free_with_free(new_dir_exists());
 }
 
 static void hide_icon(void)
@@ -179,20 +240,24 @@ static void hide_icon(void)
 //this action should open the reporter dialog directly, without showing the main window
 static void action_report(NotifyNotification *notification, gchar *action, gpointer user_data)
 {
-    bool foreign_problem = *(bool *)user_data;
-    if (ap_last_problem_dir)
+    problem_info_t *pi = (problem_info_t *)user_data;
+
+    bool foreign_problem = false;
+
+    if (pi->problem_dir)
     {
         if (foreign_problem)
         {
-            int res = chown_dir_over_dbus(ap_last_problem_dir);
+            int res = chown_dir_over_dbus(pi->problem_dir);
             if (res != 0)
             {
-                error_msg(_("Can't take ownership of '%s'"), ap_last_problem_dir);
+                error_msg(_("Can't take ownership of '%s'"), pi->problem_dir);
+                problem_info_free(pi);
                 return;
             }
         }
 
-        report_problem_in_dir(ap_last_problem_dir, LIBREPORT_NOWAIT);
+        report_problem_in_dir(pi->problem_dir, LIBREPORT_NOWAIT);
 
         GError *err = NULL;
         notify_notification_close(notification, &err);
@@ -203,13 +268,14 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
         }
 
         hide_icon();
+        problem_info_free(pi);
 
         /* Scan dirs and save new $XDG_CACHE_HOME/abrt/applet_dirlist.
          * (Oterwise, after a crash, next time applet is started,
          * it will show alert icon even if we did click on it
          * "in previous life"). We ignore finction return value.
          */
-        new_dir_exists();
+        list_free_with_free(new_dir_exists());
     }
 }
 
@@ -258,13 +324,13 @@ static NotifyNotification *new_warn_notification()
     g_signal_connect(notification, "closed", G_CALLBACK(on_notify_close), NULL);
 
     GdkPixbuf *pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(),
-                GTK_STOCK_DIALOG_WARNING, 48, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
+                "abrt", 48, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
 
     if (pixbuf)
         notify_notification_set_icon_from_pixbuf(notification, pixbuf);
     notify_notification_set_urgency(notification, NOTIFY_URGENCY_NORMAL);
     notify_notification_set_timeout(notification,
-                              persistent_notification ? NOTIFY_EXPIRES_NEVER
+                              server_has_persistence() ? NOTIFY_EXPIRES_NEVER
                                                       : NOTIFY_EXPIRES_DEFAULT);
 
     return notification;
@@ -367,7 +433,7 @@ static void set_icon_tooltip(const char *format, ...)
     free(buf);
 }
 
-static void show_problem_notification(bool foreign_problem, const char *format, ...)
+static void show_problem_notification(problem_info_t *pi, const char *format, ...)
 {
     va_list args;
     va_start(args, format);
@@ -381,7 +447,7 @@ static void show_problem_notification(bool foreign_problem, const char *format, 
 
     notify_notification_add_action(notification, "REPORT", _("Report"),
                                     NOTIFY_ACTION_CALLBACK(action_report),
-                                    &foreign_problem, NULL);
+                                    pi, NULL);
 
     notify_notification_update(notification, _("A Problem has Occurred"), buf, NULL);
     free(buf);
@@ -397,46 +463,11 @@ static void show_problem_notification(bool foreign_problem, const char *format, 
 
 static void show_icon(void)
 {
-    if (ap_status_icon == NULL)
+    if (server_has_persistence())
         return;
 
     gtk_status_icon_set_visible(ap_status_icon, true);
 }
-
-static void call_notify_init(void)
-{
-    static bool inited = 0;
-    if (inited)
-        return;
-    inited = 1;
-
-    notify_init(_("Problem detected"));
-}
-
-#if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR >= 6)
-static gboolean server_has_persistence(void)
-{
-    GList *caps;
-    GList *l;
-
-    call_notify_init();
-
-    caps = notify_get_server_caps();
-    if (caps == NULL)
-    {
-        error_msg("Failed to receive server caps");
-        return FALSE;
-    }
-
-    l = g_list_find_custom(caps, "persistence", (GCompareFunc)strcmp);
-
-    list_free_with_free(caps);
-    VERB1 log("notify server %s support pesistence", l ? "DOES" : "DOESN'T");
-    return (l != NULL);
-}
-#else
-# define server_has_persistence() call_notify_init()
-#endif
 
 static void init_applet(void)
 {
@@ -450,6 +481,7 @@ static void init_applet(void)
     if (!persistent_notification)
     {
         ap_status_icon = gtk_status_icon_new_from_icon_name("abrt");
+
         hide_icon();
         g_signal_connect(G_OBJECT(ap_status_icon), "activate", G_CALLBACK(on_applet_activate_cb), NULL);
         g_signal_connect(G_OBJECT(ap_status_icon), "popup_menu", G_CALLBACK(on_menu_popup_cb), NULL);
@@ -506,8 +538,9 @@ static void Crash(DBusMessage* signal)
     if (package_name[0] == '\0')
         message = _("A problem has been detected");
 
-    if (server_has_persistence())
+    if (!server_has_persistence())
     {
+        error_msg("notifyd doesn't have persistence - showing old style status icon");
         init_applet();
         set_icon_tooltip(message, package_name);
         show_icon();
@@ -533,7 +566,10 @@ static void Crash(DBusMessage* signal)
     free(ap_last_problem_dir);
     ap_last_problem_dir = xstrdup(dir);
 
-    show_problem_notification(foreign_problem, message, package_name);
+    problem_info_t *pi = problem_info_new();
+    pi->problem_dir = xstrdup(dir);
+    pi->foreign = foreign_problem;
+    show_problem_notification(pi, message, package_name);
 }
 
 static DBusHandlerResult handle_message(DBusConnection* conn, DBusMessage* msg, void* user_data)
@@ -669,12 +705,36 @@ int main(int argc, char** argv)
         continue;
 
     /* If some new dirs appeared since our last run, let user know it */
-    if (new_dir_exists())
+    GList *new_dirs = new_dir_exists();
+    while (new_dirs)
     {
+        struct dump_dir *dd = dd_opendir((char *)new_dirs->data, DD_OPEN_READONLY);
+        if (dd == NULL)
+        {
+            VERB1 log("'%s' is not a dump dir - ignoring\n", (char *)new_dirs->data);
+            new_dirs = g_list_next(new_dirs);
+            continue;
+        }
+
+        const char *package_name = dd_load_text(dd, FILENAME_COMPONENT);
+        const char *message = _("A problem in the %s package has been detected");
+        if (package_name[0] == '\0')
+            message = _("A problem has been detected");
+
         init_applet();
+        set_icon_tooltip(message, package_name);
         show_icon();
-        //show_msg_notification("New problems detected since last login");
+
+        problem_info_t *pi = problem_info_new();
+        pi->problem_dir = xstrdup((char *)new_dirs->data);
+        pi->foreign = false;
+        show_problem_notification(pi, message, package_name);
+
+        dd_close(dd);
+
+        new_dirs = g_list_next(new_dirs);
     }
+    list_free_with_free(new_dirs);
 
     /* Enter main loop */
     gtk_main();
