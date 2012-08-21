@@ -35,7 +35,8 @@ dist_events_DATA = \
     collect_Smolt.xml \
     collect_GConf.xml \
     collect_vimrc_user.xml \
-    collect_vimrc_system.xml
+    collect_vimrc_system.xml \
+    post_report.xml
 
 @INTLTOOL_XML_RULE@
 
@@ -71,7 +72,8 @@ EXTRA_DIST = \
     analyze_RetraceServer.xml.in \
     analyze_VMcore.xml.in \
     abrt-action-analyze-vmcore \
-    https-utils.h
+    https-utils.h \
+    post_report.xml.in
 
 abrt_watch_log_SOURCES = \
     abrt-watch-log.c
