@@ -29,9 +29,6 @@
 #include "libabrt.h"
 
 
-#define ENABLE_ANIMATION 0
-
-
 #define ABRTD_DBUS_NAME  "com.redhat.abrt"
 #define ABRTD_DBUS_PATH  "/com/redhat/abrt"
 #define ABRTD_DBUS_IFACE "com.redhat.abrt"
@@ -43,26 +40,61 @@ static GtkWidget *ap_menu;
 static char *ap_last_problem_dir;
 static char **s_dirs;
 static char *s_home;
-//static bool ap_daemon_running;
 #define ap_daemon_running 1
 
-#if ENABLE_ANIMATION
-enum ICON_STAGES
+typedef struct problem_info {
+    char *problem_dir;
+    bool foreign;
+} problem_info_t;
+
+static problem_info_t *problem_info_new()
 {
-    ICON_DEFAULT,
-    ICON_STAGE1,
-    ICON_STAGE2,
-    ICON_STAGE3,
-    ICON_STAGE4,
-    ICON_STAGE5,
-    /* this must be always the last */
-    ICON_STAGE_LAST
-};
-static int ap_animation_stage;
-static guint ap_animator;
-static unsigned ap_anim_countdown;
-static bool ap_icons_loaded;
-static GdkPixbuf *ap_icon_stages_buff[ICON_STAGE_LAST];
+    problem_info_t *pi = xmalloc(sizeof(problem_info_t));
+    return pi;
+}
+
+static void problem_info_free(problem_info_t *pi)
+{
+    if (pi == NULL)
+        return;
+
+    free(pi->problem_dir);
+    free(pi);
+}
+
+static void call_notify_init(void)
+{
+    static bool inited = 0;
+    if (inited)
+        return;
+    inited = 1;
+
+    notify_init(_("Problem detected"));
+}
+
+#if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR >= 6)
+static gboolean server_has_persistence(void)
+{
+    GList *caps;
+    GList *l;
+
+    call_notify_init();
+
+    caps = notify_get_server_caps();
+    if (caps == NULL)
+    {
+        error_msg("Failed to receive server caps");
+        return FALSE;
+    }
+
+    l = g_list_find_custom(caps, "persistence", (GCompareFunc)strcmp);
+
+    list_free_with_free(caps);
+    VERB1 log("notify server %s support pesistence", l ? "DOES" : "DOESN'T");
+    return (l != NULL);
+}
+#else
+# define server_has_persistence() call_notify_init()
 #endif
 
 static GList *add_dirs_to_dirlist(GList *dirlist, const char *dirname)
@@ -92,14 +124,10 @@ static GList *add_dirs_to_dirlist(GList *dirlist, const char *dirname)
  * in ~/.abrt/applet_dirlist. In any case, ~/.abrt/applet_dirlist
  * is updated with updated list.
  */
-static int new_dir_exists(void)
+static GList *new_dir_exists(void)
 {
-    if (!s_home)
-        return 0;
-
-    int new_dir_exists = 0;
-
     GList *dirlist = NULL;
+    GList *new_dirs = NULL;
     char **pp = s_dirs;
     while (*pp)
     {
@@ -141,7 +169,8 @@ static int new_dir_exists(void)
             different |= diff;
             if (diff < 0)
             {
-                new_dir_exists = 1;
+                new_dirs = g_list_prepend(new_dirs, xstrdup(l1->data));
+                VERB1 log("New dir detected: %s", (char *)l1->data);
                 l1 = g_list_next(l1);
                 continue;
             }
@@ -149,8 +178,15 @@ static int new_dir_exists(void)
             if (diff == 0)
                 l1 = g_list_next(l1);
         }
-        if (l1)
-            new_dir_exists = 1;
+
+        different |= (l1 != NULL);
+        while(l1)
+        {
+            new_dirs = g_list_prepend(new_dirs, xstrdup(l1->data));
+            VERB1 log("New dir detected: %s", (char *)l1->data);
+            l1 = g_list_next(l1);
+        }
+
         if (different || l1 || l2)
         {
             rewind(fp);
@@ -167,7 +203,7 @@ static int new_dir_exists(void)
     }
     list_free_with_free(dirlist);
 
-    return new_dir_exists;
+    return new_dirs;
 }
 
 static void fork_exec_gui(void)
@@ -191,77 +227,8 @@ static void fork_exec_gui(void)
      * it will show alert icon even if we did click on it
      * "in previous life"). We ignore function return value.
      */
-    new_dir_exists();
+    list_free_with_free(new_dir_exists());
 }
-
-#if ENABLE_ANIMATION
-
-static bool load_icons(void)
-{
-    int stage;
-    for (stage = ICON_DEFAULT; stage < ICON_STAGE_LAST; stage++)
-    {
-        char name[sizeof(ICON_DIR"/abrt%02d.png")];
-        GError *error = NULL;
-        if (snprintf(name, sizeof(ICON_DIR"/abrt%02d.png"), ICON_DIR"/abrt%02d.png", stage) > 0)
-        {
-            ap_icon_stages_buff[stage] = gdk_pixbuf_new_from_file(name, &error);
-            if (error != NULL)
-            {
-                error_msg("Can't load pixbuf from %s, animation is disabled", name);
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
-static gboolean update_icon(void *user_data)
-{
-    if (ap_status_icon && ap_animation_stage < ICON_STAGE_LAST)
-    {
-        gtk_status_icon_set_from_pixbuf(ap_status_icon,
-                                        ap_icon_stages_buff[ap_animation_stage++]);
-    }
-    if (ap_animation_stage == ICON_STAGE_LAST)
-    {
-        ap_animation_stage = 0;
-    }
-    if (--ap_anim_countdown == 0)
-    {
-        stop_animate_icon();
-    }
-    return true;
-}
-
-static void animate_icon(void)
-{
-    if (ap_animator == 0)
-    {
-        ap_animator = g_timeout_add(100, update_icon, NULL);
-        ap_anim_countdown = 10 * 3; /* 3 sec */
-    }
-}
-
-static void stop_animate_icon(void)
-{
-    /* ap_animator should be 0 if icons are not loaded, so this should be safe */
-    if (ap_animator != 0)
-    {
-        g_source_remove(ap_animator);
-        gtk_status_icon_set_from_pixbuf(ap_status_icon,
-                                        ap_icon_stages_buff[ICON_DEFAULT]
-        );
-        ap_animator = 0;
-    }
-}
-
-#else
-
-# define animate_icon() ((void)0)
-# define stop_animate_icon() ((void)0)
-
-#endif
 
 static void hide_icon(void)
 {
@@ -269,15 +236,15 @@ static void hide_icon(void)
         return;
 
     gtk_status_icon_set_visible(ap_status_icon, false);
-    stop_animate_icon();
 }
 
 //this action should open the reporter dialog directly, without showing the main window
 static void action_report(NotifyNotification *notification, gchar *action, gpointer user_data)
 {
+    problem_info_t *pi = (problem_info_t *)user_data;
     if (ap_daemon_running && ap_last_problem_dir)
     {
-        report_problem_in_dir(ap_last_problem_dir, LIBREPORT_ANALYZE | LIBREPORT_NOWAIT);
+        report_problem_in_dir(pi->problem_dir, LIBREPORT_ANALYZE | LIBREPORT_NOWAIT);
 
         GError *err = NULL;
         notify_notification_close(notification, &err);
@@ -288,13 +255,14 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
         }
 
         hide_icon();
+        problem_info_free(pi);
 
         /* Scan dirs and save new ~/.abrt/applet_dirlist.
          * (Oterwise, after a crash, next time applet is started,
          * it will show alert icon even if we did click on it
          * "in previous life"). We ignore finction return value.
          */
-        new_dir_exists();
+        list_free_with_free(new_dir_exists());
     }
 }
 
@@ -320,7 +288,6 @@ static void on_menu_popup_cb(GtkStatusIcon *status_icon,
                         guint          activate_time,
                         gpointer       user_data)
 {
-    stop_animate_icon();
 
     if (ap_menu != NULL)
     {
@@ -350,13 +317,13 @@ static NotifyNotification *new_warn_notification(void)
     g_signal_connect(notification, "closed", G_CALLBACK(on_notify_close), NULL);
 
     GdkPixbuf *pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(),
-                GTK_STOCK_DIALOG_WARNING, 48, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
+                "abrt", 48, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
 
     if (pixbuf)
         notify_notification_set_icon_from_pixbuf(notification, pixbuf);
     notify_notification_set_urgency(notification, NOTIFY_URGENCY_NORMAL);
     notify_notification_set_timeout(notification,
-                              persistent_notification ? NOTIFY_EXPIRES_NEVER
+                              server_has_persistence() ? NOTIFY_EXPIRES_NEVER
                                                       : NOTIFY_EXPIRES_DEFAULT);
 
     return notification;
@@ -462,7 +429,7 @@ static void set_icon_tooltip(const char *format, ...)
     free(buf);
 }
 
-static void show_problem_notification(const char *format, ...)
+static void show_problem_notification(problem_info_t *pi, const char *format, ...)
 {
     va_list args;
     va_start(args, format);
@@ -472,7 +439,7 @@ static void show_problem_notification(const char *format, ...)
     NotifyNotification *notification = new_warn_notification();
     notify_notification_add_action(notification, "REPORT", _("Report"),
                                     NOTIFY_ACTION_CALLBACK(action_report),
-                                    NULL, NULL);
+                                    pi, NULL);
     notify_notification_add_action(notification, "default", _("Show"),
                                     NOTIFY_ACTION_CALLBACK(action_open_gui),
                                     NULL, NULL);
@@ -491,51 +458,11 @@ static void show_problem_notification(const char *format, ...)
 
 static void show_icon(void)
 {
-    if (ap_status_icon == NULL)
+    if (server_has_persistence())
         return;
 
     gtk_status_icon_set_visible(ap_status_icon, true);
-#if ENABLE_ANIMATION
-    /* only animate if all icons are loaded, use the "gtk-warning" instead */
-    if (ap_icons_loaded)
-        animate_icon();
-#endif
 }
-
-static void call_notify_init(void)
-{
-    static bool inited = 0;
-    if (inited)
-        return;
-    inited = 1;
-
-    notify_init("ABRT");
-}
-
-#if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR >= 6)
-static gboolean server_has_persistence(void)
-{
-    GList *caps;
-    GList *l;
-
-    call_notify_init();
-
-    caps = notify_get_server_caps();
-    if (caps == NULL)
-    {
-        error_msg("Failed to receive server caps");
-        return FALSE;
-    }
-
-    l = g_list_find_custom(caps, "persistence", (GCompareFunc)strcmp);
-
-    list_free_with_free(caps);
-    VERB1 log("notify server %s support pesistence", l ? "DOES" : "DOESN'T");
-    return (l != NULL);
-}
-#else
-# define server_has_persistence() call_notify_init()
-#endif
 
 static void init_applet(void)
 {
@@ -549,22 +476,7 @@ static void init_applet(void)
 
     if (!persistent_notification)
     {
-#if ENABLE_ANIMATION
-        /* set-up icon buffers */
-        if (ICON_DEFAULT != 0)
-            ap_animation_stage = ICON_DEFAULT;
-        ap_icons_loaded = load_icons();
-        /* - animation - */
-        if (ap_icons_loaded == true)
-        {
-            //FIXME: animation is disabled for now
-            ap_status_icon = gtk_status_icon_new_from_pixbuf(ap_icon_stages_buff[ICON_DEFAULT]);
-        }
-        else
-#endif
-        {
-            ap_status_icon = gtk_status_icon_new_from_icon_name("abrt");
-        }
+        ap_status_icon = gtk_status_icon_new_from_icon_name("abrt");
         hide_icon();
         g_signal_connect(G_OBJECT(ap_status_icon), "activate", G_CALLBACK(on_applet_activate_cb), NULL);
         g_signal_connect(G_OBJECT(ap_status_icon), "popup_menu", G_CALLBACK(on_menu_popup_cb), NULL);
@@ -618,9 +530,14 @@ static void Crash(DBusMessage* signal)
     const char* message = _("A problem in the %s package has been detected");
     if (package_name[0] == '\0')
         message = _("A problem has been detected");
-    init_applet();
-    set_icon_tooltip(message, package_name);
-    show_icon();
+
+    if (!server_has_persistence())
+    {
+        error_msg("notifyd doesn't have persistence - showing old style status icon");
+        init_applet();
+        set_icon_tooltip(message, package_name);
+        show_icon();
+    }
 
     /* If this problem seems to be repeating, do not annoy user with popup dialog.
      * (The icon in the tray is not suppressed)
@@ -641,44 +558,9 @@ static void Crash(DBusMessage* signal)
     free(ap_last_problem_dir);
     ap_last_problem_dir = xstrdup(dir);
 
-    show_problem_notification(message, package_name);
-}
-
-static void NameOwnerChanged(DBusMessage* signal)
-{
-    int r;
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(signal, &in_iter);
-    const char* name = NULL;
-    r = load_charp(&in_iter, &name);
-    if (r != ABRT_DBUS_MORE_FIELDS)
-    {
-        error_msg("dbus signal %s: parameter type mismatch", __func__);
-        return;
-    }
-
-    /* We are only interested in (dis)appearances of our daemon */
-    if (strcmp(name, "com.redhat.abrt") != 0)
-        return;
-
-    const char* old_owner = NULL;
-    r = load_charp(&in_iter, &old_owner);
-    if (r != ABRT_DBUS_MORE_FIELDS)
-    {
-        error_msg("dbus signal %s: parameter type mismatch", __func__);
-        return;
-    }
-    const char* new_owner = NULL;
-    r = load_charp(&in_iter, &new_owner);
-    if (r != ABRT_DBUS_LAST_FIELD)
-    {
-        error_msg("dbus signal %s: parameter type mismatch", __func__);
-        return;
-    }
-
-// hide icon if it's visible - as NM and don't show it, if it's not
-    if (!new_owner[0])
-        hide_icon();
+    problem_info_t *pi = problem_info_new();
+    pi->problem_dir = xstrdup(dir);
+    show_problem_notification(pi, message, package_name);
 }
 
 static DBusHandlerResult handle_message(DBusConnection* conn, DBusMessage* msg, void* user_data)
@@ -694,8 +576,8 @@ static DBusHandlerResult handle_message(DBusConnection* conn, DBusMessage* msg, 
         return DBUS_HANDLER_RESULT_HANDLED;
     }
 
-    if (strcmp(member, "NameOwnerChanged") == 0)
-        NameOwnerChanged(msg);
+    //if (strcmp(member, "NameOwnerChanged") == 0)
+    //    NameOwnerChanged(msg);
     else if (strcmp(member, "Crash") == 0)
         Crash(msg);
 
@@ -814,13 +696,6 @@ int main(int argc, char** argv)
     die_if_dbus_error(r != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER, &err,
         "Problem connecting to dbus, or applet is already running");
 
-    /* show the warning in terminal, as nm-applet does */
-    if (!dbus_bus_name_has_owner(system_conn, ABRTD_DBUS_NAME, &err))
-    {
-        const char* msg = _("ABRT service is not running");
-        puts(msg);
-    }
-
     /* dbus_bus_request_name can already read some data. Thus while dbus fd hasn't
      * any data anymore, dbus library can buffer a message or two.
      * If we don't do this, the data won't be processed until next dbus data arrives.
@@ -830,12 +705,36 @@ int main(int argc, char** argv)
         continue;
 
     /* If some new dirs appeared since our last run, let user know it */
-    if (new_dir_exists())
+    GList *new_dirs = new_dir_exists();
+    while (new_dirs)
     {
+        struct dump_dir *dd = dd_opendir((char *)new_dirs->data, DD_OPEN_READONLY);
+        if (dd == NULL)
+        {
+            VERB1 log("'%s' is not a dump dir - ignoring\n", (char *)new_dirs->data);
+            new_dirs = g_list_next(new_dirs);
+            continue;
+        }
+
+        const char *package_name = dd_load_text(dd, FILENAME_COMPONENT);
+        const char *message = _("A problem in the %s package has been detected");
+        if (package_name[0] == '\0')
+            message = _("A problem has been detected");
+
         init_applet();
+        set_icon_tooltip(message, package_name);
         show_icon();
-        //show_msg_notification("New problems detected since last login");
+
+        problem_info_t *pi = problem_info_new();
+        pi->problem_dir = xstrdup((char *)new_dirs->data);
+        pi->foreign = false;
+        show_problem_notification(pi, message, package_name);
+
+        dd_close(dd);
+
+        new_dirs = g_list_next(new_dirs);
     }
+    list_free_with_free(new_dirs);
 
     /* Enter main loop */
     gtk_main();
