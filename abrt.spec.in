@@ -630,6 +630,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
 %{_datadir}/dbus-1/system-services/org.freedesktop.problems.service
 %{_datadir}/polkit-1/actions/abrt_polkit.policy
+%config(noreplace) %{_sysconfdir}/libreport/events.d/dbus_event.conf
+
 
 %changelog
 * Wed Mar 16 2011 Jiri Moskovcak <jmoskovc@redhat.com> 2.0.0-1
