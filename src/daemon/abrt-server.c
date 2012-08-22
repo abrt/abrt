@@ -517,7 +517,7 @@ int main(int argc, char **argv)
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_INTEGER('u', NULL, &client_uid, _("Use UID as client uid")),
+        OPT_INTEGER('u', NULL, &client_uid, _("Use NUM as client uid")),
         OPT_BOOL(   's', NULL, NULL       , _("Log to syslog")),
         OPT_BOOL(   'p', NULL, NULL       , _("Add program names to log")),
         OPT_END()
