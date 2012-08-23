@@ -7,24 +7,18 @@ abrt-dbus - dbus server for querying problem data
 
 SYNOPSIS
 --------
-'abrt-dbus' [-dsv[v]...] [-t NUM]
+'abrt-dbus' [-v[v]...] [-t NUM]
 
 DESCRIPTION
 -----------
-'abrt-dbus' allows other programs to query list of currently existing problem
-directories.
+'abrt-dbus' allows other programs to operate on problem data directories over
+D-Bus.
 
 Normally 'abrt-dbus' is started by D-Bus daemon on demand, and terminates
 after a timeout.
 
 OPTIONS
 -------
--d::
-   Stay in the foreground and log to standard error.
-
--s::
-   Log to system log even with option -d.
-
 -v::
    Log more detailed debugging information.
 

@@ -7,7 +7,7 @@ abrt-server - Unix socket for ABRT.
 
 SYNOPSIS
 --------
-'abrt-server' [-uspv[v]...]
+'abrt-server' [-u UID] [-spv[v]...]
 
 DESCRIPTION
 -----------
@@ -18,7 +18,7 @@ of a new problem directory by following the communication protocol
 
 OPTIONS
 -------
--u::
+-u UID::
    Use UID as client uid
 
 -s::
@@ -33,30 +33,39 @@ OPTIONS
 Protocol
 --------
 Initializing new dump:
-open /var/run/abrt.socket
+connect to UNIX domain socket /var/run/abrt.socket
 
-Providing dump data (hook writes to the socket):
+Providing data (writting data to the socket):
 
 -------------------------------------------------
+-> "PUT / HTTP/1.1\r\n"
+-> "\r\n"
 -> "PID=number\0"
-   number 0 - PID_MAX (/proc/sys/kernel/pid_max)
+   number, 0 - PID_MAX (/proc/sys/kernel/pid_max)
 -> "EXECUTABLE=string\0"
-   string maximum length ~MAX_PATH
+   string, maximum length ~MAX_PATH
 -> "BACKTRACE=string\0"
-   string maximum length 1 MB
+   string, maximum length 1 MB
 -> "ANALYZER=string\0"
-   string maximum length 100 bytes
+   string, maximum length 100 bytes
 -> "BASENAME=string\0"
    string maximum length 100 bytes, no slashes
 -> "REASON=string\0"
-   string maximum length 512 bytes
+   string, maximum length 512 bytes
+-> (close writing half of the socket)
+<- "HTTP/1.1 200 \r\n"
+<- "\r\n"
 -------------------------------------------------
 
-Finalizing dump creation:
+Deleting problem directory:
 
----------
--> "DONE\0"
----------
+-------------------------------------------------
+-> "DELETE <directory_name> HTTP/1.1\r\n"
+-> "\r\n"
+-> (close writing half of the socket)
+<- "HTTP/1.1 200 \r\n"
+<- "\r\n"
+-------------------------------------------------
 
 AUTHORS
 -------
