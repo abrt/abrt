@@ -244,9 +244,6 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
     char *args[21];
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";
-
-    // when/if gdb supports "set debug-file-directory DIR1:DIR2":
-    // (https://bugzilla.redhat.com/show_bug.cgi?id=528668):
     args[2] = (char*)"-ex";
     struct strbuf *set_debug_file_directory = strbuf_new();
     if(debuginfo_dirs == NULL)
