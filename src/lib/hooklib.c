@@ -249,17 +249,26 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
     // (https://bugzilla.redhat.com/show_bug.cgi?id=528668):
     args[2] = (char*)"-ex";
     struct strbuf *set_debug_file_directory = strbuf_new();
-    strbuf_append_str(set_debug_file_directory, "set debug-file-directory /usr/lib/debug");
-    const char *p = debuginfo_dirs;
-    while (1)
+    if(debuginfo_dirs == NULL)
     {
-        while (*p == ':')
-            p++;
-        if (*p == '\0')
-            break;
-        const char *colon_or_nul = strchrnul(p, ':');
-        strbuf_append_strf(set_debug_file_directory, ":%.*s/usr/lib/debug", (int)(colon_or_nul - p), p);
-        p = colon_or_nul;
+        // set non-existent debug file directory to prevent resolving
+        // function names - we need offsets for core backtrace.
+        strbuf_append_str(set_debug_file_directory, "set debug-file-directory /");
+    }
+    else
+    {
+        strbuf_append_str(set_debug_file_directory, "set debug-file-directory /usr/lib/debug");
+        const char *p = debuginfo_dirs;
+        while (1)
+        {
+            while (*p == ':')
+                p++;
+            if (*p == '\0')
+                break;
+            const char *colon_or_nul = strchrnul(p, ':');
+            strbuf_append_strf(set_debug_file_directory, ":%.*s/usr/lib/debug", (int)(colon_or_nul - p), p);
+            p = colon_or_nul;
+        }
     }
     args[3] = strbuf_free_nobuf(set_debug_file_directory);
 

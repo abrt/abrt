@@ -106,7 +106,7 @@ int main(int argc, char **argv)
     if (strcmp(analyzer, "CCpp") == 0)
     {
         VERB1 log("Querying gdb for backtrace");
-        char *gdb_out = get_backtrace(dump_dir_name, exec_timeout_sec, "");
+        char *gdb_out = get_backtrace(dump_dir_name, exec_timeout_sec, NULL);
         if (gdb_out == NULL)
             xfunc_die();
 
