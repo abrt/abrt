@@ -24,12 +24,6 @@
 # define _(S) (S)
 #endif
 
-/* Some libc's forget to declare these, do it ourself */
-extern char **environ;
-#if defined(__GLIBC__) && __GLIBC__ < 2
-int vdprintf(int d, const char *format, va_list ap);
-#endif
-
 #undef NORETURN
 #define NORETURN __attribute__ ((noreturn))
 
@@ -39,6 +33,13 @@ int vdprintf(int d, const char *format, va_list ap);
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/* Some libc's forget to declare these, do it ourself */
+extern char **environ;
+#if defined(__GLIBC__) && __GLIBC__ < 2
+int vdprintf(int d, const char *format, va_list ap);
+#endif
+
 
 #define check_free_space abrt_check_free_space
 void check_free_space(unsigned setting_MaxCrashReportsSize, const char *dump_location);
