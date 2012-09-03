@@ -144,7 +144,7 @@ GList *get_problems_over_dbus(bool authorize)
 {
     GDBusProxy *proxy = get_dbus_proxy();
     if (!proxy)
-        return NULL;
+        return ERR_PTR;
 
     GError *error = NULL;
     GVariant *result = g_dbus_proxy_call_sync(proxy,
@@ -159,6 +159,7 @@ GList *get_problems_over_dbus(bool authorize)
     {
         error_msg(_("Can't get problem list from abrt-dbus: %s"), error->message);
         g_error_free(error);
+        return ERR_PTR;
     }
 
     GList *list = NULL;

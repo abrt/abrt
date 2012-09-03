@@ -252,23 +252,6 @@ static void add_directory_to_dirlist(const char *problem_dir_path, gpointer data
     VERB1 log("added: %s", problem_dir_path);
 }
 
-static void query_dbus_and_add_to_dirlist(void)
-{
-    GList *problem_dirs = get_problems_over_dbus(g_authorize);
-
-    if (problem_dirs)
-    {
-        g_list_foreach(problem_dirs, (GFunc)add_directory_to_dirlist, /*use_dbus:*/ (void*)true);
-        list_free_with_free(problem_dirs);
-    }
-
-    /* HACK ALERT! We "magically know" that dbus-reported problem dirs
-     * live in g_settings_dump_location.
-     * Notifications on changes should be implemented to go over dbus too.
-     */
-    watch_this_dir(g_settings_dump_location);
-}
-
 static void scan_directory_and_add_to_dirlist(const char *path)
 {
     DIR *dp = opendir(path);
@@ -294,6 +277,33 @@ static void scan_directory_and_add_to_dirlist(const char *path)
     closedir(dp);
 
     watch_this_dir(path);
+}
+
+static void query_dbus_and_add_to_dirlist(void)
+{
+    GList *problem_dirs = get_problems_over_dbus(g_authorize);
+
+    if (problem_dirs == ERR_PTR)
+    {
+        /* One way to trigger this is to temporarily rename
+         * dbus socket (/var/run/dbus/system_bus_socket)
+         */
+        error_msg("Error in DBus communication, falling back to direct access to '%s'", g_settings_dump_location);
+        scan_directory_and_add_to_dirlist(g_settings_dump_location);
+        return;
+    }
+
+    if (problem_dirs)
+    {
+        g_list_foreach(problem_dirs, (GFunc)add_directory_to_dirlist, /*use_dbus:*/ (void*)true);
+        list_free_with_free(problem_dirs);
+    }
+
+    /* HACK ALERT! We "magically know" that dbus-reported problem dirs
+     * live in g_settings_dump_location.
+     * Notifications on changes should be implemented to go over dbus too.
+     */
+    watch_this_dir(g_settings_dump_location);
 }
 
 static void scan_dirs_and_add_to_dirlist(void)
