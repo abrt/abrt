@@ -399,6 +399,8 @@ void koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], char *oops_buf, const 
     // [<c0460a56>] ? audit_syscall_entry+0xf9/0x123
     // [<c049b460>] ? sys_ioctl+0x40/0x5c
     // [<c0403c76>] ? syscall_call+0x7/0xb
+    // Code:...  <======== we should ignore everything which isn't call trace
+    // RIP  ...
     struct strbuf *kernel_bt = strbuf_new();
     char *call_trace = strstr(oops_buf, "Call Trace");
     if (call_trace)
@@ -413,7 +415,9 @@ void koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], char *oops_buf, const 
             char *p = skip_whitespace(line);
             char *end_mem_block = strchr(p, ' ');
             if (!end_mem_block)
-                error_msg_and_die("no [<mem>] mark");
+                break; /* no memblock, we are done */
+            if (p[0] != '[' || p[1] != '<' || end_mem_block[-2] != '>' || end_mem_block[-1] != ']')
+                break; /* no memblock, we are done */
 
             end_mem_block = skip_whitespace(end_mem_block);
 
