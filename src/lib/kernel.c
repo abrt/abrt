@@ -406,7 +406,7 @@ void koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], char *oops_buf, const 
         call_trace += sizeof("Call Trace\n");
         char *end_line = strchr(call_trace, '\n');
         int i = 0;
-        while (end_line && !*end_line)
+        while (end_line && end_line[0] != '\0')
         {
             char *line = xstrndup(call_trace, end_line - call_trace);
 
