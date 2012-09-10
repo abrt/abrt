@@ -362,7 +362,7 @@ static bool allowed_problem_dir(const char *dir_name)
     return true;
 }
 
-static char *handle_new_problem(GVariant *problem_info, char **error)
+static char *handle_new_problem(GVariant *problem_info, uid_t caller_uid, char **error)
 {
     problem_data_t *pd = problem_data_new();
 
@@ -372,6 +372,14 @@ static char *handle_new_problem(GVariant *problem_info, char **error)
     while (g_variant_iter_loop(iter, "{ss}", &key, &value))
     {
         problem_data_add_text_editable(pd, key, value);
+    }
+
+    if (caller_uid != 0 || problem_data_get_content_or_NULL(pd, FILENAME_UID) == NULL)
+    {   /* set uid field to caller's uid if caller is not root or root doesn't pass own uid */
+        VERB2 log("Adding UID %d to problem data", caller_uid);
+        char buf[sizeof(uid_t) * 3 + 2];
+        snprintf(buf, sizeof(buf), "%d", caller_uid);
+        problem_data_add_text_noteditable(pd, FILENAME_UID, buf);
     }
 
     char *problem_id = problem_data_save(pd);
@@ -419,7 +427,7 @@ static void handle_method_call(GDBusConnection *connection,
     if (g_strcmp0(method_name, "NewProblem") == 0)
     {
         char *error = NULL;
-        char *problem_id = handle_new_problem(g_variant_get_child_value(parameters, 0), &error);
+        char *problem_id = handle_new_problem(g_variant_get_child_value(parameters, 0), caller_uid, &error);
         if (!problem_id)
         {
             g_dbus_method_invocation_return_dbus_error(invocation,
