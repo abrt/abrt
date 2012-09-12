@@ -1,0 +1,117 @@
+#!/usr/bin/env python
+"""This module provides a function for executing of disjunction of analyze
+events.
+"""
+
+import sys
+import os
+from argparse import ArgumentParser
+import locale
+import gettext
+from subprocess import Popen
+
+
+GETTEXT_PROGNAME = "abrt-action-perform-ccpp-analysis"
+
+_ = gettext.lgettext
+
+def ask_yes_no_save_result(option_name, question):
+    """Asks user for answer to yes/no/yesforever question.
+
+    Keyword arguments:
+    option_name -- a key for configuration to store the yesforever answer
+    question -- a displayed question
+
+    Returns True if user's answer is yes or yes forever; otherwise returns
+    False.
+
+    """
+
+    sys.stdout.write("ASK_YES_NO_YESFOREVER {0} {1}\n"
+                        .format(option_name, question))
+    sys.stdout.flush()
+    return sys.stdin.readline()  == "yes\n"
+
+def handle_event(event_name, problem_dir):
+    """Helper function handling a single event
+
+    Keyword arguments:
+    envet_name -- a name of handled event
+    problem_dir -- a path to problem directory
+
+    Returns True if the handled event was successfully executed; otherwise
+    returns False.
+
+    """
+
+    executable = "@libexecdir@/abrt-handle-event"
+    try:
+        proc = Popen([executable, "-e", event_name, "--", problem_dir])
+        return proc.wait() == 0
+    except OSError as e:
+        sys.stderr.write("Can't run '{0}': {1}\n".format(executable, e))
+        sys.exit(1)
+
+
+def run_analyze_smart(problem_dir):
+    """Runs analyze_RetraceServer event or analyze_LocalGB event.
+
+    At first runs analyze_RetraceServer. If user dismisses
+    analyze_RetraceServer event or if the run fails the analyze_LocalGDB event
+    will be run.
+
+    Keyword arguments:
+    problem_dir -- a path to problem directory
+
+    Returns True if any of the events was successfully performed; otherwise
+    returns False.
+
+    """
+
+    analyzed = False
+    allowed = ask_yes_no_save_result("abrt_analyze_smart_ask_upload_coredump",
+                _("Ok to upload core dump? (It may contain sensitive data). "\
+                  "If your answer is 'No', a stack trace will be generated locally. "\
+                  "(It may download a huge amount of data)."))
+
+    if allowed:
+        analyzed = handle_event("analyze_RetraceServer", problem_dir)
+
+    # temporary helper variables for better readability
+    option = "abrt_analyze_smart_ask_perform_local_analysis"
+    question = _("Do you want to generate a stack trace localy? "\
+                 "(It may download a huge amount of data but reporting "\
+                 "can't continue without stack trace).")
+
+    # run local GDB if the retrace event was dismissed
+    # or if the retrace event failed and user gave us permission to run local GDB
+    if not allowed or (not analyzed and ask_yes_no_save_result(option, question)):
+        analyzed = handle_event("analyze_LocalGDB", problem_dir)
+
+    return analyzed
+
+
+if __name__ == "__main__":
+    try:
+        locale.setlocale(locale.LC_ALL, "")
+    except locale.Error:
+        os.environ['LC_ALL'] = 'C'
+        locale.setlocale(locale.LC_ALL, "")
+
+    # Defeat "AttributeError: 'module' object has no attribute 'nl_langinfo'"
+    try:
+        gettext.bind_textdomain_codeset(GETTEXT_PROGNAME,
+                                        locale.nl_langinfo(locale.CODESET))
+    except AttributeError:
+        pass
+
+    gettext.bindtextdomain(GETTEXT_PROGNAME, '/usr/share/locale')
+    gettext.textdomain(GETTEXT_PROGNAME)
+
+    CMDARGS = ArgumentParser(description = _('Smartly runs analyze events'))
+    CMDARGS.add_argument('-d', '--problem-dir', type=str,
+                         default='.', help=_('Problem directory'))
+
+    OPTIONS = CMDARGS.parse_args()
+
+    sys.exit(0 if run_analyze_smart(vars(OPTIONS)['problem_dir']) else 1)

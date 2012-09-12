@@ -535,11 +535,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-action-generate-core-backtrace
 %{_bindir}/abrt-action-analyze-backtrace
 %{_bindir}/abrt-action-list-dsos
+%{_bindir}/abrt-action-perform-ccpp-analysis
 %{_bindir}/abrt-dedup-client
 %{_sbindir}/abrt-install-ccpp-hook
 %{_sysconfdir}/libreport/events.d/ccpp_event.conf
 %{_sysconfdir}/libreport/events.d/gconf_event.conf
 %{_sysconfdir}/libreport/events.d/vimrc_event.conf
+%{_sysconfdir}/libreport/events/analyze_CCpp.xml
 %{_sysconfdir}/libreport/events/analyze_LocalGDB.xml
 %{_sysconfdir}/libreport/events/collect_xsession_errors.xml
 %{_sysconfdir}/libreport/events/collect_Smolt.xml

@@ -4,7 +4,8 @@ bin_SCRIPTS = \
     abrt-action-install-debuginfo \
     abrt-action-analyze-core \
     abrt-action-analyze-vmcore \
-    abrt-action-list-dsos
+    abrt-action-list-dsos \
+    abrt-action-perform-ccpp-analysis
 
 bin_PROGRAMS = \
     abrt-watch-log \
@@ -28,6 +29,7 @@ libexec_PROGRAMS = abrt-action-install-debuginfo-to-abrt-cache
 eventsdir = $(EVENTS_DIR)
 
 dist_events_DATA = \
+    analyze_CCpp.xml \
     analyze_LocalGDB.xml \
     analyze_RetraceServer.xml \
     analyze_VMcore.xml \
@@ -59,7 +61,8 @@ PYTHON_FILES = \
     abrt-action-install-debuginfo.in \
     abrt-action-list-dsos \
     abrt-action-analyze-core \
-    abrt-action-analyze-vmcore.in
+    abrt-action-analyze-vmcore.in \
+    abrt-action-perform-ccpp-analysis.in
 
 EXTRA_DIST = \
     $(PYTHON_FILES) \
@@ -68,6 +71,7 @@ EXTRA_DIST = \
     collect_GConf.xml.in \
     collect_vimrc_user.xml.in \
     collect_vimrc_system.xml.in \
+    analyze_CCpp.xml.in \
     analyze_LocalGDB.xml.in \
     analyze_RetraceServer.xml.in \
     analyze_VMcore.xml.in \
@@ -266,3 +270,8 @@ abrt_bodhi_SOURCES = \
 
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
+
+
+abrt-action-perform-ccpp-analysis: abrt-action-perform-ccpp-analysis.in
+	sed -e s,\@libexecdir\@,$(libexecdir),g \
+        $< >$@

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<event>
+    <name>Analyze C/C++ Crash</name>
+    <_description>Send core dump to remote retrace server for analysis or perform local analysis if the remote analysis fails</_description>
+    <_long-description>Uploads coredump to a server, which generates backtrace and returns it. If user doens't want to upload his coredump to anywhere the event performs local analysis. Local analysis is run event if remote analysis fails.
+    Pros: no need for debuginfo downloads. Retrace server's database of debuginfos is more complete. Retrace server may generate better backtraces.
+    Cons: coredump you upload contains all the data from the crashed program, including your private data, if any.
+    </_long-description>
+    <creates-items>backtrace</creates-items>
+    <gui-review-elements>no</gui-review-elements>
+
+    <!-- The event shows a message about sensitive data on its own.
+         It has to ask user on its own because other tools interrupts
+         processing at all if user rejects sending of sensitive data.
+         The second result for showing the question on its own is that the
+         event implementation automatically runs the analyze_LocalGDB event if
+         user dismisses the analyze_RetraceServer event. -->
+    <sending-sensitive-data>no</sending-sensitive-data>
+
+    <!-- The following options are taken from analyze_RetraceServer
+         event configuration because the analyze ccpp event internally runs
+         the analyze_RetraceServer.  The current implementation of the event
+         and libreport's run event framework can't load configuration of an
+         internally executed event.  This causes that user can be forced to
+         configure remote analysis on two different places. -->
+    <options>
+        <option type="text" name="RETRACE_SERVER_URL">
+           <_label>Retrace server URL</_label>
+           <default-value>retrace.fedoraproject.org</default-value>
+           <allow-empty>no</allow-empty>
+           <_description>Address of the retrace server</_description>
+       </option>
+       <option type="text" name="RETRACE_SERVER_INSECURE">
+           <_label>Insecure</_label>
+           <allow-empty>yes</allow-empty>
+           <_description>Whether or not to use insecure connection</_description>
+           <_note-html>Write "insecure" to allow insecure connection &lt;a href="https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection" &gt;(warning)&lt;/a&gt;</_note-html>
+       </option>
+
+    </options>
+</event>
