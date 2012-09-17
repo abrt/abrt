@@ -40,7 +40,7 @@ rlJournalStart
         rlLog "Create problem data as root without UID"
         dbus-send --system --type=method_call --print-reply \
                     --dest=org.freedesktop.problems /org/freedesktop/problems org.freedesktop.problems.NewProblem \
-                    dict:string:string:"analyzer","libreport","executable","/usr/bin/true" > dbus_first_reply.log
+                    dict:string:string:"analyzer","libreport","executable","$(which true)" > dbus_first_reply.log
         rlAssertGrep "^[ ]*string[ ]\+\"[^ ]\+\"$" dbus_first_reply.log
         problem_ID1=`cat dbus_first_reply.log | tail -1 | sed 's/ *string *"\(.*\)"/\1/'`
         sleep 5
@@ -59,7 +59,7 @@ rlJournalStart
         rlLog "Create problem data as root with UID"
         dbus-send --system --type=method_call --print-reply \
                     --dest=org.freedesktop.problems /org/freedesktop/problems org.freedesktop.problems.NewProblem \
-                    dict:string:string:"analyzer","libreport","executable","/usr/bin/true","uid","$TEST_UID" > dbus_second_reply.log
+                    dict:string:string:"analyzer","libreport","executable","$(which true)","uid","$TEST_UID" > dbus_second_reply.log
         rlAssertGrep "^[ ]*string[ ]\+\"[^ ]\+\"$" dbus_second_reply.log
         problem_ID2=`cat dbus_second_reply.log | tail -1 | sed 's/ *string *"\(.*\)"/\1/'`
         sleep 5
@@ -78,7 +78,7 @@ rlJournalStart
         rlLog "Create problem data as a user without UID"
         su abrtdbustest -c 'dbus-send --system --type=method_call --print-reply \
                     --dest=org.freedesktop.problems /org/freedesktop/problems org.freedesktop.problems.NewProblem \
-                    dict:string:string:"analyzer","libreport","executable","/usr/bin/true"' > dbus_third_reply.log
+                    dict:string:string:"analyzer","libreport","executable","$(which true)"' > dbus_third_reply.log
         rlAssertGrep "^[ ]*string[ ]\+\"[^ ]\+\"$" dbus_third_reply.log
         problem_ID3=`cat dbus_third_reply.log | tail -1 | sed 's/ *string *"\(.*\)"/\1/'`
         sleep 5
@@ -97,7 +97,7 @@ rlJournalStart
         rlLog "Create problem data as a user with root's UID"
         su abrtdbustest -c 'dbus-send --system --type=method_call --print-reply \
                     --dest=org.freedesktop.problems /org/freedesktop/problems org.freedesktop.problems.NewProblem \
-                    dict:string:string:"analyzer","libreport","executable","/usr/bin/true","uid","0"' > dbus_fourth_reply.log
+                    dict:string:string:"analyzer","libreport","executable","$(which true)","uid","0"' > dbus_fourth_reply.log
         rlAssertGrep "^[ ]*string[ ]\+\"[^ ]\+\"$" dbus_fourth_reply.log
         problem_ID4=`cat dbus_fourth_reply.log | tail -1 | sed 's/ *string *"\(.*\)"/\1/'`
         sleep 5
