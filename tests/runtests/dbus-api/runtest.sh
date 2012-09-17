@@ -82,7 +82,7 @@ rlJournalStart
     rlPhaseStartCleanup
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
         rlRun "abrt-cli rm $crash2_PATH" 0 "Remove second crash directory"
-        rlBundleLogs abrt "*.log"
+        rlBundleLogs abrt *.log
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd
