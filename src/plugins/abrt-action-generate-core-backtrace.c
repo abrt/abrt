@@ -95,7 +95,8 @@ int main(int argc, char **argv)
     if (!dd)
         xfunc_die(); /* dd_opendir already printed error msg */
     char *analyzer = dd_load_text(dd, FILENAME_ANALYZER);
-    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+    char *executable = dd_load_text_ext(dd, FILENAME_EXECUTABLE,
+                                        DD_FAIL_QUIETLY_ENOENT);
     char *txt_backtrace = dd_load_text_ext(dd, FILENAME_BACKTRACE,
                                            DD_FAIL_QUIETLY_ENOENT);
     char *kernel = dd_load_text_ext(dd, FILENAME_KERNEL,
