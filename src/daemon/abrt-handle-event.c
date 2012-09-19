@@ -319,7 +319,7 @@ int main(int argc, char **argv)
         if (!dd)
             return 1;
 
-        uid = dd_load_text(dd, FILENAME_UID);
+        uid = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT);
         dd_close(dd);
 
         struct run_event_state *run_state = new_run_event_state();
