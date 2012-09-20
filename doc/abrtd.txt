@@ -21,14 +21,21 @@ plugins.
 
 OPTIONS
 -------
+-v::
+   Log more detailed debugging information.
+
 -d::
    Stay in the foreground and log to standard error.
 
 -s::
    Log to system log even with option -d.
 
--v::
-   Log more detailed debugging information.
+-t NUM::
+   Exit after NUM seconds of inactivity.
+
+-p::
+   Add program names to log.
+
 
 CAVEATS
 -------
