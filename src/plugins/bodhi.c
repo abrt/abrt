@@ -326,10 +326,9 @@ static char *rpm_get_nvr_by_pkg_name(const char *pkg_name)
 {
     int status = rpmReadConfigFiles((const char *) NULL, (const char *) NULL);
     if (status)
-        error_msg_and_die("error reading rc files");
+        error_msg_and_die("error reading RPM rc files");
 
-    char* nvr = NULL;
-    const char *errmsg = NULL;
+    char *nvr = NULL;
 
     rpmts ts = rpmtsCreate();
     rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pkg_name, 0);
@@ -338,6 +337,7 @@ static char *rpm_get_nvr_by_pkg_name(const char *pkg_name)
     if (!header)
         goto error;
 
+    const char *errmsg = NULL;
     nvr = headerFormat(header, "%{name}-%{version}-%{release}", &errmsg);
 
     if (!nvr && errmsg)
@@ -436,36 +436,57 @@ int main(int argc, char **argv)
     if (!update_hash_tbl || !g_hash_table_size(update_hash_tbl))
     {
         log(_("No updates for this package found"));
+        /*if (update_hash_tbl) g_hash_table_unref(update_hash_tbl);*/
         return 0;
     }
 
     GHashTableIter iter;
-    char *name = NULL;
-    struct bodhi *b = NULL;
+    char *name;
+    struct bodhi *b;
     struct strbuf *q = strbuf_new();
     g_hash_table_iter_init(&iter, update_hash_tbl);
     while (g_hash_table_iter_next(&iter, (void **) &name, (void **) &b))
     {
         char *installed_pkg_nvr = rpm_get_nvr_by_pkg_name(name);
-        if (installed_pkg_nvr && rpmvercmp(installed_pkg_nvr, b->nvr) > 0)
+        if (installed_pkg_nvr && rpmvercmp(installed_pkg_nvr, b->nvr) >= 0)
         {
-            VERB2 log("Update %s is older than local version: %s, skipping", b->nvr, installed_pkg_nvr);
+            VERB2 log("Update %s is older or same as local version %s, skipping", b->nvr, installed_pkg_nvr);
+            free(installed_pkg_nvr);
             continue;
         }
+        free(installed_pkg_nvr);
 
         strbuf_append_strf(q, " %s", b->nvr);
     }
 
+    /*g_hash_table_unref(update_hash_tbl);*/
+
     if (!q->len)
     {
+        /*strbuf_free(q);*/
         log(_("Local version of the package is newer than available updates"));
         return 0;
     }
 
-    strbuf_prepend_str(q, _("Abrt found a new update which fix your problem. Please run "
-                            "before submitting bug: pkcon update --repo-enable=fedora --repo"
-                            "-repo=updates-testing"));
+    /* Message is split into text and command in order to make
+     * translator's job easier
+     */
 
-    strbuf_append_str(q, _(". Do you want to continue with reporting bug?"));
-    return !ask_yes_no(q->buf);
+    /* We suggest the command which is most likely to exist on user's system,
+     * and which is familiar to the largest population of users.
+     * There are other tools (pkcon et al) which might be somewhat more
+     * convenient (for example, they might be usable from non-root), but they
+     * might be not present on the system, may evolve or be superseded,
+     * while yum is unlikely to do so.
+     */
+    strbuf_prepend_str(q, "yum update --enablerepo=fedora --enablerepo=updates-testing");
+
+    char *msg = xasprintf(_("An update exists which might fix your problem. "
+                "You can install it by running: %s. "
+                "Do you want to continue with reporting the bug?"),
+                q->buf
+    );
+    /*strbuf_free(q);*/
+
+    return !ask_yes_no(msg);
 }
