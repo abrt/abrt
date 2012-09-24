@@ -79,9 +79,9 @@ or to query list of possible events for a directory.
 
 When user (admin) wants to see the list of dumped crashes and
 process them, he runs abrt-gui or abrt-cli. These programs
-perform a dbus call to "com.redhat.abrt" on a system dbus.
+perform a dbus call to "org.freedesktop.problems" on a system dbus.
 If there is no program with this name on it, dbus autostart
-will invoke abrtd, which registers "com.redhat.abrt"
+will invoke abrtd, which registers "org.freedesktop.problems"
 and processes the call(s).
 
 The key dbus calls served by abrtd are:

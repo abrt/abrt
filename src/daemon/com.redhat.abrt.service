@@ -1,7 +1,0 @@
-[D-BUS Service]
-Name=com.redhat.abrt
-# For testing, you may use -t5 to use small timeout of 5 seconds.
-# This will make "abrtd exited while clients existed but were idle"
-# situations easier to trigger
-Exec=/usr/sbin/abrt-dbus -t133
-User=root

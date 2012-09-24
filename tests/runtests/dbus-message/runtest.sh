@@ -40,7 +40,7 @@ rlJournalStart
         TmpDir=$(mktemp -d)
         pushd $TmpDir
         rlRun "dbus-monitor --system \
-            \"type='signal',interface='com.redhat.abrt',path='/com/redhat/abrt'\" \
+            \"type='signal',interface='org.freedesktop.problems',path='/org/freedesktop/problems'\" \
             > dbus.log &" 0 "Running dbus-monitor"
     rlPhaseEnd
 

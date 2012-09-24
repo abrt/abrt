@@ -28,10 +28,6 @@
 #include <libreport/internal_abrt_dbus.h>
 #include "libabrt.h"
 
-#define ABRTD_DBUS_NAME  "com.redhat.abrt"
-#define ABRTD_DBUS_PATH  "/com/redhat/abrt"
-#define ABRTD_DBUS_IFACE "com.redhat.abrt"
-
 
 static gboolean persistent_notification;
 static GtkStatusIcon *ap_status_icon;
@@ -680,10 +676,10 @@ int main(int argc, char** argv)
     attach_dbus_conn_to_glib_main_loop(system_conn, NULL, NULL);
     if (!dbus_connection_add_filter(system_conn, handle_message, NULL, NULL))
         error_msg_and_die("Can't add dbus filter");
-    //signal sender=:1.73 -> path=/com/redhat/abrt; interface=com.redhat.abrt; member=Crash
+    //signal sender=:1.73 -> path=/org/freedesktop/problems; interface=org.freedesktop.problems; member=Crash
     //   string "coreutils-7.2-3.fc11"
     //   string "0"
-    dbus_bus_add_match(system_conn, "type='signal',path='/com/redhat/abrt'", &err);
+    dbus_bus_add_match(system_conn, "type='signal',path='"ABRT_DBUS_OBJECT"'", &err);
     die_if_dbus_error(false, &err, "Can't add dbus match");
 
     /* dbus_abrt cannot handle more than one bus, and we don't really need to.
@@ -691,7 +687,7 @@ int main(int argc, char** argv)
     DBusConnection* session_conn = dbus_bus_get(DBUS_BUS_SESSION, &err);
     die_if_dbus_error(session_conn == NULL, &err, "Can't connect to session dbus");
     int r = dbus_bus_request_name(session_conn,
-        "com.redhat.abrt.applet",
+        ABRT_DBUS_NAME".applet",
         /* flags */ DBUS_NAME_FLAG_DO_NOT_QUEUE, &err);
     die_if_dbus_error(r != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER, &err,
         "Problem connecting to dbus, or applet is already running");
