@@ -174,6 +174,7 @@ uncaught exception in python programs.
 %package tui
 Summary: %{name}'s command line interface
 Group: User Interface/Desktops
+Requires: libreport-cli
 
 %description tui
 This package contains a simple command line client for processing abrt reports in
@@ -184,7 +185,6 @@ Summary: Virtual package to install all necessary packages for usage from comman
 Group: Applications/System
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-tui
-Requires: libreport-cli
 Requires: abrt-addon-kerneloops
 Requires: abrt-addon-ccpp, abrt-addon-python
 Requires: libreport-plugin-bugzilla, libreport-plugin-logger
