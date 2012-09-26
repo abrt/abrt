@@ -143,6 +143,7 @@ static off_t copyfd_sparse(int src_fd, int dst_fd1, int dst_fd2, off_t size2)
 /* Global data */
 
 static char *user_pwd;
+static char *proc_pid_status;
 static struct dump_dir *dd;
 static int user_core_fd = -1;
 /*
@@ -168,7 +169,8 @@ static char* get_executable(pid_t pid, int *fd_p)
     char buf[sizeof("/proc/%lu/exe") + sizeof(long)*3];
 
     sprintf(buf, "/proc/%lu/exe", (long)pid);
-    *fd_p = open(buf, O_RDONLY); /* might fail and return -1, it's ok */
+    if (fd_p)
+        *fd_p = open(buf, O_RDONLY); /* might fail and return -1, it's ok */
     char *executable = malloc_readlink(buf);
     if (!executable)
         return NULL;
@@ -203,31 +205,29 @@ static char* get_rootdir(pid_t pid)
     return malloc_readlink(buf);
 }
 
-static int get_fsuid(pid_t pid)
+static int get_fsuid(void)
 {
-    char filename[sizeof("/proc/%lu/status") + sizeof(long)*3];
-    sprintf(filename, "/proc/%lu/status", (long)pid);
-    int real, euid, saved, fs_uid = 0; //if we fail to parse the uid, then make it root only readable to be safe
-    FILE *file = fopen(filename, "r");
+    int real, euid, saved;
+    /* if we fail to parse the uid, then make it root only readable to be safe */
+    int fs_uid = 0;
 
-    if (!file)
-        /* rather bail out than create core with wrong permission */
-        perror_msg_and_die("Can't open %s", filename);
-
-    char line[128];
-    while (fgets(line, sizeof(line), file) != NULL)
+    char *line = proc_pid_status; /* never NULL */
+    for (;;)
     {
         if (strncmp(line, "Uid", 3) == 0)
         {
-            int n = sscanf(line, "Uid:\t%d\t%d\t%d\t%d\n",&real, &euid, &saved, &fs_uid);
+            int n = sscanf(line, "Uid:\t%d\t%d\t%d\t%d\n", &real, &euid, &saved, &fs_uid);
             if (n != 4)
             {
-                perror_msg_and_die("Can't parse %s", filename);
+                perror_msg_and_die("Can't parse Uid: line");
             }
             break;
         }
+        line = strchr(line, '\n');
+        if (!line)
+            break;
+        line++;
     }
-    fclose(file);
 
     return fs_uid;
 }
@@ -536,8 +536,10 @@ int main(int argc, char** argv)
         argv[8] = uts.nodename;
     }
 
-    int src_fd_binary;
-    char *executable = get_executable(pid, &src_fd_binary);
+    char path[PATH_MAX];
+
+    int src_fd_binary = -1;
+    char *executable = get_executable(pid, setting_SaveBinaryImage ? &src_fd_binary : NULL);
     if (executable && strstr(executable, "/abrt-hook-ccpp"))
     {
         error_msg_and_die("PID %lu is '%s', not dumping it to avoid recursion",
@@ -547,14 +549,11 @@ int main(int argc, char** argv)
     user_pwd = get_cwd(pid); /* may be NULL on error */
     VERB1 log("user_pwd:'%s'", user_pwd);
 
-    if (!setting_SaveBinaryImage && src_fd_binary >= 0)
-    {
-        close(src_fd_binary);
-        src_fd_binary = -1;
-    }
+    sprintf(path, "/proc/%lu/status", (long)pid);
+    proc_pid_status = xmalloc_xopen_read_close(path, /*maxsz:*/ NULL);
 
     uid_t fsuid = uid;
-    uid_t tmp_fsuid = get_fsuid(pid);
+    uid_t tmp_fsuid = get_fsuid();
     int suid_policy = dump_suid_policy();
     if (tmp_fsuid != uid)
     {
@@ -617,8 +616,6 @@ int main(int argc, char** argv)
         check_free_space(maxsize, g_settings_dump_location);
     }
 
-    char path[PATH_MAX];
-
     /* Check /var/spool/abrt/last-ccpp marker, do not dump repeated crashes
      * if they happen too often. Else, write new marker value.
      */
@@ -659,7 +656,6 @@ int main(int argc, char** argv)
     {
         return 1;
     }
-
 
     /* use fsuid instead of uid, so we don't expose any sensitive
      * information of suided app in /var/spool/abrt
@@ -706,6 +702,7 @@ int main(int argc, char** argv)
         dd_save_text(dd, FILENAME_ANALYZER, "CCpp");
         dd_save_text(dd, FILENAME_EXECUTABLE, executable);
         dd_save_text(dd, FILENAME_PID, pid_str);
+        dd_save_text(dd, FILENAME_PROC_PID_STATUS, proc_pid_status);
         if (user_pwd)
             dd_save_text(dd, FILENAME_PWD, user_pwd);
         if (rootdir)
