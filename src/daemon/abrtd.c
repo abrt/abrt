@@ -704,6 +704,28 @@ static void dumpsocket_shutdown()
     }
 }
 
+static pid_t get_locking_pid()
+{
+    FILE *pid_file = fopen(VAR_RUN_PIDFILE, "r");
+    pid_t retval = 0;
+
+    if (!pid_file)
+    {
+        perror_msg("Can't open %s", VAR_RUN_PIDFILE);
+        return retval;
+    }
+
+    char line[128]; //should be enough to store pid
+
+    if (fgets(line, sizeof(line), pid_file) != NULL)
+    {
+        retval = strtol(line, (char **)NULL, 10);
+    }
+
+    fclose(pid_file);
+    return retval;
+}
+
 static int create_pidfile()
 {
     /* Note:
@@ -718,6 +740,18 @@ static int create_pidfile()
         if (lockf(fd, F_TLOCK, 0) < 0)
         {
             perror_msg("Can't lock file '%s'", VAR_RUN_PIDFILE);
+            /* should help with problems like rhbz#859724 */
+            pid_t locking_pid = get_locking_pid();
+
+            if (locking_pid <= 0)
+                return -1;
+
+            char *cmdline = get_cmdline(locking_pid);
+            if (cmdline != NULL)
+                error_msg("Process: '%s (%u)' is holding the lock", cmdline, locking_pid);
+
+            free(cmdline);
+
             return -1;
         }
         close_on_exec_on(fd);
