@@ -727,7 +727,7 @@ int main(int argc, char** argv)
         dd_save_text(dd, FILENAME_ENVIRON, environ ? : "");
         free(environ);
 
-        dd_save_text(dd, "abrt_version", VERSION);
+        dd_save_text(dd, FILENAME_ABRT_VERSION, VERSION);
 
         if (src_fd_binary > 0)
         {

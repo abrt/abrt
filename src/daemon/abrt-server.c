@@ -110,7 +110,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     }
 
     dd_create_basic_files(dd, client_uid, NULL);
-    dd_save_text(dd, "abrt_version", VERSION);
+    dd_save_text(dd, FILENAME_ABRT_VERSION, VERSION);
 
     gpointer gpkey = g_hash_table_lookup(problem_info, FILENAME_CMDLINE);
     if (!gpkey)
