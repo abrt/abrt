@@ -9,8 +9,8 @@ import sys
 sys.path.insert(0, "../../../src/hooks")
 import abrt_exception_handler
 sys.argv[0]="/...testsuite.../$1.py"
-def write_dump(tb):
-	print tb.splitlines()[0]
+def write_dump(tb_text, tb):
+	print tb_text.splitlines()[0]
 abrt_exception_handler.write_dump = write_dump
 $2
 ]])
