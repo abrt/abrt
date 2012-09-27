@@ -704,28 +704,6 @@ static void dumpsocket_shutdown()
     }
 }
 
-static pid_t get_locking_pid()
-{
-    FILE *pid_file = fopen(VAR_RUN_PIDFILE, "r");
-    pid_t retval = 0;
-
-    if (!pid_file)
-    {
-        perror_msg("Can't open %s", VAR_RUN_PIDFILE);
-        return retval;
-    }
-
-    char line[128]; //should be enough to store pid
-
-    if (fgets(line, sizeof(line), pid_file) != NULL)
-    {
-        retval = strtol(line, (char **)NULL, 10);
-    }
-
-    fclose(pid_file);
-    return retval;
-}
-
 static int create_pidfile()
 {
     /* Note:
@@ -734,23 +712,27 @@ static int create_pidfile()
      * there is another live abrtd. O_TRUNCing the file in this case
      * would be wrong - it'll erase the pid to empty string!
      */
-    int fd = open(VAR_RUN_PIDFILE, O_WRONLY|O_CREAT, 0644);
+    int fd = open(VAR_RUN_PIDFILE, O_RDWR|O_CREAT, 0644);
     if (fd >= 0)
     {
         if (lockf(fd, F_TLOCK, 0) < 0)
         {
             perror_msg("Can't lock file '%s'", VAR_RUN_PIDFILE);
             /* should help with problems like rhbz#859724 */
-            pid_t locking_pid = get_locking_pid();
+            size_t maxsize = 128;
+            char *pid_str = xmalloc_read(fd, &maxsize);
+            close(fd);
 
-            if (locking_pid <= 0)
-                return -1;
+            if (pid_str && pid_str[0])
+            {
+                int locking_pid = strtoul(pid_str, NULL, 10);
+                char *cmdline = get_cmdline(locking_pid);
+                if (cmdline != NULL)
+                    error_msg("Process: '%s (%u)' is holding the lock", cmdline, locking_pid);
 
-            char *cmdline = get_cmdline(locking_pid);
-            if (cmdline != NULL)
-                error_msg("Process: '%s (%u)' is holding the lock", cmdline, locking_pid);
-
-            free(cmdline);
+                free(cmdline);
+                free(pid_str);
+            }
 
             return -1;
         }
