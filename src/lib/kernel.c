@@ -17,6 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#define _GNU_SOURCE 1 /* for strcasestr */
 #include "libabrt.h"
 
 /*
@@ -168,16 +169,17 @@ void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
         }
         /* remove jiffies time stamp counter if present
          * jiffies are unsigned long, so it can be 2^64 long, which is
-         * 20 decimal digits*/
+         * 20 decimal digits
+         */
         if (*c == '[')
         {
             char *c2 = strchr(c, '.');
             char *c3 = strchr(c, ']');
-            if (c2 && c3 && (c2 < c3) && (c3-c) < 21 && (c2-c) < 8)
+            if (c2 && c3 && (c2 < c3) && (c3-c) < 21)
             {
                 c = c3 + 1;
                 if (*c == ' ')
-                        c++;
+                    c++;
             }
         }
         if ((lines_info_size & 0xfff) == 0)
@@ -291,7 +293,7 @@ next_line:
         /* a call trace starts with "Call Trace:" or with the " [<.......>] function+0xFF/0xAA" pattern */
         if (oopsstart >= 0 && !inbacktrace)
         {
-            if (strstr(curline, "Call Trace:"))
+            if (strcasestr(curline, "Call Trace:")) /* yes, it must be case-insensitive */
                 inbacktrace = 1;
             else
             if (strnlen(curline, 9) > 8
