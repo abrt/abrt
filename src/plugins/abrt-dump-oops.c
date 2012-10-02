@@ -259,7 +259,7 @@ int main(int argc, char **argv)
                 debug_dumps_dir = g_settings_dump_location;
             }
 
-            log("Creating dump directories");
+            log("Creating problem directories");
             errors = save_oops_to_dump_dir(oops_list, oops_cnt);
             if (errors)
                 log("%d errors while dumping oopses", errors);
