@@ -1,0 +1,40 @@
+[1462424.527379] general protection fault: 0000 [#1] SMP 
+[1462424.527431] CPU 1 
+[1462424.527448] Modules linked in: vfat fat usb_storage fuse ebtable_nat ebtables ipt_MASQUERADE iptable_nat nf_nat xt_CHECKSUM iptable_mangle bridge stp llc rfcomm be2iscsi iscsi_boot_sysfs bnep bnx2i cnic uio cxgb4i cxgb4 cxgb3i cxgb3 mdio ip6t_REJECT nf_conntrack_ipv6 nf_defrag_ipv6 ip6table_filter ip6_tables libcxgbi ib_iser rdma_cm tpm_bios nf_conntrack_ipv4 nf_defrag_ipv4 xt_state nf_conntrack ib_addr iw_cm ib_cm ib_sa ib_mad ib_core iscsi_tcp libiscsi_tcp libiscsi scsi_transport_iscsi nls_utf8 hfsplus snd_hda_codec_hdmi btusb bluetooth snd_hda_codec_cirrus b43 snd_hda_intel coretemp mac80211 snd_hda_codec cfg80211 rfkill ssb microcode snd_hwdep snd_pcm snd_page_alloc snd_timer snd lpc_ich mfd_core tg3 mei applesmc bcma input_polldev shpchp i2c_i801 soundcore apple_gmux apple_bl vhost_net tun macvtap macvlan kvm_intel nfsd kvm nfs_acl auth_rpcgss uinput lockd sunrpc crc32c_intel ghash_clmulni_intel firewire_ohci firewire_core crc_itu_t sdhci_pci sdhci mmc_core i915 video i2c
+_algo_bit drm_kms_helper drm i2c_core [last unloaded: scsi_wait_scan]
+[1462424.528377] 
+[1462424.528383] Pid: 1659, comm: rpm Not tainted 3.5.3-1.fc17.x86_64 #1 Apple Inc. Macmini5,1/Mac-8ED6AF5B48C039E1
+[1462424.528456] RIP: 0010:[<ffffffff812db222>]  [<ffffffff812db222>] memcpy+0x12/0x110
+[1462424.528515] RSP: 0018:ffff880041c5dc30  EFLAGS: 00010202
+[1462424.528552] RAX: ffff880041c5dcc4 RBX: 0000000000000004 RCX: 0000000000000004
+[1462424.528600] RDX: 0000000000000004 RSI: 0005080000000800 RDI: ffff880041c5dcc4
+[1462424.528647] RBP: ffff880041c5dc98 R08: 0000000000000000 R09: ffff880076677e50
+[1462424.528695] R10: ffff880005dbc780 R11: 0000000000000069 R12: ffff880041c5dcc4
+[1462424.528742] R13: ffff880000000000 R14: 0000160000000000 R15: 0000000000000004
+[1462424.528791] FS:  00007fa354dc7800(0000) GS:ffff880100240000(0000) knlGS:0000000000000000
+[1462424.528844] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[1462424.528883] CR2: 00007f838e0bd430 CR3: 000000003c8c3000 CR4: 00000000000407e0
+[1462424.528930] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[1462424.528978] DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
+[1462424.529026] Process rpm (pid: 1659, threadinfo ffff880041c5c000, task ffff8800039a4530)
+[1462424.529077] Stack:
+[1462424.529094]  ffffffffa053f719 ffff880041c5dc98 ffffffff00000800 ffff880000000004
+[1462424.529154]  ffff880076677e50 ffff880041c5dcc8 00000069a0542980 ff7bffef00000000
+[1462424.529213]  0000000000000001 ffff880041c5dd10 0000000000000003 0000000000000003
+[1462424.529272] Call Trace:
+[1462424.529302]  [<ffffffffa053f719>] ? hfsplus_bnode_read+0x89/0x100 [hfsplus]
+[1462424.529355]  [<ffffffffa0541e9e>] hfsplus_brec_find+0x7e/0x150 [hfsplus]
+[1462424.529406]  [<ffffffffa053d7ea>] hfsplus_delete_cat+0x7a/0x290 [hfsplus]
+[1462424.529457]  [<ffffffffa053e93b>] hfsplus_unlink+0x8b/0x1f0 [hfsplus]
+[1462424.529505]  [<ffffffff8127621c>] ? security_inode_permission+0x1c/0x30
+[1462424.529554]  [<ffffffff8119384e>] vfs_unlink+0x9e/0x110
+[1462424.529593]  [<ffffffff81196de3>] do_unlinkat+0x183/0x1c0
+[1462424.529633]  [<ffffffff810d358c>] ? __audit_syscall_entry+0xcc/0x300
+[1462424.529677]  [<ffffffff810d3bac>] ? __audit_syscall_exit+0x3ec/0x450
+[1462424.532090]  [<ffffffff811a416e>] ? mnt_want_write+0x3e/0x60
+[1462424.534494]  [<ffffffff81197b86>] sys_unlink+0x16/0x20
+[1462424.536899]  [<ffffffff81614ae9>] system_call_fastpath+0x16/0x1b
+[1462424.539450] Code: 4e 48 83 c4 08 5b 5d c3 90 e8 eb fb ff ff eb e6 90 90 90 90 90 90 90 90 90 48 89 f8 48 89 d1 48 c1 e9 03 83 e2 07 f3 48 a5 89 d1 <f3> a4 c3 20 4c 8b 06 4c 8b 4e 08 4c 8b 56 10 4c 8b 5e 18 48 8d 
+[1462424.544800] RIP  [<ffffffff812db222>] memcpy+0x12/0x110
+[1462424.547415]  RSP <ffff880041c5dc30>
+[1462424.667311] ---[ end trace ca3a6cae6c998aca ]---
