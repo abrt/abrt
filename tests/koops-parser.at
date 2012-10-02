@@ -160,6 +160,18 @@ int run_test(const struct test_struct *test)
 	char *oops_jiffies = fread_full(test->filename);
 	char *oops_no_jiffies = fread_full(test->expected_results);
 
+	if (strncmp(oops_no_jiffies, "abrt-dump-oops: Found oopses:",
+				strlen("abrt-dump-oops: Found oopses:")) == 0) {
+		/* Skip "abrt-dump-oops: Found oopses: N"
+		 * and next line (which should be empty)
+		 */
+		oops_no_jiffies = strchr(oops_no_jiffies, '\n') + 1;
+		oops_no_jiffies = strchr(oops_no_jiffies, '\n') + 1;
+		if (strncmp(oops_no_jiffies, "Version: ",
+				strlen("Version: ")) == 0)
+			oops_no_jiffies += strlen("Version: ");
+	}
+
 	/* for testing purpose, I will record only one koops */
 	GList *oops_list = NULL;
 	koops_extract_oopses(&oops_list, oops_jiffies, strlen(oops_jiffies));
@@ -176,7 +188,7 @@ int main(void)
 {
 	struct test_struct all_same_hashes[] = {
 		{ EXAMPLE_PFX"/oops-with-jiffies.test", EXAMPLE_PFX"/oops-with-jiffies.right" },
-		{ EXAMPLE_PFX"/oops_recursive_locking1.test", EXAMPLE_PFX"/oops_recursive_locking1-no-jiffies.test"},
+		{ EXAMPLE_PFX"/oops_recursive_locking1.test", EXAMPLE_PFX"/oops_recursive_locking1.right"},
 	};
 
 	int ret = 0;
