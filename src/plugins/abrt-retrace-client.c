@@ -510,7 +510,15 @@ static int create(bool delete_temp_archive,
 
         char *package = dd_load_text(dd, FILENAME_PACKAGE);
         char *arch = dd_load_text(dd, FILENAME_ARCHITECTURE);
-        char *release = dd_load_text(dd, FILENAME_OS_RELEASE);
+        char *release;
+        /* paranoia - consider crash chrooted when both ROOTDIR
+           and OS_RELEASE_IN_ROOTDIR exist, although only
+           the second one is really required */
+        if (dd_exist(dd, FILENAME_ROOTDIR) &&
+            dd_exist(dd, FILENAME_OS_RELEASE_IN_ROOTDIR))
+            release = dd_load_text(dd, FILENAME_OS_RELEASE_IN_ROOTDIR);
+        else
+            release = dd_load_text(dd, FILENAME_OS_RELEASE);
 
         dd_close(dd);
 
