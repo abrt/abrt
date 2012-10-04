@@ -71,13 +71,8 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
 
     VERB1 log("Saving %u oopses as dump dirs", oops_cnt >= countdown ? countdown-1 : oops_cnt);
 
-    char *cmdline_str = NULL;
-    FILE *cmdline_fp = fopen("/proc/cmdline", "r");
-    if (cmdline_fp)
-    {
-        cmdline_str = xmalloc_fgetline(cmdline_fp);
-        fclose(cmdline_fp);
-    }
+    char *cmdline_str = xmalloc_fopen_fgetline_fclose("/proc/cmdline");
+    char *fips_enabled = xmalloc_fopen_fgetline_fclose("/proc/sys/crypto/fips_enabled");
 
     time_t t = time(NULL);
     const char *iso_date = iso_date_string(&t);
@@ -116,6 +111,8 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
             dd_save_text(dd, FILENAME_KERNEL, first_line);
             if (cmdline_str)
                 dd_save_text(dd, FILENAME_CMDLINE, cmdline_str);
+            if (fips_enabled && strcmp(fips_enabled, "0") != 0)
+                dd_save_text(dd, "fips_enabled", fips_enabled);
             dd_save_text(dd, FILENAME_BACKTRACE, second_line);
 
             /* check if trace doesn't have line: 'Your BIOS is broken' */
@@ -153,6 +150,7 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
     }
 
     free(cmdline_str);
+    free(fips_enabled);
 
     return errors;
 }

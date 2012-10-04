@@ -517,11 +517,8 @@ int main(int argc, char** argv)
         perror_msg_and_die("PID '%s' or limit '%s' is bogus", argv[3], argv[2]);
     }
 
-    FILE *saved_core_pattern = fopen(VAR_RUN"/abrt/saved_core_pattern", "r");
-    if (saved_core_pattern)
     {
-        char *s = xmalloc_fgetline(saved_core_pattern);
-        fclose(saved_core_pattern);
+        char *s = xmalloc_fopen_fgetline_fclose(VAR_RUN"/abrt/saved_core_pattern");
         /* If we have a saved pattern and it's not a "|PROG ARGS" thing... */
         if (s && s[0] != '|')
             core_basename = s;
