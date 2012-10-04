@@ -721,6 +721,14 @@ int main(int argc, char** argv)
         dd_save_text(dd, FILENAME_ENVIRON, environ ? : "");
         free(environ);
 
+        char *fips_enabled = xmalloc_fopen_fgetline_fclose("/proc/sys/crypto/fips_enabled");
+        if (fips_enabled)
+        {
+            if (strcmp(fips_enabled, "0") != 0)
+                dd_save_text(dd, "fips_enabled", fips_enabled);
+            free(fips_enabled);
+        }
+
         dd_save_text(dd, FILENAME_ABRT_VERSION, VERSION);
 
         if (src_fd_binary > 0)
