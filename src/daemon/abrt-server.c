@@ -204,7 +204,7 @@ static int delete_path(const char *dump_dir_name)
             if (!uid_matches)
             {
                 dd_close(dd);
-                error_msg("Dump directory '%s' can't be accessed by user with uid %ld", dump_dir_name, (long)client_uid);
+                error_msg("Problem directory '%s' can't be accessed by user with uid %ld", dump_dir_name, (long)client_uid);
                 return 403; /* Forbidden */
             }
         }

@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_STRING('d', NULL, &dump_dir_name, "DIR", _("Dump directory")),
+        OPT_STRING('d', NULL, &dump_dir_name, "DIR", _("Problem directory")),
         OPT_END()
     };
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage_string);

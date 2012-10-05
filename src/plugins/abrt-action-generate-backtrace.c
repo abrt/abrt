@@ -51,7 +51,7 @@ int main(int argc, char **argv)
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_STRING( 'd', NULL, &dump_dir_name   , "DIR"           , _("Dump directory")),
+        OPT_STRING( 'd', NULL, &dump_dir_name   , "DIR"           , _("Problem directory")),
         OPT_STRING( 'i', NULL, &i_opt           , "DIR1[:DIR2]...", _("Additional debuginfo directories")),
         OPT_INTEGER('t', NULL, &exec_timeout_sec,                   _("Kill gdb if it runs for more than NUM seconds")),
         OPT_END()
