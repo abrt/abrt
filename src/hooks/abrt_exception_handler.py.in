@@ -73,8 +73,12 @@ def write_dump(tb_text, tb):
             if dso_list:
                 s.sendall("dso_list=%s\0" % "\n".join(dso_list))
 
-            s.shutdown(socket.SHUT_WR)
+            s.sendall("environ=")
+            for k,v in os.environ.iteritems():
+                s.sendall("%s=%s\n" % (k,v))
+            s.sendall("\0")
 
+            s.shutdown(socket.SHUT_WR)
 
             # Read the response and log if there's anything wrong
             response = ""
