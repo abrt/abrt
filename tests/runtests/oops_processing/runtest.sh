@@ -31,6 +31,7 @@ TEST="oops_processing"
 PACKAGE="abrt"
 OOPS_REQUIRED_FILES="kernel core_backtrace kernel
 pkg_name pkg_arch pkg_epoch pkg_release pkg_version"
+EXAMPLES_PATH="../../../examples"
 
 rlJournalStart
     rlPhaseStartSetup
@@ -40,12 +41,19 @@ rlJournalStart
         fi
 
         TmpDir=$(mktemp -d)
-        tar xf examples.tar -C $TmpDir
+        sed "s/2.6.27.9-159.fc10.i686/<KERNEL_VERSION>/" \
+            $EXAMPLES_PATH/oops1.test > \
+            $TmpDir/oops1.test
+
+        sed "s/3.0.0-1.fc16.i686/<KERNEL_VERSION>/" \
+            $EXAMPLES_PATH/oops5.test > \
+            $TmpDir/oops5.test
+
         pushd $TmpDir
     rlPhaseEnd
 
     rlPhaseStartTest OOPS
-        for oops in examples/oops*.test; do
+        for oops in oops*.test; do
             installed_kernel="$( rpm -q kernel | tail -n1 )"
             kernel_version="$( rpm -q --qf "%{version}" $installed_kernel )"
             sed -i "s/<KERNEL_VERSION>/$installed_kernel/g" $oops
