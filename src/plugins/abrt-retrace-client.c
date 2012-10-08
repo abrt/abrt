@@ -453,9 +453,14 @@ static int create(bool delete_temp_archive,
                 xfunc_die();
             }
 
-            unpacked_size += (long long)file_stat.st_size;
             free(path);
 
+            if (!S_ISREG(file_stat.st_mode))
+                error_msg_and_die(_("'%s' must be a regular file in "
+                                    "order to use Retrace server."),
+                                  required_files[i]);
+
+            unpacked_size += (long long)file_stat.st_size;
             ++i;
         }
 
@@ -467,8 +472,13 @@ static int create(bool delete_temp_archive,
                 if (stat(path, &file_stat) == -1)
                     continue;
 
-                unpacked_size += (long long)file_stat.st_size;
                 free(path);
+                if (!S_ISREG(file_stat.st_mode))
+                    error_msg_and_die(_("'%s' must be a regular file in "
+                                        "order to use Retrace server."),
+                                      required_files[i]);
+
+                unpacked_size += (long long)file_stat.st_size;
             }
         }
     }
