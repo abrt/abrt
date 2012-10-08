@@ -29,12 +29,14 @@
 
 TEST="dumpoops"
 PACKAGE="abrt"
+EXAMPLES_PATH="../../../examples"
 
 rlJournalStart
     rlPhaseStartSetup
         TmpDir=$(mktemp -d)
-        tar xf examples.tar -C $TmpDir
-        rlRun "pushd $TmpDir/examples"
+        cp $EXAMPLES_PATH/oops*.test $TmpDir
+        cp $EXAMPLES_PATH/not_oops*.test $TmpDir
+        rlRun "pushd $TmpDir"
     rlPhaseEnd
 
     rlPhaseStartTest OOPS
