@@ -108,7 +108,7 @@ def extract_info_from_core(coredump_name):
             # we might want to remove this special-casing later.
             if b_ids_line[BUILD_ID] == '-':
                 log(_("Missing build id: %s" % b_ids_line[EXECUTABLE]))
-            elif (b_ids_line[EXECUTABLE] not in ["linux-vdso.so.1", "linux-gate.so.1"]):
+            elif ((len(b_ids_line) == EXECUTABLE) or (b_ids_line[EXECUTABLE] not in ["linux-vdso.so.1", "linux-gate.so.1"])):
                 build_id = b_ids_line[BUILD_ID].split('@')[0]
                 build_ids.add(build_id)
                 library = b_ids_line[LIBRARY]
