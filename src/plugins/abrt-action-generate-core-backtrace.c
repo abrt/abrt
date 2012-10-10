@@ -25,6 +25,22 @@
 
 static bool raw_fingerprints = false;
 
+/* add the information about '?' flag to fingerprint field
+   fingerprint is otherwise always empty for kerneloops */
+static void oops_add_question_marks(GList *backtrace)
+{
+    GList *elem = backtrace;
+    struct backtrace_entry *entry;
+    while (elem)
+    {
+        entry = (struct backtrace_entry *)elem->data;
+        if (entry->function_initial_loc)
+            entry->fingerprint = btp_strdup("?");
+
+        elem = g_list_next(elem);
+    }
+}
+
 static void hash_fingerprints(GList *backtrace)
 {
     GList *elem = backtrace;
@@ -144,7 +160,10 @@ int main(int argc, char **argv)
     else if (strcmp(analyzer, "Python") == 0)
         backtrace = btp_parse_python_backtrace(txt_backtrace);
     else if (strcmp(analyzer, "Kerneloops") == 0 || strcmp(analyzer, "vmcore") == 0)
+    {
         backtrace = btp_parse_kerneloops(txt_backtrace, kernel);
+        oops_add_question_marks(backtrace);
+    }
     else
         error_msg_and_die(_("Core-backtraces are not supported for '%s'"), analyzer);
 
