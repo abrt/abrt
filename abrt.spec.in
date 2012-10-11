@@ -638,6 +638,22 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Thu Oct 11 2012 Jakub Filak <jfilak@redhat.com> 2.0.15-1
+- add collect_* event to reporting chains for CCpp/Python/Kernel
+- testsuite: fixed url for the F18 nightly
+- core-backtrace: make sure kernel version does not contain spaces
+- core-backtrace: also include '?' flag for kerneloops
+- don't check EXECUTABLE if it isn't present in list
+- testsuite: rename oops_processing to oops-processing
+- testsuite: remove examples.tar from oops_processing test
+- testsuite: remove examples.tar from dumpoos dir
+- fix up oops1.{test,right} to not hash '' string (we don't allow that anymore)
+- retrace-client: check whether all included files are regular
+- abrt_exception_handler.py: save 'environ' element
+- add Makefile target release-fix
+- Make it possible for developer to disable crash processing for specific apps. Closes rhbz#848786
+- s/Dump directory/Problem directory/
+
 * Wed Mar 16 2011 Jiri Moskovcak <jmoskovc@redhat.com> 2.0.0-1
 - update to the latest upstream version
 - many improvements
