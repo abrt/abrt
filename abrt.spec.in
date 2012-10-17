@@ -638,6 +638,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Wed Oct 17 2012 Jakub Filak <jfilak@redhat.com> 2.0.16-1
+- xorg_event: make post-create save dmesg, drop problems w/ binary modules
+- collect_xsession_errors should not fail if !xsession-errors. Closes rhbz#866698
+- testsuite: updated the url for F18 nightlies
+
 * Thu Oct 11 2012 Jakub Filak <jfilak@redhat.com> 2.0.15-1
 - add collect_* event to reporting chains for CCpp/Python/Kernel
 - testsuite: fixed url for the F18 nightly
