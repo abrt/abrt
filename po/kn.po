@@ -3,24 +3,25 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
+#   <prasad.mvs@gmail.com>, 2012.
 # Shankar Prasad <svenkate@redhat.com>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-08-06 13:40+0200\n"
-"PO-Revision-Date: 2012-03-02 11:22+0000\n"
+"POT-Creation-Date: 2012-10-18 16:36+0200\n"
+"PO-Revision-Date: 2012-10-09 09:33+0000\n"
 "Last-Translator: shanky <prasad.mvs@gmail.com>\n"
-"Language-Team: Kannada (http://www.transifex.net/projects/p/fedora/language/"
+"Language-Team: Kannada (http://www.transifex.com/projects/p/fedora/language/"
 "kn/)\n"
 "Language: kn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:733
+#: ../src/gui-gtk/main.c:684
 msgid "Automatic Bug Reporting Tool"
 msgstr "ಸ್ವಯಂಚಾಲಿತ ದೋಷ ವರದಿ ಮಾಡುವ ಉಪಕರಣ"
 
@@ -28,45 +29,49 @@ msgstr "ಸ್ವಯಂಚಾಲಿತ ದೋಷ ವರದಿ ಮಾಡುವ �
 msgid "ABRT notification applet"
 msgstr "ABRT ಸೂಚನಾ ಆಪ್ಲೆಟ್"
 
-#: ../src/applet/applet.c:345 ../src/applet/applet.c:347
+#: ../src/applet/applet.c:72
+msgid "Problem detected"
+msgstr "ತೊಂದರೆಯು ಕಂಡುಬಂದಿದೆ"
+
+#: ../src/applet/applet.c:312 ../src/applet/applet.c:314
 msgid "Warning"
 msgstr "ಎಚ್ಚರಿಕೆ"
 
-#: ../src/applet/applet.c:395
+#: ../src/applet/applet.c:362
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT ಇಂದ ಪತ್ತೆ ಮಾಡಲಾದ ತೊಂದರೆಗಳನ್ನು ಬಳಕೆದಾರರಿಗೆ ಸೂಚಿಸುವ ಸೂಚನಾ ಸ್ಥಳದ ಆಪ್ಲೆಟ್"
 
-#: ../src/applet/applet.c:411 ../src/gui-gtk/main.c:579
+#: ../src/applet/applet.c:378 ../src/gui-gtk/main.c:533
 msgid "translator-credits"
 msgstr "ಶಂಕರ್ ಪ್ರಸಾದ್ <svenkate@redhat.com>"
 
-#: ../src/applet/applet.c:421
+#: ../src/applet/applet.c:388
 msgid "Hide"
 msgstr "ಅಡಗಿಸು"
 
-#: ../src/applet/applet.c:473
+#: ../src/applet/applet.c:440
 msgid "Report"
 msgstr "ವರದಿ"
 
-#: ../src/applet/applet.c:476
+#: ../src/applet/applet.c:443
 msgid "Show"
 msgstr "ತೋರಿಸು"
 
-#: ../src/applet/applet.c:480
+#: ../src/applet/applet.c:447
 msgid "A Problem has Occurred"
 msgstr "ದೋಷವೊಂದು ಸಂಭವಿಸಿದೆ"
 
-#: ../src/applet/applet.c:608
+#: ../src/applet/applet.c:530 ../src/applet/applet.c:720
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "%s ಎಂಬ ಪ್ಯಾಕೇಜಿನಲ್ಲಿ ಒಂದು ತೊಂದರೆಯು ಕಂಡುಬಂದಿದೆ"
 
-#: ../src/applet/applet.c:610
+#: ../src/applet/applet.c:532 ../src/applet/applet.c:722
 msgid "A problem has been detected"
 msgstr "ಒಂದು ತೊಂದರೆಯು ಕಂಡುಬಂದಿದೆ"
 
-#: ../src/applet/applet.c:738
+#: ../src/applet/applet.c:630
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -75,10 +80,6 @@ msgstr ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
-
-#: ../src/applet/applet.c:810
-msgid "ABRT service is not running"
-msgstr "ABRT ಸೇವೆಯು ಚಾಲನೆಯಲ್ಲಿಲ್ಲ"
 
 #: ../src/daemon/abrt-action-save-package-data.c:362
 msgid ""
@@ -117,7 +118,7 @@ msgid "Log to syslog"
 msgstr "syslog ಗೆ ದಾಖಲಿಸು"
 
 #: ../src/daemon/abrt-server.c:471 ../src/daemon/abrtd.c:671
-#: ../src/gui-gtk/main.c:1068
+#: ../src/gui-gtk/main.c:1019
 msgid "Add program names to log"
 msgstr "ಪ್ರೊಗ್ರಾಮ್‌ನ ಹೆಸರುಗಳನ್ನು ದಾಖಲೆಗೆ ಸೇರಿಸು"
 
@@ -145,67 +146,55 @@ msgstr "DIR ನಲ್ಲಿ EVENT ಅನ್ನು ಚಲಾಯಿಸಿ"
 msgid "View and report application crashes"
 msgstr "ಅನ್ವಯದ ಕುಸಿತವನ್ನು ನೋಡಿ ಹಾಗು ವರದಿ ಮಾಡಿ"
 
-#: ../src/gui-gtk/main.c:517
-msgid "Problem description"
-msgstr "ತೊಂದರೆಯ ವಿವರಣೆ"
-
-#: ../src/gui-gtk/main.c:520
-msgid "Send"
-msgstr "ಕಳುಹಿಸು"
-
-#: ../src/gui-gtk/main.c:598 ../src/gui-gtk/main.c:644
+#: ../src/gui-gtk/main.c:552 ../src/gui-gtk/main.c:598
 msgid "Source"
 msgstr "ಆಕರ"
 
-#: ../src/gui-gtk/main.c:608 ../src/gui-gtk/main.c:654
+#: ../src/gui-gtk/main.c:562 ../src/gui-gtk/main.c:608
 msgid "Problem"
 msgstr "ತೊಂದರೆ"
 
-#: ../src/gui-gtk/main.c:629
+#: ../src/gui-gtk/main.c:583
 msgid "Last Occurrence"
 msgstr "ಕೊನೆಯ ಬಾರಿ ಸಂಭವಿಸಿದ್ದು"
 
-#: ../src/gui-gtk/main.c:664
+#: ../src/gui-gtk/main.c:618
 msgid "Date Submitted"
 msgstr "ಸಲ್ಲಿಸಿದ ದಿನಾಂಕ"
 
-#: ../src/gui-gtk/main.c:673
+#: ../src/gui-gtk/main.c:627
 msgid "Submission Result"
 msgstr "ಸಲ್ಲಿಕೆಯ ಫಲಿತಾಂಶ"
 
-#: ../src/gui-gtk/main.c:686
+#: ../src/gui-gtk/main.c:640
 msgid "_Report"
 msgstr "ವರದಿ (_R)"
 
-#: ../src/gui-gtk/main.c:687
+#: ../src/gui-gtk/main.c:641
 msgid "_Edit"
 msgstr "ಸಂಪಾದನೆ (_E)"
 
-#: ../src/gui-gtk/main.c:688
+#: ../src/gui-gtk/main.c:642
 msgid "_Help"
 msgstr "ಸಹಾಯ (_H)"
 
-#: ../src/gui-gtk/main.c:714
-msgid "Report problem with ABRT"
-msgstr "ABRTಯೊಂದಿಗೆ ತೊಂದರೆಯನ್ನು ವರದಿ ಮಾಡಿ"
-
-#: ../src/gui-gtk/main.c:753
+#: ../src/gui-gtk/main.c:704
 msgid "Not submitted reports"
 msgstr "ಸಲ್ಲಿಸದೆ ಇರುವ ವರದಿಗಳು"
 
-#: ../src/gui-gtk/main.c:755
+#: ../src/gui-gtk/main.c:706
 msgid "<b>Not submitted reports</b>"
 msgstr "<b>ಸಲ್ಲಿಸದೆ ಇರುವ ವರದಿಗಳು</b>"
 
-#: ../src/gui-gtk/main.c:803
+#: ../src/gui-gtk/main.c:754
 msgid "Submitted reports"
 msgstr "ಸಲ್ಲಿಸಿದ ವರದಿಗಳು"
 
-#: ../src/gui-gtk/main.c:806
+#: ../src/gui-gtk/main.c:757
 msgid "<b>Submitted reports</b>"
 msgstr "<b>ಸಲ್ಲಿಸಿದ ವರದಿಗಳು</b>"
 
-#: ../src/gui-gtk/main.c:1057
+#: ../src/gui-gtk/main.c:1008
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
@@ -343,7 +332,7 @@ msgid "Exiting on user command"
 msgstr "ಬಳಕೆದಾರರ ಆಜ್ಞೆಯ ಮೇರೆಗೆ ನಿರ್ಗಮಿಸಲಾಗುತ್ತಿದೆ"
 
 #: ../src/plugins/abrt-action-install-debuginfo:86
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -362,20 +351,23 @@ msgid ""
 "    --size_mb   Default: 4096\n"
 "    -e,--exact  Download only specified files\n"
 msgstr ""
-"Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+"ಬಳಕೆ: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
 "[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH]\n"
 "\n"
-"Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
-"to CACHEDIR, using TMPDIR as temporary staging area.\n"
-"Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
+"TMPDIR ಅನ್ನು ತಾತ್ಕಾಲಿಕ ಸ್ಟೇಜಿಂಗ್ ಪ್ರದೇಶವಾಗಿ ಬಳಸಿಕೊಂಡು, CACHEDIR ಮಾಡಲು\n"
+"BUILD_IDS_FILE ನಲ್ಲಿ ನಮೂದಿಸಲಾದ ನಿರ್ಮಾಣ-Idಗಳಿಗಾಗಿ debuginfos ಅನ್ನು "
+"ಅನುಸ್ಥಾಪಿಸುತ್ತದೆ.\n"
+"CACHEDIR ನಲ್ಲಿನ ಹಳೆಯ ಕಡತಗಳನ್ನು ಕಡತಗಳು SIZE ಗಿಂತ ಚಿಕ್ಕದಾಗುವವರೆಗೆ ಅಳಿಸಲಾಗುತ್ತದೆ.\n"
 "\n"
-"    -v          Be verbose\n"
-"    -y          Noninteractive, assume 'Yes' to all questions\n"
-"    --ids       Default: build_ids\n"
-"    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
-"    --cache     Default: /var/cache/abrt-di\n"
-"    --size_mb   Default: 4096\n"
+"    -v          ವರ್ಬೋಸ್ ಆಗಿರು\n"
+"    -y          ಸಂವಾದಾತ್ಮಕವಲ್ಲದ, ಎಲ್ಲಾ ಪ್ರಶ್ನೆಗಳಿಗೂ ಸಹ  'ಹೌದು' ಎಂದು ಊಹಿಸಿಕೊ\n"
+"    --ids       ಪೂರ್ವನಿಯೋಜಿತ: build_ids\n"
+"    --tmpdir    ಪೂರ್ವನಿಯೋಜಿತ: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     ಪೂರ್ವನಿಯೋಜಿತ: /var/cache/abrt-di\n"
+"    --size_mb   ಪೂರ್ವನಿಯೋಜಿತ: 4096\n"
+"    -e,--exact  ಸೂಚಿತ ಕಡತಗಳನ್ನು ಮಾತ್ರ ಇಳಿಸಿಕೊ\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo:168
 msgid "Can't open {0}: {1}"
@@ -392,9 +384,8 @@ msgid "Missing debuginfo file: {0}"
 msgstr "debuginfo ಕಡತವು ಕಾಣಿಸುತ್ತಿಲ್ಲ: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo:215
-#, fuzzy
 msgid "All debuginfo files are available"
-msgstr "{0} debuginfo ಕಡತಗಳಿಗಾಗಿ ಪ್ಯಾಕೇಜುಗಳನ್ನು ಪತ್ತೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
+msgstr "ಎಲ್ಲಾ debuginfo ಕಡತಗಳು ಲಭ್ಯವಿವೆ"
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -423,7 +414,6 @@ msgid "Preserve this directory"
 msgstr "ಈ ಕೋಶವನ್ನು ಇರಿಸಿಕೊ"
 
 #: ../src/plugins/abrt-dedup-client.c:96
-#: ../src/plugins/abrt-retrace-client.c:964
 msgid "log to syslog"
 msgstr "syslog ಗೆ ದಾಖಲಾಗಿ"
 
@@ -444,7 +434,6 @@ msgid "ABRT dump directory"
 msgstr "ABRT ಡಂಪ್ ಕೋಶ"
 
 #: ../src/plugins/abrt-dedup-client.c:106
-#: ../src/plugins/abrt-retrace-client.c:972
 msgid "(debug) show received HTTP headers"
 msgstr "(ದೋಷನಿವಾರಣೆ) ಸ್ವೀಕರಿಸಲಾದ HTTP ಹೆಡರುಗಳನ್ನು ತೋರಿಸು"
 
@@ -467,13 +456,13 @@ msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr "%d ಉದ್ದದ HTTP ಮನವಿಯನ್ನು ಕಳುಹಿಸಲು ವಿಫಲಗೊಂಡಿದೆ: NSS ದೋಷ %d."
 
 #: ../src/plugins/abrt-dump-oops.c:175
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"ಒಂದು ಕರ್ನಲ್ ತೊಂದರೆ ಎದುರಾಗಿದೆ, ಆದರೆ ಕರ್ನಲ್‌ಗೆ ಸೋಂಕು ಹಿಡಿದಿದೆ (flags:%s). ಕರ್ನಲ್ "
-"ಮೇಲ್ವಿಚಾರಕರಿಂದ ಸೋಂಕು ವರದಿಗಳನ್ನು ತಪಾಸಣೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
+"ಒಂದು ಕರ್ನಲ್ ತೊಂದರೆಯು ಎದುರಾಗಿದೆ, ಆದರೆ ನಿಮ್ಮ ಕರ್ನಲ್ ದೋಷಪೂರಿತವಾಗಿದೆ (ಫ್ಲ್ಯಾಗ್‌ಗಳು:%s). "
+"ಕರ್ನಲ್ ಮೇಲ್ವಿಚಾರಕರಿಂದ ದೋಷಪೂರಿತ ವರದಿಗಳಲ್ಲಿನ ತೊಂದರೆಗಳನ್ನು ಪತ್ತೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
 
 #: ../src/plugins/abrt-dump-oops.c:226
 msgid ""
@@ -515,285 +504,6 @@ msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
 "-d DumpLocation ನಂತೆಯೆ, abrt.conf ನಲ್ಲಿ DumpLocation ಅನ್ನು ಸೂಚಿಸಲಾಗಿರುತ್ತದೆ"
 
-#: ../src/plugins/abrt-retrace-client.c:63
-msgid ""
-"Retrace server can not be used, because the crash is too large. Try local "
-"retracing."
-msgstr ""
-"ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕವನ್ನು ಬಳಸಲು ಸಾಧ್ಯವಿಲ್ಲ, ಏಕೆಂದರೆ ಕುಸಿತವು ಬಹಳ ದೊಡ್ಡದಾಗಿದೆ. ಸ್ಥಳೀಯವಾಗಿ "
-"ರಿಟ್ರೇಸ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸಿ."
-
-#: ../src/plugins/abrt-retrace-client.c:96
-msgid "Cannot open temporary file"
-msgstr "ತಾತ್ಕಾಲಿಕ ಕಡತವನ್ನು ತೆರೆಯಲಾಗಿಲ್ಲ"
-
-#: ../src/plugins/abrt-retrace-client.c:122
-#: ../src/plugins/abrt-retrace-client.c:151
-#, c-format
-msgid "Can't execute '%s'"
-msgstr "'%s' ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸಲಾಗಿಲ್ಲ"
-
-#: ../src/plugins/abrt-retrace-client.c:187
-#: ../src/plugins/abrt-retrace-client.c:529
-#: ../src/plugins/abrt-retrace-client.c:786
-#: ../src/plugins/abrt-retrace-client.c:855
-#, c-format
-msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr "%d ಯಷ್ಟು ದೊಡ್ಡದಾದ HTTP ಹೆಡರ್ ಅನ್ನು ಕಳುಹಿಸುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ: NSS ದೋಷ %d."
-
-#: ../src/plugins/abrt-retrace-client.c:199
-#: ../src/plugins/abrt-retrace-client.c:628
-#: ../src/plugins/abrt-retrace-client.c:724
-#: ../src/plugins/abrt-retrace-client.c:803
-#: ../src/plugins/abrt-retrace-client.c:872
-#, c-format
-msgid ""
-"Unexpected HTTP response from server: %d\n"
-"%s"
-msgstr ""
-"ಪರಿಚಾರಕದಿಂದ ಅನಿರೀಕ್ಷಿತವಾದ HTTP ಪ್ರತ್ಯುತ್ತರ ಬಂದಿದೆ: %d\n"
-"%s"
-
-#: ../src/plugins/abrt-retrace-client.c:208
-#: ../src/plugins/abrt-retrace-client.c:608
-#: ../src/plugins/abrt-retrace-client.c:716
-#: ../src/plugins/abrt-retrace-client.c:795
-#: ../src/plugins/abrt-retrace-client.c:864
-msgid "Invalid response from server: missing HTTP message body."
-msgstr ""
-"ಪರಿಚಾರಕದಿಂದ ಅಮಾನ್ಯವಾದ ಪ್ರತ್ಯುತ್ತರ ಬಂದಿದೆ: HTTP ಸಂದೇಶದ ಮುಖ್ಯಭಾಗವು ಕಂಡುಬಂದಿಲ್ಲ."
-
-#: ../src/plugins/abrt-retrace-client.c:347
-msgid "Querying server settings"
-msgstr "ಪರಿಚಾರಕದ ಸಿದ್ಧತೆಗಳಿಗಾಗಿ ಕೋರಲಾಗುತ್ತಿದೆ"
-
-#: ../src/plugins/abrt-retrace-client.c:355
-msgid "The server is fully occupied. Try again later."
-msgstr "ಪರಿಚಾರಕವು ಸಂಪೂರ್ಣವಾಗಿ ಆವರಿಸಲ್ಪಟ್ಟಿದೆ. ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ."
-
-#: ../src/plugins/abrt-retrace-client.c:356
-msgid "The server denied your request."
-msgstr "ಪರಿಚಾರಕವು ನಿಮ್ಮ ಮನವಿಯನ್ನು ತಿರಸ್ಕರಿಸಿದೆ."
-
-#: ../src/plugins/abrt-retrace-client.c:366
-#: ../src/plugins/abrt-retrace-client.c:389
-#, c-format
-msgid "Unable to stat file '%s'."
-msgstr "'%s' ಕಡತವನ್ನು ಸ್ಟ್ಯಾಟ್ ಮಾಡಲಾಗಿಲ್ಲ."
-
-#: ../src/plugins/abrt-retrace-client.c:374
-#, c-format
-msgid "Unable to open dump directory '%s'."
-msgstr "ಡಂಪ್ ಕೋಶ '%s' ಅನ್ನು ತೆರೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
-
-#: ../src/plugins/abrt-retrace-client.c:404
-#, c-format
-msgid ""
-"The size of your crash is %lld bytes, but the retrace server only accepts "
-"crashes smaller or equal to %lld bytes."
-msgstr ""
-"ಕುಸಿತದ ಗಾತ್ರವು %lld ಬೈಟ್‌ಗಳಾಗಿವೆ, ಆದರೆ ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕವು ಕೇವಲ %lld ಬೈಟ್‌ಗಳಿಗಿಂದ "
-"ಚಿಕ್ಕದಾದ ಅಥವ ಅದಕ್ಕೆ ಸಮನಾದ ಕುಸಿತಗಳನ್ನು ಮಾತ್ರ ಒಪ್ಪಿಕೊಳ್ಳುತ್ತದೆ."
-
-#: ../src/plugins/abrt-retrace-client.c:424
-msgid "The server does not support xz-compressed tarballs."
-msgstr "ಪೂರೈಕೆಗಣಕವು xz-ಸಂಕುಚನಗೊಳಿಸಲಾದ ಟಾರ್ಬಾಲ್‌ಗಳನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ"
-
-#: ../src/plugins/abrt-retrace-client.c:447
-#, c-format
-msgid "The release '%s' is not supported by the Retrace server."
-msgstr "'%s' ಅನ್ನು ಬಿಡುಗಡೆಗೊಳಿಸುವುದನ್ನು ರಿಟ್ರೇಸ್ ಪೂರೈಕೆಗಣಕವು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ."
-
-#: ../src/plugins/abrt-retrace-client.c:451
-msgid "The server is not able to handle your request."
-msgstr "ಪೂರೈಕೆಗಣಕದಿಂದ ನಿಮ್ಮ ಮನವಿಯನ್ನು ನಿಭಾಯಿಸಲು ಸಾಧ್ಯವಿರುವುದಿಲ್ಲ."
-
-#: ../src/plugins/abrt-retrace-client.c:460
-msgid "Preparing an archive to upload"
-msgstr "ಒಂದು ಆರ್ಕೈವ್ ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಲು ಸಿದ್ಧಗೊಳಿಸಲಾಗುತ್ತಿದೆ"
-
-#: ../src/plugins/abrt-retrace-client.c:473
-#, c-format
-msgid ""
-"The size of your archive is %lld bytes, but the retrace server only accepts "
-"archives smaller or equal %lld bytes."
-msgstr ""
-"ಆರ್ಕೈವ್‌ನ ಗಾತ್ರವು %lld ಬೈಟ್‌ಗಳಾಗಿವೆ, ಆದರೆ ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕವು ಕೇವಲ %lld ಬೈಟ್‌ಗಳಿಗಿಂದ "
-"ಚಿಕ್ಕದಾದ ಅಥವ ಅದಕ್ಕೆ ಸಮನಾದ ಆರ್ಕೈವ್‌ಗಳನ್ನು ಮಾತ್ರ ಒಪ್ಪಿಕೊಳ್ಳುತ್ತದೆ."
-
-#: ../src/plugins/abrt-retrace-client.c:486
-#, c-format
-msgid "You are going to upload %d megabytes.Continue?"
-msgstr "ನೀವು %d ಮೆಗಾಬೈಟ್‌ಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಲಿದ್ದೀರಿ. ಮುಂದುವರೆಯಲು ಬಯಸುವಿರಾ?"
-
-#: ../src/plugins/abrt-retrace-client.c:493
-msgid "Cancelled by user"
-msgstr "ಬಳಕೆದಾರರಿಂದ ರದ್ದುಗೊಳಿಸಲ್ಪಟ್ಟಿದೆ"
-
-#: ../src/plugins/abrt-retrace-client.c:536
-#, c-format
-msgid "Uploading %d megabytes\n"
-msgstr "%d ಮೆಗಾಬೈಟ್‌ಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ\n"
-
-#: ../src/plugins/abrt-retrace-client.c:538
-#, c-format
-msgid "Uploading %lld bytes\n"
-msgstr "%lld ಬೈಟ್‌ಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ\n"
-
-#: ../src/plugins/abrt-retrace-client.c:562
-#, c-format
-msgid "Uploading %d%%\n"
-msgstr "%d%% ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ\n"
-
-#: ../src/plugins/abrt-retrace-client.c:574
-msgid "Failed to read from a pipe"
-msgstr "ಒಂದು ಪೈಪ್‌ನಿಂದ ಓದುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ"
-
-#: ../src/plugins/abrt-retrace-client.c:587
-#, c-format
-msgid "Failed to send data: NSS error %d (%s): %s"
-msgstr "ದತ್ತಾಂಶವನ್ನು ಕಳುಹಿಸುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ: NSS ದೋಷ %d (%s): %s"
-
-#: ../src/plugins/abrt-retrace-client.c:598
-msgid "Upload successful"
-msgstr "ಅಪ್‌ಲೋಡ್ ಯಶಸ್ವಿಯಾಗಿದೆ"
-
-#: ../src/plugins/abrt-retrace-client.c:620
-msgid ""
-"Your problem directory is corrupted and can not be processed by the Retrace "
-"server."
-msgstr ""
-"ನಿಮ್ಮ ತೊಂದರೆ ಕೋಶವು ಹಾಳಾಗಿದೆ ಹಾಗು ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕದಿಂದ ಸಂಸ್ಕರಿಸಲು ಸಾಧ್ಯವಿರುವುದಿಲ್ಲ."
-
-#: ../src/plugins/abrt-retrace-client.c:622
-msgid ""
-"The archive contains malicious files (such as symlinks) and thus can not be "
-"processed."
-msgstr ""
-"ನಿಮ್ಮ ಆರ್ಕೈವ್‌ ದುರುದ್ಧೇಶಪೂರಿತವಾದ ಕಡತಗಳನ್ನು (ಸಾಂಕೇತಿಕಕೊಂಡಿಗಳಂತಹ) ಹಾಗು ಅದನ್ನು "
-"ಸಂಸ್ಕರಿಸಲು ಸಾಧ್ಯವಿರುವುದಿಲ್ಲ."
-
-#: ../src/plugins/abrt-retrace-client.c:635
-msgid "Invalid response from server: missing X-Task-Id."
-msgstr "ಪರಿಚಾರಕದಿಂದ ಅಮಾನ್ಯವಾದ ಪ್ರತ್ಯುತ್ತರ ಬಂದಿದೆ:  X-Task-Id ಕಾಣಿಸುತ್ತಿಲ್ಲ."
-
-#: ../src/plugins/abrt-retrace-client.c:641
-msgid "Invalid response from server: missing X-Task-Password."
-msgstr "ಪರಿಚಾರಕದಿಂದ ಅಮಾನ್ಯವಾದ ಪ್ರತ್ಯುತ್ತರ ಬಂದಿದೆ:  X-Task-Password ಕಾಣಿಸುತ್ತಿಲ್ಲ."
-
-#: ../src/plugins/abrt-retrace-client.c:648
-msgid "Retrace job started"
-msgstr "ಕೆಲಸವನ್ನು ರಿಟ್ರೇಸ್ ಮಾಡಲು ಆರಂಭಿಸಲಾಗಿದೆ"
-
-#: ../src/plugins/abrt-retrace-client.c:661
-#, c-format
-msgid ""
-"Task Id: %s\n"
-"Task Password: %s\n"
-msgstr ""
-"ಕಾರ್ಯದ Id: %s\n"
-"ಕಾರ್ಯದ ಗುಪ್ತಪದ: %s\n"
-
-#: ../src/plugins/abrt-retrace-client.c:707
-#, c-format
-msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr "%d ಯಷ್ಟು ದೊಡ್ಡದಾದ HTTP ಹೆಡರ್ ಅನ್ನು ಕಳುಹಿಸುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ: NSS ದೋಷ %d"
-
-#: ../src/plugins/abrt-retrace-client.c:731
-msgid "Invalid response from server: missing X-Task-Status."
-msgstr "ಪರಿಚಾರಕದಿಂದ ಅಮಾನ್ಯವಾದ ಪ್ರತ್ಯುತ್ತರ ಬಂದಿದೆ:  X-Task-Status ಕಾಣಿಸುತ್ತಿಲ್ಲ."
-
-#: ../src/plugins/abrt-retrace-client.c:743
-#, c-format
-msgid ""
-"Task Status: %s\n"
-"%s\n"
-msgstr ""
-"ಕಾರ್ಯದ ಸ್ಥಿತಿ: %s\n"
-"%s\n"
-
-#: ../src/plugins/abrt-retrace-client.c:919
-msgid ""
-"Retrace failed. Try again later and if the problem persists report this "
-"issue please."
-msgstr ""
-"ರಿಟ್ರೇಸ್ ವಿಫಲಗೊಂಡಿದೆ. ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಪ್ರಯತ್ನಿಸಿ ಹಾಗು ಆದರೂ ಸಹ ತೊಂದರೆ ಹಾಗೆಯೆ "
-"ಇದ್ದಲ್ಲಿ ದಯವಿಟ್ಟು ಈ ಸಮಸ್ಯೆಯನ್ನು ವರದಿ ಮಾಡಿ."
-
-#: ../src/plugins/abrt-retrace-client.c:966
-msgid "allow insecure connection to retrace server"
-msgstr "ಅಸುರಕ್ಷಿತ ಸಂಪರ್ಕವನ್ನು ಪರಿಚಾರಕವು ರಿಟ್ರೇಸ್ ಮಾಡಲು ಅನುಮತಿಸು"
-
-#: ../src/plugins/abrt-retrace-client.c:968
-msgid "retrace server URL"
-msgstr "ಪರಿಚಾರಕ URL ಅನ್ನು ರಿಟ್ರೇಸ್ ಮಾಡು"
-
-#: ../src/plugins/abrt-retrace-client.c:970
-msgid "retrace server port"
-msgstr "ರಿಟ್ರೇಸ್ ಪೂರೈಕೆಗಣಕದ ಸಂಪರ್ಕಸ್ಥಾನ"
-
-#: ../src/plugins/abrt-retrace-client.c:973
-msgid "For create and batch operations"
-msgstr "ರಚಿಸುವಿಕೆ ಹಾಗು ತಂಡ ಕಾರ್ಯಾಚರಣೆಗಳು"
-
-#: ../src/plugins/abrt-retrace-client.c:975
-msgid "read data from ABRT problem directory"
-msgstr "ABRT ತೊಂದರೆ ಕೋಶದಿಂದ ದತ್ತಾಂಶವನ್ನು ಓದಲಾಗಿದೆ"
-
-#: ../src/plugins/abrt-retrace-client.c:977
-msgid "read data from coredump"
-msgstr "ಕೋರ್ ಡಂಪ್‌ನಿಂದ ದತ್ತಾಂಶವನ್ನು ಓದು"
-
-#: ../src/plugins/abrt-retrace-client.c:979
-msgid "Delay for polling operations"
-msgstr "ಪೋಲಿಂಗ್ ಕಾರ್ಯಾಚರಣೆಗಳಿಗೆ ವಿಳಂಬ ಮಾಡು"
-
-#: ../src/plugins/abrt-retrace-client.c:981
-msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
-msgstr "(ದೋಷನಿವಾರಣೆ) /tmp ಯಲ್ಲಿ ಡಂಪ್‌ನಿಂದ ರಚಿಸಲಾದ ತಾತ್ಕಾಲಿಕ ಆರ್ಕೈವ್ ಅನ್ನು ಅಳಿಸಬೇಡ"
-
-#: ../src/plugins/abrt-retrace-client.c:983
-msgid "For status, backtrace, and log operations"
-msgstr "ಸ್ಥಿತಿ, ಬ್ಯಾಕ್‌ಟ್ರೇಸ್, ಹಾಗು ದಾಖಲೆ ಕಾರ್ಯಾಚರಣೆಗಳಿಗಾಗಿ"
-
-#: ../src/plugins/abrt-retrace-client.c:985
-msgid "id of your task on server"
-msgstr "ಪರಿಚಾರಕದಲ್ಲಿನ ನಿಮ್ಮ ಕಾರ್ಯದ id"
-
-#: ../src/plugins/abrt-retrace-client.c:987
-msgid "password of your task on server"
-msgstr "ಪರಿಚಾರಕದಲ್ಲಿನ ನಿಮ್ಮ ಕಾರ್ಯದ ಗುಪ್ತಪದ"
-
-#: ../src/plugins/abrt-retrace-client.c:991
-msgid ""
-"abrt-retrace-client <operation> [options]\n"
-"Operations: create/status/backtrace/log/batch"
-msgstr ""
-"abrt-retrace-client <operation> [options]\n"
-"ಕಾರ್ಯಾಚರಣೆಗಳು: create/status/backtrace/log/batch"
-
-#: ../src/plugins/abrt-retrace-client.c:1036
-#: ../src/plugins/abrt-retrace-client.c:1042
-msgid "Either problem directory or coredump is needed."
-msgstr "ತೊಂದರೆಯ ಕೋಶ ಅಥವ ಕೋರ ಡಂಪ್ ಅಗತ್ಯವಿದೆ."
-
-#: ../src/plugins/abrt-retrace-client.c:1048
-#: ../src/plugins/abrt-retrace-client.c:1056
-#: ../src/plugins/abrt-retrace-client.c:1064
-msgid "Task id is needed."
-msgstr "ಕಾರ್ಯದ id ಯ ಅಗತ್ಯವಿದೆ."
-
-#: ../src/plugins/abrt-retrace-client.c:1050
-#: ../src/plugins/abrt-retrace-client.c:1058
-#: ../src/plugins/abrt-retrace-client.c:1066
-msgid "Task password is needed."
-msgstr "ಕಾರ್ಯದ ಗುಪ್ತಪದದ ಅಗತ್ಯವಿದೆ."
-
-#: ../src/plugins/abrt-retrace-client.c:1070
-#, c-format
-msgid "Unknown operation: %s."
-msgstr "ತಿಳಿಯದ ಕಾರ್ಯಾಚರಣೆ: %s."
-
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
 msgstr "ಸ್ಥಳೀಯ GNU ಡೀಬಗ್ಗರ್"
@@ -814,54 +524,9 @@ msgstr ""
 "ಡಿಸ್ಕಿನ ಜಾಗವನ್ನೂ ಸಹ ತೆಗೆದುಕೊಳ್ಳಬಹುದು. ಆದರೆ, RetraceServer ದಲ್ಲಿರುವಂತೆ, ಇದು ದೂರಸ್ಥ "
 "ಗಣಕಯಂತ್ರಗಳಿಗೆ ಕೋರ್ ಡಂಪ್ ಅನ್ನು ಕಳುಹಿಸುವುದಿಲ್ಲ."
 
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:1
-msgid "Send core dump to remote retrace server for analysis"
-msgstr "ಕೋರ್ ಡಂಪ್ ಅನ್ನು ವಿಶ್ಲೇಷಣೆಗಾಗಿ ದೂರಸ್ಥ ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕಕ್ಕೆ ಕಳುಹಿಸು"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:2
-msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. "
-"Pros: no need for debuginfo downloads. Retrace server's database of "
-"debuginfos is more complete. Retrace server may generate better backtraces. "
-"Cons: coredump you upload contains all the data from the crashed program, "
-"including your private data, if any."
-msgstr ""
-"ಕೋರ್ ಡಂಪ್‌ಗಳನ್ನು ಪರಿಚಾರಕಕ್ಕೆ ಅಪ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ, ಇದು ಬ್ಯಾಕ್‌ಟ್ರೇಸ್‌ ಅನ್ನು ಉತ್ಪಾದಿಸುತ್ತದೆ ಹಾಗು "
-"ಅದನ್ನು ಮರಳಿಸುತ್ತದೆ. ಅನುಕೂಲಗಳು: ದೋಷನಿವಾರಣಾಮಾಹಿತಿಯನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡುವ "
-"ಅಗತ್ಯವಿರುವುದಿಲ್ಲ. ದೋಷನಿವಾರಣಾಮಾಹಿತಿಯ ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕದ ದತ್ತಸಂಚಯವು ಹೆಚ್ಚು "
-"ಪರಿಪೂರ್ಣವಾಗಿರುತ್ತದೆ. ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕವು ಉತ್ತಮವಾದ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್‌ಗಳನ್ನು ಉತ್ಪಾದಿಸಬಲ್ಲದು. "
-"ಅನಾನುಕೂಲಗಳು: ನೀವು ಅಪ್‌ಲೋಡ್ ಮಾಡುವ ಕೋರ್ ಡಂಪ್ ನಿಮ್ಮ ಯಾವುದಾದರೂ ಖಾಸಗಿ ಮಾಹಿತಿ ಇದ್ದಲ್ಲಿ ಅದೂ "
-"ಸೇರಿದಂತೆ ಕುಸಿತಗೊಂಡ ಪ್ರೊಗ್ರಾಮ್‌ನ ಎಲ್ಲಾ ಮಾಹಿತಿಯನ್ನು ಹೊಂದಿರುತ್ತದೆ."
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-msgid "Retrace server URL"
-msgstr "ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕ URL"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:4
-msgid "Address of the retrace server"
-msgstr "ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕದ ವಿಳಾಸ"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:5
-msgid "Insecure"
-msgstr "ಅಸುರಕ್ಷಿತ"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:6
-msgid "Whether or not to use insecure connection"
-msgstr "ಅಸುರಕ್ಷಿತ ಸಂಪರ್ಕವನ್ನು ಬಳಸಬೇಕೆ ಅಥವ ಬೇಡವೆ"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:7
-msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
-"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
-"(warning)&lt;/a&gt;"
-msgstr ""
-"ಅಸುರಕ್ಷಿತ ಸಂಪರ್ಕ &lt;a href=\"https://fedorahosted.org/abrt/wiki/"
-"AbrtRetraceServerInsecureConnection\" &gt;(warning)&lt;/a&gt; ಅನ್ನು ಅನುಮತಿಸಲು "
-"\"insecure\" ಅನ್ನು ಬರೆಯಿರಿ"
-
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
-msgstr ""
+msgstr ".xsession-errors ಅನ್ನು ಸಂಗ್ರಹಿಸು"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1075,20 +740,6 @@ msgid ""
 msgstr ""
 "gconftool-2 --recursive-list /apps/executable ಅನ್ನು ಪುನರಾವರ್ತಿತವಾಗಿ "
 "ಚಲಾಯಿಸುತ್ತದೆ ಮತ್ತು ಅದನ್ನು 'gconf_subtree' ಅಂಶವಾಗಿ ಉಳಿಸುತ್ತದೆ."
-
-#: ../src/plugins/collect_Smolt.xml.in.h:1
-msgid "Collect Smolt profile"
-msgstr ""
-
-#: ../src/plugins/collect_Smolt.xml.in.h:2
-msgid "Save your computer's hardware profile information"
-msgstr "ನಿಮ್ಮ ಗಣಕಯಂತ್ರದ ಯಂತ್ರಾಂಶ ಮಾಹಿತಿಯನ್ನು ಉಳಿಸುತ್ತದೆ"
-
-#: ../src/plugins/collect_Smolt.xml.in.h:3
-msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
-msgstr ""
-"smoltSendProfile -p ಅನ್ನು ಚಲಾಯಿಸುತ್ತದೆ ಮತ್ತು ಅದರ ನೀಡಿಕೆಯನ್ನು 'smolt_data' "
-"ಅಂಶದಲ್ಲಿ ಉಳಿಸುತ್ತದೆ."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"

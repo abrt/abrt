@@ -5,23 +5,23 @@
 # Translators:
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
 # Runa Bhattacharjee <runab@redhat.com>, 2009, 2010, 2011.
-#   <runabh@gmail.com>, 2011, 2012.
+#   <runabh@gmail.com>, 2011-2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-08-06 13:40+0200\n"
-"PO-Revision-Date: 2012-02-28 12:13+0000\n"
+"POT-Creation-Date: 2012-10-18 16:36+0200\n"
+"PO-Revision-Date: 2012-10-11 07:13+0000\n"
 "Last-Translator: runa <runabh@gmail.com>\n"
 "Language-Team: Bengali (India) <anubad@lists.ankur.org.in>\n"
 "Language: bn_IN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:733
+#: ../src/gui-gtk/main.c:684
 msgid "Automatic Bug Reporting Tool"
 msgstr "স্বয়ংক্রিয় বাগ রিপোর্টিং ব্যবস্থা"
 
@@ -29,47 +29,51 @@ msgstr "স্বয়ংক্রিয় বাগ রিপোর্টিং ব
 msgid "ABRT notification applet"
 msgstr "ABRT বিজ্ঞেপ্তির অ্যাপ্লেট"
 
-#: ../src/applet/applet.c:345 ../src/applet/applet.c:347
+#: ../src/applet/applet.c:72
+msgid "Problem detected"
+msgstr "সমস্যা সনাক্ত হয়েছে"
+
+#: ../src/applet/applet.c:312 ../src/applet/applet.c:314
 msgid "Warning"
 msgstr "সতর্কবার্তা"
 
-#: ../src/applet/applet.c:395
+#: ../src/applet/applet.c:362
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "ABRT দ্বারা সনাক্ত করা সমস্যা সম্বন্ধে ব্যবহারকারীদেরকে সূচিত করার উদ্দেশ্যে, "
 "বিজ্ঞপ্তিস্থলে ব্যবহারযোগ্য অ্যাপ্লেট"
 
-#: ../src/applet/applet.c:411 ../src/gui-gtk/main.c:579
+#: ../src/applet/applet.c:378 ../src/gui-gtk/main.c:533
 msgid "translator-credits"
 msgstr "রুণা ভট্টাচার্য্য"
 
-#: ../src/applet/applet.c:421
+#: ../src/applet/applet.c:388
 msgid "Hide"
 msgstr "আড়াল করুন"
 
-#: ../src/applet/applet.c:473
+#: ../src/applet/applet.c:440
 msgid "Report"
 msgstr "রিপোর্ট"
 
-#: ../src/applet/applet.c:476
+#: ../src/applet/applet.c:443
 msgid "Show"
 msgstr "প্রদর্শন"
 
-#: ../src/applet/applet.c:480
+#: ../src/applet/applet.c:447
 msgid "A Problem has Occurred"
 msgstr "একটি সমস্যা দেখা দিয়েছে"
 
-#: ../src/applet/applet.c:608
+#: ../src/applet/applet.c:530 ../src/applet/applet.c:720
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "%s প্যাকেজের মধ্যে একটি বিপর্যয় সনাক্ত করা হয়েছে"
 
-#: ../src/applet/applet.c:610
+#: ../src/applet/applet.c:532 ../src/applet/applet.c:722
 msgid "A problem has been detected"
 msgstr "একটি সমস্যা সনাক্ত হয়েছে"
 
-#: ../src/applet/applet.c:738
+#: ../src/applet/applet.c:630
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -78,10 +82,6 @@ msgstr ""
 "& [-v] [DIR]...\n"
 "\n"
 "ABRT দ্বারা নতুন সমস্যা সনাক্ত করা হলে ব্যবহারকারীদের সূচিত করতে ব্যবহৃত অ্যাপ্লেট\n"
-
-#: ../src/applet/applet.c:810
-msgid "ABRT service is not running"
-msgstr "ABRT পরিসেবা বর্তমানে চলছে না"
 
 #: ../src/daemon/abrt-action-save-package-data.c:362
 msgid ""
@@ -120,7 +120,7 @@ msgid "Log to syslog"
 msgstr "syslog-এ লগ করা হবে"
 
 #: ../src/daemon/abrt-server.c:471 ../src/daemon/abrtd.c:671
-#: ../src/gui-gtk/main.c:1068
+#: ../src/gui-gtk/main.c:1019
 msgid "Add program names to log"
 msgstr "লগের মধ্যে প্রোগ্রামের নাম যোগ করুন"
 
@@ -148,67 +148,55 @@ msgstr "DIR-র মধ্যে EVENT সঞ্চালন করা হবে"
 msgid "View and report application crashes"
 msgstr "অ্যাপ্লিকেশনের বিপর্যয় সংক্রান্ত তথ্য নিরীক্ষণ ও দায়ের করুন"
 
-#: ../src/gui-gtk/main.c:517
-msgid "Problem description"
-msgstr "সমস্যার বিবরণ"
-
-#: ../src/gui-gtk/main.c:520
-msgid "Send"
-msgstr "পাঠিয়ে দিন"
-
-#: ../src/gui-gtk/main.c:598 ../src/gui-gtk/main.c:644
+#: ../src/gui-gtk/main.c:552 ../src/gui-gtk/main.c:598
 msgid "Source"
 msgstr "উৎস"
 
-#: ../src/gui-gtk/main.c:608 ../src/gui-gtk/main.c:654
+#: ../src/gui-gtk/main.c:562 ../src/gui-gtk/main.c:608
 msgid "Problem"
 msgstr "সমস্যা"
 
-#: ../src/gui-gtk/main.c:629
+#: ../src/gui-gtk/main.c:583
 msgid "Last Occurrence"
 msgstr "সর্বশেষ উৎপত্তি"
 
-#: ../src/gui-gtk/main.c:664
+#: ../src/gui-gtk/main.c:618
 msgid "Date Submitted"
 msgstr "দায়ের করার তারিখ"
 
-#: ../src/gui-gtk/main.c:673
+#: ../src/gui-gtk/main.c:627
 msgid "Submission Result"
 msgstr "দায়ের করার ফল"
 
-#: ../src/gui-gtk/main.c:686
+#: ../src/gui-gtk/main.c:640
 msgid "_Report"
 msgstr "রিপোর্ট (_R)"
 
-#: ../src/gui-gtk/main.c:687
+#: ../src/gui-gtk/main.c:641
 msgid "_Edit"
 msgstr "সম্পাদনা (_E)"
 
-#: ../src/gui-gtk/main.c:688
+#: ../src/gui-gtk/main.c:642
 msgid "_Help"
 msgstr "সাহায্য (_H)"
 
-#: ../src/gui-gtk/main.c:714
-msgid "Report problem with ABRT"
-msgstr "ABRT-র মাধ্যমে সমস্যার তথ্য দাখিল করুন"
-
-#: ../src/gui-gtk/main.c:753
+#: ../src/gui-gtk/main.c:704
 msgid "Not submitted reports"
 msgstr "দােয়র না করা রিপোর্ট"
 
-#: ../src/gui-gtk/main.c:755
+#: ../src/gui-gtk/main.c:706
 msgid "<b>Not submitted reports</b>"
 msgstr "<b>দােয়র না করা রিপোর্ট</b>"
 
-#: ../src/gui-gtk/main.c:803
+#: ../src/gui-gtk/main.c:754
 msgid "Submitted reports"
 msgstr "দায়ের করা রিপোর্ট"
 
-#: ../src/gui-gtk/main.c:806
+#: ../src/gui-gtk/main.c:757
 msgid "<b>Submitted reports</b>"
 msgstr "<b>দায়ের করা রিপোর্ট</b>"
 
-#: ../src/gui-gtk/main.c:1057
+#: ../src/gui-gtk/main.c:1008
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
@@ -349,7 +337,7 @@ msgid "Exiting on user command"
 msgstr "ব্যবহারকারী দ্বারা উল্লিখিত কমান্ডের ফলে প্রস্থান করা হচ্ছে"
 
 #: ../src/plugins/abrt-action-install-debuginfo:86
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -368,13 +356,15 @@ msgid ""
 "    --size_mb   Default: 4096\n"
 "    -e,--exact  Download only specified files\n"
 msgstr ""
-"Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+"ব্যবহারপ্রণালী: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
 "[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH]\n"
 "\n"
-"Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
-"to CACHEDIR, using TMPDIR as temporary staging area.\n"
-"Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
+"BUILD_IDS_FILE-র মধ্যে উল্লিখিত সকল build-id-র জন্য debuginfo CACHEDIR-এ ইনস্টল "
+"করা হয়। এর জন্য, সাময়িক স্টেজি: অঞ্চন রূপে TMPDIR ব্যবহার করা হয়।\n"
+"SIZE থেকে মাপ কম না হওয়া অব্দি CACHEDIR-র মধ্যে উপস্থিত পুরোনো ফাইল মুছে ফেলা "
+"হয়।\n"
 "\n"
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
@@ -382,6 +372,7 @@ msgstr ""
 "    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
+"    -e,--exact  Download only specified files\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo:168
 msgid "Can't open {0}: {1}"
@@ -398,9 +389,8 @@ msgid "Missing debuginfo file: {0}"
 msgstr "debuginfo ফাইল অনুপস্থিত: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo:215
-#, fuzzy
 msgid "All debuginfo files are available"
-msgstr "সকল {0}-টি debuginfo ফাইল উপলব্ধ রয়েছে"
+msgstr "সকল debuginfo ফাইল উপলব্ধ রয়েছে"
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -429,7 +419,6 @@ msgid "Preserve this directory"
 msgstr "এই ডিরেক্টরিটি সংরক্ষণ করা হবে"
 
 #: ../src/plugins/abrt-dedup-client.c:96
-#: ../src/plugins/abrt-retrace-client.c:964
 msgid "log to syslog"
 msgstr "syslog-এ লগ করা হবে"
 
@@ -450,7 +439,6 @@ msgid "ABRT dump directory"
 msgstr "ABRT ডাম্প ডিরেক্টরি"
 
 #: ../src/plugins/abrt-dedup-client.c:106
-#: ../src/plugins/abrt-retrace-client.c:972
 msgid "(debug) show received HTTP headers"
 msgstr "(debug) প্রাপ্ত HTTP হেডার প্রদর্শন করা হবে"
 
@@ -473,14 +461,14 @@ msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr "%d দৈর্ঘের HTTP অনুরোধ পাঠাতে ব্যর্থ: NSS সংক্রান্ত ত্রুটি %d।"
 
 #: ../src/plugins/abrt-dump-oops.c:175
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"kernel সংক্রান্ত একটি সমস্যা দেখা দিয়েছে, কিন্তু আপনার ব্যবহৃত kernel-টি টেইন্ট "
-"হয়েছে  (flags:%s)। Kernel-র পরিচালকরা টেইন্ট হওয়া kernel-র রিপোর্ট থেকে সমস্যার "
-"কারণ নির্ণয় করতে সক্ষম হবেন না।"
+"kernel সংক্রান্ত একটি সমস্যা দেখা দিয়েছে, কিন্তু আপনার ব্যবহৃত kernel-টি টেইন্ট "
+"হয়েছে  (flags:%s)। Kernel-র পরিচালকরা টেইন্ট হওয়া kernel-র রিপোর্ট থেকে সমস্যার "
+"কারণ নির্ণয় করতে সক্ষম হবেন না।"
 
 #: ../src/plugins/abrt-dump-oops.c:226
 msgid ""
@@ -523,286 +511,6 @@ msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
 "-d DumpLocation -র অনুরূপ, abrt.conf ফাইলের মধ্যে DumpLocation উল্লেখ করা হয়"
 
-#: ../src/plugins/abrt-retrace-client.c:63
-msgid ""
-"Retrace server can not be used, because the crash is too large. Try local "
-"retracing."
-msgstr ""
-"বিপর্যয়ের পরিমাণ অত্যন্ত বড় হওয়ার ফলে Retrace সার্ভার ব্যবহার করা সম্ভব নয়।  "
-"স্থানীয় অবস্থান থেকে retrace করার প্রচেষ্টা করুন।"
-
-#: ../src/plugins/abrt-retrace-client.c:96
-msgid "Cannot open temporary file"
-msgstr "অস্থায়ী ফাইল খুলতে ব্যর্থ"
-
-#: ../src/plugins/abrt-retrace-client.c:122
-#: ../src/plugins/abrt-retrace-client.c:151
-#, c-format
-msgid "Can't execute '%s'"
-msgstr "'%s' সঞ্চালন করতে ব্যর্থ"
-
-#: ../src/plugins/abrt-retrace-client.c:187
-#: ../src/plugins/abrt-retrace-client.c:529
-#: ../src/plugins/abrt-retrace-client.c:786
-#: ../src/plugins/abrt-retrace-client.c:855
-#, c-format
-msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr "%d দৈর্ঘ্যের HTTP হেডার প্রাপ্ত করতে ব্যর্থ: NSS সংক্রান্ত ত্রুটি %d।"
-
-#: ../src/plugins/abrt-retrace-client.c:199
-#: ../src/plugins/abrt-retrace-client.c:628
-#: ../src/plugins/abrt-retrace-client.c:724
-#: ../src/plugins/abrt-retrace-client.c:803
-#: ../src/plugins/abrt-retrace-client.c:872
-#, c-format
-msgid ""
-"Unexpected HTTP response from server: %d\n"
-"%s"
-msgstr ""
-"সার্ভার থেকে অপ্রত্যাশিত HTTP উত্তর পাওয়া গিয়েছে: %d\n"
-"%s"
-
-#: ../src/plugins/abrt-retrace-client.c:208
-#: ../src/plugins/abrt-retrace-client.c:608
-#: ../src/plugins/abrt-retrace-client.c:716
-#: ../src/plugins/abrt-retrace-client.c:795
-#: ../src/plugins/abrt-retrace-client.c:864
-msgid "Invalid response from server: missing HTTP message body."
-msgstr "সার্ভার থেকে প্রাপ্ত উত্তর বৈধ নয়: HTTP বার্তার মূল অংশ অনুপস্থিত।"
-
-#: ../src/plugins/abrt-retrace-client.c:347
-msgid "Querying server settings"
-msgstr "সার্ভারের বৈশিষ্ট্য অনুসন্ধান করা হচ্ছে"
-
-#: ../src/plugins/abrt-retrace-client.c:355
-msgid "The server is fully occupied. Try again later."
-msgstr "সার্ভার সম্পূর্ণরূপে ব্যবহৃত হচ্ছে। পরে কোনো সময় পুনরায় প্রয়াস করুন।"
-
-#: ../src/plugins/abrt-retrace-client.c:356
-msgid "The server denied your request."
-msgstr "সার্ভার দ্বারা আপনার অনুরোধ প্রত্যাখ্যান করা হয়েছে।"
-
-#: ../src/plugins/abrt-retrace-client.c:366
-#: ../src/plugins/abrt-retrace-client.c:389
-#, c-format
-msgid "Unable to stat file '%s'."
-msgstr "'%s' ফাইল stat  করতে ব্যর্থ।"
-
-#: ../src/plugins/abrt-retrace-client.c:374
-#, c-format
-msgid "Unable to open dump directory '%s'."
-msgstr "ডাম্প ডিরেক্টরি '%s' খুলতে ব্যর্থ"
-
-#: ../src/plugins/abrt-retrace-client.c:404
-#, c-format
-msgid ""
-"The size of your crash is %lld bytes, but the retrace server only accepts "
-"crashes smaller or equal to %lld bytes."
-msgstr ""
-"বিপর্যয়ের মাপ %lld বাইট, কিন্তু রি-ট্রেস সার্ভার দ্বারা শুধুমাত্র %lld বাইট অথবা এর "
-"থেকে কম মাপের বিপর্যয়ের তথ্য গ্রহণ করা হয়।"
-
-#: ../src/plugins/abrt-retrace-client.c:424
-msgid "The server does not support xz-compressed tarballs."
-msgstr "সার্ভার দ্বারা xz কমপ্রেসশন সহ  tarball সমর্থন করা হয় না।"
-
-#: ../src/plugins/abrt-retrace-client.c:447
-#, c-format
-msgid "The release '%s' is not supported by the Retrace server."
-msgstr "'%s' রিলিজটি Retrace সার্ভার দ্বারা সমর্থিত নয়।"
-
-#: ../src/plugins/abrt-retrace-client.c:451
-msgid "The server is not able to handle your request."
-msgstr "আপনার অনুরোধটি সার্ভার দ্বারা পূরণ করা সম্ভব নয়।"
-
-#: ../src/plugins/abrt-retrace-client.c:460
-msgid "Preparing an archive to upload"
-msgstr "আপলোড করার জন্য আর্কাইভ প্রস্তুত করা হচ্ছে"
-
-#: ../src/plugins/abrt-retrace-client.c:473
-#, c-format
-msgid ""
-"The size of your archive is %lld bytes, but the retrace server only accepts "
-"archives smaller or equal %lld bytes."
-msgstr ""
-"আর্কাইভের মাপ %lld বাইট, কিন্তু রি-ট্রেস সার্ভার দ্বারা শুধুমাত্র %lld বাইট অথবা এর "
-"থেকে কম মাপের আর্কাইভ গ্রহণ করা হয়।"
-
-#: ../src/plugins/abrt-retrace-client.c:486
-#, c-format
-msgid "You are going to upload %d megabytes.Continue?"
-msgstr "আপনি %d মেগা-বাইট তথ্য আপলোড করতে চলেছেন। এগিয়ে যাওয়া হবে কি?"
-
-#: ../src/plugins/abrt-retrace-client.c:493
-msgid "Cancelled by user"
-msgstr "ব্যবহারকারী দ্বারা বাতিল করা হয়েছে"
-
-#: ../src/plugins/abrt-retrace-client.c:536
-#, c-format
-msgid "Uploading %d megabytes\n"
-msgstr "%d মেগা-বাইট আপলোড করা হচ্ছে\n"
-
-#: ../src/plugins/abrt-retrace-client.c:538
-#, c-format
-msgid "Uploading %lld bytes\n"
-msgstr "%lld বাইট আপলোড করা হচ্ছে\n"
-
-#: ../src/plugins/abrt-retrace-client.c:562
-#, c-format
-msgid "Uploading %d%%\n"
-msgstr "%d%% আপলোড করা হচ্ছে\n"
-
-#: ../src/plugins/abrt-retrace-client.c:574
-msgid "Failed to read from a pipe"
-msgstr "পাইপ থেকে পড়তে ব্যর্থ"
-
-#: ../src/plugins/abrt-retrace-client.c:587
-#, c-format
-msgid "Failed to send data: NSS error %d (%s): %s"
-msgstr "তথ্য পাঠাতে ব্যর্থ: NSS সংক্রান্ত ত্রুটি %d (%s): %s"
-
-#: ../src/plugins/abrt-retrace-client.c:598
-msgid "Upload successful"
-msgstr "সাফল্যের সাথে আপলোড করা হয়েছে"
-
-#: ../src/plugins/abrt-retrace-client.c:620
-msgid ""
-"Your problem directory is corrupted and can not be processed by the Retrace "
-"server."
-msgstr ""
-"সমস্যাযুক্ত ডিরেক্টরিটি বর্তমানে ক্ষতিগ্রস্ত ও Retrace সার্ভার দ্বারা প্রক্রিয়াভুক্ত করা "
-"সম্ভব নয়।"
-
-#: ../src/plugins/abrt-retrace-client.c:622
-msgid ""
-"The archive contains malicious files (such as symlinks) and thus can not be "
-"processed."
-msgstr ""
-"আর্কাইভের মধ্যে ত্রুটিপূর্ণ ফাইল (যেমন সিম-লিংক উপস্থিত রয়েছে) এবং তা প্রক্রিয়াভুক্ত "
-"করা সম্ভব নয়।"
-
-#: ../src/plugins/abrt-retrace-client.c:635
-msgid "Invalid response from server: missing X-Task-Id."
-msgstr "সার্ভার থেকে প্রাপ্ত উত্তর বৈধ নয়: X-Task-Id অনুপস্থিত।"
-
-#: ../src/plugins/abrt-retrace-client.c:641
-msgid "Invalid response from server: missing X-Task-Password."
-msgstr "সার্ভার থেকে প্রাপ্ত উত্তর বৈধ নয়: X-Task-Password অনুপস্থিত।"
-
-#: ../src/plugins/abrt-retrace-client.c:648
-msgid "Retrace job started"
-msgstr "Retrace-র কাজ আরম্ভ করা হয়েছে"
-
-#: ../src/plugins/abrt-retrace-client.c:661
-#, c-format
-msgid ""
-"Task Id: %s\n"
-"Task Password: %s\n"
-msgstr ""
-"কাজের Id: %s\n"
-"কাজের পাসওয়ার্ড: %s\n"
-
-#: ../src/plugins/abrt-retrace-client.c:707
-#, c-format
-msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr "%d দৈর্ঘ্যের HTTP হেডার পাঠাতে বিফল: NSS সংক্রান্ত ত্রুটি %d"
-
-#: ../src/plugins/abrt-retrace-client.c:731
-msgid "Invalid response from server: missing X-Task-Status."
-msgstr "সার্ভার থেকে প্রাপ্ত উত্তর বৈধ নয়: X-Task-Status অনুপস্থিত।"
-
-#: ../src/plugins/abrt-retrace-client.c:743
-#, c-format
-msgid ""
-"Task Status: %s\n"
-"%s\n"
-msgstr ""
-"কাজের অবস্থা: %s\n"
-"%s\n"
-
-#: ../src/plugins/abrt-retrace-client.c:919
-msgid ""
-"Retrace failed. Try again later and if the problem persists report this "
-"issue please."
-msgstr ""
-"Retrace করতে ব্যর্থ। পরে পুনরায় প্রচেষ্টা করুন ও সমস্যা দেখা দিলে এই সম্পর্কে সূচিত "
-"করুন।"
-
-#: ../src/plugins/abrt-retrace-client.c:966
-msgid "allow insecure connection to retrace server"
-msgstr "retrace সার্ভারের জন্য অসুরক্ষিত সংযোগ ব্যবহারের অনুমতি প্রদান করা হবে"
-
-#: ../src/plugins/abrt-retrace-client.c:968
-msgid "retrace server URL"
-msgstr "retrace সার্ভারের URL"
-
-#: ../src/plugins/abrt-retrace-client.c:970
-msgid "retrace server port"
-msgstr "retrace সার্ভারের পোর্ট"
-
-#: ../src/plugins/abrt-retrace-client.c:973
-msgid "For create and batch operations"
-msgstr "নির্মাণ ও ব্যাচ কাজের জন্য প্রযোজ্য"
-
-#: ../src/plugins/abrt-retrace-client.c:975
-msgid "read data from ABRT problem directory"
-msgstr "ABRT-র সমস্যার ডিরেক্টরি থেকে তথ্য পড়া হবে"
-
-#: ../src/plugins/abrt-retrace-client.c:977
-msgid "read data from coredump"
-msgstr "coredump থেকে তথ্য পড়া হবে"
-
-#: ../src/plugins/abrt-retrace-client.c:979
-msgid "Delay for polling operations"
-msgstr "poll সংক্রান্ত কাজে বিলম্ব"
-
-#: ../src/plugins/abrt-retrace-client.c:981
-msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
-msgstr ""
-"(debug) /tmp -র মধ্যে ডাম্প ডিরেক্টরি থেকে নির্মিত অস্থায়ী আর্কাইভ মুছে ফেলা হবে না"
-
-#: ../src/plugins/abrt-retrace-client.c:983
-msgid "For status, backtrace, and log operations"
-msgstr "অবস্থা, backtrace, ও লগ সংক্রান্ত কাজের ক্ষেত্রে প্রযোজ্য"
-
-#: ../src/plugins/abrt-retrace-client.c:985
-msgid "id of your task on server"
-msgstr "সার্ভারের মধ্যে চলমান আপনার কাজের id"
-
-#: ../src/plugins/abrt-retrace-client.c:987
-msgid "password of your task on server"
-msgstr "সার্ভারের মধ্যে চলমান আপনার কাজের password"
-
-#: ../src/plugins/abrt-retrace-client.c:991
-msgid ""
-"abrt-retrace-client <operation> [options]\n"
-"Operations: create/status/backtrace/log/batch"
-msgstr ""
-"abrt-retrace-client <operation> [options]\n"
-"Operations: create/status/backtrace/log/batch"
-
-#: ../src/plugins/abrt-retrace-client.c:1036
-#: ../src/plugins/abrt-retrace-client.c:1042
-msgid "Either problem directory or coredump is needed."
-msgstr "সমস্যার ডিরেক্টরি অথবা coredump আবশ্যক।"
-
-#: ../src/plugins/abrt-retrace-client.c:1048
-#: ../src/plugins/abrt-retrace-client.c:1056
-#: ../src/plugins/abrt-retrace-client.c:1064
-msgid "Task id is needed."
-msgstr "কাজের id আবশ্যক।"
-
-#: ../src/plugins/abrt-retrace-client.c:1050
-#: ../src/plugins/abrt-retrace-client.c:1058
-#: ../src/plugins/abrt-retrace-client.c:1066
-msgid "Task password is needed."
-msgstr "কাজের পাসওয়ার্ড আবশ্যক।"
-
-#: ../src/plugins/abrt-retrace-client.c:1070
-#, c-format
-msgid "Unknown operation: %s."
-msgstr "অজানা কাজ: %s."
-
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
 msgstr "স্থানীয় GNU ডিবাগার"
@@ -822,52 +530,9 @@ msgstr ""
 "ডিস্কের অনেক স্থান ব্যবহার করা হবে। কিন্তু, RetraceServer-র মত এটি দূরবর্তী মেশিনে "
 "coredump পাঠায় না।"
 
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:1
-msgid "Send core dump to remote retrace server for analysis"
-msgstr "বিশ্লেষণের জন্য retrace সার্ভারের মধ্যে কোর-ডাম্প পাঠানো হয়"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:2
-msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. "
-"Pros: no need for debuginfo downloads. Retrace server's database of "
-"debuginfos is more complete. Retrace server may generate better backtraces. "
-"Cons: coredump you upload contains all the data from the crashed program, "
-"including your private data, if any."
-msgstr ""
-"সার্ভারের মধ্যে coredump আপলোড করে এবং সার্ভারে ব্যাক-ট্রেস প্রস্তুত করে ফেরৎ দেওয়া "
-"হয়।সুবিধা: debuginfo ডাউনলোড করার প্রয়োজন নেই। রি-ট্রেস সার্ভারের ডাটাবেস অনেক "
-"বেশি পরিপূর্ণ ও সার্ভার থেকে উন্নত ব্যাক-ট্রেস প্রাপ্ত হবে।অসুবিধা: আপলোড করা "
-"coredump-র মধ্যে গোপনীয় তথ্য সহ বিপর্যস্ত প্রোগ্রামের সকল তথ্য অন্তর্ভুক্ত করা হয়।"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-msgid "Retrace server URL"
-msgstr "Retrace সার্ভারের URL"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:4
-msgid "Address of the retrace server"
-msgstr "retrace সার্ভারের ঠিকানা"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:5
-msgid "Insecure"
-msgstr "অসুরক্ষিত"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:6
-msgid "Whether or not to use insecure connection"
-msgstr "অসুরক্ষিত সংযোগ ব্যবহার করা হবে কি না"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:7
-msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
-"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
-"(warning)&lt;/a&gt;"
-msgstr ""
-"অসুরক্ষিত সংযোগ ব্যবহারের অনুমোদন প্রদান করার জন্য \"insecure\" লিখুন &lt;a href="
-"\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
-"&gt;(warning)&lt;/a&gt;"
-
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
-msgstr ""
+msgstr ".xsession-errors সংগ্রহ করা হবে"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1077,20 +742,6 @@ msgid ""
 msgstr ""
 "gconftool-2 --recursive-list /apps/executable সঞ্চালনা করে 'gconf_subtree' "
 "এলিমেন্ট রূপে এটি সংরক্ষণ করা হয়।"
-
-#: ../src/plugins/collect_Smolt.xml.in.h:1
-msgid "Collect Smolt profile"
-msgstr ""
-
-#: ../src/plugins/collect_Smolt.xml.in.h:2
-msgid "Save your computer's hardware profile information"
-msgstr "কম্পিউটারের হার্ডওয়্যার প্রোফাইলের তথ্য সংরক্ষণ করুন"
-
-#: ../src/plugins/collect_Smolt.xml.in.h:3
-msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
-msgstr ""
-"smoltSendProfile -p সঞ্চালন করে  'smolt_data' এলিমেন্ট রূপে এর ফলাফল সংরক্ষণ করা "
-"হয়।"
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"

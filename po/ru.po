@@ -4,12 +4,13 @@
 #
 # Translators:
 # Yulia <ypoyarko@redhat.com>, 2011, 2012.
+# Yulia  <yulia.poyarkova@redhat.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-08-06 13:40+0200\n"
-"PO-Revision-Date: 2012-03-01 03:19+0000\n"
+"POT-Creation-Date: 2012-10-18 16:36+0200\n"
+"PO-Revision-Date: 2012-10-09 04:58+0000\n"
 "Last-Translator: Yulia <yulia.poyarkova@redhat.com>\n"
 "Language-Team: Russian <trans-ru@lists.fedoraproject.org>\n"
 "Language: ru\n"
@@ -17,10 +18,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:733
+#: ../src/gui-gtk/main.c:684
 msgid "Automatic Bug Reporting Tool"
 msgstr "Автоматизированный регистратор ошибок"
 
@@ -28,48 +29,52 @@ msgstr "Автоматизированный регистратор ошибок
 msgid "ABRT notification applet"
 msgstr "Апплет уведомлений ABRT"
 
-#: ../src/applet/applet.c:345 ../src/applet/applet.c:347
+#: ../src/applet/applet.c:72
+msgid "Problem detected"
+msgstr "Обнаружена проблема"
+
+#: ../src/applet/applet.c:312 ../src/applet/applet.c:314
 msgid "Warning"
 msgstr "Предупреждение"
 
-#: ../src/applet/applet.c:395
+#: ../src/applet/applet.c:362
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "Значок в области уведомления сообщает об обнаруженных сбоях"
 
-#: ../src/applet/applet.c:411 ../src/gui-gtk/main.c:579
+#: ../src/applet/applet.c:378 ../src/gui-gtk/main.c:533
 msgid "translator-credits"
 msgstr ""
 "Yulia <ypoyarko AT redhat.com>\n"
 "Misha Shnurapet <shnurapet AT fedoraproject.org>\n"
 "Yuri Khabarov <madb00blik AT gmail.com>"
 
-#: ../src/applet/applet.c:421
+#: ../src/applet/applet.c:388
 msgid "Hide"
 msgstr "Скрыть"
 
-#: ../src/applet/applet.c:473
+#: ../src/applet/applet.c:440
 msgid "Report"
 msgstr "Сообщить"
 
-#: ../src/applet/applet.c:476
+#: ../src/applet/applet.c:443
 msgid "Show"
 msgstr "Показать"
 
-#: ../src/applet/applet.c:480
+#: ../src/applet/applet.c:447
 msgid "A Problem has Occurred"
 msgstr "Произошёл сбой"
 
-#: ../src/applet/applet.c:608
+#: ../src/applet/applet.c:530 ../src/applet/applet.c:720
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "Обнаружена неполадка в пакете %s"
 
-#: ../src/applet/applet.c:610
+#: ../src/applet/applet.c:532 ../src/applet/applet.c:722
 msgid "A problem has been detected"
 msgstr "Обнаружена неполадка"
 
-#: ../src/applet/applet.c:738
+#: ../src/applet/applet.c:630
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -79,10 +84,6 @@ msgstr ""
 "\n"
 "Модуль оповещения о неполадках, обнаруженных ABRT\n"
 "\n"
-
-#: ../src/applet/applet.c:810
-msgid "ABRT service is not running"
-msgstr "Служба ABRT не выполняется"
 
 #: ../src/daemon/abrt-action-save-package-data.c:362
 msgid ""
@@ -121,7 +122,7 @@ msgid "Log to syslog"
 msgstr "Запись в журнал"
 
 #: ../src/daemon/abrt-server.c:471 ../src/daemon/abrtd.c:671
-#: ../src/gui-gtk/main.c:1068
+#: ../src/gui-gtk/main.c:1019
 msgid "Add program names to log"
 msgstr "Добавить названия программ в журнал"
 
@@ -149,67 +150,55 @@ msgstr "Запуск EVENT в DIR"
 msgid "View and report application crashes"
 msgstr "Просмотреть сбои и создать отчет"
 
-#: ../src/gui-gtk/main.c:517
-msgid "Problem description"
-msgstr "Описание проблемы"
-
-#: ../src/gui-gtk/main.c:520
-msgid "Send"
-msgstr "Отправить"
-
-#: ../src/gui-gtk/main.c:598 ../src/gui-gtk/main.c:644
+#: ../src/gui-gtk/main.c:552 ../src/gui-gtk/main.c:598
 msgid "Source"
 msgstr "Источник"
 
-#: ../src/gui-gtk/main.c:608 ../src/gui-gtk/main.c:654
+#: ../src/gui-gtk/main.c:562 ../src/gui-gtk/main.c:608
 msgid "Problem"
 msgstr "Проблема"
 
-#: ../src/gui-gtk/main.c:629
+#: ../src/gui-gtk/main.c:583
 msgid "Last Occurrence"
 msgstr "Последнее появление"
 
-#: ../src/gui-gtk/main.c:664
+#: ../src/gui-gtk/main.c:618
 msgid "Date Submitted"
 msgstr "Дата отправки"
 
-#: ../src/gui-gtk/main.c:673
+#: ../src/gui-gtk/main.c:627
 msgid "Submission Result"
 msgstr "Результат передачи"
 
-#: ../src/gui-gtk/main.c:686
+#: ../src/gui-gtk/main.c:640
 msgid "_Report"
 msgstr "_Отчет"
 
-#: ../src/gui-gtk/main.c:687
+#: ../src/gui-gtk/main.c:641
 msgid "_Edit"
 msgstr "_Правка"
 
-#: ../src/gui-gtk/main.c:688
+#: ../src/gui-gtk/main.c:642
 msgid "_Help"
 msgstr "_Справка"
 
-#: ../src/gui-gtk/main.c:714
-msgid "Report problem with ABRT"
-msgstr "Сообщить об ошибке в ABRT"
-
-#: ../src/gui-gtk/main.c:753
+#: ../src/gui-gtk/main.c:704
 msgid "Not submitted reports"
 msgstr "Неотправленные отчеты"
 
-#: ../src/gui-gtk/main.c:755
+#: ../src/gui-gtk/main.c:706
 msgid "<b>Not submitted reports</b>"
 msgstr "<b>Неотправленные отчеты</b>"
 
-#: ../src/gui-gtk/main.c:803
+#: ../src/gui-gtk/main.c:754
 msgid "Submitted reports"
 msgstr "Отправленные отчеты"
 
-#: ../src/gui-gtk/main.c:806
+#: ../src/gui-gtk/main.c:757
 msgid "<b>Submitted reports</b>"
 msgstr "<b>Отправленные отчеты</b>"
 
-#: ../src/gui-gtk/main.c:1057
+#: ../src/gui-gtk/main.c:1008
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
@@ -350,7 +339,7 @@ msgid "Exiting on user command"
 msgstr "Выход по команде пользователя"
 
 #: ../src/plugins/abrt-action-install-debuginfo:86
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -372,19 +361,20 @@ msgstr ""
 "Формат: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
 "[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH]\n"
 "\n"
-"Устанавливает отладочные пакеты для всех build-id, перечисленных в "
-"BUILD_IDS_FILE,\n"
-"в каталог CACHEDIR, используя TMPDIR для временного хранения.\n"
-"Старые файлы в CACHEDIR будут удаляться до тех пор, пока его размер не "
-"станет меньше SIZE.\n"
+"Устанавливает отладочные пакеты для build-id, перечисленных в "
+"BUILD_IDS_FILE, в каталог CACHEDIR, используя TMPDIR для временного "
+"хранения. Старые файлы в CACHEDIR будут удаляться до тех пор, пока его "
+"размер не станет меньше SIZE.\n"
 "\n"
 "    -v          Подробный вывод\n"
-"    -y          Неинтерактивный режим, ответ «Да» на все вопросы\n"
-"    --ids       По умолчанию: build_ids\n"
+"    -y          Неинтерактивный режим: «Да» на все вопросы\n"
+"    --ids       По умолчанию: build_id\n"
 "    --tmpdir    По умолчанию: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
 "    --cache     По умолчанию: /var/cache/abrt-di\n"
 "    --size_mb   По умолчанию: 4096\n"
+"    -e,--exact  Загрузка указанных файлов\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo:168
 msgid "Can't open {0}: {1}"
@@ -401,9 +391,8 @@ msgid "Missing debuginfo file: {0}"
 msgstr "Отсутствует файл debuginfo: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo:215
-#, fuzzy
 msgid "All debuginfo files are available"
-msgstr "Есть все файлы debuginfo {0}"
+msgstr "Есть все файлы debuginfo"
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -432,7 +421,6 @@ msgid "Preserve this directory"
 msgstr "Оставить этот каталог"
 
 #: ../src/plugins/abrt-dedup-client.c:96
-#: ../src/plugins/abrt-retrace-client.c:964
 msgid "log to syslog"
 msgstr "записать в syslog"
 
@@ -453,7 +441,6 @@ msgid "ABRT dump directory"
 msgstr "каталог дампа ABRT"
 
 #: ../src/plugins/abrt-dedup-client.c:106
-#: ../src/plugins/abrt-retrace-client.c:972
 msgid "(debug) show received HTTP headers"
 msgstr "(отладка) показывать полученные заголовки HTTP"
 
@@ -476,13 +463,13 @@ msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr "Не удалось отправить запрос HTTP длиной %d. Ошибка NSS: %d."
 
 #: ../src/plugins/abrt-dump-oops.c:175
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"Обнаружена проблема с ядром, но ваше ядро было повреждено (флаги:%s). "
-"Сопровождение ядра не может диагностировать испорченные отчеты."
+"Обнаружена проблема с ядром, но ваше ядро было повреждено (флаги:%s).  "
+"Диагностика поврежденных отчетов невозможна."
 
 #: ../src/plugins/abrt-dump-oops.c:226
 msgid ""
@@ -524,283 +511,6 @@ msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
 "То же, что и \"-d DumpLocation\", \"DumpLocation\" задается в abrt.conf"
 
-#: ../src/plugins/abrt-retrace-client.c:63
-msgid ""
-"Retrace server can not be used, because the crash is too large. Try local "
-"retracing."
-msgstr ""
-"Не удалось задействовать сервер трассировки, так как сбой слишком обширен. "
-"Попробуйте обработать локально."
-
-#: ../src/plugins/abrt-retrace-client.c:96
-msgid "Cannot open temporary file"
-msgstr "Не удалось открыть временный файл"
-
-#: ../src/plugins/abrt-retrace-client.c:122
-#: ../src/plugins/abrt-retrace-client.c:151
-#, c-format
-msgid "Can't execute '%s'"
-msgstr "Не удалось выполнить «%s»"
-
-#: ../src/plugins/abrt-retrace-client.c:187
-#: ../src/plugins/abrt-retrace-client.c:529
-#: ../src/plugins/abrt-retrace-client.c:786
-#: ../src/plugins/abrt-retrace-client.c:855
-#, c-format
-msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr "Не удалось отправить заголовок HTTP длиной %d. Ошибка NSS: %d."
-
-#: ../src/plugins/abrt-retrace-client.c:199
-#: ../src/plugins/abrt-retrace-client.c:628
-#: ../src/plugins/abrt-retrace-client.c:724
-#: ../src/plugins/abrt-retrace-client.c:803
-#: ../src/plugins/abrt-retrace-client.c:872
-#, c-format
-msgid ""
-"Unexpected HTTP response from server: %d\n"
-"%s"
-msgstr ""
-"Непредвиденный HTTP-ответ сервера: %d\n"
-"%s"
-
-#: ../src/plugins/abrt-retrace-client.c:208
-#: ../src/plugins/abrt-retrace-client.c:608
-#: ../src/plugins/abrt-retrace-client.c:716
-#: ../src/plugins/abrt-retrace-client.c:795
-#: ../src/plugins/abrt-retrace-client.c:864
-msgid "Invalid response from server: missing HTTP message body."
-msgstr "Неверный ответ сервера: отсутствует тело HTTP-сообщения."
-
-#: ../src/plugins/abrt-retrace-client.c:347
-msgid "Querying server settings"
-msgstr "Запрос настроек сервера"
-
-#: ../src/plugins/abrt-retrace-client.c:355
-msgid "The server is fully occupied. Try again later."
-msgstr "Сервер занят. Повторите попытку позже."
-
-#: ../src/plugins/abrt-retrace-client.c:356
-msgid "The server denied your request."
-msgstr "Отказ сервера."
-
-#: ../src/plugins/abrt-retrace-client.c:366
-#: ../src/plugins/abrt-retrace-client.c:389
-#, c-format
-msgid "Unable to stat file '%s'."
-msgstr "Не удалось получить информацию о состоянии файла «%s»."
-
-#: ../src/plugins/abrt-retrace-client.c:374
-#, c-format
-msgid "Unable to open dump directory '%s'."
-msgstr "Не удалось открыть каталог дампа \"%s\"."
-
-#: ../src/plugins/abrt-retrace-client.c:404
-#, c-format
-msgid ""
-"The size of your crash is %lld bytes, but the retrace server only accepts "
-"crashes smaller or equal to %lld bytes."
-msgstr ""
-"Размер архива составляет %lld байт, но отслеживающий сервер принимает не "
-"больше %lld байт."
-
-#: ../src/plugins/abrt-retrace-client.c:424
-msgid "The server does not support xz-compressed tarballs."
-msgstr "Сервер не поддерживает архивы, созданные в xz."
-
-#: ../src/plugins/abrt-retrace-client.c:447
-#, c-format
-msgid "The release '%s' is not supported by the Retrace server."
-msgstr "Версия «%s» не поддерживается отслеживающим сервером."
-
-#: ../src/plugins/abrt-retrace-client.c:451
-msgid "The server is not able to handle your request."
-msgstr "Сервер не смог обработать запрос."
-
-#: ../src/plugins/abrt-retrace-client.c:460
-msgid "Preparing an archive to upload"
-msgstr "Подготовка архива к передаче"
-
-#: ../src/plugins/abrt-retrace-client.c:473
-#, c-format
-msgid ""
-"The size of your archive is %lld bytes, but the retrace server only accepts "
-"archives smaller or equal %lld bytes."
-msgstr ""
-"Размер архива - %lld байт, но отслеживающий сервер принимает архивы размером "
-"не более %lld байт."
-
-#: ../src/plugins/abrt-retrace-client.c:486
-#, c-format
-msgid "You are going to upload %d megabytes.Continue?"
-msgstr "Будет отправлено %d МБ. Продолжить?"
-
-#: ../src/plugins/abrt-retrace-client.c:493
-msgid "Cancelled by user"
-msgstr "Отменено пользователем"
-
-#: ../src/plugins/abrt-retrace-client.c:536
-#, c-format
-msgid "Uploading %d megabytes\n"
-msgstr "Отправляется %d МБ\n"
-
-#: ../src/plugins/abrt-retrace-client.c:538
-#, c-format
-msgid "Uploading %lld bytes\n"
-msgstr "Отправляется %lld Б\n"
-
-#: ../src/plugins/abrt-retrace-client.c:562
-#, c-format
-msgid "Uploading %d%%\n"
-msgstr "Отправляется %d%%\n"
-
-#: ../src/plugins/abrt-retrace-client.c:574
-msgid "Failed to read from a pipe"
-msgstr "Ошибка чтения из потока"
-
-#: ../src/plugins/abrt-retrace-client.c:587
-#, c-format
-msgid "Failed to send data: NSS error %d (%s): %s"
-msgstr "Не удалось отправить данные. Ошибка NSS: %d (%s): %s"
-
-#: ../src/plugins/abrt-retrace-client.c:598
-msgid "Upload successful"
-msgstr "Передано успешно"
-
-#: ../src/plugins/abrt-retrace-client.c:620
-msgid ""
-"Your problem directory is corrupted and can not be processed by the Retrace "
-"server."
-msgstr "Каталог поврежден и не может быть обработан сервером."
-
-#: ../src/plugins/abrt-retrace-client.c:622
-msgid ""
-"The archive contains malicious files (such as symlinks) and thus can not be "
-"processed."
-msgstr ""
-"Архив содержит недопустимые файлы (такие как символьные ссылки) и не может "
-"быть обработан."
-
-#: ../src/plugins/abrt-retrace-client.c:635
-msgid "Invalid response from server: missing X-Task-Id."
-msgstr "Неверный ответ сервера: отсутствует X-Task-Id."
-
-#: ../src/plugins/abrt-retrace-client.c:641
-msgid "Invalid response from server: missing X-Task-Password."
-msgstr "Неверный ответ сервера: отсутствует X-Task-Password."
-
-#: ../src/plugins/abrt-retrace-client.c:648
-msgid "Retrace job started"
-msgstr "Задание отслеживания запущено"
-
-#: ../src/plugins/abrt-retrace-client.c:661
-#, c-format
-msgid ""
-"Task Id: %s\n"
-"Task Password: %s\n"
-msgstr ""
-"ID задания: %s\n"
-"Пароль: %s\n"
-
-#: ../src/plugins/abrt-retrace-client.c:707
-#, c-format
-msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr "Не удалось отправить заголовок HTTP длиной %d. Ошибка NSS: %d."
-
-#: ../src/plugins/abrt-retrace-client.c:731
-msgid "Invalid response from server: missing X-Task-Status."
-msgstr "Неверный ответ сервера: отсутствует X-Task-Status."
-
-#: ../src/plugins/abrt-retrace-client.c:743
-#, c-format
-msgid ""
-"Task Status: %s\n"
-"%s\n"
-msgstr ""
-"Статус задания: %s\n"
-"%s\n"
-
-#: ../src/plugins/abrt-retrace-client.c:919
-msgid ""
-"Retrace failed. Try again later and if the problem persists report this "
-"issue please."
-msgstr ""
-"Обработка не удалась. Повторите попытку позже, а в случае неудачи сообщите "
-"разработчикам."
-
-#: ../src/plugins/abrt-retrace-client.c:966
-msgid "allow insecure connection to retrace server"
-msgstr "разрешить незащищенное соединение с сервером"
-
-#: ../src/plugins/abrt-retrace-client.c:968
-msgid "retrace server URL"
-msgstr "URL отслеживающего сервера"
-
-#: ../src/plugins/abrt-retrace-client.c:970
-msgid "retrace server port"
-msgstr "порт отслеживающего сервера"
-
-#: ../src/plugins/abrt-retrace-client.c:973
-msgid "For create and batch operations"
-msgstr "Для операций создания и пакетных операций"
-
-#: ../src/plugins/abrt-retrace-client.c:975
-msgid "read data from ABRT problem directory"
-msgstr "читать данные из каталога ABRT"
-
-#: ../src/plugins/abrt-retrace-client.c:977
-msgid "read data from coredump"
-msgstr "чтение данных из дампа памяти"
-
-#: ../src/plugins/abrt-retrace-client.c:979
-msgid "Delay for polling operations"
-msgstr "Ожидать операции опроса"
-
-#: ../src/plugins/abrt-retrace-client.c:981
-msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
-msgstr "(отладка) не удалять временный архив из /tmp"
-
-#: ../src/plugins/abrt-retrace-client.c:983
-msgid "For status, backtrace, and log operations"
-msgstr "Для операций получения статуса, отслеживания и ведения журналов"
-
-#: ../src/plugins/abrt-retrace-client.c:985
-msgid "id of your task on server"
-msgstr "ID задания на сервере"
-
-#: ../src/plugins/abrt-retrace-client.c:987
-msgid "password of your task on server"
-msgstr "Пароль задания на сервере"
-
-#: ../src/plugins/abrt-retrace-client.c:991
-msgid ""
-"abrt-retrace-client <operation> [options]\n"
-"Operations: create/status/backtrace/log/batch"
-msgstr ""
-"abrt-retrace-client <функция> [параметры]\n"
-"Функции: create/status/backtrace/log/batch"
-
-#: ../src/plugins/abrt-retrace-client.c:1036
-#: ../src/plugins/abrt-retrace-client.c:1042
-msgid "Either problem directory or coredump is needed."
-msgstr "Необходим каталог с данными сбоя или дамп памяти."
-
-#: ../src/plugins/abrt-retrace-client.c:1048
-#: ../src/plugins/abrt-retrace-client.c:1056
-#: ../src/plugins/abrt-retrace-client.c:1064
-msgid "Task id is needed."
-msgstr "Требуется идентификатор задания."
-
-#: ../src/plugins/abrt-retrace-client.c:1050
-#: ../src/plugins/abrt-retrace-client.c:1058
-#: ../src/plugins/abrt-retrace-client.c:1066
-msgid "Task password is needed."
-msgstr "Требуется пароль задания."
-
-#: ../src/plugins/abrt-retrace-client.c:1070
-#, c-format
-msgid "Unknown operation: %s."
-msgstr "Неизвестная функция:  %s."
-
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
 msgstr "Локальный отладчик GNU"
@@ -820,53 +530,9 @@ msgstr ""
 "требует наличия свободного места на диске. Отличается от обработки на "
 "сервере тем, что не передаёт дамп удалённым компьютерам."
 
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:1
-msgid "Send core dump to remote retrace server for analysis"
-msgstr "Отправка дампа памяти удалённому серверу для анализа"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:2
-msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. "
-"Pros: no need for debuginfo downloads. Retrace server's database of "
-"debuginfos is more complete. Retrace server may generate better backtraces. "
-"Cons: coredump you upload contains all the data from the crashed program, "
-"including your private data, if any."
-msgstr ""
-"Отправляет дамп памяти на сервер для генерации протокола сбоя. Достоинства: "
-"не требуется загружать debuginfo. База данных на остлеживающем сервер более "
-"подробная, поэтому сервер может создавать более точные отчёты. Недостатки: "
-"отправляемый дамп содержит все данные сбойной программы, в том числе и "
-"личные."
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-msgid "Retrace server URL"
-msgstr "URL отслеживающего сервера"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:4
-msgid "Address of the retrace server"
-msgstr "Адрес отслеживающего сервера"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:5
-msgid "Insecure"
-msgstr "Незащищенное"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:6
-msgid "Whether or not to use insecure connection"
-msgstr "Использование незащищенного подключения"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:7
-msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
-"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
-"(warning)&lt;/a&gt;"
-msgstr ""
-"Введите «insecure», чтобы разрешить незащищенное подключение &lt;a href="
-"\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" "
-"&gt;(предупреждение)&lt;/a&gt;"
-
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
-msgstr ""
+msgstr "Сбор .xsession-errors"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1076,18 +742,6 @@ msgid ""
 msgstr ""
 "Запуск «gconftool-2 --recursive-list /apps/executable» с сохранением данных "
 "в «gconf_subtree»."
-
-#: ../src/plugins/collect_Smolt.xml.in.h:1
-msgid "Collect Smolt profile"
-msgstr ""
-
-#: ../src/plugins/collect_Smolt.xml.in.h:2
-msgid "Save your computer's hardware profile information"
-msgstr "Сохранить профиль оборудования компьютера"
-
-#: ../src/plugins/collect_Smolt.xml.in.h:3
-msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
-msgstr "Запуск «smoltSendProfile -p» с сохранением данных в «smolt_data»."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"

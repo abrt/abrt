@@ -3,24 +3,24 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Krishnababu Krothapalli <kkrothap@redhat.com>, 2011, 2012.
+# Krishnababu Krothapalli <kkrothap@redhat.com>, 2011-2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-08-06 13:40+0200\n"
-"PO-Revision-Date: 2012-02-28 10:38+0000\n"
+"POT-Creation-Date: 2012-10-18 16:36+0200\n"
+"PO-Revision-Date: 2012-10-09 07:47+0000\n"
 "Last-Translator: Krishnababu Krothapalli <krisnababu@gmail.com>\n"
-"Language-Team: Telugu (http://www.transifex.net/projects/p/fedora/language/"
+"Language-Team: Telugu (http://www.transifex.com/projects/p/fedora/language/"
 "te/)\n"
 "Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:733
+#: ../src/gui-gtk/main.c:684
 msgid "Automatic Bug Reporting Tool"
 msgstr "స్వయంచాలక బగ్ నివేదీకరణ సాధనము"
 
@@ -28,45 +28,49 @@ msgstr "స్వయంచాలక బగ్ నివేదీకరణ సా
 msgid "ABRT notification applet"
 msgstr "ABRT ప్రకటన ఆప్లెట్"
 
-#: ../src/applet/applet.c:345 ../src/applet/applet.c:347
+#: ../src/applet/applet.c:72
+msgid "Problem detected"
+msgstr "సమస్య గుర్తించబడింది"
+
+#: ../src/applet/applet.c:312 ../src/applet/applet.c:314
 msgid "Warning"
 msgstr "హెచ్చరిక"
 
-#: ../src/applet/applet.c:395
+#: ../src/applet/applet.c:362
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT చేత గుర్తించబడిన సమస్యల గురించి వినియోగదారికి తెలుపుటకు నోటిఫికేషన్ ప్రాంతపు ఆప్లెట్"
 
-#: ../src/applet/applet.c:411 ../src/gui-gtk/main.c:579
+#: ../src/applet/applet.c:378 ../src/gui-gtk/main.c:533
 msgid "translator-credits"
 msgstr "కృష్ణబాబు క్రొత్తపల్లి <kkrothap@redhat.com> 2009,2010."
 
-#: ../src/applet/applet.c:421
+#: ../src/applet/applet.c:388
 msgid "Hide"
 msgstr "మరుగునవుంచుము"
 
-#: ../src/applet/applet.c:473
+#: ../src/applet/applet.c:440
 msgid "Report"
 msgstr "నివేదించు"
 
-#: ../src/applet/applet.c:476
+#: ../src/applet/applet.c:443
 msgid "Show"
 msgstr "చూపు"
 
-#: ../src/applet/applet.c:480
+#: ../src/applet/applet.c:447
 msgid "A Problem has Occurred"
 msgstr "ఒక సమస్య యెదురైంది"
 
-#: ../src/applet/applet.c:608
+#: ../src/applet/applet.c:530 ../src/applet/applet.c:720
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "ప్యాకేజీ %s నందు వొక సమస్య గుర్తించబడింది"
 
-#: ../src/applet/applet.c:610
+#: ../src/applet/applet.c:532 ../src/applet/applet.c:722
 msgid "A problem has been detected"
 msgstr "ఒక సమస్య గుర్తించబడింది"
 
-#: ../src/applet/applet.c:738
+#: ../src/applet/applet.c:630
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -75,10 +79,6 @@ msgstr ""
 "& [-v] [DIR]...\n"
 "\n"
 "ABRT చేత కొత్త సమస్యలు గుర్తించబడినప్పుడు వినియోగదారికి తెలుపు ఆప్లెట్\n"
-
-#: ../src/applet/applet.c:810
-msgid "ABRT service is not running"
-msgstr "ABRT సేవ నడుచుటలేదు"
 
 #: ../src/daemon/abrt-action-save-package-data.c:362
 msgid ""
@@ -117,7 +117,7 @@ msgid "Log to syslog"
 msgstr "సిస్‌లాగ్‌కు లాగ్"
 
 #: ../src/daemon/abrt-server.c:471 ../src/daemon/abrtd.c:671
-#: ../src/gui-gtk/main.c:1068
+#: ../src/gui-gtk/main.c:1019
 msgid "Add program names to log"
 msgstr "లాగ్‌నకు ప్రోగ్రామ్ పేరులను జతచేయి"
 
@@ -145,67 +145,55 @@ msgstr "EVENT ను DIR పై నడుపుము"
 msgid "View and report application crashes"
 msgstr "అనువర్తనము క్రాషెస్‌ను దర్శించుము మరియు నివేదించుము"
 
-#: ../src/gui-gtk/main.c:517
-msgid "Problem description"
-msgstr "సమస్య వివరణ"
-
-#: ../src/gui-gtk/main.c:520
-msgid "Send"
-msgstr "పంపు"
-
-#: ../src/gui-gtk/main.c:598 ../src/gui-gtk/main.c:644
+#: ../src/gui-gtk/main.c:552 ../src/gui-gtk/main.c:598
 msgid "Source"
 msgstr "మూలం"
 
-#: ../src/gui-gtk/main.c:608 ../src/gui-gtk/main.c:654
+#: ../src/gui-gtk/main.c:562 ../src/gui-gtk/main.c:608
 msgid "Problem"
 msgstr "సమస్య"
 
-#: ../src/gui-gtk/main.c:629
+#: ../src/gui-gtk/main.c:583
 msgid "Last Occurrence"
 msgstr "చివరి సంభవం"
 
-#: ../src/gui-gtk/main.c:664
+#: ../src/gui-gtk/main.c:618
 msgid "Date Submitted"
 msgstr "సమర్పించిన తేది"
 
-#: ../src/gui-gtk/main.c:673
+#: ../src/gui-gtk/main.c:627
 msgid "Submission Result"
 msgstr "సమర్పణ ఫలితం"
 
-#: ../src/gui-gtk/main.c:686
+#: ../src/gui-gtk/main.c:640
 msgid "_Report"
 msgstr "నివేదించు (_R)"
 
-#: ../src/gui-gtk/main.c:687
+#: ../src/gui-gtk/main.c:641
 msgid "_Edit"
 msgstr "సరికూర్చు (_E)"
 
-#: ../src/gui-gtk/main.c:688
+#: ../src/gui-gtk/main.c:642
 msgid "_Help"
 msgstr "సహాయము (_H)"
 
-#: ../src/gui-gtk/main.c:714
-msgid "Report problem with ABRT"
-msgstr "ABRT తో సమస్య నివేదించు"
-
-#: ../src/gui-gtk/main.c:753
+#: ../src/gui-gtk/main.c:704
 msgid "Not submitted reports"
 msgstr "సమర్పించని నివేదికలు"
 
-#: ../src/gui-gtk/main.c:755
+#: ../src/gui-gtk/main.c:706
 msgid "<b>Not submitted reports</b>"
 msgstr "<b>సమర్పించని నివేదికలు</b>"
 
-#: ../src/gui-gtk/main.c:803
+#: ../src/gui-gtk/main.c:754
 msgid "Submitted reports"
 msgstr "సమర్పించిన నివేదికలు"
 
-#: ../src/gui-gtk/main.c:806
+#: ../src/gui-gtk/main.c:757
 msgid "<b>Submitted reports</b>"
 msgstr "<b>సమర్పించిన నివేదికలు</b>"
 
-#: ../src/gui-gtk/main.c:1057
+#: ../src/gui-gtk/main.c:1008
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
@@ -344,7 +332,7 @@ msgid "Exiting on user command"
 msgstr "వాడుకరి ఆదేశంపై నిష్క్రమించుచున్నది"
 
 #: ../src/plugins/abrt-action-install-debuginfo:86
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -366,6 +354,7 @@ msgstr ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
 "[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -377,6 +366,7 @@ msgstr ""
 "    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
+"    -e,--exact  Download only specified files\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo:168
 msgid "Can't open {0}: {1}"
@@ -391,9 +381,8 @@ msgid "Missing debuginfo file: {0}"
 msgstr "డీబగ్‌యిన్ఫో ఫైల్ తప్పిపోయింది: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo:215
-#, fuzzy
 msgid "All debuginfo files are available"
-msgstr "అన్ని {0} డీబగ్‌యిన్ఫో ఫైళ్ళు అందుబాటులో వున్నాయి"
+msgstr "అన్ని డీబగ్‌యిన్ఫో ఫైళ్ళు అందుబాటులో వున్నాయి"
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -422,7 +411,6 @@ msgid "Preserve this directory"
 msgstr "ఈ డైరెక్టరీను నిలిపివుంచుము"
 
 #: ../src/plugins/abrt-dedup-client.c:96
-#: ../src/plugins/abrt-retrace-client.c:964
 msgid "log to syslog"
 msgstr "సిస్‌లాగ్ లాగ్"
 
@@ -443,7 +431,6 @@ msgid "ABRT dump directory"
 msgstr "ABRT డంప్ డైరెక్టరీ"
 
 #: ../src/plugins/abrt-dedup-client.c:106
-#: ../src/plugins/abrt-retrace-client.c:972
 msgid "(debug) show received HTTP headers"
 msgstr "(డీబగ్) స్వీకరించబడిన HTTP హెడర్లు చూపు"
 
@@ -466,13 +453,13 @@ msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr "%d పొడవైన HTTP అభ్యర్దన పంపుటలో విఫలమైంది: NSS దోషము %d."
 
 #: ../src/plugins/abrt-dump-oops.c:175
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"కెర్నల్ సమస్య యెదురైంది, అయితే మీ కెర్నల్ చెడిపోయింది (ఫ్లాగ్స్:%s). కెర్నల్ నిర్వాహకులు చెడిపోయిన నివేదికలను "
-"విశ్లేషించలేక పోయినారు."
+"కెర్నల్ సమస్య యెదురైంది, అయితే మీ కెర్నల్ కల్మషమైంది (flags:%s). కల్మషమైన నివేదికలను కెర్నల్ "
+"నిర్వాహకులు విశ్లేషించలేక పోయినారు."
 
 #: ../src/plugins/abrt-dump-oops.c:226
 msgid ""
@@ -513,277 +500,6 @@ msgstr "సమస్యాత్మక డైరెక్టరీను అం�
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "-d DumpLocation వలె, DumpLocation అనునది abrt.conf నందు తెలుపబడెను"
 
-#: ../src/plugins/abrt-retrace-client.c:63
-msgid ""
-"Retrace server can not be used, because the crash is too large. Try local "
-"retracing."
-msgstr "తిరిగిట్రేస్ చేసిన సర్వర్ వుపయోగించలేము, యెంచేతంటే క్రాష్ చేలా పెద్దది. స్థానిక రీట్రేస్ ప్రయత్నించు."
-
-#: ../src/plugins/abrt-retrace-client.c:96
-msgid "Cannot open temporary file"
-msgstr "తాత్కాలిక ఫైలు తెరువలేదు"
-
-#: ../src/plugins/abrt-retrace-client.c:122
-#: ../src/plugins/abrt-retrace-client.c:151
-#, c-format
-msgid "Can't execute '%s'"
-msgstr "'%s' యెగ్జిక్యూట్ చేయలేదు"
-
-#: ../src/plugins/abrt-retrace-client.c:187
-#: ../src/plugins/abrt-retrace-client.c:529
-#: ../src/plugins/abrt-retrace-client.c:786
-#: ../src/plugins/abrt-retrace-client.c:855
-#, c-format
-msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr "%d పొడవైన HTTP హెడర్ పంపుటకు విఫలమైంది: NSS దోషం %d."
-
-#: ../src/plugins/abrt-retrace-client.c:199
-#: ../src/plugins/abrt-retrace-client.c:628
-#: ../src/plugins/abrt-retrace-client.c:724
-#: ../src/plugins/abrt-retrace-client.c:803
-#: ../src/plugins/abrt-retrace-client.c:872
-#, c-format
-msgid ""
-"Unexpected HTTP response from server: %d\n"
-"%s"
-msgstr ""
-"సర్వర్ నుండి అనుకోని  HTTP ప్రతిస్పందన: %d\n"
-"%s"
-
-#: ../src/plugins/abrt-retrace-client.c:208
-#: ../src/plugins/abrt-retrace-client.c:608
-#: ../src/plugins/abrt-retrace-client.c:716
-#: ../src/plugins/abrt-retrace-client.c:795
-#: ../src/plugins/abrt-retrace-client.c:864
-msgid "Invalid response from server: missing HTTP message body."
-msgstr "సర్వర్‌నుండి చెల్లని ప్రతిస్పందన: HTTP సందేశం బాడీ తప్పిపోయింది."
-
-#: ../src/plugins/abrt-retrace-client.c:347
-msgid "Querying server settings"
-msgstr "సర్వర్ అమరికలను క్వరీ చేస్తోంది"
-
-#: ../src/plugins/abrt-retrace-client.c:355
-msgid "The server is fully occupied. Try again later."
-msgstr "సర్వర్ పూర్తిగా నిండినది. తరువాత ప్రయత్నించు."
-
-#: ../src/plugins/abrt-retrace-client.c:356
-msgid "The server denied your request."
-msgstr "సర్వర్ మీ అభ్యర్ధనను తిరస్కరించింది."
-
-#: ../src/plugins/abrt-retrace-client.c:366
-#: ../src/plugins/abrt-retrace-client.c:389
-#, c-format
-msgid "Unable to stat file '%s'."
-msgstr "ఫైల్ '%s' స్టాట్ చేయలేదు."
-
-#: ../src/plugins/abrt-retrace-client.c:374
-#, c-format
-msgid "Unable to open dump directory '%s'."
-msgstr "డంప్ డైరెక్టరీ '%s' ను తెరువలేక పోయింది"
-
-#: ../src/plugins/abrt-retrace-client.c:404
-#, c-format
-msgid ""
-"The size of your crash is %lld bytes, but the retrace server only accepts "
-"crashes smaller or equal to %lld bytes."
-msgstr ""
-"మీ క్రాష్ యొక్క పరిమాణం %lld బైట్లు, అయితే ట్రేస్ సర్వర్ అనునది %lld బైట్లకు తక్కువైన లేదా సమానమైన క్రాష్ "
-"మాత్రమే ఆమోదించును."
-
-#: ../src/plugins/abrt-retrace-client.c:424
-msgid "The server does not support xz-compressed tarballs."
-msgstr "సేవిక xz-compressed టార్బాళ్ళకు తోడ్పాటునీయదు."
-
-#: ../src/plugins/abrt-retrace-client.c:447
-#, c-format
-msgid "The release '%s' is not supported by the Retrace server."
-msgstr "విడుదల '%s' అనునది రీట్రేస్ సేవిక చేత తోడ్పాటునీయబడదు."
-
-#: ../src/plugins/abrt-retrace-client.c:451
-msgid "The server is not able to handle your request."
-msgstr "సేవిక మీ అభ్యర్ధనను సంభాలించలేక పోయింది."
-
-#: ../src/plugins/abrt-retrace-client.c:460
-msgid "Preparing an archive to upload"
-msgstr "అప్‌లోడ్ చేయుటకు వొక ఆర్కైవ్‌ను సిద్దంచేస్తోంది"
-
-#: ../src/plugins/abrt-retrace-client.c:473
-#, c-format
-msgid ""
-"The size of your archive is %lld bytes, but the retrace server only accepts "
-"archives smaller or equal %lld bytes."
-msgstr ""
-"మీ ఆర్కైవ్ యొక్క పరిమాణం %lld బైట్లు, అయితే ట్రేస్ సర్వర్ %lld బైట్లకు సమానమైన లేదా తక్కువైన ఆర్కైవ్‌లను "
-"మాత్రమే ఆమోదించును."
-
-#: ../src/plugins/abrt-retrace-client.c:486
-#, c-format
-msgid "You are going to upload %d megabytes.Continue?"
-msgstr "మీరు %d మెగాబైట్లను అప్‌లోడ్ చేయబోచున్నారు. కొనసాగించాలా?"
-
-#: ../src/plugins/abrt-retrace-client.c:493
-msgid "Cancelled by user"
-msgstr "వాడుకరిచే రద్దుచేయబడెను"
-
-#: ../src/plugins/abrt-retrace-client.c:536
-#, c-format
-msgid "Uploading %d megabytes\n"
-msgstr "%d మెగాబైట్లను లోడుచేస్తోంది\n"
-
-#: ../src/plugins/abrt-retrace-client.c:538
-#, c-format
-msgid "Uploading %lld bytes\n"
-msgstr "%lld బైట్లను లోడుచేయుచున్నది\n"
-
-#: ../src/plugins/abrt-retrace-client.c:562
-#, c-format
-msgid "Uploading %d%%\n"
-msgstr "%d%% అప్‌లోడుచేయుచున్నది\n"
-
-#: ../src/plugins/abrt-retrace-client.c:574
-msgid "Failed to read from a pipe"
-msgstr "పైప్ నుండి చదువుటకు విఫలమైంది"
-
-#: ../src/plugins/abrt-retrace-client.c:587
-#, c-format
-msgid "Failed to send data: NSS error %d (%s): %s"
-msgstr "డాటా పంపుటలో విఫలమైంది: NSS దోషం %d (%s): %s"
-
-#: ../src/plugins/abrt-retrace-client.c:598
-msgid "Upload successful"
-msgstr "అప్‌లోడ్ విజయవంతమైంది"
-
-#: ../src/plugins/abrt-retrace-client.c:620
-msgid ""
-"Your problem directory is corrupted and can not be processed by the Retrace "
-"server."
-msgstr "మీ సమస్యాత్మక డైరెక్టరీ పాడైంది మరియు  రీట్రేస్ సర్వర్ చే ప్రోసెస్ చేయబడలేదు."
-
-#: ../src/plugins/abrt-retrace-client.c:622
-msgid ""
-"The archive contains malicious files (such as symlinks) and thus can not be "
-"processed."
-msgstr "ఆర్కైవ్ అనునది చెడ్డ ఫైళ్ళను కలిగివుంది (సిమ్‌లింక్స్ వంటివి) కనుక ప్రోసెస్ చేయబడలేదు."
-
-#: ../src/plugins/abrt-retrace-client.c:635
-msgid "Invalid response from server: missing X-Task-Id."
-msgstr "సర్వర్‌నుండి చెల్లని ప్రతిస్పందన: X-Task-Id తప్పిపోయింది."
-
-#: ../src/plugins/abrt-retrace-client.c:641
-msgid "Invalid response from server: missing X-Task-Password."
-msgstr "సర్వర్‌నుండి చెల్లని ప్రతిస్పందన: X-Task-Password తప్పిపోయింది."
-
-#: ../src/plugins/abrt-retrace-client.c:648
-msgid "Retrace job started"
-msgstr "రిట్రేస్ జాబ్ ప్రారంభమైంది"
-
-#: ../src/plugins/abrt-retrace-client.c:661
-#, c-format
-msgid ""
-"Task Id: %s\n"
-"Task Password: %s\n"
-msgstr ""
-"టాస్క్ ఐడి: %s\n"
-"టాస్క్ సంకేతపదం: %s\n"
-
-#: ../src/plugins/abrt-retrace-client.c:707
-#, c-format
-msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr "%d పొడవైన HTTP హెడర్ పంపుటలో విఫలమైంది: NSS దోషం %d"
-
-#: ../src/plugins/abrt-retrace-client.c:731
-msgid "Invalid response from server: missing X-Task-Status."
-msgstr "సర్వర్‌నుండి చెల్లని ప్రతిస్పందన: X-Task-Status తప్పిపోయింది."
-
-#: ../src/plugins/abrt-retrace-client.c:743
-#, c-format
-msgid ""
-"Task Status: %s\n"
-"%s\n"
-msgstr ""
-"టాస్క్ స్థితి: %s\n"
-"%s\n"
-
-#: ../src/plugins/abrt-retrace-client.c:919
-msgid ""
-"Retrace failed. Try again later and if the problem persists report this "
-"issue please."
-msgstr "రిట్రేస్ విఫలమైంది. తరువాత ప్రయత్నించుము వోకవేళ యీ సమస్య యింకావుంటే యీ సమస్యను నివేదించుము."
-
-#: ../src/plugins/abrt-retrace-client.c:966
-msgid "allow insecure connection to retrace server"
-msgstr "సర్వర్‌ను రీట్రేస్ చేయుటకు సురక్షితం కాని అనుసంధానం అనుమతించు"
-
-#: ../src/plugins/abrt-retrace-client.c:968
-msgid "retrace server URL"
-msgstr "సర్వర్ URL రీట్రేస్‌చేయి"
-
-#: ../src/plugins/abrt-retrace-client.c:970
-msgid "retrace server port"
-msgstr "సేవిక పోర్ట్ రీట్రేస్ చేయి"
-
-#: ../src/plugins/abrt-retrace-client.c:973
-msgid "For create and batch operations"
-msgstr "create మరియు batch ఆపరేషన్ల కొరకు"
-
-#: ../src/plugins/abrt-retrace-client.c:975
-msgid "read data from ABRT problem directory"
-msgstr "ABRT సమస్యాత్మక డైరెక్టరీ నుండి డాటా చదువుము"
-
-#: ../src/plugins/abrt-retrace-client.c:977
-msgid "read data from coredump"
-msgstr "కోర్‌డంప్ నుండి డాటా చదువు"
-
-#: ../src/plugins/abrt-retrace-client.c:979
-msgid "Delay for polling operations"
-msgstr "పోలింగ్ ఆపరేషన్ల కొరకు ఆలస్యం"
-
-#: ../src/plugins/abrt-retrace-client.c:981
-msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
-msgstr "(డీబగ్) /tmp నందు డంప్ dir నుండి సృష్టించబడిన తాత్కాలిక ఆర్కైవ్‌ను తొలగించవద్దు"
-
-#: ../src/plugins/abrt-retrace-client.c:983
-msgid "For status, backtrace, and log operations"
-msgstr "స్థితి, బ్యాక్‌ట్రేస్, మరియు లాగ్ ఆపరేషన్ల కొరకు"
-
-#: ../src/plugins/abrt-retrace-client.c:985
-msgid "id of your task on server"
-msgstr "సర్వర్ పైన మీ టాస్క్ id "
-
-#: ../src/plugins/abrt-retrace-client.c:987
-msgid "password of your task on server"
-msgstr "సర్వర్ పైన మీ టాస్క్ సంకేతపదం"
-
-#: ../src/plugins/abrt-retrace-client.c:991
-msgid ""
-"abrt-retrace-client <operation> [options]\n"
-"Operations: create/status/backtrace/log/batch"
-msgstr ""
-"abrt-retrace-client <operation> [options]\n"
-"ఆపరేషన్లు: create/status/backtrace/log/batch"
-
-#: ../src/plugins/abrt-retrace-client.c:1036
-#: ../src/plugins/abrt-retrace-client.c:1042
-msgid "Either problem directory or coredump is needed."
-msgstr "సమస్యాత్మక డైరెక్టరీ లేదా కోర్‌డంప్ అవసరము."
-
-#: ../src/plugins/abrt-retrace-client.c:1048
-#: ../src/plugins/abrt-retrace-client.c:1056
-#: ../src/plugins/abrt-retrace-client.c:1064
-msgid "Task id is needed."
-msgstr "టాస్క్ ఐడి అవసరమైంది."
-
-#: ../src/plugins/abrt-retrace-client.c:1050
-#: ../src/plugins/abrt-retrace-client.c:1058
-#: ../src/plugins/abrt-retrace-client.c:1066
-msgid "Task password is needed."
-msgstr "టాస్క్ సంకేతపదం అవసరమైంది."
-
-#: ../src/plugins/abrt-retrace-client.c:1070
-#, c-format
-msgid "Unknown operation: %s."
-msgstr "తెలియని ఆపరేషన్: %s."
-
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
 msgstr "స్థానిక GNU డీబగ్గర్"
@@ -801,52 +517,9 @@ msgstr ""
 "డీబగ్‌యిన్ఫో ప్యాకేజీలను డౌన్‌లోడ్ చేయవలసివుంటుంది, దీనికి తగిన సమయం పడుతుంది, మరియు డిస్కు జాగాను "
 "తీసుకొనును. రీట్రేస్‌సర్వర్ వలె కాక, కోర్‌డంప్ ను రిమోట్ సర్వర్లకు పంపదు."
 
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:1
-msgid "Send core dump to remote retrace server for analysis"
-msgstr "విశ్లేషణ కొరకు కోర్ డంప్‌ను రిమోట్ రీట్రేస్ సర్వర్‌కు పంపుము"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:2
-msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. "
-"Pros: no need for debuginfo downloads. Retrace server's database of "
-"debuginfos is more complete. Retrace server may generate better backtraces. "
-"Cons: coredump you upload contains all the data from the crashed program, "
-"including your private data, if any."
-msgstr ""
-"కోర్‌డంప్‌ను సర్వర్‌కు అప్‌లోడ్ చేయును, యిది బ్యాక్‌ట్రేస్‌ను సృష్టించి మరియు దానిని తిప్పియిచ్చును. లాభాలు: "
-"డీబగ్‌యిన్ఫో డౌన్‌లోడ్ చేయవలసిన అవసరం లేదు. రీట్రేస్ సర్వర్ యొక్క డీబగ్‌యిన్ఫోల డాటాబేస్ పూర్తిగా వుండును. రీట్రేస్ "
-"సర్వర్ మంచి బ్యాక్‌ట్రేస్‌లను జనియింపచేయగలదు. నష్టాలు: మీరు అప్‌లోడ్ చేసిన కోర్‌డంప్ క్రాష్‌డ్ ప్రోగ్రామ్‌నుండి "
-"మొత్తం డాటాను కలిగివుంటుంది, మీ వ్యక్తిగత డాటా యేదైనా వుంటే దానితో సహా."
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-msgid "Retrace server URL"
-msgstr "రీట్రేస్ సర్వర్ URL"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:4
-msgid "Address of the retrace server"
-msgstr "రిట్రేస్ సర్వర్ యొక్క చిరునామా"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:5
-msgid "Insecure"
-msgstr "సురక్షితంకాని"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:6
-msgid "Whether or not to use insecure connection"
-msgstr "సురక్షితం కాని అనుసంధానంను వుపయోగించాలా వద్దా"
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:7
-msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
-"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
-"(warning)&lt;/a&gt;"
-msgstr ""
-"సురక్షితం కాని అనుసంధానం అనుమతించుటకు \"insecure\" వ్రాయి &lt;a href=\"https://"
-"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
-"(warning)&lt;/a&gt;"
-
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
-msgstr ""
+msgstr ".xsession-errors సేకరించు"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1055,19 +728,6 @@ msgid ""
 msgstr ""
 "gconftool-2 --recursive-list /apps/executable నడుపును మరియు దానిని "
 "'gconf_subtree' మూలకం వలె దాయును."
-
-#: ../src/plugins/collect_Smolt.xml.in.h:1
-msgid "Collect Smolt profile"
-msgstr ""
-
-#: ../src/plugins/collect_Smolt.xml.in.h:2
-msgid "Save your computer's hardware profile information"
-msgstr "మీ కంప్యూటర్ యొక్క హార్డువేర్ ప్రొఫైల్ సమాచారం దాయును"
-
-#: ../src/plugins/collect_Smolt.xml.in.h:3
-msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
-msgstr ""
-"smoltSendProfile -p నడుపును మరియు దాని అవుట్పుట్‌ను 'smolt_data' మూలకం వలె దాయును."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"

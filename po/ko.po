@@ -3,24 +3,24 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Eun-Ju Kim  <eukim@redhat.com>, 2011, 2012.
+# Eun-Ju Kim  <eukim@redhat.com>, 2011-2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-08-06 13:40+0200\n"
-"PO-Revision-Date: 2012-03-02 01:30+0000\n"
+"POT-Creation-Date: 2012-10-18 16:36+0200\n"
+"PO-Revision-Date: 2012-10-09 13:59+0000\n"
 "Last-Translator: eukim <eukim@redhat.com>\n"
-"Language-Team: Korean (http://www.transifex.net/projects/p/fedora/language/"
+"Language-Team: Korean (http://www.transifex.com/projects/p/fedora/language/"
 "ko/)\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:733
+#: ../src/gui-gtk/main.c:684
 msgid "Automatic Bug Reporting Tool"
 msgstr "자동 버그 보고 도구 (ABRT) "
 
@@ -28,47 +28,51 @@ msgstr "자동 버그 보고 도구 (ABRT) "
 msgid "ABRT notification applet"
 msgstr "ABRT 알림 애플릿"
 
-#: ../src/applet/applet.c:345 ../src/applet/applet.c:347
+#: ../src/applet/applet.c:72
+msgid "Problem detected"
+msgstr "문제가 감지되었습니다 "
+
+#: ../src/applet/applet.c:312 ../src/applet/applet.c:314
 msgid "Warning"
 msgstr "경고"
 
-#: ../src/applet/applet.c:395
+#: ../src/applet/applet.c:362
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT가 감지한 문제를 사용자에게 통지하기 위한 통지 영역 애플릿"
 
-#: ../src/applet/applet.c:411 ../src/gui-gtk/main.c:579
+#: ../src/applet/applet.c:378 ../src/gui-gtk/main.c:533
 msgid "translator-credits"
 msgstr ""
 "김은주<eukim@redhat.com>\n"
 "오현석<hoh@redhat.com>"
 
-#: ../src/applet/applet.c:421
+#: ../src/applet/applet.c:388
 msgid "Hide"
 msgstr "숨기기"
 
-#: ../src/applet/applet.c:473
+#: ../src/applet/applet.c:440
 msgid "Report"
 msgstr "보고  "
 
-#: ../src/applet/applet.c:476
+#: ../src/applet/applet.c:443
 msgid "Show"
 msgstr "보기 "
 
-#: ../src/applet/applet.c:480
+#: ../src/applet/applet.c:447
 msgid "A Problem has Occurred"
 msgstr "한 가지 문제가 발생했습니다 "
 
-#: ../src/applet/applet.c:608
+#: ../src/applet/applet.c:530 ../src/applet/applet.c:720
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "%s 패키지에서 문제가 감지되었습니다  "
 
-#: ../src/applet/applet.c:610
+#: ../src/applet/applet.c:532 ../src/applet/applet.c:722
 msgid "A problem has been detected"
 msgstr "문제가 감지되었습니다  "
 
-#: ../src/applet/applet.c:738
+#: ../src/applet/applet.c:630
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -77,10 +81,6 @@ msgstr ""
 "& [-v] [DIR]...\n"
 "\n"
 "ABRT가 새로운 문제를 감지할 경우 사용자에게 통지하는 애플릿\n"
-
-#: ../src/applet/applet.c:810
-msgid "ABRT service is not running"
-msgstr "ABRT 서비스가 실행되고 있지 않음 "
 
 #: ../src/daemon/abrt-action-save-package-data.c:362
 msgid ""
@@ -119,7 +119,7 @@ msgid "Log to syslog"
 msgstr "syslog에 로그   "
 
 #: ../src/daemon/abrt-server.c:471 ../src/daemon/abrtd.c:671
-#: ../src/gui-gtk/main.c:1068
+#: ../src/gui-gtk/main.c:1019
 msgid "Add program names to log"
 msgstr "로그에 프로그램 이름 추가 "
 
@@ -147,67 +147,55 @@ msgstr "DIR에서 EVENT 실행 "
 msgid "View and report application crashes"
 msgstr "애플리케이션 크래시를 확인 및 보고함"
 
-#: ../src/gui-gtk/main.c:517
-msgid "Problem description"
-msgstr "문제 설명 "
-
-#: ../src/gui-gtk/main.c:520
-msgid "Send"
-msgstr "전송 "
-
-#: ../src/gui-gtk/main.c:598 ../src/gui-gtk/main.c:644
+#: ../src/gui-gtk/main.c:552 ../src/gui-gtk/main.c:598
 msgid "Source"
 msgstr "소스 "
 
-#: ../src/gui-gtk/main.c:608 ../src/gui-gtk/main.c:654
+#: ../src/gui-gtk/main.c:562 ../src/gui-gtk/main.c:608
 msgid "Problem"
 msgstr "문제 "
 
-#: ../src/gui-gtk/main.c:629
+#: ../src/gui-gtk/main.c:583
 msgid "Last Occurrence"
 msgstr "마지막 문제 발생  "
 
-#: ../src/gui-gtk/main.c:664
+#: ../src/gui-gtk/main.c:618
 msgid "Date Submitted"
 msgstr "날짜가 제출되었습니다 "
 
-#: ../src/gui-gtk/main.c:673
+#: ../src/gui-gtk/main.c:627
 msgid "Submission Result"
 msgstr "제출 결과 "
 
-#: ../src/gui-gtk/main.c:686
+#: ../src/gui-gtk/main.c:640
 msgid "_Report"
 msgstr "보고(_R) "
 
-#: ../src/gui-gtk/main.c:687
+#: ../src/gui-gtk/main.c:641
 msgid "_Edit"
 msgstr "편집(_E)  "
 
-#: ../src/gui-gtk/main.c:688
+#: ../src/gui-gtk/main.c:642
 msgid "_Help"
 msgstr "도움말(_H)  "
 
-#: ../src/gui-gtk/main.c:714
-msgid "Report problem with ABRT"
-msgstr "ABRT로 문제 보고 "
-
-#: ../src/gui-gtk/main.c:753
+#: ../src/gui-gtk/main.c:704
 msgid "Not submitted reports"
 msgstr "제출되지 않은 보고 "
 
-#: ../src/gui-gtk/main.c:755
+#: ../src/gui-gtk/main.c:706
 msgid "<b>Not submitted reports</b>"
 msgstr "<b>제출되지 않은 보고</b>"
 
-#: ../src/gui-gtk/main.c:803
+#: ../src/gui-gtk/main.c:754
 msgid "Submitted reports"
 msgstr "제출된 보고 "
 
-#: ../src/gui-gtk/main.c:806
+#: ../src/gui-gtk/main.c:757
 msgid "<b>Submitted reports</b>"
 msgstr "<b>제출된 보고</b> "
 
-#: ../src/gui-gtk/main.c:1057
+#: ../src/gui-gtk/main.c:1008
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
@@ -343,7 +331,7 @@ msgid "Exiting on user command"
 msgstr "사용자 명령을 종료합니다 "
 
 #: ../src/plugins/abrt-action-install-debuginfo:86
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -365,17 +353,20 @@ msgstr ""
 "사용법: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
 "[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH]\n"
 "\n"
-"BUILD_IDS_FILE에 나열된 모든 build-id의 debuginfo를 CACHEDIR에\n"
-" 설치합니다. 이때 TMPDIR를 임시 단계 영역으로 사용합니다. \n"
-"CACHEDIR에 있는 오래된 파일은 크기가 SIZE 미만이 될 때 까지 삭제됩니다. \n"
+"임시 준비 영역으로 TMPDIR를 사용하여 CACHEDIR에 있는\n"
+"BUILD_IDS_FILE에 나열된 모든 빌드 ID의 디버그 정보를 설치합니다.\n"
+"SIZE에 있는 크기 보다 작게될 때 까지 CACHEDIR에 있는 오래된 파일이 삭제됩니"
+"다.\n"
 "\n"
-"    -v          상세 설명\n"
-"    -y          비상호대화식, 모든 질문에 'Yes'라고 답변\n"
+"    -v          구문 분석함\n"
+"    -y          비대화식, 모든 질문에 대해 '예'라고 가정\n"
 "    --ids       디폴트: build_ids\n"
 "    --tmpdir    디폴트: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
 "    --cache     디폴트: /var/cache/abrt-di\n"
 "    --size_mb   디폴트: 4096\n"
+"    -e,--exact  지정된 파일만 다운로드함\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo:168
 msgid "Can't open {0}: {1}"
@@ -391,9 +382,8 @@ msgid "Missing debuginfo file: {0}"
 msgstr "debuginfo 파일이 누락되어 있습니다: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo:215
-#, fuzzy
 msgid "All debuginfo files are available"
-msgstr "모든 {0} debuginfo 파일이 사용 가능합니다  "
+msgstr "모든 디버그 정보 파일을 사용할 수 있습니다 "
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -422,7 +412,6 @@ msgid "Preserve this directory"
 msgstr "이 디렉토리를 보관합니다  "
 
 #: ../src/plugins/abrt-dedup-client.c:96
-#: ../src/plugins/abrt-retrace-client.c:964
 msgid "log to syslog"
 msgstr "syslog에 기록 "
 
@@ -443,7 +432,6 @@ msgid "ABRT dump directory"
 msgstr "ABRT 덤프 디렉토리 "
 
 #: ../src/plugins/abrt-dedup-client.c:106
-#: ../src/plugins/abrt-retrace-client.c:972
 msgid "(debug) show received HTTP headers"
 msgstr "(디버그) 수신된 HTTP 헤더 보기 "
 
@@ -466,13 +454,13 @@ msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr "%d 길이의 HTTP 요청 전송 실패: NSS 오류 %d."
 
 #: ../src/plugins/abrt-dump-oops.c:175
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"커널에 문제가 발생했지만 커널 자체가 손상되어 있습니다 (플래그: %s). 커널 관"
-"리자는 손상된 보고를 진단할 수 없습니다. "
+"커널 문제가 발생하여 커널이 감염되었습니다 (플래그: %s). 커널 관리자는 감염 "
+"보고를 진단할 수 없습니다."
 
 #: ../src/plugins/abrt-dump-oops.c:226
 msgid ""
@@ -513,284 +501,6 @@ msgstr "문제 디렉토리를 전역에서 읽기 가능하게 합니다 "
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "-d DumpLocation과 동일, DumpLocation은 abrt.conf에 지정됩니다 "
 
-#: ../src/plugins/abrt-retrace-client.c:63
-msgid ""
-"Retrace server can not be used, because the crash is too large. Try local "
-"retracing."
-msgstr ""
-"크래시가 너무 크기때문에 Retrace 서버를 사용할 수 없습니다. 로컬 Retracing을 "
-"시도해 보십시오  "
-
-#: ../src/plugins/abrt-retrace-client.c:96
-msgid "Cannot open temporary file"
-msgstr "임시 파일을 열 수 없습니다 "
-
-#: ../src/plugins/abrt-retrace-client.c:122
-#: ../src/plugins/abrt-retrace-client.c:151
-#, c-format
-msgid "Can't execute '%s'"
-msgstr "'%s'을(를) 실행할 수 없습니다 "
-
-#: ../src/plugins/abrt-retrace-client.c:187
-#: ../src/plugins/abrt-retrace-client.c:529
-#: ../src/plugins/abrt-retrace-client.c:786
-#: ../src/plugins/abrt-retrace-client.c:855
-#, c-format
-msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr "%d 길이의 HTTP 헤더 전송 실패: NSS 오류 %d. "
-
-#: ../src/plugins/abrt-retrace-client.c:199
-#: ../src/plugins/abrt-retrace-client.c:628
-#: ../src/plugins/abrt-retrace-client.c:724
-#: ../src/plugins/abrt-retrace-client.c:803
-#: ../src/plugins/abrt-retrace-client.c:872
-#, c-format
-msgid ""
-"Unexpected HTTP response from server: %d\n"
-"%s"
-msgstr ""
-"서버로 부터 예상치 못한 HTTP 응답: %d\n"
-"%s "
-
-#: ../src/plugins/abrt-retrace-client.c:208
-#: ../src/plugins/abrt-retrace-client.c:608
-#: ../src/plugins/abrt-retrace-client.c:716
-#: ../src/plugins/abrt-retrace-client.c:795
-#: ../src/plugins/abrt-retrace-client.c:864
-msgid "Invalid response from server: missing HTTP message body."
-msgstr "서버로 부터 잘못된 응답: HTTP 메세지 내용이 없음. "
-
-#: ../src/plugins/abrt-retrace-client.c:347
-msgid "Querying server settings"
-msgstr "서버 설정을 쿼리 중 "
-
-#: ../src/plugins/abrt-retrace-client.c:355
-msgid "The server is fully occupied. Try again later."
-msgstr "서버가 꽉 찼습니다. 나중에 다시 시도하십시오. "
-
-#: ../src/plugins/abrt-retrace-client.c:356
-msgid "The server denied your request."
-msgstr "서버가 요청을 거부했습니다.  "
-
-#: ../src/plugins/abrt-retrace-client.c:366
-#: ../src/plugins/abrt-retrace-client.c:389
-#, c-format
-msgid "Unable to stat file '%s'."
-msgstr "파일 '%s'을(를) 시작할 수 없습니다. "
-
-#: ../src/plugins/abrt-retrace-client.c:374
-#, c-format
-msgid "Unable to open dump directory '%s'."
-msgstr "덤프 디렉토리 '%s'을(를) 열 수 없습니다. "
-
-#: ../src/plugins/abrt-retrace-client.c:404
-#, c-format
-msgid ""
-"The size of your crash is %lld bytes, but the retrace server only accepts "
-"crashes smaller or equal to %lld bytes."
-msgstr ""
-"크래시의 크기는 %lld 바이트이지만 Retrace 서버는 %lld 바이트보다 작거나 동일"
-"한 크래시만을 허용합니다. "
-
-#: ../src/plugins/abrt-retrace-client.c:424
-msgid "The server does not support xz-compressed tarballs."
-msgstr "서버는 xz 압축 tarball을 지원하지 않습니다. "
-
-#: ../src/plugins/abrt-retrace-client.c:447
-#, c-format
-msgid "The release '%s' is not supported by the Retrace server."
-msgstr "릴리즈 '%s'은(는) Retrace 서버에 의해 지원되지 않습니다. "
-
-#: ../src/plugins/abrt-retrace-client.c:451
-msgid "The server is not able to handle your request."
-msgstr "서버가 귀하의 요청을 처리할 수 없습니다. "
-
-#: ../src/plugins/abrt-retrace-client.c:460
-msgid "Preparing an archive to upload"
-msgstr "업로드할 아카이브 준비  "
-
-#: ../src/plugins/abrt-retrace-client.c:473
-#, c-format
-msgid ""
-"The size of your archive is %lld bytes, but the retrace server only accepts "
-"archives smaller or equal %lld bytes."
-msgstr ""
-"아카이브의 크기는 %lld 바이트이지만 Retrace 서버는 %lld 바이트보다 작거나 동"
-"일한 아카이브만을 허용합니다. "
-
-#: ../src/plugins/abrt-retrace-client.c:486
-#, c-format
-msgid "You are going to upload %d megabytes.Continue?"
-msgstr "%d 메가바이트를 업로드할 예정입니다. 계속 진행하시겠습니까? "
-
-#: ../src/plugins/abrt-retrace-client.c:493
-msgid "Cancelled by user"
-msgstr "사용자에 의해 취소됨 "
-
-#: ../src/plugins/abrt-retrace-client.c:536
-#, c-format
-msgid "Uploading %d megabytes\n"
-msgstr "%d 메가바이트 업로드 중\n"
-
-#: ../src/plugins/abrt-retrace-client.c:538
-#, c-format
-msgid "Uploading %lld bytes\n"
-msgstr "%lld 바이트 업로드 중 \n"
-
-#: ../src/plugins/abrt-retrace-client.c:562
-#, c-format
-msgid "Uploading %d%%\n"
-msgstr "%d%% 업로드 중 \n"
-
-#: ../src/plugins/abrt-retrace-client.c:574
-msgid "Failed to read from a pipe"
-msgstr "파이프에서 읽기 실패 "
-
-#: ../src/plugins/abrt-retrace-client.c:587
-#, c-format
-msgid "Failed to send data: NSS error %d (%s): %s"
-msgstr "데이터 전송 실패: NSS 오류 %d (%s): %s "
-
-#: ../src/plugins/abrt-retrace-client.c:598
-msgid "Upload successful"
-msgstr "성공적으로 업로드 "
-
-#: ../src/plugins/abrt-retrace-client.c:620
-msgid ""
-"Your problem directory is corrupted and can not be processed by the Retrace "
-"server."
-msgstr "문제 디렉토리가 손상되어 Retrace 서버에 의해 처리될 수 없습니다. "
-
-#: ../src/plugins/abrt-retrace-client.c:622
-msgid ""
-"The archive contains malicious files (such as symlinks) and thus can not be "
-"processed."
-msgstr ""
-"아카이브에는 악성 파일 (예: 심볼릭 링크)이 들어 있으므로 처리될 수 없습니다. "
-
-#: ../src/plugins/abrt-retrace-client.c:635
-msgid "Invalid response from server: missing X-Task-Id."
-msgstr "서버로 부터의 잘못된 응답: X-Task-Id가 없음. "
-
-#: ../src/plugins/abrt-retrace-client.c:641
-msgid "Invalid response from server: missing X-Task-Password."
-msgstr "서버로 부터의 잘못된 응답: X-Task-Password가 없음.  "
-
-#: ../src/plugins/abrt-retrace-client.c:648
-msgid "Retrace job started"
-msgstr "Retrace 작업 시작 "
-
-#: ../src/plugins/abrt-retrace-client.c:661
-#, c-format
-msgid ""
-"Task Id: %s\n"
-"Task Password: %s\n"
-msgstr ""
-"작업 Id: %s\n"
-"작업 암호: %s\n"
-
-#: ../src/plugins/abrt-retrace-client.c:707
-#, c-format
-msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr "%d 길이의 HTTP 헤더 전송 실패: NSS 오류 %d"
-
-#: ../src/plugins/abrt-retrace-client.c:731
-msgid "Invalid response from server: missing X-Task-Status."
-msgstr "서버로 부터의 잘못된 응답: X-Task-Status가 없음. "
-
-#: ../src/plugins/abrt-retrace-client.c:743
-#, c-format
-msgid ""
-"Task Status: %s\n"
-"%s\n"
-msgstr ""
-"작업 상태: %s\n"
-"%s\n"
-
-#: ../src/plugins/abrt-retrace-client.c:919
-msgid ""
-"Retrace failed. Try again later and if the problem persists report this "
-"issue please."
-msgstr ""
-"Retrace 실패. 나중에 다시 시도해 주십시오. 만약 문제가 계속될 경우 이를 보고"
-"해 주십시오. "
-
-#: ../src/plugins/abrt-retrace-client.c:966
-msgid "allow insecure connection to retrace server"
-msgstr "Retrace 서버로 비보안 연결을 허용 "
-
-#: ../src/plugins/abrt-retrace-client.c:968
-msgid "retrace server URL"
-msgstr "Retrace 서버 URL "
-
-#: ../src/plugins/abrt-retrace-client.c:970
-msgid "retrace server port"
-msgstr "Retrace 서버 포트 "
-
-#: ../src/plugins/abrt-retrace-client.c:973
-msgid "For create and batch operations"
-msgstr "생성 및 일괄 처리 작업의 경우 "
-
-#: ../src/plugins/abrt-retrace-client.c:975
-msgid "read data from ABRT problem directory"
-msgstr "ABRT 문제 디렉토리에서 데이터 읽기 "
-
-#: ../src/plugins/abrt-retrace-client.c:977
-msgid "read data from coredump"
-msgstr "코어 덤프에서 데이터 읽기 "
-
-#: ../src/plugins/abrt-retrace-client.c:979
-msgid "Delay for polling operations"
-msgstr "폴링 작동 지연  "
-
-#: ../src/plugins/abrt-retrace-client.c:981
-msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
-msgstr ""
-"(디버그) /tmp에 있는 덤프 디렉토리에서 생성된 임시 아카이브를 삭제하지 않습니"
-"다 "
-
-#: ../src/plugins/abrt-retrace-client.c:983
-msgid "For status, backtrace, and log operations"
-msgstr "상태, 백트레이스, 로그 작동의 경우  "
-
-#: ../src/plugins/abrt-retrace-client.c:985
-msgid "id of your task on server"
-msgstr "서버 상의 작업 id "
-
-#: ../src/plugins/abrt-retrace-client.c:987
-msgid "password of your task on server"
-msgstr "서버 상의 작업 암호 "
-
-#: ../src/plugins/abrt-retrace-client.c:991
-msgid ""
-"abrt-retrace-client <operation> [options]\n"
-"Operations: create/status/backtrace/log/batch"
-msgstr ""
-"abrt-retrace-client <operation> [options]\n"
-"작업: create/status/backtrace/log/batch "
-
-#: ../src/plugins/abrt-retrace-client.c:1036
-#: ../src/plugins/abrt-retrace-client.c:1042
-msgid "Either problem directory or coredump is needed."
-msgstr "문제가 있는 디렉토리나 코어 덤프가 필요합니다. "
-
-#: ../src/plugins/abrt-retrace-client.c:1048
-#: ../src/plugins/abrt-retrace-client.c:1056
-#: ../src/plugins/abrt-retrace-client.c:1064
-msgid "Task id is needed."
-msgstr "작업 id가 필요합니다. "
-
-#: ../src/plugins/abrt-retrace-client.c:1050
-#: ../src/plugins/abrt-retrace-client.c:1058
-#: ../src/plugins/abrt-retrace-client.c:1066
-msgid "Task password is needed."
-msgstr "작업 암호가 필요합니다. "
-
-#: ../src/plugins/abrt-retrace-client.c:1070
-#, c-format
-msgid "Unknown operation: %s."
-msgstr "알 수 없는 작업: %s."
-
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
 msgstr "로컬 GNU 디버거 "
@@ -809,53 +519,9 @@ msgstr ""
 "크 공간을 차지합니다. 하지만 RetraceServer와 달리 원격 컴퓨터에 코어 덤프를 "
 "전송하지 않습니다.   "
 
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:1
-msgid "Send core dump to remote retrace server for analysis"
-msgstr "분석을 위해 코어 덤프를 원격 Retrace 서버로 전송 "
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:2
-msgid ""
-"Uploads coredump to a server, which generates backtrace and returns it. "
-"Pros: no need for debuginfo downloads. Retrace server's database of "
-"debuginfos is more complete. Retrace server may generate better backtraces. "
-"Cons: coredump you upload contains all the data from the crashed program, "
-"including your private data, if any."
-msgstr ""
-"코어 덤프를 서버에 업로드하려면 백트레이스를 생성하고 이를 반환합니다. 장점: "
-"debuginfo를 다운로드할 필요가 없습니다. Retrace 서버의 debuginfo 데이터베이스"
-"는 보다 완벽합니다. Retrace 서버는 보다 나은 백트레이스를 생성합니다. 단점: "
-"업로드한 코어 덤프에는 (존재할 경우) 개인 데이터를 포함하여 충돌된 프로그램에"
-"서의 모든 데이터가 포함되어 있습니다.      "
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:3
-msgid "Retrace server URL"
-msgstr "Retrace 서버 URL "
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:4
-msgid "Address of the retrace server"
-msgstr "Retrace 서버 주소 "
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:5
-msgid "Insecure"
-msgstr "비보안 "
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:6
-msgid "Whether or not to use insecure connection"
-msgstr "비보안 연결을 사용할 지에 대한 여부 "
-
-#: ../src/plugins/analyze_RetraceServer.xml.in.h:7
-msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
-"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
-"(warning)&lt;/a&gt;"
-msgstr ""
-"비보안 연결을 허용하기 위해 \"insecure\"라고 씁니다 &lt;a href=\"https://"
-"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
-"(warning)&lt;/a&gt;"
-
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
-msgstr ""
+msgstr ".xsession-errors를 수집"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1065,18 +731,6 @@ msgid ""
 msgstr ""
 "gconftool-2 --recursive-list /apps/executable을 실행하고 이를 "
 "'gconf_subtree'로 저장합니다. "
-
-#: ../src/plugins/collect_Smolt.xml.in.h:1
-msgid "Collect Smolt profile"
-msgstr ""
-
-#: ../src/plugins/collect_Smolt.xml.in.h:2
-msgid "Save your computer's hardware profile information"
-msgstr "컴퓨터의 하드웨어 프로파일 정보를 저장합니다 "
-
-#: ../src/plugins/collect_Smolt.xml.in.h:3
-msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
-msgstr "smoltSendProfile -p를 실행하여 출력 결과를 'smolt_data'로 저장합니다. "
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
