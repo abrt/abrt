@@ -26,15 +26,6 @@ import sys
 import os
 import inspect
 
-try:
-    import rpm
-    HAVE_RPM = True
-except ImportError as imperr:
-    HAVE_RPM = False
-    import syslog
-    syslog.syslog("RPM module not available, cannot query RPM db for package "\
-                  "names")
-
 class RPMinfoError(Exception):
     """Exception class for RPMdb-querying related errors"""
     pass
@@ -47,10 +38,14 @@ def write_dump(tb_text, tb):
         # (BTW, we *can't* assume the script is in current directory.)
         executable = sys.argv[0]
 
-    if HAVE_RPM:
+    dso_list = None
+    try:
+        import rpm
         dso_list = get_dso_list(tb)
-    else:
-        dso_list = None
+    except ImportError as imperr:
+        import syslog
+        syslog.syslog("RPM module not available, cannot query RPM db for package "\
+                      "names")
 
     # Open ABRT daemon's socket and write data to it
     try:
@@ -116,6 +111,7 @@ def get_package_for_file(fpath):
 
     """
 
+    import rpm
     ts = rpm.TransactionSet()
     mi = ts.dbMatch("basenames", fpath)
     try:
