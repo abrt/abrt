@@ -638,6 +638,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Wed Oct 24 2012 Jakub Filak <jfilak@redhat.com> 2.0.17-1
+- provide a problem item containing versions of binaries listed in Xorg backtrace
+- import rpm lazily
+
 * Wed Oct 17 2012 Jakub Filak <jfilak@redhat.com> 2.0.16-1
 - xorg_event: make post-create save dmesg, drop problems w/ binary modules
 - collect_xsession_errors should not fail if !xsession-errors. Closes rhbz#866698
