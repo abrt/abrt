@@ -24,7 +24,6 @@ Module for the ABRT exception handling hook
 
 import sys
 import os
-import inspect
 
 class RPMinfoError(Exception):
     """Exception class for RPMdb-querying related errors"""
@@ -135,6 +134,7 @@ def get_dso_list(tb):
 
     """
 
+    import inspect
     if inspect.istraceback(tb):
         tb = inspect.getinnerframes(tb)
 
