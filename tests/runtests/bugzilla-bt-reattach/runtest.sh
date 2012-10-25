@@ -67,7 +67,7 @@ rlJournalStart
         kill %1
 
         rlAssertGrep "Bug is already reported: 772488" client_better
-        rlAssertGrep "Add abrt@mailinator.com to CC list" client_better
+        rlAssertGrep "Adding abrt@mailinator.com to CC list" client_better
         rlAssertGrep "Adding new comment to bug 772488" client_better
         rlAssertGrep "Attaching better backtrace" client_better
         rm -f problem_dir/reported_to
