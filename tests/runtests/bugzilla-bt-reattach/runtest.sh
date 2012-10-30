@@ -45,9 +45,15 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "bugzilla create"
-        ./pyserve 0* 1no_duplicates_response\
-        2bug_created_response version_response dummy\
-        dummy dummy &> server_create &
+        ./pyserve \
+                version_response \
+                0* \
+                1no_duplicates_response \
+                2bug_created_response \
+                dummy \
+                dummy \
+                dummy \
+                &> server_create &
         sleep 1
         rlRun "reporter-bugzilla -v -c bugzilla.conf -d problem_dir/ &> client_create"
         kill %1
@@ -60,8 +66,16 @@ rlJournalStart
         # bug details response has backtrace rating 3
         echo '4' > problem_dir/backtrace_rating
         rlLog "Local backtrace rating $( cat problem_dir/backtrace_rating )"
-        ./pyserve 0* 1duplicates_response \
-            version_response 2bug_details dummy dummy dummy dummy &> server_better &
+        ./pyserve \
+                version_response \
+                0* \
+                1duplicates_response \
+                2bug_details \
+                dummy \
+                dummy \
+                dummy \
+                dummy \
+                &> server_better &
         sleep 1
         rlRun "reporter-bugzilla -v -c bugzilla.conf -d problem_dir/ &> client_better"
         kill %1
@@ -77,8 +91,16 @@ rlJournalStart
         echo '1' > problem_dir/backtrace_rating
         rlLog "Local backtrace rating $( cat problem_dir/backtrace_rating )"
 
-        ./pyserve 0* 1duplicates_response \
-            version_response 2bug_details dummy dummy dummy dummy &> server_worse &
+        ./pyserve \
+                version_response \
+                0* \
+                1duplicates_response \
+                2bug_details \
+                dummy \
+                dummy \
+                dummy \
+                dummy \
+                &> server_worse &
         sleep 1
         rlRun "reporter-bugzilla -v -c bugzilla.conf -d problem_dir/ &> client_worse"
         kill %1
@@ -92,8 +114,16 @@ rlJournalStart
         echo '3' > problem_dir/backtrace_rating
         rlLog "Local backtrace rating $( cat problem_dir/backtrace_rating )"
 
-        ./pyserve 0* 1duplicates_response \
-            version_response 2bug_details dummy dummy dummy dummy &> server_equal &
+        ./pyserve \
+                version_response \
+                0* \
+                1duplicates_response \
+                2bug_details \
+                dummy \
+                dummy \
+                dummy \
+                dummy \
+                &> server_equal &
         sleep 1
         rlRun "reporter-bugzilla -v -c bugzilla.conf -d problem_dir/ &> client_equal"
         kill %1
