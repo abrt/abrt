@@ -30,8 +30,8 @@
 
 TEST="bugzilla-dupe-search"
 PACKAGE="abrt"
-DUPHASH=5d25425e3589df3280ac8331554b2b1fa8384e49
-REPORTING_OUTPUT="Logging into Bugzilla at https://bugzilla.redhat.com/Checking for duplicatesBug is already reported: 755535Logging out"
+DUPHASH="5d25425e3589df3280ac8331554b2b1fa8384e49"
+REPORTING_OUTPUT="Logging into Bugzilla at https://bugzilla.redhat.com/Checking for duplicatesBug is already reported: 871696Logging out"
 
 AVCPROBLEMDIR=`pwd`"/avc-problem-dir"
 
@@ -48,9 +48,9 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "avc reporting"
-        rlRun "reporter-bugzilla -d $AVCPROBLEMDIR -c bugzilla.conf &> output2" 0 "Reporting already reported AVC: 755535"
-        out="`cat output2 | tr -d '\n'`"; test "$REPORTING_OUTPUT" ==  "${out:0:118}";
-        rlRun "test \"$?\" == \"0\"" 0 "Comparing new output with expected output"
+        rlRun "reporter-bugzilla -d $AVCPROBLEMDIR -c bugzilla.conf &> output2" 0 "Reporting already reported AVC: 871696"
+        out="`cat output2 | tr -d '\n'`"; test "$REPORTING_OUTPUT" = "${out:0:118}";
+        rlRun "test \"$?\" = \"0\"" 0 "Comparing new output with expected output"
     rlPhaseEnd
 
     rlPhaseStartCleanup
