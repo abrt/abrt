@@ -70,6 +70,7 @@ rlJournalStart
                 version_response \
                 0* \
                 1duplicates_response \
+                1duplicates_response \
                 2bug_details \
                 dummy \
                 dummy \
