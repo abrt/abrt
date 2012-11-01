@@ -714,7 +714,7 @@ static void on_button_send_cb(GtkWidget *button, gpointer data)
 
     if (text[0])
     {
-        problem_data_add_text_noteditable(pd, "description", text);
+        problem_data_add_text_noteditable(pd, "comment", text);
     }
 
     /* why it doesn't want to hide before report ends? */
