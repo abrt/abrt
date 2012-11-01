@@ -638,6 +638,16 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Thu Nov 01 2012 Jakub Filak <jfilak@redhat.com> 2.0.18-1
+- tests/runtests/bugzilla-dupe-search: fix false positive
+- tests/runtests/bugzilla-bt-reattach: further fixes for changed bz reporter
+- tests/runtests/bugzilla-bt-reattach: further fixes for changed bz reporter
+- tests/runtests/bugzilla-bt-reattach: change to account for differen behavior in new reporter-bz
+- bugzilla-dupe-search: fix os_release to contain the same OS version as bug 755535
+- Do not stop reporting when GConf entry is not found. Closes rhbz#869833
+- Fix false positive caused by English language fix
+- import inspect lazily
+
 * Wed Oct 24 2012 Jakub Filak <jfilak@redhat.com> 2.0.17-1
 - provide a problem item containing versions of binaries listed in Xorg backtrace
 - import rpm lazily
