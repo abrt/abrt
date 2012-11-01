@@ -48,9 +48,12 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "avc reporting"
-        rlRun "reporter-bugzilla -d $AVCPROBLEMDIR -c bugzilla.conf &> output2" 0 "Reporting already reported AVC: 871696"
-        out="`cat output2 | tr -d '\n'`"; test "$REPORTING_OUTPUT" = "${out:0:118}";
-        rlRun "test \"$?\" = \"0\"" 0 "Comparing new output with expected output"
+        rlRun "reporter-bugzilla -d $AVCPROBLEMDIR -c bugzilla.conf &> output2" 0 "Reporting already reported AVC"
+        # Tired of tracking ever-changing rhbz#s: it was bug 755535,
+        # then it was 871696, then 871790...
+        #out="`cat output2 | tr -d '\n'`"; test "$REPORTING_OUTPUT" = "${out:0:118}";
+        #rlRun "test \"$?\" = \"0\"" 0 "Comparing new output with expected output"
+        rlAssertGrep "Bug is already reported:" output
     rlPhaseEnd
 
     rlPhaseStartCleanup
