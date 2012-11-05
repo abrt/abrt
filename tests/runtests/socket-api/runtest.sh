@@ -50,9 +50,15 @@ rlPhaseStartSetup
 
     rlPhaseStartTest
         rlRun "./$TEST_APP" 0 "Response from server: success"
+
+        crash_PATH="$(abrt-cli list -f | grep Directory | awk '{ print $2 }' | tail -n1)"
+        if [ ! -d "$crash_PATH" ]; then
+            rlDie "No crash dir generated, this shouldn't happen"
+        fi
     rlPhaseEnd
 
     rlPhaseStartCleanup
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
         popd #TmpDir
         rm -rf $TmpDir
     rlPhaseEnd
