@@ -142,6 +142,8 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
                 dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason);
                 free(reason);
             }
+
+            free(tainted_short);
 // TODO: add "Kernel oops: " prefix, so that all oopses have recognizable FILENAME_REASON?
 // kernel oops 1st line may look quite puzzling otherwise...
             strchrnul(second_line, '\n')[0] = '\0';
