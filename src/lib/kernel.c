@@ -556,14 +556,47 @@ static char *turn_off_flag(char *flags, char flag)
 
 char *kernel_tainted_short(const char *kernel_bt)
 {
-    /* example of flags: |G    B      | */
+    /* example of flags: 'Tainted: G    B       ' */
     char *tainted = strstr(kernel_bt, "Tainted: ");
     if (!tainted)
         return NULL;
 
-    /* 12 == count of flags */
-    char *tnt = xstrndup(tainted + strlen("Tainted: "), 12);
+    tainted += strlen("Tainted: ");
+    /* 13 == current count of known flags */
+    /* http://git.kernel.org/?p=linux/kernel/git/torvalds/linux.git;a=blob_plain;f=kernel/panic.c;hb=HEAD */
+    /* 26 the maximal sane count of flags because of alphabet limits */
+    unsigned sz = 26 + 1;
+    unsigned cnt = 0;
+    char *tnt = xmalloc(sz);
 
+    for (;;)
+    {
+        if (tainted[0] >= 'A' && tainted[0] <= 'Z')
+        {
+            if (cnt == sz - 1)
+            {   /* this should not happen but */
+                /* I guess, it's a bit better approach than simple failure */
+                sz <<= 1;
+                tnt = xrealloc(tnt, sizeof(char) * sz);
+            }
+
+            tnt[cnt] = tainted[0];
+            ++cnt;
+        }
+        else if (tainted[0] != ' ')
+            break;
+
+        ++tainted;
+    }
+
+    if (cnt == 0)
+    {   /* this should not happen
+         * cnt eq 0 means that a tainted string contains only spaces */
+        free(tnt);
+        return NULL;
+    }
+
+    tnt[cnt] = '\0';
     return tnt;
 }
 
