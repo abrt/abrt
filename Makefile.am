@@ -5,7 +5,9 @@ DISTCHECK_CONFIGURE_FLAGS = \
         --with-systemdsystemunitdir=$$dc_install_base/$(systemdsystemunitdir)
 
 TESTSUITE_FILES =
-TESTSUITE_FILES += examples/koops-tainted-gw
+TESTSUITE_FILES += examples/koops-tainted-g
+TESTSUITE_FILES += examples/koops-tainted-insane
+TESTSUITE_FILES += examples/koops-tainted-spaces
 TESTSUITE_FILES += examples/cut_here.right
 TESTSUITE_FILES += examples/oops-kernel-3.x.x
 TESTSUITE_FILES += examples/oops1.right

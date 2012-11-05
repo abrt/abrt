@@ -35,7 +35,7 @@ int main(void)
 	struct test_struct test[] = {
 		{ EXAMPLE_PFX"/cut_here.right", "2.6.32-19.el6.x86_64" },
 		{ EXAMPLE_PFX"/oops-kernel-3.x.x", "3.0.0-3.fc16.i686.PAE" },
-		{ EXAMPLE_PFX"/koops-tainted-gw", "3.1.0-0.rc9.git0.0.fc16.x86_64"},
+		{ EXAMPLE_PFX"/koops-tainted-g", "3.1.0-0.rc9.git0.0.fc16.x86_64"},
 	};
 
 	int ret = 0;
@@ -77,6 +77,11 @@ int run_test(const struct test_struct *test, int flags)
 			log("%s", test->filename);
 			ret = 1;
 		}
+		else if (strcmp(tnt, test->expected_results) != 0)
+		{
+			log("%s '%s'", test->filename, tnt);
+			ret = 1;
+		}
 	};
 
 	free(tnt);
@@ -88,12 +93,14 @@ int main(void)
 	/* tests run in abrt/tests/testsuite.dir/X, where X is test number */
 	struct test_struct not_tainted[] = {
 		{ EXAMPLE_PFX"/oops1.right", NULL},
+		{ EXAMPLE_PFX"/koops-tainted-spaces", NULL},
 	};
 
 	struct test_struct tainted[] = {
-		{ EXAMPLE_PFX"/koops-tainted-bg1", "G    B      " },
-		{ EXAMPLE_PFX"/oops-same-as-oops4.right", "P           " },
-		{ EXAMPLE_PFX"/koops-tainted-gw", NULL },
+		{ EXAMPLE_PFX"/koops-tainted-g", "G"},
+		{ EXAMPLE_PFX"/koops-tainted-bg1", "GB" },
+		{ EXAMPLE_PFX"/oops-same-as-oops4.right", "P" },
+		{ EXAMPLE_PFX"/koops-tainted-insane", "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
 	};
 
 	log("test not tainted");
