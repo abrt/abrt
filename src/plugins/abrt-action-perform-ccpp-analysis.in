@@ -30,7 +30,7 @@ def ask_yes_no_save_result(option_name, question):
     sys.stdout.write("ASK_YES_NO_YESFOREVER {0} {1}\n"
                         .format(option_name, question))
     sys.stdout.flush()
-    return sys.stdin.readline()  == "yes\n"
+    return sys.stdin.readline()[:-1]  == _("y")
 
 def handle_event(event_name, problem_dir):
     """Helper function handling a single event
