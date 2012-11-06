@@ -287,13 +287,16 @@ int main(int argc, char **argv)
     abrt_init(argv);
 
     const char *program_usage_string = _(
-        "& [-v] -e|--event EVENT DIR..."
+        "& [-v -i] -e|--event EVENT DIR..."
         );
 
     char *event_name = NULL;
+    bool interactive = false;
+
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_STRING('e', "event" , &event_name, "EVENT",  _("Run EVENT on DIR")),
+        OPT_BOOL('i', "interactive" , &interactive, _("Communicate directly to the user")),
         OPT_END()
     };
 
@@ -323,6 +326,8 @@ int main(int argc, char **argv)
         dd_close(dd);
 
         struct run_event_state *run_state = new_run_event_state();
+        if (!interactive)
+            make_run_event_state_forwarding(run_state);
         if (post_create)
             run_state->post_run_callback = is_crash_a_dup;
         run_state->logging_callback = do_log;
