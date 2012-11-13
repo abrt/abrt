@@ -469,16 +469,16 @@ static int create(bool delete_temp_archive,
             for (i = 0; optional_retrace[i]; ++i)
             {
                 path = concat_path_file(dump_dir_name, optional_retrace[i]);
-                if (stat(path, &file_stat) == -1)
-                    continue;
+                if (stat(path, &file_stat) != -1)
+                {
+                    if (!S_ISREG(file_stat.st_mode))
+                        error_msg_and_die(_("'%s' must be a regular file in "
+                                            "order to use Retrace server."),
+                                          required_files[i]);
 
+                    unpacked_size += (long long)file_stat.st_size;
+                }
                 free(path);
-                if (!S_ISREG(file_stat.st_mode))
-                    error_msg_and_die(_("'%s' must be a regular file in "
-                                        "order to use Retrace server."),
-                                      required_files[i]);
-
-                unpacked_size += (long long)file_stat.st_size;
             }
         }
     }
