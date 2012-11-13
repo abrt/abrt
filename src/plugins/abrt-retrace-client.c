@@ -1015,12 +1015,17 @@ static int run_batch(bool delete_temp_archive)
     int status_delay = delay ? delay : 10;
     while (0 != strncmp(task_status, "FINISHED", strlen("finished")))
     {
+        char *previous_status_message = status_message;
         free(task_status);
-        free(status_message);
         sleep(status_delay);
         status(task_id, task_password, &task_status, &status_message);
-        puts(status_message);
-        fflush(stdout);
+        if (g_verbose > 0 || 0 != strcmp(previous_status_message, status_message))
+        {
+            puts(status_message);
+            fflush(stdout);
+        }
+        free(previous_status_message);
+        previous_status_message = status_message;
     }
     if (0 == strcmp(task_status, "FINISHED_SUCCESS"))
     {
