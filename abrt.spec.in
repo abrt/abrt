@@ -638,6 +638,21 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Wed Nov 14 2012 Jakub Filak <jfilak@redhat.com> 2.0.19-1
+- call g_type_init() only in GLib version < 2.35
+- plugins/*_event.conf: use reporter-bz -F FMTFILE as appropriate
+- don't leak optional retrace path
+- repeat unchaged retrace status message only in verbose mode
+- check the correct return value of yesforever answer
+- abrt-handle-event: forward event process requests to parrent
+- testsuite: enhance koops parser unit tests
+- don't leak kernel tainted string
+- enhance koops tainted flag parser
+- testsuite: remove crash dir in socket-api
+- Use "comment" element instead of "description"
+- testsuite: fixed a copy&paste bug in bt-dupe-search
+- tests/runtests/bugzilla-dupe-search: fix false positive
+
 * Thu Nov 01 2012 Jakub Filak <jfilak@redhat.com> 2.0.18-1
 - tests/runtests/bugzilla-dupe-search: fix false positive
 - tests/runtests/bugzilla-bt-reattach: further fixes for changed bz reporter
