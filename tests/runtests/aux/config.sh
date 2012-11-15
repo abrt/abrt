@@ -22,6 +22,12 @@ export TEST_CONTINUE=0
 # wait $DELAY seconds before running next script
 #export DELAY=30
 
+# - pre script config -
+export REINSTALL_PRE=1
+export UPDATE_PRE=0
+export DISABLE_NOAUDIT=0
+export STORE_CONFIGS=1
+
 # - mailx script config -
 export MAILTO='rmarko@redhat.com'
 export MAILFROM='abrt-testsuite-bot@redhat.com'
@@ -33,3 +39,9 @@ export SCPOPTS="-o StrictHostKeyChecking=no"
 # - post script config -
 # shutdown machine after testing
 export SHUTDOWN=0
+
+# - misc
+export PACKAGES="abrt-desktop \
+                 abrt-cli \
+                 libreport-plugin-reportuploader \
+                 libreport-plugin-mailx"
