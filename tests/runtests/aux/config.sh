@@ -40,6 +40,11 @@ export SCPOPTS="-o StrictHostKeyChecking=no"
 # shutdown machine after testing
 export SHUTDOWN=0
 
+# - runner script config -
+export REINSTALL_BEFORE_EACH_TEST=0
+export RESTORE_CONFIGS_BEFORE_EACH_TEST=1
+export CLEAN_SPOOL_BEFORE_EACH_TEST=1
+
 # - misc
 export PACKAGES="abrt-desktop \
                  abrt-cli \

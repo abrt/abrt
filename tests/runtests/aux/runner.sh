@@ -18,18 +18,35 @@ if [ $1 ]; then
     fi
 
     rm -f /var/spool/abrt/last-ccpp
-    yum remove abrt\* libreport\* -y;
 
-    rm -rf /etc/abrt/
-    rm -rf /etc/libreport/
-    rm -rf /var/spool/abrt/*
+    if [ "${REINSTALL_BEFORE_EACH_TEST}" = "1" ]; then
+        echo 'REINSTALL_BEFORE_EACH_TEST set'
 
-    PACKAGES="abrt-desktop \
-    abrt-cli \
-    libreport-plugin-reportuploader \
-    libreport-plugin-mailx";
+        yum -y remove abrt\* libreport\*
 
-    yum install $PACKAGES -y;
+        rm -rf /etc/abrt/
+        rm -rf /etc/libreport/
+
+        yum -y install $PACKAGES
+    fi
+
+    if [ "${RESTORE_CONFIGS_BEFORE_EACH_TEST}" = "1" ]; then
+        echo 'RESTORE_CONFIGS_BEFORE_EACH_TEST set'
+
+        if [ -d /tmp/abrt-config ]; then
+            rm -rf /etc/abrt/
+            rm -rf /etc/libreport/
+
+            cp -a /tmp/abrt-config/abrt /etc/abrt
+            cp -a /tmp/abrt-config/libreport /etc/libreport
+        else
+            echo 'Nothing to restore'
+        fi
+    fi
+
+    if [ "${CLEAN_SPOOL_BEFORE_EACH_TEST}" = "1" ]; then
+        rm -rf /var/spool/abrt/*
+    fi
 
     service abrtd restart
     service abrt-ccpp restart
