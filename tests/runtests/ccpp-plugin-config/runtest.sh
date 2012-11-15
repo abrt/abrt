@@ -60,8 +60,8 @@ rlJournalStart
         rm -rf core.*
         rlLogInfo "MakeCompatCore = yes"
         rlRun "echo 'MakeCompatCore = yes' > $CFG_FILE" 0 "Set MakeCompatCore = yes"
-        rlLog "Sleep for 30 seconds"
-        sleep 30
+
+        rm -f /var/spool/abrt/last-ccpp
 
         generate_crash
         get_crash_path
@@ -79,8 +79,8 @@ rlJournalStart
 
         rlLogInfo "MakeCompatCore = no"
         rlRun "echo 'MakeCompatCore = no' > $CFG_FILE" 0 "Set MakeCompatCore = no"
-        rlLog "Sleeping for 30 seconds"
-        sleep 30
+
+        rm -f /var/spool/abrt/last-ccpp
 
         generate_crash
         get_crash_path
@@ -97,8 +97,7 @@ rlJournalStart
     rlPhaseStartTest "SaveBinaryImage"
         rlLogInfo "SaveBinaryImage = yes"
         rlRun "echo 'SaveBinaryImage = yes' > $CFG_FILE" 0 "Set SaveBinaryImage = yes"
-        rlLog "Sleep for 30 seconds"
-        sleep 30
+        rm -f /var/spool/abrt/last-ccpp
 
         generate_crash
         get_crash_path
@@ -109,8 +108,8 @@ rlJournalStart
 
         rlLogInfo "SaveBinaryImage = no"
         rlRun "echo 'SaveBinaryImage = no' > $CFG_FILE" 0 "Set SaveBinaryImage = no"
-        rlLog "Sleeping for 30 seconds"
-        sleep 30
+
+        rm -f /var/spool/abrt/last-ccpp
 
         generate_crash
         get_crash_path
