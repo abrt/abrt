@@ -232,6 +232,9 @@ function recreate_vm() {
     embed_file "/etc/hosts" ~/common/hosts_hunk
     embed_file "/etc/motd" ~/common/motd_hunk
 
+    # turn off noaudit
+    cat ~/common/noaudit_hunk >> custom-ks.cfg
+
     add_rhel_repos
     add_abrt_repos
 
