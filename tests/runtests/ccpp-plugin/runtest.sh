@@ -45,16 +45,9 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
-        rlAssertGreater "Crash recorded" $(abrt-cli list | wc -l) 0
-        crash_PATH="$(abrt-cli list -f | grep Directory | awk '{ print $2 }' | tail -n1)"
-        if [ ! -d "$crash_PATH" ]; then
-            rlDie "No crash dir generated, this shouldn't happen"
-        fi
+        generate_crash
+        get_crash_path
+
         ls $crash_PATH > crash_dir_ls
 
         rlAssertExists "$crash_PATH/uuid"

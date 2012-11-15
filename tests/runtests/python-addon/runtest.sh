@@ -49,11 +49,8 @@ rlJournalStart
         cat $TFILE
         rlRun "python $TFILE" 1 "Run python $TFILE"
         sleep 3
-        crash_PATH=$(abrt-cli list -f | grep Directory | tail -n1 | awk '{ print $2 }')
-        if [ ! -d "$crash_PATH" ]; then
-            rlDie "No crash dir generated, this shouldn't happen"
-        fi
-        rlLog "PATH = $crash_PATH"
+
+        get_crash_path
 
         rlRun "abrt-cli info $crash_PATH | grep $TFILE" 0 "abrt-cli info should contain $TFILE"
         rlRun "abrt-cli info $crash_PATH | grep 'pyhook'" 0 "abrt-cli info should contain 'pyhook'"

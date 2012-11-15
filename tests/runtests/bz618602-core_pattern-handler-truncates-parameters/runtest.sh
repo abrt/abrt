@@ -60,11 +60,8 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
+        generate_crash
+
         rlAssertExists "core.info"
         rlAssertGrep "<abc>" "core.info" # check presence of 'abc'
     rlPhaseEnd

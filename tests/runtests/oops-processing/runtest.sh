@@ -58,11 +58,7 @@ rlJournalStart
             rlRun "abrt-dump-oops $oops -xD 2>&1 | grep 'abrt-dump-oops: Found oopses: [1-9]'" 0 "[$oops] Found OOPS"
 
             sleep 5
-            rlAssertGreater "Crash recorded" $(abrt-cli list | wc -l) 0
-            crash_PATH="$(abrt-cli list -f | grep Directory | awk '{ print $2 }' | tail -n1)"
-            if [ ! -d "$crash_PATH" ]; then
-                rlDie "No crash dir generated, this shouldn't happen"
-            fi
+            get_crash_path
 
             ls $crash_PATH > crash_dir_ls
 

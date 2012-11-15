@@ -50,11 +50,9 @@ rlJournalStart
 
     rlPhaseStartTest "Disable ccpp"
         rlRun "/usr/sbin/abrt-install-ccpp-hook uninstall" 0 "Uninstall hook"
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
+
+        generate_crash
+
         rlAssert0 "No crash recorded" $(abrt-cli list | wc -l)
         rlRun "/usr/sbin/abrt-install-ccpp-hook install" 0 "Restore hook"
     rlPhaseEnd
@@ -65,17 +63,9 @@ rlJournalStart
         rlLog "Sleep for 30 seconds"
         sleep 30
 
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
-        rlAssertGreater "Crash recorded" $(abrt-cli list | wc -l) 0
-        crash_PATH="$(abrt-cli list -f | grep Directory | awk '{ print $2 }' | tail -n1)"
-        if [ ! -d "$crash_PATH" ]; then
-            rlFileRestore # CFG_FILE
-            rlDie "No crash dir generated, this shouldn't happen"
-        fi
+        generate_crash
+        get_crash_path
+
         ls core* > make_compat_core_yes_pwd_ls
         core_fname="$(echo core*)"
         rlLog "$core_fname"
@@ -92,17 +82,9 @@ rlJournalStart
         rlLog "Sleeping for 30 seconds"
         sleep 30
 
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
-        rlAssertGreater "Crash recorded" $(abrt-cli list | wc -l) 0
-        crash_PATH="$(abrt-cli list -f | grep Directory | awk '{ print $2 }' | tail -n1)"
-        if [ ! -d "$crash_PATH" ]; then
-            rlFileRestore # CFG_FILE
-            rlDie "No crash dir generated, this shouldn't happen"
-        fi
+        generate_crash
+        get_crash_path
+
         ls core* > make_compat_core_no_pwd_ls
         core_fname="$(echo core*)"
         rlAssertNotExists "$core_fname"
@@ -118,17 +100,9 @@ rlJournalStart
         rlLog "Sleep for 30 seconds"
         sleep 30
 
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
-        rlAssertGreater "Crash recorded" $(abrt-cli list | wc -l) 0
-        crash_PATH="$(abrt-cli list -f | grep Directory | awk '{ print $2 }' | tail -n1)"
-        if [ ! -d "$crash_PATH" ]; then
-            rlFileRestore # CFG_FILE
-            rlDie "No crash dir generated, this shouldn't happen"
-        fi
+        generate_crash
+        get_crash_path
+
         ls $crash_PATH > save_binary_image_yes_ls
         rlAssertExists "$crash_PATH/binary"
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
@@ -138,17 +112,9 @@ rlJournalStart
         rlLog "Sleeping for 30 seconds"
         sleep 30
 
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
-        rlAssertGreater "Crash recorded" $(abrt-cli list | wc -l) 0
-        crash_PATH="$(abrt-cli list -f | grep Directory | awk '{ print $2 }' | tail -n1)"
-        if [ ! -d "$crash_PATH" ]; then
-            rlFileRestore # CFG_FILE
-            rlDie "No crash dir generated, this shouldn't happen"
-        fi
+        generate_crash
+        get_crash_path
+
         ls $crash_PATH > save_binary_image_no_ls
         rlAssertNotExists "$crash_PATH/binary"
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"

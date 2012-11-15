@@ -66,7 +66,6 @@ rlJournalStart
             if [ ! -d "$crash_PATH" ]; then
                 rlLog "No crash dir generated, this shouldn't happen"
             fi
-            rlLog "PATH = $crash_PATH"
 
             if [ -n "$crash_PATH" ]; then
                 rlRun "abrt-cli info $crash_PATH"

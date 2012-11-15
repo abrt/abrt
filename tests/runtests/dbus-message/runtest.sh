@@ -43,16 +43,8 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %2
-        sleep 5
-        rlAssertGreater "Crash recorded" $(abrt-cli list | wc -l) 0
-        crash_PATH="$(abrt-cli list -f | grep Directory | awk '{ print $2 }' | tail -n1)"
-        if [ ! -d "$crash_PATH" ]; then
-            rlDie "No crash dir generated, this shouldn't happen"
-        fi
+        generate_crash
+        get_crash_path
 
         package="$(abrt-cli list -f | grep -i Package | awk '{ print $2 }' | tail -n1)"
         user="$( id -u )"

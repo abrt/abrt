@@ -40,16 +40,8 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
-        rlAssertGreater "Crash recorded" $(abrt-cli list | wc -l) 0
-        crash_PATH="$(abrt-cli list -f | grep Directory | awk '{ print $2 }' | tail -n1)"
-        if [ ! -d "$crash_PATH" ]; then
-            rlDie "No crash dir generated, this shouldn't happen"
-        fi
+        generate_crash
+        get_crash_path
 
         rlRun "dbus-send --system --type=method_call --print-reply --dest=org.freedesktop.problems /org/freedesktop/problems org.freedesktop.problems.GetProblems &> dbus_reply.log"
 
@@ -57,11 +49,8 @@ rlJournalStart
         rlAssertGrep "string" dbus_reply.log
         rlAssertGrep "$crash_PATH" dbus_reply.log
 
-        rlLog "Generate second crash"
-        top -b > /dev/null &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 5
+        generate_second_crash
+
         rlAssertGreater "Second crash recorded" $(abrt-cli list | wc -l) 0
         crash2_PATH="$(abrt-cli list -f | grep Directory \
             | grep -v "$crash_PATH" \
