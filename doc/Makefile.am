@@ -1,3 +1,5 @@
+SUBDIRS = problems-service
+
 -include ../config.mak
 
 MAN1_TXT =

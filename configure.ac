@@ -127,6 +127,7 @@ AC_CONFIG_FILES([
 	Makefile
 	abrt.pc
 	doc/Makefile
+	doc/problems-service/Makefile
 	src/include/Makefile
 	src/lib/Makefile
 	src/plugins/Makefile

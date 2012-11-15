@@ -1,0 +1,138 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+
+<!--
+ * This is the well known dbus service name for controlling the
+ * entire daemon. The service manages crashes.
+-->
+<tp:spec xmlns:tp="http://telepathy.freedesktop.org/wiki/DbusSpec#extensions-v0">
+    <tp:title>Problems API Specification</tp:title>
+    <tp:version>0.1</tp:version>
+    <tp:copyright>
+      Copyright (C) 2012 Red Hat
+    </tp:copyright>
+    <tp:copyright>
+      Copyright (C) 2012 ABRT Team &lt;crash-catcher@lists.fedorahosted.org&gt;
+    </tp:copyright>
+
+    <!--
+     * ======================================================================================
+     * Problems Service Interface
+     *
+    -->
+
+    <node name="/org/freedesktop/Problems">
+        <interface name="org.freedesktop.Problems">
+            <tp:docstring>The Problems Service manages all the crashes.</tp:docstring>
+
+            <method name='NewProblem'>"
+                <tp:docstring>Creates a new problem.</tp:docstring>
+
+                <arg type='a{ss}' name='problem_data' direction='in'>
+                    <tp:docstring>
+                        <para>
+                        A dictionary describing problem.
+                            <example>
+                                <title>Example for problems data</title>
+                                <programlisting>
+<![CDATA[
+problem_data = { "analyzer": "abrt",
+                 "summary" : "Application crashed"
+               }
+]]>
+                                </programlisting>
+                            </example>
+                        </para>
+                    </tp:docstring>
+                </arg>
+
+                <arg type='s' name='problem_id' direction='out'>
+                    <tp:docstring>An indentifier of the new problem</tp:docstring>
+                </arg>
+            </method>
+
+            <method name='GetProblems'>
+                <tp:docstring>Gets a list of problem identifiers for problems visible by the caller.</tp:docstring>
+
+                <arg type='as' name='response' direction='out'>
+                    <tp:docstring>List of problem identifiers</tp:docstring>
+                </arg>
+            </method>
+
+            <method name='GetAllProblems'>
+                <tp:docstring>Gets a list of problems visible by the caller.</tp:docstring>
+
+                <arg type='as' name='response' direction='out'>
+                    <tp:docstring>List of problem identifiers</tp:docstring>
+                </arg>
+            </method>
+
+            <method name='GetInfo'>
+                <tp:docstring>Gets a value of problem's element.</tp:docstring>
+
+                <arg type='s' name='problem_dir' direction='in'>
+                    <tp:docstring>Identifier of problem from which we want to get info.</tp:docstring>
+                </arg>
+
+                <arg type='as' name='element_names' direction='in'>
+                    <tp:docstring>A name of required info.</tp:docstring>
+                </arg>
+
+                <arg type='a{ss}' name='response' direction='out'>
+                    <tp:docstring>A value of the problem's element.</tp:docstring>
+                </arg>
+            </method>
+
+            <method name='ChownProblemDir'>
+                <tp:docstring>Assures ownership of a specified problem for the caller.</tp:docstring>
+
+                <arg type='s' name='problem_dir' direction='in'>
+                    <tp:docstring>An indetifier of the problem.</tp:docstring>
+                </arg>
+            </method>
+
+            <method name='DeleteProblem'>
+                <tp:docstring>Deletes a specified problem.</tp:docstring>
+
+                <arg type='as' name='problem_dir' direction='in'>
+                    <tp:docstring>An identifier of problem to be deleted.</tp:docstring>
+                </arg>
+            </method>
+
+            <method name='FindProblemByElementInTimeRange'>
+                <tp:docstring>Finds an problem having an element's value and has been created in specified time range.</tp:docstring>
+
+                <arg type='s' name='element' direction='in'>
+                    <tp:docstring>A name of searched element.</tp:docstring>
+                </arg>
+
+                <arg type='s' name='value' direction='in'>
+                    <tp:docstring>A value of the searched element.</tp:docstring>
+                </arg>
+
+                <arg type='x' name='timestamp_from' direction='in'>
+                    <tp:docstring>Beginnig of required time range.</tp:docstring>
+                </arg>
+
+                <arg type='x' name='timestamp_to' direction='in'>
+                    <tp:docstring>End of required time range.</tp:docstring>
+                </arg>
+
+                <arg type='b' name='all_users' direction='in'>
+                    <tp:docstring>Perform a look up in all system problems.</tp:docstring>
+                </arg>
+
+                <arg type='as' name='response' direction='out'>
+                    <tp:docstring>List of problem idnetifiers.</tp:docstring>
+                </arg>
+            </method>
+
+            <method name='Quit'>
+                <tp:docstring>Kills the service.</tp:docstring>
+            </method>
+
+        </interface>
+
+    </node>
+
+</tp:spec>

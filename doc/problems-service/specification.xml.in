@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<book xml:id="index" xmlns="http://docbook.org/ns/docbook" version="5.0">
+	<bookinfo>
+		<title>Problems API</title>
+		<releaseinfo>
+			Problems 0.1
+		</releaseinfo>
+
+		<authorgroup>
+		<author>
+			<firstname>ABRT Team</firstname>
+			<affiliation>
+				<address>
+					<email>crash-catcher@lists.fedorahosted.org</email>
+				</address>
+			</affiliation>
+		</author>
+		</authorgroup>
+
+		<copyright>
+			<year>2012</year>
+			<holder>Red Hat</holder>
+		</copyright>
+
+	</bookinfo>
+
+	<part xml:id="ref-dbus-api">
+		<title>D-Bus API Reference</title>
+
+		<chapter xml:id='object-paths'>
+			<title>Object Paths</title>
+
+			<programlisting>/org/freedesktop/problems</programlisting>
+			<para>The object path for the service.</para>
+
+		</chapter>
+
+		<xi:include href="reference.xml" xpointer="interfaces" xmlns:xi="http://www.w3.org/2001/XInclude">
+			<xi:fallback/>
+		</xi:include>
+
+	</part>
+
+	<xi:include href="xml/annotation-glossary.xml" xmlns:xi="http://www.w3.org/2001/XInclude">
+		<xi:fallback/>
+	</xi:include>
+
+</book>
