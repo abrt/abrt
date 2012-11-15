@@ -62,7 +62,13 @@ if [ $1 ]; then
     # run test
     pushd $(dirname $1)
     echo ":: TEST START MARK ::"
-    ./$(basename $1)
+    if [ -x /usr/bin/time ]; then
+        /usr/bin/time -o time.out ./$(basename $1)
+        cat time.out
+        rm time.out
+    else
+        ./$(basename $1)
+    fi
     echo ":: TEST END MARK ::"
     popd
 
