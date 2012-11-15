@@ -19,16 +19,10 @@ function get_crash_path() {
 
 function generate_crash() {
     rlLog "Generate crash"
-    sleep 3m &
-    sleep 2
-    kill -SIGSEGV %1
-    sleep 5
+    will_segfault
 }
 
 function generate_second_crash() {
     rlLog "Generate second crash"
-    top -b > /dev/null &
-    sleep 2
-    kill -SIGSEGV %1
-    sleep 5
+    will_abort
 }

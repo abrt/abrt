@@ -53,7 +53,7 @@ rlJournalStart
         rlAssertExists "$crash_PATH/uuid"
 
         rlAssertExists "$crash_PATH/core_backtrace"
-        rlAssertGrep "/bin/sleep" "$crash_PATH/core_backtrace"
+        rlAssertGrep "/bin/will_segfault" "$crash_PATH/core_backtrace"
     rlPhaseEnd
 
     rlPhaseStartCleanup
