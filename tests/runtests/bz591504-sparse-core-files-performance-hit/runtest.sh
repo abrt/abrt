@@ -55,11 +55,13 @@ rlJournalStart
         # In my experience here apparent size is almost 500 times bigger
         rlAssertGreater "Corefile is very sparse" $((apparent_coresize/50)) $actual_coresize
 
+
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        # clean the awfully big coredumps, it causes the test machine to run out of space :(
-        rm /var/spool/abrt/*/coredump 2>/dev/null
+        get_crash_path
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+
         popd # $TmpDir
         rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
     rlPhaseEnd
