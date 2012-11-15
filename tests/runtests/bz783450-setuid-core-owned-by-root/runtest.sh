@@ -27,6 +27,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="bz783450-setuid-core-owned-by-root"
 PACKAGE="abrt"
@@ -34,6 +35,8 @@ SUIDEDEXE="suidedexecutable"
 
 rlJournalStart
     rlPhaseStartSetup
+        check_prior_crashes
+
         old_ulimit=$(ulimit -c)
         rlRun "ulimit -c unlimited" 0
 

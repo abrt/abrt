@@ -27,6 +27,7 @@
 
 # Include rhts environment
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="libreport-make-check"
 PACKAGE="abrt"

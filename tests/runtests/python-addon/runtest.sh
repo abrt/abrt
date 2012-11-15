@@ -26,6 +26,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="python-addon"
 PACKAGE="abrt"
@@ -34,6 +35,8 @@ TFILE="/usr/bin/pydoc"
 
 rlJournalStart
     rlPhaseStartSetup
+        check_prior_crashes
+
         TmpDir=$(mktemp -d)
         pushd $TmpDir
         rlAssertRpm "abrt-addon-python"

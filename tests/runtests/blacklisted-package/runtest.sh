@@ -27,6 +27,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="blacklisted-package"
 PACKAGE="abrt"
@@ -35,6 +36,8 @@ CFG_FNAME="abrt-action-save-package-data.conf"
 
 rlJournalStart
     rlPhaseStartSetup
+        check_prior_crashes
+
         TmpDir=$(mktemp -d)
         cp $CFG_FNAME $TmpDir
         pushd $TmpDir

@@ -26,12 +26,15 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="dbus-NewProblem"
 PACKAGE="abrt"
 
 rlJournalStart
     rlPhaseStartSetup
+        check_prior_crashes
+
         rlRun "useradd -c \"dbus-NewProblem test user\" -M abrtdbustest"
         TEST_UID=`id -u abrtdbustest`
     rlPhaseEnd

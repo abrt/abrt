@@ -27,12 +27,15 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="localized-reporting"
 PACKAGE="abrt"
 
 rlJournalStart
     rlPhaseStartSetup
+        check_prior_crashes
+
         TmpDir=$(mktemp -d)
         pushd $TmpDir
         rlLog "Generate crash"

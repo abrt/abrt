@@ -27,6 +27,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="socket-api"
 PACKAGE="abrt"
@@ -36,11 +37,9 @@ TEST_APP_SRC=$TEST_APP".c"
 
 rlJournalStart
 rlPhaseStartSetup
+        check_prior_crashes
+
         rlRun "yum install -y abrt-devel libreport-devel" 0 "installed required devel packages"
-        rlAssert0 "No prior crashes recorded" $(abrt-cli list | wc -l)
-        if [ ! "_$(abrt-cli list | wc -l)" == "_0" ]; then
-            rlDie "Won't proceed"
-        fi
 
         TmpDir=$(mktemp -d)
         cp $TEST_APP_SRC $TmpDir

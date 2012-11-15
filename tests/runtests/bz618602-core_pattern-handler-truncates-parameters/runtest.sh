@@ -27,6 +27,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="bz618602-core_pattern-handler-truncates-parameters"
 PACKAGE="abrt"
@@ -36,6 +37,8 @@ CORE_PATTERN="/proc/sys/kernel/core_pattern"
 
 rlJournalStart
     rlPhaseStartSetup
+        check_prior_crashes
+
         TmpDir=$(mktemp -d)
         rlRun "cc -o $TmpDir/cppt ./core_pattern_pipe_test.c" 0 "Compile core_pattern_pipe_test"
         new_pattern="|$TmpDir/cppt %p %s %c %u %g %t " # !IMPORTANT: keep %p first (due to core_pattern_pipe_test implementation)

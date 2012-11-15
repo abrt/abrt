@@ -28,12 +28,15 @@
 
 # Include rhts environment
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="bz652338-removed-proc-PID"
 PACKAGE="abrt"
 
 rlJournalStart
     rlPhaseStartSetup
+        check_prior_crashes
+
         TmpDir=$(mktemp -d)
         pushd $TmpDir
         core_pipe_limit_bkp="$(cat /proc/sys/kernel/core_pipe_limit)"
