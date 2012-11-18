@@ -18,6 +18,7 @@ if [ $1 ]; then
     fi
 
     rm -f /var/spool/abrt/last-ccpp
+    rm -f /tmp/abrt-done
 
     if [ "${REINSTALL_BEFORE_EACH_TEST}" = "1" ]; then
         echo 'REINSTALL_BEFORE_EACH_TEST set'
