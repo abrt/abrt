@@ -10,6 +10,7 @@ import locale
 import gettext
 from subprocess import Popen
 
+import report
 
 GETTEXT_PROGNAME = "abrt-action-perform-ccpp-analysis"
 
@@ -44,13 +45,18 @@ def handle_event(event_name, problem_dir):
 
     """
 
-    executable = "@libexecdir@/abrt-handle-event"
-    try:
-        proc = Popen([executable, "-e", event_name, "--", problem_dir])
-        return proc.wait() == 0
-    except OSError as e:
-        sys.stderr.write("Can't run '{0}': {1}\n".format(executable, e))
-        sys.exit(1)
+    def log(line):
+        sys.stderr.write(line)
+        sys.stderr.write("\n")
+        sys.stderr.flush()
+
+    state = report.run_event_state()
+    state.make_run_event_state_forwarding()
+    state.logging_callback = log;
+
+    ret = state.run_event_on_dir_name(problem_dir, event_name)
+
+    return ret == 0
 
 
 def run_analyze_smart(problem_dir):
