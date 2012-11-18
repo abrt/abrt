@@ -1,8 +1,6 @@
 #!/bin/bash
 if [ "$SHUTDOWN" = "1" ]; then
-    echo "All done, shutdown in 60 seconds"
-    sleep 60
-    echo "Shutdown"
+    echo "All done, shutting down"
     shutdown -h now
 else
     echo "All done, shutdown disabled"
