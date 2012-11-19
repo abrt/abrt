@@ -1,0 +1,27 @@
+summary: [abrt] rxvt-unicode-9.12-2.fc15: rxvt_term::selection_delimit_word: Process /usr/bin/urxvtd was killed by signal 11 (SIGSEGV)
+
+Description of problem:
+Shift selecting text in console window
+
+Version-Release number of selected component:
+rxvt-unicode-9.12-2.fc15
+
+Additional info:
+backtrace_rating: 1
+cmdline:        urxvtd -q -o -f
+crash_function: rxvt_term::selection_delimit_word
+executable:     /usr/bin/urxvtd
+kernel:         2.6.38.8-35.fc15.x86_64
+uid:            502
+xsession_errors: 
+
+Truncated backtrace:
+Thread no. 1 (8 frames)
+ #0 rxvt_term::selection_delimit_word at screen.C
+ #1 rxvt_term::selection_extend_colrow at screen.C
+ #2 rxvt_term::button_press at command.C
+ #3 rxvt_term::x_cb at command.C
+ #4 call at ./callback.h
+ #5 rxvt_display::flush_cb at rxvttoolkit.C
+ #6 ev_invoke_pending at ../libev/ev.c
+ #7 ev_run at ../libev/ev.c
