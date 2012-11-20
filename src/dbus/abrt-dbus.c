@@ -492,6 +492,13 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
+        if (errno == ENOENT)
+        {
+            VERB1 log("Requested directory does not exist '%s'", problem_dir);
+            return_InvalidProblemDir_error(invocation, problem_dir);
+            return;
+        }
+
         if (polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
         {
             VERB1 log("not authorized");
@@ -565,6 +572,13 @@ static void handle_method_call(GDBusConnection *connection,
 
         if (!dir_accessible_by_uid(problem_dir, caller_uid))
         {
+            if (errno == ENOENT)
+            {
+                VERB1 log("Requested directory does not exist '%s'", problem_dir);
+                return_InvalidProblemDir_error(invocation, problem_dir);
+                return;
+            }
+
             if (polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
             {
                 VERB1 log("not authorized");
@@ -646,6 +660,12 @@ static void handle_method_call(GDBusConnection *connection,
             const char *dir_name = (const char*)l->data;
             if (!dir_accessible_by_uid(dir_name, caller_uid))
             {
+                if (errno == ENOENT)
+                {
+                    VERB1 log("Requested directory does not exist '%s'", dir_name);
+                    continue;
+                }
+
                 if (polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
                 { // if user didn't provide correct credentials, just move to the next dir
                     continue;
