@@ -17,6 +17,11 @@ if [ $1 ]; then
         rm -f /var/run/abrt/saved_core_pattern
     fi
 
+    if pidof abrtd; then
+        killall -9 abrtd
+        rm -f /var/run/abrt/abrtd.pid
+    fi
+
     rm -f /var/spool/abrt/last-ccpp
     rm -f /tmp/abrt-done
 
