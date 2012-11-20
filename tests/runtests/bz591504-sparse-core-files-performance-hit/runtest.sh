@@ -30,7 +30,8 @@
 
 TEST="bz591504-sparse-core-files-performance-hit"
 PACKAGE="abrt"
-GDB_BUILDDEPS="expat-devel ncurses-devel rpm-devel bison python-devel gettext flex zlib-devel texinfo-text texinfo"
+
+CFG_FILE="/etc/abrt/abrt-action-save-package-data.conf"
 
 rlJournalStart
     rlPhaseStartSetup
@@ -38,6 +39,9 @@ rlJournalStart
         rlRun "cc bigcore.c -o $TmpDir/bigcore" 0 "Compiling bigcore.c"
         pushd $TmpDir
         rlRun "ulimit -c unlimited"
+
+        rlFileBackup $CFG_FILE
+        sed -i 's/ProcessUnpackaged = no/ProcessUnpackaged = yes/g' $CFG_FILE
     rlPhaseEnd
 
     rlPhaseStartTest
@@ -54,8 +58,6 @@ rlJournalStart
 
         # In my experience here apparent size is almost 500 times bigger
         rlAssertGreater "Corefile is very sparse" $((apparent_coresize/50)) $actual_coresize
-
-
     rlPhaseEnd
 
     rlPhaseStartCleanup
@@ -64,6 +66,7 @@ rlJournalStart
 
         popd # $TmpDir
         rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
+        rlFileRestore # CFG_FILE
     rlPhaseEnd
 rlJournalPrintText
 rlJournalEnd
