@@ -50,6 +50,9 @@ rlJournalStart
 
     rlPhaseStartTest "Disable ccpp"
         rlRun "/usr/sbin/abrt-install-ccpp-hook uninstall" 0 "Uninstall hook"
+        rlRun "/usr/sbin/abrt-install-ccpp-hook is-installed" 1 "Is hook uninstalled"
+        rlAssertGrep "core" /proc/sys/kernel/core_pattern
+        rlAssertNotGrep "abrt" /proc/sys/kernel/core_pattern
 
         generate_crash
 
