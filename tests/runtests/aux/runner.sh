@@ -9,12 +9,10 @@ if [ $1 ]; then
     service abrtd stop
 
     # cleanup
+    echo 'core' > /var/run/abrt/saved_core_pattern
+
     if [ -x /usr/sbin/abrt-install-ccpp-hook ]; then
         /usr/sbin/abrt-install-ccpp-hook uninstall
-    fi
-
-    if [ -f /var/run/abrt/saved_core_pattern ]; then
-        rm -f /var/run/abrt/saved_core_pattern
     fi
 
     if pidof abrtd; then
