@@ -58,7 +58,7 @@ rlJournalStart
 
     rlPhaseStartTest
         ( sleep 10; killall -11 sleep) &
-        rlRun "strace sleep 3m 2>&1 > /dev/null" 139 "strace process was killed with signal 11"
+        strace sleep 3m 2>&1 > /dev/null
         sleep 3
         rlRun "abrt-cli list -f | grep strace" 1 "No strace in abrt-cli output"
     rlPhaseEnd
