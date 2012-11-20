@@ -57,15 +57,13 @@ rlJournalStart
             rlRun "restorecon -R /etc/abrt"
 
             rlLog "Generate crash (not blacklisted path)"
-            sleep 3m &
-            sleep 2
-            kill -SIGSEGV %1
-            sleep 3
+            prepare
 
-            crash_PATH=$(abrt-cli list -f | grep Directory | tail -n1 | awk '{ print $2 }')
-            if [ ! -d "$crash_PATH" ]; then
-                rlLog "No crash dir generated, this shouldn't happen"
-            fi
+            cp $( which will_abort ) /var
+            /var/will_abort
+
+            wait_for_hooks
+            get_crash_path
 
             if [ -n "$crash_PATH" ]; then
                 rlRun "abrt-cli info $crash_PATH"
@@ -73,35 +71,29 @@ rlJournalStart
             fi
 
             rlLog "Generate second crash (blacklisted path)"
-            yes > /dev/null &
-            sleep 2
-            kill -SIGSEGV %1
-            sleep 3
-            rlAssert0 "No crash recorded" $(abrt-cli list | wc -l)
+            prepare
+            generate_crash
+            # can't use wait_for_hooks as the path is blacklisted
+            # and processing is stopped in post-create hook
+            sleep 0.5
 
-            rlLog "Sleeping for 30 seconds"
-            sleep 30
+            rlAssert0 "No crash recorded" $(abrt-cli list | wc -l)
         done
     rlPhaseEnd
 
     rlPhaseStartTest "empty BlackListedPaths"
-        rlLog "Generate crash"
-        sleep 3m &
-        sleep 2
-        kill -SIGSEGV %1
-        sleep 3
+        rm -f "/etc/abrt/$CFG_FNAME"
+        touch "/etc/abrt/$CFG_FNAME"
 
-        crash_PATH=$(abrt-cli list -f | grep Directory | tail -n1 | awk '{ print $2 }')
-        if [ ! -d "$crash_PATH" ]; then
-            rlLog "No crash dir generated, this shouldn't happen"
-        fi
-        rlLog "PATH = $crash_PATH"
+        prepare
+        generate_crash
+        wait_for_hooks
+        get_crash_path
 
         if [ -n "$crash_PATH" ]; then
             rlRun "abrt-cli info $crash_PATH"
             rlRun "abrt-cli rm $crash_PATH"
         fi
-
     rlPhaseEnd
 
     rlPhaseStartCleanup
