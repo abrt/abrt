@@ -69,9 +69,10 @@ if [ $1 ]; then
     pushd $(dirname $1)
     echo ":: TEST START MARK ::"
     if [ -x /usr/bin/time ]; then
-        /usr/bin/time -v -o time.out ./$(basename $1)
-        cat time.out
-        rm time.out
+        tmpfile=$( mktemp )
+        /usr/bin/time -v -o $tmpfile ./$(basename $1)
+        cat $tmpfile
+        rm $tmpfile
     else
         ./$(basename $1)
     fi
