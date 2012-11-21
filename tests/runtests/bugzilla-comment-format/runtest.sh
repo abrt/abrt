@@ -2,9 +2,9 @@
 # vim: dict=/usr/share/beakerlib/dictionary.vim cpt=.,w,b,u,t,i,k
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-#   runtest.sh of bugzilla-dupe-search
-#   Description: Tests reporter-bugzilla duplicate search
-#   Author: Jiri Moskovcak <jmoskovc@redhat.com>
+#   runtest.sh of bugzilla-comment-format
+#   Description: Tests reporter-bugzilla comment formatting
+#   Author: Denys Vlasenko <dvlasenk@redhat.com>
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
