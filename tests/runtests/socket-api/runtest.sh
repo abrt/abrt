@@ -35,9 +35,14 @@ PACKAGE="abrt"
 TEST_APP="create_problem_socket"
 TEST_APP_SRC=$TEST_APP".c"
 
+CFG_FILE="/etc/abrt/abrt-action-save-package-data.conf"
+
 rlJournalStart
 rlPhaseStartSetup
         check_prior_crashes
+
+        rlFileBackup $CFG_FILE
+        sed -i 's/ProcessUnpackaged = no/ProcessUnpackaged = yes/g' $CFG_FILE
 
         rlRun "yum install -y abrt-devel libreport-devel" 0 "installed required devel packages"
 
@@ -57,6 +62,7 @@ rlPhaseStartSetup
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
         popd #TmpDir
         rm -rf $TmpDir
+        rlFileRestore # CFG_FILE
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd
