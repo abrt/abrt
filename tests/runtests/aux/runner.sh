@@ -6,7 +6,7 @@ if [ $1 ]; then
     # stop services
     service abrt-oops stop
     service abrt-xorg stop
-    service abrtd stop
+    service abrtd stop &> /dev/null
 
     # cleanup
     echo 'core' > /var/run/abrt/saved_core_pattern
@@ -52,9 +52,9 @@ if [ $1 ]; then
         rm -rf /var/spool/abrt/*
     fi
 
-    service abrtd restart
-    service abrt-ccpp restart
-    service abrt-oops restart
+    service abrtd start
+    service abrt-ccpp start
+    service abrt-oops start
 
     # test delay
     if [ "${DELAY+set}" = "set" ]; then
