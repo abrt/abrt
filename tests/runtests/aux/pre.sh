@@ -21,6 +21,11 @@ EVENT=notify
         touch /tmp/abrt-done
 _EOF_
 
+if [ "${DISABLE_GPGCHECK}" = "1" ]; then
+    sed -i 's/OpenGPGCheck.*=.*yes/OpenGPGCheck = no/' \
+        /etc/abrt/abrt-action-save-package-data.conf
+fi
+
 if [ "${STORE_CONFIGS}" = "1" ]; then
     echo 'STORE_CONFIGS set'
     rm -rf /tmp/abrt-config/

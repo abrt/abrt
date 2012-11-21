@@ -26,6 +26,7 @@ export TEST_CONTINUE=0
 export REINSTALL_PRE=1
 export UPDATE_PRE=0
 export DISABLE_NOAUDIT=0
+export DISABLE_GPGCHECK=0
 export STORE_CONFIGS=1
 
 # - mailx script config -
