@@ -35,6 +35,7 @@ PACKAGE="abrt"
 rlJournalStart
     rlPhaseStartSetup
         generate_crash
+        wait_for_hooks
         get_crash_path
 
         rlLog "PATH = $crash_PATH"

@@ -61,6 +61,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
+        wait_for_hooks
         get_crash_path
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
 

@@ -57,7 +57,7 @@ rlJournalStart
             sed -i "s/<KERNEL_VERSION>/$installed_kernel/g" $oops
             rlRun "abrt-dump-oops $oops -xD 2>&1 | grep 'abrt-dump-oops: Found oopses: [1-9]'" 0 "[$oops] Found OOPS"
 
-            sleep 5
+            wait_for_hooks
             get_crash_path
 
             ls $crash_PATH > crash_dir_ls

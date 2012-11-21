@@ -57,15 +57,15 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
-        ( sleep 10; killall -11 sleep) &
+        ( sleep 1; killall -11 sleep) &
         strace sleep 3m 2>&1 > /dev/null
-        sleep 3
+        wait_for_hooks
         rlRun "abrt-cli list -f | grep strace" 1 "No strace in abrt-cli output"
     rlPhaseEnd
 
     rlPhaseStartCleanup
         rlFileRestore
-        crash_PATH=$(abrt-cli list -f | grep Directory | tail -n1 | awk '{ print $2 }')
+        get_crash_path
         if [ ! -z "$crash_PATH" ]; then
             rlRun "abrt-cli rm $crash_PATH" 0 "Delete $crash_PATH"
         fi
