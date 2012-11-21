@@ -35,9 +35,14 @@ if [ "${STORE_CONFIGS}" = "1" ]; then
     cp -a /etc/libreport /tmp/abrt-config
 fi
 
-if [ "${UPDATE_PRE}" = "1" ]; then
-    echo 'UPDATE_PRE set'
+if [ "${UPDATE_PACKAGES}" = "1" ]; then
+    echo 'UPDATE_PACKAGES set'
     yum -y update $PACKAGES
+fi
+
+if [ "${UPDATE_SYSTEM}" = "1" ]; then
+    echo 'UPDATE_SYSTEM set'
+    yum -y update
 fi
 
 if [ "${DISABLE_NOAUDIT}" = "1" ]; then
