@@ -53,6 +53,7 @@ rlJournalStart
     rlPhaseStartTest "list"
         generate_crash
         get_crash_path
+        wait_for_hooks
 
         rlRun "abrt-cli list | grep -i 'Executable'"
         rlRun "abrt-cli list | grep -i 'Package'"

@@ -47,6 +47,7 @@ rlJournalStart
     rlPhaseStartTest
         generate_crash
         get_crash_path
+        wait_for_hooks
 
         ls $crash_PATH > crash_dir_ls
 

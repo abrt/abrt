@@ -37,7 +37,9 @@ rlJournalStart
         CRASHES_BEFORE="$(abrt-cli list -f | grep Directory | wc -l)"
         rlLog "Crashes before our attempt: $CRASHES_BEFORE"
         rlRun "PYTHONINSPECT=YES yum <<<quit" 1 "yum exits with SystemExit=1"
-        sleep 30
+
+        sleep 1
+
         CRASHES_AFTER="$(abrt-cli list -f | grep Directory | wc -l)"
         rlLog "Crashes after our attempt: $CRASHES_BEFORE"
         rlAssertEquals "# of bugs before SystemExit=1 is the same after" $CRASHES_BEFORE $CRASHES_AFTER

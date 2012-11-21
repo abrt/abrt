@@ -42,6 +42,7 @@ rlJournalStart
     rlPhaseStartTest
         generate_crash
         get_crash_path
+        wait_for_hooks
 
         rlRun "dbus-send --system --type=method_call --print-reply --dest=org.freedesktop.problems /org/freedesktop/problems org.freedesktop.problems.GetProblems &> dbus_reply.log"
 
@@ -53,7 +54,9 @@ rlJournalStart
         # mark next crash as a duplicate
         rm -f "$crash_PATH/core_backtrace"
 
+        prepare
         generate_second_crash
+        wait_for_hooks
 
         rlAssertGreater "Second crash recorded" $(abrt-cli list | wc -l) 0
         crash2_PATH="$(abrt-cli list -f | grep Directory \

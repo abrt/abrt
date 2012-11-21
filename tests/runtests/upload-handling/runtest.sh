@@ -45,9 +45,9 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "handle upload"
-        sleep 3
         rlRun "reporter-upload -d problem_dir -u file:///var/spool/abrt-upload/upload.tar.gz"
-        sleep 3
+
+        wait_for_hooks
 
         rem_upload_dir=$( echo /var/spool/abrt/remote* )
         rlAssertExists "$rem_upload_dir/coredump"

@@ -41,6 +41,7 @@ rlJournalStart
 
         generate_crash
         get_crash_path
+        wait_for_hooks
     rlPhaseEnd
 
     rlPhaseStartTest

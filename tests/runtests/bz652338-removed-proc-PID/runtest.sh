@@ -71,6 +71,8 @@ rlJournalStart
         rlRun "$CLI_LIST"
         kill %1 || kill -9 %1 # kill tailf
 
+        wait_for_sosreport
+
         rlAssertGrep "Skipping core dump" var-log-messages
 
         rlRun "$CLI_LIST | grep package | grep abrt" 1 "abrtd did not crashed"

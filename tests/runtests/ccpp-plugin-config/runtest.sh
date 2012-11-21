@@ -64,10 +64,10 @@ rlJournalStart
         rlLogInfo "MakeCompatCore = yes"
         rlRun "echo 'MakeCompatCore = yes' > $CFG_FILE" 0 "Set MakeCompatCore = yes"
 
-        rm -f /var/spool/abrt/last-ccpp
-
+        prepare
         generate_crash
         get_crash_path
+        wait_for_hooks
 
         ls core* > make_compat_core_yes_pwd_ls
         core_fname="$(echo core*)"
@@ -83,10 +83,10 @@ rlJournalStart
         rlLogInfo "MakeCompatCore = no"
         rlRun "echo 'MakeCompatCore = no' > $CFG_FILE" 0 "Set MakeCompatCore = no"
 
-        rm -f /var/spool/abrt/last-ccpp
-
+        prepare
         generate_crash
         get_crash_path
+        wait_for_hooks
 
         ls core* > make_compat_core_no_pwd_ls
         core_fname="$(echo core*)"
@@ -100,10 +100,11 @@ rlJournalStart
     rlPhaseStartTest "SaveBinaryImage"
         rlLogInfo "SaveBinaryImage = yes"
         rlRun "echo 'SaveBinaryImage = yes' > $CFG_FILE" 0 "Set SaveBinaryImage = yes"
-        rm -f /var/spool/abrt/last-ccpp
 
+        prepare
         generate_crash
         get_crash_path
+        wait_for_hooks
 
         ls $crash_PATH > save_binary_image_yes_ls
         rlAssertExists "$crash_PATH/binary"
@@ -112,10 +113,10 @@ rlJournalStart
         rlLogInfo "SaveBinaryImage = no"
         rlRun "echo 'SaveBinaryImage = no' > $CFG_FILE" 0 "Set SaveBinaryImage = no"
 
-        rm -f /var/spool/abrt/last-ccpp
-
+        prepare
         generate_crash
         get_crash_path
+        wait_for_hooks
 
         ls $crash_PATH > save_binary_image_no_ls
         rlAssertNotExists "$crash_PATH/binary"

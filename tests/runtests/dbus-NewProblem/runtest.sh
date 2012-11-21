@@ -46,7 +46,8 @@ rlJournalStart
                     dict:string:string:"analyzer","libreport","executable","$(which true)" > dbus_first_reply.log
         rlAssertGrep "^[ ]*string[ ]\+\"[^ ]\+\"$" dbus_first_reply.log
         problem_ID1=`cat dbus_first_reply.log | tail -1 | sed 's/ *string *"\(.*\)"/\1/'`
-        sleep 5
+
+        wait_for_hooks
 
         rlAssertGreater "Problem data recorded" $(abrt-cli list | grep -c ${problem_ID1}) 0
 
@@ -58,14 +59,16 @@ rlJournalStart
         problem_UID1="$(abrt-cli list -f | awk -v id=$problem_ID1 '$0 ~ "Directory:.*"id, /uid:/ { if ($1 == "uid:") { print $2 } else if ($1 == "") { print "missing uid"; exit } }')"
         rlAssertEquals "Problem uid is equal to 0" "0" "$problem_UID1"
 
-        sleep 10
+        prepare
+
         rlLog "Create problem data as root with UID"
         dbus-send --system --type=method_call --print-reply \
                     --dest=org.freedesktop.problems /org/freedesktop/problems org.freedesktop.problems.NewProblem \
                     dict:string:string:"analyzer","libreport","executable","$(which true)","uid","$TEST_UID" > dbus_second_reply.log
         rlAssertGrep "^[ ]*string[ ]\+\"[^ ]\+\"$" dbus_second_reply.log
         problem_ID2=`cat dbus_second_reply.log | tail -1 | sed 's/ *string *"\(.*\)"/\1/'`
-        sleep 5
+
+        wait_for_hooks
 
         rlAssertGreater "Problem data recorded" $(abrt-cli list | grep -c ${problem_ID2}) 0
 
@@ -77,14 +80,16 @@ rlJournalStart
         problem_UID2="$(abrt-cli list -f | awk -v id=$problem_ID2 '$0 ~ "Directory:.*"id, /uid:/ { if ($1 == "uid:") { print $2 } else if ($1 == "") { print "missing uid"; exit } }')"
         rlAssertEquals "Problem uid equals to the passed uid" "$TEST_UID" "$problem_UID2"
 
-        sleep 10
+        prepare
+
         rlLog "Create problem data as a user without UID"
         su abrtdbustest -c 'dbus-send --system --type=method_call --print-reply \
                     --dest=org.freedesktop.problems /org/freedesktop/problems org.freedesktop.problems.NewProblem \
                     dict:string:string:"analyzer","libreport","executable","$(which true)"' > dbus_third_reply.log
         rlAssertGrep "^[ ]*string[ ]\+\"[^ ]\+\"$" dbus_third_reply.log
         problem_ID3=`cat dbus_third_reply.log | tail -1 | sed 's/ *string *"\(.*\)"/\1/'`
-        sleep 5
+
+        wait_for_hooks
 
         rlAssertGreater "Problem data recorded" $(abrt-cli list | grep -c ${problem_ID3}) 0
 
@@ -96,14 +101,16 @@ rlJournalStart
         problem_UID3="$(abrt-cli list -f | awk -v id=$problem_ID3 '$0 ~ "Directory:.*"id, /uid:/ { if ($1 == "uid:") { print $2 } else if ($1 == "") { print "missing uid"; exit } }')"
         rlAssertEquals "Problem uid equals to caller's uid" "$TEST_UID" "$problem_UID3"
 
-        sleep 10
+        prepare
+
         rlLog "Create problem data as a user with root's UID"
         su abrtdbustest -c 'dbus-send --system --type=method_call --print-reply \
                     --dest=org.freedesktop.problems /org/freedesktop/problems org.freedesktop.problems.NewProblem \
                     dict:string:string:"analyzer","libreport","executable","$(which true)","uid","0"' > dbus_fourth_reply.log
         rlAssertGrep "^[ ]*string[ ]\+\"[^ ]\+\"$" dbus_fourth_reply.log
         problem_ID4=`cat dbus_fourth_reply.log | tail -1 | sed 's/ *string *"\(.*\)"/\1/'`
-        sleep 5
+
+        wait_for_hooks
 
         rlAssertGreater "Problem data recorded" $(abrt-cli list | grep -c ${problem_ID4}) 0
 
