@@ -49,6 +49,10 @@ rlJournalStart
         rlAssertGrep "string" dbus_reply.log
         rlAssertGrep "$crash_PATH" dbus_reply.log
 
+        # we need to remove core_backtrace so it doesn't
+        # mark next crash as a duplicate
+        rm -f "$crash_PATH/core_backtrace"
+
         generate_second_crash
 
         rlAssertGreater "Second crash recorded" $(abrt-cli list | wc -l) 0
