@@ -25,7 +25,7 @@ function wait_for_process() {
     fi
     rlLog "Waiting for $procname to end"
     local c=0
-    while pidof "$procname" &> /dev/null; do
+    while pidof -x "$procname" &> /dev/null; do
         sleep 0.1
         let c=$c+1
         if [ $c -gt $timeout ]; then
