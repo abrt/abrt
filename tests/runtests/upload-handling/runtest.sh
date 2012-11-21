@@ -37,6 +37,7 @@ rlJournalStart
         TmpDir=$(mktemp -d)
         cp -R problem_dir $TmpDir
         pushd $TmpDir
+        mkdir -p /var/spool/abrt-upload/
         echo "WatchCrashdumpArchiveDir = /var/spool/abrt-upload/" > /etc/abrt/abrt.conf
         rlRun "setsebool -P abrt_anon_write 1"
         rlRun "service abrtd stop" 0 "Killing abrtd"
