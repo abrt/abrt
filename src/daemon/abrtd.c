@@ -400,14 +400,15 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
         {
             log("'post-create' on '%s' killed by signal %d",
                             state->dirname, WTERMSIG(status));
+            goto delete_bad_dir;
         }
         /* else: it is WIFEXITED(status) */
         else if (!state->dup_of_dir)
         {
             log("'post-create' on '%s' exited with %d",
                             state->dirname, WEXITSTATUS(status));
+            goto delete_bad_dir;
         }
-        goto delete_bad_dir;
     }
 
     char *work_dir = state->dup_of_dir ? state->dup_of_dir : state->dirname;
