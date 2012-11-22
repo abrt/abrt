@@ -9,4 +9,4 @@ LOC='http://download.englab.brq.redhat.com/pub/rhel/rel-eng/latest-RHEL-6/6/Work
 DISK=$( echo /dev/mapper/*el6_vm )
 REPOS_REQUIRED='el6_latest'
 MAC="52:54:00:10:b4:df"
-IP="10.34.25.207"
+IP="10.34.37.134"
