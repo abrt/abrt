@@ -244,7 +244,7 @@ function recreate_vm() {
     cat ~/common/end_post_hunk >> custom-ks.cfg
 
     echo 'Running virt-install'
-    virt-install --name $VM_NAME --ram "1300" \
+    virt-install --name $VM_NAME --ram "2000" \
       --connect qemu:///system \
       --location "$LOC" \
       --disk path=$DISK,cache=none \
@@ -252,7 +252,7 @@ function recreate_vm() {
       --noautoconsole \
       --os-type=linux \
       --os-variant=$OS_VARIANT \
-      --graphics type=vnc \
+      --graphics type=spice \
       --quiet \
       --network bridge:br0,mac=$MAC
 
