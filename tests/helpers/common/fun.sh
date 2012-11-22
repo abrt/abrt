@@ -30,37 +30,33 @@ function reinit_vm() {
         return
     fi
 
-    if virsh --connect qemu:///system list | grep -q $VM_NAME;  then
+    if virsh --connect qemu:///system list | grep -q "${VM_NAME}_clone";  then
         echo 'Destroying virtual machine'
-        virsh --connect qemu:///system destroy $VM_NAME
+        virsh --connect qemu:///system destroy "${VM_NAME}_clone"
     fi
 
-#    if virsh --connect qemu:///system list --all | grep -q $VM_NAME;  then
-#        echo 'Undef virtual machine'
-#        virsh --connect qemu:///system undefine $VM_NAME
+    if virsh --connect qemu:///system list --all | grep -q "${VM_NAME}_clone";  then
+        echo 'Undef virtual machine'
+        virsh --connect qemu:///system undefine "${VM_NAME}_clone"
+    fi
 
-    echo "Restoring vm ${VM_NAME}"
-    # beware sudo!!
-    sudo dd if=/pub/VM/${VM_NAME}.img of=/dev/mapper/vg-${CURR_TARGET}_vm bs=4M
+    if test -e "${DISK}_clone"; then
+        echo 'Removing current snapshot'
+        sudo lvremove -f "${DISK}_clone"
+    fi
+
+    echo "Creating snapshot of ${VM_NAME}"
+    orig_device="$( echo $DISK | sed 's#mapper/##g;s#vol0-#vol0/#' )"
+    sudo lvcreate -L 1G -s -n "$( basename "${DISK}_clone" | sed 's#vol0-##')" "$orig_device"
+
+    virt-clone --connect qemu:///system -o "${VM_NAME}" -n "${VM_NAME}_clone" \
+        -f "${DISK}_clone" --preserve-data -m ${MAC}
+
     if [ $? -ne 0 ]; then
         echo "Restoring VM failed";
         exit 1;
     else
         echo "VM restored";
-    fi
-
-#    fi
-}
-
-function update_vm_image() {
-    echo "Saving new image for ${VM_NAME}"
-    # beware sudo!!
-    sudo dd of=/pub/VM/${VM_NAME}.img.latest if=/dev/mapper/vg-${CURR_TARGET}_vm bs=4M
-    if [ $? -ne 0 ]; then
-        echo "Saving new image failed";
-        exit 1;
-    else
-        echo "Image saved successfully";
     fi
 }
 
