@@ -57,18 +57,17 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
-        ( sleep 1; killall -11 sleep) &
-        strace sleep 3m 2>&1 > /dev/null
-        wait_for_hooks
+        strace sleep 3m 2>&1 > /dev/null &
+        sleep 1
+        straced_sleep_pid=$( pstree -p -c -l -A | grep strace | sed 's#.*sleep(\(.*\))#\1#' )
+        kill -11 $straced_sleep_pid
+        sleep 1
         rlRun "abrt-cli list -f | grep strace" 1 "No strace in abrt-cli output"
+        rlRun "abrt-cli list -f | grep sleep" 1 "No sleep in abrt-cli output"
     rlPhaseEnd
 
     rlPhaseStartCleanup
         rlFileRestore
-        get_crash_path
-        if [ ! -z "$crash_PATH" ]; then
-            rlRun "abrt-cli rm $crash_PATH" 0 "Delete $crash_PATH"
-        fi
         popd #TmpDir
         rm -rf $TmpDir
     rlPhaseEnd
