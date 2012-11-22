@@ -34,16 +34,15 @@ fi
 # if PREPARE is set, we only reinstall the VMs and die
 if [ $PREPARE ]; then
     recreate_vm
-    update_vm_image
     exit 0
 fi
 
 reinit_vm
 
-virsh --connect qemu:///system start $VM_NAME
+virsh --connect qemu:///system start "${VM_NAME}_clone"
 if [ $? != 0 ]; then
    # how about we create it here instead of dying??
-   echo "VM with name $VM_NAME does not exist!"
+   echo "VM with name ${VM_NAME}_clone does not exist!"
    exit 1;
 fi
 
