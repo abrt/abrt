@@ -1,5 +1,7 @@
 #!/bin/bash -x
 
+date
+
 source ~/common/globaldefs.sh
 source ~/targets/${1}/defs.sh
 source ~/common/fun.sh
@@ -83,6 +85,7 @@ while true; do
   sleep 1; # wait between the attempts, otherwise it floods the log
 done
 
+date
 echo -n "Zzzz (until VM is executing the tests): "
 while virsh --connect qemu:///system list | grep -q $VM_NAME; do
     echo -n '.'
@@ -90,14 +93,18 @@ while virsh --connect qemu:///system list | grep -q $VM_NAME; do
 done
 echo -n 'x'
 set -x
+date
 
 handle_results "$DATA_DIR/data/" "/var/nightly_results/$( basename $DATA_DIR/)"
 echo $result_path
+date
 test -d $result_path || exit 1
 echo 'Mirroring website'
 ~/web_mirror/cron_wrapper
+date
 echo 'Send email'
 res_mail $result_path
+date
 
 popd # $DATA_DIR
 echo 'All done'
