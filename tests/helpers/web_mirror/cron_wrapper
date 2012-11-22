@@ -1,4 +1,4 @@
 #!/bin/bash
-LOGDEST='/var/log/abrt_builds/web_mirror.log'
+LOGDEST='/var/log/abrt/web_mirror.log'
 ( ~/web_mirror/mirror.sh 2>&1 ) | ~/bin/predate.sh >> $LOGDEST
 exit $?
