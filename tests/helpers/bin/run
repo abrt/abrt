@@ -56,7 +56,9 @@ sleep 5
 set +x
 
 while true; do
-  scp -o StrictHostKeyChecking=no ~/targets/$CURR_TARGET/runtests.sh root@$IP:~
+  scp -o StrictHostKeyChecking=no ~/targets/runtests.sh \
+    ~/targets/$CURR_TARGET/config.sh.local root@$IP:~
+
   res=$?;
   if [ $res == 0 ]; then
     break;
