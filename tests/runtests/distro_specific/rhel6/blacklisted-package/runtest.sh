@@ -27,7 +27,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
-. ../aux/lib.sh
+. ../../../aux/lib.sh
 
 TEST="blacklisted-package"
 PACKAGE="abrt"
