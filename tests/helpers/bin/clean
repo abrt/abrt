@@ -6,6 +6,9 @@
 mtimes_data=/tmp/clean_mtimes_data
 
 cd /var/nightly_results/
+
+find -name 'post_crashes' | xargs rm -rf
+
 for osver in *; do 
 pushd $osver
     rm -f $mtimes_data
