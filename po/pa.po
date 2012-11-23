@@ -3,20 +3,23 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Jaswinder Singh Phulewala <j.phulewala@gmail.com>, 2011, 2012.
+# Jaswinder Singh <j.phulewala@gmail.com>, 2011, 2012.
+# Jaswinder Singh <jsingh@redhat.com>, 2011-2012.
+# Jaswinder Singh Phulewala <j.phulewala@gmail.com>, 2011-2012.
+# Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-11-23 15:59+0100\n"
-"PO-Revision-Date: 2012-03-01 06:57+0000\n"
-"Last-Translator: Jaswinder Singh <j.phulewala@gmail.com>\n"
+"POT-Creation-Date: 2012-11-23 18:31+0100\n"
+"PO-Revision-Date: 2012-11-23 17:23+0000\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Panjabi (Punjabi) <punjabi-users@lists.sf.net>\n"
 "Language: pa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
 #: ../src/gui-gtk/main.c:955
@@ -28,14 +31,13 @@ msgid "ABRT notification applet"
 msgstr "ABRT ਸੂਚਨਾ ਐਪਲਿਟ"
 
 #: ../src/applet/applet.c:66
-#, fuzzy
 msgid "Problem detected"
-msgstr "ਸਮੱਸਿਆ ਡਾਇਰੈਕਟਰੀ"
+msgstr "ਸਮੱਸਿਆ ਖੋਜੀ ਗਈ ਹੈ"
 
 #: ../src/applet/applet.c:250
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr ""
+msgstr "'%s' ਦਾ ਮਾਲਕ ਨਹੀਂ ਬਣ ਸਕਦਾ"
 
 #: ../src/applet/applet.c:315 ../src/applet/applet.c:317
 msgid "Warning"
@@ -56,7 +58,7 @@ msgstr "ਓਹਲੇ"
 
 #: ../src/applet/applet.c:440
 msgid "Ignore"
-msgstr ""
+msgstr "ਅਣਡਿੱਠਾ"
 
 #. buttons are homogenous so set size only for one button and it will
 #. * work for the rest buttons in same gtk_hbox_new()
@@ -118,9 +120,8 @@ msgid "& [options]"
 msgstr "& [ਚੋਣਾਂ]"
 
 #: ../src/daemon/abrt-server.c:520
-#, fuzzy
 msgid "Use NUM as client uid"
-msgstr "UID ਨੂੰ ਕਲਾਂਈਟ uid ਤੌਰ ਤੇ ਵਰਤੋ"
+msgstr ""
 
 #: ../src/daemon/abrt-server.c:521 ../src/plugins/abrt-watch-log.c:141
 #: ../src/plugins/abrt-dump-oops.c:193 ../src/plugins/abrt-dump-xorg.c:238
@@ -133,25 +134,24 @@ msgid "Add program names to log"
 msgstr "ਸਮੱਸਿਆ ਨਾਂ ਲਾਗ ਵਿੱਚ ਜੋੜੋ"
 
 #: ../src/dbus/abrt-dbus.c:110
-#, fuzzy
 msgid "Unknown error"
-msgstr "ਅਣਜਾਣ ਓਪਰੇਸ਼ਨ: %s."
+msgstr "ਅਣਜਾਣੀ ਗਲਤੀ"
 
 #: ../src/dbus/abrt-dbus.c:398
-#, fuzzy, c-format
+#, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr "{0} ਇੱਕ ਢੁੱਕਵਾਂ vmcore ਨਹੀਂ ਹੈ"
+msgstr "'%s' ਠੀਕ ਸਮੱਸਿਆ ਡਾਇਰੈਕਟਰੀ ਨਹੀਂ ਹੈ"
 
 #: ../src/dbus/abrt-dbus.c:507 ../src/dbus/abrt-dbus.c:587
 msgid "Not Authorized"
-msgstr ""
+msgstr "ਪਰਮਾਣਤ ਨਹੀਂ"
 
 #: ../src/dbus/abrt-dbus.c:754
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
-msgstr ""
+msgstr "ਨਾਂ '%s' ਗੁੰਮ ਗਿਆ ਹੈ, ਕਿਰਪਾ ਕਰਕੇ ਜਾਂਚੋ ਕਿ ਇਸ ਨਾਂ ਵਾਲਾ ਹੋਰ ਜੰਤਰ ਤਾਂ ਨਹੀਂ ਚੱਲ ਰਿਹਾ।\n"
 
 #: ../src/dbus/abrt-dbus.c:781 ../src/daemon/abrtd.c:844
 msgid "Exit after NUM seconds of inactivity"
@@ -159,7 +159,7 @@ msgstr "NUM ਸਕਿੰਟਾਂ ਦੀ ਕਾਰਵਾਈ ਤੋਂ ਬਾਅ�
 
 #: ../src/dbus/abrt-dbus.c:799
 msgid "This program must be run as root."
-msgstr ""
+msgstr "ਇਹ ਪਰੋਗਰਾਮ ਪਰਬੰਧਕ(root) ਦੇ ਤੌਰ ਤੇ ਚਲਾਉਣਾ ਜਰੂਰੀ ਹੈ।"
 
 #: ../src/daemon/abrtd.c:842
 msgid "Do not daemonize"
@@ -170,9 +170,8 @@ msgid "Log to syslog even with -d"
 msgstr "syslog ਵਿੱਚ ਭਾਵੇਂ -d ਚੋਣ ਨਾਲ ਲਾਗ ਕਰੋ"
 
 #: ../src/daemon/abrt-handle-event.c:290
-#, fuzzy
 msgid "& [-v -i] -e|--event EVENT DIR..."
-msgstr "& [-v] -e|--event EVENT DIR..."
+msgstr ""
 
 #: ../src/daemon/abrt-handle-event.c:298
 msgid "Run EVENT on DIR"
@@ -215,9 +214,8 @@ msgid "Submission Result"
 msgstr "ਭੇਜਣ ਦਾ ਨਤੀਜਾ"
 
 #: ../src/gui-gtk/main.c:899
-#, fuzzy
 msgid "_Problem"
-msgstr "ਸਮੱਸਿਆ"
+msgstr "ਸਮੱਸਿਆ(_P)"
 
 #: ../src/gui-gtk/main.c:900
 msgid "_Edit"
@@ -229,7 +227,7 @@ msgstr "ਮੱਦਦ(_H)"
 
 #: ../src/gui-gtk/main.c:912
 msgid "Open problem data"
-msgstr ""
+msgstr "ਸਮੱਸਿਆ ਡਾਟਾ ਖੋਲੋ"
 
 #: ../src/gui-gtk/main.c:936
 msgid "Report problem with ABRT"
@@ -245,7 +243,7 @@ msgstr "<b>ਭੇਜੀ ਰਿਪੋਰਟ ਨਹੀਂ ਹੈ</b>"
 
 #: ../src/gui-gtk/main.c:979
 msgid "Show all problems"
-msgstr ""
+msgstr "ਸਭ ਸਮੱਸਿਆਵਾਂ ਵੇਖਾਓ"
 
 #: ../src/gui-gtk/main.c:1022
 msgid "Submitted reports"
@@ -256,20 +254,20 @@ msgid "<b>Submitted reports</b>"
 msgstr "<b>ਭੇਜੀ ਰਿਪੋਰਟ</b>"
 
 #: ../src/gui-gtk/main.c:1216
-#, fuzzy
 msgid ""
 "& [-vpD] [DIR]...\n"
 "\n"
 "Shows list of problem directories in specified DIR(s)\n"
 "and ones saved in system-wide problem directory spool."
 msgstr ""
-"& [-vp] [DIR]...\n"
+"& [-vpD] [DIR]...\n"
 "\n"
-"ABRT ਡੰਪ ਡਾਇਰੈਕਟਰੀਆਂ ਦੀ ਸੂਚੀ ਨੂੰ ਨਿਰਧਾਰਤ DIR(s) ਵਿੱਚ ਵੇਖਾਓ\n"
+"ਦੱਸੀ DIR(s) ਵਿੱਚ ਸਮੱਸਿਆ ਡਾਇਰੈਕਟਰੀਆਂ ਦੀ ਸੂਚੀ ਵੇਖਾਓ\n"
+"ਅਤੇ ਸਿਸਟਮ-ਸੰਬੰਧੀ ਸਮੱਸਿਆ ਡਾਇਰੈਕਟਰੀ ਪੂਲ ਵਿੱਚ ਸੰਭਾਲੀਆਂ ਹਨ, ਉਹ ਵੀ ਵੇਖਾਓ।"
 
 #: ../src/gui-gtk/main.c:1226
 msgid "Do not query problems over dbus (use only DIRs)"
-msgstr ""
+msgstr "dbus ਸੰਬੰਧੀ ਸਮੱਸਿਆ ਲਈ ਨਾ ਪੁੱਛੋ (ਸਿਰਫ DIRs ਵਰਤੋ)"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:242 ../src/plugins/abrt-action-analyze-vmcore.in:126
@@ -279,27 +277,27 @@ msgstr "ਬੈਕਟਰੇਸ ਬਣਾ ਰਿਹਾ"
 #: ../src/lib/problem_api.c:41
 #, c-format
 msgid "Can't connect to system DBus: %s"
-msgstr ""
+msgstr "ਸਿਸਟਮ DBus ਨਾਲ ਜੁੜ ਨਹੀਂ ਸਕਿਆ: %s"
 
 #: ../src/lib/problem_api.c:65
-#, fuzzy, c-format
+#, c-format
 msgid "Can't chown '%s': %s"
-msgstr "'%s' ਨੂੰ ਚਲਾ ਨਹੀਂ ਸਕਦਾ"
+msgstr "chown '%s' ਨਹੀਂ ਕਰ ਸਕਿਆ: %s"
 
 #: ../src/lib/problem_api.c:92
-#, fuzzy, c-format
+#, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr "ਪੂਰੀਆਂ ਸਮੱਸਿਆ ਡਾਇਰੈਕਟਰੀਆਂ ਹਟਾਓ"
+msgstr "ਸਮੱਸਿਆ ਡਾਇਰੈਕਟਰੀ ਹਟਾਉਣ ਵਿੱਚ ਫੇਲ ਹੋਇਆ: %s"
 
 #: ../src/lib/problem_api.c:126
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
-msgstr ""
+msgstr "abrt-dbus ਤੋਂ ਸਮੱਸਿਆ ਡਾਟਾ ਨਹੀਂ ਲੈ ਸਕਿਆ: %s"
 
 #: ../src/lib/problem_api.c:160
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
-msgstr ""
+msgstr "abrt-dbus ਤੋਂ ਸਮੱਸਿਆ ਸੂਚੀ ਨਹੀਂ ਲੈ ਸਕਿਆ: %s"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:51
 msgid ""
@@ -416,19 +414,19 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:97
 msgid "Do not hash fingerprints"
-msgstr ""
+msgstr "ਫਿੰਗਰਪ੍ਰਿੰਟਾਂ ਨੂੰ ਹੈਸ਼ ਨਾ ਕਰੋ"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:172
-#, fuzzy, c-format
+#, c-format
 msgid "Core-backtraces are not supported for '%s'"
-msgstr "%s ਲਈ ਬੈਕਟਰੇਸ ਪਾਰਸਿੰਗ ਫੇਲ ਹੋਈ ਹੈ"
+msgstr "ਕੋਰ-ਬੈਕਟਰੇਸ ਨੂੰ '%s' ਲਈ ਸਹਿਯੋਗ ਨਹੀਂ ਹੈ"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:50
 msgid "Exiting on user command"
 msgstr "ਉਪਭੋਗੀ ਕਮਾਂਡ ਬੰਦ ਕਰ ਰਿਹਾ ਹੈ"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:86
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -450,6 +448,7 @@ msgstr ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
 "[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -461,6 +460,7 @@ msgstr ""
 "    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
+"    -e,--exact  Download only specified files\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:170
 msgid "Can't open {0}: {1}"
@@ -475,13 +475,12 @@ msgid "Missing debuginfo file: {0}"
 msgstr "ਗੈਰ-ਮੌਜੂਦ debuginfo ਫਾਇਲ: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:217
-#, fuzzy
 msgid "All debuginfo files are available"
-msgstr "ਸਭ {0} debuginfo ਫਾਇਲਾਂ ਉਪਲੱਬਧ ਹਨ"
+msgstr "ਸਭ debuginfo ਫਾਇਲਾਂ ਉਪਲੱਬਧ ਹਨ"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:34
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:79
 msgid ""
@@ -572,31 +571,32 @@ msgid ""
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
 msgstr ""
+"& [-vs] [-F STR]... FILE PROG [ARGS]\n"
+"\n"
+"ਲਾਗ ਫਾਇਲ FILE ਵੇਖੋ, PROG ਚਲਾਓ ਜਦੋਂ ਇਹ ਫੈਲਦਾ ਹੈ ਜਾਂ ਤਬਦੀਲ ਕੀਤਾ ਜਾਂਦਾ ਹੈ"
 
 #: ../src/plugins/abrt-watch-log.c:142
 msgid "Don't run PROG if STRs aren't found"
-msgstr ""
+msgstr "PROG ਨਾਲ ਚਲਾਓ ਜੇ STRs ਨਹੀਂ ਲੱਭਿਆ"
 
 #: ../src/plugins/abrt-dump-oops.c:136
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"ਇੱਕ ਕਰਨਲ ਸਮੱਸਿਆ ਆਈ ਹੈ, ਪਰ ਤੁਹਾਡਾ ਕਰਨਲ ਖਰਾਬ ਹੈ (ਫਲੈਗ:%s)। ਕਰਨਲ ਮੈਨਟੇਨਰ ਖਰਾਬ ਰਿਪੋਰਟਾਂ ਦੀ "
-"ਜਾਂਚ ਕਰਨ ਤੋਂ ਅਸਮਰਥ ਹੈ।"
+"ਇੱਕ ਕਰਨਲ ਸਮੱਸਿਆ ਆਈ ਹੈ, ਪਰ ਤੁਹਾਡਾ ਕਰਨਲ ਖਰਾਬ (flags:%s) ਹੋ ਗਿਆ ਹੈ। ਕਰਨਲ ਪਰਬੰਧਕ ਖਰਾਬੀ "
+"ਬਾਰੇ ਪੜਤਾਲ ਕਰਨ ਤੋਂ ਅਸਮਰਥ ਹਨ।"
 
 #: ../src/plugins/abrt-dump-oops.c:177
-#, fuzzy
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr ""
-"& [-vsrowx] [-d DIR] FILE\n"
-"or: & [-vsrowx] -D FILE\n"
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
-"oops ਨੂੰ syslog/dmesg ਫਾਇਲ ਤੋਂ ਖੋਲਦਾ ਹੈ"
+"oops ਨੂੰ FILE ਤੋਂ ਲਵੋ (ਜਾਂ ਸਟੈਂਡਰਡ ਇੰਪੁੱਟ ਤੋਂ)"
 
 #: ../src/plugins/abrt-dump-oops.c:194
 msgid "Print found oopses on standard output"
@@ -619,7 +619,7 @@ msgstr "ਸਮੱਸਿਆ ਡਾਇਰੈਕਟਰੀ ਨੂੰ ਪੜ੍ਹਨ
 
 #: ../src/plugins/abrt-dump-oops.c:201 ../src/plugins/abrt-dump-xorg.c:243
 msgid "Print search string(s) to stdout and exit"
-msgstr ""
+msgstr "ਖੋਜ ਸਤਰਾਂ ਨੂੰ stdout ਤੇ ਪ੍ਰਿੰਟ ਕਰੋ ਅਤੇ ਬਾਹਰ ਜਾਓ"
 
 #: ../src/plugins/abrt-dump-xorg.c:231
 msgid ""
@@ -627,16 +627,17 @@ msgid ""
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
 msgstr ""
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"Xorg ਕਰੈਸ਼ ਨੂੰ FILE (ਜਾਂ ਸਟੈਂਡਰਡ ਇੰਪੁੱਟ) ਤੋਂ ਲਵੋ"
 
 #: ../src/plugins/abrt-dump-xorg.c:239
-#, fuzzy
 msgid "Print found crash data on standard output"
-msgstr "Print found oopses on standard output"
+msgstr "ਮਿਲੇ ਕਰੈਸ਼ ਡਾਟੇ ਨੂੰ ਸਟੈਂਡਰਡ ਆਊਟਪੁੱਟ ਤੇ ਪ੍ਰਿੰਟ ਕਰੋ"
 
 #: ../src/plugins/abrt-dump-xorg.c:240
-#, fuzzy
 msgid "Create ABRT dump in DIR for every crash found"
-msgstr "ਹਰੇਕ oops ਲਈ DIR ਵਿੱਚ ABRT ਡੰਪ ਬਣਾਓ"
+msgstr "ABRT ਡੰਪ ਨੂੰ DIR ਵਿੱਚ ਹਰੇਕ ਕਰੈਸ਼ ਲਈ ਬਣਾਓ"
 
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid ""
@@ -697,6 +698,8 @@ msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official %s repositories?"
 msgstr ""
+"ਰੀਟਰੇਸ ਸਰਵਰ ਪੈਕੇਜ '%s.%s' ਨੂੰ ਪਰੋਸੈੱਸ ਕਰਨ ਤੋਂ ਅਸਮਰਥ ਹੈ।\n"
+"ਇਹ ਦਫਤਰੀ %s ਰਿਪੋਜ਼ਟਰੀਆਂ ਦਾ ਹਿੱਸਾ ਹੈ?"
 
 #: ../src/plugins/abrt-retrace-client.c:409
 msgid "Querying server settings"
@@ -750,9 +753,8 @@ msgid "The server is not able to handle your request."
 msgstr "ਸਰਵਰ ਤੁਹਾਡੀ ਬੇਨਤੀ ਦਾ ਹੱਲ ਨਹੀਂ ਕਰ ਸਕਦਾ।"
 
 #: ../src/plugins/abrt-retrace-client.c:576
-#, fuzzy
 msgid "Unknown package sent to Retrace server."
-msgstr "ਰੀਟਰੇਸ ਸਰਵਰ ਨਾਲ ਅਸੁਰੱਖਿਅਤ ਕੁਨੈਕਸ਼ਨ ਮਨਜੂਰ ਕਰੋ"
+msgstr "ਅਣਜਾਣ ਪੈਕੇਜ ਰੀਟਰੇਸ ਸਰਵਰ ਤੇ ਭੇਜਿਆ ਗਿਆ ਹੈ।"
 
 #: ../src/plugins/abrt-retrace-client.c:586
 msgid "Preparing an archive to upload"
@@ -768,9 +770,9 @@ msgstr ""
 "ਅਕਾਰ ਸਵੀਕਾਰ ਕਰਦਾ ਹੈ।"
 
 #: ../src/plugins/abrt-retrace-client.c:612
-#, fuzzy, c-format
+#, c-format
 msgid "You are going to upload %d megabytes. Continue?"
-msgstr "ਤੁਸੀਂ %d ਮੈਗੀਬਾਈਟ ਅੱਪਲੋਡ ਕਰਨ ਜਾ ਰਹੇ ਹੋ। ਜਾਰੀ ਕਰਨਾ?"
+msgstr "ਤੁਸੀਂ %d ਮੈਗਾਬਾਈਟ ਅੱਪਲੋਡ ਕਰਨ ਜਾ ਰਹੇ ਹੋ। ਜਾਰੀ ਕਰਨਾ?"
 
 #: ../src/plugins/abrt-retrace-client.c:619
 msgid "Cancelled by user"
@@ -864,7 +866,7 @@ msgstr "ਰੀਟਰੇਸ ਸਰਵਰ ਨਾਲ ਅਸੁਰੱਖਿਅਤ �
 msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
-msgstr ""
+msgstr "ਜਾਂਚ ਨਾ ਕਰੋ ਕਿ ਰੀਟਰੇਸ ਸਰਵਰ ਦਿੱਤੇ ਪੈਕੇਜ ਨੂੰ ਪਰੋਸੈੱਸ ਕਰ ਦੇ ਯੋਗ ਹੈ ਜਾਂ ਨਹੀਂ"
 
 #: ../src/plugins/abrt-retrace-client.c:1103
 msgid "retrace server URL"
@@ -1003,7 +1005,7 @@ msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
-msgstr ""
+msgstr "Collect .xsession-errors"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1141,15 +1143,15 @@ msgstr "NSS ਨੂੰ ਬੰਦ ਕਰਨ ਵਿੱਚ ਫੇਲ"
 
 #: ../src/plugins/bodhi.c:375
 msgid "List of bug ids"
-msgstr ""
+msgstr "ਬੱਗ ids ਦੀ ਸੂਚੀ"
 
 #: ../src/plugins/bodhi.c:376
 msgid "Specify a bodhi server url"
-msgstr ""
+msgstr "ਇੱਕ ਬੋਧੀ ਸਰਵਰ url ਦਿਓ"
 
 #: ../src/plugins/bodhi.c:377
 msgid "Specify a release"
-msgstr ""
+msgstr "ਇੱਕ ਰੀਲੀਜ਼ ਦਿਓ"
 
 #: ../src/plugins/bodhi.c:382
 msgid ""
@@ -1157,19 +1159,22 @@ msgid ""
 "\n"
 "Search for updates on bodhi server"
 msgstr ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"\n"
+"ਬੋਧੀ ਸਰਵਰ ਤੇ ਅੱਪਡੇਟਾਂ ਲਈ ਖੋਜੋ"
 
 #: ../src/plugins/bodhi.c:432
 msgid "Searching for updates"
-msgstr ""
+msgstr "ਅੱਪਡੇਟਾਂ ਲਈ ਖੋਜ ਰਿਹਾ ਹੈ"
 
 #: ../src/plugins/bodhi.c:438
 msgid "No updates for this package found"
-msgstr ""
+msgstr "ਇਸ ਪੈਕੇਜ ਲਈ ਕੋਈ ਅੱਪਡੇਟ ਨਹੀਂ ਲੱਭਿਆ"
 
 #. strbuf_free(q);
 #: ../src/plugins/bodhi.c:467
 msgid "Local version of the package is newer than available updates"
-msgstr ""
+msgstr "ਪੈਕੇਜ ਦਾ ਲੋਕਲ ਵਰਜਨ ਉਪਲੱਬਧ ਅੱਪਡੇਟਾਂ ਤੋਂ ਨਵਾਂ ਹੈ"
 
 #: ../src/plugins/bodhi.c:484
 #, c-format
@@ -1220,14 +1225,12 @@ msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
-#, fuzzy
 msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
-msgstr "ਜਾਂਚ ਵਾਸਤੇ ਕੋਰਡੰਪ ਨੂੰ ਰਿਮੋਟ ਰੀਟਰੇਸ ਸਰਵਰ ਉੱਪਰ ਭੇਜੋ"
+msgstr ""
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
-#, fuzzy
 msgid ""
 "Uploads coredump to a server, which generates backtrace and returns it. If "
 "user doens't want to upload his coredump to anywhere the event performs "
@@ -1237,10 +1240,6 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
-"ਕੋਰਡੰਪ ਨੂੰ ਸਰਵਰ ਤੇ ਅੱਪਲੋਡ ਕਰਦਾ ਹੈ, ਜੋ ਬੈਕਟਰੇਸ ਬਣਾਉਂਦੀ ਹੈ ਅਤੇ ਵਾਪਸ ਭੇਜਦੀ ਹੈ। Pros: ਡੀਬੱਗ-"
-"ਜਾਣਕਾਰੀ ਡਾਊਨਲੋਡ ਕਰਨ ਦੀ ਕੋਈ ਲੋੜ ਨਹੀਂ ਹੈ। ਰੀਟਰੇਸ ਸਰਵਰ ਦਾ ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਡਾਟਾਬੇਸ ਦੀ "
-"ਰੀਟਰੇਸ ਜਿਆਦਾ ਮੁਕੰਮਲ ਹੈ। ਰੀਟਰੇਸ ਸਰਵਰ ਵਧੀਆ ਬੈਕਟਰੇਸ ਬਣਾ ਸਕਦਾ ਹੈ। Cons: ਕੋਰਡੰਪ ਜੋ ਤੁਸੀਂ ਅੱਪਲੋਡ "
-"ਕੀਤਾ ਹੈ ਉਸ ਵਿੱਚ ਕਰੈਸ਼ ਪਰੋਗਰਾਮ ਦੀ ਸਾਰਾ ਡਾਟਾ ਸ਼ਾਮਿਲ ਹੈ, ਤੁਹਾਡੇ ਪਰਾਈਵੇਟ ਡਾਟੇ ਸਮੇਤ, ਜੇ ਕੋਈ ਹੈ।"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -1276,7 +1275,7 @@ msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:1
 msgid "Collect Smolt profile"
-msgstr ""
+msgstr "Smolt ਪਰੋਫਾਈਲ ਲਵੋ"
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
 msgid "Save your computer's hardware profile information"
@@ -1320,9 +1319,8 @@ msgstr ""
 "user_gvimrc, ਤੌਰ ਤੇ ਸੰਭਾਲੋ।"
 
 #: ../src/plugins/post_report.xml.in.h:1
-#, fuzzy
 msgid "Post report"
-msgstr "ਭੇਜੀ ਰਿਪੋਰਟ ਨਹੀਂ ਹੈ"
+msgstr ""
 
 #: ../src/plugins/post_report.xml.in.h:2
 msgid "Executed after the reporting is finished"
@@ -1331,21 +1329,3 @@ msgstr ""
 #: ../src/plugins/post_report.xml.in.h:3
 msgid "Used for updating of the databases"
 msgstr ""
-
-#~ msgid "Dump directory"
-#~ msgstr "ਡੰਪ ਡਾਇਰੈਕਟਰੀ"
-
-#~ msgid "Show"
-#~ msgstr "ਵੇਖੋ"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "ABRT ਸਰਵਿਸ ਨਹੀਂ ਚੱਲ ਰਹੀ ਹੈ"
-
-#~ msgid "_Report"
-#~ msgstr "ਰਿਪੋਰਟ(_R)"
-
-#~ msgid "Parse kernel's message buffer before parsing FILE"
-#~ msgstr "FILE ਪਾਰਸ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਕਰਨਲ ਦੇ ਮੈਸੇਜ ਬਫਰ ਨੂੰ ਪਾਰਸ ਕਰੋ"
-
-#~ msgid "Do not exit, watch the file for new oopses"
-#~ msgstr "ਬੰਦ ਨਾ ਕਰੋ, ਨਵੇਂ oopses ਲਈ ਫਾਇਲ ਵੇਖੋ"

@@ -4,23 +4,23 @@
 #
 # Translators:
 # bardisch <kwb0128@gmail.com>, 2011.
-# Eun-Ju Kim  <eukim@redhat.com>, 2011, 2012.
+# Eun-Ju Kim  <eukim@redhat.com>, 2011-2012.
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
-#   <raypoatssium@gmail.com>, 2011, 2012.
+#   <raypoatssium@gmail.com>, 2011-2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-11-23 15:59+0100\n"
-"PO-Revision-Date: 2012-08-07 01:57+0000\n"
-"Last-Translator: eukim <eukim@redhat.com>\n"
+"POT-Creation-Date: 2012-11-23 18:31+0100\n"
+"PO-Revision-Date: 2012-11-23 17:24+0000\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/fedora/language/"
 "ko/)\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
 #: ../src/gui-gtk/main.c:955
@@ -32,14 +32,13 @@ msgid "ABRT notification applet"
 msgstr "ABRT 알림 애플릿"
 
 #: ../src/applet/applet.c:66
-#, fuzzy
 msgid "Problem detected"
-msgstr "문제가 있는 디렉토리 "
+msgstr "문제가 감지되었습니다"
 
 #: ../src/applet/applet.c:250
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr ""
+msgstr "'%s'의 소유 권한을 갖을 수 없음 "
 
 #: ../src/applet/applet.c:315 ../src/applet/applet.c:317
 msgid "Warning"
@@ -62,7 +61,7 @@ msgstr "숨기기"
 
 #: ../src/applet/applet.c:440
 msgid "Ignore"
-msgstr ""
+msgstr "무시"
 
 #. buttons are homogenous so set size only for one button and it will
 #. * work for the rest buttons in same gtk_hbox_new()
@@ -124,9 +123,8 @@ msgid "& [options]"
 msgstr "& [options]"
 
 #: ../src/daemon/abrt-server.c:520
-#, fuzzy
 msgid "Use NUM as client uid"
-msgstr "UID를 클라이언트 uid로 사용 "
+msgstr ""
 
 #: ../src/daemon/abrt-server.c:521 ../src/plugins/abrt-watch-log.c:141
 #: ../src/plugins/abrt-dump-oops.c:193 ../src/plugins/abrt-dump-xorg.c:238
@@ -139,18 +137,17 @@ msgid "Add program names to log"
 msgstr "로그에 프로그램 이름 추가 "
 
 #: ../src/dbus/abrt-dbus.c:110
-#, fuzzy
 msgid "Unknown error"
-msgstr "알 수 없는 작업: %s."
+msgstr "알 수 없는 오류"
 
 #: ../src/dbus/abrt-dbus.c:398
-#, fuzzy, c-format
+#, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr "{0}은(는) 유효한 vmcore가 아닙니다 "
+msgstr "'%s'는 유효한 문제 디렉토리가 아닙니다"
 
 #: ../src/dbus/abrt-dbus.c:507 ../src/dbus/abrt-dbus.c:587
 msgid "Not Authorized"
-msgstr ""
+msgstr "권한이 없습니다 "
 
 #: ../src/dbus/abrt-dbus.c:754
 #, c-format
@@ -158,6 +155,8 @@ msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr ""
+"'%s'의 이름이 분실되었습니다. 이 이름을 갖는 다른 서비스가 실행되고 있지 않은"
+"지 확인하십시오.\n"
 
 #: ../src/dbus/abrt-dbus.c:781 ../src/daemon/abrtd.c:844
 msgid "Exit after NUM seconds of inactivity"
@@ -165,7 +164,7 @@ msgstr "NUM 초 동안 동작하지 않을 경우 종료합니다 "
 
 #: ../src/dbus/abrt-dbus.c:799
 msgid "This program must be run as root."
-msgstr ""
+msgstr "이 프로그램은 root로 실행해야 합니다."
 
 #: ../src/daemon/abrtd.c:842
 msgid "Do not daemonize"
@@ -176,9 +175,8 @@ msgid "Log to syslog even with -d"
 msgstr "-d를 사용하여 syslog에 로그 "
 
 #: ../src/daemon/abrt-handle-event.c:290
-#, fuzzy
 msgid "& [-v -i] -e|--event EVENT DIR..."
-msgstr "& [-v] -e|--event EVENT DIR..."
+msgstr ""
 
 #: ../src/daemon/abrt-handle-event.c:298
 msgid "Run EVENT on DIR"
@@ -221,9 +219,8 @@ msgid "Submission Result"
 msgstr "제출 결과 "
 
 #: ../src/gui-gtk/main.c:899
-#, fuzzy
 msgid "_Problem"
-msgstr "문제 "
+msgstr "문제(_P)"
 
 #: ../src/gui-gtk/main.c:900
 msgid "_Edit"
@@ -235,7 +232,7 @@ msgstr "도움말(_H)  "
 
 #: ../src/gui-gtk/main.c:912
 msgid "Open problem data"
-msgstr ""
+msgstr "문제 데이터 열기"
 
 #: ../src/gui-gtk/main.c:936
 msgid "Report problem with ABRT"
@@ -251,7 +248,7 @@ msgstr "<b>제출되지 않은 보고</b>"
 
 #: ../src/gui-gtk/main.c:979
 msgid "Show all problems"
-msgstr ""
+msgstr "모든 문제 보기"
 
 #: ../src/gui-gtk/main.c:1022
 msgid "Submitted reports"
@@ -262,20 +259,20 @@ msgid "<b>Submitted reports</b>"
 msgstr "<b>제출된 보고</b> "
 
 #: ../src/gui-gtk/main.c:1216
-#, fuzzy
 msgid ""
 "& [-vpD] [DIR]...\n"
 "\n"
 "Shows list of problem directories in specified DIR(s)\n"
 "and ones saved in system-wide problem directory spool."
 msgstr ""
-"& [-vp] [DIR]...\n"
+"& [-vpD] [DIR]...\n"
 "\n"
-"지정된 DIR에 있는 ABRT 덤프 디렉토리 목록 보기 \n"
+"지정된 DIR와 시스템 전역 문제 디렉토리 스풀에 저장된\n"
+"문제 디렉토리의 목록을 표시합니다."
 
 #: ../src/gui-gtk/main.c:1226
 msgid "Do not query problems over dbus (use only DIRs)"
-msgstr ""
+msgstr "dbus 상의 문제는 쿼리하지 않음 (DIR만 사용)"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:242 ../src/plugins/abrt-action-analyze-vmcore.in:126
@@ -285,27 +282,27 @@ msgstr "백트레이스 생성  "
 #: ../src/lib/problem_api.c:41
 #, c-format
 msgid "Can't connect to system DBus: %s"
-msgstr ""
+msgstr "시스템 DBus에 연결할 수 없음: %s"
 
 #: ../src/lib/problem_api.c:65
-#, fuzzy, c-format
+#, c-format
 msgid "Can't chown '%s': %s"
-msgstr "'%s'을(를) 실행할 수 없습니다 "
+msgstr "'%s'의 chown할 수 없음: %s"
 
 #: ../src/lib/problem_api.c:92
-#, fuzzy, c-format
+#, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr "문제가 있는 디렉토리 전체를 삭제 "
+msgstr "문제 디렉토리 삭제 실패: %s"
 
 #: ../src/lib/problem_api.c:126
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
-msgstr ""
+msgstr "abrt-dbus에서 문제 데이터를 가져올 수 없음: %s"
 
 #: ../src/lib/problem_api.c:160
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
-msgstr ""
+msgstr "abrt-dbus에서 문제 목록을 가져올 수 없음: %s"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:51
 msgid ""
@@ -420,12 +417,12 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:97
 msgid "Do not hash fingerprints"
-msgstr ""
+msgstr "지문을 해시하지 않음"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:172
-#, fuzzy, c-format
+#, c-format
 msgid "Core-backtraces are not supported for '%s'"
-msgstr "%s 용 백트레이스 구문 분석 실패 "
+msgstr "'%s'에 대해 코어 백트레이스가 지원되지 않음"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:50
 msgid "Exiting on user command"
@@ -487,7 +484,7 @@ msgstr "모든 debuginfo 파일이 사용 가능합니다"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:34
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:79
 msgid ""
@@ -578,10 +575,13 @@ msgid ""
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
 msgstr ""
+"& [-vs] [-F STR]... FILE PROG [ARGS]\n"
+"\n"
+"로그 파일 FILE을 확인하고 로그 파일이 증가하거나 교체되면 PROG를 실행합니다"
 
 #: ../src/plugins/abrt-watch-log.c:142
 msgid "Don't run PROG if STRs aren't found"
-msgstr ""
+msgstr "STR를 찾을 수 없을 경우 PROG를 실행하지 않습니다"
 
 #: ../src/plugins/abrt-dump-oops.c:136
 #, c-format
@@ -593,16 +593,14 @@ msgstr ""
 "리자는 손상된 보고를 진단할 수 없습니다."
 
 #: ../src/plugins/abrt-dump-oops.c:177
-#, fuzzy
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr ""
-"& [-vsrowx] [-d DIR] FILE\n"
-"또는: & [-vsrowx] -D FILE\n"
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
-"syslog/dmesg 파일에서 oops를 추출합니다 "
+"FILE (또는 표준 입력)에서 oops를 추출합니다"
 
 #: ../src/plugins/abrt-dump-oops.c:194
 msgid "Print found oopses on standard output"
@@ -625,7 +623,7 @@ msgstr "문제 디렉토리를 전역에서 읽기 가능하게 합니다 "
 
 #: ../src/plugins/abrt-dump-oops.c:201 ../src/plugins/abrt-dump-xorg.c:243
 msgid "Print search string(s) to stdout and exit"
-msgstr ""
+msgstr "검색 문자열을 표준 출력에 인쇄하고 종료 "
 
 #: ../src/plugins/abrt-dump-xorg.c:231
 msgid ""
@@ -633,16 +631,17 @@ msgid ""
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
 msgstr ""
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"FILE (또는 표준 입력)에서 Xorg 크래시를 추출합니다"
 
 #: ../src/plugins/abrt-dump-xorg.c:239
-#, fuzzy
 msgid "Print found crash data on standard output"
-msgstr "찾아낸 oops를 표준 출력으로 인쇄합니다 "
+msgstr "검색된 크래시 데이터를 표준 출력에 인쇄 "
 
 #: ../src/plugins/abrt-dump-xorg.c:240
-#, fuzzy
 msgid "Create ABRT dump in DIR for every crash found"
-msgstr "모든 oops에 대해 DIR에 ABRT 덤프를 생성합니다 "
+msgstr "검색된 모든 크래시에 대해 DIR에 ABRT 덤프 생성 "
 
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid ""
@@ -704,6 +703,8 @@ msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official %s repositories?"
 msgstr ""
+"Retrace 서버는 패키지 '%s.%s'를 처리할 수 없습니다.\n"
+"이는 공식적인 %s의 리포지터리입니까?"
 
 #: ../src/plugins/abrt-retrace-client.c:409
 msgid "Querying server settings"
@@ -757,9 +758,8 @@ msgid "The server is not able to handle your request."
 msgstr "서버가 귀하의 요청을 처리할 수 없습니다. "
 
 #: ../src/plugins/abrt-retrace-client.c:576
-#, fuzzy
 msgid "Unknown package sent to Retrace server."
-msgstr "Retrace 서버로 비보안 연결을 허용 "
+msgstr "알 수 없는 패키지가 Retrace 서버에 전송되었습니다."
 
 #: ../src/plugins/abrt-retrace-client.c:586
 msgid "Preparing an archive to upload"
@@ -775,9 +775,9 @@ msgstr ""
 "일한 아카이브만을 허용합니다. "
 
 #: ../src/plugins/abrt-retrace-client.c:612
-#, fuzzy, c-format
+#, c-format
 msgid "You are going to upload %d megabytes. Continue?"
-msgstr "%d 메가바이트를 업로드할 예정입니다. 계속 진행하시겠습니까? "
+msgstr "%d MB를 업로드하려고 합니다. 계속 하시겠습니까? "
 
 #: ../src/plugins/abrt-retrace-client.c:619
 msgid "Cancelled by user"
@@ -875,6 +875,8 @@ msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
 msgstr ""
+"아카이브를 업로드하기 전 Retrace 서버가 해당 패키지를 처리할 수 있는지 확인하"
+"지 않음"
 
 #: ../src/plugins/abrt-retrace-client.c:1103
 msgid "retrace server URL"
@@ -1156,15 +1158,15 @@ msgstr "NSS 종료 실패 "
 
 #: ../src/plugins/bodhi.c:375
 msgid "List of bug ids"
-msgstr ""
+msgstr "버그 ID 목록"
 
 #: ../src/plugins/bodhi.c:376
 msgid "Specify a bodhi server url"
-msgstr ""
+msgstr "bodhi 서버 url 지정"
 
 #: ../src/plugins/bodhi.c:377
 msgid "Specify a release"
-msgstr ""
+msgstr "릴리즈 지정"
 
 #: ../src/plugins/bodhi.c:382
 msgid ""
@@ -1172,19 +1174,22 @@ msgid ""
 "\n"
 "Search for updates on bodhi server"
 msgstr ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"\n"
+"bodhi 서버에서 업데이트 검색"
 
 #: ../src/plugins/bodhi.c:432
 msgid "Searching for updates"
-msgstr ""
+msgstr "업데이트 검색 중"
 
 #: ../src/plugins/bodhi.c:438
 msgid "No updates for this package found"
-msgstr ""
+msgstr "이 패키지에 대한 업데이트를 찾을 수 없음"
 
 #. strbuf_free(q);
 #: ../src/plugins/bodhi.c:467
 msgid "Local version of the package is newer than available updates"
-msgstr ""
+msgstr "패키지의 로컬 버전은 사용 가능한 업데이트 보다 새로운 버전입니다"
 
 #: ../src/plugins/bodhi.c:484
 #, c-format
@@ -1235,14 +1240,12 @@ msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
-#, fuzzy
 msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
-msgstr "분석을 위해 코어 덤프를 원격 Retrace 서버로 전송 "
+msgstr ""
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
-#, fuzzy
 msgid ""
 "Uploads coredump to a server, which generates backtrace and returns it. If "
 "user doens't want to upload his coredump to anywhere the event performs "
@@ -1252,11 +1255,6 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
-"코어 덤프를 서버에 업로드하려면 백트레이스를 생성하고 이를 반환합니다. 장점: "
-"debuginfo를 다운로드할 필요가 없습니다. Retrace 서버의 debuginfo 데이터베이스"
-"는 보다 완벽합니다. Retrace 서버는 보다 나은 백트레이스를 생성합니다. 단점: "
-"업로드한 코어 덤프에는 (존재할 경우) 개인 데이터를 포함하여 충돌된 프로그램에"
-"서의 모든 데이터가 포함되어 있습니다.      "
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -1336,9 +1334,8 @@ msgstr ""
 "user_gvimrc로 저장합니다. "
 
 #: ../src/plugins/post_report.xml.in.h:1
-#, fuzzy
 msgid "Post report"
-msgstr "제출되지 않은 보고 "
+msgstr ""
 
 #: ../src/plugins/post_report.xml.in.h:2
 msgid "Executed after the reporting is finished"
@@ -1347,21 +1344,3 @@ msgstr ""
 #: ../src/plugins/post_report.xml.in.h:3
 msgid "Used for updating of the databases"
 msgstr ""
-
-#~ msgid "Dump directory"
-#~ msgstr "덤프 디렉토리 "
-
-#~ msgid "Show"
-#~ msgstr "보기 "
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "ABRT 서비스가 실행되고 있지 않음 "
-
-#~ msgid "_Report"
-#~ msgstr "보고(_R) "
-
-#~ msgid "Parse kernel's message buffer before parsing FILE"
-#~ msgstr "FILE을 구문 분석하기 전 커널의 메세지 버퍼를 구문 분석합니다  "
-
-#~ msgid "Do not exit, watch the file for new oopses"
-#~ msgstr "종료하지 않고 새 oops 파일을 관찰합니다 "

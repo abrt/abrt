@@ -1,32 +1,35 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
-# Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
+# Hasan Alp İNAN <hasanalpinan@gmail.com>, 2011.
+# M. Fatih ULUÇAM <>, 2012.
+# Muhammet Kara <muhammet.k@gmail.com>, 2011.
+# Onuralp SEZER <thunderbirdtr@gmail.com>, 2012.
+# Onur Baysan <onurbaysan@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-11-23 18:31+0100\n"
-"PO-Revision-Date: 2012-11-23 17:13+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2012-11-23 18:05+0100\n"
+"PO-Revision-Date: 2012-11-23 15:14+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
-"Language-Team: Arabic <trans-ar@lists.fedoraproject.org>\n"
-"Language: ar\n"
+"Language-Team: Turkish (http://www.transifex.com/projects/p/fedora/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"Language: tr\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
 #: ../src/gui-gtk/main.c:955
 msgid "Automatic Bug Reporting Tool"
-msgstr "أداة تبليغ العلّل الآليّة"
+msgstr "Otomatik Hata Bildirim Aracı"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2
 msgid "ABRT notification applet"
-msgstr "بريمج الإخطار إيه.بي.آر.تي (ABRT)"
+msgstr "ABRT bildirim uygulaması"
 
 #: ../src/applet/applet.c:66
 msgid "Problem detected"
@@ -39,20 +42,20 @@ msgstr ""
 
 #: ../src/applet/applet.c:315 ../src/applet/applet.c:317
 msgid "Warning"
-msgstr "تحذير"
+msgstr "Uyarı"
 
 #: ../src/applet/applet.c:365
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
-msgstr "بريمج منطقة التنبيه لتنبيه المستخدم عن المشاكل المٌكتشفة عن طريق ABRT"
+msgstr "ABRT tarafından tespit edilen sorunları kullanıcılara haber veren bildirim alanı uygulamacığı"
 
 #: ../src/applet/applet.c:381 ../src/gui-gtk/main.c:792
 msgid "translator-credits"
-msgstr "أحمد محمد عربي <egydev@fedoraproject.org>"
+msgstr "Hasan Alp İNAN , Onur BAYSAN"
 
 #: ../src/applet/applet.c:391
 msgid "Hide"
-msgstr "إخفاء"
+msgstr "Gizle"
 
 #: ../src/applet/applet.c:440
 msgid "Ignore"
@@ -63,11 +66,11 @@ msgstr ""
 #: ../src/applet/applet.c:444 ../src/gui-gtk/main.c:910
 #: ../src/gui-gtk/main.c:1048
 msgid "Report"
-msgstr "تقرير"
+msgstr "Rapor"
 
 #: ../src/applet/applet.c:448
 msgid "A Problem has Occurred"
-msgstr ""
+msgstr "Bir problem meydana geldi"
 
 #: ../src/applet/applet.c:533 ../src/applet/applet.c:716
 #, c-format
@@ -76,7 +79,7 @@ msgstr ""
 
 #: ../src/applet/applet.c:535 ../src/applet/applet.c:718
 msgid "A problem has been detected"
-msgstr ""
+msgstr "Bir sorun tespit edildi"
 
 #: ../src/applet/applet.c:634
 msgid ""
@@ -100,16 +103,16 @@ msgstr ""
 #: ../src/plugins/abrt-action-generate-backtrace.c:54
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:96
 msgid "Problem directory"
-msgstr ""
+msgstr "Dİzin problemi"
 
 #: ../src/daemon/abrt-action-save-package-data.c:388
 msgid "Configuration file"
-msgstr ""
+msgstr "Yapılandırma dosyası"
 
 #: ../src/daemon/abrt-server.c:509 ../src/dbus/abrt-dbus.c:772
 #: ../src/daemon/abrtd.c:829
 msgid "& [options]"
-msgstr ""
+msgstr "& [seçenekler]"
 
 #: ../src/daemon/abrt-server.c:520
 msgid "Use NUM as client uid"
@@ -118,12 +121,12 @@ msgstr ""
 #: ../src/daemon/abrt-server.c:521 ../src/plugins/abrt-watch-log.c:141
 #: ../src/plugins/abrt-dump-oops.c:193 ../src/plugins/abrt-dump-xorg.c:238
 msgid "Log to syslog"
-msgstr ""
+msgstr "Sistem günlüğüne kaydet"
 
 #: ../src/daemon/abrt-server.c:522 ../src/daemon/abrtd.c:845
 #: ../src/gui-gtk/main.c:1225
 msgid "Add program names to log"
-msgstr ""
+msgstr "Program adlarını günlüğe ekle"
 
 #: ../src/dbus/abrt-dbus.c:110
 msgid "Unknown error"
@@ -155,11 +158,11 @@ msgstr ""
 
 #: ../src/daemon/abrtd.c:842
 msgid "Do not daemonize"
-msgstr ""
+msgstr "Daemonize etme"
 
 #: ../src/daemon/abrtd.c:843
 msgid "Log to syslog even with -d"
-msgstr ""
+msgstr "Syslogları -d parametresi ile kullanın"
 
 #: ../src/daemon/abrt-handle-event.c:290
 msgid "& [-v -i] -e|--event EVENT DIR..."
@@ -175,35 +178,35 @@ msgstr ""
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr "عرض وتبليغ عن أعطال التطبيق"
+msgstr "Uygulama hatalarını göster ve raporla"
 
 #: ../src/gui-gtk/main.c:730
 msgid "Problem description"
-msgstr ""
+msgstr "Problem tanımı"
 
 #: ../src/gui-gtk/main.c:733
 msgid "Send"
-msgstr ""
+msgstr "Gönder"
 
 #: ../src/gui-gtk/main.c:811 ../src/gui-gtk/main.c:857
 msgid "Source"
-msgstr ""
+msgstr "Kaynak"
 
 #: ../src/gui-gtk/main.c:821 ../src/gui-gtk/main.c:867
 msgid "Problem"
-msgstr ""
+msgstr "Problem"
 
 #: ../src/gui-gtk/main.c:842
 msgid "Last Occurrence"
-msgstr ""
+msgstr "Son Gerçekleşme"
 
 #: ../src/gui-gtk/main.c:877
 msgid "Date Submitted"
-msgstr ""
+msgstr "Sunulan Zaman"
 
 #: ../src/gui-gtk/main.c:886
 msgid "Submission Result"
-msgstr ""
+msgstr "Gönderim Sonucu"
 
 #: ../src/gui-gtk/main.c:899
 msgid "_Problem"
@@ -211,11 +214,11 @@ msgstr ""
 
 #: ../src/gui-gtk/main.c:900
 msgid "_Edit"
-msgstr "_تحرير"
+msgstr "_Düzenle"
 
 #: ../src/gui-gtk/main.c:901
 msgid "_Help"
-msgstr "م_ساعدة"
+msgstr "_Yardım"
 
 #: ../src/gui-gtk/main.c:912
 msgid "Open problem data"
@@ -223,15 +226,15 @@ msgstr ""
 
 #: ../src/gui-gtk/main.c:936
 msgid "Report problem with ABRT"
-msgstr ""
+msgstr "ABRT aracılığıyla problemi raporla"
 
 #: ../src/gui-gtk/main.c:975
 msgid "Not submitted reports"
-msgstr ""
+msgstr "Gönderilmemiş raporlar"
 
 #: ../src/gui-gtk/main.c:977
 msgid "<b>Not submitted reports</b>"
-msgstr ""
+msgstr "<b>Gönderilmemiş raporlar</b>"
 
 #: ../src/gui-gtk/main.c:979
 msgid "Show all problems"
@@ -239,11 +242,11 @@ msgstr ""
 
 #: ../src/gui-gtk/main.c:1022
 msgid "Submitted reports"
-msgstr ""
+msgstr "Gönderilen raporlar"
 
 #: ../src/gui-gtk/main.c:1025
 msgid "<b>Submitted reports</b>"
-msgstr ""
+msgstr "<b>Gönderilen raporlar</b>"
 
 #: ../src/gui-gtk/main.c:1216
 msgid ""
@@ -260,7 +263,7 @@ msgstr ""
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:242 ../src/plugins/abrt-action-analyze-vmcore.in:126
 msgid "Generating backtrace"
-msgstr ""
+msgstr "Geri izleme üretiliyor"
 
 #: ../src/lib/problem_api.c:41
 #, c-format
@@ -295,15 +298,14 @@ msgid ""
 "and identifies crash function in problem directory DIR"
 msgstr ""
 
-#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:100
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "%s için geri izleme ayrıştırması başarısız oldu"
 
 #: ../src/plugins/abrt-action-analyze-c.c:79
 msgid ""
@@ -327,24 +329,25 @@ msgid ""
 msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:29
-msgid "Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
+msgid ""
+"Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
 msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:63
 msgid "File {0} doesn't exist"
-msgstr ""
+msgstr "{0} dosyası mevcut değil"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "{0} is not a valid vmcore"
-msgstr ""
+msgstr "{0} geçersiz vmcore"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:101
 msgid "Required vmlinux debuginfo is installed in {0}"
-msgstr ""
+msgstr "Gerekli vmlinux hata ayıklama bilgisi {0} yüklü"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:107
 msgid "Installing kernel debuginfo(s)"
-msgstr ""
+msgstr "Kurulu çekirdek hata ayıklama bilgi(leri)si"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:114
 #: ../src/plugins/abrt-action-analyze-vmcore.in:123
@@ -360,19 +363,19 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 msgid "Additional debuginfo directories"
-msgstr ""
+msgstr "Ek hata ayıklama bilgisi dizinleri"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr ""
+msgstr "gdb NUM saniyeden fazla süredir çalışıyorsa sonlandır"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:102
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr ""
+msgstr "Geri izleme oluşturuldu ve kaydedildi, %u bayt"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:84
 msgid ""
@@ -392,14 +395,13 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:50
 msgid "Exiting on user command"
-msgstr ""
+msgstr "Kullanıcı komutuyla çıkılıyor"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:86
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
-"[--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
 "       [-e, --exact=PATH]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
@@ -417,7 +419,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:170
 msgid "Can't open {0}: {1}"
-msgstr ""
+msgstr "{0}: {1} açılmıyor"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:203
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
@@ -433,7 +435,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:34
 msgid "y"
-msgstr "ن"
+msgstr ""
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:79
 msgid ""
@@ -444,16 +446,15 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:88
 msgid ""
-"Do you want to generate a stack trace localy? (It may download a huge amount "
-"of data but reporting can't continue without stack trace)."
+"Do you want to generate a stack trace localy? (It may download a huge amount"
+" of data but reporting can't continue without stack trace)."
 msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
-"SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
 
@@ -467,12 +468,12 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:238
 msgid "Preserve this directory"
-msgstr ""
+msgstr "Bu dizini koru"
 
 #: ../src/plugins/abrt-dedup-client.c:96
 #: ../src/plugins/abrt-retrace-client.c:1096
 msgid "log to syslog"
-msgstr ""
+msgstr "dökümden sys dökümüne"
 
 #: ../src/plugins/abrt-dedup-client.c:98
 msgid "allow insecure connection to dedup server"
@@ -480,11 +481,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-dedup-client.c:100
 msgid "dedup server URL"
-msgstr ""
+msgstr "dedup sunucu URL"
 
 #: ../src/plugins/abrt-dedup-client.c:102
 msgid "dedup server port"
-msgstr ""
+msgstr "dedup sunucu port"
 
 #: ../src/plugins/abrt-dedup-client.c:104
 msgid "ABRT dump directory"
@@ -493,7 +494,7 @@ msgstr ""
 #: ../src/plugins/abrt-dedup-client.c:106
 #: ../src/plugins/abrt-retrace-client.c:1107
 msgid "(debug) show received HTTP headers"
-msgstr ""
+msgstr "(hata ayıklama) alınan HTTP başlıklarını göster"
 
 #: ../src/plugins/abrt-dedup-client.c:110
 msgid "abrt-dedup-client component backtrace_file [options]"
@@ -540,14 +541,14 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-oops.c:194
 msgid "Print found oopses on standard output"
-msgstr ""
+msgstr "Standart çıktı üzerinde bulunan oops ları yazdır"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
+#. 
 #: ../src/plugins/abrt-dump-oops.c:198
 msgid "Create ABRT dump in DIR for every oops found"
-msgstr ""
+msgstr "Her bulunan oops için DIR de ABRT dökümü yarat"
 
 #: ../src/plugins/abrt-dump-oops.c:199 ../src/plugins/abrt-dump-xorg.c:241
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
@@ -584,13 +585,13 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:100
 msgid "Cannot open temporary file"
-msgstr ""
+msgstr "Geçici dosya açılamıyor"
 
 #: ../src/plugins/abrt-retrace-client.c:126
 #: ../src/plugins/abrt-retrace-client.c:162
 #, c-format
 msgid "Can't execute '%s'"
-msgstr ""
+msgstr "'%s' çalıştırılamıyor"
 
 #: ../src/plugins/abrt-retrace-client.c:198
 #: ../src/plugins/abrt-retrace-client.c:655
@@ -598,7 +599,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:981
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr ""
+msgstr "%d uzunluğunda HTTP başlığı gönderimi başarısız: NSS hatası %d."
 
 #: ../src/plugins/abrt-retrace-client.c:210
 #: ../src/plugins/abrt-retrace-client.c:380
@@ -610,7 +611,7 @@ msgstr ""
 msgid ""
 "Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr ""
+msgstr "Sunucudan beklenmeyen HTTP cevabı: %d\\n\n%s"
 
 #: ../src/plugins/abrt-retrace-client.c:219
 #: ../src/plugins/abrt-retrace-client.c:734
@@ -618,13 +619,13 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:921
 #: ../src/plugins/abrt-retrace-client.c:990
 msgid "Invalid response from server: missing HTTP message body."
-msgstr ""
+msgstr "Sunucudan geçersiz cevap: kayıp HTTP mesaj gövdesi "
 
 #: ../src/plugins/abrt-retrace-client.c:366
 #: ../src/plugins/abrt-retrace-client.c:833
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr ""
+msgstr "%d uzunluğundaki HTTP başlığının gönderimi başarısız: NSS hata %d"
 
 #: ../src/plugins/abrt-retrace-client.c:387
 #, c-format
@@ -635,21 +636,21 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:409
 msgid "Querying server settings"
-msgstr ""
+msgstr "Sunucu ayarları sorgulanıyor."
 
 #: ../src/plugins/abrt-retrace-client.c:417
 msgid "The server is fully occupied. Try again later."
-msgstr ""
+msgstr "Sunucu tamamen dolu. Daha sonra tekrar deneyin."
 
 #: ../src/plugins/abrt-retrace-client.c:418
 msgid "The server denied your request."
-msgstr ""
+msgstr "Sunucu isteğinizi reddetti."
 
 #: ../src/plugins/abrt-retrace-client.c:428
 #: ../src/plugins/abrt-retrace-client.c:451
 #, c-format
 msgid "Unable to stat file '%s'."
-msgstr ""
+msgstr "'%s' dosyası açılamıyor."
 
 #: ../src/plugins/abrt-retrace-client.c:436
 #, c-format
@@ -667,20 +668,20 @@ msgstr ""
 msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
-msgstr ""
+msgstr "Dosya boyutu %lld byte, sunucu ancak %lld byte ve altındaki dosyaları kabul edebilir."
 
 #: ../src/plugins/abrt-retrace-client.c:509
 msgid "The server does not support xz-compressed tarballs."
-msgstr ""
+msgstr "Sunucu sıkıştırılmış-xz tarball'ları desteklemiyor."
 
 #: ../src/plugins/abrt-retrace-client.c:553
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
-msgstr ""
+msgstr "'%s' sürümü geri izleme sunucusu tarafından desteklenmiyor. "
 
 #: ../src/plugins/abrt-retrace-client.c:557
 msgid "The server is not able to handle your request."
-msgstr ""
+msgstr "Sunucu, talebinizi değerlendiremiyor."
 
 #: ../src/plugins/abrt-retrace-client.c:576
 msgid "Unknown package sent to Retrace server."
@@ -688,14 +689,14 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:586
 msgid "Preparing an archive to upload"
-msgstr ""
+msgstr "Karşıya yüklemek için bir arşiv hazırlanıyor"
 
 #: ../src/plugins/abrt-retrace-client.c:599
 #, c-format
 msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
-msgstr ""
+msgstr "Arşiv boyutu %lld byte, sunucu ancak %lld byte ve altındaki arşiv dosyalarını kabul edebilir."
 
 #: ../src/plugins/abrt-retrace-client.c:612
 #, c-format
@@ -704,35 +705,35 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:619
 msgid "Cancelled by user"
-msgstr ""
+msgstr "Kullanıcı tarafından iptal edildi"
 
 #: ../src/plugins/abrt-retrace-client.c:662
 #, c-format
 msgid "Uploading %d megabytes\n"
-msgstr ""
+msgstr "%d megabytes yükleniyor\n"
 
 #: ../src/plugins/abrt-retrace-client.c:664
 #, c-format
 msgid "Uploading %lld bytes\n"
-msgstr ""
+msgstr "Yüklenen %lld byte \n"
 
 #: ../src/plugins/abrt-retrace-client.c:688
 #, c-format
 msgid "Uploading %d%%\n"
-msgstr ""
+msgstr "Yükleniyor '%d%%\n"
 
 #: ../src/plugins/abrt-retrace-client.c:700
 msgid "Failed to read from a pipe"
-msgstr ""
+msgstr "Borudan okuma başarısız oldu"
 
 #: ../src/plugins/abrt-retrace-client.c:713
 #, c-format
 msgid "Failed to send data: NSS error %d (%s): %s"
-msgstr ""
+msgstr "Veri gönderme başarısız: NSS hatası %d (%s): %s"
 
 #: ../src/plugins/abrt-retrace-client.c:724
 msgid "Upload successful"
-msgstr ""
+msgstr "Yükleme başarılı"
 
 #: ../src/plugins/abrt-retrace-client.c:746
 msgid ""
@@ -744,37 +745,37 @@ msgstr ""
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
-msgstr ""
+msgstr "Arşiv, zararlı dosyalar(symlinks gibi) içeriyor ve bundan dolayı işlenemez."
 
 #: ../src/plugins/abrt-retrace-client.c:761
 msgid "Invalid response from server: missing X-Task-Id."
-msgstr ""
+msgstr "Sunucudan geçersiz cevap: X-Task-Id kayıp"
 
 #: ../src/plugins/abrt-retrace-client.c:767
 msgid "Invalid response from server: missing X-Task-Password."
-msgstr ""
+msgstr "Sunucudan geçersiz cevap: X-Task-Password kayıp"
 
 #: ../src/plugins/abrt-retrace-client.c:774
 msgid "Retrace job started"
-msgstr ""
+msgstr "Geri izleme işi başladı."
 
 #: ../src/plugins/abrt-retrace-client.c:787
 #, c-format
 msgid ""
 "Task Id: %s\n"
 "Task Password: %s\n"
-msgstr ""
+msgstr "Görev Id: %d\n\nGörev Şifresi: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:857
 msgid "Invalid response from server: missing X-Task-Status."
-msgstr ""
+msgstr "Sunucudan geçersiz cevap: X-Task-Status kayıp"
 
 #: ../src/plugins/abrt-retrace-client.c:869
 #, c-format
 msgid ""
 "Task Status: %s\n"
 "%s\n"
-msgstr ""
+msgstr "Görev Durumu: %s\n\n%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:1050
 msgid ""
@@ -784,7 +785,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1098
 msgid "allow insecure connection to retrace server"
-msgstr ""
+msgstr "Güvensiz geri izleme sunucu bağlantısına izin ver."
 
 #: ../src/plugins/abrt-retrace-client.c:1100
 msgid ""
@@ -794,15 +795,15 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1103
 msgid "retrace server URL"
-msgstr ""
+msgstr "Geri"
 
 #: ../src/plugins/abrt-retrace-client.c:1105
 msgid "retrace server port"
-msgstr ""
+msgstr "Geri izleme sunucu portu"
 
 #: ../src/plugins/abrt-retrace-client.c:1108
 msgid "For create and batch operations"
-msgstr ""
+msgstr "Yaratma ve toplu işlemler için"
 
 #: ../src/plugins/abrt-retrace-client.c:1110
 msgid "read data from ABRT problem directory"
@@ -810,33 +811,33 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1112
 msgid "read data from coredump"
-msgstr ""
+msgstr "coredump tan veri oku"
 
 #: ../src/plugins/abrt-retrace-client.c:1114
 msgid "Delay for polling operations"
-msgstr ""
+msgstr "Sıradaki işlemleri erteleme"
 
 #: ../src/plugins/abrt-retrace-client.c:1116
 msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
-msgstr ""
+msgstr "(hata ayıklama) /tmp içindeki döküm dizininden yaratılan geçici arşiv dosyasını silme"
 
 #: ../src/plugins/abrt-retrace-client.c:1118
 msgid "For status, backtrace, and log operations"
-msgstr ""
+msgstr "Durum, geri izleme ve günlük işlemleri için"
 
 #: ../src/plugins/abrt-retrace-client.c:1120
 msgid "id of your task on server"
-msgstr ""
+msgstr "sunucudaki görevin id si"
 
 #: ../src/plugins/abrt-retrace-client.c:1122
 msgid "password of your task on server"
-msgstr ""
+msgstr "sunucudaki görevin şifresi"
 
 #: ../src/plugins/abrt-retrace-client.c:1126
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch"
-msgstr ""
+msgstr "abrt-retrace-client <operation> [options] \\n\nİşlemler: yaratma/durum/geri izleme/günlük alma/toplu işlem"
 
 #: ../src/plugins/abrt-retrace-client.c:1172
 #: ../src/plugins/abrt-retrace-client.c:1178
@@ -847,37 +848,37 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:1192
 #: ../src/plugins/abrt-retrace-client.c:1200
 msgid "Task id is needed."
-msgstr ""
+msgstr "Görev ID si gerekli"
 
 #: ../src/plugins/abrt-retrace-client.c:1186
 #: ../src/plugins/abrt-retrace-client.c:1194
 #: ../src/plugins/abrt-retrace-client.c:1202
 msgid "Task password is needed."
-msgstr ""
+msgstr "Görev şifresi gerekli."
 
 #: ../src/plugins/abrt-retrace-client.c:1206
 #, c-format
 msgid "Unknown operation: %s."
-msgstr ""
+msgstr "Bilinmeyen işlem: %s"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
-msgstr ""
+msgstr "Yerel GNU Hata Ayıklayıcısı"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr ""
+msgstr "debuginfo paketlerini indir ve GDB kullanarak yerelde geri izleme üret"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
 msgstr ""
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
-msgstr ""
+msgstr "Çekirdek dökümünü uzak geri besleme sunucusuna analiz için gönder"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
@@ -891,17 +892,17 @@ msgstr ""
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 #: ../src/plugins/analyze_CCpp.xml.in.h:3
 msgid "Retrace server URL"
-msgstr ""
+msgstr "Tekrar izlenecek sunucu URL"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 #: ../src/plugins/analyze_CCpp.xml.in.h:4
 msgid "Address of the retrace server"
-msgstr ""
+msgstr "Tekrar izlenecek sunucunun adresi"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:5
 #: ../src/plugins/analyze_CCpp.xml.in.h:5
 msgid "Insecure"
-msgstr ""
+msgstr "Güvensiz"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
 #: ../src/plugins/analyze_CCpp.xml.in.h:6
@@ -911,10 +912,10 @@ msgstr ""
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 #: ../src/plugins/analyze_CCpp.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
-"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
-"(warning)&lt;/a&gt;"
-msgstr ""
+"Write \"insecure\" to allow insecure connection &lt;a "
+"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
+" &gt;(warning)&lt;/a&gt;"
+msgstr "Güvensiz bağlantıya izin vermek için \"güvensiz\" yaz &lt;a href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;(warning)&lt;/a&gt;"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
@@ -922,13 +923,13 @@ msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
-msgstr ""
+msgstr "~/.xsession-errors dosyasındaki ilgili satırları kaydet"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:3
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
-msgstr ""
+msgstr " ~/.xsession-errors dosyasını tarar ve çalıştırılabilir dosya isimleri içeren satırları kaydeder. Sonuç 'xsession_errors' element olarak kaydedilir."
 
 #: ../src/plugins/https-utils.c:46
 msgid "An error occurred on the server side. Try again later."
@@ -943,12 +944,12 @@ msgstr ""
 #: ../src/plugins/https-utils.c:69
 #, c-format
 msgid "Issuer certificate is invalid: '%s'."
-msgstr ""
+msgstr "Sağlayıcı sertifikası geçersiz: '%s'."
 
 #: ../src/plugins/https-utils.c:72
 #, c-format
 msgid "Certificate is signed by an untrusted issuer: '%s'."
-msgstr ""
+msgstr "Sertifika güvenilmeyen biri tarafından imzalandı: '%s'"
 
 #: ../src/plugins/https-utils.c:75
 #, c-format
@@ -957,17 +958,17 @@ msgstr ""
 
 #: ../src/plugins/https-utils.c:79
 msgid "Remote certificate has expired."
-msgstr ""
+msgstr "Uzak sertifikanın süresi dolmuş."
 
 #: ../src/plugins/https-utils.c:82
 #, c-format
 msgid "Certificate issuer is not recognized: '%s'."
-msgstr ""
+msgstr "Sertifika sağlayıcı tanımlanamadı: '%s'."
 
 #: ../src/plugins/https-utils.c:85
 #, c-format
 msgid "Bad certificate received. Subject '%s', issuer '%s'."
-msgstr ""
+msgstr "Kötü sertifika alındı. Konu '%s', sertifikayı sağlayan '%s'"
 
 #: ../src/plugins/https-utils.c:121
 #, c-format
@@ -977,19 +978,19 @@ msgstr ""
 #: ../src/plugins/https-utils.c:154
 #, c-format
 msgid "Failed to get host by name: NSS error %d."
-msgstr ""
+msgstr "Ana makine adının alımı başarısız: NSS hata %d"
 
 #: ../src/plugins/https-utils.c:174
 msgid "Failed to create a TCP socket"
-msgstr ""
+msgstr "TCP soket yaratma başarısız"
 
 #: ../src/plugins/https-utils.c:182
 msgid "Failed to set socket blocking mode."
-msgstr ""
+msgstr "Soketin bloklama modu ayarı başarısız"
 
 #: ../src/plugins/https-utils.c:188
 msgid "Failed to wrap TCP socket by SSL."
-msgstr ""
+msgstr "TCP soketinin SSL tarafından sarmalanması başarısız"
 
 #: ../src/plugins/https-utils.c:194 ../src/plugins/https-utils.c:198
 #: ../src/plugins/https-utils.c:200 ../src/plugins/https-utils.c:202
@@ -1002,38 +1003,38 @@ msgstr ""
 
 #: ../src/plugins/https-utils.c:215
 msgid "Failed to connect SSL address."
-msgstr ""
+msgstr "SSL adresine bağlanma başarısız"
 
 #: ../src/plugins/https-utils.c:222
 msgid "Failed to set certificate hook."
-msgstr ""
+msgstr "Sertifika ekleme başarısız oldu."
 
 #: ../src/plugins/https-utils.c:229
 msgid "Failed to set handshake callback."
-msgstr ""
+msgstr "Geri resetleme ayarı başarısız oldu."
 
 #: ../src/plugins/https-utils.c:236
 msgid "Failed to reset handshake."
-msgstr ""
+msgstr "Resetleme başarısız oldu"
 
 #: ../src/plugins/https-utils.c:243
 #, c-format
 msgid "Failed to force handshake: NSS error %d."
-msgstr ""
+msgstr "İşlem başarısız oldu : %d NSS hatası."
 
 #: ../src/plugins/https-utils.c:252
 msgid "Failed to close SSL socket."
-msgstr ""
+msgstr "SSL soketinin kapatılması başarısız."
 
 #: ../src/plugins/https-utils.c:306 ../src/plugins/https-utils.c:312
 #: ../src/plugins/https-utils.c:318
 msgid "Invalid response from server: HTTP header not found."
-msgstr ""
+msgstr "Sunucudan geçersiz cevap: HTTP başlığı bulunamadı."
 
 #: ../src/plugins/https-utils.c:357
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
-msgstr ""
+msgstr "Alınan veri başarısız: NSS hatası %d."
 
 #: ../src/plugins/https-utils.c:386
 msgid "Malformed chunked response."
@@ -1041,15 +1042,15 @@ msgstr ""
 
 #: ../src/plugins/https-utils.c:411
 msgid "Failed to initialize NSS."
-msgstr ""
+msgstr "NSS ilklendirme başarısız"
 
 #: ../src/plugins/https-utils.c:417
 msgid "Failed to initialize security module."
-msgstr ""
+msgstr "Güvenlik modülünün ilklendirilmesi başarısız"
 
 #: ../src/plugins/https-utils.c:432
 msgid "Failed to shutdown NSS."
-msgstr ""
+msgstr "NSS in kapatılması başarısız"
 
 #: ../src/plugins/bodhi.c:375
 msgid "List of bug ids"
@@ -1120,12 +1121,12 @@ msgstr ""
 
 #: ../src/cli/list.c:97
 msgid "List even reported problems"
-msgstr ""
+msgstr "Raporlanmış olsa bile problemleri listele"
 
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:99 ../src/cli/list.c:139
 msgid "Show detailed report"
-msgstr ""
+msgstr "Detaylı raporu göster"
 
 #: ../src/cli/list.c:131
 msgid "& info [options] DIR..."
@@ -1143,18 +1144,19 @@ msgid ""
 "user doens't want to upload his coredump to anywhere the event performs "
 "local analysis. Local analysis is run event if remote analysis fails. Pros: "
 "no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump "
-"you upload contains all the data from the crashed program, including your "
+"more complete. Retrace server may generate better backtraces. Cons: coredump"
+" you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
-msgstr ""
+msgstr "VM çekirdeğini çözümle"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
-msgid "Install kernel debuginfo packages, generate kernel log and oops message"
-msgstr ""
+msgid ""
+"Install kernel debuginfo packages, generate kernel log and oops message"
+msgstr "kernel debuginfo paketlerini kur , kernel günlüğü ve oops mesajı üret"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
@@ -1164,17 +1166,17 @@ msgstr ""
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
-msgstr ""
+msgstr "GConf yapılandırması toplanıyor"
 
 #: ../src/plugins/collect_GConf.xml.in.h:2
 msgid "Save configuration from application's GConf directory"
-msgstr ""
+msgstr "Uygulamanın GConf dizinindeki yapılandırmayı kaydet"
 
 #: ../src/plugins/collect_GConf.xml.in.h:3
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
-msgstr ""
+msgstr " gconftool-2 --recursive-list /apps/executable 'ı çalıştır ve onu 'gconf_subtree' elemanı olarak kaydet."
 
 #: ../src/plugins/collect_Smolt.xml.in.h:1
 msgid "Collect Smolt profile"
@@ -1182,7 +1184,7 @@ msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
 msgid "Save your computer's hardware profile information"
-msgstr ""
+msgstr "Bilgisayarın donanım profili bilgisini kaydet"
 
 #: ../src/plugins/collect_Smolt.xml.in.h:3
 msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
@@ -1194,27 +1196,27 @@ msgstr ""
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:2
 msgid "Save /etc/vimrc and /etc/gvimrc"
-msgstr ""
+msgstr "/etc/vimrc ve /etc/gvimrc kaydet"
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:3
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
-msgstr ""
+msgstr "/etc dizininde vimrc ve gvimrc dosyalarını kontrol et ve onları sırasıyla system_vimrc ve system_gvimrc olarak kaydet."
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid "Collect yours vim configuration files"
-msgstr ""
+msgstr "vim yapılandırma dosyalarını topla"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:2
 msgid "Save .vimrc and .gvimrc from your home directory"
-msgstr ""
+msgstr "Ana dizinden .vimrc ve .gvimrc kaydet"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
-"as user_vimrc and user_gvimrc, respectively."
-msgstr ""
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
+" as user_vimrc and user_gvimrc, respectively."
+msgstr "Ana dizinde .vimrc ve .gvimrc dosyalarını kontrol et ve onları sırasıyla user_vimrc ve user_gvimrc olarak kaydet."
 
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"

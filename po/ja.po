@@ -4,26 +4,28 @@
 #
 # Translators:
 # Casey Jones <nahareport@yahoo.com>, 2011.
-# Hajime Taira <htaira@redhat.com>, 2010, 2011.
+# Hajime Taira <htaira@redhat.com>, 2010-2011.
 # Hyu_gabaru Ryu_ichi <hyu_gabaru@yahoo.co.jp>, 2009.
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
-# Kiyoto Hashida <khashida@redhat.com>, 2009, 2010, 2011.
+# Kiyoto Hashida <khashida@redhat.com>, 2009-2012.
 # Makoto Mizukami <makoto@fedoraporject.org>, 2010.
 #   <noriko@fedoraproject.org>, 2012.
 # Noriko Mizumoto <noriko@fedoraproject.org>, 2010.
+# Tomoyuki KATO <tomo@dream.daynight.jp>, 2012.
+#   <www.carrotsoft@gmail.com>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-11-23 15:59+0100\n"
-"PO-Revision-Date: 2012-03-02 00:52+0000\n"
-"Last-Translator: noriko <noriko@fedoraproject.org>\n"
+"POT-Creation-Date: 2012-11-23 18:31+0100\n"
+"PO-Revision-Date: 2012-11-23 17:24+0000\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Japanese <trans-ja@lists.fedoraproject.org>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
 #: ../src/gui-gtk/main.c:955
@@ -35,14 +37,13 @@ msgid "ABRT notification applet"
 msgstr "ABRT 通知アプレット"
 
 #: ../src/applet/applet.c:66
-#, fuzzy
 msgid "Problem detected"
-msgstr "問題のディレクトリ"
+msgstr "問題を発見しました"
 
 #: ../src/applet/applet.c:250
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr ""
+msgstr "'%s' は所有できません"
 
 #: ../src/applet/applet.c:315 ../src/applet/applet.c:317
 msgid "Warning"
@@ -66,7 +67,7 @@ msgstr "隠す"
 
 #: ../src/applet/applet.c:440
 msgid "Ignore"
-msgstr ""
+msgstr "無視する"
 
 #. buttons are homogenous so set size only for one button and it will
 #. * work for the rest buttons in same gtk_hbox_new()
@@ -129,9 +130,8 @@ msgid "& [options]"
 msgstr "& [オプション]"
 
 #: ../src/daemon/abrt-server.c:520
-#, fuzzy
 msgid "Use NUM as client uid"
-msgstr "UIDをクライアントuidとして使用する"
+msgstr ""
 
 #: ../src/daemon/abrt-server.c:521 ../src/plugins/abrt-watch-log.c:141
 #: ../src/plugins/abrt-dump-oops.c:193 ../src/plugins/abrt-dump-xorg.c:238
@@ -144,18 +144,17 @@ msgid "Add program names to log"
 msgstr "ログするためにプログラム名を追加する"
 
 #: ../src/dbus/abrt-dbus.c:110
-#, fuzzy
 msgid "Unknown error"
-msgstr "不明な操作: %s　"
+msgstr "不明なエラーです"
 
 #: ../src/dbus/abrt-dbus.c:398
-#, fuzzy, c-format
+#, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr "{0} は有効な vmcore ではありません"
+msgstr "'%s' は有効な問題ディレクトリではありません"
 
 #: ../src/dbus/abrt-dbus.c:507 ../src/dbus/abrt-dbus.c:587
 msgid "Not Authorized"
-msgstr ""
+msgstr "権限がありません"
 
 #: ../src/dbus/abrt-dbus.c:754
 #, c-format
@@ -163,6 +162,8 @@ msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr ""
+"'%s' の名前を紛失しました。その名前を持つ他のサービスが実行していないかチェッ"
+"クして下さい。\n"
 
 #: ../src/dbus/abrt-dbus.c:781 ../src/daemon/abrtd.c:844
 msgid "Exit after NUM seconds of inactivity"
@@ -170,7 +171,7 @@ msgstr "NUM 秒の間アクティビティが見られない場合に終了し�
 
 #: ../src/dbus/abrt-dbus.c:799
 msgid "This program must be run as root."
-msgstr ""
+msgstr "このプログラムは root で実行しなければなりません"
 
 #: ../src/daemon/abrtd.c:842
 msgid "Do not daemonize"
@@ -181,9 +182,8 @@ msgid "Log to syslog even with -d"
 msgstr "-d を使用しても syslog へログ"
 
 #: ../src/daemon/abrt-handle-event.c:290
-#, fuzzy
 msgid "& [-v -i] -e|--event EVENT DIR..."
-msgstr "& [-v] -e|--event EVENT DIR..."
+msgstr ""
 
 #: ../src/daemon/abrt-handle-event.c:298
 msgid "Run EVENT on DIR"
@@ -226,9 +226,8 @@ msgid "Submission Result"
 msgstr "サブミットの結果"
 
 #: ../src/gui-gtk/main.c:899
-#, fuzzy
 msgid "_Problem"
-msgstr "問題"
+msgstr "問題 (_P)"
 
 #: ../src/gui-gtk/main.c:900
 msgid "_Edit"
@@ -240,7 +239,7 @@ msgstr "ヘルプ(_H)"
 
 #: ../src/gui-gtk/main.c:912
 msgid "Open problem data"
-msgstr ""
+msgstr "問題のデータを開く"
 
 #: ../src/gui-gtk/main.c:936
 msgid "Report problem with ABRT"
@@ -256,7 +255,7 @@ msgstr "<b>サブミットされていない報告</b>"
 
 #: ../src/gui-gtk/main.c:979
 msgid "Show all problems"
-msgstr ""
+msgstr "全ての問題を表示"
 
 #: ../src/gui-gtk/main.c:1022
 msgid "Submitted reports"
@@ -267,20 +266,18 @@ msgid "<b>Submitted reports</b>"
 msgstr "<b>サブミットされた報告</b>"
 
 #: ../src/gui-gtk/main.c:1216
-#, fuzzy
 msgid ""
 "& [-vpD] [DIR]...\n"
 "\n"
 "Shows list of problem directories in specified DIR(s)\n"
 "and ones saved in system-wide problem directory spool."
 msgstr ""
-"& [-vp] [DIR]...\n"
-"\n"
-"指定 DIR 内の ABRT ダンプディレクトリを一覧表示します\n"
+"& [-vpD] [DIR]...⏎ ⏎ は、特定した DIR(s)⏎ 内の問題ディレクトリ一とシステム全"
+"域の問題ディレクトリスプールに保存したものの一覧を表示します"
 
 #: ../src/gui-gtk/main.c:1226
 msgid "Do not query problems over dbus (use only DIRs)"
-msgstr ""
+msgstr "dbus 上の問題はクエリしない (DIRs のみ使用)"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:242 ../src/plugins/abrt-action-analyze-vmcore.in:126
@@ -290,27 +287,27 @@ msgstr "バックトレースの生成中"
 #: ../src/lib/problem_api.c:41
 #, c-format
 msgid "Can't connect to system DBus: %s"
-msgstr ""
+msgstr "システムの DBus に接続できません: %s"
 
 #: ../src/lib/problem_api.c:65
-#, fuzzy, c-format
+#, c-format
 msgid "Can't chown '%s': %s"
-msgstr "%s を実行できません。"
+msgstr "'%s の chown ができません: %s"
 
 #: ../src/lib/problem_api.c:92
-#, fuzzy, c-format
+#, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr "問題のディレクトリをすべて削除"
+msgstr "問題ディレクトリの削除は失敗しました: %s"
 
 #: ../src/lib/problem_api.c:126
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
-msgstr ""
+msgstr "abrt-dbus から問題のデータを取りこめません: %s"
 
 #: ../src/lib/problem_api.c:160
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
-msgstr ""
+msgstr "abrt-dbus から問題の一覧を取りこめません: %s"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:51
 msgid ""
@@ -434,19 +431,19 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:97
 msgid "Do not hash fingerprints"
-msgstr ""
+msgstr "フィンガープリントをハッシュ化しない"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:172
-#, fuzzy, c-format
+#, c-format
 msgid "Core-backtraces are not supported for '%s'"
-msgstr "%s 用のバックトレース構文解析は失敗"
+msgstr "'%s' には、コアバックトレースのサポートがありません"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:50
 msgid "Exiting on user command"
 msgstr "ユーザコマンドを終了しています"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:86
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -468,18 +465,20 @@ msgstr ""
 "使い方: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
 "[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH]\n"
 "\n"
-"BUILD_IDS_FILE に記述されているすべての build-id の debuginfo \n"
-"を CACHEDIR にインストールします。 TMPDIR を一時的なステージ\n"
-"ングエリアとして使用します。 CACHEDIR にある古いファイルはディレクトリのサイ"
-"ズが SIZE 未満になるまで削除されます。\n"
+"一時的なステージングエリアとして TMPDIR を使用して、 BUILD_IDS_FILE に記載さ"
+"れているすべての build-id のデバッグ情報を\n"
+"CACHEDIR にインストールします。 サイズが SIZE 未満になるまで \n"
+"CACHEDIR にある古いファイルが削除されます。\n"
 "\n"
-"    -v          冗長\n"
-"    -y          非インテラクティブ、 すべての質問に「Yes」の回答\n"
+"    -v          冗長になります\n"
+"    -y          非対話式、 全質問に対して「はい」の答えになります\n"
 "    --ids       デフォルト: build_ids\n"
 "    --tmpdir    デフォルト: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
 "    --cache     デフォルト: /var/cache/abrt-di\n"
 "    --size_mb   デフォルト: 4096\n"
+"    -e,--exact  指定ファイルのみをダウンロードします\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:170
 msgid "Can't open {0}: {1}"
@@ -496,13 +495,12 @@ msgid "Missing debuginfo file: {0}"
 msgstr "debuginfo ファイルがありません: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:217
-#, fuzzy
 msgid "All debuginfo files are available"
-msgstr "{0} debuginfo ファイルすべてが使用可能です"
+msgstr "全デバッグ情報ファイルが使用可能です"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:34
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:79
 msgid ""
@@ -593,31 +591,33 @@ msgid ""
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
 msgstr ""
+"& [-vs] [-F STR]... FILE PROG [ARGS]\n"
+"\n"
+"ログファイル FILE を確認して、それが増大したり入れ替えになると PROG を実行し"
+"ます"
 
 #: ../src/plugins/abrt-watch-log.c:142
 msgid "Don't run PROG if STRs aren't found"
-msgstr ""
+msgstr "STRs が見つからない場合は PROG を実行しない"
 
 #: ../src/plugins/abrt-dump-oops.c:136
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"カーネルに問題が発生しましたがカーネル自体が損傷しています (フラグ: %s)。 "
-"カーネルメンテナーは損傷している報告の診断はできません。"
+"カーネルの問題が発生しました。しかしカーネルが汚染されていました (フラグ: "
+"%s)。カーネルメンテナーは汚染されたレポートを診断できません。"
 
 #: ../src/plugins/abrt-dump-oops.c:177
-#, fuzzy
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr ""
-"& [-vsrowx] [-d DIR] FILE\n"
-"or: & [-vsrowx] -D FILE\n"
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
-"oops を syslog/dmesg から抽出します"
+"FILE (又は標準入力) から oops を抽出する"
 
 #: ../src/plugins/abrt-dump-oops.c:194
 msgid "Print found oopses on standard output"
@@ -640,7 +640,7 @@ msgstr "問題のディレクトリを誰でも見れるようにします"
 
 #: ../src/plugins/abrt-dump-oops.c:201 ../src/plugins/abrt-dump-xorg.c:243
 msgid "Print search string(s) to stdout and exit"
-msgstr ""
+msgstr "検索文字列を標準出力に表示して終了"
 
 #: ../src/plugins/abrt-dump-xorg.c:231
 msgid ""
@@ -648,16 +648,17 @@ msgid ""
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
 msgstr ""
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"FILE (又は、標準入力) から Xorg クラッシュを抽出する"
 
 #: ../src/plugins/abrt-dump-xorg.c:239
-#, fuzzy
 msgid "Print found crash data on standard output"
-msgstr "見つけた oops を標準出力に表示します"
+msgstr "発見したクラッシュデータを標準出力に表示する"
 
 #: ../src/plugins/abrt-dump-xorg.c:240
-#, fuzzy
 msgid "Create ABRT dump in DIR for every crash found"
-msgstr "全ての oops に対し、DIR の ABRT ダンプを作成する"
+msgstr "発見した全てのクラッシュ用に DIR 内に ABRT ダンプを作成する"
 
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid ""
@@ -719,6 +720,8 @@ msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official %s repositories?"
 msgstr ""
+"リトレースサーバーはパッケージ '%s.%s' をプロセスできません。⏎ これは正式な "
+"%s のレポジトリですか？"
 
 #: ../src/plugins/abrt-retrace-client.c:409
 msgid "Querying server settings"
@@ -772,9 +775,8 @@ msgid "The server is not able to handle your request."
 msgstr "サーバーが要求を処理できません"
 
 #: ../src/plugins/abrt-retrace-client.c:576
-#, fuzzy
 msgid "Unknown package sent to Retrace server."
-msgstr "再トレースサーバーへ保護のない接続を許可する"
+msgstr "不明なパッケージがリトレースサーバーに送信されました。"
 
 #: ../src/plugins/abrt-retrace-client.c:586
 msgid "Preparing an archive to upload"
@@ -790,9 +792,9 @@ msgstr ""
 "等か、それ以下しか受理しません。"
 
 #: ../src/plugins/abrt-retrace-client.c:612
-#, fuzzy, c-format
+#, c-format
 msgid "You are going to upload %d megabytes. Continue?"
-msgstr "%d メガバイトをアップロードしようとしています。続けますか？"
+msgstr "%d メガバイトをアップロードしようとしています。継続しますか？"
 
 #: ../src/plugins/abrt-retrace-client.c:619
 msgid "Cancelled by user"
@@ -891,6 +893,8 @@ msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
 msgstr ""
+"アーカイブのアップロード前にリトレースサーバーが該当パッケージをプロセスでき"
+"るかどうかチェックしない"
 
 #: ../src/plugins/abrt-retrace-client.c:1103
 msgid "retrace server URL"
@@ -1034,7 +1038,7 @@ msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
-msgstr ""
+msgstr ".xsession-errors を収集"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1173,15 +1177,15 @@ msgstr "NSS のシャットダウンに失敗しました。"
 
 #: ../src/plugins/bodhi.c:375
 msgid "List of bug ids"
-msgstr ""
+msgstr "バグ id の一覧"
 
 #: ../src/plugins/bodhi.c:376
 msgid "Specify a bodhi server url"
-msgstr ""
+msgstr "bodhi サーバーの url を指定する"
 
 #: ../src/plugins/bodhi.c:377
 msgid "Specify a release"
-msgstr ""
+msgstr "リリースを指定する"
 
 #: ../src/plugins/bodhi.c:382
 msgid ""
@@ -1189,19 +1193,22 @@ msgid ""
 "\n"
 "Search for updates on bodhi server"
 msgstr ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"\n"
+"bodhi サーバー上で更新を検索する"
 
 #: ../src/plugins/bodhi.c:432
 msgid "Searching for updates"
-msgstr ""
+msgstr "更新の検索"
 
 #: ../src/plugins/bodhi.c:438
 msgid "No updates for this package found"
-msgstr ""
+msgstr "このパッケージ用の更新はありません"
 
 #. strbuf_free(q);
 #: ../src/plugins/bodhi.c:467
 msgid "Local version of the package is newer than available updates"
-msgstr ""
+msgstr "パッケージのローカルバージョンは利用可能な更新より新しいものです"
 
 #: ../src/plugins/bodhi.c:484
 #, c-format
@@ -1252,14 +1259,12 @@ msgid "& info [options] DIR..."
 msgstr "& info [オプション] DIR..."
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
-#, fuzzy
 msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
-msgstr "コアダンプを分析の為にリモート Retrace サーバーに送信する"
+msgstr ""
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
-#, fuzzy
 msgid ""
 "Uploads coredump to a server, which generates backtrace and returns it. If "
 "user doens't want to upload his coredump to anywhere the event performs "
@@ -1269,12 +1274,6 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
-"コアダンプをサーバーにアップロードするには、backtraceを生成し、それを返しま"
-"す。メリット: debuginfo をダウンロードする必要がありません。再トレースサー"
-"バーのdebaguinfoデータベースは、より完璧です。Retrace サーバーはより良い"
-"backtraceを生成できます。デメリット: アップロードするコアダンプには、クラッ"
-"シュしたプログラムと、あなたのプライベートデータ(もしあった場合)、全てが含ま"
-"れています。"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -1312,7 +1311,7 @@ msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:1
 msgid "Collect Smolt profile"
-msgstr ""
+msgstr "Smolt プロファイルを収集"
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
 msgid "Save your computer's hardware profile information"
@@ -1357,9 +1356,8 @@ msgstr ""
 "user_vimrc と user_gvimrc として保存します"
 
 #: ../src/plugins/post_report.xml.in.h:1
-#, fuzzy
 msgid "Post report"
-msgstr "サブミットされていない報告"
+msgstr ""
 
 #: ../src/plugins/post_report.xml.in.h:2
 msgid "Executed after the reporting is finished"
@@ -1368,21 +1366,3 @@ msgstr ""
 #: ../src/plugins/post_report.xml.in.h:3
 msgid "Used for updating of the databases"
 msgstr ""
-
-#~ msgid "Dump directory"
-#~ msgstr "ディレクトリをダンプする"
-
-#~ msgid "Show"
-#~ msgstr "見る"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "ABRT サービスが稼働していません。"
-
-#~ msgid "_Report"
-#~ msgstr "報告(_R)"
-
-#~ msgid "Parse kernel's message buffer before parsing FILE"
-#~ msgstr "FILE をパースする前にカーネルのメッセージバッファをパースします"
-
-#~ msgid "Do not exit, watch the file for new oopses"
-#~ msgstr "終了せずに新規 oops のファイルを観察します"

@@ -3,20 +3,27 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Sam Friedmann <sam.friedmann@redhat.com>, 2011, 2012.
+#   <cyril.francois.87@gmail.com>, 2011.
+# dominique bribanick <chepioq@gmail.com>, 2011.
+# Jérôme Fenal <jfenal@gmail.com>, 2012.
+# Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
+# Kévin Raymond <shaiton@fedoraproject.org>, 2011, 2012.
+# Sam Friedmann <sam.friedmann@redhat.com>, 2011-2012.
+# Vincent HERBER <vincent.herber@gmail.com>, 2011.
+# Vincent  <vincent.herber@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-11-23 15:59+0100\n"
-"PO-Revision-Date: 2012-02-29 06:37+0000\n"
-"Last-Translator: Sam Friedmann <sam.friedmann@redhat.com>\n"
+"POT-Creation-Date: 2012-11-23 18:31+0100\n"
+"PO-Revision-Date: 2012-11-23 17:23+0000\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: French <trans-fr@lists.fedoraproject.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
 #: ../src/gui-gtk/main.c:955
@@ -28,14 +35,13 @@ msgid "ABRT notification applet"
 msgstr "Applet de notification ABRT"
 
 #: ../src/applet/applet.c:66
-#, fuzzy
 msgid "Problem detected"
-msgstr "Répertoire des incidents"
+msgstr "Problème détecté"
 
 #: ../src/applet/applet.c:250
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr ""
+msgstr "Impossible de s'approprier « %s »"
 
 #: ../src/applet/applet.c:315 ../src/applet/applet.c:317
 msgid "Warning"
@@ -63,7 +69,7 @@ msgstr "Masquer"
 
 #: ../src/applet/applet.c:440
 msgid "Ignore"
-msgstr ""
+msgstr "Ignorer"
 
 #. buttons are homogenous so set size only for one button and it will
 #. * work for the rest buttons in same gtk_hbox_new()
@@ -127,9 +133,8 @@ msgid "& [options]"
 msgstr "& [options]"
 
 #: ../src/daemon/abrt-server.c:520
-#, fuzzy
 msgid "Use NUM as client uid"
-msgstr "Utiliser UID comme identifiant client"
+msgstr ""
 
 #: ../src/daemon/abrt-server.c:521 ../src/plugins/abrt-watch-log.c:141
 #: ../src/plugins/abrt-dump-oops.c:193 ../src/plugins/abrt-dump-xorg.c:238
@@ -142,18 +147,17 @@ msgid "Add program names to log"
 msgstr "Ajouter le nom des programmes dans le journal"
 
 #: ../src/dbus/abrt-dbus.c:110
-#, fuzzy
 msgid "Unknown error"
-msgstr "Opération inconnue : %s."
+msgstr "Erreur inconnue"
 
 #: ../src/dbus/abrt-dbus.c:398
-#, fuzzy, c-format
+#, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr "{0} n'est pas un vmcore valide"
+msgstr "« %s » n'est pas un répertoire de problèmes valide"
 
 #: ../src/dbus/abrt-dbus.c:507 ../src/dbus/abrt-dbus.c:587
 msgid "Not Authorized"
-msgstr ""
+msgstr "Interdit"
 
 #: ../src/dbus/abrt-dbus.c:754
 #, c-format
@@ -161,6 +165,8 @@ msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr ""
+"Le nom « %s » a été perdu, merci de vérifier qu'un autre service utilisant "
+"ce même nom ne tourne pas.\n"
 
 #: ../src/dbus/abrt-dbus.c:781 ../src/daemon/abrtd.c:844
 msgid "Exit after NUM seconds of inactivity"
@@ -168,7 +174,7 @@ msgstr "Fermeture après NUM secondes d'inactivité"
 
 #: ../src/dbus/abrt-dbus.c:799
 msgid "This program must be run as root."
-msgstr ""
+msgstr "Le programme doit être lancé en tant que root"
 
 #: ../src/daemon/abrtd.c:842
 msgid "Do not daemonize"
@@ -179,9 +185,8 @@ msgid "Log to syslog even with -d"
 msgstr "Journaliser vers syslog même avec -d"
 
 #: ../src/daemon/abrt-handle-event.c:290
-#, fuzzy
 msgid "& [-v -i] -e|--event EVENT DIR..."
-msgstr "& [-v] -e|--event EVENT DIR..."
+msgstr ""
 
 #: ../src/daemon/abrt-handle-event.c:298
 msgid "Run EVENT on DIR"
@@ -224,9 +229,8 @@ msgid "Submission Result"
 msgstr "Résultat de la soumission"
 
 #: ../src/gui-gtk/main.c:899
-#, fuzzy
 msgid "_Problem"
-msgstr "Incident"
+msgstr "_Problème"
 
 #: ../src/gui-gtk/main.c:900
 msgid "_Edit"
@@ -238,7 +242,7 @@ msgstr "_Aide"
 
 #: ../src/gui-gtk/main.c:912
 msgid "Open problem data"
-msgstr ""
+msgstr "Ouvrir les données du problème"
 
 #: ../src/gui-gtk/main.c:936
 msgid "Report problem with ABRT"
@@ -254,7 +258,7 @@ msgstr "<b>Aucun rapport soumis</b>"
 
 #: ../src/gui-gtk/main.c:979
 msgid "Show all problems"
-msgstr ""
+msgstr "Montrer tous les problèmes"
 
 #: ../src/gui-gtk/main.c:1022
 msgid "Submitted reports"
@@ -265,21 +269,21 @@ msgid "<b>Submitted reports</b>"
 msgstr "<b>Rapports soumis</b>"
 
 #: ../src/gui-gtk/main.c:1216
-#, fuzzy
 msgid ""
 "& [-vpD] [DIR]...\n"
 "\n"
 "Shows list of problem directories in specified DIR(s)\n"
 "and ones saved in system-wide problem directory spool."
 msgstr ""
-"& [-vp] [DIR]...\n"
+"& [-vpD] [DIR]...\n"
 "\n"
-"Affiche une liste des répertoires de vidage ABRT dans le(s) DIR(s) spécifié"
-"(s)\n"
+"Montre la liste des répertoires de problèmes dans les DIR\n"
+"spécifiés, et ceux enregistrés dans le spool de problèmes\n"
+"du système."
 
 #: ../src/gui-gtk/main.c:1226
 msgid "Do not query problems over dbus (use only DIRs)"
-msgstr ""
+msgstr "Ne pas requêter les problèmes via dbus (utiliser uniquement les DIR)"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:242 ../src/plugins/abrt-action-analyze-vmcore.in:126
@@ -289,27 +293,27 @@ msgstr "Génération du backtrace"
 #: ../src/lib/problem_api.c:41
 #, c-format
 msgid "Can't connect to system DBus: %s"
-msgstr ""
+msgstr "Impossible de se connecter au DBUS système : %s"
 
 #: ../src/lib/problem_api.c:65
-#, fuzzy, c-format
+#, c-format
 msgid "Can't chown '%s': %s"
-msgstr "Impossible d'exécuter '%s'"
+msgstr "chown impossible sur « %s » : %s"
 
 #: ../src/lib/problem_api.c:92
-#, fuzzy, c-format
+#, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr "Supprimer les répertoires des incidents en entier"
+msgstr "La suppression du répertoire de problème a échoué : %s"
 
 #: ../src/lib/problem_api.c:126
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
-msgstr ""
+msgstr "Impossible d'obtenir les données du problème depuis abrt-dbus : %s"
 
 #: ../src/lib/problem_api.c:160
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
-msgstr ""
+msgstr "Impossible d'obtenir la liste des problèmes depuis abrt-dbus : %s"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:51
 msgid ""
@@ -431,19 +435,20 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:97
 msgid "Do not hash fingerprints"
-msgstr ""
+msgstr "Ne pas calculer les empreintes cryptographiques"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:172
-#, fuzzy, c-format
+#, c-format
 msgid "Core-backtraces are not supported for '%s'"
-msgstr "Erreur lors de l'analyse du backtrace pour %s"
+msgstr ""
+"Les traces arrières de processus ne sont pas prises en comptes pour « %s »"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:50
 msgid "Exiting on user command"
 msgstr "Arrêt à la demande de l'utilisateur"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:86
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -462,22 +467,24 @@ msgid ""
 "    --size_mb   Default: 4096\n"
 "    -e,--exact  Download only specified files\n"
 msgstr ""
-"Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+"Utilisation : %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
 "[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH]\n"
 "\n"
-"Installe debuginfos pour tous les id de version répertoriés dans "
-"BUILD_IDS_FILE\n"
-"sur CACHEDIR, à l'aide de TMPDIR en tant que zone de transit temporaire.\n"
-"Les anciens fichiers dans CACHEDIR sont supprimés jusqu'à cxe qu'il soit "
-"plus petit que SIZE.\n"
+"Installe les paquets debuginfos correspondants à tous les build-ids "
+"répertoriés dans BUILD_IDS_FILE\n"
+"sur CACHEDIR, en utilisant TMPDIR comme répertoire intermédaire temporaire.\n"
+"Les anciens fichiers dans CACHEDIR sont supprimés jusqu'à ce que CACHEDIR "
+"fasse moins de SIZE.\n"
 "\n"
 "    -v          Verbeux\n"
-"    -y          Non-interactif, assume 'Oui' pour toutes les questions\n"
+"    -y          Non-interactif, répondre 'Yes' à toutes les questions\n"
 "    --ids       Par défaut : build_ids\n"
-"    --tmpdir    Par défaut : /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
-"    --cache     Par défaut : /var/cache/abrt-di\n"
-"    --size_mb   Par défaut : 4096\n"
+"    --tmpdir    Par défaut : /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     Par défaut : /var/cache/abrt-di\n"
+"    --size_mb   Par défaut : 4096\n"
+"    -e,--exact  Télécharger les fichiers spécifiés uniquement\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:170
 msgid "Can't open {0}: {1}"
@@ -494,13 +501,12 @@ msgid "Missing debuginfo file: {0}"
 msgstr "Fichier debuginfo manquant : {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:217
-#, fuzzy
 msgid "All debuginfo files are available"
-msgstr "Tous les fichiers debuginfo {0} sont disponibles"
+msgstr "Tous les fichiers debuginfo sont disponibles"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:34
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:79
 msgid ""
@@ -591,32 +597,34 @@ msgid ""
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
 msgstr ""
+"& [-vs] [-F STR]... FILE PROG [ARGS]\n"
+"\n"
+"Surveiller le fichier journal FILE, lancer PROG quand il grossit ou est "
+"remplacé"
 
 #: ../src/plugins/abrt-watch-log.c:142
 msgid "Don't run PROG if STRs aren't found"
-msgstr ""
+msgstr "Ne pas lancer PROG si les chaînes STR sont introuvables"
 
 #: ../src/plugins/abrt-dump-oops.c:136
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"Un incident de noyau s'est produit, votre noyau a été entaché (indicateurs :"
-"%s). Les mainteneurs du noyau ne sont pas en mesure de diagnostiquer les "
-"rapports entachés."
+"Un incident noyau est survenu, mais votre noyau a été teinté (drapeau : %s). "
+"Les mainteneurs du noyau n'ont pas la possibilité de diagnostiquer les "
+"rapports teinté."
 
 #: ../src/plugins/abrt-dump-oops.c:177
-#, fuzzy
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr ""
-"& [-vsrowx] [-d DIR] FILE\n"
-"ou : & [-vsrowx] -D FILE\n"
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
-"Extrait les oops du fichier syslog/dmesg"
+"Extraire les oops de FILE (ou de l'entrée standard)"
 
 #: ../src/plugins/abrt-dump-oops.c:194
 msgid "Print found oopses on standard output"
@@ -641,7 +649,7 @@ msgstr "Rendre le répertoire des incidents lisible par tout le monde"
 
 #: ../src/plugins/abrt-dump-oops.c:201 ../src/plugins/abrt-dump-xorg.c:243
 msgid "Print search string(s) to stdout and exit"
-msgstr ""
+msgstr "Afficher les chaînes recherchées sur la sortie standard et quitter"
 
 #: ../src/plugins/abrt-dump-xorg.c:231
 msgid ""
@@ -649,16 +657,17 @@ msgid ""
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
 msgstr ""
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"Extraire les données de plantage de Xorg de FILE (ou de l'entrée standard)"
 
 #: ../src/plugins/abrt-dump-xorg.c:239
-#, fuzzy
 msgid "Print found crash data on standard output"
-msgstr "Afficher les oops noyau trouvés sur la sortie standard"
+msgstr "Afficher les données de plantage sur la sortie standard"
 
 #: ../src/plugins/abrt-dump-xorg.c:240
-#, fuzzy
 msgid "Create ABRT dump in DIR for every crash found"
-msgstr "Créer un vidage ABRT dans DIR pour chaque oops trouvé"
+msgstr "Créer un vidage ABRT pour chaque plantage trouvé"
 
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid ""
@@ -721,6 +730,8 @@ msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official %s repositories?"
 msgstr ""
+"Le serveur Retrace est incapable de traiter le paquet « %s.%s ».\n"
+"Fait-il partie des dépôts %s officiels ?"
 
 #: ../src/plugins/abrt-retrace-client.c:409
 msgid "Querying server settings"
@@ -774,9 +785,8 @@ msgid "The server is not able to handle your request."
 msgstr "Le serveur n'est pas en mesure de gérer votre requête."
 
 #: ../src/plugins/abrt-retrace-client.c:576
-#, fuzzy
 msgid "Unknown package sent to Retrace server."
-msgstr "autoriser une connexion non-sécurisée au serveur retrace"
+msgstr "Paquet inconnu envoyé au serveur Retrace."
 
 #: ../src/plugins/abrt-retrace-client.c:586
 msgid "Preparing an archive to upload"
@@ -792,9 +802,9 @@ msgstr ""
 "uniquement des archives plus petites ou égales à %lld octets."
 
 #: ../src/plugins/abrt-retrace-client.c:612
-#, fuzzy, c-format
+#, c-format
 msgid "You are going to upload %d megabytes. Continue?"
-msgstr "Vous allez télécharger %d mégaoctets. Continuer ?"
+msgstr "Vous allez télécharger %d megaoctets. Continuer ?"
 
 #: ../src/plugins/abrt-retrace-client.c:619
 msgid "Cancelled by user"
@@ -895,6 +905,8 @@ msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
 msgstr ""
+"ne pas vérifier si le serveur Retrace est capable de traiter un paquet donné "
+"avant d'envoyer l'archive"
 
 #: ../src/plugins/abrt-retrace-client.c:1103
 msgid "retrace server URL"
@@ -1040,7 +1052,7 @@ msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
-msgstr ""
+msgstr "Récupérer .xsession-errors"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1183,15 +1195,15 @@ msgstr "Impossible de fermer NSS."
 
 #: ../src/plugins/bodhi.c:375
 msgid "List of bug ids"
-msgstr ""
+msgstr "Liste des identifiants de bogues"
 
 #: ../src/plugins/bodhi.c:376
 msgid "Specify a bodhi server url"
-msgstr ""
+msgstr "Spécifier l'URL d'un serveur bodhi"
 
 #: ../src/plugins/bodhi.c:377
 msgid "Specify a release"
-msgstr ""
+msgstr "Spécifier une révision"
 
 #: ../src/plugins/bodhi.c:382
 msgid ""
@@ -1199,19 +1211,23 @@ msgid ""
 "\n"
 "Search for updates on bodhi server"
 msgstr ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"\n"
+"Rechercher des mises à jour sur le serveur bodhi"
 
 #: ../src/plugins/bodhi.c:432
 msgid "Searching for updates"
-msgstr ""
+msgstr "Recherche de mises à jour"
 
 #: ../src/plugins/bodhi.c:438
 msgid "No updates for this package found"
-msgstr ""
+msgstr "Mises à jour introuvables pour ce paquet"
 
 #. strbuf_free(q);
 #: ../src/plugins/bodhi.c:467
 msgid "Local version of the package is newer than available updates"
 msgstr ""
+"La version de ce paquet est plus récente que les mises à jour disponibles"
 
 #: ../src/plugins/bodhi.c:484
 #, c-format
@@ -1263,14 +1279,12 @@ msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
-#, fuzzy
 msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
-msgstr "Envoyer la trace mémoire au serveur retrace pour analyse "
+msgstr ""
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
-#, fuzzy
 msgid ""
 "Uploads coredump to a server, which generates backtrace and returns it. If "
 "user doens't want to upload his coredump to anywhere the event performs "
@@ -1280,12 +1294,6 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
-"Télécharge coredump sur un serveur, ce qui génère un backtrace et le "
-"retourne. Avantages : télécharger debuginfo n'est plus nécessaire, la base "
-"de données de debuginfos du serveur Retrace est plus complète. Le serveur "
-"Retrace peut aussi générer de meilleurs backtraces. Défauts : le coredump "
-"téléchargé contient toutes les données du programme en échec, y compris vos "
-"données personnelles s'il y en a."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -1324,7 +1332,7 @@ msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:1
 msgid "Collect Smolt profile"
-msgstr ""
+msgstr "Récupérer le profile Smolt"
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
 msgid "Save your computer's hardware profile information"
@@ -1369,9 +1377,8 @@ msgstr ""
 "de base et les enregistre respectivement sous user_vimrc and user_gvimrc."
 
 #: ../src/plugins/post_report.xml.in.h:1
-#, fuzzy
 msgid "Post report"
-msgstr "Aucun rapport soumis"
+msgstr ""
 
 #: ../src/plugins/post_report.xml.in.h:2
 msgid "Executed after the reporting is finished"
@@ -1380,22 +1387,3 @@ msgstr ""
 #: ../src/plugins/post_report.xml.in.h:3
 msgid "Used for updating of the databases"
 msgstr ""
-
-#~ msgid "Dump directory"
-#~ msgstr "Répertoire de trace"
-
-#~ msgid "Show"
-#~ msgstr "Afficher"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "Le service ABRT n'est pas en cours d'exécution"
-
-#~ msgid "_Report"
-#~ msgstr "_Rapport"
-
-#~ msgid "Parse kernel's message buffer before parsing FILE"
-#~ msgstr ""
-#~ "Analyse le tampon des messages du noyau avant d'analyser le fichier FILE"
-
-#~ msgid "Do not exit, watch the file for new oopses"
-#~ msgstr "Ne pas sortir, lire le fichier pour de nouveaux oops noyau"

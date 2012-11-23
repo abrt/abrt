@@ -3,30 +3,29 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2012-11-23 18:31+0100\n"
-"PO-Revision-Date: 2012-11-23 17:13+0000\n"
+"PO-Revision-Date: 2012-11-23 15:14+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
-"Language-Team: Arabic <trans-ar@lists.fedoraproject.org>\n"
-"Language: ar\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: lt_LT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
+"%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
 #: ../src/gui-gtk/main.c:955
 msgid "Automatic Bug Reporting Tool"
-msgstr "أداة تبليغ العلّل الآليّة"
+msgstr "Automatinių pranešimų apie klaidas įrankis"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2
 msgid "ABRT notification applet"
-msgstr "بريمج الإخطار إيه.بي.آر.تي (ABRT)"
+msgstr "ABRT pranešimų įtaisas"
 
 #: ../src/applet/applet.c:66
 msgid "Problem detected"
@@ -39,20 +38,20 @@ msgstr ""
 
 #: ../src/applet/applet.c:315 ../src/applet/applet.c:317
 msgid "Warning"
-msgstr "تحذير"
+msgstr "Perspėjimas"
 
 #: ../src/applet/applet.c:365
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
-msgstr "بريمج منطقة التنبيه لتنبيه المستخدم عن المشاكل المٌكتشفة عن طريق ABRT"
+msgstr "Pranešimų vietos įtaisas, kuris praneša apie ABRT aptiktas problemas"
 
 #: ../src/applet/applet.c:381 ../src/gui-gtk/main.c:792
 msgid "translator-credits"
-msgstr "أحمد محمد عربي <egydev@fedoraproject.org>"
+msgstr "Išvertė:Aurimas Černius"
 
 #: ../src/applet/applet.c:391
 msgid "Hide"
-msgstr "إخفاء"
+msgstr "Slėpti"
 
 #: ../src/applet/applet.c:440
 msgid "Ignore"
@@ -63,11 +62,11 @@ msgstr ""
 #: ../src/applet/applet.c:444 ../src/gui-gtk/main.c:910
 #: ../src/gui-gtk/main.c:1048
 msgid "Report"
-msgstr "تقرير"
+msgstr "Pranešti"
 
 #: ../src/applet/applet.c:448
 msgid "A Problem has Occurred"
-msgstr ""
+msgstr "Kilo problema"
 
 #: ../src/applet/applet.c:533 ../src/applet/applet.c:716
 #, c-format
@@ -104,7 +103,7 @@ msgstr ""
 
 #: ../src/daemon/abrt-action-save-package-data.c:388
 msgid "Configuration file"
-msgstr ""
+msgstr "Konfigūracijos failas"
 
 #: ../src/daemon/abrt-server.c:509 ../src/dbus/abrt-dbus.c:772
 #: ../src/daemon/abrtd.c:829
@@ -118,12 +117,12 @@ msgstr ""
 #: ../src/daemon/abrt-server.c:521 ../src/plugins/abrt-watch-log.c:141
 #: ../src/plugins/abrt-dump-oops.c:193 ../src/plugins/abrt-dump-xorg.c:238
 msgid "Log to syslog"
-msgstr ""
+msgstr "Įrašyti į syslog"
 
 #: ../src/daemon/abrt-server.c:522 ../src/daemon/abrtd.c:845
 #: ../src/gui-gtk/main.c:1225
 msgid "Add program names to log"
-msgstr ""
+msgstr "Pridėti programų pavadinimus į žurnalą"
 
 #: ../src/dbus/abrt-dbus.c:110
 msgid "Unknown error"
@@ -155,11 +154,11 @@ msgstr ""
 
 #: ../src/daemon/abrtd.c:842
 msgid "Do not daemonize"
-msgstr ""
+msgstr "Neveikti tarnybos veiksena"
 
 #: ../src/daemon/abrtd.c:843
 msgid "Log to syslog even with -d"
-msgstr ""
+msgstr "Įrašyti į syslog net naudojant -d"
 
 #: ../src/daemon/abrt-handle-event.c:290
 msgid "& [-v -i] -e|--event EVENT DIR..."
@@ -175,15 +174,15 @@ msgstr ""
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr "عرض وتبليغ عن أعطال التطبيق"
+msgstr "Rodyti ir pranešti apie programų lūžimus"
 
 #: ../src/gui-gtk/main.c:730
 msgid "Problem description"
-msgstr ""
+msgstr "Problemos aprašymas"
 
 #: ../src/gui-gtk/main.c:733
 msgid "Send"
-msgstr ""
+msgstr "Siųsti"
 
 #: ../src/gui-gtk/main.c:811 ../src/gui-gtk/main.c:857
 msgid "Source"
@@ -191,7 +190,7 @@ msgstr ""
 
 #: ../src/gui-gtk/main.c:821 ../src/gui-gtk/main.c:867
 msgid "Problem"
-msgstr ""
+msgstr "Problema"
 
 #: ../src/gui-gtk/main.c:842
 msgid "Last Occurrence"
@@ -211,11 +210,11 @@ msgstr ""
 
 #: ../src/gui-gtk/main.c:900
 msgid "_Edit"
-msgstr "_تحرير"
+msgstr "_Taisa"
 
 #: ../src/gui-gtk/main.c:901
 msgid "_Help"
-msgstr "م_ساعدة"
+msgstr "_Žinynas"
 
 #: ../src/gui-gtk/main.c:912
 msgid "Open problem data"
@@ -223,7 +222,7 @@ msgstr ""
 
 #: ../src/gui-gtk/main.c:936
 msgid "Report problem with ABRT"
-msgstr ""
+msgstr "Pranešti apie problemą su ABRT"
 
 #: ../src/gui-gtk/main.c:975
 msgid "Not submitted reports"
@@ -303,7 +302,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-analyze-backtrace.c:100
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "Nepavyko perskaityti %s pėdsako"
 
 #: ../src/plugins/abrt-action-analyze-c.c:79
 msgid ""
@@ -360,11 +359,11 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 msgid "Additional debuginfo directories"
-msgstr ""
+msgstr "Papildomi derinimo informacijos katalogai"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr ""
+msgstr "Išjungti gdb, jei jis veikia ilgiau nei NUM sekudžių"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
@@ -372,7 +371,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-generate-backtrace.c:102
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
-msgstr ""
+msgstr "Pėdsakas sugeneruotas ir išsaugotas, %u baitų"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:84
 msgid ""
@@ -392,7 +391,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:50
 msgid "Exiting on user command"
-msgstr ""
+msgstr "Išeinama po naudotojo komandos"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:86
 #, c-format
@@ -433,7 +432,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:34
 msgid "y"
-msgstr "ن"
+msgstr ""
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:79
 msgid ""
@@ -472,7 +471,7 @@ msgstr ""
 #: ../src/plugins/abrt-dedup-client.c:96
 #: ../src/plugins/abrt-retrace-client.c:1096
 msgid "log to syslog"
-msgstr ""
+msgstr "įrašyti į syslog"
 
 #: ../src/plugins/abrt-dedup-client.c:98
 msgid "allow insecure connection to dedup server"
@@ -493,7 +492,7 @@ msgstr ""
 #: ../src/plugins/abrt-dedup-client.c:106
 #: ../src/plugins/abrt-retrace-client.c:1107
 msgid "(debug) show received HTTP headers"
-msgstr ""
+msgstr "(derinimas) rodyti gautas HTTP antraštes"
 
 #: ../src/plugins/abrt-dedup-client.c:110
 msgid "abrt-dedup-client component backtrace_file [options]"
@@ -540,14 +539,14 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-oops.c:194
 msgid "Print found oopses on standard output"
-msgstr ""
+msgstr "Išspausdinti oops į standartinę išvestį"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
 #.
 #: ../src/plugins/abrt-dump-oops.c:198
 msgid "Create ABRT dump in DIR for every oops found"
-msgstr ""
+msgstr "Sukurti ABRT išklotinę kataloge visiems rastiems oops"
 
 #: ../src/plugins/abrt-dump-oops.c:199 ../src/plugins/abrt-dump-xorg.c:241
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
@@ -584,13 +583,13 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:100
 msgid "Cannot open temporary file"
-msgstr ""
+msgstr "Nepavyksta atverti laikino failo"
 
 #: ../src/plugins/abrt-retrace-client.c:126
 #: ../src/plugins/abrt-retrace-client.c:162
 #, c-format
 msgid "Can't execute '%s'"
-msgstr ""
+msgstr "Nepavyksta įvykdyti „%s“"
 
 #: ../src/plugins/abrt-retrace-client.c:198
 #: ../src/plugins/abrt-retrace-client.c:655
@@ -598,7 +597,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:981
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr ""
+msgstr "Nepavyko išsiųsti %d ilgio HTTP antraštės: NSS klaida %d."
 
 #: ../src/plugins/abrt-retrace-client.c:210
 #: ../src/plugins/abrt-retrace-client.c:380
@@ -611,6 +610,8 @@ msgid ""
 "Unexpected HTTP response from server: %d\n"
 "%s"
 msgstr ""
+"Nelauktas HTTP atsakas iš serverio: %d\n"
+"%s"
 
 #: ../src/plugins/abrt-retrace-client.c:219
 #: ../src/plugins/abrt-retrace-client.c:734
@@ -618,13 +619,13 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:921
 #: ../src/plugins/abrt-retrace-client.c:990
 msgid "Invalid response from server: missing HTTP message body."
-msgstr ""
+msgstr "Netinkamas serverio atsakas: trūkstamas HTTP pranešimo pagridas."
 
 #: ../src/plugins/abrt-retrace-client.c:366
 #: ../src/plugins/abrt-retrace-client.c:833
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr ""
+msgstr "Nepavyko išsiųsti %d ilgio HTTP antraštės: NSS klaida %d"
 
 #: ../src/plugins/abrt-retrace-client.c:387
 #, c-format
@@ -635,7 +636,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:409
 msgid "Querying server settings"
-msgstr ""
+msgstr "Užklausiama serverio nustatymų"
 
 #: ../src/plugins/abrt-retrace-client.c:417
 msgid "The server is fully occupied. Try again later."
@@ -649,7 +650,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:451
 #, c-format
 msgid "Unable to stat file '%s'."
-msgstr ""
+msgstr "Nepavyko nustatyti failo „%s“."
 
 #: ../src/plugins/abrt-retrace-client.c:436
 #, c-format
@@ -668,6 +669,8 @@ msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
 msgstr ""
+"Jūsų lūžimo dydis yra %lld baitų, bet trasavimo serveris priima tik iki %lld "
+"baitų."
 
 #: ../src/plugins/abrt-retrace-client.c:509
 msgid "The server does not support xz-compressed tarballs."
@@ -688,7 +691,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:586
 msgid "Preparing an archive to upload"
-msgstr ""
+msgstr "Ruošiamas archyvas nusiuntimui"
 
 #: ../src/plugins/abrt-retrace-client.c:599
 #, c-format
@@ -696,6 +699,8 @@ msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
 msgstr ""
+"Jūsų archyvo dydis yra %lld baitų, bet trasavimo serveris priima tik iki "
+"%lld baitų."
 
 #: ../src/plugins/abrt-retrace-client.c:612
 #, c-format
@@ -714,25 +719,25 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:664
 #, c-format
 msgid "Uploading %lld bytes\n"
-msgstr ""
+msgstr "Nusinčiama %lld baitų\n"
 
 #: ../src/plugins/abrt-retrace-client.c:688
 #, c-format
 msgid "Uploading %d%%\n"
-msgstr ""
+msgstr "Nusiunčiama %d%%\n"
 
 #: ../src/plugins/abrt-retrace-client.c:700
 msgid "Failed to read from a pipe"
-msgstr ""
+msgstr "Nepavyko skaityti iš kanalo"
 
 #: ../src/plugins/abrt-retrace-client.c:713
 #, c-format
 msgid "Failed to send data: NSS error %d (%s): %s"
-msgstr ""
+msgstr "Nepavyko išsiųsti duomenų: NSS klaida %d (%s): %s"
 
 #: ../src/plugins/abrt-retrace-client.c:724
 msgid "Upload successful"
-msgstr ""
+msgstr "Nusiuntimas sėkmingas"
 
 #: ../src/plugins/abrt-retrace-client.c:746
 msgid ""
@@ -748,15 +753,15 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:761
 msgid "Invalid response from server: missing X-Task-Id."
-msgstr ""
+msgstr "Netinkamas atsakas iš serverio: trūkstamas X užduoties Id."
 
 #: ../src/plugins/abrt-retrace-client.c:767
 msgid "Invalid response from server: missing X-Task-Password."
-msgstr ""
+msgstr "Netinkamas atsakas iš serverio: trūkstamas X užduoties slaptažodis."
 
 #: ../src/plugins/abrt-retrace-client.c:774
 msgid "Retrace job started"
-msgstr ""
+msgstr "Trasavimo darbas pradėtas"
 
 #: ../src/plugins/abrt-retrace-client.c:787
 #, c-format
@@ -764,10 +769,12 @@ msgid ""
 "Task Id: %s\n"
 "Task Password: %s\n"
 msgstr ""
+"Užduoties Id: %s\n"
+"Užduoties slaptažodis: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:857
 msgid "Invalid response from server: missing X-Task-Status."
-msgstr ""
+msgstr "Netinkamas serverio atsakas: trūksta X užduoties būsenos."
 
 #: ../src/plugins/abrt-retrace-client.c:869
 #, c-format
@@ -775,6 +782,8 @@ msgid ""
 "Task Status: %s\n"
 "%s\n"
 msgstr ""
+"Užduoties būsena: %s\n"
+"%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:1050
 msgid ""
@@ -784,7 +793,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1098
 msgid "allow insecure connection to retrace server"
-msgstr ""
+msgstr "leisti nesaugiam ryšiui trasuoti serverį"
 
 #: ../src/plugins/abrt-retrace-client.c:1100
 msgid ""
@@ -794,7 +803,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1103
 msgid "retrace server URL"
-msgstr ""
+msgstr "trasavimo serverio URL"
 
 #: ../src/plugins/abrt-retrace-client.c:1105
 msgid "retrace server port"
@@ -802,7 +811,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1108
 msgid "For create and batch operations"
-msgstr ""
+msgstr "Kūrimo ir grupiniams veiksmams"
 
 #: ../src/plugins/abrt-retrace-client.c:1110
 msgid "read data from ABRT problem directory"
@@ -810,33 +819,37 @@ msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:1112
 msgid "read data from coredump"
-msgstr ""
+msgstr "skaityti duomenis iš išklotinės"
 
 #: ../src/plugins/abrt-retrace-client.c:1114
 msgid "Delay for polling operations"
-msgstr ""
+msgstr "Delsti dėl užklausų veiksmų"
 
 #: ../src/plugins/abrt-retrace-client.c:1116
 msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
 msgstr ""
+"(derinimas) netrinti laikimo archyvo, sukurto iš išklotinės katalogo "
+"kataloge /tmp"
 
 #: ../src/plugins/abrt-retrace-client.c:1118
 msgid "For status, backtrace, and log operations"
-msgstr ""
+msgstr "Būsenai, pėdsakui ir žurnalo veiksmams"
 
 #: ../src/plugins/abrt-retrace-client.c:1120
 msgid "id of your task on server"
-msgstr ""
+msgstr "jūsų užduoties id serveryje"
 
 #: ../src/plugins/abrt-retrace-client.c:1122
 msgid "password of your task on server"
-msgstr ""
+msgstr "jūsų užduoties slaptažodis serveryje"
 
 #: ../src/plugins/abrt-retrace-client.c:1126
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch"
 msgstr ""
+"abrt-retrace-client <veiksmas> [parinktys]\n"
+"Veiksmai: create/status/backtrace/log/batch"
 
 #: ../src/plugins/abrt-retrace-client.c:1172
 #: ../src/plugins/abrt-retrace-client.c:1178
@@ -847,26 +860,28 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:1192
 #: ../src/plugins/abrt-retrace-client.c:1200
 msgid "Task id is needed."
-msgstr ""
+msgstr "Reikalingas užduoties id."
 
 #: ../src/plugins/abrt-retrace-client.c:1186
 #: ../src/plugins/abrt-retrace-client.c:1194
 #: ../src/plugins/abrt-retrace-client.c:1202
 msgid "Task password is needed."
-msgstr ""
+msgstr "Reikalingas užduoties slaptažodis."
 
 #: ../src/plugins/abrt-retrace-client.c:1206
 #, c-format
 msgid "Unknown operation: %s."
-msgstr ""
+msgstr "Nežinomas veiksmas: %s."
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
-msgstr ""
+msgstr "Vietinė GNU derintuvė"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgstr ""
+"Parsiųsti derinimo informacijos paketus ir sugeneruoti pėdsaką vietoje "
+"naudojant GDB"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
@@ -874,10 +889,13 @@ msgid ""
 "and take up disk space. However, unlike RetraceServer, doesn't send coredump "
 "to remote machines."
 msgstr ""
+"Reikalauja parsiųsti derinimo informacijos paketus, o tai gali užtrukti ir "
+"užimti nemažai disko vietos. Tačiau, skirtingai nuo RetraceServer, nesiunčia "
+"išklotinių į nutolusius kompiuterius."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
-msgstr ""
+msgstr "Siųsti išklotinę į nuotolinį trasavimo serverį analizei"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:2
 msgid ""
@@ -887,16 +905,21 @@ msgid ""
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
 msgstr ""
+"Nusiunčia išklotinę į serverį, kuris sugeneruoja pėdsaką ir jį grąžina. "
+"Pranašumai: nereikia parsiųsti derinimo informacijos. Trasavimo serverio "
+"derinimo duomenų bazė yra pilnesnė. Trasavimo serveris gali sugeneruoti "
+"geresnius pėdsakus. Trūkumai: išklotinė, kurią nusiųsite, turi visus "
+"lūžusios programos duomenis, įskaitant privačius, jei tokie yra."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 #: ../src/plugins/analyze_CCpp.xml.in.h:3
 msgid "Retrace server URL"
-msgstr ""
+msgstr "Trasavimo serverio URL"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
 #: ../src/plugins/analyze_CCpp.xml.in.h:4
 msgid "Address of the retrace server"
-msgstr ""
+msgstr "Trasavimo serverio adresas"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:5
 #: ../src/plugins/analyze_CCpp.xml.in.h:5
@@ -922,13 +945,15 @@ msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
-msgstr ""
+msgstr "Išsaugoti tinkamas eilutes iš ~/.xsession-errors failo"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:3
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
 msgstr ""
+"Skaito ~/.xsession-errors failą ir išsaugo eilutes, kurios turi programos "
+"pavadinimą. Rezultatas išsaugomas kaip „xsession_errors“ elementas."
 
 #: ../src/plugins/https-utils.c:46
 msgid "An error occurred on the server side. Try again later."
@@ -943,26 +968,26 @@ msgstr ""
 #: ../src/plugins/https-utils.c:69
 #, c-format
 msgid "Issuer certificate is invalid: '%s'."
-msgstr ""
+msgstr "Išdavėjo liudijimas netinkamas: „%s“"
 
 #: ../src/plugins/https-utils.c:72
 #, c-format
 msgid "Certificate is signed by an untrusted issuer: '%s'."
-msgstr ""
+msgstr "Liudijimą pasirašo nepatikimas išdavėjas: „%s“."
 
 #: ../src/plugins/https-utils.c:75
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
-msgstr ""
+msgstr "Liudijimo subjektas „%s“ neatitinka tikslo „%s“."
 
 #: ../src/plugins/https-utils.c:79
 msgid "Remote certificate has expired."
-msgstr ""
+msgstr "Nuotolinio liudijimo galiojimas pasibaigė."
 
 #: ../src/plugins/https-utils.c:82
 #, c-format
 msgid "Certificate issuer is not recognized: '%s'."
-msgstr ""
+msgstr "Liudijimo išdavėjas neatpažįstamas: „%s“."
 
 #: ../src/plugins/https-utils.c:85
 #, c-format
@@ -972,7 +997,7 @@ msgstr ""
 #: ../src/plugins/https-utils.c:121
 #, c-format
 msgid "Failed to get slot 'PEM Token #0': %d."
-msgstr ""
+msgstr "Nepavyko gauti lizdo „PEM Token #0“: %d."
 
 #: ../src/plugins/https-utils.c:154
 #, c-format
@@ -981,59 +1006,59 @@ msgstr ""
 
 #: ../src/plugins/https-utils.c:174
 msgid "Failed to create a TCP socket"
-msgstr ""
+msgstr "Nepavyko sukurti TCP jungties."
 
 #: ../src/plugins/https-utils.c:182
 msgid "Failed to set socket blocking mode."
-msgstr ""
+msgstr "Nepavyko nustatyti jungties į blokavimo veikseną."
 
 #: ../src/plugins/https-utils.c:188
 msgid "Failed to wrap TCP socket by SSL."
-msgstr ""
+msgstr "Nepavyko apvilkti TCP junkties su SSL."
 
 #: ../src/plugins/https-utils.c:194 ../src/plugins/https-utils.c:198
 #: ../src/plugins/https-utils.c:200 ../src/plugins/https-utils.c:202
 msgid "Failed to enable client handshake to SSL socket."
-msgstr ""
+msgstr "Nepavyko leisti kliento rankos paspaudimo SSL jungtyje."
 
 #: ../src/plugins/https-utils.c:208
 msgid "Failed to set URL to SSL socket."
-msgstr ""
+msgstr "Nepavyko nustatyti SSL jungties URL."
 
 #: ../src/plugins/https-utils.c:215
 msgid "Failed to connect SSL address."
-msgstr ""
+msgstr "Nepavyko prisijungti SSL adresu."
 
 #: ../src/plugins/https-utils.c:222
 msgid "Failed to set certificate hook."
-msgstr ""
+msgstr "Nepavyko nustatyti liudijimo prikabinimo."
 
 #: ../src/plugins/https-utils.c:229
 msgid "Failed to set handshake callback."
-msgstr ""
+msgstr "Nepavyko nustatyti rankos paspaudimo atgalinio iškvietimo."
 
 #: ../src/plugins/https-utils.c:236
 msgid "Failed to reset handshake."
-msgstr ""
+msgstr "Nepavyko išjungti rankos paspaudimo."
 
 #: ../src/plugins/https-utils.c:243
 #, c-format
 msgid "Failed to force handshake: NSS error %d."
-msgstr ""
+msgstr "Nepavyko priversti rankos paspaudimo: NSS klaida %d"
 
 #: ../src/plugins/https-utils.c:252
 msgid "Failed to close SSL socket."
-msgstr ""
+msgstr "Nepavyko užverti SSL jungties."
 
 #: ../src/plugins/https-utils.c:306 ../src/plugins/https-utils.c:312
 #: ../src/plugins/https-utils.c:318
 msgid "Invalid response from server: HTTP header not found."
-msgstr ""
+msgstr "Netinkamas serverio atsakas: HTTP antraštė nerasta."
 
 #: ../src/plugins/https-utils.c:357
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
-msgstr ""
+msgstr "Duomenų gavimas nepavyko: NSS klaida %d."
 
 #: ../src/plugins/https-utils.c:386
 msgid "Malformed chunked response."
@@ -1041,15 +1066,15 @@ msgstr ""
 
 #: ../src/plugins/https-utils.c:411
 msgid "Failed to initialize NSS."
-msgstr ""
+msgstr "Nepavyko inicializuoti NSS."
 
 #: ../src/plugins/https-utils.c:417
 msgid "Failed to initialize security module."
-msgstr ""
+msgstr "Nepavyko inicializuoti saugumo modulio."
 
 #: ../src/plugins/https-utils.c:432
 msgid "Failed to shutdown NSS."
-msgstr ""
+msgstr "Nepavyko išjungti NSS."
 
 #: ../src/plugins/bodhi.c:375
 msgid "List of bug ids"

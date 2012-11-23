@@ -3,21 +3,23 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
+# Cheng-Chia Tseng <pswo10680@gmail.com>, 2011-2012.
 # Chester Cheng <ccheng@redhat.com>, 2012.
-# Terry Chuang <tchuang@redhat.com>, 2011.
+# Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
+# Terry Chuang <tchuang@redhat.com>, 2011-2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-11-23 15:59+0100\n"
-"PO-Revision-Date: 2012-03-01 04:30+0000\n"
-"Last-Translator: Chester Cheng <ccheng@redhat.com>\n"
+"POT-Creation-Date: 2012-11-23 18:31+0100\n"
+"PO-Revision-Date: 2012-11-23 17:23+0000\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Chinese (Taiwan) <trans-zh_TW@lists.fedoraproject.org>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
 #: ../src/gui-gtk/main.c:955
@@ -29,14 +31,13 @@ msgid "ABRT notification applet"
 msgstr "ABRT 通知面板程式"
 
 #: ../src/applet/applet.c:66
-#, fuzzy
 msgid "Problem detected"
-msgstr "問題目錄"
+msgstr "偵測到問題"
 
 #: ../src/applet/applet.c:250
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr ""
+msgstr "無法取得「%s」的擁有權"
 
 #: ../src/applet/applet.c:315 ../src/applet/applet.c:317
 msgid "Warning"
@@ -57,7 +58,7 @@ msgstr "隱藏"
 
 #: ../src/applet/applet.c:440
 msgid "Ignore"
-msgstr ""
+msgstr "忽略"
 
 #. buttons are homogenous so set size only for one button and it will
 #. * work for the rest buttons in same gtk_hbox_new()
@@ -119,9 +120,8 @@ msgid "& [options]"
 msgstr "& [options]"
 
 #: ../src/daemon/abrt-server.c:520
-#, fuzzy
 msgid "Use NUM as client uid"
-msgstr "使用 UID 作為客戶端 uid"
+msgstr ""
 
 #: ../src/daemon/abrt-server.c:521 ../src/plugins/abrt-watch-log.c:141
 #: ../src/plugins/abrt-dump-oops.c:193 ../src/plugins/abrt-dump-xorg.c:238
@@ -134,25 +134,24 @@ msgid "Add program names to log"
 msgstr "加入程式名稱至紀錄檔"
 
 #: ../src/dbus/abrt-dbus.c:110
-#, fuzzy
 msgid "Unknown error"
-msgstr "不明作業：%s。"
+msgstr "不明的錯誤"
 
 #: ../src/dbus/abrt-dbus.c:398
-#, fuzzy, c-format
+#, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr "{0} 不是合於規定的 vmcore"
+msgstr "「%s」不是個有效的問題目錄"
 
 #: ../src/dbus/abrt-dbus.c:507 ../src/dbus/abrt-dbus.c:587
 msgid "Not Authorized"
-msgstr ""
+msgstr "未經認證"
 
 #: ../src/dbus/abrt-dbus.c:754
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
-msgstr ""
+msgstr "「%s」這組名稱已遺失，請檢查是否有其他擁有該名稱的服務並未運作。\n"
 
 #: ../src/dbus/abrt-dbus.c:781 ../src/daemon/abrtd.c:844
 msgid "Exit after NUM seconds of inactivity"
@@ -160,7 +159,7 @@ msgstr "NUM 秒內沒有動作，就退出"
 
 #: ../src/dbus/abrt-dbus.c:799
 msgid "This program must be run as root."
-msgstr ""
+msgstr "此程式必須以 root 身份執行。"
 
 #: ../src/daemon/abrtd.c:842
 msgid "Do not daemonize"
@@ -171,9 +170,8 @@ msgid "Log to syslog even with -d"
 msgstr "即使加上 -d 參數也紀錄至 syslog"
 
 #: ../src/daemon/abrt-handle-event.c:290
-#, fuzzy
 msgid "& [-v -i] -e|--event EVENT DIR..."
-msgstr "& [-v] -e|--event EVENT DIR..."
+msgstr ""
 
 #: ../src/daemon/abrt-handle-event.c:298
 msgid "Run EVENT on DIR"
@@ -216,9 +214,8 @@ msgid "Submission Result"
 msgstr "提交結果"
 
 #: ../src/gui-gtk/main.c:899
-#, fuzzy
 msgid "_Problem"
-msgstr "問題"
+msgstr "問題(_P)"
 
 #: ../src/gui-gtk/main.c:900
 msgid "_Edit"
@@ -230,7 +227,7 @@ msgstr "求助(_H)"
 
 #: ../src/gui-gtk/main.c:912
 msgid "Open problem data"
-msgstr ""
+msgstr "開啟問題資料"
 
 #: ../src/gui-gtk/main.c:936
 msgid "Report problem with ABRT"
@@ -246,7 +243,7 @@ msgstr "<b>未提交的報告</b>"
 
 #: ../src/gui-gtk/main.c:979
 msgid "Show all problems"
-msgstr ""
+msgstr "顯示所有問題"
 
 #: ../src/gui-gtk/main.c:1022
 msgid "Submitted reports"
@@ -257,20 +254,20 @@ msgid "<b>Submitted reports</b>"
 msgstr "<b>已提交的報告</b>"
 
 #: ../src/gui-gtk/main.c:1216
-#, fuzzy
 msgid ""
 "& [-vpD] [DIR]...\n"
 "\n"
 "Shows list of problem directories in specified DIR(s)\n"
 "and ones saved in system-wide problem directory spool."
 msgstr ""
-"& [-vp] [DIR]...\n"
+"& [-vpD] [DIR]...\n"
 "\n"
-"顯示特定 DIR 中，ABRT dump 目錄的清單\n"
+"顯示指定 DIR 中的問題目錄清單，\n"
+"以及儲存於系統全域問題目錄 spool 中的問題目錄。"
 
 #: ../src/gui-gtk/main.c:1226
 msgid "Do not query problems over dbus (use only DIRs)"
-msgstr ""
+msgstr "請勿透過 dbus 查詢問題 (僅能使用 DIR)"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:242 ../src/plugins/abrt-action-analyze-vmcore.in:126
@@ -280,27 +277,27 @@ msgstr "產生 backtrace"
 #: ../src/lib/problem_api.c:41
 #, c-format
 msgid "Can't connect to system DBus: %s"
-msgstr ""
+msgstr "無法連接至系統 DBus：%s"
 
 #: ../src/lib/problem_api.c:65
-#, fuzzy, c-format
+#, c-format
 msgid "Can't chown '%s': %s"
-msgstr "無法執行「%s」"
+msgstr "無法 chown '%s'：%s"
 
 #: ../src/lib/problem_api.c:92
-#, fuzzy, c-format
+#, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr "刪除所有問題目錄"
+msgstr "刪除問題目錄失敗：%s"
 
 #: ../src/lib/problem_api.c:126
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
-msgstr ""
+msgstr "無法由 abrt-dbus 取得問題資料：%s"
 
 #: ../src/lib/problem_api.c:160
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
-msgstr ""
+msgstr "無法由 abrt-dbus 取得問題清單：%s"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:51
 msgid ""
@@ -417,19 +414,19 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:97
 msgid "Do not hash fingerprints"
-msgstr ""
+msgstr "不要製作雜湊指紋"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:172
-#, fuzzy, c-format
+#, c-format
 msgid "Core-backtraces are not supported for '%s'"
-msgstr "%s 的 backtrace 剖析失敗"
+msgstr "'%s' 不支援 Core-backtrace"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:50
 msgid "Exiting on user command"
 msgstr "正在離開使用者指令"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:86
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -451,17 +448,19 @@ msgstr ""
 "用法：%s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
 "[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH]\n"
 "\n"
-"將列於 BUILD_IDS_FILE 的所有 build-id 安裝至 CACHEDIR，\n"
-"使用 TMPDIR 做為暫存區域。\n"
-"CACHEDIR 中的舊檔案會在大小小於 SIZE 之後被刪除。\n"
+"為所有列於 BUILD_IDS_FILE 的 build-id 安裝 debuginfo\n"
+"至 CACHEDIR，並使用 TMPDIR 作為暫時臨架區。\n"
+"CACHEDIR 中的舊檔案會被刪除，直到它小於 SIZE。\n"
 "\n"
-"    -v          列出詳細資料\n"
-"    -y          非互動式，以「Yes」（是）回答所有問題\n"
-"    --ids       預設值：build_ids\n"
-"    --tmpdir    預設值：/tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
-"    --cache     預設值：/var/cache/abrt-di\n"
-"    --size_mb   預設值：4096\n"
+"    -v          冗長模式\n"
+"    -y          非互動模式，所有問題的回答都假定為「Yes」\n"
+"    --ids       預設：build_ids\n"
+"    --tmpdir    預設：/tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     預設：/var/cache/abrt-di\n"
+"    --size_mb   預設：4096\n"
+"    -e,--exact  僅下載指定檔案\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:170
 msgid "Can't open {0}: {1}"
@@ -476,13 +475,12 @@ msgid "Missing debuginfo file: {0}"
 msgstr "找不到 debuginfo 檔案：{0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:217
-#, fuzzy
 msgid "All debuginfo files are available"
-msgstr "總共有 {0} 個 debuginfo 檔案可用"
+msgstr "所有的 debuginfo 檔案皆可用"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:34
 msgid "y"
-msgstr ""
+msgstr "是 (y)"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:79
 msgid ""
@@ -572,31 +570,32 @@ msgid ""
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
 msgstr ""
+"& [-vs] [-F STR]... FILE PROG [ARGS]\n"
+"\n"
+"監視日誌檔案 FILE，當它增長或被取代時，執行 PROG"
 
 #: ../src/plugins/abrt-watch-log.c:142
 msgid "Don't run PROG if STRs aren't found"
-msgstr ""
+msgstr "若找不到 STR，便不執行 PROG"
 
 #: ../src/plugins/abrt-dump-oops.c:136
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"發生 kernel 的問題，您的 kernel 已經受損 (flags:%s)。kernel 維護人員無法診斷"
-"受損問題。"
+"遭遇一項內核問題，但您的內核已經損壞 (旗標：%s)。內核維護者無法診斷損壞的回報"
+"有什麼問題。"
 
 #: ../src/plugins/abrt-dump-oops.c:177
-#, fuzzy
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr ""
-"& [-vsrowx] [-d DIR] FILE\n"
-"or: & [-vsrowx] -D FILE\n"
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
-"從 syslog/dmesg 檔案中擷取 oops"
+"由 FILE (或標準輸入) 抽出 oops"
 
 #: ../src/plugins/abrt-dump-oops.c:194
 msgid "Print found oopses on standard output"
@@ -619,7 +618,7 @@ msgstr "讓問題目錄可以讓全世界讀到"
 
 #: ../src/plugins/abrt-dump-oops.c:201 ../src/plugins/abrt-dump-xorg.c:243
 msgid "Print search string(s) to stdout and exit"
-msgstr ""
+msgstr "將搜尋字串印在 stdout 上並離開"
 
 #: ../src/plugins/abrt-dump-xorg.c:231
 msgid ""
@@ -627,16 +626,17 @@ msgid ""
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
 msgstr ""
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"由 FILE (或是標準輸入) 抽出 Xorg 崩潰資料"
 
 #: ../src/plugins/abrt-dump-xorg.c:239
-#, fuzzy
 msgid "Print found crash data on standard output"
-msgstr "列印找到的 oops 於標準輸出上"
+msgstr "將找到的崩潰資料列印在標準輸出上"
 
 #: ../src/plugins/abrt-dump-xorg.c:240
-#, fuzzy
 msgid "Create ABRT dump in DIR for every crash found"
-msgstr "在 DIR 內為每個找到的 oops 建立 ABRT 傾印"
+msgstr "每當找到一筆崩潰資料時便在 DIR 中建立 ABRT 傾印"
 
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid ""
@@ -696,6 +696,8 @@ msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official %s repositories?"
 msgstr ""
+"回追伺服器無法處理套件「'%s.%s」。\n"
+"此套件是否屬於官方 %s 套件庫的一部分？"
 
 #: ../src/plugins/abrt-retrace-client.c:409
 msgid "Querying server settings"
@@ -749,9 +751,8 @@ msgid "The server is not able to handle your request."
 msgstr "伺服器無法處理您的需求。"
 
 #: ../src/plugins/abrt-retrace-client.c:576
-#, fuzzy
 msgid "Unknown package sent to Retrace server."
-msgstr "允許非安全的連線至 retrace 伺服器"
+msgstr "傳送至回追伺服器的套件不明。"
 
 #: ../src/plugins/abrt-retrace-client.c:586
 msgid "Preparing an archive to upload"
@@ -767,9 +768,9 @@ msgstr ""
 "位元組的封存檔案。"
 
 #: ../src/plugins/abrt-retrace-client.c:612
-#, fuzzy, c-format
+#, c-format
 msgid "You are going to upload %d megabytes. Continue?"
-msgstr "您即將上傳 %d MB。是否希望繼續進行？"
+msgstr "您即將上傳 %d MB。是否繼續？"
 
 #: ../src/plugins/abrt-retrace-client.c:619
 msgid "Cancelled by user"
@@ -863,7 +864,7 @@ msgstr "允許非安全的連線至 retrace 伺服器"
 msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
-msgstr ""
+msgstr "在上傳檔案前，不要檢查回追伺服器是否能夠處理所提供的套件"
 
 #: ../src/plugins/abrt-retrace-client.c:1103
 msgid "retrace server URL"
@@ -1001,7 +1002,7 @@ msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
-msgstr ""
+msgstr "收集 .xsession-errors"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1138,15 +1139,15 @@ msgstr "無法關閉 NSS。"
 
 #: ../src/plugins/bodhi.c:375
 msgid "List of bug ids"
-msgstr ""
+msgstr "臭蟲的 ID 清單"
 
 #: ../src/plugins/bodhi.c:376
 msgid "Specify a bodhi server url"
-msgstr ""
+msgstr "指定 bodhi 伺服器的 url"
 
 #: ../src/plugins/bodhi.c:377
 msgid "Specify a release"
-msgstr ""
+msgstr "指定發行版本"
 
 #: ../src/plugins/bodhi.c:382
 msgid ""
@@ -1154,19 +1155,22 @@ msgid ""
 "\n"
 "Search for updates on bodhi server"
 msgstr ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"\n"
+"在 bodhi 伺服器上搜尋更新"
 
 #: ../src/plugins/bodhi.c:432
 msgid "Searching for updates"
-msgstr ""
+msgstr "搜尋是否有更新"
 
 #: ../src/plugins/bodhi.c:438
 msgid "No updates for this package found"
-msgstr ""
+msgstr "找到的此套件沒有可用的更新"
 
 #. strbuf_free(q);
 #: ../src/plugins/bodhi.c:467
 msgid "Local version of the package is newer than available updates"
-msgstr ""
+msgstr "套件的本地版本比可用更新的版本還新"
 
 #: ../src/plugins/bodhi.c:484
 #, c-format
@@ -1217,14 +1221,12 @@ msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
-#, fuzzy
 msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
-msgstr "傳送核心傾印至遠端 retrace 伺服器以進行分析"
+msgstr ""
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
-#, fuzzy
 msgid ""
 "Uploads coredump to a server, which generates backtrace and returns it. If "
 "user doens't want to upload his coredump to anywhere the event performs "
@@ -1234,10 +1236,6 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
-"上傳核心傾印資料至伺服器，該伺服器會產生 backtrace 資料並回傳。優點：不需要下"
-"載 debuginfo 套件、retrace 伺服器資料庫中的 debuginfo 比較完整、retrace 伺服"
-"器可能會產生較良好的 backtrace 資料。缺點：您需要上傳核心傾印檔案，該檔案包含"
-"當掉程式的所有資料，包括您的私人資料 (若存在的話)。"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -1271,7 +1269,7 @@ msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:1
 msgid "Collect Smolt profile"
-msgstr ""
+msgstr "收集 Smolt 硬體資訊"
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
 msgid "Save your computer's hardware profile information"
@@ -1314,9 +1312,8 @@ msgstr ""
 "user_gvimrc。"
 
 #: ../src/plugins/post_report.xml.in.h:1
-#, fuzzy
 msgid "Post report"
-msgstr "未提交的報告"
+msgstr ""
 
 #: ../src/plugins/post_report.xml.in.h:2
 msgid "Executed after the reporting is finished"
@@ -1325,21 +1322,3 @@ msgstr ""
 #: ../src/plugins/post_report.xml.in.h:3
 msgid "Used for updating of the databases"
 msgstr ""
-
-#~ msgid "Dump directory"
-#~ msgstr "傾印目錄"
-
-#~ msgid "Show"
-#~ msgstr "顯示"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "ABRT 服務非運作中"
-
-#~ msgid "_Report"
-#~ msgstr "回報(_R)"
-
-#~ msgid "Parse kernel's message buffer before parsing FILE"
-#~ msgstr "在剖析 FILE 前先解析 kernel 的訊息緩衝"
-
-#~ msgid "Do not exit, watch the file for new oopses"
-#~ msgstr "不要離開，監視檔案以取得新的 oops"

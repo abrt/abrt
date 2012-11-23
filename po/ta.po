@@ -4,21 +4,23 @@
 #
 # Translators:
 # A <B>, 2012.
-# Felix I <ifelix25@gmail.com>, 2011, 2012.
+# Felix I <ifelix25@gmail.com>, 2011-2012.
 # I Felix <ifelix@redhat.com>, 2011.
+# Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
+# Shantha kumar <shkumar@redhat.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-11-23 15:59+0100\n"
-"PO-Revision-Date: 2012-03-02 18:04+0000\n"
-"Last-Translator: Felix I <ifelix25@gmail.com>\n"
+"POT-Creation-Date: 2012-11-23 18:31+0100\n"
+"PO-Revision-Date: 2012-11-23 17:23+0000\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Tamil <tamil-users@lists.fedoraproject.org>\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
 #: ../src/gui-gtk/main.c:955
@@ -30,14 +32,13 @@ msgid "ABRT notification applet"
 msgstr "ABRT அறிவிப்பு ஆப்லெட்"
 
 #: ../src/applet/applet.c:66
-#, fuzzy
 msgid "Problem detected"
-msgstr "சிக்கல் அடைவு"
+msgstr "சிக்கல் இருப்பதாக கண்டறியப்பட்டுள்ளது"
 
 #: ../src/applet/applet.c:250
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr ""
+msgstr "'%s' இன் உரிமையை எடுத்துக்கொள்ள முடியாது"
 
 #: ../src/applet/applet.c:315 ../src/applet/applet.c:317
 msgid "Warning"
@@ -60,7 +61,7 @@ msgstr "மறை"
 
 #: ../src/applet/applet.c:440
 msgid "Ignore"
-msgstr ""
+msgstr "புறக்கணி"
 
 #. buttons are homogenous so set size only for one button and it will
 #. * work for the rest buttons in same gtk_hbox_new()
@@ -122,9 +123,8 @@ msgid "& [options]"
 msgstr "& [options]"
 
 #: ../src/daemon/abrt-server.c:520
-#, fuzzy
 msgid "Use NUM as client uid"
-msgstr "UID ஐ வாடிக்கையாளர் uid ஆக பயன்படுத்தவும்"
+msgstr ""
 
 #: ../src/daemon/abrt-server.c:521 ../src/plugins/abrt-watch-log.c:141
 #: ../src/plugins/abrt-dump-oops.c:193 ../src/plugins/abrt-dump-xorg.c:238
@@ -137,18 +137,17 @@ msgid "Add program names to log"
 msgstr "பதிவிற்கு நிரல் பெயர்களை சேர்க்கவும்"
 
 #: ../src/dbus/abrt-dbus.c:110
-#, fuzzy
 msgid "Unknown error"
-msgstr "தெரியாத செயல்பாடு: %s."
+msgstr "தெரியாத பிழை"
 
 #: ../src/dbus/abrt-dbus.c:398
-#, fuzzy, c-format
+#, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr "{0} ஆனது ஒரு சரியான vmcore இல்லை"
+msgstr "'%s' ஒரு சரியான சிக்கல் கோப்பகமல்ல"
 
 #: ../src/dbus/abrt-dbus.c:507 ../src/dbus/abrt-dbus.c:587
 msgid "Not Authorized"
-msgstr ""
+msgstr "அங்கீகாரம் இல்லை"
 
 #: ../src/dbus/abrt-dbus.c:754
 #, c-format
@@ -156,6 +155,8 @@ msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr ""
+"'%s' என்ற பெயர் போய்விட்டது, இதே பெயரைக் கொண்ட மற்ற பயன்பாடுகள் எதுவும் இயங்காமல் உள்ளதா "
+"எனப் பார்க்கவும்.\n"
 
 #: ../src/dbus/abrt-dbus.c:781 ../src/daemon/abrtd.c:844
 msgid "Exit after NUM seconds of inactivity"
@@ -163,7 +164,7 @@ msgstr "NUM விநாடிகளுக்கு செயலில்லா�
 
 #: ../src/dbus/abrt-dbus.c:799
 msgid "This program must be run as root."
-msgstr ""
+msgstr "இந்த நிரலை மூலப் பயனராகவே இயக்க வேண்டும்."
 
 #: ../src/daemon/abrtd.c:842
 msgid "Do not daemonize"
@@ -174,9 +175,8 @@ msgid "Log to syslog even with -d"
 msgstr "-d-உடன் syslog பதிவு செய்தாலும்"
 
 #: ../src/daemon/abrt-handle-event.c:290
-#, fuzzy
 msgid "& [-v -i] -e|--event EVENT DIR..."
-msgstr "& [-v] -e|--event EVENT DIR..."
+msgstr ""
 
 #: ../src/daemon/abrt-handle-event.c:298
 msgid "Run EVENT on DIR"
@@ -219,9 +219,8 @@ msgid "Submission Result"
 msgstr "சமர்ப்பித்தல் முடிவு"
 
 #: ../src/gui-gtk/main.c:899
-#, fuzzy
 msgid "_Problem"
-msgstr "சிக்கல்"
+msgstr "சிக்கல் (_P)"
 
 #: ../src/gui-gtk/main.c:900
 msgid "_Edit"
@@ -233,7 +232,7 @@ msgstr "உதவி (_H)"
 
 #: ../src/gui-gtk/main.c:912
 msgid "Open problem data"
-msgstr ""
+msgstr "சிக்கல் தரவைத் திற"
 
 #: ../src/gui-gtk/main.c:936
 msgid "Report problem with ABRT"
@@ -249,7 +248,7 @@ msgstr "<b>சமர்ப்பிக்கப்பட்ட அறிக்�
 
 #: ../src/gui-gtk/main.c:979
 msgid "Show all problems"
-msgstr ""
+msgstr "எல்லா சிக்கல்களையும் காண்பி"
 
 #: ../src/gui-gtk/main.c:1022
 msgid "Submitted reports"
@@ -260,20 +259,20 @@ msgid "<b>Submitted reports</b>"
 msgstr "<b>சமர்ப்பிக்கப்பட்ட அறிக்கைகள்</b>"
 
 #: ../src/gui-gtk/main.c:1216
-#, fuzzy
 msgid ""
 "& [-vpD] [DIR]...\n"
 "\n"
 "Shows list of problem directories in specified DIR(s)\n"
 "and ones saved in system-wide problem directory spool."
 msgstr ""
-"& [-vp] [DIR]...\n"
+"& [-vpD] [DIR]...\n"
 "\n"
-"Shows list of ABRT dump directories in specified DIR(s)\n"
+"DIR(s) இல் குறிப்பிடப்பட்டுள்ள சிக்கல் கோப்பகங்களின் பட்டியலைக் காண்பிக்கும்\n"
+"அத்துடன் கணினியளவிலான சிக்கல் கோப்பக பதிவிலுள்ளவற்றையும் பட்டியலிடும்."
 
 #: ../src/gui-gtk/main.c:1226
 msgid "Do not query problems over dbus (use only DIRs)"
-msgstr ""
+msgstr "dbus இலான சிக்கல்களைப் பற்றி வினவ வேண்டாம் (DIRs மட்டுமே பயன்படுத்தவும்)"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:242 ../src/plugins/abrt-action-analyze-vmcore.in:126
@@ -283,27 +282,27 @@ msgstr "பேக்ட்ரேஸை துவக்குகிறது"
 #: ../src/lib/problem_api.c:41
 #, c-format
 msgid "Can't connect to system DBus: %s"
-msgstr ""
+msgstr "கணினி DBus உடன் இணைக்க முடியவில்லை: %s"
 
 #: ../src/lib/problem_api.c:65
-#, fuzzy, c-format
+#, c-format
 msgid "Can't chown '%s': %s"
-msgstr "'%s' ஐ நிறைவேற்ற முடியவில்லை"
+msgstr "'%s' உரிமையாளரை மாற்ற முடியவில்லை: %s"
 
 #: ../src/lib/problem_api.c:92
-#, fuzzy, c-format
+#, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr "மொத்த சிக்கல் அடைவுகளை அழிக்கவும்"
+msgstr "சிக்கல் கோப்பகத்தைக் கண்டறிதல் தோல்வியடைந்தது: %s"
 
 #: ../src/lib/problem_api.c:126
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
-msgstr ""
+msgstr "abrt-dbus இலிருந்து சிக்கல் தொடர்பான தரவைப் பெற முடியவில்லை: %s"
 
 #: ../src/lib/problem_api.c:160
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
-msgstr ""
+msgstr "abrt-dbus இலிருந்து சிக்கல் பட்டியலைப் பெற முடியவில்லை: %s"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:51
 msgid ""
@@ -421,19 +420,19 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:97
 msgid "Do not hash fingerprints"
-msgstr ""
+msgstr "கைரேகைகளை ஹாஷ் செய்ய வேண்டாம்"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:172
-#, fuzzy, c-format
+#, c-format
 msgid "Core-backtraces are not supported for '%s'"
-msgstr "பேக்ட்ரேஸ் %s-க்கு பகுக்க முடியவில்லைபேக்டே"
+msgstr "கோர்-பின்தடமறிதல்கள் '%s' க்கு ஆதரிக்கப்படுவதில்லை"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:50
 msgid "Exiting on user command"
 msgstr "Exiting on user command"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:86
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -452,13 +451,14 @@ msgid ""
 "    --size_mb   Default: 4096\n"
 "    -e,--exact  Download only specified files\n"
 msgstr ""
-"Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+"பயன்பாடு: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
 "[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH]\n"
 "\n"
-"Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
-"to CACHEDIR, using TMPDIR as temporary staging area.\n"
-"Old files in CACHEDIR are deleted until it is smaller than SIZE.\n"
+"BUILD_IDS_FILE இல் பட்டியலிடப்பட்டுள்ள அனைத்து பில்ட் ஐடிகளுக்குமான வழுநீக்கல் தகவலை \n"
+"TMPDIR ஐ தற்காலிக சேகரிப்பிடமாகப் பயன்படுத்தி, CACHEDIR இல் நிறுவுகிறது.\n"
+"CACHEDIR இல் இருந்த பழைய கோப்புகள் SIZE ஐ விடச் சிறியதாகும் வரை நீக்கப்படுகின்றன.\n"
 "\n"
 "    -v          Be verbose\n"
 "    -y          Noninteractive, assume 'Yes' to all questions\n"
@@ -466,6 +466,7 @@ msgstr ""
 "    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
+"    -e,--exact  Download only specified files\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:170
 msgid "Can't open {0}: {1}"
@@ -480,13 +481,12 @@ msgid "Missing debuginfo file: {0}"
 msgstr "விடுப்பட்ட பிழைதிருத்ததகவல் கோப்பு: 0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:217
-#, fuzzy
 msgid "All debuginfo files are available"
-msgstr "அனைத்து {0} பிழைதிருத்ததகவல் கோப்புகள் உள்ளன"
+msgstr "வழுநீக்கல் தகவல் கோப்புகள் அனைத்தும் உள்ளன"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:34
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:79
 msgid ""
@@ -577,31 +577,33 @@ msgid ""
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
 msgstr ""
+"& [-vs] [-F STR]... FILE PROG [ARGS]\n"
+"\n"
+"FILE என்ற பதிவுக் கோப்பைப் பார்க்கவும், அது அதிகரிக்கும் போது அல்லது இடமாற்றப்படும் "
+"பட்சத்தில் PROG கட்டளையை இயக்கவும்"
 
 #: ../src/plugins/abrt-watch-log.c:142
 msgid "Don't run PROG if STRs aren't found"
-msgstr ""
+msgstr "STRs இல்லாவிட்டால் PROG கட்டளையை இயக்க வேண்டாம்"
 
 #: ../src/plugins/abrt-dump-oops.c:136
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"ஒரு கெர்னல் சிக்கல் ஏற்பட்டது, ஆனால் உங்கள் கெர்னலானது பென்டெயின்டு (கொடிகள்:%s). கெர்னல் "
-"பராமரிப்பாளர்கள் todiagnose கறை அறிக்கைகளை செய்ய முடியவில்லை."
+"ஒரு கெர்னல் சிக்கல் ஏற்பட்டது, ஆனால் உங்கள் கெர்னல் பாதிக்கப்படவில்லை (கொடிகள்:%s). கெர்னல் "
+"பராமரிப்பு தொகுதிகளால் சிதைவடைந்தவை பற்றிய அறிக்கைகளை உருவாக்க முடியவில்லை."
 
 #: ../src/plugins/abrt-dump-oops.c:177
-#, fuzzy
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr ""
-"& [-vsrowx] [-d DIR] FILE\n"
-"or: & [-vsrowx] -D FILE\n"
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
-"Extract oops from syslog/dmesg file"
+"FILE இல் இருந்து oops ஐப் பிரித்தெடு (அல்லது தரநிலை உள்ளீடு)"
 
 #: ../src/plugins/abrt-dump-oops.c:194
 msgid "Print found oopses on standard output"
@@ -624,7 +626,7 @@ msgstr "உலகம் வாசிக்கக்கூடிய அடைவ�
 
 #: ../src/plugins/abrt-dump-oops.c:201 ../src/plugins/abrt-dump-xorg.c:243
 msgid "Print search string(s) to stdout and exit"
-msgstr ""
+msgstr "தேடல் சரங்களை stdout க்கு அச்சிட்டு வெளியேறு"
 
 #: ../src/plugins/abrt-dump-xorg.c:231
 msgid ""
@@ -632,16 +634,17 @@ msgid ""
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
 msgstr ""
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"Xorg ஐ FILE இலிருந்து பிரித்தெடு (அல்லது தரநிலை உள்ளீடு)"
 
 #: ../src/plugins/abrt-dump-xorg.c:239
-#, fuzzy
 msgid "Print found crash data on standard output"
-msgstr "Print found oopses on standard output"
+msgstr "கண்டறிந்த செயலிழப்பு தரவை தரநிலையான வெளியீட்டில் அச்சிடு"
 
 #: ../src/plugins/abrt-dump-xorg.c:240
-#, fuzzy
 msgid "Create ABRT dump in DIR for every crash found"
-msgstr "ABRT டம்ப்பை DIR இல் ஒவ்வொரு oops காக காணப்படும்"
+msgstr "DIR இல் கண்டறியப்படும் ஒவ்வொரு செயலிழப்புக்கும் ABRT ஐ உருவாக்கு"
 
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid ""
@@ -703,6 +706,8 @@ msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official %s repositories?"
 msgstr ""
+"பின்தடம்றிதல் சேவையகத்தால் '%s தொகுப்பை செயலாக்க முடியவில்லை.%s'.\n"
+"அது அதிகாரப்பூர்வமான %s தகவல் களஞ்சியங்களின் பகுதியா?"
 
 #: ../src/plugins/abrt-retrace-client.c:409
 msgid "Querying server settings"
@@ -756,9 +761,8 @@ msgid "The server is not able to handle your request."
 msgstr "உங்கள் கோரிக்கையை சேவையகந்ததால் கையாள முடியவில்லை."
 
 #: ../src/plugins/abrt-retrace-client.c:576
-#, fuzzy
 msgid "Unknown package sent to Retrace server."
-msgstr "ரீட்ரேஸ் சேவையகத்திற்கு பாதுகாப்பற்ற இணைப்பை அனுமதிக்கவும்"
+msgstr "பின்தடமறிதல் சேவையகத்திற்கு தெரியாத ஒரு தொகுப்பு அனுப்பப்பட்டது."
 
 #: ../src/plugins/abrt-retrace-client.c:586
 msgid "Preparing an archive to upload"
@@ -774,9 +778,9 @@ msgstr ""
 "அல்லது %lld பைட்டுகளுக்கு சமமாக மட்டும் ஏற்கின்றன."
 
 #: ../src/plugins/abrt-retrace-client.c:612
-#, fuzzy, c-format
+#, c-format
 msgid "You are going to upload %d megabytes. Continue?"
-msgstr "நீங்கள்  %d மெகாபைட்டுகளை பதிவேற்ற போகிறீர்கள்.தொடரவா?"
+msgstr "நீங்கள் %d மெகாபைட் பதிவேற்றப் போகிறீர்கள். தொடர விரும்புகிறீர்களா?"
 
 #: ../src/plugins/abrt-retrace-client.c:619
 msgid "Cancelled by user"
@@ -873,6 +877,8 @@ msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
 msgstr ""
+"காப்பகத்தைப் பதிவேற்றும் முன்பு, பின்தடமறிதல் சேவையகத்தால் கொடுக்கப்பட்ட தொகுப்பைச் செயலாக்க "
+"முடியுமா என்று சோதிக்க வேண்டாம்"
 
 #: ../src/plugins/abrt-retrace-client.c:1103
 msgid "retrace server URL"
@@ -1018,7 +1024,7 @@ msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
-msgstr ""
+msgstr ".xsession-பிழைகளைச் சேகரி"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1157,15 +1163,15 @@ msgstr "NSS ஐ பணிநிறுத்த முடியவில்லை
 
 #: ../src/plugins/bodhi.c:375
 msgid "List of bug ids"
-msgstr ""
+msgstr "வழு ஐடிகளின் பட்டியல்"
 
 #: ../src/plugins/bodhi.c:376
 msgid "Specify a bodhi server url"
-msgstr ""
+msgstr "ஒரு போதி சேவையக url ஐக் குறிப்பிடவும்"
 
 #: ../src/plugins/bodhi.c:377
 msgid "Specify a release"
-msgstr ""
+msgstr "ஒரு வெளியீட்டைக் குறிப்பிடவும்"
 
 #: ../src/plugins/bodhi.c:382
 msgid ""
@@ -1173,19 +1179,22 @@ msgid ""
 "\n"
 "Search for updates on bodhi server"
 msgstr ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"\n"
+"போதி சேவையகத்தில் புதுப்பிப்புகள் உள்ளதா எனத் தேடு"
 
 #: ../src/plugins/bodhi.c:432
 msgid "Searching for updates"
-msgstr ""
+msgstr "புதுப்பிப்புகள் உள்ளதா எனத் தேடுகிறது"
 
 #: ../src/plugins/bodhi.c:438
 msgid "No updates for this package found"
-msgstr ""
+msgstr "இந்தத் தொகுப்புக்கு புதுப்பிப்பு எதுவும் இல்லை"
 
 #. strbuf_free(q);
 #: ../src/plugins/bodhi.c:467
 msgid "Local version of the package is newer than available updates"
-msgstr ""
+msgstr "கிடைக்கக்கூடிய புதுப்பிப்புகளைக் காட்டிலும், தற்போதுள்ள பதிப்பு புதியது"
 
 #: ../src/plugins/bodhi.c:484
 #, c-format
@@ -1236,14 +1245,12 @@ msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
-#, fuzzy
 msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
-msgstr "சோதனைக்காக தொலை ரீட்ரெஸ் சேவையகத்தை கோர் டம்ப்பிற்காக அனுப்பவும்"
+msgstr ""
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
-#, fuzzy
 msgid ""
 "Uploads coredump to a server, which generates backtrace and returns it. If "
 "user doens't want to upload his coredump to anywhere the event performs "
@@ -1253,12 +1260,6 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
-"ஒரு சேவையகத்திற்கு coredump ஐ பதிவேற்றவும், இது பேக்ட்ரெஸ்ஸை உருவாக்கி திருப்புகிறது. "
-"Pros: பிழைதிருத்த பதிவிறக்கங்கள் தேவை இல்லை. சேவையகத்தின் தரவுத்தளத்தை "
-"பிழைதிருத்ததகவலில் சரியாக ரீட்ரெஸ் முடித்துள்ளது. ரீட்ரெஸ் சேவையகமானது சரியான "
-"பேக்ட்ரெஸ்களை உருவாக்கலாம். Cons: நீங்கள் பதிவேற்றிய coredump ஆனது கிரஷ் செய்யப்பட்ட "
-"நிரலிலிருந்மு அனைத்து தரவையும்,உங்கள் தனிப்பட்ட தரவையும், ஏதாவது இருந்தால் அவற்றையும் "
-"கொண்டுள்ளன."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -1296,7 +1297,7 @@ msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:1
 msgid "Collect Smolt profile"
-msgstr ""
+msgstr "Smolt விவரத்தொகுப்பைச் சேகரி"
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
 msgid "Save your computer's hardware profile information"
@@ -1340,9 +1341,8 @@ msgstr ""
 "user_gvimrc, முறையே சேமிக்கின்றது."
 
 #: ../src/plugins/post_report.xml.in.h:1
-#, fuzzy
 msgid "Post report"
-msgstr "சமர்ப்பிக்கப்பட்ட அறிக்கைகள் அல்ல"
+msgstr ""
 
 #: ../src/plugins/post_report.xml.in.h:2
 msgid "Executed after the reporting is finished"
@@ -1351,21 +1351,3 @@ msgstr ""
 #: ../src/plugins/post_report.xml.in.h:3
 msgid "Used for updating of the databases"
 msgstr ""
-
-#~ msgid "Dump directory"
-#~ msgstr "டம்ப் அடைவு"
-
-#~ msgid "Show"
-#~ msgstr "காட்டுதல்"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "ABRT சேவை இயங்கவில்லை"
-
-#~ msgid "_Report"
-#~ msgstr "அறிக்கை (_R)"
-
-#~ msgid "Parse kernel's message buffer before parsing FILE"
-#~ msgstr "Parse kernel's message buffer before parsing FILE"
-
-#~ msgid "Do not exit, watch the file for new oopses"
-#~ msgstr "Do not exit, watch the file for new oopses"

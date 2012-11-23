@@ -3,21 +3,24 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Krishnababu Krothapalli <kkrothap@redhat.com>, 2011, 2012.
+# Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
+# Krishnababu Krothapalli <kkrothap@redhat.com>, 2011-2012.
+# Krishnababu Krothapalli <krisnababu@gmail.com>, 2011, 2012.
+# ప్రవీణ్ యిళ్ళ <mail2ipn@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-11-23 15:59+0100\n"
-"PO-Revision-Date: 2012-02-28 10:38+0000\n"
-"Last-Translator: Krishnababu Krothapalli <krisnababu@gmail.com>\n"
-"Language-Team: Telugu (http://www.transifex.net/projects/p/fedora/language/"
+"POT-Creation-Date: 2012-11-23 18:31+0100\n"
+"PO-Revision-Date: 2012-11-23 17:23+0000\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"Language-Team: Telugu (http://www.transifex.com/projects/p/fedora/language/"
 "te/)\n"
 "Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
 #: ../src/gui-gtk/main.c:955
@@ -29,14 +32,13 @@ msgid "ABRT notification applet"
 msgstr "ABRT ప్రకటన ఆప్లెట్"
 
 #: ../src/applet/applet.c:66
-#, fuzzy
 msgid "Problem detected"
-msgstr "సమస్య డైరెక్టరీ"
+msgstr "సమస్య గుర్తించబడింది"
 
 #: ../src/applet/applet.c:250
 #, c-format
 msgid "Can't take ownership of '%s'"
-msgstr ""
+msgstr "'%s' పై అజమాయిషీ తీసుకోలేదు"
 
 #: ../src/applet/applet.c:315 ../src/applet/applet.c:317
 msgid "Warning"
@@ -57,7 +59,7 @@ msgstr "మరుగునవుంచుము"
 
 #: ../src/applet/applet.c:440
 msgid "Ignore"
-msgstr ""
+msgstr "విస్మరించు"
 
 #. buttons are homogenous so set size only for one button and it will
 #. * work for the rest buttons in same gtk_hbox_new()
@@ -119,9 +121,8 @@ msgid "& [options]"
 msgstr "& [ఐచ్చికాలు]"
 
 #: ../src/daemon/abrt-server.c:520
-#, fuzzy
 msgid "Use NUM as client uid"
-msgstr "UIDను క్లైంట్ uid వలె వుపయోగించు"
+msgstr ""
 
 #: ../src/daemon/abrt-server.c:521 ../src/plugins/abrt-watch-log.c:141
 #: ../src/plugins/abrt-dump-oops.c:193 ../src/plugins/abrt-dump-xorg.c:238
@@ -134,25 +135,24 @@ msgid "Add program names to log"
 msgstr "లాగ్‌నకు ప్రోగ్రామ్ పేరులను జతచేయి"
 
 #: ../src/dbus/abrt-dbus.c:110
-#, fuzzy
 msgid "Unknown error"
-msgstr "తెలియని ఆపరేషన్: %s."
+msgstr "తెలియని దోషం"
 
 #: ../src/dbus/abrt-dbus.c:398
-#, fuzzy, c-format
+#, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr "{0} అనునది చెల్లునటువంటి vmcore కాదు"
+msgstr "'%s' సరైన సమస్యా డైరెక్టరీ కాదు"
 
 #: ../src/dbus/abrt-dbus.c:507 ../src/dbus/abrt-dbus.c:587
 msgid "Not Authorized"
-msgstr ""
+msgstr "ధృవీకరించబడలేదు"
 
 #: ../src/dbus/abrt-dbus.c:754
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
-msgstr ""
+msgstr "పేరు '%s' పోయంది, వేరే సేవ యీ పేరు పొంది నడువకుండా చూడండి.\n"
 
 #: ../src/dbus/abrt-dbus.c:781 ../src/daemon/abrtd.c:844
 msgid "Exit after NUM seconds of inactivity"
@@ -160,7 +160,7 @@ msgstr "NUM క్షణాల క్రియాహీనత తరువాత
 
 #: ../src/dbus/abrt-dbus.c:799
 msgid "This program must be run as root."
-msgstr ""
+msgstr "ఈ ప్రోగ్రామ్ root గా నడువవలెను."
 
 #: ../src/daemon/abrtd.c:842
 msgid "Do not daemonize"
@@ -171,9 +171,8 @@ msgid "Log to syslog even with -d"
 msgstr "సిస్‌లాగ్‌కు -d తో లాగ్ అవ్వుము"
 
 #: ../src/daemon/abrt-handle-event.c:290
-#, fuzzy
 msgid "& [-v -i] -e|--event EVENT DIR..."
-msgstr "& [-v] -e|--event EVENT DIR..."
+msgstr ""
 
 #: ../src/daemon/abrt-handle-event.c:298
 msgid "Run EVENT on DIR"
@@ -216,9 +215,8 @@ msgid "Submission Result"
 msgstr "సమర్పణ ఫలితం"
 
 #: ../src/gui-gtk/main.c:899
-#, fuzzy
 msgid "_Problem"
-msgstr "సమస్య"
+msgstr "సమస్య (_P)"
 
 #: ../src/gui-gtk/main.c:900
 msgid "_Edit"
@@ -230,7 +228,7 @@ msgstr "సహాయము (_H)"
 
 #: ../src/gui-gtk/main.c:912
 msgid "Open problem data"
-msgstr ""
+msgstr "సమస్య దత్తాంశం ను తెరువు"
 
 #: ../src/gui-gtk/main.c:936
 msgid "Report problem with ABRT"
@@ -246,7 +244,7 @@ msgstr "<b>సమర్పించని నివేదికలు</b>"
 
 #: ../src/gui-gtk/main.c:979
 msgid "Show all problems"
-msgstr ""
+msgstr "అన్ని సమస్యలను చూపు"
 
 #: ../src/gui-gtk/main.c:1022
 msgid "Submitted reports"
@@ -257,20 +255,20 @@ msgid "<b>Submitted reports</b>"
 msgstr "<b>సమర్పించిన నివేదికలు</b>"
 
 #: ../src/gui-gtk/main.c:1216
-#, fuzzy
 msgid ""
 "& [-vpD] [DIR]...\n"
 "\n"
 "Shows list of problem directories in specified DIR(s)\n"
 "and ones saved in system-wide problem directory spool."
 msgstr ""
-"& [-vp] [DIR]...\n"
+"& [-vpD] [DIR]...\n"
 "\n"
-"ABRT డంప్ డైరెక్టరీల జాబితాను తెలుపబడిన DIR(s) నందు చూపును\n"
+"తెలుపబడిన DIR(ల) నందలి మరియు వ్యవస్థ-వ్యాప్త సమస్యా డైరెక్టరీ స్పూల్ నందలి\n"
+"సమస్యా డైరెక్టరీల జాబితాను చూపుము."
 
 #: ../src/gui-gtk/main.c:1226
 msgid "Do not query problems over dbus (use only DIRs)"
-msgstr ""
+msgstr "dbus నందు సమస్యలను ప్రశ్నించవద్దు (DIRలు మాత్రమే వుపయోగించు)"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:242 ../src/plugins/abrt-action-analyze-vmcore.in:126
@@ -280,27 +278,27 @@ msgstr "బ్యాక్‌ట్రేస్ జనియింపచేస�
 #: ../src/lib/problem_api.c:41
 #, c-format
 msgid "Can't connect to system DBus: %s"
-msgstr ""
+msgstr "వ్యవస్థ DBus కు అనుసంధానం కాలేదు: %s"
 
 #: ../src/lib/problem_api.c:65
-#, fuzzy, c-format
+#, c-format
 msgid "Can't chown '%s': %s"
-msgstr "'%s' యెగ్జిక్యూట్ చేయలేదు"
+msgstr "chown '%s' కాలేదు: %s"
 
 #: ../src/lib/problem_api.c:92
-#, fuzzy, c-format
+#, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr "అన్ని సమస్యాత్మక డైరెక్టరీలను తొలగించుము"
+msgstr "సమస్యా డైరెక్టరీను తొలగించుట విఫలమైంది: %s"
 
 #: ../src/lib/problem_api.c:126
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
-msgstr ""
+msgstr "abrt-dbus నుండి సమస్యా దత్తాంశమును పొందలేదు: %s"
 
 #: ../src/lib/problem_api.c:160
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
-msgstr ""
+msgstr "abrt-dbus నుండి సమస్య జాబితాను పొందలేదు: %s"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:51
 msgid ""
@@ -418,19 +416,19 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:97
 msgid "Do not hash fingerprints"
-msgstr ""
+msgstr "ఫింగర్‌ప్రింట్స్ హాష్ చేయవద్దు"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:172
-#, fuzzy, c-format
+#, c-format
 msgid "Core-backtraces are not supported for '%s'"
-msgstr "%s కొరకు బాక్‌ట్రేస్ పార్శింగ్ విఫలమైంది"
+msgstr "కోర్-బాక్‌ట్రేసెస్ '%s' కొరకు తోడ్పాటునీయవు"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:50
 msgid "Exiting on user command"
 msgstr "వాడుకరి ఆదేశంపై నిష్క్రమించుచున్నది"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:86
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
@@ -452,6 +450,7 @@ msgstr ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
 "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
 "[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
 "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -463,6 +462,7 @@ msgstr ""
 "    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
+"    -e,--exact  Download only specified files\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:170
 msgid "Can't open {0}: {1}"
@@ -477,13 +477,12 @@ msgid "Missing debuginfo file: {0}"
 msgstr "డీబగ్‌యిన్ఫో ఫైల్ తప్పిపోయింది: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:217
-#, fuzzy
 msgid "All debuginfo files are available"
-msgstr "అన్ని {0} డీబగ్‌యిన్ఫో ఫైళ్ళు అందుబాటులో వున్నాయి"
+msgstr "అన్ని డీబగ్‌యిన్ఫో ఫైళ్ళు అందుబాటులో వున్నాయి"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:34
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:79
 msgid ""
@@ -574,31 +573,32 @@ msgid ""
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
 msgstr ""
+"& [-vs] [-F STR]... FILE PROG [ARGS]\n"
+"\n"
+"లాగ్ ఫైలు చూడు, అది పెరిగినప్పుడు పునఃస్థాపించ బడినప్పుడు PROG నడుపు"
 
 #: ../src/plugins/abrt-watch-log.c:142
 msgid "Don't run PROG if STRs aren't found"
-msgstr ""
+msgstr "STRలు కనబడకపోతే PROG నడుపవద్దు"
 
 #: ../src/plugins/abrt-dump-oops.c:136
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
-"కెర్నల్ సమస్య యెదురైంది, అయితే మీ కెర్నల్ చెడిపోయింది (ఫ్లాగ్స్:%s). కెర్నల్ నిర్వాహకులు చెడిపోయిన నివేదికలను "
-"విశ్లేషించలేక పోయినారు."
+"కెర్నల్ సమస్య యెదురైంది, అయితే మీ కెర్నల్ కల్మషమైంది (flags:%s). కల్మషమైన నివేదికలను కెర్నల్ "
+"నిర్వాహకులు విశ్లేషించలేక పోయినారు."
 
 #: ../src/plugins/abrt-dump-oops.c:177
-#, fuzzy
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr ""
-"& [-vsrowx] [-d DIR] FILE\n"
-"or: & [-vsrowx] -D FILE\n"
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
-"syslog/dmesg ఫైలు నుండి oops వెలికితీయుము"
+"ఫైలు (లేదా ప్రామాణిక యిన్పుట్) నుండి oops వెలికితీయి"
 
 #: ../src/plugins/abrt-dump-oops.c:194
 msgid "Print found oopses on standard output"
@@ -621,7 +621,7 @@ msgstr "సమస్యాత్మక డైరెక్టరీను అం�
 
 #: ../src/plugins/abrt-dump-oops.c:201 ../src/plugins/abrt-dump-xorg.c:243
 msgid "Print search string(s) to stdout and exit"
-msgstr ""
+msgstr "stdout కు శోధన స్ట్రింగ్స్ ముద్రించి నిష్క్రమించు"
 
 #: ../src/plugins/abrt-dump-xorg.c:231
 msgid ""
@@ -629,16 +629,17 @@ msgid ""
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
 msgstr ""
+"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+"\n"
+"Xorg క్రాష్ ఫైలు నుండి (లేదా ప్రామాణిక యిన్పుట్) నుండి వెలికితీయి"
 
 #: ../src/plugins/abrt-dump-xorg.c:239
-#, fuzzy
 msgid "Print found crash data on standard output"
-msgstr "కనుగొన్న oopses ను ప్రామాణిక అవుట్పుట్‌పై ముద్రించు"
+msgstr "కనుగొనిన క్రాష్ దత్తాంశం ప్రామాణిక అవుట్పుట్‌పై ముద్రించు"
 
 #: ../src/plugins/abrt-dump-xorg.c:240
-#, fuzzy
 msgid "Create ABRT dump in DIR for every crash found"
-msgstr "కనుగొనిన ప్రతి oops నకు DIR నందు ABRT డంప్ సృష్టించు"
+msgstr "కనుగొనిన ప్రతి క్రాష్‌నకు DIR నందు ABRT డంప్ సృష్టించు"
 
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid ""
@@ -698,6 +699,8 @@ msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official %s repositories?"
 msgstr ""
+"సేవిక రీట్రేస్ ప్యాకేజీ '%s.%s' ను ప్రోసెస్ చేయలేదు.\n"
+"ఇది అదికారిక %s రిపోజిటరీలలో భాగమేనా?"
 
 #: ../src/plugins/abrt-retrace-client.c:409
 msgid "Querying server settings"
@@ -751,9 +754,8 @@ msgid "The server is not able to handle your request."
 msgstr "సేవిక మీ అభ్యర్ధనను సంభాలించలేక పోయింది."
 
 #: ../src/plugins/abrt-retrace-client.c:576
-#, fuzzy
 msgid "Unknown package sent to Retrace server."
-msgstr "సర్వర్‌ను రీట్రేస్ చేయుటకు సురక్షితం కాని అనుసంధానం అనుమతించు"
+msgstr "తెలియని ప్యాకేజీ రీట్రేస్ సేవికకు పంపబడింది."
 
 #: ../src/plugins/abrt-retrace-client.c:586
 msgid "Preparing an archive to upload"
@@ -769,7 +771,7 @@ msgstr ""
 "మాత్రమే ఆమోదించును."
 
 #: ../src/plugins/abrt-retrace-client.c:612
-#, fuzzy, c-format
+#, c-format
 msgid "You are going to upload %d megabytes. Continue?"
 msgstr "మీరు %d మెగాబైట్లను అప్‌లోడ్ చేయబోచున్నారు. కొనసాగించాలా?"
 
@@ -866,6 +868,7 @@ msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
 msgstr ""
+"ఆర్కైవ్‌ను అప్‌లోడ్ చేయుటకు ముందుగా యిచ్చిన ప్యాకేజీను రీట్రేస్ సర్వర్ ప్రోసెస్ చేయగలదో లేదో పరిశీలించవద్దు"
 
 #: ../src/plugins/abrt-retrace-client.c:1103
 msgid "retrace server URL"
@@ -1004,7 +1007,7 @@ msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
-msgstr ""
+msgstr ".xsession-errors సేకరించు"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
@@ -1143,15 +1146,15 @@ msgstr "NSS మూసివేతకు విఫలమైంది."
 
 #: ../src/plugins/bodhi.c:375
 msgid "List of bug ids"
-msgstr ""
+msgstr "బగ్ ఐడిల జాబితా"
 
 #: ../src/plugins/bodhi.c:376
 msgid "Specify a bodhi server url"
-msgstr ""
+msgstr "బోదీ సేవిక url తెలుపుము"
 
 #: ../src/plugins/bodhi.c:377
 msgid "Specify a release"
-msgstr ""
+msgstr "విడుదల తెలుపుము"
 
 #: ../src/plugins/bodhi.c:382
 msgid ""
@@ -1159,19 +1162,22 @@ msgid ""
 "\n"
 "Search for updates on bodhi server"
 msgstr ""
+"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
+"\n"
+"బోదీ సేవికపై నవీకరణల కొరకు వెతుకుము"
 
 #: ../src/plugins/bodhi.c:432
 msgid "Searching for updates"
-msgstr ""
+msgstr "నవీకరణల కొరకు వెతుకుచున్నది"
 
 #: ../src/plugins/bodhi.c:438
 msgid "No updates for this package found"
-msgstr ""
+msgstr "ఈ ప్యాకేజీ కొరకు యే నవీకరణలు కనుగొనబడలేదు"
 
 #. strbuf_free(q);
 #: ../src/plugins/bodhi.c:467
 msgid "Local version of the package is newer than available updates"
-msgstr ""
+msgstr "అందుబాటులోని నవీకరణల కన్నా స్థానికంగా వున్న ప్యాకేజీ వర్షన్ కొత్తది"
 
 #: ../src/plugins/bodhi.c:484
 #, c-format
@@ -1222,14 +1228,12 @@ msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
-#, fuzzy
 msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
-msgstr "విశ్లేషణ కొరకు కోర్ డంప్‌ను రిమోట్ రీట్రేస్ సర్వర్‌కు పంపుము"
+msgstr ""
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
-#, fuzzy
 msgid ""
 "Uploads coredump to a server, which generates backtrace and returns it. If "
 "user doens't want to upload his coredump to anywhere the event performs "
@@ -1239,10 +1243,6 @@ msgid ""
 "you upload contains all the data from the crashed program, including your "
 "private data, if any."
 msgstr ""
-"కోర్‌డంప్‌ను సర్వర్‌కు అప్‌లోడ్ చేయును, యిది బ్యాక్‌ట్రేస్‌ను సృష్టించి మరియు దానిని తిప్పియిచ్చును. లాభాలు: "
-"డీబగ్‌యిన్ఫో డౌన్‌లోడ్ చేయవలసిన అవసరం లేదు. రీట్రేస్ సర్వర్ యొక్క డీబగ్‌యిన్ఫోల డాటాబేస్ పూర్తిగా వుండును. రీట్రేస్ "
-"సర్వర్ మంచి బ్యాక్‌ట్రేస్‌లను జనియింపచేయగలదు. నష్టాలు: మీరు అప్‌లోడ్ చేసిన కోర్‌డంప్ క్రాష్‌డ్ ప్రోగ్రామ్‌నుండి "
-"మొత్తం డాటాను కలిగివుంటుంది, మీ వ్యక్తిగత డాటా యేదైనా వుంటే దానితో సహా."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -1278,7 +1278,7 @@ msgstr ""
 
 #: ../src/plugins/collect_Smolt.xml.in.h:1
 msgid "Collect Smolt profile"
-msgstr ""
+msgstr "Smolt ప్రోఫైల్ సేకరించు"
 
 #: ../src/plugins/collect_Smolt.xml.in.h:2
 msgid "Save your computer's hardware profile information"
@@ -1322,9 +1322,8 @@ msgstr ""
 "user_gvimrc గా దాయును."
 
 #: ../src/plugins/post_report.xml.in.h:1
-#, fuzzy
 msgid "Post report"
-msgstr "సమర్పించని నివేదికలు"
+msgstr ""
 
 #: ../src/plugins/post_report.xml.in.h:2
 msgid "Executed after the reporting is finished"
@@ -1333,21 +1332,3 @@ msgstr ""
 #: ../src/plugins/post_report.xml.in.h:3
 msgid "Used for updating of the databases"
 msgstr ""
-
-#~ msgid "Dump directory"
-#~ msgstr "డంప్ డైరెక్టరీ"
-
-#~ msgid "Show"
-#~ msgstr "చూపు"
-
-#~ msgid "ABRT service is not running"
-#~ msgstr "ABRT సేవ నడుచుటలేదు"
-
-#~ msgid "_Report"
-#~ msgstr "నివేదించు (_R)"
-
-#~ msgid "Parse kernel's message buffer before parsing FILE"
-#~ msgstr "FILE ను పార్శ్ చేయుటకు ముందుగా కెర్నల్ యొక్క సందేశంను పార్శ్ చేయి"
-
-#~ msgid "Do not exit, watch the file for new oopses"
-#~ msgstr "నిష్క్రమించ వద్దు, కొత్త oopses కొరకు ఫైలును గమనించు"
