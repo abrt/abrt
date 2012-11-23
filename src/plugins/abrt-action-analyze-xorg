@@ -1,0 +1,62 @@
+#!/bin/sh
+
+test "`cat analyzer`" = "xorg" || {
+	echo "Current directory is not an Xorg problem directory"
+	exit 1
+}
+
+test -f backtrace || {
+	echo "File 'backtrace' not found in current directory"
+	exit 1
+}
+
+# Blacklist known binary-only modules
+test -f /etc/abrt/xorg.conf && {
+	# Find "BlacklistedXorgModules = mod, mod..." directive and split it on commas
+	{
+		cat /etc/abrt/xorg.conf
+		# in case last line has no "\n" (else read errors out):
+		echo
+	} \
+	| sed -n 's/^BlacklistedXorgModules[ \t]*=//p' \
+	| sed 's/,/\n/g' \
+	| sed -e 's/^[ \t]*//' -e 's/[ \t]*$//' \
+	| while read bad_mod; do
+		grep -F -e "/$bad_mod" backtrace && {
+			echo "Module '$bad_mod' was loaded - won't report this crash" >not_reportable
+			exit 2
+		}
+		test -f Xorg.0.log && {
+			grep -F -e "LoadModule: \"$bad_mod\"" Xorg.0.log && {
+				echo "Module '$bad_mod' was loaded - won't report this crash" >not_reportable
+				exit 2
+			}
+		}
+	done
+	# On normal exit from the loop,
+	# we have $? = 1 ("read bad_mod" failed), not 0!
+	# $? = 2 only if "exit 2" above was reached.
+	test $? = 2 && exit 0
+}
+
+# Generate duplicate detection hashes.
+# To err on the "flag it as a dup" side is way better than the opposite.
+# To this end:
+# - sanitize whitespace
+# - remove N: prefix
+# - remove path: we don't care whether it's /usr/lib64/foo or /lib/foo
+# - remove VERSION from so.VERSION
+# - drop main() invocation
+# - replace all hex constants with string "0xZ".
+# - drop adjacent duplicate lines
+sed \
+	-e 's/[ \t][ \t]*/ /g' -e 's/  *$//' \
+	-e 's/^[0-9][0-9]*: //' \
+	-e 's@^/[^ ]*/@@' \
+	-e 's/\.so\.[0-9][0-9]*/.so/' \
+	-e '/libc_start_main/d' \
+	-e 's/0x[0-9a-fA-F][0-9a-fA-F]*/0xZ/g' \
+	backtrace \
+| uniq \
+| sha1sum | sed 's/[ \t].*//' >uuid
+test -f uuid && cp uuid duphash

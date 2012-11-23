@@ -4,6 +4,7 @@ bin_SCRIPTS = \
     abrt-action-install-debuginfo \
     abrt-action-analyze-core \
     abrt-action-analyze-vmcore \
+    abrt-action-analyze-xorg \
     abrt-action-list-dsos \
     abrt-action-perform-ccpp-analysis \
     abrt-action-save-kernel-data
@@ -80,6 +81,10 @@ EXTRA_DIST = \
     abrt-action-save-kernel-data \
     https-utils.h \
     post_report.xml.in
+
+confdir = $(CONF_DIR)
+dist_conf_DATA = \
+    xorg.conf
 
 abrt_watch_log_SOURCES = \
     abrt-watch-log.c

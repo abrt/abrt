@@ -468,8 +468,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-handle-upload
 %{_bindir}/abrt-action-save-package-data
 %{_bindir}/abrt-watch-log
+%{_bindir}/abrt-action-analyze-xorg
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-action-save-package-data.conf
+%config(noreplace) %{_sysconfdir}/%{name}/xorg.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
 %config(noreplace) %{_sysconfdir}/libreport/events.d/abrt_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/smart_event.conf
