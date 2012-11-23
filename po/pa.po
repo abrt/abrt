@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-08-13 13:47+0200\n"
+"POT-Creation-Date: 2012-11-23 15:59+0100\n"
 "PO-Revision-Date: 2012-03-01 06:57+0000\n"
 "Last-Translator: Jaswinder Singh <j.phulewala@gmail.com>\n"
 "Language-Team: Panjabi (Punjabi) <punjabi-users@lists.sf.net>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:945
+#: ../src/gui-gtk/main.c:955
 msgid "Automatic Bug Reporting Tool"
 msgstr "ਆਟੋਮੈਟਿਕ ਬੱਗ ਰਿਪੋਰਟਿੰਗ ਟੂਲ"
 
@@ -27,58 +27,58 @@ msgstr "ਆਟੋਮੈਟਿਕ ਬੱਗ ਰਿਪੋਰਟਿੰਗ ਟੂਲ
 msgid "ABRT notification applet"
 msgstr "ABRT ਸੂਚਨਾ ਐਪਲਿਟ"
 
-#: ../src/applet/applet.c:190
+#: ../src/applet/applet.c:66
+#, fuzzy
+msgid "Problem detected"
+msgstr "ਸਮੱਸਿਆ ਡਾਇਰੈਕਟਰੀ"
+
+#: ../src/applet/applet.c:250
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr ""
 
-#: ../src/applet/applet.c:253 ../src/applet/applet.c:255
+#: ../src/applet/applet.c:315 ../src/applet/applet.c:317
 msgid "Warning"
 msgstr "ਚੇਤਾਵਨੀ"
 
-#: ../src/applet/applet.c:303
+#: ../src/applet/applet.c:365
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ਸੂਚਨਾ ਖੇਤਰ ਐਪਲਿਟ ਜੋ ਯੂਜ਼ਰ ਨੂੰ ABRT ਦੁਆਰਾ ਲੱਭੇ ਮੁੱਦਿਆਂ ਬਾਰੇ ਦੱਸਦਾ ਹੈ"
 
-#: ../src/applet/applet.c:319 ../src/gui-gtk/main.c:782
+#: ../src/applet/applet.c:381 ../src/gui-gtk/main.c:792
 msgid "translator-credits"
 msgstr "Jaswinder Singh Phulewala <j.phulewala@gmail.com>"
 
-#: ../src/applet/applet.c:329
+#: ../src/applet/applet.c:391
 msgid "Hide"
 msgstr "ਓਹਲੇ"
 
-#: ../src/applet/applet.c:378
+#: ../src/applet/applet.c:440
 msgid "Ignore"
 msgstr ""
 
 #. buttons are homogenous so set size only for one button and it will
 #. * work for the rest buttons in same gtk_hbox_new()
-#: ../src/applet/applet.c:382 ../src/gui-gtk/main.c:900
-#: ../src/gui-gtk/main.c:1038
+#: ../src/applet/applet.c:444 ../src/gui-gtk/main.c:910
+#: ../src/gui-gtk/main.c:1048
 msgid "Report"
 msgstr "ਰਿਪੋਰਟ"
 
-#: ../src/applet/applet.c:386
+#: ../src/applet/applet.c:448
 msgid "A Problem has Occurred"
 msgstr "ਇੱਕ ਸਮੱਸਿਆ ਆਈ ਹੈ"
 
-#: ../src/applet/applet.c:447
-#, fuzzy
-msgid "Problem detected"
-msgstr "ਸਮੱਸਿਆ ਡਾਇਰੈਕਟਰੀ"
-
-#: ../src/applet/applet.c:495
+#: ../src/applet/applet.c:533 ../src/applet/applet.c:716
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "%s ਪੈਕੇਜ ਵਿੱਚ ਇੱਕ ਸਮੱਸਿਆ ਆਈ ਹੈ"
 
-#: ../src/applet/applet.c:497
+#: ../src/applet/applet.c:535 ../src/applet/applet.c:718
 msgid "A problem has been detected"
 msgstr "ਇੱਕ ਸਮੱਸਿਆ ਖੋਜੀ ਗਈ ਹੈ"
 
-#: ../src/applet/applet.c:592
+#: ../src/applet/applet.c:634
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -99,7 +99,12 @@ msgstr ""
 "ਕਿਊਰੀ ਪੈਕੇਜ ਡਾਟਾਬੇਸ ਅਤੇ ਪੈਕੇਜ ਸੰਭਾਲੋ ਅਤੇ ਕੰਪੋਨੈੱਟ ਨਾਂ"
 
 #: ../src/daemon/abrt-action-save-package-data.c:387
-#: ../src/plugins/abrt-action-generate-core-backtrace.c:80
+#: ../src/plugins/abrt-action-analyze-backtrace.c:63
+#: ../src/plugins/abrt-action-analyze-c.c:90
+#: ../src/plugins/abrt-action-analyze-oops.c:48
+#: ../src/plugins/abrt-action-analyze-python.c:47
+#: ../src/plugins/abrt-action-generate-backtrace.c:54
+#: ../src/plugins/abrt-action-generate-core-backtrace.c:96
 msgid "Problem directory"
 msgstr "ਸਮੱਸਿਆ ਡਾਇਰੈਕਟਰੀ"
 
@@ -107,22 +112,23 @@ msgstr "ਸਮੱਸਿਆ ਡਾਇਰੈਕਟਰੀ"
 msgid "Configuration file"
 msgstr "ਸੰਰਚਨਾ ਫਾਇਲ"
 
-#: ../src/daemon/abrt-server.c:509 ../src/dbus/abrt-dbus.c:744
-#: ../src/daemon/abrtd.c:812
+#: ../src/daemon/abrt-server.c:509 ../src/dbus/abrt-dbus.c:772
+#: ../src/daemon/abrtd.c:829
 msgid "& [options]"
 msgstr "& [ਚੋਣਾਂ]"
 
 #: ../src/daemon/abrt-server.c:520
-msgid "Use UID as client uid"
+#, fuzzy
+msgid "Use NUM as client uid"
 msgstr "UID ਨੂੰ ਕਲਾਂਈਟ uid ਤੌਰ ਤੇ ਵਰਤੋ"
 
 #: ../src/daemon/abrt-server.c:521 ../src/plugins/abrt-watch-log.c:141
-#: ../src/plugins/abrt-dump-oops.c:198 ../src/plugins/abrt-dump-xorg.c:238
+#: ../src/plugins/abrt-dump-oops.c:193 ../src/plugins/abrt-dump-xorg.c:238
 msgid "Log to syslog"
 msgstr "syslog ਵਿੱਚ ਲਾਗ ਕਰੋ"
 
-#: ../src/daemon/abrt-server.c:522 ../src/daemon/abrtd.c:828
-#: ../src/gui-gtk/main.c:1215
+#: ../src/daemon/abrt-server.c:522 ../src/daemon/abrtd.c:845
+#: ../src/gui-gtk/main.c:1225
 msgid "Add program names to log"
 msgstr "ਸਮੱਸਿਆ ਨਾਂ ਲਾਗ ਵਿੱਚ ਜੋੜੋ"
 
@@ -131,120 +137,125 @@ msgstr "ਸਮੱਸਿਆ ਨਾਂ ਲਾਗ ਵਿੱਚ ਜੋੜੋ"
 msgid "Unknown error"
 msgstr "ਅਣਜਾਣ ਓਪਰੇਸ਼ਨ: %s."
 
-#: ../src/dbus/abrt-dbus.c:390
+#: ../src/dbus/abrt-dbus.c:398
 #, fuzzy, c-format
 msgid "'%s' is not a valid problem directory"
 msgstr "{0} ਇੱਕ ਢੁੱਕਵਾਂ vmcore ਨਹੀਂ ਹੈ"
 
-#: ../src/dbus/abrt-dbus.c:492 ../src/dbus/abrt-dbus.c:565
+#: ../src/dbus/abrt-dbus.c:507 ../src/dbus/abrt-dbus.c:587
 msgid "Not Authorized"
 msgstr ""
 
-#: ../src/dbus/abrt-dbus.c:726
+#: ../src/dbus/abrt-dbus.c:754
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr ""
 
-#: ../src/dbus/abrt-dbus.c:753 ../src/daemon/abrtd.c:827
+#: ../src/dbus/abrt-dbus.c:781 ../src/daemon/abrtd.c:844
 msgid "Exit after NUM seconds of inactivity"
 msgstr "NUM ਸਕਿੰਟਾਂ ਦੀ ਕਾਰਵਾਈ ਤੋਂ ਬਾਅਦ ਬੰਦ ਕਰੋ"
 
-#: ../src/dbus/abrt-dbus.c:771
+#: ../src/dbus/abrt-dbus.c:799
 msgid "This program must be run as root."
 msgstr ""
 
-#: ../src/daemon/abrtd.c:825
+#: ../src/daemon/abrtd.c:842
 msgid "Do not daemonize"
 msgstr "ਡੈਮਨਾਈਜ਼ ਨਾ ਕਰੋ"
 
-#: ../src/daemon/abrtd.c:826
+#: ../src/daemon/abrtd.c:843
 msgid "Log to syslog even with -d"
 msgstr "syslog ਵਿੱਚ ਭਾਵੇਂ -d ਚੋਣ ਨਾਲ ਲਾਗ ਕਰੋ"
 
 #: ../src/daemon/abrt-handle-event.c:290
-msgid "& [-v] -e|--event EVENT DIR..."
+#, fuzzy
+msgid "& [-v -i] -e|--event EVENT DIR..."
 msgstr "& [-v] -e|--event EVENT DIR..."
 
-#: ../src/daemon/abrt-handle-event.c:296
+#: ../src/daemon/abrt-handle-event.c:298
 msgid "Run EVENT on DIR"
 msgstr "EVENT ਨੂੰ DIR ਉੱਪ ਚਲਾਓ"
+
+#: ../src/daemon/abrt-handle-event.c:299
+msgid "Communicate directly to the user"
+msgstr ""
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ ਕਰੈਸ਼ ਵੇਖੋ ਅਤੇ ਰਿਪੋਰਟ ਕਰੋ"
 
-#: ../src/gui-gtk/main.c:720
+#: ../src/gui-gtk/main.c:730
 msgid "Problem description"
 msgstr "ਸਮੱਸਿਆ ਵੇਰਵਾ"
 
-#: ../src/gui-gtk/main.c:723
+#: ../src/gui-gtk/main.c:733
 msgid "Send"
 msgstr "ਭੇਜੋ"
 
-#: ../src/gui-gtk/main.c:801 ../src/gui-gtk/main.c:847
+#: ../src/gui-gtk/main.c:811 ../src/gui-gtk/main.c:857
 msgid "Source"
 msgstr "ਸਰੋਤ"
 
-#: ../src/gui-gtk/main.c:811 ../src/gui-gtk/main.c:857
+#: ../src/gui-gtk/main.c:821 ../src/gui-gtk/main.c:867
 msgid "Problem"
 msgstr "ਸਮੱਸਿਆ"
 
-#: ../src/gui-gtk/main.c:832
+#: ../src/gui-gtk/main.c:842
 msgid "Last Occurrence"
 msgstr "ਆਖਰੀ ਘਟਨਾ"
 
-#: ../src/gui-gtk/main.c:867
+#: ../src/gui-gtk/main.c:877
 msgid "Date Submitted"
 msgstr "ਮਿਤੀ ਭੇਜੀ ਗਈ"
 
-#: ../src/gui-gtk/main.c:876
+#: ../src/gui-gtk/main.c:886
 msgid "Submission Result"
 msgstr "ਭੇਜਣ ਦਾ ਨਤੀਜਾ"
 
-#: ../src/gui-gtk/main.c:889
+#: ../src/gui-gtk/main.c:899
 #, fuzzy
 msgid "_Problem"
 msgstr "ਸਮੱਸਿਆ"
 
-#: ../src/gui-gtk/main.c:890
+#: ../src/gui-gtk/main.c:900
 msgid "_Edit"
 msgstr "ਸੋਧ(_E)"
 
-#: ../src/gui-gtk/main.c:891
+#: ../src/gui-gtk/main.c:901
 msgid "_Help"
 msgstr "ਮੱਦਦ(_H)"
 
-#: ../src/gui-gtk/main.c:902
+#: ../src/gui-gtk/main.c:912
 msgid "Open problem data"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:926
+#: ../src/gui-gtk/main.c:936
 msgid "Report problem with ABRT"
 msgstr "ABRT ਨਾਲ ਸਮੱਸਿਆ ਰਿਪੋਰਟ ਕਰੋ"
 
-#: ../src/gui-gtk/main.c:965
+#: ../src/gui-gtk/main.c:975
 msgid "Not submitted reports"
 msgstr "ਭੇਜੀ ਰਿਪੋਰਟ ਨਹੀਂ ਹੈ"
 
-#: ../src/gui-gtk/main.c:967
+#: ../src/gui-gtk/main.c:977
 msgid "<b>Not submitted reports</b>"
 msgstr "<b>ਭੇਜੀ ਰਿਪੋਰਟ ਨਹੀਂ ਹੈ</b>"
 
-#: ../src/gui-gtk/main.c:969
+#: ../src/gui-gtk/main.c:979
 msgid "Show all problems"
 msgstr ""
 
-#: ../src/gui-gtk/main.c:1012
+#: ../src/gui-gtk/main.c:1022
 msgid "Submitted reports"
 msgstr "ਭੇਜੀ ਰਿਪੋਰਟ"
 
-#: ../src/gui-gtk/main.c:1015
+#: ../src/gui-gtk/main.c:1025
 msgid "<b>Submitted reports</b>"
 msgstr "<b>ਭੇਜੀ ਰਿਪੋਰਟ</b>"
 
-#: ../src/gui-gtk/main.c:1206
+#: ../src/gui-gtk/main.c:1216
 #, fuzzy
 msgid ""
 "& [-vpD] [DIR]...\n"
@@ -256,7 +267,7 @@ msgstr ""
 "\n"
 "ABRT ਡੰਪ ਡਾਇਰੈਕਟਰੀਆਂ ਦੀ ਸੂਚੀ ਨੂੰ ਨਿਰਧਾਰਤ DIR(s) ਵਿੱਚ ਵੇਖਾਓ\n"
 
-#: ../src/gui-gtk/main.c:1216
+#: ../src/gui-gtk/main.c:1226
 msgid "Do not query problems over dbus (use only DIRs)"
 msgstr ""
 
@@ -301,14 +312,6 @@ msgstr ""
 "\n"
 "C/C++ ਬੈਕਟਰੇਸ ਜਾਂਚ ਕਰੋ, ਡੁਪਲੀਕੇਟ ਹੈਸ਼, ਬੈਕਟਰੇਸ ਰੇਟਿੰਗ ਬਣਾਓ,\n"
 "ਅਤੇ ਸਮੱਸਿਆ ਡਾਇਰੈਕਟਰੀ DIR ਵਿੱਚ ਕਰੈਸ਼ ਫੰਕਸ਼ਨ ਦੀ ਪਛਾਣ ਕਰੋ"
-
-#: ../src/plugins/abrt-action-analyze-backtrace.c:63
-#: ../src/plugins/abrt-action-analyze-c.c:90
-#: ../src/plugins/abrt-action-analyze-oops.c:48
-#: ../src/plugins/abrt-action-analyze-python.c:47
-#: ../src/plugins/abrt-action-generate-backtrace.c:54
-msgid "Dump directory"
-msgstr "ਡੰਪ ਡਾਇਰੈਕਟਰੀ"
 
 #.
 #. * The parser failed. Compute the duphash from the executable
@@ -401,7 +404,7 @@ msgstr "gdb ਨੂੰ ਬੰਦ ਕਰੋ ਜੋ ਇਹ NUM ਸਕਿੰਟਾ�
 msgid "Backtrace is generated and saved, %u bytes"
 msgstr "ਬੈਕਟਰੇਸ ਬਣਾਇਆ ਗਿਆ ਹੈ ਅਤੇ ਸੰਭਾਲਿਆ ਗਿਆ ਹੈ, %u ਬਾਈਟਾਂ"
 
-#: ../src/plugins/abrt-action-generate-core-backtrace.c:68
+#: ../src/plugins/abrt-action-generate-core-backtrace.c:84
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
@@ -411,20 +414,20 @@ msgstr ""
 "\n"
 "ਕੋਰ ਡੰਪ ਅਤੇ ਸੰਬੰਧਿਤ ਬਾਇਨਰੀ ਤੋਂ ਕੋਰਡੰਪ-ਲੈਵਲ ਬੈਕਟਰੇਸ ਬਣਾਉਂਦਾ ਹੈ"
 
-#: ../src/plugins/abrt-action-generate-core-backtrace.c:81
+#: ../src/plugins/abrt-action-generate-core-backtrace.c:97
 msgid "Do not hash fingerprints"
 msgstr ""
 
-#: ../src/plugins/abrt-action-generate-core-backtrace.c:148
+#: ../src/plugins/abrt-action-generate-core-backtrace.c:172
 #, fuzzy, c-format
 msgid "Core-backtraces are not supported for '%s'"
 msgstr "%s ਲਈ ਬੈਕਟਰੇਸ ਪਾਰਸਿੰਗ ਫੇਲ ਹੋਈ ਹੈ"
 
-#: ../src/plugins/abrt-action-install-debuginfo:50
+#: ../src/plugins/abrt-action-install-debuginfo.in:50
 msgid "Exiting on user command"
 msgstr "ਉਪਭੋਗੀ ਕਮਾਂਡ ਬੰਦ ਕਰ ਰਿਹਾ ਹੈ"
 
-#: ../src/plugins/abrt-action-install-debuginfo:86
+#: ../src/plugins/abrt-action-install-debuginfo.in:86
 #, fuzzy, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
@@ -459,22 +462,39 @@ msgstr ""
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
 
-#: ../src/plugins/abrt-action-install-debuginfo:170
+#: ../src/plugins/abrt-action-install-debuginfo.in:170
 msgid "Can't open {0}: {1}"
 msgstr "{0} ਨੂੰ ਖੋਲ ਨਹੀਂ ਸਕਦਾ: {1}"
 
-#: ../src/plugins/abrt-action-install-debuginfo:203
+#: ../src/plugins/abrt-action-install-debuginfo.in:203
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr "ਕੋਰਡੰਪ ਹਵਾਲਾ {0} debuginfo ਫਾਇਲਾਂ, ਉਹਨਾਂ ਵਿੱਚੋਂ {1} ਇੰਸਟਾਲ ਨਹੀਂ ਹਨ"
 
-#: ../src/plugins/abrt-action-install-debuginfo:214
+#: ../src/plugins/abrt-action-install-debuginfo.in:214
 msgid "Missing debuginfo file: {0}"
 msgstr "ਗੈਰ-ਮੌਜੂਦ debuginfo ਫਾਇਲ: {0}"
 
-#: ../src/plugins/abrt-action-install-debuginfo:217
+#: ../src/plugins/abrt-action-install-debuginfo.in:217
 #, fuzzy
 msgid "All debuginfo files are available"
 msgstr "ਸਭ {0} debuginfo ਫਾਇਲਾਂ ਉਪਲੱਬਧ ਹਨ"
+
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:34
+msgid "y"
+msgstr ""
+
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:79
+msgid ""
+"Ok to upload core dump? (It may contain sensitive data). If your answer is "
+"'No', a stack trace will be generated locally. (It may download a huge "
+"amount of data)."
+msgstr ""
+
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:88
+msgid ""
+"Do you want to generate a stack trace localy? (It may download a huge amount "
+"of data but reporting can't continue without stack trace)."
+msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -503,7 +523,7 @@ msgid "Preserve this directory"
 msgstr "ਇਹ ਡਾਇਰੈਕਟਰੀ ਨੂੰ ਬਰਕਰਾਰ ਰੱਖੋ"
 
 #: ../src/plugins/abrt-dedup-client.c:96
-#: ../src/plugins/abrt-retrace-client.c:1073
+#: ../src/plugins/abrt-retrace-client.c:1096
 msgid "log to syslog"
 msgstr "syslog ਵਿੱਚ ਲਾਗ ਬਣਾਓ"
 
@@ -524,7 +544,7 @@ msgid "ABRT dump directory"
 msgstr "ABRT ਡੰਪ ਡਾਇਰੈਕਟਰੀ"
 
 #: ../src/plugins/abrt-dedup-client.c:106
-#: ../src/plugins/abrt-retrace-client.c:1084
+#: ../src/plugins/abrt-retrace-client.c:1107
 msgid "(debug) show received HTTP headers"
 msgstr "(ਡੀਬੱਗ) ਪ੍ਰਾਪਤ ਕੀਤਾ HTTP ਹੈਡਰ ਵੇਖਾਓ"
 
@@ -557,7 +577,7 @@ msgstr ""
 msgid "Don't run PROG if STRs aren't found"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:131
+#: ../src/plugins/abrt-dump-oops.c:136
 #, fuzzy, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
@@ -566,7 +586,7 @@ msgstr ""
 "ਇੱਕ ਕਰਨਲ ਸਮੱਸਿਆ ਆਈ ਹੈ, ਪਰ ਤੁਹਾਡਾ ਕਰਨਲ ਖਰਾਬ ਹੈ (ਫਲੈਗ:%s)। ਕਰਨਲ ਮੈਨਟੇਨਰ ਖਰਾਬ ਰਿਪੋਰਟਾਂ ਦੀ "
 "ਜਾਂਚ ਕਰਨ ਤੋਂ ਅਸਮਰਥ ਹੈ।"
 
-#: ../src/plugins/abrt-dump-oops.c:182
+#: ../src/plugins/abrt-dump-oops.c:177
 #, fuzzy
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
@@ -578,26 +598,26 @@ msgstr ""
 "\n"
 "oops ਨੂੰ syslog/dmesg ਫਾਇਲ ਤੋਂ ਖੋਲਦਾ ਹੈ"
 
-#: ../src/plugins/abrt-dump-oops.c:199
+#: ../src/plugins/abrt-dump-oops.c:194
 msgid "Print found oopses on standard output"
 msgstr "Print found oopses on standard output"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
 #.
-#: ../src/plugins/abrt-dump-oops.c:203
+#: ../src/plugins/abrt-dump-oops.c:198
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr "ਹਰੇਕ oops ਲਈ DIR ਵਿੱਚ ABRT ਡੰਪ ਬਣਾਓ"
 
-#: ../src/plugins/abrt-dump-oops.c:204 ../src/plugins/abrt-dump-xorg.c:241
+#: ../src/plugins/abrt-dump-oops.c:199 ../src/plugins/abrt-dump-xorg.c:241
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "-d DumpLocation ਵਾਂਗ, DumpLocation ਨੂੰ abrt.conf ਵਿੱਚ ਨਿਰਧਾਰਤ ਕੀਤਾ ਹੈ"
 
-#: ../src/plugins/abrt-dump-oops.c:205 ../src/plugins/abrt-dump-xorg.c:242
+#: ../src/plugins/abrt-dump-oops.c:200 ../src/plugins/abrt-dump-xorg.c:242
 msgid "Make the problem directory world readable"
 msgstr "ਸਮੱਸਿਆ ਡਾਇਰੈਕਟਰੀ ਨੂੰ ਪੜ੍ਹਨਯੋਗ ਬਣਾਓ"
 
-#: ../src/plugins/abrt-dump-oops.c:206 ../src/plugins/abrt-dump-xorg.c:243
+#: ../src/plugins/abrt-dump-oops.c:201 ../src/plugins/abrt-dump-xorg.c:243
 msgid "Print search string(s) to stdout and exit"
 msgstr ""
 
@@ -636,19 +656,19 @@ msgid "Can't execute '%s'"
 msgstr "'%s' ਨੂੰ ਚਲਾ ਨਹੀਂ ਸਕਦਾ"
 
 #: ../src/plugins/abrt-retrace-client.c:198
-#: ../src/plugins/abrt-retrace-client.c:637
-#: ../src/plugins/abrt-retrace-client.c:894
-#: ../src/plugins/abrt-retrace-client.c:963
+#: ../src/plugins/abrt-retrace-client.c:655
+#: ../src/plugins/abrt-retrace-client.c:912
+#: ../src/plugins/abrt-retrace-client.c:981
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d."
 msgstr "HTTP ਹੈਡਰ ਭੇਜਣ ਤੋਞ ਫੇਲ ਹੋਇਆ ਜਿਸ ਦੀ ਲੰਬਾਈ %d ਹੈ: NSS ਗਲਤੀ %d।"
 
 #: ../src/plugins/abrt-retrace-client.c:210
 #: ../src/plugins/abrt-retrace-client.c:380
-#: ../src/plugins/abrt-retrace-client.c:736
-#: ../src/plugins/abrt-retrace-client.c:832
-#: ../src/plugins/abrt-retrace-client.c:911
-#: ../src/plugins/abrt-retrace-client.c:980
+#: ../src/plugins/abrt-retrace-client.c:754
+#: ../src/plugins/abrt-retrace-client.c:850
+#: ../src/plugins/abrt-retrace-client.c:929
+#: ../src/plugins/abrt-retrace-client.c:998
 #, c-format
 msgid ""
 "Unexpected HTTP response from server: %d\n"
@@ -658,15 +678,15 @@ msgstr ""
 "%s"
 
 #: ../src/plugins/abrt-retrace-client.c:219
-#: ../src/plugins/abrt-retrace-client.c:716
-#: ../src/plugins/abrt-retrace-client.c:824
-#: ../src/plugins/abrt-retrace-client.c:903
-#: ../src/plugins/abrt-retrace-client.c:972
+#: ../src/plugins/abrt-retrace-client.c:734
+#: ../src/plugins/abrt-retrace-client.c:842
+#: ../src/plugins/abrt-retrace-client.c:921
+#: ../src/plugins/abrt-retrace-client.c:990
 msgid "Invalid response from server: missing HTTP message body."
 msgstr "ਸਰਵਰ ਤੋਂ ਗਲਤ ਜਵਾਬ: HTTP ਮੈਸੇਜ ਬਾਡੀ ਗੌਰ-ਮੌਜੂਦ ਹੈ।"
 
 #: ../src/plugins/abrt-retrace-client.c:366
-#: ../src/plugins/abrt-retrace-client.c:815
+#: ../src/plugins/abrt-retrace-client.c:833
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d"
 msgstr "%d ਲੰਬਾਈ ਵਾਲਾ HTTP ਹੈਡਰ ਭੇਜਣ ਤੋਂ ਫੇਲ ਹੋਇਆ: NSS ਗਲਤੀ %d"
@@ -701,7 +721,13 @@ msgstr "ਫਾਇਲ '%s' ਦੇ ਅੰਕੜੇ ਪਤਾ ਕਰਨ ਤੋਂ �
 msgid "Unable to open dump directory '%s'."
 msgstr "ਡੰਪ ਡਾਇਰੈਟਰੀ '%s' ਨੂੰ ਖੋਲਣ ਤੋਂ ਅਸਮਰਥ।"
 
-#: ../src/plugins/abrt-retrace-client.c:479
+#: ../src/plugins/abrt-retrace-client.c:459
+#: ../src/plugins/abrt-retrace-client.c:475
+#, c-format
+msgid "'%s' must be a regular file in order to use Retrace server."
+msgstr ""
+
+#: ../src/plugins/abrt-retrace-client.c:489
 #, c-format
 msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
@@ -710,29 +736,29 @@ msgstr ""
 "ਤੁਹਾਡੇ ਕਰੈਸ਼ ਦਾ ਅਕਾਰ %lld ਬਾਈਟ ਹੈ, ਪਰ ਰੀਟਰੇਸ ਸਰਵਰ ਸਿਰਫ %lld ਬਾਈਟ ਦੇ ਬਰਾਬਰ ਜਾਂ ਛੋਟਾ "
 "ਅਕਾਰ ਸਵੀਕਾਰ ਕਰਦਾ ਹੈ।"
 
-#: ../src/plugins/abrt-retrace-client.c:499
+#: ../src/plugins/abrt-retrace-client.c:509
 msgid "The server does not support xz-compressed tarballs."
 msgstr "ਸਰਵਰ xz-ਸੰਕੁਚਿਤ ਟਾਰਬਾਲ ਨੂੰ ਸਹਿਯੋਗ ਨਹੀਂ ਦਿੰਦਾ।"
 
-#: ../src/plugins/abrt-retrace-client.c:535
+#: ../src/plugins/abrt-retrace-client.c:553
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
 msgstr "ਰੀਲੀਜ਼ '%s' ਨੂੰ ਰੀਟਰੇਸ ਸਰਵਰ ਦਾ ਸਹਿਯੋਗ ਨਹੀਂ ਹੈ।"
 
-#: ../src/plugins/abrt-retrace-client.c:539
+#: ../src/plugins/abrt-retrace-client.c:557
 msgid "The server is not able to handle your request."
 msgstr "ਸਰਵਰ ਤੁਹਾਡੀ ਬੇਨਤੀ ਦਾ ਹੱਲ ਨਹੀਂ ਕਰ ਸਕਦਾ।"
 
-#: ../src/plugins/abrt-retrace-client.c:558
+#: ../src/plugins/abrt-retrace-client.c:576
 #, fuzzy
 msgid "Unknown package sent to Retrace server."
 msgstr "ਰੀਟਰੇਸ ਸਰਵਰ ਨਾਲ ਅਸੁਰੱਖਿਅਤ ਕੁਨੈਕਸ਼ਨ ਮਨਜੂਰ ਕਰੋ"
 
-#: ../src/plugins/abrt-retrace-client.c:568
+#: ../src/plugins/abrt-retrace-client.c:586
 msgid "Preparing an archive to upload"
 msgstr "ਅੱਪਲੋਡ ਕਰਨ ਲਈ ਆਰਚੀਵ ਤਿਆਰ ਕਰ ਰਿਹਾ ਹੈ"
 
-#: ../src/plugins/abrt-retrace-client.c:581
+#: ../src/plugins/abrt-retrace-client.c:599
 #, c-format
 msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
@@ -741,68 +767,68 @@ msgstr ""
 "ਤੁਹਾਡੀ ਆਰਚੀਵ ਦਾ ਅਕਾਰ %lld ਬਾਈਟ ਹੈ, ਪਰ ਰੀਟਰੇਸ ਸਰਵਰ ਸਿਰਫ %lld ਬਾਈਟ ਦੇ ਬਰਾਬਰ ਜਾਂ ਛੋਟਾ "
 "ਅਕਾਰ ਸਵੀਕਾਰ ਕਰਦਾ ਹੈ।"
 
-#: ../src/plugins/abrt-retrace-client.c:594
+#: ../src/plugins/abrt-retrace-client.c:612
 #, fuzzy, c-format
 msgid "You are going to upload %d megabytes. Continue?"
 msgstr "ਤੁਸੀਂ %d ਮੈਗੀਬਾਈਟ ਅੱਪਲੋਡ ਕਰਨ ਜਾ ਰਹੇ ਹੋ। ਜਾਰੀ ਕਰਨਾ?"
 
-#: ../src/plugins/abrt-retrace-client.c:601
+#: ../src/plugins/abrt-retrace-client.c:619
 msgid "Cancelled by user"
 msgstr "ਯੂਜ਼ਰ ਦੁਆਰਾ ਰੱਦ"
 
-#: ../src/plugins/abrt-retrace-client.c:644
+#: ../src/plugins/abrt-retrace-client.c:662
 #, c-format
 msgid "Uploading %d megabytes\n"
 msgstr "%d ਮੈਗਾਬਾਈਟ ਅੱਪਲੋਡ ਕਰ ਰਿਹਾ ਹੈ\n"
 
-#: ../src/plugins/abrt-retrace-client.c:646
+#: ../src/plugins/abrt-retrace-client.c:664
 #, c-format
 msgid "Uploading %lld bytes\n"
 msgstr "%lld ਬਾਈਟ ਅੱਪਲੋਡ ਕਰ ਰਿਹਾ ਹੈ\n"
 
-#: ../src/plugins/abrt-retrace-client.c:670
+#: ../src/plugins/abrt-retrace-client.c:688
 #, c-format
 msgid "Uploading %d%%\n"
 msgstr "%d%% ਅੱਪਲੋਡ ਕਰ ਰਿਹਾ ਹੈ\n"
 
-#: ../src/plugins/abrt-retrace-client.c:682
+#: ../src/plugins/abrt-retrace-client.c:700
 msgid "Failed to read from a pipe"
 msgstr "ਪਾਈਪ ਤੋਂ ਪੜ੍ਹਨ ਵਿੱਚ ਫੇਲ"
 
-#: ../src/plugins/abrt-retrace-client.c:695
+#: ../src/plugins/abrt-retrace-client.c:713
 #, c-format
 msgid "Failed to send data: NSS error %d (%s): %s"
 msgstr "ਡਾਟਾ ਭੇਜਣ ਤੋਂ ਫੇਲ: NSS ਗਲਤੀ %d (%s): %s"
 
-#: ../src/plugins/abrt-retrace-client.c:706
+#: ../src/plugins/abrt-retrace-client.c:724
 msgid "Upload successful"
 msgstr "ਅੱਪਲੋਡ ਸਫਲ ਹੋਇਆ"
 
-#: ../src/plugins/abrt-retrace-client.c:728
+#: ../src/plugins/abrt-retrace-client.c:746
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
 msgstr "ਤੁਹਾਡੀ ਸਮੱਸਿਆ ਡਾਇਰੈਕਟਰੀ ਖਰਾਬ ਹੈ ਅਤੇ ਰੀਟਰੇਸ ਸਰਵਰ ਦੁਆਰਾ ਵਰਤੀ ਨਹੀਂ ਜਾ ਸਕਦੀ।"
 
-#: ../src/plugins/abrt-retrace-client.c:730
+#: ../src/plugins/abrt-retrace-client.c:748
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
 msgstr "ਆਰਚੀਵ ਵਿੱਚ ਗਲਤ ਫਾਇਲਾਂ ਹਨ (ਜਿਵੇਂ symlinks) ਅਤੇ ਵਰਤੀਆਂ ਨਹੀਂ ਜਾ ਸਕਦੀਆਂ।"
 
-#: ../src/plugins/abrt-retrace-client.c:743
+#: ../src/plugins/abrt-retrace-client.c:761
 msgid "Invalid response from server: missing X-Task-Id."
 msgstr "ਸਰਵਰ ਤੋਂ ਗਲਤ ਜਵਾਬ: X-Task-Id ਗੈਰਮੌਜੂਦ ਹੈ।"
 
-#: ../src/plugins/abrt-retrace-client.c:749
+#: ../src/plugins/abrt-retrace-client.c:767
 msgid "Invalid response from server: missing X-Task-Password."
 msgstr "ਸਰਵਰ ਤੋਂ ਗਲਤ ਜਵਾਬ: X-Task-Password ਗੈਰਮੌਜੂਦ ਹੈ।"
 
-#: ../src/plugins/abrt-retrace-client.c:756
+#: ../src/plugins/abrt-retrace-client.c:774
 msgid "Retrace job started"
 msgstr "ਰੀਟਰੇਸ ਜੌਬ ਚਾਲੂ ਹੋਈ"
 
-#: ../src/plugins/abrt-retrace-client.c:769
+#: ../src/plugins/abrt-retrace-client.c:787
 #, c-format
 msgid ""
 "Task Id: %s\n"
@@ -811,11 +837,11 @@ msgstr ""
 "ਕਾਰਜ Id: %s\n"
 "ਕਾਰਜ ਪਾਸਵਰਡ: %s\n"
 
-#: ../src/plugins/abrt-retrace-client.c:839
+#: ../src/plugins/abrt-retrace-client.c:857
 msgid "Invalid response from server: missing X-Task-Status."
 msgstr "ਸਰਵਰ ਤੋਂ ਗਲਤ ਜਵਾਬ: X-Task-Status ਗੈਰ-ਮੌਜੂਦ ਹੈ।"
 
-#: ../src/plugins/abrt-retrace-client.c:851
+#: ../src/plugins/abrt-retrace-client.c:869
 #, c-format
 msgid ""
 "Task Status: %s\n"
@@ -824,63 +850,63 @@ msgstr ""
 "ਕਾਰਜ ਹਾਲਤ: %s\n"
 "%s\n"
 
-#: ../src/plugins/abrt-retrace-client.c:1027
+#: ../src/plugins/abrt-retrace-client.c:1050
 msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
 msgstr "ਰੀਟਰੇਸ ਫੇਲ ਹੋਇਆ। ਬਾਅਦ ਵਿੱਚ ਫਿਲ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜੇ ਸਮੱਸਿਆ ਹੈ ਤਾਂ ਇਸ ਮੁੱਦੇ ਦੀ ਰਿਪੋਰਟ ਕਰੋ।"
 
-#: ../src/plugins/abrt-retrace-client.c:1075
+#: ../src/plugins/abrt-retrace-client.c:1098
 msgid "allow insecure connection to retrace server"
 msgstr "ਰੀਟਰੇਸ ਸਰਵਰ ਨਾਲ ਅਸੁਰੱਖਿਅਤ ਕੁਨੈਕਸ਼ਨ ਮਨਜੂਰ ਕਰੋ"
 
-#: ../src/plugins/abrt-retrace-client.c:1077
+#: ../src/plugins/abrt-retrace-client.c:1100
 msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
 msgstr ""
 
-#: ../src/plugins/abrt-retrace-client.c:1080
+#: ../src/plugins/abrt-retrace-client.c:1103
 msgid "retrace server URL"
 msgstr "ਰੀਟਰੇਸ ਸਰਵਰ URL"
 
-#: ../src/plugins/abrt-retrace-client.c:1082
+#: ../src/plugins/abrt-retrace-client.c:1105
 msgid "retrace server port"
 msgstr "ਰੀਟਰੇਸ ਸਰਵਰ ਪੋਰਟ"
 
-#: ../src/plugins/abrt-retrace-client.c:1085
+#: ../src/plugins/abrt-retrace-client.c:1108
 msgid "For create and batch operations"
 msgstr "ਕਰੀਏਟ ਅਤੇ ਬੈਚ ਓਪਰੇਸ਼ਨ ਲਈ"
 
-#: ../src/plugins/abrt-retrace-client.c:1087
+#: ../src/plugins/abrt-retrace-client.c:1110
 msgid "read data from ABRT problem directory"
 msgstr "ABRT ਸਮੱਸਿਆ ਡਾਇਰੈਕਟਰੀ ਤੋਂ ਡਾਟਾ ਪੜ੍ਹੋ"
 
-#: ../src/plugins/abrt-retrace-client.c:1089
+#: ../src/plugins/abrt-retrace-client.c:1112
 msgid "read data from coredump"
 msgstr "ਕੋਰਡੰਪ ਤੋਂ ਡਾਟਾ ਪੜ੍ਹੋ"
 
-#: ../src/plugins/abrt-retrace-client.c:1091
+#: ../src/plugins/abrt-retrace-client.c:1114
 msgid "Delay for polling operations"
 msgstr "ਪੋਲਿੰਗ ਓਪਰੇਸ਼ਨ ਲਈ ਅੰਤਰਾਲ"
 
-#: ../src/plugins/abrt-retrace-client.c:1093
+#: ../src/plugins/abrt-retrace-client.c:1116
 msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
 msgstr "(ਡੀਬੱਗ) ਆਰਜੀ ਆਰਚੀਵ ਨਾਲ ਹਟਾਓ ਜੋ ਡੰਪ ਡਾਇਰੈਕਟਰੀ ਤੋਂ /tmp ਵਿੱਚ ਬਣਾਈ ਗਈ ਸੀ"
 
-#: ../src/plugins/abrt-retrace-client.c:1095
+#: ../src/plugins/abrt-retrace-client.c:1118
 msgid "For status, backtrace, and log operations"
 msgstr "ਹਾਲਤ, ਬੈਕਟਰੇਸ, ਅਤੇ ਲਾਗ ਓਪਰੇਸ਼ਨ ਲਈ"
 
-#: ../src/plugins/abrt-retrace-client.c:1097
+#: ../src/plugins/abrt-retrace-client.c:1120
 msgid "id of your task on server"
 msgstr "ਸਰਵਰ ਉੱਪਰ ਤੁਹਾਡੇ ਕਾਰਜ ਦਾ id"
 
-#: ../src/plugins/abrt-retrace-client.c:1099
+#: ../src/plugins/abrt-retrace-client.c:1122
 msgid "password of your task on server"
 msgstr "ਸਰਵਰ ਉੱਪਰ ਤੁਹਾਡੇ ਕਾਰਜ ਦਾ ਪਾਸਵਰਡ"
 
-#: ../src/plugins/abrt-retrace-client.c:1103
+#: ../src/plugins/abrt-retrace-client.c:1126
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch"
@@ -888,24 +914,24 @@ msgstr ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch"
 
-#: ../src/plugins/abrt-retrace-client.c:1149
-#: ../src/plugins/abrt-retrace-client.c:1155
+#: ../src/plugins/abrt-retrace-client.c:1172
+#: ../src/plugins/abrt-retrace-client.c:1178
 msgid "Either problem directory or coredump is needed."
 msgstr "ਸਮੱਸਿਆ ਡਾਇਰੈਕਟਰੀ ਜਾਂ ਕੋਰਡੰਪ ਦੀ ਲੋੜ ਹੈ।"
 
-#: ../src/plugins/abrt-retrace-client.c:1161
-#: ../src/plugins/abrt-retrace-client.c:1169
-#: ../src/plugins/abrt-retrace-client.c:1177
+#: ../src/plugins/abrt-retrace-client.c:1184
+#: ../src/plugins/abrt-retrace-client.c:1192
+#: ../src/plugins/abrt-retrace-client.c:1200
 msgid "Task id is needed."
 msgstr "ਕਾਰਜ id ਦੀ ਲੋੜ ਹੈ।"
 
-#: ../src/plugins/abrt-retrace-client.c:1163
-#: ../src/plugins/abrt-retrace-client.c:1171
-#: ../src/plugins/abrt-retrace-client.c:1179
+#: ../src/plugins/abrt-retrace-client.c:1186
+#: ../src/plugins/abrt-retrace-client.c:1194
+#: ../src/plugins/abrt-retrace-client.c:1202
 msgid "Task password is needed."
 msgstr "ਕਾਰਜ ਪਾਸਵਰਡ ਦੀ ਲੋੜ ਹੈ।"
 
-#: ../src/plugins/abrt-retrace-client.c:1183
+#: ../src/plugins/abrt-retrace-client.c:1206
 #, c-format
 msgid "Unknown operation: %s."
 msgstr "ਅਣਜਾਣ ਓਪਰੇਸ਼ਨ: %s."
@@ -945,22 +971,27 @@ msgstr ""
 "ਕੀਤਾ ਹੈ ਉਸ ਵਿੱਚ ਕਰੈਸ਼ ਪਰੋਗਰਾਮ ਦੀ ਸਾਰਾ ਡਾਟਾ ਸ਼ਾਮਿਲ ਹੈ, ਤੁਹਾਡੇ ਪਰਾਈਵੇਟ ਡਾਟੇ ਸਮੇਤ, ਜੇ ਕੋਈ ਹੈ।"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
+#: ../src/plugins/analyze_CCpp.xml.in.h:3
 msgid "Retrace server URL"
 msgstr "ਰੀਟਰੇਸ ਸਰਵਰ URL"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:4
+#: ../src/plugins/analyze_CCpp.xml.in.h:4
 msgid "Address of the retrace server"
 msgstr "ਰੀਟਰੇਸ ਸਰਵਰ ਦਾ ਐਡਰੈੱਸ"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:5
+#: ../src/plugins/analyze_CCpp.xml.in.h:5
 msgid "Insecure"
 msgstr "ਅਸੁਰੱਖਿਅਤ"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:6
+#: ../src/plugins/analyze_CCpp.xml.in.h:6
 msgid "Whether or not to use insecure connection"
 msgstr "ਅਸੁਰੱਖਿਅਤ ਕੁਨੈਕਸ਼ਨ ਵਰਤਣਾ ਹੈ ਜਾਂ ਨਹੀਂ"
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
+#: ../src/plugins/analyze_CCpp.xml.in.h:7
 msgid ""
 "Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
 "fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
@@ -1135,18 +1166,16 @@ msgstr ""
 msgid "No updates for this package found"
 msgstr ""
 
-#: ../src/plugins/bodhi.c:461
+#. strbuf_free(q);
+#: ../src/plugins/bodhi.c:467
 msgid "Local version of the package is newer than available updates"
 msgstr ""
 
-#: ../src/plugins/bodhi.c:465
+#: ../src/plugins/bodhi.c:484
+#, c-format
 msgid ""
-"Abrt found a new update which fix your problem. Please run before submitting "
-"bug: pkcon update --repo-enable=fedora --repo-repo=updates-testing"
-msgstr ""
-
-#: ../src/plugins/bodhi.c:469
-msgid ". Do you want to continue with reporting bug?"
+"An update exists which might fix your problem. You can install it by "
+"running: %s. Do you want to continue with reporting the bug?"
 msgstr ""
 
 #: ../src/cli/abrt-cli.c:142
@@ -1189,6 +1218,29 @@ msgstr "ਵਿਸਥਾਰ ਰਿਪੋਰਟ ਵੇਖਾਓ"
 #: ../src/cli/list.c:131
 msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
+
+#: ../src/plugins/analyze_CCpp.xml.in.h:1
+#, fuzzy
+msgid ""
+"Send core dump to remote retrace server for analysis or perform local "
+"analysis if the remote analysis fails"
+msgstr "ਜਾਂਚ ਵਾਸਤੇ ਕੋਰਡੰਪ ਨੂੰ ਰਿਮੋਟ ਰੀਟਰੇਸ ਸਰਵਰ ਉੱਪਰ ਭੇਜੋ"
+
+#: ../src/plugins/analyze_CCpp.xml.in.h:2
+#, fuzzy
+msgid ""
+"Uploads coredump to a server, which generates backtrace and returns it. If "
+"user doens't want to upload his coredump to anywhere the event performs "
+"local analysis. Local analysis is run event if remote analysis fails. Pros: "
+"no need for debuginfo downloads. Retrace server's database of debuginfos is "
+"more complete. Retrace server may generate better backtraces. Cons: coredump "
+"you upload contains all the data from the crashed program, including your "
+"private data, if any."
+msgstr ""
+"ਕੋਰਡੰਪ ਨੂੰ ਸਰਵਰ ਤੇ ਅੱਪਲੋਡ ਕਰਦਾ ਹੈ, ਜੋ ਬੈਕਟਰੇਸ ਬਣਾਉਂਦੀ ਹੈ ਅਤੇ ਵਾਪਸ ਭੇਜਦੀ ਹੈ। Pros: ਡੀਬੱਗ-"
+"ਜਾਣਕਾਰੀ ਡਾਊਨਲੋਡ ਕਰਨ ਦੀ ਕੋਈ ਲੋੜ ਨਹੀਂ ਹੈ। ਰੀਟਰੇਸ ਸਰਵਰ ਦਾ ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਡਾਟਾਬੇਸ ਦੀ "
+"ਰੀਟਰੇਸ ਜਿਆਦਾ ਮੁਕੰਮਲ ਹੈ। ਰੀਟਰੇਸ ਸਰਵਰ ਵਧੀਆ ਬੈਕਟਰੇਸ ਬਣਾ ਸਕਦਾ ਹੈ। Cons: ਕੋਰਡੰਪ ਜੋ ਤੁਸੀਂ ਅੱਪਲੋਡ "
+"ਕੀਤਾ ਹੈ ਉਸ ਵਿੱਚ ਕਰੈਸ਼ ਪਰੋਗਰਾਮ ਦੀ ਸਾਰਾ ਡਾਟਾ ਸ਼ਾਮਿਲ ਹੈ, ਤੁਹਾਡੇ ਪਰਾਈਵੇਟ ਡਾਟੇ ਸਮੇਤ, ਜੇ ਕੋਈ ਹੈ।"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -1266,6 +1318,22 @@ msgid ""
 msgstr ""
 "ਜਾਂਚੋ ਜੇ .vimrc ਅਤੇ .gvimrc ਤੁਹਾਡੀ ਘਰੇਲੂ ਡਾਇਰੈਕਰੀ ਵਿੱਚ ਹਨ ਅਤੇ user_vimrc ਅਤੇ "
 "user_gvimrc, ਤੌਰ ਤੇ ਸੰਭਾਲੋ।"
+
+#: ../src/plugins/post_report.xml.in.h:1
+#, fuzzy
+msgid "Post report"
+msgstr "ਭੇਜੀ ਰਿਪੋਰਟ ਨਹੀਂ ਹੈ"
+
+#: ../src/plugins/post_report.xml.in.h:2
+msgid "Executed after the reporting is finished"
+msgstr ""
+
+#: ../src/plugins/post_report.xml.in.h:3
+msgid "Used for updating of the databases"
+msgstr ""
+
+#~ msgid "Dump directory"
+#~ msgstr "ਡੰਪ ਡਾਇਰੈਕਟਰੀ"
 
 #~ msgid "Show"
 #~ msgstr "ਵੇਖੋ"
