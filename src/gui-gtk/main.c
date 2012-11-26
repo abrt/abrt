@@ -1192,6 +1192,55 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
     return TRUE; /* "please don't remove this event" */
 }
 
+static void activate(GtkApplication *app)
+{
+
+    GList *windows = NULL;
+
+    windows = gtk_application_get_windows(app);
+
+    if (windows)
+    {
+        gtk_window_present(GTK_WINDOW(windows->data));
+        return;
+    }
+
+    GtkWidget *main_window = create_main_window();
+    load_abrt_conf();
+    load_user_settings("abrt-gui");
+
+    init_notify();
+
+    scan_dirs_and_add_to_dirlist();
+
+    gtk_window_set_application(GTK_WINDOW(main_window), app);
+
+    gtk_widget_show_all(main_window);
+
+    sanitize_cursor(NULL);
+
+    /* Set up signal pipe */
+    xpipe(s_signal_pipe);
+    close_on_exec_on(s_signal_pipe[0]);
+    close_on_exec_on(s_signal_pipe[1]);
+    ndelay_on(s_signal_pipe[0]);
+    ndelay_on(s_signal_pipe[1]);
+    signal(SIGCHLD, handle_signal);
+    g_io_add_watch(g_io_channel_unix_new(s_signal_pipe[0]),
+                G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP | G_IO_NVAL,
+                handle_signal_pipe,
+                NULL);
+
+    g_custom_logger = &show_warning_dialog;
+
+    /* Enter main loop */
+    gtk_main();
+
+    save_user_settings();
+    free_abrt_conf_data();
+    return;
+}
+
 int main(int argc, char **argv)
 {
     /* I18n */
@@ -1230,13 +1279,8 @@ int main(int argc, char **argv)
 
     migrate_to_xdg_dirs();
 
-    load_user_settings("abrt-gui");
-
     export_abrt_envvars(g_opts & OPT_p);
 
-    GtkWidget *main_window = create_main_window();
-
-    load_abrt_conf();
     const char *default_dirs[] = {
         NULL,
         NULL,
@@ -1249,32 +1293,15 @@ int main(int argc, char **argv)
     }
     s_dirs = argv;
 
-    init_notify();
+    GtkApplication *app = NULL;
+    gint status;
 
-    scan_dirs_and_add_to_dirlist();
+    app = gtk_application_new("org.freedesktop.AbrtGui", 0);
+    g_signal_connect(app, "activate", G_CALLBACK (activate), NULL);
 
-    gtk_widget_show_all(main_window);
+    status = g_application_run(G_APPLICATION(app), argc, argv);
 
-    sanitize_cursor(NULL);
+    g_object_unref(app);
 
-    /* Set up signal pipe */
-    xpipe(s_signal_pipe);
-    close_on_exec_on(s_signal_pipe[0]);
-    close_on_exec_on(s_signal_pipe[1]);
-    ndelay_on(s_signal_pipe[0]);
-    ndelay_on(s_signal_pipe[1]);
-    signal(SIGCHLD, handle_signal);
-    g_io_add_watch(g_io_channel_unix_new(s_signal_pipe[0]),
-                G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP | G_IO_NVAL,
-                handle_signal_pipe,
-                NULL);
-
-    g_custom_logger = &show_warning_dialog;
-
-    /* Enter main loop */
-    gtk_main();
-
-    save_user_settings();
-    free_abrt_conf_data();
-    return 0;
+    return status;
 }
