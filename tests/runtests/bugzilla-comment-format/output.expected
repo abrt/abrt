@@ -16,11 +16,11 @@ uid:            502
 
 Truncated backtrace:
 Thread no. 1 (8 frames)
- #0 rxvt_term::selection_delimit_word at screen.C
- #1 rxvt_term::selection_extend_colrow at screen.C
- #2 rxvt_term::button_press at command.C
- #3 rxvt_term::x_cb at command.C
- #4 call at ./callback.h
- #5 rxvt_display::flush_cb at rxvttoolkit.C
- #6 ev_invoke_pending at ../libev/ev.c
- #7 ev_run at ../libev/ev.c
+ #0 rxvt_term::selection_delimit_word at screen.C:3047
+ #1 rxvt_term::selection_extend_colrow at screen.C:3279
+ #2 rxvt_term::button_press at command.C:1938
+ #3 rxvt_term::x_cb at command.C:1365
+ #4 call at ./callback.h:83
+ #5 rxvt_display::flush_cb at rxvttoolkit.C:585
+ #6 ev_invoke_pending at ../libev/ev.c:2117
+ #7 ev_run at ../libev/ev.c:2392
