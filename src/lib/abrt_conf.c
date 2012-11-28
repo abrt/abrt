@@ -22,6 +22,8 @@ char *        g_settings_sWatchCrashdumpArchiveDir = NULL;
 unsigned int  g_settings_nMaxCrashReportsSize = 1000;
 char *        g_settings_dump_location = NULL;
 bool          g_settings_delete_uploaded = 0;
+bool          g_settings_autoreporting = 0;
+char *        g_settings_autoreporting_event = NULL;
 
 void free_abrt_conf_data()
 {
@@ -71,6 +73,22 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
         g_settings_delete_uploaded = string_to_bool(value);
         remove_map_string_item(settings, "DeleteUploaded");
     }
+
+    value = g_hash_table_lookup(settings, "AutoreportingEnabled");
+    if (value)
+    {
+        g_settings_autoreporting = string_to_bool(value);
+        g_hash_table_remove(settings, "AutoreportingEnabled");
+    }
+
+    value = g_hash_table_lookup(settings, "AutoreportingEvent");
+    if (value)
+    {
+        g_settings_autoreporting_event = xstrdup(value);
+        g_hash_table_remove(settings, "AutoreportingEvent");
+    }
+    else
+        g_settings_autoreporting_event = xstrdup("report_uReport");
 
     GHashTableIter iter;
     const char *name;
