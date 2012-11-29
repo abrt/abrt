@@ -36,6 +36,11 @@ static const gchar introspection_xml[] =
   "      <arg type='as' name='element_names' direction='in'/>"
   "      <arg type='a{ss}' name='response' direction='out'/>"
   "    </method>"
+  "    <method name='SetElement'>"
+  "      <arg type='s' name='problem_dir' direction='in'/>"
+  "      <arg type='s' name='name' direction='in'/>"
+  "      <arg type='s' name='value' direction='in'/>"
+  "    </method>"
   "    <method name='ChownProblemDir'>"
   "      <arg type='s' name='problem_dir' direction='in'/>"
   "    </method>"
@@ -154,7 +159,9 @@ static bool uid_in_group(uid_t uid, gid_t gid)
 static int dir_accessible_by_uid(const char *dir_path, uid_t uid)
 {
     struct stat statbuf;
-    if (stat(dir_path, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
+    if (stat(dir_path, &statbuf) != 0 || !S_ISDIR(statbuf.st_mode))
+        errno = ENOTDIR;
+    else
     {
         if (uid == 0 || (statbuf.st_mode & S_IROTH) || uid_in_group(uid, statbuf.st_gid))
         {
@@ -403,6 +410,65 @@ static void return_InvalidProblemDir_error(GDBusMethodInvocation *invocation, co
     free(msg);
 }
 
+/*
+ * Checks element's rights and does not open directory if element is protected.
+ * Checks problem's rights and does not open directory if user hasn't got
+ * access to a problem.
+ *
+ * Returns a dump directory opend for writing or NULL.
+ *
+ * If any operation from the above listed fails, immediately returns D-Bus
+ * error to a D-Bus caller.
+ */
+static struct dump_dir *open_directory_for_modification_of_element(
+    GDBusMethodInvocation *invocation,
+    uid_t caller_uid,
+    const char *problem_id,
+    const char *element)
+{
+    static const char *const protected_elements[] = {
+        FILENAME_TIME,
+        FILENAME_UID,
+        NULL,
+    };
+
+    for (const char *const *protected = protected_elements; *protected; ++protected)
+    {
+        if (strcmp(*protected, element) == 0)
+        {
+            char *error = xasprintf(_("'%s' element can't be modified"), element);
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                        "org.freedesktop.problems.ProtectedElement",
+                                        error);
+            free(error);
+            return NULL;
+        }
+    }
+
+    if (!dir_accessible_by_uid(problem_id, caller_uid))
+    {
+        if (errno == ENOTDIR)
+            return_InvalidProblemDir_error(invocation, problem_id);
+        else
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                "org.freedesktop.problems.AuthFailure",
+                                _("Not Authorized"));
+
+        return NULL;
+    }
+
+    struct dump_dir *dd = dd_opendir(problem_id, /* flags : */ 0);
+    if (!dd)
+    {   /* This should not happen because of the access check above */
+        g_dbus_method_invocation_return_dbus_error(invocation,
+                                "org.freedesktop.problems.Failure",
+                                _("Can't access the problem for modification"));
+        return NULL;
+    }
+
+    return dd;
+}
+
 static void handle_method_call(GDBusConnection *connection,
                         const gchar *caller,
                         const gchar *object_path,
@@ -631,6 +697,53 @@ static void handle_method_call(GDBusConnection *connection,
 
         VERB2 log("GetInfo: returning value for '%s'", problem_dir);
         g_dbus_method_invocation_return_value(invocation, response);
+        return;
+    }
+
+    if (g_strcmp0(method_name, "SetElement") == 0)
+    {
+        const char *problem_id;
+        const char *element;
+        const char *value;
+
+        g_variant_get(parameters, "(&s&s&s)", &problem_id, &element, &value);
+
+        if (element == NULL || element[0] == '\0' || strlen(element) > 64)
+        {
+            char *error = xasprintf(_("'%s' is not a valid element name"), element);
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                              "org.freedesktop.problems.InvalidElement",
+                                              error);
+
+            free(error);
+            return;
+        }
+
+        struct dump_dir *dd = open_directory_for_modification_of_element(
+                                    invocation, caller_uid, problem_id, element);
+        if (!dd)
+            return;
+
+        /* Is it good idea to make it static? Is it possible to change the max size while a single run? */
+        const double max_size = g_settings_nMaxCrashReportsSize * (1024 * 1024);
+
+        const double requested_size = strlen(value) - dd_get_item_size(dd, element);
+        /* Don't want to check the size limit in case of reducing of size */
+        if (requested_size > 0
+            && requested_size > (max_size - get_dirsize(g_settings_dump_location)))
+        {
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                                      "org.freedesktop.problems.Failure",
+                                                      _("No problem space left"));
+        }
+        else
+        {
+            dd_save_text(dd, element, value);
+            g_dbus_method_invocation_return_value(invocation, NULL);
+        }
+
+        dd_close(dd);
+
         return;
     }
 
