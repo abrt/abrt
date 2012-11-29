@@ -41,6 +41,10 @@ static const gchar introspection_xml[] =
   "      <arg type='s' name='name' direction='in'/>"
   "      <arg type='s' name='value' direction='in'/>"
   "    </method>"
+  "    <method name='DeleteElement'>"
+  "      <arg type='s' name='problem_dir' direction='in'/>"
+  "      <arg type='s' name='name' direction='in'/>"
+  "    </method>"
   "    <method name='ChownProblemDir'>"
   "      <arg type='s' name='problem_dir' direction='in'/>"
   "    </method>"
@@ -744,6 +748,36 @@ static void handle_method_call(GDBusConnection *connection,
 
         dd_close(dd);
 
+        return;
+    }
+
+    if (g_strcmp0(method_name, "DeleteElement") == 0)
+    {
+        const char *problem_id;
+        const char *element;
+
+        g_variant_get(parameters, "(&s&s)", &problem_id, &element);
+
+        struct dump_dir *dd = open_directory_for_modification_of_element(
+                                    invocation, caller_uid, problem_id, element);
+        if (!dd)
+            return;
+
+        const int res = dd_delete_item(dd, element);
+        dd_close(dd);
+
+        if (res != 0)
+        {
+            char *error = xasprintf(_("Can't delete the element '%s' from the problem directory '%s'"), element, problem_id);
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                          "org.freedesktop.problems.Failure",
+                                          error);
+            free(error);
+            return;
+        }
+
+
+        g_dbus_method_invocation_return_value(invocation, NULL);
         return;
     }
 
