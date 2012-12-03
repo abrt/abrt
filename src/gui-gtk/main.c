@@ -1083,7 +1083,7 @@ static GtkWidget *create_main_window(GtkApplication *app)
     g_signal_connect(btn_delete, "clicked", G_CALLBACK(on_btn_delete_cb), NULL);
 
     /* Quit when user closes the main window */
-    g_signal_connect(g_main_window, "destroy", gtk_main_quit, NULL);
+    g_signal_connect(g_main_window, "destroy", (GCallback)on_quit_cb, app);
 
     return g_main_window;
 }
