@@ -799,7 +799,7 @@ static void on_menu_about_cb(GtkMenuItem *menuitem, gpointer unused)
 
 static void show_events_list_dialog_cb(GtkMenuItem *menuitem, gpointer user_data)
 {
-    show_events_list_dialog(GTK_WINDOW(g_main_window));
+    show_config_list_dialog(GTK_WINDOW(g_main_window));
 }
 
 static void add_columns(GtkTreeView *treeview)
