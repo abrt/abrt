@@ -892,7 +892,14 @@ static void add_columns_reported(GtkTreeView *treeview)
     gtk_tree_view_append_column(treeview, column);
 }
 
-static GtkWidget *create_menu(void)
+void on_quit_cb(GtkWidget *widget, gpointer user_data)
+{
+  GApplication *app = user_data;
+
+  g_application_quit(app);
+}
+
+static GtkWidget *create_menu(GtkApplication *app)
 {
     /* main bar */
     GtkWidget *menu = gtk_menu_bar_new();
@@ -918,7 +925,7 @@ static GtkWidget *create_menu(void)
 
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(file_item), file_submenu);
 
-    g_signal_connect(quit_item, "activate", &gtk_main_quit, NULL);
+    g_signal_connect(quit_item, "activate", (GCallback)on_quit_cb, app);
 
     /* edit submenu */
     GtkWidget *edit_submenu = gtk_menu_new();
@@ -947,7 +954,7 @@ static GtkWidget *create_menu(void)
     return menu;
 }
 
-static GtkWidget *create_main_window(void)
+static GtkWidget *create_main_window(GtkApplication *app)
 {
     /* Main window */
     g_main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -957,7 +964,7 @@ static GtkWidget *create_main_window(void)
 
     GtkWidget *main_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     /* add menu */
-    gtk_box_pack_start(GTK_BOX(main_vbox), create_menu(), false, false, 0);
+    gtk_box_pack_start(GTK_BOX(main_vbox), create_menu(app), false, false, 0);
 
     GtkWidget *not_subm_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_set_border_width(GTK_CONTAINER(not_subm_vbox), 10);
@@ -1205,7 +1212,7 @@ static void activate(GtkApplication *app)
         return;
     }
 
-    GtkWidget *main_window = create_main_window();
+    GtkWidget *main_window = create_main_window(app);
     load_abrt_conf();
     load_user_settings("abrt-gui");
 
@@ -1232,9 +1239,6 @@ static void activate(GtkApplication *app)
                 NULL);
 
     g_custom_logger = &show_warning_dialog;
-
-    /* Enter main loop */
-    gtk_main();
 
     save_user_settings();
     free_abrt_conf_data();
@@ -1294,11 +1298,11 @@ int main(int argc, char **argv)
     s_dirs = argv;
 
     GtkApplication *app = NULL;
-    gint status;
+
 
     app = gtk_application_new("org.freedesktop.AbrtGui", 0);
     g_signal_connect(app, "activate", G_CALLBACK (activate), NULL);
-
+    gint status;
     status = g_application_run(G_APPLICATION(app), argc, argv);
 
     g_object_unref(app);
