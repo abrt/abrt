@@ -894,9 +894,9 @@ static void add_columns_reported(GtkTreeView *treeview)
 
 void on_quit_cb(GtkWidget *widget, gpointer user_data)
 {
-  GApplication *app = user_data;
+    GApplication *app = user_data;
 
-  g_application_quit(app);
+    g_application_quit(app);
 }
 
 static GtkWidget *create_menu(GtkApplication *app)
