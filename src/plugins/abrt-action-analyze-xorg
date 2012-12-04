@@ -1,6 +1,6 @@
 #!/bin/sh
 
-test "`cat analyzer`" = "xorg" || {
+test x"`cat analyzer`" = x"xorg" || {
 	echo "Current directory is not an Xorg problem directory"
 	exit 1
 }
