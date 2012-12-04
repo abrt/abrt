@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# This script wraps reporter-ureport client and keeps number of sent
+# uReports to a server consistent with number of problem ocurrences.
+#
+# FAF server returns a BTHASH which is used as global identifier of problem.
+# reporter-ureport stores received BTHASH value in reported_to element under
+# uReport key. Therefore, if reported_to element contains uReport key,
+# reporter-ureport won't be run again.
+#
+# TODO: this implementation allows caller to report a problem only once
+
+if test -f reported_to && cat reported_to | grep -q "BTHASH"
+then
+
+    test -n "$ABRT_VERBOSE" && test $ABRT_VERBOSE -ge 1 && {
+            echo "Problem has been already reported: '`pwd`'"
+    }
+
+    exit 0
+fi
+
+reporter-ureport

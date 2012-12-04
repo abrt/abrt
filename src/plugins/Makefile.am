@@ -26,6 +26,8 @@ bin_PROGRAMS = \
 
 libexec_PROGRAMS = abrt-action-install-debuginfo-to-abrt-cache
 
+libexec_SCRIPTS = abrt-action-ureport
+
 #dist_pluginsconf_DATA = Python.conf
 
 eventsdir = $(EVENTS_DIR)
@@ -80,6 +82,7 @@ EXTRA_DIST = \
     abrt-action-analyze-vmcore \
     abrt-action-analyze-xorg \
     abrt-action-save-kernel-data \
+    abrt-action-ureport \
     https-utils.h \
     post_report.xml.in
 
@@ -278,7 +281,6 @@ abrt_bodhi_SOURCES = \
 
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
-
 
 abrt-action-perform-ccpp-analysis: abrt-action-perform-ccpp-analysis.in
 	sed -e s,\@libexecdir\@,$(libexecdir),g \
