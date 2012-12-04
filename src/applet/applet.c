@@ -24,26 +24,212 @@
 #include <dbus/dbus-shared.h>
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-lowlevel.h>
+#include <glib.h>
 
 #include <libreport/internal_abrt_dbus.h>
+#include <libreport/event_config.h>
+#include <libreport/internal_libreport_gtk.h>
 #include "libabrt.h"
 
+/* NetworkManager DBus configuration */
+#define NM_DBUS_SERVICE "org.freedesktop.NetworkManager"
+#define NM_DBUS_PATH  "/org/freedesktop/NetworkManager"
+#define NM_DBUS_INTERFACE "org.freedesktop.NetworkManager"
+#define NM_STATE_CONNECTED_LOCAL 50
+#define NM_STATE_CONNECTED_SITE 60
+#define NM_STATE_CONNECTED_GLOBAL 70
 
-static gboolean persistent_notification;
+/* libnotify action keys */
+#define A_KNOWN_OPEN_GUI "OPEN"
+#define A_KNOWN_OPEN_BROWSER "SHOW"
+#define A_REPORT_START_AUTOREPORT "START_AUTOREPORT"
+#define A_REPORT_REPORT "REPORT"
+#define A_REPORT_AUTOREPORT "AUTOREPORT"
+
+enum
+{
+    /*
+     * with this flag show_problem_notification() shows only the old ABRT icon
+     */
+    SHOW_ICON_ONLY = 1 << 0,
+
+    /*
+     * show autoreport button on notification
+     */
+    JUST_DETECTED_PROBLEM = 1 << 1,
+};
+
+
+static GDBusConnection *g_system_bus;
 static GtkStatusIcon *ap_status_icon;
 static GtkWidget *ap_menu;
 static char *ap_last_problem_dir;
 static char **s_dirs;
+static GList *g_deferred_crash_queue;
+static guint g_deferred_timeout;
 
+static bool is_autoreporting_enabled(void)
+{
+    const char *option = get_user_setting("AutoreportingEnabled");
+
+    /* If user configured autoreporting from his scope, don't look at system
+     * configuration.
+     */
+    return    (!option && g_settings_autoreporting)
+           || ( option && string_to_bool(option));
+}
+
+static void enable_autoreporting(void)
+{
+    set_user_setting("AutoreportingEnabled", "yes");
+    save_user_settings();
+}
+
+static const char *get_autoreport_event_name(void)
+{
+    const char *configured = get_user_setting("AutoreportingEvent");
+    return configured ? configured : g_settings_autoreporting_event;
+}
+
+/*
+ * Converts a NM state value stored in GVariant to boolean.
+ *
+ * Returns true if a state means connected.
+ *
+ * Sinks the args variant.
+ */
+static bool nm_state_is_connected(GVariant *args)
+{
+    GVariant *value = g_variant_get_child_value(args, 0);
+
+    if (g_variant_is_of_type(value, G_VARIANT_TYPE_VARIANT))
+    {
+        GVariant *tmp = g_variant_get_child_value(value, 0);
+        g_variant_unref(value);
+        value = tmp;
+    }
+
+    int state = g_variant_get_uint32 (value);
+
+    g_variant_unref(value);
+    g_variant_unref(args);
+
+    return state == NM_STATE_CONNECTED_GLOBAL
+           || state == NM_STATE_CONNECTED_LOCAL
+           || state == NM_STATE_CONNECTED_SITE;
+}
+
+/*
+ * The function tries to get network state from NetworkManager over DBus
+ * call. If NetworkManager DBus service is not available the function returns
+ * true which means that network is enabled and up.
+ *
+ * Function must return true on any error, otherwise user won't be notified
+ * about new problems. Because if network is not enabled, new problems are
+ * pushed to the deferred queue. The deferred queue is processed immediately
+ * after network becomes enabled. In case where NetworkManager is broken or not
+ * available, notification about network state doesn't work thus the deferred
+ * queue won't be ever processed.
+ */
+static bool is_networking_enabled(void)
+{
+    GError *error = NULL;
+
+    /* Create a D-Bus proxy to get the object properties from the NM Manager
+     * object.
+     */
+    const int flags = G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES
+                      | G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS;
+
+    GDBusProxy *props_proxy = g_dbus_proxy_new_sync(g_system_bus,
+                                flags,
+                                NULL /* GDBusInterfaceInfo */,
+                                NM_DBUS_SERVICE,
+                                NM_DBUS_PATH,
+                                DBUS_INTERFACE_PROPERTIES,
+                                NULL /* GCancellable */,
+                                &error);
+
+    if (!props_proxy)
+    {
+        /* The NetworkManager DBus service is not available. */
+        error_msg (_("Can't connect to NetworkManager over DBus: %s"), error->message);
+        g_error_free (error);
+
+        /* Consider network state as connected. */
+        return true;
+    }
+
+    /* Get the State property from the NM Manager object */
+    GVariant *const value = g_dbus_proxy_call_sync (props_proxy,
+                                "Get",
+                                 g_variant_new("(ss)", NM_DBUS_INTERFACE, "State"),
+                                 G_DBUS_PROXY_FLAGS_NONE,
+                                 -1   /* timeout: use proxy default */,
+                                 NULL /* GCancellable */,
+                                 &error);
+
+    /* Consider network state as connected if any error occurs */
+    bool ret = true;
+
+    if (!error)
+        /* Convert the state value and sink the variable */
+        ret = nm_state_is_connected(value);
+    else
+    {
+        error_msg (_("Can't determine network status via NetworkManager: %s"), error->message);
+        g_error_free (error);
+    }
+
+    g_object_unref(props_proxy);
+
+    return ret;
+}
+
+static void show_problem_list_notification(GList *problems, int flags);
+
+static gboolean process_deferred_queue_timeout_fn(GList *queue)
+{
+    g_deferred_timeout = 0;
+    show_problem_list_notification(queue, /* process these crashes as new crashes */ 0);
+
+    /* Remove this timeout fn from the main loop*/
+    return FALSE;
+}
+
+static void on_nm_state_changed(GDBusConnection *connection, const gchar *sender_name,
+                                const gchar *object_path, const gchar *interface_name,
+                                const gchar *signal_name, GVariant *parameters,
+                                gpointer user_data)
+{
+    g_variant_ref(parameters);
+
+    if (nm_state_is_connected(parameters))
+    {
+        if (g_deferred_timeout)
+            g_source_remove(g_deferred_timeout);
+
+        g_deferred_timeout = g_timeout_add(30 * 1000 /* give NM 30s to configure network */,
+                                           (GSourceFunc)process_deferred_queue_timeout_fn,
+                                           g_deferred_crash_queue);
+    }
+}
 
 typedef struct problem_info {
     char *problem_dir;
     bool foreign;
+    char *message;
+    bool known;
 } problem_info_t;
 
-static problem_info_t *problem_info_new()
+static void push_to_deferred_queue(problem_info_t *pi)
 {
-    problem_info_t *pi = xmalloc(sizeof(problem_info_t));
+    g_deferred_crash_queue = g_list_append(g_deferred_crash_queue, pi);
+}
+
+static problem_info_t *problem_info_new(void)
+{
+    problem_info_t *pi = xzalloc(sizeof(*pi));
     return pi;
 }
 
@@ -52,44 +238,52 @@ static void problem_info_free(problem_info_t *pi)
     if (pi == NULL)
         return;
 
+    free(pi->message);
     free(pi->problem_dir);
     free(pi);
 }
 
-static void call_notify_init(void)
+static void run_event_async(problem_info_t *pi, const char *event_name, int flags);
+
+enum {
+    REPORT_UNKNOWN_PROBLEM_IMMEDIATELY = 1 << 0,
+};
+
+struct event_processing_state
 {
-    static bool inited = 0;
-    if (inited)
+    pid_t child_pid;
+    int   child_stdout_fd;
+    struct strbuf *cmd_output;
+
+    problem_info_t *pi;
+    int flags;
+};
+
+static struct event_processing_state *new_event_processing_state(void)
+{
+    struct event_processing_state *p = xzalloc(sizeof(*p));
+    p->child_pid = -1;
+    p->child_stdout_fd = -1;
+    p->cmd_output = strbuf_new();
+    return p;
+}
+
+static void free_event_processing_state(struct event_processing_state *p)
+{
+    if (!p)
         return;
-    inited = 1;
 
-    notify_init(_("Problem detected"));
+    strbuf_free(p->cmd_output);
+    free(p);
 }
 
-#if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR >= 6)
-static gboolean server_has_persistence(void)
+static char *build_message(const char *package_name)
 {
-    GList *caps;
-    GList *l;
+    if (package_name[0] == '\0')
+        return xasprintf(_("A problem has been detected"));
 
-    call_notify_init();
-
-    caps = notify_get_server_caps();
-    if (caps == NULL)
-    {
-        error_msg("Failed to receive server caps");
-        return FALSE;
-    }
-
-    l = g_list_find_custom(caps, "persistence", (GCompareFunc)strcmp);
-
-    list_free_with_free(caps);
-    VERB1 log("notify server %s support pesistence", l ? "DOES" : "DOESN'T");
-    return (l != NULL);
+    return xasprintf(_("A problem in the %s package has been detected"), package_name);
 }
-#else
-# define server_has_persistence() call_notify_init()
-#endif
 
 static GList *add_dirs_to_dirlist(GList *dirlist, const char *dirname)
 {
@@ -114,14 +308,16 @@ static GList *add_dirs_to_dirlist(GList *dirlist, const char *dirname)
     return g_list_reverse(dirlist);
 }
 
-/* Return 1 if a new directory appeared, compared to list saved
- * in $XDG_CACHE_HOME/abrt/applet_dirlist. In any case, applet_dirlist
- * is updated with updated list.
+/* Compares the problem directories to list saved in
+ * $XDG_CACHE_HOME/abrt/applet_dirlist and updates the applet_dirlist
+ * with updated list.
+ *
+ * @param new_dirs The list where new directories are stored if caller
+ * wishes it. Can be NULL.
  */
-static GList *new_dir_exists(void)
+static void new_dir_exists(GList **new_dirs)
 {
     GList *dirlist = NULL;
-    GList *new_dirs = NULL;
     char **pp = s_dirs;
     while (*pp)
     {
@@ -164,8 +360,11 @@ static GList *new_dir_exists(void)
             different |= diff;
             if (diff < 0)
             {
-                new_dirs = g_list_prepend(new_dirs, xstrdup(l1->data));
-                VERB1 log("New dir detected: %s", (char *)l1->data);
+                if (new_dirs)
+                {
+                    *new_dirs = g_list_prepend(*new_dirs, xstrdup(l1->data));
+                    VERB1 log("New dir detected: %s", (char *)l1->data);
+                }
                 l1 = g_list_next(l1);
                 continue;
             }
@@ -175,14 +374,17 @@ static GList *new_dir_exists(void)
         }
 
         different |= (l1 != NULL);
-        while(l1)
+        if (different && new_dirs)
         {
-            new_dirs = g_list_prepend(new_dirs, xstrdup(l1->data));
-            VERB1 log("New dir detected: %s", (char *)l1->data);
-            l1 = g_list_next(l1);
+            while (l1)
+            {
+                *new_dirs = g_list_prepend(*new_dirs, xstrdup(l1->data));
+                VERB1 log("New dir detected: %s", (char *)l1->data);
+                l1 = g_list_next(l1);
+            }
         }
 
-        if (different || l1 || l2)
+        if (different || l2)
         {
             rewind(fp);
             if (ftruncate(fileno(fp), 0)) /* shut up gcc */;
@@ -197,32 +399,41 @@ static GList *new_dir_exists(void)
         list_free_with_free(old_dirlist);
     }
     list_free_with_free(dirlist);
-
-    return new_dirs;
 }
 
 static void fork_exec_gui(void)
 {
-    pid_t pid = vfork();
+    pid_t pid = fork();
     if (pid < 0)
-        perror_msg("vfork");
-    if (pid == 0)
+        perror_msg("fork");
+    else if (pid == 0)
     {
         /* child */
-        signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
-//TODO: pass s_dirs[] as DIR param(s) to abrt-gui
+        /* double fork to avoid GUI zombies */
+        pid_t grand_child = fork();
+        if (grand_child != 0)
+        {
+            if (grand_child < 0) perror_msg("fork");
+            exit(0);
+        }
+
+        /* grand child */
+        //TODO: pass s_dirs[] as DIR param(s) to abrt-gui
         execl(BIN_DIR"/abrt-gui", "abrt-gui", (char*) NULL);
         /* Did not find abrt-gui in installation directory. Oh well */
         /* Trying to find it in PATH */
         execlp("abrt-gui", "abrt-gui", (char*) NULL);
-        perror_msg_and_die("Can't execute '%s'", "abrt-gui");
+        perror_msg_and_die(_("Can't execute '%s'"), "abrt-gui");
     }
+    else
+        safe_waitpid(pid, /* status */ NULL, /* options */ 0);
+
     /* Scan dirs and save new $XDG_CACHE_HOME/abrt/applet_dirlist.
      * (Oterwise, after a crash, next time applet is started,
      * it will show alert icon even if we did click on it
      * "in previous life"). We ignore function return value.
      */
-    list_free_with_free(new_dir_exists());
+    new_dir_exists(/* new dirs list */ NULL);
 }
 
 static void hide_icon(void)
@@ -233,50 +444,87 @@ static void hide_icon(void)
     gtk_status_icon_set_visible(ap_status_icon, false);
 }
 
+static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *event_name, int *fdp)
+{
+    char *args[6];
+    args[0] = (char *) LIBEXEC_DIR"/abrt-handle-event";
+    args[1] = (char *) "-e";
+    args[2] = (char *) event_name;
+    args[3] = (char *) "--";
+    args[4] = (char *) dump_dir_name;
+    args[5] = NULL;
+
+    int pipeout[2];
+    int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_QUIET | EXECFLG_ERR2OUT;
+    VERB1 flags &= ~EXECFLG_QUIET;
+
+    pid_t child = fork_execv_on_steroids(flags, args, fdp ? pipeout : NULL,
+            /*env_vec:*/ NULL, /*dir:*/ NULL,
+            /*uid(unused):*/ 0);
+    if (fdp)
+        *fdp = pipeout[0];
+
+    return child;
+}
+
+static void run_report_from_applet(const char *dirname)
+{
+    /* prevent zombies; double fork() */
+    pid_t pid = fork();
+    if (pid < 0)
+        perror_msg("fork");
+    else if (pid == 0)
+    {
+        spawn_event_handler_child(dirname, "report-gui", NULL);
+        exit(0);
+    }
+    else
+        safe_waitpid(pid, /* status */ NULL, /* options */ 0);
+}
+
 //this action should open the reporter dialog directly, without showing the main window
 static void action_report(NotifyNotification *notification, gchar *action, gpointer user_data)
 {
+    VERB3 log("Reporting a problem!");
     problem_info_t *pi = (problem_info_t *)user_data;
-
-    bool foreign_problem = false;
 
     if (pi->problem_dir)
     {
-        if (foreign_problem)
-        {
-            int res = chown_dir_over_dbus(pi->problem_dir);
-            if (res != 0)
-            {
-                error_msg(_("Can't take ownership of '%s'"), pi->problem_dir);
-                problem_info_free(pi);
-                return;
-            }
-        }
+        if (strcmp(A_REPORT_START_AUTOREPORT, action) == 0)
+            enable_autoreporting();
 
-        report_problem_in_dir(pi->problem_dir, LIBREPORT_NOWAIT);
+        if (strcmp(A_REPORT_REPORT, action) == 0)
+        {
+            run_report_from_applet(pi->problem_dir);
+            problem_info_free(pi);
+        }
+        else /* start autoreporting and autoreporting itself */
+            run_event_async(pi, get_autoreport_event_name(), REPORT_UNKNOWN_PROBLEM_IMMEDIATELY);
 
         GError *err = NULL;
         notify_notification_close(notification, &err);
         if (err != NULL)
         {
-            error_msg("%s", err->message);
+            error_msg(_("Can't close notification: %s"), err->message);
             g_error_free(err);
         }
 
         hide_icon();
-        problem_info_free(pi);
 
         /* Scan dirs and save new $XDG_CACHE_HOME/abrt/applet_dirlist.
          * (Oterwise, after a crash, next time applet is started,
          * it will show alert icon even if we did click on it
          * "in previous life"). We ignore finction return value.
          */
-        list_free_with_free(new_dir_exists());
+        new_dir_exists(/* new dirs list */ NULL);
     }
+    else
+        problem_info_free(pi);
 }
 
 static void action_ignore(NotifyNotification *notification, gchar *action, gpointer user_data)
 {
+    VERB3 log("Ignore a problem!");
     GError *err = NULL;
     notify_notification_close(notification, &err);
     if (err != NULL)
@@ -284,6 +532,48 @@ static void action_ignore(NotifyNotification *notification, gchar *action, gpoin
         error_msg("%s", err->message);
         g_error_free(err);
     }
+    hide_icon();
+}
+
+static void action_known(NotifyNotification *notification, gchar *action, gpointer user_data)
+{
+    VERB3 log("Handle known action '%s'!", action);
+    problem_info_t *pi = (problem_info_t *)user_data;
+
+    if (strcmp(A_KNOWN_OPEN_BROWSER, action) == 0)
+    {
+        struct dump_dir *dd = dd_opendir(pi->problem_dir, DD_OPEN_READONLY);
+        if (dd)
+        {
+            report_result_t *res = find_in_reported_to(dd, "ABRT Server");
+            if (res && res->url)
+            {
+                GError *error = NULL;
+                if (!gtk_show_uri(/* use default screen */ NULL, res->url, GDK_CURRENT_TIME, &error))
+                {
+                    error_msg(_("Can't open url '%s': %s"), res->url, error->message);
+                    g_error_free(error);
+                }
+            }
+            free_report_result(res);
+            dd_close(dd);
+        }
+    }
+    else if (strcmp(A_KNOWN_OPEN_GUI, action) == 0)
+        /* TODO teach gui to select a problem passed on cmd line */
+        fork_exec_gui();
+    else
+        /* This should not happen; otherwise it's a bug */
+        error_msg("%s:%d %s(): BUG Unknown action '%s'", __FILE__, __LINE__, __func__, action);
+
+    GError *err = NULL;
+    notify_notification_close(notification, &err);
+    if (err != NULL)
+    {
+        error_msg(_("Can't close notification: %s"), err->message);
+        g_error_free(err);
+    }
+
     hide_icon();
 }
 
@@ -303,10 +593,11 @@ static void on_menu_popup_cb(GtkStatusIcon *status_icon,
 
 static void on_notify_close(NotifyNotification *notification, gpointer user_data)
 {
+    VERB3 log("Notify closed!");
     g_object_unref(notification);
 }
 
-static NotifyNotification *new_warn_notification()
+static NotifyNotification *new_warn_notification(bool persistence)
 {
     NotifyNotification *notification;
 
@@ -325,9 +616,8 @@ static NotifyNotification *new_warn_notification()
     if (pixbuf)
         notify_notification_set_icon_from_pixbuf(notification, pixbuf);
     notify_notification_set_urgency(notification, NOTIFY_URGENCY_NORMAL);
-    notify_notification_set_timeout(notification,
-                              server_has_persistence() ? NOTIFY_EXPIRES_NEVER
-                                                      : NOTIFY_EXPIRES_DEFAULT);
+    notify_notification_set_timeout(notification, persistence ? NOTIFY_EXPIRES_NEVER
+                                                              : NOTIFY_EXPIRES_DEFAULT);
 
     return notification;
 }
@@ -413,80 +703,338 @@ static void on_applet_activate_cb(GtkStatusIcon *status_icon, gpointer user_data
     hide_icon();
 }
 
-static void set_icon_tooltip(const char *format, ...)
+static GtkStatusIcon *create_status_icon(void)
+{
+     GtkStatusIcon *icn = gtk_status_icon_new_from_icon_name("abrt");
+
+     g_signal_connect(G_OBJECT(icn), "activate", G_CALLBACK(on_applet_activate_cb), NULL);
+     g_signal_connect(G_OBJECT(icn), "popup_menu", G_CALLBACK(on_menu_popup_cb), NULL);
+
+     return icn;
+}
+
+static void show_icon(const char *tooltip)
 {
     if (ap_status_icon == NULL)
-        return;
-
-    va_list args;
-    char *buf;
-
-    va_start(args, format);
-    buf = xvasprintf(format, args);
-    va_end(args);
-
-    gtk_status_icon_set_tooltip_text(ap_status_icon, buf);
-    free(buf);
-}
-
-static void show_problem_notification(problem_info_t *pi, const char *format, ...)
-{
-    va_list args;
-    va_start(args, format);
-    char *buf = xvasprintf(format, args);
-    va_end(args);
-
-    NotifyNotification *notification = new_warn_notification();
-    notify_notification_add_action(notification, "IGNORE", _("Ignore"),
-                                    NOTIFY_ACTION_CALLBACK(action_ignore),
-                                    NULL, NULL);
-
-    notify_notification_add_action(notification, "REPORT", _("Report"),
-                                    NOTIFY_ACTION_CALLBACK(action_report),
-                                    pi, NULL);
-
-    notify_notification_update(notification, _("A Problem has Occurred"), buf, NULL);
-    free(buf);
-
-    GError *err = NULL;
-    notify_notification_show(notification, &err);
-    if (err != NULL)
     {
-        error_msg("%s", err->message);
-        g_error_free(err);
+        ap_status_icon = create_status_icon();
+        ap_menu = create_menu();
     }
-}
 
-static void show_icon(void)
-{
-    if (server_has_persistence())
-        return;
-
+    gtk_status_icon_set_tooltip_text(ap_status_icon, tooltip);
     gtk_status_icon_set_visible(ap_status_icon, true);
 }
 
-static void init_applet(void)
+static gboolean server_has_persistence(void)
 {
-    static bool inited = 0;
-    if (inited)
-        return;
-    inited = 1;
-
-    persistent_notification = server_has_persistence();
-
-    if (!persistent_notification)
+#if !defined(NOTIFY_VERSION_MINOR) || (NOTIFY_VERSION_MAJOR == 0 && NOTIFY_VERSION_MINOR >= 6)
+    GList *caps = notify_get_server_caps();
+    if (caps == NULL)
     {
-        ap_status_icon = gtk_status_icon_new_from_icon_name("abrt");
-
-        hide_icon();
-        g_signal_connect(G_OBJECT(ap_status_icon), "activate", G_CALLBACK(on_applet_activate_cb), NULL);
-        g_signal_connect(G_OBJECT(ap_status_icon), "popup_menu", G_CALLBACK(on_menu_popup_cb), NULL);
-        ap_menu = create_menu();
+        error_msg("Failed to receive server caps");
+        return FALSE;
     }
+
+    GList *l = g_list_find_custom(caps, "persistence", (GCompareFunc)strcmp);
+
+    list_free_with_free(caps);
+    VERB1 log("notify server %s support pesistence", l ? "DOES" : "DOESN'T");
+    return (l != NULL);
+#else
+    return FALSE;
+#endif
+}
+
+static void notify_problem_list(GList *problems, int flags)
+{
+    bool persistence = false;
+    if (notify_is_initted() || notify_init(_("Problem detected")))
+        persistence = server_has_persistence();
+    else
+        /* show icon and don't try to show notify if initialization of libnotify failed */
+        flags |= SHOW_ICON_ONLY;
+
+    if (!persistence || flags & SHOW_ICON_ONLY)
+    {
+        /* Use a message of the last one */
+        GList *last = g_list_last(problems);
+
+        if (last)
+        {
+            problem_info_t *pi = (problem_info_t *)last->data;
+            show_icon(pi->message);
+        }
+    }
+
+    if (flags & SHOW_ICON_ONLY)
+    {
+        g_list_free_full(problems, (GDestroyNotify)problem_info_free);
+        return;
+    }
+
+    for (GList *iter = problems; iter; iter = g_list_next(iter))
+    {
+        problem_info_t *pi = iter->data;
+        NotifyNotification *notification = new_warn_notification(persistence);
+        notify_notification_add_action(notification, "IGNORE", _("Ignore"),
+                NOTIFY_ACTION_CALLBACK(action_ignore),
+                pi, NULL);
+
+        if (pi->known)
+        {
+            notify_notification_add_action(notification, A_KNOWN_OPEN_GUI, _("Open"),
+                    NOTIFY_ACTION_CALLBACK(action_known),
+                    pi, NULL);
+
+            notify_notification_add_action(notification, A_KNOWN_OPEN_BROWSER, _("Show"),
+                    NOTIFY_ACTION_CALLBACK(action_known),
+                    pi, NULL);
+
+            notify_notification_update(notification, _("A Known Problem has Occurred"), pi->message, NULL);
+        }
+        else
+        {
+            if (flags & JUST_DETECTED_PROBLEM)
+            {
+                notify_notification_add_action(notification, A_REPORT_AUTOREPORT, _("Report"),
+                        NOTIFY_ACTION_CALLBACK(action_report),
+                        pi, NULL);
+
+                /* Doesn't make sense to allow autoreporting for foreign problems */
+                if (!pi->foreign)
+                {
+                    notify_notification_add_action(notification, A_REPORT_START_AUTOREPORT, _("Start Autoreporting"),
+                            NOTIFY_ACTION_CALLBACK(action_report),
+                            pi, NULL);
+                }
+
+                notify_notification_update(notification, _("A Problem has Occurred"), pi->message, NULL);
+            }
+            else
+            {
+                notify_notification_add_action(notification, A_REPORT_REPORT, _("Report"),
+                        NOTIFY_ACTION_CALLBACK(action_report),
+                        pi, NULL);
+
+                notify_notification_update(notification, _("A New Problem has Occurred"), pi->message, NULL);
+            }
+        }
+
+        GError *err = NULL;
+        VERB3 log("Showing a notification");
+        notify_notification_show(notification, &err);
+        if (err != NULL)
+        {
+            error_msg(_("Can't show notification: %s"), err->message);
+            g_error_free(err);
+        }
+    }
+
+    g_list_free(problems);
+}
+
+static void notify_problem(problem_info_t *pi)
+{
+    GList *problems = g_list_append(NULL, pi);
+    notify_problem_list(problems, /* show icon and notify, don't show autoreport and don't use anon report*/ 0);
+}
+
+/* Event-processing child output handler */
+static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr)
+{
+    struct event_processing_state *state = ptr;
+    problem_info_t *pi = state->pi;
+
+    /* Read streamed data and split lines */
+    for (;;)
+    {
+        char buf[250]; /* usually we get one line, no need to have big buf */
+        errno = 0;
+        gsize r = 0;
+        GError *error = NULL;
+        GIOStatus stat = g_io_channel_read_chars(gio, buf, sizeof(buf) - 1, &r, &error);
+        if (stat == G_IO_STATUS_ERROR)
+        {   /* TODO: Terminate child's process? */
+            error_msg(_("Can't read from gio channel: '%s'"), error ? error->message : "");
+            g_error_free(error);
+            break;
+        }
+        if (stat == G_IO_STATUS_AGAIN)
+        {   /* We got all buffered data, but fd is still open. Done for now */
+            return TRUE; /* "glib, please don't remove this event (yet)" */
+        }
+        if (stat == G_IO_STATUS_EOF)
+            break;
+
+        buf[r] = '\0';
+
+        /* split lines in the current buffer */
+        char *raw = buf;
+        char *newline;
+        while ((newline = strchr(raw, '\n')) != NULL)
+        {
+            *newline = '\0';
+            strbuf_append_str(state->cmd_output, raw);
+            char *msg = state->cmd_output->buf;
+
+            VERB3 log("%s", msg);
+            pi->known |= (prefixcmp(msg, "THANKYOU") == 0);
+
+            strbuf_clear(state->cmd_output);
+            /* jump to next line */
+            raw = newline + 1;
+        }
+
+        /* beginning of next line. the line continues by next read */
+        strbuf_append_str(state->cmd_output, raw);
+    }
+
+    /* EOF/error */
+
+    /* Wait for child to actually exit, collect status */
+    int status = 1;
+    if (safe_waitpid(state->child_pid, &status, 0) <= 0)
+        perror_msg("waitpid(%d)", (int)state->child_pid);
+
+    if (status == 0)
+    {
+        VERB3 log("fast report finished successfully");
+        if (pi->known || !(state->flags & REPORT_UNKNOWN_PROBLEM_IMMEDIATELY))
+            notify_problem(pi);
+        else
+            run_report_from_applet(pi->problem_dir);
+    }
+    else
+    {
+        VERB3 log("fast report failed");
+        if (is_networking_enabled())
+            notify_problem(pi);
+        else
+            push_to_deferred_queue(pi);
+    }
+
+    free_event_processing_state(state);
+    return FALSE;
+}
+
+static GIOChannel *my_io_channel_unix_new(int fd)
+{
+    GIOChannel *ch = g_io_channel_unix_new(fd);
+
+    /* Need to set the encoding otherwise we get:
+     * "Invalid byte sequence in conversion input".
+     * According to manual "NULL" is safe for binary data.
+     */
+    GError *error = NULL;
+    g_io_channel_set_encoding(ch, NULL, &error);
+    if (error)
+        perror_msg_and_die(_("Can't set encoding on gio channel: %s"), error->message);
+
+    g_io_channel_set_flags(ch, G_IO_FLAG_NONBLOCK, &error);
+    if (error)
+        perror_msg_and_die(_("Can't turn on nonblocking mode for gio channel: %s"), error->message);
+
+    g_io_channel_set_close_on_unref(ch, TRUE);
+
+    return ch;
+}
+
+static void export_event_configuration(const char *event_name)
+{
+    static bool exported = false;
+    if (exported)
+        return;
+
+    exported = true;
+
+    event_config_t *event_config = get_event_config(event_name);
+
+    /* load event config data only for the event */
+    if (event_config != NULL)
+        load_single_event_config_data_from_user_storage(event_config);
+
+    GList *ex_env = export_event_config(event_name);
+    g_list_free(ex_env);
+}
+
+static void run_event_async(problem_info_t *pi, const char *event_name, int flags)
+{
+    if (pi->foreign)
+    {
+        int res = chown_dir_over_dbus(pi->problem_dir);
+        if (res != 0)
+        {
+            error_msg(_("Can't take ownership of '%s'"), pi->problem_dir);
+            problem_info_free(pi);
+            return;
+        }
+        pi->foreign = false;
+    }
+
+    struct dump_dir *dd = open_directory_for_writing(pi->problem_dir, /* don't ask */ NULL);
+    if (!dd)
+    {
+        error_msg(_("Can't open directory for writing '%s'"), pi->problem_dir);
+        problem_info_free(pi);
+        return;
+    }
+
+    free(pi->problem_dir);
+    pi->problem_dir = xstrdup(dd->dd_dirname);
+    dd_close(dd);
+
+    export_event_configuration(event_name);
+
+    struct event_processing_state *state = new_event_processing_state();
+    state->pi = pi;
+    state->flags = flags;
+
+    state->child_pid = spawn_event_handler_child(state->pi->problem_dir, event_name, &state->child_stdout_fd);
+
+    GIOChannel *channel_event_output = my_io_channel_unix_new(state->child_stdout_fd);
+    g_io_add_watch(channel_event_output, G_IO_IN | G_IO_PRI | G_IO_HUP,
+                   handle_event_output_cb, state);
+}
+
+static void show_problem_list_notification(GList *problems, int flags)
+{
+    if (is_autoreporting_enabled())
+    {
+        /* Automatically report only own problems */
+        /* and skip foreign problems */
+        for (GList *iter = problems; iter;)
+        {
+            problem_info_t *data = (problem_info_t *)iter->data;
+            GList *next = g_list_next(iter);
+
+            if (!data->foreign)
+            {
+                run_event_async((problem_info_t *)iter->data, get_autoreport_event_name(), /* don't automatically report */ 0);
+                problems = g_list_delete_link(problems, iter);
+            }
+
+            iter = next;
+        }
+
+    }
+
+    /* report the rest:
+     *  - only foreign if autoreporting is enabled
+     *  - the whole list otherwise
+     */
+    if (problems)
+        notify_problem_list(problems, flags | JUST_DETECTED_PROBLEM);
+}
+
+static void show_problem_notification(problem_info_t *pi, int flags)
+{
+    GList *problems = g_list_append(NULL, pi);
+    show_problem_list_notification(problems, flags);
 }
 
 static void Crash(DBusMessage* signal)
 {
+    VERB3 log("Crash recorded");
     int r;
     DBusMessageIter in_iter;
     dbus_message_iter_init(signal, &in_iter);
@@ -530,42 +1078,35 @@ static void Crash(DBusMessage* signal)
         }
     }
 
-    const char* message = _("A problem in the %s package has been detected");
-    if (package_name[0] == '\0')
-        message = _("A problem has been detected");
-
-    if (!server_has_persistence())
-    {
-        error_msg("notifyd doesn't have persistence - showing old style status icon");
-        init_applet();
-        set_icon_tooltip(message, package_name);
-        show_icon();
-    }
-
     /* If this problem seems to be repeating, do not annoy user with popup dialog.
      * (The icon in the tray is not suppressed)
      */
     static time_t last_time = 0;
     static char* last_package_name = NULL;
     time_t cur_time = time(NULL);
+    int flags = 0;
     if (last_package_name && strcmp(last_package_name, package_name) == 0
      && ap_last_problem_dir && strcmp(ap_last_problem_dir, dir) == 0
      && (unsigned)(cur_time - last_time) < 2 * 60 * 60
     ) {
         /* log_msg doesn't show in .xsession_errors */
         error_msg("repeated problem in %s, not showing the notification", package_name);
-        return;
+        flags |= SHOW_ICON_ONLY;
     }
-    last_time = cur_time;
-    free(last_package_name);
-    last_package_name = xstrdup(package_name);
-    free(ap_last_problem_dir);
-    ap_last_problem_dir = xstrdup(dir);
+    else
+    {
+        last_time = cur_time;
+        free(last_package_name);
+        last_package_name = xstrdup(package_name);
+        free(ap_last_problem_dir);
+        ap_last_problem_dir = xstrdup(dir);
+    }
 
     problem_info_t *pi = problem_info_new();
     pi->problem_dir = xstrdup(dir);
     pi->foreign = foreign_problem;
-    show_problem_notification(pi, message, package_name);
+    pi->message = build_message(package_name);
+    show_problem_notification(pi, flags);
 }
 
 static DBusHandlerResult handle_message(DBusConnection* conn, DBusMessage* msg, void* user_data)
@@ -611,7 +1152,6 @@ int main(int argc, char** argv)
 #endif
 
     abrt_init(argv);
-
     /* Glib 2.31:
      * Major changes to threading and synchronisation
      * - threading is now always enabled in GLib
@@ -625,6 +1165,33 @@ int main(int argc, char** argv)
     gdk_threads_init();
     gdk_threads_enter();
 #endif
+
+#if (GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 35)
+    /* Initialize GType system */
+    g_type_init();
+#endif
+
+    /* Monitor 'StateChanged' signal on 'org.freedesktop.NetworkManager' interface */
+    GError *error = NULL;
+    g_system_bus = g_bus_get_sync(G_BUS_TYPE_SYSTEM, NULL, &error);
+
+    if (g_system_bus == NULL)
+    {
+        error_msg("Error creating D-Bus proxy: %s\n", error->message);
+        g_error_free(error);
+        return -1;
+    }
+
+    const guint signal_ret = g_dbus_connection_signal_subscribe(g_system_bus,
+                                                        NM_DBUS_SERVICE,
+                                                        NM_DBUS_INTERFACE,
+                                                        "StateChanged",
+                                                        NM_DBUS_PATH,
+                                                        /* arg0 */ NULL,
+                                                        G_DBUS_SIGNAL_FLAGS_NONE,
+                                                        on_nm_state_changed,
+                                                        /* user_data */ NULL,
+                                                        /* user_data_free_func */ NULL);
 
     g_set_prgname("abrt");
     gtk_init(&argc, &argv);
@@ -651,6 +1218,9 @@ int main(int argc, char** argv)
     msg_prefix = g_progname;
 
     load_abrt_conf();
+    load_event_config_data();
+    load_user_settings("abrt-applet");
+
     const char *default_dirs[] = {
         g_settings_dump_location,
         NULL,
@@ -663,9 +1233,6 @@ int main(int argc, char** argv)
         argv = (char**)default_dirs;
     }
     s_dirs = argv;
-
-    /* Prevent zombies when we spawn abrt-gui */
-    signal(SIGCHLD, SIG_IGN);
 
     /* Initialize our (dbus_abrt) machinery: hook _system_ dbus to glib main loop.
      * (session bus is left to be handled by libnotify, see below) */
@@ -701,7 +1268,9 @@ int main(int argc, char** argv)
         continue;
 
     /* If some new dirs appeared since our last run, let user know it */
-    GList *new_dirs = new_dir_exists();
+    GList *new_dirs = NULL;
+    GList *notify_list = NULL;
+    new_dir_exists(&new_dirs);
     while (new_dirs)
     {
         struct dump_dir *dd = dd_opendir((char *)new_dirs->data, DD_OPEN_READONLY);
@@ -712,24 +1281,25 @@ int main(int argc, char** argv)
             continue;
         }
 
-        const char *package_name = dd_load_text(dd, FILENAME_COMPONENT);
-        const char *message = _("A problem in the %s package has been detected");
-        if (package_name[0] == '\0')
-            message = _("A problem has been detected");
-
-        init_applet();
-        set_icon_tooltip(message, package_name);
-        show_icon();
-
         problem_info_t *pi = problem_info_new();
         pi->problem_dir = xstrdup((char *)new_dirs->data);
+        pi->message = build_message(dd_load_text(dd, FILENAME_COMPONENT));
+
+        /* Can't be foreign because if the problem is foreign then the
+         * dd_opendir() call failed few lines above and the problem is ignored.
+         * */
         pi->foreign = false;
-        show_problem_notification(pi, message, package_name);
+
+        notify_list = g_list_prepend(notify_list, pi);
 
         dd_close(dd);
 
         new_dirs = g_list_next(new_dirs);
     }
+
+    if (notify_list)
+        show_problem_list_notification(notify_list, /* show icon and notify */ 0);
+
     list_free_with_free(new_dirs);
 
     /* Enter main loop */
@@ -740,6 +1310,11 @@ int main(int argc, char** argv)
 
     if (notify_is_initted())
         notify_uninit();
+
+    save_user_settings();
+
+    g_dbus_connection_signal_unsubscribe(g_system_bus, signal_ret);
+    g_object_unref(g_system_bus);
 
     return 0;
 }
