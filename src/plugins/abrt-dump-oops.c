@@ -67,12 +67,12 @@ static void scan_syslog_file(GList **oops_list, int fd)
 static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
 {
     unsigned countdown = 16; /* do not report hundreds of oopses */
-    unsigned idx = 0; //oops_cnt;
 
     VERB1 log("Saving %u oopses as dump dirs", oops_cnt >= countdown ? countdown-1 : oops_cnt);
 
     char *cmdline_str = xmalloc_fopen_fgetline_fclose("/proc/cmdline");
     char *fips_enabled = xmalloc_fopen_fgetline_fclose("/proc/sys/crypto/fips_enabled");
+    char *proc_modules = xmalloc_open_read_close("/proc/modules", /*maxsize:*/ NULL);
     char *suspend_stats = xmalloc_open_read_close("/sys/kernel/debug/suspend_stats", /*maxsize:*/ NULL);
 
     time_t t = time(NULL);
@@ -88,6 +88,7 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
     }
 
     pid_t my_pid = getpid();
+    unsigned idx = 0;
     unsigned errors = 0;
     while (idx < oops_cnt && --countdown != 0)
     {
@@ -109,41 +110,47 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
             dd_create_basic_files(dd, /*uid:*/ my_euid, NULL);
             dd_save_text(dd, FILENAME_ABRT_VERSION, VERSION);
             dd_save_text(dd, FILENAME_ANALYZER, "Kerneloops");
+            dd_save_text(dd, FILENAME_TYPE, "Kerneloops");
             dd_save_text(dd, FILENAME_KERNEL, first_line);
+            dd_save_text(dd, FILENAME_BACKTRACE, second_line);
             if (cmdline_str)
                 dd_save_text(dd, FILENAME_CMDLINE, cmdline_str);
+            if (proc_modules)
+                dd_save_text(dd, "proc_modules", proc_modules);
             if (fips_enabled && strcmp(fips_enabled, "0") != 0)
                 dd_save_text(dd, "fips_enabled", fips_enabled);
             if (suspend_stats)
                 dd_save_text(dd, "suspend_stats", suspend_stats);
-            dd_save_text(dd, FILENAME_BACKTRACE, second_line);
 
             /* check if trace doesn't have line: 'Your BIOS is broken' */
             char *broken_bios = strstr(second_line, "Your BIOS is broken");
             if (broken_bios)
                 dd_save_text(dd, FILENAME_NOT_REPORTABLE, "Your BIOS is broken");
-
-            char *tainted_short = kernel_tainted_short(second_line);
-            if (tainted_short && !broken_bios)
+            else
             {
-                VERB1 log("Kernel is tainted '%s'", tainted_short);
-                dd_save_text(dd, FILENAME_TAINTED_SHORT, tainted_short);
+                char *tainted_short = kernel_tainted_short(second_line);
+                if (tainted_short)
+                {
+                    VERB1 log("Kernel is tainted '%s'", tainted_short);
+                    dd_save_text(dd, FILENAME_TAINTED_SHORT, tainted_short);
 
-                char *tnt_long = kernel_tainted_long(tainted_short);
-                dd_save_text(dd, FILENAME_TAINTED_LONG, tnt_long);
-                free(tnt_long);
+                    char *tnt_long = kernel_tainted_long(tainted_short);
+                    dd_save_text(dd, FILENAME_TAINTED_LONG, tnt_long);
+                    free(tnt_long);
 
-                const char *fmt = _("A kernel problem occurred, but your kernel has been "
-                             "tainted (flags:%s). Kernel maintainers are unable to "
-                             "diagnose tainted reports.");
+                    const char *fmt = _("A kernel problem occurred, but your kernel has been "
+                                 "tainted (flags:%s). Kernel maintainers are unable to "
+                                 "diagnose tainted reports.");
+//FIXME: the above looks ugly in GUI: "Sentence. Sentence.: Reason."
 
-                char *reason = xasprintf(fmt, tainted_short);
+                    char *reason = xasprintf(fmt, tainted_short);
 
-                dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason);
-                free(reason);
+                    dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason);
+                    free(reason);
+                    free(tainted_short);
+                }
             }
 
-            free(tainted_short);
 // TODO: add "Kernel oops: " prefix, so that all oopses have recognizable FILENAME_REASON?
 // kernel oops 1st line may look quite puzzling otherwise...
             strchrnul(second_line, '\n')[0] = '\0';
@@ -155,6 +162,7 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
     }
 
     free(cmdline_str);
+    free(proc_modules);
     free(fips_enabled);
     free(suspend_stats);
 
