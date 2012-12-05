@@ -1,3 +1,13 @@
+#!/usr/bin/env python
+import os
+import sys
+import logging
+
+sys.path.insert(0, os.path.abspath(".."))
+os.environ["PATH"] = "{0}:{1}".format(os.path.abspath(".."), os.environ["PATH"])
+
+import unittest
+
 from nose import tools
 
 from base import ProblematicTestCase
@@ -25,3 +35,6 @@ class ListTestCase(ProblematicTestCase):
 
         prob.delete()
 
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    unittest.main()

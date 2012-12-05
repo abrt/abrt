@@ -1,8 +1,13 @@
+#!/usr/bin/env python
 import os
+import sys
 import time
 import logging
 import datetime
 import unittest
+
+sys.path.insert(0, os.path.abspath(".."))
+os.environ["PATH"] = "{0}:{1}".format(os.path.abspath(".."), os.environ["PATH"])
 
 from nose import tools
 
@@ -27,6 +32,7 @@ class ProblemAPITestCase(ProblematicTestCase):
         tools.ok_(
             '<stdin>'  in prob.executable or
             'tests.py' in prob.executable or
+            'test_api.py' in prob.executable or
             'nosetest' in prob.executable)
 
     def test_getattr(self):
