@@ -175,6 +175,10 @@ rlJournalStart
 
         rlLog "Create a problem data as the root user"
         roots_problem=`abrtDBusNewProblem deleted,to_be_deleted,changed,to_be_changed`
+        if echo $roots_problem | grep -s "org.freedesktop.problems.Failure"; then
+          rlDie "Create problem failed"
+        fi
+
         sleep 5
         roots_problem_path="$(abrt-cli list -f $DUMP_LOCATION | awk -v id=$roots_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$roots_problem_path" ]; then
@@ -183,6 +187,10 @@ rlJournalStart
 
         rlLog "Create a problem data as the unprivileged user"
         unprivilegeds_problem=`su abrtdbustest -c 'abrtDBusNewProblem deleted,to_be_deleted,changed,to_be_changed'`
+        if echo $unprivilegeds_problem | grep -s "org.freedesktop.problems.Failure"; then
+          rlDie "Create problem failed"
+        fi
+
         sleep 5
         unprivilegeds_problem_path="$(abrt-cli list -f $DUMP_LOCATION | awk -v id=$unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$unprivilegeds_problem_path" ]; then
@@ -222,6 +230,10 @@ rlJournalStart
 
         rlLog "Create a problem data as the root user"
         roots_problem=`abrtDBusNewProblem`
+        if echo $roots_problem | grep -s "org.freedesktop.problems.Failure"; then
+          rlDie "Create problem failed"
+        fi
+
         sleep 5
         roots_problem_path="$(abrt-cli list -f $DUMP_LOCATION | awk -v id=$roots_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$roots_problem_path" ]; then
@@ -230,6 +242,10 @@ rlJournalStart
 
         rlLog "Create a problem data as the unprivileged user"
         unprivilegeds_problem=`su abrtdbustest -c 'abrtDBusNewProblem'`
+        if echo $unprivilegeds_problem | grep -s "org.freedesktop.problems.Failure"; then
+          rlDie "Create problem failed"
+        fi
+
         sleep 5
         unprivilegeds_problem_path="$(abrt-cli list -f $DUMP_LOCATION | awk -v id=$unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$unprivilegeds_problem_path" ]; then
@@ -238,6 +254,10 @@ rlJournalStart
 
         rlLog "Create a problem data as the unprivileged user"
         second_unprivilegeds_problem=`su abrtdbustest -c 'abrtDBusNewProblem'`
+        if echo $second_unprivilegeds_problem | grep -s "org.freedesktop.problems.Failure"; then
+          rlDie "Create problem failed"
+        fi
+
         sleep 5
         second_unprivilegeds_problem_path="$(abrt-cli list -f $DUMP_LOCATION | awk -v id=$second_unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$second_unprivilegeds_problem_path" ]; then
