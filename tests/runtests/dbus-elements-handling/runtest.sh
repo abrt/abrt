@@ -166,7 +166,7 @@ rlJournalStart
         export -f abrtDBusSetElement
         export -f abrtDBusDelElement
         export -f abrtDBusGetElement
-        DUMP_LOCATION=`mktemp -d`
+        DUMP_LOCATION=`mktemp -d /var/spool/XXXXX`
         # Set limit to 1Midk
         rlRun "cp /etc/abrt/abrt.conf /etc/abrt/abrt.conf.bak" 0 "Create a backup of abrt configuration"
         rlRun "sed 's,^.*MaxCrashReportsSize.*=.*$,MaxCrashReportsSize=1,' -i /etc/abrt/abrt.conf" 0 "Set limit for crash reports to 1MiB"
