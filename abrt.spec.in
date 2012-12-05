@@ -232,6 +232,17 @@ ABRT DBus service which provides org.freedesktop.problems API on dbus and
 uses PolicyKit to authorize to access the problem data.
 
 
+%package python
+Summary: ABRT Python API
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+BuildRequires: python-sphinx
+BuildArch: noarch
+
+%description python
+High-level API for querying, creating and manipulating
+problems handled by ABRT in Python.
+
 %prep
 %setup -q
 
@@ -639,6 +650,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/polkit-1/actions/abrt_polkit.policy
 %config(noreplace) %{_sysconfdir}/libreport/events.d/dbus_event.conf
 
+%files python
+%{python_sitelib}/problem/
+%{_mandir}/man5/abrt-python.5.gz
+%{_defaultdocdir}/%{name}-python-%{version}/examples/
 
 %changelog
 * Wed Nov 14 2012 Jakub Filak <jfilak@redhat.com> 2.0.19-1
