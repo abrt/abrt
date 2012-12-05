@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'python-problem'
+project = u'abrt-python'
 copyright = u'2012, Richard Marko'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -120,7 +120,7 @@ html_theme = 'default'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+#html_static_path = ['_static']
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -164,7 +164,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'python-problemdoc'
+htmlhelp_basename = 'abrt-pythondoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -183,7 +183,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'python-problem.tex', u'python-problem Documentation',
+  ('index', 'abrt-python.tex', u'abrt-python Documentation',
    u'Richard Marko', 'manual'),
 ]
 
@@ -213,8 +213,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'python-problem', u'python-problem Documentation',
-     [u'Richard Marko'], 1)
+    ('index', 'abrt-python', u'abrt-python Documentation',
+     [u'Richard Marko'], 5)
 ]
 
 # If true, show URL addresses after external links.
@@ -227,8 +227,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'python-problem', u'python-problem Documentation',
-   u'Richard Marko', 'python-problem', 'One line description of project.',
+  ('index', 'abrt-python', u'abrt-python Documentation',
+   u'Richard Marko', 'abrt-python', 'One line description of project.',
    'Miscellaneous'),
 ]
 

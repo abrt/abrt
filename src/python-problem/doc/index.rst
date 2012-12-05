@@ -1,10 +1,10 @@
-.. python-problem documentation master file, created by
+.. abrt-python documentation master file, created by
    sphinx-quickstart on Tue Dec  4 12:03:58 2012.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-python-problem
-==============
+abrt-python
+===========
 
 High-level API for querying, creating and manipulating
 problems handled by `ABRT <https://fedorahosted.org/abrt/>`_ 
