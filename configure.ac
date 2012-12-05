@@ -144,6 +144,11 @@ AC_CONFIG_FILES([
 	src/dbus/Makefile
 	src/plugins/abrt-action-install-debuginfo
 	src/plugins/abrt-action-analyze-vmcore
+	src/python-problem/Makefile
+	src/python-problem/doc/Makefile
+	src/python-problem/tests/Makefile
+	src/python-problem/problem/Makefile
+	src/python-problem/examples/Makefile
 	po/Makefile.in
 	icons/Makefile
 ])
