@@ -63,6 +63,46 @@ static void scan_syslog_file(GList **oops_list, int fd)
     free(buffer);
 }
 
+static char *list_of_tainted_modules(const char *proc_modules)
+{
+    struct strbuf *result = strbuf_new();
+
+    const char *p = proc_modules;
+    for (;;)
+    {
+        const char *end = strchrnul(p, '\n');
+        const char *paren = strchrnul(p, '(');
+        /* We look for a line with this format:
+         * "kvm_intel 126289 0 - Live 0xf829e000 (taint_flags)"
+         * where taint_flags have letters
+         * (flags '+' and '-' indicate (un)loading, we must ignore them).
+         */
+        while (++paren < end)
+        {
+            if ((unsigned)(toupper(*paren) - 'A') <= 'Z'-'A')
+            {
+                strbuf_append_strf(result, result->len == 0 ? "%.*s" : ",%.*s",
+                        (int)(strchrnul(p,' ') - p), p
+                );
+                break;
+            }
+            if (*paren == ')')
+                break;
+        }
+
+        if (*end == '\0')
+            break;
+        p = end + 1;
+    }
+
+    if (result->len == 0)
+    {
+        strbuf_free(result);
+        return NULL;
+    }
+    return strbuf_free_nobuf(result);
+}
+
 /* returns number of errors */
 static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
 {
@@ -125,7 +165,7 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
             /* check if trace doesn't have line: 'Your BIOS is broken' */
             char *broken_bios = strstr(second_line, "Your BIOS is broken");
             if (broken_bios)
-                dd_save_text(dd, FILENAME_NOT_REPORTABLE, "Your BIOS is broken");
+                dd_save_text(dd, FILENAME_NOT_REPORTABLE, "Your BIOS is broken.");
             else
             {
                 char *tainted_short = kernel_tainted_short(second_line);
@@ -138,15 +178,21 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
                     dd_save_text(dd, FILENAME_TAINTED_LONG, tnt_long);
                     free(tnt_long);
 
+                    struct strbuf *reason = strbuf_new();
                     const char *fmt = _("A kernel problem occurred, but your kernel has been "
                                  "tainted (flags:%s). Kernel maintainers are unable to "
                                  "diagnose tainted reports.");
-//FIXME: the above looks ugly in GUI: "Sentence. Sentence.: Reason."
+                    strbuf_append_strf(reason, fmt, tainted_short);
 
-                    char *reason = xasprintf(fmt, tainted_short);
+                    char *modlist = !proc_modules ? NULL : list_of_tainted_modules(proc_modules);
+                    if (modlist)
+                    {
+                        strbuf_append_strf(reason, _(" Tainted modules: %s."), modlist);
+                        free(modlist);
+                    }
 
-                    dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason);
-                    free(reason);
+                    dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason->buf);
+                    strbuf_free(reason);
                     free(tainted_short);
                 }
             }
