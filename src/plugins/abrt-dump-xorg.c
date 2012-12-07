@@ -237,7 +237,7 @@ int main(int argc, char **argv)
         OPT__VERBOSE(&g_verbose),
         OPT_BOOL(  's', NULL, NULL, _("Log to syslog")),
         OPT_BOOL(  'o', NULL, NULL, _("Print found crash data on standard output")),
-        OPT_STRING('d', NULL, &debug_dumps_dir, "DIR", _("Create ABRT dump in DIR for every crash found")),
+        OPT_STRING('d', NULL, &debug_dumps_dir, "DIR", _("Create problem directory in DIR for every crash found")),
         OPT_BOOL(  'D', NULL, NULL, _("Same as -d DumpLocation, DumpLocation is specified in abrt.conf")),
         OPT_BOOL(  'x', NULL, NULL, _("Make the problem directory world readable")),
         OPT_BOOL(  'm', NULL, NULL, _("Print search string(s) to stdout and exit")),
