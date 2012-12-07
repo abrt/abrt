@@ -1281,17 +1281,23 @@ int main(int argc, char** argv)
             continue;
         }
 
-        problem_info_t *pi = problem_info_new();
-        pi->problem_dir = xstrdup((char *)new_dirs->data);
-        pi->message = build_message(dd_load_text(dd, FILENAME_COMPONENT));
+        char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO,
+                                                    DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+        if (reported_to == NULL)
+        {
+            problem_info_t *pi = problem_info_new();
+            pi->problem_dir = xstrdup((char *)new_dirs->data);
+            pi->message = build_message(dd_load_text(dd, FILENAME_COMPONENT));
 
-        /* Can't be foreign because if the problem is foreign then the
-         * dd_opendir() call failed few lines above and the problem is ignored.
-         * */
-        pi->foreign = false;
+            /* Can't be foreign because if the problem is foreign then the
+             * dd_opendir() call failed few lines above and the problem is ignored.
+             * */
+            pi->foreign = false;
 
-        notify_list = g_list_prepend(notify_list, pi);
+            notify_list = g_list_prepend(notify_list, pi);
+        }
 
+        free(reported_to);
         dd_close(dd);
 
         new_dirs = g_list_next(new_dirs);
