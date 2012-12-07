@@ -279,7 +279,7 @@ static void free_event_processing_state(struct event_processing_state *p)
 
 static char *build_message(const char *package_name)
 {
-    if (package_name[0] == '\0')
+    if (package_name == NULL || package_name[0] == '\0')
         return xasprintf(_("A problem has been detected"));
 
     return xasprintf(_("A problem in the %s package has been detected"), package_name);
@@ -1282,12 +1282,16 @@ int main(int argc, char** argv)
         }
 
         char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO,
-                                                    DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+                                DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
         if (reported_to == NULL)
         {
             problem_info_t *pi = problem_info_new();
             pi->problem_dir = xstrdup((char *)new_dirs->data);
-            pi->message = build_message(dd_load_text(dd, FILENAME_COMPONENT));
+
+            char *component = dd_load_text_ext(dd, FILENAME_COMPONENT,
+                                DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+            pi->message = build_message(component);
+            free(component);
 
             /* Can't be foreign because if the problem is foreign then the
              * dd_opendir() call failed few lines above and the problem is ignored.
