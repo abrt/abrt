@@ -70,7 +70,6 @@ static GtkTreePath *s_path_treeview;
 static GtkTreePath *s_path_reported_treeview;
 
 static GtkWidget *g_main_window;
-static GtkWidget *s_report_window;
 
 enum
 {
@@ -697,49 +696,152 @@ static void on_menu_help_cb(GtkMenuItem *menuitem, gpointer unused)
     gtk_show_uri(NULL, help_uri, GDK_CURRENT_TIME, NULL);
 }
 
+static void show_error_dialog(GtkWindow *wnd, const char *summary, const char *description)
+{
+    GtkWidget *dialog = gtk_message_dialog_new(wnd,
+                            GTK_DIALOG_DESTROY_WITH_PARENT,
+                            GTK_MESSAGE_ERROR,
+                            GTK_BUTTONS_OK,
+                            summary);
+
+    gtk_message_dialog_format_secondary_text(GTK_MESSAGE_DIALOG(dialog), description);
+
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy (dialog);
+}
+
 static void on_button_send_cb(GtkWidget *button, gpointer data)
 {
-    GtkTextView *tev = GTK_TEXT_VIEW(data);
+    GtkWidget *wnd_report = GTK_WIDGET(data);
+
+    /* Excpecting that the first child is Vertical Box with all the widgets */
+    GList *children = gtk_container_get_children(GTK_CONTAINER(wnd_report));
+    GtkContainer *vbox = GTK_CONTAINER(children->data);
+    g_list_free(children);
+
+    /* Expected content of the children list:
+     *   Lable Summary
+     *   Entry Summary
+     *   TextView Description
+     *   Button Send
+     */
+    children = gtk_container_get_children(vbox);
+
+    children = g_list_delete_link(children, children);
+    GtkEntry *txe_summary = GTK_ENTRY(children->data);
+
+    children = g_list_delete_link(children, children);
+    GtkTextView *tev = GTK_TEXT_VIEW(children->data);
+
+    g_list_free(children);
+
     GtkTextBuffer *buf = gtk_text_view_get_buffer(tev);
     GtkTextIter it_start;
     GtkTextIter it_end;
     gtk_text_buffer_get_start_iter(buf, &it_start);
     gtk_text_buffer_get_end_iter(buf, &it_end);
-    gchar *text = gtk_text_buffer_get_text(buf,
+    gchar *description = gtk_text_buffer_get_text(buf,
                                            &it_start,
                                            &it_end,
                                            false);
 
-    problem_data_t *pd = problem_data_new();
-
-    if (text[0])
+    if (strlen(description) < 10)
     {
-        problem_data_add_text_noteditable(pd, "comment", text);
+        show_error_dialog(GTK_WINDOW(wnd_report),
+                          _("The description of problem is too short"),
+                          _("In order to get more usefull reports we "
+                            "do not accept reports with the description "
+                            "shorter than 10 letters."));
+
+        gtk_widget_grab_focus(GTK_WIDGET(tev));
+
+        free(description);
+        return;
     }
 
+    char *summary = xstrdup(gtk_entry_get_text(txe_summary));
+    if (strlen(summary) < 10)
+    {
+        show_error_dialog(GTK_WINDOW(wnd_report),
+                          _("The summary of problem is too short"),
+                          _("In order to get more usefull reports we "
+                            "do not accept reports with the summary "
+                            "shorter than 10 letters."));
+
+        gtk_widget_grab_focus(GTK_WIDGET(txe_summary));
+        gtk_editable_set_position(GTK_EDITABLE(txe_summary), strlen(summary));
+
+        free(description);
+        free(summary);
+        return;
+    }
+
+
+    problem_data_t *pd = problem_data_new();
+    problem_data_add_text_noteditable(pd, FILENAME_COMMENT, description);
+    problem_data_add_text_noteditable(pd, FILENAME_REASON, summary);
+    problem_data_add_text_noteditable(pd, FILENAME_COMPONENT, "abrt");
+    char *version = xasprintf("abrt-%s", VERSION);
+    problem_data_add_text_noteditable(pd, FILENAME_PACKAGE, version);
+
+    /* Must be here because it computes FILENAME_DUPHASH from the content. */
+    problem_data_add_basics(pd);
+
     /* why it doesn't want to hide before report ends? */
-    gtk_widget_destroy(s_report_window);
+    gtk_widget_destroy(wnd_report);
 
     report_problem_in_memory(pd, LIBREPORT_NOWAIT | LIBREPORT_GETPID);
+
+    free(version);
+    free(summary);
+    free(description);
     problem_data_free(pd);
 }
 
 static void on_menu_report_cb(GtkMenuItem *menuitem, gpointer unused)
 {
-    s_report_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(s_report_window), _("Problem description"));
-    gtk_window_set_default_size(GTK_WINDOW(s_report_window), 400, 400);
+    GtkWidget *wnd_report = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(wnd_report), _("Problem description"));
+    gtk_window_set_default_size(GTK_WINDOW(wnd_report), 400, 400);
+
     GtkWidget *vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    GtkWidget *button_send = gtk_button_new_with_label(_("Send"));
+    gtk_widget_set_margin_top(vbox, 5);
+    gtk_widget_set_margin_left(vbox, 5);
+    gtk_widget_set_margin_right(vbox, 5);
+
+    GtkWidget *lbl_summary = GTK_WIDGET(gtk_label_new(_("Summary:")));
+    gtk_widget_set_halign(lbl_summary, GTK_ALIGN_START);
+    gtk_widget_set_margin_left(lbl_summary, 3);
+    gtk_widget_set_margin_right(lbl_summary, 3);
+
+    GtkWidget *txe_reason = GTK_WIDGET(gtk_entry_new());
+
     GtkWidget *tev = gtk_text_view_new();
-    g_signal_connect(button_send, "clicked", G_CALLBACK(on_button_send_cb), tev);
+    gtk_widget_set_margin_left(tev, 3);
+    gtk_widget_set_margin_right(tev, 3);
+    gtk_widget_set_can_focus(tev, TRUE);
 
-    gtk_box_pack_start(GTK_BOX(vbox), tev, true, true, 0);
-    gtk_box_pack_start(GTK_BOX(vbox), button_send, false, false, 5);
+    GtkWidget *btn_send = gtk_button_new_with_label(_("_Send"));
+    gtk_button_set_use_underline(GTK_BUTTON(btn_send), TRUE);
+    g_signal_connect(btn_send, "clicked", G_CALLBACK(on_button_send_cb), wnd_report);
 
-    gtk_container_add(GTK_CONTAINER(s_report_window), vbox);
+    /* gtk_box_pack_start(box,        widget,          expand,  fill, padding) */
+    gtk_box_pack_start(GTK_BOX(vbox), lbl_summary,       FALSE,   TRUE, 3);
+    gtk_box_pack_start(GTK_BOX(vbox), txe_reason,      FALSE,   TRUE, 3);
+    gtk_box_pack_start(GTK_BOX(vbox), tev,             TRUE,    TRUE, 5);
+    gtk_box_pack_start(GTK_BOX(vbox), btn_send,        FALSE,   TRUE, 3);
 
-    gtk_widget_show_all(s_report_window);
+    gtk_container_add(GTK_CONTAINER(wnd_report), vbox);
+
+    gtk_widget_show_all(wnd_report);
+
+    /* Sets text but text is selected :) */
+    gtk_entry_set_text(GTK_ENTRY(txe_reason), _("A problem with ABRT"));
+    /* Unselect text in txe_entry */
+    gtk_editable_set_position(GTK_EDITABLE(txe_reason), 0);
+
+    /* Move focus to text view with description of problem */
+    gtk_widget_grab_focus(tev);
 }
 
 static void on_menu_about_cb(GtkMenuItem *menuitem, gpointer unused)
