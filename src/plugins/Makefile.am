@@ -4,7 +4,6 @@ bin_SCRIPTS = \
     abrt-action-install-debuginfo \
     abrt-action-analyze-core \
     abrt-action-analyze-vmcore \
-    abrt-action-analyze-xorg \
     abrt-action-list-dsos \
     abrt-action-perform-ccpp-analysis \
     abrt-action-save-kernel-data
@@ -16,6 +15,7 @@ bin_PROGRAMS = \
     abrt-action-analyze-c \
     abrt-action-analyze-python \
     abrt-action-analyze-oops \
+    abrt-action-analyze-xorg \
     abrt-action-trim-files \
     abrt-action-generate-backtrace \
     abrt-action-generate-core-backtrace \
@@ -162,6 +162,19 @@ abrt_action_analyze_oops_CPPFLAGS = \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE
 abrt_action_analyze_oops_LDADD = \
+    $(LIBREPORT_LIBS) \
+    ../lib/libabrt.la
+
+abrt_action_analyze_xorg_SOURCES = \
+    abrt-action-analyze-xorg.c
+abrt_action_analyze_xorg_CPPFLAGS = \
+    -I$(srcdir)/../libreport/src/include/ -I$(srcdir)/../include \
+    -I$(srcdir)/../libreport/src/lib \
+    -I$(srcdir)/../lib \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    -D_GNU_SOURCE
+abrt_action_analyze_xorg_LDADD = \
     $(LIBREPORT_LIBS) \
     ../lib/libabrt.la
 
