@@ -80,7 +80,6 @@ EXTRA_DIST = \
     analyze_RetraceServer.xml.in \
     analyze_VMcore.xml.in \
     abrt-action-analyze-vmcore \
-    abrt-action-analyze-xorg \
     abrt-action-save-kernel-data \
     abrt-action-ureport \
     https-utils.h \
