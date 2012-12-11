@@ -38,6 +38,8 @@ class ProblemifyTestCase(ProblematicTestCase):
         prob2 = problem.tools.problemify(ident, self.proxy)
         tools.eq_(type(prob2), problem.Unknown)
 
+        prob.delete()
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     unittest.main()

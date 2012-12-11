@@ -267,6 +267,8 @@ class ProblemAPITestCase(ProblematicTestCase):
         path = prob.save()
         tools.ok_('runtime-' in path)
 
+        prob.delete()
+
     def test_repr(self):
         prob = self.create_problem()
         ret = repr(prob)
@@ -341,6 +343,8 @@ class ProblemAPITestCase(ProblematicTestCase):
         ident2 = prob.save()
 
         tools.ok_(ident != ident2)
+
+        prob.delete()
 
     def test_problem_types(self):
         for ptype, internal in problem.PROBLEM_TYPES.items():
