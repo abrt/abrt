@@ -63,7 +63,7 @@ class DBusProxy(object):
         return str(val[name])
 
     def set_item(self, dump_dir, name, value):
-        return self._dbus_call('SetElement', dump_dir, name, value)
+        return self._dbus_call('SetElement', dump_dir, name, str(value))
 
     def del_item(self, dump_dir, name):
         return self._dbus_call('DeleteElement', dump_dir, name)
