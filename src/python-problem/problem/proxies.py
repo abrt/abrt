@@ -1,4 +1,6 @@
+import os
 import logging
+import report
 
 import problem.exception
 
@@ -113,6 +115,71 @@ class SocketProxy(object):
         raise NotImplementedError
     def list(self, *args):
         raise NotImplementedError
+    def list_all(self, *args):
+        return self.list(*args)
+
+class FsProxy(object):
+    def __init__(self, directory):
+        self.directory = directory
+
+    def create(self, problem_dict):
+        probd = report.problem_data()
+        for key, value in problem_dict.iteritems():
+            probd.add(key, value)
+
+        ddir = probd.create_dump_dir('/tmp/abrt/')
+        ret = ddir.name
+        ddir.close()
+        return ret
+
+    def _open_ddir(self, dump_dir):
+        ddir = report.dd_opendir(dump_dir)
+        if not ddir:
+            raise problem.exception.InvalidProblem(
+                'Can\'t open directory: {0}'.format(dump_dir))
+
+        return ddir
+
+    def get_item(self, dump_dir, name):
+        ddir = self._open_ddir(dump_dir)
+
+        val = ddir.load_text(name,
+            report.DD_OPEN_READONLY |
+            report.DD_FAIL_QUIETLY_EACCES |
+            report.DD_FAIL_QUIETLY_ENOENT |
+            report.DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE)
+
+        ddir.close()
+        return val
+
+    def set_item(self, dump_dir, name, value):
+        ddir = self._open_ddir(dump_dir)
+        ddir.save_text(name, str(value))
+        ddir.close()
+
+    def del_item(self, dump_dir, name):
+        ddir = self._open_ddir(dump_dir)
+        ddir.delete_item(name)
+        ddir.close()
+
+    def delete(self, dump_dir):
+        ddir = report.dd_opendir(dump_dir)
+        if not ddir:
+            return not os.path.isdir(dump_dir)
+
+        ddir.delete()
+        return True
+
+    def list(self):
+        for dir_entry in os.listdir(self.directory):
+            dump_dir = os.path.join(self.directory, dir_entry)
+            ddir = report.dd_opendir(dump_dir)
+            if ddir:
+                ddir.close()
+                yield dump_dir
+
+    def list_all(self, *args):
+        return self.list(*args)
 
 def get_proxy():
     try:
