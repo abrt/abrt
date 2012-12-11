@@ -42,7 +42,6 @@
 /* libnotify action keys */
 #define A_KNOWN_OPEN_GUI "OPEN"
 #define A_KNOWN_OPEN_BROWSER "SHOW"
-#define A_REPORT_START_AUTOREPORT "START_AUTOREPORT"
 #define A_REPORT_REPORT "REPORT"
 #define A_REPORT_AUTOREPORT "AUTOREPORT"
 
@@ -79,16 +78,33 @@ static bool is_autoreporting_enabled(void)
            || ( option && string_to_bool(option));
 }
 
-static void enable_autoreporting(void)
-{
-    set_user_setting("AutoreportingEnabled", "yes");
-    save_user_settings();
-}
-
 static const char *get_autoreport_event_name(void)
 {
     const char *configured = get_user_setting("AutoreportingEvent");
     return configured ? configured : g_settings_autoreporting_event;
+}
+
+static void ask_start_autoreporting()
+{
+    /* The "Yes" response will be saved even if user don't check the
+     * "Don't ask me again" box.
+     */
+    const int ret = run_ask_yes_no_save_result_dialog("AutoreportingEnabled",
+     _("The report which will be sent does not contain any security sensitive data. "
+       "Therefore it is not necessary to bother you next time and require any further action by you. "
+       "\nDo you want to enable automatically submitted anonymous crash reports?"),
+       /*parent wnd */ NULL);
+
+    /* Don't forget:
+     *
+     * The "Yes" response will be saved even if user don't check the
+     * "Don't ask me again" box.
+     */
+    if (ret != 0)
+        set_user_setting("AutoreportingEnabled", "yes");
+
+    /* must be called immediately, otherwise the data could be lost in case of crash */
+    save_user_settings();
 }
 
 /*
@@ -486,30 +502,32 @@ static void run_report_from_applet(const char *dirname)
 static void action_report(NotifyNotification *notification, gchar *action, gpointer user_data)
 {
     VERB3 log("Reporting a problem!");
-    problem_info_t *pi = (problem_info_t *)user_data;
+    /* must be closed before ask_yes_no dialog run */
+    GError *err = NULL;
+    notify_notification_close(notification, &err);
+    if (err != NULL)
+    {
+        error_msg(_("Can't close notification: %s"), err->message);
+        g_error_free(err);
+    }
 
+    hide_icon();
+
+    problem_info_t *pi = (problem_info_t *)user_data;
     if (pi->problem_dir)
     {
-        if (strcmp(A_REPORT_START_AUTOREPORT, action) == 0)
-            enable_autoreporting();
-
         if (strcmp(A_REPORT_REPORT, action) == 0)
         {
             run_report_from_applet(pi->problem_dir);
             problem_info_free(pi);
         }
-        else /* start autoreporting and autoreporting itself */
-            run_event_async(pi, get_autoreport_event_name(), REPORT_UNKNOWN_PROBLEM_IMMEDIATELY);
-
-        GError *err = NULL;
-        notify_notification_close(notification, &err);
-        if (err != NULL)
+        else
         {
-            error_msg(_("Can't close notification: %s"), err->message);
-            g_error_free(err);
-        }
+            if (pi->foreign == false && strcmp(A_REPORT_AUTOREPORT, action) == 0)
+                ask_start_autoreporting();
 
-        hide_icon();
+            run_event_async(pi, get_autoreport_event_name(), REPORT_UNKNOWN_PROBLEM_IMMEDIATELY);
+        }
 
         /* Scan dirs and save new $XDG_CACHE_HOME/abrt/applet_dirlist.
          * (Oterwise, after a crash, next time applet is started,
@@ -799,14 +817,6 @@ static void notify_problem_list(GList *problems, int flags)
                 notify_notification_add_action(notification, A_REPORT_AUTOREPORT, _("Report"),
                         NOTIFY_ACTION_CALLBACK(action_report),
                         pi, NULL);
-
-                /* Doesn't make sense to allow autoreporting for foreign problems */
-                if (!pi->foreign)
-                {
-                    notify_notification_add_action(notification, A_REPORT_START_AUTOREPORT, _("Start Autoreporting"),
-                            NOTIFY_ACTION_CALLBACK(action_report),
-                            pi, NULL);
-                }
 
                 notify_notification_update(notification, _("A Problem has Occurred"), pi->message, NULL);
             }
