@@ -101,7 +101,7 @@ int main(int argc, char **argv)
         OPT_INTEGER(0, "port", &(cfg.port),
                     _("dedup server port")),
         OPT_STRING('d', "dump-dir", &dump_dir_name, "DUMP_DIR",
-                   _("ABRT dump directory")),
+                   _("Problem directory")),
         OPT_BOOL(0, "headers", NULL,
                  _("(debug) show received HTTP headers")),
         OPT_END()

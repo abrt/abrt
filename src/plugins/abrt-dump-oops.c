@@ -249,7 +249,7 @@ int main(int argc, char **argv)
         /* oopses don't contain any sensitive info, and even
          * the old koops app was showing the oopses to all users
          */
-        OPT_STRING('d', NULL, &debug_dumps_dir, "DIR", _("Create ABRT dump in DIR for every oops found")),
+        OPT_STRING('d', NULL, &debug_dumps_dir, "DIR", _("Create new problem directory in DIR for every oops found")),
         OPT_BOOL(  'D', NULL, NULL, _("Same as -d DumpLocation, DumpLocation is specified in abrt.conf")),
         OPT_BOOL(  'x', NULL, NULL, _("Make the problem directory world readable")),
         OPT_BOOL(  'm', NULL, NULL, _("Print search string(s) to stdout and exit")),
