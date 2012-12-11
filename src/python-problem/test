@@ -1,0 +1,9 @@
+#!/bin/bash
+
+which nosetests &> /dev/null
+if [ $? -ne 0 ]; then
+    echo 'python-nose package required'
+    exit 1
+fi
+
+nosetests --with-coverage --cover-package=problem --nocapture --nologcapture --no-skip --verbose tests/*.py
