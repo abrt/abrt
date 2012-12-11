@@ -498,12 +498,17 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
     /* NB: this variable _must_ be int-sized, ioctl expects that! */
     int inotify_bytes = INOTIFY_BUF_SIZE;
     if (ioctl(g_io_channel_unix_get_fd(gio), FIONREAD, &inotify_bytes) != 0
-     || inotify_bytes < sizeof(struct inotify_event)
+    /*|| inotify_bytes < sizeof(struct inotify_event)
+         ^^^^^^^^^^^^^^^^^^^ - WRONG: legitimate 0 was seen when flooded with inotify events
+    */
      || inotify_bytes > INOTIFY_BUF_SIZE
     ) {
         inotify_bytes = INOTIFY_BUF_SIZE;
     }
     VERB3 log("FIONREAD:%d", inotify_bytes);
+
+    if (inotify_bytes == 0)
+        return TRUE; /* "please don't remove this event" */
 
     char *buf = (char*)xmalloc(inotify_bytes);
     errno = 0;
@@ -514,6 +519,8 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
     {
         perror_msg("Error reading inotify fd: %s", gerror ? gerror->message : "unknown");
         free(buf);
+        if (gerror)
+            g_error_free(gerror);
         return FALSE; /* "remove this event" (huh??) */
     }
 
@@ -953,6 +960,10 @@ int main(int argc, char** argv)
         }
     }
     VERB1 log("Adding inotify watch to glib main loop");
+    /* Without nonblocking mode, users observed abrtd blocking
+     * on inotify read forever. Must set fd to non-blocking:
+     */
+    ndelay_on(inotify_fd);
     channel_inotify = my_io_channel_unix_new(inotify_fd);
     channel_id_inotify_event = add_watch_or_die(channel_inotify,
                         G_IO_IN | G_IO_PRI | G_IO_HUP,
