@@ -42,6 +42,7 @@ class DBusProxy(object):
 
     def _dbus_call(self, fun_name, *args):
         try:
+            logging.debug('Calling {0} with {1}'.format(fun_name, args))
             return getattr(self._iface, fun_name)(*args)
         except self.dbus.exceptions.DBusException as e:
             dbname = e.get_dbus_name()
