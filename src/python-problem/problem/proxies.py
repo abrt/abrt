@@ -74,7 +74,7 @@ class DBusProxy(object):
         return self._dbus_call('NewProblem', problem_dict)
 
     def delete(self, dump_dir):
-        return self._dbus_call('DeleteProblem', dump_dir)
+        return self._dbus_call('DeleteProblem', [dump_dir])
 
     def list(self):
         return map(str, self._dbus_call('GetProblems'))
