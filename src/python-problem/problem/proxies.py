@@ -118,6 +118,8 @@ class SocketProxy(object):
         raise NotImplementedError
     def list_all(self, *args):
         return self.list(*args)
+    def get_problem_watcher(self):
+        raise NotImplementedError
 
 class FsProxy(object):
     def __init__(self, directory):

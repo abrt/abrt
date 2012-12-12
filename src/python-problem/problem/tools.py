@@ -1,3 +1,6 @@
+import os
+import logging
+
 import problem
 
 def problemify(probdir, proxy):

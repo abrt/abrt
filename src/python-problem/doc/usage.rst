@@ -39,3 +39,14 @@ Editing existing problems
 -------------------------
 
 .. literalinclude:: ../examples/edit_example.py
+
+
+Watching for new problems
+-------------------------
+
+.. literalinclude:: ../examples/watch_example.py
+
+Watching for new problems in a thread
+--------------------------------------
+
+.. literalinclude:: ../examples/thread_watch_example.py
