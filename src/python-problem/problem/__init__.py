@@ -2,7 +2,7 @@ import os
 import inspect
 import datetime
 
-from problem import proxies, exception, tools
+from problem import proxies, exception, tools, watch
 
 JAVA = 'java'
 SELINUX = 'selinux'
@@ -266,3 +266,15 @@ def get(identifier, auth=False, __proxy = proxies.get_proxy()):
         return None
 
     return tools.problemify(identifier, __proxy)
+
+def get_problem_watcher(auth=False):
+    ''' Return ``ProblemWatcher`` object which can be used
+    to attach callbacks called when new problem is created
+
+    Use ``auth=True`` if authentication should be attempted for
+    new problem that doesn't belong to current user. If not
+    set such a problem is ignored.
+
+    '''
+
+    return watch.ProblemWatcher(auth)
