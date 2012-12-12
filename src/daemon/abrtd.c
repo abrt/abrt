@@ -370,7 +370,7 @@ static mw_result_t run_post_create_and_load_data(const char *dump_dir_name, prob
     if (*problem_data != NULL)
     {
         res = MW_OK;
-        if (count > 1)
+        if (dup_of_dir)
         {
             log("Problem directory is a duplicate of %s", dump_dir_name);
             res = MW_OCCURRED;
