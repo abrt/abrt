@@ -528,13 +528,6 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
 
             run_event_async(pi, get_autoreport_event_name(), REPORT_UNKNOWN_PROBLEM_IMMEDIATELY);
         }
-
-        /* Scan dirs and save new $XDG_CACHE_HOME/abrt/applet_dirlist.
-         * (Oterwise, after a crash, next time applet is started,
-         * it will show alert icon even if we did click on it
-         * "in previous life"). We ignore finction return value.
-         */
-        new_dir_exists(/* new dirs list */ NULL);
     }
     else
         problem_info_free(pi);
@@ -613,6 +606,13 @@ static void on_notify_close(NotifyNotification *notification, gpointer user_data
 {
     VERB3 log("Notify closed!");
     g_object_unref(notification);
+
+    /* Scan dirs and save new $XDG_CACHE_HOME/abrt/applet_dirlist.
+     * (Oterwise, after a crash, next time applet is started,
+     * it will show alert icon even if we did click on it
+     * "in previous life"). We ignore finction return value.
+     */
+    new_dir_exists(/* new dirs list */ NULL);
 }
 
 static NotifyNotification *new_warn_notification(bool persistence)
@@ -1092,6 +1092,13 @@ static void Crash(DBusMessage* signal)
         }
     }
 
+    /*
+     * Can't append dir to the seen list because of directory stealing
+     *
+     * append_dirlist(dir);
+     *
+     */
+
     /* If this problem seems to be repeating, do not annoy user with popup dialog.
      * (The icon in the tray is not suppressed)
      */
@@ -1357,9 +1364,48 @@ next:
 
     /* Enter main loop */
     gtk_main();
+
+    /* GTK3 doesn't return from main loop in case of termination due to desktop
+     * session end. (GTK handles XSMP (X Session Management Protocol) messages
+     * on its own and exits on session end.)
+     *
+     * https://bugs.freedesktop.org/show_bug.cgi?id=32839
+     * https://bugzilla.gnome.org/show_bug.cgi?id=639770
+     *
+     * !!! None of the following commands will be executed. !!!
+     *
+     * The commands should be pushed into some callback used by deprecated
+     * gtk_quit_add() or proposed g_flush_all()
+     *
+     * Or we can use proposed GtkSMClient (currently available in libegg)
+     * https://live.gnome.org/SessionManagement/EggSMClient
+     *
+     * Or DBus GnomeSession manager (this won't work for other desktops)
+     * http://people.gnome.org/~mccann/gnome-session/docs/gnome-session.html
+     */
+
 #if (GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 31)
     gdk_threads_leave();
 #endif
+
+    /* new_dir_exists() is called for each notification and if user clicks on
+     * the abrt icon. Those calls cover 99.97% of detected crashes
+     *
+     * The rest of detected crashes:
+     *
+     * 0.01%
+     * applet doesn't append a repeated crash to the seen list if the crash was
+     * the last caught crash before exit (notification is not shown in case of
+     * repeated crash)
+     *
+     * 0.01%
+     * applet doesn't append a stolen directory to the seen list if
+     * notification was closed before the notified directory had been stolen
+     *
+     * 0.1%
+     * crashes of abrt-applet
+     */
+    new_dir_exists(/* new dirs list */ NULL);
 
     if (notify_is_initted())
         notify_uninit();
