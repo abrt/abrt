@@ -2,10 +2,6 @@
 # vim: dict=/usr/share/beakerlib/dictionary.vim cpt=.,w,b,u,t,i,k
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-#   runtest.sh of run-abrtd
-#   Description: Starts abrtd
-#   Author: Michal Nowak <mnowak@redhat.com>
-#
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 #   Copyright (c) 2011 Red Hat, Inc. All rights reserved.
@@ -28,7 +24,7 @@
 . /usr/share/beakerlib/beakerlib.sh
 . ../aux/lib.sh
 
-TEST="run-abrtd"
+TEST="abrtd-inotify-flood"
 PACKAGE="abrt"
 
 rlJournalStart
