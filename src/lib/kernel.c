@@ -399,7 +399,38 @@ int koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf)
                 break;
             char *line = xstrndup(call_trace, end_line - call_trace);
 
-            char *p = skip_whitespace(line);
+            /* Skip whitespace and "<IRQ>" / "<EOI>" markers */
+            char *p = line;
+            for (;;)
+            {
+                p = skip_whitespace(p);
+                if (prefixcmp(p, "<IRQ>") == 0)
+                {
+                    p += strlen("<IRQ>");
+                    continue;
+                }
+                if (prefixcmp(p, "<EOI>") == 0)
+                {
+                    p += strlen("<EOI>");
+                    continue;
+                }
+                /* Didn't see it in practice,
+                 * but code inspection in arch/x86/kernel/dumpstack_64.c
+                 * tells me these strings can be there as well:
+                 */
+                if (prefixcmp(p, "<EOE>") == 0)
+                {
+                    p += strlen("<EOE>");
+                    continue;
+                }
+                if (prefixcmp(p, "<<EOE>>") == 0)
+                {
+                    p += strlen("<<EOE>>");
+                    continue;
+                }
+                break;
+            }
+
             char *end_mem_block = strchr(p, ' ');
             if (!end_mem_block)
                 goto done; /* no memblock, we are done */
