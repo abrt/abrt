@@ -73,7 +73,7 @@ char *koops_extract_version(const char *line);
 #define kernel_tainted_short abrt_kernel_tainted_short
 char *kernel_tainted_short(const char *kernel_bt);
 #define koops_hash_str abrt_koops_hash_str
-void koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], char *oops_buf, const char *oops_ptr);
+int koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf);
 #define koops_extract_oopses abrt_koops_extract_oopses
 void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen);
 

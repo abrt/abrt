@@ -58,13 +58,18 @@ int main(int argc, char **argv)
 
     char *oops = dd_load_text(dd, FILENAME_BACKTRACE);
     char hash_str[SHA1_RESULT_LEN*2 + 1];
-    koops_hash_str(hash_str, oops, oops);
+    int bad = koops_hash_str(hash_str, oops);
     free(oops);
 
-    dd_save_text(dd, FILENAME_UUID, hash_str);
-    dd_save_text(dd, FILENAME_DUPHASH, hash_str);
+    if (bad)
+        error_msg("Can't find a meaningful backtrace for hashing in '%s'", dump_dir_name);
+    else
+    {
+        dd_save_text(dd, FILENAME_UUID, hash_str);
+        dd_save_text(dd, FILENAME_DUPHASH, hash_str);
+    }
 
     dd_close(dd);
 
-    return 0;
+    return bad;
 }
