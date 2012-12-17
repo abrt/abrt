@@ -66,6 +66,7 @@ static char *ap_last_problem_dir;
 static char **s_dirs;
 static GList *g_deferred_crash_queue;
 static guint g_deferred_timeout;
+static int g_signal_pipe[2];
 
 static bool is_autoreporting_enabled(void)
 {
@@ -1163,6 +1164,35 @@ static void die_if_dbus_error(bool error_flag, DBusError* err, const char* msg)
     error_msg_and_die("%s", msg);
 }
 
+static void handle_signal(int signo)
+{
+    int save_errno = errno;
+
+    // Enable for debugging only, malloc/printf are unsafe in signal handlers
+    //VERB3 log("Got signal %d", signo);
+
+    uint8_t sig_caught = signo;
+    if (write(g_signal_pipe[1], &sig_caught, 1))
+        /* we ignore result, if () shuts up stupid compiler */;
+
+    errno = save_errno;
+}
+
+static gboolean handle_sigterm_pipe(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
+{
+    /* It can be only SIGTERM.
+     * We are going to quit.
+     * Therefore No read from the channel is necessary.
+     */
+
+    /* Next received SIGTERM will kill the applet. */
+    signal(SIGTERM, SIG_DFL);
+
+    gtk_main_quit();
+
+    return FALSE; /* Pointless (loop is done and signal handler was reset); "please remove this event" */
+}
+
 int main(int argc, char** argv)
 {
     /* I18n */
@@ -1362,8 +1392,35 @@ next:
 
     list_free_with_free(new_dirs);
 
-    /* Enter main loop */
+    /*
+     * We handle SIGTERM in order to perform nice termination.
+     *
+     * SIGTERM handler simply stops GTK main loop and the applet saves user
+     * settings, releases notify resources, releases dbus resources and updates
+     * the seen list.
+     */
+
+    /* Set up signal pipe */
+    xpipe(g_signal_pipe);
+    close_on_exec_on(g_signal_pipe[0]);
+    close_on_exec_on(g_signal_pipe[1]);
+    ndelay_on(g_signal_pipe[0]);
+    ndelay_on(g_signal_pipe[1]);
+    signal(SIGTERM, handle_signal);
+    GIOChannel *channel_id_signal = my_io_channel_unix_new(g_signal_pipe[0]);
+    g_io_add_watch(channel_id_signal,
+                G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP | G_IO_NVAL,
+                handle_sigterm_pipe,
+                NULL);
+
+    /* Enter main loop
+     *
+     * Returns on SIGTERM signal or on menu button Quit click.
+     * Please, see the comment below.
+     */
     gtk_main();
+
+    g_io_channel_unref(channel_id_signal);
 
     /* GTK3 doesn't return from main loop in case of termination due to desktop
      * session end. (GTK handles XSMP (X Session Management Protocol) messages
