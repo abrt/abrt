@@ -20,4 +20,14 @@ then
     exit 0
 fi
 
+if test ! -s core_backtrace
+then
+    if test -n "$ABRT_VERBOSE" && test $ABRT_VERBOSE -ge 1
+    then
+        echo "Generating core_backtrace"
+    fi
+
+    abrt-action-generate-core-backtrace
+fi
+
 reporter-ureport
