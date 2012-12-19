@@ -749,7 +749,7 @@ static void on_button_send_cb(GtkWidget *button, gpointer data)
     {
         show_error_dialog(GTK_WINDOW(wnd_report),
                           _("The description of problem is too short"),
-                          _("In order to get more usefull reports we "
+                          _("In order to get more useful reports we "
                             "do not accept reports with the description "
                             "shorter than 10 letters."));
 
@@ -764,7 +764,7 @@ static void on_button_send_cb(GtkWidget *button, gpointer data)
     {
         show_error_dialog(GTK_WINDOW(wnd_report),
                           _("The summary of problem is too short"),
-                          _("In order to get more usefull reports we "
+                          _("In order to get more useful reports we "
                             "do not accept reports with the summary "
                             "shorter than 10 letters."));
 
