@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
 # Shankar Prasad <svenkate@redhat.com>, 2011-2012.
@@ -9,20 +9,19 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
-"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-11-23 18:31+0100\n"
-"PO-Revision-Date: 2012-11-23 17:24+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
-"Language-Team: Kannada (http://www.transifex.com/projects/p/fedora/language/"
-"kn/)\n"
-"Language: kn\n"
+"Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
+"POT-Creation-Date: 2012-12-19 15:48+0100\n"
+"PO-Revision-Date: 2012-12-19 14:49+0000\n"
+"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
+"Language-Team: Kannada (http://www.transifex.com/projects/p/fedora/language/kn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: kn\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:955
+#: ../src/gui-gtk/main.c:1064
 msgid "Automatic Bug Reporting Tool"
 msgstr "ಸ್ವಯಂಚಾಲಿತ ದೋಷ ವರದಿ ಮಾಡುವ ಉಪಕರಣ"
 
@@ -30,83 +29,154 @@ msgstr "ಸ್ವಯಂಚಾಲಿತ ದೋಷ ವರದಿ ಮಾಡುವ �
 msgid "ABRT notification applet"
 msgstr "ABRT ಸೂಚನಾ ಆಪ್ಲೆಟ್"
 
-#: ../src/applet/applet.c:66
-msgid "Problem detected"
-msgstr "ತೊಂದರೆಯು ಕಂಡುಬಂದಿದೆ"
-
-#: ../src/applet/applet.c:250
-#, c-format
-msgid "Can't take ownership of '%s'"
-msgstr "'%s' ನ ಮಾಲಿಕತ್ವವನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
-
-#: ../src/applet/applet.c:315 ../src/applet/applet.c:317
-msgid "Warning"
-msgstr "ಎಚ್ಚರಿಕೆ"
-
-#: ../src/applet/applet.c:365
+#: ../src/applet/applet.c:93
 msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
-msgstr "ABRT ಇಂದ ಪತ್ತೆ ಮಾಡಲಾದ ತೊಂದರೆಗಳನ್ನು ಬಳಕೆದಾರರಿಗೆ ಸೂಚಿಸುವ ಸೂಚನಾ ಸ್ಥಳದ ಆಪ್ಲೆಟ್"
+"The report which will be sent does not contain any security sensitive data. Therefore it is not necessary to bother you next time and require any further action by you. \n"
+"Do you want to enable automatically submitted anonymous crash reports?"
+msgstr ""
 
-#: ../src/applet/applet.c:381 ../src/gui-gtk/main.c:792
-msgid "translator-credits"
-msgstr "ಶಂಕರ್ ಪ್ರಸಾದ್ <svenkate@redhat.com>"
+#. The NetworkManager DBus service is not available.
+#: ../src/applet/applet.c:172
+#, c-format
+msgid "Can't connect to NetworkManager over DBus: %s"
+msgstr ""
 
-#: ../src/applet/applet.c:391
-msgid "Hide"
-msgstr "ಅಡಗಿಸು"
+#: ../src/applet/applet.c:196
+#, c-format
+msgid "Can't determine network status via NetworkManager: %s"
+msgstr ""
 
-#: ../src/applet/applet.c:440
-msgid "Ignore"
-msgstr "ಕಡೆಗಣಿಸು"
+#: ../src/applet/applet.c:299
+msgid "A problem has been detected"
+msgstr "ಒಂದು ತೊಂದರೆಯು ಕಂಡುಬಂದಿದೆ"
 
-#. buttons are homogenous so set size only for one button and it will
-#. * work for the rest buttons in same gtk_hbox_new()
-#: ../src/applet/applet.c:444 ../src/gui-gtk/main.c:910
-#: ../src/gui-gtk/main.c:1048
-msgid "Report"
-msgstr "ವರದಿ"
-
-#: ../src/applet/applet.c:448
-msgid "A Problem has Occurred"
-msgstr "ದೋಷವೊಂದು ಸಂಭವಿಸಿದೆ"
-
-#: ../src/applet/applet.c:533 ../src/applet/applet.c:716
+#: ../src/applet/applet.c:301
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "%s ಎಂಬ ಪ್ಯಾಕೇಜಿನಲ್ಲಿ ಒಂದು ತೊಂದರೆಯು ಕಂಡುಬಂದಿದೆ"
 
-#: ../src/applet/applet.c:535 ../src/applet/applet.c:718
-msgid "A problem has been detected"
-msgstr "ಒಂದು ತೊಂದರೆಯು ಕಂಡುಬಂದಿದೆ"
+#: ../src/applet/applet.c:442 ../src/plugins/abrt-retrace-client.c:126
+#: ../src/plugins/abrt-retrace-client.c:162
+#, c-format
+msgid "Can't execute '%s'"
+msgstr "'%s' ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸಲಾಗಿಲ್ಲ"
 
-#: ../src/applet/applet.c:634
+#: ../src/applet/applet.c:510 ../src/applet/applet.c:591
+#, c-format
+msgid "Can't close notification: %s"
+msgstr ""
+
+#: ../src/applet/applet.c:572
+#, c-format
+msgid "Can't open url '%s': %s"
+msgstr ""
+
+#: ../src/applet/applet.c:624 ../src/applet/applet.c:626
+msgid "Warning"
+msgstr "ಎಚ್ಚರಿಕೆ"
+
+#: ../src/applet/applet.c:673
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
+msgstr "ABRT ಇಂದ ಪತ್ತೆ ಮಾಡಲಾದ ತೊಂದರೆಗಳನ್ನು ಬಳಕೆದಾರರಿಗೆ ಸೂಚಿಸುವ ಸೂಚನಾ ಸ್ಥಳದ ಆಪ್ಲೆಟ್"
+
+#: ../src/applet/applet.c:689 ../src/gui-gtk/main.c:894
+msgid "translator-credits"
+msgstr "ಶಂಕರ್ ಪ್ರಸಾದ್ <svenkate@redhat.com>"
+
+#: ../src/applet/applet.c:699
+msgid "Hide"
+msgstr "ಅಡಗಿಸು"
+
+#: ../src/applet/applet.c:769
+msgid "Problem detected"
+msgstr "ತೊಂದರೆಯು ಕಂಡುಬಂದಿದೆ"
+
+#: ../src/applet/applet.c:797
+msgid "Ignore"
+msgstr "ಕಡೆಗಣಿಸು"
+
+#: ../src/applet/applet.c:803
+msgid "Open"
+msgstr ""
+
+#: ../src/applet/applet.c:807
+msgid "Show"
+msgstr ""
+
+#: ../src/applet/applet.c:811
+msgid "A Known Problem has Occurred"
+msgstr ""
+
+#. buttons are homogenous so set size only for one button and it will
+#. * work for the rest buttons in same gtk_hbox_new()
+#: ../src/applet/applet.c:817 ../src/applet/applet.c:825
+#: ../src/gui-gtk/main.c:1019 ../src/gui-gtk/main.c:1157
+msgid "Report"
+msgstr "ವರದಿ"
+
+#: ../src/applet/applet.c:821
+msgid "A Problem has Occurred"
+msgstr "ದೋಷವೊಂದು ಸಂಭವಿಸಿದೆ"
+
+#: ../src/applet/applet.c:829
+msgid "A New Problem has Occurred"
+msgstr ""
+
+#: ../src/applet/applet.c:838
+#, c-format
+msgid "Can't show notification: %s"
+msgstr ""
+
+#. TODO: Terminate child's process?
+#: ../src/applet/applet.c:868
+#, c-format
+msgid "Can't read from gio channel: '%s'"
+msgstr ""
+
+#: ../src/applet/applet.c:941
+#, c-format
+msgid "Can't set encoding on gio channel: %s"
+msgstr ""
+
+#: ../src/applet/applet.c:945
+#, c-format
+msgid "Can't turn on nonblocking mode for gio channel: %s"
+msgstr ""
+
+#: ../src/applet/applet.c:977
+#, c-format
+msgid "Can't take ownership of '%s'"
+msgstr "'%s' ನ ಮಾಲಿಕತ್ವವನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
+
+#: ../src/applet/applet.c:987
+#, c-format
+msgid "Can't open directory for writing '%s'"
+msgstr ""
+
+#: ../src/applet/applet.c:1211
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
-msgstr ""
-"& [-v] [DIR]...\n"
-"\n"
-"Applet which notifies user when new problems are detected by ABRT\n"
+msgstr "& [-v] [DIR]...\n\nApplet which notifies user when new problems are detected by ABRT\n"
 
 #: ../src/daemon/abrt-action-save-package-data.c:375
 msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
-msgstr ""
-"& [-v] [-c CONFFILE] -d DIR\n"
-"\n"
-"Query package database and save package and component name"
+msgstr "& [-v] [-c CONFFILE] -d DIR\n\nQuery package database and save package and component name"
 
 #: ../src/daemon/abrt-action-save-package-data.c:387
 #: ../src/plugins/abrt-action-analyze-backtrace.c:63
 #: ../src/plugins/abrt-action-analyze-c.c:90
 #: ../src/plugins/abrt-action-analyze-oops.c:48
+#: ../src/plugins/abrt-action-analyze-xorg.c:82
 #: ../src/plugins/abrt-action-analyze-python.c:47
 #: ../src/plugins/abrt-action-generate-backtrace.c:54
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:96
+#: ../src/plugins/abrt-dedup-client.c:104
 msgid "Problem directory"
 msgstr "ತೊಂದರೆಯ ಕೋಶ"
 
@@ -114,66 +184,88 @@ msgstr "ತೊಂದರೆಯ ಕೋಶ"
 msgid "Configuration file"
 msgstr "ಸಂರಚನಾ ಕಡತ"
 
-#: ../src/daemon/abrt-server.c:509 ../src/dbus/abrt-dbus.c:772
-#: ../src/daemon/abrtd.c:829
+#: ../src/daemon/abrt-server.c:509 ../src/dbus/abrt-dbus.c:919
+#: ../src/daemon/abrtd.c:836
 msgid "& [options]"
 msgstr "& [ಆಯ್ಕೆಗಳು]"
 
 #: ../src/daemon/abrt-server.c:520
 msgid "Use NUM as client uid"
-msgstr ""
+msgstr "NUM ಅನ್ನು ಕ್ಲೈಂಟ್ uid ಆಗಿ ಬಳಸು"
 
 #: ../src/daemon/abrt-server.c:521 ../src/plugins/abrt-watch-log.c:141
-#: ../src/plugins/abrt-dump-oops.c:193 ../src/plugins/abrt-dump-xorg.c:238
+#: ../src/plugins/abrt-dump-oops.c:247 ../src/plugins/abrt-dump-xorg.c:238
 msgid "Log to syslog"
 msgstr "syslog ಗೆ ದಾಖಲಿಸು"
 
-#: ../src/daemon/abrt-server.c:522 ../src/daemon/abrtd.c:845
-#: ../src/gui-gtk/main.c:1225
+#: ../src/daemon/abrt-server.c:522 ../src/daemon/abrtd.c:852
+#: ../src/gui-gtk/main.c:1378
 msgid "Add program names to log"
 msgstr "ಪ್ರೊಗ್ರಾಮ್‌ನ ಹೆಸರುಗಳನ್ನು ದಾಖಲೆಗೆ ಸೇರಿಸು"
 
-#: ../src/dbus/abrt-dbus.c:110
+#: ../src/dbus/abrt-dbus.c:119
 msgid "Unknown error"
 msgstr "ಗೊತ್ತಿರದ ದೋಷ"
 
-#: ../src/dbus/abrt-dbus.c:398
+#: ../src/dbus/abrt-dbus.c:409
 #, c-format
 msgid "'%s' is not a valid problem directory"
 msgstr "'%s' ಎನ್ನುವುದು ಒಂದು ಮಾನ್ಯವಾದ ತೊಂದರೆಯ ಕೋಶವಾಗಿಲ್ಲ"
 
-#: ../src/dbus/abrt-dbus.c:507 ../src/dbus/abrt-dbus.c:587
+#: ../src/dbus/abrt-dbus.c:443
+#, c-format
+msgid "'%s' element can't be modified"
+msgstr ""
+
+#: ../src/dbus/abrt-dbus.c:459 ../src/dbus/abrt-dbus.c:577
+#: ../src/dbus/abrt-dbus.c:657
 msgid "Not Authorized"
 msgstr "ಅಧಿಕಾರವಿಲ್ಲ"
 
-#: ../src/dbus/abrt-dbus.c:754
+#: ../src/dbus/abrt-dbus.c:469
+msgid "Can't access the problem for modification"
+msgstr ""
+
+#: ../src/dbus/abrt-dbus.c:717
+#, c-format
+msgid "'%s' is not a valid element name"
+msgstr ""
+
+#: ../src/dbus/abrt-dbus.c:741
+msgid "No problem space left"
+msgstr ""
+
+#: ../src/dbus/abrt-dbus.c:771
+#, c-format
+msgid "Can't delete the element '%s' from the problem directory '%s'"
+msgstr ""
+
+#: ../src/dbus/abrt-dbus.c:901
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
-msgstr ""
-"'%s' ಎಂಬ ಹೆಸರು ಕಾಣೆಯಾಗಿದೆ, ಇದೇ ಹೆಸರಿನ ಇನ್ನೊಂದು ಸೇವೆಯು ಚಾಲನೆಯಲ್ಲಿಲ್ಲವೆ ಎಂದು "
-"ಪರೀಕ್ಷಿಸಿ.\n"
+msgstr "'%s' ಎಂಬ ಹೆಸರು ಕಾಣೆಯಾಗಿದೆ, ಇದೇ ಹೆಸರಿನ ಇನ್ನೊಂದು ಸೇವೆಯು ಚಾಲನೆಯಲ್ಲಿಲ್ಲವೆ ಎಂದು ಪರೀಕ್ಷಿಸಿ.\n"
 
-#: ../src/dbus/abrt-dbus.c:781 ../src/daemon/abrtd.c:844
+#: ../src/dbus/abrt-dbus.c:928 ../src/daemon/abrtd.c:851
 msgid "Exit after NUM seconds of inactivity"
 msgstr "NUM ಸೆಕೆಂಡುಗಳ ನಿಷ್ಕ್ರಿಯತೆಯ ನಂತರ ನಿರ್ಗಮಿಸು"
 
-#: ../src/dbus/abrt-dbus.c:799
+#: ../src/dbus/abrt-dbus.c:946
 msgid "This program must be run as root."
 msgstr "ಈ ಪ್ರೊಗ್ರಾಮ್ ಅನ್ನು ನಿರ್ವಾಹಕರಾಗಿ ಚಲಾಯಿಸಬೇಕು."
 
-#: ../src/daemon/abrtd.c:842
+#: ../src/daemon/abrtd.c:849
 msgid "Do not daemonize"
 msgstr "ಡೆಮನ್‌ ಆಗಿ ಮಾಡಬೇಡ"
 
-#: ../src/daemon/abrtd.c:843
+#: ../src/daemon/abrtd.c:850
 msgid "Log to syslog even with -d"
 msgstr "-d ಯೊಂದಿಗೂ ಸಹ syslog ಗೆ ದಾಖಲಿಸಿ"
 
 #: ../src/daemon/abrt-handle-event.c:290
 msgid "& [-v -i] -e|--event EVENT DIR..."
-msgstr ""
+msgstr "& [-v -i] -e|--event EVENT DIR..."
 
 #: ../src/daemon/abrt-handle-event.c:298
 msgid "Run EVENT on DIR"
@@ -181,93 +273,118 @@ msgstr "DIR ನಲ್ಲಿ EVENT ಅನ್ನು ಚಲಾಯಿಸಿ"
 
 #: ../src/daemon/abrt-handle-event.c:299
 msgid "Communicate directly to the user"
-msgstr ""
+msgstr "ಬಳಕೆದಾರರೊಂದಿಗೆ ನೇರವಾಗಿ ವ್ಯವಹರಿಸು"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
 msgstr "ಅನ್ವಯದ ಕುಸಿತವನ್ನು ನೋಡಿ ಹಾಗು ವರದಿ ಮಾಡಿ"
 
-#: ../src/gui-gtk/main.c:730
+#: ../src/gui-gtk/main.c:751
+msgid "The description of problem is too short"
+msgstr ""
+
+#: ../src/gui-gtk/main.c:752
+msgid ""
+"In order to get more usefull reports we do not accept reports with the "
+"description shorter than 10 letters."
+msgstr ""
+
+#: ../src/gui-gtk/main.c:766
+msgid "The summary of problem is too short"
+msgstr ""
+
+#: ../src/gui-gtk/main.c:767
+msgid ""
+"In order to get more usefull reports we do not accept reports with the "
+"summary shorter than 10 letters."
+msgstr ""
+
+#: ../src/gui-gtk/main.c:804
 msgid "Problem description"
 msgstr "ತೊಂದರೆಯ ವಿವರಣೆ"
 
-#: ../src/gui-gtk/main.c:733
-msgid "Send"
-msgstr "ಕಳುಹಿಸು"
+#: ../src/gui-gtk/main.c:812
+msgid "Summary:"
+msgstr ""
 
-#: ../src/gui-gtk/main.c:811 ../src/gui-gtk/main.c:857
+#: ../src/gui-gtk/main.c:824
+msgid "_Send"
+msgstr ""
+
+#. Sets text but text is selected :)
+#: ../src/gui-gtk/main.c:839
+msgid "A problem with ABRT"
+msgstr ""
+
+#: ../src/gui-gtk/main.c:913 ../src/gui-gtk/main.c:959
 msgid "Source"
 msgstr "ಆಕರ"
 
-#: ../src/gui-gtk/main.c:821 ../src/gui-gtk/main.c:867
+#: ../src/gui-gtk/main.c:923 ../src/gui-gtk/main.c:969
 msgid "Problem"
 msgstr "ತೊಂದರೆ"
 
-#: ../src/gui-gtk/main.c:842
+#: ../src/gui-gtk/main.c:944
 msgid "Last Occurrence"
 msgstr "ಕೊನೆಯ ಬಾರಿ ಸಂಭವಿಸಿದ್ದು"
 
-#: ../src/gui-gtk/main.c:877
+#: ../src/gui-gtk/main.c:979
 msgid "Date Submitted"
 msgstr "ಸಲ್ಲಿಸಿದ ದಿನಾಂಕ"
 
-#: ../src/gui-gtk/main.c:886
+#: ../src/gui-gtk/main.c:988
 msgid "Submission Result"
 msgstr "ಸಲ್ಲಿಕೆಯ ಫಲಿತಾಂಶ"
 
-#: ../src/gui-gtk/main.c:899
+#: ../src/gui-gtk/main.c:1008
 msgid "_Problem"
 msgstr "ತೊಂದರೆ (_P)"
 
-#: ../src/gui-gtk/main.c:900
+#: ../src/gui-gtk/main.c:1009
 msgid "_Edit"
 msgstr "ಸಂಪಾದನೆ (_E)"
 
-#: ../src/gui-gtk/main.c:901
+#: ../src/gui-gtk/main.c:1010
 msgid "_Help"
 msgstr "ಸಹಾಯ (_H)"
 
-#: ../src/gui-gtk/main.c:912
+#: ../src/gui-gtk/main.c:1021
 msgid "Open problem data"
 msgstr "ತೊಂದರೆಯ ದತ್ತಾಂಶವನ್ನು ತೆರೆ"
 
-#: ../src/gui-gtk/main.c:936
+#: ../src/gui-gtk/main.c:1045
 msgid "Report problem with ABRT"
 msgstr "ABRTಯೊಂದಿಗೆ ತೊಂದರೆಯನ್ನು ವರದಿ ಮಾಡಿ"
 
-#: ../src/gui-gtk/main.c:975
+#: ../src/gui-gtk/main.c:1084
 msgid "Not submitted reports"
 msgstr "ಸಲ್ಲಿಸದೆ ಇರುವ ವರದಿಗಳು"
 
-#: ../src/gui-gtk/main.c:977
+#: ../src/gui-gtk/main.c:1086
 msgid "<b>Not submitted reports</b>"
 msgstr "<b>ಸಲ್ಲಿಸದೆ ಇರುವ ವರದಿಗಳು</b>"
 
-#: ../src/gui-gtk/main.c:979
+#: ../src/gui-gtk/main.c:1088
 msgid "Show all problems"
 msgstr "ಎಲ್ಲಾ ತೊಂದರೆಗಳನ್ನು ತೋರಿಸು"
 
-#: ../src/gui-gtk/main.c:1022
+#: ../src/gui-gtk/main.c:1131
 msgid "Submitted reports"
 msgstr "ಸಲ್ಲಿಸಿದ ವರದಿಗಳು"
 
-#: ../src/gui-gtk/main.c:1025
+#: ../src/gui-gtk/main.c:1134
 msgid "<b>Submitted reports</b>"
 msgstr "<b>ಸಲ್ಲಿಸಿದ ವರದಿಗಳು</b>"
 
-#: ../src/gui-gtk/main.c:1216
+#: ../src/gui-gtk/main.c:1369
 msgid ""
 "& [-vpD] [DIR]...\n"
 "\n"
 "Shows list of problem directories in specified DIR(s)\n"
 "and ones saved in system-wide problem directory spool."
-msgstr ""
-"& [-vpD] [DIR]...\n"
-"\n"
-"ನಿಶ್ಚಿತ DIR(s) ನಲ್ಲಿ ಮತ್ತು ವ್ಯವಸ್ಥೆಯಾದ್ಯಂತದ ತೊಂದರೆ ಕೋಶದ ಸ್ಪೂಲ್‌ನಲ್ಲಿ\n"
-"ಉಳಿಸಲಾದ ತೊಂದರೆಯ ಕೋಶಗಳ ಪಟ್ಟಿಯನ್ನು ತೋರಿಸುತ್ತದೆ."
+msgstr "& [-vpD] [DIR]...\n\nನಿಶ್ಚಿತ DIR(s) ನಲ್ಲಿ ಮತ್ತು ವ್ಯವಸ್ಥೆಯಾದ್ಯಂತದ ತೊಂದರೆ ಕೋಶದ ಸ್ಪೂಲ್‌ನಲ್ಲಿ\nಉಳಿಸಲಾದ ತೊಂದರೆಯ ಕೋಶಗಳ ಪಟ್ಟಿಯನ್ನು ತೋರಿಸುತ್ತದೆ."
 
-#: ../src/gui-gtk/main.c:1226
+#: ../src/gui-gtk/main.c:1379
 msgid "Do not query problems over dbus (use only DIRs)"
 msgstr "ಡಿಬಸ್ ಮುಖಾಂತರ ತೊಂದರೆಗಳನ್ನು ಪ್ರಶ್ನಿಸಬೇಡ (ಕೇವಲ DIRಗಳನ್ನು ಮಾತ್ರ ಬಳಸಿ)"
 
@@ -307,17 +424,12 @@ msgid ""
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
-msgstr ""
-"& [options] -d DIR\n"
-"\n"
-"Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
-"and identifies crash function in problem directory DIR"
+msgstr "& [options] -d DIR\n\nAnalyzes C/C++ backtrace, generates duplication hash, backtrace rating,\nand identifies crash function in problem directory DIR"
 
-#.
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#.
+#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:100
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -328,33 +440,37 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
-msgstr ""
-"& [-v] -d DIR\n"
-"\n"
-"Calculates and saves UUID of coredump in problem directory DIR"
+msgstr "& [-v] -d DIR\n\nCalculates and saves UUID of coredump in problem directory DIR"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
-"& [-vs] -d DIR\n"
+"& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
 msgstr ""
-"& [-vs] -d DIR\n"
+
+#: ../src/plugins/abrt-action-analyze-xorg.c:71
+msgid ""
+"& [-v] -d DIR\n"
 "\n"
-"Calculates and saves UUID and DUPHASH for oops problem directory DIR"
+"Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
+msgstr ""
+
+#: ../src/plugins/abrt-action-analyze-xorg.c:111
+#, c-format
+msgid "Module '%s' was loaded - won't report this crash"
+msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-python.c:36
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
-msgstr ""
-"& [-v] -d DIR\n"
-"\n"
-"Calculates and saves UUID and DUPHASH of python crash dumps"
+msgstr "& [-v] -d DIR\n\nCalculates and saves UUID and DUPHASH of python crash dumps"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:29
-msgid "Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
+msgid ""
+"Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
 msgstr "ಬಳಕೆ: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:63
@@ -383,10 +499,7 @@ msgid ""
 "& [options] -d DIR\n"
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
-msgstr ""
-"& [options] -d DIR\n"
-"\n"
-"Analyzes coredump in problem directory DIR, generates and saves backtrace"
+msgstr "& [options] -d DIR\n\nAnalyzes coredump in problem directory DIR, generates and saves backtrace"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 msgid "Additional debuginfo directories"
@@ -398,7 +511,7 @@ msgstr "NUM ಸೆಕೆಂಡುಗಳಿಗಿಂತ ಹೆಚ್ಚು ಸಮ
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#.
+#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:102
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -409,10 +522,7 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
-msgstr ""
-"& [-v] -d DIR\n"
-"\n"
-"Creates coredump-level backtrace from core dump and corresponding binary"
+msgstr "& [-v] -d DIR\n\nCreates coredump-level backtrace from core dump and corresponding binary"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:97
 msgid "Do not hash fingerprints"
@@ -431,8 +541,7 @@ msgstr "ಬಳಕೆದಾರರ ಆಜ್ಞೆಯ ಮೇರೆಗೆ ನಿರ
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
-"[--size_mb=SIZE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
 "       [-e, --exact=PATH]\n"
 "\n"
 "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
@@ -446,23 +555,7 @@ msgid ""
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
 "    -e,--exact  Download only specified files\n"
-msgstr ""
-"ಬಳಕೆ: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
-"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
-"[--size_mb=SIZE]\n"
-"       [-e, --exact=PATH]\n"
-"\n"
-"TMPDIR ಅನ್ನು ತಾತ್ಕಾಲಿಕವಾಗಿ ಇರಿಸುವ ಸ್ಥಳವಾಗಿ ಬಳಸಿಕೊಂಡು BUILD_IDS_FILE \n"
-"ಇಂದ CACHEDIR ವರೆಗಿನ ಎಲ್ಲಾ ನಿರ್ಮಾಣ-idಗಳಿಗಾಗಿ debuginfos ಅನ್ನು ಅನುಸ್ಥಾಪಿಸುತ್ತದೆ.\n"
-"CACHEDIR ಯಲ್ಲಿನ ಹಳೆಯ ಕಡತಗಳನ್ನು SIZE ಗಿಂತಲೂ ಚಿಕ್ಕದಾಗುವವರೆಗೆ ಅಳಿಸಿಹಾಕುತ್ತದೆ.\n"
-"\n"
-"    -v          ವರ್ಬೋಸ್ ಆಗಿರು\n"
-"    -y          ಸಂವಾದಾತ್ಮಕವಲ್ಲ, ಎಲ್ಲಾ ಪ್ರಶ್ನೆಗಳಿಗೂ 'ಹೌದು' ಎಂದು ಊಹಿಸಿಕೊ\n"
-"    --ids       ಪೂರ್ವನಿಯೋಜಿತ: build_ids\n"
-"    --tmpdir    ಪೂರ್ವನಿಯೋಜಿತ: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
-"    --cache     ಪೂರ್ವನಿಯೋಜಿತ: /var/cache/abrt-di\n"
-"    --size_mb   ಪೂರ್ವನಿಯೋಜಿತ: 4096\n"
-"    -e,--exact  ನಿಶ್ಚಿತ ಕಡತಗಳನ್ನು ಮಾತ್ರ ಇಳಿಸಿಕೊ\n"
+msgstr "ಬಳಕೆ: %s [-vy] [--ids=BUILD_IDS_FILE]\n       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n       [-e, --exact=PATH]\n\nTMPDIR ಅನ್ನು ತಾತ್ಕಾಲಿಕವಾಗಿ ಇರಿಸುವ ಸ್ಥಳವಾಗಿ ಬಳಸಿಕೊಂಡು BUILD_IDS_FILE \nಇಂದ CACHEDIR ವರೆಗಿನ ಎಲ್ಲಾ ನಿರ್ಮಾಣ-idಗಳಿಗಾಗಿ debuginfos ಅನ್ನು ಅನುಸ್ಥಾಪಿಸುತ್ತದೆ.\nCACHEDIR ಯಲ್ಲಿನ ಹಳೆಯ ಕಡತಗಳನ್ನು SIZE ಗಿಂತಲೂ ಚಿಕ್ಕದಾಗುವವರೆಗೆ ಅಳಿಸಿಹಾಕುತ್ತದೆ.\n\n    -v          ವರ್ಬೋಸ್ ಆಗಿರು\n    -y          ಸಂವಾದಾತ್ಮಕವಲ್ಲ, ಎಲ್ಲಾ ಪ್ರಶ್ನೆಗಳಿಗೂ 'ಹೌದು' ಎಂದು ಊಹಿಸಿಕೊ\n    --ids       ಪೂರ್ವನಿಯೋಜಿತ: build_ids\n    --tmpdir    ಪೂರ್ವನಿಯೋಜಿತ: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n    --cache     ಪೂರ್ವನಿಯೋಜಿತ: /var/cache/abrt-di\n    --size_mb   ಪೂರ್ವನಿಯೋಜಿತ: 4096\n    -e,--exact  ನಿಶ್ಚಿತ ಕಡತಗಳನ್ನು ಮಾತ್ರ ಇಳಿಸಿಕೊ\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:170
 msgid "Can't open {0}: {1}"
@@ -470,9 +563,7 @@ msgstr "{0} ಅನ್ನು ತೆರೆಯಲು ಸಾಧ್ಯವಾಗಿಲ
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:203
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
-msgstr ""
-"{0} debuginfo ಕಡತಗಳನ್ನು Coredump ಉಲ್ಲೇಖಿಸುತ್ತದೆ, ಅವುಗಳಲ್ಲಿ {1} ಅನ್ನು "
-"ಅನುಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ"
+msgstr "{0} debuginfo ಕಡತಗಳನ್ನು Coredump ಉಲ್ಲೇಖಿಸುತ್ತದೆ, ಅವುಗಳಲ್ಲಿ {1} ಅನ್ನು ಅನುಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:214
 msgid "Missing debuginfo file: {0}"
@@ -482,36 +573,26 @@ msgstr "debuginfo ಕಡತವು ಕಾಣಿಸುತ್ತಿಲ್ಲ: {0}"
 msgid "All debuginfo files are available"
 msgstr "debuginfo ಕಡತಗಳಿಗಾಗಿ ಪ್ಯಾಕೇಜುಗಳನ್ನು ಪತ್ತೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:34
-msgid "y"
-msgstr "y"
-
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:79
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
 msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
-msgstr ""
+msgstr "ಕೋರ್ ಡಂಪ್ ಮಾಡಲು ಸರಿಯಾಗಿದೆಯೆ? (ಇದು ಕೆಲವು ಸೂಕ್ಷ್ಮ ಮಾಹಿತಿಯನ್ನು ಹೊಂದಿರಬಹುದು). ನಿಮ್ಮ ಉತ್ತರವು 'ಇಲ್ಲ' ಆಗಿದ್ದಲ್ಲಿ, ಸ್ಥಳೀಯವಾಗಿ ಒಂದು ಸ್ಟ್ಯಾಕ್ ಟ್ರೇಸ್‌ ಅನ್ನು ಉತ್ಪಾದಿಸಲಾಗುತ್ತದೆ. (ಇದು ದೊಡ್ಡ ಮೊತ್ತದ ದತ್ತಾಂಶವನ್ನು ಇಳಿಸಿಕೊಳ್ಳಬಹುದು)."
 
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:88
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
 msgid ""
-"Do you want to generate a stack trace localy? (It may download a huge amount "
-"of data but reporting can't continue without stack trace)."
-msgstr ""
+"Do you want to generate a stack trace localy? (It may download a huge amount"
+" of data but reporting can't continue without stack trace)."
+msgstr "ನೀವು ಸ್ಥಳೀಯವಾಗಿ ಸ್ಟ್ಯಾಕ್ ಟ್ರೇಸ್ ಅನ್ನು ಉತ್ಪಾದಿಸಲು ಬಯಸುತ್ತೀರಾ? (ಇದು ದೊಡ್ಡ ಮೊತ್ತದ ದತ್ತಾಂಶವನ್ನು ಇಳಿಸಿಕೊಳ್ಳಬಹುದು ಆದರೆ ಸ್ಟ್ಯಾಕ್ ಟ್ರೇಸ್ ಇಲ್ಲದೆ ವರದಿ ಮಾಡುವಿಕೆಯು ಮುಂದುವರೆಯುವುದಿಲ್ಲ)."
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
 "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
 "\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
-"SIZE.\n"
+"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
 "FILEs are preserved (never deleted)."
-msgstr ""
-"& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n"
-"\n"
-"Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than "
-"SIZE.\n"
-"FILEs are preserved (never deleted)."
+msgstr "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n\nDeletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\nFILEs are preserved (never deleted)."
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
@@ -542,10 +623,6 @@ msgstr "dedup ಪರಿಚಾರಕದ ಸಂಪರ್ಕಸ್ಥಾನ"
 msgid "dedup server port"
 msgstr "dedup ಪರಿಚಾರಕದ ಸಂಪರ್ಕಸ್ಥಾನ"
 
-#: ../src/plugins/abrt-dedup-client.c:104
-msgid "ABRT dump directory"
-msgstr "ABRT ಡಂಪ್ ಕೋಶ"
-
 #: ../src/plugins/abrt-dedup-client.c:106
 #: ../src/plugins/abrt-retrace-client.c:1107
 msgid "(debug) show received HTTP headers"
@@ -574,55 +651,51 @@ msgid ""
 "& [-vs] [-F STR]... FILE PROG [ARGS]\n"
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
-msgstr ""
-"& [-vs] [-F STR]... FILE PROG [ARGS]\n"
-"\n"
-"ದಿನಚರಿ ಕಡತ FILE ಅನ್ನು ನೋಡಿ, ಅದು ಬೆಳೆದಲ್ಲಿ ಅಥವ ಬದಲಾಯಿಸಲ್ಪಟ್ಟಲ್ಲಿ PROG ಅನ್ನು ಚಲಾಯಿಸು"
+msgstr "& [-vs] [-F STR]... FILE PROG [ARGS]\n\nದಿನಚರಿ ಕಡತ FILE ಅನ್ನು ನೋಡಿ, ಅದು ಬೆಳೆದಲ್ಲಿ ಅಥವ ಬದಲಾಯಿಸಲ್ಪಟ್ಟಲ್ಲಿ PROG ಅನ್ನು ಚಲಾಯಿಸು"
 
 #: ../src/plugins/abrt-watch-log.c:142
 msgid "Don't run PROG if STRs aren't found"
 msgstr "STRಗಳು ಕಂಡುಬರದೆ ಇದ್ದಲ್ಲಿ PROG ಅನ್ನು ಚಲಾಯಿಸಬೇಡ"
 
-#: ../src/plugins/abrt-dump-oops.c:136
+#: ../src/plugins/abrt-dump-oops.c:182
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
-msgstr ""
-"ಒಂದು ಕರ್ನಲ್ ತೊಂದರೆ ಎದುರಾಗಿದೆ, ಆದರೆ ಕರ್ನಲ್‌ಗೆ ಸೋಂಕು ಹಿಡಿದಿದೆ (flags:%s). ಕರ್ನಲ್ "
-"ಮೇಲ್ವಿಚಾರಕರಿಂದ ಸೋಂಕು ವರದಿಗಳನ್ನು ತಪಾಸಣೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
+msgstr "ಒಂದು ಕರ್ನಲ್ ತೊಂದರೆ ಎದುರಾಗಿದೆ, ಆದರೆ ಕರ್ನಲ್‌ಗೆ ಸೋಂಕು ಹಿಡಿದಿದೆ (flags:%s). ಕರ್ನಲ್ ಮೇಲ್ವಿಚಾರಕರಿಂದ ಸೋಂಕು ವರದಿಗಳನ್ನು ತಪಾಸಣೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
 
-#: ../src/plugins/abrt-dump-oops.c:177
+#: ../src/plugins/abrt-dump-oops.c:190
+#, c-format
+msgid " Tainted modules: %s."
+msgstr ""
+
+#: ../src/plugins/abrt-dump-oops.c:231
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
-msgstr ""
-"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
-"\n"
-"Xorg ಕುಸಿತವನ್ನು FILE (ಅಥವ ಶಿಷ್ಟವಾದ ಇನ್‌ಪುಟ್‌) ಇಂದ ಹೊರತೆಗೆ"
+msgstr "& [-vsoxm] [-d DIR]/[-D] [FILE]\n\nXorg ಕುಸಿತವನ್ನು FILE (ಅಥವ ಶಿಷ್ಟವಾದ ಇನ್‌ಪುಟ್‌) ಇಂದ ಹೊರತೆಗೆ"
 
-#: ../src/plugins/abrt-dump-oops.c:194
+#: ../src/plugins/abrt-dump-oops.c:248
 msgid "Print found oopses on standard output"
 msgstr "ಕಂಡು ಬಂದ oops ಗಳನ್ನು ಶಿಷ್ಟವಾದ ಔಟ್‌ಪುಟ್‌ಗೆ ಮುದ್ರಿಸು"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#.
-#: ../src/plugins/abrt-dump-oops.c:198
-msgid "Create ABRT dump in DIR for every oops found"
-msgstr "ಕಂಡುಬಂದ ಪ್ರತಿಯೊಂದು oops ಗೂ ಸಹ DIR ಯಲ್ಲಿ ABRT ಅನ್ನು ರಚಿಸುತ್ತದೆ"
-
-#: ../src/plugins/abrt-dump-oops.c:199 ../src/plugins/abrt-dump-xorg.c:241
-msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
+#. 
+#: ../src/plugins/abrt-dump-oops.c:252
+msgid "Create new problem directory in DIR for every oops found"
 msgstr ""
-"-d DumpLocation ನಂತೆಯೆ, abrt.conf ನಲ್ಲಿ DumpLocation ಅನ್ನು ಸೂಚಿಸಲಾಗಿರುತ್ತದೆ"
 
-#: ../src/plugins/abrt-dump-oops.c:200 ../src/plugins/abrt-dump-xorg.c:242
+#: ../src/plugins/abrt-dump-oops.c:253 ../src/plugins/abrt-dump-xorg.c:241
+msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
+msgstr "-d DumpLocation ನಂತೆಯೆ, abrt.conf ನಲ್ಲಿ DumpLocation ಅನ್ನು ಸೂಚಿಸಲಾಗಿರುತ್ತದೆ"
+
+#: ../src/plugins/abrt-dump-oops.c:254 ../src/plugins/abrt-dump-xorg.c:242
 msgid "Make the problem directory world readable"
 msgstr "ದೋಷದ ಕೋಶವನ್ನು ಜಗತ್ತು ಓದುವ ರೀತಿಯಲ್ಲಿ ಮಾಡಿ"
 
-#: ../src/plugins/abrt-dump-oops.c:201 ../src/plugins/abrt-dump-xorg.c:243
+#: ../src/plugins/abrt-dump-oops.c:255 ../src/plugins/abrt-dump-xorg.c:243
 msgid "Print search string(s) to stdout and exit"
 msgstr "ಹುಡುಕು ವಾಕ್ಯಾಂಶವನ್ನು(ಗಳನ್ನು) stdout ಗೆ ಮುದ್ರಿಸು ಮತ್ತು ನಿರ್ಗಮಿಸು"
 
@@ -631,36 +704,25 @@ msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
-msgstr ""
-"& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
-"\n"
-"Xorg ಕುಸಿತವನ್ನು FILE (ಅಥವ ಶಿಷ್ಟವಾದ ಇನ್‌ಪುಟ್‌) ಇಂದ ಹೊರತೆಗೆ"
+msgstr "& [-vsoxm] [-d DIR]/[-D] [FILE]\n\nXorg ಕುಸಿತವನ್ನು FILE (ಅಥವ ಶಿಷ್ಟವಾದ ಇನ್‌ಪುಟ್‌) ಇಂದ ಹೊರತೆಗೆ"
 
 #: ../src/plugins/abrt-dump-xorg.c:239
 msgid "Print found crash data on standard output"
 msgstr "ಕಂಡು ಬಂದ ಕುಸಿತದ ದತ್ತಾಂಶವನ್ನು ಶಿಷ್ಟವಾದ ಔಟ್‌ಪುಟ್‌ಗೆ ಮುದ್ರಿಸು"
 
 #: ../src/plugins/abrt-dump-xorg.c:240
-msgid "Create ABRT dump in DIR for every crash found"
-msgstr "ಪ್ರತಿಯೊಂದು ಕುಸಿತಕ್ಕಾಗಿ DIR ನಲ್ಲಿ ABRT ಡಂಪ್‌ ಅನ್ನು ರಚಿಸಿ"
+msgid "Create problem directory in DIR for every crash found"
+msgstr ""
 
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
-msgstr ""
-"ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕವನ್ನು ಬಳಸಲು ಸಾಧ್ಯವಿಲ್ಲ, ಏಕೆಂದರೆ ಕುಸಿತವು ಬಹಳ ದೊಡ್ಡದಾಗಿದೆ. ಸ್ಥಳೀಯವಾಗಿ "
-"ರಿಟ್ರೇಸ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸಿ."
+msgstr "ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕವನ್ನು ಬಳಸಲು ಸಾಧ್ಯವಿಲ್ಲ, ಏಕೆಂದರೆ ಕುಸಿತವು ಬಹಳ ದೊಡ್ಡದಾಗಿದೆ. ಸ್ಥಳೀಯವಾಗಿ ರಿಟ್ರೇಸ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸಿ."
 
 #: ../src/plugins/abrt-retrace-client.c:100
 msgid "Cannot open temporary file"
 msgstr "ತಾತ್ಕಾಲಿಕ ಕಡತವನ್ನು ತೆರೆಯಲಾಗಿಲ್ಲ"
-
-#: ../src/plugins/abrt-retrace-client.c:126
-#: ../src/plugins/abrt-retrace-client.c:162
-#, c-format
-msgid "Can't execute '%s'"
-msgstr "'%s' ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸಲಾಗಿಲ್ಲ"
 
 #: ../src/plugins/abrt-retrace-client.c:198
 #: ../src/plugins/abrt-retrace-client.c:655
@@ -680,9 +742,7 @@ msgstr "%d ಯಷ್ಟು ದೊಡ್ಡದಾದ HTTP ಹೆಡರ್ ಅನ�
 msgid ""
 "Unexpected HTTP response from server: %d\n"
 "%s"
-msgstr ""
-"ಪರಿಚಾರಕದಿಂದ ಅನಿರೀಕ್ಷಿತವಾದ HTTP ಪ್ರತ್ಯುತ್ತರ ಬಂದಿದೆ: %d\n"
-"%s"
+msgstr "ಪರಿಚಾರಕದಿಂದ ಅನಿರೀಕ್ಷಿತವಾದ HTTP ಪ್ರತ್ಯುತ್ತರ ಬಂದಿದೆ: %d\n%s"
 
 #: ../src/plugins/abrt-retrace-client.c:219
 #: ../src/plugins/abrt-retrace-client.c:734
@@ -690,8 +750,7 @@ msgstr ""
 #: ../src/plugins/abrt-retrace-client.c:921
 #: ../src/plugins/abrt-retrace-client.c:990
 msgid "Invalid response from server: missing HTTP message body."
-msgstr ""
-"ಪರಿಚಾರಕದಿಂದ ಅಮಾನ್ಯವಾದ ಪ್ರತ್ಯುತ್ತರ ಬಂದಿದೆ: HTTP ಸಂದೇಶದ ಮುಖ್ಯಭಾಗವು ಕಂಡುಬಂದಿಲ್ಲ."
+msgstr "ಪರಿಚಾರಕದಿಂದ ಅಮಾನ್ಯವಾದ ಪ್ರತ್ಯುತ್ತರ ಬಂದಿದೆ: HTTP ಸಂದೇಶದ ಮುಖ್ಯಭಾಗವು ಕಂಡುಬಂದಿಲ್ಲ."
 
 #: ../src/plugins/abrt-retrace-client.c:366
 #: ../src/plugins/abrt-retrace-client.c:833
@@ -704,9 +763,7 @@ msgstr "%d ಯಷ್ಟು ದೊಡ್ಡದಾದ HTTP ಹೆಡರ್ ಅನ�
 msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official %s repositories?"
-msgstr ""
-"'%s.%s' ಪ್ಯಾಕೇಜನ್ನು ಸಂಸ್ಕರಿಸಲು ರಿಟ್ರೇಸ್‌ ಪೂರೈಕೆಗಣಕದಿಂದ ಸಾಧ್ಯವಾಗಿಲ್ಲ.\n"
-"ಇದು ಅಧೀಕೃತ %s ರೆಪೊಸಿಟರಿಗಳ ಒಂದು ಭಾಗವೆ?"
+msgstr "'%s.%s' ಪ್ಯಾಕೇಜನ್ನು ಸಂಸ್ಕರಿಸಲು ರಿಟ್ರೇಸ್‌ ಪೂರೈಕೆಗಣಕದಿಂದ ಸಾಧ್ಯವಾಗಿಲ್ಲ.\nಇದು ಅಧೀಕೃತ %s ರೆಪೊಸಿಟರಿಗಳ ಒಂದು ಭಾಗವೆ?"
 
 #: ../src/plugins/abrt-retrace-client.c:409
 msgid "Querying server settings"
@@ -735,16 +792,14 @@ msgstr "ಡಂಪ್ ಕೋಶ '%s' ಅನ್ನು ತೆರೆಯಲು ಸಾ
 #: ../src/plugins/abrt-retrace-client.c:475
 #, c-format
 msgid "'%s' must be a regular file in order to use Retrace server."
-msgstr ""
+msgstr "ರಿಟ್ರೇಸ್ ಪೂರೈಕೆಗಣಕದಲ್ಲಿ ಬಳಸಲು '%s' ಒಂದು ಸಾಮಾನ್ಯ ಕಡತವಾಗಿರಬೇಕು."
 
 #: ../src/plugins/abrt-retrace-client.c:489
 #, c-format
 msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
-msgstr ""
-"ಕುಸಿತದ ಗಾತ್ರವು %lld ಬೈಟ್‌ಗಳಾಗಿವೆ, ಆದರೆ ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕವು ಕೇವಲ %lld ಬೈಟ್‌ಗಳಿಗಿಂದ "
-"ಚಿಕ್ಕದಾದ ಅಥವ ಅದಕ್ಕೆ ಸಮನಾದ ಕುಸಿತಗಳನ್ನು ಮಾತ್ರ ಒಪ್ಪಿಕೊಳ್ಳುತ್ತದೆ."
+msgstr "ಕುಸಿತದ ಗಾತ್ರವು %lld ಬೈಟ್‌ಗಳಾಗಿವೆ, ಆದರೆ ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕವು ಕೇವಲ %lld ಬೈಟ್‌ಗಳಿಗಿಂದ ಚಿಕ್ಕದಾದ ಅಥವ ಅದಕ್ಕೆ ಸಮನಾದ ಕುಸಿತಗಳನ್ನು ಮಾತ್ರ ಒಪ್ಪಿಕೊಳ್ಳುತ್ತದೆ."
 
 #: ../src/plugins/abrt-retrace-client.c:509
 msgid "The server does not support xz-compressed tarballs."
@@ -772,9 +827,7 @@ msgstr "ಒಂದು ಆರ್ಕೈವ್ ಅನ್ನು ಅಪ್‌ಲೋಡ
 msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
-msgstr ""
-"ಆರ್ಕೈವ್‌ನ ಗಾತ್ರವು %lld ಬೈಟ್‌ಗಳಾಗಿವೆ, ಆದರೆ ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕವು ಕೇವಲ %lld ಬೈಟ್‌ಗಳಿಗಿಂದ "
-"ಚಿಕ್ಕದಾದ ಅಥವ ಅದಕ್ಕೆ ಸಮನಾದ ಆರ್ಕೈವ್‌ಗಳನ್ನು ಮಾತ್ರ ಒಪ್ಪಿಕೊಳ್ಳುತ್ತದೆ."
+msgstr "ಆರ್ಕೈವ್‌ನ ಗಾತ್ರವು %lld ಬೈಟ್‌ಗಳಾಗಿವೆ, ಆದರೆ ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕವು ಕೇವಲ %lld ಬೈಟ್‌ಗಳಿಗಿಂದ ಚಿಕ್ಕದಾದ ಅಥವ ಅದಕ್ಕೆ ಸಮನಾದ ಆರ್ಕೈವ್‌ಗಳನ್ನು ಮಾತ್ರ ಒಪ್ಪಿಕೊಳ್ಳುತ್ತದೆ."
 
 #: ../src/plugins/abrt-retrace-client.c:612
 #, c-format
@@ -817,16 +870,13 @@ msgstr "ಅಪ್‌ಲೋಡ್ ಯಶಸ್ವಿಯಾಗಿದೆ"
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
-msgstr ""
-"ನಿಮ್ಮ ತೊಂದರೆ ಕೋಶವು ಹಾಳಾಗಿದೆ ಹಾಗು ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕದಿಂದ ಸಂಸ್ಕರಿಸಲು ಸಾಧ್ಯವಿರುವುದಿಲ್ಲ."
+msgstr "ನಿಮ್ಮ ತೊಂದರೆ ಕೋಶವು ಹಾಳಾಗಿದೆ ಹಾಗು ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕದಿಂದ ಸಂಸ್ಕರಿಸಲು ಸಾಧ್ಯವಿರುವುದಿಲ್ಲ."
 
 #: ../src/plugins/abrt-retrace-client.c:748
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
-msgstr ""
-"ನಿಮ್ಮ ಆರ್ಕೈವ್‌ ದುರುದ್ಧೇಶಪೂರಿತವಾದ ಕಡತಗಳನ್ನು (ಸಾಂಕೇತಿಕಕೊಂಡಿಗಳಂತಹ) ಹಾಗು ಅದನ್ನು "
-"ಸಂಸ್ಕರಿಸಲು ಸಾಧ್ಯವಿರುವುದಿಲ್ಲ."
+msgstr "ನಿಮ್ಮ ಆರ್ಕೈವ್‌ ದುರುದ್ಧೇಶಪೂರಿತವಾದ ಕಡತಗಳನ್ನು (ಸಾಂಕೇತಿಕಕೊಂಡಿಗಳಂತಹ) ಹಾಗು ಅದನ್ನು ಸಂಸ್ಕರಿಸಲು ಸಾಧ್ಯವಿರುವುದಿಲ್ಲ."
 
 #: ../src/plugins/abrt-retrace-client.c:761
 msgid "Invalid response from server: missing X-Task-Id."
@@ -845,9 +895,7 @@ msgstr "ಕೆಲಸವನ್ನು ರಿಟ್ರೇಸ್ ಮಾಡಲು ಆ
 msgid ""
 "Task Id: %s\n"
 "Task Password: %s\n"
-msgstr ""
-"ಕಾರ್ಯದ Id: %s\n"
-"ಕಾರ್ಯದ ಗುಪ್ತಪದ: %s\n"
+msgstr "ಕಾರ್ಯದ Id: %s\nಕಾರ್ಯದ ಗುಪ್ತಪದ: %s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:857
 msgid "Invalid response from server: missing X-Task-Status."
@@ -858,17 +906,13 @@ msgstr "ಪರಿಚಾರಕದಿಂದ ಅಮಾನ್ಯವಾದ ಪ್ರ�
 msgid ""
 "Task Status: %s\n"
 "%s\n"
-msgstr ""
-"ಕಾರ್ಯದ ಸ್ಥಿತಿ: %s\n"
-"%s\n"
+msgstr "ಕಾರ್ಯದ ಸ್ಥಿತಿ: %s\n%s\n"
 
 #: ../src/plugins/abrt-retrace-client.c:1050
 msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
-msgstr ""
-"ರಿಟ್ರೇಸ್ ವಿಫಲಗೊಂಡಿದೆ. ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಪ್ರಯತ್ನಿಸಿ ಹಾಗು ಆದರೂ ಸಹ ತೊಂದರೆ ಹಾಗೆಯೆ "
-"ಇದ್ದಲ್ಲಿ ದಯವಿಟ್ಟು ಈ ಸಮಸ್ಯೆಯನ್ನು ವರದಿ ಮಾಡಿ."
+msgstr "ರಿಟ್ರೇಸ್ ವಿಫಲಗೊಂಡಿದೆ. ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಪ್ರಯತ್ನಿಸಿ ಹಾಗು ಆದರೂ ಸಹ ತೊಂದರೆ ಹಾಗೆಯೆ ಇದ್ದಲ್ಲಿ ದಯವಿಟ್ಟು ಈ ಸಮಸ್ಯೆಯನ್ನು ವರದಿ ಮಾಡಿ."
 
 #: ../src/plugins/abrt-retrace-client.c:1098
 msgid "allow insecure connection to retrace server"
@@ -878,9 +922,7 @@ msgstr "ಅಸುರಕ್ಷಿತ ಸಂಪರ್ಕವನ್ನು ಪರಿ�
 msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
-msgstr ""
-"ಆರ್ಕೈವ್ ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡುವ ಮೊದಲು ರಿಟ್ರೇಸ್ ಪೂರೈಕೆಗಣಕವು ಒದಗಿಸಲಾದ ಪ್ಯಾಕೇಜನ್ನು ಸಂಸ್ಕರಿಸಲು "
-"ಸಮರ್ಥವಾಗಿದೆಯೆ ಎಂದು ಪರೀಕ್ಷಿಸಬೇಡಿ"
+msgstr "ಆರ್ಕೈವ್ ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡುವ ಮೊದಲು ರಿಟ್ರೇಸ್ ಪೂರೈಕೆಗಣಕವು ಒದಗಿಸಲಾದ ಪ್ಯಾಕೇಜನ್ನು ಸಂಸ್ಕರಿಸಲು ಸಮರ್ಥವಾಗಿದೆಯೆ ಎಂದು ಪರೀಕ್ಷಿಸಬೇಡಿ"
 
 #: ../src/plugins/abrt-retrace-client.c:1103
 msgid "retrace server URL"
@@ -926,9 +968,7 @@ msgstr "ಪರಿಚಾರಕದಲ್ಲಿನ ನಿಮ್ಮ ಕಾರ್ಯ�
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch"
-msgstr ""
-"abrt-retrace-client <operation> [options]\n"
-"ಕಾರ್ಯಾಚರಣೆಗಳು: create/status/backtrace/log/batch"
+msgstr "abrt-retrace-client <operation> [options]\nಕಾರ್ಯಾಚರಣೆಗಳು: create/status/backtrace/log/batch"
 
 #: ../src/plugins/abrt-retrace-client.c:1172
 #: ../src/plugins/abrt-retrace-client.c:1178
@@ -958,19 +998,14 @@ msgstr "ಸ್ಥಳೀಯ GNU ಡೀಬಗ್ಗರ್"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
-msgstr ""
-"ದೋಷನಿವಾರಣಾಮಾಹಿತಿ ಪ್ಯಾಕೇಜುಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ ಹಾಗು GDB ಅನ್ನು ಬಳಸಿಕೊಂಡು ಸ್ಥಳೀಯವಾಗಿ "
-"ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಉತ್ಪಾದಿಸಿ"
+msgstr "ದೋಷನಿವಾರಣಾಮಾಹಿತಿ ಪ್ಯಾಕೇಜುಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ ಹಾಗು GDB ಅನ್ನು ಬಳಸಿಕೊಂಡು ಸ್ಥಳೀಯವಾಗಿ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಉತ್ಪಾದಿಸಿ"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
 "Needs to downloads debuginfo packages, which might take significant time, "
-"and take up disk space. However, unlike RetraceServer, doesn't send coredump "
-"to remote machines."
-msgstr ""
-"ದೋಷನಿವಾರಣಾಮಾಹಿತಿ ಪ್ಯಾಕೇಜುಗಳ ಅಗತ್ಯವಿರುತ್ತದೆ, ಇದಕ್ಕೆ ಗಮನಾರ್ಹವಾದ ಸಮಯ ತಗಲಬಹುದು, ಹಾಗು "
-"ಡಿಸ್ಕಿನ ಜಾಗವನ್ನೂ ಸಹ ತೆಗೆದುಕೊಳ್ಳಬಹುದು. ಆದರೆ, RetraceServer ದಲ್ಲಿರುವಂತೆ, ಇದು ದೂರಸ್ಥ "
-"ಗಣಕಯಂತ್ರಗಳಿಗೆ ಕೋರ್ ಡಂಪ್ ಅನ್ನು ಕಳುಹಿಸುವುದಿಲ್ಲ."
+"and take up disk space. However, unlike RetraceServer, doesn't send coredump"
+" to remote machines."
+msgstr "ದೋಷನಿವಾರಣಾಮಾಹಿತಿ ಪ್ಯಾಕೇಜುಗಳ ಅಗತ್ಯವಿರುತ್ತದೆ, ಇದಕ್ಕೆ ಗಮನಾರ್ಹವಾದ ಸಮಯ ತಗಲಬಹುದು, ಹಾಗು ಡಿಸ್ಕಿನ ಜಾಗವನ್ನೂ ಸಹ ತೆಗೆದುಕೊಳ್ಳಬಹುದು. ಆದರೆ, RetraceServer ದಲ್ಲಿರುವಂತೆ, ಇದು ದೂರಸ್ಥ ಗಣಕಯಂತ್ರಗಳಿಗೆ ಕೋರ್ ಡಂಪ್ ಅನ್ನು ಕಳುಹಿಸುವುದಿಲ್ಲ."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:1
 msgid "Send core dump to remote retrace server for analysis"
@@ -983,13 +1018,7 @@ msgid ""
 "debuginfos is more complete. Retrace server may generate better backtraces. "
 "Cons: coredump you upload contains all the data from the crashed program, "
 "including your private data, if any."
-msgstr ""
-"ಕೋರ್ ಡಂಪ್‌ಗಳನ್ನು ಪರಿಚಾರಕಕ್ಕೆ ಅಪ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ, ಇದು ಬ್ಯಾಕ್‌ಟ್ರೇಸ್‌ ಅನ್ನು ಉತ್ಪಾದಿಸುತ್ತದೆ ಹಾಗು "
-"ಅದನ್ನು ಮರಳಿಸುತ್ತದೆ. ಅನುಕೂಲಗಳು: ದೋಷನಿವಾರಣಾಮಾಹಿತಿಯನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡುವ "
-"ಅಗತ್ಯವಿರುವುದಿಲ್ಲ. ದೋಷನಿವಾರಣಾಮಾಹಿತಿಯ ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕದ ದತ್ತಸಂಚಯವು ಹೆಚ್ಚು "
-"ಪರಿಪೂರ್ಣವಾಗಿರುತ್ತದೆ. ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕವು ಉತ್ತಮವಾದ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್‌ಗಳನ್ನು ಉತ್ಪಾದಿಸಬಲ್ಲದು. "
-"ಅನಾನುಕೂಲಗಳು: ನೀವು ಅಪ್‌ಲೋಡ್ ಮಾಡುವ ಕೋರ್ ಡಂಪ್ ನಿಮ್ಮ ಯಾವುದಾದರೂ ಖಾಸಗಿ ಮಾಹಿತಿ ಇದ್ದಲ್ಲಿ ಅದೂ "
-"ಸೇರಿದಂತೆ ಕುಸಿತಗೊಂಡ ಪ್ರೊಗ್ರಾಮ್‌ನ ಎಲ್ಲಾ ಮಾಹಿತಿಯನ್ನು ಹೊಂದಿರುತ್ತದೆ."
+msgstr "ಕೋರ್ ಡಂಪ್‌ಗಳನ್ನು ಪರಿಚಾರಕಕ್ಕೆ ಅಪ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ, ಇದು ಬ್ಯಾಕ್‌ಟ್ರೇಸ್‌ ಅನ್ನು ಉತ್ಪಾದಿಸುತ್ತದೆ ಹಾಗು ಅದನ್ನು ಮರಳಿಸುತ್ತದೆ. ಅನುಕೂಲಗಳು: ದೋಷನಿವಾರಣಾಮಾಹಿತಿಯನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡುವ ಅಗತ್ಯವಿರುವುದಿಲ್ಲ. ದೋಷನಿವಾರಣಾಮಾಹಿತಿಯ ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕದ ದತ್ತಸಂಚಯವು ಹೆಚ್ಚು ಪರಿಪೂರ್ಣವಾಗಿರುತ್ತದೆ. ರಿಟ್ರೇಸ್ ಪರಿಚಾರಕವು ಉತ್ತಮವಾದ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್‌ಗಳನ್ನು ಉತ್ಪಾದಿಸಬಲ್ಲದು. ಅನಾನುಕೂಲಗಳು: ನೀವು ಅಪ್‌ಲೋಡ್ ಮಾಡುವ ಕೋರ್ ಡಂಪ್ ನಿಮ್ಮ ಯಾವುದಾದರೂ ಖಾಸಗಿ ಮಾಹಿತಿ ಇದ್ದಲ್ಲಿ ಅದೂ ಸೇರಿದಂತೆ ಕುಸಿತಗೊಂಡ ಪ್ರೊಗ್ರಾಮ್‌ನ ಎಲ್ಲಾ ಮಾಹಿತಿಯನ್ನು ಹೊಂದಿರುತ್ತದೆ."
 
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:3
 #: ../src/plugins/analyze_CCpp.xml.in.h:3
@@ -1014,13 +1043,10 @@ msgstr "ಅಸುರಕ್ಷಿತ ಸಂಪರ್ಕವನ್ನು ಬಳಸ�
 #: ../src/plugins/analyze_RetraceServer.xml.in.h:7
 #: ../src/plugins/analyze_CCpp.xml.in.h:7
 msgid ""
-"Write \"insecure\" to allow insecure connection &lt;a href=\"https://"
-"fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;"
-"(warning)&lt;/a&gt;"
-msgstr ""
-"ಅಸುರಕ್ಷಿತ ಸಂಪರ್ಕ &lt;a href=\"https://fedorahosted.org/abrt/wiki/"
-"AbrtRetraceServerInsecureConnection\" &gt;(warning)&lt;/a&gt; ಅನ್ನು ಅನುಮತಿಸಲು "
-"\"insecure\" ಅನ್ನು ಬರೆಯಿರಿ"
+"Write \"insecure\" to allow insecure connection &lt;a "
+"href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\""
+" &gt;(warning)&lt;/a&gt;"
+msgstr "ಅಸುರಕ್ಷಿತ ಸಂಪರ್ಕ &lt;a href=\"https://fedorahosted.org/abrt/wiki/AbrtRetraceServerInsecureConnection\" &gt;(warning)&lt;/a&gt; ಅನ್ನು ಅನುಮತಿಸಲು \"insecure\" ಅನ್ನು ಬರೆಯಿರಿ"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
@@ -1034,10 +1060,7 @@ msgstr "~/.xsession-errors file ಇಂದ ಸೂಕ್ತವಾದ ಸಾಲು�
 msgid ""
 "Scans through ~/.xsession-errors file and saves those lines which contain "
 "executable's name. The result is saved as 'xsession_errors' element."
-msgstr ""
-"~/.xsession-errors ಕಡತದ ಮೂಲಕ ಶೋಧಿಸುತ್ತದೆ ಹಾಗು ಕಾರ್ಯಗತಗೊಳಿಸಲಬಲ್ಲ ಹೆಸರನ್ನು "
-"ಹೊಂದಿರುವ ಸಾಲುಗಳನ್ನು ಉಳಿಸುತ್ತದೆ. ಫಲಿತಾಂಶವನ್ನು  'xsession_errors' ಘಟಕವಾಗಿ "
-"ಉಳಿಸಲಾಗುತ್ತದೆ."
+msgstr "~/.xsession-errors ಕಡತದ ಮೂಲಕ ಶೋಧಿಸುತ್ತದೆ ಹಾಗು ಕಾರ್ಯಗತಗೊಳಿಸಲಬಲ್ಲ ಹೆಸರನ್ನು ಹೊಂದಿರುವ ಸಾಲುಗಳನ್ನು ಉಳಿಸುತ್ತದೆ. ಫಲಿತಾಂಶವನ್ನು  'xsession_errors' ಘಟಕವಾಗಿ ಉಳಿಸಲಾಗುತ್ತದೆ."
 
 #: ../src/plugins/https-utils.c:46
 msgid "An error occurred on the server side. Try again later."
@@ -1047,9 +1070,7 @@ msgstr "ಪೂರೈಕೆಗಣಕದಲ್ಲಿ ಒಂದು ದೋಷವು 
 msgid ""
 "An error occurred while connecting to the server. Check your network "
 "connection and try again."
-msgstr ""
-"ಪೂರೈಕೆಗಣಕದೊಂದಿಗೆ ಸಂಪರ್ಕ ಸಾಧಿಸುವಾಗ ಒಂದು ದೋಷವು ಸಂಭವಿಸಿದೆ. ನಿಮ್ಮ ಜಾಲಬಂಧ ಸಂಪರ್ಕವನ್ನು "
-"ಪರೀಕ್ಷಿಸಿ ಮತ್ತು ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ."
+msgstr "ಪೂರೈಕೆಗಣಕದೊಂದಿಗೆ ಸಂಪರ್ಕ ಸಾಧಿಸುವಾಗ ಒಂದು ದೋಷವು ಸಂಭವಿಸಿದೆ. ನಿಮ್ಮ ಜಾಲಬಂಧ ಸಂಪರ್ಕವನ್ನು ಪರೀಕ್ಷಿಸಿ ಮತ್ತು ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ."
 
 #: ../src/plugins/https-utils.c:69
 #, c-format
@@ -1064,9 +1085,7 @@ msgstr "ಪ್ರಮಾಣಪತ್ರವನ್ನು ನಂಬಲರ್ಹವ�
 #: ../src/plugins/https-utils.c:75
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
-msgstr ""
-"ಪ್ರಮಾಣಪತ್ರದ ವಿಷಯದ '%s' ಎಂಬ ಹೆಸರು ಉದ್ಧೇಶಿತ ಆತಿಥೇಯ ಹೆಸರಾದ '%s' ಎಂಬುದಕ್ಕೆ "
-"ತಾಳೆಯಾಗುತ್ತಿಲ್ಲ."
+msgstr "ಪ್ರಮಾಣಪತ್ರದ ವಿಷಯದ '%s' ಎಂಬ ಹೆಸರು ಉದ್ಧೇಶಿತ ಆತಿಥೇಯ ಹೆಸರಾದ '%s' ಎಂಬುದಕ್ಕೆ ತಾಳೆಯಾಗುತ್ತಿಲ್ಲ."
 
 #: ../src/plugins/https-utils.c:79
 msgid "Remote certificate has expired."
@@ -1181,10 +1200,7 @@ msgid ""
 "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
 "\n"
 "Search for updates on bodhi server"
-msgstr ""
-"& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n"
-"\n"
-"ಬೋಧಿ ಪೂರೈಕೆಗಣಕದಲ್ಲಿ ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಹುಡುಕಲಾಗುತ್ತಿದೆ"
+msgstr "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n\nಬೋಧಿ ಪೂರೈಕೆಗಣಕದಲ್ಲಿ ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಹುಡುಕಲಾಗುತ್ತಿದೆ"
 
 #: ../src/plugins/bodhi.c:432
 msgid "Searching for updates"
@@ -1204,11 +1220,11 @@ msgstr "ಪ್ಯಾಕೇಜಿನ ಸ್ಥಳೀಯ ಆವೃತ್ತಿಯ�
 msgid ""
 "An update exists which might fix your problem. You can install it by "
 "running: %s. Do you want to continue with reporting the bug?"
-msgstr ""
+msgstr "ಒಂದು ಅಪ್‌ಡೇಟ್ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ ಮತ್ತು ಇದು ನಿಮ್ಮ ತೊಂದರೆಯನ್ನು ಸರಿಪಡಿಸಬಹುದು. ಇದನ್ನು ಚಲಾಯಿಸುವ ಮೂಲಕ ನೀವು ಅನುಸ್ಥಾಪಿಸಬಹುದು: %s. ದೋಷ ವರದಿ ಮಾಡುವಿಕೆಯೊಂದಿಗೆ ನೀವು ಮುಂದುವರೆಯಲು ಬಯಸುವಿರಾ?"
 
 #: ../src/cli/abrt-cli.c:142
 msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
-msgstr "Usage: abrt-cli [--version] COMMAND [DIR]..."
+msgstr "ಬಳಕೆ: abrt-cli [--version] COMMAND [DIR]..."
 
 #: ../src/cli/abrt-cli.c:146
 msgid "List not yet reported problems [in DIRs]"
@@ -1251,7 +1267,7 @@ msgstr "& info [options] DIR..."
 msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
-msgstr ""
+msgstr "ಕೋರ್ ಡಂಪ್ ಅನ್ನು ವಿಶ್ಲೇಷಣೆಗಾಗಿ ದೂರಸ್ಥ ರಿಟ್ರೇಸ್ ಪೂರೈಕೆಗಣಕಕ್ಕೆ ಕಳುಹಿಸು ಅಥವ ದೂರಸ್ಥ ವಿಶ್ಲೇಷಣೆಯು ವಿಫಲಗೊಂಡಲ್ಲಿ ಸ್ಥಳೀಯ ವಿಶ್ಲೇಷಣೆಯನ್ನು ನಿರ್ವಹಿಸು"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
 msgid ""
@@ -1259,28 +1275,25 @@ msgid ""
 "user doens't want to upload his coredump to anywhere the event performs "
 "local analysis. Local analysis is run event if remote analysis fails. Pros: "
 "no need for debuginfo downloads. Retrace server's database of debuginfos is "
-"more complete. Retrace server may generate better backtraces. Cons: coredump "
-"you upload contains all the data from the crashed program, including your "
+"more complete. Retrace server may generate better backtraces. Cons: coredump"
+" you upload contains all the data from the crashed program, including your "
 "private data, if any."
-msgstr ""
+msgstr "ಕೋರ್ ಡಂಪ್ ಅನ್ನು ಪೂರೈಕೆಗಗಣಕಕ್ಕೆ ಏರಿಸು, ಇದು ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಉತ್ಪಾದಿಸುತ್ತದೆ ಮತ್ತು ಅದನ್ನು ಮರಳಿಸುತ್ತದೆ. ಬಳಕೆದಾರರು ತಮ್ಮ ಕೋರ್ ಡಂಪ್ ಅನ್ನು ಎಲ್ಲಿಯೂ ಏರಿಸಲು ಬಯಸದೇ ಇದ್ದಲ್ಲಿ ಸ್ಥಳೀಯ ವಿಶ್ಲೇಷಣೆಯನ್ನು ನಡೆಸಲಾಗುತ್ತದೆ. ದೂರಸ್ಥ ವಿಶ್ಲೇಷಣೆಯು ವಿಫಲಗೊಂಡಲ್ಲಿ ಸ್ಥಳೀಯ ವಿಶ್ಲೇಷಣೆಯನ್ನು ನಡೆಸಲಾಗುತ್ತದೆ. ಅನುಕೂಲಗಳು: ದೋಷನಿದಾನ ಮಾಹಿತಿಯನ್ನು ಇಳಿಸಿಕೊಳ್ಳುವ ಅಗತ್ಯವಿರುವುದಿಲ್ಲ. ದೋಷನಿದಾನ ಮಾಹಿತಿಗಳ ರಿಟ್ರೇಸ್ ಪೂರೈಕೆಗಣಕದ ದತ್ತಸಂಚಯವು ಹೆಚ್ಚು ಪರಿಪೂರ್ಣವಾಗಿರುತ್ತವೆ. ರಿಟ್ರೇಸ್ ಪೂರೈಕೆಗಣಕವು ಉತ್ತಮ ಬ್ಯಾಕ್‌ಟ್ರೇಸ್‌ಗಳನ್ನು ಉತ್ಪಾದಿಸಬಲ್ಲದು. ಕೊರತೆಗಳು: ನೀವು ಏರಿಸುವ ಕೋರ್ ಡಂಪ್‌ನಲ್ಲಿ ನಿಮ್ಮ ಖಾಸಗಿ ಮಾಹಿತಿಯೂ ಸೇರಿದಂತೆ ಕುಸಿತಗೊಂಡ ಪ್ರೊಗ್ರಾಮ್‌ನ ಎಲ್ಲಾ ಮಾಹಿತಿಯು ಇರುತ್ತದೆ."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
 msgstr "VM ಕೋರ್ ಅನ್ನು ವಿಶ್ಲೇಷಿಸಿ"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
-msgid "Install kernel debuginfo packages, generate kernel log and oops message"
-msgstr ""
-"ಕರ್ನಲ್ debuginfo(s) ಅನ್ನು ಅನುಸ್ಥಾಪಿಸಿ, ಕರ್ನಲ್ ದಿನಚರಿಯನ್ನು ಮತ್ತು oops ಸಂದೇಶವನ್ನು "
-"ಉತ್ಪಾದಿಸಿ"
+msgid ""
+"Install kernel debuginfo packages, generate kernel log and oops message"
+msgstr "ಕರ್ನಲ್ debuginfo(s) ಅನ್ನು ಅನುಸ್ಥಾಪಿಸಿ, ಕರ್ನಲ್ ದಿನಚರಿಯನ್ನು ಮತ್ತು oops ಸಂದೇಶವನ್ನು ಉತ್ಪಾದಿಸಿ"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
 "Needs to install kernel debuginfo packages, which might take significant "
 "time, and take up disk space."
-msgstr ""
-"ಕರ್ನಲ್ ದೋಷನಿದಾನಮಾಹಿತಿ ಪ್ಯಾಕೇಜುಗಳ ಅಗತ್ಯವಿರುತ್ತದೆ, ಇದಕ್ಕೆ ಬಹಳ ಸಮಯ ಹಿಡಿಯಬಹುದು ಮತ್ತು "
-"ಡಿಸ್ಕಿನ ಜಾಗವೂ ಸಹ ಬಳಸಲ್ಪಡಬಹುದು."
+msgstr "ಕರ್ನಲ್ ದೋಷನಿದಾನಮಾಹಿತಿ ಪ್ಯಾಕೇಜುಗಳ ಅಗತ್ಯವಿರುತ್ತದೆ, ಇದಕ್ಕೆ ಬಹಳ ಸಮಯ ಹಿಡಿಯಬಹುದು ಮತ್ತು ಡಿಸ್ಕಿನ ಜಾಗವೂ ಸಹ ಬಳಸಲ್ಪಡಬಹುದು."
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
@@ -1294,9 +1307,7 @@ msgstr "ಅನ್ವಯದ GConf ಕೋಶದ ಸಂರಚನೆಯನ್ನು 
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
-msgstr ""
-"gconftool-2 --recursive-list /apps/executable ಅನ್ನು ಪುನರಾವರ್ತಿತವಾಗಿ "
-"ಚಲಾಯಿಸುತ್ತದೆ ಮತ್ತು ಅದನ್ನು 'gconf_subtree' ಅಂಶವಾಗಿ ಉಳಿಸುತ್ತದೆ."
+msgstr "gconftool-2 --recursive-list /apps/executable ಅನ್ನು ಪುನರಾವರ್ತಿತವಾಗಿ ಚಲಾಯಿಸುತ್ತದೆ ಮತ್ತು ಅದನ್ನು 'gconf_subtree' ಅಂಶವಾಗಿ ಉಳಿಸುತ್ತದೆ."
 
 #: ../src/plugins/collect_Smolt.xml.in.h:1
 msgid "Collect Smolt profile"
@@ -1308,9 +1319,7 @@ msgstr "ನಿಮ್ಮ ಗಣಕಯಂತ್ರದ ಯಂತ್ರಾಂಶ ಮ
 
 #: ../src/plugins/collect_Smolt.xml.in.h:3
 msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
-msgstr ""
-"smoltSendProfile -p ಅನ್ನು ಚಲಾಯಿಸುತ್ತದೆ ಮತ್ತು ಅದರ ನೀಡಿಕೆಯನ್ನು 'smolt_data' "
-"ಅಂಶದಲ್ಲಿ ಉಳಿಸುತ್ತದೆ."
+msgstr "smoltSendProfile -p ಅನ್ನು ಚಲಾಯಿಸುತ್ತದೆ ಮತ್ತು ಅದರ ನೀಡಿಕೆಯನ್ನು 'smolt_data' ಅಂಶದಲ್ಲಿ ಉಳಿಸುತ್ತದೆ."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
@@ -1324,9 +1333,7 @@ msgstr "/etc/vimrc ಮತ್ತು /etc/gvimrc ಅನ್ನು ಉಳಿಸಿ�
 msgid ""
 "Checks if there are vimrc and gvimrc files in /etc and saves them as "
 "system_vimrc and system_gvimrc, respectively."
-msgstr ""
-"/etc vimrc ಮತ್ತು gvimrc ಕಡತಗಳು ಇವೆಯೆ ಎಂದು ಪರೀಕ್ಷಿಸುತ್ತದೆ ಮತ್ತು ಅವನ್ನು ಅನುಕ್ರಮವಾಗಿ "
-"system_vimrc ಮತ್ತು system_gvimrcಯಲ್ಲಿ ಉಳಿಸಿಡುತ್ತದೆ."
+msgstr "/etc vimrc ಮತ್ತು gvimrc ಕಡತಗಳು ಇವೆಯೆ ಎಂದು ಪರೀಕ್ಷಿಸುತ್ತದೆ ಮತ್ತು ಅವನ್ನು ಅನುಕ್ರಮವಾಗಿ system_vimrc ಮತ್ತು system_gvimrcಯಲ್ಲಿ ಉಳಿಸಿಡುತ್ತದೆ."
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid "Collect yours vim configuration files"
@@ -1338,20 +1345,18 @@ msgstr "ನಿಮ್ಮ ನೆಲೆ ಕೋಶದಿಂದ .vimrc ಮತ್ತ�
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
-"Checks if there are .vimrc and .gvimrc in your home directory and saves them "
-"as user_vimrc and user_gvimrc, respectively."
-msgstr ""
-"ನಿಮ್ಮ ನೆಲೆ ಕೋಶದಲ್ಲಿ .vimrc ಮತ್ತು .gvimrc ಇದೆಯೆ ಎಂದು ಪರೀಕ್ಷಿಸುತ್ತದೆ ಮತ್ತು ಅವನ್ನು "
-"ಅನುಕ್ರಮವಾಗಿ user_vimrc ಮತ್ತು user_gvimrcಯಲ್ಲಿ  ಉಳಿಸಿಡುತ್ತದೆ."
+"Checks if there are .vimrc and .gvimrc in your home directory and saves them"
+" as user_vimrc and user_gvimrc, respectively."
+msgstr "ನಿಮ್ಮ ನೆಲೆ ಕೋಶದಲ್ಲಿ .vimrc ಮತ್ತು .gvimrc ಇದೆಯೆ ಎಂದು ಪರೀಕ್ಷಿಸುತ್ತದೆ ಮತ್ತು ಅವನ್ನು ಅನುಕ್ರಮವಾಗಿ user_vimrc ಮತ್ತು user_gvimrcಯಲ್ಲಿ  ಉಳಿಸಿಡುತ್ತದೆ."
 
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"
-msgstr ""
+msgstr "ವರದಿಯನ್ನು ಪೋಸ್ಟ್ ಮಾಡು"
 
 #: ../src/plugins/post_report.xml.in.h:2
 msgid "Executed after the reporting is finished"
-msgstr ""
+msgstr "ಪೂರ್ಣಗೊಂಡಿದೆ ಎಂದು ವರದಿ ಮಾಡಿದ ನಂತರ ಕಾರ್ಯಗತಗೊಳಿಸಲಾಗಿದೆ"
 
 #: ../src/plugins/post_report.xml.in.h:3
 msgid "Used for updating of the databases"
-msgstr ""
+msgstr "ದತ್ತಸಂಚಯಗಳನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ಬಳಸಲಾಗಿದೆ"
