@@ -3,7 +3,7 @@ AC_INIT([abrt],
 	[crash-catcher@fedorahosted.org])
 
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AM_INIT_AUTOMAKE([-Wall foreign])
 # Support silent build rules. Disable by either passing --disable-silent-rules
 # to ./configure or passing V=1 to make
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
