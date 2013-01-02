@@ -924,6 +924,10 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
     }
 
     free_event_processing_state(state);
+
+    /* We stop using this channel */
+    g_io_channel_unref(gio);
+
     return FALSE;
 }
 
