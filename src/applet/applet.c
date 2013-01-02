@@ -108,6 +108,18 @@ static void ask_start_autoreporting()
     save_user_settings();
 }
 
+static bool is_shortened_reporting_enabled()
+{
+    /* User config always takes precedence */
+    const char *configured = get_user_setting("ShortenedReporting");
+    if (configured)
+        return string_to_bool(configured);
+
+    /* Default: enabled for GNOME desktop, else disabled */
+    const char *desktop_env = getenv("DESKTOP_SESSION");
+    return (desktop_env && strcasestr(desktop_env, "gnome") != NULL);
+}
+
 /*
  * Converts a NM state value stored in GVariant to boolean.
  *
@@ -237,6 +249,7 @@ typedef struct problem_info {
     bool foreign;
     char *message;
     bool known;
+    bool was_announced;
 } problem_info_t;
 
 static void push_to_deferred_queue(problem_info_t *pi)
@@ -527,7 +540,10 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
             if (pi->foreign == false && strcmp(A_REPORT_AUTOREPORT, action) == 0)
                 ask_start_autoreporting();
 
-            run_event_async(pi, get_autoreport_event_name(), REPORT_UNKNOWN_PROBLEM_IMMEDIATELY);
+            /* if shortened reporting is configured don't start reporting process
+             * when problem is unknown (just show notification) */
+            run_event_async(pi, get_autoreport_event_name(),
+                is_shortened_reporting_enabled() ? 0 : REPORT_UNKNOWN_PROBLEM_IMMEDIATELY);
         }
     }
     else
@@ -794,13 +810,22 @@ static void notify_problem_list(GList *problems, int flags)
     for (GList *iter = problems; iter; iter = g_list_next(iter))
     {
         problem_info_t *pi = iter->data;
+        if (is_shortened_reporting_enabled() && pi->was_announced)
+        {   /* In case of shortened reporting, show the problem notification only once. */
+            problem_info_free(pi);
+            continue;
+        }
+
+        pi->was_announced = true;
+
         NotifyNotification *notification = new_warn_notification(persistence);
         notify_notification_add_action(notification, "IGNORE", _("Ignore"),
                 NOTIFY_ACTION_CALLBACK(action_ignore),
                 pi, NULL);
 
         if (pi->known)
-        {
+        {   /* Problem has been 'autoreported' and is considered as KNOWN
+             */
             notify_notification_add_action(notification, A_KNOWN_OPEN_GUI, _("Open"),
                     NOTIFY_ACTION_CALLBACK(action_known),
                     pi, NULL);
@@ -814,7 +839,9 @@ static void notify_problem_list(GList *problems, int flags)
         else
         {
             if (flags & JUST_DETECTED_PROBLEM)
-            {
+            {   /* Problem has not yet been 'autoreported' and can be
+                 * 'autoreported' on user request.
+                 */
                 notify_notification_add_action(notification, A_REPORT_AUTOREPORT, _("Report"),
                         NOTIFY_ACTION_CALLBACK(action_report),
                         pi, NULL);
@@ -822,12 +849,28 @@ static void notify_problem_list(GList *problems, int flags)
                 notify_notification_update(notification, _("A Problem has Occurred"), pi->message, NULL);
             }
             else
-            {
-                notify_notification_add_action(notification, A_REPORT_REPORT, _("Report"),
-                        NOTIFY_ACTION_CALLBACK(action_report),
-                        pi, NULL);
+            {   /* Problem has been 'autoreported' and is considered as UNKNOWN
+                 *
+                 * In case of shortened reporting don't scare (confuse, bother)
+                 * user with the 'Report' button and simply announce that some
+                 * problem has been reported.
+                 *
+                 * Otherwise let user decide if he wants to start the standard
+                 * reporting process of a new problem by clicking on the
+                 * 'Report' button.
+                 */
+                if (is_shortened_reporting_enabled())
+                {
+                    notify_notification_update(notification, _("A Problem has been Reported"), pi->message, NULL);
+                }
+                else
+                {
+                    notify_notification_add_action(notification, A_REPORT_REPORT, _("Report"),
+                            NOTIFY_ACTION_CALLBACK(action_report),
+                            pi, NULL);
 
-                notify_notification_update(notification, _("A New Problem has Occurred"), pi->message, NULL);
+                    notify_notification_update(notification, _("A New Problem has Occurred"), pi->message, NULL);
+                }
             }
         }
 
