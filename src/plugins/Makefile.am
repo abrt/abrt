@@ -188,7 +188,7 @@ abrt_action_install_debuginfo_to_abrt_cache_CPPFLAGS = \
     -D_GNU_SOURCE \
     $(LIBREPORT_CFLAGS) \
     -Wall -Wwrite-strings \
-    -fPIE -Wl,-z,bind_now
+    -fPIE -Wl,-z,relro,now
 abrt_action_install_debuginfo_to_abrt_cache_LDADD = \
      $(LIBREPORT_LIBS) \
      ../lib/libabrt.la
