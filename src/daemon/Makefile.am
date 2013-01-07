@@ -24,7 +24,8 @@ abrtd_CPPFLAGS = \
     -DLIBEXEC_DIR=\"$(libexecdir)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    -D_GNU_SOURCE
+    -D_GNU_SOURCE \
+    -fPIE -Wl,-z,relro,now
 abrtd_LDADD = \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS)
