@@ -1285,6 +1285,12 @@ int main(int argc, char** argv)
     GList *new_dirs = NULL;
     GList *notify_list = NULL;
     new_dir_exists(&new_dirs);
+
+#define time_before_ndays(n) (time(NULL) - (n)*24*60*60)
+
+    /* Age limit = now - 3 days */
+    const unsigned long min_born_time = (unsigned long)(time_before_ndays(3));
+
     while (new_dirs)
     {
         struct dump_dir *dd = dd_opendir((char *)new_dirs->data, DD_OPEN_READONLY);
@@ -1293,6 +1299,22 @@ int main(int argc, char** argv)
             VERB1 log("'%s' is not a dump dir - ignoring\n", (char *)new_dirs->data);
             new_dirs = g_list_next(new_dirs);
             continue;
+        }
+
+        char *time_str = dd_load_text_ext(dd, FILENAME_TIME,
+                                DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+
+        if (time_str == NULL)
+        {
+            error_msg(_("dd_open() opened problem '%s' without valid time element"), (char *)new_dirs->data);
+            goto next;
+        }
+
+        /* Don't check errors, time element is always valid time stamp!! */
+        if (strtoul(time_str, 0, 10) < min_born_time)
+        {
+            VERB1 log("Ignoring outdated problem '%s'", (char *)new_dirs->data);
+            goto next;
         }
 
         char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO,
@@ -1314,8 +1336,15 @@ int main(int argc, char** argv)
 
             notify_list = g_list_prepend(notify_list, pi);
         }
+        else
+        {
+            VERB1 log("Ignoring already reported problem '%s'", (char *)new_dirs->data);
+        }
 
         free(reported_to);
+
+next:
+        free(time_str);
         dd_close(dd);
 
         new_dirs = g_list_next(new_dirs);
