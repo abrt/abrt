@@ -23,4 +23,5 @@ libabrt_la_CPPFLAGS = \
 libabrt_la_LDFLAGS = \
     -version-info 0:1:0
 libabrt_la_LIBADD = \
-    $(GLIB_LIBS)
+    $(GLIB_LIBS) \
+    $(LIBREPORT_LIBS)
