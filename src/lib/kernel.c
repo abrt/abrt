@@ -101,6 +101,19 @@ static const char *const s_koops_suspicious_strings[] = {
     ": nobody cared",
     "IRQ handler type mismatch",
 
+    /* X86 TRAPs */
+    "divide error:",
+    "bounds:",
+    "coprocessor segment overrun:",
+    "invalid TSS:",
+    "segment not present:",
+    "invalid opcode:",
+    "alignment check:",
+    "stack segment:",
+    "fpu exception:",
+    "simd exception:",
+    "iret exception:",
+
     /* Termination */
     NULL
 };
