@@ -68,13 +68,22 @@ rlJournalStart
         rlRun "abrt-cli report FAKEDIR" 1
     rlPhaseEnd
 
-    rlPhaseStartTest "report DIR"
-        DIR=$(abrt-cli list -f | grep 'Directory' | head -n1 | awk '{ print $2 }')
-        echo -e "1\n" |  EDITOR="cat" abrt-cli report $DIR > output.out 2>&1
-
-        rlAssertGrep "\-cmdline" output.out
-        rlAssertGrep "\-kernel" output.out
-    rlPhaseEnd
+    # This test used to select 1st analyzer (Local GNU Debugger)
+    # and run it, then "edit" data with cat (this merely prints data to stdout)
+    # and terminate. This was far from reliable (what if analyzer would change?).
+    #
+    # With the changed CLI, it probably can be emulated by running
+    # "report-cli -e analyze_LocalGDB $DIR"
+    # ...except that analyze_LocalGDB has <gui-review-elements>no</gui-review-elements>!
+    # Need to think about this...
+    #
+    #rlPhaseStartTest "report DIR"
+    #    DIR=$(abrt-cli list -f | grep 'Directory' | head -n1 | awk '{ print $2 }')
+    #    echo -e "1\n" | VISUAL="cat" EDITOR="cat" abrt-cli report $DIR > output.out 2>&1
+    #
+    #    rlAssertGrep "\-cmdline" output.out
+    #    rlAssertGrep "\-kernel" output.out
+    #rlPhaseEnd
 
     rlPhaseStartTest "info DIR"
         DIR=$(abrt-cli list -f | grep 'Directory' | head -n1 | awk '{ print $2 }')
