@@ -230,6 +230,11 @@ class ProblemAPITestCase(ProblematicTestCase):
         prob.delete()
 
     def test_time_cast(self):
+
+        if type(self.proxy) == problem.proxies.DBusProxy:
+            # set_item time is not allowed by the daemon
+            return unittest.skip('Skipping time cast test on DBusProxy')
+
         prob = self.create_problem()
 
         prob.add_current_process_data()
@@ -294,6 +299,8 @@ class ProblemAPITestCase(ProblematicTestCase):
         prob.add_current_process_data()
         ident = prob.save()
         prob.delete()
+
+        time.sleep(2)
 
         with self.assertRaises(problem.exception.InvalidProblem):
             self.proxy.get_item(ident, 'reason')
