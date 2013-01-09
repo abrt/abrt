@@ -74,25 +74,41 @@ static void record_oops(GList **oops_list, struct line_info* lines_info, int oop
     VERB3 if (rv == 0) log("Dropped oops: too short");
 }
 
+/* In some comparisons, we skip 1st letter, to avoid dealing with
+ * changes in capitalization in kernel. For example, I see that
+ * current kernel git (at 2011-01-01) has both "kernel BUG at ..."
+ * and "Kernel BUG at ..." messages, and I don't want to change
+ * the code below whenever kernel is changed to use "K" (or "k")
+ * uniformly.
+ */
+static const char *const s_koops_suspicious_strings[] = {
+    "BUG:",
+    "WARNING: at",
+    "INFO: possible recursive locking detected",
+    /*k*/"ernel BUG at",
+    "list_del corruption",
+    "list_add corruption",
+    "do_IRQ: stack overflow:",
+    /*n*/"ear stack overflow (cur:",
+    /*g*/"eneral protection fault",
+    /*u*/"nable to handle kernel",
+    /*d*/"ouble fault:",
+    "RTNL: assertion failed",
+    /*e*/"eek! page_mapcount(page) went negative!",
+    /*b*/"adness at",
+    "NETDEV WATCHDOG",
+    /*s*/"ysctl table check failed",
+    ": nobody cared",
+    "IRQ handler type mismatch",
+
+    /* Termination */
+    NULL
+};
+
 void koops_print_suspicious_strings(void)
 {
-    fputs(
-    "BUG" "\n"
-    "corruption" "\n"
-    "stack overflow" "\n"
-    "protection fault" "\n"
-    "WARNING: at" "\n"
-    /*u*/ "nable to handle" "\n"
-    /*d*/ "ouble fault:" "\n"
-    "RTNL: assertion failed" "\n"
-    /*e*/ "eek! page_mapcount(page) went negative!" "\n"
-    /*b*/ "adness at" "\n"
-    "NETDEV WATCHDOG" "\n"
-    /*s*/ "ysctl table check failed" "\n"
-    "INFO: possible recursive locking detected" "\n"
-    ": nobody cared" "\n"
-    "IRQ handler type mismatch" "\n"
-    , stdout);
+    for (const char *const *str = s_koops_suspicious_strings; *str; ++str)
+        puts(*str);
 }
 
 void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
@@ -216,55 +232,14 @@ next_line:
         if (oopsstart < 0)
         {
             /* Find start-of-oops markers */
-            /* In some comparisons, we skip 1st letter, to avoid dealing with
-             * changes in capitalization in kernel. For example, I see that
-             * current kernel git (at 2011-01-01) has both "kernel BUG at ..."
-             * and "Kernel BUG at ..." messages, and I don't want to change
-             * the code below whenever kernel is changed to use "K" (or "k")
-             * uniformly.
-             */
-            if (strstr(curline, /*g*/ "eneral protection fault:"))
-                oopsstart = i;
-            else if (strstr(curline, "BUG:"))
-                oopsstart = i;
-            else if (strstr(curline, /*k*/ "ernel BUG at"))
-                oopsstart = i;
-            /* WARN_ON() generated message */
-            else if (strstr(curline, "WARNING: at "))
-                oopsstart = i;
-            else if (strstr(curline, /*u*/ "nable to handle kernel"))
-                oopsstart = i;
-            else if (strstr(curline, /*d*/ "ouble fault:"))
-                oopsstart = i;
-            else if (strstr(curline, "do_IRQ: stack overflow:"))
-                oopsstart = i;
-            else if (strstr(curline, "RTNL: assertion failed"))
-                 oopsstart = i;
-            else if (strstr(curline, /*e*/ "eek! page_mapcount(page) went negative!"))
-                oopsstart = i;
-            else if (strstr(curline, /*n*/ "ear stack overflow (cur:"))
-                oopsstart = i;
-            else if (strstr(curline, /*b*/ "adness at"))
-                oopsstart = i;
-            else if (strstr(curline, "NETDEV WATCHDOG"))
-                oopsstart = i;
-            else if (strstr(curline, /*s*/ "ysctl table check failed"))
-                oopsstart = i;
-            else if (strstr(curline, "INFO: possible recursive locking detected"))
-                oopsstart = i;
-            // Not needed: "--[ cut here ]--" is always followed
-            // by "Badness at", "kernel BUG at", or "WARNING: at" string
-            //else if (strstr(curline, "------------[ cut here ]------------"))
-            //  oopsstart = i;
-            else if (strstr(curline, "list_del corruption"))
-                oopsstart = i;
-            else if (strstr(curline, "list_add corruption"))
-                oopsstart = i;
-            /* "irq NN: nobody cared..." */
-            else if (strstr(curline, ": nobody cared"))
-                oopsstart = i;
-            else if (strstr(curline, "IRQ handler type mismatch"))
-                oopsstart = i;
+            for (const char *const *str = s_koops_suspicious_strings; *str; ++str)
+            {
+                if (strstr(curline, *str))
+                {
+                    oopsstart = i;
+                    break;
+                }
+            }
 
             if (oopsstart >= 0)
             {
@@ -335,14 +310,21 @@ next_line:
                 oopsend = i-1;
             else if (strstr(curline, "Instruction dump:"))
                 oopsend = i;
-            /* if a new oops starts, this one has ended */
-            else if (strstr(curline, "WARNING: at ") && oopsstart != i) /* WARN_ON() generated message */
-                oopsend = i-1;
-            else if (strstr(curline, "Unable to handle") && oopsstart != i)
-                oopsend = i-1;
             /* kernel end-of-oops marker (not including marker itself) */
             else if (strstr(curline, "---[ end trace"))
                 oopsend = i-1;
+            else
+            {
+                /* if a new oops starts, this one has ended */
+                for (const char *const *str = s_koops_suspicious_strings; *str; ++str)
+                {
+                    if (strstr(curline, *str))
+                    {
+                        oopsend = i-1;
+                        break;
+                    }
+                }
+            }
 
             if (oopsend <= i)
             {
