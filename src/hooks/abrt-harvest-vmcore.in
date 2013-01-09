@@ -21,7 +21,12 @@ sleep 1
 
 umask 077
 
-CopyVMcore=`sed -n '/^CopyVMcore[ \t]*=/ s/.*=[ \t]*//p' /etc/abrt/abrt-harvest-vmcore.conf 2>/dev/null`
+CopyVMcore=`sed -n '/^CopyVMcore[ \t]*=/ s/.*=[ \t]*//p' @CONF_DIR@/abrt-harvest-vmcore.conf 2>/dev/null`
+ABRTDumpDir=`sed -n '/^DumpLocation[ \t]*=/ s/.*=[ \t]*//p' @CONF_DIR@/abrt.conf 2>/dev/null`
+
+if test -z "$ABRTDumpDir"; then
+    ABRTDumpDir="/var/spool/abrt"
+fi
 
 move_core=false
 if test x"$CopyVMcore" = x"no" || test x"$CopyVMcore" = x"0"; then
@@ -51,13 +56,13 @@ for d in *; do
 	#mv -- "$d" "/var/spool/abrt/vmcore-$d.new" || continue
 	# ...and this is what selinux forces me to do
 	# (otherwise files have wrong context and abrtd can't access them):
-	cp -r --no-preserve=all -- "$d" "/var/spool/abrt/vmcore-$d.new" || {
-		rm -rf "/var/spool/abrt/vmcore-$d.new"
+	cp -r --no-preserve=all -- "$d" "$ABRTDumpDir/vmcore-$d.new" || {
+		rm -rf -- "$ABRTDumpDir/vmcore-$d.new"
 		continue
 	}
 	$move_core && rm -rf -- "$d"
 
-	chown -R 0:0 "/var/spool/abrt/vmcore-$d.new"
-	chmod -R u+rwX,go-rwxst "/var/spool/abrt/vmcore-$d.new"
-	mv "/var/spool/abrt/vmcore-$d.new" "/var/spool/abrt/vmcore-$d"
+	chown -R 0:0 -- "$ABRTDumpDir/vmcore-$d.new"
+	chmod -R u+rwX,go-rwxst -- "$ABRTDumpDir/vmcore-$d.new"
+	mv -- "$ABRTDumpDir/vmcore-$d.new" "$ABRTDumpDir/vmcore-$d"
 done
