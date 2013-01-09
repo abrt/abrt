@@ -4,7 +4,9 @@ example_python_DATA = \
 	list_all_example.py \
 	list_example.py \
 	selinux_example.py \
-	userspace_example.py
+	userspace_example.py \
+	watch_example.py \
+	thread_watch_example.py
 
 example_pythondir = $(datadir)/doc/$(PACKAGE)-python-$(VERSION)/examples
 
