@@ -1436,7 +1436,10 @@ next:
     list_free_with_free(new_dirs);
 
     /*
-     * We handle SIGTERM in order to perform nice termination.
+     * We want to update "seen directories" list on SIGTERM.
+     * Updating it after each notification doesn't account for stealing directories:
+     * if directory is stolen after seen list is updated,
+     * on next startup applet will notify user about stolen directory. WRONG.
      *
      * SIGTERM handler simply stops GTK main loop and the applet saves user
      * settings, releases notify resources, releases dbus resources and updates
