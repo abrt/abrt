@@ -36,6 +36,9 @@ rlJournalStart
     rlPhaseStartSetup
         check_prior_crashes
 
+        cp test_event.conf /etc/libreport/events.d || exit $?
+        cp test_event.xml  /etc/libreport/events   || exit $?
+
         TmpDir=$(mktemp -d)
         pushd $TmpDir
 
@@ -45,9 +48,9 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
-        rlRun 'echo -e "1\n1\n" \
-            | EDITOR="cat" LC_ALL="cs_CZ.UTF-8" \
-              abrt-cli report $crash_PATH 2>&1 \
+        rlRun '\
+            EDITOR="cat" VISUAL="cat" LC_ALL="cs_CZ.UTF-8" \
+              report-cli -e test_event $crash_PATH 2>&1 \
             | tee crash.log \
             | grep "Architektura"' \
             0 "Localized string 'Architektura' present"
@@ -58,8 +61,9 @@ rlJournalStart
         rlBundleLogs "crash.log" crash.log
         popd
         rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
+        rlRun "rm /etc/libreport/events.d/test_event.conf" 0 "Removing test event config"
+        rlRun "rm /etc/libreport/events/test_event.xml"    0 "Removing test event config"
         rlRun "abrt-cli rm $crash_PATH"
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd
-
