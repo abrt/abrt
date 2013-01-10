@@ -108,6 +108,7 @@ EVENTS_DIR='${sysconfdir}/libreport/events'
 EVENTS_CONF_DIR='${sysconfdir}/libreport/events.d'
 ENABLE_SOCKET_OR_DBUS='-DENABLE_DBUS=1'
 DEFAULT_DUMP_LOCATION='${localstatedir}/spool/abrt'
+DEFAULT_DUMP_DIR_MODE=$($PKG_CONFIG --variable=dd_mode libreport)
 
 AC_SUBST(CONF_DIR)
 AC_SUBST(VAR_RUN)
@@ -115,6 +116,7 @@ AC_SUBST(PLUGINS_CONF_DIR)
 AC_SUBST(EVENTS_CONF_DIR)
 AC_SUBST(EVENTS_DIR)
 AC_SUBST(DEFAULT_DUMP_LOCATION)
+AC_SUBST(DEFAULT_DUMP_DIR_MODE)
 
 # Initialize the test suite.
 AC_CONFIG_TESTDIR(tests)

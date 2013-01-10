@@ -657,7 +657,7 @@ int main(int argc, char** argv)
     /* use fsuid instead of uid, so we don't expose any sensitive
      * information of suided app in /var/spool/abrt
      */
-    dd = dd_create(path, fsuid, 0640);
+    dd = dd_create(path, fsuid, DEFAULT_DUMP_DIR_MODE);
     if (dd)
     {
         char *rootdir = get_rootdir(pid);

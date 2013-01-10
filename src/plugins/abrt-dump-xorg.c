@@ -70,11 +70,11 @@ static void save_bt_to_dump_dir(const char *bt, const char *exe, const char *rea
     const char *iso_date = iso_date_string(&t);
     /* dump should be readable by all if we're run with -x */
     uid_t my_euid = (uid_t)-1L;
-    mode_t mode = 0644;
+    mode_t mode = DEFAULT_DUMP_DIR_MODE | S_IROTH;
     /* and readable only for the owner otherwise */
     if (!(g_opts & OPT_x))
     {
-        mode = 0640;
+        mode = DEFAULT_DUMP_DIR_MODE;
         my_euid = geteuid();
     }
 

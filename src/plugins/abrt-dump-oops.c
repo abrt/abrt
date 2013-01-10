@@ -119,11 +119,11 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
     const char *iso_date = iso_date_string(&t);
     /* dump should be readable by all if we're run with -x */
     uid_t my_euid = (uid_t)-1L;
-    mode_t mode = 0644;
+    mode_t mode = DEFAULT_DUMP_DIR_MODE | S_IROTH;
     /* and readable only for the owner otherwise */
     if (!world_readable_dump)
     {
-        mode = 0640;
+        mode = DEFAULT_DUMP_DIR_MODE;
         my_euid = geteuid();
     }
 

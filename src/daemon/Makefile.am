@@ -37,6 +37,7 @@ abrt_server_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
+    -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
     -D_GNU_SOURCE
 abrt_server_LDADD = \
     ../lib/libabrt.la \
