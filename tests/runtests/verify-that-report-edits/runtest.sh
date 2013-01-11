@@ -35,34 +35,40 @@ rlJournalStart
     rlPhaseStartSetup
         check_prior_crashes
 
+        cp test_event_*.conf /etc/libreport/events.d || exit $?
+        cp test_event_*.xml  /etc/libreport/events   || exit $?
+
         TmpDir=$(mktemp -d)
-        rlRun "yum -y install expect" 0 "Install expect"
+#        rlRun "yum -y install expect" 0 "Install expect"
         cp "./fakeditor.sh" $TmpDir
         cp "./expect" $TmpDir
         pushd $TmpDir
 
         generate_crash
-        wait_for_hooks
+#        wait_for_hooks
         get_crash_path
     rlPhaseEnd
 
     rlPhaseStartTest
         rlRun "./expect $crash_PATH &> out" 0 "Running abrt-cli via expect"
-        rlLog "$( cat out)"
+        rlLog "$(cat out)"
         rlAssertGrep "The report has been updated" out
 
         smart_quote="$(grep 'smart_quote=' fakeditor.sh | awk -F '"' '{ print $2 }')"
         rlAssertGrep "edited successfully" out
-        rlAssertGrep "/tmp/abrt.log" out
+        # Disabled in ./expect so far:
+        #rlAssertGrep "/tmp/abrt.log" out
         rlAssertNotGrep "!! Timeout !!" out
         rlLog "smart_quote=$smart_quote"
-        rlAssertGrep "$smart_quote" "/tmp/abrt.log"
+        rlAssertGrep "$smart_quote" "$crash_PATH/comment"
     rlPhaseEnd
 
     rlPhaseStartCleanup
         rlRun "abrt-cli rm $crash_PATH" 0 "Delete $crash_PATH"
         popd # TmpDir
-        rm -rf $TmpDir
+        rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
+        rlRun "rm /etc/libreport/events.d/test_event_*.conf" 0 "Removing test event config"
+        rlRun "rm /etc/libreport/events/test_event_*.xml"    0 "Removing test event config"
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd
