@@ -25,7 +25,7 @@ CopyVMcore=`sed -n '/^CopyVMcore[ \t]*=/ s/.*=[ \t]*//p' @CONF_DIR@/abrt-harvest
 ABRTDumpDir=`sed -n '/^DumpLocation[ \t]*=/ s/.*=[ \t]*//p' @CONF_DIR@/abrt.conf 2>/dev/null`
 
 if test -z "$ABRTDumpDir"; then
-    ABRTDumpDir="/var/spool/abrt"
+    ABRTDumpDir="@DEFAULT_DUMP_LOCATION@"
 fi
 
 move_core=false

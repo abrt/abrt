@@ -65,7 +65,7 @@ static void ParseCommon(map_string_h *settings, const char *conf_filename)
         g_hash_table_remove(settings, "DumpLocation");
     }
     else
-        g_settings_dump_location = xstrdup("/var/spool/abrt");
+        g_settings_dump_location = xstrdup(DEFAULT_DUMP_LOCATION);
 
     value = g_hash_table_lookup(settings, "DeleteUploaded");
     if (value)

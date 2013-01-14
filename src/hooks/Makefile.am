@@ -59,4 +59,5 @@ abrt-install-ccpp-hook: abrt-install-ccpp-hook.in
 
 abrt-harvest-vmcore: abrt-harvest-vmcore.in
 	sed -e s,\@CONF_DIR\@,\$(CONF_DIR)\,g \
+	    -e s,\@DEFAULT_DUMP_LOCATION\@,$(DEFAULT_DUMP_LOCATION),g \
 		$< >$@

@@ -20,6 +20,7 @@ libabrt_la_CPPFLAGS = \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
+    -DDEFAULT_DUMP_LOCATION=\"$(DEFAULT_DUMP_LOCATION)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     $(GIO_CFLAGS) \
