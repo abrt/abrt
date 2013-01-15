@@ -802,7 +802,7 @@ static void ensure_writable_dir(const char *dir, mode_t mode, const char *user)
     if (!pw)
         perror_msg_and_die("Can't find user '%s'", user);
 
-    if ((sb.st_uid != pw->pw_uid || sb.st_gid != pw->pw_gid) && chown(dir, pw->pw_uid, pw->pw_gid) != 0)
+    if ((sb.st_uid != pw->pw_uid || sb.st_gid != pw->pw_gid) && lchown(dir, pw->pw_uid, pw->pw_gid) != 0)
         perror_msg_and_die("Can't set owner %u:%u on '%s'", (unsigned int)pw->pw_uid, (unsigned int)pw->pw_gid, dir);
     if ((sb.st_mode & 07777) != mode && chmod(dir, mode) != 0)
         perror_msg_and_die("Can't set mode %o on '%s'", mode, dir);
