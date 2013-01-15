@@ -65,13 +65,12 @@ int main(int argc, char **argv)
         setreuid(u, u);
         /* We are suid'ed! */
         /* Prevent malicious user from messing up with suid'ed process: */
-        /* Set safe PATH */
-// TODO: honor configure --prefix here by adding it to PATH
-// (otherwise abrt-action-install-debuginfo would fail to spawn abrt-action-trim-files):
-        if (u == 0)
-            putenv((char*) "PATH=/usr/sbin:/sbin:/usr/bin:/bin");
-        else
-            putenv((char*) "PATH=/usr/bin:/bin");
+#if 1
+// We forgot to sanitize PYTHONPATH. And who knows what else we forgot
+// (especially considering *future* new variables of this kind).
+// We switched to clearing entire environment instead:
+        clearenv();
+#else
         /* Clear dangerous stuff from env */
         static const char forbid[] =
             "LD_LIBRARY_PATH" "\0"
@@ -88,6 +87,14 @@ int main(int argc, char **argv)
             unsetenv(p);
             p += strlen(p) + 1;
         } while (*p);
+#endif
+        /* Set safe PATH */
+// TODO: honor configure --prefix here by adding it to PATH
+// (otherwise abrt-action-install-debuginfo would fail to spawn abrt-action-trim-files):
+        if (u == 0)
+            putenv((char*) "PATH=/usr/sbin:/sbin:/usr/bin:/bin");
+        else
+            putenv((char*) "PATH=/usr/bin:/bin");
     }
 
     execvp(EXECUTABLE, argv);
