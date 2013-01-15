@@ -604,13 +604,13 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
-        int chown_res = chown(problem_dir, statbuf.st_uid, pwd->pw_gid);
+        int chown_res = lchown(problem_dir, statbuf.st_uid, pwd->pw_gid);
         dd_init_next_file(dd);
         char *full_name;
         while (chown_res == 0 && dd_get_next_file(dd, /*short_name*/ NULL, &full_name))
         {
             VERB3 log("chowning %s", full_name);
-            chown_res = chown(full_name, statbuf.st_uid, pwd->pw_gid);
+            chown_res = lchown(full_name, statbuf.st_uid, pwd->pw_gid);
             free(full_name);
         }
 
