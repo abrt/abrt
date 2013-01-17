@@ -19,7 +19,7 @@ ccpp-plugin-config
 python-addon
 
 # - tools tests
-cli-sanity
+distro_specific/rhel6/cli-sanity
 check-hook-install
 distro_specific/rhel6/dumpoops
 #dumpxorg
@@ -34,8 +34,8 @@ distro_specific/rhel6/dbus-api
 #bugzilla-comment-format
 
 mailx-reporting
-localized-reporting
-verify-that-report-edits
+distro_specific/rhel6/localized-reporting
+distro_specific/rhel6/verify-that-report-edits
 upload-scp
 upload-ftp
 upload-handling
