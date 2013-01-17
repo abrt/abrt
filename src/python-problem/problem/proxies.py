@@ -176,6 +176,10 @@ class FsProxy(object):
     def list(self):
         for dir_entry in os.listdir(self.directory):
             dump_dir = os.path.join(self.directory, dir_entry)
+
+            if not os.path.isdir(dump_dir) or not os.access(dump_dir, os.R_OK):
+                continue
+
             ddir = report.dd_opendir(dump_dir)
             if ddir:
                 ddir.close()
