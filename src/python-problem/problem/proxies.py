@@ -122,7 +122,7 @@ class SocketProxy(object):
         raise NotImplementedError
 
 class FsProxy(object):
-    def __init__(self, directory):
+    def __init__(self, directory='/var/tmp/abrt'):
         self.directory = directory
 
     def create(self, problem_dict):
@@ -130,7 +130,7 @@ class FsProxy(object):
         for key, value in problem_dict.iteritems():
             probd.add(key, value)
 
-        ddir = probd.create_dump_dir('/tmp/abrt/')
+        ddir = probd.create_dump_dir(self.directory)
         ret = ddir.name
         ddir.close()
         return ret
