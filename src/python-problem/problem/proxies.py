@@ -173,11 +173,15 @@ class FsProxy(object):
         ddir.delete()
         return True
 
-    def list(self):
+    def list(self, _all=False):
         for dir_entry in os.listdir(self.directory):
             dump_dir = os.path.join(self.directory, dir_entry)
 
             if not os.path.isdir(dump_dir) or not os.access(dump_dir, os.R_OK):
+                continue
+
+            uid = os.getuid()
+            if not _all and os.stat(dump_dir).st_uid != uid:
                 continue
 
             ddir = report.dd_opendir(dump_dir)
@@ -185,8 +189,9 @@ class FsProxy(object):
                 ddir.close()
                 yield dump_dir
 
-    def list_all(self, *args):
-        return self.list(*args)
+    def list_all(self, *args, **kwargs):
+        kwargs.update(dict(_all=True))
+        return self.list(*args, **kwargs)
 
 def get_proxy():
     try:
