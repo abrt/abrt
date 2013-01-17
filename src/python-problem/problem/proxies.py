@@ -197,4 +197,4 @@ def get_proxy():
     except ImportError:
         logging.debug('DBus not found')
 
-    return SocketProxy()
+    return FsProxy()
