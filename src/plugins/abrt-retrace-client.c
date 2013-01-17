@@ -1036,7 +1036,7 @@ static int run_batch(bool delete_temp_archive)
             /* the result of TASK_VMCORE is not backtrace, but kernel log */
             char *backtrace_path = xasprintf("%s/%s", dump_dir_name,
                                              task_type == TASK_VMCORE ? FILENAME_KERNEL_LOG : FILENAME_BACKTRACE);
-            int backtrace_fd = xopen3(backtrace_path, O_WRONLY | O_CREAT | O_TRUNC, 0640);
+            int backtrace_fd = xopen3(backtrace_path, O_WRONLY | O_CREAT | O_TRUNC, DEFAULT_DUMP_DIR_MODE);
             xwrite(backtrace_fd, backtrace_text, strlen(backtrace_text));
             close(backtrace_fd);
             free(backtrace_path);

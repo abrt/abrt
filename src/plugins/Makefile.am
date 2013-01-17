@@ -255,6 +255,7 @@ abrt_retrace_client_SOURCES = \
      $(NSS_CFLAGS) \
      $(GLIB_CFLAGS) \
      -D_GNU_SOURCE \
+     -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
      $(LIBREPORT_CFLAGS)
  abrt_retrace_client_LDADD = \
      $(LIBREPORT_LIBS) \
