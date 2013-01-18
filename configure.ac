@@ -107,8 +107,13 @@ PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
 EVENTS_DIR='${sysconfdir}/libreport/events'
 EVENTS_CONF_DIR='${sysconfdir}/libreport/events.d'
 ENABLE_SOCKET_OR_DBUS='-DENABLE_DBUS=1'
-DEFAULT_DUMP_LOCATION='${localstatedir}/spool/abrt'
 DEFAULT_DUMP_DIR_MODE=$($PKG_CONFIG --variable=dd_mode libreport)
+
+AC_ARG_WITH([defaultdumplocation],
+            AS_HELP_STRING([--with-defaultdumplocation=DIR],
+                           [Default dump location ('LOCALSTATEDIR/spool/abrt')]),
+            [], [with_defaultdumplocation=${localstatedir}/spool/abrt])
+AC_SUBST([DEFAULT_DUMP_LOCATION], [$with_defaultdumplocation])
 
 AC_SUBST(CONF_DIR)
 AC_SUBST(VAR_RUN)
