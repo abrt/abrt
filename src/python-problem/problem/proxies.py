@@ -2,6 +2,7 @@ import os
 import logging
 import report
 
+import problem.config
 import problem.exception
 
 class DBusProxy(object):
@@ -122,7 +123,7 @@ class SocketProxy(object):
         raise NotImplementedError
 
 class FsProxy(object):
-    def __init__(self, directory='/var/tmp/abrt'):
+    def __init__(self, directory=problem.config.DEFAULT_DUMP_LOCATION):
         self.directory = directory
 
     def create(self, problem_dict):
