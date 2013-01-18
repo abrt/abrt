@@ -1,10 +1,6 @@
 import os
 import logging
 
-import dbus
-import dbus.mainloop.glib
-import gobject
-
 import problem
 
 class ProblemWatcher(object):
@@ -17,6 +13,9 @@ class ProblemWatcher(object):
     '''
 
     def __init__(self, auth):
+        import dbus
+        import dbus.mainloop.glib
+        import gobject
 
         gobject.threads_init()
 
