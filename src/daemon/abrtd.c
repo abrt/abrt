@@ -54,14 +54,67 @@ static int s_upload_watch = -1;
 static unsigned s_timeout;
 static bool s_exiting;
 
-static GIOChannel *socket_channel = NULL;
-static guint socket_channel_cb_id = 0;
-static int socket_client_count = 0;
+static GIOChannel *channel_socket = NULL;
+static guint channel_id_socket = 0;
+static int child_count = 0;
 
+static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpointer ptr_unused);
 
 /* Helpers */
 
-static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *event_name, FILE **fpp)
+static GIOChannel *my_io_channel_unix_new(int fd)
+{
+    GIOChannel *ch = g_io_channel_unix_new(fd);
+
+    /* Need to set the encoding otherwise we get:
+     * "Invalid byte sequence in conversion input".
+     * According to manual "NULL" is safe for binary data.
+     */
+    GError *error = NULL;
+    g_io_channel_set_encoding(ch, NULL, &error);
+    if (error)
+        perror_msg_and_die("Can't set encoding on gio channel: %s", error->message);
+
+    g_io_channel_set_close_on_unref(ch, TRUE);
+
+    return ch;
+}
+
+static guint add_watch_or_die(GIOChannel *channel, unsigned condition, GIOFunc func)
+{
+    errno = 0;
+    guint r = g_io_add_watch(channel, (GIOCondition)condition, func, NULL);
+    if (!r)
+        perror_msg_and_die("g_io_add_watch failed");
+    return r;
+}
+
+
+static void increment_child_count()
+{
+    if (++child_count >= MAX_CLIENT_COUNT)
+    {
+        error_msg("Too many clients, refusing connections to '%s'", SOCKET_FILE);
+        /* To avoid infinite loop caused by the descriptor in "ready" state,
+         * the callback must be disabled.
+         * It is added back in client_free(). */
+        g_source_remove(channel_id_socket);
+        channel_id_socket = 0;
+    }
+}
+
+static void decrement_child_count()
+{
+    if (child_count)
+        child_count--;
+    if (child_count < MAX_CLIENT_COUNT && !channel_id_socket)
+    {
+        log("Accepting connections on '%s'", SOCKET_FILE);
+        channel_id_socket = add_watch_or_die(channel_socket, G_IO_IN | G_IO_PRI | G_IO_HUP, server_socket_cb);
+    }
+}
+
+static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *event_name, int *fdp)
 {
     char *args[6];
     args[0] = (char *) "/usr/libexec/abrt-handle-event";
@@ -76,21 +129,12 @@ static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *ev
     VERB1 flags &= ~EXECFLG_QUIET;
 
     pid_t child = fork_execv_on_steroids(flags, args, pipeout,
-                                         /*env_vec:*/ NULL, /*dir:*/ NULL, 0);
-
-    *fpp = fdopen(pipeout[0], "r");
-    if (!*fpp)
-        die_out_of_memory();
+                                         /*env_vec:*/ NULL, /*dir:*/ NULL,
+                                         /*uid(unused):*/ 0);
+    if (fdp)
+        *fdp = pipeout[0];
+    increment_child_count();
     return child;
-}
-
-static guint add_watch_or_die(GIOChannel *channel, unsigned condition, GIOFunc func)
-{
-    errno = 0;
-    guint r = g_io_add_watch(channel, (GIOCondition)condition, func, NULL);
-    if (!r)
-        perror_msg_and_die("g_io_add_watch failed");
-    return r;
 }
 
 
@@ -99,18 +143,6 @@ static guint add_watch_or_die(GIOChannel *channel, unsigned condition, GIOFunc f
 /* Callback called by glib main loop when a client connects to ABRT's socket. */
 static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpointer ptr_unused)
 {
-    /* Check the limit for number of simultaneously attached clients. */
-    if (socket_client_count >= MAX_CLIENT_COUNT)
-    {
-        error_msg("Too many clients, refusing connections to '%s'", SOCKET_FILE);
-        /* To avoid infinite loop caused by the descriptor in "ready" state,
-         * the callback must be disabled.
-         * It is added back in client_free(). */
-        g_source_remove(socket_channel_cb_id);
-        socket_channel_cb_id = 0;
-        return TRUE;
-    }
-
     int socket = accept(g_io_channel_unix_get_fd(source), NULL, NULL);
     if (socket == -1)
     {
@@ -142,7 +174,7 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
         perror_msg_and_die("Can't execute '%s'", argv[0]);
     }
     /* parent */
-    socket_client_count++;
+    increment_child_count();
     close(socket);
     return TRUE;
 }
@@ -167,23 +199,22 @@ static void dumpsocket_init()
     if (chmod(SOCKET_FILE, SOCKET_PERMISSION) != 0)
         perror_msg_and_die("chmod '%s'", SOCKET_FILE);
 
-    socket_channel = g_io_channel_unix_new(socketfd);
-    g_io_channel_set_close_on_unref(socket_channel, TRUE);
+    channel_socket = my_io_channel_unix_new(socketfd);
 
-    socket_channel_cb_id = add_watch_or_die(socket_channel, G_IO_IN | G_IO_PRI, server_socket_cb);
+    channel_id_socket = add_watch_or_die(channel_socket, G_IO_IN | G_IO_PRI | G_IO_HUP, server_socket_cb);
 }
 
 /* Releases all resources used by dumpsocket. */
 static void dumpsocket_shutdown()
 {
     /* Set everything to pre-initialization state. */
-    if (socket_channel)
+    if (channel_socket)
     {
         /* Undo add_watch_or_die */
-        g_source_remove(socket_channel_cb_id);
+        g_source_remove(channel_id_socket);
         /* Undo g_io_channel_unix_new */
-        g_io_channel_unref(socket_channel);
-        socket_channel = NULL;
+        g_io_channel_unref(channel_socket);
+        channel_socket = NULL;
     }
 }
 
@@ -251,13 +282,7 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
             pid_t pid;
             while ((pid = safe_waitpid(-1, NULL, WNOHANG)) > 0)
             {
-                if (socket_client_count)
-                    socket_client_count--;
-                if (!socket_channel_cb_id)
-                {
-                    log("Accepting connections on '%s'", SOCKET_FILE);
-                    socket_channel_cb_id = add_watch_or_die(socket_channel, G_IO_IN | G_IO_PRI, server_socket_cb);
-                }
+                decrement_child_count();
             }
         }
     }
@@ -265,55 +290,105 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
 }
 
 
-/* Inotify handler */
-
-static problem_data_t *load_problem_data(const char *dump_dir_name)
+/* Event-processing child output handler (such as "post-create" event) */
+enum {
+    EVTYPE_POST_CREATE,
+    EVTYPE_NOTIFY,
+};
+struct event_processing_state
 {
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return NULL;
-
-    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
-    dd_close(dd);
-
-    add_to_problem_data_ext(problem_data, CD_DUMPDIR, dump_dir_name,
-                          CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE);
-
-    return problem_data;
+    int   event_type;
+    pid_t child_pid;
+    int   child_stdout_fd;
+    struct strbuf *cmd_output;
+    char *dirname;
+    char *dup_of_dir;
+};
+static struct event_processing_state *new_event_processing_state(void)
+{
+    struct event_processing_state *p = xzalloc(sizeof(*p));
+    p->child_pid = -1;
+    p->child_stdout_fd = -1;
+    p->cmd_output = strbuf_new();
+    return p;
+}
+static void free_event_processing_state(struct event_processing_state *p)
+{
+    if (!p)
+        return;
+    /*
+    if (p->child_stdout_fd >= 0)
+        close(p->child_stdout_fd);
+    */
+    strbuf_free(p->cmd_output);
+    free(p->dirname);
+    free(p->dup_of_dir);
+    free(p);
 }
 
-typedef enum {
-    MW_OK,       /* No error */
-    MW_OCCURRED, /* No error, but thus dir is a dup */
-    MW_ERROR,    /* Other error (such as "post-create" event exited with nonzero */
-} mw_result_t;
-
-static mw_result_t run_post_create_and_load_data(const char *dump_dir_name, problem_data_t **problem_data)
+static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr)
 {
-    FILE *fp;
-    pid_t child = spawn_event_handler_child(dump_dir_name, "post-create", &fp);
+    struct event_processing_state *state = ptr;
 
-    char *buf;
-    char *dup_of_dir = NULL;
-    while ((buf = xmalloc_fgetline(fp)) != NULL)
+    //log("Reading from event fd %d", state->child_stdout_fd);
+
+    /* Read streamed data and split lines */
+    for (;;)
     {
-        /* Hmm, DUP_OF_DIR: ends up in syslog. move log() into 'else'? */
-        log("%s", buf);
+        char buf[250]; /* usually we get one line, no need to have big buf */
+        errno = 0;
+        gsize r = 0;
+        g_io_channel_read_chars(gio, buf, sizeof(buf) - 1, &r, NULL);
+        if (r <= 0)
+            break;
+        buf[r] = '\0';
 
-        if (strncmp("DUP_OF_DIR: ", buf, strlen("DUP_OF_DIR: ")) == 0)
+        /* split lines in the current buffer */
+        char *raw = buf;
+        char *newline;
+        while ((newline = strchr(raw, '\n')) != NULL)
         {
-            overlapping_strcpy(buf, buf + strlen("DUP_OF_DIR: "));
-            free(dup_of_dir);
-            dup_of_dir = buf;
-        }
-        else
-            free(buf);
-    }
-    fclose(fp);
+            *newline = '\0';
+            strbuf_append_str(state->cmd_output, raw);
+            char *msg = state->cmd_output->buf;
 
-    /* Prevent having zombie child process */
-    int status;
-    safe_waitpid(child, &status, 0);
+            /* Hmm, DUP_OF_DIR: ends up in syslog. move log() into 'else'? */
+            log("%s", msg);
+            if (state->event_type == EVTYPE_POST_CREATE
+             && strncmp("DUP_OF_DIR: ", msg, strlen("DUP_OF_DIR: ")) == 0
+            ) {
+                free(state->dup_of_dir);
+                state->dup_of_dir = xstrdup(msg + strlen("DUP_OF_DIR: "));
+            }
+
+            strbuf_clear(state->cmd_output);
+            /* jump to next line */
+            raw = newline + 1;
+        }
+
+        /* beginning of next line. the line continues by next read */
+        strbuf_append_str(state->cmd_output, raw);
+    }
+
+    if (errno == EAGAIN)
+    {
+        /* We got all buffered data, but fd is still open. Done for now */
+        //log("EAGAIN on fd %d", state->child_stdout_fd);
+        return TRUE; /* "glib, please don't remove this event (yet)" */
+    }
+
+    /* EOF/error */
+
+    /* Wait for child to actually exit, collect status */
+    int status = 0;
+    if (safe_waitpid(state->child_pid, &status, 0) > 0)
+        decrement_child_count();
+
+    /* If it was a "notify[-dup]" event, then we're done */
+    if (state->event_type == EVTYPE_NOTIFY)
+        goto ret;
+
+    /* Else: it was "post-create" event */
 
     /* exit 0 means "this is a good, non-dup dir" */
     /* exit with 1 + "DUP_OF_DIR: dir" string => dup */
@@ -322,30 +397,24 @@ static mw_result_t run_post_create_and_load_data(const char *dump_dir_name, prob
         if (WIFSIGNALED(status))
         {
             log("'post-create' on '%s' killed by signal %d",
-                            dump_dir_name, WTERMSIG(status));
-            return MW_ERROR;
+                            state->dirname, WTERMSIG(status));
         }
         /* else: it is WIFEXITED(status) */
-        if (!dup_of_dir)
+        else if (!state->dup_of_dir)
         {
             log("'post-create' on '%s' exited with %d",
-                            dump_dir_name, WEXITSTATUS(status));
-            return MW_ERROR;
+                            state->dirname, WEXITSTATUS(status));
         }
-        dump_dir_name = dup_of_dir;
+        goto delete_bad_dir;
     }
 
-    /* Loads problem_data (from the *first dir* if this one is a dup)
-     * Returns:
-     * MW_OCCURRED: "count is != 1" (iow: it is > 1 - dup)
-     * MW_OK: "count is 1" (iow: this is a new problem, not a dup)
-     * else: MW_ERROR
-     */
-    mw_result_t res = MW_ERROR;
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    char *work_dir = state->dup_of_dir ? state->dup_of_dir : state->dirname;
+
+    /* Load problem_data (from the *first dir* if this one is a dup) */
+    struct dump_dir *dd = dd_opendir(work_dir, /*flags:*/ 0);
     if (!dd)
         /* dd_opendir already emitted error msg */
-        goto ret;
+        goto delete_bad_dir;
 
     /* Reset mode/uig/gid to correct values for all files created by event run */
     dd_sanitize_mode_and_owner(dd);
@@ -355,9 +424,9 @@ static mw_result_t run_post_create_and_load_data(const char *dump_dir_name, prob
     unsigned long count = strtoul(count_str, NULL, 10);
 
     /* Don't increase crash count if we are working with newly uploaded
-     * directory (remote crash) which already has it's crash count set.
+     * directory (remote crash) which already has its crash count set.
      */
-    if((status != 0 && dup_of_dir) || count == 0)
+    if ((status != 0 && state->dup_of_dir) || count == 0)
     {
         count++;
         char new_count_str[sizeof(long)*3 + 2];
@@ -366,22 +435,45 @@ static mw_result_t run_post_create_and_load_data(const char *dump_dir_name, prob
     }
     dd_close(dd);
 
-    *problem_data = load_problem_data(dump_dir_name);
-    if (*problem_data != NULL)
+    if (!state->dup_of_dir)
+        log("New problem directory %s, processing", work_dir);
+    else
     {
-        res = MW_OK;
-        if (dup_of_dir)
-        {
-            log("Problem directory is a duplicate of %s", dump_dir_name);
-            res = MW_OCCURRED;
-        }
+        log("Deleting problem directory %s (dup of %s)",
+                strrchr(state->dirname, '/') + 1,
+                strrchr(state->dup_of_dir, '/') + 1);
+        delete_dump_dir(state->dirname);
     }
-    /* else: load_problem_data already emitted error msg */
+
+    /* Run "notify[-dup]" event */
+    int fd;
+    state->child_pid = spawn_event_handler_child(
+                work_dir,
+                (state->dup_of_dir ? "notify-dup" : "notify"),
+                &fd
+    );
+    ndelay_on(fd);
+    //log("Started notify, fd %d -> %d", fd, state->child_stdout_fd);
+    xmove_fd(fd, state->child_stdout_fd);
+    state->event_type = EVTYPE_NOTIFY;
+    return TRUE; /* "glib, please don't remove this event (yet)" */
+
+
+ delete_bad_dir:
+    log("Corrupted or bad directory '%s', deleting", state->dirname);
+    delete_dump_dir(state->dirname);
 
  ret:
-    free(dup_of_dir);
-    return res;
+    //log("Closing event fd %d", state->child_stdout_fd);
+    free_event_processing_state(state);
+
+    /* We stop using this channel */
+    g_io_channel_unref(gio);
+    return FALSE; /* "glib, please remove this events source!" */
+    /* Removing will also drop the last ref to this gio, closing/freeing it */
 }
+
+/* Inotify handler */
 
 static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
 {
@@ -443,7 +535,10 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 
                 const char *dir = g_settings_sWatchCrashdumpArchiveDir;
                 log("Detected creation of file '%s' in upload directory '%s'", name, dir);
-                if (fork() == 0)
+                pid_t pid = fork();
+                if (pid < 0)
+                    perror_msg("fork");
+                if (pid == 0)
                 {
                     xchdir(dir);
 
@@ -456,6 +551,8 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 
                     error_msg_and_die("Can't execute '%s'", "abrt-handle-upload");
                 }
+                if (pid > 0)
+                    increment_child_count();
             }
             continue;
         }
@@ -493,55 +590,18 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             }
         }
 
-        char *fullname = concat_path_file(g_settings_dump_location, name);
-        problem_data_t *problem_data = NULL;
-        mw_result_t res = run_post_create_and_load_data(fullname, &problem_data);
-        switch (res)
-        {
-            case MW_OK:
-                log("New problem directory %s, processing", fullname);
-                /* Fall through */
+        struct event_processing_state *state = new_event_processing_state();
+        state->event_type = EVTYPE_POST_CREATE;
+        state->dirname = concat_path_file(g_settings_dump_location, name);
 
-            case MW_OCCURRED: /* dup */
-            {
-                const char *first = NULL;
-                if (res != MW_OK)
-                {
-                    /* Fetch the name of older directory of which we are a dup */
-                    first = get_problem_item_content_or_NULL(problem_data, CD_DUMPDIR);
+        state->child_pid = spawn_event_handler_child(state->dirname, "post-create", &state->child_stdout_fd);
+        ndelay_on(state->child_stdout_fd);
 
-                    log("Deleting problem directory %s (dup of %s)",
-                            strrchr(fullname, '/') + 1,
-                            strrchr(first, '/') + 1);
-                    delete_dump_dir(fullname);
-                }
-
-                /* Run "notify[_dup]" event */
-                FILE *fp;
-                pid_t child = spawn_event_handler_child(
-                                (first ? first : fullname),
-                                (first ? "notify_dup" : "notify"),
-                                &fp
-                );
-                char *buf;
-                while ((buf = xmalloc_fgetline(fp)) != NULL)
-                {
-                    log("%s", buf);
-                    free(buf);
-                }
-                fclose(fp);
-                /* Prevent having zombie child process */
-                safe_waitpid(child, NULL, 0);
-
-                break;
-            }
-            default: /* always MW_ERROR */
-                log("Corrupted or bad directory %s, deleting", fullname);
-                delete_dump_dir(fullname);
-                break;
-        }
-        free(fullname);
-        free_problem_data(problem_data);
+        GIOChannel *channel_event_output = my_io_channel_unix_new(state->child_stdout_fd);
+        /*uint channel_id_event_output =*/ g_io_add_watch(channel_event_output,
+                                              G_IO_IN | G_IO_PRI | G_IO_HUP,
+                                              handle_event_output_cb,
+                                              state);
     } /* while */
 
     free(buf);
@@ -790,29 +850,19 @@ int main(int argc, char** argv)
      * on inotify read forever. Must set fd to non-blocking:
      */
     ndelay_on(inotify_fd);
-    channel_inotify = g_io_channel_unix_new(inotify_fd);
-
-    GError *gerror = NULL;
-    g_io_channel_set_encoding(channel_inotify, NULL, &gerror);
-    /* need to set the encoding otherwise we get:
-     * Invalid byte sequence in conversion input
-     * according to manual "NULL" is safe for binary data
-    */
-    if (gerror)
-        perror_msg("Can't set encoding on gio channel: '%s'", gerror->message);
-
+    channel_inotify = my_io_channel_unix_new(inotify_fd);
     channel_inotify_event_id = g_io_add_watch(channel_inotify,
-                                              G_IO_IN,
-                                              handle_inotify_cb,
-                                              NULL);
+                     G_IO_IN | G_IO_PRI | G_IO_HUP,
+                     handle_inotify_cb,
+                     NULL);
 
     /* Add an event source which waits for INT/TERM signal */
     VERB1 log("Adding signal pipe watch to glib main loop");
     channel_signal = g_io_channel_unix_new(s_signal_pipe[0]);
     channel_signal_event_id = g_io_add_watch(channel_signal,
-                                             G_IO_IN,
-                                             handle_signal_cb,
-                                             NULL);
+                     G_IO_IN | G_IO_PRI | G_IO_HUP,
+                     handle_signal_cb,
+                     NULL);
 
     /* Mark the territory */
     VERB1 log("Creating pid file");
