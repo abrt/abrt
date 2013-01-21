@@ -63,6 +63,8 @@ int load_abrt_conf();
 void free_abrt_conf_data();
 
 
+int check_recent_crash_file(const char *filename, const char *executable);
+
 /* Returns 1 if abrtd daemon is running, 0 otherwise. */
 #define daemon_is_ok abrt_daemon_is_ok
 int daemon_is_ok();

@@ -445,8 +445,6 @@ static int create_or_die(const char *filename)
 
 int main(int argc, char** argv)
 {
-    struct stat sb;
-
     /* Kernel starts us with all fd's closed.
      * But it's dangerous:
      * fprintf(stderr) can dump messages into random fds, etc.
@@ -625,33 +623,12 @@ int main(int argc, char** argv)
      * if they happen too often. Else, write new marker value.
      */
     snprintf(path, sizeof(path), "%s/last-ccpp", g_settings_dump_location);
-    fd = open(path, O_RDWR | O_CREAT, 0600);
-    if (fd >= 0)
+    if (check_recent_crash_file(path, executable))
     {
-        int sz;
-        fstat(fd, &sb); /* !paranoia. this can't fail. */
-
-        if (sb.st_size != 0 /* if it wasn't created by us just now... */
-         && (unsigned)(time(NULL) - sb.st_mtime) < 20 /* and is relatively new [is 20 sec ok?] */
-        ) {
-            sz = read(fd, path, sizeof(path)-1); /* (ab)using path as scratch buf */
-            if (sz > 0)
-            {
-                path[sz] = '\0';
-                if (strcmp(executable, path) == 0)
-                {
-                    error_msg("Not dumping repeating crash in '%s'", executable);
-                    if (setting_MakeCompatCore)
-                        goto create_user_core;
-                    return 1;
-                }
-            }
-            lseek(fd, 0, SEEK_SET);
-        }
-        sz = write(fd, executable, strlen(executable));
-        if (sz >= 0)
-            IGNORE_RESULT(ftruncate(fd, sz));
-        close(fd);
+        /* It is a repeating crash */
+        if (setting_MakeCompatCore)
+            goto create_user_core;
+        return 1;
     }
 
     const char *last_slash = strrchr(executable, '/');

@@ -437,6 +437,13 @@ static int perform_http_xact(void)
 
     /* Write out the crash dump. Don't let alarm to interrupt here */
     alarm(0);
+
+    char *last_file = concat_path_file(g_settings_dump_location, "last-via-server");
+    int repeating_crash = check_recent_crash_file(last_file, executable);
+    free(last_file);
+    if (repeating_crash) /* Only pretend that we saved it */
+        return 0; /* ret is 0: "success" */
+
     return create_debug_dump();
 }
 
