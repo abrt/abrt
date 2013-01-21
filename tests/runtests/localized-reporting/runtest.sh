@@ -50,10 +50,10 @@ rlJournalStart
     rlPhaseStartTest
         rlRun '\
             EDITOR="cat" VISUAL="cat" LC_ALL="cs_CZ.UTF-8" \
-              report-cli -e test_event_lr $crash_PATH 2>&1 \
+              report-cli -y -e test_event_lr $crash_PATH 2>&1 \
             | tee crash.log \
-            | grep "Architektura"' \
-            0 "Localized string 'Architektura' present"
+            | grep " byl vytvo"' \
+            0 "Localized string ' byl vytvo' present"
         #rlLog "$(cat crash.log)"
     rlPhaseEnd
 
