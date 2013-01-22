@@ -585,39 +585,11 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
-        struct passwd *pwd = getpwuid(caller_uid);
-        if (!pwd)
-        {
-            error_msg("UID %ld is not found in user database", (long)caller_uid);
-            dd_close(dd);
-            return;
-        }
-
-        errno = 0;
-        struct stat statbuf;
-        if (!(stat(problem_dir, &statbuf) == 0 && S_ISDIR(statbuf.st_mode)))
-        {
-            g_dbus_method_invocation_return_dbus_error(invocation,
-                                  "org.freedesktop.problems.StatFailure",
-                                  strerror(errno));
-            dd_close(dd);
-            return;
-        }
-
-        int chown_res = lchown(problem_dir, statbuf.st_uid, pwd->pw_gid);
-        dd_init_next_file(dd);
-        char *full_name;
-        while (chown_res == 0 && dd_get_next_file(dd, /*short_name*/ NULL, &full_name))
-        {
-            VERB3 log("chowning %s", full_name);
-            chown_res = lchown(full_name, statbuf.st_uid, pwd->pw_gid);
-            free(full_name);
-        }
-
+        int chown_res = dd_chown(dd, caller_uid);
         if (chown_res != 0)
             g_dbus_method_invocation_return_dbus_error(invocation,
                                               "org.freedesktop.problems.ChownError",
-                                              strerror(errno));
+                                              _("Chowning directory failed. Check system logs for more details."));
         else
             g_dbus_method_invocation_return_value(invocation, NULL);
 
