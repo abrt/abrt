@@ -74,6 +74,24 @@ static int child_count = 0;
  */
 static GList *s_pid_list;
 
+/*
+ * The post-create event cannot be run concurrently for more problem
+ * directories. The problem is in searching for duplicates process in case when
+ * two concurrently processed directories are duplicates of each other. Both of
+ * the directories are marked as duplicates of each other and are deleted.
+ *
+ * This queue is used for serialization of processing of created problem
+ * directories.
+ *
+ * The GIO notify handler pushes new directories to this queue and if the queue was
+ * empty before push then starts processing of the pushed directory.
+ *
+ * Directory processing code pops the processed directory from the queue at the
+ * end of processing. If the queue is not empty starts processing of the next
+ * directory which is on the top of the queue.
+ */
+static GList *s_dir_queue;
+
 enum {
     EVTYPE_POST_CREATE,
     EVTYPE_NOTIFY,
@@ -291,6 +309,25 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
     return TRUE; /* "please don't remove this event" */
 }
 
+static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr);
+
+/* Runs post-create event asynchronously. Uses GIOChanel for communication with event process. */
+static void run_post_create_on_dir_async(const char *name)
+{
+    struct event_processing_state *state = new_event_processing_state();
+    state->event_type = EVTYPE_POST_CREATE;
+    state->dirname = concat_path_file(g_settings_dump_location, name);
+
+    state->child_pid = spawn_event_handler_child(state->dirname, "post-create", &state->child_stdout_fd);
+    s_pid_list = g_list_prepend(s_pid_list, state);
+    ndelay_on(state->child_stdout_fd);
+
+    GIOChannel *channel_event_output = my_io_channel_unix_new(state->child_stdout_fd);
+    /*uint channel_id_event_output =*/ g_io_add_watch(channel_event_output,
+            G_IO_IN | G_IO_PRI | G_IO_HUP,
+            handle_event_output_cb,
+            state);
+}
 
 /* Event-processing child output handler (such as "post-create" event) */
 static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr)
@@ -435,6 +472,17 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
 
     /* We stop using this channel */
     g_io_channel_unref(gio);
+
+    /* pop the currently processed directory from the incoming queue */
+    char *name = s_dir_queue->data;
+    s_dir_queue = g_list_remove(s_dir_queue, name);
+    free(name);
+
+    /* if the queue is not empty process directory from */
+    /* the top of the incoming queue */
+    if (s_dir_queue)
+        run_post_create_on_dir_async(s_dir_queue->data);
+
     return FALSE; /* "glib, please remove this events source!" */
     /* Removing will also drop the last ref to this gio, closing/freeing it */
 }
@@ -556,19 +604,14 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             }
         }
 
-        struct event_processing_state *state = new_event_processing_state();
-        state->event_type = EVTYPE_POST_CREATE;
-        state->dirname = concat_path_file(g_settings_dump_location, name);
+        const bool empty_queue = s_dir_queue == NULL;
+        /* push the new directory to the end of the incoming queue */
+        s_dir_queue = g_list_append(s_dir_queue, xstrdup(name));
 
-        state->child_pid = spawn_event_handler_child(state->dirname, "post-create", &state->child_stdout_fd);
-        s_pid_list = g_list_prepend(s_pid_list, state);
-        ndelay_on(state->child_stdout_fd);
+        /* if the queue was empty process the current directory */
+        if (empty_queue)
+            run_post_create_on_dir_async(name);
 
-        GIOChannel *channel_event_output = my_io_channel_unix_new(state->child_stdout_fd);
-        /*uint channel_id_event_output =*/ g_io_add_watch(channel_event_output,
-                                              G_IO_IN | G_IO_PRI | G_IO_HUP,
-                                              handle_event_output_cb,
-                                              state);
     } /* while */
 
     free(buf);
