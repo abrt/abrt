@@ -128,55 +128,6 @@ static uid_t get_caller_uid(GDBusConnection *connection, GDBusMethodInvocation *
     return caller_uid;
 }
 
-static bool uid_in_group(uid_t uid, gid_t gid)
-{
-    char **tmp;
-    struct passwd *pwd = getpwuid(uid);
-
-    if (!pwd)
-        return FALSE;
-
-    if (pwd->pw_gid == gid)
-        return TRUE;
-
-    struct group *grp = getgrgid(gid);
-    if (!(grp && grp->gr_mem))
-        return FALSE;
-
-    for (tmp = grp->gr_mem; *tmp != NULL; tmp++)
-    {
-        if (g_strcmp0(*tmp, pwd->pw_name) == 0)
-        {
-            VERB3 log("user %s belongs to group: %s",  pwd->pw_name, grp->gr_name);
-            return TRUE;
-        }
-    }
-
-    VERB2 log("user %s DOESN'T belong to group: %s",  pwd->pw_name, grp->gr_name);
-    return FALSE;
-}
-
-/*
- 0 - user doesn't have access
- 1 - user has access
-*/
-static int dir_accessible_by_uid(const char *dir_path, uid_t uid)
-{
-    struct stat statbuf;
-    if (stat(dir_path, &statbuf) != 0 || !S_ISDIR(statbuf.st_mode))
-        errno = ENOTDIR;
-    else
-    {
-        if (uid == 0 || (statbuf.st_mode & S_IROTH) || uid_in_group(uid, statbuf.st_gid))
-        {
-            VERB1 log("caller has access to the requested directory %s", dir_path);
-            return 1;
-        }
-    }
-
-    return 0;
-}
-
 /*
  * Structure for simple conditions based on problem fields
  */
@@ -239,8 +190,7 @@ static GList* scan_directory(const char *path,
             continue; /* skip "." and ".." */
 
         char *full_name = concat_path_file(path, dent->d_name);
-        struct stat statbuf;
-        if (stat(full_name, &statbuf) == 0 && S_ISDIR(statbuf.st_mode))
+        if (dump_dir_accessible_by_uid(full_name, caller_uid))
         {
             /* Silently ignore *any* errors, not only EACCES.
              * We saw "lock file is locked by process PID" error
@@ -253,15 +203,15 @@ static GList* scan_directory(const char *path,
             /* or we could just setuid?
              - but it would require locking, because we want to setuid back before we server another request..
             */
-            if (dd && (caller_uid == 0 || statbuf.st_mode & S_IROTH || uid_in_group(caller_uid, statbuf.st_gid)))
+            if (dd)
             {
                 if (problem_condition_evaluate_and(dd, condition))
                 {
                     list = g_list_prepend(list, full_name);
                     full_name = NULL;
                 }
+                dd_close(dd); //doesn't fail even if dd == NULL
             }
-            dd_close(dd); //doesn't fail even if dd == NULL
         }
         free(full_name);
     }
@@ -449,7 +399,7 @@ static struct dump_dir *open_directory_for_modification_of_element(
         }
     }
 
-    if (!dir_accessible_by_uid(problem_id, caller_uid))
+    if (!dump_dir_accessible_by_uid(problem_id, caller_uid))
     {
         if (errno == ENOTDIR)
             return_InvalidProblemDir_error(invocation, problem_id);
@@ -555,7 +505,7 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
-        if (dir_accessible_by_uid(problem_dir, caller_uid)) //caller seems to be in group with access to this dir, so no action needed
+        if (dump_dir_accessible_by_uid(problem_dir, caller_uid)) //caller seems to be in group with access to this dir, so no action needed
         {
             VERB1 log("caller has access to the requested directory %s", problem_dir);
             g_dbus_method_invocation_return_value(invocation, NULL);
@@ -612,7 +562,7 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
-        if (!dir_accessible_by_uid(problem_dir, caller_uid))
+        if (!dump_dir_accessible_by_uid(problem_dir, caller_uid))
         {
             if (errno == ENOENT)
             {
@@ -777,7 +727,7 @@ static void handle_method_call(GDBusConnection *connection,
         for (GList *l = problem_dirs; l; l = l->next)
         {
             const char *dir_name = (const char*)l->data;
-            if (!dir_accessible_by_uid(dir_name, caller_uid))
+            if (!dump_dir_accessible_by_uid(dir_name, caller_uid))
             {
                 if (errno == ENOENT)
                 {
