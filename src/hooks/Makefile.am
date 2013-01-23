@@ -1,4 +1,5 @@
 confdir = $(CONF_DIR)
+pyhookdir = $(pyexecdir)
 
 dist_conf_DATA = \
     abrt-harvest-vmcore.conf
@@ -31,7 +32,8 @@ abrt_hook_ccpp_LDADD = \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS)
 
-python_PYTHON = abrt.pth abrt_exception_handler.py
+pyhook_PYTHON = abrt_exception_handler.py
+python_PYTHON = abrt.pth
 EXTRA_DIST = abrt_exception_handler.py.in \
 	abrt-install-ccpp-hook.in \
 	abrt-harvest-vmcore.in
