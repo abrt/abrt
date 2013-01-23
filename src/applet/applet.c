@@ -45,6 +45,8 @@
 #define A_REPORT_REPORT "REPORT"
 #define A_REPORT_AUTOREPORT "AUTOREPORT"
 
+#define GUI_EXECUTABLE "gnome-abrt"
+
 enum
 {
     /*
@@ -448,12 +450,12 @@ static void fork_exec_gui(void)
         }
 
         /* grand child */
-        //TODO: pass s_dirs[] as DIR param(s) to abrt-gui
-        execl(BIN_DIR"/abrt-gui", "abrt-gui", (char*) NULL);
-        /* Did not find abrt-gui in installation directory. Oh well */
+        //TODO: pass s_dirs[] as DIR param(s) to 'gui executable'
+        execl(BIN_DIR"/"GUI_EXECUTABLE, GUI_EXECUTABLE, (char*) NULL);
+        /* Did not find 'gui executable' in installation directory. Oh well */
         /* Trying to find it in PATH */
-        execlp("abrt-gui", "abrt-gui", (char*) NULL);
-        perror_msg_and_die(_("Can't execute '%s'"), "abrt-gui");
+        execlp(GUI_EXECUTABLE, GUI_EXECUTABLE, (char*) NULL);
+        perror_msg_and_die(_("Can't execute '%s'"), GUI_EXECUTABLE);
     }
     else
         safe_waitpid(pid, /* status */ NULL, /* options */ 0);

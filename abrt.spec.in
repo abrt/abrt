@@ -84,6 +84,7 @@ Summary: %{name}'s gui
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-dbus = %{version}-%{release}
+Requires: gnome-abrt
 BuildRequires: libreport-gtk-devel
 # we used to have abrt-applet, now abrt-gui includes it:
 Provides: abrt-applet = %{version}-%{release}
@@ -210,6 +211,7 @@ Requires: abrt-addon-xorg
 # Default config of addon-ccpp requires gdb
 Requires: gdb >= 7.0-3
 Requires: abrt-gui
+Requires: gnome-abrt
 Requires: abrt-plugin-bodhi
 Requires: libreport-plugin-logger, libreport-plugin-bugzilla
 Requires: libreport-plugin-ureport
@@ -264,12 +266,6 @@ mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-di
 mkdir -p $RPM_BUILD_ROOT/var/run/abrt
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt-upload
-
-desktop-file-install \
-        --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
-        --vendor %{desktopvendor} \
-        --delete-original \
-        ${RPM_BUILD_ROOT}%{_datadir}/applications/%{name}.desktop
 
 desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_sysconfdir}/xdg/autostart \
@@ -524,7 +520,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-gui
 %dir %{_datadir}/%{name}
 # all glade, gtkbuilder and py files for gui
-%{_datadir}/applications/%{desktopvendor}-%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/*
 %{_datadir}/icons/hicolor/*/status/*
 %{_datadir}/%{name}/icons/hicolor/*/status/*

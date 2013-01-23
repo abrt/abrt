@@ -36,10 +36,3 @@ abrt_gui_LDADD = \
 #    ../lib/libreport.la
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
-
-@INTLTOOL_DESKTOP_RULE@
-desktopdir = $(datadir)/applications
-desktop_in_files = abrt.desktop.in
-desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
-
-EXTRA_DIST = $(desktop_in_files)
