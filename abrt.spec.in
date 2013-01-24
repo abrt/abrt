@@ -515,7 +515,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_sysconfdir}/libreport/events.d/python_event.conf
 %{_bindir}/abrt-action-analyze-python
 %{_mandir}/man1/abrt-action-analyze-python.1*
-%{python_site}/abrt*.py*
+%{python_sitearch}/abrt*.py*
 %{python_site}/abrt.pth
 
 %files cli
