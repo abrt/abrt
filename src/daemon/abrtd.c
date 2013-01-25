@@ -510,10 +510,20 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
     if (inotify_bytes == 0)
         return TRUE; /* "please don't remove this event" */
 
-    char *buf = (char*)xmalloc(inotify_bytes);
+    /* We may race: more inotify events may happen after ioctl(FIONREAD).
+     * To be more efficient, allocate a bit more space to eat those events too.
+     * This also would help against a bug we once had where
+     * g_io_channel_read_chars() was buffering reads
+     * and we were going out of sync wrt struct inotify_event's layout.
+     */
+    inotify_bytes += 2 * (sizeof(struct inotify_event) + FILENAME_MAX);
+    char *buf = xmalloc(inotify_bytes);
     errno = 0;
     gsize len;
     GError *gerror = NULL;
+    /* Note: we ensured elsewhere that this read is non-blocking, making it ok
+     * for buffer len (inotify_bytes) to be larger than actual available byte count.
+     */
     GIOStatus err = g_io_channel_read_chars(gio, buf, inotify_bytes, &len, &gerror);
     if (err != G_IO_STATUS_NORMAL)
     {
@@ -526,8 +536,16 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 
     /* Reconstruct each event */
     gsize i = 0;
-    while (i < len)
+    for (;;)
     {
+        if (i >= len)
+        {
+            /* This would catch one of our former bugs. Let's be paranoid */
+            if (i > len)
+                error_msg("warning: ran off struct inotify (this should never happen): %u > %u", (int)i, (int)len);
+            break;
+        }
+
         struct inotify_event *event = (struct inotify_event *) &buf[i];
         const char *name = NULL;
         if (event->len)
@@ -596,7 +614,6 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             ) {
                 log("Size of '%s' >= %u MB, deleting '%s'",
                     g_settings_dump_location, g_settings_nMaxCrashReportsSize, worst_dir);
-                /* deletes both directory and DB record */
                 char *d = concat_path_file(g_settings_dump_location, worst_dir);
                 free(worst_dir);
                 worst_dir = NULL;
@@ -965,6 +982,13 @@ int main(int argc, char** argv)
      */
     ndelay_on(inotify_fd);
     channel_inotify = my_io_channel_unix_new(inotify_fd);
+    /*
+     * glib's read buffering must be disabled, or else
+     * FIONREAD-reported "available data" sizes and sizes of reads
+     * can become inconsistent, and worse, buffering can split
+     * struct inotify's (very bad!).
+     */
+    g_io_channel_set_buffered(channel_inotify, false);
     channel_id_inotify_event = add_watch_or_die(channel_inotify,
                         G_IO_IN | G_IO_PRI | G_IO_HUP,
                         handle_inotify_cb);
