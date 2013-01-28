@@ -948,6 +948,13 @@ int main(int argc, char** argv)
      */
     ndelay_on(inotify_fd);
     channel_inotify = my_io_channel_unix_new(inotify_fd);
+    /*
+     * glib's read buffering must be disabled, or else
+     * FIONREAD-reported "available data" sizes and sizes of reads
+     * can become inconsistent, and worse, buffering can split
+     * struct inotify's (very bad!).
+     */
+    g_io_channel_set_buffered(channel_inotify, false);
     channel_inotify_event_id = g_io_add_watch(channel_inotify,
                      G_IO_IN | G_IO_PRI | G_IO_HUP,
                      handle_inotify_cb,
