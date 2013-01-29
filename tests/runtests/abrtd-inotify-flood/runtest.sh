@@ -30,7 +30,8 @@ PACKAGE="abrt"
 rlJournalStart
     rlPhaseStartTest
         service abrtd stop
-        rlRun "abrtd -s" 0 "Start abrtd"
+        rlRun "abrtd -d >abrtd.LOG 2>&1 &" 0 "Start abrtd"
+        sleep 1 # give it time to initialize
         # One second of intense inotify notifications:
         rlRun "./inotify_flooder.sh" 0 "Create/delete many files in /var/spool/abrtd"
         # The bug was confusing abrtd with 0-byte inotify read.
@@ -39,6 +40,11 @@ rlJournalStart
         rlRun "killall abrtd" 0 "Send TERM to abrtd"
         sleep 1
         rlRun "! pidof abrtd" 0 "abrtd doesn't run"
+        # Read buffering of inotify fd was making us misinterpret
+        # inotify data - wrongly seeing it as indication directory creations.
+        # Then abrtd was failing to find them, and declaring them 'corrupt':
+        rlAssertNotGrep "Corrupted or bad directory" abrtd.LOG
+        rm abrtd.LOG
     rlPhaseEnd
 
     rlPhaseStartCleanup
