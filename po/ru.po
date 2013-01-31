@@ -11,6 +11,7 @@
 # Stanislav Darchinov <darchinov@gmail.com>, 2011.
 # Stanislav Hanzhin <hanzhin.stas@gmail.com>, 2011.
 # Yulia <ypoyarko@redhat.com>, 2011-2012.
+# Yulia <yulia.poyarkova@redhat.com>, 2013.
 # Yulia  <yulia.poyarkova@redhat.com>, 2012.
 # Yuri Khabarov <madb00blik@gmail.com>, 2011.
 # Игорь Горбунов <igor.gorbounov@gmail.com>, 2011-2012.
@@ -18,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2012-12-19 15:48+0100\n"
-"PO-Revision-Date: 2012-12-19 14:49+0000\n"
+"POT-Creation-Date: 2013-01-31 13:23+0100\n"
+"PO-Revision-Date: 2013-01-31 12:24+0000\n"
 "Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: Russian <trans-ru@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -28,8 +29,7 @@ msgstr ""
 "Language: ru\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:1064
+#: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/main.c:1064
 msgid "Automatic Bug Reporting Tool"
 msgstr "Автоматизированный регистратор ошибок"
 
@@ -37,137 +37,151 @@ msgstr "Автоматизированный регистратор ошибок
 msgid "ABRT notification applet"
 msgstr "Апплет уведомлений ABRT"
 
-#: ../src/applet/applet.c:93
+#: ../src/applet/applet.c:96
 msgid ""
 "The report which will be sent does not contain any security sensitive data. Therefore it is not necessary to bother you next time and require any further action by you. \n"
 "Do you want to enable automatically submitted anonymous crash reports?"
-msgstr ""
+msgstr "Отправляемый отчет не включает конфиденциальные данные. Нет необходимости в дополнительных действиях. \nВключить автоматическую отправку анонимных отчетов?"
 
 #. The NetworkManager DBus service is not available.
-#: ../src/applet/applet.c:172
+#: ../src/applet/applet.c:187
 #, c-format
 msgid "Can't connect to NetworkManager over DBus: %s"
-msgstr ""
+msgstr "Не удалось подключиться к NetworkManager через DBus: %s"
 
-#: ../src/applet/applet.c:196
+#: ../src/applet/applet.c:211
 #, c-format
 msgid "Can't determine network status via NetworkManager: %s"
-msgstr ""
+msgstr "NetworkManager не смог определить статус сети: %s"
 
-#: ../src/applet/applet.c:299
+#: ../src/applet/applet.c:315
 msgid "A problem has been detected"
 msgstr "Обнаружена неполадка"
 
-#: ../src/applet/applet.c:301
+#: ../src/applet/applet.c:317
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "Обнаружена неполадка в пакете %s"
 
-#: ../src/applet/applet.c:442 ../src/plugins/abrt-retrace-client.c:126
+#: ../src/applet/applet.c:458 ../src/plugins/abrt-retrace-client.c:126
 #: ../src/plugins/abrt-retrace-client.c:162
 #, c-format
 msgid "Can't execute '%s'"
 msgstr "Не удалось выполнить «%s»"
 
-#: ../src/applet/applet.c:510 ../src/applet/applet.c:591
+#: ../src/applet/applet.c:526 ../src/applet/applet.c:603
 #, c-format
 msgid "Can't close notification: %s"
-msgstr ""
+msgstr "Не удалось закрыть уведомление: %s"
 
-#: ../src/applet/applet.c:572
+#: ../src/applet/applet.c:584
 #, c-format
 msgid "Can't open url '%s': %s"
-msgstr ""
+msgstr "Не удалось открыть URL «%s»: %s"
 
-#: ../src/applet/applet.c:624 ../src/applet/applet.c:626
+#: ../src/applet/applet.c:643 ../src/applet/applet.c:645
 msgid "Warning"
 msgstr "Предупреждение"
 
-#: ../src/applet/applet.c:673
+#: ../src/applet/applet.c:692
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "Значок в области уведомления сообщает об обнаруженных сбоях"
 
-#: ../src/applet/applet.c:689 ../src/gui-gtk/main.c:894
+#: ../src/applet/applet.c:708 ../src/gui-gtk/main.c:894
 msgid "translator-credits"
 msgstr "Yulia <ypoyarko AT redhat.com>\nMisha Shnurapet <shnurapet AT fedoraproject.org>\nYuri Khabarov <madb00blik AT gmail.com>"
 
-#: ../src/applet/applet.c:699
+#: ../src/applet/applet.c:718
 msgid "Hide"
 msgstr "Скрыть"
 
-#: ../src/applet/applet.c:769
+#: ../src/applet/applet.c:788
 msgid "Problem detected"
 msgstr "Проблема обнаружена"
 
-#: ../src/applet/applet.c:797
+#: ../src/applet/applet.c:824
 msgid "Ignore"
 msgstr "Игнорировать"
 
-#: ../src/applet/applet.c:803
+#. Problem has been 'autoreported' and is considered as KNOWN
+#. 
+#: ../src/applet/applet.c:831
 msgid "Open"
-msgstr ""
+msgstr "Открыть"
 
-#: ../src/applet/applet.c:807
+#: ../src/applet/applet.c:835
 msgid "Show"
-msgstr ""
+msgstr "Показать"
 
-#: ../src/applet/applet.c:811
+#: ../src/applet/applet.c:839
 msgid "A Known Problem has Occurred"
-msgstr ""
+msgstr "Произошла известная проблема"
 
+#. Problem has not yet been 'autoreported' and can be
+#. * 'autoreported' on user request.
+#. 
 #. buttons are homogenous so set size only for one button and it will
 #. * work for the rest buttons in same gtk_hbox_new()
-#: ../src/applet/applet.c:817 ../src/applet/applet.c:825
+#: ../src/applet/applet.c:847 ../src/applet/applet.c:870
 #: ../src/gui-gtk/main.c:1019 ../src/gui-gtk/main.c:1157
 msgid "Report"
 msgstr "Сообщить"
 
-#: ../src/applet/applet.c:821
+#: ../src/applet/applet.c:851
 msgid "A Problem has Occurred"
 msgstr "Произошёл сбой"
 
-#: ../src/applet/applet.c:829
-msgid "A New Problem has Occurred"
+#: ../src/applet/applet.c:866
+msgid "A Problem has been Reported"
 msgstr ""
 
-#: ../src/applet/applet.c:838
+#: ../src/applet/applet.c:874
+msgid "A New Problem has Occurred"
+msgstr "Произошла проблема"
+
+#: ../src/applet/applet.c:884
 #, c-format
 msgid "Can't show notification: %s"
-msgstr ""
+msgstr "Не удалось показать уведомление: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:868
+#: ../src/applet/applet.c:914
 #, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr ""
+msgstr "Не удалось выполнить чтение из канала gio: «%s»"
 
-#: ../src/applet/applet.c:941
+#: ../src/applet/applet.c:991
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr ""
+msgstr "Не удалось изменить шифрование в канале gio: %s"
 
-#: ../src/applet/applet.c:945
+#: ../src/applet/applet.c:995
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr ""
+msgstr "Не удалось включить неблокирующий режим для канала gio: %s"
 
-#: ../src/applet/applet.c:977
+#: ../src/applet/applet.c:1027
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "Не удается стать владельцем «%s»"
 
-#: ../src/applet/applet.c:987
+#: ../src/applet/applet.c:1037
 #, c-format
 msgid "Can't open directory for writing '%s'"
-msgstr ""
+msgstr "Не удалось открыть катало для записи «%s»"
 
-#: ../src/applet/applet.c:1211
+#: ../src/applet/applet.c:1297
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr "& [-v] [DIR]...\n\nМодуль оповещения о неполадках, обнаруженных ABRT\n\n"
+
+#: ../src/applet/applet.c:1391
+#, c-format
+msgid "dd_open() opened problem '%s' without valid time element"
+msgstr ""
 
 #: ../src/daemon/abrt-action-save-package-data.c:375
 msgid ""
@@ -192,21 +206,21 @@ msgstr "Каталог с данными сбоя"
 msgid "Configuration file"
 msgstr "Файл конфигурации"
 
-#: ../src/daemon/abrt-server.c:509 ../src/dbus/abrt-dbus.c:919
-#: ../src/daemon/abrtd.c:836
+#: ../src/daemon/abrt-server.c:495 ../src/dbus/abrt-dbus.c:841
+#: ../src/daemon/abrtd.c:853
 msgid "& [options]"
 msgstr "& [параметры]"
 
-#: ../src/daemon/abrt-server.c:520
+#: ../src/daemon/abrt-server.c:506
 msgid "Use NUM as client uid"
 msgstr "Использовать NUM как uid клиента"
 
-#: ../src/daemon/abrt-server.c:521 ../src/plugins/abrt-watch-log.c:141
+#: ../src/daemon/abrt-server.c:507 ../src/plugins/abrt-watch-log.c:141
 #: ../src/plugins/abrt-dump-oops.c:247 ../src/plugins/abrt-dump-xorg.c:238
 msgid "Log to syslog"
 msgstr "Запись в журнал"
 
-#: ../src/daemon/abrt-server.c:522 ../src/daemon/abrtd.c:852
+#: ../src/daemon/abrt-server.c:508 ../src/daemon/abrtd.c:869
 #: ../src/gui-gtk/main.c:1378
 msgid "Add program names to log"
 msgstr "Добавить названия программ в журнал"
@@ -215,59 +229,63 @@ msgstr "Добавить названия программ в журнал"
 msgid "Unknown error"
 msgstr "Неизвестная ошибка"
 
-#: ../src/dbus/abrt-dbus.c:409
+#: ../src/dbus/abrt-dbus.c:359
 #, c-format
 msgid "'%s' is not a valid problem directory"
 msgstr "«%s» не является правильным каталогом для данных о сбое"
 
-#: ../src/dbus/abrt-dbus.c:443
+#: ../src/dbus/abrt-dbus.c:393
 #, c-format
 msgid "'%s' element can't be modified"
-msgstr ""
+msgstr "Элемент «%s» не может быть изменен"
 
-#: ../src/dbus/abrt-dbus.c:459 ../src/dbus/abrt-dbus.c:577
-#: ../src/dbus/abrt-dbus.c:657
+#: ../src/dbus/abrt-dbus.c:409 ../src/dbus/abrt-dbus.c:527
+#: ../src/dbus/abrt-dbus.c:579
 msgid "Not Authorized"
 msgstr "Не разрешено"
 
-#: ../src/dbus/abrt-dbus.c:469
+#: ../src/dbus/abrt-dbus.c:419
 msgid "Can't access the problem for modification"
+msgstr "Ошибка доступа к проблеме с целью ее изменения"
+
+#: ../src/dbus/abrt-dbus.c:542
+msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
 
-#: ../src/dbus/abrt-dbus.c:717
+#: ../src/dbus/abrt-dbus.c:639
 #, c-format
 msgid "'%s' is not a valid element name"
-msgstr ""
+msgstr "Недопустимое имя элемента:  «%s»"
 
-#: ../src/dbus/abrt-dbus.c:741
+#: ../src/dbus/abrt-dbus.c:663
 msgid "No problem space left"
-msgstr ""
+msgstr "Недостаточно места"
 
-#: ../src/dbus/abrt-dbus.c:771
+#: ../src/dbus/abrt-dbus.c:693
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr ""
+msgstr "Ошибка удаления элемента «%s» из каталога «%s»"
 
-#: ../src/dbus/abrt-dbus.c:901
+#: ../src/dbus/abrt-dbus.c:823
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr "Имя «%s» было потеряно, проверьте, не работает ли другая служба, использующая это имя.\n"
 
-#: ../src/dbus/abrt-dbus.c:928 ../src/daemon/abrtd.c:851
+#: ../src/dbus/abrt-dbus.c:850 ../src/daemon/abrtd.c:868
 msgid "Exit after NUM seconds of inactivity"
 msgstr "Выйти после NUM секунд бездействия"
 
-#: ../src/dbus/abrt-dbus.c:946
+#: ../src/dbus/abrt-dbus.c:868
 msgid "This program must be run as root."
 msgstr "Эта программа должна запускаться от имени привелигированного пользователя."
 
-#: ../src/daemon/abrtd.c:849
+#: ../src/daemon/abrtd.c:866
 msgid "Do not daemonize"
 msgstr "Не выполнять как службу"
 
-#: ../src/daemon/abrtd.c:850
+#: ../src/daemon/abrtd.c:867
 msgid "Log to syslog even with -d"
 msgstr "Запись в журнал даже с -d"
 
@@ -283,29 +301,25 @@ msgstr "Запуск EVENT в DIR"
 msgid "Communicate directly to the user"
 msgstr "Взаимодействие с пользователем напрямую"
 
-#: ../src/gui-gtk/abrt.desktop.in.h:2
-msgid "View and report application crashes"
-msgstr "Просмотреть сбои и создать отчет"
-
 #: ../src/gui-gtk/main.c:751
 msgid "The description of problem is too short"
-msgstr ""
+msgstr "Слишком краткое описание"
 
 #: ../src/gui-gtk/main.c:752
 msgid ""
-"In order to get more usefull reports we do not accept reports with the "
+"In order to get more useful reports we do not accept reports with the "
 "description shorter than 10 letters."
-msgstr ""
+msgstr "Отчеты со сводкой меньше 10 знаков не принимаются."
 
 #: ../src/gui-gtk/main.c:766
 msgid "The summary of problem is too short"
-msgstr ""
+msgstr "Слишком краткое описание проблемы"
 
 #: ../src/gui-gtk/main.c:767
 msgid ""
-"In order to get more usefull reports we do not accept reports with the "
+"In order to get more useful reports we do not accept reports with the "
 "summary shorter than 10 letters."
-msgstr ""
+msgstr "Отчеты с описанием меньше 10 знаков не принимаются."
 
 #: ../src/gui-gtk/main.c:804
 msgid "Problem description"
@@ -313,16 +327,16 @@ msgstr "Описание проблемы"
 
 #: ../src/gui-gtk/main.c:812
 msgid "Summary:"
-msgstr ""
+msgstr "Сводка:"
 
 #: ../src/gui-gtk/main.c:824
 msgid "_Send"
-msgstr ""
+msgstr "_Отправить"
 
 #. Sets text but text is selected :)
 #: ../src/gui-gtk/main.c:839
 msgid "A problem with ABRT"
-msgstr ""
+msgstr "Проблема с ABRT"
 
 #: ../src/gui-gtk/main.c:913 ../src/gui-gtk/main.c:959
 msgid "Source"
@@ -455,19 +469,19 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
-msgstr ""
+msgstr "& [-vs] -d DIR\n\nРасчет и сохранение UUID и DUPHASH для каталога сбоев oops DIR"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:71
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
-msgstr ""
+msgstr "& [-v] -d DIR\n\nРасчет и сохранение UUID и DUPHASH для каталога DIR со сбоями xorg"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:111
 #, c-format
 msgid "Module '%s' was loaded - won't report this crash"
-msgstr ""
+msgstr "Модуль «%s» успешно загружен, поэтому он не будет включен в отчет"
 
 #: ../src/plugins/abrt-action-analyze-python.c:36
 msgid ""
@@ -675,7 +689,7 @@ msgstr "Возник сбой в работе ядра. Установленно
 #: ../src/plugins/abrt-dump-oops.c:190
 #, c-format
 msgid " Tainted modules: %s."
-msgstr ""
+msgstr "Поврежденные модули: %s."
 
 #: ../src/plugins/abrt-dump-oops.c:231
 msgid ""
@@ -693,7 +707,7 @@ msgstr "Вывести найденные ошибки в stdout"
 #. 
 #: ../src/plugins/abrt-dump-oops.c:252
 msgid "Create new problem directory in DIR for every oops found"
-msgstr ""
+msgstr "Создавать каталог в DIR для каждого сбоя oops"
 
 #: ../src/plugins/abrt-dump-oops.c:253 ../src/plugins/abrt-dump-xorg.c:241
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
@@ -720,7 +734,7 @@ msgstr "Вывести найденные данные о сбое в станд
 
 #: ../src/plugins/abrt-dump-xorg.c:240
 msgid "Create problem directory in DIR for every crash found"
-msgstr ""
+msgstr "Создавать каталог в DIR для каждого сбоя"
 
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid ""

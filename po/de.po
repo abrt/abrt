@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2012-12-19 15:48+0100\n"
-"PO-Revision-Date: 2012-12-19 14:49+0000\n"
+"POT-Creation-Date: 2013-01-31 13:23+0100\n"
+"PO-Revision-Date: 2013-01-31 12:24+0000\n"
 "Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: German <trans-de@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,146 +25,159 @@ msgstr ""
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:1064
+#: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/main.c:1064
 msgid "Automatic Bug Reporting Tool"
-msgstr "Automatisches Bug-Reporting-Tool"
+msgstr "Automatisierte Fehlerberichterstattung"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2
 msgid "ABRT notification applet"
 msgstr "ABRT-Benachrichtigung-Applet"
 
-#: ../src/applet/applet.c:93
+#: ../src/applet/applet.c:96
 msgid ""
 "The report which will be sent does not contain any security sensitive data. Therefore it is not necessary to bother you next time and require any further action by you. \n"
 "Do you want to enable automatically submitted anonymous crash reports?"
-msgstr ""
+msgstr "Der Bericht, der gesendet wird, enthält keine sicherheitsrelevanten Daten. Deshalb kann dieser Vorgang zukünftig automatisiert werden, ohne dass Sie dies jedes Mal bestätigen müssen.\nMöchten Sie die automatische Übermittlung von anonymen Absturzberichten aktivieren?"
 
 #. The NetworkManager DBus service is not available.
-#: ../src/applet/applet.c:172
+#: ../src/applet/applet.c:187
 #, c-format
 msgid "Can't connect to NetworkManager over DBus: %s"
-msgstr ""
+msgstr "Keine Verbindung mit NetworkManager über DBus: %s"
 
-#: ../src/applet/applet.c:196
+#: ../src/applet/applet.c:211
 #, c-format
 msgid "Can't determine network status via NetworkManager: %s"
-msgstr ""
+msgstr "Netzwerkstatus kann über NetworkManager nicht bestimmt werden: %s"
 
-#: ../src/applet/applet.c:299
+#: ../src/applet/applet.c:315
 msgid "A problem has been detected"
 msgstr "Es wurde ein Absturz entdeckt"
 
-#: ../src/applet/applet.c:301
+#: ../src/applet/applet.c:317
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "In Paket %s wurde ein Absturz entdeckt"
 
-#: ../src/applet/applet.c:442 ../src/plugins/abrt-retrace-client.c:126
+#: ../src/applet/applet.c:458 ../src/plugins/abrt-retrace-client.c:126
 #: ../src/plugins/abrt-retrace-client.c:162
 #, c-format
 msgid "Can't execute '%s'"
 msgstr "»%s« kann nicht ausgeführt werden"
 
-#: ../src/applet/applet.c:510 ../src/applet/applet.c:591
+#: ../src/applet/applet.c:526 ../src/applet/applet.c:603
 #, c-format
 msgid "Can't close notification: %s"
-msgstr ""
+msgstr "Benachrichtigung kann nicht geschlossen werden: %s"
 
-#: ../src/applet/applet.c:572
+#: ../src/applet/applet.c:584
 #, c-format
 msgid "Can't open url '%s': %s"
-msgstr ""
+msgstr "URL »%s«: %s kann nicht geöffnet werden"
 
-#: ../src/applet/applet.c:624 ../src/applet/applet.c:626
+#: ../src/applet/applet.c:643 ../src/applet/applet.c:645
 msgid "Warning"
 msgstr "Warnung"
 
-#: ../src/applet/applet.c:673
+#: ../src/applet/applet.c:692
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "Info-Applet, das Benutzer über die von ABRT entdeckten Probleme benachrichtigt"
 
-#: ../src/applet/applet.c:689 ../src/gui-gtk/main.c:894
+#: ../src/applet/applet.c:708 ../src/gui-gtk/main.c:894
 msgid "translator-credits"
 msgstr "Mario Blättermann\nFabian Affolter\nRoman Spirgi"
 
-#: ../src/applet/applet.c:699
+#: ../src/applet/applet.c:718
 msgid "Hide"
 msgstr "Ausblenden"
 
-#: ../src/applet/applet.c:769
+#: ../src/applet/applet.c:788
 msgid "Problem detected"
-msgstr "Problem festgestellt"
+msgstr "Fehler festgestellt"
 
-#: ../src/applet/applet.c:797
+#: ../src/applet/applet.c:824
 msgid "Ignore"
 msgstr "Ignorieren"
 
-#: ../src/applet/applet.c:803
+#. Problem has been 'autoreported' and is considered as KNOWN
+#. 
+#: ../src/applet/applet.c:831
 msgid "Open"
-msgstr ""
+msgstr "Öffnen"
 
-#: ../src/applet/applet.c:807
+#: ../src/applet/applet.c:835
 msgid "Show"
-msgstr ""
+msgstr "Anzeigen"
 
-#: ../src/applet/applet.c:811
+#: ../src/applet/applet.c:839
 msgid "A Known Problem has Occurred"
-msgstr ""
+msgstr "Ein bekannter Fehler ist aufgetreten"
 
+#. Problem has not yet been 'autoreported' and can be
+#. * 'autoreported' on user request.
+#. 
 #. buttons are homogenous so set size only for one button and it will
 #. * work for the rest buttons in same gtk_hbox_new()
-#: ../src/applet/applet.c:817 ../src/applet/applet.c:825
+#: ../src/applet/applet.c:847 ../src/applet/applet.c:870
 #: ../src/gui-gtk/main.c:1019 ../src/gui-gtk/main.c:1157
 msgid "Report"
 msgstr "Melden"
 
-#: ../src/applet/applet.c:821
+#: ../src/applet/applet.c:851
 msgid "A Problem has Occurred"
-msgstr "Ein Problem ist aufgetreten"
+msgstr "Ein Fehler ist aufgetreten"
 
-#: ../src/applet/applet.c:829
-msgid "A New Problem has Occurred"
+#: ../src/applet/applet.c:866
+msgid "A Problem has been Reported"
 msgstr ""
 
-#: ../src/applet/applet.c:838
+#: ../src/applet/applet.c:874
+msgid "A New Problem has Occurred"
+msgstr "Ein neues Problem ist aufgetreten"
+
+#: ../src/applet/applet.c:884
 #, c-format
 msgid "Can't show notification: %s"
-msgstr ""
+msgstr "Benachrichtigung kann nicht angezeigt werden: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:868
+#: ../src/applet/applet.c:914
 #, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr ""
+msgstr "Von gio channel kann nicht gelesen werden: »%s«"
 
-#: ../src/applet/applet.c:941
+#: ../src/applet/applet.c:991
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr ""
+msgstr "Verschlüsselung kann auf gio channel nicht gesetzt werden: %s"
 
-#: ../src/applet/applet.c:945
+#: ../src/applet/applet.c:995
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr ""
+msgstr "Nichtblockier-Modus kann für gio channel nicht gesetzt werden: %s"
 
-#: ../src/applet/applet.c:977
+#: ../src/applet/applet.c:1027
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "Eigentumsrechte von »%s« können nicht geändert werden."
 
-#: ../src/applet/applet.c:987
+#: ../src/applet/applet.c:1037
 #, c-format
 msgid "Can't open directory for writing '%s'"
-msgstr ""
+msgstr "Verzeichnis kann nicht mit Schreibrechten geöffnet werden - »%s«"
 
-#: ../src/applet/applet.c:1211
+#: ../src/applet/applet.c:1297
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr "& [-v] [DIR]...\n\nApplet zur Benachrichtigung des Benutzers, wenn neue Abstürze durch ABRT entdeckt werden\n"
+
+#: ../src/applet/applet.c:1391
+#, c-format
+msgid "dd_open() opened problem '%s' without valid time element"
+msgstr ""
 
 #: ../src/daemon/abrt-action-save-package-data.c:375
 msgid ""
@@ -183,27 +196,27 @@ msgstr "& [-v] [-c CONFFILE] -d DIR\n\nPaketdatenbank durchsuchen und Paket- und
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:96
 #: ../src/plugins/abrt-dedup-client.c:104
 msgid "Problem directory"
-msgstr "Problem-Verzeichnis"
+msgstr "Fehler-Verzeichnis"
 
 #: ../src/daemon/abrt-action-save-package-data.c:388
 msgid "Configuration file"
 msgstr "Konfigurationsdatei"
 
-#: ../src/daemon/abrt-server.c:509 ../src/dbus/abrt-dbus.c:919
-#: ../src/daemon/abrtd.c:836
+#: ../src/daemon/abrt-server.c:495 ../src/dbus/abrt-dbus.c:841
+#: ../src/daemon/abrtd.c:853
 msgid "& [options]"
 msgstr "& [options]"
 
-#: ../src/daemon/abrt-server.c:520
+#: ../src/daemon/abrt-server.c:506
 msgid "Use NUM as client uid"
 msgstr "NUM als Client-UID benutzen"
 
-#: ../src/daemon/abrt-server.c:521 ../src/plugins/abrt-watch-log.c:141
+#: ../src/daemon/abrt-server.c:507 ../src/plugins/abrt-watch-log.c:141
 #: ../src/plugins/abrt-dump-oops.c:247 ../src/plugins/abrt-dump-xorg.c:238
 msgid "Log to syslog"
 msgstr "In Systemprotokoll speichern"
 
-#: ../src/daemon/abrt-server.c:522 ../src/daemon/abrtd.c:852
+#: ../src/daemon/abrt-server.c:508 ../src/daemon/abrtd.c:869
 #: ../src/gui-gtk/main.c:1378
 msgid "Add program names to log"
 msgstr "Anwendungsnamen protokollieren"
@@ -212,59 +225,63 @@ msgstr "Anwendungsnamen protokollieren"
 msgid "Unknown error"
 msgstr "Unbekannter Fehler"
 
-#: ../src/dbus/abrt-dbus.c:409
+#: ../src/dbus/abrt-dbus.c:359
 #, c-format
 msgid "'%s' is not a valid problem directory"
 msgstr "»%s« ist kein gültiges Problem-Verzeichnis"
 
-#: ../src/dbus/abrt-dbus.c:443
+#: ../src/dbus/abrt-dbus.c:393
 #, c-format
 msgid "'%s' element can't be modified"
-msgstr ""
+msgstr "Element »%s« kann nicht geändert werden"
 
-#: ../src/dbus/abrt-dbus.c:459 ../src/dbus/abrt-dbus.c:577
-#: ../src/dbus/abrt-dbus.c:657
+#: ../src/dbus/abrt-dbus.c:409 ../src/dbus/abrt-dbus.c:527
+#: ../src/dbus/abrt-dbus.c:579
 msgid "Not Authorized"
 msgstr "Nicht erlaubt"
 
-#: ../src/dbus/abrt-dbus.c:469
+#: ../src/dbus/abrt-dbus.c:419
 msgid "Can't access the problem for modification"
+msgstr "Der Fehlerbericht kann nicht für die Bearbeitung geöffnet werden"
+
+#: ../src/dbus/abrt-dbus.c:542
+msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
 
-#: ../src/dbus/abrt-dbus.c:717
+#: ../src/dbus/abrt-dbus.c:639
 #, c-format
 msgid "'%s' is not a valid element name"
-msgstr ""
+msgstr "»%s« ist kein gültiger Name für das Element"
 
-#: ../src/dbus/abrt-dbus.c:741
+#: ../src/dbus/abrt-dbus.c:663
 msgid "No problem space left"
-msgstr ""
+msgstr "Kein weiterer Speicherplatz für die Fehlerbeschreibung vorhanden"
 
-#: ../src/dbus/abrt-dbus.c:771
+#: ../src/dbus/abrt-dbus.c:693
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr ""
+msgstr "Element »%s« kann nicht vo Fehlerverzeichnis »%s« entfernt werden"
 
-#: ../src/dbus/abrt-dbus.c:901
+#: ../src/dbus/abrt-dbus.c:823
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr "Der Name »%s« ist verloren gegangen. Bitte stellen Sie sicher, dass kein anderer Dienst unter dem gleichen Namen läuft.\n"
 
-#: ../src/dbus/abrt-dbus.c:928 ../src/daemon/abrtd.c:851
+#: ../src/dbus/abrt-dbus.c:850 ../src/daemon/abrtd.c:868
 msgid "Exit after NUM seconds of inactivity"
 msgstr "Nach NUM Sekunden Inaktivität beenden"
 
-#: ../src/dbus/abrt-dbus.c:946
+#: ../src/dbus/abrt-dbus.c:868
 msgid "This program must be run as root."
 msgstr "Die Anwendung muss mit Root-Rechten ausgeführt werden."
 
-#: ../src/daemon/abrtd.c:849
+#: ../src/daemon/abrtd.c:866
 msgid "Do not daemonize"
 msgstr "Nicht als Hintergrunddienst ausführen"
 
-#: ../src/daemon/abrtd.c:850
+#: ../src/daemon/abrtd.c:867
 msgid "Log to syslog even with -d"
 msgstr "Auch mit -d  im Systemprotokoll speichern"
 
@@ -280,46 +297,42 @@ msgstr "EVENT auf DIR ausführen"
 msgid "Communicate directly to the user"
 msgstr "Direkt mit dem Benutzer kommunizieren"
 
-#: ../src/gui-gtk/abrt.desktop.in.h:2
-msgid "View and report application crashes"
-msgstr "Applikationsabstürze ansehen und melden"
-
 #: ../src/gui-gtk/main.c:751
 msgid "The description of problem is too short"
-msgstr ""
+msgstr "Die Fehlerbeschreibung ist zu kurz"
 
 #: ../src/gui-gtk/main.c:752
 msgid ""
-"In order to get more usefull reports we do not accept reports with the "
+"In order to get more useful reports we do not accept reports with the "
 "description shorter than 10 letters."
-msgstr ""
+msgstr "Damit wir mehr aussagekräftige Fehlermeldungen erhalten, akzeptieren wir keine Berichte mit einer Beschreibung von weniger als 10 Zeichen."
 
 #: ../src/gui-gtk/main.c:766
 msgid "The summary of problem is too short"
-msgstr ""
+msgstr "Die Zusammenfassung des Problems ist zu kurz"
 
 #: ../src/gui-gtk/main.c:767
 msgid ""
-"In order to get more usefull reports we do not accept reports with the "
+"In order to get more useful reports we do not accept reports with the "
 "summary shorter than 10 letters."
-msgstr ""
+msgstr "Damit wir mehr aussagekräftige Fehlermeldungen erhalten, akzeptieren wir keine Bericht mit einer Zusammenfassung von weniger als 10 Zeichen."
 
 #: ../src/gui-gtk/main.c:804
 msgid "Problem description"
-msgstr "Problembeschreibung"
+msgstr "Fehlerbeschreibung"
 
 #: ../src/gui-gtk/main.c:812
 msgid "Summary:"
-msgstr ""
+msgstr "Zusammenfassung;"
 
 #: ../src/gui-gtk/main.c:824
 msgid "_Send"
-msgstr ""
+msgstr "_Senden"
 
 #. Sets text but text is selected :)
 #: ../src/gui-gtk/main.c:839
 msgid "A problem with ABRT"
-msgstr ""
+msgstr "Ein Problem mit ABRT"
 
 #: ../src/gui-gtk/main.c:913 ../src/gui-gtk/main.c:959
 msgid "Source"
@@ -327,7 +340,7 @@ msgstr "Quelle"
 
 #: ../src/gui-gtk/main.c:923 ../src/gui-gtk/main.c:969
 msgid "Problem"
-msgstr "Problem"
+msgstr "Fehler"
 
 #: ../src/gui-gtk/main.c:944
 msgid "Last Occurrence"
@@ -343,7 +356,7 @@ msgstr "Ergebnis der Übertragung"
 
 #: ../src/gui-gtk/main.c:1008
 msgid "_Problem"
-msgstr "_Problem"
+msgstr "_Fehler"
 
 #: ../src/gui-gtk/main.c:1009
 msgid "_Edit"
@@ -355,7 +368,7 @@ msgstr "_Hilfe"
 
 #: ../src/gui-gtk/main.c:1021
 msgid "Open problem data"
-msgstr "Problem-Daten öffnen"
+msgstr "Fehlerbericht öffnen"
 
 #: ../src/gui-gtk/main.c:1045
 msgid "Report problem with ABRT"
@@ -371,7 +384,7 @@ msgstr "<b>Ungesendete Berichte</b>"
 
 #: ../src/gui-gtk/main.c:1088
 msgid "Show all problems"
-msgstr "Alle Probleme anzeigen"
+msgstr "Alle Fehler anzeigen"
 
 #: ../src/gui-gtk/main.c:1131
 msgid "Submitted reports"
@@ -416,12 +429,12 @@ msgstr "Problematisches Verzeichnis konnte nicht gelöscht werden: %s"
 #: ../src/lib/problem_api.c:126
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
-msgstr "Problem-Daten können von abrt-dbus nicht abgerufen werden: %s"
+msgstr "Fehler-Daten können von abrt-dbus nicht abgerufen werden: %s"
 
 #: ../src/lib/problem_api.c:160
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
-msgstr "Problem-Liste kann von abrt-dbus nicht abgerufen werden: %s"
+msgstr "Fehler-Liste kann von abrt-dbus nicht abgerufen werden: %s"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:51
 msgid ""
@@ -452,19 +465,19 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
-msgstr ""
+msgstr "& [-v] -d DIR\n\nBerechnet und speichert UUID und DUPHASH für Kernelabsturz-Fehlerverzeichnis DIR"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:71
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
-msgstr ""
+msgstr "& [-v] -d DIR\n\nBerechnet und speichert UUID und DUPHASH für Xorg-Problemverzeichnis DIR"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:111
 #, c-format
 msgid "Module '%s' was loaded - won't report this crash"
-msgstr ""
+msgstr "Modul »%s« geladen - Dieser Absturz wird nicht übermittelt"
 
 #: ../src/plugins/abrt-action-analyze-python.c:36
 msgid ""
@@ -583,7 +596,7 @@ msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
-msgstr "Sind Sie damit einverstanden, den Speicherauszug hochzuladen? Möglicherweise sind darin vertrauliche Daten enthalten. Falls Sie mit »Nein« bestätigen, wird eine lokale Stapelüberwachung erstellt - und damit unter Umständen ein große Datenmenge heruntergeladen."
+msgstr "Sind Sie damit einverstanden, den Speicherauszug hochzuladen? Möglicherweise sind vertrauliche Daten darin enthalten. Falls Sie mit »Nein« bestätigen, wird eine lokale Stapelüberwachung erstellt - und damit unter Umständen ein große Datenmenge heruntergeladen."
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
 msgid ""
@@ -601,7 +614,7 @@ msgstr "& [-v] [-d GRÖSSE:VERZ]... [-f GRÖSSE:VERZ]... [-p VERZ] [DATEI]...\n\
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
-msgstr "Löscht gesamtes Problem-Verzeichnis"
+msgstr "Löscht gesamtes Fehler-Verzeichnis"
 
 #: ../src/plugins/abrt-action-trim-files.c:237
 msgid "Delete files inside this directory"
@@ -672,14 +685,14 @@ msgstr "Es ist ein Kernel-Problem aufgetreten, aber Ihr Kernel ist defekt (flags
 #: ../src/plugins/abrt-dump-oops.c:190
 #, c-format
 msgid " Tainted modules: %s."
-msgstr ""
+msgstr "Betroffene Module: %s."
 
 #: ../src/plugins/abrt-dump-oops.c:231
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
-msgstr "& [-vsoxm] [-d DIR]/[-D] [FILE]\n\nOops aus FILE extrahieren (oder Standard-Eingabe)"
+msgstr "& [-vsoxm] [-d DIR]/[-D] [FILE]\n\nKernel-Absturz aus FILE extrahieren (oder Standard-Eingabe)"
 
 #: ../src/plugins/abrt-dump-oops.c:248
 msgid "Print found oopses on standard output"
@@ -690,7 +703,7 @@ msgstr "Gefundene Kernel-Abstürze auf der Standardausgabe ausgeben"
 #. 
 #: ../src/plugins/abrt-dump-oops.c:252
 msgid "Create new problem directory in DIR for every oops found"
-msgstr ""
+msgstr "Neues Fehlerverzeichnis in DIR erstellen für jede gefundene Kernelabsturz-Meldung"
 
 #: ../src/plugins/abrt-dump-oops.c:253 ../src/plugins/abrt-dump-xorg.c:241
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
@@ -698,7 +711,7 @@ msgstr "Entspricht -d DumpLocation, DumpLocation ist in abrt.conf spezifiziert"
 
 #: ../src/plugins/abrt-dump-oops.c:254 ../src/plugins/abrt-dump-xorg.c:242
 msgid "Make the problem directory world readable"
-msgstr "Problem-Verzeichnis allgemein lesbar machen"
+msgstr "Fehler-Verzeichnis allgemein lesbar machen"
 
 #: ../src/plugins/abrt-dump-oops.c:255 ../src/plugins/abrt-dump-xorg.c:243
 msgid "Print search string(s) to stdout and exit"
@@ -717,7 +730,7 @@ msgstr "Gefundene Daten zum Absturz auf Standard-Eingabe ausgeben"
 
 #: ../src/plugins/abrt-dump-xorg.c:240
 msgid "Create problem directory in DIR for every crash found"
-msgstr ""
+msgstr "Neues Fehlerverzeichnis in DIR erstellen für jeden gefundenen Absturz"
 
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid ""
@@ -875,7 +888,7 @@ msgstr "Übertragung war erfolgreich"
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
-msgstr "Das Problem-Verzeichnis ist beschädigt und kann vom Retrace-Server nicht verarbeitet werden."
+msgstr "Das Fehler-Verzeichnis ist beschädigt und kann vom Retrace-Server nicht verarbeitet werden."
 
 #: ../src/plugins/abrt-retrace-client.c:748
 msgid ""
@@ -943,7 +956,7 @@ msgstr "Für Create- und Batch-Operationen"
 
 #: ../src/plugins/abrt-retrace-client.c:1110
 msgid "read data from ABRT problem directory"
-msgstr "Daten aus ABRT-Problemverzeichnis lesen"
+msgstr "Daten aus ABRT-Fehlerverzeichnis lesen"
 
 #: ../src/plugins/abrt-retrace-client.c:1112
 msgid "read data from coredump"
@@ -978,7 +991,7 @@ msgstr "abrt-retrace-client <Operation> [Optionen]\nOperationen: create/status/b
 #: ../src/plugins/abrt-retrace-client.c:1172
 #: ../src/plugins/abrt-retrace-client.c:1178
 msgid "Either problem directory or coredump is needed."
-msgstr "Problem-Verzeichnis oder Speicherauszug ist erforderlich."
+msgstr "Fehler-Verzeichnis oder Speicherauszug ist erforderlich."
 
 #: ../src/plugins/abrt-retrace-client.c:1184
 #: ../src/plugins/abrt-retrace-client.c:1192
@@ -1233,15 +1246,15 @@ msgstr "Aufruf: abrt-cli [--version] COMMAND [DIR]..."
 
 #: ../src/cli/abrt-cli.c:146
 msgid "List not yet reported problems [in DIRs]"
-msgstr "Liste noch nicht berichteter Probleme [in DIRs]"
+msgstr "Liste noch nicht berichteter Fehler [in DIRs]"
 
 #: ../src/cli/abrt-cli.c:147
 msgid "Remove problem directory DIR"
-msgstr "Problem-Verzeichnis DIR entfernen"
+msgstr "Fehler-Verzeichnis DIR entfernen"
 
 #: ../src/cli/abrt-cli.c:148
 msgid "Analyze and report problem data in DIR"
-msgstr "Problemdaten in DIR analysieren und berichten"
+msgstr "Fehlerdaten in DIR analysieren und berichten"
 
 #: ../src/cli/abrt-cli.c:149
 msgid "Print information about DIR"
@@ -1257,7 +1270,7 @@ msgstr "& list [Optionen] [DIR]..."
 
 #: ../src/cli/list.c:97
 msgid "List even reported problems"
-msgstr "Auch bereits gemeldete Probleme anzeigen"
+msgstr "Auch bereits gemeldete Fehler anzeigen"
 
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:99 ../src/cli/list.c:139
@@ -1292,7 +1305,7 @@ msgstr "VM-Core analysieren"
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
 msgid ""
 "Install kernel debuginfo packages, generate kernel log and oops message"
-msgstr "Kernel-Debuginfo-Pakete installieren, Kernel-Protokoll und Oops-Nachricht erzeugen"
+msgstr "Kernel-Debuginfo-Pakete installieren, Kernel-Protokoll und Kernelabsturz-Nachricht erzeugen"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""

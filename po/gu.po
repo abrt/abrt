@@ -6,12 +6,13 @@
 # , 2011-2012.
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
 # sweta <swkothar@redhat.com>, 2011-2012.
+# sweta <swkothar@redhat.com>, 2011-2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2012-12-19 15:48+0100\n"
-"PO-Revision-Date: 2012-12-19 14:49+0000\n"
+"POT-Creation-Date: 2013-01-31 13:23+0100\n"
+"PO-Revision-Date: 2013-01-31 12:24+0000\n"
 "Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: Gujarati <trans-gu@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,8 +21,7 @@ msgstr ""
 "Language: gu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:1064
+#: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/main.c:1064
 msgid "Automatic Bug Reporting Tool"
 msgstr "આપોઆપ ભૂલ અહેવાલીકરણ સાધન"
 
@@ -29,137 +29,151 @@ msgstr "આપોઆપ ભૂલ અહેવાલીકરણ સાધન"
 msgid "ABRT notification applet"
 msgstr "ABRT સૂચના એપલેટ"
 
-#: ../src/applet/applet.c:93
+#: ../src/applet/applet.c:96
 msgid ""
 "The report which will be sent does not contain any security sensitive data. Therefore it is not necessary to bother you next time and require any further action by you. \n"
 "Do you want to enable automatically submitted anonymous crash reports?"
-msgstr ""
+msgstr "અહેવાલ કે જે મોકલેલ હશે તે કોઇપણ સુરક્ષિત સંવેદનશીલ માહિતીને સમાવતુ નથી. માટે તેની ચિંતા કરવાની આગળ જરૂરી નથી અને તમારા દ્દારા કોઇપણ આગળની ક્રિયાની જરૂર છે. \nશું તમે આપમેળે સમાવેલ અનામિક ભંગાણ અહેવાલોને સક્રિય કરવા માંગો છો?"
 
 #. The NetworkManager DBus service is not available.
-#: ../src/applet/applet.c:172
+#: ../src/applet/applet.c:187
 #, c-format
 msgid "Can't connect to NetworkManager over DBus: %s"
-msgstr ""
+msgstr "DBus પર NetworkManager સાથે જોડાઇ શકાતુ નથી: %s"
 
-#: ../src/applet/applet.c:196
+#: ../src/applet/applet.c:211
 #, c-format
 msgid "Can't determine network status via NetworkManager: %s"
-msgstr ""
+msgstr "NetworkManager મારફતે નેટવર્ક પરિસ્થિતિને  નક્કી કરી શકાતુ નથી: %s"
 
-#: ../src/applet/applet.c:299
+#: ../src/applet/applet.c:315
 msgid "A problem has been detected"
 msgstr "સમસ્યાને શોધી દેવામાં આવી છે"
 
-#: ../src/applet/applet.c:301
+#: ../src/applet/applet.c:317
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "%s પેકેજમાં સમસ્યાને શોધી દેવામાં આવી છે"
 
-#: ../src/applet/applet.c:442 ../src/plugins/abrt-retrace-client.c:126
+#: ../src/applet/applet.c:458 ../src/plugins/abrt-retrace-client.c:126
 #: ../src/plugins/abrt-retrace-client.c:162
 #, c-format
 msgid "Can't execute '%s'"
 msgstr "'%s' ને ચલાવી શકાતુ નથી"
 
-#: ../src/applet/applet.c:510 ../src/applet/applet.c:591
+#: ../src/applet/applet.c:526 ../src/applet/applet.c:603
 #, c-format
 msgid "Can't close notification: %s"
-msgstr ""
+msgstr "સૂચનાને બંધ કરી શકાતી નથી: %s"
 
-#: ../src/applet/applet.c:572
+#: ../src/applet/applet.c:584
 #, c-format
 msgid "Can't open url '%s': %s"
-msgstr ""
+msgstr "url '%s' ને ખોલી શકાતી નથી: %s"
 
-#: ../src/applet/applet.c:624 ../src/applet/applet.c:626
+#: ../src/applet/applet.c:643 ../src/applet/applet.c:645
 msgid "Warning"
 msgstr "ચેતવણી"
 
-#: ../src/applet/applet.c:673
+#: ../src/applet/applet.c:692
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "સૂચના વિસ્તાર એપલેટ કે જે ABRT દ્દારા શોધેલ મુદ્દાઓ વિશે વપરાશકર્તાને સૂચિત કરે છે"
 
-#: ../src/applet/applet.c:689 ../src/gui-gtk/main.c:894
+#: ../src/applet/applet.c:708 ../src/gui-gtk/main.c:894
 msgid "translator-credits"
 msgstr "શ્ર્વેતા કોઠારી <swkothar@redhat.com>"
 
-#: ../src/applet/applet.c:699
+#: ../src/applet/applet.c:718
 msgid "Hide"
 msgstr "છુપાડો"
 
-#: ../src/applet/applet.c:769
+#: ../src/applet/applet.c:788
 msgid "Problem detected"
 msgstr "સમસ્યા મળી"
 
-#: ../src/applet/applet.c:797
+#: ../src/applet/applet.c:824
 msgid "Ignore"
 msgstr "અવગણો"
 
-#: ../src/applet/applet.c:803
+#. Problem has been 'autoreported' and is considered as KNOWN
+#. 
+#: ../src/applet/applet.c:831
 msgid "Open"
-msgstr ""
+msgstr "ખોલો"
 
-#: ../src/applet/applet.c:807
+#: ../src/applet/applet.c:835
 msgid "Show"
-msgstr ""
+msgstr "બતાવો"
 
-#: ../src/applet/applet.c:811
+#: ../src/applet/applet.c:839
 msgid "A Known Problem has Occurred"
-msgstr ""
+msgstr "જાણીતી સમસ્યા ઉદ્ભવી"
 
+#. Problem has not yet been 'autoreported' and can be
+#. * 'autoreported' on user request.
+#. 
 #. buttons are homogenous so set size only for one button and it will
 #. * work for the rest buttons in same gtk_hbox_new()
-#: ../src/applet/applet.c:817 ../src/applet/applet.c:825
+#: ../src/applet/applet.c:847 ../src/applet/applet.c:870
 #: ../src/gui-gtk/main.c:1019 ../src/gui-gtk/main.c:1157
 msgid "Report"
 msgstr "અહેવાલ"
 
-#: ../src/applet/applet.c:821
+#: ../src/applet/applet.c:851
 msgid "A Problem has Occurred"
 msgstr "સમસ્યા ઉદ્ભવી"
 
-#: ../src/applet/applet.c:829
-msgid "A New Problem has Occurred"
+#: ../src/applet/applet.c:866
+msgid "A Problem has been Reported"
 msgstr ""
 
-#: ../src/applet/applet.c:838
+#: ../src/applet/applet.c:874
+msgid "A New Problem has Occurred"
+msgstr "નવી સમસ્યા ઉદ્ભવી"
+
+#: ../src/applet/applet.c:884
 #, c-format
 msgid "Can't show notification: %s"
-msgstr ""
+msgstr "સૂચનાને બતાવી શકાતુ નથી: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:868
+#: ../src/applet/applet.c:914
 #, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr ""
+msgstr "gio ચેનલમાંથી વાંચી શકાતુ નથી: '%s'"
 
-#: ../src/applet/applet.c:941
+#: ../src/applet/applet.c:991
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr ""
+msgstr "gio ચેનલ પર એનકોડીંગ સુયોજિત કરી શકાતુ નથી: %s"
 
-#: ../src/applet/applet.c:945
+#: ../src/applet/applet.c:995
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr ""
+msgstr "gio ચેનલ માટે બ્લોક ન થાય તેવી સ્થિતિને ચાલુ કરી શકાતી નથી: %s"
 
-#: ../src/applet/applet.c:977
+#: ../src/applet/applet.c:1027
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "'%s' ની માલિકી લઇ શકાતી નથી"
 
-#: ../src/applet/applet.c:987
+#: ../src/applet/applet.c:1037
 #, c-format
 msgid "Can't open directory for writing '%s'"
-msgstr ""
+msgstr "'%s' ને લખવા માટે ડિરેક્ટરીને ખોલી શકાતી નથી"
 
-#: ../src/applet/applet.c:1211
+#: ../src/applet/applet.c:1297
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr "& [-v] [DIR]...\n\nએપલેટ કે જે વપરાશકર્તાને સૂચન કરે છે જ્યારે નવી સમસ્યાઓ ABRT દ્દારા શોધાયેલ છે\n"
+
+#: ../src/applet/applet.c:1391
+#, c-format
+msgid "dd_open() opened problem '%s' without valid time element"
+msgstr ""
 
 #: ../src/daemon/abrt-action-save-package-data.c:375
 msgid ""
@@ -184,21 +198,21 @@ msgstr "સમસ્યા ડિરેક્ટરી"
 msgid "Configuration file"
 msgstr "રૂપરેખાંકન ફાઇલ"
 
-#: ../src/daemon/abrt-server.c:509 ../src/dbus/abrt-dbus.c:919
-#: ../src/daemon/abrtd.c:836
+#: ../src/daemon/abrt-server.c:495 ../src/dbus/abrt-dbus.c:841
+#: ../src/daemon/abrtd.c:853
 msgid "& [options]"
 msgstr "& [options]"
 
-#: ../src/daemon/abrt-server.c:520
+#: ../src/daemon/abrt-server.c:506
 msgid "Use NUM as client uid"
-msgstr ""
+msgstr "ક્લાયન્ટ uid તરીકે NUM ને વાપરો"
 
-#: ../src/daemon/abrt-server.c:521 ../src/plugins/abrt-watch-log.c:141
+#: ../src/daemon/abrt-server.c:507 ../src/plugins/abrt-watch-log.c:141
 #: ../src/plugins/abrt-dump-oops.c:247 ../src/plugins/abrt-dump-xorg.c:238
 msgid "Log to syslog"
 msgstr "syslog માં લૉગ લો"
 
-#: ../src/daemon/abrt-server.c:522 ../src/daemon/abrtd.c:852
+#: ../src/daemon/abrt-server.c:508 ../src/daemon/abrtd.c:869
 #: ../src/gui-gtk/main.c:1378
 msgid "Add program names to log"
 msgstr "લૉગ રાખવા માટે કાર્યક્રમ નામો ઉમેરો"
@@ -207,65 +221,69 @@ msgstr "લૉગ રાખવા માટે કાર્યક્રમ ન�
 msgid "Unknown error"
 msgstr "અજ્ઞાત ભૂલ"
 
-#: ../src/dbus/abrt-dbus.c:409
+#: ../src/dbus/abrt-dbus.c:359
 #, c-format
 msgid "'%s' is not a valid problem directory"
 msgstr "'%s' માન્ય સમસ્યા ડિરેક્ટરી નથી"
 
-#: ../src/dbus/abrt-dbus.c:443
+#: ../src/dbus/abrt-dbus.c:393
 #, c-format
 msgid "'%s' element can't be modified"
-msgstr ""
+msgstr "'%s' ઘટકને બદલી શકાતુ નથી"
 
-#: ../src/dbus/abrt-dbus.c:459 ../src/dbus/abrt-dbus.c:577
-#: ../src/dbus/abrt-dbus.c:657
+#: ../src/dbus/abrt-dbus.c:409 ../src/dbus/abrt-dbus.c:527
+#: ../src/dbus/abrt-dbus.c:579
 msgid "Not Authorized"
 msgstr "અધિકૃત નથી"
 
-#: ../src/dbus/abrt-dbus.c:469
+#: ../src/dbus/abrt-dbus.c:419
 msgid "Can't access the problem for modification"
+msgstr "સૂચના માટે સમસ્યાને વાપરી શકાતુ નથી"
+
+#: ../src/dbus/abrt-dbus.c:542
+msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
 
-#: ../src/dbus/abrt-dbus.c:717
+#: ../src/dbus/abrt-dbus.c:639
 #, c-format
 msgid "'%s' is not a valid element name"
-msgstr ""
+msgstr "'%s' એ યોગ્ય ઘટક નામ નથી"
 
-#: ../src/dbus/abrt-dbus.c:741
+#: ../src/dbus/abrt-dbus.c:663
 msgid "No problem space left"
-msgstr ""
+msgstr "સમસ્યાની જગ્યા બાકી રહેલ નથી"
 
-#: ../src/dbus/abrt-dbus.c:771
+#: ../src/dbus/abrt-dbus.c:693
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr ""
+msgstr "સમસ્યા ડિરેક્ટરી '%s' માંથી ઘટક '%s' ને કાઢી શકાતુ નથી"
 
-#: ../src/dbus/abrt-dbus.c:901
+#: ../src/dbus/abrt-dbus.c:823
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr "નામ '%s' ગુમ થઇ ગયુ છે, મહેરબાની કરીને ચકાસો જો માલિકી ધરાવતા નામ વાળી બીજી સેવા ચાલી રહી નથી.\n"
 
-#: ../src/dbus/abrt-dbus.c:928 ../src/daemon/abrtd.c:851
+#: ../src/dbus/abrt-dbus.c:850 ../src/daemon/abrtd.c:868
 msgid "Exit after NUM seconds of inactivity"
 msgstr "નિષ્ક્રિયતાની NUM સેકંડ પછી બહાર નીકળો"
 
-#: ../src/dbus/abrt-dbus.c:946
+#: ../src/dbus/abrt-dbus.c:868
 msgid "This program must be run as root."
 msgstr "આ કાર્યક્રમ રુટ તરીકે જ ચલાવવો જોઇએ."
 
-#: ../src/daemon/abrtd.c:849
+#: ../src/daemon/abrtd.c:866
 msgid "Do not daemonize"
 msgstr "ડિમોનાઇઝ કરો નહિં"
 
-#: ../src/daemon/abrtd.c:850
+#: ../src/daemon/abrtd.c:867
 msgid "Log to syslog even with -d"
 msgstr "-d સાથે પણ syslog નો લૉગ લો"
 
 #: ../src/daemon/abrt-handle-event.c:290
 msgid "& [-v -i] -e|--event EVENT DIR..."
-msgstr ""
+msgstr "& [-v -i] -e|--event EVENT DIR..."
 
 #: ../src/daemon/abrt-handle-event.c:298
 msgid "Run EVENT on DIR"
@@ -273,31 +291,27 @@ msgstr "DIR પર EVENT ચલાવો"
 
 #: ../src/daemon/abrt-handle-event.c:299
 msgid "Communicate directly to the user"
-msgstr ""
-
-#: ../src/gui-gtk/abrt.desktop.in.h:2
-msgid "View and report application crashes"
-msgstr "કાર્યક્રમ તૂટવાનું દર્શાવો અને અહેવાલ કરો"
+msgstr "સીધુ વપરાશકર્તા સાથે વાર્તાલાપ કરો"
 
 #: ../src/gui-gtk/main.c:751
 msgid "The description of problem is too short"
-msgstr ""
+msgstr "સમસ્યાનું વર્ણન ઘણુ નાનું છે"
 
 #: ../src/gui-gtk/main.c:752
 msgid ""
-"In order to get more usefull reports we do not accept reports with the "
+"In order to get more useful reports we do not accept reports with the "
 "description shorter than 10 letters."
-msgstr ""
+msgstr "વધારે ઉપયોગી અહેવાલોને મેળવવા ક્રમમાં અમારે 10 અક્ષરો કરતા ઓછા વર્ણનો સાથે અહેવાલોને સ્વીકારતા નથી."
 
 #: ../src/gui-gtk/main.c:766
 msgid "The summary of problem is too short"
-msgstr ""
+msgstr "સમસ્યાનો સારાંશ ઘણો ટૂંકો છે"
 
 #: ../src/gui-gtk/main.c:767
 msgid ""
-"In order to get more usefull reports we do not accept reports with the "
+"In order to get more useful reports we do not accept reports with the "
 "summary shorter than 10 letters."
-msgstr ""
+msgstr "વધારે ઉપયોગી અહેવાલોને મેળવવા ક્રમમાં અમારે 10 અક્ષરો કરતા ઓછા સારાંશ સાથે અહેવાલોને સ્વીકારતા નથી."
 
 #: ../src/gui-gtk/main.c:804
 msgid "Problem description"
@@ -305,16 +319,16 @@ msgstr "સમસ્યા વર્ણન"
 
 #: ../src/gui-gtk/main.c:812
 msgid "Summary:"
-msgstr ""
+msgstr "સારાંશ:"
 
 #: ../src/gui-gtk/main.c:824
 msgid "_Send"
-msgstr ""
+msgstr "મોકલો (_S)"
 
 #. Sets text but text is selected :)
 #: ../src/gui-gtk/main.c:839
 msgid "A problem with ABRT"
-msgstr ""
+msgstr "ABRT સાથે સમસ્યા"
 
 #: ../src/gui-gtk/main.c:913 ../src/gui-gtk/main.c:959
 msgid "Source"
@@ -447,19 +461,19 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
-msgstr ""
+msgstr "& [-v] -d DIR\n\noops સમસ્યા ડિરેક્ટરી DIR માટે UUID અને DUPHASH ની ગણતરી અને સંગ્રહ થાય છે"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:71
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
-msgstr ""
+msgstr "& [-v] -d DIR\n\nxorg સમસ્યા ડિરેક્ટરી DIR માટે UUID અને DUPHASH ની ગણતરી અને સંગ્રહ થાય છે"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:111
 #, c-format
 msgid "Module '%s' was loaded - won't report this crash"
-msgstr ""
+msgstr "મોડ્યુલ '%s' લાવેલ હતુ - આ ભંગાણનો અહેવાલ કરાતો નથી"
 
 #: ../src/plugins/abrt-action-analyze-python.c:36
 msgid ""
@@ -578,13 +592,13 @@ msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
-msgstr ""
+msgstr "શું કૉર ડમ્પને અપલોડ કરવાનું બરાબર છે? (તે સંવેદનશીલ માહિતીને સમાવી શકે છે). જો તમારો જવાબ 'ના' હોય તો, સ્ટેક ટ્રેસ સ્થાનિક રીતે ઉત્પન્ન કરાશે. (તે વિશાળ પ્રમાણમાં માહિતીને ડાઉનલોડ કરી શકે છે)."
 
 #: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
 msgid ""
 "Do you want to generate a stack trace localy? (It may download a huge amount"
 " of data but reporting can't continue without stack trace)."
-msgstr ""
+msgstr "સ્ટૅક ટ્રેસને સ્થાનિક રીતે ઉત્પન્ન કરતા તમે માંગો છો? (તે વિશાળ પ્રમાણમાં માહિતીને ડાઉનલોડ કરી શકે છે પરંતુ સ્ટેક ટ્રેસ વગર અહેવાલીકરણને ચાલુ રાખી શકાતુ નથી)."
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -667,7 +681,7 @@ msgstr "કર્નલ સમસ્યા ઉદ્ભવી, પરંતુ �
 #: ../src/plugins/abrt-dump-oops.c:190
 #, c-format
 msgid " Tainted modules: %s."
-msgstr ""
+msgstr " લાઇસન્સ વગરનાં મોડ્યુલો: %s."
 
 #: ../src/plugins/abrt-dump-oops.c:231
 msgid ""
@@ -685,7 +699,7 @@ msgstr "મૂળભૂત આઉટપુટ પર મળેલ oopses ને 
 #. 
 #: ../src/plugins/abrt-dump-oops.c:252
 msgid "Create new problem directory in DIR for every oops found"
-msgstr ""
+msgstr "મળેલ દરેક oops માટે DIR માં નવી સમસ્યા ડિરેક્ટરીને બનાવો"
 
 #: ../src/plugins/abrt-dump-oops.c:253 ../src/plugins/abrt-dump-xorg.c:241
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
@@ -712,7 +726,7 @@ msgstr "મૂળભૂત આઉટપુટ પર મળેલ ભંગા�
 
 #: ../src/plugins/abrt-dump-xorg.c:240
 msgid "Create problem directory in DIR for every crash found"
-msgstr ""
+msgstr "મળેલ દરેક ભંગાણ માટે DIR માં સમસ્યા ડિરેક્ટરીને બનાવો"
 
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid ""
@@ -792,7 +806,7 @@ msgstr "ડમ્પ ડિરેક્ટરી '%s' ને ખોલવામ�
 #: ../src/plugins/abrt-retrace-client.c:475
 #, c-format
 msgid "'%s' must be a regular file in order to use Retrace server."
-msgstr ""
+msgstr "રિટ્રેસ સર્વરને વાપરવા માટે ક્રમમાં '%s' એ નિયમિત ફાઇલ હોવી જ જોઇએ."
 
 #: ../src/plugins/abrt-retrace-client.c:489
 #, c-format
@@ -1220,7 +1234,7 @@ msgstr "પેકેજની સ્થાનિક આવૃત્તિ ઉપ
 msgid ""
 "An update exists which might fix your problem. You can install it by "
 "running: %s. Do you want to continue with reporting the bug?"
-msgstr ""
+msgstr "સુધારો અસ્તિત્વ ધરાવે છે કે જેથી તમારી સમસ્યાને સુધારી શકો છો. તમે ચાલવા દ્દારા તેને સ્થાપિત કરી શકો છો: %s. શું તમે ભૂલ અહેવાલીકરણ સાથે ચાલુ રાખવા માંગો છો?"
 
 #: ../src/cli/abrt-cli.c:142
 msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
@@ -1267,7 +1281,7 @@ msgstr "& info [options] DIR..."
 msgid ""
 "Send core dump to remote retrace server for analysis or perform local "
 "analysis if the remote analysis fails"
-msgstr ""
+msgstr "સ્થાનિક વિશ્ર્લેષણને ચલાવવા અથવા વિશ્ર્લેષણ માટે દૂરસ્થ રિટ્રેસ સર્વરમાં કૉર ડમ્પ મોકલો જો દૂરસ્થ વિશ્ર્લેષણ નિષ્ફળ જાય"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:2
 msgid ""
@@ -1278,7 +1292,7 @@ msgid ""
 "more complete. Retrace server may generate better backtraces. Cons: coredump"
 " you upload contains all the data from the crashed program, including your "
 "private data, if any."
-msgstr ""
+msgstr "સર્વરમાં કૉરડમ્પને અપલોડ કરે છે, કે જે બેકટ્રેસને ઉત્પન્ન કરે છે અને તેને પાછુ કરે છે. જો વપરાશકર્તા કોઇપણ જગ્યાએ તેનાં કૉરડમ્પને અપલોડ કરવા માંગતા ન હોય તો ઘટના સ્થાનિક વિશ્ર્લેષણને ચલાવે છે. સ્થાનિક વિશ્ર્લેષણ ચાલતી ઘટના થે જો દૂરસ્થ વિશ્ર્લેષણ નિષ્ફળ જાય. ગુણ: ડિબગ જાણકારી ડાઉનલોડ કરવુ જરૂરી નથી. ડિબગ જાણકારીનાં રિટ્રેસ સર્વરનાં ડેટાબેઝ વધારે પૂર્ણ છે. રિટ્રેસ સર્વર વધારે સારું બેકટ્રેસને માંથી બધી માહિતીને સમાવે છે, તમારી ખાનગી માહિતીને સમાવી રહ્યુ છે, જો કોઇપણ હોય."
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
@@ -1351,12 +1365,12 @@ msgstr "જો તમારી ઘર ડિરેક્ટરીમાં .vimr
 
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"
-msgstr ""
+msgstr "અહેવાલ અદા કરો"
 
 #: ../src/plugins/post_report.xml.in.h:2
 msgid "Executed after the reporting is finished"
-msgstr ""
+msgstr "અહેવાલીકરણ સમાપ્ત થયુ પછી ચલાવાયું"
 
 #: ../src/plugins/post_report.xml.in.h:3
 msgid "Used for updating of the databases"
-msgstr ""
+msgstr "ડેટાબેઝને વાપરવા માટે વાપરેલ છે"

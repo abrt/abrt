@@ -9,16 +9,17 @@
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
 # Kiyoto Hashida <khashida@redhat.com>, 2009-2012.
 # Makoto Mizukami <makoto@fedoraporject.org>, 2010.
+#  <nnakakit@redhat.com>, 2013.
 #   <noriko@fedoraproject.org>, 2012.
 # Noriko Mizumoto <noriko@fedoraproject.org>, 2010.
-# Tomoyuki KATO <tomo@dream.daynight.jp>, 2012.
+# Tomoyuki KATO <tomo@dream.daynight.jp>, 2012-2013.
 #   <www.carrotsoft@gmail.com>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2012-12-19 15:48+0100\n"
-"PO-Revision-Date: 2012-12-19 14:49+0000\n"
+"POT-Creation-Date: 2013-01-31 13:23+0100\n"
+"PO-Revision-Date: 2013-01-31 12:24+0000\n"
 "Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: Japanese <trans-ja@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -27,8 +28,7 @@ msgstr ""
 "Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:1064
+#: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/main.c:1064
 msgid "Automatic Bug Reporting Tool"
 msgstr "自動バグ報告ツール（ABRT）"
 
@@ -36,137 +36,151 @@ msgstr "自動バグ報告ツール（ABRT）"
 msgid "ABRT notification applet"
 msgstr "ABRT 通知アプレット"
 
-#: ../src/applet/applet.c:93
+#: ../src/applet/applet.c:96
 msgid ""
 "The report which will be sent does not contain any security sensitive data. Therefore it is not necessary to bother you next time and require any further action by you. \n"
 "Do you want to enable automatically submitted anonymous crash reports?"
-msgstr ""
+msgstr "送信される報告にはセキュリティ関連のデータは含まれていないため、次回さらに操作する必要はありません。 \n自動的に提出される匿名のクラッシュ報告を有効にしますか?"
 
 #. The NetworkManager DBus service is not available.
-#: ../src/applet/applet.c:172
+#: ../src/applet/applet.c:187
 #, c-format
 msgid "Can't connect to NetworkManager over DBus: %s"
-msgstr ""
+msgstr "DBus で NetworkManager に接続できません: %s"
 
-#: ../src/applet/applet.c:196
+#: ../src/applet/applet.c:211
 #, c-format
 msgid "Can't determine network status via NetworkManager: %s"
-msgstr ""
+msgstr "NetworkManager でネットワークのステータスを判断できません: %s"
 
-#: ../src/applet/applet.c:299
+#: ../src/applet/applet.c:315
 msgid "A problem has been detected"
 msgstr "問題が検出されました"
 
-#: ../src/applet/applet.c:301
+#: ../src/applet/applet.c:317
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "%s パッケージ内の問題が検出されました"
 
-#: ../src/applet/applet.c:442 ../src/plugins/abrt-retrace-client.c:126
+#: ../src/applet/applet.c:458 ../src/plugins/abrt-retrace-client.c:126
 #: ../src/plugins/abrt-retrace-client.c:162
 #, c-format
 msgid "Can't execute '%s'"
 msgstr "%s を実行できません。"
 
-#: ../src/applet/applet.c:510 ../src/applet/applet.c:591
+#: ../src/applet/applet.c:526 ../src/applet/applet.c:603
 #, c-format
 msgid "Can't close notification: %s"
-msgstr ""
+msgstr "通知を閉じることができません: %s"
 
-#: ../src/applet/applet.c:572
+#: ../src/applet/applet.c:584
 #, c-format
 msgid "Can't open url '%s': %s"
-msgstr ""
+msgstr "url '%s' を開くことができません: %s"
 
-#: ../src/applet/applet.c:624 ../src/applet/applet.c:626
+#: ../src/applet/applet.c:643 ../src/applet/applet.c:645
 msgid "Warning"
 msgstr "警告"
 
-#: ../src/applet/applet.c:673
+#: ../src/applet/applet.c:692
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT によって検出された問題をユーザーに通知するための通知エリアアプレット"
 
-#: ../src/applet/applet.c:689 ../src/gui-gtk/main.c:894
+#: ../src/applet/applet.c:708 ../src/gui-gtk/main.c:894
 msgid "translator-credits"
 msgstr "Casey Jones <nahareport@yahoo.com>\nHajime Taira <htaira@redhat.com>"
 
-#: ../src/applet/applet.c:699
+#: ../src/applet/applet.c:718
 msgid "Hide"
 msgstr "隠す"
 
-#: ../src/applet/applet.c:769
+#: ../src/applet/applet.c:788
 msgid "Problem detected"
 msgstr "問題を発見しました"
 
-#: ../src/applet/applet.c:797
+#: ../src/applet/applet.c:824
 msgid "Ignore"
 msgstr "無視する"
 
-#: ../src/applet/applet.c:803
+#. Problem has been 'autoreported' and is considered as KNOWN
+#. 
+#: ../src/applet/applet.c:831
 msgid "Open"
-msgstr ""
+msgstr "開く"
 
-#: ../src/applet/applet.c:807
+#: ../src/applet/applet.c:835
 msgid "Show"
-msgstr ""
+msgstr "表示"
 
-#: ../src/applet/applet.c:811
+#: ../src/applet/applet.c:839
 msgid "A Known Problem has Occurred"
-msgstr ""
+msgstr "既知の問題が発生しました"
 
+#. Problem has not yet been 'autoreported' and can be
+#. * 'autoreported' on user request.
+#. 
 #. buttons are homogenous so set size only for one button and it will
 #. * work for the rest buttons in same gtk_hbox_new()
-#: ../src/applet/applet.c:817 ../src/applet/applet.c:825
+#: ../src/applet/applet.c:847 ../src/applet/applet.c:870
 #: ../src/gui-gtk/main.c:1019 ../src/gui-gtk/main.c:1157
 msgid "Report"
 msgstr "報告"
 
-#: ../src/applet/applet.c:821
+#: ../src/applet/applet.c:851
 msgid "A Problem has Occurred"
 msgstr "1つ問題が起きました"
 
-#: ../src/applet/applet.c:829
-msgid "A New Problem has Occurred"
+#: ../src/applet/applet.c:866
+msgid "A Problem has been Reported"
 msgstr ""
 
-#: ../src/applet/applet.c:838
+#: ../src/applet/applet.c:874
+msgid "A New Problem has Occurred"
+msgstr "新しい問題が発生しました"
+
+#: ../src/applet/applet.c:884
 #, c-format
 msgid "Can't show notification: %s"
-msgstr ""
+msgstr "通知を表示できません: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:868
+#: ../src/applet/applet.c:914
 #, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr ""
+msgstr "gio チャネルから読み取ることができません: '%s'"
 
-#: ../src/applet/applet.c:941
+#: ../src/applet/applet.c:991
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr ""
+msgstr "gio チャネルでエンコーディングを設定できません: %s"
 
-#: ../src/applet/applet.c:945
+#: ../src/applet/applet.c:995
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr ""
+msgstr "gio チャネルのノンブロッキングモードを有効にできません: %s"
 
-#: ../src/applet/applet.c:977
+#: ../src/applet/applet.c:1027
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "'%s' は所有できません"
 
-#: ../src/applet/applet.c:987
+#: ../src/applet/applet.c:1037
 #, c-format
 msgid "Can't open directory for writing '%s'"
-msgstr ""
+msgstr "'%s' を書き込むためのディレクトリーを開くことができません"
 
-#: ../src/applet/applet.c:1211
+#: ../src/applet/applet.c:1297
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr "& [-v] [DIR]...\n\n新しい問題が ABRT で検出されるとユーザーに通知するアプレットです\n"
+
+#: ../src/applet/applet.c:1391
+#, c-format
+msgid "dd_open() opened problem '%s' without valid time element"
+msgstr ""
 
 #: ../src/daemon/abrt-action-save-package-data.c:375
 msgid ""
@@ -191,21 +205,21 @@ msgstr "問題のディレクトリ"
 msgid "Configuration file"
 msgstr "設定ファイル"
 
-#: ../src/daemon/abrt-server.c:509 ../src/dbus/abrt-dbus.c:919
-#: ../src/daemon/abrtd.c:836
+#: ../src/daemon/abrt-server.c:495 ../src/dbus/abrt-dbus.c:841
+#: ../src/daemon/abrtd.c:853
 msgid "& [options]"
 msgstr "& [オプション]"
 
-#: ../src/daemon/abrt-server.c:520
+#: ../src/daemon/abrt-server.c:506
 msgid "Use NUM as client uid"
 msgstr "NUM をクライアントの uid  として使用"
 
-#: ../src/daemon/abrt-server.c:521 ../src/plugins/abrt-watch-log.c:141
+#: ../src/daemon/abrt-server.c:507 ../src/plugins/abrt-watch-log.c:141
 #: ../src/plugins/abrt-dump-oops.c:247 ../src/plugins/abrt-dump-xorg.c:238
 msgid "Log to syslog"
 msgstr "syslog へのログ"
 
-#: ../src/daemon/abrt-server.c:522 ../src/daemon/abrtd.c:852
+#: ../src/daemon/abrt-server.c:508 ../src/daemon/abrtd.c:869
 #: ../src/gui-gtk/main.c:1378
 msgid "Add program names to log"
 msgstr "ログするためにプログラム名を追加する"
@@ -214,59 +228,63 @@ msgstr "ログするためにプログラム名を追加する"
 msgid "Unknown error"
 msgstr "不明なエラーです"
 
-#: ../src/dbus/abrt-dbus.c:409
+#: ../src/dbus/abrt-dbus.c:359
 #, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr "'%s' は有効な問題ディレクトリではありません"
+msgstr "'%s' は有効な問題ディレクトリーではありません"
 
-#: ../src/dbus/abrt-dbus.c:443
+#: ../src/dbus/abrt-dbus.c:393
 #, c-format
 msgid "'%s' element can't be modified"
-msgstr ""
+msgstr "'%s' エレメントを修正できません"
 
-#: ../src/dbus/abrt-dbus.c:459 ../src/dbus/abrt-dbus.c:577
-#: ../src/dbus/abrt-dbus.c:657
+#: ../src/dbus/abrt-dbus.c:409 ../src/dbus/abrt-dbus.c:527
+#: ../src/dbus/abrt-dbus.c:579
 msgid "Not Authorized"
 msgstr "権限がありません"
 
-#: ../src/dbus/abrt-dbus.c:469
+#: ../src/dbus/abrt-dbus.c:419
 msgid "Can't access the problem for modification"
+msgstr "問題にアクセスして修正できません"
+
+#: ../src/dbus/abrt-dbus.c:542
+msgid "Chowning directory failed. Check system logs for more details."
 msgstr ""
 
-#: ../src/dbus/abrt-dbus.c:717
+#: ../src/dbus/abrt-dbus.c:639
 #, c-format
 msgid "'%s' is not a valid element name"
-msgstr ""
+msgstr "'%s' は有効なエレメント名ではありません"
 
-#: ../src/dbus/abrt-dbus.c:741
+#: ../src/dbus/abrt-dbus.c:663
 msgid "No problem space left"
-msgstr ""
+msgstr "残っている問題領域はありません"
 
-#: ../src/dbus/abrt-dbus.c:771
+#: ../src/dbus/abrt-dbus.c:693
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr ""
+msgstr "'%s' エレメントを問題のディレクトリー '%s' から削除できません"
 
-#: ../src/dbus/abrt-dbus.c:901
+#: ../src/dbus/abrt-dbus.c:823
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr "'%s' の名前を紛失しました。その名前を持つ他のサービスが実行していないかチェックして下さい。\n"
 
-#: ../src/dbus/abrt-dbus.c:928 ../src/daemon/abrtd.c:851
+#: ../src/dbus/abrt-dbus.c:850 ../src/daemon/abrtd.c:868
 msgid "Exit after NUM seconds of inactivity"
 msgstr "NUM 秒の間アクティビティが見られない場合に終了します"
 
-#: ../src/dbus/abrt-dbus.c:946
+#: ../src/dbus/abrt-dbus.c:868
 msgid "This program must be run as root."
 msgstr "このプログラムは root で実行しなければなりません"
 
-#: ../src/daemon/abrtd.c:849
+#: ../src/daemon/abrtd.c:866
 msgid "Do not daemonize"
 msgstr "デーモン化されていません。"
 
-#: ../src/daemon/abrtd.c:850
+#: ../src/daemon/abrtd.c:867
 msgid "Log to syslog even with -d"
 msgstr "-d を使用しても syslog へログ"
 
@@ -282,29 +300,25 @@ msgstr "EVENT を DIR で実行"
 msgid "Communicate directly to the user"
 msgstr "ユーザーと直接通信する"
 
-#: ../src/gui-gtk/abrt.desktop.in.h:2
-msgid "View and report application crashes"
-msgstr "アプリケーションクラッシュの表示とレポート"
-
 #: ../src/gui-gtk/main.c:751
 msgid "The description of problem is too short"
-msgstr ""
+msgstr "問題の説明が短すぎます"
 
 #: ../src/gui-gtk/main.c:752
 msgid ""
-"In order to get more usefull reports we do not accept reports with the "
+"In order to get more useful reports we do not accept reports with the "
 "description shorter than 10 letters."
-msgstr ""
+msgstr "報告を実用的にするために、説明が 10 文字以上の報告のみ受理します"
 
 #: ../src/gui-gtk/main.c:766
 msgid "The summary of problem is too short"
-msgstr ""
+msgstr "問題の概要が短すぎます"
 
 #: ../src/gui-gtk/main.c:767
 msgid ""
-"In order to get more usefull reports we do not accept reports with the "
+"In order to get more useful reports we do not accept reports with the "
 "summary shorter than 10 letters."
-msgstr ""
+msgstr "報告を実用的にするために、概要が 10 文字以上の報告のみ受理します"
 
 #: ../src/gui-gtk/main.c:804
 msgid "Problem description"
@@ -312,16 +326,16 @@ msgstr "問題の説明"
 
 #: ../src/gui-gtk/main.c:812
 msgid "Summary:"
-msgstr ""
+msgstr "概要:"
 
 #: ../src/gui-gtk/main.c:824
 msgid "_Send"
-msgstr ""
+msgstr "送信(_S)"
 
 #. Sets text but text is selected :)
 #: ../src/gui-gtk/main.c:839
 msgid "A problem with ABRT"
-msgstr ""
+msgstr "ABRT での問題"
 
 #: ../src/gui-gtk/main.c:913 ../src/gui-gtk/main.c:959
 msgid "Source"
@@ -389,7 +403,7 @@ msgid ""
 "\n"
 "Shows list of problem directories in specified DIR(s)\n"
 "and ones saved in system-wide problem directory spool."
-msgstr "& [-vpD] [DIR]...⏎ ⏎ は、特定した DIR(s)⏎ 内の問題ディレクトリ一とシステム全域の問題ディレクトリスプールに保存したものの一覧を表示します"
+msgstr "& [-vpD] [DIR]...⏎ ⏎ は、特定した DIR(s)⏎ 内の問題ディレクトリ一とシステム全域の問題ディレクトリースプールに保存したものの一覧を表示します"
 
 #: ../src/gui-gtk/main.c:1379
 msgid "Do not query problems over dbus (use only DIRs)"
@@ -413,7 +427,7 @@ msgstr "'%s の chown ができません: %s"
 #: ../src/lib/problem_api.c:92
 #, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr "問題ディレクトリの削除は失敗しました: %s"
+msgstr "問題ディレクトリーの削除は失敗しました: %s"
 
 #: ../src/lib/problem_api.c:126
 #, c-format
@@ -431,7 +445,7 @@ msgid ""
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
-msgstr "& [options] -d DIR\n\nC/C++ バックトレースを分析し、 重複ハッシュ、 バックトレース\nレーティングを生成、 問題の DIR ディレクトリ内のクラッシュ関数を\n識別します"
+msgstr "& [options] -d DIR\n\nC/C++ バックトレースを分析し、 重複ハッシュ、 バックトレース\nレーティングを生成、 問題の DIR ディレクトリー内のクラッシュ関数を\n識別します"
 
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
@@ -447,26 +461,26 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
-msgstr "& [-v] -d DIR\n\n問題の DIR ディレクトリ内のコアダンプの UUID を算出して保存\nします"
+msgstr "& [-v] -d DIR\n\n問題の DIR ディレクトリー内のコアダンプの UUID を算出して保存\nします"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
-msgstr ""
+msgstr "& [-vs] -d DIR\n\noops 問題の DIR ディレクトリーの UUID と DUPHASH を算出して\n保存します"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:71
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
-msgstr ""
+msgstr "& [-v] -d DIR\n\nxorg 問題の DIR ディレクトリーの UUID と DUPHASH を算出して保存します"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:111
 #, c-format
 msgid "Module '%s' was loaded - won't report this crash"
-msgstr ""
+msgstr "'%s' モジュールがロードされました - このクラッシュは報告しません"
 
 #: ../src/plugins/abrt-action-analyze-python.c:36
 msgid ""
@@ -506,11 +520,11 @@ msgid ""
 "& [options] -d DIR\n"
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
-msgstr "& [options] -d DIR\n\n問題の DIR ディレクトリ内のコアダンプを分析し、 バックトレースを\n生成して保存します"
+msgstr "& [options] -d DIR\n\n問題の DIR ディレクトリー内のコアダンプを分析し、 バックトレースを\n生成して保存します"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 msgid "Additional debuginfo directories"
-msgstr "追加の debuginfo ディレクトリ"
+msgstr "追加の debuginfo ディレクトリー"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Kill gdb if it runs for more than NUM seconds"
@@ -599,19 +613,19 @@ msgid ""
 "\n"
 "Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
 "FILEs are preserved (never deleted)."
-msgstr "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n\nDIR のサイズが SIZE 未満になるまで DIR 内の問題のディレクトリ \n(-d) またはファイル (-f) を削除します。 FILE については維持され\nます (削除しないようにします)。"
+msgstr "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n\nDIR のサイズが SIZE 未満になるまで DIR 内の問題のディレクトリー \n(-d) またはファイル (-f) を削除します。 FILE については維持され\nます (削除しないようにします)。"
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
-msgstr "問題のディレクトリをすべて削除"
+msgstr "問題のディレクトリーをすべて削除"
 
 #: ../src/plugins/abrt-action-trim-files.c:237
 msgid "Delete files inside this directory"
-msgstr "このディレクトリ内のファイル群を削除"
+msgstr "このディレクトリー内のファイル群を削除"
 
 #: ../src/plugins/abrt-action-trim-files.c:238
 msgid "Preserve this directory"
-msgstr "このディレクトリを維持"
+msgstr "このディレクトリーを維持"
 
 #: ../src/plugins/abrt-dedup-client.c:96
 #: ../src/plugins/abrt-retrace-client.c:1096
@@ -674,7 +688,7 @@ msgstr "カーネルの問題が発生しました。しかしカーネルが汚
 #: ../src/plugins/abrt-dump-oops.c:190
 #, c-format
 msgid " Tainted modules: %s."
-msgstr ""
+msgstr "汚染されたモジュール: %s."
 
 #: ../src/plugins/abrt-dump-oops.c:231
 msgid ""
@@ -692,7 +706,7 @@ msgstr "見つけた oops を標準出力に表示します"
 #. 
 #: ../src/plugins/abrt-dump-oops.c:252
 msgid "Create new problem directory in DIR for every oops found"
-msgstr ""
+msgstr "検出される oops ごとに DIR に新しい問題のディレクトリーを作成します"
 
 #: ../src/plugins/abrt-dump-oops.c:253 ../src/plugins/abrt-dump-xorg.c:241
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
@@ -700,7 +714,7 @@ msgstr "-d DumpLocation と同じです、 DumpLocation は abrt.conf で指定�
 
 #: ../src/plugins/abrt-dump-oops.c:254 ../src/plugins/abrt-dump-xorg.c:242
 msgid "Make the problem directory world readable"
-msgstr "問題のディレクトリを誰でも見れるようにします"
+msgstr "問題のディレクトリーを誰でも見れるようにします"
 
 #: ../src/plugins/abrt-dump-oops.c:255 ../src/plugins/abrt-dump-xorg.c:243
 msgid "Print search string(s) to stdout and exit"
@@ -719,7 +733,7 @@ msgstr "発見したクラッシュデータを標準出力に表示する"
 
 #: ../src/plugins/abrt-dump-xorg.c:240
 msgid "Create problem directory in DIR for every crash found"
-msgstr ""
+msgstr "検出されるクラッシュごとに DIR に問題のディレクトリーを作成します"
 
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid ""
@@ -793,7 +807,7 @@ msgstr "ファイル '%s' の統計ができません。"
 #: ../src/plugins/abrt-retrace-client.c:436
 #, c-format
 msgid "Unable to open dump directory '%s'."
-msgstr "ダンプディレクトリ「%s」を開けません"
+msgstr "ダンプディレクトリー「%s」を開けません"
 
 #: ../src/plugins/abrt-retrace-client.c:459
 #: ../src/plugins/abrt-retrace-client.c:475
@@ -877,7 +891,7 @@ msgstr "アップロードに成功しました。"
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
-msgstr "問題のディレクトリが破損しており、再トレースサーバーではプロセスできません。"
+msgstr "問題のディレクトリーが破損しており、再トレースサーバーではプロセスできません。"
 
 #: ../src/plugins/abrt-retrace-client.c:748
 msgid ""
@@ -945,7 +959,7 @@ msgstr "作成とバッチの操作用"
 
 #: ../src/plugins/abrt-retrace-client.c:1110
 msgid "read data from ABRT problem directory"
-msgstr "ABRT の問題ディレクトリからデータを読み込みます"
+msgstr "ABRT の問題ディレクトリーからデータを読み込みます"
 
 #: ../src/plugins/abrt-retrace-client.c:1112
 msgid "read data from coredump"
@@ -957,7 +971,7 @@ msgstr "ポーリング処理の遅延"
 
 #: ../src/plugins/abrt-retrace-client.c:1116
 msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
-msgstr "(debug) /tmp 内のダンプディレクトリから作成された一時アーカイブを削除しない"
+msgstr "(debug) /tmp 内のダンプディレクトリーから作成された一時アーカイブを削除しない"
 
 #: ../src/plugins/abrt-retrace-client.c:1118
 msgid "For status, backtrace, and log operations"
@@ -980,7 +994,7 @@ msgstr "abrt-retrace-client <operation> [options]\n操作: create/status/backtra
 #: ../src/plugins/abrt-retrace-client.c:1172
 #: ../src/plugins/abrt-retrace-client.c:1178
 msgid "Either problem directory or coredump is needed."
-msgstr "問題のディレクトリまたはコアダンプのいずれかが必要です"
+msgstr "問題のディレクトリーまたはコアダンプのいずれかが必要です"
 
 #: ../src/plugins/abrt-retrace-client.c:1184
 #: ../src/plugins/abrt-retrace-client.c:1192
@@ -1239,7 +1253,7 @@ msgstr "まだ報告されていない問題を表示する [DIR 内]"
 
 #: ../src/cli/abrt-cli.c:147
 msgid "Remove problem directory DIR"
-msgstr "問題の DIR ディレクトリを削除する"
+msgstr "問題の DIR ディレクトリーを削除する"
 
 #: ../src/cli/abrt-cli.c:148
 msgid "Analyze and report problem data in DIR"
@@ -1308,7 +1322,7 @@ msgstr "GConf 設定を収集"
 
 #: ../src/plugins/collect_GConf.xml.in.h:2
 msgid "Save configuration from application's GConf directory"
-msgstr "アプリケーションの GConf ディレクトリから設定を保存します"
+msgstr "アプリケーションの GConf ディレクトリーから設定を保存します"
 
 #: ../src/plugins/collect_GConf.xml.in.h:3
 msgid ""
@@ -1348,13 +1362,13 @@ msgstr "vim 設定ファイルを収集します"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:2
 msgid "Save .vimrc and .gvimrc from your home directory"
-msgstr "ホームディレクトリの .vimrc と .gvimrc を保存します"
+msgstr "ホームディレクトリーの .vimrc と .gvimrc を保存します"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
 "Checks if there are .vimrc and .gvimrc in your home directory and saves them"
 " as user_vimrc and user_gvimrc, respectively."
-msgstr "ホームディレクトリに .vimrc と .gvimrc があるか確認して、 それぞれを user_vimrc と user_gvimrc として保存します"
+msgstr "ホームディレクトリーに .vimrc と .gvimrc があるか確認して、 それぞれを user_vimrc と user_gvimrc として保存します"
 
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"
