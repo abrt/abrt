@@ -111,8 +111,8 @@ DEFAULT_DUMP_DIR_MODE=$($PKG_CONFIG --variable=dd_mode libreport)
 
 AC_ARG_WITH([defaultdumplocation],
             AS_HELP_STRING([--with-defaultdumplocation=DIR],
-                           [Default dump location ('LOCALSTATEDIR/spool/abrt')]),
-            [], [with_defaultdumplocation=${localstatedir}/spool/abrt])
+                           [Default dump location ('LOCALSTATEDIR/tmp/abrt')]),
+            [], [with_defaultdumplocation=${localstatedir}/tmp/abrt])
 AC_SUBST([DEFAULT_DUMP_LOCATION], [$with_defaultdumplocation])
 
 AC_SUBST(CONF_DIR)
