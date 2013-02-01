@@ -419,9 +419,6 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
         /* dd_opendir already emitted error msg */
         goto delete_bad_dir;
 
-    /* Reset mode/uig/gid to correct values for all files created by event run */
-    dd_sanitize_mode_and_owner(dd);
-
     /* Update count */
     char *count_str = dd_load_text_ext(dd, FILENAME_COUNT, DD_FAIL_QUIETLY_ENOENT);
     unsigned long count = strtoul(count_str, NULL, 10);
@@ -436,6 +433,10 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
         sprintf(new_count_str, "%lu", count);
         dd_save_text(dd, FILENAME_COUNT, new_count_str);
     }
+
+    /* Reset mode/uig/gid to correct values for all files created by event run */
+    dd_sanitize_mode_and_owner(dd);
+
     dd_close(dd);
 
     if (!state->dup_of_dir)
