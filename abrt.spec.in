@@ -251,7 +251,16 @@ problems handled by ABRT in Python.
 
 %build
 autoconf
-CFLAGS="%{optflags} -Werror" %configure --disable-silent-rules
+%if 0%{?fedora} < 18
+    %if 0%{?rhel} < 7
+        CFLAGS="%{optflags} -Werror" %configure --with-defaultdumplocation=/var/tmp/abrt --disable-silent-rules
+    %else
+        CFLAGS="%{optflags} -Werror" %configure --disable-silent-rules
+    %endif
+%else
+        CFLAGS="%{optflags} -Werror" %configure --disable-silent-rules
+%endif
+    
 make %{?_smp_mflags}
 
 %install
