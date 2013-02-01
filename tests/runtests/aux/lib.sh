@@ -66,7 +66,21 @@ function generate_second_crash() {
     will_abort
 }
 
+function load_abrt_conf() {
+    ABRT_CONF_DUMP_LOCATION=`sed -n '/^DumpLocation[ \t]*=/ s/.*=[ \t]*//p' @CONF_DIR@/abrt.conf 2>/dev/null`
+
+    if test -z "$ABRT_CONF_DUMP_LOCATION"; then
+        ABRT_CONF_DUMP_LOCATION=$( pkg-config abrt --variable=defaultdumplocation )
+    fi
+
+    if test -z "$ABRT_CONF_DUMP_LOCATION"; then
+        ABRT_CONF_DUMP_LOCATION="/var/spool/abrt"
+    fi
+}
+
 function prepare() {
-    rm -f /var/spool/abrt/last-ccpp
+    load_abrt_conf
+
+    rm -f -- $ABRT_CONF_DUMP_LOCATION/last-ccpp
     rm -f /tmp/abrt-done
 }

@@ -26,6 +26,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
+. ../aux/lib.sh
 
 TEST="dbus-elements-handling"
 PACKAGE="abrt"
@@ -166,12 +167,12 @@ rlJournalStart
         export -f abrtDBusSetElement
         export -f abrtDBusDelElement
         export -f abrtDBusGetElement
-        DUMP_LOCATION=`mktemp -d /var/spool/XXXXX`
         # Set limit to 1Midk
         rlRun "cp /etc/abrt/abrt.conf /etc/abrt/abrt.conf.bak" 0 "Create a backup of abrt configuration"
         rlRun "sed 's,^.*MaxCrashReportsSize.*=.*$,MaxCrashReportsSize=1,' -i /etc/abrt/abrt.conf" 0 "Set limit for crash reports to 1MiB"
-        rlRun "sed 's,^.*DumpLocation.*=.*$,DumpLocation=$DUMP_LOCATION,' -i /etc/abrt/abrt.conf" 0 "Change the dump location"
         rlRun "systemctl restart abrtd.service" 0 "Restart abrt service"
+
+        load_abrt_conf
 
         rlLog "Create a problem data as the root user"
         roots_problem=`abrtDBusNewProblem deleted,to_be_deleted,changed,to_be_changed`
@@ -180,7 +181,7 @@ rlJournalStart
         fi
 
         sleep 5
-        roots_problem_path="$(abrt-cli list -f $DUMP_LOCATION | awk -v id=$roots_problem '$0 ~ "Directory:.*"id { print $2 }')"
+        roots_problem_path="$(abrt-cli list -f $ABRT_CONF_DUMP_LOCATION | awk -v id=$roots_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$roots_problem_path" ]; then
             rlDie "Not found path"
         fi
@@ -192,7 +193,7 @@ rlJournalStart
         fi
 
         sleep 5
-        unprivilegeds_problem_path="$(abrt-cli list -f $DUMP_LOCATION | awk -v id=$unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
+        unprivilegeds_problem_path="$(abrt-cli list -f $ABRT_CONF_DUMP_LOCATION | awk -v id=$unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$unprivilegeds_problem_path" ]; then
             rlDie "Not found path"
         fi
@@ -225,7 +226,7 @@ rlJournalStart
 
     rlPhaseStartSetup
         rlRun "systemctl stop abrtd.service" 0 "Stop abrtd before cleaning of the dump location"
-        rlRun "rm -rf $DUMP_LOCATION/*" 0 "Clean the dump location"
+        rlRun "rm -rf $ABRT_CONF_DUMP_LOCATION/*" 0 "Clean the dump location"
         rlRun "systemctl start abrtd.service" 0 "Start abrtd after cleaning of the dump location"
 
         rlLog "Create a problem data as the root user"
@@ -235,7 +236,7 @@ rlJournalStart
         fi
 
         sleep 5
-        roots_problem_path="$(abrt-cli list -f $DUMP_LOCATION | awk -v id=$roots_problem '$0 ~ "Directory:.*"id { print $2 }')"
+        roots_problem_path="$(abrt-cli list -f $ABRT_CONF_DUMP_LOCATION | awk -v id=$roots_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$roots_problem_path" ]; then
             rlDie "Not found path problem path"
         fi
@@ -247,7 +248,7 @@ rlJournalStart
         fi
 
         sleep 5
-        unprivilegeds_problem_path="$(abrt-cli list -f $DUMP_LOCATION | awk -v id=$unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
+        unprivilegeds_problem_path="$(abrt-cli list -f $ABRT_CONF_DUMP_LOCATION | awk -v id=$unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$unprivilegeds_problem_path" ]; then
             rlDie "Not found path problem path"
         fi
@@ -259,7 +260,7 @@ rlJournalStart
         fi
 
         sleep 5
-        second_unprivilegeds_problem_path="$(abrt-cli list -f $DUMP_LOCATION | awk -v id=$second_unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
+        second_unprivilegeds_problem_path="$(abrt-cli list -f $ABRT_CONF_DUMP_LOCATION | awk -v id=$second_unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$second_unprivilegeds_problem_path" ]; then
             rlDie "Not found path problem path"
         fi
@@ -292,7 +293,7 @@ rlJournalStart
         rlRun "userdel -r abrtdbustestanother" 0 "Remove the another test user"
         rlRun "mv /etc/abrt/abrt.conf.bak /etc/abrt/abrt.conf" 0 "Restore abrt configuration"
         rlRun "systemctl restart abrtd.service" 0 "Restart abrtd after configuration changes"
-        rlRun "rm -rf $DUMP_LOCATION"
+        rlRun "rm -rf -- $ABRT_CONF_DUMP_LOCATION/*"
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd

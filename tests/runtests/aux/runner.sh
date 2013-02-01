@@ -1,5 +1,9 @@
 #!/bin/bash
 
+. ./aux/lib.sh
+
+load_abrt_conf
+
 if [ $1 ]; then
 
     # clenaup BEFORE every test
@@ -20,8 +24,7 @@ if [ $1 ]; then
         rm -f /var/run/abrt/abrtd.pid
     fi
 
-    rm -f /var/spool/abrt/last-ccpp
-    rm -f /tmp/abrt-done
+    prepare
 
     if [ "${REINSTALL_BEFORE_EACH_TEST}" = "1" ]; then
         echo 'REINSTALL_BEFORE_EACH_TEST set'
@@ -49,7 +52,7 @@ if [ $1 ]; then
     fi
 
     if [ "${CLEAN_SPOOL_BEFORE_EACH_TEST}" = "1" ]; then
-        rm -rf /var/spool/abrt/*
+        rm -rf $ABRT_CONF_DUMP_LOCATION/*
     fi
 
     service abrtd start

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+. ./aux/lib.sh
+
+load_abrt_conf
+
 testlist=$(cat $TEST_LIST | grep '^[^#]\+$')
 crit_test_fail=0
 
@@ -22,11 +26,11 @@ for test_dir in $testlist; do
     sleep 1
 
     # save post crashes
-    if [ -d /var/spool/abrt ]; then
-        n_post=$( find /var/spool/abrt/ -mindepth 1 -type d | wc -l )
+    if [ -d "$ABRT_CONF_DUMP_LOCATION" ]; then
+        n_post=$( find $ABRT_CONF_DUMP_LOCATION -mindepth 1 -type d | wc -l )
         if [ $n_post -gt 0 ]; then
             mkdir "$outdir/post_crashes"
-            for dir in $( find /var/spool/abrt/ -mindepth 1 -type d ); do
+            for dir in $( find $ABRT_CONF_DUMP_LOCATION  -mindepth 1 -type d ); do
                 mv "$dir" "$outdir/post_crashes/"
             done
         fi

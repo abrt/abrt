@@ -1,10 +1,14 @@
 #!/bin/sh
 
-stopfile="/var/spool/abrt/bogofile.stop.$$"
+. ../aux/lib.sh
+
+load_abrt_conf
+
+stopfile="$ABRT_CONF_DUMP_LOCATION/bogofile.stop.$$"
 >"$stopfile"
 
 f() {
-    name="/var/spool/abrt/bogofile.$RANDOM"
+    name="$ABRT_CONF_DUMP_LOCATION/bogofile.$RANDOM"
     while test -f "$stopfile"; do
         rm "$name" >"$name"
     done
