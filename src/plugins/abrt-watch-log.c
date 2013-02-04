@@ -70,7 +70,7 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
         off_t offset = cur_pos & ~(off_t)(page_size - 1);
         size_t length = statbuf->st_size - offset;
         void *map = mmap(NULL, length, PROT_READ, MAP_SHARED, fd, offset);
-        if (mmap != MAP_FAILED)
+        if (map != MAP_FAILED)
         {
             size_t skip = (cur_pos & (page_size - 1));
             for (GList *l = match_list; l; l = l->next)
@@ -170,7 +170,7 @@ int main(int argc, char **argv)
         *eol++ = '\0';
         if (!*eol)
             continue;
-        l = g_list_append(l, eol); /* in fact, always returns unchamged l */
+        l = g_list_append(l, eol); /* in fact, always returns unchanged l */
     }
 
     const char *filename = *argv++;
