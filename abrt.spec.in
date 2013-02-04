@@ -44,9 +44,9 @@ BuildRequires: libtool
 BuildRequires: nss-devel
 BuildRequires: asciidoc
 BuildRequires: xmlto
-BuildRequires: libreport-devel >= 2.0.20
+BuildRequires: libreport-devel >= 2.1.0
 BuildRequires: btparser-devel
-Requires: libreport >= 2.0.20
+Requires: libreport >= 2.1.0
 
 %if %{with systemd}
 Requires: systemd-units
@@ -254,11 +254,14 @@ problems handled by ABRT in Python.
 autoconf
 %if 0%{?fedora} < 18
     %if 0%{?rhel} < 7
-        CFLAGS="%{optflags} -Werror" %configure --with-defaultdumplocation=/var/tmp/abrt --disable-silent-rules
+        %define var_base_dir spool
+        CFLAGS="%{optflags} -Werror" %configure --with-defaultdumplocation=/var/%{var_base_dir}/abrt --disable-silent-rules
     %else
+        %define var_base_dir tmp
         CFLAGS="%{optflags} -Werror" %configure --disable-silent-rules
     %endif
 %else
+        %define var_base_dir tmp
         CFLAGS="%{optflags} -Werror" %configure --disable-silent-rules
 %endif
     
@@ -274,7 +277,7 @@ find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
 mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-di
 mkdir -p $RPM_BUILD_ROOT/var/run/abrt
-mkdir -p $RPM_BUILD_ROOT/var/spool/abrt
+mkdir -p $RPM_BUILD_ROOT/var/%{var_base_dir}/abrt
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt-upload
 
 desktop-file-install \
@@ -495,7 +498,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/abrt_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/smart_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/smolt_event.conf
-%dir %attr(0755, abrt, abrt) %{_localstatedir}/spool/%{name}
+%dir %attr(0755, abrt, abrt) %{_localstatedir}/%{var_base_dir}/%{name}
 %dir %attr(0700, abrt, abrt) %{_localstatedir}/spool/%{name}-upload
 # abrtd runs as root
 %dir %attr(0755, root, root) %{_localstatedir}/run/%{name}
@@ -662,6 +665,71 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_defaultdocdir}/%{name}-python-%{version}/examples/
 
 %changelog
+* Mon Feb 04 2013 Jakub Filak <jfilak@redhat.com> 2.1.0-1
+- testsuite: replace hardcoded dump location by variable
+- pkg-config: export defaultdumplocation variable
+- rpm: preserve old configuration for F17< and REHL7<
+- configure: set default dump location to /var/tmp/abrt
+- abrtd: sanitize mode and ovner of all elements
+- updated translation
+- abrtd-inotify-flood test: expend it to check for another inotify-related bug
+- applet: on requrest open gnome-abrt instead of abrt-gui
+- Make it so that g_io_channel_read_chars(channel_inotify) does not buffer data.
+- multilib fixes
+- daemon: unify accessibility check before delete with dbus
+- dbus: move dir accessibility check from abrt to libreport
+- dbus: user dd_chown instead of own impl.
+- testsuite: run report-cli in non-interactive mode and look for correct string
+- allow default dump directory to be configured through cmd line args
+- abrt-python: import dbus lazily
+- abrt-python: add missing file
+- abrt-python: add DEFAULT_DUMP_LOCATION to config
+- abrt-python: fix list_all to return meaningful results
+- abrt-python: use filesystem proxy as a fallback
+- abrt-python: use /var/tmp/abrt by default
+- abrt-python: skip non-accessible directories
+- abrt-python: minor test updates
+- abrt-python: add missing watch examples
+- abrt-python: add new problem notification support
+- abrt-python: add debugging message for dbus calls
+- abrt-python: DeleteProblem takes list of problems
+- abrt-python: add support for dump dir access
+- abrt-python: force string for dbus set item
+- abrt-python: add test executable
+- abrt-python: fix tests not cleaning after themselves
+- abrt-python: add python-nose to buildrequires
+- abrt-python: add abrt-python package
+- abrt-python: cover python-problem by autotools
+- abrt-python: add python-problem tests to POTFILES.skip
+- abrt-python: add documentation build dir to .gitignore
+- abrt-python: rename to abrt-python
+- abrt-python: fix each test to run standalone
+- abrt-python: initial
+- testsuite: added symlink test to test list
+- testsuite: added test for symlink handling rhbz#895442
+- reporter-bz: post a comment to dup bug, if we found a dup. version 2.
+- testsuite: add rhel6 specific tests for CLI
+- replace left over magic dd modes by macro
+- synchronize default dump dir mode with libreport
+- replace all occurrences of hardcoded dump location by a variable
+- harvest-vmcore: read dump dir path from configuration
+- use lchown when chowning files over dbus
+- use lchown when chowning newly created problem directory
+- verify-that-report-edits test: fix to account for new CLI interface
+- localized-reporting test: fix breakage
+- localized-reporting: tweak it to work with new cli interface
+- Fix cli-sanity failures with new CLI
+- koops: add all x86 TRAP prefixes to list of suspicious strings
+- koops: put all suspicious strings to global variable
+- applet: extend comment. No code changes
+- applet: introduce shortened reporting
+- abrt-applet: handle SIGTERM and perform nice termination
+- abrt-applet: update the seen list on every possible action
+- applet: don't notify outdated new problems
+- Add and use "report-cli" event instead of removed "report-cli -r" option
+- fixed the relro flags rhbz#812284
+- applet: unref unused GIOChannel
+
 * Wed Nov 14 2012 Jakub Filak <jfilak@redhat.com> 2.0.19-1
 - call g_type_init() only in GLib version < 2.35
 - plugins/*_event.conf: use reporter-bz -F FMTFILE as appropriate
