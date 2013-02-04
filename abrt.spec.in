@@ -44,8 +44,9 @@ BuildRequires: libtool
 BuildRequires: nss-devel
 BuildRequires: asciidoc
 BuildRequires: xmlto
-BuildRequires: libreport-devel >= 2.0.10
+BuildRequires: libreport-devel >= 2.0.20
 BuildRequires: btparser-devel
+Requires: libreport >= 2.0.20
 
 %if %{with systemd}
 Requires: systemd-units
