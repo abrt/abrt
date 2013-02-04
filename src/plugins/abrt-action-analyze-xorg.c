@@ -118,6 +118,8 @@ int main(int argc, char **argv)
 
     dd_close(dd);
 
+    xchdir(dump_dir_name);
+
     /* Get ready for extremely ugly sight.
      *
      * # Generate duplicate detection hashes.
