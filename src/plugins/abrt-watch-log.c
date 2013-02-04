@@ -67,18 +67,22 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
 
     if (match_list && (statbuf->st_size - cur_pos) < MAX_SCAN_BLOCK)
     {
-        off_t offset = cur_pos & ~(off_t)(page_size - 1);
-        size_t length = statbuf->st_size - offset;
-        void *map = mmap(NULL, length, PROT_READ, MAP_SHARED, fd, offset);
+        size_t length = statbuf->st_size - cur_pos;
+
+        off_t mapofs = cur_pos & ~(off_t)(page_size - 1);
+        size_t maplen = statbuf->st_size - mapofs;
+        void *map = mmap(NULL, maplen, PROT_READ, MAP_SHARED, fd, mapofs);
+
         if (map != MAP_FAILED)
         {
-            size_t skip = (cur_pos & (page_size - 1));
+            char *start = (char*)map + (cur_pos & (page_size - 1));
             for (GList *l = match_list; l; l = l->next)
             {
-                VERB3 log("Searching for '%s' in '%.*s'", (char*)l->data,
-                    (int)(length - skip) > 20 ? 20 : (int)(length - skip),
-                    (char*)map + skip);
-                if (memstr((char*)map + skip, length - skip, (char*)l->data))
+                VERB3 log("Searching for '%s' in '%.*s'",
+                                (char*)l->data,
+                                length > 20 ? 20 : (int)length, start
+                );
+                if (memstr(start, length, (char*)l->data))
                 {
                     VERB3 log("FOUND:'%s'", (char*)l->data);
                     goto found;
@@ -86,11 +90,11 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
             }
             /* None of the strings are found */
             VERB3 log("NOT FOUND");
-            munmap(map, length);
-            lseek(fd, length - skip, SEEK_CUR);
+            munmap(map, maplen);
+            lseek(fd, statbuf->st_size, SEEK_SET);
             return;
  found: ;
-            munmap(map, length);
+            munmap(map, maplen);
         }
     }
 
@@ -107,7 +111,15 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
 
     safe_waitpid(pid, NULL, 0);
 
-//TODO: check fd's position, and move to end if wasn't changed.
+    /* Check fd's position, and move to end if it wasn't advanced.
+     * This means that child failed to read its stdin.
+     * This is not supposed to happen, so warn about it.
+     */
+    if (lseek(fd, 0, SEEK_CUR) <= cur_pos)
+    {
+        log("Warning, '%s' did not process its input", prog[0]);
+        lseek(fd, statbuf->st_size, SEEK_SET);
+    }
 }
 
 int main(int argc, char **argv)
@@ -190,7 +202,8 @@ int main(int argc, char **argv)
         if (file_fd >= 0)
         {
             memset(&statbuf, 0, sizeof(statbuf));
-            fstat(file_fd, &statbuf);
+            if (fstat(file_fd, &statbuf) != 0)
+                goto close_fd;
             run_scanner_prog(file_fd, &statbuf, match_list, argv);
 
             /* Was file deleted or replaced? */
@@ -198,6 +211,7 @@ int main(int argc, char **argv)
             if (stat(filename, &statbuf) != 0 || statbuf.st_ino != fd_ino) /* yes */
             {
                 VERB2 log("Inode# changed, closing fd");
+ close_fd:
                 close(file_fd);
                 if (wd >= 0)
                     inotify_rm_watch(inotify_fd, wd);
