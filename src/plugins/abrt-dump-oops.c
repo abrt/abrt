@@ -19,6 +19,11 @@
 #include <syslog.h>
 #include "libabrt.h"
 
+/* How many problem dirs to create at most?
+ * Also causes cooldown sleep if exceeded -
+ * useful when called from a log watcher.
+ */
+#define MAX_DUMPED_DD_COUNT  5
 
 static bool world_readable_dump = false;
 static const char *debug_dumps_dir = ".";
@@ -106,7 +111,7 @@ static char *list_of_tainted_modules(const char *proc_modules)
 /* returns number of errors */
 static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
 {
-    unsigned countdown = 16; /* do not report hundreds of oopses */
+    unsigned countdown = MAX_DUMPED_DD_COUNT + 1; /* do not report hundreds of oopses */
 
     VERB1 log("Saving %u oopses as dump dirs", oops_cnt >= countdown ? countdown-1 : oops_cnt);
 
@@ -333,8 +338,17 @@ int main(int argc, char **argv)
             );
         }
     }
-    //list_free_with_free(oops_list);
+    list_free_with_free(oops_list);
     //oops_list = NULL;
+
+    /* If we are run by a log watcher, this delays log rescan
+     * (because log watcher waits to us to terminate)
+     * and possibly prevents dreaded "abrt storm".
+     */
+    if (oops_cnt > MAX_DUMPED_DD_COUNT)
+    {
+        sleep(oops_cnt - MAX_DUMPED_DD_COUNT);
+    }
 
     return errors;
 }

@@ -35,9 +35,15 @@ enum {
     OPT_m = 1 << 6,
 };
 
+/* How many problem dirs to create at most?
+ * Also causes cooldown sleep if exceeded -
+ * useful when called from a log watcher.
+ */
+#define MAX_DUMPED_DD_COUNT  5
+
+static unsigned g_bt_count = 0;
 static unsigned g_opts;
 static const char *debug_dumps_dir = ".";
-static unsigned dir_seq_no = 0;
 
 static char *skip_pfx(char *p)
 {
@@ -83,7 +89,7 @@ static void save_bt_to_dump_dir(const char *bt, const char *exe, const char *rea
     struct dump_dir *dd;
     {
         char base[sizeof("xorg-YYYY-MM-DD-hh:mm:ss-%lu-%lu") + 2 * sizeof(long)*3];
-        sprintf(base, "xorg-%s-%lu-%u", iso_date, (long)my_pid, ++dir_seq_no);
+        sprintf(base, "xorg-%s-%lu-%u", iso_date, (long)my_pid, g_bt_count);
         char *path = concat_path_file(debug_dumps_dir, base);
         dd = dd_create(path, /*uid:*/ my_euid, mode);
         free(path);
@@ -208,7 +214,8 @@ static void process_xorg_bt(void)
         if (g_opts & OPT_o)
             printf("%s%s%s\n", bt, reason ? reason : "", reason ? "\n" : "");
         if (g_opts & (OPT_d|OPT_D))
-            save_bt_to_dump_dir(bt, exe, reason ? reason : "Xorg server crashed");
+            if (g_bt_count <= MAX_DUMPED_DD_COUNT)
+                save_bt_to_dump_dir(bt, exe, reason ? reason : "Xorg server crashed");
         free(bt);
     }
     free(reason);
@@ -281,10 +288,21 @@ int main(int argc, char **argv)
         if (strcmp(p, "Backtrace:") == 0)
         {
             free(line);
+            g_bt_count++;
             process_xorg_bt();
             continue;
         }
         free(line);
+    }
+
+    /* If we are run by a log watcher, this delays log rescan
+     * (because log watcher waits to us to terminate)
+     * and possibly prevents dreaded "abrt storm".
+     */
+    if (opts & (OPT_d|OPT_D))
+    {
+        if (g_bt_count > MAX_DUMPED_DD_COUNT)
+            sleep(g_bt_count - MAX_DUMPED_DD_COUNT);
     }
 
     return 0;
