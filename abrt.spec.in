@@ -551,7 +551,18 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_initrddir}/abrt-ccpp
 %endif
 %{_libexecdir}/abrt-hook-ccpp
+
+# if fedora < 18 && rhel < 7; then attr(4755 ~= SETUID) ; else attr(6755 ~= SETUID|SETGID); fi
+%if 0%{?fedora} < 18
+%if 0%{?rhel} < 7
 %attr(4755, abrt, abrt) %{_libexecdir}/abrt-action-install-debuginfo-to-abrt-cache
+%else
+%attr(6755, abrt, abrt) %{_libexecdir}/abrt-action-install-debuginfo-to-abrt-cache
+%endif
+%else
+%attr(6755, abrt, abrt) %{_libexecdir}/abrt-action-install-debuginfo-to-abrt-cache
+%endif
+
 %{_bindir}/abrt-action-analyze-c
 %{_bindir}/abrt-action-trim-files
 %{_bindir}/abrt-action-analyze-core
