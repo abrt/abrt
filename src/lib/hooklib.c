@@ -120,12 +120,10 @@ static char* exec_vp(char **args, int redirect_stderr, int exec_timeout_sec, int
      * coredumps were observed to cause gdb to enter infinite loop.
      * Therefore we have a (largish) timeout, after which we kill the child.
      */
+    ndelay_on(pipeout[0]);
     int t = time(NULL); /* int is enough, no need to use time_t */
     int endtime = t + exec_timeout_sec;
-
     struct strbuf *buf_out = strbuf_new();
-
-    ndelay_on(pipeout[0]);
     while (1)
     {
         int timeout = endtime - t;
@@ -187,6 +185,7 @@ char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
     /* Bugs in unstrip or corrupted coredumps can cause it to enter infinite loop.
      * Therefore we have a (largish) timeout, after which we kill the child.
      */
+    ndelay_on(pipeout[0]);
     int t = time(NULL); /* int is enough, no need to use time_t */
     int endtime = t + timeout_sec;
     struct strbuf *buf_out = strbuf_new();
@@ -196,7 +195,8 @@ char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
         if (timeout < 0)
         {
             kill(child, SIGKILL);
-            strbuf_append_strf(buf_out, "\nTimeout exceeded: %u seconds, killing %s\n", timeout_sec, args[0]);
+            strbuf_free(buf_out);
+            buf_out = NULL;
             break;
         }
 
@@ -209,9 +209,15 @@ char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
         char buff[1024];
         int r = read(pipeout[0], buff, sizeof(buff) - 1);
         if (r <= 0)
+        {
+            /* I did see EAGAIN happening here */
+            if (r < 0 && errno == EAGAIN)
+                goto next;
             break;
+        }
         buff[r] = '\0';
         strbuf_append_str(buf_out, buff);
+ next:
         t = time(NULL);
     }
     close(pipeout[0]);
@@ -220,9 +226,9 @@ char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
     int status;
     safe_waitpid(child, &status, 0);
 
-    if (status != 0)
+    if (status != 0 || buf_out == NULL)
     {
-        /* unstrip didnt exit with exit code 0 */
+        /* unstrip didnt exit with exit code 0, or we timed out */
         strbuf_free(buf_out);
         return NULL;
     }
@@ -313,7 +319,7 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
 
     /* Get the backtrace, but try to cap its size */
     /* Limit bt depth. With no limit, gdb sometimes OOMs the machine */
-    unsigned bt_depth = 2048;
+    unsigned bt_depth = 1024;
     const char *thread_apply_all = "thread apply all";
     const char *full = " full";
     char *bt = NULL;
@@ -327,18 +333,26 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
             break;
         }
 
-        free(bt);
         bt_depth /= 2;
+        if (bt)
+            log("Backtrace is too big (%u bytes), reducing depth to %u",
+                        (unsigned)strlen(bt), bt_depth);
+        else
+            /* (NB: in fact, current impl. of exec_vp() never returns NULL) */
+            log("Failed to generate backtrace, reducing depth to %u",
+                        bt_depth);
+        free(bt);
+
         if (bt_depth <= 64 && thread_apply_all[0] != '\0')
         {
             /* This program likely has gazillion threads, dont try to bt them all */
-            bt_depth = 256;
+            bt_depth = 128;
             thread_apply_all = "";
         }
         if (bt_depth <= 64 && full[0] != '\0')
         {
             /* Looks like there are gigantic local structures or arrays, disable "full" bt */
-            bt_depth = 256;
+            bt_depth = 128;
             full = "";
         }
     }

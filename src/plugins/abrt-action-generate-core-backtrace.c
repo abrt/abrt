@@ -104,8 +104,6 @@ int main(int argc, char **argv)
     if (g_verbose > 1)
         btp_debug_parser = true;
 
-    /* parse addresses and eventual symbols from the output*/
-    GList *backtrace;
     /* Get the executable name -- unstrip doesn't know it. */
     struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
     if (!dd)
@@ -120,18 +118,28 @@ int main(int argc, char **argv)
                                     DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
     dd_close(dd);
 
+    /* Parse addresses and eventual symbols from the output */
+    GList *backtrace;
     if (strcmp(analyzer, "CCpp") == 0)
     {
-        VERB1 log("Querying gdb for backtrace");
         char *gdb_out = get_backtrace(dump_dir_name, exec_timeout_sec, NULL);
         if (gdb_out == NULL)
             xfunc_die();
+
+        /* We observed a case when we were stuck for 36 minutes after emitting
+         * "Generating backtrace" message (in get_backtrace).
+         * We don't know whether we finished bt generation
+         * and were stuck somewhere below this point, or we were stuck
+         * in get_backtrace(). For now, we emit this message
+         * even in non-verbose mode to aid in future debugging:
+         */
+        log(_("Backtrace is generated, %u bytes"), (int)strlen(gdb_out));
 
         backtrace = btp_backtrace_extract_addresses(gdb_out);
         VERB1 log("Extracted %d frames from the backtrace", g_list_length(backtrace));
         free(gdb_out);
 
-        VERB1 log("Running eu-unstrip -n to obatin build ids");
+        VERB1 log("Running eu-unstrip -n to obtain build ids");
         /* Run eu-unstrip -n to obtain the ids. This should be rewritten to read
          * them directly from the core. */
         char *unstrip_output = run_unstrip_n(dump_dir_name, /*timeout_sec:*/ 30);
@@ -151,7 +159,7 @@ int main(int argc, char **argv)
             loop = tmp_next;
         }
 
-        /* Extract address ranges from all the executables in the backtrace*/
+        /* Extract address ranges from all the executables in the backtrace */
         VERB1 log("Computing function fingerprints");
         btp_core_backtrace_fingerprint(backtrace);
         if (!raw_fingerprints)
@@ -176,15 +184,17 @@ int main(int argc, char **argv)
     free(executable);
     free(analyzer);
 
-    char *formated_backtrace = btp_core_backtrace_fmt(backtrace);
+    char *formatted_backtrace = btp_core_backtrace_fmt(backtrace);
 
     dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         xfunc_die();
-    dd_save_text(dd, FILENAME_CORE_BACKTRACE, formated_backtrace);
+    dd_save_text(dd, FILENAME_CORE_BACKTRACE, formatted_backtrace);
     dd_close(dd);
 
-    free(formated_backtrace);
+    log(_("Core backtrace is generated and saved, %u bytes"), (int)strlen(formatted_backtrace));
+
+    free(formatted_backtrace);
     btp_core_backtrace_free(backtrace);
     return 0;
 }
