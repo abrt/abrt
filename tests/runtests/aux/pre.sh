@@ -35,6 +35,8 @@ if [ "${STORE_CONFIGS}" = "1" ]; then
     cp -a /etc/libreport /tmp/abrt-config
 fi
 
+yum clean metadata
+
 if [ "${UPDATE_PACKAGES}" = "1" ]; then
     echo 'UPDATE_PACKAGES set'
     yum -y update $PACKAGES
