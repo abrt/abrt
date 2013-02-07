@@ -677,6 +677,16 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_defaultdocdir}/%{name}-python-%{version}/examples/
 
 %changelog
+* Thu Feb 07 2013 Jakub Filak <jfilak@redhat.com> 2.1.1-1
+- ccpp_event: pass a list of build ids through pipe instead of file
+- rpm: add SETGID bit on a-a-i-d-i-t-a-cache executable
+- abrt-destkop package requires libreport-fedora package
+- abrt-dump-{oops,xorg}: limit amount of created dirs, add cooldown sleep if exceeded
+- Merge branch 'master' of github.com:abrt/abrt
+- abrt-watch-log: handle a case when child doesn't process its input
+- abrt-watch-log: fix a bug in mmap error check
+- abrt-action-analyze-xorg: fix the case with DIR != "."
+
 * Mon Feb 04 2013 Jakub Filak <jfilak@redhat.com> 2.1.0-1
 - testsuite: replace hardcoded dump location by variable
 - pkg-config: export defaultdumplocation variable
