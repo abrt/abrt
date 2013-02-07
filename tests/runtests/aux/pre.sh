@@ -4,6 +4,8 @@ export > $OUTPUT_ROOT/pre/envs.log
 cp /var/log/messages $OUTPUT_ROOT/pre/messages
 dmesg -c > $OUTPUT_ROOT/pre/dmesg_pre
 
+yum clean metadata
+
 #yum install -y beakerlib dejagnu time createrepo mock expect
 if [ "${REINSTALL_PRE}" = "1" ]; then
     echo 'REINSTALL_PRE set'
@@ -34,8 +36,6 @@ if [ "${STORE_CONFIGS}" = "1" ]; then
     cp -a /etc/abrt /tmp/abrt-config/abrt
     cp -a /etc/libreport /tmp/abrt-config
 fi
-
-yum clean metadata
 
 if [ "${UPDATE_PACKAGES}" = "1" ]; then
     echo 'UPDATE_PACKAGES set'
