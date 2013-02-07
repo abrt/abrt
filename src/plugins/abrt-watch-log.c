@@ -98,6 +98,7 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
         }
     }
 
+    fflush(NULL); /* paranoia */
     pid_t pid = vfork();
     if (pid < 0)
         perror_msg_and_die("vfork");

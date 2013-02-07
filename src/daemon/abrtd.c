@@ -242,6 +242,7 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
     }
 
     log("New client connected");
+    fflush(NULL); /* paranoia */
     pid_t pid = fork();
     if (pid < 0)
     {
@@ -569,22 +570,24 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 
                 const char *dir = g_settings_sWatchCrashdumpArchiveDir;
                 log("Detected creation of file '%s' in upload directory '%s'", name, dir);
+
+                fflush(NULL); /* paranoia */
                 pid_t pid = fork();
                 if (pid < 0)
                     perror_msg("fork");
                 if (pid == 0)
                 {
+                    /* child */
                     xchdir(dir);
-
                     if (g_settings_delete_uploaded)
                         execlp("abrt-handle-upload", "abrt-handle-upload", "-d",
                                g_settings_dump_location, dir, name, (char*)NULL);
                     else
                         execlp("abrt-handle-upload", "abrt-handle-upload",
                                g_settings_dump_location, dir, name, (char*)NULL);
-
                     error_msg_and_die("Can't execute '%s'", "abrt-handle-upload");
                 }
+
                 if (pid > 0)
                     increment_child_count();
             }
@@ -908,6 +911,7 @@ int main(int argc, char** argv)
     if (!(opts & OPT_d))
     {
         /* forking to background */
+        fflush(NULL); /* paranoia */
         pid_t pid = fork();
         if (pid < 0)
         {

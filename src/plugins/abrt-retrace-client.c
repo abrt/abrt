@@ -114,6 +114,7 @@ static int create_archive(bool unlink_temp)
 
     int tar_xz_pipe[2];
     xpipe(tar_xz_pipe);
+    fflush(NULL); /* paranoia */
     pid_t xz_child = vfork();
     if (xz_child == -1)
         perror_msg_and_die("vfork");
@@ -121,7 +122,7 @@ static int create_archive(bool unlink_temp)
     {
         close(tar_xz_pipe[1]);
         xmove_fd(tar_xz_pipe[0], STDIN_FILENO);
-        xdup2(tempfd, STDOUT_FILENO);
+        xmove_fd(tempfd, STDOUT_FILENO);
         execvp(xz_args[0], (char * const*)xz_args);
         perror_msg_and_die(_("Can't execute '%s'"), xz_args[0]);
     }
@@ -151,6 +152,7 @@ static int create_archive(bool unlink_temp)
     tar_args[index] = NULL;
     dd_close(dd);
 
+    fflush(NULL); /* paranoia */
     pid_t tar_child = vfork();
     if (tar_child == -1)
         perror_msg_and_die("vfork");

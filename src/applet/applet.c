@@ -435,21 +435,28 @@ static void new_dir_exists(GList **new_dirs)
 
 static void fork_exec_gui(void)
 {
+    fflush(NULL); /* paranoia */
     pid_t pid = fork();
     if (pid < 0)
+    {
         perror_msg("fork");
-    else if (pid == 0)
+        goto record_dirs;
+    }
+
+    if (pid == 0)
     {
         /* child */
         /* double fork to avoid GUI zombies */
         pid_t grand_child = fork();
         if (grand_child != 0)
         {
-            if (grand_child < 0) perror_msg("fork");
-            exit(0);
+            /* child */
+            if (grand_child < 0)
+                perror_msg("fork");
+            _exit(0);
         }
 
-        /* grand child */
+        /* grandchild */
         //TODO: pass s_dirs[] as DIR param(s) to 'gui executable'
         execl(BIN_DIR"/"GUI_EXECUTABLE, GUI_EXECUTABLE, (char*) NULL);
         /* Did not find 'gui executable' in installation directory. Oh well */
@@ -457,9 +464,11 @@ static void fork_exec_gui(void)
         execlp(GUI_EXECUTABLE, GUI_EXECUTABLE, (char*) NULL);
         perror_msg_and_die(_("Can't execute '%s'"), GUI_EXECUTABLE);
     }
-    else
-        safe_waitpid(pid, /* status */ NULL, /* options */ 0);
 
+    /* parent */
+    safe_waitpid(pid, /* status */ NULL, /* options */ 0);
+
+ record_dirs:
     /* Scan dirs and save new $XDG_CACHE_HOME/abrt/applet_dirlist.
      * (Oterwise, after a crash, next time applet is started,
      * it will show alert icon even if we did click on it
@@ -501,17 +510,21 @@ static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *ev
 
 static void run_report_from_applet(const char *dirname)
 {
-    /* prevent zombies; double fork() */
+    fflush(NULL); /* paranoia */
     pid_t pid = fork();
     if (pid < 0)
-        perror_msg("fork");
-    else if (pid == 0)
     {
-        spawn_event_handler_child(dirname, "report-gui", NULL);
-        exit(0);
+        perror_msg("fork");
+        return;
     }
-    else
-        safe_waitpid(pid, /* status */ NULL, /* options */ 0);
+    if (pid == 0)
+    {
+        /* child */
+        /* prevent zombies - another fork inside: */
+        spawn_event_handler_child(dirname, "report-gui", NULL);
+        _exit(0);
+    }
+    safe_waitpid(pid, /* status */ NULL, /* options */ 0);
 }
 
 //this action should open the reporter dialog directly, without showing the main window

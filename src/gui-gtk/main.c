@@ -524,6 +524,7 @@ static void on_row_activated_cb(GtkTreeView *treeview, GtkTreePath *path, GtkTre
     {
         if (!is_dbus || chown_dir_over_dbus(dirname) == 0)
         {
+            fflush(NULL); /* paranoia */
             pid_t pid = fork();
             if (pid < 0) /* error */
                 perror_msg_and_die("fork");
@@ -551,6 +552,7 @@ static void open_problem_data_cb(GtkMenuItem *menuitem, gpointer user_data)
             return;
         }
 
+        fflush(NULL); /* paranoia */
         pid_t pid = fork();
         if (pid < 0) /* error */
             perror_msg_and_die("fork");
