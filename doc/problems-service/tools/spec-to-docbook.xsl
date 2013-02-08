@@ -1141,9 +1141,9 @@
       </xsl:if>
       <xsl:choose>
         <xsl:when test="not(@direction)"/>
-        <xsl:when test="@direction='in'"/>
+        <xsl:when test="@direction='out'"/>
         <!-- This doesn't work with the DTD (see comment in DTD)
-        <xsl:when test="@direction='in'">
+        <xsl:when test="@direction='out'">
           <xsl:message terminate="no">
             <xsl:text>INFO: an arg of signal </xsl:text>
             <xsl:value-of select="concat(../../@name, '.', ../@name)"/>
@@ -1155,7 +1155,7 @@
           <xsl:message terminate="yes">
             <xsl:text>ERR: an arg of signal </xsl:text>
             <xsl:value-of select="concat(../../@name, '.', ../@name)"/>
-            <xsl:text> has direction other than 'in'</xsl:text>
+            <xsl:text> has direction other than 'out'</xsl:text>
           </xsl:message>
         </xsl:otherwise>
       </xsl:choose>

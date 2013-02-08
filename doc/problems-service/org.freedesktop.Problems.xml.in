@@ -26,29 +26,105 @@
             <tp:docstring>The Problems Service manages all the crashes.</tp:docstring>
 
             <method name='NewProblem'>"
-                <tp:docstring>Creates a new problem.</tp:docstring>
+                <tp:docstring>Creates a new problem and returns it's identifier.</tp:docstring>
 
                 <arg type='a{ss}' name='problem_data' direction='in'>
                     <tp:docstring>
-                        <para>
-                        A dictionary describing problem.
-                            <example>
-                                <title>Example for problems data</title>
-                                <programlisting>
-<![CDATA[
-problem_data = { "analyzer": "abrt",
-                 "summary" : "Application crashed"
-               }
-]]>
-                                </programlisting>
-                            </example>
-                        </para>
+                        A dictionary describing problem. There are few commonly recognized fields but the dictionary can hold anything you need.
+                        <variablelist>
+                            <varlistentry>
+                                <term>analyzer</term>
+                                <listitem>
+                                    <para>This field should be always present. The field defines a type of problem. If the item is not provided, <emphasis role="bold">libreport</emphasis> string is used by default.</para>
+                                </listitem>
+                            </varlistentry>
+                            <varlistentry>
+                                <term>reason</term>
+                                <listitem>
+                                    <para>This field should contain a short human readable text describing the problem.</para>
+                                </listitem>
+                            </varlistentry>
+                            <varlistentry>
+                                <term>time</term>
+                                <listitem>
+                                    <para>This field is filled automaticaly.</para>
+                                </listitem>
+                            </varlistentry>
+                            <varlistentry>
+                                <term>uid</term>
+                                <listitem>
+                                    <para>Only a user with root priviledges can pass this field. For all other users the field is filled by caller's uid.</para>
+                                </listitem>
+                            </varlistentry>
+                            <varlistentry>
+                                <term>executable</term>
+                                <listitem>
+                                    <para>This is mandatory field and must contain a valid path to an executable.</para>
+                                </listitem>
+                            </varlistentry>
+                            <varlistentry>
+                                <term>component</term>
+                                <listitem>
+                                    <para>A name of package which a problematic application belongs to. If this field is provided, <emphasis role="bold">the executable field becomes optional</emphasis>.</para>
+                                </listitem>
+                            </varlistentry>
+                            <varlistentry>
+                                <term>uuid</term>
+                                <listitem>
+                                    <para>Machine readable identifier of a kind of the problem. ABRT uses this field for <emphasis role="bold">local duplicates searching</emphasis>.</para>
+                                </listitem>
+                            </varlistentry>
+                            <varlistentry>
+                                <term>duphash</term>
+                                <listitem>
+                                    <para>Machine readable identifier of a kind of the problem. ABRT uses this field for <emphasis role="bold">global duplicates searching</emphasis>.</para>
+                                </listitem>
+                            </varlistentry>
+                        </variablelist>
                     </tp:docstring>
                 </arg>
 
                 <arg type='s' name='problem_id' direction='out'>
                     <tp:docstring>An indentifier of the new problem</tp:docstring>
                 </arg>
+
+                <tp:docstring>
+                    <example>
+                        <title>How to create a new problems in Python</title>
+                        <programlisting>
+<![CDATA[
+#!/usr/bin/env python
+import dbus
+
+bus = dbus.SystemBus()
+
+proxy = bus.get_object("org.freedesktop.problems",
+                                  '/org/freedesktop/problems')
+
+problems = dbus.Interface(proxy, dbus_interface='org.freedesktop.problems')
+
+description = {"analyzer"    : "libreport",
+               "reason"      : "Application has been killed",
+               "backtrace"   : "die()",
+               "executable"  : "/usr/bin/foo"}
+
+problems.NewProblem(description)
+]]>
+                        </programlisting>
+                    </example>
+                    <example>
+                        <title>How to create a new problems in Bash</title>
+                        <programlisting>
+<![CDATA[
+#!/usr/bin/bash
+dbus-send --system --type=method_call --print-reply \
+          --dest=org.freedesktop.problems /org/freedesktop/problems \
+          org.freedesktop.problems.NewProblem \
+          dict:string:string:analyzer,libreport,reason,"Application has been killed",backtrace,"die()",executable,"/usr/bin/true"
+]]>
+                        </programlisting>
+                    </example>
+                </tp:docstring>
             </method>
 
             <method name='GetProblems'>
@@ -75,11 +151,39 @@ problem_data = { "analyzer": "abrt",
                 </arg>
 
                 <arg type='as' name='element_names' direction='in'>
-                    <tp:docstring>A name of required info.</tp:docstring>
+                    <tp:docstring>A list of names of required info.</tp:docstring>
                 </arg>
 
                 <arg type='a{ss}' name='response' direction='out'>
-                    <tp:docstring>A value of the problem's element.</tp:docstring>
+                    <tp:docstring>A list of values of the requested elements.</tp:docstring>
+                </arg>
+            </method>
+
+            <method name='SetElement'>
+                <tp:docstring>Sets a value of problem's element.</tp:docstring>
+
+                <arg type='s' name='problem_dir' direction='in'>
+                    <tp:docstring>An identifier of problem.</tp:docstring>
+                </arg>
+
+                <arg type='s' name='name' direction='in'>
+                    <tp:docstring>A name of set element.</tp:docstring>
+                </arg>
+
+                <arg type='s' name='value' direction='in'>
+                    <tp:docstring>A value of problem's element.</tp:docstring>
+                </arg>
+            </method>
+
+            <method name='DeleteElement'>
+                <tp:docstring>Deletes problem's element.</tp:docstring>
+
+                <arg type='s' name='problem_dir' direction='in'>
+                    <tp:docstring>An identifier of problem.</tp:docstring>
+                </arg>
+
+                <arg type='s' name='name' direction='in'>
+                    <tp:docstring>A name of deleted element.</tp:docstring>
                 </arg>
             </method>
 
@@ -130,6 +234,34 @@ problem_data = { "analyzer": "abrt",
             <method name='Quit'>
                 <tp:docstring>Kills the service.</tp:docstring>
             </method>
+
+            <signal name='Crash'>
+                <tp:docstring>A new system problem has been detected.</tp:docstring>
+
+                <arg type='s' name='package' direction='out'>
+                    <tp:docstring>A name of package which crashed application belongs to.</tp:docstring>
+                </arg>
+
+                <arg type='s' name='problem_id' direction='out'>
+                    <tp:docstring>An identifier of the newly created problem.</tp:docstring>
+                </arg>
+            </signal>
+
+            <signal name='Crash'>
+                <tp:docstring>A new system problem has been detected. This is the second variant of the Crash signal with additional argument <emphasis>uid</emphasis></tp:docstring>
+
+                <arg type='s' name='package' direction='out'>
+                    <tp:docstring>List of problem idnetifiers.</tp:docstring>
+                </arg>
+
+                <arg type='s' name='problem_id' direction='out'>
+                    <tp:docstring>An identifier of the newly created problem.</tp:docstring>
+                </arg>
+
+                <arg type='s' name='uid' direction='out'>
+                    <tp:docstring>UID of user who reported this problem.</tp:docstring>
+                </arg>
+            </signal>
 
         </interface>
 
