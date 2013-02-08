@@ -96,6 +96,12 @@ AC_ARG_WITH([systemdsystemunitdir],
 AC_SUBST([systemdsystemunitdir], [$with_systemdsystemunitdir])
 AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$with_systemdsystemunitdir"])
 
+AC_ARG_WITH([dbusinterfacedir],
+        AS_HELP_STRING([--with-dbusinterfacedir=DIR], [Directory for dbus interface files]),
+        [], [with_dbusinterfacedir=${datadir}/dbus-1/interfaces])
+AC_SUBST([dbusinterfacedir], [$with_dbusinterfacedir])
+
+
 AC_CHECK_HEADER([sys/inotify.h], [],
    [AC_MSG_ERROR([sys/inotify.h is needed to build abrt])])
 
