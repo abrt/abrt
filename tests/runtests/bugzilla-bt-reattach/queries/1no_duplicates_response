@@ -1,45 +1,9 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <methodResponse>
   <params>
     <param>
       <value>
         <struct>
-          <member>
-            <name>sql</name>
-            <value>
-              <string>SELECT bugs.bug_id AS bug_id, map_products.name AS product, bugs.bug_severity AS bug_severity, bugs.priority AS priority, bugs.op_sys AS op_sys, map_assigned_to.realname AS assigned_to, bugs.bug_status AS bug_status, bugs.resolution AS resolution, bugs.short_desc AS short_desc FROM bugs  INNER JOIN profiles AS map_assigned_to ON (bugs.assigned_to = map_assigned_to.userid) INNER JOIN products AS map_products ON (bugs.product_id = map_products.id) LEFT JOIN bug_status ON (bug_status.value = bugs.bug_status) LEFT JOIN priority ON (priority.value = bugs.priority) LEFT JOIN bug_group_map  ON bug_group_map.bug_id = bugs.bug_id  WHERE ((INSTR(bugs.status_whiteboard, 'bbfe66399cc9cb8ba647414e33c5d1e4ad82b511') > 0)) AND (( bugs.product_id IN (49,70,90,82,68,66,97,71,79) )) AND ((( bugs.component_id IN (16466,21405)  OR 1=2))) AND bugs.creation_ts IS NOT NULL  AND ((bug_group_map.group_id IS NULL) OR (bug_group_map.group_id IN (-1))) GROUP BY bugs.bug_id ORDER BY bug_status.sortkey,bug_status.value,priority.sortkey,priority.value,assigned_to,bug_id</string>
-            </value>
-          </member>
-          <member>
-            <name>displaycolumns</name>
-            <value>
-              <array>
-                <data>
-                  <value>
-                    <string>bug_severity</string>
-                  </value>
-                  <value>
-                    <string>priority</string>
-                  </value>
-                  <value>
-                    <string>op_sys</string>
-                  </value>
-                  <value>
-                    <string>assigned_to</string>
-                  </value>
-                  <value>
-                    <string>bug_status</string>
-                  </value>
-                  <value>
-                    <string>resolution</string>
-                  </value>
-                  <value>
-                    <string>short_desc</string>
-                  </value>
-                </data>
-              </array>
-            </value>
-          </member>
           <member>
             <name>bugs</name>
             <value>

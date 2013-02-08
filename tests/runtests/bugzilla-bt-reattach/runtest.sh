@@ -71,20 +71,20 @@ rlJournalStart
                 version_response \
                 0* \
                 1duplicates_response \
-                1duplicates_response \
+                1duplicates_response_scn \
                 2bug_details \
-                dummy \
-                dummy \
-                dummy \
-                dummy \
+                2bug_comments \
+                3bug_add_comment \
+                3bug_add_attachment \
+                4logout \
                 &> server_better &
         sleep 1
         rlRun "reporter-bugzilla -v -c bugzilla.conf -d problem_dir/ &> client_better"
         kill %1
 
-        rlAssertGrep "Bug is already reported: 772488" client_better
+        rlAssertGrep "Bug is already reported: 890310" client_better
         rlAssertGrep "Adding abrt@mailinator.com to CC list" client_better
-        rlAssertGrep "Adding new comment to bug 772488" client_better
+        rlAssertGrep "Adding new comment to bug 890310" client_better
         rlAssertGrep "Attaching better backtrace" client_better
         rm -f problem_dir/reported_to
     rlPhaseEnd
@@ -97,18 +97,17 @@ rlJournalStart
                 version_response \
                 0* \
                 1duplicates_response \
-                1duplicates_response \
+                1duplicates_response_scn \
                 2bug_details \
-                dummy \
-                dummy \
-                dummy \
-                dummy \
+                2bug_comments \
+                3bug_add_comment \
+                4logout \
                 &> server_worse &
         sleep 1
         rlRun "reporter-bugzilla -v -c bugzilla.conf -d problem_dir/ &> client_worse"
         kill %1
 
-        rlAssertGrep "Adding new comment to bug 772488" client_worse
+        rlAssertGrep "Adding new comment to bug 890310" client_worse
         rlAssertNotGrep "Attaching better backtrace" client_worse
         rm -f problem_dir/reported_to
     rlPhaseEnd
@@ -121,18 +120,17 @@ rlJournalStart
                 version_response \
                 0* \
                 1duplicates_response \
-                1duplicates_response \
+                1duplicates_response_scn \
                 2bug_details \
-                dummy \
-                dummy \
-                dummy \
-                dummy \
+                2bug_comments \
+                3bug_add_comment \
+                4logout \
                 &> server_equal &
         sleep 1
         rlRun "reporter-bugzilla -v -c bugzilla.conf -d problem_dir/ &> client_equal"
         kill %1
 
-        rlAssertGrep "Adding new comment to bug 772488" client_equal
+        rlAssertGrep "Adding new comment to bug 890310" client_equal
         rlAssertNotGrep "Attaching better backtrace" client_equal
         rm -f problem_dir/reported_to
     rlPhaseEnd
