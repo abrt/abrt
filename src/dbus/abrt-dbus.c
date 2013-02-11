@@ -343,6 +343,9 @@ static char *handle_new_problem(GVariant *problem_info, uid_t caller_uid, char *
         problem_data_add_text_noteditable(pd, FILENAME_UID, buf);
     }
 
+    /* At least it should generate local problem identifier UUID */
+    problem_data_add_basics(pd);
+
     char *problem_id = problem_data_save(pd);
     if (!problem_id)
     {
