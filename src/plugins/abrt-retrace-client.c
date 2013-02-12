@@ -20,6 +20,7 @@
 
 #define MAX_FORMATS 16
 #define MAX_RELEASES 32
+#define MAX_DOTS_PER_LINE 80
 
 enum
 {
@@ -1008,6 +1009,7 @@ static int run_batch(bool delete_temp_archive)
     char *task_status = xstrdup("");
     char *status_message = xstrdup("");
     int status_delay = delay ? delay : 10;
+    int dots = 0;
     while (0 != strncmp(task_status, "FINISHED", strlen("finished")))
     {
         char *previous_status_message = status_message;
@@ -1016,7 +1018,26 @@ static int run_batch(bool delete_temp_archive)
         status(task_id, task_password, &task_status, &status_message);
         if (g_verbose > 0 || 0 != strcmp(previous_status_message, status_message))
         {
+            if (dots)
+            {   /* A same message was received and a period was printed instead
+                 * but the period wasn't followed by new line and now we are 
+                 * goning to print a new message thus we want to start at next line
+                 */
+                dots = 0;
+                putchar('\n');
+            }
             puts(status_message);
+            fflush(stdout);
+        }
+        else
+        {
+            if (dots >= MAX_DOTS_PER_LINE)
+            {
+                dots = 0;
+                putchar('\n');
+            }
+            ++dots;
+            client_log(".");
             fflush(stdout);
         }
         free(previous_status_message);
