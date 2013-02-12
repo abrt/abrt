@@ -393,6 +393,7 @@ static struct dump_dir *open_directory_for_modification_of_element(
     {
         if (strcmp(*protected, element) == 0)
         {
+            VERB1 log("'%s' element of '%s' can't be modified", element, problem_id);
             char *error = xasprintf(_("'%s' element can't be modified"), element);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                         "org.freedesktop.problems.ProtectedElement",
@@ -405,11 +406,17 @@ static struct dump_dir *open_directory_for_modification_of_element(
     if (!dump_dir_accessible_by_uid(problem_id, caller_uid))
     {
         if (errno == ENOTDIR)
+        {
+            VERB1 log("'%s' is not a valid problem directory", problem_id);
             return_InvalidProblemDir_error(invocation, problem_id);
+        }
         else
+        {
+            VERB1 log("UID(%d) is not Authorized to access '%s'", caller_uid, problem_id);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                 "org.freedesktop.problems.AuthFailure",
                                 _("Not Authorized"));
+        }
 
         return NULL;
     }
@@ -417,6 +424,7 @@ static struct dump_dir *open_directory_for_modification_of_element(
     struct dump_dir *dd = dd_opendir(problem_id, /* flags : */ 0);
     if (!dd)
     {   /* This should not happen because of the access check above */
+        VERB1 log("Can't access the problem '%s' for modification", problem_id);
         g_dbus_method_invocation_return_dbus_error(invocation,
                                 "org.freedesktop.problems.Failure",
                                 _("Can't access the problem for modification"));
@@ -639,6 +647,7 @@ static void handle_method_call(GDBusConnection *connection,
 
         if (element == NULL || element[0] == '\0' || strlen(element) > 64)
         {
+            VERB1 log("'%s' is not a valid element name of '%s'", element, problem_id);
             char *error = xasprintf(_("'%s' is not a valid element name"), element);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                               "org.freedesktop.problems.InvalidElement",
@@ -651,16 +660,28 @@ static void handle_method_call(GDBusConnection *connection,
         struct dump_dir *dd = open_directory_for_modification_of_element(
                                     invocation, caller_uid, problem_id, element);
         if (!dd)
+            /* Already logged from open_directory_for_modification_of_element() */
             return;
 
         /* Is it good idea to make it static? Is it possible to change the max size while a single run? */
-        const double max_size = g_settings_nMaxCrashReportsSize * (1024 * 1024);
+        const double max_dir_size = g_settings_nMaxCrashReportsSize * (1024 * 1024);
+        const long item_size = dd_get_item_size(dd, element);
+        if (item_size < 0)
+        {
+            VERB1 log("Can't get size of '%s/%s'", problem_id, element);
+            char *error = xasprintf(_("Can't get size of '%s'"), element);
+            g_dbus_method_invocation_return_dbus_error(invocation,
+                                                      "org.freedesktop.problems.Failure",
+                                                      error);
+            return;
+        }
 
-        const double requested_size = strlen(value) - dd_get_item_size(dd, element);
+        const double requested_size = strlen(value) - item_size;
         /* Don't want to check the size limit in case of reducing of size */
         if (requested_size > 0
-            && requested_size > (max_size - get_dirsize(g_settings_dump_location)))
+            && requested_size > (max_dir_size - get_dirsize(g_settings_dump_location)))
         {
+            VERB1 log("No problem space left in '%s' (requested Bytes %f)", problem_id, requested_size);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                                       "org.freedesktop.problems.Failure",
                                                       _("No problem space left"));
@@ -686,6 +707,7 @@ static void handle_method_call(GDBusConnection *connection,
         struct dump_dir *dd = open_directory_for_modification_of_element(
                                     invocation, caller_uid, problem_id, element);
         if (!dd)
+            /* Already logged from open_directory_for_modification_of_element() */
             return;
 
         const int res = dd_delete_item(dd, element);
@@ -693,6 +715,7 @@ static void handle_method_call(GDBusConnection *connection,
 
         if (res != 0)
         {
+            VERB1 log("Can't delete the element '%s' from the problem directory '%s'", element, problem_id);
             char *error = xasprintf(_("Can't delete the element '%s' from the problem directory '%s'"), element, problem_id);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                           "org.freedesktop.problems.Failure",
