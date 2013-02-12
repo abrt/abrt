@@ -29,14 +29,7 @@ def handle_event(event_name, problem_dir):
 
     """
 
-    def log(line):
-        sys.stderr.write(line)
-        sys.stderr.write("\n")
-        sys.stderr.flush()
-
     state = report.run_event_state()
-    state.logging_callback = log;
-
     ret = state.run_event_on_dir_name(problem_dir, event_name)
 
     return ret == 0
