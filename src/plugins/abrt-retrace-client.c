@@ -97,7 +97,7 @@ static int create_archive(bool unlink_temp)
     char *filename = xstrdup("/tmp/abrt-retrace-client-archive-XXXXXX.tar.xz");
     int tempfd = mkstemps(filename, /*suffixlen:*/7);
     if (tempfd == -1)
-        perror_msg_and_die(_("Cannot open temporary file"));
+        perror_msg_and_die(_("Can't create temporary file in /tmp"));
     if (unlink_temp)
         xunlink(filename);
     free(filename);
@@ -114,6 +114,7 @@ static int create_archive(bool unlink_temp)
 
     int tar_xz_pipe[2];
     xpipe(tar_xz_pipe);
+
     fflush(NULL); /* paranoia */
     pid_t xz_child = vfork();
     if (xz_child == -1)
@@ -167,13 +168,21 @@ static int create_archive(bool unlink_temp)
     free((void*)tar_args[2]);
     close(tar_xz_pipe[1]);
 
-    /* Wait for tar and xz to finish */
+    /* Wait for tar and xz to finish successfully */
+    int status;
     VERB1 log_msg("Waiting for tar...");
-    safe_waitpid(tar_child, NULL, 0);
+    safe_waitpid(tar_child, &status, 0);
+    if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
+        /* Hopefully, by this time child emitted more meaningful
+         * error message. But just in case it didn't:
+         */
+        error_msg_and_die(_("Can't create temporary file in /tmp"));
     VERB1 log_msg("Waiting for xz...");
-    safe_waitpid(xz_child, NULL, 0);
-//FIXME: need to check that both exited with 0! Think about out-of-disk-space situation...
+    safe_waitpid(xz_child, &status, 0);
+    if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
+        error_msg_and_die(_("Can't create temporary file in /tmp"));
     VERB1 log_msg("Done...");
+
     xlseek(tempfd, 0, SEEK_SET);
     return tempfd;
 }
@@ -195,9 +204,8 @@ struct retrace_settings *get_settings()
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
     {
-        PR_Close(ssl_sock);
-        alert_connection_error();
-        error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d."),
+        alert_connection_error(cfg.url);
+        error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d"),
                           http_request->len, PR_GetError());
     }
     strbuf_free(http_request);
@@ -208,7 +216,7 @@ struct retrace_settings *get_settings()
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
-        alert_server_error();
+        alert_server_error(cfg.url);
         error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"),
                           response_code, http_response);
     }
@@ -217,7 +225,7 @@ struct retrace_settings *get_settings()
     char *c, *row, *value;
     if (!headers_end)
     {
-        alert_server_error();
+        alert_server_error(cfg.url);
         error_msg_and_die(_("Invalid response from server: missing HTTP message body."));
     }
     row = headers_end + strlen("\r\n\r\n");
@@ -363,8 +371,7 @@ static int check_package(const char *nvr, const char *arch, const char *release,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
     {
-        PR_Close(ssl_sock);
-        alert_connection_error();
+        alert_connection_error(cfg.url);
         error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d"),
                           http_request->len, PR_GetError());
     }
@@ -378,7 +385,7 @@ static int check_package(const char *nvr, const char *arch, const char *release,
     if (response_code != 302 && response_code != 404)
     {
         char *http_body = http_get_body(http_response);
-        alert_server_error();
+        alert_server_error(cfg.url);
         error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"),
                             response_code, http_body);
     }
@@ -426,20 +433,16 @@ static int create(bool delete_temp_archive,
     /* get raw size */
     if (coredump)
     {
-        if (stat(coredump, &file_stat) == -1)
-            error_msg_and_die(_("Unable to stat file '%s'."), coredump);
-
+        xstat(coredump, &file_stat);
         unpacked_size = (long long)file_stat.st_size;
     }
     else if (dump_dir_name != NULL)
     {
         struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags*/ 0);
         if (!dd)
-            error_msg_and_die(_("Unable to open dump directory '%s'."), dump_dir_name);
-
+            xfunc_die(); /* dd_opendir already emitted error message */
         if (dd_exist(dd, FILENAME_VMCORE))
             task_type = TASK_VMCORE;
-
         dd_close(dd);
 
         char *path;
@@ -448,13 +451,7 @@ static int create(bool delete_temp_archive,
         while (required_files[i])
         {
             path = concat_path_file(dump_dir_name, required_files[i]);
-            if (stat(path, &file_stat) == -1)
-            {
-                error_msg(_("Unable to stat file '%s'."), path);
-                free(path);
-                xfunc_die();
-            }
-
+            xstat(path, &file_stat);
             free(path);
 
             if (!S_ISREG(file_stat.st_mode))
@@ -507,7 +504,7 @@ static int create(bool delete_temp_archive,
 
         if (!supported)
         {
-            alert_server_error();
+            alert_server_error(cfg.url);
             error_msg_and_die(_("The server does not support "
                                 "xz-compressed tarballs."));
         }
@@ -652,9 +649,8 @@ static int create(bool delete_temp_archive,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
     {
-        PR_Close(ssl_sock);
-        alert_connection_error();
-        error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d."),
+        alert_connection_error(cfg.url);
+        error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d"),
                           http_request->len, PR_GetError());
     }
 
@@ -711,7 +707,7 @@ static int create(bool delete_temp_archive,
                if the server send some explanation regarding the
                error. */
             result = 1;
-            alert_connection_error();
+            alert_connection_error(cfg.url);
             error_msg(_("Failed to send data: NSS error %d (%s): %s"),
                       PR_GetError(),
                       PR_ErrorToName(PR_GetError()),
@@ -732,7 +728,7 @@ static int create(bool delete_temp_archive,
     char *http_body = http_get_body(http_response);
     if (!http_body)
     {
-        alert_server_error();
+        alert_server_error(cfg.url);
         error_msg_and_die(_("Invalid response from server: missing HTTP message body."));
     }
     if (http_show_headers)
@@ -740,7 +736,7 @@ static int create(bool delete_temp_archive,
     int response_code = http_get_response_code(http_response);
     if (response_code == 500 || response_code == 507)
     {
-        alert_server_error();
+        alert_server_error(cfg.url);
         error_msg_and_die(http_body);
     }
     else if (response_code == 403)
@@ -752,20 +748,20 @@ static int create(bool delete_temp_archive,
     }
     else if (response_code != 201)
     {
-        alert_server_error();
+        alert_server_error(cfg.url);
         error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"), response_code, http_body);
     }
     free(http_body);
     *task_id = http_get_header_value(http_response, "X-Task-Id");
     if (!*task_id)
     {
-        alert_server_error();
+        alert_server_error(cfg.url);
         error_msg_and_die(_("Invalid response from server: missing X-Task-Id."));
     }
     *task_password = http_get_header_value(http_response, "X-Task-Password");
     if (!*task_password)
     {
-        alert_server_error();
+        alert_server_error(cfg.url);
         error_msg_and_die(_("Invalid response from server: missing X-Task-Password."));
     }
     free(http_response);
@@ -830,8 +826,7 @@ static void status(const char *task_id,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
     {
-        PR_Close(ssl_sock);
-        alert_connection_error();
+        alert_connection_error(cfg.url);
         error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d"),
                           http_request->len, PR_GetError());
     }
@@ -840,7 +835,7 @@ static void status(const char *task_id,
     char *http_body = http_get_body(http_response);
     if (!*http_body)
     {
-        alert_server_error();
+        alert_server_error(cfg.url);
         error_msg_and_die(_("Invalid response from server: missing HTTP message body."));
     }
     if (http_show_headers)
@@ -848,14 +843,14 @@ static void status(const char *task_id,
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
-        alert_server_error();
+        alert_server_error(cfg.url);
         error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"),
                           response_code, http_body);
     }
     *task_status = http_get_header_value(http_response, "X-Task-Status");
     if (!*task_status)
     {
-        alert_server_error();
+        alert_server_error(cfg.url);
         error_msg_and_die(_("Invalid response from server: missing X-Task-Status."));
     }
     *status_message = http_body;
@@ -909,8 +904,7 @@ static void backtrace(const char *task_id, const char *task_password,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
     {
-        PR_Close(ssl_sock);
-        alert_connection_error();
+        alert_connection_error(cfg.url);
         error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d."),
                           http_request->len, PR_GetError());
     }
@@ -919,7 +913,7 @@ static void backtrace(const char *task_id, const char *task_password,
     char *http_body = http_get_body(http_response);
     if (!http_body)
     {
-        alert_server_error();
+        alert_server_error(cfg.url);
         error_msg_and_die(_("Invalid response from server: missing HTTP message body."));
     }
     if (http_show_headers)
@@ -927,7 +921,7 @@ static void backtrace(const char *task_id, const char *task_password,
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
-        alert_server_error();
+        alert_server_error(cfg.url);
         error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"),
                           response_code, http_body);
     }
@@ -978,8 +972,7 @@ static void run_log(const char *task_id, const char *task_password)
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
     {
-        PR_Close(ssl_sock);
-        alert_connection_error();
+        alert_connection_error(cfg.url);
         error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d."),
                           http_request->len, PR_GetError());
     }
@@ -988,7 +981,7 @@ static void run_log(const char *task_id, const char *task_password)
     char *http_body = http_get_body(http_response);
     if (!http_body)
     {
-        alert_server_error();
+        alert_server_error(cfg.url);
         error_msg_and_die(_("Invalid response from server: missing HTTP message body."));
     }
     if (http_show_headers)
@@ -996,7 +989,7 @@ static void run_log(const char *task_id, const char *task_password)
     int response_code = http_get_response_code(http_response);
     if (response_code != 200)
     {
-        alert_server_error();
+        alert_server_error(cfg.url);
         error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"),
                           response_code, http_body);
     }

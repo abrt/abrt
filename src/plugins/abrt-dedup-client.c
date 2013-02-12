@@ -198,8 +198,7 @@ int main(int argc, char **argv)
                               0/*flags*/, PR_INTERVAL_NO_TIMEOUT);
     if (written < 0)
     {
-        PR_Close(ssl_sock);
-        alert_connection_error();
+        alert_connection_error(cfg.url);
         error_msg_and_die(_("Failed to send HTTP request of length %d: NSS error %d."),
                             request->len, PR_GetError());
     }

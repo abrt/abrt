@@ -49,8 +49,8 @@ struct https_cfg
 };
 
 void get_language(struct language *lang);
-void alert_server_error();
-void alert_connection_error();
+void alert_server_error(const char *peer_name);
+void alert_connection_error(const char *peer_name);
 void ssl_connect(struct https_cfg *cfg, PRFileDesc **tcp_sock, PRFileDesc **ssl_sock);
 void ssl_disconnect(PRFileDesc *ssl_sock);
 char *http_get_header_value(const char *message, const char *header_name);

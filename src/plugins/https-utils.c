@@ -41,15 +41,28 @@ void get_language(struct language *lang)
     ++lang->encoding;
 }
 
-void alert_server_error()
+void alert_server_error(const char *peer_name)
 {
-    alert(_("An error occurred on the server side. Try again later."));
+    if (!peer_name)
+        alert(_("An error occurred on the server side."));
+    else
+    {
+        char *msg = xasprintf(_("A server-side error occurred on '%s'"), peer_name);
+        alert(msg);
+        free(msg);
+    }
 }
 
-void alert_connection_error()
+void alert_connection_error(const char *peer_name)
 {
-    alert(_("An error occurred while connecting to the server. "
-            "Check your network connection and try again."));
+    if (!peer_name)
+        alert(_("An error occurred while connecting to the server"));
+    else
+    {
+        char *msg = xasprintf(_("An error occurred while connecting to '%s'"), peer_name);
+        alert(msg);
+        free(msg);
+    }
 }
 
 static SECStatus ssl_bad_cert_handler(void *arg, PRFileDesc *sock)
@@ -150,16 +163,18 @@ void ssl_connect(struct https_cfg *cfg, PRFileDesc **tcp_sock, PRFileDesc **ssl_
     PRAddrInfo *addrinfo = PR_GetAddrInfoByName(cfg->url, PR_AF_UNSPEC, PR_AI_ADDRCONFIG);
     if (!addrinfo)
     {
-        alert_connection_error();
-        error_msg_and_die(_("Failed to get host by name: NSS error %d."), PR_GetError());
+        alert_connection_error(cfg->url);
+        error_msg_and_die(_("Can't resolve host name '%s'. NSS error %d."), cfg->url, PR_GetError());
     }
+
+    /* Hack */
+    ssl_allow_insecure = cfg->ssl_allow_insecure;
 
     void *enumptr = NULL;
     PRNetAddr addr;
     *tcp_sock = NULL;
-    ssl_allow_insecure = cfg->ssl_allow_insecure;
 
-    while ((enumptr = PR_EnumerateAddrInfo(enumptr, addrinfo, cfg->port, &addr)))
+    while ((enumptr = PR_EnumerateAddrInfo(enumptr, addrinfo, cfg->port, &addr)) != NULL)
     {
         if (addr.raw.family == PR_AF_INET || addr.raw.family == PR_AF_INET6)
         {
@@ -167,80 +182,64 @@ void ssl_connect(struct https_cfg *cfg, PRFileDesc **tcp_sock, PRFileDesc **ssl_
             break;
         }
     }
-
     PR_FreeAddrInfo(addrinfo);
-
     if (!*tcp_sock)
-        error_msg_and_die(_("Failed to create a TCP socket"));
+        /* Host exists, but has neither IPv4 nor IPv6?? */
+        error_msg_and_die(_("Can't resolve host name '%s'."), cfg->url);
+
+    /* These operations are expected to always succeed: */
     PRSocketOptionData sock_option;
-    sock_option.option  = PR_SockOpt_Nonblocking;
+    sock_option.option = PR_SockOpt_Nonblocking;
     sock_option.value.non_blocking = PR_FALSE;
-    PRStatus pr_status = PR_SetSocketOption(*tcp_sock, &sock_option);
-    if (PR_SUCCESS != pr_status)
-    {
-        PR_Close(*tcp_sock);
+    if (PR_SUCCESS != PR_SetSocketOption(*tcp_sock, &sock_option))
         error_msg_and_die(_("Failed to set socket blocking mode."));
-    }
     *ssl_sock = SSL_ImportFD(NULL, *tcp_sock);
     if (!*ssl_sock)
-    {
-        PR_Close(*tcp_sock);
         error_msg_and_die(_("Failed to wrap TCP socket by SSL."));
-    }
-    SECStatus sec_status = SSL_OptionSet(*ssl_sock, SSL_HANDSHAKE_AS_CLIENT, PR_TRUE);
-    if (SECSuccess != sec_status)
-    {
-        PR_Close(*ssl_sock);
+    if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_HANDSHAKE_AS_CLIENT, PR_TRUE))
         error_msg_and_die(_("Failed to enable client handshake to SSL socket."));
-    }
-
     if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_SSL2, PR_TRUE))
         error_msg_and_die(_("Failed to enable client handshake to SSL socket."));
     if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_SSL3, PR_TRUE))
         error_msg_and_die(_("Failed to enable client handshake to SSL socket."));
     if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_TLS, PR_TRUE))
         error_msg_and_die(_("Failed to enable client handshake to SSL socket."));
-
-    sec_status = SSL_SetURL(*ssl_sock, cfg->url);
-    if (SECSuccess != sec_status)
-    {
-        PR_Close(*ssl_sock);
+    if (SECSuccess != SSL_SetURL(*ssl_sock, cfg->url))
         error_msg_and_die(_("Failed to set URL to SSL socket."));
-    }
-    pr_status = PR_Connect(*ssl_sock, &addr, PR_INTERVAL_NO_TIMEOUT);
-    if (PR_SUCCESS != pr_status)
+
+    /* This finally sends packets down the wire.
+     * If we fail here, then server denied our connect, or is down, etc.
+     * Need a good error message.
+     */
+    if (PR_SUCCESS != PR_Connect(*ssl_sock, &addr, PR_INTERVAL_NO_TIMEOUT))
     {
-        PR_Close(*ssl_sock);
-        alert_connection_error();
-        error_msg_and_die(_("Failed to connect SSL address."));
+        alert_connection_error(cfg->url);
+        error_msg_and_die(_("Can't connect to '%s'"), cfg->url);
     }
+
+    /* These should not fail either. (Why we don't set them earlier?) */
     if (SECSuccess != SSL_BadCertHook(*ssl_sock,
                                       (SSLBadCertHandler)ssl_bad_cert_handler,
                                       NULL))
     {
-        PR_Close(*ssl_sock);
         error_msg_and_die(_("Failed to set certificate hook."));
     }
     if (SECSuccess != SSL_HandshakeCallback(*ssl_sock,
                                             (SSLHandshakeCallback)ssl_handshake_callback,
                                             NULL))
     {
-        PR_Close(*ssl_sock);
         error_msg_and_die(_("Failed to set handshake callback."));
     }
-    sec_status = SSL_ResetHandshake(*ssl_sock, /*asServer:*/PR_FALSE);
-    if (SECSuccess != sec_status)
+    if (SECSuccess != SSL_ResetHandshake(*ssl_sock, /*asServer:*/PR_FALSE))
     {
-        PR_Close(*ssl_sock);
-        alert_server_error();
         error_msg_and_die(_("Failed to reset handshake."));
     }
-    sec_status = SSL_ForceHandshake(*ssl_sock);
-    if (SECSuccess != sec_status)
+
+    /* This performs SSL/TLS negotiation */
+    if (SECSuccess != SSL_ForceHandshake(*ssl_sock))
     {
-        PR_Close(*ssl_sock);
-        alert_server_error();
-        error_msg_and_die(_("Failed to force handshake: NSS error %d."),
+        alert_connection_error(cfg->url);
+        error_msg_and_die(_("Failed to complete SSL handshake: NSS error %d."),
                           PR_GetError());
     }
 }
@@ -301,23 +300,20 @@ char *http_get_body(const char *message)
 int http_get_response_code(const char *message)
 {
     if (0 != strncmp(message, "HTTP/", strlen("HTTP/")))
-    {
-        alert_server_error();
-        error_msg_and_die(_("Invalid response from server: HTTP header not found."));
-    }
-    char *space = strstr(message, " ");
+        goto err;
+    char *space = strchr(message, ' ');
     if (!space)
-    {
-        alert_server_error();
-        error_msg_and_die(_("Invalid response from server: HTTP header not found."));
-    }
+        goto err;
     int response_code;
     if (1 != sscanf(space + 1, "%d", &response_code))
-    {
-        alert_server_error();
-        error_msg_and_die(_("Invalid response from server: HTTP header not found."));
-    }
+        goto err;
     return response_code;
+
+ err:
+    alert_server_error(NULL);
+    /* Show bad header to the user */
+    char *sanitized = sanitize_utf8(message, (SANITIZE_ALL & ~SANITIZE_TAB));
+    error_msg_and_die(_("Malformed HTTP response header: '%s'"), sanitized ? sanitized : message);
 }
 
 void http_print_headers(FILE *file, const char *message)
@@ -353,7 +349,7 @@ char *tcp_read_response(PRFileDesc *tcp_sock)
         }
         if (received == -1)
         {
-            alert_connection_error();
+            alert_connection_error(NULL);
             error_msg_and_die(_("Receiving of data failed: NSS error %d."),
                               PR_GetError());
         }
