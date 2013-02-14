@@ -1396,17 +1396,8 @@ int main(int argc, char** argv)
             continue;
         }
 
-        char *time_str = dd_load_text_ext(dd, FILENAME_TIME,
-                                DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-
-        if (time_str == NULL)
-        {
-            error_msg(_("dd_open() opened problem '%s' without valid time element"), (char *)new_dirs->data);
-            goto next;
-        }
-
         /* Don't check errors, time element is always valid time stamp!! */
-        if (strtoul(time_str, 0, 10) < min_born_time)
+        if (dd->dd_time < min_born_time)
         {
             VERB1 log("Ignoring outdated problem '%s'", (char *)new_dirs->data);
             goto next;
@@ -1439,7 +1430,6 @@ int main(int argc, char** argv)
         free(reported_to);
 
 next:
-        free(time_str);
         dd_close(dd);
 
         new_dirs = g_list_next(new_dirs);
