@@ -433,7 +433,7 @@ static void new_dir_exists(GList **new_dirs)
     list_free_with_free(dirlist);
 }
 
-static void fork_exec_gui(void)
+static void fork_exec_gui(const char *problem_id)
 {
     fflush(NULL); /* paranoia */
     pid_t pid = fork();
@@ -456,12 +456,22 @@ static void fork_exec_gui(void)
             _exit(0);
         }
 
+        // pass s_[] as DIR param(s) to 'gui executable'
+        char *gui_args[4];
+        char **pp = gui_args;
+        *pp++ = (char *)GUI_EXECUTABLE;
+        if (problem_id != NULL)
+        {
+            *pp++ = (char *)"-p";
+            *pp++ = (char *)problem_id;
+        }
+        *pp = NULL;
+
         /* grandchild */
-        //TODO: pass s_dirs[] as DIR param(s) to 'gui executable'
-        execl(BIN_DIR"/"GUI_EXECUTABLE, GUI_EXECUTABLE, (char*) NULL);
+        execv(BIN_DIR"/"GUI_EXECUTABLE, gui_args);
         /* Did not find 'gui executable' in installation directory. Oh well */
         /* Trying to find it in PATH */
-        execlp(GUI_EXECUTABLE, GUI_EXECUTABLE, (char*) NULL);
+        execvp(GUI_EXECUTABLE, gui_args);
         perror_msg_and_die(_("Can't execute '%s'"), GUI_EXECUTABLE);
     }
 
@@ -604,7 +614,7 @@ static void action_known(NotifyNotification *notification, gchar *action, gpoint
     }
     else if (strcmp(A_KNOWN_OPEN_GUI, action) == 0)
         /* TODO teach gui to select a problem passed on cmd line */
-        fork_exec_gui();
+        fork_exec_gui(pi->problem_dir);
     else
         /* This should not happen; otherwise it's a bug */
         error_msg("%s:%d %s(): BUG Unknown action '%s'", __FILE__, __LINE__, __func__, action);
@@ -749,7 +759,7 @@ static GtkWidget *create_menu(void)
 
 static void on_applet_activate_cb(GtkStatusIcon *status_icon, gpointer user_data)
 {
-    fork_exec_gui();
+    fork_exec_gui(/* problem id */ NULL);
     hide_icon();
 }
 
