@@ -161,7 +161,7 @@ EOF"`
 
 rlJournalStart
     rlPhaseStartSetup
-        rlRun "useradd -c \"dbus-elements-handling test an unprivileged user\" -M abrtdbustest" 0 "Create a test user"
+        rlRun "useradd -c \"dbus-elements-handling test an unprivileged user\" -M abrtdbustestone" 0 "Create a test user"
         rlRun "useradd -c \"dbus-elements-handling test an another user\" -M abrtdbustestanother" 0 "Create an another test user"
         export -f abrtDBusNewProblem
         export -f abrtDBusSetElement
@@ -187,7 +187,7 @@ rlJournalStart
         fi
 
         rlLog "Create a problem data as the unprivileged user"
-        unprivilegeds_problem=`su abrtdbustest -c 'abrtDBusNewProblem deleted,to_be_deleted,changed,to_be_changed'`
+        unprivilegeds_problem=`su abrtdbustestone -c 'abrtDBusNewProblem deleted,to_be_deleted,changed,to_be_changed'`
         if echo $unprivilegeds_problem | grep -s "org.freedesktop.problems.Failure"; then
           rlDie "Create problem failed"
         fi
@@ -242,7 +242,7 @@ rlJournalStart
         fi
 
         rlLog "Create a problem data as the unprivileged user"
-        unprivilegeds_problem=`su abrtdbustest -c 'abrtDBusNewProblem'`
+        unprivilegeds_problem=`su abrtdbustestone -c 'abrtDBusNewProblem'`
         if echo $unprivilegeds_problem | grep -s "org.freedesktop.problems.Failure"; then
           rlDie "Create problem failed"
         fi
@@ -254,7 +254,7 @@ rlJournalStart
         fi
 
         rlLog "Create a problem data as the unprivileged user"
-        second_unprivilegeds_problem=`su abrtdbustest -c 'abrtDBusNewProblem'`
+        second_unprivilegeds_problem=`su abrtdbustestone -c 'abrtDBusNewProblem'`
         if echo $second_unprivilegeds_problem | grep -s "org.freedesktop.problems.Failure"; then
           rlDie "Create problem failed"
         fi
@@ -268,14 +268,14 @@ rlJournalStart
 
     rlPhaseStartTest "Handle elements as a user"
         rlLog "User changes root's problem"
-        abrtElementsHandlingTest "$roots_problem_path" "abrtdbustest" \
+        abrtElementsHandlingTest "$roots_problem_path" "abrtdbustestone" \
             "Error org.freedesktop.problems.AuthFailure: Not Authorized" \
             "Error org.freedesktop.problems.AuthFailure: Not Authorized" \
             "Error org.freedesktop.problems.AuthFailure: Not Authorized" \
             "Error org.freedesktop.problems.AuthFailure: Not Authorized"
 
         rlLog "User changes user's problem"
-        abrtElementsHandlingTest "$unprivilegeds_problem_path" "abrtdbustest"
+        abrtElementsHandlingTest "$unprivilegeds_problem_path" "abrtdbustestone"
 
         rlLog "Another user changes user's problem"
         abrtElementsHandlingTest "$second_unprivilegeds_problem_path" "abrtdbustestanother" \
@@ -285,11 +285,11 @@ rlJournalStart
             "Error org.freedesktop.problems.AuthFailure: Not Authorized"
 
         rlLog "Chech max crash reports size"
-        abrtMaxCrashReportsSizeTest "$unprivilegeds_problem_path" "abrtdbustest"
+        abrtMaxCrashReportsSizeTest "$unprivilegeds_problem_path" "abrtdbustestone"
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "userdel -r abrtdbustest" 0 "Remove the test user"
+        rlRun "userdel -r abrtdbustestone" 0 "Remove the test user"
         rlRun "userdel -r abrtdbustestanother" 0 "Remove the another test user"
         rlRun "mv /etc/abrt/abrt.conf.bak /etc/abrt/abrt.conf" 0 "Restore abrt configuration"
         rlRun "systemctl restart abrtd.service" 0 "Restart abrtd after configuration changes"
