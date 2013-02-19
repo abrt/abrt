@@ -33,7 +33,7 @@ PACKAGE="abrt"
 STAT="stat --format=%A,%U,%G"
 
 function abrtDBusNewProblem() {
-    args=analyzer,libreport,executable,$(which true)
+    args=analyzer,libreport,executable,$(which true),uuid,$(date +%s)
 
     if [ -n "$2" ]; then
         args = $args,$2
