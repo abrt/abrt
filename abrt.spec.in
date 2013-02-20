@@ -396,7 +396,7 @@ fi
 %preun addon-kerneloops
 if [ "$1" -eq "0" ] ; then
 %if %{with systemd}
-    /bin/systemctl --no-reload abrt-oops.service >/dev/null 2>&1 || :
+    /bin/systemctl --no-reload disable abrt-oops.service >/dev/null 2>&1 || :
     /bin/systemctl stop abrt-oops.service >/dev/null 2>&1 || :
 %else
     service abrt-oops stop >/dev/null 2>&1
@@ -407,7 +407,7 @@ fi
 %preun addon-xorg
 if [ "$1" -eq "0" ] ; then
 %if %{with systemd}
-    /bin/systemctl --no-reload abrt-xorg.service >/dev/null 2>&1 || :
+    /bin/systemctl --no-reload disable abrt-xorg.service >/dev/null 2>&1 || :
     /bin/systemctl stop abrt-xorg.service >/dev/null 2>&1 || :
 %else
     service abrt-xorg stop >/dev/null 2>&1
@@ -418,7 +418,7 @@ fi
 %preun addon-vmcore
 if [ "$1" -eq "0" ] ; then
 %if %{with systemd}
-    /bin/systemctl --no-reload abrt-vmcore.service >/dev/null 2>&1 || :
+    /bin/systemctl --no-reload disable abrt-vmcore.service >/dev/null 2>&1 || :
     /bin/systemctl stop abrt-vmcore.service >/dev/null 2>&1 || :
 %else
     service abrt-vmcore stop >/dev/null 2>&1
