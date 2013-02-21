@@ -25,6 +25,7 @@ static GList *settings_setOpenGPGPublicKeys = NULL;
 static GList *settings_setBlackListedPkgs = NULL;
 static GList *settings_setBlackListedPaths = NULL;
 static bool   settings_bProcessUnpackaged = false;
+static GList *settings_Interpreters = NULL;
 
 static GList *parse_list(const char* list)
 {
@@ -86,6 +87,13 @@ static void ParseCommon(map_string_h *settings, const char *conf_filename)
     {
         settings_bProcessUnpackaged = string_to_bool(value);
         g_hash_table_remove(settings, "ProcessUnpackaged");
+    }
+
+    value = g_hash_table_lookup(settings, "Interpreters");
+    if (value)
+    {
+        settings_Interpreters = parse_list(value);
+        g_hash_table_remove(settings, "Interpreters");
     }
 
     GHashTableIter iter;
@@ -282,12 +290,27 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     else
         basename = executable;
 
-    if (!strcmp(basename, "python")
-        || !strcmp(basename, "perl"))
+    /* if basename is known interpreter, we want to blame the running script
+     * not the interpreter
+     */
+    if (g_list_find_custom(settings_Interpreters, basename, (GCompareFunc)g_strcmp0))
     {
         struct pkg_envra *script_pkg = get_script_name(cmdline, &executable);
         if (!script_pkg)
-            goto ret;
+        {
+            /* none or unknown script, and config says we don't care about
+             * unpackaged things
+             */
+            if (!settings_bProcessUnpackaged)
+                goto ret;
+
+            /* unpackaged script, but the settings says we want to keep it
+             * bz plugin wont allow to report this anyway, because component
+             * is missing, so there is no reason to mark it as not_reportable
+             * someone might want to use abrt to report it using ftp
+             */
+            goto ret0;
+        }
 
         free_pkg_envra(pkg_name);
         pkg_name = script_pkg;
@@ -296,15 +319,11 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     package_short_name = xasprintf("%s", pkg_name->p_name);
     VERB2 log("Package:'%s' short:'%s'", pkg_name->p_nvr, package_short_name);
 
-    GList *li;
 
-    for (li = settings_setBlackListedPkgs; li != NULL; li = g_list_next(li))
+    if (g_list_find_custom(settings_setBlackListedPkgs, package_short_name, (GCompareFunc)g_strcmp0))
     {
-        if (strcmp((char*)li->data, package_short_name) == 0)
-        {
-            log("Blacklisted package '%s'", package_short_name);
-            goto ret; /* return 1 (failure) */
-        }
+        log("Blacklisted package '%s'", package_short_name);
+        goto ret; /* return 1 (failure) */
     }
 
     if (settings_bOpenGPGCheck)
