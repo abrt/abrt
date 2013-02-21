@@ -44,7 +44,7 @@ function wait_for_sosreport() {
 function wait_for_hooks() {
     rlLog "Waiting for all hooks to end"
     local c=0
-    while [ ! -f /tmp/abrt-done ]; do
+    while [ ! -f "/tmp/abrt-done" ]; do
         sleep 0.1
         let c=$c+1
         if [ $c -gt 3000 ]; then
@@ -66,6 +66,11 @@ function generate_second_crash() {
     will_abort
 }
 
+function generate_python_segfault() {
+    rlLog "Generate python segfault"
+    will_python_sigsegv
+}
+
 function load_abrt_conf() {
     ABRT_CONF_DUMP_LOCATION=`sed -n '/^DumpLocation[ \t]*=/ s/.*=[ \t]*//p' @CONF_DIR@/abrt.conf 2>/dev/null`
 
@@ -82,5 +87,5 @@ function prepare() {
     load_abrt_conf
 
     rm -f -- $ABRT_CONF_DUMP_LOCATION/last-ccpp
-    rm -f /tmp/abrt-done
+    rm -f "/tmp/abrt-done"
 }
