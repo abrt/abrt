@@ -121,6 +121,38 @@ AC_ARG_WITH([defaultdumplocation],
             [], [with_defaultdumplocation=${localstatedir}/tmp/abrt])
 AC_SUBST([DEFAULT_DUMP_LOCATION], [$with_defaultdumplocation])
 
+AC_ARG_ENABLE(doxygen-docs,
+    AS_HELP_STRING([--enable-doxygen-docs],
+	[build DOXYGEN documentation (requires Doxygen)]),
+    [enable_doxygen_docs=$enableval],
+    [enable_doxygen_docs=no]
+)
+
+
+# Doxygen Documentation
+
+AC_PATH_PROG(DOXYGEN, doxygen, no)
+
+AC_MSG_CHECKING([whether to build Doxygen documentation])
+
+if test "$DOXYGEN" = "no" ; then
+    have_doxygen=no
+else
+    have_doxygen=yes
+fi
+
+if test "$enable_doxygen_docs" = "yes" ; then
+    if test "$have_doxygen" = "no"; then
+        AC_MSG_ERROR([Building Doxygen docs explicitly required, but Doxygen not found])
+    fi
+    AC_MSG_RESULT(yes)
+else
+    AC_MSG_RESULT(no)
+fi
+
+AM_CONDITIONAL(DBUS_DOXYGEN_DOCS_ENABLED, test "$enable_doxygen_docs" = "yes")
+
+
 AC_SUBST(CONF_DIR)
 AC_SUBST(VAR_RUN)
 AC_SUBST(PLUGINS_CONF_DIR)
@@ -141,6 +173,9 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([
 	Makefile
 	abrt.pc
+	apidoc/Makefile
+	apidoc/Doxyfile
+	apidoc/html/Makefile
 	doc/Makefile
 	doc/problems-service/Makefile
 	src/include/Makefile

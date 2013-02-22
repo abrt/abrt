@@ -3,6 +3,9 @@
  *
  * Licensed under GPLv2, see file COPYING in this tarball for details.
  */
+
+/** @file libabrt.h */
+
 #ifndef LIBABRT_H_
 #define LIBABRT_H_
 
@@ -42,6 +45,14 @@ int vdprintf(int d, const char *format, va_list ap);
 
 
 #define check_free_space abrt_check_free_space
+
+/**
+  @brief Checks if there is enough free space to store the problem data
+
+  @param setting_MaxCrashReportsSize Maximum data size
+  @param dump_location Location to check for the available space
+*/
+
 void check_free_space(unsigned setting_MaxCrashReportsSize, const char *dump_location);
 #define trim_problem_dirs abrt_trim_problem_dirs
 void trim_problem_dirs(const char *dirname, double cap_size, const char *exclude_path);
@@ -94,9 +105,38 @@ void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen);
 void koops_print_suspicious_strings(void);
 
 /* dbus client api */
+
+/**
+  @brief Changes the access rights of the problem specified by problem id
+
+  Requires authorization
+
+  @return 0 if successfull non-zeru on failure
+*/
 int chown_dir_over_dbus(const char *problem_dir_path);
+
+/**
+ @brief Delets multiple problems specified by their id (as returned from problem_data_save)
+
+ @param problem_dir_paths List of problem ids
+ @return 0 if operation was successfull, non-zero on failure
+*/
+
 int delete_problem_dirs_over_dbus(const GList *problem_dir_paths);
+
+/**
+  @brief Fetches problem information for specified problem id
+
+  @return problem_data_t or NULL on failure
+*/
 problem_data_t *get_problem_data_dbus(const char *problem_dir_path);
+
+/**
+  @brief Fetches all problems from problem database
+
+  @param authorize If set to true will try to fetch even problems owned by other users (will require root authorization over policy kit)
+  @return List of problem ids or NULL on failure
+*/
 GList *get_problems_over_dbus(bool authorize);
 
 

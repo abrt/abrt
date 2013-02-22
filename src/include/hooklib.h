@@ -16,4 +16,16 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+/** @file hooklib.h */
+
+/**
+ @brief Saves the problem data
+
+ Creates the problem_dir in the system problem directory where it's
+ picked by ABRT
+
+ @param[in] pd Filled problem data structure to be saved
+ @return Unique identifier for the saved problem (usually full path to the
+ stored data, but it's not guaranteed)
+ */
 char *problem_data_save(problem_data_t *pd);

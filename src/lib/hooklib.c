@@ -363,9 +363,6 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
     return bt;
 }
 
-/** Saves the problem data
- * creates the problem_dir in the configured problems directory
- */
 char* problem_data_save(problem_data_t *pd)
 {
     load_abrt_conf();
