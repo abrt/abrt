@@ -83,6 +83,7 @@
                         </variablelist>
                     </tp:docstring>
                 </arg>
+                <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QHash&lt;QString,QString&gt;"/>
 
                 <arg type='s' name='problem_id' direction='out'>
                     <tp:docstring>An indentifier of the new problem</tp:docstring>
@@ -157,6 +158,7 @@ dbus-send --system --type=method_call --print-reply \
                 <arg type='a{ss}' name='response' direction='out'>
                     <tp:docstring>A list of values of the requested elements.</tp:docstring>
                 </arg>
+                <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QHash&lt;QString,QString&gt;"/>
             </method>
 
             <method name='SetElement'>
