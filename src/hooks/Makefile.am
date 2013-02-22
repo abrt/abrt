@@ -33,8 +33,7 @@ abrt_hook_ccpp_LDADD = \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS)
 
-pyhook_PYTHON = abrt_exception_handler.py
-python_PYTHON = abrt.pth
+pyhook_PYTHON = abrt_exception_handler.py abrt.pth
 EXTRA_DIST = abrt_exception_handler.py.in \
 	abrt-install-ccpp-hook \
 	abrt-harvest-vmcore
