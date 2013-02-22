@@ -38,6 +38,9 @@ help:
 	@echo "  linkcheck  to check all external links for integrity"
 	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
 
+problem-config:
+	cd ../problem && $(MAKE) $(AM_MAKEFLAGS) all
+
 clean-local:
 	-rm -rf $(BUILDDIR)/*
 
@@ -161,4 +164,4 @@ EXTRA_DIST = \
 
 man5_MANS = _build/man/abrt-python.5
 
-_build/man/abrt-python.5: man
+_build/man/abrt-python.5: problem-config man

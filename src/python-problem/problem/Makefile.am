@@ -7,3 +7,5 @@ config.py: config.py.in
 		$< >$@
 
 EXTRA_DIST = config.py.in
+
+all-local: config.py
