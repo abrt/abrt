@@ -37,18 +37,13 @@ for d in *; do
 	test -d "$d" || continue
 	test -f "$d/vmcore" || continue
 
-	# Let abrtd know what type of problem it is:
-	printf 'vmcore' >"$d/analyzer"
-	printf 'vmcore' >"$d/type"
-	printf 'kernel' >"$d/component"
-	printf '%s' "`date '+%s'`" >"$d/time"
-	printf '0' >"$d/uid"
-	# TODO: need to generate *real* UUID,
-	# one which has a real chance of catching dups!
-	# This one generates different hashes even for similar cores:
-	printf '%s' "`sha1sum <"$d/vmcore" | cut -d" " -f1`" >"$d/uuid"
+	dst="$ABRTDumpDir/vmcore-$d"
 
-	# Move vmcore directory to abrt spool dir.
+	# Did we already copy it last time we booted?
+	test -d "$dst" && continue
+	test -d "$dst.new" && continue
+
+	# Copy/move vmcore directory to abrt spool dir.
 	# We use .new suffix - we must make sure abrtd doesn't try
 	# to process partially-copied directory.
 	#
@@ -56,13 +51,24 @@ for d in *; do
 	#mv -- "$d" "/var/spool/abrt/vmcore-$d.new" || continue
 	# ...and this is what selinux forces me to do
 	# (otherwise files have wrong context and abrtd can't access them):
-	cp -r --no-preserve=all -- "$d" "$ABRTDumpDir/vmcore-$d.new" || {
-		rm -rf -- "$ABRTDumpDir/vmcore-$d.new"
+	cp -r --no-preserve=all -- "$d" "$dst.new" || {
+		rm -rf -- "$dst.new"
 		continue
 	}
 	$move_core && rm -rf -- "$d"
 
-	chown -R 0:0 -- "$ABRTDumpDir/vmcore-$d.new"
-	chmod -R u+rwX,go-rwxst -- "$ABRTDumpDir/vmcore-$d.new"
-	mv -- "$ABRTDumpDir/vmcore-$d.new" "$ABRTDumpDir/vmcore-$d"
+	# Let abrtd know what type of problem it is:
+	printf 'vmcore'            >"$dst.new/analyzer"
+	printf 'vmcore'            >"$dst.new/type"
+	printf 'kernel'            >"$dst.new/component"
+	printf '%s' "`date '+%s'`" >"$dst.new/time"
+	printf '0'                 >"$dst.new/uid"
+	# TODO: need to generate *real* UUID,
+	# one which has a real chance of catching dups!
+	# This one generates different hashes even for similar cores:
+	printf '%s' "`sha1sum <"$dst.new/vmcore" | cut -d" " -f1`" >"$dst.new/uuid"
+
+	chown -R 0:0 -- "$dst.new"
+	chmod -R u+rwX,go-rwxst -- "$dst.new"
+	mv -- "$dst.new" "$dst"
 done
