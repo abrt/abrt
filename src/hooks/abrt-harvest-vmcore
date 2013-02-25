@@ -32,6 +32,12 @@ for d in *; do
 	test -d "$d" || continue
 	test -f "$d/vmcore" || continue
 
+	dst="/var/spool/abrt/vmcore-$d"
+
+	# Did we already copy it last time we booted?
+	test -d "$dst" && continue
+	test -d "$dst.new" && continue
+
 	# Let abrtd know what type of problem it is:
 	printf 'vmcore' >"$d/analyzer"
 	printf 'vmcore' >"$d/type"
@@ -43,21 +49,21 @@ for d in *; do
 	# This one generates different hashes even for similar cores:
 	printf '%s' "`sha1sum <"$d/vmcore" | cut -d" " -f1`" >"$d/uuid"
 
-	# Move vmcore directory to abrt spool dir.
+	# Copy/move vmcore directory to abrt spool dir.
 	# We use .new suffix - we must make sure abrtd doesn't try
 	# to process partially-copied directory.
 	#
 	# This is the efficient way:
-	#mv -- "$d" "/var/spool/abrt/vmcore-$d.new" || continue
+	#mv -- "$d" "$dst.new" || continue
 	# ...and this is what selinux forces me to do
 	# (otherwise files have wrong context and abrtd can't access them):
-	cp -r --no-preserve=all -- "$d" "/var/spool/abrt/vmcore-$d.new" || {
-		rm -rf "/var/spool/abrt/vmcore-$d.new"
+	cp -r --no-preserve=all -- "$d" "$dst.new" || {
+		rm -rf -- "$dst.new"
 		continue
 	}
 	$move_core && rm -rf -- "$d"
 
-	chown -R 0:0 "/var/spool/abrt/vmcore-$d.new"
-	chmod -R u+rwX,go-rwxst "/var/spool/abrt/vmcore-$d.new"
-	mv "/var/spool/abrt/vmcore-$d.new" "/var/spool/abrt/vmcore-$d"
+	chown -R 0:0 -- "$dst.new"
+	chmod -R u+rwX,go-rwxst -- "$dst.new"
+	mv -- "$dst.new" "$dst"
 done
