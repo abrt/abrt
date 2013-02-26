@@ -466,7 +466,7 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
 
 
  delete_bad_dir:
-    log("Corrupted or bad directory '%s', deleting", state->dirname);
+    log("Deleting problem directory '%s'", state->dirname);
     delete_dump_dir(state->dirname);
 
  ret:
