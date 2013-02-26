@@ -41,7 +41,6 @@
 
 /* libnotify action keys */
 #define A_KNOWN_OPEN_GUI "OPEN"
-#define A_KNOWN_OPEN_BROWSER "SHOW"
 #define A_REPORT_REPORT "REPORT"
 #define A_REPORT_AUTOREPORT "AUTOREPORT"
 
@@ -593,27 +592,7 @@ static void action_known(NotifyNotification *notification, gchar *action, gpoint
     VERB3 log("Handle known action '%s'!", action);
     problem_info_t *pi = (problem_info_t *)user_data;
 
-    if (strcmp(A_KNOWN_OPEN_BROWSER, action) == 0)
-    {
-        struct dump_dir *dd = dd_opendir(pi->problem_dir, DD_OPEN_READONLY);
-        if (dd)
-        {
-            report_result_t *res = find_in_reported_to(dd, "ABRT Server");
-            if (res && res->url)
-            {
-                GError *error = NULL;
-                if (!gtk_show_uri(/* use default screen */ NULL, res->url, GDK_CURRENT_TIME, &error))
-                {
-                    error_msg(_("Can't open url '%s': %s"), res->url, error->message);
-                    g_error_free(error);
-                }
-            }
-            free_report_result(res);
-            dd_close(dd);
-        }
-    }
-    else if (strcmp(A_KNOWN_OPEN_GUI, action) == 0)
-        /* TODO teach gui to select a problem passed on cmd line */
+    if (strcmp(A_KNOWN_OPEN_GUI, action) == 0)
         fork_exec_gui(pi->problem_dir);
     else
         /* This should not happen; otherwise it's a bug */
@@ -852,10 +831,6 @@ static void notify_problem_list(GList *problems, int flags)
         {   /* Problem has been 'autoreported' and is considered as KNOWN
              */
             notify_notification_add_action(notification, A_KNOWN_OPEN_GUI, _("Open"),
-                    NOTIFY_ACTION_CALLBACK(action_known),
-                    pi, NULL);
-
-            notify_notification_add_action(notification, A_KNOWN_OPEN_BROWSER, _("Show"),
                     NOTIFY_ACTION_CALLBACK(action_known),
                     pi, NULL);
 
