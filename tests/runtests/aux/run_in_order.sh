@@ -86,11 +86,14 @@ for test_dir in $testlist; do
         fi
     fi
 
-    # console reporting
+    # console reporting & fail.log creation
     if [ "$test_result" == "FAIL" ]; then
         touch "$outdir/fail.log"
-        sed -n "1,${protocol_start}p;${protocol_start}q" $logfile \
-            | grep -n ' FAIL ' > "$outdir/fail.log"
+        if [ -f "$outdir/protocol.log" ]; then
+            grep -n ' FAIL ' "$outdir/protocol.log" > "$outdir/fail.log"
+        else
+            egrep -n ' (FAIL|FATAL) ' "$logfile" > "$outdir/fail.log"
+        fi
         echo_failure
         RESULT="FAIL"
     else
@@ -119,4 +122,6 @@ for test_dir in $testlist; do
 
 done
 
-export RESULT
+if [ "$RESULT" == "FAIL" ]; then
+    return 1
+fi
