@@ -231,7 +231,10 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
                 VERB2 log("Crash in unpackaged executable '%s', proceeding without packaging information", executable);
                 goto ret0; /* no error */
             }
-            log("Executable '%s' doesn't belong to any package", executable);
+            log("Executable '%s' doesn't belong to any package"
+                " and ProcessUnpackaged is set to 'no'",
+                executable
+            );
             goto ret; /* return 1 (failure) */
         }
 
