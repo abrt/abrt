@@ -282,7 +282,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
         log("Executable '%s' doesn't belong to any package"
 		" and ProcessUnpackaged is set to 'no'",
 		executable
-	);
+        );
         goto ret; /* return 1 (failure) */
     }
 
