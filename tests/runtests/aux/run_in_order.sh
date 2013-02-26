@@ -7,6 +7,8 @@ load_abrt_conf
 testlist=$(cat $TEST_LIST | grep '^[^#]\+$')
 crit_test_fail=0
 
+RESULT="PASS"
+
 for test_dir in $testlist; do
     test="$test_dir/runtest.sh"
     testname="$(grep 'TEST=\".*\"' $test | awk -F '=' '{ print $2 }' | sed 's/"//g')"
@@ -90,6 +92,7 @@ for test_dir in $testlist; do
         sed -n "1,${protocol_start}p;${protocol_start}q" $logfile \
             | grep -n ' FAIL ' > "$outdir/fail.log"
         echo_failure
+        RESULT="FAIL"
     else
         echo_success
     fi
@@ -115,15 +118,5 @@ for test_dir in $testlist; do
     fi
 
 done
-
-if grep -q FAIL $OUTPUT_ROOT/results; then
-    RESULT="FAIL"
-else
-    RESULT="PASS"
-fi
-
-if [ $crit_test_fail -eq 1 ]; then
-    RESULT="FAIL"
-fi
 
 export RESULT
