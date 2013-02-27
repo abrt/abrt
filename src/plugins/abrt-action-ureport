@@ -2,32 +2,66 @@
 #
 # This script wraps reporter-ureport client and keeps number of sent
 # uReports to a server consistent with number of problem ocurrences.
+
+# $1 a message
+log1()
+{
+    test -n "$ABRT_VERBOSE" && test "$ABRT_VERBOSE" -ge 1 && echo "$1" >&2
+}
+
+# $1 a full path fo file
+# $2 a default value
+try_parse_number()
+{
+    if grep -q "^[0-9][0-9]*$" < "$1" && test 0 -eq $(wc -l < $1); then
+        cat -- "$1"
+    else
+        log1 "Not a number in file '$1'"
+        printf "%s" "$2"
+    fi
+}
+
 #
-# FAF server returns a BTHASH which is used as global identifier of problem.
-# reporter-ureport stores received BTHASH value in reported_to element under
-# uReport key. Therefore, if reported_to element contains uReport key,
-# reporter-ureport won't be run again.
+# Main
 #
-# TODO: this implementation allows caller to report a problem only once
 
-if test -f reported_to && cat reported_to | grep -q "BTHASH"
-then
+1>&2
 
-    test -n "$ABRT_VERBOSE" && test $ABRT_VERBOSE -ge 1 && {
-            echo "Problem has been already reported: '`pwd`'"
-    }
+UREPORTS=$(try_parse_number "$PWD/ureports_counter" "0")
+COUNT=$(try_parse_number "$PWD/count" "0")
 
+# Send only if the problem is not yet reported
+#           if the count file is corrupted or
+#           if the number of ureports is lower then the number of occurrences
+if test 0 -ne "$UREPORTS" && test 0 -ne "$COUNT" && test "$UREPORTS" -ge "$COUNT"; then
+    log1 "uReport has been already sent: '$PWD'"
+
+    if test -f reported_to; then
+        grep -e "^Bugzilla: " -e "^ABRT Server: " < reported_to | sort -u
+
+        if grep -q -e "^Bugzilla: " -e "^ABRT Server: " < reported_to; then
+            echo "THANKYOU"
+            exit 0
+        fi
+
+        log1 "Bug for '$PWD' not yet filed. Continuing."
+        exit 0
+    fi
+
+    log1 "uReport was sent but '$PWD/reported_to' doesn't exist. Continuing."
     exit 0
 fi
 
-if test ! -s core_backtrace
-then
-    if test -n "$ABRT_VERBOSE" && test $ABRT_VERBOSE -ge 1
-    then
-        echo "Generating core_backtrace"
-    fi
+if test ! -s core_backtrace; then
+    log1 "Generating core_backtrace"
 
-    abrt-action-generate-core-backtrace
+    abrt-action-generate-core-backtrace || {
+        log1 "uReport can't be sent without core_backtrace. Exiting."
+        exit 1
+    }
 fi
 
-reporter-ureport
+reporter-ureport && {
+    printf "%s" "$((UREPORTS + 1))" > ureports_counter
+    exit 0
+}
