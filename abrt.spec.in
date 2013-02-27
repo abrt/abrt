@@ -8,9 +8,9 @@
 %endif
 
 %if 0%{?rhel} >= 6
-%define vendor redhat
+%define desktopvendor redhat
 %else
-%define vendor fedora
+%define desktopvendor fedora
 %endif
 
 Summary: Automatic bug detection and reporting tool
@@ -206,7 +206,7 @@ mkdir -p $RPM_BUILD_ROOT/var/spool/abrt-upload
 
 desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
-        --vendor %{vendor} \
+        --vendor %{desktopvendor} \
         --delete-original \
         ${RPM_BUILD_ROOT}%{_datadir}/applications/%{name}.desktop
 
@@ -437,7 +437,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-gui
 %dir %{_datadir}/%{name}
 # all glade, gtkbuilder and py files for gui
-%{_datadir}/applications/%{vendor}-%{name}.desktop
+%{_datadir}/applications/%{desktopvendor}-%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/*
 %{_datadir}/icons/hicolor/*/status/*
 %{_datadir}/%{name}/icons/hicolor/*/status/*
