@@ -72,12 +72,6 @@ for test_dir in $testlist; do
         rm "$outdir/avc"
     fi
 
-    # append protocol to results
-    echo '' >> $OUTPUT_ROOT/results
-    if [ -f "$outdir/protocol.log" ]; then
-        cat "$outdir/protocol.log" >> $OUTPUT_ROOT/results
-    fi
-
     # check test result
     test_result="FAIL"
     if [ -e $logfile ]; then
@@ -100,6 +94,14 @@ for test_dir in $testlist; do
         echo_success
     fi
     echo " | $short_testname"
+
+    # append protocol to results, use fail.log if not available
+    echo '' >> $OUTPUT_ROOT/results
+    if [ -f "$outdir/protocol.log" ]; then
+        cat "$outdir/protocol.log" >> $OUTPUT_ROOT/results
+    elif [ -f "$outdir/fail.log" ]; then
+        cat "$outdir/fail.log" >> $OUTPUT_ROOT/results
+    fi
 
     if [ "$test_result" == "FAIL" ]; then
         for ctest in $TEST_CRITICAL; do
