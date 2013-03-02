@@ -7,14 +7,14 @@
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
 # Máté Gelei <gelei.mate1@gmail.com>, 2011.
 # Peter Borsa <peter.borsa@gmail.com>, 2012.
-# Zoltan Hoppár <hopparz@gmail.com>, 2011-2012.
+# Zoltan Hoppár <hopparz@gmail.com>, 2011-2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
 "POT-Creation-Date: 2013-01-31 13:23+0100\n"
-"PO-Revision-Date: 2013-01-31 12:24+0000\n"
-"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
+"PO-Revision-Date: 2013-02-02 13:16+0000\n"
+"Last-Translator: Zoltan Hoppár <hopparz@gmail.com>\n"
 "Language-Team: Hungarian <trans-hu@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -127,7 +127,7 @@ msgstr "Hiba történt"
 
 #: ../src/applet/applet.c:866
 msgid "A Problem has been Reported"
-msgstr ""
+msgstr "A probléma már bejelentésre került."
 
 #: ../src/applet/applet.c:874
 msgid "A New Problem has Occurred"
@@ -174,7 +174,7 @@ msgstr "& [-v] [DIR]...\n\nAlkalmazás amely képes jelezni az ABRT-n keresztül
 #: ../src/applet/applet.c:1391
 #, c-format
 msgid "dd_open() opened problem '%s' without valid time element"
-msgstr ""
+msgstr "dd_open() megynyitotta a '%s'  problémát különösebb érvényes időelem nélkül"
 
 #: ../src/daemon/abrt-action-save-package-data.c:375
 msgid ""
@@ -243,7 +243,7 @@ msgstr "Módosításhoz  a probléma nem elérhető"
 
 #: ../src/dbus/abrt-dbus.c:542
 msgid "Chowning directory failed. Check system logs for more details."
-msgstr ""
+msgstr "Chown parancs végrehajtása sikertelen a mappán. Ellenőrizze a rendszer logfájljait a további részletekért."
 
 #: ../src/dbus/abrt-dbus.c:639
 #, c-format
@@ -570,7 +570,7 @@ msgid ""
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
 "    -e,--exact  Download only specified files\n"
-msgstr "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n       [-e, --exact=PATH]\n\nInstalls debuginfos for all build-ids listed in BUILD_IDS_FILE\nto CACHEDIR, using TMPDIR as temporary staging area.\nOld files in CACHEDIR are deleted until it is smaller than SIZE.\n\n    -v          Be verbose\n    -y          Noninteractive, assume 'Yes' to all questions\n    --ids       Default: build_ids\n    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n    --cache     Default: /var/cache/abrt-di\n    --size_mb   Default: 4096\n    -e,--exact  Download only specified files\n"
+msgstr "Használat: %s [-vy] [--ids=BUILD_IDS_FILE]\n       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n       [-e, --exact=PATH]\n\nTelepíti a debuginfo fájlokat az összes BUILD_IDS_FILE-ban listázott build-id-k alapján a CACHEDIR-hez, a TMPDIR mappát használva mint átmeneti tárolót.\nRégebbi fájlok a CACHEDIR mappában törlésre kerülnek amik nem kisebbek, mint a SIZE méret.\n\n    -v          Legyen részletes\n    -y          Nem-interaktív, mindenre 'Igen' a felelet az összes kérdésre\n    --ids       Alapértelmezés: build_ids\n    --tmpdir    Alapértelmezés: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n    --cache     Alapértelmezés: /var/cache/abrt-di\n    --size_mb   Alapértelmezés: 4096\n    -e,--exact  Csak a meghatározott fájlokat töltse le\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:170
 msgid "Can't open {0}: {1}"

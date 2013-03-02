@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
 "POT-Creation-Date: 2013-01-31 13:23+0100\n"
-"PO-Revision-Date: 2013-01-31 12:24+0000\n"
-"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
+"PO-Revision-Date: 2013-02-06 03:49+0000\n"
+"Last-Translator: Tomoyuki KATO <tomo@dream.daynight.jp>\n"
 "Language-Team: Japanese <trans-ja@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -133,7 +133,7 @@ msgstr "1つ問題が起きました"
 
 #: ../src/applet/applet.c:866
 msgid "A Problem has been Reported"
-msgstr ""
+msgstr "問題が報告されました。"
 
 #: ../src/applet/applet.c:874
 msgid "A New Problem has Occurred"
@@ -168,7 +168,7 @@ msgstr "'%s' は所有できません"
 #: ../src/applet/applet.c:1037
 #, c-format
 msgid "Can't open directory for writing '%s'"
-msgstr "'%s' を書き込むためのディレクトリーを開くことができません"
+msgstr "'%s' を書き込むためのディレクトリを開くことができません"
 
 #: ../src/applet/applet.c:1297
 msgid ""
@@ -180,7 +180,7 @@ msgstr "& [-v] [DIR]...\n\n新しい問題が ABRT で検出されるとユー�
 #: ../src/applet/applet.c:1391
 #, c-format
 msgid "dd_open() opened problem '%s' without valid time element"
-msgstr ""
+msgstr "dd_open() が有効な time 要素なしで問題 '%s' を開きました。"
 
 #: ../src/daemon/abrt-action-save-package-data.c:375
 msgid ""
@@ -231,7 +231,7 @@ msgstr "不明なエラーです"
 #: ../src/dbus/abrt-dbus.c:359
 #, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr "'%s' は有効な問題ディレクトリーではありません"
+msgstr "'%s' は有効な問題ディレクトリではありません"
 
 #: ../src/dbus/abrt-dbus.c:393
 #, c-format
@@ -249,7 +249,7 @@ msgstr "問題にアクセスして修正できません"
 
 #: ../src/dbus/abrt-dbus.c:542
 msgid "Chowning directory failed. Check system logs for more details."
-msgstr ""
+msgstr "ディレクトリの所有者変更に失敗しました。詳細はシステムログを確認してください。"
 
 #: ../src/dbus/abrt-dbus.c:639
 #, c-format
@@ -263,7 +263,7 @@ msgstr "残っている問題領域はありません"
 #: ../src/dbus/abrt-dbus.c:693
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr "'%s' エレメントを問題のディレクトリー '%s' から削除できません"
+msgstr "'%s' エレメントを問題のディレクトリ '%s' から削除できません"
 
 #: ../src/dbus/abrt-dbus.c:823
 #, c-format
@@ -403,7 +403,7 @@ msgid ""
 "\n"
 "Shows list of problem directories in specified DIR(s)\n"
 "and ones saved in system-wide problem directory spool."
-msgstr "& [-vpD] [DIR]...⏎ ⏎ は、特定した DIR(s)⏎ 内の問題ディレクトリ一とシステム全域の問題ディレクトリースプールに保存したものの一覧を表示します"
+msgstr "& [-vpD] [DIR]...⏎ ⏎ は、特定した DIR(s)⏎ 内の問題ディレクトリ一とシステム全域の問題ディレクトリスプールに保存したものの一覧を表示します"
 
 #: ../src/gui-gtk/main.c:1379
 msgid "Do not query problems over dbus (use only DIRs)"
@@ -427,7 +427,7 @@ msgstr "'%s の chown ができません: %s"
 #: ../src/lib/problem_api.c:92
 #, c-format
 msgid "Deleting problem directory failed: %s"
-msgstr "問題ディレクトリーの削除は失敗しました: %s"
+msgstr "問題ディレクトリの削除は失敗しました: %s"
 
 #: ../src/lib/problem_api.c:126
 #, c-format
@@ -445,7 +445,7 @@ msgid ""
 "\n"
 "Analyzes C/C++ backtrace, generates duplication hash, backtrace rating,\n"
 "and identifies crash function in problem directory DIR"
-msgstr "& [options] -d DIR\n\nC/C++ バックトレースを分析し、 重複ハッシュ、 バックトレース\nレーティングを生成、 問題の DIR ディレクトリー内のクラッシュ関数を\n識別します"
+msgstr "& [options] -d DIR\n\nC/C++ バックトレースを分析し、 重複ハッシュ、 バックトレース\nレーティングを生成、 問題の DIR ディレクトリ内のクラッシュ関数を\n識別します"
 
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
@@ -461,21 +461,21 @@ msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
-msgstr "& [-v] -d DIR\n\n問題の DIR ディレクトリー内のコアダンプの UUID を算出して保存\nします"
+msgstr "& [-v] -d DIR\n\n問題の DIR ディレクトリ内のコアダンプの UUID を算出して保存\nします"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
-msgstr "& [-vs] -d DIR\n\noops 問題の DIR ディレクトリーの UUID と DUPHASH を算出して\n保存します"
+msgstr "& [-vs] -d DIR\n\noops 問題の DIR ディレクトリの UUID と DUPHASH を算出して\n保存します"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:71
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Calculates and saves UUID and DUPHASH for xorg problem directory DIR"
-msgstr "& [-v] -d DIR\n\nxorg 問題の DIR ディレクトリーの UUID と DUPHASH を算出して保存します"
+msgstr "& [-v] -d DIR\n\nxorg 問題の DIR ディレクトリの UUID と DUPHASH を算出して保存します"
 
 #: ../src/plugins/abrt-action-analyze-xorg.c:111
 #, c-format
@@ -520,11 +520,11 @@ msgid ""
 "& [options] -d DIR\n"
 "\n"
 "Analyzes coredump in problem directory DIR, generates and saves backtrace"
-msgstr "& [options] -d DIR\n\n問題の DIR ディレクトリー内のコアダンプを分析し、 バックトレースを\n生成して保存します"
+msgstr "& [options] -d DIR\n\n問題の DIR ディレクトリ内のコアダンプを分析し、 バックトレースを\n生成して保存します"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 msgid "Additional debuginfo directories"
-msgstr "追加の debuginfo ディレクトリー"
+msgstr "追加の debuginfo ディレクトリ"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:56
 msgid "Kill gdb if it runs for more than NUM seconds"
@@ -613,19 +613,19 @@ msgid ""
 "\n"
 "Deletes problem dirs (-d) or files (-f) in DIRs until they are smaller than SIZE.\n"
 "FILEs are preserved (never deleted)."
-msgstr "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n\nDIR のサイズが SIZE 未満になるまで DIR 内の問題のディレクトリー \n(-d) またはファイル (-f) を削除します。 FILE については維持され\nます (削除しないようにします)。"
+msgstr "& [-v] [-d SIZE:DIR]... [-f SIZE:DIR]... [-p DIR] [FILE]...\n\nDIR のサイズが SIZE 未満になるまで DIR 内の問題のディレクトリ \n(-d) またはファイル (-f) を削除します。 FILE については維持され\nます (削除しないようにします)。"
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
-msgstr "問題のディレクトリーをすべて削除"
+msgstr "問題のディレクトリをすべて削除"
 
 #: ../src/plugins/abrt-action-trim-files.c:237
 msgid "Delete files inside this directory"
-msgstr "このディレクトリー内のファイル群を削除"
+msgstr "このディレクトリ内のファイル群を削除"
 
 #: ../src/plugins/abrt-action-trim-files.c:238
 msgid "Preserve this directory"
-msgstr "このディレクトリーを維持"
+msgstr "このディレクトリを維持"
 
 #: ../src/plugins/abrt-dedup-client.c:96
 #: ../src/plugins/abrt-retrace-client.c:1096
@@ -706,7 +706,7 @@ msgstr "見つけた oops を標準出力に表示します"
 #. 
 #: ../src/plugins/abrt-dump-oops.c:252
 msgid "Create new problem directory in DIR for every oops found"
-msgstr "検出される oops ごとに DIR に新しい問題のディレクトリーを作成します"
+msgstr "検出される oops ごとに DIR に新しい問題のディレクトリを作成します"
 
 #: ../src/plugins/abrt-dump-oops.c:253 ../src/plugins/abrt-dump-xorg.c:241
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
@@ -714,7 +714,7 @@ msgstr "-d DumpLocation と同じです、 DumpLocation は abrt.conf で指定�
 
 #: ../src/plugins/abrt-dump-oops.c:254 ../src/plugins/abrt-dump-xorg.c:242
 msgid "Make the problem directory world readable"
-msgstr "問題のディレクトリーを誰でも見れるようにします"
+msgstr "問題のディレクトリを誰でも見れるようにします"
 
 #: ../src/plugins/abrt-dump-oops.c:255 ../src/plugins/abrt-dump-xorg.c:243
 msgid "Print search string(s) to stdout and exit"
@@ -733,7 +733,7 @@ msgstr "発見したクラッシュデータを標準出力に表示する"
 
 #: ../src/plugins/abrt-dump-xorg.c:240
 msgid "Create problem directory in DIR for every crash found"
-msgstr "検出されるクラッシュごとに DIR に問題のディレクトリーを作成します"
+msgstr "検出されるクラッシュごとに DIR に問題のディレクトリを作成します"
 
 #: ../src/plugins/abrt-retrace-client.c:67
 msgid ""
@@ -807,7 +807,7 @@ msgstr "ファイル '%s' の統計ができません。"
 #: ../src/plugins/abrt-retrace-client.c:436
 #, c-format
 msgid "Unable to open dump directory '%s'."
-msgstr "ダンプディレクトリー「%s」を開けません"
+msgstr "ダンプディレクトリ「%s」を開けません"
 
 #: ../src/plugins/abrt-retrace-client.c:459
 #: ../src/plugins/abrt-retrace-client.c:475
@@ -891,7 +891,7 @@ msgstr "アップロードに成功しました。"
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
-msgstr "問題のディレクトリーが破損しており、再トレースサーバーではプロセスできません。"
+msgstr "問題のディレクトリが破損しており、再トレースサーバーではプロセスできません。"
 
 #: ../src/plugins/abrt-retrace-client.c:748
 msgid ""
@@ -959,7 +959,7 @@ msgstr "作成とバッチの操作用"
 
 #: ../src/plugins/abrt-retrace-client.c:1110
 msgid "read data from ABRT problem directory"
-msgstr "ABRT の問題ディレクトリーからデータを読み込みます"
+msgstr "ABRT の問題ディレクトリからデータを読み込みます"
 
 #: ../src/plugins/abrt-retrace-client.c:1112
 msgid "read data from coredump"
@@ -971,7 +971,7 @@ msgstr "ポーリング処理の遅延"
 
 #: ../src/plugins/abrt-retrace-client.c:1116
 msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
-msgstr "(debug) /tmp 内のダンプディレクトリーから作成された一時アーカイブを削除しない"
+msgstr "(debug) /tmp 内のダンプディレクトリから作成された一時アーカイブを削除しない"
 
 #: ../src/plugins/abrt-retrace-client.c:1118
 msgid "For status, backtrace, and log operations"
@@ -994,7 +994,7 @@ msgstr "abrt-retrace-client <operation> [options]\n操作: create/status/backtra
 #: ../src/plugins/abrt-retrace-client.c:1172
 #: ../src/plugins/abrt-retrace-client.c:1178
 msgid "Either problem directory or coredump is needed."
-msgstr "問題のディレクトリーまたはコアダンプのいずれかが必要です"
+msgstr "問題のディレクトリまたはコアダンプのいずれかが必要です"
 
 #: ../src/plugins/abrt-retrace-client.c:1184
 #: ../src/plugins/abrt-retrace-client.c:1192
@@ -1253,7 +1253,7 @@ msgstr "まだ報告されていない問題を表示する [DIR 内]"
 
 #: ../src/cli/abrt-cli.c:147
 msgid "Remove problem directory DIR"
-msgstr "問題の DIR ディレクトリーを削除する"
+msgstr "問題の DIR ディレクトリを削除する"
 
 #: ../src/cli/abrt-cli.c:148
 msgid "Analyze and report problem data in DIR"
@@ -1322,7 +1322,7 @@ msgstr "GConf 設定を収集"
 
 #: ../src/plugins/collect_GConf.xml.in.h:2
 msgid "Save configuration from application's GConf directory"
-msgstr "アプリケーションの GConf ディレクトリーから設定を保存します"
+msgstr "アプリケーションの GConf ディレクトリから設定を保存します"
 
 #: ../src/plugins/collect_GConf.xml.in.h:3
 msgid ""
@@ -1362,13 +1362,13 @@ msgstr "vim 設定ファイルを収集します"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:2
 msgid "Save .vimrc and .gvimrc from your home directory"
-msgstr "ホームディレクトリーの .vimrc と .gvimrc を保存します"
+msgstr "ホームディレクトリの .vimrc と .gvimrc を保存します"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
 "Checks if there are .vimrc and .gvimrc in your home directory and saves them"
 " as user_vimrc and user_gvimrc, respectively."
-msgstr "ホームディレクトリーに .vimrc と .gvimrc があるか確認して、 それぞれを user_vimrc と user_gvimrc として保存します"
+msgstr "ホームディレクトリに .vimrc と .gvimrc があるか確認して、 それぞれを user_vimrc と user_gvimrc として保存します"
 
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"
