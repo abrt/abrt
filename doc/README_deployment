@@ -1,0 +1,31 @@
+Install publican.
+Version 3.0.0 was used by me via manual fetch from koji + yum localinstall.
+Docs are in /usr/share/doc/publican-doc-3.0.0/en-US/index.html
+if you opted to install publican-doc-3.0.0
+
+publican create --name deployment
+(creates "deployment" directory and some files in it)
+
+Copy Automatic_Bug_Reporting_Tool_ABRT.xml to deployment/en-US/
+Copy abrt-*.png to deployment/en-US/images/
+(took these files from RHEL6 Deployment Guide)
+
+Add
+	<xi:include href="Automatic_Bug_Reporting_Tool_ABRT.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+to deployment/en-US/deployment.xml file.
+(You may want to remove some auto-generated files there?)
+
+publican build --langs en-US --formats html-single
+(must be in the "deployment" dir (one with "publican.cfg" file))
+DTD Validation failed:
+Automatic_Bug_Reporting_Tool_ABRT.xml:180: validity error : IDREF attribute linkend references an unknown ID "sec-Installing"
+Automatic_Bug_Reporting_Tool_ABRT.xml:1513: validity error : IDREF attribute linkend references an unknown ID "sec-Installing"
+Automatic_Bug_Reporting_Tool_ABRT.xml:1601: validity error : IDREF attribute linkend references an unknown ID "s1-FTP"
+Automatic_Bug_Reporting_Tool_ABRT.xml:1601: validity error : IDREF attribute linkend references an unknown ID "s2-ssh-clients-scp"
+Automatic_Bug_Reporting_Tool_ABRT.xml:198: validity error : IDREF attribute linkend references an unknown ID "s2-services-chkconfig"
+Automatic_Bug_Reporting_Tool_ABRT.xml:1450: validity error : IDREF attribute linkend references an unknown ID "ch-kdump"
+(^^^^ need to work around these. I replaced offending <>s with []'s...)
+
+firefox deployment/tmp/en-US/html-single/index.html
+
+tmp/* stuff seems to be temporary and ok to nuke
