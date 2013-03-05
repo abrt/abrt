@@ -13,7 +13,7 @@ log1()
 # $2 a default value
 try_parse_number()
 {
-    if grep -q "^[0-9][0-9]*$" < "$1" && test 0 -eq $(wc -l < $1); then
+    if test -f $1 && grep -q "^[0-9][0-9]*$" < "$1" && test 0 -eq $(wc -l < $1); then
         cat -- "$1"
     else
         log1 "Not a number in file '$1'"
