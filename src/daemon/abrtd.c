@@ -972,8 +972,14 @@ int main(int argc, char** argv)
         perror_msg("inotify_add_watch failed on '%s'", g_settings_dump_location);
         goto init_error;
     }
+    /* ...and upload dir */
     if (g_settings_sWatchCrashdumpArchiveDir)
     {
+        if (strcmp(g_settings_sWatchCrashdumpArchiveDir, g_settings_dump_location) == 0)
+        {
+            error_msg("%s and %s can't be the same", "DumpLocation", "WatchCrashdumpArchiveDir");
+            goto init_error;
+        }
         s_upload_watch = inotify_add_watch(inotify_fd, g_settings_sWatchCrashdumpArchiveDir, IN_CLOSE_WRITE|IN_MOVED_TO);
         if (s_upload_watch < 0)
         {
@@ -981,6 +987,7 @@ int main(int argc, char** argv)
             goto init_error;
         }
     }
+
     VERB1 log("Adding inotify watch to glib main loop");
     /* Without nonblocking mode, users observed abrtd blocking
      * on inotify read forever. Must set fd to non-blocking:
