@@ -22,5 +22,5 @@ grep -o 'src="[A-Za-z0-9/._-]*"' index.html \
 		printf "%s" "s^$src^src=\"data:image/$ext;base64,"
 		base64 <"$name" | tr -d $'\n'
 		echo '"^g'
-	} sed -f - -i index1.html
+	} | sed -f - -i index1.html
 done
