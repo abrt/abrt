@@ -33,8 +33,10 @@
 static void scan_dirs_and_add_to_dirlist(void);
 
 
-static const char help_uri[] = "http://docs.redhat.com/docs/en-US/"
-    "Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/";
+static const char help_uri[] =
+//Was broken link: http://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/
+"https://access.redhat.com/knowledge/docs/en-US/Red_Hat_Enterprise_Linux/6/html-single/Deployment_Guide/index.html#ch-abrt";
+
 
 static GtkListStore *s_dumps_list_store;
 static GtkListStore *s_reported_dumps_list_store;
