@@ -1,0 +1,1625 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "<application>ABRT</application>-2.x.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="ch-abrt">
+  <title>Automatic Bug Reporting Tool (<application>ABRT</application>)</title>
+    <para>
+      The <application>Automatic Bug Reporting Tool</application>, commonly abbreviated as <application>ABRT</application>, consists of the <systemitem class="daemon">abrtd</systemitem> daemon and a number of system services and utilities to process, analyze, and report detected problems. The daemon runs silently in the background most of the time, and springs into action when an application crashes or a kernel oops is detected. The daemon then collects the relevant problem data such as a core file if there is one, the crashing application's command line parameters, and other data of forensic utility. For a brief overview of the most important ABRT components, see <xref linkend="tabl-abrt" />.
+    </para>
+    <important>
+      <title>Migration to <application>ABRT</application> version 2.0</title>
+      <para>
+        For Red Hat Enterprise Linux 6.2, the Automatic Bug Reporting Tool has been upgraded to version 2.0. The <application>ABRT</application> 2-series brings major improvements to automatic bug detection and reporting.
+      </para>
+      <!-- msvoboda: Differencies between ABRT 1-series and ABRT 2-series cannot be added to Release Notes because the amount of changes is too large
+      <para>For more information on the major differences between the <application>ABRT</application> 1-series and <application>ABRT</application> 2-series, refer to the <citetitle>Red Hat Enterprise Linux 6.2 Release Notes</citetitle>.</para>-->
+      <!--msvoboda: The ABRT Migration section will be added on RHEL 6.2 GA 
+      <para>For more information on the major differences between the <application>ABRT</application> 1-series and <application>ABRT</application> 2-series, as well as easy migration instructions, refer to <xref linkend="sect-migration_to_abrt2"/>
+      </para>-->
+    </important>
+    <table id="tabl-abrt">
+      <title>Basic ABRT components</title>
+      <tgroup cols="3">
+        <colspec colname="component" colnum="1" colwidth="20*" />
+        <colspec colname="package" colnum="2" colwidth="30*" />
+        <colspec colname="description" colnum="3" colwidth="50*" />
+        <thead>
+          <row>
+            <entry>Component</entry>
+            <entry>Package</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>
+              <systemitem class="daemon">abrtd</systemitem>
+            </entry>
+            <entry>
+              <package>abrt</package>
+            </entry>
+            <entry>
+              The <application>ABRT</application> daemon which runs under the root user as a background service.
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <command>abrt-applet</command>
+            </entry>
+            <entry>
+              <package>abrt-gui</package>
+            </entry>
+            <entry>
+              The program that receives messages from <systemitem class="daemon">abrtd</systemitem> and informs you whenever a new problem occurs.
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <command>abrt-gui</command>
+            </entry>
+            <entry>
+              <package>abrt-gui</package>
+            </entry>
+            <entry>
+              The GUI application that shows collected problem data and allows you to further process it.
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <command>abrt-cli</command>
+            </entry>
+            <entry>
+              <package>abrt-cli</package>
+            </entry>
+            <entry>
+              The command line interface that provides similar functionality to the GUI.
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <systemitem class="service">abrt-ccpp</systemitem>
+            </entry>
+            <entry>
+              <package>abrt-addon-ccpp</package>
+            </entry>
+            <entry>
+              The <application>ABRT</application> service that provides the C/C++ problems analyzer.
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <systemitem class="service">abrt-oops</systemitem>
+            </entry>
+            <entry>
+              <package>abrt-addon-kerneloops</package>
+            </entry>
+            <entry>
+              The <application>ABRT</application> service that provides the kernel oopses analyzer.
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <systemitem class="service">abrt-vmcore</systemitem>
+            </entry>
+            <entry>
+              <package>abrt-addon-vmcore</package>
+            </entry>
+            <entry>
+              The <application>ABRT</application> service that provides the kernel panic analyzer and reporter.
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para>
+      <application>ABRT</application> currently supports detection of crashes in applications written in the C/C++ and Python languages, as well as kernel oopses. With Red Hat Enterprise Linux 6.3, <application>ABRT</application> can also detect kernel panics if the additional <package>abrt-addon-vmcore</package> package is installed and the <systemitem class="service">kdump</systemitem> crash dumping mechanism is enabled and configured on the system accordingly.
+    </para>
+    <para>
+      <application>ABRT</application> is capable of reporting problems to a remote issue tracker. Reporting can be configured to happen automatically whenever an issue is detected, or problem data can be stored locally, reviewed, reported, and deleted manually by a user. The reporting tools can send problem data to a Bugzilla database, a Red Hat Technical Support (RHTSupport) site, upload it using <systemitem class="protocol">FTP</systemitem>/<systemitem class="protocol">SCP</systemitem>, email it, or write it to a file.
+    </para>
+    <para>
+      The part of <application>ABRT</application> which handles already-existing problem data (as opposed to, for example, creation of new problem data) has been factored out into a separate project, <application>libreport</application>. The <application>libreport</application> library provides a generic mechanism for analyzing and reporting problems, and it is used by applications other than <application>ABRT</application>. However, <application>ABRT</application> and <application>libreport</application> operation and configuration is closely integrated. They are therefore discussed as one in this document.
+    </para>
+    <para>
+      Whenever a problem is detected, <application>ABRT</application> compares it with all existing problem data and determines whether that same problem has been recorded. If it has been, the existing problem data is updated and the most recent (duplicate) problem is not recorded again. If this problem is not recognized by <application>ABRT</application>, a <emphasis
+        role="bold">problem data directory</emphasis> is created. A problem data directory typically consists of files such as: <filename>analyzer</filename>, <filename>architecture</filename>, <filename>coredump</filename>, <filename>cmdline</filename>, <filename>executable</filename>, <filename>kernel</filename>, <filename>os_release</filename>, <filename>reason</filename>, <filename>time</filename> and <filename>uid</filename>.
+    </para>
+    <para>
+      Other files, such as <filename>backtrace</filename>, can be created during analysis depending on which analyzer method is used and its configuration settings. Each of these files holds specific information about the system and the problem itself. For example, the <filename>kernel</filename> file records the version of the crashed kernel.
+    </para>
+    <para>
+      After the problem directory is created and problem data gathered, you can further process, analyze and report the problem using either the <application>ABRT</application> GUI, or the <application>abrt-cli</application> utility for the command line. For more information about these tools, refer to <xref linkend="sect-abrt-gui"/> and <xref linkend="sect-abrt-cli"/> respectively.
+    </para>
+    <note>
+      <title>The report utility is no longer supported</title>
+      <para>
+        If you do not use <application>ABRT</application> to further analyze and report the detected problems but instead you report problems using a legacy problem reporting tool, <application>report</application>, note that you can no longer file new bugs. The <application>report</application> utility can now only be used to attach new content to the already existing bugs in the RHTSupport or Bugzilla database. Use the following command to do so:
+      </para>
+      <synopsis>
+        <command>report <optional>-v</optional> <option>--target</option> <replaceable>target</replaceable> <option>--ticket</option> <replaceable>ID</replaceable> <replaceable>file</replaceable></command>
+      </synopsis>
+      <para>
+        …where <replaceable>target</replaceable> is either <emphasis role="bold">strata</emphasis> for reporting to RHTSupport or <emphasis role="bold">bugzilla</emphasis> for reporting to Bugzilla. <replaceable>ID</replaceable> stands for number identifying an existing problem case in the respective database, and <replaceable>file</replaceable> is a file containing information to be added to the problem case.
+      </para>
+      <para>
+        If you want to report new problems and you do not wish to use <application>abrt-cli</application>, you can now use the <application>report-cli</application> utility instead of <application>report</application>. Issue the following command to let <application>report-cli</application> to guide you through the problem reporting process:
+      </para>
+      <synopsis>
+        <command>report-cli <option>-r</option> <replaceable>dump_directory</replaceable></command>
+      </synopsis>
+      <para>
+        …where <replaceable>dump_directory</replaceable> is a problem data directory created by <application>ABRT</application> or some other application using <systemitem class="library">libreport</systemitem>. For more information on <application>report-cli</application>, refer to <command>man report-cli</command>.
+      </para>
+    </note>
+  <section id="sect-abrt-installation">
+    <title>Installing <application>ABRT</application> and Starting its Services</title>
+    <para>
+      As the first step in order to use <application>ABRT</application>, you should ensure that the <package>abrt-desktop</package> package is installed on your system by running the following command as the root user:
+    </para>
+    <screen>~]# <command>yum install abrt-desktop</command></screen>
+    <para>
+      With <package>abrt-desktop</package> installed, you will be able to use <application>ABRT</application> only in its graphical interface. If you intend to use <application>ABRT</application> on the command line, install the <package>abrt-cli</package> package:
+    </para>
+        <screen>~]# <command>yum install abrt-cli</command></screen>
+    <para>
+      Refer to [xref linkend="sec-Installing"/] for more information on how to install packages with the <application>Yum</application> package manager.
+    </para>
+    <para>
+      Your next step should be to verify that <systemitem class="daemon">abrtd</systemitem> is running. The daemon is typically configured to start up at boot time. You can use the following command as root to verify its current status:
+    </para>
+    <screen>~]#&#160;<command>service abrtd status</command>
+abrtd (pid 1535) is running...</screen>
+    <para>
+      If the <command>service</command> command returns the <computeroutput>abrt is stopped</computeroutput> message, the daemon is not running. It can be started for the current session by entering this command:
+    </para>
+    <screen>~]#&#160;<command>service abrtd start</command>
+Starting abrt daemon:                                      [  OK  ]</screen>
+    <para>
+      Similarly, you can follow the same steps to check and start up the <systemitem class="service">abrt-ccpp</systemitem> service if you want <application>ABRT</application> to catch C/C++ crashes. To set <application>ABRT</application> to detect kernel oopses, use the same steps for the <systemitem class="service">abrt-oops</systemitem> service. Note that this service cannot catch kernel oopses which cause the system to fail, to become unresponsive or to reboot immediately. To be able to detect such kernel oopses with <application>ABRT</application>, you need to install the <systemitem class="service">abrt-vmcore</systemitem> service. If you require this functionality, refer to <xref linkend="sect-abrt-configuration-kernel_panic_detection"/> for more information.
+    </para>
+    <para>
+      When installing <application>ABRT</application> packages, all respective ABRT services are automatically enabled for <literal>runlevels 3 and 5</literal>. You can disable or enable any ABRT service for the desired runlevels using the <command>chkconfig</command> utility. Refer to [xref linkend="s2-services-chkconfig"/] for more information.
+    </para>
+    <warning>
+    	<title>Installation of ABRT overwrites <systemitem>core_pattern</systemitem></title>
+    	<para>
+    	  Please note that installing <application>ABRT</application> packages overwrites the <filename>/proc/sys/kernel/core_pattern</filename> file which can contain a template used to name core dump files. The content of this file will be overwritten to:
+    	</para>
+    	<programlisting language="Bash">|/usr/libexec/abrt-hook-ccpp %s %c %p %u %g %t e</programlisting>
+    </warning>
+    <para>
+      Finally, if you run ABRT in a graphical desktop environment, you can verify that the <systemitem class="service">ABRT notification applet</systemitem> is running:
+    </para>
+    <screen>~]$ <command>ps -el | grep abrt-applet</command>
+0 S   500  2036  1824  0  80   0 - 61604 poll_s ?        00:00:00 abrt-applet</screen>
+    <para>
+      If the <application>ABRT</application> notification applet is not running, you can start it manually in your current desktop session by running the <systemitem class="service">abrt-applet</systemitem> program:
+    </para>
+    <screen>~]$ <command>abrt-applet &amp;</command>
+[1] 2261</screen>
+    <para>
+      The applet can be configured to start automatically when your graphical desktop session starts. You can ensure that the <application>ABRT</application> notification applet is added to the list of programs and selected to run at system startup by selecting the <menuchoice><guimenu>System</guimenu><guisubmenu>Preferences</guisubmenu><guimenuitem>Startup Applications</guimenuitem></menuchoice> menu in the top panel.
+    </para>
+    <figure id="fig-abrt-applet_setting">
+      <title>Setting <application>ABRT</application> notification applet to run automatically.</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata
+            fileref="images/abrt-applet_setting.png"
+            format="PNG"
+            scalefit="0" />
+        </imageobject>
+        <textobject>
+          <para>
+            How to set the <application>ABRT</application> notification applet to run automatically.
+          </para>
+        </textobject>
+      </mediaobject>
+    </figure>
+  </section>
+  <section id="sect-abrt-gui">
+    <title>Using the Graphical User Interface</title>
+    <para>
+      The <application>ABRT</application> daemon sends a broadcast D-Bus message whenever a problem report is created. If the <application>ABRT</application> notification applet is running, it catches this message and displays an orange alarm icon in the Notification Area. You can open the <application>ABRT GUI</application> application using this icon. As an alternative, you can display the <application>ABRT</application> GUI by selecting the 
+      <menuchoice>
+        <guimenu>Application</guimenu>
+        <guisubmenu>System Tools</guisubmenu>
+        <guimenuitem>Automatic Bug Reporting Tool</guimenuitem>
+      </menuchoice> menu item.
+    </para>
+    <para>
+      Alternatively, you can run the <application>ABRT</application> GUI from the command line as follows:
+    </para>
+    <screen>~]$ <command>abrt-gui &amp;</command></screen>
+    <para>
+      The <application>ABRT</application> GUI provides an easy and intuitive way of viewing, reporting and deleting of reported problems. The <application>ABRT</application> window displays a list of detected problems. Each problem entry consists of the name of the failing application, the reason why the application crashed, and the date of the last occurrence of the problem.
+    </para>
+    <figure id="fig-abrt-gui_main_screen">
+      <title>An example of running <application>ABRT</application> GUI.</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata
+            fileref="images/abrt-gui_main_screen.png"
+            format="PNG"
+            scalefit="0" />
+        </imageobject>
+        <textobject>
+          <para>ABRT displaying its list of crashed applications</para>
+        </textobject>
+      </mediaobject>
+    </figure>
+    <para>
+      If you double-click on a problem report line, you can access the detailed problem description and proceed with the process of determining how the problem should be analyzed, and where it should be reported.
+    </para>
+    <figure id="fig-abrt-gui_problem_description">
+      <title>A detailed problem data example</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata
+            fileref="images/abrt-gui_problem_description.png"
+            format="PNG"
+            scalefit="0" />
+        </imageobject>
+        <textobject>
+          <para>Viewing detailed problem data</para>
+        </textobject>
+      </mediaobject>
+    </figure>
+    <para>
+      You are first asked to provide additional information about the problem which occurred. You should provide detailed information on how the problem happened and what steps should be done in order to reproduce it. In the next steps, choose how the problem will be analyzed and generate a backtrace depending on your configuration. You can skip the analysis and backtrace-generation steps but remember that developers need as much information about the problem as possible. You can always modify the backtrace and remove any sensitive information you do not want to provide before you send the problem data out.
+    </para>
+    <figure id="fig-abrt-gui_select_analyzer">
+      <title>Selecting how to analyze the problem</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata
+            fileref="images/abrt-gui_select_analyzer.png"
+            format="PNG"
+            scalefit="0" />
+        </imageobject>
+        <textobject>
+          <para>Selecting how to analyze the problem.</para>
+        </textobject>
+      </mediaobject>
+    </figure>
+    <figure id="fig-abrt-gui_problem_analyzing">
+      <title>ABRT analyzing the problem</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata
+            fileref="images/abrt-gui_problem_analyzing.png"
+            format="PNG"
+            scalefit="0" />
+        </imageobject>
+        <textobject>
+          <para>ABRT analyzing the problem</para>
+        </textobject>
+      </mediaobject>
+    </figure>
+    <para>
+      Next, choose how you want to report the issue. If you are using Red Hat Enterprise Linux, Red Hat Customer Support is the preferred choice.
+    </para>
+    <figure id="fig-abrt-gui_select_reporter">
+      <title>Selecting a problem reporter</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata
+            fileref="images/abrt-gui_select_reporter.png"
+            format="PNG"
+            scalefit="0" />
+        </imageobject>
+        <textobject>
+          <para>Selecting a problem reporter.</para>
+        </textobject>
+      </mediaobject>
+    </figure>
+    <para>
+      If you choose to report to Red Hat Customer Support, and you have not configured this event yet, you will be warned that this event is not configured properly and you will be offered an option to do so.
+    </para>
+    <figure id="fig-abrt-gui_rhtsupport_warning">
+      <title>Warning - missing Red Hat Customer Support configuration</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata
+            fileref="images/abrt-gui_rhtsupport_warning.png"
+            format="PNG"
+            scalefit="0" />
+        </imageobject>
+        <textobject>
+          <para>Warning - missing Red Hat Customer Support configuration.</para>
+        </textobject>
+      </mediaobject>
+    </figure>
+    <para>
+      Here, you need to provide your Red Hat login information (Refer to <xref linkend="sect-abrt-configuration-event_configuration_in_gui"/> for more information on how to acquire it and how to set this event.), otherwise you will fail to report the problem.
+    </para>
+    <figure id="fig-abrt-gui_rhtsupport_configuration.png">
+      <title>Red Hat Customer Support configuration window</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata
+            fileref="images/abrt-gui_rhtsupport_configuration.png"
+            format="PNG"
+            scalefit="0" />
+        </imageobject>
+        <textobject>
+          <para>Red Hat Customer Support configuration window.</para>
+        </textobject>
+      </mediaobject>
+    </figure>
+    <para>
+      After you have chosen a reporting method and have it set up correctly, review the backtrace and confirm the data to be reported.
+    </para>
+    <figure id="fig-abrt-gui_backtrace_review">
+      <title>Reviewing the problem backtrace</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata
+            fileref="images/abrt-gui_backtrace_review.png"
+            format="PNG"
+            scalefit="0" />
+        </imageobject>
+        <textobject>
+          <para>Reviewing the problem backtrace.</para>
+        </textobject>
+      </mediaobject>
+    </figure>
+    <figure id="fig-abrt-gui_report_confirmation">
+      <title>Confirming the data to report</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata
+            fileref="images/abrt-gui_report_confirmation.png"
+            format="PNG"
+            scalefit="0" />
+        </imageobject>
+        <textobject>
+          <para>Confirming the data to report.</para>
+        </textobject>
+      </mediaobject>
+    </figure>
+    <para>
+      Finally, the problem data is sent to the chosen destination, and you can now decide whether to continue with reporting the problem using another available method or finish your work on this problem. If you have reported your problem to the Red Hat Customer Support database, a problem case is filed in the database. From now on, you will be informed about the problem resolution progress via email you provided during the process of reporting. You can also oversee the problem case using the URL that is provided to you by <application>ABRT</application> GUI when the problem case is created, or via emails received from Red Hat Support.
+    </para>
+    <figure id="fig-abrt-gui_rhtsupport_reporting">
+      <title>Problem is being reported to the Red Hat Customer Support database</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata
+            fileref="images/abrt-gui_rhtsupport_reporting.png"
+            format="PNG"
+            scalefit="0" />
+        </imageobject>
+        <textobject>
+          <para>Problem is being reported to the Red Hat Customer Support database.</para>
+        </textobject>
+      </mediaobject>
+    </figure>
+  </section>
+  <section id="sect-abrt-cli">
+    <title>Using the Command Line Interface</title>
+    <para>
+      Problem data saved by <systemitem class="daemon">abrtd</systemitem> can be viewed, reported, and deleted using the command line interface.
+    </para>
+    <para>
+      General usage of the <application>abrt-cli</application> tool can be described using the following syntax:
+    </para>
+    <synopsis>
+      <command>abrt-cli</command> <optional><option>--version</option></optional> <replaceable>command</replaceable> <optional><replaceable>args</replaceable></optional>
+    </synopsis>
+    <para>
+      …where <replaceable>args</replaceable> stands for a problem data directory and/or options modifying the commands, and <replaceable>command</replaceable> is one of the following sub-commands:
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <command>list</command> — lists problems and views the problem data.
+          </para>
+      </listitem>
+      <listitem>
+        <para>
+          <command>report</command> — analyzes and reports problems.
+          </para>
+      </listitem>
+      <listitem>
+        <para>
+          <command>rm</command> — removes unneeded problems.
+          </para>
+      </listitem>
+      <listitem>
+        <para>
+          <command>info</command> — provides information about a particular problem.
+          </para>
+      </listitem>
+    </itemizedlist>
+    <para>To display help on particular <command>abrt-cli</command> command use:</para>
+    <synopsis>
+      <command>abrt-cli <replaceable>command</replaceable>
+        <option>--help</option>
+      </command>
+    </synopsis>
+    <para>
+      The rest of the commands used with <application>abrt-cli</application> are described in the following sections.
+    </para>
+    <section id="sect-abrt-cli_viewing_problems">
+      <title>Viewing Problems</title>
+      <para>
+        To view detected problems, enter the <command>abrt-cli list</command> command:
+      </para>
+      <screen>~]#&#160;<command>abrt-cli list</command>
+Directory:      /var/spool/abrt/ccpp-2011-09-13-10:18:14-2895
+count:          2
+executable:     /usr/bin/gdb
+package:        gdb-7.2-48.el6
+time:           Tue 13 Sep 2011 10:18:14 AM CEST
+uid:            500
+
+Directory:      /var/spool/abrt/ccpp-2011-09-21-18:18:07-2841
+count:          1
+executable:     /bin/bash
+package:        bash-4.1.2-8.el6
+time:           Wed 21 Sep 2011 06:18:07 PM CEST
+uid:            500</screen>
+      <!--<para>Note that you can add one or more of the <option>- -full</option>, <option>- -detailed</option> or <option>- -verbose</option> flags to the <command>abrt-cli list</command> command to display more detailed data about the problem.</para>
+      <para>If you run <command>abrt-cli list</command> without any arguments, only crashes which have not yet been viewed are displayed.</para>
+      <para>Here are descriptions of various fields in the output:</para>-->
+      <itemizedlist>
+        <listitem>
+          <para>
+            <computeroutput>Directory</computeroutput> — Shows the problem data directory that contains all information about the problem.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <computeroutput>count</computeroutput> — Shows how many times this particular problem occurred.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <computeroutput>executable</computeroutput> — Indicates which binary or executable script crashed.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <computeroutput>package</computeroutput> — Shows the name of the package that contains the program that caused the problem.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <computeroutput>time</computeroutput> — Shows the date and time of the last occurrence of the problem.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <computeroutput>uid</computeroutput> — Shows the ID of the user which ran the program that crashed.
+          </para>
+        </listitem>
+      </itemizedlist>
+      <para>
+        The following table shows options available with the <command>abrt-cli list</command> command. All options are mutually inclusive so you can combine them according to your need. The command output will be the most comprehensive if you combine all options, and you will receive the least details if you use no additional options.
+      </para>
+      <table
+        id="tab-abrt-cli_list">
+        <title>The <command>abrt-cli list</command> command options</title>
+        <tgroup
+          cols="2">
+          <colspec
+            colname="command"
+            colnum="1"
+            colwidth="30*"/>
+          <colspec
+            colname="argument"
+            colnum="2"
+            colwidth="70*"/>
+          <thead>
+            <row>
+              <entry>
+                Option
+              </entry>
+              <entry>
+                Description
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+
+              </entry>
+              <entry>
+                With no additional option, the <command>abrt-cli list</command> command displays only basic information for problems that have not been reported yet.
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <option>-d</option>, <option>--detailed</option>
+              </entry>
+              <entry>
+                Displays all stored information about problems listed, including a <filename>backtrace</filename> if it has already been generated.
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <option>-f</option>, <option>--full</option>
+              </entry>
+              <entry>
+                Displays basic information for all problems including the already-reported ones.
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <option>-v</option>, <option>--verbose</option>
+              </entry>
+              <entry>
+                Provides additional information on its actions.
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para>
+        If you want to view information just about one particular problem, you can use the command:
+      </para>
+        <synopsis>
+          <command>abrt-cli info</command> <replaceable>directory</replaceable>
+        </synopsis>
+      <para>
+        …where <replaceable>directory</replaceable> stands for the <emphasis
+          role="bold">problem data directory</emphasis> of the problem that is being viewed. The following table shows options available with the <command>abrt-cli info</command> command. All options are mutually inclusive so you can combine them according to your need. The command output will be the most comprehensive if you combine all options, and you will receive the least details if you use no additional options.
+      </para>
+      <table
+        id="tab-abrt-cli_info">
+        <title>The <command>abrt-cli info</command> command options</title>
+        <tgroup
+          cols="2">
+          <colspec
+            colname="command"
+            colnum="1"
+            colwidth="30*"/>
+          <colspec
+            colname="argument"
+            colnum="2"
+            colwidth="70*"/>
+          <thead>
+            <row>
+              <entry>
+                Option
+              </entry>
+              <entry>
+                Description
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+
+              </entry>
+              <entry>
+                With no additional option, the <command>abrt-cli info</command> command displays only basic information for the problem specified by the <systemitem>problem data directory</systemitem> argument.
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <option>-d</option>, <option>--detailed</option>
+              </entry>
+              <entry>
+                Displays all stored information for the problem specified by the <systemitem>problem data directory</systemitem> argument, including a <filename>backtrace</filename> if it has already been generated.
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <option>-v</option>, <option>--verbose</option>
+              </entry>
+              <entry>
+                <command>abrt-cli info</command> provides additional information on its actions.
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section id="sect-abrt-cli_reporting_problems">
+      <title>Reporting Problems</title>
+      <para>
+        To report a certain problem, use the command:</para>
+      <synopsis>
+        <command>abrt-cli report <replaceable>directory</replaceable></command>
+      </synopsis>
+      <para>...where <replaceable>directory</replaceable> stands for the <emphasis
+          role="bold">problem data directory</emphasis> of the problem that is being reported. For example:
+      </para>
+      <screen>~]$&#160;<command>abrt-cli report</command>&#160;<filename>/var/spool/abrt/ccpp-2011-09-13-10:18:14-2895</filename>
+How you would like to analyze the problem?
+1) Collect .xsession-errors
+2) Local GNU Debugger
+Select analyzer: _</screen>
+      <para>
+        <application>ABRT</application> prompts you to select an analyzer event for the problem that is being reported. After selecting an event, the problem is analyzed. This can take a considerable amount of time. When the problem report is ready, <command>abrt-cli</command> opens a text editor with the content of the report. You can see what is being reported, and you can fill in instructions on how to reproduce the crash and other comments. You should also check the backtrace, because the backtrace might be sent to a public server and viewed by anyone, depending on the problem reporter event settings.
+      </para>
+      <note>
+        <title>Selecting a preferred text editor</title>
+        <para>
+          You can choose which text editor is used to check the reports. <command>abrt-cli</command> uses the editor defined in the <envar>ABRT_EDITOR</envar> environment variable. If the variable is not defined, it checks the <envar>VISUAL</envar> and <envar>EDITOR</envar> variables. If none of these variables is set, <command>vi</command> is used. You can set the preferred editor in your <filename>.bashrc</filename> configuration file. For example, if you prefer GNU Emacs, add the following line to the file:
+      </para>
+        <screen>export <varname>VISUAL</varname>=<userinput>emacs</userinput></screen>
+      </note>
+      <para>
+        When you are done with the report, save your changes and close the editor. You will be asked which of the configured <application>ABRT</application> reporter events you want to use to send the report.
+      </para>
+      <screen>How would you like to report the problem?
+1) Logger
+2) Red Hat Customer Support
+Select reporter(s): _</screen>
+      <para>
+        After selecting a reporting method, you can proceed with reviewing data to be sent with the report. The following table shows options available with the <command>abrt-cli report</command> command.
+      </para>
+      <table id="tab-abrt-cli_report">
+        <title>The <command>abrt-cli report</command> command options</title>
+        <tgroup
+          cols="2">
+          <colspec
+            colname="command"
+            colnum="1"
+            colwidth="30*"/>
+          <colspec
+            colname="argument"
+            colnum="2"
+            colwidth="70*"/>
+          <thead>
+            <row>
+              <entry>
+                Option
+              </entry>
+              <entry>
+                Description
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+
+              </entry>
+              <entry>
+                With no additional option, the <command>abrt-cli report</command> command provides the usual output.
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <option>-v</option>, <option>--verbose</option>
+              </entry>
+              <entry>
+                <command>abrt-cli report</command> provides additional information on its actions.
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section id="sect-abrt-cli_deleting_problems">
+      <title>Deleting Problems</title>
+      <para>
+        If you are certain that you do not want to report a particular problem, you can delete it. To delete a problem so <application>ABRT</application> does not keep information about it, use the command:
+      </para>
+      <synopsis>
+        <command>abrt-cli rm <replaceable>directory</replaceable></command>
+      </synopsis>
+      <para>
+        ...where <replaceable>directory</replaceable> stands for the problem data directory of the problem being deleted. For example:
+      </para>
+      <screen>~]$ <command>abrt-cli rm</command> <filename>/var/spool/abrt/ccpp-2011-09-12-18:37:24-4413</filename>
+rm '/var/spool/abrt/ccpp-2011-09-12-18:37:24-4413'</screen>
+      <note>
+        <title>Deletion of a problem can lead to frequent ABRT notification</title>
+        <para>
+          Note that <application>ABRT</application> performs a detection of duplicate problems by comparing new problems with all locally saved problems. For a repeating crash, <application>ABRT</application> requires you to act upon it only once. However, if you delete the crash dump of that problem, the next time this specific problem occurs, <application>ABRT</application> will treat it as a new crash: <application>ABRT</application> will alert you about it, prompt you to fill in a description, and report it. To avoid having <application>ABRT</application> notifying you about a recurring problem, do not delete its problem data.
+        </para>
+      </note>
+      <para>
+        The following table shows options available with the <command>abrt-cli rm</command> command.
+      </para>
+      <table id="tab-abrt-cli_rm">
+        <title>The <command>abrt-cli rm</command> command options</title>
+        <tgroup
+          cols="2">
+          <colspec
+            colname="command"
+            colnum="1"
+            colwidth="30*"/>
+          <colspec
+            colname="argument"
+            colnum="2"
+            colwidth="70*"/>
+          <thead>
+            <row>
+              <entry>
+                Option
+              </entry>
+              <entry>
+                Description
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+
+              </entry>
+              <entry>
+                With no additional option, the <command>abrt-cli rm</command> command removes the specified <systemitem>problem data directory</systemitem> with all its contents.
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <option>-v</option>, <option>--verbose</option>
+              </entry>
+              <entry>
+                <command>abrt-cli rm</command> provides additional information on its actions.
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section id="sect-abrt-configuration">
+    <title>Configuring ABRT</title>
+    <para>
+      A <emphasis>problem</emphasis> life cycle is driven by <emphasis>events</emphasis> in <application>ABRT</application>. For example:
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para>
+          Event 1 — a problem data directory is created.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          Event 2 — problem data is analyzed.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          Event 3 — a problem is reported to Bugzilla.
+        </para>
+      </listitem>
+    </itemizedlist>
+    <para>
+      When a problem is detected and its defining data is stored, the problem is processed by running events on the problem's data directory. For more information on events and how to define one, refer to <xref linkend="sect-abrt-configuration-events"/>. Standard <application>ABRT</application> installation currently supports several default events that can be selected and used during problem reporting process. Refer to <xref linkend="sect-abrt-configuration-events-default_events"/> to see the list of these events.
+    </para>
+    <para>
+      Upon installation, <application>ABRT</application> and <application>libreport</application> place their respective configuration files into the several directories on a system:
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <filename>/etc/libreport/</filename> &mdash; contains the <filename>report_event.conf</filename> main configuration file. More information about this configuration file can be found in <xref linkend="sect-abrt-configuration-events"/>.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <filename>/etc/libreport/events/</filename> &mdash; holds files specifying the default setting of predefined events.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <filename>/etc/libreport/events.d/</filename> &mdash; keeps configuration files defining events.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <filename>/etc/libreport/plugins/</filename> &mdash; contains configuration files of programs that take part in events.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <filename>/etc/abrt/</filename> &mdash; holds <application>ABRT</application> specific configuration files used to modify the  behavior of <application>ABRT</application>'s services and programs. More information about certain specific configuration files can be found in <xref linkend="sect-abrt-configuration-abrt"/>.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <filename>/etc/abrt/plugins/</filename> &mdash; keeps configuration files used to override the default setting of <application>ABRT</application>'s services and programs. For more information on some specific configuration files refer to <xref linkend="sect-abrt-configuration-abrt"/>.
+        </para>
+      </listitem>
+    </itemizedlist>
+    <section id="sect-abrt-configuration-events">
+      <title>ABRT Events</title>
+      <para>
+        Each event is defined by one rule structure in a respective configuration file. The configuration files are typically stored in the <filename>/etc/libreport/events.d/</filename> directory. These configuration files are used by the main configuration file, <filename>/etc/libreport/report_event.conf</filename>.
+      </para>
+      <para>
+        The <filename>/etc/libreport/report_event.conf</filename> file consists of <emphasis>include
+        directives</emphasis> and <emphasis>rules</emphasis>. Rules are typically stored in other configuration files in the <filename>/etc/libreport/events.d/</filename> directory. In the standard installation, the <filename>/etc/libreport/report_event.conf</filename> file contains only one include directive:
+      </para>
+      <screen><code>include events.d/*.conf</code></screen>
+      <para>
+        If you would like to modify this file, please note that it respects shell metacharacters (*,$,?, etc.) and interprets relative paths relatively to its location.
+      </para>
+      <para>
+        Each <emphasis>rule</emphasis> starts with a line with a non-space leading character, all subsequent lines starting with the <systemitem>space</systemitem> character or the <systemitem>tab</systemitem> character are considered a part of this rule. Each <emphasis>rule</emphasis> consists of two parts, a <emphasis>condition</emphasis> part and a <emphasis>program</emphasis> part. The condition part contains conditions in one of the following forms:
+      </para>
+      <itemizedlist>
+        <listitem>
+          <para><replaceable>VAR</replaceable>=<replaceable>VAL</replaceable>,</para>
+        </listitem>
+        <listitem>
+          <para>
+            <replaceable>VAR</replaceable>!=<replaceable>VAL</replaceable>, or
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <replaceable>VAL</replaceable>~=<replaceable>REGEX</replaceable>
+          </para>
+        </listitem>
+      </itemizedlist>
+      <para>
+        …where:
+      </para>
+      <itemizedlist>
+        <listitem>
+          <para>
+            <replaceable>VAR</replaceable> is either the <constant>EVENT</constant> key word or a name of a problem data directory element (such as <filename>executable</filename>, <filename>package</filename>, <filename>hostname</filename>, etc.),
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <replaceable>VAL</replaceable> is either a name of an event or a problem data element, and
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <replaceable>REGEX</replaceable> is a regular expression.
+          </para>
+        </listitem>
+      </itemizedlist>
+      <para>
+        The program part consists of program names and shell interpretable code. If all conditions in the condition part are valid, the program part is run in the shell. The following is an <emphasis>event</emphasis> example:
+      </para>
+      <programlisting language="Bash">EVENT=post-create date &gt; /tmp/dt
+        echo $HOSTNAME `uname -r`</programlisting>
+      <para>
+        This event would overwrite the contents of the <filename>/tmp/dt</filename> file with the current date and time, and print the hostname of the machine and its kernel version on the standard output.
+      </para>
+      <para>
+        Here is an example of a yet more complex event which is actually one of the predefined events. It saves relevant lines from the <filename>~/.xsession-errors</filename> file to the problem report for any problem for which the <systemitem>abrt-ccpp</systemitem> services has been used to process that problem, and the crashed application has loaded any X11 libraries at the time of crash:
+      </para>
+      <programlisting language="Bash">EVENT=analyze_xsession_errors analyzer=CCpp dso_list~=.*/libX11.*
+        test -f ~/.xsession-errors || { echo "No ~/.xsession-errors"; exit 1; }
+        test -r ~/.xsession-errors || { echo "Can't read ~/.xsession-errors"; exit 1; }
+        executable=`cat executable` &amp;&amp;
+        base_executable=${executable##*/} &amp;&amp;
+        grep -F -e "$base_executable" ~/.xsession-errors | tail -999 &gt;xsession_errors &amp;&amp;
+        echo "Element 'xsession_errors' saved"</programlisting>
+      <para>
+        The set of possible events is not hard-set. System administrators can add events according to their need. Currently, the following event names are provided with standard <application>ABRT</application> and <application>libreport</application> installation:
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term>
+            <systemitem class="event">post-create</systemitem>
+          </term>
+          <listitem>
+            <para>
+              This event is run by <systemitem class="daemon">abrtd</systemitem> on newly created problem data directories. When the <systemitem class="event">post-create</systemitem> event is run, <systemitem class="daemon">abrtd</systemitem> checks whether the UUID identifier of the new problem data matches the UUID of any already existing problem directories. If such a problem directory exists, the new problem data is deleted.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <systemitem class="event">analyze_<replaceable>name_suffix</replaceable></systemitem>
+          </term>
+          <listitem>
+            <para>
+              …where <replaceable>name_suffix</replaceable> is the adjustable part of the event name. This event is used to process collected data. For example, the <systemitem class="event">analyze_LocalGDB</systemitem> runs the GNU Debugger (<application>GDB</application>) utility on a core dump of an application and produces a backtrace of a program. You can view the list of analyze events and choose from it using <application>abrt-gui</application>.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <systemitem class="event">collect_<replaceable>name_suffix</replaceable></systemitem>
+          </term>
+          <listitem>
+            <para>
+              …where <replaceable>name_suffix</replaceable> is the adjustable part of the event name. This event is used to collect additional information on a problem. You can view the list of collect events and choose from it using <application>abrt-gui</application>.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <systemitem class="event">report_<replaceable>name_suffix</replaceable></systemitem>
+          </term>
+          <listitem>
+            <para>
+              …where <replaceable>name_suffix</replaceable> is the adjustable part of the event name. This event is used to report a problem. You can view the list of report events and choose from it using <application>abrt-gui</application>.
+            </para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+      <para>
+        Additional information about events (such as their description, names and types of parameters which can be passed to them as environment variables, and other properties) is stored in the <filename>/etc/libreport/events/<replaceable>event_name</replaceable>.xml</filename> files. These files are used by <application>abrt-gui</application> and <application>abrt-cli</application> to make the user interface more friendly. Do not edit these files unless you want to modify the standard installation.
+      </para>
+    </section>
+    <section id="sect-abrt-configuration-events-default_events">
+      <title>Standard ABRT Installation Supported Events</title>
+      <para>
+        Standard <application>ABRT</application> installation currently provides a number of default analyzing, collecting and reporting events. Some of these events are also configurable using the <application>ABRT</application> GUI application (for more information on event configuration using <application>ABRT</application> GUI, refer to <xref linkend="sect-abrt-configuration-event_configuration_in_gui"/>). <application>ABRT</application> GUI only shows the event's unique part of the name which is more readable the user, instead of the complete event name. For example, the <systemitem class="event">analyze_xsession_errors</systemitem> event is shown as <systemitem>Collect&#160;.xsession-errors</systemitem> in <application>ABRT</application> GUI. The following is a list of default analyzing, collecting and reporting events provided by the standard installation of <application>ABRT</application>:
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term>
+            analyze_VMcore — Analyze VM core
+          </term>
+          <listitem>
+            <para>
+              Runs <application>GDB</application> (the GNU debugger) on problem data of an application and generates a <filename>backtrace</filename> of the kernel. It is defined in the <filename>/etc/libreport/events.d/vmcore_event.conf</filename> configuration file.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            analyze_LocalGDB — Local GNU Debugger
+          </term>
+          <listitem>
+            <para>
+              Runs <application>GDB</application> (the GNU debugger) on problem data of an application and generates a <filename>backtrace</filename> of a program. It is defined in the <filename>/etc/libreport/events.d/ccpp_event.conf</filename> configuration file.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            analyze_xsession_errors — Collect .xsession-errors
+          </term>
+          <listitem>
+            <para>
+              Saves relevant lines from the <filename>~/.xsession-errors</filename> file to the problem report. It is defined in the <filename>/etc/libreport/events.d/ccpp_event.conf</filename> configuration file.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            report_Logger — Logger
+          </term>
+          <listitem>
+            <para>
+              Creates a problem report and saves it to a specified local file. It is defined in the <filename>/etc/libreport/events.d/print_event.conf</filename> configuration file.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            report_RHTSupport — Red Hat Customer Support
+          </term>
+          <listitem>
+            <para>
+              Reports problems to the Red Hat Technical Support system. This possibility is intended for users of Red Hat Enterprise Linux. It is defined in the <filename>/etc/libreport/events.d/rhtsupport_event.conf</filename> configuration file.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            report_Mailx — Mailx
+          </term>
+          <listitem>
+            <para>
+              Sends a problem report via the <application>Mailx</application> utility to a specified email address. It is defined in the <filename>/etc/libreport/events.d/mailx_event.conf</filename> configuration file.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            report_Kerneloops — Kerneloops.org
+          </term>
+          <listitem>
+            <para>
+              Sends a kernel problem to the oops tracker. It is defined in the <filename>/etc/libreport/events.d/koops_event.conf</filename> configuration file.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            report_Uploader — Report uploader
+          </term>
+          <listitem>
+            <para>
+              Uploads a tarball (.tar.gz) archive with problem data to the chosen destination using the <systemitem class="protocol">FTP</systemitem> or the <systemitem class="protocol">SCP</systemitem> protocol. It is defined in the <filename>/etc/libreport/events.d/uploader_event.conf</filename> configuration file.
+            </para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </section>
+    <section id="sect-abrt-configuration-event_configuration_in_gui">
+      <title>Event Configuration in ABRT GUI</title>
+      <para>
+        Events can use parameters passed to them as environment variables (for example, the <systemitem class="event">report_Logger</systemitem> event accepts an output file name as a parameter). Using the respective <filename>/etc/libreport/events/<replaceable>event_name</replaceable>.xml</filename> file, <application>ABRT</application> GUI determines which parameters can be specified for a selected event and allows a user to set the values for these parameters. These values are saved by <application>ABRT</application> GUI and reused on subsequent invocations of these events.
+      </para>
+      <para>
+        Open the <guilabel>Event Configuration</guilabel> window by clicking <menuchoice><guimenu>Edit</guimenu><guisubmenu>Preferences</guisubmenu></menuchoice>. This window shows a list of all available events that can be selected during the reporting process. When you select one of the configurable events, you can click the <guibutton>Configure Event</guibutton> button and you will be able to configure settings for that event. If you change any of the events' parameters, they are saved in the <application>Gnome</application> keyring and will be used in the future GUI sessions.
+      </para>
+      <note>
+        <title>Do not store sensitive data in global configuration files</title>
+        <para>
+            All files in the <filename>/etc/libreport/</filename> directory hierarchy are world readable and are meant to be used as global settings. Thus, it is not advisable to store usernames, passwords or any other sensitive data in them. The per-user settings (set in the GUI application and readable by the owner of <varname>$HOME</varname> only) are stored in the <application>Gnome</application> keyring or can be stored in a text file in <filename>$HOME/.abrt/*.conf</filename> for use in <command>abrt-cli</command>.
+        </para>
+      </note>
+      <figure
+        id="fig-abrt-gui_event_configuration">
+        <title>The Event Configuration Window</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata
+              fileref="images/abrt-gui_event_configuration.png"
+              format="PNG"
+              scalefit="0" />
+          </imageobject>
+          <textobject>
+            <para>
+              The Event Configuration Window.
+            </para>
+          </textobject>
+        </mediaobject>
+      </figure>
+      <para>
+        The following is a list of all configuration options available for each predefined event that is configurable in the <application>ABRT</application> GUI application.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term>
+            Logger
+          </term>
+          <listitem>
+            <para>
+              In the <guilabel>Logger</guilabel> event configuration window, you can configure the following parameter:
+            </para>
+            <itemizedlist>
+              <listitem>
+                <para>
+                  <guilabel>Log file</guilabel> — Specifies a file into which the crash reports are saved (by default, set to <filename>/var/log/abrt.log</filename>).
+                </para>
+              </listitem>
+            </itemizedlist>
+            <para>
+              When the <guilabel>Append</guilabel> option is checked, the Logger event will append new crash reports to the log file specified in the <guilabel>Logger file</guilabel> option. When unchecked, the new crash report always replaces the previous one.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Red Hat Customer Support</term>
+          <listitem>
+            <para>
+              In the <guilabel>Red Hat Customer Support</guilabel> event configuration window, you can configure the following parameters:
+            </para>
+            <itemizedlist>
+              <listitem>
+                <para>
+                  <guilabel>RH Portal URL</guilabel> — Specifies the Red Hat Customer Support URL where crash dumps are sent (by default, set to <ulink url="https://api.access.redhat.com/rs"/>).
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  <guilabel>Username</guilabel> — User login which is used to log into Red Hat Customer Support and create a Red Hat Customer Support database entry for a reported crash. Use your <emphasis>Red Hat Login</emphasis> acquired by creating an account on <ulink url="http://www.redhat.com/">http://www.redhat.com/</ulink>, the Red Hat Customer Portal (<ulink url="https://access.redhat.com/home">https://access.redhat.com/home</ulink>) or the Red Hat Network (<ulink url="https://rhn.redhat.com/">https://rhn.redhat.com/</ulink>).
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  <guilabel>Password</guilabel> — Password used to log into Red Hat Customer Support (that is, password associated with your <emphasis>Red Hat Login</emphasis>)
+                </para>
+              </listitem>
+            </itemizedlist>
+            <para>
+              When the <guilabel>SSL verify</guilabel> option is checked, the <systemitem class="protocol">SSL</systemitem> protocol is used when sending the data over the network.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>MailX</term>
+          <listitem>
+            <para>
+              In the <guilabel>MailX</guilabel> event configuration window, you can configure the following parameters:
+            </para>
+            <itemizedlist>
+              <listitem>
+                <para>
+                  <guilabel>Subject</guilabel> — A string that appears in the <literal>Subject</literal> field of a problem report email sent by <application>Mailx</application> (by default, set to <literal>"[abrt] detected a crash"</literal>).
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  <guilabel>Sender</guilabel> — A string that appears in the <literal>From</literal> field of a problem report email.
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  <guilabel>Recipient</guilabel> — Email address of the recipient of a problem report email.
+                </para>
+              </listitem>
+            </itemizedlist>
+            <para>
+              When the <guilabel>Send Binary Data</guilabel> option is checked, the problem report email will also contain all binary files associated with the problem in an attachment. The core dump file is also sent as an attachment.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Kerneloops.org</term>
+          <listitem>
+            <para>
+              In the <guilabel>Kerneloops.org</guilabel> event configuration window, you can configure the following parameter:
+            </para>
+            <itemizedlist>
+              <listitem>
+                <para>
+                  <guilabel>Kerneloops URL</guilabel> — Specifies the URL where Kernel problems are reported to (by default, set to <ulink url="http://submit.kerneloops.org/submitoops.php"/>)
+                </para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Report Uploader</term>
+          <listitem>
+            <para>
+              In the <guilabel>Report Uploader</guilabel> event configuration widow, you can configure the following parameter:
+            </para>
+            <itemizedlist>
+              <listitem>
+                <para>
+                  <guilabel>URL</guilabel> — Specifies the URL where a tarball containing compressed problem data is uploaded using the <systemitem class="protocol">FTP</systemitem> or <systemitem class="protocol">SCP</systemitem> protocol (by default, set to <literal>ftp://localhost:/tmp/upload</literal>).
+                </para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </section>
+    <section id="sect-abrt-configuration-abrt">
+      <title>ABRT Specific Configuration</title>
+      <para>
+        Standard <application>ABRT</application> installation currently provides the following <application>ABRT</application> specific configuration files:
+      </para>
+      <itemizedlist>
+        <listitem>
+          <para>
+            <filename>/etc/abrt/abrt.conf</filename> &mdash; allows you to modify the behavior of the <systemitem class="daemon">abrtd</systemitem> service.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <filename>/etc/abrt/abrt-action-save-package-data.conf</filename> &mdash; allows you to modify the behavior of the <application>abrt-action-save-package-data</application> program.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <filename>/etc/abrt/plugins/CCpp.conf</filename> &mdash; allows you to modify the behavior of <application>ABRT</application>'s core catching hook.
+          </para>
+        </listitem>
+      </itemizedlist>
+      <para>
+        The following configuration directives are supported in the <filename>/etc/abrt/abrt.conf</filename> file:
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term>
+            WatchCrashdumpArchiveDir = /var/spool/abrt-upload
+          </term>
+          <listitem>
+            <para>
+              This directive is commented out by default. Enable it if you want <systemitem class="daemon">abrtd</systemitem> to auto-unpack crashdump tarball archives (.tar.gz) which are located in the specified directory. In the example above, it is the <filename>/var/spool/abrt-upload/</filename> directory. Whichever directory you specify in this directive, you must ensure that it exists and it is writable for <systemitem class="daemon">abrtd</systemitem>. The <application>ABRT</application> daemon will not create it automatically. If you change the default value of this option, be aware that in order to ensure proper functionality of <application>ABRT</application>, this directory <emphasis role="bold">must not</emphasis> be the same as the directory specified for the <option>DumpLocation</option> option.
+            </para>
+            <warning>
+              <title>Do not modify this option in SELinux</title>
+              <para>
+                Changing the location for crashdump archives will cause SELinux denials unless you reflect the change in respective SELinux rules first. See the <systemitem>abrt_selinux(8)</systemitem> manual page for more information on running <application>ABRT</application> in SELinux.
+              </para>
+              <para>
+                Remember that if you enable this option when using SELinux, you need to execute the following command in order to set the appropriate Boolean allowing <application>ABRT</application> to write into the public_content_rw_t domain:
+              </para>
+              <synopsis>
+                <command>setsebool -P abrt_anon_write 1</command>
+              </synopsis>
+            </warning>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            MaxCrashReportsSize = <replaceable>size_in_megabytes</replaceable>
+          </term>
+          <listitem>
+            <para>
+              This option sets the amount of storage space, in megabytes, used by <application>ABRT</application> to store all problem information from all users. The default setting is <constant>1000</constant>&#160;MB. Once the quota specified here has been met, <application>ABRT</application> will continue catching problems, and in order to make room for the new crash dumps, it will delete the oldest and largest ones.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            DumpLocation = /var/spool/abrt
+          </term>
+          <listitem>
+            <para>
+              This directive is commented out by default. It specifies the location where problem data directories are created and in which problem core dumps and all other problem data are stored. The default location is set to the <filename>/var/spool/abrt</filename> directory. Whichever directory you specify in this directive, you must ensure that it exists and it is writable for <systemitem class="daemon">abrtd</systemitem>. If you change the default value of this option, be aware that in order to ensure proper functionality of <application>ABRT</application>, this directory <emphasis role="bold">must not</emphasis> be the same as the directory specified for the <option>WatchCrashdumpArchiveDir</option> option.
+            </para>
+            <warning>
+              <title>Do not modify this option in SELinux</title>
+              <para>
+                Changing the dump location will cause SELinux denials unless you reflect the change in respective SELinux rules first. See the <systemitem>abrt_selinux(8)</systemitem> manual page for more information on running <application>ABRT</application> in SELinux.
+              </para>
+              <para>
+                Remember that if you enable this option when using SELinux, you need to execute the following command in order to set the appropriate Boolean allowing <application>ABRT</application> to write into the public_content_rw_t domain:
+              </para>
+              <synopsis>
+                <command>setsebool -P abrt_anon_write 1</command>
+              </synopsis>
+            </warning>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+      <para>
+        The following configuration directives are supported in the <filename>/etc/abrt/abrt-action-save-package-data.conf</filename> file:
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term>
+            OpenGPGCheck = <replaceable>yes/no</replaceable>
+          </term>
+          <listitem>
+            <para>
+              Setting the <computeroutput>OpenGPGCheck</computeroutput> directive to <userinput>yes</userinput> (the default setting) tells <application>ABRT</application> to <emphasis>only</emphasis> analyze and handle crashes in applications provided by packages which are signed by the GPG keys whose locations are listed in the <filename>/etc/abrt/gpg_keys</filename> file. Setting <parameter>OpenGPGCheck</parameter> to <userinput>no</userinput> tells <application>ABRT</application> to catch crashes in all programs.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            BlackList = nspluginwrapper, valgrind, strace, <optional><replaceable>more_packages</replaceable>
+            </optional>
+          </term>
+          <listitem>
+            <para>
+              Crashes in packages and binaries listed after the <parameter>BlackList</parameter> directive will not be handled by <application>ABRT</application>. If you want <application>ABRT</application> to ignore other packages and binaries, list them here separated by commas.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            ProcessUnpackaged = <replaceable>yes/no</replaceable>
+          </term>
+          <listitem>
+            <para>
+              This directive tells <application>ABRT</application> whether to process crashes in executables that do not belong to any package. The default setting is <emphasis>no</emphasis>.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            BlackListedPaths = <filename>/usr/share/doc/*</filename>, <filename>*/example*</filename>
+          </term>
+          <listitem>
+            <para>
+              Crashes in executables in these paths will be ignored by <application>ABRT</application>.
+            </para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+      <para>
+        The following configuration directives are supported in the <filename>/etc/abrt/plugins/CCpp.conf</filename> file:
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term>
+            MakeCompatCore = <replaceable>yes/no</replaceable>
+          </term>
+          <listitem>
+            <para>
+              This directive specifies whether <application>ABRT</application>'s core catching hook should create a core file, as it could be done if <application>ABRT</application> would not be installed. The core file is typically created in the current directory of the crashed program but only if the <command>ulimit -c</command> setting allows it. The directive is set to <emphasis>yes</emphasis> by default.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            SaveBinaryImage = <replaceable>yes/no</replaceable>
+          </term>
+          <listitem>
+            <para>
+              This directive specifies whether <application>ABRT</application>'s core catching hook should save a binary image to a core dump. It is useful when debugging crashes which occurred in binaries that were deleted. The default setting is <emphasis>no</emphasis>.
+            </para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </section>
+    <section id="sect-abrt-configuration-kernel_panic_detection">
+      <title>Configuring ABRT to Detect a Kernel Panic</title>
+      <para>
+        With Red Hat Enterprise Linux 6.3, <application>ABRT</application> can detect a kernel panic using the <systemitem class="service">abrt-vmcore</systemitem> service, which is provided by the <package>abrt-addon-vmcore</package> package. The service starts automatically on system boot and searches for a core dump file in the <filename>/var/crash/</filename> directory. If a core dump file is found, <systemitem class="service">abrt-vmcore</systemitem> creates the <systemitem>problem data directory</systemitem> in the <filename>/var/spool/abrt/</filename> directory and moves the core dump file to the newly created problem data directory. After the <filename>/var/crash/</filename> directory is searched through, the service is stopped until the next system boot.
+      </para>
+      <para>
+        To configure <application>ABRT</application> to detect a kernel panic, perform the following steps:
+      </para>
+      <orderedlist>
+        <listitem>
+          <para>
+            Ensure that the <systemitem class="service">kdump</systemitem> service is enabled on the system. Especially, the amount of memory that is reserved for the kdump kernel has to be set correctly. You can set it by using the <application>system-config-kdump</application> graphical tool, or by specifying the <option>crashkernel</option> parameter in the list of kernel options in the <filename>/etc/grub.conf</filename> configuration file. See [xref linkend="ch-kdump"/] for details on how to enable and configure <systemitem class="service">kdump</systemitem>.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Install the <package>abrt-addon-vmcore</package> package using the <application>Yum</application> package installer:
+          </para>
+          <screen>~]# <command>yum install abrt-addon-vmcore</command></screen>
+          <para>
+            This installs the <systemitem class="service">abrt-vmcore</systemitem> service with respective support and configuration files.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Reboot the system for the changes to take effect.
+          </para>
+        </listitem>
+      </orderedlist>
+      <para>
+        Unless <application>ABRT</application> is configured differently, problem data for any detected kernel panic is now stored in the <filename>/var/spool/abrt/</filename> directory and can be further processed by <application>ABRT</application> just as any other detected kernel oops.
+      </para>
+    </section>
+    <section id="sect-abrt-configuration-debuginfo">
+      <title>Automatic Downloads and Installation of Debuginfo Packages</title>
+      <para>
+        ABRT can be configured to automatically download and install packages needed for debugging of particular problems. This feature can be useful if you want to debug problems locally in your company environment. To enable automatic debuginfo downloads and installation, ensure that your system fulfills the following conditions:
+      </para>
+      <itemizedlist>
+        <listitem>
+          <para>
+            The <filename>/etc/libreport/events.d/ccpp_event.conf</filename> file contains the following analyzer event, which is present uncommented in default configuration:
+          </para>
+          <programlisting language="Bash">EVENT=analyze_LocalGDB analyzer=CCpp
+        abrt-action-analyze-core --core=coredump -o build_ids &amp;&amp;
+        # In RHEL we don't want to install anything by default
+        # and also this would fail, as the debuginfo repositories.
+        # are not available without root password rhbz#759443
+        # /usr/libexec/abrt-action-install-debuginfo-to-abrt-cache --size_mb=4096 &amp;&amp;
+        abrt-action-generate-backtrace &amp;&amp;
+        abrt-action-analyze-backtrace</programlisting>
+        </listitem>
+        <listitem>
+          <para>
+            The <filename>/etc/libreport/events.d/ccpp_event.conf</filename> file contains the following line, which allows ABRT to run binary to install debuginfo packages for the problems being analyzed. This line is, in order to avoid installations of unnecessary content, commented out by default so you have to remove the leading <literal>#</literal> character to enable it:
+          </para>
+          <programlisting language="Bash">/usr/libexec/abrt-action-install-debuginfo-to-abrt-cache --size_mb=4096 &amp;&amp;</programlisting>
+        </listitem>
+      </itemizedlist>
+        <itemizedlist>
+          <listitem>
+            <para>
+              The <package>gdb</package> package, which allows you to generate a backtrace during a problem analysis, is installed on your system. If needed, refer to [xref linkend="sec-Installing"/] for more information on how to install packages with the <application>Yum</application> package manager.
+            </para>
+          </listitem>
+        </itemizedlist>
+      <important>
+        <title>Root privileges required</title>
+        <para>
+          Note that debuginfo packages are installed using the <application>rhnplugin</application> which requires root privileges. Therefore, you have to run ABRT as <systemitem class="username">root</systemitem> to be able to install debuginfo packages.
+        </para>
+      </important>
+    </section>
+    <section id="sect-abrt-configuration-automatic_reporting">
+      <title>Configuring Automatic Reporting</title>
+      <para>
+        ABRT can be configured to report any detected issues or crashes automatically without any user interaction. This can be achieved by specifying an analyze-and-report rule as a <emphasis>post-create</emphasis> rule. For example, you can instruct ABRT to report Python crashes to Bugzilla immediately without any user interaction by enabling the rule and replacing the <command>EVENT=report_Bugzilla</command> condition with the <command>EVENT=post-create</command> condition in the <filename>/etc/libreport/events.d/python_event.conf</filename> file. The new rule will look like the follows:
+      </para>
+      <programlisting language="Bash">EVENT=post-create analyzer=Python
+        test -f component || abrt-action-save-package-data
+        reporter-bugzilla -c /etc/abrt/plugins/bugzilla.conf</programlisting>
+      <warning>
+        <title><systemitem class="event">post-create</systemitem> runs with root privileges</title>
+        <para>
+          Please note that the <systemitem class="event">post-create</systemitem> event is run by <systemitem class="daemon">abrtd</systemitem>, which usually runs with root privileges.
+        </para>
+      </warning>
+    </section>
+    <section id="sect-abrt-configuration-proxy_servers">
+      <title>Uploading and Reporting Using a Proxy Server</title>
+      <para>
+        The <application>reporter-bugzilla</application> and the <application>reporter-upload</application> tools respect the <envar>http_proxy</envar> and the <envar>ftp_proxy</envar> environment variables. When you use environment variables as a part of a reporting event, they inherit their values from the process which performs reporting, usually <application>abrt-gui</application> or <application>abrt-cli</application>. Therefore, you can specify <systemitem class="protocol">HTTP</systemitem> or <systemitem class="protocol">FTP</systemitem> proxy servers by using these variables in your working environment.
+      </para>
+      <para>
+        If you arrange these tools to be a part of the <systemitem class="event">post-create</systemitem> event, they will run as children of the <systemitem class="daemon">abrtd</systemitem> process. You should either adjust the environment of abrtd or modify the rules to set these variables. For example:
+      </para>
+      <programlisting language="Bash">EVENT=post-create analyzer=Python
+        test -f component || abrt-action-save-package-data
+        export http_proxy=http://proxy.server:8888/
+        reporter-bugzilla -c /etc/abrt/plugins/bugzilla.conf</programlisting>
+    </section>
+  </section>
+  <section id="sect-abrt-centralized_crash_collection">
+    <title>Configuring Centralized Crash Collection</title>
+    <para>
+      You can set up <application>ABRT</application> so that crash reports are collected from multiple systems and sent to a dedicated system for further processing. This is useful when an administrator does not want to log into hundreds of systems and manually check for crashes found by <application>ABRT</application>. In order to use this method, you need to install the <application>libreport-plugin-reportuploader</application> plug-in (<command>yum install libreport-plugin-reportuploader</command>). See the following sections on how to configure systems to use ABRT's centralized crash collection.
+    </para>
+    <section id="sect-abrt-centralized_crash_collection-server">
+      <title>Configuration Steps Required on a Dedicated System</title>
+      <para>
+        Complete the following steps on a dedicated (server) system:
+      </para>
+      <orderedlist>
+        <listitem>
+          <para>
+            Create a directory to which you want the crash reports to be uploaded to. Usually, <filename>/var/spool/abrt-upload/</filename> is used (the rest of the document assumes you are using this directory). Make sure this directory is writable by the abrt user.
+          </para>
+          <note>
+            <title>The abrt user and group</title>
+            <para>
+              When the <package>abrt-desktop</package> package is installed, it creates a new system user and a group, both named <systemitem class="username">abrt</systemitem>. This user is used by the <systemitem class="daemon">abrtd</systemitem> daemon, for example, as the owner:group of <filename>/var/spool/abrt/*</filename> directories.
+            </para>
+          </note>
+        </listitem>
+        <listitem>
+          <para>
+            In the <filename>/etc/abrt/abrt.conf</filename> configuration file, set the <varname>WatchCrashdumpArchiveDir</varname> directive to the following:
+          </para>
+          <screen>WatchCrashdumpArchiveDir = /var/spool/abrt-upload/</screen>
+        </listitem>
+        <listitem>
+          <para>
+            Choose your preferred upload mechanism; for example, <systemitem class="protocol">FTP</systemitem> or <systemitem class="protocol">SCP</systemitem>. For more information on how to configure <systemitem class="protocol">FTP</systemitem>, refer to [xref linkend="s1-FTP"/]. For more information on how to configure <systemitem class="protocol">SCP</systemitem>, refer to [xref linkend="s2-ssh-clients-scp"/].
+          </para>
+          <para>
+            It is advisable to check whether your upload method works. For example, if you use <systemitem class="protocol">FTP</systemitem>, upload a file using an interactive <systemitem class="protocol">FTP</systemitem> client:
+          </para>
+          <screen>~]$ <command>ftp</command>
+ftp> <command>open <replaceable>servername</replaceable></command>
+Name: <userinput><replaceable>username</replaceable></userinput>
+Password: <userinput><replaceable>password</replaceable></userinput>
+ftp> <command>cd /var/spool/abrt-upload</command>
+250 Operation successful
+ftp> <command>put <replaceable>testfile</replaceable></command>
+ftp> <command>quit</command></screen>
+          <para>
+            Check whether <filename><replaceable>testfile</replaceable></filename> appeared in the correct directory on the server system.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            The <varname>MaxCrashReportsSize</varname> directive (in the <filename>/etc/abrt/abrt.conf</filename> configuration file) needs to be set to a larger value if the expected volume of crash data is larger than the default <constant>1000</constant> MB.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Consider whether you would like to generate a backtrace of C/C++ crashes.
+          </para>
+          <para>
+            You can disable backtrace generation on the server if you do not wish to generate backtraces at all, or if you decide to create them locally on the machine where a problem occurred. In the standard ABRT installation, a backtrace of a C/C++ crash is generated using the following rule in the <filename>/etc/libreport/events.d/ccpp_events.conf</filename> configuration file:
+          </para>
+          <programlisting language="Bash">EVENT=analyze_LocalGDB analyzer=CCpp
+        abrt-action-analyze-core.py --core=coredump -o build_ids &amp;&amp;
+        abrt-action-install-debuginfo-to-abrt-cache --size_mb=4096 &amp;&amp;
+        abrt-action-generate-backtrace &amp;&amp;
+        abrt-action-analyze-backtrace</programlisting>
+          <para>
+            You can ensure that this rule is not applied for uploaded problem data by adding the <computeroutput>remote!=1</computeroutput> condition to the rule.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Decide whether you want to collect package information (the <option>package</option> and the <option>component</option> elements) in the problem data. Refer to <xref linkend="sect-abrt-centralized_crash_collection-saving_package_information"/> to find out whether you need to collect package information in your centralized crash collection configuration and how to configure it properly.
+          </para>
+        </listitem>
+      </orderedlist>
+    </section>
+    <section id="sect-abrt-centralized_crash_collection-client">
+      <title>Configuration Steps Required on a Client System</title>
+      <para>
+        Complete the following steps on every client system which will use the central management method:
+      </para>
+      <orderedlist>
+        <listitem>
+          <para>
+            If you do not wish to generate a backtrace, or if you decided to generate it on a server system, you need to delete or comment out the corresponding rules in the <filename>/etc/libreport/events.d/ccpp_events.conf</filename> file. Refer to <xref linkend="sect-abrt-centralized_crash_collection-server"/> for an example of such a example.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            If you decided to not collect package information on client machines, delete, comment out or modify the rule which runs abrt-action-save-package-data in the <filename>/etc/libreport/events.d/abrt_event.conf</filename> file. Refer to <xref linkend="sect-abrt-centralized_crash_collection-saving_package_information"/> to find out whether you need to collect package information in your centralized crash collection configuration and how to configure it properly.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Add a rule for uploading problem reports to the server system in the corresponding configuration file. For example, if you want to upload all problems automatically as soon as they are detected, you can use the following rule in the <filename>/etc/libreport/events.d/abrt_event.conf</filename> configuration file:
+          </para>
+          <programlisting language="Bash">EVENT=post-create
+        reporter-upload -u scp://<replaceable>user</replaceable>:<replaceable>password</replaceable>@<replaceable>server.name</replaceable><replaceable>/directory/</replaceable></programlisting>
+          <para>
+            Alternatively, you can use a similar rule that runs the reporter-upload program as the <systemitem class="event">report_<replaceable>SFX</replaceable></systemitem> event if you want to store problem data locally on clients and upload it later using ABRT GUI/CLI. The following is an example of such an event:
+          </para>
+          <programlisting language="Bash">EVENT=report_UploadToMyServer
+        reporter-upload -u scp://<replaceable>user</replaceable>:<replaceable>password</replaceable>@<replaceable>server.name</replaceable><replaceable>/directory/</replaceable></programlisting>
+        </listitem>
+      </orderedlist>
+    </section>
+    <section id="sect-abrt-centralized_crash_collection-saving_package_information">
+      <title>Saving Package Information</title>
+      <para>
+        In a single-machine <application>ABRT</application> installation, problems are usually reported to external bug databases such as RHTSupport or Bugzilla. Reporting to these bug databases usually requires knowledge about the component and package in which the problem occurred. The <systemitem class="event">post-create</systemitem> event runs the <application>abrt-action-save-package-data</application> tool (among other steps) in order to provide this information in the standard <application>ABRT</application> installation.
+      </para>
+      <para>
+        If you are setting up a centralized crash collection system, your requirements may be significantly different. Depending on your needs, you have two options:
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term>Internal analysis of problems</term>
+          <listitem>
+            <para>
+              After collecting problem data, you do not need to collect package information if you plan to analyze problems in-house, without reporting them to any external bug databases. You might be also interested in collecting crashes that occur in programs written by your organization or third-party applications installed on your system. If such a program is a part of an RPM package, then on <emphasis>client systems</emphasis> and a <emphasis>dedicated crash collecting system</emphasis>, you can only add the respective GPG key to the <filename>/etc/abrt/gpg_keys</filename> file or set the following line in the <filename>/etc/abrt/abrt-action-save-package-data.conf</filename> file:
+            </para>
+            <screen>OpenGPGCheck = no</screen>
+            <para>
+              If the program does not belong to any RPM package, take the following steps on both, <emphasis>client systems</emphasis> and a <emphasis>dedicated crash collecting system</emphasis>:
+            </para>
+            <itemizedlist>
+              <listitem>
+                <para>
+                  Remove the following rule from the <filename>/etc/libreport/events.d/abrt_event.conf</filename> file:
+                </para>
+                <programlisting language="Bash">EVENT=post-create component=
+        abrt-action-save-package-data</programlisting>
+              </listitem>
+              <listitem>
+                <para>
+                  Prevent deletion of problem data directories which do not correspond to any installed package by setting the following directive in the <filename>/etc/abrt/abrt-action-save-package-data.conf</filename> file:
+                </para>
+                <screen>ProcessUnpackaged = yes</screen>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Reporting to external bug database</term>
+          <listitem>
+            <para>
+              Alternatively, you may want to report crashes to RHTSupport or Bugzilla. In this case, you need to collect package information. Generally, client machines and dedicated crash collecting systems have non-identical sets of installed packages. Therefore, it may happen that problem data uploaded from a client does not correspond to any package installed on the dedicated crash collecting system. In the standard <application>ABRT</application> configuration, this will lead to deletion of problem data (ABRT will consider it to be a crash in an unpackaged executable). To prevent this from happening, it is necessary to modify <application>ABRT</application>'s configuration on the <emphasis>dedicated system</emphasis> in the following way:
+            </para>
+            <itemizedlist>
+              <listitem>
+                <para>
+                  Prevent inadvertent collection of package information for problem data uploaded from client machines, by adding the <code>remote!=1</code> condition in the <filename>/etc/libreport/events.d/abrt_event.conf</filename> file:
+                  <programlisting language="Bash">EVENT=post-create remote!=1 component=
+        abrt-action-save-package-data</programlisting>
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  Prevent deletion of problem data directories which do not correspond to any installed package by setting the following directive in <filename>/etc/abrt/abrt-action-save-package-data.conf</filename>:
+                </para>
+                <screen>ProcessUnpackaged = yes</screen>
+              </listitem>
+            </itemizedlist>
+            <note>
+              <title>Configuration required only for the dedicated system</title>
+              <para>
+                Note that in this case, no such modifications are necessary on client systems: they continue to collect package information, and continue to ignore crashes in unpackaged executables.
+              </para>
+            </note>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </section>
+    <section id="sect-abrt-crash_detection_test">
+      <title>Testing ABRT's Crash Detection</title>
+      <para>
+        After completing all the steps of the configuration process, the basic setup is finished. To test that this setup works properly use the <command>kill -s SEGV <replaceable>PID</replaceable>
+        </command> command to terminate a process on a client system. For example, start a <systemitem
+          class="process">sleep</systemitem> process and terminate it with the <command>kill</command> command in the following way:
+      </para>
+      <screen>~]$ <command>sleep 100 &amp;</command>
+[1] 2823
+~]$ <command>kill -s SEGV 2823</command></screen>
+      <para>
+        <application>ABRT</application> should detect a crash shortly after executing the <command>kill</command> command. Check that the crash was detected by <application>ABRT</application> on the client system (this can be checked by examining the appropriate syslog file, by running the <command>abrt-cli list --full</command> command, or by examining the crash dump created in the <filename>/var/spool/abrt</filename> directory), copied to the server system, unpacked on the server system and can be seen and acted upon using <command>abrt-cli</command> or <command>abrt-gui</command> on the server system.
+      </para>
+    </section>
+  </section>
+  <!--<section id="sect-migration_to_abrt2">
+    <title>Migrating ABRT 1.x to ABRT 2.x</title>
+    <para>
+      TBD
+    </para>
+  </section>-->
+</chapter>
