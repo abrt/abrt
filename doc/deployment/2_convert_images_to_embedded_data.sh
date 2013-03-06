@@ -28,3 +28,5 @@ grep -o 'src="[A-Za-z0-9/._-]*"' "$file" \
 		echo '"^g'
 	} | sed -f - -i Deployment_Guide.html
 done
+
+#TODO: embed css

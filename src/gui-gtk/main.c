@@ -43,8 +43,14 @@
 static void rescan_and_refresh(void);
 
 
-static const char help_uri[] = "http://docs.fedoraproject.org/en-US/"
-    "Fedora/14/html/Deployment_Guide/ch-abrt.html";
+static const char help_uri[] =
+// For released versions, should be similar to:
+// "http://docs.fedoraproject.org/en-US/Fedora/14/html/Deployment_Guide/ch-abrt.html";
+//
+// This doc (hopefully) matches the most recent code.
+// It is supposed to be kept updated (see doc/deployment/*)
+// and uploaded to fedorahosted.org:
+"https://fedorahosted.org/releases/a/b/abrt/Deployment_Guide.html";
 
 enum {
     OPT_v = 1 << 0,
