@@ -6,7 +6,8 @@ bin_SCRIPTS = \
     abrt-action-analyze-vmcore \
     abrt-action-list-dsos \
     abrt-action-perform-ccpp-analysis \
-    abrt-action-save-kernel-data
+    abrt-action-save-kernel-data \
+    abrt-action-analyze-ccpp-local
 
 bin_PROGRAMS = \
     abrt-watch-log \
@@ -83,7 +84,8 @@ EXTRA_DIST = \
     abrt-action-save-kernel-data \
     abrt-action-ureport \
     https-utils.h \
-    post_report.xml.in
+    post_report.xml.in \
+    abrt-action-analyze-ccpp-local
 
 confdir = $(CONF_DIR)
 dist_conf_DATA = \
