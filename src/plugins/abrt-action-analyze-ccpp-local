@@ -1,15 +1,28 @@
-#! /bin/sh
-if [ "`id -u`x" == "0x" ]; then
-    abrt-action-analyze-core --core=coredump | abrt-action-install-debuginfo --ids=- --size_mb=4096
-else
-    abrt-action-analyze-core --core=coredump | /usr/libexec/abrt-action-install-debuginfo-to-abrt-cache --ids=- --size_mb=4096
-fi;
+#!/bin/sh
 
-if [ "$?x" == "0x" ]; then
+INSTALL_DI=true
+for opt in "$@"; do
+    if [ x"$opt" = x"--without-di" ]; then
+        INSTALL_DI=false
+    fi;
+done
+if $INSTALL_DI; then
+    # On some systems debuginfo install needs root privileges.
+    # Running a suided-to-abrt wrapper would make
+    # debuginfo install fail even for root.
+    # Therefore, if we are root, we don't use the wrapper.
+    if [ x"`id -u`" = x"0" ]; then
+        abrt-action-analyze-core --core=coredump | abrt-action-install-debuginfo --ids=- --size_mb=4096
+    else
+        abrt-action-analyze-core --core=coredump | /usr/libexec/abrt-action-install-debuginfo-to-abrt-cache --ids=- --size_mb=4096
+    fi
+fi
+
+if [ $? = 0 ]; then
     abrt-action-generate-backtrace &&
     abrt-action-analyze-backtrace &&
     (
-        bug_id=$(reporter-bugzilla -h `cat duphash`) &&
+        bug_id=$(reporter-bugzilla -h "`cat duphash`") &&
         if test -n "$bug_id"; then
             abrt-bodhi -r -b $bug_id
         fi
