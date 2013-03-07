@@ -1,0 +1,17 @@
+#! /bin/sh
+if [ "`id -u`x" == "0x" ]; then
+    abrt-action-analyze-core --core=coredump | abrt-action-install-debuginfo --ids=- --size_mb=4096
+else
+    abrt-action-analyze-core --core=coredump | /usr/libexec/abrt-action-install-debuginfo-to-abrt-cache --ids=- --size_mb=4096
+fi;
+
+if [ "$?x" == "0x" ]; then
+    abrt-action-generate-backtrace &&
+    abrt-action-analyze-backtrace &&
+    (
+        bug_id=$(reporter-bugzilla -h `cat duphash`) &&
+        if test -n "$bug_id"; then
+            abrt-bodhi -r -b $bug_id
+        fi
+    )
+fi
