@@ -102,6 +102,8 @@ Group: System Environment/Libraries
 Requires: cpio, btparser
 Requires: gdb >= 7.0-3
 Requires: elfutils
+# abrt-action-perform-ccpp-analysis wants to run analyze_RetraceServer:
+Requires: %{name}-retrace-client
 Requires: %{name} = %{version}-%{release}
 
 %description addon-ccpp
