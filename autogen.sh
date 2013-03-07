@@ -1,6 +1,6 @@
-#! /bin/sh
+#!/bin/sh
 
-function print_help()
+print_help()
 {
 cat << EOH
 Prepares the source tree for configuration
@@ -16,12 +16,12 @@ Options:
 EOH
 }
 
-function build_depslist()
+build_depslist()
 {
     DEPS_LIST=`grep "^\(Build\)\?Requires:" *.spec.in | grep -v "%{name}" | tr -s " " | tr "," "\n" | cut -f2 -d " " | grep -v "^abrt" | sort -u | tr "\n" " "`
 }
 
-case $1 in
+case "$1" in
     "--help"|"-h")
             print_help
             exit 0
@@ -38,7 +38,7 @@ case $1 in
             fi
             exit 0
         ;;
-        *)
+    *)
             echo "Running gen-version"
             ./gen-version
 
