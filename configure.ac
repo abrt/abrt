@@ -61,8 +61,8 @@ AC_PATH_PROG([XMLTO], [xmlto], [no])
     [exit 1]
 [fi]
 
-AC_PATH_PROG([PYTHON], [python-config], [no])
-[if test "$XMLTO" = "no"]
+AC_PATH_PROG([PYTHON_CONFIG], [python-config], [no])
+[if test "$PYTHON_CONFIG" = "no"]
 [then]
     [echo "The python-config program was not found in the search path. Please ensure"]
     [echo "that it is installed and its directory is included in the search path."]
