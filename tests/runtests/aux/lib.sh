@@ -71,6 +71,11 @@ function generate_python_segfault() {
     will_python_sigsegv
 }
 
+function generate_python_exception() {
+    rlLog "Generate unhandled python exception"
+    will_python_raise
+}
+
 function load_abrt_conf() {
     ABRT_CONF_DUMP_LOCATION=`sed -n '/^DumpLocation[ \t]*=/ s/.*=[ \t]*//p' @CONF_DIR@/abrt.conf 2>/dev/null`
 
