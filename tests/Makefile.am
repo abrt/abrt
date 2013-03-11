@@ -18,7 +18,7 @@ package.m4: Makefile.in
              echo 'm4_define([AT_PACKAGE_URL],' && \
              echo '  [@PACKAGE_URL@])'; \
 	} >'package.m4'
-EXTRA_DIST = package.m4
+EXTRA_DIST = package.m4 ignored_problems_data
 
 ## ------------ ##
 ## Test suite.  ##
@@ -28,7 +28,8 @@ TESTSUITE_AT = \
   local.at \
   testsuite.at \
   pyhook.at \
-  koops-parser.at
+  koops-parser.at \
+  ignored_problems.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite
