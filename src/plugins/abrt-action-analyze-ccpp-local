@@ -1,11 +1,23 @@
 #!/bin/sh
 
 INSTALL_DI=true
+WITH_BODHI=true
+# if bz is set to false it also disables bodhi, because it needs it's result
+WITH_BUGZILLA=true
 for opt in "$@"; do
     if [ x"$opt" = x"--without-di" ]; then
         INSTALL_DI=false
-    fi;
+    fi
+
+    if [ x"$opt" = x"--without-bz" ]; then
+        WITH_BUGZILLA=false
+    fi
+
+    if [ x"$opt" = x"--without-bodhi" ]; then
+        WITH_BODHI=false
+    fi
 done
+
 if $INSTALL_DI; then
     # On some systems debuginfo install needs root privileges.
     # Running a suided-to-abrt wrapper would make
@@ -20,11 +32,15 @@ fi
 
 if [ $? = 0 ]; then
     abrt-action-generate-backtrace &&
-    abrt-action-analyze-backtrace &&
-    (
-        bug_id=$(reporter-bugzilla -h "`cat duphash`") &&
-        if test -n "$bug_id"; then
-            abrt-bodhi -r -b $bug_id
+    abrt-action-analyze-backtrace
+    if [ "$?" == "0" ]; then
+        if $WITH_BUGZILLA; then
+            bug_id=$(reporter-bugzilla -h "`cat duphash`")
+            if $WITH_BODHI; then
+                if test -n "$bug_id"; then
+                    abrt-bodhi -r -b $bug_id
+                fi
+            fi
         fi
-    )
+    fi
 fi
