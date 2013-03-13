@@ -3,6 +3,7 @@
 function check_prior_crashes() {
     rlAssert0 "No prior crashes recorded" $(abrt-cli list | wc -l)
     if [ ! "_$(abrt-cli list | wc -l)" == "_0" ]; then
+        abrt-cli list
         rlDie "Won't proceed"
     fi
 }
