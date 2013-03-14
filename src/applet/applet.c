@@ -68,6 +68,7 @@ static char **s_dirs;
 static GList *g_deferred_crash_queue;
 static guint g_deferred_timeout;
 static int g_signal_pipe[2];
+static ignored_problems_t *g_ignore_set;
 
 static bool is_autoreporting_enabled(void)
 {
@@ -576,7 +577,12 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
 
 static void action_ignore(NotifyNotification *notification, gchar *action, gpointer user_data)
 {
-    VERB3 log("Ignore a problem!");
+    problem_info_t *pi = (problem_info_t *)user_data;
+
+    VERB3 log("Ignoring problem '%s'", pi->problem_dir);
+
+    ignored_problems_add(g_ignore_set, pi->problem_dir);
+
     GError *err = NULL;
     notify_notification_close(notification, &err);
     if (err != NULL)
@@ -814,7 +820,8 @@ static void notify_problem_list(GList *problems, int flags)
     for (GList *iter = problems; iter; iter = g_list_next(iter))
     {
         problem_info_t *pi = iter->data;
-        if (is_shortened_reporting_enabled() && pi->was_announced)
+        if (ignored_problems_contains(g_ignore_set, pi->problem_dir)
+            || (is_shortened_reporting_enabled() && pi->was_announced))
         {   /* In case of shortened reporting, show the problem notification only once. */
             problem_info_free(pi);
             continue;
@@ -1420,6 +1427,8 @@ next:
         new_dirs = g_list_next(new_dirs);
     }
 
+    g_ignore_set = ignored_problems_new(concat_path_file(g_get_user_cache_dir(), "abrt/ignored_problems"));
+
     if (notify_list)
         show_problem_list_notification(notify_list, /* show icon and notify */ 0);
 
@@ -1457,6 +1466,8 @@ next:
     gtk_main();
 
     g_io_channel_unref(channel_id_signal);
+
+    ignored_problems_free(g_ignore_set);
 
     /* GTK3 doesn't return from main loop in case of termination due to desktop
      * session end. (GTK handles XSMP (X Session Management Protocol) messages
