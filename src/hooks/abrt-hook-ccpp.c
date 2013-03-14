@@ -803,6 +803,18 @@ int main(int argc, char** argv)
             char *java_log = xasprintf("/tmp/jvm-%lu/hs_error.log", (long)pid);
             int src_fd = open(java_log, O_RDONLY);
             free(java_log);
+
+            /* If we couldn't open the error log in /tmp directory we can try to
+             * read the log from the current directory. It may produce AVC, it
+             * may produce some error log but all these are expected.
+             */
+            if (src_fd < 0)
+            {
+                java_log = xasprintf("%s/hs_err_pid%lu.log", user_pwd, (long)pid);
+                src_fd = open(java_log, O_RDONLY);
+                free(java_log);
+            }
+
             if (src_fd >= 0)
             {
                 strcpy(path + path_len, "/hs_err.log");
