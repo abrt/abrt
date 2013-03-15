@@ -12,7 +12,8 @@ libabrt_la_SOURCES = \
     abrt_glib.c \
     migrate_dirs.c \
     check_recent_crash_file.c \
-    problem_api.c
+    problem_api.c \
+    ignored_problems.c
 
 libabrt_la_CPPFLAGS = \
     -I$(srcdir)/../include \

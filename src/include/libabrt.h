@@ -139,6 +139,62 @@ problem_data_t *get_problem_data_dbus(const char *problem_dir_path);
 */
 GList *get_problems_over_dbus(bool authorize);
 
+/**
+  @struct ignored_problems
+  @brief An opaque structure holding a list of ignored problems
+*/
+typedef struct ignored_problems ignored_problems_t;
+
+/**
+  @brief Initializes a new instance of ignored problems
+
+  @param file_path A malloced string holding a path to a file containing the list of ignored problems. Function takes ownership of the malloced memory, which will be freed in ignored_problems_free()
+  @see ignored_problems_free()
+  @return Fully initialized instance of ignored problems struct which must be destroyed by ignored_problems_free()
+*/
+ignored_problems_t *ignored_problems_new(char *file_path);
+
+/**
+  @brief Destroys an instance of ignored problems
+
+  This function never fails. Supports the common behaviour where it accepts
+  NULL pointers.
+
+  @param set A destroyed instance
+*/
+void ignored_problems_free(ignored_problems_t *set);
+
+/**
+  @brief Adds a problem to the ignored problems
+
+  This function never fails. All errors will be logged.
+
+  @param set An instance of ignored problems to which the problem will be added
+  @param problem_id An identifier of a problem which will be added to an ignored set
+*/
+void ignored_problems_add(ignored_problems_t *set, const char *problem_id);
+
+/**
+  @brief Removes a problem from the ignored problems
+
+  This function never fails. All errors will be logged.
+
+  @param set An instance of ignored problems from which the problem will be deleted
+  @param problem_id An identifier of a problem which will be removed from an ignored problems struct
+*/
+void ignored_problems_remove(ignored_problems_t *set, const char *problem_id);
+
+/**
+  @brief Checks if a problem is in the ignored problems
+
+  This function never fails. All errors will be logged. If any error occurs,
+  the function returns 0 value.
+
+  @param set An instance of ignored problems in which the problem will be searched
+  @param problem_id An identifier of a problem
+  @return Non 0 value if the problem is ignored; otherwise returns 0 value.
+*/
+bool ignored_problems_contains(ignored_problems_t *set, const char *problem_id);
 
 #ifdef __cplusplus
 }
