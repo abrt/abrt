@@ -12,21 +12,23 @@ int run_test(const struct test_struct *test)
 	FILE *fp = xfopen_ro(test->filename);
 	fprintf(stderr, "%s\t", test->filename);
 	char *line;
+	char *version;
 	while ((line = xmalloc_fgetline(fp)) != NULL)
 	{
-		char *version = koops_extract_version(line);
-		if (version && !strcmp(version, test->expected_results))
-		{
-			log("version %s", version);
-			free(version);
-			return 0;
-		}
-
+		version = koops_extract_version(line);
 		free(line);
+		if (version && !strcmp(version, test->expected_results))
+			break;
+		free(version);
+		version = NULL;
 	}
-	log("version was not found");
+	if (version)
+		log("version %s", version);
+	else
+		log("version was not found");
+	free(version);
 	fclose(fp);
-	return 1;
+	return version == NULL;
 }
 
 int main(void)
@@ -128,9 +130,11 @@ int run_test(const struct test_struct *test)
 
 	char hash_oops1[SHA1_RESULT_LEN*2 + 1];
 	koops_hash_str(hash_oops1, oops1);
+	free(oops1);
 
 	char hash_oops2[SHA1_RESULT_LEN*2 + 1];
 	koops_hash_str(hash_oops2, oops2);
+	free(oops2);
 
 	if (!strcmp(hash_oops1, hash_oops2))
 		return 0;
@@ -165,7 +169,9 @@ AT_TESTFUN([koops_remove_jiffies_timestamp],
 int run_test(const struct test_struct *test)
 {
 	char *oops_jiffies = fread_full(test->filename);
+	char *oops_jiffies_bck = oops_jiffies;
 	char *oops_no_jiffies = fread_full(test->expected_results);
+	char *oops_no_jiffies_bck = oops_no_jiffies;
 
 	if (strncmp(oops_no_jiffies, "abrt-dump-oops: Found oopses:",
 				strlen("abrt-dump-oops: Found oopses:")) == 0) {
@@ -183,12 +189,15 @@ int run_test(const struct test_struct *test)
 	GList *oops_list = NULL;
 	koops_extract_oopses(&oops_list, oops_jiffies, strlen(oops_jiffies));
 
-	if (oops_list && !strcmp((char *)oops_list->data, oops_no_jiffies))
-		return 0;
+	int result = !(oops_list && !strcmp((char *)oops_list->data, oops_no_jiffies));
+	if (result)
+		log("'%s' \n '%s'", (char *)oops_list->data, oops_no_jiffies);
 
-	log("'%s' \n '%s'", (char *)oops_list->data, oops_no_jiffies);
+	g_list_free_full(oops_list, free);
+	free(oops_no_jiffies_bck);
+	free(oops_jiffies_bck);
 
-	return 1;
+	return result;
 }
 
 int main(void)

@@ -38,6 +38,7 @@ check_DATA = atconfig atlocal $(TESTSUITE)
 DISTCLEANFILES = atconfig
 EXTRA_DIST += atlocal.in
 EXTRA_DIST += koops-test.h
+EXTRA_DIST += GList_append.supp
 
 atconfig: $(top_builddir)/config.status
 	(cd ${top_builddir} && ./config.status ${subdir}/atconfig)
@@ -49,7 +50,7 @@ check-local: $(check_DATA)
 maintainer-check-valgrind: $(check_DATA)
 	$(MAKE) check-local \
 		PRE_AT_CHECK='$(abs_top_builddir)/libtool --mode=execute $(VALGRIND)' \
-		VALGRIND_OPTS='--tool=memcheck --leak-check=full --show-reachable=yes --error-exitcode=1 -q'
+		VALGRIND_OPTS='--tool=memcheck --leak-check=full --show-reachable=yes --error-exitcode=1 --suppressions=$(abs_top_builddir)/tests/GList_append.supp -q'
 
 .PHONY: maintainer-check
 maintainer-check: maintainer-check-valgrind
