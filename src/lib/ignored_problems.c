@@ -50,7 +50,7 @@ static bool ignored_problems_eq(ignored_problems_t *set,
     const char *ignored = line;
     const char *ignored_end = strchrnul(ignored, IGN_COLUMN_DELIMITER);
     size_t sz = ignored_end - ignored;
-    if (sz == strlen(problem_id) && strncmp(problem_id, ignored, sz) == 0)
+    if (strncmp(problem_id, ignored, sz) == 0 && problem_id[sz] == '\0')
     {
         VERB1 log("Ignored id matches '%s'", problem_id);
         return true;
@@ -65,7 +65,7 @@ static bool ignored_problems_eq(ignored_problems_t *set,
     ignored = ignored_end + 1;
     ignored_end = strchrnul(ignored, IGN_COLUMN_DELIMITER);
     sz = ignored_end - ignored;
-    if (uuid != NULL && sz == strlen(uuid) && strncmp(uuid, ignored, sz) == 0)
+    if (uuid != NULL && strncmp(uuid, ignored, sz) == 0 && uuid[sz] == '\0')
     {
         VERB1 log("Ignored uuid '%s' matches uuid of problem '%s'", ignored, problem_id);
         return true;
@@ -80,7 +80,7 @@ static bool ignored_problems_eq(ignored_problems_t *set,
     ignored = ignored_end + 1;
     ignored_end = strchrnul(ignored, IGN_COLUMN_DELIMITER);
     sz = ignored_end - ignored;
-    if (duphash != NULL && sz == strlen(duphash) && strncmp(duphash, ignored, sz) == 0)
+    if (duphash != NULL && strncmp(duphash, ignored, sz) == 0 && duphash[sz] == '\0')
     {
         VERB1 log("Ignored duphash '%s' matches duphash of problem '%s'", ignored, problem_id);
         return true;
