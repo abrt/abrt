@@ -89,20 +89,41 @@ static bool ignored_problems_eq(ignored_problems_t *set,
     return false;
 }
 
+static bool ignored_problems_file_contains(ignored_problems_t *set,
+        const char *problem_id, const char *uuid, const char *duphash,
+        FILE **out_fp, const char *mode)
+{
+    bool found = false;
+    FILE *fp = fopen(set->ign_set_file_path, mode);
+    if (!fp)
+    {
+        VERB1 perror_msg("Can't open ignored problems '%s' in mode '%s'", set->ign_set_file_path, mode);
+        goto ret_contains_end;
+    }
+
+    unsigned line_num = 0;
+    while (!found)
+    {
+        char *line = xmalloc_fgetline(fp);
+        if (!line)
+            break;
+        ++line_num;
+        found = ignored_problems_eq(set, problem_id, uuid, duphash, line, line_num);
+        free(line);
+    }
+
+ ret_contains_end:
+    if (out_fp)
+        *out_fp = fp;
+    else if (fp)
+        fclose(fp);
+
+    return found;
+}
+
+
 void ignored_problems_add(ignored_problems_t *set, const char *problem_id)
 {
-#if 1
-    /* Hmm, do we really want to open/lock/read/unlock/close dd *twice*?
-     * (ignored_problems_contains does that once, then we do it again).
-     */
-    if (ignored_problems_contains(set, problem_id))
-    {
-        VERB1 log("Won't add problem '%s' to ignored problems:"
-                " it is already there", problem_id);
-        return;
-    }
-#endif
-
     struct dump_dir *dd = dd_opendir(problem_id, IGN_DD_OPEN_FLAGS);
     if (!dd)
     {
@@ -119,45 +140,43 @@ void ignored_problems_add(ignored_problems_t *set, const char *problem_id)
     char *duphash = dd_load_text_ext(dd, FILENAME_DUPHASH, IGN_DD_LOAD_TEXT_FLAGS);
     dd_close(dd);
 
-    FILE *fp = fopen(set->ign_set_file_path, "a");
-    if (!fp)
-    {
-        /* This is not a fatal problem. We are permissive because we don't want
-         * to scare users by strange error messages.
-         */
-        VERB1 perror_msg("Can't open ignored problems '%s'"
-                " for adding problem '%s'",
-                set->ign_set_file_path, problem_id);
-        goto ret_add_free_hashes;
-    }
-    /* We can add write error checks here.
-     * However, what exactly can we *do* if we detect it?
-     */
-    fprintf(fp, "%s;%s;%s\n", problem_id, (uuid ? uuid : ""),
-                              (duphash ? duphash : ""));
-    fclose(fp);
+    VERB1 log("Going to add problem '%s' to ignored problems", problem_id);
 
- ret_add_free_hashes:
+    FILE *fp;
+    if (!ignored_problems_file_contains(set, problem_id, uuid, duphash, &fp, "a+"))
+    {
+        if (fp)
+        {
+            /* We can add write error checks here.
+             * However, what exactly can we *do* if we detect it?
+             */
+            fprintf(fp, "%s;%s;%s\n", problem_id, (uuid ? uuid : ""),
+                                      (duphash ? duphash : ""));
+        }
+        else
+        {
+            /* This is not a fatal problem. We are permissive because we don't want
+             * to scare users by strange error messages.
+             */
+            VERB1 log("Can't add problem '%s' to ignored problems:"
+                      " can't open the list", problem_id);
+        }
+    }
+    else
+    {
+        VERB1 log("Won't add problem '%s' to ignored problems:"
+                " it is already there", problem_id);
+    }
+
+    if (fp)
+        fclose(fp);
+
     free(duphash);
     free(uuid);
 }
 
 void ignored_problems_remove(ignored_problems_t *set, const char *problem_id)
 {
-#if 1
-    /* Hmm, do we really want to open/lock/read/unlock/close dd *twice*?
-     * (ignored_problems_contains does that once, then we do it again).
-     */
-    if (!ignored_problems_contains(set, problem_id))
-    {
-        VERB1 log("Won't remove problem '%s' from ignored problems:"
-                  " it is already removed", problem_id);
-        return;
-    }
-#endif
-
-    VERB1 log("Removing problem '%s' from ignored problems", problem_id);
-
     char *uuid = NULL;
     char *duphash = NULL;
     struct dump_dir *dd = dd_opendir(problem_id, IGN_DD_OPEN_FLAGS);
@@ -179,16 +198,36 @@ void ignored_problems_remove(ignored_problems_t *set, const char *problem_id)
                 " can't open the problem", problem_id);
     }
 
-    FILE *orig_fp = fopen(set->ign_set_file_path, "r");
-    if (!orig_fp)
+    VERB1 log("Going to remove problem '%s' from ignored problems", problem_id);
+
+    FILE *orig_fp;
+    if (!ignored_problems_file_contains(set, problem_id, uuid, duphash, &orig_fp, "r"))
     {
-        /* This is not a fatal problem. We are permissive because we don't want
-         * to scare users by strange error messages.
-         */
-        VERB1 perror_msg("Can't open '%s' for removal of problem '%s'",
-                set->ign_set_file_path, problem_id);
+        if (orig_fp)
+        {
+            VERB1 log("Won't remove problem '%s' from ignored problems:"
+                      " it is already removed", problem_id);
+            /* Close orig_fp here becuase it looks like much simpler than
+             * exetendig the set of goto labels at the end of this function */
+            fclose(orig_fp);
+        }
+        else
+        {
+            /* This is not a fatal problem. We are permissive because we don't want
+             * to scare users by strange error messages.
+             */
+            VERB1 log("Can't remove problem '%s' from ignored problems:"
+                      " can't open the list", problem_id);
+        }
         goto ret_free_hashes;
     }
+
+    /* orig_fp must be valid here because if ignored_problems_file_contains()
+     * returned TRUE the function ensures that orig_fp is set to a valid FILE*.
+     *
+     * But the function moved the file position indicator.
+     */
+    rewind(orig_fp);
 
     char *new_tempfile_name = xasprintf("%s.XXXXXX", set->ign_set_file_path);
     int new_tempfile_fd = mkstemp(new_tempfile_name);
@@ -261,33 +300,12 @@ bool ignored_problems_contains(ignored_problems_t *set, const char *problem_id)
     char *duphash = dd_load_text_ext(dd, FILENAME_DUPHASH, IGN_DD_LOAD_TEXT_FLAGS);
     dd_close(dd);
 
-    bool found = false;
-    FILE *fp = fopen(set->ign_set_file_path, "r");
-    if (!fp)
-    {
-        /* This is not a fatal problem. We are permissive because we don't want
-         * to scare users by strange error messages.
-         */
-        VERB1 perror_msg("Can't open '%s' and determine"
-                   " whether problem '%s' belongs to it",
-                   set->ign_set_file_path, problem_id);
-        goto ret_contains_free_hashes;
-    }
+    VERB1 log("Going to check if problem '%s' is in ignored problems '%s'",
+            problem_id, set->ign_set_file_path);
 
-    unsigned line_num = 0;
-    while (!found)
-    {
-        char *line = xmalloc_fgetline(fp);
-        if (!line)
-            break;
-        ++line_num;
-        found = ignored_problems_eq(set, problem_id, uuid, duphash, line, line_num);
-        free(line);
-    }
+    bool found = ignored_problems_file_contains(set, problem_id, uuid, duphash,
+                    /* (FILE **) */NULL, "r");
 
-    fclose(fp);
-
- ret_contains_free_hashes:
     free(duphash);
     free(uuid);
 
