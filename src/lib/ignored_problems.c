@@ -128,7 +128,7 @@ void ignored_problems_add(ignored_problems_t *set, const char *problem_id)
         VERB1 perror_msg("Can't open ignored problems '%s'"
                 " for adding problem '%s'",
                 set->ign_set_file_path, problem_id);
-        return;
+        goto ret_add_free_hashes;
     }
     /* We can add write error checks here.
      * However, what exactly can we *do* if we detect it?
@@ -137,6 +137,7 @@ void ignored_problems_add(ignored_problems_t *set, const char *problem_id)
                               (duphash ? duphash : ""));
     fclose(fp);
 
+ ret_add_free_hashes:
     free(duphash);
     free(uuid);
 }
@@ -260,6 +261,7 @@ bool ignored_problems_contains(ignored_problems_t *set, const char *problem_id)
     char *duphash = dd_load_text_ext(dd, FILENAME_DUPHASH, IGN_DD_LOAD_TEXT_FLAGS);
     dd_close(dd);
 
+    bool found = false;
     FILE *fp = fopen(set->ign_set_file_path, "r");
     if (!fp)
     {
@@ -269,10 +271,9 @@ bool ignored_problems_contains(ignored_problems_t *set, const char *problem_id)
         VERB1 perror_msg("Can't open '%s' and determine"
                    " whether problem '%s' belongs to it",
                    set->ign_set_file_path, problem_id);
-        return false;
+        goto ret_contains_free_hashes;
     }
 
-    bool found = false;
     unsigned line_num = 0;
     while (!found)
     {
@@ -284,9 +285,11 @@ bool ignored_problems_contains(ignored_problems_t *set, const char *problem_id)
         free(line);
     }
 
+    fclose(fp);
+
+ ret_contains_free_hashes:
     free(duphash);
     free(uuid);
-    fclose(fp);
 
     return found;
 }
