@@ -25,7 +25,7 @@ int main(void)
 {
     {
         unlink(SET_PATH);
-        ignored_problems_t *set = ignored_problems_new(xstrdup(xstrdup(SET_PATH)));
+        ignored_problems_t *set = ignored_problems_new(xstrdup(SET_PATH));
 
         ignored_problems_add(set, "foo_blah");
         assert(0 == ignored_problems_contains(set, "foo_blah") || "The set contains invalid problem");
@@ -53,6 +53,8 @@ int main(void)
         ignored_problems_t *set = ignored_problems_new(xstrdup("/foo/blah"));
 
         ignored_problems_add(set, FIRST_DD_ID);
+        ignored_problems_remove(set, FIRST_DD_ID);
+        assert(0 == ignored_problems_contains(set, FIRST_DD_ID) || !"Invalid file contains a problem");
 
         ignored_problems_free(set);
     }
