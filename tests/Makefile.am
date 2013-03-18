@@ -45,6 +45,15 @@ atconfig: $(top_builddir)/config.status
 check-local: $(check_DATA)
 	$(SHELL) '$(TESTSUITE)' $(TESTSUITEFLAGS)
 
+.PHONY: maintainer-check-valgrind
+maintainer-check-valgrind: $(check_DATA)
+	$(MAKE) check-local \
+		PRE_AT_CHECK='$(abs_top_builddir)/libtool --mode=execute $(VALGRIND)' \
+		VALGRIND_OPTS='--tool=memcheck --leak-check=full --show-reachable=yes --error-exitcode=1 -q'
+
+.PHONY: maintainer-check
+maintainer-check: maintainer-check-valgrind
+
 installcheck-local: $(check_DATA)
 	$(SHELL) '$(TESTSUITE)' AUTOTEST_PATH='$(bindir)' $(TESTSUITEFLAGS)
 

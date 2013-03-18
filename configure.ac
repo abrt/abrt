@@ -170,6 +170,8 @@ AC_SUBST([O0CFLAGS], [`echo $CFLAGS   | sed 's/-O[[0-9]] *//' | sed 's/-Werror//
 
 AC_CONFIG_HEADERS([config.h])
 
+AC_CHECK_PROGS([VALGRIND], [valgrind])
+
 AC_CONFIG_FILES([
 	Makefile
 	abrt.pc

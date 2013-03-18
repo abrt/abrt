@@ -16,12 +16,11 @@ m4_define([AT_COMPILE],
 # Create a test named NAME by compiling and running C file with
 # contents SOURCE.  The stdout and stderr output of the C program is
 # ignored by Autotest.
-
 m4_define([AT_TESTFUN],
 [AT_SETUP([$1])
 AT_DATA([$1.c], [$2])
 AT_COMPILE([$1])
-AT_CHECK([./$1], 0, [ignore], [ignore])
+AT_CHECK([$PRE_AT_CHECK ./$1], 0, [ignore], [ignore])
 AT_CLEANUP])
 
 AT_INIT
