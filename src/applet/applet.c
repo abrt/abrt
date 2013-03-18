@@ -792,14 +792,14 @@ static gboolean server_has_persistence(void)
 
 static void notify_problem_list(GList *problems, int flags)
 {
-    bool persistence = false;
+    bool persistence_supported = false;
     if (notify_is_initted() || notify_init(_("Problem detected")))
-        persistence = server_has_persistence();
+        persistence_supported = server_has_persistence();
     else
         /* show icon and don't try to show notify if initialization of libnotify failed */
         flags |= SHOW_ICON_ONLY;
 
-    if (!persistence || flags & SHOW_ICON_ONLY)
+    if (!persistence_supported || flags & SHOW_ICON_ONLY)
     {
         /* Use a message of the last one */
         GList *last = g_list_last(problems);
@@ -820,19 +820,26 @@ static void notify_problem_list(GList *problems, int flags)
     for (GList *iter = problems; iter; iter = g_list_next(iter))
     {
         problem_info_t *pi = iter->data;
-        if (ignored_problems_contains(g_ignore_set, pi->problem_dir)
-            || (is_shortened_reporting_enabled() && pi->was_announced))
+        if (ignored_problems_contains(g_ignore_set, pi->problem_dir))
         {   /* In case of shortened reporting, show the problem notification only once. */
             problem_info_free(pi);
             continue;
         }
 
-        pi->was_announced = true;
+        /* Don't show persistent notification (let notification bubble expire
+         * and disappear in few seconds) with ShortenedReporting mode enabled
+         * and already announced problem. And of course show persistent bubble
+         * only if the persistence is supported.
+         */
+        const bool persistent_notification = (persistence_supported
+            && !(is_shortened_reporting_enabled() && pi->was_announced));
 
-        NotifyNotification *notification = new_warn_notification(persistence);
+        NotifyNotification *notification = new_warn_notification(persistent_notification);
         notify_notification_add_action(notification, "IGNORE", _("Ignore"),
                 NOTIFY_ACTION_CALLBACK(action_ignore),
                 pi, NULL);
+
+        pi->was_announced = true;
 
         if (pi->known)
         {   /* Problem has been 'autoreported' and is considered as KNOWN
