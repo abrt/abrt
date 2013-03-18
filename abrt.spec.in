@@ -219,7 +219,12 @@ Requires: gnome-abrt
 Requires: abrt-plugin-bodhi
 Requires: libreport-plugin-logger, libreport-plugin-bugzilla
 Requires: libreport-plugin-ureport
+%if 0%{?fedora}
 Requires: libreport-fedora
+%endif
+%if 0%{?rhel}
+Requires: libreport-rhel
+%endif
 #Requires: abrt-plugin-firefox
 Obsoletes: bug-buddy > 0.0.1
 Provides: bug-buddy
