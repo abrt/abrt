@@ -687,6 +687,83 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_defaultdocdir}/%{name}-python-%{version}/examples/
 
 %changelog
+* Tue Mar 19 2013 Jakub Filak <jfilak@redhat.com> 2.1.2-1
+- Show a confirmation notify bubble for reported problems in ShortenedReporting mode
+- Fix leaks in koops-parser unit tests
+- Add maintainer-check-valgrind make target
+- Add more unittests for ignored problem error paths
+- Get rid of 2 x dd_opendir() calls in ignored problems
+- ignored_problems: small optimization
+- Fix memory leaks in ignored problem helpers
+- added vmcore cli and gui events rhbz#921954
+- Add unit tests for ignored problem helpers
+- applet: mark problems as ignored and don't notify ignored problems
+- Introduce helpers for management of list of ignored problems
+- abrt-ccpp: try to read hs_err.log from crash's CWD
+- spec: added a-a-a-ccpp-local man page
+- created manpage for a-a-a-ccpp-local
+- testsuite: extend the logs with the list of prior crashes which caused test's failure
+- testsuite: add ureport validation test
+- added options to disable bugzilla and bodhi related to: rhbz#828673 rhbz#810309
+- abrt-action-perform-ccpp-analysis: Complain if analyze_RetraceServer can't run. Closes 619
+- autogen.sh: stop using bashisms
+- configure.ac: Fix wrong variable name
+- added option to bypass di install closes #618
+- abrt-gui: change URL to point to most recent doc
+- spec: added abrt-action-analyze-ccpp-local to ccpp-addon related to rhbz#759443
+- - analyze-ccpp don't suid to abrt when run as root, related rhbz#759443
+- Deployment Guide: expand helper scripts
+- convert_images_to_embedded_data.sh: trivial fix
+- Deployment Guide: add .xml files (hey were missed because of .gitignore)
+- abrtd: prohibit DumpLocation == WatchCrashdumpArchiveDir. Closes rhbz#854668
+- Deployment Guide: add convertor to single HTML file with embedded images
+- Small update of Deployment Guide machinery
+- a-a-ureport: don't fail on missing counter file
+- dbus doc: make xml interface parseable by qtdbusxml2cpp
+- README_deployment: extend a bit
+- Added doc/README_deployment and doc/deployment/*
+- update translation
+- add targets to makefile to ease the new release process
+- testsuite: append fatal failures to results file as well
+- a-a-ureport: allow to send ureport more than once
+- applet: remove confusing "Show" button
+- abrtd: Remove "Corrupted or bad directory" words from the message
+- testsuite: better handling of FATAL test failures
+- Whitespace fix. No code changes.
+- Improve log messages in cccpp hook and save-package-data. See rhbz#909617
+- testsuite: fail better
+- abrt-harvest-vmcore: don't copy dir from var/spool if copy already exists
+- add doxygen to BuildReqs
+- doc: fix doxygen complaints
+- doc: added doxygen support closes #525
+- abrt-python: fix makefiles
+- testsuite: added dont-blame-interpret test closes#609
+- don't blame interpreter, blame the running script #609
+- fix path in the collect_xsession_errors event
+- spec: fix systemd service removal in %preun
+- testsuite: fix upload path for rawhide vm
+- testsuite: add mac address list
+- applet: pass problem's id to the gui app
+- applet: don't parse dd's time on its own
+- testsuite: provide some uuids to avoid unwated duplicates detection
+- a-a-p-ccpp-analysis: use default run_event logging function
+- retrace-client: print dots instead of repeated status message
+- dbus: add more debugging logs
+- move abrt.pth to arch specific location rhbz#912540
+- testsuite: provide an uuid to avoid unwanted duplicate detection
+- testsuite: rename a test user to avoid colissions with previous test
+- abrt-retrace-client: improve error messages
+- dbus: add basics to a new problem
+- doc: install abrt-dbus documentation files to the correct places
+- doc: extend the documentation of DBus API
+- testsuite: add selinux-policy to DontMatchComponents list in bugzilla.conf
+- testsuite: update bugzilla responses
+- autogen: add function which installs dependencies (works on Fedora)
+- Make forking code paths more robust.
+- testsuite: clean metadata *before* reinstallation
+- testsuite: clean metadata before updating
+- add more logging to catch "stuck core-backtrace" problem; reduce gdb looping
+
 * Thu Feb 07 2013 Jakub Filak <jfilak@redhat.com> 2.1.1-1
 - ccpp_event: pass a list of build ids through pipe instead of file
 - rpm: add SETGID bit on a-a-i-d-i-t-a-cache executable
