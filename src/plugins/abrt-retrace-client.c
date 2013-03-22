@@ -324,6 +324,9 @@ static char *get_release_id(const char *rawrelease, const char *architecture)
     }
     char *release = NULL, *version = NULL, *result = NULL;
     parse_release_for_rhts(rawrelease, &release, &version);
+    char *space = strchr(version, ' ');
+    if (space)
+        *space = '\0';
 
     if (strcmp("Fedora", release) == 0)
         result = xasprintf("fedora-%s-%s", version, arch);
