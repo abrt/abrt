@@ -41,6 +41,7 @@
 /* Maximum number of simultaneously opened client connections. */
 #define MAX_CLIENT_COUNT  10
 
+#define IN_DUMP_LOCATION_FLAGS (IN_CREATE | IN_MOVED_TO | IN_DELETE_SELF | IN_MOVE_SELF)
 
 /* Daemon initializes, then sits in glib main loop, waiting for events.
  * Events can be:
@@ -490,6 +491,36 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
     /* Removing will also drop the last ref to this gio, closing/freeing it */
 }
 
+static void ensure_writable_dir(const char *dir, mode_t mode, const char *user)
+{
+    struct stat sb;
+
+    if (mkdir(dir, mode) != 0 && errno != EEXIST)
+        perror_msg_and_die("Can't create '%s'", dir);
+    if (stat(dir, &sb) != 0 || !S_ISDIR(sb.st_mode))
+        error_msg_and_die("'%s' is not a directory", dir);
+
+    struct passwd *pw = getpwnam(user);
+    if (!pw)
+        perror_msg_and_die("Can't find user '%s'", user);
+
+    if ((sb.st_uid != pw->pw_uid || sb.st_gid != pw->pw_gid) && lchown(dir, pw->pw_uid, pw->pw_gid) != 0)
+        perror_msg_and_die("Can't set owner %u:%u on '%s'", (unsigned int)pw->pw_uid, (unsigned int)pw->pw_gid, dir);
+    if ((sb.st_mode & 07777) != mode && chmod(dir, mode) != 0)
+        perror_msg_and_die("Can't set mode %o on '%s'", mode, dir);
+}
+
+static void sanitize_dump_dir_rights()
+{
+    /* We can't allow everyone to create dumps: otherwise users can flood
+     * us with thousands of bogus or malicious dumps */
+    /* 07000 bits are setuid, setgit, and sticky, and they must be unset */
+    /* 00777 bits are usual "rwxrwxrwx" access rights */
+    ensure_writable_dir(g_settings_dump_location, 0755, "abrt");
+    /* temp dir */
+    ensure_writable_dir(VAR_RUN"/abrt", 0755, "root");
+}
+
 /* Inotify handler */
 
 static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
@@ -591,6 +622,22 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 if (pid > 0)
                     increment_child_count();
             }
+            continue;
+        }
+
+        if (event->mask & IN_DELETE_SELF || event->mask & IN_MOVE_SELF)
+        {
+            /* HACK: we expect that we watch deletion only of 'g_settings_dump_location'
+             * but this handler is used for 'g_settings_sWatchCrashdumpArchiveDir' too
+             */
+            log("Recreating deleted dump location '%s'", g_settings_dump_location);
+            inotify_rm_watch(g_io_channel_unix_get_fd(gio), event->wd);
+            sanitize_dump_dir_rights();
+            if (inotify_add_watch(g_io_channel_unix_get_fd(gio), g_settings_dump_location, IN_DUMP_LOCATION_FLAGS) < 0)
+            {
+                perror_msg_and_die("inotify_add_watch failed on recreated '%s'", g_settings_dump_location);
+            }
+
             continue;
         }
 
@@ -810,36 +857,6 @@ static void start_syslog_logging()
     putenv((char*)"ABRT_SYSLOG=1");
 }
 
-static void ensure_writable_dir(const char *dir, mode_t mode, const char *user)
-{
-    struct stat sb;
-
-    if (mkdir(dir, mode) != 0 && errno != EEXIST)
-        perror_msg_and_die("Can't create '%s'", dir);
-    if (stat(dir, &sb) != 0 || !S_ISDIR(sb.st_mode))
-        error_msg_and_die("'%s' is not a directory", dir);
-
-    struct passwd *pw = getpwnam(user);
-    if (!pw)
-        perror_msg_and_die("Can't find user '%s'", user);
-
-    if ((sb.st_uid != pw->pw_uid || sb.st_gid != pw->pw_gid) && lchown(dir, pw->pw_uid, pw->pw_gid) != 0)
-        perror_msg_and_die("Can't set owner %u:%u on '%s'", (unsigned int)pw->pw_uid, (unsigned int)pw->pw_gid, dir);
-    if ((sb.st_mode & 07777) != mode && chmod(dir, mode) != 0)
-        perror_msg_and_die("Can't set mode %o on '%s'", mode, dir);
-}
-
-static void sanitize_dump_dir_rights()
-{
-    /* We can't allow everyone to create dumps: otherwise users can flood
-     * us with thousands of bogus or malicious dumps */
-    /* 07000 bits are setuid, setgit, and sticky, and they must be unset */
-    /* 00777 bits are usual "rwxrwxrwx" access rights */
-    ensure_writable_dir(g_settings_dump_location, 0755, "abrt");
-    /* temp dir */
-    ensure_writable_dir(VAR_RUN"/abrt", 0755, "root");
-}
-
 int main(int argc, char** argv)
 {
     /* I18n */
@@ -966,8 +983,9 @@ int main(int argc, char** argv)
         perror_msg_and_die("inotify_init failed");
     close_on_exec_on(inotify_fd);
 
-    /* Watching 'g_settings_dump_location' for new files... */
-    if (inotify_add_watch(inotify_fd, g_settings_dump_location, IN_CREATE | IN_MOVED_TO) < 0)
+    /* Watching 'g_settings_dump_location' for new files and delete self
+     * because hooks expects that the dump location exists if abrtd is runnig*/
+    if (inotify_add_watch(inotify_fd, g_settings_dump_location, IN_DUMP_LOCATION_FLAGS) < 0)
     {
         perror_msg("inotify_add_watch failed on '%s'", g_settings_dump_location);
         goto init_error;
