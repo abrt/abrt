@@ -49,11 +49,11 @@ rlJournalStart
         ./pyserve \
                 create_0hint \
                 create_1create \
-                dummy \
-                dummy \
-                dummy \
-                &> server_create &
+                create_2attach \
+                >server_create 2>&1 &
         sleep 1
+        # just in case. otherwise reporter asks "This problem was already reported, want to do it again?"
+        rm problem_dir/reported_to 2>/dev/null
         rlRun "reporter-rhtsupport -v -c rhtsupport.conf -d problem_dir/ &> client_create"
         kill %1
 
