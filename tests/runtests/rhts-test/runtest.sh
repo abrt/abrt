@@ -57,8 +57,9 @@ rlJournalStart
         rlRun "reporter-rhtsupport -v -c rhtsupport.conf -d problem_dir/ &> client_create"
         kill %1
 
-        #rlAssertGrep "http://localhost:12345/show_bug.cgi?id=1234567" client_create
-        #rm -f problem_dir/reported_to
+        rlAssertGrep "URL=http://127.0.0.1:12345/rs/cases/[0-9]*/attachments/.*" client_create
+        rlAssertGrep "RHTSupport:.* URL=http://127.0.0.1:12345/rs/cases/[0-9]*/attachments/.*" problem_dir/reported_to
+        rm -f problem_dir/reported_to
     rlPhaseEnd
 
     rlPhaseStartCleanup
