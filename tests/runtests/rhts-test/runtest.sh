@@ -54,11 +54,29 @@ rlJournalStart
         sleep 1
         # just in case. otherwise reporter asks "This problem was already reported, want to do it again?"
         rm problem_dir/reported_to 2>/dev/null
-        rlRun "reporter-rhtsupport -v -c rhtsupport.conf -d problem_dir/ &> client_create"
+        rlRun "reporter-rhtsupport -v -c rhtsupport.conf -d problem_dir/ >client_create 2>&1"
         kill %1
 
         rlAssertGrep "URL=http://127.0.0.1:12345/rs/cases/[0-9]*/attachments/.*" client_create
         rlAssertGrep "RHTSupport:.* URL=http://127.0.0.1:12345/rs/cases/[0-9]*/attachments/.*" problem_dir/reported_to
+        rm -f problem_dir/reported_to
+    rlPhaseEnd
+
+    # testing -tCASE_NO
+    rlPhaseStartTest "rhtsupport attach"
+        ./pyserve \
+                create_0hint \
+                create_2attach \
+                >server_create 2>&1 &
+        sleep 1
+        # just in case. otherwise reporter asks "This problem was already reported, want to do it again?"
+        rm problem_dir/reported_to 2>/dev/null
+        rlRun "strace -o/tmp/zzz -tt -s199 reporter-rhtsupport -v -c rhtsupport.conf -d problem_dir/ -t00809787 >client_create 2>&1"
+        kill %1
+
+        #-tCASE_NO does not do this:
+        #rlAssertGrep "URL=http://127.0.0.1:12345/rs/cases/[0-9]*/attachments/.*" client_create
+        #rlAssertGrep "RHTSupport:.* URL=http://127.0.0.1:12345/rs/cases/[0-9]*/attachments/.*" problem_dir/reported_to
         rm -f problem_dir/reported_to
     rlPhaseEnd
 
