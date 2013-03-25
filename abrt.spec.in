@@ -501,7 +501,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
 %config(noreplace) %{_sysconfdir}/libreport/events.d/abrt_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/smart_event.conf
-%config(noreplace) %{_sysconfdir}/libreport/events.d/smolt_event.conf
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/%{var_base_dir}/%{name}
 %dir %attr(0700, abrt, abrt) %{_localstatedir}/spool/%{name}-upload
 # abrtd runs as root
@@ -586,7 +585,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_sysconfdir}/libreport/events/analyze_CCpp.xml
 %{_sysconfdir}/libreport/events/analyze_LocalGDB.xml
 %{_sysconfdir}/libreport/events/collect_xsession_errors.xml
-%{_sysconfdir}/libreport/events/collect_Smolt.xml
 %{_sysconfdir}/libreport/events/collect_GConf.xml
 %{_sysconfdir}/libreport/events/collect_vimrc_user.xml
 %{_sysconfdir}/libreport/events/collect_vimrc_system.xml
