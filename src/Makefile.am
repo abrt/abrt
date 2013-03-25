@@ -1,1 +1,1 @@
-SUBDIRS = include lib hooks daemon applet gui-gtk plugins cli dbus python-problem
+SUBDIRS = include lib hooks daemon applet plugins cli dbus python-problem

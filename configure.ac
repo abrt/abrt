@@ -187,7 +187,6 @@ AC_CONFIG_FILES([
 	src/daemon/Makefile
 	src/hooks/Makefile
 	src/applet/Makefile
-	src/gui-gtk/Makefile
 	src/cli/Makefile
 	src/dbus/Makefile
 	src/plugins/abrt-action-install-debuginfo
