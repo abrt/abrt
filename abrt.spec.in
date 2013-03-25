@@ -535,7 +535,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files gui
 %defattr(-,root,root,-)
-%{_bindir}/abrt-gui
 %dir %{_datadir}/%{name}
 # all glade, gtkbuilder and py files for gui
 %{_datadir}/icons/hicolor/*/apps/*
