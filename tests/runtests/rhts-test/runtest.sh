@@ -71,7 +71,7 @@ rlJournalStart
         sleep 1
         # just in case. otherwise reporter asks "This problem was already reported, want to do it again?"
         rm problem_dir/reported_to 2>/dev/null
-        rlRun "strace -o/tmp/zzz -tt -s199 reporter-rhtsupport -v -c rhtsupport.conf -d problem_dir/ -t00809787 >client_create 2>&1"
+        rlRun "reporter-rhtsupport -v -c rhtsupport.conf -d problem_dir/ -t00809787 >client_create 2>&1"
         kill %1
 
         #-tCASE_NO does not do this:
