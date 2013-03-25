@@ -72,7 +72,6 @@ Property              Meaning                                                  E
 ``suspend_stats``     Copy of /sys/kernel/debug/suspend_stats                                                         Kerneloops
 ``reported_to``       If the problem was already reported, this item contains                                         Reported problems
                       URLs of the services where it was reported
-``smolt_data``        Smolt profile of the machine                                                                    Reported problems
 ``event_log``         ABRT event log                                                                                  Reported problems
 ``dmesg``             Copy of dmesg                                                                                   Kerneloops
 ===================== ======================================================== ====================================== ===============================

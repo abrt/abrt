@@ -34,15 +34,6 @@ while {1} {
     "Downloading" {
       send "N\r"
     }
-    # collectors
-    -re "\n (\[0-9\]).*?Smolt" {
-      puts "Got Smolt"
-      set smolt_opt $expect_out(1,string)
-      puts ">> $smolt_opt"
-    }
-    "Select collector" {
-      send "$smolt_opt\r"
-    }
     # reporters
     -re "\n (\[0-9\]).*?Bugzilla" {
       puts "Got Bugzilla"
