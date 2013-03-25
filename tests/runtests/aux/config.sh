@@ -50,5 +50,6 @@ export CLEAN_SPOOL_BEFORE_EACH_TEST=1
 # - misc
 export PACKAGES="abrt-desktop \
                  abrt-cli \
+                 abrt-devel \
                  libreport-plugin-reportuploader \
                  libreport-plugin-mailx"
