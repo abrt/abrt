@@ -15,9 +15,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include <btparser/backtrace.h>
-#include <btparser/frame.h>
-#include <btparser/location.h>
+#include "satyr-compat.h"
 #include "libabrt.h"
 
 static const char *dump_dir_name = ".";
@@ -83,10 +81,10 @@ int main(int argc, char **argv)
     }
 
     /* Compute backtrace hash */
-    struct btp_location location;
-    btp_location_init(&location);
+    struct sr_location location;
+    sr_location_init(&location);
     const char *backtrace_str_ptr = backtrace_str;
-    struct btp_backtrace *backtrace = btp_backtrace_parse(&backtrace_str_ptr, &location);
+    struct sr_gdb_stacktrace *backtrace = sr_gdb_stacktrace_parse(&backtrace_str_ptr, &location);
     free(backtrace_str);
 
     /* Store backtrace hash */
@@ -132,7 +130,7 @@ int main(int argc, char **argv)
     }
 
     /* Compute duplication hash. */
-    char *str_hash_core = btp_backtrace_get_duplication_hash(backtrace);
+    char *str_hash_core = sr_gdb_stacktrace_get_duplication_hash(backtrace);
     struct strbuf *str_hash = strbuf_new();
     strbuf_append_str(str_hash, component);
     strbuf_append_str(str_hash, str_hash_core);
@@ -146,7 +144,7 @@ int main(int argc, char **argv)
     free(str_hash_core);
 
     /* Compute the backtrace rating. */
-    float quality = btp_backtrace_quality_complex(backtrace);
+    float quality = sr_gdb_stacktrace_quality_complex(backtrace);
     const char *rating;
     if (quality < 0.6f)
         rating = "0";
@@ -161,7 +159,7 @@ int main(int argc, char **argv)
     dd_save_text(dd, FILENAME_RATING, rating);
 
     /* Get the function name from the crash frame. */
-    struct btp_frame *crash_frame = btp_backtrace_get_crash_frame(backtrace);
+    struct sr_gdb_frame *crash_frame = sr_gdb_stacktrace_get_crash_frame(backtrace);
     if (crash_frame)
     {
         if (crash_frame->function_name &&
@@ -169,9 +167,9 @@ int main(int argc, char **argv)
         {
             dd_save_text(dd, FILENAME_CRASH_FUNCTION, crash_frame->function_name);
         }
-        btp_frame_free(crash_frame);
+        sr_gdb_frame_free(crash_frame);
     }
-    btp_backtrace_free(backtrace);
+    sr_gdb_stacktrace_free(backtrace);
     dd_close(dd);
     free(component);
     return 0;

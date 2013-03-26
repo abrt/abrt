@@ -19,55 +19,39 @@
 
 #include "libabrt.h"
 #include <libreport/run_event.h>
-
-#include <btparser/frame.h>
-#include <btparser/thread.h>
-#include <btparser/normalize.h>
-#include <btparser/metrics.h>
-#include <btparser/core-backtrace.h>
-
-#define BACKTRACE_DUP_THRESHOLD 2
+#include "satyr-compat.h"
 
 static char *uid = NULL;
 static char *uuid = NULL;
-static struct btp_thread *corebt = NULL;
+static struct sr_core_stacktrace *corebt = NULL;
 static char *crash_dump_dup_name = NULL;
 
-
-#if 0
-/* Useful only for debugging. */
-static void print_thread(const struct btp_thread *thread)
-{
-    struct btp_frame *frame;
-
-    for (frame = thread->frames; frame != NULL; frame = frame->next)
-    {
-        struct frame_aux *aux = frame->user_data;
-        printf("%s %s+0x%jx %s %s\n", frame->function_name, aux->build_id,
-                (uintmax_t)frame->address, aux->modname, aux->fingerprint);
-    }
-}
-#endif
-
-
-static int core_backtrace_is_duplicate(struct btp_thread *bt1, const char *bt2_text)
+static int core_backtrace_is_duplicate(struct sr_core_stacktrace *bt1,
+                                       const char *bt2_text)
 {
     int result;
-    struct btp_thread *bt2 = btp_load_core_backtrace(bt2_text);
+    char *error_message;
+    struct sr_core_stacktrace *bt2 = sr_core_stacktrace_from_json_text(bt2_text, &error_message);
     if (bt2 == NULL)
     {
-        VERB1 log("Failed to parse backtrace, considering it not duplicate");
+        VERB1 log("Failed to parse backtrace, considering it not duplicate: %s", error_message);
+        free(error_message);
         return 0;
     }
-    else if (btp_thread_get_frame_count(bt2) <= 0)
+
+    struct sr_core_thread *thread1 = sr_core_stacktrace_find_crash_thread(bt1);
+    struct sr_core_thread *thread2 = sr_core_stacktrace_find_crash_thread(bt2);
+
+    if (sr_core_thread_get_frame_count(thread2) <= 0)
     {
         VERB1 log("Core backtrace has zero frames, considering it not duplicate");
         result = 0;
         goto end;
     }
 
-    int distance = btp_thread_levenshtein_distance_custom(bt1, bt2, true,
-                                                          btp_core_backtrace_frame_cmp);
+    int distance = sr_distance_core(SR_DISTANCE_DAMERAU_LEVENSHTEIN,
+                                    thread1, thread2);
+
     if (distance == -1)
     {
         result = 0;
@@ -79,7 +63,7 @@ static int core_backtrace_is_duplicate(struct btp_thread *bt1, const char *bt2_t
     }
 
 end:
-    btp_free_core_backtrace(bt2);
+    sr_core_stacktrace_free(bt2);
 
     return result;
 }
@@ -107,7 +91,7 @@ static int dup_uuid_compare(const struct dump_dir *dd)
      * XXX: this relies on the fact that backtrace is created in the same event
      * as UUID
      */
-    if (corebt && btp_thread_get_frame_count(corebt) > 0)
+    if (corebt)
         return 0;
 
     dd_uuid = dd_load_text_ext(dd, FILENAME_UUID, DD_FAIL_QUIETLY_ENOENT);
@@ -140,13 +124,14 @@ static void dup_corebt_init(const struct dump_dir *dd)
     if (!corebt_text)
         return; /* no backtrace */
 
-    corebt = btp_load_core_backtrace(corebt_text);
+    char *error_message;
+    corebt = sr_core_stacktrace_from_json_text(corebt_text,
+                                                &error_message);
 
-    if (corebt && btp_thread_get_frame_count(corebt) <= 0)
+    if (!corebt)
     {
-        VERB1 log("Core backtrace of the crash has zero frames");
-        btp_free_core_backtrace(corebt);
-        corebt = NULL;
+        VERB1 log("Failed to load core stacktrace: %s", error_message);
+        free(error_message);
     }
 
     free(corebt_text);
@@ -175,7 +160,7 @@ static int dup_corebt_compare(const struct dump_dir *dd)
 
 static void dup_corebt_fini(void)
 {
-    btp_free_core_backtrace(corebt);
+    sr_core_stacktrace_free(corebt);
     corebt = NULL;
 }
 

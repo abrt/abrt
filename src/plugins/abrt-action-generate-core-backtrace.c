@@ -17,6 +17,27 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "libabrt.h"
+
+#ifdef USE_SATYR
+/* If satyr is used, just run "satyr abrt-create-core-stacktrace" on the dump directory.
+ */
+
+#include <unistd.h>
+
+int main(int argc, char **argv)
+{
+    VERB1 log("Running 'satyr abrt-create-core-stacktrace .'");
+    execlp("satyr", "satyr", "abrt-create-core-stacktrace", ".", NULL);
+    perror_msg_and_die("Can't execute satyr");
+
+    return 0;
+}
+
+#else /* USE_SATYR */
+/* Btparser is used. Once the support is removed, this whole file can be
+ * deleted and ccpp_event.conf modified accordingly.
+ */
+
 #include <btparser/hash_sha1.h>
 #include <btparser/utils.h>
 #include <btparser/core-backtrace.h>
@@ -198,3 +219,5 @@ int main(int argc, char **argv)
     btp_core_backtrace_free(backtrace);
     return 0;
 }
+
+#endif /* USE_SATYR */
