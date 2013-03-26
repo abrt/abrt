@@ -47,6 +47,8 @@ BuildRequires: doxygen
 BuildRequires: xmlto
 BuildRequires: libreport-devel >= 2.1.0
 BuildRequires: btparser-devel
+##satyr migration:
+#BuildRequires: satyr-devel
 Requires: libreport >= 2.1.0
 
 %if %{with systemd}
@@ -100,6 +102,8 @@ GTK+ wizard for convenient bug reporting.
 Summary: %{name}'s C/C++ addon
 Group: System Environment/Libraries
 Requires: cpio, btparser
+##satyr migration:
+#Requires: cpio, satyr
 Requires: gdb >= 7.0-3
 Requires: elfutils
 # abrt-action-perform-ccpp-analysis wants to run analyze_RetraceServer:
