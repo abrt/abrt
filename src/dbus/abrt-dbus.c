@@ -523,7 +523,7 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
-        if (errno == ENOENT)
+        if (errno == ENOTDIR)
         {
             VERB1 log("Requested directory does not exist '%s'", problem_dir);
             return_InvalidProblemDir_error(invocation, problem_dir);
@@ -575,7 +575,7 @@ static void handle_method_call(GDBusConnection *connection,
 
         if (!dump_dir_accessible_by_uid(problem_dir, caller_uid))
         {
-            if (errno == ENOENT)
+            if (errno == ENOTDIR)
             {
                 VERB1 log("Requested directory does not exist '%s'", problem_dir);
                 return_InvalidProblemDir_error(invocation, problem_dir);
@@ -755,7 +755,7 @@ static void handle_method_call(GDBusConnection *connection,
             const char *dir_name = (const char*)l->data;
             if (!dump_dir_accessible_by_uid(dir_name, caller_uid))
             {
-                if (errno == ENOENT)
+                if (errno == ENOTDIR)
                 {
                     VERB1 log("Requested directory does not exist '%s'", dir_name);
                     continue;
