@@ -41,7 +41,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "sanity"
-        rlRun "reporter-rhtsupport --help &> null"
+        rlRun "reporter-rhtsupport --help >/dev/null 2>&1"
         rlRun "reporter-rhtsupport --help 2>&1 | grep 'Usage:'"
     rlPhaseEnd
 
@@ -56,6 +56,8 @@ rlJournalStart
         rm problem_dir/reported_to 2>/dev/null
         rlRun "reporter-rhtsupport -v -c rhtsupport.conf -d problem_dir/ >client_create 2>&1"
         kill %1
+        echo client_create:
+        cat -n client_create
 
         rlAssertGrep "URL=http://127.0.0.1:12345/rs/cases/[0-9]*/attachments/.*" client_create
         rlAssertGrep "RHTSupport:.* URL=http://127.0.0.1:12345/rs/cases/[0-9]*/attachments/.*" problem_dir/reported_to
@@ -73,6 +75,8 @@ rlJournalStart
         rm problem_dir/reported_to 2>/dev/null
         rlRun "reporter-rhtsupport -v -c rhtsupport.conf -d problem_dir/ -t00809787 >client_create 2>&1"
         kill %1
+        echo client_create:
+        cat -n client_create
 
         #-tCASE_NO does not do this:
         #rlAssertGrep "URL=http://127.0.0.1:12345/rs/cases/[0-9]*/attachments/.*" client_create

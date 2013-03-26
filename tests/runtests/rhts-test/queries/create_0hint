@@ -1,7 +1,11 @@
-HTTP/1.1 404 Not Found
+HTTP/1.1 200 OK
 Server: Apache-Coyote/1.1
-Content-Type: application/xml
-Content-Length: 283
-Date: Sun, 24 Mar 2013 12:12:03 GMT
+Access-Control-Allow-Headers: Content-Type, X-PINGOTHER
+Access-Control-Max-Age: 1728000
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT
+Content-Type: text/xml
+Content-Length: 316
+Date: Tue, 26 Mar 2013 10:05:53 GMT
 
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><error xmlns="http://www.redhat.com/gss/strata"><code>404</code><message>Could not find resource for relative : /cases/00809787/problems of full path: https://api.access.redhat.com:80/rs/cases/00809787/problems</message></error>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><problems xmlns="http://www.redhat.com/gss/strata"><link uri="http://access.redhat.com/" rel="help"><value>The main Red Hat Support web site</value></link><source>Not a problem report we currently handle.  Found file type: application/x-gzip</source></problems>
