@@ -1,56 +1,5 @@
 #!/bin/sh
 
-#set -e
-
-#git clone git://git.fedorahosted.org/git/abrt.git
-#SRCDIR="abrt"
-#BUILDDIR="abrt"
-
-SRCDIR="."
-BUILDDIR="00_builddir"
-
-rm -rf "$BUILDDIR"
-
-if ! test -f "$SRCDIR/configure"; then
-        echo "Autogenerating configure"
-        (cd "$SRCDIR" && ./autogen.sh) || { rm -f "$SRCDIR/configure"; exit 1; }
-fi
-
-test -f "$SRCDIR/abrt.spec" || exit 1
-ABRTVER=`grep ^Version: "$SRCDIR/abrt.spec" | head -n1 | sed 's/.* //'`
-
-T=`mktemp -d`
-
-# Prepare source snapshot
-cp -a "$SRCDIR" "$T"/"abrt-$ABRTVER"
-
-# Can't do it before copying, BUILDDIR may be a subdir of SRCDIR
-mkdir "$BUILDDIR" 2>/dev/null
-
-# Prepare sources for rpmbuild
-(tar -czf - -C "$T" "abrt-$ABRTVER") >"$BUILDDIR"/"abrt-$ABRTVER".tar.gz
-rm -rf "$T"
-cp "$SRCDIR"/abrt.spec "$BUILDDIR"
-cp "$SRCDIR"/abrt*.init "$BUILDDIR"
-#cp "$SRCDIR"/dbg_* "$BUILDDIR" 2>/dev/null # developers' toys
-
-{
-
-cd "$BUILDDIR" || exit 1
-
-# Build them
-nice -n10 rpmbuild \
-  --define "_topdir $PWD" \
-  --define "_builddir $PWD" \
-  --define "_rpmdir $PWD" \
-  --define "_sourcedir $PWD" \
-  --define "_specdir $PWD" \
-  --define "_srcrpmdir $PWD" \
-  --define "_build_name_fmt %%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm" \
-  -bb abrt.spec 2>&1
-echo "Exitcode: $?"
-
-} | tee -a "$0.log"
-
-test x"`tail -n 1 "$0.log"`" = x"Exitcode: 0"
-exit $?
+./autogen.sh || exit $?
+./configure || exit $?
+make rpm || exit $?
