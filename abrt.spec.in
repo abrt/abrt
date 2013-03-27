@@ -693,6 +693,31 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_defaultdocdir}/%{name}-python-%{version}/examples/
 
 %changelog
+* Wed Mar 27 2013 Jakub Filak <jfilak@redhat.com> 2.1.3-1
+- post-create: record runlevel (correct version w/o subshell)
+- post-create: record runlevel
+- testsuite: install libreport-plugin-rhtsupport
+- spec: integration with satyr
+- Integration with satyr
+- dbus: check correct errno after dump_dir_is_accessible_by_uid()
+- spec: require libreport workflow package acc. to OS type
+- tests/runtests/rhts-test: correct hints response, add log output
+- rhts-test: remove stray strace invocation
+- testsuite: install abrt-devel to testing machines
+- spec: remove the abrt-gui related: #629
+- remove the abrt-gui closes #629
+- retrace-client: do not allow space in os_release_id; closes #625
+- Remove all smolt-related files and code bits
+- Remove smolt-related parts of specfile
+- tests/runtests/rhts-test: add a test for -tCASE_NO
+- tests/runtests/rhts-test: add tests for reported_to and client output
+- tests/runtests/rhts-test: fix URLs in responses, add "attached ok" response
+- tests/runtests/rhts-test: new test
+- testsuite: add test for recreating /var/tmp/abrt when it's deleted
+- Update debug build scripts
+- testsuite: add tests for Java VM dump directories
+- abrtd: recreate Dump Location directory if it is delete
+
 * Tue Mar 19 2013 Jakub Filak <jfilak@redhat.com> 2.1.2-1
 - Show a confirmation notify bubble for reported problems in ShortenedReporting mode
 - Fix leaks in koops-parser unit tests
