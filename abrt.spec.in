@@ -45,11 +45,11 @@ BuildRequires: nss-devel
 BuildRequires: asciidoc
 BuildRequires: doxygen
 BuildRequires: xmlto
-BuildRequires: libreport-devel >= 2.1.0
+BuildRequires: libreport-devel >= 2.1.3
 BuildRequires: btparser-devel
 ##satyr migration:
 #BuildRequires: satyr-devel
-Requires: libreport >= 2.1.0
+Requires: libreport >= 2.1.3
 
 %if %{with systemd}
 Requires: systemd-units
