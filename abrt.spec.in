@@ -195,8 +195,14 @@ Group: Applications/System
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-tui
 Requires: abrt-addon-kerneloops
-Requires: abrt-addon-ccpp, abrt-addon-python
+Requires: abrt-addon-vmcore
+Requires: abrt-addon-ccpp
+Requires: abrt-addon-python
+Requires: abrt-addon-xorg
+Requires: abrt-retrace-client
+Requires: abrt-plugin-bodhi
 Requires: libreport-plugin-bugzilla, libreport-plugin-logger
+Requires: libreport-plugin-ureport
 
 %description cli
 Virtual package to make easy default installation on non-graphical environments.
