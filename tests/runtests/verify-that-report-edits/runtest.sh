@@ -56,11 +56,21 @@ rlJournalStart
         rlAssertGrep "The report has been updated" out
 
         smart_quote="$(grep 'smart_quote=' fakeditor.sh | awk -F '"' '{ print $2 }')"
-        rlAssertGrep "edited successfully" out
-        rlAssertGrep "/tmp/abrt.log" out
-        rlAssertNotGrep "!! Timeout !!" out
         rlLog "smart_quote=$smart_quote"
-        rlAssertGrep "$smart_quote" "/tmp/abrt.log"
+        rlAssertGrep "edited successfully" out
+        rlAssertNotGrep "!! Timeout !!" out
+        #
+        # We used to invoke Logger, but now the default config makes "abrt-cli report"
+        # to show these choices:
+        # 1) New Red Hat Support case
+        # 2) Existing Red Hat Support case
+        # 3) Save to tar archive
+        #
+        # ./expect script was changed to invoke choice (3)
+        #
+        #rlAssertGrep "/tmp/abrt.log" out
+        #rlAssertGrep "$smart_quote" "/tmp/abrt.log"
+        rlAssertGrep "Archive is created: '/tmp/" out
     rlPhaseEnd
 
     rlPhaseStartCleanup

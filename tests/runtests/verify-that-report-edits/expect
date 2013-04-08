@@ -64,8 +64,13 @@ while {1} {
       set rhcs_opt $expect_out(1,string)
       puts ">> $rhcs_opt"
     }
+    -re "\n (\[0-9\]).*?Save to tar archive" {
+      puts "Got 'Save tar'"
+      set tar_opt $expect_out(1,string)
+      puts ">> $tar_opt"
+    }
     "Select reporter" {
-      send "$logger_opt\r"
+      send "$tar_opt\r"
     }
     "Log File" {
       puts "Setting log file to /tmp/abrt.log"
