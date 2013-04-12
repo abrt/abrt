@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2013-01-31 13:23+0100\n"
-"PO-Revision-Date: 2013-01-31 19:27+0000\n"
-"Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
+"POT-Creation-Date: 2013-04-12 16:26+0200\n"
+"PO-Revision-Date: 2013-04-12 14:26+0000\n"
+"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/fedora/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/main.c:1064
+#: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "Automatisch bug-rapporteerhulpmiddel"
 
@@ -54,151 +54,134 @@ msgstr "Er is een probleem ontdekt"
 msgid "A problem in the %s package has been detected"
 msgstr "Er is een probleem in pakket %s ontdekt"
 
-#: ../src/applet/applet.c:458 ../src/plugins/abrt-retrace-client.c:126
-#: ../src/plugins/abrt-retrace-client.c:162
+#: ../src/applet/applet.c:475 ../src/plugins/abrt-retrace-client.c:129
+#: ../src/plugins/abrt-retrace-client.c:166
 #, c-format
 msgid "Can't execute '%s'"
 msgstr "Kan '%s' niet uitvoeren"
 
-#: ../src/applet/applet.c:526 ../src/applet/applet.c:603
+#: ../src/applet/applet.c:549 ../src/applet/applet.c:611
 #, c-format
 msgid "Can't close notification: %s"
 msgstr "Kan notificatie niet sluiten: %s"
 
-#: ../src/applet/applet.c:584
-#, c-format
-msgid "Can't open url '%s': %s"
-msgstr "Kan url '%s' niet openen: %s"
-
-#: ../src/applet/applet.c:643 ../src/applet/applet.c:645
+#: ../src/applet/applet.c:651 ../src/applet/applet.c:653
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: ../src/applet/applet.c:692
+#: ../src/applet/applet.c:700
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "Mededelingengebied-applet dat gebruiker bericht over problemen ontdekt door ABRT"
 
-#: ../src/applet/applet.c:708 ../src/gui-gtk/main.c:894
+#: ../src/applet/applet.c:716
 msgid "translator-credits"
 msgstr "Geert Warrink <geert.warrink@onsnet.nu>\nRichard van der Luit <nippur@fedoraproject.org>"
 
-#: ../src/applet/applet.c:718
+#: ../src/applet/applet.c:726
 msgid "Hide"
 msgstr "Verbergen"
 
-#: ../src/applet/applet.c:788
+#: ../src/applet/applet.c:796
 msgid "Problem detected"
 msgstr "Er is een probleem ontdekt"
 
-#: ../src/applet/applet.c:824
+#: ../src/applet/applet.c:838
 msgid "Ignore"
 msgstr "Negeren"
 
 #. Problem has been 'autoreported' and is considered as KNOWN
 #. 
-#: ../src/applet/applet.c:831
+#: ../src/applet/applet.c:847
 msgid "Open"
 msgstr "Open"
 
-#: ../src/applet/applet.c:835
-msgid "Show"
-msgstr "Toon"
-
-#: ../src/applet/applet.c:839
+#: ../src/applet/applet.c:851
 msgid "A Known Problem has Occurred"
 msgstr "Er Is Een Bekend Probleem Opgetreden"
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
 #. 
-#. buttons are homogenous so set size only for one button and it will
-#. * work for the rest buttons in same gtk_hbox_new()
-#: ../src/applet/applet.c:847 ../src/applet/applet.c:870
-#: ../src/gui-gtk/main.c:1019 ../src/gui-gtk/main.c:1157
+#: ../src/applet/applet.c:859 ../src/applet/applet.c:882
 msgid "Report"
 msgstr "Rapport"
 
-#: ../src/applet/applet.c:851
+#: ../src/applet/applet.c:863
 msgid "A Problem has Occurred"
 msgstr "Er is een probleem opgetreden"
 
-#: ../src/applet/applet.c:866
+#: ../src/applet/applet.c:878
 msgid "A Problem has been Reported"
 msgstr "Er is een probleem gerapporteerd"
 
-#: ../src/applet/applet.c:874
+#: ../src/applet/applet.c:886
 msgid "A New Problem has Occurred"
 msgstr "Er Is Een Nieuw Probleem Opgetreden"
 
-#: ../src/applet/applet.c:884
+#: ../src/applet/applet.c:896
 #, c-format
 msgid "Can't show notification: %s"
 msgstr "Kan notificatie niet tonen: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:914
+#: ../src/applet/applet.c:926
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "Kan niet van gio kanaal lezen: '%s'"
 
-#: ../src/applet/applet.c:991
+#: ../src/applet/applet.c:1003
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "Kan codering op gio kanaal niet instellenl: %s"
 
-#: ../src/applet/applet.c:995
+#: ../src/applet/applet.c:1007
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "Kan niet-blokkerende modus niet instellen voor gio kanaal: %s"
 
-#: ../src/applet/applet.c:1027
+#: ../src/applet/applet.c:1039
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "Kan '%s' niet claimen"
 
-#: ../src/applet/applet.c:1037
+#: ../src/applet/applet.c:1049
 #, c-format
 msgid "Can't open directory for writing '%s'"
 msgstr "Kan map niet openen voor het schrijven van '%s'"
 
-#: ../src/applet/applet.c:1297
+#: ../src/applet/applet.c:1309
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr "& [-v] [MAP]...\n\nApplet die de gebruiker waarschuwt als nieuwe problemen door ABRT gedetecteerd zijn\n"
 
-#: ../src/applet/applet.c:1391
-#, c-format
-msgid "dd_open() opened problem '%s' without valid time element"
-msgstr "dd_open() opende probleem '%s' zonder een geldig tijdselement"
-
-#: ../src/daemon/abrt-action-save-package-data.c:375
+#: ../src/daemon/abrt-action-save-package-data.c:397
 msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
 msgstr "& [-v] [-c CONFFILE] -d MAP\n\nRaadpleeg pakketdatabase en sla pakket- en componentnaam op"
 
-#: ../src/daemon/abrt-action-save-package-data.c:387
-#: ../src/plugins/abrt-action-analyze-backtrace.c:63
+#: ../src/daemon/abrt-action-save-package-data.c:409
+#: ../src/plugins/abrt-action-analyze-backtrace.c:61
 #: ../src/plugins/abrt-action-analyze-c.c:90
 #: ../src/plugins/abrt-action-analyze-oops.c:48
 #: ../src/plugins/abrt-action-analyze-xorg.c:82
 #: ../src/plugins/abrt-action-analyze-python.c:47
 #: ../src/plugins/abrt-action-generate-backtrace.c:54
-#: ../src/plugins/abrt-action-generate-core-backtrace.c:96
+#: ../src/plugins/abrt-action-generate-core-backtrace.c:117
 #: ../src/plugins/abrt-dedup-client.c:104
 msgid "Problem directory"
 msgstr "Probleemmap"
 
-#: ../src/daemon/abrt-action-save-package-data.c:388
+#: ../src/daemon/abrt-action-save-package-data.c:410
 msgid "Configuration file"
 msgstr "Configuratiebestand"
 
-#: ../src/daemon/abrt-server.c:495 ../src/dbus/abrt-dbus.c:841
-#: ../src/daemon/abrtd.c:853
+#: ../src/daemon/abrt-server.c:495 ../src/dbus/abrt-dbus.c:867
+#: ../src/daemon/abrtd.c:874
 msgid "& [options]"
 msgstr "& [opties]"
 
@@ -206,13 +189,12 @@ msgstr "& [opties]"
 msgid "Use NUM as client uid"
 msgstr "Gebruik NUM as cliënt uid"
 
-#: ../src/daemon/abrt-server.c:507 ../src/plugins/abrt-watch-log.c:141
-#: ../src/plugins/abrt-dump-oops.c:247 ../src/plugins/abrt-dump-xorg.c:238
+#: ../src/daemon/abrt-server.c:507 ../src/plugins/abrt-watch-log.c:154
+#: ../src/plugins/abrt-dump-oops.c:252 ../src/plugins/abrt-dump-xorg.c:245
 msgid "Log to syslog"
 msgstr "Loggen naar syslog"
 
-#: ../src/daemon/abrt-server.c:508 ../src/daemon/abrtd.c:869
-#: ../src/gui-gtk/main.c:1378
+#: ../src/daemon/abrt-server.c:508 ../src/daemon/abrtd.c:890
 msgid "Add program names to log"
 msgstr "Voeg programmanamen toe aan de log"
 
@@ -220,189 +202,85 @@ msgstr "Voeg programmanamen toe aan de log"
 msgid "Unknown error"
 msgstr "Onbekende fout"
 
-#: ../src/dbus/abrt-dbus.c:359
+#: ../src/dbus/abrt-dbus.c:362
 #, c-format
 msgid "'%s' is not a valid problem directory"
 msgstr "'%s' is geen geldige probleemmap"
 
-#: ../src/dbus/abrt-dbus.c:393
+#: ../src/dbus/abrt-dbus.c:397
 #, c-format
 msgid "'%s' element can't be modified"
 msgstr "'%s' element kan niet veranderd worden"
 
-#: ../src/dbus/abrt-dbus.c:409 ../src/dbus/abrt-dbus.c:527
-#: ../src/dbus/abrt-dbus.c:579
+#: ../src/dbus/abrt-dbus.c:418 ../src/dbus/abrt-dbus.c:538
+#: ../src/dbus/abrt-dbus.c:590
 msgid "Not Authorized"
 msgstr "Niet geauthoriseerd"
 
-#: ../src/dbus/abrt-dbus.c:419
+#: ../src/dbus/abrt-dbus.c:430
 msgid "Can't access the problem for modification"
 msgstr "Krijg geen toegang tot het probleem om het te veranderen"
 
-#: ../src/dbus/abrt-dbus.c:542
+#: ../src/dbus/abrt-dbus.c:553
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr "Veranderen van mapeigenaar mislukte. Controleer systeemlogs voor meer details. "
 
-#: ../src/dbus/abrt-dbus.c:639
+#: ../src/dbus/abrt-dbus.c:651
 #, c-format
 msgid "'%s' is not a valid element name"
 msgstr "'%s' is geen geldige element naam"
 
-#: ../src/dbus/abrt-dbus.c:663
+#: ../src/dbus/abrt-dbus.c:672
+#, c-format
+msgid "Can't get size of '%s'"
+msgstr "Kan grootte van '%s' niet verkrijgen"
+
+#: ../src/dbus/abrt-dbus.c:687
 msgid "No problem space left"
 msgstr "Er is geen probleemruimte meer"
 
-#: ../src/dbus/abrt-dbus.c:693
+#: ../src/dbus/abrt-dbus.c:719
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
 msgstr "Kan het element '%s' niet verwijderen uit de probleemmap '%s'"
 
-#: ../src/dbus/abrt-dbus.c:823
+#: ../src/dbus/abrt-dbus.c:849
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr "De naam '%s' is verloren gegaan, controleer of er geen andere service draait die eigenaar is van de naam.\n"
 
-#: ../src/dbus/abrt-dbus.c:850 ../src/daemon/abrtd.c:868
+#: ../src/dbus/abrt-dbus.c:876 ../src/daemon/abrtd.c:889
 msgid "Exit after NUM seconds of inactivity"
 msgstr "Afsluiten na NUM seconden van inactiviteit"
 
-#: ../src/dbus/abrt-dbus.c:868
+#: ../src/dbus/abrt-dbus.c:894
 msgid "This program must be run as root."
 msgstr "Dit programma moet door root worden uitgevoerd"
 
-#: ../src/daemon/abrtd.c:866
+#: ../src/daemon/abrtd.c:887
 msgid "Do not daemonize"
 msgstr "Niet instellen als daemon"
 
-#: ../src/daemon/abrtd.c:867
+#: ../src/daemon/abrtd.c:888
 msgid "Log to syslog even with -d"
 msgstr "Loggen naar syslog zelfs met -d"
 
-#: ../src/daemon/abrt-handle-event.c:290
+#: ../src/daemon/abrt-handle-event.c:275
 msgid "& [-v -i] -e|--event EVENT DIR..."
 msgstr "& [-v -i] -e|--event EVENT MAP..."
 
-#: ../src/daemon/abrt-handle-event.c:298
+#: ../src/daemon/abrt-handle-event.c:283
 msgid "Run EVENT on DIR"
 msgstr "Voer EVENT uit op DIR"
 
-#: ../src/daemon/abrt-handle-event.c:299
+#: ../src/daemon/abrt-handle-event.c:284
 msgid "Communicate directly to the user"
 msgstr "Communiceer rechtstreeks met de gebruiker"
 
-#: ../src/gui-gtk/main.c:751
-msgid "The description of problem is too short"
-msgstr "De beschrijving vna het probleem is te kort"
-
-#: ../src/gui-gtk/main.c:752
-msgid ""
-"In order to get more useful reports we do not accept reports with the "
-"description shorter than 10 letters."
-msgstr "Om nuttiger rapporten te krijgen accepteren we geen rapporten waarvan de beschrijving kleiner is dan 10 letters."
-
-#: ../src/gui-gtk/main.c:766
-msgid "The summary of problem is too short"
-msgstr "De samenvatting van het probleem is te kort"
-
-#: ../src/gui-gtk/main.c:767
-msgid ""
-"In order to get more useful reports we do not accept reports with the "
-"summary shorter than 10 letters."
-msgstr "Om nuttiger rapporten te krijgen accepteren we geen rapporten waarvan de samenvatting kleiner is dan 10 letters."
-
-#: ../src/gui-gtk/main.c:804
-msgid "Problem description"
-msgstr "Probleembeschrijving"
-
-#: ../src/gui-gtk/main.c:812
-msgid "Summary:"
-msgstr "Samenvatting:"
-
-#: ../src/gui-gtk/main.c:824
-msgid "_Send"
-msgstr "_Verstuur"
-
-#. Sets text but text is selected :)
-#: ../src/gui-gtk/main.c:839
-msgid "A problem with ABRT"
-msgstr "Een probleem met ABRT"
-
-#: ../src/gui-gtk/main.c:913 ../src/gui-gtk/main.c:959
-msgid "Source"
-msgstr "Bron"
-
-#: ../src/gui-gtk/main.c:923 ../src/gui-gtk/main.c:969
-msgid "Problem"
-msgstr "Probleem"
-
-#: ../src/gui-gtk/main.c:944
-msgid "Last Occurrence"
-msgstr "Laatst opgetreden"
-
-#: ../src/gui-gtk/main.c:979
-msgid "Date Submitted"
-msgstr "Ingediende data"
-
-#: ../src/gui-gtk/main.c:988
-msgid "Submission Result"
-msgstr "Indieningsresultaat"
-
-#: ../src/gui-gtk/main.c:1008
-msgid "_Problem"
-msgstr "_Probleem"
-
-#: ../src/gui-gtk/main.c:1009
-msgid "_Edit"
-msgstr "Be_werken"
-
-#: ../src/gui-gtk/main.c:1010
-msgid "_Help"
-msgstr "_Hulp"
-
-#: ../src/gui-gtk/main.c:1021
-msgid "Open problem data"
-msgstr "Open probleemdata"
-
-#: ../src/gui-gtk/main.c:1045
-msgid "Report problem with ABRT"
-msgstr "Rapporteer probleem met ABRT"
-
-#: ../src/gui-gtk/main.c:1084
-msgid "Not submitted reports"
-msgstr "Geen rapporten ingediend"
-
-#: ../src/gui-gtk/main.c:1086
-msgid "<b>Not submitted reports</b>"
-msgstr "<b>Geen rapporten ingediend</b>"
-
-#: ../src/gui-gtk/main.c:1088
-msgid "Show all problems"
-msgstr "Toon alle problemen"
-
-#: ../src/gui-gtk/main.c:1131
-msgid "Submitted reports"
-msgstr "Ingediende rapporten"
-
-#: ../src/gui-gtk/main.c:1134
-msgid "<b>Submitted reports</b>"
-msgstr "<b>Ingediende rapporten</b>"
-
-#: ../src/gui-gtk/main.c:1369
-msgid ""
-"& [-vpD] [DIR]...\n"
-"\n"
-"Shows list of problem directories in specified DIR(s)\n"
-"and ones saved in system-wide problem directory spool."
-msgstr "& [-vpD] [DIR]...\n\nToont lijst van probleemmappen in opgegeven DIR(s)\nen mappen opgeslagen in systeem-wijde probleemmap-spool."
-
-#: ../src/gui-gtk/main.c:1379
-msgid "Do not query problems over dbus (use only DIRs)"
-msgstr "Onderzoek geen problemen over dbus (gebruik enkel DIRs)"
-
 #. Let user know what's going on
-#: ../src/lib/hooklib.c:242 ../src/plugins/abrt-action-analyze-vmcore.in:126
+#: ../src/lib/hooklib.c:248 ../src/plugins/abrt-action-analyze-vmcore.in:126
 msgid "Generating backtrace"
 msgstr "Backtrace genereren"
 
@@ -431,7 +309,25 @@ msgstr "Kan geen probleemdata verkrijgen van abrt-dbus: %s"
 msgid "Can't get problem list from abrt-dbus: %s"
 msgstr "Kan geen probleemlijst verkrijgen van abrt-dbus: %s"
 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:51
+#: ../src/lib/ignored_problems.c:236
+#, c-format
+msgid "Can't create temporary file '%s'"
+msgstr ""
+
+#: ../src/lib/ignored_problems.c:253
+#, c-format
+msgid ""
+"Can't write to '%s'. Problem '%s' will not be removed from the ignored "
+"problems '%s'"
+msgstr ""
+
+#. Something nefarious happened
+#: ../src/lib/ignored_problems.c:267
+#, c-format
+msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-analyze-backtrace.c:49
 msgid ""
 "& [options] -d DIR\n"
 "\n"
@@ -443,7 +339,7 @@ msgstr "& [opties] -d DIR\n\nAnalyseert C/C++ backtrace, genereert duplicaat has
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
 #. 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:100
+#: ../src/plugins/abrt-action-analyze-backtrace.c:98
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "Backtrace ontleden mislukte voor %s"
@@ -530,21 +426,38 @@ msgstr "Sluit gdb af als het draait voor meer dan NUM seconden"
 msgid "Backtrace is generated and saved, %u bytes"
 msgstr "Backtrace wordt gegenereerd en opgeslagen, %u bytes"
 
-#: ../src/plugins/abrt-action-generate-core-backtrace.c:84
+#: ../src/plugins/abrt-action-generate-core-backtrace.c:105
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
 msgstr "& [-v] -d DIR\n\nMaakt coredump-level backtrace aan van coredump en corresponderende binary"
 
-#: ../src/plugins/abrt-action-generate-core-backtrace.c:97
+#: ../src/plugins/abrt-action-generate-core-backtrace.c:118
 msgid "Do not hash fingerprints"
 msgstr "fingerprints niet hashen"
 
-#: ../src/plugins/abrt-action-generate-core-backtrace.c:172
+#. We observed a case when we were stuck for 36 minutes after emitting
+#. * "Generating backtrace" message (in get_backtrace).
+#. * We don't know whether we finished bt generation
+#. * and were stuck somewhere below this point, or we were stuck
+#. * in get_backtrace(). For now, we emit this message
+#. * even in non-verbose mode to aid in future debugging:
+#. 
+#: ../src/plugins/abrt-action-generate-core-backtrace.c:157
+#, c-format
+msgid "Backtrace is generated, %u bytes"
+msgstr "Backtrace is aangemaakt, %u bytes"
+
+#: ../src/plugins/abrt-action-generate-core-backtrace.c:201
 #, c-format
 msgid "Core-backtraces are not supported for '%s'"
 msgstr "Core-backtraces worden niet ondersteund voor '%s'"
+
+#: ../src/plugins/abrt-action-generate-core-backtrace.c:216
+#, c-format
+msgid "Core backtrace is generated and saved, %u bytes"
+msgstr "Core backtrace is aangemaakt en opgeslagen, %u bytes"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:50
 msgid "Exiting on user command"
@@ -586,18 +499,18 @@ msgstr "Ontbrekend debuginfo-bestand:  {0}"
 msgid "All debuginfo files are available"
 msgstr "Alle debuginfo-bestanden zijn beschikbaar"
 
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:62
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:58
 msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
 msgstr "Is het OK de coredump te uploaden? (Het kan gevoelige data bevatten). Als je antwoord 'Nee' is , zal lokaal een stacktrace aangemaakt worden. (Dit kan een grote hoeveelheid data gaan downloaden.)"
 
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:71
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:67
 msgid ""
-"Do you want to generate a stack trace localy? (It may download a huge amount"
-" of data but reporting can't continue without stack trace)."
-msgstr "Wil je lokaal een stacktrace aanmaken? (Dit kan een grote hoeveelheid data gaan downloaden maar rapporteren kan niet verdergaan zonder een stacktrace)."
+"Do you want to generate a stack trace locally? (It may download a huge "
+"amount of data but reporting can't continue without stack trace)."
+msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -620,7 +533,7 @@ msgid "Preserve this directory"
 msgstr "Deze map behouden"
 
 #: ../src/plugins/abrt-dedup-client.c:96
-#: ../src/plugins/abrt-retrace-client.c:1096
+#: ../src/plugins/abrt-retrace-client.c:1115
 msgid "log to syslog"
 msgstr "log naar syslog"
 
@@ -637,7 +550,7 @@ msgid "dedup server port"
 msgstr "dedup-serverport"
 
 #: ../src/plugins/abrt-dedup-client.c:106
-#: ../src/plugins/abrt-retrace-client.c:1107
+#: ../src/plugins/abrt-retrace-client.c:1126
 msgid "(debug) show received HTTP headers"
 msgstr "(debug) toon ontvangen HTTP-header"
 
@@ -654,353 +567,347 @@ msgstr "'"
 msgid "Forbidden component name: '%s'."
 msgstr "Verboden componentnaam: '%s'."
 
-#: ../src/plugins/abrt-dedup-client.c:203
+#: ../src/plugins/abrt-dedup-client.c:202
 #, c-format
 msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr "HTTP-request van lengte %d sturen niet gelukt: NSS fout %d."
 
-#: ../src/plugins/abrt-watch-log.c:130
+#: ../src/plugins/abrt-watch-log.c:143
 msgid ""
 "& [-vs] [-F STR]... FILE PROG [ARGS]\n"
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
 msgstr "& [-vs] [-F STR]... FILE PROG [ARGS]\n\nHoud logbestand FILE in de gaten, voer PROG uit wanneer het groeit of wanneer het vervangen is"
 
-#: ../src/plugins/abrt-watch-log.c:142
+#: ../src/plugins/abrt-watch-log.c:155
 msgid "Don't run PROG if STRs aren't found"
 msgstr "Voer PROG niet uit als STRs niet gevonden zijn"
 
-#: ../src/plugins/abrt-dump-oops.c:182
+#: ../src/plugins/abrt-dump-oops.c:187
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr "Een kernelprobleem trad op, maar de kernel werd aangetast (flags:%s). Kernelmaintainers kunnen geen diagnose stellen bij aangetaste rapporten."
 
-#: ../src/plugins/abrt-dump-oops.c:190
+#: ../src/plugins/abrt-dump-oops.c:195
 #, c-format
 msgid " Tainted modules: %s."
 msgstr "Aangetaste modules: %s"
 
-#: ../src/plugins/abrt-dump-oops.c:231
+#: ../src/plugins/abrt-dump-oops.c:236
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr "& [-vsoxm] [-d DIR]/[-D] [FILE]\n\nExtraheer oops van FILE (of standaard input)"
 
-#: ../src/plugins/abrt-dump-oops.c:248
+#: ../src/plugins/abrt-dump-oops.c:253
 msgid "Print found oopses on standard output"
 msgstr "Print gevonden oops naar standaard output"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
 #. 
-#: ../src/plugins/abrt-dump-oops.c:252
+#: ../src/plugins/abrt-dump-oops.c:257
 msgid "Create new problem directory in DIR for every oops found"
 msgstr "Maak nieuwe probleem map aan in MAP voor elke gevonden oops"
 
-#: ../src/plugins/abrt-dump-oops.c:253 ../src/plugins/abrt-dump-xorg.c:241
+#: ../src/plugins/abrt-dump-oops.c:258 ../src/plugins/abrt-dump-xorg.c:248
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "Hetzelfde als -d DumpLocation, DumpLocation wordt gespecificeerd in abrt.conf"
 
-#: ../src/plugins/abrt-dump-oops.c:254 ../src/plugins/abrt-dump-xorg.c:242
+#: ../src/plugins/abrt-dump-oops.c:259 ../src/plugins/abrt-dump-xorg.c:249
 msgid "Make the problem directory world readable"
 msgstr "Maak de probleemmap leesbaar voor iedereen"
 
-#: ../src/plugins/abrt-dump-oops.c:255 ../src/plugins/abrt-dump-xorg.c:243
+#: ../src/plugins/abrt-dump-oops.c:260 ../src/plugins/abrt-dump-xorg.c:250
 msgid "Print search string(s) to stdout and exit"
 msgstr "Print zoekstring(s) naar stdout en sluit af"
 
-#: ../src/plugins/abrt-dump-xorg.c:231
+#: ../src/plugins/abrt-dump-xorg.c:238
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
 msgstr "& [-vsoxm] [-d DIR]/[-D] [FILE]\n\nExtraheer Xorg crash van FILE (of standaard input)"
 
-#: ../src/plugins/abrt-dump-xorg.c:239
+#: ../src/plugins/abrt-dump-xorg.c:246
 msgid "Print found crash data on standard output"
 msgstr "Print vond crashdata bij standaard output"
 
-#: ../src/plugins/abrt-dump-xorg.c:240
+#: ../src/plugins/abrt-dump-xorg.c:247
 msgid "Create problem directory in DIR for every crash found"
 msgstr "Maak probleem map aan in MAP voor elke gevonden crash"
 
-#: ../src/plugins/abrt-retrace-client.c:67
+#: ../src/plugins/abrt-retrace-client.c:68
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
 msgstr "De retrace-server kan niet gebruikt worden omdat de crash te groot is. Probeer lokaal te retracen. "
 
-#: ../src/plugins/abrt-retrace-client.c:100
-msgid "Cannot open temporary file"
-msgstr "Kan tijdelijk bestand niet openen"
+#. Hopefully, by this time child emitted more meaningful
+#. * error message. But just in case it didn't:
+#. 
+#: ../src/plugins/abrt-retrace-client.c:101
+#: ../src/plugins/abrt-retrace-client.c:180
+#: ../src/plugins/abrt-retrace-client.c:184
+msgid "Can't create temporary file in /tmp"
+msgstr "Kan geen tijdelijk bestand in /tmp aanmaken"
 
-#: ../src/plugins/abrt-retrace-client.c:198
-#: ../src/plugins/abrt-retrace-client.c:655
-#: ../src/plugins/abrt-retrace-client.c:912
-#: ../src/plugins/abrt-retrace-client.c:981
+#: ../src/plugins/abrt-retrace-client.c:209
+#: ../src/plugins/abrt-retrace-client.c:379
+#: ../src/plugins/abrt-retrace-client.c:657
+#: ../src/plugins/abrt-retrace-client.c:834
 #, c-format
-msgid "Failed to send HTTP header of length %d: NSS error %d."
-msgstr "Verzenden van HTTP-header met lengte %d mislukte: NSS fout %d."
+msgid "Failed to send HTTP header of length %d: NSS error %d"
+msgstr "Versturen van HTTP-header met lengte %d mislukte: NSS fout %d"
 
-#: ../src/plugins/abrt-retrace-client.c:210
-#: ../src/plugins/abrt-retrace-client.c:380
-#: ../src/plugins/abrt-retrace-client.c:754
-#: ../src/plugins/abrt-retrace-client.c:850
+#: ../src/plugins/abrt-retrace-client.c:221
+#: ../src/plugins/abrt-retrace-client.c:393
+#: ../src/plugins/abrt-retrace-client.c:756
+#: ../src/plugins/abrt-retrace-client.c:851
 #: ../src/plugins/abrt-retrace-client.c:929
-#: ../src/plugins/abrt-retrace-client.c:998
+#: ../src/plugins/abrt-retrace-client.c:997
 #, c-format
 msgid ""
 "Unexpected HTTP response from server: %d\n"
 "%s"
 msgstr "Onverwacht HTTP-antwoord van server: %d\n%s"
 
-#: ../src/plugins/abrt-retrace-client.c:219
-#: ../src/plugins/abrt-retrace-client.c:734
-#: ../src/plugins/abrt-retrace-client.c:842
+#: ../src/plugins/abrt-retrace-client.c:230
+#: ../src/plugins/abrt-retrace-client.c:736
+#: ../src/plugins/abrt-retrace-client.c:843
 #: ../src/plugins/abrt-retrace-client.c:921
-#: ../src/plugins/abrt-retrace-client.c:990
+#: ../src/plugins/abrt-retrace-client.c:989
 msgid "Invalid response from server: missing HTTP message body."
 msgstr "Ongeldig antwoord van server: HTTP-message-body ontbreekt."
 
-#: ../src/plugins/abrt-retrace-client.c:366
-#: ../src/plugins/abrt-retrace-client.c:833
-#, c-format
-msgid "Failed to send HTTP header of length %d: NSS error %d"
-msgstr "Versturen van HTTP-header met lengte %d mislukte: NSS fout %d"
-
-#: ../src/plugins/abrt-retrace-client.c:387
+#: ../src/plugins/abrt-retrace-client.c:400
 #, c-format
 msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official %s repositories?"
 msgstr "Retrace-server is niet in staat het pakket  '%s.%s' te verwerken.\nIs het een onderdeel van officiële %s repositories?"
 
-#: ../src/plugins/abrt-retrace-client.c:409
+#: ../src/plugins/abrt-retrace-client.c:422
 msgid "Querying server settings"
 msgstr "Serverinstellingen bevragen"
 
-#: ../src/plugins/abrt-retrace-client.c:417
+#: ../src/plugins/abrt-retrace-client.c:430
 msgid "The server is fully occupied. Try again later."
 msgstr "De server is volledig bezet. Probeer het later opnieuw."
 
-#: ../src/plugins/abrt-retrace-client.c:418
+#: ../src/plugins/abrt-retrace-client.c:431
 msgid "The server denied your request."
 msgstr "De server heeft jouw verzoek geweigerd."
 
-#: ../src/plugins/abrt-retrace-client.c:428
-#: ../src/plugins/abrt-retrace-client.c:451
-#, c-format
-msgid "Unable to stat file '%s'."
-msgstr "Kan status bestand '%s' niet tonen."
-
-#: ../src/plugins/abrt-retrace-client.c:436
-#, c-format
-msgid "Unable to open dump directory '%s'."
-msgstr "Niet in staat dumpmap '%s' te openen."
-
-#: ../src/plugins/abrt-retrace-client.c:459
-#: ../src/plugins/abrt-retrace-client.c:475
+#: ../src/plugins/abrt-retrace-client.c:462
+#: ../src/plugins/abrt-retrace-client.c:478
 #, c-format
 msgid "'%s' must be a regular file in order to use Retrace server."
 msgstr "'%s' moet een gewoon bestand zijn om de retrace-server te gebruiken."
 
-#: ../src/plugins/abrt-retrace-client.c:489
+#: ../src/plugins/abrt-retrace-client.c:492
 #, c-format
 msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
 msgstr "De grootte van de crash is %lld bytes, maar de retrace-server accepteert alleen crashes kleiner dan of gelijk aan %lld bytes."
 
-#: ../src/plugins/abrt-retrace-client.c:509
+#: ../src/plugins/abrt-retrace-client.c:512
 msgid "The server does not support xz-compressed tarballs."
 msgstr "De server ondersteunt geen xz-gecomprimeerde tarballs."
 
-#: ../src/plugins/abrt-retrace-client.c:553
+#: ../src/plugins/abrt-retrace-client.c:556
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
 msgstr "De release '%s' wordt niet ondersteund door de Retrace-server."
 
-#: ../src/plugins/abrt-retrace-client.c:557
+#: ../src/plugins/abrt-retrace-client.c:560
 msgid "The server is not able to handle your request."
 msgstr "De server kan jouw verzoek niet afhandelen."
 
-#: ../src/plugins/abrt-retrace-client.c:576
+#: ../src/plugins/abrt-retrace-client.c:579
 msgid "Unknown package sent to Retrace server."
 msgstr "Onbekend pakket verzonden naar retrace-server."
 
-#: ../src/plugins/abrt-retrace-client.c:586
+#: ../src/plugins/abrt-retrace-client.c:589
 msgid "Preparing an archive to upload"
 msgstr "Een archief klaarmaken voor uploaden"
 
-#: ../src/plugins/abrt-retrace-client.c:599
+#: ../src/plugins/abrt-retrace-client.c:602
 #, c-format
 msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
 msgstr "De grootte van het archief is %lld bytes, maar de retrace-server accepteert alleen archieven kleiner dan of gelijk aan %lld bytes."
 
-#: ../src/plugins/abrt-retrace-client.c:612
+#: ../src/plugins/abrt-retrace-client.c:615
 #, c-format
 msgid "You are going to upload %d megabytes. Continue?"
 msgstr "Je gaat %d megabytes uploaden. Doorgaan?"
 
-#: ../src/plugins/abrt-retrace-client.c:619
+#: ../src/plugins/abrt-retrace-client.c:622
 msgid "Cancelled by user"
 msgstr "Afgebroken door gebruiker"
 
-#: ../src/plugins/abrt-retrace-client.c:662
+#: ../src/plugins/abrt-retrace-client.c:664
 #, c-format
 msgid "Uploading %d megabytes\n"
 msgstr "%d megabytes uploaden\n"
 
-#: ../src/plugins/abrt-retrace-client.c:664
+#: ../src/plugins/abrt-retrace-client.c:666
 #, c-format
 msgid "Uploading %lld bytes\n"
 msgstr "Uploaden van %lld bytes\n"
 
-#: ../src/plugins/abrt-retrace-client.c:688
+#: ../src/plugins/abrt-retrace-client.c:690
 #, c-format
 msgid "Uploading %d%%\n"
 msgstr "Uploaden van %d%%\n"
 
-#: ../src/plugins/abrt-retrace-client.c:700
+#: ../src/plugins/abrt-retrace-client.c:702
 msgid "Failed to read from a pipe"
 msgstr "Lezen van een pipe mislukte"
 
-#: ../src/plugins/abrt-retrace-client.c:713
+#: ../src/plugins/abrt-retrace-client.c:715
 #, c-format
 msgid "Failed to send data: NSS error %d (%s): %s"
 msgstr "Verzenden van data mislukte: NSS fout %d (%s): %s"
 
-#: ../src/plugins/abrt-retrace-client.c:724
+#: ../src/plugins/abrt-retrace-client.c:726
 msgid "Upload successful"
 msgstr "Upload succesvol"
 
-#: ../src/plugins/abrt-retrace-client.c:746
+#: ../src/plugins/abrt-retrace-client.c:748
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
 msgstr "De probleemmap is corrupt en kan niet door de Retrace-server verwerkt worden."
 
-#: ../src/plugins/abrt-retrace-client.c:748
+#: ../src/plugins/abrt-retrace-client.c:750
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
 msgstr "Het archief bevat kwaadaardige bestanden (zoals symlinks) en kan dus niet verwerkt worden."
 
-#: ../src/plugins/abrt-retrace-client.c:761
+#: ../src/plugins/abrt-retrace-client.c:763
 msgid "Invalid response from server: missing X-Task-Id."
 msgstr "Ongeldig antwoord van de server: X-Task-Id ontbreekt."
 
-#: ../src/plugins/abrt-retrace-client.c:767
+#: ../src/plugins/abrt-retrace-client.c:769
 msgid "Invalid response from server: missing X-Task-Password."
 msgstr "Ongeldig antwoord van de server: X-Task-Password ontbreekt."
 
-#: ../src/plugins/abrt-retrace-client.c:774
+#: ../src/plugins/abrt-retrace-client.c:776
 msgid "Retrace job started"
 msgstr "Retrace-taak opgestart"
 
-#: ../src/plugins/abrt-retrace-client.c:787
+#: ../src/plugins/abrt-retrace-client.c:789
 #, c-format
 msgid ""
 "Task Id: %s\n"
 "Task Password: %s\n"
 msgstr "Taak Id: %s\nTaak Password: %s\n"
 
-#: ../src/plugins/abrt-retrace-client.c:857
+#: ../src/plugins/abrt-retrace-client.c:858
 msgid "Invalid response from server: missing X-Task-Status."
 msgstr "Ongeldig antwoord van de server: X-Task-Status ontbreekt."
 
-#: ../src/plugins/abrt-retrace-client.c:869
+#: ../src/plugins/abrt-retrace-client.c:870
 #, c-format
 msgid ""
 "Task Status: %s\n"
 "%s\n"
 msgstr "Taak status: %s\n%s\n"
 
-#: ../src/plugins/abrt-retrace-client.c:1050
+#: ../src/plugins/abrt-retrace-client.c:912
+#: ../src/plugins/abrt-retrace-client.c:980
+#, c-format
+msgid "Failed to send HTTP header of length %d: NSS error %d."
+msgstr "Verzenden van HTTP-header met lengte %d mislukte: NSS fout %d."
+
+#: ../src/plugins/abrt-retrace-client.c:1069
 msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
 msgstr "Retracen mislukte. Probeer het later opnieuw. Indien het probleem zich blijft voordoen, rapporteer dit dan."
 
-#: ../src/plugins/abrt-retrace-client.c:1098
+#: ../src/plugins/abrt-retrace-client.c:1117
 msgid "allow insecure connection to retrace server"
 msgstr "sta onveilige verbinding toe naar retrace-server"
 
-#: ../src/plugins/abrt-retrace-client.c:1100
+#: ../src/plugins/abrt-retrace-client.c:1119
 msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
 msgstr "controleer niet of retrace-server bij machte is het betreffende pakket te verwerken voordat archief wordt geupload"
 
-#: ../src/plugins/abrt-retrace-client.c:1103
+#: ../src/plugins/abrt-retrace-client.c:1122
 msgid "retrace server URL"
 msgstr "retrace-server-URL"
 
-#: ../src/plugins/abrt-retrace-client.c:1105
+#: ../src/plugins/abrt-retrace-client.c:1124
 msgid "retrace server port"
 msgstr "retrace-serverpoort"
 
-#: ../src/plugins/abrt-retrace-client.c:1108
+#: ../src/plugins/abrt-retrace-client.c:1127
 msgid "For create and batch operations"
 msgstr "Voor aanmaak en batch bewerkingen"
 
-#: ../src/plugins/abrt-retrace-client.c:1110
+#: ../src/plugins/abrt-retrace-client.c:1129
 msgid "read data from ABRT problem directory"
 msgstr "Lees data van ABRT-probleemmap"
 
-#: ../src/plugins/abrt-retrace-client.c:1112
+#: ../src/plugins/abrt-retrace-client.c:1131
 msgid "read data from coredump"
 msgstr "lees data van coredump"
 
-#: ../src/plugins/abrt-retrace-client.c:1114
+#: ../src/plugins/abrt-retrace-client.c:1133
 msgid "Delay for polling operations"
 msgstr "Wacht op poll bewerkingen"
 
-#: ../src/plugins/abrt-retrace-client.c:1116
+#: ../src/plugins/abrt-retrace-client.c:1135
 msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
 msgstr "(debug) verwijder tijdelijk archief aangemaakt van dump map in /tmp niet"
 
-#: ../src/plugins/abrt-retrace-client.c:1118
+#: ../src/plugins/abrt-retrace-client.c:1137
 msgid "For status, backtrace, and log operations"
 msgstr "Voor status, backtrack en log bewerkingen"
 
-#: ../src/plugins/abrt-retrace-client.c:1120
+#: ../src/plugins/abrt-retrace-client.c:1139
 msgid "id of your task on server"
 msgstr "id van jouw taak op de server"
 
-#: ../src/plugins/abrt-retrace-client.c:1122
+#: ../src/plugins/abrt-retrace-client.c:1141
 msgid "password of your task on server"
 msgstr "wachtwoord van jouw taak op de server"
 
-#: ../src/plugins/abrt-retrace-client.c:1126
+#: ../src/plugins/abrt-retrace-client.c:1145
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch"
 msgstr "abrt-retrace-client <bewerking> [opties]\nBewerkingen: create/status/backtrace/log/batch"
 
-#: ../src/plugins/abrt-retrace-client.c:1172
-#: ../src/plugins/abrt-retrace-client.c:1178
+#: ../src/plugins/abrt-retrace-client.c:1191
+#: ../src/plugins/abrt-retrace-client.c:1197
 msgid "Either problem directory or coredump is needed."
 msgstr "Of een probleemmap, of een coredump is nodig."
 
-#: ../src/plugins/abrt-retrace-client.c:1184
-#: ../src/plugins/abrt-retrace-client.c:1192
-#: ../src/plugins/abrt-retrace-client.c:1200
+#: ../src/plugins/abrt-retrace-client.c:1203
+#: ../src/plugins/abrt-retrace-client.c:1211
+#: ../src/plugins/abrt-retrace-client.c:1219
 msgid "Task id is needed."
 msgstr "Taak-id is nodig."
 
-#: ../src/plugins/abrt-retrace-client.c:1186
-#: ../src/plugins/abrt-retrace-client.c:1194
-#: ../src/plugins/abrt-retrace-client.c:1202
+#: ../src/plugins/abrt-retrace-client.c:1205
+#: ../src/plugins/abrt-retrace-client.c:1213
+#: ../src/plugins/abrt-retrace-client.c:1221
 msgid "Task password is needed."
 msgstr "Taakwachtwoord is nodig."
 
-#: ../src/plugins/abrt-retrace-client.c:1206
+#: ../src/plugins/abrt-retrace-client.c:1225
 #, c-format
 msgid "Unknown operation: %s."
 msgstr "Onbekende bewerking: %s."
@@ -1075,69 +982,79 @@ msgid ""
 "executable's name. The result is saved as 'xsession_errors' element."
 msgstr "Bekijk het ~/.xsession-errors-bestand en slaat de regels op die de naam van het uitvoerbare bestand bevatten. Het resultaat wordt opgeslagen als het 'xsession_errors' element."
 
-#: ../src/plugins/https-utils.c:46
-msgid "An error occurred on the server side. Try again later."
-msgstr "Er trad een probleem op bij de server. Probeer het later opnieuw."
+#: ../src/plugins/https-utils.c:47
+msgid "An error occurred on the server side."
+msgstr "Er trad een fout op bij de server."
 
-#: ../src/plugins/https-utils.c:51
-msgid ""
-"An error occurred while connecting to the server. Check your network "
-"connection and try again."
-msgstr "Er trad een probleem op bij het verbinden met de server. Controleer de netwerkverbinding en probeer het opnieuw."
+#: ../src/plugins/https-utils.c:50
+#, c-format
+msgid "A server-side error occurred on '%s'"
+msgstr "Er trad een fout bij server '%s'"
 
-#: ../src/plugins/https-utils.c:69
+#: ../src/plugins/https-utils.c:59
+msgid "An error occurred while connecting to the server"
+msgstr "Er trad een fout op bij het verbinden met de server."
+
+#: ../src/plugins/https-utils.c:62
+#, c-format
+msgid "An error occurred while connecting to '%s'"
+msgstr "Er trad een fout op bij het verbinden met '%s'"
+
+#: ../src/plugins/https-utils.c:82
 #, c-format
 msgid "Issuer certificate is invalid: '%s'."
 msgstr "Uitgave certificaat is ongeldig: '%s'."
 
-#: ../src/plugins/https-utils.c:72
+#: ../src/plugins/https-utils.c:85
 #, c-format
 msgid "Certificate is signed by an untrusted issuer: '%s'."
 msgstr "Certificaat is ondertekend door een niet-vertrouwde uitgever: '%s'."
 
-#: ../src/plugins/https-utils.c:75
+#: ../src/plugins/https-utils.c:88
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
 msgstr "Certificaat subject naam '%s' komt niet overeen met doelhostnaam '%s'."
 
-#: ../src/plugins/https-utils.c:79
+#: ../src/plugins/https-utils.c:92
 msgid "Remote certificate has expired."
 msgstr "Certificaat op afstand is verlopen."
 
-#: ../src/plugins/https-utils.c:82
+#: ../src/plugins/https-utils.c:95
 #, c-format
 msgid "Certificate issuer is not recognized: '%s'."
 msgstr "Certificaat uitgever wordt niet herkend: '%s'."
 
-#: ../src/plugins/https-utils.c:85
+#: ../src/plugins/https-utils.c:98
 #, c-format
 msgid "Bad certificate received. Subject '%s', issuer '%s'."
 msgstr "Slecht certificaat ontvangen. Onderwerp '%s', uitgever '%s'."
 
-#: ../src/plugins/https-utils.c:121
+#: ../src/plugins/https-utils.c:134
 #, c-format
 msgid "Failed to get slot 'PEM Token #0': %d."
 msgstr "Sllot 'PEM Token #0' verkrijgen mislukte: %d."
 
-#: ../src/plugins/https-utils.c:154
+#: ../src/plugins/https-utils.c:167
 #, c-format
-msgid "Failed to get host by name: NSS error %d."
-msgstr "Host volgens naam verkrijgen mislukte: NSS fout %d."
+msgid "Can't resolve host name '%s'. NSS error %d."
+msgstr "Kan hostnaam '%s' niet oplossen. NSS fout %d."
 
-#: ../src/plugins/https-utils.c:174
-msgid "Failed to create a TCP socket"
-msgstr "Aanmaken van een TCP socket mislukte"
+#. Host exists, but has neither IPv4 nor IPv6??
+#: ../src/plugins/https-utils.c:188
+#, c-format
+msgid "Can't resolve host name '%s'."
+msgstr "Kan hostnaam '%s' niet oplossen."
 
-#: ../src/plugins/https-utils.c:182
+#: ../src/plugins/https-utils.c:195
 msgid "Failed to set socket blocking mode."
 msgstr "Socket-blokkeermodus instellen mislukte."
 
-#: ../src/plugins/https-utils.c:188
+#: ../src/plugins/https-utils.c:198
 msgid "Failed to wrap TCP socket by SSL."
 msgstr "TCP-socket wrappen met SSL mislukte."
 
-#: ../src/plugins/https-utils.c:194 ../src/plugins/https-utils.c:198
 #: ../src/plugins/https-utils.c:200 ../src/plugins/https-utils.c:202
+#: ../src/plugins/https-utils.c:204 ../src/plugins/https-utils.c:206
 msgid "Failed to enable client handshake to SSL socket."
 msgstr "Cliënthandshake naar SSL socket aanzetten mislukte."
 
@@ -1145,54 +1062,55 @@ msgstr "Cliënthandshake naar SSL socket aanzetten mislukte."
 msgid "Failed to set URL to SSL socket."
 msgstr "URL instellen naar SSL-socket mislukte."
 
-#: ../src/plugins/https-utils.c:215
-msgid "Failed to connect SSL address."
-msgstr "SSL-adres verbinden mislukte."
+#: ../src/plugins/https-utils.c:217
+#, c-format
+msgid "Can't connect to '%s'"
+msgstr "Kan niet verbinden met '%s'"
 
-#: ../src/plugins/https-utils.c:222
+#: ../src/plugins/https-utils.c:225
 msgid "Failed to set certificate hook."
 msgstr "Instellen van certificaathook mislukte."
 
-#: ../src/plugins/https-utils.c:229
+#: ../src/plugins/https-utils.c:231
 msgid "Failed to set handshake callback."
 msgstr "Instellen van handshake callback mislukte."
 
-#: ../src/plugins/https-utils.c:236
+#: ../src/plugins/https-utils.c:235
 msgid "Failed to reset handshake."
 msgstr "Herstellen van handshake mislukte."
 
-#: ../src/plugins/https-utils.c:243
+#: ../src/plugins/https-utils.c:242
 #, c-format
-msgid "Failed to force handshake: NSS error %d."
-msgstr "Forceren van handshake mislukte: NSS fout %d."
+msgid "Failed to complete SSL handshake: NSS error %d."
+msgstr "Afmaken van SSL handshake mislukte: NSS fout %d."
 
-#: ../src/plugins/https-utils.c:252
+#: ../src/plugins/https-utils.c:251
 msgid "Failed to close SSL socket."
 msgstr "Sluiten van SSL-socket mislukte."
 
-#: ../src/plugins/https-utils.c:306 ../src/plugins/https-utils.c:312
-#: ../src/plugins/https-utils.c:318
-msgid "Invalid response from server: HTTP header not found."
-msgstr "Ongeldig antwoord van de server: HTTP-header niet gevonden."
+#: ../src/plugins/https-utils.c:316
+#, c-format
+msgid "Malformed HTTP response header: '%s'"
+msgstr "Slecht gevormde HTTP-antwoord koptekst: '%s'"
 
-#: ../src/plugins/https-utils.c:357
+#: ../src/plugins/https-utils.c:353
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
 msgstr "Ontvangen van data mislukte: NSS fout %d."
 
-#: ../src/plugins/https-utils.c:386
+#: ../src/plugins/https-utils.c:382
 msgid "Malformed chunked response."
 msgstr "Slecht gevormde, afgehakte response."
 
-#: ../src/plugins/https-utils.c:411
+#: ../src/plugins/https-utils.c:407
 msgid "Failed to initialize NSS."
 msgstr "Initialiseren van NSS mislukte"
 
-#: ../src/plugins/https-utils.c:417
+#: ../src/plugins/https-utils.c:413
 msgid "Failed to initialize security module."
 msgstr "Initialiseren van beveiligingsmodule mislukte"
 
-#: ../src/plugins/https-utils.c:432
+#: ../src/plugins/https-utils.c:428
 msgid "Failed to shutdown NSS."
 msgstr "Afsluiten van NSS mislukte."
 
@@ -1321,18 +1239,6 @@ msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
 msgstr "Draait gconftool-2 --recursive-list /apps/executable en slaat het op als 'gconf_subtree' element."
-
-#: ../src/plugins/collect_Smolt.xml.in.h:1
-msgid "Collect Smolt profile"
-msgstr "Verzamel Smoltprofiel"
-
-#: ../src/plugins/collect_Smolt.xml.in.h:2
-msgid "Save your computer's hardware profile information"
-msgstr "Sla hardwareprofiel-informatie van de computer op"
-
-#: ../src/plugins/collect_Smolt.xml.in.h:3
-msgid "Runs smoltSendProfile -p and saves its output as 'smolt_data' element."
-msgstr "Draait smoltSendProfile -p en slaat de output hiervan op als 'smolt_data' element."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
