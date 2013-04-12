@@ -434,6 +434,41 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
         char new_count_str[sizeof(long)*3 + 2];
         sprintf(new_count_str, "%lu", count);
         dd_save_text(dd, FILENAME_COUNT, new_count_str);
+
+        /* This condition can be simplified to either
+         * (status * != 0 && * state->dup_of_dir) or (count == 1). But the
+         * chosen form is much more reliable and safe. We must not call
+         * dd_opendir() to locked dd otherwise we go into a deadlock.
+         */
+        if (strcmp(dd->dd_dirname, state->dirname) != 0)
+        {
+            /* Update the last occurrence file by the time file of the new problem */
+            struct dump_dir *new_dd = dd_opendir(state->dirname, DD_OPEN_READONLY);
+            char *last_ocr = NULL;
+            if (new_dd)
+            {
+                /* TIME must exists in a valid dump directory but we don't want to die
+                 * due to broken duplicated dump directory */
+                last_ocr = dd_load_text_ext(new_dd, FILENAME_TIME,
+                            DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE | DD_FAIL_QUIETLY_ENOENT);
+                dd_close(new_dd);
+            }
+            else
+            {   /* dd_opendir() already produced a message with good information about failure */
+                error_msg("Can't read the last occurrence file from the new dump directory.");
+            }
+
+            if (!last_ocr)
+            {   /* the new dump directory may lie in the dump location for some time */
+                log("Using current time for the last occurrence file which may be incorrect.");
+                time_t t = time(NULL);
+                last_ocr = xasprintf("%lu", (long)t);
+            }
+
+            dd_save_text(dd, FILENAME_LAST_OCCURRENCE, last_ocr);
+
+            free(last_ocr);
+        }
     }
 
     /* Reset mode/uig/gid to correct values for all files created by event run */
