@@ -125,6 +125,9 @@ int main(int argc, char **argv)
     if (g_verbose > 1)
         btp_debug_parser = true;
 
+    /* Let user know what's going on */
+    log(_("Generating core_backtrace"));
+
     /* Get the executable name -- unstrip doesn't know it. */
     struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
     if (!dd)
