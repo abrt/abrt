@@ -39,6 +39,8 @@ int cmd_report(int argc, const char **argv)
     if (!argv[0])
         show_usage_and_die(program_usage_string, program_options);
 
+    export_abrt_envvars(/*prog_prefix:*/ 0);
+
     load_abrt_conf();
     GList *D_list = NULL;
     D_list = g_list_append(D_list, concat_path_file(g_get_user_cache_dir(), "abrt/spool"));
