@@ -619,7 +619,10 @@ static int create(bool delete_temp_archive,
         free(question);
 
         if (!response)
+        {
+            set_xfunc_error_retval(EXIT_CANCEL_BY_USER);
             error_msg_and_die(_("Cancelled by user"));
+        }
     }
 
     PRFileDesc *tcp_sock, *ssl_sock;

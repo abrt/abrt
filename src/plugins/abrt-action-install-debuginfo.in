@@ -197,7 +197,7 @@ if __name__ == "__main__":
             error_msg("Can't execute abrt-action-trim-files: %s", e);
 
         missing = filter_installed_debuginfos(b_ids, cachedirs)
-
+    result = RETURN_OK
     if missing:
         log2("%s", missing)
         print _("Coredump references {0} debuginfo files, {1} of them are not installed").format(len(b_ids), len(missing))
@@ -216,4 +216,4 @@ if __name__ == "__main__":
     if not missing:
         print _("All debuginfo files are available")
 
-    exit(RETURN_OK)
+    exit(result)

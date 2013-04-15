@@ -11,7 +11,7 @@ import gettext
 from subprocess import Popen
 
 import report
-from reportclient import ask_yes_no_yesforever
+from reportclient import ask_yes_no_yesforever, RETURN_OK, RETURN_CANCEL_BY_USER
 
 GETTEXT_PROGNAME = "abrt"
 
@@ -34,8 +34,9 @@ def handle_event(event_name, problem_dir):
 
     if ret == 0 and state.children_count == 0:
         print "No actions are found for event '%s'" % event_name
+        return RETURN_FAILURE
 
-    return ret == 0 and state.children_count != 0
+    return ret
 
 
 def run_analyze_smart(problem_dir):
@@ -53,14 +54,14 @@ def run_analyze_smart(problem_dir):
 
     """
 
-    analyzed = False
+    retval = RETURN_CANCEL_BY_USER
     allowed = ask_yes_no_yesforever("abrt_analyze_smart_ask_upload_coredump",
                 _("Ok to upload core dump? (It may contain sensitive data). "\
                   "If your answer is 'No', a stack trace will be generated locally. "\
                   "(It may download a huge amount of data)."))
 
     if allowed:
-        analyzed = handle_event("analyze_RetraceServer", problem_dir)
+        retval = handle_event("analyze_RetraceServer", problem_dir)
 
     # temporary helper variables for better readability
     option = "abrt_analyze_smart_ask_perform_local_analysis"
@@ -70,10 +71,13 @@ def run_analyze_smart(problem_dir):
 
     # run local GDB if the retrace event was dismissed
     # or if the retrace event failed and user gave us permission to run local GDB
-    if not allowed or (not analyzed and ask_yes_no_yesforever(option, question)):
-        analyzed = handle_event("analyze_LocalGDB", problem_dir)
+    #
+    # don't change the retval to RETURN_CANCEL_BY_USER if ask_yes_no_yesforever() is False
+    # we want to catch errors produced by Retrace Server
+    if not allowed or (retval != RETURN_OK and ask_yes_no_yesforever(option, question)):
+        retval = handle_event("analyze_LocalGDB", problem_dir)
 
-    return analyzed
+    return retval
 
 
 if __name__ == "__main__":
@@ -99,4 +103,4 @@ if __name__ == "__main__":
 
     OPTIONS = CMDARGS.parse_args()
 
-    sys.exit(0 if run_analyze_smart(vars(OPTIONS)['problem_dir']) else 1)
+    sys.exit(run_analyze_smart(vars(OPTIONS)['problem_dir']))
