@@ -134,6 +134,27 @@ dbus-send --system --type=method_call --print-reply \
                 <arg type='as' name='response' direction='out'>
                     <tp:docstring>List of problem identifiers</tp:docstring>
                 </arg>
+
+                <tp:docstring>
+                    <example>
+                        <title>How to get the list of problems in Python</title>
+                        <programlisting>
+<![CDATA[
+#!/usr/bin/env python
+import dbus
+
+bus = dbus.SystemBus()
+
+proxy = bus.get_object("org.freedesktop.problems",
+                                  '/org/freedesktop/problems')
+
+problems = dbus.Interface(proxy, dbus_interface='org.freedesktop.problems')
+prblms = problems.GetProblems()
+]]>
+                        </programlisting>
+                    </example>
+                </tp:docstring>
+
             </method>
 
             <method name='GetAllProblems'>
@@ -159,6 +180,38 @@ dbus-send --system --type=method_call --print-reply \
                     <tp:docstring>A list of values of the requested elements.</tp:docstring>
                 </arg>
                 <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QHash&lt;QString,QString&gt;"/>
+
+                <tp:docstring>
+                    <example>
+                        <title>How to use GetInfo() method to print out a nice list of problems</title>
+                        <programlisting>
+<![CDATA[
+#!/usr/bin/env python
+from sys import stdout
+import dbus
+from datetime import datetime
+
+bus = dbus.SystemBus()
+
+proxy = bus.get_object("org.freedesktop.problems",
+                          '/org/freedesktop/problems')
+
+problems = dbus.Interface(proxy, dbus_interface='org.freedesktop.problems')
+
+for prblmid in problems.GetProblems():
+    kv = problems.GetInfo(prblmid, ["time", "count", "package", "reason"])
+
+    date = datetime.fromtimestamp(float(kv["time"]))
+    count = int(kv.get("count", 0))
+    package = str(kv.get("package", ""))
+    reason = str(kv.get("reason", ""))
+
+    stdout.write("{0} {1:-3} {2:30} : {3}\n".format(date, count, package, reason))
+]]>
+                        </programlisting>
+                    </example>
+                </tp:docstring>
+
             </method>
 
             <method name='SetElement'>
