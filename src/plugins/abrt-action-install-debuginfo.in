@@ -191,12 +191,14 @@ if __name__ == "__main__":
                 argv.extend(build_ids_to_path(cachedirs[0], b_ids))
                 log2("abrt-action-trim-files %s", argv);
                 os.execvp("abrt-action-trim-files", argv);
+                error_msg_and_die("Can't execute '%s'", "abrt-action-trim-files");
             if pid > 0:
                 os.waitpid(pid, 0);
         except Exception, e:
             error_msg("Can't execute abrt-action-trim-files: %s", e);
 
         missing = filter_installed_debuginfos(b_ids, cachedirs)
+
     result = RETURN_OK
     if missing:
         log2("%s", missing)
