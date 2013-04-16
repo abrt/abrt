@@ -100,6 +100,15 @@ static const char *const s_koops_suspicious_strings[] = {
     /*s*/"ysctl table check failed",
     ": nobody cared",
     "IRQ handler type mismatch",
+    /*
+     * MCE examples for various CPUs/architectures (collected 2013-04):
+     * arch/arc/kernel/traps.c:			die("Machine Check Exception", regs, address, cause);
+     * arch/x86/kernel/cpu/mcheck/winchip.c:	printk(KERN_EMERG "CPU0: Machine Check Exception.\n");
+     * arch/x86/kernel/cpu/mcheck/p5.c:		"CPU#%d: Machine Check Exception:  0x%8X (type 0x%8X).\n",
+     * arch/x86/kernel/cpu/mcheck/mce.c:	pr_emerg(HW_ERR "CPU %d: Machine Check Exception: %Lx Bank %d: %016Lx\n",
+     * drivers/edac/sb_edac.c:			printk("CPU %d: Machine Check Exception: %Lx Bank %d: %016Lx\n",
+     */
+    "Machine Check Exception",
 
     /* X86 TRAPs */
     "divide error:",
