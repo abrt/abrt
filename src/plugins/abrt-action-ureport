@@ -40,8 +40,7 @@ if test 0 -ne "$UREPORTS" && test 0 -ne "$COUNT" && test "$UREPORTS" -ge "$COUNT
         grep -e "^Bugzilla: " -e "^ABRT Server: " < reported_to | sort -u
 
         if grep -q -e "^Bugzilla: " -e "^ABRT Server: " < reported_to; then
-            echo "THANKYOU"
-            exit 0
+            exit 70  # EXIT_STOP_EVENT_RUN
         fi
 
         log1 "Bug for '$PWD' not yet filed. Continuing."
@@ -61,7 +60,9 @@ if test ! -s core_backtrace; then
     }
 fi
 
-reporter-ureport && {
+reporter-ureport
+RET_CODE=$?
+if [ $RET_CODE -eq 0 ] || [ $RET_CODE -eq 70 ]; then
     printf "%s" "$((UREPORTS + 1))" > ureports_counter
-    exit 0
-}
+    exit $RET_CODE
+fi

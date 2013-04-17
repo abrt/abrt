@@ -946,7 +946,6 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
             char *msg = state->cmd_output->buf;
 
             VERB3 log("%s", msg);
-            pi->known |= (prefixcmp(msg, "THANKYOU") == 0);
 
             strbuf_clear(state->cmd_output);
             /* jump to next line */
@@ -963,6 +962,12 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
     int status = 1;
     if (safe_waitpid(state->child_pid, &status, 0) <= 0)
         perror_msg("waitpid(%d)", (int)state->child_pid);
+
+    if (WIFEXITED(status) && WEXITSTATUS(status) == EXIT_STOP_EVENT_RUN)
+    {
+        pi->known = 1;
+        status = 0;
+    }
 
     if (status == 0)
     {

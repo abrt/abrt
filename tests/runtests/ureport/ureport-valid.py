@@ -169,6 +169,6 @@ if __name__ == "__main__":
             ureport = json.load(fh)
 
         ureport = validate(ureport)
-        print "THANKYOU"
+        sys.exit(70)
     except Exception as ex:
         sys.exit("ERROR {0}".format(str(ex)))
