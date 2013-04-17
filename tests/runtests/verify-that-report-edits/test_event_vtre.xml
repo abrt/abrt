@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event>
+    <name>Local GNU Debugger</name>
+    <description>Download debuginfo packages and generate backtrace locally using GDB</description>
+    <long-description>Needs to downloads debuginfo packages, which might take significant time, and take up disk space. However, unlike RetraceServer, doesn't send coredump to remote machines.</long-description>
+    <creates-items>backtrace</creates-items>
+    <gui-review-elements>yes</gui-review-elements>
+</event>
