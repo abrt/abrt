@@ -313,7 +313,7 @@ static void free_settings(struct retrace_settings *settings)
 
 /* returns release identifier as dist-ver-arch */
 /* or NULL if unknown */
-static char *get_release_id(const char *rawrelease, const char *architecture)
+static char *get_release_id(map_string_t *osinfo, const char *architecture)
 {
     char *arch = xstrdup(architecture);
 
@@ -322,26 +322,35 @@ static char *get_release_id(const char *rawrelease, const char *architecture)
         free(arch);
         arch = xstrdup("i386");
     }
-    char *release = NULL, *version = NULL, *result = NULL;
-    parse_release_for_rhts(rawrelease, &release, &version);
-    char *space = strchr(version, ' ');
-    if (space)
-        *space = '\0';
 
-    if (strcmp("Fedora", release) == 0)
-        result = xasprintf("fedora-%s-%s", version, arch);
-    else if (strcmp("Red Hat Enterprise Linux", release) == 0)
-        result = xasprintf("rhel-%s-%s", version, arch);
+    char *result = NULL;
+    const char *release = get_map_string_item_or_NULL(osinfo, OSINFO_ID);
+    const char *version = get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID);
+    if (release != NULL && version != NULL)
+        result = xasprintf("%s-%s-%s", release, version, arch);
+    else
+    {
+        parse_osinfo_for_rhts(osinfo, (char **)&release, (char **)&version);
+        char *space = strchr(version, ' ');
+        if (space)
+            *space = '\0';
 
-    free(release);
-    free(version);
+        if (strcmp("Fedora", release) == 0)
+            result = xasprintf("fedora-%s-%s", version, arch);
+        else if (strcmp("Red Hat Enterprise Linux", release) == 0)
+            result = xasprintf("rhel-%s-%s", version, arch);
+
+        free((void *)release);
+        free((void *)version);
+    }
+
     free(arch);
     return result;
 }
 
-static int check_package(const char *nvr, const char *arch, const char *release, char **msg)
+static int check_package(const char *nvr, const char *arch, map_string_t *osinfo, char **msg)
 {
-    char *releaseid = get_release_id(release, arch);
+    char *releaseid = get_release_id(osinfo, arch);
 
     struct language lang;
     get_language(&lang);
@@ -397,9 +406,15 @@ static int check_package(const char *nvr, const char *arch, const char *release,
     if (msg)
     {
         if (response_code == 404)
+        {
+            const char *os = get_map_string_item_or_empty(osinfo, OSINFO_PRETTY_NAME);
+            if (!os)
+                os = get_map_string_item_or_empty(osinfo, OSINFO_NAME);
+
             *msg = xasprintf(_("Retrace server is unable to process package "
-                               "'%s.%s'.\nIs it a part of official %s repositories?"),
-                               nvr, arch, release);
+                               "'%s.%s'.\nIs it a part of official '%s' repositories?"),
+                               nvr, arch, os);
+        }
         else
             *msg = NULL;
     }
@@ -520,25 +535,18 @@ static int create(bool delete_temp_archive,
         struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
         if (!dd)
             xfunc_die();
-
-        char *package = dd_load_text(dd, FILENAME_PACKAGE);
-        char *arch = dd_load_text(dd, FILENAME_ARCHITECTURE);
-        char *release;
-        /* paranoia - consider crash chrooted when both ROOTDIR
-           and OS_RELEASE_IN_ROOTDIR exist, although only
-           the second one is really required */
-        if (dd_exist(dd, FILENAME_ROOTDIR) &&
-            dd_exist(dd, FILENAME_OS_RELEASE_IN_ROOTDIR))
-            release = dd_load_text(dd, FILENAME_OS_RELEASE_IN_ROOTDIR);
-        else
-            release = dd_load_text(dd, FILENAME_OS_RELEASE);
-
+        problem_data_t *pd = create_problem_data_from_dump_dir(dd);
         dd_close(dd);
+
+        char *package = problem_data_get_content_or_NULL(pd, FILENAME_PACKAGE);
+        char *arch = problem_data_get_content_or_NULL(pd, FILENAME_ARCHITECTURE);
+        map_string_t *osinfo = new_map_string();
+        problem_data_get_osinfo(pd, osinfo);
 
         /* not needed for TASK_VMCORE - the information is kept in the vmcore itself */
         if (settings->supported_releases)
         {
-            char *releaseid = get_release_id(release, arch);
+            char *releaseid = get_release_id(osinfo, arch);
             if (!releaseid)
                 error_msg_and_die("Unable to parse release.");
 
@@ -568,7 +576,7 @@ static int create(bool delete_temp_archive,
         if (!no_pkgcheck)
         {
             char *msg;
-            int known = check_package(package, arch, release, &msg);
+            int known = check_package(package, arch, osinfo, &msg);
             if (msg)
             {
                 alert(msg);
@@ -579,9 +587,8 @@ static int create(bool delete_temp_archive,
                 error_msg_and_die(_("Unknown package sent to Retrace server."));
         }
 
-        free(package);
-        free(arch);
-        free(release);
+        free_map_string(osinfo);
+        problem_data_free(pd);
     }
 
     if (delay)

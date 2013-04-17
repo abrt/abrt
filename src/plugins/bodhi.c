@@ -410,12 +410,14 @@ int main(int argc, char **argv)
             if (!problem_data)
                 xfunc_die(); /* create_problem_data_for_reporting already emitted error msg */
 
-            release = problem_data_get_content_or_NULL(problem_data, FILENAME_OS_RELEASE);
-            //COMPAT, remove in abrt-2.1
-            if (!release) release = problem_data_get_content_or_die(problem_data, "release");
-            char *product = NULL, *version = NULL;
-            parse_release_for_bz(release, &product, &version);
+            char *product, *version;
+            map_string_t *osinfo = new_map_string();
+            problem_data_get_osinfo(problem_data, osinfo);
+            parse_osinfo_for_rhts(osinfo, &product, &version);
             query = strbuf_append_strf(query, "release=f%s&", version);
+            free(product);
+            free(version);
+            free_map_string(osinfo);
         }
     }
 
