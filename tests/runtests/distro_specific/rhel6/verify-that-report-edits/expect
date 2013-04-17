@@ -1,6 +1,7 @@
 #!/usr/bin/expect -f
 
 set env(EDITOR) "./fakeditor.sh"
+set env(VISUAL) "./fakeditor.sh"
 set crashdir [lindex $argv 0]
 spawn abrt-cli report $crashdir
 
@@ -34,29 +35,38 @@ while {1} {
     "Downloading" {
       send "N\r"
     }
+    # collectors
+    -re "\n (\[0-9\]).*?Smolt" {
+      puts "Got Smolt"
+      set smolt_opt $expect_out(1,string)
+      puts ">> $smolt_opt"
+    }
+    "Select collector" {
+      send "$smolt_opt\r"
+    }
     # reporters
-    -re "\n (\[0-9\]).*?Bugzilla" {
-      puts "Got Bugzilla"
+    -re "\n (\[0-9\]*)\\) Bugzilla" {
+      puts "Got Bugzilla idx:$expect_out(1,string)"
       set bugzilla_opt $expect_out(1,string)
-      puts ">> $bugzilla_opt"
     }
-    -re "\n (\[0-9\]).*?Mailx" {
-      puts "Got Mailx"
+    -re "\n (\[0-9\]*)\\) Mailx" {
+      puts "Got Mailx idx:$expect_out(1,string)"
       set mailx_opt $expect_out(1,string)
-      puts ">> $mailx_opt"
     }
-    -re "\n (\[0-9\]).*?Logger" {
-      puts "Got Logger"
+    -re "\n (\[0-9\]*)\\) Logger" {
+      puts "Got Logger idx:$expect_out(1,string)"
       set logger_opt $expect_out(1,string)
-      puts ">> $logger_opt"
     }
-    -re "\n (\[0-9\]).*?Customer" {
-      puts "Got RHCS"
+    -re "\n (\[0-9\]*)\\) New Red Hat Support case" {
+      puts "Got RHCS idx:$expect_out(1,string)"
       set rhcs_opt $expect_out(1,string)
-      puts ">> $rhcs_opt"
+    }
+    -re "\n (\[0-9\]*)\\) Save to tar archive" {
+      set tar_opt $expect_out(1,string)
+      puts "Got 'Save tar' idx:$expect_out(1,string)"
     }
     "Select reporter" {
-      send "$logger_opt\r"
+      send "$tar_opt\r"
     }
     "Log File" {
       puts "Setting log file to /tmp/abrt.log"
