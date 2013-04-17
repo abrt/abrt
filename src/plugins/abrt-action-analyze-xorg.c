@@ -86,7 +86,7 @@ int main(int argc, char **argv)
 
     export_abrt_envvars(0);
 
-    map_string_h *settings = new_map_string();
+    map_string_t *settings = new_map_string();
     VERB1 log("Loading settings from '%s'", "/etc/abrt/xorg.conf");
     load_conf_file("/etc/abrt/xorg.conf", settings, /*skip key w/o values:*/ false);
     VERB3 log("Loaded '%s'", "/etc/abrt/xorg.conf");

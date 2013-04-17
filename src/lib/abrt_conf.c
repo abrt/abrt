@@ -34,18 +34,18 @@ void free_abrt_conf_data()
     g_settings_dump_location = NULL;
 }
 
-static void ParseCommon(map_string_h *settings, const char *conf_filename)
+static void ParseCommon(map_string_t *settings, const char *conf_filename)
 {
-    char *value;
+    const char *value;
 
-    value = g_hash_table_lookup(settings, "WatchCrashdumpArchiveDir");
+    value = get_map_string_item_or_NULL(settings, "WatchCrashdumpArchiveDir");
     if (value)
     {
         g_settings_sWatchCrashdumpArchiveDir = xstrdup(value);
-        g_hash_table_remove(settings, "WatchCrashdumpArchiveDir");
+        remove_map_string_item(settings, "WatchCrashdumpArchiveDir");
     }
 
-    value = g_hash_table_lookup(settings, "MaxCrashReportsSize");
+    value = get_map_string_item_or_NULL(settings, "MaxCrashReportsSize");
     if (value)
     {
         char *end;
@@ -55,46 +55,46 @@ static void ParseCommon(map_string_h *settings, const char *conf_filename)
             error_msg("Error parsing %s setting: '%s'", "MaxCrashReportsSize", value);
         else
             g_settings_nMaxCrashReportsSize = ul;
-        g_hash_table_remove(settings, "MaxCrashReportsSize");
+        remove_map_string_item(settings, "MaxCrashReportsSize");
     }
 
-    value = g_hash_table_lookup(settings, "DumpLocation");
+    value = get_map_string_item_or_NULL(settings, "DumpLocation");
     if (value)
     {
         g_settings_dump_location = xstrdup(value);
-        g_hash_table_remove(settings, "DumpLocation");
+        remove_map_string_item(settings, "DumpLocation");
     }
     else
         g_settings_dump_location = xstrdup(DEFAULT_DUMP_LOCATION);
 
-    value = g_hash_table_lookup(settings, "DeleteUploaded");
+    value = get_map_string_item_or_NULL(settings, "DeleteUploaded");
     if (value)
     {
         g_settings_delete_uploaded = string_to_bool(value);
-        g_hash_table_remove(settings, "DeleteUploaded");
+        remove_map_string_item(settings, "DeleteUploaded");
     }
 
-    value = g_hash_table_lookup(settings, "AutoreportingEnabled");
+    value = get_map_string_item_or_NULL(settings, "AutoreportingEnabled");
     if (value)
     {
         g_settings_autoreporting = string_to_bool(value);
-        g_hash_table_remove(settings, "AutoreportingEnabled");
+        remove_map_string_item(settings, "AutoreportingEnabled");
     }
 
-    value = g_hash_table_lookup(settings, "AutoreportingEvent");
+    value = get_map_string_item_or_NULL(settings, "AutoreportingEvent");
     if (value)
     {
         g_settings_autoreporting_event = xstrdup(value);
-        g_hash_table_remove(settings, "AutoreportingEvent");
+        remove_map_string_item(settings, "AutoreportingEvent");
     }
     else
         g_settings_autoreporting_event = xstrdup("report_uReport");
 
     GHashTableIter iter;
-    char *name;
+    const char *name;
     /*char *value; - already declared */
-    g_hash_table_iter_init(&iter, settings);
-    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
+    init_map_string_iter(&iter, settings);
+    while (next_map_string_iter(&iter, &name, &value))
     {
         error_msg("Unrecognized variable '%s' in '%s'", name, conf_filename);
     }
@@ -104,7 +104,7 @@ int load_abrt_conf()
 {
     free_abrt_conf_data();
 
-    map_string_h *settings = new_map_string();
+    map_string_t *settings = new_map_string();
     if (!load_conf_file(CONF_DIR"/abrt.conf", settings, /*skip key w/o values:*/ false))
         perror_msg("Can't open '%s'", CONF_DIR"/abrt.conf");
 
