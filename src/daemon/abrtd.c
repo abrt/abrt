@@ -892,6 +892,70 @@ static void start_syslog_logging()
     putenv((char*)"ABRT_SYSLOG=1");
 }
 
+/* The function expects that FILENAME_COUNT dump dir element is created by
+ * abrtd after all post-create events are successfully done. Thus if
+ * FILENAME_COUNT element doesn't exist abrtd can consider the dump directory
+ * as unprocessed.
+ *
+ * Relying on content of dump directory has one problem. If a hook provides
+ * FILENAME_COUNT abrtd will consider the dump directory as processed.
+ */
+static void mark_unprocessed_dump_dirs_not_reportable(const char *path)
+{
+    log("Searching for unprocessed dump directories");
+
+    DIR *dp = opendir(path);
+    if (!dp)
+    {
+        perror_msg("Can't open directory '%s'", path);
+        return;
+    }
+
+    struct dirent *dent;
+    while ((dent = readdir(dp)) != NULL)
+    {
+        if (dot_or_dotdot(dent->d_name))
+            continue; /* skip "." and ".." */
+
+        char *full_name = concat_path_file(path, dent->d_name);
+
+        struct stat stat_buf;
+        if (stat(full_name, &stat_buf) != 0)
+        {
+            perror_msg("Can't access path '%s'", full_name);
+            goto next_dd;
+        }
+
+        if (S_ISDIR(stat_buf.st_mode) == 0)
+            /* This is expected. The dump location contains some aux files */
+            goto next_dd;
+
+        struct dump_dir *dd = dd_opendir(full_name, /*flags*/0);
+        if (dd)
+        {
+            if (!dd_exist(dd, FILENAME_COUNT) && !dd_exist(dd, FILENAME_NOT_REPORTABLE))
+            {
+                log("Marking '%s' not reportable (no '"FILENAME_COUNT"' item)", full_name);
+
+                dd_save_text(dd, FILENAME_NOT_REPORTABLE, _("The problem data are "
+                            "incomplete. This usually happens when a problem"
+                            "is detected while computer is shutting down or"
+                            "user is logging out. In order to provide"
+                            "valuable problem reports, ABRT will not allow"
+                            "you to submit this problem. If you have time and"
+                            "want to help the developers in their effort to"
+                            "sort out this problem, please contact them directly."));
+
+            }
+            dd_close(dd);
+        }
+
+  next_dd:
+        free(full_name);
+    }
+    closedir(dp);
+}
+
 int main(int argc, char** argv)
 {
     /* I18n */
@@ -959,6 +1023,25 @@ int main(int argc, char** argv)
     if (s_timeout != 0)
         signal(SIGALRM, handle_signal);
 
+    /* Moved before daemonization because parent waits for signal from daemon
+     * only for short period and time consumed by
+     * mark_unprocessed_dump_dirs_not_reportable() is slightly unpredictable.
+     */
+    GMainLoop* pMainloop = NULL;
+    GIOChannel* channel_inotify = NULL;
+    guint channel_id_inotify_event = 0;
+    GIOChannel* channel_signal = NULL;
+    guint channel_id_signal_event = 0;
+    bool pidfile_created = false;
+
+    /* Initialization */
+    VERB1 log("Loading settings");
+    if (load_abrt_conf() != 0)
+        goto init_error;
+
+    sanitize_dump_dir_rights();
+    mark_unprocessed_dump_dirs_not_reportable(g_settings_dump_location);
+
     /* Daemonize unless -d */
     if (!(opts & OPT_d))
     {
@@ -993,20 +1076,6 @@ int main(int argc, char** argv)
         if (g_verbose == 0 && logmode != LOGMODE_SYSLOG)
             start_syslog_logging();
     }
-
-    GMainLoop* pMainloop = NULL;
-    GIOChannel* channel_inotify = NULL;
-    guint channel_id_inotify_event = 0;
-    GIOChannel* channel_signal = NULL;
-    guint channel_id_signal_event = 0;
-    bool pidfile_created = false;
-
-    /* Initialization */
-    VERB1 log("Loading settings");
-    if (load_abrt_conf() != 0)
-        goto init_error;
-
-    sanitize_dump_dir_rights();
 
     VERB1 log("Creating glib main loop");
     pMainloop = g_main_loop_new(NULL, FALSE);
