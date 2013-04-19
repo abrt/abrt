@@ -47,10 +47,10 @@ rlJournalStart
 
         ./fakefaf.py ccpp_ureport &
         sleep 1
-        rlRun "reporter-ureport -v --insecure --url http://localhost:12345/faf -d $crash_PATH &> ccpp_reporter" 0 "Send uReport"
+        # 70 is EXIT_STOP_EVENT_RUN
+        rlRun "reporter-ureport -v --insecure --url http://localhost:12345/faf -d $crash_PATH &> ccpp_reporter" 70 "Send uReport"
         kill %1
 
-        # 70 is EXIT_STOP_EVENT_RUN
         rlRun "./ureport-valid.py ccpp_ureport" 70 "Validate uReport contents"
 
         cp $crash_PATH/reported_to ccpp_reported_to
@@ -68,10 +68,9 @@ rlJournalStart
 
         ./fakefaf.py python_ureport &
         sleep 1
-        rlRun "reporter-ureport -v --insecure --url http://localhost:12345/faf -d $crash_PATH &> python_reporter" 0 "Send uReport"
+        rlRun "reporter-ureport -v --insecure --url http://localhost:12345/faf -d $crash_PATH &> python_reporter" 70 "Send uReport"
         kill %1
 
-        # 70 is EXIT_STOP_EVENT_RUN
         rlRun "./ureport-valid.py python_ureport" 70 "Validate uReport contents"
 
         cp $crash_PATH/reported_to python_reported_to
