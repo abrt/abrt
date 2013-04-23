@@ -938,12 +938,12 @@ static void mark_unprocessed_dump_dirs_not_reportable(const char *path)
                 log("Marking '%s' not reportable (no '"FILENAME_COUNT"' item)", full_name);
 
                 dd_save_text(dd, FILENAME_NOT_REPORTABLE, _("The problem data are "
-                            "incomplete. This usually happens when a problem"
-                            "is detected while computer is shutting down or"
-                            "user is logging out. In order to provide"
-                            "valuable problem reports, ABRT will not allow"
-                            "you to submit this problem. If you have time and"
-                            "want to help the developers in their effort to"
+                            "incomplete. This usually happens when a problem "
+                            "is detected while computer is shutting down or "
+                            "user is logging out. In order to provide "
+                            "valuable problem reports, ABRT will not allow "
+                            "you to submit this problem. If you have time and "
+                            "want to help the developers in their effort to "
                             "sort out this problem, please contact them directly."));
 
             }
