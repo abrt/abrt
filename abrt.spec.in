@@ -541,7 +541,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
-#%dir %{_libdir}/%{name}
 %{_mandir}/man1/abrt-handle-upload.1.gz
 %{_mandir}/man1/abrt-server.1.gz
 %{_mandir}/man1/abrt-action-save-package-data.1.gz
@@ -572,7 +571,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/icons/hicolor/*/status/*
 %{_datadir}/%{name}/icons/hicolor/*/status/*
 %{_bindir}/abrt-applet
-#%{_bindir}/test-report
+#%%{_bindir}/test-report
 %{_sysconfdir}/xdg/autostart/abrt-applet.desktop
 
 %files addon-ccpp
@@ -655,7 +654,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_initrddir}/abrt-xorg
 %endif
 %{_bindir}/abrt-dump-xorg
-###%{_mandir}/man1/abrt-dump-xorg.1*
 
 %files addon-vmcore
 %defattr(-,root,root,-)
