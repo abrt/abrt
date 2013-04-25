@@ -94,6 +94,7 @@ BuildRequires: libreport-gtk-devel
 Provides: abrt-applet = %{version}-%{release}
 Obsoletes: abrt-applet < 0.0.5
 Conflicts: abrt-applet < 0.0.5
+Requires: abrt-libs = %{version}-%{release}
 
 %description gui
 GTK+ wizard for convenient bug reporting.
@@ -109,6 +110,7 @@ Requires: elfutils
 # abrt-action-perform-ccpp-analysis wants to run analyze_RetraceServer:
 Requires: %{name}-retrace-client
 Requires: %{name} = %{version}-%{release}
+Requires: abrt-libs = %{version}-%{release}
 
 %description addon-ccpp
 This package contains hook for C/C++ crashed programs and %{name}'s C/C++
@@ -130,6 +132,7 @@ Group: System Environment/Libraries
 Requires: curl
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-plugin-kerneloops
+Requires: abrt-libs = %{version}-%{release}
 Obsoletes: kerneloops > 0.0.1
 Obsoletes: abrt-plugin-kerneloops > 0.0.1
 Obsoletes: abrt-plugin-kerneloopsreporter > 0.0.1
@@ -142,6 +145,7 @@ Summary: %{name}'s Xorg addon
 Group: System Environment/Libraries
 Requires: curl
 Requires: %{name} = %{version}-%{release}
+Requires: abrt-libs = %{version}-%{release}
 
 %description addon-xorg
 This package contains plugin for collecting Xorg crash information from Xorg log.
@@ -184,6 +188,7 @@ uncaught exception in python programs.
 Summary: %{name}'s command line interface
 Group: User Interface/Desktops
 Requires: libreport-cli
+Requires: abrt-libs = %{version}-%{release}
 
 %description tui
 This package contains a simple command line client for processing abrt reports in
@@ -248,6 +253,7 @@ Group: Application/System
 Requires: %{name} = %{version}-%{release}
 Requires: libreport
 BuildRequires: polkit-devel
+Requires: abrt-libs = %{version}-%{release}
 
 %description dbus
 ABRT DBus service which provides org.freedesktop.problems API on dbus and
