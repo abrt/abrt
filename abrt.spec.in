@@ -266,6 +266,16 @@ BuildArch: noarch
 High-level API for querying, creating and manipulating
 problems handled by ABRT in Python.
 
+%package console-notification
+Summary: ABRT console notification script
+Group: Applications/System
+Requires: %{name} = %{version}-%{release}
+Requires: %{name}-cli = %{version}-%{release}
+
+%description console-notification
+A small script which prints a count of detected problems when someone logs in
+to the shell
+
 %prep
 %setup -q
 
@@ -697,6 +707,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{python_sitelib}/problem/
 %{_mandir}/man5/abrt-python.5.gz
 %{_defaultdocdir}/%{name}-python-%{version}/examples/
+
+%files console-notification
+%{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
 * Wed Mar 27 2013 Jakub Filak <jfilak@redhat.com> 2.1.3-1
