@@ -82,6 +82,7 @@ BuildRequires: libreport-gtk-devel
 Provides: abrt-applet = %{version}-%{release}
 Obsoletes: abrt-applet < 0.0.5
 Conflicts: abrt-applet < 0.0.5
+Requires: abrt-libs = %{version}-%{release}
 
 %description gui
 GTK+ wizard for convenient bug reporting.
@@ -92,6 +93,7 @@ Group: System Environment/Libraries
 Requires: elfutils, elfutils-libelf, elfutils-libs, cpio
 Requires: gdb >= 7.0-3
 Requires: %{name} = %{version}-%{release}
+Requires: abrt-libs = %{version}-%{release}
 
 %description addon-ccpp
 This package contains hook for C/C++ crashed programs and %{name}'s C/C++
@@ -103,6 +105,7 @@ Group: System Environment/Libraries
 Requires: curl
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-plugin-kerneloops
+Requires: abrt-libs = %{version}-%{release}
 Obsoletes: kerneloops > 0.0.1
 Obsoletes: abrt-plugin-kerneloops > 0.0.1
 Obsoletes: abrt-plugin-kerneloopsreporter > 0.0.1
@@ -135,6 +138,7 @@ uncaught exception in python programs.
 %package tui
 Summary: %{name}'s command line interface
 Group: User Interface/Desktops
+Requires: abrt-libs = %{version}-%{release}
 
 %description tui
 This package contains simple command line client for processing abrt reports in
