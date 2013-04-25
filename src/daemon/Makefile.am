@@ -27,7 +27,8 @@ abrtd_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings \
     -Werror \
-    -fPIE -Wl,-z,relro,now
+    -fPIE \
+    -Wl,-z,relro -Wl,-z,now
 abrtd_LDADD = \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS)
