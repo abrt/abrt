@@ -5,4 +5,5 @@ libabrt_include_HEADERS = \
     libabrt.h \
     abrt-dbus.h \
     hooklib.h \
-    satyr-compat.h
+    satyr-compat.h \
+    problem_api.h
