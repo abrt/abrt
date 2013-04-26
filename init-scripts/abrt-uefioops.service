@@ -1,0 +1,12 @@
+[Unit]
+Description=Collect UEFI-saved oopses for ABRT
+After=abrtd.service
+Requisite=abrtd.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/abrt-harvest-uefioops
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

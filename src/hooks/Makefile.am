@@ -12,7 +12,11 @@ dist_pluginsconf_DATA = \
 
 sbin_SCRIPTS = \
     abrt-install-ccpp-hook \
-    abrt-harvest-vmcore
+    abrt-harvest-vmcore \
+    abrt-harvest-uefioops
+
+bin_PROGRAMS = \
+    abrt-merge-uefioops
 
 libexec_PROGRAMS = abrt-hook-ccpp
 
@@ -32,10 +36,32 @@ abrt_hook_ccpp_LDADD = \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS)
 
-pyhook_PYTHON = abrt_exception_handler.py abrt.pth
+# abrt-merge-uefioops
+abrt_merge_uefioops_SOURCES = \
+    abrt-merge-uefioops.c
+abrt_merge_uefioops_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    -D_GNU_SOURCE
+abrt_merge_uefioops_LDADD = \
+    ../lib/libabrt.la \
+    $(LIBREPORT_LIBS)
+
+DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
+
+pyhook_PYTHON = \
+	abrt_exception_handler.py \
+	abrt.pth
+
 EXTRA_DIST = abrt_exception_handler.py.in \
 	abrt-install-ccpp-hook.in \
-	abrt-harvest-vmcore.in
+	abrt-harvest-vmcore.in \
+	abrt-harvest-uefioops.in
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc)) $(man1_MANS)
 
@@ -60,6 +86,11 @@ abrt-install-ccpp-hook: abrt-install-ccpp-hook.in
 		$< >$@
 
 abrt-harvest-vmcore: abrt-harvest-vmcore.in
+	sed -e s,\@CONF_DIR\@,\$(CONF_DIR)\,g \
+	    -e s,\@DEFAULT_DUMP_LOCATION\@,$(DEFAULT_DUMP_LOCATION),g \
+		$< >$@
+
+abrt-harvest-uefioops: abrt-harvest-uefioops.in
 	sed -e s,\@CONF_DIR\@,\$(CONF_DIR)\,g \
 	    -e s,\@DEFAULT_DUMP_LOCATION\@,$(DEFAULT_DUMP_LOCATION),g \
 		$< >$@

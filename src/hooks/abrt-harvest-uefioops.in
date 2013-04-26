@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+# This script is meant to be run once at system startup after abrtd is up
+# and running. It scans /sys/fs/pstore/*, reconstructs oops text(s)
+# from these files, creates ABRT problem directories from them,
+# then removes the files (UEFI storage is a limited resource).
+#
+
+# Wait for abrtd to start. Give it at least 1 second to initialize.
+i=10
+while ! pidof abrtd >/dev/null; do
+	if test $((i--)) = 0; then
+		exit 1
+	fi
+	sleep 1
+done
+sleep 1
+
+cd /sys/fs/pstore 2>/dev/null || exit 0
+
+abrt-merge-uefioops -o * | abrt-dump-oops -D
+if test $? = 0; then
+	abrt-merge-uefioops -d *
+fi
