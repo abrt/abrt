@@ -471,15 +471,15 @@ int main(int argc, char** argv)
 
     if (argc < 8)
     {
-        /* percent specifier:         %s    %c             %p  %u  %g  %t   %e          %h */
-        /* argv:                  [0] [1]   [2]            [3] [4] [5] [6]  [7]         [8]*/
+        /* percent specifier:         %s   %c              %p  %u  %g  %t   %e          %h */
+        /* argv:                  [0] [1]  [2]             [3] [4] [5] [6]  [7]         [8]*/
         error_msg_and_die("Usage: %s SIGNO CORE_SIZE_LIMIT PID UID GID TIME BINARY_NAME [HOSTNAME]", argv[0]);
     }
 
     /* Not needed on 2.6.30.
      * At least 2.6.18 has a bug where
-     * argv[1] = "DUMPDIR SIGNO CORE_SIZE_LIMIT ..."
-     * argv[2] = "SIGNO CORE_SIZE_LIMIT ..."
+     * argv[1] = "SIGNO CORE_SIZE_LIMIT PID ..."
+     * argv[2] = "CORE_SIZE_LIMIT PID ..."
      * and so on. Fixing it:
      */
     if (strchr(argv[1], ' '))
