@@ -160,6 +160,15 @@ Requires: crash
 %description addon-vmcore
 This package contains plugin for collecting kernel crash information from vmcore files.
 
+%package addon-uefioops
+Summary: %{name}'s UEFI oops addon
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+Requires: abrt-addon-kerneloops
+
+%description addon-uefioops
+This package contains plugin for collecting kernel oopses from UEFI storage.
+
 %package plugin-bodhi
 Summary: %{name}'s bodhi plugin
 BuildRequires: json-c-devel
@@ -200,6 +209,7 @@ Group: Applications/System
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-tui
 Requires: abrt-addon-kerneloops
+Requires: abrt-addon-uefioops
 Requires: abrt-addon-vmcore
 Requires: abrt-addon-ccpp
 Requires: abrt-addon-python
@@ -222,6 +232,7 @@ Group: User Interface/Desktops
 # any tweaking in abrt.conf (IOW: all plugins mentioned there must be installed)
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-addon-kerneloops
+Requires: abrt-addon-uefioops
 Requires: abrt-addon-vmcore
 Requires: abrt-addon-ccpp
 Requires: abrt-retrace-client
@@ -405,6 +416,19 @@ if [ $1 -eq 1 ]; then
 %endif
 fi
 
+%post addon-uefioops
+if [ $1 -eq 1 ]; then
+    # (see explanation in addon-ccpp section)
+%if %{with systemd}
+    # Enable (but don't start) the units by default
+    /bin/systemctl enable abrt-uefioops.service >/dev/null 2>&1 || :
+%else
+    if /sbin/chkconfig abrtd >/dev/null 2>&1; then
+        /sbin/chkconfig --add abrt-uefioops
+    fi
+%endif
+fi
+
 %preun
 if [ "$1" -eq "0" ] ; then
 %if %{with systemd}
@@ -460,6 +484,17 @@ if [ "$1" -eq "0" ] ; then
 %endif
 fi
 
+%preun addon-uefioops
+if [ "$1" -eq "0" ] ; then
+%if %{with systemd}
+    /bin/systemctl --no-reload disable abrt-uefioops.service >/dev/null 2>&1 || :
+    /bin/systemctl stop abrt-uefioops.service >/dev/null 2>&1 || :
+%else
+    service abrt-uefioops stop >/dev/null 2>&1
+    /sbin/chkconfig --del abrt-uefioops
+%endif
+fi
+
 %if %{with systemd}
 %postun
 /bin/systemctl daemon-reload >/dev/null 2>&1 || :
@@ -471,6 +506,9 @@ fi
 /bin/systemctl daemon-reload >/dev/null 2>&1 || :
 
 %postun addon-vmcore
+/bin/systemctl daemon-reload >/dev/null 2>&1 || :
+
+%postun addon-uefioops
 /bin/systemctl daemon-reload >/dev/null 2>&1 || :
 
 %postun addon-ccpp
@@ -506,6 +544,9 @@ service abrt-xorg condrestart >/dev/null 2>&1 || :
 
 %posttrans addon-vmcore
 service abrt-vmcore condrestart >/dev/null 2>&1 || :
+
+%posttrans addon-uefioops
+service abrt-uefioops condrestart >/dev/null 2>&1 || :
 
 %posttrans gui
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
@@ -668,6 +709,16 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_sbindir}/abrt-harvest-vmcore
 %{_bindir}/abrt-action-analyze-vmcore
 %{_mandir}/man1/abrt-action-analyze-vmcore.1*
+
+%files addon-uefioops
+%defattr(-,root,root,-)
+%if %{with systemd}
+%{_unitdir}/abrt-uefioops.service
+%else
+%{_initrddir}/abrt-uefioops
+%endif
+%{_sbindir}/abrt-harvest-uefioops
+%{_bindir}/abrt-merge-uefioops
 
 %files addon-python
 %defattr(-,root,root,-)
