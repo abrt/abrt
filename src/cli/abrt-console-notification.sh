@@ -1,13 +1,16 @@
 #! /bin/sh
 
-LPATH="$HOME/.cache/abrt/lastnotificaion"
+LPATHDIR="$HOME/.cache/abrt"
+SINCEFILE="$LPATHDIR/lastnotification"
+TMPPATH=`mktemp --tmpdir="$LPATHDIR" lastnotification.XXXXXXXX`
 
 SINCE=0
-if [ -f $LPATH ]; then
-	SINCE=`cat $LPATH`
+if [ -f $SINCEFILE ]; then
+	SINCE=`cat $SINCEFILE`
 fi
 
 # always update the lastnotification
-date +%s > "$LPATH"
+date +%s > "$TMPPATH"
+mv "$TMPPATH" "$SINCEFILE"
 
 abrt-cli status --since="$SINCE"
