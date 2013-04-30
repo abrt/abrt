@@ -1,5 +1,3 @@
-#! /bin/sh
-
 LPATHDIR="$HOME/.cache/abrt"
 SINCEFILE="$LPATHDIR/lastnotification"
 TMPPATH=`mktemp --tmpdir="$LPATHDIR" lastnotification.XXXXXXXX`
