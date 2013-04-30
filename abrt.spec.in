@@ -716,6 +716,46 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Tue Apr 30 2013 Jakub Filak <jfilak@redhat.com> 2.1.4-1
+- spec: fix rpmlint errors for console-notification
+- fixed race in the console notification closes #643
+- Fix wrong comments. No code changes
+- testsuite: enabled cli-status test closes #642
+- testsuite: added tests for abrt-cli status
+- abrt-action-ureport: rewrite in python, improve messages
+- build abrtd and setuided executables with full relro rhbz#812284
+- spec: remove the commented macros rhbz#864851
+- minor fix to console notification #641
+- spec: added the versioned abrt-libs requires to silence rpmdiff rhbz#881123
+- trivial fix to console notification #641
+- spec: create a new subpackage for the console notification #641
+- added a console notification script to profile.d closes #641
+- added 'status' command to abrt-cli
+- factor out the problem querying functions from abrt-dbus to libabrt
+- rename problem_api.c -> problem_api_dbus.c
+- testsuite: release -> os_release
+- bodhi, retrace: support /etc/os-release
+- refactorize: reflect recent changes in map_string_t
+- abrtd: fix incomplete data not-reportable message typos
+- abrt-action-generate-core-backtrace: be a bit more verbose
+- abrtd: mark unprocessed dump directories as not-reportable
+- tests/runtests/ureport: fix test to expect exit code 70 instead of "THANKYOU" string
+- abrt-dump-oops: add "Machine Check Exception" to the list of watched strings rhbz#812537
+- Replace "THANKYOU" with EXIT_STOP_EVENT_RUN exit code (70)
+- Fix rhel6 version of verify-that-report-edits test
+- tests/runtests/verify-that-report-edits: add forgotten file
+- abrt-action-install-debuginfo: do not assume os.execvp never returns
+- abrtd: update last occurrence dump dir file
+- return the right exit code for user cancellation
+- add more examples to Problem API doc
+- fix incompatible translation lines ending
+- tests/runtests/upload-{ftp,scp}: fix the test to check for DIR.tar.gz
+- abrt-cli: make "report -v[vv]" export correct $ABRT_VERBOSE value
+- updated translation Related: #951416
+- tests/runtests/upload-filename: new test
+- spec: add deps. required for reporting to abrt-cli pkg
+- spec: inc required version of libreport
+
 * Wed Mar 27 2013 Jakub Filak <jfilak@redhat.com> 2.1.3-1
 - post-create: record runlevel (correct version w/o subshell)
 - post-create: record runlevel
