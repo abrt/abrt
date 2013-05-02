@@ -3,18 +3,19 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
-# Krishnababu Krothapalli <kkrothap@redhat.com>, 2011-2012.
-# Krishnababu Krothapalli <krisnababu@gmail.com>, 2011-2012.
-# Krishnababu Krothapalli <krisnababu@gmail.com>, 2011-2012, 2013.
-# ప్రవీణ్ యిళ్ళ <mail2ipn@gmail.com>, 2011.
+# Jiří Moskovčák <jmoskovc@redhat.com>, 2011
+# Krishnababu Krothapalli <kkrothap@redhat.com>, 2011-2012
+# Krishnababu Krothapalli <krisnababu@gmail.com>, 2011-2012
+# Krishnababu Krothapalli <krisnababu@gmail.com>, 2013
+# sudheesh001 <sudheesh1995@outlook.com>, 2013
+# ప్రవీణ్ ఇళ్ళ <mail2ipn@gmail.com>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2013-04-12 16:26+0200\n"
-"PO-Revision-Date: 2013-04-12 14:26+0000\n"
-"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
+"POT-Creation-Date: 2013-05-02 09:31+0200\n"
+"PO-Revision-Date: 2013-05-02 07:32+0000\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Telugu (http://www.transifex.com/projects/p/fedora/language/te/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -132,27 +133,27 @@ msgstr "ప్రకటనను చూపలేదు: %s"
 msgid "Can't read from gio channel: '%s'"
 msgstr "gio చానల్‌నుండి చదువలేదు: '%s'"
 
-#: ../src/applet/applet.c:1003
+#: ../src/applet/applet.c:1008
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "gio చానల్ నందు యెన్కోడింగ్ అమర్చలేదు: %s"
 
-#: ../src/applet/applet.c:1007
+#: ../src/applet/applet.c:1012
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "gio చానల్ కొరకు నాన్‌బ్లాకింగ్ రీతిని ఆన్ చేయలేదు: %s"
 
-#: ../src/applet/applet.c:1039
+#: ../src/applet/applet.c:1044
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "'%s' పై అజమాయిషీ తీసుకోలేదు"
 
-#: ../src/applet/applet.c:1049
+#: ../src/applet/applet.c:1054
 #, c-format
 msgid "Can't open directory for writing '%s'"
 msgstr "'%s' వ్రాయుట కొరకు డైరెక్టరీ తెరువలేదు"
 
-#: ../src/applet/applet.c:1309
+#: ../src/applet/applet.c:1314
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
@@ -182,8 +183,8 @@ msgstr "సమస్య డైరెక్టరీ"
 msgid "Configuration file"
 msgstr "ఆకృతీకరణ ఫైలు"
 
-#: ../src/daemon/abrt-server.c:495 ../src/dbus/abrt-dbus.c:867
-#: ../src/daemon/abrtd.c:874
+#: ../src/daemon/abrt-server.c:495 ../src/dbus/abrt-dbus.c:699
+#: ../src/daemon/abrtd.c:973
 msgid "& [options]"
 msgstr "& [ఐచ్చికాలు]"
 
@@ -196,76 +197,85 @@ msgstr "NUM క్లైంట్ uid వలె వుపయోగించు"
 msgid "Log to syslog"
 msgstr "సిస్‌లాగ్‌కు లాగ్"
 
-#: ../src/daemon/abrt-server.c:508 ../src/daemon/abrtd.c:890
+#: ../src/daemon/abrt-server.c:508 ../src/daemon/abrtd.c:989
 msgid "Add program names to log"
 msgstr "లాగ్‌నకు ప్రోగ్రామ్ పేరులను జతచేయి"
 
-#: ../src/dbus/abrt-dbus.c:119
+#: ../src/dbus/abrt-dbus.c:120
 msgid "Unknown error"
 msgstr "తెలియని దోషం"
 
-#: ../src/dbus/abrt-dbus.c:362
+#: ../src/dbus/abrt-dbus.c:186
 #, c-format
 msgid "'%s' is not a valid problem directory"
 msgstr "'%s' సరైన సమస్యా డైరెక్టరీ కాదు"
 
-#: ../src/dbus/abrt-dbus.c:397
+#: ../src/dbus/abrt-dbus.c:221
 #, c-format
 msgid "'%s' element can't be modified"
 msgstr "'%s' మూలకం సవరించలేదు"
 
-#: ../src/dbus/abrt-dbus.c:418 ../src/dbus/abrt-dbus.c:538
-#: ../src/dbus/abrt-dbus.c:590
+#: ../src/dbus/abrt-dbus.c:242 ../src/dbus/abrt-dbus.c:367
+#: ../src/dbus/abrt-dbus.c:419
 msgid "Not Authorized"
 msgstr "ధృవీకరించబడలేదు"
 
-#: ../src/dbus/abrt-dbus.c:430
+#: ../src/dbus/abrt-dbus.c:254
 msgid "Can't access the problem for modification"
 msgstr "సవరణ కొరకు సమస్యను యాక్సెస్ చేయలేము"
 
-#: ../src/dbus/abrt-dbus.c:553
+#: ../src/dbus/abrt-dbus.c:382
 msgid "Chowning directory failed. Check system logs for more details."
 msgstr "సంచయం chown చేయుట విఫలమైంది. మరిన్ని వివరాల కొరకు వ్యవస్థ లాగ్‌లను పరిశీలించండి."
 
-#: ../src/dbus/abrt-dbus.c:651
+#: ../src/dbus/abrt-dbus.c:480
 #, c-format
 msgid "'%s' is not a valid element name"
 msgstr "'%s' చెల్లునటువంటి మూలకం పేరు కాదు"
 
-#: ../src/dbus/abrt-dbus.c:672
+#: ../src/dbus/abrt-dbus.c:501
 #, c-format
 msgid "Can't get size of '%s'"
 msgstr "'%s' యొక్క పరిమాణం పొందలేదు"
 
-#: ../src/dbus/abrt-dbus.c:687
+#: ../src/dbus/abrt-dbus.c:516
 msgid "No problem space left"
 msgstr "ఏ సమస్య ఖాళీ విడువలేదు"
 
-#: ../src/dbus/abrt-dbus.c:719
+#: ../src/dbus/abrt-dbus.c:548
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
 msgstr "మూలకం '%s'ను సమస్య డైరెక్టరీ '%s' నుండి తొలగించలేదు"
 
-#: ../src/dbus/abrt-dbus.c:849
+#: ../src/dbus/abrt-dbus.c:681
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr "పేరు '%s' పోయంది, వేరే సేవ యీ పేరు పొంది నడువకుండా చూడండి.\n"
 
-#: ../src/dbus/abrt-dbus.c:876 ../src/daemon/abrtd.c:889
+#: ../src/dbus/abrt-dbus.c:708 ../src/daemon/abrtd.c:988
 msgid "Exit after NUM seconds of inactivity"
 msgstr "NUM క్షణాల క్రియాహీనత తరువాత నిష్క్రమించు"
 
-#: ../src/dbus/abrt-dbus.c:894
+#: ../src/dbus/abrt-dbus.c:726
 msgid "This program must be run as root."
 msgstr "ఈ ప్రోగ్రామ్ root గా నడువవలెను."
 
-#: ../src/daemon/abrtd.c:887
+#: ../src/daemon/abrtd.c:940
+msgid ""
+"The problem data are incomplete. This usually happens when a problem is "
+"detected while computer is shutting down or user is logging out. In order to"
+" provide valuable problem reports, ABRT will not allow you to submit this "
+"problem. If you have time and want to help the developers in their effort to"
+" sort out this problem, please contact them directly."
+msgstr ""
+
+#: ../src/daemon/abrtd.c:986
 msgid "Do not daemonize"
 msgstr "డెమొనైజ్ చేయవద్దు"
 
-#: ../src/daemon/abrtd.c:888
+#: ../src/daemon/abrtd.c:987
 msgid "Log to syslog even with -d"
 msgstr "సిస్‌లాగ్‌కు -d తో లాగ్ అవ్వుము"
 
@@ -286,27 +296,27 @@ msgstr "వాడుకరిని నేరుగా సంప్రదిం�
 msgid "Generating backtrace"
 msgstr "బ్యాక్‌ట్రేస్ జనియింపచేస్తోంది"
 
-#: ../src/lib/problem_api.c:41
+#: ../src/lib/problem_api_dbus.c:41
 #, c-format
 msgid "Can't connect to system DBus: %s"
 msgstr "వ్యవస్థ DBus కు అనుసంధానం కాలేదు: %s"
 
-#: ../src/lib/problem_api.c:65
+#: ../src/lib/problem_api_dbus.c:65
 #, c-format
 msgid "Can't chown '%s': %s"
 msgstr "chown '%s' కాలేదు: %s"
 
-#: ../src/lib/problem_api.c:92
+#: ../src/lib/problem_api_dbus.c:92
 #, c-format
 msgid "Deleting problem directory failed: %s"
 msgstr "సమస్యా డైరెక్టరీను తొలగించుట విఫలమైంది: %s"
 
-#: ../src/lib/problem_api.c:126
+#: ../src/lib/problem_api_dbus.c:126
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
 msgstr "abrt-dbus నుండి సమస్యా దత్తాంశమును పొందలేదు: %s"
 
-#: ../src/lib/problem_api.c:160
+#: ../src/lib/problem_api_dbus.c:160
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
 msgstr "abrt-dbus నుండి సమస్య జాబితాను పొందలేదు: %s"
@@ -314,20 +324,20 @@ msgstr "abrt-dbus నుండి సమస్య జాబితాను ప�
 #: ../src/lib/ignored_problems.c:236
 #, c-format
 msgid "Can't create temporary file '%s'"
-msgstr ""
+msgstr "'%s' టెంపరరీ ఫైలును సృష్టించలేము"
 
 #: ../src/lib/ignored_problems.c:253
 #, c-format
 msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
 "problems '%s'"
-msgstr ""
+msgstr "'%s' కు వ్రాయడానికి కాదు. '%s' సమస్య '%s' నిర్లక్ష్యం సమస్యల నుండి తీసివేయబడదు"
 
 #. Something nefarious happened
 #: ../src/lib/ignored_problems.c:267
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
-msgstr ""
+msgstr "'%s'నుండి '%s' కు రీనేమ్ చేయలేరు. '%s' సమస్య తొలగించడానికి విఫలమైంది"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:49
 msgid ""
@@ -439,6 +449,11 @@ msgstr "& [-v] -d DIR\n\nకోర్ డంప్ నుండి మరియ�
 msgid "Do not hash fingerprints"
 msgstr "ఫింగర్‌ప్రింట్స్ హాష్ చేయవద్దు"
 
+#. Let user know what's going on
+#: ../src/plugins/abrt-action-generate-core-backtrace.c:129
+msgid "Generating core_backtrace"
+msgstr ""
+
 #. We observed a case when we were stuck for 36 minutes after emitting
 #. * "Generating backtrace" message (in get_backtrace).
 #. * We don't know whether we finished bt generation
@@ -446,17 +461,17 @@ msgstr "ఫింగర్‌ప్రింట్స్ హాష్ చేయ�
 #. * in get_backtrace(). For now, we emit this message
 #. * even in non-verbose mode to aid in future debugging:
 #. 
-#: ../src/plugins/abrt-action-generate-core-backtrace.c:157
+#: ../src/plugins/abrt-action-generate-core-backtrace.c:160
 #, c-format
 msgid "Backtrace is generated, %u bytes"
 msgstr "బ్యాక్‌ట్రేస్ జనియింపచేయబడింది, %u బైట్లు"
 
-#: ../src/plugins/abrt-action-generate-core-backtrace.c:201
+#: ../src/plugins/abrt-action-generate-core-backtrace.c:204
 #, c-format
 msgid "Core-backtraces are not supported for '%s'"
 msgstr "కోర్-బాక్‌ట్రేసెస్ '%s' కొరకు తోడ్పాటునీయవు"
 
-#: ../src/plugins/abrt-action-generate-core-backtrace.c:216
+#: ../src/plugins/abrt-action-generate-core-backtrace.c:219
 #, c-format
 msgid "Core backtrace is generated and saved, %u bytes"
 msgstr "కోర్ బ్యాక్‌ట్రేస్ జనియింపచేయబడెను మరియు దాయబడెను, %u బైట్లు"
@@ -489,30 +504,30 @@ msgstr "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n       [--tmpdir=TMPDIR] [--cach
 msgid "Can't open {0}: {1}"
 msgstr "{0} తెరువలేదు: {1}"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:203
+#: ../src/plugins/abrt-action-install-debuginfo.in:205
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr "కోర్‌డంప్ {0} డీబగ్‌యిన్ఫో ఫైళ్ళను పరిశీలించుతోంది, వాటిలో {1} సంస్థాపించబడలేదు"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:214
+#: ../src/plugins/abrt-action-install-debuginfo.in:216
 msgid "Missing debuginfo file: {0}"
 msgstr "డీబగ్‌యిన్ఫో ఫైల్ తప్పిపోయింది: {0}"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:217
+#: ../src/plugins/abrt-action-install-debuginfo.in:219
 msgid "All debuginfo files are available"
 msgstr "అన్ని డీబగ్‌యిన్ఫో ఫైళ్ళు అందుబాటులో వున్నాయి"
 
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:58
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:59
 msgid ""
 "Ok to upload core dump? (It may contain sensitive data). If your answer is "
 "'No', a stack trace will be generated locally. (It may download a huge "
 "amount of data)."
 msgstr "కోర్ డంప్ అప్‌లోడ్ చేయుటకు సరేనా? (ఇది సున్నితమైన డాటా కలిగివుండును). మీ సమాధానం 'వద్దు' అయితే గనుక, స్టాక్ ట్రేస్ స్థానికంగా జనియింపబడును. (అది పెద్ద మొత్తంలో దత్తాంశమును డౌనులోడు చేయవచ్చు)."
 
-#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:67
+#: ../src/plugins/abrt-action-perform-ccpp-analysis.in:68
 msgid ""
 "Do you want to generate a stack trace locally? (It may download a huge "
 "amount of data but reporting can't continue without stack trace)."
-msgstr ""
+msgstr "మీరు స్టాక్ ట్రేస్ స్థానికంగా జనియింపచేయాలని అనుకొనుచున్నారా? (అది పెద్ద మొత్తంలో దత్తాంశం డౌనులోడు చేయవచ్చు అయితే స్టాక్ ట్రేస్ లేకుండా ఫిర్యాదు కొనసాగించుట కుదరదు)."
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -535,7 +550,7 @@ msgid "Preserve this directory"
 msgstr "ఈ డైరెక్టరీను నిలిపివుంచుము"
 
 #: ../src/plugins/abrt-dedup-client.c:96
-#: ../src/plugins/abrt-retrace-client.c:1115
+#: ../src/plugins/abrt-retrace-client.c:1125
 msgid "log to syslog"
 msgstr "సిస్‌లాగ్ లాగ్"
 
@@ -552,7 +567,7 @@ msgid "dedup server port"
 msgstr "dedup సర్వర్ పోర్ట్"
 
 #: ../src/plugins/abrt-dedup-client.c:106
-#: ../src/plugins/abrt-retrace-client.c:1126
+#: ../src/plugins/abrt-retrace-client.c:1136
 msgid "(debug) show received HTTP headers"
 msgstr "(డీబగ్) స్వీకరించబడిన HTTP హెడర్లు చూపు"
 
@@ -658,19 +673,19 @@ msgid "Can't create temporary file in /tmp"
 msgstr "/tmp నందు టెంపరరీ ఫైలును సృష్టించలేము"
 
 #: ../src/plugins/abrt-retrace-client.c:209
-#: ../src/plugins/abrt-retrace-client.c:379
-#: ../src/plugins/abrt-retrace-client.c:657
-#: ../src/plugins/abrt-retrace-client.c:834
+#: ../src/plugins/abrt-retrace-client.c:388
+#: ../src/plugins/abrt-retrace-client.c:667
+#: ../src/plugins/abrt-retrace-client.c:844
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d"
 msgstr "%d పొడవైన HTTP హెడర్ పంపుటలో విఫలమైంది: NSS దోషం %d"
 
 #: ../src/plugins/abrt-retrace-client.c:221
-#: ../src/plugins/abrt-retrace-client.c:393
-#: ../src/plugins/abrt-retrace-client.c:756
-#: ../src/plugins/abrt-retrace-client.c:851
-#: ../src/plugins/abrt-retrace-client.c:929
-#: ../src/plugins/abrt-retrace-client.c:997
+#: ../src/plugins/abrt-retrace-client.c:402
+#: ../src/plugins/abrt-retrace-client.c:766
+#: ../src/plugins/abrt-retrace-client.c:861
+#: ../src/plugins/abrt-retrace-client.c:939
+#: ../src/plugins/abrt-retrace-client.c:1007
 #, c-format
 msgid ""
 "Unexpected HTTP response from server: %d\n"
@@ -678,238 +693,238 @@ msgid ""
 msgstr "సర్వర్ నుండి అనుకోని  HTTP ప్రతిస్పందన: %d\n%s"
 
 #: ../src/plugins/abrt-retrace-client.c:230
-#: ../src/plugins/abrt-retrace-client.c:736
-#: ../src/plugins/abrt-retrace-client.c:843
-#: ../src/plugins/abrt-retrace-client.c:921
-#: ../src/plugins/abrt-retrace-client.c:989
+#: ../src/plugins/abrt-retrace-client.c:746
+#: ../src/plugins/abrt-retrace-client.c:853
+#: ../src/plugins/abrt-retrace-client.c:931
+#: ../src/plugins/abrt-retrace-client.c:999
 msgid "Invalid response from server: missing HTTP message body."
 msgstr "సర్వర్‌నుండి చెల్లని ప్రతిస్పందన: HTTP సందేశం బాడీ తప్పిపోయింది."
 
-#: ../src/plugins/abrt-retrace-client.c:400
+#: ../src/plugins/abrt-retrace-client.c:414
 #, c-format
 msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
-"Is it a part of official %s repositories?"
-msgstr "సేవిక రీట్రేస్ ప్యాకేజీ '%s.%s' ను ప్రోసెస్ చేయలేదు.\nఇది అదికారిక %s రిపోజిటరీలలో భాగమేనా?"
+"Is it a part of official '%s' repositories?"
+msgstr ""
 
-#: ../src/plugins/abrt-retrace-client.c:422
+#: ../src/plugins/abrt-retrace-client.c:437
 msgid "Querying server settings"
 msgstr "సర్వర్ అమరికలను క్వరీ చేస్తోంది"
 
-#: ../src/plugins/abrt-retrace-client.c:430
+#: ../src/plugins/abrt-retrace-client.c:445
 msgid "The server is fully occupied. Try again later."
 msgstr "సర్వర్ పూర్తిగా నిండినది. తరువాత ప్రయత్నించు."
 
-#: ../src/plugins/abrt-retrace-client.c:431
+#: ../src/plugins/abrt-retrace-client.c:446
 msgid "The server denied your request."
 msgstr "సర్వర్ మీ అభ్యర్ధనను తిరస్కరించింది."
 
-#: ../src/plugins/abrt-retrace-client.c:462
-#: ../src/plugins/abrt-retrace-client.c:478
+#: ../src/plugins/abrt-retrace-client.c:477
+#: ../src/plugins/abrt-retrace-client.c:493
 #, c-format
 msgid "'%s' must be a regular file in order to use Retrace server."
 msgstr "రీట్రేస్ సేవికను వుపయోగించుటకు '%s' తప్పనిసరిగా సాధారణ ఫైలు కావాలి."
 
-#: ../src/plugins/abrt-retrace-client.c:492
+#: ../src/plugins/abrt-retrace-client.c:507
 #, c-format
 msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
 msgstr "మీ క్రాష్ యొక్క పరిమాణం %lld బైట్లు, అయితే ట్రేస్ సర్వర్ అనునది %lld బైట్లకు తక్కువైన లేదా సమానమైన క్రాష్ మాత్రమే ఆమోదించును."
 
-#: ../src/plugins/abrt-retrace-client.c:512
+#: ../src/plugins/abrt-retrace-client.c:527
 msgid "The server does not support xz-compressed tarballs."
 msgstr "సేవిక xz-compressed టార్బాళ్ళకు తోడ్పాటునీయదు."
 
-#: ../src/plugins/abrt-retrace-client.c:556
+#: ../src/plugins/abrt-retrace-client.c:564
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
 msgstr "విడుదల '%s' అనునది రీట్రేస్ సేవిక చేత తోడ్పాటునీయబడదు."
 
-#: ../src/plugins/abrt-retrace-client.c:560
+#: ../src/plugins/abrt-retrace-client.c:568
 msgid "The server is not able to handle your request."
 msgstr "సేవిక మీ అభ్యర్ధనను సంభాలించలేక పోయింది."
 
-#: ../src/plugins/abrt-retrace-client.c:579
+#: ../src/plugins/abrt-retrace-client.c:587
 msgid "Unknown package sent to Retrace server."
 msgstr "తెలియని ప్యాకేజీ రీట్రేస్ సేవికకు పంపబడింది."
 
-#: ../src/plugins/abrt-retrace-client.c:589
+#: ../src/plugins/abrt-retrace-client.c:596
 msgid "Preparing an archive to upload"
 msgstr "అప్‌లోడ్ చేయుటకు వొక ఆర్కైవ్‌ను సిద్దంచేస్తోంది"
 
-#: ../src/plugins/abrt-retrace-client.c:602
+#: ../src/plugins/abrt-retrace-client.c:609
 #, c-format
 msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
 msgstr "మీ ఆర్కైవ్ యొక్క పరిమాణం %lld బైట్లు, అయితే ట్రేస్ సర్వర్ %lld బైట్లకు సమానమైన లేదా తక్కువైన ఆర్కైవ్‌లను మాత్రమే ఆమోదించును."
 
-#: ../src/plugins/abrt-retrace-client.c:615
+#: ../src/plugins/abrt-retrace-client.c:622
 #, c-format
 msgid "You are going to upload %d megabytes. Continue?"
 msgstr "మీరు %d మెగాబైట్లను అప్‌లోడ్ చేయబోచున్నారు. కొనసాగించాలా?"
 
-#: ../src/plugins/abrt-retrace-client.c:622
+#: ../src/plugins/abrt-retrace-client.c:631
 msgid "Cancelled by user"
 msgstr "వాడుకరిచే రద్దుచేయబడెను"
 
-#: ../src/plugins/abrt-retrace-client.c:664
+#: ../src/plugins/abrt-retrace-client.c:674
 #, c-format
 msgid "Uploading %d megabytes\n"
 msgstr "%d మెగాబైట్లను లోడుచేస్తోంది\n"
 
-#: ../src/plugins/abrt-retrace-client.c:666
+#: ../src/plugins/abrt-retrace-client.c:676
 #, c-format
 msgid "Uploading %lld bytes\n"
 msgstr "%lld బైట్లను లోడుచేయుచున్నది\n"
 
-#: ../src/plugins/abrt-retrace-client.c:690
+#: ../src/plugins/abrt-retrace-client.c:700
 #, c-format
 msgid "Uploading %d%%\n"
 msgstr "%d%% అప్‌లోడుచేయుచున్నది\n"
 
-#: ../src/plugins/abrt-retrace-client.c:702
+#: ../src/plugins/abrt-retrace-client.c:712
 msgid "Failed to read from a pipe"
 msgstr "పైప్ నుండి చదువుటకు విఫలమైంది"
 
-#: ../src/plugins/abrt-retrace-client.c:715
+#: ../src/plugins/abrt-retrace-client.c:725
 #, c-format
 msgid "Failed to send data: NSS error %d (%s): %s"
 msgstr "డాటా పంపుటలో విఫలమైంది: NSS దోషం %d (%s): %s"
 
-#: ../src/plugins/abrt-retrace-client.c:726
+#: ../src/plugins/abrt-retrace-client.c:736
 msgid "Upload successful"
 msgstr "అప్‌లోడ్ విజయవంతమైంది"
 
-#: ../src/plugins/abrt-retrace-client.c:748
+#: ../src/plugins/abrt-retrace-client.c:758
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
 msgstr "మీ సమస్యాత్మక డైరెక్టరీ పాడైంది మరియు  రీట్రేస్ సర్వర్ చే ప్రోసెస్ చేయబడలేదు."
 
-#: ../src/plugins/abrt-retrace-client.c:750
+#: ../src/plugins/abrt-retrace-client.c:760
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
 msgstr "ఆర్కైవ్ అనునది చెడ్డ ఫైళ్ళను కలిగివుంది (సిమ్‌లింక్స్ వంటివి) కనుక ప్రోసెస్ చేయబడలేదు."
 
-#: ../src/plugins/abrt-retrace-client.c:763
+#: ../src/plugins/abrt-retrace-client.c:773
 msgid "Invalid response from server: missing X-Task-Id."
 msgstr "సర్వర్‌నుండి చెల్లని ప్రతిస్పందన: X-Task-Id తప్పిపోయింది."
 
-#: ../src/plugins/abrt-retrace-client.c:769
+#: ../src/plugins/abrt-retrace-client.c:779
 msgid "Invalid response from server: missing X-Task-Password."
 msgstr "సర్వర్‌నుండి చెల్లని ప్రతిస్పందన: X-Task-Password తప్పిపోయింది."
 
-#: ../src/plugins/abrt-retrace-client.c:776
+#: ../src/plugins/abrt-retrace-client.c:786
 msgid "Retrace job started"
 msgstr "రిట్రేస్ జాబ్ ప్రారంభమైంది"
 
-#: ../src/plugins/abrt-retrace-client.c:789
+#: ../src/plugins/abrt-retrace-client.c:799
 #, c-format
 msgid ""
 "Task Id: %s\n"
 "Task Password: %s\n"
 msgstr "టాస్క్ ఐడి: %s\nటాస్క్ సంకేతపదం: %s\n"
 
-#: ../src/plugins/abrt-retrace-client.c:858
+#: ../src/plugins/abrt-retrace-client.c:868
 msgid "Invalid response from server: missing X-Task-Status."
 msgstr "సర్వర్‌నుండి చెల్లని ప్రతిస్పందన: X-Task-Status తప్పిపోయింది."
 
-#: ../src/plugins/abrt-retrace-client.c:870
+#: ../src/plugins/abrt-retrace-client.c:880
 #, c-format
 msgid ""
 "Task Status: %s\n"
 "%s\n"
 msgstr "టాస్క్ స్థితి: %s\n%s\n"
 
-#: ../src/plugins/abrt-retrace-client.c:912
-#: ../src/plugins/abrt-retrace-client.c:980
+#: ../src/plugins/abrt-retrace-client.c:922
+#: ../src/plugins/abrt-retrace-client.c:990
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d."
 msgstr "%d పొడవైన HTTP హెడర్ పంపుటకు విఫలమైంది: NSS దోషం %d."
 
-#: ../src/plugins/abrt-retrace-client.c:1069
+#: ../src/plugins/abrt-retrace-client.c:1079
 msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
 msgstr "రిట్రేస్ విఫలమైంది. తరువాత ప్రయత్నించుము వోకవేళ యీ సమస్య యింకావుంటే యీ సమస్యను నివేదించుము."
 
-#: ../src/plugins/abrt-retrace-client.c:1117
+#: ../src/plugins/abrt-retrace-client.c:1127
 msgid "allow insecure connection to retrace server"
 msgstr "సర్వర్‌ను రీట్రేస్ చేయుటకు సురక్షితం కాని అనుసంధానం అనుమతించు"
 
-#: ../src/plugins/abrt-retrace-client.c:1119
+#: ../src/plugins/abrt-retrace-client.c:1129
 msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
 msgstr "ఆర్కైవ్‌ను అప్‌లోడ్ చేయుటకు ముందుగా యిచ్చిన ప్యాకేజీను రీట్రేస్ సర్వర్ ప్రోసెస్ చేయగలదో లేదో పరిశీలించవద్దు"
 
-#: ../src/plugins/abrt-retrace-client.c:1122
+#: ../src/plugins/abrt-retrace-client.c:1132
 msgid "retrace server URL"
 msgstr "సర్వర్ URL రీట్రేస్‌చేయి"
 
-#: ../src/plugins/abrt-retrace-client.c:1124
+#: ../src/plugins/abrt-retrace-client.c:1134
 msgid "retrace server port"
 msgstr "సేవిక పోర్ట్ రీట్రేస్ చేయి"
 
-#: ../src/plugins/abrt-retrace-client.c:1127
+#: ../src/plugins/abrt-retrace-client.c:1137
 msgid "For create and batch operations"
 msgstr "create మరియు batch ఆపరేషన్ల కొరకు"
 
-#: ../src/plugins/abrt-retrace-client.c:1129
+#: ../src/plugins/abrt-retrace-client.c:1139
 msgid "read data from ABRT problem directory"
 msgstr "ABRT సమస్యాత్మక డైరెక్టరీ నుండి డాటా చదువుము"
 
-#: ../src/plugins/abrt-retrace-client.c:1131
+#: ../src/plugins/abrt-retrace-client.c:1141
 msgid "read data from coredump"
 msgstr "కోర్‌డంప్ నుండి డాటా చదువు"
 
-#: ../src/plugins/abrt-retrace-client.c:1133
+#: ../src/plugins/abrt-retrace-client.c:1143
 msgid "Delay for polling operations"
 msgstr "పోలింగ్ ఆపరేషన్ల కొరకు ఆలస్యం"
 
-#: ../src/plugins/abrt-retrace-client.c:1135
+#: ../src/plugins/abrt-retrace-client.c:1145
 msgid "(debug) do not delete temporary archive created from dump dir in /tmp"
 msgstr "(డీబగ్) /tmp నందు డంప్ dir నుండి సృష్టించబడిన తాత్కాలిక ఆర్కైవ్‌ను తొలగించవద్దు"
 
-#: ../src/plugins/abrt-retrace-client.c:1137
+#: ../src/plugins/abrt-retrace-client.c:1147
 msgid "For status, backtrace, and log operations"
 msgstr "స్థితి, బ్యాక్‌ట్రేస్, మరియు లాగ్ ఆపరేషన్ల కొరకు"
 
-#: ../src/plugins/abrt-retrace-client.c:1139
+#: ../src/plugins/abrt-retrace-client.c:1149
 msgid "id of your task on server"
 msgstr "సర్వర్ పైన మీ టాస్క్ id "
 
-#: ../src/plugins/abrt-retrace-client.c:1141
+#: ../src/plugins/abrt-retrace-client.c:1151
 msgid "password of your task on server"
 msgstr "సర్వర్ పైన మీ టాస్క్ సంకేతపదం"
 
-#: ../src/plugins/abrt-retrace-client.c:1145
+#: ../src/plugins/abrt-retrace-client.c:1155
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
 "Operations: create/status/backtrace/log/batch"
 msgstr "abrt-retrace-client <operation> [options]\nఆపరేషన్లు: create/status/backtrace/log/batch"
 
-#: ../src/plugins/abrt-retrace-client.c:1191
-#: ../src/plugins/abrt-retrace-client.c:1197
+#: ../src/plugins/abrt-retrace-client.c:1201
+#: ../src/plugins/abrt-retrace-client.c:1207
 msgid "Either problem directory or coredump is needed."
 msgstr "సమస్యాత్మక డైరెక్టరీ లేదా కోర్‌డంప్ అవసరము."
 
-#: ../src/plugins/abrt-retrace-client.c:1203
-#: ../src/plugins/abrt-retrace-client.c:1211
-#: ../src/plugins/abrt-retrace-client.c:1219
+#: ../src/plugins/abrt-retrace-client.c:1213
+#: ../src/plugins/abrt-retrace-client.c:1221
+#: ../src/plugins/abrt-retrace-client.c:1229
 msgid "Task id is needed."
 msgstr "టాస్క్ ఐడి అవసరమైంది."
 
-#: ../src/plugins/abrt-retrace-client.c:1205
-#: ../src/plugins/abrt-retrace-client.c:1213
-#: ../src/plugins/abrt-retrace-client.c:1221
+#: ../src/plugins/abrt-retrace-client.c:1215
+#: ../src/plugins/abrt-retrace-client.c:1223
+#: ../src/plugins/abrt-retrace-client.c:1231
 msgid "Task password is needed."
 msgstr "టాస్క్ సంకేతపదం అవసరమైంది."
 
-#: ../src/plugins/abrt-retrace-client.c:1225
+#: ../src/plugins/abrt-retrace-client.c:1235
 #, c-format
 msgid "Unknown operation: %s."
 msgstr "తెలియని ఆపరేషన్: %s."
@@ -1135,20 +1150,20 @@ msgid ""
 "Search for updates on bodhi server"
 msgstr "& [-v] [-r[RELEASE]] (-b ID1[,ID2,...] | PKG-NAME) [PKG-NAME]... \n\nబోదీ సేవికపై నవీకరణల కొరకు వెతుకుము"
 
-#: ../src/plugins/bodhi.c:432
+#: ../src/plugins/bodhi.c:434
 msgid "Searching for updates"
 msgstr "నవీకరణల కొరకు వెతుకుచున్నది"
 
-#: ../src/plugins/bodhi.c:438
+#: ../src/plugins/bodhi.c:440
 msgid "No updates for this package found"
 msgstr "ఈ ప్యాకేజీ కొరకు యే నవీకరణలు కనుగొనబడలేదు"
 
 #. strbuf_free(q);
-#: ../src/plugins/bodhi.c:467
+#: ../src/plugins/bodhi.c:469
 msgid "Local version of the package is newer than available updates"
 msgstr "అందుబాటులోని నవీకరణల కన్నా స్థానికంగా వున్న ప్యాకేజీ వర్షన్ కొత్తది"
 
-#: ../src/plugins/bodhi.c:484
+#: ../src/plugins/bodhi.c:486
 #, c-format
 msgid ""
 "An update exists which might fix your problem. You can install it by "
@@ -1175,7 +1190,11 @@ msgstr "సమస్య డాటాను DIR నందు విశ్లే�
 msgid "Print information about DIR"
 msgstr "DIR గురించి సమాచారం ముద్రించు"
 
-#: ../src/cli/abrt-cli.c:164
+#: ../src/cli/abrt-cli.c:150
+msgid "Print the count of the recent crashes"
+msgstr ""
+
+#: ../src/cli/abrt-cli.c:165
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "అదనపు సమాచారం కొరకు 'abrt-cli COMMAND --help' చూడండి"
 
@@ -1195,6 +1214,25 @@ msgstr "విశదీకృత నివేదిక చూపుము"
 #: ../src/cli/list.c:131
 msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
+
+#: ../src/cli/status.c:27
+msgid "& status [DIR]..."
+msgstr ""
+
+#: ../src/cli/status.c:37
+msgid "Print only the problem count without any message"
+msgstr ""
+
+#: ../src/cli/status.c:38
+msgid "Print only the problems more recent than specified timestamp"
+msgstr ""
+
+#: ../src/cli/status.c:57
+#, c-format
+msgid ""
+"ABRT has detected '%u' problem(s). (For more info run: $ abrt-cli list "
+"--full)\n"
+msgstr ""
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
