@@ -1,3 +1,20 @@
+# copy-pasted from libreport
+# ABRT_PARSE_WITH(PACKAGE)
+# -----------------------
+# For use in AC_ARG_WITH action-if-found, for packages default ON.
+# * Set NO_PACKAGE=YesPlease for --without-PACKAGE
+# * Unset NO_PACKAGE for --with-PACKAGE without ARG
+AC_DEFUN([ABRT_PARSE_WITH],
+    [m4_pushdef([ABRT_UC_PACKAGE], m4_toupper([$1]))dnl
+    if test "$withval" = "no"; then
+        NO_[]ABRT_UC_PACKAGE=YesPlease
+    elif test "$withval" = "yes"; then
+        NO_[]ABRT_UC_PACKAGE=
+    else
+        NO_[]ABRT_UC_PACKAGE=
+    fi
+    m4_popdef([ABRT_UC_PACKAGE])])
+
 AC_INIT([abrt],
 	m4_esyscmd([cat ./abrt-version]),
 	[crash-catcher@fedorahosted.org])
@@ -172,6 +189,18 @@ AC_SUBST(EVENTS_CONF_DIR)
 AC_SUBST(EVENTS_DIR)
 AC_SUBST(DEFAULT_DUMP_LOCATION)
 AC_SUBST(DEFAULT_DUMP_DIR_MODE)
+
+AC_ARG_WITH(bodhi,
+AS_HELP_STRING([--with-bodhi],[use Bodhi plugin (default is YES)]),
+ABRT_PARSE_WITH([bodhi]))
+
+if test -z "$NO_BODHI"
+then
+PKG_CHECK_MODULES([JSON_C], [json])
+AM_CONDITIONAL(BUILD_BODHI, true)
+else
+AM_CONDITIONAL(BUILD_BODHI, false)
+fi dnl end NO_BODHI
 
 # Initialize the test suite.
 AC_CONFIG_TESTDIR(tests)

@@ -22,8 +22,12 @@ bin_PROGRAMS = \
     abrt-action-generate-core-backtrace \
     abrt-action-analyze-backtrace \
     abrt-retrace-client \
-    abrt-dedup-client \
+    abrt-dedup-client
+
+if BUILD_BODHI
+bin_PROGRAMS += \
     abrt-bodhi
+endif
 
 libexec_PROGRAMS = abrt-action-install-debuginfo-to-abrt-cache
 
@@ -277,6 +281,7 @@ abrt_dedup_client_SOURCES = \
      $(SATYR_LIBS) \
      $(NSS_LIBS)
 
+if BUILD_BODHI
 abrt_bodhi_SOURCES = \
     bodhi.c
  abrt_bodhi_CPPFLAGS = \
@@ -293,7 +298,7 @@ abrt_bodhi_SOURCES = \
     $(RPM_LIBS) \
     $(LIBREPORT_LIBS) \
     $(LIBREPORT_WEB_LIBS)
-
+endif
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
