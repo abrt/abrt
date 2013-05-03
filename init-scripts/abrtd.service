@@ -1,6 +1,9 @@
 [Unit]
 Description=ABRT Automated Bug Reporting Tool
-After=syslog.target
+# livesys.service has been added because of live distributions mounting tmpfs
+# to /var/tmp after abrtd.service was started which was hiding /var/tmp/abrt
+# which was created before the mount to tmpfs happened
+After=syslog.target livesys.service
 
 [Service]
 ExecStart=/usr/sbin/abrtd -d -s
