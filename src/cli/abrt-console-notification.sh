@@ -11,4 +11,4 @@ fi
 date +%s > "$TMPPATH"
 mv "$TMPPATH" "$SINCEFILE"
 
-abrt-cli status --since="$SINCE"
+abrt-cli status --since="$SINCE" 2> /dev/null
