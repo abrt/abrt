@@ -174,7 +174,7 @@ GList *get_problem_dirs_for_element_in_time(uid_t uid,
     };
 
     const struct problem_condition timec = {
-        .field_name = FILENAME_TIME,
+        .field_name = FILENAME_LAST_OCCURRENCE,
         .args = &interval,
         .evaluate = time_interval_problem_condition
     };
