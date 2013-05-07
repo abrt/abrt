@@ -22,6 +22,11 @@ TESTSUITE_FILES += examples/oops-with-jiffies.test
 TESTSUITE_FILES += examples/oops-with-jiffies.right
 TESTSUITE_FILES += examples/oops_recursive_locking1.test
 TESTSUITE_FILES += examples/oops_recursive_locking1.right
+TESTSUITE_FILES += examples/nmi_oops.test
+TESTSUITE_FILES += examples/nmi_oops.right
+TESTSUITE_FILES += examples/nmi_oops_hash.test
+TESTSUITE_FILES += examples/nmi_oops_hash.right
+
 
 EXTRA_DIST = doc/coding-style abrt.spec.in abrt.pc.in \
 	abrt-version asciidoc.conf init-scripts/* $(TESTSUITE_FILES)

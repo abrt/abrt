@@ -150,7 +150,10 @@ int main(void)
 		{ EXAMPLE_PFX"/oops4.right", EXAMPLE_PFX"/oops-same-as-oops4.right" },
 		{ EXAMPLE_PFX"/hash-gen-oops6.right", EXAMPLE_PFX"/hash-gen-same-as-oops6.right" },
 		{ EXAMPLE_PFX"/hash-gen-short-oops.right", EXAMPLE_PFX"/hash-gen-short-oops.right" },
+		{ EXAMPLE_PFX"/nmi_oops_hash.test", EXAMPLE_PFX"/nmi_oops_hash.right" },
 	};
+
+    g_verbose = 4;
 
 	int ret = 0;
 	for (int i = 0; i < ARRAY_SIZE(all_same_hashes); ++i)
@@ -161,41 +164,41 @@ int main(void)
 
 ]])
 
-AT_TESTFUN([koops_remove_jiffies_timestamp],
+AT_TESTFUN([koops_parser_sanity],
 [[
 #include "libabrt.h"
 #include "koops-test.h"
 
 int run_test(const struct test_struct *test)
 {
-	char *oops_jiffies = fread_full(test->filename);
-	char *oops_jiffies_bck = oops_jiffies;
-	char *oops_no_jiffies = fread_full(test->expected_results);
-	char *oops_no_jiffies_bck = oops_no_jiffies;
+	char *oops_test = fread_full(test->filename);
+	char *oops_test_bck = oops_test;
+	char *oops_expected = fread_full(test->expected_results);
+	char *oops_expected_bck = oops_expected;
 
-	if (strncmp(oops_no_jiffies, "abrt-dump-oops: Found oopses:",
+	if (strncmp(oops_expected, "abrt-dump-oops: Found oopses:",
 				strlen("abrt-dump-oops: Found oopses:")) == 0) {
 		/* Skip "abrt-dump-oops: Found oopses: N"
 		 * and next line (which should be empty)
 		 */
-		oops_no_jiffies = strchr(oops_no_jiffies, '\n') + 1;
-		oops_no_jiffies = strchr(oops_no_jiffies, '\n') + 1;
-		if (strncmp(oops_no_jiffies, "Version: ",
+		oops_expected = strchr(oops_expected, '\n') + 1;
+		oops_expected = strchr(oops_expected, '\n') + 1;
+		if (strncmp(oops_expected, "Version: ",
 				strlen("Version: ")) == 0)
-			oops_no_jiffies += strlen("Version: ");
+			oops_expected += strlen("Version: ");
 	}
 
 	/* for testing purpose, I will record only one koops */
 	GList *oops_list = NULL;
-	koops_extract_oopses(&oops_list, oops_jiffies, strlen(oops_jiffies));
+	koops_extract_oopses(&oops_list, oops_test, strlen(oops_test));
 
-	int result = !(oops_list && !strcmp((char *)oops_list->data, oops_no_jiffies));
+	int result = !(oops_list && !strcmp((char *)oops_list->data, oops_expected));
 	if (result)
-		log("'%s' \n '%s'", (char *)oops_list->data, oops_no_jiffies);
+		log("'%s' \n '%s'", (char *)oops_list->data, oops_expected);
 
 	g_list_free_full(oops_list, free);
-	free(oops_no_jiffies_bck);
-	free(oops_jiffies_bck);
+	free(oops_expected_bck);
+	free(oops_test_bck);
 
 	return result;
 }
@@ -205,6 +208,7 @@ int main(void)
 	struct test_struct all_same_hashes[] = {
 		{ EXAMPLE_PFX"/oops-with-jiffies.test", EXAMPLE_PFX"/oops-with-jiffies.right" },
 		{ EXAMPLE_PFX"/oops_recursive_locking1.test", EXAMPLE_PFX"/oops_recursive_locking1.right"},
+		{ EXAMPLE_PFX"/nmi_oops.test", EXAMPLE_PFX"/nmi_oops.right"},
 	};
 
 	int ret = 0;

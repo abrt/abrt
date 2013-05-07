@@ -1,0 +1,32 @@
+Jan 11 22:31:37 kids1 kernel: ------------[ cut here ]------------
+Jan 11 22:31:38 kids1 kernel: WARNING: at kernel/watchdog.c:245 watchdog_overflow_callback+0x9c/0xd0()
+Jan 11 22:31:38 kids1 kernel: Hardware name: Bochs
+Jan 11 22:31:38 kids1 kernel: Watchdog detected hard LOCKUP on cpu 0
+Jan 11 22:31:38 kids1 kernel: Modules linked in: tcp_lp fuse ebtable_nat xt_CHECKSUM bridge stp llc nf_conntrack_netbios_ns nf_conntrack_broadcast ipt_MASQUERADE ip6table_nat nf_nat_ipv6 ip6table_mangle ip6t_REJECT nf_conntrack_ipv6 nf_defrag_ipv6 iptable_nat nf_nat_ipv4 nf_nat iptable_mangle nf_conntrack_ipv4 nf_defrag_ipv4 xt_conntrack bnep nf_conntrack bluetooth rfkill ebtable_filter ebtables ip6table_filter ip6_tables joydev snd_intel8x0 snd_ac97_codec crc32_pclmul ac97_bus crc32c_intel snd_seq snd_seq_device ghash_clmulni_intel snd_pcm snd_page_alloc snd_timer snd microcode virtio_balloon 8139too i2c_piix4 soundcore 8139cp mii binfmt_misc qxl drm_kms_helper ttm drm i2c_core uinput
+Jan 12 14:32:19 kids1 kernel: Pid: 0, comm: swapper/0 Not tainted 3.8.9-200.fc18.x86_64 #1
+Jan 12 14:32:21 kids1 kernel: Call Trace:
+Jan 12 14:32:21 kids1 kernel:   <NMI>  [<ffffffff810eb800>] ? watchdog_overflow_callback+0x60/0xd0
+Jan 12 14:32:21 kids1 kernel:   [<ffffffff8105cd86>] warn_slowpath_common+0x66/0x80
+Jan 12 14:32:21 kids1 kernel:   [<ffffffff8105cdec>] warn_slowpath_fmt+0x4c/0x50
+Jan 12 16:12:16 kids1 kernel:   [<ffffffff810eb7a0>] ? watchdog_enable+0x1e0/0x1e0
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff810eb83c>] watchdog_overflow_callback+0x9c/0xd0
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff811261ce>] __perf_event_overflow+0x8e/0x220
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff81125059>] ? perf_event_update_userpage+0x19/0x100
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff81126da4>] perf_event_overflow+0x14/0x20
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff81028b02>] intel_pmu_handle_irq+0x1b2/0x370
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff81646e1d>] perf_event_nmi_handler+0x1d/0x20
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff816465e9>] nmi_handle.isra.0+0x59/0x90
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff816466f0>] do_nmi+0xd0/0x310
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff81645c41>] end_repeat_nmi+0x1e/0x2e
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff81093e44>] ? irqtime_account_process_tick.isra.2+0x94/0x3c0
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff81093e44>] ? irqtime_account_process_tick.isra.2+0x94/0x3c0
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff81093e44>] ? irqtime_account_process_tick.isra.2+0x94/0x3c0
+Jan 12 19:08:41 kids1 kernel:   <<EOE>>  [<ffffffff810944f0>] account_idle_ticks+0x90/0xa0
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff810b6ae5>] tick_nohz_idle_exit+0x165/0x1a0
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff8101c06b>] cpu_idle+0x11b/0x140
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff81629902>] rest_init+0x72/0x80
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff81d04eca>] start_kernel+0x3f2/0x3fe
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff81d048e1>] ? repair_env_string+0x5c/0x5c
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff81d04120>] ? early_idt_handlers+0x120/0x120
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff81d045e0>] x86_64_start_reservations+0x2a/0x2c
+Jan 12 19:08:41 kids1 kernel:   [<ffffffff81d046d5>] x86_64_start_kernel+0xf3/0x100
