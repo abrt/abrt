@@ -3,7 +3,7 @@ import logging
 import report
 
 import problem.config
-import problem.exception
+
 
 class DBusProxy(object):
     __instance = None
@@ -17,8 +17,8 @@ class DBusProxy(object):
 
     def __new__(cls, *args, **kwargs):
         if not cls.__instance:
-            cls.__instance = super(DBusProxy, cls).__new__(
-                                    cls, *args, **kwargs)
+            cls.__instance = super(DBusProxy, cls).__new__(cls, *args, **kwargs)
+
         return cls.__instance
 
     def connect(self):
@@ -34,7 +34,7 @@ class DBusProxy(object):
 
         try:
             self._iface = self.dbus.Interface(self._proxy,
-                'org.freedesktop.problems')
+                                              'org.freedesktop.problems')
         except self.dbus.exceptions.DBusException as e:
             logging.debug('Unable to get dbus interface: {0}'.format(e.message))
             return
@@ -84,6 +84,7 @@ class DBusProxy(object):
     def list_all(self):
         return map(str, self._dbus_call('GetAllProblems'))
 
+
 class SocketProxy(object):
     def create(self, problem_dict):
         import socket
@@ -109,18 +110,25 @@ class SocketProxy(object):
 
     def get_item(self, *args):
         raise NotImplementedError
+
     def set_item(self, *args):
         raise NotImplementedError
+
     def del_item(self, *args):
         raise NotImplementedError
+
     def delete(self, *args):
         raise NotImplementedError
+
     def list(self, *args):
         raise NotImplementedError
+
     def list_all(self, *args):
         return self.list(*args)
+
     def get_problem_watcher(self):
         raise NotImplementedError
+
 
 class FsProxy(object):
     def __init__(self, directory=problem.config.DEFAULT_DUMP_LOCATION):
@@ -147,7 +155,8 @@ class FsProxy(object):
     def get_item(self, dump_dir, name):
         ddir = self._open_ddir(dump_dir)
 
-        val = ddir.load_text(name,
+        val = ddir.load_text(
+            name,
             report.DD_OPEN_READONLY |
             report.DD_FAIL_QUIETLY_EACCES |
             report.DD_FAIL_QUIETLY_ENOENT |
@@ -193,6 +202,7 @@ class FsProxy(object):
     def list_all(self, *args, **kwargs):
         kwargs.update(dict(_all=True))
         return self.list(*args, **kwargs)
+
 
 def get_proxy():
     try:
