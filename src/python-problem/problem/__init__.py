@@ -271,7 +271,7 @@ def get(identifier, auth=False, __proxy=proxies.get_proxy()):
 
     fun = __proxy.list
     if auth:
-        lst = __proxy.list_all
+        fun = __proxy.list_all
 
     if identifier not in fun():
         return None
