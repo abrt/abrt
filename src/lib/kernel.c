@@ -317,6 +317,7 @@ next_line:
              && !strstr(curline, "<#DF>")
              && !strstr(curline, "<IRQ>")
              && !strstr(curline, "<EOI>")
+             && !strstr(curline, "<NMI>")
              && !strstr(curline, "<<EOE>>")
              && strncmp(curline, "Code: ", 6) != 0
              && strncmp(curline, "RIP ", 4) != 0
@@ -431,6 +432,11 @@ int koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf)
             for (;;)
             {
                 p = skip_whitespace(p);
+                if (prefixcmp(p, "<NMI>") == 0)
+                {
+                    p += strlen("<NMI>");
+                    continue;
+                }
                 if (prefixcmp(p, "<IRQ>") == 0)
                 {
                     p += strlen("<IRQ>");
