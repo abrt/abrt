@@ -3,6 +3,7 @@ import logging
 
 import problem
 
+
 class ProblemWatcher(object):
     ''' New problem signal handler attached to DBus signal
 
@@ -14,14 +15,13 @@ class ProblemWatcher(object):
 
     def __init__(self, auth):
         import dbus
-        import dbus.mainloop.glib
         import gobject
 
         gobject.threads_init()
 
         bus = dbus.SystemBus(
-                mainloop=dbus.mainloop.glib.DBusGMainLoop(),
-                private=True)
+            mainloop=dbus.mainloop.glib.DBusGMainLoop(),
+            private=True)
 
         self.bus = bus
         self.auth = auth
@@ -39,7 +39,7 @@ class ProblemWatcher(object):
         logging.debug('New problem notification received')
         if int(uid) != os.getuid() and not self.auth:
             logging.debug('Auth disabled, ignoring crash with'
-                ' uid: {0}'.format(uid))
+                          ' uid: {0}'.format(uid))
             return
 
         prob = problem.tools.problemify(ddir, problem.proxies.get_proxy())

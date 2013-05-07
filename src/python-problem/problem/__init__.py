@@ -16,7 +16,7 @@ UNKNOWN = 'libreport'
 REQUIRED_FIELDS = ['executable']
 
 PROBLEM_TYPES = {
-    'JAVA' : JAVA,
+    'JAVA': JAVA,
     'SELINUX': SELINUX,
     'CCPP': CCPP,
     'PYTHON': PYTHON,
@@ -24,7 +24,8 @@ PROBLEM_TYPES = {
     'RUNTIME': RUNTIME,
     'XORG': XORG,
     'UNKNOWN': UNKNOWN,
-    }
+}
+
 
 class Problem(object):
     '''
@@ -54,8 +55,8 @@ class Problem(object):
         # by attr name
         mapping = {
             'time': (datetime.datetime.fromtimestamp,
-                    lambda x: x.strftime('%s'))
-            }
+                     lambda x: x.strftime('%s'))
+        }
 
         if attr in mapping:
             fun, revfun = mapping[attr]
@@ -150,7 +151,7 @@ class Problem(object):
         for field in REQUIRED_FIELDS:
             if not hasattr(self, field):
                 raise exception.ValidationError(
-                     'Missing required field {0}'.format(field))
+                    'Missing required field {0}'.format(field))
 
     def save(self):
         ''' Create this problem or update modified data
@@ -176,7 +177,7 @@ class Problem(object):
                     self._proxy.del_item(self._probdir, key)
                 else:
                     self._proxy.set_item(self._probdir, key,
-                        self.__cast(key, value, reverse=True))
+                                         self.__cast(key, value, reverse=True))
 
             self._dirty_data = dict()
         else:
@@ -194,47 +195,56 @@ class Problem(object):
             self._probdir = None
             self._dirty_data = {}
 
+
 class Java(Problem):
     ''' Java problem '''
     def __init__(self, reason):
         super(Java, self).__init__(JAVA, reason)
+
 
 class Selinux(Problem):
     ''' Selinux problem '''
     def __init__(self, reason):
         super(Selinux, self).__init__(SELINUX, reason)
 
+
 class Ccpp(Problem):
     ''' C, C++ problem '''
     def __init__(self, reason):
         super(Ccpp, self).__init__(CCPP, reason)
+
 
 class Python(Problem):
     ''' Python problem '''
     def __init__(self, reason):
         super(Python, self).__init__(PYTHON, reason)
 
+
 class Kerneloops(Problem):
     ''' Kerneloops problem '''
     def __init__(self, reason):
         super(Kerneloops, self).__init__(KERNELOOPS, reason)
+
 
 class Xorg(Problem):
     ''' Xorg problem '''
     def __init__(self, reason):
         super(Xorg, self).__init__(XORG, reason)
 
+
 class Runtime(Problem):
     ''' Runtime problem '''
     def __init__(self, reason):
         super(Runtime, self).__init__(RUNTIME, reason)
+
 
 class Unknown(Problem):
     ''' Unknown problem '''
     def __init__(self, reason):
         super(Unknown, self).__init__('libreport', reason)
 
-def list(auth=False, __proxy = proxies.get_proxy()):
+
+def list(auth=False, __proxy=proxies.get_proxy()):
     ''' Return the list of the problems
 
     Use ``auth=True`` if authentication should be attempted.
@@ -249,7 +259,8 @@ def list(auth=False, __proxy = proxies.get_proxy()):
 
     return map(lambda x: tools.problemify(x, __proxy), fun())
 
-def get(identifier, auth=False, __proxy = proxies.get_proxy()):
+
+def get(identifier, auth=False, __proxy=proxies.get_proxy()):
     ''' Return problem object matching ``identifier``
 
     Return ``None`` in case the problem does not exist.
@@ -266,6 +277,7 @@ def get(identifier, auth=False, __proxy = proxies.get_proxy()):
         return None
 
     return tools.problemify(identifier, __proxy)
+
 
 def get_problem_watcher(auth=False):
     ''' Return ``ProblemWatcher`` object which can be used

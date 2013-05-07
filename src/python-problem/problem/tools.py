@@ -1,11 +1,9 @@
-import os
-import logging
-
 import problem
 
+
 def problemify(probdir, proxy):
-    by_analyzer = dict(zip(problem.PROBLEM_TYPES.values(), 
-        problem.PROBLEM_TYPES.keys()))
+    by_analyzer = dict(zip(problem.PROBLEM_TYPES.values(),
+                           problem.PROBLEM_TYPES.keys()))
 
     analyzer = proxy.get_item(probdir, 'analyzer')
     reason = proxy.get_item(probdir, 'reason')
