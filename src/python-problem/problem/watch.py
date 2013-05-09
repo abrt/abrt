@@ -16,11 +16,12 @@ class ProblemWatcher(object):
     def __init__(self, auth):
         import dbus
         import gobject
+        from dbus.mainloop.glib import DBusGMainLoop
 
         gobject.threads_init()
 
         bus = dbus.SystemBus(
-            mainloop=dbus.mainloop.glib.DBusGMainLoop(),
+            mainloop=DBusGMainLoop(),
             private=True)
 
         self.bus = bus
@@ -32,6 +33,11 @@ class ProblemWatcher(object):
         evt_match = self.bus.add_signal_receiver(
             self._new_problem_handler,
             signal_name='Crash', path='/org/freedesktop/problems')
+
+        # add second listener for the old path
+        evt_match_old_path = self.bus.add_signal_receiver(
+            self._new_problem_handler,
+            signal_name='Crash', path='/com/redhat/abrt')
 
         self.loop = gobject.MainLoop()
 
