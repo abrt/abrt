@@ -155,12 +155,14 @@ class FsProxy(object):
     def get_item(self, dump_dir, name):
         ddir = self._open_ddir(dump_dir)
 
-        val = ddir.load_text(
-            name,
-            report.DD_OPEN_READONLY |
-            report.DD_FAIL_QUIETLY_EACCES |
+        flags = (report.DD_FAIL_QUIETLY_EACCES |
             report.DD_FAIL_QUIETLY_ENOENT |
             report.DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE)
+
+        if hasattr(report, 'DD_OPEN_READONLY'):
+            flags |= report.DD_OPEN_READONLY
+
+        val = ddir.load_text(name, flags)
 
         ddir.close()
         return val
