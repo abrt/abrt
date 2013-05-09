@@ -6,4 +6,4 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-nosetests --with-coverage --cover-package=problem --nocapture --nologcapture --no-skip --verbose tests/*.py
+nosetests --with-coverage --cover-package=problem --nocapture --no-skip --verbose tests/*.py
