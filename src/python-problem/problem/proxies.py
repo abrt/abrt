@@ -193,7 +193,10 @@ class FsProxy(object):
                 continue
 
             uid = os.getuid()
-            if not _all and os.stat(dump_dir).st_uid != uid:
+            gid = os.getuid()
+            dir_stat = os.stat(dump_dir)
+            if not _all and (dir_stat.st_uid != uid and
+                             dir_stat.st_gid != gid):
                 continue
 
             ddir = report.dd_opendir(dump_dir)
