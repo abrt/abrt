@@ -17,7 +17,7 @@ class DBusProxy(object):
 
     def __new__(cls, *args, **kwargs):
         if not cls.__instance:
-            cls.__instance = super(DBusProxy, cls).__new__(cls, *args, **kwargs)
+            cls.__instance = super(DBusProxy, cls).__new__(cls)
 
         return cls.__instance
 
@@ -29,14 +29,14 @@ class DBusProxy(object):
             self._proxy = self.dbus.SystemBus().get_object(
                 'org.freedesktop.problems', '/org/freedesktop/problems')
         except self.dbus.exceptions.DBusException as e:
-            logging.debug('Unable to get dbus proxy: {0}'.format(e.message))
+            logging.debug('Unable to get dbus proxy: {0}'.format(e))
             return
 
         try:
             self._iface = self.dbus.Interface(self._proxy,
                                               'org.freedesktop.problems')
         except self.dbus.exceptions.DBusException as e:
-            logging.debug('Unable to get dbus interface: {0}'.format(e.message))
+            logging.debug('Unable to get dbus interface: {0}'.format(e))
             return
 
         self.connected = True
@@ -52,10 +52,10 @@ class DBusProxy(object):
                 return getattr(self._iface, fun_name)(*args)
 
             if dbname == 'org.freedesktop.problems.AuthFailure':
-                raise problem.exception.AuthFailure(e.message)
+                raise problem.exception.AuthFailure(e)
 
             if dbname == 'org.freedesktop.problems.InvalidProblemDir':
-                raise problem.exception.InvalidProblem(e.message)
+                raise problem.exception.InvalidProblem(e)
 
             raise
 
