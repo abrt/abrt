@@ -40,11 +40,7 @@ class ProblemAPITestCase(ProblematicTestCase):
 
         tools.eq_(prob.reason, 'Front fell off')
 
-        with self.assertRaises(AttributeError):
-            prob.non_existent
-
-        with self.assertRaises(AttributeError):
-            prob.non_existent_method()
+        self.assertRaises(AttributeError, lambda: prob.non_existent)
 
         prob.add_current_process_data()
         ident = prob.save()
@@ -52,11 +48,7 @@ class ProblemAPITestCase(ProblematicTestCase):
         self.proxy.set_item(ident, 'test', 'wat')
         tools.eq_(prob.test, 'wat')
 
-        with self.assertRaises(AttributeError):
-            prob.persisted_non_existent
-
-        with self.assertRaises(AttributeError):
-            prob.persisted_non_existent_method()
+        self.assertRaises(AttributeError, lambda: prob.persisted_non_existent)
 
         prob.delete()
 
@@ -67,8 +59,7 @@ class ProblemAPITestCase(ProblematicTestCase):
         prob.save()
         del prob.executable
 
-        with self.assertRaises(AttributeError):
-            prob.executable
+        self.assertRaises(AttributeError, getattr, prob, 'executable')
 
         prob.delete()
 
@@ -89,8 +80,7 @@ class ProblemAPITestCase(ProblematicTestCase):
 
         tools.eq_(prob['reason'], 'Front fell off')
 
-        with self.assertRaises(KeyError):
-            prob['non_existent']
+        self.assertRaises(KeyError, lambda:  prob['non_existent'])
 
         prob.add_current_process_data()
         ident = prob.save()
@@ -98,8 +88,7 @@ class ProblemAPITestCase(ProblematicTestCase):
         self.proxy.set_item(ident, 'test', 'wat')
         tools.eq_(prob['test'], 'wat')
 
-        with self.assertRaises(KeyError):
-            prob['persisted_non_existent']
+        self.assertRaises(KeyError, lambda: prob['persisted_non_existent'])
 
         prob.delete()
 
@@ -156,11 +145,9 @@ class ProblemAPITestCase(ProblematicTestCase):
     def test_delattr(self):
         prob = self.create_problem()
         del prob.reason
-        with self.assertRaises(AttributeError):
-            prob.reason
+        self.assertRaises(AttributeError, lambda: prob.reason)
 
-        with self.assertRaises(AttributeError):
-            del prob.non_existent
+        self.assertRaises(AttributeError, lambda: prob.non_existant)
 
         prob.add_current_process_data()
         ident = prob.save()
@@ -184,8 +171,10 @@ class ProblemAPITestCase(ProblematicTestCase):
 
         del prob.test
 
-        with self.assertRaises(AttributeError):
+        def raising_delete():
             del prob.test
+
+        self.assertRaises(AttributeError, raising_delete)
 
         prob.save()
 
@@ -197,11 +186,12 @@ class ProblemAPITestCase(ProblematicTestCase):
         prob = self.create_problem()
 
         del prob['reason']
-        with self.assertRaises(KeyError):
-            prob['reason']
+        self.assertRaises(KeyError, lambda: prob['reason'])
 
-        with self.assertRaises(KeyError):
+        def raising_delete():
             del prob['non_existent']
+
+        self.assertRaises(KeyError, raising_delete)
 
         prob.add_current_process_data()
         ident = prob.save()
@@ -291,8 +281,7 @@ class ProblemAPITestCase(ProblematicTestCase):
         prob.validate()
 
         del prob.executable
-        with self.assertRaises(problem.exception.ValidationError):
-            prob.validate()
+        self.assertRaises(problem.exception.ValidationError, prob.validate)
 
     def test_invalidproblem(self):
         prob = self.create_problem()
@@ -302,8 +291,7 @@ class ProblemAPITestCase(ProblematicTestCase):
 
         time.sleep(2)
 
-        with self.assertRaises(problem.exception.InvalidProblem):
-            self.proxy.get_item(ident, 'reason')
+        self.assertRaises(problem.exception.InvalidProblem, self.proxy.get_item,ident, 'reason')
 
     def test_save(self):
         prob = self.create_problem()
