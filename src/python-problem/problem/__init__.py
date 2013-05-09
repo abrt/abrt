@@ -113,7 +113,7 @@ class Problem(object):
         try:
             return self.__getattr__(attr)
         except AttributeError as e:
-            raise KeyError(e.message)
+            raise KeyError(e)
 
     def __setitem__(self, attr, value):
         self.__setattr__(attr, value)
@@ -122,7 +122,7 @@ class Problem(object):
         try:
             self.__delattr__(attr)
         except AttributeError as e:
-            raise KeyError(e.message)
+            raise KeyError(e)
 
     def __repr__(self):
         return '<problem.{0} ({1})>'.format(self.__class__.__name__, self.reason)
