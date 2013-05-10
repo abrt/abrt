@@ -8,6 +8,7 @@ BUILTIN_C =
 BUILTIN_C += list.c
 BUILTIN_C += rm.c
 BUILTIN_C += report.c
+BUILTIN_C += status.c
 
 abrt_cli_SOURCES = $(CLI_C) $(BUILTIN_C) builtin-cmd.h abrt-cli-core.h
 

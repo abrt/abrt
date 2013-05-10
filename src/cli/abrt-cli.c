@@ -147,6 +147,7 @@ int main(int argc, const char **argv)
         CMD(rm, _("Remove problem directory DIR")),
         CMD(report, _("Analyze and report problem data in DIR")),
         CMD(info, _("Print information about DIR")),
+        CMD(status, _("Print the count of the recent crashes")),
         {NULL, NULL, NULL}
     };
 

@@ -24,5 +24,6 @@ extern int cmd_list(int argc, const char **argv);
 extern int cmd_rm(int argc, const char **argv);
 extern int cmd_report(int argc, const char **argv);
 extern int cmd_info(int argc, const char **argv);
+extern int cmd_status(int argc, const char **argv);
 
 #endif /* _BUILTIN-CMD_H_ */
