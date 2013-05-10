@@ -55,12 +55,11 @@
 #include <btparser/location.h>
 #include "libabrt.h" /* xstrdup */
 
-#define BACKTRACE_DUP_THRESHOLD 2
+#define BACKTRACE_DUP_THRESHOLD 2.0
 
 /* abrt-handle-event.c */
 #define sr_core_stacktrace btp_thread
 #define sr_core_thread btp_thread
-#define sr_thread_get_frame_count btp_thread_get_frame_count
 
 enum sr_distance_type
 {

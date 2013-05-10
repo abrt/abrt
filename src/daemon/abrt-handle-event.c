@@ -49,8 +49,8 @@ static int core_backtrace_is_duplicate(struct sr_core_stacktrace *bt1,
         goto end;
     }
 
-    int distance = sr_distance_core(SR_DISTANCE_DAMERAU_LEVENSHTEIN,
-                                    thread1, thread2);
+    float distance = sr_distance_core(SR_DISTANCE_DAMERAU_LEVENSHTEIN,
+                                      thread1, thread2);
 
     if (distance == -1)
     {
@@ -58,7 +58,7 @@ static int core_backtrace_is_duplicate(struct sr_core_stacktrace *bt1,
     }
     else
     {
-        VERB2 log("Distance between backtraces: %d", distance);
+        VERB2 log("Distance between backtraces: %f", distance);
         result = (distance <= BACKTRACE_DUP_THRESHOLD);
     }
 
