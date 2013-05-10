@@ -161,7 +161,3 @@ EXTRA_DIST = \
 	api.rst \
 	properties.rst \
 	usage.rst
-
-man5_MANS = _build/man/abrt-python.5
-
-_build/man/abrt-python.5: problem-config man
