@@ -186,6 +186,16 @@ Provides: bug-buddy
 %description desktop
 Virtual package to make easy default installation on desktop environments.
 
+%package console-notification
+Summary: ABRT console notification script
+Group: Applications/System
+Requires: %{name} = %{version}-%{release}
+Requires: %{name}-cli = %{version}-%{release}
+
+%description console-notification
+A small script which prints a count of detected problems when someone logs in
+to the shell
+
 %prep
 %setup -q
 
@@ -533,6 +543,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files desktop
 %defattr(-,root,root,-)
+
+%files console-notification
+%config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
 * Wed Mar 16 2011 Jiri Moskovcak <jmoskovc@redhat.com> 2.0.0-1
