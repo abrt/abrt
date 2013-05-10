@@ -22,4 +22,8 @@ abrt_cli_LDADD = \
     $(LIBREPORT_LIBS) \
     ../lib/libabrt.la
 
+profileconfigdir = $(sysconfdir)/profile.d
+dist_profileconfig_DATA = \
+    abrt-console-notification.sh
+
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
