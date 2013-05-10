@@ -96,6 +96,13 @@ sr_core_thread_get_frame_count(struct sr_core_thread *thread)
     return btp_thread_get_frame_count(thread);
 }
 
+int
+sr_core_thread_cmp(struct sr_core_thread *thread1,
+                   struct sr_core_thread *thread2)
+{
+    return btp_thread_cmp(thread1, thread2);
+}
+
 float
 sr_distance_core(enum sr_distance_type distance_type,
                  struct sr_core_thread *thread1,

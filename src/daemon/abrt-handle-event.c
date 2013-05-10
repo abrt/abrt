@@ -42,12 +42,25 @@ static int core_backtrace_is_duplicate(struct sr_core_stacktrace *bt1,
     struct sr_core_thread *thread1 = sr_core_stacktrace_find_crash_thread(bt1);
     struct sr_core_thread *thread2 = sr_core_stacktrace_find_crash_thread(bt2);
 
-    if (sr_core_thread_get_frame_count(thread2) <= 0)
+    int length1 = sr_core_thread_get_frame_count(thread1);
+    int length2 = sr_core_thread_get_frame_count(thread2);
+
+    if (length2 <= 0)
     {
         VERB1 log("Core backtrace has zero frames, considering it not duplicate");
         result = 0;
         goto end;
     }
+
+    /* This is an ugly workaround for https://github.com/abrt/btparser/issues/6 */
+#ifndef USE_SATYR
+    if (length1 <= 2 || length2 <= 2)
+    {
+        VERB1 log("Backtraces too short, falling back on full comparison");
+        result = (sr_core_thread_cmp(thread1, thread2) == 0);
+        goto end;
+    }
+#endif
 
     float distance = sr_distance_core(SR_DISTANCE_DAMERAU_LEVENSHTEIN,
                                       thread1, thread2);
