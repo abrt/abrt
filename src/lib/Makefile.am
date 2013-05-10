@@ -9,7 +9,8 @@ libabrt_la_SOURCES = \
     hooklib.c \
     daemon_is_ok.c \
     kernel.c \
-    check_recent_crash_file.c
+    check_recent_crash_file.c \
+    problem_api.c
 
 libabrt_la_CPPFLAGS = \
     -Wall -Wwrite-strings -Werror \
