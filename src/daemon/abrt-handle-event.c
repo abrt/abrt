@@ -197,6 +197,10 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
     dup_uuid_init(dd);
     dup_corebt_init(dd);
 
+    char *analyzer = dd_load_text(dd, FILENAME_ANALYZER);
+    /* dump_dir_name can be relative */
+    dump_dir_name = realpath(dump_dir_name, NULL);
+
     dd_close(dd);
 
     DIR *dir = opendir(g_settings_dump_location);
@@ -215,6 +219,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
             continue; /* skip anything named "<dirname>.new" */
 
         char *dump_dir_name2 = concat_path_file(g_settings_dump_location, dent->d_name);
+        char *dd_uid = NULL, *dd_analyzer = NULL;
 
         if (strcmp(dump_dir_name, dump_dir_name2) == 0)
             goto next; /* we are never a dup of ourself */
@@ -224,8 +229,16 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
             goto next;
 
         /* crashes of different users are not considered duplicates */
-        char *dd_uid = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT);
+        dd_uid = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT);
         if (strcmp(uid, dd_uid))
+        {
+            dd_close(dd);
+            goto next;
+        }
+
+        /* different crash types are not duplicates */
+        dd_analyzer = dd_load_text_ext(dd, FILENAME_ANALYZER, DD_FAIL_QUIETLY_ENOENT);
+        if (strcmp(analyzer, dd_analyzer))
         {
             dd_close(dd);
             goto next;
@@ -243,10 +256,13 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
 
 next:
         free(dump_dir_name2);
+        free(dd_uid);
+        free(dd_analyzer);
     }
     closedir(dir);
 
 end:
+    free(analyzer);
     return retval;
 }
 
