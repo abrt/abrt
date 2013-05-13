@@ -15,7 +15,7 @@ fi
 # always update the lastnotification
 if [ -f "$TMPPATH" ]; then
     date +%s > "$TMPPATH"
-    mv "$TMPPATH" "$SINCEFILE"
+    mv -f "$TMPPATH" "$SINCEFILE"
 fi
 
 abrt-cli status --since="$SINCE" 2> /dev/null
