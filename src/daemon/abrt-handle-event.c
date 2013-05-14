@@ -42,7 +42,6 @@ static int core_backtrace_is_duplicate(struct sr_core_stacktrace *bt1,
     struct sr_core_thread *thread1 = sr_core_stacktrace_find_crash_thread(bt1);
     struct sr_core_thread *thread2 = sr_core_stacktrace_find_crash_thread(bt2);
 
-    int length1 = sr_core_thread_get_frame_count(thread1);
     int length2 = sr_core_thread_get_frame_count(thread2);
 
     if (length2 <= 0)
@@ -54,6 +53,8 @@ static int core_backtrace_is_duplicate(struct sr_core_stacktrace *bt1,
 
     /* This is an ugly workaround for https://github.com/abrt/btparser/issues/6 */
 #ifndef USE_SATYR
+    int length1 = sr_core_thread_get_frame_count(thread1);
+
     if (length1 <= 2 || length2 <= 2)
     {
         VERB1 log("Backtraces too short, falling back on full comparison");
