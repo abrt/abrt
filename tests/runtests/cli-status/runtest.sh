@@ -73,6 +73,7 @@ rlJournalStart
 
 
     rlPhaseStartCleanup
+        find $( dirname $crash_PATH ) -mindepth 1 -type d | xargs rm -rf
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd
