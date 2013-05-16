@@ -6,6 +6,8 @@
 # then removes the files (UEFI storage is a limited resource).
 #
 
+cd /sys/fs/pstore 2>/dev/null || exit 0
+
 # Wait for abrtd to start. Give it at least 1 second to initialize.
 i=10
 while ! pidof abrtd >/dev/null; do
@@ -15,8 +17,6 @@ while ! pidof abrtd >/dev/null; do
 	sleep 1
 done
 sleep 1
-
-cd /sys/fs/pstore 2>/dev/null || exit 0
 
 abrt-merge-uefioops -o * | abrt-dump-oops -D
 if test $? = 0; then
