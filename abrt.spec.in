@@ -754,6 +754,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/dbus-1/system-services/org.freedesktop.problems.service
 %{_datadir}/polkit-1/actions/abrt_polkit.policy
 %config(noreplace) %{_sysconfdir}/libreport/events.d/dbus_event.conf
+%dir %{_defaultdocdir}/%{name}-dbus-%{version}/
 %dir %{_defaultdocdir}/%{name}-dbus-%{version}/html/
 %{_defaultdocdir}/%{name}-dbus-%{version}/html/*.html
 %{_defaultdocdir}/%{name}-dbus-%{version}/html/*.css
@@ -761,6 +762,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files python
 %{python_sitelib}/problem/
 %{_mandir}/man5/abrt-python.5.gz
+%dir %{_defaultdocdir}/%{name}-python-%{version}/
 %{_defaultdocdir}/%{name}-python-%{version}/examples/
 
 %files console-notification
