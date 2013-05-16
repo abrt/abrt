@@ -51,6 +51,7 @@ export CLEAN_SPOOL_BEFORE_EACH_TEST=1
 export PACKAGES="abrt-desktop \
                  abrt-cli \
                  abrt-devel \
+                 abrt-python \
                  libreport-plugin-rhtsupport \
                  libreport-plugin-reportuploader \
                  libreport-plugin-mailx"
