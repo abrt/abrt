@@ -2,6 +2,7 @@
 Description=Harvest vmcores for ABRT
 After=abrtd.service
 Requisite=abrtd.service
+ConditionDirectoryNotEmpty=/var/crash
 
 [Service]
 Type=oneshot

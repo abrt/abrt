@@ -2,6 +2,7 @@
 Description=ABRT Xorg log watcher
 After=abrtd.service
 Requisite=abrtd.service
+ConditionPathExists=/var/log/Xorg.0.log
 
 [Service]
 ExecStart=/bin/sh -c 'exec /usr/bin/abrt-watch-log -F "`/usr/bin/abrt-dump-xorg -m`" /var/log/Xorg.0.log -- /usr/bin/abrt-dump-xorg -xD'
