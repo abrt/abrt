@@ -505,7 +505,7 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
-        const double requested_size = strlen(value) - item_size;
+        const double requested_size = (double)strlen(value) - item_size;
         /* Don't want to check the size limit in case of reducing of size */
         if (requested_size > 0
             && requested_size > (max_dir_size - get_dirsize(g_settings_dump_location)))
