@@ -29,7 +29,7 @@
 . /usr/share/beakerlib/beakerlib.sh
 . ../aux/lib.sh
 
-TEST="ccpp-plugin"
+TEST="abrt-python"
 PACKAGE="abrt"
 
 
