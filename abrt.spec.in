@@ -562,6 +562,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files python
 %{python_sitelib}/problem/
+%dir %{_defaultdocdir}/%{name}-python-%{version}/
 %{_defaultdocdir}/%{name}-python-%{version}/examples/
 
 %changelog
