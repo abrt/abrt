@@ -57,39 +57,24 @@ problem_data_t *fill_crash_info(const char *dump_dir_name)
     return problem_data;
 }
 
-vector_of_problem_data_t *fetch_crash_infos(GList *dir_list)
+static int
+append_problem_data(struct dump_dir *dd, void *arg)
 {
-    vector_of_problem_data_t *ci = new_vector_of_problem_data();
-    for (GList *li = dir_list; li; li = li->next)
-    {
-        char *dir_name = (char *)li->data;
-        VERB1 log("Loading dumps from '%s'", dir_name);
+    vector_of_problem_data_t *vpd = arg;
 
-        DIR *dir = opendir(dir_name);
-        if (dir != NULL)
-        {
-            struct dirent *dent;
-            while ((dent = readdir(dir)) != NULL)
-            {
-                if (dot_or_dotdot(dent->d_name))
-                    continue; /* skip "." and ".." */
-
-                char *dump_dir_name = concat_path_file(dir_name, dent->d_name);
-
-                struct stat statbuf;
-                if (stat(dump_dir_name, &statbuf) == 0
-                    && S_ISDIR(statbuf.st_mode))
-                {
-                    problem_data_t *problem_data = fill_crash_info(dump_dir_name);
-                    if (problem_data)
-                        g_ptr_array_add(ci, problem_data);
-                }
-                free(dump_dir_name);
-            }
-            closedir(dir);
-        }
-    }
-
-    return ci;
+    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
+    problem_data_add(problem_data, CD_DUMPDIR, dd->dd_dirname,
+                            CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE + CD_FLAG_LIST);
+    g_ptr_array_add(vpd, problem_data);
+    return 0;
 }
 
+vector_of_problem_data_t *fetch_crash_infos(GList *dir_list)
+{
+    vector_of_problem_data_t *vpd = new_vector_of_problem_data();
+
+    for (GList *li = dir_list; li; li = li->next)
+        for_each_problem_in_dir(li->data, getuid(), append_problem_data, vpd);
+
+    return vpd;
+}

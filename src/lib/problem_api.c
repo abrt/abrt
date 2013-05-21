@@ -25,7 +25,7 @@
  * Goes through all problems and for problems accessible by caller_uid
  * calls callback. If callback returns non-0, returns that value.
  */
-static int for_each_problem_in_dir(const char *path,
+int for_each_problem_in_dir(const char *path,
                         uid_t caller_uid,
                         int (*callback)(struct dump_dir *dd, void *arg),
                         void *arg)
