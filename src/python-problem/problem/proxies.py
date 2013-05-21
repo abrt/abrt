@@ -144,8 +144,12 @@ class FsProxy(object):
         ddir.close()
         return ret
 
-    def _open_ddir(self, dump_dir):
-        ddir = report.dd_opendir(dump_dir)
+    def _open_ddir(self, dump_dir, readonly=False):
+        flags = 0
+        if readonly:
+            flags |= report.DD_OPEN_READONLY
+
+        ddir = report.dd_opendir(dump_dir, flags)
         if not ddir:
             raise problem.exception.InvalidProblem(
                 'Can\'t open directory: {0}'.format(dump_dir))
@@ -153,14 +157,11 @@ class FsProxy(object):
         return ddir
 
     def get_item(self, dump_dir, name):
-        ddir = self._open_ddir(dump_dir)
+        ddir = self._open_ddir(dump_dir, readonly=True)
 
         flags = (report.DD_FAIL_QUIETLY_EACCES |
-            report.DD_FAIL_QUIETLY_ENOENT |
-            report.DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE)
-
-        if hasattr(report, 'DD_OPEN_READONLY'):
-            flags |= report.DD_OPEN_READONLY
+                 report.DD_FAIL_QUIETLY_ENOENT |
+                 report.DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE)
 
         val = ddir.load_text(name, flags)
 
@@ -199,7 +200,7 @@ class FsProxy(object):
                              dir_stat.st_gid != gid):
                 continue
 
-            ddir = report.dd_opendir(dump_dir)
+            ddir = report.dd_opendir(dump_dir, report.DD_OPEN_READONLY)
             if ddir:
                 ddir.close()
                 yield dump_dir
