@@ -20,24 +20,11 @@
 #include <glib.h>
 #include <libabrt.h>
 
-/*
- * Structure for simple conditions based on problem fields
- */
-struct problem_condition
-{
-    /* a name of filed required by evaluate function */
-    const char *field_name;
-    /* extra data passed to evaluate function */
-    const void *args;
-    /* evaluate function returning TRUE if condition was passed */
-    bool (*evaluate)(const char *, const void *);
-};
-
 /* Retrieves the list of directories currently used as a problem storage
  * The result must be freed by caller
  * @returns List of strings representing the full path to dirs
-*/
-GList *get_problem_storages();
+ */
+GList *get_problem_storages(void);
 GList *get_problem_dirs_for_uid(uid_t uid, const char *dump_location);
 GList *get_problem_dirs_for_element_in_time(uid_t uid,
                                                       const char *element,

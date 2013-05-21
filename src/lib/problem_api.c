@@ -22,47 +22,23 @@
 #include "problem_api.h"
 
 /*
- * Evaluates a NULL-terminated list of problem conditions as a logical conjunction
+ * Goes through all problems and for problems accessible by caller_uid
+ * calls callback. If callback returns non-0, returns that value.
  */
-static bool problem_condition_evaluate_and(struct dump_dir *dd,
-                                           const struct problem_condition *const *condition)
+static int for_each_problem_in_dir(const char *path,
+                        uid_t caller_uid,
+                        int (*callback)(struct dump_dir *dd, void *arg),
+                        void *arg)
 {
-    /* We stop on the first FALSE condition */
-    while (condition && *condition != NULL)
-    {
-        const struct problem_condition *c = *condition;
-        char *field_data = dd_load_text(dd, c->field_name);
-        bool value = c->evaluate(field_data, c->args);
-        free(field_data);
-        if (!value)
-            return false;
-        ++condition;
-    }
-
-    return true;
-}
-
-/*
- * Goes through all problems and selects only problems accessible by caller_uid and
- * problems for which an and_filter gets TRUE
- *
- * @param condition a NULL-terminated list of problem conditions evaluated
- * as conjunction, can be NULL (means always TRUE)
- */
-static GList* scan_directory(const char *path,
-                             uid_t caller_uid,
-                             const struct problem_condition *const *condition)
-{
-    GList *list = NULL;
-
     DIR *dp = opendir(path);
     if (!dp)
     {
         /* We don't want to yell if, say, $XDG_CACHE_DIR/abrt/spool doesn't exist */
         //perror_msg("Can't open directory '%s'", path);
-        return list;
+        return 0;
     }
 
+    int brk = 0;
     struct dirent *dent;
     while ((dent = readdir(dp)) != NULL)
     {
@@ -80,132 +56,123 @@ static GList* scan_directory(const char *path,
             logmode = 0;
             struct dump_dir *dd = dd_opendir(full_name, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES | DD_DONT_WAIT_FOR_LOCK);
             logmode = sv_logmode;
-            /* or we could just setuid?
-             - but it would require locking, because we want to setuid back before we server another request..
-            */
             if (dd)
             {
-                if (!condition || problem_condition_evaluate_and(dd, condition))
-                {
-                    list = g_list_prepend(list, full_name);
-                    full_name = NULL;
-                }
-                dd_close(dd); //doesn't fail even if dd == NULL
+                brk = callback ? callback(dd, arg) : 0;
+                dd_close(dd);
             }
         }
         free(full_name);
+        if (brk)
+            break;
     }
     closedir(dp);
 
-    /* Why reverse?
+    return brk;
+}
+
+/* get_problem_dirs_for_uid and its helpers */
+
+static int add_dirname_to_GList(struct dump_dir *dd, void *arg)
+{
+    GList **list = arg;
+    *list = g_list_prepend(*list, xstrdup(dd->dd_dirname));
+    return 0;
+}
+
+GList *get_problem_dirs_for_uid(uid_t uid, const char *dump_location)
+{
+    GList *list = NULL;
+    for_each_problem_in_dir(dump_location, uid, add_dirname_to_GList, &list);
+    /*
+     * Why reverse?
      * Because N*prepend+reverse is faster than N*append
      */
     return g_list_reverse(list);
 }
 
-/* Self explaining time interval structure */
-struct time_interval
-{
-    unsigned long from;
-    unsigned long to;
+
+/* get_problem_dirs_for_element_in_time and its helpers */
+
+struct field_and_time_range {
+    GList *list;
+    const char *element;
+    const char *value;
+    unsigned long timestamp_from;
+    unsigned long timestamp_to;
 };
 
-/*
- * A problem condition evaluate function for checking of the TIME field against
- * an allowed interval
- *
- * @param field_data a content from the PID field
- * @param args a pointer to an instance of struct time_interval
- * @return TRUE if a field value is in a specified interval; otherwise FALSE
- */
-static bool time_interval_problem_condition(const char *field_data, const void *args)
+static int add_dirname_to_GList_if_matches(struct dump_dir *dd, void *arg)
 {
-    const struct time_interval *const interval = (const struct time_interval *)args;
-    const time_t timestamp = atol(field_data);
+    struct field_and_time_range *me = arg;
 
-    return interval->from <= timestamp && timestamp <= interval->to;
-}
+    char *field_data;
 
-/*
- * A problem condition evaluate function passed if strings are equal
- *
- * @param field_data a content of a field
- * @param args a checked string
- * @return TRUE if both strings are equal; otherwise FALSE
- */
-static bool equal_string_problem_condition(const char *field_data, const void *args)
-{
-    return !strcmp(field_data, (const char *)args);
-}
+    if (me->element)
+    {
+        field_data = dd_load_text(dd, me->element);
+        int brk = (strcmp(field_data, me->value) != 0);
+        free(field_data);
+        if (brk)
+            return 0;
+    }
 
-GList *get_problem_dirs_for_uid(uid_t uid, const char *dump_location)
-{
-    GList *dirs = scan_directory(dump_location, uid, NULL);
-    return dirs;
+    field_data = dd_load_text(dd, FILENAME_LAST_OCCURRENCE);
+    long val = atol(field_data);
+    free(field_data);
+    if (val < me->timestamp_from || val > me->timestamp_to)
+        return 0;
+
+    me->list = g_list_prepend(me->list, xstrdup(dd->dd_dirname));
+    return 0;
 }
 
 /*
  * Finds problems which were created in the interval
  */
 GList *get_problem_dirs_for_element_in_time(uid_t uid,
-                                                      const char *element,
-                                                      const char *value,
-                                                      unsigned long timestamp_from,
-                                                      unsigned long timestamp_to,
-                                                      const char *dump_location)
+                const char *element,
+                const char *value,
+                unsigned long timestamp_from,
+                unsigned long timestamp_to,
+                const char *dump_location)
 {
-    struct timeval tv;
-    /* use the current time if timestamp_to is 0 */
-    if (timestamp_to == 0) {
-        gettimeofday(&tv, NULL);
-        timestamp_to = tv.tv_sec;
-    }
+    if (timestamp_to == 0)
+        timestamp_to = time(NULL);
 
-
-    const struct problem_condition elementc = {
-        .field_name = element,
-        .args = value,
-        .evaluate = equal_string_problem_condition,
+    struct field_and_time_range me = {
+        .list = NULL,
+        .element = element,
+        .value = value,
+        .timestamp_from = timestamp_from,
+        .timestamp_to = timestamp_to,
     };
 
-    const struct time_interval interval = {
-        .from = timestamp_from,
-        .to = timestamp_to,
-    };
+    for_each_problem_in_dir(dump_location, uid, add_dirname_to_GList_if_matches, &me);
 
-    const struct problem_condition timec = {
-        .field_name = FILENAME_LAST_OCCURRENCE,
-        .args = &interval,
-        .evaluate = time_interval_problem_condition
-    };
-
-    const struct problem_condition *const condition[] = {
-        &timec,
-        element ? &elementc : NULL,
-        NULL
-    };
-    GList *dirs = scan_directory(dump_location, uid, condition);
-    return dirs;
+    return g_list_reverse(me.list);
 }
 
-GList *get_problem_storages()
+/* get_problem_storages */
+
+GList *get_problem_storages(void)
 {
     GList *pths = NULL;
     load_abrt_conf();
     pths = g_list_append(pths, xstrdup(g_settings_dump_location));
-    //no needed, we don't steal directories anymore
+    //not needed, we don't steal directories anymore
     pths = g_list_append(pths, concat_path_file(g_get_user_cache_dir(), "abrt/spool"));
     free_abrt_conf_data();
 
     return pths;
 }
 
+/* get_problems_count and its helpers */
 
 typedef struct problem_count_info {
     int problem_count;
     unsigned long since;
     unsigned long until;
-
 } problem_count_info_t;
 
 static void count_problems_in_dir(char *path, gpointer problem_counter)
@@ -223,16 +190,15 @@ unsigned int get_problems_count(GList *paths, unsigned long since)
 
     if (paths == NULL)
     {
-        pths = get_problem_storages();
+        paths = pths = get_problem_storages();
     }
 
     problem_count_info_t pci;
-
     pci.problem_count = 0;
     pci.since = since;
-    pci.until = 0;
+    pci.until = time(NULL);
 
-    g_list_foreach(paths ? paths : pths, (GFunc)count_problems_in_dir, &pci);
+    g_list_foreach(paths, (GFunc)count_problems_in_dir, &pci);
 
     list_free_with_free(pths);
 
