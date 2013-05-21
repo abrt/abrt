@@ -46,12 +46,15 @@ export SHUTDOWN=0
 export REINSTALL_BEFORE_EACH_TEST=0
 export RESTORE_CONFIGS_BEFORE_EACH_TEST=1
 export CLEAN_SPOOL_BEFORE_EACH_TEST=1
+export DUMP_PACKAGE_VERSIONS=1
 
 # - misc
-export PACKAGES="abrt-desktop \
+export PACKAGES="abrt \
+                 abrt-desktop \
                  abrt-cli \
                  abrt-devel \
                  abrt-python \
+                 libreport \
                  libreport-plugin-rhtsupport \
                  libreport-plugin-reportuploader \
                  libreport-plugin-mailx"

@@ -55,6 +55,10 @@ if [ $1 ]; then
         rm -rf $ABRT_CONF_DUMP_LOCATION/*
     fi
 
+    if [ "${DUMP_PACKAGE_VERSIONS}" = "1" ]; then
+        rpm -q $PACKAGES
+    fi
+
     service abrtd start
     service abrt-ccpp start
     service abrt-oops start
