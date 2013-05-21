@@ -345,21 +345,32 @@ static void handle_method_call(GDBusConnection *connection,
             return;
         }
 
-        if (dump_dir_accessible_by_uid(problem_dir, caller_uid)) //caller seems to be in group with access to this dir, so no action needed
+        int ddstat = dump_dir_stat_for_uid(problem_dir, caller_uid);
+        if (ddstat < 0)
         {
+            if (errno == ENOTDIR)
+            {
+                VERB1 log("requested directory does not exist '%s'", problem_dir);
+            }
+            else
+            {
+                perror_msg("can't get stat of '%s'", problem_dir);
+            }
+
+            return_InvalidProblemDir_error(invocation, problem_dir);
+
+            return;
+        }
+
+        if (ddstat & DD_STAT_OWNED_BY_UID)
+        {   //caller seems to be in group with access to this dir, so no action needed
             VERB1 log("caller has access to the requested directory %s", problem_dir);
             g_dbus_method_invocation_return_value(invocation, NULL);
             return;
         }
 
-        if (errno == ENOTDIR)
-        {
-            VERB1 log("Requested directory does not exist '%s'", problem_dir);
-            return_InvalidProblemDir_error(invocation, problem_dir);
-            return;
-        }
-
-        if (polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
+        if ((ddstat & DD_STAT_ACCESSIBLE_BY_UID) == 0 &&
+                polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
         {
             VERB1 log("not authorized");
             g_dbus_method_invocation_return_dbus_error(invocation,
