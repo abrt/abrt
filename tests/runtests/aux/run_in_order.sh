@@ -72,6 +72,15 @@ for test_dir in $testlist; do
         rm "$outdir/avc"
     fi
 
+    # collect files stored by beakerlibs rlBundleLogs
+    if stat -t /tmp/BEAKERLIB_STORED* &> /dev/null; then
+        tmpdir=$( mktemp -d )
+        tar xzf /tmp/BEAKERLIB_STORED* -C $tmpdir
+        find $tmpdir -type f -exec mv {} $outdir \;
+        rm -rf $tmpdir
+        rm -f /tmp/BEAKERLIB_STORED*
+    fi
+
     # check test result
     test_result="FAIL"
     if [ -e $logfile ]; then
