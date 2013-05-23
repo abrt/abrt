@@ -54,7 +54,11 @@ int cmd_status(int argc, const char **argv)
         if (opt_bare)
             printf("%u", problem_count);
         else
-            printf(_("ABRT has detected '%u' problem(s). (For more info run: $ abrt-cli list --full)\n"), problem_count);
+        {
+            char *list_arg = opt_since ? xasprintf(" --since %d", opt_since) : xstrdup("");
+            printf(_("ABRT has detected '%u' problem(s). (For more info run: $ abrt-cli list%s )\n"), problem_count, list_arg);
+            free(list_arg);
+        }
     }
 
     list_free_with_free(problem_dir_list);
