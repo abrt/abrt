@@ -37,11 +37,3 @@ GList *get_problem_dirs_for_element_in_time(uid_t uid,
                                                       unsigned long timestamp_from,
                                                       unsigned long timestamp_to,
                                                       const char *dump_location);
-
-/* Counts all problems in given directories
- *
- * @paths[in] list of paths to scan (pass NULL to use the default problem directories)
- * @since[in]
- * @returns   count of problems
- */
-unsigned int get_problems_count(GList *paths, unsigned long since);
