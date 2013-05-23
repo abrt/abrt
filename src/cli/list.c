@@ -101,7 +101,7 @@ static bool print_crash_list(vector_of_problem_data_t *crash_list, int detailed,
         problem_data_t *crash = get_problem_data(crash_list, i);
         if (only_not_reported)
         {
-            if (!get_problem_item_content_or_NULL(crash, FILENAME_REPORTED_TO))
+            if (get_problem_item_content_or_NULL(crash, FILENAME_REPORTED_TO))
                 continue;
         }
         if (since || until)
