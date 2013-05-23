@@ -31,9 +31,3 @@ int for_each_problem_in_dir(const char *path,
  */
 GList *get_problem_storages(void);
 GList *get_problem_dirs_for_uid(uid_t uid, const char *dump_location);
-GList *get_problem_dirs_for_element_in_time(uid_t uid,
-                                                      const char *element,
-                                                      const char *value,
-                                                      unsigned long timestamp_from,
-                                                      unsigned long timestamp_to,
-                                                      const char *dump_location);

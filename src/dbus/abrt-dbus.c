@@ -258,6 +258,62 @@ static struct dump_dir *open_directory_for_modification_of_element(
     return dd;
 }
 
+
+/*
+ * Lists problems which have given element and were seen in given time interval
+ */
+
+struct field_and_time_range {
+    GList *list;
+    const char *element;
+    const char *value;
+    unsigned long timestamp_from;
+    unsigned long timestamp_to;
+};
+
+static int add_dirname_to_GList_if_matches(struct dump_dir *dd, void *arg)
+{
+    struct field_and_time_range *me = arg;
+
+    char *field_data = dd_load_text(dd, me->element);
+    int brk = (strcmp(field_data, me->value) != 0);
+    free(field_data);
+    if (brk)
+        return 0;
+
+    field_data = dd_load_text(dd, FILENAME_LAST_OCCURRENCE);
+    long val = atol(field_data);
+    free(field_data);
+    if (val < me->timestamp_from || val > me->timestamp_to)
+        return 0;
+
+    me->list = g_list_prepend(me->list, xstrdup(dd->dd_dirname));
+    return 0;
+}
+
+static GList *get_problem_dirs_for_element_in_time(uid_t uid,
+                const char *element,
+                const char *value,
+                unsigned long timestamp_from,
+                unsigned long timestamp_to)
+{
+    if (timestamp_to == 0) /* not sure this is possible, but... */
+        timestamp_to = time(NULL);
+
+    struct field_and_time_range me = {
+        .list = NULL,
+        .element = element,
+        .value = value,
+        .timestamp_from = timestamp_from,
+        .timestamp_to = timestamp_to,
+    };
+
+    for_each_problem_in_dir(g_settings_dump_location, uid, add_dirname_to_GList_if_matches, &me);
+
+    return g_list_reverse(me.list);
+}
+
+
 static void handle_method_call(GDBusConnection *connection,
                         const gchar *caller,
                         const gchar *object_path,
@@ -629,11 +685,10 @@ static void handle_method_call(GDBusConnection *connection,
             caller_uid = 0;
 
         GList *dirs = get_problem_dirs_for_element_in_time(caller_uid, element, value, timestamp_from,
-                                                        timestamp_to, g_settings_dump_location);
-
+                                                        timestamp_to);
         response = variant_from_string_list(dirs);
-
         list_free_with_free(dirs);
+
         g_dbus_method_invocation_return_value(invocation, response);
         return;
     }

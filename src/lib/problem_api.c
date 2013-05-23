@@ -91,68 +91,6 @@ GList *get_problem_dirs_for_uid(uid_t uid, const char *dump_location)
     return g_list_reverse(list);
 }
 
-
-/* get_problem_dirs_for_element_in_time and its helpers */
-
-struct field_and_time_range {
-    GList *list;
-    const char *element;
-    const char *value;
-    unsigned long timestamp_from;
-    unsigned long timestamp_to;
-};
-
-static int add_dirname_to_GList_if_matches(struct dump_dir *dd, void *arg)
-{
-    struct field_and_time_range *me = arg;
-
-    char *field_data;
-
-    if (me->element)
-    {
-        field_data = dd_load_text(dd, me->element);
-        int brk = (strcmp(field_data, me->value) != 0);
-        free(field_data);
-        if (brk)
-            return 0;
-    }
-
-    field_data = dd_load_text(dd, FILENAME_LAST_OCCURRENCE);
-    long val = atol(field_data);
-    free(field_data);
-    if (val < me->timestamp_from || val > me->timestamp_to)
-        return 0;
-
-    me->list = g_list_prepend(me->list, xstrdup(dd->dd_dirname));
-    return 0;
-}
-
-/*
- * Finds problems which were created in the interval
- */
-GList *get_problem_dirs_for_element_in_time(uid_t uid,
-                const char *element,
-                const char *value,
-                unsigned long timestamp_from,
-                unsigned long timestamp_to,
-                const char *dump_location)
-{
-    if (timestamp_to == 0)
-        timestamp_to = time(NULL);
-
-    struct field_and_time_range me = {
-        .list = NULL,
-        .element = element,
-        .value = value,
-        .timestamp_from = timestamp_from,
-        .timestamp_to = timestamp_to,
-    };
-
-    for_each_problem_in_dir(dump_location, uid, add_dirname_to_GList_if_matches, &me);
-
-    return g_list_reverse(me.list);
-}
-
 /* get_problem_storages */
 
 GList *get_problem_storages(void)
