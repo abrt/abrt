@@ -69,7 +69,7 @@ static void print_crash_list(vector_of_problem_data_t *crash_list, int detailed,
         problem_data_t *crash = get_problem_data(crash_list, i);
         if (!include_reported)
         {
-            if (!problem_data_get_content_or_NULL(crash, FILENAME_REPORTED_TO))
+            if (problem_data_get_content_or_NULL(crash, FILENAME_REPORTED_TO))
                 continue;
         }
         if (since || until)
