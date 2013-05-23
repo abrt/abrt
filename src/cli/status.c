@@ -30,6 +30,9 @@ static int count_dir_if_newer_than(struct dump_dir *dd, void *arg)
 {
     struct time_range *me = arg;
 
+    if (dd_exist(dd, FILENAME_REPORTED_TO))
+        return 0;
+
     char *time_str = dd_load_text(dd, FILENAME_LAST_OCCURRENCE);
     long val = atol(time_str);
     free(time_str);
