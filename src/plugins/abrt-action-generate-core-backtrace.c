@@ -193,9 +193,14 @@ int main(int argc, char **argv)
         backtrace = btp_parse_python_backtrace(txt_backtrace);
     else if (strcmp(analyzer, "Kerneloops") == 0 || strcmp(analyzer, "vmcore") == 0)
     {
-        char *space = strchr(kernel, ' ');
-        if (space)
-            *space = '\0';
+        /* btp_parse_kerneloops() accepts NULL in the kernelver argument. It is not
+         * documented, but it is true. */
+        if (kernel != NULL)
+        {
+            char *space = strchr(kernel, ' ');
+            if (space)
+                *space = '\0';
+        }
 
         backtrace = btp_parse_kerneloops(txt_backtrace, kernel);
         oops_add_question_marks(backtrace);
