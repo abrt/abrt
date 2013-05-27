@@ -131,3 +131,27 @@ if __name__ == "__main__":
     backtrace_file = open("backtrace", "w")
     dump_oops = Popen(["abrt-dump-oops", "-o", "kernel_log"], stdout=backtrace_file, bufsize=-1)
     backtrace_file.close()
+
+    ret = dump_oops.wait()
+    if ret != RETURN_OK:
+        sys.exit(ret)
+
+    ret = RETURN_FAILURE
+    # Save kernel version in 'kernel' file (FILENAME_KERNEL)
+    # The code below expects that abrt-dump-oops generates file in the following format:
+    #  <empty line>
+    #  Version: 3.8.5-201.fc18.x86_64
+    #  <oops data>
+    #  <EOF>
+    with open("backtrace", "r") as backtrace_file:
+        for line in backtrace_file:
+            # Please excuse the magic constant 9 => len('Version: '). This construction is more readable for me.
+            if line[:9] == "Version: ":
+                with open("kernel", "w") as kernel_file:
+                    kernel_file.write(line[9:].rstrip())
+                    ret = RETURN_OK # set OK only if it was successfully written
+                break # break the loop, we support only one oops per vmcore
+        if ret != RETURN_OK:
+            print _("Garbled abrt-dump-oops output format. Can't find kernel version.");
+
+    sys.exit(ret)
