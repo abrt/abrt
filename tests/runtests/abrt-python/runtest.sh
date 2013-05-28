@@ -50,6 +50,11 @@ rlJournalStart
         get_crash_path
         wait_for_hooks
 
+        # Give at leas 1s to D-Bus to deliver Crash signal to watch.py
+        # It could be possible to configure dbus-monitor somehow but adding
+        # sleep is much faster and reliable.
+        sleep 1
+
         kill %1
         rlAssertNotDiffer watch_output watch_expected
 
