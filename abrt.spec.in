@@ -241,7 +241,7 @@ Requires: abrt-retrace-client
 %if %{with bodhi}
 Requires: abrt-plugin-bodhi
 %endif
-%if 0%{?!suse_version}
+%if 0%{!?suse_version:1}
 Requires: libreport-plugin-bugzilla
 %endif
 Requires: libreport-plugin-logger
@@ -273,7 +273,7 @@ Requires: gnome-abrt
 %if %{with bodhi}
 Requires: abrt-plugin-bodhi
 %endif
-%if 0%{?!suse_version}
+%if 0%{!?suse_version:1}
 Requires: libreport-plugin-bugzilla
 %endif
 Requires: libreport-plugin-logger
