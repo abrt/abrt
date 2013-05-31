@@ -1,0 +1,71 @@
+# Order of the tests
+# ------------------
+# - basic build/install tests
+# abrt-nightly-build
+# run-abrtd
+
+# abrt-make-check
+# btparser-make-check
+# libreport-make-check
+
+# - core
+abrtd-directories
+dbus-message
+socket-api
+abrtd-inotify-flood
+symlinks-rhbz-895442
+
+# - addons
+ccpp-plugin
+ccpp-plugin-java
+ccpp-plugin-config
+python-addon
+
+# - tools tests
+cli-sanity
+cli-status
+check-hook-install
+dumpoops
+dumpxorg
+dbus-api
+dbus-NewProblem
+dbus-elements-handling
+#bodhi
+oops-processing
+abrt-python
+
+# - reporting tests
+bugzilla-bt-reattach
+bugzilla-dupe-search
+bugzilla-comment-format
+
+rhts-test
+
+mailx-reporting
+localized-reporting
+verify-that-report-edits
+upload-scp
+upload-ftp
+upload-filename
+upload-handling
+ureport
+
+blacklisted-package
+blacklisted-path
+dont-blame-interpret
+abrt-should-return-rating-0-on-fail
+
+bz591504-sparse-core-files-performance-hit
+bz618602-core_pattern-handler-truncates-parameters
+bz636913-abrt-should-ignore-SystemExit-exception
+bz652338-removed-proc-PID
+bz783450-setuid-core-owned-by-root
+
+systemd-init
+
+uefioops
+
+# - more or less destructive tests
+
+# - outdated tests
+#bz623142-abrt-should-not-report-bugs-against-systems-with-TAINT_HARDWARE_UNSUPPORTED-set
