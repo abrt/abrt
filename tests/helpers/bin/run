@@ -48,12 +48,34 @@ if [ $? != 0 ]; then
    exit 1;
 fi
 
+set +x
+try=0
+
+while true; do
+  IP=$( ~/bin/virt_addr --system ${VM_NAME}_clone )
+
+  res=$?;
+  if [ $res == 0 ]; then
+    break;
+  fi;
+
+  if [ $try == 100 ]; then # max tries
+     echo "Unable to get IP of the VM";
+     exit 1;
+  fi
+  let try=try+1;
+  sleep 1; # wait between the attempts, otherwise it floods the log
+done
+
+set -x
+
 wait_for_vm
 
 echo "Giving the sshd a while to start"
 sleep 5
 
 set +x
+try=0
 
 while true; do
   scp -o StrictHostKeyChecking=no ~/targets/runtests.sh \
