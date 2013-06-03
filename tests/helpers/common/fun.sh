@@ -147,7 +147,7 @@ function res_mail() {
     partial=$( echo $res_path | sed 's#/var/nightly_results/##' )
     platform=$( dirname $partial )
     date=$( basename $partial )
-    dom='http://rmarko.fedorapeople.org/abrt/'
+    dom='http://abrt.brq.redhat.com/abrt/'
 
     if grep -q 'FAIL' 'results'; then
         result='FAIL'
@@ -160,7 +160,7 @@ function res_mail() {
         cat "$dir/fail.log" >> 'mail.summary'
         # build web link
 
-        link="${dom}${partial}/index.html#${date}_${ts}_fail"
+        link="${dom}${partial}/#${date}_${ts}_fail"
         echo "Partial: $partial"
         echo "Date: $date"
         echo "Dom: $dom"
