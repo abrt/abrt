@@ -253,8 +253,7 @@ function recreate_vm() {
       --os-type=linux \
       --os-variant=$OS_VARIANT \
       --graphics type=spice \
-      --quiet \
-      --network bridge:br0,mac=$MAC
+      --quiet
 
     set +x
     echo 'virt-install done'
