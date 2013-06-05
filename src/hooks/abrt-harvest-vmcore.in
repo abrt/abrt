@@ -62,11 +62,19 @@ for d in *; do
 	printf 'vmcore'            >"$dst.new/type"
 	printf 'kernel'            >"$dst.new/component"
 	printf '%s' "`date '+%s'`" >"$dst.new/time"
+	printf '%s' "`uname -i`"   >"$dst.new/architecture"
+	cp     "$dst.new/time"      "$dst.new/last_occurrence"
 	printf '0'                 >"$dst.new/uid"
 	# TODO: need to generate *real* UUID,
 	# one which has a real chance of catching dups!
 	# This one generates different hashes even for similar cores:
 	printf '%s' "`sha1sum <"$dst.new/vmcore" | cut -d" " -f1`" >"$dst.new/uuid"
+	cp /etc/system-release "$dst.new/os_release" || {
+		cp /etc/redhat-release "$dst.new/os_release" || {
+			cp /etc/SuSE-release "$dst.new/os_release"
+		}
+	}
+	cp /etc/os-release "$dst.new/os_info"
 
 	chown -R 0:0 -- "$dst.new"
 	chmod -R u+rwX,go-rwxst -- "$dst.new"
