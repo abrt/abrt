@@ -108,8 +108,58 @@ static char *list_of_tainted_modules(const char *proc_modules)
     return strbuf_free_nobuf(result);
 }
 
+static void save_oops_data_in_dump_dir(struct dump_dir *dd, char *oops, const char *proc_modules)
+{
+    char *first_line = oops;
+    char *second_line = (char*)strchr(first_line, '\n'); /* never NULL */
+    *second_line++ = '\0';
+
+    dd_save_text(dd, FILENAME_KERNEL, first_line);
+    dd_save_text(dd, FILENAME_BACKTRACE, second_line);
+
+    /* check if trace doesn't have line: 'Your BIOS is broken' */
+    char *broken_bios = strstr(second_line, "Your BIOS is broken");
+    if (broken_bios)
+        dd_save_text(dd, FILENAME_NOT_REPORTABLE, "Your BIOS is broken.");
+    else
+    {
+        char *tainted_short = kernel_tainted_short(second_line);
+        if (tainted_short)
+        {
+            VERB1 log("Kernel is tainted '%s'", tainted_short);
+            dd_save_text(dd, FILENAME_TAINTED_SHORT, tainted_short);
+
+            char *tnt_long = kernel_tainted_long(tainted_short);
+            dd_save_text(dd, FILENAME_TAINTED_LONG, tnt_long);
+            free(tnt_long);
+
+            struct strbuf *reason = strbuf_new();
+            const char *fmt = _("A kernel problem occurred, but your kernel has been "
+                    "tainted (flags:%s). Kernel maintainers are unable to "
+                    "diagnose tainted reports.");
+            strbuf_append_strf(reason, fmt, tainted_short);
+
+            char *modlist = !proc_modules ? NULL : list_of_tainted_modules(proc_modules);
+            if (modlist)
+            {
+                strbuf_append_strf(reason, _(" Tainted modules: %s."), modlist);
+                free(modlist);
+            }
+
+            dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason->buf);
+            strbuf_free(reason);
+            free(tainted_short);
+        }
+    }
+
+    // TODO: add "Kernel oops: " prefix, so that all oopses have recognizable FILENAME_REASON?
+    // kernel oops 1st line may look quite puzzling otherwise...
+    strchrnul(second_line, '\n')[0] = '\0';
+    dd_save_text(dd, FILENAME_REASON, second_line);
+}
+
 /* returns number of errors */
-static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
+static unsigned create_oops_dump_dirs(GList *oops_list, unsigned oops_cnt)
 {
     unsigned countdown = MAX_DUMPED_DD_COUNT + 1; /* do not report hundreds of oopses */
 
@@ -137,10 +187,6 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
     unsigned errors = 0;
     while (idx < oops_cnt && --countdown != 0)
     {
-        char *first_line = (char*)g_list_nth_data(oops_list, idx++);
-        char *second_line = (char*)strchr(first_line, '\n'); /* never NULL */
-        *second_line++ = '\0';
-
         struct dump_dir *dd;
         {
             char base[sizeof("oops-YYYY-MM-DD-hh:mm:ss-%lu-%lu") + 2 * sizeof(long)*3];
@@ -152,12 +198,11 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
 
         if (dd)
         {
+            save_oops_data_in_dump_dir(dd, (char*)g_list_nth_data(oops_list, idx++), proc_modules);
             dd_create_basic_files(dd, /*uid:*/ my_euid, NULL);
             dd_save_text(dd, FILENAME_ABRT_VERSION, VERSION);
             dd_save_text(dd, FILENAME_ANALYZER, "Kerneloops");
             dd_save_text(dd, FILENAME_TYPE, "Kerneloops");
-            dd_save_text(dd, FILENAME_KERNEL, first_line);
-            dd_save_text(dd, FILENAME_BACKTRACE, second_line);
             if (cmdline_str)
                 dd_save_text(dd, FILENAME_CMDLINE, cmdline_str);
             if (proc_modules)
@@ -166,46 +211,6 @@ static unsigned save_oops_to_dump_dir(GList *oops_list, unsigned oops_cnt)
                 dd_save_text(dd, "fips_enabled", fips_enabled);
             if (suspend_stats)
                 dd_save_text(dd, "suspend_stats", suspend_stats);
-
-            /* check if trace doesn't have line: 'Your BIOS is broken' */
-            char *broken_bios = strstr(second_line, "Your BIOS is broken");
-            if (broken_bios)
-                dd_save_text(dd, FILENAME_NOT_REPORTABLE, "Your BIOS is broken.");
-            else
-            {
-                char *tainted_short = kernel_tainted_short(second_line);
-                if (tainted_short)
-                {
-                    VERB1 log("Kernel is tainted '%s'", tainted_short);
-                    dd_save_text(dd, FILENAME_TAINTED_SHORT, tainted_short);
-
-                    char *tnt_long = kernel_tainted_long(tainted_short);
-                    dd_save_text(dd, FILENAME_TAINTED_LONG, tnt_long);
-                    free(tnt_long);
-
-                    struct strbuf *reason = strbuf_new();
-                    const char *fmt = _("A kernel problem occurred, but your kernel has been "
-                                 "tainted (flags:%s). Kernel maintainers are unable to "
-                                 "diagnose tainted reports.");
-                    strbuf_append_strf(reason, fmt, tainted_short);
-
-                    char *modlist = !proc_modules ? NULL : list_of_tainted_modules(proc_modules);
-                    if (modlist)
-                    {
-                        strbuf_append_strf(reason, _(" Tainted modules: %s."), modlist);
-                        free(modlist);
-                    }
-
-                    dd_save_text(dd, FILENAME_NOT_REPORTABLE, reason->buf);
-                    strbuf_free(reason);
-                    free(tainted_short);
-                }
-            }
-
-// TODO: add "Kernel oops: " prefix, so that all oopses have recognizable FILENAME_REASON?
-// kernel oops 1st line may look quite puzzling otherwise...
-            strchrnul(second_line, '\n')[0] = '\0';
-            dd_save_text(dd, FILENAME_REASON, second_line);
             dd_close(dd);
         }
         else
@@ -233,7 +238,7 @@ int main(int argc, char **argv)
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
+        "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
         "\n"
         "Extract oops from FILE (or standard input)"
     );
@@ -243,9 +248,11 @@ int main(int argc, char **argv)
         OPT_o = 1 << 2,
         OPT_d = 1 << 3,
         OPT_D = 1 << 4,
-        OPT_x = 1 << 5,
-        OPT_m = 1 << 6,
+        OPT_u = 1 << 5,
+        OPT_x = 1 << 6,
+        OPT_m = 1 << 7,
     };
+    char *problem_dir = NULL;
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
@@ -256,6 +263,7 @@ int main(int argc, char **argv)
          */
         OPT_STRING('d', NULL, &debug_dumps_dir, "DIR", _("Create new problem directory in DIR for every oops found")),
         OPT_BOOL(  'D', NULL, NULL, _("Same as -d DumpLocation, DumpLocation is specified in abrt.conf")),
+        OPT_STRING('u', NULL, &problem_dir, "PROBLEM", _("Save the extracted information in PROBLEM")),
         OPT_BOOL(  'x', NULL, NULL, _("Make the problem directory world readable")),
         OPT_BOOL(  'm', NULL, NULL, _("Print search string(s) to stdout and exit")),
         OPT_END()
@@ -323,7 +331,7 @@ int main(int argc, char **argv)
             }
 
             log("Creating problem directories");
-            errors = save_oops_to_dump_dir(oops_list, oops_cnt);
+            errors = create_oops_dump_dirs(oops_list, oops_cnt);
             if (errors)
                 log("%d errors while dumping oopses", errors);
             /*
@@ -337,6 +345,29 @@ int main(int argc, char **argv)
                     oops_cnt
             );
         }
+        if (opts & OPT_u)
+        {
+            log("Updating problem directory");
+            switch(g_list_length(oops_list))
+            {
+                case 0:
+                    error_msg(_("Cannot update the problem because of no oops found"));
+                    break;
+                case 1:
+                    {
+                        struct dump_dir *dd = dd_opendir(problem_dir, /*open for writing*/0);
+                        if (dd)
+                        {
+                            save_oops_data_in_dump_dir(dd, (char *)oops_list->data, /*no proc modules*/NULL);
+                            dd_close(dd);
+                        }
+                    }
+                    break;
+                default:
+                    error_msg(_("Cannot update the problem because of more oopses were found"));
+                    break;
+            }
+       }
     }
     list_free_with_free(oops_list);
     //oops_list = NULL;
