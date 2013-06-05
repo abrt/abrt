@@ -196,6 +196,19 @@ Requires: %{name}-cli = %{version}-%{release}
 A small script which prints a count of detected problems when someone logs in
 to the shell
 
+%package python
+Summary: ABRT Python API
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+Requires: pygobject2
+BuildRequires: python-nose
+BuildRequires: python-sphinx
+BuildArch: noarch
+
+%description python
+High-level API for querying, creating and manipulating
+problems handled by ABRT in Python.
+
 %prep
 %setup -q
 
@@ -546,6 +559,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files console-notification
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
+
+%files python
+%{python_sitelib}/problem/
+%dir %{_defaultdocdir}/%{name}-python-%{version}/
+%{_defaultdocdir}/%{name}-python-%{version}/examples/
 
 %changelog
 * Wed Mar 16 2011 Jiri Moskovcak <jmoskovc@redhat.com> 2.0.0-1
