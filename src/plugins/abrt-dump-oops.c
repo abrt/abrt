@@ -198,8 +198,8 @@ static unsigned create_oops_dump_dirs(GList *oops_list, unsigned oops_cnt)
 
         if (dd)
         {
-            save_oops_data_in_dump_dir(dd, (char*)g_list_nth_data(oops_list, idx++), proc_modules);
             dd_create_basic_files(dd, /*uid:*/ my_euid, NULL);
+            save_oops_data_in_dump_dir(dd, (char*)g_list_nth_data(oops_list, idx++), proc_modules);
             dd_save_text(dd, FILENAME_ABRT_VERSION, VERSION);
             dd_save_text(dd, FILENAME_ANALYZER, "Kerneloops");
             dd_save_text(dd, FILENAME_TYPE, "Kerneloops");
