@@ -219,6 +219,7 @@ uncaught exception in python programs.
 %package tui
 Summary: %{name}'s command line interface
 Group: User Interface/Desktops
+Requires: %{name} = %{version}-%{release}
 Requires: libreport-cli
 Requires: abrt-libs = %{version}-%{release}
 
