@@ -810,6 +810,72 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Fri Jun 14 2013 Jakub Filak <jfilak@redhat.com> 2.1.5-1
+- spec: require tar closes #635
+- spec: tui should require abrt closes #633
+- a-d-oops: obtain kernel version from the oops
+- a-a-p-ccpp-analysis: import all used attributes
+- vmcore: provide all problem elements necessary for the reporting
+- a-d-oops: add 'update' command line argument
+- testsuite: disable GPG check for el7
+- testsuite: update URL used in emails
+- testsuite: use nat instead of bridge
+- testsuite: use virt-addr to get IP of a VM
+- spec: always make debuginfo cache setgid
+- testsuite: add test order for el7
+- spec: use /var/spool/abrt on Fedora < 18
+- a-a-g-core-backtrace: don't crash if kernel file doesn't exist
+- a-a-a-vmcore: save kernel version in 'kernel' file
+- spec: fix a syntax bug in conditional macro
+- tweak spec for openSUSE
+- be able to configure without bodhi
+- testsuite: fix race condition between D-Bus and runtes
+- abrt-cli: make status help message more precise
+- Move get_problem_dirs_for_element_in_time() to its only user, abrt-dbus
+- abrt-cli status: don't include reported problems into count
+- Move get_problems_count() to its only user - "abrt-cli status"
+- fix a minor issue in 'abrt-cli list' if statement
+- abrt-cli list: implement --since and --until
+- Make problem_api.c easier to comprehend
+- testsuite: collect files stored by beakerlibs rlBundleLogs
+- testsuite: dump package versions
+- abrt-python: open dirs read-only if possible
+- dbus: ChownProblemDir method really changes the owner
+- python: disable events in collision with anaconda
+- spec: abrt-python requires pygobject2
+- testsuite: fix test name
+- systemd units: start services only if it make sense
+- abrt-harvest-uefioops.in: test for abrtd after testing for pstore, not before
+- make abrt-uefioops.service conditional on /sys/fs/pstore being populated
+- testsuite: install abrt-python
+- testsuite: add test for abrt-python
+- dbus: fix SetElement failing when shrinking an item
+- spec: fix unowned directories
+- testsuite: cli-status cleanup
+- Fix make rpm for satyr builds
+- abrt-python: whole python API path in POTFILES.skip
+- abrt-python: fix dbus compatibility on RHEL6
+- abrt-python: check if gid equals current users gid
+- abrt-python: fix tests compatibility with python 2.6
+- abrt-python: pass DD_OPEN_READONLY only if available
+- abrt-python: fix deprecation warnings
+- console notification shouldn't ask confirmation - closes #652
+- Short BT deduplication false positives workaround
+- satyr-compat: treat bt distance as a float
+- Only problems of same type can be duplicates
+- make the console notifiacation code more robust - closes #649
+- abrt-python: fix bug in problem.get
+- abrt-python: pep8 cleanup
+- unittest: add test for <NMI> koops frame prefix
+- koops parse: support <NMI> frame prefix
+- don't show non critical errors in console notification
+- use last_occurrence with --since
+- abrtd.service: start after livesys.service
+- tests/runtests/uefioops: new test
+- specfile: hook up abrt-uefioops service
+- abrt-uefioops: new service
+- updated translation
+
 * Tue Apr 30 2013 Jakub Filak <jfilak@redhat.com> 2.1.4-1
 - spec: fix rpmlint errors for console-notification
 - fixed race in the console notification closes #643
