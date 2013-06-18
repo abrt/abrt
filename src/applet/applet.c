@@ -63,12 +63,13 @@ enum
 static GDBusConnection *g_system_bus;
 static GtkStatusIcon *ap_status_icon;
 static GtkWidget *ap_menu;
-static char *ap_last_problem_dir;
 static char **s_dirs;
 static GList *g_deferred_crash_queue;
 static guint g_deferred_timeout;
 static int g_signal_pipe[2];
 static ignored_problems_t *g_ignore_set;
+/* Used only for selection of the last notified problem if a user clicks on the systray icon */
+static char *g_last_notified_problem_id;
 
 static bool is_autoreporting_enabled(void)
 {
@@ -742,7 +743,7 @@ static GtkWidget *create_menu(void)
 
 static void on_applet_activate_cb(GtkStatusIcon *status_icon, gpointer user_data)
 {
-    fork_exec_gui(/* problem id */ NULL);
+    fork_exec_gui(g_last_notified_problem_id);
     hide_icon();
 }
 
@@ -797,16 +798,21 @@ static void notify_problem_list(GList *problems, int flags)
         /* show icon and don't try to show notify if initialization of libnotify failed */
         flags |= SHOW_ICON_ONLY;
 
+    GList *last_item = g_list_last(problems);
+    if (last_item == NULL)
+    {
+        VERB3 log("Not showing any notification bubble because the list of problems is empty.");
+        return;
+    }
+
+    problem_info_t *last_problem = (problem_info_t *)last_item->data;
+    free(g_last_notified_problem_id);
+    g_last_notified_problem_id = xstrdup(last_problem->problem_dir);
+
     if (!persistence_supported || flags & SHOW_ICON_ONLY)
     {
         /* Use a message of the last one */
-        GList *last = g_list_last(problems);
-
-        if (last)
-        {
-            problem_info_t *pi = (problem_info_t *)last->data;
-            show_icon(pi->message);
-        }
+        show_icon(last_problem->message);
     }
 
     if (flags & SHOW_ICON_ONLY)
@@ -1165,10 +1171,11 @@ static void Crash(DBusMessage* signal)
      */
     static time_t last_time = 0;
     static char* last_package_name = NULL;
+    static char *last_problem_dir = NULL;
     time_t cur_time = time(NULL);
     int flags = 0;
     if (last_package_name && strcmp(last_package_name, package_name) == 0
-     && ap_last_problem_dir && strcmp(ap_last_problem_dir, dir) == 0
+     && last_problem_dir && strcmp(last_problem_dir, dir) == 0
      && (unsigned)(cur_time - last_time) < 2 * 60 * 60
     ) {
         /* log_msg doesn't show in .xsession_errors */
@@ -1180,8 +1187,8 @@ static void Crash(DBusMessage* signal)
         last_time = cur_time;
         free(last_package_name);
         last_package_name = xstrdup(package_name);
-        free(ap_last_problem_dir);
-        ap_last_problem_dir = xstrdup(dir);
+        free(last_problem_dir);
+        last_problem_dir = xstrdup(dir);
     }
 
     problem_info_t *pi = problem_info_new();
@@ -1537,6 +1544,8 @@ next:
 
     g_dbus_connection_signal_unsubscribe(g_system_bus, signal_ret);
     g_object_unref(g_system_bus);
+
+    free(g_last_notified_problem_id);
 
     return 0;
 }
