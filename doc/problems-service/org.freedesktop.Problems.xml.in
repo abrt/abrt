@@ -157,6 +157,17 @@ prblms = problems.GetProblems()
 
             </method>
 
+            <method name='GetForeignProblems'>
+                <tp:docstring>Gets a list of problem identifiers for problems not directly accessible by the caller.</tp:docstring>
+
+                <arg type='as' name='response' direction='out'>
+                    <tp:docstring>List of problem identifiers</tp:docstring>
+                </arg>
+
+            </method>
+
+
+
             <method name='GetAllProblems'>
                 <tp:docstring>Gets a list of problems visible by the caller.</tp:docstring>
 

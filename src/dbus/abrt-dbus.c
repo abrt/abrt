@@ -32,6 +32,9 @@ static const gchar introspection_xml[] =
   "    <method name='GetAllProblems'>"
   "      <arg type='as' name='response' direction='out'/>"
   "    </method>"
+  "    <method name='GetForeignProblems'>"
+  "      <arg type='as' name='response' direction='out'/>"
+  "    </method>"
   "    <method name='GetInfo'>"
   "      <arg type='s' name='problem_dir' direction='in'/>"
   "      <arg type='as' name='element_names' direction='in'/>"
@@ -383,6 +386,16 @@ static void handle_method_call(GDBusConnection *connection,
         GList * dirs = get_problem_dirs_for_uid(caller_uid, g_settings_dump_location);
         response = variant_from_string_list(dirs);
 
+        list_free_with_free(dirs);
+
+        g_dbus_method_invocation_return_value(invocation, response);
+        return;
+    }
+
+    if (g_strcmp0(method_name, "GetForeignProblems") == 0)
+    {
+        GList * dirs = get_problem_dirs_not_accessible_by_uid(caller_uid, g_settings_dump_location);
+        response = variant_from_string_list(dirs);
         list_free_with_free(dirs);
 
         g_dbus_method_invocation_return_value(invocation, response);
