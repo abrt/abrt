@@ -46,7 +46,7 @@ int for_each_problem_in_dir(const char *path,
             continue; /* skip "." and ".." */
 
         char *full_name = concat_path_file(path, dent->d_name);
-        if (dump_dir_accessible_by_uid(full_name, caller_uid))
+        if (caller_uid == -1 || dump_dir_accessible_by_uid(full_name, caller_uid))
         {
             /* Silently ignore *any* errors, not only EACCES.
              * We saw "lock file is locked by process PID" error
@@ -90,6 +90,35 @@ GList *get_problem_dirs_for_uid(uid_t uid, const char *dump_location)
      */
     return g_list_reverse(list);
 }
+
+/* get_problem_dirs_not_accessible_by_uid and its helpers */
+struct add_dirname_to_GList_if_not_accessible_args
+{
+    uid_t uid;
+    GList *list;
+};
+
+static int add_dirname_to_GList_if_not_accessible(struct dump_dir *dd, void *args)
+{
+    struct add_dirname_to_GList_if_not_accessible_args *param = (struct add_dirname_to_GList_if_not_accessible_args *)args;
+    /* Append if not accessible */
+    if (!dump_dir_accessible_by_uid(dd->dd_dirname, param->uid))
+        param->list = g_list_prepend(param->list, xstrdup(dd->dd_dirname));
+
+    return 0;
+}
+
+GList *get_problem_dirs_not_accessible_by_uid(uid_t uid, const char *dump_location)
+{
+    struct add_dirname_to_GList_if_not_accessible_args args = {
+        .uid = uid,
+        .list = NULL,
+    };
+
+    for_each_problem_in_dir(dump_location, /*disable default uid check*/-1, add_dirname_to_GList_if_not_accessible, &args);
+    return g_list_reverse(args.list);
+}
+
 
 /* get_problem_storages */
 

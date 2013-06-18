@@ -20,9 +20,29 @@
 #include <glib.h>
 #include <libabrt.h>
 
+
+/*
+ * Function called for each problem directory in @for_each_problem_in_dir
+ *
+ * @param dd A dump directory
+ * @param arg User's arguments
+ * @returns 0 if everything is OK, a non zero value in order to break the iterator
+ */
+typedef int (* for_each_problem_in_dir_callback)(struct dump_dir *dd, void *arg);
+
+/*
+ * Iterates over all dump directories placed in @path and call @callback.
+ *
+ * @param path Dump directories location
+ * @param caller_uid UID for access check. -1 for disabling this check
+ * @param callback Called for each applicable dump directory. Non zero
+ * value returned from @callback will breaks the iteration.
+ * @param arg User's arguments passed to @callback
+ * @returns 0 or the first non zero value returned from @callback
+ */
 int for_each_problem_in_dir(const char *path,
                         uid_t caller_uid,
-                        int (*callback)(struct dump_dir *dd, void *arg),
+                        for_each_problem_in_dir_callback callback,
                         void *arg);
 
 /* Retrieves the list of directories currently used as a problem storage
@@ -31,3 +51,12 @@ int for_each_problem_in_dir(const char *path,
  */
 GList *get_problem_storages(void);
 GList *get_problem_dirs_for_uid(uid_t uid, const char *dump_location);
+
+/*
+ * Gets list of problem directories not accessible by user
+ *
+ * @param uid User's uid
+ * @param dump_location Dump directories location
+ * @returns GList with mallocated absolute paths to dump directories
+ */
+GList *get_problem_dirs_not_accessible_by_uid(uid_t uid, const char *dump_location);
