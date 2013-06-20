@@ -38,22 +38,20 @@ connect to UNIX domain socket /var/run/abrt.socket
 Providing data (writting data to the socket):
 
 -------------------------------------------------
--> "PUT / HTTP/1.1\r\n"
+-> "POST / HTTP/1.1\r\n"
 -> "\r\n"
--> "PID=number\0"
-   number, 0 - PID_MAX (/proc/sys/kernel/pid_max)
--> "EXECUTABLE=string\0"
-   string, maximum length ~MAX_PATH
--> "BACKTRACE=string\0"
-   string, maximum length 1 MB
--> "ANALYZER=string\0"
+-> "type=string\0"
    string, maximum length 100 bytes
--> "BASENAME=string\0"
-   string maximum length 100 bytes, no slashes
--> "REASON=string\0"
+-> "reason=string\0"
    string, maximum length 512 bytes
+-> "pid=number\0"
+   number, 0 - PID_MAX (/proc/sys/kernel/pid_max)
+-> "executable=string\0"
+   string, maximum length ~MAX_PATH
+-> "backtrace=string\0"
+   string, maximum length 1 MB
 -> (close writing half of the socket)
-<- "HTTP/1.1 200 \r\n"
+<- "HTTP/1.1 201 \r\n"
 <- "\r\n"
 -------------------------------------------------
 

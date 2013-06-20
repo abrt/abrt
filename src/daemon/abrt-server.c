@@ -89,7 +89,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
 
     gchar *dir_basename = g_hash_table_lookup(problem_info, "basename");
     if (!dir_basename)
-        dir_basename = g_hash_table_lookup(problem_info, FILENAME_ANALYZER);
+        dir_basename = g_hash_table_lookup(problem_info, FILENAME_TYPE);
 
     char *path = xasprintf("%s/%s-%s-%u.new",
                            g_settings_dump_location,
@@ -232,7 +232,7 @@ static gboolean key_value_ok(gchar *key, gchar *value)
     /* check value of 'basename', it has to be valid non-hidden directory
      * name */
     if (strcmp(key, "basename") == 0
-     || strcmp(key, FILENAME_ANALYZER) == 0
+     || strcmp(key, FILENAME_TYPE) == 0
     )
     {
         if (!is_correct_filename(value))
@@ -268,7 +268,11 @@ static void process_message(GHashTable *problem_info, char *message)
             else
             {
                 g_hash_table_insert(problem_info, key, xstrdup(value));
-                key = NULL; /* prevent freeing later */
+                /* Compat, delete when FILENAME_ANALYZER is replaced by FILENAME_TYPE: */
+                if (strcmp(key, FILENAME_TYPE) == 0)
+                    g_hash_table_insert(problem_info, xstrdup(FILENAME_ANALYZER), xstrdup(value));
+                /* Prevent freeing key later: */
+                key = NULL;
             }
         }
         else
@@ -289,11 +293,13 @@ static void die_if_data_is_missing(GHashTable *problem_info)
 {
     gboolean missing_data = FALSE;
     gchar **pstring;
-    static const gchar *const needed[] = {FILENAME_ANALYZER,
-                                          FILENAME_BACKTRACE,
-                                          FILENAME_EXECUTABLE,
-                                          FILENAME_REASON,
-                                          NULL};
+    static const gchar *const needed[] = {
+        FILENAME_TYPE,
+        FILENAME_REASON,
+        /* FILENAME_BACKTRACE, - ECC errors have no such elements */
+        /* FILENAME_EXECUTABLE, */
+        NULL
+    };
 
     for (pstring = (gchar**) needed; *pstring; pstring++)
     {
@@ -408,8 +414,14 @@ static int perform_http_xact(void)
         return delete_path(messagebuf_data);
     }
 
-    if (strncmp(messagebuf_data, "PUT ", strlen("PUT ")) != 0)
-    {
+    /* We erroneously used "PUT /" to create new problems.
+     * POST is the correct request in this case:
+     * "PUT /" implies creation or replace of resource named "/"!
+     * Delete PUT in 2014.
+     */
+    if (strncmp(messagebuf_data, "PUT ", strlen("PUT ")) != 0
+     && strncmp(messagebuf_data, "POST ", strlen("POST ")) != 0
+    ) {
         return 400; /* Bad Request */;
     }
 
@@ -464,11 +476,21 @@ static int perform_http_xact(void)
     die_if_data_is_missing(problem_info);
 
     char *executable = g_hash_table_lookup(problem_info, FILENAME_EXECUTABLE);
-    char *last_file = concat_path_file(g_settings_dump_location, "last-via-server");
-    int repeating_crash = check_recent_crash_file(last_file, executable);
-    free(last_file);
-    if (repeating_crash) /* Only pretend that we saved it */
-        goto out; /* ret is 0: "success" */
+    if (executable)
+    {
+        char *last_file = concat_path_file(g_settings_dump_location, "last-via-server");
+        int repeating_crash = check_recent_crash_file(last_file, executable);
+        free(last_file);
+        if (repeating_crash) /* Only pretend that we saved it */
+            goto out; /* ret is 0: "success" */
+    }
+
+#if 0
+//TODO:
+    /* At least it should generate local problem identifier UUID */
+    problem_data_add_basics(problem_info);
+//...the problem being that problem_info here is not a problem_data_t!
+#endif
 
     ret = create_problem_dir(problem_info, pid);
 
