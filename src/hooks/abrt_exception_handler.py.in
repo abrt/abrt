@@ -53,16 +53,15 @@ def write_dump(tb_text, tb):
         s.settimeout(5)
         try:
             s.connect(@VAR_RUN@ + "/abrt/abrt.socket")
-            s.sendall("PUT / HTTP/1.1\r\n\r\n")
-            s.sendall("PID=%s\0" % os.getpid())
-            s.sendall("EXECUTABLE=%s\0" % executable)
-            s.sendall("ANALYZER=Python\0")
-            s.sendall("BASENAME=pyhook\0")
+            s.sendall("POST / HTTP/1.1\r\n\r\n")
+            s.sendall("type=Python\0")
+            s.sendall("pid=%s\0" % os.getpid())
+            s.sendall("executable=%s\0" % executable)
             # This handler puts a short(er) crash descr in 1st line of the backtrace.
             # Example:
             # CCMainWindow.py:1:<module>:ZeroDivisionError: integer division or modulo by zero
-            s.sendall("REASON=%s\0" % tb_text.splitlines()[0])
-            s.sendall("BACKTRACE=%s\0" % tb_text)
+            s.sendall("reason=%s\0" % tb_text.splitlines()[0])
+            s.sendall("backtrace=%s\0" % tb_text)
 
             if dso_list:
                 s.sendall("dso_list=%s\0" % "\n".join(dso_list))
