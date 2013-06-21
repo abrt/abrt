@@ -53,7 +53,7 @@ rlJournalStart
         get_crash_path
 
         rlRun "abrt-cli info $crash_PATH | grep $TFILE" 0 "abrt-cli info should contain $TFILE"
-        rlRun "abrt-cli info $crash_PATH | grep 'pyhook'" 0 "abrt-cli info should contain 'pyhook'"
+        rlRun "abrt-cli info $crash_PATH | grep 'Python'" 0 "abrt-cli info should contain 'Python'"
 
     rlPhaseEnd
 
