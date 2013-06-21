@@ -74,6 +74,8 @@ extern bool          g_settings_delete_uploaded;
 extern bool          g_settings_autoreporting;
 #define g_settings_autoreporting_event abrt_g_settings_autoreporting_event
 extern char *        g_settings_autoreporting_event;
+#define g_settings_shortenedreporting abrt_g_settings_shortenedreporting
+extern bool          g_settings_shortenedreporting;
 
 
 #define load_abrt_conf abrt_load_abrt_conf

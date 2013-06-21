@@ -24,6 +24,7 @@ char *        g_settings_dump_location = NULL;
 bool          g_settings_delete_uploaded = 0;
 bool          g_settings_autoreporting = 0;
 char *        g_settings_autoreporting_event = NULL;
+bool          g_settings_shortenedreporting = 0;
 
 void free_abrt_conf_data()
 {
@@ -89,6 +90,19 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
     }
     else
         g_settings_autoreporting_event = xstrdup("report_uReport");
+
+    value = get_map_string_item_or_NULL(settings, "ShortenedReporting");
+    if (value)
+    {
+        g_settings_shortenedreporting = string_to_bool(value);
+        remove_map_string_item(settings, "ShortenedReporting");
+    }
+    else
+    {
+        /* Default: enabled for GNOME desktop, else disabled */
+        const char *desktop_env = getenv("DESKTOP_SESSION");
+        g_settings_shortenedreporting = (desktop_env && strcasestr(desktop_env, "gnome") != NULL);
+    }
 
     GHashTableIter iter;
     const char *name;

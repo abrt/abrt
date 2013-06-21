@@ -117,9 +117,7 @@ static bool is_shortened_reporting_enabled()
     if (configured)
         return string_to_bool(configured);
 
-    /* Default: enabled for GNOME desktop, else disabled */
-    const char *desktop_env = getenv("DESKTOP_SESSION");
-    return (desktop_env && strcasestr(desktop_env, "gnome") != NULL);
+    return g_settings_shortenedreporting;
 }
 
 /*
