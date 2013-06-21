@@ -377,6 +377,11 @@ desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_sysconfdir}/xdg/autostart \
         src/applet/abrt-applet.desktop
 
+desktop-file-install \
+            --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
+            --delete-original \
+            ${RPM_BUILD_ROOT}%{_datadir}/applications/*.desktop
+
 # After everything is installed, remove info dir
 rm -f %{buildroot}%{_infodir}/dir
 
@@ -658,9 +663,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/icons/hicolor/*/apps/*
 %{_datadir}/icons/hicolor/*/status/*
 %{_datadir}/%{name}/icons/hicolor/*/status/*
+%{_datadir}/%{name}/ui/*
 %{_bindir}/abrt-applet
+%{_bindir}/system-config-abrt
 #%%{_bindir}/test-report
 %{_sysconfdir}/xdg/autostart/abrt-applet.desktop
+/usr/share/applications/system-config-abrt.desktop
 
 %files addon-ccpp
 %defattr(-,root,root,-)
