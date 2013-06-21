@@ -1524,7 +1524,16 @@ next:
     if (notify_is_initted())
         notify_uninit();
 
-    save_user_settings();
+    /* It does not make much sense to save settings at exit and after
+     * introduction of system-config-abrt it is wrong to do that. abrt-applet
+     * is long-running application and user can modify the configuration files
+     * while abrt-applet run. Thus, saving configuration at desktop session
+     * exit would make someone's life really hard.
+     *
+     * abrt-applet saves configuration immediately after user input.
+     *
+     * save_user_settings();
+     */
 
     g_dbus_connection_signal_unsubscribe(g_system_bus, signal_ret);
     g_object_unref(g_system_bus);
