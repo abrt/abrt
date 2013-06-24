@@ -680,6 +680,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_initrddir}/abrt-ccpp
 %endif
 %{_libexecdir}/abrt-hook-ccpp
+%{_libexecdir}/abrt-gdb-exploitable
 
 # attr(6755) ~= SETUID|SETGID
 %attr(6755, abrt, abrt) %{_libexecdir}/abrt-action-install-debuginfo-to-abrt-cache
@@ -687,6 +688,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-action-analyze-c
 %{_bindir}/abrt-action-trim-files
 %{_bindir}/abrt-action-analyze-core
+%{_bindir}/abrt-action-analyze-vulnerability
 %{_bindir}/abrt-action-install-debuginfo
 %{_bindir}/abrt-action-generate-backtrace
 %{_bindir}/abrt-action-generate-core-backtrace
