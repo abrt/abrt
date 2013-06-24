@@ -3,6 +3,7 @@
 bin_SCRIPTS = \
     abrt-action-install-debuginfo \
     abrt-action-analyze-core \
+    abrt-action-analyze-vulnerability \
     abrt-action-analyze-vmcore \
     abrt-action-list-dsos \
     abrt-action-perform-ccpp-analysis \
@@ -29,9 +30,12 @@ bin_PROGRAMS += \
     abrt-bodhi
 endif
 
-libexec_PROGRAMS = abrt-action-install-debuginfo-to-abrt-cache
+libexec_PROGRAMS = \
+    abrt-action-install-debuginfo-to-abrt-cache
 
-libexec_SCRIPTS = abrt-action-ureport
+libexec_SCRIPTS = \
+    abrt-action-ureport \
+    abrt-gdb-exploitable
 
 #dist_pluginsconf_DATA = Python.conf
 
@@ -68,6 +72,7 @@ PYTHON_FILES = \
     abrt-action-install-debuginfo.in \
     abrt-action-list-dsos \
     abrt-action-analyze-core \
+    abrt-action-analyze-vulnerability \
     abrt-action-analyze-vmcore.in \
     abrt-action-perform-ccpp-analysis.in
 
@@ -84,6 +89,7 @@ EXTRA_DIST = \
     abrt-action-analyze-vmcore \
     abrt-action-save-kernel-data \
     abrt-action-ureport \
+    abrt-gdb-exploitable \
     https-utils.h \
     post_report.xml.in \
     abrt-action-analyze-ccpp-local
