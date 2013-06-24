@@ -16,7 +16,9 @@ abrtd-inotify-flood
 # - addons
 distro_specific/rhel6/ccpp-plugin
 ccpp-plugin-config
-python-addon
+# Remove me and revert to common python-addon test
+# when rhel6's python hook stops sending "basename=pyhook" item:
+distro_specific/rhel6/python-addon
 
 # - tools tests
 distro_specific/rhel6/cli-sanity
