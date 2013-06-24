@@ -102,7 +102,7 @@ int cmd_status(int argc, const char **argv)
         else
         {
             char *list_arg = opt_since ? xasprintf(" --since %d", opt_since) : xstrdup("");
-            printf(_("ABRT has detected '%u' problem(s). (For more info run: $ abrt-cli list%s )\n"), problem_count, list_arg);
+            printf(_("ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"), problem_count, list_arg);
             free(list_arg);
         }
     }
