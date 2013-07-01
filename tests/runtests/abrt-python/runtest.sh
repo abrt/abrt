@@ -78,17 +78,17 @@ rlJournalStart
         get_crash_path
         wait_for_hooks
 
-        rlRun "python edit.py" 
-        # ^ should delete coredump and replace will_segfault with 31337 in core_backtrace
+        rlRun "python edit.py"
+        # ^ should delete coredump and replace will_segfault with 31337 in cmdline
 
         rlAssertNotExists $crash_PATH/coredump
-        rlAssertGrep "31337" $crash_PATH/core_backtrace
+        rlAssertGrep "31337" $crash_PATH/cmdline
 
         rlRun "python delete.py"
         rlAssertNotExists $crash_PATH
     rlPhaseEnd
 
-    rlPhaseStartTest edit
+    rlPhaseStartTest create
         prepare
         rlRun "python create.py" 
         get_crash_path
