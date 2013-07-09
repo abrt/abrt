@@ -92,11 +92,6 @@ PYTHON_LIBS=`python-config --libs 2> /dev/null`
 AC_SUBST(PYTHON_CFLAGS)
 AC_SUBST(PYTHON_LIBS)
 
-AC_ARG_WITH([satyr],
-    AS_HELP_STRING([--with-satyr],
-        [use satyr instead of btparser (default is no)]),
-    [], [with_satyr=no])
-
 PKG_CHECK_MODULES([GTK], [gtk+-3.0])
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.21])
 PKG_CHECK_MODULES([DBUS], [dbus-1])
@@ -109,14 +104,7 @@ PKG_CHECK_MODULES([LIBREPORT_GTK], [libreport-gtk])
 PKG_CHECK_MODULES([LIBREPORT_WEB], [libreport-web])
 PKG_CHECK_MODULES([POLKIT], [polkit-gobject-1])
 PKG_CHECK_MODULES([GIO], [gio-2.0])
-
-[if test "$with_satyr" = "yes"]
-[then]
-    PKG_CHECK_MODULES([SATYR], [satyr])
-    AC_DEFINE([USE_SATYR], [1], [Use satyr instead of btparser])
-[else]
-    PKG_CHECK_MODULES([SATYR], [btparser])
-[fi]
+PKG_CHECK_MODULES([SATYR], [satyr])
 
 PKG_PROG_PKG_CONFIG
 AC_ARG_WITH([systemdsystemunitdir],

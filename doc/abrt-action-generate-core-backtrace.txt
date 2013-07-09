@@ -3,12 +3,11 @@ abrt-action-generate-core-backtrace(1)
 
 NAME
 ----
-abrt-action-generate-core-backtrace - Generates coredump-level (debuginfo-free)
-backtrace
+abrt-action-generate-core-backtrace - Generates coredump-level backtrace
 
 SYNOPSIS
 --------
-'abrt-action-generate-core-backtrace' [-v] [-d DIR]
+'abrt-action-generate-core-backtrace' [-v] [-r] [-d DIR]
 
 DESCRIPTION
 -----------
@@ -22,8 +21,7 @@ However, it only contains information that can be obtained from the coredump
 without debugging symbols available - mainly relative addresses of
 the stored instruction pointers. Such backtrace can still be useful
 for reporting and reproducing the bug and does not require debugging
-information files to be installed.  See <<X1,*FILE FORMAT*>> for the
-description of the generated file.
+information files to be installed.
 
 The result is saved in the problem directory in a file named
 'core_backtrace'.
@@ -45,47 +43,11 @@ OPTIONS
 -d DIR::
    Path to problem directory.
 
+-r::
+   Do not hash function fingerprints. Useful for debugging.
+
 -v::
    Be more verbose. Can be given multiple times.
-
-[[X1]]
-FILE FORMAT
------------
-
-The generated file is a text file containing one line for each stack frame of
-the thread that most likely caused the crash. The line has following format:
-
-------------
-BUILD_ID OFFSET SYMBOL MODNAME FINGERPRINT
-------------
-
-Where:
-
-*BUILD_ID*::
-  Build ID of the binary file the address is mapped to as a hexadecimal string.
-
-*OFFSET*::
-  Offset from the start of the executable section of aforementioned file the
-  stored instruction pointer points to. Number in hexadecimal format.
-
-*SYMBOL*::
-  Name of the function if it is present in the binary (which is often the case
-  for shared libraries).
-
-*MODNAME*::
-  Name of the module. Contains name of a library or *[exe]* if it is the
-  executable.
-
-*FINGERPRINT*::
-  Fingerprint of the function the instruction pointer points to (x86-64 only).
-  The fingerprint is generated from various aspects of the machine code of the
-  function in question. Its purpose is to supplant the BUILD_ID and OFFSET
-  pair in case they are not present and to allow for comparison of
-  coredump-level backtraces produced by two slightly different versions of a
-  program.
-
-Dash in place of any of the parts indicates that the part is unknown.
-
 
 
 AUTHORS

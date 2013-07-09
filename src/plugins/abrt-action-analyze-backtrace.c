@@ -15,7 +15,11 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include "satyr-compat.h"
+#include <satyr/location.h>
+#include <satyr/thread.h>
+#include <satyr/gdb/frame.h>
+#include <satyr/gdb/stacktrace.h>
+
 #include "libabrt.h"
 
 static const char *dump_dir_name = ".";
@@ -130,18 +134,29 @@ int main(int argc, char **argv)
     }
 
     /* Compute duplication hash. */
-    char *str_hash_core = sr_gdb_stacktrace_get_duplication_hash(backtrace);
-    struct strbuf *str_hash = strbuf_new();
-    strbuf_append_str(str_hash, component);
-    strbuf_append_str(str_hash, str_hash_core);
+    struct sr_thread *crash_thread =
+        (struct sr_thread *)sr_gdb_stacktrace_find_crash_thread(backtrace);
 
-    VERB3 log("Generating duphash: %s", str_hash->buf);
-    char hash_str[SHA1_RESULT_LEN*2 + 1];
-    create_hash(hash_str, str_hash->buf);
+    if (crash_thread)
+    {
+        char *hash_str;
 
-    dd_save_text(dd, FILENAME_DUPHASH, hash_str);
-    strbuf_free(str_hash);
-    free(str_hash_core);
+        if (g_verbose >= 3)
+        {
+            hash_str = sr_thread_get_duphash(crash_thread, 3, component,
+                                             SR_DUPHASH_NOHASH);
+            log("Generating duphash: %s", hash_str);
+            free(hash_str);
+        }
+
+        hash_str = sr_thread_get_duphash(crash_thread, 3, component,
+                                         SR_DUPHASH_NORMAL);
+        dd_save_text(dd, FILENAME_DUPHASH, hash_str);
+        free(hash_str);
+    }
+    else
+        log(_("Crash thread not found"));
+
 
     /* Compute the backtrace rating. */
     float quality = sr_gdb_stacktrace_quality_complex(backtrace);

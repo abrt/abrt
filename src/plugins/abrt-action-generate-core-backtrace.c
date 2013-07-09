@@ -16,74 +16,10 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include <satyr/abrt.h>
+#include <satyr/utils.h>
+
 #include "libabrt.h"
-
-#ifdef USE_SATYR
-/* If satyr is used, just run "satyr abrt-create-core-stacktrace" on the dump directory.
- */
-
-#include <unistd.h>
-
-int main(int argc, char **argv)
-{
-    VERB1 log("Running 'satyr abrt-create-core-stacktrace .'");
-    execlp("satyr", "satyr", "abrt-create-core-stacktrace", ".", NULL);
-    perror_msg_and_die("Can't execute satyr");
-
-    return 0;
-}
-
-#else /* USE_SATYR */
-/* Btparser is used. Once the support is removed, this whole file can be
- * deleted and ccpp_event.conf modified accordingly.
- */
-
-#include <btparser/hash_sha1.h>
-#include <btparser/utils.h>
-#include <btparser/core-backtrace.h>
-#include <btparser/core-backtrace-python.h>
-#include <btparser/core-backtrace-oops.h>
-
-static bool raw_fingerprints = false;
-
-/* add the information about '?' flag to fingerprint field
-   fingerprint is otherwise always empty for kerneloops */
-static void oops_add_question_marks(GList *backtrace)
-{
-    GList *elem = backtrace;
-    struct backtrace_entry *entry;
-    while (elem)
-    {
-        entry = (struct backtrace_entry *)elem->data;
-        if (entry->function_initial_loc)
-            entry->fingerprint = btp_strdup("?");
-
-        elem = g_list_next(elem);
-    }
-}
-
-static void hash_fingerprints(GList *backtrace)
-{
-    GList *elem = backtrace;
-    struct backtrace_entry *entry;
-    char bin_hash[BTP_SHA1_RESULT_BIN_LEN], hash[BTP_SHA1_RESULT_LEN];
-    btp_sha1_ctx_t ctx;
-    while (elem)
-    {
-        entry = (struct backtrace_entry *)elem->data;
-        if (entry->fingerprint)
-        {
-            btp_sha1_begin(&ctx);
-            btp_sha1_hash(&ctx, entry->fingerprint, strlen(entry->fingerprint));
-            btp_sha1_end(&ctx, bin_hash);
-            btp_bin2hex(hash, bin_hash, sizeof(bin_hash))[0] = '\0';
-
-            free(entry->fingerprint);
-            entry->fingerprint = btp_strndup(hash, sizeof(hash));
-        }
-        elem = g_list_next(elem);
-    }
-}
 
 int main(int argc, char **argv)
 {
@@ -97,12 +33,11 @@ int main(int argc, char **argv)
     abrt_init(argv);
 
     const char *dump_dir_name = ".";
-    /* 60 seconds was too limiting on slow machines */
-    const int exec_timeout_sec = 240;
+    bool raw_fingerprints = false;
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
-        "& [-v] -d DIR\n"
+        "& [-v] [-r] -d DIR\n"
         "\n"
         "Creates coredump-level backtrace from core dump and corresponding binary"
     );
@@ -123,109 +58,22 @@ int main(int argc, char **argv)
     export_abrt_envvars(0);
 
     if (g_verbose > 1)
-        btp_debug_parser = true;
+        sr_debug_parser = true;
 
     /* Let user know what's going on */
     log(_("Generating core_backtrace"));
 
-    /* Get the executable name -- unstrip doesn't know it. */
-    struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
-    if (!dd)
-        xfunc_die(); /* dd_opendir already printed error msg */
-    char *analyzer = dd_load_text(dd, FILENAME_ANALYZER);
-    char *executable = dd_load_text_ext(dd, FILENAME_EXECUTABLE,
-                                        DD_FAIL_QUIETLY_ENOENT);
-    char *txt_backtrace = dd_load_text_ext(dd, FILENAME_BACKTRACE,
-                                           DD_FAIL_QUIETLY_ENOENT);
-    char *kernel = dd_load_text_ext(dd, FILENAME_KERNEL,
-                                    DD_FAIL_QUIETLY_ENOENT |
-                                    DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-    dd_close(dd);
+    char *error_message = NULL;
+    bool success = sr_abrt_create_core_stacktrace(dump_dir_name,
+                                                  !raw_fingerprints,
+                                                  &error_message);
 
-    /* Parse addresses and eventual symbols from the output */
-    GList *backtrace;
-    if (strcmp(analyzer, "CCpp") == 0)
+    if (!success)
     {
-        char *gdb_out = get_backtrace(dump_dir_name, exec_timeout_sec, NULL);
-        if (gdb_out == NULL)
-            xfunc_die();
-
-        /* We observed a case when we were stuck for 36 minutes after emitting
-         * "Generating backtrace" message (in get_backtrace).
-         * We don't know whether we finished bt generation
-         * and were stuck somewhere below this point, or we were stuck
-         * in get_backtrace(). For now, we emit this message
-         * even in non-verbose mode to aid in future debugging:
-         */
-        log(_("Backtrace is generated, %u bytes"), (int)strlen(gdb_out));
-
-        backtrace = btp_backtrace_extract_addresses(gdb_out);
-        VERB1 log("Extracted %d frames from the backtrace", g_list_length(backtrace));
-        free(gdb_out);
-
-        VERB1 log("Running eu-unstrip -n to obtain build ids");
-        /* Run eu-unstrip -n to obtain the ids. This should be rewritten to read
-         * them directly from the core. */
-        char *unstrip_output = run_unstrip_n(dump_dir_name, /*timeout_sec:*/ 30);
-        if (unstrip_output == NULL)
-            error_msg_and_die("Running eu-unstrip failed");
-        btp_core_assign_build_ids(backtrace, unstrip_output, executable);
-        free(unstrip_output);
-
-        /* Remove empty lines from the backtrace. */
-        GList *loop = backtrace;
-        while (loop != NULL)
-        {
-            struct backtrace_entry *entry = loop->data;
-            GList *const tmp_next = g_list_next(loop);
-            if (!entry->build_id && !entry->filename && !entry->modname)
-                backtrace = g_list_delete_link(backtrace, loop);
-            loop = tmp_next;
-        }
-
-        /* Extract address ranges from all the executables in the backtrace */
-        VERB1 log("Computing function fingerprints");
-        btp_core_backtrace_fingerprint(backtrace);
-        if (!raw_fingerprints)
-            hash_fingerprints(backtrace);
+        log(_("Error: %s"), error_message);
+        free(error_message);
+        return 1;
     }
-    else if (strcmp(analyzer, "Python") == 0)
-        backtrace = btp_parse_python_backtrace(txt_backtrace);
-    else if (strcmp(analyzer, "Kerneloops") == 0 || strcmp(analyzer, "vmcore") == 0)
-    {
-        /* btp_parse_kerneloops() accepts NULL in the kernelver argument. It is not
-         * documented, but it is true. */
-        if (kernel != NULL)
-        {
-            char *space = strchr(kernel, ' ');
-            if (space)
-                *space = '\0';
-        }
 
-        backtrace = btp_parse_kerneloops(txt_backtrace, kernel);
-        oops_add_question_marks(backtrace);
-    }
-    else
-        error_msg_and_die(_("Core-backtraces are not supported for '%s'"), analyzer);
-
-    free(txt_backtrace);
-    free(kernel);
-    free(executable);
-    free(analyzer);
-
-    char *formatted_backtrace = btp_core_backtrace_fmt(backtrace);
-
-    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        xfunc_die();
-    dd_save_text(dd, FILENAME_CORE_BACKTRACE, formatted_backtrace);
-    dd_close(dd);
-
-    log(_("Core backtrace is generated and saved, %u bytes"), (int)strlen(formatted_backtrace));
-
-    free(formatted_backtrace);
-    btp_core_backtrace_free(backtrace);
     return 0;
 }
-
-#endif /* USE_SATYR */

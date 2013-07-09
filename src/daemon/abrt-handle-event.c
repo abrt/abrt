@@ -16,22 +16,42 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include <satyr/thread.h>
+#include <satyr/stacktrace.h>
+#include <satyr/distance.h>
+#include <satyr/abrt.h>
 
 #include "libabrt.h"
 #include <libreport/run_event.h>
-#include "satyr-compat.h"
+
+/* 70 % similarity */
+#define BACKTRACE_DUP_THRESHOLD 0.3
 
 static char *uid = NULL;
 static char *uuid = NULL;
-static struct sr_core_stacktrace *corebt = NULL;
+static struct sr_stacktrace *corebt = NULL;
+static char *analyzer = NULL;
 static char *crash_dump_dup_name = NULL;
 
-static int core_backtrace_is_duplicate(struct sr_core_stacktrace *bt1,
+static char* load_backtrace(const struct dump_dir *dd)
+{
+    const char *filename = FILENAME_BACKTRACE;
+    if (strcmp(analyzer, "CCpp") == 0)
+    {
+        filename = FILENAME_CORE_BACKTRACE;
+    }
+
+    return dd_load_text_ext(dd, filename,
+        DD_FAIL_QUIETLY_ENOENT|DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+}
+
+static int core_backtrace_is_duplicate(struct sr_stacktrace *bt1,
                                        const char *bt2_text)
 {
     int result;
     char *error_message;
-    struct sr_core_stacktrace *bt2 = sr_core_stacktrace_from_json_text(bt2_text, &error_message);
+    struct sr_stacktrace *bt2 = sr_stacktrace_parse(sr_abrt_type_from_analyzer(analyzer),
+                                                    bt2_text, &error_message);
     if (bt2 == NULL)
     {
         VERB1 log("Failed to parse backtrace, considering it not duplicate: %s", error_message);
@@ -39,10 +59,10 @@ static int core_backtrace_is_duplicate(struct sr_core_stacktrace *bt1,
         return 0;
     }
 
-    struct sr_core_thread *thread1 = sr_core_stacktrace_find_crash_thread(bt1);
-    struct sr_core_thread *thread2 = sr_core_stacktrace_find_crash_thread(bt2);
+    struct sr_thread *thread1 = sr_stacktrace_find_crash_thread(bt1);
+    struct sr_thread *thread2 = sr_stacktrace_find_crash_thread(bt2);
 
-    int length2 = sr_core_thread_get_frame_count(thread2);
+    int length2 = sr_thread_frame_count(thread2);
 
     if (length2 <= 0)
     {
@@ -52,7 +72,7 @@ static int core_backtrace_is_duplicate(struct sr_core_stacktrace *bt1,
     }
 
     /* This is an ugly workaround for https://github.com/abrt/btparser/issues/6 */
-#ifndef USE_SATYR
+    /*
     int length1 = sr_core_thread_get_frame_count(thread1);
 
     if (length1 <= 2 || length2 <= 2)
@@ -61,23 +81,14 @@ static int core_backtrace_is_duplicate(struct sr_core_stacktrace *bt1,
         result = (sr_core_thread_cmp(thread1, thread2) == 0);
         goto end;
     }
-#endif
+    */
 
-    float distance = sr_distance_core(SR_DISTANCE_DAMERAU_LEVENSHTEIN,
-                                      thread1, thread2);
-
-    if (distance == -1)
-    {
-        result = 0;
-    }
-    else
-    {
-        VERB2 log("Distance between backtraces: %f", distance);
-        result = (distance <= BACKTRACE_DUP_THRESHOLD);
-    }
+    float distance = sr_distance(SR_DISTANCE_DAMERAU_LEVENSHTEIN, thread1, thread2);
+    VERB2 log("Distance between backtraces: %f", distance);
+    result = (distance <= BACKTRACE_DUP_THRESHOLD);
 
 end:
-    sr_core_stacktrace_free(bt2);
+    sr_stacktrace_free(bt2);
 
     return result;
 }
@@ -126,22 +137,17 @@ static void dup_uuid_fini(void)
 
 static void dup_corebt_init(const struct dump_dir *dd)
 {
-    char *corebt_text;
-
     if (corebt)
         return; /* already checked */
 
-    corebt_text = dd_load_text_ext(dd, FILENAME_CORE_BACKTRACE,
-                            DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
-    );
-
+    char *corebt_text = load_backtrace(dd);
     if (!corebt_text)
         return; /* no backtrace */
 
+    /* sr_stacktrace_parse moves the pointer */
     char *error_message;
-    corebt = sr_core_stacktrace_from_json_text(corebt_text,
-                                                &error_message);
-
+    corebt = sr_stacktrace_parse(sr_abrt_type_from_analyzer(analyzer),
+                                 corebt_text, &error_message);
     if (!corebt)
     {
         VERB1 log("Failed to load core stacktrace: %s", error_message);
@@ -157,9 +163,8 @@ static int dup_corebt_compare(const struct dump_dir *dd)
         return 0;
 
     int isdup;
-    char *dd_corebt = dd_load_text_ext(dd, FILENAME_CORE_BACKTRACE,
-            DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
 
+    char *dd_corebt = load_backtrace(dd);
     if (!dd_corebt)
         return 0;
 
@@ -174,7 +179,7 @@ static int dup_corebt_compare(const struct dump_dir *dd)
 
 static void dup_corebt_fini(void)
 {
-    sr_core_stacktrace_free(corebt);
+    sr_stacktrace_free(corebt);
     corebt = NULL;
 }
 
@@ -208,12 +213,12 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
     if (!dd)
         return 0; /* wtf? (error, but will be handled elsewhere later) */
 
-    dup_uuid_init(dd);
-    dup_corebt_init(dd);
-
-    char *analyzer = dd_load_text(dd, FILENAME_ANALYZER);
+    analyzer = dd_load_text(dd, FILENAME_ANALYZER);
     /* dump_dir_name can be relative */
     dump_dir_name = realpath(dump_dir_name, NULL);
+
+    dup_uuid_init(dd);
+    dup_corebt_init(dd);
 
     dd_close(dd);
 
