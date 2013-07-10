@@ -127,7 +127,7 @@ AC_CHECK_HEADERS([locale.h])
 CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
 VAR_RUN='${localstatedir}/run'
 PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
-EVENTS_DIR='${sysconfdir}/libreport/events'
+EVENTS_DIR='${datadir}/libreport/events'
 EVENTS_CONF_DIR='${sysconfdir}/libreport/events.d'
 ENABLE_SOCKET_OR_DBUS='-DENABLE_DBUS=1'
 DEFAULT_DUMP_DIR_MODE=$($PKG_CONFIG --variable=dd_mode libreport)

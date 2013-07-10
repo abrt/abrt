@@ -698,13 +698,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/ccpp_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/gconf_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vimrc_event.conf
-%config(noreplace) %{_sysconfdir}/libreport/events/analyze_CCpp.xml
-%config(noreplace) %{_sysconfdir}/libreport/events/analyze_LocalGDB.xml
-%config(noreplace) %{_sysconfdir}/libreport/events/collect_xsession_errors.xml
-%config(noreplace) %{_sysconfdir}/libreport/events/collect_GConf.xml
-%config(noreplace) %{_sysconfdir}/libreport/events/collect_vimrc_user.xml
-%config(noreplace) %{_sysconfdir}/libreport/events/collect_vimrc_system.xml
-%config(noreplace) %{_sysconfdir}/libreport/events/post_report.xml
+%{_datadir}/libreport/events/analyze_CCpp.xml
+%{_datadir}/libreport/events/analyze_LocalGDB.xml
+%{_datadir}/libreport/events/collect_xsession_errors.xml
+%{_datadir}/libreport/events/collect_GConf.xml
+%{_datadir}/libreport/events/collect_vimrc_user.xml
+%{_datadir}/libreport/events/collect_vimrc_system.xml
+%{_datadir}/libreport/events/post_report.xml
 %{_mandir}/man*/abrt-action-analyze-c.*
 %{_mandir}/man*/abrt-action-trim-files.*
 %{_mandir}/man*/abrt-action-generate-backtrace.*
@@ -717,7 +717,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-retrace-client
 %{_mandir}/man1/abrt-retrace-client.1.gz
 %config(noreplace) %{_sysconfdir}/libreport/events.d/ccpp_retrace_event.conf
-%config(noreplace) %{_sysconfdir}/libreport/events/analyze_RetraceServer.xml
+%{_datadir}/libreport/events/analyze_RetraceServer.xml
 
 %files addon-kerneloops
 %defattr(-,root,root,-)
@@ -746,7 +746,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vmcore_event.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-harvest-vmcore.conf
-%config(noreplace) %{_sysconfdir}/libreport/events/analyze_VMcore.xml
+%{_datadir}/libreport/events/analyze_VMcore.xml
 %if %{with systemd}
 %{_unitdir}/abrt-vmcore.service
 %else
