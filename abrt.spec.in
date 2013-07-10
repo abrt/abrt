@@ -470,7 +470,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/%{name}/icons/hicolor/*/status/*
 %{_bindir}/abrt-applet
 #%{_bindir}/test-report
-%{_sysconfdir}/xdg/autostart/abrt-applet.desktop
+%config(noreplace) %{_sysconfdir}/xdg/autostart/abrt-applet.desktop
 
 %files addon-ccpp
 %defattr(-,root,root,-)
@@ -494,14 +494,14 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-dedup-client
 %{_bindir}/abrt-action-analyze-ccpp-local
 %{_sbindir}/abrt-install-ccpp-hook
-%{_sysconfdir}/libreport/events.d/ccpp_event.conf
-%{_sysconfdir}/libreport/events.d/gconf_event.conf
-%{_sysconfdir}/libreport/events.d/vimrc_event.conf
-%{_sysconfdir}/libreport/events/analyze_LocalGDB.xml
-%{_sysconfdir}/libreport/events/collect_xsession_errors.xml
-%{_sysconfdir}/libreport/events/collect_GConf.xml
-%{_sysconfdir}/libreport/events/collect_vimrc_user.xml
-%{_sysconfdir}/libreport/events/collect_vimrc_system.xml
+%config(noreplace) %{_sysconfdir}/libreport/events.d/ccpp_event.conf
+%config(noreplace) %{_sysconfdir}/libreport/events.d/gconf_event.conf
+%config(noreplace) %{_sysconfdir}/libreport/events.d/vimrc_event.conf
+%config %{_sysconfdir}/libreport/events/analyze_LocalGDB.xml
+%config %{_sysconfdir}/libreport/events/collect_xsession_errors.xml
+%config %{_sysconfdir}/libreport/events/collect_GConf.xml
+%config %{_sysconfdir}/libreport/events/collect_vimrc_user.xml
+%config %{_sysconfdir}/libreport/events/collect_vimrc_system.xml
 %{_mandir}/man*/abrt-action-analyze-c.*
 %{_mandir}/man*/abrt-action-trim-files.*
 %{_mandir}/man*/abrt-action-generate-backtrace.*
@@ -526,7 +526,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vmcore_event.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-harvest-vmcore.conf
-%{_sysconfdir}/libreport/events/analyze_VMcore.xml
+%config %{_sysconfdir}/libreport/events/analyze_VMcore.xml
 %if %{with systemd}
 %{_unitdir}/abrt-vmcore.service
 %else
@@ -540,7 +540,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python.conf
 # TODO? Do we need %config(noreplace) in the below line too?
-%{_sysconfdir}/libreport/events.d/python_event.conf
+%config(noreplace) %{_sysconfdir}/libreport/events.d/python_event.conf
 %{_bindir}/abrt-action-analyze-python
 %{_mandir}/man1/abrt-action-analyze-python.1*
 %{python_sitearch}/abrt*.py*
