@@ -55,7 +55,7 @@ rlJournalStart
         get_crash_path
         wait_for_hooks
 
-        rlRun "abrt-cli status | grep \"ABRT has detected '1' problem(s).\"" 0
+        rlRun "abrt-cli status | grep \"ABRT has detected 1 problem(s).\"" 0
 
         sleep 2 #just to make sure that SINCE > time of the previous crash
         SINCE=`date +%s`
@@ -64,9 +64,9 @@ rlJournalStart
         get_crash_path
         wait_for_hooks
 
-        rlRun "abrt-cli status | grep \"ABRT has detected '2' problem(s).\"" 0
+        rlRun "abrt-cli status | grep \"ABRT has detected 2 problem(s).\"" 0
 
-        rlRun "abrt-cli status --since=$SINCE | grep \"ABRT has detected '1' problem(s).\"" 0
+        rlRun "abrt-cli status --since=$SINCE | grep \"ABRT has detected 1 problem(s).\"" 0
 
     rlPhaseEnd
 
