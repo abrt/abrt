@@ -38,6 +38,8 @@
 %define shadow_utils shadow-utils
 %endif
 
+%define libreport_ver 2.1.5
+
 Summary: Automatic bug detection and reporting tool
 Name: abrt
 Version: @@ABRT_VERSION@@
@@ -61,9 +63,9 @@ BuildRequires: %{nss_devel}
 BuildRequires: asciidoc
 BuildRequires: doxygen
 BuildRequires: xmlto
-BuildRequires: libreport-devel >= 2.1.3
+BuildRequires: libreport-devel >= %{libreport_ver}
 BuildRequires: satyr-devel >= 0.4
-Requires: libreport >= 2.1.3
+Requires: libreport >= %{libreport_ver}
 Requires: satyr >= 0.4
 # these only exist on suse
 %if 0%{?suse_version}
@@ -109,7 +111,7 @@ Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-dbus = %{version}-%{release}
 Requires: gnome-abrt
-BuildRequires: libreport-gtk-devel
+BuildRequires: libreport-gtk-devel >= %{libreport_ver}
 # we used to have abrt-applet, now abrt-gui includes it:
 Provides: abrt-applet = %{version}-%{release}
 Obsoletes: abrt-applet < 0.0.5
@@ -150,14 +152,16 @@ Summary: %{name}'s kerneloops addon
 Group: System Environment/Libraries
 Requires: curl
 Requires: %{name} = %{version}-%{release}
-Requires: libreport-plugin-kerneloops
+Requires: libreport-plugin-kerneloops >= %{libreport_ver}
+
 Requires: abrt-libs = %{version}-%{release}
 Obsoletes: kerneloops > 0.0.1
 Obsoletes: abrt-plugin-kerneloops > 0.0.1
 Obsoletes: abrt-plugin-kerneloopsreporter > 0.0.1
 
 %description addon-kerneloops
-This package contains plugin for collecting kernel crash information from system log.
+This package contains plugin for collecting kernel crash information from
+system log.
 
 %package addon-xorg
 Summary: %{name}'s Xorg addon
@@ -167,7 +171,8 @@ Requires: %{name} = %{version}-%{release}
 Requires: abrt-libs = %{version}-%{release}
 
 %description addon-xorg
-This package contains plugin for collecting Xorg crash information from Xorg log.
+This package contains plugin for collecting Xorg crash information from Xorg
+log.
 
 %package addon-vmcore
 Summary: %{name}'s vmcore addon
@@ -177,7 +182,8 @@ Requires: abrt-addon-kerneloops
 Requires: crash
 
 %description addon-vmcore
-This package contains plugin for collecting kernel crash information from vmcore files.
+This package contains plugin for collecting kernel crash information from
+vmcore files.
 
 %package addon-uefioops
 Summary: %{name}'s UEFI oops addon
@@ -194,7 +200,7 @@ Summary: %{name}'s bodhi plugin
 BuildRequires: %{libjson_devel}
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
-BuildRequires: libreport-web-devel >= 2.0.10
+BuildRequires: libreport-web-devel >= %{libreport_ver}
 Obsoletes: libreport-plugin-bodhi > 0.0.1
 Provides: libreport-plugin-bodhi
 
@@ -218,15 +224,15 @@ uncaught exception in python programs.
 Summary: %{name}'s command line interface
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
-Requires: libreport-cli
+Requires: libreport-cli >= %{libreport_ver}
 Requires: abrt-libs = %{version}-%{release}
 
 %description tui
-This package contains a simple command line client for processing abrt reports in
-command line environment.
+This package contains a simple command line client for processing abrt reports
+in command line environment.
 
 %package cli
-Summary: Virtual package to install all necessary packages for usage from command line environment
+Summary: Virtual package to make easy default installation on non-graphical environments
 Group: Applications/System
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-tui
@@ -241,16 +247,17 @@ Requires: abrt-retrace-client
 Requires: abrt-plugin-bodhi
 %endif
 %if 0%{!?suse_version:1}
-Requires: libreport-plugin-bugzilla
+Requires: libreport-plugin-bugzilla >= %{libreport_ver}
 %endif
-Requires: libreport-plugin-logger
-Requires: libreport-plugin-ureport
+Requires: libreport-plugin-logger >= %{libreport_ver}
+Requires: libreport-plugin-ureport >= %{libreport_ver}
 
 %description cli
-Virtual package to make easy default installation on non-graphical environments.
+Virtual package to install all necessary packages for usage from command line
+environment.
 
 %package desktop
-Summary: Virtual package to install all necessary packages for usage from desktop environment
+Summary: Virtual package to make easy default installation on desktop environments
 Group: User Interface/Desktops
 # This package gets installed when anything requests bug-buddy -
 # happens when users upgrade Fn to Fn+1;
@@ -273,28 +280,28 @@ Requires: gnome-abrt
 Requires: abrt-plugin-bodhi
 %endif
 %if 0%{!?suse_version:1}
-Requires: libreport-plugin-bugzilla
+Requires: libreport-plugin-bugzilla >= %{libreport_ver}
 %endif
-Requires: libreport-plugin-logger
-Requires: libreport-plugin-ureport
+Requires: libreport-plugin-logger >= %{libreport_ver}
+Requires: libreport-plugin-ureport >= %{libreport_ver}
 %if 0%{?fedora}
-Requires: libreport-fedora
+Requires: libreport-fedora >= %{libreport_ver}
 %endif
 %if 0%{?rhel}
-Requires: libreport-rhel
+Requires: libreport-rhel >= %{libreport_ver}
 %endif
 #Requires: abrt-plugin-firefox
 Obsoletes: bug-buddy > 0.0.1
 Provides: bug-buddy
 
 %description desktop
-Virtual package to make easy default installation on desktop environments.
+Virtual package to install all necessary packages for usage from desktop
+environment.
 
 %package dbus
 Summary: ABRT DBus service
-Group: Application/System
+Group: Applications/System
 Requires: %{name} = %{version}-%{release}
-Requires: libreport
 BuildRequires: polkit-devel
 Requires: abrt-libs = %{version}-%{release}
 
