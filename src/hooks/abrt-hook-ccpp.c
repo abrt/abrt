@@ -633,9 +633,7 @@ int main(int argc, char** argv)
     if (check_recent_crash_file(path, executable))
     {
         /* It is a repeating crash */
-        if (setting_MakeCompatCore)
-            goto create_user_core;
-        return 1;
+        goto create_user_core;
     }
 
     const char *last_slash = strrchr(executable, '/');
@@ -664,7 +662,7 @@ int main(int argc, char** argv)
             g_settings_dump_location, iso_date_string(NULL), (long)pid);
     if (path_len >= (sizeof(path) - sizeof("/"FILENAME_COREDUMP)))
     {
-        return 1;
+        goto create_user_core;
     }
 
     /* use fsuid instead of uid, so we don't expose any sensitive
