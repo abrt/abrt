@@ -1,0 +1,49 @@
+abrt-dump-oops(1)
+===============
+
+NAME
+----
+abrt-dump-oops - Extract oops from FILE (or standard input)
+
+SYNOPSIS
+--------
+'abrt-dump-oops' [-vusoxm] [-d DIR]/[-D] [FILE]
+
+DESCRIPTION
+-----------
+This tool creates problem directory from, updates problem directory with or
+prints oops extracted from FILE or standard input.
+
+OPTIONS
+-------
+-v, --verbose::
+   Be more verbose. Can be given multiple times.
+
+-s::
+   Log to syslog
+
+-o::
+   Print found oopses on standard output
+
+-d DIR::
+   Create new problem directory in DIR for every oops found
+
+-D::
+   Same as -d DumpLocation, DumpLocation is specified in abrt.conf
+
+-u PROBLEM::
+   Save the extracted information in PROBLEM directory
+
+-x::
+   Make the problem directory world readable. Usable only with -d/-D
+
+-m::
+   Print search string(s) for 'abrt-watch-log' to stdout and exit
+
+SEE ALSO
+--------
+abrt-watch-log(1), abrt.conf(5)
+
+AUTHORS
+-------
+* ABRT team
