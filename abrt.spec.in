@@ -641,12 +641,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man1/abrt-handle-upload.1.gz
 %{_mandir}/man1/abrt-server.1.gz
 %{_mandir}/man1/abrt-action-save-package-data.1.gz
+%{_mandir}/man1/abrt-watch-log.1.gz
+%{_mandir}/man1/abrt-action-analyze-xorg.1.gz
 %{_mandir}/man8/abrtd.8.gz
-%{_mandir}/man8/abrt-dbus.8.gz
 %{_mandir}/man5/abrt.conf.5.gz
 %{_mandir}/man5/abrt-action-save-package-data.conf.5.gz
 # {_mandir}/man5/pyhook.conf.5.gz
-%{_mandir}/man1/abrt-action-analyze-ccpp-local.*
 
 %files libs
 %defattr(-,root,root,-)
@@ -673,6 +673,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #%%{_bindir}/test-report
 %config(noreplace) %{_sysconfdir}/xdg/autostart/abrt-applet.desktop
 /usr/share/applications/system-config-abrt.desktop
+%{_mandir}/man1/abrt-applet.1*
+%{_mandir}/man1/system-config-abrt.1*
 
 %files addon-ccpp
 %defattr(-,root,root,-)
@@ -718,7 +720,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man*/abrt-action-generate-core-backtrace.*
 %{_mandir}/man*/abrt-action-analyze-backtrace.*
 %{_mandir}/man*/abrt-action-list-dsos.*
-%{_mandir}/man1/abrt-install-ccpp-hook.1.gz
+%{_mandir}/man*/abrt-install-ccpp-hook.*
+%{_mandir}/man*/abrt-action-install-debuginfo.*
+%{_mandir}/man*/abrt-action-analyze-ccpp-local.*
+%{_mandir}/man*/abrt-action-analyze-core.*
+%{_mandir}/man*/abrt-action-analyze-vulnerability.*
+%{_mandir}/man*/abrt-action-perform-ccpp-analysis.*
+%{_mandir}/man*/abrt-dedup-client.*
 
 %files retrace-client
 %{_bindir}/abrt-retrace-client
@@ -737,7 +745,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-dump-oops
 %{_bindir}/abrt-action-analyze-oops
 %{_bindir}/abrt-action-save-kernel-data
+%{_mandir}/man1/abrt-dump-oops.1*
 %{_mandir}/man1/abrt-action-analyze-oops.1*
+%{_mandir}/man1/abrt-action-save-kernel-data.1*
 
 %files addon-xorg
 %defattr(-,root,root,-)
@@ -748,6 +758,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_initrddir}/abrt-xorg
 %endif
 %{_bindir}/abrt-dump-xorg
+%{_mandir}/man1/abrt-dump-xorg.1*
 
 %files addon-vmcore
 %defattr(-,root,root,-)
@@ -761,6 +772,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 %{_sbindir}/abrt-harvest-vmcore
 %{_bindir}/abrt-action-analyze-vmcore
+%{_mandir}/man1/abrt-harvest-vmcore.1*
 %{_mandir}/man1/abrt-action-analyze-vmcore.1*
 
 %files addon-uefioops
@@ -772,6 +784,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 %{_sbindir}/abrt-harvest-uefioops
 %{_bindir}/abrt-merge-uefioops
+%{_mandir}/man1/abrt-harvest-uefioops.1*
+%{_mandir}/man1/abrt-merge-uefioops.1*
 
 %files addon-python
 %defattr(-,root,root,-)
@@ -804,6 +818,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files dbus
 %defattr(-,root,root,-)
 %{_sbindir}/abrt-dbus
+%{_mandir}/man8/abrt-dbus.8.gz
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
 %{_datadir}/dbus-1/interfaces/org.freedesktop.Problems.xml
 %{_datadir}/dbus-1/system-services/org.freedesktop.problems.service
