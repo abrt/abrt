@@ -79,11 +79,6 @@ Requires: %{systemd_units}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
 Requires(pre): %{shadow_utils}
-Obsoletes: abrt-plugin-sqlite3 > 0.0.1
-# required for transition from 1.1.13, can be removed after some time
-Obsoletes: abrt-plugin-runapp > 0.0.1
-Obsoletes: abrt-plugin-filetransfer > 0.0.1
-Obsoletes: abrt-plugin-sosreport > 0.0.1
 
 %description
 %{name} is a tool to help users to detect defects in applications and
@@ -153,11 +148,7 @@ Group: System Environment/Libraries
 Requires: curl
 Requires: %{name} = %{version}-%{release}
 Requires: libreport-plugin-kerneloops >= %{libreport_ver}
-
 Requires: abrt-libs = %{version}-%{release}
-Obsoletes: kerneloops > 0.0.1
-Obsoletes: abrt-plugin-kerneloops > 0.0.1
-Obsoletes: abrt-plugin-kerneloopsreporter > 0.0.1
 
 %description addon-kerneloops
 This package contains plugin for collecting kernel crash information from
@@ -213,8 +204,6 @@ Summary: %{name}'s addon for catching and analyzing Python exceptions
 Group: System Environment/Libraries
 Requires: python
 Requires: %{name} = %{version}-%{release}
-Obsoletes: gnome-python2-bugbuddy > 0.0.1
-Provides: gnome-python2-bugbuddy
 
 %description addon-python
 This package contains python hook and python analyzer plugin for handling
@@ -291,7 +280,6 @@ Requires: libreport-fedora >= %{libreport_ver}
 Requires: libreport-rhel >= %{libreport_ver}
 %endif
 #Requires: abrt-plugin-firefox
-Obsoletes: bug-buddy > 0.0.1
 Provides: bug-buddy
 
 %description desktop
