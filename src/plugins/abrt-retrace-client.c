@@ -324,26 +324,43 @@ static char *get_release_id(map_string_t *osinfo, const char *architecture)
     }
 
     char *result = NULL;
-    const char *release = get_map_string_item_or_NULL(osinfo, OSINFO_ID);
-    const char *version = get_map_string_item_or_NULL(osinfo, OSINFO_VERSION_ID);
-    if (release != NULL && version != NULL)
-        result = xasprintf("%s-%s-%s", release, version, arch);
-    else
+    char *release = NULL;
+    char *version = NULL;
+    parse_osinfo_for_rhts(osinfo, (char **)&release, (char **)&version);
+
+    if (release == NULL || version == NULL)
+        error_msg_and_die("Can't parse OS release name or version");
+
+    char *space = strchr(version, ' ');
+    if (space)
+        *space = '\0';
+
+    if (strcmp("Fedora", release) == 0)
     {
-        parse_osinfo_for_rhts(osinfo, (char **)&release, (char **)&version);
-        char *space = strchr(version, ' ');
-        if (space)
-            *space = '\0';
-
-        if (strcmp("Fedora", release) == 0)
-            result = xasprintf("fedora-%s-%s", version, arch);
-        else if (strcmp("Red Hat Enterprise Linux", release) == 0)
-            result = xasprintf("rhel-%s-%s", version, arch);
-
-        free((void *)release);
-        free((void *)version);
+        /* Because of inconsistency between Fedora's os-release and retrace
+         * server.
+         *
+         * Adding the reporting fields to Fedora's os-release was a bit
+         * frustrating for all participants and fixing it on the retrace server
+         * side is neither feasible nor acceptable.
+         *
+         * Therefore, we have decided to add the following hack.
+         */
+        if (strcmp("Rawhide", version) == 0)
+        {
+            /* Rawhide -> rawhide */
+            version[0] = 'r';
+        }
+        /* Fedora -> fedora */
+        release[0] = 'f';
     }
+    else if (strcmp("Red Hat Enterprise Linux", release) == 0)
+        strcpy(release, "rhel");
 
+    result = xasprintf("%s-%s-%s", release, version, arch);
+
+    free(release);
+    free(version);
     free(arch);
     return result;
 }
