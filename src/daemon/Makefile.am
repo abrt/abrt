@@ -15,6 +15,8 @@ sbin_PROGRAMS = \
 
 libexec_PROGRAMS = abrt-handle-event
 
+# This is a daemon, building with full relro and PIE
+# for increased security.
 abrtd_SOURCES = \
     abrtd.c
 abrtd_CPPFLAGS = \
@@ -25,11 +27,13 @@ abrtd_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
-    -fPIE \
-    -Wl,-z,relro -Wl,-z,now
+    -fPIE
 abrtd_LDADD = \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS)
+abrtd_LDFLAGS = \
+    -Wl,-z,relro -Wl,-z,now \
+    -pie
 
 abrt_server_SOURCES = \
     abrt-server.c

@@ -242,6 +242,8 @@ abrt_action_analyze_backtrace_LDADD = \
     $(LIBREPORT_LIBS) \
     $(SATYR_LIBS)
 
+# SUID application, building with full relro and PIE
+# for increased security.
 abrt_action_install_debuginfo_to_abrt_cache_SOURCES = \
     abrt-action-install-debuginfo-to-abrt-cache.c
 abrt_action_install_debuginfo_to_abrt_cache_CPPFLAGS = \
@@ -250,11 +252,13 @@ abrt_action_install_debuginfo_to_abrt_cache_CPPFLAGS = \
     -D_GNU_SOURCE \
     $(LIBREPORT_CFLAGS) \
     -Wall -Wwrite-strings \
-    -fPIE \
-    -Wl,-z,relro -Wl,-z,now
-abrt_action_install_debuginfo_to_abrt_cache_LDADD = \
-     $(LIBREPORT_LIBS) \
-     ../lib/libabrt.la
+    -fPIE
+ abrt_action_install_debuginfo_to_abrt_cache_LDADD = \
+    $(LIBREPORT_LIBS) \
+    ../lib/libabrt.la
+ abrt_action_install_debuginfo_to_abrt_cache_LDFLAGS = \
+    -Wl,-z,relro -Wl,-z,now \
+    -pie
 
 abrt_retrace_client_SOURCES = \
     abrt-retrace-client.c \
