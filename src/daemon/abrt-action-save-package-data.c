@@ -194,10 +194,10 @@ static struct pkg_envra *get_script_name(const char *cmdline, char **executable)
 // TODO: we don't verify that python executable is not modified
 // or that python package is properly signed
 // (see CheckFingerprint/CheckHash below)
-        /* Try to find package for the script by looking at argv[1].
-         * This will work only if the cmdline contains the whole path.
-         * Example: python /usr/bin/system-control-network
-         */
+    /* Try to find package for the script by looking at argv[1].
+     * This will work only if the cmdline contains the whole path.
+     * Example: python /usr/bin/system-control-network
+     */
     struct pkg_envra *script_pkg = NULL;
     char *script_name = get_argv1_if_full_path(cmdline);
     if (script_name)
@@ -207,22 +207,11 @@ static struct pkg_envra *get_script_name(const char *cmdline, char **executable)
         {
             /* There is a well-formed script name in argv[1],
              * and it does belong to some package.
-             * Replace interpreter's package_full_name and executable
+             * Replace executable
              * with data pertaining to the script.
              */
             *executable = script_name;
-            /* executable has changed, check it again */
-            if (is_path_blacklisted(*executable))
-            {
-                log("Blacklisted executable '%s'", *executable);
-                return NULL;
-            }
         }
-    }
-    if (!script_pkg && !settings_bProcessUnpackaged)
-    {
-        log("Interpreter crashed, but no packaged script detected: '%s'", cmdline);
-        return NULL;
     }
 
     return script_pkg;
@@ -299,18 +288,27 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     if (g_list_find_custom(settings_Interpreters, basename, (GCompareFunc)g_strcmp0))
     {
         struct pkg_envra *script_pkg = get_script_name(cmdline, &executable);
+        /* executable may have changed, check it again */
+        if (is_path_blacklisted(executable))
+        {
+            log("Blacklisted executable '%s'", executable);
+            goto ret; /* return 1 (failure) */
+        }
         if (!script_pkg)
         {
-            /* none or unknown script, and config says we don't care about
-             * unpackaged things
+            /* Script name is not absolute, or it doesn't
+             * belong to any installed package.
              */
             if (!settings_bProcessUnpackaged)
-                goto ret;
+            {
+                log("Interpreter crashed, but no packaged script detected: '%s'", cmdline);
+                goto ret; /* return 1 (failure) */
+            }
 
-            /* unpackaged script, but the settings says we want to keep it
-             * bz plugin wont allow to report this anyway, because component
-             * is missing, so there is no reason to mark it as not_reportable
-             * someone might want to use abrt to report it using ftp
+            /* Unpackaged script, but the settings says we want to keep it.
+             * BZ plugin wont allow to report this anyway, because component
+             * is missing, so there is no reason to mark it as not_reportable.
+             * Someone might want to use abrt to report it using ftp.
              */
             goto ret0;
         }
