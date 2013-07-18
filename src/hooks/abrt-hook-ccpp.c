@@ -626,7 +626,7 @@ int main(int argc, char** argv)
         check_free_space(maxsize, g_settings_dump_location);
     }
 
-    /* Check /var/spool/abrt/last-ccpp marker, do not dump repeated crashes
+    /* Check /var/tmp/abrt/last-ccpp marker, do not dump repeated crashes
      * if they happen too often. Else, write new marker value.
      */
     snprintf(path, sizeof(path), "%s/last-ccpp", g_settings_dump_location);
@@ -666,7 +666,7 @@ int main(int argc, char** argv)
     }
 
     /* use fsuid instead of uid, so we don't expose any sensitive
-     * information of suided app in /var/spool/abrt
+     * information of suided app in /var/tmp/abrt
      */
     dd = dd_create(path, fsuid, DEFAULT_DUMP_DIR_MODE);
     if (dd)

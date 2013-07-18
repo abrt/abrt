@@ -48,7 +48,7 @@ for d in *; do
 	# to process partially-copied directory.
 	#
 	# This is the efficient way:
-	#mv -- "$d" "/var/spool/abrt/vmcore-$d.new" || continue
+	#mv -- "$d" "/var/tmp/abrt/vmcore-$d.new" || continue
 	# ...and this is what selinux forces me to do
 	# (otherwise files have wrong context and abrtd can't access them):
 	cp -r --no-preserve=all -- "$d" "$dst.new" || {

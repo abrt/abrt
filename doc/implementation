@@ -8,7 +8,7 @@ the coredump of crashing app:
 * helper source code: http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob_plain;f=src/Hooks/abrt-hook-python.cpp
 the code responsible for this:
 
-    #define CORE_PATTERN            "|/usr/libexec/abrt-hook-ccpp" "/var/spool/abrt" %p %s %u"
+    #define CORE_PATTERN            "|/usr/libexec/abrt-hook-ccpp" "/var/tmp/abrt" %p %s %u"
     ofstream fOutCorePattern;
     fOutCorePattern.open(CORE_PATTERN_IFACE);
     if (fOutCorePattern.is_open())
@@ -33,7 +33,7 @@ cmdline:
     char path[sizeof("/proc/%u/cmdline") + sizeof(int)*3];
     sprintf(path, "/proc/%u/cmdline", (int)pid);
 
-both is saved to file in /var/spool/abrt/ccpp-<time>-<pid> readable
+both is saved to file in /var/tmp/abrt/ccpp-<time>-<pid> readable
 only by owner the crashed process:
     int fd = open(pPath, O_WRONLY | O_TRUNC | O_CREAT, 0666);
     if(fd){
@@ -82,7 +82,7 @@ abrt-action-install-debuginfo is a shell script using elfutils to get build-ids 
     - gdb is run with the same privileges as the crashed app (setregid, setreuid)
     d) BT is saved to same directory where the coredump is
 
-Once the backtrace is processed all data from the /var/spool/abrt/ccpp-<time>-<pid> is sent
+Once the backtrace is processed all data from the /var/tmp/abrt/ccpp-<time>-<pid> is sent
 over dbus to the client and then user can edit the backtrace. When user is happy about
 the report and command the client (gui, tui) to send the it, the client sends the data back
 to the daemon calling the Report(data) method over the dbus. The actual reporting is done by

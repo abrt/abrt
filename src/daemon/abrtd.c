@@ -45,7 +45,7 @@
 
 /* Daemon initializes, then sits in glib main loop, waiting for events.
  * Events can be:
- * - inotify: something new appeared under /var/spool/abrt or /var/spool/abrt-upload
+ * - inotify: something new appeared under /var/tmp/abrt or /var/spool/abrt-upload
  * - signal: we got SIGTERM, SIGINT, SIGALRM or SIGCHLD
  * - new socket connection
  */

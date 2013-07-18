@@ -43,23 +43,23 @@ of the above usage scenarios.
 Since currently we do not know how to dump oops on demand,
 we can only poll for it. There is a small daemon, abrt-dump-oops,
 which polls syslog file and saves oopses when it sees them.
-The oops dump is written into /var/spool/abrt/DIR.
-[TODO? abrt-dump-oops spawns "abrt-handle-crashdump -d /var/spool/abrt/DIR"
+The oops dump is written into /var/tmp/abrt/DIR.
+[TODO? abrt-dump-oops spawns "abrt-handle-crashdump -d /var/tmp/abrt/DIR"
 which processes it according to configuration in /etc/abrt/*.conf]
 
 In order to catch binary crashes, we install a handler for it
 in /proc/sys/kernel/core_pattern (by setting it to
-"|/usr/libexec/abrt-hook-ccpp /var/spool/abrt ....").
-When process dumps core, the dump is written into /var/spool/abrt/DIR.
+"|/usr/libexec/abrt-hook-ccpp /var/tmp/abrt ....").
+When process dumps core, the dump is written into /var/tmp/abrt/DIR.
 [TODO? after this, abrt-hook-ccpp spawns "abrt-handle-crashdump
--d /var/spool/abrt/DIR"]
+-d /var/tmp/abrt/DIR"]
 Then abrt-hook-ccpp terminates.
 
 When python program crashes, it invokes internal python subroutine
 which connects to abrtd via /var/run/abrt/abrt.socket and sends
-crash data to abrtd. abrtd creates dump dir /var/spool/abrt/DIR.
+crash data to abrtd. abrtd creates dump dir /var/tmp/abrt/DIR.
 
-abrtd daemon watches /var/spool/abrt for new directories.
+abrtd daemon watches /var/tmp/abrt/ for new directories.
 When new directory is noticed, abrtd runs "post-create" event
 on it, and emits a dbus signal. This dbus signal is used
 to inform online users about the new crash: if abrt-applet
@@ -89,22 +89,22 @@ The key dbus calls served by abrtd are:
 - GetCrashInfos(): returns a vector_map_crash_data_t (vector_map_vector_string_t)
      of crashes for given uid
      v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
-- CreateReport(/var/spool/abrt/DIR): starts creating a report.
+- CreateReport(/var/tmp/abrt/DIR): starts creating a report.
      Returns job id (uint64).
      Then abrtd run "analyze" event on the DIR.
      After it completes, when report creation thread has finished,
-     JobDone(client_dbus_ID,/var/spool/abrt/DIR) dbus signal is emitted.
+     JobDone(client_dbus_ID,/var/tmp/abrt/DIR) dbus signal is emitted.
   [Problem: how to do privilegged plugin specific actions?]
     Solution: if plugin needs an access to some root only accessible dir then
     abrt should be run by root anyway
     - debuginfo gets installed using pk-debuginfo-install, which cares about
     privileges itself, so no problem here
-- GetJobResult(/var/spool/abrt/DIR): returns map_crash_data_t (map_vector_string_t)
+- GetJobResult(/var/tmp/abrt/DIR): returns map_crash_data_t (map_vector_string_t)
 - Report(map_crash_data_t (map_vector_string_t)):
-     "Please report this crash": 
+     "Please report this crash":
      abrtd run "report[_FOO]" event(s) on the DIR.
      Returns report_status_t (map_vector_string_t) - the status of each event
-- DeleteDebugDump(/var/spool/abrt/DIR): delete /var/spool/abrt/DIR. Returns bool
+- DeleteDebugDump(/var/tmp/abrt/DIR): delete /var/tmp/abrt/DIR. Returns bool
 
 [Note: we are in the process of reducing/eliminating
 dbus communication between abrt-gui/abrt-cli and abrtd.

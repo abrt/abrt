@@ -32,12 +32,12 @@ be interpreted by the interpreter in the same way as the applications
 When some event which should be caught by ABRT occurs and is detected
 by the hook, the hook reports it to ABRT using ABRT daemon's socket
 file.  ABRT then creates a new directory describing the crash in
-/var/spool/abrt.
+/var/tmp/abrt.
 
 The ABRT's CCpp plugin does not use the socket file, but it creates
-crash data directory in /var/spool/abrt directly. Interpreted hooks
+crash data directory in /var/tmp/abrt directly. Interpreted hooks
 must not report crashes this way, because SELinux blocks interpreter
-access to /var/spool/abrt and this access can not be granted due to
+access to /var/tmp/abrt and this access can not be granted due to
 security issues.
 
 ABRT socket file resides in /var/run/abrt.socket. Hooks should open
@@ -76,7 +76,7 @@ for the crash dump. Sensible names are "python", "perl", "java" etc.
 
 BASENAME
 Short string indicating the origin of the event. It is used as a part
-of directory name: /var/spool/abrt/BASENAME-suffix. Use "python" for
+of directory name: /var/tmp/abrt/BASENAME-suffix. Use "python" for
 Python exceptions, "ruby" for ruby interpreter, "java" for JRE.
 
 REASON

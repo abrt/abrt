@@ -27,7 +27,7 @@
  *     add  wildcard e.g. *-2011-04-01-10-* (list all problems in specific day)
  *
  * TODO?: remove base dir from list of crashes? is there a way that same crash can be in
- *       ~/.abrt/spool and /var/spool/abrt? needs more _meditation_.
+ *       ~/.abrt/spool and /var/tmp/abrt? needs more _meditation_.
  */
 
 /** Prints basic information about a crash to stdout. */
