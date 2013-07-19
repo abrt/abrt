@@ -426,6 +426,10 @@ int main(int argc, char **argv)
         rpm_load_gpgkey((char*)li->data);
     }
 
-    return SavePackageDescriptionToDebugDump(dump_dir_name);
-    /* can call rpm_destroy but do we really need to bother? we are exiting! */
+    int r = SavePackageDescriptionToDebugDump(dump_dir_name);
+
+    /* Close RPM database */
+    rpm_destroy();
+
+    return r;
 }

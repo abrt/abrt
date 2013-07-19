@@ -61,9 +61,16 @@ void rpm_init()
 
 void rpm_destroy()
 {
-    rpmFreeRpmrc();
+    /* Mirroring the order of deinit calls in rpm-4.11.1/lib/poptALL.c::rpmcliFini() */
     rpmFreeCrypto();
     rpmFreeMacros(NULL);
+    rpmFreeRpmrc();
+
+    /* RPM doc says "clean up any open iterators and databases".
+     * Observed to eliminate these Berkeley DB warnings:
+     * "BDB2053 Freeing read locks for locker 0x1e0: 28718/139661746636736"
+     */
+    rpmdbCheckTerminate(1);
 
     list_free_with_free(list_fingerprints);
     list_fingerprints = NULL;
