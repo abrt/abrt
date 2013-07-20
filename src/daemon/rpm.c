@@ -316,6 +316,8 @@ struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_
 
     p->p_nvr = xasprintf("%s-%s-%s", p->p_name, p->p_version, p->p_release);
 
+    rpmdbFreeIterator(iter);
+    rpmtsFree(ts);
     return p;
 
  error:
