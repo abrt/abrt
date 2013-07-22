@@ -36,7 +36,7 @@ rlJournalStart
         check_prior_crashes
 
         cp test_event_*.conf /etc/libreport/events.d || exit $?
-        cp test_event_*.xml  /etc/libreport/events   || exit $?
+        cp test_event_*.xml  /usr/share/libreport/events || exit $?
 
         TmpDir=$(mktemp -d)
 #        rlRun "yum -y install expect" 0 "Install expect"
@@ -68,7 +68,7 @@ rlJournalStart
         popd # TmpDir
         rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
         rlRun "rm /etc/libreport/events.d/test_event_*.conf" 0 "Removing test event config"
-        rlRun "rm /etc/libreport/events/test_event_*.xml"    0 "Removing test event config"
+        rlRun "rm /usr/share/libreport/events/test_event_*.xml" 0 "Removing test event config"
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd
