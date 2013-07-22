@@ -144,10 +144,17 @@ static void dup_corebt_init(const struct dump_dir *dd)
     if (!corebt_text)
         return; /* no backtrace */
 
+    enum sr_report_type report_type = sr_abrt_type_from_analyzer(analyzer);
+    if (report_type == SR_REPORT_INVALID)
+    {
+        VERB1 log("Can't load stacktrace because of unsupported analyzer: %s",
+                  analyzer);
+        return;
+    }
+
     /* sr_stacktrace_parse moves the pointer */
     char *error_message;
-    corebt = sr_stacktrace_parse(sr_abrt_type_from_analyzer(analyzer),
-                                 corebt_text, &error_message);
+    corebt = sr_stacktrace_parse(report_type, corebt_text, &error_message);
     if (!corebt)
     {
         VERB1 log("Failed to load core stacktrace: %s", error_message);
