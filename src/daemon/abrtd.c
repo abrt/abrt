@@ -701,11 +701,10 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 log("Size of '%s' >= %u MB, deleting '%s'",
                     g_settings_dump_location, g_settings_nMaxCrashReportsSize, worst_dir);
                 char *d = concat_path_file(g_settings_dump_location, worst_dir);
-                free(worst_dir);
-                worst_dir = NULL;
                 delete_dump_dir(d);
                 free(d);
             }
+            free(worst_dir);
         }
 
         const bool empty_queue = s_dir_queue == NULL;
