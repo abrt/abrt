@@ -1284,10 +1284,7 @@ int main(int argc, char** argv)
     gdk_threads_enter();
 #endif
 
-#if (GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 35)
-    /* Initialize GType system */
-    g_type_init();
-#endif
+    glib_init();
 
     /* Monitor 'StateChanged' signal on 'org.freedesktop.NetworkManager' interface */
     GError *error = NULL;

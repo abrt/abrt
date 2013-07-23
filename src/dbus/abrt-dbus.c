@@ -804,9 +804,7 @@ int main(int argc, char *argv[])
     if (getuid() != 0)
         error_msg_and_die(_("This program must be run as root."));
 
-#if (GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 35)
-    g_type_init();
-#endif
+    glib_init();
 
     /* We are lazy here - we don't want to manually provide
     * the introspection data structures - so we just build

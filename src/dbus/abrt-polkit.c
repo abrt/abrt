@@ -91,18 +91,16 @@ out:
 
 PolkitResult polkit_check_authorization_dname(const char *dbus_name, const char *action_id)
 {
-#if (GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 35)
-    g_type_init();
-#endif
+    glib_init();
+
     PolkitSubject *subject = polkit_system_bus_name_new(dbus_name);
     return do_check(subject, action_id);
 }
 
 PolkitResult polkit_check_authorization_pid(pid_t pid, const char *action_id)
 {
-#if (GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 35)
-    g_type_init();
-#endif
+    glib_init();
+
     PolkitSubject *subject = polkit_unix_process_new(pid);
     return do_check(subject, action_id);
 }
