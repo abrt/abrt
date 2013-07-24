@@ -69,7 +69,7 @@ system_config_abrt_window_new(GApplication *app)
             gtk_alignment_new(/*xalign*/.5, /*yalign*/.5, /*xscale*/.5, /*yscale*/.5),
             /*expand*/TRUE, /*fill*/TRUE, /*padding*/0);
 
-    GtkWidget *btn_apply = gtk_button_new_from_stock(GTK_STOCK_APPLY);
+    GtkWidget *btn_apply = gtk_button_new_with_mnemonic(_("_Apply"));
     gtk_widget_set_sensitive(btn_apply, FALSE);
     gtk_widget_set_halign(btn_apply, GTK_ALIGN_END);
     gtk_widget_set_valign(btn_apply, GTK_ALIGN_END);

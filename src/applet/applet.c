@@ -720,11 +720,11 @@ static GtkWidget *create_about_dialog(void)
 static GtkWidget *create_menu(void)
 {
     GtkWidget *menu = gtk_menu_new();
-    GtkWidget *b_quit = gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT, NULL);
+    GtkWidget *b_quit = gtk_menu_item_new_with_mnemonic(_("_Quit"));
     g_signal_connect(b_quit, "activate", gtk_main_quit, NULL);
     GtkWidget *b_hide = gtk_menu_item_new_with_label(_("Hide"));
     g_signal_connect(b_hide, "activate", G_CALLBACK(hide_icon), NULL);
-    GtkWidget *b_about = gtk_image_menu_item_new_from_stock(GTK_STOCK_ABOUT, NULL);
+    GtkWidget *b_about = gtk_menu_item_new_with_mnemonic(_("_About"));
     GtkWidget *about_dialog = create_about_dialog();
     g_signal_connect(b_about, "activate", G_CALLBACK(on_about_cb), about_dialog);
     GtkWidget *separator = gtk_separator_menu_item_new();
