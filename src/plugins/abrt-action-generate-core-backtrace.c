@@ -64,9 +64,31 @@ int main(int argc, char **argv)
     log(_("Generating core_backtrace"));
 
     char *error_message = NULL;
-    bool success = sr_abrt_create_core_stacktrace(dump_dir_name,
-                                                  !raw_fingerprints,
-                                                  &error_message);
+    bool success;
+
+#ifdef ENABLE_NATIVE_UNWINDER
+
+    success = sr_abrt_create_core_stacktrace(dump_dir_name, !raw_fingerprints,
+                                             &error_message);
+#else /* ENABLE_NATIVE_UNWINDER */
+
+    /* The value 240 was taken from abrt-action-generate-backtrace.c. */
+    int exec_timeout_sec = 240;
+
+    char *gdb_output = get_backtrace(dump_dir_name, exec_timeout_sec, NULL);
+    if (!gdb_output)
+    {
+        log(_("Error: GDB did not return any data"));
+        return 1;
+    }
+
+    success = sr_abrt_create_core_stacktrace_from_gdb(dump_dir_name,
+                                                      gdb_output,
+                                                      !raw_fingerprints,
+                                                      &error_message);
+    free(gdb_output);
+
+#endif /* ENABLE_NATIVE_UNWINDER */
 
     if (!success)
     {

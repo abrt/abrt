@@ -170,6 +170,19 @@ fi
 AM_CONDITIONAL(DBUS_DOXYGEN_DOCS_ENABLED, test "$enable_doxygen_docs" = "yes")
 
 
+# Make satyr use GDB or elfutils/libunwind for unwinding?
+
+AC_ARG_ENABLE([native-unwinder],
+    AS_HELP_STRING([--enable-native-unwinder],
+        [use native unwinder (libunwind or elfutils) instead of GDB (default is no)]),
+    [], [enable_native_unwinder=no])
+
+[if test "$enable_native_unwinder" = "yes"]
+[then]
+    AC_DEFINE([ENABLE_NATIVE_UNWINDER], [1], [Use elfutils/libunwind for unwinding instead of GDB.])
+[fi]
+
+
 AC_SUBST(CONF_DIR)
 AC_SUBST(VAR_RUN)
 AC_SUBST(PLUGINS_CONF_DIR)
