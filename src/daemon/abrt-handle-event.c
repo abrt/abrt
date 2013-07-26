@@ -219,15 +219,14 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
     struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
     if (!dd)
         return 0; /* wtf? (error, but will be handled elsewhere later) */
-
+    free(analyzer);
     analyzer = dd_load_text(dd, FILENAME_ANALYZER);
-    /* dump_dir_name can be relative */
-    dump_dir_name = realpath(dump_dir_name, NULL);
-
     dup_uuid_init(dd);
     dup_corebt_init(dd);
-
     dd_close(dd);
+
+    /* dump_dir_name can be relative */
+    dump_dir_name = realpath(dump_dir_name, NULL);
 
     DIR *dir = opendir(g_settings_dump_location);
     if (dir == NULL)
@@ -236,7 +235,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
     /* Scan crash dumps looking for a dup */
     //TODO: explain why this is safe wrt concurrent runs
     struct dirent *dent;
-    while ((dent = readdir(dir)) != NULL)
+    while ((dent = readdir(dir)) != NULL && crash_dump_dup_name == NULL)
     {
         if (dot_or_dotdot(dent->d_name))
             continue; /* skip "." and ".." */
@@ -244,6 +243,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
         if (ext && strcmp(ext, ".new") == 0)
             continue; /* skip anything named "<dirname>.new" */
 
+        dd = NULL;
         char *dump_dir_name2 = concat_path_file(g_settings_dump_location, dent->d_name);
         char *dd_uid = NULL, *dd_analyzer = NULL;
 
@@ -258,7 +258,6 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
         dd_uid = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT);
         if (strcmp(uid, dd_uid))
         {
-            dd_close(dd);
             goto next;
         }
 
@@ -266,36 +265,35 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
         dd_analyzer = dd_load_text_ext(dd, FILENAME_ANALYZER, DD_FAIL_QUIETLY_ENOENT);
         if (strcmp(analyzer, dd_analyzer))
         {
-            dd_close(dd);
             goto next;
         }
 
         if (dup_uuid_compare(dd)
          || dup_corebt_compare(dd)
         ) {
-            dd_close(dd);
             crash_dump_dup_name = dump_dir_name2;
+            dump_dir_name2 = NULL;
             retval = 1; /* "run_event, please stop iterating" */
-            goto end;
+            /* sonce crash_dump_dup_name != NULL now, we exit the loop */
         }
-        dd_close(dd);
 
 next:
         free(dump_dir_name2);
+        dd_close(dd);
         free(dd_uid);
         free(dd_analyzer);
     }
     closedir(dir);
 
 end:
-    free(analyzer);
+    free((char*)dump_dir_name);
     return retval;
 }
 
 static char *do_log(char *log_line, void *param)
 {
-    /* We pipe output of events to our log (which usually
-     * includes syslog). Otherwise, errors on post-create result in
+    /* We pipe output of events to our log.
+     * Otherwise, errors on post-create result in
      * "Corrupted or bad dump DIR, deleting" without adequate explanation why.
      */
     log("%s", log_line);
@@ -355,13 +353,21 @@ int main(int argc, char **argv)
         struct run_event_state *run_state = new_run_event_state();
         if (!interactive)
             make_run_event_state_forwarding(run_state);
+        run_state->logging_callback = do_log;
         if (post_create)
             run_state->post_run_callback = is_crash_a_dup;
-        run_state->logging_callback = do_log;
+
         int r = run_event_on_dir_name(run_state, dump_dir_name, event_name);
+
+        free_run_event_state(run_state);
+        /* Needed only if is_crash_a_dup() was called, but harmless
+         * even if it wasn't:
+         */
+        dup_uuid_fini();
+        dup_corebt_fini();
+
         if (r == 0 && run_state->children_count == 0)
             error_msg_and_die("No actions are found for event '%s'", event_name);
-        free_run_event_state(run_state);
 
 //TODO: consider this case:
 // new dump is created, post-create detects that it is a dup,
@@ -372,24 +378,17 @@ int main(int argc, char **argv)
         /* Is crash a dup? (In this case, is_crash_a_dup() should have
          * aborted "post-create" event processing as soon as it saw uuid
          * and determined that there is another crash with same uuid.
-         * In this case it sets state.crash_dump_dup_name)
+         * In this case it sets crash_dump_dup_name)
          */
-        if (!crash_dump_dup_name)
-        {
-            /* No. Was there error on one of processing steps in run_event? */
-            if (r != 0)
-                return r; /* yes */
-        }
-        else
-        {
+        if (crash_dump_dup_name)
             error_msg_and_die("DUP_OF_DIR: %s", crash_dump_dup_name);
-        }
 
-        if (post_create)
-        {
-            dup_uuid_fini();
-            dup_corebt_fini();
-        }
+        /* Was there error on one of processing steps in run_event? */
+        if (r != 0)
+            return r; /* yes */
+
+        free(dump_dir_name);
+        dump_dir_name = NULL;
     }
 
     /* exit 0 means, that there is no duplicate of dump-dir */
