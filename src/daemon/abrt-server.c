@@ -346,7 +346,8 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     /* Exit if free space is less than 1/4 of MaxCrashReportsSize */
     if (g_settings_nMaxCrashReportsSize > 0)
     {
-        check_free_space(g_settings_nMaxCrashReportsSize, g_settings_dump_location);
+        if (low_free_space(g_settings_nMaxCrashReportsSize, g_settings_dump_location))
+            exit(1);
     }
 
     /* Create temp directory with the problem data.

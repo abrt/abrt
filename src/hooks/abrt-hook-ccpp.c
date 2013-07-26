@@ -618,12 +618,9 @@ int main(int argc, char** argv)
 
     if (g_settings_nMaxCrashReportsSize > 0)
     {
-        /* x1.25 and round up to 64m: go a bit up, so that usual in-daemon trimming
-         * kicks in first, and we don't "fight" with it:
-         */
-        unsigned maxsize = g_settings_nMaxCrashReportsSize + g_settings_nMaxCrashReportsSize / 4;
-        maxsize |= 63;
-        check_free_space(maxsize, g_settings_dump_location);
+        /* If free space is less than 1/4 of MaxCrashReportsSize... */
+        if (low_free_space(g_settings_nMaxCrashReportsSize, g_settings_dump_location))
+            goto create_user_core;
     }
 
     /* Check /var/tmp/abrt/last-ccpp marker, do not dump repeated crashes

@@ -44,16 +44,15 @@ int vdprintf(int d, const char *format, va_list ap);
 #endif
 
 
-#define check_free_space abrt_check_free_space
-
+#define low_free_space abrt_low_free_space
 /**
   @brief Checks if there is enough free space to store the problem data
 
   @param setting_MaxCrashReportsSize Maximum data size
   @param dump_location Location to check for the available space
 */
+int low_free_space(unsigned setting_MaxCrashReportsSize, const char *dump_location);
 
-void check_free_space(unsigned setting_MaxCrashReportsSize, const char *dump_location);
 #define trim_problem_dirs abrt_trim_problem_dirs
 void trim_problem_dirs(const char *dirname, double cap_size, const char *exclude_path);
 #define run_unstrip_n abrt_run_unstrip_n
