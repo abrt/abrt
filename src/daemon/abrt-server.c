@@ -76,98 +76,6 @@ static unsigned total_bytes_read = 0;
 static uid_t client_uid = (uid_t)-1L;
 
 
-/* Create a new problem directory from client session.
- * Caller must ensure that all fields in struct client
- * are properly filled.
- */
-static int create_problem_dir(GHashTable *problem_info, unsigned pid)
-{
-    /* Create temp directory with the problem data.
-     * This directory is renamed to final directory name after
-     * all files have been stored into it.
-     */
-
-    gchar *dir_basename = g_hash_table_lookup(problem_info, "basename");
-    if (!dir_basename)
-        dir_basename = g_hash_table_lookup(problem_info, FILENAME_TYPE);
-
-    char *path = xasprintf("%s/%s-%s-%u.new",
-                           g_settings_dump_location,
-                           dir_basename,
-                           iso_date_string(NULL),
-                           pid);
-
-    /* This item is useless, don't save it */
-    g_hash_table_remove(problem_info, "basename");
-
-    /* No need to check the path length, as all variables used are limited,
-     * and dd_create() fails if the path is too long.
-     */
-    struct dump_dir *dd = dd_create(path, client_uid, DEFAULT_DUMP_DIR_MODE);
-    if (!dd)
-    {
-        error_msg_and_die("Error creating problem directory '%s'", path);
-    }
-
-    dd_create_basic_files(dd, client_uid, NULL);
-    dd_save_text(dd, FILENAME_ABRT_VERSION, VERSION);
-
-    gpointer gpkey = g_hash_table_lookup(problem_info, FILENAME_CMDLINE);
-    if (!gpkey)
-    {
-        /* Obtain and save the command line. */
-        char *cmdline = get_cmdline(pid);
-        if (cmdline)
-        {
-            dd_save_text(dd, FILENAME_CMDLINE, cmdline);
-            free(cmdline);
-        }
-    }
-
-    /* Store id of the user whose application crashed. */
-    char uid_str[sizeof(long) * 3 + 2];
-    sprintf(uid_str, "%lu", (long)client_uid);
-    dd_save_text(dd, FILENAME_UID, uid_str);
-
-    GHashTableIter iter;
-    gpointer gpvalue;
-    g_hash_table_iter_init(&iter, problem_info);
-    while (g_hash_table_iter_next(&iter, &gpkey, &gpvalue))
-    {
-        dd_save_text(dd, (gchar *) gpkey, (gchar *) gpvalue);
-    }
-
-    dd_close(dd);
-
-    /* Move the completely created problem directory
-     * to final directory.
-     */
-    char *newpath = xstrndup(path, strlen(path) - strlen(".new"));
-    if (rename(path, newpath) == 0)
-        strcpy(path, newpath);
-    free(newpath);
-
-    log("Saved problem directory of pid %u to '%s'", pid, path);
-
-    /* Trim old problem directories if necessary */
-    load_abrt_conf();
-    if (g_settings_nMaxCrashReportsSize > 0)
-    {
-        /* x1.25 and round up to 64m: go a bit up, so that usual in-daemon trimming
-         * kicks in first, and we don't "fight" with it:
-         */
-        unsigned maxsize = g_settings_nMaxCrashReportsSize + g_settings_nMaxCrashReportsSize / 4;
-        maxsize |= 63;
-        check_free_space(maxsize, g_settings_dump_location);
-        trim_problem_dirs(g_settings_dump_location, maxsize * (double)(1024*1024), path);
-    }
-    free_abrt_conf_data();
-
-    free(path);
-
-    return 201; /* Created */
-}
-
 static bool dir_is_in_dump_location(const char *dump_dir_name)
 {
     unsigned len = strlen(g_settings_dump_location);
@@ -427,6 +335,98 @@ static int run_post_create(const char *dirname)
     free(dup_of_dir);
     close(child_stdout_fd);
     return 0;
+}
+
+/* Create a new problem directory from client session.
+ * Caller must ensure that all fields in struct client
+ * are properly filled.
+ */
+static int create_problem_dir(GHashTable *problem_info, unsigned pid)
+{
+    /* Create temp directory with the problem data.
+     * This directory is renamed to final directory name after
+     * all files have been stored into it.
+     */
+
+    gchar *dir_basename = g_hash_table_lookup(problem_info, "basename");
+    if (!dir_basename)
+        dir_basename = g_hash_table_lookup(problem_info, FILENAME_TYPE);
+
+    char *path = xasprintf("%s/%s-%s-%u.new",
+                           g_settings_dump_location,
+                           dir_basename,
+                           iso_date_string(NULL),
+                           pid);
+
+    /* This item is useless, don't save it */
+    g_hash_table_remove(problem_info, "basename");
+
+    /* No need to check the path length, as all variables used are limited,
+     * and dd_create() fails if the path is too long.
+     */
+    struct dump_dir *dd = dd_create(path, client_uid, DEFAULT_DUMP_DIR_MODE);
+    if (!dd)
+    {
+        error_msg_and_die("Error creating problem directory '%s'", path);
+    }
+
+    dd_create_basic_files(dd, client_uid, NULL);
+    dd_save_text(dd, FILENAME_ABRT_VERSION, VERSION);
+
+    gpointer gpkey = g_hash_table_lookup(problem_info, FILENAME_CMDLINE);
+    if (!gpkey)
+    {
+        /* Obtain and save the command line. */
+        char *cmdline = get_cmdline(pid);
+        if (cmdline)
+        {
+            dd_save_text(dd, FILENAME_CMDLINE, cmdline);
+            free(cmdline);
+        }
+    }
+
+    /* Store id of the user whose application crashed. */
+    char uid_str[sizeof(long) * 3 + 2];
+    sprintf(uid_str, "%lu", (long)client_uid);
+    dd_save_text(dd, FILENAME_UID, uid_str);
+
+    GHashTableIter iter;
+    gpointer gpvalue;
+    g_hash_table_iter_init(&iter, problem_info);
+    while (g_hash_table_iter_next(&iter, &gpkey, &gpvalue))
+    {
+        dd_save_text(dd, (gchar *) gpkey, (gchar *) gpvalue);
+    }
+
+    dd_close(dd);
+
+    /* Move the completely created problem directory
+     * to final directory.
+     */
+    char *newpath = xstrndup(path, strlen(path) - strlen(".new"));
+    if (rename(path, newpath) == 0)
+        strcpy(path, newpath);
+    free(newpath);
+
+    log("Saved problem directory of pid %u to '%s'", pid, path);
+
+    /* Trim old problem directories if necessary */
+    load_abrt_conf();
+    if (g_settings_nMaxCrashReportsSize > 0)
+    {
+        /* x1.25 and round up to 64m: go a bit up, so that usual in-daemon trimming
+         * kicks in first, and we don't "fight" with it:
+         */
+        unsigned maxsize = g_settings_nMaxCrashReportsSize + g_settings_nMaxCrashReportsSize / 4;
+        maxsize |= 63;
+        check_free_space(maxsize, g_settings_dump_location);
+        trim_problem_dirs(g_settings_dump_location, maxsize * (double)(1024*1024), path);
+    }
+    free_abrt_conf_data();
+
+    free(path);
+
+    return 201; /* Created */
 }
 
 /* Checks if a string contains only printable characters. */
