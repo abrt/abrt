@@ -168,22 +168,30 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
     return 201; /* Created */
 }
 
-/* Remove dump dir */
-static int delete_path(const char *dump_dir_name)
+static bool dir_is_in_dump_location(const char *dump_dir_name)
 {
     unsigned len = strlen(g_settings_dump_location);
 
-    /* If doesn't start with "g_settings_dump_location/"... */
-    if (strncmp(dump_dir_name, g_settings_dump_location, len) != 0
-     || dump_dir_name[len] != '/'
-    /* or contains "/." anywhere (-> might contain ".." component) */
-     || strstr(dump_dir_name + len, "/.")
+    if (strncmp(dump_dir_name, g_settings_dump_location, len) == 0
+     && dump_dir_name[len] == '/'
+    /* must not contain "/." anywhere (IOW: disallow ".." component) */
+     && !strstr(dump_dir_name + len, "/.")
     ) {
+        return 1;
+    }
+    return 0;
+}
+
+/* Remove dump dir */
+static int delete_path(const char *dump_dir_name)
+{
+    /* If doesn't start with "g_settings_dump_location/"... */
+    if (!dir_is_in_dump_location(dump_dir_name))
+    {
         /* Then refuse to operate on it (someone is attacking us??) */
         error_msg("Bad problem directory name '%s', not deleting", dump_dir_name);
         return 400; /* Bad Request */
     }
-
     if (!dump_dir_accessible_by_uid(dump_dir_name, client_uid))
     {
         if (errno == ENOTDIR)
@@ -191,7 +199,6 @@ static int delete_path(const char *dump_dir_name)
             error_msg("Path '%s' isn't problem directory", dump_dir_name);
             return 404; /* Not Found */
         }
-
         error_msg("Problem directory '%s' can't be accessed by user with uid %ld", dump_dir_name, (long)client_uid);
         return 403; /* Forbidden */
     }
@@ -199,6 +206,227 @@ static int delete_path(const char *dump_dir_name)
     delete_dump_dir(dump_dir_name);
 
     return 0; /* success */
+}
+
+static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *event_name, int *fdp)
+{
+    char *args[6];
+    args[0] = (char *) LIBEXEC_DIR"/abrt-handle-event";
+    args[1] = (char *) "-e";
+    args[2] = (char *) event_name;
+    args[3] = (char *) "--";
+    args[4] = (char *) dump_dir_name;
+    args[5] = NULL;
+
+    int pipeout[2];
+    int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_QUIET | EXECFLG_ERR2OUT;
+    VERB1 flags &= ~EXECFLG_QUIET;
+
+    pid_t child = fork_execv_on_steroids(flags, args, pipeout,
+                                         /*env_vec:*/ NULL, /*dir:*/ NULL,
+                                         /*uid(unused):*/ 0);
+    if (fdp)
+        *fdp = pipeout[0];
+    return child;
+}
+
+static int run_post_create(const char *dirname)
+{
+    /* If doesn't start with "g_settings_dump_location/"... */
+    if (!dir_is_in_dump_location(dirname))
+    {
+        /* Then refuse to operate on it (someone is attacking us??) */
+        error_msg("Bad problem directory name '%s'", dirname);
+        return 400; /* Bad Request */
+    }
+    if (!dump_dir_accessible_by_uid(dirname, client_uid))
+    {
+        if (errno == ENOTDIR)
+        {
+            error_msg("Path '%s' isn't problem directory", dirname);
+            return 404; /* Not Found */
+        }
+        error_msg("Problem directory '%s' can't be accessed by user with uid %ld", dirname, (long)client_uid);
+        return 403; /* Forbidden */
+    }
+
+    int child_stdout_fd;
+    int child_pid = spawn_event_handler_child(dirname, "post-create", &child_stdout_fd);
+
+    char *dup_of_dir = NULL;
+    struct strbuf *cmd_output = strbuf_new();
+
+    bool child_is_post_create = 1; /* else it is a notify child */
+
+ read_child_output:
+    //log("Reading from event fd %d", child_stdout_fd);
+
+    /* Read streamed data and split lines */
+    for (;;)
+    {
+        char buf[250]; /* usually we get one line, no need to have big buf */
+        errno = 0;
+        int r = safe_read(child_stdout_fd, buf, sizeof(buf) - 1);
+        if (r <= 0)
+            break;
+        buf[r] = '\0';
+
+        /* split lines in the current buffer */
+        char *raw = buf;
+        char *newline;
+        while ((newline = strchr(raw, '\n')) != NULL)
+        {
+            *newline = '\0';
+            strbuf_append_str(cmd_output, raw);
+            char *msg = cmd_output->buf;
+
+            /* Hmm, DUP_OF_DIR: ends up in syslog. move log() into 'else'? */
+            log("%s", msg);
+
+            if (child_is_post_create
+             && prefixcmp(msg, "DUP_OF_DIR: ") == 0
+            ) {
+                free(dup_of_dir);
+                dup_of_dir = xstrdup(msg + strlen("DUP_OF_DIR: "));
+            }
+
+            strbuf_clear(cmd_output);
+            /* jump to next line */
+            raw = newline + 1;
+        }
+
+        /* beginning of next line. the line continues by next read */
+        strbuf_append_str(cmd_output, raw);
+    }
+
+    /* EOF/error */
+
+    /* Wait for child to actually exit, collect status */
+    int status = 0;
+    if (safe_waitpid(child_pid, &status, 0) <= 0)
+    /* should not happen */
+        perror_msg("waitpid(%d)", child_pid);
+
+    /* If it was a "notify[-dup]" event, then we're done */
+    if (!child_is_post_create)
+        goto ret;
+
+    /* exit 0 means "this is a good, non-dup dir" */
+    /* exit with 1 + "DUP_OF_DIR: dir" string => dup */
+    if (status != 0)
+    {
+        if (WIFSIGNALED(status))
+        {
+            log("'post-create' on '%s' killed by signal %d",
+                            dirname, WTERMSIG(status));
+            goto delete_bad_dir;
+        }
+        /* else: it is WIFEXITED(status) */
+        if (!dup_of_dir)
+        {
+            log("'post-create' on '%s' exited with %d",
+                            dirname, WEXITSTATUS(status));
+            goto delete_bad_dir;
+        }
+    }
+
+    const char *work_dir = (dup_of_dir ? dup_of_dir : dirname);
+
+    /* Load problem_data (from the *first dir* if this one is a dup) */
+    struct dump_dir *dd = dd_opendir(work_dir, /*flags:*/ 0);
+    if (!dd)
+        /* dd_opendir already emitted error msg */
+        goto delete_bad_dir;
+
+    /* Update count */
+    char *count_str = dd_load_text_ext(dd, FILENAME_COUNT, DD_FAIL_QUIETLY_ENOENT);
+    unsigned long count = strtoul(count_str, NULL, 10);
+
+    /* Don't increase crash count if we are working with newly uploaded
+     * directory (remote crash) which already has its crash count set.
+     */
+    if ((status != 0 && dup_of_dir) || count == 0)
+    {
+        count++;
+        char new_count_str[sizeof(long)*3 + 2];
+        sprintf(new_count_str, "%lu", count);
+        dd_save_text(dd, FILENAME_COUNT, new_count_str);
+
+        /* This condition can be simplified to either
+         * (status * != 0 && * dup_of_dir) or (count == 1). But the
+         * chosen form is much more reliable and safe. We must not call
+         * dd_opendir() to locked dd otherwise we go into a deadlock.
+         */
+        if (strcmp(dd->dd_dirname, dirname) != 0)
+        {
+            /* Update the last occurrence file by the time file of the new problem */
+            struct dump_dir *new_dd = dd_opendir(dirname, DD_OPEN_READONLY);
+            char *last_ocr = NULL;
+            if (new_dd)
+            {
+                /* TIME must exists in a valid dump directory but we don't want to die
+                 * due to broken duplicated dump directory */
+                last_ocr = dd_load_text_ext(new_dd, FILENAME_TIME,
+                            DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE | DD_FAIL_QUIETLY_ENOENT);
+                dd_close(new_dd);
+            }
+            else
+            {   /* dd_opendir() already produced a message with good information about failure */
+                error_msg("Can't read the last occurrence file from the new dump directory.");
+            }
+
+            if (!last_ocr)
+            {   /* the new dump directory may lie in the dump location for some time */
+                log("Using current time for the last occurrence file which may be incorrect.");
+                time_t t = time(NULL);
+                last_ocr = xasprintf("%lu", (long)t);
+            }
+
+            dd_save_text(dd, FILENAME_LAST_OCCURRENCE, last_ocr);
+
+            free(last_ocr);
+        }
+    }
+
+    /* Reset mode/uig/gid to correct values for all files created by event run */
+    dd_sanitize_mode_and_owner(dd);
+
+    dd_close(dd);
+
+    if (!dup_of_dir)
+        log("New problem directory %s, processing", work_dir);
+    else
+    {
+        log("Deleting problem directory %s (dup of %s)",
+                strrchr(dirname, '/') + 1,
+                strrchr(dup_of_dir, '/') + 1);
+        delete_dump_dir(dirname);
+    }
+
+    /* Run "notify[-dup]" event */
+    int fd;
+    child_pid = spawn_event_handler_child(
+                work_dir,
+                (dup_of_dir ? "notify-dup" : "notify"),
+                &fd
+    );
+    //log("Started notify, fd %d -> %d", fd, child_stdout_fd);
+    xmove_fd(fd, child_stdout_fd);
+    child_is_post_create = 0;
+    strbuf_clear(cmd_output);
+    free(dup_of_dir);
+    dup_of_dir = NULL;
+    goto read_child_output;
+
+ delete_bad_dir:
+    log("Deleting problem directory '%s'", dirname);
+    delete_dump_dir(dirname);
+
+ ret:
+    strbuf_free(cmd_output);
+    free(dup_of_dir);
+    close(child_stdout_fd);
+    return 0;
 }
 
 /* Checks if a string contains only printable characters. */
@@ -402,11 +630,11 @@ static int perform_http_xact(void)
     /* First line must be "op<space>[http://host]/path<space>HTTP/n.n".
      * <space> is exactly one space char.
      */
-    if (strncmp(messagebuf_data, "DELETE ", strlen("DELETE ")) == 0)
+    if (prefixcmp(messagebuf_data, "DELETE ") == 0)
     {
         messagebuf_data += strlen("DELETE ");
         char *space = strchr(messagebuf_data, ' ');
-        if (!space || strncmp(space+1, "HTTP/", strlen("HTTP/")) != 0)
+        if (!space || prefixcmp(space+1, "HTTP/") != 0)
             return 400; /* Bad Request */
         *space = '\0';
         //decode_url(messagebuf_data); %20 => ' '
@@ -419,16 +647,29 @@ static int perform_http_xact(void)
      * "PUT /" implies creation or replace of resource named "/"!
      * Delete PUT in 2014.
      */
-    if (strncmp(messagebuf_data, "PUT ", strlen("PUT ")) != 0
-     && strncmp(messagebuf_data, "POST ", strlen("POST ")) != 0
+    if (prefixcmp(messagebuf_data, "PUT ") != 0
+     && prefixcmp(messagebuf_data, "POST ") != 0
     ) {
         return 400; /* Bad Request */
     }
 
+    enum {
+        CREATION_NOTIFICATION,
+        CREATION_REQUEST,
+    };
+    int url_type;
+    char *url = skip_non_whitespace(messagebuf_data) + 1; /* skip "POST " */
+    if (prefixcmp(url, "/creation_notification ") == 0)
+        url_type = CREATION_NOTIFICATION;
+    else if (prefixcmp(url, "/ ") == 0)
+        url_type = CREATION_REQUEST;
+    else
+        return 400; /* Bad Request */
+
     /* Read body */
     if (!body_start)
     {
-        VERB1 log("EOF detected, exiting");
+        log("Premature EOF detected, exiting");
         return 400; /* Bad Request */
     }
 
@@ -439,18 +680,21 @@ static int perform_http_xact(void)
     /* Loop until EOF/error/timeout */
     while (1)
     {
-        while (1)
+        if (url_type == CREATION_REQUEST)
         {
-            unsigned len = strnlen(messagebuf_data, messagebuf_len);
-            if (len >= messagebuf_len)
-                break;
-            /* messagebuf has at least one NUL - process the line */
-            process_message(problem_info, messagebuf_data);
-            messagebuf_len -= (len + 1);
-            memmove(messagebuf_data, messagebuf_data + len + 1, messagebuf_len);
+            while (1)
+            {
+                unsigned len = strnlen(messagebuf_data, messagebuf_len);
+                if (len >= messagebuf_len)
+                    break;
+                /* messagebuf has at least one NUL - process the line */
+                process_message(problem_info, messagebuf_data);
+                messagebuf_len -= (len + 1);
+                memmove(messagebuf_data, messagebuf_data + len + 1, messagebuf_len);
+            }
         }
 
-        messagebuf_data = xrealloc(messagebuf_data, messagebuf_len + INPUT_BUFFER_SIZE);
+        messagebuf_data = xrealloc(messagebuf_data, messagebuf_len + INPUT_BUFFER_SIZE + 1);
         int rd = read(STDIN_FILENO, messagebuf_data + messagebuf_len, INPUT_BUFFER_SIZE);
         if (rd < 0)
         {
@@ -468,9 +712,16 @@ static int perform_http_xact(void)
             error_msg_and_die("Message is too long, aborting");
     }
 
-    /* Save problem dir. Don't let alarm to interrupt here */
+    /* Body received, EOF was seen. Don't let alarm to interrupt after this. */
     alarm(0);
 
+    if (url_type == CREATION_NOTIFICATION)
+    {
+        messagebuf_data[messagebuf_len] = '\0';
+        return run_post_create(messagebuf_data);
+    }
+
+    /* Save problem dir */
     int ret = 0;
     unsigned pid = convert_pid(problem_info);
     die_if_data_is_missing(problem_info);
