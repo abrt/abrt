@@ -343,6 +343,12 @@ static int run_post_create(const char *dirname)
  */
 static int create_problem_dir(GHashTable *problem_info, unsigned pid)
 {
+    /* Exit if free space is less than 1/4 of MaxCrashReportsSize */
+    if (g_settings_nMaxCrashReportsSize > 0)
+    {
+        check_free_space(g_settings_nMaxCrashReportsSize, g_settings_dump_location);
+    }
+
     /* Create temp directory with the problem data.
      * This directory is renamed to final directory name after
      * all files have been stored into it.
@@ -400,6 +406,9 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
 
     dd_close(dd);
 
+    /* Not needing it anymore */
+    g_hash_table_destroy(problem_info);
+
     /* Move the completely created problem directory
      * to final directory.
      */
@@ -410,23 +419,24 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
 
     log("Saved problem directory of pid %u to '%s'", pid, path);
 
+    /* We let the peer know that problem dir was created successfully
+     * _before_ we run potentially long-running post-create.
+     */
+    printf("HTTP/1.1 201 Created\r\n\r\n");
+    fflush(NULL);
+    close(STDOUT_FILENO);
+    xdup2(STDERR_FILENO, STDOUT_FILENO); /* paranoia: don't leave stdout fd closed */
+
     /* Trim old problem directories if necessary */
-    load_abrt_conf();
     if (g_settings_nMaxCrashReportsSize > 0)
     {
-        /* x1.25 and round up to 64m: go a bit up, so that usual in-daemon trimming
-         * kicks in first, and we don't "fight" with it:
-         */
-        unsigned maxsize = g_settings_nMaxCrashReportsSize + g_settings_nMaxCrashReportsSize / 4;
-        maxsize |= 63;
-        check_free_space(maxsize, g_settings_dump_location);
-        trim_problem_dirs(g_settings_dump_location, maxsize * (double)(1024*1024), path);
+        trim_problem_dirs(g_settings_dump_location, g_settings_nMaxCrashReportsSize * (double)(1024*1024), path);
     }
-    free_abrt_conf_data();
 
-    free(path);
+    run_post_create(path);
 
-    return 201; /* Created */
+    /* free(path); */
+    exit(0);
 }
 
 /* Checks if a string contains only printable characters. */
@@ -743,7 +753,8 @@ static int perform_http_xact(void)
 //...the problem being that problem_info here is not a problem_data_t!
 #endif
 
-    ret = create_problem_dir(problem_info, pid);
+    create_problem_dir(problem_info, pid);
+    /* does not return */
 
  out:
     g_hash_table_destroy(problem_info);
