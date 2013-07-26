@@ -38,7 +38,7 @@
 %define shadow_utils shadow-utils
 %endif
 
-%define libreport_ver 2.1.5
+%define libreport_ver 2.1.6
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
@@ -64,9 +64,9 @@ BuildRequires: asciidoc
 BuildRequires: doxygen
 BuildRequires: xmlto
 BuildRequires: libreport-devel >= %{libreport_ver}
-BuildRequires: satyr-devel >= 0.4
+BuildRequires: satyr-devel >= 0.5
 Requires: libreport >= %{libreport_ver}
-Requires: satyr >= 0.4
+Requires: satyr >= 0.5
 # these only exist on suse
 %if 0%{?suse_version}
 BuildRequires: dbus-1-glib-devel
@@ -828,6 +828,62 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Fri Jul 26 2013 Jakub Filak <jfilak@redhat.com> 2.1.6-1
+- replace functions deprecated in Gtk-3.10 with their substitutes
+- use shared GLib initialization function
+- a-a-g-c-b: Unwind using GDB
+- abrtd: fix on top of "prevent possible leak of malloced worst_dir"
+- testsuite: recognize uReport2
+- a-handle-event: check if satyr supports the analyzer
+- abrtd: prevent possible leak of malloced worst_dir
+- use absolute path in python shebang rhzb#987010
+- moved parse_list to the shared library in libreport - related to rhbz#803772
+- testsuite: do not require core_backtrace in koops problems
+- testsuite: update path to XML event config base dir
+- abrt-action-save-package-data: properly close rpm database. Closes #674.
+- abrt-action-save-package-data: fix handling of ProcessUnpackaged on scripts
+- blacklisted-script: new test
+- abrt-action-save-package-data manpage: typo fix
+- change /var/spool/abrt/ to /var/tmp/abrt rhbz#912750
+- Fix RPMdiff warnings about abrtd and abrt-action-install-debuginfo-to-abrt-cache
+- specfile: add dependency on abrt-libs to abrt-addon-uefioops
+- stop using the hardcoded event list, use workflows instead rhbz#866027
+- retrace-client: build correct release for Fedora Rawhide
+- spec: drop unnecessary Obsoletes and Provides
+- correct FSF address in python exception hook
+- spec: add manual pages to packages
+- add all missing manual pages
+- fix rpmlint issues in the spec file
+- move event option XML files to /usr/share/libreport/
+- spec: replace btparser with satyr
+- Update satyr support, drop btparser compatibility
+- abrt-hook-ccpp: always fall back to creating user core.
+- testsuite: fixed cli test closes #671
+- abrt-gdb-exploitable: comment-out dead code
+- spec: specify all conf files
+- abrt-gdb-exploitable: formatting
+- abrt-gdb-exploitable: improve signal analysis by looking at siginfo.si_code
+- abrt-gdb-exploitable: first cut of ppc support
+- abrt-gdb-exploitable: x86 factoring-out
+- dbus: add GetForeignProblems method
+- problem API: add function getting list of inaccessible problem IDs
+- the system tray icon opens recently detected problem
+- testsuite: fix abrt-python test to work on rhel6
+- testsuite: enable abrt-python test for rhel6
+- specfile: hook up vulnerability analyzer
+- Add gdb python plugin which analyzes coredump for vulnerability
+- applet: stop saving configuration at exit
+- spec: add system-config-abrt stuff
+- introduce system-config-abrt
+- move initialization of shortened reporting option to libabrt
+- abrt-cli status: fix the output
+- Fix wrong path in shell include
+- Make rhel6/python-addon test to test for old behaviour
+- tests/runtests/python-addon: check for "Python", not "pyhook"
+- abrt-dump-xorg: save "type=xorg" along with "analyzer=xorg"
+- Update python hook to use fixed socket interface
+- abrt-server: updates/fixes for future rasdaemon needs
+
 * Fri Jun 14 2013 Jakub Filak <jfilak@redhat.com> 2.1.5-1
 - spec: require tar closes #635
 - spec: tui should require abrt closes #633
