@@ -4,9 +4,17 @@ libabrtconfigui_la_SOURCES = \
 	abrt-config-widget.c \
 	abrt-config-widget.h
 
+# G_DEFINE_TYPE(...) macros result in
+# typedef '_GStaticAssertCompileTimeAssertion_0' locally defined but not used
+# warnings on some glib versions
+# (observed on glib2-2.34.2 on F18).
+# -Wno-error=unused-local-typedefs in CPPFLAGS suppresses this warning.
+# Newer glib may have it fixed.
+
 libabrtconfigui_la_CPPFLAGS = \
 	-I$(srcdir)/../include \
 	-I$(srcdir)/../lib \
+	-Wno-error=unused-local-typedefs \
 	$(LIBREPORT_CFLAGS) \
 	$(GTK_CFLAGS) \
 	-DABRT_UI_DIR="\"$(uidir)\"" \
@@ -25,6 +33,7 @@ bin_PROGRAMS = system-config-abrt
 system_config_abrt_CPPFLAGS = \
 	-I$(srcdir)/../include \
 	-I$(srcdir)/../lib \
+	-Wno-error=unused-local-typedefs \
 	$(GTK_CFLAGS) \
 	$(LIBREPORT_CFLAGS)
 
