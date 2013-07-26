@@ -1088,6 +1088,7 @@ int main(int argc, char** argv)
         perror_msg_and_die("inotify_init failed");
     close_on_exec_on(inotify_fd);
 
+#if 0
     /* Watching 'g_settings_dump_location' for new files and delete self
      * because hooks expects that the dump location exists if abrtd is running
      */
@@ -1096,6 +1097,7 @@ int main(int argc, char** argv)
         perror_msg("inotify_add_watch failed on '%s'", g_settings_dump_location);
         goto init_error;
     }
+#endif
     /* ...and upload dir */
     if (g_settings_sWatchCrashdumpArchiveDir)
     {
