@@ -422,7 +422,7 @@ static int perform_http_xact(void)
     if (strncmp(messagebuf_data, "PUT ", strlen("PUT ")) != 0
      && strncmp(messagebuf_data, "POST ", strlen("POST ")) != 0
     ) {
-        return 400; /* Bad Request */;
+        return 400; /* Bad Request */
     }
 
     /* Read body */

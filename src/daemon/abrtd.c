@@ -1024,10 +1024,6 @@ int main(int argc, char** argv)
     if (s_timeout != 0)
         signal(SIGALRM, handle_signal);
 
-    /* Moved before daemonization because parent waits for signal from daemon
-     * only for short period and time consumed by
-     * mark_unprocessed_dump_dirs_not_reportable() is slightly unpredictable.
-     */
     GMainLoop* pMainloop = NULL;
     GIOChannel* channel_inotify = NULL;
     guint channel_id_inotify_event = 0;
@@ -1040,6 +1036,10 @@ int main(int argc, char** argv)
     if (load_abrt_conf() != 0)
         goto init_error;
 
+    /* Moved before daemonization because parent waits for signal from daemon
+     * only for short period and time consumed by
+     * mark_unprocessed_dump_dirs_not_reportable() is slightly unpredictable.
+     */
     sanitize_dump_dir_rights();
     mark_unprocessed_dump_dirs_not_reportable(g_settings_dump_location);
 
@@ -1089,7 +1089,8 @@ int main(int argc, char** argv)
     close_on_exec_on(inotify_fd);
 
     /* Watching 'g_settings_dump_location' for new files and delete self
-     * because hooks expects that the dump location exists if abrtd is runnig*/
+     * because hooks expects that the dump location exists if abrtd is running
+     */
     if (inotify_add_watch(inotify_fd, g_settings_dump_location, IN_DUMP_LOCATION_FLAGS) < 0)
     {
         perror_msg("inotify_add_watch failed on '%s'", g_settings_dump_location);

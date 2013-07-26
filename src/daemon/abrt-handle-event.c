@@ -96,7 +96,7 @@ end:
 static void dup_uuid_init(const struct dump_dir *dd)
 {
     if (uuid)
-        return; /* we already checked it, don't do it again */
+        return; /* we already loaded it, don't do it again */
 
     uuid = dd_load_text_ext(dd, FILENAME_UUID,
                             DD_FAIL_QUIETLY_ENOENT + DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
@@ -138,7 +138,7 @@ static void dup_uuid_fini(void)
 static void dup_corebt_init(const struct dump_dir *dd)
 {
     if (corebt)
-        return; /* already checked */
+        return; /* already loaded */
 
     char *corebt_text = load_backtrace(dd);
     if (!corebt_text)
