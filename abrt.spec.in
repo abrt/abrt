@@ -147,7 +147,9 @@ Summary: %{name}'s kerneloops addon
 Group: System Environment/Libraries
 Requires: curl
 Requires: %{name} = %{version}-%{release}
+%if 0%{!?rhel:1}
 Requires: libreport-plugin-kerneloops >= %{libreport_ver}
+%endif
 Requires: abrt-libs = %{version}-%{release}
 
 %description addon-kerneloops
@@ -232,6 +234,9 @@ Requires: abrt-addon-vmcore
 Requires: abrt-addon-ccpp
 Requires: abrt-addon-python
 Requires: abrt-addon-xorg
+%if 0%{?rhel}
+Requires: libreport-plugin-rhtsupport >= %{libreport_ver}
+%else
 Requires: abrt-retrace-client
 %if %{with bodhi}
 Requires: abrt-plugin-bodhi
@@ -241,6 +246,7 @@ Requires: libreport-plugin-bugzilla >= %{libreport_ver}
 %endif
 Requires: libreport-plugin-logger >= %{libreport_ver}
 Requires: libreport-plugin-ureport >= %{libreport_ver}
+%endif
 
 %description cli
 Virtual package to install all necessary packages for usage from command line
@@ -259,13 +265,17 @@ Requires: abrt-addon-kerneloops
 Requires: abrt-addon-uefioops
 Requires: abrt-addon-vmcore
 Requires: abrt-addon-ccpp
-Requires: abrt-retrace-client
 Requires: abrt-addon-python
 Requires: abrt-addon-xorg
 # Default config of addon-ccpp requires gdb
 Requires: gdb >= 7.0-3
 Requires: abrt-gui
 Requires: gnome-abrt
+%if 0%{?rhel}
+Requires: libreport-rhel >= %{libreport_ver}
+Requires: libreport-plugin-rhtsupport >= %{libreport_ver}
+%else
+Requires: abrt-retrace-client
 %if %{with bodhi}
 Requires: abrt-plugin-bodhi
 %endif
@@ -277,8 +287,6 @@ Requires: libreport-plugin-ureport >= %{libreport_ver}
 %if 0%{?fedora}
 Requires: libreport-fedora >= %{libreport_ver}
 %endif
-%if 0%{?rhel}
-Requires: libreport-rhel >= %{libreport_ver}
 %endif
 #Requires: abrt-plugin-firefox
 Provides: bug-buddy
