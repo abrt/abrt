@@ -159,7 +159,7 @@ static GIOChannel *my_io_channel_unix_new(int fd)
     return ch;
 }
 
-static void increment_child_count()
+static void increment_child_count(void)
 {
     if (++child_count >= MAX_CLIENT_COUNT)
     {
@@ -174,7 +174,7 @@ static void increment_child_count()
 
 static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpointer ptr_unused);
 
-static void decrement_child_count()
+static void decrement_child_count(void)
 {
     if (child_count)
         child_count--;
@@ -545,7 +545,7 @@ static void ensure_writable_dir(const char *dir, mode_t mode, const char *user)
         perror_msg_and_die("Can't set mode %o on '%s'", mode, dir);
 }
 
-static void sanitize_dump_dir_rights()
+static void sanitize_dump_dir_rights(void)
 {
     /* We can't allow everyone to create dumps: otherwise users can flood
      * us with thousands of bogus or malicious dumps */
@@ -780,7 +780,7 @@ static void run_main_loop(GMainLoop* loop)
 /* Initializes the dump socket, usually in /var/run directory
  * (the path depends on compile-time configuration).
  */
-static void dumpsocket_init()
+static void dumpsocket_init(void)
 {
     unlink(SOCKET_FILE); /* not caring about the result */
 
@@ -803,7 +803,7 @@ static void dumpsocket_init()
 }
 
 /* Releases all resources used by dumpsocket. */
-static void dumpsocket_shutdown()
+static void dumpsocket_shutdown(void)
 {
     /* Set everything to pre-initialization state. */
     if (channel_socket)
@@ -816,7 +816,7 @@ static void dumpsocket_shutdown()
     }
 }
 
-static int create_pidfile()
+static int create_pidfile(void)
 {
     /* Note:
      * No O_EXCL: we would happily overwrite stale pidfile from previous boot.
@@ -831,19 +831,25 @@ static int create_pidfile()
         {
             perror_msg("Can't lock file '%s'", VAR_RUN_PIDFILE);
             /* should help with problems like rhbz#859724 */
-            size_t maxsize = 128;
-            char *pid_str = xmalloc_read(fd, &maxsize);
+            char pid_str[sizeof(long)*3 + 4];
+            int r = full_read(fd, pid_str, sizeof(pid_str));
             close(fd);
 
-            if (pid_str && pid_str[0])
+            /* File can contain garbage. Be careful interpreting it as PID */
+            if (r > 0)
             {
-                int locking_pid = strtoul(pid_str, NULL, 10);
-                char *cmdline = get_cmdline(locking_pid);
-                if (cmdline != NULL)
-                    error_msg("Process: '%s (%u)' is holding the lock", cmdline, locking_pid);
-
-                free(cmdline);
-                free(pid_str);
+                pid_str[r] = '\0';
+                errno = 0;
+                long locking_pid = strtol(pid_str, NULL, 10);
+                if (!errno && locking_pid > 0 && locking_pid <= INT_MAX)
+                {
+                    char *cmdline = get_cmdline(locking_pid);
+                    if (cmdline)
+                    {
+                        error_msg("Process %lu '%s' is holding the lock", locking_pid, cmdline);
+                        free(cmdline);
+                    }
+                }
             }
 
             return -1;
@@ -880,7 +886,7 @@ static void handle_signal(int signo)
 }
 
 
-static void start_syslog_logging()
+static void start_syslog_logging(void)
 {
     /* Open stdin to /dev/null */
     xmove_fd(xopen("/dev/null", O_RDWR), STDIN_FILENO);
