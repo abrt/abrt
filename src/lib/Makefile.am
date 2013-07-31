@@ -8,6 +8,7 @@ libabrt_la_SOURCES = \
     abrt_conf.c \
     hooklib.c \
     daemon_is_ok.c \
+    notify_new_path.c \
     kernel.c \
     abrt_glib.c \
     migrate_dirs.c \

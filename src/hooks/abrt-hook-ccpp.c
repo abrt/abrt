@@ -19,7 +19,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <syslog.h>
-#include <sys/un.h>
 #include <sys/utsname.h>
 #include "libabrt.h"
 
@@ -455,38 +454,6 @@ static int create_or_die(const char *filename)
     }
     errno = sv_errno;
     perror_msg_and_die("Can't open '%s'", filename);
-}
-
-static void notify_new_path(const char *path)
-{
-    int fd = socket(AF_UNIX, SOCK_STREAM, 0);
-    if (fd < 0)
-    {
-        perror_msg("socket(AF_UNIX)");
-        return;
-    }
-
-    struct sockaddr_un sunx;
-    memset(&sunx, 0, sizeof(sunx));
-    sunx.sun_family = AF_UNIX;
-    strcpy(sunx.sun_path, VAR_RUN"/abrt/abrt.socket");
-
-    if (connect(fd, (struct sockaddr *)&sunx, sizeof(sunx)))
-    {
-        perror_msg("connect('%s')", sunx.sun_path);
-        close(fd);
-        return;
-    }
-
-    full_write_str(fd, "POST /creation_notification HTTP/1.1\r\n\r\n");
-    full_write_str(fd, path);
-    /*
-     * This sends FIN packet. Without it, close() may result in RST instead.
-     * Not really needed on AF_UNIX, just a bit of TCP-induced paranoia
-     * aka "good practice".
-     */
-    shutdown(fd, SHUT_WR);
-    close(fd);
 }
 
 int main(int argc, char** argv)

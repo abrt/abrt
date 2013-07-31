@@ -78,9 +78,9 @@ extern bool          g_settings_shortenedreporting;
 
 
 #define load_abrt_conf abrt_load_abrt_conf
-int load_abrt_conf();
+int load_abrt_conf(void);
 #define free_abrt_conf_data abrt_free_abrt_conf_data
-void free_abrt_conf_data();
+void free_abrt_conf_data(void);
 
 
 void migrate_to_xdg_dirs(void);
@@ -89,7 +89,10 @@ int check_recent_crash_file(const char *filename, const char *executable);
 
 /* Returns 1 if abrtd daemon is running, 0 otherwise. */
 #define daemon_is_ok abrt_daemon_is_ok
-int daemon_is_ok();
+int daemon_is_ok(void);
+
+#define notify_new_path abrt_notify_new_path
+void notify_new_path(const char *path);
 
 /* Note: should be public since unit tests need to call it */
 #define koops_extract_version abrt_koops_extract_version

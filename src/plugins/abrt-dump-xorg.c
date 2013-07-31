@@ -86,15 +86,11 @@ static void save_bt_to_dump_dir(const char *bt, const char *exe, const char *rea
 
     pid_t my_pid = getpid();
 
-    struct dump_dir *dd;
-    {
-        char base[sizeof("xorg-YYYY-MM-DD-hh:mm:ss-%lu-%lu") + 2 * sizeof(long)*3];
-        sprintf(base, "xorg-%s-%lu-%u", iso_date, (long)my_pid, g_bt_count);
-        char *path = concat_path_file(debug_dumps_dir, base);
-        dd = dd_create(path, /*uid:*/ my_euid, mode);
-        free(path);
-    }
+    char base[sizeof("xorg-YYYY-MM-DD-hh:mm:ss-%lu-%lu") + 2 * sizeof(long)*3];
+    sprintf(base, "xorg-%s-%lu-%u", iso_date, (long)my_pid, g_bt_count);
+    char *path = concat_path_file(debug_dumps_dir, base);
 
+    struct dump_dir *dd = dd_create(path, /*uid:*/ my_euid, mode);
     if (dd)
     {
         dd_create_basic_files(dd, /*uid:*/ my_euid, NULL);
@@ -117,7 +113,10 @@ static void save_bt_to_dump_dir(const char *bt, const char *exe, const char *rea
         }
         dd_save_text(dd, FILENAME_EXECUTABLE, exe);
         dd_close(dd);
+        notify_new_path(path);
     }
+
+    free(path);
 }
 
 /* Called after "Backtrace:" line was read.

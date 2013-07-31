@@ -187,15 +187,11 @@ static unsigned create_oops_dump_dirs(GList *oops_list, unsigned oops_cnt)
     unsigned errors = 0;
     while (idx < oops_cnt && --countdown != 0)
     {
-        struct dump_dir *dd;
-        {
-            char base[sizeof("oops-YYYY-MM-DD-hh:mm:ss-%lu-%lu") + 2 * sizeof(long)*3];
-            sprintf(base, "oops-%s-%lu-%lu", iso_date, (long)my_pid, (long)idx);
-            char *path = concat_path_file(debug_dumps_dir, base);
-            dd = dd_create(path, /*uid:*/ my_euid, mode);
-            free(path);
-        }
+        char base[sizeof("oops-YYYY-MM-DD-hh:mm:ss-%lu-%lu") + 2 * sizeof(long)*3];
+        sprintf(base, "oops-%s-%lu-%lu", iso_date, (long)my_pid, (long)idx);
+        char *path = concat_path_file(debug_dumps_dir, base);
 
+        struct dump_dir *dd = dd_create(path, /*uid:*/ my_euid, mode);
         if (dd)
         {
             dd_create_basic_files(dd, /*uid:*/ my_euid, NULL);
@@ -212,9 +208,12 @@ static unsigned create_oops_dump_dirs(GList *oops_list, unsigned oops_cnt)
             if (suspend_stats)
                 dd_save_text(dd, "suspend_stats", suspend_stats);
             dd_close(dd);
+            notify_new_path(path);
         }
         else
             errors++;
+
+        free(path);
     }
 
     free(cmdline_str);
