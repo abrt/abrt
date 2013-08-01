@@ -60,76 +60,6 @@ static GIOChannel *channel_socket = NULL;
 static guint channel_id_socket = 0;
 static int child_count = 0;
 
-/* We spawn three kinds of children:
- * - handlers for accepted socket connections (abrt-server)
- * - handlers for detected uploads (abrt-upload)
- * - handlers for "post-create" + "notify[-dup]" events
- * First two kinds of children don't need spcial handling:
- * we only need to collect their exit status to avoid creating zombies.
- * Unfortunately, the third kind is not this simple: wee need to collect
- * their exit status _after_ we ate their output.
- * Since we can either (1) detect EOF first and do waitpid after it,
- * OR (2) we can get SIGCHLD and do waitpit first, we need to maintain a list
- * of known children of third kind, or else in the case (2) we won't be able
- * to save exit status. s_pid_list exists solely for this purpose.
- */
-static GList *s_pid_list;
-
-/*
- * The post-create event cannot be run concurrently for more problem
- * directories. The problem is in searching for duplicates process in case when
- * two concurrently processed directories are duplicates of each other. Both of
- * the directories are marked as duplicates of each other and are deleted.
- *
- * This queue is used for serialization of processing of created problem
- * directories.
- *
- * The GIO notify handler pushes new directories to this queue and if the queue was
- * empty before push then starts processing of the pushed directory.
- *
- * Directory processing code pops the processed directory from the queue at the
- * end of processing. If the queue is not empty starts processing of the next
- * directory which is on the top of the queue.
- */
-static GList *s_dir_queue;
-
-enum {
-    EVTYPE_POST_CREATE,
-    EVTYPE_NOTIFY,
-};
-struct event_processing_state
-{
-    int   event_type;
-    pid_t child_pid;
-    int   child_exitstatus;
-    int   child_stdout_fd;
-    struct strbuf *cmd_output;
-    char *dirname;
-    char *dup_of_dir;
-};
-static struct event_processing_state *new_event_processing_state(void)
-{
-    struct event_processing_state *p = xzalloc(sizeof(*p));
-    p->child_pid = -1;
-    p->child_stdout_fd = -1;
-    p->cmd_output = strbuf_new();
-    return p;
-}
-static void free_event_processing_state(struct event_processing_state *p)
-{
-    if (!p)
-        return;
-    /*
-    if (p->child_stdout_fd >= 0)
-        close(p->child_stdout_fd);
-    */
-    strbuf_free(p->cmd_output);
-    free(p->dirname);
-    free(p->dup_of_dir);
-    free(p);
-}
-
-
 /* Helpers */
 
 static guint add_watch_or_die(GIOChannel *channel, unsigned condition, GIOFunc func)
@@ -185,53 +115,6 @@ static void decrement_child_count(void)
     }
 }
 
-static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *event_name, int *fdp)
-{
-    char *args[6];
-    args[0] = (char *) LIBEXEC_DIR"/abrt-handle-event";
-    args[1] = (char *) "-e";
-    args[2] = (char *) event_name;
-    args[3] = (char *) "--";
-    args[4] = (char *) dump_dir_name;
-    args[5] = NULL;
-
-    int pipeout[2];
-    int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_QUIET | EXECFLG_ERR2OUT;
-    VERB1 flags &= ~EXECFLG_QUIET;
-
-    pid_t child = fork_execv_on_steroids(flags, args, pipeout,
-                                         /*env_vec:*/ NULL, /*dir:*/ NULL,
-                                         /*uid(unused):*/ 0);
-    if (fdp)
-        *fdp = pipeout[0];
-    increment_child_count();
-    return child;
-}
-
-static int wait_for_child(struct event_processing_state *state)
-{
-    int status = 0;
-
-    if (state->child_pid < 0)
-        status = state->child_exitstatus;
-    else
-    {
-        if (safe_waitpid(state->child_pid, &status, 0) > 0)
-        {
-            state->child_pid = -1;
-            state->child_exitstatus = status;
-            decrement_child_count();
-        }
-        else /* should not happen */
-            perror_msg("waitpid(%d)", (int)state->child_pid);
-    }
-
-    s_pid_list = g_list_remove(s_pid_list, state);
-
-    return status;
-}
-
-
 /* Callback called by glib main loop when a client connects to ABRT's socket. */
 static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpointer ptr_unused)
 {
@@ -272,14 +155,7 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
     return TRUE;
 }
 
-
 /* Signal pipe handler */
-static gint compare_pids(gconstpointer a, gconstpointer b)
-{
-    const struct event_processing_state *state = a;
-    pid_t pid = (pid_t) (uintptr_t) b;
-    return state->child_pid != pid;
-}
 static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
 {
     uint8_t signo;
@@ -293,237 +169,13 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
             s_exiting = 1;
         else
         {
-            pid_t pid;
-            int status;
-            while ((pid = safe_waitpid(-1, &status, WNOHANG)) > 0)
+            while (safe_waitpid(-1, NULL, WNOHANG) > 0)
             {
                 decrement_child_count();
-                GList *l = g_list_find_custom(s_pid_list, (gconstpointer) (uintptr_t) pid, compare_pids);
-                if (l)
-                {
-                    struct event_processing_state *state = l->data;
-                    state->child_pid = -1;
-                    state->child_exitstatus = status;
-                }
             }
         }
     }
     return TRUE; /* "please don't remove this event" */
-}
-
-static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr);
-
-/* Runs post-create event asynchronously. Uses GIOChanel for communication with event process. */
-static void run_post_create_on_dir_async(const char *name)
-{
-    struct event_processing_state *state = new_event_processing_state();
-    state->event_type = EVTYPE_POST_CREATE;
-    state->dirname = concat_path_file(g_settings_dump_location, name);
-
-    state->child_pid = spawn_event_handler_child(state->dirname, "post-create", &state->child_stdout_fd);
-    s_pid_list = g_list_prepend(s_pid_list, state);
-    ndelay_on(state->child_stdout_fd);
-
-    GIOChannel *channel_event_output = my_io_channel_unix_new(state->child_stdout_fd);
-    /*uint channel_id_event_output =*/ g_io_add_watch(channel_event_output,
-            G_IO_IN | G_IO_PRI | G_IO_HUP,
-            handle_event_output_cb,
-            state);
-}
-
-/* Event-processing child output handler (such as "post-create" event) */
-static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr)
-{
-    struct event_processing_state *state = ptr;
-
-    //log("Reading from event fd %d", state->child_stdout_fd);
-
-    /* Read streamed data and split lines */
-    for (;;)
-    {
-        char buf[250]; /* usually we get one line, no need to have big buf */
-        errno = 0;
-        gsize r = 0;
-        g_io_channel_read_chars(gio, buf, sizeof(buf) - 1, &r, NULL);
-        if (r <= 0)
-            break;
-        buf[r] = '\0';
-
-        /* split lines in the current buffer */
-        char *raw = buf;
-        char *newline;
-        while ((newline = strchr(raw, '\n')) != NULL)
-        {
-            *newline = '\0';
-            strbuf_append_str(state->cmd_output, raw);
-            char *msg = state->cmd_output->buf;
-
-            /* Hmm, DUP_OF_DIR: ends up in syslog. move log() into 'else'? */
-            log("%s", msg);
-            if (state->event_type == EVTYPE_POST_CREATE
-             && strncmp("DUP_OF_DIR: ", msg, strlen("DUP_OF_DIR: ")) == 0
-            ) {
-                free(state->dup_of_dir);
-                state->dup_of_dir = xstrdup(msg + strlen("DUP_OF_DIR: "));
-            }
-
-            strbuf_clear(state->cmd_output);
-            /* jump to next line */
-            raw = newline + 1;
-        }
-
-        /* beginning of next line. the line continues by next read */
-        strbuf_append_str(state->cmd_output, raw);
-    }
-
-    if (errno == EAGAIN)
-    {
-        /* We got all buffered data, but fd is still open. Done for now */
-        //log("EAGAIN on fd %d", state->child_stdout_fd);
-        return TRUE; /* "glib, please don't remove this event (yet)" */
-    }
-
-    /* EOF/error */
-
-    /* Wait for child to actually exit, collect status */
-    int status = wait_for_child(state);
-
-    /* If it was a "notify[-dup]" event, then we're done */
-    if (state->event_type == EVTYPE_NOTIFY)
-        goto ret;
-
-    /* Else: it was "post-create" event */
-
-    /* exit 0 means "this is a good, non-dup dir" */
-    /* exit with 1 + "DUP_OF_DIR: dir" string => dup */
-    if (status != 0)
-    {
-        if (WIFSIGNALED(status))
-        {
-            log("'post-create' on '%s' killed by signal %d",
-                            state->dirname, WTERMSIG(status));
-            goto delete_bad_dir;
-        }
-        /* else: it is WIFEXITED(status) */
-        else if (!state->dup_of_dir)
-        {
-            log("'post-create' on '%s' exited with %d",
-                            state->dirname, WEXITSTATUS(status));
-            goto delete_bad_dir;
-        }
-    }
-
-    char *work_dir = state->dup_of_dir ? state->dup_of_dir : state->dirname;
-
-    /* Load problem_data (from the *first dir* if this one is a dup) */
-    struct dump_dir *dd = dd_opendir(work_dir, /*flags:*/ 0);
-    if (!dd)
-        /* dd_opendir already emitted error msg */
-        goto delete_bad_dir;
-
-    /* Update count */
-    char *count_str = dd_load_text_ext(dd, FILENAME_COUNT, DD_FAIL_QUIETLY_ENOENT);
-    unsigned long count = strtoul(count_str, NULL, 10);
-
-    /* Don't increase crash count if we are working with newly uploaded
-     * directory (remote crash) which already has its crash count set.
-     */
-    if ((status != 0 && state->dup_of_dir) || count == 0)
-    {
-        count++;
-        char new_count_str[sizeof(long)*3 + 2];
-        sprintf(new_count_str, "%lu", count);
-        dd_save_text(dd, FILENAME_COUNT, new_count_str);
-
-        /* This condition can be simplified to either
-         * (status * != 0 && * state->dup_of_dir) or (count == 1). But the
-         * chosen form is much more reliable and safe. We must not call
-         * dd_opendir() to locked dd otherwise we go into a deadlock.
-         */
-        if (strcmp(dd->dd_dirname, state->dirname) != 0)
-        {
-            /* Update the last occurrence file by the time file of the new problem */
-            struct dump_dir *new_dd = dd_opendir(state->dirname, DD_OPEN_READONLY);
-            char *last_ocr = NULL;
-            if (new_dd)
-            {
-                /* TIME must exists in a valid dump directory but we don't want to die
-                 * due to broken duplicated dump directory */
-                last_ocr = dd_load_text_ext(new_dd, FILENAME_TIME,
-                            DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE | DD_FAIL_QUIETLY_ENOENT);
-                dd_close(new_dd);
-            }
-            else
-            {   /* dd_opendir() already produced a message with good information about failure */
-                error_msg("Can't read the last occurrence file from the new dump directory.");
-            }
-
-            if (!last_ocr)
-            {   /* the new dump directory may lie in the dump location for some time */
-                log("Using current time for the last occurrence file which may be incorrect.");
-                time_t t = time(NULL);
-                last_ocr = xasprintf("%lu", (long)t);
-            }
-
-            dd_save_text(dd, FILENAME_LAST_OCCURRENCE, last_ocr);
-
-            free(last_ocr);
-        }
-    }
-
-    /* Reset mode/uig/gid to correct values for all files created by event run */
-    dd_sanitize_mode_and_owner(dd);
-
-    dd_close(dd);
-
-    if (!state->dup_of_dir)
-        log("New problem directory %s, processing", work_dir);
-    else
-    {
-        log("Deleting problem directory %s (dup of %s)",
-                strrchr(state->dirname, '/') + 1,
-                strrchr(state->dup_of_dir, '/') + 1);
-        delete_dump_dir(state->dirname);
-    }
-
-    /* Run "notify[-dup]" event */
-    int fd;
-    state->child_pid = spawn_event_handler_child(
-                work_dir,
-                (state->dup_of_dir ? "notify-dup" : "notify"),
-                &fd
-    );
-    s_pid_list = g_list_prepend(s_pid_list, state);
-    ndelay_on(fd);
-    //log("Started notify, fd %d -> %d", fd, state->child_stdout_fd);
-    xmove_fd(fd, state->child_stdout_fd);
-    state->event_type = EVTYPE_NOTIFY;
-    return TRUE; /* "glib, please don't remove this event (yet)" */
-
-
- delete_bad_dir:
-    log("Deleting problem directory '%s'", state->dirname);
-    delete_dump_dir(state->dirname);
-
- ret:
-    //log("Closing event fd %d", state->child_stdout_fd);
-    free_event_processing_state(state);
-
-    /* We stop using this channel */
-    g_io_channel_unref(gio);
-
-    /* pop the currently processed directory from the incoming queue */
-    char *name = s_dir_queue->data;
-    s_dir_queue = g_list_remove(s_dir_queue, name);
-    free(name);
-
-    /* if the queue is not empty process directory from */
-    /* the top of the incoming queue */
-    if (s_dir_queue)
-        run_post_create_on_dir_async(s_dir_queue->data);
-
-    return FALSE; /* "glib, please remove this events source!" */
-    /* Removing will also drop the last ref to this gio, closing/freeing it */
 }
 
 static void ensure_writable_dir(const char *dir, mode_t mode, const char *user)
@@ -666,16 +318,19 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
              * but this handler is used for 'g_settings_sWatchCrashdumpArchiveDir' too
              */
             log("Recreating deleted dump location '%s'", g_settings_dump_location);
-            inotify_rm_watch(g_io_channel_unix_get_fd(gio), event->wd);
+
+            int inotify_fd = g_io_channel_unix_get_fd(gio);
+            inotify_rm_watch(inotify_fd, event->wd);
             sanitize_dump_dir_rights();
-            if (inotify_add_watch(g_io_channel_unix_get_fd(gio), g_settings_dump_location, IN_DUMP_LOCATION_FLAGS) < 0)
+            if (inotify_add_watch(inotify_fd, g_settings_dump_location, IN_DUMP_LOCATION_FLAGS) < 0)
             {
                 perror_msg_and_die("inotify_add_watch failed on recreated '%s'", g_settings_dump_location);
             }
 
             continue;
         }
-
+/* We no longer watch for subdirectory creations */
+#if 0
         if (!(event->mask & IN_ISDIR) || !name)
         {
             /* ignore lock files and such */
@@ -690,33 +345,8 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             continue;
         }
         log("Directory '%s' creation detected", name);
-
-        if (g_settings_nMaxCrashReportsSize > 0)
-        {
-            char *worst_dir = NULL;
-            while (g_settings_nMaxCrashReportsSize > 0
-             && get_dirsize_find_largest_dir(g_settings_dump_location, &worst_dir, name) / (1024*1024) >= g_settings_nMaxCrashReportsSize
-             && worst_dir
-            ) {
-                log("Size of '%s' >= %u MB, deleting '%s'",
-                    g_settings_dump_location, g_settings_nMaxCrashReportsSize, worst_dir);
-                char *d = concat_path_file(g_settings_dump_location, worst_dir);
-                free(worst_dir);
-                worst_dir = NULL;
-                delete_dump_dir(d);
-                free(d);
-            }
-            free(worst_dir);
-        }
-
-        const bool empty_queue = s_dir_queue == NULL;
-        /* push the new directory to the end of the incoming queue */
-        s_dir_queue = g_list_append(s_dir_queue, xstrdup(name));
-
-        /* if the queue was empty process the current directory */
-        if (empty_queue)
-            run_post_create_on_dir_async(name);
-
+        ...
+#endif
     } /* while */
 
     free(buf);

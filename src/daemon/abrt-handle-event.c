@@ -402,6 +402,13 @@ int main(int argc, char **argv)
         if (post_create)
         {
             run_state->post_run_callback = is_crash_a_dup;
+            /*
+             * The post-create event cannot be run concurrently for more problem
+             * directories. The problem is in searching for duplicates process
+             * in case when two concurrently processed directories are duplicates
+             * of each other. Both of the directories are marked as duplicates
+             * of each other and are deleted.
+             */
             create_lockfile();
         }
 
