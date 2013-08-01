@@ -118,6 +118,11 @@ AC_ARG_WITH([dbusinterfacedir],
         [], [with_dbusinterfacedir=${datadir}/dbus-1/interfaces])
 AC_SUBST([dbusinterfacedir], [$with_dbusinterfacedir])
 
+AC_ARG_WITH(largedatatmpdir,
+            [AS_HELP_STRING([--with-largedatatmpdir=DIR],
+                           [Directory where potentially large data are created (default: /var/tmp)])],
+            [], [with_largedatatmpdir="/var/tmp"])
+AC_SUBST([LARGE_DATA_TMP_DIR], [$with_largedatatmpdir])
 
 AC_CHECK_HEADER([sys/inotify.h], [],
    [AC_MSG_ERROR([sys/inotify.h is needed to build abrt])])
@@ -227,6 +232,7 @@ AC_CONFIG_FILES([
 	src/plugins/Makefile
 	src/Makefile
 	src/daemon/Makefile
+	src/daemon/abrt-handle-upload
 	src/hooks/Makefile
 	src/applet/Makefile
 	src/cli/Makefile

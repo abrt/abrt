@@ -94,7 +94,7 @@ if __name__ == "__main__":
             "    -v          Be verbose\n"
             "    -y          Noninteractive, assume 'Yes' to all questions\n"
             "    --ids       Default: build_ids\n"
-            "    --tmpdir    Default: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+            "    --tmpdir    Default: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
             "    --cache     Default: /var/cache/abrt-di\n"
             "    --size_mb   Default: 4096\n"
             "    -e,--exact  Download only specified files\n"
@@ -157,8 +157,9 @@ if __name__ == "__main__":
             cachedirs = ["/var/cache/abrt-di"]
     if not tmpdir:
         # security people prefer temp subdirs in app's private dir, like /var/run/abrt
-        # for now, we use /tmp...
-        tmpdir = "/tmp/abrt-tmp-debuginfo-%s.%u" % (time.strftime("%Y-%m-%d-%H:%M:%S"), os.getpid())
+        # and we switched to /tmp but Fedora feature tmp-on-tmpfs appeared, hence we must
+        # not use /tmp for potential big data anymore
+        tmpdir = "@LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-%s.%u" % (time.strftime("%Y-%m-%d-%H:%M:%S"), os.getpid())
 
 
     if missing == None:

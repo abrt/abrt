@@ -270,6 +270,7 @@ abrt_retrace_client_SOURCES = \
      $(GLIB_CFLAGS) \
      -D_GNU_SOURCE \
      -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
+     -DLARGE_DATA_TMP_DIR=\"$(LARGE_DATA_TMP_DIR)\" \
      $(LIBREPORT_CFLAGS)
  abrt_retrace_client_LDADD = \
      $(LIBREPORT_LIBS) \

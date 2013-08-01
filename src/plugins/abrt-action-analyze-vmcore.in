@@ -85,8 +85,9 @@ if __name__ == "__main__":
 
     if not tmpdir:
         # security people prefer temp subdirs in app's private dir, like /var/run/abrt
-        # for now, we use /tmp...
-        tmpdir = "/tmp/abrt-tmp-debuginfo-%s.%u" % (time.strftime("%Y-%m-%d-%H:%M:%S"), os.getpid())
+        # and we switched to /tmp but Fedora feature tmp-on-tmpfs appeared, hence we must
+        # not use /tmp for potential big data anymore
+        tmpdir = "@LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-%s.%u" % (time.strftime("%Y-%m-%d-%H:%M:%S"), os.getpid())
 
     crash = Popen(["crash", "--osrelease", vmcore], stdout=PIPE, bufsize = -1)
     ver, err = crash.communicate()

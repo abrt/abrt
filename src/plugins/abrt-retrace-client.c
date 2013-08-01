@@ -95,10 +95,10 @@ static int create_archive(bool unlink_temp)
         return -1;
 
     /* Open a temporary file. */
-    char *filename = xstrdup("/tmp/abrt-retrace-client-archive-XXXXXX.tar.xz");
+    char *filename = xstrdup(LARGE_DATA_TMP_DIR"/abrt-retrace-client-archive-XXXXXX.tar.xz");
     int tempfd = mkstemps(filename, /*suffixlen:*/7);
     if (tempfd == -1)
-        perror_msg_and_die(_("Can't create temporary file in /tmp"));
+        perror_msg_and_die(_("Can't create temporary file in "LARGE_DATA_TMP_DIR));
     if (unlink_temp)
         xunlink(filename);
     free(filename);
@@ -177,11 +177,11 @@ static int create_archive(bool unlink_temp)
         /* Hopefully, by this time child emitted more meaningful
          * error message. But just in case it didn't:
          */
-        error_msg_and_die(_("Can't create temporary file in /tmp"));
+        error_msg_and_die(_("Can't create temporary file in "LARGE_DATA_TMP_DIR));
     VERB1 log_msg("Waiting for xz...");
     safe_waitpid(xz_child, &status, 0);
     if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
-        error_msg_and_die(_("Can't create temporary file in /tmp"));
+        error_msg_and_die(_("Can't create temporary file in "LARGE_DATA_TMP_DIR));
     VERB1 log_msg("Done...");
 
     xlseek(tempfd, 0, SEEK_SET);
@@ -1160,7 +1160,7 @@ int main(int argc, char **argv)
                     _("Delay for polling operations")),
         OPT_BOOL(0, "no-unlink", NULL,
                  _("(debug) do not delete temporary archive created"
-                   " from dump dir in /tmp")),
+                   " from dump dir in "LARGE_DATA_TMP_DIR)),
         OPT_GROUP(_("For status, backtrace, and log operations")),
         OPT_STRING('t', "task", &task_id, "ID",
                    _("id of your task on server")),

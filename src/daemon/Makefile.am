@@ -84,7 +84,7 @@ dist_daemonconf_DATA = \
     abrt-action-save-package-data.conf \
     gpg_keys
 
-EXTRA_DIST = abrt-handle-upload
+EXTRA_DIST = abrt-handle-upload.in
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 

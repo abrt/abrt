@@ -48,7 +48,7 @@ test x"${archive%.tar.xz}" != x"$archive" && unpacker="unxz"
 
 test "$unpacker" || print_clean_and_die "Unknown file type: '$archive'"
 
-workingdir=`mktemp -d "abrt_handle_upload.XXXXXXXXXX" --tmpdir=/tmp` || print_clean_and_die "Can't create working directory"
+workingdir=`mktemp -d "abrt_handle_upload.XXXXXXXXXX" --tmpdir=@LARGE_DATA_TMP_DIR@` || print_clean_and_die "Can't create working directory"
 delete_on_exit="$workingdir"
 
 tempdir="$workingdir/remote.`date +%Y-%m-%d-%H:%M:%S.%N`.$$"
