@@ -174,11 +174,10 @@ static char *handle_new_problem(GVariant *problem_info, uid_t caller_uid, char *
     problem_data_add_basics(pd);
 
     char *problem_id = problem_data_save(pd);
-    if (!problem_id)
-    {
-        if (error)
-            *error = xasprintf("Cannot create a new problem");
-    }
+    if (problem_id)
+        notify_new_path(problem_id);
+    else if (error)
+        *error = xasprintf("Cannot create a new problem");
 
     problem_data_free(pd);
     return problem_id;
