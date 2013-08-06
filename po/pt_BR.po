@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-#   <gcintra@redhat.com>, 2012.
-# Glaucia Freitas <gcintra@redhat.com>, 2012.
-# Ricardo Gyorfy <rgyorfy@redhat.com>, 2011.
+# Glaucia Freitas <gcintra@redhat.com>, 2012
+# Glaucia Freitas <gcintra@redhat.com>, 2012-2013
+# Ricardo Gyorfy <rgyorfy@redhat.com>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-10-18 16:36+0200\n"
-"PO-Revision-Date: 2012-10-11 05:50+0000\n"
+"POT-Creation-Date: 2013-08-06 09:56+0200\n"
+"PO-Revision-Date: 2013-07-30 12:15+0000\n"
 "Last-Translator: Glaucia Freitas <gcintra@redhat.com>\n"
 "Language-Team: Portuguese (Brazil) <trans-pt_br@lists.fedoraproject.org>\n"
 "Language: pt_BR\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:684
+#: ../src/gui-gtk/main.c:686
 msgid "Automatic Bug Reporting Tool"
 msgstr "Ferramenta para o relatório automático de erros"
 
@@ -44,7 +44,7 @@ msgstr ""
 "O mini aplicativo da área de notificação para notificar o usuário sobre os "
 "problemas detectados pelo ABRT "
 
-#: ../src/applet/applet.c:378 ../src/gui-gtk/main.c:533
+#: ../src/applet/applet.c:378 ../src/gui-gtk/main.c:535
 msgid "translator-credits"
 msgstr ""
 "Ricardo Gyorfy <rgyorfy@redhat.com>\n"
@@ -88,7 +88,7 @@ msgstr ""
 "O mini aplicativo que notifica o usuário quando novos problemas foram "
 "detectados pelo ABRT\n"
 
-#: ../src/daemon/abrt-action-save-package-data.c:362
+#: ../src/daemon/abrt-action-save-package-data.c:365
 msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
@@ -98,7 +98,7 @@ msgstr ""
 "\n"
 "Analise o banco de dados do pacote e salve o pacote e nome do componente"
 
-#: ../src/daemon/abrt-action-save-package-data.c:374
+#: ../src/daemon/abrt-action-save-package-data.c:377
 #: ../src/plugins/abrt-action-analyze-backtrace.c:63
 #: ../src/plugins/abrt-action-analyze-c.c:90
 #: ../src/plugins/abrt-action-analyze-oops.c:48
@@ -107,37 +107,37 @@ msgstr ""
 msgid "Dump directory"
 msgstr "Diretório de despejo"
 
-#: ../src/daemon/abrt-action-save-package-data.c:375
+#: ../src/daemon/abrt-action-save-package-data.c:378
 msgid "Configuration file"
 msgstr "Arquivo de Configuração"
 
-#: ../src/daemon/abrt-server.c:458 ../src/daemon/abrt-dbus.c:378
-#: ../src/daemon/abrtd.c:655
+#: ../src/daemon/abrt-server.c:465 ../src/daemon/abrt-dbus.c:378
+#: ../src/daemon/abrtd.c:855
 msgid "& [options]"
 msgstr "& [options]"
 
-#: ../src/daemon/abrt-server.c:469
+#: ../src/daemon/abrt-server.c:476
 msgid "Use UID as client uid"
 msgstr "Use UID como cliente uid"
 
-#: ../src/daemon/abrt-server.c:470 ../src/plugins/abrt-dump-oops.c:244
+#: ../src/daemon/abrt-server.c:477 ../src/plugins/abrt-dump-oops.c:257
 msgid "Log to syslog"
 msgstr "Log para o syslog"
 
-#: ../src/daemon/abrt-server.c:471 ../src/daemon/abrtd.c:671
-#: ../src/gui-gtk/main.c:1019
+#: ../src/daemon/abrt-server.c:478 ../src/daemon/abrtd.c:871
+#: ../src/gui-gtk/main.c:1021
 msgid "Add program names to log"
 msgstr "Adicionar os nomes dos programas ao log"
 
-#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:668
+#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:868
 msgid "Do not daemonize"
 msgstr "Não criar um daemon"
 
-#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:669
+#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:869
 msgid "Log to syslog even with -d"
 msgstr "Registrar no syslog mesmo com o -d"
 
-#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:670
+#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:870
 msgid "Exit after NUM seconds of inactivity"
 msgstr "Sai após os segundos NUM de inatividade"
 
@@ -153,55 +153,55 @@ msgstr "Executar o EVENT no DIR"
 msgid "View and report application crashes"
 msgstr "Visualizar e reportar travamentos de aplicativos"
 
-#: ../src/gui-gtk/main.c:552 ../src/gui-gtk/main.c:598
+#: ../src/gui-gtk/main.c:554 ../src/gui-gtk/main.c:600
 msgid "Source"
 msgstr "Fonte"
 
-#: ../src/gui-gtk/main.c:562 ../src/gui-gtk/main.c:608
+#: ../src/gui-gtk/main.c:564 ../src/gui-gtk/main.c:610
 msgid "Problem"
 msgstr "Problema"
 
-#: ../src/gui-gtk/main.c:583
+#: ../src/gui-gtk/main.c:585
 msgid "Last Occurrence"
 msgstr "Última Ocorrência"
 
-#: ../src/gui-gtk/main.c:618
+#: ../src/gui-gtk/main.c:620
 msgid "Date Submitted"
 msgstr "Data submetida"
 
-#: ../src/gui-gtk/main.c:627
+#: ../src/gui-gtk/main.c:629
 msgid "Submission Result"
 msgstr "Resultado de submissão"
 
-#: ../src/gui-gtk/main.c:640
+#: ../src/gui-gtk/main.c:642
 msgid "_Report"
 msgstr "_Reportar"
 
-#: ../src/gui-gtk/main.c:641
+#: ../src/gui-gtk/main.c:643
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../src/gui-gtk/main.c:642
+#: ../src/gui-gtk/main.c:644
 msgid "_Help"
 msgstr "_Ajuda"
 
-#: ../src/gui-gtk/main.c:704
+#: ../src/gui-gtk/main.c:706
 msgid "Not submitted reports"
 msgstr "Nenhum formulário submetido"
 
-#: ../src/gui-gtk/main.c:706
+#: ../src/gui-gtk/main.c:708
 msgid "<b>Not submitted reports</b>"
 msgstr "<b>Nenhum formulário submetido</b>"
 
-#: ../src/gui-gtk/main.c:754
+#: ../src/gui-gtk/main.c:756
 msgid "Submitted reports"
 msgstr "Formulários submetidos"
 
-#: ../src/gui-gtk/main.c:757
+#: ../src/gui-gtk/main.c:759
 msgid "<b>Submitted reports</b>"
 msgstr "<b>Formulários submetidos</b>"
 
-#: ../src/gui-gtk/main.c:1008
+#: ../src/gui-gtk/main.c:1010
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
@@ -462,7 +462,7 @@ msgstr "Nome de componente proibído: '%s'."
 msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr "Falha ao enviar requisição HTTP de comprimento %d: NSS erro %d."
 
-#: ../src/plugins/abrt-dump-oops.c:175
+#: ../src/plugins/abrt-dump-oops.c:180
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
@@ -471,7 +471,7 @@ msgstr ""
 "Ocorreu um problema com o kernel mas seu kernel foi corrompido(flags:%s). Os "
 "mantedores do kernel não podem diagnosticar formulários corrompidos."
 
-#: ../src/plugins/abrt-dump-oops.c:226
+#: ../src/plugins/abrt-dump-oops.c:239
 msgid ""
 "& [-vsrowx] [-d DIR] FILE\n"
 "or: & [-vsrowx] -D FILE\n"
@@ -483,30 +483,30 @@ msgstr ""
 "\n"
 "Extrair oops do arquivo syslog/dmesg"
 
-#: ../src/plugins/abrt-dump-oops.c:245
+#: ../src/plugins/abrt-dump-oops.c:258
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "Analisar buffer de mensagens do kernel antes de analisar o ARQUIVO"
 
-#: ../src/plugins/abrt-dump-oops.c:246
+#: ../src/plugins/abrt-dump-oops.c:259
 msgid "Print found oopses on standard output"
 msgstr "Exibir erros encontrados no resultado padrão"
 
-#: ../src/plugins/abrt-dump-oops.c:247
+#: ../src/plugins/abrt-dump-oops.c:260
 msgid "Do not exit, watch the file for new oopses"
 msgstr "Não existe, monitore o arquivo por novos erros"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
 #.
-#: ../src/plugins/abrt-dump-oops.c:251
+#: ../src/plugins/abrt-dump-oops.c:264
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr "Cria despejo do ABRT no DIR para cada erro encontrado"
 
-#: ../src/plugins/abrt-dump-oops.c:252
+#: ../src/plugins/abrt-dump-oops.c:265
 msgid "Make the problem directory world readable"
 msgstr "Tornar o diretório de problema mundial legível"
 
-#: ../src/plugins/abrt-dump-oops.c:253
+#: ../src/plugins/abrt-dump-oops.c:266
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "Mesmo que -d DumpLocation, DumpLocation está especificado no abrt.conf"
 
@@ -690,7 +690,11 @@ msgstr "Analisar e reportar dados do problema no DIR"
 msgid "Print information about DIR"
 msgstr "Imprimir informações sobre o DIR"
 
-#: ../src/cli/abrt-cli.c:162
+#: ../src/cli/abrt-cli.c:150
+msgid "Print the count of the recent crashes"
+msgstr "Mostrar a contagem das quebras recentes"
+
+#: ../src/cli/abrt-cli.c:163
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "Ver 'abrt-cli COMMAND --help' para mais informações."
 
@@ -710,6 +714,28 @@ msgstr "Exibir relatório detalhado"
 #: ../src/cli/list.c:133
 msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
+
+#: ../src/cli/status.c:27
+msgid "& status [DIR]..."
+msgstr "& status [DIR]..."
+
+#: ../src/cli/status.c:37
+msgid "Print only the problem count without any message"
+msgstr "Mostrar apenas a contagem de problema sem mensagem"
+
+#: ../src/cli/status.c:38
+msgid "Print only the problems more recent than specified timestamp"
+msgstr ""
+"Mostrar apenas problemas mais recentes que a marca de tempo especificada"
+
+#: ../src/cli/status.c:57
+#, c-format
+msgid ""
+"ABRT has detected '%u' problem(s). (For more info run: $ abrt-cli list --"
+"full)\n"
+msgstr ""
+"ABRT detectou '%u' problema(s). (Para mais informações execute: $ abrt-cli "
+"list --full)\n"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"

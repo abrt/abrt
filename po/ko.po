@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-10-18 16:36+0200\n"
+"POT-Creation-Date: 2013-08-06 09:56+0200\n"
 "PO-Revision-Date: 2012-10-09 13:59+0000\n"
 "Last-Translator: eukim <eukim@redhat.com>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/fedora/language/"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:684
+#: ../src/gui-gtk/main.c:686
 msgid "Automatic Bug Reporting Tool"
 msgstr "자동 버그 보고 도구 (ABRT) "
 
@@ -41,7 +41,7 @@ msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT가 감지한 문제를 사용자에게 통지하기 위한 통지 영역 애플릿"
 
-#: ../src/applet/applet.c:378 ../src/gui-gtk/main.c:533
+#: ../src/applet/applet.c:378 ../src/gui-gtk/main.c:535
 msgid "translator-credits"
 msgstr ""
 "김은주<eukim@redhat.com>\n"
@@ -82,7 +82,7 @@ msgstr ""
 "\n"
 "ABRT가 새로운 문제를 감지할 경우 사용자에게 통지하는 애플릿\n"
 
-#: ../src/daemon/abrt-action-save-package-data.c:362
+#: ../src/daemon/abrt-action-save-package-data.c:365
 msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
@@ -92,7 +92,7 @@ msgstr ""
 "\n"
 "패키지 데이터베이스를 쿼리하고 패키지 및 구성 요소 이름을 저장합니다 "
 
-#: ../src/daemon/abrt-action-save-package-data.c:374
+#: ../src/daemon/abrt-action-save-package-data.c:377
 #: ../src/plugins/abrt-action-analyze-backtrace.c:63
 #: ../src/plugins/abrt-action-analyze-c.c:90
 #: ../src/plugins/abrt-action-analyze-oops.c:48
@@ -101,37 +101,37 @@ msgstr ""
 msgid "Dump directory"
 msgstr "덤프 디렉토리 "
 
-#: ../src/daemon/abrt-action-save-package-data.c:375
+#: ../src/daemon/abrt-action-save-package-data.c:378
 msgid "Configuration file"
 msgstr "설정 파일 "
 
-#: ../src/daemon/abrt-server.c:458 ../src/daemon/abrt-dbus.c:378
-#: ../src/daemon/abrtd.c:655
+#: ../src/daemon/abrt-server.c:465 ../src/daemon/abrt-dbus.c:378
+#: ../src/daemon/abrtd.c:855
 msgid "& [options]"
 msgstr "& [options]"
 
-#: ../src/daemon/abrt-server.c:469
+#: ../src/daemon/abrt-server.c:476
 msgid "Use UID as client uid"
 msgstr "UID를 클라이언트 uid로 사용 "
 
-#: ../src/daemon/abrt-server.c:470 ../src/plugins/abrt-dump-oops.c:244
+#: ../src/daemon/abrt-server.c:477 ../src/plugins/abrt-dump-oops.c:257
 msgid "Log to syslog"
 msgstr "syslog에 로그   "
 
-#: ../src/daemon/abrt-server.c:471 ../src/daemon/abrtd.c:671
-#: ../src/gui-gtk/main.c:1019
+#: ../src/daemon/abrt-server.c:478 ../src/daemon/abrtd.c:871
+#: ../src/gui-gtk/main.c:1021
 msgid "Add program names to log"
 msgstr "로그에 프로그램 이름 추가 "
 
-#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:668
+#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:868
 msgid "Do not daemonize"
 msgstr "데몬화하지 않습니다 "
 
-#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:669
+#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:869
 msgid "Log to syslog even with -d"
 msgstr "-d를 사용하여 syslog에 로그 "
 
-#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:670
+#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:870
 msgid "Exit after NUM seconds of inactivity"
 msgstr "NUM 초 동안 동작하지 않을 경우 종료합니다 "
 
@@ -147,55 +147,55 @@ msgstr "DIR에서 EVENT 실행 "
 msgid "View and report application crashes"
 msgstr "애플리케이션 크래시를 확인 및 보고함"
 
-#: ../src/gui-gtk/main.c:552 ../src/gui-gtk/main.c:598
+#: ../src/gui-gtk/main.c:554 ../src/gui-gtk/main.c:600
 msgid "Source"
 msgstr "소스 "
 
-#: ../src/gui-gtk/main.c:562 ../src/gui-gtk/main.c:608
+#: ../src/gui-gtk/main.c:564 ../src/gui-gtk/main.c:610
 msgid "Problem"
 msgstr "문제 "
 
-#: ../src/gui-gtk/main.c:583
+#: ../src/gui-gtk/main.c:585
 msgid "Last Occurrence"
 msgstr "마지막 문제 발생  "
 
-#: ../src/gui-gtk/main.c:618
+#: ../src/gui-gtk/main.c:620
 msgid "Date Submitted"
 msgstr "날짜가 제출되었습니다 "
 
-#: ../src/gui-gtk/main.c:627
+#: ../src/gui-gtk/main.c:629
 msgid "Submission Result"
 msgstr "제출 결과 "
 
-#: ../src/gui-gtk/main.c:640
+#: ../src/gui-gtk/main.c:642
 msgid "_Report"
 msgstr "보고(_R) "
 
-#: ../src/gui-gtk/main.c:641
+#: ../src/gui-gtk/main.c:643
 msgid "_Edit"
 msgstr "편집(_E)  "
 
-#: ../src/gui-gtk/main.c:642
+#: ../src/gui-gtk/main.c:644
 msgid "_Help"
 msgstr "도움말(_H)  "
 
-#: ../src/gui-gtk/main.c:704
+#: ../src/gui-gtk/main.c:706
 msgid "Not submitted reports"
 msgstr "제출되지 않은 보고 "
 
-#: ../src/gui-gtk/main.c:706
+#: ../src/gui-gtk/main.c:708
 msgid "<b>Not submitted reports</b>"
 msgstr "<b>제출되지 않은 보고</b>"
 
-#: ../src/gui-gtk/main.c:754
+#: ../src/gui-gtk/main.c:756
 msgid "Submitted reports"
 msgstr "제출된 보고 "
 
-#: ../src/gui-gtk/main.c:757
+#: ../src/gui-gtk/main.c:759
 msgid "<b>Submitted reports</b>"
 msgstr "<b>제출된 보고</b> "
 
-#: ../src/gui-gtk/main.c:1008
+#: ../src/gui-gtk/main.c:1010
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
@@ -453,7 +453,7 @@ msgstr "금지된 구성 요소 이름:  '%s'."
 msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr "%d 길이의 HTTP 요청 전송 실패: NSS 오류 %d."
 
-#: ../src/plugins/abrt-dump-oops.c:175
+#: ../src/plugins/abrt-dump-oops.c:180
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
@@ -462,7 +462,7 @@ msgstr ""
 "커널 문제가 발생하여 커널이 감염되었습니다 (플래그: %s). 커널 관리자는 감염 "
 "보고를 진단할 수 없습니다."
 
-#: ../src/plugins/abrt-dump-oops.c:226
+#: ../src/plugins/abrt-dump-oops.c:239
 msgid ""
 "& [-vsrowx] [-d DIR] FILE\n"
 "or: & [-vsrowx] -D FILE\n"
@@ -474,30 +474,30 @@ msgstr ""
 "\n"
 "syslog/dmesg 파일에서 oops를 추출합니다 "
 
-#: ../src/plugins/abrt-dump-oops.c:245
+#: ../src/plugins/abrt-dump-oops.c:258
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "FILE을 구문 분석하기 전 커널의 메세지 버퍼를 구문 분석합니다  "
 
-#: ../src/plugins/abrt-dump-oops.c:246
+#: ../src/plugins/abrt-dump-oops.c:259
 msgid "Print found oopses on standard output"
 msgstr "찾아낸 oops를 표준 출력으로 인쇄합니다 "
 
-#: ../src/plugins/abrt-dump-oops.c:247
+#: ../src/plugins/abrt-dump-oops.c:260
 msgid "Do not exit, watch the file for new oopses"
 msgstr "종료하지 않고 새 oops 파일을 관찰합니다 "
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
 #.
-#: ../src/plugins/abrt-dump-oops.c:251
+#: ../src/plugins/abrt-dump-oops.c:264
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr "모든 oops에 대해 DIR에 ABRT 덤프를 생성합니다 "
 
-#: ../src/plugins/abrt-dump-oops.c:252
+#: ../src/plugins/abrt-dump-oops.c:265
 msgid "Make the problem directory world readable"
 msgstr "문제 디렉토리를 전역에서 읽기 가능하게 합니다 "
 
-#: ../src/plugins/abrt-dump-oops.c:253
+#: ../src/plugins/abrt-dump-oops.c:266
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "-d DumpLocation과 동일, DumpLocation은 abrt.conf에 지정됩니다 "
 
@@ -678,7 +678,11 @@ msgstr "DIR에 문제가 있는 데이터를 분석 및 보고 "
 msgid "Print information about DIR"
 msgstr "DIR에 관한 정보 출력 "
 
-#: ../src/cli/abrt-cli.c:162
+#: ../src/cli/abrt-cli.c:150
+msgid "Print the count of the recent crashes"
+msgstr ""
+
+#: ../src/cli/abrt-cli.c:163
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "보다 자세한 내용은 'abrt-cli COMMAND --help'에서 참조하십시오 "
 
@@ -698,6 +702,26 @@ msgstr "상세 보고를 표시합니다 "
 #: ../src/cli/list.c:133
 msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
+
+#: ../src/cli/status.c:27
+#, fuzzy
+msgid "& status [DIR]..."
+msgstr "& list [options] [DIR]..."
+
+#: ../src/cli/status.c:37
+msgid "Print only the problem count without any message"
+msgstr ""
+
+#: ../src/cli/status.c:38
+msgid "Print only the problems more recent than specified timestamp"
+msgstr ""
+
+#: ../src/cli/status.c:57
+#, c-format
+msgid ""
+"ABRT has detected '%u' problem(s). (For more info run: $ abrt-cli list --"
+"full)\n"
+msgstr ""
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"

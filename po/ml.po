@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Ani Peter <apeter@redhat.com>, 2012.
-# Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
+# Ani Peter <apeter@redhat.com>, 2012-2013
+# Jiří Moskovčák <jmoskovc@redhat.com>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-10-18 16:36+0200\n"
-"PO-Revision-Date: 2012-10-09 07:26+0000\n"
+"POT-Creation-Date: 2013-08-06 09:56+0200\n"
+"PO-Revision-Date: 2013-07-30 07:11+0000\n"
 "Last-Translator: Ani Peter <apeter@redhat.com>\n"
 "Language-Team: Malayalam <discuss@lists.smc.org.in>\n"
 "Language: ml\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:684
+#: ../src/gui-gtk/main.c:686
 msgid "Automatic Bug Reporting Tool"
 msgstr "ഓട്ടോമാറ്റിക് ബഗ് രേഖപ്പെടുത്തല്‍ പ്രയോഗം"
 
@@ -41,7 +41,7 @@ msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT കണ്ടുപിടിക്കുന്ന പ്രശ്നങ്ങളെപ്പറ്റി ഉപയോക്താവിനെ അറിയിക്കുന്നതിനായുള്ള ആപ്ലെറ്റ്"
 
-#: ../src/applet/applet.c:378 ../src/gui-gtk/main.c:533
+#: ../src/applet/applet.c:378 ../src/gui-gtk/main.c:535
 msgid "translator-credits"
 msgstr "Ani Peter | അനി പീറ്റര്‍ <apeter@redhat.com>"
 
@@ -80,7 +80,7 @@ msgstr ""
 "\n"
 "പുതിയ പ്രശ്നങ്ങള്‍ ABRT കണ്ടുപിടിയ്ക്കുമ്പോള്‍ ഉപയോക്താവിനെ അറിയിയ്ക്കുന്നതിനുള്ള ആപ്ലെറ്റ്\n"
 
-#: ../src/daemon/abrt-action-save-package-data.c:362
+#: ../src/daemon/abrt-action-save-package-data.c:365
 msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
@@ -90,7 +90,7 @@ msgstr ""
 "\n"
 "പാക്കേജ് ഡേറ്റാബെയിസ് ചോദ്യം ചെയ്തു്, പാക്കേജും ഘടകത്തിന്റെ പേരും സൂക്ഷിയ്ക്കുക"
 
-#: ../src/daemon/abrt-action-save-package-data.c:374
+#: ../src/daemon/abrt-action-save-package-data.c:377
 #: ../src/plugins/abrt-action-analyze-backtrace.c:63
 #: ../src/plugins/abrt-action-analyze-c.c:90
 #: ../src/plugins/abrt-action-analyze-oops.c:48
@@ -99,37 +99,37 @@ msgstr ""
 msgid "Dump directory"
 msgstr "ഡംപ് ഡയറക്ടറി"
 
-#: ../src/daemon/abrt-action-save-package-data.c:375
+#: ../src/daemon/abrt-action-save-package-data.c:378
 msgid "Configuration file"
 msgstr "ക്രമീകരണ ഫയല്‍"
 
-#: ../src/daemon/abrt-server.c:458 ../src/daemon/abrt-dbus.c:378
-#: ../src/daemon/abrtd.c:655
+#: ../src/daemon/abrt-server.c:465 ../src/daemon/abrt-dbus.c:378
+#: ../src/daemon/abrtd.c:855
 msgid "& [options]"
 msgstr "& [options]"
 
-#: ../src/daemon/abrt-server.c:469
+#: ../src/daemon/abrt-server.c:476
 msgid "Use UID as client uid"
 msgstr "ക്ലയന്റ് യുഐഡി ആയി UID ഉപയോഗിയ്ക്കുക"
 
-#: ../src/daemon/abrt-server.c:470 ../src/plugins/abrt-dump-oops.c:244
+#: ../src/daemon/abrt-server.c:477 ../src/plugins/abrt-dump-oops.c:257
 msgid "Log to syslog"
 msgstr "syslog-ലേക്കു് പ്രവേശിയ്ക്കുക"
 
-#: ../src/daemon/abrt-server.c:471 ../src/daemon/abrtd.c:671
-#: ../src/gui-gtk/main.c:1019
+#: ../src/daemon/abrt-server.c:478 ../src/daemon/abrtd.c:871
+#: ../src/gui-gtk/main.c:1021
 msgid "Add program names to log"
 msgstr "ലോഗിലേക്കു് പ്രോഗ്രാമിന്റെ പേരുകള്‍ ചേര്‍ക്കുക"
 
-#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:668
+#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:868
 msgid "Do not daemonize"
 msgstr "daemonize ചെയ്യേണ്ടതില്ല"
 
-#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:669
+#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:869
 msgid "Log to syslog even with -d"
 msgstr "-d ഉപയോഗിച്ചു് syslog-ലേക്കു് പ്രവേശിയ്ക്കുക"
 
-#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:670
+#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:870
 msgid "Exit after NUM seconds of inactivity"
 msgstr "NUM നിമിഷങ്ങള്‍ നിഷ്ക്രിയമായശേഷം പുറത്തു് കടക്കുക"
 
@@ -145,55 +145,55 @@ msgstr "DIR-ല്‍ EVENT പ്രവര്‍ത്തിപ്പിയ്�
 msgid "View and report application crashes"
 msgstr "പ്രയോഗത്തിന്റെ തകരാറുകള്‍ രേഖപ്പെടുത്തുക"
 
-#: ../src/gui-gtk/main.c:552 ../src/gui-gtk/main.c:598
+#: ../src/gui-gtk/main.c:554 ../src/gui-gtk/main.c:600
 msgid "Source"
 msgstr "ശ്രോതസ്സ്"
 
-#: ../src/gui-gtk/main.c:562 ../src/gui-gtk/main.c:608
+#: ../src/gui-gtk/main.c:564 ../src/gui-gtk/main.c:610
 msgid "Problem"
 msgstr "പ്രശ്നം"
 
-#: ../src/gui-gtk/main.c:583
+#: ../src/gui-gtk/main.c:585
 msgid "Last Occurrence"
 msgstr "അവസാനം സംഭവിച്ചതു്"
 
-#: ../src/gui-gtk/main.c:618
+#: ../src/gui-gtk/main.c:620
 msgid "Date Submitted"
 msgstr "സമര്‍പ്പിച്ച തീയതി"
 
-#: ../src/gui-gtk/main.c:627
+#: ../src/gui-gtk/main.c:629
 msgid "Submission Result"
 msgstr "സമര്‍പ്പിച്ചതിന്റെ ഫലം"
 
-#: ../src/gui-gtk/main.c:640
+#: ../src/gui-gtk/main.c:642
 msgid "_Report"
 msgstr "_റിപോര്‍ട്ട്"
 
-#: ../src/gui-gtk/main.c:641
+#: ../src/gui-gtk/main.c:643
 msgid "_Edit"
 msgstr "_ചിട്ടപ്പെടുത്തുക"
 
-#: ../src/gui-gtk/main.c:642
+#: ../src/gui-gtk/main.c:644
 msgid "_Help"
 msgstr "_സഹായം"
 
-#: ../src/gui-gtk/main.c:704
+#: ../src/gui-gtk/main.c:706
 msgid "Not submitted reports"
 msgstr "സമര്‍പ്പിച്ച രേഖകള്‍ ലഭ്യമല്ല"
 
-#: ../src/gui-gtk/main.c:706
+#: ../src/gui-gtk/main.c:708
 msgid "<b>Not submitted reports</b>"
 msgstr "<b>സമര്‍പ്പിച്ച രേഖകള്‍ ലഭ്യമല്ല</b>"
 
-#: ../src/gui-gtk/main.c:754
+#: ../src/gui-gtk/main.c:756
 msgid "Submitted reports"
 msgstr "സമര്‍പ്പിച്ച രേഖകള്‍"
 
-#: ../src/gui-gtk/main.c:757
+#: ../src/gui-gtk/main.c:759
 msgid "<b>Submitted reports</b>"
 msgstr "<b>സമര്‍പ്പിച്ച രേഖകള്‍</b>"
 
-#: ../src/gui-gtk/main.c:1008
+#: ../src/gui-gtk/main.c:1010
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
@@ -452,7 +452,7 @@ msgstr "അനുവദിച്ചിട്ടില്ലാത്ത ഘട�
 msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr "%d: എന്‍എസ്എസ് പിശക് %d നീളമുള്ള HTTP ആവശ്യം അയയ്ക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
 
-#: ../src/plugins/abrt-dump-oops.c:175
+#: ../src/plugins/abrt-dump-oops.c:180
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
@@ -461,7 +461,7 @@ msgstr ""
 "കേര്‍ണലില്‍ എന്തോ പ്രശ്നമുണ്ടു്; കേര്‍ണലില്‍ തകരാറുണ്ടു് (ഫ്ലാഗുകള്‍:%s). കേര്‍ണല്‍ കാര്യസ്ഥര്‍ക്കു് റിപ്പോര്‍ട്ട് "
 "നോക്കി പ്രശ്നം കണ്ടുപിടിയ്ക്കുവാനായില്ല."
 
-#: ../src/plugins/abrt-dump-oops.c:226
+#: ../src/plugins/abrt-dump-oops.c:239
 msgid ""
 "& [-vsrowx] [-d DIR] FILE\n"
 "or: & [-vsrowx] -D FILE\n"
@@ -473,30 +473,30 @@ msgstr ""
 "\n"
 "syslog/dmesg ഫയലില്‍ നിന്നും oops ലഭ്യമാക്കുക"
 
-#: ../src/plugins/abrt-dump-oops.c:245
+#: ../src/plugins/abrt-dump-oops.c:258
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "ഫയല്‍ പാഴ്സ് ചെയ്യുന്നതിനു് മുമ്പു് കേര്‍ണലിന്റെ സന്ദേശത്തിനുള്ള ബഫര്‍ പാഴ്സ് ചെയ്യുക"
 
-#: ../src/plugins/abrt-dump-oops.c:246
+#: ../src/plugins/abrt-dump-oops.c:259
 msgid "Print found oopses on standard output"
 msgstr "സാധാരണ ഔട്ട്പുട്ടില്‍ ലഭ്യമാക്കി oops-കള്‍ പ്രിന്റ് ചെയ്യുക"
 
-#: ../src/plugins/abrt-dump-oops.c:247
+#: ../src/plugins/abrt-dump-oops.c:260
 msgid "Do not exit, watch the file for new oopses"
 msgstr "പുറത്തു് കടക്കേണ്ടതില്ല, പുതിയ oops-കള്‍ക്കായി ഫയല്‍ തെരയുക"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
 #.
-#: ../src/plugins/abrt-dump-oops.c:251
+#: ../src/plugins/abrt-dump-oops.c:264
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr "കണ്ടുപിടിച്ച എല്ല oops-കള്‍ക്കും DIR-ല്‍ ABRT ഡംപ് തയ്യാറാക്കുക"
 
-#: ../src/plugins/abrt-dump-oops.c:252
+#: ../src/plugins/abrt-dump-oops.c:265
 msgid "Make the problem directory world readable"
 msgstr "പ്രശ്നമുള്ള ഡയറക്ടറി ലഭ്യമാക്കുക"
 
-#: ../src/plugins/abrt-dump-oops.c:253
+#: ../src/plugins/abrt-dump-oops.c:266
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "-d DumpLocation പോലെ തന്നെ, abrt.conf-ല്‍ DumpLocation നിഷ്കര്‍ഷിച്ചിരിയ്ക്കുന്നു"
 
@@ -680,7 +680,11 @@ msgstr "DIR-ല്‍ പ്രശ്നമുള്ള ഡേറ്റാ ന�
 msgid "Print information about DIR"
 msgstr "DIR സംബന്ധിച്ചുള്ള വിവരം പ്രിന്റ് ചെയ്യുക"
 
-#: ../src/cli/abrt-cli.c:162
+#: ../src/cli/abrt-cli.c:150
+msgid "Print the count of the recent crashes"
+msgstr "അടുത്തിടെയുള്ള ക്രാഷുകളുടെ എണ്ണം പ്രിന്റ് ചെയ്യുക"
+
+#: ../src/cli/abrt-cli.c:163
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "കൂടുതല്‍ വിവരങ്ങള്‍ക്കായി 'abrt-cli COMMAND --help' കാണുക."
 
@@ -700,6 +704,27 @@ msgstr "വിശദമായ രേഖപ്പെടുത്തല്‍ ക�
 #: ../src/cli/list.c:133
 msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
+
+#: ../src/cli/status.c:27
+msgid "& status [DIR]..."
+msgstr "& status [DIR]..."
+
+#: ../src/cli/status.c:37
+msgid "Print only the problem count without any message"
+msgstr "ഒരു സന്ദേശവുമില്ലാതെ പ്രശ്നത്തിന്റെ എണ്ണം മാത്രം പ്രിന്റ് ചെയ്യുക"
+
+#: ../src/cli/status.c:38
+msgid "Print only the problems more recent than specified timestamp"
+msgstr "നല്‍കിയിരിയ്ക്കുന്ന ടൈംസ്റ്റാമ്പിനേക്കാള്‍ അടുത്തുള്ള പ്രശ്നങ്ങള്‍ മാത്രം പ്രിന്റ് ചെയ്യുക"
+
+#: ../src/cli/status.c:57
+#, c-format
+msgid ""
+"ABRT has detected '%u' problem(s). (For more info run: $ abrt-cli list --"
+"full)\n"
+msgstr ""
+"എബിആര്‍റ്റി '%u' പ്രശ്നങ്ങള്‍ കണ്ടുപിടിച്ചിരിയ്ക്കുന്നു. (കൂടുതല്‍ വിവരങ്ങള്‍ക്കായി: $ abrt-cli list "
+"--full)\n"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"

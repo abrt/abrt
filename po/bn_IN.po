@@ -3,16 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Jiří Moskovčák <jmoskovc@redhat.com>, 2011.
-# Runa Bhattacharjee <runab@redhat.com>, 2009, 2010, 2011.
-#   <runabh@gmail.com>, 2011-2012.
+# Jiří Moskovčák <jmoskovc@redhat.com>, 2011
+# runab <runab@redhat.com>, 2009, 2010, 2011
+# runa <runabh@gmail.com>, 2011-2012
+# bnin <sray@redhat.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-10-18 16:36+0200\n"
-"PO-Revision-Date: 2012-10-11 07:13+0000\n"
-"Last-Translator: runa <runabh@gmail.com>\n"
+"POT-Creation-Date: 2013-08-06 09:56+0200\n"
+"PO-Revision-Date: 2013-08-06 06:52+0000\n"
+"Last-Translator: bnin <sray@redhat.com>\n"
 "Language-Team: Bengali (India) <anubad@lists.ankur.org.in>\n"
 "Language: bn_IN\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:684
+#: ../src/gui-gtk/main.c:686
 msgid "Automatic Bug Reporting Tool"
 msgstr "স্বয়ংক্রিয় বাগ রিপোর্টিং ব্যবস্থা"
 
@@ -44,7 +45,7 @@ msgstr ""
 "ABRT দ্বারা সনাক্ত করা সমস্যা সম্বন্ধে ব্যবহারকারীদেরকে সূচিত করার উদ্দেশ্যে, "
 "বিজ্ঞপ্তিস্থলে ব্যবহারযোগ্য অ্যাপ্লেট"
 
-#: ../src/applet/applet.c:378 ../src/gui-gtk/main.c:533
+#: ../src/applet/applet.c:378 ../src/gui-gtk/main.c:535
 msgid "translator-credits"
 msgstr "রুণা ভট্টাচার্য্য"
 
@@ -83,7 +84,7 @@ msgstr ""
 "\n"
 "ABRT দ্বারা নতুন সমস্যা সনাক্ত করা হলে ব্যবহারকারীদের সূচিত করতে ব্যবহৃত অ্যাপ্লেট\n"
 
-#: ../src/daemon/abrt-action-save-package-data.c:362
+#: ../src/daemon/abrt-action-save-package-data.c:365
 msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
@@ -93,7 +94,7 @@ msgstr ""
 "\n"
 "প্যাকেজের ডাটাবেস সন্ধান করুন ও প্যাকেজ ও সামগ্রীর নাম সংরক্ষণ করুন"
 
-#: ../src/daemon/abrt-action-save-package-data.c:374
+#: ../src/daemon/abrt-action-save-package-data.c:377
 #: ../src/plugins/abrt-action-analyze-backtrace.c:63
 #: ../src/plugins/abrt-action-analyze-c.c:90
 #: ../src/plugins/abrt-action-analyze-oops.c:48
@@ -102,37 +103,37 @@ msgstr ""
 msgid "Dump directory"
 msgstr "ডাম্প ডিরেক্টরি "
 
-#: ../src/daemon/abrt-action-save-package-data.c:375
+#: ../src/daemon/abrt-action-save-package-data.c:378
 msgid "Configuration file"
 msgstr "কনফিগারেশন ফাইল"
 
-#: ../src/daemon/abrt-server.c:458 ../src/daemon/abrt-dbus.c:378
-#: ../src/daemon/abrtd.c:655
+#: ../src/daemon/abrt-server.c:465 ../src/daemon/abrt-dbus.c:378
+#: ../src/daemon/abrtd.c:855
 msgid "& [options]"
 msgstr "& [options]"
 
-#: ../src/daemon/abrt-server.c:469
+#: ../src/daemon/abrt-server.c:476
 msgid "Use UID as client uid"
 msgstr "ক্লায়েন্ট ID রূপে UID ব্যবহার করা হবে"
 
-#: ../src/daemon/abrt-server.c:470 ../src/plugins/abrt-dump-oops.c:244
+#: ../src/daemon/abrt-server.c:477 ../src/plugins/abrt-dump-oops.c:257
 msgid "Log to syslog"
 msgstr "syslog-এ লগ করা হবে"
 
-#: ../src/daemon/abrt-server.c:471 ../src/daemon/abrtd.c:671
-#: ../src/gui-gtk/main.c:1019
+#: ../src/daemon/abrt-server.c:478 ../src/daemon/abrtd.c:871
+#: ../src/gui-gtk/main.c:1021
 msgid "Add program names to log"
 msgstr "লগের মধ্যে প্রোগ্রামের নাম যোগ করুন"
 
-#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:668
+#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:868
 msgid "Do not daemonize"
 msgstr "ডেমন তৈরি করা হবে না"
 
-#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:669
+#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:869
 msgid "Log to syslog even with -d"
 msgstr "-d সহযোগেও syslog-এ লগ করা হবে"
 
-#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:670
+#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:870
 msgid "Exit after NUM seconds of inactivity"
 msgstr "NUM সেকেন্ড নিষ্ক্রিয় থাকলে প্রস্থান করা হবে"
 
@@ -148,55 +149,55 @@ msgstr "DIR-র মধ্যে EVENT সঞ্চালন করা হবে"
 msgid "View and report application crashes"
 msgstr "অ্যাপ্লিকেশনের বিপর্যয় সংক্রান্ত তথ্য নিরীক্ষণ ও দায়ের করুন"
 
-#: ../src/gui-gtk/main.c:552 ../src/gui-gtk/main.c:598
+#: ../src/gui-gtk/main.c:554 ../src/gui-gtk/main.c:600
 msgid "Source"
 msgstr "উৎস"
 
-#: ../src/gui-gtk/main.c:562 ../src/gui-gtk/main.c:608
+#: ../src/gui-gtk/main.c:564 ../src/gui-gtk/main.c:610
 msgid "Problem"
 msgstr "সমস্যা"
 
-#: ../src/gui-gtk/main.c:583
+#: ../src/gui-gtk/main.c:585
 msgid "Last Occurrence"
 msgstr "সর্বশেষ উৎপত্তি"
 
-#: ../src/gui-gtk/main.c:618
+#: ../src/gui-gtk/main.c:620
 msgid "Date Submitted"
 msgstr "দায়ের করার তারিখ"
 
-#: ../src/gui-gtk/main.c:627
+#: ../src/gui-gtk/main.c:629
 msgid "Submission Result"
 msgstr "দায়ের করার ফল"
 
-#: ../src/gui-gtk/main.c:640
+#: ../src/gui-gtk/main.c:642
 msgid "_Report"
 msgstr "রিপোর্ট (_R)"
 
-#: ../src/gui-gtk/main.c:641
+#: ../src/gui-gtk/main.c:643
 msgid "_Edit"
 msgstr "সম্পাদনা (_E)"
 
-#: ../src/gui-gtk/main.c:642
+#: ../src/gui-gtk/main.c:644
 msgid "_Help"
 msgstr "সাহায্য (_H)"
 
-#: ../src/gui-gtk/main.c:704
-msgid "Not submitted reports"
-msgstr "দােয়র না করা রিপোর্ট"
-
 #: ../src/gui-gtk/main.c:706
-msgid "<b>Not submitted reports</b>"
-msgstr "<b>দােয়র না করা রিপোর্ট</b>"
+msgid "Not submitted reports"
+msgstr "দায়ের না করা রিপোর্ট"
 
-#: ../src/gui-gtk/main.c:754
+#: ../src/gui-gtk/main.c:708
+msgid "<b>Not submitted reports</b>"
+msgstr "<b>দায়ের না করা রিপোর্ট</b>"
+
+#: ../src/gui-gtk/main.c:756
 msgid "Submitted reports"
 msgstr "দায়ের করা রিপোর্ট"
 
-#: ../src/gui-gtk/main.c:757
+#: ../src/gui-gtk/main.c:759
 msgid "<b>Submitted reports</b>"
 msgstr "<b>দায়ের করা রিপোর্ট</b>"
 
-#: ../src/gui-gtk/main.c:1008
+#: ../src/gui-gtk/main.c:1010
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
@@ -460,7 +461,7 @@ msgstr "সামগ্রীর জন্য এই নামের ব্য�
 msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr "%d দৈর্ঘের HTTP অনুরোধ পাঠাতে ব্যর্থ: NSS সংক্রান্ত ত্রুটি %d।"
 
-#: ../src/plugins/abrt-dump-oops.c:175
+#: ../src/plugins/abrt-dump-oops.c:180
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
@@ -470,7 +471,7 @@ msgstr ""
 "হয়েছে  (flags:%s)। Kernel-র পরিচালকরা টেইন্ট হওয়া kernel-র রিপোর্ট থেকে সমস্যার "
 "কারণ নির্ণয় করতে সক্ষম হবেন না।"
 
-#: ../src/plugins/abrt-dump-oops.c:226
+#: ../src/plugins/abrt-dump-oops.c:239
 msgid ""
 "& [-vsrowx] [-d DIR] FILE\n"
 "or: & [-vsrowx] -D FILE\n"
@@ -482,15 +483,15 @@ msgstr ""
 "\n"
 "syslog/dmesg ফাইল থেকে oops প্রাপ্ত করুন"
 
-#: ../src/plugins/abrt-dump-oops.c:245
+#: ../src/plugins/abrt-dump-oops.c:258
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr "FILE পার্স করার পূর্বে kernel-র মেসেজ বাফার পার্স করা হবে"
 
-#: ../src/plugins/abrt-dump-oops.c:246
+#: ../src/plugins/abrt-dump-oops.c:259
 msgid "Print found oopses on standard output"
 msgstr "প্রমিত আউটপুটের মধ্যে print দ্বারা oops-র সম্মুখীন হওয়া গিয়েছে"
 
-#: ../src/plugins/abrt-dump-oops.c:247
+#: ../src/plugins/abrt-dump-oops.c:260
 msgid "Do not exit, watch the file for new oopses"
 msgstr ""
 "প্রস্থান না করে, নতুন oops সৃষ্টি হচ্ছে কি না জানার জন্য ফাইলটি নিরীক্ষণ করা হবে"
@@ -498,15 +499,15 @@ msgstr ""
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
 #.
-#: ../src/plugins/abrt-dump-oops.c:251
+#: ../src/plugins/abrt-dump-oops.c:264
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr "সনাক্ত করা প্রতিটি oops-র জন্য DIR-র মধ্যে ABRT ডাম্প প্রস্তুত করা হয়"
 
-#: ../src/plugins/abrt-dump-oops.c:252
+#: ../src/plugins/abrt-dump-oops.c:265
 msgid "Make the problem directory world readable"
 msgstr "সমস্যাযুক্ত ডিরেক্টরিটি সার্বজনীন রূপে পাঠযোগ্য হবে"
 
-#: ../src/plugins/abrt-dump-oops.c:253
+#: ../src/plugins/abrt-dump-oops.c:266
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr ""
 "-d DumpLocation -র অনুরূপ, abrt.conf ফাইলের মধ্যে DumpLocation উল্লেখ করা হয়"
@@ -689,7 +690,11 @@ msgstr "DIR-র মধ্যে সমস্যার তথ্য বিশ্�
 msgid "Print information about DIR"
 msgstr "DIR সম্পর্কে তথ্য প্রিন্ট করুন"
 
-#: ../src/cli/abrt-cli.c:162
+#: ../src/cli/abrt-cli.c:150
+msgid "Print the count of the recent crashes"
+msgstr "সাম্প্রতিক ক্যাশের সংখ্যা প্রিন্ট করুন"
+
+#: ../src/cli/abrt-cli.c:163
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "অধিক বিবরণের জন্য 'abrt-cli COMMAND --help' দেখুন"
 
@@ -709,6 +714,27 @@ msgstr "বিস্তারিত বিবরণ প্রদর্শন ক
 #: ../src/cli/list.c:133
 msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
+
+#: ../src/cli/status.c:27
+msgid "& status [DIR]..."
+msgstr "& স্টেটাস [DIR]..."
+
+#: ../src/cli/status.c:37
+msgid "Print only the problem count without any message"
+msgstr "কোনো বার্তা ছাড়াই শুধু সমস্যার সংখ্যা প্রিন্ট করুন"
+
+#: ../src/cli/status.c:38
+msgid "Print only the problems more recent than specified timestamp"
+msgstr "নির্দিষ্ট সময়সীমার নিরিখের পরিবর্তে শুধুমাত্র অতিসাম্প্রতিক সমস্যাগুলি প্রিন্ট করুন"
+
+#: ../src/cli/status.c:57
+#, c-format
+msgid ""
+"ABRT has detected '%u' problem(s). (For more info run: $ abrt-cli list --"
+"full)\n"
+msgstr ""
+"ABRT '%u' টি সমস্যা নির্ধারণ করেছে। (বিস্তারিত জানতে, চালান: $ abrt-cli list --"
+"full)\n"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"

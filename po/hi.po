@@ -3,16 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Rajesh Ranjan <rranjan@redhat.com>, 2011-2012.
-# Rajesh <rranjan>, 2011.
-# zz <zz>, 2012.
+# jayeshvani <jayeshvani@gmail.com>, 2013
+# Rajesh Ranjan <rranjan@redhat.com>, 2011-2012
+# Rajesh <rranjan>, 2011
+# zz <zz>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2012-10-18 16:36+0200\n"
-"PO-Revision-Date: 2012-10-09 10:16+0000\n"
-"Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
+"POT-Creation-Date: 2013-08-06 09:56+0200\n"
+"PO-Revision-Date: 2013-07-31 08:11+0000\n"
+"Last-Translator: jayeshvani <jayeshvani@gmail.com>\n"
 "Language-Team: Hindi <indlinux-hindi@lists.sourceforge.net>\n"
 "Language: hi\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1 ../src/gui-gtk/abrt.desktop.in.h:1
-#: ../src/gui-gtk/main.c:684
+#: ../src/gui-gtk/main.c:686
 msgid "Automatic Bug Reporting Tool"
 msgstr "स्वचालित बग रिपोर्टिंग औजार"
 
@@ -43,7 +44,7 @@ msgid ""
 msgstr ""
 "अधिसूचना क्षेत्र एप्लेट जो ABRT के द्वारा पता किए मुद्दों के बारे में उपयोक्ता को सूचित करता है"
 
-#: ../src/applet/applet.c:378 ../src/gui-gtk/main.c:533
+#: ../src/applet/applet.c:378 ../src/gui-gtk/main.c:535
 msgid "translator-credits"
 msgstr "राजेश रंजन (rranjan@redhat.com, rajeshkajha@yahoo.com)"
 
@@ -82,7 +83,7 @@ msgstr ""
 "\n"
 "एप्प्लेट जो उपयोक्ता को अधिसूचित करता है जब नई समस्या ABRT द्वारा पायी जाती है\n"
 
-#: ../src/daemon/abrt-action-save-package-data.c:362
+#: ../src/daemon/abrt-action-save-package-data.c:365
 msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
@@ -92,7 +93,7 @@ msgstr ""
 "\n"
 "संकुल डेटाबेस को प्रश्न करता है और संकुल और घटक नाम सहेजता है"
 
-#: ../src/daemon/abrt-action-save-package-data.c:374
+#: ../src/daemon/abrt-action-save-package-data.c:377
 #: ../src/plugins/abrt-action-analyze-backtrace.c:63
 #: ../src/plugins/abrt-action-analyze-c.c:90
 #: ../src/plugins/abrt-action-analyze-oops.c:48
@@ -101,37 +102,37 @@ msgstr ""
 msgid "Dump directory"
 msgstr "डंप निर्देशिका"
 
-#: ../src/daemon/abrt-action-save-package-data.c:375
+#: ../src/daemon/abrt-action-save-package-data.c:378
 msgid "Configuration file"
 msgstr "विन्यास फाइल"
 
-#: ../src/daemon/abrt-server.c:458 ../src/daemon/abrt-dbus.c:378
-#: ../src/daemon/abrtd.c:655
+#: ../src/daemon/abrt-server.c:465 ../src/daemon/abrt-dbus.c:378
+#: ../src/daemon/abrtd.c:855
 msgid "& [options]"
 msgstr "& [विकल्प]"
 
-#: ../src/daemon/abrt-server.c:469
+#: ../src/daemon/abrt-server.c:476
 msgid "Use UID as client uid"
 msgstr "UID को बतौर क्लाइंट uid उपयोग करें"
 
-#: ../src/daemon/abrt-server.c:470 ../src/plugins/abrt-dump-oops.c:244
+#: ../src/daemon/abrt-server.c:477 ../src/plugins/abrt-dump-oops.c:257
 msgid "Log to syslog"
 msgstr "सिसलॉग में लॉग करेंसिस्टल"
 
-#: ../src/daemon/abrt-server.c:471 ../src/daemon/abrtd.c:671
-#: ../src/gui-gtk/main.c:1019
+#: ../src/daemon/abrt-server.c:478 ../src/daemon/abrtd.c:871
+#: ../src/gui-gtk/main.c:1021
 msgid "Add program names to log"
 msgstr "लाग करने के लिए अधिक प्रोग्राम नाम"
 
-#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:668
+#: ../src/daemon/abrt-dbus.c:389 ../src/daemon/abrtd.c:868
 msgid "Do not daemonize"
 msgstr "डेमॉनाइज मत करें"
 
-#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:669
+#: ../src/daemon/abrt-dbus.c:390 ../src/daemon/abrtd.c:869
 msgid "Log to syslog even with -d"
 msgstr "-d के साथ सिसलॉग घटना में लॉग-d के साथ सिस्"
 
-#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:670
+#: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:870
 msgid "Exit after NUM seconds of inactivity"
 msgstr "NUM सेकेंड की निष्क्रियता के बाद बाहर निकलें"
 
@@ -147,55 +148,55 @@ msgstr "EVENT को DIR पर चलाएँ"
 msgid "View and report application crashes"
 msgstr "अनुप्रयोग क्रैश को देखें और रिपोर्ट करें"
 
-#: ../src/gui-gtk/main.c:552 ../src/gui-gtk/main.c:598
+#: ../src/gui-gtk/main.c:554 ../src/gui-gtk/main.c:600
 msgid "Source"
 msgstr "स्रोत "
 
-#: ../src/gui-gtk/main.c:562 ../src/gui-gtk/main.c:608
+#: ../src/gui-gtk/main.c:564 ../src/gui-gtk/main.c:610
 msgid "Problem"
 msgstr "समस्या"
 
-#: ../src/gui-gtk/main.c:583
+#: ../src/gui-gtk/main.c:585
 msgid "Last Occurrence"
 msgstr "अंतिम आवृत्ति"
 
-#: ../src/gui-gtk/main.c:618
+#: ../src/gui-gtk/main.c:620
 msgid "Date Submitted"
 msgstr "तिथि दर्ज की गयी "
 
-#: ../src/gui-gtk/main.c:627
+#: ../src/gui-gtk/main.c:629
 msgid "Submission Result"
 msgstr "सुपुर्दगी परिणाम"
 
-#: ../src/gui-gtk/main.c:640
+#: ../src/gui-gtk/main.c:642
 msgid "_Report"
 msgstr "रिपोर्ट करें (_R)"
 
-#: ../src/gui-gtk/main.c:641
+#: ../src/gui-gtk/main.c:643
 msgid "_Edit"
 msgstr "संपादन करें (_E)"
 
-#: ../src/gui-gtk/main.c:642
+#: ../src/gui-gtk/main.c:644
 msgid "_Help"
 msgstr "मदद (_H)"
 
-#: ../src/gui-gtk/main.c:704
+#: ../src/gui-gtk/main.c:706
 msgid "Not submitted reports"
 msgstr "नहीं प्रस्तुत किया गया रिपोर्ट"
 
-#: ../src/gui-gtk/main.c:706
+#: ../src/gui-gtk/main.c:708
 msgid "<b>Not submitted reports</b>"
 msgstr "<b>नहीं प्रस्तुत किया गया रिपोर्ट</b>"
 
-#: ../src/gui-gtk/main.c:754
+#: ../src/gui-gtk/main.c:756
 msgid "Submitted reports"
 msgstr "प्रस्तुत किया गया रिपोर्ट"
 
-#: ../src/gui-gtk/main.c:757
+#: ../src/gui-gtk/main.c:759
 msgid "<b>Submitted reports</b>"
 msgstr "<b>प्रस्तुत किया गया रिपोर्ट</b>"
 
-#: ../src/gui-gtk/main.c:1008
+#: ../src/gui-gtk/main.c:1010
 msgid ""
 "& [-vp] [DIR]...\n"
 "\n"
@@ -454,7 +455,7 @@ msgstr "मनाही अवयव नाम: '%s'."
 msgid "Failed to send HTTP request of length %d: NSS error %d."
 msgstr "%d लंबाई के HTTP आग्रह भेजने में विफल: NSS त्रुटि %d."
 
-#: ../src/plugins/abrt-dump-oops.c:175
+#: ../src/plugins/abrt-dump-oops.c:180
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
@@ -463,7 +464,7 @@ msgstr ""
 "एक कर्नेल समस्या आयी लेकिन आपके कर्नेल  (flags:%s) खराब हो गए हैं. कर्नेल मेनटेनर्स खराब "
 "रिपोर्ट के निदान में असमर्थ हैं."
 
-#: ../src/plugins/abrt-dump-oops.c:226
+#: ../src/plugins/abrt-dump-oops.c:239
 msgid ""
 "& [-vsrowx] [-d DIR] FILE\n"
 "or: & [-vsrowx] -D FILE\n"
@@ -475,32 +476,32 @@ msgstr ""
 "\n"
 "syslog/dmesg फ़ाइल से वूप्स निकालें"
 
-#: ../src/plugins/abrt-dump-oops.c:245
+#: ../src/plugins/abrt-dump-oops.c:258
 msgid "Parse kernel's message buffer before parsing FILE"
 msgstr ""
 "FILE के विश्लेषण के पहले कर्नेल के संदेश का विश्लेषण करेंFILE के विश्लेषण के पहले कर्नेल के संदेश का "
 "विशेFILE के विश्"
 
-#: ../src/plugins/abrt-dump-oops.c:246
+#: ../src/plugins/abrt-dump-oops.c:259
 msgid "Print found oopses on standard output"
 msgstr "मानक आउटपुट पर मिले वूप्स छापें"
 
-#: ../src/plugins/abrt-dump-oops.c:247
+#: ../src/plugins/abrt-dump-oops.c:260
 msgid "Do not exit, watch the file for new oopses"
 msgstr "बाहर मत निकलें, नए वूप्स के लिए फ़ाइल देखेंबाहर मत निकलें, नए वूप्स के लिए फ़ा"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
 #.
-#: ../src/plugins/abrt-dump-oops.c:251
+#: ../src/plugins/abrt-dump-oops.c:264
 msgid "Create ABRT dump in DIR for every oops found"
 msgstr "ABRT डंप को DIR में हर मिले वूप्स के लिए बनाएँ"
 
-#: ../src/plugins/abrt-dump-oops.c:252
+#: ../src/plugins/abrt-dump-oops.c:265
 msgid "Make the problem directory world readable"
 msgstr "समस्या निर्देशिका को सभी के लिए लिखने योग्य बनाएँ"
 
-#: ../src/plugins/abrt-dump-oops.c:253
+#: ../src/plugins/abrt-dump-oops.c:266
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "-d DumpLocation की तरह, DumpLocation को abrt.conf में निर्दिष्ट है"
 
@@ -678,7 +679,11 @@ msgstr "DIR में समस्या आँकड़े को विश्�
 msgid "Print information about DIR"
 msgstr "DIR के बारे में प्रिंट सूचना"
 
-#: ../src/cli/abrt-cli.c:162
+#: ../src/cli/abrt-cli.c:150
+msgid "Print the count of the recent crashes"
+msgstr "हालिया क्रैश की गिनती छापें"
+
+#: ../src/cli/abrt-cli.c:163
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "'abrt-cli COMMAND --help' को अधिक सूचना के लिए देखें"
 
@@ -698,6 +703,27 @@ msgstr "विस्तृत विवरण देखें"
 #: ../src/cli/list.c:133
 msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
+
+#: ../src/cli/status.c:27
+msgid "& status [DIR]..."
+msgstr "& स्थिति [DIR]..."
+
+#: ../src/cli/status.c:37
+msgid "Print only the problem count without any message"
+msgstr "बिना किसी संदेश के केवल समस्या गिनती छापें"
+
+#: ../src/cli/status.c:38
+msgid "Print only the problems more recent than specified timestamp"
+msgstr "निर्दिष्ट टाइमस्टैंप के बनिस्बत हालिय समस्याओं को केवल छापें"
+
+#: ../src/cli/status.c:57
+#, c-format
+msgid ""
+"ABRT has detected '%u' problem(s). (For more info run: $ abrt-cli list --"
+"full)\n"
+msgstr ""
+"ABRT ने '%u' समस्या(एँ) पता की है. (अधिक सूचना के लिए चलाएँ: $ abrt-cli list --"
+"full)\n"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
