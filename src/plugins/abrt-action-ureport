@@ -59,6 +59,13 @@ if __name__ == "__main__":
     dd = dd_opendir(dirname, 0)
     if not dd:
         sys.exit(1)
+
+    report_type = dd.load_text("type", DD_FAIL_QUIETLY_ENOENT)
+
+    # because of backward compatibility
+    if not report_type:
+        report_type = dd.load_text("analyzer", 0)
+
     core_backtrace_exists = dd.exist("core_backtrace")
     reported_to = dd.load_text("reported_to", DD_FAIL_QUIETLY_ENOENT)
     ureports_counter = try_parse_number(dd, "ureports_counter")
@@ -90,7 +97,7 @@ if __name__ == "__main__":
         log(_("uReport was already sent, not sending it again"))
         sys.exit(0)
 
-    if not core_backtrace_exists:
+    if report_type == "CCpp" and not core_backtrace_exists:
         exitcode = spawn_and_wait("abrt-action-generate-core-backtrace")
         if exitcode != 0:
             log1("uReport can't be sent without core_backtrace. Exiting.")
