@@ -41,7 +41,7 @@
 /* Maximum number of simultaneously opened client connections. */
 #define MAX_CLIENT_COUNT  10
 
-#define IN_DUMP_LOCATION_FLAGS (IN_CREATE | IN_MOVED_TO | IN_DELETE_SELF | IN_MOVE_SELF)
+#define IN_DUMP_LOCATION_FLAGS (IN_DELETE_SELF | IN_MOVE_SELF)
 
 /* Daemon initializes, then sits in glib main loop, waiting for events.
  * Events can be:
@@ -724,8 +724,7 @@ int main(int argc, char** argv)
         perror_msg_and_die("inotify_init failed");
     close_on_exec_on(inotify_fd);
 
-#if 0
-    /* Watching 'g_settings_dump_location' for new files and delete self
+    /* Watching 'g_settings_dump_location' for delete self
      * because hooks expects that the dump location exists if abrtd is running
      */
     if (inotify_add_watch(inotify_fd, g_settings_dump_location, IN_DUMP_LOCATION_FLAGS) < 0)
@@ -733,7 +732,6 @@ int main(int argc, char** argv)
         perror_msg("inotify_add_watch failed on '%s'", g_settings_dump_location);
         goto init_error;
     }
-#endif
     /* ...and upload dir */
     if (g_settings_sWatchCrashdumpArchiveDir)
     {
