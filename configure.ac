@@ -237,6 +237,7 @@ AC_CONFIG_FILES([
 	src/applet/Makefile
 	src/cli/Makefile
 	src/configuration-gui/Makefile
+	src/configuration-gui/abrt_gui.pc
 	src/dbus/Makefile
 	src/plugins/abrt-action-install-debuginfo
 	src/plugins/abrt-action-analyze-vmcore

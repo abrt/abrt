@@ -1,8 +1,17 @@
-lib_LTLIBRARIES = libabrtconfigui.la
+libabrt_gui_includedir = \
+	$(includedir)/abrt
 
-libabrtconfigui_la_SOURCES = \
+libabrt_gui_include_HEADERS = \
+	abrt-config-widget.h \
+	system-config-abrt.h
+
+lib_LTLIBRARIES = libabrt_gui.la
+
+libabrt_gui_la_SOURCES = \
 	abrt-config-widget.c \
-	abrt-config-widget.h
+	abrt-config-widget.h \
+	system-config-abrt.c \
+	system-config-abrt.h
 
 # G_DEFINE_TYPE(...) macros result in
 # typedef '_GStaticAssertCompileTimeAssertion_0' locally defined but not used
@@ -11,7 +20,7 @@ libabrtconfigui_la_SOURCES = \
 # -Wno-error=unused-local-typedefs in CPPFLAGS suppresses this warning.
 # Newer glib may have it fixed.
 
-libabrtconfigui_la_CPPFLAGS = \
+libabrt_gui_la_CPPFLAGS = \
 	-I$(srcdir)/../include \
 	-I$(srcdir)/../lib \
 	-Wno-error=unused-local-typedefs \
@@ -20,10 +29,10 @@ libabrtconfigui_la_CPPFLAGS = \
 	-DABRT_UI_DIR="\"$(uidir)\"" \
 	-DLOCALEDIR="\"$(localedir)\""
 
-libabrtconfigui_la_LDFLAGS = \
+libabrt_gui_la_LDFLAGS = \
 	-version-info 0:1:0
 
-libabrtconfigui_la_LIBADD = \
+libabrt_gui_la_LIBADD = \
 	$(GLIB_LIBS) \
 	$(GTK_LIBS) \
 	$(LIBREPORT_LIBS)
@@ -38,11 +47,11 @@ system_config_abrt_CPPFLAGS = \
 	$(LIBREPORT_CFLAGS)
 
 system_config_abrt_SOURCES = \
-	system-config-abrt.c
+	main.c
 
 system_config_abrt_LDADD = \
 	../lib/libabrt.la \
-	libabrtconfigui.la
+	libabrt_gui.la
 	$(GLIB_LIBS) \
 	$(GTK_LIBS) \
 	$(LIBREPORT_LIBS)
@@ -56,4 +65,8 @@ desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
 CLEANFILES = $(desktop_DATA)
-EXTRA_DIST = $(desktop_in_files)
+EXTRA_DIST = $(desktop_in_files) \
+	abrt_gui.pc.in
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = abrt_gui.pc

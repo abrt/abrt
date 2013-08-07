@@ -15,14 +15,11 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
+#include "system-config-abrt.h"
 #include "abrt-config-widget.h"
-#include "libabrt.h"
 
-#include <stdlib.h>
-#include <gtk/gtk.h>
+#include <libabrt.h>
 
-#define APP_NAME "System Config ABRT"
 
 static void
 system_config_abrt_apply_cb(GtkButton *button, gpointer user_data)
@@ -39,15 +36,9 @@ system_config_abrt_changed_cb(AbrtConfigWidget *config, gpointer user_data)
     gtk_widget_set_sensitive(button, TRUE);
 }
 
-static GtkWidget *
-system_config_abrt_window_new(GApplication *app)
+GtkWidget *system_config_abrt_widget_new(void)
 {
-    GtkWidget *wnd = gtk_application_window_new(GTK_APPLICATION(app));
-    gtk_window_set_default_size(GTK_WINDOW(wnd), 640, 480);
-    gtk_window_set_title(GTK_WINDOW(wnd), _("Problem Reporting Configuration"));
-
     GtkBox *box = GTK_BOX(gtk_box_new(GTK_ORIENTATION_VERTICAL, /*spacing*/0));
-    gtk_container_add(GTK_CONTAINER(wnd), GTK_WIDGET(box));
 
     AbrtConfigWidget *config = abrt_config_widget_new();
     gtk_widget_set_visible(GTK_WIDGET(config), TRUE);
@@ -79,132 +70,46 @@ system_config_abrt_window_new(GApplication *app)
 
     gtk_widget_show_all(buttons);
 
-    return wnd;
-}
-
-/* SystemConfigAbrt : GtkApplication */
-
-typedef struct
-{
-    GtkApplication parent_instance;
-} SystemConfigAbrt;
-
-typedef GtkApplicationClass SystemConfigAbrtClass;
-
-G_DEFINE_TYPE (SystemConfigAbrt, system_config_abrt, GTK_TYPE_APPLICATION)
-
-static void
-system_config_abrt_finalize (GObject *object)
-{
-    G_OBJECT_CLASS(system_config_abrt_parent_class)->finalize(object);
+    return GTK_WIDGET(box);
 }
 
 static void
-about_activated (GSimpleAction *action,
-        GVariant      *parameter,
-        gpointer       user_data)
+system_config_abrt_dialog_close(GtkDialog *dialog, gpointer user_data)
 {
-    const gchar *authors[] = {
-        "ABRT Team &lt;crash-catcher@lists.fedorahosted.org&gt;",
-        NULL
-    };
-
-    gtk_show_about_dialog (NULL,
-            "program-name", APP_NAME,
-            "title", _("About System Config ABRT"),
-            "version", VERSION,
-            "website", "https://github.com/abrt/abrt/wiki/overview",
-            "authors", authors,
-            NULL);
+    gtk_widget_destroy(GTK_WIDGET(dialog));
 }
 
-static void
-quit_activated (GSimpleAction *action,
-        GVariant      *parameter,
-        gpointer       user_data)
+static gboolean
+system_config_abrt_dialog_delete_event(GtkWidget *dialog, GdkEvent *event, gpointer user_data)
 {
-    GApplication *app = user_data;
-
-    g_application_quit(app);
+    gtk_widget_destroy(GTK_WIDGET(dialog));
+    return TRUE; /*do not propagate the event*/
 }
 
-static GActionEntry app_entries[] = {
-    { "about", about_activated, NULL, NULL, NULL },
-    { "quit", quit_activated, NULL, NULL, NULL },
-};
-
-static void
-system_config_abrt_startup(GApplication *application)
+void show_system_config_abrt_dialog(GtkWindow *parent)
 {
-    G_APPLICATION_CLASS(system_config_abrt_parent_class)->startup(application);
+    GtkWidget *dialog = gtk_dialog_new();
 
-    g_action_map_add_action_entries(G_ACTION_MAP(application), app_entries, G_N_ELEMENTS(app_entries), application);
+    gtk_window_set_title(GTK_WINDOW(dialog), _("Problem Reporting Configuration"));
+    gtk_window_set_default_size(GTK_WINDOW(dialog), 640, 480);
+    gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
 
-    GMenu *app_menu = g_menu_new();
-    g_menu_append(app_menu, _("About"), "app.about");
-    g_menu_append(app_menu, _("Quit"), "app.quit");
+    if (parent != NULL)
+    {
+        gtk_window_set_icon_name(GTK_WINDOW(dialog), gtk_window_get_icon_name(parent));
+        gtk_window_set_transient_for(GTK_WINDOW(dialog), parent);
+        gtk_window_set_destroy_with_parent(GTK_WINDOW(dialog), TRUE);
+    }
 
-    gtk_application_set_app_menu(GTK_APPLICATION(application), G_MENU_MODEL(app_menu));
-}
+    /* Have to handle these signals on our own otherwise users must press close button twice */
+    g_signal_connect(dialog, "close", G_CALLBACK(system_config_abrt_dialog_close), /*user_data*/NULL);
+    g_signal_connect(dialog, "delete_event", G_CALLBACK(system_config_abrt_dialog_delete_event), /*user_data*/NULL);
 
-static void
-system_config_abrt_shutdown(GApplication *application)
-{
-    G_APPLICATION_CLASS(system_config_abrt_parent_class)->shutdown (application);
-}
+    GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    GtkWidget *sca = system_config_abrt_widget_new();
+    gtk_box_pack_start(GTK_BOX(content), sca, /*expand*/TRUE, /*fill*/TRUE, /*padding*/0);
 
-static void
-system_config_abrt_activate(GApplication *application)
-{
-    GtkWidget *wnd = system_config_abrt_window_new(application);
-    gtk_widget_show_all(wnd);
-    gtk_application_add_window(GTK_APPLICATION(application), GTK_WINDOW(wnd));
-}
+    gtk_widget_show_all(content);
 
-static void
-system_config_abrt_init (SystemConfigAbrt *app)
-{
-}
-
-static void
-system_config_abrt_class_init (SystemConfigAbrtClass *class)
-{
-    GApplicationClass *application_class = G_APPLICATION_CLASS(class);
-    GObjectClass *object_class = G_OBJECT_CLASS(class);
-
-    application_class->startup = system_config_abrt_startup;
-    application_class->shutdown = system_config_abrt_shutdown;
-    application_class->activate = system_config_abrt_activate;
-
-    object_class->finalize = system_config_abrt_finalize;
-}
-
-SystemConfigAbrt *
-system_config_abrt_new (void)
-{
-    SystemConfigAbrt *system_config_abrt;
-
-    g_set_application_name(APP_NAME);
-
-    system_config_abrt = g_object_new(system_config_abrt_get_type(),
-            "application-id", "org.freedesktop.SystemConfigAbrt",
-            "flags", G_APPLICATION_HANDLES_OPEN,
-            NULL);
-
-    return system_config_abrt;
-}
-
-/* End class */
-
-int main(int argc, char *argv[])
-{
-    glib_init();
-
-    SystemConfigAbrt *system_config_abrt = system_config_abrt_new();
-
-    const int status = g_application_run(G_APPLICATION(system_config_abrt), argc, argv);
-
-    g_object_unref(system_config_abrt);
-
-    return status;
+    gtk_dialog_run(GTK_DIALOG(dialog));
 }
