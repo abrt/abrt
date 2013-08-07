@@ -100,6 +100,21 @@ Requires: abrt-libs = %{version}-%{release}
 %description devel
 Development libraries and headers for %{name}.
 
+%package gui-libs
+Summary: Libraries for %{name}-gui
+Group: System Environment/Libraries
+
+%description gui-libs
+Libraries for %{name}-gui.
+
+%package gui-devel
+Summary: Development libraries for %{name}-gui
+Group: Development/Libraries
+Requires: abrt-gui-libs = %{version}-%{release}
+
+%description gui-devel
+Development libraries and headers for %{name}-gui.
+
 %package gui
 Summary: %{name}'s gui
 Group: User Interface/Desktops
@@ -381,11 +396,6 @@ desktop-file-install \
 
 ln -sf %{_datadir}/applications/abrt-applet.desktop ${RPM_BUILD_ROOT}%{_sysconfdir}/xdg/autostart/
 
-desktop-file-install \
-            --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
-            --delete-original \
-            ${RPM_BUILD_ROOT}%{_datadir}/applications/*.desktop
-
 # After everything is installed, remove info dir
 rm -f %{buildroot}%{_infodir}/dir
 
@@ -580,6 +590,10 @@ touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
 %postun libs -p /sbin/ldconfig
 
+%post gui-libs -p /sbin/ldconfig
+
+%postun gui-libs -p /sbin/ldconfig
+
 %postun gui
 if [ $1 -eq 0 ] ; then
     touch --no-create %{_datadir}/icons/hicolor &>/dev/null
@@ -650,15 +664,28 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files libs
 %defattr(-,root,root,-)
-%{_libdir}/libabrt*.so.*
+%{_libdir}/libabrt.so.*
 
 %files devel
 %defattr(-,root,root,-)
 %doc apidoc/html/*
-%{_includedir}/abrt/*
-%{_libdir}/libabrt*.so
-#FIXME: this should go to libreportgtk-devel package
-%{_libdir}/pkgconfig/*
+%{_includedir}/abrt/abrt-dbus.h
+%{_includedir}/abrt/hooklib.h
+%{_includedir}/abrt/libabrt.h
+%{_includedir}/abrt/problem_api.h
+%{_libdir}/libabrt.so
+%{_libdir}/pkgconfig/abrt.pc
+
+%files gui-libs
+%defattr(-,root,root,-)
+%{_libdir}/libabrt_gui.so.*
+
+%files gui-devel
+%defattr(-,root,root,-)
+%{_includedir}/abrt/abrt-config-widget.h
+%{_includedir}/abrt/system-config-abrt.h
+%{_libdir}/libabrt_gui.so
+%{_libdir}/pkgconfig/abrt_gui.pc
 
 %files gui
 %defattr(-,root,root,-)
@@ -673,7 +700,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #%%{_bindir}/test-report
 %{_datadir}/applications/abrt-applet.desktop
 %config(noreplace) %{_sysconfdir}/xdg/autostart/abrt-applet.desktop
-/usr/share/applications/system-config-abrt.desktop
 %{_mandir}/man1/abrt-applet.1*
 %{_mandir}/man1/system-config-abrt.1*
 
