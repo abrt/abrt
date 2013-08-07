@@ -59,14 +59,7 @@ system_config_abrt_LDADD = \
 dist_ui_DATA = abrt-config-widget.ui
 uidir = $(pkgdatadir)/ui
 
-desktopdir = $(datadir)/applications
-desktop_in_files = system-config-abrt.desktop.in
-desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
-@INTLTOOL_DESKTOP_RULE@
-
-CLEANFILES = $(desktop_DATA)
-EXTRA_DIST = $(desktop_in_files) \
-	abrt_gui.pc.in
+EXTRA_DIST = abrt_gui.pc.in
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = abrt_gui.pc
