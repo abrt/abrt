@@ -38,7 +38,7 @@ rlJournalStart
         prepare
 
         systemctl stop abrtd
-        rlRun "rm -rf ABRT_CONF_DUMP_LOCATION" "0" "Prepare to force abrtd to create the dump location at startup"
+        rlRun "rm -rf $ABRT_CONF_DUMP_LOCATION" "0" "Prepare to force abrtd to create the dump location at startup"
         RECREATION_CNT=$( grep -c "Recreating deleted dump location '$ABRT_CONF_DUMP_LOCATION'" /var/log/messages )
 
         TmpDir=$(mktemp -d)
