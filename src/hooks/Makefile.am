@@ -60,7 +60,7 @@ pyhook_PYTHON = \
 
 EXTRA_DIST = abrt_exception_handler.py.in \
 	abrt-install-ccpp-hook.in \
-	abrt-harvest-vmcore.in \
+	abrt_harvest_vmcore.py.in \
 	abrt-harvest-uefioops.in
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc)) $(man1_MANS)
@@ -85,7 +85,7 @@ abrt-install-ccpp-hook: abrt-install-ccpp-hook.in
 	    -e s,\@libexecdir\@,$(libexecdir),g \
 		$< >$@
 
-abrt-harvest-vmcore: abrt-harvest-vmcore.in
+abrt-harvest-vmcore: abrt_harvest_vmcore.py.in
 	sed -e s,\@CONF_DIR\@,\$(CONF_DIR)\,g \
 	    -e s,\@DEFAULT_DUMP_LOCATION\@,$(DEFAULT_DUMP_LOCATION),g \
 		$< >$@

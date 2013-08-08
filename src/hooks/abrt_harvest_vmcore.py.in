@@ -1,0 +1,181 @@
+#!/usr/bin/python
+"""
+ This script is meant to be run once at system startup after abrtd is up
+ and running. It moves all vmcore directories in /var/crash
+ (which are presumably created by kdump) to abrtd spool directory.
+
+ The goal is to let abrtd notice and process them as new problem data dirs.
+"""
+
+import os
+import ConfigParser
+import StringIO
+import shutil
+import time
+import hashlib
+
+# Path to the vmcore directories
+CORE_DIR = '/var/crash'
+
+
+def write_to_file(path, content):
+    """
+    A function for writing into a file
+
+    path - path to the file
+    content - content to write into the file
+    """
+
+    with open(path, 'w') as wfile:
+        wfile.write(content)
+
+
+def change_owner_rec(dest):
+    """
+    A simple function to recursively change file mode for a directory.
+
+    dest - path to the directory
+    """
+
+    os.chown(dest, 0, 0)
+    for root, dirs, files in os.walk(dest):
+        for i in dirs:
+            os.chown(os.path.join(root, i), 0, 0)
+        for i in files:
+            os.chown(os.path.join(root, i), 0, 0)
+
+
+def change_mode_rec(dest):
+    """
+    A simple function to recursively change file mode for a directory.
+
+    dest - path to the directory
+    """
+
+    os.chmod(dest, 0700)
+    for root, dirs, files in os.walk(dest):
+        for i in dirs:
+            os.chmod(os.path.join(root, i), 0700)
+        for i in files:
+            os.chmod(os.path.join(root, i), 0600)
+
+
+def create_abrtd_info(dest):
+    """
+    A simple function to write important information for the abrt daemon into
+    the vmcore directory to let abrtd know what kind of problem it is.
+
+    dest - path to the vmcore directory
+    """
+
+    write_to_file(os.path.join(dest, 'analyzer'), 'vmcore')
+    write_to_file(os.path.join(dest, 'type'), 'vmcore')
+    write_to_file(os.path.join(dest, 'component'), 'kernel')
+    write_to_file(os.path.join(dest, 'time'), str(time.time()).split('.')[0])
+    shutil.copy(os.path.join(dest, 'time'),
+                os.path.join(dest, 'last_occurrence'))
+    write_to_file(os.path.join(dest, 'architecture'), os.uname()[4])
+    write_to_file(os.path.join(dest, 'uid'), '0')
+
+    # TODO: need to generate *real* UUID,
+    # one which has a real chance of catching dups!
+    # This one generates different hashes even for similar cores:
+    hashobj = hashlib.sha1()
+    # Iterate over the file a line at a time in order to not load the whole
+    # vmcore file
+    with open(os.path.join(dest, 'vmcore'), 'r') as corefile:
+        for line in corefile:
+            hashobj.update(line)
+    write_to_file(os.path.join(dest, 'uuid'), hashobj.hexdigest())
+
+    # Write os info into the vmcore directory
+    if os.path.exists('/etc/system-release'):
+        shutil.copy('/etc/system-release', os.path.join(dest, 'os_release'))
+    elif os.path.exists('/etc/redhat-release'):
+        shutil.copy('/etc/redhat-release', os.path.join(dest, 'os_release'))
+    elif os.path.exists('/etc/SuSE-release'):
+        shutil.copy('/etc/SuSE-release', os.path.join(dest, 'os_release'))
+    if os.path.exists('/etc/os-release'):
+        shutil.copy('/etc/os-release', os.path.join(dest, 'os_info'))
+
+
+def harvest_vmcore():
+    """
+    This function moves vmcore directories from /var/crash to a dump dir.
+
+    The script also creates additional files used to tell abrt what kind of
+    problem it is and creates an uuid from the vmcore using a sha1 hash
+    function.
+    """
+
+    if not os.path.exists('/etc/os-release'):
+        exit(0)
+
+    # Wait for abrtd to start. Give it at least 1 second to initialize.
+    for i in xrange(10):
+        if i is 9:
+            exit(1)
+        elif os.system('pidof abrtd >/dev/null'):
+            time.sleep(1)
+        else:
+            break
+
+    os.umask(077)
+
+    # Check abrt config files for copy/move settings and
+    config = ConfigParser.ConfigParser()
+    # We need to add a root section as ConfigParser doesn't know how to work
+    # with config files without any sections
+    with open('@CONF_DIR@/abrt-harvest-vmcore.conf') as conf_file:
+        conf_str = '[section]\n' + conf_file.read()
+    conf_fp = StringIO.StringIO(conf_str)
+    config.readfp(conf_fp)
+    copyvmcore = config.get('section', 'CopyVMcore')
+    with open('@CONF_DIR@/abrt.conf') as conf_file:
+        conf_str = '[section]\n' + conf_file.read()
+    conf_fp = StringIO.StringIO(conf_str)
+    config = ConfigParser.ConfigParser()
+    config.readfp(conf_fp)
+    try:
+        abrtdumpdir = config.get('section', 'DumpLocation')
+    except ConfigParser.NoOptionError:
+        abrtdumpdir = '@DEFAULT_DUMP_LOCATION@'
+
+    # Go through all directories in /var/crash
+    for cfile in os.listdir(CORE_DIR):
+        f_full = os.path.join(CORE_DIR, cfile)
+        if not os.path.isdir(f_full):
+            continue
+        files = [ff for ff in os.listdir(f_full)
+                 if os.path.isfile(os.path.join(f_full, ff))]
+        if 'vmcore' not in files:
+            continue
+
+        destdir = os.path.join(abrtdumpdir, ('vmcore-' + cfile))
+        destdirnew = destdir + '.new'
+        # Did we already copy it last time we booted?
+        if os.path.isdir(destdir):
+            continue
+        if os.path.isdir(destdirnew):
+            continue
+        # Copy/move vmcore directory to abrt spool dir.
+        # We use .new suffix - we must make sure abrtd doesn't try
+        # to process partially-copied directory.
+        shutil.copytree(f_full, destdirnew)
+        if copyvmcore == 'no':
+            shutil.rmtree(f_full)
+
+        # Let abrtd know what type of problem it is:
+        create_abrtd_info(destdirnew)
+
+        # chown -R 0:0
+        change_owner_rec(destdirnew)
+        # chmod -R u+rwX,go-rwxst
+        change_mode_rec(destdirnew)
+
+        # Get rid of  the .new suffix
+        shutil.move(destdirnew, destdir)
+
+
+if __name__ == '__main__':
+    harvest_vmcore()
