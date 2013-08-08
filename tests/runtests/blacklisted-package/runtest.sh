@@ -61,7 +61,7 @@ rlJournalStart
         sleep 1
         straced_sleep_pid=$( pstree -p -c -l -A | grep strace | sed 's#.*sleep(\(.*\))#\1#' )
         kill -11 $straced_sleep_pid
-        sleep 1
+        sleep 3
         rlRun "abrt-cli list -f | grep strace" 1 "No strace in abrt-cli output"
         rlRun "abrt-cli list -f | grep sleep" 1 "No sleep in abrt-cli output"
     rlPhaseEnd
