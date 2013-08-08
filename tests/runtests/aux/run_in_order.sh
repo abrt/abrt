@@ -33,7 +33,12 @@ for test_dir in $testlist; do
         if [ $n_post -gt 0 ]; then
             mkdir "$outdir/post_crashes"
             for dir in $( find $ABRT_CONF_DUMP_LOCATION  -mindepth 1 -type d ); do
-                mv "$dir" "$outdir/post_crashes/"
+                # do not store crashes that are too big
+                if [ $( du -s "$dir" | awk '{ print $1 }' ) -lt 100000 ]; then
+                    mv "$dir" "$outdir/post_crashes/"
+                else
+                    rm -rf "$dir"
+                fi
             done
         fi
     fi
