@@ -662,6 +662,7 @@ static NotifyNotification *new_warn_notification(bool persistence)
     notify_notification_set_urgency(notification, NOTIFY_URGENCY_NORMAL);
     notify_notification_set_timeout(notification, persistence ? NOTIFY_EXPIRES_NEVER
                                                               : NOTIFY_EXPIRES_DEFAULT);
+    notify_notification_set_hint(notification, "desktop-entry", g_variant_new_string("abrt-applet"));
 
     return notification;
 }
