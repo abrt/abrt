@@ -377,8 +377,10 @@ mkdir -p $RPM_BUILD_ROOT/var/%{var_base_dir}/abrt
 mkdir -p $RPM_BUILD_ROOT/var/spool/abrt-upload
 
 desktop-file-install \
-        --dir ${RPM_BUILD_ROOT}%{_sysconfdir}/xdg/autostart \
+        --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
         src/applet/abrt-applet.desktop
+
+ln -sf %{_datadir}/applications/abrt-applet.desktop ${RPM_BUILD_ROOT}%{_sysconfdir}/xdg/autostart/
 
 desktop-file-install \
             --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
@@ -670,6 +672,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-applet
 %{_bindir}/system-config-abrt
 #%%{_bindir}/test-report
+%{_datadir}/applications/abrt-applet.desktop
 %config(noreplace) %{_sysconfdir}/xdg/autostart/abrt-applet.desktop
 /usr/share/applications/system-config-abrt.desktop
 %{_mandir}/man1/abrt-applet.1*
