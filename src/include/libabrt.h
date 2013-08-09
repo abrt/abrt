@@ -91,6 +91,11 @@ int check_recent_crash_file(const char *filename, const char *executable);
 #define daemon_is_ok abrt_daemon_is_ok
 int daemon_is_ok(void);
 
+/**
+@brief Sends notification to abrtd that a new problem has been detected
+
+@param[in] path Path to the problem directory containing the problem data
+*/
 #define notify_new_path abrt_notify_new_path
 void notify_new_path(const char *path);
 

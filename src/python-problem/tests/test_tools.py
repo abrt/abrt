@@ -5,6 +5,7 @@ import logging
 import unittest
 
 sys.path.insert(0, os.path.abspath(".."))
+sys.path.insert(0, os.path.abspath("../problem/.libs"))  # because of _pyabrt
 os.environ["PATH"] = "{0}:{1}".format(os.path.abspath(".."), os.environ["PATH"])
 
 from nose import tools
