@@ -1,0 +1,14 @@
+Panic#2 Part2
+<4> Call Trace:
+<4> [<f88e11c7>] radeon_cp_resume+0x7d/0xbc [radeon]
+<4> [<f88745f8>] drm_ioctl+0x1b0/0x225 [drm]
+<4> [<f88e114a>] radeon_cp_resume+0x0/0xbc [radeon]
+<4> [<c049b1c0>] vfs_ioctl+0x50/0x69
+<4> [<c049b414>] do_vfs_ioctl+0x23b/0x247
+<4> [<c0460a56>] audit_syscall_entry+0xf9/0x123
+<4> [<c049b460>] sys_ioctl+0x40/0x5c
+<4> [<c0403c76>] syscall_call+0x7/0xb
+<4> =======================
+<4> Code: 66 31 d2 09 c2 89 d8 e8 fc e7 ff ff 8b 83 cc 00 00 00 8b 53 34 03 10 8b 86 70 02 00 00 2b  50 44
+<4> EIP: [<f88dec25>] radeon_cp_init_ring_buffer+0x90/0x302 [radeon] SS:ESP 0068:f0a0cf08
+<4> ---[ end trace 81e3cf9431f7af0c ]---
