@@ -1,24 +1,44 @@
-#!/bin/sh
+#! /usr/bin/python
 #
-# This script is meant to be run once at system startup after abrtd is up
-# and running. It scans /sys/fs/pstore/*, reconstructs oops text(s)
+# This script is meant to be run once at system startup
+# It scans /sys/fs/pstore/*, reconstructs oops text(s)
 # from these files, creates ABRT problem directories from them,
 # then removes the files (UEFI storage is a limited resource).
 #
 
-cd /sys/fs/pstore 2>/dev/null || exit 0
+import os
+import sys
+from subprocess import Popen
 
-# Wait for abrtd to start. Give it at least 1 second to initialize.
-i=10
-while ! pidof abrtd >/dev/null; do
-	if test $((i--)) = 0; then
-		exit 1
-	fi
-	sleep 1
-done
-sleep 1
+if __name__ == "__main__":
+    # need to allow setting the uefi oops storage dir
+    # to make this script testable
+    uefidir = "/sys/fs/pstore"
+    dryrun = False
 
-abrt-merge-uefioops -o * | abrt-dump-oops -D
-if test $? = 0; then
-	abrt-merge-uefioops -d *
-fi
+    for arg in sys.argv:
+        if arg == "dryrun":
+            dryrun = True
+            continue
+
+        if arg.startswith("--uefidir"):
+            uefidir = arg.split('=')[1]
+
+    try:
+        os.chdir(uefidir)
+    except OSError, ex:
+        # silently ignore if the pstore doesn't exist, because that usually
+        # means that we're on the system where uefi boot is not supported
+        sys.stderr.write("Can't chdir to {0}: {1}".format(uefidir, ex))
+        sys.exit(0)
+
+    merge_status = Popen(
+            ["-c", "abrt-merge-uefioops -o * | abrt-dump-oops {0}"
+            .format("-o" if dryrun else "-D")],
+            shell=True,
+            bufsize=-1
+        ).wait()
+    if merge_status == 0:
+        Popen(["abrt-merge-uefioops -d *"], shell=True, bufsize=-1)
+    else:
+        sys.stderr.write("Failed to merge uefi oops")
