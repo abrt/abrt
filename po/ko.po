@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Eun-Ju Kim  <eukim@redhat.com>, 2011-2012.
+# eukim <eukim@redhat.com>, 2013
+# eukim <eukim@redhat.com>, 2011-2012
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2013-08-06 09:56+0200\n"
-"PO-Revision-Date: 2012-10-09 13:59+0000\n"
+"POT-Creation-Date: 2013-08-13 16:00+0200\n"
+"PO-Revision-Date: 2013-08-13 09:08+0000\n"
 "Last-Translator: eukim <eukim@redhat.com>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/fedora/language/"
 "ko/)\n"
@@ -680,7 +681,7 @@ msgstr "DIR에 관한 정보 출력 "
 
 #: ../src/cli/abrt-cli.c:150
 msgid "Print the count of the recent crashes"
-msgstr ""
+msgstr "최근 충돌 횟수를 출력"
 
 #: ../src/cli/abrt-cli.c:163
 msgid "See 'abrt-cli COMMAND --help' for more information"
@@ -704,17 +705,16 @@ msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
 
 #: ../src/cli/status.c:27
-#, fuzzy
 msgid "& status [DIR]..."
-msgstr "& list [options] [DIR]..."
+msgstr "& status [DIR]..."
 
 #: ../src/cli/status.c:37
 msgid "Print only the problem count without any message"
-msgstr ""
+msgstr "아무 메세지를 표시하지 않고 문제의 건수만 출력 "
 
 #: ../src/cli/status.c:38
 msgid "Print only the problems more recent than specified timestamp"
-msgstr ""
+msgstr "지정된 타임 스탬프 보다 최신의 문제만 출력"
 
 #: ../src/cli/status.c:57
 #, c-format
@@ -722,6 +722,8 @@ msgid ""
 "ABRT has detected '%u' problem(s). (For more info run: $ abrt-cli list --"
 "full)\n"
 msgstr ""
+"ABRT에 의해 '%u' 건의 문제가 발견되었습니다. (다음을 실행하여 보다 자세한 내"
+"용을 확인합니다: $ abrt-cli list --full)\n"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"

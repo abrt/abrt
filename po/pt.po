@@ -3,16 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Bruno Martins <bmomartins@gmail.com>, 2011.
-# Ricardo Pinto <ricardo.bigote@gmail.com>, 2012.
+# Bruno Martins <bruno@bmartins.eu>, 2011
+# pmdaniel <danielthpro@gmail.com>, 2013
+# Ricardo Pinto <ricardo.bigote@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2013-08-06 09:56+0200\n"
-"PO-Revision-Date: 2012-10-01 12:44+0000\n"
-"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2013-08-13 16:00+0200\n"
+"PO-Revision-Date: 2013-08-06 11:24+0000\n"
+"Last-Translator: pmdaniel <danielthpro@gmail.com>\n"
+"Language-Team: Portuguese <trans-pt@lists.fedoraproject.org>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,7 +31,7 @@ msgstr "Applet de notificação do ABRT"
 
 #: ../src/applet/applet.c:72
 msgid "Problem detected"
-msgstr ""
+msgstr "Problema detectado"
 
 #: ../src/applet/applet.c:312 ../src/applet/applet.c:314
 msgid "Warning"
@@ -66,11 +67,11 @@ msgstr "Ocorreu um problema"
 #: ../src/applet/applet.c:530 ../src/applet/applet.c:720
 #, c-format
 msgid "A problem in the %s package has been detected"
-msgstr ""
+msgstr "Foi detetado um problema no pacote %s"
 
 #: ../src/applet/applet.c:532 ../src/applet/applet.c:722
 msgid "A problem has been detected"
-msgstr ""
+msgstr "Foi detetado um problema"
 
 #: ../src/applet/applet.c:630
 msgid ""
@@ -102,7 +103,7 @@ msgstr "Ficheiro de configuração"
 #: ../src/daemon/abrt-server.c:465 ../src/daemon/abrt-dbus.c:378
 #: ../src/daemon/abrtd.c:855
 msgid "& [options]"
-msgstr ""
+msgstr "& [opções]"
 
 #: ../src/daemon/abrt-server.c:476
 msgid "Use UID as client uid"
@@ -127,15 +128,15 @@ msgstr "Registar para o syslog mesmo com o -d"
 
 #: ../src/daemon/abrt-dbus.c:391 ../src/daemon/abrtd.c:870
 msgid "Exit after NUM seconds of inactivity"
-msgstr ""
+msgstr "Sair depois de NUM segundos de inactividade"
 
 #: ../src/daemon/abrt-handle-event.c:408
 msgid "& [-v] -e|--event EVENT DIR..."
-msgstr ""
+msgstr "& [-v] -e|--event EVENT DIR..."
 
 #: ../src/daemon/abrt-handle-event.c:415
 msgid "Run EVENT on DIR"
-msgstr ""
+msgstr "Executa EVENT no DIR"
 
 #: ../src/gui-gtk/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -155,11 +156,11 @@ msgstr "Última Ocorrência"
 
 #: ../src/gui-gtk/main.c:620
 msgid "Date Submitted"
-msgstr ""
+msgstr "Data de submissão"
 
 #: ../src/gui-gtk/main.c:629
 msgid "Submission Result"
-msgstr ""
+msgstr "Resultado da Submissão"
 
 #: ../src/gui-gtk/main.c:642
 msgid "_Report"
@@ -175,19 +176,19 @@ msgstr "_Ajuda"
 
 #: ../src/gui-gtk/main.c:706
 msgid "Not submitted reports"
-msgstr ""
+msgstr "Relatórios não submetidos"
 
 #: ../src/gui-gtk/main.c:708
 msgid "<b>Not submitted reports</b>"
-msgstr ""
+msgstr "<b>Relatórios não submetidos</b>"
 
 #: ../src/gui-gtk/main.c:756
 msgid "Submitted reports"
-msgstr ""
+msgstr "Relatórios submetidos"
 
 #: ../src/gui-gtk/main.c:759
 msgid "<b>Submitted reports</b>"
-msgstr ""
+msgstr "<b>Relatórios submetidos</b>"
 
 #: ../src/gui-gtk/main.c:1010
 msgid ""
@@ -195,6 +196,10 @@ msgid ""
 "\n"
 "Shows list of ABRT dump directories in specified DIR(s)\n"
 msgstr ""
+"& [-vp] [DIR]...\n"
+"\n"
+"Apresenta a lista de directórios dump do ABRT nos directórios DIR(s) "
+"especificados\n"
 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:51
 msgid ""
@@ -220,6 +225,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID of coredump in problem directory DIR"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Calcula e guarda o UUID de coredump no directório de problemas DIR"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
@@ -227,6 +235,9 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH for oops problem directory DIR"
 msgstr ""
+"& [-vs] -d DIR\n"
+"\n"
+"Calcula e grava o UUID e DUPHASH para problemas oops do directório DIR"
 
 #: ../src/plugins/abrt-action-analyze-python.c:36
 msgid ""
@@ -234,37 +245,41 @@ msgid ""
 "\n"
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
+"& [-v] -d DIR\n"
+"\n"
+"Calcula e guarda o UUID e DUPHASH de dumps do python"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:29
 msgid "Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
 msgstr ""
+"Utilização: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:63
 msgid "File {0} doesn't exist"
-msgstr ""
+msgstr "Ficheiro {0} não existe"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "{0} is not a valid vmcore"
-msgstr ""
+msgstr "{0} não é um vmcore válido"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:101
 msgid "Required vmlinux debuginfo is installed in {0}"
-msgstr ""
+msgstr "O debuginfo vmlinux necessário está instalado em {0}"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:107
 msgid "Installing kernel debuginfo(s)"
-msgstr ""
+msgstr "A instalar debuginfo(s) do kernel"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:114
 #: ../src/plugins/abrt-action-analyze-vmcore.in:120
 msgid "Can't download required debuginfo"
-msgstr ""
+msgstr "Impossível descarregar debuginfo necessário"
 
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-analyze-vmcore.in:123
 #: ../src/plugins/abrt-action-generate-backtrace.c:44
 msgid "Generating backtrace"
-msgstr ""
+msgstr "A gerar o backtrace"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:163
 msgid ""
@@ -279,7 +294,7 @@ msgstr "Directórios adicionais de debuginfo"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:178
 msgid "Kill gdb if it runs for more than NUM seconds"
-msgstr ""
+msgstr "Matar o gdb se este for executado por mais de NUM segundos"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
@@ -298,7 +313,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:902
 msgid "Problem directory"
-msgstr ""
+msgstr "Directório de problemas"
 
 #: ../src/plugins/abrt-action-install-debuginfo:50
 msgid "Exiting on user command"
@@ -324,22 +339,40 @@ msgid ""
 "    --size_mb   Default: 4096\n"
 "    -e,--exact  Download only specified files\n"
 msgstr ""
+"Utilização: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
+"       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] "
+"[--size_mb=SIZE]\n"
+"       [-e, --exact=PATH]\n"
+"\n"
+"Instala debuginfos para todos os build-ids definidos em BUILD_IDS_FILE em "
+"CACHEDIR, usando TMPDIR como armazenamento temporário.\n"
+"Os ficheiros antigos em CACHEDIR são apagados até que a dimensão deste seja "
+"inferior a SIZE.\n"
+"\n"
+"    -v          Modo detalhado\n"
+"    -y          Modo não interactivo, assume 'Sim' em todas as questões\n"
+"    --ids       Por omissão: build_ids\n"
+"    --tmpdir    Por omissão: /tmp/abrt-tmp-debuginfo-RANDOM_SUFFIX\n"
+"    --cache     Por omissão: /var/cache/abrt-di\n"
+"    --size_mb   Por omissão: 4096\n"
+"    -e,--exact  Transferir apenas os ficheiros especificados\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo:168
 msgid "Can't open {0}: {1}"
-msgstr ""
+msgstr "Incapaz de abrir {0}: {1}"
 
 #: ../src/plugins/abrt-action-install-debuginfo:201
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr ""
+"O coredump referencia {0} ficheiros debuginfo, {1} deles não estão instalados"
 
 #: ../src/plugins/abrt-action-install-debuginfo:212
 msgid "Missing debuginfo file: {0}"
-msgstr ""
+msgstr "Ficheiro debuginfo em falta: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo:215
 msgid "All debuginfo files are available"
-msgstr ""
+msgstr "Todos os ficheiros debuginfo se encontram disponíveis"
 
 #: ../src/plugins/abrt-action-trim-files.c:222
 msgid ""
@@ -349,18 +382,23 @@ msgid ""
 "SIZE.\n"
 "FILEs are preserved (never deleted)."
 msgstr ""
+"& [-v] [-d TAMANHO:DIR]... [-f TAMANHO:DIR]... [-p DIR] [FICHEIRO]...\n"
+"\n"
+"Remove directórios com problemas (-d) ou ficheiros (-f) em DIRs até que "
+"estes sejam menores que TAMANHO.\n"
+"FICHEIROs são preservados (nunca apagados)."
 
 #: ../src/plugins/abrt-action-trim-files.c:236
 msgid "Delete whole problem directories"
-msgstr ""
+msgstr "Remover todos os directórios com problemas"
 
 #: ../src/plugins/abrt-action-trim-files.c:237
 msgid "Delete files inside this directory"
-msgstr ""
+msgstr "Remover ficheiros dentro deste directório"
 
 #: ../src/plugins/abrt-action-trim-files.c:238
 msgid "Preserve this directory"
-msgstr ""
+msgstr "Manter este directório"
 
 #: ../src/plugins/abrt-dedup-client.c:96
 msgid "log to syslog"
@@ -368,41 +406,41 @@ msgstr "Registar no syslog"
 
 #: ../src/plugins/abrt-dedup-client.c:98
 msgid "allow insecure connection to dedup server"
-msgstr ""
+msgstr "permitir ligações inseguras ao servidor dedup"
 
 #: ../src/plugins/abrt-dedup-client.c:100
 msgid "dedup server URL"
-msgstr ""
+msgstr "URL do servidor dedup"
 
 #: ../src/plugins/abrt-dedup-client.c:102
 msgid "dedup server port"
-msgstr ""
+msgstr "porto do servidor dedup"
 
 #: ../src/plugins/abrt-dedup-client.c:104
 msgid "ABRT dump directory"
-msgstr ""
+msgstr "directório de erro ABRT"
 
 #: ../src/plugins/abrt-dedup-client.c:106
 msgid "(debug) show received HTTP headers"
-msgstr ""
+msgstr "(depurar) mostra cabeçalhos HTTP recebidos"
 
 #: ../src/plugins/abrt-dedup-client.c:110
 msgid "abrt-dedup-client component backtrace_file [options]"
-msgstr ""
+msgstr "abrt-dedup-client component backtrace_file [opções]"
 
 #: ../src/plugins/abrt-dedup-client.c:153
 msgid "'"
-msgstr ""
+msgstr "'"
 
 #: ../src/plugins/abrt-dedup-client.c:157
 #, c-format
 msgid "Forbidden component name: '%s'."
-msgstr ""
+msgstr "Nome do componente proibido: '%s'."
 
 #: ../src/plugins/abrt-dedup-client.c:203
 #, c-format
 msgid "Failed to send HTTP request of length %d: NSS error %d."
-msgstr ""
+msgstr "Falhou o envio do pedido HTTP de tamanho %d: Erro NSS %d."
 
 #: ../src/plugins/abrt-dump-oops.c:180
 #, c-format
@@ -410,6 +448,9 @@ msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr ""
+"Ocorreu um problema com o kernel, mas o kernel foi contaminado (flags:%s). "
+"Os programadores do kernel não conseguem diagnosticar relatórios "
+"contaminados."
 
 #: ../src/plugins/abrt-dump-oops.c:239
 msgid ""
@@ -444,7 +485,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-dump-oops.c:266
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
-msgstr ""
+msgstr "Igual a -d DumpLocation, DumpLocation está especificado em abrt.conf"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:1
 msgid "Local GNU Debugger"
@@ -453,6 +494,7 @@ msgstr "Depurador GNU local"
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:2
 msgid "Download debuginfo packages and generate backtrace locally using GDB"
 msgstr ""
+"Descarregar pacotes debuginfo e gerar backtrace localmente utilizando GDB"
 
 #: ../src/plugins/analyze_LocalGDB.xml.in.h:3
 msgid ""
@@ -463,11 +505,11 @@ msgstr ""
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:1
 msgid "Collect .xsession-errors"
-msgstr ""
+msgstr "Recolher .xsession-errors"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:2
 msgid "Save relevant lines from ~/.xsession-errors file"
-msgstr ""
+msgstr "Guardar linhas relevantes do ficheiro ~/.xsession-errors"
 
 #: ../src/plugins/collect_xsession_errors.xml.in.h:3
 msgid ""
@@ -477,23 +519,25 @@ msgstr ""
 
 #: ../src/plugins/https-utils.c:46
 msgid "An error occurred on the server side. Try again later."
-msgstr ""
+msgstr "Ocorreu um erro no servidor. Tente mais tarde."
 
 #: ../src/plugins/https-utils.c:51
 msgid ""
 "An error occurred while connecting to the server. Check your network "
 "connection and try again."
 msgstr ""
+"Ocorreu um erro ao ligar ao servidor. Verifique a sua ligação de rede e "
+"tente novamente."
 
 #: ../src/plugins/https-utils.c:69
 #, c-format
 msgid "Issuer certificate is invalid: '%s'."
-msgstr ""
+msgstr "O certificado do emissor é inválido: '%s'."
 
 #: ../src/plugins/https-utils.c:72
 #, c-format
 msgid "Certificate is signed by an untrusted issuer: '%s'."
-msgstr ""
+msgstr "O certificado está assinado por um emissor não confiável: '%s'."
 
 #: ../src/plugins/https-utils.c:75
 #, c-format
@@ -507,102 +551,102 @@ msgstr "O certificado remoto expirou."
 #: ../src/plugins/https-utils.c:82
 #, c-format
 msgid "Certificate issuer is not recognized: '%s'."
-msgstr ""
+msgstr "O emissor do certificado não é reconhecido: '%s'."
 
 #: ../src/plugins/https-utils.c:85
 #, c-format
 msgid "Bad certificate received. Subject '%s', issuer '%s'."
-msgstr ""
+msgstr "Recebido um mau certificado. Assunto '%s', emissor '%s'."
 
 #: ../src/plugins/https-utils.c:121
 #, c-format
 msgid "Failed to get slot 'PEM Token #0': %d."
-msgstr ""
+msgstr "Falha ao obter slot 'PEM Token #0': %d."
 
 #: ../src/plugins/https-utils.c:154
 #, c-format
 msgid "Failed to get host by name: NSS error %d."
-msgstr ""
+msgstr "Falha ao obter máquina através do nome: Erro NSS %d."
 
 #: ../src/plugins/https-utils.c:174
 msgid "Failed to create a TCP socket"
-msgstr ""
+msgstr "Falha ao criar socket TCP"
 
 #: ../src/plugins/https-utils.c:182
 msgid "Failed to set socket blocking mode."
-msgstr ""
+msgstr "Falha ao definir o modo de bloqueio do socket."
 
 #: ../src/plugins/https-utils.c:188
 msgid "Failed to wrap TCP socket by SSL."
-msgstr ""
+msgstr "Falha ao encapsular socket TCP por SSL."
 
 #: ../src/plugins/https-utils.c:194 ../src/plugins/https-utils.c:198
 #: ../src/plugins/https-utils.c:200 ../src/plugins/https-utils.c:202
 msgid "Failed to enable client handshake to SSL socket."
-msgstr ""
+msgstr "Falha ao activar a negociação cliente para socket SSL."
 
 #: ../src/plugins/https-utils.c:208
 msgid "Failed to set URL to SSL socket."
-msgstr ""
+msgstr "Falha ao definir URL para socket SSL."
 
 #: ../src/plugins/https-utils.c:215
 msgid "Failed to connect SSL address."
-msgstr ""
+msgstr "Falha na ligação ao endereço SSL."
 
 #: ../src/plugins/https-utils.c:222
 msgid "Failed to set certificate hook."
-msgstr ""
+msgstr "Falha ao definir o gancho de certificado."
 
 #: ../src/plugins/https-utils.c:229
 msgid "Failed to set handshake callback."
-msgstr ""
+msgstr "Falha ao definir a função de retorno da negociação."
 
 #: ../src/plugins/https-utils.c:236
 msgid "Failed to reset handshake."
-msgstr ""
+msgstr "Falha ao redefinir a negociação."
 
 #: ../src/plugins/https-utils.c:243
 #, c-format
 msgid "Failed to force handshake: NSS error %d."
-msgstr ""
+msgstr "Falha ao forçar negociação: erro NSS %d."
 
 #: ../src/plugins/https-utils.c:252
 msgid "Failed to close SSL socket."
-msgstr ""
+msgstr "Falha ao fechar socket SSL."
 
 #: ../src/plugins/https-utils.c:306 ../src/plugins/https-utils.c:312
 #: ../src/plugins/https-utils.c:318
 msgid "Invalid response from server: HTTP header not found."
-msgstr ""
+msgstr "Resposta inválida do servidor: cabeçalho HTTP não encontrado."
 
 #: ../src/plugins/https-utils.c:357
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
-msgstr ""
+msgstr "Falha na recepção de dados: erro NSS %d."
 
 #: ../src/plugins/https-utils.c:386
 msgid "Malformed chunked response."
-msgstr ""
+msgstr "Resposta mal formatada."
 
 #: ../src/plugins/https-utils.c:411
 msgid "Failed to initialize NSS."
-msgstr ""
+msgstr "Falha ao iniciar NSS."
 
 #: ../src/plugins/https-utils.c:417
 msgid "Failed to initialize security module."
-msgstr ""
+msgstr "Falha ao inicializar o módulo de segurança."
 
 #: ../src/plugins/https-utils.c:432
 msgid "Failed to shutdown NSS."
-msgstr ""
+msgstr "Falha ao encerrar NSS."
 
 #: ../src/cli/abrt-cli.c:142
 msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
-msgstr ""
+msgstr "Utilização: abrt-cli [--version] COMMAND [DIR]..."
 
 #: ../src/cli/abrt-cli.c:146
 msgid "List not yet reported problems [in DIRs]"
-msgstr ""
+msgstr "Mostrar problemas [em DIRs] ainda não reportados"
 
 #: ../src/cli/abrt-cli.c:147
 msgid "Remove problem directory DIR"
@@ -610,11 +654,11 @@ msgstr ""
 
 #: ../src/cli/abrt-cli.c:148
 msgid "Analyze and report problem data in DIR"
-msgstr ""
+msgstr "Analisar e reportar problema no DIR"
 
 #: ../src/cli/abrt-cli.c:149
 msgid "Print information about DIR"
-msgstr ""
+msgstr "Apresentar informação sobre DIR"
 
 #: ../src/cli/abrt-cli.c:150
 msgid "Print the count of the recent crashes"
@@ -626,11 +670,11 @@ msgstr ""
 
 #: ../src/cli/list.c:90
 msgid "& list [options] [DIR]..."
-msgstr ""
+msgstr "& lista [opções] [DIR]..."
 
 #: ../src/cli/list.c:97
 msgid "List even reported problems"
-msgstr ""
+msgstr "Mostrar até problemas reportados"
 
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:99 ../src/cli/list.c:141
@@ -639,11 +683,11 @@ msgstr "Mostrar relatório detalhado"
 
 #: ../src/cli/list.c:133
 msgid "& info [options] DIR..."
-msgstr ""
+msgstr "& info [opções] DIR..."
 
 #: ../src/cli/status.c:27
 msgid "& status [DIR]..."
-msgstr ""
+msgstr "& status [DIR]..."
 
 #: ../src/cli/status.c:37
 msgid "Print only the problem count without any message"
@@ -662,11 +706,13 @@ msgstr ""
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
-msgstr ""
+msgstr "Analisar núcleo VM"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
 msgid "Install kernel debuginfo packages, generate kernel log and oops message"
 msgstr ""
+"Instala os pacotes debuginfo do kernel, gera o log do kernel e mensagens de "
+"oops"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:3
 msgid ""
@@ -676,17 +722,19 @@ msgstr ""
 
 #: ../src/plugins/collect_GConf.xml.in.h:1
 msgid "Collect GConf configuration"
-msgstr ""
+msgstr "Recolher a configuração GConf"
 
 #: ../src/plugins/collect_GConf.xml.in.h:2
 msgid "Save configuration from application's GConf directory"
-msgstr ""
+msgstr "Guardar a configuração da directoria GConf da aplicação"
 
 #: ../src/plugins/collect_GConf.xml.in.h:3
 msgid ""
 "Runs gconftool-2 --recursive-list /apps/executable and saves it as "
 "'gconf_subtree' element."
 msgstr ""
+"Executa gconftool-2 --recursive-list /apps/executable e gravá-o com um "
+"elemento 'gconf_subtree'."
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:1
 msgid "Collect system-wide vim configuration files"
@@ -694,7 +742,7 @@ msgstr ""
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:2
 msgid "Save /etc/vimrc and /etc/gvimrc"
-msgstr ""
+msgstr "Guardar /etc/vimrc e /etc/gvimrc"
 
 #: ../src/plugins/collect_vimrc_system.xml.in.h:3
 msgid ""
@@ -704,11 +752,11 @@ msgstr ""
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:1
 msgid "Collect yours vim configuration files"
-msgstr ""
+msgstr "Recolhe os seus ficheiros de configuração vim"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:2
 msgid "Save .vimrc and .gvimrc from your home directory"
-msgstr ""
+msgstr "Guarda .vimrc e .gvimrc da sua pasta pessoal"
 
 #: ../src/plugins/collect_vimrc_user.xml.in.h:3
 msgid ""
