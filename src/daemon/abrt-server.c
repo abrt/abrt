@@ -97,7 +97,7 @@ static int delete_path(const char *dump_dir_name)
     if (!dir_is_in_dump_location(dump_dir_name))
     {
         /* Then refuse to operate on it (someone is attacking us??) */
-        error_msg("Bad problem directory name '%s', not deleting", dump_dir_name);
+        error_msg("Bad problem directory name '%s', should start with: '%s'", dump_dir_name, g_settings_dump_location);
         return 400; /* Bad Request */
     }
     if (!dump_dir_accessible_by_uid(dump_dir_name, client_uid))
@@ -144,7 +144,7 @@ static int run_post_create(const char *dirname)
     if (!dir_is_in_dump_location(dirname))
     {
         /* Then refuse to operate on it (someone is attacking us??) */
-        error_msg("Bad problem directory name '%s'", dirname);
+        error_msg("Bad problem directory name '%s', should start with: '%s'", dirname, g_settings_dump_location);
         return 400; /* Bad Request */
     }
     if (!dump_dir_accessible_by_uid(dirname, client_uid))
