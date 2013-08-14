@@ -53,7 +53,11 @@ GType abrt_config_widget_get_type (void) G_GNUC_CONST;
 
 AbrtConfigWidget *abrt_config_widget_new();
 
+void abrt_config_widget_reset_to_defaults(AbrtConfigWidget *self);
+
 void abrt_config_widget_save_chnages(AbrtConfigWidget *config);
+
+gboolean abrt_config_widget_get_changed(AbrtConfigWidget *config);
 
 G_END_DECLS
 

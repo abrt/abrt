@@ -23,6 +23,7 @@
 #include "abrt-config-widget.h"
 
 #include "libabrt.h"
+#include <assert.h>
 
 #define ABRT_CONFIG_WIDGET_GET_PRIVATE(o) \
     (G_TYPE_INSTANCE_GET_PRIVATE((o), TYPE_ABRT_CONFIG_WIDGET, AbrtConfigWidgetPrivate))
@@ -33,19 +34,31 @@
 
 typedef struct {
     const char *name;
+    GtkSwitch *widget;
+    gboolean default_value;
+    gboolean current_value;
     map_string_t *config;
 } AbrtConfigWidgetOption;
+
+enum AbrtOptions
+{
+    _ABRT_OPT_BEGIN_,
+
+    ABRT_OPT_UPLOAD_COREDUMP = _ABRT_OPT_BEGIN_,
+    ABRT_OPT_STEAL_DIRECTORY,
+    ABRT_OPT_SEND_UREPORT,
+    ABRT_OPT_SHORTENED_REPORTING,
+    ABRT_OPT_SILENT_SHORTENED_REPORTING,
+
+    _ABRT_OPT_END_,
+};
 
 struct AbrtConfigWidgetPrivate {
     GtkBuilder   *builder;
     map_string_t *report_gtk_conf;
     map_string_t *abrt_applet_conf;
 
-    AbrtConfigWidgetOption opt_upload_coredump;
-    AbrtConfigWidgetOption opt_steal_directory;
-    AbrtConfigWidgetOption opt_send_ureport;
-    AbrtConfigWidgetOption opt_shortened_reporting;
-    AbrtConfigWidgetOption opt_silent_shortened_reporting;
+    AbrtConfigWidgetOption options[_ABRT_OPT_END_];
 };
 
 G_DEFINE_TYPE(AbrtConfigWidget, abrt_config_widget, GTK_TYPE_BOX)
@@ -119,15 +132,29 @@ on_switch_activate(GObject       *object,
 }
 
 static void
-connect_switch_with_option(GtkSwitch *gsw, AbrtConfigWidget *config, AbrtConfigWidgetOption *option, gboolean def)
+update_option_current_value(AbrtConfigWidget *self, enum AbrtOptions opid)
 {
-    const char *val = get_app_user_setting(option->config, option->name);
-    const gboolean state = val ? string_to_bool(val) : def;
+    assert((opid >= _ABRT_OPT_BEGIN_ && opid < _ABRT_OPT_END_) || !"Out of range Option ID value");
 
-    gtk_switch_set_active(gsw, state);
+    AbrtConfigWidgetOption *option = &(self->priv->options[opid]);
+    const char *val = get_app_user_setting(option->config, option->name);
+    option->current_value = val ? string_to_bool(val) : option->default_value;;
+}
+
+static void
+connect_switch_with_option(AbrtConfigWidget *self, enum AbrtOptions opid, const char *switch_name)
+{
+    assert((opid >= _ABRT_OPT_BEGIN_ && opid < _ABRT_OPT_END_) || !"Out of range Option ID value");
+
+    AbrtConfigWidgetOption *option = &(self->priv->options[opid]);
+    update_option_current_value(self, opid);
+
+    GtkSwitch *gsw = GTK_SWITCH(WID(switch_name));
+    option->widget = gsw;
+    gtk_switch_set_active(gsw, option->current_value);
     g_object_set_data(G_OBJECT(gsw), "abrt-option", option);
     g_signal_connect(G_OBJECT(gsw), "notify::active",
-            G_CALLBACK(on_switch_activate), config);
+            G_CALLBACK(on_switch_activate), self);
 }
 
 static void
@@ -168,33 +195,33 @@ abrt_config_widget_init(AbrtConfigWidget *self)
 
     /* Initialize options */
     /* report-gtk */
-    self->priv->opt_steal_directory.name = "ask_steal_dir";
-    self->priv->opt_steal_directory.config = self->priv->report_gtk_conf;
+    self->priv->options[ABRT_OPT_STEAL_DIRECTORY].name = "ask_steal_dir";
+    self->priv->options[ABRT_OPT_STEAL_DIRECTORY].default_value = TRUE;
+    self->priv->options[ABRT_OPT_STEAL_DIRECTORY].config = self->priv->report_gtk_conf;
 
-    self->priv->opt_upload_coredump.name = "abrt_analyze_smart_ask_upload_coredump";
-    self->priv->opt_upload_coredump.config = self->priv->report_gtk_conf;
+    self->priv->options[ABRT_OPT_UPLOAD_COREDUMP].name = "abrt_analyze_smart_ask_upload_coredump";
+    self->priv->options[ABRT_OPT_UPLOAD_COREDUMP].default_value = TRUE;
+    self->priv->options[ABRT_OPT_UPLOAD_COREDUMP].config = self->priv->report_gtk_conf;
 
     /* abrt-applet */
-    self->priv->opt_send_ureport.name = "AutoreportingEnabled";
-    self->priv->opt_send_ureport.config = self->priv->abrt_applet_conf;
+    self->priv->options[ABRT_OPT_SEND_UREPORT].name = "AutoreportingEnabled";
+    self->priv->options[ABRT_OPT_SEND_UREPORT].default_value = g_settings_autoreporting;
+    self->priv->options[ABRT_OPT_SEND_UREPORT].config = self->priv->abrt_applet_conf;
 
-    self->priv->opt_shortened_reporting.name = "ShortenedReporting";
-    self->priv->opt_shortened_reporting.config = self->priv->abrt_applet_conf;
+    self->priv->options[ABRT_OPT_SHORTENED_REPORTING].name = "ShortenedReporting";
+    self->priv->options[ABRT_OPT_SHORTENED_REPORTING].default_value = g_settings_shortenedreporting;
+    self->priv->options[ABRT_OPT_SHORTENED_REPORTING].config = self->priv->abrt_applet_conf;
 
-    self->priv->opt_silent_shortened_reporting.name = "SilentShortenedReporting";
-    self->priv->opt_silent_shortened_reporting.config = self->priv->abrt_applet_conf;
+    self->priv->options[ABRT_OPT_SILENT_SHORTENED_REPORTING].name = "SilentShortenedReporting";
+    self->priv->options[ABRT_OPT_SILENT_SHORTENED_REPORTING].default_value = FALSE;
+    self->priv->options[ABRT_OPT_SILENT_SHORTENED_REPORTING].config = self->priv->abrt_applet_conf;
 
     /* Connect widgets with options */
-    connect_switch_with_option(GTK_SWITCH(WID("switch_upload_coredump")), self,
-            &(self->priv->opt_upload_coredump), /* default: */ FALSE);
-    connect_switch_with_option(GTK_SWITCH(WID("switch_steal_directory")), self,
-            &(self->priv->opt_steal_directory), /* default: */ FALSE);
-    connect_switch_with_option(GTK_SWITCH(WID("switch_send_ureport")), self,
-            &(self->priv->opt_send_ureport), g_settings_autoreporting);
-    connect_switch_with_option(GTK_SWITCH(WID("switch_shortened_reporting")), self,
-            &(self->priv->opt_shortened_reporting), g_settings_shortenedreporting);
-    connect_switch_with_option(GTK_SWITCH(WID("switch_silent_shortened_reporting")), self,
-            &(self->priv->opt_silent_shortened_reporting), FALSE);
+    connect_switch_with_option(self, ABRT_OPT_UPLOAD_COREDUMP, "switch_upload_coredump");
+    connect_switch_with_option(self, ABRT_OPT_STEAL_DIRECTORY, "switch_steal_directory");
+    connect_switch_with_option(self, ABRT_OPT_SEND_UREPORT, "switch_send_ureport");
+    connect_switch_with_option(self, ABRT_OPT_SHORTENED_REPORTING, "switch_shortened_reporting");
+    connect_switch_with_option(self, ABRT_OPT_SILENT_SHORTENED_REPORTING, "switch_silent_shortened_reporting");
 
     gtk_widget_reparent(WID("grid"), GTK_WIDGET(self));
 
@@ -214,4 +241,26 @@ abrt_config_widget_save_chnages(AbrtConfigWidget *config)
     /* Save configuration */
     save_app_conf_file("report-gtk", config->priv->report_gtk_conf);
     save_app_conf_file("abrt-applet", config->priv->abrt_applet_conf);
+
+    for(unsigned i = _ABRT_OPT_BEGIN_; i < _ABRT_OPT_END_; ++i)
+        update_option_current_value(config, i);
+}
+
+gboolean
+abrt_config_widget_get_changed(AbrtConfigWidget *self)
+{
+    for(unsigned i = _ABRT_OPT_BEGIN_; i < _ABRT_OPT_END_; ++i)
+    {
+        if (gtk_switch_get_active(self->priv->options[i].widget) != self->priv->options[i].current_value)
+            return TRUE;
+    }
+
+    return FALSE;
+}
+
+void
+abrt_config_widget_reset_to_defaults(AbrtConfigWidget *self)
+{
+    for(unsigned i = _ABRT_OPT_BEGIN_; i < _ABRT_OPT_END_; ++i)
+        gtk_switch_set_active(self->priv->options[i].widget, self->priv->options[i].default_value);
 }
