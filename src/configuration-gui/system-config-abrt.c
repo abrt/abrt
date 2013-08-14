@@ -91,7 +91,7 @@ void show_system_config_abrt_dialog(GtkWindow *parent)
     GtkWidget *dialog = gtk_dialog_new();
 
     gtk_window_set_title(GTK_WINDOW(dialog), _("Problem Reporting Configuration"));
-    gtk_window_set_default_size(GTK_WINDOW(dialog), 640, 480);
+    gtk_window_set_default_size(GTK_WINDOW(dialog), 500, 300);
     gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
 
     if (parent != NULL)

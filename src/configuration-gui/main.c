@@ -26,7 +26,7 @@ static GtkWidget *
 system_config_abrt_window_new(GApplication *app)
 {
     GtkWidget *wnd = gtk_application_window_new(GTK_APPLICATION(app));
-    gtk_window_set_default_size(GTK_WINDOW(wnd), 640, 480);
+    gtk_window_set_default_size(GTK_WINDOW(wnd), 500, 300);
     gtk_window_set_title(GTK_WINDOW(wnd), _("Problem Reporting Configuration"));
 
     GtkWidget *sca = system_config_abrt_widget_new();
