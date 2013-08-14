@@ -123,6 +123,15 @@ static bool is_shortened_reporting_enabled()
     return g_settings_shortenedreporting;
 }
 
+static bool is_silent_shortened_reporting_enabled(void)
+{
+    const char *configured = get_user_setting("SilentShortenedReporting");
+    if (configured)
+        return string_to_bool(configured);
+
+    return 0;
+}
+
 /*
  * Converts a NM state value stored in GVariant to boolean.
  *
@@ -882,6 +891,17 @@ static void notify_problem_list(GList *problems, int flags)
                  */
                 if (is_shortened_reporting_enabled())
                 {
+                    /* Users dislike "useless" notification of reported
+                     * problems allowing only to disable future notifications
+                     * of the same problem.
+                     */
+                    if (is_silent_shortened_reporting_enabled())
+                    {
+                        problem_info_free(pi);
+                        g_object_unref(notification);
+                        continue;
+                    }
+
                     notify_notification_update(notification, _("A Problem has been Reported"), pi->message, NULL);
                 }
                 else
