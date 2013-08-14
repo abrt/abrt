@@ -842,7 +842,7 @@ static void notify_problem_list(GList *problems, int flags)
             && !(is_shortened_reporting_enabled() && pi->was_announced));
 
         NotifyNotification *notification = new_warn_notification(persistent_notification);
-        notify_notification_add_action(notification, "IGNORE", _("Ignore"),
+        notify_notification_add_action(notification, "IGNORE", _("Ignore forever"),
                 NOTIFY_ACTION_CALLBACK(action_ignore),
                 pi, NULL);
 
