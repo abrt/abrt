@@ -45,6 +45,7 @@ struct AbrtConfigWidgetPrivate {
     AbrtConfigWidgetOption opt_steal_directory;
     AbrtConfigWidgetOption opt_send_ureport;
     AbrtConfigWidgetOption opt_shortened_reporting;
+    AbrtConfigWidgetOption opt_silent_shortened_reporting;
 };
 
 G_DEFINE_TYPE(AbrtConfigWidget, abrt_config_widget, GTK_TYPE_BOX)
@@ -180,6 +181,9 @@ abrt_config_widget_init(AbrtConfigWidget *self)
     self->priv->opt_shortened_reporting.name = "ShortenedReporting";
     self->priv->opt_shortened_reporting.config = self->priv->abrt_applet_conf;
 
+    self->priv->opt_silent_shortened_reporting.name = "SilentShortenedReporting";
+    self->priv->opt_silent_shortened_reporting.config = self->priv->abrt_applet_conf;
+
     /* Connect widgets with options */
     connect_switch_with_option(GTK_SWITCH(WID("switch_upload_coredump")), self,
             &(self->priv->opt_upload_coredump), /* default: */ FALSE);
@@ -189,6 +193,8 @@ abrt_config_widget_init(AbrtConfigWidget *self)
             &(self->priv->opt_send_ureport), g_settings_autoreporting);
     connect_switch_with_option(GTK_SWITCH(WID("switch_shortened_reporting")), self,
             &(self->priv->opt_shortened_reporting), g_settings_shortenedreporting);
+    connect_switch_with_option(GTK_SWITCH(WID("switch_silent_shortened_reporting")), self,
+            &(self->priv->opt_silent_shortened_reporting), FALSE);
 
     gtk_widget_reparent(WID("grid"), GTK_WIDGET(self));
 
