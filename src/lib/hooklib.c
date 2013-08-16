@@ -315,7 +315,7 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
     args[14] = (char*)"-ex";
     args[15] = (char*)"print (char*)__glib_assert_msg";
     args[16] = (char*)"-ex";
-    args[17] = (char*)"info registers";
+    args[17] = (char*)"info all-registers";
     args[18] = (char*)"-ex";
     args[19] = (char*)"disassemble";
     args[20] = NULL;
