@@ -13,6 +13,7 @@ import StringIO
 import shutil
 import time
 import hashlib
+import problem
 
 # Path to the vmcore directories
 CORE_DIR = '/var/crash'
@@ -175,6 +176,8 @@ def harvest_vmcore():
 
         # Get rid of  the .new suffix
         shutil.move(destdirnew, destdir)
+
+        problem.notify_new_path(destdir)
 
 
 if __name__ == '__main__':
