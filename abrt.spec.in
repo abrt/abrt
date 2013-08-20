@@ -416,173 +416,62 @@ exit 0
 
 %post
 # $1 == 1 if install; 2 if upgrade
-if [ $1 -eq 1 ]; then
-%if %{with systemd}
-    # Enable (but don't start) the units by default
-    /bin/systemctl enable abrtd.service >/dev/null 2>&1 || :
-%else
-    /sbin/chkconfig --add abrtd
-%endif
-fi
+%systemd_post abrtd.service
 
 %post addon-ccpp
 # this is required for transition from 1.1.x to 2.x
 # because /cache/abrt-di/* was created under root with root:root
 # so 2.x fails when it tries to extract debuginfo there..
 chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
-if [ $1 -eq 1 ]; then
-    # We are installing this package, we aren't upgrading it.
-    # Probably the system had old abrt, one without abrt-ccpp package.
-    # If this old abrtd was enabled, then the new package
-    # should have abrt-ccpp enabled too.
-%if %{with systemd}
-    # Enable (but don't start) the units by default
-    /bin/systemctl enable abrt-ccpp.service >/dev/null 2>&1 || :
-%else
-    if /sbin/chkconfig abrtd >/dev/null 2>&1; then
-        /sbin/chkconfig --add abrt-ccpp
-    fi
-%endif
-fi
+%systemd_post abrt-ccpp.service
 
 %post addon-kerneloops
-if [ $1 -eq 1 ]; then
-    # (see explanation in addon-ccpp section)
-%if %{with systemd}
-    # Enable (but don't start) the units by default
-    /bin/systemctl enable abrt-oops.service >/dev/null 2>&1 || :
-%else
-    if /sbin/chkconfig abrtd >/dev/null 2>&1; then
-        /sbin/chkconfig --add abrt-oops
-    fi
-%endif
-fi
+%systemd_post abrt-oops.service
 
 %post addon-xorg
-if [ $1 -eq 1 ]; then
-    # (see explanation in addon-ccpp section)
-%if %{with systemd}
-    # Enable (but don't start) the units by default
-    /bin/systemctl enable abrt-xorg.service >/dev/null 2>&1 || :
-%else
-    if /sbin/chkconfig abrtd >/dev/null 2>&1; then
-        /sbin/chkconfig --add abrt-xorg
-    fi
-%endif
-fi
+%systemd_post abrt-xorg.service
 
 %post addon-vmcore
-if [ $1 -eq 1 ]; then
-    # (see explanation in addon-ccpp section)
-%if %{with systemd}
-    # Enable (but don't start) the units by default
-    /bin/systemctl enable abrt-vmcore.service >/dev/null 2>&1 || :
-%else
-    if /sbin/chkconfig abrtd >/dev/null 2>&1; then
-        /sbin/chkconfig --add abrt-vmcore
-    fi
-%endif
-fi
+%systemd_post abrt-vmcore.service
 
 %post addon-uefioops
-if [ $1 -eq 1 ]; then
-    # (see explanation in addon-ccpp section)
-%if %{with systemd}
-    # Enable (but don't start) the units by default
-    /bin/systemctl enable abrt-uefioops.service >/dev/null 2>&1 || :
-%else
-    if /sbin/chkconfig abrtd >/dev/null 2>&1; then
-        /sbin/chkconfig --add abrt-uefioops
-    fi
-%endif
-fi
+%systemd_post abrt-uefioops.service
 
 %preun
-if [ "$1" -eq "0" ] ; then
-%if %{with systemd}
-    /bin/systemctl --no-reload disable abrtd.service > /dev/null 2>&1 || :
-    /bin/systemctl stop abrtd.service >/dev/null 2>&1 || :
-%else
-    service abrtd stop >/dev/null 2>&1
-    /sbin/chkconfig --del abrtd
-%endif
-fi
+%systemd_preun abrtd.service
 
 %preun addon-ccpp
-if [ "$1" -eq "0" ] ; then
-%if %{with systemd}
-    /bin/systemctl --no-reload disable abrt-ccpp.service >/dev/null 2>&1 || :
-    /bin/systemctl stop abrt-ccpp.service >/dev/null 2>&1 || :
-%else
-    service abrt-ccpp stop >/dev/null 2>&1
-    /sbin/chkconfig --del abrt-ccpp
-%endif
-fi
+%systemd_preun abrt-ccpp.service
 
 %preun addon-kerneloops
-if [ "$1" -eq "0" ] ; then
-%if %{with systemd}
-    /bin/systemctl --no-reload disable abrt-oops.service >/dev/null 2>&1 || :
-    /bin/systemctl stop abrt-oops.service >/dev/null 2>&1 || :
-%else
-    service abrt-oops stop >/dev/null 2>&1
-    /sbin/chkconfig --del abrt-oops
-%endif
-fi
+%systemd_preun abrt-oops.service
 
 %preun addon-xorg
-if [ "$1" -eq "0" ] ; then
-%if %{with systemd}
-    /bin/systemctl --no-reload disable abrt-xorg.service >/dev/null 2>&1 || :
-    /bin/systemctl stop abrt-xorg.service >/dev/null 2>&1 || :
-%else
-    service abrt-xorg stop >/dev/null 2>&1
-    /sbin/chkconfig --del abrt-xorg
-%endif
-fi
+%systemd_preun abrt-xorg.service
 
 %preun addon-vmcore
-if [ "$1" -eq "0" ] ; then
-%if %{with systemd}
-    /bin/systemctl --no-reload disable abrt-vmcore.service >/dev/null 2>&1 || :
-    /bin/systemctl stop abrt-vmcore.service >/dev/null 2>&1 || :
-%else
-    service abrt-vmcore stop >/dev/null 2>&1
-    /sbin/chkconfig --del abrt-vmcore
-%endif
-fi
+%systemd_preun abrt-vmcore.service
 
 %preun addon-uefioops
-if [ "$1" -eq "0" ] ; then
-%if %{with systemd}
-    /bin/systemctl --no-reload disable abrt-uefioops.service >/dev/null 2>&1 || :
-    /bin/systemctl stop abrt-uefioops.service >/dev/null 2>&1 || :
-%else
-    service abrt-uefioops stop >/dev/null 2>&1
-    /sbin/chkconfig --del abrt-uefioops
-%endif
-fi
+%systemd_preun abrt-uefioops.service
 
-%if %{with systemd}
 %postun
-/bin/systemctl daemon-reload >/dev/null 2>&1 || :
-
-%postun addon-kerneloops
-/bin/systemctl daemon-reload >/dev/null 2>&1 || :
-
-%postun addon-xorg
-/bin/systemctl daemon-reload >/dev/null 2>&1 || :
-
-%postun addon-vmcore
-/bin/systemctl daemon-reload >/dev/null 2>&1 || :
-
-%postun addon-uefioops
-/bin/systemctl daemon-reload >/dev/null 2>&1 || :
+%systemd_postun_with_restart abrtd.service
 
 %postun addon-ccpp
-/bin/systemctl daemon-reload >/dev/null 2>&1 || :
+%systemd_postun_with_restart abrt-ccpp.service
 
-%endif
+%postun addon-kerneloops
+%systemd_postun_with_restart abrt-oops.service
+
+%postun addon-xorg
+%systemd_postun_with_restart abrt-xorg.service
+
+%postun addon-vmcore
+%systemd_postun_with_restart abrt-vmcore.service
+
+%postun addon-uefioops
+%systemd_postun_with_restart abrt-uefioops.service
 
 %post gui
 # update icon cache
