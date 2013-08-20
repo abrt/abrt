@@ -347,10 +347,10 @@ int main(int argc, char **argv)
         if (opts & OPT_u)
         {
             log("Updating problem directory");
-            switch(g_list_length(oops_list))
+            switch (oops_cnt)
             {
                 case 0:
-                    error_msg(_("Cannot update the problem because of no oops found"));
+                    error_msg(_("Can't update the problem: no oops found"));
                     break;
                 case 1:
                     {
@@ -363,7 +363,7 @@ int main(int argc, char **argv)
                     }
                     break;
                 default:
-                    error_msg(_("Cannot update the problem because of more oopses were found"));
+                    error_msg(_("Can't update the problem: more than one oops found"));
                     break;
             }
        }
