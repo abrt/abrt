@@ -11,14 +11,17 @@ bin_PROGRAMS = \
 
 sbin_PROGRAMS = \
     abrtd \
-    abrt-server
+    abrt-server \
+    abrt-upload-watch
 
 libexec_PROGRAMS = abrt-handle-event
 
 # This is a daemon, building with full relro and PIE
 # for increased security.
 abrtd_SOURCES = \
-    abrtd.c
+    abrtd.c \
+    abrt-inotify.c \
+    abrt-inotify.h
 abrtd_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
@@ -48,6 +51,24 @@ abrt_server_CPPFLAGS = \
 abrt_server_LDADD = \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS)
+
+abrt_upload_watch_SOURCES = \
+    abrt-upload-watch.c \
+    abrt-inotify.c \
+    abrt-inotify.h
+abrt_upload_watch_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
+    -DLIBEXEC_DIR=\"$(libexecdir)\" \
+    $(GLIB_CFLAGS) \
+    $(GIO_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    -D_GNU_SOURCE
+abrt_upload_watch_LDADD = \
+    ../lib/libabrt.la \
+    $(LIBREPORT_LIBS)
+
 
 abrt_handle_event_SOURCES = \
     abrt-handle-event.c

@@ -1,0 +1,51 @@
+abrt-upload-watch(1)
+==================
+
+NAME
+----
+abrt-upload-watch - Watch upload directory and unpacks incoming archives into DumpLocation
+
+SYNOPSIS
+--------
+'abrt-upload-watch' [-vs] [-w NUM_WORKERS] [-c CACHE_SIZE_MIB] [UPLOAD_DIRECTORY]
+
+OPTIONS
+-------
+-v, --verbose::
+   Be more verbose. Can be given multiple times.
+
+-s::
+   Log to syslog
+
+-d::
+   Daemonize
+
+-w NUM_WORKERS::
+   Number of concurrent workers. Default is 10
+
+-c CACHE_SIZE_MIB::
+   Maximal cache size in MiB. Default is 4
+
+UPLOAD_DIRECTORY::
+   Watched directory. Default is a value of WatchCrashdumpArchiveDir option from abrt.conf
+
+FILES
+-----
+Uses these three configuration options from file '/etc/abrt/abrt.conf':
+
+WatchCrashdumpArchiveDir::
+   Default upload directory
+
+DumpLocation::
+   Place where uploaded archives are unpacked
+
+DeleteUploaded::
+   Specifies if uploaded archives are deleted after unpacking
+
+SEE ALSO
+--------
+abrt.conf(5)
+
+AUTHORS
+-------
+* ABRT team

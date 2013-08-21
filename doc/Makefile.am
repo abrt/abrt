@@ -33,6 +33,7 @@ MAN1_TXT += abrt-install-ccpp-hook.txt
 MAN1_TXT += abrt-action-analyze-vmcore.txt
 MAN1_TXT += abrt-action-analyze-ccpp-local.txt
 MAN1_TXT += abrt-watch-log.txt
+MAN1_TXT += abrt-upload-watch.txt
 MAN1_TXT += system-config-abrt.txt
 if BUILD_BODHI
 MAN1_TXT += abrt-bodhi.txt

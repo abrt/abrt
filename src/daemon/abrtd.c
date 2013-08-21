@@ -21,10 +21,9 @@
 #endif
 #include <sys/un.h>
 #include <syslog.h>
-#include <sys/inotify.h>
-#include <sys/ioctl.h> /* ioctl(FIONREAD) */
 
 #include "abrt_glib.h"
+#include "abrt-inotify.h"
 #include "libabrt.h"
 
 
@@ -53,7 +52,6 @@
 static volatile sig_atomic_t s_sig_caught;
 static int s_signal_pipe[2];
 static int s_signal_pipe_write = -1;
-static int s_upload_watch = -1;
 static unsigned s_timeout;
 static bool s_exiting;
 
@@ -62,7 +60,6 @@ static guint channel_id_socket = 0;
 static int child_count = 0;
 
 /* Helpers */
-
 static guint add_watch_or_die(GIOChannel *channel, unsigned condition, GIOFunc func)
 {
     errno = 0;
@@ -193,124 +190,23 @@ static void sanitize_dump_dir_rights(void)
 
 /* Inotify handler */
 
-static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
+static void handle_inotify_cb(struct abrt_inotify_watch *watch, struct inotify_event *event, gpointer ptr_unused)
 {
-    /* Default size: 128 simultaneous actions (about 1/2 meg) */
-#define INOTIFY_BUF_SIZE ((sizeof(struct inotify_event) + FILENAME_MAX)*128)
-    /* Determine how much to read (it usually is much smaller) */
-    /* NB: this variable _must_ be int-sized, ioctl expects that! */
-    int inotify_bytes = INOTIFY_BUF_SIZE;
-    if (ioctl(g_io_channel_unix_get_fd(gio), FIONREAD, &inotify_bytes) != 0
-    /*|| inotify_bytes < sizeof(struct inotify_event)
-         ^^^^^^^^^^^^^^^^^^^ - WRONG: legitimate 0 was seen when flooded with inotify events
-    */
-     || inotify_bytes > INOTIFY_BUF_SIZE
-    ) {
-        inotify_bytes = INOTIFY_BUF_SIZE;
-    }
-    VERB3 log("FIONREAD:%d", inotify_bytes);
-
-    if (inotify_bytes == 0)
-        return TRUE; /* "please don't remove this event" */
-
-    /* We may race: more inotify events may happen after ioctl(FIONREAD).
-     * To be more efficient, allocate a bit more space to eat those events too.
-     * This also would help against a bug we once had where
-     * g_io_channel_read_chars() was buffering reads
-     * and we were going out of sync wrt struct inotify_event's layout.
-     */
-    inotify_bytes += 2 * (sizeof(struct inotify_event) + FILENAME_MAX);
-    char *buf = xmalloc(inotify_bytes);
-    errno = 0;
-    gsize len;
-    GError *gerror = NULL;
-    /* Note: we ensured elsewhere that this read is non-blocking, making it ok
-     * for buffer len (inotify_bytes) to be larger than actual available byte count.
-     */
-    GIOStatus err = g_io_channel_read_chars(gio, buf, inotify_bytes, &len, &gerror);
-    if (err != G_IO_STATUS_NORMAL)
-    {
-        perror_msg("Error reading inotify fd: %s", gerror ? gerror->message : "unknown");
-        free(buf);
-        if (gerror)
-            g_error_free(gerror);
-        return FALSE; /* "remove this event" (huh??) */
-    }
-
-    /* Reconstruct each event */
-    gsize i = 0;
-    for (;;)
-    {
-        if (i >= len)
-        {
-            /* This would catch one of our former bugs. Let's be paranoid */
-            if (i > len)
-                error_msg("warning: ran off struct inotify (this should never happen): %u > %u", (int)i, (int)len);
-            break;
-        }
-
-        struct inotify_event *event = (struct inotify_event *) &buf[i];
+/* We no longer need a name of event */
+#if 0
         const char *name = NULL;
         if (event->len)
             name = event->name;
+#endif
         //log("i:%d len:%d event->mask:%x IN_ISDIR:%x IN_CLOSE_WRITE:%x event->len:%d",
         //    i, len, event->mask, IN_ISDIR, IN_CLOSE_WRITE, event->len);
-        i += sizeof(*event) + event->len;
-
-        if (event->wd == s_upload_watch)
-        {
-            /* Was the (presumable newly created) file closed in upload dir,
-             * or a file moved to upload dir? */
-            if (!(event->mask & IN_ISDIR)
-             && event->mask & (IN_CLOSE_WRITE|IN_MOVED_TO)
-             && name
-            ) {
-                const char *ext = strrchr(name, '.');
-                if (ext && strcmp(ext + 1, "working") == 0)
-                    continue;
-
-                const char *dir = g_settings_sWatchCrashdumpArchiveDir;
-                log("Detected creation of file '%s' in upload directory '%s'", name, dir);
-
-                fflush(NULL); /* paranoia */
-                pid_t pid = fork();
-                if (pid < 0)
-                    perror_msg("fork");
-                if (pid == 0)
-                {
-                    /* child */
-                    xchdir(dir);
-                    if (g_settings_delete_uploaded)
-                        execlp("abrt-handle-upload", "abrt-handle-upload", "-d",
-                               g_settings_dump_location, dir, name, (char*)NULL);
-                    else
-                        execlp("abrt-handle-upload", "abrt-handle-upload",
-                               g_settings_dump_location, dir, name, (char*)NULL);
-                    error_msg_and_die("Can't execute '%s'", "abrt-handle-upload");
-                }
-
-                if (pid > 0)
-                    increment_child_count();
-            }
-            continue;
-        }
 
         if (event->mask & IN_DELETE_SELF || event->mask & IN_MOVE_SELF)
         {
-            /* HACK: we expect that we watch deletion only of 'g_settings_dump_location'
-             * but this handler is used for 'g_settings_sWatchCrashdumpArchiveDir' too
-             */
             log("Recreating deleted dump location '%s'", g_settings_dump_location);
 
-            int inotify_fd = g_io_channel_unix_get_fd(gio);
-            inotify_rm_watch(inotify_fd, event->wd);
             sanitize_dump_dir_rights();
-            if (inotify_add_watch(inotify_fd, g_settings_dump_location, IN_DUMP_LOCATION_FLAGS) < 0)
-            {
-                perror_msg_and_die("inotify_add_watch failed on recreated '%s'", g_settings_dump_location);
-            }
-
-            continue;
+            abrt_inotify_watch_reset(watch, g_settings_dump_location, IN_DUMP_LOCATION_FLAGS);
         }
 /* We no longer watch for subdirectory creations */
 #if 0
@@ -330,10 +226,6 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         log("Directory '%s' creation detected", name);
         ...
 #endif
-    } /* while */
-
-    free(buf);
-    return TRUE; /* "please don't remove this event" */
 }
 
 
@@ -644,11 +536,10 @@ int main(int argc, char** argv)
         signal(SIGALRM, handle_signal);
 
     GMainLoop* pMainloop = NULL;
-    GIOChannel* channel_inotify = NULL;
-    guint channel_id_inotify_event = 0;
     GIOChannel* channel_signal = NULL;
     guint channel_id_signal_event = 0;
     bool pidfile_created = false;
+    struct abrt_inotify_watch *aiw = NULL;
 
     /* Initialization */
     VERB1 log("Loading settings");
@@ -700,53 +591,11 @@ int main(int argc, char** argv)
     VERB1 log("Creating glib main loop");
     pMainloop = g_main_loop_new(NULL, FALSE);
 
-    VERB1 log("Initializing inotify");
-    errno = 0;
-    int inotify_fd = inotify_init();
-    if (inotify_fd == -1)
-        perror_msg_and_die("inotify_init failed");
-    close_on_exec_on(inotify_fd);
-
     /* Watching 'g_settings_dump_location' for delete self
      * because hooks expects that the dump location exists if abrtd is running
      */
-    if (inotify_add_watch(inotify_fd, g_settings_dump_location, IN_DUMP_LOCATION_FLAGS) < 0)
-    {
-        perror_msg("inotify_add_watch failed on '%s'", g_settings_dump_location);
-        goto init_error;
-    }
-    /* ...and upload dir */
-    if (g_settings_sWatchCrashdumpArchiveDir)
-    {
-        if (strcmp(g_settings_sWatchCrashdumpArchiveDir, g_settings_dump_location) == 0)
-        {
-            error_msg("%s and %s can't be the same", "DumpLocation", "WatchCrashdumpArchiveDir");
-            goto init_error;
-        }
-        s_upload_watch = inotify_add_watch(inotify_fd, g_settings_sWatchCrashdumpArchiveDir, IN_CLOSE_WRITE|IN_MOVED_TO);
-        if (s_upload_watch < 0)
-        {
-            perror_msg("inotify_add_watch failed on '%s'", g_settings_sWatchCrashdumpArchiveDir);
-            goto init_error;
-        }
-    }
-
-    VERB1 log("Adding inotify watch to glib main loop");
-    /* Without nonblocking mode, users observed abrtd blocking
-     * on inotify read forever. Must set fd to non-blocking:
-     */
-    ndelay_on(inotify_fd);
-    channel_inotify = abrt_gio_channel_unix_new(inotify_fd);
-    /*
-     * glib's read buffering must be disabled, or else
-     * FIONREAD-reported "available data" sizes and sizes of reads
-     * can become inconsistent, and worse, buffering can split
-     * struct inotify's (very bad!).
-     */
-    g_io_channel_set_buffered(channel_inotify, false);
-    channel_id_inotify_event = add_watch_or_die(channel_inotify,
-                        G_IO_IN | G_IO_PRI | G_IO_HUP,
-                        handle_inotify_cb);
+    aiw = abrt_inotify_watch_init(g_settings_dump_location,
+            IN_DUMP_LOCATION_FLAGS, handle_inotify_cb, /*user data*/NULL);
 
     /* Add an event source which waits for INT/TERM signal */
     VERB1 log("Adding signal pipe watch to glib main loop");
@@ -792,10 +641,8 @@ int main(int argc, char** argv)
         g_source_remove(channel_id_signal_event);
     if (channel_signal)
         g_io_channel_unref(channel_signal);
-    if (channel_id_inotify_event > 0)
-        g_source_remove(channel_id_inotify_event);
-    if (channel_inotify)
-        g_io_channel_unref(channel_inotify);
+
+    abrt_inotify_watch_destroy(aiw);
 
     if (pMainloop)
         g_main_loop_unref(pMainloop);
