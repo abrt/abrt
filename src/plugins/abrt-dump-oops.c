@@ -20,12 +20,13 @@
 #include "libabrt.h"
 
 /* How many problem dirs to create at most?
- * Also causes cooldown sleep if exceeded -
+ * Also causes cooldown sleep with -t if exceeded -
  * useful when called from a log watcher.
  */
 #define MAX_DUMPED_DD_COUNT  5
 
 static bool world_readable_dump = false;
+static bool throttle_dd_creation = false;
 static const char *debug_dumps_dir = ".";
 
 #define MAX_SCAN_BLOCK  (4*1024*1024)
@@ -161,9 +162,9 @@ static void save_oops_data_in_dump_dir(struct dump_dir *dd, char *oops, const ch
 /* returns number of errors */
 static unsigned create_oops_dump_dirs(GList *oops_list, unsigned oops_cnt)
 {
-    unsigned countdown = MAX_DUMPED_DD_COUNT + 1; /* do not report hundreds of oopses */
+    unsigned countdown = MAX_DUMPED_DD_COUNT; /* do not report hundreds of oopses */
 
-    VERB1 log("Saving %u oopses as dump dirs", oops_cnt >= countdown ? countdown-1 : oops_cnt);
+    VERB1 log("Saving %u oopses as problem dirs", oops_cnt >= countdown ? countdown : oops_cnt);
 
     char *cmdline_str = xmalloc_fopen_fgetline_fclose("/proc/cmdline");
     char *fips_enabled = xmalloc_fopen_fgetline_fclose("/proc/sys/crypto/fips_enabled");
@@ -185,7 +186,7 @@ static unsigned create_oops_dump_dirs(GList *oops_list, unsigned oops_cnt)
     pid_t my_pid = getpid();
     unsigned idx = 0;
     unsigned errors = 0;
-    while (idx < oops_cnt && --countdown != 0)
+    while (idx < oops_cnt)
     {
         char base[sizeof("oops-YYYY-MM-DD-hh:mm:ss-%lu-%lu") + 2 * sizeof(long)*3];
         sprintf(base, "oops-%s-%lu-%lu", iso_date, (long)my_pid, (long)idx);
@@ -214,6 +215,12 @@ static unsigned create_oops_dump_dirs(GList *oops_list, unsigned oops_cnt)
             errors++;
 
         free(path);
+
+        if (--countdown == 0)
+            break;
+
+        if (dd && throttle_dd_creation)
+            sleep(1);
     }
 
     free(cmdline_str);
@@ -249,7 +256,8 @@ int main(int argc, char **argv)
         OPT_D = 1 << 4,
         OPT_u = 1 << 5,
         OPT_x = 1 << 6,
-        OPT_m = 1 << 7,
+        OPT_t = 1 << 7,
+        OPT_m = 1 << 8,
     };
     char *problem_dir = NULL;
     /* Keep enum above and order of options below in sync! */
@@ -264,6 +272,7 @@ int main(int argc, char **argv)
         OPT_BOOL(  'D', NULL, NULL, _("Same as -d DumpLocation, DumpLocation is specified in abrt.conf")),
         OPT_STRING('u', NULL, &problem_dir, "PROBLEM", _("Save the extracted information in PROBLEM")),
         OPT_BOOL(  'x', NULL, NULL, _("Make the problem directory world readable")),
+        OPT_BOOL(  't', NULL, NULL, _("Throttle problem directory creation to 1 per second")),
         OPT_BOOL(  'm', NULL, NULL, _("Print search string(s) to stdout and exit")),
         OPT_END()
     };
@@ -299,6 +308,7 @@ int main(int argc, char **argv)
         xmove_fd(xopen(argv[0], O_RDONLY), STDIN_FILENO);
 
     world_readable_dump = (opts & OPT_x);
+    throttle_dd_creation = (opts & OPT_t);
     unsigned errors = 0;
     GList *oops_list = NULL;
     scan_syslog_file(&oops_list, STDIN_FILENO);
@@ -366,7 +376,7 @@ int main(int argc, char **argv)
                     error_msg(_("Can't update the problem: more than one oops found"));
                     break;
             }
-       }
+        }
     }
     list_free_with_free(oops_list);
     //oops_list = NULL;
@@ -375,9 +385,12 @@ int main(int argc, char **argv)
      * (because log watcher waits to us to terminate)
      * and possibly prevents dreaded "abrt storm".
      */
-    if (oops_cnt > MAX_DUMPED_DD_COUNT)
+    int unreported_cnt = oops_cnt - MAX_DUMPED_DD_COUNT;
+    if (unreported_cnt > 0 && throttle_dd_creation)
     {
-        sleep(oops_cnt - MAX_DUMPED_DD_COUNT);
+        /* Quadratic throttle time growth, but careful to not overflow in "n*n" */
+        int n = unreported_cnt > 30 ? 30 : unreported_cnt;
+        sleep(n * n); /* max 15 mins */
     }
 
     return errors;

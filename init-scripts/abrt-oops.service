@@ -5,7 +5,7 @@ Requisite=abrtd.service
 
 [Service]
 # TODO: do we really need absolute paths here?
-ExecStart=/bin/sh -c '/bin/dmesg | /usr/bin/abrt-dump-oops -xD; exec /usr/bin/abrt-watch-log -F "`/usr/bin/abrt-dump-oops -m`" /var/log/messages -- /usr/bin/abrt-dump-oops -xD'
+ExecStart=/bin/sh -c '/bin/dmesg | /usr/bin/abrt-dump-oops -xD; exec /usr/bin/abrt-watch-log -F "`/usr/bin/abrt-dump-oops -m`" /var/log/messages -- /usr/bin/abrt-dump-oops -xtD'
 
 [Install]
 WantedBy=multi-user.target

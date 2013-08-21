@@ -40,7 +40,7 @@ start() {
 	# Scan dmesg
 	dmesg | abrt-dump-oops -xD
 	# Watch and scan /var/log/messages
-	setsid abrt-watch-log -F "`abrt-dump-oops -m`" /var/log/messages -- abrt-dump-oops -xD </dev/null >/dev/null 2>&1 &
+	setsid abrt-watch-log -F "`abrt-dump-oops -m`" /var/log/messages -- abrt-dump-oops -xtD </dev/null >/dev/null 2>&1 &
 	$dry_run || touch -- "$LOCK"
 	return $RETVAL
 }

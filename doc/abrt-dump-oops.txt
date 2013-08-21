@@ -7,7 +7,7 @@ abrt-dump-oops - Extract oops from FILE (or standard input)
 
 SYNOPSIS
 --------
-'abrt-dump-oops' [-vusoxm] [-d DIR]/[-D] [FILE]
+'abrt-dump-oops' [-vusoxtm] [-d DIR]/[-D] [FILE]
 
 DESCRIPTION
 -----------
@@ -36,6 +36,9 @@ OPTIONS
 
 -x::
    Make the problem directory world readable. Usable only with -d/-D
+
+-t::
+   Throttle problem directory creation to 1 per second
 
 -m::
    Print search string(s) for 'abrt-watch-log' to stdout and exit
