@@ -43,6 +43,7 @@ rlJournalStart
         rlRun "setsebool -P abrt_anon_write 1"
         rlRun "service abrtd stop" 0 "Killing abrtd"
         rlRun "service abrtd start" 0 "Starting abrtd"
+        rlRun "service abrt-upload-watch start" 0 "Starting abrt-upload-watch"
         rlRun "service abrt-ccpp restart" 0 "Start abrt-ccpp"
     rlPhaseEnd
 
