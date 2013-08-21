@@ -150,6 +150,15 @@ Requires: abrt-libs = %{version}-%{release}
 This package contains hook for C/C++ crashed programs and %{name}'s C/C++
 analyzer plugin.
 
+%package addon-upload-watch
+Summary: %{name}'s upload addon
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+Requires: abrt-libs = %{version}-%{release}
+
+%description addon-upload-watch
+This package contains hook for uploaded problems.
+
 %package retrace-client
 Summary: %{name}'s retrace client
 Group: System Environment/Libraries
@@ -437,6 +446,9 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %post addon-uefioops
 %systemd_post abrt-uefioops.service
 
+%post addon-upload-watch
+%systemd_post abrt-upload-watch.service
+
 %preun
 %systemd_preun abrtd.service
 
@@ -455,6 +467,9 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %preun addon-uefioops
 %systemd_preun abrt-uefioops.service
 
+%preun addon-upload-watch
+%systemd_preun abrt-upload-watch.service
+
 %postun
 %systemd_postun_with_restart abrtd.service
 
@@ -472,6 +487,9 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 
 %postun addon-uefioops
 %systemd_postun_with_restart abrt-uefioops.service
+
+%postun addon-upload-watch
+%systemd_postun_with_restart abrt-upload-watch.service
 
 %post gui
 # update icon cache
@@ -645,6 +663,17 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man*/abrt-action-analyze-vulnerability.*
 %{_mandir}/man*/abrt-action-perform-ccpp-analysis.*
 %{_mandir}/man*/abrt-dedup-client.*
+
+%files addon-upload-watch
+%defattr(-,root,root,-)
+%{_sbindir}/abrt-upload-watch
+%if %{with systemd}
+%{_unitdir}/abrt-upload-watch.service
+%else
+%{_initrddir}/abrt-upload-watch
+%endif
+%{_mandir}/man*/abrt-upload-watch.*
+
 
 %files retrace-client
 %{_bindir}/abrt-retrace-client
