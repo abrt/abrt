@@ -705,6 +705,7 @@ int main(int argc, char** argv)
         free(dest_filename);
 
         dd_save_text(dd, FILENAME_ANALYZER, "CCpp");
+        dd_save_text(dd, FILENAME_TYPE, "CCpp");
         dd_save_text(dd, FILENAME_EXECUTABLE, executable);
         dd_save_text(dd, FILENAME_PID, pid_str);
         dd_save_text(dd, FILENAME_PROC_PID_STATUS, proc_pid_status);
