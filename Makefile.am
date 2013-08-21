@@ -40,7 +40,8 @@ if HAVE_SYSTEMD
                                   init-scripts/abrt-oops.service \
                                   init-scripts/abrt-xorg.service \
                                   init-scripts/abrt-vmcore.service \
-                                  init-scripts/abrt-uefioops.service
+                                  init-scripts/abrt-uefioops.service \
+                                  init-scripts/abrt-upload-watch.service
 else
     sysv_initdir = $(sysconfdir)/rc.d/init.d/
     sysv_init_SCRIPTS = init-scripts/abrtd \
@@ -48,7 +49,8 @@ else
                         init-scripts/abrt-oops \
                         init-scripts/abrt-xorg \
                         init-scripts/abrt-vmcore \
-                        init-scripts/abrt-uefioops
+                        init-scripts/abrt-uefioops \
+                        init-scripts/abrt-upload-watch
 endif
 
 RPM_DIRS = --define "_sourcedir `pwd`" \

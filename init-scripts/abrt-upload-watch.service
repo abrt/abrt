@@ -1,0 +1,10 @@
+[Unit]
+Description=ABRT upload watcher
+After=abrtd.service
+Requisite=abrtd.service
+
+[Service]
+ExecStart=/usr/sbin/abrt-upload-watch
+
+[Install]
+WantedBy=multi-user.target
