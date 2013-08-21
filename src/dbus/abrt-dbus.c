@@ -5,7 +5,7 @@
 #include <grp.h>
 #include "libabrt.h"
 #include "abrt-polkit.h"
-#include "abrt-dbus.h"
+#include "abrt_glib.h"
 #include <libreport/dump_dir.h>
 #include "problem_api.h"
 

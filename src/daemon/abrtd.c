@@ -24,6 +24,7 @@
 #include <sys/inotify.h>
 #include <sys/ioctl.h> /* ioctl(FIONREAD) */
 
+#include "abrt_glib.h"
 #include "libabrt.h"
 
 
@@ -69,24 +70,6 @@ static guint add_watch_or_die(GIOChannel *channel, unsigned condition, GIOFunc f
     if (!r)
         perror_msg_and_die("g_io_add_watch failed");
     return r;
-}
-
-static GIOChannel *my_io_channel_unix_new(int fd)
-{
-    GIOChannel *ch = g_io_channel_unix_new(fd);
-
-    /* Need to set the encoding otherwise we get:
-     * "Invalid byte sequence in conversion input".
-     * According to manual "NULL" is safe for binary data.
-     */
-    GError *error = NULL;
-    g_io_channel_set_encoding(ch, NULL, &error);
-    if (error)
-        perror_msg_and_die("Can't set encoding on gio channel: %s", error->message);
-
-    g_io_channel_set_close_on_unref(ch, TRUE);
-
-    return ch;
 }
 
 static void increment_child_count(void)
@@ -427,7 +410,7 @@ static void dumpsocket_init(void)
     if (chmod(SOCKET_FILE, SOCKET_PERMISSION) != 0)
         perror_msg_and_die("chmod '%s'", SOCKET_FILE);
 
-    channel_socket = my_io_channel_unix_new(socketfd);
+    channel_socket = abrt_gio_channel_unix_new(socketfd);
 
     channel_id_socket = add_watch_or_die(channel_socket, G_IO_IN | G_IO_PRI | G_IO_HUP, server_socket_cb);
 }
@@ -753,7 +736,7 @@ int main(int argc, char** argv)
      * on inotify read forever. Must set fd to non-blocking:
      */
     ndelay_on(inotify_fd);
-    channel_inotify = my_io_channel_unix_new(inotify_fd);
+    channel_inotify = abrt_gio_channel_unix_new(inotify_fd);
     /*
      * glib's read buffering must be disabled, or else
      * FIONREAD-reported "available data" sizes and sizes of reads
@@ -767,7 +750,7 @@ int main(int argc, char** argv)
 
     /* Add an event source which waits for INT/TERM signal */
     VERB1 log("Adding signal pipe watch to glib main loop");
-    channel_signal = my_io_channel_unix_new(s_signal_pipe[0]);
+    channel_signal = abrt_gio_channel_unix_new(s_signal_pipe[0]);
     channel_id_signal_event = add_watch_or_die(channel_signal,
                         G_IO_IN | G_IO_PRI | G_IO_HUP,
                         handle_signal_cb);

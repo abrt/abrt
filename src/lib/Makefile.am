@@ -11,6 +11,7 @@ libabrt_la_SOURCES = \
     notify_new_path.c \
     kernel.c \
     abrt_glib.c \
+    abrt_glib.h \
     migrate_dirs.c \
     check_recent_crash_file.c \
     problem_api.c \

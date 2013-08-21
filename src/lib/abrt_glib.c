@@ -16,7 +16,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include <glib-2.0/glib.h>
+#include "abrt_glib.h"
 #include "libabrt.h"
 
 GList *string_list_from_variant(GVariant *variant)
@@ -53,4 +53,22 @@ GVariant *variant_from_string_list(const GList *strings)
     g_variant_builder_unref(builder);
 
     return variant;
+}
+
+GIOChannel *abrt_gio_channel_unix_new(int fd)
+{
+    GIOChannel *ch = g_io_channel_unix_new(fd);
+
+    /* Need to set the encoding otherwise we get:
+     * "Invalid byte sequence in conversion input".
+     * According to manual "NULL" is safe for binary data.
+     */
+    GError *error = NULL;
+    g_io_channel_set_encoding(ch, NULL, &error);
+    if (error)
+        perror_msg_and_die("Can't set encoding on gio channel: %s", error->message);
+
+    g_io_channel_set_close_on_unref(ch, TRUE);
+
+    return ch;
 }
