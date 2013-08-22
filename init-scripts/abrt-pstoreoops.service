@@ -6,7 +6,7 @@ ConditionDirectoryNotEmpty=/sys/fs/pstore
 
 [Service]
 Type=oneshot
-ExecStart=/usr/sbin/abrt-harvest-uefioops
+ExecStart=/usr/sbin/abrt-harvest-pstoreoops
 RemainAfterExit=yes
 
 [Install]

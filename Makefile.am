@@ -40,7 +40,7 @@ if HAVE_SYSTEMD
                                   init-scripts/abrt-oops.service \
                                   init-scripts/abrt-xorg.service \
                                   init-scripts/abrt-vmcore.service \
-                                  init-scripts/abrt-uefioops.service \
+                                  init-scripts/abrt-pstoreoops.service \
                                   init-scripts/abrt-upload-watch.service
 else
     sysv_initdir = $(sysconfdir)/rc.d/init.d/
@@ -49,7 +49,7 @@ else
                         init-scripts/abrt-oops \
                         init-scripts/abrt-xorg \
                         init-scripts/abrt-vmcore \
-                        init-scripts/abrt-uefioops \
+                        init-scripts/abrt-pstoreoops \
                         init-scripts/abrt-upload-watch
 endif
 

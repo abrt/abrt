@@ -13,10 +13,10 @@ dist_pluginsconf_DATA = \
 sbin_SCRIPTS = \
     abrt-install-ccpp-hook \
     abrt-harvest-vmcore \
-    abrt-harvest-uefioops
+    abrt-harvest-pstoreoops
 
 bin_PROGRAMS = \
-    abrt-merge-uefioops
+    abrt-merge-pstoreoops
 
 libexec_PROGRAMS = abrt-hook-ccpp
 
@@ -36,10 +36,10 @@ abrt_hook_ccpp_LDADD = \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS)
 
-# abrt-merge-uefioops
-abrt_merge_uefioops_SOURCES = \
-    abrt-merge-uefioops.c
-abrt_merge_uefioops_CPPFLAGS = \
+# abrt-merge-pstoreoops
+abrt_merge_pstoreoops_SOURCES = \
+    abrt-merge-pstoreoops.c
+abrt_merge_pstoreoops_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -DVAR_RUN=\"$(VAR_RUN)\" \
@@ -48,7 +48,7 @@ abrt_merge_uefioops_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE
-abrt_merge_uefioops_LDADD = \
+abrt_merge_pstoreoops_LDADD = \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS)
 
@@ -61,7 +61,7 @@ pyhook_PYTHON = \
 EXTRA_DIST = abrt_exception_handler.py.in \
 	abrt-install-ccpp-hook.in \
 	abrt_harvest_vmcore.py.in \
-	abrt-harvest-uefioops.in
+	abrt-harvest-pstoreoops.in
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc)) $(man1_MANS)
 
@@ -90,7 +90,7 @@ abrt-harvest-vmcore: abrt_harvest_vmcore.py.in
 	    -e s,\@DEFAULT_DUMP_LOCATION\@,$(DEFAULT_DUMP_LOCATION),g \
 		$< >$@
 
-abrt-harvest-uefioops: abrt-harvest-uefioops.in
+abrt-harvest-pstoreoops: abrt-harvest-pstoreoops.in
 	sed -e s,\@CONF_DIR\@,\$(CONF_DIR)\,g \
 	    -e s,\@DEFAULT_DUMP_LOCATION\@,$(DEFAULT_DUMP_LOCATION),g \
 		$< >$@

@@ -2,9 +2,9 @@
 # vim: dict=/usr/share/beakerlib/dictionary.vim cpt=.,w,b,u,t,i,k
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#   runtest.sh of uefioops
-#   Description: Tests abrt uefi harvesting
-#   Author: Jiri Moskovcak <jmoskovc@redhat.com>
+#   runtest.sh of pstoreoops
+#   Description: Test abrt-merge-pstoreoops
+#   Author: Denys Vlasenko <dvlasenk@redhat.com>
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -28,7 +28,7 @@
 . /usr/share/beakerlib/beakerlib.sh
 . ../aux/lib.sh
 
-TEST="uefioops"
+TEST="pstoreoops"
 PACKAGE="abrt"
 
 rlJournalStart
@@ -38,8 +38,12 @@ rlJournalStart
         pushd -- "$TmpDir"
     rlPhaseEnd
 
-    rlPhaseStartTest "Harvesting oops"
-        rlRun "abrt-harvest-uefioops --uefidir=$TmpDir dryrun 2>&1 | grep 'abrt-dump-oops: Found oopses: 1'" 0 "Testing harvesting"
+    rlPhaseStartTest "merge pstore oops"
+        rlRun "abrt-merge-pstoreoops -o dmesg-efi-* | grep 'Process Xorg'" 0 "Testing merging"
+    rlPhaseEnd
+
+    rlPhaseStartTest "delete pstore oops"
+        rlRun "abrt-merge-pstoreoops -d dmesg-efi-*" 0 "Testing deleting"
         rlAssertNotExists dmesg-efi-1
         rlAssertNotExists dmesg-efi-2
     rlPhaseEnd

@@ -11,9 +11,9 @@ import sys
 from subprocess import Popen
 
 if __name__ == "__main__":
-    # need to allow setting the uefi oops storage dir
+    # need to allow setting the pstore oops storage dir
     # to make this script testable
-    uefidir = "/sys/fs/pstore"
+    pstoredir = "/sys/fs/pstore"
     dryrun = False
 
     for arg in sys.argv:
@@ -21,24 +21,24 @@ if __name__ == "__main__":
             dryrun = True
             continue
 
-        if arg.startswith("--uefidir"):
-            uefidir = arg.split('=')[1]
+        if arg.startswith("--pstoredir"):
+            pstoredir = arg.split('=')[1]
 
     try:
-        os.chdir(uefidir)
+        os.chdir(pstoredir)
     except OSError, ex:
         # silently ignore if the pstore doesn't exist, because that usually
-        # means that we're on the system where uefi boot is not supported
-        sys.stderr.write("Can't chdir to {0}: {1}".format(uefidir, ex))
+        # means that we're on the system where pstore boot is not supported
+        sys.stderr.write("Can't chdir to {0}: {1}".format(pstoredir, ex))
         sys.exit(0)
 
     merge_status = Popen(
-            ["-c", "abrt-merge-uefioops -o * | abrt-dump-oops {0}"
+            ["-c", "abrt-merge-pstoreoops -o * | abrt-dump-oops {0}"
             .format("-o" if dryrun else "-D")],
             shell=True,
             bufsize=-1
         ).wait()
     if merge_status == 0:
-        Popen(["abrt-merge-uefioops -d *"], shell=True, bufsize=-1)
+        Popen(["abrt-merge-pstoreoops -d *"], shell=True, bufsize=-1)
     else:
-        sys.stderr.write("Failed to merge uefi oops")
+        sys.stderr.write("Failed to merge pstore oops")

@@ -2,21 +2,21 @@
 # Harvest UEFI-saved oopses for ABRT
 #
 # chkconfig: 35 82 16
-# description: Collects UEFI-saved oopses for ABRT
+# description: Collects pstore-saved oopses for ABRT
 ### BEGIN INIT INFO
-# Provides: abrt-uefioops
+# Provides: abrt-pstoreoops
 # Required-Start: $abrtd
 # Default-Stop: 0 1 2 6
 # Default-Start: 3 5
-# Short-Description: Collects UEFI-saved oopses for ABRT
-# Description: Collects UEFI-saved oopses for ABRT
+# Short-Description: Collects pstore-saved oopses for ABRT
+# Description: Collects pstore-saved oopses for ABRT
 ### END INIT INFO
 
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-LOCK="/var/lock/subsys/abrt-uefioops"
-HARVEST_CMD="/usr/sbin/abrt-harvest-uefioops"
+LOCK="/var/lock/subsys/abrt-pstoreoops"
+HARVEST_CMD="/usr/sbin/abrt-harvest-pstoreoops"
 
 RETVAL=0
 
