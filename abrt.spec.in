@@ -206,15 +206,15 @@ Requires: crash
 This package contains plugin for collecting kernel crash information from
 vmcore files.
 
-%package addon-uefioops
-Summary: %{name}'s UEFI oops addon
+%package addon-pstoreoops
+Summary: %{name}'s pstore oops addon
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-libs = %{version}-%{release}
 Requires: abrt-addon-kerneloops
 
-%description addon-uefioops
-This package contains plugin for collecting kernel oopses from UEFI storage.
+%description addon-pstoreoops
+This package contains plugin for collecting kernel oopses from pstore storage.
 
 %if %{with bodhi}
 %package plugin-bodhi
@@ -257,7 +257,7 @@ Group: Applications/System
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-tui
 Requires: abrt-addon-kerneloops
-Requires: abrt-addon-uefioops
+Requires: abrt-addon-pstoreoops
 Requires: abrt-addon-vmcore
 Requires: abrt-addon-ccpp
 Requires: abrt-addon-python
@@ -290,7 +290,7 @@ Group: User Interface/Desktops
 # any tweaking in abrt.conf (IOW: all plugins mentioned there must be installed)
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-addon-kerneloops
-Requires: abrt-addon-uefioops
+Requires: abrt-addon-pstoreoops
 Requires: abrt-addon-vmcore
 Requires: abrt-addon-ccpp
 Requires: abrt-addon-python
@@ -443,8 +443,8 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %post addon-vmcore
 %systemd_post abrt-vmcore.service
 
-%post addon-uefioops
-%systemd_post abrt-uefioops.service
+%post addon-pstoreoops
+%systemd_post abrt-pstoreoops.service
 
 %post addon-upload-watch
 %systemd_post abrt-upload-watch.service
@@ -464,8 +464,8 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %preun addon-vmcore
 %systemd_preun abrt-vmcore.service
 
-%preun addon-uefioops
-%systemd_preun abrt-uefioops.service
+%preun addon-pstoreoops
+%systemd_preun abrt-pstoreoops.service
 
 %preun addon-upload-watch
 %systemd_preun abrt-upload-watch.service
@@ -485,8 +485,8 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %postun addon-vmcore
 %systemd_postun_with_restart abrt-vmcore.service
 
-%postun addon-uefioops
-%systemd_postun_with_restart abrt-uefioops.service
+%postun addon-pstoreoops
+%systemd_postun_with_restart abrt-pstoreoops.service
 
 %postun addon-upload-watch
 %systemd_postun_with_restart abrt-upload-watch.service
@@ -526,8 +526,8 @@ service abrt-xorg condrestart >/dev/null 2>&1 || :
 %posttrans addon-vmcore
 service abrt-vmcore condrestart >/dev/null 2>&1 || :
 
-%posttrans addon-uefioops
-service abrt-uefioops condrestart >/dev/null 2>&1 || :
+%posttrans addon-pstoreoops
+service abrt-pstoreoops condrestart >/dev/null 2>&1 || :
 
 %posttrans gui
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
@@ -724,17 +724,17 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man1/abrt-harvest-vmcore.1*
 %{_mandir}/man1/abrt-action-analyze-vmcore.1*
 
-%files addon-uefioops
+%files addon-pstoreoops
 %defattr(-,root,root,-)
 %if %{with systemd}
-%{_unitdir}/abrt-uefioops.service
+%{_unitdir}/abrt-pstoreoops.service
 %else
-%{_initrddir}/abrt-uefioops
+%{_initrddir}/abrt-pstoreoops
 %endif
-%{_sbindir}/abrt-harvest-uefioops
-%{_bindir}/abrt-merge-uefioops
-%{_mandir}/man1/abrt-harvest-uefioops.1*
-%{_mandir}/man1/abrt-merge-uefioops.1*
+%{_sbindir}/abrt-harvest-pstoreoops
+%{_bindir}/abrt-merge-pstoreoops
+%{_mandir}/man1/abrt-harvest-pstoreoops.1*
+%{_mandir}/man1/abrt-merge-pstoreoops.1*
 
 %files addon-python
 %defattr(-,root,root,-)
