@@ -518,6 +518,16 @@ service abrtd condrestart >/dev/null 2>&1 || :
 
 %posttrans addon-ccpp
 service abrt-ccpp condrestart >/dev/null 2>&1 || :
+# Regenerate core_bactraces because of missing crash threads
+abrtdir=$(grep "DumpLocation" /etc/abrt/abrt.conf | cut -d'=' -f2 | tr -d ' ')
+if test -d "$abrtdir"; then
+    for DD in `find "$abrtdir" -maxdepth 1 -type d`
+    do
+        if test -f "$DD/analyzer" && grep -q "^CCpp$" "$DD/analyzer"; then
+            /usr/bin/abrt-action-generate-core-backtrace -d "$DD" -- >/dev/null 2>&1
+        fi
+    done
+fi
 
 %posttrans addon-kerneloops
 service abrt-oops condrestart >/dev/null 2>&1 || :
