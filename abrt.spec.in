@@ -212,6 +212,7 @@ Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-libs = %{version}-%{release}
 Requires: abrt-addon-kerneloops
+Obsoletes: abrt-addon-uefioops
 
 %description addon-pstoreoops
 This package contains plugin for collecting kernel oopses from pstore storage.
