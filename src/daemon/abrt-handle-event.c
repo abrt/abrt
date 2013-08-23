@@ -33,6 +33,8 @@ static struct sr_stacktrace *corebt = NULL;
 static char *analyzer = NULL;
 static char *crash_dump_dup_name = NULL;
 
+static void dup_corebt_fini(void);
+
 static char* load_backtrace(const struct dump_dir *dd)
 {
     const char *filename = FILENAME_BACKTRACE;
@@ -48,6 +50,15 @@ static char* load_backtrace(const struct dump_dir *dd)
 static int core_backtrace_is_duplicate(struct sr_stacktrace *bt1,
                                        const char *bt2_text)
 {
+    struct sr_thread *thread1 = sr_stacktrace_find_crash_thread(bt1);
+
+    if (thread1 == NULL)
+    {
+        VERB1 log("New stacktrace has no crash thread, disabling core stacktrace deduplicate");
+        dup_corebt_fini();
+        return 0;
+    }
+
     int result;
     char *error_message;
     struct sr_stacktrace *bt2 = sr_stacktrace_parse(sr_abrt_type_from_analyzer(analyzer),
@@ -59,8 +70,14 @@ static int core_backtrace_is_duplicate(struct sr_stacktrace *bt1,
         return 0;
     }
 
-    struct sr_thread *thread1 = sr_stacktrace_find_crash_thread(bt1);
     struct sr_thread *thread2 = sr_stacktrace_find_crash_thread(bt2);
+
+    if (thread2 == NULL)
+    {
+        VERB1 log("Failed to get crash thread, considering it not duplicate");
+        result = 0;
+        goto end;
+    }
 
     int length2 = sr_thread_frame_count(thread2);
 
