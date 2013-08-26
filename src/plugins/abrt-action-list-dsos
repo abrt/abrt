@@ -28,8 +28,15 @@ def xopen(name, mode):
 def parse_maps(maps_path):
     try:
         f = xopen(maps_path, "r")
-        # set() -> uniqifies the list of filenames
-        return set([x.strip()[x.find('/'):] for x in f.readlines() if x.find('/') > -1])
+        # We want to handle both /proc/PID/maps format:
+        #  4f200000-4f215000 r-xp 00000000 08:03 1835520   /usr/lib64/libz.so.1.2.7
+        # and Xorg backtrace format:
+        #  [ 86985.880] 9: /usr/lib64/libdrm.so.2 (drmHandleEvent+0xa3) [0x376b407513]
+        # To do that, we take only lines which have a / character,
+        # then for each line we start at first /, then remove everyting after first whitespace
+        files = [x[x.find('/'):].split()[0] for x in f.readlines() if x.find('/') > -1]
+        # set() uniqifies the list of filenames
+        return set(files)
     except IOError, e:
         error_msg_and_die("Can't read '%s': %s" % (maps_path, e))
 
