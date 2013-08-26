@@ -539,6 +539,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %doc README COPYING
 %if %{with systemd}
 %{_unitdir}/abrtd.service
+%{_tmpfilesdir}/abrt.conf
 %else
 %{_initrddir}/abrtd
 %endif
