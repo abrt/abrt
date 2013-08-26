@@ -42,6 +42,9 @@ if HAVE_SYSTEMD
                                   init-scripts/abrt-vmcore.service \
                                   init-scripts/abrt-pstoreoops.service \
                                   init-scripts/abrt-upload-watch.service
+
+    systemdtmpfilesdir = $(prefix)/lib/tmpfiles.d
+    systemdtmpfiles_DATA = init-scripts/abrt.conf
 else
     sysv_initdir = $(sysconfdir)/rc.d/init.d/
     sysv_init_SCRIPTS = init-scripts/abrtd \
