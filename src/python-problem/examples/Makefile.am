@@ -1,4 +1,5 @@
 example_python_DATA = \
+	bugzilla_numbers.py \
 	daemon_example.py \
 	edit_example.py \
 	list_all_example.py \

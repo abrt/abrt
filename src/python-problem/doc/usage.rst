@@ -50,3 +50,8 @@ Watching for new problems in a thread
 --------------------------------------
 
 .. literalinclude:: ../examples/thread_watch_example.py
+
+Getting bug numbers of problems reported to bugzilla
+----------------------------------------------------
+
+.. literalinclude:: ../examples/bugzilla_numbers.py
