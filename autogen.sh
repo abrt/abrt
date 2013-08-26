@@ -18,7 +18,7 @@ EOH
 
 build_depslist()
 {
-    DEPS_LIST=`grep "^\(Build\)\?Requires:" *.spec.in | grep -v "%{name}" | tr -s " " | tr "," "\n" | cut -f2 -d " " | grep -v "^abrt" | sort -u | tr "\n" " "`
+    DEPS_LIST=`grep "^\(Build\)\?Requires:" *.spec.in | grep -v "%{name}" | tr -s " " | tr "," "\n" | cut -f2 -d " " | grep -v "^abrt" | sort -u | while read br; do if [ "%" = ${br:0:1} ]; then grep "^%define ${br:2:-1}" *.spec.in | cut -f3 -d" "; else echo $br ;fi ; done | tr "\n" " "`
 }
 
 case "$1" in
