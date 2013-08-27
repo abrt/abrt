@@ -51,7 +51,6 @@ rlJournalStart
 
         # the upload watcher is not installed by default, but we need it for this test
         rlRun "yum install abrt-addon-upload-watch -y"
-        rlRun "service abrt-upload-watch start" 0 "Starting abrt-upload-watch"
         # Adding $PWD to PATH in order to override abrt-handle-upload
         # by a local script
         # Use 60 workers and in the worst case 1GiB for cache
@@ -89,14 +88,23 @@ rlJournalStart
         # Wait while out.log is growing ..."
         OLD_SIZE=0
         CYCLE=0
+        WAS_SAME=0
         while : ; do
-            NEW_SIZE=$(stat --printf=%s out.log)
+            # we can't use size of the log, the output is buffered!
+            NEW_SIZE=$(ls -l $WATCHED_DIR 2>/dev/null | wc -l)
 
-            test $((NEW_SIZE - OLD_SIZE)) -gt 0 || break
+            if [ $((NEW_SIZE - OLD_SIZE)) -eq 0 ]; then
+                WAS_SAME=$((WAS_SAME+1))
+            fi
+            if [ $WAS_SAME -gt 5 ]; then # it has to be 5 times the same
+                break
+            fi
 
             OLD_SIZE=$NEW_SIZE
 
             CYCLE=$((CYCLE + 1))
+
+
             test $CYCLE -gt 100 && break
 
             sleep 2
