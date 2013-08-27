@@ -49,6 +49,9 @@ rlJournalStart
         export WATCHED_DIR
         mkdir -p $WATCHED_DIR
 
+        # the upload watcher is not installed by default, but we need it for this test
+        rlRun "yum install abrt-addon-upload-watch -y"
+        rlRun "service abrt-upload-watch start" 0 "Starting abrt-upload-watch"
         # Adding $PWD to PATH in order to override abrt-handle-upload
         # by a local script
         # Use 60 workers and in the worst case 1GiB for cache

@@ -40,10 +40,12 @@ rlJournalStart
         mkdir -p /var/spool/abrt-upload/
         echo "WatchCrashdumpArchiveDir = /var/spool/abrt-upload/" > /etc/abrt/abrt.conf
         load_abrt_conf
+        # the upload watcher is not installed by default, but we need it for this test
+        rlRun "yum install abrt-addon-upload-watch -y"
         rlRun "setsebool -P abrt_anon_write 1"
         rlRun "service abrtd stop" 0 "Killing abrtd"
         rlRun "service abrtd start" 0 "Starting abrtd"
-        rlRun "service abrt-upload-watch start" 0 "Starting abrt-upload-watch"
+        rlRun "service abrt-upload-watch restart" 0 "Starting abrt-upload-watch"
         rlRun "service abrt-ccpp restart" 0 "Start abrt-ccpp"
     rlPhaseEnd
 
