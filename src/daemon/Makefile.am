@@ -103,7 +103,7 @@ daemonconfdir = $(CONF_DIR)
 dist_daemonconf_DATA = \
     abrt.conf \
     abrt-action-save-package-data.conf \
-    gpg_keys
+    gpg_keys.conf
 
 EXTRA_DIST = abrt-handle-upload.in
 

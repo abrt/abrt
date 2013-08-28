@@ -78,21 +78,28 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
 
 static void load_gpg_keys(void)
 {
-    FILE *fp = fopen(CONF_DIR"/gpg_keys", "r");
-    if (fp)
+    map_string_t *settings = new_map_string();
+    const char *conf_filename = CONF_DIR"/gpg_keys.conf";
+    if (!load_conf_file(conf_filename, settings, /*skip key w/o values:*/ false))
     {
-        /* every line is one key
-         * FIXME: make it more robust, it doesn't handle comments
-         */
-        char *line;
-        while ((line = xmalloc_fgetline(fp)) != NULL)
+        error_msg("Can't open '%s'", conf_filename);
+        return;
+    }
+
+    const char *gpg_keys_dir = get_map_string_item_or_NULL(settings, "GPGKeysDir");
+    if (strcmp(gpg_keys_dir, "") != 0)
+    {
+        VERB3 log("Reading gpg keys from '%s'", gpg_keys_dir);
+        GList *gpg_files = get_file_list(gpg_keys_dir, NULL /* we don't care about the file ext */);
+        GList *tmp_gpp_files = gpg_files;
+        while (tmp_gpp_files)
         {
-            if (line[0] == '/') // probably the beginning of a path, so let's handle it as a key
-                settings_setOpenGPGPublicKeys = g_list_append(settings_setOpenGPGPublicKeys, line);
-            else
-                free(line);
+            VERB3 log("Loading gpg key '%s'", fo_get_fullpath((file_obj_t *)tmp_gpp_files->data));
+            settings_setOpenGPGPublicKeys = g_list_append(settings_setOpenGPGPublicKeys, xstrdup(fo_get_fullpath((file_obj_t *)(tmp_gpp_files->data)) ));
+            tmp_gpp_files = g_list_next(tmp_gpp_files);
         }
-        fclose(fp);
+
+        g_list_free_full(gpg_files, (GDestroyNotify)free_file_obj);
     }
 }
 
