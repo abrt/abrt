@@ -50,11 +50,13 @@ rlJournalStart
         mkdir -p $WATCHED_DIR
 
         # the upload watcher is not installed by default, but we need it for this test
-        rlRun "yum install abrt-addon-upload-watch -y"
+        upload_watch_pkg="abrt-addon-upload-watch"
+        rlRun "rpm -q $upload_watch_pkg >/dev/null || yum install $upload_watch_pkg -y"
         # Adding $PWD to PATH in order to override abrt-handle-upload
         # by a local script
         # Use 60 workers and in the worst case 1GiB for cache
-        PATH="$PWD:$PATH:/usr/sbin" abrt-upload-watch -w 60 -c 1024 -v $WATCHED_DIR > out.log 2>&1 &
+        ERR_LOG="err.log"
+        PATH="$PWD:$PATH:/usr/sbin" abrt-upload-watch -w 60 -c 1024 -v $WATCHED_DIR > out.log 2>$ERR_LOG &
         PID_OF_WATCH=$!
     rlPhaseEnd
 
@@ -90,14 +92,17 @@ rlJournalStart
         CYCLE=0
         WAS_SAME=0
         while : ; do
-            # we can't use size of the log, the output is buffered!
-            NEW_SIZE=$(ls -l $WATCHED_DIR 2>/dev/null | wc -l)
-
-            if [ $((NEW_SIZE - OLD_SIZE)) -eq 0 ]; then
-                WAS_SAME=$((WAS_SAME+1))
-            fi
-            if [ $WAS_SAME -gt 5 ]; then # it has to be 5 times the same
-                break
+            kill -s USR1 $PID_OF_WATCH
+            grep "0 archives to process, 0 active workers" $ERR_LOG
+            if [ x"$?" == x"0" ]; then
+                # we can't use size of the log, the output is buffered!
+                NEW_SIZE=$(ls -l $WATCHED_DIR 2>/dev/null | wc -l)
+                if [ $((NEW_SIZE - OLD_SIZE)) -eq 0 ]; then
+                    WAS_SAME=$((WAS_SAME+1))
+                fi
+                if [ $WAS_SAME -gt 5 ]; then # it has to be 5 times the same
+                    break
+                fi
             fi
 
             OLD_SIZE=$NEW_SIZE
