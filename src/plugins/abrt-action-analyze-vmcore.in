@@ -3,13 +3,12 @@
 # Generate backtrace from vmcore
 #
 
-from subprocess import Popen, PIPE
 import os
 import sys
-from reportclient import _, verbose, set_verbosity, error_msg_and_die, error_msg
-import time
-from reportclient.debuginfo import DebugInfoDownload
 import getopt
+from subprocess import Popen, PIPE
+
+from reportclient import _, verbose, set_verbosity, error_msg_and_die, error_msg
 
 PROGNAME = "abrt-action-analyze-vmcore"
 
@@ -20,17 +19,18 @@ RETURN_FAILURE = 2
 
 ver = ""
 if __name__ == "__main__":
+    dmesg_log = "dmesg_log"
     cachedirs = []
     vmlinux_di_cachedir = ""
     vmlinux_di_path = ""
     tmpdir = ""
     vmcore = ""
 
-    help_text = _("Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]").format(PROGNAME)
+    help_text = _("Usage: {0} [-v[v]] [--core=VMCORE]").format(PROGNAME)
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hvd", ["help", "tmpdir=", "cache=", "core="])
+        opts, args = getopt.getopt(sys.argv[1:], "hvd", ["help", "core="])
     except getopt.GetoptError, err:
-        error_msg(str(err)) # prints something like "option -a not recognized"
+        error_msg(str(err))  # prints something like "option -a not recognized"
         error_msg_and_die(help_text)
     usercache = False
 
@@ -38,15 +38,8 @@ if __name__ == "__main__":
         if opt in ("-h", "--help"):
             print help_text
             exit(0)
-        if opt == "--cache":
-            cachedirs = arg.split(':')
-            usercache = True
         elif opt == "-v":
             verbose += 1
-        elif opt == "--core":
-            vmcore = arg
-        elif opt == "--tmpdir":
-            tmpdir = arg
         elif opt in ("-d"):
             try:
                 os.chdir(arg)
@@ -63,74 +56,21 @@ if __name__ == "__main__":
         print _("File {0} doesn't exist").format(vmcore)
         sys.exit(RETURN_FAILURE)
 
-    if not cachedirs:
-        try:
-            fp = open("@sysconfdir@/@PACKAGE_NAME@/plugins/CCpp.conf", "r")
-            for line in fp:
-                stripped = line.lstrip()
-                if len(stripped) == 0:
-                    continue
-                if stripped[0] == "#":
-                    continue
-                if stripped[:len("DebuginfoLocation")] != "DebuginfoLocation":
-                    continue
+    print _("Extracting the oops text from core")
+    crash = Popen(["makedumpfile", "--dump-dmesg", "-f", vmcore, dmesg_log], stdout=PIPE, stderr=PIPE, bufsize=-1)
+    out, err = crash.communicate()
 
-                cachedirs =  stripped[len("DebuginfoLocation"):].strip(" =\n").split(":")
-            fp.close()
-        except IOError as (errno, strerror):
-            print "I/O error({0}): {1}".format(errno, strerror)
+    if crash.returncode != 0:
+        error_msg_and_die(_("Can't process {0}:\n{1}").format(vmcore, err))
 
-    if not cachedirs:
-        cachedirs = ["/var/cache/abrt-di"]
-
-    if not tmpdir:
-        # security people prefer temp subdirs in app's private dir, like /var/run/abrt
-        # and we switched to /tmp but Fedora feature tmp-on-tmpfs appeared, hence we must
-        # not use /tmp for potential big data anymore
-        tmpdir = "@LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-%s.%u" % (time.strftime("%Y-%m-%d-%H:%M:%S"), os.getpid())
-
-    crash = Popen(["crash", "--osrelease", vmcore], stdout=PIPE, bufsize = -1)
-    ver, err = crash.communicate()
-    ver = ver.strip() #remove '\n'
-    if not ver or crash.returncode != 0:
-        error_msg_and_die(_("{0} is not a valid vmcore").format(vmcore))
-
-    for cachedir in cachedirs:
-        path = "{0}/usr/lib/debug/lib/modules/{1}/vmlinux".format(cachedir, ver)
-        if os.path.exists(path):
-            vmlinux_di_cachedir = cachedir
-            print _("Required vmlinux debuginfo is installed in {0}".format(vmlinux_di_cachedir))
-            vmlinux_di_path = path
-            break
-
-    if not vmlinux_di_path: #didn't find the vmlinux in any cachedir
-        vmlinux_di_cachedir = cachedirs[0] # let's hope it has always at least 1 item
-        print _("Installing kernel debuginfo(s)")
-        # replace with abrt-action-install-debuginfo
-        vmlinux_di_path = "/usr/lib/debug/lib/modules/%s/vmlinux" % ver
-        if usercache: # if user set the cache, we assume it's writeable for him
-            downloader = DebugInfoDownload(cache=vmlinux_di_cachedir, tmp=tmpdir, keep_rpms=True)
-            res = downloader.download([vmlinux_di_path], download_exact_files=True)
-            if res != RETURN_OK:
-                error_msg_and_die(_("Can't download required debuginfo"))
-            vmlinux_di_path = "{0}/usr/lib/debug/lib/modules/{1}/vmlinux".format(vmlinux_di_cachedir, ver)
-        else: # we need to use the suid wrapper, if we use the default cache
-            downloader_args = ["/usr/libexec/abrt-action-install-debuginfo-to-abrt-cache", "--size_mb=4096", "--exact={0}".format(vmlinux_di_path)]
-            if verbose > 0:
-                downloader_args.append("-{0}".format("v"*verbose))
-            downloader = Popen(downloader_args, bufsize = -1)
-            res = downloader.wait()
-            if res != 0:
-                error_msg_and_die(_("Can't download required debuginfo"))
-            vmlinux_di_path = "{0}/usr/lib/debug/lib/modules/{1}/vmlinux".format(vmlinux_di_cachedir, ver)
-
-    print _("Generating backtrace")
-    log_file = open("kernel_log","w")
-    crash = Popen(["crash", "-s", "vmcore", vmlinux_di_path], stdin=PIPE, stderr=PIPE, stdout=log_file, bufsize = -1)
-    out, err = crash.communicate(input="log")
-    log_file.close()
     backtrace_file = open("backtrace", "w")
-    dump_oops = Popen(["abrt-dump-oops", "-u", ".", "kernel_log"], stdout=backtrace_file, bufsize=-1)
+    dump_oops = Popen(["abrt-dump-oops", "-u", ".", dmesg_log], stdout=backtrace_file, stderr=PIPE, bufsize=-1)
+    out, err = dump_oops.communicate()
     backtrace_file.close()
-    ret = dump_oops.wait()
+    ret = dump_oops.returncode
+    if dump_oops.returncode != 0:
+        print _("Can't extract the oops message: '{0}'").format(err)
+        sys.exit(ret)
+
+    print _("Oops text extracted successfully")
     sys.exit(ret)
