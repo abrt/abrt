@@ -54,10 +54,10 @@ else
 endif
 
 RPM_DIRS = --define "_sourcedir `pwd`" \
-	   --define "_rpmdir `pwd`" \
+	   --define "_rpmdir `pwd`/build" \
 	   --define "_specdir `pwd`" \
-	   --define "_builddir `pwd`" \
-	   --define "_srcrpmdir `pwd`"
+	   --define "_builddir `pwd`/build" \
+	   --define "_srcrpmdir `pwd`/build"
 
 rpm:
 	./gen-version
