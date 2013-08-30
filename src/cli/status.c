@@ -70,14 +70,13 @@ int cmd_status(int argc, const char **argv)
         "& status [DIR]..."
         );
 
-    bool opt_bare = false;
+    int opt_bare = 0; /* must be _int_, OPT_BOOL expects that! */
     int opt_since = 0;
 
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_GROUP(""),
-        OPT_BOOL   ('b', "bare",  &opt_bare,      _("Print only the problem count without any message")),
-        OPT_INTEGER('s', "since", &opt_since,     _("Print only the problems more recent than specified timestamp")),
+        OPT_BOOL   ('b', "bare",  &opt_bare,  _("Print only the problem count without any message")),
+        OPT_INTEGER('s', "since", &opt_since, _("Print only the problems more recent than specified timestamp")),
         OPT_END()
     };
 

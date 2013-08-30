@@ -361,7 +361,7 @@ int main(int argc, char **argv)
         );
 
     char *event_name = NULL;
-    bool interactive = false;
+    int interactive = 0; /* must be _int_, OPT_BOOL expects that! */
 
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),

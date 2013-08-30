@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     abrt_init(argv);
 
     const char *dump_dir_name = ".";
-    bool raw_fingerprints = false;
+    int raw_fingerprints = 0; /* must be _int_, OPT_BOOL expects that! */
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
