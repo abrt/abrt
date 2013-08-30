@@ -41,7 +41,11 @@ rlJournalStart
         echo "WatchCrashdumpArchiveDir = /var/spool/abrt-upload/" > /etc/abrt/abrt.conf
         load_abrt_conf
         # the upload watcher is not installed by default, but we need it for this test
-        rlRun "yum install abrt-addon-upload-watch -y"
+        # but it's not available on rhel6, so don't fail!
+        # the upload watcher is not installed by default, but we need it for this test
+        upload_watch_pkg="abrt-addon-upload-watch"
+        rlRun "rpm -q $upload_watch_pkg >/dev/null || (yum install $upload_watch_pkg -y || :)"
+        rlRun "rpm -q $upload_watch_pkg >/dev/null || (echo 'WARN $upload_watch_pkg is not available, are we on rhel6?'; :)"
         rlRun "setsebool -P abrt_anon_write 1"
         rlRun "service abrtd stop" 0 "Killing abrtd"
         rlRun "service abrtd start" 0 "Starting abrtd"
