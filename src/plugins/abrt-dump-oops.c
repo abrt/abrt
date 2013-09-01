@@ -390,7 +390,10 @@ int main(int argc, char **argv)
     {
         /* Quadratic throttle time growth, but careful to not overflow in "n*n" */
         int n = unreported_cnt > 30 ? 30 : unreported_cnt;
-        sleep(n * n); /* max 15 mins */
+        n = n * n;
+        if (n > 9)
+            log(_("Sleeping for %d seconds"), n);
+        sleep(n); /* max 15 mins */
     }
 
     return errors;
