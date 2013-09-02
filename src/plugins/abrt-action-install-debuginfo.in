@@ -206,7 +206,8 @@ if __name__ == "__main__":
         print _("Coredump references {0} debuginfo files, {1} of them are not installed").format(len(b_ids), len(missing))
 
         # TODO: should we pass keep_rpms=keeprpms to DebugInfoDownload here??
-        downloader = DebugInfoDownload(cache=cachedirs[0], tmp=tmpdir)
+        downloader = DebugInfoDownload(cache=cachedirs[0], tmp=tmpdir,
+                                       noninteractive=noninteractive)
         try:
             result = downloader.download(missing, download_exact_files=exact_fls)
         except Exception, ex:
