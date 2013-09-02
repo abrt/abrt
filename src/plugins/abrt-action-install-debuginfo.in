@@ -68,6 +68,7 @@ if __name__ == "__main__":
     b_ids = []
     exact_fls = False
     missing = None
+    repo_pattern = "*debug*"
 
     # localization
     init_gettext()
@@ -98,12 +99,15 @@ if __name__ == "__main__":
             "    --cache     Default: /var/cache/abrt-di\n"
             "    --size_mb   Default: 4096\n"
             "    -e,--exact  Download only specified files\n"
+            "    --repo      Pattern to use when searching for repos.\n"
+            "                Default: *debug*\n"
             # --keeprpms is not documented yet because it's a NOP so far
     ) % PROGNAME
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], "vyhe",
-                ["help", "ids=", "cache=", "size_mb=", "tmpdir=", "keeprpms", "exact="])
+                ["help", "ids=", "cache=", "size_mb=", "tmpdir=", "keeprpms",
+                 "exact=", "repo="])
     except getopt.GetoptError, err:
         print str(err) # prints something like "option -a not recognized"
         exit(RETURN_FAILURE)
@@ -133,6 +137,8 @@ if __name__ == "__main__":
         elif opt in ("-e", "--exact"):
             missing=arg.split(':')
             exact_fls = True
+        elif opt == "--repo":
+            repo_pattern = arg
 
     set_verbosity(verbose)
 
@@ -207,7 +213,8 @@ if __name__ == "__main__":
 
         # TODO: should we pass keep_rpms=keeprpms to DebugInfoDownload here??
         downloader = DebugInfoDownload(cache=cachedirs[0], tmp=tmpdir,
-                                       noninteractive=noninteractive)
+                                       noninteractive=noninteractive,
+                                       repo_pattern=repo_pattern)
         try:
             result = downloader.download(missing, download_exact_files=exact_fls)
         except Exception, ex:
