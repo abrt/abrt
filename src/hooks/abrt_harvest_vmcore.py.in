@@ -62,7 +62,7 @@ def parse_kdump():
         kdump_conf = conf_file.read()
 
     # first uncommented path instruction
-    regexp = re.compile('^(?<!#)path (.*)$', flags=8)  # MULTILINE
+    regexp = re.compile('^(?<!#)path (.*)$', flags=re.MULTILINE)
     result = regexp.search(kdump_conf)
     if result:
         dump_path = result.group(1).strip()
@@ -71,7 +71,7 @@ def parse_kdump():
     partition = None
     # first uncommented fs_type partition instruction
     for fs_type in fs_types:
-        regexp = re.compile('^(?<!#)' + fs_type + ' (.*)$', flags=8)
+        regexp = re.compile('^(?<!#)' + fs_type + ' (.*)$', flags=re.MULTILINE)
         result = regexp.search(kdump_conf)
         if result:
             partition = result.group(1)
