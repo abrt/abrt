@@ -47,9 +47,16 @@ def parse_kdump():
     This function parses /etc/kdump.conf to get a path to kdump's
     dump directory.
     """
+    # default
+    dump_path = '/var/crash'
 
     # filesystem types that can be used by kdump for dumping
     fs_types = ['ext4', 'ext3', 'ext2', 'minix', 'btrfs', 'xfs']
+
+    if not os.access('/etc/kdump.conf', os.R_OK):
+        sys.stderr.write("/etc/kdump.conf not readable, using "
+                         "default path '%s'\n" % dump_path)
+        return dump_path
 
     with open('/etc/kdump.conf') as conf_file:
         kdump_conf = conf_file.read()
@@ -59,9 +66,6 @@ def parse_kdump():
     result = regexp.search(kdump_conf)
     if result:
         dump_path = result.group(1).strip()
-    else:
-        # default
-        dump_path = '/var/crash'
 
     # default
     partition = None
