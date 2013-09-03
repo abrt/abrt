@@ -31,7 +31,7 @@
  */
 
 /** Prints basic information about a crash to stdout. */
-static void print_crash(problem_data_t *problem_data, int detailed)
+static void print_crash(problem_data_t *problem_data, int detailed, int text_size)
 {
     if (!problem_data)
         return;
@@ -42,17 +42,17 @@ static void print_crash(problem_data_t *problem_data, int detailed)
         int show_multiline = (detailed ? MAKEDESC_SHOW_MULTILINE : 0);
         desc = make_description(problem_data,
                                 /*names_to_skip:*/ NULL,
-                                /*max_text_size:*/ CD_TEXT_ATT_SIZE_BZ,
+                                /*max_text_size:*/ text_size,
                                 MAKEDESC_SHOW_FILES | show_multiline);
     }
     else
     {
         desc = make_description(problem_data,
                             /*names_to_skip:*/ NULL,
-                            /*max_text_size:*/ CD_TEXT_ATT_SIZE_BZ,
+                            /*max_text_size:*/ text_size,
                             MAKEDESC_SHOW_ONLY_LIST);
     }
-    fprintf(stdout, "%s", desc);
+    fputs(desc, stdout);
     free(desc);
 }
 
@@ -61,7 +61,7 @@ static void print_crash(problem_data_t *problem_data, int detailed)
  * @param include_reported
  *   Do not skip entries marked as already reported.
  */
-static void print_crash_list(vector_of_problem_data_t *crash_list, int detailed, int include_reported, long since, long until)
+static void print_crash_list(vector_of_problem_data_t *crash_list, int detailed, int include_reported, long since, long until, int text_size)
 {
     unsigned i;
     for (i = 0; i < crash_list->len; ++i)
@@ -83,7 +83,7 @@ static void print_crash_list(vector_of_problem_data_t *crash_list, int detailed,
         }
 
         printf("@%i\n", i);
-        print_crash(crash, detailed);
+        print_crash(crash, detailed, text_size);
         if (i != crash_list->len - 1)
             printf("\n");
     }
@@ -101,8 +101,7 @@ int cmd_list(int argc, const char **argv)
     int opt_until = 0;
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_GROUP(""),
-        OPT_BOOL('f', "full"     , &opt_full,      _("List even reported problems")),
+        OPT_BOOL('f', "full"     , &opt_full,      _("List reported problems too")),
         /* deprecate -d option with --pretty=full*/
         OPT_BOOL('d', "detailed" , &opt_detailed,  _("Show detailed report")),
         OPT_INTEGER('s', "since" , &opt_since,  _("List only the problems more recent than specified timestamp")),
@@ -123,7 +122,7 @@ int cmd_list(int argc, const char **argv)
 
     g_ptr_array_sort_with_data(ci, &cmp_problem_data, (char *) FILENAME_LAST_OCCURRENCE);
 
-    print_crash_list(ci, opt_detailed, opt_full, opt_since, opt_until);
+    print_crash_list(ci, opt_detailed, opt_full, opt_since, opt_until, CD_TEXT_ATT_SIZE_BZ);
     free_vector_of_problem_data(ci);
     list_free_with_free(D_list);
 
@@ -137,11 +136,12 @@ int cmd_info(int argc, const char **argv)
         );
 
     int opt_detailed = 0;
+    int text_size = CD_TEXT_ATT_SIZE_BZ;
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_GROUP(""),
         /* deprecate -d option with --pretty=full*/
-        OPT_BOOL('d', "detailed" , &opt_detailed,  _("Show detailed report")),
+        OPT_BOOL(   'd', "detailed" , &opt_detailed, _("Show detailed report")),
+        OPT_INTEGER('s', "size",      &text_size,    _("Text larger than this will be shown abridged")),
         OPT_END()
     };
 
@@ -150,6 +150,9 @@ int cmd_info(int argc, const char **argv)
 
     if (!argv[0])
         show_usage_and_die(program_usage_string, program_options);
+
+    if (text_size <= 0)
+        text_size = INT_MAX;
 
     int errs = 0;
     while (*argv)
@@ -163,7 +166,7 @@ int cmd_info(int argc, const char **argv)
             continue;
         }
 
-        print_crash(problem, opt_detailed);
+        print_crash(problem, opt_detailed, text_size);
         problem_data_free(problem);
         if (*argv)
             printf("\n");

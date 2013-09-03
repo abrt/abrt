@@ -13,7 +13,7 @@ SYNOPSIS
 
 'abrt-cli' report [-v]   DIR...
 
-'abrt-cli' info   [-vd]  DIR...
+'abrt-cli' info   [-vd] [-s SIZE] DIR...
 
 OPTIONS
 -------
@@ -24,7 +24,10 @@ OPTIONS
    Show detailed report
 
 -f,--full::
-   List even reported problems
+   List reported problems too
+
+-s,--size SIZE:
+   Text larger than SIZE bytes will be shown abridged
 
 AUTHORS
 -------
