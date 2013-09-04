@@ -28,7 +28,6 @@ problem_data_t *get_problem_data(vector_of_problem_data_t *vector, unsigned i);
 
 void free_vector_of_problem_data(vector_of_problem_data_t *vector);
 vector_of_problem_data_t *new_vector_of_problem_data(void);
-problem_data_t *fill_crash_info(const char *dump_dir_name);
 vector_of_problem_data_t *fetch_crash_infos(GList *dir_list);
 
 #endif /* ABRT_CLI_CORE_H_ */

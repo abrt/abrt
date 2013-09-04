@@ -39,24 +39,6 @@ vector_of_problem_data_t *new_vector_of_problem_data(void)
     return g_ptr_array_new_with_free_func((void (*)(void*)) &problem_data_free);
 }
 
-problem_data_t *fill_crash_info(const char *dump_dir_name)
-{
-    int sv_logmode = logmode;
-    logmode = 0; /* suppress EPERM/EACCES errors in opendir */
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ DD_OPEN_READONLY);
-    logmode = sv_logmode;
-
-    if (!dd)
-        return NULL;
-
-    problem_data_t *problem_data = create_problem_data_from_dump_dir(dd);
-    dd_close(dd);
-    problem_data_add(problem_data, CD_DUMPDIR, dump_dir_name,
-                            CD_FLAG_TXT + CD_FLAG_ISNOTEDITABLE + CD_FLAG_LIST);
-
-    return problem_data;
-}
-
 static int
 append_problem_data(struct dump_dir *dd, void *arg)
 {
