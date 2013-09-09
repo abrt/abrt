@@ -39,7 +39,10 @@ struct language
 {
     char *locale;
     char *encoding;
+    char *accept_charset;
+    char *accept_language;
 };
+void get_language(struct language *lang);
 
 struct https_cfg
 {
@@ -48,7 +51,6 @@ struct https_cfg
     bool ssl_allow_insecure;
 };
 
-void get_language(struct language *lang);
 void alert_server_error(const char *peer_name);
 void alert_connection_error(const char *peer_name);
 void ssl_connect(struct https_cfg *cfg, PRFileDesc **tcp_sock, PRFileDesc **ssl_sock);

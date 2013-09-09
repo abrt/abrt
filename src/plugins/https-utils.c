@@ -26,19 +26,34 @@ void get_language(struct language *lang)
 {
     lang->locale = NULL;
     lang->encoding = NULL;
+    /*
+     * Note: ->accept_language and ->accept_charset will always be non-NULL:
+     * if we don't know them, they'll be ""; otherwise,
+     * they will be fully formed HTTP headers, with \r\n at the end.
+     * IOW: they are formatted for adding them to HTTP headers as-is.
+     */
 
     char *locale = setlocale(LC_ALL, NULL);
     if (!locale)
+    {
+        lang->accept_language = xzalloc(1);
+        lang->accept_charset = xzalloc(1);
         return;
+    }
 
     lang->locale = xstrdup(locale);
-    lang->encoding = strchr(lang->locale, '.');
+    lang->accept_language = xasprintf("Accept-Language: %s\r\n", locale);
 
+    lang->encoding = strchr(lang->locale, '.');
     if (!lang->encoding)
+    {
+        lang->accept_charset = xzalloc(1);
         return;
+    }
 
     *lang->encoding = '\0';
     ++lang->encoding;
+    lang->accept_charset = xasprintf("Accept-Charset: %s\r\n", lang->encoding);
 }
 
 void alert_server_error(const char *peer_name)

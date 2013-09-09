@@ -171,19 +171,17 @@ int main(int argc, char **argv)
                        "Host: %s\r\n"
                        "Content-Type: application/x-www-form-urlencoded\r\n"
                        "Content-Length: %d\r\n"
-                       "Connection: close\r\n",
-                       cfg.url, request_body->len);
+                       "Connection: close\r\n"
+                       "%s"
+                       "%s"
+                       "\r\n",
+                       cfg.url,
+                       request_body->len,
+                       lang.accept_charset,
+                       lang.accept_language
+    );
 
-    if (lang.encoding)
-        strbuf_append_strf(request, "Accept-Charset: %s\r\n", lang.encoding);
-
-    if (lang.locale)
-    {
-        strbuf_append_strf(request, "Accept-Language: %s\r\n", lang.locale);
-        free(lang.locale);
-    }
-
-    strbuf_append_strf(request, "\r\n%s", request_body->buf);
+    strbuf_append_str(request, request_body->buf);
     strbuf_free(request_body);
 
     /* Initialize NSS */

@@ -29,6 +29,8 @@ enum
     TASK_VMCORE,
 };
 
+static struct language lang;
+
 struct retrace_settings
 {
     int running_tasks;
@@ -369,8 +371,6 @@ static int check_package(const char *nvr, const char *arch, map_string_t *osinfo
 {
     char *releaseid = get_release_id(osinfo, arch);
 
-    struct language lang;
-    get_language(&lang);
     PRFileDesc *tcp_sock, *ssl_sock;
     ssl_connect(&cfg, &tcp_sock, &ssl_sock);
     struct strbuf *http_request = strbuf_new();
@@ -381,22 +381,15 @@ static int check_package(const char *nvr, const char *arch, map_string_t *osinfo
                        "Connection: close\r\n"
                        "X-Package-NVR: %s\r\n"
                        "X-Package-Arch: %s\r\n"
-                       "X-OS-Release: %s\r\n",
-                       cfg.url, nvr, arch, releaseid);
+                       "X-OS-Release: %s\r\n"
+                       "%s"
+                       "%s"
+                       "\r\n",
+                       cfg.url, nvr, arch, releaseid,
+                       lang.accept_charset,
+                       lang.accept_language
+    );
 
-    if (lang.encoding)
-        strbuf_append_strf(http_request,
-                           "Accept-Charset: %s\r\n",
-                           lang.encoding);
-    if (lang.locale)
-    {
-        strbuf_append_strf(http_request,
-                           "Accept-Language: %s\r\n",
-                           lang.locale);
-        free(lang.locale);
-    }
-
-    strbuf_append_str(http_request, "\r\n");
     PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
     if (written == -1)
@@ -446,9 +439,6 @@ static int create(bool delete_temp_archive,
                   char **task_id,
                   char **task_password)
 {
-    struct language lang;
-    get_language(&lang);
-
     if (delay)
     {
         puts(_("Querying server settings"));
@@ -659,22 +649,14 @@ static int create(bool delete_temp_archive,
                        "Content-Type: application/x-xz-compressed-tar\r\n"
                        "Content-Length: %lld\r\n"
                        "Connection: close\r\n"
-                       "X-Task-Type: %d\r\n",
-                       cfg.url, (long long)file_stat.st_size, task_type);
-
-    if (lang.encoding)
-        strbuf_append_strf(http_request,
-                           "Accept-Charset: %s\r\n",
-                           lang.encoding);
-    if (lang.locale)
-    {
-        strbuf_append_strf(http_request,
-                           "Accept-Language: %s\r\n",
-                           lang.locale);
-        free(lang.locale);
-    }
-
-    strbuf_append_str(http_request, "\r\n");
+                       "X-Task-Type: %d\r\n"
+                       "%s"
+                       "%s"
+                       "\r\n",
+                       cfg.url, (long long)file_stat.st_size, task_type,
+                       lang.accept_charset,
+                       lang.accept_language
+    );
 
     PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
@@ -825,9 +807,6 @@ static void status(const char *task_id,
                    char **task_status,
                    char **status_message)
 {
-    struct language lang;
-    get_language(&lang);
-
     PRFileDesc *tcp_sock, *ssl_sock;
     ssl_connect(&cfg, &tcp_sock, &ssl_sock);
     struct strbuf *http_request = strbuf_new();
@@ -836,22 +815,14 @@ static void status(const char *task_id,
                        "Host: %s\r\n"
                        "X-Task-Password: %s\r\n"
                        "Content-Length: 0\r\n"
-                       "Connection: close\r\n",
-                       task_id, cfg.url, task_password);
-
-    if (lang.encoding)
-        strbuf_append_strf(http_request,
-                           "Accept-Charset: %s\r\n",
-                           lang.encoding);
-    if (lang.locale)
-    {
-        strbuf_append_strf(http_request,
-                           "Accept-Language: %s\r\n",
-                           lang.locale);
-        free(lang.locale);
-    }
-
-    strbuf_append_str(http_request, "\r\n");
+                       "Connection: close\r\n"
+                       "%s"
+                       "%s"
+                       "\r\n",
+                       task_id, cfg.url, task_password,
+                       lang.accept_charset,
+                       lang.accept_language
+    );
 
     PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
@@ -903,9 +874,6 @@ static void run_status(const char *task_id, const char *task_password)
 static void backtrace(const char *task_id, const char *task_password,
                       char **backtrace)
 {
-    struct language lang;
-    get_language(&lang);
-
     PRFileDesc *tcp_sock, *ssl_sock;
     ssl_connect(&cfg, &tcp_sock, &ssl_sock);
     struct strbuf *http_request = strbuf_new();
@@ -914,22 +882,14 @@ static void backtrace(const char *task_id, const char *task_password,
                        "Host: %s\r\n"
                        "X-Task-Password: %s\r\n"
                        "Content-Length: 0\r\n"
-                       "Connection: close\r\n",
-                       task_id, cfg.url, task_password);
-
-    if (lang.encoding)
-        strbuf_append_strf(http_request,
-                           "Accept-Charset: %s\r\n",
-                           lang.encoding);
-    if (lang.locale)
-    {
-        strbuf_append_strf(http_request,
-                           "Accept-Language: %s\r\n",
-                           lang.locale);
-        free(lang.locale);
-    }
-
-    strbuf_append_str(http_request, "\r\n");
+                       "Connection: close\r\n"
+                       "%s"
+                       "%s"
+                       "\r\n",
+                       task_id, cfg.url, task_password,
+                       lang.accept_charset,
+                       lang.accept_language
+    );
 
     PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
@@ -971,9 +931,6 @@ static void run_backtrace(const char *task_id, const char *task_password)
 
 static void run_log(const char *task_id, const char *task_password)
 {
-    struct language lang;
-    get_language(&lang);
-
     PRFileDesc *tcp_sock, *ssl_sock;
     ssl_connect(&cfg, &tcp_sock, &ssl_sock);
     struct strbuf *http_request = strbuf_new();
@@ -982,22 +939,14 @@ static void run_log(const char *task_id, const char *task_password)
                        "Host: %s\r\n"
                        "X-Task-Password: %s\r\n"
                        "Content-Length: 0\r\n"
-                       "Connection: close\r\n",
-                       task_id, cfg.url, task_password);
-
-    if (lang.encoding)
-        strbuf_append_strf(http_request,
-                           "Accept-Charset: %s\r\n",
-                           lang.encoding);
-    if (lang.locale)
-    {
-        strbuf_append_strf(http_request,
-                           "Accept-Language: %s\r\n",
-                           lang.locale);
-        free(lang.locale);
-    }
-
-    strbuf_append_str(http_request, "\r\n");
+                       "Connection: close\r\n"
+                       "%s"
+                       "%s"
+                       "\r\n",
+                       task_id, cfg.url, task_password,
+                       lang.accept_charset,
+                       lang.accept_language
+    );
 
     PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
                               /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
@@ -1114,6 +1063,7 @@ int main(int argc, char **argv)
 #endif
 
     abrt_init(argv);
+    get_language(&lang);
 
     const char *task_id = NULL;
     const char *task_password = NULL;
