@@ -15,9 +15,9 @@ The configuration file consists of items in the format "Option = Value".
 A description of each item follows:
 
 OpenGPGCheck = 'yes' | 'no'::
-   When set to 'yes', 'abrt' will report crashes only in executables which belong
+   When set to 'yes', 'abrt' will handle only crashes in executables which belong
    to an installed package with valid GPG signature.
-   The default is 'no'.
+   The default is 'yes'.
    The files containing trusted GPG keys which are used to verify
    the signatures are listed in the gpg_keys configuration file.
 BlackList = 'packageName', 'packageName' ...::
