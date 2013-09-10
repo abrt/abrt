@@ -19,7 +19,7 @@ OpenGPGCheck = 'yes' | 'no'::
    to an installed package with valid GPG signature.
    The default is 'yes'.
    The files containing trusted GPG keys which are used to verify
-   the signatures are listed in the gpg_keys configuration file.
+   the signatures are listed in the gpg_keys.conf configuration file.
 BlackList = 'packageName', 'packageName' ...::
    'abrt' will ignore packages in this list and will not handle their crashes.
 BlackListedPaths = '`/path/to/ignore/*`', '`*/another/ignored/path*`' ...::
