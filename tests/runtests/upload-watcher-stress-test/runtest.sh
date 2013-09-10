@@ -65,25 +65,9 @@ rlJournalStart
 
         flood 0 9 &
         flood 10 19 &
-        flood 20 29 &
-        flood 30 39 &
-        flood 40 49 &
-        flood 50 59 &
-        flood 60 69 &
-        flood 70 79 &
-        flood 80 89 &
-        flood 90 99 &
 
         while test -f "/tmp/flood.09";do sleep 1; done
         while test -f "/tmp/flood.1019";do sleep 1; done
-        while test -f "/tmp/flood.2029";do sleep 1; done
-        while test -f "/tmp/flood.3039";do sleep 1; done
-        while test -f "/tmp/flood.4049";do sleep 1; done
-        while test -f "/tmp/flood.5059";do sleep 1; done
-        while test -f "/tmp/flood.6069";do sleep 1; done
-        while test -f "/tmp/flood.7079";do sleep 1; done
-        while test -f "/tmp/flood.8089";do sleep 1; done
-        while test -f "/tmp/flood.9099";do sleep 1; done
 
         echo "Synchronization waiting ..."
 
@@ -93,7 +77,7 @@ rlJournalStart
         WAS_SAME=0
         while : ; do
             kill -s USR1 $PID_OF_WATCH
-            grep "0 archives to process, 0 active workers" $ERR_LOG
+            tail -n 10 $ERR_LOG | grep "0 archives to process, 0 active workers"
             if [ x"$?" == x"0" ]; then
                 # we can't use size of the log, the output is buffered!
                 NEW_SIZE=$(ls -l $WATCHED_DIR 2>/dev/null | wc -l)
