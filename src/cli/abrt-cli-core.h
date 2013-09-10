@@ -30,4 +30,9 @@ void free_vector_of_problem_data(vector_of_problem_data_t *vector);
 vector_of_problem_data_t *new_vector_of_problem_data(void);
 vector_of_problem_data_t *fetch_crash_infos(GList *dir_list);
 
+const char *str2hash(const char *str);
+/* Returns malloced string, or NULL if not found: */
+char *hash2dirname(const char *hash);
+
+
 #endif /* ABRT_CLI_CORE_H_ */

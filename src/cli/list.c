@@ -30,49 +30,6 @@
  *       ~/.abrt/spool and /var/tmp/abrt? needs more _meditation_.
  */
 
-static bool isxdigit_str(const char *str)
-{
-    do
-    {
-        if (*str < '0' || *str > '9')
-            if ((*str|0x20) < 'a' || (*str|0x20) > 'f')
-                return false;
-        str++;
-    } while (*str);
-    return true;
-}
-
-static char *str2hash(const char *str)
-{
-    static char result[SHA1_RESULT_LEN*2 + 1];
-
-    char hash_bytes[SHA1_RESULT_LEN];
-    sha1_ctx_t sha1ctx;
-    sha1_begin(&sha1ctx);
-    sha1_hash(&sha1ctx, str, strlen(str));
-    sha1_end(&sha1ctx, hash_bytes);
-    bin2hex(result, hash_bytes, SHA1_RESULT_LEN)[0] = '\0';
-    return result;
-}
-
-struct name_resolution_param {
-    const char *shortcut;
-    unsigned strlen_shortcut;
-    char *found_name;
-};
-static int find_dir_by_hash(struct dump_dir *dd, void *arg)
-{
-    struct name_resolution_param *param = arg;
-    char *h = str2hash(dd->dd_dirname);
-    if (strncasecmp(param->shortcut, h, param->strlen_shortcut) == 0)
-    {
-        if (param->found_name)
-            error_msg_and_die(_("'%s' identifies more than one problem directory"), param->shortcut);
-        param->found_name = xstrdup(dd->dd_dirname);
-    }
-    return 0;
-}
-
 static problem_data_t *load_problem_data(const char *dump_dir_name)
 {
     /* First, try loading by dirname */
@@ -81,19 +38,13 @@ static problem_data_t *load_problem_data(const char *dump_dir_name)
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ DD_OPEN_READONLY);
     logmode = sv_logmode;
 
-    unsigned name_len = strlen(dump_dir_name);
     /* (git requires at least 5 char hash prefix, we do the same) */
-    if (!dd && errno == ENOENT && isxdigit_str(dump_dir_name) && name_len >= 5)
+    if (!dd && errno == ENOENT)
     {
         /* Try loading by dirname hash */
-        struct name_resolution_param param = { dump_dir_name, name_len, NULL };
-        GList *dir_list = get_problem_storages();
-        for (GList *li = dir_list; li; li = li->next)
-            for_each_problem_in_dir(li->data, getuid(), find_dir_by_hash, &param);
-        if (!param.found_name)
-            return NULL;
-        dd = dd_opendir(param.found_name, /*flags:*/ DD_OPEN_READONLY);
-        free(param.found_name);
+        char *name2 = hash2dirname(dump_dir_name);
+        dd = dd_opendir(name2, /*flags:*/ DD_OPEN_READONLY);
+        free(name2);
     }
 
     if (!dd)

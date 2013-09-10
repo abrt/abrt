@@ -51,26 +51,18 @@ int cmd_report(int argc, const char **argv)
     {
         const char *dir_name = *argv++;
 
-        vector_of_problem_data_t *ci = NULL;
-        if (*dir_name == '@')
+        char *free_me = NULL;
+        if (access(dir_name, F_OK) != 0 && errno == ENOENT)
         {
-            dir_name++;
-            unsigned at = xatoi_positive(dir_name);
-
-            ci = fetch_crash_infos(D_list);
-            if (at >= ci->len)
-                error_msg_and_die("error: number is out of range '%s'", dir_name);
-
-            g_ptr_array_sort_with_data(ci, &cmp_problem_data, (char *) FILENAME_LAST_OCCURRENCE);
-            problem_data_t *pd = get_problem_data(ci, at);
-
-            dir_name = problem_data_get_content_or_NULL(pd, CD_DUMPDIR);
+            free_me = hash2dirname(dir_name);
+            if (free_me)
+                dir_name = free_me;
         }
-
         int status = report_problem_in_dir(dir_name,
                                              LIBREPORT_WAIT
                                            | LIBREPORT_RUN_CLI);
-        free_vector_of_problem_data(ci);
+        free(free_me);
+
         if (status)
             exit(status);
     }
