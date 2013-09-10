@@ -114,7 +114,7 @@ static void print_crash_list(vector_of_problem_data_t *crash_list, int detailed,
         char hash_str[SHA1_RESULT_LEN*2 + 1];
         struct problem_item *item = g_hash_table_lookup(crash, CD_DUMPDIR);
         if (item)
-            printf("@%s\n", str_to_sha1str(hash_str, item->content));
+            printf("id %s\n", str_to_sha1str(hash_str, item->content));
         print_crash(crash, detailed, text_size);
         if (i != crash_list->len - 1)
             printf("\n");
