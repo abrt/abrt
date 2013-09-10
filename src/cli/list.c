@@ -43,7 +43,8 @@ static problem_data_t *load_problem_data(const char *dump_dir_name)
     {
         /* Try loading by dirname hash */
         char *name2 = hash2dirname(dump_dir_name);
-        dd = dd_opendir(name2, /*flags:*/ DD_OPEN_READONLY);
+        if (name2)
+            dd = dd_opendir(name2, /*flags:*/ DD_OPEN_READONLY);
         free(name2);
     }
 
