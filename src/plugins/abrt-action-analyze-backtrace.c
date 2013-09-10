@@ -25,18 +25,6 @@
 static const char *dump_dir_name = ".";
 
 
-static void create_hash(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *pInput)
-{
-    char hash_bytes[SHA1_RESULT_LEN];
-    sha1_ctx_t sha1ctx;
-    sha1_begin(&sha1ctx);
-    sha1_hash(&sha1ctx, pInput, strlen(pInput));
-    sha1_end(&sha1ctx, hash_bytes);
-
-    bin2hex(hash_str, hash_bytes, SHA1_RESULT_LEN)[0] = '\0';
-    //log("hash:%s str:'%s'", hash_str, pInput);
-}
-
 int main(int argc, char **argv)
 {
     /* I18n */
@@ -111,7 +99,7 @@ int main(int argc, char **argv)
 
         VERB3 log("Generating duphash: %s", emptybt->buf);
         char hash_str[SHA1_RESULT_LEN*2 + 1];
-        create_hash(hash_str, emptybt->buf);
+        str_to_sha1str(hash_str, emptybt->buf);
 
         dd_save_text(dd, FILENAME_DUPHASH, hash_str);
         /*

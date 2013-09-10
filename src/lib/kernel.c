@@ -517,14 +517,8 @@ int koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf)
      */
     int bad = (kernel_bt->len == 0);
 
-    char hash_bytes[SHA1_RESULT_LEN];
-    sha1_ctx_t sha1ctx;
-    sha1_begin(&sha1ctx);
-    sha1_hash(&sha1ctx, kernel_bt->buf, kernel_bt->len);
-    sha1_end(&sha1ctx, hash_bytes);
+    str_to_sha1str(hash_str, kernel_bt->buf);
     strbuf_free(kernel_bt);
-
-    bin2hex(hash_str, hash_bytes, SHA1_RESULT_LEN)[0] = '\0';
     VERB3 log("hash: %s", hash_str);
 
     return bad;
