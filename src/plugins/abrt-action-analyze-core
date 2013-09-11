@@ -171,12 +171,15 @@ if __name__ == "__main__":
         # when we are definitely going to write something to it
         outfile = sys.stdout
         outname = opt_o
+        # Make sure the file is readable for all
+        oldmask = os.umask(0002)
         for bid in b_ids:
             if outname:
                 outfile = xopen(outname, "w")
                 outname = None
             outfile.write("%s\n" % bid)
         outfile.close()
+        os.umask(oldmask)
     except IOError, e:
         if not opt_o:
             opt_o = "<stdout>"

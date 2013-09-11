@@ -24,10 +24,11 @@ if $INSTALL_DI; then
     # debuginfo install fail even for root.
     # Therefore, if we are root, we don't use the wrapper.
     if [ x"`id -u`" = x"0" ]; then
-        abrt-action-analyze-core --core=coredump | abrt-action-install-debuginfo --ids=- --size_mb=4096
+        abrt-action-analyze-core --core=coredump -o build_ids && abrt-action-install-debuginfo --size_mb=4096
     else
-        abrt-action-analyze-core --core=coredump | /usr/libexec/abrt-action-install-debuginfo-to-abrt-cache --ids=- --size_mb=4096
+        abrt-action-analyze-core --core=coredump -o build_ids && /usr/libexec/abrt-action-install-debuginfo-to-abrt-cache --size_mb=4096
     fi
+    rm -f build_ids
 fi
 
 if [ $? = 0 ]; then
