@@ -801,6 +801,79 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Wed Sep 11 2013 Jakub Filak <jfilak@redhat.com> 2.1.7-1
+- fix debuginfo installer expecting user input from a pipe - closes #696
+- add environment variable whitelist to debuginfo install wrapper - closes 692
+- add repo_pattern argument as a custom repository filter - closes #688
+- abrt-cli list: replace "@" prefix by "id " prefix
+- fix a crash in 'abrt-cli info' when short id isn't found
+- Use common string-to-sha1_hash functions. #694
+- doc: update OpenGPGCheck in a-a-save-package-data rhbz#997922
+- abrt-cli report: accept sha1 hashes of directory names. #693
+- abrt-dump-oops: emit a message if throttling for a significant period of time
+- abrt-gdb-exploitable: print current instruction
+- spec: posttrans scriptlet regenerating core_backtraces
+- abrt-handle-event: add check for missing crash thread
+- provide tmpfiles.d configuration
+- abrt-cli list: use sha1 hash as short ids instead of @N thing. rhbz#906733
+- vmcore: fail gracefully if dump_dir is not accessible
+- spec: vmcore: require kexec-tools
+- vmcore: use re.MULTILINE instead of numerical value
+- vmcore: don't fail if /etc/kdump.conf is not readable
+- abrt-cli info: add "-s SIZE" option. closes #689
+- fix noninteractive mode in debuginfo installer - rhbz#737066
+- fixed the gpg keys loading - closes #686
+- Fix type of OPT_BOOL's referenced flag variable - it must be int, not bool!
+- adds a kdump.conf parser to get the correct dump dir location, closes #640
+- xorg_event.conf: use abrt-action-list-dsos to create dso_list
+- abrt-action-list-dsos: extend it to be able to parse Xorg backtrace.
+- don't require debuginfo for vmcore analysis rhbz#768389
+- specfile: make addon-pstoreoops obsolete addon-uefioops
+- abrt-dump-oops: add -t option which slows down problem creation. rhbz#902398.
+- rename uefioops to pstoreoops rhbz#949721
+- spec: create type element for problem dirs where it doesn't exist - rhbz#958968
+- introduce abrt-upload-watch
+- fix ccpp hook to create the type element - closes #682
+- specfile: use systemd-rpm macros. rhbz#850019
+- abrt-harvest-vmcore: notify new path - #657
+- abrt-dump-oops: remove redundant g_list_length() call, make messages clearer
+- updated translation - rhbz#860555
+- updated transifex url
+- GUI config: add Close/Defaults button
+- GUI config: hide option descriptions in tool tips
+- GUI config: add Silent shortened reporting support
+- applet: silent shortened reporting
+- applet: less misleading label for Ignore button
+- abrt-handle-upload: switch from shell to python; send socket notification. #657
+- spec: add build requires for XSMP depencies
+- applet: update seen list when X Session dies
+- improved the error messages in abrt-server - closes #679
+- fix typo in abrt-config-widget.ui
+- spec: add new packages abrt-gui-libs and abrt-gui-devel
+- delete desktop file for system-config-abrt
+- expose abrt configuration GUI in public API
+- rewrite abrt-harvest-uefioops to python - closes #678
+- spec: abrt-python is no longer noarch - related #677
+- created python binding for notify_new_path - closes #677
+- spec: install applet's desktop file to system dir
+- applet: configure notification source
+- rewrite shell script for moving vmcores into python closes #676
+- abrtd: ensure that the dump location directory exists
+- a-a-ureport: generate core_backtrace only for CCpp problems
+- do not store potentially big data in /tmp
+- abrt-dbus: send new problem notify signal to socket
+- abrtd: remove "post-create" machinery. Related to #657
+- Avoid leaving stale rpmdb locks behind (rhbz#918184)
+- abrtd: improve parsing of pidfile in create_pidfile()
+- abrt-dump-{oops,xorg}: send new problem notify signal to socket
+- abrtd: disable inotify watch on DUMP_LOC
+- abrt-hook-ccpp: send "POST /creation_notification" after creating problem dir
+- Stop dying in check_free_space(); rename it to low_free_space()
+- abrt-server: make create_problem_dir() run "post-create"
+- abrt-handle-event: create DUMP_LOC/post-create.lock when running "post-create"
+- abrt-server: add support for "POST /creation_notification"
+- abrt-handle-event: free more of allocated data
+
 * Fri Jul 26 2013 Jakub Filak <jfilak@redhat.com> 2.1.6-1
 - replace functions deprecated in Gtk-3.10 with their substitutes
 - use shared GLib initialization function
