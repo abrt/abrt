@@ -70,7 +70,29 @@ int main(int argc, char **argv)
 // We forgot to sanitize PYTHONPATH. And who knows what else we forgot
 // (especially considering *future* new variables of this kind).
 // We switched to clearing entire environment instead:
+
+        // However since we communicate through environment variables
+        // we have to keep a whitelist of variables to keep.
+        static const char *whitelist[] = {
+            "REPORT_CLIENT_SLAVE" //  Check if the app is being run as a slave
+        };
+        const size_t wlsize = sizeof(whitelist)/sizeof(char*);
+        char *setlist[sizeof(whitelist)/sizeof(char*)] = { 0 };
+        char *p = NULL;
+        for (size_t i = 0; i < wlsize; i++)
+            if ((p = getenv(whitelist[i])) != NULL)
+                setlist[i] = xstrdup(p);
+
+        // Now we can clear the environment
         clearenv();
+
+        // And once again set whitelisted variables
+        for (size_t i = 0; i < wlsize; i++)
+            if (setlist[i] != NULL)
+            {
+                xsetenv(whitelist[i], setlist[i]);
+                free(setlist[i]);
+            }
 #else
         /* Clear dangerous stuff from env */
         static const char forbid[] =
