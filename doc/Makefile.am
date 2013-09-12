@@ -25,7 +25,6 @@ MAN1_TXT += abrt-harvest-pstoreoops.txt
 MAN1_TXT += abrt-harvest-vmcore.txt
 MAN1_TXT += abrt-merge-pstoreoops.txt
 MAN1_TXT += abrt-server.txt
-MAN1_TXT += abrt-dedup-client.txt
 MAN1_TXT += abrt-cli.txt
 MAN1_TXT += abrt-action-save-package-data.txt
 MAN1_TXT += abrt-action-save-kernel-data.txt

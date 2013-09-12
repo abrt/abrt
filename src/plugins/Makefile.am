@@ -22,8 +22,7 @@ bin_PROGRAMS = \
     abrt-action-generate-backtrace \
     abrt-action-generate-core-backtrace \
     abrt-action-analyze-backtrace \
-    abrt-retrace-client \
-    abrt-dedup-client
+    abrt-retrace-client
 
 if BUILD_BODHI
 bin_PROGRAMS += \
@@ -273,21 +272,6 @@ abrt_retrace_client_SOURCES = \
      -DLARGE_DATA_TMP_DIR=\"$(LARGE_DATA_TMP_DIR)\" \
      $(LIBREPORT_CFLAGS)
  abrt_retrace_client_LDADD = \
-     $(LIBREPORT_LIBS) \
-     $(SATYR_LIBS) \
-     $(NSS_LIBS)
-
-abrt_dedup_client_SOURCES = \
-    abrt-dedup-client.c \
-    https-utils.c
- abrt_dedup_client_CFLAGS = \
-    -I$(srcdir)/../include \
-    -I$(srcdir)/../lib \
-     $(NSS_CFLAGS) \
-     $(GLIB_CFLAGS) \
-     -D_GNU_SOURCE \
-     $(LIBREPORT_CFLAGS)
- abrt_dedup_client_LDADD = \
      $(LIBREPORT_LIBS) \
      $(SATYR_LIBS) \
      $(NSS_LIBS)
