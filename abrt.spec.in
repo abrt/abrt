@@ -652,7 +652,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-action-analyze-backtrace
 %{_bindir}/abrt-action-list-dsos
 %{_bindir}/abrt-action-perform-ccpp-analysis
-%{_bindir}/abrt-dedup-client
 %{_bindir}/abrt-action-analyze-ccpp-local
 %{_sbindir}/abrt-install-ccpp-hook
 %config(noreplace) %{_sysconfdir}/libreport/events.d/ccpp_event.conf
@@ -677,7 +676,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man*/abrt-action-analyze-core.*
 %{_mandir}/man*/abrt-action-analyze-vulnerability.*
 %{_mandir}/man*/abrt-action-perform-ccpp-analysis.*
-%{_mandir}/man*/abrt-dedup-client.*
 
 %files addon-upload-watch
 %defattr(-,root,root,-)
