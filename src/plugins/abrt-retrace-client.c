@@ -21,6 +21,7 @@
 #define MAX_FORMATS 16
 #define MAX_RELEASES 32
 #define MAX_DOTS_PER_LINE 80
+#define MIN_EXPLOITABLE_RATING 4
 
 enum
 {
@@ -929,6 +930,93 @@ static void run_backtrace(const char *task_id, const char *task_password)
     free(backtrace_text);
 }
 
+/* This is not robust at all but will work for now */
+static int get_exploitable_rating(const char *exploitable_text)
+{
+    const char *colon = strrchr(exploitable_text, ':');
+    int result;
+    if (!colon || sscanf(colon, ": %d", &result) != 1)
+    {
+        VERB1 log_msg("Unable to determine exploitable rating");
+        return -1;
+    }
+
+    VERB1 log_msg("Exploitable rating: %d", result);
+    return result;
+}
+
+/* Caller must free exploitable_text */
+static void exploitable(const char *task_id, const char *task_password,
+                        char **exploitable_text)
+{
+    PRFileDesc *tcp_sock, *ssl_sock;
+    ssl_connect(&cfg, &tcp_sock, &ssl_sock);
+    struct strbuf *http_request = strbuf_new();
+    strbuf_append_strf(http_request,
+                       "GET /%s/exploitable HTTP/1.1\r\n"
+                       "Host: %s\r\n"
+                       "X-Task-Password: %s\r\n"
+                       "Content-Length: 0\r\n"
+                       "Connection: close\r\n"
+                       "%s"
+                       "%s"
+                       "\r\n",
+                       task_id, cfg.url, task_password,
+                       lang.accept_charset,
+                       lang.accept_language
+    );
+
+    PRInt32 written = PR_Send(tcp_sock, http_request->buf, http_request->len,
+                              /*flags:*/0, PR_INTERVAL_NO_TIMEOUT);
+    if (written == -1)
+    {
+        alert_connection_error(cfg.url);
+        error_msg_and_die(_("Failed to send HTTP header of length %d: NSS error %d."),
+                          http_request->len, PR_GetError());
+    }
+    strbuf_free(http_request);
+    char *http_response = tcp_read_response(tcp_sock);
+    char *http_body = http_get_body(http_response);
+    if (!http_body)
+    {
+        alert_server_error(cfg.url);
+        error_msg_and_die(_("Invalid response from server: missing HTTP message body."));
+    }
+    if (http_show_headers)
+        http_print_headers(stderr, http_response);
+    int response_code = http_get_response_code(http_response);
+
+    free(http_response);
+    ssl_disconnect(ssl_sock);
+
+    /* 404 = exploitability results not available
+       200 = OK
+       anything else = error */
+    if (response_code == 404)
+        *exploitable_text = NULL;
+    else if (response_code == 200)
+        *exploitable_text = http_body;
+    else
+    {
+        alert_server_error(cfg.url);
+        error_msg_and_die(_("Unexpected HTTP response from server: %d\n%s"),
+                          response_code, http_body);
+    }
+}
+
+static void run_exploitable(const char *task_id, const char *task_password)
+{
+    char *exploitable_text;
+    exploitable(task_id, task_password, &exploitable_text);
+    if (exploitable_text)
+    {
+        printf("%s\n", exploitable_text);
+        free(exploitable_text);
+    }
+    else
+        puts("No exploitability information available.");
+}
+
 static void run_log(const char *task_id, const char *task_password)
 {
     PRFileDesc *tcp_sock, *ssl_sock;
@@ -1026,19 +1114,47 @@ static int run_batch(bool delete_temp_archive)
     {
         char *backtrace_text;
         backtrace(task_id, task_password, &backtrace_text);
+        char *exploitable_text = NULL;
+        if (task_type == TASK_RETRACE)
+        {
+            exploitable(task_id, task_password, &exploitable_text);
+            if (!exploitable_text)
+                VERB1 log_msg("No exploitable data available");
+        }
+
         if (dump_dir_name)
         {
+            struct dump_dir *dd = dd_opendir(dump_dir_name, 0/* flags */);
+            if (!dd)
+            {
+                free(backtrace_text);
+                xfunc_die();
+            }
+
             /* the result of TASK_VMCORE is not backtrace, but kernel log */
-            char *backtrace_path = xasprintf("%s/%s", dump_dir_name,
-                                             task_type == TASK_VMCORE ? FILENAME_KERNEL_LOG : FILENAME_BACKTRACE);
-            int backtrace_fd = xopen3(backtrace_path, O_WRONLY | O_CREAT | O_TRUNC, DEFAULT_DUMP_DIR_MODE);
-            xwrite(backtrace_fd, backtrace_text, strlen(backtrace_text));
-            close(backtrace_fd);
-            free(backtrace_path);
+            const char *target = task_type == TASK_VMCORE ? FILENAME_KERNEL_LOG : FILENAME_BACKTRACE;
+            dd_save_text(dd, target, backtrace_text);
+
+            if (exploitable_text)
+            {
+                int exploitable_rating = get_exploitable_rating(exploitable_text);
+                if (exploitable_rating >= MIN_EXPLOITABLE_RATING)
+                    dd_save_text(dd, FILENAME_EXPLOITABLE, exploitable_text);
+                else
+                    VERB1 log_msg("Not saving exploitable data, rating < %d",
+                                  MIN_EXPLOITABLE_RATING);
+            }
+
+            dd_close(dd);
         }
         else
-            printf("%s", backtrace_text);
+        {
+            printf("%s\n", backtrace_text);
+            if (exploitable_text)
+                printf("%s\n", exploitable_text);
+        }
         free(backtrace_text);
+        free(exploitable_text);
     }
     else
     {
@@ -1120,7 +1236,7 @@ int main(int argc, char **argv)
     };
 
     const char *usage = _("abrt-retrace-client <operation> [options]\n"
-        "Operations: create/status/backtrace/log/batch");
+        "Operations: create/status/backtrace/log/batch/exploitable");
 
     char *env_url = getenv("RETRACE_SERVER_URL");
     if (env_url)
@@ -1197,6 +1313,14 @@ int main(int argc, char **argv)
         if (!task_password)
             error_msg_and_die(_("Task password is needed."));
         run_log(task_id, task_password);
+    }
+    else if (0 == strcasecmp(operation, "exploitable"))
+    {
+        if (!task_id)
+            error_msg_and_die(_("Task id is needed."));
+        if (!task_password)
+            error_msg_and_die(_("Task password is needed."));
+        run_exploitable(task_id, task_password);
     }
     else
         error_msg_and_die(_("Unknown operation: %s."), operation);
