@@ -91,7 +91,7 @@ EXTRA_DIST = \
     abrt-gdb-exploitable \
     https-utils.h \
     post_report.xml.in \
-    abrt-action-analyze-ccpp-local
+    abrt-action-analyze-ccpp-local.in
 
 confdir = $(CONF_DIR)
 dist_conf_DATA = \
@@ -249,6 +249,8 @@ abrt_action_install_debuginfo_to_abrt_cache_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     -D_GNU_SOURCE \
+    -DBIN_DIR=\"$(bindir)\" \
+    -DSBIN_DIR=\"$(sbindir)\" \
     $(LIBREPORT_CFLAGS) \
     -Wall -Wwrite-strings \
     -fPIE
@@ -297,6 +299,12 @@ endif
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
+DISTCLEANFILES = abrt-action-analyze-ccpp-local
+
 abrt-action-perform-ccpp-analysis: abrt-action-perform-ccpp-analysis.in
 	sed -e s,\@libexecdir\@,$(libexecdir),g \
+        $< >$@
+
+abrt-action-analyze-ccpp-local: abrt-action-analyze-ccpp-local.in
+	sed -e s,\@LIBEXEC_DIR\@,$(libexecdir),g \
         $< >$@

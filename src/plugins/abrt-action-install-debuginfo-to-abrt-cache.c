@@ -112,12 +112,13 @@ int main(int argc, char **argv)
         } while (*p);
 #endif
         /* Set safe PATH */
-// TODO: honor configure --prefix here by adding it to PATH
-// (otherwise abrt-action-install-debuginfo would fail to spawn abrt-action-trim-files):
-        if (u == 0)
-            putenv((char*) "PATH=/usr/sbin:/sbin:/usr/bin:/bin");
-        else
-            putenv((char*) "PATH=/usr/bin:/bin");
+        // Adding configure --bindir and --sbindir to the PATH so that
+        // abrt-action-install-debuginfo doesn't fail when spawning
+        // abrt-action-trim-files
+        char path_env[] = "PATH=/usr/sbin:/sbin:/usr/bin:/bin:"BIN_DIR":"SBIN_DIR;
+        if (u != 0)
+            strcpy(path_env, "PATH=/usr/bin:/bin:"BIN_DIR);
+        putenv(path_env);
     }
 
     execvp(EXECUTABLE, argv);
