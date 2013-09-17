@@ -55,6 +55,8 @@ export PACKAGES="abrt \
                  abrt-devel \
                  abrt-python \
                  libreport \
+                 libreport-plugin-bugzilla \
                  libreport-plugin-rhtsupport \
                  libreport-plugin-reportuploader \
-                 libreport-plugin-mailx"
+                 libreport-plugin-mailx \
+                 libreport-plugin-ureport"
