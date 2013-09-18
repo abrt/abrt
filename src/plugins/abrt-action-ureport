@@ -13,7 +13,12 @@ from report import dd_opendir, DD_FAIL_QUIETLY_ENOENT
 from reportclient import _, set_verbosity, error_msg_and_die, error_msg, log1, log
 
 def spawn_and_wait(prog):
-    return os.spawnlp(os.P_WAIT, prog, prog)
+    try:
+        return os.spawnlp(os.P_WAIT, prog, prog)
+    except OSError as err:
+        error_msg(_("Unable to start '%s', error message was: '%s'"),
+                    prog, err)
+        return -1
 
 def try_parse_number(dd, filename):
     try:
@@ -54,7 +59,12 @@ if __name__ == "__main__":
 
     set_verbosity(verbose)
 
-    dirname = os.getcwd()
+    # getcwd might fail if cwd was deleted
+    try:
+        dirname = os.getcwd()
+    except OSError as err:
+        error_msg_and_die(_("Unable to get current working directory as"
+                            " it was probably deleted"))
 
     dd = dd_opendir(dirname, 0)
     if not dd:
@@ -111,3 +121,5 @@ if __name__ == "__main__":
         dd.save_text("ureports_counter", str(ureports_counter + 1))
         dd.close()
         sys.exit(exitcode)
+    else:
+        error_msg_and_die(_("reporter-ureport failed with exit code %d" % exitcode))
