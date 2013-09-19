@@ -43,7 +43,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">2</property>
+            <property name="top_attach">3</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -88,7 +88,7 @@
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">2</property>
+            <property name="top_attach">3</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -106,7 +106,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">3</property>
+            <property name="top_attach">4</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -121,7 +121,7 @@
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">3</property>
+            <property name="top_attach">4</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -136,7 +136,7 @@
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">4</property>
+            <property name="top_attach">5</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -154,7 +154,7 @@
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">4</property>
+            <property name="top_attach">5</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -203,7 +203,7 @@
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">2</property>
+            <property name="top_attach">3</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -219,7 +219,7 @@
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">3</property>
+            <property name="top_attach">4</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -235,7 +235,7 @@
           </object>
           <packing>
             <property name="left_attach">2</property>
-            <property name="top_attach">4</property>
+            <property name="top_attach">5</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -254,6 +254,53 @@
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">0</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="image6">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes"> With this option enabled ABRT always create bug ticket with restricted access if possibly sensitive data are dected.</property>
+            <property name="halign">end</property>
+            <property name="margin_left">5</property>
+            <property name="stock">gtk-dialog-question</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">2</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label5">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="hexpand">True</property>
+            <property name="ypad">10</property>
+            <property name="label" translatable="yes">Request private ticket for sensitive information</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">2</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSwitch" id="switch_private_ticket">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="halign">end</property>
+            <property name="valign">center</property>
+            <property name="margin_left">10</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">2</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
