@@ -101,6 +101,9 @@ PolkitResult polkit_check_authorization_pid(pid_t pid, const char *action_id)
 {
     glib_init();
 
-    PolkitSubject *subject = polkit_unix_process_new(pid);
+    PolkitSubject *subject = polkit_unix_process_new_for_owner(pid,
+            /*use start_time from /proc*/0,
+            /*use uid from /proc*/ -1);
+
     return do_check(subject, action_id);
 }
