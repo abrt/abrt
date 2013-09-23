@@ -46,6 +46,7 @@ enum AbrtOptions
 
     ABRT_OPT_UPLOAD_COREDUMP = _ABRT_OPT_BEGIN_,
     ABRT_OPT_STEAL_DIRECTORY,
+    ABRT_OPT_PRIVATE_TICKET,
     ABRT_OPT_SEND_UREPORT,
     ABRT_OPT_SHORTENED_REPORTING,
     ABRT_OPT_SILENT_SHORTENED_REPORTING,
@@ -203,6 +204,10 @@ abrt_config_widget_init(AbrtConfigWidget *self)
     self->priv->options[ABRT_OPT_UPLOAD_COREDUMP].default_value = TRUE;
     self->priv->options[ABRT_OPT_UPLOAD_COREDUMP].config = self->priv->report_gtk_conf;
 
+    self->priv->options[ABRT_OPT_PRIVATE_TICKET].name = CREATE_PRIVATE_TICKET;
+    self->priv->options[ABRT_OPT_PRIVATE_TICKET].default_value = FALSE;
+    self->priv->options[ABRT_OPT_PRIVATE_TICKET].config = self->priv->report_gtk_conf;
+
     /* abrt-applet */
     self->priv->options[ABRT_OPT_SEND_UREPORT].name = "AutoreportingEnabled";
     self->priv->options[ABRT_OPT_SEND_UREPORT].default_value = g_settings_autoreporting;
@@ -219,6 +224,7 @@ abrt_config_widget_init(AbrtConfigWidget *self)
     /* Connect widgets with options */
     connect_switch_with_option(self, ABRT_OPT_UPLOAD_COREDUMP, "switch_upload_coredump");
     connect_switch_with_option(self, ABRT_OPT_STEAL_DIRECTORY, "switch_steal_directory");
+    connect_switch_with_option(self, ABRT_OPT_PRIVATE_TICKET, "switch_private_ticket");
     connect_switch_with_option(self, ABRT_OPT_SEND_UREPORT, "switch_send_ureport");
     connect_switch_with_option(self, ABRT_OPT_SHORTENED_REPORTING, "switch_shortened_reporting");
     connect_switch_with_option(self, ABRT_OPT_SILENT_SHORTENED_REPORTING, "switch_silent_shortened_reporting");
