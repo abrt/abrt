@@ -145,6 +145,7 @@ Requires: %{name}-retrace-client
 %endif
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-libs = %{version}-%{release}
+Requires: libreport-python
 
 %description addon-ccpp
 This package contains hook for C/C++ crashed programs and %{name}'s C/C++
