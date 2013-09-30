@@ -2,7 +2,7 @@
 # vim: dict=/usr/share/beakerlib/dictionary.vim cpt=.,w,b,u,t,i,k
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#   runtest.sh of pstoreoops
+#   runtest.sh of pstoreoops-harvest
 #   Description: Tests abrt pstore harvesting
 #   Author: Jiri Moskovcak <jmoskovc@redhat.com>
 #
@@ -28,7 +28,7 @@
 . /usr/share/beakerlib/beakerlib.sh
 . ../aux/lib.sh
 
-TEST="pstoreoops"
+TEST="pstoreoops-harvest"
 PACKAGE="abrt"
 
 rlJournalStart
