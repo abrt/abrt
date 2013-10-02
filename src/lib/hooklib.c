@@ -346,6 +346,10 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
                         bt_depth);
         free(bt);
 
+        /* Disable -ex disassemble, output might be huge preventing backtrace generation */
+        args[18] = NULL;
+        args[19] = NULL;
+
         if (bt_depth <= 64 && thread_apply_all[0] != '\0')
         {
             /* This program likely has gazillion threads, dont try to bt them all */
