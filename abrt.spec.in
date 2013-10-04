@@ -38,6 +38,13 @@
 %define shadow_utils shadow-utils
 %endif
 
+# do not append package version to doc directory of subpackages in F20 and later; rhbz#993656
+%if "%{_pkgdocdir}" == "%{_docdir}/%{name}"
+    %define docdirversion %{nil}
+%else
+    %define docdirversion -%{version}
+%endif
+
 %define libreport_ver 2.1.8
 
 Summary: Automatic bug detection and reporting tool
@@ -405,8 +412,7 @@ make %{?_smp_mflags}
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT \
              mandir=%{_mandir} \
-             dbusabrtdocdir=%{_defaultdocdir}/%{name}-dbus-%{version}/html/ \
-             example_pythondir=%{_defaultdocdir}/%{name}-python-%{version}/examples
+             dbusabrtdocdir=%{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/
 
 %find_lang %{name}
 
@@ -800,10 +806,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/dbus-1/system-services/org.freedesktop.problems.service
 %{_datadir}/polkit-1/actions/abrt_polkit.policy
 %config(noreplace) %{_sysconfdir}/libreport/events.d/dbus_event.conf
-%dir %{_defaultdocdir}/%{name}-dbus-%{version}/
-%dir %{_defaultdocdir}/%{name}-dbus-%{version}/html/
-%{_defaultdocdir}/%{name}-dbus-%{version}/html/*.html
-%{_defaultdocdir}/%{name}-dbus-%{version}/html/*.css
+%dir %{_defaultdocdir}/%{name}-dbus%{docdirversion}/
+%dir %{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/
+%{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/*.html
+%{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/*.css
 
 %files python
 %{python_sitelib}/problem/
