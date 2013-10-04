@@ -346,9 +346,16 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
                         bt_depth);
         free(bt);
 
-        /* Disable -ex disassemble, output might be huge preventing backtrace generation */
-        args[18] = NULL;
-        args[19] = NULL;
+        /* Replace -ex disassemble (which disasms entire function $pc points to)
+         * to a version which analyzes limited, small patch of code around $pc.
+         * (Users reported a case where bare "disassemble" attempted to process
+         * entire .bss).
+         * TODO: what if "$pc-N" underflows? in my test, this happens:
+         * Dump of assembler code from 0xfffffffffffffff0 to 0x30:
+         * End of assembler dump.
+         * (IOW: "empty" dump)
+         */
+        args[19] = (char*)"disassemble $pc-20, $pc+64";
 
         if (bt_depth <= 64 && thread_apply_all[0] != '\0')
         {
