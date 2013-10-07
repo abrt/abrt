@@ -261,7 +261,18 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
             continue; /* skip anything named "<dirname>.new" */
 
         dd = NULL;
-        char *dump_dir_name2 = concat_path_file(g_settings_dump_location, dent->d_name);
+
+        char *tmp_concat_path = concat_path_file(g_settings_dump_location, dent->d_name);
+
+        char *dump_dir_name2 = realpath(tmp_concat_path, NULL);
+        if (g_verbose > 1 && !dump_dir_name2)
+            perror_msg("realpath(%s)", tmp_concat_path);
+
+        free(tmp_concat_path);
+
+        if (!dump_dir_name2)
+            continue;
+
         char *dd_uid = NULL, *dd_analyzer = NULL;
 
         if (strcmp(dump_dir_name, dump_dir_name2) == 0)
