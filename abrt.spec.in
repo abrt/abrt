@@ -46,6 +46,7 @@ Requires: systemd-units
 %endif
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
+Requires: libreport-plugin-mailx
 Requires(pre): shadow-utils
 Obsoletes: abrt-plugin-sqlite3 > 0.0.1
 # required for transition from 1.1.13, can be removed after some time
