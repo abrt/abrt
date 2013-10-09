@@ -129,6 +129,7 @@ Provides: abrt-applet = %{version}-%{release}
 Obsoletes: abrt-applet < 0.0.5
 Conflicts: abrt-applet < 0.0.5
 Requires: abrt-libs = %{version}-%{release}
+Requires: abrt-gui-libs = %{version}-%{release}
 
 %description gui
 GTK+ wizard for convenient bug reporting.
@@ -343,6 +344,7 @@ uses PolicyKit to authorize to access the problem data.
 Summary: ABRT Python API
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
+Requires: %{name}-libs = %{version}-%{release}
 Requires: pygobject2
 BuildRequires: python-nose
 BuildRequires: python-sphinx
