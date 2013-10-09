@@ -353,6 +353,17 @@ BuildRequires: python-sphinx
 High-level API for querying, creating and manipulating
 problems handled by ABRT in Python.
 
+%package python-doc
+Summary: ABRT Python API Documentation
+Group: Documentation
+BuildArch: noarch
+BuildRequires: python2-devel
+Requires: %{name} = %{version}-%{release}
+Requires: %{name}-python = %{version}-%{release}
+
+%description python-doc
+Examples and documentation for ABRT Python API.
+
 %package console-notification
 Summary: ABRT console notification script
 Group: Applications/System
@@ -796,8 +807,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files python
 %{python_sitelib}/problem/
 %{_mandir}/man5/abrt-python.5.gz
-%dir %{_defaultdocdir}/%{name}-python-%{version}/
-%{_defaultdocdir}/%{name}-python-%{version}/examples/
+
+%files python-doc
+%{python_sitelib}/problem_examples
 
 %files console-notification
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
