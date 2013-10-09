@@ -218,6 +218,17 @@ BuildRequires: python-sphinx
 High-level API for querying, creating and manipulating
 problems handled by ABRT in Python.
 
+%package python-doc
+Summary: ABRT Python API Documentation
+Group: Documentation
+BuildArch: noarch
+BuildRequires: python2-devel
+Requires: %{name} = %{version}-%{release}
+Requires: %{name}-python = %{version}-%{release}
+
+%description python-doc
+Examples and documentation for ABRT Python API.
+
 %prep
 %setup -q
 
@@ -592,8 +603,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files python
 %{python_sitelib}/problem/
-%dir %{_defaultdocdir}/%{name}-python-%{version}/
-%{_defaultdocdir}/%{name}-python-%{version}/examples/
+
+%files python-doc
+%{python_sitelib}/problem_examples
 
 %changelog
 * Wed Mar 16 2011 Jiri Moskovcak <jmoskovc@redhat.com> 2.0.0-1
