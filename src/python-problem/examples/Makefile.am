@@ -1,4 +1,4 @@
-example_python_DATA = \
+example_PYTHON = \
 	daemon_example.py \
 	edit_example.py \
 	list_all_example.py \
@@ -8,6 +8,4 @@ example_python_DATA = \
 	watch_example.py \
 	thread_watch_example.py
 
-example_pythondir = $(datadir)/doc/$(PACKAGE)-python-$(VERSION)/examples
-
-EXTRA_DIST = $(example_python_DATA)
+exampledir = $(pythondir)/problem_examples
