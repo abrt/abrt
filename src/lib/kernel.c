@@ -84,6 +84,7 @@ static void record_oops(GList **oops_list, struct line_info* lines_info, int oop
 static const char *const s_koops_suspicious_strings[] = {
     "BUG:",
     "WARNING: at",
+    "WARNING: CPU:",
     "INFO: possible recursive locking detected",
     /*k*/"ernel BUG at",
     "list_del corruption",
