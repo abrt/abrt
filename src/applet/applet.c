@@ -1431,7 +1431,11 @@ xsmp_client_connect(void)
     /* Make sure we don't pass on these file descriptors to an
      * exec'd child process.
      */
-    fcntl(fd, F_SETFD, fcntl(fd, F_GETFD, 0) | FD_CLOEXEC);
+    const int fd_flags = fcntl(fd, F_GETFD, 0);
+    if (fd_flags < 0)
+        perror_msg_and_die("fcntl(IceConnectionNumber, F_GETFD, 0)");
+    else if (fcntl(fd, F_SETFD, fd_flags | FD_CLOEXEC) < 0)
+        perror_msg_and_die("fcntl(IceConnectionNumber, + FD_CLOEXEC, 0)");
 
     /* When a client detects that there is data to read on an ICE connection,
      * it should call the IceProcessMessages function.
