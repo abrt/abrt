@@ -12,16 +12,9 @@ if [ ! -f kernel ]; then
 fi
 
 echo "Looking for kernel package"
-kernel_package="kernel"
 kernel_version="$( sed 's/ .*//' kernel )"
 
-if grep -q "PAE" kernel; then
-        echo "Looking for PAE kernel"
-        kernel_package="kernel-PAE"
-        kernel_version="$( echo "$kernel_version" | sed 's/\.PAE//' )"
-fi
-
-package="$( rpm -q "$kernel_package" | grep "$kernel_version" )"
+package="$( rpm -qf "/boot/vmlinuz-$kernel_version" )"
 if [ $? != 0 ]; then
         echo "Can't find kernel package corresponding to '$kernel_version'"
         echo "Can't record package version data (pkg_version, pkg_release, ...)."
