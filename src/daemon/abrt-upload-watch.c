@@ -227,7 +227,7 @@ handle_inotify_cb(struct abrt_inotify_watch *watch, struct inotify_event *event,
 {
     /* Was the (presumable newly created) file closed in upload dir,
      * or a file moved to upload dir? */
-    if (event->name && !(event->mask & IN_ISDIR) && (event->mask & (IN_CLOSE_WRITE | IN_MOVED_TO)))
+    if (!(event->mask & IN_ISDIR) && (event->mask & (IN_CLOSE_WRITE | IN_MOVED_TO)))
     {
         const char *ext = strrchr(event->name, '.');
         if (ext && strcmp(ext + 1, "working") == 0)

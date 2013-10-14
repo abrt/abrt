@@ -583,7 +583,8 @@ int main(int argc, char** argv)
             error_msg_and_die("Failed to start: timeout waiting for child");
         }
         /* Child (daemon) continues */
-        setsid(); /* never fails */
+        if (setsid() < 0)
+            perror_msg_and_die("setsid");
         if (g_verbose == 0 && logmode != LOGMODE_SYSLOG)
             start_syslog_logging();
     }
