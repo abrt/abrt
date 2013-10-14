@@ -91,7 +91,7 @@ if __name__ == "__main__":
         if reported_to and reported_to != "":
             bugs = set()
             for line in reported_to.split("\n"):
-                if line.startswith("Bugzilla:") or line.startswith("ABRT Server:"):
+                if line.startswith("Bugzilla:"):
                     bugs.add(line)
             if bugs:
                 log(_("A bug was already filed about this problem:"))
