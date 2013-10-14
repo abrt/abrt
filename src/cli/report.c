@@ -42,9 +42,6 @@ int cmd_report(int argc, const char **argv)
     export_abrt_envvars(/*prog_prefix:*/ 0);
 
     load_abrt_conf();
-    GList *D_list = NULL;
-    D_list = g_list_append(D_list, concat_path_file(g_get_user_cache_dir(), "abrt/spool"));
-    D_list = g_list_append(D_list, xstrdup(g_settings_dump_location));
     free_abrt_conf_data();
 
     while (*argv)

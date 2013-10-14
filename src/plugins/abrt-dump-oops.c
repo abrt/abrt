@@ -359,9 +359,6 @@ int main(int argc, char **argv)
             log("Updating problem directory");
             switch (oops_cnt)
             {
-                case 0:
-                    error_msg(_("Can't update the problem: no oops found"));
-                    break;
                 case 1:
                     {
                         struct dump_dir *dd = dd_opendir(problem_dir, /*open for writing*/0);
