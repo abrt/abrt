@@ -20,7 +20,6 @@
 # include <locale.h>
 #endif
 #include <sys/un.h>
-#include <syslog.h>
 
 #include "abrt_glib.h"
 #include "abrt-inotify.h"
@@ -122,7 +121,7 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
         char *argv[3];  /* abrt-server [-s] NULL */
         char **pp = argv;
         *pp++ = (char*)"abrt-server";
-        if (logmode & LOGMODE_SYSLOG)
+        if (logmode & LOGMODE_JOURNAL)
             *pp++ = (char*)"-s";
         *pp = NULL;
 
@@ -391,7 +390,7 @@ static void handle_signal(int signo)
 }
 
 
-static void start_syslog_logging(void)
+static void start_logging(void)
 {
     /* Open stdin to /dev/null */
     xmove_fd(xopen("/dev/null", O_RDWR), STDIN_FILENO);
@@ -399,8 +398,7 @@ static void start_syslog_logging(void)
      * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
     xdup2(STDIN_FILENO, STDOUT_FILENO);
     xdup2(STDIN_FILENO, STDERR_FILENO);
-    openlog(g_progname, 0, LOG_DAEMON);
-    logmode = LOGMODE_SYSLOG;
+    logmode = LOGMODE_JOURNAL;
     putenv((char*)"ABRT_SYSLOG=1");
 }
 
@@ -522,7 +520,7 @@ int main(int argc, char** argv)
         error_msg_and_die("Must be run as root");
 
     if (opts & OPT_s)
-        start_syslog_logging();
+        start_logging();
 
     xpipe(s_signal_pipe);
     close_on_exec_on(s_signal_pipe[0]);
@@ -585,8 +583,8 @@ int main(int argc, char** argv)
         /* Child (daemon) continues */
         if (setsid() < 0)
             perror_msg_and_die("setsid");
-        if (g_verbose == 0 && logmode != LOGMODE_SYSLOG)
-            start_syslog_logging();
+        if (g_verbose == 0 && logmode != LOGMODE_JOURNAL)
+            start_logging();
     }
 
     log_notice("Creating glib main loop");
@@ -619,8 +617,8 @@ int main(int argc, char** argv)
     {
         log_notice("Signalling parent");
         kill(parent_pid, SIGTERM);
-        if (logmode != LOGMODE_SYSLOG)
-            start_syslog_logging();
+        if (logmode != LOGMODE_JOURNAL)
+            start_logging();
     }
 
     /* Only now we want signal pipe to work */

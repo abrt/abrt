@@ -283,8 +283,7 @@ int main(int argc, char **argv)
     msg_prefix = g_progname;
     if ((opts & OPT_s) || getenv("ABRT_SYSLOG"))
     {
-        openlog(msg_prefix, 0, LOG_DAEMON);
-        logmode = LOGMODE_SYSLOG;
+        logmode = LOGMODE_JOURNAL;
     }
 
     if (opts & OPT_m)

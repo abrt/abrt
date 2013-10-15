@@ -15,7 +15,6 @@
   with this program; if not, write to the Free Software Foundation, Inc.,
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include <syslog.h>
 #include "libabrt.h"
 
 /* Maximal length of backtrace. */
@@ -800,8 +799,7 @@ int main(int argc, char **argv)
     msg_prefix = xasprintf("%s[%u]", g_progname, getpid());
     if (opts & OPT_s)
     {
-        openlog(msg_prefix, 0, LOG_DAEMON);
-        logmode = LOGMODE_SYSLOG;
+        logmode = LOGMODE_JOURNAL;
     }
 
     /* Set up timeout handling */

@@ -20,8 +20,6 @@
 #include "abrt_glib.h"
 #include "libabrt.h"
 
-#include <syslog.h>
-
 #define STRINGIZE_DETAIL(str) #str
 #define STRINGIZE(str) STRINGIZE_DETAIL(str)
 
@@ -346,8 +344,7 @@ main(int argc, char **argv)
     msg_prefix = g_progname;
     if ((opts & OPT_d) || (opts & OPT_s) || getenv("ABRT_SYSLOG"))
     {
-        openlog(msg_prefix, 0, LOG_DAEMON);
-        logmode = LOGMODE_SYSLOG;
+        logmode = LOGMODE_JOURNAL;
     }
 
     log_info("Creating glib main loop");

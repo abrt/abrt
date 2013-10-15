@@ -16,7 +16,6 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-#include <syslog.h>
 #include "libabrt.h"
 
 /* I want to use -Werror, but gcc-4.4 throws a curveball:
@@ -257,8 +256,7 @@ int main(int argc, char **argv)
     msg_prefix = g_progname;
     if ((opts & OPT_s) || getenv("ABRT_SYSLOG"))
     {
-        openlog(msg_prefix, 0, LOG_DAEMON);
-        logmode = LOGMODE_SYSLOG;
+        logmode = LOGMODE_JOURNAL;
     }
 
     if (opts & OPT_m)
