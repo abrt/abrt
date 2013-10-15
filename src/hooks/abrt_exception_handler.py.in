@@ -42,8 +42,8 @@ def write_dump(tb_text, tb):
         import rpm
         dso_list = get_dso_list(tb)
     except ImportError as imperr:
-        import syslog
-        syslog.syslog("RPM module not available, cannot query RPM db for package "\
+        from systemd import journal
+        journal.send("RPM module not available, cannot query RPM db for package "\
                       "names")
 
     # Open ABRT daemon's socket and write data to it
@@ -81,8 +81,8 @@ def write_dump(tb_text, tb):
                     break
                 response += buf
         except socket.timeout as ex:
-            import syslog
-            syslog.syslog("communication with ABRT daemon failed: %s" % str(ex))
+            from systemd import journal
+            journal.send("communication with ABRT daemon failed: %s" % str(ex))
 
         s.close()
         parts = response.split()
@@ -90,12 +90,12 @@ def write_dump(tb_text, tb):
                 or (not parts[0].startswith("HTTP/"))
                 or (not parts[1].isdigit())
                 or (int(parts[1]) >= 400)):
-            import syslog
-            syslog.syslog("error sending data to ABRT daemon: %s" % response)
+            from systemd import journal
+            journal.send("error sending data to ABRT daemon: %s" % response)
 
     except Exception as ex:
-        import syslog
-        syslog.syslog("can't communicate with ABRT daemon, is it running? %s" % str(ex))
+        from systemd import journal
+        journal.send("can't communicate with ABRT daemon, is it running? %s" % str(ex))
 
 def get_package_for_file(fpath):
     """
@@ -203,8 +203,7 @@ def handleMyException((etype, value, tb)):
             if value.errno == errno.EPIPE:
                 return sys.__excepthook__(etype, value, tb)
 
-        import syslog
-        syslog.openlog("abrt")
+        from systemd import journal
 
         # Ignore interactive Python and similar
         # Check for first "-" is meant to catch "-c" which appears in this case:
@@ -212,12 +211,12 @@ def handleMyException((etype, value, tb)):
         ## argv0 is:-c
         # Are there other cases when sys.argv[0][0] is "-"?
         if not sys.argv[0] or sys.argv[0][0] == "-":
-            syslog.syslog("detected unhandled Python exception")
+            journal.send("detected unhandled Python exception")
             raise Exception
 
         # Ignore scripts with relative path unless "RequireAbsolutePath = no".
         # (In this case we can't reliably determine package)
-        syslog.syslog("detected unhandled Python exception in '%s'" % sys.argv[0])
+        journal.send("detected unhandled Python exception in '%s'" % sys.argv[0])
         if sys.argv[0][0] != "/":
             if conf_enabled("RequireAbsolutePath") != 0:
                 raise Exception
