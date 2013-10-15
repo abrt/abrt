@@ -864,7 +864,9 @@ static void notify_problem_list(GList *problems, int flags)
                     NOTIFY_ACTION_CALLBACK(action_known),
                     pi, NULL);
 
-            notify_notification_update(notification, _("A Known Problem has Occurred"), pi->message, NULL);
+            notify_notification_update(notification, pi->was_announced ?
+                    _("The Problem has already been Reported") : _("A Known Problem has Occurred"),
+                    pi->message, NULL);
         }
         else
         {
@@ -1000,7 +1002,12 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
     {
         VERB3 log("fast report finished successfully");
         if (pi->known || !(state->flags & REPORT_UNKNOWN_PROBLEM_IMMEDIATELY))
+        {
+            char *updated_message = xasprintf(_("%s and reported"), pi->message);
+            free(pi->message);
+            pi->message = updated_message;
             notify_problem(pi);
+        }
         else
             run_report_from_applet(pi->problem_dir);
     }
