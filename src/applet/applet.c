@@ -75,6 +75,7 @@ static char *g_last_notified_problem_id;
 
 static bool is_autoreporting_enabled(void)
 {
+    load_user_settings("abrt-applet");
     const char *option = get_user_setting("AutoreportingEnabled");
 
     /* If user configured autoreporting from his scope, don't look at system
@@ -86,6 +87,7 @@ static bool is_autoreporting_enabled(void)
 
 static const char *get_autoreport_event_name(void)
 {
+    load_user_settings("abrt-applet");
     const char *configured = get_user_setting("AutoreportingEvent");
     return configured ? configured : g_settings_autoreporting_event;
 }
@@ -100,6 +102,8 @@ static void ask_start_autoreporting()
        "Therefore it is not necessary to bother you next time and require any further action by you. "
        "\nDo you want to enable automatically submitted anonymous crash reports?"),
        /*parent wnd */ NULL);
+
+    load_user_settings("abrt-applet");
 
     /* Don't forget:
      *
@@ -116,6 +120,7 @@ static void ask_start_autoreporting()
 static bool is_shortened_reporting_enabled()
 {
     /* User config always takes precedence */
+    load_user_settings("abrt-applet");
     const char *configured = get_user_setting("ShortenedReporting");
     if (configured)
         return string_to_bool(configured);
@@ -125,6 +130,8 @@ static bool is_shortened_reporting_enabled()
 
 static bool is_silent_shortened_reporting_enabled(void)
 {
+    /* User config always takes precedence */
+    load_user_settings("abrt-applet");
     const char *configured = get_user_setting("SilentShortenedReporting");
     if (configured)
         return string_to_bool(configured);
