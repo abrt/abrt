@@ -127,7 +127,7 @@ on_switch_activate(GObject       *object,
     const char *const val = state ? "yes" : "no";
 
     AbrtConfigWidgetOption *option = g_object_get_data(G_OBJECT(object), "abrt-option");
-    VERB3 log("%s : %s", option->name, val);
+    log_debug("%s : %s", option->name, val);
     set_app_user_setting(option->config, option->name, val);
     emit_change(config);
 }

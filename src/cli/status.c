@@ -48,7 +48,7 @@ static void count_problems_in_dir(gpointer data, gpointer arg)
     char *path = data;
     struct time_range *me = arg;
 
-    VERB2 log("scanning '%s' for problems since %lu", path, me->since);
+    log_info("scanning '%s' for problems since %lu", path, me->since);
 
     for_each_problem_in_dir(path, getuid(), count_dir_if_newer_than, me);
 }

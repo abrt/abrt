@@ -97,7 +97,7 @@ int main(int argc, char **argv)
 
         strbuf_prepend_str(emptybt, component);
 
-        VERB3 log("Generating duphash: %s", emptybt->buf);
+        log_debug("Generating duphash: %s", emptybt->buf);
         char hash_str[SHA1_RESULT_LEN*2 + 1];
         str_to_sha1str(hash_str, emptybt->buf);
 

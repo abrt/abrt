@@ -61,7 +61,7 @@ static void scan_syslog_file(GList **oops_list, int fd)
         int r = full_read(fd, buffer, sz-1);
         if (r <= 0)
             break;
-        VERB3 log("Read %u bytes", r);
+        log_debug("Read %u bytes", r);
         koops_extract_oopses(oops_list, buffer, r);
 //TODO: rewind to last newline?
     }
@@ -127,7 +127,7 @@ static void save_oops_data_in_dump_dir(struct dump_dir *dd, char *oops, const ch
         char *tainted_short = kernel_tainted_short(second_line);
         if (tainted_short)
         {
-            VERB1 log("Kernel is tainted '%s'", tainted_short);
+            log_notice("Kernel is tainted '%s'", tainted_short);
             dd_save_text(dd, FILENAME_TAINTED_SHORT, tainted_short);
 
             char *tnt_long = kernel_tainted_long(tainted_short);
@@ -164,7 +164,7 @@ static unsigned create_oops_dump_dirs(GList *oops_list, unsigned oops_cnt)
 {
     unsigned countdown = MAX_DUMPED_DD_COUNT; /* do not report hundreds of oopses */
 
-    VERB1 log("Saving %u oopses as problem dirs", oops_cnt >= countdown ? countdown : oops_cnt);
+    log_notice("Saving %u oopses as problem dirs", oops_cnt >= countdown ? countdown : oops_cnt);
 
     char *cmdline_str = xmalloc_fopen_fgetline_fclose("/proc/cmdline");
     char *fips_enabled = xmalloc_fopen_fgetline_fclose("/proc/sys/crypto/fips_enabled");

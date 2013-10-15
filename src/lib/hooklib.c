@@ -61,7 +61,7 @@ void trim_problem_dirs(const char *dirname, double cap_size, const char *exclude
             excluded_basename = exclude_path + len_dirname + 1;
         }
     }
-    VERB3 log("excluded_basename:'%s'", excluded_basename);
+    log_debug("excluded_basename:'%s'", excluded_basename);
 
     int count = 20;
     while (--count >= 0)
@@ -71,7 +71,7 @@ void trim_problem_dirs(const char *dirname, double cap_size, const char *exclude
         double cur_size = get_dirsize_find_largest_dir(dirname, &worst_basename, excluded_basename);
         if (cur_size <= cap_size || !worst_basename)
         {
-            VERB2 log("cur_size:%.0f cap_size:%.0f, no (more) trimming", cur_size, cap_size);
+            log_info("cur_size:%.0f cap_size:%.0f, no (more) trimming", cur_size, cap_size);
             free(worst_basename);
             break;
         }
@@ -390,6 +390,6 @@ char* problem_data_save(problem_data_t *pd)
         dd_close(dd);
     }
 
-    VERB2 log("problem id: '%s'", problem_id);
+    log_info("problem id: '%s'", problem_id);
     return problem_id;
 }

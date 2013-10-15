@@ -180,7 +180,7 @@ static void delete_files(gpointer data, gpointer void_preserve_list)
         if (cur_size <= cap_size || !worst_file_list)
         {
             list_free_with_free(worst_file_list);
-            VERB2 log("cur_size:%.0f cap_size:%.0f, no (more) trimming", cur_size, cap_size);
+            log_info("cur_size:%.0f cap_size:%.0f, no (more) trimming", cur_size, cap_size);
             break;
         }
 
@@ -190,7 +190,7 @@ static void delete_files(gpointer data, gpointer void_preserve_list)
         while (worst_file_list && cur_size > cap_size)
         {
             struct name_and_size *ns = worst_file_list->data;
-            VERB1 log("%s is %.0f bytes (more than %.0f MB), deleting '%s' (%llu bytes)",
+            log_notice("%s is %.0f bytes (more than %.0f MB), deleting '%s' (%llu bytes)",
                     dir, cur_size, cap_size / (1024*1024), ns->name, (long long)ns->size);
             if (unlink(ns->name) != 0)
                 perror_msg("Can't unlink '%s'", ns->name);

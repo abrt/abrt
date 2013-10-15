@@ -60,7 +60,7 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
         return; /* we are at EOF, nothing to do */
     }
 
-    VERB2 log("File grew by %llu bytes, from %llu to %llu",
+    log_info("File grew by %llu bytes, from %llu to %llu",
         (long long)(statbuf->st_size - cur_pos),
         (long long)(cur_pos),
         (long long)(statbuf->st_size));
@@ -78,18 +78,18 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
             char *start = (char*)map + (cur_pos & (page_size - 1));
             for (GList *l = match_list; l; l = l->next)
             {
-                VERB3 log("Searching for '%s' in '%.*s'",
+                log_debug("Searching for '%s' in '%.*s'",
                                 (char*)l->data,
                                 length > 20 ? 20 : (int)length, start
                 );
                 if (memstr(start, length, (char*)l->data))
                 {
-                    VERB3 log("FOUND:'%s'", (char*)l->data);
+                    log_debug("FOUND:'%s'", (char*)l->data);
                     goto found;
                 }
             }
             /* None of the strings are found */
-            VERB3 log("NOT FOUND");
+            log_debug("NOT FOUND");
             munmap(map, maplen);
             lseek(fd, statbuf->st_size, SEEK_SET);
             return;
@@ -105,7 +105,7 @@ static void run_scanner_prog(int fd, struct stat *statbuf, GList *match_list, ch
     if (pid == 0)
     {
         xmove_fd(fd, STDIN_FILENO);
-        VERB3 log("Execing '%s'", prog[0]);
+        log_debug("Execing '%s'", prog[0]);
         execvp(prog[0], prog);
         perror_msg_and_die("Can't execute '%s'", prog[0]);
     }
@@ -211,7 +211,7 @@ int main(int argc, char **argv)
             ino_t fd_ino = statbuf.st_ino;
             if (stat(filename, &statbuf) != 0 || statbuf.st_ino != fd_ino) /* yes */
             {
-                VERB2 log("Inode# changed, closing fd");
+                log_info("Inode# changed, closing fd");
  close_fd:
                 close(file_fd);
                 if (wd >= 0)
@@ -227,7 +227,7 @@ int main(int argc, char **argv)
             file_fd = open(filename, O_RDONLY);
             if (file_fd >= 0)
             {
-                VERB2 log("Opened '%s'", filename);
+                log_info("Opened '%s'", filename);
                 /* For -w case, if we don't have inotify watch yet, open one */
                 if (wd < 0)
                 {
@@ -235,7 +235,7 @@ int main(int argc, char **argv)
                     if (wd < 0)
                         perror_msg("inotify_add_watch failed on '%s'", filename);
                     else
-                        VERB2 log("Added inotify watch for '%s'", filename);
+                        log_info("Added inotify watch for '%s'", filename);
                 }
                 if (fstat(file_fd, &statbuf) == 0)
                 {
@@ -264,7 +264,7 @@ int main(int argc, char **argv)
         if (wd >= 0)
         {
             char buf[4096];
-            VERB3 log("Waiting for '%s' to change", filename);
+            log_debug("Waiting for '%s' to change", filename);
             /* We block here: */
             int len = read(inotify_fd, buf, sizeof(buf));
             if (len < 0 && errno != EINTR) /* I saw EINTR here on strace attach */
@@ -272,7 +272,7 @@ int main(int argc, char **argv)
             /* we don't actually check what happened to file -
              * the code will handle all possibilities.
              */
-            VERB3 log("Change in '%s' detected", filename);
+            log_debug("Change in '%s' detected", filename);
             /* Let them finish writing to the log file. otherwise
              * we may end up trying to analyze partial oops.
              */

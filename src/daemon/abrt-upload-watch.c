@@ -75,10 +75,10 @@ process_quit(struct process *proc)
 static void
 run_abrt_handle_upload(struct process *proc, const char *name)
 {
-    VERB2 log("Processing file '%s' in directory '%s'", name, proc->upload_directory);
+    log_info("Processing file '%s' in directory '%s'", name, proc->upload_directory);
 
     ++proc->children;
-    VERB3 log("Running workers: %d", proc->children);
+    log_debug("Running workers: %d", proc->children);
 
     fflush(NULL); /* paranoia */
     pid_t pid = fork();
@@ -115,7 +115,7 @@ handle_new_path(struct process *proc, char *name)
         return;
     }
 
-    VERB3 log("Pushing '%s' to deferred queue", name);
+    log_debug("Pushing '%s' to deferred queue", name);
     if (!queue_push(&proc->queue, name))
     {
         error_msg(_("No free workers and full buffer. Omitting archive '%s'"), name);
@@ -150,7 +150,7 @@ process_next_in_queue(struct process *proc)
     char *name = queue_pop(&proc->queue);
     if (!name)
     {
-        VERB3 log("Deferred queue is empty. Running workers: %d", proc->children);
+        log_debug("Deferred queue is empty. Running workers: %d", proc->children);
         return;
     }
 
@@ -201,7 +201,7 @@ handle_signal_pipe_cb(GIOChannel *gio, GIOCondition condition, gpointer user_dat
         for (unsigned signo = 0; signo < len; ++signo)
         {
             /* we did receive a signal */
-            VERB3 log("Got signal %d through signal pipe", signals[signo]);
+            log_debug("Got signal %d through signal pipe", signals[signo]);
             if (signals[signo] != SIGCHLD)
             {
                 process_quit(proc);
@@ -318,7 +318,7 @@ main(int argc, char **argv)
     /* By default it is about 1024 entries */
     g_queue_init(&proc.queue.q);
     proc.queue.capacity = cache_size_mib * (1024 * 1024 / FILENAME_MAX);
-    VERB3 log("Max queue size %u", proc.queue.capacity);
+    log_debug("Max queue size %u", proc.queue.capacity);
 
     argv += optind;
     if (argv[0])
@@ -330,7 +330,7 @@ main(int argc, char **argv)
     }
 
     /* Initialization */
-    VERB2 log("Loading settings");
+    log_info("Loading settings");
     if (load_abrt_conf() != 0)
         return 1;
 
@@ -350,16 +350,16 @@ main(int argc, char **argv)
         logmode = LOGMODE_SYSLOG;
     }
 
-    VERB2 log("Creating glib main loop");
+    log_info("Creating glib main loop");
     proc.main_loop = g_main_loop_new(NULL, FALSE);
 
-    VERB1 log("Setting up a file monitor for '%s'", proc.upload_directory);
+    log_notice("Setting up a file monitor for '%s'", proc.upload_directory);
     /* Never returns NULL; it will die if an error occurs */
     struct abrt_inotify_watch *aiw = abrt_inotify_watch_init(proc.upload_directory,
             IN_CLOSE_WRITE | IN_MOVED_TO,
             handle_inotify_cb, &proc);
 
-    VERB1 log("Setting up a signal handler");
+    log_notice("Setting up a signal handler");
     /* Set up signal pipe */
     xpipe(g_signal_pipe);
     close_on_exec_on(g_signal_pipe[0]);
@@ -377,11 +377,11 @@ main(int argc, char **argv)
                 &proc);
 
     int status_callback_source_id = g_idle_add((GSourceFunc)print_stats, &proc);
-    VERB2 log("Starting glib main loop");
+    log_info("Starting glib main loop");
 
     g_main_loop_run(proc.main_loop);
 
-    VERB2 log("Glib main loop finished");
+    log_info("Glib main loop finished");
 
     g_source_remove(channel_signal_source_id);
     g_source_remove(status_callback_source_id);
@@ -390,7 +390,7 @@ main(int argc, char **argv)
     g_io_channel_shutdown(channel_signal, FALSE, &error);
     if (error)
     {
-        VERB1 log("Can't shutdown gio channel: '%s'", error ? error->message : "");
+        log_notice("Can't shutdown gio channel: '%s'", error ? error->message : "");
         g_error_free(error);
     }
 

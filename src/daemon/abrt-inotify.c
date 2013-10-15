@@ -50,7 +50,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
     ) {
         inotify_bytes = INOTIFY_BUF_SIZE;
     }
-    VERB3 log("FIONREAD:%d", inotify_bytes);
+    log_debug("FIONREAD:%d", inotify_bytes);
 
     if (inotify_bytes == 0)
         return TRUE; /* "please don't remove this event" */
@@ -107,7 +107,7 @@ abrt_inotify_watch_init(const char *path, int inotify_flags, abrt_inotify_watch_
     aiw->handler = handler;
     aiw->user_data = user_data;
 
-    VERB1 log("Initializing inotify");
+    log_notice("Initializing inotify");
     errno = 0;
     aiw->inotify_fd = inotify_init();
     if (aiw->inotify_fd == -1)
@@ -118,7 +118,7 @@ abrt_inotify_watch_init(const char *path, int inotify_flags, abrt_inotify_watch_
     if (aiw->inotify_wd < 0)
         perror_msg_and_die("inotify_add_watch failed on '%s'", path);
 
-    VERB1 log("Adding inotify watch to glib main loop");
+    log_notice("Adding inotify watch to glib main loop");
     /* Without nonblocking mode, users observed abrtd blocking
      * on inotify read forever. Must set fd to non-blocking:
      */
@@ -166,7 +166,7 @@ abrt_inotify_watch_destroy(struct abrt_inotify_watch *watch)
     g_io_channel_shutdown(watch->channel_inotify, FALSE, &error);
     if (error)
     {
-        VERB1 log("Can't shutdown inotify gio channel: '%s'", error->message);
+        log_notice("Can't shutdown inotify gio channel: '%s'", error->message);
         g_error_free(error);
     }
 

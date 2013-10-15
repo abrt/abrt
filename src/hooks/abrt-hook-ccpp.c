@@ -557,7 +557,7 @@ int main(int argc, char** argv)
     }
 
     user_pwd = get_cwd(pid); /* may be NULL on error */
-    VERB1 log("user_pwd:'%s'", user_pwd);
+    log_notice("user_pwd:'%s'", user_pwd);
 
     sprintf(path, "/proc/%lu/status", (long)pid);
     proc_pid_status = xmalloc_xopen_read_close(path, /*maxsz:*/ NULL);

@@ -405,7 +405,7 @@ static void new_dir_exists(GList **new_dirs)
                 if (new_dirs)
                 {
                     *new_dirs = g_list_prepend(*new_dirs, xstrdup(l1->data));
-                    VERB1 log("New dir detected: %s", (char *)l1->data);
+                    log_notice("New dir detected: %s", (char *)l1->data);
                 }
                 l1 = g_list_next(l1);
                 continue;
@@ -421,7 +421,7 @@ static void new_dir_exists(GList **new_dirs)
             while (l1)
             {
                 *new_dirs = g_list_prepend(*new_dirs, xstrdup(l1->data));
-                VERB1 log("New dir detected: %s", (char *)l1->data);
+                log_notice("New dir detected: %s", (char *)l1->data);
                 l1 = g_list_next(l1);
             }
         }
@@ -550,7 +550,7 @@ static void run_report_from_applet(const char *dirname)
 //this action should open the reporter dialog directly, without showing the main window
 static void action_report(NotifyNotification *notification, gchar *action, gpointer user_data)
 {
-    VERB3 log("Reporting a problem!");
+    log_debug("Reporting a problem!");
     /* must be closed before ask_yes_no dialog run */
     GError *err = NULL;
     notify_notification_close(notification, &err);
@@ -589,7 +589,7 @@ static void action_ignore(NotifyNotification *notification, gchar *action, gpoin
 {
     problem_info_t *pi = (problem_info_t *)user_data;
 
-    VERB3 log("Ignoring problem '%s'", pi->problem_dir);
+    log_debug("Ignoring problem '%s'", pi->problem_dir);
 
     ignored_problems_add(g_ignore_set, pi->problem_dir);
 
@@ -605,7 +605,7 @@ static void action_ignore(NotifyNotification *notification, gchar *action, gpoin
 
 static void action_known(NotifyNotification *notification, gchar *action, gpointer user_data)
 {
-    VERB3 log("Handle known action '%s'!", action);
+    log_debug("Handle known action '%s'!", action);
     problem_info_t *pi = (problem_info_t *)user_data;
 
     if (strcmp(A_KNOWN_OPEN_GUI, action) == 0)
@@ -641,7 +641,7 @@ static void on_menu_popup_cb(GtkStatusIcon *status_icon,
 
 static void on_notify_close(NotifyNotification *notification, gpointer user_data)
 {
-    VERB3 log("Notify closed!");
+    log_debug("Notify closed!");
     g_object_unref(notification);
 
     /* Scan dirs and save new $XDG_CACHE_HOME/abrt/applet_dirlist.
@@ -794,7 +794,7 @@ static gboolean server_has_persistence(void)
     GList *l = g_list_find_custom(caps, "persistence", (GCompareFunc)strcmp);
 
     list_free_with_free(caps);
-    VERB1 log("notify server %s support pesistence", l ? "DOES" : "DOESN'T");
+    log_notice("notify server %s support pesistence", l ? "DOES" : "DOESN'T");
     return (l != NULL);
 #else
     return FALSE;
@@ -813,7 +813,7 @@ static void notify_problem_list(GList *problems, int flags)
     GList *last_item = g_list_last(problems);
     if (last_item == NULL)
     {
-        VERB3 log("Not showing any notification bubble because the list of problems is empty.");
+        log_debug("Not showing any notification bubble because the list of problems is empty.");
         return;
     }
 
@@ -916,7 +916,7 @@ static void notify_problem_list(GList *problems, int flags)
         }
 
         GError *err = NULL;
-        VERB3 log("Showing a notification");
+        log_debug("Showing a notification");
         notify_notification_show(notification, &err);
         if (err != NULL)
         {
@@ -972,7 +972,7 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
             strbuf_append_str(state->cmd_output, raw);
             char *msg = state->cmd_output->buf;
 
-            VERB3 log("%s", msg);
+            log_debug("%s", msg);
 
             strbuf_clear(state->cmd_output);
             /* jump to next line */
@@ -998,7 +998,7 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
 
     if (status == 0)
     {
-        VERB3 log("fast report finished successfully");
+        log_debug("fast report finished successfully");
         if (pi->known || !(state->flags & REPORT_UNKNOWN_PROBLEM_IMMEDIATELY))
             notify_problem(pi);
         else
@@ -1006,7 +1006,7 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
     }
     else
     {
-        VERB3 log("fast report failed");
+        log_debug("fast report failed");
         if (is_networking_enabled())
             notify_problem(pi);
         else
@@ -1138,7 +1138,7 @@ static void show_problem_notification(problem_info_t *pi, int flags)
 
 static void Crash(DBusMessage* signal)
 {
-    VERB3 log("Crash recorded");
+    log_debug("Crash recorded");
     int r;
     DBusMessageIter in_iter;
     dbus_message_iter_init(signal, &in_iter);
@@ -1178,7 +1178,7 @@ static void Crash(DBusMessage* signal)
         if (errno || *end != '\0' || uid_num != getuid())
         {
             foreign_problem = true;
-            VERB1 log("foreign problem %i", foreign_problem);
+            log_notice("foreign problem %i", foreign_problem);
         }
     }
 
@@ -1225,7 +1225,7 @@ static DBusHandlerResult handle_message(DBusConnection* conn, DBusMessage* msg, 
 {
     const char* member = dbus_message_get_member(msg);
 
-    VERB1 log("%s(member:'%s')", __func__, member);
+    log_notice("%s(member:'%s')", __func__, member);
 
     int type = dbus_message_get_type(msg);
     if (type != DBUS_MESSAGE_TYPE_SIGNAL)
@@ -1259,7 +1259,7 @@ static void handle_signal(int signo)
     int save_errno = errno;
 
     // Enable for debugging only, malloc/printf are unsafe in signal handlers
-    //VERB3 log("Got signal %d", signo);
+    //log_debug("Got signal %d", signo);
 
     uint8_t sig_caught = signo;
     if (write(g_signal_pipe[1], &sig_caught, 1))
@@ -1588,7 +1588,7 @@ int main(int argc, char** argv)
         struct dump_dir *dd = dd_opendir((char *)new_dirs->data, DD_OPEN_READONLY);
         if (dd == NULL)
         {
-            VERB1 log("'%s' is not a dump dir - ignoring\n", (char *)new_dirs->data);
+            log_notice("'%s' is not a dump dir - ignoring\n", (char *)new_dirs->data);
             new_dirs = g_list_next(new_dirs);
             continue;
         }
@@ -1596,7 +1596,7 @@ int main(int argc, char** argv)
         /* Don't check errors, time element is always valid time stamp!! */
         if (dd->dd_time < min_born_time)
         {
-            VERB1 log("Ignoring outdated problem '%s'", (char *)new_dirs->data);
+            log_notice("Ignoring outdated problem '%s'", (char *)new_dirs->data);
             goto next;
         }
 
@@ -1621,7 +1621,7 @@ int main(int argc, char** argv)
         }
         else
         {
-            VERB1 log("Ignoring already reported problem '%s'", (char *)new_dirs->data);
+            log_notice("Ignoring already reported problem '%s'", (char *)new_dirs->data);
         }
 
         free(reported_to);

@@ -174,18 +174,18 @@ static int create_archive(bool unlink_temp)
 
     /* Wait for tar and xz to finish successfully */
     int status;
-    VERB1 log_msg("Waiting for tar...");
+    log_notice("Waiting for tar...");
     safe_waitpid(tar_child, &status, 0);
     if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
         /* Hopefully, by this time child emitted more meaningful
          * error message. But just in case it didn't:
          */
         error_msg_and_die(_("Can't create temporary file in "LARGE_DATA_TMP_DIR));
-    VERB1 log_msg("Waiting for xz...");
+    log_notice("Waiting for xz...");
     safe_waitpid(xz_child, &status, 0);
     if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
         error_msg_and_die(_("Can't create temporary file in "LARGE_DATA_TMP_DIR));
-    VERB1 log_msg("Done...");
+    log_notice("Done...");
 
     xlseek(tempfd, 0, SEEK_SET);
     return tempfd;
@@ -937,11 +937,11 @@ static int get_exploitable_rating(const char *exploitable_text)
     int result;
     if (!colon || sscanf(colon, ": %d", &result) != 1)
     {
-        VERB1 log_msg("Unable to determine exploitable rating");
+        log_notice("Unable to determine exploitable rating");
         return -1;
     }
 
-    VERB1 log_msg("Exploitable rating: %d", result);
+    log_notice("Exploitable rating: %d", result);
     return result;
 }
 
@@ -1119,7 +1119,7 @@ static int run_batch(bool delete_temp_archive)
         {
             exploitable(task_id, task_password, &exploitable_text);
             if (!exploitable_text)
-                VERB1 log_msg("No exploitable data available");
+                log_notice("No exploitable data available");
         }
 
         if (dump_dir_name)
@@ -1141,7 +1141,7 @@ static int run_batch(bool delete_temp_archive)
                 if (exploitable_rating >= MIN_EXPLOITABLE_RATING)
                     dd_save_text(dd, FILENAME_EXPLOITABLE, exploitable_text);
                 else
-                    VERB1 log_msg("Not saving exploitable data, rating < %d",
+                    log_notice("Not saving exploitable data, rating < %d",
                                   MIN_EXPLOITABLE_RATING);
             }
 

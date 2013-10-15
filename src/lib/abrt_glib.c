@@ -27,7 +27,7 @@ GList *string_list_from_variant(GVariant *variant)
     g_variant_get(variant, "as", &iter);
     while (g_variant_iter_loop(iter, "s", &str))
     {
-        VERB1 log("adding: %s", str);
+        log_notice("adding: %s", str);
         list = g_list_prepend(list, xstrdup(str));
     }
     g_variant_unref(variant);
