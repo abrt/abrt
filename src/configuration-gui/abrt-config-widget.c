@@ -33,11 +33,16 @@
 #define UI_FILE_NAME "abrt-config-widget.ui"
 
 typedef struct {
+    char *app_name;
+    map_string_t *settings;
+} AbrtAppConfiguration;
+
+typedef struct {
     const char *name;
     GtkSwitch *widget;
     gboolean default_value;
     gboolean current_value;
-    map_string_t *config;
+    AbrtAppConfiguration *config;
 } AbrtConfigWidgetOption;
 
 enum AbrtOptions
@@ -56,8 +61,8 @@ enum AbrtOptions
 
 struct AbrtConfigWidgetPrivate {
     GtkBuilder   *builder;
-    map_string_t *report_gtk_conf;
-    map_string_t *abrt_applet_conf;
+    AbrtAppConfiguration *report_gtk_conf;
+    AbrtAppConfiguration *abrt_applet_conf;
 
     AbrtConfigWidgetOption options[_ABRT_OPT_END_];
 };
@@ -72,6 +77,52 @@ enum {
 static guint s_signals[SN_LAST_SIGNAL] = { 0 };
 
 static void abrt_config_widget_finalize(GObject *object);
+
+static AbrtAppConfiguration *
+abrt_app_configuration_new(const char *app_name)
+{
+    AbrtAppConfiguration *conf = xmalloc(sizeof(*conf));
+
+    conf->app_name = xstrdup(app_name);
+    conf->settings = new_map_string();
+
+    if(!load_app_conf_file(conf->app_name, conf->settings)) {
+        g_warning("Failed to load config for '%s'", conf->app_name);
+    }
+
+    return conf;
+}
+
+static void
+abrt_app_configuration_set_value(AbrtAppConfiguration *conf, const char *name, const char *value)
+{
+    set_app_user_setting(conf->settings, name, value);
+}
+
+static const char *
+abrt_app_configuration_get_value(AbrtAppConfiguration *conf, const char *name)
+{
+    return get_app_user_setting(conf->settings, name);
+}
+
+static void
+abrt_app_configuration_save(AbrtAppConfiguration *conf)
+{
+    save_app_conf_file(conf->app_name, conf->settings);
+}
+
+static void
+abrt_app_configuration_free(AbrtAppConfiguration *conf)
+{
+    if (!conf)
+        return;
+
+    free(conf->app_name);
+    conf->app_name = (void *)0xDEADBEAF;
+
+    free_map_string(conf->settings);
+    conf->settings = (void *)0xDEADBEAF;
+}
 
 static void
 abrt_config_widget_class_init(AbrtConfigWidgetClass *klass)
@@ -103,10 +154,10 @@ abrt_config_widget_finalize(GObject *object)
     }
 
     /* Clean up */
-    free_map_string(self->priv->report_gtk_conf);
+    abrt_app_configuration_free(self->priv->report_gtk_conf);
     self->priv->report_gtk_conf = NULL;
 
-    free_map_string(self->priv->abrt_applet_conf);
+    abrt_app_configuration_free(self->priv->abrt_applet_conf);
     self->priv->abrt_applet_conf = NULL;
 
     G_OBJECT_CLASS(abrt_config_widget_parent_class)->finalize(object);
@@ -128,7 +179,8 @@ on_switch_activate(GObject       *object,
 
     AbrtConfigWidgetOption *option = g_object_get_data(G_OBJECT(object), "abrt-option");
     VERB3 log("%s : %s", option->name, val);
-    set_app_user_setting(option->config, option->name, val);
+    abrt_app_configuration_set_value(option->config, option->name, val);
+    abrt_app_configuration_save(option->config);
     emit_change(config);
 }
 
@@ -138,8 +190,8 @@ update_option_current_value(AbrtConfigWidget *self, enum AbrtOptions opid)
     assert((opid >= _ABRT_OPT_BEGIN_ && opid < _ABRT_OPT_END_) || !"Out of range Option ID value");
 
     AbrtConfigWidgetOption *option = &(self->priv->options[opid]);
-    const char *val = get_app_user_setting(option->config, option->name);
-    option->current_value = val ? string_to_bool(val) : option->default_value;;
+    const char *val = abrt_app_configuration_get_value(option->config, option->name);
+    option->current_value = val ? string_to_bool(val) : option->default_value;
 }
 
 static void
@@ -184,15 +236,8 @@ abrt_config_widget_init(AbrtConfigWidget *self)
     /* Load configuration */
     load_abrt_conf();
 
-    self->priv->report_gtk_conf = new_map_string();
-    if(!load_app_conf_file("report-gtk", self->priv->report_gtk_conf)) {
-        g_warning("Failed to load config for '%s'", "report-gtk");
-    }
-
-    self->priv->abrt_applet_conf = new_map_string();
-    if(!load_app_conf_file("abrt-applet", self->priv->abrt_applet_conf)) {
-        g_warning("Failed to load config for '%s'", "abrt-applet");
-    }
+    self->priv->report_gtk_conf = abrt_app_configuration_new("report-gtk");
+    self->priv->abrt_applet_conf = abrt_app_configuration_new("abrt-applet");
 
     /* Initialize options */
     /* report-gtk */
@@ -239,29 +284,6 @@ AbrtConfigWidget *
 abrt_config_widget_new()
 {
     return g_object_new(TYPE_ABRT_CONFIG_WIDGET, NULL);
-}
-
-void
-abrt_config_widget_save_chnages(AbrtConfigWidget *config)
-{
-    /* Save configuration */
-    save_app_conf_file("report-gtk", config->priv->report_gtk_conf);
-    save_app_conf_file("abrt-applet", config->priv->abrt_applet_conf);
-
-    for(unsigned i = _ABRT_OPT_BEGIN_; i < _ABRT_OPT_END_; ++i)
-        update_option_current_value(config, i);
-}
-
-gboolean
-abrt_config_widget_get_changed(AbrtConfigWidget *self)
-{
-    for(unsigned i = _ABRT_OPT_BEGIN_; i < _ABRT_OPT_END_; ++i)
-    {
-        if (gtk_switch_get_active(self->priv->options[i].widget) != self->priv->options[i].current_value)
-            return TRUE;
-    }
-
-    return FALSE;
 }
 
 void

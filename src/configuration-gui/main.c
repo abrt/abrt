@@ -22,22 +22,6 @@
 
 #define APP_NAME "System Config ABRT"
 
-static void
-system_config_abrt_window_close_cb(gpointer user_data)
-{
-    GtkWidget *sca = GTK_WIDGET(g_object_get_data(G_OBJECT(user_data), "system-config-abrt"));
-
-    if (system_config_abrt_check_before_close(sca))
-        gtk_widget_destroy(GTK_WIDGET(user_data));
-}
-
-static gboolean
-system_config_abrt_window_delete_event(GtkWidget *window, GdkEvent *event, gpointer user_data)
-{
-    GtkWidget *sca = GTK_WIDGET(g_object_get_data(G_OBJECT(window), "system-config-abrt"));
-    return !system_config_abrt_check_before_close(sca);
-}
-
 static GtkWidget *
 system_config_abrt_window_new(GApplication *app)
 {
@@ -45,10 +29,7 @@ system_config_abrt_window_new(GApplication *app)
     gtk_window_set_default_size(GTK_WINDOW(wnd), 500, 300);
     gtk_window_set_title(GTK_WINDOW(wnd), _("Problem Reporting Configuration"));
 
-    GtkWidget *sca = system_config_abrt_widget_new_with_close_button(
-                        system_config_abrt_window_close_cb, wnd);
-    g_object_set_data(G_OBJECT(wnd), "system-config-abrt", sca);
-    g_signal_connect(wnd, "delete-event", G_CALLBACK(system_config_abrt_window_delete_event), /*user_data*/NULL);
+    GtkWidget *sca = system_config_abrt_widget_new();
     gtk_container_add(GTK_CONTAINER(wnd), sca);
 
     return wnd;
