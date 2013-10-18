@@ -205,6 +205,38 @@ void ignored_problems_remove(ignored_problems_t *set, const char *problem_id);
 */
 bool ignored_problems_contains(ignored_problems_t *set, const char *problem_id);
 
+/**
+  @brief Adds a problem defined by its data to the ignored problems
+
+  This function never fails. All errors will be logged.
+
+  @param set An instance of ignored problems to which the problem will be added
+  @param pd A data of a problem which will be added to an ignored set
+*/
+void ignored_problems_add_problem_data(ignored_problems_t *set, problem_data_t *pd);
+
+/**
+  @brief Removes a problem defined by its data from the ignored problems
+
+  This function never fails. All errors will be logged.
+
+  @param set An instance of ignored problems from which the problem will be deleted
+  @param pd A data of a problem which will be removed from an ignored problems struct
+*/
+void ignored_problems_remove_problem_data(ignored_problems_t *set, problem_data_t *pd);
+
+/**
+  @brief Checks if a problem defined its data is in the ignored problems
+
+  This function never fails. All errors will be logged. If any error occurs,
+  the function returns 0 value.
+
+  @param set An instance of ignored problems in which the problem will be searched
+  @param pd A data of a problem
+  @return Non 0 value if the problem is ignored; otherwise returns 0 value.
+*/
+bool ignored_problems_contains_problem_data(ignored_problems_t *set, problem_data_t *pd);
+
 #ifdef __cplusplus
 }
 #endif
