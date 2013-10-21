@@ -59,4 +59,5 @@ export PACKAGES="abrt \
                  libreport-plugin-rhtsupport \
                  libreport-plugin-reportuploader \
                  libreport-plugin-mailx \
-                 libreport-plugin-ureport"
+                 libreport-plugin-ureport \
+                 will-crash"
