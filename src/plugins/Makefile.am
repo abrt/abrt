@@ -8,7 +8,8 @@ bin_SCRIPTS = \
     abrt-action-list-dsos \
     abrt-action-perform-ccpp-analysis \
     abrt-action-save-kernel-data \
-    abrt-action-analyze-ccpp-local
+    abrt-action-analyze-ccpp-local \
+    abrt-action-notify
 
 bin_PROGRAMS = \
     abrt-watch-log \
@@ -73,7 +74,8 @@ PYTHON_FILES = \
     abrt-action-analyze-core \
     abrt-action-analyze-vulnerability \
     abrt-action-analyze-vmcore.in \
-    abrt-action-perform-ccpp-analysis.in
+    abrt-action-perform-ccpp-analysis.in \
+    abrt-action-notify
 
 EXTRA_DIST = \
     $(PYTHON_FILES) \
