@@ -33,7 +33,7 @@ char* get_package_name_from_NVR_or_NULL(const char* packageNVR)
     char* package_name = NULL;
     if (packageNVR != NULL)
     {
-        VERB1 log("packageNVR %s", packageNVR);
+        log_notice("packageNVR %s", packageNVR);
         package_name = xstrdup(packageNVR);
         char *pos = strrchr(package_name, '-');
         if (pos != NULL)
@@ -113,7 +113,7 @@ int rpm_chk_fingerprint(const char* pkg)
     pgpsig = headerFormat(header, "%|SIGGPG?{%{SIGGPG:pgpsig}}:{%{SIGPGP:pgpsig}}|", &errmsg);
     if (!pgpsig && errmsg)
     {
-        VERB1 log("cannot get siggpg:pgpsig. reason: %s", errmsg);
+        log_notice("cannot get siggpg:pgpsig. reason: %s", errmsg);
         goto error;
     }
 

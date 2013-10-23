@@ -452,7 +452,7 @@ int main(int argc, char **argv)
         char *installed_pkg_nvr = rpm_get_nvr_by_pkg_name(name);
         if (installed_pkg_nvr && rpmvercmp(installed_pkg_nvr, b->nvr) >= 0)
         {
-            VERB2 log("Update %s is older or same as local version %s, skipping", b->nvr, installed_pkg_nvr);
+            log_info("Update %s is older or same as local version %s, skipping", b->nvr, installed_pkg_nvr);
             free(installed_pkg_nvr);
             continue;
         }

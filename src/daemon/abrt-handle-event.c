@@ -54,7 +54,7 @@ static int core_backtrace_is_duplicate(struct sr_stacktrace *bt1,
 
     if (thread1 == NULL)
     {
-        VERB1 log("New stacktrace has no crash thread, disabling core stacktrace deduplicate");
+        log_notice("New stacktrace has no crash thread, disabling core stacktrace deduplicate");
         dup_corebt_fini();
         return 0;
     }
@@ -65,7 +65,7 @@ static int core_backtrace_is_duplicate(struct sr_stacktrace *bt1,
                                                     bt2_text, &error_message);
     if (bt2 == NULL)
     {
-        VERB1 log("Failed to parse backtrace, considering it not duplicate: %s", error_message);
+        log_notice("Failed to parse backtrace, considering it not duplicate: %s", error_message);
         free(error_message);
         return 0;
     }
@@ -74,7 +74,7 @@ static int core_backtrace_is_duplicate(struct sr_stacktrace *bt1,
 
     if (thread2 == NULL)
     {
-        VERB1 log("Failed to get crash thread, considering it not duplicate");
+        log_notice("Failed to get crash thread, considering it not duplicate");
         result = 0;
         goto end;
     }
@@ -83,7 +83,7 @@ static int core_backtrace_is_duplicate(struct sr_stacktrace *bt1,
 
     if (length2 <= 0)
     {
-        VERB1 log("Core backtrace has zero frames, considering it not duplicate");
+        log_notice("Core backtrace has zero frames, considering it not duplicate");
         result = 0;
         goto end;
     }
@@ -94,14 +94,14 @@ static int core_backtrace_is_duplicate(struct sr_stacktrace *bt1,
 
     if (length1 <= 2 || length2 <= 2)
     {
-        VERB1 log("Backtraces too short, falling back on full comparison");
+        log_notice("Backtraces too short, falling back on full comparison");
         result = (sr_core_thread_cmp(thread1, thread2) == 0);
         goto end;
     }
     */
 
     float distance = sr_distance(SR_DISTANCE_DAMERAU_LEVENSHTEIN, thread1, thread2);
-    VERB2 log("Distance between backtraces: %f", distance);
+    log_info("Distance between backtraces: %f", distance);
     result = (distance <= BACKTRACE_DUP_THRESHOLD);
 
 end:
@@ -164,7 +164,7 @@ static void dup_corebt_init(const struct dump_dir *dd)
     enum sr_report_type report_type = sr_abrt_type_from_analyzer(analyzer);
     if (report_type == SR_REPORT_INVALID)
     {
-        VERB1 log("Can't load stacktrace because of unsupported analyzer: %s",
+        log_notice("Can't load stacktrace because of unsupported analyzer: %s",
                   analyzer);
         return;
     }
@@ -174,7 +174,7 @@ static void dup_corebt_init(const struct dump_dir *dd)
     corebt = sr_stacktrace_parse(report_type, corebt_text, &error_message);
     if (!corebt)
     {
-        VERB1 log("Failed to load core stacktrace: %s", error_message);
+        log_notice("Failed to load core stacktrace: %s", error_message);
         free(error_message);
     }
 

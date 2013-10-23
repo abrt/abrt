@@ -187,7 +187,7 @@ void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
                  * we know we submitted everything upto here already */
                 if (strstr(c, "kernel oopses to Abrt"))
                 {
-                    VERB3 log("Found our marker at line %d", linecount);
+                    log_debug("Found our marker at line %d", linecount);
                     free(lines_info);
                     lines_info = NULL;
                     lines_info_size = 0;
@@ -267,11 +267,9 @@ next_line:
             if (oopsstart >= 0)
             {
                 /* debug information */
-                VERB3 {
-                    log("Found oops at line %d: '%s'", oopsstart, lines_info[oopsstart].ptr);
-                    if (oopsstart != i)
-                            log("Trigger line is %d: '%s'", i, c);
-                }
+                log_debug("Found oops at line %d: '%s'", oopsstart, lines_info[oopsstart].ptr);
+                if (oopsstart != i)
+                        log_debug("Trigger line is %d: '%s'", i, c);
                 /* try to find the end marker */
                 int i2 = i + 1;
                 while (i2 < lines_info_size && i2 < (i+50))
@@ -352,7 +350,7 @@ next_line:
 
             if (oopsend <= i)
             {
-                VERB3 log("End of oops at line %d (%d): '%s'", oopsend, i, lines_info[oopsend].ptr);
+                log_debug("End of oops at line %d (%d): '%s'", oopsend, i, lines_info[oopsend].ptr);
                 record_oops(oops_list, lines_info, oopsstart, oopsend);
                 oopsstart = -1;
                 inbacktrace = 0;
@@ -371,14 +369,14 @@ next_line:
             {
                 inbacktrace = 0;
                 oopsstart = -1;
-                VERB3 log("Dropped oops, too long");
+                log_debug("Dropped oops, too long");
                 continue;
             }
             if (!inbacktrace && i - oopsstart > 40)
             {
                 /*inbacktrace = 0; - already is */
                 oopsstart = -1;
-                VERB3 log("Dropped oops, too long");
+                log_debug("Dropped oops, too long");
                 continue;
             }
         }
@@ -388,7 +386,7 @@ next_line:
     if (oopsstart >= 0 && inbacktrace)
     {
         int oopsend = i-1;
-        VERB3 log("End of oops at line %d (end of file): '%s'", oopsend, lines_info[oopsend].ptr);
+        log_debug("End of oops at line %d (end of file): '%s'", oopsend, lines_info[oopsend].ptr);
         record_oops(oops_list, lines_info, oopsstart, oopsend);
     }
 
@@ -511,7 +509,7 @@ int koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf)
     }
 
  gen_hash: ;
-    VERB3 log("bt to hash: '%s'", kernel_bt->buf);
+    log_debug("bt to hash: '%s'", kernel_bt->buf);
 
     /* If we failed to find and process bt, we may end up hashing "".
      * Not good. Let user know it via return value.
@@ -520,7 +518,7 @@ int koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf)
 
     str_to_sha1str(hash_str, kernel_bt->buf);
     strbuf_free(kernel_bt);
-    VERB3 log("hash: %s", hash_str);
+    log_debug("hash: %s", hash_str);
 
     return bad;
 }

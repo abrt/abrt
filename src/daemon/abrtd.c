@@ -20,7 +20,6 @@
 # include <locale.h>
 #endif
 #include <sys/un.h>
-#include <syslog.h>
 
 #include "abrt_glib.h"
 #include "abrt-inotify.h"
@@ -90,7 +89,7 @@ static void decrement_child_count(void)
         child_count--;
     if (child_count < MAX_CLIENT_COUNT && !channel_id_socket)
     {
-        log("Accepting connections on '%s'", SOCKET_FILE);
+        log_info("Accepting connections on '%s'", SOCKET_FILE);
         channel_id_socket = add_watch_or_die(channel_socket, G_IO_IN | G_IO_PRI | G_IO_HUP, server_socket_cb);
     }
 }
@@ -105,7 +104,7 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
         return TRUE;
     }
 
-    log("New client connected");
+    log_notice("New client connected");
     fflush(NULL); /* paranoia */
     pid_t pid = fork();
     if (pid < 0)
@@ -122,7 +121,7 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
         char *argv[3];  /* abrt-server [-s] NULL */
         char **pp = argv;
         *pp++ = (char*)"abrt-server";
-        if (logmode & LOGMODE_SYSLOG)
+        if (logmode & LOGMODE_JOURNAL)
             *pp++ = (char*)"-s";
         *pp = NULL;
 
@@ -144,7 +143,7 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
     if (len == 1)
     {
         /* we did receive a signal */
-        VERB3 log("Got signal %d through signal pipe", signo);
+        log_debug("Got signal %d through signal pipe", signo);
         if (signo != SIGCHLD)
             s_exiting = 1;
         else
@@ -203,7 +202,7 @@ static void handle_inotify_cb(struct abrt_inotify_watch *watch, struct inotify_e
 
         if (event->mask & IN_DELETE_SELF || event->mask & IN_MOVE_SELF)
         {
-            log("Recreating deleted dump location '%s'", g_settings_dump_location);
+            log_notice("Recreating deleted dump location '%s'", g_settings_dump_location);
 
             sanitize_dump_dir_rights();
             abrt_inotify_watch_reset(watch, g_settings_dump_location, IN_DUMP_LOCATION_FLAGS);
@@ -214,13 +213,13 @@ static void handle_inotify_cb(struct abrt_inotify_watch *watch, struct inotify_e
         {
             /* ignore lock files and such */
             // Happens all the time during normal run
-            //VERB3 log("File '%s' creation detected, ignoring", name);
+            //log_debug("File '%s' creation detected, ignoring", name);
             continue;
         }
         const char *ext = strrchr(name, '.');
         if (ext && strcmp(ext, ".new") == 0)
         {
-            //VERB3 log("Directory '%s' creation detected, ignoring", name);
+            //log_debug("Directory '%s' creation detected, ignoring", name);
             continue;
         }
         log("Directory '%s' creation detected", name);
@@ -378,7 +377,7 @@ static void handle_signal(int signo)
     int save_errno = errno;
 
     // Enable for debugging only, malloc/printf are unsafe in signal handlers
-    //VERB3 log("Got signal %d", signo);
+    //log_debug("Got signal %d", signo);
 
     uint8_t sig_caught;
     s_sig_caught = sig_caught = signo;
@@ -391,7 +390,7 @@ static void handle_signal(int signo)
 }
 
 
-static void start_syslog_logging(void)
+static void start_logging(void)
 {
     /* Open stdin to /dev/null */
     xmove_fd(xopen("/dev/null", O_RDWR), STDIN_FILENO);
@@ -399,8 +398,7 @@ static void start_syslog_logging(void)
      * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
     xdup2(STDIN_FILENO, STDOUT_FILENO);
     xdup2(STDIN_FILENO, STDERR_FILENO);
-    openlog(g_progname, 0, LOG_DAEMON);
-    logmode = LOGMODE_SYSLOG;
+    logmode = LOGMODE_JOURNAL;
     putenv((char*)"ABRT_SYSLOG=1");
 }
 
@@ -414,7 +412,7 @@ static void start_syslog_logging(void)
  */
 static void mark_unprocessed_dump_dirs_not_reportable(const char *path)
 {
-    log("Searching for unprocessed dump directories");
+    log_notice("Searching for unprocessed dump directories");
 
     DIR *dp = opendir(path);
     if (!dp)
@@ -447,7 +445,7 @@ static void mark_unprocessed_dump_dirs_not_reportable(const char *path)
         {
             if (!dd_exist(dd, FILENAME_COUNT) && !dd_exist(dd, FILENAME_NOT_REPORTABLE))
             {
-                log("Marking '%s' not reportable (no '"FILENAME_COUNT"' item)", full_name);
+                log_warning("Marking '%s' not reportable (no '"FILENAME_COUNT"' item)", full_name);
 
                 dd_save_text(dd, FILENAME_NOT_REPORTABLE, _("The problem data are "
                             "incomplete. This usually happens when a problem "
@@ -522,7 +520,7 @@ int main(int argc, char** argv)
         error_msg_and_die("Must be run as root");
 
     if (opts & OPT_s)
-        start_syslog_logging();
+        start_logging();
 
     xpipe(s_signal_pipe);
     close_on_exec_on(s_signal_pipe[0]);
@@ -542,7 +540,7 @@ int main(int argc, char** argv)
     struct abrt_inotify_watch *aiw = NULL;
 
     /* Initialization */
-    VERB1 log("Loading settings");
+    log_notice("Loading settings");
     if (load_abrt_conf() != 0)
         goto init_error;
 
@@ -585,11 +583,11 @@ int main(int argc, char** argv)
         /* Child (daemon) continues */
         if (setsid() < 0)
             perror_msg_and_die("setsid");
-        if (g_verbose == 0 && logmode != LOGMODE_SYSLOG)
-            start_syslog_logging();
+        if (g_verbose == 0 && logmode != LOGMODE_JOURNAL)
+            start_logging();
     }
 
-    VERB1 log("Creating glib main loop");
+    log_notice("Creating glib main loop");
     pMainloop = g_main_loop_new(NULL, FALSE);
 
     /* Watching 'g_settings_dump_location' for delete self
@@ -599,14 +597,14 @@ int main(int argc, char** argv)
             IN_DUMP_LOCATION_FLAGS, handle_inotify_cb, /*user data*/NULL);
 
     /* Add an event source which waits for INT/TERM signal */
-    VERB1 log("Adding signal pipe watch to glib main loop");
+    log_notice("Adding signal pipe watch to glib main loop");
     channel_signal = abrt_gio_channel_unix_new(s_signal_pipe[0]);
     channel_id_signal_event = add_watch_or_die(channel_signal,
                         G_IO_IN | G_IO_PRI | G_IO_HUP,
                         handle_signal_cb);
 
     /* Mark the territory */
-    VERB1 log("Creating pid file");
+    log_notice("Creating pid file");
     if (create_pidfile() != 0)
         goto init_error;
     pidfile_created = true;
@@ -617,10 +615,10 @@ int main(int argc, char** argv)
     /* Inform parent that we initialized ok */
     if (!(opts & OPT_d))
     {
-        VERB1 log("Signalling parent");
+        log_notice("Signalling parent");
         kill(parent_pid, SIGTERM);
-        if (logmode != LOGMODE_SYSLOG)
-            start_syslog_logging();
+        if (logmode != LOGMODE_JOURNAL)
+            start_logging();
     }
 
     /* Only now we want signal pipe to work */

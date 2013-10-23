@@ -15,7 +15,6 @@
   with this program; if not, write to the Free Software Foundation, Inc.,
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include <syslog.h>
 #include "libabrt.h"
 
 /* Maximal length of backtrace. */
@@ -302,12 +301,12 @@ static int run_post_create(const char *dirname)
     dd_close(dd);
 
     if (!dup_of_dir)
-        log("New problem directory %s, processing", work_dir);
+        log_notice("New problem directory %s, processing", work_dir);
     else
     {
-        log("Deleting problem directory %s (dup of %s)",
-                strrchr(dirname, '/') + 1,
-                strrchr(dup_of_dir, '/') + 1);
+        log_warning("Deleting problem directory %s (dup of %s)",
+                    strrchr(dirname, '/') + 1,
+                    strrchr(dup_of_dir, '/') + 1);
         delete_dump_dir(dirname);
     }
 
@@ -327,7 +326,7 @@ static int run_post_create(const char *dirname)
     goto read_child_output;
 
  delete_bad_dir:
-    log("Deleting problem directory '%s'", dirname);
+    log_warning("Deleting problem directory '%s'", dirname);
     delete_dump_dir(dirname);
 
  ret:
@@ -418,7 +417,7 @@ static int create_problem_dir(GHashTable *problem_info, unsigned pid)
         strcpy(path, newpath);
     free(newpath);
 
-    log("Saved problem directory of pid %u to '%s'", pid, path);
+    log_notice("Saved problem directory of pid %u to '%s'", pid, path);
 
     /* We let the peer know that problem dir was created successfully
      * _before_ we run potentially long-running post-create.
@@ -601,7 +600,7 @@ static int perform_http_xact(void)
         if (rd == 0)
             break;
 
-        VERB3 log("Received %u bytes of data", rd);
+        log_debug("Received %u bytes of data", rd);
         messagebuf_len += rd;
         total_bytes_read += rd;
         if (total_bytes_read > MAX_MESSAGE_SIZE)
@@ -630,7 +629,7 @@ static int perform_http_xact(void)
         }
     } /* while (read) */
  found_end_of_header: ;
-    VERB3 log("Request: %s", messagebuf_data);
+    log_debug("Request: %s", messagebuf_data);
 
     /* Sanitize and analyze header.
      * Header now is in messagebuf_data, NUL terminated string,
@@ -680,13 +679,13 @@ static int perform_http_xact(void)
     /* Read body */
     if (!body_start)
     {
-        log("Premature EOF detected, exiting");
+        log_warning("Premature EOF detected, exiting");
         return 400; /* Bad Request */
     }
 
     messagebuf_len -= (body_start - messagebuf_data);
     memmove(messagebuf_data, body_start, messagebuf_len);
-    VERB3 log("Body so far: %u bytes, '%s'", messagebuf_len, messagebuf_data);
+    log_debug("Body so far: %u bytes, '%s'", messagebuf_len, messagebuf_data);
 
     /* Loop until EOF/error/timeout */
     while (1)
@@ -716,7 +715,7 @@ static int perform_http_xact(void)
         if (rd == 0)
             break;
 
-        VERB3 log("Received %u bytes of data", rd);
+        log_debug("Received %u bytes of data", rd);
         messagebuf_len += rd;
         total_bytes_read += rd;
         if (total_bytes_read > MAX_MESSAGE_SIZE)
@@ -800,8 +799,7 @@ int main(int argc, char **argv)
     msg_prefix = xasprintf("%s[%u]", g_progname, getpid());
     if (opts & OPT_s)
     {
-        openlog(msg_prefix, 0, LOG_DAEMON);
-        logmode = LOGMODE_SYSLOG;
+        logmode = LOGMODE_JOURNAL;
     }
 
     /* Set up timeout handling */

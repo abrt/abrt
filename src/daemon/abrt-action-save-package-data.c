@@ -89,12 +89,12 @@ static void load_gpg_keys(void)
     const char *gpg_keys_dir = get_map_string_item_or_NULL(settings, "GPGKeysDir");
     if (strcmp(gpg_keys_dir, "") != 0)
     {
-        VERB3 log("Reading gpg keys from '%s'", gpg_keys_dir);
+        log_debug("Reading gpg keys from '%s'", gpg_keys_dir);
         GList *gpg_files = get_file_list(gpg_keys_dir, NULL /* we don't care about the file ext */);
         GList *tmp_gpp_files = gpg_files;
         while (tmp_gpp_files)
         {
-            VERB3 log("Loading gpg key '%s'", fo_get_fullpath((file_obj_t *)tmp_gpp_files->data));
+            log_debug("Loading gpg key '%s'", fo_get_fullpath((file_obj_t *)tmp_gpp_files->data));
             settings_setOpenGPGPublicKeys = g_list_append(settings_setOpenGPGPublicKeys, xstrdup(fo_get_fullpath((file_obj_t *)(tmp_gpp_files->data)) ));
             tmp_gpp_files = g_list_next(tmp_gpp_files);
         }
@@ -241,7 +241,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     {
         if (settings_bProcessUnpackaged)
         {
-            VERB2 log("Crash in unpackaged executable '%s', "
+            log_info("Crash in unpackaged executable '%s', "
                       "proceeding without packaging information", executable);
             goto ret0; /* no error */
         }
@@ -295,7 +295,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     }
 
     package_short_name = xasprintf("%s", pkg_name->p_name);
-    VERB2 log("Package:'%s' short:'%s'", pkg_name->p_nvr, package_short_name);
+    log_info("Package:'%s' short:'%s'", pkg_name->p_nvr, package_short_name);
 
 
     if (g_list_find_custom(settings_setBlackListedPkgs, package_short_name, (GCompareFunc)g_strcmp0))
@@ -389,17 +389,17 @@ int main(int argc, char **argv)
 
     export_abrt_envvars(0);
 
-    VERB1 log("Loading settings");
+    log_notice("Loading settings");
     if (load_conf(conf_filename) != 0)
         return 1; /* syntax error (logged already by load_conf) */
 
-    VERB1 log("Initializing rpm library");
+    log_notice("Initializing rpm library");
     rpm_init();
 
     GList *li;
     for (li = settings_setOpenGPGPublicKeys; li != NULL; li = g_list_next(li))
     {
-        VERB1 log("Loading GPG key '%s'", (char*)li->data);
+        log_notice("Loading GPG key '%s'", (char*)li->data);
         rpm_load_gpgkey((char*)li->data);
     }
 

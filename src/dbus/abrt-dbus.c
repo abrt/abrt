@@ -76,10 +76,10 @@ static void reset_timeout(void)
 {
     if (g_timeout_source > 0)
     {
-        VERB2 log("Removing timeout");
+        log_info("Removing timeout");
         g_source_remove(g_timeout_source);
     }
-    VERB2 log("Setting a new timeout");
+    log_info("Setting a new timeout");
     g_timeout_source = g_timeout_add_seconds(g_timeout_value, on_timeout_cb, NULL);
 }
 
@@ -128,7 +128,7 @@ static uid_t get_caller_uid(GDBusConnection *connection, GDBusMethodInvocation *
     g_variant_get(result, "(u)", &caller_uid);
     g_variant_unref(result);
 
-    VERB2 log("Caller uid: %i", caller_uid);
+    log_info("Caller uid: %i", caller_uid);
     return caller_uid;
 }
 
@@ -164,7 +164,7 @@ static char *handle_new_problem(GVariant *problem_info, uid_t caller_uid, char *
 
     if (caller_uid != 0 || problem_data_get_content_or_NULL(pd, FILENAME_UID) == NULL)
     {   /* set uid field to caller's uid if caller is not root or root doesn't pass own uid */
-        VERB2 log("Adding UID %d to problem data", caller_uid);
+        log_info("Adding UID %d to problem data", caller_uid);
         char buf[sizeof(uid_t) * 3 + 2];
         snprintf(buf, sizeof(buf), "%d", caller_uid);
         problem_data_add_text_noteditable(pd, FILENAME_UID, buf);
@@ -219,7 +219,7 @@ static struct dump_dir *open_directory_for_modification_of_element(
     {
         if (strcmp(*protected, element) == 0)
         {
-            VERB1 log("'%s' element of '%s' can't be modified", element, problem_id);
+            log_notice("'%s' element of '%s' can't be modified", element, problem_id);
             char *error = xasprintf(_("'%s' element can't be modified"), element);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                         "org.freedesktop.problems.ProtectedElement",
@@ -233,12 +233,12 @@ static struct dump_dir *open_directory_for_modification_of_element(
     {
         if (errno == ENOTDIR)
         {
-            VERB1 log("'%s' is not a valid problem directory", problem_id);
+            log_notice("'%s' is not a valid problem directory", problem_id);
             return_InvalidProblemDir_error(invocation, problem_id);
         }
         else
         {
-            VERB1 log("UID(%d) is not Authorized to access '%s'", caller_uid, problem_id);
+            log_notice("UID(%d) is not Authorized to access '%s'", caller_uid, problem_id);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                 "org.freedesktop.problems.AuthFailure",
                                 _("Not Authorized"));
@@ -250,7 +250,7 @@ static struct dump_dir *open_directory_for_modification_of_element(
     struct dump_dir *dd = dd_opendir(problem_id, /* flags : */ 0);
     if (!dd)
     {   /* This should not happen because of the access check above */
-        VERB1 log("Can't access the problem '%s' for modification", problem_id);
+        log_notice("Can't access the problem '%s' for modification", problem_id);
         g_dbus_method_invocation_return_dbus_error(invocation,
                                 "org.freedesktop.problems.Failure",
                                 _("Can't access the problem for modification"));
@@ -332,7 +332,7 @@ static void handle_method_call(GDBusConnection *connection,
 
     caller_uid = get_caller_uid(connection, invocation, caller);
 
-    VERB1 log("caller_uid:%ld method:'%s'", (long)caller_uid, method_name);
+    log_notice("caller_uid:%ld method:'%s'", (long)caller_uid, method_name);
 
     if (caller_uid == (uid_t) -1)
         return;
@@ -405,7 +405,7 @@ static void handle_method_call(GDBusConnection *connection,
     {
         const gchar *problem_dir;
         g_variant_get(parameters, "(&s)", &problem_dir);
-        VERB1 log("problem_dir:'%s'", problem_dir);
+        log_notice("problem_dir:'%s'", problem_dir);
 
         if (!allowed_problem_dir(problem_dir))
         {
@@ -418,7 +418,7 @@ static void handle_method_call(GDBusConnection *connection,
         {
             if (errno == ENOTDIR)
             {
-                VERB1 log("requested directory does not exist '%s'", problem_dir);
+                log_notice("requested directory does not exist '%s'", problem_dir);
             }
             else
             {
@@ -432,7 +432,7 @@ static void handle_method_call(GDBusConnection *connection,
 
         if (ddstat & DD_STAT_OWNED_BY_UID)
         {   //caller seems to be in group with access to this dir, so no action needed
-            VERB1 log("caller has access to the requested directory %s", problem_dir);
+            log_notice("caller has access to the requested directory %s", problem_dir);
             g_dbus_method_invocation_return_value(invocation, NULL);
             return;
         }
@@ -440,7 +440,7 @@ static void handle_method_call(GDBusConnection *connection,
         if ((ddstat & DD_STAT_ACCESSIBLE_BY_UID) == 0 &&
                 polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
         {
-            VERB1 log("not authorized");
+            log_notice("not authorized");
             g_dbus_method_invocation_return_dbus_error(invocation,
                                               "org.freedesktop.problems.AuthFailure",
                                               _("Not Authorized"));
@@ -473,7 +473,7 @@ static void handle_method_call(GDBusConnection *connection,
 	/* Get 1st param - problem dir name */
         const gchar *problem_dir;
         g_variant_get_child(parameters, 0, "&s", &problem_dir);
-        VERB1 log("problem_dir:'%s'", problem_dir);
+        log_notice("problem_dir:'%s'", problem_dir);
 
         if (!allowed_problem_dir(problem_dir))
         {
@@ -485,14 +485,14 @@ static void handle_method_call(GDBusConnection *connection,
         {
             if (errno == ENOTDIR)
             {
-                VERB1 log("Requested directory does not exist '%s'", problem_dir);
+                log_notice("Requested directory does not exist '%s'", problem_dir);
                 return_InvalidProblemDir_error(invocation, problem_dir);
                 return;
             }
 
             if (polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") != PolkitYes)
             {
-                VERB1 log("not authorized");
+                log_notice("not authorized");
                 g_dbus_method_invocation_return_dbus_error(invocation,
                                                   "org.freedesktop.problems.AuthFailure",
                                                   _("Not Authorized"));
@@ -520,7 +520,7 @@ static void handle_method_call(GDBusConnection *connection,
                                                 | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
                                                 | DD_FAIL_QUIETLY_ENOENT
                                                 | DD_FAIL_QUIETLY_EACCES);
-            VERB1 log("element '%s' %s", element_name, value ? "fetched" : "not found");
+            log_notice("element '%s' %s", element_name, value ? "fetched" : "not found");
             if (value)
             {
                 if (!builder)
@@ -540,7 +540,7 @@ static void handle_method_call(GDBusConnection *connection,
         if (builder)
             g_variant_builder_unref(builder);
 
-        VERB2 log("GetInfo: returning value for '%s'", problem_dir);
+        log_info("GetInfo: returning value for '%s'", problem_dir);
         g_dbus_method_invocation_return_value(invocation, response);
         return;
     }
@@ -555,7 +555,7 @@ static void handle_method_call(GDBusConnection *connection,
 
         if (element == NULL || element[0] == '\0' || strlen(element) > 64)
         {
-            VERB1 log("'%s' is not a valid element name of '%s'", element, problem_id);
+            log_notice("'%s' is not a valid element name of '%s'", element, problem_id);
             char *error = xasprintf(_("'%s' is not a valid element name"), element);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                               "org.freedesktop.problems.InvalidElement",
@@ -576,7 +576,7 @@ static void handle_method_call(GDBusConnection *connection,
         const long item_size = dd_get_item_size(dd, element);
         if (item_size < 0)
         {
-            VERB1 log("Can't get size of '%s/%s'", problem_id, element);
+            log_notice("Can't get size of '%s/%s'", problem_id, element);
             char *error = xasprintf(_("Can't get size of '%s'"), element);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                                       "org.freedesktop.problems.Failure",
@@ -589,7 +589,7 @@ static void handle_method_call(GDBusConnection *connection,
         if (requested_size > 0
             && requested_size > (max_dir_size - get_dirsize(g_settings_dump_location)))
         {
-            VERB1 log("No problem space left in '%s' (requested Bytes %f)", problem_id, requested_size);
+            log_notice("No problem space left in '%s' (requested Bytes %f)", problem_id, requested_size);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                                       "org.freedesktop.problems.Failure",
                                                       _("No problem space left"));
@@ -623,7 +623,7 @@ static void handle_method_call(GDBusConnection *connection,
 
         if (res != 0)
         {
-            VERB1 log("Can't delete the element '%s' from the problem directory '%s'", element, problem_id);
+            log_notice("Can't delete the element '%s' from the problem directory '%s'", element, problem_id);
             char *error = xasprintf(_("Can't delete the element '%s' from the problem directory '%s'"), element, problem_id);
             g_dbus_method_invocation_return_dbus_error(invocation,
                                           "org.freedesktop.problems.Failure",
@@ -650,7 +650,7 @@ static void handle_method_call(GDBusConnection *connection,
         for (GList *l = problem_dirs; l; l = l->next)
         {
             const char *dir_name = (const char*)l->data;
-            VERB1 log("dir_name:'%s'", dir_name);
+            log_notice("dir_name:'%s'", dir_name);
             if (!allowed_problem_dir(dir_name))
             {
                 return_InvalidProblemDir_error(invocation, dir_name);
@@ -665,7 +665,7 @@ static void handle_method_call(GDBusConnection *connection,
             {
                 if (errno == ENOTDIR)
                 {
-                    VERB1 log("Requested directory does not exist '%s'", dir_name);
+                    log_notice("Requested directory does not exist '%s'", dir_name);
                     continue;
                 }
 
@@ -827,7 +827,7 @@ int main(int argc, char *argv[])
     loop = g_main_loop_new(NULL, FALSE);
     g_main_loop_run(loop);
 
-    VERB1 log("Cleaning up");
+    log_notice("Cleaning up");
 
     g_bus_unown_name(owner_id);
 

@@ -18,7 +18,6 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include <syslog.h>
 #include <sys/utsname.h>
 #include "libabrt.h"
 
@@ -491,8 +490,7 @@ int main(int argc, char** argv)
         }
     }
 
-    openlog("abrt", LOG_PID, LOG_DAEMON);
-    logmode = LOGMODE_SYSLOG;
+    logmode = LOGMODE_JOURNAL;
 
     /* Parse abrt.conf */
     load_abrt_conf();
@@ -557,7 +555,7 @@ int main(int argc, char** argv)
     }
 
     user_pwd = get_cwd(pid); /* may be NULL on error */
-    VERB1 log("user_pwd:'%s'", user_pwd);
+    log_notice("user_pwd:'%s'", user_pwd);
 
     sprintf(path, "/proc/%lu/status", (long)pid);
     proc_pid_status = xmalloc_xopen_read_close(path, /*maxsz:*/ NULL);

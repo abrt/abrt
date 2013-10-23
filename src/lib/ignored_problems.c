@@ -52,13 +52,13 @@ static bool ignored_problems_eq(ignored_problems_t *set,
     size_t sz = ignored_end - ignored;
     if (strncmp(problem_id, ignored, sz) == 0 && problem_id[sz] == '\0')
     {
-        VERB1 log("Ignored id matches '%s'", problem_id);
+        log_notice("Ignored id matches '%s'", problem_id);
         return true;
     }
 
     if (ignored_end[0] == '\0')
     {
-        VERB1 log("No 2nd column (UUID) at line %d in ignored problems file '%s'",
+        log_notice("No 2nd column (UUID) at line %d in ignored problems file '%s'",
                 line_num, set->ign_set_file_path);
         return false;
     }
@@ -67,13 +67,13 @@ static bool ignored_problems_eq(ignored_problems_t *set,
     sz = ignored_end - ignored;
     if (uuid != NULL && strncmp(uuid, ignored, sz) == 0 && uuid[sz] == '\0')
     {
-        VERB1 log("Ignored uuid '%s' matches uuid of problem '%s'", ignored, problem_id);
+        log_notice("Ignored uuid '%s' matches uuid of problem '%s'", ignored, problem_id);
         return true;
     }
 
     if (ignored_end[0] == '\0')
     {
-        VERB1 log("No 3rd column (DUPHASH) at line %d in ignored problems file '%s'",
+        log_notice("No 3rd column (DUPHASH) at line %d in ignored problems file '%s'",
                 line_num, set->ign_set_file_path);
         return false;
     }
@@ -82,7 +82,7 @@ static bool ignored_problems_eq(ignored_problems_t *set,
     sz = ignored_end - ignored;
     if (duphash != NULL && strncmp(duphash, ignored, sz) == 0 && duphash[sz] == '\0')
     {
-        VERB1 log("Ignored duphash '%s' matches duphash of problem '%s'", ignored, problem_id);
+        log_notice("Ignored duphash '%s' matches duphash of problem '%s'", ignored, problem_id);
         return true;
     }
 
@@ -97,7 +97,7 @@ static bool ignored_problems_file_contains(ignored_problems_t *set,
     FILE *fp = fopen(set->ign_set_file_path, mode);
     if (!fp)
     {
-        VERB1 perror_msg("Can't open ignored problems '%s' in mode '%s'", set->ign_set_file_path, mode);
+        pwarn_msg("Can't open ignored problems '%s' in mode '%s'", set->ign_set_file_path, mode);
         goto ret_contains_end;
     }
 
@@ -132,7 +132,7 @@ void ignored_problems_add(ignored_problems_t *set, const char *problem_id)
          * already emitted good explanatory message. This message
          * explains what the previous failure causes.
          */
-        VERB1 log("Can't add problem '%s' to ignored problems:"
+        log_notice("Can't add problem '%s' to ignored problems:"
                 " can't open the problem", problem_id);
         return;
     }
@@ -140,7 +140,7 @@ void ignored_problems_add(ignored_problems_t *set, const char *problem_id)
     char *duphash = dd_load_text_ext(dd, FILENAME_DUPHASH, IGN_DD_LOAD_TEXT_FLAGS);
     dd_close(dd);
 
-    VERB1 log("Going to add problem '%s' to ignored problems", problem_id);
+    log_notice("Going to add problem '%s' to ignored problems", problem_id);
 
     FILE *fp;
     if (!ignored_problems_file_contains(set, problem_id, uuid, duphash, &fp, "a+"))
@@ -158,13 +158,13 @@ void ignored_problems_add(ignored_problems_t *set, const char *problem_id)
             /* This is not a fatal problem. We are permissive because we don't want
              * to scare users by strange error messages.
              */
-            VERB1 log("Can't add problem '%s' to ignored problems:"
+            log_notice("Can't add problem '%s' to ignored problems:"
                       " can't open the list", problem_id);
         }
     }
     else
     {
-        VERB1 log("Won't add problem '%s' to ignored problems:"
+        log_notice("Won't add problem '%s' to ignored problems:"
                 " it is already there", problem_id);
     }
 
@@ -198,14 +198,14 @@ void ignored_problems_remove(ignored_problems_t *set, const char *problem_id)
                 " can't open the problem", problem_id);
     }
 
-    VERB1 log("Going to remove problem '%s' from ignored problems", problem_id);
+    log_notice("Going to remove problem '%s' from ignored problems", problem_id);
 
     FILE *orig_fp;
     if (!ignored_problems_file_contains(set, problem_id, uuid, duphash, &orig_fp, "r"))
     {
         if (orig_fp)
         {
-            VERB1 log("Won't remove problem '%s' from ignored problems:"
+            log_notice("Won't remove problem '%s' from ignored problems:"
                       " it is already removed", problem_id);
             /* Close orig_fp here becuase it looks like much simpler than
              * exetendig the set of goto labels at the end of this function */
@@ -216,7 +216,7 @@ void ignored_problems_remove(ignored_problems_t *set, const char *problem_id)
             /* This is not a fatal problem. We are permissive because we don't want
              * to scare users by strange error messages.
              */
-            VERB1 log("Can't remove problem '%s' from ignored problems:"
+            log_notice("Can't remove problem '%s' from ignored problems:"
                       " can't open the list", problem_id);
         }
         goto ret_free_hashes;
@@ -300,7 +300,7 @@ bool ignored_problems_contains(ignored_problems_t *set, const char *problem_id)
     char *duphash = dd_load_text_ext(dd, FILENAME_DUPHASH, IGN_DD_LOAD_TEXT_FLAGS);
     dd_close(dd);
 
-    VERB1 log("Going to check if problem '%s' is in ignored problems '%s'",
+    log_notice("Going to check if problem '%s' is in ignored problems '%s'",
             problem_id, set->ign_set_file_path);
 
     bool found = ignored_problems_file_contains(set, problem_id, uuid, duphash,
