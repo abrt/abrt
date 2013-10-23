@@ -338,8 +338,10 @@ static void free_event_processing_state(struct event_processing_state *p)
     free(p);
 }
 
-static char *build_message(const char *package_name)
+static char *build_message(problem_info_t *pi)
 {
+    char *package_name = problem_data_get_content_or_NULL(pi->problem_data, FILENAME_COMPONENT);
+
     if (package_name == NULL || package_name[0] == '\0')
         return xasprintf(_("A problem has been detected"));
 
@@ -1239,8 +1241,10 @@ static void Crash(DBusMessage* signal)
         problem_data_add_text_noteditable(pi->problem_data, FILENAME_UUID, uuid);
     if (duphash != NULL && duphash[0] != '\0')
         problem_data_add_text_noteditable(pi->problem_data, FILENAME_DUPHASH, duphash);
+    if (package_name != NULL && package_name[0] != '\0')
+        problem_data_add_text_noteditable(pi->problem_data, FILENAME_COMPONENT, duphash);
     pi->foreign = foreign_problem;
-    pi->message = build_message(package_name);
+    pi->message = build_message(pi);
     show_problem_notification(pi, flags);
 }
 
@@ -1649,9 +1653,12 @@ int main(int argc, char** argv)
             {
                 char *component = dd_load_text_ext(dd, FILENAME_COMPONENT,
                                     DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-                pi->message = build_message(component);
+                if (component)
+                    problem_data_add_text_noteditable(pi->problem_data, FILENAME_COMPONENT, component);
                 free(component);
             }
+
+            pi->message = build_message(pi);
 
             /* Can't be foreign because if the problem is foreign then the
              * dd_opendir() call failed few lines above and the problem is ignored.
