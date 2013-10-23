@@ -32,6 +32,7 @@
 #include <libreport/event_config.h>
 #include <libreport/internal_libreport_gtk.h>
 #include "libabrt.h"
+#include "problem_api.h"
 
 /* NetworkManager DBus configuration */
 #define NM_DBUS_SERVICE "org.freedesktop.NetworkManager"
@@ -73,16 +74,20 @@ static ignored_problems_t *g_ignore_set;
 /* Used only for selection of the last notified problem if a user clicks on the systray icon */
 static char *g_last_notified_problem_id;
 
+static bool get_configured_bool_or_default(const char *opt_name, bool def)
+{
+    /* User config always takes precedence */
+    load_user_settings("abrt-applet");
+    const char *configured = get_user_setting(opt_name);
+    if (configured)
+        return string_to_bool(configured);
+
+    return def;
+}
+
 static bool is_autoreporting_enabled(void)
 {
-    load_user_settings("abrt-applet");
-    const char *option = get_user_setting("AutoreportingEnabled");
-
-    /* If user configured autoreporting from his scope, don't look at system
-     * configuration.
-     */
-    return    (!option && g_settings_autoreporting)
-           || ( option && string_to_bool(option));
+    return get_configured_bool_or_default("AutoreportingEnabled", g_settings_autoreporting);
 }
 
 static const char *get_autoreport_event_name(void)
@@ -119,24 +124,17 @@ static void ask_start_autoreporting()
 
 static bool is_shortened_reporting_enabled()
 {
-    /* User config always takes precedence */
-    load_user_settings("abrt-applet");
-    const char *configured = get_user_setting("ShortenedReporting");
-    if (configured)
-        return string_to_bool(configured);
-
-    return g_settings_shortenedreporting;
+    return get_configured_bool_or_default("ShortenedReporting", g_settings_shortenedreporting);
 }
 
 static bool is_silent_shortened_reporting_enabled(void)
 {
-    /* User config always takes precedence */
-    load_user_settings("abrt-applet");
-    const char *configured = get_user_setting("SilentShortenedReporting");
-    if (configured)
-        return string_to_bool(configured);
+    return get_configured_bool_or_default("SilentShortenedReporting", 0);
+}
 
-    return 0;
+static bool is_notification_of_incomplete_problems_enabled(void)
+{
+    return get_configured_bool_or_default("NotifyIncompleteProblems", 0);
 }
 
 /*
@@ -266,8 +264,9 @@ static void on_nm_state_changed(GDBusConnection *connection, const gchar *sender
 typedef struct problem_info {
     problem_data_t *problem_data;
     bool foreign;
-    char *message;
     bool known;
+    bool incomplete;
+    bool reported;
     bool was_announced;
 } problem_info_t;
 
@@ -299,7 +298,6 @@ static void problem_info_free(problem_info_t *pi)
     if (pi == NULL)
         return;
 
-    free(pi->message);
     problem_data_free(pi->problem_data);
     free(pi);
 }
@@ -342,10 +340,23 @@ static char *build_message(problem_info_t *pi)
 {
     char *package_name = problem_data_get_content_or_NULL(pi->problem_data, FILENAME_COMPONENT);
 
+    char *msg = NULL;
     if (package_name == NULL || package_name[0] == '\0')
-        return xasprintf(_("A problem has been detected"));
+        msg = xasprintf(_("A problem has been detected"));
+    else
+        msg = xasprintf(_("A problem in the %s package has been detected"), package_name);
 
-    return xasprintf(_("A problem in the %s package has been detected"), package_name);
+    if (pi->incomplete)
+    {
+        const char *not_reportable = problem_data_get_content_or_NULL(pi->problem_data, FILENAME_NOT_REPORTABLE);
+        log_notice("%s", not_reportable);
+        if (not_reportable)
+            msg = xasprintf("%s\n\n%s", msg, not_reportable);
+    }
+    else if (pi->reported)
+        msg = xasprintf(_("%s and the diagnostic data has been submitted"), msg);
+
+    return msg;
 }
 
 static GList *add_dirs_to_dirlist(GList *dirlist, const char *dirname)
@@ -845,7 +856,9 @@ static void notify_problem_list(GList *problems, int flags)
     if (!persistence_supported || flags & SHOW_ICON_ONLY)
     {
         /* Use a message of the last one */
-        show_icon(last_problem->message);
+        char *message = build_message(last_problem);
+        show_icon(message);
+        free(message);
     }
 
     if (flags & SHOW_ICON_ONLY)
@@ -854,6 +867,7 @@ static void notify_problem_list(GList *problems, int flags)
         return;
     }
 
+    char *notify_body = NULL;
     for (GList *iter = problems; iter; iter = g_list_next(iter))
     {
         problem_info_t *pi = iter->data;
@@ -876,6 +890,9 @@ static void notify_problem_list(GList *problems, int flags)
                 NOTIFY_ACTION_CALLBACK(action_ignore),
                 pi, NULL);
 
+        free(notify_body);
+        notify_body = build_message(pi);
+
         pi->was_announced = true;
 
         if (pi->known)
@@ -887,19 +904,30 @@ static void notify_problem_list(GList *problems, int flags)
 
             notify_notification_update(notification, pi->was_announced ?
                     _("The Problem has already been Reported") : _("A Known Problem has Occurred"),
-                    pi->message, NULL);
+                    notify_body, NULL);
         }
         else
         {
             if (flags & JUST_DETECTED_PROBLEM)
-            {   /* Problem has not yet been 'autoreported' and can be
-                 * 'autoreported' on user request.
+            {   /* Problem cannot be 'autoreported' because its data are incomplete
                  */
-                notify_notification_add_action(notification, A_REPORT_AUTOREPORT, _("Report"),
-                        NOTIFY_ACTION_CALLBACK(action_report),
-                        pi, NULL);
+                if (pi->incomplete)
+                {
+                    notify_notification_add_action(notification, A_KNOWN_OPEN_GUI, _("Open"),
+                            NOTIFY_ACTION_CALLBACK(action_known),
+                            pi, NULL);
+                }
+                else
+                {
+                   /* Problem has not yet been 'autoreported' and can be
+                    * 'autoreported' on user request.
+                    */
+                    notify_notification_add_action(notification, A_REPORT_AUTOREPORT, _("Report"),
+                            NOTIFY_ACTION_CALLBACK(action_report),
+                            pi, NULL);
+                }
 
-                notify_notification_update(notification, _("A Problem has Occurred"), pi->message, NULL);
+                notify_notification_update(notification, _("A Problem has Occurred"), notify_body, NULL);
             }
             else
             {   /* Problem has been 'autoreported' and is considered as UNKNOWN
@@ -925,7 +953,7 @@ static void notify_problem_list(GList *problems, int flags)
                         continue;
                     }
 
-                    notify_notification_update(notification, _("A Problem has been Reported"), pi->message, NULL);
+                    notify_notification_update(notification, _("A Problem has been Reported"), notify_body, NULL);
                 }
                 else
                 {
@@ -933,10 +961,11 @@ static void notify_problem_list(GList *problems, int flags)
                             NOTIFY_ACTION_CALLBACK(action_report),
                             pi, NULL);
 
-                    notify_notification_update(notification, _("A New Problem has Occurred"), pi->message, NULL);
+                    notify_notification_update(notification, _("A New Problem has Occurred"), notify_body, NULL);
                 }
             }
         }
+        free(notify_body);
 
         GError *err = NULL;
         log_debug("Showing a notification");
@@ -1021,14 +1050,11 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
 
     if (status == 0)
     {
+        pi->reported = 1;
+
         log_debug("fast report finished successfully");
         if (pi->known || !(state->flags & REPORT_UNKNOWN_PROBLEM_IMMEDIATELY))
-        {
-            char *updated_message = xasprintf(_("%s and reported"), pi->message);
-            free(pi->message);
-            pi->message = updated_message;
             notify_problem(pi);
-        }
         else
             run_report_from_applet(problem_info_get_dir(pi));
     }
@@ -1138,7 +1164,7 @@ static void show_problem_list_notification(GList *problems, int flags)
             problem_info_t *data = (problem_info_t *)iter->data;
             GList *next = g_list_next(iter);
 
-            if (!data->foreign)
+            if (!data->foreign && !data->incomplete)
             {
                 run_event_async((problem_info_t *)iter->data, get_autoreport_event_name(), /* don't automatically report */ 0);
                 problems = g_list_delete_link(problems, iter);
@@ -1244,7 +1270,6 @@ static void Crash(DBusMessage* signal)
     if (package_name != NULL && package_name[0] != '\0')
         problem_data_add_text_noteditable(pi->problem_data, FILENAME_COMPONENT, duphash);
     pi->foreign = foreign_problem;
-    pi->message = build_message(pi);
     show_problem_notification(pi, flags);
 }
 
@@ -1610,6 +1635,8 @@ int main(int argc, char** argv)
     /* Age limit = now - 3 days */
     const unsigned long min_born_time = (unsigned long)(time_before_ndays(3));
 
+    const bool notify_incomplete = is_notification_of_incomplete_problems_enabled();
+
     while (new_dirs)
     {
         struct dump_dir *dd = dd_opendir((char *)new_dirs->data, DD_OPEN_READONLY);
@@ -1620,45 +1647,34 @@ int main(int argc, char** argv)
             continue;
         }
 
-        /* Don't check errors, time element is always valid time stamp!! */
         if (dd->dd_time < min_born_time)
         {
             log_notice("Ignoring outdated problem '%s'", (char *)new_dirs->data);
             goto next;
         }
 
-        char *reported_to = dd_load_text_ext(dd, FILENAME_REPORTED_TO,
-                                DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-        if (reported_to == NULL)
+        const bool incomplete = !problem_dump_dir_is_complete(dd);
+        if (!notify_incomplete && incomplete)
+        {
+            log_notice("Ignoring incomplete problem '%s'", (char *)new_dirs->data);
+            goto next;
+        }
+
+        if (!dd_exist(dd, FILENAME_REPORTED_TO))
         {
             problem_info_t *pi = problem_info_new(new_dirs->data);
+            const char *elements[] = {FILENAME_UUID, FILENAME_DUPHASH, FILENAME_COMPONENT, FILENAME_NOT_REPORTABLE};
 
+            for (size_t i = 0; i < sizeof(elements)/sizeof(*elements); ++i)
             {
-                char *uuid = dd_load_text_ext(dd, FILENAME_UUID,
-                                    DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-                if (uuid)
-                    problem_data_add_text_noteditable(pi->problem_data, FILENAME_UUID, uuid);
-                free(uuid);
+                char * const value = dd_load_text_ext(dd, elements[i],
+                        DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+                if (value)
+                    problem_data_add_text_noteditable(pi->problem_data, elements[i], value);
+                free(value);
             }
 
-            {
-                char *duphash = dd_load_text_ext(dd, FILENAME_DUPHASH,
-                                    DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-                if (duphash)
-                    problem_data_add_text_noteditable(pi->problem_data, FILENAME_DUPHASH, duphash);
-                free(duphash);
-            }
-
-
-            {
-                char *component = dd_load_text_ext(dd, FILENAME_COMPONENT,
-                                    DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-                if (component)
-                    problem_data_add_text_noteditable(pi->problem_data, FILENAME_COMPONENT, component);
-                free(component);
-            }
-
-            pi->message = build_message(pi);
+            pi->incomplete = incomplete;
 
             /* Can't be foreign because if the problem is foreign then the
              * dd_opendir() call failed few lines above and the problem is ignored.
@@ -1671,8 +1687,6 @@ int main(int argc, char** argv)
         {
             log_notice("Ignoring already reported problem '%s'", (char *)new_dirs->data);
         }
-
-        free(reported_to);
 
 next:
         dd_close(dd);
