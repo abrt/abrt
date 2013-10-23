@@ -1,8 +1,9 @@
 #!/bin/sh
 
 yum -y -C erase 'abrt*'
+yum install gnome-abrt
 
 # the */ part below should be $ARCH/
-yum -y -C --nogpgcheck localinstall */*.rpm
+yum -y -C --nogpgcheck localinstall */*/*.rpm
 
 killall -HUP dbus-daemon
