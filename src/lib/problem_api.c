@@ -133,3 +133,8 @@ GList *get_problem_storages(void)
 
     return pths;
 }
+
+int problem_dump_dir_is_complete(struct dump_dir *dd)
+{
+    return dd_exist(dd, FILENAME_COUNT);
+}
