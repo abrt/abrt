@@ -580,6 +580,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-action-save-package-data.conf
 %config(noreplace) %{_sysconfdir}/%{name}/xorg.conf
+%{_mandir}/man5/abrt-xorg.conf.5.gz
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/abrt_event.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/smart_event.conf
