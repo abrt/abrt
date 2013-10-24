@@ -29,6 +29,23 @@ class RPMinfoError(Exception):
     """Exception class for RPMdb-querying related errors"""
     pass
 
+def syslog(msg):
+    """Log message to system logger (journal)"""
+
+    from systemd import journal
+
+    # required as a workaround for rhbz#1023041
+    # where journal tries to log into non-existent log
+    # and fails (during %check in mock)
+    #
+    # try/except block should be removed when the bug is fixed
+
+    try:
+        journal.send(msg)
+    except:
+        pass
+
+
 def write_dump(tb_text, tb):
     if sys.argv[0][0] == "/":
         executable = os.path.abspath(sys.argv[0])
@@ -42,9 +59,8 @@ def write_dump(tb_text, tb):
         import rpm
         dso_list = get_dso_list(tb)
     except ImportError as imperr:
-        from systemd import journal
-        journal.send("RPM module not available, cannot query RPM db for package "\
-                      "names")
+        syslog("RPM module not available, cannot query RPM db for package "\
+               "names")
 
     # Open ABRT daemon's socket and write data to it
     try:
@@ -81,8 +97,7 @@ def write_dump(tb_text, tb):
                     break
                 response += buf
         except socket.timeout as ex:
-            from systemd import journal
-            journal.send("communication with ABRT daemon failed: %s" % str(ex))
+            syslog("communication with ABRT daemon failed: %s" % str(ex))
 
         s.close()
         parts = response.split()
@@ -90,12 +105,10 @@ def write_dump(tb_text, tb):
                 or (not parts[0].startswith("HTTP/"))
                 or (not parts[1].isdigit())
                 or (int(parts[1]) >= 400)):
-            from systemd import journal
-            journal.send("error sending data to ABRT daemon: %s" % response)
+            syslog("error sending data to ABRT daemon: %s" % response)
 
     except Exception as ex:
-        from systemd import journal
-        journal.send("can't communicate with ABRT daemon, is it running? %s" % str(ex))
+        syslog("can't communicate with ABRT daemon, is it running? %s" % str(ex))
 
 def get_package_for_file(fpath):
     """
@@ -203,20 +216,18 @@ def handleMyException((etype, value, tb)):
             if value.errno == errno.EPIPE:
                 return sys.__excepthook__(etype, value, tb)
 
-        from systemd import journal
-
         # Ignore interactive Python and similar
         # Check for first "-" is meant to catch "-c" which appears in this case:
         ## $ python -c 'import sys; print "argv0 is:%s" % sys.argv[0]'
         ## argv0 is:-c
         # Are there other cases when sys.argv[0][0] is "-"?
         if not sys.argv[0] or sys.argv[0][0] == "-":
-            journal.send("detected unhandled Python exception")
+            syslog("detected unhandled Python exception")
             raise Exception
 
         # Ignore scripts with relative path unless "RequireAbsolutePath = no".
         # (In this case we can't reliably determine package)
-        journal.send("detected unhandled Python exception in '%s'" % sys.argv[0])
+        syslog("detected unhandled Python exception in '%s'" % sys.argv[0])
         if sys.argv[0][0] != "/":
             if conf_enabled("RequireAbsolutePath") != 0:
                 raise Exception
