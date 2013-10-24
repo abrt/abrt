@@ -117,20 +117,27 @@ static int delete_path(const char *dump_dir_name)
 
 static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *event_name, int *fdp)
 {
-    char *args[6];
+    char *args[7];
     args[0] = (char *) LIBEXEC_DIR"/abrt-handle-event";
-    args[1] = (char *) "-e";
-    args[2] = (char *) event_name;
-    args[3] = (char *) "--";
-    args[4] = (char *) dump_dir_name;
-    args[5] = NULL;
+    /* Do not forward ASK_* messages to parent*/
+    args[1] = (char *) "-i";
+    args[2] = (char *) "-e";
+    args[3] = (char *) event_name;
+    args[4] = (char *) "--";
+    args[5] = (char *) dump_dir_name;
+    args[6] = NULL;
 
     int pipeout[2];
     int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_QUIET | EXECFLG_ERR2OUT;
     VERB1 flags &= ~EXECFLG_QUIET;
 
+    char *env_vec[2];
+    /* Intercept ASK_* messages in Client API -> don't wait for user response */
+    env_vec[0] = xstrdup("REPORT_CLIENT_NONINTERACTIVE=1");
+    env_vec[1] = NULL;
+
     pid_t child = fork_execv_on_steroids(flags, args, pipeout,
-                                         /*env_vec:*/ NULL, /*dir:*/ NULL,
+                                         env_vec, /*dir:*/ NULL,
                                          /*uid(unused):*/ 0);
     if (fdp)
         *fdp = pipeout[0];
