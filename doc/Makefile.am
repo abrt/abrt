@@ -42,6 +42,7 @@ MAN5_TXT =
 MAN5_TXT += abrt.conf.txt
 MAN5_TXT += abrt-action-save-package-data.conf.txt
 MAN5_TXT += abrt-xorg.conf.txt
+MAN5_TXT += abrt-harvest-vmcore.conf.txt
 
 MAN8_TXT =
 MAN8_TXT += abrtd.txt abrt-dbus.txt

@@ -1,0 +1,25 @@
+abrt-harvest-vmcore.conf(5)
+===========================
+
+NAME
+----
+abrt-harvest-vmcore.conf - Configuration file for abrt-harvest-vmcore
+
+DESCRIPTION
+-----------
+The configuration file consists of items in the format "Option = Value".
+Currently, only one item exists:
+
+CopyVMcore = 'yes' / 'no'::
+   Set to 'no' if you want vmcore to be moved, not copied, from /var/crash
+   to ABRT's main problem directory.
+   Default is to copy vmcore.
+
+SEE ALSO
+--------
+abrt-harvest-vmcore(1)
+abrt.conf(5)
+
+AUTHORS
+-------
+* ABRT team
