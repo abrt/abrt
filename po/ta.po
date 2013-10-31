@@ -14,10 +14,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: http://bugzilla.redhat.com/\n"
-"POT-Creation-Date: 2013-08-20 12:59+0200\n"
-"PO-Revision-Date: 2013-08-20 10:59+0000\n"
-"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
-"Language-Team: Tamil <tamil-users@lists.fedoraproject.org>\n"
+"POT-Creation-Date: 2013-10-31 13:48+0100\n"
+"PO-Revision-Date: 2013-10-31 12:49+0000\n"
+"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"Language-Team: Tamil (http://www.transifex.com/projects/p/fedora/language/ta/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -32,237 +32,218 @@ msgstr "தானியக்க பிழை அறிக்கையிடு�
 msgid "ABRT notification applet"
 msgstr "ABRT அறிவிப்பு பயன்பாடு"
 
-#: ../src/applet/applet.c:99
+#: ../src/applet/applet.c:101
 msgid ""
 "The report which will be sent does not contain any security sensitive data. Therefore it is not necessary to bother you next time and require any further action by you. \n"
 "Do you want to enable automatically submitted anonymous crash reports?"
 msgstr "அனுப்பப்படும் அறிக்கையில் பாதுகாப்பு ரீதியாக முக்கியத் தகவல் எதுவும் இருக்காது. ஆகவே அடுத்த முறை உங்களுக்கு தொந்தரவு கொடுக்கவும் உங்களை ஏதேனும் செய்யச் சொல்லவும் அவசியம் இருக்காது. \nஅநாமதேய செயலிழப்பு புகார்களை தானாக சமர்ப்பிக்கும் அம்சத்தைச் செயல்படுத்த வேண்டுமா?"
 
 #. The NetworkManager DBus service is not available.
-#: ../src/applet/applet.c:197
+#: ../src/applet/applet.c:204
 #, c-format
 msgid "Can't connect to NetworkManager over DBus: %s"
 msgstr "DBus மூலம் NetworkManager க்கு இணைக்க முடியவில்லை: %s"
 
-#: ../src/applet/applet.c:221
+#: ../src/applet/applet.c:228
 #, c-format
 msgid "Can't determine network status via NetworkManager: %s"
 msgstr "NetworkManager மூலம் பிணைய நிலையை தீர்மானிக்க முடியவில்லை: %s"
 
-#: ../src/applet/applet.c:325
+#: ../src/applet/applet.c:332
 msgid "A problem has been detected"
 msgstr "ஒரு சிக்கல் கண்டறியப்பட்டது"
 
-#: ../src/applet/applet.c:327
+#: ../src/applet/applet.c:334
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "%s தொகுப்பில் ஒரு சிக்கல் கண்டறியப்பட்டது"
 
-#: ../src/applet/applet.c:485 ../src/plugins/abrt-retrace-client.c:129
-#: ../src/plugins/abrt-retrace-client.c:166
+#: ../src/applet/applet.c:492 ../src/plugins/abrt-retrace-client.c:131
+#: ../src/plugins/abrt-retrace-client.c:168
 #, c-format
 msgid "Can't execute '%s'"
 msgstr "'%s' ஐ செயல்படுத்த முடியவில்லை"
 
-#: ../src/applet/applet.c:559 ../src/applet/applet.c:621
+#: ../src/applet/applet.c:566 ../src/applet/applet.c:628
 #, c-format
 msgid "Can't close notification: %s"
 msgstr "அறிவிப்பை மூட முடியவில்லை: %s"
 
-#: ../src/applet/applet.c:661 ../src/applet/applet.c:663
+#: ../src/applet/applet.c:668 ../src/applet/applet.c:670
 msgid "Warning"
 msgstr "எச்சரிக்கை"
 
-#: ../src/applet/applet.c:711
+#: ../src/applet/applet.c:718
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT கண்டுபிடித்த சிக்கல்களைப் பற்றி அறிவிக்கும் அறிவிப்புப் பகுதி பயன்பாடு"
 
-#: ../src/applet/applet.c:727
+#: ../src/applet/applet.c:734
 msgid "translator-credits"
 msgstr "shkumar@redhat.com"
 
-#: ../src/applet/applet.c:735
+#: ../src/applet/applet.c:742
 msgid "_Quit"
-msgstr ""
+msgstr "வெளியேறு (_Q)"
 
-#: ../src/applet/applet.c:737
+#: ../src/applet/applet.c:744
 msgid "Hide"
 msgstr "மறை"
 
-#: ../src/applet/applet.c:739
+#: ../src/applet/applet.c:746
 msgid "_About"
-msgstr ""
+msgstr "அறிமுகம் (_A)"
 
-#: ../src/applet/applet.c:807
+#: ../src/applet/applet.c:814
 msgid "Problem detected"
 msgstr "சிக்கல் கண்டறியப்பட்டுள்ளது"
 
-#: ../src/applet/applet.c:854
+#: ../src/applet/applet.c:861
 msgid "Ignore forever"
-msgstr ""
+msgstr "எப்பொழுதும் புறக்கணி"
 
 #. Problem has been 'autoreported' and is considered as KNOWN
 #. 
-#: ../src/applet/applet.c:863
+#: ../src/applet/applet.c:870
 msgid "Open"
 msgstr "திற"
 
-#: ../src/applet/applet.c:867
+#: ../src/applet/applet.c:875
+msgid "The Problem has already been Reported"
+msgstr ""
+
+#: ../src/applet/applet.c:875
 msgid "A Known Problem has Occurred"
 msgstr "தெரிந்த ஒரு சிக்கல் ஏற்பட்டது"
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
 #. 
-#: ../src/applet/applet.c:875 ../src/applet/applet.c:909
+#: ../src/applet/applet.c:884 ../src/applet/applet.c:918
 msgid "Report"
 msgstr "அறிக்கையிடு"
 
-#: ../src/applet/applet.c:879
+#: ../src/applet/applet.c:888
 msgid "A Problem has Occurred"
 msgstr "ஒரு சிக்கல் ஏற்பட்டது"
 
-#: ../src/applet/applet.c:905
+#: ../src/applet/applet.c:914
 msgid "A Problem has been Reported"
 msgstr "ஒரு சிக்கல் குறித்து அறிக்கையிடப்பட்டுள்ளது"
 
-#: ../src/applet/applet.c:913
+#: ../src/applet/applet.c:922
 msgid "A New Problem has Occurred"
 msgstr "ஒரு புதிய சிக்கல் ஏற்பட்டது"
 
-#: ../src/applet/applet.c:923
+#: ../src/applet/applet.c:932
 #, c-format
 msgid "Can't show notification: %s"
 msgstr "அறிவிப்பைக் காண்பிக்க முடியவில்லை: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:953
+#: ../src/applet/applet.c:962 ../src/daemon/abrt-upload-watch.c:189
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "gio சேனலில் இருந்து வாசிக்க முடியவில்லை: '%s'"
 
-#: ../src/applet/applet.c:1035
+#: ../src/applet/applet.c:1013
+#, c-format
+msgid "%s and reported"
+msgstr ""
+
+#: ../src/applet/applet.c:1049
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "gio சேனலில் குறியீடாக்கத்தை அமைக்க முடியவில்லை: %s"
 
-#: ../src/applet/applet.c:1039
+#: ../src/applet/applet.c:1053
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "gio சேனலுக்கு தடுக்காத பயன்முறையை இயக்க முடியவில்லை: %s"
 
-#: ../src/applet/applet.c:1071
+#: ../src/applet/applet.c:1085
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "'%s' இன் உரிமையை கைக்கொள்ள முடியவில்லை"
 
-#: ../src/applet/applet.c:1081
+#: ../src/applet/applet.c:1095
 #, c-format
 msgid "Can't open directory for writing '%s'"
 msgstr "'%s' ஐ எழுத கோப்பகத்தைத் திறக்க முடியவில்லை"
 
-#: ../src/applet/applet.c:1366
+#: ../src/applet/applet.c:1380
 #, c-format
 msgid ""
 "Failed to open connection to session manager: '%s', notification may "
 "reappear on the next login"
-msgstr ""
+msgstr "அமர்வு நிர்வாகிக்கான இணைப்பைத் திறக்கையில் தோல்வியடைந்தது: '%s', அடுத்த புகுபதிவில் அறிவிப்பு மீண்டும் காண்பிக்கப்படலாம்"
 
-#: ../src/applet/applet.c:1503
+#: ../src/applet/applet.c:1521
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr "& [-v] [DIR]...\n\nABRT புதிய சிக்கல்களைக் கண்டறியும் போது அதைப் பற்றி அறிவிக்கும் பயன்பாடு\n"
 
-#: ../src/configuration-gui/system-config-abrt.c:66
-msgid "Apply setting changes"
-msgstr ""
-
-#. xalign
-#. yalign
-#. xscale
-#. yscale
-#. expand
-#. fill
-#. padding
-#: ../src/configuration-gui/system-config-abrt.c:69
-#: ../src/configuration-gui/system-config-abrt.c:147
-msgid "_Apply"
-msgstr ""
-
-#: ../src/configuration-gui/system-config-abrt.c:70
-msgid "_Discard"
-msgstr ""
-
-#: ../src/configuration-gui/system-config-abrt.c:71
-msgid "_Cancel"
-msgstr ""
-
-#: ../src/configuration-gui/system-config-abrt.c:129
-msgid "_Close"
-msgstr ""
-
-#: ../src/configuration-gui/system-config-abrt.c:138
+#: ../src/configuration-gui/system-config-abrt.c:53
 msgid "_Defaults"
-msgstr ""
+msgstr "முன்னிருப்புகள் (_D)"
 
-#: ../src/configuration-gui/system-config-abrt.c:183
-#: ../src/configuration-gui/main.c:46
+#: ../src/configuration-gui/system-config-abrt.c:66
+#: ../src/configuration-gui/main.c:30
 msgid "Problem Reporting Configuration"
-msgstr ""
+msgstr "அமைவாக்கத்தை அறிக்கையிடுவதில் சிக்கல்"
 
-#: ../src/configuration-gui/main.c:86
+#: ../src/configuration-gui/main.c:67
 msgid "About System Config ABRT"
-msgstr ""
+msgstr "System Config ABRT - அறிமுகம்"
 
-#: ../src/configuration-gui/main.c:116
+#: ../src/configuration-gui/main.c:97
 msgid "About"
-msgstr ""
+msgstr "அறிமுகம்"
 
-#: ../src/configuration-gui/main.c:117
+#: ../src/configuration-gui/main.c:98
 msgid "Quit"
-msgstr ""
+msgstr "வெளியேறு"
 
-#: ../src/daemon/abrt-action-save-package-data.c:365
+#: ../src/daemon/abrt-action-save-package-data.c:372
 msgid ""
 "& [-v] [-c CONFFILE] -d DIR\n"
 "\n"
 "Query package database and save package and component name"
 msgstr "& [-v] [-c CONFFILE] -d DIR\n\nதொகுப்பு தரவுத்தளத்தை வினவி தொகுப்பு மற்றும் கூறின் பெயரைச் சேமி"
 
-#: ../src/daemon/abrt-action-save-package-data.c:377
-#: ../src/plugins/abrt-action-analyze-backtrace.c:65
-#: ../src/plugins/abrt-action-analyze-c.c:90
+#: ../src/daemon/abrt-action-save-package-data.c:384
+#: ../src/plugins/abrt-action-analyze-backtrace.c:53
+#: ../src/plugins/abrt-action-analyze-c.c:78
 #: ../src/plugins/abrt-action-analyze-oops.c:48
 #: ../src/plugins/abrt-action-analyze-xorg.c:82
 #: ../src/plugins/abrt-action-analyze-python.c:47
 #: ../src/plugins/abrt-action-generate-backtrace.c:54
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
-#: ../src/plugins/abrt-dedup-client.c:104
 msgid "Problem directory"
 msgstr "சிக்கல் கோப்பகம்"
 
-#: ../src/daemon/abrt-action-save-package-data.c:378
+#: ../src/daemon/abrt-action-save-package-data.c:385
 msgid "Configuration file"
 msgstr "அமைவாக்கக் கோப்பு"
 
-#: ../src/daemon/abrt-server.c:780 ../src/dbus/abrt-dbus.c:777
-#: ../src/daemon/abrtd.c:610
+#: ../src/daemon/abrt-server.c:786 ../src/dbus/abrt-dbus.c:777
+#: ../src/daemon/abrtd.c:483
 msgid "& [options]"
 msgstr "& [options]"
 
-#: ../src/daemon/abrt-server.c:791
+#: ../src/daemon/abrt-server.c:797
 msgid "Use NUM as client uid"
 msgstr "NUM ஐ கிளையன்ட் uid ஆகப் பயன்படுத்தவும்"
 
-#: ../src/daemon/abrt-server.c:792 ../src/plugins/abrt-watch-log.c:154
-#: ../src/plugins/abrt-dump-oops.c:258 ../src/plugins/abrt-dump-xorg.c:245
+#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:297
+#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:266
+#: ../src/plugins/abrt-dump-xorg.c:244
 msgid "Log to syslog"
 msgstr "syslog க்கு பதியவும்"
 
-#: ../src/daemon/abrt-server.c:793 ../src/daemon/abrtd.c:626
+#: ../src/daemon/abrt-server.c:799 ../src/daemon/abrtd.c:499
 msgid "Add program names to log"
 msgstr "நிரல் பெயர்களை பதிவில் சேர்க்கவும்"
 
@@ -319,7 +300,7 @@ msgid ""
 "is not running.\n"
 msgstr "'%s' என்ற பெயர் போய்விட்டது, இதே பெயரைக் கொண்ட மற்ற சேவைகள் எதுவும் இயங்காமல் உள்ளதா எனப் பார்க்கவும்.\n"
 
-#: ../src/dbus/abrt-dbus.c:786 ../src/daemon/abrtd.c:625
+#: ../src/dbus/abrt-dbus.c:786 ../src/daemon/abrtd.c:498
 msgid "Exit after NUM seconds of inactivity"
 msgstr "NUM விநாடிகளுக்கு செயலில்லாமல் இருந்த பிறகு வெளியேறவும்"
 
@@ -327,7 +308,7 @@ msgstr "NUM விநாடிகளுக்கு செயலில்லா�
 msgid "This program must be run as root."
 msgstr "இந்த நிரலை மூலப் பயனராகவே இயக்க வேண்டும்."
 
-#: ../src/daemon/abrtd.c:577
+#: ../src/daemon/abrtd.c:450
 msgid ""
 "The problem data are incomplete. This usually happens when a problem is "
 "detected while computer is shutting down or user is logging out. In order to"
@@ -336,52 +317,81 @@ msgid ""
 " sort out this problem, please contact them directly."
 msgstr "சிக்கல் தரவு முழுமையானதாக இல்லை. வழக்கமாக கணினி அணைக்கப்படும் போது அல்லது பயனர் வெளியேறும் போது ஏதேனும் சிக்கல் கண்டறியப்பட்டால் தான் இப்படி நடக்கும். மதிப்பு மிக்க சிக்கல் அறிக்கைகளை வழங்க வேண்டும் என்ற காரணத்திற்காக, இந்த சிக்கல் குறித்து அறிக்கையிட ABRT உங்களை அனுமதிக்காது. உங்களுக்கு நேரமிருந்து, இந்த சிக்கலைத் தீர்ப்பதில் உருவாக்குநர்களுக்கு உதவ முடியும் எனில், அவர்களை நேரடியாகத் தொடர்பு கொள்ளவும்."
 
-#: ../src/daemon/abrtd.c:623
+#: ../src/daemon/abrtd.c:496
 msgid "Do not daemonize"
 msgstr "டெமனைஸ் செய்ய வேண்டாம்"
 
-#: ../src/daemon/abrtd.c:624
+#: ../src/daemon/abrtd.c:497
 msgid "Log to syslog even with -d"
 msgstr "-d உடனும் syslog இல் பதிவு செய்யவும்"
 
-#: ../src/daemon/abrt-handle-event.c:360
+#: ../src/daemon/abrt-handle-event.c:388
 msgid "& [-v -i] -e|--event EVENT DIR..."
 msgstr "& [-v -i] -e|--event EVENT DIR..."
 
-#: ../src/daemon/abrt-handle-event.c:368
+#: ../src/daemon/abrt-handle-event.c:396
 msgid "Run EVENT on DIR"
 msgstr "DIR இல் EVENT ஐ இயக்கு"
 
-#: ../src/daemon/abrt-handle-event.c:369
+#: ../src/daemon/abrt-handle-event.c:397
 msgid "Communicate directly to the user"
 msgstr "நேரடியாக பயனரிடம் தொடர்புகொள்ளவும்"
 
+#: ../src/daemon/abrt-upload-watch.c:119
+#, c-format
+msgid "No free workers and full buffer. Omitting archive '%s'"
+msgstr ""
+
+#: ../src/daemon/abrt-upload-watch.c:275
+msgid ""
+"& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
+"\n"
+"\n"
+"Watches UPLOAD_DIRECTORY and unpacks incoming archives into DumpLocation\n"
+"specified in abrt.conf\n"
+"\n"
+"If UPLOAD_DIRECTORY is not provided, uses a value of\n"
+"WatchCrashdumpArchiveDir option from abrt.conf"
+msgstr ""
+
+#: ../src/daemon/abrt-upload-watch.c:298
+msgid "Daemize"
+msgstr ""
+
+#: ../src/daemon/abrt-upload-watch.c:299
+msgid "Number of concurrent workers. Default is "
+msgstr ""
+
+#: ../src/daemon/abrt-upload-watch.c:300
+msgid "Maximal cache size in MiB. Default is "
+msgstr ""
+
 #. Let user know what's going on
-#: ../src/lib/hooklib.c:251 ../src/plugins/abrt-action-analyze-vmcore.in:127
+#: ../src/lib/hooklib.c:251
 msgid "Generating backtrace"
 msgstr "பின்தடமறிதலை உருவாக்குகிறது"
 
-#: ../src/lib/problem_api_dbus.c:41
+#: ../src/lib/problem_api_dbus.c:42
 #, c-format
 msgid "Can't connect to system DBus: %s"
 msgstr "DBus முறைமையுடன் இணைக்க முடியவில்லை: %s"
 
-#: ../src/lib/problem_api_dbus.c:65
+#: ../src/lib/problem_api_dbus.c:66
 #, c-format
 msgid "Can't chown '%s': %s"
 msgstr "'%s' ஐ chown செய்ய முடியவில்லை: %s"
 
-#: ../src/lib/problem_api_dbus.c:92
+#: ../src/lib/problem_api_dbus.c:93
 #, c-format
 msgid "Deleting problem directory failed: %s"
 msgstr "சிக்கல் கோப்பகத்தை நீக்குவது தோல்வியடைந்தது: %s"
 
-#: ../src/lib/problem_api_dbus.c:126
+#: ../src/lib/problem_api_dbus.c:127
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
 msgstr "abrt-dbus இலிருந்து சிக்கல் தொடர்பான தரவைப் பெற முடியவில்லை: %s"
 
-#: ../src/lib/problem_api_dbus.c:160
+#: ../src/lib/problem_api_dbus.c:161
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
 msgstr "abrt-dbus இலிருந்து சிக்கல் பட்டியலைப் பெற முடியவில்லை: %s"
@@ -404,7 +414,7 @@ msgstr "'%s' இல் எழுத முடியவில்லை. புற
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
 msgstr "'%s' ஐ '%s' என மறுபெயரிட முடியவில்லை. சிக்கல் '%s' ஐ நீக்குவது தோல்வியடைந்தது"
 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:53
+#: ../src/plugins/abrt-action-analyze-backtrace.c:41
 msgid ""
 "& [options] -d DIR\n"
 "\n"
@@ -416,16 +426,16 @@ msgstr "& [options] -d DIR\n\nC/C++ பின் தடமறிதலைப் 
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
 #. 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:102
+#: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "%s க்கு பின் தடமறிதல் பாகுபடுத்துதல் தோல்வியடைந்தது"
 
-#: ../src/plugins/abrt-action-analyze-backtrace.c:158
+#: ../src/plugins/abrt-action-analyze-backtrace.c:146
 msgid "Crash thread not found"
-msgstr ""
+msgstr "செயலிழப்பு இழை காணப்படவில்லை"
 
-#: ../src/plugins/abrt-action-analyze-c.c:79
+#: ../src/plugins/abrt-action-analyze-c.c:67
 msgid ""
 "& [-v] -d DIR\n"
 "\n"
@@ -459,30 +469,30 @@ msgid ""
 msgstr "& [-v] -d DIR\n\npython செயலிழப்பு டம்ப்புகளின் UUID மற்றும் DUPHASH ஐக் கணக்கிட்டு சேமிக்கும்"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:29
-msgid ""
-"Usage: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
-msgstr "பயன்பாடு: {0} [-v[v]] [--core=VMCORE] [--tmpdir=TMPDIR] [--cache=CACHEDIR]"
+msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
+msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:63
+#: ../src/plugins/abrt-action-analyze-vmcore.in:56
 msgid "File {0} doesn't exist"
 msgstr "கோப்பு {0} இல்லை"
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:96
-msgid "{0} is not a valid vmcore"
-msgstr "{0} ஆனது ஒரு சரியான vmcore இல்லை"
+#: ../src/plugins/abrt-action-analyze-vmcore.in:59
+msgid "Extracting the oops text from core"
+msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:102
-msgid "Required vmlinux debuginfo is installed in {0}"
-msgstr "தேவையான vmlinux வழுநீக்கல் தகவல் {0} இல் நிறுவப்பட்டுள்ளது"
+#: ../src/plugins/abrt-action-analyze-vmcore.in:64
+msgid ""
+"Can't process {0}:\n"
+"{1}"
+msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:108
-msgid "Installing kernel debuginfo(s)"
-msgstr "கெர்னல் வழுநீக்கல் தகவல்களை நிறுவுகிறது"
+#: ../src/plugins/abrt-action-analyze-vmcore.in:72
+msgid "Can't extract the oops message: '{0}'"
+msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:115
-#: ../src/plugins/abrt-action-analyze-vmcore.in:124
-msgid "Can't download required debuginfo"
-msgstr "தேவைப்படும் வழுநீக்கல் தகவலைப் பதிவிறக்க முடியவில்லை"
+#: ../src/plugins/abrt-action-analyze-vmcore.in:75
+msgid "Oops text extracted successfully"
+msgstr ""
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:41
 msgid ""
@@ -512,7 +522,7 @@ msgid ""
 "& [-v] [-r] -d DIR\n"
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
-msgstr ""
+msgstr "& [-v] [-r] -d DIR\n\nகோர் டம்ப் மற்றும் உரிய பைனரியிலிருந்து கோர்டம் நிலையிலான பின் தடமறிதலை உருவாக்கும்"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
@@ -525,18 +535,18 @@ msgstr "core_backtrace ஐ உருவாக்குகிறது"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:81
 msgid "Error: GDB did not return any data"
-msgstr ""
+msgstr "பிழை: GDB தரவு எதையும் திருப்பி வழங்கவில்லை"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:95
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "பிழை: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:50
 msgid "Exiting on user command"
 msgstr "பயனர் கட்டளையின் படி வெளியேறுகிறது"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:86
+#: ../src/plugins/abrt-action-install-debuginfo.in:87
 #, c-format
 msgid ""
 "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
@@ -554,21 +564,23 @@ msgid ""
 "    --cache     Default: /var/cache/abrt-di\n"
 "    --size_mb   Default: 4096\n"
 "    -e,--exact  Download only specified files\n"
+"    --repo      Pattern to use when searching for repos.\n"
+"                Default: *debug*\n"
 msgstr ""
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:171
+#: ../src/plugins/abrt-action-install-debuginfo.in:177
 msgid "Can't open {0}: {1}"
 msgstr "{0} ஐத் திறக்க முடியாது: {1}"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:206
+#: ../src/plugins/abrt-action-install-debuginfo.in:212
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
 msgstr "கோர்டம்ப் {0} வழுநீக்கல் தகவல் கோப்புகளைக் குறிக்கிறது, அவற்றில் {1} கோப்புகள் நிறுவப்படவில்லை"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:217
+#: ../src/plugins/abrt-action-install-debuginfo.in:225
 msgid "Missing debuginfo file: {0}"
 msgstr "விடுப்பட்ட வழுநீக்கல் தகவல் கோப்பு: {0}"
 
-#: ../src/plugins/abrt-action-install-debuginfo.in:220
+#: ../src/plugins/abrt-action-install-debuginfo.in:228
 msgid "All debuginfo files are available"
 msgstr "வழுநீக்கல் தகவல் கோப்புகள் அனைத்தும் உள்ளன"
 
@@ -605,241 +617,210 @@ msgstr "இந்த கோப்பகத்தில் உள்ள கோப
 msgid "Preserve this directory"
 msgstr "இந்த கோப்பகத்தை வைத்திரு"
 
-#: ../src/plugins/abrt-dedup-client.c:96
-#: ../src/plugins/abrt-retrace-client.c:1142
-msgid "log to syslog"
-msgstr "syslog இல் பதிவிடு"
-
-#: ../src/plugins/abrt-dedup-client.c:98
-msgid "allow insecure connection to dedup server"
-msgstr "dedup சேவையகத்திற்கு பாதுகாப்பற்ற இணைப்பை அனுமதி"
-
-#: ../src/plugins/abrt-dedup-client.c:100
-msgid "dedup server URL"
-msgstr "dedup சேவையக URL"
-
-#: ../src/plugins/abrt-dedup-client.c:102
-msgid "dedup server port"
-msgstr "dedup சேவையக முனையம்"
-
-#: ../src/plugins/abrt-dedup-client.c:106
-#: ../src/plugins/abrt-retrace-client.c:1153
-msgid "(debug) show received HTTP headers"
-msgstr "(பிழைதிருத்தம்) பெறப்பட்ட HTTP தலைப்புகளை காட்டவும்"
-
-#: ../src/plugins/abrt-dedup-client.c:110
-msgid "abrt-dedup-client component backtrace_file [options]"
-msgstr "abrt-dedup-client கூறு backtrace_file [options]"
-
-#: ../src/plugins/abrt-dedup-client.c:153
-msgid "'"
-msgstr "'"
-
-#: ../src/plugins/abrt-dedup-client.c:157
-#, c-format
-msgid "Forbidden component name: '%s'."
-msgstr "தடைசெய்யப்பட்ட கூறின் பெயர்: '%s'."
-
-#: ../src/plugins/abrt-dedup-client.c:202
-#, c-format
-msgid "Failed to send HTTP request of length %d: NSS error %d."
-msgstr "%d நீளமுள்ள HTTP கோரிக்கையை அனுப்புவதில் தோல்வியடைந்தது: NSS பிழை %d."
-
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
-msgstr ""
+msgstr "பயனரிடைவெளி குறியீட்டால் அனுப்பப்பட்ட சமிக்ஞை"
 
 #: ../src/plugins/abrt-gdb-exploitable:533
 msgid "Signal sent by timer/IO/async event"
-msgstr ""
+msgstr "டைமர்/IO/async நிகழ்வால் அனுப்பப்பட்ட சமிக்ஞை"
 
 #: ../src/plugins/abrt-gdb-exploitable:541
 msgid "Signal has siginfo.si_code = SI_USER"
-msgstr ""
+msgstr "சமிக்ஞையில் siginfo.si_code = SI_USER உள்ளது"
 
 #: ../src/plugins/abrt-gdb-exploitable:544
 msgid "Signal due to write to closed pipe"
-msgstr ""
+msgstr "மூடிய பைப்பில் எழுதியதன் காரணமான சமிக்ஞை"
 
 #: ../src/plugins/abrt-gdb-exploitable:550
 #: ../src/plugins/abrt-gdb-exploitable:575
 msgid "Signal sent by keyboard"
-msgstr ""
+msgstr "விசைப்பலகையால் அனுப்பப்பட்ட சமிக்ஞை"
 
 #: ../src/plugins/abrt-gdb-exploitable:554
 #: ../src/plugins/abrt-gdb-exploitable:579
 msgid "Job control signal sent by kernel"
-msgstr ""
+msgstr "கெர்னலால் பணிக் கட்டுப்பாடு சமிக்ஞை அனுப்பப்பட்டது"
 
 #: ../src/plugins/abrt-gdb-exploitable:558
 #: ../src/plugins/abrt-gdb-exploitable:587
 msgid "Signal sent by window resize"
-msgstr ""
+msgstr "சாளர மறுஅளவால் அனுப்பப்பட்ட சமிக்ஞை"
 
 #: ../src/plugins/abrt-gdb-exploitable:562
 #: ../src/plugins/abrt-gdb-exploitable:591
 msgid "Signal sent by alarm(N) expiration"
-msgstr ""
+msgstr "அலார (N) காலாவதியாக்கத்தால் அனுப்பப்பட்ட சமிக்ஞை"
 
 #: ../src/plugins/abrt-gdb-exploitable:583
 msgid "Signal due to write to broken pipe"
-msgstr ""
+msgstr "உடைந்த பைப்பில் எழுதியதன் காரணமான சமிக்ஞை"
 
 #: ../src/plugins/abrt-gdb-exploitable:607
 msgid "ABRT signal (abort() was called?)"
-msgstr ""
+msgstr "ABRT சமிக்ஞை (abort() அழைக்கப்பட்டதா?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:616
 msgid "XCPU signal (over CPU time limit)"
-msgstr ""
+msgstr "XCPU சமிக்ஞை (CPU நேர வரம்புக்கு மேல்)"
 
 #: ../src/plugins/abrt-gdb-exploitable:620
 msgid "XFSZ signal (over file size limit)"
-msgstr ""
+msgstr "XFSZ சமிக்ஞை (கோப்பு அளவு வரம்புக்கு மேல்)"
 
 #: ../src/plugins/abrt-gdb-exploitable:624
 msgid "TRAP signal (can be a bug in a debugger/tracer)"
-msgstr ""
+msgstr "TRAP சமிக்ஞை (வழுநீக்கல்/தடமறிதலில் உள்ள வழுவாக இருக்கலாம்)"
 
 #: ../src/plugins/abrt-gdb-exploitable:628
 msgid "SYS signal (unknown syscall was called?)"
-msgstr ""
+msgstr "SYS சமிக்ஞை (தெரியாத syscall அழைக்கப்பட்டதா?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:633
 msgid "Arithmetic exception"
-msgstr ""
+msgstr "எண்ணியல் விதிவிலக்கம்"
 
 #: ../src/plugins/abrt-gdb-exploitable:637
 msgid "Division by zero"
-msgstr ""
+msgstr "பூச்சியத்தால் வகுத்தல்"
 
 #: ../src/plugins/abrt-gdb-exploitable:641
 msgid "Illegal instruction (jump to a random address?)"
-msgstr ""
+msgstr "தவறான அறிவுறுத்தல் (எழுந்தமானமான ஒரு முகவரிக்குத் தாவ வேண்டுமா?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:647
 msgid "Non-crash related signal"
-msgstr ""
+msgstr "செயலிழப்பு அல்லாத தொடர்புடைய சமிக்ஞை"
 
 #: ../src/plugins/abrt-gdb-exploitable:652
 msgid "Stack overflow"
-msgstr ""
+msgstr "ஸ்டேக் மேல்வழிதல்"
 
 #: ../src/plugins/abrt-gdb-exploitable:656
 msgid "Write to an invalid address"
-msgstr ""
+msgstr "செல்லுபடியாகாத ஒரு முகவரியில் எழுது"
 
 #: ../src/plugins/abrt-gdb-exploitable:660
 msgid "Subroutine return to an invalid address (corrupted stack?)"
-msgstr ""
+msgstr "ஒரு செல்லுபடியாகாத முகவரிக்கு உப சுழல்செயல் திருப்பிவழங்கல் (ஸ்டேக் சிதைந்துள்ளதா?)"
 
 #: ../src/plugins/abrt-gdb-exploitable:666
 #: ../src/plugins/abrt-gdb-exploitable:670
 msgid "Jump to an invalid address"
-msgstr ""
+msgstr "செல்லுபடியாகாத ஒரு முகவரிக்குத் தாவு"
 
 #: ../src/plugins/abrt-gdb-exploitable:674
 msgid ""
 "Access past the end of mapped file, invalid address, unaligned access, etc"
-msgstr ""
+msgstr "மேப் செய்யப்பட்ட கோப்பின் முடிவுக்கு முந்தைய பகுதி, செல்லுபடியாகாத முகவரி, சீரமைக்கப்படாத அணுகல் போன்றவற்றை அணுகும்"
 
 #: ../src/plugins/abrt-gdb-exploitable:693
 msgid "Can't get signal no and do exploitability analysis\n"
-msgstr ""
+msgstr "சமிக்ஞை எண்ணைப் பெற முடியவில்லை, மேலும் பயன்படுத்திக்கொள்ளும் தன்மைக்கான பகுப்பாய்வைச் செய்யவும்\n"
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Likely crash reason: "
-msgstr ""
+msgstr "செயலிழப்புக்கான சாத்தியமுள்ள காரணம்:"
 
 #: ../src/plugins/abrt-gdb-exploitable:707
 msgid "Exploitable rating (0-9 scale): "
-msgstr ""
+msgstr "பயன்படுத்திக்கொள்ளும் தன்மைக்கான தரம் (0-9 அளவுகோல்): "
 
 #: ../src/plugins/abrt-gdb-exploitable:709
-msgid "Exploitability analysis came up empty\n"
+msgid "Current instruction: "
 msgstr ""
 
-#: ../src/plugins/abrt-watch-log.c:143
+#: ../src/plugins/abrt-gdb-exploitable:711
+msgid "Exploitability analysis came up empty\n"
+msgstr "பயன்படுத்திக்கொள்ளும் தன்மைக்கான பகுப்பாய்வு வெறுமையாக முடிந்தது\n"
+
+#: ../src/plugins/abrt-watch-log.c:142
 msgid ""
 "& [-vs] [-F STR]... FILE PROG [ARGS]\n"
 "\n"
 "Watch log file FILE, run PROG when it grows or is replaced"
 msgstr "& [-vs] [-F STR]... FILE PROG [ARGS]\n\nFILE என்ற பதிவுக் கோப்பைக் கவனி, அது அதிகரிக்கும் போது அல்லது இடமாற்றப்படும் பட்சத்தில் PROG கட்டளையை இயக்கு"
 
-#: ../src/plugins/abrt-watch-log.c:155
+#: ../src/plugins/abrt-watch-log.c:154
 msgid "Don't run PROG if STRs aren't found"
 msgstr "STR கள் இல்லாவிட்டால் PROG கட்டளையை இயக்க வேண்டாம்"
 
-#: ../src/plugins/abrt-dump-oops.c:137
+#: ../src/plugins/abrt-dump-oops.c:138
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr "ஒரு கெர்னல் சிக்கல் ஏற்பட்டது, ஆனால் உங்கள் கெர்னல் பாதிக்கப்படவில்லை (கொடிகள்:%s). கெர்னல் பராமரிப்பு தொகுதிகளால் சிதைவடைந்தவை பற்றிய அறிக்கைகளை உருவாக்க முடியவில்லை."
 
-#: ../src/plugins/abrt-dump-oops.c:145
+#: ../src/plugins/abrt-dump-oops.c:146
 #, c-format
 msgid " Tainted modules: %s."
 msgstr " பாதிக்கப்பட்ட தொகுதிக்கூறுகள்: %s."
 
-#: ../src/plugins/abrt-dump-oops.c:240
+#: ../src/plugins/abrt-dump-oops.c:247
 msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
-msgstr ""
+msgstr "& [-vusoxm] [-d DIR]/[-D] [FILE]\n\nFILE இலிருந்து (அல்லது வழக்கமான உள்ளீட்டிலிருந்து) oops ஐப் பிரித்தெடுக்கும்"
 
-#: ../src/plugins/abrt-dump-oops.c:259
+#: ../src/plugins/abrt-dump-oops.c:267
 msgid "Print found oopses on standard output"
 msgstr "கண்டறியப்பட்ட oops களை தரநிலை வெளியீட்டில் அச்சிடு"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
 #. 
-#: ../src/plugins/abrt-dump-oops.c:263
+#: ../src/plugins/abrt-dump-oops.c:271
 msgid "Create new problem directory in DIR for every oops found"
 msgstr "கண்டறியப்பட்ட ஒவ்வொரு oops க்கும் DIR இல் ஒரு புதிய சிக்கல் கோப்பகத்தை உருவாக்கு"
 
-#: ../src/plugins/abrt-dump-oops.c:264 ../src/plugins/abrt-dump-xorg.c:248
+#: ../src/plugins/abrt-dump-oops.c:272 ../src/plugins/abrt-dump-xorg.c:247
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "-d DumpLocation போன்றது DumpLocation ஆனது abrt.conf இல் குறிப்பிடப்பட்டுள்ளது"
 
-#: ../src/plugins/abrt-dump-oops.c:265
+#: ../src/plugins/abrt-dump-oops.c:273
 msgid "Save the extracted information in PROBLEM"
-msgstr ""
+msgstr "பிரித்தெடுத்த தகவலை PROBLEM இல் சேமி"
 
-#: ../src/plugins/abrt-dump-oops.c:266 ../src/plugins/abrt-dump-xorg.c:249
+#: ../src/plugins/abrt-dump-oops.c:274 ../src/plugins/abrt-dump-xorg.c:248
 msgid "Make the problem directory world readable"
 msgstr "சிக்கல் கோப்பகத்தை அனைவரும் வாசிக்கும்படி அமை"
 
-#: ../src/plugins/abrt-dump-oops.c:267 ../src/plugins/abrt-dump-xorg.c:250
+#: ../src/plugins/abrt-dump-oops.c:275
+msgid "Throttle problem directory creation to 1 per second"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-oops.c:276 ../src/plugins/abrt-dump-xorg.c:249
 msgid "Print search string(s) to stdout and exit"
 msgstr "தேடல் சரங்களை stdout இல் அச்சிட்டு வெளியேறு"
 
-#: ../src/plugins/abrt-dump-oops.c:353
-msgid "Cannot update the problem because of no oops found"
+#: ../src/plugins/abrt-dump-oops.c:372
+msgid "Can't update the problem: more than one oops found"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:366
-msgid "Cannot update the problem because of more oopses were found"
+#: ../src/plugins/abrt-dump-oops.c:391
+#, c-format
+msgid "Sleeping for %d seconds"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-xorg.c:238
+#: ../src/plugins/abrt-dump-xorg.c:237
 msgid ""
 "& [-vsoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract Xorg crash from FILE (or standard input)"
 msgstr "& [-vsoxm] [-d DIR]/[-D] [FILE]\n\nFILE இல் (அல்லது தரநிலை உள்ளீட்டில்) இருந்து Xorg ஐப் பிரித்தெடு"
 
-#: ../src/plugins/abrt-dump-xorg.c:246
+#: ../src/plugins/abrt-dump-xorg.c:245
 msgid "Print found crash data on standard output"
 msgstr "கண்டறிந்த செயலிழப்பு தரவை தரநிலையான வெளியீட்டில் அச்சிடு"
 
-#: ../src/plugins/abrt-dump-xorg.c:247
+#: ../src/plugins/abrt-dump-xorg.c:246
 msgid "Create problem directory in DIR for every crash found"
 msgstr "கண்டறியப்படும் ஒவ்வொரு செயலிழப்புக்கும் DIR இல் ஒரு சிக்கல் கோப்பகத்தை உருவாக்கு"
 
-#: ../src/plugins/abrt-retrace-client.c:68
+#: ../src/plugins/abrt-retrace-client.c:70
 msgid ""
 "Retrace server can not be used, because the crash is too large. Try local "
 "retracing."
@@ -848,265 +829,278 @@ msgstr "ரீட்ரேஸ் சேவையகத்தைப் பயன�
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
 #. 
-#: ../src/plugins/abrt-retrace-client.c:101
-#: ../src/plugins/abrt-retrace-client.c:180
-#: ../src/plugins/abrt-retrace-client.c:184
+#: ../src/plugins/abrt-retrace-client.c:103
+#: ../src/plugins/abrt-retrace-client.c:182
+#: ../src/plugins/abrt-retrace-client.c:186
 msgid "Can't create temporary file in "
-msgstr ""
+msgstr "இங்கு தற்காலிக கோப்பினை உருவாக்க முடியவில்லை"
 
-#: ../src/plugins/abrt-retrace-client.c:209
-#: ../src/plugins/abrt-retrace-client.c:405
-#: ../src/plugins/abrt-retrace-client.c:684
-#: ../src/plugins/abrt-retrace-client.c:861
+#: ../src/plugins/abrt-retrace-client.c:211
+#: ../src/plugins/abrt-retrace-client.c:398
+#: ../src/plugins/abrt-retrace-client.c:666
+#: ../src/plugins/abrt-retrace-client.c:832
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d"
 msgstr "%d நீளமுள்ள HTTP தலைப்பை அனுப்புவதில் தோல்வியடைந்தது: NSS பிழை %d"
 
-#: ../src/plugins/abrt-retrace-client.c:221
-#: ../src/plugins/abrt-retrace-client.c:419
-#: ../src/plugins/abrt-retrace-client.c:783
-#: ../src/plugins/abrt-retrace-client.c:878
-#: ../src/plugins/abrt-retrace-client.c:956
-#: ../src/plugins/abrt-retrace-client.c:1024
+#: ../src/plugins/abrt-retrace-client.c:223
+#: ../src/plugins/abrt-retrace-client.c:412
+#: ../src/plugins/abrt-retrace-client.c:765
+#: ../src/plugins/abrt-retrace-client.c:849
+#: ../src/plugins/abrt-retrace-client.c:916
+#: ../src/plugins/abrt-retrace-client.c:1001
+#: ../src/plugins/abrt-retrace-client.c:1060
 #, c-format
 msgid ""
 "Unexpected HTTP response from server: %d\n"
 "%s"
 msgstr "சேவையகத்திலிருந்து எதிர்பாராத HTTP பதில்: %d\n%s"
 
-#: ../src/plugins/abrt-retrace-client.c:230
-#: ../src/plugins/abrt-retrace-client.c:763
-#: ../src/plugins/abrt-retrace-client.c:870
-#: ../src/plugins/abrt-retrace-client.c:948
-#: ../src/plugins/abrt-retrace-client.c:1016
+#: ../src/plugins/abrt-retrace-client.c:232
+#: ../src/plugins/abrt-retrace-client.c:745
+#: ../src/plugins/abrt-retrace-client.c:841
+#: ../src/plugins/abrt-retrace-client.c:908
+#: ../src/plugins/abrt-retrace-client.c:982
+#: ../src/plugins/abrt-retrace-client.c:1052
 msgid "Invalid response from server: missing HTTP message body."
 msgstr "சேவையகத்திலிருந்து செல்லுபடியாகாத பதில்: HTTP செய்தி பிரதான பகுதி விடுபட்டுள்ளது."
 
-#: ../src/plugins/abrt-retrace-client.c:431
+#: ../src/plugins/abrt-retrace-client.c:424
 #, c-format
 msgid ""
 "Retrace server is unable to process package '%s.%s'.\n"
 "Is it a part of official '%s' repositories?"
 msgstr "பின் தடமறி சேவையகத்தால் '%s.%s' தொகுப்பை செயலாக்க முடியவில்லை.\nஅது அதிகாரப்பூர்வ '%s' தொகுப்பதிவகங்களின் அங்கம் தானா?"
 
-#: ../src/plugins/abrt-retrace-client.c:454
+#: ../src/plugins/abrt-retrace-client.c:444
 msgid "Querying server settings"
 msgstr "சேவையக அமைவுகளை கேட்கிறது"
 
-#: ../src/plugins/abrt-retrace-client.c:462
+#: ../src/plugins/abrt-retrace-client.c:452
 msgid "The server is fully occupied. Try again later."
 msgstr "சேவையகம் முழுவதும் பயன்பாட்டில் உள்ளது. மீண்டும் முயற்சிக்கவும்."
 
-#: ../src/plugins/abrt-retrace-client.c:463
+#: ../src/plugins/abrt-retrace-client.c:453
 msgid "The server denied your request."
 msgstr "சேவையகம் உங்கள் கோரிக்கையை நிராகரித்துவிட்டது."
 
-#: ../src/plugins/abrt-retrace-client.c:494
-#: ../src/plugins/abrt-retrace-client.c:510
+#: ../src/plugins/abrt-retrace-client.c:484
+#: ../src/plugins/abrt-retrace-client.c:500
 #, c-format
 msgid "'%s' must be a regular file in order to use Retrace server."
 msgstr "ரிடிரேஸ் சேவையகத்தைப் பயன்படுத்த வேண்டுமானால் '%s' ஆனது வழக்கமான கோப்பாக இருக்க வேண்டும்."
 
-#: ../src/plugins/abrt-retrace-client.c:524
+#: ../src/plugins/abrt-retrace-client.c:514
 #, c-format
 msgid ""
 "The size of your crash is %lld bytes, but the retrace server only accepts "
 "crashes smaller or equal to %lld bytes."
 msgstr "உங்கள் செயலிழப்பின் அளவு %lld பைட்டுகள், ஆனால் ரீட்ரேஸ் சேவையகமானது %lld பைட்டுகளுக்கு சமமான அல்லது அதை விட சிறிய செயலிழப்புகளை மட்டும் ஏற்கும்."
 
-#: ../src/plugins/abrt-retrace-client.c:544
+#: ../src/plugins/abrt-retrace-client.c:534
 msgid "The server does not support xz-compressed tarballs."
 msgstr "சேவையகமானது xz-சுருக்கப்பட்ட டார்பால்களுக்கு துணைபுரியவில்லை."
 
-#: ../src/plugins/abrt-retrace-client.c:581
+#: ../src/plugins/abrt-retrace-client.c:571
 #, c-format
 msgid "The release '%s' is not supported by the Retrace server."
 msgstr "ரீட்ரேஸ் சேவையகத்தால் வெளியீடு '%s' துணைப்புரியப்படவில்லை."
 
-#: ../src/plugins/abrt-retrace-client.c:585
+#: ../src/plugins/abrt-retrace-client.c:575
 msgid "The server is not able to handle your request."
 msgstr "உங்கள் கோரிக்கையை சேவையகத்தால் கையாள முடியவில்லை."
 
-#: ../src/plugins/abrt-retrace-client.c:604
+#: ../src/plugins/abrt-retrace-client.c:594
 msgid "Unknown package sent to Retrace server."
 msgstr "பின்தடமறிதல் சேவையகத்திற்கு தெரியாத ஒரு தொகுப்பு அனுப்பப்பட்டது."
 
-#: ../src/plugins/abrt-retrace-client.c:613
+#: ../src/plugins/abrt-retrace-client.c:603
 msgid "Preparing an archive to upload"
 msgstr "பதிவேற்ற ஒரு ஆர்ச்சிவை தயார் செய்கிறது"
 
-#: ../src/plugins/abrt-retrace-client.c:626
+#: ../src/plugins/abrt-retrace-client.c:616
 #, c-format
 msgid ""
 "The size of your archive is %lld bytes, but the retrace server only accepts "
 "archives smaller or equal %lld bytes."
 msgstr "உங்கள் ஆர்சிவ்வின் அளவு %lld பைட்டுகள், ஆனால் ரீட்ரேஸ் சேவையகமானது %lld பைட்டுகளுக்கு சமமான அலல்து சிறிய ஆர்ச்சிவ்களை மட்டுமே ஏற்கும்."
 
-#: ../src/plugins/abrt-retrace-client.c:639
+#: ../src/plugins/abrt-retrace-client.c:629
 #, c-format
 msgid "You are going to upload %d megabytes. Continue?"
 msgstr "நீங்கள் %d மெகாபைட் பதிவேற்றப் போகிறீர்கள். தொடர விரும்புகிறீர்களா?"
 
-#: ../src/plugins/abrt-retrace-client.c:648
+#: ../src/plugins/abrt-retrace-client.c:638
 msgid "Cancelled by user"
 msgstr "பயனரால் ரத்துசெய்யப்பட்டது"
 
-#: ../src/plugins/abrt-retrace-client.c:691
+#: ../src/plugins/abrt-retrace-client.c:673
 #, c-format
 msgid "Uploading %d megabytes\n"
 msgstr "%d மெகாபைட்டுகளை பதிவேற்றுகிறது\n"
 
-#: ../src/plugins/abrt-retrace-client.c:693
+#: ../src/plugins/abrt-retrace-client.c:675
 #, c-format
 msgid "Uploading %lld bytes\n"
 msgstr "%lld பைட்டுகளை பதிவேற்றுகிறது\n"
 
-#: ../src/plugins/abrt-retrace-client.c:717
+#: ../src/plugins/abrt-retrace-client.c:699
 #, c-format
 msgid "Uploading %d%%\n"
 msgstr "%d%% ஐ பதிவேற்றுகிறது\n"
 
-#: ../src/plugins/abrt-retrace-client.c:729
+#: ../src/plugins/abrt-retrace-client.c:711
 msgid "Failed to read from a pipe"
 msgstr "ஒரு பைப்பிலிருந்து வாசிக்க முடியவில்லை"
 
-#: ../src/plugins/abrt-retrace-client.c:742
+#: ../src/plugins/abrt-retrace-client.c:724
 #, c-format
 msgid "Failed to send data: NSS error %d (%s): %s"
 msgstr "தரவை அனுப்ப முடியவில்லை: NSS பிழை %d (%s): %s"
 
-#: ../src/plugins/abrt-retrace-client.c:753
+#: ../src/plugins/abrt-retrace-client.c:735
 msgid "Upload successful"
 msgstr "பதிவேற்றம் வெற்றியடைந்தது"
 
-#: ../src/plugins/abrt-retrace-client.c:775
+#: ../src/plugins/abrt-retrace-client.c:757
 msgid ""
 "Your problem directory is corrupted and can not be processed by the Retrace "
 "server."
 msgstr "உங்கள் சிக்கல் அடைவு சிதைந்துள்ளது இல்லை இவை ரீட்ரேஸ் சேவையகத்தால் செயற்படுத்த முடியாது."
 
-#: ../src/plugins/abrt-retrace-client.c:777
+#: ../src/plugins/abrt-retrace-client.c:759
 msgid ""
 "The archive contains malicious files (such as symlinks) and thus can not be "
 "processed."
 msgstr "ஆர்ச்சிவானது பல கோப்புகளை (symlinks போன்ற) கொண்டுள்ளன அவற்றை செயற்படுத்த முடியாது."
 
-#: ../src/plugins/abrt-retrace-client.c:790
+#: ../src/plugins/abrt-retrace-client.c:772
 msgid "Invalid response from server: missing X-Task-Id."
 msgstr "சேவையகத்திலிருந்து தவறான பதில்: X-Task-Id விடுபட்டுள்ளது."
 
-#: ../src/plugins/abrt-retrace-client.c:796
+#: ../src/plugins/abrt-retrace-client.c:778
 msgid "Invalid response from server: missing X-Task-Password."
 msgstr "சேவையகத்திலிருந்து தவறான பதில்: X-Task-கடவுச்சொல் விடுபட்டுள்ளது."
 
-#: ../src/plugins/abrt-retrace-client.c:803
+#: ../src/plugins/abrt-retrace-client.c:785
 msgid "Retrace job started"
 msgstr "மறுதடமறிதல் பணி துவக்கப்பட்டது"
 
-#: ../src/plugins/abrt-retrace-client.c:816
+#: ../src/plugins/abrt-retrace-client.c:798
 #, c-format
 msgid ""
 "Task Id: %s\n"
 "Task Password: %s\n"
 msgstr "பணி குறியீடு: %s\nபணி கடவுச்சொல்: %s\n"
 
-#: ../src/plugins/abrt-retrace-client.c:885
+#: ../src/plugins/abrt-retrace-client.c:856
 msgid "Invalid response from server: missing X-Task-Status."
 msgstr "சேவையகத்திலிருந்து தவறான பதில்: X-Task-நிலை விடுபட்டுள்ளது."
 
-#: ../src/plugins/abrt-retrace-client.c:897
+#: ../src/plugins/abrt-retrace-client.c:868
 #, c-format
 msgid ""
 "Task Status: %s\n"
 "%s\n"
 msgstr "பணி நிலை: %s\n%s\n"
 
-#: ../src/plugins/abrt-retrace-client.c:939
-#: ../src/plugins/abrt-retrace-client.c:1007
+#: ../src/plugins/abrt-retrace-client.c:899
+#: ../src/plugins/abrt-retrace-client.c:973
+#: ../src/plugins/abrt-retrace-client.c:1043
 #, c-format
 msgid "Failed to send HTTP header of length %d: NSS error %d."
 msgstr "%d நீளமுள்ள HTTP தலைப்பை அனுப்ப முடியவில்லை: NSS பிழை %d."
 
-#: ../src/plugins/abrt-retrace-client.c:1096
+#: ../src/plugins/abrt-retrace-client.c:1160
 msgid ""
 "Retrace failed. Try again later and if the problem persists report this "
 "issue please."
 msgstr "மறுதடமறிதல் தோல்வியுற்றது. மீண்டும் முயற்சிக்கவும் சிக்கல் தொடர்ந்தால் இந்த சிக்கலை அறிக்கையிடவும்."
 
-#: ../src/plugins/abrt-retrace-client.c:1144
+#: ../src/plugins/abrt-retrace-client.c:1207
+msgid "log to syslog"
+msgstr "syslog இல் பதிவிடு"
+
+#: ../src/plugins/abrt-retrace-client.c:1209
 msgid "allow insecure connection to retrace server"
 msgstr "மறுதடமறிதல் சேவையகத்திற்கு பாதுகாப்பற்ற இணைப்பை அனுமதிக்கவும்"
 
-#: ../src/plugins/abrt-retrace-client.c:1146
+#: ../src/plugins/abrt-retrace-client.c:1211
 msgid ""
 "do not check whether retrace server is able to process given package before "
 "uploading the archive"
 msgstr "காப்பகத்தைப் பதிவேற்றும் முன்பு, பின்தடமறிதல் சேவையகத்தால் கொடுக்கப்பட்ட தொகுப்பைச் செயலாக்க முடியுமா என்று சோதிக்க வேண்டாம்"
 
-#: ../src/plugins/abrt-retrace-client.c:1149
+#: ../src/plugins/abrt-retrace-client.c:1214
 msgid "retrace server URL"
 msgstr "மறுதடமறிதல் சேவையக URL"
 
-#: ../src/plugins/abrt-retrace-client.c:1151
+#: ../src/plugins/abrt-retrace-client.c:1216
 msgid "retrace server port"
 msgstr "மறுதடமறிதல் சேவையக முனையம்"
 
-#: ../src/plugins/abrt-retrace-client.c:1154
+#: ../src/plugins/abrt-retrace-client.c:1218
+msgid "(debug) show received HTTP headers"
+msgstr "(பிழைதிருத்தம்) பெறப்பட்ட HTTP தலைப்புகளை காட்டவும்"
+
+#: ../src/plugins/abrt-retrace-client.c:1219
 msgid "For create and batch operations"
 msgstr "உருவாக்குதல் மற்றும் குழு செயல்பாடுகளுக்கு"
 
-#: ../src/plugins/abrt-retrace-client.c:1156
+#: ../src/plugins/abrt-retrace-client.c:1221
 msgid "read data from ABRT problem directory"
 msgstr "ABRT சிக்கல் அடைவிலிருந்து தரவை வாசிக்கவும்"
 
-#: ../src/plugins/abrt-retrace-client.c:1158
+#: ../src/plugins/abrt-retrace-client.c:1223
 msgid "read data from coredump"
 msgstr "கோர்டம்ப்பிலிருந்து தரவை வாசிக்கவும்"
 
-#: ../src/plugins/abrt-retrace-client.c:1160
+#: ../src/plugins/abrt-retrace-client.c:1225
 msgid "Delay for polling operations"
 msgstr "போலிங் செயல்பாடுகளுக்காக தாமதமாக்கு"
 
-#: ../src/plugins/abrt-retrace-client.c:1162
+#: ../src/plugins/abrt-retrace-client.c:1227
 msgid "(debug) do not delete temporary archive created from dump dir in "
-msgstr ""
+msgstr "(வழுநீக்கம்) dump dir in இலிருந்து உருவாக்கப்பட்ட தற்காலிக காப்பகத்தை அழிக்க வேண்டாம்"
 
-#: ../src/plugins/abrt-retrace-client.c:1164
+#: ../src/plugins/abrt-retrace-client.c:1229
 msgid "For status, backtrace, and log operations"
 msgstr "நிலை, பின்தடமறிதல் மற்றும் பதிவு செயல்பாடுகளுக்கு"
 
-#: ../src/plugins/abrt-retrace-client.c:1166
+#: ../src/plugins/abrt-retrace-client.c:1231
 msgid "id of your task on server"
 msgstr "சேவையகத்தில் உங்கள் பணியின் குறியீடு"
 
-#: ../src/plugins/abrt-retrace-client.c:1168
+#: ../src/plugins/abrt-retrace-client.c:1233
 msgid "password of your task on server"
 msgstr "சேவையகத்தில் உங்கள் பணியின் கடவுச்சொல்"
 
-#: ../src/plugins/abrt-retrace-client.c:1172
+#: ../src/plugins/abrt-retrace-client.c:1237
 msgid ""
 "abrt-retrace-client <operation> [options]\n"
-"Operations: create/status/backtrace/log/batch"
-msgstr "abrt-retrace-client <operation> [விருப்பங்கள்]\nசெயல்பாடுகள்: create/status/backtrace/log/batch"
+"Operations: create/status/backtrace/log/batch/exploitable"
+msgstr ""
 
-#: ../src/plugins/abrt-retrace-client.c:1218
-#: ../src/plugins/abrt-retrace-client.c:1224
+#: ../src/plugins/abrt-retrace-client.c:1282
+#: ../src/plugins/abrt-retrace-client.c:1288
 msgid "Either problem directory or coredump is needed."
 msgstr "சிக்கல் அடைவு அல்லது கோர்டம்ப் தேவை."
 
-#: ../src/plugins/abrt-retrace-client.c:1230
-#: ../src/plugins/abrt-retrace-client.c:1238
-#: ../src/plugins/abrt-retrace-client.c:1246
+#: ../src/plugins/abrt-retrace-client.c:1294
+#: ../src/plugins/abrt-retrace-client.c:1302
+#: ../src/plugins/abrt-retrace-client.c:1310
+#: ../src/plugins/abrt-retrace-client.c:1318
 msgid "Task id is needed."
 msgstr "பணி குறியீடு தேவை."
 
-#: ../src/plugins/abrt-retrace-client.c:1232
-#: ../src/plugins/abrt-retrace-client.c:1240
-#: ../src/plugins/abrt-retrace-client.c:1248
+#: ../src/plugins/abrt-retrace-client.c:1296
+#: ../src/plugins/abrt-retrace-client.c:1304
+#: ../src/plugins/abrt-retrace-client.c:1312
+#: ../src/plugins/abrt-retrace-client.c:1320
 msgid "Task password is needed."
 msgstr "பணி கடவுச்சொல் தேவை."
 
-#: ../src/plugins/abrt-retrace-client.c:1252
+#: ../src/plugins/abrt-retrace-client.c:1324
 #, c-format
 msgid "Unknown operation: %s."
 msgstr "தெரியாத செயல்பாடு: %s."
@@ -1181,135 +1175,135 @@ msgid ""
 "executable's name. The result is saved as 'xsession_errors' element."
 msgstr "~/.xsession-errors கோப்பை ஸ்கேன் செய்து செயல்படுத்தக்கூடியவற்றின் பெயரைக் கொண்டுள்ள வரிகளைச் சேமிக்கிறது. முடிவானது 'xsession_errors' கூறாக சேமிக்கப்படுகிறது."
 
-#: ../src/plugins/https-utils.c:47
+#: ../src/plugins/https-utils.c:62
 msgid "An error occurred on the server side."
 msgstr "சேவையகத் தரப்பில் ஒரு பிழை ஏற்பட்டது."
 
-#: ../src/plugins/https-utils.c:50
+#: ../src/plugins/https-utils.c:65
 #, c-format
 msgid "A server-side error occurred on '%s'"
 msgstr "'%s' இல் சேவையகத் தரப்பிலான ஒரு பிழை ஏற்பட்டது"
 
-#: ../src/plugins/https-utils.c:59
+#: ../src/plugins/https-utils.c:74
 msgid "An error occurred while connecting to the server"
 msgstr "சேவையகத்திற்கு இணைக்கும்போது ஒரு பிழை ஏற்பட்டது"
 
-#: ../src/plugins/https-utils.c:62
+#: ../src/plugins/https-utils.c:77
 #, c-format
 msgid "An error occurred while connecting to '%s'"
 msgstr "'%s' க்கு இணைக்கும் போது ஒரு பிழை ஏற்பட்டது"
 
-#: ../src/plugins/https-utils.c:82
+#: ../src/plugins/https-utils.c:97
 #, c-format
 msgid "Issuer certificate is invalid: '%s'."
 msgstr "வழங்குநரின் சான்றிதழ் செல்லாதது: '%s'."
 
-#: ../src/plugins/https-utils.c:85
+#: ../src/plugins/https-utils.c:100
 #, c-format
 msgid "Certificate is signed by an untrusted issuer: '%s'."
 msgstr "நம்பகமில்லாத வழங்குநரால் சான்றிதழ் கையொப்பமிடப்பட்டது: '%s'."
 
-#: ../src/plugins/https-utils.c:88
+#: ../src/plugins/https-utils.c:103
 #, c-format
 msgid "Certificate subject name '%s' does not match target host name '%s'."
 msgstr "சான்றிதழ் பொருள் பெயர் '%s' ஆனது இலக்கு புரவல பெயர் '%s' க்கு பொருந்தவில்லை."
 
-#: ../src/plugins/https-utils.c:92
+#: ../src/plugins/https-utils.c:107
 msgid "Remote certificate has expired."
 msgstr "தொலை சான்றிதழ் காலாவதியானது"
 
-#: ../src/plugins/https-utils.c:95
+#: ../src/plugins/https-utils.c:110
 #, c-format
 msgid "Certificate issuer is not recognized: '%s'."
 msgstr "சான்றிதழ் வழங்குபவர் கண்டறியப்படவில்லை: '%s'."
 
-#: ../src/plugins/https-utils.c:98
+#: ../src/plugins/https-utils.c:113
 #, c-format
 msgid "Bad certificate received. Subject '%s', issuer '%s'."
 msgstr "மோசமான சான்றிதழ் பெறப்பட்டது. பொருள் '%s', வழங்குநர் '%s'."
 
-#: ../src/plugins/https-utils.c:134
+#: ../src/plugins/https-utils.c:149
 #, c-format
 msgid "Failed to get slot 'PEM Token #0': %d."
 msgstr "'PEM Token #0': %d ஐ வரிசையை பெற முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:167
+#: ../src/plugins/https-utils.c:182
 #, c-format
 msgid "Can't resolve host name '%s'. NSS error %d."
 msgstr "வழங்கி பெயர் '%s' ஐத் தீர்க்க முடியவில்லை. NSS பிழை %d."
 
 #. Host exists, but has neither IPv4 nor IPv6??
-#: ../src/plugins/https-utils.c:188
+#: ../src/plugins/https-utils.c:203
 #, c-format
 msgid "Can't resolve host name '%s'."
 msgstr "வழங்கி பெயர் '%s' ஐத் தீர்க்க முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:195
+#: ../src/plugins/https-utils.c:210
 msgid "Failed to set socket blocking mode."
 msgstr "சாக்கெட் தடுக்கும் முறைமையை அமைக்க முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:198
+#: ../src/plugins/https-utils.c:213
 msgid "Failed to wrap TCP socket by SSL."
 msgstr "TCP சாக்கெட்டை SSL ஆல் மூட முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:200 ../src/plugins/https-utils.c:202
-#: ../src/plugins/https-utils.c:204 ../src/plugins/https-utils.c:206
+#: ../src/plugins/https-utils.c:215 ../src/plugins/https-utils.c:217
+#: ../src/plugins/https-utils.c:219 ../src/plugins/https-utils.c:221
 msgid "Failed to enable client handshake to SSL socket."
 msgstr "SSL சாக்கெட்டிற்கு கிளையன்ட் ஹேன்ட்ஷேக்கை செயல்படுத்த முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:208
+#: ../src/plugins/https-utils.c:223
 msgid "Failed to set URL to SSL socket."
 msgstr "SSL சாக்கெட்டுக்கு URL ஐ அமைக்க முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:217
+#: ../src/plugins/https-utils.c:232
 #, c-format
 msgid "Can't connect to '%s'"
 msgstr "'%s' க்கு இணைக்க முடியவில்லை"
 
-#: ../src/plugins/https-utils.c:225
+#: ../src/plugins/https-utils.c:240
 msgid "Failed to set certificate hook."
 msgstr "சான்றிதழ் ஹுக்கை அமைக்க முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:231
+#: ../src/plugins/https-utils.c:246
 msgid "Failed to set handshake callback."
 msgstr "ஹேன்ட்ஷேக் பின்னழைப்பை அமைக்க முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:235
+#: ../src/plugins/https-utils.c:250
 msgid "Failed to reset handshake."
 msgstr "ஹேன்ட்ஹ்சேக்கை மீட்டமைக்க முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:242
+#: ../src/plugins/https-utils.c:257
 #, c-format
 msgid "Failed to complete SSL handshake: NSS error %d."
 msgstr "SSL ஹேன்ட்ஷேக்கை முடிக்க முடியவில்லை: NSS பிழை %d."
 
-#: ../src/plugins/https-utils.c:251
+#: ../src/plugins/https-utils.c:266
 msgid "Failed to close SSL socket."
 msgstr "SSL சாக்கெட்டை மூட முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:316
+#: ../src/plugins/https-utils.c:331
 #, c-format
 msgid "Malformed HTTP response header: '%s'"
 msgstr "தவறாக வடிவமைக்கப்பட்ட HTTP பதில் தலைப்பு: '%s'"
 
-#: ../src/plugins/https-utils.c:353
+#: ../src/plugins/https-utils.c:368
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
 msgstr "தரவை பெறுதலில் தோல்வி: NSS பிழை %d."
 
-#: ../src/plugins/https-utils.c:382
+#: ../src/plugins/https-utils.c:397
 msgid "Malformed chunked response."
 msgstr "தவறான துண்டு பதில்."
 
-#: ../src/plugins/https-utils.c:407
+#: ../src/plugins/https-utils.c:422
 msgid "Failed to initialize NSS."
 msgstr "NSS க்கு துவக்க முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:413
+#: ../src/plugins/https-utils.c:428
 msgid "Failed to initialize security module."
 msgstr "பாதுகாப்பு மாதிரியை துவக்க முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:428
+#: ../src/plugins/https-utils.c:443
 msgid "Failed to shutdown NSS."
 msgstr "NSS ஐ பணிநிறுத்த முடியவில்லை."
 
@@ -1352,19 +1346,24 @@ msgid ""
 "running: %s. Do you want to continue with reporting the bug?"
 msgstr "உங்கள் சிக்கலைத் தீர்க்க சாத்தியமுள்ள ஒரு புதுப்பிப்பு உள்ளது. இதை இயக்கி அதை நீங்கள் நிறுவலாம்: %s. வழுவைப் புகாரளிக்கும் செயலைத் தொடர வேண்டுமா?"
 
-#: ../src/hooks/abrt-merge-uefioops.c:85
+#: ../src/hooks/abrt-merge-pstoreoops.c:85
 msgid ""
 "& [-v] [-od] FILE...\n"
 "\n"
 "Scans files for split oops message. Can print and/or delete them."
-msgstr ""
+msgstr "& [-v] [-od] FILE...\n\nsplit oops செய்தி உள்ளதா என கோப்புகளை வருடிப் பார்க்கும். அவற்றை அச்சிட மற்றும்/அல்லது அழிக்க முடியும்."
 
-#: ../src/hooks/abrt-merge-uefioops.c:97
+#: ../src/hooks/abrt-merge-pstoreoops.c:97
 msgid "Print found oopses"
-msgstr ""
+msgstr "கண்டறியப்பட்ட oopses ஐ அச்சிடு"
 
-#: ../src/hooks/abrt-merge-uefioops.c:98
+#: ../src/hooks/abrt-merge-pstoreoops.c:98
 msgid "Delete files with found oopses"
+msgstr "கண்டறியப்பட்ட oopses கொண்டுள்ள கோப்புகளை அழி"
+
+#: ../src/cli/abrt-cli-core.c:91
+#, c-format
+msgid "'%s' identifies more than one problem directory"
 msgstr ""
 
 #: ../src/cli/abrt-cli.c:142
@@ -1395,47 +1394,56 @@ msgstr "சமீபத்திய செயலிழப்புகளின�
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "'abrt-cli COMMAND --help' க்கான மேலும் தகவலுக்கு பார்க்கவும்"
 
-#: ../src/cli/list.c:95
+#: ../src/cli/list.c:127
 msgid "& list [options] [DIR]..."
 msgstr "& list [options] [DIR]..."
 
-#: ../src/cli/list.c:105
-msgid "List even reported problems"
-msgstr "அறிக்கையிட்ட சிக்கல்களையும் பட்டியலிடு"
+#: ../src/cli/list.c:136
+msgid "List reported problems too"
+msgstr ""
 
 #. deprecate -d option with --pretty=full
-#: ../src/cli/list.c:107 ../src/cli/list.c:144
+#: ../src/cli/list.c:138 ../src/cli/list.c:175
 msgid "Show detailed report"
 msgstr "விவரமான அறிக்கையை காட்டவும்"
 
-#: ../src/cli/list.c:108
+#: ../src/cli/list.c:139
 msgid "List only the problems more recent than specified timestamp"
-msgstr ""
+msgstr "குறிப்பிட்ட நேரமுத்திரைக்கும் பிறகான சிக்கல்களை மட்டும் பட்டியலிடு"
 
-#: ../src/cli/list.c:109
+#: ../src/cli/list.c:140
 msgid "List only the problems older than specified timestamp"
-msgstr ""
+msgstr "குறிப்பிட்ட நேரமுத்திரைக்கும் முந்தைய சிக்கல்களை மட்டும் பட்டியலிடு"
 
-#: ../src/cli/list.c:136
+#: ../src/cli/list.c:167
 msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
+
+#: ../src/cli/list.c:176
+msgid "Text larger than this will be shown abridged"
+msgstr ""
+
+#: ../src/cli/list.c:196
+#, c-format
+msgid "No such problem directory '%s'"
+msgstr ""
 
 #: ../src/cli/status.c:70
 msgid "& status [DIR]..."
 msgstr "& நிலை [DIR]..."
 
-#: ../src/cli/status.c:79
+#: ../src/cli/status.c:78
 msgid "Print only the problem count without any message"
 msgstr "எந்த செய்தியும் இன்றி சிக்கல் எண்ணிக்கையை மட்டும் அச்சிடு"
 
-#: ../src/cli/status.c:80
+#: ../src/cli/status.c:79
 msgid "Print only the problems more recent than specified timestamp"
 msgstr "குறிப்பிடப்பட்ட நேர முத்திரைக்கு சமீபமான சிக்கல்களை மட்டும் அச்சிடு"
 
-#: ../src/cli/status.c:105
+#: ../src/cli/status.c:104
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
-msgstr ""
+msgstr "ABRT %u சிக்கல்களைக் கண்டறிந்துள்ளது. மேலும் தகவலுக்கு இந்தக் கட்டளையை இயக்கவும்: abrt-cli list%s\n"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
