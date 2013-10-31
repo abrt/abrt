@@ -785,6 +785,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files addon-python
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python.conf
+%{_mandir}/man5/abrt-python.conf.5.gz
 # TODO? Do we need %config(noreplace) in the below line too?
 %config(noreplace) %{_sysconfdir}/libreport/events.d/python_event.conf
 %{_mandir}/man5/python_event.conf.5.gz
