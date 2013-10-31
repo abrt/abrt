@@ -591,7 +591,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/abrt-xorg.conf.5.gz
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys.conf
 %config(noreplace) %{_sysconfdir}/libreport/events.d/abrt_event.conf
+%{_mandir}/man5/abrt_event.conf.5.gz
 %config(noreplace) %{_sysconfdir}/libreport/events.d/smart_event.conf
+%{_mandir}/man5/smart_event.conf.5.gz
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/%{var_base_dir}/%{name}
 %dir %attr(0700, abrt, abrt) %{_localstatedir}/spool/%{name}-upload
 # abrtd runs as root
@@ -680,8 +682,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-action-analyze-ccpp-local
 %{_sbindir}/abrt-install-ccpp-hook
 %config(noreplace) %{_sysconfdir}/libreport/events.d/ccpp_event.conf
+%{_mandir}/man5/ccpp_event.conf.5.gz
 %config(noreplace) %{_sysconfdir}/libreport/events.d/gconf_event.conf
+%{_mandir}/man5/gconf_event.conf.5.gz
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vimrc_event.conf
+%{_mandir}/man5/vimrc_event.conf.5.gz
 %{_datadir}/libreport/events/analyze_CCpp.xml
 %{_datadir}/libreport/events/analyze_LocalGDB.xml
 %{_datadir}/libreport/events/collect_xsession_errors.xml
@@ -717,11 +722,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-retrace-client
 %{_mandir}/man1/abrt-retrace-client.1.gz
 %config(noreplace) %{_sysconfdir}/libreport/events.d/ccpp_retrace_event.conf
+%{_mandir}/man5/ccpp_retrace_event.conf.5.gz
 %{_datadir}/libreport/events/analyze_RetraceServer.xml
 
 %files addon-kerneloops
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/koops_event.conf
+%{_mandir}/man5/koops_event.conf.5.gz
 %if %{with systemd}
 %{_unitdir}/abrt-oops.service
 %else
@@ -737,6 +744,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files addon-xorg
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/xorg_event.conf
+%{_mandir}/man5/xorg_event.conf.5.gz
 %if %{with systemd}
 %{_unitdir}/abrt-xorg.service
 %else
@@ -748,6 +756,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files addon-vmcore
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vmcore_event.conf
+%{_mandir}/man5/vmcore_event.conf.5.gz
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-harvest-vmcore.conf
 %{_datadir}/libreport/events/analyze_VMcore.xml
 %if %{with systemd}
@@ -778,6 +787,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python.conf
 # TODO? Do we need %config(noreplace) in the below line too?
 %config(noreplace) %{_sysconfdir}/libreport/events.d/python_event.conf
+%{_mandir}/man5/python_event.conf.5.gz
 %{_bindir}/abrt-action-analyze-python
 %{_mandir}/man1/abrt-action-analyze-python.1*
 %{python_sitearch}/abrt*.py*
@@ -810,6 +820,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/dbus-1/system-services/org.freedesktop.problems.service
 %{_datadir}/polkit-1/actions/abrt_polkit.policy
 %config(noreplace) %{_sysconfdir}/libreport/events.d/dbus_event.conf
+%{_mandir}/man5/dbus_event.conf.5.gz
 %dir %{_defaultdocdir}/%{name}-dbus%{docdirversion}/
 %dir %{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/
 %{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/*.html
