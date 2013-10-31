@@ -1,0 +1,25 @@
+gpg_keys.conf(5)
+================
+
+NAME
+----
+gpg_keys.conf - Configuration file for abrt-action-save-package-data.
+
+DESCRIPTION
+-----------
+The configuration file consists of items in the format "Option = Value".
+Currently, only one item exists:
+
+GPGKeysDir = 'directory'::
+   The path of the directory which contains files with GPG keys of known
+   RPM repositories. These keys are used to verify package signatures.
+   Example: /etc/pki/rpm-gpg
+
+SEE ALSO
+--------
+abrt-action-save-package-data(1)
+abrt.conf(5)
+
+AUTHORS
+-------
+* ABRT team
