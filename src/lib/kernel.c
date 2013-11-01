@@ -29,6 +29,11 @@ struct line_info {
     char level;
 };
 
+/* Used to be 100, but some MCE oopses are short:
+ * "CPU 0: Machine Check Exception: 0000000000000007"
+ */
+#define SANE_MIN_OOPS_LEN 30
+
 static void record_oops(GList **oops_list, struct line_info* lines_info, int oopsstart, int oopsend)
 {
     int q;
@@ -40,7 +45,7 @@ static void record_oops(GList **oops_list, struct line_info* lines_info, int oop
         len += strlen(lines_info[q].ptr) + 1;
 
     /* too short oopses are invalid */
-    if (len > 100)
+    if (len > SANE_MIN_OOPS_LEN)
     {
         char *oops = (char*)xzalloc(len);
         char *dst = oops;
@@ -55,7 +60,7 @@ static void record_oops(GList **oops_list, struct line_info* lines_info, int oop
                 dst = stpcpy(dst, "\n");
             }
         }
-        if ((dst - oops) > 100)
+        if ((dst - oops) > SANE_MIN_OOPS_LEN)
         {
             *oops_list = g_list_append(
                         *oops_list,
@@ -109,7 +114,7 @@ static const char *const s_koops_suspicious_strings[] = {
      * arch/x86/kernel/cpu/mcheck/mce.c:	pr_emerg(HW_ERR "CPU %d: Machine Check Exception: %Lx Bank %d: %016Lx\n",
      * drivers/edac/sb_edac.c:			printk("CPU %d: Machine Check Exception: %Lx Bank %d: %016Lx\n",
      */
-    "Machine Check Exception",
+    "Machine Check Exception:",
 
     /* X86 TRAPs */
     "divide error:",
@@ -374,20 +379,32 @@ next_line:
             }
             if (!inbacktrace && i - oopsstart > 40)
             {
+                /* Used to drop oopses w/o backtraces, but some of them
+                 * (MCEs, for example) don't have backtrace yet we still want to file them.
+                 */
+                log_debug("One-line oops at line %d: '%s'", oopsstart, lines_info[oopsstart].ptr);
+                record_oops(oops_list, lines_info, oopsstart, oopsstart);
                 /*inbacktrace = 0; - already is */
                 oopsstart = -1;
-                log_debug("Dropped oops, too long");
                 continue;
             }
         }
     } /* while (i < lines_info_size) */
 
     /* process last oops if we have one */
-    if (oopsstart >= 0 && inbacktrace)
+    if (oopsstart >= 0)
     {
-        int oopsend = i-1;
-        log_debug("End of oops at line %d (end of file): '%s'", oopsend, lines_info[oopsend].ptr);
-        record_oops(oops_list, lines_info, oopsstart, oopsend);
+        if (inbacktrace)
+        {
+            int oopsend = i-1;
+            log_debug("End of oops at line %d (end of file): '%s'", oopsend, lines_info[oopsend].ptr);
+            record_oops(oops_list, lines_info, oopsstart, oopsend);
+        }
+        else
+        {
+            log_debug("One-line oops at line %d: '%s'", oopsstart, lines_info[oopsstart].ptr);
+            record_oops(oops_list, lines_info, oopsstart, oopsstart);
+        }
     }
 
     free(lines_info);

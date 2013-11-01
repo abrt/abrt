@@ -1,10 +1,13 @@
+abrt-dump-oops: Found oopses: 1
+
+Version: 3.8.9-200.fc18.x86_64
 WARNING: at kernel/watchdog.c:245 watchdog_overflow_callback+0x9c/0xd0()
 Hardware name: Bochs
 Watchdog detected hard LOCKUP on cpu 0
 Modules linked in: tcp_lp fuse ebtable_nat xt_CHECKSUM bridge stp llc nf_conntrack_netbios_ns nf_conntrack_broadcast ipt_MASQUERADE ip6table_nat nf_nat_ipv6 ip6table_mangle ip6t_REJECT nf_conntrack_ipv6 nf_defrag_ipv6 iptable_nat nf_nat_ipv4 nf_nat iptable_mangle nf_conntrack_ipv4 nf_defrag_ipv4 xt_conntrack bnep nf_conntrack bluetooth rfkill ebtable_filter ebtables ip6table_filter ip6_tables joydev snd_intel8x0 snd_ac97_codec crc32_pclmul ac97_bus crc32c_intel snd_seq snd_seq_device ghash_clmulni_intel snd_pcm snd_page_alloc snd_timer snd microcode virtio_balloon 8139too i2c_piix4 soundcore 8139cp mii binfmt_misc qxl drm_kms_helper ttm drm i2c_core uinput
 Pid: 0, comm: swapper/0 Not tainted 3.8.9-200.fc18.x86_64 #1
 Call Trace:
-  [<ffffffff810eb800>] ? watchdog_overflow_callback+0x60/0xd0
+  <NMI>  [<ffffffff810eb800>] ? watchdog_overflow_callback+0x60/0xd0
   [<ffffffff8105cd86>] warn_slowpath_common+0x66/0x80
   [<ffffffff8105cdec>] warn_slowpath_fmt+0x4c/0x50
   [<ffffffff810eb7a0>] ? watchdog_enable+0x1e0/0x1e0
@@ -20,7 +23,7 @@ Call Trace:
   [<ffffffff81093e44>] ? irqtime_account_process_tick.isra.2+0x94/0x3c0
   [<ffffffff81093e44>] ? irqtime_account_process_tick.isra.2+0x94/0x3c0
   [<ffffffff81093e44>] ? irqtime_account_process_tick.isra.2+0x94/0x3c0
-  [<ffffffff810944f0>] account_idle_ticks+0x90/0xa0
+  <<EOE>>  [<ffffffff810944f0>] account_idle_ticks+0x90/0xa0
   [<ffffffff810b6ae5>] tick_nohz_idle_exit+0x165/0x1a0
   [<ffffffff8101c06b>] cpu_idle+0x11b/0x140
   [<ffffffff81629902>] rest_init+0x72/0x80
