@@ -715,8 +715,8 @@ int main(int argc, char** argv)
                 dd_save_text(dd, FILENAME_ROOTDIR, rootdir);
         }
 
-        char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)",
-                                 executable, signal_str, signame ? signame : signal_str);
+        char *reason = xasprintf("%s killed by SIG%s",
+                                 last_slash, signame ? signame : signal_str);
         dd_save_text(dd, FILENAME_REASON, reason);
         free(reason);
 
