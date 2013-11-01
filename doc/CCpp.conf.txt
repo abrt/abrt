@@ -1,0 +1,31 @@
+CCpp.conf(5)
+============
+
+NAME
+----
+CCpp.conf - Configuration file for ABRT's core dump crash hook
+
+DESCRIPTION
+-----------
+The configuration file consists of items in the format "Option = Value".
+Ithe following items are recognized:
+
+MakeCompatCore = 'yes' / 'no' ...::
+   If you also want to dump file named "core"
+   in crashed process' current dir, set to "yes".
+
+SaveBinaryImage = 'yes' / 'no' ...::
+   Do you want a copy of crashed binary be saved?
+   Useful, for example, when _deleted binary_ segfaults.
+   Default is 'no'.
+
+VerboseLog = NUM::
+   Used to make the hook more verbose
+
+SEE ALSO
+--------
+abrt.conf(5)
+
+AUTHORS
+-------
+* ABRT team

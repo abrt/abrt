@@ -42,15 +42,31 @@ MAN5_TXT =
 MAN5_TXT += abrt.conf.txt
 MAN5_TXT += abrt-action-save-package-data.conf.txt
 MAN5_TXT += abrt-xorg.conf.txt
+MAN5_TXT += abrt-python.conf.txt
+MAN5_TXT += CCpp.conf.txt
+MAN5_TXT += gpg_keys.conf.txt
+MAN5_TXT += abrt-harvest-vmcore.conf.txt
+
+MAN5_PREFORMATTED =
+MAN5_PREFORMATTED += abrt_event.conf.5
+MAN5_PREFORMATTED += ccpp_event.conf.5
+MAN5_PREFORMATTED += ccpp_retrace_event.conf.5
+MAN5_PREFORMATTED += dbus_event.conf.5
+MAN5_PREFORMATTED += gconf_event.conf.5
+MAN5_PREFORMATTED += koops_event.conf.5
+MAN5_PREFORMATTED += python_event.conf.5
+MAN5_PREFORMATTED += smart_event.conf.5
+MAN5_PREFORMATTED += vimrc_event.conf.5
+MAN5_PREFORMATTED += vmcore_event.conf.5
+MAN5_PREFORMATTED += xorg_event.conf.5
 
 MAN8_TXT =
 MAN8_TXT += abrtd.txt abrt-dbus.txt
 
 # Manual pages are generated from .txt via Docbook
 man1_MANS = ${MAN1_TXT:%.txt=%.1}
-man5_MANS = ${MAN5_TXT:%.txt=%.5}
+man5_MANS = ${MAN5_TXT:%.txt=%.5} ${MAN5_PREFORMATTED}
 man8_MANS = ${MAN8_TXT:%.txt=%.8}
-
 
 %.1 %.5 %.8: %.xml
 	$(XMLTO_SILENT) xmlto man $< 2>&1 | sed '/Note/d'
@@ -60,6 +76,6 @@ man8_MANS = ${MAN8_TXT:%.txt=%.8}
                            --conf-file ../asciidoc.conf \
                            -aabrt_version=$(PACKAGE_VERSION) -o $@ $<
 
-EXTRA_DIST = $(MAN1_TXT) $(MAN5_TXT) $(MAN8_TXT)
+EXTRA_DIST = $(MAN1_TXT) $(MAN5_TXT) $(MAN8_TXT) $(MAN5_PREFORMATTED)
 
-CLEANFILES = $(man1_MANS) $(man5_MANS) $(man8_MANS)
+CLEANFILES = ${MAN1_TXT:%.txt=%.1} ${MAN5_TXT:%.txt=%.5} ${MAN8_TXT:%.txt=%.8}
