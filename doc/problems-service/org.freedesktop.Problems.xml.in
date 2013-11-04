@@ -302,18 +302,6 @@ for prblmid in problems.GetProblems():
             </method>
 
             <signal name='Crash'>
-                <tp:docstring>A new system problem has been detected.</tp:docstring>
-
-                <arg type='s' name='package' direction='out'>
-                    <tp:docstring>A name of package which crashed application belongs to.</tp:docstring>
-                </arg>
-
-                <arg type='s' name='problem_id' direction='out'>
-                    <tp:docstring>An identifier of the newly created problem.</tp:docstring>
-                </arg>
-            </signal>
-
-            <signal name='Crash'>
                 <tp:docstring>A new system problem has been detected. This is the second variant of the Crash signal with additional argument <emphasis>uid</emphasis></tp:docstring>
 
                 <arg type='s' name='package' direction='out'>
@@ -327,6 +315,15 @@ for prblmid in problems.GetProblems():
                 <arg type='s' name='uid' direction='out'>
                     <tp:docstring>UID of user who reported this problem.</tp:docstring>
                 </arg>
+
+                <arg type='s' name='uuid' direction='out'>
+                    <tp:docstring>UUID - a weak problem identifier usuful for local duplicates look up.</tp:docstring>
+                </arg>
+
+                <arg type='s' name='duphash' direction='out'>
+                    <tp:docstring>DUPHASH - a strong problem identifier usuful for global duplicates look up.</tp:docstring>
+                </arg>
+
             </signal>
 
         </interface>

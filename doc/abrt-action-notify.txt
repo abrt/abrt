@@ -1,0 +1,38 @@
+abrt-action-notify(1)
+===================
+
+NAME
+----
+abrt-action-notify - Announces a new occurrence of problem via all accessible channels
+
+SYNOPSIS
+--------
+'abrt-action-notify' [-h] [-d PROBLEM_DIR]
+
+DESCRIPTION
+-----------
+The current implementation emits a D-Bus signal on System bus in path
+/org/freedesktop/problems of org.freedesktop.problems interface for Crash
+member.
+
+Integration with ABRT events
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'abrt-action-notify' is used to notify new problems and consecutive occurrences
+of a single problem for all crash types.
+
+------------
+EVENT=notify package!=
+    abrt-action-notify
+------------
+
+OPTIONS
+-------
+-d, --problem-dir PROBLEM_DIR::
+   Problem directory [Default: current directory]
+
+-h, --help::
+   Show help message
+
+AUTHORS
+-------
+* ABRT team

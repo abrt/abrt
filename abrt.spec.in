@@ -344,6 +344,7 @@ Group: Applications/System
 Requires: %{name} = %{version}-%{release}
 BuildRequires: polkit-devel
 Requires: abrt-libs = %{version}-%{release}
+Requires: python-dbus
 
 %description dbus
 ABRT DBus service which provides org.freedesktop.problems API on dbus and
@@ -818,6 +819,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files dbus
 %defattr(-,root,root,-)
 %{_sbindir}/abrt-dbus
+%{_bindir}/abrt-action-notify
+%{_mandir}/man1/abrt-action-notify.1.gz
 %{_mandir}/man8/abrt-dbus.8.gz
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
 %{_datadir}/dbus-1/interfaces/org.freedesktop.Problems.xml

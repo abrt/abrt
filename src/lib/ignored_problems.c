@@ -121,25 +121,9 @@ static bool ignored_problems_file_contains(ignored_problems_t *set,
     return found;
 }
 
-
-void ignored_problems_add(ignored_problems_t *set, const char *problem_id)
+static void ignored_problems_add_row(ignored_problems_t *set, const char *problem_id,
+        const char *uuid, const char *duphash)
 {
-    struct dump_dir *dd = dd_opendir(problem_id, IGN_DD_OPEN_FLAGS);
-    if (!dd)
-    {
-        /* We do not consider this as an error because the directory can be
-         * deleted by other programs. This code expects that dd_opendir()
-         * already emitted good explanatory message. This message
-         * explains what the previous failure causes.
-         */
-        log_notice("Can't add problem '%s' to ignored problems:"
-                " can't open the problem", problem_id);
-        return;
-    }
-    char *uuid = dd_load_text_ext(dd, FILENAME_UUID, IGN_DD_LOAD_TEXT_FLAGS);
-    char *duphash = dd_load_text_ext(dd, FILENAME_DUPHASH, IGN_DD_LOAD_TEXT_FLAGS);
-    dd_close(dd);
-
     log_notice("Going to add problem '%s' to ignored problems", problem_id);
 
     FILE *fp;
@@ -170,35 +154,45 @@ void ignored_problems_add(ignored_problems_t *set, const char *problem_id)
 
     if (fp)
         fclose(fp);
-
-    free(duphash);
-    free(uuid);
 }
 
-void ignored_problems_remove(ignored_problems_t *set, const char *problem_id)
+void ignored_problems_add_problem_data(ignored_problems_t *set, problem_data_t *pd)
 {
-    char *uuid = NULL;
-    char *duphash = NULL;
+    ignored_problems_add_row(set,
+            problem_data_get_content_or_NULL(pd, CD_DUMPDIR),
+            problem_data_get_content_or_NULL(pd, FILENAME_UUID),
+            problem_data_get_content_or_NULL(pd, FILENAME_DUPHASH)
+            );
+}
+
+void ignored_problems_add(ignored_problems_t *set, const char *problem_id)
+{
     struct dump_dir *dd = dd_opendir(problem_id, IGN_DD_OPEN_FLAGS);
-    if (dd)
-    {
-        uuid = dd_load_text_ext(dd, FILENAME_UUID, IGN_DD_LOAD_TEXT_FLAGS);
-        duphash = dd_load_text_ext(dd, FILENAME_DUPHASH, IGN_DD_LOAD_TEXT_FLAGS);
-        dd_close(dd);
-    }
-    else
+    if (!dd)
     {
         /* We do not consider this as an error because the directory can be
          * deleted by other programs. This code expects that dd_opendir()
          * already emitted good explanatory message. This message
          * explains what the previous failure causes.
          */
-        VERB1 error_msg("Can't get UUID/DUPHASH from"
-                " '%s' to remove it from the ignored problems:"
+        VERB1 log("Can't add problem '%s' to ignored problems:"
                 " can't open the problem", problem_id);
+        return;
     }
+    char *uuid = dd_load_text_ext(dd, FILENAME_UUID, IGN_DD_LOAD_TEXT_FLAGS);
+    char *duphash = dd_load_text_ext(dd, FILENAME_DUPHASH, IGN_DD_LOAD_TEXT_FLAGS);
+    dd_close(dd);
 
-    log_notice("Going to remove problem '%s' from ignored problems", problem_id);
+    ignored_problems_add_row(set, problem_id, uuid, duphash);
+
+    free(duphash);
+    free(uuid);
+}
+
+void ignored_problems_remove_row(ignored_problems_t *set, const char *problem_id,
+        const char *uuid, const char *duphash)
+{
+    VERB1 log("Going to remove problem '%s' from ignored problems", problem_id);
 
     FILE *orig_fp;
     if (!ignored_problems_file_contains(set, problem_id, uuid, duphash, &orig_fp, "r"))
@@ -219,7 +213,7 @@ void ignored_problems_remove(ignored_problems_t *set, const char *problem_id)
             log_notice("Can't remove problem '%s' from ignored problems:"
                       " can't open the list", problem_id);
         }
-        goto ret_free_hashes;
+        return;
     }
 
     /* orig_fp must be valid here because if ignored_problems_file_contains()
@@ -276,9 +270,54 @@ void ignored_problems_remove(ignored_problems_t *set, const char *problem_id)
         close(new_tempfile_fd);
     free(new_tempfile_name);
 
- ret_free_hashes:
+}
+
+void ignored_problems_remove_problem_data(ignored_problems_t *set, problem_data_t *pd)
+{
+    ignored_problems_remove_row(set,
+            problem_data_get_content_or_NULL(pd, CD_DUMPDIR),
+            problem_data_get_content_or_NULL(pd, FILENAME_UUID),
+            problem_data_get_content_or_NULL(pd, FILENAME_DUPHASH)
+            );
+}
+
+void ignored_problems_remove(ignored_problems_t *set, const char *problem_id)
+{
+    char *uuid = NULL;
+    char *duphash = NULL;
+    struct dump_dir *dd = dd_opendir(problem_id, IGN_DD_OPEN_FLAGS);
+    if (dd)
+    {
+        uuid = dd_load_text_ext(dd, FILENAME_UUID, IGN_DD_LOAD_TEXT_FLAGS);
+        duphash = dd_load_text_ext(dd, FILENAME_DUPHASH, IGN_DD_LOAD_TEXT_FLAGS);
+        dd_close(dd);
+    }
+    else
+    {
+        /* We do not consider this as an error because the directory can be
+         * deleted by other programs. This code expects that dd_opendir()
+         * already emitted good explanatory message. This message
+         * explains what the previous failure causes.
+         */
+        VERB1 error_msg("Can't get UUID/DUPHASH from"
+                " '%s' to remove it from the ignored problems:"
+                " can't open the problem", problem_id);
+    }
+
+    ignored_problems_remove_row(set, problem_id, uuid, duphash);
+
     free(duphash);
     free(uuid);
+}
+
+bool ignored_problems_contains_problem_data(ignored_problems_t *set, problem_data_t *pd)
+{
+    return ignored_problems_file_contains(set,
+            problem_data_get_content_or_NULL(pd, CD_DUMPDIR),
+            problem_data_get_content_or_NULL(pd, FILENAME_UUID),
+            problem_data_get_content_or_NULL(pd, FILENAME_DUPHASH),
+            /* (FILE **) */NULL, "r"
+            );
 }
 
 bool ignored_problems_contains(ignored_problems_t *set, const char *problem_id)
