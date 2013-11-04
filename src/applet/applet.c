@@ -264,7 +264,7 @@ static void on_nm_state_changed(GDBusConnection *connection, const gchar *sender
 }
 
 typedef struct problem_info {
-    char *problem_dir;
+    problem_data_t *problem_data;
     bool foreign;
     char *message;
     bool known;
@@ -276,9 +276,21 @@ static void push_to_deferred_queue(problem_info_t *pi)
     g_deferred_crash_queue = g_list_append(g_deferred_crash_queue, pi);
 }
 
-static problem_info_t *problem_info_new(void)
+static const char *problem_info_get_dir(problem_info_t *pi)
+{
+    return problem_data_get_content_or_NULL(pi->problem_data, CD_DUMPDIR);
+}
+
+static void problem_info_set_dir(problem_info_t *pi, const char *dir)
+{
+    problem_data_add_text_noteditable(pi->problem_data, CD_DUMPDIR, dir);
+}
+
+static problem_info_t *problem_info_new(const char *dir)
 {
     problem_info_t *pi = xzalloc(sizeof(*pi));
+    pi->problem_data = problem_data_new();
+    problem_info_set_dir(pi, dir);
     return pi;
 }
 
@@ -288,7 +300,7 @@ static void problem_info_free(problem_info_t *pi)
         return;
 
     free(pi->message);
-    free(pi->problem_dir);
+    problem_data_free(pi->problem_data);
     free(pi);
 }
 
@@ -570,11 +582,11 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
     hide_icon();
 
     problem_info_t *pi = (problem_info_t *)user_data;
-    if (pi->problem_dir)
+    if (problem_info_get_dir(pi))
     {
         if (strcmp(A_REPORT_REPORT, action) == 0)
         {
-            run_report_from_applet(pi->problem_dir);
+            run_report_from_applet(problem_info_get_dir(pi));
             problem_info_free(pi);
         }
         else
@@ -596,9 +608,9 @@ static void action_ignore(NotifyNotification *notification, gchar *action, gpoin
 {
     problem_info_t *pi = (problem_info_t *)user_data;
 
-    log_debug("Ignoring problem '%s'", pi->problem_dir);
+    log_debug("Ignoring problem '%s'", problem_info_get_dir(pi));
 
-    ignored_problems_add(g_ignore_set, pi->problem_dir);
+    ignored_problems_add_problem_data(g_ignore_set, pi->problem_data);
 
     GError *err = NULL;
     notify_notification_close(notification, &err);
@@ -616,7 +628,7 @@ static void action_known(NotifyNotification *notification, gchar *action, gpoint
     problem_info_t *pi = (problem_info_t *)user_data;
 
     if (strcmp(A_KNOWN_OPEN_GUI, action) == 0)
-        fork_exec_gui(pi->problem_dir);
+        fork_exec_gui(problem_info_get_dir(pi));
     else
         /* This should not happen; otherwise it's a bug */
         error_msg("%s:%d %s(): BUG Unknown action '%s'", __FILE__, __LINE__, __func__, action);
@@ -826,7 +838,7 @@ static void notify_problem_list(GList *problems, int flags)
 
     problem_info_t *last_problem = (problem_info_t *)last_item->data;
     free(g_last_notified_problem_id);
-    g_last_notified_problem_id = xstrdup(last_problem->problem_dir);
+    g_last_notified_problem_id = xstrdup(problem_info_get_dir(last_problem));
 
     if (!persistence_supported || flags & SHOW_ICON_ONLY)
     {
@@ -843,7 +855,7 @@ static void notify_problem_list(GList *problems, int flags)
     for (GList *iter = problems; iter; iter = g_list_next(iter))
     {
         problem_info_t *pi = iter->data;
-        if (ignored_problems_contains(g_ignore_set, pi->problem_dir))
+        if (ignored_problems_contains_problem_data(g_ignore_set, pi->problem_data))
         {   /* In case of shortened reporting, show the problem notification only once. */
             problem_info_free(pi);
             continue;
@@ -1016,7 +1028,7 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
             notify_problem(pi);
         }
         else
-            run_report_from_applet(pi->problem_dir);
+            run_report_from_applet(problem_info_get_dir(pi));
     }
     else
     {
@@ -1079,26 +1091,25 @@ static void run_event_async(problem_info_t *pi, const char *event_name, int flag
 {
     if (pi->foreign)
     {
-        int res = chown_dir_over_dbus(pi->problem_dir);
+        int res = chown_dir_over_dbus(problem_info_get_dir(pi));
         if (res != 0)
         {
-            error_msg(_("Can't take ownership of '%s'"), pi->problem_dir);
+            error_msg(_("Can't take ownership of '%s'"), problem_info_get_dir(pi));
             problem_info_free(pi);
             return;
         }
         pi->foreign = false;
     }
 
-    struct dump_dir *dd = open_directory_for_writing(pi->problem_dir, /* don't ask */ NULL);
+    struct dump_dir *dd = open_directory_for_writing(problem_info_get_dir(pi), /* don't ask */ NULL);
     if (!dd)
     {
-        error_msg(_("Can't open directory for writing '%s'"), pi->problem_dir);
+        error_msg(_("Can't open directory for writing '%s'"), problem_info_get_dir(pi));
         problem_info_free(pi);
         return;
     }
 
-    free(pi->problem_dir);
-    pi->problem_dir = xstrdup(dd->dd_dirname);
+    problem_info_set_dir(pi, dd->dd_dirname);
     dd_close(dd);
 
     export_event_configuration(event_name);
@@ -1107,7 +1118,7 @@ static void run_event_async(problem_info_t *pi, const char *event_name, int flag
     state->pi = pi;
     state->flags = flags;
 
-    state->child_pid = spawn_event_handler_child(state->pi->problem_dir, event_name, &state->child_stdout_fd);
+    state->child_pid = spawn_event_handler_child(problem_info_get_dir(state->pi), event_name, &state->child_stdout_fd);
 
     GIOChannel *channel_event_output = my_io_channel_unix_new(state->child_stdout_fd);
     g_io_add_watch(channel_event_output, G_IO_IN | G_IO_PRI | G_IO_HUP,
@@ -1153,38 +1164,32 @@ static void show_problem_notification(problem_info_t *pi, int flags)
 static void Crash(DBusMessage* signal)
 {
     log_debug("Crash recorded");
-    int r;
     DBusMessageIter in_iter;
     dbus_message_iter_init(signal, &in_iter);
 
+#define DBUS_ARG_VAR(varname, retval) \
+    const char* varname = NULL; \
+    if (load_charp(&in_iter, &varname) != retval) \
+    { \
+        error_msg("dbus signal %s: parameter '%s' type mismatch", __func__, #varname); \
+        return; \
+    } \
+
     /* 1st param: package */
-    const char* package_name = NULL;
-    r = load_charp(&in_iter, &package_name);
-
+    DBUS_ARG_VAR(package_name, ABRT_DBUS_MORE_FIELDS);
     /* 2nd param: dir */
-//dir parameter is not used for now, use is planned in the future
-    if (r != ABRT_DBUS_MORE_FIELDS)
-    {
-        error_msg("dbus signal %s: parameter type mismatch", __func__);
-        return;
-    }
-    const char* dir = NULL;
-    r = load_charp(&in_iter, &dir);
+    DBUS_ARG_VAR(dir, ABRT_DBUS_MORE_FIELDS);
+    /* 3rd param: uid_str */
+    DBUS_ARG_VAR(uid_str, ABRT_DBUS_MORE_FIELDS);
+    /* 4th param: uuid */
+    DBUS_ARG_VAR(uuid, ABRT_DBUS_MORE_FIELDS);
+    /* 5th param: duphash */
+    DBUS_ARG_VAR(duphash, ABRT_DBUS_LAST_FIELD);
 
-    /* Optional 3rd param: uid */
-    const char* uid_str = NULL;
-    if (r == ABRT_DBUS_MORE_FIELDS)
-    {
-        r = load_charp(&in_iter, &uid_str);
-    }
-    if (r != ABRT_DBUS_LAST_FIELD)
-    {
-        error_msg("dbus signal %s: parameter type mismatch", __func__);
-        return;
-    }
+#undef DBUS_ARG_VAR
 
     bool foreign_problem = false;
-    if (uid_str != NULL)
+    if (uid_str[0] != '\0')
     {
         char *end;
         errno = 0;
@@ -1228,8 +1233,12 @@ static void Crash(DBusMessage* signal)
         last_problem_dir = xstrdup(dir);
     }
 
-    problem_info_t *pi = problem_info_new();
-    pi->problem_dir = xstrdup(dir);
+
+    problem_info_t *pi = problem_info_new(dir);
+    if (uuid != NULL && uuid[0] != '\0')
+        problem_data_add_text_noteditable(pi->problem_data, FILENAME_UUID, uuid);
+    if (duphash != NULL && duphash[0] != '\0')
+        problem_data_add_text_noteditable(pi->problem_data, FILENAME_DUPHASH, duphash);
     pi->foreign = foreign_problem;
     pi->message = build_message(package_name);
     show_problem_notification(pi, flags);
@@ -1618,13 +1627,31 @@ int main(int argc, char** argv)
                                 DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
         if (reported_to == NULL)
         {
-            problem_info_t *pi = problem_info_new();
-            pi->problem_dir = xstrdup((char *)new_dirs->data);
+            problem_info_t *pi = problem_info_new(new_dirs->data);
 
-            char *component = dd_load_text_ext(dd, FILENAME_COMPONENT,
-                                DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-            pi->message = build_message(component);
-            free(component);
+            {
+                char *uuid = dd_load_text_ext(dd, FILENAME_UUID,
+                                    DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+                if (uuid)
+                    problem_data_add_text_noteditable(pi->problem_data, FILENAME_UUID, uuid);
+                free(uuid);
+            }
+
+            {
+                char *duphash = dd_load_text_ext(dd, FILENAME_DUPHASH,
+                                    DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+                if (duphash)
+                    problem_data_add_text_noteditable(pi->problem_data, FILENAME_DUPHASH, duphash);
+                free(duphash);
+            }
+
+
+            {
+                char *component = dd_load_text_ext(dd, FILENAME_COMPONENT,
+                                    DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
+                pi->message = build_message(component);
+                free(component);
+            }
 
             /* Can't be foreign because if the problem is foreign then the
              * dd_opendir() call failed few lines above and the problem is ignored.

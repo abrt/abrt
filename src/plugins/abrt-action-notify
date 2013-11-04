@@ -1,0 +1,164 @@
+#!/usr/bin/python
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+import os
+import sys
+from argparse import ArgumentParser
+
+import dbus
+import dbus.lowlevel
+
+import report
+from reportclient import (RETURN_OK,
+                          RETURN_FAILURE)
+
+CD_DUMPDIR = "Directory"
+FILENAME_PACKAGE = "package"
+FILENAME_UID = "uid"
+FILENAME_UUID = "uuid"
+FILENAME_DUPHASH = "duphash"
+
+def emit_crash_dbus_signal(problem_data):
+    """Emits a Crash signal on D-Bus Problem bus
+
+    Emits a signal with 5 members:
+        package -- value of 'package' element in problem_data
+        problem_id -- value of 'Directory' element in problem_data
+        uid -- empty string if 'uid' element is not present in problem_data
+        uuid -- empty string if 'uuid' element is not present in problem_data
+        duphash -- empty string if 'duphash' element is not present in problem_data
+
+    Keyword arguments:
+    problem_data -- problem data of notified problems
+
+    Returns None as it raises an exception on error
+
+    Raises:
+    RuntimeError -- for all D-Bus related errors
+    KeyError -- if any of required elements is missing
+    """
+
+    try:
+        bus = dbus.SystemBus()
+        msg = dbus.lowlevel.SignalMessage("/org/freedesktop/problems",
+                "org.freedesktop.problems", "Crash")
+
+        # List of tuples where the first member is element name and the second
+        # member is a Boolean flag which is True if the element is required
+        arguments = ((FILENAME_PACKAGE, True), (CD_DUMPDIR, True),
+                (FILENAME_UID, False), (FILENAME_UUID, False),
+                (FILENAME_PACKAGE, False))
+
+        for elem in arguments:
+            itm = problem_data.get(elem[0])
+
+            if itm is None:
+                if elem[1]:
+                    raise KeyError(elem[0])
+
+                msg.append("", signature="s")
+            else:
+                msg.append(itm[0], signature="s")
+
+
+        bus.send_message(msg)
+    except dbus.exceptions.DBusException as ex:
+        raise RuntimeError("Failed to emit D-Bus Crash signal: {0}"
+                .format(ex.message))
+    finally:
+        if bus is not None:
+            bus.close()
+
+def build_notification_problem_data(problem_dir):
+    """Loads all necessary problem elements
+
+    Problem dump directory must contain 'package' element.
+
+    Keyword arguments:
+    problem_dir -- an absolute file system path problem directory
+
+    Returns an instance of report.problem_data
+
+    Raises:
+    ValueError -- if problem_dir is not an absolute path, if problem_dir cannot
+        be opened and if any required problem element is missing.
+    """
+
+    if not os.path.isabs(problem_dir):
+        raise ValueError("problem directory must be absolute path")
+
+    prblm_dt = report.problem_data()
+
+    try:
+        dump_dir = report.dd_opendir(problem_dir, report.DD_OPEN_READONLY)
+        if not dump_dir:
+            raise ValueError("cannot open problem directory")
+
+        dd_load_flag = (report.DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                | report.DD_FAIL_QUIETLY_ENOENT)
+
+        package = dump_dir.load_text(FILENAME_PACKAGE, dd_load_flag)
+        if not package:
+            raise ValueError("problem directory misses '{0}'"
+                    .format(FILENAME_PACKAGE))
+
+        pd_add_flag = report.CD_FLAG_TXT | report.CD_FLAG_ISNOTEDITABLE
+
+        prblm_dt.add(FILENAME_PACKAGE, package, pd_add_flag)
+        prblm_dt.add(CD_DUMPDIR, problem_dir, pd_add_flag)
+
+        for element in (FILENAME_UID, FILENAME_UUID, FILENAME_DUPHASH):
+            val = dump_dir.load_text(element, dd_load_flag)
+            if val is not None:
+                prblm_dt.add(element, val, pd_add_flag)
+    finally:
+        dump_dir.close()
+
+    return prblm_dt
+
+
+if __name__ == "__main__":
+    CMDARGS = ArgumentParser(
+            description=("Announce a new or duplicated problem via"
+                " all accessible channels"))
+    CMDARGS.add_argument("-d", "--problem-dir",
+            type=str, required=True,
+            help="An absolute path to a new or duplicated problem directory")
+
+    OPTIONS = CMDARGS.parse_args()
+
+    DIR_PATH = OPTIONS.problem_dir
+
+    try:
+        PD = build_notification_problem_data(DIR_PATH)
+    except ValueError as ex:
+        sys.stderr.write("Cannot notify '{0}': {1}\n".
+                format(DIR_PATH, ex.message))
+        sys.exit(RETURN_FAILURE)
+
+    try:
+        emit_crash_dbus_signal(PD)
+    except RuntimeError as ex:
+        sys.stderr.write("Cannot notify '{0}': {1}\n".
+                format(DIR_PATH, ex.message))
+        sys.exit(RETURN_FAILURE)
+    except KeyError as ex:
+        # this is a bug in build_notification_problem_data()
+        sys.stderr.write("BUG: problem data misses required element '{0}'"
+                .format(ex.message))
+        sys.exit(RETURN_FAILURE)
+
+    sys.exit(RETURN_OK)
+

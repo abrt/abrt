@@ -16,6 +16,7 @@ MAN1_TXT += abrt-action-analyze-vulnerability.txt
 MAN1_TXT += abrt-action-install-debuginfo.txt
 MAN1_TXT += abrt-action-list-dsos.txt
 MAN1_TXT += abrt-action-perform-ccpp-analysis.txt
+MAN1_TXT += abrt-action-notify.txt
 MAN1_TXT += abrt-applet.txt
 MAN1_TXT += abrt-dump-oops.txt
 MAN1_TXT += abrt-dump-xorg.txt
