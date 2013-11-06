@@ -15,8 +15,10 @@ dir=`dirname "$file"`
 grep -o 'src="[A-Za-z0-9/._-]*"' "$file" \
 | sort | uniq \
 | while read src; do
+	# Extract FILE.EXT from src="FILE.EXT"
 	name="${src#src=?}"
 	name="${name%?}"
+	# Extract EXT from FILE.EXT
 	ext="${name##*.}"
 	(cd "$dir" && test -f "$name") || continue
 	echo "Replacing $name with data:image/$ext;base64"
@@ -29,4 +31,31 @@ grep -o 'src="[A-Za-z0-9/._-]*"' "$file" \
 	} | sed -f - -i Deployment_Guide.html
 done
 
-#TODO: embed css
+exit
+
+# WORKS, BUT DISABLED FOR NOW:
+# Embed css
+#We handle: <link rel="stylesheet" type="text/css" href="Common_Content/css/default.css"
+#TODO: also handle <link rel="stylesheet" media="print" href="..."
+#TODO: recursively process .css files - they have file references too,
+#otherwise we don't gain much:
+#default.css is merely 3 lines:
+#  @import url("common.css");
+#  @import url("overrides.css");
+#  @import url("lang.css");
+#and further, those files have file refs like
+#  background: #003d6e url(../images/h1-bg.png) top left repeat-x;
+#
+grep -o '<link rel="stylesheet" type="text/css" href="[A-Za-z0-9/._-]*"' "$file" \
+| sort | uniq \
+| while read src; do
+	name="${src#?link rel=?stylesheet? type=?text?css? href=?}"
+	name="${name%?}"
+	(cd "$dir" && test -f "$name") || continue
+	echo "Replacing $name with data:text/css;base64"
+	{
+		printf "%s" "s^\"$name\"^\"data:text/css;base64,"
+		(cd "$dir" && base64 <"$name") | tr -d $'\n'
+		echo '"^g'
+	} | sed -f - -i Deployment_Guide.html
+done
