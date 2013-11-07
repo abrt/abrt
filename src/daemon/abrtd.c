@@ -24,6 +24,7 @@
 #include "abrt_glib.h"
 #include "abrt-inotify.h"
 #include "libabrt.h"
+#include "problem_api.h"
 
 
 /* I want to use -Werror, but gcc-4.4 throws a curveball:
@@ -443,7 +444,7 @@ static void mark_unprocessed_dump_dirs_not_reportable(const char *path)
         struct dump_dir *dd = dd_opendir(full_name, /*flags*/0);
         if (dd)
         {
-            if (!dd_exist(dd, FILENAME_COUNT) && !dd_exist(dd, FILENAME_NOT_REPORTABLE))
+            if (!problem_dump_dir_is_complete(dd) && !dd_exist(dd, FILENAME_NOT_REPORTABLE))
             {
                 log_warning("Marking '%s' not reportable (no '"FILENAME_COUNT"' item)", full_name);
 

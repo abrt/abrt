@@ -55,6 +55,7 @@ enum AbrtOptions
     ABRT_OPT_SEND_UREPORT,
     ABRT_OPT_SHORTENED_REPORTING,
     ABRT_OPT_SILENT_SHORTENED_REPORTING,
+    ABRT_OPT_NOTIFY_INCOMPLETE_PROBLEMS,
 
     _ABRT_OPT_END_,
 };
@@ -266,6 +267,10 @@ abrt_config_widget_init(AbrtConfigWidget *self)
     self->priv->options[ABRT_OPT_SILENT_SHORTENED_REPORTING].default_value = FALSE;
     self->priv->options[ABRT_OPT_SILENT_SHORTENED_REPORTING].config = self->priv->abrt_applet_conf;
 
+    self->priv->options[ABRT_OPT_NOTIFY_INCOMPLETE_PROBLEMS].name = "NotifyIncompleteProblems";
+    self->priv->options[ABRT_OPT_NOTIFY_INCOMPLETE_PROBLEMS].default_value = FALSE;
+    self->priv->options[ABRT_OPT_NOTIFY_INCOMPLETE_PROBLEMS].config = self->priv->abrt_applet_conf;
+
     /* Connect widgets with options */
     connect_switch_with_option(self, ABRT_OPT_UPLOAD_COREDUMP, "switch_upload_coredump");
     connect_switch_with_option(self, ABRT_OPT_STEAL_DIRECTORY, "switch_steal_directory");
@@ -273,6 +278,7 @@ abrt_config_widget_init(AbrtConfigWidget *self)
     connect_switch_with_option(self, ABRT_OPT_SEND_UREPORT, "switch_send_ureport");
     connect_switch_with_option(self, ABRT_OPT_SHORTENED_REPORTING, "switch_shortened_reporting");
     connect_switch_with_option(self, ABRT_OPT_SILENT_SHORTENED_REPORTING, "switch_silent_shortened_reporting");
+    connect_switch_with_option(self, ABRT_OPT_NOTIFY_INCOMPLETE_PROBLEMS, "switch_notify_incomplete_problems");
 
     gtk_widget_reparent(WID("grid"), GTK_WIDGET(self));
 

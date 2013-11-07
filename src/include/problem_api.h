@@ -60,3 +60,12 @@ GList *get_problem_dirs_for_uid(uid_t uid, const char *dump_location);
  * @returns GList with mallocated absolute paths to dump directories
  */
 GList *get_problem_dirs_not_accessible_by_uid(uid_t uid, const char *dump_location);
+
+
+/*
+ * Checks if problem dump directory contains all necessary data
+ *
+ * @param dd Dump directory
+ * @returns Non zero if problem data are complete, otherwise false
+ */
+int problem_dump_dir_is_complete(struct dump_dir *dd);
