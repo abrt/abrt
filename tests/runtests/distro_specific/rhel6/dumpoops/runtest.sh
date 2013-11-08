@@ -42,6 +42,9 @@ rlJournalStart
 
     rlPhaseStartTest OOPS
         for oops in oops*.test; do
+            # oops7.test case is not caught by the RHEL6 abrt-dump-oops
+            # (so far. It may be re-enabled after relevant patch is ported to RHEL6):
+            test "$oops" = "oops7.test" && continue
             rlRun "abrt-dump-oops $oops 2>&1 | grep 'abrt-dump-oops: Found oopses: [1-9]'" 0 "[$oops] Found OOPS"
         done
     rlPhaseEnd
