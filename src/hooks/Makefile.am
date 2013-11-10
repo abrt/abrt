@@ -10,6 +10,9 @@ dist_pluginsconf_DATA = \
     CCpp.conf \
     python.conf
 
+defaultpluginsconfdir = $(DEFAULT_PLUGINS_CONF_DIR)
+dist_defaultpluginsconf_DATA = $(dist_pluginsconf_DATA)
+
 sbin_SCRIPTS = \
     abrt-install-ccpp-hook \
     abrt-harvest-vmcore \

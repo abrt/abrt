@@ -203,23 +203,21 @@ def harvest_vmcore():
     os.umask(077)
 
     # Check abrt config files for copy/move settings and
-    config = ConfigParser.ConfigParser()
-    # We need to add a root section as ConfigParser doesn't know how to work
-    # with config files without any sections
-    with open('@CONF_DIR@/abrt-harvest-vmcore.conf') as conf_file:
-        conf_str = '[section]\n' + conf_file.read()
-    conf_fp = StringIO.StringIO(conf_str)
-    config.readfp(conf_fp)
-    copyvmcore = config.get('section', 'CopyVMcore')
-    with open('@CONF_DIR@/abrt.conf') as conf_file:
-        conf_str = '[section]\n' + conf_file.read()
-    conf_fp = StringIO.StringIO(conf_str)
-    config = ConfigParser.ConfigParser()
-    config.readfp(conf_fp)
     try:
-        abrtdumpdir = config.get('section', 'DumpLocation')
-    except ConfigParser.NoOptionError:
-        abrtdumpdir = '@DEFAULT_DUMP_LOCATION@'
+        conf = problem.load_conf_file("abrt-harvest-vmcore.conf")
+    except OSError as ex:
+        sys.stderr.write(str(ex))
+        sys.exit(1)
+    else:
+        copyvmcore = conf.get("CopyVMcore", "no")
+
+    try:
+        conf = problem.load_conf_file("abrt.conf")
+    except OSError as ex:
+        sys.stderr.write(str(ex))
+        sys.exit(1)
+    else:
+        abrtdumpdir = conf.get("DumpLocation", "@DEFAULT_DUMP_LOCATION@")
 
     try:
         filelist = os.listdir(dump_dir)

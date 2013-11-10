@@ -32,3 +32,62 @@ PyObject *p_notify_new_path(PyObject *pself, PyObject *args)
     notify_new_path(path);
     Py_RETURN_NONE;
 }
+
+static PyObject *
+load_settings_to_dict(const char *file, int (*loader)(const char *, map_string_t *))
+{
+    PyObject *dict = NULL;
+    map_string_t *settings = new_map_string();
+    if (!loader(file, settings))
+    {
+        PyErr_SetString(PyExc_OSError, "Failed to load configuration file.");
+        goto lacf_error;
+    }
+
+    dict = PyDict_New();
+    if (dict == NULL)
+    {
+        goto lacf_error;
+    }
+
+    map_string_iter_t iter;
+    const char *key = NULL;
+    const char *value = NULL;
+    init_map_string_iter(&iter, settings);
+    while(next_map_string_iter(&iter, &key, &value))
+    {
+        if (0 != PyDict_SetItemString(dict, key, PyString_FromString(value)))
+        {
+            goto lacf_error;
+        }
+    }
+    free_map_string(settings);
+    return dict;
+
+lacf_error:
+    Py_XDECREF(dict);
+    free_map_string(settings);
+    return NULL;
+}
+
+/* C: void load_abrt_conf_file(const char *file, map_string_t *settings); */
+PyObject *p_load_conf_file(PyObject *pself, PyObject *args)
+{
+    const char *file;
+    if (!PyArg_ParseTuple(args, "s", &file))
+    {
+        return NULL;
+    }
+    return load_settings_to_dict(file, load_abrt_conf_file);
+}
+
+/* C: void load_abrt_plugin_conf_file(const char *file, map_string_t *settings); */
+PyObject *p_load_plugin_conf_file(PyObject *pself, PyObject *args)
+{
+    const char *file;
+    if (!PyArg_ParseTuple(args, "s", &file))
+    {
+        return NULL;
+    }
+    return load_settings_to_dict(file, load_abrt_plugin_conf_file);
+}

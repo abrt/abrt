@@ -18,6 +18,7 @@
 */
 #include "libabrt.h"
 
+#define CCPP_CONF "CCpp.conf"
 
 static const char *dump_dir_name = ".";
 /* 60 seconds was too limiting on slow machines */
@@ -61,8 +62,8 @@ int main(int argc, char **argv)
     export_abrt_envvars(0);
 
     map_string_t *settings = new_map_string();
-    if (!load_conf_file(PLUGINS_CONF_DIR"/CCpp.conf", settings, /*skip key w/o values:*/ false))
-        error_msg("Can't open '%s'", PLUGINS_CONF_DIR"/CCpp.conf");
+    if (!load_abrt_plugin_conf_file(CCPP_CONF, settings))
+        error_msg("Can't load '%s'", CCPP_CONF);
 
     const char *value = get_map_string_item_or_NULL(settings, "DebuginfoLocation");
     char *debuginfo_location;

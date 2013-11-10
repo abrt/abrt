@@ -24,6 +24,8 @@ static PyMethodDef module_methods[] = {
     /* method_name, func, flags, doc_string */
     /* for include/client.h */
     { "notify_new_path"           , p_notify_new_path         , METH_VARARGS },
+    { "load_conf_file"            , p_load_conf_file          , METH_VARARGS },
+    { "load_plugin_conf_file"     , p_load_plugin_conf_file   , METH_VARARGS },
     { NULL }
 };
 
