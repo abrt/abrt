@@ -86,7 +86,7 @@ if __name__ == "__main__":
     help_text = _(
             "Usage: %s [-vy] [--ids=BUILD_IDS_FILE]\n"
             "       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n"
-            "       [-e, --exact=PATH]\n"
+            "       [-e, --exact=PATH[:PATH]...]\n"
             "\n"
             "Installs debuginfos for all build-ids listed in BUILD_IDS_FILE\n"
             "to CACHEDIR, using TMPDIR as temporary staging area.\n"
@@ -135,7 +135,7 @@ if __name__ == "__main__":
             keeprpms = True
         # --exact takes precendece over --ids
         elif opt in ("-e", "--exact"):
-            missing=arg.split(':')
+            missing = arg.split(':')
             exact_fls = True
         elif opt == "--repo":
             repo_pattern = arg
@@ -206,10 +206,15 @@ if __name__ == "__main__":
 
         missing = filter_installed_debuginfos(b_ids, cachedirs)
 
+    exact_file_missing = 0
     result = RETURN_OK
     if missing:
         log2("%s", missing)
-        print _("Coredump references {0} debuginfo files, {1} of them are not installed").format(len(b_ids), len(missing))
+        if len(b_ids) > 0:
+            print _("Coredump references {0} debuginfo files, {1} of them are not installed").format(len(b_ids), len(missing))
+        else:
+            # Only --exact FILE[:FILE2]... was specified
+            print _("{0} of debuginfo files are not installed").format(len(missing))
 
         # TODO: should we pass keep_rpms=keeprpms to DebugInfoDownload here??
         downloader = DebugInfoDownload(cache=cachedirs[0], tmp=tmpdir,
@@ -220,11 +225,20 @@ if __name__ == "__main__":
         except Exception, ex:
             error_msg_and_die("Can't download debuginfos: %s", ex)
 
+        if exact_fls:
+            for bid in missing:
+                if not os.path.isfile(bid):
+                    print _("Missing requested file: {0}").format(bid)
+                    exact_file_missing = 1
+
         missing = filter_installed_debuginfos(b_ids, cachedirs)
         for bid in missing:
             print _("Missing debuginfo file: {0}").format(bid)
 
-    if not missing:
+    if not missing and not exact_file_missing:
         print _("All debuginfo files are available")
+
+    if exact_file_missing:
+        result = RETURN_FAILURE
 
     exit(result)
