@@ -206,7 +206,7 @@ if __name__ == "__main__":
 
         missing = filter_installed_debuginfos(b_ids, cachedirs)
 
-    exact_file_missing = 0
+    exact_file_missing = False
     result = RETURN_OK
     if missing:
         log2("%s", missing)
@@ -229,7 +229,7 @@ if __name__ == "__main__":
             for bid in missing:
                 if not os.path.isfile(bid):
                     print _("Missing requested file: {0}").format(bid)
-                    exact_file_missing = 1
+                    exact_file_missing = True
 
         missing = filter_installed_debuginfos(b_ids, cachedirs)
         for bid in missing:
