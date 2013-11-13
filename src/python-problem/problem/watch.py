@@ -41,7 +41,7 @@ class ProblemWatcher(object):
 
         self.loop = gobject.MainLoop()
 
-    def _new_problem_handler(self, comp, ddir, uid):
+    def _new_problem_handler(self, comp, ddir, uid, uuid, duphash):
         logging.debug('New problem notification received')
         if int(uid) != os.getuid() and not self.auth:
             logging.debug('Auth disabled, ignoring crash with'
