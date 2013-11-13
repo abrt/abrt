@@ -203,7 +203,7 @@ static void handle_inotify_cb(struct abrt_inotify_watch *watch, struct inotify_e
 
         if (event->mask & IN_DELETE_SELF || event->mask & IN_MOVE_SELF)
         {
-            log_notice("Recreating deleted dump location '%s'", g_settings_dump_location);
+            log_warning("Recreating deleted dump location '%s'", g_settings_dump_location);
 
             sanitize_dump_dir_rights();
             abrt_inotify_watch_reset(watch, g_settings_dump_location, IN_DUMP_LOCATION_FLAGS);
