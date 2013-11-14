@@ -49,6 +49,8 @@ static GtkTreePath *s_path_reported_treeview;
 
 static GtkWidget *g_main_window;
 
+static int inotify_fd = -1;
+
 enum
 {
     COLUMN_SOURCE,
@@ -97,6 +99,23 @@ static void add_directory_to_dirlist(const char *dirname)
     logmode = sv_logmode;
     if (!dd)
         return;
+
+    /* Check if the problem directory has been processed by abrt.
+     * If not, add a watch to to check again later.
+     */
+    if(!dd_exist(dd, "sosreport.tar.xz") && dd_exist(dd, "sosreport.log")) {
+        char *sosreport_path = concat_path_file(dd->dd_dirname, "sosreport.log");
+        // one time watch on deletion of sosreport.log
+        if (inotify_fd >= 0 && inotify_add_watch(inotify_fd,
+            sosreport_path, 0 | IN_DELETE_SELF | IN_ONESHOT
+            ) < 0)
+        {
+            perror_msg("inotify_add_watch failed on '%s'",
+            sosreport_path);
+        }
+        free(sosreport_path);
+	    return;
+    }
 
     char time_buf[sizeof("YYYY-MM-DD hh:mm:ss")];
     time_buf[0] = '\0';
@@ -822,7 +841,6 @@ static GtkWidget *create_main_window(void)
 }
 
 
-static int inotify_fd = -1;
 static GIOChannel *channel_inotify;
 static int channel_inotify_event_id = -1;
 static char **s_dirs;
