@@ -147,6 +147,14 @@ AC_ARG_WITH([defaultdumplocation],
             [], [with_defaultdumplocation=${localstatedir}/tmp/abrt])
 AC_SUBST([DEFAULT_DUMP_LOCATION], [$with_defaultdumplocation])
 
+AC_ARG_WITH(augeaslenslibdir,
+                    [AS_HELP_STRING([--with-augeaslenslibdir=DIR],
+                                                   [Directory for librepor lens (default: /usr/share/augeas/lenses)])],
+                                [], [with_augeaslenslibdir="/usr/share/augeas/lenses"])
+AC_SUBST([AUGEAS_LENS_LIB_DIR], [$with_augeaslenslibdir])
+
+AC_PATH_PROG(AUGPARSE, augparse, no)
+
 AC_ARG_ENABLE(doxygen-docs,
     AS_HELP_STRING([--enable-doxygen-docs],
 	[build DOXYGEN documentation (requires Doxygen)]),

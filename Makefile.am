@@ -29,10 +29,17 @@ TESTSUITE_FILES += examples/nmi_oops_hash.right
 
 
 EXTRA_DIST = doc/coding-style abrt.spec.in abrt.pc.in \
-	abrt-version asciidoc.conf init-scripts/* $(TESTSUITE_FILES)
+	abrt-version asciidoc.conf init-scripts/* $(TESTSUITE_FILES) \
+	augeas/test_abrt.aug
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = abrt.pc
+
+augeasdir = $(AUGEAS_LENS_LIB_DIR)
+dist_augeas_DATA = augeas/abrt.aug
+
+check-local:
+	$(AUGPARSE) -I $(top_builddir)/augeas $(top_builddir)/augeas/test_abrt.aug
 
 if HAVE_SYSTEMD
     dist_systemdsystemunit_DATA = init-scripts/abrtd.service \
