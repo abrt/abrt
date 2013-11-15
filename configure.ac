@@ -132,8 +132,10 @@ AC_CHECK_HEADER([sys/inotify.h], [],
 AC_CHECK_HEADERS([locale.h])
 
 CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
+DEFAULT_CONF_DIR='${datadir}/${PACKAGE_NAME}/conf.d'
 VAR_RUN='${localstatedir}/run'
 PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
+DEFAULT_PLUGINS_CONF_DIR='${datadir}/${PACKAGE_NAME}/conf.d/plugins'
 EVENTS_DIR='${datadir}/libreport/events'
 EVENTS_CONF_DIR='${sysconfdir}/libreport/events.d'
 ENABLE_SOCKET_OR_DBUS='-DENABLE_DBUS=1'
@@ -191,8 +193,10 @@ AC_ARG_ENABLE([native-unwinder],
 
 
 AC_SUBST(CONF_DIR)
+AC_SUBST(DEFAULT_CONF_DIR)
 AC_SUBST(VAR_RUN)
 AC_SUBST(PLUGINS_CONF_DIR)
+AC_SUBST(DEFAULT_PLUGINS_CONF_DIR)
 AC_SUBST(EVENTS_CONF_DIR)
 AC_SUBST(EVENTS_DIR)
 AC_SUBST(DEFAULT_DUMP_LOCATION)

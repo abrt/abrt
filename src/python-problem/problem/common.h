@@ -20,3 +20,5 @@
 
 /* module-level functions */
 PyObject *p_notify_new_path(PyObject *pself, PyObject *args);
+PyObject *p_load_conf_file(PyObject *pself, PyObject *args);
+PyObject *p_load_plugin_conf_file(PyObject *pself, PyObject *args);

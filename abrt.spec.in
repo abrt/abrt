@@ -250,6 +250,7 @@ Group: System Environment/Libraries
 Requires: python
 Requires: %{name} = %{version}-%{release}
 Requires: systemd-python
+Requires: abrt-python
 
 %description addon-python
 This package contains python hook and python analyzer plugin for handling
@@ -588,10 +589,14 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-watch-log
 %{_bindir}/abrt-action-analyze-xorg
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
+%{_datadir}/%{name}/conf.d/abrt.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-action-save-package-data.conf
-%config(noreplace) %{_sysconfdir}/%{name}/xorg.conf
+%{_datadir}/%{name}/conf.d/abrt-action-save-package-data.conf
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/xorg.conf
+%{_datadir}/%{name}/conf.d/plugins/xorg.conf
 %{_mandir}/man5/abrt-xorg.conf.5.gz
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys.conf
+%{_datadir}/%{name}/conf.d/gpg_keys.conf
 %{_mandir}/man5/gpg_keys.conf.5.gz
 %config(noreplace) %{_sysconfdir}/libreport/events.d/abrt_event.conf
 %{_mandir}/man5/abrt_event.conf.5.gz
@@ -606,6 +611,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
+%dir %{_datadir}/%{name}
+%dir %{_datadir}/%{name}/conf.d
+%dir %{_datadir}/%{name}/conf.d/plugins
 %{_mandir}/man1/abrt-handle-upload.1.gz
 %{_mandir}/man1/abrt-server.1.gz
 %{_mandir}/man1/abrt-action-save-package-data.1.gz
@@ -660,6 +668,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files addon-ccpp
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
+%{_datadir}/%{name}/conf.d/plugins/CCpp.conf
 %{_mandir}/man5/CCpp.conf.5.gz
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
 %if %{with systemd}
@@ -789,6 +798,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files addon-python
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python.conf
+%{_datadir}/%{name}/conf.d/plugins/python.conf
 %{_mandir}/man5/abrt-python.conf.5.gz
 # TODO? Do we need %config(noreplace) in the below line too?
 %config(noreplace) %{_sysconfdir}/libreport/events.d/python_event.conf
