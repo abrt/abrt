@@ -95,9 +95,11 @@ EXTRA_DIST = \
     post_report.xml.in \
     abrt-action-analyze-ccpp-local.in
 
-confdir = $(CONF_DIR)
+confdir = $(PLUGINS_CONF_DIR)
 dist_conf_DATA = \
     xorg.conf
+defaultconfdir = $(DEFAULT_PLUGINS_CONF_DIR)
+dist_defaultconf_DATA = $(dist_conf_DATA)
 
 abrt_watch_log_SOURCES = \
     abrt-watch-log.c

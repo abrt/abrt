@@ -19,6 +19,8 @@
 #include <paths.h>
 #include "libabrt.h"
 
+#define XORG_CONF "xorg.conf"
+
 static
 void trim_spaces(char *str)
 {
@@ -87,9 +89,9 @@ int main(int argc, char **argv)
     export_abrt_envvars(0);
 
     map_string_t *settings = new_map_string();
-    log_notice("Loading settings from '%s'", "/etc/abrt/xorg.conf");
-    load_conf_file("/etc/abrt/xorg.conf", settings, /*skip key w/o values:*/ false);
-    log_debug("Loaded '%s'", "/etc/abrt/xorg.conf");
+    log_notice("Loading settings from '%s'", XORG_CONF);
+    load_abrt_plugin_conf_file(XORG_CONF, settings);
+    log_debug("Loaded '%s'", XORG_CONF);
     char *BlacklistedXorgModules = xstrdup(get_map_string_item_or_empty(settings, "BlacklistedXorgModules"));
     trim_spaces(BlacklistedXorgModules);
     free_map_string(settings);

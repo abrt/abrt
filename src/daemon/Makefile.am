@@ -104,6 +104,8 @@ dist_daemonconf_DATA = \
     abrt.conf \
     abrt-action-save-package-data.conf \
     gpg_keys.conf
+defaultdaemonconfdir = $(DEFAULT_CONF_DIR)
+dist_defaultdaemonconf_DATA = $(dist_daemonconf_DATA)
 
 EXTRA_DIST = abrt-handle-upload.in
 
