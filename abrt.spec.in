@@ -88,6 +88,8 @@ Requires: %{systemd_units}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
 Requires(pre): %{shadow_utils}
+Requires: python-dbus
+Requires: libreport-plugin-ureport
 
 %description
 %{name} is a tool to help users to detect defects in applications and
@@ -345,7 +347,6 @@ Group: Applications/System
 Requires: %{name} = %{version}-%{release}
 BuildRequires: polkit-devel
 Requires: abrt-libs = %{version}-%{release}
-Requires: python-dbus
 
 %description dbus
 ABRT DBus service which provides org.freedesktop.problems API on dbus and
@@ -585,6 +586,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_libexecdir}/abrt-handle-event
 %{_libexecdir}/abrt-action-ureport
 %{_bindir}/abrt-handle-upload
+%{_bindir}/abrt-action-notify
+%{_mandir}/man1/abrt-action-notify.1.gz
 %{_bindir}/abrt-action-save-package-data
 %{_bindir}/abrt-watch-log
 %{_bindir}/abrt-action-analyze-xorg
@@ -829,15 +832,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files dbus
 %defattr(-,root,root,-)
 %{_sbindir}/abrt-dbus
-%{_bindir}/abrt-action-notify
-%{_mandir}/man1/abrt-action-notify.1.gz
 %{_mandir}/man8/abrt-dbus.8.gz
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
 %{_datadir}/dbus-1/interfaces/org.freedesktop.Problems.xml
 %{_datadir}/dbus-1/system-services/org.freedesktop.problems.service
 %{_datadir}/polkit-1/actions/abrt_polkit.policy
-%config(noreplace) %{_sysconfdir}/libreport/events.d/dbus_event.conf
-%{_mandir}/man5/dbus_event.conf.5.gz
 %dir %{_defaultdocdir}/%{name}-dbus%{docdirversion}/
 %dir %{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/
 %{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/*.html

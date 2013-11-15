@@ -7,7 +7,7 @@ abrt-action-notify - Announces a new occurrence of problem via all accessible ch
 
 SYNOPSIS
 --------
-'abrt-action-notify' [-h] [-d PROBLEM_DIR]
+'abrt-action-notify' [-h] -d PROBLEM_DIR [-v] [-a] [-e AUTOREPORTING_EVENT]
 
 DESCRIPTION
 -----------
@@ -27,11 +27,39 @@ EVENT=notify package!=
 
 OPTIONS
 -------
+-v, --verbose::
+   Be verbose
+
 -d, --problem-dir PROBLEM_DIR::
    Problem directory [Default: current directory]
 
 -h, --help::
    Show help message
+
+-a, --autoreporting::
+   Force to run autoreporting event
+
+-e, --autoreporting-event AUTOREPORTING_EVENT::
+   Overwrite autoreporting event name
+
+ENVIRONMENT
+----------
+ABRT_VERBOSE::
+   ABRT verbosity level
+
+FILES
+-----
+/etc/abrt/abrt.conf
+
+AutoreportingEnabled::
+   If enabled, abrt-action-notify runs AutoreportingEvent
+
+AutoreportingEvent::
+   Name of event to be run if autoreporting is enabled
+
+SEE ALSO
+--------
+abrt.conf(5)
 
 AUTHORS
 -------

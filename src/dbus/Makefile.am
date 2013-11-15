@@ -33,6 +33,3 @@ orgfreedesktopproblemsservicedir = ${datadir}/dbus-1/system-services
 dist_orgfreedesktopproblemsservice_DATA = org.freedesktop.problems.service
 
 eventsconfdir = $(EVENTS_CONF_DIR)
-
-dist_eventsconf_DATA = \
-    dbus_event.conf
