@@ -147,6 +147,21 @@ AC_ARG_WITH([defaultdumplocation],
             [], [with_defaultdumplocation=${localstatedir}/tmp/abrt])
 AC_SUBST([DEFAULT_DUMP_LOCATION], [$with_defaultdumplocation])
 
+AC_ARG_WITH(augeaslenslibdir,
+                    [AS_HELP_STRING([--with-augeaslenslibdir=DIR],
+                                                   [Directory for librepor lens (default: /usr/share/augeas/lenses)])],
+                                [], [with_augeaslenslibdir="/usr/share/augeas/lenses"])
+AC_SUBST([AUGEAS_LENS_LIB_DIR], [$with_augeaslenslibdir])
+
+AC_PATH_PROG(AUGPARSE, augparse, no)
+[if test "$ARGPARSE" = "no"]
+[then]
+    [echo "The argparse program was not found in the search path. Please ensure"]
+    [echo "that it is installed and its directory is included in the search path."]
+    [echo "Then run configure again before attempting to build ABRT."]
+    [exit 1]
+[fi]
+
 AC_ARG_ENABLE(doxygen-docs,
     AS_HELP_STRING([--enable-doxygen-docs],
 	[build DOXYGEN documentation (requires Doxygen)]),
