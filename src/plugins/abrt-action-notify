@@ -20,15 +20,54 @@ from argparse import ArgumentParser
 import dbus
 import dbus.lowlevel
 
+import problem
+
 import report
 from reportclient import (RETURN_OK,
-                          RETURN_FAILURE)
+                          RETURN_FAILURE,
+                          RETURN_CANCEL_BY_USER,
+                          RETURN_STOP_EVENT_RUN,
+                          log1,
+                          set_verbosity)
 
 CD_DUMPDIR = "Directory"
 FILENAME_PACKAGE = "package"
 FILENAME_UID = "uid"
 FILENAME_UUID = "uuid"
 FILENAME_DUPHASH = "duphash"
+
+
+def run_autoreport(problem_data, event_name):
+    """Runs autoreporting event
+
+    Requires CD_DUMPDIR key in problem_data.
+
+    Keyword arguments:
+    problem_data -- problem data of notified problems
+
+    Returns None as it raises an exception on error
+
+    Raises:
+    KeyError -- if any of required elements is missing
+    RuntimeError -- if event run fails
+    """
+
+    dir_name = problem_data.get(CD_DUMPDIR)
+    if dir_name is None:
+        raise KeyError(CD_DUMPDIR)
+
+    log1("Running autoreporting event: '{0}'".format(event_name))
+
+    res = report.run_event_state()
+    ret = res.run_event_on_dir_name(dir_name[0], event_name)
+
+    if res.children_count == 0 and ret == 0:
+        raise RuntimeError("No processing is specified for event '{0}'"
+                .format(event_name))
+
+    if not ret in [RETURN_OK, RETURN_CANCEL_BY_USER, RETURN_STOP_EVENT_RUN]:
+        raise RuntimeError("Event '{0}' exited with {1}"
+                .format(event_name, ret))
 
 def emit_crash_dbus_signal(problem_data):
     """Emits a Crash signal on D-Bus Problem bus
@@ -132,14 +171,42 @@ def build_notification_problem_data(problem_dir):
 if __name__ == "__main__":
     CMDARGS = ArgumentParser(
             description=("Announce a new or duplicated problem via"
-                " all accessible channels"))
+                " all accessible channels"),
+            epilog=("Reads the default configuration from 'abrt.conf' file"))
     CMDARGS.add_argument("-d", "--problem-dir",
             type=str, required=True,
             help="An absolute path to a new or duplicated problem directory")
+    CMDARGS.add_argument("-v", "--verbose",
+            action="count", dest="verbose", default=0,
+            help="Be verbose")
+    CMDARGS.add_argument("-a", "--autoreporting",
+            action="store_true", dest="autoreporting", default=False,
+            help="Force to run autoreporting event")
+    CMDARGS.add_argument("-e", "--autoreporting-event",
+            type=str, dest="autoreporting_event",
+            help="Overwrite autoreporting event name")
 
     OPTIONS = CMDARGS.parse_args()
 
     DIR_PATH = OPTIONS.problem_dir
+
+    verbose = 0
+    ABRT_VERBOSE = os.getenv("ABRT_VERBOSE")
+    if ABRT_VERBOSE:
+        try:
+            verbose = int(ABRT_VERBOSE)
+        except:
+            pass
+
+    verbose += OPTIONS.verbose
+    set_verbosity(verbose)
+    os.environ["ABRT_VERBOSE"] = str(verbose)
+
+    try:
+        conf = problem.load_conf_file("abrt.conf")
+    except OSError as ex:
+        sys.stderr.write("{0}".format(str(ex)))
+        sys.exit(RETURN_FAILURE)
 
     try:
         PD = build_notification_problem_data(DIR_PATH)
@@ -159,6 +226,27 @@ if __name__ == "__main__":
         sys.stderr.write("BUG: problem data misses required element '{0}'"
                 .format(ex.message))
         sys.exit(RETURN_FAILURE)
+
+    if OPTIONS.autoreporting or conf.get("AutoreportingEnabled", "no") == "yes":
+        event_name = OPTIONS.autoreporting_event
+        if not event_name:
+            if "AutoreportingEvent" in conf:
+                event_name = conf["AutoreportingEvent"]
+            else:
+                sys.stderr.write("Autoreporting event is not configured")
+                sys.stderr.exit(RETURN_FAILURE)
+
+        try:
+            run_autoreport(PD, event_name)
+        except RuntimeError as ex:
+            sys.stderr.write("Cannot notify '{0}': {1}\n".
+                    format(DIR_PATH, ex.message))
+            sys.exit(RETURN_FAILURE)
+        except KeyError as ex:
+            # this is a bug in build_notification_problem_data()
+            sys.stderr.write("BUG: problem data misses required element '{0}'"
+                    .format(ex.message))
+            sys.exit(RETURN_FAILURE)
 
     sys.exit(RETURN_OK)
 

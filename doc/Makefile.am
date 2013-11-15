@@ -52,7 +52,6 @@ MAN5_PREFORMATTED =
 MAN5_PREFORMATTED += abrt_event.conf.5
 MAN5_PREFORMATTED += ccpp_event.conf.5
 MAN5_PREFORMATTED += ccpp_retrace_event.conf.5
-MAN5_PREFORMATTED += dbus_event.conf.5
 MAN5_PREFORMATTED += gconf_event.conf.5
 MAN5_PREFORMATTED += koops_event.conf.5
 MAN5_PREFORMATTED += python_event.conf.5
