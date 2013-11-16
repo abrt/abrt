@@ -73,6 +73,7 @@ BuildRequires: xmlto
 BuildRequires: libreport-devel >= %{libreport_ver}
 BuildRequires: satyr-devel >= 0.11
 BuildRequires: systemd-python
+BuildRequires: augeas
 
 Requires: libreport >= %{libreport_ver}
 Requires: satyr >= 0.11
@@ -626,6 +627,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/abrt.conf.5.gz
 %{_mandir}/man5/abrt-action-save-package-data.conf.5.gz
 # {_mandir}/man5/pyhook.conf.5.gz
+
+# filesystem package should own /usr/share/augeas/lenses directory
+%{_datadir}/augeas/lenses/abrt.aug
 
 %files libs
 %defattr(-,root,root,-)
