@@ -1,17 +1,12 @@
 confdir = $(CONF_DIR)
 pyhookdir = $(pyexecdir)
 
-dist_conf_DATA = \
-    abrt-harvest-vmcore.conf
-
-defaultconfdir = $(DEFAULT_CONF_DIR)
-dist_defaultconf_DATA = $(dist_conf_DATA)
-
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 
 dist_pluginsconf_DATA = \
     CCpp.conf \
-    python.conf
+    python.conf \
+    vmcore.conf
 
 defaultpluginsconfdir = $(DEFAULT_PLUGINS_CONF_DIR)
 dist_defaultpluginsconf_DATA = $(dist_pluginsconf_DATA)

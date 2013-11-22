@@ -19,12 +19,13 @@ The goal is to let abrtd notice and process them as new problem data dirs.
 
 FILES
 -----
-/etc/abrt/abrt-harvest-vmcore.conf::
+/etc/abrt/plugins/vmcore.conf::
    Configuration file where user can enable copying or moving VMcore to ABRT
    problem directory
 
 SEE ALSO
 --------
+abrt-vmcore.conf(5)
 abrt.conf(5)
 
 AUTHORS

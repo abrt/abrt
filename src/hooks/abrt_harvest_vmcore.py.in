@@ -204,7 +204,7 @@ def harvest_vmcore():
 
     # Check abrt config files for copy/move settings and
     try:
-        conf = problem.load_conf_file("abrt-harvest-vmcore.conf")
+        conf = problem.load_plugin_conf_file("vmcore.conf")
     except OSError as ex:
         sys.stderr.write(str(ex))
         sys.exit(1)

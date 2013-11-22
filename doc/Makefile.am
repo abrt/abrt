@@ -46,7 +46,7 @@ MAN5_TXT += abrt-xorg.conf.txt
 MAN5_TXT += abrt-python.conf.txt
 MAN5_TXT += CCpp.conf.txt
 MAN5_TXT += gpg_keys.conf.txt
-MAN5_TXT += abrt-harvest-vmcore.conf.txt
+MAN5_TXT += abrt-vmcore.conf.txt
 
 MAN5_PREFORMATTED =
 MAN5_PREFORMATTED += abrt_event.conf.5
