@@ -565,6 +565,12 @@ service abrt-xorg condrestart >/dev/null 2>&1 || :
 
 %posttrans addon-vmcore
 service abrt-vmcore condrestart >/dev/null 2>&1 || :
+# Copy the configuration file to plugin's directory
+test -f /etc/abrt/abrt-harvest-vmcore.conf && {
+    echo "Moving /etc/abrt/abrt-harvest-vmcore.conf to /etc/abrt/plugins/vmcore.conf"
+    mv -b /etc/abrt/abrt-harvest-vmcore.conf /etc/abrt/plugins/vmcore.conf
+}
+exit 0
 
 %posttrans addon-pstoreoops
 service abrt-pstoreoops condrestart >/dev/null 2>&1 || :
@@ -773,8 +779,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vmcore_event.conf
 %{_mandir}/man5/vmcore_event.conf.5.gz
-%config(noreplace) %{_sysconfdir}/%{name}/abrt-harvest-vmcore.conf
-%{_datadir}/%{name}/conf.d/abrt-harvest-vmcore.conf
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/vmcore.conf
+%{_datadir}/%{name}/conf.d/plugins/vmcore.conf
 %{_datadir}/libreport/events/analyze_VMcore.xml
 %if %{with systemd}
 %{_unitdir}/abrt-vmcore.service
@@ -784,7 +790,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_sbindir}/abrt-harvest-vmcore
 %{_bindir}/abrt-action-analyze-vmcore
 %{_mandir}/man1/abrt-harvest-vmcore.1*
-%{_mandir}/man5/abrt-harvest-vmcore.conf.5*
+%{_mandir}/man5/abrt-vmcore.conf.5*
 %{_mandir}/man1/abrt-action-analyze-vmcore.1*
 
 %files addon-pstoreoops
