@@ -4,6 +4,9 @@ pyhookdir = $(pyexecdir)
 dist_conf_DATA = \
     abrt-harvest-vmcore.conf
 
+defaultconfdir = $(DEFAULT_CONF_DIR)
+dist_defaultconf_DATA = $(dist_conf_DATA)
+
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 
 dist_pluginsconf_DATA = \
