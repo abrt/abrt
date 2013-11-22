@@ -17,6 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#define _GNU_SOURCE 1 /* for strcasestr */
 #include "libabrt.h"
 
 /*
@@ -27,6 +28,11 @@ struct line_info {
     char *ptr;
     char level;
 };
+
+/* Used to be 100, but some MCE oopses are short:
+ * "CPU 0: Machine Check Exception: 0000000000000007"
+ */
+#define SANE_MIN_OOPS_LEN 30
 
 static void record_oops(GList **oops_list, struct line_info* lines_info, int oopsstart, int oopsend)
 {
@@ -39,7 +45,7 @@ static void record_oops(GList **oops_list, struct line_info* lines_info, int oop
         len += strlen(lines_info[q].ptr) + 1;
 
     /* too short oopses are invalid */
-    if (len > 100)
+    if (len > SANE_MIN_OOPS_LEN)
     {
         char *oops = (char*)xzalloc(len);
         char *dst = oops;
@@ -54,7 +60,7 @@ static void record_oops(GList **oops_list, struct line_info* lines_info, int oop
                 dst = stpcpy(dst, "\n");
             }
         }
-        if ((dst - oops) > 100)
+        if ((dst - oops) > SANE_MIN_OOPS_LEN)
         {
             *oops_list = g_list_append(
                         *oops_list,
@@ -72,6 +78,81 @@ static void record_oops(GList **oops_list, struct line_info* lines_info, int oop
 
     VERB3 if (rv == 0) log("Dropped oops: too short");
 }
+
+/* In some comparisons, we skip 1st letter, to avoid dealing with
+ * changes in capitalization in kernel. For example, I see that
+ * current kernel git (at 2011-01-01) has both "kernel BUG at ..."
+ * and "Kernel BUG at ..." messages, and I don't want to change
+ * the code below whenever kernel is changed to use "K" (or "k")
+ * uniformly.
+ */
+static const char *const s_koops_suspicious_strings[] = {
+    "BUG:",
+    "WARNING: at",
+    "WARNING: CPU:",
+    "INFO: possible recursive locking detected",
+    /*k*/"ernel BUG at",
+    "list_del corruption",
+    "list_add corruption",
+    "do_IRQ: stack overflow:",
+    /*n*/"ear stack overflow (cur:",
+    /*g*/"eneral protection fault",
+    /*u*/"nable to handle kernel",
+    /*d*/"ouble fault:",
+    "RTNL: assertion failed",
+    /*e*/"eek! page_mapcount(page) went negative!",
+    /*b*/"adness at",
+    "NETDEV WATCHDOG",
+    /*s*/"ysctl table check failed",
+    ": nobody cared",
+    "IRQ handler type mismatch",
+    /*
+     * MCE examples for various CPUs/architectures (collected 2013-04):
+     * arch/arc/kernel/traps.c:			die("Machine Check Exception", regs, address, cause);
+     * arch/x86/kernel/cpu/mcheck/winchip.c:	printk(KERN_EMERG "CPU0: Machine Check Exception.\n");
+     * arch/x86/kernel/cpu/mcheck/p5.c:		"CPU#%d: Machine Check Exception:  0x%8X (type 0x%8X).\n",
+     * arch/x86/kernel/cpu/mcheck/mce.c:	pr_emerg(HW_ERR "CPU %d: Machine Check Exception: %Lx Bank %d: %016Lx\n",
+     * drivers/edac/sb_edac.c:			printk("CPU %d: Machine Check Exception: %Lx Bank %d: %016Lx\n",
+     *
+     * MCEs can be fatal (they panic kernel) or not.
+     * Fatal MCE are delivered as exception#18 to the CPU.
+     * Non-fatal ones sometimes are delivered as exception#18;
+     * other times they are silently recorded in magic MSRs, CPU is not alerted.
+     * Linux kernel periodically (up to 5 mins interval) reads those MSRs
+     * and if MCE is seen there, it is piped in binary form through
+     * /dev/mcelog to whoever listens on it. (Such as mcelog tool in --daemon
+     * mode; but cat </dev/mcelog would do too).
+     *
+     * "Machine Check Exception:" message is printed *only*
+     * by fatal MCEs (so far, future kernels may be different).
+     * It will be caught as vmcore if kdump is configured.
+     *
+     * Non-fatal MCEs have "[Hardware Error]: Machine check events logged"
+     * message in kernel log.
+     * When /dev/mcelog is read, *no additional kernel log messages appear*:
+     * if we want more readable data, we must rely on other tools
+     * (such as mcelog daemon consuming binary /dev/mcelog and writing
+     * human-readable /var/log/mcelog).
+     */
+    "Machine Check Exception:",
+    "Machine check events logged",
+
+    /* X86 TRAPs */
+    "divide error:",
+    "bounds:",
+    "coprocessor segment overrun:",
+    "invalid TSS:",
+    "segment not present:",
+    "invalid opcode:",
+    "alignment check:",
+    "stack segment:",
+    "fpu exception:",
+    "simd exception:",
+    "iret exception:",
+
+    /* Termination */
+    NULL
+};
 
 void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
 {
@@ -152,11 +233,11 @@ void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
         {
             char *c2 = strchr(c, '.');
             char *c3 = strchr(c, ']');
-            if (c2 && c3 && (c2 < c3) && (c3-c) < 21 && (c2-c) < 8)
+            if (c2 && c3 && (c2 < c3) && (c3-c) < 21)
             {
                 c = c3 + 1;
                 if (*c == ' ')
-                        c++;
+                    c++;
             }
         }
         if ((lines_info_size & 0xfff) == 0)
@@ -193,64 +274,21 @@ next_line:
         if (oopsstart < 0)
         {
             /* Find start-of-oops markers */
-            /* In some comparisons, we skip 1st letter, to avoid dealing with
-             * changes in capitalization in kernel. For example, I see that
-             * current kernel git (at 2011-01-01) has both "kernel BUG at ..."
-             * and "Kernel BUG at ..." messages, and I don't want to change
-             * the code below whenever kernel is changed to use "K" (or "k")
-             * uniformly.
-             */
-            if (strstr(curline, /*g*/ "eneral protection fault:"))
-                oopsstart = i;
-            else if (strstr(curline, "BUG:"))
-                oopsstart = i;
-            else if (strstr(curline, /*k*/ "ernel BUG at"))
-                oopsstart = i;
-            /* WARN_ON() generated message */
-            else if (strstr(curline, "WARNING: at "))
-                oopsstart = i;
-            else if (strstr(curline, /*u*/ "nable to handle kernel"))
-                oopsstart = i;
-            else if (strstr(curline, /*d*/ "ouble fault:"))
-                oopsstart = i;
-            else if (strstr(curline, "do_IRQ: stack overflow:"))
-                oopsstart = i;
-            else if (strstr(curline, "RTNL: assertion failed"))
-                 oopsstart = i;
-            else if (strstr(curline, /*e*/ "eek! page_mapcount(page) went negative!"))
-                oopsstart = i;
-            else if (strstr(curline, /*n*/ "ear stack overflow (cur:"))
-                oopsstart = i;
-            else if (strstr(curline, /*b*/ "adness at"))
-                oopsstart = i;
-            else if (strstr(curline, "NETDEV WATCHDOG"))
-                oopsstart = i;
-            else if (strstr(curline, /*s*/ "ysctl table check failed"))
-                oopsstart = i;
-            else if (strstr(curline, "INFO: possible recursive locking detected"))
-                oopsstart = i;
-            // Not needed: "--[ cut here ]--" is always followed
-            // by "Badness at", "kernel BUG at", or "WARNING: at" string
-            //else if (strstr(curline, "------------[ cut here ]------------"))
-            //  oopsstart = i;
-            else if (strstr(curline, "list_del corruption"))
-                oopsstart = i;
-            else if (strstr(curline, "list_add corruption"))
-                oopsstart = i;
-            /* "irq NN: nobody cared..." */
-            else if (strstr(curline, ": nobody cared"))
-                oopsstart = i;
-            else if (strstr(curline, "IRQ handler type mismatch"))
-                oopsstart = i;
+            for (const char *const *str = s_koops_suspicious_strings; *str; ++str)
+            {
+                if (strstr(curline, *str))
+                {
+                    oopsstart = i;
+                    break;
+                }
+            }
 
             if (oopsstart >= 0)
             {
                 /* debug information */
-                VERB3 {
-                    log("Found oops at line %d: '%s'", oopsstart, lines_info[oopsstart].ptr);
-                    if (oopsstart != i)
-                            log("Trigger line is %d: '%s'", i, c);
-                }
+                VERB3 log("Found oops at line %d: '%s'", oopsstart, lines_info[oopsstart].ptr);
+                if (oopsstart != i)
+                        VERB3 log("Trigger line is %d: '%s'", i, c);
                 /* try to find the end marker */
                 int i2 = i + 1;
                 while (i2 < lines_info_size && i2 < (i+50))
@@ -270,7 +308,7 @@ next_line:
         /* a call trace starts with "Call Trace:" or with the " [<.......>] function+0xFF/0xAA" pattern */
         if (oopsstart >= 0 && !inbacktrace)
         {
-            if (strstr(curline, "Call Trace:"))
+            if (strcasestr(curline, "Call Trace:")) /* yes, it must be case-insensitive */
                 inbacktrace = 1;
             else
             if (strnlen(curline, 9) > 8
@@ -297,6 +335,7 @@ next_line:
              && !strstr(curline, "<#DF>")
              && !strstr(curline, "<IRQ>")
              && !strstr(curline, "<EOI>")
+             && !strstr(curline, "<NMI>")
              && !strstr(curline, "<<EOE>>")
              && strncmp(curline, "Code: ", 6) != 0
              && strncmp(curline, "RIP ", 4) != 0
@@ -312,14 +351,21 @@ next_line:
                 oopsend = i-1;
             else if (strstr(curline, "Instruction dump:"))
                 oopsend = i;
-            /* if a new oops starts, this one has ended */
-            else if (strstr(curline, "WARNING: at ") && oopsstart != i) /* WARN_ON() generated message */
-                oopsend = i-1;
-            else if (strstr(curline, "Unable to handle") && oopsstart != i)
-                oopsend = i-1;
             /* kernel end-of-oops marker (not including marker itself) */
             else if (strstr(curline, "---[ end trace"))
                 oopsend = i-1;
+            else
+            {
+                /* if a new oops starts, this one has ended */
+                for (const char *const *str = s_koops_suspicious_strings; *str; ++str)
+                {
+                    if (strstr(curline, *str))
+                    {
+                        oopsend = i-1;
+                        break;
+                    }
+                }
+            }
 
             if (oopsend <= i)
             {
@@ -347,20 +393,32 @@ next_line:
             }
             if (!inbacktrace && i - oopsstart > 40)
             {
+                /* Used to drop oopses w/o backtraces, but some of them
+                 * (MCEs, for example) don't have backtrace yet we still want to file them.
+                 */
+                VERB3 log("One-line oops at line %d: '%s'", oopsstart, lines_info[oopsstart].ptr);
+                record_oops(oops_list, lines_info, oopsstart, oopsstart);
                 /*inbacktrace = 0; - already is */
                 oopsstart = -1;
-                VERB3 log("Dropped oops, too long");
                 continue;
             }
         }
     } /* while (i < lines_info_size) */
 
     /* process last oops if we have one */
-    if (oopsstart >= 0 && inbacktrace)
+    if (oopsstart >= 0)
     {
-        int oopsend = i-1;
-        VERB3 log("End of oops at line %d (end of file): '%s'", oopsend, lines_info[oopsend].ptr);
-        record_oops(oops_list, lines_info, oopsstart, oopsend);
+        if (inbacktrace)
+        {
+            int oopsend = i-1;
+            VERB3 log("End of oops at line %d (end of file): '%s'", oopsend, lines_info[oopsend].ptr);
+            record_oops(oops_list, lines_info, oopsstart, oopsend);
+        }
+        else
+        {
+            VERB3 log("One-line oops at line %d: '%s'", oopsstart, lines_info[oopsstart].ptr);
+            record_oops(oops_list, lines_info, oopsstart, oopsstart);
+        }
     }
 
     free(lines_info);
@@ -404,6 +462,11 @@ int koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf)
             for (;;)
             {
                 p = skip_whitespace(p);
+                if (prefixcmp(p, "<NMI>") == 0)
+                {
+                    p += strlen("<NMI>");
+                    continue;
+                }
                 if (prefixcmp(p, "<IRQ>") == 0)
                 {
                     p += strlen("<IRQ>");
@@ -474,6 +537,14 @@ int koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf)
             while (oops_buf < p)
                 strbuf_append_char(kernel_bt, *oops_buf++);
         }
+        goto gen_hash;
+    }
+
+    /* If it's an one-line oops (such as MCE), hash the line */
+    const char *eol = strchrnul(oops_buf, '\n');
+    if (!eol[0] || !eol[1]) /* "line" or "line\n" */
+    {
+        strbuf_append_strf(kernel_bt, "%.*s", (int)(eol - oops_buf), oops_buf);
     }
 
  gen_hash: ;
