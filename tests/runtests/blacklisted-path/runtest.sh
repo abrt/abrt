@@ -82,8 +82,8 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "empty BlackListedPaths"
-        rm -f "/etc/abrt/$CFG_FNAME"
-        touch "/etc/abrt/$CFG_FNAME"
+        # 'will-crash' pack isn't signed on RHEL
+        echo "OpenGPGCheck = no" > "/etc/abrt/$CFG_FNAME"
 
         prepare
         generate_crash
