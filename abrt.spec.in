@@ -774,6 +774,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vmcore_event.conf
 %{_mandir}/man5/vmcore_event.conf.5.gz
 %config(noreplace) %{_sysconfdir}/%{name}/abrt-harvest-vmcore.conf
+%{_datadir}/%{name}/conf.d/abrt-harvest-vmcore.conf
 %{_datadir}/libreport/events/analyze_VMcore.xml
 %if %{with systemd}
 %{_unitdir}/abrt-vmcore.service
