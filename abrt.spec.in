@@ -678,7 +678,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
 %{_datadir}/%{name}/conf.d/plugins/CCpp.conf
-%{_mandir}/man5/CCpp.conf.5.gz
+%{_mandir}/man5/abrt-CCpp.conf.5.gz
 %dir %attr(0775, abrt, abrt) %{_localstatedir}/cache/abrt-di
 %if %{with systemd}
 %{_unitdir}/abrt-ccpp.service
