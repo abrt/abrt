@@ -90,7 +90,7 @@
                 </arg>
 
                 <tp:docstring>
-                    <example>
+                    <example id="NewProblem_example_python">
                         <title>How to create a new problems in Python</title>
                         <programlisting>
 <![CDATA[
@@ -113,7 +113,7 @@ problems.NewProblem(description)
 ]]>
                         </programlisting>
                     </example>
-                    <example>
+                    <example id="NewProblem_example_bash">
                         <title>How to create a new problems in Bash</title>
                         <programlisting>
 <![CDATA[
@@ -136,7 +136,7 @@ dbus-send --system --type=method_call --print-reply \
                 </arg>
 
                 <tp:docstring>
-                    <example>
+                    <example id="GetProblems_example_python">
                         <title>How to get the list of problems in Python</title>
                         <programlisting>
 <![CDATA[
@@ -193,7 +193,7 @@ prblms = problems.GetProblems()
                 <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QHash&lt;QString,QString&gt;"/>
 
                 <tp:docstring>
-                    <example>
+                    <example id="GetInfo_example_python">
                         <title>How to use GetInfo() method to print out a nice list of problems</title>
                         <programlisting>
 <![CDATA[
