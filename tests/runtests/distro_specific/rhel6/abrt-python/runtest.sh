@@ -27,7 +27,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 . /usr/share/beakerlib/beakerlib.sh
-. ../aux/lib.sh
+. ../../../aux/lib.sh
 
 TEST="abrt-python"
 PACKAGE="abrt"
