@@ -9,8 +9,6 @@
 
 import os
 import sys
-import ConfigParser
-import StringIO
 import shutil
 import time
 import hashlib
@@ -80,10 +78,8 @@ def parse_kdump():
 
     if partition:
         if os.path.isabs(dump_path):
-            # path is absolute
-            sys.stderr.write("Path '" + dump_path + "' cannot be an absolute"
-                             " path when mounting a dump partition.\n")
-            sys.exit(1)
+            # path is absolute, change it to relative
+            dump_path = dump_path.lstrip("/")
         mount_point = get_mount_point(partition, filesystem)
         path = os.path.join(mount_point, dump_path)
     else:
