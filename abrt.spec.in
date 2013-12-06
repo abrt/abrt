@@ -643,7 +643,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files devel
 %defattr(-,root,root,-)
-%doc apidoc/html/*
+# The complex pattern below (instead of simlpy *) excludes Makefile{.am,.in}:
+%doc apidoc/html/*.{html,png,css,js}
 %{_includedir}/abrt/abrt-dbus.h
 %{_includedir}/abrt/hooklib.h
 %{_includedir}/abrt/libabrt.h

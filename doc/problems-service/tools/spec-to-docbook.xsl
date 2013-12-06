@@ -345,7 +345,7 @@
 
       <refsynopsisdiv>
         <xsl:if test="method">
-          <refsect2>
+          <refsect2 id="methods">
             <title>Methods</title>
             <funcsynopsis>
               <xsl:apply-templates select="method" mode="funcsynopsislinked"/>
@@ -353,7 +353,7 @@
           </refsect2>
         </xsl:if>
         <xsl:if test="signal">
-          <refsect2>
+          <refsect2 id="signals">
             <title>Signals</title>
             <funcsynopsis>
               <xsl:apply-templates select="signal" mode="funcsynopsislinked"/>
@@ -361,7 +361,7 @@
           </refsect2>
         </xsl:if>
         <xsl:if test="property">
-          <refsect2>
+          <refsect2 id="properties">
             <title>Properties</title>
             <refsynopsisdiv>
               <title> </title>
@@ -372,21 +372,21 @@
       </refsynopsisdiv>
 
       <xsl:if test="method">
-        <refsection>
+        <refsection id="methods">
           <title>Methods</title>
           <xsl:apply-templates select="method" mode="detail"/>
         </refsection>
       </xsl:if>
 
       <xsl:if test="signal">
-        <refsection>
+        <refsection id="signals">
           <title>Signals</title>
           <xsl:apply-templates select="signal" mode="detail"/>
         </refsection>
       </xsl:if>
 
       <xsl:if test="tp:property">
-        <refsection>
+        <refsection id="tp_properties">
           <title>Telepathy Properties</title>
           <para>
             Accessed using the
@@ -401,7 +401,7 @@
       </xsl:if>
 
       <xsl:if test="property">
-        <refsection>
+        <refsection id="dbus_properties">
           <title>D-Bus Properties</title>
           <para>
             Accessed using the org.freedesktop.DBus.Properties interface.
