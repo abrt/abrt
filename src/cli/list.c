@@ -87,16 +87,16 @@ static void print_crash(problem_data_t *problem_data, int detailed, int text_siz
 
 /**
  * Prints a list containing "crashes" to stdout.
- * @param include_reported
+ * @param only_unreported
  *   Do not skip entries marked as already reported.
  */
-static void print_crash_list(vector_of_problem_data_t *crash_list, int detailed, int include_reported, long since, long until, int text_size)
+static void print_crash_list(vector_of_problem_data_t *crash_list, int detailed, int only_not_reported, long since, long until, int text_size)
 {
     unsigned i;
     for (i = 0; i < crash_list->len; ++i)
     {
         problem_data_t *crash = get_problem_data(crash_list, i);
-        if (!include_reported)
+        if (only_not_reported)
         {
             if (problem_data_get_content_or_NULL(crash, FILENAME_REPORTED_TO))
                 continue;
@@ -127,13 +127,13 @@ int cmd_list(int argc, const char **argv)
         "& list [options] [DIR]..."
         );
 
-    int opt_full = 0;
+    int opt_not_reported = 0;
     int opt_detailed = 0;
     int opt_since = 0;
     int opt_until = 0;
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_BOOL('f', "full"     , &opt_full,      _("List reported problems too")),
+        OPT_BOOL('n', "not-reported"     , &opt_not_reported,      _("List only not-reported problems")),
         /* deprecate -d option with --pretty=full*/
         OPT_BOOL('d', "detailed" , &opt_detailed,  _("Show detailed report")),
         OPT_INTEGER('s', "since" , &opt_since,  _("List only the problems more recent than specified timestamp")),
@@ -154,7 +154,7 @@ int cmd_list(int argc, const char **argv)
 
     g_ptr_array_sort_with_data(ci, &cmp_problem_data, (char *) FILENAME_LAST_OCCURRENCE);
 
-    print_crash_list(ci, opt_detailed, opt_full, opt_since, opt_until, CD_TEXT_ATT_SIZE_BZ);
+    print_crash_list(ci, opt_detailed, opt_not_reported, opt_since, opt_until, CD_TEXT_ATT_SIZE_BZ);
     free_vector_of_problem_data(ci);
     list_free_with_free(D_list);
 
