@@ -79,7 +79,7 @@ static void print_crash(problem_data_t *problem_data, int detailed, int text_siz
         desc = make_description(problem_data,
                             /*names_to_skip:*/ NULL,
                             /*max_text_size:*/ text_size,
-                            MAKEDESC_SHOW_ONLY_LIST);
+                            MAKEDESC_SHOW_ONLY_LIST | MAKEDESC_SHOW_URLS);
     }
     fputs(desc, stdout);
     free(desc);
