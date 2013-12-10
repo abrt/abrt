@@ -181,7 +181,7 @@ rlJournalStart
         fi
 
         sleep 5
-        roots_problem_path="$(abrt-cli list -f $ABRT_CONF_DUMP_LOCATION | awk -v id=$roots_problem '$0 ~ "Directory:.*"id { print $2 }')"
+        roots_problem_path="$(abrt-cli list $ABRT_CONF_DUMP_LOCATION | awk -v id=$roots_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$roots_problem_path" ]; then
             rlDie "Not found path"
         fi
@@ -193,7 +193,7 @@ rlJournalStart
         fi
 
         sleep 5
-        unprivilegeds_problem_path="$(abrt-cli list -f $ABRT_CONF_DUMP_LOCATION | awk -v id=$unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
+        unprivilegeds_problem_path="$(abrt-cli list $ABRT_CONF_DUMP_LOCATION | awk -v id=$unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$unprivilegeds_problem_path" ]; then
             rlDie "Not found path"
         fi
@@ -236,7 +236,7 @@ rlJournalStart
         fi
 
         sleep 5
-        roots_problem_path="$(abrt-cli list -f $ABRT_CONF_DUMP_LOCATION | awk -v id=$roots_problem '$0 ~ "Directory:.*"id { print $2 }')"
+        roots_problem_path="$(abrt-cli list $ABRT_CONF_DUMP_LOCATION | awk -v id=$roots_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$roots_problem_path" ]; then
             rlDie "Not found path problem path"
         fi
@@ -248,7 +248,7 @@ rlJournalStart
         fi
 
         sleep 5
-        unprivilegeds_problem_path="$(abrt-cli list -f $ABRT_CONF_DUMP_LOCATION | awk -v id=$unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
+        unprivilegeds_problem_path="$(abrt-cli list $ABRT_CONF_DUMP_LOCATION | awk -v id=$unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$unprivilegeds_problem_path" ]; then
             rlDie "Not found path problem path"
         fi
@@ -260,7 +260,7 @@ rlJournalStart
         fi
 
         sleep 5
-        second_unprivilegeds_problem_path="$(abrt-cli list -f $ABRT_CONF_DUMP_LOCATION | awk -v id=$second_unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
+        second_unprivilegeds_problem_path="$(abrt-cli list $ABRT_CONF_DUMP_LOCATION | awk -v id=$second_unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$second_unprivilegeds_problem_path" ]; then
             rlDie "Not found path problem path"
         fi

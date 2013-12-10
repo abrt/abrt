@@ -51,12 +51,12 @@ rlJournalStart
 
         rlAssertGreater "Problem data recorded" $(abrt-cli list | grep -c ${problem_ID1}) 0
 
-        problem_PATH1="$(abrt-cli list -f | awk -v id=$problem_ID1 '$0 ~ "Directory:.*"id { print $2 }')"
+        problem_PATH1="$(abrt-cli list | awk -v id=$problem_ID1 '$0 ~ "Directory:.*"id { print $2 }')"
         if [ ! -d "$problem_PATH1" ]; then
             rlDie "No crash dir generated, this shouldn't happen"
         fi
 
-        problem_UID1="$(abrt-cli list -f | awk -v id=$problem_ID1 '$0 ~ "Directory:.*"id, /uid:/ { if ($1 == "uid:") { print $2 } else if ($1 == "") { print "missing uid"; exit } }')"
+        problem_UID1="$(abrt-cli list | awk -v id=$problem_ID1 '$0 ~ "Directory:.*"id, /uid:/ { if ($1 == "uid:") { print $2 } else if ($1 == "") { print "missing uid"; exit } }')"
         rlAssertEquals "Problem uid is equal to 0" "0" "$problem_UID1"
 
         prepare
@@ -72,12 +72,12 @@ rlJournalStart
 
         rlAssertGreater "Problem data recorded" $(abrt-cli list | grep -c ${problem_ID2}) 0
 
-        problem_PATH2="$(abrt-cli list -f | awk -v id=${problem_ID2} '$0 ~ "Directory:.*"id { print $2 }')"
+        problem_PATH2="$(abrt-cli list | awk -v id=${problem_ID2} '$0 ~ "Directory:.*"id { print $2 }')"
         if [ ! -d "$problem_PATH2" ]; then
             rlDie "No crash dir generated, this shouldn't happen"
         fi
 
-        problem_UID2="$(abrt-cli list -f | awk -v id=$problem_ID2 '$0 ~ "Directory:.*"id, /uid:/ { if ($1 == "uid:") { print $2 } else if ($1 == "") { print "missing uid"; exit } }')"
+        problem_UID2="$(abrt-cli list | awk -v id=$problem_ID2 '$0 ~ "Directory:.*"id, /uid:/ { if ($1 == "uid:") { print $2 } else if ($1 == "") { print "missing uid"; exit } }')"
         rlAssertEquals "Problem uid equals to the passed uid" "$TEST_UID" "$problem_UID2"
 
         prepare
@@ -93,12 +93,12 @@ rlJournalStart
 
         rlAssertGreater "Problem data recorded" $(abrt-cli list | grep -c ${problem_ID3}) 0
 
-        problem_PATH3="$(abrt-cli list -f | awk -v id=$problem_ID3 '$0 ~ "Directory:.*"id { print $2 }')"
+        problem_PATH3="$(abrt-cli list | awk -v id=$problem_ID3 '$0 ~ "Directory:.*"id { print $2 }')"
         if [ ! -d "$problem_PATH3" ]; then
             rlDie "No crash dir generated, this shouldn't happen"
         fi
 
-        problem_UID3="$(abrt-cli list -f | awk -v id=$problem_ID3 '$0 ~ "Directory:.*"id, /uid:/ { if ($1 == "uid:") { print $2 } else if ($1 == "") { print "missing uid"; exit } }')"
+        problem_UID3="$(abrt-cli list | awk -v id=$problem_ID3 '$0 ~ "Directory:.*"id, /uid:/ { if ($1 == "uid:") { print $2 } else if ($1 == "") { print "missing uid"; exit } }')"
         rlAssertEquals "Problem uid equals to caller's uid" "$TEST_UID" "$problem_UID3"
 
         prepare
@@ -114,12 +114,12 @@ rlJournalStart
 
         rlAssertGreater "Problem data recorded" $(abrt-cli list | grep -c ${problem_ID4}) 0
 
-        problem_PATH4="$(abrt-cli list -f | awk -v id=$problem_ID4 '$0 ~ "Directory:.*"id { print $2 }')"
+        problem_PATH4="$(abrt-cli list | awk -v id=$problem_ID4 '$0 ~ "Directory:.*"id { print $2 }')"
         if [ ! -d "$problem_PATH4" ]; then
             rlDie "No crash dir generated, this shouldn't happen"
         fi
 
-        problem_UID4="$(abrt-cli list -f | awk -v id=$problem_ID4 '$0 ~ "Directory:.*"id, /uid:/ { if ($1 == "uid:") { print $2 } else if ($1 == "") { print "missing uid"; exit } }')"
+        problem_UID4="$(abrt-cli list | awk -v id=$problem_ID4 '$0 ~ "Directory:.*"id, /uid:/ { if ($1 == "uid:") { print $2 } else if ($1 == "") { print "missing uid"; exit } }')"
         rlAssertEquals "Passed uid is replaced by caller's uid" "$TEST_UID" "$problem_UID4"
     rlPhaseEnd
 
