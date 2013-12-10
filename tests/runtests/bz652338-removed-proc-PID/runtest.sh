@@ -45,7 +45,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
-        CLI_LIST="abrt-cli list -f"
+        CLI_LIST="abrt-cli list"
         CLI_RM="abrt-cli rm"
 
         tail -f -n 0 /var/log/messages > var-log-messages &

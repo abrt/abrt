@@ -59,9 +59,9 @@ rlJournalStart
         rlRun "abrt-cli list | grep -i 'Package'"
     rlPhaseEnd
 
-    rlPhaseStartTest "list -f" # list full
-        rlRun "abrt-cli list -f | grep -i 'Executable'"
-        rlRun "abrt-cli list -f | grep -i 'Package'"
+    rlPhaseStartTest "list -n" # list not-reported
+        rlRun "abrt-cli list -n | grep -i 'Executable'"
+        rlRun "abrt-cli list -n | grep -i 'Package'"
     rlPhaseEnd
 
     rlPhaseStartTest "report FAKEDIR"
@@ -78,7 +78,7 @@ rlJournalStart
     # Need to think about this...
     #
     #rlPhaseStartTest "report DIR"
-    #    DIR=$(abrt-cli list -f | grep 'Directory' | head -n1 | awk '{ print $2 }')
+    #    DIR=$(abrt-cli list -n | grep 'Directory' | head -n1 | awk '{ print $2 }')
     #    echo -e "1\n" | VISUAL="cat" EDITOR="cat" abrt-cli report $DIR > output.out 2>&1
     #
     #    rlAssertGrep "\-cmdline" output.out
@@ -86,7 +86,7 @@ rlJournalStart
     #rlPhaseEnd
 
     rlPhaseStartTest "info DIR"
-        DIR=$(abrt-cli list -f | grep 'Directory' | head -n1 | awk '{ print $2 }')
+        DIR=$(abrt-cli list | grep 'Directory' | head -n1 | awk '{ print $2 }')
         rlRun "abrt-cli info $DIR"
         rlRun "abrt-cli info -d $DIR > info.out"
     rlPhaseEnd
@@ -101,7 +101,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "rm DIR"
-        DIR_DELETE=$(abrt-cli list -f | grep 'Directory' | head -n1 | awk '{ print $2 }')
+        DIR_DELETE=$(abrt-cli list | grep 'Directory' | head -n1 | awk '{ print $2 }')
         rlRun "abrt-cli rm $DIR_DELETE"
     rlPhaseEnd
 
