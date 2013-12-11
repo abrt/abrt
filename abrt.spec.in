@@ -865,6 +865,56 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Wed Dec 11 2013 Jakub Filak <jfilak@redhat.com> 2.1.10-1
+- make: filter out useless msgs in chagelog gen alg
+- abrt-cli: display URL to reports in the details
+- abrt-cli list: list all problems by default
+- configure: libreport-web only with bodhi
+- Do not copy Makefiles to documentation.
+- Fix doc gen, making multilib test happy during packaging.
+- harvest_vmcore: Fix absolute path handling
+- Speed up journalctl --system support detection
+- Add build/ to POTFILES.skip
+- spec: add abrt's augeas module
+- add augeas module for abrt configuration files
+- spec: rename CCpp.conf
+- rename CCpp.conf man to abrt-CCpp.conf
+- spec: move vmcore addon's configuration to a new dir
+- vmcore: reorganize configuration
+- make: install abrt-harvest-vmcore into share conf.d
+- spec: install abrt-harvest-vmcore.conf to share conf.d
+- switch to libreport workflows in all report-cli events
+- abrtd: use warning level for "Recreating deleted ..." message
+- abrt-python: add missing arguments to Crash handler
+- spec: adapt recent changes related to abrt-action-notify
+- move the notify event from dbus_event.conf to abrt_event.conf
+- run the autoreporting event from abrt-action-notify
+- spec: install conf to /usr/share/abrt/conf.d
+- Load conf from /usr/share/abrt/conf.d and /etc/abrt
+- abrt-action-install-debuginfo: fix --exact handling. Fixes rhbz1027786
+- testsuite/dumpoops: do not test oops7.test on RHEL6
+- small improvement in Deployment Guide build machinery
+- Use bugzilla_formatdup.conf for detected duplicates in python too. Fixes rhbz#875312.
+- applet: properly handle incomplete problems
+- wrap check for incomplete problem in a function
+- applet: make build_message() more general
+- DBus Problems API: update documentation
+- spec: add abrt-action-notify
+- factor out D-Bus notification to a python script
+- adapt post_create event to the recent changes in reporter-ureport
+- spec: add Requires: systemd-python for python addon
+- shorten CCpp reason message
+- abrt-dump-oops: if backtrace is not seen, file an one-line oops. Fixes rhbz#812537
+- Fix false failure in nmi_oops_hash testcase
+- Update translations
+- Create manpage for gpg_keys.conf
+- Create manpage for CCpp.conf
+- Create manpage for python.conf
+- Add 11 manpages for *_event.conf.5, all refer to report_event.conf manpage
+- Create manpage for abrt-harvest-vmcore.conf
+- applet: use problem_data_t in ignored problems
+- ignored problems: add functions accepting problem_data_t
+
 * Sat Oct 26 2013 Jakub Filak <jfilak@redhat.com> 2.1.9-1
 - pyhook: add logging workaround for rhbz#1023041
 - spec: add systemd-python to BuildRequires
