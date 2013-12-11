@@ -116,7 +116,7 @@ release-major:
 .PHONY: release
 release:
 	echo "* $$(date +'%a %b %d %Y') $$(git config --get user.name) <$$(git config --get user.email)> $$NEW_VER-1" > /tmp/changelog.tmp; \
-	git log --oneline $$OLD_VER..HEAD | awk '{$$1=""; print "-" $$0} END {print ""}' >> /tmp/changelog.tmp; \
+	git log --oneline $$OLD_VER..HEAD | awk '{$$1=""; print "-" $$0} END {print ""}' | grep -v -e "- Merge" -e "- testsuite:" >> /tmp/changelog.tmp; \
 	sed "$$(grep -n changelog abrt.spec.in | cut -f1 -d:)"'r /tmp/changelog.tmp' -i abrt.spec.in; \
 	git add abrt.spec.in; \
 	git commit -m "New version $$NEW_VER"; \
