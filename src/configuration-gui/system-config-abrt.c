@@ -45,8 +45,13 @@ GtkWidget *system_config_abrt_widget_new(void)
     GtkWidget *buttons = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, /*spacing*/0);
     gtk_box_pack_start(GTK_BOX(box), buttons, /*expand*/TRUE, /*fill*/FALSE, /*padding*/0);
 
+#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 11) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 11 && GTK_MICRO_VERSION < 2))
     gtk_widget_set_margin_left(buttons, 10);
     gtk_widget_set_margin_right(buttons, 10);
+#else
+    gtk_widget_set_margin_start(buttons, 10);
+    gtk_widget_set_margin_end(buttons, 10);
+#endif
     gtk_widget_set_margin_top(buttons, 10);
     gtk_widget_set_margin_bottom(buttons, 10);
 
