@@ -298,7 +298,8 @@ next_line:
                 inbacktrace = 1;
             else
             if (strnlen(curline, 9) > 8
-             && curline[0] == '[' && curline[1] == '<'
+             && (  (curline[0] == '(' && curline[1] == '[' && curline[2] == '<')
+                || (curline[0] == '[' && curline[1] == '<'))
              && strstr(curline, ">]")
              && strstr(curline, "+0x")
              && strstr(curline, "/0x")
@@ -314,7 +315,8 @@ next_line:
 
             /* line needs to start with " [" or have "] [" if it is still a call trace */
             /* example: "[<ffffffffa006c156>] radeon_get_ring_head+0x16/0x41 [radeon]" */
-            if (curline[0] != '['
+            /* example s390: "([<ffffffffa006c156>] 0xdeadbeaf)" */
+            if ((curline[0] != '[' && (curline[0] != '(' || curline[1] != '['))
              && !strstr(curline, "] [")
              && !strstr(curline, "--- Exception")
              && !strstr(curline, "LR =")
@@ -326,6 +328,9 @@ next_line:
              && strncmp(curline, "Code: ", 6) != 0
              && strncmp(curline, "RIP ", 4) != 0
              && strncmp(curline, "RSP ", 4) != 0
+             /* s390 Call Trace ends with 'Last Breaking-Event-Address:'
+              * which is followed by a single frame */
+             && strncmp(curline, "Last Breaking-Event-Address:", strlen("Last Breaking-Event-Address:")) != 0
             ) {
                 oopsend = i-1; /* not a call trace line */
             }

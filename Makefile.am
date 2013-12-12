@@ -26,6 +26,8 @@ TESTSUITE_FILES += examples/nmi_oops.test
 TESTSUITE_FILES += examples/nmi_oops.right
 TESTSUITE_FILES += examples/nmi_oops_hash.test
 TESTSUITE_FILES += examples/nmi_oops_hash.right
+TESTSUITE_FILES += examples/oops10_s390x.test
+TESTSUITE_FILES += examples/oops10_s390x.right
 
 
 EXTRA_DIST = doc/coding-style abrt.spec.in abrt.pc.in \
