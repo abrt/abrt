@@ -1,0 +1,33 @@
+[    3.841328] ------------[ cut here ]------------
+[    3.841330] kernel BUG at drivers/scsi/scsi_lib.c:660!
+[    3.841353] illegal operation: 0001 [#1] SMP
+[    3.841355] Modules linked in: foo blah
+[    3.841367] CPU: 0 PID: 10721 Comm: systemd-udevd Not tainted 3.69.69-69.0.fit.s390x #1
+[    3.841369] task: 000000006d639110 ti: 000000006ef48000 task.ti: 000000006ef48000
+[    3.841371] Krnl PSW : 0404c00180000000 0000000000431f8e (scsi_alloc_sgtable+0x62/0x7c)
+[    3.841377]            R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 EA:3\x0aKrnl GPRS: 000000000c7fff88 000000006ad08600 000000006e8e2078 0000000000000000
+[    3.841379]            0000000000000020 0000000000000000 0000000000001000 000000000c7fff80
+[    3.841381]            0000000000000000 000000006e8e2078 0000000000000020 0000000000000000
+[    3.841383]            000000006e8e2078 000000006ad09200 000000006ef4b8b0 000000006ef4b858
+[    3.841391] Krnl Code: 0000000000433f82: eb6ff0a00004\x09lmg\x09%r8,%r15,160(%r15)\x0a           0000000000431f88: 00f7\x08\x08acr\x0915,%r4\x0a          #0000000000431f8a: a7f88781\x09\x09brc\x0915,431f8c\x0a          >0000000000431f8e: b904002c\x09\x09lgr\x09%r2,%r12\x0a           0000000000431f92: a7390080\x09\x09lghi\x09%r3,128\x0a           0000000000431f96: c040fffff95f\x09larl\x09%r4,431254\x0a           0000000000431f9c: c0e5fffc7c48\x09brasl\x09%r14,3c182c\x0a           0000000000431fa2: a7f4ffeb\x09\x09brc\x0915,431f78
+[    3.841403] Call Trace:
+[    3.841404] ([<00000000027f8000>] 0x27f8000)
+[    3.841406]  [<0000000000432114>] scsi_init_io+0xdc/0x184
+[    3.841408]  [<000003ff808bd352>] sd_prep_fn+0xfa/0xd1c [sd_mod]
+[    3.841410]  [<00000000003813e4>] blk_peek_request+0xfc/0x25c
+[    3.841412]  [<000000000043250c>] scsi_request_fn+0x64/0x620
+[    3.841414]  [<000000000037abaa>] __blk_run_queue+0x52/0x68
+[    3.841417]  [<000000000037d416>] queue_unplugged+0x42/0xbc
+[    3.841419]  [<000000000038191c>] blk_flush_plug_list+0x24c/0x2cc
+[    3.841420]  [<0000000000381dc0>] blk_finish_plug+0x2c/0x58
+[    3.841440]  [<000000000021cfcc>] __do_page_cache_readahead+0x1f4/0x294
+[    3.841443]  [<000000000021d724>] force_page_cache_readahead+0xbc/0x114
+[    3.841445]  [<0000000000210ee2>] generic_file_aio_read+0x5c2/0x844
+[    3.841448]  [<000000000028259e>] do_sync_read+0x86/0xc0
+[    3.841451]  [<0000000000282caa>] vfs_read+0x82/0x17c
+[    3.841452]  [<000000000028390a>] SyS_read+0x5e/0xac
+[    3.841453]  [<00000000005db5cc>] sysc_nr_ok+0x22/0x28
+[    3.841458]  [<0000004e15e926dc>] 0x4e15e926dc
+[    3.841459] Last Breaking-Event-Address:
+[    3.841460]  [<0000000000431f8a>] scsi_alloc_sgtable+0x5e/0x7c
+[    3.841461]  
