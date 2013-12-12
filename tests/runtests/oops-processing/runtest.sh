@@ -47,6 +47,14 @@ rlJournalStart
             $EXAMPLES_PATH/oops5.test > \
             $TmpDir/oops5.test
 
+        sed "s/3.10.0-33.el7.ppc64/<KERNEL_VERSION>/" \
+            $EXAMPLES_PATH/oops8_ppc64.test > \
+            $TmpDir/oops8_ppc64.test
+
+        sed "s/3.69.69-69.0.fit.s390x/<KERNEL_VERSION>/" \
+            $EXAMPLES_PATH/oops10_s390x.test > \
+            $TmpDir/oops10_s390x.test
+
         pushd $TmpDir
     rlPhaseEnd
 
