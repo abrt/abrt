@@ -89,6 +89,7 @@ def emit_crash_dbus_signal(problem_data):
     KeyError -- if any of required elements is missing
     """
 
+    bus = None
     try:
         bus = dbus.SystemBus()
         msg = dbus.lowlevel.SignalMessage("/org/freedesktop/problems",
@@ -234,7 +235,7 @@ if __name__ == "__main__":
                 event_name = conf["AutoreportingEvent"]
             else:
                 sys.stderr.write("Autoreporting event is not configured")
-                sys.stderr.exit(RETURN_FAILURE)
+                sys.exit(RETURN_FAILURE)
 
         try:
             run_autoreport(PD, event_name)
