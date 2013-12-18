@@ -31,10 +31,12 @@ libabrt_la_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     $(GIO_CFLAGS) \
+    $(SATYR_CFLAGS) \
     -D_GNU_SOURCE
 libabrt_la_LDFLAGS = \
     -version-info 0:1:0
 libabrt_la_LIBADD = \
     $(GLIB_LIBS) \
     $(GIO_LIBS) \
-    $(LIBREPORT_LIBS)
+    $(LIBREPORT_LIBS) \
+    $(SATYR_LIBS)
