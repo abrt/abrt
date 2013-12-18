@@ -168,7 +168,6 @@ AC_ARG_ENABLE(doxygen-docs,
     [enable_doxygen_docs=no]
 )
 
-
 # Doxygen Documentation
 
 AC_PATH_PROG(DOXYGEN, doxygen, no)
@@ -192,6 +191,17 @@ fi
 
 AM_CONDITIONAL(DBUS_DOXYGEN_DOCS_ENABLED, test "$enable_doxygen_docs" = "yes")
 
+
+# Autoreporting advertisement
+
+AC_ARG_ENABLE(suggest-autoreporting,
+    AS_HELP_STRING([--enable-suggest-autoreporting],
+    [print messages encouraging users to enable autoreporting]),
+    [enable_suggest_autoreporting=$enableval],
+    [enable_suggest_autoreporting=no]
+)
+
+AM_CONDITIONAL(SUGGEST_AUTOREPORTING, test "$enable_suggest_autoreporting" = "yes")
 
 # Make satyr use GDB or elfutils/libunwind for unwinding?
 

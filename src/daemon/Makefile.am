@@ -12,7 +12,8 @@ bin_PROGRAMS = \
 sbin_PROGRAMS = \
     abrtd \
     abrt-server \
-    abrt-upload-watch
+    abrt-upload-watch \
+    abrt-auto-reporting
 
 libexec_PROGRAMS = abrt-handle-event
 
@@ -98,6 +99,17 @@ abrt_action_save_package_data_LDADD = \
     $(RPM_LIBS) \
     $(LIBREPORT_LIBS) \
     ../lib/libabrt.la
+
+abrt_auto_reporting_SOURCES = \
+    abrt-auto-reporting.c
+abrt_auto_reporting_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    $(LIBREPORT_CFLAGS) \
+    -D_GNU_SOURCE
+abrt_auto_reporting_LDADD = \
+    ../lib/libabrt.la \
+    $(LIBREPORT_LIBS)
 
 daemonconfdir = $(CONF_DIR)
 dist_daemonconf_DATA = \

@@ -17,6 +17,10 @@ abrt_cli_CFLAGS = \
 	-I$(srcdir)/../lib \
 	$(LIBREPORT_CFLAGS)
 
+if SUGGEST_AUTOREPORTING
+abrt_cli_CFLAGS += -DSUGGEST_AUTOREPORTING=1
+endif
+
 abrt_cli_LDADD = \
     $(LIBREPORT_LIBS) \
     ../lib/libabrt.la

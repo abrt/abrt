@@ -90,8 +90,9 @@ static void print_crash(problem_data_t *problem_data, int detailed, int text_siz
  * @param only_unreported
  *   Do not skip entries marked as already reported.
  */
-static void print_crash_list(vector_of_problem_data_t *crash_list, int detailed, int only_not_reported, long since, long until, int text_size)
+static bool print_crash_list(vector_of_problem_data_t *crash_list, int detailed, int only_not_reported, long since, long until, int text_size)
 {
+    bool output = false;
     unsigned i;
     for (i = 0; i < crash_list->len; ++i)
     {
@@ -118,7 +119,9 @@ static void print_crash_list(vector_of_problem_data_t *crash_list, int detailed,
         print_crash(crash, detailed, text_size);
         if (i != crash_list->len - 1)
             printf("\n");
+        output = true;
     }
+    return output;
 }
 
 int cmd_list(int argc, const char **argv)
@@ -154,9 +157,25 @@ int cmd_list(int argc, const char **argv)
 
     g_ptr_array_sort_with_data(ci, &cmp_problem_data, (char *) FILENAME_LAST_OCCURRENCE);
 
+#if SUGGEST_AUTOREPORTING != 0
+    const bool output =
+#endif
     print_crash_list(ci, opt_detailed, opt_not_reported, opt_since, opt_until, CD_TEXT_ATT_SIZE_BZ);
+
     free_vector_of_problem_data(ci);
     list_free_with_free(D_list);
+
+#if SUGGEST_AUTOREPORTING != 0
+    load_abrt_conf();
+    if (!g_settings_autoreporting)
+    {
+        if (output)
+            putchar('\n');
+
+        printf(_("The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
+                 "'abrt-auto-reporting enabled' as a user with root privileges\n"));
+    }
+#endif
 
     return 0;
 }
