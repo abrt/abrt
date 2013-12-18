@@ -20,6 +20,7 @@ MAN1_TXT += abrt-action-notify.txt
 MAN1_TXT += abrt-applet.txt
 MAN1_TXT += abrt-dump-oops.txt
 MAN1_TXT += abrt-dump-xorg.txt
+MAN1_TXT += abrt-auto-reporting.txt
 MAN1_TXT += abrt-retrace-client.txt
 MAN1_TXT += abrt-handle-upload.txt
 MAN1_TXT += abrt-harvest-pstoreoops.txt
