@@ -445,6 +445,8 @@ int main(int argc, char **argv)
         if (post_create)
             delete_lockfile();
 
+        const bool no_action_for_event = (r == 0 && run_state->children_count == 0);
+
         free_run_event_state(run_state);
         /* Needed only if is_crash_a_dup() was called, but harmless
          * even if it wasn't:
@@ -452,7 +454,7 @@ int main(int argc, char **argv)
         dup_uuid_fini();
         dup_corebt_fini();
 
-        if (r == 0 && run_state->children_count == 0)
+        if (no_action_for_event)
             error_msg_and_die("No actions are found for event '%s'", event_name);
 
 //TODO: consider this case:
