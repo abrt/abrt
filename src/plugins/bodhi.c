@@ -490,5 +490,5 @@ int main(int argc, char **argv)
     );
     /*strbuf_free(q);*/
 
-    return !ask_yes_no(msg);
+    return ask_yes_no(msg) ? 0 : EXIT_STOP_EVENT_RUN;
 }
