@@ -75,7 +75,7 @@ rpm:
 	./gen-version
 	autoconf --force
 	$(MAKE) dist
-	rpmbuild $(RPM_DIRS) -ba abrt.spec
+	rpmbuild $(RPM_DIRS) $(RPM_FLAGS) -ba abrt.spec
 
 srpm:
 	./gen-version
