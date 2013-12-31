@@ -12,31 +12,28 @@ import sys
 import shutil
 import time
 import hashlib
-import re
+import augeas
 
 import problem
 
 
-def get_mount_point(part_id, filesystem):
+def get_mount_point(part_id):
     """
     A function used to look up a mount point in mtab using
     the provided identifier.
 
     part_id - device node, label or uuid
-    filesystem - filesystem type of the mounted partition
     """
 
-    # look up the identifier in /etc/fstab
-    with open('/etc/mtab') as fs_table_file:
-        fs_table = fs_table_file.read()
-    regexp = re.compile(part_id + r'\s+(.*)\s+' + filesystem)
-    result = regexp.search(fs_table)
+    # look up the identifier in /etc/mtab
+    result = augeas.Augeas().get("/files/etc/mtab/*"
+                                 "[spec=\"" + part_id + "\"]/file")
     if result:
-        return result.group(1).strip()
+        return result
     else:
         # identifier not in the table
         sys.stderr.write("Error: Cannot access partition '" + part_id +
-                         "', mount point not found! \n")
+                         "', mount point not found in /etc/mtab!\n")
         sys.exit(1)
 
 
@@ -56,31 +53,26 @@ def parse_kdump():
                          "default path '%s'\n" % dump_path)
         return dump_path
 
-    with open('/etc/kdump.conf') as conf_file:
-        kdump_conf = conf_file.read()
-
-    # first uncommented path instruction
-    regexp = re.compile('^(?<!#)path (.*)$', flags=re.MULTILINE)
-    result = regexp.search(kdump_conf)
-    if result:
-        dump_path = result.group(1).strip()
+    aug_obj = augeas.Augeas()
+    # check for path variable in kdump.conf
+    kdump_path = aug_obj.get("/files/etc/kdump.conf/path")
+    if kdump_path:
+        dump_path = kdump_path
 
     # default
     partition = None
     # first uncommented fs_type partition instruction
     for fs_type in fs_types:
-        regexp = re.compile('^(?<!#)' + fs_type + ' (.*)$', flags=re.MULTILINE)
-        result = regexp.search(kdump_conf)
+        result = aug_obj.get("/files/etc/kdump.conf/" + fs_type)
         if result:
-            partition = result.group(1)
-            filesystem = fs_type
+            partition = result
             break
 
     if partition:
         if os.path.isabs(dump_path):
             # path is absolute, change it to relative
             dump_path = dump_path.lstrip("/")
-        mount_point = get_mount_point(partition, filesystem)
+        mount_point = get_mount_point(partition)
         path = os.path.join(mount_point, dump_path)
     else:
         path = dump_path
