@@ -1,8 +1,8 @@
 #!/bin/bash
 
 function check_prior_crashes() {
-    rlAssert0 "No prior crashes recorded" $(abrt-cli list | wc -l)
-    if [ ! "_$(abrt-cli list | wc -l)" == "_0" ]; then
+    rlAssert0 "No prior crashes recorded" $(abrt-cli list 2> /dev/null | wc -l)
+    if [ ! "_$(abrt-cli list 2> /dev/null | wc -l)" == "_0" ]; then
         abrt-cli list
         rlDie "Won't proceed"
     fi
@@ -10,8 +10,8 @@ function check_prior_crashes() {
 
 function get_crash_path() {
     rlLog "Get crash path"
-    rlAssertGreater "Crash recorded" $(abrt-cli list | wc -l) 0
-    crash_PATH="$(abrt-cli list | grep Directory | awk '{ print $2 }' | tail -n1)"
+    rlAssertGreater "Crash recorded" $(abrt-cli list 2> /dev/null | wc -l) 0
+    crash_PATH="$(abrt-cli list 2> /dev/null | grep Directory | awk '{ print $2 }' | tail -n1)"
     if [ ! -d "$crash_PATH" ]; then
         rlDie "No crash dir generated, this shouldn't happen"
     fi
