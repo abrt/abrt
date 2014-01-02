@@ -135,10 +135,10 @@ int cmd_list(int argc, const char **argv)
     if (!g_settings_autoreporting)
     {
         if (output)
-            putchar('\n');
+            putc('\n', stderr);
 
-        printf(_("The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
-                 "'abrt-auto-reporting enabled' as a user with root privileges\n"));
+        fprintf(stderr, _("The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
+                          "'abrt-auto-reporting enabled' as a user with root privileges\n"));
     }
 
     return 0;
