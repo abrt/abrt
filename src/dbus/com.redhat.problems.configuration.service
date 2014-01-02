@@ -1,0 +1,7 @@
+[D-BUS Service]
+Name=com.redhat.problems.configuration
+# For testing, you may use -t5 to use small timeout of 5 seconds.  This will
+# make "abrt-configuration exited while clients existed but were idle"
+# situations easier to trigger
+Exec=/usr/sbin/abrt-configuration -t133
+User=root

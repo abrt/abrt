@@ -25,4 +25,15 @@ Copyright (c) 2012 ABRT Team <crash-catcher@fedorahosted.com>
     </defaults>
   </action>
 
+  <!-- by default only root can access configuration  -->
+  <action id="com.redhat.problems.configuration.update">
+    <description>Set value of configuration properties</description>
+    <message>Update configuration values reuquires authentication</message>
+    <defaults>
+      <allow_any>no</allow_any>
+      <allow_active>auth_admin_keep</allow_active>
+      <allow_inactive>no</allow_inactive>
+    </defaults>
+  </action>
+
 </policyconfig>
