@@ -55,6 +55,14 @@ rlJournalStart
             $EXAMPLES_PATH/oops10_s390x.test > \
             $TmpDir/oops10_s390x.test
 
+        sed "s/3.10.0-41.el7.x86_64/<KERNEL_VERSION>/" \
+            $EXAMPLES_PATH/oops_unsupported_hw.test > \
+            $TmpDir/oops_not_reportable_unsupported_hw.test
+
+        sed "s/2.6.35.6-45.fc14.x86_64/<KERNEL_VERSION>/" \
+            $EXAMPLES_PATH/oops_broken_bios.test > \
+            $TmpDir/oops_not_reportable_broken_bios.test
+
         pushd $TmpDir
     rlPhaseEnd
 
@@ -73,6 +81,12 @@ rlJournalStart
             for f in $OOPS_REQUIRED_FILES; do
                 rlAssertExists "$crash_PATH/$f"
             done
+
+            if [[ "$oops" == *not_reportable* ]]; then
+                rlAssertExists "$crash_PATH/not-reportable"
+            else
+                rlAssertNotExists "$crash_PATH/not-reportable"
+            fi
 
             rlAssertGrep "kernel" "$crash_PATH/pkg_name"
             rlAssertGrep "$kernel_version" "$crash_PATH/pkg_version"
