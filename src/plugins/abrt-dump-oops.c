@@ -119,9 +119,15 @@ static void save_oops_data_in_dump_dir(struct dump_dir *dd, char *oops, const ch
     dd_save_text(dd, FILENAME_BACKTRACE, second_line);
 
     /* check if trace doesn't have line: 'Your BIOS is broken' */
-    char *broken_bios = strstr(second_line, "Your BIOS is broken");
-    if (broken_bios)
-        dd_save_text(dd, FILENAME_NOT_REPORTABLE, "Your BIOS is broken.");
+    if (strstr(second_line, "Your BIOS is broken"))
+        dd_save_text(dd, FILENAME_NOT_REPORTABLE,
+                _("A kernel problem occurred because of broken BIOS. "
+                  "Unfortunately, such problems are not fixable by kernel maintainers."));
+    /* check if trace doesn't have line: 'Your hardware is unsupported' */
+    else if (strstr(second_line, "Your hardware is unsupported"))
+        dd_save_text(dd, FILENAME_NOT_REPORTABLE,
+                _("A kernel problem occurred, but your hardware is unsupported, "
+                  "therefore kernel maintainers are unable to fix this problem."));
     else
     {
         char *tainted_short = kernel_tainted_short(second_line);
