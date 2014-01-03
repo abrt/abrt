@@ -1,0 +1,20 @@
+------------[ cut here ]------------
+WARNING: at kernel/rh_taint.c:13 mark_hardware_unsupported+0x39/0x40()
+Your hardware is unsupported.  Please do not report bugs, panics, oopses, etc., on this hardware.
+Modules linked in:
+CPU: 0 PID: 0 Comm: swapper Not tainted 3.10.0-41.el7.x86_64 #1
+Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+ 000000000000001c ffffffff818f5e28 ffffffff81601f85 ffffffff818f5e60
+ ffffffff81058981 000000007ff8ec00 0000000037457000 0000000000b9847c
+ 0000000000000000 0000000000000000 ffffffff818f5ec0 ffffffff81058a34
+Call Trace:
+ [<ffffffff81601f85>] dump_stack+0x19/0x1b
+ [<ffffffff81058981>] warn_slowpath_common+0x61/0x80
+ [<ffffffff81058a34>] warn_slowpath_fmt_taint+0x44/0x50
+ [<ffffffff810871c9>] mark_hardware_unsupported+0x39/0x40
+ [<ffffffff81a44a52>] setup_arch+0xd19/0xd59
+ [<ffffffff81a3dbba>] start_kernel+0xcf/0x426
+ [<ffffffff81a3d120>] ? early_idt_handlers+0x120/0x120
+ [<ffffffff81a3d5dc>] x86_64_start_reservations+0x2a/0x2c
+ [<ffffffff81a3d6e6>] x86_64_start_kernel+0x108/0x117
+---[ end trace a7919e7f17c0a725 ]---
