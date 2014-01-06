@@ -5,6 +5,7 @@ bin_SCRIPTS = \
     abrt-action-analyze-core \
     abrt-action-analyze-vulnerability \
     abrt-action-analyze-vmcore \
+    abrt-action-check-oops-for-hw-error \
     abrt-action-list-dsos \
     abrt-action-perform-ccpp-analysis \
     abrt-action-save-kernel-data \
@@ -74,6 +75,7 @@ PYTHON_FILES = \
     abrt-action-analyze-core \
     abrt-action-analyze-vulnerability \
     abrt-action-analyze-vmcore.in \
+    abrt-action-check-oops-for-hw-error.in \
     abrt-action-perform-ccpp-analysis.in \
     abrt-action-notify
 
@@ -88,6 +90,7 @@ EXTRA_DIST = \
     analyze_RetraceServer.xml.in \
     analyze_VMcore.xml.in \
     abrt-action-analyze-vmcore \
+    abrt-action-check-oops-for-hw-error \
     abrt-action-save-kernel-data \
     abrt-action-ureport \
     abrt-gdb-exploitable \
