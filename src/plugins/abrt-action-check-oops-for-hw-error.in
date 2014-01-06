@@ -1,0 +1,118 @@
+#!/usr/bin/python -u
+
+import sys
+import os
+import locale
+import gettext
+
+GETTEXT_PROGNAME = "abrt"
+
+_ = gettext.lgettext
+
+def file_has_string(filename, string):
+    try:
+        f = open(filename, "r")
+    except IOError as e:
+        #print e
+        return False
+    for line in f:
+        if string in line:
+            f.close()
+            return True
+    f.close()
+    return False
+
+
+def tail_with_search(filename, string, maxlen):
+    try:
+        f = open(filename, "r")
+    except IOError as e:
+        #print e
+        return []
+    l = []
+    for line in f:
+        if string in line:
+            l.append(line)
+            if len(l) > maxlen:
+                del l[0]
+    f.close()
+    return l
+
+
+if __name__ == "__main__":
+    try:
+        locale.setlocale(locale.LC_ALL, "")
+    except locale.Error:
+        os.environ['LC_ALL'] = 'C'
+        locale.setlocale(locale.LC_ALL, "")
+
+    # Defeat "AttributeError: 'module' object has no attribute 'nl_langinfo'"
+    try:
+        gettext.bind_textdomain_codeset(GETTEXT_PROGNAME,
+                                        locale.nl_langinfo(locale.CODESET))
+    except AttributeError:
+        pass
+
+    gettext.bindtextdomain(GETTEXT_PROGNAME, '/usr/share/locale')
+    gettext.textdomain(GETTEXT_PROGNAME)
+
+    #
+    # So far we only look for Machine Check Exceptions here.
+    #
+
+    # See if MCEs were seen
+    if not file_has_string("dmesg", "Machine check events logged"):
+        sys.exit(0)
+    #
+    # There was an MCE. IOW: it's not a bug, it's a HW error.
+    f = open("not-reportable", "w")
+    f.write("The kernel log indicates that hardware errors were detected.\n");
+    f.write("This is most likely not a software problem.\n");
+    f.close()
+
+    #
+    # Did mcelog logged it to /var/log/mcelog
+    # (RHEL6 by default does this)?
+    if os.path.exists("/var/log/mcelog"):
+        f = open("comment", "w")
+        f.write("The kernel log indicates that hardware errors were detected.\n")
+        f.write("/var/log/mcelog file may have more information.\n")
+        f.write("The last 20 lines of /var/log/mcelog are:\n")
+        f.write("=========================================\n")
+        #tail -n20 /var/log/mcelog 2>&1
+        l = tail_with_search("/var/log/mcelog", "", 20)
+        for line in l:
+            f.write(line)
+        f.close()
+        sys.exit(0)
+    #
+    # On RHEL7, mcelog is run so that its output ends up in syslog.
+    # Do we see that?
+    if file_has_string("/var/log/messages", "mcelog: Hardware event"):
+        f = open("comment", "w")
+        f.write("The kernel log indicates that hardware errors were detected.\n")
+        f.write("System log may have more information.\n")
+        f.write("The last 20 mcelog lines of system log are:\n")
+        f.write("==========================================\n")
+        #grep -Fi 'mcelog:' /var/log/messages | tail -n20 2>&1
+        l = tail_with_search("/var/log/messages", "mcelog:", 20)
+        for line in l:
+            f.write(line)
+        f.close()
+        sys.exit(0)
+    #
+    # Apparently, there is no running mcelog daemon!
+    # Let user know that he needs one.
+    f = open("comment", "w")
+    f.write("The kernel log indicates that hardware errors were detected.\n")
+    f.write("The data was saved by kernel for processing by the mcelog tool.\n")
+    f.write("However, neither /var/log/mcelog nor system log contain mcelog messages.\n")
+    f.write("Most likely reason is that mcelog is not installed or not configured\n")
+    f.write("to be started during boot.\n")
+    f.write("Without this tool running, the binary data saved by kernel\n")
+    f.write("is of limited usefulness.\n")
+    f.write("(You can save this data anyway by running 'cat </dev/mcelog >FILE').\n")
+    f.write("The recommended course of action is to install mcelog.\n")
+    f.write("If another hardware error would occur, a user-readable description\n")
+    f.write("of it will be saved in system log or /var/log/mcelog.\n")
+    f.close()
