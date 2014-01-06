@@ -115,8 +115,29 @@ static const char *const s_koops_suspicious_strings[] = {
      * arch/x86/kernel/cpu/mcheck/p5.c:		"CPU#%d: Machine Check Exception:  0x%8X (type 0x%8X).\n",
      * arch/x86/kernel/cpu/mcheck/mce.c:	pr_emerg(HW_ERR "CPU %d: Machine Check Exception: %Lx Bank %d: %016Lx\n",
      * drivers/edac/sb_edac.c:			printk("CPU %d: Machine Check Exception: %Lx Bank %d: %016Lx\n",
+     *
+     * MCEs can be fatal (they panic kernel) or not.
+     * Fatal MCE are delivered as exception#18 to the CPU.
+     * Non-fatal ones sometimes are delivered as exception#18;
+     * other times they are silently recorded in magic MSRs, CPU is not alerted.
+     * Linux kernel periodically (up to 5 mins interval) reads those MSRs
+     * and if MCE is seen there, it is piped in binary form through
+     * /dev/mcelog to whoever listens on it. (Such as mcelog tool in --daemon
+     * mode; but cat </dev/mcelog would do too).
+     *
+     * "Machine Check Exception:" message is printed *only*
+     * by fatal MCEs (so far, future kernels may be different).
+     * It will be caught as vmcore if kdump is configured.
+     *
+     * Non-fatal MCEs have "[Hardware Error]: Machine check events logged"
+     * message in kernel log.
+     * When /dev/mcelog is read, *no additional kernel log messages appear*:
+     * if we want more readable data, we must rely on other tools
+     * (such as mcelog daemon consuming binary /dev/mcelog and writing
+     * human-readable /var/log/mcelog).
      */
     "Machine Check Exception:",
+    "Machine check events logged",
 
     /* X86 TRAPs */
     "divide error:",
@@ -297,6 +318,16 @@ next_line:
         if (oopsstart >= 0 && !inbacktrace)
         {
             if (strcasestr(curline, "Call Trace:")) /* yes, it must be case-insensitive */
+                inbacktrace = 1;
+            else
+            /* Fatal MCE's have a few lines of useful information between
+             * first "Machine check exception:" line and the final "Kernel panic"
+             * line. Such oops, of course, is only detectable in kdumps (tested)
+             * or possibly pstore-saved logs (I did not try this yet).
+             * In order to capture all these lines, we treat final line
+             * as "backtrace" (which is admittedly a hack):
+             */
+            if (strstr(curline, "Kernel panic - not syncing"))
                 inbacktrace = 1;
             else
             if (strnlen(curline, 9) > 8
