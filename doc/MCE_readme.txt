@@ -70,7 +70,7 @@ echo "Exitcode:$?"
 
 It requires files which describe MCE to simulate. I grabbed a few examples
 from mce-test.tar.gz (source tarball of mce-test project).
-I used this this file to cause a non-fatal MCE:
+I used this file to cause a non-fatal MCE:
 
 CPU 0 BANK 2
 STATUS VAL OVER EN
@@ -84,3 +84,10 @@ RIP 12343434
 MISC 11
 
 (Not sure what failures exactly they imitate, maybe there are better examples).
+
+
+For testing fatal MCEs you need to set up kdump. Mini-recipe:
+(1) yum install --enablerepo='*debuginfo*' kexec-tools crash kernel-debuginfo
+(2) add "crashkernel=128M" to the kernel's command line, reboot
+(3) before injecting fatal MCE, start kdump service:
+    systemctl start kdump.service

@@ -115,7 +115,8 @@ static void save_oops_data_in_dump_dir(struct dump_dir *dd, char *oops, const ch
     char *second_line = (char*)strchr(first_line, '\n'); /* never NULL */
     *second_line++ = '\0';
 
-    dd_save_text(dd, FILENAME_KERNEL, first_line);
+    if (first_line[0])
+        dd_save_text(dd, FILENAME_KERNEL, first_line);
     dd_save_text(dd, FILENAME_BACKTRACE, second_line);
 
     /* check if trace doesn't have line: 'Your BIOS is broken' */
