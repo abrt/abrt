@@ -66,7 +66,7 @@ static void record_oops(GList **oops_list, struct line_info* lines_info, int oop
         {
             *oops_list = g_list_append(
                         *oops_list,
-                        xasprintf("%s\n%s", (version ? version : "undefined"), oops)
+                        xasprintf("%s\n%s", (version ? version : ""), oops)
             );
         }
         else
