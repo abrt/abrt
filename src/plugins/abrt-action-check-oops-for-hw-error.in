@@ -39,6 +39,15 @@ def tail_with_search(filename, string, maxlen):
     return l
 
 
+def open_or_die(filename, mode):
+    try:
+        f = open(filename, mode)
+    except IOError as e:
+        sys.stderr.write(str(e) + "\n")
+        sys.exit(1)
+    return f
+
+
 if __name__ == "__main__":
     try:
         locale.setlocale(locale.LC_ALL, "")
@@ -65,16 +74,18 @@ if __name__ == "__main__":
         sys.exit(0)
     #
     # There was an MCE. IOW: it's not a bug, it's a HW error.
-    f = open("not-reportable", "w")
-    f.write("The kernel log indicates that hardware errors were detected.\n");
-    f.write("This is most likely not a software problem.\n");
+    f = open_or_die("not-reportable", "w")
+    f.write(_(
+                "The kernel log indicates that hardware errors were detected.\n"
+                "This is most likely not a software problem.\n"
+    ))
     f.close()
 
     #
     # Did mcelog logged it to /var/log/mcelog
     # (RHEL6 by default does this)?
     if os.path.exists("/var/log/mcelog"):
-        f = open("comment", "w")
+        f = open_or_die("comment", "w")
         f.write("The kernel log indicates that hardware errors were detected.\n")
         f.write("/var/log/mcelog file may have more information.\n")
         f.write("The last 20 lines of /var/log/mcelog are:\n")
@@ -89,7 +100,7 @@ if __name__ == "__main__":
     # On RHEL7, mcelog is run so that its output ends up in syslog.
     # Do we see that?
     if file_has_string("/var/log/messages", "mcelog: Hardware event"):
-        f = open("comment", "w")
+        f = open_or_die("comment", "w")
         f.write("The kernel log indicates that hardware errors were detected.\n")
         f.write("System log may have more information.\n")
         f.write("The last 20 mcelog lines of system log are:\n")
@@ -103,7 +114,7 @@ if __name__ == "__main__":
     #
     # Apparently, there is no running mcelog daemon!
     # Let user know that he needs one.
-    f = open("comment", "w")
+    f = open_or_die("comment", "w")
     f.write("The kernel log indicates that hardware errors were detected.\n")
     f.write("The data was saved by kernel for processing by the mcelog tool.\n")
     f.write("However, neither /var/log/mcelog nor system log contain mcelog messages.\n")
