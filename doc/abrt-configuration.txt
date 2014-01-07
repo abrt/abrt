@@ -1,0 +1,72 @@
+abrt-configuration(8)
+======================
+
+NAME
+----
+abrt-configuration - dbus server for reading/writing ABRT configuration
+
+SYNOPSIS
+--------
+'abrt-configuration' [-v[v]...] [-t NUM]
+
+DESCRIPTION
+-----------
+'abrt-configuration' allows other programs to read/write ABRT configuration over
+D-Bus.
+
+Normally 'abrt-configuration' is started by D-Bus daemon on demand, and terminates
+after a timeout.
+
+The server listens on 'com.redhat.problem.configuration' address on the system
+bus and exports the configuration as D-Bus objects identified by D-Bus path and
+D-Bus interface. The configuration objects are created from D-BUS Object
+Introspection XML files placed in /usr/share/problems/config/interfaces directory.
+
+Each file must contain exactly one 'node' element with one 'interface' element
+and the interface must contain only 'property' elements. The node element must
+also have both 'com.redhat.problems.configuration.ConfFile' and
+'com.rehdat.problems.configuration.DefaultConfFile' annotations elements which
+provide path to the working configuration file, where the changes are written,
+and to the default configuration file.
+
+'property' elements can also have the path annotations but they must be
+specified both or neither. 'propety's name must be equal to some option from
+the configuration files and its type must be one of the following D-Bus types:
+b,i,s,as.
+
+The server allows all users to read the configuration, but modifications are
+authorized over PolicyKit with 'com.redhat.problem.configuration.update' policy.
+
+Example of the configuration XML file:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+------------
+<node name="/com/redhat/problems/configuration/ccpp">
+    <annotation name="com.redhat.problems.ConfFile" value="/etc/abrt/plugins/CCpp.conf" />
+    <annotation name="com.redhat.problems.DefaultConfFile" value="/usr/share/abrt/conf.d/plugins/CCpp.conf" />
+
+    <interface name="com.redhat.problems.configuration.ccpp">
+        <property name="MakeCompatCore" type="b" access="readwrite"/>
+        <property name="SaveBinaryImage" type="b" access="readwrite"/>
+        <property name="VerboseLog" type="i" access="readwrite"/>
+        <property name="DebuginfoLocation" type="s" access="readwrite"/>
+    </interface>
+</node>
+------------
+
+
+OPTIONS
+-------
+-v::
+   Log more detailed debugging information.
+
+-t NUM::
+   Exit after NUM seconds of inactivity.
+
+AUTHORS
+-------
+* ABRT team
+
+SEE ALSO
+--------
+abrt.conf(5)
