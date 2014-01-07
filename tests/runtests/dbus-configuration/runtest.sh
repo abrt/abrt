@@ -316,7 +316,7 @@ rlJournalStart
         rlAssertEquals "Set 'OpenGPGCheck' value" "_$(confDBusGetProperty abrt OpenGPGCheck)" "_false"
         rlRun "confDBusSetPropertyDefault abrt OpenGPGCheck" 0
         rlAssertEquals "Reset 'OpenGPGCheck' value" "_$(confDBusGetProperty abrt OpenGPGCheck)" "_true"
-    rlPhaseEend
+    rlPhaseEnd
 
     rlPhaseStartTest "Empty Int32 Value from non-default file"
         rlAssertEquals "Get 'VerboseLog' value" "_$(confDBusGetProperty ccpp VerboseLog)" "_"
@@ -324,7 +324,34 @@ rlJournalStart
         rlAssertEquals "Set 'VerboseLog' value" "_$(confDBusGetProperty ccpp VerboseLog)" "_3"
         rlRun "confDBusSetPropertyDefault ccpp VerboseLog" 0
         rlAssertEquals "Reset 'VerboseLog' value" "_$(confDBusGetProperty ccpp VerboseLog)" "_"
-    rlPhaseEend
+    rlPhaseEnd
+
+    rlPhaseStartTest "Read/Write Python configuration"
+        rlAssertEquals "Get 'RequireAbsolutePath' value" "_$(confDBusGetProperty python RequireAbsolutePath)" "_"
+        rlRun "confDBusSetProperty python RequireAbsolutePath boolean False" 0
+        rlAssertEquals "Set 'RequireAbsolutePath' value" "_$(confDBusGetProperty python RequireAbsolutePath)" "_false"
+        rlRun "confDBusSetPropertyDefault python RequireAbsolutePath" 0
+        rlAssertEquals "Reset 'RequireAbsolutePath' value" "_$(confDBusGetProperty python RequireAbsolutePath)" "_"
+    rlPhaseEnd
+
+    rlPhaseStartTest "Read/Write VMcore configuration"
+        rlAssertEquals "Get 'CopyVMcore' value" "_$(confDBusGetProperty vmcore CopyVMcore)" "_true"
+        rlRun "confDBusSetProperty vmcore CopyVMcore boolean False" 0
+        rlAssertEquals "Set 'CopyVMcore' value" "_$(confDBusGetProperty vmcore CopyVMcore)" "_false"
+        rlRun "confDBusSetPropertyDefault vmcore CopyVMcore" 0
+        rlAssertEquals "Reset 'CopyVMcore' value" "_$(confDBusGetProperty vmcore CopyVMcore)" "_true"
+    rlPhaseEnd
+
+    rlPhaseStartTest "Read/Write XOrg configuration"
+        rlAssertEquals "Get 'BlacklistedXorgModules' value" "_$(confDBusGetProperty xorg BlacklistedXorgModules)" \
+            '_[ string "nvidia" string "fglrx" string "vboxvideo" ]'
+        rlRun "confDBusSetProperty xorg BlacklistedXorgModules array:string '[\"foo\",\"blah\",\"panda\"]'" 0
+        rlAssertEquals "Get 'BlacklistedXorgModules' value" "_$(confDBusGetProperty xorg BlacklistedXorgModules)" \
+            '_[ string "foo" string "blah" string "panda" ]'
+        rlRun "confDBusSetPropertyDefault xorg BlacklistedXorgModules" 0
+        rlAssertEquals "Get 'BlacklistedXorgModules' value" "_$(confDBusGetProperty xorg BlacklistedXorgModules)" \
+            '_[ string "nvidia" string "fglrx" string "vboxvideo" ]'
+    rlPhaseEnd
 
     rlPhaseStartCleanup
     rlPhaseEnd
