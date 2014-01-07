@@ -1,0 +1,16 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+
+<node>
+    <interface name="com.redhat.problems.configuration">
+        <method name="SetDefault">
+            <arg name="name" type="s" direction="in" />
+        </method>
+        <!--
+        <signal name="OptionChanged">
+            <arg name="name" type="s" direction="in" />
+            <arg name="value" type="v" direction="in" />
+        </signal>
+        -->
+    </interface>
+</node>

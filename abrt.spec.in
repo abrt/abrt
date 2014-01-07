@@ -849,10 +849,16 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files dbus
 %defattr(-,root,root,-)
 %{_sbindir}/abrt-dbus
+%{_sbindir}/abrt-configuration
 %{_mandir}/man8/abrt-dbus.8.gz
+%{_mandir}/man8/abrt-configuration.8.gz
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
 %{_datadir}/dbus-1/interfaces/org.freedesktop.Problems.xml
+%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.xml
+%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.abrt.xml
+%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.ccpp.xml
 %{_datadir}/dbus-1/system-services/org.freedesktop.problems.service
+%{_datadir}/dbus-1/system-services/com.redhat.problems.configuration.service
 %{_datadir}/polkit-1/actions/abrt_polkit.policy
 %dir %{_defaultdocdir}/%{name}-dbus%{docdirversion}/
 %dir %{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/
