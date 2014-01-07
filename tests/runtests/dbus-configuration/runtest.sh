@@ -311,11 +311,11 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "Boolean from non-default file"
-        rlAssertEquals "Get 'OpenGPGCheck' value" "_$(confDBusGetProperty abrt OpenGPGCheck)" "_true"
-        rlRun "confDBusSetProperty abrt OpenGPGCheck boolean False" 0
-        rlAssertEquals "Set 'OpenGPGCheck' value" "_$(confDBusGetProperty abrt OpenGPGCheck)" "_false"
-        rlRun "confDBusSetPropertyDefault abrt OpenGPGCheck" 0
-        rlAssertEquals "Reset 'OpenGPGCheck' value" "_$(confDBusGetProperty abrt OpenGPGCheck)" "_true"
+        rlAssertEquals "Get 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_false"
+        rlRun "confDBusSetProperty abrt ProcessUnpackaged boolean True" 0
+        rlAssertEquals "Set 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_true"
+        rlRun "confDBusSetPropertyDefault abrt ProcessUnpackaged" 0
+        rlAssertEquals "Reset 'ProcessUnpackaged' value" "_$(confDBusGetProperty abrt ProcessUnpackaged)" "_false"
     rlPhaseEnd
 
     rlPhaseStartTest "Empty Int32 Value from non-default file"
