@@ -1,0 +1,11 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+
+<node name="/com/redhat/problems/configuration/xorg">
+    <annotation name="com.redhat.problems.ConfFile" value="/etc/abrt/plugins/xorg.conf" />
+    <annotation name="com.redhat.problems.DefaultConfFile" value="/usr/share/abrt/conf.d/plugins/xorg.conf" />
+
+    <interface name="com.redhat.problems.configuration.xorg">
+        <property name="BlacklistedXorgModules" type="as" access="readwrite" />
+    </interface>
+</node>
