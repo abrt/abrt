@@ -100,11 +100,7 @@ static void ParseCommon(map_string_t *settings, const char *conf_filename)
         remove_map_string_item(settings, "ShortenedReporting");
     }
     else
-    {
-        /* Default: enabled for GNOME desktop, else disabled */
-        const char *desktop_env = getenv("DESKTOP_SESSION");
-        g_settings_shortenedreporting = (desktop_env && strcasestr(desktop_env, "gnome") != NULL);
-    }
+        g_settings_shortenedreporting = 0;
 
     GHashTableIter iter;
     const char *name;
