@@ -60,7 +60,7 @@ static bool no_pkgcheck;
 
 static struct https_cfg cfg =
 {
-    .url = "retrace.fedoraproject.org",
+    .url = "localhost",
     .port = 443,
     .ssl_allow_insecure = false,
 };
