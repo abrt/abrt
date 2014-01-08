@@ -880,6 +880,26 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Wed Jan 08 2014 Jakub Filak <jfilak@redhat.com> 2.1.11-1
+- Update translations
+- spec: add python-augeas to the requires
+- harvest_vmcore: replace regexp config parsing with augeas
+- spec: install python, vmcore and xorg conf ifaces
+- add configuration ifaces for python, xorg and vmcore
+- spec: install D-Bus Configuration files
+- introduce D-Bus Configuration Service
+- mark koopses with unsupporeted HW as not-reportable
+- cli: print autoreporting notification to stderr
+- make rpm: add $RPM_FLAGS aux variable
+- bodhi: use the right exit codes
+- abrt-handle-event: don't use already freed memory
+- spec: install abrt-auto-reporting files
+- introduce abrt-auto-reporting utility
+- abrt-action-notify: fix couple of flaws
+- Use satyr to compute koops duphash
+- koops: tweak koops parser for s390 Call Traces
+- configui: do not use deprecated gtk3 API
+
 * Wed Dec 11 2013 Jakub Filak <jfilak@redhat.com> 2.1.10-1
 - make: filter out useless msgs in chagelog gen alg
 - abrt-cli: display URL to reports in the details
