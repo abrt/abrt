@@ -24,6 +24,15 @@
 #define CLOSE_BUTTON_DATA_NAME_USER_DATA "my-close-user-data"
 
 static void
+system_config_abrt_close_btn_cb(GtkButton *button, gpointer user_data)
+{
+    system_config_abrt_widget_close_callback callback = g_object_get_data(G_OBJECT(button), CLOSE_BUTTON_DATA_NAME_CALLBACK);
+    gpointer callback_user_data = g_object_get_data(G_OBJECT(button), CLOSE_BUTTON_DATA_NAME_USER_DATA);
+
+    callback(callback_user_data);
+}
+
+static void
 system_config_abrt_defaults_cb(GtkButton *button, gpointer user_data)
 {
     AbrtConfigWidget *config = ABRT_CONFIG_WIDGET(user_data);
@@ -31,6 +40,12 @@ system_config_abrt_defaults_cb(GtkButton *button, gpointer user_data)
 }
 
 GtkWidget *system_config_abrt_widget_new(void)
+{
+    return system_config_abrt_widget_new_with_close_button(/*no close button*/NULL,
+                                                           /*no user data*/NULL);
+}
+
+GtkWidget *system_config_abrt_widget_new_with_close_button(system_config_abrt_widget_close_callback close_cb, gpointer user_data)
 {
     GtkBox *box = GTK_BOX(gtk_box_new(GTK_ORIENTATION_VERTICAL, /*spacing*/0));
 
@@ -55,6 +70,17 @@ GtkWidget *system_config_abrt_widget_new(void)
     gtk_widget_set_margin_top(buttons, 10);
     gtk_widget_set_margin_bottom(buttons, 10);
 
+    if (close_cb != NULL)
+    {
+        GtkWidget *btn_close = gtk_button_new_with_mnemonic(_("_Close"));
+        gtk_box_pack_end(GTK_BOX(buttons), btn_close, /*expand*/FALSE, /*fill*/FALSE, /*padding*/0);
+
+        g_object_set_data(G_OBJECT(btn_close), CLOSE_BUTTON_DATA_NAME_CALLBACK, close_cb);
+        g_object_set_data(G_OBJECT(btn_close), CLOSE_BUTTON_DATA_NAME_USER_DATA, user_data);
+
+        g_signal_connect(btn_close, "clicked", G_CALLBACK(system_config_abrt_close_btn_cb), /*user_data*/NULL);
+    }
+
     GtkWidget *btn_defaults = gtk_button_new_with_mnemonic(_("_Defaults"));
     gtk_box_pack_start(GTK_BOX(buttons), btn_defaults, /*expand*/FALSE, /*fill*/FALSE, /*padding*/0);
     g_signal_connect(btn_defaults, "clicked", G_CALLBACK(system_config_abrt_defaults_cb), config);
@@ -62,6 +88,19 @@ GtkWidget *system_config_abrt_widget_new(void)
     gtk_widget_show_all(buttons);
 
     return GTK_WIDGET(box);
+}
+
+static void
+system_config_abrt_dialog_close_cb(gpointer user_data)
+{
+    gtk_widget_destroy(GTK_WIDGET(user_data));
+}
+
+static gboolean
+system_config_abrt_dialog_delete_event(GtkWidget *dialog, GdkEvent *event, gpointer user_data)
+{
+    system_config_abrt_dialog_close_cb(dialog);
+    return TRUE; /*do not propagate the event*/
 }
 
 void show_system_config_abrt_dialog(GtkWindow *parent)
@@ -79,8 +118,12 @@ void show_system_config_abrt_dialog(GtkWindow *parent)
         gtk_window_set_destroy_with_parent(GTK_WINDOW(dialog), TRUE);
     }
 
+    /* Have to handle this signal, which is emitted on Esc or Alt+F4, otherwise */
+    /* the user must commit the action twice to take effect. */
+    g_signal_connect(dialog, "delete-event", G_CALLBACK(system_config_abrt_dialog_delete_event), /*user_data*/NULL);
+
     GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-    GtkWidget *sca = system_config_abrt_widget_new();
+    GtkWidget *sca = system_config_abrt_widget_new_with_close_button(system_config_abrt_dialog_close_cb, dialog);
     gtk_box_pack_start(GTK_BOX(content), sca, /*expand*/TRUE, /*fill*/TRUE, /*padding*/0);
 
     gtk_widget_show_all(content);
