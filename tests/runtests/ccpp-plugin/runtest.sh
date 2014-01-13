@@ -41,10 +41,11 @@ rlJournalStart
         rlRun "ulimit -c unlimited" 0
 
         TmpDir=$(mktemp -d)
+        cp verify_core_backtrace.py $TmpDir
         pushd $TmpDir
     rlPhaseEnd
 
-    rlPhaseStartTest
+    rlPhaseStartTest "CCpp plugin works"
         generate_crash
         get_crash_path
         wait_for_hooks
@@ -57,10 +58,19 @@ rlJournalStart
         rlAssertGrep "/bin/will_segfault" "$crash_PATH/core_backtrace"
     rlPhaseEnd
 
+    rlPhaseStartTest "core_backtrace contents"
+        generate_crash
+        get_crash_path
+        wait_for_hooks
+
+        rlAssertExists "$crash_PATH/core_backtrace"
+        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace 2>&1 > verify_result" 0
+    rlPhaseEnd
+
     rlPhaseStartCleanup
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
         rlRun "ulimit -c $old_ulimit" 0
-        rlBundleLogs abrt $(echo *_ls)
+        rlBundleLogs abrt $(echo *_ls) verify_result
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd
