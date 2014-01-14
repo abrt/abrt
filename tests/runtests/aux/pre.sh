@@ -51,3 +51,7 @@ if [ "${DISABLE_NOAUDIT}" = "1" ]; then
     # turn off noaudit
     semodule -DB
 fi
+
+if [ "${DISABLE_AUTOREPORTING}" = "1" ]; then
+    which abrt-auto-reporting && abrt-auto-reporting disabled
+fi

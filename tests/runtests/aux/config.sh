@@ -28,6 +28,7 @@ export UPDATE_SYSTEM=0
 export UPDATE_PACKAGES=0
 export DISABLE_NOAUDIT=0
 export DISABLE_GPGCHECK=0
+export DISABLE_AUTOREPORTING=1
 export STORE_CONFIGS=1
 
 # - mailx script config -

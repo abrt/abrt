@@ -109,6 +109,7 @@ rlJournalStart
     rpPhaseEnd
 
     rlPhaseStartCleanup
+        rlRun "abrt-auto-reporting disabled"
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd
