@@ -28,6 +28,10 @@ if [ "${DISABLE_GPGCHECK}" = "1" ]; then
         /etc/abrt/abrt-action-save-package-data.conf
 fi
 
+if [ "${DISABLE_AUTOREPORTING}" = "1" ]; then
+    which abrt-auto-reporting && abrt-auto-reporting disabled
+fi
+
 if [ "${STORE_CONFIGS}" = "1" ]; then
     echo 'STORE_CONFIGS set'
     rm -rf /tmp/abrt-config/
@@ -50,8 +54,4 @@ fi
 if [ "${DISABLE_NOAUDIT}" = "1" ]; then
     # turn off noaudit
     semodule -DB
-fi
-
-if [ "${DISABLE_AUTOREPORTING}" = "1" ]; then
-    which abrt-auto-reporting && abrt-auto-reporting disabled
 fi
