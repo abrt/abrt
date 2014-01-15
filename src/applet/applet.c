@@ -890,7 +890,6 @@ static void notify_problem_list(GList *problems, int flags)
                 NOTIFY_ACTION_CALLBACK(action_ignore),
                 pi, NULL);
 
-        free(notify_body);
         notify_body = build_message(pi);
 
         pi->was_announced = true;
@@ -950,7 +949,7 @@ static void notify_problem_list(GList *problems, int flags)
                     {
                         problem_info_free(pi);
                         g_object_unref(notification);
-                        continue;
+                        goto next_problem_to_notify;
                     }
 
                     notify_notification_update(notification, _("A Problem has been Reported"), notify_body, NULL);
@@ -965,7 +964,6 @@ static void notify_problem_list(GList *problems, int flags)
                 }
             }
         }
-        free(notify_body);
 
         GError *err = NULL;
         log_debug("Showing a notification");
@@ -975,6 +973,10 @@ static void notify_problem_list(GList *problems, int flags)
             error_msg(_("Can't show notification: %s"), err->message);
             g_error_free(err);
         }
+
+next_problem_to_notify:
+        free(notify_body);
+        notify_body = NULL;
     }
 
     g_list_free(problems);
