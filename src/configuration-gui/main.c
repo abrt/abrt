@@ -22,6 +22,12 @@
 
 #define APP_NAME "System Config ABRT"
 
+static void
+system_config_abrt_window_close_cb(gpointer user_data)
+{
+    gtk_widget_destroy(GTK_WIDGET(user_data));
+}
+
 static GtkWidget *
 system_config_abrt_window_new(GApplication *app)
 {
@@ -29,7 +35,9 @@ system_config_abrt_window_new(GApplication *app)
     gtk_window_set_default_size(GTK_WINDOW(wnd), 500, 300);
     gtk_window_set_title(GTK_WINDOW(wnd), _("Problem Reporting Configuration"));
 
-    GtkWidget *sca = system_config_abrt_widget_new();
+    GtkWidget *sca = system_config_abrt_widget_new_with_close_button(
+                                    system_config_abrt_window_close_cb, wnd);
+
     gtk_container_add(GTK_CONTAINER(wnd), sca);
 
     return wnd;
