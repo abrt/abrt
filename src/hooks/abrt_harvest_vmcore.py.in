@@ -17,6 +17,18 @@ import augeas
 import problem
 
 
+def get_augeas(module, file_path):
+    """
+    A function for efficient configuration of Augeas.
+    Augeas modules are placed in /usr/share/augeas/lenses/dist
+    """
+
+    aug_obj = augeas.Augeas(flags=augeas.Augeas.NO_MODL_AUTOLOAD)
+    aug_obj.set("/augeas/load/{0}/lens".format(module), "{0}.lns".format(module))
+    aug_obj.set("/augeas/load/{0}/incl".format(module), file_path)
+    aug_obj.load()
+    return aug_obj
+
 def get_mount_point(part_id):
     """
     A function used to look up a mount point in mtab using
@@ -26,7 +38,7 @@ def get_mount_point(part_id):
     """
 
     # look up the identifier in /etc/mtab
-    result = augeas.Augeas().get("/files/etc/mtab/*"
+    result = get_augeas("Fstab", "/etc/mtab").get("/files/etc/mtab/*"
                                  "[spec=\"" + part_id + "\"]/file")
     if result:
         return result
@@ -53,7 +65,7 @@ def parse_kdump():
                          "default path '%s'\n" % dump_path)
         return dump_path
 
-    aug_obj = augeas.Augeas()
+    aug_obj = get_augeas("Kdump", "/etc/kdump.conf")
     # check for path variable in kdump.conf
     kdump_path = aug_obj.get("/files/etc/kdump.conf/path")
     if kdump_path:
