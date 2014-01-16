@@ -97,7 +97,8 @@ static bool ignored_problems_file_contains(ignored_problems_t *set,
     FILE *fp = fopen(set->ign_set_file_path, mode);
     if (!fp)
     {
-        pwarn_msg("Can't open ignored problems '%s' in mode '%s'", set->ign_set_file_path, mode);
+        if (errno != ENOENT)
+            pwarn_msg("Can't open ignored problems '%s' in mode '%s'", set->ign_set_file_path, mode);
         goto ret_contains_end;
     }
 
