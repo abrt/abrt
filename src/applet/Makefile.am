@@ -9,6 +9,7 @@ abrt_applet_CPPFLAGS = \
     -DBIN_DIR=\"$(bindir)\" \
     -DLIBEXEC_DIR=\"$(libexecdir)\" \
     -DICON_DIR=\"${datadir}/abrt/icons/hicolor/48x48/status\" \
+    -DLIBREPORT_PLUGINS_CONF_DIR=\"$(LIBREPORT_PLUGINS_CONF_DIR)\" \
     $(XICE_CFLAGS) \
     $(XSMP_CFLAGS) \
     $(GTK_CFLAGS) \
