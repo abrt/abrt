@@ -90,6 +90,27 @@ static bool is_autoreporting_enabled(void)
     return get_configured_bool_or_default("AutoreportingEnabled", g_settings_autoreporting);
 }
 
+static bool is_ureport_auth_enabled(void)
+{
+    bool success, auth_enabled;
+    map_string_t *settings = new_map_string();
+    char *ureport_conf_path = concat_path_file(LIBREPORT_PLUGINS_CONF_DIR, "ureport.conf");
+
+    success = load_conf_file(ureport_conf_path, settings, /*skipKeysWithoutValue*/false);
+    if (success)
+    {
+        const char *value = get_map_string_item_or_NULL(settings, "SSLClientAuth");
+        auth_enabled = (value && value[0] != '\0');
+    }
+    else
+        auth_enabled = true; /* assume it is, do not claim the reporting is anonymous */
+
+    free(ureport_conf_path);
+    free_map_string(settings);
+
+    return auth_enabled;
+}
+
 static const char *get_autoreport_event_name(void)
 {
     load_user_settings("abrt-applet");
@@ -99,14 +120,28 @@ static const char *get_autoreport_event_name(void)
 
 static void ask_start_autoreporting()
 {
+    struct strbuf *question = strbuf_new();
+    question = strbuf_append_str(question,
+         _("The report which will be sent does not contain any security sensitive data. "
+           "Therefore it is not necessary to bother you next time and require any further action by you. \n"));
+
+    if (is_ureport_auth_enabled())
+    {
+        question = strbuf_append_str(question,
+            _("Do you want to enable automatically submitted crash reports?"));
+    }
+    else
+    {
+        question = strbuf_append_str(question,
+            _("Do you want to enable automatically submitted anonymous crash reports?"));
+    }
+
     /* The "Yes" response will be saved even if user don't check the
      * "Don't ask me again" box.
      */
-    const int ret = run_ask_yes_no_save_result_dialog("AutoreportingEnabled",
-     _("The report which will be sent does not contain any security sensitive data. "
-       "Therefore it is not necessary to bother you next time and require any further action by you. "
-       "\nDo you want to enable automatically submitted anonymous crash reports?"),
+    const int ret = run_ask_yes_no_save_result_dialog("AutoreportingEnabled", question->buf,
        /*parent wnd */ NULL);
+    strbuf_free(question);
 
     load_user_settings("abrt-applet");
 
