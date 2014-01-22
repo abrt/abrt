@@ -15,7 +15,8 @@ abrt_cli_SOURCES = $(CLI_C) $(BUILTIN_C) builtin-cmd.h abrt-cli-core.h
 abrt_cli_CFLAGS = \
 	-I$(srcdir)/../include \
 	-I$(srcdir)/../lib \
-	$(LIBREPORT_CFLAGS)
+	$(LIBREPORT_CFLAGS) \
+	-DWORKFLOWS_DIR=\"${WORKFLOWS_DIR}\"
 
 if SUGGEST_AUTOREPORTING
 abrt_cli_CFLAGS += -DSUGGEST_AUTOREPORTING=1
