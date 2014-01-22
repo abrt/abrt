@@ -51,6 +51,37 @@ static void print_crash(problem_data_t *problem_data, int detailed)
                             /*names_to_skip:*/ NULL,
                             /*max_text_size:*/ CD_TEXT_ATT_SIZE_BZ,
                             MAKEDESC_SHOW_ONLY_LIST | MAKEDESC_SHOW_URLS);
+
+        /*
+         * If the problem is reportable and has not yet been reported into RHTS
+         * and there is at least one applicable Workflow which contains
+         * 'report_RHTSupport' event, then append a short message informing
+         * user that he can create a new case in Red Hat Customer Portal.
+         */
+        const char *const not_reportable =  get_problem_item_content_or_NULL(problem_data, FILENAME_NOT_REPORTABLE);
+        const char *const reported_to    =  not_reportable            ? NULL : get_problem_item_content_or_NULL(problem_data, FILENAME_REPORTED_TO);
+        report_result_t *const report    = !reported_to               ? NULL : find_in_reported_to_data(reported_to, "RHTSupport");
+
+        if (!not_reportable && !report)
+        {
+            /* The lines below should be replaced by something simpler, I'd
+             * like to see:
+             * GHashTable *possible_worfklows = load_applicable_workflows_for_dump();
+             *
+             * However, this feature (rhbz#1055565) is intended for RHEL only
+             * and I'm not sure whether it's worth to file another bug against
+             * libreport and try to improve libreport public API.
+             */
+            const char *const dump_dir_name = get_problem_item_content_or_NULL(problem_data, CD_DUMPDIR);
+            char *event_names = list_possible_events(NULL, dump_dir_name, "report_RHTSupport");
+            if (event_names != NULL && strlen(event_names) != 0)
+            {
+                char *tmp = xasprintf(_("%sRun 'abrt-cli report %s' for creating a case in Red Hat Customer Portal\n"), desc, dump_dir_name);
+                free(desc);
+                desc = tmp;
+            }
+            free(event_names);
+        }
     }
     fprintf(stdout, "%s", desc);
     free(desc);
