@@ -95,3 +95,15 @@ function prepare() {
     rm -f -- $ABRT_CONF_DUMP_LOCATION/last-ccpp
     rm -f "/tmp/abrt-done"
 }
+
+# should be faster than "sleep 1"
+function wait_for_server() {
+    PORT=$1
+
+    for I in `seq 100`; do
+        if nc -4 localhost $PORT </dev/null &>/dev/null; then
+            break
+        fi
+        sleep 0.01
+    done
+}
