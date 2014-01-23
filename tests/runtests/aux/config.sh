@@ -62,4 +62,5 @@ export PACKAGES="abrt \
                  libreport-plugin-mailx \
                  libreport-plugin-ureport \
                  libreport-plugin-logger \
+                 satyr \
                  will-crash"
