@@ -283,6 +283,7 @@ Requires: abrt-addon-ccpp
 Requires: abrt-addon-python
 Requires: abrt-addon-xorg
 %if 0%{?rhel}
+Requires: libreport-rhel >= %{libreport_ver}
 Requires: libreport-plugin-rhtsupport >= %{libreport_ver}
 %else
 Requires: abrt-retrace-client
@@ -294,6 +295,9 @@ Requires: libreport-plugin-bugzilla >= %{libreport_ver}
 %endif
 Requires: libreport-plugin-logger >= %{libreport_ver}
 Requires: libreport-plugin-ureport >= %{libreport_ver}
+%if 0%{?fedora}
+Requires: libreport-fedora >= %{libreport_ver}
+%endif
 %endif
 
 %description cli
