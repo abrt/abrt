@@ -275,11 +275,21 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "Boolean"
-        rlAssertEquals "Get 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_false"
-        rlRun "confDBusSetProperty abrt AutoreportingEnabled boolean True" 0
-        rlAssertEquals "Set 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_true"
+        if [ "xenabled" == "x$(abrt-auto-reporting)" ]; then
+            DEFAULT="true"
+            SETTO="False"
+            MODIFIED="false"
+        else
+            DEFAULT="false"
+            SETTO="True"
+            MODIFIED="true"
+        fi
+
+        rlAssertEquals "Get 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_$DEFAULT"
+        rlRun "confDBusSetProperty abrt AutoreportingEnabled boolean $SETTO" 0
+        rlAssertEquals "Set 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_$MODIFIED"
         rlRun "confDBusSetPropertyDefault abrt AutoreportingEnabled" 0
-        rlAssertEquals "Reset 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_false"
+        rlAssertEquals "Reset 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_$DEFAULT"
     rlPhaseEnd
 
     rlPhaseStartTest "String"
