@@ -50,7 +50,7 @@ function confDBusSetPropertyDefault() {
 function confDBusGetProperty() {
     dbus-send --system --type=method_call --print-reply \
               --dest=com.redhat.problems.configuration /com/redhat/problems/configuration/$1 org.freedesktop.DBus.Properties.Get \
-              string:"com.redhat.problems.configuration.$1" string:$2 | sed 1d | tr "\n" " " | tr -s " " | cut -f 4- -d ' '
+              string:"com.redhat.problems.configuration.$1" string:$2 | sed 1d | tr -d "\n" | tr -s " " | cut -f 4- -d ' '
 }
 
 rlJournalStart
