@@ -216,17 +216,22 @@ if __name__ == "__main__":
                 format(DIR_PATH, ex.message))
         sys.exit(RETURN_FAILURE)
 
+    # The execution must continue because we should try to notify via all
+    # configured channels. One of them might work properly.
+    return_status = RETURN_OK
     try:
         emit_crash_dbus_signal(PD)
     except RuntimeError as ex:
-        sys.stderr.write("Cannot notify '{0}': {1}\n".
+        sys.stderr.write("Cannot notify '{0}' via D-Bus: {1}\n".
                 format(DIR_PATH, ex.message))
-        sys.exit(RETURN_FAILURE)
+        return_status = RETURN_FAILURE
     except KeyError as ex:
         # this is a bug in build_notification_problem_data()
         sys.stderr.write("BUG: problem data misses required element '{0}'"
-                .format(ex.message))
-        sys.exit(RETURN_FAILURE)
+                         " required for D-Bus notification\n"
+                         .format(ex.message))
+
+        return_status = RETURN_FAILURE
 
     if OPTIONS.autoreporting or conf.get("AutoreportingEnabled", "no") == "yes":
         event_name = OPTIONS.autoreporting_event
@@ -234,20 +239,23 @@ if __name__ == "__main__":
             if "AutoreportingEvent" in conf:
                 event_name = conf["AutoreportingEvent"]
             else:
-                sys.stderr.write("Autoreporting event is not configured")
-                sys.exit(RETURN_FAILURE)
+                sys.stderr.write("Autoreporting event is not configured\n")
+                return_status = RETURN_FAILURE
 
-        try:
-            run_autoreport(PD, event_name)
-        except RuntimeError as ex:
-            sys.stderr.write("Cannot notify '{0}': {1}\n".
-                    format(DIR_PATH, ex.message))
-            sys.exit(RETURN_FAILURE)
-        except KeyError as ex:
-            # this is a bug in build_notification_problem_data()
-            sys.stderr.write("BUG: problem data misses required element '{0}'"
-                    .format(ex.message))
-            sys.exit(RETURN_FAILURE)
+        if event_name:
+            try:
+                run_autoreport(PD, event_name)
+            except RuntimeError as ex:
+                sys.stderr.write("Cannot notify '{0}' via uReport: {1}\n".
+                        format(DIR_PATH, ex.message))
+                return_status = RETURN_FAILURE
+            except KeyError as ex:
+                # this is a bug in build_notification_problem_data()
+                sys.stderr.write(
+                    "BUG: problem data misses required element '{0}'"
+                    " required for uReport notification\n".format(ex.message))
 
-    sys.exit(RETURN_OK)
+                return_status = RETURN_FAILURE
+
+    sys.exit(return_status)
 
