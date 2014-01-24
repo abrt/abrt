@@ -38,18 +38,21 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
+        prepare
+
         rlLog "Creating problem data."
         dbus-send --system --type=method_call --print-reply \
           --dest=org.freedesktop.problems /org/freedesktop/problems \
           org.freedesktop.problems.NewProblem \
           dict:string:string:analyzer,libreport,reason,"Testing crash",backtrace,"die()",executable,"/usr/bin/true"
-        cd /var/tmp/abrt/libreport*
-        rlLog "Waiting few seconds."
-        sleep 2s
+
+        wait_for_hooks
+
+        rlRun "cd /var/tmp/abrt/libreport*"
         rlLog "Removing count file and restarting abrtd"
-        rm -f count
-        systemctl restart abrtd.service
-        sleep 2s
+        rlRun "rm -f count"
+        rlRun "systemctl restart abrtd"
+        sleep 4s
         rlLog "Abrtd should recognize the problem and add a 'not-reportable file'"
         rlAssertExists not-reportable
     rlPhaseEnd

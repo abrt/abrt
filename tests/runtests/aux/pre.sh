@@ -21,6 +21,8 @@ fi
 cat > /etc/libreport/events.d/test_event.conf << _EOF_
 EVENT=notify
         touch /tmp/abrt-done
+EVENT=notify-dup
+        touch /tmp/abrt-done
 _EOF_
 
 if [ "${DISABLE_GPGCHECK}" = "1" ]; then

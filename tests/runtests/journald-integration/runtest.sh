@@ -38,15 +38,18 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
+        prepare
+
         rlLog "Creating crash data."
         rlRun "sleep 1000 &" 0 "Running 'sleep' process"
         rlRun "kill -s SIGSEGV %%" 0 "Kill running process"
-        cd /var/tmp/abrt/ccpp*
 
-        sleep 3s
+        wait_for_hooks
+
+        rlRun "cd /var/tmp/abrt/ccpp*"
 
         rlLog "check if we are running a compatible systemd version"
-        if ! journalctl --system >/dev/null
+        if ! journalctl --system -n1 >/dev/null
         then
             rlLog "journald does not have '--system' argument, using /var/log/messages instead"
             rlAssertExists var_log_messages

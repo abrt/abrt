@@ -168,31 +168,32 @@ rlJournalStart
         export -f abrtDBusDelElement
         export -f abrtDBusGetElement
         # Set limit to 1Midk
-        rlRun "cp /etc/abrt/abrt.conf /etc/abrt/abrt.conf.bak" 0 "Create a backup of abrt configuration"
-        rlRun "sed 's,^.*MaxCrashReportsSize.*=.*$,MaxCrashReportsSize=1,' -i /etc/abrt/abrt.conf" 0 "Set limit for crash reports to 1MiB"
+        rlRun "OLDCRASHSIZE=\"$(augtool print /files/etc/abrt/abrt.conf/MaxCrashReportsSize | tr -d '=\"')\"" 0 "Create a backup of abrt configuration"
+        rlRun "augtool set /files/etc/abrt/abrt.conf/MaxCrashReportsSize 1" 0 "Set limit for crash reports to 1MiB"
         rlRun "systemctl restart abrtd.service" 0 "Restart abrt service"
 
         load_abrt_conf
-
+        prepare
         rlLog "Create a problem data as the root user"
         roots_problem=`abrtDBusNewProblem deleted,to_be_deleted,changed,to_be_changed`
         if echo $roots_problem | grep -s "org.freedesktop.problems.Failure"; then
           rlDie "Create problem failed"
         fi
 
-        sleep 5
+        wait_for_hooks
         roots_problem_path="$(abrt-cli list $ABRT_CONF_DUMP_LOCATION | awk -v id=$roots_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$roots_problem_path" ]; then
             rlDie "Not found path"
         fi
 
+        prepare
         rlLog "Create a problem data as the unprivileged user"
         unprivilegeds_problem=`su abrtdbustestone -c 'abrtDBusNewProblem deleted,to_be_deleted,changed,to_be_changed'`
         if echo $unprivilegeds_problem | grep -s "org.freedesktop.problems.Failure"; then
           rlDie "Create problem failed"
         fi
 
-        sleep 5
+        wait_for_hooks
         unprivilegeds_problem_path="$(abrt-cli list $ABRT_CONF_DUMP_LOCATION | awk -v id=$unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$unprivilegeds_problem_path" ]; then
             rlDie "Not found path"
@@ -229,37 +230,40 @@ rlJournalStart
         rlRun "rm -rf $ABRT_CONF_DUMP_LOCATION/*" 0 "Clean the dump location"
         rlRun "systemctl start abrtd.service" 0 "Start abrtd after cleaning of the dump location"
 
+        prepare
         rlLog "Create a problem data as the root user"
         roots_problem=`abrtDBusNewProblem`
         if echo $roots_problem | grep -s "org.freedesktop.problems.Failure"; then
           rlDie "Create problem failed"
         fi
 
-        sleep 5
+        wait_for_hooks
         roots_problem_path="$(abrt-cli list $ABRT_CONF_DUMP_LOCATION | awk -v id=$roots_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$roots_problem_path" ]; then
             rlDie "Not found path problem path"
         fi
 
+        prepare
         rlLog "Create a problem data as the unprivileged user"
         unprivilegeds_problem=`su abrtdbustestone -c 'abrtDBusNewProblem'`
         if echo $unprivilegeds_problem | grep -s "org.freedesktop.problems.Failure"; then
           rlDie "Create problem failed"
         fi
 
-        sleep 5
+        wait_for_hooks
         unprivilegeds_problem_path="$(abrt-cli list $ABRT_CONF_DUMP_LOCATION | awk -v id=$unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$unprivilegeds_problem_path" ]; then
             rlDie "Not found path problem path"
         fi
 
+        prepare
         rlLog "Create a problem data as the unprivileged user"
         second_unprivilegeds_problem=`su abrtdbustestone -c 'abrtDBusNewProblem'`
         if echo $second_unprivilegeds_problem | grep -s "org.freedesktop.problems.Failure"; then
           rlDie "Create problem failed"
         fi
 
-        sleep 5
+        wait_for_hooks
         second_unprivilegeds_problem_path="$(abrt-cli list $ABRT_CONF_DUMP_LOCATION | awk -v id=$second_unprivilegeds_problem '$0 ~ "Directory:.*"id { print $2 }')"
         if [ -z "$second_unprivilegeds_problem_path" ]; then
             rlDie "Not found path problem path"
@@ -291,7 +295,11 @@ rlJournalStart
     rlPhaseStartCleanup
         rlRun "userdel -r abrtdbustestone" 0 "Remove the test user"
         rlRun "userdel -r abrtdbustestanother" 0 "Remove the another test user"
-        rlRun "mv /etc/abrt/abrt.conf.bak /etc/abrt/abrt.conf" 0 "Restore abrt configuration"
+        if [ -n "$OLDCRASHSIZE" ]; then
+            rlRun "augtool set $OLDCRASHSIZE" 0
+        else
+            rlRun "augtool rm /files/etc/abrt/abrt.conf/MaxCrashReportsSize" 0
+        fi
         rlRun "systemctl restart abrtd.service" 0 "Restart abrtd after configuration changes"
         rlRun "rm -rf -- $ABRT_CONF_DUMP_LOCATION/*"
     rlPhaseEnd

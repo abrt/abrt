@@ -68,6 +68,8 @@ rlJournalStart
 
     rlPhaseStartTest OOPS
         for oops in oops*.test; do
+            prepare
+
             installed_kernel="$( rpm -q kernel | tail -n1 )"
             kernel_version="$( rpm -q --qf "%{version}" $installed_kernel )"
             sed -i "s/<KERNEL_VERSION>/$installed_kernel/g" $oops

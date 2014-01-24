@@ -54,6 +54,8 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "handle upload"
+        prepare
+
         rlRun "reporter-upload -d problem_dir -u file:///var/spool/abrt-upload/upload.tar.gz"
 
         wait_for_hooks
