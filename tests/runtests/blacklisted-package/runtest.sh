@@ -66,6 +66,7 @@ rlJournalStart
 
         sleep 2
         wait_for_sosreport
+        sleep 2
 
         rlRun "abrt-cli list | grep strace" 1 "No strace in abrt-cli output"
         rlRun "abrt-cli list | grep sleep" 1 "No sleep in abrt-cli output"
