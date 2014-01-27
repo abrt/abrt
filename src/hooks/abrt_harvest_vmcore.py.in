@@ -231,10 +231,19 @@ def harvest_vmcore():
         f_full = os.path.join(dump_dir, cfile)
         if not os.path.isdir(f_full):
             continue
-        files = [ff for ff in os.listdir(f_full)
-                 if os.path.isfile(os.path.join(f_full, ff))]
-        if 'vmcore' not in files:
+
+        try:
+            vmcoredirfilelist = os.listdir(f_full)
+        except OSError as ex:
+            sys.stderr.write("VMCore dir '%s' not accessible.\n" % f_full)
             continue
+        else:
+             if all(("vmcore" != ff
+                     for ff in vmcoredirfilelist
+                        if os.path.isfile(os.path.join(f_full, ff)))):
+                sys.stderr.write(
+                    "VMCore dir '%s' doesn't contain 'vmcore' file.\n" % f_full)
+                continue
 
         destdir = os.path.join(abrtdumpdir, ('vmcore-' + cfile))
         destdirnew = destdir + '.new'
@@ -250,7 +259,7 @@ def harvest_vmcore():
         try:
             shutil.copytree(f_full, destdirnew)
         except (OSError, shutil.Error):
-            sys.stderr.write("Unable to copy '%s' to '%s'. Skipping"
+            sys.stderr.write("Unable to copy '%s' to '%s'. Skipping\n"
                              % (f_full, destdirnew))
 
             # delete .new dir so we don't create mess
@@ -261,7 +270,7 @@ def harvest_vmcore():
             try:
                 shutil.rmtree(f_full)
             except OSError:
-                sys.stderr.write("Unable to delete '%s'. Ignoring" % f_full)
+                sys.stderr.write("Unable to delete '%s'. Ignoring\n" % f_full)
 
         # Let abrtd know what type of problem it is:
         create_abrtd_info(destdirnew)
