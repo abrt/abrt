@@ -52,6 +52,9 @@ rlJournalStart
 
         first_occurrence=`cat last_occurrence`
 
+        rlLog "Ensure that the second crash will not occur at the same second as the first one"
+        sleep 2
+
         prepare
 
         rlLog "Creating problem data a second time."
@@ -62,7 +65,7 @@ rlJournalStart
 
         wait_for_hooks
 
-        rlAssertNotEquals "Checking if last_occurrence has been updated" $first_occurrence `cat last_occurrence`
+        rlAssertNotEquals "Checking if last_occurrence has been updated" "_$first_occurrence" "_`cat last_occurrence`"
         rlAssertEquals "Checking if abrt counted multiple crashes" `cat count` 2
     rlPhaseEnd
 
