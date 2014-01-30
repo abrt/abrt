@@ -804,9 +804,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 %{_sbindir}/abrt-harvest-vmcore
 %{_bindir}/abrt-action-analyze-vmcore
+%{_bindir}/abrt-action-check-oops-for-hw-error
 %{_mandir}/man1/abrt-harvest-vmcore.1*
 %{_mandir}/man5/abrt-vmcore.conf.5*
 %{_mandir}/man1/abrt-action-analyze-vmcore.1*
+%{_mandir}/man1/abrt-action-check-oops-for-hw-error.1*
 
 %files addon-pstoreoops
 %defattr(-,root,root,-)

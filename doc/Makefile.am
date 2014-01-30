@@ -32,6 +32,7 @@ MAN1_TXT += abrt-action-save-package-data.txt
 MAN1_TXT += abrt-action-save-kernel-data.txt
 MAN1_TXT += abrt-install-ccpp-hook.txt
 MAN1_TXT += abrt-action-analyze-vmcore.txt
+MAN1_TXT += abrt-action-check-oops-for-hw-error.txt
 MAN1_TXT += abrt-action-analyze-ccpp-local.txt
 MAN1_TXT += abrt-watch-log.txt
 MAN1_TXT += abrt-upload-watch.txt
