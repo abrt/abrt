@@ -886,6 +886,27 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Thu Jan 30 2014 Jakub Filak <jfilak@redhat.com> 2.1.12-1
+- don't break the event run by failures of abrt-action-notify
+- harvest-vmcore: properly handle inaccessible dir error
+- spec: abrt-cli requires a pkg providing workflows
+- applet: do not say the report is anonymous when ureport auth is enabled
+- abrtd.service: Don't order after syslog.target
+- MCE: make oops and vmcore MCEs a bit more similar
+- vmcore: properly configure Augeas
+- applet: don't notify missing ignored_problems file
+- fix a double free error in abrt-applet
+- configui: show 'Close' button in the dialog
+- configure: remove all -Werror from O0CFLAGS
+- MCE: cover cases where kernel version isn't detected on Fedora 20.
+- examples/mce2.test: an example of non-fatal MCE
+- doc/MCE_readme.txt: new file - documentation about MCE handling
+- oops post-create: do not fail the event if check-oops-for-hw-error exits nonzero
+- Add a manpage for abrt-action-check-oops-for-hw-error
+- abrt-action-check-oops-for-hw-error: i18n, add error check on open()
+- move MCE handling in event to abrt-action-check-oops-for-hw-error
+- Fix handling of Machine Check Exceptions.
+
 * Wed Jan 08 2014 Jakub Filak <jfilak@redhat.com> 2.1.11-1
 - Update translations
 - spec: add python-augeas to the requires
