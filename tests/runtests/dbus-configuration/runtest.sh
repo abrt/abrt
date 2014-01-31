@@ -59,6 +59,17 @@ rlJournalStart
 
         INTERFACES_DIR=`pkg-config --variable=problemsconfigurationdir abrt`
         export INTERFACES_DIR
+
+        rlRun "ABRT_AUTO_REPORTING=$(abrt-auto-reporting)"
+        if [ "xenabled" == "x$ABRT_AUTO_REPORTING" ]; then
+            DEFAULT_AUTO_REPORTING="true"
+            SETTO_AUTO_REPORTING="False"
+            MODIFIED_AUTO_REPORTING="false"
+        else
+            DEFAULT_AUTO_REPORTING="false"
+            SETTO_AUTO_REPORTING="True"
+            MODIFIED_AUTO_REPORTING="true"
+        fi
     rlPhaseEnd
 
     rlPhaseStartTest "Invalid XML interface file"
@@ -203,12 +214,14 @@ rlJournalStart
 
         rlRun "abrt-configuration >$LOG_FILE 2>&1 &"
 
-        rlAssertEquals "Get 'AutoreportingEnabled' value" "_$(confDBusGetProperty blah AutoreportingEnabled)" "_false"
-        rlRun "confDBusSetProperty blah AutoreportingEnabled boolean True" 0
+        rlAssertEquals "Get 'AutoreportingEnabled' value" "_$(confDBusGetProperty blah AutoreportingEnabled)" "_$DEFAULT_AUTO_REPORTING"
+        rlRun "confDBusSetProperty blah AutoreportingEnabled boolean $SETTO_AUTO_REPORTING" 0
 
         rlAssertExists "/tmp/abrt.conf"
 
-        rlAssertEquals "Get 'AutoreportingEnabled' value" "_$(confDBusGetProperty blah AutoreportingEnabled)" "_true"
+        rlAssertEquals "Get 'AutoreportingEnabled' value" "_$(confDBusGetProperty blah AutoreportingEnabled)" "_$MODIFIED_AUTO_REPORTING"
+        rlRun "confDBusSetPropertyDefault blah AutoreportingEnabled" 0
+        rlAssertEquals "Reset 'AutoreportingEnabled' value" "_$(confDBusGetProperty blah AutoreportingEnabled)" "_$DEFAULT_AUTO_REPORTING"
 
         killall abrt-configuration
 
@@ -275,21 +288,11 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "Boolean"
-        if [ "xenabled" == "x$(abrt-auto-reporting)" ]; then
-            DEFAULT="true"
-            SETTO="False"
-            MODIFIED="false"
-        else
-            DEFAULT="false"
-            SETTO="True"
-            MODIFIED="true"
-        fi
-
-        rlAssertEquals "Get 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_$DEFAULT"
-        rlRun "confDBusSetProperty abrt AutoreportingEnabled boolean $SETTO" 0
-        rlAssertEquals "Set 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_$MODIFIED"
+        rlAssertEquals "Get 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_$DEFAULT_AUTO_REPORTING"
+        rlRun "confDBusSetProperty abrt AutoreportingEnabled boolean $SETTO_AUTO_REPORTING" 0
+        rlAssertEquals "Set 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_$MODIFIED_AUTO_REPORTING"
         rlRun "confDBusSetPropertyDefault abrt AutoreportingEnabled" 0
-        rlAssertEquals "Reset 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_$DEFAULT"
+        rlAssertEquals "Reset 'AutoreportingEnabled' value" "_$(confDBusGetProperty abrt AutoreportingEnabled)" "_$DEFAULT_AUTO_REPORTING"
     rlPhaseEnd
 
     rlPhaseStartTest "String"
