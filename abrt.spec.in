@@ -602,7 +602,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %files python
-%{python_sitelib}/problem/
+%{python_sitearch}/problem/
 
 %files python-doc
 %{python_sitelib}/problem_examples
