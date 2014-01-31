@@ -1,6 +1,6 @@
 problem_PYTHON = __init__.py exception.py proxies.py tools.py watch.py config.py
 
-problemdir = $(pythondir)/problem
+problemdir = $(pyexecdir)/problem
 
 pyabrtdir = $(problemdir)
 pyabrt_LTLIBRARIES = _pyabrt.la
