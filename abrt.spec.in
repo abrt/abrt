@@ -876,7 +876,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_defaultdocdir}/%{name}-dbus%{docdirversion}/html/*.css
 
 %files python
-%{python_sitelib}/problem/
+%{python_sitearch}/problem/
 %{_mandir}/man5/abrt-python.5.gz
 
 %files python-doc
