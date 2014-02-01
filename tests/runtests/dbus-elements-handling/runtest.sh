@@ -186,6 +186,8 @@ rlJournalStart
             rlDie "Not found path"
         fi
 
+        rlRun "rm -f $roots_problem_path/sosreport.tar.*"
+
         prepare
         rlLog "Create a problem data as the unprivileged user"
         unprivilegeds_problem=`su abrtdbustestone -c 'abrtDBusNewProblem deleted,to_be_deleted,changed,to_be_changed'`
@@ -198,6 +200,8 @@ rlJournalStart
         if [ -z "$unprivilegeds_problem_path" ]; then
             rlDie "Not found path"
         fi
+
+        rlRun "rm -f $unprivilegeds_problem_path/sosreport.tar.*"
     rlPhaseEnd
 
     rlPhaseStartTest "Sanity tests"
@@ -243,6 +247,8 @@ rlJournalStart
             rlDie "Not found path problem path"
         fi
 
+        rlRun "rm -f $roots_problem_path/sosreport.tar.*"
+
         prepare
         rlLog "Create a problem data as the unprivileged user"
         unprivilegeds_problem=`su abrtdbustestone -c 'abrtDBusNewProblem'`
@@ -256,6 +262,8 @@ rlJournalStart
             rlDie "Not found path problem path"
         fi
 
+        rlRun "rm -f $unprivilegeds_problem_path/sosreport.tar.*"
+
         prepare
         rlLog "Create a problem data as the unprivileged user"
         second_unprivilegeds_problem=`su abrtdbustestone -c 'abrtDBusNewProblem'`
@@ -268,6 +276,8 @@ rlJournalStart
         if [ -z "$second_unprivilegeds_problem_path" ]; then
             rlDie "Not found path problem path"
         fi
+
+        rlRun "rm -f $second_unprivilegeds_problem_path/sosreport.tar.*"
     rlPhaseEnd
 
     rlPhaseStartTest "Handle elements as a user"
