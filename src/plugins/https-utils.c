@@ -213,12 +213,13 @@ void ssl_connect(struct https_cfg *cfg, PRFileDesc **tcp_sock, PRFileDesc **ssl_
         error_msg_and_die(_("Failed to wrap TCP socket by SSL."));
     if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_HANDSHAKE_AS_CLIENT, PR_TRUE))
         error_msg_and_die(_("Failed to enable client handshake to SSL socket."));
-    if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_SSL2, PR_TRUE))
-        error_msg_and_die(_("Failed to enable client handshake to SSL socket."));
+    // https://bugzilla.redhat.com/show_bug.cgi?id=1189952
+    //if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_SSL2, PR_TRUE))
+    //    error_msg_and_die(_("Failed to enable SSL2."));
     if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_SSL3, PR_TRUE))
-        error_msg_and_die(_("Failed to enable client handshake to SSL socket."));
+        error_msg_and_die(_("Failed to enable SSL3."));
     if (SECSuccess != SSL_OptionSet(*ssl_sock, SSL_ENABLE_TLS, PR_TRUE))
-        error_msg_and_die(_("Failed to enable client handshake to SSL socket."));
+        error_msg_and_die(_("Failed to enable TLS."));
     if (SECSuccess != SSL_SetURL(*ssl_sock, cfg->url))
         error_msg_and_die(_("Failed to set URL to SSL socket."));
 
