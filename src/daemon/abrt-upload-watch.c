@@ -27,7 +27,6 @@
 #define DEFAULT_CACHE_MIB_SIZE 4
 
 static int g_signal_pipe[2];
-static sig_atomic_t got_sigusr;
 
 struct queue
 {
@@ -122,24 +121,11 @@ handle_new_path(struct process *proc, char *name)
     }
 }
 
-static gboolean
+static void
 print_stats(struct process *proc)
 {
-    /* there is a race, because we run this function from 2 different places
-     * 1st when a child dies
-     * 2nd as idle source from mainloop
-     * if it happens the stats will be printed twice, which I think
-     * is not a big deal, because it's only for debug and tests
-     */
-    if (got_sigusr == 1)
-    {
-        got_sigusr = 0;
-        /* this is meant only for debugging, so not marking it as translatable */
-        fprintf(stderr, "%i archives to process, %i active workers\n", g_queue_get_length(&proc->queue.q), proc->children);
-    }
-
-    /* don't remove this source from glib */
-    return true;
+    /* this is meant only for debugging, so not marking it as translatable */
+    fprintf(stderr, "%i archives to process, %i active workers\n", g_queue_get_length(&proc->queue.q), proc->children);
 }
 
 static void
@@ -154,13 +140,6 @@ process_next_in_queue(struct process *proc)
 
     run_abrt_handle_upload(proc, name);
     free(name);
-}
-
-static void
-handle_sigusr(int signo)
-{
-    /* just set the flag and process it synchronously */
-    got_sigusr = 1;
 }
 
 static void
@@ -200,7 +179,11 @@ handle_signal_pipe_cb(GIOChannel *gio, GIOCondition condition, gpointer user_dat
         {
             /* we did receive a signal */
             log_debug("Got signal %d through signal pipe", signals[signo]);
-            if (signals[signo] != SIGCHLD)
+            if (signals[signo] == SIGUSR1)
+            {
+                print_stats(proc);
+            }
+            else if (signals[signo] != SIGCHLD)
             {
                 process_quit(proc);
                 return FALSE; /* remove this event */
@@ -363,7 +346,7 @@ main(int argc, char **argv)
     close_on_exec_on(g_signal_pipe[1]);
     ndelay_on(g_signal_pipe[0]);
     ndelay_on(g_signal_pipe[1]);
-    signal(SIGUSR1, handle_sigusr);
+    signal(SIGUSR1, handle_signal);
     signal(SIGTERM, handle_signal);
     signal(SIGINT, handle_signal);
     signal(SIGCHLD, handle_signal);
@@ -373,7 +356,6 @@ main(int argc, char **argv)
                 handle_signal_pipe_cb,
                 &proc);
 
-    int status_callback_source_id = g_idle_add((GSourceFunc)print_stats, &proc);
     log_info("Starting glib main loop");
 
     g_main_loop_run(proc.main_loop);
@@ -381,7 +363,6 @@ main(int argc, char **argv)
     log_info("Glib main loop finished");
 
     g_source_remove(channel_signal_source_id);
-    g_source_remove(status_callback_source_id);
 
     GError *error = NULL;
     g_io_channel_shutdown(channel_signal, FALSE, &error);
