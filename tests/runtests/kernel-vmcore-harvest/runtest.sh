@@ -40,12 +40,15 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest
+        prepare
+
         rlRun "mkdir -p /var/crash/test" 0 "Creating vmcore dir"
         rlRun "echo testing > /var/crash/test/vmcore" 0 "Creating vmcore"
         rlLogInfo "Restarting abrtd"
         systemctl restart  abrtd.service
-        rlLogInfo "Wait 1s for abrtd to finish checking vmcores"
-        sleep 1s
+
+        wait_for_hooks
+
         rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-test"
         rlAssertExists "${ABRT_CONF_DUMP_LOCATION}/vmcore-test/analyzer"
         for f in $REQUIRED_FILES; do
