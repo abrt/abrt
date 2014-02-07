@@ -60,8 +60,11 @@ rlJournalStart
         INTERFACES_DIR=`pkg-config --variable=problemsconfigurationdir abrt`
         export INTERFACES_DIR
 
-        rlRun "ABRT_AUTO_REPORTING=$(abrt-auto-reporting)"
-        if [ "xenabled" == "x$ABRT_AUTO_REPORTING" ]; then
+        rlRun "DEFAULT_AUTO_REPORTING=\"$(augtool get /files/usr/share/abrt/conf.d/abrt.conf/AutoreportingEnabled | cut -d' ' -f3)\"" 0
+        rlRun "ABRT_AUTO_REPORTING=\"$(augtool get /files/etc/abrt/abrt.conf/AutoreportingEnabled | cut -d' ' -f3)\"" 0
+        rlRun "augtool set /files/etc/abrt/abrt.conf/AutoreportingEnabled $DEFAULT_AUTO_REPORTING" 0
+
+        if [ "xyes" == "x$DEFAULT_AUTO_REPORTING" ]; then
             DEFAULT_AUTO_REPORTING="true"
             SETTO_AUTO_REPORTING="False"
             MODIFIED_AUTO_REPORTING="false"
@@ -367,6 +370,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
+        rlRun "augtool set /files/etc/abrt/abrt.conf/AutoreportingEnabled $ABRT_AUTO_REPORTING" 0 "Restore AutoreportingEnabled"
     rlPhaseEnd
     rlJournalPrintText
 rlJournalEnd
