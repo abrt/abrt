@@ -38,6 +38,8 @@ rlJournalStart
         rlRun "TEST_EVENT_XML_FILE_SYSTEM=\"/usr/share/libreport/events/${TEST_EVENT_XML_FILE}\""
         rlRun "TEST_EVENT_CONF_FILE=\"${TEST_EVENT}.conf\""
         rlRun "TEST_EVENT_CONF_FILE_SYSTEM=\"/etc/libreport/events/${TEST_EVENT_CONF_FILE}\""
+        rlRun "TEST_EVENT_DEF_FILE=\"event_${TEST_EVENT}.conf\""
+        rlRun "TEST_EVENT_DEF_FILE_SYSTEM=\"/etc/libreport/events.d/${TEST_EVENT_DEF_FILE}\""
         rlRun "TEST_USER_HOME_CONF=\"$HOME/.cache/abrt/events\""
         rlRun "TEST_EVENT_CONF_FILE_USER=\"$TEST_USER_HOME_CONF/${TEST_EVENT_CONF_FILE}\""
         rlRun "TEST_XDG_CACHE_HOME=\"$HOME/.utopia\""
@@ -46,6 +48,7 @@ rlJournalStart
         rlRun "GENERATED_FILE=\"/tmp/${TEST_EVENT_CONF_FILE}\""
 
         rlRun "cp ${TEST_EVENT_XML_FILE} ${TEST_EVENT_XML_FILE_SYSTEM}"
+        rlRun "cp ${TEST_EVENT_DEF_FILE} ${TEST_EVENT_DEF_FILE_SYSTEM}"
         rlRun "rm -f ${TEST_EVENT_CONF_FILE_SYSTEM} ${TEST_EVENT_CONF_FILE_USER} ${TEST_EVENT_CONF_FILE_XDG}"
 
         prepare
@@ -91,7 +94,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "rm -f $TEST_EVENT_XML_FILE_SYSTEM"
+        rlRun "rm -f $TEST_EVENT_XML_FILE_SYSTEM $TEST_EVENT_DEF_FILE_SYSTEM"
         rlRun "rm -f ${TEST_EVENT_CONF_FILE_SYSTEM} ${TEST_EVENT_CONF_FILE_USER} ${TEST_EVENT_CONF_FILE_XDG}"
         rlRun "abrt-cli rm $crash_PATH"
     rlPhaseEnd
