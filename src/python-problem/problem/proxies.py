@@ -2,6 +2,7 @@ import os
 import logging
 import report
 
+import problem
 import problem.config
 
 
@@ -142,6 +143,7 @@ class FsProxy(object):
         ddir = probd.create_dump_dir(self.directory)
         ret = ddir.name
         ddir.close()
+        problem.notify_new_path(ret)
         return ret
 
     def _open_ddir(self, dump_dir, readonly=False):
