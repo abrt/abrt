@@ -70,7 +70,7 @@ if __name__ == "__main__":
     #
 
     # See if MCEs were seen
-    oops_mce = file_has_string("dmesg", "Machine check events logged");
+    oops_mce = file_has_string("backtrace", "Machine check events logged");
     vmcore_mce = file_has_string("backtrace", "Machine Check Exception:");
     if not oops_mce and not vmcore_mce:
         sys.exit(0)
