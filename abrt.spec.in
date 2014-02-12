@@ -366,6 +366,8 @@ Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-libs = %{version}-%{release}
 Requires: pygobject2
+Requires: dbus-python
+Requires: libreport-python
 BuildRequires: python-nose
 BuildRequires: python-sphinx
 
