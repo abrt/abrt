@@ -263,6 +263,19 @@ Requires: abrt-python
 This package contains python hook and python analyzer plugin for handling
 uncaught exception in python programs.
 
+%package addon-python3
+Summary: %{name}'s addon for catching and analyzing Python 3 exceptions
+Group: System Environment/Libraries
+Requires: python3
+Requires: %{name} = %{version}-%{release}
+Requires: systemd-python3
+Requires: abrt-python3
+Requires: abrt-addon-python
+
+%description addon-python3
+This package contains python 3 hook and python analyzer plugin for handling
+uncaught exception in python 3 programs.
+
 %package tui
 Summary: %{name}'s command line interface
 Group: User Interface/Desktops
@@ -284,6 +297,7 @@ Requires: abrt-addon-pstoreoops
 Requires: abrt-addon-vmcore
 Requires: abrt-addon-ccpp
 Requires: abrt-addon-python
+Requires: abrt-addon-python3
 Requires: abrt-addon-xorg
 %if 0%{?rhel}
 Requires: libreport-rhel >= %{libreport_ver}
@@ -321,6 +335,7 @@ Requires: abrt-addon-pstoreoops
 Requires: abrt-addon-vmcore
 Requires: abrt-addon-ccpp
 Requires: abrt-addon-python
+Requires: abrt-addon-python3
 Requires: abrt-addon-xorg
 # Default config of addon-ccpp requires gdb
 Requires: gdb >= 7.0-3
@@ -858,13 +873,19 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python.conf
 %{_datadir}/%{name}/conf.d/plugins/python.conf
 %{_mandir}/man5/abrt-python.conf.5.gz
-# TODO? Do we need %config(noreplace) in the below line too?
 %config(noreplace) %{_sysconfdir}/libreport/events.d/python_event.conf
 %{_mandir}/man5/python_event.conf.5.gz
 %{_bindir}/abrt-action-analyze-python
 %{_mandir}/man1/abrt-action-analyze-python.1*
 %{python_sitearch}/abrt*.py*
 %{python_sitearch}/abrt.pth
+
+%files addon-python3
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/python3.conf
+%{_datadir}/%{name}/conf.d/plugins/python3.conf
+%{python3_sitearch}/abrt*
+%{python3_sitearch}/__pycache__/abrt*
 
 %files cli
 %defattr(-,root,root,-)
