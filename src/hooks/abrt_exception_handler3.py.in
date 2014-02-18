@@ -51,7 +51,7 @@ def send(data):
         s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         s.settimeout(5)
         s.connect(@VAR_RUN@ + "/abrt/abrt.socket")
-        pre = "POST / HTTP/1.1\r\n\r\ntype=Python\0"
+        pre = "POST / HTTP/1.1\r\n\r\ntype=Python3\0"
         s.sendall(pre.encode())
         s.sendall(data.encode())
 
