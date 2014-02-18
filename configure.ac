@@ -28,9 +28,11 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 AM_SILENT_RULES([yes])
 
 
+AM_PROG_AR
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 AC_PROG_CC
+AM_PROG_CC_C_O
 AC_PROG_LN_S
 
 AC_SYS_LARGEFILE
@@ -57,6 +59,12 @@ dnl ****** END ****************************************
 AM_PATH_PYTHON
 if test -z "$PYTHON"; then
     echo "*** Essential program python not found" 1>&2
+    exit 1
+fi
+
+AC_PATH_PROG([PYTHON3], [python3], [no])
+if test -z "$PYTHON3"; then
+    echo "*** Essential program python3 not found" 1>&2
     exit 1
 fi
 
@@ -87,10 +95,33 @@ AC_PATH_PROG([PYTHON_CONFIG], [python-config], [no])
     [exit 1]
 [fi]
 
+AC_PATH_PROG([PYTHON3_CONFIG], [python3-config], [no])
+[if test "$PYTHON3_CONFIG" = "no"]
+[then]
+    [echo "The python3-config program was not found in the search path. Please ensure"]
+    [echo "that it is installed and its directory is included in the search path."]
+    [echo "Then run configure again before attempting to build libreport."]
+    [exit 1]
+[fi]
+
 PYTHON_CFLAGS=`python-config --cflags 2> /dev/null`
 PYTHON_LIBS=`python-config --libs 2> /dev/null`
+
+PYTHON3_CFLAGS=`python3-config --cflags 2> /dev/null`
+PYTHON3_LIBS=`python3-config --libs 2> /dev/null`
+
+PYTHON3_DIR=`$PYTHON3 -c "import distutils.sysconfig; \
+    print(distutils.sysconfig.get_python_lib(0,0))"`
+PYTHON3_EXECDIR=`$PYTHON3 -c "import distutils.sysconfig; \
+    print(distutils.sysconfig.get_python_lib(1,0))"`
+
 AC_SUBST(PYTHON_CFLAGS)
 AC_SUBST(PYTHON_LIBS)
+
+AC_SUBST(PYTHON3_CFLAGS)
+AC_SUBST(PYTHON3_LIBS)
+AC_SUBST(python3dir, $PYTHON3_DIR)
+AC_SUBST(py3execdir, $PYTHON3_EXECDIR)
 
 PKG_CHECK_MODULES([XICE], [ice])
 PKG_CHECK_MODULES([XSMP], [sm])

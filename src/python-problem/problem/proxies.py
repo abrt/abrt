@@ -79,10 +79,10 @@ class DBusProxy(object):
         return self._dbus_call('DeleteProblem', [dump_dir])
 
     def list(self):
-        return map(str, self._dbus_call('GetProblems'))
+        return [str(prob) for prob in self._dbus_call('GetProblems')]
 
     def list_all(self):
-        return map(str, self._dbus_call('GetAllProblems'))
+        return [str(prob) for prob in self._dbus_call('GetAllProblems')]
 
 
 class SocketProxy(object):
@@ -93,7 +93,7 @@ class SocketProxy(object):
         try:
             sock.connect('/var/run/abrt/abrt.socket')
             sock.sendall("PUT / HTTP/1.1\r\n\r\n")
-            for key, value in problem_dict.iteritems():
+            for key, value in problem_dict.items():
                 sock.sendall('{0}={1}\0'.format(key.upper(), value))
 
             sock.shutdown(socket.SHUT_WR)
@@ -136,7 +136,7 @@ class FsProxy(object):
 
     def create(self, problem_dict):
         probd = report.problem_data()
-        for key, value in problem_dict.iteritems():
+        for key, value in problem_dict.items():
             probd.add(key, value)
 
         ddir = probd.create_dump_dir(self.directory)
@@ -163,7 +163,7 @@ class FsProxy(object):
                  report.DD_FAIL_QUIETLY_ENOENT |
                  report.DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE)
 
-        val = ddir.load_text(name, flags)
+        val = ddir.load_text(name, flags).encode('utf-8', errors='ignore')
 
         ddir.close()
         return val

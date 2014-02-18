@@ -3,7 +3,13 @@ import inspect
 import datetime
 
 from problem import proxies, exception, tools, watch
-from _pyabrt import *
+try:
+    from _pyabrt import *
+except ImportError:
+    try:
+        from _py3abrt import *
+    except ImportError:
+        from problem._py3abrt import *
 
 JAVA = 'java'
 SELINUX = 'selinux'
@@ -142,7 +148,7 @@ class Problem(object):
     def add_current_environment(self):
         ''' Add environment of current process to this problem object '''
         self.environ = ''
-        for key, value in os.environ.iteritems():
+        for key, value in os.environ.items():
             self.environ += '{0}={1}\n'.format(key, value)
 
     def items(self):
@@ -168,12 +174,12 @@ class Problem(object):
 
         # convert to strings
         str_data = dict()
-        for key, value in self._data.iteritems():
+        for key, value in self._data.items():
             str_data[str(key)] = self.__cast(key, value, reverse=True)
 
         # already persisted?
         if self._persisted:
-            for key, value in self._dirty_data.iteritems():
+            for key, value in self._dirty_data.items():
                 if value is None:
                     self._proxy.del_item(self._probdir, key)
                 else:
@@ -258,14 +264,13 @@ def list(auth=False, __proxy=proxies.get_proxy()):
     if auth:
         fun = __proxy.list_all
 
-    return map(lambda x: tools.problemify(x, __proxy), fun())
+    return [tools.problemify(prob, __proxy) for prob in fun()]
 
 
 def get(identifier, auth=False, __proxy=proxies.get_proxy()):
     ''' Return problem object matching ``identifier``
 
     Return ``None`` in case the problem does not exist.
-
     Use ``auth=True`` if authentication should be attempted.
 
     '''

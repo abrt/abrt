@@ -56,7 +56,7 @@ load_settings_to_dict(const char *file, int (*loader)(const char *, map_string_t
     init_map_string_iter(&iter, settings);
     while(next_map_string_iter(&iter, &key, &value))
     {
-        if (0 != PyDict_SetItemString(dict, key, PyString_FromString(value)))
+        if (0 != PyDict_SetItemString(dict, key, PyUnicode_FromString(value)))
         {
             goto lacf_error;
         }
