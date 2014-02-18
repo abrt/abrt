@@ -270,7 +270,6 @@ Requires: python3
 Requires: %{name} = %{version}-%{release}
 Requires: systemd-python3
 Requires: abrt-python3
-Requires: abrt-addon-python
 
 %description addon-python3
 This package contains python 3 hook and python analyzer plugin for handling
@@ -652,6 +651,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man1/abrt-action-notify.1.gz
 %{_bindir}/abrt-action-save-package-data
 %{_bindir}/abrt-watch-log
+%{_bindir}/abrt-action-analyze-python
 %{_bindir}/abrt-action-analyze-xorg
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
 %{_datadir}/%{name}/conf.d/abrt.conf
@@ -683,6 +683,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man1/abrt-server.1.gz
 %{_mandir}/man1/abrt-action-save-package-data.1.gz
 %{_mandir}/man1/abrt-watch-log.1.gz
+%{_mandir}/man1/abrt-action-analyze-python.1*
 %{_mandir}/man1/abrt-action-analyze-xorg.1.gz
 %{_mandir}/man1/abrt-auto-reporting.1.gz
 %{_mandir}/man8/abrtd.8.gz
@@ -875,8 +876,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/abrt-python.conf.5.gz
 %config(noreplace) %{_sysconfdir}/libreport/events.d/python_event.conf
 %{_mandir}/man5/python_event.conf.5.gz
-%{_bindir}/abrt-action-analyze-python
-%{_mandir}/man1/abrt-action-analyze-python.1*
 %{python_sitearch}/abrt*.py*
 %{python_sitearch}/abrt.pth
 
@@ -884,6 +883,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python3.conf
 %{_datadir}/%{name}/conf.d/plugins/python3.conf
+%{_mandir}/man5/abrt-python3.conf.5.gz
+%config(noreplace) %{_sysconfdir}/libreport/events.d/python3_event.conf
+%{_mandir}/man5/python3_event.conf.5.gz
 %{python3_sitearch}/abrt*
 %{python3_sitearch}/__pycache__/abrt*
 
