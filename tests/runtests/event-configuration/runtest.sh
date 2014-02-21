@@ -31,25 +31,54 @@
 TEST="event-configuration"
 PACKAGE="abrt"
 
+function prepare_event
+{
+    t_XML_FILE="${!var_name}.xml"
+    rlRun "eval ${var_name}_XML_FILE=\"$t_XML_FILE\""
+
+    t_XML_FILE_SYSTEM="/usr/share/libreport/events/$t_XML_FILE"
+    rlRun "eval ${var_name}_XML_FILE_SYSTEM=\"$t_XML_FILE_SYSTEM\""
+
+    t_CONF_FILE="${!var_name}.conf"
+    rlRun "eval ${var_name}_CONF_FILE=\"$t_CONF_FILE\""
+
+    t_CONF_FILE_SYSTEM="/etc/libreport/events/$t_CONF_FILE"
+    rlRun "eval ${var_name}_CONF_FILE_SYSTEM=\"$t_CONF_FILE_SYSTEM\""
+
+    t_DEF_FILE="event_${!var_name}.conf"
+    rlRun "eval ${var_name}_DEF_FILE=\"$t_DEF_FILE\""
+
+    t_DEF_FILE_SYSTEM="/etc/libreport/events.d/$t_DEF_FILE"
+    rlRun "eval ${var_name}_DEF_FILE_SYSTEM=\"$t_DEF_FILE_SYSTEM\""
+
+    t_CONF_FILE_USER="$TEST_USER_HOME_CONF/$t_CONF_FILE"
+    rlRun "eval ${var_name}_CONF_FILE_USER=\"$t_CONF_FILE_USER\""
+
+    t_CONF_FILE_XDG="$TEST_XDG_CACHE_HOME_CONF/$t_CONF_FILE"
+    rlRun "eval ${var_name}_CONF_FILE_XDG=\"$t_CONF_FILE_XDG\""
+
+    rlRun "cp $t_XML_FILE $t_XML_FILE_SYSTEM"
+    rlRun "cp $t_DEF_FILE $t_DEF_FILE_SYSTEM"
+    rlRun "rm -f $t_CONF_FILE_SYSTEM $t_CONF_FILE_USER $t_CONF_FILE_XDG"
+}
+
 rlJournalStart
     rlPhaseStartSetup
-        rlRun "TEST_EVENT=\"test_Configuration\""
-        rlRun "TEST_EVENT_XML_FILE=\"${TEST_EVENT}.xml\""
-        rlRun "TEST_EVENT_XML_FILE_SYSTEM=\"/usr/share/libreport/events/${TEST_EVENT_XML_FILE}\""
-        rlRun "TEST_EVENT_CONF_FILE=\"${TEST_EVENT}.conf\""
-        rlRun "TEST_EVENT_CONF_FILE_SYSTEM=\"/etc/libreport/events/${TEST_EVENT_CONF_FILE}\""
-        rlRun "TEST_EVENT_DEF_FILE=\"event_${TEST_EVENT}.conf\""
-        rlRun "TEST_EVENT_DEF_FILE_SYSTEM=\"/etc/libreport/events.d/${TEST_EVENT_DEF_FILE}\""
         rlRun "TEST_USER_HOME_CONF=\"$HOME/.cache/abrt/events\""
-        rlRun "TEST_EVENT_CONF_FILE_USER=\"$TEST_USER_HOME_CONF/${TEST_EVENT_CONF_FILE}\""
         rlRun "TEST_XDG_CACHE_HOME=\"$HOME/.utopia\""
         rlRun "TEST_XDG_CACHE_HOME_CONF=\"$HOME/.utopia/abrt/events\""
-        rlRun "TEST_EVENT_CONF_FILE_XDG=\"$TEST_XDG_CACHE_HOME_CONF/${TEST_EVENT_CONF_FILE}\""
+
+        rlRun "TEST_EVENT=\"test_Configuration\""
+        var_name="TEST_EVENT"
+        prepare_event
+
         rlRun "GENERATED_FILE=\"/tmp/${TEST_EVENT_CONF_FILE}\""
 
-        rlRun "cp ${TEST_EVENT_XML_FILE} ${TEST_EVENT_XML_FILE_SYSTEM}"
-        rlRun "cp ${TEST_EVENT_DEF_FILE} ${TEST_EVENT_DEF_FILE_SYSTEM}"
-        rlRun "rm -f ${TEST_EVENT_CONF_FILE_SYSTEM} ${TEST_EVENT_CONF_FILE_USER} ${TEST_EVENT_CONF_FILE_XDG}"
+        rlRun "TEST_INCLUDE_EVENT=\"test_IncludesConfiguration\""
+        var_name="TEST_INCLUDE_EVENT"
+        prepare_event
+
+        rlRun "INCLUDE_GENERATED_FILE=\"/tmp/${TEST_INCLUDE_EVENT_CONF_FILE}\""
 
         prepare
         generate_crash
@@ -93,9 +122,20 @@ rlJournalStart
         rlRun "mv $GENERATED_FILE xdg_gen_$TEST_EVENT_CONF_FILE"
     rlPhaseEnd
 
+    rlPhaseStartTest "Options included from another event"
+        rlRun "rm -rf $INCLUDE_GENERATED_FILE"
+        rlRun "report-cli -e $TEST_INCLUDE_EVENT -- $crash_PATH"
+        rlAssertNotDiffer $TEST_INCLUDE_EVENT_CONF_FILE $INCLUDE_GENERATED_FILE
+        rlRun "mv $INCLUDE_GENERATED_FILE default_gen_$TEST_INCLUDE_EVENT_CONF_FILE"
+    rlPhaseEnd
+
     rlPhaseStartCleanup
         rlRun "rm -f $TEST_EVENT_XML_FILE_SYSTEM $TEST_EVENT_DEF_FILE_SYSTEM"
         rlRun "rm -f ${TEST_EVENT_CONF_FILE_SYSTEM} ${TEST_EVENT_CONF_FILE_USER} ${TEST_EVENT_CONF_FILE_XDG}"
+
+        rlRun "rm -f $TEST_INCLUDE_EVENT_XML_FILE_SYSTEM $TEST_INCLUDE_EVENT_DEF_FILE_SYSTEM"
+        rlRun "rm -f ${TEST_INCLUDE_EVENT_CONF_FILE_SYSTEM} ${TEST_INCLUDE_EVENT_CONF_FILE_USER} ${TEST_INCLUDE_EVENT_CONF_FILE_XDG}"
+
         rlRun "abrt-cli rm $crash_PATH"
     rlPhaseEnd
 
