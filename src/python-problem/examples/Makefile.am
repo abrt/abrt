@@ -1,4 +1,4 @@
-example_PYTHON = \
+EXAMPLES = \
 	bugzilla_numbers.py \
 	daemon_example.py \
 	edit_example.py \
@@ -9,4 +9,8 @@ example_PYTHON = \
 	watch_example.py \
 	thread_watch_example.py
 
+example_PYTHON = $(EXAMPLES)
 exampledir = $(pythondir)/problem_examples
+
+example3_PYTHON = $(EXAMPLES)
+example3dir = $(python3dir)/problem_examples

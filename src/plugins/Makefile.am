@@ -64,6 +64,7 @@ dist_eventsconf_DATA = \
     xorg_event.conf \
     vmcore_event.conf \
     python_event.conf \
+    python3_event.conf \
     smart_event.conf \
     gconf_event.conf \
     vimrc_event.conf

@@ -1,29 +1,51 @@
-problem_PYTHON = __init__.py exception.py proxies.py tools.py watch.py config.py
+PYFILES= __init__.py exception.py proxies.py tools.py watch.py config.py
+
+problem_PYTHON = $(PYFILES)
+problem3_PYTHON = $(PYFILES)
 
 problemdir = $(pyexecdir)/problem
+problem3dir = $(py3execdir)/problem
 
 pyabrtdir = $(problemdir)
 pyabrt_LTLIBRARIES = _pyabrt.la
 
-_pyabrt_la_SOURCES = \
-    pyabrtmodule.c \
-    pyabrt.c \
-    common.h
-_pyabrt_la_CPPFLAGS = \
+py3abrtdir = $(problem3dir)
+py3abrt_LTLIBRARIES = _py3abrt.la
+
+PYEXTFILES = pyabrtmodule.c pyabrt.c common.h
+PYEXTCPPFLAGS = \
     -I$(srcdir)/../../include \
     -D_GNU_SOURCE \
-    $(PYTHON_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -fPIE
-_pyabrt_la_LDFLAGS = \
+
+PYEXTLDFLAGS = \
     -module \
     -avoid-version \
-    -export-symbols-regex init_pyabrt \
      $(LIBREPORT_CFLAGS) \
     -Wl,-z,relro -Wl,-z,now
+
+_pyabrt_la_SOURCES = $(PYEXTFILES)
+_pyabrt_la_CPPFLAGS = \
+    $(PYEXTCPPFLAGS) \
+    $(PYTHON_CFLAGS)
+_pyabrt_la_LDFLAGS = \
+    $(PYEXTLDFLAGS) \
+    -export-symbols-regex init_pyabrt
 _pyabrt_la_LIBADD = \
     ../../lib/libabrt.la
+    $(PYTHON2_LIBS)
 
+_py3abrt_la_SOURCES = $(PYEXTFILES)
+_py3abrt_la_CPPFLAGS = \
+    $(PYEXTCPPFLAGS) \
+    $(PYTHON3_CFLAGS)
+_py3abrt_la_LDFLAGS = \
+    $(PYEXTLDFLAGS) \
+    -export-symbols-regex PyInit__py3abrt
+_py3abrt_la_LIBADD = \
+    ../../lib/libabrt.la \
+    $(PYTHON3_LIBS)
 
 config.py: config.py.in
 	sed -e s,\@DEFAULT_DUMP_LOCATION\@,$(DEFAULT_DUMP_LOCATION),g \

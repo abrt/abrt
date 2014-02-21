@@ -1,11 +1,13 @@
 confdir = $(CONF_DIR)
 pyhookdir = $(pyexecdir)
+py3hookdir = $(py3execdir)
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 
 dist_pluginsconf_DATA = \
     CCpp.conf \
     python.conf \
+    python3.conf \
     vmcore.conf
 
 defaultpluginsconfdir = $(DEFAULT_PLUGINS_CONF_DIR)
@@ -59,7 +61,12 @@ pyhook_PYTHON = \
 	abrt_exception_handler.py \
 	abrt.pth
 
+py3hook_PYTHON = \
+	abrt_exception_handler3.py \
+	abrt3.pth
+
 EXTRA_DIST = abrt_exception_handler.py.in \
+	abrt_exception_handler3.py.in \
 	abrt-install-ccpp-hook.in \
 	abrt_harvest_vmcore.py.in \
 	abrt-harvest-pstoreoops.in
@@ -67,7 +74,7 @@ EXTRA_DIST = abrt_exception_handler.py.in \
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc)) $(man1_MANS)
 
 # Generate on build
-all: abrt_exception_handler.py
+all: abrt_exception_handler.py abrt_exception_handler3.py
 
 # Must be synchronized with another sed call below.
 abrt_exception_handler.py: abrt_exception_handler.py.in
@@ -75,11 +82,19 @@ abrt_exception_handler.py: abrt_exception_handler.py.in
 	    -e s,\@CONF_DIR\@,\"$(CONF_DIR)\",g \
 	    abrt_exception_handler.py.in >abrt_exception_handler.py
 
+abrt_exception_handler3.py: abrt_exception_handler3.py.in
+	sed -e s,\@VAR_RUN\@,\"$(VAR_RUN)\",g \
+	    -e s,\@CONF_DIR\@,\"$(CONF_DIR)\",g \
+	    abrt_exception_handler3.py.in >abrt_exception_handler3.py
+
 # RPM fix: we need to regenerate abrt_exception_handler.py, because it has the default ddir
 install-data-local:
 	sed -e s,\@VAR_RUN\@,\"$(VAR_RUN)\",g \
 	    -e s,\@CONF_DIR\@,\"$(CONF_DIR)\",g \
 	    abrt_exception_handler.py.in >abrt_exception_handler.py
+	sed -e s,\@VAR_RUN\@,\"$(VAR_RUN)\",g \
+	    -e s,\@CONF_DIR\@,\"$(CONF_DIR)\",g \
+	    abrt_exception_handler3.py.in >abrt_exception_handler3.py
 
 abrt-install-ccpp-hook: abrt-install-ccpp-hook.in
 	sed -e s,\@VAR_RUN\@,$(VAR_RUN),g \

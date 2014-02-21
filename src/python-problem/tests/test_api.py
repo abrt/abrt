@@ -253,7 +253,7 @@ class ProblemAPITestCase(ProblematicTestCase):
 
         prob.add_current_environment()
 
-        for key, value in os.environ.iteritems():
+        for key, value in os.environ.items():
             tools.ok_('{0}={1}'.format(key, value) in prob.environ)
 
     def test_save_delete(self):

@@ -20,6 +20,24 @@
 
 #include "common.h"
 
+#if PY_MAJOR_VERSION >= 3
+  #define MOD_ERROR_VAL NULL
+  #define MOD_SUCCESS_VAL(val) val
+  #define MOD_INIT PyMODINIT_FUNC PyInit__py3abrt(void)
+  #define MOD_DEF(ob, name, doc, methods) \
+            static struct PyModuleDef moduledef = { \
+                          PyModuleDef_HEAD_INIT, name, doc, -1, methods, }; \
+          ob = PyModule_Create(&moduledef);
+#else
+  #define MOD_ERROR_VAL
+  #define MOD_SUCCESS_VAL(val)
+  #define MOD_INIT void init_pyabrt(void)
+  #define MOD_DEF(ob, name, doc, methods) \
+            ob = Py_InitModule3(name, methods, doc);
+#endif
+
+static char module_doc[] = "ABRT utilities";
+
 static PyMethodDef module_methods[] = {
     /* method_name, func, flags, doc_string */
     /* for include/client.h */
@@ -29,13 +47,11 @@ static PyMethodDef module_methods[] = {
     { NULL }
 };
 
-#ifndef PyMODINIT_FUNC /* declarations for DLL import/export */
-#define PyMODINIT_FUNC void
-#endif
-PyMODINIT_FUNC
-init_pyabrt(void)
+MOD_INIT
 {
-    PyObject *m = Py_InitModule("_pyabrt", module_methods);
-    if (!m)
-        printf("m == NULL\n");
+    PyObject *m;
+    MOD_DEF(m, "_pyabrt", module_doc, module_methods);
+    if (m == NULL)
+        return MOD_ERROR_VAL;
+    return MOD_SUCCESS_VAL(m);
 }

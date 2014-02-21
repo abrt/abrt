@@ -77,6 +77,11 @@ function generate_python_exception() {
     will_python_raise
 }
 
+function generate_python3_exception() {
+    rlLog "Generate unhandled python3 exception"
+    will_python3_raise
+}
+
 function load_abrt_conf() {
     ABRT_CONF_DUMP_LOCATION=`sed -n '/^DumpLocation[ \t]*=/ s/.*=[ \t]*//p' @CONF_DIR@/abrt.conf 2>/dev/null`
 

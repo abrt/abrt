@@ -62,6 +62,7 @@ BuildRequires: desktop-file-utils
 BuildRequires: libnotify-devel
 #why? BuildRequires: file-devel
 BuildRequires: python-devel
+BuildRequires: python3-devel
 BuildRequires: gettext
 BuildRequires: libxml2-devel
 BuildRequires: intltool
@@ -73,6 +74,7 @@ BuildRequires: xmlto
 BuildRequires: libreport-devel >= %{libreport_ver}
 BuildRequires: satyr-devel >= 0.11
 BuildRequires: systemd-python
+BuildRequires: systemd-python3
 BuildRequires: augeas
 
 Requires: libreport >= %{libreport_ver}
@@ -261,6 +263,18 @@ Requires: abrt-python
 This package contains python hook and python analyzer plugin for handling
 uncaught exception in python programs.
 
+%package addon-python3
+Summary: %{name}'s addon for catching and analyzing Python 3 exceptions
+Group: System Environment/Libraries
+Requires: python3
+Requires: %{name} = %{version}-%{release}
+Requires: systemd-python3
+Requires: abrt-python3
+
+%description addon-python3
+This package contains python 3 hook and python analyzer plugin for handling
+uncaught exception in python 3 programs.
+
 %package tui
 Summary: %{name}'s command line interface
 Group: User Interface/Desktops
@@ -282,6 +296,7 @@ Requires: abrt-addon-pstoreoops
 Requires: abrt-addon-vmcore
 Requires: abrt-addon-ccpp
 Requires: abrt-addon-python
+Requires: abrt-addon-python3
 Requires: abrt-addon-xorg
 %if 0%{?rhel}
 Requires: libreport-rhel >= %{libreport_ver}
@@ -319,6 +334,7 @@ Requires: abrt-addon-pstoreoops
 Requires: abrt-addon-vmcore
 Requires: abrt-addon-ccpp
 Requires: abrt-addon-python
+Requires: abrt-addon-python3
 Requires: abrt-addon-xorg
 # Default config of addon-ccpp requires gdb
 Requires: gdb >= 7.0-3
@@ -366,6 +382,8 @@ Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-libs = %{version}-%{release}
 Requires: pygobject2
+Requires: dbus-python
+Requires: libreport-python
 BuildRequires: python-nose
 BuildRequires: python-sphinx
 
@@ -383,6 +401,32 @@ Requires: %{name}-python = %{version}-%{release}
 
 %description python-doc
 Examples and documentation for ABRT Python API.
+
+%package python3
+Summary: ABRT Python 3 API
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+Requires: %{name}-libs = %{version}-%{release}
+Requires: pygobject3
+Requires: python3-dbus
+Requires: libreport-python3
+BuildRequires: python3-nose
+BuildRequires: python3-sphinx
+
+%description python3
+High-level API for querying, creating and manipulating
+problems handled by ABRT in Python 3.
+
+%package python3-doc
+Summary: ABRT Python API Documentation
+Group: Documentation
+BuildArch: noarch
+BuildRequires: python3-devel
+Requires: %{name} = %{version}-%{release}
+Requires: %{name}-python3 = %{version}-%{release}
+
+%description python3-doc
+Examples and documentation for ABRT Python 3 API.
 
 %package console-notification
 Summary: ABRT console notification script
@@ -607,6 +651,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man1/abrt-action-notify.1.gz
 %{_bindir}/abrt-action-save-package-data
 %{_bindir}/abrt-watch-log
+%{_bindir}/abrt-action-analyze-python
 %{_bindir}/abrt-action-analyze-xorg
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
 %{_datadir}/%{name}/conf.d/abrt.conf
@@ -638,6 +683,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man1/abrt-server.1.gz
 %{_mandir}/man1/abrt-action-save-package-data.1.gz
 %{_mandir}/man1/abrt-watch-log.1.gz
+%{_mandir}/man1/abrt-action-analyze-python.1*
 %{_mandir}/man1/abrt-action-analyze-xorg.1.gz
 %{_mandir}/man1/abrt-auto-reporting.1.gz
 %{_mandir}/man8/abrtd.8.gz
@@ -828,13 +874,20 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/python.conf
 %{_datadir}/%{name}/conf.d/plugins/python.conf
 %{_mandir}/man5/abrt-python.conf.5.gz
-# TODO? Do we need %config(noreplace) in the below line too?
 %config(noreplace) %{_sysconfdir}/libreport/events.d/python_event.conf
 %{_mandir}/man5/python_event.conf.5.gz
-%{_bindir}/abrt-action-analyze-python
-%{_mandir}/man1/abrt-action-analyze-python.1*
 %{python_sitearch}/abrt*.py*
 %{python_sitearch}/abrt.pth
+
+%files addon-python3
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/python3.conf
+%{_datadir}/%{name}/conf.d/plugins/python3.conf
+%{_mandir}/man5/abrt-python3.conf.5.gz
+%config(noreplace) %{_sysconfdir}/libreport/events.d/python3_event.conf
+%{_mandir}/man5/python3_event.conf.5.gz
+%{python3_sitearch}/abrt*
+%{python3_sitearch}/__pycache__/abrt*
 
 %files cli
 %defattr(-,root,root,-)
@@ -882,6 +935,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files python-doc
 %{python_sitelib}/problem_examples
+
+%files python3
+%{python3_sitearch}/problem/
+%{_mandir}/man5/abrt-python3.5.gz
+
+%files python3-doc
+%{python3_sitelib}/problem_examples
 
 %files console-notification
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
