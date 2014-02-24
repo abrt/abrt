@@ -49,6 +49,8 @@
 
 #define GUI_EXECUTABLE "gnome-abrt"
 
+#define RHBZ_1067114_NO_UREPORT
+
 enum
 {
     /*
@@ -90,6 +92,7 @@ static bool is_autoreporting_enabled(void)
     return get_configured_bool_or_default("AutoreportingEnabled", g_settings_autoreporting);
 }
 
+#ifndef RHBZ_1067114_NO_UREPORT
 static bool is_ureport_auth_enabled(void)
 {
     bool success, auth_enabled;
@@ -110,6 +113,7 @@ static bool is_ureport_auth_enabled(void)
 
     return auth_enabled;
 }
+#endif//RHBZ_1067114_NO_UREPORT
 
 static const char *get_autoreport_event_name(void)
 {
@@ -118,6 +122,7 @@ static const char *get_autoreport_event_name(void)
     return configured ? configured : g_settings_autoreporting_event;
 }
 
+#ifndef RHBZ_1067114_NO_UREPORT
 static void ask_start_autoreporting()
 {
     struct strbuf *question = strbuf_new();
@@ -156,6 +161,7 @@ static void ask_start_autoreporting()
     /* must be called immediately, otherwise the data could be lost in case of crash */
     save_user_settings();
 }
+#endif//RHBZ_1067114_NO_UREPORT
 
 static bool is_shortened_reporting_enabled()
 {
@@ -632,10 +638,13 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
     problem_info_t *pi = (problem_info_t *)user_data;
     if (problem_info_get_dir(pi))
     {
+#ifndef RHBZ_1067114_NO_UREPORT
         if (strcmp(A_REPORT_REPORT, action) == 0)
         {
+#endif//RHBZ_1067114_NO_UREPORT
             run_report_from_applet(problem_info_get_dir(pi));
             problem_info_free(pi);
+#ifndef RHBZ_1067114_NO_UREPORT
         }
         else
         {
@@ -647,6 +656,7 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
             run_event_async(pi, get_autoreport_event_name(),
                 is_shortened_reporting_enabled() ? 0 : REPORT_UNKNOWN_PROBLEM_IMMEDIATELY);
         }
+#endif//RHBZ_1067114_NO_UREPORT
     }
     else
         problem_info_free(pi);
