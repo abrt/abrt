@@ -9,7 +9,7 @@ import sys
 import os
 import getopt
 
-from report import dd_opendir, DD_FAIL_QUIETLY_ENOENT
+from report import dd_opendir, DD_FAIL_QUIETLY_ENOENT, run_event_state
 from reportclient import _, set_verbosity, error_msg_and_die, error_msg, log1, log
 
 def spawn_and_wait(prog):
@@ -29,6 +29,19 @@ def try_parse_number(dd, filename):
     except:
         error_msg(_("Not a number in file '%s'"), filename)
         return 0
+
+def get_bugzilla_reports(reported_to):
+    bugs = set()
+    for line in reported_to.split("\n"):
+        if line.startswith("Bugzilla:"):
+            bugs.add(line)
+    return bugs
+
+def run_event(event_name, dump_dir_name):
+    state = run_event_state()
+    ret = state.run_event_on_dir_name(dump_dir_name, event_name)
+    if ret == 0 and state.children_count == 0:
+        log1("Didn't find definition of event '%s'", event_name)
 
 if __name__ == "__main__":
     # localization
@@ -89,10 +102,7 @@ if __name__ == "__main__":
         log1("uReport has been already sent: '%s'", dirname)
 
         if reported_to and reported_to != "":
-            bugs = set()
-            for line in reported_to.split("\n"):
-                if line.startswith("Bugzilla:"):
-                    bugs.add(line)
+            bugs = get_bugzilla_reports(reported_to)
             if bugs:
                 log(_("A bug was already filed about this problem:"))
                 bugs = sorted(bugs)
@@ -119,7 +129,15 @@ if __name__ == "__main__":
         if not dd:
             sys.exit(1)
         dd.save_text("ureports_counter", str(ureports_counter + 1))
+        reported_to = dd.load_text("reported_to", DD_FAIL_QUIETLY_ENOENT)
         dd.close()
+
+        watch = os.getenv("uReport_WatchReportedBugs") or ""
+        if exitcode == 70 and watch.lower() in ["yes", "on", "1"]:
+            if reported_to and reported_to != "" and get_bugzilla_reports(reported_to):
+                log(_("Adding you to CC List of the existing bugzilla bug"))
+                run_event("watch_Bugzilla", dirname)
+
         sys.exit(exitcode)
     else:
         error_msg_and_die(_("reporter-ureport failed with exit code %d" % exitcode))
