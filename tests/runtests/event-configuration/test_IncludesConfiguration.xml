@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event>
+    <name>Test Include Configuration</name>
+    <description>Test Include Configuration</description>
+    <long-description>Test Include Configuration</long-description>
+    <gui-review-elements>no</gui-review-elements>
+    <sending-sensitive-data>no</sending-sensitive-data>
+    <options>
+        <import-event-options event="test_Configuration" />
+
+        <option type="text" name="TEST_OPTION_TEXT">
+           <label>Text</label>
+           <description>Test override text options</description>
+           <default-value>default include text</default-value>
+        </option>
+        <option type="bool" name="TEST_INCLUDE_OPTION_BOOL">
+           <label>Boolean</label>
+           <description>Test include boolean options</description>
+           <default-value>no</default-value>
+        </option>
+        <option type="password" name="TEST_INCLUDE_OPTION_PASSWORD">
+           <label>Password</label>
+           <description>Test include password options</description>
+           <default-value>default include password</default-value>
+        </option>
+        <option type="number" name="TEST_OPTION_NUMBER">
+           <label>Number</label>
+           <description>Test override number options</description>
+           <default-value>1</default-value>
+        </option>
+    </options>
+</event>
