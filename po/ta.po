@@ -4,19 +4,16 @@
 # 
 # Translators:
 # A <B>, 2012
-# Felix I <ifelix25@gmail.com>, 2011-2012
 # I Felix <ifelix@redhat.com>, 2011
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
-# shkumar <shkumar@redhat.com>, 2012-2013
-# shkumar <shkumar@redhat.com>, 2012
-# shkumar <shkumar@redhat.com>, 2012
+# shkumar <shkumar@redhat.com>, 2012,2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-01-07 23:20+0100\n"
-"PO-Revision-Date: 2014-01-07 22:20+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-02-26 09:33+0100\n"
+"PO-Revision-Date: 2014-02-11 12:59+0000\n"
+"Last-Translator: shkumar <shkumar@redhat.com>\n"
 "Language-Team: Tamil (http://www.transifex.com/projects/p/fedora/language/ta/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,177 +29,188 @@ msgstr "தானியக்க பிழை அறிக்கையிடு�
 msgid "ABRT notification applet"
 msgstr "ABRT அறிவிப்பு பயன்பாடு"
 
-#: ../src/applet/applet.c:106
+#: ../src/applet/applet.c:130
 msgid ""
-"The report which will be sent does not contain any security sensitive data. Therefore it is not necessary to bother you next time and require any further action by you. \n"
-"Do you want to enable automatically submitted anonymous crash reports?"
-msgstr "அனுப்பப்படும் அறிக்கையில் பாதுகாப்பு ரீதியாக முக்கியத் தகவல் எதுவும் இருக்காது. ஆகவே அடுத்த முறை உங்களுக்கு தொந்தரவு கொடுக்கவும் உங்களை ஏதேனும் செய்யச் சொல்லவும் அவசியம் இருக்காது. \nஅநாமதேய செயலிழப்பு புகார்களை தானாக சமர்ப்பிக்கும் அம்சத்தைச் செயல்படுத்த வேண்டுமா?"
+"The report which will be sent does not contain any security sensitive data. "
+"Therefore it is not necessary to bother you next time and require any "
+"further action by you. \n"
+msgstr "அனுப்பப்படும் அறிக்கையில் பாதுகாப்பு ரீதியாக முக்கியத் தகவல் எதுவும் இருக்காது. ஆகவே அடுத்த முறை உங்களுக்கு தொந்தரவு கொடுக்கவும் உங்களை ஏதேனும் செய்யச் சொல்லவும் அவசியம் இருக்காது. \n"
+
+#: ../src/applet/applet.c:136
+msgid "Do you want to enable automatically submitted crash reports?"
+msgstr "செயலிழப்பு அறிக்கைகளை தானாக அறிக்கையிடும் வசதியை இயக்க வேண்டுமா?"
+
+#: ../src/applet/applet.c:141
+msgid "Do you want to enable automatically submitted anonymous crash reports?"
+msgstr "அநாமதேய செயலிழப்பு அறிக்கைகளை தானாக அறிக்கையிடும் வசதியை இயக்க வேண்டுமா?"
 
 #. The NetworkManager DBus service is not available.
-#: ../src/applet/applet.c:202
+#: ../src/applet/applet.c:243
 #, c-format
 msgid "Can't connect to NetworkManager over DBus: %s"
 msgstr "DBus மூலம் NetworkManager க்கு இணைக்க முடியவில்லை: %s"
 
-#: ../src/applet/applet.c:226
+#: ../src/applet/applet.c:267
 #, c-format
 msgid "Can't determine network status via NetworkManager: %s"
 msgstr "NetworkManager மூலம் பிணைய நிலையை தீர்மானிக்க முடியவில்லை: %s"
 
-#: ../src/applet/applet.c:345
+#: ../src/applet/applet.c:386
 msgid "A problem has been detected"
 msgstr "ஒரு சிக்கல் கண்டறியப்பட்டது"
 
-#: ../src/applet/applet.c:347
+#: ../src/applet/applet.c:388
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "%s தொகுப்பில் ஒரு சிக்கல் கண்டறியப்பட்டது"
 
-#: ../src/applet/applet.c:357
+#: ../src/applet/applet.c:398
 #, c-format
 msgid "%s and the diagnostic data has been submitted"
-msgstr ""
+msgstr "%s மற்றும் கண்டறிதல் தரவு ஆகியவை சமர்ப்பிக்கப்பட்டன"
 
-#: ../src/applet/applet.c:517 ../src/plugins/abrt-retrace-client.c:131
+#: ../src/applet/applet.c:558 ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
 #, c-format
 msgid "Can't execute '%s'"
 msgstr "'%s' ஐ செயல்படுத்த முடியவில்லை"
 
-#: ../src/applet/applet.c:591 ../src/applet/applet.c:653
+#: ../src/applet/applet.c:632 ../src/applet/applet.c:698
 #, c-format
 msgid "Can't close notification: %s"
 msgstr "அறிவிப்பை மூட முடியவில்லை: %s"
 
-#: ../src/applet/applet.c:693 ../src/applet/applet.c:695
+#: ../src/applet/applet.c:738 ../src/applet/applet.c:740
 msgid "Warning"
 msgstr "எச்சரிக்கை"
 
-#: ../src/applet/applet.c:743
+#: ../src/applet/applet.c:788
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT கண்டுபிடித்த சிக்கல்களைப் பற்றி அறிவிக்கும் அறிவிப்புப் பகுதி பயன்பாடு"
 
-#: ../src/applet/applet.c:759
+#: ../src/applet/applet.c:804
 msgid "translator-credits"
 msgstr "shkumar@redhat.com"
 
-#: ../src/applet/applet.c:767
+#: ../src/applet/applet.c:812
 msgid "_Quit"
 msgstr "வெளியேறு (_Q)"
 
-#: ../src/applet/applet.c:769
+#: ../src/applet/applet.c:814
 msgid "Hide"
 msgstr "மறை"
 
-#: ../src/applet/applet.c:771
+#: ../src/applet/applet.c:816
 msgid "_About"
 msgstr "அறிமுகம் (_A)"
 
-#: ../src/applet/applet.c:839
+#: ../src/applet/applet.c:884
 msgid "Problem detected"
 msgstr "சிக்கல் கண்டறியப்பட்டுள்ளது"
 
-#: ../src/applet/applet.c:889
+#: ../src/applet/applet.c:934
 msgid "Ignore forever"
 msgstr "எப்பொழுதும் புறக்கணி"
 
 #. Problem has been 'autoreported' and is considered as KNOWN
-#. 
-#: ../src/applet/applet.c:901 ../src/applet/applet.c:916
+#: ../src/applet/applet.c:945 ../src/applet/applet.c:960
 msgid "Open"
 msgstr "திற"
 
-#: ../src/applet/applet.c:906
+#: ../src/applet/applet.c:950
 msgid "The Problem has already been Reported"
 msgstr "சிக்கல் ஏற்கனவே அறிக்கையிடப்பட்டது"
 
-#: ../src/applet/applet.c:906
+#: ../src/applet/applet.c:950
 msgid "A Known Problem has Occurred"
 msgstr "தெரிந்த ஒரு சிக்கல் ஏற்பட்டது"
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
-#. 
-#: ../src/applet/applet.c:925 ../src/applet/applet.c:960
+#: ../src/applet/applet.c:969 ../src/applet/applet.c:1004
 msgid "Report"
 msgstr "அறிக்கையிடு"
 
-#: ../src/applet/applet.c:930
+#: ../src/applet/applet.c:974
 msgid "A Problem has Occurred"
 msgstr "ஒரு சிக்கல் ஏற்பட்டது"
 
-#: ../src/applet/applet.c:956
+#: ../src/applet/applet.c:1000
 msgid "A Problem has been Reported"
 msgstr "ஒரு சிக்கல் குறித்து அறிக்கையிடப்பட்டுள்ளது"
 
-#: ../src/applet/applet.c:964
+#: ../src/applet/applet.c:1008
 msgid "A New Problem has Occurred"
 msgstr "ஒரு புதிய சிக்கல் ஏற்பட்டது"
 
-#: ../src/applet/applet.c:975
+#: ../src/applet/applet.c:1018
 #, c-format
 msgid "Can't show notification: %s"
 msgstr "அறிவிப்பைக் காண்பிக்க முடியவில்லை: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:1005 ../src/daemon/abrt-upload-watch.c:189
+#: ../src/applet/applet.c:1052 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "gio சேனலில் இருந்து வாசிக்க முடியவில்லை: '%s'"
 
-#: ../src/applet/applet.c:1089
+#: ../src/applet/applet.c:1136
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "gio சேனலில் குறியீடாக்கத்தை அமைக்க முடியவில்லை: %s"
 
-#: ../src/applet/applet.c:1093
+#: ../src/applet/applet.c:1140
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "gio சேனலுக்கு தடுக்காத பயன்முறையை இயக்க முடியவில்லை: %s"
 
-#: ../src/applet/applet.c:1125
+#: ../src/applet/applet.c:1172
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "'%s' இன் உரிமையை கைக்கொள்ள முடியவில்லை"
 
-#: ../src/applet/applet.c:1135
+#: ../src/applet/applet.c:1182
 #, c-format
 msgid "Can't open directory for writing '%s'"
 msgstr "'%s' ஐ எழுத கோப்பகத்தைத் திறக்க முடியவில்லை"
 
-#: ../src/applet/applet.c:1418
+#: ../src/applet/applet.c:1465
 #, c-format
 msgid ""
 "Failed to open connection to session manager: '%s', notification may "
 "reappear on the next login"
 msgstr "அமர்வு நிர்வாகிக்கான இணைப்பைத் திறக்கையில் தோல்வியடைந்தது: '%s', அடுத்த புகுபதிவில் அறிவிப்பு மீண்டும் காண்பிக்கப்படலாம்"
 
-#: ../src/applet/applet.c:1559
+#: ../src/applet/applet.c:1606
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr "& [-v] [DIR]...\n\nABRT புதிய சிக்கல்களைக் கண்டறியும் போது அதைப் பற்றி அறிவிக்கும் பயன்பாடு\n"
 
-#: ../src/configuration-gui/system-config-abrt.c:58
+#: ../src/configuration-gui/system-config-abrt.c:75
+msgid "_Close"
+msgstr "மூடு (_C)"
+
+#: ../src/configuration-gui/system-config-abrt.c:84
 msgid "_Defaults"
 msgstr "முன்னிருப்புகள் (_D)"
 
-#: ../src/configuration-gui/system-config-abrt.c:71
-#: ../src/configuration-gui/main.c:30
+#: ../src/configuration-gui/system-config-abrt.c:110
+#: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
 msgstr "அமைவாக்கத்தை அறிக்கையிடுவதில் சிக்கல்"
 
-#: ../src/configuration-gui/main.c:67
+#: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
 msgstr "System Config ABRT - அறிமுகம்"
 
-#: ../src/configuration-gui/main.c:97
+#: ../src/configuration-gui/main.c:105
 msgid "About"
 msgstr "அறிமுகம்"
 
-#: ../src/configuration-gui/main.c:98
+#: ../src/configuration-gui/main.c:106
 msgid "Quit"
 msgstr "வெளியேறு"
 
@@ -237,8 +245,8 @@ msgstr "& [options]"
 msgid "Use NUM as client uid"
 msgstr "NUM ஐ கிளையன்ட் uid ஆகப் பயன்படுத்தவும்"
 
-#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:297
-#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:272
+#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:273
 #: ../src/plugins/abrt-dump-xorg.c:244
 msgid "Log to syslog"
 msgstr "syslog க்கு பதியவும்"
@@ -340,12 +348,12 @@ msgstr "DIR இல் EVENT ஐ இயக்கு"
 msgid "Communicate directly to the user"
 msgstr "நேரடியாக பயனரிடம் தொடர்புகொள்ளவும்"
 
-#: ../src/daemon/abrt-upload-watch.c:119
+#: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
 msgstr "கட்டற்ற ஒர்க்கர்கள் இல்லை, முழு பஃபர். காப்பகம் '%s' ஐ புறக்கணிக்கிறது"
 
-#: ../src/daemon/abrt-upload-watch.c:275
+#: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
 "& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
 "\n"
@@ -357,30 +365,30 @@ msgid ""
 "WatchCrashdumpArchiveDir option from abrt.conf"
 msgstr "& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n\n\nUPLOAD_DIRECTORY ஐ கவனித்து உள்வரும் காப்பகங்களை abrt.conf இல் குறிப்பிட்டுள்ள\nDumpLocation க்கு பிரித்தெடுக்கும்\n\nUPLOAD_DIRECTORY வழங்கப்படாவிட்டால் abrt.conf இல் இருந்து\nWatchCrashdumpArchiveDir இன் ஒரு விருப்பத்தைப் பயன்படுத்தும்"
 
-#: ../src/daemon/abrt-upload-watch.c:298
+#: ../src/daemon/abrt-upload-watch.c:281
 msgid "Daemize"
 msgstr "டெமனாக்கம் செய்"
 
-#: ../src/daemon/abrt-upload-watch.c:299
+#: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
 msgstr "ஒத்த சமய ஒர்க்கர்களின் எண்ணிக்கை. முன்னிருப்பு: "
 
-#: ../src/daemon/abrt-upload-watch.c:300
+#: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
 msgstr "MiB இல் அதிகபட்ச தேக்கக அளவு. முன்னிருப்பு:"
 
 #: ../src/daemon/abrt-auto-reporting.c:81
 msgid "& [ "
-msgstr ""
+msgstr "& [ "
 
 #: ../src/daemon/abrt-auto-reporting.c:113
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "செல்லுபடியாகாத மதிப்புருக்களின் எண்ணிக்கை"
 
 #: ../src/daemon/abrt-auto-reporting.c:138
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "தெரியாத விருப்ப மதிப்பு: '%s'\n"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:251
@@ -412,12 +420,12 @@ msgstr "abrt-dbus இலிருந்து சிக்கல் தொடர
 msgid "Can't get problem list from abrt-dbus: %s"
 msgstr "abrt-dbus இலிருந்து சிக்கல் பட்டியலைப் பெற முடியவில்லை: %s"
 
-#: ../src/lib/ignored_problems.c:230
+#: ../src/lib/ignored_problems.c:231
 #, c-format
 msgid "Can't create temporary file '%s'"
 msgstr "தற்காலிக கோப்பு '%s' ஐ உருவாக்க முடியவில்லை"
 
-#: ../src/lib/ignored_problems.c:247
+#: ../src/lib/ignored_problems.c:248
 #, c-format
 msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
@@ -425,7 +433,7 @@ msgid ""
 msgstr "'%s' இல் எழுத முடியவில்லை. புறக்கணிக்கப்பட்ட சிக்கல்கள் '%s' இலிருந்து சிக்கல் '%s' ஆனது நீக்கப்படாது"
 
 #. Something nefarious happened
-#: ../src/lib/ignored_problems.c:261
+#: ../src/lib/ignored_problems.c:262
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
 msgstr "'%s' ஐ '%s' என மறுபெயரிட முடியவில்லை. சிக்கல் '%s' ஐ நீக்குவது தோல்வியடைந்தது"
@@ -441,7 +449,6 @@ msgstr "& [options] -d DIR\n\nC/C++ பின் தடமறிதலைப் 
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -510,6 +517,12 @@ msgstr "oops செய்தியை பிரித்தெடுக்க �
 msgid "Oops text extracted successfully"
 msgstr "Oops உரை வெற்றிகரமாக பிரித்தெடுக்கப்பட்டது"
 
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:81
+msgid ""
+"The kernel log indicates that hardware errors were detected.\n"
+"This is most likely not a software problem.\n"
+msgstr "கெர்னல் பதிவு வன்பொருள் பிழைகள் கண்டறியப்பட்டதாகக் குறிக்கிறது.\nஅநேகமாக இது மென்பொருள் தொடர்பான பிரச்சனையாக இருக்காது.\n"
+
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
 "& [options] -d DIR\n"
@@ -527,7 +540,6 @@ msgstr "NUM விநாடிகளுக்கு மேல் இயங்க
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -582,7 +594,7 @@ msgid ""
 "    -e,--exact  Download only specified files\n"
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
-msgstr ""
+msgstr "பயன்பாடு: %s [-vy] [--ids=BUILD_IDS_FILE]\n       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n       [-e, --exact=PATH[:PATH]...]\n\nBUILD_IDS_FILE இல் பட்டியலிடப்பட்டுள்ள அனைத்து பில்ட் ஐடிகளுக்கும் வழுநீக்கல் தகவல்களை\nCACHEDIR க்கு நிறுவும், அப்போது TMPDIR ஐ தற்காலிக நிகழ்ச்சிப் பகுதியாகப் பயன்படுத்தும்.\nCACHEDIR இல் உள்ள பழைய கோப்புகள் SIZE க்குக் குறைவாகும் வரை அழிக்கப்படும்.\n\n    -v          வெர்பரோஸாக இரு\n    -y          கேள்விகேட்காதே, எல்லா கேள்விக்கும் 'Yes' என பதில் கொள்\n    --ids       முன்னிருப்பு: build_ids\n    --tmpdir    முன்னிருப்பு: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n    --cache     முன்னிருப்பு: /var/cache/abrt-di\n    --size_mb   முன்னிருப்பு: 4096\n    -e,--exact  குறிப்பிட்ட கோப்புகளை மட்டும் பதிவிறக்கு\n    --repo      தொகுப்பதிவகங்களைத் தேடும்போது பயன்படுத்த வேண்டிய வடிவவகை.\n                முன்னிருப்பு: *debug*\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:169
 msgid "Can't open {0}: {1}"
@@ -594,11 +606,11 @@ msgstr "கோர்டம்ப் {0} வழுநீக்கல் தகவ
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:209
 msgid "{0} of debuginfo files are not installed"
-msgstr ""
+msgstr "வழுநீக்கக் கோப்புகளில் {0} நிறுவப்படவில்லை"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:223
 msgid "Missing requested file: {0}"
-msgstr ""
+msgstr "கோரப்பட்ட கோப்பு விடுபட்டுள்ளது: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:228
 msgid "Missing debuginfo file: {0}"
@@ -770,73 +782,72 @@ msgstr "& [-vs] [-F STR]... FILE PROG [ARGS]\n\nFILE என்ற பதிவ�
 msgid "Don't run PROG if STRs aren't found"
 msgstr "STR கள் இல்லாவிட்டால் PROG கட்டளையை இயக்க வேண்டாம்"
 
-#: ../src/plugins/abrt-dump-oops.c:124
+#: ../src/plugins/abrt-dump-oops.c:125
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
-msgstr ""
+msgstr "பழுதடைந்த BIOS ஆல் ஒரு கெர்னல் சிக்கல் ஏற்பட்டது. துரதிருஷ்டவசமாக இத்தகைய சிக்கல்கள் கெர்னல் பராமரிப்பாளர்களால் தீர்க்கப்படுவதில்லை."
 
-#: ../src/plugins/abrt-dump-oops.c:129
+#: ../src/plugins/abrt-dump-oops.c:130
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
-msgstr ""
+msgstr "ஒரு கெர்னல் சிக்கல் ஏற்பட்டது, ஆனால் உங்கள் வன்பொருளுக்கு ஆதரவில்லை, ஆகவேகெர்னல் பரிமாரிப்பாளர்களால் இந்த சிக்கலைத் தீர்க்க முடியாது."
 
-#: ../src/plugins/abrt-dump-oops.c:144
+#: ../src/plugins/abrt-dump-oops.c:145
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr "ஒரு கெர்னல் சிக்கல் ஏற்பட்டது, ஆனால் உங்கள் கெர்னல் பாதிக்கப்படவில்லை (கொடிகள்:%s). கெர்னல் பராமரிப்பு தொகுதிகளால் சிதைவடைந்தவை பற்றிய அறிக்கைகளை உருவாக்க முடியவில்லை."
 
-#: ../src/plugins/abrt-dump-oops.c:152
+#: ../src/plugins/abrt-dump-oops.c:153
 #, c-format
 msgid " Tainted modules: %s."
 msgstr " பாதிக்கப்பட்ட தொகுதிக்கூறுகள்: %s."
 
-#: ../src/plugins/abrt-dump-oops.c:253
+#: ../src/plugins/abrt-dump-oops.c:254
 msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr "& [-vusoxm] [-d DIR]/[-D] [FILE]\n\nFILE இலிருந்து (அல்லது வழக்கமான உள்ளீட்டிலிருந்து) oops ஐப் பிரித்தெடுக்கும்"
 
-#: ../src/plugins/abrt-dump-oops.c:273
+#: ../src/plugins/abrt-dump-oops.c:274
 msgid "Print found oopses on standard output"
 msgstr "கண்டறியப்பட்ட oops களை தரநிலை வெளியீட்டில் அச்சிடு"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
-#: ../src/plugins/abrt-dump-oops.c:277
+#: ../src/plugins/abrt-dump-oops.c:278
 msgid "Create new problem directory in DIR for every oops found"
 msgstr "கண்டறியப்பட்ட ஒவ்வொரு oops க்கும் DIR இல் ஒரு புதிய சிக்கல் கோப்பகத்தை உருவாக்கு"
 
-#: ../src/plugins/abrt-dump-oops.c:278 ../src/plugins/abrt-dump-xorg.c:247
+#: ../src/plugins/abrt-dump-oops.c:279 ../src/plugins/abrt-dump-xorg.c:247
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "-d DumpLocation போன்றது DumpLocation ஆனது abrt.conf இல் குறிப்பிடப்பட்டுள்ளது"
 
-#: ../src/plugins/abrt-dump-oops.c:279
+#: ../src/plugins/abrt-dump-oops.c:280
 msgid "Save the extracted information in PROBLEM"
 msgstr "பிரித்தெடுத்த தகவலை PROBLEM இல் சேமி"
 
-#: ../src/plugins/abrt-dump-oops.c:280 ../src/plugins/abrt-dump-xorg.c:248
+#: ../src/plugins/abrt-dump-oops.c:281 ../src/plugins/abrt-dump-xorg.c:248
 msgid "Make the problem directory world readable"
 msgstr "சிக்கல் கோப்பகத்தை அனைவரும் வாசிக்கும்படி அமை"
 
-#: ../src/plugins/abrt-dump-oops.c:281
+#: ../src/plugins/abrt-dump-oops.c:282
 msgid "Throttle problem directory creation to 1 per second"
 msgstr "ஒரு வினாடிக்கு த்ராட்டில் சிக்கல் கோப்பக உருவாக்கம் 1"
 
-#: ../src/plugins/abrt-dump-oops.c:282 ../src/plugins/abrt-dump-xorg.c:249
+#: ../src/plugins/abrt-dump-oops.c:283 ../src/plugins/abrt-dump-xorg.c:249
 msgid "Print search string(s) to stdout and exit"
 msgstr "தேடல் சரங்களை stdout இல் அச்சிட்டு வெளியேறு"
 
-#: ../src/plugins/abrt-dump-oops.c:378
+#: ../src/plugins/abrt-dump-oops.c:379
 msgid "Can't update the problem: more than one oops found"
 msgstr "சிக்கலைப் புதுப்பிக்க முடியவில்லை: ஒன்றுக்கும் அதிகமான oops கண்டறியப்பட்டுள்ளது"
 
-#: ../src/plugins/abrt-dump-oops.c:397
+#: ../src/plugins/abrt-dump-oops.c:398
 #, c-format
 msgid "Sleeping for %d seconds"
 msgstr "%d வினாடிகளுக்கு தூங்குகிறது"
@@ -864,7 +875,6 @@ msgstr "ரீட்ரேஸ் சேவையகத்தைப் பயன�
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
-#. 
 #: ../src/plugins/abrt-retrace-client.c:103
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
@@ -1282,64 +1292,71 @@ msgstr "சாக்கெட் தடுக்கும் முறைமை�
 msgid "Failed to wrap TCP socket by SSL."
 msgstr "TCP சாக்கெட்டை SSL ஆல் மூட முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:215 ../src/plugins/https-utils.c:217
-#: ../src/plugins/https-utils.c:219 ../src/plugins/https-utils.c:221
+#: ../src/plugins/https-utils.c:215
 msgid "Failed to enable client handshake to SSL socket."
 msgstr "SSL சாக்கெட்டிற்கு கிளையன்ட் ஹேன்ட்ஷேக்கை செயல்படுத்த முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:223
+#: ../src/plugins/https-utils.c:220
+msgid "Failed to enable SSL3."
+msgstr "SSL3 ஐ செயல்படுத்துவதில் தோல்வியடைந்தது."
+
+#: ../src/plugins/https-utils.c:222
+msgid "Failed to enable TLS."
+msgstr "TLS ஐ செயல்படுத்துவதில் தோல்வியடைந்தது."
+
+#: ../src/plugins/https-utils.c:224
 msgid "Failed to set URL to SSL socket."
 msgstr "SSL சாக்கெட்டுக்கு URL ஐ அமைக்க முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:232
+#: ../src/plugins/https-utils.c:233
 #, c-format
 msgid "Can't connect to '%s'"
 msgstr "'%s' க்கு இணைக்க முடியவில்லை"
 
-#: ../src/plugins/https-utils.c:240
+#: ../src/plugins/https-utils.c:241
 msgid "Failed to set certificate hook."
 msgstr "சான்றிதழ் ஹுக்கை அமைக்க முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:246
+#: ../src/plugins/https-utils.c:247
 msgid "Failed to set handshake callback."
 msgstr "ஹேன்ட்ஷேக் பின்னழைப்பை அமைக்க முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:250
+#: ../src/plugins/https-utils.c:251
 msgid "Failed to reset handshake."
 msgstr "ஹேன்ட்ஹ்சேக்கை மீட்டமைக்க முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:257
+#: ../src/plugins/https-utils.c:258
 #, c-format
 msgid "Failed to complete SSL handshake: NSS error %d."
 msgstr "SSL ஹேன்ட்ஷேக்கை முடிக்க முடியவில்லை: NSS பிழை %d."
 
-#: ../src/plugins/https-utils.c:266
+#: ../src/plugins/https-utils.c:267
 msgid "Failed to close SSL socket."
 msgstr "SSL சாக்கெட்டை மூட முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:331
+#: ../src/plugins/https-utils.c:332
 #, c-format
 msgid "Malformed HTTP response header: '%s'"
 msgstr "தவறாக வடிவமைக்கப்பட்ட HTTP பதில் தலைப்பு: '%s'"
 
-#: ../src/plugins/https-utils.c:368
+#: ../src/plugins/https-utils.c:369
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
 msgstr "தரவை பெறுதலில் தோல்வி: NSS பிழை %d."
 
-#: ../src/plugins/https-utils.c:397
+#: ../src/plugins/https-utils.c:398
 msgid "Malformed chunked response."
 msgstr "தவறான துண்டு பதில்."
 
-#: ../src/plugins/https-utils.c:422
+#: ../src/plugins/https-utils.c:423
 msgid "Failed to initialize NSS."
 msgstr "NSS க்கு துவக்க முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:428
+#: ../src/plugins/https-utils.c:429
 msgid "Failed to initialize security module."
 msgstr "பாதுகாப்பு மாதிரியை துவக்க முடியவில்லை."
 
-#: ../src/plugins/https-utils.c:443
+#: ../src/plugins/https-utils.c:444
 msgid "Failed to shutdown NSS."
 msgstr "NSS ஐ பணிநிறுத்த முடியவில்லை."
 
@@ -1430,43 +1447,43 @@ msgstr "சமீபத்திய செயலிழப்புகளின�
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "'abrt-cli COMMAND --help' க்கான மேலும் தகவலுக்கு பார்க்கவும்"
 
-#: ../src/cli/list.c:130
+#: ../src/cli/list.c:179
 msgid "& list [options] [DIR]..."
 msgstr "& list [options] [DIR]..."
 
-#: ../src/cli/list.c:139
+#: ../src/cli/list.c:188
 msgid "List only not-reported problems"
-msgstr ""
+msgstr "அறிக்கையிடாத சிக்கல்களை மட்டும் பட்டியலிடு"
 
 #. deprecate -d option with --pretty=full
-#: ../src/cli/list.c:141 ../src/cli/list.c:194
+#: ../src/cli/list.c:190 ../src/cli/list.c:243
 msgid "Show detailed report"
 msgstr "விவரமான அறிக்கையை காட்டவும்"
 
-#: ../src/cli/list.c:142
+#: ../src/cli/list.c:191
 msgid "List only the problems more recent than specified timestamp"
 msgstr "குறிப்பிட்ட நேரமுத்திரைக்கும் பிறகான சிக்கல்களை மட்டும் பட்டியலிடு"
 
-#: ../src/cli/list.c:143
+#: ../src/cli/list.c:192
 msgid "List only the problems older than specified timestamp"
 msgstr "குறிப்பிட்ட நேரமுத்திரைக்கும் முந்தைய சிக்கல்களை மட்டும் பட்டியலிடு"
 
-#: ../src/cli/list.c:175
+#: ../src/cli/list.c:224
 #, c-format
 msgid ""
 "The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
-msgstr ""
+msgstr "Autoreporting அம்சம் முடக்கப்பட்டுள்ளது. ரூட் அனுமதி உள்ள பயனராக \n'abrt-auto-reporting enabled' கட்டளையை இயக்கி அதை செயல்படுத்தவும்\n"
 
-#: ../src/cli/list.c:186
+#: ../src/cli/list.c:235
 msgid "& info [options] DIR..."
 msgstr "& info [options] DIR..."
 
-#: ../src/cli/list.c:195
+#: ../src/cli/list.c:244
 msgid "Text larger than this will be shown abridged"
 msgstr "இதை விட பெரிய உரை அப்ரிட்ஜ் செய்யப்பட்டு காண்பிக்கப்படும்"
 
-#: ../src/cli/list.c:215
+#: ../src/cli/list.c:264
 #, c-format
 msgid "No such problem directory '%s'"
 msgstr "இப்படி ஒரு சிக்கல் கோப்பகம் இல்லை '%s'"

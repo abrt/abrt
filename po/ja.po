@@ -4,24 +4,20 @@
 # 
 # Translators:
 # Casey Jones <nahareport@yahoo.com>, 2011
-# Hajime Taira <htaira@redhat.com>, 2010-2011,2013
 # hyuugabaru <hyu_gabaru@yahoo.co.jp>, 2009
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
-# Kiyoto Hashida <khashida@redhat.com>, 2009-2012
 # Makoto Mizukami <makoto@fedoraporject.org>, 2010
 # nnakakit <nnakakit@redhat.com>, 2013
-# noriko <noriko@fedoraproject.org>, 2013
-# noriko <noriko@fedoraproject.org>, 2012
-# noriko <noriko@fedoraproject.org>, 2010
-# Tomoyuki KATO <tomo@dream.daynight.jp>, 2012-2013
-# 高一人参 @欠陥遺伝子 <www.carrotsoft@gmail.com>, 2011, 2012
+# noriko <noriko@fedoraproject.org>, 2014
+# noriko <noriko@fedoraproject.org>, 2010,2012-2013
+# 高一人参 @欠陥遺伝子 <www.carrotsoft@gmail.com>, 2011-2012
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-01-07 23:20+0100\n"
-"PO-Revision-Date: 2014-01-07 22:20+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-02-26 09:33+0100\n"
+"PO-Revision-Date: 2014-02-12 05:40+0000\n"
+"Last-Translator: noriko <noriko@fedoraproject.org>\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/fedora/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,177 +33,188 @@ msgstr "自動バグ報告ツール（ABRT）"
 msgid "ABRT notification applet"
 msgstr "ABRT 通知アプレット"
 
-#: ../src/applet/applet.c:106
+#: ../src/applet/applet.c:130
 msgid ""
-"The report which will be sent does not contain any security sensitive data. Therefore it is not necessary to bother you next time and require any further action by you. \n"
-"Do you want to enable automatically submitted anonymous crash reports?"
-msgstr "送信される報告にはセキュリティ関連のデータは含まれていないため、次回さらに何らかの操作を行なう必要はありません。 \n自動的に提出される匿名のクラッシュ報告を有効にしますか?"
+"The report which will be sent does not contain any security sensitive data. "
+"Therefore it is not necessary to bother you next time and require any "
+"further action by you. \n"
+msgstr "送信される報告にはセキュリティに関する機密データは含まれていないため、次回操作は必要ありません。 \n"
+
+#: ../src/applet/applet.c:136
+msgid "Do you want to enable automatically submitted crash reports?"
+msgstr "自動的に送信されるクラッシュ報告を有効にしますか?"
+
+#: ../src/applet/applet.c:141
+msgid "Do you want to enable automatically submitted anonymous crash reports?"
+msgstr "自動的に送信される anonymous のクラッシュ報告を有効にしますか?"
 
 #. The NetworkManager DBus service is not available.
-#: ../src/applet/applet.c:202
+#: ../src/applet/applet.c:243
 #, c-format
 msgid "Can't connect to NetworkManager over DBus: %s"
 msgstr "DBus で NetworkManager に接続できません: %s"
 
-#: ../src/applet/applet.c:226
+#: ../src/applet/applet.c:267
 #, c-format
 msgid "Can't determine network status via NetworkManager: %s"
 msgstr "NetworkManager でネットワークの状態を判断できません: %s"
 
-#: ../src/applet/applet.c:345
+#: ../src/applet/applet.c:386
 msgid "A problem has been detected"
 msgstr "問題が検出されました"
 
-#: ../src/applet/applet.c:347
+#: ../src/applet/applet.c:388
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "%s パッケージ内で問題が検出されました"
 
-#: ../src/applet/applet.c:357
+#: ../src/applet/applet.c:398
 #, c-format
 msgid "%s and the diagnostic data has been submitted"
-msgstr ""
+msgstr "%s および診断データが送信されました"
 
-#: ../src/applet/applet.c:517 ../src/plugins/abrt-retrace-client.c:131
+#: ../src/applet/applet.c:558 ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
 #, c-format
 msgid "Can't execute '%s'"
 msgstr "「%s」を実行できません"
 
-#: ../src/applet/applet.c:591 ../src/applet/applet.c:653
+#: ../src/applet/applet.c:632 ../src/applet/applet.c:698
 #, c-format
 msgid "Can't close notification: %s"
 msgstr "通知を閉じることができません: %s"
 
-#: ../src/applet/applet.c:693 ../src/applet/applet.c:695
+#: ../src/applet/applet.c:738 ../src/applet/applet.c:740
 msgid "Warning"
 msgstr "警告"
 
-#: ../src/applet/applet.c:743
+#: ../src/applet/applet.c:788
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT によって検出された問題をユーザーに通知するための通知エリアアプレット"
 
-#: ../src/applet/applet.c:759
+#: ../src/applet/applet.c:804
 msgid "translator-credits"
 msgstr "Casey Jones <nahareport@yahoo.com>\nHajime Taira <htaira@redhat.com>\nNoriko Mizumoto <noriko@fedoraproject.org>"
 
-#: ../src/applet/applet.c:767
+#: ../src/applet/applet.c:812
 msgid "_Quit"
 msgstr "終了 (_Q)"
 
-#: ../src/applet/applet.c:769
+#: ../src/applet/applet.c:814
 msgid "Hide"
 msgstr "非表示"
 
-#: ../src/applet/applet.c:771
+#: ../src/applet/applet.c:816
 msgid "_About"
 msgstr "ABRT について (_A)"
 
-#: ../src/applet/applet.c:839
+#: ../src/applet/applet.c:884
 msgid "Problem detected"
 msgstr "問題を発見しました"
 
-#: ../src/applet/applet.c:889
+#: ../src/applet/applet.c:934
 msgid "Ignore forever"
 msgstr "永久に無視"
 
 #. Problem has been 'autoreported' and is considered as KNOWN
-#. 
-#: ../src/applet/applet.c:901 ../src/applet/applet.c:916
+#: ../src/applet/applet.c:945 ../src/applet/applet.c:960
 msgid "Open"
 msgstr "開く"
 
-#: ../src/applet/applet.c:906
+#: ../src/applet/applet.c:950
 msgid "The Problem has already been Reported"
 msgstr "この問題はすでに報告済みです"
 
-#: ../src/applet/applet.c:906
+#: ../src/applet/applet.c:950
 msgid "A Known Problem has Occurred"
 msgstr "既知の問題が発生しました"
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
-#. 
-#: ../src/applet/applet.c:925 ../src/applet/applet.c:960
+#: ../src/applet/applet.c:969 ../src/applet/applet.c:1004
 msgid "Report"
 msgstr "報告する"
 
-#: ../src/applet/applet.c:930
+#: ../src/applet/applet.c:974
 msgid "A Problem has Occurred"
 msgstr "問題が発生しました"
 
-#: ../src/applet/applet.c:956
+#: ../src/applet/applet.c:1000
 msgid "A Problem has been Reported"
 msgstr "問題が報告されました"
 
-#: ../src/applet/applet.c:964
+#: ../src/applet/applet.c:1008
 msgid "A New Problem has Occurred"
 msgstr "新しい問題が発生しました"
 
-#: ../src/applet/applet.c:975
+#: ../src/applet/applet.c:1018
 #, c-format
 msgid "Can't show notification: %s"
 msgstr "通知を表示できません: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:1005 ../src/daemon/abrt-upload-watch.c:189
+#: ../src/applet/applet.c:1052 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "gio チャネルからの読み込みができません: '%s'"
 
-#: ../src/applet/applet.c:1089
+#: ../src/applet/applet.c:1136
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "gio チャネルでエンコーディングを設定できません: %s"
 
-#: ../src/applet/applet.c:1093
+#: ../src/applet/applet.c:1140
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "gio チャネルのノンブロッキングモードを有効にできません: %s"
 
-#: ../src/applet/applet.c:1125
+#: ../src/applet/applet.c:1172
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "'%s' の所有権を取得できません"
 
-#: ../src/applet/applet.c:1135
+#: ../src/applet/applet.c:1182
 #, c-format
 msgid "Can't open directory for writing '%s'"
 msgstr "'%s' を書き込むためのディレクトリを開くことができません"
 
-#: ../src/applet/applet.c:1418
+#: ../src/applet/applet.c:1465
 #, c-format
 msgid ""
 "Failed to open connection to session manager: '%s', notification may "
 "reappear on the next login"
 msgstr "セッションマネージャに対する接続を開くのに失敗しました: 「%s」、次回のログイン時に通知が再表示される場合があります。"
 
-#: ../src/applet/applet.c:1559
+#: ../src/applet/applet.c:1606
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr "& [-v] [DIR]...\n\n新しい問題が ABRT で検出されるとユーザーに通知するアプレットです\n"
 
-#: ../src/configuration-gui/system-config-abrt.c:58
+#: ../src/configuration-gui/system-config-abrt.c:75
+msgid "_Close"
+msgstr "閉じる (_C)"
+
+#: ../src/configuration-gui/system-config-abrt.c:84
 msgid "_Defaults"
 msgstr "デフォルト (_D)"
 
-#: ../src/configuration-gui/system-config-abrt.c:71
-#: ../src/configuration-gui/main.c:30
+#: ../src/configuration-gui/system-config-abrt.c:110
+#: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
 msgstr "問題報告の設定"
 
-#: ../src/configuration-gui/main.c:67
+#: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
 msgstr "System Config ABRT について"
 
-#: ../src/configuration-gui/main.c:97
+#: ../src/configuration-gui/main.c:105
 msgid "About"
 msgstr "ABRT について"
 
-#: ../src/configuration-gui/main.c:98
+#: ../src/configuration-gui/main.c:106
 msgid "Quit"
 msgstr "終了"
 
@@ -242,8 +249,8 @@ msgstr "& [オプション]"
 msgid "Use NUM as client uid"
 msgstr "NUM をクライアントの uid  として使用する"
 
-#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:297
-#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:272
+#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:273
 #: ../src/plugins/abrt-dump-xorg.c:244
 msgid "Log to syslog"
 msgstr "syslog にログする"
@@ -345,12 +352,12 @@ msgstr "EVENT を DIR で実行する"
 msgid "Communicate directly to the user"
 msgstr "ユーザーと直接通信する"
 
-#: ../src/daemon/abrt-upload-watch.c:119
+#: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
 msgstr "空きワーカーが無く、バッファーが満杯です。'%s' のアーカイブを省略します。"
 
-#: ../src/daemon/abrt-upload-watch.c:275
+#: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
 "& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
 "\n"
@@ -362,30 +369,30 @@ msgid ""
 "WatchCrashdumpArchiveDir option from abrt.conf"
 msgstr "& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n\n\nUPLOAD_DIRECTORY をウォッチし、abrt.conf で指定された \nDumpLocation に格納されたアーカイブを展開します。\n\nUPLOAD_DIRECTORY が指定されていない場合、\nabrt.conf の WatchCrashdumpArchiveDir オプションの値を使用します。"
 
-#: ../src/daemon/abrt-upload-watch.c:298
+#: ../src/daemon/abrt-upload-watch.c:281
 msgid "Daemize"
 msgstr "デーモン化"
 
-#: ../src/daemon/abrt-upload-watch.c:299
+#: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
 msgstr "同時実行ワーカー数。規定値は次のとおりです。"
 
-#: ../src/daemon/abrt-upload-watch.c:300
+#: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
 msgstr "MiB 単位の最大キャッシュ容量。規定値は次のとおりです。"
 
 #: ../src/daemon/abrt-auto-reporting.c:81
 msgid "& [ "
-msgstr ""
+msgstr "& [ "
 
 #: ../src/daemon/abrt-auto-reporting.c:113
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "引数の数が無効な数です"
 
 #: ../src/daemon/abrt-auto-reporting.c:138
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "不明なオプション値です: '%s'\n"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:251
@@ -417,12 +424,12 @@ msgstr "abrt-dbus から問題のデータを取り込めません: %s"
 msgid "Can't get problem list from abrt-dbus: %s"
 msgstr "abrt-dbus から問題の一覧を取りこめません: %s"
 
-#: ../src/lib/ignored_problems.c:230
+#: ../src/lib/ignored_problems.c:231
 #, c-format
 msgid "Can't create temporary file '%s'"
 msgstr "一時ファイル '%s' を作成できません"
 
-#: ../src/lib/ignored_problems.c:247
+#: ../src/lib/ignored_problems.c:248
 #, c-format
 msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
@@ -430,7 +437,7 @@ msgid ""
 msgstr "'%s' に書き込みできません。問題 '%s' は、無視した問題 '%s' からは削除されません。"
 
 #. Something nefarious happened
-#: ../src/lib/ignored_problems.c:261
+#: ../src/lib/ignored_problems.c:262
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
 msgstr "'%s' の名前を '%s' に変更できません。問題 '%s' の削除に失敗しました。"
@@ -446,7 +453,6 @@ msgstr "& [オプション] -d DIR\n\nC/C++ バックトレースを分析し、
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -515,6 +521,12 @@ msgstr "ウップスメッセージを抽出できません: '{0}'"
 msgid "Oops text extracted successfully"
 msgstr "ウップステキストが正常に抽出されました"
 
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:81
+msgid ""
+"The kernel log indicates that hardware errors were detected.\n"
+"This is most likely not a software problem.\n"
+msgstr "カーネルログではハードウェア関連のエラーが検出されたことが示されているため、\nこれはおそらくソフトウェアに関する問題ではないでしょう。\n"
+
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
 "& [options] -d DIR\n"
@@ -532,7 +544,6 @@ msgstr "gdb が NUM 秒以上実行している場合は gdb を終了します"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -587,7 +598,7 @@ msgid ""
 "    -e,--exact  Download only specified files\n"
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
-msgstr ""
+msgstr "使い方: %s [-vy] [--ids=BUILD_IDS_FILE]\n[--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n[-e, --exact=PATH[:PATH]...]\n\nBUILD_IDS_FILE に記載されている全 build-id の debuginfo を CACHEDIR に\nインストールします。TMPDIR を一時的なステージングエリアに使用します。\nCACHEDIR の大きさが SIZE に減少するまで CACHEDIR 内の古いファイルが削除されます。\n\n-v          冗長表示にする\n-y          非インテラクティブ、すべての質問に「はい」と答える\n--ids       デフォルト: build_ids\n--tmpdir    デフォルト: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n--cache     デフォルト: /var/cache/abrt-di\n--size_mb   デフォルト: 4096\n-e,--exact  指定したファイルのみダウンロードする\n--repo      リポジトリの検索時に使用するパターン\nデフォルト: *debug*\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:169
 msgid "Can't open {0}: {1}"
@@ -599,11 +610,11 @@ msgstr "コアダンプにより {0} debuginfo ファイルが参照されます
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:209
 msgid "{0} of debuginfo files are not installed"
-msgstr ""
+msgstr "{0} debuginfo ファイルがインストールされていません"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:223
 msgid "Missing requested file: {0}"
-msgstr ""
+msgstr "要求されたファイルがありません: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:228
 msgid "Missing debuginfo file: {0}"
@@ -775,73 +786,72 @@ msgstr "& [-vs] [-F STR]... FILE PROG [ARGS]\n\nFILE ログファイルを監視
 msgid "Don't run PROG if STRs aren't found"
 msgstr "STR が見つからない場合は PROG を実行しない"
 
-#: ../src/plugins/abrt-dump-oops.c:124
+#: ../src/plugins/abrt-dump-oops.c:125
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
-msgstr ""
+msgstr "BIOS が破損しているためカーネル関連の問題が発生しました。残念ながら、このような問題はカーネルのメンテナーでは修正できません。"
 
-#: ../src/plugins/abrt-dump-oops.c:129
+#: ../src/plugins/abrt-dump-oops.c:130
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
-msgstr ""
+msgstr "カーネル関連の問題が発生しましたが、お使いのハードウェアはサポートされていないため、カーネルメンテナーは問題の修正ができません。"
 
-#: ../src/plugins/abrt-dump-oops.c:144
+#: ../src/plugins/abrt-dump-oops.c:145
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr "カーネル関連の問題が発生しましたが、カーネル自体が破損しています (フラグ:%s)。破損したレポートの診断はカーネルメンテナーでは行なえません。"
 
-#: ../src/plugins/abrt-dump-oops.c:152
+#: ../src/plugins/abrt-dump-oops.c:153
 #, c-format
 msgid " Tainted modules: %s."
 msgstr "破損モジュール: %s."
 
-#: ../src/plugins/abrt-dump-oops.c:253
+#: ../src/plugins/abrt-dump-oops.c:254
 msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr "& [-vusoxm] [-d DIR]/[-D] [FILE]\n\nFILE (または標準入力) から oops を抽出します"
 
-#: ../src/plugins/abrt-dump-oops.c:273
+#: ../src/plugins/abrt-dump-oops.c:274
 msgid "Print found oopses on standard output"
 msgstr "見つけた oops を標準出力に表示します"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
-#: ../src/plugins/abrt-dump-oops.c:277
+#: ../src/plugins/abrt-dump-oops.c:278
 msgid "Create new problem directory in DIR for every oops found"
 msgstr "検出される oops ごと DIR 内に新規の問題ディレクトリを作成します"
 
-#: ../src/plugins/abrt-dump-oops.c:278 ../src/plugins/abrt-dump-xorg.c:247
+#: ../src/plugins/abrt-dump-oops.c:279 ../src/plugins/abrt-dump-xorg.c:247
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "-d DumpLocation と同じです、 DumpLocation は abrt.conf で指定します"
 
-#: ../src/plugins/abrt-dump-oops.c:279
+#: ../src/plugins/abrt-dump-oops.c:280
 msgid "Save the extracted information in PROBLEM"
 msgstr "抽出した情報を PROBLEM に保存します"
 
-#: ../src/plugins/abrt-dump-oops.c:280 ../src/plugins/abrt-dump-xorg.c:248
+#: ../src/plugins/abrt-dump-oops.c:281 ../src/plugins/abrt-dump-xorg.c:248
 msgid "Make the problem directory world readable"
 msgstr "問題ディレクトリを誰でも見れるようにします"
 
-#: ../src/plugins/abrt-dump-oops.c:281
+#: ../src/plugins/abrt-dump-oops.c:282
 msgid "Throttle problem directory creation to 1 per second"
 msgstr "問題のディレクトリの作成を毎秒 1 個に制限"
 
-#: ../src/plugins/abrt-dump-oops.c:282 ../src/plugins/abrt-dump-xorg.c:249
+#: ../src/plugins/abrt-dump-oops.c:283 ../src/plugins/abrt-dump-xorg.c:249
 msgid "Print search string(s) to stdout and exit"
 msgstr "検索文字列を標準出力に表示して終了"
 
-#: ../src/plugins/abrt-dump-oops.c:378
+#: ../src/plugins/abrt-dump-oops.c:379
 msgid "Can't update the problem: more than one oops found"
 msgstr "問題を更新できません: 複数のウップスが見つかりました"
 
-#: ../src/plugins/abrt-dump-oops.c:397
+#: ../src/plugins/abrt-dump-oops.c:398
 #, c-format
 msgid "Sleeping for %d seconds"
 msgstr "%d 秒スリープします"
@@ -869,7 +879,6 @@ msgstr "クラッシュが大きすぎるため、リトレースサーバーが
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
-#. 
 #: ../src/plugins/abrt-retrace-client.c:103
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
@@ -1287,64 +1296,71 @@ msgstr "ソケットのブロックモード設定に失敗しました。"
 msgid "Failed to wrap TCP socket by SSL."
 msgstr "SSL による TCP ソケットのラップに失敗しました。"
 
-#: ../src/plugins/https-utils.c:215 ../src/plugins/https-utils.c:217
-#: ../src/plugins/https-utils.c:219 ../src/plugins/https-utils.c:221
+#: ../src/plugins/https-utils.c:215
 msgid "Failed to enable client handshake to SSL socket."
 msgstr "SSL ソケットに対するクライアントのハンドシェイク有効化に失敗しました。"
 
-#: ../src/plugins/https-utils.c:223
+#: ../src/plugins/https-utils.c:220
+msgid "Failed to enable SSL3."
+msgstr "SSL3 を有効にできませんでした。"
+
+#: ../src/plugins/https-utils.c:222
+msgid "Failed to enable TLS."
+msgstr "TLS を有効にできませんでした。"
+
+#: ../src/plugins/https-utils.c:224
 msgid "Failed to set URL to SSL socket."
 msgstr "SSL ソケットへの URL の設定に失敗しました。"
 
-#: ../src/plugins/https-utils.c:232
+#: ../src/plugins/https-utils.c:233
 #, c-format
 msgid "Can't connect to '%s'"
 msgstr "'%s' に接続できません"
 
-#: ../src/plugins/https-utils.c:240
+#: ../src/plugins/https-utils.c:241
 msgid "Failed to set certificate hook."
 msgstr "証明書フックの設定に失敗しました。"
 
-#: ../src/plugins/https-utils.c:246
+#: ../src/plugins/https-utils.c:247
 msgid "Failed to set handshake callback."
 msgstr "ハンドシェイクのコールバック設定に失敗しました。"
 
-#: ../src/plugins/https-utils.c:250
+#: ../src/plugins/https-utils.c:251
 msgid "Failed to reset handshake."
 msgstr "ハンドシェイクのリセットに失敗しました。"
 
-#: ../src/plugins/https-utils.c:257
+#: ../src/plugins/https-utils.c:258
 #, c-format
 msgid "Failed to complete SSL handshake: NSS error %d."
 msgstr "SSL ハンドシェークの完了に失敗しました: NSS エラー %d。"
 
-#: ../src/plugins/https-utils.c:266
+#: ../src/plugins/https-utils.c:267
 msgid "Failed to close SSL socket."
 msgstr "SSL ソケットの切断に失敗しました。"
 
-#: ../src/plugins/https-utils.c:331
+#: ../src/plugins/https-utils.c:332
 #, c-format
 msgid "Malformed HTTP response header: '%s'"
 msgstr "不正な形式の HTTP 応答ヘッダー: '%s'"
 
-#: ../src/plugins/https-utils.c:368
+#: ../src/plugins/https-utils.c:369
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
 msgstr "データの受信に失敗しました: NSS エラー %d"
 
-#: ../src/plugins/https-utils.c:397
+#: ../src/plugins/https-utils.c:398
 msgid "Malformed chunked response."
 msgstr "不正な形式の応答です。"
 
-#: ../src/plugins/https-utils.c:422
+#: ../src/plugins/https-utils.c:423
 msgid "Failed to initialize NSS."
 msgstr "NSS の初期化に失敗しました。"
 
-#: ../src/plugins/https-utils.c:428
+#: ../src/plugins/https-utils.c:429
 msgid "Failed to initialize security module."
 msgstr "セキュリティモジュールの初期化に失敗しました。"
 
-#: ../src/plugins/https-utils.c:443
+#: ../src/plugins/https-utils.c:444
 msgid "Failed to shutdown NSS."
 msgstr "NSS のシャットダウンに失敗しました。"
 
@@ -1435,43 +1451,43 @@ msgstr "最新のクラッシュ回数を表示する"
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "詳細については abrt-cli COMMAND --help を参照してください"
 
-#: ../src/cli/list.c:130
+#: ../src/cli/list.c:179
 msgid "& list [options] [DIR]..."
 msgstr "& list [オプション] [DIR]..."
 
-#: ../src/cli/list.c:139
+#: ../src/cli/list.c:188
 msgid "List only not-reported problems"
-msgstr ""
+msgstr "報告されていない問題のみを表示する"
 
 #. deprecate -d option with --pretty=full
-#: ../src/cli/list.c:141 ../src/cli/list.c:194
+#: ../src/cli/list.c:190 ../src/cli/list.c:243
 msgid "Show detailed report"
 msgstr "詳細報告を表示する"
 
-#: ../src/cli/list.c:142
+#: ../src/cli/list.c:191
 msgid "List only the problems more recent than specified timestamp"
 msgstr "指定したタイムスタンプより新しい問題のみを表示します"
 
-#: ../src/cli/list.c:143
+#: ../src/cli/list.c:192
 msgid "List only the problems older than specified timestamp"
 msgstr "指定したタイムスタンプよりも古い問題のみを表示します"
 
-#: ../src/cli/list.c:175
+#: ../src/cli/list.c:224
 #, c-format
 msgid ""
 "The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
-msgstr ""
+msgstr "自動報告機能は無効になっています。root の特権を持つユーザーで\n'abrt-auto-reporting enabled' を発行し、この機能を有効にすることを検討してみてください\n"
 
-#: ../src/cli/list.c:186
+#: ../src/cli/list.c:235
 msgid "& info [options] DIR..."
 msgstr "& info [オプション] DIR..."
 
-#: ../src/cli/list.c:195
+#: ../src/cli/list.c:244
 msgid "Text larger than this will be shown abridged"
 msgstr "これより大きなテキストは要約して表示されます"
 
-#: ../src/cli/list.c:215
+#: ../src/cli/list.c:264
 #, c-format
 msgid "No such problem directory '%s'"
 msgstr "そのような問題ディレクトリ '%s' はありません"

@@ -4,14 +4,14 @@
 # 
 # Translators:
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
-# Yuri Chornoivan <yurchor@ukr.net>, 2011-2013
+# Yuri Chornoivan <yurchor@ukr.net>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-01-07 23:20+0100\n"
-"PO-Revision-Date: 2014-01-07 22:20+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-02-26 09:33+0100\n"
+"PO-Revision-Date: 2014-02-11 11:28+0000\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/projects/p/fedora/language/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,177 +27,188 @@ msgstr "ABRT — автоматичне звітування про помилк
 msgid "ABRT notification applet"
 msgstr "Аплет сповіщення ABRT"
 
-#: ../src/applet/applet.c:106
+#: ../src/applet/applet.c:130
 msgid ""
-"The report which will be sent does not contain any security sensitive data. Therefore it is not necessary to bother you next time and require any further action by you. \n"
-"Do you want to enable automatically submitted anonymous crash reports?"
-msgstr "У звіті, який буде надіслано, не міститься жодних конфіденційних даних. Тому немає потреби у тому, щоб турбувати вас надалі, також надалі не потрібно буде виконувати ніяких додаткових дій. \nХочете увімкнути автоматичне надсилання анонімних звітів щодо аварійних завершень роботи?"
+"The report which will be sent does not contain any security sensitive data. "
+"Therefore it is not necessary to bother you next time and require any "
+"further action by you. \n"
+msgstr "У звіті, який буде надіслано, не міститься жодних конфіденційних даних. Тому немає потреби у тому, щоб турбувати вас надалі, також надалі не потрібно буде виконувати ніяких додаткових дій.\n"
+
+#: ../src/applet/applet.c:136
+msgid "Do you want to enable automatically submitted crash reports?"
+msgstr "Хочете увімкнути автоматичне надсилання звітів щодо аварій?"
+
+#: ../src/applet/applet.c:141
+msgid "Do you want to enable automatically submitted anonymous crash reports?"
+msgstr "Хочете увімкнути автоматичне надсилання анонімних звітів щодо аварій?"
 
 #. The NetworkManager DBus service is not available.
-#: ../src/applet/applet.c:202
+#: ../src/applet/applet.c:243
 #, c-format
 msgid "Can't connect to NetworkManager over DBus: %s"
 msgstr "Не вдалося встановити з’єднання з NetworkManager за допомогою DBus: %s"
 
-#: ../src/applet/applet.c:226
+#: ../src/applet/applet.c:267
 #, c-format
 msgid "Can't determine network status via NetworkManager: %s"
 msgstr "Не вдалося визначити стан у мережі за допомогою NetworkManager: %s"
 
-#: ../src/applet/applet.c:345
+#: ../src/applet/applet.c:386
 msgid "A problem has been detected"
 msgstr "Було виявлено проблему"
 
-#: ../src/applet/applet.c:347
+#: ../src/applet/applet.c:388
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "Було виявлено проблему, пов’язану з пакунком %s"
 
-#: ../src/applet/applet.c:357
+#: ../src/applet/applet.c:398
 #, c-format
 msgid "%s and the diagnostic data has been submitted"
-msgstr ""
+msgstr "%s та діагностичні дані надіслано"
 
-#: ../src/applet/applet.c:517 ../src/plugins/abrt-retrace-client.c:131
+#: ../src/applet/applet.c:558 ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
 #, c-format
 msgid "Can't execute '%s'"
 msgstr "Не вдалося виконати «%s»"
 
-#: ../src/applet/applet.c:591 ../src/applet/applet.c:653
+#: ../src/applet/applet.c:632 ../src/applet/applet.c:698
 #, c-format
 msgid "Can't close notification: %s"
 msgstr "Не вдалося закрити сповіщення: %s"
 
-#: ../src/applet/applet.c:693 ../src/applet/applet.c:695
+#: ../src/applet/applet.c:738 ../src/applet/applet.c:740
 msgid "Warning"
 msgstr "Попередження"
 
-#: ../src/applet/applet.c:743
+#: ../src/applet/applet.c:788
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "Аплет у області сповіщень для попередження користувача про виявлені ABRT проблеми"
 
-#: ../src/applet/applet.c:759
+#: ../src/applet/applet.c:804
 msgid "translator-credits"
 msgstr "Максим Дзюманенко <dziumanenko@gmail.com>\nЮрій Чорноіван <yurchor@ukr.net>"
 
-#: ../src/applet/applet.c:767
+#: ../src/applet/applet.c:812
 msgid "_Quit"
 msgstr "Ви_йти"
 
-#: ../src/applet/applet.c:769
+#: ../src/applet/applet.c:814
 msgid "Hide"
 msgstr "Сховати"
 
-#: ../src/applet/applet.c:771
+#: ../src/applet/applet.c:816
 msgid "_About"
 msgstr "_Про програму"
 
-#: ../src/applet/applet.c:839
+#: ../src/applet/applet.c:884
 msgid "Problem detected"
 msgstr "Виявлено проблему"
 
-#: ../src/applet/applet.c:889
+#: ../src/applet/applet.c:934
 msgid "Ignore forever"
 msgstr "Завжди ігнорувати"
 
 #. Problem has been 'autoreported' and is considered as KNOWN
-#. 
-#: ../src/applet/applet.c:901 ../src/applet/applet.c:916
+#: ../src/applet/applet.c:945 ../src/applet/applet.c:960
 msgid "Open"
 msgstr "Відкрити"
 
-#: ../src/applet/applet.c:906
+#: ../src/applet/applet.c:950
 msgid "The Problem has already been Reported"
 msgstr "Звіт про цю проблему вже створено"
 
-#: ../src/applet/applet.c:906
+#: ../src/applet/applet.c:950
 msgid "A Known Problem has Occurred"
 msgstr "Виникла відома проблема"
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
-#. 
-#: ../src/applet/applet.c:925 ../src/applet/applet.c:960
+#: ../src/applet/applet.c:969 ../src/applet/applet.c:1004
 msgid "Report"
 msgstr "Повідомити"
 
-#: ../src/applet/applet.c:930
+#: ../src/applet/applet.c:974
 msgid "A Problem has Occurred"
 msgstr "Виникла проблема"
 
-#: ../src/applet/applet.c:956
+#: ../src/applet/applet.c:1000
 msgid "A Problem has been Reported"
 msgstr "Створено звіт щодо проблеми"
 
-#: ../src/applet/applet.c:964
+#: ../src/applet/applet.c:1008
 msgid "A New Problem has Occurred"
 msgstr "Виникла нова проблема"
 
-#: ../src/applet/applet.c:975
+#: ../src/applet/applet.c:1018
 #, c-format
 msgid "Can't show notification: %s"
 msgstr "Не вдалося показати сповіщення: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:1005 ../src/daemon/abrt-upload-watch.c:189
+#: ../src/applet/applet.c:1052 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "Не вдалося виконати читання з каналу gio: «%s»"
 
-#: ../src/applet/applet.c:1089
+#: ../src/applet/applet.c:1136
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "Не вдалося встановити кодування на каналі gio: %s"
 
-#: ../src/applet/applet.c:1093
+#: ../src/applet/applet.c:1140
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "Не вдалося увімкнути режим без блокування для каналу gio: %s"
 
-#: ../src/applet/applet.c:1125
+#: ../src/applet/applet.c:1172
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "Не вдалося визначити права доступу до «%s»"
 
-#: ../src/applet/applet.c:1135
+#: ../src/applet/applet.c:1182
 #, c-format
 msgid "Can't open directory for writing '%s'"
 msgstr "Не вдалося відкрити каталог для запису, «%s»"
 
-#: ../src/applet/applet.c:1418
+#: ../src/applet/applet.c:1465
 #, c-format
 msgid ""
 "Failed to open connection to session manager: '%s', notification may "
 "reappear on the next login"
 msgstr "Не вдалося встановити з’єднання з засобом керування сеансом: «%s», сповіщення може бути повторно показано під час наступного входу до системи"
 
-#: ../src/applet/applet.c:1559
+#: ../src/applet/applet.c:1606
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr "& [-v] [КАТАЛОГ]...\n\nАплет для сповіщення користувача про виявлені ABRT проблеми\n"
 
-#: ../src/configuration-gui/system-config-abrt.c:58
+#: ../src/configuration-gui/system-config-abrt.c:75
+msgid "_Close"
+msgstr "З_акрити"
+
+#: ../src/configuration-gui/system-config-abrt.c:84
 msgid "_Defaults"
 msgstr "_Типові"
 
-#: ../src/configuration-gui/system-config-abrt.c:71
-#: ../src/configuration-gui/main.c:30
+#: ../src/configuration-gui/system-config-abrt.c:110
+#: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
 msgstr "Налаштування звітування про проблеми"
 
-#: ../src/configuration-gui/main.c:67
+#: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
 msgstr "Про загальносистемні налаштування ABRT"
 
-#: ../src/configuration-gui/main.c:97
+#: ../src/configuration-gui/main.c:105
 msgid "About"
 msgstr "Відомості"
 
-#: ../src/configuration-gui/main.c:98
+#: ../src/configuration-gui/main.c:106
 msgid "Quit"
 msgstr "Вийти"
 
@@ -232,8 +243,8 @@ msgstr "& [параметри]"
 msgid "Use NUM as client uid"
 msgstr "Використовувати вказане число як uid клієнта"
 
-#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:297
-#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:272
+#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:273
 #: ../src/plugins/abrt-dump-xorg.c:244
 msgid "Log to syslog"
 msgstr "Записувати до журналу syslog"
@@ -335,12 +346,12 @@ msgstr "Виконати ДІЮ над даними каталогу КАТАЛ�
 msgid "Communicate directly to the user"
 msgstr "Обмінюватися даними безпосередньо з користувачем"
 
-#: ../src/daemon/abrt-upload-watch.c:119
+#: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
 msgstr "Немає вільних засобів обробки і повний буфер. Пропускаємо архів «%s»."
 
-#: ../src/daemon/abrt-upload-watch.c:275
+#: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
 "& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
 "\n"
@@ -352,30 +363,30 @@ msgid ""
 "WatchCrashdumpArchiveDir option from abrt.conf"
 msgstr "& [-vs] [-w ЧИСЛО] [-c МіБ] [КАТАЛОГ_ВИВАНТАЖЕННЯ]\n\n\nСпостерігати за каталогом КАТАЛОГ_ВИВАНТАЖЕННЯ розпаковувати вхідні архіви до каталогу DumpLocation, вказаного у abrt.conf\n\nЯкщо не вказано каталогу КАТАЛОГ_ВИВАНТАЖЕННЯ, буде використано значення\nWatchCrashdumpArchiveDir option from abrt.conf"
 
-#: ../src/daemon/abrt-upload-watch.c:298
+#: ../src/daemon/abrt-upload-watch.c:281
 msgid "Daemize"
 msgstr "Режим фонової служби"
 
-#: ../src/daemon/abrt-upload-watch.c:299
+#: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
 msgstr "Кількість паралельних потоків обробки. Типовою є"
 
-#: ../src/daemon/abrt-upload-watch.c:300
+#: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
 msgstr "Максимальний розмір кешу у МіБ. Типовим є"
 
 #: ../src/daemon/abrt-auto-reporting.c:81
 msgid "& [ "
-msgstr ""
+msgstr "& [ "
 
 #: ../src/daemon/abrt-auto-reporting.c:113
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "Некоректна кількість параметрів"
 
 #: ../src/daemon/abrt-auto-reporting.c:138
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "Невідоме значення параметра: «%s»\n"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:251
@@ -407,12 +418,12 @@ msgstr "Не вдалося отримати дані проблеми з abrt-d
 msgid "Can't get problem list from abrt-dbus: %s"
 msgstr "Не вдалося отримати список проблем з abrt-dbus: %s"
 
-#: ../src/lib/ignored_problems.c:230
+#: ../src/lib/ignored_problems.c:231
 #, c-format
 msgid "Can't create temporary file '%s'"
 msgstr "Не вдалося створити тимчасовий файл «%s»"
 
-#: ../src/lib/ignored_problems.c:247
+#: ../src/lib/ignored_problems.c:248
 #, c-format
 msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
@@ -420,7 +431,7 @@ msgid ""
 msgstr "Не вдалося виконати запис до «%s». Проблему «%s» не буде вилучено зі списку ігнорованих проблем «%s»"
 
 #. Something nefarious happened
-#: ../src/lib/ignored_problems.c:261
+#: ../src/lib/ignored_problems.c:262
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
 msgstr "Не вдалося перейменувати «%s» на «%s». Помилка під час спроби вилучення проблеми «%s»."
@@ -436,7 +447,6 @@ msgstr "& [параметри] -d КАТАЛОГ\n\nПроаналізувати
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -505,6 +515,12 @@ msgstr "Не вдалося видобути повідомлення щодо �
 msgid "Oops text extracted successfully"
 msgstr "Текст повідомлення щодо помилки успішно видобуто"
 
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:81
+msgid ""
+"The kernel log indicates that hardware errors were detected.\n"
+"This is most likely not a software problem.\n"
+msgstr "З журналу ядра можна зрозуміти, що було виявлено помилки, пов’язані з обладнанням.\nЙмовірно, цю проблему не пов’язано з програмним забезпеченням.\n"
+
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
 "& [options] -d DIR\n"
@@ -522,7 +538,6 @@ msgstr "Завершити роботу gdb, якщо вона триває по
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -577,7 +592,7 @@ msgid ""
 "    -e,--exact  Download only specified files\n"
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
-msgstr ""
+msgstr "Використання: %s [-vy] [--ids=ФАЙЛ_ІДЕНТИФІКАТОРІВ_ЗБИРАННЯ]\n       [--tmpdir=ТИМЧКАТАЛОГ] [--cache=КАТАЛОГКЕШУ[:КАТАЛОГДІАГНДАНИХ1:КАТАЛОГДІАГНДАНИХ2...]] [--size_mb=РОЗМІР]\n       [-e, --exact=ШЛЯХ[:ШЛЯХ]...]]\n\nВстановлює пакунки символів для діагностики для всіх ідентифікаторів\nз файла ФАЙЛ_ІДЕНТИФІКАТОРІВ_ЗБИРАННЯ до каталогу \nКАТАЛОГКЕШУ з використанням проміжного сховища у каталозі\nТИМЧКАТАЛОГ.\nЗастарілі файли у каталозі КАТАЛОГКЕШУ буде вилучено, якщо їхній розмір\nперевищує вказаний РОЗМІР.\n\n    -v          режим докладних повідомлень\n    -y          неінтерактивний режим, відповідь «Так» на всі питання\n    --ids       Типове значення: build_ids\n    --tmpdir    Типове значення: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n    --cache     Типове значення: /var/cache/abrt-di\n    --size_mb   Типове значення: 4096\n    --repo      зразок для пошуку сховищ.\n                Типове значення: *debug*\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:169
 msgid "Can't open {0}: {1}"
@@ -589,11 +604,11 @@ msgstr "Дамп ядра посилається на {0} файлів діаг�
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:209
 msgid "{0} of debuginfo files are not installed"
-msgstr ""
+msgstr "{0} з файлів debuginfo не встановлено"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:223
 msgid "Missing requested file: {0}"
-msgstr ""
+msgstr "Не вистачає такого файла: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:228
 msgid "Missing debuginfo file: {0}"
@@ -765,73 +780,72 @@ msgstr "& [-vs] [-F РЯДОК]... ФАЙЛ ПРОГРАМА [ПАРАМЕТРИ
 msgid "Don't run PROG if STRs aren't found"
 msgstr "Не запускати програму ПРОГРАМА, якщо не знайдено рядка РЯДОК"
 
-#: ../src/plugins/abrt-dump-oops.c:124
+#: ../src/plugins/abrt-dump-oops.c:125
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
-msgstr ""
+msgstr "Проблеми з ядром виникли через помилки у BIOS. На жаль, супровідники ядра системи не зможуть усунути такі проблеми."
 
-#: ../src/plugins/abrt-dump-oops.c:129
+#: ../src/plugins/abrt-dump-oops.c:130
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
-msgstr ""
+msgstr "Виникли проблеми з ядром, підтримки обладнання у системі не передбачено, тому супровідники ядра не зможуть усунути цю проблему."
 
-#: ../src/plugins/abrt-dump-oops.c:144
+#: ../src/plugins/abrt-dump-oops.c:145
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr "Сталася проблема з ядром, яке було завантажено з небажаними модулями (прапорці:%s). Супровідники коду ядра не зможуть проаналізувати звіти щодо ядра з небажаними модулями."
 
-#: ../src/plugins/abrt-dump-oops.c:152
+#: ../src/plugins/abrt-dump-oops.c:153
 #, c-format
 msgid " Tainted modules: %s."
 msgstr " Модулі сумнівної якості: %s."
 
-#: ../src/plugins/abrt-dump-oops.c:253
+#: ../src/plugins/abrt-dump-oops.c:254
 msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr "& [-vusoxm] [-d КАТАЛОГ]/[-D] [ФАЙЛ]\n\nВидобути дані аварії (oops) з файла ФАЙЛ (або стандартного джерела вхідних даних)"
 
-#: ../src/plugins/abrt-dump-oops.c:273
+#: ../src/plugins/abrt-dump-oops.c:274
 msgid "Print found oopses on standard output"
 msgstr "Вивести знайдені повідомлення про аварії (oops) до стандартного виводу"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
-#: ../src/plugins/abrt-dump-oops.c:277
+#: ../src/plugins/abrt-dump-oops.c:278
 msgid "Create new problem directory in DIR for every oops found"
 msgstr "Створювати новий каталог проблеми для кожного знайденого повідомлення про аварію (oops)"
 
-#: ../src/plugins/abrt-dump-oops.c:278 ../src/plugins/abrt-dump-xorg.c:247
+#: ../src/plugins/abrt-dump-oops.c:279 ../src/plugins/abrt-dump-xorg.c:247
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "Зберегти як -d DumpLocation, DumpLocation вказано у abrt.conf"
 
-#: ../src/plugins/abrt-dump-oops.c:279
+#: ../src/plugins/abrt-dump-oops.c:280
 msgid "Save the extracted information in PROBLEM"
 msgstr "Зберегти отримані дані у каталозі ПРОБЛЕМА"
 
-#: ../src/plugins/abrt-dump-oops.c:280 ../src/plugins/abrt-dump-xorg.c:248
+#: ../src/plugins/abrt-dump-oops.c:281 ../src/plugins/abrt-dump-xorg.c:248
 msgid "Make the problem directory world readable"
 msgstr "Зробити каталог даних проблеми доступним для всіх користувачів"
 
-#: ../src/plugins/abrt-dump-oops.c:281
+#: ../src/plugins/abrt-dump-oops.c:282
 msgid "Throttle problem directory creation to 1 per second"
 msgstr "Встановлення інтервалу створення каталогу проблеми у 1 секунду"
 
-#: ../src/plugins/abrt-dump-oops.c:282 ../src/plugins/abrt-dump-xorg.c:249
+#: ../src/plugins/abrt-dump-oops.c:283 ../src/plugins/abrt-dump-xorg.c:249
 msgid "Print search string(s) to stdout and exit"
 msgstr "Вивести рядки пошуку до стандартного виведення і завершити роботу"
 
-#: ../src/plugins/abrt-dump-oops.c:378
+#: ../src/plugins/abrt-dump-oops.c:379
 msgid "Can't update the problem: more than one oops found"
 msgstr "Не вдалося оновити дані проблеми, оскільки знайдено декілька повідомлень про помилки."
 
-#: ../src/plugins/abrt-dump-oops.c:397
+#: ../src/plugins/abrt-dump-oops.c:398
 #, c-format
 msgid "Sleeping for %d seconds"
 msgstr "Очікуємо %d секунд"
@@ -859,7 +873,6 @@ msgstr "Використання сервера повторного трасу�
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
-#. 
 #: ../src/plugins/abrt-retrace-client.c:103
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
@@ -1277,64 +1290,71 @@ msgstr "Не вдалося встановити режим блокування
 msgid "Failed to wrap TCP socket by SSL."
 msgstr "Не вдалося використати для шифрування даних сокета TCP SSL."
 
-#: ../src/plugins/https-utils.c:215 ../src/plugins/https-utils.c:217
-#: ../src/plugins/https-utils.c:219 ../src/plugins/https-utils.c:221
+#: ../src/plugins/https-utils.c:215
 msgid "Failed to enable client handshake to SSL socket."
 msgstr "Не вдалося увімкнути клієнтську процедуру встановлення зв’язку з сокетом SSL."
 
-#: ../src/plugins/https-utils.c:223
+#: ../src/plugins/https-utils.c:220
+msgid "Failed to enable SSL3."
+msgstr "Не вдалося увімкнути SSL3."
+
+#: ../src/plugins/https-utils.c:222
+msgid "Failed to enable TLS."
+msgstr "Не вдалося увімкнути TLS."
+
+#: ../src/plugins/https-utils.c:224
 msgid "Failed to set URL to SSL socket."
 msgstr "Не вдалося встановити адресу для сокета SSL."
 
-#: ../src/plugins/https-utils.c:232
+#: ../src/plugins/https-utils.c:233
 #, c-format
 msgid "Can't connect to '%s'"
 msgstr "Не вдалося встановити зв’язок з «%s»"
 
-#: ../src/plugins/https-utils.c:240
+#: ../src/plugins/https-utils.c:241
 msgid "Failed to set certificate hook."
 msgstr "Не вдалося встановити скрипт обробки сертифікатів."
 
-#: ../src/plugins/https-utils.c:246
+#: ../src/plugins/https-utils.c:247
 msgid "Failed to set handshake callback."
 msgstr "Не вдалося встановити зворотній виклик під час встановлення зв’язку."
 
-#: ../src/plugins/https-utils.c:250
+#: ../src/plugins/https-utils.c:251
 msgid "Failed to reset handshake."
 msgstr "Не вдалося скинути зворотній виклик."
 
-#: ../src/plugins/https-utils.c:257
+#: ../src/plugins/https-utils.c:258
 #, c-format
 msgid "Failed to complete SSL handshake: NSS error %d."
 msgstr "Не вдалося завершити встановлення зв’язку у режимі SSL: помилка NSS %d."
 
-#: ../src/plugins/https-utils.c:266
+#: ../src/plugins/https-utils.c:267
 msgid "Failed to close SSL socket."
 msgstr "Не вдалося закрити сокет SSL."
 
-#: ../src/plugins/https-utils.c:331
+#: ../src/plugins/https-utils.c:332
 #, c-format
 msgid "Malformed HTTP response header: '%s'"
 msgstr "Помилкове форматування заголовка відповіді HTTP: «%s»"
 
-#: ../src/plugins/https-utils.c:368
+#: ../src/plugins/https-utils.c:369
 #, c-format
 msgid "Receiving of data failed: NSS error %d."
 msgstr "Помилка отримання даних: помилка NSS %d."
 
-#: ../src/plugins/https-utils.c:397
+#: ../src/plugins/https-utils.c:398
 msgid "Malformed chunked response."
 msgstr "Помилкове форматування відповіді."
 
-#: ../src/plugins/https-utils.c:422
+#: ../src/plugins/https-utils.c:423
 msgid "Failed to initialize NSS."
 msgstr "Не вдалося ініціалізувати NSS."
 
-#: ../src/plugins/https-utils.c:428
+#: ../src/plugins/https-utils.c:429
 msgid "Failed to initialize security module."
 msgstr "Не вдалося ініціалізувати модуль захисту."
 
-#: ../src/plugins/https-utils.c:443
+#: ../src/plugins/https-utils.c:444
 msgid "Failed to shutdown NSS."
 msgstr "Не вдалося завершити роботу NSS."
 
@@ -1425,43 +1445,43 @@ msgstr "Вивести кількість нещодавніх аварійни�
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr "Щоб дізнатися більше, скористайтеся командою «abrt-cli КОМАНДА --help»"
 
-#: ../src/cli/list.c:130
+#: ../src/cli/list.c:179
 msgid "& list [options] [DIR]..."
 msgstr "& list [параметри] [КАТАЛОГ]..."
 
-#: ../src/cli/list.c:139
+#: ../src/cli/list.c:188
 msgid "List only not-reported problems"
-msgstr ""
+msgstr "Показати список лише проблем, щодо яких не складено звітів"
 
 #. deprecate -d option with --pretty=full
-#: ../src/cli/list.c:141 ../src/cli/list.c:194
+#: ../src/cli/list.c:190 ../src/cli/list.c:243
 msgid "Show detailed report"
 msgstr "Показати докладний звіт"
 
-#: ../src/cli/list.c:142
+#: ../src/cli/list.c:191
 msgid "List only the problems more recent than specified timestamp"
 msgstr "Вивести список лише тих проблем, які сталися після вказаної часової позначки"
 
-#: ../src/cli/list.c:143
+#: ../src/cli/list.c:192
 msgid "List only the problems older than specified timestamp"
 msgstr "Вивести список лише тих проблем, які сталися до вказаної часової позначки"
 
-#: ../src/cli/list.c:175
+#: ../src/cli/list.c:224
 #, c-format
 msgid ""
 "The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
-msgstr ""
+msgstr "Можливість автоматичного звітування вимкнено. Вам варто увімкнути її за допомогою команди\n«abrt-auto-reporting enabled», відданої від імені користувача з правами доступу root\n"
 
-#: ../src/cli/list.c:186
+#: ../src/cli/list.c:235
 msgid "& info [options] DIR..."
 msgstr "& info [параметри] КАТАЛОГ..."
 
-#: ../src/cli/list.c:195
+#: ../src/cli/list.c:244
 msgid "Text larger than this will be shown abridged"
 msgstr "Текст з розмірами, що перевищують вказані, буде обрізано під час показу"
 
-#: ../src/cli/list.c:215
+#: ../src/cli/list.c:264
 #, c-format
 msgid "No such problem directory '%s'"
 msgstr "Каталогу проблеми «%s» не існує"
