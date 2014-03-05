@@ -947,6 +947,29 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Wed Mar 05 2014 Jakub Filak <jfilak@redhat.com> 2.2.0-1
+- Translation updates
+- limit ourselves to *.conf in /etc/abrt
+- spec: remove stray space from %description
+- applet: run Autoreporting event in NONINTERACTIVE mode
+- ureport: add user to CC List of Bugzilla bug
+- spec: addon-python3 doesn't require addon-python
+- addon-python3 doesn't require addon-python
+- python: FsProxy uses notify_new_path
+- python: fix check for absolute path
+- spec: abrt-addon-python3
+- abrt-addon-python3
+- spec: python api for py3
+- python: build python api for py3
+- spec: add missing requires for python api
+- never search for MCE strings in dmesg
+- spec: add dependency on abrt-python
+- make dist: use tar-ustar due to long filenames
+- upload-watch: remove busy-wait for SIGUSR1
+- autogen: fix sysdeps parser
+- spec: abrt-python's files to arch specific dir
+- python: install modules to sitearch directory
+
 * Thu Jan 30 2014 Jakub Filak <jfilak@redhat.com> 2.1.12-1
 - don't break the event run by failures of abrt-action-notify
 - harvest-vmcore: properly handle inaccessible dir error
