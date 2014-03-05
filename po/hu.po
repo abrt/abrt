@@ -597,7 +597,7 @@ msgid ""
 "    -e,--exact  Download only specified files\n"
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
-msgstr "Használat: %s [-vy] [--ids=BUILD_IDS_FILE] \\n [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE] \\n [-e, --exact=PATH] \\n A felsorolt azonosítók alapján felépíti és telepíti a debuginfot BUILD_IDS_FILE alapján \\n a CACHEDIR segítségével a TMPDIR ideiglenes átmeneti területére . \\n A régi fájlok tőrlődnek a CACHEDIRból amíg a z kisebb , mint a SIZE . \\n \\n -v Legyen részletesebb \\n -Y Legyen interaktív és válaszoljunk 'igen'el mindegyik kérdésre \\n --ids Alapértelmezett: build_ids \\n --tmpdir Alapértelmezett: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX \\n --cache Alapértelmezett: /var/cache/abrt-di \\n --size_mb Alapértelmezettt: 4096 \\n -e,--exact Csak a megadott fájlok letöltése \\n"
+msgstr "Használat: %s [-vy] [--ids=BUILD_IDS_FILE]\n [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n [-e, --exact=PATH]\n A felsorolt azonosítók alapján felépíti és telepíti a debuginfot BUILD_IDS_FILE alapján\n a CACHEDIR segítségével a TMPDIR ideiglenes átmeneti területére .\n A régi fájlok tőrlődnek a CACHEDIRból amíg a z kisebb , mint a SIZE.\n\n -v Legyen részletesebb\n -Y Legyen interaktív és válaszoljunk 'igen'el mindegyik kérdésre\n --ids Alapértelmezett: build_ids\n --tmpdir Alapértelmezett: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n --cache Alapértelmezett: /var/cache/abrt-di\n --size_mb Alapértelmezettt: 4096\n -e,--exact Csak a megadott fájlok letöltése\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:169
 msgid "Can't open {0}: {1}"
@@ -756,7 +756,7 @@ msgstr "Adjon hozzáférést a hozzárendelt fájlon túl, helytelen címzésekh
 
 #: ../src/plugins/abrt-gdb-exploitable:693
 msgid "Can't get signal no and do exploitability analysis\n"
-msgstr "Nincsen jel és így nem lehet kihasználhatósági elemzést készíteni \\n"
+msgstr "Nincsen jel és így nem lehet kihasználhatósági elemzést készíteni\n"
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Likely crash reason: "
@@ -772,7 +772,7 @@ msgstr "Jelenlegi instrukció:"
 
 #: ../src/plugins/abrt-gdb-exploitable:711
 msgid "Exploitability analysis came up empty\n"
-msgstr "A kihasználhatósági elemzés üresen jött \\n"
+msgstr "A kihasználhatósági elemzés üresen jött\n"
 
 #: ../src/plugins/abrt-watch-log.c:142
 msgid ""
@@ -1499,7 +1499,7 @@ msgstr "Csak azoknak az eseteknek a számát jelenítse meg, ami a megjelölt id
 #: ../src/cli/status.c:104
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
-msgstr "Az ABRT több hibát is talált %u (s) . További információhoz  futtasa az abrt-cli list %s parancsot \\n"
+msgstr "Az ABRT több hibát is talált %u (s) . További információhoz  futtasa az abrt-cli list %s parancsot\n"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
