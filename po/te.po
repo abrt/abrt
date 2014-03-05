@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-01-07 23:20+0100\n"
-"PO-Revision-Date: 2014-01-07 22:20+0000\n"
+"POT-Creation-Date: 2014-03-05 10:34+0100\n"
+"PO-Revision-Date: 2014-02-06 06:07+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Telugu (http://www.transifex.com/projects/p/fedora/language/te/)\n"
 "MIME-Version: 1.0\n"
@@ -33,177 +33,188 @@ msgstr "స్వయంచాలక బగ్ నివేదీకరణ సా
 msgid "ABRT notification applet"
 msgstr "ABRT ప్రకటన ఆప్లెట్"
 
-#: ../src/applet/applet.c:106
+#: ../src/applet/applet.c:125
 msgid ""
-"The report which will be sent does not contain any security sensitive data. Therefore it is not necessary to bother you next time and require any further action by you. \n"
-"Do you want to enable automatically submitted anonymous crash reports?"
-msgstr "పంపబడే నివేదిక యెటువంటి రక్షణ సంభందిత దత్తాంశం కలిగివుండదు. కనుగ తరువాతిసారి మిమ్ములను యిబ్బంది పెట్టవలసిన అవసరం లేదు మరియు యింకా యే చర్యా తీసుకోనక్కరలేదు.\nమీరు స్వయంచాలకంగా అప్పజెప్పిన యెనానిమస్ క్రాష్ నివేదికలను చేతనం చేయాలని అనుకొనుచున్నారా?"
+"The report which will be sent does not contain any security sensitive data. "
+"Therefore it is not necessary to bother you next time and require any "
+"further action by you. \n"
+msgstr ""
+
+#: ../src/applet/applet.c:131
+msgid "Do you want to enable automatically submitted crash reports?"
+msgstr ""
+
+#: ../src/applet/applet.c:136
+msgid "Do you want to enable automatically submitted anonymous crash reports?"
+msgstr ""
 
 #. The NetworkManager DBus service is not available.
-#: ../src/applet/applet.c:202
+#: ../src/applet/applet.c:237
 #, c-format
 msgid "Can't connect to NetworkManager over DBus: %s"
 msgstr "DBus నందు నెట్వర్కుమేనేజర్‌ను అనుసంధానించలేదు: %s"
 
-#: ../src/applet/applet.c:226
+#: ../src/applet/applet.c:261
 #, c-format
 msgid "Can't determine network status via NetworkManager: %s"
 msgstr "నెట్వర్కుమేనేజర్ ద్వారా నెట్వర్కు స్థితిని నిర్ణయించలేదు: %s"
 
-#: ../src/applet/applet.c:345
+#: ../src/applet/applet.c:380
 msgid "A problem has been detected"
 msgstr "ఒక సమస్య గుర్తించబడింది"
 
-#: ../src/applet/applet.c:347
+#: ../src/applet/applet.c:382
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "ప్యాకేజీ %s నందు వొక సమస్య గుర్తించబడింది"
 
-#: ../src/applet/applet.c:357
+#: ../src/applet/applet.c:392
 #, c-format
 msgid "%s and the diagnostic data has been submitted"
 msgstr ""
 
-#: ../src/applet/applet.c:517 ../src/plugins/abrt-retrace-client.c:131
+#: ../src/applet/applet.c:552 ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
 #, c-format
 msgid "Can't execute '%s'"
 msgstr "'%s' యెగ్జిక్యూట్ చేయలేదు"
 
-#: ../src/applet/applet.c:591 ../src/applet/applet.c:653
+#: ../src/applet/applet.c:637 ../src/applet/applet.c:699
 #, c-format
 msgid "Can't close notification: %s"
 msgstr "ప్రకటనను మూయలేదు: %s"
 
-#: ../src/applet/applet.c:693 ../src/applet/applet.c:695
+#: ../src/applet/applet.c:739 ../src/applet/applet.c:741
 msgid "Warning"
 msgstr "హెచ్చరిక"
 
-#: ../src/applet/applet.c:743
+#: ../src/applet/applet.c:789
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT చేత గుర్తించబడిన సమస్యల గురించి వినియోగదారికి తెలుపుటకు నోటిఫికేషన్ ప్రాంతపు ఆప్లెట్"
 
-#: ../src/applet/applet.c:759
+#: ../src/applet/applet.c:805
 msgid "translator-credits"
 msgstr "కృష్ణబాబు క్రొత్తపల్లి <kkrothap@redhat.com> 2009,2010."
 
-#: ../src/applet/applet.c:767
+#: ../src/applet/applet.c:813
 msgid "_Quit"
 msgstr "నిష్క్రమించు (_Q)"
 
-#: ../src/applet/applet.c:769
+#: ../src/applet/applet.c:815
 msgid "Hide"
 msgstr "మరుగునవుంచుము"
 
-#: ../src/applet/applet.c:771
+#: ../src/applet/applet.c:817
 msgid "_About"
 msgstr "గురించి (_A)"
 
-#: ../src/applet/applet.c:839
+#: ../src/applet/applet.c:885
 msgid "Problem detected"
 msgstr "సమస్య గుర్తించబడింది"
 
-#: ../src/applet/applet.c:889
+#: ../src/applet/applet.c:935
 msgid "Ignore forever"
 msgstr "ఎప్పటికీ విస్మరించు"
 
 #. Problem has been 'autoreported' and is considered as KNOWN
-#. 
-#: ../src/applet/applet.c:901 ../src/applet/applet.c:916
+#: ../src/applet/applet.c:946 ../src/applet/applet.c:961
 msgid "Open"
 msgstr "తెరుచు"
 
-#: ../src/applet/applet.c:906
+#: ../src/applet/applet.c:951
 msgid "The Problem has already been Reported"
 msgstr ""
 
-#: ../src/applet/applet.c:906
+#: ../src/applet/applet.c:951
 msgid "A Known Problem has Occurred"
 msgstr "తెలిసిన సమస్య యెదురైనది"
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
-#. 
-#: ../src/applet/applet.c:925 ../src/applet/applet.c:960
+#: ../src/applet/applet.c:970 ../src/applet/applet.c:1005
 msgid "Report"
 msgstr "నివేదించు"
 
-#: ../src/applet/applet.c:930
+#: ../src/applet/applet.c:975
 msgid "A Problem has Occurred"
 msgstr "ఒక సమస్య యెదురైంది"
 
-#: ../src/applet/applet.c:956
+#: ../src/applet/applet.c:1001
 msgid "A Problem has been Reported"
 msgstr "ఒక సమస్య నివేదించబడింది"
 
-#: ../src/applet/applet.c:964
+#: ../src/applet/applet.c:1009
 msgid "A New Problem has Occurred"
 msgstr "కొత్త సమస్య యెదురైనది"
 
-#: ../src/applet/applet.c:975
+#: ../src/applet/applet.c:1019
 #, c-format
 msgid "Can't show notification: %s"
 msgstr "ప్రకటనను చూపలేదు: %s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:1005 ../src/daemon/abrt-upload-watch.c:189
+#: ../src/applet/applet.c:1053 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "gio చానల్‌నుండి చదువలేదు: '%s'"
 
-#: ../src/applet/applet.c:1089
+#: ../src/applet/applet.c:1137
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "gio చానల్ నందు యెన్కోడింగ్ అమర్చలేదు: %s"
 
-#: ../src/applet/applet.c:1093
+#: ../src/applet/applet.c:1141
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "gio చానల్ కొరకు నాన్‌బ్లాకింగ్ రీతిని ఆన్ చేయలేదు: %s"
 
-#: ../src/applet/applet.c:1125
+#: ../src/applet/applet.c:1173
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "'%s' పై అజమాయిషీ తీసుకోలేదు"
 
-#: ../src/applet/applet.c:1135
+#: ../src/applet/applet.c:1183
 #, c-format
 msgid "Can't open directory for writing '%s'"
 msgstr "'%s' వ్రాయుట కొరకు డైరెక్టరీ తెరువలేదు"
 
-#: ../src/applet/applet.c:1418
+#: ../src/applet/applet.c:1466
 #, c-format
 msgid ""
 "Failed to open connection to session manager: '%s', notification may "
 "reappear on the next login"
 msgstr "సెషన్ నిర్వాహికకు అనుసంధానం తెరుచుటకు విఫలమైంది: '%s', తరువాతి లాగిన్ పైన ప్రకటన తిరిగికనిపించవచ్చు"
 
-#: ../src/applet/applet.c:1559
+#: ../src/applet/applet.c:1607
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr "& [-v] [DIR]...\n\nABRT చేత కొత్త సమస్యలు గుర్తించబడినప్పుడు వినియోగదారికి తెలుపు ఆప్లెట్\n"
 
-#: ../src/configuration-gui/system-config-abrt.c:58
+#: ../src/configuration-gui/system-config-abrt.c:75
+msgid "_Close"
+msgstr ""
+
+#: ../src/configuration-gui/system-config-abrt.c:84
 msgid "_Defaults"
 msgstr "అప్రమేయాలు (_D)"
 
-#: ../src/configuration-gui/system-config-abrt.c:71
-#: ../src/configuration-gui/main.c:30
+#: ../src/configuration-gui/system-config-abrt.c:110
+#: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
 msgstr "ఆకృతీకరణను నివేదించుటలో సమస్య"
 
-#: ../src/configuration-gui/main.c:67
+#: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
 msgstr "వ్యవస్థ ఆకృతీకరణ ABRT గురించి"
 
-#: ../src/configuration-gui/main.c:97
+#: ../src/configuration-gui/main.c:105
 msgid "About"
 msgstr "గురించి"
 
-#: ../src/configuration-gui/main.c:98
+#: ../src/configuration-gui/main.c:106
 msgid "Quit"
 msgstr "నిష్క్రమించు"
 
@@ -238,8 +249,8 @@ msgstr "& [ఐచ్చికాలు]"
 msgid "Use NUM as client uid"
 msgstr "NUM క్లైంట్ uid వలె వుపయోగించు"
 
-#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:297
-#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:272
+#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:273
 #: ../src/plugins/abrt-dump-xorg.c:244
 msgid "Log to syslog"
 msgstr "సిస్‌లాగ్‌కు లాగ్"
@@ -341,12 +352,12 @@ msgstr "EVENT ను DIR పై నడుపుము"
 msgid "Communicate directly to the user"
 msgstr "వాడుకరిని నేరుగా సంప్రదించు"
 
-#: ../src/daemon/abrt-upload-watch.c:119
+#: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
 msgstr ""
 
-#: ../src/daemon/abrt-upload-watch.c:275
+#: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
 "& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
 "\n"
@@ -358,15 +369,15 @@ msgid ""
 "WatchCrashdumpArchiveDir option from abrt.conf"
 msgstr ""
 
-#: ../src/daemon/abrt-upload-watch.c:298
+#: ../src/daemon/abrt-upload-watch.c:281
 msgid "Daemize"
 msgstr ""
 
-#: ../src/daemon/abrt-upload-watch.c:299
+#: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
 msgstr ""
 
-#: ../src/daemon/abrt-upload-watch.c:300
+#: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
 msgstr ""
 
@@ -413,12 +424,12 @@ msgstr "abrt-dbus నుండి సమస్యా దత్తాంశము
 msgid "Can't get problem list from abrt-dbus: %s"
 msgstr "abrt-dbus నుండి సమస్య జాబితాను పొందలేదు: %s"
 
-#: ../src/lib/ignored_problems.c:230
+#: ../src/lib/ignored_problems.c:231
 #, c-format
 msgid "Can't create temporary file '%s'"
 msgstr "'%s' టెంపరరీ ఫైలును సృష్టించలేము"
 
-#: ../src/lib/ignored_problems.c:247
+#: ../src/lib/ignored_problems.c:248
 #, c-format
 msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
@@ -426,7 +437,7 @@ msgid ""
 msgstr "'%s' కు వ్రాయడానికి కాదు. '%s' సమస్య '%s' నిర్లక్ష్యం సమస్యల నుండి తీసివేయబడదు"
 
 #. Something nefarious happened
-#: ../src/lib/ignored_problems.c:261
+#: ../src/lib/ignored_problems.c:262
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
 msgstr "'%s'నుండి '%s' కు రీనేమ్ చేయలేరు. '%s' సమస్య తొలగించడానికి విఫలమైంది"
@@ -442,7 +453,6 @@ msgstr "& [options] -d DIR\n\nసమస్యాత్మక డైరెక్�
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -511,6 +521,12 @@ msgstr ""
 msgid "Oops text extracted successfully"
 msgstr ""
 
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:81
+msgid ""
+"The kernel log indicates that hardware errors were detected.\n"
+"This is most likely not a software problem.\n"
+msgstr ""
+
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
 "& [options] -d DIR\n"
@@ -528,7 +544,6 @@ msgstr "NUM సెకనుల కన్నా యెక్కువ నడి�
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -771,73 +786,72 @@ msgstr "& [-vs] [-F STR]... FILE PROG [ARGS]\n\nలాగ్ ఫైలు చూ
 msgid "Don't run PROG if STRs aren't found"
 msgstr "STRలు కనబడకపోతే PROG నడుపవద్దు"
 
-#: ../src/plugins/abrt-dump-oops.c:124
+#: ../src/plugins/abrt-dump-oops.c:125
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:129
+#: ../src/plugins/abrt-dump-oops.c:130
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:144
+#: ../src/plugins/abrt-dump-oops.c:145
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr "కెర్నల్ సమస్య యెదురైంది, అయితే మీ కెర్నల్ కల్మషమైంది (flags:%s). కల్మషమైన నివేదికలను కెర్నల్ నిర్వాహకులు విశ్లేషించలేక పోయినారు."
 
-#: ../src/plugins/abrt-dump-oops.c:152
+#: ../src/plugins/abrt-dump-oops.c:153
 #, c-format
 msgid " Tainted modules: %s."
 msgstr "టైన్టెట్ మాడ్యూళ్ళు: %s."
 
-#: ../src/plugins/abrt-dump-oops.c:253
+#: ../src/plugins/abrt-dump-oops.c:254
 msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr "& [-vusoxm] [-d DIR]/[-D] [FILE]\n\nFILE (లేదా ప్రామాణిక ఇన్పుట్) నుండి oops వెలికితీయి"
 
-#: ../src/plugins/abrt-dump-oops.c:273
+#: ../src/plugins/abrt-dump-oops.c:274
 msgid "Print found oopses on standard output"
 msgstr "కనుగొన్న oopses ను ప్రామాణిక అవుట్పుట్‌పై ముద్రించు"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
-#: ../src/plugins/abrt-dump-oops.c:277
+#: ../src/plugins/abrt-dump-oops.c:278
 msgid "Create new problem directory in DIR for every oops found"
 msgstr "కనుగొనబడిన ప్రతి oopsకు కొత్త సమస్య డైరెక్టరీను DIR నందు సృష్టించుము"
 
-#: ../src/plugins/abrt-dump-oops.c:278 ../src/plugins/abrt-dump-xorg.c:247
+#: ../src/plugins/abrt-dump-oops.c:279 ../src/plugins/abrt-dump-xorg.c:247
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "-d DumpLocation వలె, DumpLocation అనునది abrt.conf నందు తెలుపబడెను"
 
-#: ../src/plugins/abrt-dump-oops.c:279
+#: ../src/plugins/abrt-dump-oops.c:280
 msgid "Save the extracted information in PROBLEM"
 msgstr "వెలికితీసిన సమాచారం PROBLEM నందు దాయి"
 
-#: ../src/plugins/abrt-dump-oops.c:280 ../src/plugins/abrt-dump-xorg.c:248
+#: ../src/plugins/abrt-dump-oops.c:281 ../src/plugins/abrt-dump-xorg.c:248
 msgid "Make the problem directory world readable"
 msgstr "సమస్యాత్మక డైరెక్టరీను అందరూ చదువదగినదిగా చేయి"
 
-#: ../src/plugins/abrt-dump-oops.c:281
+#: ../src/plugins/abrt-dump-oops.c:282
 msgid "Throttle problem directory creation to 1 per second"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:282 ../src/plugins/abrt-dump-xorg.c:249
+#: ../src/plugins/abrt-dump-oops.c:283 ../src/plugins/abrt-dump-xorg.c:249
 msgid "Print search string(s) to stdout and exit"
 msgstr "stdout కు శోధన స్ట్రింగ్స్ ముద్రించి నిష్క్రమించు"
 
-#: ../src/plugins/abrt-dump-oops.c:378
+#: ../src/plugins/abrt-dump-oops.c:379
 msgid "Can't update the problem: more than one oops found"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:397
+#: ../src/plugins/abrt-dump-oops.c:398
 #, c-format
 msgid "Sleeping for %d seconds"
 msgstr ""
@@ -865,7 +879,6 @@ msgstr "తిరిగిట్రేస్ చేసిన సర్వర్ 
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
-#. 
 #: ../src/plugins/abrt-retrace-client.c:103
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186

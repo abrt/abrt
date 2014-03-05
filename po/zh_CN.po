@@ -6,7 +6,7 @@
 # alanzheng <machinecat1666@gmail.com>, 2011
 # Alick Zhao <alick9188@gmail.com>, 2011
 # Alick Zhao <alick9188@gmail.com>, 2013
-# Christopher Meng <cickumqt@gmail.com>, 2012-2013
+# Christopher Meng <cickumqt@gmail.com>, 2012-2014
 # Huan Chen <chenhuan126@126.com>, 2011-2012
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
 # Leah Liu <lliu@redhat.com>, 2011-2012
@@ -17,7 +17,7 @@
 # Tiansworld <tiansworld@fedoraproject.org>, 2013
 # Tommy He <lovenemesis@gmail.com>, 2012-2013
 # wwy353244835 <wangwenye_wwy@163.com>, 2013
-# Wei Liu <LLIU@REDHAT.COM>, 2012-2013
+# Wei Liu <LLIU@REDHAT.COM>, 2012-2014
 # turning <isyangxin@gmail.com>, 2013
 # yusuf <yusufma77@yahoo.com>, 2011
 # zsun <zamirs@163.com>, 2013
@@ -25,9 +25,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-01-07 23:20+0100\n"
-"PO-Revision-Date: 2014-01-07 22:20+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-03-05 10:34+0100\n"
+"PO-Revision-Date: 2014-02-23 11:23+0000\n"
+"Last-Translator: Christopher Meng <cickumqt@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/fedora/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,177 +43,188 @@ msgstr "错误自动报告工具"
 msgid "ABRT notification applet"
 msgstr "ABRT 通知小程序"
 
-#: ../src/applet/applet.c:106
+#: ../src/applet/applet.c:125
 msgid ""
-"The report which will be sent does not contain any security sensitive data. Therefore it is not necessary to bother you next time and require any further action by you. \n"
-"Do you want to enable automatically submitted anonymous crash reports?"
-msgstr "要发送的报告中不包含任何安全敏感数据。因此下一次就没有必要打扰您，让您执行进一步的操作。\n您要启用自动提交匿名崩溃报告吗？"
+"The report which will be sent does not contain any security sensitive data. "
+"Therefore it is not necessary to bother you next time and require any "
+"further action by you. \n"
+msgstr "将要发送的报告中不包含任何安全敏感数据。因此不需要再次打扰您，或者需要您有进一步的操作。\n"
+
+#: ../src/applet/applet.c:131
+msgid "Do you want to enable automatically submitted crash reports?"
+msgstr "您想要启用自动提交崩溃报告功能吗？"
+
+#: ../src/applet/applet.c:136
+msgid "Do you want to enable automatically submitted anonymous crash reports?"
+msgstr "您想要启用自动匿名提交崩溃报告功能吗？"
 
 #. The NetworkManager DBus service is not available.
-#: ../src/applet/applet.c:202
+#: ../src/applet/applet.c:237
 #, c-format
 msgid "Can't connect to NetworkManager over DBus: %s"
 msgstr "无法通过 DBus 连接到至 NetworkManger：%s"
 
-#: ../src/applet/applet.c:226
+#: ../src/applet/applet.c:261
 #, c-format
 msgid "Can't determine network status via NetworkManager: %s"
 msgstr "无法通过 NetworkManager 确定网络状态：%s"
 
-#: ../src/applet/applet.c:345
+#: ../src/applet/applet.c:380
 msgid "A problem has been detected"
 msgstr "已检测到一个问题"
 
-#: ../src/applet/applet.c:347
+#: ../src/applet/applet.c:382
 #, c-format
 msgid "A problem in the %s package has been detected"
 msgstr "检测到 %s 软件包中的一个问题"
 
-#: ../src/applet/applet.c:357
+#: ../src/applet/applet.c:392
 #, c-format
 msgid "%s and the diagnostic data has been submitted"
-msgstr ""
+msgstr "已提交 %s 和诊断数据"
 
-#: ../src/applet/applet.c:517 ../src/plugins/abrt-retrace-client.c:131
+#: ../src/applet/applet.c:552 ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
 #, c-format
 msgid "Can't execute '%s'"
 msgstr "无法执行 ”%s“"
 
-#: ../src/applet/applet.c:591 ../src/applet/applet.c:653
+#: ../src/applet/applet.c:637 ../src/applet/applet.c:699
 #, c-format
 msgid "Can't close notification: %s"
 msgstr "无法关闭通知：%s"
 
-#: ../src/applet/applet.c:693 ../src/applet/applet.c:695
+#: ../src/applet/applet.c:739 ../src/applet/applet.c:741
 msgid "Warning"
 msgstr "警告"
 
-#: ../src/applet/applet.c:743
+#: ../src/applet/applet.c:789
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "用来将 ABRT 检测到的问题通知给用户的小程序"
 
-#: ../src/applet/applet.c:759
+#: ../src/applet/applet.c:805
 msgid "translator-credits"
 msgstr "Fedora Simplified Chinese Translation Group <trans-zh_cn@lists.fedoraproject.org>\nTommy He <lovenemesis@fedoraproject.org>"
 
-#: ../src/applet/applet.c:767
+#: ../src/applet/applet.c:813
 msgid "_Quit"
 msgstr "退出(_Q)"
 
-#: ../src/applet/applet.c:769
+#: ../src/applet/applet.c:815
 msgid "Hide"
 msgstr "隐藏"
 
-#: ../src/applet/applet.c:771
+#: ../src/applet/applet.c:817
 msgid "_About"
 msgstr "关于(_A)"
 
-#: ../src/applet/applet.c:839
+#: ../src/applet/applet.c:885
 msgid "Problem detected"
 msgstr "检测到问题"
 
-#: ../src/applet/applet.c:889
+#: ../src/applet/applet.c:935
 msgid "Ignore forever"
 msgstr "永远忽略"
 
 #. Problem has been 'autoreported' and is considered as KNOWN
-#. 
-#: ../src/applet/applet.c:901 ../src/applet/applet.c:916
+#: ../src/applet/applet.c:946 ../src/applet/applet.c:961
 msgid "Open"
 msgstr "打开"
 
-#: ../src/applet/applet.c:906
+#: ../src/applet/applet.c:951
 msgid "The Problem has already been Reported"
 msgstr "该问题已经被提交"
 
-#: ../src/applet/applet.c:906
+#: ../src/applet/applet.c:951
 msgid "A Known Problem has Occurred"
 msgstr "发生一个已知问题"
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
-#. 
-#: ../src/applet/applet.c:925 ../src/applet/applet.c:960
+#: ../src/applet/applet.c:970 ../src/applet/applet.c:1005
 msgid "Report"
 msgstr "报告"
 
-#: ../src/applet/applet.c:930
+#: ../src/applet/applet.c:975
 msgid "A Problem has Occurred"
-msgstr "发生一个错误"
+msgstr "探测到一个问题"
 
-#: ../src/applet/applet.c:956
+#: ../src/applet/applet.c:1001
 msgid "A Problem has been Reported"
 msgstr "一个问题已被提交"
 
-#: ../src/applet/applet.c:964
+#: ../src/applet/applet.c:1009
 msgid "A New Problem has Occurred"
 msgstr "发生一个新问题"
 
-#: ../src/applet/applet.c:975
+#: ../src/applet/applet.c:1019
 #, c-format
 msgid "Can't show notification: %s"
 msgstr "无法显示通知：%s"
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:1005 ../src/daemon/abrt-upload-watch.c:189
+#: ../src/applet/applet.c:1053 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr "无法读取 gio 频道：'%s'"
 
-#: ../src/applet/applet.c:1089
+#: ../src/applet/applet.c:1137
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr "无法在 gio 频道中设定编码：%s"
 
-#: ../src/applet/applet.c:1093
+#: ../src/applet/applet.c:1141
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr "无法为 gio 频道设定非阻断模式：%s"
 
-#: ../src/applet/applet.c:1125
+#: ../src/applet/applet.c:1173
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr "无法获取 '%s' 的所有权"
 
-#: ../src/applet/applet.c:1135
+#: ../src/applet/applet.c:1183
 #, c-format
 msgid "Can't open directory for writing '%s'"
 msgstr "无法打开目录以写入 '%s'"
 
-#: ../src/applet/applet.c:1418
+#: ../src/applet/applet.c:1466
 #, c-format
 msgid ""
 "Failed to open connection to session manager: '%s', notification may "
 "reappear on the next login"
 msgstr "打开会话管理器 :'%s', 失败，通知会在下次登录时重新出现"
 
-#: ../src/applet/applet.c:1559
+#: ../src/applet/applet.c:1607
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr "& [-v] [DIR]...\n\nABRT 探测到问题后，小程序会通知用户\n"
 
-#: ../src/configuration-gui/system-config-abrt.c:58
+#: ../src/configuration-gui/system-config-abrt.c:75
+msgid "_Close"
+msgstr "关闭(_C)"
+
+#: ../src/configuration-gui/system-config-abrt.c:84
 msgid "_Defaults"
 msgstr "默认(_D)"
 
-#: ../src/configuration-gui/system-config-abrt.c:71
-#: ../src/configuration-gui/main.c:30
+#: ../src/configuration-gui/system-config-abrt.c:110
+#: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
 msgstr "配置错误报告"
 
-#: ../src/configuration-gui/main.c:67
+#: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
 msgstr "关于系统配置 ABRT"
 
-#: ../src/configuration-gui/main.c:97
+#: ../src/configuration-gui/main.c:105
 msgid "About"
 msgstr "关于"
 
-#: ../src/configuration-gui/main.c:98
+#: ../src/configuration-gui/main.c:106
 msgid "Quit"
 msgstr "退出"
 
@@ -248,8 +259,8 @@ msgstr "& [options]"
 msgid "Use NUM as client uid"
 msgstr "使用 NUM 作为客户端 UID"
 
-#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:297
-#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:272
+#: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:280
+#: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:273
 #: ../src/plugins/abrt-dump-xorg.c:244
 msgid "Log to syslog"
 msgstr "记录至 syslog"
@@ -351,12 +362,12 @@ msgstr "在 DIR 中运行 EVENT "
 msgid "Communicate directly to the user"
 msgstr "直接联系用户"
 
-#: ../src/daemon/abrt-upload-watch.c:119
+#: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
 msgid "No free workers and full buffer. Omitting archive '%s'"
 msgstr "没有空闲的工作者和完整缓存。忽略档案 '%s'"
 
-#: ../src/daemon/abrt-upload-watch.c:275
+#: ../src/daemon/abrt-upload-watch.c:258
 msgid ""
 "& [-vs] [-w NUM] [-c MiB] [UPLOAD_DIRECTORY]\n"
 "\n"
@@ -368,30 +379,30 @@ msgid ""
 "WatchCrashdumpArchiveDir option from abrt.conf"
 msgstr "& [-vs] [-w 工作者数] [-c MiB] [上传目录]\n\n\n监视指定上传目录，将新加入的档案解压至 abrt.conf 中\n指定的转储位置\n\n如未指定上传目录，则使用 abrt.conf 中 \n指定的 WatchCrashdumpArchiveDir 选项"
 
-#: ../src/daemon/abrt-upload-watch.c:298
+#: ../src/daemon/abrt-upload-watch.c:281
 msgid "Daemize"
 msgstr "在后台运行"
 
-#: ../src/daemon/abrt-upload-watch.c:299
+#: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
 msgstr "并行工作者数量。 默认为"
 
-#: ../src/daemon/abrt-upload-watch.c:300
+#: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
 msgstr "以 MiB 计最大缓存尺寸。默认为"
 
 #: ../src/daemon/abrt-auto-reporting.c:81
 msgid "& [ "
-msgstr ""
+msgstr "& [ "
 
 #: ../src/daemon/abrt-auto-reporting.c:113
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "无效参数数值"
 
 #: ../src/daemon/abrt-auto-reporting.c:138
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "未知选项值：'%s'\n"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:251
@@ -423,12 +434,12 @@ msgstr "无法从 abrt-dbus 中获取问题数据：%s"
 msgid "Can't get problem list from abrt-dbus: %s"
 msgstr "无法从 abrt-dbus 中获取问题列表：%s"
 
-#: ../src/lib/ignored_problems.c:230
+#: ../src/lib/ignored_problems.c:231
 #, c-format
 msgid "Can't create temporary file '%s'"
 msgstr "无法创建临时文件 '%s'"
 
-#: ../src/lib/ignored_problems.c:247
+#: ../src/lib/ignored_problems.c:248
 #, c-format
 msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
@@ -436,7 +447,7 @@ msgid ""
 msgstr "无法写入 '%s'。问题 '%s' 将不会从已忽略问题 '%s' 中被移除"
 
 #. Something nefarious happened
-#: ../src/lib/ignored_problems.c:261
+#: ../src/lib/ignored_problems.c:262
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
 msgstr "无法重命名 '%s' 为 '%s'。移除问题 '%s' 失败"
@@ -452,7 +463,6 @@ msgstr "& [options] -d DIR\n\n在有问题的目录 DIR 中分析 C/C++ 回溯�
 #. * The parser failed. Compute the duphash from the executable
 #. * instead of a backtrace.
 #. * and component only.  This is not supposed to happen often.
-#. 
 #: ../src/plugins/abrt-action-analyze-backtrace.c:90
 #, c-format
 msgid "Backtrace parsing failed for %s"
@@ -521,6 +531,12 @@ msgstr "无法提取异常信息: '{0}'"
 msgid "Oops text extracted successfully"
 msgstr "成功提取异常文字信息"
 
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:81
+msgid ""
+"The kernel log indicates that hardware errors were detected.\n"
+"This is most likely not a software problem.\n"
+msgstr "内核日志表明已探测到硬件错误。\n这很可能不是普通的软件问题。\n"
+
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
 "& [options] -d DIR\n"
@@ -538,7 +554,6 @@ msgstr "如果 gdb 运行超过 NUM 秒就终止"
 
 #. Don't be completely silent. gdb run takes a few seconds,
 #. * it is useful to let user know it (maybe) worked.
-#. 
 #: ../src/plugins/abrt-action-generate-backtrace.c:103
 #, c-format
 msgid "Backtrace is generated and saved, %u bytes"
@@ -571,7 +586,7 @@ msgstr "错误： %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:51
 msgid "Exiting on user command"
-msgstr "由于用户命令正在退出"
+msgstr "由于用户指令，正在退出"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:88
 #, c-format
@@ -593,7 +608,7 @@ msgid ""
 "    -e,--exact  Download only specified files\n"
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
-msgstr ""
+msgstr "用法：%s [-vy] [--ids=BUILD_IDS_FILE]\n       [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n       [-e, --exact=PATH[:PATH]...]\n\n为所有 BUILD_IDS_FILE 中列出的 build-id 安装 debuginfo\n以便 CACHEDIR，使用 TMPDIR 作为临时存储区。\n除非 CACHEDIR 除非它小于 SIZE。\n\n    -v          详细输出\n    -y          非互动，假设所有问题答案为 'Yes' \n    --ids       默认：build_ids\n    --tmpdir   默认：@LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n    --cache     默认：/var/cache/abrt-di\n    --size_mb   默认：4096\n    -e,--exact  只下载指定文件\n    --repo      搜索库时使用的模式。\n                默认：*debug*\n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:169
 msgid "Can't open {0}: {1}"
@@ -605,11 +620,11 @@ msgstr "核心转储需要 {0} 个 debuginfo 软件包，其中有 {1} 个尚未
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:209
 msgid "{0} of debuginfo files are not installed"
-msgstr ""
+msgstr "未安装 debuginfo 的 {0} 文件"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:223
 msgid "Missing requested file: {0}"
-msgstr ""
+msgstr "缺少所需文件：{0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:228
 msgid "Missing debuginfo file: {0}"
@@ -781,73 +796,72 @@ msgstr "& [-vs] [-F STR]... FILE PROG [ARGS]\n\n监视日志文件 FILE，当它
 msgid "Don't run PROG if STRs aren't found"
 msgstr "如果未找到字符串 STR，则不运行程序 PROG"
 
-#: ../src/plugins/abrt-dump-oops.c:124
+#: ../src/plugins/abrt-dump-oops.c:125
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
-msgstr ""
+msgstr "由于 BIOS 出错出现内核问题。遗憾的是内核维护者尚未解决这个问题。"
 
-#: ../src/plugins/abrt-dump-oops.c:129
+#: ../src/plugins/abrt-dump-oops.c:130
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
-msgstr ""
+msgstr "出现内核问题，但您的硬件不支持，因此内核维护者无法修复这个问题。"
 
-#: ../src/plugins/abrt-dump-oops.c:144
+#: ../src/plugins/abrt-dump-oops.c:145
 #, c-format
 msgid ""
 "A kernel problem occurred, but your kernel has been tainted (flags:%s). "
 "Kernel maintainers are unable to diagnose tainted reports."
 msgstr "发生了内核问题，但您的内核已被污染（标志：%s）。内核维护器无法诊断被污染的报告。"
 
-#: ../src/plugins/abrt-dump-oops.c:152
+#: ../src/plugins/abrt-dump-oops.c:153
 #, c-format
 msgid " Tainted modules: %s."
 msgstr "受污染的模块：%s。"
 
-#: ../src/plugins/abrt-dump-oops.c:253
+#: ../src/plugins/abrt-dump-oops.c:254
 msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
 msgstr "& [-vusoxm] [-d 目录]/[-D] [文件]\n\n从指定文件(或标准输入)中提取出错信息"
 
-#: ../src/plugins/abrt-dump-oops.c:273
+#: ../src/plugins/abrt-dump-oops.c:274
 msgid "Print found oopses on standard output"
 msgstr "打印在标准输出中找到的严重错误(Oops)"
 
 #. oopses don't contain any sensitive info, and even
 #. * the old koops app was showing the oopses to all users
-#. 
-#: ../src/plugins/abrt-dump-oops.c:277
+#: ../src/plugins/abrt-dump-oops.c:278
 msgid "Create new problem directory in DIR for every oops found"
 msgstr "在 DIR 中为每个发现的 oops 生成新问题目录"
 
-#: ../src/plugins/abrt-dump-oops.c:278 ../src/plugins/abrt-dump-xorg.c:247
+#: ../src/plugins/abrt-dump-oops.c:279 ../src/plugins/abrt-dump-xorg.c:247
 msgid "Same as -d DumpLocation, DumpLocation is specified in abrt.conf"
 msgstr "与 -d DumpLocation 相同，是在 abrt.conf 中指定 DumpLocation。"
 
-#: ../src/plugins/abrt-dump-oops.c:279
+#: ../src/plugins/abrt-dump-oops.c:280
 msgid "Save the extracted information in PROBLEM"
 msgstr "保存提取信息到PROBLEM"
 
-#: ../src/plugins/abrt-dump-oops.c:280 ../src/plugins/abrt-dump-xorg.c:248
+#: ../src/plugins/abrt-dump-oops.c:281 ../src/plugins/abrt-dump-xorg.c:248
 msgid "Make the problem directory world readable"
 msgstr "使问题目录可读"
 
-#: ../src/plugins/abrt-dump-oops.c:281
+#: ../src/plugins/abrt-dump-oops.c:282
 msgid "Throttle problem directory creation to 1 per second"
 msgstr "每 1 秒创建一个控流问题目录"
 
-#: ../src/plugins/abrt-dump-oops.c:282 ../src/plugins/abrt-dump-xorg.c:249
+#: ../src/plugins/abrt-dump-oops.c:283 ../src/plugins/abrt-dump-xorg.c:249
 msgid "Print search string(s) to stdout and exit"
 msgstr "输出搜索字符串至标准输出并退出"
 
-#: ../src/plugins/abrt-dump-oops.c:378
+#: ../src/plugins/abrt-dump-oops.c:379
 msgid "Can't update the problem: more than one oops found"
 msgstr "无法更新问题：发现超过一个异常"
 
-#: ../src/plugins/abrt-dump-oops.c:397
+#: ../src/plugins/abrt-dump-oops.c:398
 #, c-format
 msgid "Sleeping for %d seconds"
 msgstr "休眠 %d 秒"
@@ -875,7 +889,6 @@ msgstr "由于崩溃数据过大，导致追溯服务器无法使用。请使用
 
 #. Hopefully, by this time child emitted more meaningful
 #. * error message. But just in case it didn't:
-#. 
 #: ../src/plugins/abrt-retrace-client.c:103
 #: ../src/plugins/abrt-retrace-client.c:182
 #: ../src/plugins/abrt-retrace-client.c:186
@@ -1447,7 +1460,7 @@ msgstr "& list [options] [DIR]..."
 
 #: ../src/cli/list.c:139
 msgid "List only not-reported problems"
-msgstr ""
+msgstr "只列出未报告的问题"
 
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:141 ../src/cli/list.c:194
@@ -1467,7 +1480,7 @@ msgstr "仅列出比指定时间戳更早的问题"
 msgid ""
 "The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
-msgstr ""
+msgstr "已禁用自动报告功能。请考虑启用它，方法是\n作为有 root 特权的用户使用命令 'abrt-auto-reporting enabled'\n"
 
 #: ../src/cli/list.c:186
 msgid "& info [options] DIR..."
