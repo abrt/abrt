@@ -143,7 +143,7 @@ int main(int argc, const char **argv)
         );
 
     const struct cmd_struct commands[] = {
-        CMD(list, _("List not yet reported problems [in DIRs]")),
+        CMD(list, _("List problems [in DIRs]")),
         CMD(rm, _("Remove problem directory DIR")),
         CMD(report, _("Analyze and report problem data in DIR")),
         CMD(info, _("Print information about DIR")),
