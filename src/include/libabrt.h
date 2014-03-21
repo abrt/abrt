@@ -9,6 +9,8 @@
 #ifndef LIBABRT_H_
 #define LIBABRT_H_
 
+#include <regex.h>
+
 #include <gio/gio.h> /* dbus */
 #include "abrt-dbus.h"
 /* libreport's internal functions we use: */
@@ -109,6 +111,14 @@ int koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf);
 void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen);
 #define koops_print_suspicious_strings abrt_koops_print_suspicious_strings
 void koops_print_suspicious_strings(void);
+/**
+ * Prints all suspicious strings that do not match any of the regular
+ * expression in NULL terminated list.
+ *
+ * The regular expression should be compiled with REG_NOSUB flag.
+ */
+#define koops_print_suspicious_strings_filtered abrt_koops_print_suspicious_strings_filtered
+void koops_print_suspicious_strings_filtered(const regex_t **filterout);
 
 /* dbus client api */
 
