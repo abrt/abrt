@@ -158,8 +158,35 @@ static const char *const s_koops_suspicious_strings[] = {
 
 void koops_print_suspicious_strings(void)
 {
+    koops_print_suspicious_strings_filtered(NULL);
+}
+
+static bool match_any(const regex_t **res, const char *str)
+{
+    for (const regex_t **r = res; *r != NULL; ++r)
+    {
+        /* Regular expressions compiled with REG_NOSUB */
+        const int reti = regexec(*r, str, 0, NULL, 0);
+        if (reti == 0)
+            return true;
+        else if (reti != REG_NOMATCH)
+        {
+            char msgbuf[100];
+            regerror(reti, *r, msgbuf, sizeof(msgbuf));
+            error_msg_and_die("Regex match failed: %s", msgbuf);
+        }
+    }
+
+    return false;
+}
+
+void koops_print_suspicious_strings_filtered(const regex_t **filterout)
+{
     for (const char *const *str = s_koops_suspicious_strings; *str; ++str)
-        puts(*str);
+    {
+        if (filterout == NULL || !match_any(filterout, *str))
+            puts(*str);
+    }
 }
 
 void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)

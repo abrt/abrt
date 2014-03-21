@@ -8,7 +8,8 @@ dist_pluginsconf_DATA = \
     CCpp.conf \
     python.conf \
     python3.conf \
-    vmcore.conf
+    vmcore.conf \
+    oops.conf
 
 defaultpluginsconfdir = $(DEFAULT_PLUGINS_CONF_DIR)
 dist_defaultpluginsconf_DATA = $(dist_pluginsconf_DATA)
