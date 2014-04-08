@@ -79,7 +79,7 @@ rlJournalStart
 
     rlPhaseStartCleanup
         rlRun "ulimit -c $old_ulimit" 0
-        rlRun "userdel -r abrt-suid-test" 0
+        rlRun "userdel -r -f abrt-suid-test" 0
 
         popd # TmpDir
         rm -rf $TmpDir

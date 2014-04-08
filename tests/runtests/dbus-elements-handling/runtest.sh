@@ -303,8 +303,8 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "userdel -r abrtdbustestone" 0 "Remove the test user"
-        rlRun "userdel -r abrtdbustestanother" 0 "Remove the another test user"
+        rlRun "userdel -r -f abrtdbustestone" 0 "Remove the test user"
+        rlRun "userdel -r -f abrtdbustestanother" 0 "Remove the another test user"
         if [ -n "$OLDCRASHSIZE" ]; then
             rlRun "augtool set $OLDCRASHSIZE" 0
         else

@@ -124,7 +124,7 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartCleanup
-        rlRun "userdel -r abrtdbustest"
+        rlRun "userdel -r -f abrtdbustest"
         rlRun "abrt-cli rm $problem_PATH1" 0 "Remove crash directory"
         rlRun "abrt-cli rm $problem_PATH2" 0 "Remove crash directory"
         rlRun "abrt-cli rm $problem_PATH3" 0 "Remove crash directory"
