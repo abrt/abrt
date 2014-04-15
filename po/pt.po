@@ -5,6 +5,7 @@
 # Translators:
 # Bruno Martins <bmomartins@gmail.com>, 2011
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
+# alfalb_mansil <manuela.silva@sky.com>, 2014
 # manuelmarque <manuelmarque@gmail.com>, 2012
 # Miguel Sousa <migueljorgesousa@sapo.pt>, 2011
 # nmartins <nmartins10@gmail.com>, 2011
@@ -15,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-03-05 10:34+0100\n"
-"PO-Revision-Date: 2014-02-06 06:07+0000\n"
+"POT-Creation-Date: 2014-04-15 12:20+0200\n"
+"PO-Revision-Date: 2014-04-15 10:20+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Portuguese (http://www.transifex.com/projects/p/fedora/language/pt/)\n"
 "MIME-Version: 1.0\n"
@@ -82,7 +83,7 @@ msgstr "Incapaz de executar '%s'"
 #: ../src/applet/applet.c:637 ../src/applet/applet.c:699
 #, c-format
 msgid "Can't close notification: %s"
-msgstr ""
+msgstr "Não é possível fechar a notificação: %s"
 
 #: ../src/applet/applet.c:739 ../src/applet/applet.c:741
 msgid "Warning"
@@ -128,7 +129,7 @@ msgstr ""
 
 #: ../src/applet/applet.c:951
 msgid "A Known Problem has Occurred"
-msgstr ""
+msgstr "Ocorreu um Problema Conhecido"
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
@@ -142,32 +143,32 @@ msgstr "Ocorreu um problema"
 
 #: ../src/applet/applet.c:1001
 msgid "A Problem has been Reported"
-msgstr ""
+msgstr "Foi Comunicado um Problema"
 
 #: ../src/applet/applet.c:1009
 msgid "A New Problem has Occurred"
-msgstr ""
+msgstr "Ocorreu um Novo Problema"
 
 #: ../src/applet/applet.c:1019
 #, c-format
 msgid "Can't show notification: %s"
-msgstr ""
+msgstr "Não é possível mostrar a notificação: %s"
 
 #. TODO: Terminate child's process?
 #: ../src/applet/applet.c:1053 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
-msgstr ""
+msgstr "Não é possível ler do canal 'gio': '%s'"
 
 #: ../src/applet/applet.c:1137
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
-msgstr ""
+msgstr "Não é posssível definir a codificação no canal 'gio': %s"
 
 #: ../src/applet/applet.c:1141
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
-msgstr ""
+msgstr "Não é possível ligar o modo 'não bloquear' para o canal 'gio': %s"
 
 #: ../src/applet/applet.c:1173
 #, c-format
@@ -177,7 +178,7 @@ msgstr "Não é possível tomar posse de '%s'"
 #: ../src/applet/applet.c:1183
 #, c-format
 msgid "Can't open directory for writing '%s'"
-msgstr ""
+msgstr "Não é possível abrir a diretoria para gravar '%s'"
 
 #: ../src/applet/applet.c:1466
 #, c-format
@@ -192,6 +193,85 @@ msgid ""
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr "& [-v] [DIR]...\n\nObjecto que notifica o utilizador quando novos problemas são detectados pelo ABRT\n"
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:1
+msgid "Ask before stealing directory"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:2
+msgid "Automatically send uReport"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:3
+msgid "Shortened reporting"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:4
+msgid "Silent shortened reporting"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:5
+msgid ""
+"The coredump file is necessary for generating stack trace which is time and "
+"space consuming operation. ABRT provides a service which generates the stack"
+" trace from the coredump but you have to upload the coredump to this "
+"service. With this option disabled ABRT will upload the coredump without "
+"asking."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:6
+msgid ""
+"ABRT stores problem data in directories. Whenever ABRT needs writable "
+"directory, the directory is moved from the system location to your home "
+"directory. With this option disabled ABRT will move the problem directory "
+"without asking."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:7
+msgid ""
+"uReport is short and completely anonymous description of a problem. ABRT "
+"uses uReports  for fast global duplicate detection. In default configuration"
+" uReport is sent at beginning of reporting process. With this option enabled"
+" uReports are sent automatically immediately after problem detection."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:8
+msgid ""
+"With this option enabled reporting process started by click on Report button"
+" in problem notification bubble will be interrupted after uReport is sent. "
+"You can always use the default problem browser to make complete report."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:9
+msgid ""
+" With this option enabled ABRT never shows notifications of reported "
+"problems. Takes effect only if Shortened reporting is enabled."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:10
+msgid "Ask before uploading coredump"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:11
+msgid ""
+" With this option enabled ABRT always create bug ticket with restricted "
+"access if possibly sensitive data are detected."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:12
+msgid "Request private ticket for sensitive information"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:13
+msgid "Notify incomplete problems"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:14
+msgid ""
+"Incomplete problems are detected while computer is shutting down or user is "
+"logging out. In order to provide valuable problem reports, ABRT will not "
+"allow you to submit these problems."
+msgstr ""
 
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Close"
@@ -271,7 +351,7 @@ msgstr "'%s' não é um directório de problema válido"
 #: ../src/dbus/abrt-dbus.c:223
 #, c-format
 msgid "'%s' element can't be modified"
-msgstr ""
+msgstr "'%s' elemento não pode ser modificado"
 
 #: ../src/dbus/abrt-dbus.c:244 ../src/dbus/abrt-dbus.c:446
 #: ../src/dbus/abrt-dbus.c:498 ../src/dbus/abrt-configuration.c:618
@@ -282,7 +362,7 @@ msgstr "Não Autorizado"
 
 #: ../src/dbus/abrt-dbus.c:256
 msgid "Can't access the problem for modification"
-msgstr ""
+msgstr "Não é possível aceder ao problema para modificação"
 
 #: ../src/dbus/abrt-dbus.c:461
 msgid "Chowning directory failed. Check system logs for more details."
@@ -291,7 +371,7 @@ msgstr ""
 #: ../src/dbus/abrt-dbus.c:559
 #, c-format
 msgid "'%s' is not a valid element name"
-msgstr ""
+msgstr "'%s' não é um nome de elemento válido"
 
 #: ../src/dbus/abrt-dbus.c:580
 #, c-format
@@ -305,7 +385,7 @@ msgstr ""
 #: ../src/dbus/abrt-dbus.c:627
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr ""
+msgstr "Não é possível apagar o elemento '%s' da diretoria de problemas '%s'"
 
 #: ../src/dbus/abrt-dbus.c:759 ../src/dbus/abrt-configuration.c:983
 #, c-format
@@ -1227,7 +1307,7 @@ msgstr "Analisa através do ficheiro ~/.xsession-errors e grava as linhas que co
 
 #: ../src/plugins/https-utils.c:62
 msgid "An error occurred on the server side."
-msgstr ""
+msgstr "Ocorreu um erro no servidor."
 
 #: ../src/plugins/https-utils.c:65
 #, c-format
@@ -1421,8 +1501,8 @@ msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
 msgstr "Utilização: abrt-cli [--version] COMMAND [DIR]..."
 
 #: ../src/cli/abrt-cli.c:146
-msgid "List not yet reported problems [in DIRs]"
-msgstr "Mostrar problemas [em DIRs] ainda não reportados"
+msgid "List problems [in DIRs]"
+msgstr ""
 
 #: ../src/cli/abrt-cli.c:147
 msgid "Remove problem directory DIR"

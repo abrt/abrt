@@ -5,12 +5,13 @@
 # Translators:
 # Bernabé Borrero <bernabeborrero@gmail.com>, 2012
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
+# Josep Torné <josep@substantiu.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-03-05 10:34+0100\n"
-"PO-Revision-Date: 2014-02-06 06:07+0000\n"
+"POT-Creation-Date: 2014-04-15 12:20+0200\n"
+"PO-Revision-Date: 2014-04-15 10:20+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Catalan (http://www.transifex.com/projects/p/fedora/language/ca/)\n"
 "MIME-Version: 1.0\n"
@@ -36,36 +37,36 @@ msgstr ""
 
 #: ../src/applet/applet.c:131
 msgid "Do you want to enable automatically submitted crash reports?"
-msgstr ""
+msgstr "Voleu activar que automàticament s'enviïn informes de fallada?"
 
 #: ../src/applet/applet.c:136
 msgid "Do you want to enable automatically submitted anonymous crash reports?"
-msgstr ""
+msgstr "Voleu activar que automàticament s'enviïn informes anònims de fallada?"
 
 #. The NetworkManager DBus service is not available.
 #: ../src/applet/applet.c:237
 #, c-format
 msgid "Can't connect to NetworkManager over DBus: %s"
-msgstr ""
+msgstr "No s'ha pogut connectar a NetworkManager a través de DBus: %s"
 
 #: ../src/applet/applet.c:261
 #, c-format
 msgid "Can't determine network status via NetworkManager: %s"
-msgstr ""
+msgstr "No s'ha pogut determinat l'estat de la xarxa a través de NetworkManager: %s"
 
 #: ../src/applet/applet.c:380
 msgid "A problem has been detected"
-msgstr ""
+msgstr "S'ha detectat un problema"
 
 #: ../src/applet/applet.c:382
 #, c-format
 msgid "A problem in the %s package has been detected"
-msgstr ""
+msgstr "S'ha detectat un problema en el paquet %s"
 
 #: ../src/applet/applet.c:392
 #, c-format
 msgid "%s and the diagnostic data has been submitted"
-msgstr ""
+msgstr "S'ha enviat %s i les dades de diagnostic"
 
 #: ../src/applet/applet.c:552 ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
@@ -76,7 +77,7 @@ msgstr "No es pot executar «%s»"
 #: ../src/applet/applet.c:637 ../src/applet/applet.c:699
 #, c-format
 msgid "Can't close notification: %s"
-msgstr ""
+msgstr "No es pot tancar la notificació: %s"
 
 #: ../src/applet/applet.c:739 ../src/applet/applet.c:741
 msgid "Warning"
@@ -89,11 +90,11 @@ msgstr "Mini-aplicació de l'àrea de notificació que notifica als usuaris sobr
 
 #: ../src/applet/applet.c:805
 msgid "translator-credits"
-msgstr "Robert Antoni Buj Gelonch <robert.buj@gmail.com>"
+msgstr "Robert Antoni Buj Gelonch <robert.buj@gmail.com>\nJosep Torné <josep@substantiu.com> 2014"
 
 #: ../src/applet/applet.c:813
 msgid "_Quit"
-msgstr ""
+msgstr "_Surt"
 
 #: ../src/applet/applet.c:815
 msgid "Hide"
@@ -101,28 +102,28 @@ msgstr "Oculta"
 
 #: ../src/applet/applet.c:817
 msgid "_About"
-msgstr ""
+msgstr "_Quant a"
 
 #: ../src/applet/applet.c:885
 msgid "Problem detected"
-msgstr ""
+msgstr "Problema detectat"
 
 #: ../src/applet/applet.c:935
 msgid "Ignore forever"
-msgstr ""
+msgstr "Ignora-ho sempre"
 
 #. Problem has been 'autoreported' and is considered as KNOWN
 #: ../src/applet/applet.c:946 ../src/applet/applet.c:961
 msgid "Open"
-msgstr ""
+msgstr "Obre"
 
 #: ../src/applet/applet.c:951
 msgid "The Problem has already been Reported"
-msgstr ""
+msgstr "El problema ja ha estat informat"
 
 #: ../src/applet/applet.c:951
 msgid "A Known Problem has Occurred"
-msgstr ""
+msgstr "S'ha produït un problema conegut"
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
@@ -136,16 +137,16 @@ msgstr "S'ha Produït un Problema"
 
 #: ../src/applet/applet.c:1001
 msgid "A Problem has been Reported"
-msgstr ""
+msgstr "S'ha informat un problema"
 
 #: ../src/applet/applet.c:1009
 msgid "A New Problem has Occurred"
-msgstr ""
+msgstr "S'ha produït un nou problema"
 
 #: ../src/applet/applet.c:1019
 #, c-format
 msgid "Can't show notification: %s"
-msgstr ""
+msgstr "No es pot mostrar la notificació: %s"
 
 #. TODO: Terminate child's process?
 #: ../src/applet/applet.c:1053 ../src/daemon/abrt-upload-watch.c:168
@@ -187,13 +188,92 @@ msgid ""
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr ""
 
+#: ../src/configuration-gui/abrt-config-widget.glade.h:1
+msgid "Ask before stealing directory"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:2
+msgid "Automatically send uReport"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:3
+msgid "Shortened reporting"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:4
+msgid "Silent shortened reporting"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:5
+msgid ""
+"The coredump file is necessary for generating stack trace which is time and "
+"space consuming operation. ABRT provides a service which generates the stack"
+" trace from the coredump but you have to upload the coredump to this "
+"service. With this option disabled ABRT will upload the coredump without "
+"asking."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:6
+msgid ""
+"ABRT stores problem data in directories. Whenever ABRT needs writable "
+"directory, the directory is moved from the system location to your home "
+"directory. With this option disabled ABRT will move the problem directory "
+"without asking."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:7
+msgid ""
+"uReport is short and completely anonymous description of a problem. ABRT "
+"uses uReports  for fast global duplicate detection. In default configuration"
+" uReport is sent at beginning of reporting process. With this option enabled"
+" uReports are sent automatically immediately after problem detection."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:8
+msgid ""
+"With this option enabled reporting process started by click on Report button"
+" in problem notification bubble will be interrupted after uReport is sent. "
+"You can always use the default problem browser to make complete report."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:9
+msgid ""
+" With this option enabled ABRT never shows notifications of reported "
+"problems. Takes effect only if Shortened reporting is enabled."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:10
+msgid "Ask before uploading coredump"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:11
+msgid ""
+" With this option enabled ABRT always create bug ticket with restricted "
+"access if possibly sensitive data are detected."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:12
+msgid "Request private ticket for sensitive information"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:13
+msgid "Notify incomplete problems"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:14
+msgid ""
+"Incomplete problems are detected while computer is shutting down or user is "
+"logging out. In order to provide valuable problem reports, ABRT will not "
+"allow you to submit these problems."
+msgstr ""
+
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Close"
-msgstr ""
+msgstr "_Tanca"
 
 #: ../src/configuration-gui/system-config-abrt.c:84
 msgid "_Defaults"
-msgstr ""
+msgstr "_Predeterminats"
 
 #: ../src/configuration-gui/system-config-abrt.c:110
 #: ../src/configuration-gui/main.c:36
@@ -202,15 +282,15 @@ msgstr ""
 
 #: ../src/configuration-gui/main.c:75
 msgid "About System Config ABRT"
-msgstr ""
+msgstr "Quant a System Config ABRT"
 
 #: ../src/configuration-gui/main.c:105
 msgid "About"
-msgstr ""
+msgstr "Quant a"
 
 #: ../src/configuration-gui/main.c:106
 msgid "Quit"
-msgstr ""
+msgstr "Surt"
 
 #: ../src/daemon/abrt-action-save-package-data.c:382
 msgid ""
@@ -228,7 +308,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-generate-backtrace.c:55
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:52
 msgid "Problem directory"
-msgstr ""
+msgstr "Directori del problema"
 
 #: ../src/daemon/abrt-action-save-package-data.c:395
 msgid "Configuration file"
@@ -237,11 +317,11 @@ msgstr "Fitxer de configuració"
 #: ../src/daemon/abrt-server.c:786 ../src/dbus/abrt-dbus.c:777
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:484
 msgid "& [options]"
-msgstr ""
+msgstr "& [opcions]"
 
 #: ../src/daemon/abrt-server.c:797
 msgid "Use NUM as client uid"
-msgstr ""
+msgstr "Utilitza NUM com a uid del client"
 
 #: ../src/daemon/abrt-server.c:798 ../src/daemon/abrt-upload-watch.c:280
 #: ../src/plugins/abrt-watch-log.c:153 ../src/plugins/abrt-dump-oops.c:273
@@ -255,24 +335,24 @@ msgstr "Afegir els noms dels programes al registre"
 
 #: ../src/dbus/abrt-dbus.c:123
 msgid "Unknown error"
-msgstr ""
+msgstr "Error desconegut"
 
 #: ../src/dbus/abrt-dbus.c:188
 #, c-format
 msgid "'%s' is not a valid problem directory"
-msgstr ""
+msgstr "'%s' no es un directori del problema vàlid"
 
 #: ../src/dbus/abrt-dbus.c:223
 #, c-format
 msgid "'%s' element can't be modified"
-msgstr ""
+msgstr "L'element '%s' no es pot modificar "
 
 #: ../src/dbus/abrt-dbus.c:244 ../src/dbus/abrt-dbus.c:446
 #: ../src/dbus/abrt-dbus.c:498 ../src/dbus/abrt-configuration.c:618
 #: ../src/dbus/abrt-configuration.c:683
 #, c-format
 msgid "Not Authorized"
-msgstr ""
+msgstr "No autoritzat"
 
 #: ../src/dbus/abrt-dbus.c:256
 msgid "Can't access the problem for modification"
@@ -285,12 +365,12 @@ msgstr ""
 #: ../src/dbus/abrt-dbus.c:559
 #, c-format
 msgid "'%s' is not a valid element name"
-msgstr ""
+msgstr "'%s' no és un nom d'element vàlid"
 
 #: ../src/dbus/abrt-dbus.c:580
 #, c-format
 msgid "Can't get size of '%s'"
-msgstr ""
+msgstr "No es pot determinar la mida de '%s'"
 
 #: ../src/dbus/abrt-dbus.c:595
 msgid "No problem space left"
@@ -299,7 +379,7 @@ msgstr ""
 #: ../src/dbus/abrt-dbus.c:627
 #, c-format
 msgid "Can't delete the element '%s' from the problem directory '%s'"
-msgstr ""
+msgstr "No es pot eliminar l'element '%s' del directori del problema '%s'"
 
 #: ../src/dbus/abrt-dbus.c:759 ../src/dbus/abrt-configuration.c:983
 #, c-format
@@ -311,11 +391,11 @@ msgstr ""
 #: ../src/dbus/abrt-dbus.c:786 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:499
 msgid "Exit after NUM seconds of inactivity"
-msgstr ""
+msgstr "Surt després de NUM segons d'inactivitat"
 
 #: ../src/dbus/abrt-dbus.c:804 ../src/dbus/abrt-configuration.c:1021
 msgid "This program must be run as root."
-msgstr ""
+msgstr "Aquest programa cal executar-lo com a root."
 
 #: ../src/daemon/abrtd.c:451
 msgid ""
@@ -324,11 +404,11 @@ msgid ""
 " provide valuable problem reports, ABRT will not allow you to submit this "
 "problem. If you have time and want to help the developers in their effort to"
 " sort out this problem, please contact them directly."
-msgstr ""
+msgstr "Les dades del problema no són complertes. Això normalment passa quan es detecta un problema mentre l'ordinador s'està apagant o l'usuari està sortint del sistema. Per obtenir informes de problema valuosos, ABRT no permet que envieu aquest problema. Si teniu temps i voleu ajudar als desenvolupadors en la seva tasca per posar en ordre aquest problema, contacteu-hi directament."
 
 #: ../src/daemon/abrtd.c:497
 msgid "Do not daemonize"
-msgstr "No fer-ho dimoni"
+msgstr "No en facis un dimoni"
 
 #: ../src/daemon/abrtd.c:498
 msgid "Log to syslog even with -d"
@@ -340,11 +420,11 @@ msgstr ""
 
 #: ../src/daemon/abrt-handle-event.c:396
 msgid "Run EVENT on DIR"
-msgstr ""
+msgstr "Executa EVENT a DIR"
 
 #: ../src/daemon/abrt-handle-event.c:397
 msgid "Communicate directly to the user"
-msgstr ""
+msgstr "Comuniqueu-vos directament amb l'usuari"
 
 #: ../src/daemon/abrt-upload-watch.c:118
 #, c-format
@@ -369,7 +449,7 @@ msgstr ""
 
 #: ../src/daemon/abrt-upload-watch.c:282
 msgid "Number of concurrent workers. Default is "
-msgstr ""
+msgstr "Nombre de treballs concurrents. Per defecte són"
 
 #: ../src/daemon/abrt-upload-watch.c:283
 msgid "Maximal cache size in MiB. Default is "
@@ -377,16 +457,16 @@ msgstr ""
 
 #: ../src/daemon/abrt-auto-reporting.c:81
 msgid "& [ "
-msgstr ""
+msgstr "& ["
 
 #: ../src/daemon/abrt-auto-reporting.c:113
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "Nombre d'arguments no vàlid"
 
 #: ../src/daemon/abrt-auto-reporting.c:138
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "Valor d'opció desconeguda: '%s'\n"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:251
@@ -495,7 +575,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:56
 msgid "File {0} doesn't exist"
-msgstr ""
+msgstr "El fitxer {0} no existeix"
 
 #: ../src/plugins/abrt-action-analyze-vmcore.in:59
 msgid "Extracting the oops text from core"
@@ -566,7 +646,7 @@ msgstr ""
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:95
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Error: %s"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:51
 msgid "Exiting on user command"
@@ -596,7 +676,7 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:169
 msgid "Can't open {0}: {1}"
-msgstr ""
+msgstr "No es pot obrir {0}: {1}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:206
 msgid "Coredump references {0} debuginfo files, {1} of them are not installed"
@@ -1415,7 +1495,7 @@ msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
 msgstr ""
 
 #: ../src/cli/abrt-cli.c:146
-msgid "List not yet reported problems [in DIRs]"
+msgid "List problems [in DIRs]"
 msgstr ""
 
 #: ../src/cli/abrt-cli.c:147

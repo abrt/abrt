@@ -5,17 +5,18 @@
 # Translators:
 # Gábor Molnár <molesz1986@gmail.com>, 2011
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
+# levex <levex@linux.com>, 2014
 # Máté Gelei <gelei.mate1@gmail.com>, 2011
 # ptr <ptr@ulx.hu>, 2013
 # Peter Borsa <peter.borsa@gmail.com>, 2012-2013
 # Ferenc Teknős <teknos.ferenc@gmail.com>, 2013-2014
-# Zoltan Hoppár <hopparz@gmail.com>, 2011-2013
+# Zoltan Hoppár <zoltanh721@fedoraproject.org>, 2011-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-03-05 10:34+0100\n"
-"PO-Revision-Date: 2014-02-06 06:07+0000\n"
+"POT-Creation-Date: 2014-04-15 12:20+0200\n"
+"PO-Revision-Date: 2014-04-15 10:20+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/fedora/language/hu/)\n"
 "MIME-Version: 1.0\n"
@@ -37,15 +38,15 @@ msgid ""
 "The report which will be sent does not contain any security sensitive data. "
 "Therefore it is not necessary to bother you next time and require any "
 "further action by you. \n"
-msgstr ""
+msgstr "A jelentésre szánt anyag nem tartalmaz semmilyen érzékeny adatot. Ennélfogva, nem szükséges legközelebb semmilyen további beavatkozás a felhasználó részéről.\n"
 
 #: ../src/applet/applet.c:131
 msgid "Do you want to enable automatically submitted crash reports?"
-msgstr ""
+msgstr "Engedélyezi az autómatikusan elküldött hibajelentéseket?"
 
 #: ../src/applet/applet.c:136
 msgid "Do you want to enable automatically submitted anonymous crash reports?"
-msgstr ""
+msgstr "Engedélyezi az automatikusan küldött anoním hiba jelentéseket?"
 
 #. The NetworkManager DBus service is not available.
 #: ../src/applet/applet.c:237
@@ -192,9 +193,88 @@ msgid ""
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr "& [-v] [DIR]...\n\nAlkalmazás amely képes jelezni az ABRT-n keresztül a felhasználó felé ha új probléma történne\n"
 
+#: ../src/configuration-gui/abrt-config-widget.glade.h:1
+msgid "Ask before stealing directory"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:2
+msgid "Automatically send uReport"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:3
+msgid "Shortened reporting"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:4
+msgid "Silent shortened reporting"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:5
+msgid ""
+"The coredump file is necessary for generating stack trace which is time and "
+"space consuming operation. ABRT provides a service which generates the stack"
+" trace from the coredump but you have to upload the coredump to this "
+"service. With this option disabled ABRT will upload the coredump without "
+"asking."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:6
+msgid ""
+"ABRT stores problem data in directories. Whenever ABRT needs writable "
+"directory, the directory is moved from the system location to your home "
+"directory. With this option disabled ABRT will move the problem directory "
+"without asking."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:7
+msgid ""
+"uReport is short and completely anonymous description of a problem. ABRT "
+"uses uReports  for fast global duplicate detection. In default configuration"
+" uReport is sent at beginning of reporting process. With this option enabled"
+" uReports are sent automatically immediately after problem detection."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:8
+msgid ""
+"With this option enabled reporting process started by click on Report button"
+" in problem notification bubble will be interrupted after uReport is sent. "
+"You can always use the default problem browser to make complete report."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:9
+msgid ""
+" With this option enabled ABRT never shows notifications of reported "
+"problems. Takes effect only if Shortened reporting is enabled."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:10
+msgid "Ask before uploading coredump"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:11
+msgid ""
+" With this option enabled ABRT always create bug ticket with restricted "
+"access if possibly sensitive data are detected."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:12
+msgid "Request private ticket for sensitive information"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:13
+msgid "Notify incomplete problems"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:14
+msgid ""
+"Incomplete problems are detected while computer is shutting down or user is "
+"logging out. In order to provide valuable problem reports, ABRT will not "
+"allow you to submit these problems."
+msgstr ""
+
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Close"
-msgstr ""
+msgstr "_Kilépés"
 
 #: ../src/configuration-gui/system-config-abrt.c:84
 msgid "_Defaults"
@@ -391,7 +471,7 @@ msgstr "Érvénytelen számú argumentum"
 #: ../src/daemon/abrt-auto-reporting.c:138
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "Ismeretlen érték: '%s'\n"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:251
@@ -524,7 +604,7 @@ msgstr "Oops szöveg sikeresen kibontva"
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
-msgstr ""
+msgstr "A kernelnapló szerint hardware hiba történt.\nEz valószínűleg nem egy szoftver hiba.\n"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
@@ -553,7 +633,7 @@ msgid ""
 "& [-v] [-r] -d DIR\n"
 "\n"
 "Creates coredump-level backtrace from core dump and corresponding binary"
-msgstr "& [-v] [-r] -d DIR \\n\n\\n\nEgy coredump-szintű nyomkövetési adatot készít a hibaadatokból és a kapcsolódó binárisból"
+msgstr "& [-v] [-r] -d DIR \n\nEgy coredump-szintű nyomkövetési adatot készít a hibaadatokból és a kapcsolódó binárisból"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:53
 msgid "Do not hash fingerprints"
@@ -597,7 +677,7 @@ msgid ""
 "    -e,--exact  Download only specified files\n"
 "    --repo      Pattern to use when searching for repos.\n"
 "                Default: *debug*\n"
-msgstr "Használat: %s [-vy] [--ids=BUILD_IDS_FILE]\n [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE]\n [-e, --exact=PATH]\n A felsorolt azonosítók alapján felépíti és telepíti a debuginfot BUILD_IDS_FILE alapján\n a CACHEDIR segítségével a TMPDIR ideiglenes átmeneti területére .\n A régi fájlok tőrlődnek a CACHEDIRból amíg a z kisebb , mint a SIZE.\n\n -v Legyen részletesebb\n -Y Legyen interaktív és válaszoljunk 'igen'el mindegyik kérdésre\n --ids Alapértelmezett: build_ids\n --tmpdir Alapértelmezett: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX\n --cache Alapértelmezett: /var/cache/abrt-di\n --size_mb Alapértelmezettt: 4096\n -e,--exact Csak a megadott fájlok letöltése\n"
+msgstr "Használat: %s [-vy] [--ids=BUILD_IDS_FILE] \n [--tmpdir=TMPDIR] [--cache=CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]] [--size_mb=SIZE] \n [-e, --exact=PATH] \n A felsorolt azonosítók alapján felépíti és telepíti a debuginfot BUILD_IDS_FILE alapján \n a CACHEDIR segítségével a TMPDIR ideiglenes átmeneti területére . \n A régi fájlok tőrlődnek a CACHEDIRból amíg a z kisebb , mint a SIZE . \n \n -v Legyen részletesebb \n -Y Legyen interaktív és válaszoljunk 'igen'el mindegyik kérdésre \n --ids Alapértelmezett: build_ids \n --tmpdir Alapértelmezett: @LARGE_DATA_TMP_DIR@/abrt-tmp-debuginfo-RANDOM_SUFFIX \n --cache Alapértelmezett: /var/cache/abrt-di \n --size_mb Alapértelmezettt: 4096 \n -e,--exact Csak a megadott fájlok letöltése \n"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:169
 msgid "Can't open {0}: {1}"
@@ -756,7 +836,7 @@ msgstr "Adjon hozzáférést a hozzárendelt fájlon túl, helytelen címzésekh
 
 #: ../src/plugins/abrt-gdb-exploitable:693
 msgid "Can't get signal no and do exploitability analysis\n"
-msgstr "Nincsen jel és így nem lehet kihasználhatósági elemzést készíteni\n"
+msgstr "Nincsen jel és így nem lehet kihasználhatósági elemzést készíteni \n"
 
 #: ../src/plugins/abrt-gdb-exploitable:706
 msgid "Likely crash reason: "
@@ -772,7 +852,7 @@ msgstr "Jelenlegi instrukció:"
 
 #: ../src/plugins/abrt-gdb-exploitable:711
 msgid "Exploitability analysis came up empty\n"
-msgstr "A kihasználhatósági elemzés üresen jött\n"
+msgstr "A kihasználhatósági elemzés üresen jött \n"
 
 #: ../src/plugins/abrt-watch-log.c:142
 msgid ""
@@ -789,13 +869,13 @@ msgstr "Ne futtassa a PROG ha STR nem található"
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
-msgstr ""
+msgstr "Kernelhiba történt egy hibás BIOS miatt. Sajnálatos módon, az ilyen problémákat nem tudják a kernel programozók kijavítani."
 
 #: ../src/plugins/abrt-dump-oops.c:130
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
-msgstr ""
+msgstr "Kernelhiba történt és az ön hardware-je nem támogatott, ezért a kernel programozók nem tudják megjavítani ezt a problémát."
 
 #: ../src/plugins/abrt-dump-oops.c:145
 #, c-format
@@ -814,7 +894,7 @@ msgid ""
 "& [-vusoxm] [-d DIR]/[-D] [FILE]\n"
 "\n"
 "Extract oops from FILE (or standard input)"
-msgstr "& [-vusoxm] [-d DIR]/[-D] [FILE] \\n\n\\n\nBontsa ki az oppsot okozó fájlt a (standard bemenetre)"
+msgstr "& [-vusoxm] [-d DIR]/[-D] [FILE] \n\nBontsa ki az oppsot okozó fájlt a (standard bemenetre)"
 
 #: ../src/plugins/abrt-dump-oops.c:274
 msgid "Print found oopses on standard output"
@@ -1400,7 +1480,7 @@ msgid ""
 "& [-v] [-od] FILE...\n"
 "\n"
 "Scans files for split oops message. Can print and/or delete them."
-msgstr "& [-v] [-od] FILE... \\n\n\\n\nAz osztott  oops üzeneteket kinyomtathatja/törölheti az átviszgált fájlban  ."
+msgstr "& [-v] [-od] FILE... \n\nAz osztott  oops üzeneteket kinyomtathatja/törölheti az átviszgált fájlban  ."
 
 #: ../src/hooks/abrt-merge-pstoreoops.c:97
 msgid "Print found oopses"
@@ -1420,8 +1500,8 @@ msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
 msgstr "Használat: abrt-cli [--version] COMMAND [DIR]..."
 
 #: ../src/cli/abrt-cli.c:146
-msgid "List not yet reported problems [in DIRs]"
-msgstr "Listázza a még be nem jelentett hibákat [DIR könyvtárakban]"
+msgid "List problems [in DIRs]"
+msgstr ""
 
 #: ../src/cli/abrt-cli.c:147
 msgid "Remove problem directory DIR"
@@ -1449,7 +1529,7 @@ msgstr "& list [opciók] [DIR]..."
 
 #: ../src/cli/list.c:139
 msgid "List only not-reported problems"
-msgstr ""
+msgstr "Listázza csak a nem jelentett problémákat"
 
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:141 ../src/cli/list.c:194
@@ -1469,7 +1549,7 @@ msgstr "Csak azokat a megadott eseteket jelenítse meg amik régebbiek mint az i
 msgid ""
 "The Autoreporting feature is disabled. Please consider enabling it by issuing\n"
 "'abrt-auto-reporting enabled' as a user with root privileges\n"
-msgstr ""
+msgstr "Az önműködő jelentés ki van kapcsolva. Kérem engedélyezze ezzel a paranccsal\n'abrt-auto-reporting enabled' root jogú felhasználóként\n"
 
 #: ../src/cli/list.c:186
 msgid "& info [options] DIR..."
@@ -1499,7 +1579,7 @@ msgstr "Csak azoknak az eseteknek a számát jelenítse meg, ami a megjelölt id
 #: ../src/cli/status.c:104
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
-msgstr "Az ABRT több hibát is talált %u (s) . További információhoz  futtasa az abrt-cli list %s parancsot\n"
+msgstr "Az ABRT több hibát is talált %u (s) . További információhoz  futtasa az abrt-cli list %s parancsot \n"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-03-05 10:34+0100\n"
-"PO-Revision-Date: 2014-02-06 06:07+0000\n"
+"POT-Creation-Date: 2014-04-15 12:20+0200\n"
+"PO-Revision-Date: 2014-04-15 10:19+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Macedonian (http://www.transifex.com/projects/p/fedora/language/mk/)\n"
 "MIME-Version: 1.0\n"
@@ -183,6 +183,85 @@ msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:1
+msgid "Ask before stealing directory"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:2
+msgid "Automatically send uReport"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:3
+msgid "Shortened reporting"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:4
+msgid "Silent shortened reporting"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:5
+msgid ""
+"The coredump file is necessary for generating stack trace which is time and "
+"space consuming operation. ABRT provides a service which generates the stack"
+" trace from the coredump but you have to upload the coredump to this "
+"service. With this option disabled ABRT will upload the coredump without "
+"asking."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:6
+msgid ""
+"ABRT stores problem data in directories. Whenever ABRT needs writable "
+"directory, the directory is moved from the system location to your home "
+"directory. With this option disabled ABRT will move the problem directory "
+"without asking."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:7
+msgid ""
+"uReport is short and completely anonymous description of a problem. ABRT "
+"uses uReports  for fast global duplicate detection. In default configuration"
+" uReport is sent at beginning of reporting process. With this option enabled"
+" uReports are sent automatically immediately after problem detection."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:8
+msgid ""
+"With this option enabled reporting process started by click on Report button"
+" in problem notification bubble will be interrupted after uReport is sent. "
+"You can always use the default problem browser to make complete report."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:9
+msgid ""
+" With this option enabled ABRT never shows notifications of reported "
+"problems. Takes effect only if Shortened reporting is enabled."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:10
+msgid "Ask before uploading coredump"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:11
+msgid ""
+" With this option enabled ABRT always create bug ticket with restricted "
+"access if possibly sensitive data are detected."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:12
+msgid "Request private ticket for sensitive information"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:13
+msgid "Notify incomplete problems"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:14
+msgid ""
+"Incomplete problems are detected while computer is shutting down or user is "
+"logging out. In order to provide valuable problem reports, ABRT will not "
+"allow you to submit these problems."
 msgstr ""
 
 #: ../src/configuration-gui/system-config-abrt.c:75
@@ -1413,7 +1492,7 @@ msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
 msgstr ""
 
 #: ../src/cli/abrt-cli.c:146
-msgid "List not yet reported problems [in DIRs]"
+msgid "List problems [in DIRs]"
 msgstr ""
 
 #: ../src/cli/abrt-cli.c:147

@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# denka <dennis@dennis.se>, 2014
 # Göran Uddeborg <goeran@uddeborg.se>, 2011,2013
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
 # fedoratrans <fedoratrans@gmail.com>, 2009
@@ -14,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-03-05 10:34+0100\n"
-"PO-Revision-Date: 2014-02-06 06:07+0000\n"
+"POT-Creation-Date: 2014-04-15 12:20+0200\n"
+"PO-Revision-Date: 2014-04-15 10:20+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/fedora/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -37,15 +38,15 @@ msgid ""
 "The report which will be sent does not contain any security sensitive data. "
 "Therefore it is not necessary to bother you next time and require any "
 "further action by you. \n"
-msgstr ""
+msgstr "Rapporten som kommer skickas innehåller inte någon säkerhetskänslig information. På grund av detta är det inte nödvändigt att störa dig nästa gång för fortsatta åtgärder från dig.\n"
 
 #: ../src/applet/applet.c:131
 msgid "Do you want to enable automatically submitted crash reports?"
-msgstr ""
+msgstr "Vill du aktivera automatisk sändning av krashrapporter?"
 
 #: ../src/applet/applet.c:136
 msgid "Do you want to enable automatically submitted anonymous crash reports?"
-msgstr ""
+msgstr "Vill du aktivera automatisk sändning av anonyma krashrapporter?"
 
 #. The NetworkManager DBus service is not available.
 #: ../src/applet/applet.c:237
@@ -70,7 +71,7 @@ msgstr "Ett problem i paketet %s har upptäckts"
 #: ../src/applet/applet.c:392
 #, c-format
 msgid "%s and the diagnostic data has been submitted"
-msgstr ""
+msgstr "%s och diagnostikdata har skickats"
 
 #: ../src/applet/applet.c:552 ../src/plugins/abrt-retrace-client.c:131
 #: ../src/plugins/abrt-retrace-client.c:168
@@ -192,9 +193,88 @@ msgid ""
 "Applet which notifies user when new problems are detected by ABRT\n"
 msgstr "& [-v] [KAT]...\n\nPanelprogram som meddelar användare när nya problem upptäcks av ABRT\n"
 
+#: ../src/configuration-gui/abrt-config-widget.glade.h:1
+msgid "Ask before stealing directory"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:2
+msgid "Automatically send uReport"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:3
+msgid "Shortened reporting"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:4
+msgid "Silent shortened reporting"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:5
+msgid ""
+"The coredump file is necessary for generating stack trace which is time and "
+"space consuming operation. ABRT provides a service which generates the stack"
+" trace from the coredump but you have to upload the coredump to this "
+"service. With this option disabled ABRT will upload the coredump without "
+"asking."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:6
+msgid ""
+"ABRT stores problem data in directories. Whenever ABRT needs writable "
+"directory, the directory is moved from the system location to your home "
+"directory. With this option disabled ABRT will move the problem directory "
+"without asking."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:7
+msgid ""
+"uReport is short and completely anonymous description of a problem. ABRT "
+"uses uReports  for fast global duplicate detection. In default configuration"
+" uReport is sent at beginning of reporting process. With this option enabled"
+" uReports are sent automatically immediately after problem detection."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:8
+msgid ""
+"With this option enabled reporting process started by click on Report button"
+" in problem notification bubble will be interrupted after uReport is sent. "
+"You can always use the default problem browser to make complete report."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:9
+msgid ""
+" With this option enabled ABRT never shows notifications of reported "
+"problems. Takes effect only if Shortened reporting is enabled."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:10
+msgid "Ask before uploading coredump"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:11
+msgid ""
+" With this option enabled ABRT always create bug ticket with restricted "
+"access if possibly sensitive data are detected."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:12
+msgid "Request private ticket for sensitive information"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:13
+msgid "Notify incomplete problems"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:14
+msgid ""
+"Incomplete problems are detected while computer is shutting down or user is "
+"logging out. In order to provide valuable problem reports, ABRT will not "
+"allow you to submit these problems."
+msgstr ""
+
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Close"
-msgstr ""
+msgstr "_Stäng"
 
 #: ../src/configuration-gui/system-config-abrt.c:84
 msgid "_Defaults"
@@ -382,16 +462,16 @@ msgstr "Maximal cachestorlek i MiB.  Standard är "
 
 #: ../src/daemon/abrt-auto-reporting.c:81
 msgid "& [ "
-msgstr ""
+msgstr "& [ "
 
 #: ../src/daemon/abrt-auto-reporting.c:113
 msgid "Invalid number of arguments"
-msgstr ""
+msgstr "Fel antal argument"
 
 #: ../src/daemon/abrt-auto-reporting.c:138
 #, c-format
 msgid "Unknown option value: '%s'\n"
-msgstr ""
+msgstr "Okänt parametervärde: '%s'\n"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:251
@@ -524,7 +604,7 @@ msgstr "Oops-texten extraherad"
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
-msgstr ""
+msgstr "Kernelloggen indikerar att hårdvarufel inträffat.\nDetta är troligen inte ett mjukvaruproblem.\n"
 
 #: ../src/plugins/abrt-action-generate-backtrace.c:42
 msgid ""
@@ -609,11 +689,11 @@ msgstr "Minnesdumpen refererar {0} felsökningsfiler, {1} av dem är inte instal
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:209
 msgid "{0} of debuginfo files are not installed"
-msgstr ""
+msgstr "{0} av debuginfo-filer är inte installerade"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:223
 msgid "Missing requested file: {0}"
-msgstr ""
+msgstr "Saknar efterfrågad fil: {0}"
 
 #: ../src/plugins/abrt-action-install-debuginfo.in:228
 msgid "Missing debuginfo file: {0}"
@@ -789,13 +869,13 @@ msgstr "Kör inte PROG om det inte finns några STR"
 msgid ""
 "A kernel problem occurred because of broken BIOS. Unfortunately, such "
 "problems are not fixable by kernel maintainers."
-msgstr ""
+msgstr "Ett Kernelproblem inträffade på grund av trasigt BIOS. Tyvärr går sådana problem inte att rätta utav Kernelutvecklare."
 
 #: ../src/plugins/abrt-dump-oops.c:130
 msgid ""
 "A kernel problem occurred, but your hardware is unsupported, therefore "
 "kernel maintainers are unable to fix this problem."
-msgstr ""
+msgstr "Ett Kernelproblem har inträffat då din hårdvara inte stöds. På grund av detta kan inte Kernelutvecklare fixa problemet."
 
 #: ../src/plugins/abrt-dump-oops.c:145
 #, c-format
@@ -1420,8 +1500,8 @@ msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
 msgstr "Användning: abrt-cli [--version] KOMMANDO [KAT]…"
 
 #: ../src/cli/abrt-cli.c:146
-msgid "List not yet reported problems [in DIRs]"
-msgstr "Lista ännu inte rapporterade problem [i KAT]"
+msgid "List problems [in DIRs]"
+msgstr ""
 
 #: ../src/cli/abrt-cli.c:147
 msgid "Remove problem directory DIR"
@@ -1449,7 +1529,7 @@ msgstr "& list [flaggor] [KAT]…"
 
 #: ../src/cli/list.c:139
 msgid "List only not-reported problems"
-msgstr ""
+msgstr "Lista endast orapporterade problem"
 
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:141 ../src/cli/list.c:194
