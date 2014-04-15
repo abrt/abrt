@@ -56,7 +56,7 @@ system_config_abrt_LDADD = \
 	$(GTK_LIBS) \
 	$(LIBREPORT_LIBS)
 
-dist_ui_DATA = abrt-config-widget.ui
+dist_ui_DATA = abrt-config-widget.glade
 uidir = $(pkgdatadir)/ui
 
 EXTRA_DIST = abrt_gui.pc.in
