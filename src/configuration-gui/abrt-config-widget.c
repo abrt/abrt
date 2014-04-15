@@ -30,7 +30,7 @@
 
 #define WID(s) GTK_WIDGET(gtk_builder_get_object(self->priv->builder, s))
 
-#define UI_FILE_NAME "abrt-config-widget.ui"
+#define UI_FILE_NAME "abrt-config-widget.glade"
 
 typedef struct {
     char *app_name;
