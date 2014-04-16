@@ -5,6 +5,7 @@ lib_LTLIBRARIES = \
     libabrt.la
 
 libabrt_la_SOURCES = \
+    libabrt_init.c \
     abrt_conf.c \
     hooklib.c \
     daemon_is_ok.c \
@@ -40,3 +41,5 @@ libabrt_la_LIBADD = \
     $(GIO_LIBS) \
     $(LIBREPORT_LIBS) \
     $(SATYR_LIBS)
+
+DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@

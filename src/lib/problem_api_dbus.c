@@ -18,7 +18,7 @@
 */
 
 #include "abrt_glib.h"
-#include "libabrt.h"
+#include "internal_libabrt.h"
 
 static GDBusProxy *get_dbus_proxy(void)
 {
@@ -48,6 +48,8 @@ static GDBusProxy *get_dbus_proxy(void)
 
 int chown_dir_over_dbus(const char *problem_dir_path)
 {
+    INITIALIZE_LIBABRT();
+
     GDBusProxy *proxy = get_dbus_proxy();
     if (!proxy)
         return 1;
@@ -72,6 +74,8 @@ int chown_dir_over_dbus(const char *problem_dir_path)
 
 int delete_problem_dirs_over_dbus(const GList *problem_dir_paths)
 {
+    INITIALIZE_LIBABRT();
+
     GDBusProxy *proxy = get_dbus_proxy();
     if (!proxy)
         return 1;
@@ -99,6 +103,8 @@ int delete_problem_dirs_over_dbus(const GList *problem_dir_paths)
 
 problem_data_t *get_problem_data_dbus(const char *problem_dir_path)
 {
+    INITIALIZE_LIBABRT();
+
     GDBusProxy *proxy = get_dbus_proxy();
     if (!proxy)
         return NULL;
@@ -143,6 +149,8 @@ problem_data_t *get_problem_data_dbus(const char *problem_dir_path)
 
 GList *get_problems_over_dbus(bool authorize)
 {
+    INITIALIZE_LIBABRT();
+
     GDBusProxy *proxy = get_dbus_proxy();
     if (!proxy)
         return ERR_PTR;
