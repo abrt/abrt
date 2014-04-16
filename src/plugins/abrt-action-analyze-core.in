@@ -8,7 +8,7 @@ import sys
 import os
 import getopt
 
-GETTEXT_PROGNAME = "abrt"
+GETTEXT_PROGNAME = "@PACKAGE@"
 import locale
 import gettext
 
@@ -54,7 +54,7 @@ def init_gettext():
         gettext.bind_textdomain_codeset(GETTEXT_PROGNAME, locale.nl_langinfo(locale.CODESET))
     except AttributeError:
         pass
-    gettext.bindtextdomain(GETTEXT_PROGNAME, '/usr/share/locale')
+    gettext.bindtextdomain(GETTEXT_PROGNAME, "@localedir@")
     gettext.textdomain(GETTEXT_PROGNAME)
 
 #eu_unstrip_OUT=`eu-unstrip "--core=$core" -n 2>eu_unstrip.ERR`
