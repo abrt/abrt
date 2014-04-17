@@ -1,6 +1,6 @@
 [Unit]
 Description=Harvest vmcores for ABRT
-After=abrtd.service
+After=abrtd.service kdump.service
 Requisite=abrtd.service
 ConditionDirectoryNotEmpty=/var/crash
 
