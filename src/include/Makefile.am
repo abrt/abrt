@@ -6,3 +6,6 @@ libabrt_include_HEADERS = \
     abrt-dbus.h \
     hooklib.h \
     problem_api.h
+
+EXTRA_DIST = \
+    internal_libabrt.h

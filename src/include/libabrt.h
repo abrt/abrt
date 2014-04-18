@@ -17,21 +17,6 @@
 #include <libreport/internal_libreport.h>
 #include "hooklib.h"
 
-#ifdef HAVE_CONFIG_H
-# include "config.h"
-#endif
-
-/* Must be after #include "config.h" */
-#if ENABLE_NLS
-# include <libintl.h>
-# define _(S) gettext(S)
-#else
-# define _(S) (S)
-#endif
-
-#undef NORETURN
-#define NORETURN __attribute__ ((noreturn))
-
 #undef ARRAY_SIZE
 #define ARRAY_SIZE(x) ((unsigned)(sizeof(x) / sizeof((x)[0])))
 
