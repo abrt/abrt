@@ -149,8 +149,8 @@ static void free_bodhi_item(struct bodhi *b)
 static void bodhi_read_value(json_object *json, const char *item_name,
                              void *value, int flags)
 {
-    json_object *j = json_object_object_get(json, item_name);
-    if (!j)
+    json_object *j = NULL;
+    if (!json_object_object_get_ex(json, item_name, &j));
     {
         error_msg("'%s' section is not available", item_name);
         return;
