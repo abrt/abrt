@@ -295,7 +295,30 @@ int main(int argc, char **argv)
 
     if (opts & OPT_m)
     {
-        koops_print_suspicious_strings();
+        map_string_t *settings = new_map_string();
+
+        load_abrt_plugin_conf_file("oops.conf", settings);
+
+        int only_fatal_mce = 1;
+        try_get_map_string_item_as_bool(settings, "OnlyFatalMCE", &only_fatal_mce);
+
+        free_map_string(settings);
+
+        if (only_fatal_mce)
+        {
+            regex_t mce_re;
+            if (regcomp(&mce_re, "^Machine .*$", REG_NOSUB) != 0)
+                perror_msg_and_die(_("Failed to compile regex"));
+
+            const regex_t *filter[] = { &mce_re, NULL };
+
+            koops_print_suspicious_strings_filtered(filter);
+
+            regfree(&mce_re);
+        }
+        else
+            koops_print_suspicious_strings();
+
         return 1;
     }
 
