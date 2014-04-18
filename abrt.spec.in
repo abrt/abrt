@@ -821,6 +821,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/koops_event.conf
 %{_mandir}/man5/koops_event.conf.5.gz
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/oops.conf
+%{_datadir}/%{name}/conf.d/plugins/oops.conf
 %if %{with systemd}
 %{_unitdir}/abrt-oops.service
 %else
@@ -926,6 +928,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.xml
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.abrt.xml
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.ccpp.xml
+%{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.oops.xml
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.python.xml
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.vmcore.xml
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.xorg.xml
