@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include "libabrt.h"
+#include "internal_libabrt.h"
 
 #define IGN_COLUMN_DELIMITER ';'
 #define IGN_DD_OPEN_FLAGS (DD_OPEN_READONLY | DD_FAIL_QUIETLY_ENOENT | DD_FAIL_QUIETLY_EACCES)
@@ -193,6 +193,8 @@ void ignored_problems_add(ignored_problems_t *set, const char *problem_id)
 void ignored_problems_remove_row(ignored_problems_t *set, const char *problem_id,
         const char *uuid, const char *duphash)
 {
+    INITIALIZE_LIBABRT();
+
     VERB1 log("Going to remove problem '%s' from ignored problems", problem_id);
 
     FILE *orig_fp;

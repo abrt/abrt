@@ -74,7 +74,8 @@ int main(int argc, char **argv)
         // However since we communicate through environment variables
         // we have to keep a whitelist of variables to keep.
         static const char *whitelist[] = {
-            "REPORT_CLIENT_SLAVE" //  Check if the app is being run as a slave
+            "REPORT_CLIENT_SLAVE", //  Check if the app is being run as a slave
+            "LANG",
         };
         const size_t wlsize = sizeof(whitelist)/sizeof(char*);
         char *setlist[sizeof(whitelist)/sizeof(char*)] = { 0 };

@@ -90,6 +90,7 @@ EXTRA_DIST = \
     analyze_LocalGDB.xml.in \
     analyze_RetraceServer.xml.in \
     analyze_VMcore.xml.in \
+    abrt-action-analyze-core.in \
     abrt-action-analyze-vmcore \
     abrt-action-check-oops-for-hw-error \
     abrt-action-save-kernel-data \
@@ -307,7 +308,7 @@ endif
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
-DISTCLEANFILES = abrt-action-analyze-ccpp-local
+DISTCLEANFILES = abrt-action-analyze-ccpp-local abrt-action-analyze-core
 
 abrt-action-perform-ccpp-analysis: abrt-action-perform-ccpp-analysis.in
 	sed -e s,\@libexecdir\@,$(libexecdir),g \
@@ -315,4 +316,9 @@ abrt-action-perform-ccpp-analysis: abrt-action-perform-ccpp-analysis.in
 
 abrt-action-analyze-ccpp-local: abrt-action-analyze-ccpp-local.in
 	sed -e s,\@LIBEXEC_DIR\@,$(libexecdir),g \
+        $< >$@
+
+abrt-action-analyze-core: abrt-action-analyze-core.in
+	sed -e s,\@localedir\@,$(localedir),g \
+        -e s,\@PACKAGE\@,$(PACKAGE),g \
         $< >$@
