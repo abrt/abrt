@@ -150,7 +150,7 @@ static void bodhi_read_value(json_object *json, const char *item_name,
                              void *value, int flags)
 {
     json_object *j = NULL;
-    if (!json_object_object_get_ex(json, item_name, &j));
+    if (!json_object_object_get_ex(json, item_name, &j))
     {
         error_msg("'%s' section is not available", item_name);
         return;
