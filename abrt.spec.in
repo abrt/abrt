@@ -958,6 +958,25 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Tue Apr 22 2014 Jakub Filak <jfilak@redhat.com> 2.2.1-1
+- bodhi: remove an extra semicolon after if stmt
+- stop using deprecated json-c functions
+- vmcore: start the service after kdump service
+- a-a-a-core: fix localization
+- do not clear LANG env variable
+- localization: fix gettext
+- Translation updates
+- configu UI: use glade file extension instead of ui
+- simplify Analyze C/C++ event configuration
+- Support handling crashes in lxc containers
+- spec: hook Kernel oops configuration files
+- koops: add an option controlling MCE detection
+- cli: list displays all problems
+- Fix a spelling error in a configuration GUI tooltip.
+- spec: python3 corrections
+- remove TODO entry from vmcore.conf
+- Fix new lines in po files
+
 * Wed Mar 05 2014 Jakub Filak <jfilak@redhat.com> 2.2.0-1
 - Translation updates
 - limit ourselves to *.conf in /etc/abrt
