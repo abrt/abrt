@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# Save pkg_{name, arch, version, release} for kernel oopses.
+#
+# These files are required by reporter-ureporter (mandatory
+# in uReport).
+#
+
+if [ ! -f kernel ]; then
+    echo "File 'kernel' containing kernel version not found in current directory"
+    exit 1
+fi
+
+echo "Looking for kernel package"
+kernel_version="$( sed 's/ .*//' kernel )"
+
+package="$( rpm -qf "/boot/vmlinuz-$kernel_version" )"
+if [ $? != 0 ]; then
+        echo "Can't find kernel package corresponding to '$kernel_version'"
+        echo "Can't record package version data (pkg_version, pkg_release, ...)."
+        exit 1
+fi
+
+echo "Kernel package $package found"
+rpm -q --qf "%{name}\n" "$package" > pkg_name
+rpm -q --qf "%{arch}\n" "$package" > pkg_arch
+rpm -q --qf "%{version}\n" "$package" > pkg_version
+rpm -q --qf "%{release}\n" "$package" > pkg_release
+epoch="$( rpm -q --qf "%{epoch}" "$package" )"
+test "$epoch" = "(none)"  && epoch=0
+echo "$epoch" > pkg_epoch

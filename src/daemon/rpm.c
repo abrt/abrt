@@ -219,13 +219,33 @@ char* rpm_get_component(const char *filename, const char *rootdir_or_NULL)
     return ret;
 }
 
+#define pkg_add_id(name)                                                \
+    static inline int pkg_add_##name(Header header, struct pkg_envra *p) \
+    {                                                                   \
+        const char *errmsg = NULL;                                      \
+        p->p_##name = headerFormat(header, "%{"#name"}", &errmsg);      \
+        if (p->p_##name || !errmsg)                                     \
+            return 0;                                                   \
+                                                                        \
+        error_msg("cannot get "#name": %s", errmsg);                    \
+                                                                        \
+        return -1;                                                      \
+    }                                                                   \
+
+pkg_add_id(epoch);
+pkg_add_id(name);
+pkg_add_id(version);
+pkg_add_id(release);
+pkg_add_id(arch);
+
 // caller is responsible to free returned value
-char* rpm_get_package_nvr(const char *filename, const char *rootdir_or_NULL)
+struct pkg_envra *rpm_get_package_nvr(const char *filename, const char *rootdir_or_NULL)
 {
-    char *nvr = NULL;
     rpmts ts;
     rpmdbMatchIterator iter;
     Header header;
+
+    struct pkg_envra *p = NULL;
 
     ts = rpmtsCreate();
     /* This loop executes once (normally) or twice (if we detect chroot) */
@@ -254,14 +274,64 @@ char* rpm_get_package_nvr(const char *filename, const char *rootdir_or_NULL)
         rootdir_or_NULL = NULL;
     }
 
-    const char *errmsg = NULL;
-    nvr = headerFormat(header, "%{NAME}-%{VERSION}-%{RELEASE}", &errmsg);
-    if (!nvr && errmsg)
-        error_msg("cannot get nvr. reason: %s", errmsg);
+
+
+    p = xzalloc(sizeof(*p));
+    int r;
+    r = pkg_add_epoch(header, p);
+    if (r)
+        goto error;
+   /*
+    * <npajkovs> hello, what's the difference between epoch '0' and  '(none)'?
+    * <Panu> nothing really, a missing epoch is considered equal to zero epoch
+    */
+    if (!strncmp(p->p_epoch, "(none)", strlen("(none)")))
+    {
+        free(p->p_epoch);
+        p->p_epoch = xstrdup("0");
+    }
+
+    r = pkg_add_name(header, p);
+    if (r)
+        goto error;
+
+    r = pkg_add_version(header, p);
+    if (r)
+        goto error;
+
+    r = pkg_add_release(header, p);
+    if (r)
+        goto error;
+
+    r = pkg_add_arch(header, p);
+    if (r)
+        goto error;
+
+    p->p_nvr = xasprintf("%s-%s-%s", p->p_name, p->p_version, p->p_release);
+
+    rpmdbFreeIterator(iter);
+    rpmtsFree(ts);
+    return p;
 
  error:
+    free_pkg_envra(p);
+
     rpmdbFreeIterator(iter);
  error1:
     rpmtsFree(ts);
-    return nvr;
+    return NULL;
+}
+
+void free_pkg_envra(struct pkg_envra *p)
+{
+    if (!p)
+        return;
+
+    free(p->p_epoch);
+    free(p->p_name);
+    free(p->p_version);
+    free(p->p_release);
+    free(p->p_arch);
+    free(p->p_nvr);
+    free(p);
 }

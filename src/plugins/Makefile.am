@@ -5,7 +5,8 @@ bin_SCRIPTS = \
     abrt-action-analyze-core \
     abrt-action-analyze-vmcore \
     abrt-action-list-dsos \
-    abrt-action-analyze-ccpp-local
+    abrt-action-analyze-ccpp-local \
+    abrt-action-save-kernel-data
 
 bin_PROGRAMS = \
     abrt-dump-oops \
@@ -62,7 +63,8 @@ EXTRA_DIST = \
     analyze_VMcore.xml.in \
     abrt-action-analyze-vmcore \
     https-utils.h \
-    abrt-action-analyze-ccpp-local
+    abrt-action-analyze-ccpp-local \
+    abrt-action-save-kernel-data
 
 abrt_dump_oops_SOURCES = \
     abrt-dump-oops.c
