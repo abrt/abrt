@@ -23,128 +23,6 @@ static const char *dump_dir_name = ".";
 /* 60 seconds was too limiting on slow machines */
 static int exec_timeout_sec = 240;
 
-
-static char *get_backtrace(struct dump_dir *dd, const char *debuginfo_dirs)
-{
-    char *uid_str = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
-    uid_t uid = -1L;
-    if (uid_str)
-    {
-        uid = xatoi_positive(uid_str);
-        free(uid_str);
-        if (uid == geteuid())
-        {
-            uid = -1L; /* no need to setuid/gid if we are already under right uid */
-        }
-    }
-    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
-    dd_close(dd);
-
-    /* Let user know what's going on */
-    log(_("Generating backtrace"));
-
-    char *args[21];
-    args[0] = (char*)"gdb";
-    args[1] = (char*)"-batch";
-
-    // when/if gdb supports "set debug-file-directory DIR1:DIR2":
-    // (https://bugzilla.redhat.com/show_bug.cgi?id=528668):
-    args[2] = (char*)"-ex";
-    struct strbuf *set_debug_file_directory = strbuf_new();
-    strbuf_append_str(set_debug_file_directory, "set debug-file-directory /usr/lib/debug");
-    const char *p = debuginfo_dirs;
-    while (1)
-    {
-        while (*p == ':')
-            p++;
-        if (*p == '\0')
-            break;
-        const char *colon_or_nul = strchrnul(p, ':');
-        strbuf_append_strf(set_debug_file_directory, ":%.*s/usr/lib/debug", (int)(colon_or_nul - p), p);
-        p = colon_or_nul;
-    }
-    args[3] = strbuf_free_nobuf(set_debug_file_directory);
-
-    /* "file BINARY_FILE" is needed, without it gdb cannot properly
-     * unwind the stack. Currently the unwind information is located
-     * in .eh_frame which is stored only in binary, not in coredump
-     * or debuginfo.
-     *
-     * Fedora GDB does not strictly need it, it will find the binary
-     * by its build-id.  But for binaries either without build-id
-     * (= built on non-Fedora GCC) or which do not have
-     * their debuginfo rpm installed gdb would not find BINARY_FILE
-     * so it is still makes sense to supply "file BINARY_FILE".
-     *
-     * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
-     * was deleted (as often happens during system updates):
-     * gdb uses specified BINARY_FILE
-     * even if it is completely unrelated to the coredump.
-     * See https://bugzilla.redhat.com/show_bug.cgi?id=525721
-     *
-     * TODO: check mtimes on COREFILE and BINARY_FILE and not supply
-     * BINARY_FILE if it is newer (to at least avoid gdb complaining).
-     */
-    args[4] = (char*)"-ex";
-    args[5] = xasprintf("file %s", executable);
-    free(executable);
-
-    args[6] = (char*)"-ex";
-    args[7] = xasprintf("core-file %s/"FILENAME_COREDUMP, dump_dir_name);
-
-    args[8] = (char*)"-ex";
-    /*args[9] = ... see below */
-    args[10] = (char*)"-ex";
-    args[11] = (char*)"info sharedlib";
-    /* glibc's abort() stores its message in __abort_msg variable */
-    args[12] = (char*)"-ex";
-    args[13] = (char*)"print (char*)__abort_msg";
-    args[14] = (char*)"-ex";
-    args[15] = (char*)"print (char*)__glib_assert_msg";
-    args[16] = (char*)"-ex";
-    args[17] = (char*)"info registers";
-    args[18] = (char*)"-ex";
-    args[19] = (char*)"disassemble";
-    args[20] = NULL;
-
-    /* Get the backtrace, but try to cap its size */
-    /* Limit bt depth. With no limit, gdb sometimes OOMs the machine */
-    unsigned bt_depth = 2048;
-    const char *thread_apply_all = "thread apply all";
-    const char *full = " full";
-    char *bt = NULL;
-    while (1)
-    {
-        args[9] = xasprintf("%s backtrace %u%s", thread_apply_all, bt_depth, full);
-        bt = exec_vp(args, uid, /*redirect_stderr:*/ 1, exec_timeout_sec, NULL);
-        free(args[9]);
-        if ((bt && strnlen(bt, 256*1024) < 256*1024) || bt_depth <= 32)
-        {
-            break;
-        }
-
-        free(bt);
-        bt_depth /= 2;
-        if (bt_depth <= 64 && thread_apply_all[0] != '\0')
-        {
-            /* This program likely has gazillion threads, dont try to bt them all */
-            bt_depth = 256;
-            thread_apply_all = "";
-        }
-        if (bt_depth <= 64 && full[0] != '\0')
-        {
-            /* Looks like there are gigantic local structures or arrays, disable "full" bt */
-            bt_depth = 256;
-            full = "";
-        }
-    }
-
-    free(args[3]);
-    free(args[5]);
-    free(args[7]);
-    return bt;
-}
-
 int main(int argc, char **argv)
 {
     /* I18n */
@@ -198,13 +76,10 @@ int main(int argc, char **argv)
     if (i_opt)
         debuginfo_dirs = xasprintf("%s:%s", debuginfo_location, i_opt);
 
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-        return 1;
-
     /* Create gdb backtrace */
     /* NB: get_backtrace() closes dd */
-    char *backtrace = get_backtrace(dd, (debuginfo_dirs) ? debuginfo_dirs : debuginfo_location);
+    char *backtrace = get_backtrace(dump_dir_name, exec_timeout_sec,
+            (debuginfo_dirs) ? debuginfo_dirs : debuginfo_location);
     free(debuginfo_location);
     if (!backtrace)
     {
@@ -216,9 +91,10 @@ int main(int argc, char **argv)
 
     /* Store gdb backtrace */
 
-    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return 1;
+
     dd_save_text(dd, FILENAME_BACKTRACE, backtrace);
     dd_close(dd);
 

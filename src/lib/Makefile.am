@@ -21,9 +21,11 @@ libabrt_la_CPPFLAGS = \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
+    $(SATYR_CFLAGS) \
     -D_GNU_SOURCE
 libabrt_la_LDFLAGS = \
     -version-info 0:1:0
 libabrt_la_LIBADD = \
     $(GLIB_LIBS) \
-    $(LIBREPORT_LIBS)
+    $(LIBREPORT_LIBS) \
+    $(SATYR_LIBS)

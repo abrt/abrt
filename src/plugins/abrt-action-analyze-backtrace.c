@@ -15,25 +15,15 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include <btparser/backtrace.h>
-#include <btparser/frame.h>
-#include <btparser/location.h>
+#include <satyr/location.h>
+#include <satyr/thread.h>
+#include <satyr/gdb/frame.h>
+#include <satyr/gdb/stacktrace.h>
+
 #include "libabrt.h"
 
 static const char *dump_dir_name = ".";
 
-
-static void create_hash(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *pInput)
-{
-    char hash_bytes[SHA1_RESULT_LEN];
-    sha1_ctx_t sha1ctx;
-    sha1_begin(&sha1ctx);
-    sha1_hash(&sha1ctx, pInput, strlen(pInput));
-    sha1_end(&sha1ctx, hash_bytes);
-
-    bin2hex(hash_str, hash_bytes, SHA1_RESULT_LEN)[0] = '\0';
-    //log("hash:%s str:'%s'", hash_str, pInput);
-}
 
 int main(int argc, char **argv)
 {
@@ -83,10 +73,10 @@ int main(int argc, char **argv)
     }
 
     /* Compute backtrace hash */
-    struct btp_location location;
-    btp_location_init(&location);
+    struct sr_location location;
+    sr_location_init(&location);
     const char *backtrace_str_ptr = backtrace_str;
-    struct btp_backtrace *backtrace = btp_backtrace_parse(&backtrace_str_ptr, &location);
+    struct sr_gdb_stacktrace *backtrace = sr_gdb_stacktrace_parse(&backtrace_str_ptr, &location);
     free(backtrace_str);
 
     /* Store backtrace hash */
@@ -109,7 +99,7 @@ int main(int argc, char **argv)
 
         VERB3 log("Generating duphash: %s", emptybt->buf);
         char hash_str[SHA1_RESULT_LEN*2 + 1];
-        create_hash(hash_str, emptybt->buf);
+        str_to_sha1str(hash_str, emptybt->buf);
 
         dd_save_text(dd, FILENAME_DUPHASH, hash_str);
         /*
@@ -132,21 +122,31 @@ int main(int argc, char **argv)
     }
 
     /* Compute duplication hash. */
-    char *str_hash_core = btp_backtrace_get_duplication_hash(backtrace);
-    struct strbuf *str_hash = strbuf_new();
-    strbuf_append_str(str_hash, component);
-    strbuf_append_str(str_hash, str_hash_core);
+    struct sr_thread *crash_thread =
+        (struct sr_thread *)sr_gdb_stacktrace_find_crash_thread(backtrace);
 
-    VERB3 log("Generating duphash: %s", str_hash->buf);
-    char hash_str[SHA1_RESULT_LEN*2 + 1];
-    create_hash(hash_str, str_hash->buf);
+    if (crash_thread)
+    {
+        char *hash_str;
 
-    dd_save_text(dd, FILENAME_DUPHASH, hash_str);
-    strbuf_free(str_hash);
-    free(str_hash_core);
+        if (g_verbose >= 3)
+        {
+            hash_str = sr_thread_get_duphash(crash_thread, 3, component,
+                                             SR_DUPHASH_NOHASH);
+            log("Generating duphash: %s", hash_str);
+            free(hash_str);
+        }
+
+        hash_str = sr_thread_get_duphash(crash_thread, 3, component,
+                                         SR_DUPHASH_NORMAL);
+        dd_save_text(dd, FILENAME_DUPHASH, hash_str);
+        free(hash_str);
+    }
+    else
+        log(_("Crash thread not found"));
 
     /* Compute the backtrace rating. */
-    float quality = btp_backtrace_quality_complex(backtrace);
+    float quality = sr_gdb_stacktrace_quality_complex(backtrace);
     const char *rating;
     if (quality < 0.6f)
         rating = "0";
@@ -161,7 +161,7 @@ int main(int argc, char **argv)
     dd_save_text(dd, FILENAME_RATING, rating);
 
     /* Get the function name from the crash frame. */
-    struct btp_frame *crash_frame = btp_backtrace_get_crash_frame(backtrace);
+    struct sr_gdb_frame *crash_frame = sr_gdb_stacktrace_get_crash_frame(backtrace);
     if (crash_frame)
     {
         if (crash_frame->function_name &&
@@ -169,9 +169,9 @@ int main(int argc, char **argv)
         {
             dd_save_text(dd, FILENAME_CRASH_FUNCTION, crash_frame->function_name);
         }
-        btp_frame_free(crash_frame);
+        sr_gdb_frame_free(crash_frame);
     }
-    btp_backtrace_free(backtrace);
+    sr_gdb_stacktrace_free(backtrace);
     dd_close(dd);
     free(component);
     return 0;

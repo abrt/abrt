@@ -68,7 +68,7 @@ PKG_CHECK_MODULES([LIBXML], [libxml-2.0])
 PKG_CHECK_MODULES([RPM], [rpm])
 PKG_CHECK_MODULES([LIBNOTIFY], [libnotify])
 PKG_CHECK_MODULES([NSS], [nss])
-PKG_CHECK_MODULES([BTPARSER], [btparser])
+PKG_CHECK_MODULES([SATYR], [satyr])
 PKG_CHECK_MODULES([LIBREPORT], [libreport])
 PKG_CHECK_MODULES([LIBREPORT_GTK], [libreport-gtk])
 # Just PKG_CHECK_MODULES([PYTHON], [python]) works only with python2.7+

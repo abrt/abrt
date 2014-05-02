@@ -16,6 +16,8 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include <satyr/stacktrace.h>
+#include <satyr/thread.h>
 
 #include "libabrt.h"
 
@@ -366,140 +368,58 @@ next_line:
     free(lines_info);
 }
 
-int koops_hash_str_ext(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf, int frame_count, int only_reliable)
+int koops_hash_str_ext(char result[SHA1_RESULT_LEN*2 + 1], const char *oops_buf, int frame_count, int duphash_flags)
 {
-    struct strbuf *kernel_bt = strbuf_new();
+    char *hash_str = NULL, *error = NULL;
+    int bad = 0;
 
-    // Example of call trace part of oops:
-    // Call Trace:
-    // [<f88e11c7>] ? radeon_cp_resume+0x7d/0xbc [radeon]
-    // [<f88745f8>] ? drm_ioctl+0x1b0/0x225 [drm]
-    // [<f88e114a>] ? radeon_cp_resume+0x0/0xbc [radeon]
-    // [<c049b1c0>] ? vfs_ioctl+0x50/0x69
-    // [<c049b414>] ? do_vfs_ioctl+0x23b/0x247
-    // [<c0460a56>] ? audit_syscall_entry+0xf9/0x123
-    // [<c049b460>] ? sys_ioctl+0x40/0x5c
-    // [<c0403c76>] ? syscall_call+0x7/0xb
-    // Code:...  <======== we should ignore everything which isn't call trace
-    // RIP  ...
-    char *call_trace = strcasestr(oops_buf, "Call Trace:"); /* yes, it must be case-insensitive */
-    if (call_trace)
+    struct sr_stacktrace *stacktrace = sr_stacktrace_parse(SR_REPORT_KERNELOOPS,
+                                                           oops_buf, &error);
+    if (!stacktrace)
     {
-        /* Different architectures have different case
-         * and different kind/amount of whitespace after ":" -
-         * don't assume there is a single "\n"!
-         */
-        call_trace += sizeof("Call Trace:")-1;
-        call_trace = skip_whitespace(call_trace);
-        int i = 0;
-        for (;;)
-        {
-            char *end_line = strchr(call_trace, '\n');
-            if (!end_line)
-                break;
-            char *line = xstrndup(call_trace, end_line - call_trace);
-
-            /* Skip whitespace and "<IRQ>" / "<EOI>" markers */
-            char *p = line;
-            for (;;)
-            {
-                p = skip_whitespace(p);
-                if (prefixcmp(p, "<IRQ>") == 0)
-                {
-                    p += strlen("<IRQ>");
-                    continue;
-                }
-                if (prefixcmp(p, "<EOI>") == 0)
-                {
-                    p += strlen("<EOI>");
-                    continue;
-                }
-                /* Didn't see it in practice,
-                 * but code inspection in arch/x86/kernel/dumpstack_64.c
-                 * tells me these strings can be there as well:
-                 */
-                if (prefixcmp(p, "<EOE>") == 0)
-                {
-                    p += strlen("<EOE>");
-                    continue;
-                }
-                if (prefixcmp(p, "<<EOE>>") == 0)
-                {
-                    p += strlen("<<EOE>>");
-                    continue;
-                }
-                break;
-            }
-
-            char *end_mem_block = strchr(p, ' ');
-            if (!end_mem_block)
-                goto done; /* no memblock, we are done */
-            if (p[0] != '[' || p[1] != '<' || end_mem_block[-2] != '>' || end_mem_block[-1] != ']')
-                goto done; /* no memblock, we are done */
-
-            /* skip symbols prefixed with "?" */
-            end_mem_block = skip_whitespace(end_mem_block);
-            if (only_reliable && end_mem_block && *end_mem_block == '?')
-                goto skip_line;
-            /* strip out "+off/len" */
-            p = strchrnul(end_mem_block, '+');
-            /* append "func_name\n" */
-            strbuf_append_strf(kernel_bt, "%.*s\n", (int)(p - end_mem_block), end_mem_block);
-            if (frame_count > 0 && i == frame_count)
-            {
- done:
-                free(line);
-                break;
-            }
-            ++i;
- skip_line:
-            free(line);
-            call_trace = end_line + 1;
-        }
-        goto gen_hash;
+        VERB3 log("Failed to parse koops: %s", error);
+        free(error);
+        bad = 1;
+        goto end;
     }
 
-    /* Special-case: if the first line is of form:
-     * WARNING: at net/wireless/core.c:614 wdev_cleanup_work+0xe9/0x120 [cfg80211]() (Not tainted)
-     * then hash only "file:line func+ofs/len" part.
-     */
-    if (strncmp(oops_buf, "WARNING: at ", sizeof("WARNING: at ")-1) == 0)
+    struct sr_thread *thread = sr_stacktrace_find_crash_thread(stacktrace);
+    if (!thread)
     {
-        const char *p = oops_buf + sizeof("WARNING: at ")-1;
-        p = strchr(p, ' '); /* skip filename:NNN */
-        if (p)
-        {
-            p = strchrnul(p + 1, ' '); /* skip function_name+0xNN/0xNNN */
-            oops_buf += sizeof("WARNING: at ")-1;
-            while (oops_buf < p)
-                strbuf_append_char(kernel_bt, *oops_buf++);
-        }
+        VERB3 log("Failed to find crash thread");
+        bad = 1;
+        goto end;
     }
 
- gen_hash: ;
-    VERB3 log("bt to hash: '%s'", kernel_bt->buf);
+    if (g_verbose >= 3)
+    {
+        hash_str = sr_thread_get_duphash(thread, frame_count, NULL,
+                                         duphash_flags|SR_DUPHASH_NOHASH);
+        if (hash_str)
+            log("Generating duphash: %s", hash_str);
+        free(hash_str);
+    }
 
-    /* If we failed to find and process bt, we may end up hashing "".
-     * Not good. Let user know it via return value.
-     */
-    int bad = (kernel_bt->len == 0);
+    hash_str = sr_thread_get_duphash(thread, frame_count, NULL, duphash_flags);
+    if (hash_str)
+    {
+        strncpy(result, hash_str, SHA1_RESULT_LEN*2);
+        result[SHA1_RESULT_LEN*2] = '\0';
+        free(hash_str);
+    }
+    else
+        bad = 1;
 
-    char hash_bytes[SHA1_RESULT_LEN];
-    sha1_ctx_t sha1ctx;
-    sha1_begin(&sha1ctx);
-    sha1_hash(&sha1ctx, kernel_bt->buf, kernel_bt->len);
-    sha1_end(&sha1ctx, hash_bytes);
-    strbuf_free(kernel_bt);
-
-    bin2hex(hash_str, hash_bytes, SHA1_RESULT_LEN)[0] = '\0';
-    VERB3 log("hash: %s", hash_str);
-
+end:
+    sr_stacktrace_free(stacktrace);
     return bad;
 }
 
 int koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf)
 {
-    return koops_hash_str_ext(hash_str, oops_buf, /*frame count*/5, /*only reliable*/1);
+    const int frame_count = 5;
+    const int duphash_flags = SR_DUPHASH_NONORMALIZE|SR_DUPHASH_KOOPS_COMPAT;
+    return koops_hash_str_ext(hash_str, oops_buf, frame_count, duphash_flags);
 }
 
 char *koops_extract_version(const char *linepointer)

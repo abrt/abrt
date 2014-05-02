@@ -75,13 +75,13 @@ abrt_handle_event_CPPFLAGS = \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    $(BTPARSER_CFLAGS) \
+    $(SATYR_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Wwrite-strings -Werror
 abrt_handle_event_LDADD = \
     ../lib/libabrt.la \
     $(LIBREPORT_LIBS) \
-    $(BTPARSER_LIBS)
+    $(SATYR_LIBS)
 
 abrt_action_save_package_data_SOURCES = \
     rpm.h rpm.c \

@@ -41,11 +41,10 @@ extern "C" {
 void check_free_space(unsigned setting_MaxCrashReportsSize, const char *dump_location);
 #define trim_problem_dirs abrt_trim_problem_dirs
 void trim_problem_dirs(const char *dirname, double cap_size, const char *exclude_path);
-#define exec_vp abrt_exec_vp
-char* exec_vp(char **args, uid_t uid, int redirect_stderr, int exec_timeout_sec, int *status);
 #define run_unstrip_n abrt_run_unstrip_n
 char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec);
-
+#define get_backtrace abrt_get_backtrace
+char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char *debuginfo_dirs);
 
 #define g_settings_nMaxCrashReportsSize abrt_g_settings_nMaxCrashReportsSize
 extern unsigned int  g_settings_nMaxCrashReportsSize;
@@ -75,7 +74,7 @@ char *koops_extract_version(const char *line);
 #define kernel_tainted_short abrt_kernel_tainted_short
 char *kernel_tainted_short(const char *kernel_bt);
 #define koops_hash_str_ext abrt_koops_hash_str_ext
-int koops_hash_str_ext(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf, int frame_count, int only_reliable);
+int koops_hash_str_ext(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf, int frame_count, int duphash_flags);
 #define koops_hash_str abrt_koops_hash_str
 int koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf);
 #define koops_extract_oopses abrt_koops_extract_oopses

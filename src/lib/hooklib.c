@@ -86,7 +86,7 @@ void trim_problem_dirs(const char *dirname, double cap_size, const char *exclude
  * @param[out] status See `man 2 wait` for status information.
  * @return Malloc'ed string
  */
-char* exec_vp(char **args, uid_t uid, int redirect_stderr, int exec_timeout_sec, int *status)
+static char* exec_vp(char **args, int redirect_stderr, unsigned exec_timeout_sec, int *status)
 {
     /* Nuke everything which may make setlocale() switch to non-POSIX locale:
      * we need to avoid having gdb output in some obscure language.
@@ -109,14 +109,12 @@ char* exec_vp(char **args, uid_t uid, int redirect_stderr, int exec_timeout_sec,
     };
 
     int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_SETSID | EXECFLG_QUIET;
-    if (uid != (uid_t)-1L)
-        flags |= EXECFLG_SETGUID;
     if (redirect_stderr)
         flags |= EXECFLG_ERR2OUT;
     VERB1 flags &= ~EXECFLG_QUIET;
 
     int pipeout[2];
-    pid_t child = fork_execv_on_steroids(flags, args, pipeout, (char**)env_vec, /*dir:*/ NULL, uid);
+    pid_t child = fork_execv_on_steroids(flags, args, pipeout, (char**)env_vec, /*dir:*/ NULL, /*uid(unused):*/ 0);
 
     /* We use this function to run gdb and unstrip. Bugs in gdb or corrupted
      * coredumps were observed to cause gdb to enter infinite loop.
@@ -249,4 +247,142 @@ char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
     }
 
     return strbuf_free_nobuf(buf_out);
+}
+
+char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char *debuginfo_dirs)
+{
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        return NULL;
+    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+    dd_close(dd);
+
+    /* Let user know what's going on */
+    log(_("Generating backtrace"));
+
+    char *args[21];
+    args[0] = (char*)"gdb";
+    args[1] = (char*)"-batch";
+    args[2] = (char*)"-ex";
+    struct strbuf *set_debug_file_directory = strbuf_new();
+    if(debuginfo_dirs == NULL)
+    {
+        // set non-existent debug file directory to prevent resolving
+        // function names - we need offsets for core backtrace.
+        strbuf_append_str(set_debug_file_directory, "set debug-file-directory /");
+    }
+    else
+    {
+        strbuf_append_str(set_debug_file_directory, "set debug-file-directory /usr/lib/debug");
+        const char *p = debuginfo_dirs;
+        while (1)
+        {
+            while (*p == ':')
+                p++;
+            if (*p == '\0')
+                break;
+            const char *colon_or_nul = strchrnul(p, ':');
+            strbuf_append_strf(set_debug_file_directory, ":%.*s/usr/lib/debug", (int)(colon_or_nul - p), p);
+            p = colon_or_nul;
+        }
+    }
+    args[3] = strbuf_free_nobuf(set_debug_file_directory);
+
+    /* "file BINARY_FILE" is needed, without it gdb cannot properly
+     * unwind the stack. Currently the unwind information is located
+     * in .eh_frame which is stored only in binary, not in coredump
+     * or debuginfo.
+     *
+     * Fedora GDB does not strictly need it, it will find the binary
+     * by its build-id.  But for binaries either without build-id
+     * (= built on non-Fedora GCC) or which do not have
+     * their debuginfo rpm installed gdb would not find BINARY_FILE
+     * so it is still makes sense to supply "file BINARY_FILE".
+     *
+     * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
+     * was deleted (as often happens during system updates):
+     * gdb uses specified BINARY_FILE
+     * even if it is completely unrelated to the coredump.
+     * See https://bugzilla.redhat.com/show_bug.cgi?id=525721
+     *
+     * TODO: check mtimes on COREFILE and BINARY_FILE and not supply
+     * BINARY_FILE if it is newer (to at least avoid gdb complaining).
+     */
+    args[4] = (char*)"-ex";
+    args[5] = xasprintf("file %s", executable);
+    free(executable);
+
+    args[6] = (char*)"-ex";
+    args[7] = xasprintf("core-file %s/"FILENAME_COREDUMP, dump_dir_name);
+
+    args[8] = (char*)"-ex";
+    /*args[9] = ... see below */
+    args[10] = (char*)"-ex";
+    args[11] = (char*)"info sharedlib";
+    /* glibc's abort() stores its message in __abort_msg variable */
+    args[12] = (char*)"-ex";
+    args[13] = (char*)"print (char*)__abort_msg";
+    args[14] = (char*)"-ex";
+    args[15] = (char*)"print (char*)__glib_assert_msg";
+    args[16] = (char*)"-ex";
+    args[17] = (char*)"info all-registers";
+    args[18] = (char*)"-ex";
+    args[19] = (char*)"disassemble";
+    args[20] = NULL;
+
+    /* Get the backtrace, but try to cap its size */
+    /* Limit bt depth. With no limit, gdb sometimes OOMs the machine */
+    unsigned bt_depth = 1024;
+    const char *thread_apply_all = "thread apply all";
+    const char *full = " full";
+    char *bt = NULL;
+    while (1)
+    {
+        args[9] = xasprintf("%s backtrace %u%s", thread_apply_all, bt_depth, full);
+        bt = exec_vp(args, /*redirect_stderr:*/ 1, timeout_sec, NULL);
+        free(args[9]);
+        if ((bt && strnlen(bt, 256*1024) < 256*1024) || bt_depth <= 32)
+        {
+            break;
+        }
+
+        bt_depth /= 2;
+        if (bt)
+            log("Backtrace is too big (%u bytes), reducing depth to %u",
+                        (unsigned)strlen(bt), bt_depth);
+        else
+            /* (NB: in fact, current impl. of exec_vp() never returns NULL) */
+            log("Failed to generate backtrace, reducing depth to %u",
+                        bt_depth);
+        free(bt);
+
+        /* Replace -ex disassemble (which disasms entire function $pc points to)
+         * to a version which analyzes limited, small patch of code around $pc.
+         * (Users reported a case where bare "disassemble" attempted to process
+         * entire .bss).
+         * TODO: what if "$pc-N" underflows? in my test, this happens:
+         * Dump of assembler code from 0xfffffffffffffff0 to 0x30:
+         * End of assembler dump.
+         * (IOW: "empty" dump)
+         */
+        args[19] = (char*)"disassemble $pc-20, $pc+64";
+
+        if (bt_depth <= 64 && thread_apply_all[0] != '\0')
+        {
+            /* This program likely has gazillion threads, dont try to bt them all */
+            bt_depth = 128;
+            thread_apply_all = "";
+        }
+        if (bt_depth <= 64 && full[0] != '\0')
+        {
+            /* Looks like there are gigantic local structures or arrays, disable "full" bt */
+            bt_depth = 128;
+            full = "";
+        }
+    }
+
+    free(args[3]);
+    free(args[5]);
+    free(args[7]);
+    return bt;
 }

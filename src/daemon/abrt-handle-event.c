@@ -16,198 +16,96 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include <satyr/thread.h>
+#include <satyr/stacktrace.h>
+#include <satyr/distance.h>
+#include <satyr/abrt.h>
 
 #include "libabrt.h"
 #include "run_event.h"
 
-#include <btparser/frame.h>
-#include <btparser/thread.h>
-#include <btparser/normalize.h>
-#include <btparser/metrics.h>
-
-#define BACKTRACE_TRUNCATE_LENGTH 7
-#define BACKTRACE_DUP_THRESHOLD 2
+/* 70 % similarity */
+#define BACKTRACE_DUP_THRESHOLD 0.3
 
 static char *uid = NULL;
 static char *uuid = NULL;
-static struct btp_thread *corebt = NULL;
+static struct sr_stacktrace *corebt = NULL;
+static char *analyzer = NULL;
 static char *crash_dump_dup_name = NULL;
 
-struct frame_aux
-{
-    char *build_id;
-    char *modname;
-    char *fingerprint;
-};
+static void dup_corebt_fini(void);
 
-static void free_frame_aux(void *user_data)
+static char* load_backtrace(const struct dump_dir *dd)
 {
-    struct frame_aux *aux = user_data;
-
-    if (aux)
+    const char *filename = FILENAME_BACKTRACE;
+    if (strcmp(analyzer, "CCpp") == 0)
     {
-        free(aux->build_id);
-        free(aux->modname);
-        free(aux->fingerprint);
-        free(aux);
+        filename = FILENAME_CORE_BACKTRACE;
     }
+
+    return dd_load_text_ext(dd, filename,
+        DD_FAIL_QUIETLY_ENOENT|DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
 }
 
-#if 0
-/* Useful only for debugging. */
-static void print_thread(const struct btp_thread *thread)
+static int core_backtrace_is_duplicate(struct sr_stacktrace *bt1,
+                                       const char *bt2_text)
 {
-    struct btp_frame *frame;
+    struct sr_thread *thread1 = sr_stacktrace_find_crash_thread(bt1);
 
-    for (frame = thread->frames; frame != NULL; frame = frame->next)
+    if (thread1 == NULL)
     {
-        struct frame_aux *aux = frame->user_data;
-        printf("%s %s+0x%jx %s %s\n", frame->function_name, aux->build_id,
-                (uintmax_t)frame->address, aux->modname, aux->fingerprint);
-    }
-}
-#endif
-
-static char *read_string(const char **inptr)
-{
-    const char *cur = *inptr;
-    const char *str;
-    int len;
-
-    cur = skip_whitespace(cur);
-    str = cur;
-    cur = skip_non_whitespace(cur);
-
-    len = cur-str;
-    *inptr = cur;
-
-    if (len == 1 && *str == '-')
-    {
-        return NULL;
-    }
-
-    return xstrndup(str, len);
-}
-
-static struct btp_thread* load_core_backtrace(const char *text)
-{
-    const char *cur = text;
-    int ret;
-    int chars_read;
-    uintmax_t off;
-
-    struct btp_thread *thread = xzalloc(sizeof(*thread));
-    struct btp_frame **prev_link = &(thread->frames);
-
-    /* Parse the text. */
-    while (*cur)
-    {
-        struct btp_frame *frame = xzalloc(sizeof(*frame));
-        btp_frame_init(frame);
-        struct frame_aux *aux = xzalloc(sizeof(*aux));
-        frame->user_data = aux;
-        frame->user_data_destructor = free_frame_aux;
-        *prev_link = frame;
-        prev_link = &(frame->next);
-
-        /* BUILD ID */
-        aux->build_id = read_string(&cur);
-
-        /* OFFSET */
-        cur = skip_whitespace(cur);
-        ret = sscanf(cur, "0x%jx %n", &off, &chars_read);
-        if (ret < 1)
-        {
-            btp_thread_free(thread);
-            VERB1 log("Error parsing core backtrace");
-            return NULL;
-        }
-        cur += chars_read;
-        frame->address = (uint64_t)off;
-
-        /* SYMBOL */
-        char *symbol = read_string(&cur);
-        /* btparser uses "??" to denote unknown function name */
-        frame->function_name = (symbol ? symbol : xstrdup("??"));
-
-        /* MODNAME */
-        aux->modname = read_string(&cur);
-
-        /* FINGERPRINT */
-        aux->fingerprint = read_string(&cur);
-
-        /* Skip the rest of the line. */
-        while (*cur && *cur++ != '\n')
-            continue;
-    }
-
-    btp_normalize_thread(thread);
-    btp_thread_remove_frames_below_n(thread, BACKTRACE_TRUNCATE_LENGTH);
-
-    return thread;
-}
-
-static void free_core_backtrace(struct btp_thread *thread)
-{
-    if (thread)
-        btp_thread_free(thread);
-}
-
-static int core_backtrace_frame_compare(struct btp_frame *frame1, struct btp_frame *frame2)
-{
-    /* If both function names are known, compare them directly. */
-    if (frame1->function_name && frame2->function_name
-      && strcmp(frame1->function_name, "??") != 0
-      && strcmp(frame2->function_name, "??") != 0)
-    {
-        return strcmp(frame1->function_name, frame2->function_name);
-    }
-
-    struct frame_aux *aux1 = frame1->user_data;
-    struct frame_aux *aux2 = frame2->user_data;
-
-    /* If build ids are equal, we can compare the offsets.
-     * Note that this may miss the case where the same function is called from
-     * other function in multiple places, which would pass if we were comparing
-     * the function names. */
-    if (aux1->build_id && aux2->build_id
-      && strcmp(aux1->build_id, aux2->build_id) == 0)
-    {
-        return (frame1->address != frame2->address);
-    }
-
-    /* Compare the fingerprints if present. */
-    if (aux1->fingerprint && aux2->fingerprint)
-    {
-        return strcmp(aux1->fingerprint, aux2->fingerprint);
-    }
-
-    /* No match, assume the functions are different. */
-    return -1;
-}
-
-static int core_backtrace_is_duplicate(struct btp_thread *bt1, const char *bt2_text)
-{
-    int result;
-    struct btp_thread *bt2 = load_core_backtrace(bt2_text);
-    if (bt2 == NULL)
-    {
-        VERB1 log("Failed to parse backtrace, considering it not duplicate");
+        VERB1 log("New stacktrace has no crash thread, disabling core stacktrace deduplicate");
+        dup_corebt_fini();
         return 0;
     }
 
-    int distance = btp_thread_levenshtein_distance_custom(bt1, bt2, true, core_backtrace_frame_compare);
-    if (distance == -1)
+    int result;
+    char *error_message;
+    struct sr_stacktrace *bt2 = sr_stacktrace_parse(sr_abrt_type_from_analyzer(analyzer),
+                                                    bt2_text, &error_message);
+    if (bt2 == NULL)
     {
-        result = 0;
-    }
-    else
-    {
-        VERB2 log("Distance between backtraces: %d", distance);
-        result = (distance <= BACKTRACE_DUP_THRESHOLD);
+        VERB1 log("Failed to parse backtrace, considering it not duplicate: %s", error_message);
+        free(error_message);
+        return 0;
     }
 
-    free_core_backtrace(bt2);
+    struct sr_thread *thread2 = sr_stacktrace_find_crash_thread(bt2);
+
+    if (thread2 == NULL)
+    {
+        VERB1 log("Failed to get crash thread, considering it not duplicate");
+        result = 0;
+        goto end;
+    }
+
+    int length2 = sr_thread_frame_count(thread2);
+
+    if (length2 <= 0)
+    {
+        VERB1 log("Core backtrace has zero frames, considering it not duplicate");
+        result = 0;
+        goto end;
+    }
+
+    /* This is an ugly workaround for https://github.com/abrt/btparser/issues/6 */
+    /*
+    int length1 = sr_core_thread_get_frame_count(thread1);
+
+    if (length1 <= 2 || length2 <= 2)
+    {
+        VERB1 log("Backtraces too short, falling back on full comparison");
+        result = (sr_core_thread_cmp(thread1, thread2) == 0);
+        goto end;
+    }
+    */
+
+    float distance = sr_distance(SR_DISTANCE_DAMERAU_LEVENSHTEIN, thread1, thread2);
+    VERB2 log("Distance between backtraces: %f", distance);
+    result = (distance <= BACKTRACE_DUP_THRESHOLD);
+
+end:
+    sr_stacktrace_free(bt2);
 
     return result;
 }
@@ -254,19 +152,30 @@ static void dup_uuid_fini(void)
 
 static void dup_corebt_init(const struct dump_dir *dd)
 {
-    char *corebt_text;
-
     if (corebt)
-        return; /* already checked */
+        return; /* already loaded */
 
-    corebt_text = dd_load_text_ext(dd, FILENAME_CORE_BACKTRACE,
-                            DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
-    );
-
+    char *corebt_text = load_backtrace(dd);
     if (!corebt_text)
         return; /* no backtrace */
 
-    corebt = load_core_backtrace(corebt_text);
+    enum sr_report_type report_type = sr_abrt_type_from_analyzer(analyzer);
+    if (report_type == SR_REPORT_INVALID)
+    {
+        VERB1 log("Can't load stacktrace because of unsupported analyzer: %s",
+                  analyzer);
+        return;
+    }
+
+    /* sr_stacktrace_parse moves the pointer */
+    char *error_message;
+    corebt = sr_stacktrace_parse(report_type, corebt_text, &error_message);
+    if (!corebt)
+    {
+        VERB1 log("Failed to load core stacktrace: %s", error_message);
+        free(error_message);
+    }
+
     free(corebt_text);
 }
 
@@ -276,9 +185,8 @@ static int dup_corebt_compare(const struct dump_dir *dd)
         return 0;
 
     int isdup;
-    char *dd_corebt = dd_load_text_ext(dd, FILENAME_CORE_BACKTRACE,
-            DD_FAIL_QUIETLY_ENOENT | DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE);
 
+    char *dd_corebt = load_backtrace(dd);
     if (!dd_corebt)
         return 0;
 
@@ -293,7 +201,7 @@ static int dup_corebt_compare(const struct dump_dir *dd)
 
 static void dup_corebt_fini(void)
 {
-    free_core_backtrace(corebt);
+    sr_stacktrace_free(corebt);
     corebt = NULL;
 }
 
@@ -326,11 +234,14 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
     struct dump_dir *dd = dd_opendir(dump_dir_name, DD_OPEN_READONLY);
     if (!dd)
         return 0; /* wtf? (error, but will be handled elsewhere later) */
-
+    free(analyzer);
+    analyzer = dd_load_text(dd, FILENAME_ANALYZER);
     dup_uuid_init(dd);
     dup_corebt_init(dd);
-
     dd_close(dd);
+
+    /* dump_dir_name can be relative */
+    dump_dir_name = realpath(dump_dir_name, NULL);
 
     DIR *dir = opendir(g_settings_dump_location);
     if (dir == NULL)
@@ -339,7 +250,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
     /* Scan crash dumps looking for a dup */
     //TODO: explain why this is safe wrt concurrent runs
     struct dirent *dent;
-    while ((dent = readdir(dir)) != NULL)
+    while ((dent = readdir(dir)) != NULL && crash_dump_dup_name == NULL)
     {
         if (dot_or_dotdot(dent->d_name))
             continue; /* skip "." and ".." */
@@ -347,7 +258,20 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
         if (ext && strcmp(ext, ".new") == 0)
             continue; /* skip anything named "<dirname>.new" */
 
-        char *dump_dir_name2 = concat_path_file(g_settings_dump_location, dent->d_name);
+        dd = NULL;
+
+        char *tmp_concat_path = concat_path_file(g_settings_dump_location, dent->d_name);
+
+        char *dump_dir_name2 = realpath(tmp_concat_path, NULL);
+        if (g_verbose > 1 && !dump_dir_name2)
+            perror_msg("realpath(%s)", tmp_concat_path);
+
+        free(tmp_concat_path);
+
+        if (!dump_dir_name2)
+            continue;
+
+        char *dd_uid = NULL, *dd_analyzer = NULL;
 
         if (strcmp(dump_dir_name, dump_dir_name2) == 0)
             goto next; /* we are never a dup of ourself */
@@ -357,29 +281,38 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
             goto next;
 
         /* crashes of different users are not considered duplicates */
-        char *dd_uid = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT);
+        dd_uid = dd_load_text_ext(dd, FILENAME_UID, DD_FAIL_QUIETLY_ENOENT);
         if (strcmp(uid, dd_uid))
         {
-            dd_close(dd);
+            goto next;
+        }
+
+        /* different crash types are not duplicates */
+        dd_analyzer = dd_load_text_ext(dd, FILENAME_ANALYZER, DD_FAIL_QUIETLY_ENOENT);
+        if (strcmp(analyzer, dd_analyzer))
+        {
             goto next;
         }
 
         if (dup_uuid_compare(dd)
          || dup_corebt_compare(dd)
         ) {
-            dd_close(dd);
             crash_dump_dup_name = dump_dir_name2;
+            dump_dir_name2 = NULL;
             retval = 1; /* "run_event, please stop iterating" */
-            goto end;
+            /* sonce crash_dump_dup_name != NULL now, we exit the loop */
         }
-        dd_close(dd);
 
 next:
         free(dump_dir_name2);
+        dd_close(dd);
+        free(dd_uid);
+        free(dd_analyzer);
     }
     closedir(dir);
 
 end:
+    free((char*)dump_dir_name);
     return retval;
 }
 

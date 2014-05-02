@@ -18,18 +18,6 @@
 */
 #include "libabrt.h"
 
-static void create_hash(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *pInput)
-{
-    char hash_bytes[SHA1_RESULT_LEN];
-    sha1_ctx_t sha1ctx;
-    sha1_begin(&sha1ctx);
-    sha1_hash(&sha1ctx, pInput, strlen(pInput));
-    sha1_end(&sha1ctx, hash_bytes);
-
-    bin2hex(hash_str, hash_bytes, SHA1_RESULT_LEN)[0] = '\0';
-    //log("hash:%s str:'%s'", hash_str, pInput);
-}
-
 static void trim_unstrip_output(char *result, const char *unstrip_n_output)
 {
     // lines look like this:
@@ -144,7 +132,7 @@ int main(int argc, char **argv)
     /*free(unstrip_n_output);*/
 
     char hash_str[SHA1_RESULT_LEN*2 + 1];
-    create_hash(hash_str, string_to_hash);
+    str_to_sha1str(hash_str, string_to_hash);
 
     dd_save_text(dd, FILENAME_UUID, hash_str);
     dd_close(dd);

@@ -59,16 +59,11 @@ int main(int argc, char **argv)
     /* Hash 1st line of backtrace and save it as UUID and DUPHASH */
     /* "example.py:1:<module>:ZeroDivisionError: integer division or modulo by zero" */
 
-    char hash_bytes[SHA1_RESULT_LEN];
-    sha1_ctx_t sha1ctx;
-    sha1_begin(&sha1ctx);
-    const char *bt_end = strchrnul(bt, '\n');
-    sha1_hash(&sha1ctx, bt, bt_end - bt);
-    sha1_end(&sha1ctx, hash_bytes);
-    free(bt);
-
+    char *bt_end = strchrnul(bt, '\n');
+    *bt_end = '\0';
     char hash_str[SHA1_RESULT_LEN*2 + 1];
-    bin2hex(hash_str, hash_bytes, SHA1_RESULT_LEN)[0] = '\0';
+    str_to_sha1str(hash_str, bt);
+    free(bt);
 
     dd_save_text(dd, FILENAME_UUID, hash_str);
     dd_save_text(dd, FILENAME_DUPHASH, hash_str);
