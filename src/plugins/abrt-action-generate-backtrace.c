@@ -60,11 +60,11 @@ int main(int argc, char **argv)
 
     export_abrt_envvars(0);
 
-    map_string_h *settings = new_map_string();
+    map_string_t *settings = new_map_string();
     if (!load_conf_file(PLUGINS_CONF_DIR"/CCpp.conf", settings, /*skip key w/o values:*/ false))
         error_msg("Can't open '%s'", PLUGINS_CONF_DIR"/CCpp.conf");
 
-    char *value = g_hash_table_lookup(settings, "DebuginfoLocation");
+    const char *value = get_map_string_item_or_NULL(settings, "DebuginfoLocation");
     char *debuginfo_location;
     if (value)
         debuginfo_location = xstrdup(value);

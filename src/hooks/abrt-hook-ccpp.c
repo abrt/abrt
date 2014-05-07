@@ -500,14 +500,14 @@ int main(int argc, char** argv)
     bool setting_MakeCompatCore;
     bool setting_SaveBinaryImage;
     {
-        map_string_h *settings = new_map_string();
+        map_string_t *settings = new_map_string();
         load_conf_file(PLUGINS_CONF_DIR"/CCpp.conf", settings, /*skip key w/o values:*/ false);
-        char *value;
-        value = g_hash_table_lookup(settings, "MakeCompatCore");
+        const char *value;
+        value = get_map_string_item_or_NULL(settings, "MakeCompatCore");
         setting_MakeCompatCore = value && string_to_bool(value);
-        value = g_hash_table_lookup(settings, "SaveBinaryImage");
+        value = get_map_string_item_or_NULL(settings, "SaveBinaryImage");
         setting_SaveBinaryImage = value && string_to_bool(value);
-        value = g_hash_table_lookup(settings, "VerboseLog");
+        value = get_map_string_item_or_NULL(settings, "VerboseLog");
         if (value)
             g_verbose = xatoi_positive(value);
         free_map_string(settings);

@@ -56,43 +56,43 @@ static GList *parse_list(const char* list)
     return l;
 }
 
-static void ParseCommon(map_string_h *settings, const char *conf_filename)
+static void ParseCommon(map_string_t *settings, const char *conf_filename)
 {
-    char *value;
+    const char *value;
 
-    value = g_hash_table_lookup(settings, "OpenGPGCheck");
+    value = get_map_string_item_or_NULL(settings, "OpenGPGCheck");
     if (value)
     {
         settings_bOpenGPGCheck = string_to_bool(value);
-        g_hash_table_remove(settings, "OpenGPGCheck");
+        remove_map_string_item(settings, "OpenGPGCheck");
     }
 
-    value = g_hash_table_lookup(settings, "BlackList");
+    value = get_map_string_item_or_NULL(settings, "BlackList");
     if (value)
     {
         settings_setBlackListedPkgs = parse_list(value);
-        g_hash_table_remove(settings, "BlackList");
+        remove_map_string_item(settings, "BlackList");
     }
 
-    value = g_hash_table_lookup(settings, "BlackListedPaths");
+    value = get_map_string_item_or_NULL(settings, "BlackListedPaths");
     if (value)
     {
         settings_setBlackListedPaths = parse_list(value);
-        g_hash_table_remove(settings, "BlackListedPaths");
+        remove_map_string_item(settings, "BlackListedPaths");
     }
 
-    value = g_hash_table_lookup(settings, "ProcessUnpackaged");
+    value = get_map_string_item_or_NULL(settings, "ProcessUnpackaged");
     if (value)
     {
         settings_bProcessUnpackaged = string_to_bool(value);
-        g_hash_table_remove(settings, "ProcessUnpackaged");
+        remove_map_string_item(settings, "ProcessUnpackaged");
     }
 
-    GHashTableIter iter;
-    char *name;
+    map_string_iter_t iter;
+    const char *name;
     /*char *value; - already declared */
-    g_hash_table_iter_init(&iter, settings);
-    while (g_hash_table_iter_next(&iter, (void**)&name, (void**)&value))
+    init_map_string_iter(&iter, settings);
+    while (next_map_string_iter(&iter, &name, &value))
     {
         error_msg("Unrecognized variable '%s' in '%s'", name, conf_filename);
     }
@@ -120,7 +120,7 @@ static void load_gpg_keys(void)
 
 static int load_conf(const char *conf_filename)
 {
-    map_string_h *settings = new_map_string();
+    map_string_t *settings = new_map_string();
     if (!load_conf_file(conf_filename, settings, /*skip key w/o values:*/ false))
         error_msg("Can't open '%s'", conf_filename);
 

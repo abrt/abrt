@@ -56,7 +56,7 @@ int main(int argc, char **argv)
     if (!dd)
         return 1;
 
-    map_string_h *settings = new_map_string();
+    map_string_t *settings = new_map_string();
     load_conf_file(PLUGINS_CONF_DIR"/oops.conf", settings, /*skip key w/o values:*/ false);
 
     char *oops = dd_load_text(dd, FILENAME_BACKTRACE);
