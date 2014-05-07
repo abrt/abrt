@@ -36,10 +36,14 @@ BuildRequires: nss-devel
 BuildRequires: asciidoc
 BuildRequires: xmlto
 BuildRequires: libreport-devel > 2.0.6
-BuildRequires: btparser-devel
+BuildRequires: satyr-devel >= 0.11
 BuildRequires: elfutils-devel
 BuildRequires: elfutils-libelf-devel
 BuildRequires: binutils-devel
+BuildRequires: augeas
+
+Requires: libreport >=  2.0.6
+Requires: satyr >= 0.11
 
 %if %{with systemd}
 Requires: systemd-units
@@ -448,6 +452,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/abrt-action-save-package-data.conf.5.gz
 # {_mandir}/man5/pyhook.conf.5.gz
 %{_datadir}/dbus-1/system-services/com.redhat.abrt.service
+
+# filesystem package should own /usr/share/augeas/lenses directory
+%{_datadir}/augeas/lenses/abrt.aug
 
 %files libs
 %defattr(-,root,root,-)
