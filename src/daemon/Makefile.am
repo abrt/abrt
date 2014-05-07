@@ -108,6 +108,9 @@ dist_daemonconf_DATA = \
     abrt-action-save-package-data.conf \
     gpg_keys
 
+defaultdaemonconfdir = $(DEFAULT_CONF_DIR)
+dist_defaultdaemonconf_DATA = $(dist_daemonconf_DATA)
+
 comredhatabrtservicedir = ${datadir}/dbus-1/system-services
 dist_comredhatabrtservice_DATA = com.redhat.abrt.service
 EXTRA_DIST = abrt-handle-upload

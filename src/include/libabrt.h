@@ -65,6 +65,12 @@ int load_abrt_conf();
 #define free_abrt_conf_data abrt_free_abrt_conf_data
 void free_abrt_conf_data();
 
+#define load_abrt_conf_file abrt_load_abrt_conf_file
+int load_abrt_conf_file(const char *file, map_string_t *settings);
+
+#define load_abrt_plugin_conf_file abrt_load_abrt_plugin_conf_file
+int load_abrt_plugin_conf_file(const char *file, map_string_t *settings);
+
 
 int check_recent_crash_file(const char *filename, const char *executable);
 

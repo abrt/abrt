@@ -18,6 +18,8 @@
 */
 #include "libabrt.h"
 
+#define ABRT_CONF "abrt.conf"
+
 char *        g_settings_sWatchCrashdumpArchiveDir = NULL;
 unsigned int  g_settings_nMaxCrashReportsSize = 1000;
 char *        g_settings_dump_location = NULL;
@@ -105,11 +107,25 @@ int load_abrt_conf()
     free_abrt_conf_data();
 
     map_string_t *settings = new_map_string();
-    if (!load_conf_file(CONF_DIR"/abrt.conf", settings, /*skip key w/o values:*/ false))
-        perror_msg("Can't open '%s'", CONF_DIR"/abrt.conf");
+    if (!load_abrt_conf_file(ABRT_CONF, settings))
+        perror_msg("Can't load '%s'", ABRT_CONF);
 
-    ParseCommon(settings, CONF_DIR"/abrt.conf");
+    ParseCommon(settings, ABRT_CONF);
     free_map_string(settings);
 
     return 0;
+}
+
+int load_abrt_conf_file(const char *file, map_string_t *settings)
+{
+    static const char *const base_directories[] = { DEFAULT_CONF_DIR, CONF_DIR, NULL };
+
+    return load_conf_file_from_dirs(file, base_directories, settings, /*skip key w/o values:*/ false);
+}
+
+int load_abrt_plugin_conf_file(const char *file, map_string_t *settings)
+{
+    static const char *const base_directories[] = { DEFAULT_PLUGINS_CONF_DIR, PLUGINS_CONF_DIR, NULL };
+
+    return load_conf_file_from_dirs(file, base_directories, settings, /*skip key w/o values:*/ false);
 }

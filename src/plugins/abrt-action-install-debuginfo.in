@@ -14,6 +14,7 @@ from subprocess import Popen, PIPE
 from reportclient import _, verbose, log, log1, log2, set_verbosity, error_msg_and_die, error_msg
 import time
 from reportclient.debuginfo import DebugInfoDownload, filter_installed_debuginfos, build_ids_to_path, clean_up
+import problem
 
 # everything was ok
 RETURN_OK = 0
@@ -136,20 +137,11 @@ if __name__ == "__main__":
 
     if not cachedirs:
         try:
-            fp = open("@sysconfdir@/@PACKAGE_NAME@/plugins/CCpp.conf", "r")
-            for line in fp:
-                stripped = line.lstrip()
-                if len(stripped) == 0:
-                    continue
-                if stripped[0] == "#":
-                    continue
-                if stripped[:len("DebuginfoLocation")] != "DebuginfoLocation":
-                    continue
-
-                cachedirs =  stripped[len("DebuginfoLocation"):].strip(" =\n").split(":")
-            fp.close()
-        except IOError as (errno, strerror):
-            print "I/O error({0}): {1}".format(errno, strerror)
+            conf = problem.load_plugin_conf_file("CCpp.conf")
+        except OSError as ex:
+            print str(ex)
+        else:
+            cachedirs = conf.get("DebuginfoLocation", None)
 
         if not cachedirs:
             cachedirs = ["/var/cache/abrt-di"]

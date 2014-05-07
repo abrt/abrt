@@ -501,7 +501,7 @@ int main(int argc, char** argv)
     bool setting_SaveBinaryImage;
     {
         map_string_t *settings = new_map_string();
-        load_conf_file(PLUGINS_CONF_DIR"/CCpp.conf", settings, /*skip key w/o values:*/ false);
+        load_abrt_plugin_conf_file("CCpp.conf", settings);
         const char *value;
         value = get_map_string_item_or_NULL(settings, "MakeCompatCore");
         setting_MakeCompatCore = value && string_to_bool(value);

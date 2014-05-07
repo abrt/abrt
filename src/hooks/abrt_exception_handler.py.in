@@ -79,23 +79,11 @@ def write_dump(tb):
 
 def conf_enabled(var_name):
     try:
-        file = open(@CONF_DIR@ + "/plugins/python.conf", "r")
+        conf = problem.load_plugin_conf_file("python.conf")
     except:
         return -1
-    for line in file:
-        w = line.split("=", 1)  # split on '=' to 2 parts max
-        if len(w) < 2:
-            continue
-        var = w[0].strip()  # remove whitespace
-        if var != var_name:
-            continue
-        val = w[1].strip()  # remove whitespace
-        if val == "yes":
-            return 1
-        if val == "no":
-            return 0
-    file.close()
-    return -1
+    else:
+        conf.get(var_name, -1)
 
 def handleMyException((etype, value, tb)):
     """

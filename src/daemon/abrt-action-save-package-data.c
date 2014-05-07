@@ -20,6 +20,8 @@
 #include "libabrt.h"
 #include "rpm.h"
 
+#define GPG_CONF "gpg_keys.conf"
+
 static bool   settings_bOpenGPGCheck = false;
 static GList *settings_setOpenGPGPublicKeys = NULL;
 static GList *settings_setBlackListedPkgs = NULL;
@@ -121,8 +123,17 @@ static void load_gpg_keys(void)
 static int load_conf(const char *conf_filename)
 {
     map_string_t *settings = new_map_string();
-    if (!load_conf_file(conf_filename, settings, /*skip key w/o values:*/ false))
-        error_msg("Can't open '%s'", conf_filename);
+    if (conf_filename != NULL)
+    {
+        if (!load_conf_file(conf_filename, settings, false))
+            error_msg("Can't open '%s'", conf_filename);
+    }
+    else
+    {
+        conf_filename = "abrt-action-save-package-data.conf";
+        if (!load_abrt_conf_file(conf_filename, settings))
+            error_msg("Can't load '%s'", conf_filename);
+    }
 
     ParseCommon(settings, conf_filename);
     free_map_string(settings);
@@ -394,7 +405,7 @@ int main(int argc, char **argv)
     abrt_init(argv);
 
     const char *dump_dir_name = ".";
-    const char *conf_filename = CONF_DIR"/abrt-action-save-package-data.conf";
+    const char *conf_filename = NULL;
 
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(

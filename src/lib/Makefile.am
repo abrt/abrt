@@ -18,6 +18,9 @@ libabrt_la_CPPFLAGS = \
     -I$(srcdir)/../lib \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DDEFAULT_CONF_DIR=\"$(DEFAULT_CONF_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    -DDEFAULT_PLUGINS_CONF_DIR=\"$(DEFAULT_PLUGINS_CONF_DIR)\" \
     -DEVENTS_DIR=\"$(EVENTS_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
