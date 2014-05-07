@@ -105,6 +105,21 @@ DEFAULT_PLUGINS_CONF_DIR='${datadir}/${PACKAGE_NAME}/conf.d/plugins'
 EVENTS_CONF_DIR='${sysconfdir}/libreport/events.d'
 ENABLE_SOCKET_OR_DBUS='-DENABLE_DBUS=1'
 
+AC_ARG_WITH(augeaslenslibdir,
+                    [AS_HELP_STRING([--with-augeaslenslibdir=DIR],
+                                                   [Directory for librepor lens (default: /usr/share/augeas/lenses)])],
+                                [], [with_augeaslenslibdir="/usr/share/augeas/lenses"])
+AC_SUBST([AUGEAS_LENS_LIB_DIR], [$with_augeaslenslibdir])
+
+AC_PATH_PROG(AUGPARSE, augparse, no)
+[if test "$ARGPARSE" = "no"]
+[then]
+    [echo "The argparse program was not found in the search path. Please ensure"]
+    [echo "that it is installed and its directory is included in the search path."]
+    [echo "Then run configure again before attempting to build ABRT."]
+    [exit 1]
+[fi]
+
 # Make satyr use GDB or elfutils/libunwind for unwinding?
 
 AC_ARG_ENABLE([native-unwinder],
