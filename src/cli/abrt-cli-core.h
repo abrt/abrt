@@ -20,6 +20,8 @@
 #ifndef ABRT_CLI_CORE_H_
 #define ABRT_CLI_CORE_H_
 
+#include "problem_api.h"
+
 typedef GPtrArray vector_of_problem_data_t;
 
 problem_data_t *get_problem_data(vector_of_problem_data_t *vector, unsigned i);

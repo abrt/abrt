@@ -61,7 +61,7 @@ int cmd_report(int argc, const char **argv)
             if (at >= ci->len)
                 error_msg_and_die("error: number is out of range '%s'", dir_name);
 
-            g_ptr_array_sort_with_data(ci, &cmp_problem_data, (char *) FILENAME_TIME);
+            g_ptr_array_sort_with_data(ci, &cmp_problem_data, (char *) FILENAME_LAST_OCCURRENCE);
             problem_data_t *pd = get_problem_data(ci, at);
 
             dir_name = get_problem_item_content_or_NULL(pd, CD_DUMPDIR);

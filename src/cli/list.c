@@ -23,8 +23,6 @@
 #include "builtin-cmd.h"
 
 /* TODO: npajkovs
- *     add --since
- *     add --until
  *     add --pretty=oneline|raw|normal|format="%a %b %c"
  *     add  wildcard e.g. *-2011-04-01-10-* (list all problems in specific day)
  *
@@ -63,8 +61,7 @@ static void print_crash(problem_data_t *problem_data, int detailed)
  * @param include_reported
  *   Do not skip entries marked as already reported.
  */
-static void print_crash_list(vector_of_problem_data_t *crash_list, int include_reported,
-                             int detailed)
+static void print_crash_list(vector_of_problem_data_t *crash_list, int detailed, int include_reported, long since, long until)
 {
     unsigned i;
     for (i = 0; i < crash_list->len; ++i)
@@ -72,8 +69,16 @@ static void print_crash_list(vector_of_problem_data_t *crash_list, int include_r
         problem_data_t *crash = get_problem_data(crash_list, i);
         if (!include_reported)
         {
-            const char *msg = get_problem_item_content_or_NULL(crash, FILENAME_REPORTED_TO);
-            if (msg)
+            if (!get_problem_item_content_or_NULL(crash, FILENAME_REPORTED_TO))
+                continue;
+        }
+        if (since || until)
+        {
+            const char *s = get_problem_item_content_or_NULL(crash, FILENAME_LAST_OCCURRENCE);
+            long val = s ? atol(s) : 0;
+            if (since && val < since)
+                continue;
+            if (until && val > until)
                 continue;
         }
 
@@ -90,13 +95,18 @@ int cmd_list(int argc, const char **argv)
         "& list [options] [DIR]..."
         );
 
-    static int opt_full, opt_detailed;
+    int opt_full = 0;
+    int opt_detailed = 0;
+    int opt_since = 0;
+    int opt_until = 0;
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_GROUP(""),
         OPT_BOOL('f', "full"     , &opt_full,      _("List even reported problems")),
         /* deprecate -d option with --pretty=full*/
         OPT_BOOL('d', "detailed" , &opt_detailed,  _("Show detailed report")),
+        OPT_INTEGER('s', "since" , &opt_since,  _("List only the problems more recent than specified timestamp")),
+        OPT_INTEGER('u', "until" , &opt_until,  _("List only the problems older than specified timestamp")),
         OPT_END()
     };
 
@@ -107,20 +117,13 @@ int cmd_list(int argc, const char **argv)
     while (*argv)
         D_list = g_list_append(D_list, xstrdup(*argv++));
     if (!D_list)
-    {
-        load_abrt_conf();
-        char *home = getenv("HOME");
-        if (home)
-            D_list = g_list_append(D_list, concat_path_file(home, ".abrt/spool"));
-        D_list = g_list_append(D_list, xstrdup(g_settings_dump_location));
-        free_abrt_conf_data();
-    }
+        D_list = get_problem_storages();
 
     vector_of_problem_data_t *ci = fetch_crash_infos(D_list);
 
-    g_ptr_array_sort_with_data(ci, &cmp_problem_data, (char *) FILENAME_TIME);
+    g_ptr_array_sort_with_data(ci, &cmp_problem_data, (char *) FILENAME_LAST_OCCURRENCE);
 
-    print_crash_list(ci, opt_full, opt_detailed);
+    print_crash_list(ci, opt_detailed, opt_full, opt_since, opt_until);
     free_vector_of_problem_data(ci);
     list_free_with_free(D_list);
 
@@ -133,7 +136,7 @@ int cmd_info(int argc, const char **argv)
         "& info [options] DIR..."
         );
 
-    static int opt_detailed;
+    int opt_detailed = 0;
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
         OPT_GROUP(""),

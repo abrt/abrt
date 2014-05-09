@@ -20,6 +20,11 @@
 #include <glib.h>
 #include <libabrt.h>
 
+int for_each_problem_in_dir(const char *path,
+                        uid_t caller_uid,
+                        int (*callback)(struct dump_dir *dd, void *arg),
+                        void *arg);
+
 /* Retrieves the list of directories currently used as a problem storage
  * The result must be freed by caller
  * @returns List of strings representing the full path to dirs
