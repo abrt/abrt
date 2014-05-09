@@ -71,6 +71,12 @@ int load_abrt_conf_file(const char *file, map_string_t *settings);
 #define load_abrt_plugin_conf_file abrt_load_abrt_plugin_conf_file
 int load_abrt_plugin_conf_file(const char *file, map_string_t *settings);
 
+#define save_abrt_conf_file abrt_save_abrt_conf_file
+int save_abrt_conf_file(const char *file, map_string_t *settings);
+
+#define save_abrt_plugin_conf_file abrt_save_abrt_plugin_conf_file
+int save_abrt_plugin_conf_file(const char *file, map_string_t *settings);
+
 
 int check_recent_crash_file(const char *filename, const char *executable);
 
