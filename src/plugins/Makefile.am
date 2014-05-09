@@ -22,6 +22,9 @@ bin_PROGRAMS = \
 
 libexec_PROGRAMS = abrt-action-install-debuginfo-to-abrt-cache
 
+libexec_SCRIPTS = \
+    abrt-action-ureport
+
 #dist_pluginsconf_DATA = Python.conf
 
 eventsdir = $(EVENTS_DIR)
@@ -66,7 +69,8 @@ EXTRA_DIST = \
     abrt-action-analyze-vmcore \
     https-utils.h \
     abrt-action-analyze-ccpp-local \
-    abrt-action-save-kernel-data
+    abrt-action-save-kernel-data \
+    abrt-action-ureport
 
 abrt_dump_oops_SOURCES = \
     abrt-dump-oops.c

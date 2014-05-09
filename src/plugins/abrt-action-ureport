@@ -1,0 +1,143 @@
+#!/usr/bin/python -u
+# WARNING: python -u means unbuffered I/O. Without it the messages are
+# passed to the parent asynchronously which looks bad in clients.
+#
+# This script wraps reporter-ureport client and keeps number of sent
+# uReports to a server consistent with number of problem ocurrences.
+
+import sys
+import os
+import getopt
+
+from report import dd_opendir, DD_FAIL_QUIETLY_ENOENT, run_event_state
+from reportclient import _, set_verbosity, error_msg_and_die, error_msg, log1, log
+
+def spawn_and_wait(prog):
+    try:
+        return os.spawnlp(os.P_WAIT, prog, prog)
+    except OSError as err:
+        error_msg(_("Unable to start '%s', error message was: '%s'"),
+                    prog, err)
+        return -1
+
+def try_parse_number(dd, filename):
+    try:
+        n = dd.load_text(filename, DD_FAIL_QUIETLY_ENOENT)
+        if n == "":
+            return 0
+        return int(n)
+    except:
+        error_msg(_("Not a number in file '%s'"), filename)
+        return 0
+
+def get_bugzilla_reports(reported_to):
+    bugs = set()
+    for line in reported_to.split("\n"):
+        if line.startswith("Bugzilla:"):
+            bugs.add(line)
+    return bugs
+
+def run_event(event_name, dump_dir_name):
+    state = run_event_state()
+    ret = state.run_event_on_dir_name(dump_dir_name, event_name)
+    if ret == 0 and state.children_count == 0:
+        log1("Didn't find definition of event '%s'", event_name)
+
+if __name__ == "__main__":
+    # localization
+    #init_gettext() - done by reportclient module init
+
+    verbose = 0
+    ABRT_VERBOSE = os.getenv("ABRT_VERBOSE")
+    if ABRT_VERBOSE:
+        try:
+            verbose = int(ABRT_VERBOSE)
+        except:
+            pass
+
+    progname = os.path.basename(sys.argv[0])
+    help_text = _("Usage: %s [-v]") % progname
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "vh", ["help"])
+    except getopt.GetoptError, err:
+        error_msg(err)  # prints something like "option -a not recognized"
+        error_msg_and_die(help_text)
+
+    for opt, arg in opts:
+        if opt in ("-h", "--help"):
+            print help_text
+            sys.exit(0)
+        if opt == "-v":
+            verbose += 1
+
+    set_verbosity(verbose)
+
+    # getcwd might fail if cwd was deleted
+    try:
+        dirname = os.getcwd()
+    except OSError as err:
+        error_msg_and_die(_("Unable to get current working directory as"
+                            " it was probably deleted"))
+
+    dd = dd_opendir(dirname, 0)
+    if not dd:
+        sys.exit(1)
+
+    report_type = dd.load_text("type", DD_FAIL_QUIETLY_ENOENT)
+
+    # because of backward compatibility
+    if not report_type:
+        report_type = dd.load_text("analyzer", 0)
+
+    core_backtrace_exists = dd.exist("core_backtrace")
+    reported_to = dd.load_text("reported_to", DD_FAIL_QUIETLY_ENOENT)
+    ureports_counter = try_parse_number(dd, "ureports_counter")
+    count = try_parse_number(dd, "count")
+    dd.close()
+
+    # Send only if the problem is not yet reported
+    #           if the count file is corrupted or
+    #           if the number of ureports is lower then the number of occurrences
+    if ureports_counter != 0 and count != 0 and ureports_counter >= count:
+        log1("uReport has been already sent: '%s'", dirname)
+
+        if reported_to and reported_to != "":
+            bugs = get_bugzilla_reports(reported_to)
+            if bugs:
+                log(_("A bug was already filed about this problem:"))
+                bugs = sorted(bugs)
+                for bug in bugs:
+                    print bug
+                sys.exit(70)  # EXIT_STOP_EVENT_RUN
+            log1("Bug for '%s' not yet filed. Continuing.", dirname)
+            sys.exit(0)
+        else:
+            log1("'%s/reported_to' doesn't exist", dirname)
+
+        log(_("uReport was already sent, not sending it again"))
+        sys.exit(0)
+
+    if report_type == "CCpp" and not core_backtrace_exists:
+        exitcode = spawn_and_wait("abrt-action-generate-core-backtrace")
+        if exitcode != 0:
+            log1("uReport can't be sent without core_backtrace. Exiting.")
+            sys.exit(1)
+
+    exitcode = spawn_and_wait("reporter-ureport")
+    if exitcode == 0 or exitcode == 70:
+        dd = dd_opendir(dirname, 0)
+        if not dd:
+            sys.exit(1)
+        dd.save_text("ureports_counter", str(ureports_counter + 1))
+        reported_to = dd.load_text("reported_to", DD_FAIL_QUIETLY_ENOENT)
+        dd.close()
+
+        watch = os.getenv("uReport_WatchReportedBugs") or ""
+        if exitcode == 70 and watch.lower() in ["yes", "on", "1"]:
+            if reported_to and reported_to != "" and get_bugzilla_reports(reported_to):
+                log(_("Adding you to CC List of the existing bugzilla bug"))
+                run_event("watch_Bugzilla", dirname)
+
+        sys.exit(exitcode)
+    else:
+        error_msg_and_die(_("reporter-ureport failed with exit code %d" % exitcode))
