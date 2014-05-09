@@ -1,0 +1,261 @@
+#!/usr/bin/python
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+import os
+import sys
+from argparse import ArgumentParser
+
+import dbus
+import dbus.lowlevel
+
+import problem
+
+import report
+from reportclient import (RETURN_OK,
+                          RETURN_FAILURE,
+                          RETURN_CANCEL_BY_USER,
+                          RETURN_STOP_EVENT_RUN,
+                          log1,
+                          set_verbosity)
+
+CD_DUMPDIR = "Directory"
+FILENAME_PACKAGE = "package"
+FILENAME_UID = "uid"
+FILENAME_UUID = "uuid"
+FILENAME_DUPHASH = "duphash"
+
+
+def run_autoreport(problem_data, event_name):
+    """Runs autoreporting event
+
+    Requires CD_DUMPDIR key in problem_data.
+
+    Keyword arguments:
+    problem_data -- problem data of notified problems
+
+    Returns None as it raises an exception on error
+
+    Raises:
+    KeyError -- if any of required elements is missing
+    RuntimeError -- if event run fails
+    """
+
+    dir_name = problem_data.get(CD_DUMPDIR)
+    if dir_name is None:
+        raise KeyError(CD_DUMPDIR)
+
+    log1("Running autoreporting event: '{0}'".format(event_name))
+
+    res = report.run_event_state()
+    ret = res.run_event_on_dir_name(dir_name[0], event_name)
+
+    if res.children_count == 0 and ret == 0:
+        raise RuntimeError("No processing is specified for event '{0}'"
+                .format(event_name))
+
+    if ret != RETURN_OK and ret != RETURN_CANCEL_BY_USER and ret != RETURN_STOP_EVENT_RUN:
+        raise RuntimeError("Event '{0}' exited with {1}"
+                .format(event_name, ret))
+
+def emit_crash_dbus_signal(problem_data):
+    """Emits a Crash signal on D-Bus Problem bus
+
+    Emits a signal with 5 members:
+        package -- value of 'package' element in problem_data
+        problem_id -- value of 'Directory' element in problem_data
+        uid -- empty string if 'uid' element is not present in problem_data
+        uuid -- empty string if 'uuid' element is not present in problem_data
+        duphash -- empty string if 'duphash' element is not present in problem_data
+
+    Keyword arguments:
+    problem_data -- problem data of notified problems
+
+    Returns None as it raises an exception on error
+
+    Raises:
+    RuntimeError -- for all D-Bus related errors
+    KeyError -- if any of required elements is missing
+    """
+
+    bus = None
+    try:
+        bus = dbus.SystemBus()
+        msg = dbus.lowlevel.SignalMessage("/org/freedesktop/problems",
+                "org.freedesktop.problems", "Crash")
+
+        # List of tuples where the first member is element name and the second
+        # member is a Boolean flag which is True if the element is required
+        arguments = ((FILENAME_PACKAGE, True), (CD_DUMPDIR, True),
+                (FILENAME_UID, False), (FILENAME_UUID, False),
+                (FILENAME_PACKAGE, False))
+
+        for elem in arguments:
+            itm = problem_data.get(elem[0])
+
+            if itm is None:
+                if elem[1]:
+                    raise KeyError(elem[0])
+
+                msg.append("", signature="s")
+            else:
+                msg.append(itm[0], signature="s")
+
+
+        bus.send_message(msg)
+    except dbus.exceptions.DBusException as ex:
+        raise RuntimeError("Failed to emit D-Bus Crash signal: {0}"
+                .format(str(ex)))
+    finally:
+        if bus is not None:
+            bus.close()
+
+def build_notification_problem_data(problem_dir):
+    """Loads all necessary problem elements
+
+    Problem dump directory must contain 'package' element.
+
+    Keyword arguments:
+    problem_dir -- an absolute file system path problem directory
+
+    Returns an instance of report.problem_data
+
+    Raises:
+    ValueError -- if problem_dir is not an absolute path, if problem_dir cannot
+        be opened and if any required problem element is missing.
+    """
+
+    if not os.path.isabs(problem_dir):
+        raise ValueError("problem directory must be absolute path")
+
+    prblm_dt = report.problem_data()
+
+    try:
+        dump_dir = report.dd_opendir(problem_dir, report.DD_OPEN_READONLY)
+        if not dump_dir:
+            raise ValueError("cannot open problem directory")
+
+        dd_load_flag = (report.DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+                | report.DD_FAIL_QUIETLY_ENOENT)
+
+        package = dump_dir.load_text(FILENAME_PACKAGE, dd_load_flag)
+        if not package:
+            raise ValueError("problem directory misses '{0}'"
+                    .format(FILENAME_PACKAGE))
+
+        pd_add_flag = report.CD_FLAG_TXT | report.CD_FLAG_ISNOTEDITABLE
+
+        prblm_dt.add(FILENAME_PACKAGE, package, pd_add_flag)
+        prblm_dt.add(CD_DUMPDIR, problem_dir, pd_add_flag)
+
+        for element in (FILENAME_UID, FILENAME_UUID, FILENAME_DUPHASH):
+            val = dump_dir.load_text(element, dd_load_flag)
+            if val is not None:
+                prblm_dt.add(element, val, pd_add_flag)
+    finally:
+        dump_dir.close()
+
+    return prblm_dt
+
+
+if __name__ == "__main__":
+    CMDARGS = ArgumentParser(
+            description=("Announce a new or duplicated problem via"
+                " all accessible channels"),
+            epilog=("Reads the default configuration from 'abrt.conf' file"))
+    CMDARGS.add_argument("-d", "--problem-dir",
+            type=str, required=True,
+            help="An absolute path to a new or duplicated problem directory")
+    CMDARGS.add_argument("-v", "--verbose",
+            action="count", dest="verbose", default=0,
+            help="Be verbose")
+    CMDARGS.add_argument("-a", "--autoreporting",
+            action="store_true", dest="autoreporting", default=False,
+            help="Force to run autoreporting event")
+    CMDARGS.add_argument("-e", "--autoreporting-event",
+            type=str, dest="autoreporting_event",
+            help="Overwrite autoreporting event name")
+
+    OPTIONS = CMDARGS.parse_args()
+
+    DIR_PATH = OPTIONS.problem_dir
+
+    verbose = 0
+    ABRT_VERBOSE = os.getenv("ABRT_VERBOSE")
+    if ABRT_VERBOSE:
+        try:
+            verbose = int(ABRT_VERBOSE)
+        except:
+            pass
+
+    verbose += OPTIONS.verbose
+    set_verbosity(verbose)
+    os.environ["ABRT_VERBOSE"] = str(verbose)
+
+    try:
+        conf = problem.load_conf_file("abrt.conf")
+    except OSError as ex:
+        sys.stderr.write("{0}".format(str(ex)))
+        sys.exit(RETURN_FAILURE)
+
+    try:
+        PD = build_notification_problem_data(DIR_PATH)
+    except ValueError as ex:
+        sys.stderr.write("Cannot notify '{0}': {1}\n".
+                format(DIR_PATH, str(ex)))
+        sys.exit(RETURN_FAILURE)
+
+    # The execution must continue because we should try to notify via all
+    # configured channels. One of them might work properly.
+    return_status = RETURN_OK
+    try:
+        emit_crash_dbus_signal(PD)
+    except RuntimeError as ex:
+        sys.stderr.write("Cannot notify '{0}' via D-Bus: {1}\n".
+                format(DIR_PATH, str(ex)))
+        return_status = RETURN_FAILURE
+    except KeyError as ex:
+        # this is a bug in build_notification_problem_data()
+        sys.stderr.write("BUG: problem data misses required element '{0}'"
+                         " required for D-Bus notification\n"
+                         .format(str(ex)))
+
+        return_status = RETURN_FAILURE
+
+    if OPTIONS.autoreporting or conf.get("AutoreportingEnabled", "no") == "yes":
+        event_name = OPTIONS.autoreporting_event
+        if not event_name:
+            if "AutoreportingEvent" in conf:
+                event_name = conf["AutoreportingEvent"]
+            else:
+                sys.stderr.write("Autoreporting event is not configured\n")
+                return_status = RETURN_FAILURE
+
+        if event_name:
+            try:
+                run_autoreport(PD, event_name)
+            except RuntimeError as ex:
+                sys.stderr.write("Cannot notify '{0}' via uReport: {1}\n".
+                        format(DIR_PATH, str(ex)))
+                return_status = RETURN_FAILURE
+            except KeyError as ex:
+                # this is a bug in build_notification_problem_data()
+                sys.stderr.write(
+                    "BUG: problem data misses required element '{0}'"
+                    " required for uReport notification\n".format(str(ex)))
+
+                return_status = RETURN_FAILURE
+
+    sys.exit(return_status)
+

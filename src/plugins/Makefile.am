@@ -6,7 +6,8 @@ bin_SCRIPTS = \
     abrt-action-analyze-vmcore \
     abrt-action-list-dsos \
     abrt-action-analyze-ccpp-local \
-    abrt-action-save-kernel-data
+    abrt-action-save-kernel-data \
+    abrt-action-notify
 
 bin_PROGRAMS = \
     abrt-dump-oops \
@@ -51,7 +52,8 @@ PYTHON_FILES = \
     abrt-action-install-debuginfo.in \
     abrt-action-list-dsos \
     abrt-action-analyze-core \
-    abrt-action-analyze-vmcore.in
+    abrt-action-analyze-vmcore.in \
+    abrt-action-notify
 
 EXTRA_DIST = \
     $(PYTHON_FILES) \
