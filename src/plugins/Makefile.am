@@ -35,7 +35,8 @@ dist_events_DATA = \
     collect_xsession_errors.xml \
     collect_GConf.xml \
     collect_vimrc_user.xml \
-    collect_vimrc_system.xml
+    collect_vimrc_system.xml \
+    post_report.xml
 
 @INTLTOOL_XML_RULE@
 
@@ -70,7 +71,8 @@ EXTRA_DIST = \
     https-utils.h \
     abrt-action-analyze-ccpp-local \
     abrt-action-save-kernel-data \
-    abrt-action-ureport
+    abrt-action-ureport \
+    post_report.xml.in
 
 abrt_dump_oops_SOURCES = \
     abrt-dump-oops.c
