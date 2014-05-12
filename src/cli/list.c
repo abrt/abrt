@@ -50,7 +50,7 @@ static void print_crash(problem_data_t *problem_data, int detailed)
         desc = make_description(problem_data,
                             /*names_to_skip:*/ NULL,
                             /*max_text_size:*/ CD_TEXT_ATT_SIZE_BZ,
-                            MAKEDESC_SHOW_ONLY_LIST);
+                            MAKEDESC_SHOW_ONLY_LIST | MAKEDESC_SHOW_URLS);
     }
     fprintf(stdout, "%s", desc);
     free(desc);
