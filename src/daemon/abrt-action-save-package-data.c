@@ -20,8 +20,6 @@
 #include "libabrt.h"
 #include "rpm.h"
 
-#define GPG_CONF "gpg_keys.conf"
-
 static bool   settings_bOpenGPGCheck = false;
 static GList *settings_setOpenGPGPublicKeys = NULL;
 static GList *settings_setBlackListedPkgs = NULL;

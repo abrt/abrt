@@ -3,6 +3,7 @@ import inspect
 import datetime
 
 from problem import proxies, exception, tools, watch
+from _pyabrt import *
 
 JAVA = 'java'
 SELINUX = 'selinux'
