@@ -280,7 +280,14 @@ abrt_config_widget_init(AbrtConfigWidget *self)
     connect_switch_with_option(self, ABRT_OPT_SILENT_SHORTENED_REPORTING, "switch_silent_shortened_reporting");
     connect_switch_with_option(self, ABRT_OPT_NOTIFY_INCOMPLETE_PROBLEMS, "switch_notify_incomplete_problems");
 
+#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION == 1))
+    /* https://developer.gnome.org/gtk3/3.13/GtkWidget.html#gtk-widget-reparent */
+    /* gtk_widget_reparent has been deprecated since version 3.13.2 and should not be used in newly-written code. */
     gtk_widget_reparent(WID("grid"), GTK_WIDGET(self));
+#else
+    gtk_container_remove(GTK_CONTAINER(WID("window1")), WID("grid"));
+    gtk_container_add(GTK_CONTAINER(self), WID("grid"));
+#endif
 
     /* Set the initial state of the properties */
     gtk_widget_show_all(GTK_WIDGET(self));
