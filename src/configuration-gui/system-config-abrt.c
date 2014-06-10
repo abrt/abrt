@@ -53,9 +53,13 @@ GtkWidget *system_config_abrt_widget_new_with_close_button(system_config_abrt_wi
     gtk_widget_set_visible(GTK_WIDGET(config), TRUE);
     gtk_box_pack_start(box, GTK_WIDGET(config), /*expand*/TRUE, /*fill*/TRUE, /*padding*/0);
 
+#if ((GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION < 13) || (GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION == 13 && GTK_MICRO_VERSION == 1))
+    /* https://developer.gnome.org/gtk3/3.13/GtkAlignment.html#gtk-alignment-new */
+    /* GtkAlignment has been deprecated. Use GtkWidget alignment and margin properties */
     gtk_box_pack_start(GTK_BOX(box),
             gtk_alignment_new(/*xalign*/.5, /*yalign*/.5, /*xscale*/.5, /*yscale*/.5),
             /*expand*/TRUE, /*fill*/TRUE, /*padding*/0);
+#endif
 
     GtkWidget *buttons = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, /*spacing*/0);
     gtk_box_pack_start(GTK_BOX(box), buttons, /*expand*/TRUE, /*fill*/FALSE, /*padding*/0);
