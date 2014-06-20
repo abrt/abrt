@@ -475,10 +475,8 @@ next_line:
     free(lines_info);
 }
 
-int koops_hash_str(char result[SHA1_RESULT_LEN*2 + 1], const char *oops_buf)
+int koops_hash_str_ext(char result[SHA1_RESULT_LEN*2 + 1], const char *oops_buf, int frame_count, int duphash_flags)
 {
-    const int frame_count = 6;
-    const int duphash_flags = SR_DUPHASH_NONORMALIZE|SR_DUPHASH_KOOPS_COMPAT;
     char *hash_str = NULL, *error = NULL;
     int bad = 0;
 
@@ -505,7 +503,10 @@ int koops_hash_str(char result[SHA1_RESULT_LEN*2 + 1], const char *oops_buf)
         hash_str = sr_thread_get_duphash(thread, frame_count, NULL,
                                          duphash_flags|SR_DUPHASH_NOHASH);
         if (hash_str)
-            log("Generating duphash: %s", hash_str);
+            log("Generating duphash: '%s'", hash_str);
+        else
+            log("Nothing useful for duphash");
+
         free(hash_str);
     }
 
@@ -522,6 +523,13 @@ int koops_hash_str(char result[SHA1_RESULT_LEN*2 + 1], const char *oops_buf)
 end:
     sr_stacktrace_free(stacktrace);
     return bad;
+}
+
+int koops_hash_str(char result[SHA1_RESULT_LEN*2 + 1], const char *oops_buf)
+{
+    const int frame_count = 6;
+    const int duphash_flags = SR_DUPHASH_NONORMALIZE|SR_DUPHASH_KOOPS_COMPAT;
+    return koops_hash_str_ext(result, oops_buf, frame_count, duphash_flags);
 }
 
 char *koops_extract_version(const char *linepointer)
