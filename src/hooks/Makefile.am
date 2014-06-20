@@ -8,7 +8,8 @@ pluginsconfdir = $(PLUGINS_CONF_DIR)
 
 dist_pluginsconf_DATA = \
     CCpp.conf \
-    python.conf
+    python.conf \
+    oops.conf
 
 sbin_SCRIPTS = \
     abrt-install-ccpp-hook \

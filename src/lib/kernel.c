@@ -366,7 +366,7 @@ next_line:
     free(lines_info);
 }
 
-int koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf)
+int koops_hash_str_ext(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf, int frame_count, int only_reliable)
 {
     struct strbuf *kernel_bt = strbuf_new();
 
@@ -439,13 +439,13 @@ int koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf)
 
             /* skip symbols prefixed with "?" */
             end_mem_block = skip_whitespace(end_mem_block);
-            if (end_mem_block && *end_mem_block == '?')
+            if (only_reliable && end_mem_block && *end_mem_block == '?')
                 goto skip_line;
             /* strip out "+off/len" */
             p = strchrnul(end_mem_block, '+');
             /* append "func_name\n" */
             strbuf_append_strf(kernel_bt, "%.*s\n", (int)(p - end_mem_block), end_mem_block);
-            if (i == 5)
+            if (frame_count > 0 && i == frame_count)
             {
  done:
                 free(line);
@@ -495,6 +495,11 @@ int koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf)
     VERB3 log("hash: %s", hash_str);
 
     return bad;
+}
+
+int koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf)
+{
+    return koops_hash_str_ext(hash_str, oops_buf, /*frame count*/5, /*only reliable*/1);
 }
 
 char *koops_extract_version(const char *linepointer)

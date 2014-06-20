@@ -56,20 +56,54 @@ int main(int argc, char **argv)
     if (!dd)
         return 1;
 
+    map_string_h *settings = new_map_string();
+    load_conf_file(PLUGINS_CONF_DIR"/oops.conf", settings, /*skip key w/o values:*/ false);
+
     char *oops = dd_load_text(dd, FILENAME_BACKTRACE);
     char hash_str[SHA1_RESULT_LEN*2 + 1];
     int bad = koops_hash_str(hash_str, oops);
     free(oops);
-
     if (bad)
+    {
         error_msg("Can't find a meaningful backtrace for hashing in '%s'", dump_dir_name);
-    else
+
+        /* Do not drop such oopses by default. */
+        const char *value = g_hash_table_lookup(settings, "DropNotReportableOopses");
+        if (!value || !string_to_bool(value))
+        {
+            /* Let users know that they can configure ABRT to drop these oopses. */
+            log("Preserving oops '%s' because DropNotReportableOopses is '%s'",
+			dump_dir_name, value ? value : "(not set)");
+
+            dd_save_text(dd, FILENAME_NOT_REPORTABLE,
+            _("The backtrace does not contain enough meaningful function frames "
+              "to be reported. It is annoying but it does not necessary "
+              "signalize a problem with your computer. ABRT will not allow "
+              "you to create a report in a bug tracking system but you "
+              "can contact kernel maintainers via e-mail.")
+            );
+
+            /* Try to generate the hash once more with no limits. */
+            /* We need UUID file for the local duplicates look-up and DUPHASH */
+            /* file is also useful because user can force ABRT to report */
+            /* the oops into a bug tracking system (Bugzilla). */
+            bad = koops_hash_str_ext(hash_str, oops,
+                    /* use no frame count limit */-1,
+                    /* use every frame in stacktrace */0);
+
+            /* If even this attempt fails, we can drop the oops without any hesitation. */
+        }
+    }
+
+    if (!bad)
     {
         dd_save_text(dd, FILENAME_UUID, hash_str);
         dd_save_text(dd, FILENAME_DUPHASH, hash_str);
     }
 
     dd_close(dd);
+
+    free_map_string(settings);
 
     return bad;
 }

@@ -109,6 +109,7 @@ abrt_action_analyze_oops_CPPFLAGS = \
     -I$(srcdir)/../libreport/src/include/ -I$(srcdir)/../include \
     -I$(srcdir)/../libreport/src/lib \
     -I$(srcdir)/../lib \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
     -D_GNU_SOURCE \
