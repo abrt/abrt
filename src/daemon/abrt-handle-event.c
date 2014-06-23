@@ -31,6 +31,7 @@ static char *uid = NULL;
 static char *uuid = NULL;
 static struct sr_stacktrace *corebt = NULL;
 static char *analyzer = NULL;
+static char *executable = NULL;
 static char *crash_dump_dup_name = NULL;
 
 static void dup_corebt_fini(void);
@@ -238,6 +239,8 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
         return 0; /* wtf? (error, but will be handled elsewhere later) */
     free(analyzer);
     analyzer = dd_load_text(dd, FILENAME_ANALYZER);
+    free(executable);
+    executable = dd_load_text(dd, FILENAME_EXECUTABLE);
     dup_uuid_init(dd);
     dup_corebt_init(dd);
     dd_close(dd);
@@ -274,6 +277,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
             continue;
 
         char *dd_uid = NULL, *dd_analyzer = NULL;
+        char *dd_executable = NULL;
 
         if (strcmp(dump_dir_name, dump_dir_name2) == 0)
             goto next; /* we are never a dup of ourself */
@@ -292,6 +296,13 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
         /* different crash types are not duplicates */
         dd_analyzer = dd_load_text_ext(dd, FILENAME_ANALYZER, DD_FAIL_QUIETLY_ENOENT);
         if (strcmp(analyzer, dd_analyzer))
+        {
+            goto next;
+        }
+
+        /* different executables are not duplicates */
+        dd_executable = dd_load_text_ext(dd, FILENAME_EXECUTABLE, DD_FAIL_QUIETLY_ENOENT);
+        if (strcmp(executable, dd_executable) != 0)
         {
             goto next;
         }
