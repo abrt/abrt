@@ -4,6 +4,8 @@ import sys
 import os
 import locale
 import gettext
+import hashlib
+import re
 
 GETTEXT_PROGNAME = "abrt"
 
@@ -82,6 +84,23 @@ if __name__ == "__main__":
                 "This is most likely not a software problem.\n"
     ))
     f.close()
+
+    oops_hash = hashlib.sha1()
+    with open("backtrace", "r") as btfile:
+        for line in btfile:
+            oops_hash.update(line)
+
+    with open_or_die("uuid", "w") as f:
+        f.write(oops_hash.hexdigest())
+
+    with open_or_die("duphash", "w") as f:
+        f.write(oops_hash.hexdigest())
+
+    res = tail_with_search("dmesg", "Linux version", 1)
+    if res:
+        kernel = re.sub(r"^.*Linux version ([^ ]+) .*$", r"\1", res[0]);
+        with open_or_die("kernel", "w") as krnlfile:
+            krnlfile.write(kernel)
 
     # vmcore MCEs already have good backtrace element, nothing more to do
     if vmcore_mce:
