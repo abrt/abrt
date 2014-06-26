@@ -43,6 +43,10 @@ rlJournalStart
             $EXAMPLES_PATH/oops1.test > \
             $TmpDir/oops1.test
 
+        sed "s/2.6.27.9-159.fc10.i686/<KERNEL_VERSION>/" \
+            $EXAMPLES_PATH/oops_no_reliable_frame.test > \
+            $TmpDir/oops_not_reportable_no_reliable_frame.test
+
         sed "s/3.0.0-1.fc16.i686/<KERNEL_VERSION>/" \
             $EXAMPLES_PATH/oops5.test > \
             $TmpDir/oops5.test
@@ -95,6 +99,31 @@ rlJournalStart
 
             rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
         done
+    rlPhaseEnd
+
+    rlPhaseStartTest "Drop unreliable OOPS"
+        prepare
+        check_prior_crashes
+
+        rlRun "ABRT_DROP_OOPS_VAL=\"$(augtool get /files/etc/abrt/plugins/oops.conf/DropNotReportableOopses | cut -d' ' -f3)\"" 0
+        rlRun "augtool set /files/etc/abrt/plugins/oops.conf/DropNotReportableOopses yes" 0
+
+        installed_kernel="$( rpm -q kernel | tail -n1 )"
+        kernel_version="$( rpm -q --qf "%{version}" $installed_kernel )"
+        oops=oops_not_reportable_no_reliable_frame.test
+        sed -i "s/<KERNEL_VERSION>/$installed_kernel/g" $oops
+        rlRun "abrt-dump-oops $oops -xD 2>&1 | grep 'abrt-dump-oops: Found oopses: [1-9]'" 0 "[$oops] Found OOPS"
+
+        # abrtd does not notify that a problem has been detected and deleted.
+        sleep 3
+
+        rlRun "ls /var/tmp/abrt/oops* 2>&1 | grep -q 'No such file or directory'"
+
+        if [ -n "$ABRT_DROP_OOPS_VAL" ]; then
+            rlRun "augtool set /files/etc/abrt/plugins/oops.conf/DropNotReportableOopses $ABRT_DROP_OOPS_VAL" 0
+        else
+            rlRun "augtool rm /files/etc/abrt/plugins/oops.conf/DropNotReportableOopses" 0
+        fi
     rlPhaseEnd
 
     rlPhaseStartCleanup
