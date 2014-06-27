@@ -1164,17 +1164,18 @@ static void export_event_configuration(const char *event_name)
 
 static void run_event_async(problem_info_t *pi, const char *event_name, int flags)
 {
-    if (pi->foreign)
+    /* chown the directory in any case, because kernel oopses are not foreign */
+    /* but their dump directories are not writable without chowning them or */
+    /* stealing them. The stealing is deprecated as it breaks the local */
+    /* duplicate search and root cannot see them */
+    const int res = chown_dir_over_dbus(problem_info_get_dir(pi));
+    if (pi->foreign && res != 0)
     {
-        int res = chown_dir_over_dbus(problem_info_get_dir(pi));
-        if (res != 0)
-        {
-            error_msg(_("Can't take ownership of '%s'"), problem_info_get_dir(pi));
-            problem_info_free(pi);
-            return;
-        }
-        pi->foreign = false;
+        error_msg(_("Can't take ownership of '%s'"), problem_info_get_dir(pi));
+        problem_info_free(pi);
+        return;
     }
+    pi->foreign = false;
 
     struct dump_dir *dd = open_directory_for_writing(problem_info_get_dir(pi), /* don't ask */ NULL);
     if (!dd)
