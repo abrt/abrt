@@ -19,6 +19,7 @@ MAN1_TXT += abrt-action-perform-ccpp-analysis.txt
 MAN1_TXT += abrt-action-notify.txt
 MAN1_TXT += abrt-applet.txt
 MAN1_TXT += abrt-dump-oops.txt
+MAN1_TXT += abrt-dump-journal-oops.txt
 MAN1_TXT += abrt-dump-xorg.txt
 MAN1_TXT += abrt-auto-reporting.txt
 MAN1_TXT += abrt-retrace-client.txt
