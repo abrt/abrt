@@ -109,8 +109,27 @@ char *kernel_tainted_long(const char *tainted_short);
 int koops_hash_str_ext(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf, int frame_count, int duphas_flags);
 #define koops_hash_str abrt_koops_hash_str
 int koops_hash_str(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *oops_buf);
+
+
+#define koops_line_skip_level abrt_koops_line_skip_level
+int koops_line_skip_level(const char **c);
+#define koops_line_skip_jiffies abrt_koops_line_skip_jiffies
+void koops_line_skip_jiffies(const char **c);
+
+/*
+ * extract_oops tries to find oops signatures in a log
+ */
+struct abrt_koops_line_info {
+    char *ptr;
+    int level;
+};
+
+#define koops_extract_oopses_from_lines abrt_koops_extract_oopses_from_lines
+void koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_koops_line_info *lines_info, int lines_info_size);
 #define koops_extract_oopses abrt_koops_extract_oopses
 void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen);
+#define koops_suspicious_strings_list abrt_koops_suspicious_strings_list
+GList *koops_suspicious_strings_list(void);
 #define koops_print_suspicious_strings abrt_koops_print_suspicious_strings
 void koops_print_suspicious_strings(void);
 /**

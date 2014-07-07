@@ -140,6 +140,7 @@ PKG_CHECK_MODULES([LIBREPORT_GTK], [libreport-gtk])
 PKG_CHECK_MODULES([POLKIT], [polkit-gobject-1])
 PKG_CHECK_MODULES([GIO], [gio-2.0])
 PKG_CHECK_MODULES([SATYR], [satyr])
+PKG_CHECK_MODULES([SYSTEMD_JOURNAL], [libsystemd-journal])
 
 PKG_PROG_PKG_CONFIG
 AC_ARG_WITH([systemdsystemunitdir],
@@ -167,6 +168,7 @@ AC_CHECK_HEADERS([locale.h])
 CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
 DEFAULT_CONF_DIR='${datadir}/${PACKAGE_NAME}/conf.d'
 VAR_RUN='${localstatedir}/run'
+VAR_STATE='${localstatedir}/lib/${PACKAGE_NAME}'
 PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
 DEFAULT_PLUGINS_CONF_DIR='${datadir}/${PACKAGE_NAME}/conf.d/plugins'
 EVENTS_DIR='${datadir}/libreport/events'
@@ -255,6 +257,7 @@ AC_ARG_ENABLE([native-unwinder],
 AC_SUBST(CONF_DIR)
 AC_SUBST(DEFAULT_CONF_DIR)
 AC_SUBST(VAR_RUN)
+AC_SUBST(VAR_STATE)
 AC_SUBST(PLUGINS_CONF_DIR)
 AC_SUBST(DEFAULT_PLUGINS_CONF_DIR)
 AC_SUBST(EVENTS_CONF_DIR)
