@@ -240,7 +240,7 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
     free(analyzer);
     analyzer = dd_load_text(dd, FILENAME_ANALYZER);
     free(executable);
-    executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+    executable = dd_load_text_ext(dd, FILENAME_EXECUTABLE, DD_FAIL_QUIETLY_ENOENT);
     dup_uuid_init(dd);
     dup_corebt_init(dd);
     dd_close(dd);
@@ -302,7 +302,10 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
 
         /* different executables are not duplicates */
         dd_executable = dd_load_text_ext(dd, FILENAME_EXECUTABLE, DD_FAIL_QUIETLY_ENOENT);
-        if (strcmp(executable, dd_executable) != 0)
+        if (     (executable != NULL && dd_executable == NULL)
+             ||  (executable == NULL && dd_executable != NULL)
+             || ((executable != NULL && dd_executable != NULL)
+                  && strcmp(executable, dd_executable) != 0))
         {
             goto next;
         }
