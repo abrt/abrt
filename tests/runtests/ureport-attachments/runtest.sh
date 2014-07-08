@@ -57,6 +57,15 @@ rlJournalStart
         rlRun "reporter-ureport -a DEADBEAF -e argument@redhat.com -d ex_crash_dir"
         rlRun "reporter-ureport -a DEADBEAF -E -d ex_crash_dir"
 
+        uReport_UserComment="command line user comment"
+        export uReport_UserComment
+
+        rlRun "reporter-ureport -A -o \"$uReport_UserComment\" -d ex_crash_dir"
+        rlRun "reporter-ureport -A -O -d ex_crash_dir"
+
+        rlRun "reporter-ureport -a DEADBEAF -o \"$uReport_UserComment\" -d ex_crash_dir"
+        rlRun "reporter-ureport -a DEADBEAF -O -d ex_crash_dir"
+
         kill %1
     rlPhaseEnd
 

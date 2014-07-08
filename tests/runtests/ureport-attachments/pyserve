@@ -22,16 +22,14 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.reply_false(400)
             return
 
-
         try:
             value = Handler.expected_iter.next()
             print 'Expected', value
             print 'Received', attachment[0]
+            if value != attachment[0]:
+                self.reply_false(400)
         except StopIteration:
             self.reply_false(500)
-        else:
-            if value != attachment[0]:
-                self.reply_true(400)
 
         self.reply_true(202)
 
@@ -60,6 +58,10 @@ Handler.expected_iter = [
 '{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "email", "data": "environment@redhta.com" }',
 '{ "bthash": "DEADBEAF", "type": "email", "data": "argument@redhat.com" }',
 '{ "bthash": "DEADBEAF", "type": "email", "data": "environment@redhta.com" }',
+'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "comment", "data": "command line user comment" }',
+'{ "bthash": "072c77ed630343ca99dd5333cfd159a3b062e69b", "type": "comment", "data": "dir user comment" }',
+'{ "bthash": "DEADBEAF", "type": "comment", "data": "command line user comment" }',
+'{ "bthash": "DEADBEAF", "type": "comment", "data": "dir user comment" }',
 ].__iter__()
 
 httpd = BaseHTTPServer.HTTPServer(("", PORT), Handler)
