@@ -958,6 +958,19 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Tue Jul 08 2014 Jakub Filak <jfilak@redhat.com> 2.2.2-1
+- daemon: deal with missing 'executable' file
+- applet: chown each notified problem before reporting it
+- koops: don't analyze MCEs like standard oopses
+- koops: don't drop not-reportable oopses by default
+- abrt_event: fix post-create reporter-uploader examples
+- local duplicates must have matching executables
+- replace deprecated GTK3 functions
+- gdb: disable loading of auto-loaded files
+- dbus: Fix invalid dbus policy file
+- dbus: Fix desktop centric polkit policy file
+- configure: Support cross compiling with python3
+
 * Tue Apr 22 2014 Jakub Filak <jfilak@redhat.com> 2.2.1-1
 - bodhi: remove an extra semicolon after if stmt
 - stop using deprecated json-c functions
