@@ -55,12 +55,14 @@ def write_dump(tb_text, tb):
         executable = sys.argv[0]
 
     dso_list = None
-    try:
-        import rpm
-        dso_list = get_dso_list(tb)
-    except ImportError as imperr:
-        syslog("RPM module not available, cannot query RPM db for package "\
-               "names")
+    # Trace back is None in case of SyntaxError exception.
+    if tb:
+        try:
+            import rpm
+            dso_list = get_dso_list(tb)
+        except ImportError as imperr:
+            syslog("RPM module not available, cannot query RPM db for package "\
+                   "names")
 
     # Open ABRT daemon's socket and write data to it
     try:
