@@ -191,6 +191,7 @@ which is able to analyze C/C++ crashes remotely.
 %package addon-kerneloops
 Summary: %{name}'s kerneloops addon
 Group: System Environment/Libraries
+BuildRequires: systemd-devel
 Requires: curl
 Requires: %{name} = %{version}-%{release}
 %if 0%{!?rhel:1}
