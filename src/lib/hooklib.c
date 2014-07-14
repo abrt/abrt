@@ -16,7 +16,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <sys/statvfs.h>
-#include "libabrt.h"
+#include "internal_libabrt.h"
 
 int low_free_space(unsigned setting_MaxCrashReportsSize, const char *dump_location)
 {
@@ -241,6 +241,8 @@ char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
 
 char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char *debuginfo_dirs)
 {
+    INITIALIZE_LIBABRT();
+
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return NULL;

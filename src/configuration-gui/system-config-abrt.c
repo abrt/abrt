@@ -18,7 +18,7 @@
 #include "system-config-abrt.h"
 #include "abrt-config-widget.h"
 
-#include <libabrt.h>
+#include "internal_libabrt.h"
 
 #define CLOSE_BUTTON_DATA_NAME_CALLBACK "my-close-callback"
 #define CLOSE_BUTTON_DATA_NAME_USER_DATA "my-close-user-data"
@@ -105,6 +105,8 @@ system_config_abrt_dialog_delete_event(GtkWidget *dialog, GdkEvent *event, gpoin
 
 void show_system_config_abrt_dialog(GtkWindow *parent)
 {
+    INITIALIZE_LIBABRT();
+
     GtkWidget *dialog = gtk_dialog_new();
 
     gtk_window_set_title(GTK_WINDOW(dialog), _("Problem Reporting Configuration"));
