@@ -15,6 +15,7 @@ bin_SCRIPTS = \
 bin_PROGRAMS = \
     abrt-watch-log \
     abrt-dump-oops \
+    abrt-dump-journal-oops \
     abrt-dump-xorg \
     abrt-action-analyze-c \
     abrt-action-analyze-python \
@@ -97,6 +98,8 @@ EXTRA_DIST = \
     abrt-action-ureport \
     abrt-gdb-exploitable \
     https-utils.h \
+    oops-utils.h \
+    abrt-journal.h \
     post_report.xml.in \
     abrt-action-analyze-ccpp-local.in
 
@@ -120,6 +123,7 @@ abrt_watch_log_LDADD = \
     ../lib/libabrt.la
 
 abrt_dump_oops_SOURCES = \
+    oops-utils.c \
     abrt-dump-oops.c
 abrt_dump_oops_CPPFLAGS = \
     -I$(srcdir)/../include \
@@ -131,6 +135,25 @@ abrt_dump_oops_CPPFLAGS = \
 abrt_dump_oops_LDADD = \
     $(GLIB_LIBS) \
     $(LIBREPORT_LIBS) \
+    ../lib/libabrt.la
+
+abrt_dump_journal_oops_SOURCES = \
+    oops-utils.c \
+    abrt-journal.c \
+    abrt-dump-journal-oops.c
+abrt_dump_journal_oops_CPPFLAGS = \
+    -I$(srcdir)/../include \
+    -I$(srcdir)/../lib \
+    $(GLIB_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    $(SYSTEMD_JOURNAL_CFLAGS) \
+    -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
+    -DVAR_STATE=\"$(VAR_STATE)\" \
+    -D_GNU_SOURCE
+abrt_dump_journal_oops_LDADD = \
+    $(GLIB_LIBS) \
+    $(LIBREPORT_LIBS) \
+    $(SYSTEMD_JOURNAL_LIBS) \
     ../lib/libabrt.la
 
 abrt_dump_xorg_SOURCES = \

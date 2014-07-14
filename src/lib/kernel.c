@@ -22,21 +22,12 @@
 #define _GNU_SOURCE 1 /* for strcasestr */
 #include "libabrt.h"
 
-/*
- * extract_oops tries to find oops signatures in a log
- */
-
-struct line_info {
-    char *ptr;
-    char level;
-};
-
 /* Used to be 100, but some MCE oopses are short:
  * "CPU 0: Machine Check Exception: 0000000000000007"
  */
 #define SANE_MIN_OOPS_LEN 30
 
-static void record_oops(GList **oops_list, struct line_info* lines_info, int oopsstart, int oopsend)
+static void record_oops(GList **oops_list, const struct abrt_koops_line_info* lines_info, int oopsstart, int oopsend)
 {
     int q;
     int len;
@@ -161,6 +152,15 @@ void koops_print_suspicious_strings(void)
     koops_print_suspicious_strings_filtered(NULL);
 }
 
+GList *koops_suspicious_strings_list(void)
+{
+    GList *strings = NULL;
+    for (const char *const *str = s_koops_suspicious_strings; *str; ++str)
+        strings = g_list_prepend(strings, (gpointer)*str);
+
+    return strings;
+}
+
 static bool match_any(const regex_t **res, const char *str)
 {
     for (const regex_t **r = res; *r != NULL; ++r)
@@ -189,12 +189,57 @@ void koops_print_suspicious_strings_filtered(const regex_t **filterout)
     }
 }
 
+
+void koops_line_skip_jiffies(const char **c)
+{
+    /* remove jiffies time stamp counter if present
+     * jiffies are unsigned long, so it can be 2^64 long, which is
+     * 20 decimal digits
+     */
+    if (**c == '[')
+    {
+        const char *c2 = strchr(*c, '.');
+        const char *c3 = strchr(*c, ']');
+        if (c2 && c3 && (c2 < c3) && (c3-*c) < 21)
+        {
+            *c = c3 + 1;
+            if (**c == ' ')
+                (*c)++;
+        }
+    }
+}
+
+int koops_line_skip_level(const char **c)
+{
+    int linelevel = 0;
+    if (**c == '<')
+    {
+        const char *ptr = *c + 1;
+        while (isdigit(*ptr))
+            ++ptr;
+
+        if (*ptr == '>' && (ptr - *c > 1))
+        {
+            const char *const bck = ptr + 1;
+            unsigned exp = 1;
+            while (--ptr != *c)
+            {
+                linelevel += (*ptr - '0') * exp;
+                exp *= 10;
+            }
+            *c = bck;
+        }
+    }
+
+    return linelevel;
+}
+
 void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
 {
     char *c;
     int linecount = 0;
     int lines_info_size = 0;
-    struct line_info *lines_info = NULL;
+    struct abrt_koops_line_info *lines_info = NULL;
 
     /* Split buffer into lines */
 
@@ -254,28 +299,10 @@ void koops_extract_oopses(GList **oops_list, char *buffer, size_t buflen)
             c = kernel_str + sizeof("kernel: ")-1;
         }
 
-        linelevel = 0;
         /* store and remove kernel log level */
-        if (*c == '<' && c[1] && c[2] == '>')
-        {
-            linelevel = c[1];
-            c += 3;
-        }
-        /* remove jiffies time stamp counter if present
-         * jiffies are unsigned long, so it can be 2^64 long, which is
-         * 20 decimal digits
-         */
-        if (*c == '[')
-        {
-            char *c2 = strchr(c, '.');
-            char *c3 = strchr(c, ']');
-            if (c2 && c3 && (c2 < c3) && (c3-c) < 21)
-            {
-                c = c3 + 1;
-                if (*c == ' ')
-                    c++;
-            }
-        }
+        linelevel = koops_line_skip_level((const char **)&c);
+        koops_line_skip_jiffies((const char **)&c);
+
         if ((lines_info_size & 0xfff) == 0)
         {
             lines_info = xrealloc(lines_info, (lines_info_size + 0x1000) * sizeof(lines_info[0]));
@@ -287,6 +314,12 @@ next_line:
         c = c9 + 1;
     }
 
+    koops_extract_oopses_from_lines(oops_list, lines_info, lines_info_size);
+    free(lines_info);
+}
+
+void koops_extract_oopses_from_lines(GList **oops_list, const struct abrt_koops_line_info *lines_info, int lines_info_size)
+{
     /* Analyze lines */
 
     int i;
@@ -323,8 +356,6 @@ next_line:
             {
                 /* debug information */
                 log_debug("Found oops at line %d: '%s'", oopsstart, lines_info[oopsstart].ptr);
-                if (oopsstart != i)
-                        log_debug("Trigger line is %d: '%s'", i, c);
                 /* try to find the end marker */
                 int i2 = i + 1;
                 while (i2 < lines_info_size && i2 < (i+50))
@@ -471,10 +502,7 @@ next_line:
             record_oops(oops_list, lines_info, oopsstart, oopsstart);
         }
     }
-
-    free(lines_info);
 }
-
 int koops_hash_str_ext(char result[SHA1_RESULT_LEN*2 + 1], const char *oops_buf, int frame_count, int duphash_flags)
 {
     char *hash_str = NULL, *error = NULL;
@@ -506,6 +534,7 @@ int koops_hash_str_ext(char result[SHA1_RESULT_LEN*2 + 1], const char *oops_buf,
             log("Generating duphash: '%s'", hash_str);
         else
             log("Nothing useful for duphash");
+
 
         free(hash_str);
     }
