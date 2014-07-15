@@ -420,6 +420,8 @@ CFLAGS="%{optflags} -Werror" %configure \
 %endif
 %if 0%{?rhel}
         --enable-suggest-autoreporting \
+%endif
+%ifnarch arm armhfp armv7hl armv7l aarch64
         --enable-native-unwinder \
 %endif
         --enable-doxygen-docs \
