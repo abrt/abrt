@@ -16,10 +16,10 @@
 #include <signal.h>
 #include <poll.h>
 #include <stdlib.h>
-#include <abrt/libabrt.h>
 #include <stdio.h>
 
 #include "abrt-journal.h"
+#include "libabrt.h"
 
 #include <systemd/sd-journal.h>
 
