@@ -2,7 +2,7 @@
 <event>
     <name>Analyze C/C++ Crash</name>
     <_description>Send core dump to remote retrace server for analysis or perform local analysis if the remote analysis fails</_description>
-    <_long-description>Uploads coredump to a server, which generates backtrace and returns it. If user doens't want to upload his coredump to anywhere the event performs local analysis. Local analysis is run event if remote analysis fails.
+    <_long-description>Uploads coredump to a server, which generates backtrace and returns it. If user doesn't want to upload his coredump to anywhere the event performs local analysis. Local analysis is run event if remote analysis fails.
     Pros: no need for debuginfo downloads. Retrace server's database of debuginfos is more complete. Retrace server may generate better backtraces.
     Cons: coredump you upload contains all the data from the crashed program, including your private data, if any.
     </_long-description>
