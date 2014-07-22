@@ -10,7 +10,28 @@ import os
 import getopt
 
 from report import dd_opendir, DD_FAIL_QUIETLY_ENOENT, run_event_state
-from reportclient import _, set_verbosity, error_msg_and_die, error_msg, log1, log
+from reportclient import set_verbosity, error_msg_and_die, error_msg, log1, log
+
+GETTEXT_PROGNAME = "abrt"
+import locale
+import gettext
+
+_ = lambda x: gettext.lgettext(x)
+
+def init_gettext():
+    try:
+        locale.setlocale(locale.LC_ALL, "")
+    except locale.Error:
+        os.environ['LC_ALL'] = 'C'
+        locale.setlocale(locale.LC_ALL, "")
+    # Defeat "AttributeError: 'module' object has no attribute 'nl_langinfo'"
+    try:
+        gettext.bind_textdomain_codeset(GETTEXT_PROGNAME, locale.nl_langinfo(locale.CODESET))
+    except AttributeError:
+        pass
+    gettext.bindtextdomain(GETTEXT_PROGNAME, '/usr/share/locale')
+    gettext.textdomain(GETTEXT_PROGNAME)
+
 
 def spawn_and_wait(prog):
     try:
@@ -45,7 +66,7 @@ def run_event(event_name, dump_dir_name):
 
 if __name__ == "__main__":
     # localization
-    #init_gettext() - done by reportclient module init
+    init_gettext()
 
     verbose = 0
     ABRT_VERBOSE = os.getenv("ABRT_VERBOSE")
