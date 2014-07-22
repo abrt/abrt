@@ -8,7 +8,28 @@ import sys
 import getopt
 from subprocess import Popen, PIPE
 
-from reportclient import _, verbose, set_verbosity, error_msg_and_die, error_msg
+from reportclient import verbose, set_verbosity, error_msg_and_die, error_msg
+
+GETTEXT_PROGNAME = "abrt"
+import locale
+import gettext
+
+_ = lambda x: gettext.lgettext(x)
+
+def init_gettext():
+    try:
+        locale.setlocale(locale.LC_ALL, "")
+    except locale.Error:
+        os.environ['LC_ALL'] = 'C'
+        locale.setlocale(locale.LC_ALL, "")
+    # Defeat "AttributeError: 'module' object has no attribute 'nl_langinfo'"
+    try:
+        gettext.bind_textdomain_codeset(GETTEXT_PROGNAME, locale.nl_langinfo(locale.CODESET))
+    except AttributeError:
+        pass
+    gettext.bindtextdomain(GETTEXT_PROGNAME, '/usr/share/locale')
+    gettext.textdomain(GETTEXT_PROGNAME)
+
 
 PROGNAME = "abrt-action-analyze-vmcore"
 
@@ -25,6 +46,8 @@ if __name__ == "__main__":
     vmlinux_di_path = ""
     tmpdir = ""
     vmcore = ""
+
+    init_gettext()
 
     help_text = _("Usage: {0} [-v[v]] [--core=VMCORE]").format(PROGNAME)
     try:
