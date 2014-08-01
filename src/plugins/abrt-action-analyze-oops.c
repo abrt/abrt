@@ -62,7 +62,6 @@ int main(int argc, char **argv)
     char *oops = dd_load_text(dd, FILENAME_BACKTRACE);
     char hash_str[SHA1_RESULT_LEN*2 + 1];
     int bad = koops_hash_str(hash_str, oops);
-    free(oops);
     if (bad)
     {
         error_msg("Can't find a meaningful backtrace for hashing in '%s'", dump_dir_name);
@@ -73,7 +72,7 @@ int main(int argc, char **argv)
         {
             /* Let users know that they can configure ABRT to drop these oopses. */
             log("Preserving oops '%s' because DropNotReportableOopses is '%s'",
-			dump_dir_name, value ? value : "(not set)");
+             	       dump_dir_name, value ? value : "(not set)");
 
             dd_save_text(dd, FILENAME_NOT_REPORTABLE,
             _("The backtrace does not contain enough meaningful function frames "
@@ -94,6 +93,8 @@ int main(int argc, char **argv)
             /* If even this attempt fails, we can drop the oops without any hesitation. */
         }
     }
+
+    free(oops);
 
     if (!bad)
     {
