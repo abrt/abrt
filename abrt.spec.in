@@ -514,6 +514,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files addon-kerneloops
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/koops_event.conf
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/oops.conf
 %if %{with systemd}
 %{_unitdir}/abrt-oops.service
 %else
@@ -522,6 +523,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-dump-oops
 %{_bindir}/abrt-action-analyze-oops
 %{_mandir}/man1/abrt-action-analyze-oops.1*
+%{_mandir}/man5/abrt-oops.conf.5*
 
 %files addon-vmcore
 %defattr(-,root,root,-)
