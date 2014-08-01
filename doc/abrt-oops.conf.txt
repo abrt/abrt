@@ -1,0 +1,23 @@
+abrt-oops.conf(5)
+=================
+
+NAME
+----
+abrt-oops.conf - Configuration file for ABRT's Kernel Oops extractor
+
+DESCRIPTION
+-----------
+The configuration file consists of items in the format "Option = Value".
+The following items are recognized:
+
+OnlyFatalMCE = 'yes' / 'no'
+   If you want to see only fatal MCEs, set to "yes".
+   Defaults is 'yes': detect only fatal ones.
+
+SEE ALSO
+--------
+abrt.conf(5)
+
+AUTHORS
+-------
+* ABRT team
