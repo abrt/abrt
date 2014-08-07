@@ -17,7 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include <json/json.h>
+#include <json.h>
 #include <rpm/rpmts.h>
 #include <rpm/rpmcli.h>
 #include <rpm/rpmdb.h>
