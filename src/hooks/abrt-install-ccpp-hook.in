@@ -9,7 +9,7 @@ verbose=false
 PATTERN_FILE="/proc/sys/kernel/core_pattern"
 SAVED_PATTERN_DIR="@VAR_RUN@/abrt"
 SAVED_PATTERN_FILE="@VAR_RUN@/abrt/saved_core_pattern"
-HOOK_BIN="/usr/sbin/chroot /proc/%P/root @libexecdir@/abrt-hook-ccpp"
+HOOK_BIN="@libexecdir@/abrt-hook-ccpp"
 # Must match percent_specifiers[] order in abrt-hook-ccpp.c:
 PATTERN="|$HOOK_BIN %s %c %p %u %g %t %e"
 # Same, but with bogus "executable name" parameter
