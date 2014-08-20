@@ -21,7 +21,11 @@
 #endif
 #include <X11/Xlib.h>
 #include <X11/SM/SMlib.h>
+
+#define GDK_DISABLE_DEPRECATION_WARNINGS
+/* https://bugzilla.gnome.org/show_bug.cgi?id=734826 */
 #include <gtk/gtk.h>
+
 #include <libnotify/notify.h>
 #include <dbus/dbus-shared.h>
 #include <dbus/dbus-glib.h>
