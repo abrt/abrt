@@ -142,7 +142,7 @@ static int dup_uuid_compare(const struct dump_dir *dd)
     free(dd_uuid);
 
     if (!different)
-        log("Duplicate: UUID");
+        log_notice("Duplicate: UUID");
 
     return !different;
 }
@@ -197,7 +197,7 @@ static int dup_corebt_compare(const struct dump_dir *dd)
     free(dd_corebt);
 
     if (isdup)
-        log("Duplicate: core backtrace");
+        log_notice("Duplicate: core backtrace");
 
     return isdup;
 }

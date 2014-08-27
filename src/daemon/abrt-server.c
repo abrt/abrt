@@ -194,15 +194,14 @@ static int run_post_create(const char *dirname)
             strbuf_append_str(cmd_output, raw);
             char *msg = cmd_output->buf;
 
-            /* Hmm, DUP_OF_DIR: ends up in syslog. move log() into 'else'? */
-            log("%s", msg);
-
             if (child_is_post_create
              && prefixcmp(msg, "DUP_OF_DIR: ") == 0
             ) {
                 free(dup_of_dir);
                 dup_of_dir = xstrdup(msg + strlen("DUP_OF_DIR: "));
             }
+            else
+                log("%s", msg);
 
             strbuf_clear(cmd_output);
             /* jump to next line */
