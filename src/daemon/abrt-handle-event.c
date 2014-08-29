@@ -142,7 +142,7 @@ static int dup_uuid_compare(const struct dump_dir *dd)
     free(dd_uuid);
 
     if (!different)
-        log("Duplicate: UUID");
+        log_notice("Duplicate: UUID");
 
     return !different;
 }
@@ -197,7 +197,7 @@ static int dup_corebt_compare(const struct dump_dir *dd)
     free(dd_corebt);
 
     if (isdup)
-        log("Duplicate: core backtrace");
+        log_notice("Duplicate: core backtrace");
 
     return isdup;
 }
@@ -282,7 +282,11 @@ static int is_crash_a_dup(const char *dump_dir_name, void *param)
         if (strcmp(dump_dir_name, dump_dir_name2) == 0)
             goto next; /* we are never a dup of ourself */
 
+        int sv_logmode = logmode;
+        /* Silently ignore any error in the silent log level. */
+        logmode = g_verbose == 0 ? 0 : sv_logmode;
         dd = dd_opendir(dump_dir_name2, /*flags:*/ DD_FAIL_QUIETLY_ENOENT | DD_OPEN_READONLY);
+        logmode = sv_logmode;
         if (!dd)
             goto next;
 

@@ -53,7 +53,8 @@ int for_each_problem_in_dir(const char *path,
              * when we raced with wizard.
              */
             int sv_logmode = logmode;
-            logmode = 0;
+            /* Silently ignore errors only in the silent log level. */
+            logmode = g_verbose == 0 ? 0: sv_logmode;
             struct dump_dir *dd = dd_opendir(full_name, DD_OPEN_READONLY | DD_FAIL_QUIETLY_EACCES | DD_DONT_WAIT_FOR_LOCK);
             logmode = sv_logmode;
             if (dd)

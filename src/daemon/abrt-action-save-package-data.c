@@ -91,16 +91,22 @@ static void load_gpg_keys(void)
     if (strcmp(gpg_keys_dir, "") != 0)
     {
         log_debug("Reading gpg keys from '%s'", gpg_keys_dir);
+        GHashTable *done_set = g_hash_table_new(g_str_hash, g_str_equal);
         GList *gpg_files = get_file_list(gpg_keys_dir, NULL /* we don't care about the file ext */);
-        GList *tmp_gpp_files = gpg_files;
-        while (tmp_gpp_files)
+        for (GList *iter = gpg_files; iter; iter = g_list_next(iter))
         {
-            log_debug("Loading gpg key '%s'", fo_get_fullpath((file_obj_t *)tmp_gpp_files->data));
-            settings_setOpenGPGPublicKeys = g_list_append(settings_setOpenGPGPublicKeys, xstrdup(fo_get_fullpath((file_obj_t *)(tmp_gpp_files->data)) ));
-            tmp_gpp_files = g_list_next(tmp_gpp_files);
+            const char *key_path = fo_get_fullpath((file_obj_t *)iter->data);
+
+            if (g_hash_table_contains(done_set, key_path))
+                continue;
+
+            g_hash_table_insert(done_set, (gpointer)key_path, NULL);
+            log_debug("Loading gpg key '%s'", key_path);
+            settings_setOpenGPGPublicKeys = g_list_append(settings_setOpenGPGPublicKeys, xstrdup(key_path));
         }
 
         g_list_free_full(gpg_files, (GDestroyNotify)free_file_obj);
+        g_hash_table_destroy(done_set);
     }
 }
 
