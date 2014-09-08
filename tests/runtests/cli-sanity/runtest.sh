@@ -49,6 +49,35 @@ rlJournalStart
         rlRun "abrt-cli --help 2>&1 | grep 'Usage: abrt-cli'"
     rlPhaseEnd
 
+    rlPhaseStartTest "list the same as ls"
+        abrt-cli list &> param_cmd
+        abrt-cli ls &> param_abbrev
+        rlAssertNotDiffer param_cmd param_abbrev
+    rlPhaseEnd
+
+    rlPhaseStartTest "remove the same as rm"
+        abrt-cli remove &> param_cmd
+        abrt-cli rm &> param_abbrev
+        rlAssertNotDiffer param_cmd param_abbrev
+    rlPhaseEnd
+
+    rlPhaseStartTest "report the same as e"
+        abrt-cli report &> param_cmd
+        abrt-cli e &> param_abbrev
+        rlAssertNotDiffer param_cmd param_abbrev
+    rlPhaseEnd
+
+    rlPhaseStartTest "info the same as i"
+        abrt-cli info &> param_cmd
+        abrt-cli i &> param_abbrev
+        rlAssertNotDiffer param_cmd param_abbrev
+    rlPhaseEnd
+
+    rlPhaseStartTest "status the same as st"
+        abrt-cli status &> param_cmd
+        abrt-cli st &> param_abbrev
+        rlAssertNotDiffer param_cmd param_abbrev
+    rlPhaseEnd
 
     rlPhaseStartTest "list"
         generate_crash
