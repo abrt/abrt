@@ -36,6 +36,8 @@ EXAMPLES_PATH="../../../examples"
 
 rlJournalStart
     rlPhaseStartSetup
+        LANG=""
+        export LANG
         check_prior_crashes
 
         TmpDir=$(mktemp -d)
