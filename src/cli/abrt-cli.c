@@ -20,14 +20,15 @@
 #include "libabrt.h"
 #include "builtin-cmd.h"
 
-#define USAGE_OPTS_WIDTH 12
+#define USAGE_OPTS_WIDTH 16
 #define USAGE_GAP         2
 
 /* TODO: add --pager(default) and --no-pager */
 
-#define CMD(NAME, help) { #NAME, cmd_##NAME , (help) }
+#define CMD(NAME, ABBREV, help) { #NAME, ABBREV, cmd_##NAME , (help) }
 struct cmd_struct {
     const char *cmd;
+    const char *abbrev;
     int (*fn)(int, const char **);
     const char *help;
 };
@@ -41,6 +42,7 @@ static void list_cmds_help(const struct cmd_struct *commands)
 
         pos = fprintf(stderr, "    ");
         pos += fprintf(stderr, "%s", p->cmd);
+        pos += fprintf(stderr, ", %s", p->abbrev);
 
         if (pos <= USAGE_OPTS_WIDTH)
             pad = USAGE_OPTS_WIDTH - pos;
@@ -110,7 +112,7 @@ static void handle_internal_command(int argc, const char **argv,
 
     for (const struct cmd_struct *p = commands; p->cmd; ++p)
     {
-        if (strcmp(p->cmd, cmd) != 0)
+        if (strcmp(p->cmd, cmd) != 0 && strcmp(p->abbrev, cmd) != 0)
             continue;
 
         exit(p->fn(argc, argv));
@@ -143,12 +145,12 @@ int main(int argc, const char **argv)
         );
 
     const struct cmd_struct commands[] = {
-        CMD(list, _("List problems [in DIRs]")),
-        CMD(rm, _("Remove problem directory DIR")),
-        CMD(report, _("Analyze and report problem data in DIR")),
-        CMD(info, _("Print information about DIR")),
-        CMD(status, _("Print the count of the recent crashes")),
-        {NULL, NULL, NULL}
+        CMD(list, "ls", _("List problems [in DIRs]")),
+        CMD(remove, "rm", _("Remove problem directory DIR")),
+        CMD(report, "e",_("Analyze and report problem data in DIR")),
+        CMD(info, "i", _("Print information about DIR")),
+        CMD(status, "st",_("Print the count of the recent crashes")),
+        {NULL, NULL, NULL, NULL}
     };
 
     migrate_to_xdg_dirs();

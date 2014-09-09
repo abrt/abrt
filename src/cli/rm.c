@@ -25,7 +25,7 @@
  *   add -q, --quite
  */
 
-int cmd_rm(int argc, const char **argv)
+int cmd_remove(int argc, const char **argv)
 {
     const char *program_usage_string = _(
         "& rm [options] DIR..."
