@@ -511,10 +511,16 @@ static int create(bool delete_temp_archive,
     if (unpacked_size > settings->max_unpacked_size)
     {
         alert_crash_too_large();
-        error_msg_and_die(_("The size of your crash is %lld bytes, "
+
+        /* Leaking size and max_size in hope the memory will be released in
+         * error_msg_and_die() */
+        gchar *size = g_format_size_full(unpacked_size, G_FORMAT_SIZE_IEC_UNITS);
+        gchar *max_size = g_format_size_full(settings->max_unpacked_size, G_FORMAT_SIZE_IEC_UNITS);
+
+        error_msg_and_die(_("The size of your crash is %s, "
                             "but the retrace server only accepts "
-                            "crashes smaller or equal to %lld bytes."),
-                          unpacked_size, settings->max_unpacked_size);
+                            "crashes smaller or equal to %s."),
+                            size, max_size);
     }
 
     if (settings->supported_formats)
@@ -610,14 +616,19 @@ static int create(bool delete_temp_archive,
 
     /* Get the file size. */
     fstat(tempfd, &file_stat);
+    gchar *human_size = g_format_size_full((long long)file_stat.st_size, G_FORMAT_SIZE_IEC_UNITS);
     if ((long long)file_stat.st_size > settings->max_packed_size)
     {
         alert_crash_too_large();
-        error_msg_and_die(_("The size of your archive is %lld bytes, "
+
+        /* Leaking human_size and max_size in hope the memory will be released in
+         * error_msg_and_die() */
+        gchar *max_size = g_format_size_full(settings->max_packed_size, G_FORMAT_SIZE_IEC_UNITS);
+
+        error_msg_and_die(_("The size of your archive is %s, "
                             "but the retrace server only accepts "
-                            "archives smaller or equal %lld bytes."),
-                          (long long)file_stat.st_size,
-                          settings->max_packed_size);
+                            "archives smaller or equal to %s."),
+                          human_size, max_size);
     }
 
     free_settings(settings);
@@ -626,8 +637,8 @@ static int create(bool delete_temp_archive,
 
     if (size_mb > 8) /* 8 MB - should be configurable */
     {
-        char *question = xasprintf(_("You are going to upload %d megabytes. "
-                                     "Continue?"), size_mb);
+        char *question = xasprintf(_("You are going to upload %s. "
+                                     "Continue?"), human_size);
 
         int response = ask_yes_no(question);
         free(question);
@@ -669,12 +680,11 @@ static int create(bool delete_temp_archive,
 
     if (delay)
     {
-        if (size_mb > 1)
-            printf(_("Uploading %d megabytes\n"), size_mb);
-        else
-            printf(_("Uploading %lld bytes\n"), (long long)file_stat.st_size);
+        printf(_("Uploading %s\n"), human_size);
         fflush(stdout);
     }
+
+    g_free(human_size);
 
     strbuf_free(http_request);
     int result = 0;
