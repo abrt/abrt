@@ -35,6 +35,7 @@ libexec_PROGRAMS = \
     abrt-action-install-debuginfo-to-abrt-cache
 
 libexec_SCRIPTS = \
+    abrt-action-generate-machine-id \
     abrt-action-ureport \
     abrt-gdb-exploitable
 
@@ -91,6 +92,7 @@ EXTRA_DIST = \
     analyze_VMcore.xml.in \
     abrt-action-analyze-core.in \
     abrt-action-analyze-vmcore \
+    abrt-action-generate-machine-id \
     abrt-action-check-oops-for-hw-error \
     abrt-action-save-kernel-data \
     abrt-action-ureport \
