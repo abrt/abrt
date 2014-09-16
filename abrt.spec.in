@@ -91,6 +91,7 @@ Requires: %{name}-libs = %{version}-%{release}
 Requires: %{name}-python = %{version}-%{release}
 Requires(pre): %{shadow_utils}
 Requires: python-dbus
+Requires: python-dmidecode
 Requires: libreport-plugin-ureport
 
 %description
@@ -606,6 +607,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_sbindir}/abrt-auto-reporting
 %{_libexecdir}/abrt-handle-event
 %{_libexecdir}/abrt-action-ureport
+%{_libexecdir}/abrt-action-generate-machine-id
 %{_bindir}/abrt-handle-upload
 %{_bindir}/abrt-action-notify
 %{_mandir}/man1/abrt-action-notify.1.gz
