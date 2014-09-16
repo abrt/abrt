@@ -23,6 +23,7 @@ bin_PROGRAMS = \
 libexec_PROGRAMS = abrt-action-install-debuginfo-to-abrt-cache
 
 libexec_SCRIPTS = \
+    abrt-action-generate-machine-id \
     abrt-action-ureport
 
 #dist_pluginsconf_DATA = Python.conf
@@ -70,6 +71,7 @@ EXTRA_DIST = \
     abrt-action-analyze-vmcore \
     https-utils.h \
     abrt-action-analyze-ccpp-local \
+    abrt-action-generate-machine-id \
     abrt-action-save-kernel-data \
     abrt-action-ureport \
     post_report.xml.in
