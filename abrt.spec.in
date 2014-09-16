@@ -57,6 +57,11 @@ Obsoletes: abrt-plugin-sqlite3 > 0.0.1
 Obsoletes: abrt-plugin-runapp > 0.0.1
 Obsoletes: abrt-plugin-filetransfer > 0.0.1
 Obsoletes: abrt-plugin-sosreport > 0.0.1
+Requires: %{name}-python = %{version}-%{release}
+Requires(pre): %{shadow_utils}
+Requires: python-dbus
+Requires: python-dmidecode
+Requires: libreport-plugin-ureport
 
 %description
 %{name} is a tool to help users to detect defects in applications and
@@ -426,6 +431,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_sbindir}/abrt-auto-reporting
 %{_libexecdir}/abrt-handle-event
 %{_libexecdir}/abrt-action-ureport
+%{_libexecdir}/abrt-action-generate-machine-id
 %{_bindir}/abrt-handle-upload
 %{_bindir}/abrt-action-notify
 %{_bindir}/abrt-action-save-package-data
