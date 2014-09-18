@@ -84,12 +84,12 @@ rlJournalStart
         get_crash_path
         wait_for_hooks
 
-        rlRun "abrt-cli list | grep -i 'Executable'"
+        rlRun "abrt-cli list | grep -i 'cmdline'"
         rlRun "abrt-cli list | grep -i 'Package'"
     rlPhaseEnd
 
     rlPhaseStartTest "list -n" # list not-reported
-        rlRun "abrt-cli list -n | grep -i 'Executable'"
+        rlRun "abrt-cli list -n | grep -i 'cmdline'"
         rlRun "abrt-cli list -n | grep -i 'Package'"
     rlPhaseEnd
 
@@ -126,7 +126,7 @@ rlJournalStart
         # this should ensure that ABRT will consider the problem as reported
         rlRun "reporter-print -r -d $DIR -o /dev/null"
 
-        rlRun "abrt-cli list | grep -i 'Executable'"
+        rlRun "abrt-cli list | grep -i 'cmdline'"
         rlRun "abrt-cli list | grep -i 'Package'"
 
         # this expects that reporter-print works and adds an URL to
