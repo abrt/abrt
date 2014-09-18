@@ -685,13 +685,17 @@ static void handle_method_call(GDBusConnection *connection,
 
     if (g_strcmp0(method_name, "FindProblemByElementInTimeRange") == 0)
     {
-        const char *element;
-        const char *value;
-        long timestamp_from;
-        long timestamp_to;
-        bool all;
+        const gchar *element;
+        const gchar *value;
+        glong timestamp_from;
+        glong timestamp_to;
+        gboolean all;
 
-        g_variant_get(parameters, "(ssxxb)", &element, &value, &timestamp_from, &timestamp_to, &all);
+        g_variant_get_child(parameters, 0, "&s", &element);
+        g_variant_get_child(parameters, 1, "&s", &value);
+        g_variant_get_child(parameters, 2, "x", &timestamp_from);
+        g_variant_get_child(parameters, 3, "x", &timestamp_to);
+        g_variant_get_child(parameters, 4, "b", &all);
 
         if (all && polkit_check_authorization_dname(caller, "org.freedesktop.problems.getall") == PolkitYes)
             caller_uid = 0;
