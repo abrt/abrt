@@ -150,6 +150,7 @@ int main(int argc, const char **argv)
         CMD(report, "e",_("Analyze and report problem data in DIR")),
         CMD(info, "i", _("Print information about DIR")),
         CMD(status, "st",_("Print the count of the recent crashes")),
+        CMD(process, "p",_("Process multiple problems")),
         {NULL, NULL, NULL, NULL}
     };
 
