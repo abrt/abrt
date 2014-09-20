@@ -26,14 +26,20 @@ int cmd_report(int argc, const char **argv)
 {
     const char *program_usage_string = _(
         "& report [options] DIR..."
-        );
+    );
+
+    enum {
+        OPT_v = 1 << 0,
+        OPT_d = 1 << 1,
+    };
 
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
+        OPT_BOOL('d', "delete", NULL, _("Remove PROBLEM_DIR after reporting")),
         OPT_END()
     };
 
-    parse_opts(argc, (char **)argv, program_options, program_usage_string);
+    unsigned opts = parse_opts(argc, (char **)argv, program_options, program_usage_string);
     argv += optind;
 
     if (!argv[0])
@@ -58,6 +64,14 @@ int cmd_report(int argc, const char **argv)
         int status = report_problem_in_dir(dir_name,
                                              LIBREPORT_WAIT
                                            | LIBREPORT_RUN_CLI);
+
+        /* the problem was successfully reported and option is -d */
+        if((opts & OPT_d) && (status == 0 || status == EXIT_STOP_EVENT_RUN))
+        {
+            log(_("Deleting '%s'"), dir_name);
+            delete_dump_dir_possibly_using_abrtd(dir_name);
+        }
+
         free(free_me);
 
         if (status)
