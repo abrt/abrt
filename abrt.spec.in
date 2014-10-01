@@ -14,6 +14,12 @@
     %bcond_without bodhi
 %endif
 
+%ifarch aarch64
+%define have_kexec_tools 0
+%else
+%define have_kexec_tools 1
+%endif
+
 %if 0%{?rhel} >= 6
     %define desktopvendor redhat
 %else
@@ -215,6 +221,7 @@ Requires: abrt-libs = %{version}-%{release}
 This package contains plugin for collecting Xorg crash information from Xorg
 log.
 
+%if %{?have_kexec_tools} == 1
 %package addon-vmcore
 Summary: %{name}'s vmcore addon
 Group: System Environment/Libraries
@@ -227,6 +234,7 @@ Requires: python-augeas
 %description addon-vmcore
 This package contains plugin for collecting kernel crash information from
 vmcore files.
+%endif
 
 %package addon-pstoreoops
 Summary: %{name}'s pstore oops addon
@@ -295,7 +303,9 @@ Requires: %{name} = %{version}-%{release}
 Requires: abrt-tui
 Requires: abrt-addon-kerneloops
 Requires: abrt-addon-pstoreoops
+%if %{?have_kexec_tools} == 1
 Requires: abrt-addon-vmcore
+%endif
 Requires: abrt-addon-ccpp
 Requires: abrt-addon-python
 Requires: abrt-addon-python3
@@ -333,7 +343,9 @@ Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-addon-kerneloops
 Requires: abrt-addon-pstoreoops
+%if %{?have_kexec_tools} == 1
 Requires: abrt-addon-vmcore
+%endif
 Requires: abrt-addon-ccpp
 Requires: abrt-addon-python
 Requires: abrt-addon-python3
@@ -469,6 +481,9 @@ CFLAGS="%{optflags} -Werror" %configure \
 %ifnarch arm armhfp armv7hl armv7l aarch64
         --enable-native-unwinder \
 %endif
+%if %{?have_kexec_tools} == 0
+        --disable-addon-vmcore \
+%endif
         --enable-doxygen-docs \
         --disable-silent-rules
 
@@ -537,8 +552,10 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %post addon-xorg
 %systemd_post abrt-xorg.service
 
+%if %{?have_kexec_tools} == 1
 %post addon-vmcore
 %systemd_post abrt-vmcore.service
+%endif
 
 %post addon-pstoreoops
 %systemd_post abrt-pstoreoops.service
@@ -558,8 +575,10 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %preun addon-xorg
 %systemd_preun abrt-xorg.service
 
+%if %{?have_kexec_tools} == 1
 %preun addon-vmcore
 %systemd_preun abrt-vmcore.service
+%endif
 
 %preun addon-pstoreoops
 %systemd_preun abrt-pstoreoops.service
@@ -579,8 +598,10 @@ chown -R abrt:abrt %{_localstatedir}/cache/abrt-di
 %postun addon-xorg
 %systemd_postun_with_restart abrt-xorg.service
 
+%if %{?have_kexec_tools} == 1
 %postun addon-vmcore
 %systemd_postun_with_restart abrt-vmcore.service
+%endif
 
 %postun addon-pstoreoops
 %systemd_postun_with_restart abrt-pstoreoops.service
@@ -631,6 +652,7 @@ service abrt-oops condrestart >/dev/null 2>&1 || :
 %posttrans addon-xorg
 service abrt-xorg condrestart >/dev/null 2>&1 || :
 
+%if %{?have_kexec_tools} == 1
 %posttrans addon-vmcore
 service abrt-vmcore condrestart >/dev/null 2>&1 || :
 # Copy the configuration file to plugin's directory
@@ -639,6 +661,7 @@ test -f /etc/abrt/abrt-harvest-vmcore.conf && {
     mv -b /etc/abrt/abrt-harvest-vmcore.conf /etc/abrt/plugins/vmcore.conf
 }
 exit 0
+%endif
 
 %posttrans addon-pstoreoops
 service abrt-pstoreoops condrestart >/dev/null 2>&1 || :
@@ -860,6 +883,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/abrt-dump-xorg
 %{_mandir}/man1/abrt-dump-xorg.1*
 
+%if %{?have_kexec_tools} == 1
 %files addon-vmcore
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/libreport/events.d/vmcore_event.conf
@@ -879,6 +903,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man5/abrt-vmcore.conf.5*
 %{_mandir}/man1/abrt-action-analyze-vmcore.1*
 %{_mandir}/man1/abrt-action-check-oops-for-hw-error.1*
+%endif
 
 %files addon-pstoreoops
 %defattr(-,root,root,-)
@@ -943,7 +968,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.ccpp.xml
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.oops.xml
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.python.xml
+%if %{?have_kexec_tools} == 1
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.vmcore.xml
+%endif
 %{_datadir}/dbus-1/interfaces/com.redhat.problems.configuration.xorg.xml
 %{_datadir}/dbus-1/system-services/org.freedesktop.problems.service
 %{_datadir}/dbus-1/system-services/com.redhat.problems.configuration.service
