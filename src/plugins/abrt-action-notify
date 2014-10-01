@@ -99,7 +99,7 @@ def emit_crash_dbus_signal(problem_data):
         # member is a Boolean flag which is True if the element is required
         arguments = ((FILENAME_PACKAGE, True), (CD_DUMPDIR, True),
                 (FILENAME_UID, False), (FILENAME_UUID, False),
-                (FILENAME_PACKAGE, False))
+                (FILENAME_DUPHASH, False))
 
         for elem in arguments:
             itm = problem_data.get(elem[0])

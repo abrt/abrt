@@ -671,9 +671,19 @@ static void action_ignore(NotifyNotification *notification, gchar *action, gpoin
 {
     problem_info_t *pi = (problem_info_t *)user_data;
 
-    log_debug("Ignoring problem '%s'", problem_info_get_dir(pi));
+    const char *const message = _(
+            "You are going to mute notifications of a particular problem. " \
+            "You will never see a notification bubble for this problem again, " \
+            "however, ABRT will be detecting it and you will be able " \
+            "to report it from ABRT GUI." \
+            "\n\n" \
+            "Do you want to continue?");
 
-    ignored_problems_add_problem_data(g_ignore_set, pi->problem_data);
+    if (run_ask_yes_no_yesforever_dialog("AskIgnoreForever", message, NULL))
+    {
+        log_debug("Ignoring problem '%s'", problem_info_get_dir(pi));
+        ignored_problems_add_problem_data(g_ignore_set, pi->problem_data);
+    }
 
     GError *err = NULL;
     notify_notification_close(notification, &err);
