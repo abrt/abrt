@@ -253,6 +253,18 @@ AC_ARG_ENABLE([native-unwinder],
     AC_DEFINE([ENABLE_NATIVE_UNWINDER], [1], [Use elfutils/libunwind for unwinding instead of GDB.])
 [fi]
 
+AC_ARG_ENABLE([addon-vmcore],
+    AS_HELP_STRING([--enable-addon-vmcore],
+        [allow to disable vmcore addon (for architectures without kexec/kdump) (default is yes)]),
+    [], [enable_addon_vmcore=yes])
+
+[if test "$enable_addon_vmcore" = "yes"]
+[then]
+    AC_DEFINE([ENABLE_ADDON_VMCORE], [1], [Disable vmcore addon (for architectures without kexec/kdump).])
+	AM_CONDITIONAL(BUILD_ADDON_VMCORE, true)
+[else]
+	AM_CONDITIONAL(BUILD_ADDON_VMCORE, false)
+[fi]
 
 AC_SUBST(CONF_DIR)
 AC_SUBST(DEFAULT_CONF_DIR)

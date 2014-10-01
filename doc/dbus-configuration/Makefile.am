@@ -10,7 +10,11 @@ dist_dbusabrtinterfaces_DATA = \
 	com.redhat.problems.configuration.ccpp.xml \
 	com.redhat.problems.configuration.oops.xml \
 	com.redhat.problems.configuration.python.xml \
-	com.redhat.problems.configuration.vmcore.xml \
 	com.redhat.problems.configuration.xorg.xml
+
+if BUILD_ADDON_VMCORE
+dist_dbusabrtinterfaces_DATA += \
+	com.redhat.problems.configuration.vmcore.xml
+endif
 
 EXTRA_DIST = ${INTERFACES_DIST_FILES}

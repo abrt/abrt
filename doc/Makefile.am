@@ -25,15 +25,12 @@ MAN1_TXT += abrt-auto-reporting.txt
 MAN1_TXT += abrt-retrace-client.txt
 MAN1_TXT += abrt-handle-upload.txt
 MAN1_TXT += abrt-harvest-pstoreoops.txt
-MAN1_TXT += abrt-harvest-vmcore.txt
 MAN1_TXT += abrt-merge-pstoreoops.txt
 MAN1_TXT += abrt-server.txt
 MAN1_TXT += abrt-cli.txt
 MAN1_TXT += abrt-action-save-package-data.txt
 MAN1_TXT += abrt-action-save-kernel-data.txt
 MAN1_TXT += abrt-install-ccpp-hook.txt
-MAN1_TXT += abrt-action-analyze-vmcore.txt
-MAN1_TXT += abrt-action-check-oops-for-hw-error.txt
 MAN1_TXT += abrt-action-analyze-ccpp-local.txt
 MAN1_TXT += abrt-watch-log.txt
 MAN1_TXT += abrt-upload-watch.txt
@@ -41,6 +38,7 @@ MAN1_TXT += system-config-abrt.txt
 if BUILD_BODHI
 MAN1_TXT += abrt-bodhi.txt
 endif
+
 
 MAN5_TXT =
 MAN5_TXT += abrt.conf.txt
@@ -51,7 +49,6 @@ MAN5_TXT += abrt-python3.conf.txt
 MAN5_TXT += abrt-CCpp.conf.txt
 MAN5_TXT += abrt-oops.conf.txt
 MAN5_TXT += gpg_keys.conf.txt
-MAN5_TXT += abrt-vmcore.conf.txt
 
 MAN5_PREFORMATTED =
 MAN5_PREFORMATTED += abrt_event.conf.5
@@ -63,8 +60,15 @@ MAN5_PREFORMATTED += python_event.conf.5
 MAN5_PREFORMATTED += python3_event.conf.5
 MAN5_PREFORMATTED += smart_event.conf.5
 MAN5_PREFORMATTED += vimrc_event.conf.5
-MAN5_PREFORMATTED += vmcore_event.conf.5
 MAN5_PREFORMATTED += xorg_event.conf.5
+
+if BUILD_ADDON_VMCORE
+MAN1_TXT += abrt-harvest-vmcore.txt
+MAN1_TXT += abrt-action-analyze-vmcore.txt
+MAN1_TXT += abrt-action-check-oops-for-hw-error.txt
+MAN5_TXT += abrt-vmcore.conf.txt
+MAN5_PREFORMATTED += vmcore_event.conf.5
+endif
 
 MAN8_TXT =
 MAN8_TXT += abrtd.txt abrt-dbus.txt abrt-configuration.txt

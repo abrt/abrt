@@ -4,8 +4,6 @@ bin_SCRIPTS = \
     abrt-action-install-debuginfo \
     abrt-action-analyze-core \
     abrt-action-analyze-vulnerability \
-    abrt-action-analyze-vmcore \
-    abrt-action-check-oops-for-hw-error \
     abrt-action-list-dsos \
     abrt-action-perform-ccpp-analysis \
     abrt-action-save-kernel-data \
@@ -48,7 +46,6 @@ dist_events_DATA = \
     analyze_CCpp.xml \
     analyze_LocalGDB.xml \
     analyze_RetraceServer.xml \
-    analyze_VMcore.xml \
     collect_xsession_errors.xml \
     collect_GConf.xml \
     collect_vimrc_user.xml \
@@ -64,7 +61,6 @@ dist_eventsconf_DATA = \
     ccpp_retrace_event.conf \
     koops_event.conf \
     xorg_event.conf \
-    vmcore_event.conf \
     python_event.conf \
     python3_event.conf \
     smart_event.conf \
@@ -77,7 +73,6 @@ PYTHON_FILES = \
     abrt-action-list-dsos \
     abrt-action-analyze-core \
     abrt-action-analyze-vulnerability \
-    abrt-action-analyze-vmcore.in \
     abrt-action-check-oops-for-hw-error.in \
     abrt-action-perform-ccpp-analysis.in \
     abrt-action-notify
@@ -91,11 +86,8 @@ EXTRA_DIST = \
     analyze_CCpp.xml.in \
     analyze_LocalGDB.xml.in \
     analyze_RetraceServer.xml.in \
-    analyze_VMcore.xml.in \
     abrt-action-analyze-core.in \
-    abrt-action-analyze-vmcore \
     abrt-action-generate-machine-id \
-    abrt-action-check-oops-for-hw-error \
     abrt-action-save-kernel-data \
     abrt-action-ureport \
     abrt-gdb-exploitable \
@@ -104,6 +96,26 @@ EXTRA_DIST = \
     abrt-journal.h \
     post_report.xml.in \
     abrt-action-analyze-ccpp-local.in
+
+if BUILD_ADDON_VMCORE
+bin_SCRIPTS += \
+    abrt-action-analyze-vmcore \
+    abrt-action-check-oops-for-hw-error
+
+dist_events_DATA += \
+    analyze_VMcore.xml
+
+dist_eventsconf_DATA += \
+    vmcore_event.conf
+
+PYTHON_FILES += \
+    abrt-action-analyze-vmcore.in
+
+EXTRA_DIST += \
+    analyze_VMcore.xml.in \
+    abrt-action-analyze-vmcore \
+    abrt-action-check-oops-for-hw-error
+endif
 
 confdir = $(PLUGINS_CONF_DIR)
 dist_conf_DATA = \

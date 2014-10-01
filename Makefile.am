@@ -50,9 +50,12 @@ if HAVE_SYSTEMD
                                   init-scripts/abrt-ccpp.service \
                                   init-scripts/abrt-oops.service \
                                   init-scripts/abrt-xorg.service \
-                                  init-scripts/abrt-vmcore.service \
                                   init-scripts/abrt-pstoreoops.service \
                                   init-scripts/abrt-upload-watch.service
+
+if BUILD_ADDON_VMCORE
+    dist_systemdsystemunit_DATA += init-scripts/abrt-vmcore.service
+endif
 
     systemdtmpfilesdir = $(prefix)/lib/tmpfiles.d
     systemdtmpfiles_DATA = init-scripts/abrt.conf
@@ -65,6 +68,11 @@ else
                         init-scripts/abrt-vmcore \
                         init-scripts/abrt-pstoreoops \
                         init-scripts/abrt-upload-watch
+
+if BUILD_ADDON_VMCORE
+    sysv_init_SCRIPTS += init-scripts/abrt-vmcore
+endif
+
 endif
 
 RPM_DIRS = --define "_sourcedir `pwd`" \

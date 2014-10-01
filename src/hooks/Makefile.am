@@ -8,7 +8,6 @@ dist_pluginsconf_DATA = \
     CCpp.conf \
     python.conf \
     python3.conf \
-    vmcore.conf \
     oops.conf
 
 defaultpluginsconfdir = $(DEFAULT_PLUGINS_CONF_DIR)
@@ -16,7 +15,6 @@ dist_defaultpluginsconf_DATA = $(dist_pluginsconf_DATA)
 
 sbin_SCRIPTS = \
     abrt-install-ccpp-hook \
-    abrt-harvest-vmcore \
     abrt-harvest-pstoreoops
 
 bin_PROGRAMS = \
@@ -69,8 +67,16 @@ py3hook_PYTHON = \
 EXTRA_DIST = abrt_exception_handler.py.in \
 	abrt_exception_handler3.py.in \
 	abrt-install-ccpp-hook.in \
-	abrt_harvest_vmcore.py.in \
 	abrt-harvest-pstoreoops.in
+
+if BUILD_ADDON_VMCORE
+sbin_SCRIPTS += \
+    abrt-harvest-vmcore
+dist_pluginsconf_DATA += \
+    vmcore.conf
+EXTRA_DIST +=  \
+	abrt_harvest_vmcore.py.in
+endif
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc)) $(man1_MANS)
 
