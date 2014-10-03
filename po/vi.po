@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# dinhdangkhoi <dinhdangkhoi.fs@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-02-26 09:33+0100\n"
-"PO-Revision-Date: 2014-02-11 11:03+0000\n"
+"POT-Creation-Date: 2014-10-03 13:47+0200\n"
+"PO-Revision-Date: 2014-10-03 11:47+0000\n"
 "Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
-"Language-Team: Vietnamese (http://www.transifex.com/projects/p/fedora/language/vi/)\n"
+"Language-Team: Vietnamese (http://www.transifex.com/projects/p/fedora-abrt/language/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,11 +20,11 @@ msgstr ""
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
-msgstr ""
+msgstr "Tự động Bug cho công cụ báo cáo"
 
 #: ../src/applet/abrt-applet.desktop.in.h:2
 msgid "ABRT notification applet"
-msgstr ""
+msgstr "ABRT applet thông báo"
 
 #: ../src/applet/applet.c:130
 msgid ""
@@ -53,12 +54,12 @@ msgstr ""
 
 #: ../src/applet/applet.c:386
 msgid "A problem has been detected"
-msgstr ""
+msgstr "Một vấn đề đã được phát hiện"
 
 #: ../src/applet/applet.c:388
 #, c-format
 msgid "A problem in the %s package has been detected"
-msgstr ""
+msgstr "Một vấn đề trong gói %s đã được phát hiện"
 
 #: ../src/applet/applet.c:398
 #, c-format
@@ -71,118 +72,204 @@ msgstr ""
 msgid "Can't execute '%s'"
 msgstr ""
 
-#: ../src/applet/applet.c:632 ../src/applet/applet.c:698
+#: ../src/applet/applet.c:632 ../src/applet/applet.c:708
 #, c-format
 msgid "Can't close notification: %s"
 msgstr ""
 
-#: ../src/applet/applet.c:738 ../src/applet/applet.c:740
-msgid "Warning"
+#: ../src/applet/applet.c:670
+msgid ""
+"You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
+"\n"
+"Do you want to continue?"
 msgstr ""
 
-#: ../src/applet/applet.c:788
+#: ../src/applet/applet.c:748 ../src/applet/applet.c:750
+msgid "Warning"
+msgstr "Cảnh báo"
+
+#: ../src/applet/applet.c:798
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 
-#: ../src/applet/applet.c:804
+#: ../src/applet/applet.c:814
 msgid "translator-credits"
 msgstr ""
 
-#: ../src/applet/applet.c:812
+#: ../src/applet/applet.c:822
 msgid "_Quit"
 msgstr ""
 
-#: ../src/applet/applet.c:814
+#: ../src/applet/applet.c:824
 msgid "Hide"
-msgstr ""
+msgstr "Ẩn"
 
-#: ../src/applet/applet.c:816
+#: ../src/applet/applet.c:826
 msgid "_About"
 msgstr ""
 
-#: ../src/applet/applet.c:884
+#: ../src/applet/applet.c:894
 msgid "Problem detected"
-msgstr ""
+msgstr "Phát hiện vấn đề"
 
-#: ../src/applet/applet.c:934
+#: ../src/applet/applet.c:944
 msgid "Ignore forever"
 msgstr ""
 
 #. Problem has been 'autoreported' and is considered as KNOWN
-#: ../src/applet/applet.c:945 ../src/applet/applet.c:960
+#: ../src/applet/applet.c:955 ../src/applet/applet.c:970
 msgid "Open"
 msgstr ""
 
-#: ../src/applet/applet.c:950
+#: ../src/applet/applet.c:960
 msgid "The Problem has already been Reported"
 msgstr ""
 
-#: ../src/applet/applet.c:950
+#: ../src/applet/applet.c:960
 msgid "A Known Problem has Occurred"
 msgstr ""
 
 #. Problem has not yet been 'autoreported' and can be
 #. * 'autoreported' on user request.
-#: ../src/applet/applet.c:969 ../src/applet/applet.c:1004
+#: ../src/applet/applet.c:979 ../src/applet/applet.c:1014
 msgid "Report"
 msgstr ""
 
-#: ../src/applet/applet.c:974
+#: ../src/applet/applet.c:984
 msgid "A Problem has Occurred"
 msgstr ""
 
-#: ../src/applet/applet.c:1000
+#: ../src/applet/applet.c:1010
 msgid "A Problem has been Reported"
 msgstr ""
 
-#: ../src/applet/applet.c:1008
+#: ../src/applet/applet.c:1018
 msgid "A New Problem has Occurred"
 msgstr ""
 
-#: ../src/applet/applet.c:1018
+#: ../src/applet/applet.c:1028
 #, c-format
 msgid "Can't show notification: %s"
 msgstr ""
 
 #. TODO: Terminate child's process?
-#: ../src/applet/applet.c:1052 ../src/daemon/abrt-upload-watch.c:168
+#: ../src/applet/applet.c:1062 ../src/daemon/abrt-upload-watch.c:168
 #, c-format
 msgid "Can't read from gio channel: '%s'"
 msgstr ""
 
-#: ../src/applet/applet.c:1136
+#: ../src/applet/applet.c:1146
 #, c-format
 msgid "Can't set encoding on gio channel: %s"
 msgstr ""
 
-#: ../src/applet/applet.c:1140
+#: ../src/applet/applet.c:1150
 #, c-format
 msgid "Can't turn on nonblocking mode for gio channel: %s"
 msgstr ""
 
-#: ../src/applet/applet.c:1172
+#: ../src/applet/applet.c:1184
 #, c-format
 msgid "Can't take ownership of '%s'"
 msgstr ""
 
-#: ../src/applet/applet.c:1182
+#: ../src/applet/applet.c:1193
 #, c-format
 msgid "Can't open directory for writing '%s'"
 msgstr ""
 
-#: ../src/applet/applet.c:1465
+#: ../src/applet/applet.c:1476
 #, c-format
 msgid ""
 "Failed to open connection to session manager: '%s', notification may "
 "reappear on the next login"
 msgstr ""
 
-#: ../src/applet/applet.c:1606
+#: ../src/applet/applet.c:1617
 msgid ""
 "& [-v] [DIR]...\n"
 "\n"
 "Applet which notifies user when new problems are detected by ABRT\n"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:1
+msgid "Ask before stealing directory"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:2
+msgid "Automatically send uReport"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:3
+msgid "Shortened reporting"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:4
+msgid "Silent shortened reporting"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:5
+msgid ""
+"The coredump file is necessary for generating stack trace which is time and "
+"space consuming operation. ABRT provides a service which generates the stack"
+" trace from the coredump but you have to upload the coredump to this "
+"service. With this option disabled ABRT will upload the coredump without "
+"asking."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:6
+msgid ""
+"ABRT stores problem data in directories. Whenever ABRT needs writable "
+"directory, the directory is moved from the system location to your home "
+"directory. With this option disabled ABRT will move the problem directory "
+"without asking."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:7
+msgid ""
+"uReport is short and completely anonymous description of a problem. ABRT "
+"uses uReports  for fast global duplicate detection. In default configuration"
+" uReport is sent at beginning of reporting process. With this option enabled"
+" uReports are sent automatically immediately after problem detection."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:8
+msgid ""
+"With this option enabled reporting process started by click on Report button"
+" in problem notification bubble will be interrupted after uReport is sent. "
+"You can always use the default problem browser to make complete report."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:9
+msgid ""
+" With this option enabled ABRT never shows notifications of reported "
+"problems. Takes effect only if Shortened reporting is enabled."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:10
+msgid "Ask before uploading coredump"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:11
+msgid ""
+" With this option enabled ABRT always create bug ticket with restricted "
+"access if possibly sensitive data are dected."
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:12
+msgid "Request private ticket for sensitive information"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:13
+msgid "Notify incomplete problems"
+msgstr ""
+
+#: ../src/configuration-gui/abrt-config-widget.glade.h:14
+msgid ""
+"Incomplete problems are detected while computer is shutting down or user is "
+"logging out. In order to provide valuable problem reports, ABRT will not "
+"allow you to submit these problems."
 msgstr ""
 
 #: ../src/configuration-gui/system-config-abrt.c:75
@@ -193,7 +280,7 @@ msgstr ""
 msgid "_Defaults"
 msgstr ""
 
-#: ../src/configuration-gui/system-config-abrt.c:110
+#: ../src/configuration-gui/system-config-abrt.c:112
 #: ../src/configuration-gui/main.c:36
 msgid "Problem Reporting Configuration"
 msgstr ""
@@ -232,7 +319,7 @@ msgstr ""
 msgid "Configuration file"
 msgstr ""
 
-#: ../src/daemon/abrt-server.c:786 ../src/dbus/abrt-dbus.c:777
+#: ../src/daemon/abrt-server.c:786 ../src/dbus/abrt-dbus.c:781
 #: ../src/dbus/abrt-configuration.c:1002 ../src/daemon/abrtd.c:484
 msgid "& [options]"
 msgstr ""
@@ -299,19 +386,19 @@ msgstr ""
 msgid "Can't delete the element '%s' from the problem directory '%s'"
 msgstr ""
 
-#: ../src/dbus/abrt-dbus.c:759 ../src/dbus/abrt-configuration.c:983
+#: ../src/dbus/abrt-dbus.c:763 ../src/dbus/abrt-configuration.c:983
 #, c-format
 msgid ""
 "The name '%s' has been lost, please check if other service owning the name "
 "is not running.\n"
 msgstr ""
 
-#: ../src/dbus/abrt-dbus.c:786 ../src/dbus/abrt-configuration.c:1011
+#: ../src/dbus/abrt-dbus.c:790 ../src/dbus/abrt-configuration.c:1011
 #: ../src/daemon/abrtd.c:499
 msgid "Exit after NUM seconds of inactivity"
 msgstr ""
 
-#: ../src/dbus/abrt-dbus.c:804 ../src/dbus/abrt-configuration.c:1021
+#: ../src/dbus/abrt-dbus.c:808 ../src/dbus/abrt-configuration.c:1021
 msgid "This program must be run as root."
 msgstr ""
 
@@ -386,8 +473,85 @@ msgstr ""
 msgid "Unknown option value: '%s'\n"
 msgstr ""
 
+#: ../src/daemon/abrt-handle-upload.in:69
+#, c-format
+msgid ""
+"Usage: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n"
+"\n"
+"   -v             - Verbose\n"
+"   -d             - Delete uploaded archive\n"
+"   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n"
+"   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
+"   FILENAME       - Uploaded archive file name\n"
+msgstr ""
+
+#: ../src/daemon/abrt-handle-upload.in:105
+#: ../src/daemon/abrt-handle-upload.in:108
+msgid "Not a directory: '{0}'"
+msgstr ""
+
+#: ../src/daemon/abrt-handle-upload.in:111
+msgid "Skipping: '{0}' (starts with slash)"
+msgstr ""
+
+#: ../src/daemon/abrt-handle-upload.in:114
+msgid "Skipping: '{0}' (starts with dot)"
+msgstr ""
+
+#: ../src/daemon/abrt-handle-upload.in:117
+msgid "Skipping: '{0}' (contains ..)"
+msgstr ""
+
+#: ../src/daemon/abrt-handle-upload.in:120
+msgid "Skipping: '{0}' (contains space)"
+msgstr ""
+
+#: ../src/daemon/abrt-handle-upload.in:123
+msgid "Skipping: '{0}' (contains tab)"
+msgstr ""
+
+#: ../src/daemon/abrt-handle-upload.in:128
+msgid "Can't change directory to '{0}'"
+msgstr ""
+
+#: ../src/daemon/abrt-handle-upload.in:139
+msgid "Unknown file type: '{0}'"
+msgstr ""
+
+#: ../src/daemon/abrt-handle-upload.in:144
+msgid "Can't create working directory in '{0}'"
+msgstr ""
+
+#: ../src/daemon/abrt-handle-upload.in:155
+msgid "Can't move '{0}' to '{1}'"
+msgstr ""
+
+#: ../src/daemon/abrt-handle-upload.in:160
+msgid "Can't copy '{0}' to '{1}'"
+msgstr ""
+
+#: ../src/daemon/abrt-handle-upload.in:164
+msgid "Verification error on '{0}'"
+msgstr ""
+
+#: ../src/daemon/abrt-handle-upload.in:166
+msgid "Unpacking '{0}'"
+msgstr ""
+
+#: ../src/daemon/abrt-handle-upload.in:170
+msgid "Can't create '{0}' directory"
+msgstr ""
+
+#: ../src/daemon/abrt-handle-upload.in:174
+msgid "Can't unpack '{0}'"
+msgstr ""
+
+#: ../src/daemon/abrt-handle-upload.in:198
+msgid "'{0}' processed successfully"
+msgstr ""
+
 #. Let user know what's going on
-#: ../src/lib/hooklib.c:251
+#: ../src/lib/hooklib.c:253
 msgid "Generating backtrace"
 msgstr ""
 
@@ -396,32 +560,32 @@ msgstr ""
 msgid "Can't connect to system DBus: %s"
 msgstr ""
 
-#: ../src/lib/problem_api_dbus.c:66
+#: ../src/lib/problem_api_dbus.c:68
 #, c-format
 msgid "Can't chown '%s': %s"
 msgstr ""
 
-#: ../src/lib/problem_api_dbus.c:93
+#: ../src/lib/problem_api_dbus.c:97
 #, c-format
 msgid "Deleting problem directory failed: %s"
 msgstr ""
 
-#: ../src/lib/problem_api_dbus.c:127
+#: ../src/lib/problem_api_dbus.c:133
 #, c-format
 msgid "Can't get problem data from abrt-dbus: %s"
 msgstr ""
 
-#: ../src/lib/problem_api_dbus.c:161
+#: ../src/lib/problem_api_dbus.c:169
 #, c-format
 msgid "Can't get problem list from abrt-dbus: %s"
 msgstr ""
 
-#: ../src/lib/ignored_problems.c:231
+#: ../src/lib/ignored_problems.c:233
 #, c-format
 msgid "Can't create temporary file '%s'"
 msgstr ""
 
-#: ../src/lib/ignored_problems.c:248
+#: ../src/lib/ignored_problems.c:250
 #, c-format
 msgid ""
 "Can't write to '%s'. Problem '%s' will not be removed from the ignored "
@@ -429,7 +593,7 @@ msgid ""
 msgstr ""
 
 #. Something nefarious happened
-#: ../src/lib/ignored_problems.c:262
+#: ../src/lib/ignored_problems.c:264
 #, c-format
 msgid "Can't rename '%s' to '%s'. Failed to remove problem '%s'"
 msgstr ""
@@ -461,6 +625,25 @@ msgid ""
 "Calculates and saves UUID of coredump in problem directory DIR"
 msgstr ""
 
+#: ../src/plugins/abrt-action-analyze-core.in:72
+#, c-format
+msgid "Analyzing coredump '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-analyze-core.in:110
+#, c-format
+msgid "Missing build id: %s"
+msgstr ""
+
+#: ../src/plugins/abrt-action-analyze-core.in:142
+#, c-format
+msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
+msgstr ""
+
+#: ../src/plugins/abrt-action-analyze-core.in:164
+msgid "COREFILE is not specified"
+msgstr ""
+
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
 "& [-v] -d DIR\n"
@@ -487,29 +670,29 @@ msgid ""
 "Calculates and saves UUID and DUPHASH of python crash dumps"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:29
+#: ../src/plugins/abrt-action-analyze-vmcore.in:52
 msgid "Usage: {0} [-v[v]] [--core=VMCORE]"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:56
+#: ../src/plugins/abrt-action-analyze-vmcore.in:79
 msgid "File {0} doesn't exist"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:59
+#: ../src/plugins/abrt-action-analyze-vmcore.in:82
 msgid "Extracting the oops text from core"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:64
+#: ../src/plugins/abrt-action-analyze-vmcore.in:87
 msgid ""
 "Can't process {0}:\n"
 "{1}"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:72
+#: ../src/plugins/abrt-action-analyze-vmcore.in:95
 msgid "Can't extract the oops message: '{0}'"
 msgstr ""
 
-#: ../src/plugins/abrt-action-analyze-vmcore.in:75
+#: ../src/plugins/abrt-action-analyze-vmcore.in:98
 msgid "Oops text extracted successfully"
 msgstr ""
 
@@ -647,6 +830,38 @@ msgstr ""
 
 #: ../src/plugins/abrt-action-trim-files.c:238
 msgid "Preserve this directory"
+msgstr ""
+
+#: ../src/plugins/abrt-action-ureport:39
+#, c-format
+msgid "Unable to start '%s', error message was: '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-ureport:50
+#, c-format
+msgid "Not a number in file '%s'"
+msgstr ""
+
+#: ../src/plugins/abrt-action-ureport:66
+#, c-format
+msgid "Usage: %s [-v]"
+msgstr ""
+
+#: ../src/plugins/abrt-action-ureport:86
+msgid "Unable to get current working directory as it was probably deleted"
+msgstr ""
+
+#: ../src/plugins/abrt-action-ureport:117
+msgid "A bug was already filed about this problem:"
+msgstr ""
+
+#: ../src/plugins/abrt-action-ureport:127
+msgid "uReport was already sent, not sending it again"
+msgstr ""
+
+#: ../src/plugins/abrt-action-ureport:145
+#, c-format
+msgid "reporter-ureport failed with exit code %d"
 msgstr ""
 
 #: ../src/plugins/abrt-gdb-exploitable:529
@@ -839,11 +1054,15 @@ msgstr ""
 msgid "Print search string(s) to stdout and exit"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:379
+#: ../src/plugins/abrt-dump-oops.c:311
+msgid "Failed to compile regex"
+msgstr ""
+
+#: ../src/plugins/abrt-dump-oops.c:402
 msgid "Can't update the problem: more than one oops found"
 msgstr ""
 
-#: ../src/plugins/abrt-dump-oops.c:398
+#: ../src/plugins/abrt-dump-oops.c:421
 #, c-format
 msgid "Sleeping for %d seconds"
 msgstr ""
@@ -1415,31 +1634,35 @@ msgstr ""
 msgid "'%s' identifies more than one problem directory"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:142
+#: ../src/cli/abrt-cli.c:144
 msgid "Usage: abrt-cli [--version] COMMAND [DIR]..."
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:146
-msgid "List not yet reported problems [in DIRs]"
-msgstr ""
-
-#: ../src/cli/abrt-cli.c:147
-msgid "Remove problem directory DIR"
-msgstr ""
-
 #: ../src/cli/abrt-cli.c:148
-msgid "Analyze and report problem data in DIR"
+msgid "List problems [in DIRs]"
 msgstr ""
 
 #: ../src/cli/abrt-cli.c:149
-msgid "Print information about DIR"
+msgid "Remove problem directory DIR"
 msgstr ""
 
 #: ../src/cli/abrt-cli.c:150
+msgid "Analyze and report problem data in DIR"
+msgstr ""
+
+#: ../src/cli/abrt-cli.c:151
+msgid "Print information about DIR"
+msgstr ""
+
+#: ../src/cli/abrt-cli.c:152
 msgid "Print the count of the recent crashes"
 msgstr ""
 
-#: ../src/cli/abrt-cli.c:165
+#: ../src/cli/abrt-cli.c:153
+msgid "Process multiple problems"
+msgstr ""
+
+#: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
 msgstr ""
 
@@ -1454,7 +1677,7 @@ msgstr ""
 #. deprecate -d option with --pretty=full
 #: ../src/cli/list.c:190 ../src/cli/list.c:243
 msgid "Show detailed report"
-msgstr ""
+msgstr "Hiển thị báo cáo chi tiết"
 
 #: ../src/cli/list.c:191
 msgid "List only the problems more recent than specified timestamp"
@@ -1499,6 +1722,45 @@ msgstr ""
 #: ../src/cli/status.c:104
 #, c-format
 msgid "ABRT has detected %u problem(s). For more info run: abrt-cli list%s\n"
+msgstr ""
+
+#: ../src/cli/report.c:28
+msgid "& report [options] DIR..."
+msgstr ""
+
+#: ../src/cli/report.c:38
+msgid "Remove PROBLEM_DIR after reporting"
+msgstr ""
+
+#: ../src/cli/report.c:71 ../src/cli/process.c:70
+#, c-format
+msgid "Deleting '%s'"
+msgstr ""
+
+#: ../src/cli/process.c:64
+msgid "Actions: remove(rm), info(i), skip(s):"
+msgstr ""
+
+#: ../src/cli/process.c:66
+msgid "Actions: remove(rm), report(e), info(i), skip(s):"
+msgstr ""
+
+#: ../src/cli/process.c:77
+#, c-format
+msgid "Reporting '%s'"
+msgstr ""
+
+#. dummy must be free because the function ask allocate memory
+#: ../src/cli/process.c:133
+msgid "For next problem press ENTER:"
+msgstr ""
+
+#: ../src/cli/process.c:144
+msgid "Without --since argument, iterates over all detected problems."
+msgstr ""
+
+#: ../src/cli/process.c:150
+msgid "Selects only problems detected after timestamp"
 msgstr ""
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
@@ -1577,7 +1839,7 @@ msgstr ""
 
 #: ../src/plugins/post_report.xml.in.h:1
 msgid "Post report"
-msgstr ""
+msgstr "Công bố báo cáo"
 
 #: ../src/plugins/post_report.xml.in.h:2
 msgid "Executed after the reporting is finished"
