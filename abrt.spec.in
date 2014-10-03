@@ -998,6 +998,43 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %config(noreplace) %{_sysconfdir}/profile.d/abrt-console-notification.sh
 
 %changelog
+* Fri Oct 03 2014 Jakub Filak <jfilak@redhat.com> 2.3.0-1
+- applet: confirm ignoring of notifications
+- spec: disable addon-vmcore on aarch64
+- Allow to disable vmcore plugin
+- cli: batch reporting in abrt-cli
+- cli: add option remove crash dirs after reporting
+- dbus: fixed abrt-dbus memory leaks
+- spec: add abrt-action-generate-machine-id
+- plugins: add abrt-action-generate-machine-id
+- retrace-client: humanize sizes
+- cli: use portable syntax in abrt-console-notification
+- cli: robustize abrt-console-notification.sh
+- spec: remove dependency on crash from abrt-addon-vmcore
+- cli: make consistent commands in abrt-cli
+- retrace: respect Bugzilla event preferences
+- logging: less log messages for duplicates
+- dbus: don't ignore errors in verbose logging modes
+- a-a-s-p-data: reduce amount of error messages
+- a-h-event: don't spam system logs
+- applet: disable GDK deprecation warnings
+- koops: fix a use-after-free bug uncoverd by coverity
+- Revert "Support handling crashes in lxc containers"
+- json: include json.h accordingly to json-c CFLAGS
+- spec: hook abrt-oops.conf.5
+- oops: add man page
+- configure.ac: Fix json-c detection for json-c >= 0.11
+- gettext: fix the initialization in python scripts
+- xml: fix a typo in analyze_CCpp
+- spec: don't use native unwinder on arm arch
+- abrt-journal: fix includes
+- spec: add a build require item for systemd-journal
+- spec: add the journal oops stuff
+- koops: dump oopses from systemd-journal
+- use satyr with native unwider
+- python: support exceptions without traceback
+- update .gitignore
+
 * Tue Jul 08 2014 Jakub Filak <jfilak@redhat.com> 2.2.2-1
 - daemon: deal with missing 'executable' file
 - applet: chown each notified problem before reporting it
