@@ -33,6 +33,9 @@ PACKAGE="abrt"
 
 rlJournalStart
     rlPhaseStartSetup
+
+        LANG=""
+        export LANG
         check_prior_crashes
 
         TmpDir=$(mktemp -d)
@@ -78,6 +81,13 @@ rlJournalStart
         abrt-cli st &> param_abbrev
         rlAssertNotDiffer param_cmd param_abbrev
     rlPhaseEnd
+
+    rlPhaseStartTest "process the same as p"
+        abrt-cli process &> param_cmd
+        abrt-cli p &> param_abbrev
+        rlAssertNotDiffer param_cmd param_abbrev
+    rlPhaseEnd
+
 
     rlPhaseStartTest "list"
         generate_crash
