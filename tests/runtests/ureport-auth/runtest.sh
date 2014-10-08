@@ -152,6 +152,50 @@ rlJournalStart
         fi
     rlPhaseEnd
 
+    rlPhaseStartTest "report authorization through RHSM entitlement certificates"
+
+        ENTIT_DIR=/etc/pki/entitlement
+        ENTIT_CERT=5244703559636416619.pem
+        ENTIT_KEY=5244703559636416619-key.pem
+        if test -d $ENTIT_DIR; then
+            EXISTED="yes"
+        else
+            EXISTED="no"
+            mkdir -p $ENTIT_DIR
+        fi
+
+        rlRun "cp cert/$ENTIT_CERT $ENTIT_DIR"
+        rlRun "cp cert/$ENTIT_KEY $ENTIT_DIR"
+
+        rlRun "augtool set /files/etc/libreport/plugins/ureport.conf/SSLClientAuth rhsm-entitlement"
+
+        ./pyserve none &
+        sleep 1
+        rlRun "reporter-ureport -vvv --insecure --url https://localhost:12345/faf -d $crash_PATH &> ureport.log" 70 "Send uReport"
+        kill %1
+
+        cert=$(tr -d '\n' < cert/$ENTIT_CERT)
+
+        entit_data=`echo $cert | egrep -o "\-\-\-\-\-BEGIN ENTITLEMENT DATA\-\-\-\-\-.*\-\-\-\-\-END ENTITLEMENT DATA\-\-\-\-\-"`
+        entit_sign=`echo $cert | egrep -o "\-\-\-\-\-BEGIN RSA SIGNATURE\-\-\-\-\-.*\-\-\-\-\-END RSA SIGNATURE\-\-\-\-\-"`
+
+        rlAssertGrep "Host: .*" ureport.log
+        rlAssertGrep "Accept: application/json" ureport.log
+        rlAssertGrep "Connection: close" ureport.log
+        rlAssertGrep "X-RH-Entitlement-Data: $entit_data" ureport.log
+        rlAssertGrep "X-RH-Entitlement-Sig: $entit_sign" ureport.log
+        rlAssertGrep "User-Agent: ABRT/.*" ureport.log
+
+        if [ $EXISTED = "yes" ]; then
+            rlRun "rm $ENTIT_DIR/$ENTIT_CERT"
+            rlRun "rm $ENTIT_DIR/$ENTIT_KEY"
+        else
+            rlRun "rm -r $ENTIT_DIR"
+        fi
+
+
+    rlPhaseEnd
+
     rlPhaseStartCleanup
         rlRun "abrt-cli rm $crash_PATH"
         popd # TmpDir
