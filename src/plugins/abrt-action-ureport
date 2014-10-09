@@ -8,6 +8,7 @@
 import sys
 import os
 import getopt
+import augeas
 
 from report import dd_opendir, DD_FAIL_QUIETLY_ENOENT, run_event_state
 from reportclient import set_verbosity, error_msg_and_die, error_msg, log1, log
@@ -33,12 +34,30 @@ def init_gettext():
     gettext.textdomain(GETTEXT_PROGNAME)
 
 
-def spawn_and_wait(prog):
+def get_augeas(module, file_path):
+    """
+    A function for efficient configuration of Augeas.
+    Augeas modules are placed in /usr/share/augeas/lenses/dist
+    """
+
+    aug_obj = augeas.Augeas(flags=augeas.Augeas.NO_MODL_AUTOLOAD)
+    aug_obj.set("/augeas/load/{0}/lens".format(module), "{0}.lns".format(module))
+    aug_obj.set("/augeas/load/{0}/incl".format(module), file_path)
+    aug_obj.load()
+    return aug_obj
+
+
+def spawn_and_wait(prog, args=None):
+    if args is None:
+        args = [prog]
+    else:
+        args.insert(0, prog)
+
     try:
-        return os.spawnlp(os.P_WAIT, prog, prog)
+        return os.spawnvpe(os.P_WAIT, prog, args, os.environ)
     except OSError as err:
         error_msg(_("Unable to start '%s', error message was: '%s'"),
-                    prog, err)
+                    " ".join(args), err)
         return -1
 
 def try_parse_number(dd, filename):
@@ -92,6 +111,7 @@ if __name__ == "__main__":
             verbose += 1
 
     set_verbosity(verbose)
+    os.environ["ABRT_VERBOSE"] = str(verbose)
 
     # getcwd might fail if cwd was deleted
     try:
@@ -158,6 +178,15 @@ if __name__ == "__main__":
             if reported_to and reported_to != "" and get_bugzilla_reports(reported_to):
                 log(_("Adding you to CC List of the existing bugzilla bug"))
                 run_event("watch_Bugzilla", dirname)
+
+        email = os.getenv("uReport_ContactEmail")
+        if not email:
+            augeas = get_augeas("libreport", "/etc/libreport/plugins/ureport.conf")
+            email = augeas.get("/files/etc/libreport/plugins/ureport.conf/ContactEmail")
+
+        if email:
+            log1("Attaching ContactEmail: " + email)
+            spawn_and_wait("reporter-ureport", ["-A", "-E"])
 
         sys.exit(exitcode)
     else:
