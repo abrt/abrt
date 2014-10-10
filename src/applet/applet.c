@@ -1331,7 +1331,7 @@ static void Crash(DBusMessage* signal)
     if (duphash != NULL && duphash[0] != '\0')
         problem_data_add_text_noteditable(pi->problem_data, FILENAME_DUPHASH, duphash);
     if (package_name != NULL && package_name[0] != '\0')
-        problem_data_add_text_noteditable(pi->problem_data, FILENAME_COMPONENT, duphash);
+        problem_data_add_text_noteditable(pi->problem_data, FILENAME_COMPONENT, package_name);
     pi->foreign = foreign_problem;
     show_problem_notification(pi, flags);
 }
