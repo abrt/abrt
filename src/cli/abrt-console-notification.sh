@@ -3,6 +3,9 @@
 # terminal.
 tty -s || return 0
 
+# Skip all for noninteractive shells for the same reason as above.
+[ -z "$PS1" ] && return 0
+
 # If $HOME is not set, a non human user is logging in to shell but this script
 # should provide information to human users, therefore returning immediately
 # without showing the notification.
