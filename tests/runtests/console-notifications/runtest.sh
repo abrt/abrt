@@ -53,7 +53,7 @@ rlJournalStart
         rlLog "ABRT should suggest user to run abrt-cli since"
         CANARY="CANARY_$(date +%s)_LIVES"
         # bash allows to run interactive shell with -c
-        /usr/bin/sh -l -i -c "echo $CANARY" >$LOG_NAME 2>&1
+        screen sh -c "sh -l -i -c \"echo $CANARY\" >$LOG_NAME 2>&1"
 
         rlAssertExists $LNPATH
 
@@ -73,7 +73,7 @@ rlJournalStart
         rlLog "ABRT should not output anything unless an unexpected crash happened"
         CANARY="CANARY_$(date +%s)_LIVES"
         # bash allows to run interactive shell with -c
-        /usr/bin/sh -l -i -c "echo $CANARY" >$LOG_NAME 2>&1
+        screen sh -c "sh -l -i -c \"echo $CANARY\" >$LOG_NAME 2>&1"
 
         rlAssertExists $LNPATH
 
@@ -97,7 +97,7 @@ rlJournalStart
         rlRun "TS=$(cat $LNPATH)"
         CANARY="CANARY_$(date +%s)_LIVES"
         # bash allows to run interactive shell with -c
-        /usr/bin/sh -l -i -c "echo $CANARY" >$LOG_NAME 2>&1
+        screen sh -c "sh -l -i -c \"echo $CANARY\" >$LOG_NAME 2>&1"
 
         rlAssertExists $LNPATH
 
@@ -117,7 +117,7 @@ rlJournalStart
         rlLog "Start interactive shell without TTY"
         CANARY="CANARY_$(date +%s)_LIVES"
         # forwarding STDIN closes TTY
-        /usr/bin/sh -l -i <<< "echo $CANARY" >$LOG_NAME 2>&1
+        screen sh -c "sh -l -i <<< \"echo $CANARY\" >$LOG_NAME 2>&1"
 
         rlAssertNotExists $LNPATH
 
@@ -133,7 +133,7 @@ rlJournalStart
 
         rlLog "Run a shell script with --login"
         CANARY="CANARY_$(date +%s)_LIVES"
-        /usr/bin/sh -l -c "echo $CANARY" > $LOG_NAME
+        screen sh -c "sh -l -c \"echo $CANARY\" > $LOG_NAME"
 
         rlAssertNotExists $LNPATH
 
@@ -145,11 +145,13 @@ rlJournalStart
 
     rlPhaseStartTest "interactive shell empty home"
         LOG_NAME="interactive_shell_empty_home.log"
+        rlRun "rm --preserve-root -fv $LNPATH"
+
+        rlLog "Clear HOME env variable and run interactive shell"
         CANARY="CANARY_$(date +%s)_LIVES"
+        HOME="" screen sh -c "sh -l -i -c \"echo $CANARY\" >$LOG_NAME 2>&1"
 
-
-        HOME="" /usr/bin/sh -l -i -c "echo $CANARY" >$LOG_NAME 2>&1
-
+        rlAssertNotExists $LNPATH
         rlAssertNotExists "/$RELPATH"
 
         # ABRT didn't run
@@ -164,7 +166,7 @@ rlJournalStart
 
         rlLog "Login as 'adm' user whose home is /var/adm and is not writable for him"
         CANARY="CANARY_$(date +%s)_LIVES"
-        su adm -s /usr/bin/sh -c "/usr/bin/sh -l -i -c \"echo $CANARY\"" >$LOG_NAME 2>&1
+        screen sh -c "su adm -s /usr/bin/sh -c \"sh -l -i -c \\\"echo $CANARY\\\"\">$LOG_NAME 2>&1"
 
         rlAssertNotExists $LNPATH
 
