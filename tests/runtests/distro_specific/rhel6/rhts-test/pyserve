@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+# Single purpose HTTP server
+# - serves files specified as arguments in order of appearance
+
+import os
+import sys
+import BaseHTTPServer
+
+class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
+    def do_POST(self):
+#        self.send_response(200)
+#        self.send_header("Content-type", "text/xml")
+#        self.end_headers()
+
+#        print self.rfile.read(int(self.headers.getheader('content-length')))
+
+        response = self.dummy_response
+        if not self.filelist:
+            print 'No more files to serve - sending dummy response'
+        else:
+            response = self.filelist.pop()
+        self.reply(response)
+
+    def reply(self, response):
+        try:
+            # redirect stdout to client
+            stdout = sys.stdout
+            sys.stdout = self.wfile
+            print response
+        finally:
+            sys.stdout = stdout # restore
+
+PORT = 12345
+print "Serving at port", PORT
+
+filelist = []
+for file in sys.argv[1:]:
+    if os.path.isfile(file):
+        print "Adding file %s" % file
+        with open(file) as f:
+            filelist.append(f.read())
+
+filelist.reverse()
+Handler.filelist = filelist
+Handler.dummy_response = open("dummy", "r").read()
+httpd = BaseHTTPServer.HTTPServer(("", PORT), Handler)
+httpd.serve_forever()
