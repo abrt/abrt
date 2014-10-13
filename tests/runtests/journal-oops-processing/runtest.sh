@@ -30,7 +30,7 @@
 
 TEST="journal_oops_processing"
 PACKAGE="abrt"
-OOPS_REQUIRED_FILES="kernel uuid duphash
+ooPS_REQUIRED_FILES="kernel uuid duphash
 pkg_name pkg_arch pkg_epoch pkg_release pkg_version"
 EXAMPLES_PATH="../../../examples"
 
@@ -45,31 +45,79 @@ rlJournalStart
             | cut -d" " -f6- > \
             $TmpDir/oops1.test
 
+        sed "s/2.6.27.9-159.fc10.i686/<KERNEL_VERSION>/" \
+            $EXAMPLES_PATH/oops1.right \
+            | sed "s/^ *//" \
+            | grep -v "abrt-dump-oops:" \
+            | grep -v "Version:" > \
+            $TmpDir/oops1.right
+
         # the cut command removes syslog prefix
         sed "s/2.6.27.9-159.fc10.i686/<KERNEL_VERSION>/" \
             $EXAMPLES_PATH/oops_no_reliable_frame.test \
             | cut -d" " -f6- > \
             $TmpDir/oops_not_reportable_no_reliable_frame.test
 
+        sed "s/2.6.27.9-159.fc10.i686/<KERNEL_VERSION>/" \
+            $EXAMPLES_PATH/oops_no_reliable_frame.right \
+            | sed "s/^ *//" \
+            | grep -v "abrt-dump-oops:" \
+            | grep -v "Version:" > \
+            $TmpDir/oops_not_reportable_no_reliable_frame.right
+
         sed "s/3.0.0-1.fc16.i686/<KERNEL_VERSION>/" \
             $EXAMPLES_PATH/oops5.test > \
-            TmpDir/oops5.test
+            $TmpDir/oops5.test
+
+        sed "s/3.0.0-1.fc16.i686/<KERNEL_VERSION>/" \
+            $EXAMPLES_PATH/oops5.right \
+            | sed "s/^ *//" \
+            | grep -v "abrt-dump-oops:" \
+            | grep -v "Version:" > \
+            $TmpDir/oops5.right
 
         sed "s/3.10.0-33.el7.ppc64/<KERNEL_VERSION>/" \
             $EXAMPLES_PATH/oops8_ppc64.test > \
             $TmpDir/oops8_ppc64.test
 
+        sed "s/3.10.0-33.el7.ppc64/<KERNEL_VERSION>/" \
+        $EXAMPLES_PATH/oops8_ppc64.right \
+            | sed "s/^ *//" \
+            | grep -v "abrt-dump-oops:" \
+            | grep -v "Version:" > \
+            $TmpDir/oops8_ppc64.right
+
         sed "s/3.69.69-69.0.fit.s390x/<KERNEL_VERSION>/" \
             $EXAMPLES_PATH/oops10_s390x.test > \
             $TmpDir/oops10_s390x.test
+
+        sed "s/3.69.69-69.0.fit.s390x/<KERNEL_VERSION>/" \
+            $EXAMPLES_PATH/oops10_s390x.right \
+            | grep -v "abrt-dump-oops:" \
+            | sed "s/^Version:.*$//" > \
+            $TmpDir/oops10_s390x.right
 
         sed "s/3.10.0-41.el7.x86_64/<KERNEL_VERSION>/" \
             $EXAMPLES_PATH/oops_unsupported_hw.test > \
             $TmpDir/oops_not_reportable_unsupported_hw.test
 
+        sed "s/3.10.0-41.el7.x86_64/<KERNEL_VERSION>/" \
+            $EXAMPLES_PATH/oops_unsupported_hw.right \
+            | sed "s/^ *//" \
+            | grep -v "abrt-dump-oops:" \
+            | grep -v "Version:" > \
+            $TmpDir/oops_not_reportable_unsupported_hw.right
+
         sed "s/2.6.35.6-45.fc14.x86_64/<KERNEL_VERSION>/" \
             $EXAMPLES_PATH/oops_broken_bios.test > \
             $TmpDir/oops_not_reportable_broken_bios.test
+
+        sed "s/2.6.35.6-45.fc14.x86_64/<KERNEL_VERSION>/" \
+            $EXAMPLES_PATH/oops_broken_bios.right \
+            | sed "s/^ *//" \
+            | grep -v "abrt-dump-oops:" \
+            | grep -v "Version:" > \
+            $TmpDir/oops_not_reportable_broken_bios.right
 
         pushd $TmpDir
 
@@ -86,8 +134,9 @@ rlJournalStart
             installed_kernel="$( rpm -q kernel | tail -n1 )"
             kernel_version="$( rpm -q --qf "%{version}" $installed_kernel )"
             sed -i "s/<KERNEL_VERSION>/$installed_kernel/g" $oops
+            sed -i "s/<KERNEL_VERSION>/$installed_kernel/g" ${oops/.test/.right}
 
-            rlRun "ABRT_DUMP_JOURNAL_OOPS_DEBUG_FILTER=\"SYSLOG_IDENTIFIER=abrt_test\" abrt-dump-journal-oops -vvv -f -xD >$oops.log 2>&1 &"
+            rlRun "ABRT_DUMP_JOURNAL_OOPS_DEBUG_FILTER=\"SYSLOG_IDENTIFIER=abrt_test\" abrt-dump-journal-oops -vvv -f -xD -o >$oops.log 2>&1 &"
             rlRun "ABRT_DUMPER_PID=$!"
             rlRun "logger -t abrt_test -f $oops"
 
@@ -119,6 +168,14 @@ rlJournalStart
             # Next time, the dumper should start following the journald from
             # the last seen cursor.
             rlRun "kill -TERM $ABRT_DUMPER_PID"
+
+            cat $oops".log" \
+                | grep -v "Version:" \
+                | grep -v "Found oopses:" \
+                | grep -v "abrt-dump-journal-oops:" \
+                > $oops".right.log"
+
+            rlAssertNotDiffer ${oops/.test/.right} $oops".right.log"
         done
     rlPhaseEnd
 
@@ -126,8 +183,9 @@ rlJournalStart
         # Do not confuse the system dumper. The stored cursor is invalid in the default configuration.
         rlRun "rm -rf /var/lib/abrt/abrt-dupm-journal-oops.state"
 
-        rlBundleLogs abrt $(echo *_ls)
+        rlBundleLogs abrt $(echo *_ls) $(echo *.log)
         rlRun "popd"
+        rlLog "$TmpDir"
         rlRun "rm -r $TmpDir" 0 "Removing tmp directory"
     rlPhaseEnd
     rlJournalPrintText

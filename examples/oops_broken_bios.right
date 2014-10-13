@@ -1,0 +1,23 @@
+
+Version: 2.6.35.6-45.fc14.x86_64
+WARNING: at drivers/pci/dmar.c:633 warn_invalid_dmar+0x7d/0x8d()
+Hardware name: HP Pavilion dv3 Notebook PC
+Your BIOS is broken; DMAR reported at address 0!
+BIOS vendor: Hewlett-Packard; Ver: F.13; Product Version: F.13
+Modules linked in:
+Pid: 0, comm: swapper Not tainted 2.6.35.6-45.fc14.x86_64 #1
+Call Trace:
+ [<ffffffff8104d7c1>] warn_slowpath_common+0x85/0x9d
+ [<ffffffff8102baca>] ? _paravirt_ident_64+0x9/0xe
+ [<ffffffff8104d834>] warn_slowpath_fmt_taint+0x3f/0x41
+ [<ffffffff81245693>] warn_invalid_dmar+0x7d/0x8d
+ [<ffffffff81bcf2c9>] check_zero_address+0xb9/0xf9
+ [<ffffffff81be20a0>] ? boot_command_line+0x0/0x800
+ [<ffffffff81471193>] ? _etext+0x0/0x1
+ [<ffffffff81bcf31b>] detect_intel_iommu+0x12/0x95
+ [<ffffffff81ba8362>] pci_iommu_alloc+0x1c/0x28
+ [<ffffffff81bb7243>] mem_init+0x19/0xec
+ [<ffffffff81be20a0>] ? boot_command_line+0x0/0x800
+ [<ffffffff81ba1a63>] start_kernel+0x225/0x416
+ [<ffffffff81ba12c6>] x86_64_start_reservations+0xb1/0xb5
+ [<ffffffff81ba13c2>] x86_64_start_kernel+0xf8/0x107
