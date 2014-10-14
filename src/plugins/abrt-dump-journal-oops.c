@@ -38,8 +38,8 @@ static GList* abrt_journal_extract_kernel_oops(abrt_journal_t *journal)
 
     do
     {
-        const char *line = NULL;
-        if (abrt_journal_get_log_line(journal, &line) < 0)
+        char *line = abrt_journal_get_log_line(journal);
+        if (line == NULL)
             error_msg_and_die(_("Cannot read journal data."));
 
         if (lines_info_count == lines_info_size)
@@ -48,10 +48,13 @@ static GList* abrt_journal_extract_kernel_oops(abrt_journal_t *journal)
             lines_info = xrealloc(lines_info, lines_info_size * sizeof(lines_info[0]));
         }
 
-        lines_info[lines_info_count].level = koops_line_skip_level(&line);
-        koops_line_skip_jiffies(&line);
+        char *orig_line = line;
+        lines_info[lines_info_count].level = koops_line_skip_level((const char **)&line);
+        koops_line_skip_jiffies((const char **)&line);
 
-        lines_info[lines_info_count].ptr = xstrdup(line);
+        memmove(orig_line, line, strlen(line) + 1);
+
+        lines_info[lines_info_count].ptr = orig_line;
 
         ++lines_info_count;
     }

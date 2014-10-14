@@ -23,6 +23,12 @@
 
 #include <systemd/sd-journal.h>
 
+/*
+ * http://www.freedesktop.org/software/systemd/man/sd_journal_get_data.html
+ * sd_journal_set_data_threshold() : This threshold defaults to 64K by default.
+ */
+#define JOURNALD_MAX_FIELD_SIZE (64*1024)
+
 
 struct abrt_journal
 {
@@ -84,33 +90,38 @@ int abrt_journal_get_field(abrt_journal_t *journal, const char *field, const voi
     return 0;
 }
 
-int abrt_journal_get_string_field(abrt_journal_t *journal, const char *field, const char **value)
+char *abrt_journal_get_string_field(abrt_journal_t *journal, const char *field, char *value)
 {
-    size_t value_len;
-    const int r = abrt_journal_get_field(journal, field, (const void **)value, &value_len);
+    size_t data_len;
+    const char *data;
+    const int r = abrt_journal_get_field(journal, field, (const void **)&data, &data_len);
     if (r < 0)
     {
-        return r;
+        log_notice("Cannot read journal data");
+        return NULL;
     }
 
     const size_t pfx_len = strlen(field) + 1;
-    if (value_len < pfx_len)
+    if (data_len < pfx_len)
     {
         error_msg("Invalid data format from journal: field data are not prefixed with field name");
-        return -EBADMSG;
+        return NULL;
     }
 
-    *value += pfx_len;
-    return 0;
+    const size_t len = data_len - pfx_len;
+    if (value == NULL)
+        return xstrndup(data + pfx_len, len);
+    /*else*/
+
+    strncpy(value, data + pfx_len, len);
+    /* journal data are not NULL terminated strings, so terminate the string */
+    value[len] = '\0';
+    return value;
 }
 
-int abrt_journal_get_log_line(abrt_journal_t *journal, const char **line)
+char *abrt_journal_get_log_line(abrt_journal_t *journal)
 {
-    const int r = abrt_journal_get_string_field(journal, "MESSAGE", line);
-    if (r < 0)
-        log_notice("Cannot read journal data. Exiting");
-
-    return r;
+    return abrt_journal_get_string_field(journal, "MESSAGE", NULL);
 }
 
 int abrt_journal_get_cursor(abrt_journal_t *journal, char **cursor)
@@ -272,9 +283,9 @@ void abrt_journal_watch_notify_strings(abrt_journal_watch_t *watch, void *data)
 {
     struct abrt_journal_watch_notify_strings *conf = (struct abrt_journal_watch_notify_strings *)data;
 
-    const char *message = NULL;
+    char message[JOURNALD_MAX_FIELD_SIZE + 1];
 
-    if (abrt_journal_get_string_field(abrt_journal_watch_get_journal(watch), "MESSAGE", &message) < 0)
+    if (abrt_journal_get_string_field(abrt_journal_watch_get_journal(watch), "MESSAGE", (char *)message) == NULL)
         error_msg_and_die("Cannot read journal data.");
 
     GList *cur = conf->strings;
