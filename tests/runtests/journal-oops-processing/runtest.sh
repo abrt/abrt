@@ -175,7 +175,7 @@ rlJournalStart
                 | grep -v "abrt-dump-journal-oops:" \
                 > $oops".right.log"
 
-            rlAssertNotDiffer ${oops/.test/.right} $oops".right.log"
+            rlRun "diff -u ${oops/.test/.right} ${oops}.right.log" 0 "The dumper copied oops data without any differences"
         done
     rlPhaseEnd
 
