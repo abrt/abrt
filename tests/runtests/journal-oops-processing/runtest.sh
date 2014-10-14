@@ -94,7 +94,7 @@ rlJournalStart
         sed "s/3.69.69-69.0.fit.s390x/<KERNEL_VERSION>/" \
             $EXAMPLES_PATH/oops10_s390x.right \
             | grep -v "abrt-dump-oops:" \
-            | sed "s/^Version:.*$//" > \
+            | grep -v "Version:" > \
             $TmpDir/oops10_s390x.right
 
         sed "s/3.10.0-41.el7.x86_64/<KERNEL_VERSION>/" \
