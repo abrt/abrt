@@ -40,11 +40,13 @@ int abrt_journal_get_field(abrt_journal_t *journal,
                            const void **value,
                            size_t *value_len);
 
-int abrt_journal_get_string_field(abrt_journal_t *journal,
+/* Returns allocated memory if value is NULL; otherwise makes copy of journald
+ * field to memory pointed by value arg. */
+char *abrt_journal_get_string_field(abrt_journal_t *journal,
                                   const char *field,
-                                  const char **value);
+                                  char *value);
 
-int abrt_journal_get_log_line(abrt_journal_t *journal, const char **line);
+char *abrt_journal_get_log_line(abrt_journal_t *journal);
 
 int abrt_journal_get_cursor(abrt_journal_t *journal, char **cursor);
 
