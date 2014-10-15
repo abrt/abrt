@@ -184,13 +184,13 @@ static char* get_executable(pid_t pid, int *fd_p)
     if (deleted > executable && strcmp(deleted, " (deleted)") == 0)
     {
         *deleted = '\0';
-        log("File '%s' seems to be deleted", executable);
+        log_info("File '%s' seems to be deleted", executable);
     }
     /* find and cut off prelink suffixes from the path */
     char *prelink = executable + strlen(executable) - strlen(".#prelink#.XXXXXX");
     if (prelink > executable && strncmp(prelink, ".#prelink#.", strlen(".#prelink#.")) == 0)
     {
-        log("File '%s' seems to be a prelink temporary file", executable);
+        log_info("File '%s' seems to be a prelink temporary file", executable);
         *prelink = '\0';
     }
     return executable;
@@ -649,7 +649,7 @@ int main(int argc, char** argv)
              * but it does not log file name */
             error_msg_and_die("Error saving '%s'", path);
         }
-        log("Saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
+        log_notice("Saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
         return 0;
     }
 
@@ -836,7 +836,7 @@ int main(int argc, char** argv)
             strcpy(path, newpath);
         free(newpath);
 
-        log("Saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
+        log_notice("Saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
 
         notify_new_path(path);
 
@@ -874,7 +874,7 @@ int main(int argc, char** argv)
             unlink(core_basename);
             return 1;
         }
-        log("Saved core dump of pid %lu to %s (%llu bytes)", (long)pid, full_core_basename, (long long)core_size);
+        log_notice("Saved core dump of pid %lu to %s (%llu bytes)", (long)pid, full_core_basename, (long long)core_size);
     }
 
     return 0;
