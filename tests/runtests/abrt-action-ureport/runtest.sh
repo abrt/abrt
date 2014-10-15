@@ -2,8 +2,8 @@
 # vim: dict=/usr/share/beakerlib/dictionary.vim cpt=.,w,b,u,t,i,k
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-#   runtest.sh of abrt-abrt-action-ureport
-#   Description: Verify abrt-abrt-action-ureport functionality
+#   runtest.sh of abrt-action-ureport
+#   Description: Verify abrt-action-ureport functionality
 #   Author: Matej Habrnal <mhabrnal@redhat.com>
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -28,7 +28,7 @@
 . /usr/share/beakerlib/beakerlib.sh
 . ../aux/lib.sh
 
-TEST="rhts-test"
+TEST="abrt-action-ureport"
 PACKAGE="abrt"
 
 rlJournalStart
