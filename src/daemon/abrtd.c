@@ -626,7 +626,7 @@ int main(int argc, char** argv)
     s_signal_pipe_write = s_signal_pipe[1];
 
     /* Enter the event loop */
-    log("Init complete, entering main loop");
+    log_debug("Init complete, entering main loop");
     run_main_loop(pMainloop);
 
  cleanup:
@@ -652,7 +652,10 @@ int main(int argc, char** argv)
     /* Exiting */
     if (s_sig_caught && s_sig_caught != SIGALRM && s_sig_caught != SIGCHLD)
     {
-        error_msg("Got signal %d, exiting", s_sig_caught);
+        /* We use TERM to stop abrtd, so not printing out error message. */
+        if (s_sig_caught != SIGTERM)
+            error_msg("Got signal %d, exiting", s_sig_caught);
+
         signal(s_sig_caught, SIG_DFL);
         raise(s_sig_caught);
     }
