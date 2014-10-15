@@ -61,7 +61,7 @@ int main(int argc, char **argv)
         sr_debug_parser = true;
 
     /* Let user know what's going on */
-    log(_("Generating core_backtrace"));
+    log_notice(_("Generating core_backtrace"));
 
     char *error_message = NULL;
     bool success;
