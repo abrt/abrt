@@ -17,14 +17,9 @@
 #include "oops-utils.h"
 
 #define ABRT_JOURNAL_WATCH_STATE_FILE VAR_STATE"/abrt-dump-journal-oops.state"
-#define ABRT_JOURNAL_WATCH_STATE_FILE_MODE 0600
-#define ABRT_JOURNAL_WATCH_STATE_FILE_MAX_SZ (4 * 1024)
 
 /* Limit number of buffered lines */
 #define ABRT_JOURNAL_MAX_READ_LINES (1024 * 1024)
-
-/* Forward declarations */
-static void save_abrt_journal_watch_position(abrt_journal_t *journal, const char *file_name);
 
 /*
  * Koops extractor
@@ -107,7 +102,7 @@ static void abrt_journal_watch_extract_kernel_oops(abrt_journal_watch_t *watch, 
 
     /* In case of disaster, lets make sure we won't read the journal messages */
     /* again. */
-    save_abrt_journal_watch_position(journal, ABRT_JOURNAL_WATCH_STATE_FILE);
+    abrt_journal_save_current_position(journal, ABRT_JOURNAL_WATCH_STATE_FILE);
 
     if (g_abrt_oops_sleep_woke_up_on_signal > 0)
         abrt_journal_watch_stop(watch);
@@ -116,94 +111,6 @@ static void abrt_journal_watch_extract_kernel_oops(abrt_journal_watch_t *watch, 
 /*
  * Koops extractor end
  */
-
-static void try_restore_abrt_journal_watch_position(abrt_journal_t *journal, const char *file_name)
-{
-    struct stat buf;
-    if (lstat(file_name, &buf) < 0)
-    {
-        if (errno == ENOENT)
-        {
-            /* Only notice because this is expected */
-            log_notice(_("Not restoring journal watch's position: file '%s' does not exist"), file_name);
-            return;
-        }
-
-        perror_msg(_("Cannot restore journal watch's position form file '%s'"), file_name);
-        return;
-    }
-
-    if (!(buf.st_mode & S_IFREG))
-    {
-        error_msg(_("Cannot restore journal watch's position: path '%s' is not regular file"), file_name);
-        return;
-    }
-
-    if (buf.st_size > ABRT_JOURNAL_WATCH_STATE_FILE_MAX_SZ)
-    {
-        error_msg(_("Cannot restore journal watch's position: file '%s' exceeds %dB size limit"),
-                file_name, ABRT_JOURNAL_WATCH_STATE_FILE_MAX_SZ);
-        return;
-    }
-
-    int state_fd = open(file_name, O_RDONLY | O_NOFOLLOW);
-    if (state_fd < 0)
-    {
-        perror_msg(_("Cannot restore journal watch's position: open('%s')"), file_name);
-        return;
-    }
-
-    char *crsr = xmalloc(buf.st_size + 1);
-
-    const int sz = full_read(state_fd, crsr, buf.st_size);
-    if (sz != buf.st_size)
-    {
-        error_msg(_("Cannot restore journal watch's position: cannot read entire file '%s'"), file_name);
-        close(state_fd);
-        return;
-    }
-
-    crsr[sz] = '\0';
-    close(state_fd);
-
-    const int r = abrt_journal_set_cursor(journal, crsr);
-    if (r < 0)
-    {
-        /* abrt_journal_set_cursor() prints error message in verbose mode */
-        error_msg(_("Failed to move the journal to a cursor from file '%s'"), file_name);
-        return;
-    }
-
-    free(crsr);
-}
-
-static void save_abrt_journal_watch_position(abrt_journal_t *journal, const char *file_name)
-{
-    char *crsr = NULL;
-    const int r = abrt_journal_get_cursor(journal, &crsr);
-
-    if (r < 0)
-    {
-        /* abrt_journal_set_cursor() prints error message in verbose mode */
-        error_msg(_("Cannot save journal watch's position"));
-        return;
-    }
-
-    int state_fd = open(file_name,
-            O_WRONLY | O_CREAT | O_TRUNC | O_NOFOLLOW,
-            ABRT_JOURNAL_WATCH_STATE_FILE_MODE);
-
-    if (state_fd < 0)
-    {
-        perror_msg(_("Cannot save journal watch's position: open('%s')"), file_name);
-        return;
-    }
-
-    full_write_str(state_fd, crsr);
-    close(state_fd);
-
-    free(crsr);
-}
 
 static void watch_journald(abrt_journal_t *journal, const char *dump_location, int flags)
 {
@@ -367,13 +274,13 @@ int main(int argc, char *argv[])
     if ((opts & OPT_f))
     {
         if (!cursor)
-            try_restore_abrt_journal_watch_position(journal, ABRT_JOURNAL_WATCH_STATE_FILE);
+            abrt_journal_restore_position(journal, ABRT_JOURNAL_WATCH_STATE_FILE);
         else if(abrt_journal_set_cursor(journal, cursor))
             error_msg_and_die(_("Failed to start watch from cursor '%s'"), cursor);
 
         watch_journald(journal, dump_location, oops_utils_flags);
 
-        save_abrt_journal_watch_position(journal, ABRT_JOURNAL_WATCH_STATE_FILE);
+        abrt_journal_save_current_position(journal, ABRT_JOURNAL_WATCH_STATE_FILE);
     }
     else
     {

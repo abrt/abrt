@@ -56,6 +56,12 @@ int abrt_journal_seek_tail(abrt_journal_t *journal);
 
 int abrt_journal_next(abrt_journal_t *journal);
 
+int abrt_journal_save_current_position(abrt_journal_t *journal,
+                                       const char *file_name);
+
+int abrt_journal_restore_position(abrt_journal_t *journal,
+                                  const char *file_name);
+
 /*
  * A systemd-journal listener which waits for new messages a loop and notifies
  * them via a call back

@@ -151,20 +151,30 @@ abrt_dump_oops_LDADD = \
     $(LIBREPORT_LIBS) \
     ../lib/libabrt.la
 
+noinst_LIBRARIES = libabrt-journal.a
+libabrt_journal_a_SOURCES = \
+    abrt-journal.c \
+    abrt-journal.h
+libabrt_journal_a_CFLAGS = \
+    -I$(srcdir)/../include \
+    $(SYSTEMD_JOURNAL_CFLAGS) \
+    $(LIBREPORT_CFLAGS) \
+    $(GLIB_CFLAGS) \
+    -D_GNU_SOURCE
+
 abrt_dump_journal_oops_SOURCES = \
     oops-utils.c \
-    abrt-journal.c \
     abrt-dump-journal-oops.c
 abrt_dump_journal_oops_CPPFLAGS = \
     -I$(srcdir)/../include \
     -I$(srcdir)/../lib \
     $(GLIB_CFLAGS) \
     $(LIBREPORT_CFLAGS) \
-    $(SYSTEMD_JOURNAL_CFLAGS) \
     -DDEFAULT_DUMP_DIR_MODE=$(DEFAULT_DUMP_DIR_MODE) \
     -DVAR_STATE=\"$(VAR_STATE)\" \
     -D_GNU_SOURCE
 abrt_dump_journal_oops_LDADD = \
+    libabrt-journal.a \
     $(GLIB_LIBS) \
     $(LIBREPORT_LIBS) \
     $(SYSTEMD_JOURNAL_LIBS) \
