@@ -307,6 +307,7 @@ typedef struct problem_info {
     bool incomplete;
     bool reported;
     bool was_announced;
+    bool is_writable;
 } problem_info_t;
 
 static void push_to_deferred_queue(problem_info_t *pi)
@@ -322,6 +323,36 @@ static const char *problem_info_get_dir(problem_info_t *pi)
 static void problem_info_set_dir(problem_info_t *pi, const char *dir)
 {
     problem_data_add_text_noteditable(pi->problem_data, CD_DUMPDIR, dir);
+}
+
+static bool problem_info_ensure_writable(problem_info_t *pi)
+{
+    if (pi->is_writable)
+        return true;
+
+    /* chown the directory in any case, because kernel oopses are not foreign */
+    /* but their dump directories are not writable without chowning them or */
+    /* stealing them. The stealing is deprecated as it breaks the local */
+    /* duplicate search and root cannot see them */
+    const int res = chown_dir_over_dbus(problem_info_get_dir(pi));
+    if (pi->foreign && res != 0)
+    {
+        error_msg(_("Can't take ownership of '%s'"), problem_info_get_dir(pi));
+        return false;
+    }
+    pi->foreign = false;
+
+    struct dump_dir *dd = open_directory_for_writing(problem_info_get_dir(pi), /* don't ask */ NULL);
+    if (!dd)
+    {
+        error_msg(_("Can't open directory for writing '%s'"), problem_info_get_dir(pi));
+        return false;
+    }
+
+    problem_info_set_dir(pi, dd->dd_dirname);
+    pi->is_writable = true;
+    dd_close(dd);
+    return true;
 }
 
 static problem_info_t *problem_info_new(const char *dir)
@@ -610,8 +641,13 @@ static pid_t spawn_event_handler_child(const char *dump_dir_name, const char *ev
     return child;
 }
 
-static void run_report_from_applet(const char *dirname)
+static void run_report_from_applet(problem_info_t *pi)
 {
+    if (!problem_info_ensure_writable(pi))
+        return;
+
+    const char *dirname = problem_info_get_dir(pi);
+
     fflush(NULL); /* paranoia */
     pid_t pid = fork();
     if (pid < 0)
@@ -649,7 +685,7 @@ static void action_report(NotifyNotification *notification, gchar *action, gpoin
     {
         if (strcmp(A_REPORT_REPORT, action) == 0)
         {
-            run_report_from_applet(problem_info_get_dir(pi));
+            run_report_from_applet(pi);
             problem_info_free(pi);
         }
         else
@@ -1118,7 +1154,7 @@ static gboolean handle_event_output_cb(GIOChannel *gio, GIOCondition condition, 
         if (pi->known || !(state->flags & REPORT_UNKNOWN_PROBLEM_IMMEDIATELY))
             notify_problem(pi);
         else
-            run_report_from_applet(problem_info_get_dir(pi));
+            run_report_from_applet(pi);
     }
     else
     {
@@ -1179,29 +1215,11 @@ static void export_event_configuration(const char *event_name)
 
 static void run_event_async(problem_info_t *pi, const char *event_name, int flags)
 {
-    /* chown the directory in any case, because kernel oopses are not foreign */
-    /* but their dump directories are not writable without chowning them or */
-    /* stealing them. The stealing is deprecated as it breaks the local */
-    /* duplicate search and root cannot see them */
-    const int res = chown_dir_over_dbus(problem_info_get_dir(pi));
-    if (pi->foreign && res != 0)
+    if (!problem_info_ensure_writable(pi))
     {
-        error_msg(_("Can't take ownership of '%s'"), problem_info_get_dir(pi));
         problem_info_free(pi);
         return;
     }
-    pi->foreign = false;
-
-    struct dump_dir *dd = open_directory_for_writing(problem_info_get_dir(pi), /* don't ask */ NULL);
-    if (!dd)
-    {
-        error_msg(_("Can't open directory for writing '%s'"), problem_info_get_dir(pi));
-        problem_info_free(pi);
-        return;
-    }
-
-    problem_info_set_dir(pi, dd->dd_dirname);
-    dd_close(dd);
 
     export_event_configuration(event_name);
 
