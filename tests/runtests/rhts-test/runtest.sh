@@ -96,7 +96,6 @@ rlJournalStart
         wait_for_hooks
 
         rlRun "augtool rm /files/etc/libreport/plugins/ureport.conf/ContactEmail" 0 "remove ContactEmail settings from ureport.conf"
-        rlRun "augtool set /files/etc/libreport/plugins/ureport.conf/URL http://127.0.0.1:12345/faf" 0 "set URL to ureport.conf"
 
         ./pyserve \
                 ureport_submit \
@@ -112,7 +111,7 @@ rlJournalStart
         kill %1
 
         rlAssertGrep "Sending ABRT crash statistics data" client_create
-        rlAssertGrep "Connecting to http://127.0.0.1:12345/faf/reports/new/" client_create
+        rlAssertGrep "Connecting to http://127.0.0.1:12345/rs/telemetry/abrt/reports/new/" client_create
 
         rlAssertGrep "Checking for hints" client_create
         rlAssertGrep "Connecting to http://127.0.0.1:12345/rs/problems" client_create
@@ -121,13 +120,14 @@ rlJournalStart
         rlAssertGrep "Connecting to http://127.0.0.1:12345/rs/cases" client_create
 
         rlAssertGrep "Linking ABRT crash statistics record with the case" client_create
-        rlAssertGrep "post('http://127.0.0.1:12345/faf/reports/attach/','{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"RHCID\", \"data\": \"http:\\\/\\\/127.0.0.1:12345\\\/rs\\\/cases\\\/00809787\\\/attachments\\\/382c3498-0f19-3edc-aa56-580cf0bc7251\" }')" client_create
-        rlAssertGrep "Connecting to http://127.0.0.1:12345/faf/reports/attach/" client_create
+        rlAssertGrep "post('http://127.0.0.1:12345/rs/telemetry/abrt/reports/attach/','{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"RHCID\", \"data\": \"http:\\\/\\\/127.0.0.1:12345\\\/rs\\\/cases\\\/00809787\\\/attachments\\\/382c3498-0f19-3edc-aa56-580cf0bc7251\" }')" client_create
+        rlAssertGrep "Connecting to http://127.0.0.1:12345/rs/telemetry/abrt/reports/attach/" client_create
 
         rlAssertGrep "(Attaching problem data to case)|(Adding comment to case) 'http://127.0.0.1:12345/rs/cases/00809787/attachments/382c3498-0f19-3edc-aa56-580cf0bc7251'" client_create -E
         rlAssertGrep "Connecting to http://127.0.0.1:12345/rs/cases/[0-9]*/attachments/.*/" client_create
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        rlRun "rm -rf /var/tmp/abrt/last-ccpp"
     rlPhaseEnd
 
    rlPhaseStartTest "rhtsupport create with option -u with attach email"
@@ -153,7 +153,7 @@ rlJournalStart
         kill %1
 
         rlAssertGrep "Sending ABRT crash statistics data" client_create
-        rlAssertGrep "Connecting to http://127.0.0.1:12345/faf/reports/new/" client_create
+        rlAssertGrep "Connecting to http://127.0.0.1:12345/rs/telemetry/abrt/reports/new/" client_create
 
         rlAssertGrep "Checking for hints" client_create
         rlAssertGrep "Connecting to http://127.0.0.1:12345/rs/problems" client_create
@@ -162,16 +162,17 @@ rlJournalStart
         rlAssertGrep "Connecting to http://127.0.0.1:12345/rs/cases" client_create
 
         rlAssertGrep "Linking ABRT crash statistics record with the case" client_create
-        rlAssertGrep "post('http://127.0.0.1:12345/faf/reports/attach/','{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"RHCID\", \"data\": \"http:\\\/\\\/127.0.0.1:12345\\\/rs\\\/cases\\\/00809787\\\/attachments\\\/382c3498-0f19-3edc-aa56-580cf0bc7251\" }')" client_create
-        rlAssertGrep "Connecting to http://127.0.0.1:12345/faf/reports/attach/" client_create
+        rlAssertGrep "post('http://127.0.0.1:12345/rs/telemetry/abrt/reports/attach/','{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"RHCID\", \"data\": \"http:\\\/\\\/127.0.0.1:12345\\\/rs\\\/cases\\\/00809787\\\/attachments\\\/382c3498-0f19-3edc-aa56-580cf0bc7251\" }')" client_create
+        rlAssertGrep "Connecting to http://127.0.0.1:12345/rs/telemetry/abrt/reports/attach/" client_create
 
         rlAssertGrep "Linking ABRT crash statistics record with contact email: 'abrt@email.com'" client_create
-        rlAssertGrep "post('http://127.0.0.1:12345/faf/reports/attach/','{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"email\", \"data\": \"abrt@email.com\" }')" client_create
+        rlAssertGrep "post('http://127.0.0.1:12345/rs/telemetry/abrt/reports/attach/','{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"email\", \"data\": \"abrt@email.com\" }')" client_create
 
         rlAssertGrep "(Attaching problem data to case)|(Adding comment to case) 'http://127.0.0.1:12345/rs/cases/00809787/attachments/382c3498-0f19-3edc-aa56-580cf0bc7251'" client_create -E
         rlAssertGrep "Connecting to http://127.0.0.1:12345/rs/cases/[0-9]*/attachments/.*/" client_create
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        rlRun "rm -rf /var/tmp/abrt/last-ccpp"
     rlPhaseEnd
 
     rlPhaseStartTest "rhtsupport create with option -u (uReport has been already submitted, email is configured)"
@@ -196,7 +197,7 @@ rlJournalStart
         kill %1
 
         rlAssertNOTGrep "Sending ABRT crash statistics data" client_create
-        rlAssertNOTGrep "Connecting to http://127.0.0.1:12345/faf/reports/new/" client_create
+        rlAssertNOTGrep "Connecting to http://127.0.0.1:12345/rs/telemetry/abrt/reports/new/" client_create
 
         rlAssertGrep "uReport has already been submitted." client_create
 
@@ -207,16 +208,17 @@ rlJournalStart
         rlAssertGrep "Connecting to http://127.0.0.1:12345/rs/cases" client_create
 
         rlAssertGrep "Linking ABRT crash statistics record with the case" client_create
-        rlAssertGrep "post('http://127.0.0.1:12345/faf/reports/attach/','{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"RHCID\", \"data\": \"http:\\\/\\\/127.0.0.1:12345\\\/rs\\\/cases\\\/00809787\\\/attachments\\\/382c3498-0f19-3edc-aa56-580cf0bc7251\" }')" client_create
-        rlAssertGrep "Connecting to http://127.0.0.1:12345/faf/reports/attach/" client_create
+        rlAssertGrep "post('http://127.0.0.1:12345/rs/telemetry/abrt/reports/attach/','{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"RHCID\", \"data\": \"http:\\\/\\\/127.0.0.1:12345\\\/rs\\\/cases\\\/00809787\\\/attachments\\\/382c3498-0f19-3edc-aa56-580cf0bc7251\" }')" client_create
+        rlAssertGrep "Connecting to http://127.0.0.1:12345/rs/telemetry/abrt/reports/attach/" client_create
 
         rlAssertGrep "Linking ABRT crash statistics record with contact email: 'abrt@email.com'" client_create
-        rlAssertGrep "post('http://127.0.0.1:12345/faf/reports/attach/','{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"email\", \"data\": \"abrt@email.com\" }')" client_create
+        rlAssertGrep "post('http://127.0.0.1:12345/rs/telemetry/abrt/reports/attach/','{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"email\", \"data\": \"abrt@email.com\" }')" client_create
 
         rlAssertGrep "(Attaching problem data to case)|(Adding comment to case) 'http://127.0.0.1:12345/rs/cases/00809787/attachments/382c3498-0f19-3edc-aa56-580cf0bc7251'" client_create -E
         rlAssertGrep "Connecting to http://127.0.0.1:12345/rs/cases/[0-9]*/attachments/.*/" client_create
 
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash dir"
+        rlRun "rm -rf /var/tmp/abrt/last-ccpp"
     rlPhaseEnd
 
     rlPhaseStartTest "rhtsupport create with option -u (uReport has been already submitted, email is not configured)"
@@ -242,7 +244,7 @@ rlJournalStart
         kill %1
 
         rlAssertNOTGrep "Sending ABRT crash statistics data" client_create
-        rlAssertNOTGrep "Connecting to http://127.0.0.1:12345/faf/reports/new/" client_create
+        rlAssertNOTGrep "Connecting to http://127.0.0.1:12345/rs/telemetry/abrt/reports/new/" client_create
 
         rlAssertGrep "uReport has already been submitted." client_create
 
@@ -253,11 +255,11 @@ rlJournalStart
         rlAssertGrep "Connecting to http://127.0.0.1:12345/rs/cases" client_create
 
         rlAssertGrep "Linking ABRT crash statistics record with the case" client_create
-        rlAssertGrep "post('http://127.0.0.1:12345/faf/reports/attach/','{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"RHCID\", \"data\": \"http:\\\/\\\/127.0.0.1:12345\\\/rs\\\/cases\\\/00809787\\\/attachments\\\/382c3498-0f19-3edc-aa56-580cf0bc7251\" }')" client_create
-        rlAssertGrep "Connecting to http://127.0.0.1:12345/faf/reports/attach/" client_create
+        rlAssertGrep "post('http://127.0.0.1:12345/rs/telemetry/abrt/reports/attach/','{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"RHCID\", \"data\": \"http:\\\/\\\/127.0.0.1:12345\\\/rs\\\/cases\\\/00809787\\\/attachments\\\/382c3498-0f19-3edc-aa56-580cf0bc7251\" }')" client_create
+        rlAssertGrep "Connecting to http://127.0.0.1:12345/rs/telemetry/abrt/reports/attach/" client_create
 
         rlAssertNOTGrep "Linking ABRT crash statistics record with contact email: 'abrt@email.com'" client_create
-        rlAssertNOTGrep "post('http://127.0.0.1:12345/faf/reports/attach/','{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"email\", \"data\": \"abrt@email.com\" }')" client_create
+        rlAssertNOTGrep "post('http://127.0.0.1:12345/rs/telemetry/abrt/reports/attach/','{ \"bthash\": \"691cf824e3e07457156125636e86c50279e29496\", \"type\": \"email\", \"data\": \"abrt@email.com\" }')" client_create
 
         rlAssertGrep "(Attaching problem data to case)|(Adding comment to case) 'http://127.0.0.1:12345/rs/cases/00809787/attachments/382c3498-0f19-3edc-aa56-580cf0bc7251'" client_create -E
         rlAssertGrep "Connecting to http://127.0.0.1:12345/rs/cases/[0-9]*/attachments/.*/" client_create
