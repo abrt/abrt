@@ -167,6 +167,12 @@ rlJournalStart
         rlRun "cp cert/$ENTIT_CERT $ENTIT_DIR"
         rlRun "cp cert/$ENTIT_KEY $ENTIT_DIR"
 
+        rlRun "cp cert/$ENTIT_CERT $ENTIT_DIR/2$ENTIT_CERT"
+        rlRun "cp cert/$ENTIT_KEY $ENTIT_DIR/2$ENTIT_KEY"
+
+        rlRun "cp cert/$ENTIT_CERT $ENTIT_DIR/3$ENTIT_CERT"
+        rlRun "cp cert/$ENTIT_KEY $ENTIT_DIR/3$ENTIT_KEY"
+
         rlRun "augtool set /files/etc/libreport/plugins/ureport.conf/SSLClientAuth rhsm-entitlement"
 
         ./pyserve none &
@@ -187,8 +193,8 @@ rlJournalStart
         rlAssertGrep "User-Agent: ABRT/.*" ureport.log
 
         if [ $EXISTED = "yes" ]; then
-            rlRun "rm $ENTIT_DIR/$ENTIT_CERT"
-            rlRun "rm $ENTIT_DIR/$ENTIT_KEY"
+            rlRun "rm -v $ENTIT_DIR/*$ENTIT_CERT"
+            rlRun "rm -v $ENTIT_DIR/*$ENTIT_KEY"
         else
             rlRun "rm -r $ENTIT_DIR"
         fi
