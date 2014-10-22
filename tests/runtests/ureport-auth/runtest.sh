@@ -40,7 +40,7 @@ function run_reporter() {
     PYSERVE_PID=$!
     wait_for_server 12345
 
-    rlRun "reporter-ureport -v --insecure --url https://localhost:12345/faf -d $crash_PATH $ARGS &> ccpp_reporter" $RET "auth $AUTH, reporter-ureport $ARGS"
+    rlRun "reporter-ureport -vvv --insecure --url https://localhost:12345/faf -d $crash_PATH $ARGS &> ccpp_reporter" $RET "auth $AUTH, reporter-ureport $ARGS"
 
     kill $PYSERVE_PID
 }
@@ -53,7 +53,9 @@ rlJournalStart
         pushd $TmpDir
 
         check_prior_crashes
+        prepare
         generate_crash
+        wait_for_hooks
         get_crash_path
     rlPhaseEnd
 
@@ -127,60 +129,28 @@ rlJournalStart
         export -n uReport_SSLClientAuth
 
         # setting cert implicitly via "rhsm"
-        RHSM_DIR=/etc/pki/consumer
-        RHSM_CERT=$RHSM_DIR/cert.pem
-        RHSM_KEY=$RHSM_DIR/key.pem
+        RHSM_DIR=/etc/pki/entitlement
+        RHSM_CERT=5244703559636416619.pem
+        RHSM_KEY=5244703559636416619-key.pem
         if test -d $RHSM_DIR; then
-            EXISTED="yes"
-            mv $RHSM_CERT cert_backup
-            mv $RHSM_KEY key_backup
-        else
-            EXISTED="no"
-            mkdir -p $RHSM_DIR
-        fi
-        cp cert/client_cert.pem $RHSM_CERT
-        cp cert/client_key.pem $RHSM_KEY
-
-        run_reporter required "-t rhsm" 70
-        rlAssertGrep "AUTH ureport-reporter-cn" server_log
-
-        if [ $EXISTED = "yes" ]; then
-            mv cert_backup $RHSM_CERT
-            mv key_backup $RHSM_KEY
-        else
-            rm -r $RHSM_DIR
-        fi
-    rlPhaseEnd
-
-    rlPhaseStartTest "report authorization through RHSM entitlement certificates"
-
-        ENTIT_DIR=/etc/pki/entitlement
-        ENTIT_CERT=5244703559636416619.pem
-        ENTIT_KEY=5244703559636416619-key.pem
-        if test -d $ENTIT_DIR; then
-            EXISTED="yes"
-        else
-            EXISTED="no"
-            mkdir -p $ENTIT_DIR
+            rlRun "mv $RHSM_DIR entitlement_backup"
         fi
 
-        rlRun "cp cert/$ENTIT_CERT $ENTIT_DIR"
-        rlRun "cp cert/$ENTIT_KEY $ENTIT_DIR"
+        rlRun "mkdir -p $RHSM_DIR"
 
-        rlRun "cp cert/$ENTIT_CERT $ENTIT_DIR/2$ENTIT_CERT"
-        rlRun "cp cert/$ENTIT_KEY $ENTIT_DIR/2$ENTIT_KEY"
+        rlRun "cp cert/$RHSM_CERT $RHSM_DIR"
+        rlRun "cp cert/$RHSM_KEY $RHSM_DIR"
 
-        rlRun "cp cert/$ENTIT_CERT $ENTIT_DIR/3$ENTIT_CERT"
-        rlRun "cp cert/$ENTIT_KEY $ENTIT_DIR/3$ENTIT_KEY"
+        rlRun "cp cert/$RHSM_CERT $RHSM_DIR/2$RHSM_CERT"
+        rlRun "cp cert/$RHSM_KEY $RHSM_DIR/2$RHSM_KEY"
 
-        rlRun "augtool set /files/etc/libreport/plugins/ureport.conf/SSLClientAuth rhsm-entitlement"
+        rlRun "cp cert/$RHSM_CERT $RHSM_DIR/3$RHSM_CERT"
+        rlRun "cp cert/$RHSM_KEY $RHSM_DIR/3$RHSM_KEY"
 
-        ./pyserve none &
-        sleep 1
-        rlRun "reporter-ureport -vvv --insecure --url https://localhost:12345/faf -d $crash_PATH &> ureport.log" 70 "Send uReport"
-        kill %1
+        run_reporter none "-t rhsm" 70
 
-        cert=$(tr -d '\n' < cert/$ENTIT_CERT)
+        rlRun "cp ccpp_reporter ureport.log"
+        cert=$(tr -d '\n' < cert/$RHSM_CERT)
 
         entit_data=`echo $cert | egrep -o "\-\-\-\-\-BEGIN ENTITLEMENT DATA\-\-\-\-\-.*\-\-\-\-\-END ENTITLEMENT DATA\-\-\-\-\-"`
         entit_sign=`echo $cert | egrep -o "\-\-\-\-\-BEGIN RSA SIGNATURE\-\-\-\-\-.*\-\-\-\-\-END RSA SIGNATURE\-\-\-\-\-"`
@@ -192,18 +162,15 @@ rlJournalStart
         rlAssertGrep "X-RH-Entitlement-Sig: $entit_sign" ureport.log
         rlAssertGrep "User-Agent: ABRT/.*" ureport.log
 
-        if [ $EXISTED = "yes" ]; then
-            rlRun "rm -v $ENTIT_DIR/*$ENTIT_CERT"
-            rlRun "rm -v $ENTIT_DIR/*$ENTIT_KEY"
-        else
-            rlRun "rm -r $ENTIT_DIR"
+        rlRun "rm -r $RHSM_DIR"
+        if test -d entitlement_backup; then
+            rlRun "mv entitlement_backup $RHSM_DIR"
         fi
-
-
     rlPhaseEnd
 
     rlPhaseStartCleanup
         rlRun "abrt-cli rm $crash_PATH"
+        rlBundleLogs ureport_auth_logs ureport.log
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd
