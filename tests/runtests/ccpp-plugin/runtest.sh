@@ -67,6 +67,16 @@ rlJournalStart
         rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace 2>&1 > verify_result" 0
     rlPhaseEnd
 
+    rlPhaseStartTest "core_backtrace for stack overflow"
+        generate_stack_overflow_crash
+        get_crash_path
+        wait_for_hooks
+
+        rlAssertExists "$crash_PATH/core_backtrace"
+        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace 2>&1 > verify_result" 0
+        rlRun "./verify_core_backtrace_length.py $crash_PATH/core_backtrace 2>&1 > verify_result" 0
+    rlPhaseEnd
+
     rlPhaseStartCleanup
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
         rlRun "ulimit -c $old_ulimit" 0
