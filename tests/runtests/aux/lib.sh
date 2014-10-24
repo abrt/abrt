@@ -67,6 +67,11 @@ function generate_second_crash() {
     will_abort
 }
 
+function generate_stack_overflow_crash() {
+    rlLog "Generate stack overflow"
+    will_stackoverflow
+}
+
 function generate_python_segfault() {
     rlLog "Generate python segfault"
     will_python_sigsegv
