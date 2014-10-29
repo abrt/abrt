@@ -41,7 +41,7 @@ rlJournalStart
         rlRun "ulimit -c unlimited" 0
 
         TmpDir=$(mktemp -d)
-        cp verify_core_backtrace.py $TmpDir
+        cp verify_core_backtrace.py verify_core_backtrace_length.py $TmpDir
         pushd $TmpDir
     rlPhaseEnd
 
