@@ -87,6 +87,14 @@ rlJournalStart
 
         rlRun "$ABRT_EXE -o machine_id.log 2>machine_id_errors.log" 0 "run abrt-action-generate-machine-id"
 
+        rlAssertGrep "systemd=$(cat /etc/machine-id)" $crash_PATH/machineid
+
+        if which dmidecode; then
+            rlAssertGrep "sosreport_uploader-dmidecode=" $crash_PATH/machineid
+        else
+            rlLog "dmidecode-less system"
+        fi
+
         rlAssertEquals "The error log is empty" "_" "_$(cat machine_id_errors.log)"
         rlAssertNotDiffer "$crash_PATH/machineid" machine_id.log
 
