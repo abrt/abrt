@@ -118,9 +118,9 @@ def generate_machine_id(generators):
 def print_result(ids, outfile, prefixed):
     """Writes a dictionary of machine ids to a file
 
-    Each dictionary entry is written on a single line and the last line does
-    not have new line character. The new line character is omitted as it is a
-    common approach in ABRT.
+    Each dictionary entry is written on a single line. The function does not
+    print trailing new-line if the dictionary contains only one item as it is
+    common format of one-liners placed in a dump directory.
 
     Keyword arguments:
     ids -- a dictionary [generator name: machine ids]
@@ -130,15 +130,10 @@ def print_result(ids, outfile, prefixed):
 
     fmt = '{0}={1}' if prefixed else '{1}'
 
-    items_iter = ids.iteritems()
-    try:
-        sd, mid = items_iter.next()
-        outfile.write(fmt.format(sd, mid))
-    except StopIteration:
-        return
+    if len(ids) > 1:
+        fmt += '\n'
 
-    fmt = '\n' + fmt
-    for sd, mid in items_iter:
+    for sd, mid in ids.iteritems():
         outfile.write(fmt.format(sd,mid))
 
 
@@ -193,6 +188,8 @@ if __name__ == '__main__':
             sys.exit(1)
     else:
         print_result(machineids, sys.stdout, not ARGS['noprefix'])
-        sys.stdout.write('\n')
+        # print_results() omits new-line for one-liners
+        if len(machineids) == 1:
+            sys.stdout.write('\n')
 
     sys.exit(len(requested_generators) - len(machineids.keys()))
