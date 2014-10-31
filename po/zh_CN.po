@@ -6,7 +6,7 @@
 # alanzheng <machinecat1666@gmail.com>, 2011
 # Alick Zhao <alick9188@gmail.com>, 2011,2013
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
-# Mike Manilone <zhtx10@gmail.com>, 2011
+# Ma Kai <crtmike@gmail.com>, 2011
 # Tiansworld <tiansworld@fedoraproject.org>, 2012-2013
 # Tommy He <lovenemesis@gmail.com>, 2011-2012
 # Yangxin Guan <isyangxin@gmail.com>, 2013
@@ -18,9 +18,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-10-03 13:47+0200\n"
-"PO-Revision-Date: 2014-10-03 11:47+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-10-13 17:42+0200\n"
+"PO-Revision-Date: 2014-10-23 01:03+0000\n"
+"Last-Translator: Wei Liu <LLIU@REDHAT.COM>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/fedora-abrt/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -92,7 +92,7 @@ msgid ""
 "You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "您要将某个具体问题的通知静音。您将再也无法看到这个问题的通知气泡，但 ABRT 将继续对其进行探测，同时您也可以使用 ABRT GUI 报告该问题。\n\n您要继续吗？"
 
 #: ../src/applet/applet.c:748 ../src/applet/applet.c:750
 msgid "Warning"
@@ -205,19 +205,19 @@ msgstr "& [-v] [DIR]...\n\nABRT 探测到问题后，小程序会通知用户\n"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr ""
+msgstr "占用目录前询问"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
-msgstr ""
+msgstr "自动发送 uReport"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
-msgstr ""
+msgstr "缩略报告"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
-msgstr ""
+msgstr "静默式缩略报告"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
@@ -226,7 +226,7 @@ msgid ""
 " trace from the coredump but you have to upload the coredump to this "
 "service. With this option disabled ABRT will upload the coredump without "
 "asking."
-msgstr ""
+msgstr "核心转储文件是生成费时费空间栈回溯的必要操作。ABRT 提供从核心转储生成栈回溯的服务，但您必须将核心转储上传到到该服务。当禁用此选项后 ABRT 将自动上传核心转储而不再询问。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -234,7 +234,7 @@ msgid ""
 "directory, the directory is moved from the system location to your home "
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
-msgstr ""
+msgstr "ABRT 将问题数据保存在目录中。当 ABRT 需要可写入目录时，该目录从系统位置移动到您的主目录。当禁用此选项后 ABRT 移动问题目录时将不再询问。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
@@ -242,45 +242,45 @@ msgid ""
 "uses uReports  for fast global duplicate detection. In default configuration"
 " uReport is sent at beginning of reporting process. With this option enabled"
 " uReports are sent automatically immediately after problem detection."
-msgstr ""
+msgstr "uReport 是问题的简要且完全匿名的描述。ABRT 使用 uReport 进行快速的全局重复检查。在默认配置下 uReport 在报告过程的一开始发送。当启用该选项后 uReports 将在发现问题后立即自动发送。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
 "With this option enabled reporting process started by click on Report button"
 " in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
-msgstr ""
+msgstr "启用该选项后，将会在 uReport 发送后中断由问题气泡通知中报告按钮开始的报告进程。您依然可以使用默认问题浏览器完成报告。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
-msgstr ""
+msgstr "启用该选项后 ABRT 不再提示汇报问题。仅在缩略报告启用的情况下生效。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid "Ask before uploading coredump"
-msgstr ""
+msgstr "在上传核心转储前询问"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are dected."
-msgstr ""
+msgstr "启用这个选项后，一旦检测到敏感数据，ABRT 将创建有优先访问权限的 bug ticket。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Request private ticket for sensitive information"
-msgstr ""
+msgstr "为敏感信息请求专用 ticket"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid "Notify incomplete problems"
-msgstr ""
+msgstr "通知不完整的问题"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
-msgstr ""
+msgstr "不完整的问题通常在电脑关机或用户登出时发生。为提供有价值的问题报告，ABRT 将不允许您提交此类问题。"
 
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Close"
@@ -493,72 +493,72 @@ msgid ""
 "   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n"
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
-msgstr ""
+msgstr "用法：%s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n\n   -v             - Verbose\n   -d             - Delete uploaded archive\n   ABRT_SPOOL_DIR - 将有效上传归档解压缩到该目录\n   UPLOAD_DIR     - 保存已上传归档的目录\n   FILENAME       - 已上传归档文件吗\n"
 
 #: ../src/daemon/abrt-handle-upload.in:105
 #: ../src/daemon/abrt-handle-upload.in:108
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "不是一个目录：'{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:111
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
+msgstr "跳过：'{0}'（以斜杠开始）"
 
 #: ../src/daemon/abrt-handle-upload.in:114
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
+msgstr "跳过：'{0}'（以点开始）"
 
 #: ../src/daemon/abrt-handle-upload.in:117
 msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
+msgstr "跳过：'{0}'（包含..）"
 
 #: ../src/daemon/abrt-handle-upload.in:120
 msgid "Skipping: '{0}' (contains space)"
-msgstr ""
+msgstr "跳过：'{0}'（包含空格）"
 
 #: ../src/daemon/abrt-handle-upload.in:123
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "跳过：'{0}'（包含 tab）"
 
 #: ../src/daemon/abrt-handle-upload.in:128
 msgid "Can't change directory to '{0}'"
-msgstr ""
+msgstr "无法该为目录 '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:139
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "未知文件类型：'{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:144
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "无法在 '{0}' 在这创建工作目录"
 
 #: ../src/daemon/abrt-handle-upload.in:155
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "无法从 '{0}' 迁移到 '{1}'"
 
 #: ../src/daemon/abrt-handle-upload.in:160
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "无法从 '{0}' 迁复制 '{1}'"
 
 #: ../src/daemon/abrt-handle-upload.in:164
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "'{0}' 中的验证错误"
 
 #: ../src/daemon/abrt-handle-upload.in:166
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "正在解压缩 '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:170
 msgid "Can't create '{0}' directory"
-msgstr ""
+msgstr "无法创建 '{0}' 目录"
 
 #: ../src/daemon/abrt-handle-upload.in:174
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "无法解压缩 '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:198
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "成功处理 '{0}'"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
@@ -638,21 +638,21 @@ msgstr "& [-v] -d DIR\n\n在有问题的目录 DIR 中计算并保存核心转�
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "正在分析核心转储 '%s'"
 
 #: ../src/plugins/abrt-action-analyze-core.in:110
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "缺少构建 id：'%s'"
 
 #: ../src/plugins/abrt-action-analyze-core.in:142
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr ""
+msgstr "用法：%s [-v] [-o OUTFILE] -c COREFILE"
 
 #: ../src/plugins/abrt-action-analyze-core.in:164
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "未指定 COREFILE"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
@@ -706,7 +706,7 @@ msgstr "无法提取异常信息: '{0}'"
 msgid "Oops text extracted successfully"
 msgstr "成功提取异常文字信息"
 
-#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:81
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
@@ -842,37 +842,37 @@ msgstr "删除该目录中的文件"
 msgid "Preserve this directory"
 msgstr "保留该目录"
 
-#: ../src/plugins/abrt-action-ureport:39
+#: ../src/plugins/abrt-action-ureport:59
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr "无法启动 '%s'，出错信息为：'%s'"
 
-#: ../src/plugins/abrt-action-ureport:50
+#: ../src/plugins/abrt-action-ureport:70
 #, c-format
 msgid "Not a number in file '%s'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-ureport:66
-#, c-format
-msgid "Usage: %s [-v]"
-msgstr ""
+msgstr "不是文件 '%s' 中的数字"
 
 #: ../src/plugins/abrt-action-ureport:86
+#, c-format
+msgid "Usage: %s [-v]"
+msgstr "用法：%s [-v]"
+
+#: ../src/plugins/abrt-action-ureport:107
 msgid "Unable to get current working directory as it was probably deleted"
-msgstr ""
+msgstr "无法获取当前工作目录因为可能已将其删除"
 
-#: ../src/plugins/abrt-action-ureport:117
+#: ../src/plugins/abrt-action-ureport:138
 msgid "A bug was already filed about this problem:"
-msgstr ""
+msgstr "已存在有关这个问题的 bug："
 
-#: ../src/plugins/abrt-action-ureport:127
+#: ../src/plugins/abrt-action-ureport:148
 msgid "uReport was already sent, not sending it again"
-msgstr ""
+msgstr "已发送 uReport，请不要再次发送。"
 
-#: ../src/plugins/abrt-action-ureport:145
+#: ../src/plugins/abrt-action-ureport:176
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
-msgstr ""
+msgstr "reporter-ureport 失败并给出退出代码 %d"
 
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
@@ -1066,7 +1066,7 @@ msgstr "输出搜索字符串至标准输出并退出"
 
 #: ../src/plugins/abrt-dump-oops.c:311
 msgid "Failed to compile regex"
-msgstr ""
+msgstr "编译正则表达式失败"
 
 #: ../src/plugins/abrt-dump-oops.c:402
 msgid "Can't update the problem: more than one oops found"
@@ -1650,7 +1650,7 @@ msgstr "用法：abrt-cli [--version] COMMAND [DIR]..."
 
 #: ../src/cli/abrt-cli.c:148
 msgid "List problems [in DIRs]"
-msgstr ""
+msgstr "列出 [in DIRs] 的问题"
 
 #: ../src/cli/abrt-cli.c:149
 msgid "Remove problem directory DIR"
@@ -1670,7 +1670,7 @@ msgstr "显示最近的崩溃计数"
 
 #: ../src/cli/abrt-cli.c:153
 msgid "Process multiple problems"
-msgstr ""
+msgstr "处理多个问题"
 
 #: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
@@ -1736,42 +1736,42 @@ msgstr "ABRT 已检测到 '%u' 个问题。预了解详细信息请执行：abrt
 
 #: ../src/cli/report.c:28
 msgid "& report [options] DIR..."
-msgstr ""
+msgstr "& report [options] DIR..."
 
 #: ../src/cli/report.c:38
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "报告后删除 PROBLEM_DIR"
 
 #: ../src/cli/report.c:71 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "正在删除 '%s'"
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
-msgstr ""
+msgstr "动作：remove(rm), info(i), skip(s):"
 
 #: ../src/cli/process.c:66
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
-msgstr ""
+msgstr "动作：remove(rm), report(e), info(i), skip(s):"
 
 #: ../src/cli/process.c:77
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "正在报告 '%s'"
 
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:133
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "下一个问题请按 ENTER："
 
 #: ../src/cli/process.c:144
 msgid "Without --since argument, iterates over all detected problems."
-msgstr ""
+msgstr "没有 --since 参数，则重复所有探测到的问题。"
 
 #: ../src/cli/process.c:150
 msgid "Selects only problems detected after timestamp"
-msgstr ""
+msgstr "只选择时间戳之后探测到的问题"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""

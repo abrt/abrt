@@ -11,6 +11,7 @@
 # beckerde <domingobecker@gmail.com>, 2011,2013
 # Eduardo Villagrán M <gotencool@gmail.com>, 2013
 # vareli <ehespinosa@ya.com>, 2014
+# Gerardo Rosales <grosale86@gmail.com>, 2014
 # Gladys Guerrero <gguerrer@redhat.com>, 2014
 # Henderb Rodriguez <henderbj@gmail.com>, 2014
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
@@ -22,9 +23,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-10-03 13:47+0200\n"
-"PO-Revision-Date: 2014-10-03 11:47+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-10-13 17:42+0200\n"
+"PO-Revision-Date: 2014-10-10 18:53+0000\n"
+"Last-Translator: Gerardo Rosales <grosale86@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/fedora-abrt/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -96,7 +97,7 @@ msgid ""
 "You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "Vas a silenciar las notificaciones de un problema en particular. Nunca más verás una notificación para este problema, sin embargo, ABRT seguirá detectándolos y serás capaz de reportarlo desde la interfaz de ABRT.\n\n¿Deseas continuar?"
 
 #: ../src/applet/applet.c:748 ../src/applet/applet.c:750
 msgid "Warning"
@@ -269,7 +270,7 @@ msgstr "Preguntar antes de subir coredump"
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are dected."
-msgstr ""
+msgstr "Con esta opción habilitada ABRT siempre crea una entrada del bug con acceso restringido si son detectados datos posiblemente sensibles."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Request private ticket for sensitive information"
@@ -497,72 +498,72 @@ msgid ""
 "   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n"
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
-msgstr ""
+msgstr "Uso: %s[-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n\n-v - Informativo\n-d - Elimina el archivo cargado\nABRT_SPOOL_DIR - Directorio en el cual los archivos cargados son desempaquetados\nUPLOAD_DIR - Directorio donde los archivos cargados son guardados\nFILENAME - Nombre del archivo cargado\n"
 
 #: ../src/daemon/abrt-handle-upload.in:105
 #: ../src/daemon/abrt-handle-upload.in:108
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "No es un directorio: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:111
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
+msgstr "Omitiendo: '{0}' (Inicia con una barra diagonal / )"
 
 #: ../src/daemon/abrt-handle-upload.in:114
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
+msgstr "Omitiendo: '{0}' (Inicia con un punto)"
 
 #: ../src/daemon/abrt-handle-upload.in:117
 msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
+msgstr "Omitiendo: '{0}' (contiene ..)"
 
 #: ../src/daemon/abrt-handle-upload.in:120
 msgid "Skipping: '{0}' (contains space)"
-msgstr ""
+msgstr "Omitiendo: '{0}' (Contiene espacio)"
 
 #: ../src/daemon/abrt-handle-upload.in:123
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "Omitiendo: '{0}' (Contiene tabulación)"
 
 #: ../src/daemon/abrt-handle-upload.in:128
 msgid "Can't change directory to '{0}'"
-msgstr ""
+msgstr "No se puede cambiar el directorio a '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:139
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "Tipo de archivo desconocido: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:144
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "No se puede crear un directorio para trabajar en '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:155
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "No se puede mover '{0}' a '{1}'"
 
 #: ../src/daemon/abrt-handle-upload.in:160
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "No se puede copiar '{0}' a '{1}'"
 
 #: ../src/daemon/abrt-handle-upload.in:164
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "Error de verificación en '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:166
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "Desempacando '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:170
 msgid "Can't create '{0}' directory"
-msgstr ""
+msgstr "No se puede crear el directorio '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:174
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "No se puede desempaquetar '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:198
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' se proceso exitosamente"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
@@ -710,7 +711,7 @@ msgstr "No puedo extraer el mensaje ups:'{0}'"
 msgid "Oops text extracted successfully"
 msgstr "EL texto ups a sido extraído efectivamente "
 
-#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:81
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
@@ -846,37 +847,37 @@ msgstr "Borrar archivos dentro de este directorio"
 msgid "Preserve this directory"
 msgstr "Preservar este directorio"
 
-#: ../src/plugins/abrt-action-ureport:39
+#: ../src/plugins/abrt-action-ureport:59
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr "No se pudo iniciar '%s', el mensaje de error fue: '%s'"
 
-#: ../src/plugins/abrt-action-ureport:50
+#: ../src/plugins/abrt-action-ureport:70
 #, c-format
 msgid "Not a number in file '%s'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-ureport:66
-#, c-format
-msgid "Usage: %s [-v]"
-msgstr ""
+msgstr "No un número en el archivo '%s'"
 
 #: ../src/plugins/abrt-action-ureport:86
+#, c-format
+msgid "Usage: %s [-v]"
+msgstr "Uso: %s[-v]"
+
+#: ../src/plugins/abrt-action-ureport:107
 msgid "Unable to get current working directory as it was probably deleted"
-msgstr ""
+msgstr "Imposible obtener el directorio de trabajo actual, probablemente fue borrado"
 
-#: ../src/plugins/abrt-action-ureport:117
+#: ../src/plugins/abrt-action-ureport:138
 msgid "A bug was already filed about this problem:"
-msgstr ""
+msgstr "Un error ya fue reportado acerca de este problema:"
 
-#: ../src/plugins/abrt-action-ureport:127
+#: ../src/plugins/abrt-action-ureport:148
 msgid "uReport was already sent, not sending it again"
-msgstr ""
+msgstr "uReport ya fue enviado, no se enviará de nuevo"
 
-#: ../src/plugins/abrt-action-ureport:145
+#: ../src/plugins/abrt-action-ureport:176
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
-msgstr ""
+msgstr "reporter-ureport falló con el código de salida %d"
 
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
@@ -1070,7 +1071,7 @@ msgstr "Imprime la(s) cadena(s) de búsqueda a stdout y sale"
 
 #: ../src/plugins/abrt-dump-oops.c:311
 msgid "Failed to compile regex"
-msgstr ""
+msgstr "Fallo al compilar regex"
 
 #: ../src/plugins/abrt-dump-oops.c:402
 msgid "Can't update the problem: more than one oops found"
@@ -1654,7 +1655,7 @@ msgstr "Uso: abrt-cli [--version] COMANDO [DIR]..."
 
 #: ../src/cli/abrt-cli.c:148
 msgid "List problems [in DIRs]"
-msgstr ""
+msgstr "Listar problemas [en DIRs]"
 
 #: ../src/cli/abrt-cli.c:149
 msgid "Remove problem directory DIR"
@@ -1674,7 +1675,7 @@ msgstr "Imprima el conteo de las fallas recientes"
 
 #: ../src/cli/abrt-cli.c:153
 msgid "Process multiple problems"
-msgstr ""
+msgstr "Procesando varios problemas"
 
 #: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
@@ -1740,42 +1741,42 @@ msgstr "ABRT a detectado %u problema(s). Para más información ejecute: abrt-cl
 
 #: ../src/cli/report.c:28
 msgid "& report [options] DIR..."
-msgstr ""
+msgstr "& reporte[opciones] DIR..."
 
 #: ../src/cli/report.c:38
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "Elimina PROBLEM_DIR después de reportarlos"
 
 #: ../src/cli/report.c:71 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "Borrando '%s'"
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
-msgstr ""
+msgstr "Acciones: eliminar(rm), información(i), omitir(s):"
 
 #: ../src/cli/process.c:66
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
-msgstr ""
+msgstr "Acciones: eliminar(rm), reporte(e), información(i), omitir(s):"
 
 #: ../src/cli/process.c:77
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "Reportando '%s'"
 
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:133
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "Para el siguiente problema presione la tecla ENTER:"
 
 #: ../src/cli/process.c:144
 msgid "Without --since argument, iterates over all detected problems."
-msgstr ""
+msgstr "Without -- puesto que el argumento se repite sobre todos los problemas detectados."
 
 #: ../src/cli/process.c:150
 msgid "Selects only problems detected after timestamp"
-msgstr ""
+msgstr "Selecciona unicamente los problemas después del tiempo especificado"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""

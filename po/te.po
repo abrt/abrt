@@ -6,14 +6,15 @@
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
 # Krishnababu Krothapalli <krisnababu@gmail.com>, 2013-2014
 # Sudheesh Singanamalla <sudheesh1995@outlook.com>, 2013
+# Sudheesh Singanamalla <sudheesh1995@outlook.com>, 2013
 # ప్రవీణ్ ఇళ్ళ <mail2ipn@gmail.com>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-10-03 13:47+0200\n"
-"PO-Revision-Date: 2014-10-03 11:47+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-10-13 17:42+0200\n"
+"PO-Revision-Date: 2014-10-16 09:36+0000\n"
+"Last-Translator: Krishnababu Krothapalli <krisnababu@gmail.com>\n"
 "Language-Team: Telugu (http://www.transifex.com/projects/p/fedora-abrt/language/te/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -85,7 +86,7 @@ msgid ""
 "You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "మీరు ఫలానా సమస్యకు చెందిన ప్రకటనలను రాకుండా చేయబోతున్నారు. మీరు ఇకపై ఈ సమస్యకు సంబందించి ప్రకటనను చూడబోరు, ఏమైనప్పటికీ, ABRT దానిని గుర్తించగలదు మరియు మీరు దానిని ABRT GUI నుండి నివేదించగల్గుతారు.\n\nమీరు కొనసాగాలని అనుకుంటున్నారా?"
 
 #: ../src/applet/applet.c:748 ../src/applet/applet.c:750
 msgid "Warning"
@@ -198,19 +199,19 @@ msgstr "& [-v] [DIR]...\n\nABRT చేత కొత్త సమస్యలు 
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr ""
+msgstr "సంచయాన్ని దొంగిలించుటకు ముందుగా అడుగుము"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
-msgstr ""
+msgstr "uReport స్వయంచాలకంగా పంపు"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
-msgstr ""
+msgstr "కుందించిన నివేదన"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
-msgstr ""
+msgstr "సైలెంట్ షార్టెన్డ్ రిపోర్టింగ్"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
@@ -219,7 +220,7 @@ msgid ""
 " trace from the coredump but you have to upload the coredump to this "
 "service. With this option disabled ABRT will upload the coredump without "
 "asking."
-msgstr ""
+msgstr "స్టాక్ ట్రేస్ పుట్టించుటకు కోర్‌డంప్ ఫైలు తప్పనిసరి ఇది సమయం మరియు జాగా ఖర్చుచేసే కార్యక్రమం. స్టాక్ ట్రేస్ నుండి కోర్‌డంప్‌ను పుట్టించే సేవను ABRT అందిస్తుంది అయితే మీరు కోర్‌డంప్‌ను దాని సేవకు ఎక్కించాలి. ఈ ఐచ్చికం ఆచేతించినచో ABRT కోర్‌డంప్‌ను అడగకుండానే అప్‌లోడ్ చేయును."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -227,7 +228,7 @@ msgid ""
 "directory, the directory is moved from the system location to your home "
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
-msgstr ""
+msgstr "ABRT సమస్యాత్మక డేటాను సంచయాలనందు నిల్వవుంచును. ABRT కు వ్రాయదగ్గ సంచయం అవసరమైనప్పుడు, ఆ సంచయం వ్యవస్థ స్థానమునుండి మీ నివాస సంచయంకు కదల్చబడును. ఈ ఐచ్చికం అచేతించినచో ABRT సమస్యాత్మక సంచయాన్ని అడగకుండానే కదుల్చును."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
@@ -235,45 +236,45 @@ msgid ""
 "uses uReports  for fast global duplicate detection. In default configuration"
 " uReport is sent at beginning of reporting process. With this option enabled"
 " uReports are sent automatically immediately after problem detection."
-msgstr ""
+msgstr "uReport అనగా సమస్యయొక్క సంక్షిప్త మరియు పూర్తి ఎనానిమస్ వివరణ. ABRT అనునది uReport ను ఫాస్ట్ గ్లోబల్ డూప్లికేట్ డిటెక్షన్ కొరకు ఉపయోగించును. అప్రమేయ ఆకృతీకరణనందు uReport అనునది నివేదీకరణ కార్యక్రమం ప్రారంభంలోనే పంపును. ఈ ఐచ్చికం చేతనించితే uReportలు అనునవి, సమస్య గుర్తించిన తక్షణమే స్వయంచాలకంగా పంపబడును."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
 "With this option enabled reporting process started by click on Report button"
 " in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
-msgstr ""
+msgstr "ఈ ఐచ్చికం చేతనించివుంటే గనుక, సమస్యను ప్రకటించిన బుడగనందలి నివేదించు బటన్ నొక్కి ప్రారంభించబడిన నివేదీకరణ కార్యక్రమం అనునది uReport పంపిన తరువాత అడ్డగించబడును. పూర్తి నివేదన చేయుటకు మీరు అప్రమేయ సమస్యా విహారిణిని ఉపయోగించవచ్చు."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
-msgstr ""
+msgstr "ఈ ఐచ్చికం చేతనించకపోతే, నివేదించిన సమస్యల గురించన ప్రకటనలను ABRT ఎప్పటికీ చూపదు. షార్టెన్డ్ నివేదీకరణ చేతనమైతేనే దీని ప్రభావంవుంటుంది."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid "Ask before uploading coredump"
-msgstr ""
+msgstr "కోర్‌డంప్‌ను అప్‌లోడ్ చేయుటకు ముందుగా అడుగుము"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are dected."
-msgstr ""
+msgstr "ఈ ఐచ్చికం చేతనించివున్నప్పుడు, సెన్సిటివ్ అవ్వగల డేటా ఏదైనా గుర్తించబడితే ABRT ఎప్పుడూ బగ్ టికెట్‌ను పరిమిత ఏక్సెస్‌తో సృష్టించును."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Request private ticket for sensitive information"
-msgstr ""
+msgstr "సున్నితమైన సమాచారం కొరకు వ్యక్తిగత టికెట్‌ను అభ్యర్ధించును"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid "Notify incomplete problems"
-msgstr ""
+msgstr "అసంపూర్ణ సమస్యలను ప్రకటించుము"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
-msgstr ""
+msgstr "కంప్యూటర్ మూసివేయ బడుతున్నప్పుడు లేదా వాడుకరి లాగ్ అవుట్ అవుతున్నప్పుడు అసంపూర్ణ సమస్యలను గుర్తించబడెను. సమస్య యొక్క విలువైన నివేదికలను అందించుటకు, ABRT మిమ్ములను ఈ సమస్యలను దాఖలుచేయడానికి అనుమతించదు."
 
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Close"
@@ -486,72 +487,72 @@ msgid ""
 "   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n"
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
-msgstr ""
+msgstr "వాడుక: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n\n   -v             - Verbose\n   -d             - Delete uploaded archive\n   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n   UPLOAD_DIR     - Directory where uploaded archives are stored\n   FILENAME       - Uploaded archive file name\n"
 
 #: ../src/daemon/abrt-handle-upload.in:105
 #: ../src/daemon/abrt-handle-upload.in:108
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "సంచయం కాదు: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:111
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
+msgstr "దాటవేస్తోంది: '{0}' (స్లాష్‌తో ప్రారంభమగును)"
 
 #: ../src/daemon/abrt-handle-upload.in:114
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
+msgstr "దాటవేస్తోంది: '{0}' (డాట్‌తో ప్రారంభమగును)"
 
 #: ../src/daemon/abrt-handle-upload.in:117
 msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
+msgstr "దాటవేస్తోంది: '{0}' (.. కలిగివుంది)"
 
 #: ../src/daemon/abrt-handle-upload.in:120
 msgid "Skipping: '{0}' (contains space)"
-msgstr ""
+msgstr "దాటవేస్తోంది: '{0}' (ఖాళీ కలిగివుంది)"
 
 #: ../src/daemon/abrt-handle-upload.in:123
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "దాటవేస్తోంది: '{0}' (టాబ్ కలిగివుంది)"
 
 #: ../src/daemon/abrt-handle-upload.in:128
 msgid "Can't change directory to '{0}'"
-msgstr ""
+msgstr "సంచయంను '{0}' కు మార్చలేదు"
 
 #: ../src/daemon/abrt-handle-upload.in:139
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "తెలియని ఫైల్ రకం: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:144
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "'{0}' నందు పనిచేయుచున్న సంచయం సృష్టించలేదు"
 
 #: ../src/daemon/abrt-handle-upload.in:155
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}' ను '{1}' కు కదల్చలేదు"
 
 #: ../src/daemon/abrt-handle-upload.in:160
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}' ను '{1}' కు నకలుతీయలేదు"
 
 #: ../src/daemon/abrt-handle-upload.in:164
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "'{0}' పై నిర్ధారణ దోషం"
 
 #: ../src/daemon/abrt-handle-upload.in:166
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "'{0}' విడమర్చుతోంది"
 
 #: ../src/daemon/abrt-handle-upload.in:170
 msgid "Can't create '{0}' directory"
-msgstr ""
+msgstr "'{0}' సంచయం సృష్టించలేదు"
 
 #: ../src/daemon/abrt-handle-upload.in:174
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "'{0}' విడమర్చలేదు"
 
 #: ../src/daemon/abrt-handle-upload.in:198
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' విజయవంతంగా ప్రోసెసైంది"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
@@ -631,21 +632,21 @@ msgstr "& [-v] -d DIR\n\nసమస్యాత్మక డైరెక్టర
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "కోర్‌డంప్ '%s' విశ్లేషిస్తోంది"
 
 #: ../src/plugins/abrt-action-analyze-core.in:110
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "బుల్డ్ ఐడి దొరకలేదు: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:142
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr ""
+msgstr "వాడుక: %s [-v] [-o OUTFILE] -c COREFILE"
 
 #: ../src/plugins/abrt-action-analyze-core.in:164
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "కోర్‌ఫైల్ తెలుపలేదు"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
@@ -699,7 +700,7 @@ msgstr "oops సందేశం బహిర్గతపరచలేదు: '{0}
 msgid "Oops text extracted successfully"
 msgstr "Oops పాఠం విజయవంతంగా బహిర్గతపరచెను"
 
-#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:81
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
@@ -835,37 +836,37 @@ msgstr "ఈ డైరెక్టరీ నందలి ఫైళ్ళను �
 msgid "Preserve this directory"
 msgstr "ఈ డైరెక్టరీను నిలిపివుంచుము"
 
-#: ../src/plugins/abrt-action-ureport:39
+#: ../src/plugins/abrt-action-ureport:59
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr "'%s' ప్రారంభించలేక పోయింది, దోష సందేశం: '%s'"
 
-#: ../src/plugins/abrt-action-ureport:50
+#: ../src/plugins/abrt-action-ureport:70
 #, c-format
 msgid "Not a number in file '%s'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-ureport:66
-#, c-format
-msgid "Usage: %s [-v]"
-msgstr ""
+msgstr "ఫైల్ '%s' నందు సంఖ్యకాదు"
 
 #: ../src/plugins/abrt-action-ureport:86
+#, c-format
+msgid "Usage: %s [-v]"
+msgstr "వాడుక: %s [-v]"
+
+#: ../src/plugins/abrt-action-ureport:107
 msgid "Unable to get current working directory as it was probably deleted"
-msgstr ""
+msgstr "ప్రస్తుత వర్కింగ్ సంచయం గుర్తించలేక పోయింది బహుశా తొలగించబడి ఉండవచ్చు"
 
-#: ../src/plugins/abrt-action-ureport:117
+#: ../src/plugins/abrt-action-ureport:138
 msgid "A bug was already filed about this problem:"
-msgstr ""
+msgstr "ఈ సమస్య గురించి ఒక బగ్ ఇప్పటికే ఫైల్ అయింది:"
 
-#: ../src/plugins/abrt-action-ureport:127
+#: ../src/plugins/abrt-action-ureport:148
 msgid "uReport was already sent, not sending it again"
-msgstr ""
+msgstr "uReport ఇప్పటికే పంపబడింది, దానిని మరలా పంపుటలేదు"
 
-#: ../src/plugins/abrt-action-ureport:145
+#: ../src/plugins/abrt-action-ureport:176
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
-msgstr ""
+msgstr "reporter-ureport అనేది ఎగ్జిట్ కోడ్ %d తో విఫలమైంది"
 
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
@@ -1059,7 +1060,7 @@ msgstr "stdout కు శోధన స్ట్రింగ్స్ ముద�
 
 #: ../src/plugins/abrt-dump-oops.c:311
 msgid "Failed to compile regex"
-msgstr ""
+msgstr "regex కంపైల్ చేయుటకు విఫలమైంది"
 
 #: ../src/plugins/abrt-dump-oops.c:402
 msgid "Can't update the problem: more than one oops found"
@@ -1643,7 +1644,7 @@ msgstr "వా‍డుక: abrt-cli [--version] COMMAND [DIR]..."
 
 #: ../src/cli/abrt-cli.c:148
 msgid "List problems [in DIRs]"
-msgstr ""
+msgstr "సమస్యలను జాబితాచేయి [DIRల నందు]"
 
 #: ../src/cli/abrt-cli.c:149
 msgid "Remove problem directory DIR"
@@ -1663,7 +1664,7 @@ msgstr "ఇటీవలి క్రాష్‌ల లెక్కను ము
 
 #: ../src/cli/abrt-cli.c:153
 msgid "Process multiple problems"
-msgstr ""
+msgstr "పలు సమస్యలను ప్రోసెస్‌చేయి"
 
 #: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
@@ -1729,42 +1730,42 @@ msgstr "ABRT %u సమస్య(లు) గుర్తించెను. మ�
 
 #: ../src/cli/report.c:28
 msgid "& report [options] DIR..."
-msgstr ""
+msgstr "& report [options] DIR..."
 
 #: ../src/cli/report.c:38
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "నివేదించిన తరువాత PROBLEM_DIR తీసివేయి"
 
 #: ../src/cli/report.c:71 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "'%s' తొలగిస్తోంది"
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
-msgstr ""
+msgstr "చర్యలు: remove(rm), info(i), skip(s):"
 
 #: ../src/cli/process.c:66
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
-msgstr ""
+msgstr "చర్యలు: remove(rm), report(e), info(i), skip(s):"
 
 #: ../src/cli/process.c:77
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "'%s' నివేదిస్తోంది"
 
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:133
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "తరువాతి సమస్య కొరకు ENTER వత్తండి:"
 
 #: ../src/cli/process.c:144
 msgid "Without --since argument, iterates over all detected problems."
-msgstr ""
+msgstr "--since ఎగ్రిమెంట్ లేకుండా, మొత్తం గుర్తించిన సమస్యలనందు ఆవృతంచెందును."
 
 #: ../src/cli/process.c:150
 msgid "Selects only problems detected after timestamp"
-msgstr ""
+msgstr "టైమ్‌స్టాంప్ తరువాత గుర్తించిన సమస్యలను మాత్రమే ఎంపికచేయును"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""

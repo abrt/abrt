@@ -6,9 +6,11 @@
 # Chandan kumar <chandankumar.093047@gmail.com>, 2012
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
 # keshav mishra <keshav_kumar22@yahoo.in>, 2013
-# rajesh <rajeshkajha@yahoo.com>, 2012
+# keshav mishra <keshav_kumar22@yahoo.in>, 2013
+# rajesh <rajeshkajha@yahoo.com>, 2012,2014
 # Rajesh Ranjan <rranjan@redhat.com>, 2014
 # Rajesh <rranjan>, 2011,2014
+# Tarsem singh <tarsemsinghtarsemsingh@gmail.com>, 2014
 # Tarsem singh <tarsemsinghtarsemsingh@gmail.com>, 2014
 # Umesh Agarwal <umesh.agarwal1@gmail.com>, 2013
 # zz <zz>, 2012
@@ -16,9 +18,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-10-03 13:47+0200\n"
-"PO-Revision-Date: 2014-10-03 11:47+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-10-13 17:42+0200\n"
+"PO-Revision-Date: 2014-10-17 11:47+0000\n"
+"Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
 "Language-Team: Hindi (http://www.transifex.com/projects/p/fedora-abrt/language/hi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -90,7 +92,7 @@ msgid ""
 "You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "आप खास समस्या की अधिसूचना को मूक करने जा रहे हैं. आप इस समस्या के लिए फिर से अधिसूचना बबल नहीं देखेंगे, हालाँकि, ABRT इसे पता करेगा और आप इसे ABRT GUI से रिपोर्ट कर पाएँगे.\n\nक्या आप जारी रखना चाहते हैं?"
 
 #: ../src/applet/applet.c:748 ../src/applet/applet.c:750
 msgid "Warning"
@@ -203,19 +205,19 @@ msgstr "& [-v] [DIR]...\n\nएप्प्लेट जो उपयोक्त
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr ""
+msgstr "निर्देशिका लेने के पहले पूछें"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
-msgstr ""
+msgstr "स्वतः uReport भेजें"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
-msgstr ""
+msgstr "संक्षिप्त रिपोर्टिंग"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
-msgstr ""
+msgstr "मौन संक्षिप्त रिपोर्टिंग"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
@@ -224,7 +226,7 @@ msgid ""
 " trace from the coredump but you have to upload the coredump to this "
 "service. With this option disabled ABRT will upload the coredump without "
 "asking."
-msgstr ""
+msgstr "कोरडंप फाइल स्टैक ट्रैस जनित करने के लिए जरूरी है जो कि समय और स्थान की खपत करने वाला काम है. ABRT ऐसी सेवा प्रदान करता है कोरडंप से स्टैक ट्रैस जनित करता है लेकिन आपको इस सेवा में कोरडंप को अपलोड करना है. इस विकल्प के साथ निष्क्रिय ABRT बिना पूछे कोरडंप को अपलोड करेगा."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -232,7 +234,7 @@ msgid ""
 "directory, the directory is moved from the system location to your home "
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
-msgstr ""
+msgstr "ABRT निर्देशिका में समस्या आँकड़ा को जमा करता है. जब कभी ABRT को लिखने योग्य निर्देशिका चाहिए, निर्देशिका को आपके तंत्र स्थान से घर निर्देशिका में ले जाया जाता है. इस विकल्प के साथ निष्क्रिय ABRT समस्या निर्देशिका को बिना पूछे खिसकाएगा."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
@@ -240,45 +242,45 @@ msgid ""
 "uses uReports  for fast global duplicate detection. In default configuration"
 " uReport is sent at beginning of reporting process. With this option enabled"
 " uReports are sent automatically immediately after problem detection."
-msgstr ""
+msgstr "uReport संक्षिप्त है और समस्या का पूरी तरह से बेनाम विवरण है. ABRT uReports का उपयोग तेज वैश्विक नकल जाँच के लिए करता है. तयशुदा विन्यास में uReport को रिपोर्टिंग प्रक्रिया के आरंभ में भेजा जाता है. इस विकल्प के सक्रिय किए जाने के साथ uReports को समस्या के पता के बाद तत्काल स्वतः भेजा जाता है."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
 "With this option enabled reporting process started by click on Report button"
 " in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
-msgstr ""
+msgstr "इस विकल्प के साथ सक्रिय रिपोर्टिंग प्रक्रिया जो रिपोर्ट बटन पर क्लिक करने से आरंभ होता है वह uReport के भेजे जाने के बाद बाधित होता है. आप हमेशा तयशुदा समस्या ब्राउज़र पूरी रपट बनाने के लिए उपयोग कर सकते हैं."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
-msgstr ""
+msgstr " इस विकल्प के साथ सक्रिय ABRT रिपोर्ट किए गए समस्या को कभी नहीं दिखाता है. यह तभी प्रभावी होता है जब संक्षिप्त रिपोर्टिंग सक्रिय किया जाता है."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid "Ask before uploading coredump"
-msgstr ""
+msgstr "कोरडंप अपलोड के पहले पूछें"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are dected."
-msgstr ""
+msgstr " इस विकल्प के सक्रिय करने से ABRT हमेशा बग टिकट प्रतिबंधित पहुँच के साथ बनाता है यदि संभावित रूप से संवेदनशील आँकड़ों का पता किया जाता है."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Request private ticket for sensitive information"
-msgstr ""
+msgstr "संवेदनशील सूचना के लिए निजी टिकट का निवेदन करें"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid "Notify incomplete problems"
-msgstr ""
+msgstr "अपूर्ण समस्या अधिसूचित करें"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
-msgstr ""
+msgstr "अपूर्ण समस्या का पता चलता है जब कंप्यूटर बंद किया जा रहा है या उपयोक्ता लॉग आउट है. मूल्यवान समस्या रिपोर्ट देने के क्रम में, ABRT आपको इन समस्याओं के सुपुर्द करने की छूट नहीं देगा."
 
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Close"
@@ -491,72 +493,72 @@ msgid ""
 "   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n"
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
-msgstr ""
+msgstr "प्रयोग: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n\n   -v             - Verbose\n   -d             - Delete uploaded archive\n   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n   UPLOAD_DIR     - Directory where uploaded archives are stored\n   FILENAME       - Uploaded archive file name\n"
 
 #: ../src/daemon/abrt-handle-upload.in:105
 #: ../src/daemon/abrt-handle-upload.in:108
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "निर्देशिका नहीं है: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:111
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
+msgstr "छोड़ रहा है: '{0}' (starts with slash)"
 
 #: ../src/daemon/abrt-handle-upload.in:114
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
+msgstr "छोड़ रहा है: '{0}' (starts with dot)"
 
 #: ../src/daemon/abrt-handle-upload.in:117
 msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
+msgstr "छोड़ रहा है: '{0}' (contains ..)"
 
 #: ../src/daemon/abrt-handle-upload.in:120
 msgid "Skipping: '{0}' (contains space)"
-msgstr ""
+msgstr "छोड़ रहा है: '{0}' (contains space)"
 
 #: ../src/daemon/abrt-handle-upload.in:123
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "छोड़ रहा है: '{0}' (contains tab)"
 
 #: ../src/daemon/abrt-handle-upload.in:128
 msgid "Can't change directory to '{0}'"
-msgstr ""
+msgstr "'{0}' में निर्देशिका बदल नहीं सकता है"
 
 #: ../src/daemon/abrt-handle-upload.in:139
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "अज्ञात फाइल प्रकार: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:144
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "'{0}' में कार्यशील निर्देशिका नहीं बना सकता है"
 
 #: ../src/daemon/abrt-handle-upload.in:155
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}' को '{1}' में खिसका नहीं सकता है"
 
 #: ../src/daemon/abrt-handle-upload.in:160
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}' को '{1}' में नहीं नक़ल ले सकता है"
 
 #: ../src/daemon/abrt-handle-upload.in:164
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "'{0}' पर सत्यापन त्रुटि"
 
 #: ../src/daemon/abrt-handle-upload.in:166
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "'{0}' को खोला जा रहा है"
 
 #: ../src/daemon/abrt-handle-upload.in:170
 msgid "Can't create '{0}' directory"
-msgstr ""
+msgstr "'{0}' निर्देशिका नहीं बना सकता है"
 
 #: ../src/daemon/abrt-handle-upload.in:174
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "'{0}' खोल नहीं सकता है"
 
 #: ../src/daemon/abrt-handle-upload.in:198
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' को सफलतापूर्वक प्रक्रिया किया गया"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
@@ -636,21 +638,21 @@ msgstr "& [-v] -d DIR\n\nकोरडंप के UUID को समस्य�
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "'%s' कोरडंप का विश्लेषण"
 
 #: ../src/plugins/abrt-action-analyze-core.in:110
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "अनुपस्थित बिल्ड आईडी: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:142
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr ""
+msgstr "प्रयोग: %s [-v] [-o OUTFILE] -c COREFILE"
 
 #: ../src/plugins/abrt-action-analyze-core.in:164
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "COREFILE निर्दिष्ट नहीं"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
@@ -704,7 +706,7 @@ msgstr "वूप्स संदेश निकाल नहीं सकत�
 msgid "Oops text extracted successfully"
 msgstr "वूप्स पाठ सफलतापूर्वक निकाले गए"
 
-#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:81
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
@@ -840,37 +842,37 @@ msgstr "इस निर्देशिका के भीतर की फ़�
 msgid "Preserve this directory"
 msgstr "इस निर्देशिका को संरक्षित रखता है"
 
-#: ../src/plugins/abrt-action-ureport:39
+#: ../src/plugins/abrt-action-ureport:59
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr "'%s' को आरंभ करने में असमर्थ, त्रुटि संदेश था: '%s'"
 
-#: ../src/plugins/abrt-action-ureport:50
+#: ../src/plugins/abrt-action-ureport:70
 #, c-format
 msgid "Not a number in file '%s'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-ureport:66
-#, c-format
-msgid "Usage: %s [-v]"
-msgstr ""
+msgstr "'%s' फ़ाइल में संख्या नहीं"
 
 #: ../src/plugins/abrt-action-ureport:86
+#, c-format
+msgid "Usage: %s [-v]"
+msgstr "प्रयोग: %s [-v]"
+
+#: ../src/plugins/abrt-action-ureport:107
 msgid "Unable to get current working directory as it was probably deleted"
-msgstr ""
+msgstr "वर्तमान कार्यशील निर्देशिका पाने में असमर्थ क्योंकि यह मिटा दिया गया था"
 
-#: ../src/plugins/abrt-action-ureport:117
+#: ../src/plugins/abrt-action-ureport:138
 msgid "A bug was already filed about this problem:"
-msgstr ""
+msgstr "इस समस्या के बारे में बग पहले से फ़ाइल किया गया था:"
 
-#: ../src/plugins/abrt-action-ureport:127
+#: ../src/plugins/abrt-action-ureport:148
 msgid "uReport was already sent, not sending it again"
-msgstr ""
+msgstr "uReport पहले से भेजा गया था, इसे फिर से नहीं भेज रहा है"
 
-#: ../src/plugins/abrt-action-ureport:145
+#: ../src/plugins/abrt-action-ureport:176
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
-msgstr ""
+msgstr "%d निकास कोड के साथ reporter-ureport विफल"
 
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
@@ -1064,7 +1066,7 @@ msgstr "stdout में खोज स्ट्रिंग छापें औ�
 
 #: ../src/plugins/abrt-dump-oops.c:311
 msgid "Failed to compile regex"
-msgstr ""
+msgstr "रिजेक्स कंपाइल करने में विफल"
 
 #: ../src/plugins/abrt-dump-oops.c:402
 msgid "Can't update the problem: more than one oops found"
@@ -1648,7 +1650,7 @@ msgstr "उपयोग: abrt-cli [--version] COMMAND [DIR]..."
 
 #: ../src/cli/abrt-cli.c:148
 msgid "List problems [in DIRs]"
-msgstr ""
+msgstr "[in DIRs] में समस्या की सूची दें"
 
 #: ../src/cli/abrt-cli.c:149
 msgid "Remove problem directory DIR"
@@ -1668,7 +1670,7 @@ msgstr "हालिया क्रैश की गिनती छापे�
 
 #: ../src/cli/abrt-cli.c:153
 msgid "Process multiple problems"
-msgstr ""
+msgstr "एकाधिक समस्या की प्रक्रिया करें"
 
 #: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
@@ -1734,42 +1736,42 @@ msgstr "ABRT ने %u समस्या का पता किया है. 
 
 #: ../src/cli/report.c:28
 msgid "& report [options] DIR..."
-msgstr ""
+msgstr "& report [options] DIR..."
 
 #: ../src/cli/report.c:38
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "रिपोर्टिंग के बाद PROBLEM_DIR हटाएँ"
 
 #: ../src/cli/report.c:71 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "'%s' मिटा रहा है"
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
-msgstr ""
+msgstr "क्रिया: remove(rm), info(i), skip(s):"
 
 #: ../src/cli/process.c:66
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
-msgstr ""
+msgstr "क्रिया: remove(rm), report(e), info(i), skip(s):"
 
 #: ../src/cli/process.c:77
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "'%s' की रिपोर्टिंग"
 
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:133
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "ENTER को अगली समस्या के लिए दबाएँ:"
 
 #: ../src/cli/process.c:144
 msgid "Without --since argument, iterates over all detected problems."
-msgstr ""
+msgstr "बिना --since argumen के, सभी पता किए समस्या पर बार-बार आता है."
 
 #: ../src/cli/process.c:150
 msgid "Selects only problems detected after timestamp"
-msgstr ""
+msgstr "टाइमस्टैंप के बाद पता चली समस्या को केवल दिखाता है"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""

@@ -16,9 +16,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-10-03 13:47+0200\n"
-"PO-Revision-Date: 2014-10-03 11:47+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-10-13 17:42+0200\n"
+"PO-Revision-Date: 2014-10-22 10:36+0000\n"
+"Last-Translator: Yulia <yulia.poyarkova@redhat.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/fedora-abrt/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -90,7 +90,7 @@ msgid ""
 "You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "Вы собираетесь отключить уведомления для определенной проблемы. Соответствующие всплывающие сообщения больше не будут появляться, но вы сможете создать отчет об ошибке в графическом режиме ABRT.\n\nПродолжить?"
 
 #: ../src/applet/applet.c:748 ../src/applet/applet.c:750
 msgid "Warning"
@@ -154,7 +154,7 @@ msgstr "Отчет о неполадке уже отправлен"
 
 #: ../src/applet/applet.c:1018
 msgid "A New Problem has Occurred"
-msgstr "Произошла проблема"
+msgstr "Обнаружена проблема"
 
 #: ../src/applet/applet.c:1028
 #, c-format
@@ -203,7 +203,7 @@ msgstr "& [-v] [DIR]...\n\nМодуль оповещения о неполадк
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr ""
+msgstr "Спрашивать перед перехватом каталога"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
@@ -211,11 +211,11 @@ msgstr "Автоматически отправлять uReport"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
-msgstr ""
+msgstr "Сокращенный отчет"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
-msgstr ""
+msgstr "Сокращенный отчет без подтверждения"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
@@ -224,7 +224,7 @@ msgid ""
 " trace from the coredump but you have to upload the coredump to this "
 "service. With this option disabled ABRT will upload the coredump without "
 "asking."
-msgstr ""
+msgstr "Файл дампа памяти нужен для создания трассировки стека. На эту операцию требуется достаточно много времени и места. ABRT предоставляет службу создания трассировки стека из предварительно загруженного дампа памяти. Если этот параметр выключен, ABRT будет отправлять дамп без подтверждения."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -232,7 +232,7 @@ msgid ""
 "directory, the directory is moved from the system location to your home "
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
-msgstr ""
+msgstr "ABRT хранит данные о сбоях в каталогах. Когда ABRT потребуется осуществить запись в каталог, он будет перемещен в вашу домашнюю папку. Если этот параметр выключен, ABRT переместит каталог с данными сбоя без подтверждения."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
@@ -240,45 +240,45 @@ msgid ""
 "uses uReports  for fast global duplicate detection. In default configuration"
 " uReport is sent at beginning of reporting process. With this option enabled"
 " uReports are sent automatically immediately after problem detection."
-msgstr ""
+msgstr "uReport содержит краткое и полностью анонимное описание проблемы. ABRT использует отчеты uReport для быстрого обнаружения дубликатов. В стандартной конфигурации uReport отправляется в начале процесса формирования отчетности. Если этот параметр включен, отчеты uReport отправляются автоматически сразу после обнаружения проблемы."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
 "With this option enabled reporting process started by click on Report button"
 " in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
-msgstr ""
+msgstr "Если этот параметр включен, процесс создания отчета, запущенный нажатием кнопки «Отчет» во всплывающем сообщении о сбое, будет прерван после отправления отчета uReport. Для создания полного отчета можно воспользоваться стандартным средством просмотра проблем."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
-msgstr ""
+msgstr "Если этот параметр включен, ABRT не будет показывать уведомления о сообщенных проблемах. Действует, только если включен сокращенный формат отчетов."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid "Ask before uploading coredump"
-msgstr ""
+msgstr "Спрашивать перед выгрузкой дампа памяти"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are dected."
-msgstr ""
+msgstr "Если этот параметр включен, ABRT будет создавать отчет об ошибке с ограниченным доступом, если обнаружена вероятность попадания в отчет конфиденциальных данных."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Request private ticket for sensitive information"
-msgstr ""
+msgstr "Запросить доступ к закрытому билету с конфиденциальными данными"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid "Notify incomplete problems"
-msgstr ""
+msgstr "Уведомлять о неполных данных по проблеме"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
-msgstr ""
+msgstr "Обнаружены неполные данные об ошибках вследствие выключения компьютера или выхода пользователя из системы. С целью обеспечения содержательности отчетов ABRT не отправит отчет об этих ошибках."
 
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Close"
@@ -491,72 +491,72 @@ msgid ""
 "   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n"
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
-msgstr ""
+msgstr "Формат: %s [-vd] ВРЕМЕННЫЙ_КАТАЛОГ КАТАЛОГ_ПОЛУЧАТЕЛЬ ФАЙЛ\n\n   -v             - подробный вывод\n   -d             - удалить архив после отправки\n   ВРЕМЕННЫЙ_КАТАЛОГ - каталог, в который будут распакованы архивы\n   КАТАЛОГ_ПОЛУЧАТЕЛЬ     - каталог, в котором будут размещаться полученные архивы\n   ФАЙЛ       - имя файла отправляемого архива\n"
 
 #: ../src/daemon/abrt-handle-upload.in:105
 #: ../src/daemon/abrt-handle-upload.in:108
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "Не является каталогом: «{0}»."
 
 #: ../src/daemon/abrt-handle-upload.in:111
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
+msgstr "Пропускается: «{0}» (начинается с косой черты)"
 
 #: ../src/daemon/abrt-handle-upload.in:114
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
+msgstr "Пропускается: «{0}» (начинается с точки)"
 
 #: ../src/daemon/abrt-handle-upload.in:117
 msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
+msgstr "Пропускается: «{0}» (содержит ..)"
 
 #: ../src/daemon/abrt-handle-upload.in:120
 msgid "Skipping: '{0}' (contains space)"
-msgstr ""
+msgstr "Пропускается: «{0}» (содержит пробел)"
 
 #: ../src/daemon/abrt-handle-upload.in:123
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "Пропускается: «{0}» (содержит знак табуляции)"
 
 #: ../src/daemon/abrt-handle-upload.in:128
 msgid "Can't change directory to '{0}'"
-msgstr ""
+msgstr "Не удалось изменить каталог на «{0}»"
 
 #: ../src/daemon/abrt-handle-upload.in:139
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "Неизвестный тип файла: «{0}»"
 
 #: ../src/daemon/abrt-handle-upload.in:144
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "Не удалось создать рабочий каталог в «{0}»"
 
 #: ../src/daemon/abrt-handle-upload.in:155
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "Не удалось переместить «{0}» в «{1}»"
 
 #: ../src/daemon/abrt-handle-upload.in:160
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "Не удалось скопировать «{0}» в «{1}»"
 
 #: ../src/daemon/abrt-handle-upload.in:164
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "Ошибка проверки «{0}»"
 
 #: ../src/daemon/abrt-handle-upload.in:166
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "Распаковка «{0}»"
 
 #: ../src/daemon/abrt-handle-upload.in:170
 msgid "Can't create '{0}' directory"
-msgstr ""
+msgstr "Не удалось создать каталог «{0}»"
 
 #: ../src/daemon/abrt-handle-upload.in:174
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "Не удалось распаковать «{0}»"
 
 #: ../src/daemon/abrt-handle-upload.in:198
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "«{0}» обработан успешно"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
@@ -636,21 +636,21 @@ msgstr "& [-v] -d DIR\n\nРасчет и сохранение UUID дампа п
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "Анализ дампа «%s»..."
 
 #: ../src/plugins/abrt-action-analyze-core.in:110
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "Отсутствует идентификатор сборки: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:142
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr ""
+msgstr "Формат: %s [-v] [-o OUTFILE] -c COREFILE"
 
 #: ../src/plugins/abrt-action-analyze-core.in:164
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "COREFILE не задан"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
@@ -704,7 +704,7 @@ msgstr "Не удалось извлечь сообщение ошибки яд�
 msgid "Oops text extracted successfully"
 msgstr "Текст ошибки ядра извлечен успешно"
 
-#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:81
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
@@ -746,7 +746,7 @@ msgstr "Не хешировать отпечатки"
 #. Let user know what's going on
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:64
 msgid "Generating core_backtrace"
-msgstr "Формируется "
+msgstr "Формируется core_backtrace"
 
 #: ../src/plugins/abrt-action-generate-core-backtrace.c:81
 msgid "Error: GDB did not return any data"
@@ -840,37 +840,37 @@ msgstr "Удалить файлы из каталога"
 msgid "Preserve this directory"
 msgstr "Оставить этот каталог"
 
-#: ../src/plugins/abrt-action-ureport:39
+#: ../src/plugins/abrt-action-ureport:59
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr "Не удалось запустить «%s». Ошибка: «%s»"
 
-#: ../src/plugins/abrt-action-ureport:50
+#: ../src/plugins/abrt-action-ureport:70
 #, c-format
 msgid "Not a number in file '%s'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-ureport:66
-#, c-format
-msgid "Usage: %s [-v]"
-msgstr ""
+msgstr "Файл «%s» не содержит чисел"
 
 #: ../src/plugins/abrt-action-ureport:86
+#, c-format
+msgid "Usage: %s [-v]"
+msgstr "Формат: %s [-v]"
+
+#: ../src/plugins/abrt-action-ureport:107
 msgid "Unable to get current working directory as it was probably deleted"
-msgstr ""
+msgstr "Не удалось определить рабочий каталог. Возможно, он был удален."
 
-#: ../src/plugins/abrt-action-ureport:117
+#: ../src/plugins/abrt-action-ureport:138
 msgid "A bug was already filed about this problem:"
-msgstr ""
+msgstr "Для этой ошибки уже есть запрос:"
 
-#: ../src/plugins/abrt-action-ureport:127
+#: ../src/plugins/abrt-action-ureport:148
 msgid "uReport was already sent, not sending it again"
-msgstr ""
+msgstr "uReport уже отправлен. Повторно отправляться не будет."
 
-#: ../src/plugins/abrt-action-ureport:145
+#: ../src/plugins/abrt-action-ureport:176
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
-msgstr ""
+msgstr "Ошибка reporter-ureport. Код выхода: %d"
 
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
@@ -1064,7 +1064,7 @@ msgstr "Вывести строку (строки) поиска в stdout и в�
 
 #: ../src/plugins/abrt-dump-oops.c:311
 msgid "Failed to compile regex"
-msgstr ""
+msgstr "Не удалось скомпилировать регулярное выражение"
 
 #: ../src/plugins/abrt-dump-oops.c:402
 msgid "Can't update the problem: more than one oops found"
@@ -1648,7 +1648,7 @@ msgstr "Формат: abrt-cli [--version] COMMAND [DIR]..."
 
 #: ../src/cli/abrt-cli.c:148
 msgid "List problems [in DIRs]"
-msgstr ""
+msgstr "Показать ошибки [в DIR]"
 
 #: ../src/cli/abrt-cli.c:149
 msgid "Remove problem directory DIR"
@@ -1668,7 +1668,7 @@ msgstr "Печать числа недавних сбоев"
 
 #: ../src/cli/abrt-cli.c:153
 msgid "Process multiple problems"
-msgstr ""
+msgstr "Обработка нескольких проблем"
 
 #: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
@@ -1734,42 +1734,42 @@ msgstr "ABRT обнаружила %u сбой (сбоев). Для получе�
 
 #: ../src/cli/report.c:28
 msgid "& report [options] DIR..."
-msgstr ""
+msgstr "& report [параметры] DIR..."
 
 #: ../src/cli/report.c:38
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "Удалить PROBLEM_DIR после отправки отчета"
 
 #: ../src/cli/report.c:71 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "Удаление «%s»"
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
-msgstr ""
+msgstr "Действия: удалить (rm), информация (i), пропустить (s):"
 
 #: ../src/cli/process.c:66
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
-msgstr ""
+msgstr "Действия: удалить (rm), сообщить (e), информация (i), пропустить (s):"
 
 #: ../src/cli/process.c:77
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "Отчет по «%s»..."
 
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:133
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "Для перехода к следующей проблеме нажмите ENTER:"
 
 #: ../src/cli/process.c:144
 msgid "Without --since argument, iterates over all detected problems."
-msgstr ""
+msgstr "Без аргумента --since будет осуществляться циклический переход между обнаруженными проблемами"
 
 #: ../src/cli/process.c:150
 msgid "Selects only problems detected after timestamp"
-msgstr ""
+msgstr "Выбор сбоев, обнаруженных после заданного момента времени"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
@@ -1790,7 +1790,7 @@ msgstr "Отправляет дамп памяти на сервер для ге
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:1
 msgid "Analyze VM core"
-msgstr "Диагностика отказа системы"
+msgstr "Анализировать ядро ВМ"
 
 #: ../src/plugins/analyze_VMcore.xml.in.h:2
 msgid ""

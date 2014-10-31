@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-10-03 13:47+0200\n"
-"PO-Revision-Date: 2014-10-03 11:47+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-10-13 17:42+0200\n"
+"PO-Revision-Date: 2014-10-27 05:21+0000\n"
+"Last-Translator: shkumar <shkumar@redhat.com>\n"
 "Language-Team: Tamil (http://www.transifex.com/projects/p/fedora-abrt/language/ta/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -85,7 +85,7 @@ msgid ""
 "You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "ஒரு குறிப்பிட்ட சிக்கலுக்கு அறிவிப்புகள் வராதபடி தடுக்கப் போகிறீர்கள். இனி மீண்டும் இந்தச் சிக்கல் குறித்து அறிவிப்பு காண்பிக்கப்படாது, இருப்பினும் ABRT இதைக் கண்டறியும், ABRT இடைமுகத்திலிருந்து இந்தச் சிக்கலை நீங்கள் அறிக்கையிடவும் முடியும்.\n\nதொடர வேண்டுமா?"
 
 #: ../src/applet/applet.c:748 ../src/applet/applet.c:750
 msgid "Warning"
@@ -258,7 +258,7 @@ msgstr "கோர்டம்ப்பைப் பதிவேற்றும�
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are dected."
-msgstr ""
+msgstr " இந்த விருப்பத்தைச் செயல்படுத்தினால், முக்கியமான தரவு இருப்பதாகக் கண்டறியப்பட்டால், ABRT பயன்பாடு எப்போதும் கட்டுப்படுத்தப்பட்ட அணுகலுடனான வழு டிக்கட்டை உருவாக்கும்."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Request private ticket for sensitive information"
@@ -486,72 +486,72 @@ msgid ""
 "   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n"
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
-msgstr ""
+msgstr "பயன்பாடு: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n\n   -v             - விவரமாக\n   -d             - பதிவேற்றிய காப்பகத்தை நீக்கு\n   ABRT_SPOOL_DIR - பதிவேற்றப்பட்ட செல்லுபடியான காப்பகங்கள் பிரித்தெடுக்கப்படும் கோப்பகம்\n   UPLOAD_DIR     - பதிவேற்றப்பட்ட காப்பகங்கள் சேமிக்கப்படும் கோப்பகம்\n   FILENAME       - பதிவேற்றப்பட்ட காப்பகங்கக் கோப்புப் பெயர்\n"
 
 #: ../src/daemon/abrt-handle-upload.in:105
 #: ../src/daemon/abrt-handle-upload.in:108
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "ஒரு கோப்பகமல்ல: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:111
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
+msgstr "இதைத் தவிர்க்கிறது: '{0}' (சாய்வுக் கோட்டில் தொடங்குகிறது)"
 
 #: ../src/daemon/abrt-handle-upload.in:114
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
+msgstr "இதைத் தவிர்க்கிறது: '{0}' (புள்ளியில் தொடங்குகிறது)"
 
 #: ../src/daemon/abrt-handle-upload.in:117
 msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
+msgstr "இதைத் தவிர்க்கிறது: '{0}' (.. ஐக் கொண்டுள்ளது)"
 
 #: ../src/daemon/abrt-handle-upload.in:120
 msgid "Skipping: '{0}' (contains space)"
-msgstr ""
+msgstr "இதைத் தவிர்க்கிறது: '{0}' (இடைவெளியைக் கொண்டுள்ளது)"
 
 #: ../src/daemon/abrt-handle-upload.in:123
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "இதைத் தவிர்க்கிறது: '{0}' (தத்தலைக் கொண்டுள்ளது)"
 
 #: ../src/daemon/abrt-handle-upload.in:128
 msgid "Can't change directory to '{0}'"
-msgstr ""
+msgstr "கோப்பகத்தை '{0}' க்கு மாற்றியமைக்க முடியாது"
 
 #: ../src/daemon/abrt-handle-upload.in:139
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "தெரியாத கோப்பு வகை: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:144
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "'{0}' இல் பணிக் கோப்பகத்தை உருவாக்க முடியவில்லை"
 
 #: ../src/daemon/abrt-handle-upload.in:155
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}' ஐ '{1}' க்கு நகர்த்த முடியவில்லை"
 
 #: ../src/daemon/abrt-handle-upload.in:160
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}' ஐ '{1}' இல் நகலெடுக்க முடியவில்லை"
 
 #: ../src/daemon/abrt-handle-upload.in:164
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "'{0}' இல் சரிபார்ப்புப் பிழை"
 
 #: ../src/daemon/abrt-handle-upload.in:166
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "'{0}' ஐப் பிரித்தெடுக்கிறது"
 
 #: ../src/daemon/abrt-handle-upload.in:170
 msgid "Can't create '{0}' directory"
-msgstr ""
+msgstr "'{0}' கோப்பகத்தை உருவாக்க முடியவில்லை"
 
 #: ../src/daemon/abrt-handle-upload.in:174
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "'{0}' ஐப் பிரித்தெடுக்க முடியவில்லை"
 
 #: ../src/daemon/abrt-handle-upload.in:198
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' வெற்றிகரமாக செயலாக்கப்பட்டது"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
@@ -699,7 +699,7 @@ msgstr "oops செய்தியை பிரித்தெடுக்க �
 msgid "Oops text extracted successfully"
 msgstr "Oops உரை வெற்றிகரமாக பிரித்தெடுக்கப்பட்டது"
 
-#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:81
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
@@ -835,37 +835,37 @@ msgstr "இந்த கோப்பகத்தில் உள்ள கோப
 msgid "Preserve this directory"
 msgstr "இந்த கோப்பகத்தை வைத்திரு"
 
-#: ../src/plugins/abrt-action-ureport:39
+#: ../src/plugins/abrt-action-ureport:59
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr "'%s' ஐத் தொடங்க முடியவில்லை, பிழைச் செய்தி பின்வருமாறு: '%s'"
 
-#: ../src/plugins/abrt-action-ureport:50
+#: ../src/plugins/abrt-action-ureport:70
 #, c-format
 msgid "Not a number in file '%s'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-ureport:66
-#, c-format
-msgid "Usage: %s [-v]"
-msgstr ""
+msgstr "'%s' கோப்பில் எண்ணாக இல்லை"
 
 #: ../src/plugins/abrt-action-ureport:86
+#, c-format
+msgid "Usage: %s [-v]"
+msgstr "பயன்பாடு: %s [-v]"
+
+#: ../src/plugins/abrt-action-ureport:107
 msgid "Unable to get current working directory as it was probably deleted"
-msgstr ""
+msgstr "கண்டறியப்பட்டது போன்ற பணிக் கோப்பகத்தைப் பெற முடியவில்லை"
 
-#: ../src/plugins/abrt-action-ureport:117
+#: ../src/plugins/abrt-action-ureport:138
 msgid "A bug was already filed about this problem:"
-msgstr ""
+msgstr "இந்தச் சிக்கல் பற்றி ஏற்கனவே ஒரு வழு சமர்ப்பிக்கப்பட்டுள்ளது:"
 
-#: ../src/plugins/abrt-action-ureport:127
+#: ../src/plugins/abrt-action-ureport:148
 msgid "uReport was already sent, not sending it again"
-msgstr ""
+msgstr "uReport ஏற்கனவே அனுப்பப்பட்டது, மீண்டும் அனுப்பவில்லை"
 
-#: ../src/plugins/abrt-action-ureport:145
+#: ../src/plugins/abrt-action-ureport:176
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
-msgstr ""
+msgstr "reporter-ureport ஆனது %d என்ற வெளியேற்றக் குறியீட்டை வழங்கி தோல்வியடைந்தது"
 
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
@@ -1059,7 +1059,7 @@ msgstr "தேடல் சரங்களை stdout இல் அச்சி�
 
 #: ../src/plugins/abrt-dump-oops.c:311
 msgid "Failed to compile regex"
-msgstr ""
+msgstr "சுருங்குறித் தொடரை கம்பைல் செய்வதில் தோல்வியடைந்தது"
 
 #: ../src/plugins/abrt-dump-oops.c:402
 msgid "Can't update the problem: more than one oops found"
@@ -1643,7 +1643,7 @@ msgstr "பயன்பாடு: abrt-cli [--version] COMMAND [DIR]..."
 
 #: ../src/cli/abrt-cli.c:148
 msgid "List problems [in DIRs]"
-msgstr ""
+msgstr "[DIRகளில் உள்ள] சிக்கல்களைப் பட்டியலிடு"
 
 #: ../src/cli/abrt-cli.c:149
 msgid "Remove problem directory DIR"
@@ -1663,7 +1663,7 @@ msgstr "சமீபத்திய செயலிழப்புகளின�
 
 #: ../src/cli/abrt-cli.c:153
 msgid "Process multiple problems"
-msgstr ""
+msgstr "பல சிக்கல்களைச் செயலாக்கவும்"
 
 #: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
@@ -1729,42 +1729,42 @@ msgstr "ABRT %u சிக்கல்களைக் கண்டறிந்த
 
 #: ../src/cli/report.c:28
 msgid "& report [options] DIR..."
-msgstr ""
+msgstr "& அறிக்கையிடவும் [விருப்பங்கள்] DIR..."
 
 #: ../src/cli/report.c:38
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "அறிக்கையிட்ட பிறகு PROBLEM_DIR ஐ அகற்றவும்"
 
 #: ../src/cli/report.c:71 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "'%s' ஐ அழிக்கிறது"
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
-msgstr ""
+msgstr "செயல்கள்: நீக்குதல்(rm), தகவல்(i), தவிர்த்தல்(s):"
 
 #: ../src/cli/process.c:66
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
-msgstr ""
+msgstr "செயல்கள்: நீக்குதல்(rm), அறிக்கையிடுதல்(e), தகவல்(i), தவிர்த்தல்(s):"
 
 #: ../src/cli/process.c:77
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "'%s' ஐ அறிக்கையிடுகிறது"
 
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:133
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "அடுத்த சிக்கலுக்கு ENTER ஐ அழுத்தவும்:"
 
 #: ../src/cli/process.c:144
 msgid "Without --since argument, iterates over all detected problems."
-msgstr ""
+msgstr "--since மதிப்புரு இல்லாவிட்டால், கண்டறியப்பட்ட அனைத்து சிக்கல்களிலும் மீண்டும் மீண்டும் செயல்படுத்தப்படும்."
 
 #: ../src/cli/process.c:150
 msgid "Selects only problems detected after timestamp"
-msgstr ""
+msgstr "நேரமுத்திரைக்குப் பிறகு கண்டறியப்பட்ட சிக்கல்களை மட்டும் தேர்ந்தெடுக்கவும்"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""

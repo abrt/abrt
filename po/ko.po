@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-10-03 13:47+0200\n"
-"PO-Revision-Date: 2014-10-03 11:47+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-10-13 17:42+0200\n"
+"PO-Revision-Date: 2014-10-22 06:29+0000\n"
+"Last-Translator: eukim <eukim@redhat.com>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/fedora-abrt/language/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -86,7 +86,7 @@ msgid ""
 "You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "특정 문제에 대한 알림을 무음으로 합니다. 이 문제에 대한 알림 팝업이 표시되지 않지만, ABRT가 이를 감지하여 ABRT GUI에 보고할 수 있습니다.\n\n계속 진행하시겠습니까?"
 
 #: ../src/applet/applet.c:748 ../src/applet/applet.c:750
 msgid "Warning"
@@ -199,19 +199,19 @@ msgstr "& [-v] [DIR]...\n\nABRT가 새로운 문제를 감지할 경우 사용�
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr ""
+msgstr "디렉토리를 가져오기 전 묻습니다 "
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
-msgstr ""
+msgstr "자동으로 uReport를 전송합니다 "
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
-msgstr ""
+msgstr "단축형 보고서 "
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
-msgstr ""
+msgstr "자동 단축형 보고서 "
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
@@ -220,7 +220,7 @@ msgid ""
 " trace from the coredump but you have to upload the coredump to this "
 "service. With this option disabled ABRT will upload the coredump without "
 "asking."
-msgstr ""
+msgstr "코어 덤프 파일은 시간 및 공간을 많이 사용하는 작업인 스택 트레이스 생성에 필요합니다. ABRT는 코어덤프에서 스택 트레이스를 생성하는 서비스를 제공하지만 이 서비스에 코어 덤프를 업로드해야 합니다. 이 옵션을 사용하지 않으면 ABRT는 묻지 않고 코어 덤프를 업로드합니다. "
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -228,7 +228,7 @@ msgid ""
 "directory, the directory is moved from the system location to your home "
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
-msgstr ""
+msgstr "ABRT는 문제 데이터를 디렉토리에 저장합니다. ABRT가 쓰기 가능한 디렉토리를 필요로 할 때 마다 디렉토리는 시스템에서 사용자의 홈 디렉토리로 이동합니다. 이 옵션을 사용하지 않으면 ABRT는 묻지 않고 문제 디렉토리를 이동합니다."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
@@ -236,45 +236,45 @@ msgid ""
 "uses uReports  for fast global duplicate detection. In default configuration"
 " uReport is sent at beginning of reporting process. With this option enabled"
 " uReports are sent automatically immediately after problem detection."
-msgstr ""
+msgstr "uReport는 간결하게 익명으로 문제를 설명하는 것입니다. ABRT는 uReport를 사용하여 전체 중복을 신속하게 감지합니다. 기본 설정에서 uReport는 보고 절차 시작에 전송됩니다. 이 옵션을 사용하면 문제가 감지된 후 바로 uReport가 자동으로 전송됩니다. "
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
 "With this option enabled reporting process started by click on Report button"
 " in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
-msgstr ""
+msgstr "이 옵션을 사용하면 문제 알림 팝업에 있는 보고서 버튼을 클릭하여 시작된 보고 절차가 uReport 전송 후 중단됩니다. 기본값 문제 브라우저를 사용하여 완전한 보고서를 작성할 수 있습니다."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
-msgstr ""
+msgstr "이 옵션을 사용하면 ABRT는 보고된 문제에 대해 알림을 표시하지 않습니다. 단축형 보고가 유효한 경우에만 실행됩니다. "
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid "Ask before uploading coredump"
-msgstr ""
+msgstr "coredump를 업로드하기 전 묻습니다 "
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are dected."
-msgstr ""
+msgstr "이 옵션을 사용하면 민감한 데이터가 감지되었을 경우 ABRT는 항상 액세스가 제한된 버그 티켓을 생성합니다."
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Request private ticket for sensitive information"
-msgstr ""
+msgstr "민감한 정보에 대해 비공개 티켓을 요청합니다 "
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid "Notify incomplete problems"
-msgstr ""
+msgstr "완료하지 않은 문제를 알려줍니다 "
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
-msgstr ""
+msgstr "컴퓨터 종료시 또는 사용자 로그 아웃 시에 완료하지 않은 문제가 감지되었습니다. 정확한 문제 보고서를 제출하기 위해 ABRT는 이러한 문제에 대해 보고 허용하지 않습니다."
 
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Close"
@@ -487,72 +487,72 @@ msgid ""
 "   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n"
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
-msgstr ""
+msgstr "사용법: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n\n   -v             - 상세 설명\n   -d             - 업로드된 아카이브 삭제\n   ABRT_SPOOL_DIR - 업로드된 유효한 아카이브가 압축 해제될 디렉토리\n   UPLOAD_DIR     - 업로드된 아카이브가 저장될 디렉토리\n   FILENAME       - 업로드된 아카이브 파일 이름 \n"
 
 #: ../src/daemon/abrt-handle-upload.in:105
 #: ../src/daemon/abrt-handle-upload.in:108
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "디렉토리가 아닙니다: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:111
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
+msgstr "생략 중: '{0}' (슬래시로 시작)"
 
 #: ../src/daemon/abrt-handle-upload.in:114
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
+msgstr "생략 중: '{0}' (점으로 시작)"
 
 #: ../src/daemon/abrt-handle-upload.in:117
 msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
+msgstr "생략 중: '{0}' (.. 포함)"
 
 #: ../src/daemon/abrt-handle-upload.in:120
 msgid "Skipping: '{0}' (contains space)"
-msgstr ""
+msgstr "생략 중: '{0}' (공백 포함)"
 
 #: ../src/daemon/abrt-handle-upload.in:123
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "생략 중: '{0}' (탭 포함)"
 
 #: ../src/daemon/abrt-handle-upload.in:128
 msgid "Can't change directory to '{0}'"
-msgstr ""
+msgstr "'{0}'로 디렉토리를 변경할 수 없습니다 "
 
 #: ../src/daemon/abrt-handle-upload.in:139
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "알 수 없는 파일 형식: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:144
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "'{0}'에 작업 디렉토리를 생성할 수 없습니다 "
 
 #: ../src/daemon/abrt-handle-upload.in:155
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}'을 '{1}'로 이동할 수 없습니다 "
 
 #: ../src/daemon/abrt-handle-upload.in:160
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}'을 '{1}'에 복사할 수 없습니다 "
 
 #: ../src/daemon/abrt-handle-upload.in:164
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "'{0}'에서 확인 오류 "
 
 #: ../src/daemon/abrt-handle-upload.in:166
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "'{0}' 압축 해제 중 "
 
 #: ../src/daemon/abrt-handle-upload.in:170
 msgid "Can't create '{0}' directory"
-msgstr ""
+msgstr "'{0}' 디렉토리를 생성할 수 없습니다 "
 
 #: ../src/daemon/abrt-handle-upload.in:174
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "'{0}'을 압축 해제할 수 없습니다 "
 
 #: ../src/daemon/abrt-handle-upload.in:198
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}'이 성공적으로 처리되었습니다 "
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
@@ -632,21 +632,21 @@ msgstr "& [-v] -d DIR\n\n문제 디렉토리 DIR에 있는 코어 덤프의 UUID
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "코어 덤프 '%s' 분석 중 "
 
 #: ../src/plugins/abrt-action-analyze-core.in:110
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "빌드 ID가 누락되어 있습니다: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:142
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr ""
+msgstr "사용법: %s [-v] [-o OUTFILE] -c COREFILE"
 
 #: ../src/plugins/abrt-action-analyze-core.in:164
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "COREFILE이 지정되어 있지 않습니다 "
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
@@ -700,7 +700,7 @@ msgstr "oops 메세지를 추출할 수 없습니다: '{0}'"
 msgid "Oops text extracted successfully"
 msgstr "Oops 텍스트가 성공적으로 추출되었습니다 "
 
-#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:81
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
@@ -836,37 +836,37 @@ msgstr "디렉토리 내에 있는 파일 삭제 "
 msgid "Preserve this directory"
 msgstr "이 디렉토리를 보관합니다  "
 
-#: ../src/plugins/abrt-action-ureport:39
+#: ../src/plugins/abrt-action-ureport:59
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr "'%s'를 시작할 수 없습니다. 오류 메세지: '%s'"
 
-#: ../src/plugins/abrt-action-ureport:50
+#: ../src/plugins/abrt-action-ureport:70
 #, c-format
 msgid "Not a number in file '%s'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-ureport:66
-#, c-format
-msgid "Usage: %s [-v]"
-msgstr ""
+msgstr "파일 '%s'에 번호가 없습니다 "
 
 #: ../src/plugins/abrt-action-ureport:86
+#, c-format
+msgid "Usage: %s [-v]"
+msgstr "사용법: %s [-v]"
+
+#: ../src/plugins/abrt-action-ureport:107
 msgid "Unable to get current working directory as it was probably deleted"
-msgstr ""
+msgstr "현재 작업하고 있는 디렉토리는 삭제되어 가져올 수 없습니다 "
 
-#: ../src/plugins/abrt-action-ureport:117
+#: ../src/plugins/abrt-action-ureport:138
 msgid "A bug was already filed about this problem:"
-msgstr ""
+msgstr "이 문제에 대한 버그가 이미 작성되어 있습니다:"
 
-#: ../src/plugins/abrt-action-ureport:127
+#: ../src/plugins/abrt-action-ureport:148
 msgid "uReport was already sent, not sending it again"
-msgstr ""
+msgstr "uReport가 이미 전송되어 있기때문에 다시 전송되지 않습니다 "
 
-#: ../src/plugins/abrt-action-ureport:145
+#: ../src/plugins/abrt-action-ureport:176
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
-msgstr ""
+msgstr "reporter-ureport는 종료 코드 %d로 실패했습니다 "
 
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
@@ -1060,7 +1060,7 @@ msgstr "검색 문자열을 표준 출력에 인쇄하고 종료 "
 
 #: ../src/plugins/abrt-dump-oops.c:311
 msgid "Failed to compile regex"
-msgstr ""
+msgstr "regex 컴파일에 실패했습니다 "
 
 #: ../src/plugins/abrt-dump-oops.c:402
 msgid "Can't update the problem: more than one oops found"
@@ -1644,7 +1644,7 @@ msgstr "사용법: abrt-cli [--version] COMMAND [DIR]... "
 
 #: ../src/cli/abrt-cli.c:148
 msgid "List problems [in DIRs]"
-msgstr ""
+msgstr " [in DIRs]에 문제 나열 "
 
 #: ../src/cli/abrt-cli.c:149
 msgid "Remove problem directory DIR"
@@ -1664,7 +1664,7 @@ msgstr "최근 충돌 횟수를 출력"
 
 #: ../src/cli/abrt-cli.c:153
 msgid "Process multiple problems"
-msgstr ""
+msgstr "여러 문제 처리 "
 
 #: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
@@ -1730,42 +1730,42 @@ msgstr "ABRT에 의해 '%u' 건의 문제가 발견되었습니다. (다음을 �
 
 #: ../src/cli/report.c:28
 msgid "& report [options] DIR..."
-msgstr ""
+msgstr "& report [options] DIR..."
 
 #: ../src/cli/report.c:38
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "보고 후 PROBLEM_DIR 삭제 "
 
 #: ../src/cli/report.c:71 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "'%s' 삭제 중 "
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
-msgstr ""
+msgstr "동작: 삭제(rm), 정보(i), 생략(s):"
 
 #: ../src/cli/process.c:66
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
-msgstr ""
+msgstr "동작: 삭제(rm), 보고 (e), 정보(i), 생략(s):"
 
 #: ../src/cli/process.c:77
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "'%s' 보고 중 "
 
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:133
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "다음 문제로 이동하려면 ENTER를 누릅니다: "
 
 #: ../src/cli/process.c:144
 msgid "Without --since argument, iterates over all detected problems."
-msgstr ""
+msgstr "--since 인수가 없으면 감지된 모든 문제를 반복합니다 "
 
 #: ../src/cli/process.c:150
 msgid "Selects only problems detected after timestamp"
-msgstr ""
+msgstr "타임 스탬프 후 감지된 문제만 선택합니다 "
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""

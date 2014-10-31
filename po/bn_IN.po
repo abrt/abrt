@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-10-03 13:47+0200\n"
-"PO-Revision-Date: 2014-10-03 11:47+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-10-13 17:42+0200\n"
+"PO-Revision-Date: 2014-10-17 10:24+0000\n"
+"Last-Translator: Saibal Ray\n"
 "Language-Team: Bengali (India) (http://www.transifex.com/projects/p/fedora-abrt/language/bn_IN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -86,7 +86,7 @@ msgid ""
 "You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "অাপনি একটি নির্দিষ্ট সমস্যার বিজ্ঞপ্তি নীরব করতে চলেছেন। অাপনি অার এই সমস্যার জন্য বিজ্ঞপ্তি দেখতে পাবেন না, তবে, ABRT এটি সনাক্ত করবে এবং অাপনি তা ABRT GUI থেকে রিপোর্ট করতে পারবেন।\n\nঅাপনি কি জারি রাখতে চান?"
 
 #: ../src/applet/applet.c:748 ../src/applet/applet.c:750
 msgid "Warning"
@@ -199,19 +199,19 @@ msgstr "& [-v] [DIR]...\n\nABRT দ্বারা নতুন সমস্য�
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr ""
+msgstr "ডিরেক্টরি নেওয়ার পূর্বে জিঞ্জাসা করুন"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
-msgstr ""
+msgstr "uReport স্বয়ংক্রিয়ভাবে পাঠান"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
-msgstr ""
+msgstr "সংক্ষিপ্ত রিপোর্টিং"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
-msgstr ""
+msgstr "নীরব সংক্ষিপ্ত রিপোর্টিং"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
@@ -220,7 +220,7 @@ msgid ""
 " trace from the coredump but you have to upload the coredump to this "
 "service. With this option disabled ABRT will upload the coredump without "
 "asking."
-msgstr ""
+msgstr "স্ট্যাক ট্রেস প্রস্তুত করতে কোর-ডাম্প ফাইল প্রয়োজনীয় যা সময় এবং স্থান সাপেক্ষ এক কাজ। ABRT একটি পরিষেবা প্রদান করে, যা কোর-ডাম্প থেকে স্ট্যাক ট্রেস প্রস্তুত করে কিন্তু অাপনাকে পরিষেবায় কোর-ডাম্প অাপলোড করতে হবে। এই বিকল্প নিষ্ক্রিয় অবস্থায়, ABRT জিঞ্জাসা না করেই কোর-ডাম্প অাপলোড করবে।"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -228,7 +228,7 @@ msgid ""
 "directory, the directory is moved from the system location to your home "
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
-msgstr ""
+msgstr "ABRT সমস্যা ডেটা ডিরেক্টরিগুলিতে রাখে। যখনই ABRT-এর লিখনযোগ্য ডিরেক্টরির প্রয়োজন হয় তখনই, ডিরেক্টরি সিস্টেম অবস্থান থেকে অাপনার হোম ডিরেক্টরিতে সরানো হয়। এই বিকল্প নিষ্ক্রিয় থাকা অবস্থায়, ABRT জিঞ্জাসা না করেই সরাসরি সমস্যা ডিরেক্টরি সরাবে।"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
@@ -236,45 +236,45 @@ msgid ""
 "uses uReports  for fast global duplicate detection. In default configuration"
 " uReport is sent at beginning of reporting process. With this option enabled"
 " uReports are sent automatically immediately after problem detection."
-msgstr ""
+msgstr "uReport হল একটি সমস্যার সংক্ষিপ্ত এবং সম্পূর্ণ বেনামী বর্ণনা। ABRT দ্রুত সার্বিক সদৃশ সনাক্তকরণের জন্য uReports  ব্যবহার করে। ডিফল্ট কনফিগারেশনে, রিপোর্টিং প্রক্রিয়ার শুরুতে uReport পাঠানো হয়। এই বিকল্প সক্রিয় অবস্থায়, সমস্যার সনাক্ত হওয়ার অবিলম্ব পরেই uReports স্বয়ংক্রিয়ভাবে পাঠানো হয়।"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
 "With this option enabled reporting process started by click on Report button"
 " in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
-msgstr ""
+msgstr "এই বিকল্প সক্রিয় অবস্থায়, সমস্যা বিজ্ঞপ্তি বাবলে রিপোর্ট বোতামে ক্লিক করে শুরু করা রিপোর্টিং প্রক্রিয়া uReport পাঠানোর পরে বাধাপ্রাপ্ত হবে। অাপনি ডিফল্ট সমস্যা ব্রাউজার ব্যবহার করে সর্বদাই সম্পূর্ণ রিপোর্ট বানাতে পারবেন।"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
-msgstr ""
+msgstr " এই বিকল্প সক্রিয় অবস্থায়, ABRT কখনও রিপোর্ট করা সমস্যাগুলির বিজ্ঞপ্তিগুলি দেখাবে না। সংক্ষিপ্ত রিপোর্টিং সক্রিয় থাকলে তবেই কার্যকর হয়।"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid "Ask before uploading coredump"
-msgstr ""
+msgstr "কোর-ডাম্প অাপলোড করার অাগে জিজ্ঞাসা করুন"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are dected."
-msgstr ""
+msgstr "এই বিকল্প সক্রিয় অবস্থায়, সম্ভাব্য ভাবে সংবেদনশীল ডেটা সনাক্ত হলে, ABRT সর্বদা সীমাবদ্ধ অ্যাক্সেস সমেত বাগ টিকিট তৈরি করে।"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Request private ticket for sensitive information"
-msgstr ""
+msgstr "সংবেদনশীল তথ্যের জন্য ব্যক্তিগত টিকিটের অনুরোধ জানান"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid "Notify incomplete problems"
-msgstr ""
+msgstr "অসম্পূর্ণ সমস্যাগুলি জানান"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
-msgstr ""
+msgstr "কম্পিউটার শাট ডাউন বা ব্যবহারকারী লগ অাউটের সময়ে, অসম্পূর্ণ সমস্যা সনাক্ত করা হয়েছে। মূল্যবান সমস্যার রিপোর্ট প্রদান করতে, ABRT অাপনাকে এই সমস্যাগুলি জমা দেওয়ার অনুমতি দেবে না।"
 
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Close"
@@ -487,72 +487,72 @@ msgid ""
 "   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n"
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
-msgstr ""
+msgstr "ব্যবহার: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n\n   -v             - Verbose\n   -d             - Delete uploaded archive\n   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n   UPLOAD_DIR     - Directory where uploaded archives are stored\n   FILENAME       - Uploaded archive file name\n"
 
 #: ../src/daemon/abrt-handle-upload.in:105
 #: ../src/daemon/abrt-handle-upload.in:108
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "একটি ডিরেক্টরি নয়: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:111
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
+msgstr "ছেড়ে যাওয়া হচ্ছে: '{0}' (স্ল্যাশ দিয়ে শুরু)"
 
 #: ../src/daemon/abrt-handle-upload.in:114
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
+msgstr "ছেড়ে যাওয়া হচ্ছে: '{0}' (ডট দিয়ে শুরু)"
 
 #: ../src/daemon/abrt-handle-upload.in:117
 msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
+msgstr "ছেড়ে যাওয়া হচ্ছে: '{0}' (বিশিষ্ট ..)"
 
 #: ../src/daemon/abrt-handle-upload.in:120
 msgid "Skipping: '{0}' (contains space)"
-msgstr ""
+msgstr "ছেড়ে যাওয়া হচ্ছে: '{0}' (স্পেস রয়েছে)"
 
 #: ../src/daemon/abrt-handle-upload.in:123
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "ছেড়ে যাওয়া হচ্ছে: '{0}' (ট্যাব রয়েছে)"
 
 #: ../src/daemon/abrt-handle-upload.in:128
 msgid "Can't change directory to '{0}'"
-msgstr ""
+msgstr "ডিরেক্টরি '{0}'-এ পরিবর্তন করা সম্ভব নয়"
 
 #: ../src/daemon/abrt-handle-upload.in:139
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "অজানা ফাইল ধরন: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:144
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "'{0}' -এ ওয়ার্কিং ডিরেক্টরি তৈরি করা সম্ভব নয়"
 
 #: ../src/daemon/abrt-handle-upload.in:155
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}', '{1}' -এ সরানো সম্ভব নয়"
 
 #: ../src/daemon/abrt-handle-upload.in:160
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}', '{1}'-এ অনুলিপি করা সম্ভব নয়"
 
 #: ../src/daemon/abrt-handle-upload.in:164
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "'{0}'-এ যাচাইকরণ ত্রুটি"
 
 #: ../src/daemon/abrt-handle-upload.in:166
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "'{0}' অান-প্যাক করা হচ্ছে"
 
 #: ../src/daemon/abrt-handle-upload.in:170
 msgid "Can't create '{0}' directory"
-msgstr ""
+msgstr "'{0}' ডিরেক্টরি তৈরি করা সম্ভব নয়"
 
 #: ../src/daemon/abrt-handle-upload.in:174
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "'{0}' অান-প্যাক করা সম্ভব নয়"
 
 #: ../src/daemon/abrt-handle-upload.in:198
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' সফল ভাবে প্রক্রিয়া করা হয়েছে"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
@@ -632,21 +632,21 @@ msgstr "& [-v] -d DIR\n\nসমস্যাযুক্ত ডিরেক্ট
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "'%s' কোর-ডাম্প বিশ্লেষণ করা হচ্ছে"
 
 #: ../src/plugins/abrt-action-analyze-core.in:110
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "বিল্ড অাইডি অনুপস্থিত: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:142
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr ""
+msgstr "ব্যবহার: %s [-v] [-o OUTFILE] -c COREFILE"
 
 #: ../src/plugins/abrt-action-analyze-core.in:164
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "COREFILE নির্দিষ্ট করা নেই"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
@@ -700,7 +700,7 @@ msgstr "oops বার্তা বের করে অানা যায় �
 msgid "Oops text extracted successfully"
 msgstr "Oops পাঠ্য সফলভাবে বের করে অানা হয়েছে"
 
-#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:81
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
@@ -836,37 +836,37 @@ msgstr "এই ডিরেক্টরির মধ্যে উপস্থি
 msgid "Preserve this directory"
 msgstr "এই ডিরেক্টরিটি সংরক্ষণ করা হবে"
 
-#: ../src/plugins/abrt-action-ureport:39
+#: ../src/plugins/abrt-action-ureport:59
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr "'%s' শুরু করা যায়নি, ত্রুটি বার্তা হল: '%s'"
 
-#: ../src/plugins/abrt-action-ureport:50
+#: ../src/plugins/abrt-action-ureport:70
 #, c-format
 msgid "Not a number in file '%s'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-ureport:66
-#, c-format
-msgid "Usage: %s [-v]"
-msgstr ""
+msgstr "'%s' ফাইলে একটি সংখ্যা নয়"
 
 #: ../src/plugins/abrt-action-ureport:86
+#, c-format
+msgid "Usage: %s [-v]"
+msgstr "ব্যবহার: %s [-v]"
+
+#: ../src/plugins/abrt-action-ureport:107
 msgid "Unable to get current working directory as it was probably deleted"
-msgstr ""
+msgstr "বর্তমান ওয়ার্কিং ডিরেক্টরি সম্ভবত সনাক্ত হওয়ার কারণে এটি পাওয়া যায়নি"
 
-#: ../src/plugins/abrt-action-ureport:117
+#: ../src/plugins/abrt-action-ureport:138
 msgid "A bug was already filed about this problem:"
-msgstr ""
+msgstr "এই সমস্যাটির বিষয়ে ইতিমধ্যেই একটি বাগ ফাইল করা হয়েছে:"
 
-#: ../src/plugins/abrt-action-ureport:127
+#: ../src/plugins/abrt-action-ureport:148
 msgid "uReport was already sent, not sending it again"
-msgstr ""
+msgstr "uReport ইতিমধ্যেই পাঠানো হয়েছে, তাই অাবার পাঠানো হচ্ছে না"
 
-#: ../src/plugins/abrt-action-ureport:145
+#: ../src/plugins/abrt-action-ureport:176
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
-msgstr ""
+msgstr "reporter-ureport ব্যর্থ হয়েছে, প্রস্থান কোড %d"
 
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
@@ -1060,7 +1060,7 @@ msgstr "অনুসন্ধানের পংক্তিগুলি stdout-
 
 #: ../src/plugins/abrt-dump-oops.c:311
 msgid "Failed to compile regex"
-msgstr ""
+msgstr "regex একত্রিত করতে ব্যর্থ হয়েছে"
 
 #: ../src/plugins/abrt-dump-oops.c:402
 msgid "Can't update the problem: more than one oops found"
@@ -1644,7 +1644,7 @@ msgstr "ব্যবহারপ্রণালী: abrt-cli [--version] COMMAND
 
 #: ../src/cli/abrt-cli.c:148
 msgid "List problems [in DIRs]"
-msgstr ""
+msgstr "সমস্যাগুলি তালিকাভুক্ত করুন [DIRs-এ]"
 
 #: ../src/cli/abrt-cli.c:149
 msgid "Remove problem directory DIR"
@@ -1664,7 +1664,7 @@ msgstr "সাম্প্রতিক ক্র্যাশগুলির গ�
 
 #: ../src/cli/abrt-cli.c:153
 msgid "Process multiple problems"
-msgstr ""
+msgstr "একাধিক সমস্যাগুলি প্রক্রিয়া করুন"
 
 #: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
@@ -1730,42 +1730,42 @@ msgstr "ABRT %u সমস্য সনাক্ত করেছে। অার�
 
 #: ../src/cli/report.c:28
 msgid "& report [options] DIR..."
-msgstr ""
+msgstr "& রিপোর্ট [বিকল্প] DIR..."
 
 #: ../src/cli/report.c:38
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "রিপোর্ট করার পরে PROBLEM_DIR সরান"
 
 #: ../src/cli/report.c:71 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "'%s' মোছা হচ্ছে"
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
-msgstr ""
+msgstr "অ্যাকশন: remove(rm), info(i), skip(s):"
 
 #: ../src/cli/process.c:66
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
-msgstr ""
+msgstr "অ্যাকশন: remove(rm), report(e), info(i), skip(s):"
 
 #: ../src/cli/process.c:77
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "'%s' রিপোর্ট করা হচ্ছে"
 
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:133
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "পরবর্তী সমস্যার জন্য ENTER টিপুন:"
 
 #: ../src/cli/process.c:144
 msgid "Without --since argument, iterates over all detected problems."
-msgstr ""
+msgstr "--since অার্গুমেন্ট ব্যতীত, সমস্ত সনাক্ত করা সমস্যার উপরে পুনরাবৃত্তি করুন।"
 
 #: ../src/cli/process.c:150
 msgid "Selects only problems detected after timestamp"
-msgstr ""
+msgstr "শুধুমাত্র টাইম-স্ট্যাম্পের পরে সনাক্ত করা সমস্যাগুলি নির্বাচন করে"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""

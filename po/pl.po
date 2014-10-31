@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-10-03 13:47+0200\n"
-"PO-Revision-Date: 2014-10-03 11:47+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-10-13 17:42+0200\n"
+"PO-Revision-Date: 2014-10-03 13:29+0000\n"
+"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/fedora-abrt/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -83,7 +83,7 @@ msgid ""
 "You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "Zostaną wyciszone powiadomienia o konkretnym problemie. Nie będą one już wyświetlane, ale program ABRT będzie nadal wykrywał ten problem, i będzie można go zgłosić z interfejsu programu.\n\nKontynuować?"
 
 #: ../src/applet/applet.c:748 ../src/applet/applet.c:750
 msgid "Warning"
@@ -697,7 +697,7 @@ msgstr "Nie można wypakować komunikatu oops: \"{0}\""
 msgid "Oops text extracted successfully"
 msgstr "Pomyślnie wypakowano tekst awarii oops"
 
-#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:81
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
@@ -833,34 +833,34 @@ msgstr "Usuwa pliki wewnątrz tego katalogu"
 msgid "Preserve this directory"
 msgstr "Zachowuje ten katalog"
 
-#: ../src/plugins/abrt-action-ureport:39
+#: ../src/plugins/abrt-action-ureport:59
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
 msgstr "Nie można uruchomić \"%s\", komunikat błędu: \"%s\""
 
-#: ../src/plugins/abrt-action-ureport:50
+#: ../src/plugins/abrt-action-ureport:70
 #, c-format
 msgid "Not a number in file '%s'"
 msgstr "Nie jest liczbą w \"%s\""
 
-#: ../src/plugins/abrt-action-ureport:66
+#: ../src/plugins/abrt-action-ureport:86
 #, c-format
 msgid "Usage: %s [-v]"
 msgstr "Użycie: %s [-v]"
 
-#: ../src/plugins/abrt-action-ureport:86
+#: ../src/plugins/abrt-action-ureport:107
 msgid "Unable to get current working directory as it was probably deleted"
 msgstr "Nie można uzyskać bieżącego katalogu roboczego, ponieważ został prawdopodobnie usunięty"
 
-#: ../src/plugins/abrt-action-ureport:117
+#: ../src/plugins/abrt-action-ureport:138
 msgid "A bug was already filed about this problem:"
 msgstr "Ten błąd został już zgłoszony:"
 
-#: ../src/plugins/abrt-action-ureport:127
+#: ../src/plugins/abrt-action-ureport:148
 msgid "uReport was already sent, not sending it again"
 msgstr "Już wysłano uReport, kolejny nie zostanie wysłany"
 
-#: ../src/plugins/abrt-action-ureport:145
+#: ../src/plugins/abrt-action-ureport:176
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
 msgstr "reporter-ureport się nie powiodło z kodem wyjścia %d"
@@ -1661,7 +1661,7 @@ msgstr "Wyświetla liczbę ostatnich awarii"
 
 #: ../src/cli/abrt-cli.c:153
 msgid "Process multiple problems"
-msgstr ""
+msgstr "Przetwarza wiele problemów"
 
 #: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
@@ -1740,29 +1740,29 @@ msgstr "Usuwanie \"%s\""
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
-msgstr ""
+msgstr "Działania: usuń (rm), informacje (i), pomiń (s):"
 
 #: ../src/cli/process.c:66
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
-msgstr ""
+msgstr "Działania: usuń (rm), zgłoś (e), informacje (i), pomiń (s):"
 
 #: ../src/cli/process.c:77
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "Zgłaszanie \"%s\""
 
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:133
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "Aby przejść do następnego problemu, proszę nacisnąć klawisz Enter:"
 
 #: ../src/cli/process.c:144
 msgid "Without --since argument, iterates over all detected problems."
-msgstr ""
+msgstr "Bez parametru --since przejdzie przez wszystkie wykryte problemy."
 
 #: ../src/cli/process.c:150
 msgid "Selects only problems detected after timestamp"
-msgstr ""
+msgstr "Wybiera tylko problemy wykryte po podanym czasie"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""

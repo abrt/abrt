@@ -6,6 +6,7 @@
 # Casey Jones <nahareport@yahoo.com>, 2011
 # hyuugabaru <hyu_gabaru@yahoo.co.jp>, 2009
 # Jiří Moskovčák <jmoskovc@redhat.com>, 2011
+# Kenzo Moriguchi <kmoriguc@redhat.com>, 2014
 # Makoto Mizukami <makoto@fedoraporject.org>, 2010
 # nnakakit <nnakakit@redhat.com>, 2013
 # noriko <noriko@fedoraproject.org>, 2014
@@ -15,9 +16,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-10-03 13:47+0200\n"
-"PO-Revision-Date: 2014-10-03 11:47+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-10-13 17:42+0200\n"
+"PO-Revision-Date: 2014-10-21 05:22+0000\n"
+"Last-Translator: Kenzo Moriguchi <kmoriguc@redhat.com>\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/fedora-abrt/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -89,7 +90,7 @@ msgid ""
 "You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "特定の問題の通知を無音にします。この問題では通知ポップアップが表示されませんが、ABRT はこれを検出し、ABRT GUI からこれを報告することができます。\n\n続けますか?"
 
 #: ../src/applet/applet.c:748 ../src/applet/applet.c:750
 msgid "Warning"
@@ -202,19 +203,19 @@ msgstr "& [-v] [DIR]...\n\n新しい問題が ABRT で検出されるとユー�
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:1
 msgid "Ask before stealing directory"
-msgstr ""
+msgstr "ディレクトリをスチールする前に尋ねる"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:2
 msgid "Automatically send uReport"
-msgstr ""
+msgstr "uReport を自動的に送信する"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:3
 msgid "Shortened reporting"
-msgstr ""
+msgstr " 短縮形のレポート"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:4
 msgid "Silent shortened reporting"
-msgstr ""
+msgstr "サイレントの短縮形レポート"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:5
 msgid ""
@@ -223,7 +224,7 @@ msgid ""
 " trace from the coredump but you have to upload the coredump to this "
 "service. With this option disabled ABRT will upload the coredump without "
 "asking."
-msgstr ""
+msgstr "coredump ファイルは、時間がかかりスペースを消費する操作であるスタックトレースの生成に必要です。ABRT は、coredump からスタックトレースを生成するサービスを提供しますが、coredump をこのサービスにアップロードする必要があります。このオプションを無効にすると、ABRT は尋ねることなく coredump をアップロードします。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:6
 msgid ""
@@ -231,7 +232,7 @@ msgid ""
 "directory, the directory is moved from the system location to your home "
 "directory. With this option disabled ABRT will move the problem directory "
 "without asking."
-msgstr ""
+msgstr "ABRT は、問題のデータをディレクトリに保存します。ABRT が書き込み可能なディレクトリを必要とする時は常に、このディレクトリはシステムからユーザーのホームディレクトリに移動されます。このオプションを無効にすると、ABRT は尋ねることなく問題のディレクトリを移動します。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:7
 msgid ""
@@ -239,45 +240,45 @@ msgid ""
 "uses uReports  for fast global duplicate detection. In default configuration"
 " uReport is sent at beginning of reporting process. With this option enabled"
 " uReports are sent automatically immediately after problem detection."
-msgstr ""
+msgstr "uReport は、問題を説明したもので、簡潔で完全に匿名のものです。ABRT は uReport を使用して、グローバルな重複を素早く検出します。デフォルト設定では、uReport はレポーティングプロセスの最初に送信されます。このオプションを有効にすると、問題の検出後に直ちに uReport が自動的に送信されます。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:8
 msgid ""
 "With this option enabled reporting process started by click on Report button"
 " in problem notification bubble will be interrupted after uReport is sent. "
 "You can always use the default problem browser to make complete report."
-msgstr ""
+msgstr "このオプションを有効にすると、問題通知のポップアップ内のレポートボタンをクリックして開始されたレポーティングプロセスは、uReport の送信後に中断されます。デフォルトの問題ブラウザを使った完全なレポート作成は、常に可能です。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:9
 msgid ""
 " With this option enabled ABRT never shows notifications of reported "
 "problems. Takes effect only if Shortened reporting is enabled."
-msgstr ""
+msgstr "このオプションを有効にすると、ABRT は報告された問題の通知を表示しません。短縮形レポーティングが有効な場合にのみ、実行されます。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:10
 msgid "Ask before uploading coredump"
-msgstr ""
+msgstr "coredump をアップロードする前に尋ねる"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:11
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are dected."
-msgstr ""
+msgstr "このオプションを有効にすると、機密性の可能性があるデータが検出されると ABRT は常にアクセス制限のあるバグチケットは作成します。"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Request private ticket for sensitive information"
-msgstr ""
+msgstr "機密情報のプライベートチケットを要求する"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:13
 msgid "Notify incomplete problems"
-msgstr ""
+msgstr "完了していない問題を通知する"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:14
 msgid ""
 "Incomplete problems are detected while computer is shutting down or user is "
 "logging out. In order to provide valuable problem reports, ABRT will not "
 "allow you to submit these problems."
-msgstr ""
+msgstr "コンピューターのシャットダウン中またはユーザーのログアウト中に完了していない問題が検出されました。価値のある問題レポートを提出するため、ABRT はユーザーによるこれらの問題の提出を許可しません。"
 
 #: ../src/configuration-gui/system-config-abrt.c:75
 msgid "_Close"
@@ -490,72 +491,72 @@ msgid ""
 "   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n"
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
-msgstr ""
+msgstr "使い方: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n\n   -v             - 冗長表示にする\n   -d             - アップロード済みのアーカイブを削除する\n   ABRT_SPOOL_DIR - アップロード済みの有効なアーカイブが解凍されるディレクトリ\n   UPLOAD_DIR     - アップロード済みアーカイブが保存されるディレクトリ\n   FILENAME       - アップロード済みアーカイブファイル名\n"
 
 #: ../src/daemon/abrt-handle-upload.in:105
 #: ../src/daemon/abrt-handle-upload.in:108
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "ディレクトリではありません: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:111
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
+msgstr "スキップ中: '{0}' (スラッシュで開始)"
 
 #: ../src/daemon/abrt-handle-upload.in:114
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
+msgstr "スキップ中: '{0}' (ドットで開始)"
 
 #: ../src/daemon/abrt-handle-upload.in:117
 msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
+msgstr "スキップ中: '{0}' (.. を含む)"
 
 #: ../src/daemon/abrt-handle-upload.in:120
 msgid "Skipping: '{0}' (contains space)"
-msgstr ""
+msgstr "スキップ中: '{0}' (空白を含む)"
 
 #: ../src/daemon/abrt-handle-upload.in:123
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "スキップ中: '{0}' (タブを含む)"
 
 #: ../src/daemon/abrt-handle-upload.in:128
 msgid "Can't change directory to '{0}'"
-msgstr ""
+msgstr "'{0}' にディレクトリを変更できません"
 
 #: ../src/daemon/abrt-handle-upload.in:139
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "不明なファイルタイプ: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:144
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "'{0}' に作業ディレクトリを作成できません"
 
 #: ../src/daemon/abrt-handle-upload.in:155
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}' を '{1}' に移動できません"
 
 #: ../src/daemon/abrt-handle-upload.in:160
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}' を '{1}' にコピーできません"
 
 #: ../src/daemon/abrt-handle-upload.in:164
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "'{0}' で確認エラー"
 
 #: ../src/daemon/abrt-handle-upload.in:166
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "'{0}' を解凍中"
 
 #: ../src/daemon/abrt-handle-upload.in:170
 msgid "Can't create '{0}' directory"
-msgstr ""
+msgstr "'{0}' ディレクトリを作成できません"
 
 #: ../src/daemon/abrt-handle-upload.in:174
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "'{0}' を解凍できません"
 
 #: ../src/daemon/abrt-handle-upload.in:198
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' が正常に処理されました"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
@@ -635,21 +636,21 @@ msgstr "& [-v] -d DIR\n\nDIR 問題ディレクトリ内のコアダンプの UU
 #: ../src/plugins/abrt-action-analyze-core.in:72
 #, c-format
 msgid "Analyzing coredump '%s'"
-msgstr ""
+msgstr "coredump '%s' を分析中"
 
 #: ../src/plugins/abrt-action-analyze-core.in:110
 #, c-format
 msgid "Missing build id: %s"
-msgstr ""
+msgstr "build id がありません: %s"
 
 #: ../src/plugins/abrt-action-analyze-core.in:142
 #, c-format
 msgid "Usage: %s [-v] [-o OUTFILE] -c COREFILE"
-msgstr ""
+msgstr "使い方: %s [-v] [-o OUTFILE] -c COREFILE"
 
 #: ../src/plugins/abrt-action-analyze-core.in:164
 msgid "COREFILE is not specified"
-msgstr ""
+msgstr "COREFILE が指定されていません"
 
 #: ../src/plugins/abrt-action-analyze-oops.c:37
 msgid ""
@@ -703,7 +704,7 @@ msgstr "ウップスメッセージを抽出できません: '{0}'"
 msgid "Oops text extracted successfully"
 msgstr "ウップステキストが正常に抽出されました"
 
-#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:81
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
@@ -839,37 +840,37 @@ msgstr "このディレクトリ内のファイル群を削除"
 msgid "Preserve this directory"
 msgstr "このディレクトリを維持"
 
-#: ../src/plugins/abrt-action-ureport:39
+#: ../src/plugins/abrt-action-ureport:59
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr "'%s' をスタートできません、エラーメッセージは: '%s'"
 
-#: ../src/plugins/abrt-action-ureport:50
+#: ../src/plugins/abrt-action-ureport:70
 #, c-format
 msgid "Not a number in file '%s'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-ureport:66
-#, c-format
-msgid "Usage: %s [-v]"
-msgstr ""
+msgstr "ファイル '%s' に番号がありません"
 
 #: ../src/plugins/abrt-action-ureport:86
+#, c-format
+msgid "Usage: %s [-v]"
+msgstr "使い方: %s [-v]"
+
+#: ../src/plugins/abrt-action-ureport:107
 msgid "Unable to get current working directory as it was probably deleted"
-msgstr ""
+msgstr "現在作業中のディレクトリは削除された可能性があるため、取得できません"
 
-#: ../src/plugins/abrt-action-ureport:117
+#: ../src/plugins/abrt-action-ureport:138
 msgid "A bug was already filed about this problem:"
-msgstr ""
+msgstr "この問題に関するバグはすでに提出されています:"
 
-#: ../src/plugins/abrt-action-ureport:127
+#: ../src/plugins/abrt-action-ureport:148
 msgid "uReport was already sent, not sending it again"
-msgstr ""
+msgstr "uReport はすでに送信されているので、再送信されません"
 
-#: ../src/plugins/abrt-action-ureport:145
+#: ../src/plugins/abrt-action-ureport:176
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
-msgstr ""
+msgstr "reporter-ureport は、終了コード %d で失敗しました"
 
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
@@ -1063,7 +1064,7 @@ msgstr "検索文字列を標準出力に表示して終了"
 
 #: ../src/plugins/abrt-dump-oops.c:311
 msgid "Failed to compile regex"
-msgstr ""
+msgstr "regex のコンパイルに失敗しました"
 
 #: ../src/plugins/abrt-dump-oops.c:402
 msgid "Can't update the problem: more than one oops found"
@@ -1647,7 +1648,7 @@ msgstr "使い方: abrt-cli [--version] COMMAND [DIR]..."
 
 #: ../src/cli/abrt-cli.c:148
 msgid "List problems [in DIRs]"
-msgstr ""
+msgstr "問題を一覧表示する [in DIRs]"
 
 #: ../src/cli/abrt-cli.c:149
 msgid "Remove problem directory DIR"
@@ -1667,7 +1668,7 @@ msgstr "最新のクラッシュ回数を表示する"
 
 #: ../src/cli/abrt-cli.c:153
 msgid "Process multiple problems"
-msgstr ""
+msgstr "複数の問題を処理する"
 
 #: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
@@ -1733,42 +1734,42 @@ msgstr "ABRT により %u 件の問題が検出されました。次を実行し
 
 #: ../src/cli/report.c:28
 msgid "& report [options] DIR..."
-msgstr ""
+msgstr "& report [options] DIR..."
 
 #: ../src/cli/report.c:38
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "レポート後に PROBLEM_DIR を削除します"
 
 #: ../src/cli/report.c:71 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "'%s' を削除中"
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
-msgstr ""
+msgstr "アクション: 削除(rm), 情報(i), スキップ(s):"
 
 #: ../src/cli/process.c:66
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
-msgstr ""
+msgstr "アクション: 削除(rm), レポート(e), 情報(i), スキップ(s):"
 
 #: ../src/cli/process.c:77
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "'%s' をレポート中"
 
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:133
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "次の問題に移るには、ENTER を押します:"
 
 #: ../src/cli/process.c:144
 msgid "Without --since argument, iterates over all detected problems."
-msgstr ""
+msgstr "--since 引数がないと、すべての検出済み問題を繰り返します。"
 
 #: ../src/cli/process.c:150
 msgid "Selects only problems detected after timestamp"
-msgstr ""
+msgstr "タイムスタンプ後に検出された問題のみを選択します"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""

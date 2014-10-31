@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2014-10-03 13:47+0200\n"
-"PO-Revision-Date: 2014-10-03 11:47+0000\n"
-"Last-Translator: Jakub Filak <jfilak@redhat.com>\n"
+"POT-Creation-Date: 2014-10-13 17:42+0200\n"
+"PO-Revision-Date: 2014-10-08 11:49+0000\n"
+"Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: Assamese (http://www.transifex.com/projects/p/fedora-abrt/language/as/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -85,7 +85,7 @@ msgid ""
 "You are going to mute notifications of a particular problem. You will never see a notification bubble for this problem again, however, ABRT will be detecting it and you will be able to report it from ABRT GUI.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
+msgstr "আপুনি এটা বিশেষ সমস্যাৰ অধিসূচনাসমূহ মৌন কৰিব লৈছে। আপুনি এই সমস্যাৰ বাবে এটা অধিসূচনা চিহ্ন আৰু কেতিয়াও দেখি নাপাব, যি কি নহওক, ABRT এ ইয়াক চিনাক্ত কৰিব আৰু আপুনি ইয়াক ABRT GUI ৰ পৰা সংবাদন কৰিব পাৰিব।\n\nআপুনি আগবাঢ়িব খোজে নে?"
 
 #: ../src/applet/applet.c:748 ../src/applet/applet.c:750
 msgid "Warning"
@@ -258,7 +258,7 @@ msgstr "কেন্দ্ৰডাম্প আপল'ড কৰাৰ আগ�
 msgid ""
 " With this option enabled ABRT always create bug ticket with restricted "
 "access if possibly sensitive data are dected."
-msgstr ""
+msgstr "এই বিকল্প সামৰ্থবান থাকিলে ABRT এ সদায় নিষিদ্ধ অভিগমৰ সৈতে বাগ টিকেট সৃষ্টি কৰে যদি সম্ভৱত সংবেদনশীল তথ্য চিনাক্ত কৰা হয়।"
 
 #: ../src/configuration-gui/abrt-config-widget.glade.h:12
 msgid "Request private ticket for sensitive information"
@@ -486,72 +486,72 @@ msgid ""
 "   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n"
 "   UPLOAD_DIR     - Directory where uploaded archives are stored\n"
 "   FILENAME       - Uploaded archive file name\n"
-msgstr ""
+msgstr "Usage: %s [-vd] ABRT_SPOOL_DIR UPLOAD_DIR FILENAME\n\n   -v             - Verbose\n   -d             - Delete uploaded archive\n   ABRT_SPOOL_DIR - Directory where valid uploaded archives are unpacked to\n   UPLOAD_DIR     - Directory where uploaded archives are stored\n   FILENAME       - Uploaded archive file name\n"
 
 #: ../src/daemon/abrt-handle-upload.in:105
 #: ../src/daemon/abrt-handle-upload.in:108
 msgid "Not a directory: '{0}'"
-msgstr ""
+msgstr "এটা ডাইৰেকটৰি নহয়: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:111
 msgid "Skipping: '{0}' (starts with slash)"
-msgstr ""
+msgstr "বাদ দিয়া হৈছে: '{0}' (স্লেশৰ সৈতে আৰম্ভ হয়)"
 
 #: ../src/daemon/abrt-handle-upload.in:114
 msgid "Skipping: '{0}' (starts with dot)"
-msgstr ""
+msgstr "বাদ দিয়া হৈছে: '{0}' (ডটৰ সৈতে আৰম্ভ হয়)"
 
 #: ../src/daemon/abrt-handle-upload.in:117
 msgid "Skipping: '{0}' (contains ..)"
-msgstr ""
+msgstr "বাদ দিয়া হৈছে: '{0}' (অন্তৰ্ভুক্ত কৰে ..)"
 
 #: ../src/daemon/abrt-handle-upload.in:120
 msgid "Skipping: '{0}' (contains space)"
-msgstr ""
+msgstr "বাদ দিয়া হৈছে: '{0}' (স্পেইচ অন্তৰ্ভুক্ত কৰে)"
 
 #: ../src/daemon/abrt-handle-upload.in:123
 msgid "Skipping: '{0}' (contains tab)"
-msgstr ""
+msgstr "বাদ দিয়া হৈছে: '{0}' (টেব অন্তৰ্ভুক্ত কৰে)"
 
 #: ../src/daemon/abrt-handle-upload.in:128
 msgid "Can't change directory to '{0}'"
-msgstr ""
+msgstr "ডাইৰেকটৰিক '{0}' লৈ পৰিবৰ্তন কৰিব নোৱাৰি"
 
 #: ../src/daemon/abrt-handle-upload.in:139
 msgid "Unknown file type: '{0}'"
-msgstr ""
+msgstr "অজ্ঞাত ফাইল ধৰণ: '{0}'"
 
 #: ../src/daemon/abrt-handle-upload.in:144
 msgid "Can't create working directory in '{0}'"
-msgstr ""
+msgstr "'{0}' ত কাৰ্য্যকৰী ডাইৰেকটৰি সৃষ্টি কৰিব নোৱাৰি"
 
 #: ../src/daemon/abrt-handle-upload.in:155
 msgid "Can't move '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}' ক '{1}' লৈ স্থানান্তৰ কৰিব নোৱাৰি"
 
 #: ../src/daemon/abrt-handle-upload.in:160
 msgid "Can't copy '{0}' to '{1}'"
-msgstr ""
+msgstr "'{0}' ক '{1}' লৈ কপি কৰিব নোৱাৰি"
 
 #: ../src/daemon/abrt-handle-upload.in:164
 msgid "Verification error on '{0}'"
-msgstr ""
+msgstr "'{0}' ত সত্যাপন ত্ৰুটি"
 
 #: ../src/daemon/abrt-handle-upload.in:166
 msgid "Unpacking '{0}'"
-msgstr ""
+msgstr "'{0}' আনপেক কৰা হৈছে"
 
 #: ../src/daemon/abrt-handle-upload.in:170
 msgid "Can't create '{0}' directory"
-msgstr ""
+msgstr "'{0}' ডাইৰেকটৰি সৃষ্টি কৰিব নোৱাৰি"
 
 #: ../src/daemon/abrt-handle-upload.in:174
 msgid "Can't unpack '{0}'"
-msgstr ""
+msgstr "'{0}' ক আনপেক কৰিব নোৱাৰি"
 
 #: ../src/daemon/abrt-handle-upload.in:198
 msgid "'{0}' processed successfully"
-msgstr ""
+msgstr "'{0}' ক সফলভাৱে প্ৰক্ৰিয়াকৰণ কৰা হল"
 
 #. Let user know what's going on
 #: ../src/lib/hooklib.c:253
@@ -699,7 +699,7 @@ msgstr "oops বাৰ্তা নিষ্কাষণ কৰিব নোৱ�
 msgid "Oops text extracted successfully"
 msgstr "Oops লিখনী সফলভাৱে নিষ্কাষণ কৰা হল"
 
-#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:81
+#: ../src/plugins/abrt-action-check-oops-for-hw-error.in:83
 msgid ""
 "The kernel log indicates that hardware errors were detected.\n"
 "This is most likely not a software problem.\n"
@@ -835,37 +835,37 @@ msgstr "এই ডাইৰেকটৰিৰ ভিতৰত থকা ফা�
 msgid "Preserve this directory"
 msgstr "এই ডাইৰেকটৰি সংৰক্ষণ কৰক"
 
-#: ../src/plugins/abrt-action-ureport:39
+#: ../src/plugins/abrt-action-ureport:59
 #, c-format
 msgid "Unable to start '%s', error message was: '%s'"
-msgstr ""
+msgstr "'%s' আৰম্ভ কৰিবলে অক্ষম, ত্ৰুটি বাৰ্তা আছিল: '%s'"
 
-#: ../src/plugins/abrt-action-ureport:50
+#: ../src/plugins/abrt-action-ureport:70
 #, c-format
 msgid "Not a number in file '%s'"
-msgstr ""
-
-#: ../src/plugins/abrt-action-ureport:66
-#, c-format
-msgid "Usage: %s [-v]"
-msgstr ""
+msgstr "ফাইল '%s' ত এটা সংখ্যা নহয়"
 
 #: ../src/plugins/abrt-action-ureport:86
+#, c-format
+msgid "Usage: %s [-v]"
+msgstr "Usage: %s [-v]"
+
+#: ../src/plugins/abrt-action-ureport:107
 msgid "Unable to get current working directory as it was probably deleted"
-msgstr ""
+msgstr "বৰ্তমান কাৰ্য্য ডাইৰেকটৰি সম্ভবত মচি পেলোৱাৰ বাবে প্ৰাপ্ত কৰিবলে অক্ষম "
 
-#: ../src/plugins/abrt-action-ureport:117
+#: ../src/plugins/abrt-action-ureport:138
 msgid "A bug was already filed about this problem:"
-msgstr ""
+msgstr "এই সমস্যাৰ বিষয়ে এটা বাগ ইতিমধ্যে ফাইল কৰা হৈছিল:"
 
-#: ../src/plugins/abrt-action-ureport:127
+#: ../src/plugins/abrt-action-ureport:148
 msgid "uReport was already sent, not sending it again"
-msgstr ""
+msgstr "uReport ইতিমধ্যে পঠোৱা হৈছিল, ইয়াক পুনৰ পঠোৱা হোৱা নাই"
 
-#: ../src/plugins/abrt-action-ureport:145
+#: ../src/plugins/abrt-action-ureport:176
 #, c-format
 msgid "reporter-ureport failed with exit code %d"
-msgstr ""
+msgstr "reporter-ureport প্ৰস্থান ক'ড %d ৰ সৈতে ব্যৰ্থ হল"
 
 #: ../src/plugins/abrt-gdb-exploitable:529
 msgid "Signal sent by userspace code"
@@ -1059,7 +1059,7 @@ msgstr "stdout লে সন্ধান স্ট্ৰিং(সমূহ) প
 
 #: ../src/plugins/abrt-dump-oops.c:311
 msgid "Failed to compile regex"
-msgstr ""
+msgstr "regex কমপাইল কৰিবলে ব্যৰ্থ"
 
 #: ../src/plugins/abrt-dump-oops.c:402
 msgid "Can't update the problem: more than one oops found"
@@ -1643,7 +1643,7 @@ msgstr "ব্যৱহাৰ: abrt-cli [--version] COMMAND [DIR]..."
 
 #: ../src/cli/abrt-cli.c:148
 msgid "List problems [in DIRs]"
-msgstr ""
+msgstr "সমস্যাসমূহ দেখুৱাওক [in DIRs]"
 
 #: ../src/cli/abrt-cli.c:149
 msgid "Remove problem directory DIR"
@@ -1663,7 +1663,7 @@ msgstr "শেহতীয়া ক্ৰেশসমূহৰ গণনা প্
 
 #: ../src/cli/abrt-cli.c:153
 msgid "Process multiple problems"
-msgstr ""
+msgstr "একাধিক সমস্যাসমূহ প্ৰক্ৰিয়া কৰক"
 
 #: ../src/cli/abrt-cli.c:168
 msgid "See 'abrt-cli COMMAND --help' for more information"
@@ -1729,42 +1729,42 @@ msgstr "ABRT এ %u সমস্যা(সমূহ) চিনাক্ত ক�
 
 #: ../src/cli/report.c:28
 msgid "& report [options] DIR..."
-msgstr ""
+msgstr "আৰু [options] DIR সংবাদন কৰক..."
 
 #: ../src/cli/report.c:38
 msgid "Remove PROBLEM_DIR after reporting"
-msgstr ""
+msgstr "সংবাদন কৰাৰ পিছত PROBLEM_DIR আতৰাওক"
 
 #: ../src/cli/report.c:71 ../src/cli/process.c:70
 #, c-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "'%s' মচি পেলোৱা হৈছে"
 
 #: ../src/cli/process.c:64
 msgid "Actions: remove(rm), info(i), skip(s):"
-msgstr ""
+msgstr "কাৰ্য্যসমূহ: remove(rm), info(i), skip(s):"
 
 #: ../src/cli/process.c:66
 msgid "Actions: remove(rm), report(e), info(i), skip(s):"
-msgstr ""
+msgstr "কাৰ্য্যসমূহ: remove(rm), report(e), info(i), skip(s):"
 
 #: ../src/cli/process.c:77
 #, c-format
 msgid "Reporting '%s'"
-msgstr ""
+msgstr "'%s' সংবাদন কৰা"
 
 #. dummy must be free because the function ask allocate memory
 #: ../src/cli/process.c:133
 msgid "For next problem press ENTER:"
-msgstr ""
+msgstr "পৰৱৰ্তী সমস্যাৰ বাবে ENTER টিপক:"
 
 #: ../src/cli/process.c:144
 msgid "Without --since argument, iterates over all detected problems."
-msgstr ""
+msgstr "--since তৰ্ক নাথাকিলে, সকলো চিনাক্ত কৰা সমস্যাবোৰ পুনৰাবৃত্তি হয়।"
 
 #: ../src/cli/process.c:150
 msgid "Selects only problems detected after timestamp"
-msgstr ""
+msgstr "কেৱল টাইমস্টাম্পৰ পিছত চিনাক্ত কৰা সমস্যাবোৰ নিৰ্বাচন কৰে"
 
 #: ../src/plugins/analyze_CCpp.xml.in.h:1
 msgid ""
