@@ -12,6 +12,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+#include <satyr/stacktrace.h>
+
 #include "oops-utils.h"
 #include "libabrt.h"
 
@@ -242,8 +244,24 @@ void abrt_oops_save_data_in_dump_dir(struct dump_dir *dd, char *oops, const char
 
     // TODO: add "Kernel oops: " prefix, so that all oopses have recognizable FILENAME_REASON?
     // kernel oops 1st line may look quite puzzling otherwise...
-    strchrnul(second_line, '\n')[0] = '\0';
-    dd_save_text(dd, FILENAME_REASON, second_line);
+    char *reason_pretty = NULL;
+    char *error = NULL;
+    struct sr_stacktrace *trace = sr_stacktrace_parse(SR_REPORT_KERNELOOPS, second_line, &error);
+    if (trace)
+    {
+        reason_pretty = sr_stacktrace_get_reason(trace);
+        sr_stacktrace_free(trace);
+    }
+    else
+        free(error);
+
+    if (reason_pretty)
+    {
+        dd_save_text(dd, FILENAME_REASON, reason_pretty);
+        free(reason_pretty);
+    }
+    else
+        dd_save_text(dd, FILENAME_REASON, second_line);
 }
 
 int abrt_oops_signaled_sleep(int seconds)
