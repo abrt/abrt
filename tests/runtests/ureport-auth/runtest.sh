@@ -138,6 +138,12 @@ rlJournalStart
 
         rlRun "mkdir -p $RHSM_DIR"
 
+        # first go with empty $RHSM_DIR
+        run_reporter none "-t rhsm" 70
+        rlRun "cp ccpp_reporter ureport_no_rhsm_certs.log"
+        rlAssertGrep "does not contain a cert-key files pair" ureport_no_rhsm_certs.log
+        rlAssertGrep "Not using client authentication" ureport_no_rhsm_certs.log
+
         rlRun "cp cert/$RHSM_CERT $RHSM_DIR"
         rlRun "cp cert/$RHSM_KEY $RHSM_DIR"
 
@@ -170,7 +176,7 @@ rlJournalStart
 
     rlPhaseStartCleanup
         rlRun "abrt-cli rm $crash_PATH"
-        rlBundleLogs ureport_auth_logs ureport.log
+        rlBundleLogs ureport_auth_logs ureport.log ureport_no_rhsm_certs.log
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd
