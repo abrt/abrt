@@ -252,12 +252,10 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
     /* Let user know what's going on */
     log(_("Generating backtrace"));
 
-    char *args[23];
+    char *args[21];
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";
     args[2] = (char*)"-ex";
-    args[3] = (char*)"set auto-load off";
-    args[4] = (char*)"-ex";
     struct strbuf *set_debug_file_directory = strbuf_new();
     if(debuginfo_dirs == NULL)
     {
@@ -280,7 +278,7 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
             p = colon_or_nul;
         }
     }
-    args[5] = strbuf_free_nobuf(set_debug_file_directory);
+    args[3] = strbuf_free_nobuf(set_debug_file_directory);
 
     /* "file BINARY_FILE" is needed, without it gdb cannot properly
      * unwind the stack. Currently the unwind information is located
@@ -302,27 +300,27 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
      * TODO: check mtimes on COREFILE and BINARY_FILE and not supply
      * BINARY_FILE if it is newer (to at least avoid gdb complaining).
      */
-    args[6] = (char*)"-ex";
-    args[7] = xasprintf("file %s", executable);
+    args[4] = (char*)"-ex";
+    args[5] = xasprintf("file %s", executable);
     free(executable);
 
-    args[8] = (char*)"-ex";
-    args[9] = xasprintf("core-file %s/"FILENAME_COREDUMP, dump_dir_name);
+    args[6] = (char*)"-ex";
+    args[7] = xasprintf("core-file %s/"FILENAME_COREDUMP, dump_dir_name);
 
+    args[8] = (char*)"-ex";
+    /*args[9] = ... see below */
     args[10] = (char*)"-ex";
-    /*args[11] = ... see below */
-    args[12] = (char*)"-ex";
-    args[13] = (char*)"info sharedlib";
+    args[11] = (char*)"info sharedlib";
     /* glibc's abort() stores its message in __abort_msg variable */
+    args[12] = (char*)"-ex";
+    args[13] = (char*)"print (char*)__abort_msg";
     args[14] = (char*)"-ex";
-    args[15] = (char*)"print (char*)__abort_msg";
+    args[15] = (char*)"print (char*)__glib_assert_msg";
     args[16] = (char*)"-ex";
-    args[17] = (char*)"print (char*)__glib_assert_msg";
+    args[17] = (char*)"info all-registers";
     args[18] = (char*)"-ex";
-    args[19] = (char*)"info all-registers";
-    args[20] = (char*)"-ex";
-    args[21] = (char*)"disassemble";
-    args[22] = NULL;
+    args[19] = (char*)"disassemble";
+    args[20] = NULL;
 
     /* Get the backtrace, but try to cap its size */
     /* Limit bt depth. With no limit, gdb sometimes OOMs the machine */
@@ -332,9 +330,9 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
     char *bt = NULL;
     while (1)
     {
-        args[11] = xasprintf("%s backtrace %u%s", thread_apply_all, bt_depth, full);
+        args[9] = xasprintf("%s backtrace %u%s", thread_apply_all, bt_depth, full);
         bt = exec_vp(args, /*redirect_stderr:*/ 1, timeout_sec, NULL);
-        free(args[11]);
+        free(args[9]);
         if ((bt && strnlen(bt, 256*1024) < 256*1024) || bt_depth <= 32)
         {
             break;
@@ -359,7 +357,7 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
          * End of assembler dump.
          * (IOW: "empty" dump)
          */
-        args[21] = (char*)"disassemble $pc-20, $pc+64";
+        args[19] = (char*)"disassemble $pc-20, $pc+64";
 
         if (bt_depth <= 64 && thread_apply_all[0] != '\0')
         {
@@ -375,9 +373,9 @@ char *get_backtrace(const char *dump_dir_name, unsigned timeout_sec, const char 
         }
     }
 
+    free(args[3]);
     free(args[5]);
     free(args[7]);
-    free(args[9]);
     return bt;
 }
 
