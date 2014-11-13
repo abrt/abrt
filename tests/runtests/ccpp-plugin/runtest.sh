@@ -79,6 +79,33 @@ rlJournalStart
 
     rlPhaseStartCleanup
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+    rlPhaseEnd
+
+    rlPhaseStartTest "auto-load GDB script from /var/cache/abrt-di/"
+        prepare
+        generate_crash
+        wait_for_hooks
+        get_crash_path
+
+        rlRun "mkdir -p /var/cache/abrt-di/usr/lib/debug/usr/bin"
+
+cat > /var/cache/abrt-di/usr/lib/debug/usr/bin/will_segfault-gdb.py <<EOF
+#!/usr/bin/python
+print "will_segfault auto-loaded python GDB script"
+EOF
+
+        rlAssertExists "/var/cache/abrt-di/usr/lib/debug/usr/bin/will_segfault-gdb.py"
+
+        rlRun "abrt-action-generate-backtrace -d $crash_PATH"
+        rlAssertExists "$crash_PATH/backtrace"
+        rlAssertGrep "will_segfault auto-loaded python GDB script" "$crash_PATH/backtrace"
+        rlAssertNotGrep "auto-loading has been declined by your" "$crash_PATH/backtrace"
+
+        rlRun "rm /var/cache/abrt-di/usr/lib/debug/usr/bin/will_segfault-gdb.py"
+    rlPhaseEnd
+
+    rlPhaseStartCleanup
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
         rlRun "ulimit -c $old_ulimit" 0
         rlBundleLogs abrt $(echo *_ls) $(echo verify_result*)
         popd # TmpDir
