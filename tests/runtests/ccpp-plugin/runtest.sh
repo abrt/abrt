@@ -47,8 +47,8 @@ rlJournalStart
 
     rlPhaseStartTest "CCpp plugin works"
         generate_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         ls $crash_PATH > crash_dir_ls
 
@@ -59,28 +59,28 @@ rlJournalStart
     rlPhaseEnd
 
     rlPhaseStartTest "core_backtrace contents"
-        generate_crash
-        get_crash_path
-        wait_for_hooks
-
-        rlAssertExists "$crash_PATH/core_backtrace"
         rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace 2>&1 > verify_result" 0
     rlPhaseEnd
 
+    rlPhaseStartCleanup
+        rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
+    rlPhaseEnd
+
     rlPhaseStartTest "core_backtrace for stack overflow"
+        prepare
         generate_stack_overflow_crash
-        get_crash_path
         wait_for_hooks
+        get_crash_path
 
         rlAssertExists "$crash_PATH/core_backtrace"
-        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace 2>&1 > verify_result" 0
-        rlRun "./verify_core_backtrace_length.py $crash_PATH/core_backtrace 2>&1 > verify_result" 0
+        rlRun "./verify_core_backtrace.py $crash_PATH/core_backtrace 2>&1 > verify_result_overflow" 0
+        rlRun "./verify_core_backtrace_length.py $crash_PATH/core_backtrace 2>&1 > verify_result_len_overflow" 0
     rlPhaseEnd
 
     rlPhaseStartCleanup
         rlRun "abrt-cli rm $crash_PATH" 0 "Remove crash directory"
         rlRun "ulimit -c $old_ulimit" 0
-        rlBundleLogs abrt $(echo *_ls) verify_result
+        rlBundleLogs abrt $(echo *_ls) $(echo verify_result*)
         popd # TmpDir
         rm -rf $TmpDir
     rlPhaseEnd
