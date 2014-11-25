@@ -177,7 +177,7 @@ def require_abs_path():
     import problem
 
     try:
-        conf = problem.load_plugin_conf_file("python3.conf")
+        conf = problem.load_plugin_conf_file("python.conf")
     except OsError:
         return False
 
