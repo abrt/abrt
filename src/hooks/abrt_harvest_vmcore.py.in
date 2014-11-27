@@ -272,8 +272,16 @@ def harvest_vmcore():
             except OSError:
                 sys.stderr.write("Unable to delete '%s'. Ignoring\n" % f_full)
 
-        # Let abrtd know what type of problem it is:
-        create_abrtd_info(destdirnew)
+        try:
+            # Let abrtd know what type of problem it is:
+            create_abrtd_info(destdirnew)
+        except EnvironmentError as ex:
+            sys.stderr.write("Unable to create problem directory info: " + str(ex))
+            try:
+                shutil.rmtree(destdirnew)
+            except Exception as ex:
+                sys.stderr.write("Unable to remove incomplete problem directory: " + str(ex))
+            continue
 
         # chown -R 0:0
         change_owner_rec(destdirnew)
