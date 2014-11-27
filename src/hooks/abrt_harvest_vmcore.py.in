@@ -266,12 +266,6 @@ def harvest_vmcore():
             shutil.rmtree(destdirnew)
             continue
 
-        if copyvmcore == 'no':
-            try:
-                shutil.rmtree(f_full)
-            except OSError:
-                sys.stderr.write("Unable to delete '%s'. Ignoring\n" % f_full)
-
         try:
             # Let abrtd know what type of problem it is:
             create_abrtd_info(destdirnew)
@@ -290,6 +284,12 @@ def harvest_vmcore():
 
         # Get rid of  the .new suffix
         shutil.move(destdirnew, destdir)
+
+        if copyvmcore == 'no':
+            try:
+                shutil.rmtree(f_full)
+            except OSError:
+                sys.stderr.write("Unable to delete '%s'. Ignoring\n" % f_full)
 
         problem.notify_new_path(destdir)
 
