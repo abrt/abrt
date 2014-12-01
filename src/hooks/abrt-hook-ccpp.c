@@ -140,11 +140,9 @@ static off_t copyfd_sparse(int src_fd, int dst_fd1, int dst_fd2, off_t size2)
 
 
 /* Global data */
-
 static char *user_pwd;
-static char *proc_pid_status;
 static struct dump_dir *dd;
-static int user_core_fd = -1;
+
 /*
  * %s - signal number
  * %c - ulimit -c value
@@ -210,7 +208,7 @@ static char* get_rootdir(pid_t pid)
     return malloc_readlink(buf);
 }
 
-static int get_fsuid(void)
+static int get_fsuid(char *proc_pid_status)
 {
     int real, euid, saved;
     /* if we fail to parse the uid, then make it root only readable to be safe */
@@ -434,7 +432,7 @@ static bool dump_fd_info(const char *dest_filename, char *source_filename, int s
 }
 
 /* Like xopen, but on error, unlocks and deletes dd and user core */
-static int create_or_die(const char *filename)
+static int create_or_die(const char *filename, int user_core_fd)
 {
     int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, DEFAULT_DUMP_DIR_MODE);
     if (fd >= 0)
@@ -453,6 +451,31 @@ static int create_or_die(const char *filename)
     }
     errno = sv_errno;
     perror_msg_and_die("Can't open '%s'", filename);
+}
+
+static int create_user_core(int user_core_fd, pid_t pid, off_t ulimit_c)
+{
+    if (user_core_fd >= 0)
+    {
+        off_t core_size = copyfd_size(STDIN_FILENO, user_core_fd, ulimit_c, COPYFD_SPARSE);
+        if (fsync(user_core_fd) != 0 || close(user_core_fd) != 0 || core_size < 0)
+        {
+            /* perror first, otherwise unlink may trash errno */
+            perror_msg("Error writing '%s'", full_core_basename);
+            xchdir(user_pwd);
+            unlink(core_basename);
+            return 1;
+        }
+        if (ulimit_c == 0 || core_size > ulimit_c)
+        {
+            xchdir(user_pwd);
+            unlink(core_basename);
+            return 1;
+        }
+        log_notice("Saved core dump of pid %lu to %s (%llu bytes)", (long)pid, full_core_basename, (long long)core_size);
+    }
+
+    return 0;
 }
 
 int main(int argc, char** argv)
@@ -558,10 +581,10 @@ int main(int argc, char** argv)
     log_notice("user_pwd:'%s'", user_pwd);
 
     sprintf(path, "/proc/%lu/status", (long)pid);
-    proc_pid_status = xmalloc_xopen_read_close(path, /*maxsz:*/ NULL);
+    char *proc_pid_status = xmalloc_xopen_read_close(path, /*maxsz:*/ NULL);
 
     uid_t fsuid = uid;
-    uid_t tmp_fsuid = get_fsuid();
+    uid_t tmp_fsuid = get_fsuid(proc_pid_status);
     int suid_policy = dump_suid_policy();
     if (tmp_fsuid != uid)
     {
@@ -574,6 +597,7 @@ int main(int argc, char** argv)
     }
 
     /* Open a fd to compat coredump, if requested and is possible */
+    int user_core_fd = -1;
     if (setting_MakeCompatCore && ulimit_c != 0)
         /* note: checks "user_pwd == NULL" inside; updates core_basename */
         user_core_fd = open_user_core(uid, fsuid, pid, &argv[1]);
@@ -582,7 +606,7 @@ int main(int argc, char** argv)
     {
         /* readlink on /proc/$PID/exe failed, don't create abrt dump dir */
         error_msg("Can't read /proc/%lu/exe link", (long)pid);
-        goto create_user_core;
+        return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
     const char *signame = NULL;
@@ -601,7 +625,7 @@ int main(int argc, char** argv)
       //case SIGSYS : signame = "SYS" ; break; //Bad argument to routine (SVr4)
       //case SIGXCPU: signame = "XCPU"; break; //CPU time limit exceeded (4.2BSD)
       //case SIGXFSZ: signame = "XFSZ"; break; //File size limit exceeded (4.2BSD)
-        default: goto create_user_core; // not a signal we care about
+        default: return create_user_core(user_core_fd, pid, ulimit_c); // not a signal we care about
     }
 
     if (!daemon_is_ok())
@@ -611,14 +635,14 @@ int main(int argc, char** argv)
             "/proc/sys/kernel/core_pattern contains a stale value, "
             "consider resetting it to 'core'"
         );
-        goto create_user_core;
+        return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
     if (g_settings_nMaxCrashReportsSize > 0)
     {
         /* If free space is less than 1/4 of MaxCrashReportsSize... */
         if (low_free_space(g_settings_nMaxCrashReportsSize, g_settings_dump_location))
-            goto create_user_core;
+            return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
     /* Check /var/tmp/abrt/last-ccpp marker, do not dump repeated crashes
@@ -628,7 +652,7 @@ int main(int argc, char** argv)
     if (check_recent_crash_file(path, executable))
     {
         /* It is a repeating crash */
-        goto create_user_core;
+        return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
     const char *last_slash = strrchr(executable, '/');
@@ -657,7 +681,7 @@ int main(int argc, char** argv)
             g_settings_dump_location, iso_date_string(NULL), (long)pid);
     if (path_len >= (sizeof(path) - sizeof("/"FILENAME_COREDUMP)))
     {
-        goto create_user_core;
+        return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
     /* use fsuid instead of uid, so we don't expose any sensitive
@@ -741,7 +765,7 @@ int main(int argc, char** argv)
         if (src_fd_binary > 0)
         {
             strcpy(path + path_len, "/"FILENAME_BINARY);
-            int dst_fd = create_or_die(path);
+            int dst_fd = create_or_die(path, user_core_fd);
             off_t sz = copyfd_eof(src_fd_binary, dst_fd, COPYFD_SPARSE);
             if (fsync(dst_fd) != 0 || close(dst_fd) != 0 || sz < 0)
             {
@@ -752,7 +776,7 @@ int main(int argc, char** argv)
         }
 
         strcpy(path + path_len, "/"FILENAME_COREDUMP);
-        int abrt_core_fd = create_or_die(path);
+        int abrt_core_fd = create_or_die(path, user_core_fd);
 
         /* We write both coredumps at once.
          * We can't write user coredump first, since it might be truncated
@@ -812,7 +836,7 @@ int main(int argc, char** argv)
             if (src_fd >= 0)
             {
                 strcpy(path + path_len, "/hs_err.log");
-                int dst_fd = create_or_die(path);
+                int dst_fd = create_or_die(path, user_core_fd);
                 off_t sz = copyfd_eof(src_fd, dst_fd, COPYFD_SPARSE);
                 if (close(dst_fd) != 0 || sz < 0)
                 {
@@ -856,26 +880,5 @@ int main(int argc, char** argv)
     }
 
     /* We didn't create abrt dump, but may need to create compat coredump */
- create_user_core:
-    if (user_core_fd >= 0)
-    {
-        off_t core_size = copyfd_size(STDIN_FILENO, user_core_fd, ulimit_c, COPYFD_SPARSE);
-        if (fsync(user_core_fd) != 0 || close(user_core_fd) != 0 || core_size < 0)
-        {
-            /* perror first, otherwise unlink may trash errno */
-            perror_msg("Error writing '%s'", full_core_basename);
-            xchdir(user_pwd);
-            unlink(core_basename);
-            return 1;
-        }
-        if (ulimit_c == 0 || core_size > ulimit_c)
-        {
-            xchdir(user_pwd);
-            unlink(core_basename);
-            return 1;
-        }
-        log_notice("Saved core dump of pid %lu to %s (%llu bytes)", (long)pid, full_core_basename, (long long)core_size);
-    }
-
-    return 0;
+    return create_user_core(user_core_fd, pid, ulimit_c);
 }
