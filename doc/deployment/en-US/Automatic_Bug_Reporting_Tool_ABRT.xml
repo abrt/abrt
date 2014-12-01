@@ -187,7 +187,7 @@ Starting abrt daemon:                                      [  OK  ]</screen>
     	<para>
     	  Please note that installing <application>ABRT</application> packages overwrites the <filename>/proc/sys/kernel/core_pattern</filename> file which can contain a template used to name core dump files. The content of this file will be overwritten to:
     	</para>
-    	<programlisting language="Bash">|/usr/libexec/abrt-hook-ccpp %s %c %p %u %g %t e</programlisting>
+    	<programlisting language="Bash">|/usr/libexec/abrt-hook-ccpp %s %c %p %u %g %t e %i</programlisting>
     </warning>
     <para>
       Finally, if you run ABRT in a graphical desktop environment, you can verify that the <systemitem class="service">ABRT notification applet</systemitem> is running:
