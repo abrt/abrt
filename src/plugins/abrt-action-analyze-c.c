@@ -18,6 +18,13 @@
 */
 #include "libabrt.h"
 
+#include <glib.h>
+
+#include <satyr/thread.h>
+#include <satyr/core/stacktrace.h>
+#include <satyr/core/thread.h>
+#include <satyr/core/frame.h>
+
 static void trim_unstrip_output(char *result, const char *unstrip_n_output)
 {
     // lines look like this:
@@ -47,6 +54,62 @@ static void trim_unstrip_output(char *result, const char *unstrip_n_output)
         line = eol + 1;
     }
     *dst = '\0';
+}
+
+static char *build_ids_from_core_backtrace(const char *dump_dir_name)
+{
+    char *error = NULL;
+    char *core_backtrace_path = xasprintf("%s/"FILENAME_CORE_BACKTRACE, dump_dir_name);
+    char *json = xmalloc_open_read_close(core_backtrace_path, /*maxsize:*/ NULL);
+    free(core_backtrace_path);
+
+    if (!json)
+        return NULL;
+
+    struct sr_core_stacktrace *stacktrace = sr_core_stacktrace_from_json_text(json, &error);
+    free(json);
+    if (!stacktrace)
+    {
+        if (error)
+        {
+            log_info("Failed to parse core backtrace: %s", error);
+            free(error);
+        }
+        return NULL;
+    }
+
+    struct sr_core_thread *thread = sr_core_stacktrace_find_crash_thread(stacktrace);
+    if (!thread)
+    {
+        log_info("Failed to find crash thread");
+        sr_core_stacktrace_free(stacktrace);
+        return NULL;
+    }
+
+    void *build_id_list = NULL;
+
+    struct strbuf *strbuf = strbuf_new();
+    for (struct sr_core_frame *frame = thread->frames;
+         frame;
+         frame = frame->next)
+    {
+        if (frame->build_id)
+            build_id_list = g_list_prepend(build_id_list, frame->build_id);
+    }
+
+    build_id_list = g_list_sort(build_id_list, (GCompareFunc)strcmp);
+    for (GList *iter = build_id_list; iter; iter = g_list_next(iter))
+    {
+        GList *next = g_list_next(iter);
+        if (next == NULL || 0 != strcmp(iter->data, next->data))
+        {
+            strbuf = strbuf_append_strf(strbuf, "%s\n", (char *)iter->data);
+        }
+    }
+    g_list_free(build_id_list);
+    sr_core_stacktrace_free(stacktrace);
+
+    return strbuf_free_nobuf(strbuf);
 }
 
 int main(int argc, char **argv)
@@ -82,13 +145,27 @@ int main(int argc, char **argv)
 
     export_abrt_envvars(0);
 
-    /* Run unstrip -n and trim its output, leaving only sizes and build ids */
+    char *unstrip_n_output = NULL;
+    char *coredump_path = xasprintf("%s/"FILENAME_COREDUMP, dump_dir_name);
+    if (access(coredump_path, R_OK) == 0)
+        unstrip_n_output = run_unstrip_n(dump_dir_name, /*timeout_sec:*/ 30);
 
-    char *unstrip_n_output = run_unstrip_n(dump_dir_name, /*timeout_sec:*/ 30);
-    if (!unstrip_n_output)
-        return 1; /* bad dump_dir_name, can't run unstrip, etc... */
-    /* modifies unstrip_n_output in-place: */
-    trim_unstrip_output(unstrip_n_output, unstrip_n_output);
+    free(coredump_path);
+
+    if (unstrip_n_output)
+    {
+        /* Run unstrip -n and trim its output, leaving only sizes and build ids */
+        /* modifies unstrip_n_output in-place: */
+        trim_unstrip_output(unstrip_n_output, unstrip_n_output);
+    }
+    else
+    {
+        /* bad dump_dir_name, can't run unstrip, etc...
+         * or maybe missing coredump - try generating it from core_backtrace
+         */
+
+        unstrip_n_output = build_ids_from_core_backtrace(dump_dir_name);
+    }
 
     /* Hash package + executable + unstrip_n_output and save it as UUID */
 
@@ -130,6 +207,8 @@ int main(int argc, char **argv)
     /*free(package);*/
     /*free(executable);*/
     /*free(unstrip_n_output);*/
+
+    log_debug("String to hash: %s", string_to_hash);
 
     char hash_str[SHA1_RESULT_LEN*2 + 1];
     str_to_sha1str(hash_str, string_to_hash);
