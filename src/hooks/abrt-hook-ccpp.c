@@ -501,6 +501,18 @@ static int create_user_core(int user_core_fd, pid_t pid, off_t ulimit_c)
     return 0;
 }
 
+static int test_configuration(bool setting_SaveFullCore, bool setting_CreateCoreBacktrace)
+{
+    if (!setting_SaveFullCore && !setting_CreateCoreBacktrace)
+    {
+        fprintf(stderr, "Both SaveFullCore and CreateCoreBacktrace are disabled - "
+                        "at least one of them is needed for useful report.\n");
+        return 1;
+    }
+
+    return 0;
+}
+
 int main(int argc, char** argv)
 {
     /* Kernel starts us with all fd's closed.
@@ -510,31 +522,9 @@ int main(int argc, char** argv)
      */
     int fd = xopen("/dev/null", O_RDWR);
     while (fd < 2)
-	fd = xdup(fd);
+        fd = xdup(fd);
     if (fd > 2)
-	close(fd);
-
-    if (argc < 8)
-    {
-        /* percent specifier:         %s   %c              %p  %u  %g  %t   %e          %i */
-        /* argv:                  [0] [1]  [2]             [3] [4] [5] [6]  [7]         [8]*/
-        error_msg_and_die("Usage: %s SIGNO CORE_SIZE_LIMIT PID UID GID TIME BINARY_NAME [TID]", argv[0]);
-    }
-
-    /* Not needed on 2.6.30.
-     * At least 2.6.18 has a bug where
-     * argv[1] = "SIGNO CORE_SIZE_LIMIT PID ..."
-     * argv[2] = "CORE_SIZE_LIMIT PID ..."
-     * and so on. Fixing it:
-     */
-    if (strchr(argv[1], ' '))
-    {
-        int i;
-        for (i = 1; argv[i]; i++)
-        {
-            strchrnul(argv[i], ' ')[0] = '\0';
-        }
-    }
+        close(fd);
 
     logmode = LOGMODE_JOURNAL;
 
@@ -561,6 +551,31 @@ int main(int argc, char** argv)
         if (value)
             g_verbose = xatoi_positive(value);
         free_map_string(settings);
+    }
+
+    if (argc == 2 && strcmp(argv[1], "--config-test"))
+        return test_configuration(setting_SaveFullCore, setting_CreateCoreBacktrace);
+
+    if (argc < 8)
+    {
+        /* percent specifier:         %s   %c              %p  %u  %g  %t   %e          %i */
+        /* argv:                  [0] [1]  [2]             [3] [4] [5] [6]  [7]         [8]*/
+        error_msg_and_die("Usage: %s SIGNO CORE_SIZE_LIMIT PID UID GID TIME BINARY_NAME [TID]", argv[0]);
+    }
+
+    /* Not needed on 2.6.30.
+     * At least 2.6.18 has a bug where
+     * argv[1] = "SIGNO CORE_SIZE_LIMIT PID ..."
+     * argv[2] = "CORE_SIZE_LIMIT PID ..."
+     * and so on. Fixing it:
+     */
+    if (strchr(argv[1], ' '))
+    {
+        int i;
+        for (i = 1; argv[i]; i++)
+        {
+            strchrnul(argv[i], ' ')[0] = '\0';
+        }
     }
 
     errno = 0;
