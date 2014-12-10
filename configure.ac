@@ -266,6 +266,18 @@ AC_ARG_ENABLE([addon-vmcore],
 	AM_CONDITIONAL(BUILD_ADDON_VMCORE, false)
 [fi]
 
+# Perform stack unwind on live/dying process in the core handler?
+
+AC_ARG_ENABLE([dump-time-unwind],
+    AS_HELP_STRING([--enable-dump-time-unwind],
+        [create core stack trace while the crashed process is still in memory (default is no)]),
+    [], [enable_dump_time_unwind=no])
+
+[if test "$enable_native_unwinder" = "yes" -a "$enable_dump_time_unwind" = "yes"]
+[then]
+    AC_DEFINE([ENABLE_DUMP_TIME_UNWIND], [1], [Create core stacktrace while the process is still in memory.])
+[fi]
+
 AC_SUBST(CONF_DIR)
 AC_SUBST(DEFAULT_CONF_DIR)
 AC_SUBST(VAR_RUN)

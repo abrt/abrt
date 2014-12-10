@@ -21,6 +21,11 @@
 #include <sys/utsname.h>
 #include "libabrt.h"
 
+#ifdef ENABLE_DUMP_TIME_UNWIND
+#include <satyr/abrt.h>
+#include <satyr/utils.h>
+#endif /* ENABLE_DUMP_TIME_UNWIND */
+
 #define  DUMP_SUID_UNSAFE 1
 #define  DUMP_SUID_SAFE 2
 
@@ -140,11 +145,9 @@ static off_t copyfd_sparse(int src_fd, int dst_fd1, int dst_fd2, off_t size2)
 
 
 /* Global data */
-
 static char *user_pwd;
-static char *proc_pid_status;
 static struct dump_dir *dd;
-static int user_core_fd = -1;
+
 /*
  * %s - signal number
  * %c - ulimit -c value
@@ -153,13 +156,13 @@ static int user_core_fd = -1;
  * %g - gid
  * %t - UNIX time of dump
  * %e - executable filename
- * %h - hostname
+ * %i - crash thread tid
  * %% - output one "%"
  */
 /* Hook must be installed with exactly the same sequence of %c specifiers.
  * Last one, %h, may be omitted (we can find it out).
  */
-static const char percent_specifiers[] = "%scpugteh";
+static const char percent_specifiers[] = "%scpugtei";
 static char *core_basename = (char*) "core";
 /*
  * Used for error messages only.
@@ -210,7 +213,7 @@ static char* get_rootdir(pid_t pid)
     return malloc_readlink(buf);
 }
 
-static int get_fsuid(void)
+static int get_fsuid(char *proc_pid_status)
 {
     int real, euid, saved;
     /* if we fail to parse the uid, then make it root only readable to be safe */
@@ -434,7 +437,7 @@ static bool dump_fd_info(const char *dest_filename, char *source_filename, int s
 }
 
 /* Like xopen, but on error, unlocks and deletes dd and user core */
-static int create_or_die(const char *filename)
+static int create_or_die(const char *filename, int user_core_fd)
 {
     int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, DEFAULT_DUMP_DIR_MODE);
     if (fd >= 0)
@@ -455,6 +458,61 @@ static int create_or_die(const char *filename)
     perror_msg_and_die("Can't open '%s'", filename);
 }
 
+static void create_core_backtrace(pid_t tid, const char *executable, int signal_no, const char *dd_path)
+{
+#ifdef ENABLE_DUMP_TIME_UNWIND
+    if (g_verbose > 1)
+        sr_debug_parser = true;
+
+    char *error_message = NULL;
+    bool success = sr_abrt_create_core_stacktrace_from_core_hook(dd_path, tid, executable,
+                                                                 signal_no, &error_message);
+
+    if (!success)
+    {
+        log("Failed to create core_backtrace: %s", error_message);
+        free(error_message);
+    }
+#endif /* ENABLE_DUMP_TIME_UNWIND */
+}
+
+static int create_user_core(int user_core_fd, pid_t pid, off_t ulimit_c)
+{
+    if (user_core_fd >= 0)
+    {
+        off_t core_size = copyfd_size(STDIN_FILENO, user_core_fd, ulimit_c, COPYFD_SPARSE);
+        if (fsync(user_core_fd) != 0 || close(user_core_fd) != 0 || core_size < 0)
+        {
+            /* perror first, otherwise unlink may trash errno */
+            perror_msg("Error writing '%s'", full_core_basename);
+            xchdir(user_pwd);
+            unlink(core_basename);
+            return 1;
+        }
+        if (ulimit_c == 0 || core_size > ulimit_c)
+        {
+            xchdir(user_pwd);
+            unlink(core_basename);
+            return 1;
+        }
+        log_notice("Saved core dump of pid %lu to %s (%llu bytes)", (long)pid, full_core_basename, (long long)core_size);
+    }
+
+    return 0;
+}
+
+static int test_configuration(bool setting_SaveFullCore, bool setting_CreateCoreBacktrace)
+{
+    if (!setting_SaveFullCore && !setting_CreateCoreBacktrace)
+    {
+        fprintf(stderr, "Both SaveFullCore and CreateCoreBacktrace are disabled - "
+                        "at least one of them is needed for useful report.\n");
+        return 1;
+    }
+
+    return 0;
+}
+
 int main(int argc, char** argv)
 {
     /* Kernel starts us with all fd's closed.
@@ -464,15 +522,45 @@ int main(int argc, char** argv)
      */
     int fd = xopen("/dev/null", O_RDWR);
     while (fd < 2)
-	fd = xdup(fd);
+        fd = xdup(fd);
     if (fd > 2)
-	close(fd);
+        close(fd);
+
+    logmode = LOGMODE_JOURNAL;
+
+    /* Parse abrt.conf */
+    load_abrt_conf();
+    /* ... and plugins/CCpp.conf */
+    bool setting_MakeCompatCore;
+    bool setting_SaveBinaryImage;
+    bool setting_SaveFullCore;
+    bool setting_CreateCoreBacktrace;
+    {
+        map_string_t *settings = new_map_string();
+        load_abrt_plugin_conf_file("CCpp.conf", settings);
+        const char *value;
+        value = get_map_string_item_or_NULL(settings, "MakeCompatCore");
+        setting_MakeCompatCore = value && string_to_bool(value);
+        value = get_map_string_item_or_NULL(settings, "SaveBinaryImage");
+        setting_SaveBinaryImage = value && string_to_bool(value);
+        value = get_map_string_item_or_NULL(settings, "SaveFullCore");
+        setting_SaveFullCore = value ? string_to_bool(value) : true;
+        value = get_map_string_item_or_NULL(settings, "CreateCoreBacktrace");
+        setting_CreateCoreBacktrace = value ? string_to_bool(value) : true;
+        value = get_map_string_item_or_NULL(settings, "VerboseLog");
+        if (value)
+            g_verbose = xatoi_positive(value);
+        free_map_string(settings);
+    }
+
+    if (argc == 2 && strcmp(argv[1], "--config-test"))
+        return test_configuration(setting_SaveFullCore, setting_CreateCoreBacktrace);
 
     if (argc < 8)
     {
-        /* percent specifier:         %s   %c              %p  %u  %g  %t   %e          %h */
+        /* percent specifier:         %s   %c              %p  %u  %g  %t   %e          %i */
         /* argv:                  [0] [1]  [2]             [3] [4] [5] [6]  [7]         [8]*/
-        error_msg_and_die("Usage: %s SIGNO CORE_SIZE_LIMIT PID UID GID TIME BINARY_NAME [HOSTNAME]", argv[0]);
+        error_msg_and_die("Usage: %s SIGNO CORE_SIZE_LIMIT PID UID GID TIME BINARY_NAME [TID]", argv[0]);
     }
 
     /* Not needed on 2.6.30.
@@ -488,27 +576,6 @@ int main(int argc, char** argv)
         {
             strchrnul(argv[i], ' ')[0] = '\0';
         }
-    }
-
-    logmode = LOGMODE_JOURNAL;
-
-    /* Parse abrt.conf */
-    load_abrt_conf();
-    /* ... and plugins/CCpp.conf */
-    bool setting_MakeCompatCore;
-    bool setting_SaveBinaryImage;
-    {
-        map_string_t *settings = new_map_string();
-        load_abrt_plugin_conf_file("CCpp.conf", settings);
-        const char *value;
-        value = get_map_string_item_or_NULL(settings, "MakeCompatCore");
-        setting_MakeCompatCore = value && string_to_bool(value);
-        value = get_map_string_item_or_NULL(settings, "SaveBinaryImage");
-        setting_SaveBinaryImage = value && string_to_bool(value);
-        value = get_map_string_item_or_NULL(settings, "VerboseLog");
-        if (value)
-            g_verbose = xatoi_positive(value);
-        free_map_string(settings);
     }
 
     errno = 0;
@@ -537,11 +604,10 @@ int main(int argc, char** argv)
             free(s);
     }
 
-    struct utsname uts;
-    if (!argv[8]) /* no HOSTNAME? */
+    pid_t tid = 0;
+    if (argv[8])
     {
-        uname(&uts);
-        argv[8] = uts.nodename;
+        tid = xatoi_positive(argv[8]);
     }
 
     char path[PATH_MAX];
@@ -558,10 +624,10 @@ int main(int argc, char** argv)
     log_notice("user_pwd:'%s'", user_pwd);
 
     sprintf(path, "/proc/%lu/status", (long)pid);
-    proc_pid_status = xmalloc_xopen_read_close(path, /*maxsz:*/ NULL);
+    char *proc_pid_status = xmalloc_xopen_read_close(path, /*maxsz:*/ NULL);
 
     uid_t fsuid = uid;
-    uid_t tmp_fsuid = get_fsuid();
+    uid_t tmp_fsuid = get_fsuid(proc_pid_status);
     int suid_policy = dump_suid_policy();
     if (tmp_fsuid != uid)
     {
@@ -574,6 +640,7 @@ int main(int argc, char** argv)
     }
 
     /* Open a fd to compat coredump, if requested and is possible */
+    int user_core_fd = -1;
     if (setting_MakeCompatCore && ulimit_c != 0)
         /* note: checks "user_pwd == NULL" inside; updates core_basename */
         user_core_fd = open_user_core(uid, fsuid, pid, &argv[1]);
@@ -582,7 +649,7 @@ int main(int argc, char** argv)
     {
         /* readlink on /proc/$PID/exe failed, don't create abrt dump dir */
         error_msg("Can't read /proc/%lu/exe link", (long)pid);
-        goto create_user_core;
+        return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
     const char *signame = NULL;
@@ -601,7 +668,7 @@ int main(int argc, char** argv)
       //case SIGSYS : signame = "SYS" ; break; //Bad argument to routine (SVr4)
       //case SIGXCPU: signame = "XCPU"; break; //CPU time limit exceeded (4.2BSD)
       //case SIGXFSZ: signame = "XFSZ"; break; //File size limit exceeded (4.2BSD)
-        default: goto create_user_core; // not a signal we care about
+        default: return create_user_core(user_core_fd, pid, ulimit_c); // not a signal we care about
     }
 
     if (!daemon_is_ok())
@@ -611,14 +678,14 @@ int main(int argc, char** argv)
             "/proc/sys/kernel/core_pattern contains a stale value, "
             "consider resetting it to 'core'"
         );
-        goto create_user_core;
+        return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
     if (g_settings_nMaxCrashReportsSize > 0)
     {
         /* If free space is less than 1/4 of MaxCrashReportsSize... */
         if (low_free_space(g_settings_nMaxCrashReportsSize, g_settings_dump_location))
-            goto create_user_core;
+            return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
     /* Check /var/tmp/abrt/last-ccpp marker, do not dump repeated crashes
@@ -628,7 +695,7 @@ int main(int argc, char** argv)
     if (check_recent_crash_file(path, executable))
     {
         /* It is a repeating crash */
-        goto create_user_core;
+        return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
     const char *last_slash = strrchr(executable, '/');
@@ -657,7 +724,7 @@ int main(int argc, char** argv)
             g_settings_dump_location, iso_date_string(NULL), (long)pid);
     if (path_len >= (sizeof(path) - sizeof("/"FILENAME_COREDUMP)))
     {
-        goto create_user_core;
+        return create_user_core(user_core_fd, pid, ulimit_c);
     }
 
     /* use fsuid instead of uid, so we don't expose any sensitive
@@ -741,53 +808,61 @@ int main(int argc, char** argv)
         if (src_fd_binary > 0)
         {
             strcpy(path + path_len, "/"FILENAME_BINARY);
-            int dst_fd = create_or_die(path);
+            int dst_fd = create_or_die(path, user_core_fd);
             off_t sz = copyfd_eof(src_fd_binary, dst_fd, COPYFD_SPARSE);
             if (fsync(dst_fd) != 0 || close(dst_fd) != 0 || sz < 0)
             {
-                dd_delete(dd);
-                error_msg_and_die("Error saving '%s'", path);
+                dd_delete(dd); error_msg_and_die("Error saving '%s'", path);
             }
             close(src_fd_binary);
         }
 
-        strcpy(path + path_len, "/"FILENAME_COREDUMP);
-        int abrt_core_fd = create_or_die(path);
-
-        /* We write both coredumps at once.
-         * We can't write user coredump first, since it might be truncated
-         * and thus can't be copied and used as abrt coredump;
-         * and if we write abrt coredump first and then copy it as user one,
-         * then we have a race when process exits but coredump does not exist yet:
-         * $ echo -e '#include<signal.h>\nmain(){raise(SIGSEGV);}' | gcc -o test -x c -
-         * $ rm -f core*; ulimit -c unlimited; ./test; ls -l core*
-         * 21631 Segmentation fault (core dumped) ./test
-         * ls: cannot access core*: No such file or directory <=== BAD
-         */
-        off_t core_size = copyfd_sparse(STDIN_FILENO, abrt_core_fd, user_core_fd, ulimit_c);
-        if (fsync(abrt_core_fd) != 0 || close(abrt_core_fd) != 0 || core_size < 0)
+        off_t core_size = 0;
+        if (setting_SaveFullCore)
         {
-            unlink(path);
-            dd_delete(dd);
-            if (user_core_fd >= 0)
+            strcpy(path + path_len, "/"FILENAME_COREDUMP);
+            int abrt_core_fd = create_or_die(path, user_core_fd);
+
+            /* We write both coredumps at once.
+             * We can't write user coredump first, since it might be truncated
+             * and thus can't be copied and used as abrt coredump;
+             * and if we write abrt coredump first and then copy it as user one,
+             * then we have a race when process exits but coredump does not exist yet:
+             * $ echo -e '#include<signal.h>\nmain(){raise(SIGSEGV);}' | gcc -o test -x c -
+             * $ rm -f core*; ulimit -c unlimited; ./test; ls -l core*
+             * 21631 Segmentation fault (core dumped) ./test
+             * ls: cannot access core*: No such file or directory <=== BAD
+             */
+            core_size = copyfd_sparse(STDIN_FILENO, abrt_core_fd, user_core_fd, ulimit_c);
+            if (fsync(abrt_core_fd) != 0 || close(abrt_core_fd) != 0 || core_size < 0)
             {
+                unlink(path);
+                dd_delete(dd);
+                if (user_core_fd >= 0)
+                {
+                    xchdir(user_pwd);
+                    unlink(core_basename);
+                }
+                /* copyfd_sparse logs the error including errno string,
+                 * but it does not log file name */
+                error_msg_and_die("Error writing '%s'", path);
+            }
+            if (user_core_fd >= 0
+                /* error writing user coredump? */
+             && (fsync(user_core_fd) != 0 || close(user_core_fd) != 0
+                /* user coredump is too big? */
+                || (ulimit_c == 0 /* paranoia */ || core_size > ulimit_c)
+                )
+            ) {
+                /* nuke it (silently) */
                 xchdir(user_pwd);
                 unlink(core_basename);
             }
-            /* copyfd_sparse logs the error including errno string,
-             * but it does not log file name */
-            error_msg_and_die("Error writing '%s'", path);
         }
-        if (user_core_fd >= 0
-            /* error writing user coredump? */
-         && (fsync(user_core_fd) != 0 || close(user_core_fd) != 0
-            /* user coredump is too big? */
-            || (ulimit_c == 0 /* paranoia */ || core_size > ulimit_c)
-            )
-        ) {
-            /* nuke it (silently) */
-            xchdir(user_pwd);
-            unlink(core_basename);
+        else
+        {
+            /* User core is created even if WriteFullCore is off. */
+            create_user_core(user_core_fd, pid, ulimit_c);
         }
 
         /* Save JVM crash log if it exists. (JVM's coredump per se
@@ -812,7 +887,7 @@ int main(int argc, char** argv)
             if (src_fd >= 0)
             {
                 strcpy(path + path_len, "/hs_err.log");
-                int dst_fd = create_or_die(path);
+                int dst_fd = create_or_die(path, user_core_fd);
                 off_t sz = copyfd_eof(src_fd, dst_fd, COPYFD_SPARSE);
                 if (close(dst_fd) != 0 || sz < 0)
                 {
@@ -822,6 +897,10 @@ int main(int argc, char** argv)
                 close(src_fd);
             }
         }
+
+        /* Perform crash-time unwind of the guilty thread. */
+        if (tid > 0 && setting_CreateCoreBacktrace)
+            create_core_backtrace(tid, executable, signal_no, dd->dd_dirname);
 
         /* We close dumpdir before we start catering for crash storm case.
          * Otherwise, delete_dump_dir's from other concurrent
@@ -836,7 +915,9 @@ int main(int argc, char** argv)
             strcpy(path, newpath);
         free(newpath);
 
-        log_notice("Saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
+        if (core_size > 0)
+            log_notice("Saved core dump of pid %lu (%s) to %s (%llu bytes)",
+                       (long)pid, executable, path, (long long)core_size);
 
         notify_new_path(path);
 
@@ -856,26 +937,5 @@ int main(int argc, char** argv)
     }
 
     /* We didn't create abrt dump, but may need to create compat coredump */
- create_user_core:
-    if (user_core_fd >= 0)
-    {
-        off_t core_size = copyfd_size(STDIN_FILENO, user_core_fd, ulimit_c, COPYFD_SPARSE);
-        if (fsync(user_core_fd) != 0 || close(user_core_fd) != 0 || core_size < 0)
-        {
-            /* perror first, otherwise unlink may trash errno */
-            perror_msg("Error writing '%s'", full_core_basename);
-            xchdir(user_pwd);
-            unlink(core_basename);
-            return 1;
-        }
-        if (ulimit_c == 0 || core_size > ulimit_c)
-        {
-            xchdir(user_pwd);
-            unlink(core_basename);
-            return 1;
-        }
-        log_notice("Saved core dump of pid %lu to %s (%llu bytes)", (long)pid, full_core_basename, (long long)core_size);
-    }
-
-    return 0;
+    return create_user_core(user_core_fd, pid, ulimit_c);
 }
