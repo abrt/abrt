@@ -422,3 +422,56 @@ char* problem_data_save(problem_data_t *pd)
     log_info("problem id: '%s'", problem_id);
     return problem_id;
 }
+
+int dump_suid_policy()
+{
+    /*
+     - values are:
+       0 - don't dump suided programs - in this case the hook is not called by kernel
+       1 - create coredump readable by fs_uid
+       2 - create coredump readable by root only
+    */
+    int c;
+    int suid_dump_policy = 0;
+    const char *filename = "/proc/sys/fs/suid_dumpable";
+    FILE *f  = fopen(filename, "r");
+    if (!f)
+    {
+        log("Can't open %s", filename);
+        return suid_dump_policy;
+    }
+
+    c = fgetc(f);
+    fclose(f);
+    if (c != EOF)
+        suid_dump_policy = c - '0';
+
+    //log("suid dump policy is: %i", suid_dump_policy);
+    return suid_dump_policy;
+}
+
+int signal_is_fatal(int signal_no, const char **name)
+{
+    const char *signame = NULL;
+    switch (signal_no)
+    {
+        case SIGILL : signame = "ILL" ; break;
+        case SIGFPE : signame = "FPE" ; break;
+        case SIGSEGV: signame = "SEGV"; break;
+        case SIGBUS : signame = "BUS" ; break; //Bus error (bad memory access)
+        case SIGABRT: signame = "ABRT"; break; //usually when abort() was called
+    // We have real-world reports from users who see buggy programs
+    // dying with SIGTRAP, uncommented it too:
+        case SIGTRAP: signame = "TRAP"; break; //Trace/breakpoint trap
+    // These usually aren't caused by bugs:
+      //case SIGQUIT: signame = "QUIT"; break; //Quit from keyboard
+      //case SIGSYS : signame = "SYS" ; break; //Bad argument to routine (SVr4)
+      //case SIGXCPU: signame = "XCPU"; break; //CPU time limit exceeded (4.2BSD)
+      //case SIGXFSZ: signame = "XFSZ"; break; //File size limit exceeded (4.2BSD)
+    }
+
+    if (name != NULL)
+        *name = signame;
+
+    return signame != NULL;
+}
