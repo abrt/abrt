@@ -124,7 +124,7 @@ static void print_crash(problem_data_t *problem_data, int detailed, int text_siz
 
             if (event_found)
             {
-                char *tmp = xasprintf("%sRun 'abrt-cli report %s' for creating a case in Red Hat Customer Portal\n", desc, dump_dir_name);
+                char *tmp = xasprintf(_("%sRun 'abrt-cli report %s' for creating a case in Red Hat Customer Portal\n"), desc, dump_dir_name);
                 free(desc);
                 desc = tmp;
             }
