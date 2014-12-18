@@ -3,11 +3,14 @@ abrt-auto-reporting(1)
 
 NAME
 ----
-abrt-auto-reporting - Get or modify a value of the auto reporting option
+abrt-auto-reporting - Get or modify the auto reporting option values
 
 SYNOPSIS
 --------
-'abrt-auto-reporting' [-v] [ enabled | yes | 1 | disabled | no | 0 ]
+'abrt-auto-reporting' [-v] [ enabled | yes | 1 | on | disabled | no | 0 | off ]
+                      [ [--anonymous] |
+                        [--username USERNAME [--password PASSWORD] ] |
+                        [--certificate SOURCE] ]
 
 DESCRIPTION
 -----------
@@ -22,6 +25,9 @@ process and will be persistent.
 'enabled'::
    ABRT uploads an uReport which was generated for a detected problem
    immediately after the detection phase.
+
+Reads and saves the authentication configuration options in
+/etc/libreport/plugins/ureport.conf and /etc/libreport/plugins/rhtsupport.conf
 
 uReport description
 ~~~~~~~~~~~~~~~~~~~
@@ -51,6 +57,14 @@ for kernel oopses::
     these are list of loaded kernel modules, list of taint flags, and full text
     of the kernel oops.
 
+The authenticated uReports also contains *hostname* and *machineid* to enable a
+server side filtering at https://access.redhat.com/.
+
+The authenticated uReports have the benefit of rich server replies which may
+include a solution for the submitted crash. The authentication is done using
+either Red Hat Subscription Certificates or Red Hat Customer Portal
+credentials.
+
 'Warning':
 The full text of a kernel oops might contain information like the
 identification of the host hardware type. You should disable the autoreporting
@@ -62,9 +76,30 @@ OPTIONS
 -v, --verbose::
    Be more verbose. Can be given multiple times.
 
+-a, --anonymous::
+   Turns the authentication off by clearing both 'SSLClientAuth' and 'HTTPAuth'
+   configuration options in /etc/libreport/plugins/ureport.conf
+
+-u, --username USERNAME::
+   Turns HTTP Authentication on by setting 'HTTPAuth' configuration option to
+   *rhts-credentials* in /etc/libreport/plugins/ureport.conf and storing
+   USERNAME and PASSWORD in /etc/libreport/plugins/rhtsupport.conf
+   Also turns the SSL Client Authentication off, because these methods cannot
+   be used together.
+
+-p, --password PASSWORD::
+   Password for HTTP Authentication. If not provided, a prompt asking for it
+   will be issued.
+
+-c, --certificate SOURCE::
+   Turns SSL Client Authentication on by setting 'SSLClientAuth' configuration
+   option to SOURCE in /etc/libreport/plugins/ureport.conf.
+   Also turns the HTTP Authentication off, because these methods cannot
+   be used together.
+
 SEE ALSO
 --------
-abrt.conf(5)
+abrt.conf(5), ureport.conf(5), rhtsupport.conf(5)
 
 AUTHORS
 -------
