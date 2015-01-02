@@ -90,6 +90,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
 Requires: %{name}-python = %{version}-%{release}
 Requires(pre): %{shadow_utils}
+Requires: python-augeas
 Requires: python-dbus
 Requires: python-dmidecode
 Requires: libreport-plugin-ureport
